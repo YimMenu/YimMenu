@@ -14,7 +14,7 @@ namespace rage
 		std::uint8_t** m_code_blocks;  // 0x10
 		std::uint32_t m_hash;          // 0x18
 		std::uint32_t m_code_size;     // 0x1C
-		std::uint32_t m_arg_count;   // 0x20
+		std::uint32_t m_arg_count;     // 0x20
 		std::uint32_t m_local_count;   // 0x24
 		std::uint32_t m_global_count;  // 0x28
 		std::uint32_t m_native_count;  // 0x2C
