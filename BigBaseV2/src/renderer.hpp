@@ -1,6 +1,6 @@
 #pragma once
 #include "common.hpp"
-#include "imgui/imgui.h"
+#include <imgui.h>
 
 namespace big
 {

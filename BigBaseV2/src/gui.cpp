@@ -11,8 +11,8 @@
 #include "renderer.hpp"
 #include "script.hpp"
 
-#include "imgui/imgui.h"
-#include <StackWalker/StackWalker.h>
+#include <imgui.h>
+#include <StackWalker.h>
 
 namespace big
 {

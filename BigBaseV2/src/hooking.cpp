@@ -12,7 +12,7 @@
 #include "renderer.hpp"
 #include "script_mgr.hpp"
 
-#include <mh/MinHook.h>
+#include <MinHook.h>
 
 namespace big
 {

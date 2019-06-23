@@ -2,7 +2,7 @@
 #include "detour_hook.hpp"
 #include "logger.hpp"
 #include "memory/handle.hpp"
-#include <mh/MinHook.h>
+#include <MinHook.h>
 
 namespace big
 {

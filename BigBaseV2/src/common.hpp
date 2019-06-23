@@ -1,11 +1,5 @@
 #pragma once
 
-#define NOMINMAX
-#define _CRT_SECURE_NO_WARNINGS
-
-#define WIN32_LEAN_AND_MEAN
-#define _WIN32_WINNT 0x0601
-
 #include <SDKDDKVer.h>
 #include <Windows.h>
 #include <D3D11.h>
@@ -51,11 +45,9 @@
 #include <optional>
 #include <variant>
 
-#define FMT_HEADER_ONLY
-#include <cpptoml/cpptoml.h>
 #include <fmt/format.h>
 #include <nlohmann/json.hpp>
-#include <StackWalker/StackWalker.h>
+#include <StackWalker.h>
 
 #include "logger.hpp"
 

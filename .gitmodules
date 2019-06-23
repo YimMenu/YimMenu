@@ -1,0 +1,20 @@
+[submodule "vendor/fmtlib"]
+	path = vendor/fmtlib
+	url = https://github.com/fmtlib/fmt
+	ignore = dirty
+[submodule "vendor/json"]
+	path = vendor/json
+	url = https://github.com/nlohmann/json
+	ignore = dirty
+[submodule "vendor/MinHook"]
+	path = vendor/MinHook
+	url = https://github.com/TsudaKageyu/minhook
+	ignore = dirty
+[submodule "vendor/ImGui"]
+	path = vendor/ImGui
+	url = https://github.com/ocornut/imgui
+	ignore = dirty
+[submodule "vendor/StackWalker"]
+	path = vendor/StackWalker
+	url = https://github.com/JochenKalmbach/StackWalker
+	ignore = dirty
