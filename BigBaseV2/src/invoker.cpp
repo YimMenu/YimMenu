@@ -12,18 +12,15 @@ namespace big
 		m_args = &m_arg_stack[0];
 	}
 
-	bool native_invoker::map_native(rage::scrNativeHash *hash)
+	void native_invoker::cache_handlers()
 	{
-		for (auto const &mapping : g_crossmap)
+		for (const rage::scrNativeMapping &mapping : g_crossmap)
 		{
-			if (mapping.first == *hash)
-			{
-				*hash = mapping.second;
-				return true;
-			}
-		}
+			rage::scrNativeHandler handler = g_pointers->m_get_native_handler(
+				g_pointers->m_native_registration_table, mapping.second);
 
-		return false;
+			m_handler_cache.emplace(mapping.first, handler);
+		}
 	}
 
 	void native_invoker::begin_call()
@@ -33,9 +30,10 @@ namespace big
 
 	void native_invoker::end_call(rage::scrNativeHash hash)
 	{
-		map_native(&hash);
-		if (auto handler = g_pointers->m_get_native_handler(g_pointers->m_native_registration_table, hash))
+		if (auto it = m_handler_cache.find(hash); it != m_handler_cache.end())
 		{
+			rage::scrNativeHandler handler = it->second;
+
 			__try
 			{
 				handler(&m_call_context);
