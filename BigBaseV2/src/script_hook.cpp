@@ -9,9 +9,9 @@ namespace big
 {
 	inline std::unordered_map<rage::scrProgram*, script_hook*> script_hook::s_map;
 
-	static bool map_native(rage::scrNativeHash *hash)
+	static bool map_native(rage::scrNativeHash* hash)
 	{
-		for (auto const &mapping : g_crossmap)
+		for (auto const& mapping : g_crossmap)
 		{
 			if (mapping.first == *hash)
 			{
@@ -34,7 +34,7 @@ namespace big
 	{
 		if (m_program)
 		{
-			for (auto[hash, handler_ptr] : m_native_handler_ptrs)
+			for (auto [hash, handler_ptr] : m_native_handler_ptrs)
 			{
 				auto og_handler = g_pointers->m_get_native_handler(g_pointers->m_native_registration_table, hash);
 				*handler_ptr = og_handler;
@@ -58,12 +58,12 @@ namespace big
 			if (program->is_valid())
 			{
 				hook_instance(program);
-				LOG_INFO("Hooked {} script ({})", program->m_name, static_cast<void*>(program));
+				LOG(INFO) << "Hooked " << program->m_name << " script (" << HEX_TO_UPPER(static_cast<void*>(program)) << ")";
 			}
 		}
 	}
 
-	void script_hook::hook_instance(rage::scrProgram *program)
+	void script_hook::hook_instance(rage::scrProgram* program)
 	{
 		m_program = program;
 		s_map.emplace(m_program, this);
@@ -88,7 +88,7 @@ namespace big
 		}
 	}
 
-	void script_hook::scrprogram_dtor(rage::scrProgram *this_, bool free_memory)
+	void script_hook::scrprogram_dtor(rage::scrProgram* this_, bool free_memory)
 	{
 		if (auto it = s_map.find(this_); it != s_map.end())
 		{

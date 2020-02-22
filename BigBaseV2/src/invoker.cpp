@@ -14,7 +14,7 @@ namespace big
 
 	void native_invoker::cache_handlers()
 	{
-		for (const rage::scrNativeMapping &mapping : g_crossmap)
+		for (const rage::scrNativeMapping& mapping : g_crossmap)
 		{
 			rage::scrNativeHandler handler = g_pointers->m_get_native_handler(
 				g_pointers->m_native_registration_table, mapping.second);
@@ -34,19 +34,12 @@ namespace big
 		{
 			rage::scrNativeHandler handler = it->second;
 
-			__try
-			{
-				handler(&m_call_context);
-				g_pointers->m_fix_vectors(&m_call_context);
-			}
-			__except (EXCEPTION_EXECUTE_HANDLER)
-			{
-				LOG_ERROR("Exception caught while trying to call 0x{:X} native.", hash);
-			}
+			handler(&m_call_context);
+			g_pointers->m_fix_vectors(&m_call_context);
 		}
 		else
 		{
-			LOG_ERROR("Failed to find 0x{:X} native's handler.", hash);
+			[hash]() { LOG(WARNING) << "Failed to find " << HEX_TO_UPPER(hash) << " native's handler."; }();
 		}
 	}
 }

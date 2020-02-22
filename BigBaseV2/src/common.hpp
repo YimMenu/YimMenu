@@ -47,9 +47,10 @@
 
 #include <fmt/format.h>
 #include <nlohmann/json.hpp>
-#include <StackWalker.h>
 
 #include "logger.hpp"
+
+#include "settings.h"
 
 namespace big
 {
@@ -62,16 +63,4 @@ namespace big
 	inline HANDLE g_main_thread{};
 	inline DWORD g_main_thread_id{};
 	inline std::atomic_bool g_running{ true };
-	
-	struct stackwalker : public StackWalker
-	{
-		using StackWalker::StackWalker;
-
-		void OnOutput(LPCSTR szText) override
-		{
-			g_logger->raw(log_color::red, szText);
-		}
-	};
-
-	inline stackwalker g_stackwalker;
 }

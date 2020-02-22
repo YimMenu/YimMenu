@@ -7,6 +7,7 @@
 #include <imgui.h>
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
+#include <imgui_internal.h>
 
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -27,7 +28,24 @@ namespace big
 
 		m_d3d_device->GetImmediateContext(m_d3d_device_context.GetAddressOf());
 
-		ImGui::CreateContext();
+		auto file_path = std::filesystem::path(std::getenv("appdata"));
+		file_path /= "BigBaseV2";
+		if (!std::filesystem::exists(file_path))
+		{
+			std::filesystem::create_directory(file_path);
+		}
+		else if (!std::filesystem::is_directory(file_path))
+		{
+			std::filesystem::remove(file_path);
+			std::filesystem::create_directory(file_path);
+		}
+		file_path /= "imgui.ini";
+		
+		ImGuiContext* ctx = ImGui::CreateContext();
+
+		static std::string path = file_path.make_preferred().string();
+		ctx->IO.IniFilename = path.c_str();
+
 		ImGui_ImplDX11_Init(m_d3d_device.Get(), m_d3d_device_context.Get());
 		ImGui_ImplWin32_Init(g_pointers->m_hwnd);
 
@@ -90,7 +108,21 @@ namespace big
 	void renderer::wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	{
 		if (msg == WM_KEYUP && wparam == VK_INSERT)
+		{
+			//Persist and restore the cursor position between menu instances.
+			static POINT cursor_coords{};
+			if (g_gui.m_opened)
+			{
+				GetCursorPos(&cursor_coords);
+			}
+			else if (cursor_coords.x + cursor_coords.y != 0)
+			{
+				SetCursorPos(cursor_coords.x, cursor_coords.y);
+			}
+
 			g_gui.m_opened ^= true;
+		}
+			
 
 		if (g_gui.m_opened)
 		{

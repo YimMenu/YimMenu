@@ -14,7 +14,7 @@
 	path = vendor/ImGui
 	url = https://github.com/ocornut/imgui
 	ignore = dirty
-[submodule "vendor/StackWalker"]
-	path = vendor/StackWalker
-	url = https://github.com/JochenKalmbach/StackWalker
+[submodule "vendor/g3log"]
+	path = vendor/g3log
+	url = https://github.com/KjellKod/g3log.git
 	ignore = dirty

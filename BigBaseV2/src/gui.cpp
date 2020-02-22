@@ -12,7 +12,8 @@
 #include "script.hpp"
 
 #include <imgui.h>
-#include <StackWalker.h>
+
+#include "gui/base_tab.h"
 
 namespace big
 {
@@ -96,56 +97,17 @@ namespace big
 
 	void gui::dx_on_tick()
 	{
-		if (ImGui::Begin("BigBaseV2"))
+		TRY_CLAUSE
 		{
-			static bool demo_bool = true;
-			static int demo_int = 1;
-			static float demo_float = 1.f;
-
-			static const char *demo_combo[]
+			if (ImGui::Begin("BigBaseV2"))
 			{
-				"One",
-				"Two",
-				"Three"
-			};
-			static int demo_combo_pos = 0;
-
-			ImGui::Checkbox("Bool", &demo_bool);
-			ImGui::SliderInt("Int", &demo_int, 0, 10);
-			ImGui::SliderFloat("Float", &demo_float, 0.f, 10.f);
-			ImGui::Combo("Combo", &demo_combo_pos, demo_combo, sizeof(demo_combo) / sizeof(*demo_combo));
-
-			if (ImGui::Button("Spawn a vehicle"))
-			{
-				g_fiber_pool->queue_job([]
-				{
-					constexpr auto hash = RAGE_JOAAT("adder");
-					while (!STREAMING::HAS_MODEL_LOADED(hash))
-					{
-						STREAMING::REQUEST_MODEL(hash);
-						script::get_current()->yield();
-					}
-
-					auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
-					auto vehicle = VEHICLE::CREATE_VEHICLE(hash, pos.x, pos.y, pos.z, 0.f, true, true);
-					
-					if (*g_pointers->m_is_session_started)
-					{
-						DECORATOR::DECOR_SET_INT(vehicle, "MPBitset", 0);
-					}
-
-					STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-				});
+				ImGui::BeginTabBar("tabbar");
+				base_tab::render_base_tab();
+				ImGui::EndTabBar();
 			}
-
-			ImGui::Separator();
-
-			if (ImGui::Button("Unload"))
-			{
-				g_running = false;
-			}
+			ImGui::End();
 		}
-		ImGui::End();
+		EXCEPT_CLAUSE
 	}
 
 	void gui::script_init()
@@ -154,10 +116,14 @@ namespace big
 
 	void gui::script_on_tick()
 	{
-		if (g_gui.m_opened)
+		TRY_CLAUSE
 		{
-			CONTROLS::DISABLE_ALL_CONTROL_ACTIONS(0);
+			if (g_gui.m_opened)
+			{
+				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+			}
 		}
+		EXCEPT_CLAUSE
 	}
 
 	void gui::script_func()

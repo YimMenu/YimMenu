@@ -63,7 +63,6 @@ namespace big
 		m_run_script_threads_hook.enable();
 		m_convert_thread_to_fiber_hook.enable();
 
-		ensure_dynamic_hooks();
 		m_enabled = true;
 	}
 
@@ -71,31 +70,12 @@ namespace big
 	{
 		m_enabled = false;
 
-		if (m_main_persistent_hook)
-		{
-			m_main_persistent_hook->disable();
-		}
-
 		m_convert_thread_to_fiber_hook.disable();
 		m_run_script_threads_hook.disable();
 
 		m_set_cursor_pos_hook.disable();
 		SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(m_og_wndproc));
 		m_swapchain_hook.disable();
-	}
-
-	void hooking::ensure_dynamic_hooks()
-	{
-		if (!m_main_persistent_hook)
-		{
-			if (auto main_persistent = find_script_thread(RAGE_JOAAT("main_persistent")))
-			{
-				m_main_persistent_hook = std::make_unique<vmt_hook>(main_persistent->m_handler, hooks::main_persistent_num_funcs);
-				m_main_persistent_hook->hook(hooks::main_persistent_dtor_index, &hooks::main_persistent_dtor);
-				m_main_persistent_hook->hook(hooks::main_persistent_is_networked_index, &hooks::main_persistent_is_networked);
-				m_main_persistent_hook->enable();
-			}
-		}
 	}
 
 	minhook_keepalive::minhook_keepalive()
@@ -110,85 +90,94 @@ namespace big
 
 	bool hooks::run_script_threads(std::uint32_t ops_to_execute)
 	{
-		if (g_running)
+		TRY_CLAUSE
 		{
-			g_script_mgr.tick();
-		}
+			if (g_running)
+			{
+				g_script_mgr.tick();
+			}
 
-		return g_hooking->m_run_script_threads_hook.get_original<functions::run_script_threads_t>()(ops_to_execute);
+			return g_hooking->m_run_script_threads_hook.get_original<functions::run_script_threads_t>()(ops_to_execute);
+		} EXCEPT_CLAUSE
+		return false;
 	}
 
 	void *hooks::convert_thread_to_fiber(void *param)
 	{
-		if (IsThreadAFiber())
+		TRY_CLAUSE
 		{
-			return GetCurrentFiber();
-		}
+			if (IsThreadAFiber())
+			{
+				return GetCurrentFiber();
+			}
 
-		return g_hooking->m_convert_thread_to_fiber_hook.get_original<decltype(&convert_thread_to_fiber)>()(param);
+			return g_hooking->m_convert_thread_to_fiber_hook.get_original<decltype(&convert_thread_to_fiber)>()(param);
+		} EXCEPT_CLAUSE
+		return nullptr;
 	}
 
 	HRESULT hooks::swapchain_present(IDXGISwapChain *this_, UINT sync_interval, UINT flags)
 	{
-		if (g_running)
+		TRY_CLAUSE
 		{
-			g_renderer->on_present();
-		}
+			if (g_running)
+			{
+				g_renderer->on_present();
+			}
 
-		return g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_present)>(swapchain_present_index)(this_, sync_interval, flags);
+			return g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_present)>(swapchain_present_index)(this_, sync_interval, flags);
+		} EXCEPT_CLAUSE
+		return NULL;
 	}
 
 	HRESULT hooks::swapchain_resizebuffers(IDXGISwapChain * this_, UINT buffer_count, UINT width, UINT height, DXGI_FORMAT new_format, UINT swapchain_flags)
 	{
-		if (g_running)
+		TRY_CLAUSE
 		{
-			g_renderer->pre_reset();
-
-			auto result = g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_resizebuffers)>(swapchain_resizebuffers_index)
-				(this_, buffer_count, width, height, new_format, swapchain_flags);
-
-			if (SUCCEEDED(result))
+			if (g_running)
 			{
-				g_renderer->post_reset();
+				g_renderer->pre_reset();
+
+				auto result = g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_resizebuffers)>(swapchain_resizebuffers_index)
+					(this_, buffer_count, width, height, new_format, swapchain_flags);
+
+				if (SUCCEEDED(result))
+				{
+					g_renderer->post_reset();
+				}
+
+				return result;
 			}
 
-			return result;
-		}
-
-		return g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_resizebuffers)>(swapchain_resizebuffers_index)
-			(this_, buffer_count, width, height, new_format, swapchain_flags);
+			return g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_resizebuffers)>(swapchain_resizebuffers_index)
+				(this_, buffer_count, width, height, new_format, swapchain_flags);
+		} EXCEPT_CLAUSE
+		return NULL;
 	}
 
 	LRESULT hooks::wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	{
-		if (g_running)
+		TRY_CLAUSE
 		{
-			g_renderer->wndproc(hwnd, msg, wparam, lparam);
-		}
+			if (g_running)
+			{
+				g_renderer->wndproc(hwnd, msg, wparam, lparam);
+			}
 
-		return CallWindowProcW(g_hooking->m_og_wndproc, hwnd, msg, wparam, lparam);
+			return CallWindowProcW(g_hooking->m_og_wndproc, hwnd, msg, wparam, lparam);
+		} EXCEPT_CLAUSE
+		return NULL;
 	}
 
 	BOOL hooks::set_cursor_pos(int x, int y)
 	{
-		if (g_gui.m_opened)
+		TRY_CLAUSE
 		{
-			return true;
-		}
+			if (g_gui.m_opened)
+				return true;
 
-		return g_hooking->m_set_cursor_pos_hook.get_original<decltype(&set_cursor_pos)>()(x, y);
-	}
-
-	void hooks::main_persistent_dtor(CGameScriptHandler *this_, bool free_memory)
-	{
-		auto og_func = g_hooking->m_main_persistent_hook->get_original<decltype(&main_persistent_dtor)>(main_persistent_dtor_index);
-		g_hooking->m_main_persistent_hook->disable();
-		g_hooking->m_main_persistent_hook.reset();
-		return og_func(this_, free_memory);
-	}
-
-	bool hooks::main_persistent_is_networked(CGameScriptHandler *this_)
-	{
-		return *g_pointers->m_is_session_started;
+			return g_hooking->m_set_cursor_pos_hook.get_original<decltype(&set_cursor_pos)>()(x, y);
+		} EXCEPT_CLAUSE
+		return FALSE;
 	}
 }

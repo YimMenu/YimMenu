@@ -17,7 +17,7 @@ workspace "BigBaseV2"
   IncludeDir["MinHook"] = "vendor/MinHook/include"
   IncludeDir["ImGui"] = "vendor/ImGui"
   IncludeDir["ImGuiImpl"] = "vendor/ImGui/examples"
-  IncludeDir["StackWalker"] = "vendor/StackWalker/Main/StackWalker/"
+  IncludeDir["g3log"] = "vendor/g3log/src"
   
   CppVersion = "C++17"
   MsvcToolset = "v142"
@@ -26,6 +26,8 @@ workspace "BigBaseV2"
   function DeclareMSVCOptions()
     filter "system:windows"
     staticruntime "Off"
+	floatingpoint "Fast"
+	vectorextensions "AVX2"
     systemversion (WindowsSdkVersion)
     toolset (MsvcToolset)
     cppdialect (CppVersion)
@@ -44,6 +46,11 @@ workspace "BigBaseV2"
       "4201", -- C4201: nameless struct/union
       "4307"  -- C4307: integral constant overflow
     }
+  end
+  
+  function file_exists(name)
+   local f=io.open(name,"r")
+   if f~=nil then io.close(f) return true else return false end
   end
    
   function DeclareDebugOptions()
@@ -102,27 +109,6 @@ workspace "BigBaseV2"
     DeclareMSVCOptions()
     DeclareDebugOptions()
 
-  project "StackWalker"
-    location "vendor/%{prj.name}"
-    kind "StaticLib"
-    language "C++"
-  
-    targetdir ("bin/lib/" .. outputdir)
-    objdir ("bin/lib/int/" .. outputdir .. "/%{prj.name}")
-
-    files
-    {
-      "vendor/%{prj.name}/Main/StackWalker/StackWalker.cpp"
-    }
-
-    includedirs
-    {
-      "vendor/%{prj.name}/include"
-    }
-
-    DeclareMSVCOptions()
-    DeclareDebugOptions()
-
   project "MinHook"
     location "vendor/%{prj.name}"
     kind "StaticLib"
@@ -137,6 +123,38 @@ workspace "BigBaseV2"
       "vendor/%{prj.name}/src/**.h",
       "vendor/%{prj.name}/src/**.c"
     }
+
+    DeclareMSVCOptions()
+    DeclareDebugOptions()
+	
+  project "g3log"
+    location "vendor/%{prj.name}"
+    kind "StaticLib"
+    language "C++"
+
+    targetdir ("bin/lib/" .. outputdir)
+    objdir ("bin/lib/int/" .. outputdir .. "/%{prj.name}")
+	
+	includedirs
+    {
+      "vendor/%{prj.name}/src"
+    }
+
+	if(file_exists("vendor\\g3log\\src\\g3log\\generated_definitions.hpp") == false) then
+		file = io.open("vendor\\g3log\\src\\g3log\\generated_definitions.hpp", "w")
+		file:write("// AUTO GENERATED MACRO DEFINITIONS FOR G3LOG\n\n\n/* ==========================================================================\n*2015 by KjellKod.cc. This is PUBLIC DOMAIN to use at your own risk and comes\n* with no warranties. This code is yours to share, use and modify with no\n\n*strings attached and no restrictions or obligations.\n* \n* For more information see g3log/LICENSE or refer refer to http://unlicense.org\n\n*============================================================================*/\n#pragma once\n\n\n// CMake induced definitions below. See g3log/Options.cmake for details.");
+	end
+	
+    files
+    {
+      "vendor/%{prj.name}/src/**.hpp",
+      "vendor/%{prj.name}/src/**.cpp"
+    }
+	
+	removefiles
+	{
+	  "vendor/%{prj.name}/src/crashhandler_unix.cpp"
+	}
 
     DeclareMSVCOptions()
     DeclareDebugOptions()
@@ -155,6 +173,7 @@ workspace "BigBaseV2"
     files
     {
       "%{prj.name}/src/**.hpp",
+      "%{prj.name}/src/**.h",
       "%{prj.name}/src/**.cpp",
       "%{prj.name}/src/**.asm"
     }
@@ -166,7 +185,7 @@ workspace "BigBaseV2"
       "%{IncludeDir.MinHook}",
       "%{IncludeDir.ImGui}",
       "%{IncludeDir.ImGuiImpl}",
-      "%{IncludeDir.StackWalker}",
+      "%{IncludeDir.g3log}",
       "%{prj.name}/src"
     }
 
@@ -180,7 +199,7 @@ workspace "BigBaseV2"
       "fmtlib",
       "MinHook",
       "ImGui",
-      "StackWalker"
+      "g3log"
     }
 
     pchheader "%{PrecompiledHeaderInclude}"
@@ -197,12 +216,14 @@ workspace "BigBaseV2"
     flags { "NoImportLib", "Maps" }
 
     filter "configurations:Debug"
+	  flags { "LinkTimeOptimization", "MultiProcessorCompile" }
       defines { "BIGBASEV2_DEBUG" }
 
     filter "configurations:Release"
+	  flags { "LinkTimeOptimization", "NoManifest", "MultiProcessorCompile" }
       defines { "BIGBASEV2_RELEASE" }
       optimize "speed"
     filter "configurations:Dist"
-      flags { "LinkTimeOptimization", "FatalCompileWarnings" }
+      flags { "LinkTimeOptimization", "FatalWarnings", "NoManifest", "MultiProcessorCompile" }
       defines { "BIGBASEV2_DIST" }
       optimize "speed"

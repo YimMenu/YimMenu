@@ -32,6 +32,8 @@ namespace big
 		CGameScriptHandlerMgr **m_script_handler_mgr{};
 
 		IDXGISwapChain **m_swapchain{};
+
+		PVOID m_model_spawn_bypass;
 	};
 
 	inline pointers *g_pointers{};

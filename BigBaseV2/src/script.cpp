@@ -5,10 +5,17 @@
 
 namespace big
 {
-	static void script_exception_handler(PEXCEPTION_POINTERS exp)
+	void script::script_exception_handler(PEXCEPTION_POINTERS exp)
 	{
-		LOG_ERROR("Script threw an exception!");
-		g_stackwalker.ShowCallstack(GetCurrentThread(), exp->ContextRecord);
+		HMODULE mod{};
+		DWORD64 offset{};
+		char buffer[MAX_PATH]{};
+		if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, (LPCWSTR)exp->ExceptionRecord->ExceptionAddress, &mod) == TRUE && mod != nullptr)
+		{
+			offset = ((DWORD64)exp->ExceptionRecord->ExceptionAddress - (DWORD64)mod);
+			GetModuleFileNameA(mod, buffer, MAX_PATH - 1);
+		}
+		LOG(FATAL) << "Exception Code: " << HEX_TO_UPPER(exp->ExceptionRecord->ExceptionCode) << " Exception Offset: " << HEX_TO_UPPER(offset) << " Fault Module Name: " << buffer;
 	}
 
 	script::script(func_t func, std::optional<std::size_t> stack_size) :
@@ -52,38 +59,23 @@ namespace big
 		SwitchToFiber(m_main_fiber);
 	}
 
-	script *script::get_current()
+	script* script::get_current()
 	{
 		return static_cast<script*>(GetFiberData());
 	}
 
 	void script::fiber_func()
 	{
-		__try
+		TRY_CLAUSE
 		{
-			[this]()
-			{
-				try
-				{
-					m_func();
-				}
-				catch (std::exception const &ex)
-				{
-					auto ex_class = typeid(ex).name() + 6;
-					LOG_INFO("Script threw an C++ expection! {}: {}", ex_class, ex.what());
-				}
-				catch (...)
-				{
-					LOG_INFO("Script threw a C++ exception!");
-				}
-			}();
+			m_func();
 		}
-		__except (script_exception_handler(GetExceptionInformation()), EXCEPTION_EXECUTE_HANDLER)
-		{
-			LOG_INFO("Script threw an exception!");
-		}
+			EXCEPT_CLAUSE
 
-		LOG_INFO("Script finished!");
+			[]() {
+			LOG(INFO) << "Script finished!";
+		}();
+
 		while (true)
 		{
 			yield();
