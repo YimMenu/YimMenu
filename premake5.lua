@@ -220,6 +220,7 @@ workspace "BigBaseV2"
 
     filter "configurations:Debug"
 	  flags { "LinkTimeOptimization", "MultiProcessorCompile" }
+	  editandcontinue "Off"
       defines { "BIGBASEV2_DEBUG" }
 
     filter "configurations:Release"
