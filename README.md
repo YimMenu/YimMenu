@@ -18,17 +18,8 @@ To build BigBaseV2 you need:
 
 To set up the build environment, run the following commands in a terminal:
 ```dos
-git clone https://github.com/Pocakking/BigBaseV2.git --recurse-submodules
-cd BigBaseV2
+git clone https://gir489@bitbucket.org/gir489/bigbasev2-fix.git --recurse-submodules
+cd BigBaseV2-fix
 GenerateProjects.bat
 ```
 Now, you will be able to open the solution, and simply build it in Visual Studio.
-
-It is reccomended you generate the project each time you add a file instead of adding it directly to Visual Studio.
-
-## Credits
-Pocakking - Original creator.
-
-gir489 - Implementer and wrote the g3log crash handler and added test cases.
-
-datlimabean04 - Wrote the g3log and settings implementation.
