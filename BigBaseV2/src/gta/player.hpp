@@ -3,6 +3,7 @@
 #include "fwddec.hpp"
 #include "extensible.hpp"
 #include "vector.hpp"
+#include "gta\natives.hpp"
 
 #pragma pack(push, 1)
 namespace rage
@@ -89,24 +90,52 @@ public:
 class CNetGamePlayer : public rage::netPlayer
 {
 public:
-
-};
-
-class CWantedData
-{
-public:
-	char m_padding[0x98];
-	std::int32_t m_wanted_level;
+	char pad_0x0008[0x25]; //0x0008
+	std::int8_t player_id; //0x002D 
+	char pad_0x002E[0x7A]; //0x002E
+	CPlayerInfo* player_info; //0x00A8 
+	char pad_0x00B0[0x14]; //0x00B0
+	std::uint32_t bubble_id; //0x00C4	
+	Player player; //0x00C8
 };
 
 class CPlayerInfo : public rage::fwExtensibleBase
 {
 public:
-	char m_padding1[0x1D8];      // 0x20
-	std::uint32_t m_frame_flags; // 0x1F8
-	char m_padding2[0x584];      // 0x1FC
-	CWantedData m_wanted_data;   // 0x780
-};
+	char pad_0020[20]; //0x0020
+	std::uint32_t m_internal_ip; //0x0034
+	std::uint16_t m_internal_port; //0x0038
+	char pad_003A[2]; //0x003A
+	std::uint32_t m_relay_ip; //0x003C
+	std::uint16_t m_relay_port; //0x0040
+	char pad_0042[2]; //0x0042
+	std::uint32_t m_external_ip; //0x0044
+	std::uint16_t m_external_port; //0x0048
+	char pad_004A[30]; //0x004A
+	std::uint64_t m_rockstar_id; //0x0068
+	char pad_0070[12]; //0x0070
+	char m_name[20]; //0x007C
+	char pad_0090[184]; //0x0090
+	float m_swim_speed; //0x0148
+	float m_run_speed; //0x014C
+	char pad_0150[81]; //0x0150
+	bool m_is_rockstar_dev; //0x01A1
+	char pad_01A2[1]; //0x01A2
+	bool m_is_cheater; //0x01A3
+	char pad_01A4[11]; //0x01A4
+	bool m_is_online; //0x01AF
+	char pad_01B0[24]; //0x01B0
+	rage::CPed* m_ped; //0x01C8
+	char pad_01D0[40]; //0x01D0
+	std::uint32_t m_frame_flags; //0x01F8
+	char pad_01FC[28]; //0x01FC
+	std::uint32_t m_player_controls; //0x0218
+	char pad_021C[1524]; //0x021C
+	bool m_is_wanted; //0x0810
+	char pad_0811[51]; //0x0811
+	std::int32_t m_wanted_level_display; //0x0844
+	std::int32_t m_wanted_level; //0x0848
+}; //Size: 0x084C
 
 static_assert(sizeof(CNonPhysicalPlayerData) == 0x1C);
 #pragma pack(pop)

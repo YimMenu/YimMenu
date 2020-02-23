@@ -12,13 +12,13 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Test"))
 		{
-			static const char* demo_combo[]
+			const char* const demo_combo[]
 			{
 				"One",
 				"Two",
 				"Three"
 			};
-			static double min = 0., max = 10.;
+			const double min = 0., max = 10.;
 
 			//If you want to add a new option, you have to first declare it in settings.h's default_options, otherwise, this code will crash when trying to access an option that does not exist in memory.
 			if (ImGui::Checkbox("Bool", g_settings.options["demo bool"].get<bool*>()))
@@ -41,15 +41,10 @@ namespace big
 					}
 
 					auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
-
-					while (!STREAMING::HAS_MODEL_LOADED(hash))
-					{
-						STREAMING::REQUEST_MODEL(hash);
-						script::get_current()->yield();
-					}
 					*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
 					Vehicle vehicle = VEHICLE::CREATE_VEHICLE(hash, pos.x, pos.y, pos.z, 0.f, TRUE, FALSE, FALSE);
 					*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574; //By writing the "old" bypass to the function, running CREATE_VEHICLE, then restoring it, the anti-cheat does not have enough time to catch the function in a dirty state.
+
 					script::get_current()->yield();
 					STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 					if (*g_pointers->m_is_session_started)
@@ -61,13 +56,6 @@ namespace big
 							NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true);
 						VEHICLE::SET_VEHICLE_IS_STOLEN(vehicle, FALSE);
 					}
-
-					if (*g_pointers->m_is_session_started)
-					{
-						DECORATOR::DECOR_SET_INT(vehicle, "MPBitset", 0);
-					}
-
-					STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 				}
 				QUEUE_JOB_END_CLAUSE
 			}

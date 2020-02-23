@@ -19,4 +19,16 @@ namespace rage
 			float raw[4 * 4] = {};
 		};
 	};
+
+	class CViewPort
+	{
+	public:
+		char _0x0000[0x24C];
+		float m_matrix[0x10];
+	};
+
+	struct ScreenResolution
+	{
+		uint32_t w, h;
+	};
 }
