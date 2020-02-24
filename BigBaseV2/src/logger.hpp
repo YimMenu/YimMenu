@@ -112,7 +112,6 @@ namespace big
 
 				m_worker->addSink(std::make_unique<log_sink>(), &log_sink::callback);
 				g3::initializeLogging(m_worker.get());
-				g3::installCrashHandler();
 			}
 			catch (std::filesystem::filesystem_error const& error)
 			{
