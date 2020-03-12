@@ -1,65 +1,174 @@
 #pragma once
 #include <cstdint>
 #include "fwddec.hpp"
+#include "sysMemAllocator.hpp"
 
 namespace rage
 {
-	template <typename T>
-	class atArray
-	{
-	public:
-		T *begin()
-		{
-			return m_data;
-		}
+    template <typename T>
+    class atArray
+    {
+    public:
+        atArray()
+        {
+            m_data = nullptr;
+            m_count = 0;
+            m_size = 0;
+        }
 
-		T *end()
-		{
-			return m_data + m_size;
-		}
+        atArray(const atArray& right)
+        {
+            m_count = right.m_count;
+            m_size = right.m_size;
 
-		const T *begin() const
-		{
-			return m_data;
-		}
+            m_data = (T*)rage::GetAllocator()->allocate(m_size * sizeof(T), 16, 0);
+            std::uninitialized_copy(right.m_data, right.m_data + right.m_count, m_data);
+        }
 
-		const T *end() const
-		{
-			return m_data + m_size;
-		}
+        atArray(int capacity)
+        {
+            m_data = (T*)rage::GetAllocator()->allocate(capacity * sizeof(T), 16, 0);
+            m_count = 0;
+            m_size = capacity;
+        }
 
-		T *data()
-		{
-			return m_data;
-		}
+        void clear()
+        {
+            m_count = 0;
+            m_size = 0;
 
-		const T *data() const
-		{
-			return m_data;
-		}
+            if (m_data)
+            {
+                rage::GetAllocator()->free(m_data);
 
-		std::uint16_t size() const
-		{
-			return m_size;
-		}
+                m_data = nullptr;
+            }
+        }
 
-		std::uint16_t capacity() const
-		{
-			return m_capacity;
-		}
+        void append(const std::initializer_list<T> value_array)
+        {
+            auto value_array_size = value_array.size();
+            auto old_capacity = m_count;
 
-		T &operator[](std::uint16_t index)
-		{
-			return m_data[index];
-		}
+            if ((value_array_size + m_count) > std::numeric_limits<uint16_t>::max())
+                LOG(FATAL) << "RAGE atArray was given too large of a list to append";
 
-		const T &operator[](std::uint16_t index) const
-		{
-			return m_data[index];
-		}
-	private:
-		T *m_data;
-		std::uint16_t m_size;
-		std::uint16_t m_capacity;
-	};
+            auto size = (uint16_t)value_array_size;
+            expand(m_count + size);
+            m_size += size;
+
+            auto i = old_capacity;
+            for (const T* it = value_array.begin(); it != value_array.end(); ++it)
+            {
+                m_data[i] = *it;
+                i++;
+            }
+        }
+
+        void append(T value)
+        {
+            set(m_count, value);
+        }
+
+        void set(uint16_t offset, const T& value)
+        {
+            if (offset >= m_count)
+            {
+                expand(offset + 1);
+            }
+
+            if (offset >= m_size)
+            {
+                m_size = offset + 1;
+            }
+
+            m_data[offset] = value;
+        }
+
+        void expand(uint16_t newSize)
+        {
+            if (m_count >= newSize)
+            {
+                return;
+            }
+
+            T* newOffset = (T*)rage::GetAllocator()->allocate(newSize * sizeof(T), 16, 0);
+
+            // initialize the new entries
+            std::uninitialized_fill(newOffset, newOffset + newSize, T());
+
+            // copy the existing entries
+            if (m_data)
+            {
+                std::copy(m_data, m_data + m_size, newOffset);
+
+                rage::GetAllocator()->free(m_data);
+            }
+
+            m_data = newOffset;
+            m_count = newSize;
+        }
+
+        T* begin()
+        {
+            return m_data;
+        }
+
+        T* end()
+        {
+            return m_data + m_size;
+        }
+
+        const T* begin() const
+        {
+            return m_data;
+        }
+
+        const T* end() const
+        {
+            return m_data + m_size;
+        }
+
+        T* data()
+        {
+            return m_data;
+        }
+
+        const T* data() const
+        {
+            return m_data;
+        }
+
+        std::uint16_t size() const
+        {
+            return m_size;
+        }
+
+        std::uint16_t count() const
+        {
+            return m_count;
+        }
+
+        T& operator[](std::uint16_t index)
+        {
+            return m_data[index];
+        }
+
+        friend std::ostream& operator<<(std::ostream& o, const atArray<T>& j)
+        {
+            o << "Array Size: " << j.size() << std::endl;
+            for (T item : j)
+                o << "\tArray Item: " << item << " [" << HEX_TO_UPPER(item) << "]" << (j.end() == item) ? "" : std::endl;
+            return o;
+        }
+
+        const T& operator[](std::uint16_t index) const
+        {
+            return m_data[index];
+        }
+    private:
+        T* m_data;
+        std::uint16_t m_size;
+        std::uint16_t m_count;
+    };
 }
