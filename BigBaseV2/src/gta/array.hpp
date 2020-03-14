@@ -45,13 +45,53 @@ namespace rage
             }
         }
 
+        void append(atArray<T> array_value)
+        {
+            auto value_array_size = array_value.size();
+            auto old_capacity = m_count;
+
+            if ((value_array_size + m_count) > std::numeric_limits<uint16_t>::max())
+                LOG(FATAL) << "RAGE atArray::append was given too large of an atArray to append";
+
+            auto size = (uint16_t)value_array_size;
+            expand(m_count + size);
+            m_size += size;
+
+            auto i = old_capacity;
+            for (auto weapon_hash : value_array)
+            {
+                m_data[i] = weapon_hash;
+                i++;
+            }
+        }
+
+        void append(std::vector<T> value_array)
+        {
+            auto value_array_size = value_array.size();
+            auto old_capacity = m_count;
+
+            if ((value_array_size + m_count) > std::numeric_limits<uint16_t>::max())
+                LOG(FATAL) << "RAGE atArray::append was given too large of a vector to append";
+
+            auto size = (uint16_t)value_array_size;
+            expand(m_count + size);
+            m_size += size;
+
+            auto i = old_capacity;
+            for (auto weapon_hash : value_array)
+            {
+                m_data[i] = weapon_hash;
+                i++;
+            }
+        }
+
         void append(const std::initializer_list<T> value_array)
         {
             auto value_array_size = value_array.size();
             auto old_capacity = m_count;
 
             if ((value_array_size + m_count) > std::numeric_limits<uint16_t>::max())
-                LOG(FATAL) << "RAGE atArray was given too large of a list to append";
+                LOG(FATAL) << "RAGE atArray::append was given too large of a list to append";
 
             auto size = (uint16_t)value_array_size;
             expand(m_count + size);
