@@ -5,6 +5,7 @@
 
 namespace rage
 {
+#pragma pack(push, 8)
     template <typename T>
     class atArray
     {
@@ -211,4 +212,6 @@ namespace rage
         std::uint16_t m_size;
         std::uint16_t m_count;
     };
+    static_assert(sizeof(rage::atArray<Hash>) == 0x10, "rage::atArray is not properly sized");
+#pragma pack(pop)
 }
