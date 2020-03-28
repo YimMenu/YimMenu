@@ -13,11 +13,15 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 	using namespace big;
 	if (reason == DLL_PROCESS_ATTACH)
 	{
+
 		DisableThreadLibraryCalls(hmod);
 
 		g_hmodule = hmod;
 		g_main_thread = CreateThread(nullptr, 0, [](PVOID) -> DWORD
 		{
+			while (!FindWindow(L"grcWindow", L"Grand Theft Auto V"))
+				std::this_thread::sleep_for(1s);
+
 			auto logger_instance = std::make_unique<logger>();
 			try
 			{
@@ -31,21 +35,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
           (_____|)kek";
 				auto pointers_instance = std::make_unique<pointers>();
 				LOG(INFO) << "Pointers initialized.";
-
-				//if (*g_pointers->m_game_state != eGameState::Playing)
-				//{
-				//	LOG_INFO("Waiting for the game to load.");
-				//	do
-				//	{
-				//		std::this_thread::sleep_for(100ms);
-				//	} while (*g_pointers->m_game_state != eGameState::Playing);
-				//
-				//	LOG_INFO("The game has loaded.");
-				//}
-				//else
-				//{
-				//	LOG_INFO("The game is already loaded.");
-				//}
 
 				auto renderer_instance = std::make_unique<renderer>();
 				LOG(INFO) << "Renderer initialized.";
