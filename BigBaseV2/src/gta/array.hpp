@@ -150,32 +150,17 @@ namespace rage
             m_count = newSize;
         }
 
-        T* begin()
+        T* begin() const
         {
-            return m_data;
+            return &m_data[0];
         }
 
-        T* end()
+        T* end() const
         {
-            return m_data + m_size;
+            return &m_data[m_size];
         }
 
-        const T* begin() const
-        {
-            return m_data;
-        }
-
-        const T* end() const
-        {
-            return m_data + m_size;
-        }
-
-        T* data()
-        {
-            return m_data;
-        }
-
-        const T* data() const
+        T* data() const
         {
             return m_data;
         }
@@ -195,13 +180,23 @@ namespace rage
             return m_data[index];
         }
 
+        #pragma warning(disable:4312)
         friend std::ostream& operator<<(std::ostream& o, const atArray<T>& j)
         {
             o << "Array Size: " << j.size() << std::endl;
-            for (T item : j)
-                o << "\tArray Item: " << item << " [" << HEX_TO_UPPER(item) << "]" << (j.end() == item) ? "" : std::endl;
+            for(int i = 0; i < j.size(); i++)
+            {
+                T item = j[i];
+                if (std::is_pointer<T>())
+                    o << "\tArray Pointer: " << HEX_TO_UPPER(item) << " Item: [" << HEX_TO_UPPER(*(std::uint64_t*)item) << "]"; // C4312 for 64-bit targets
+                else
+                    o << "\tArray Item: " << item;
+                if (i != j.size() - 1)
+                    o << std::endl;
+            }
             return o;
         }
+        #pragma warning(default:4312)
 
         const T& operator[](std::uint16_t index) const
         {
