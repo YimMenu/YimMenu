@@ -26,23 +26,22 @@ namespace rage
 	class netPlayerData
 	{
 	public:
-		std::uint64_t m_unk1;         // 0x00
-		std::uint64_t m_unk2;         // 0x08
-		std::uint32_t m_sec_key_time; // 0x10
-		netAddress    m_lan_ip;       // 0x14
-		std::uint16_t m_lan_port;     // 0x18
-		char          m_pad1[0x02];   // 0x1A
-		netAddress    m_relay_ip;     // 0x1C
-		std::uint16_t m_relay_port;   // 0x20
-		char          m_pad2[0x02];   // 0x22
-		netAddress    m_online_ip;    // 0x24
-		std::uint16_t m_online_port;  // 0x26
-		char          m_pad3[0x1E];   // 0x28
-		std::uint64_t m_rockstar_id;  // 0x48
-		bool          m_id_flag;      // 0x50
-		char          m_pad4[0x0B];   // 0x51
-		char          m_name[0x14];   // 0x5C
-	};
+		char pad_0000[16]; //0x0000
+		uint32_t m_sec_key_time; //0x0010
+		netAddress m_lan_ip; //0x0014
+		uint16_t m_lan_port; //0x0018
+		char pad_001A[2]; //0x001A
+		netAddress m_relay_ip; //0x001C
+		uint32_t m_relay_port; //0x0020
+		netAddress m_online_ip; //0x0024
+		uint16_t m_online_port; //0x0028
+		char pad_002A[22]; //0x002A
+		int32_t m_host_token; //0x0040
+		char pad_0044[12]; //0x0044
+		uint64_t m_rockstar_id; //0x0050
+		char pad_0058[12]; //0x0058
+		char m_name[20]; //0x0064
+	}; //Size: 0x0078
 
 	class nonPhysicalPlayerDataBase
 	{

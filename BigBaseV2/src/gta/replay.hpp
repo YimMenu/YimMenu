@@ -56,11 +56,9 @@ namespace rage
 		char pad_0D30[892]; //0x0D30
 		int8_t m_decal_index; //0x10AC
 		int8_t m_decal_info; //0x10AD
-		char pad_10AE[10]; //0x10AE
-		class CPlayerInfo* m_player_info; //0x10B8
-		char pad_10C0[1072]; //0x10C0
-		class CVehicle* m_last_vehicle2; //0x14F0
-	}; //Size: 0x14F8
+		char pad_10AE[26]; //0x10AE
+		class CPlayerInfo* m_player_info; //0x10C8
+	};
 
 	class CPlayerInfo
 	{
