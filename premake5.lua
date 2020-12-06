@@ -44,7 +44,8 @@ workspace "BigBaseV2"
     {
       "4100", -- C4100: unreferenced formal parameter
       "4201", -- C4201: nameless struct/union
-      "4307"  -- C4307: integral constant overflow
+      "4307",  -- C4307: integral constant overflow
+      "4996"  -- C4996: deprecated in C++17
     }
   end
   
@@ -74,9 +75,10 @@ workspace "BigBaseV2"
       "vendor/%{prj.name}/imgui.cpp",
       "vendor/%{prj.name}/imgui_demo.cpp",
       "vendor/%{prj.name}/imgui_draw.cpp",
+      "vendor/%{prj.name}/imgui_tables.cpp",
       "vendor/%{prj.name}/imgui_widgets.cpp",
-      "vendor/%{prj.name}/examples/imgui_impl_dx11.cpp",
-      "vendor/%{prj.name}/examples/imgui_impl_win32.cpp"
+      "vendor/%{prj.name}/backends/imgui_impl_dx11.cpp",
+      "vendor/%{prj.name}/backends/imgui_impl_win32.cpp"
     }
 
     includedirs

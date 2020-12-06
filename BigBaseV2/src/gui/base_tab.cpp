@@ -82,7 +82,7 @@ namespace big
 			{
 				g_running = false;
 			}
+			ImGui::EndTabItem();
 		}
-		ImGui::EndTabItem();
 	}
 }
