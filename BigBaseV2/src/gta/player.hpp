@@ -89,13 +89,13 @@ public:
 class CNetGamePlayer : public rage::netPlayer
 {
 public:
-	char pad_0x0008[0x25]; //0x0008
-	std::int8_t player_id; //0x002D 
-	char pad_0x002E[0x7A]; //0x002E
-	CPlayerInfo* player_info; //0x00A8 
-	char pad_0x00B0[0x14]; //0x00B0
-	std::uint32_t bubble_id; //0x00C4	
-	Player player; //0x00C8
+	char pad_0008[45]; //0x0008
+	int8_t player_id; //0x0035
+	char pad_0036[122]; //0x0036
+	CPlayerInfo* player_info; //0x00B0
+	char pad_00B8[20]; //0x00B8
+	uint32_t bubble_id; //0x00CC
+	uint32_t player; //0x00D0
 };
 
 class CPlayerInfo : public rage::fwExtensibleBase
