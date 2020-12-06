@@ -53,10 +53,10 @@ namespace rage
 	public:
 		char pad_018C[2972]; //0x018C
 		class CVehicle* m_last_vehicle; //0x0D28
-		char pad_0D30[892]; //0x0D30
-		int8_t m_decal_index; //0x10AC
-		int8_t m_decal_info; //0x10AD
-		char pad_10AE[26]; //0x10AE
+		char pad_0D30[908]; //0x0D30
+		int8_t m_decal_index; //0x10BC
+		int8_t m_decal_info; //0x10BD
+		char pad_10BE[10]; //0x10BE
 		class CPlayerInfo* m_player_info; //0x10C8
 	};
 
