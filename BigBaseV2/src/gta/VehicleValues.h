@@ -2936,6 +2936,114 @@ static bool GetVehicleInfoForClanLogo(Hash vehicleModel, rage::vector3& x, rage:
             z = { 0.0f, -0.7398f, 0.0f };
             scale = 0.4f;
             return true;
+        case VEHICLE_GAUNTLET5:
+            x = { -1.5f, 0.379f, 0.297f };
+            y = { 1.f, 0.f, 0.f };
+            z = { 0.f, -1.f, 0.f };
+            scale = 0.24f;
+            return true;
+        case VEHICLE_DUKES3:
+            x = { -1.f, 0.f, 0.f };
+            y = { 1.f, 0.f, 0.f };
+            z = { 0.f, -1.f, 0.f };
+            scale = 0.375f;
+            return true;
+        case VEHICLE_MANANA2:
+            x = { -1.76f, 0.105f, 0.009f };
+            y = { 1.f, 0.f, 0.f };
+            z = { 0.f, -1.f, 0.f };
+            scale = 0.22f;
+            return true;
+        case VEHICLE_CLUB:
+            x = { 0.f, 1.252f, 1.f };
+            y = { 0.f, 0.f, -1.f };
+            z = { -1.f, 0.f, 0.f };
+            scale = 0.31f;
+            return true;
+        case VEHICLE_GLENDALE2:
+            x = { 0.f, 2.135f, 1.f };
+            y = { 0.f, 0.f, -1.f };
+            z = { -1.f, 0.f, 0.f };
+            scale = 0.205f;
+            return true;
+        case VEHICLE_YOUGA3:
+            x = { 0.f, 2.352f, 0.3f };
+            y = { 0.f, -1.f, -0.256f };
+            z = { -1.f, 0.f, 0.f };
+            scale = 0.135f;
+            return true;
+        case VEHICLE_YOSEMITE3:
+            x = { -1.f, 0.252f, 0.203f };
+            y = { 1.f, 0.f, 0.f };
+            z = { 0.f, -1.f, 0.f };
+            scale = 0.21f;
+            return true;
+        case VEHICLE_SEMINOLE2:
+            x = { 0.f, 1.654f, 1.f };
+            y = { 0.f, 0.f, -1.f };
+            z = { -1.f, 0.f, 0.f };
+            scale = 0.25f;
+            return true;
+        case VEHICLE_PENUMBRA2:
+            x = { -1.08f, 0.28f, -0.093f };
+            y = { 1.f, 0.f, 0.f };
+            z = { 0.f, -1.f, 0.f };
+            scale = 0.4f;
+            return true;
+        case VEHICLE_LANDSTALKER2:
+            x = { -1.64f, 0.7f, 0.f };
+            y = { 1.f, 0.f, 0.f };
+            z = { 0.f, -1.f, 0.f };
+            scale = 0.35f;
+            return true;
+        case VEHICLE_COQUETTE4:
+            x = { -1.f, -0.021f, 0.273f };
+            y = { 1.f, 0.f, 0.f };
+            z = { 0.f, -1.f, 0.f };
+            scale = 0.25f;
+            return true;
+        case VEHICLE_TIGON:
+            x = { -1.f, 0.156f, 0.099f };
+            y = { 1.f, 0.f, 0.f };
+            z = { 0.f, -1.f, 0.f };
+            scale = 0.3f;
+            return true;
+        case VEHICLE_PEYOTE3:
+            x = { -1.5f, -0.36f, 0.2125f };
+            y = { 1.f, 0.f, 0.f };
+            z = { 0.f, -1.f, 0.f };
+            scale = 0.35f;
+            return true;
+        case VEHICLE_BRIOSO2:
+            x = { -1.f, 0.275f, 0.215f };
+            y = { 1.f, 0.f, 0.f };
+            z = { 0.f, -1.f, 0.f };
+            scale = 0.3f;
+            return true;
+        case VEHICLE_SLAMTRUCK:
+            x = { -1.f, 1.454f, 0.485f };
+            y = { 1.f, 0.f, 0.f };
+            z = { 0.f, -1.f, 0.f };
+            scale = 0.3f;
+            return true;
+        case VEHICLE_ITALIRSX:
+            x = { -1.f, 0.109f, 0.129f };
+            y = { 1.f, 0.f, 0.f };
+            z = { 0.f, -1.f, 0.f };
+            scale = 0.3f;
+            return true;
+        case VEHICLE_TOREADOR:
+            x = { -1.f, 0.194f, 0.342f };
+            y = { 1.f, 0.f, 0.f };
+            z = { 0.f, -1.f, 0.f };
+            scale = 0.15f;
+            return true;
+        case VEHICLE_WEEVIL:
+            x = { -1.f, 0.111f, 0.168f };
+            y = { 1.f, 0.f, 0.f };
+            z = { 0.f, -1.f, 0.f };
+            scale = 0.3f;
+            return true;
         default:
             return false;
     }
