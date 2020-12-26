@@ -9,12 +9,11 @@
 
 namespace big
 {
-	using namespace features;
-
 	class tabbar
 	{
 	public:
 		static void render_self();
+		static void render_tunables();
 	};
 
 }
