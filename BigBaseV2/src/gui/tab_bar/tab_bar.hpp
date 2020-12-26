@@ -14,6 +14,7 @@ namespace big
 	public:
 		static void render_self();
 		static void render_tunables();
+		static void render_teleport();
 	};
 
 }

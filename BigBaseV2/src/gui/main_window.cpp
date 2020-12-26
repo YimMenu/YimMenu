@@ -12,6 +12,7 @@ namespace big
 			ImGui::BeginTabBar("tabbar");
 			tabbar::render_self();
 			tabbar::render_tunables();
+			tabbar::render_teleport();
 			ImGui::EndTabBar();
 		}
 		ImGui::End();
