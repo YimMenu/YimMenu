@@ -21,7 +21,7 @@ namespace big
 				{
 					QUEUE_JOB_BEGIN_CLAUSE()
 					{
-						//features::notify_above_map(NETWORK::NETWORK_IS_HOST() ? "~g~Yes you are the host." : "You aren't the host.");
+						features::notify::above_map(NETWORK::NETWORK_IS_HOST() ? "~g~Yes you are the host." : "You aren't the host.");
 					}
 					QUEUE_JOB_END_CLAUSE
 
@@ -31,7 +31,7 @@ namespace big
 				{
 					QUEUE_JOB_BEGIN_CLAUSE()
 					{
-						//features::notify_above_map(NETWORK::NETWORK_PLAYER_IS_BADSPORT() ? "You have been ~r~reported multiple times!" : "Your account is in good standing.");
+						features::notify::above_map(NETWORK::NETWORK_PLAYER_IS_BADSPORT() ? "You have been ~r~reported multiple times!" : "Your account is in good standing.");
 					}
 					QUEUE_JOB_END_CLAUSE
 				}
@@ -47,8 +47,8 @@ namespace big
 					{
 						if (CUTSCENE::IS_CUTSCENE_ACTIVE())
 							CUTSCENE::STOP_CUTSCENE_IMMEDIATELY();
-						//else
-							//features::notify_above_map("There's no cutscene active at the moment.");
+						else
+							features::notify::above_map("There's no cutscene active at the moment.");
 					}
 					QUEUE_JOB_END_CLAUSE
 				}
