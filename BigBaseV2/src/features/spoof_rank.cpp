@@ -5,7 +5,7 @@ namespace big
 {
 	void features::spoof_rank()
 	{
-		bool bSpoofRank = g_settings.options["spoof_rank"].get<bool*>();
+		bool bSpoofRank = g_settings.options["spoof_rank"].get<bool>();
 
 		if (bSpoofRank)
 		{
