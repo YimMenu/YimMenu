@@ -71,6 +71,13 @@ namespace big
 			m_model_spawn_bypass = ptr.add(8).as<PVOID>();
 		});
 
+		// My new pointers
+		// Sync Local Time with Session
+		main_batch.add("Sync Local Time", "48 89 5C 24 ? 57 48 83 EC 20 8B F9 48 8B 0D ? ? ? ? 48 8B DA 33 D2", [this](memory::handle ptr)
+		{
+			m_sync_local_time = ptr.as<decltype(m_sync_local_time)>();
+		});
+
 		main_batch.run(memory::module(nullptr));
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);

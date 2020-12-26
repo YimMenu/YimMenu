@@ -34,6 +34,8 @@ namespace big
 		IDXGISwapChain **m_swapchain{};
 
 		PVOID m_model_spawn_bypass;
+
+		functions::sync_local_time_t* m_sync_local_time{};
 	};
 
 	inline pointers *g_pointers{};
