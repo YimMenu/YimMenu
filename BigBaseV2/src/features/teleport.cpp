@@ -2,24 +2,16 @@
 
 namespace big::features::teleport
 {
-	// Teleport the player (with/without car to a waypoint)
-	bool waypoint()
+	Vector3 get_ground_at_3d_coord(Vector3 location)
 	{
-		Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
-
-		Blip blipHandle = HUD::GET_FIRST_BLIP_INFO_ID(8);
-		if (!HUD::DOES_BLIP_EXIST(blipHandle)) return false;
-
-		Vector3 location = HUD::GET_BLIP_COORDS(blipHandle);
 		float groundZ;
-
-		UINT16 attempts = 10;
-		for (UINT16 i = 0; i < attempts; i++)
+		uint16_t attempts = 10;
+		for (uint16_t i = 0; i < attempts; i++)
 		{
 			// Only request a collision after the first try failed because the location might already be loaded on first attempt.
 			if (i)
 			{
-				for (UINT16 z = 0; z < 1000; z += 100)
+				for (uint16_t z = 0; z < 1000; z += 100)
 				{
 					STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, z);
 
@@ -38,6 +30,21 @@ namespace big::features::teleport
 
 			script::get_current()->yield();
 		}
+
+		return location;
+	}
+
+	// Teleport the player (with/without car to a waypoint)
+	bool waypoint()
+	{
+		Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
+
+		Blip blipHandle = HUD::GET_FIRST_BLIP_INFO_ID(8);
+		if (!HUD::DOES_BLIP_EXIST(blipHandle)) return false;
+
+		Vector3 location = HUD::GET_BLIP_COORDS(blipHandle);
+		
+		location = get_ground_at_3d_coord(location);
 
 		PED::SET_PED_COORDS_KEEP_VEHICLE(player, location.x, location.y, location.z);
 
