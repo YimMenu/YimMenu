@@ -44,7 +44,7 @@ namespace big::features::teleport
 		return true;
 	}
 
-	bool bring_blip(int blipSprite, int blipColor, int flag = 70)
+	bool bring_blip(int blipSprite, int blipColor, int flag)
 	{
 		Blip blipHandle = HUD::GET_FIRST_BLIP_INFO_ID(blipSprite);
 		while (HUD::DOES_BLIP_EXIST(blipHandle) && (blipColor != -1 && HUD::GET_BLIP_COLOUR(blipHandle) != blipColor))
@@ -75,7 +75,7 @@ namespace big::features::teleport
 
 		if (!VEHICLE::ARE_ANY_VEHICLE_SEATS_FREE(veh))
 		{
-			features::notify_above_map("The vehicle is full.");
+			features::notify::above_map("The vehicle is full.");
 			ENTITY::SET_ENTITY_COORDS(player, location.x, location.y, location.z + 3.f, 0, 0, 0, true);
 		}
 		else
@@ -86,7 +86,7 @@ namespace big::features::teleport
 		return true;
 	}
 
-	bool teleport_to_blip(int blipSprite, int blipColor = -1)
+	bool teleport_to_blip(int blipSprite, int blipColor)
 	{
 		Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
 
