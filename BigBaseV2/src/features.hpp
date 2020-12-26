@@ -1,5 +1,6 @@
 #pragma once
 #include "common.hpp"
+#include "fiber_pool.hpp"
 #include "structs/player.hpp"
 #include "structs/temp.hpp"
 #include "features/notify.hpp"
@@ -23,5 +24,6 @@ namespace big
 		void script_func();
 
 		void god_mode();
+		void no_ragdoll();
 	}
 }

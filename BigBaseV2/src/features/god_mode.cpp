@@ -1,5 +1,4 @@
 #include "features.hpp"
-#include "fiber_pool.hpp"
 
 namespace big
 {

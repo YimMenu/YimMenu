@@ -1,4 +1,3 @@
-#include "common.hpp"
 #include "features.hpp"
 #include "logger.hpp"
 #include "natives.hpp"
@@ -9,6 +8,7 @@ namespace big
 	void features::run_tick()
 	{
 		god_mode();
+		no_ragdoll();
 	}
 
 	void features::script_func()
