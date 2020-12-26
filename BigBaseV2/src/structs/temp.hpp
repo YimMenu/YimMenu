@@ -2,14 +2,16 @@
 
 namespace big
 {
+	struct game_time
+	{
+		int hour = 0;
+		int minutes = 0;
+	};
+
 	struct temp
 	{
-		struct game_time
-		{
-			int hour = 0;
-			int minutes = 0;
-		};
 		int spoofed_rank = 0;
+		game_time time = game_time{};
 		int wanted_level = 0;
 	};
 }
