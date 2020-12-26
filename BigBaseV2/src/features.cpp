@@ -19,6 +19,7 @@ namespace big
 		no_ragdoll();
 		off_radar();
 		spoof_rank();
+		sticky_tyres();
 		super_sprint();
 	}
 

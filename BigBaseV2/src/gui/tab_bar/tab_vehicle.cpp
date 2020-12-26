@@ -9,6 +9,8 @@ namespace big
 		{
 			ImGui::Checkbox("No Bike Fall", g_settings.options["no_bike_fall"].get<bool*>());
 
+			ImGui::Checkbox("Sticky Tyres", g_settings.options["sticky_tyres"].get<bool*>());
+
 			if (ImGui::Button("Repair Vehicle"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()

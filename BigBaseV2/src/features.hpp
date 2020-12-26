@@ -30,6 +30,7 @@ namespace big
 		void no_ragdoll();
 		void off_radar();
 		void spoof_rank();
+		void sticky_tyres();
 		void super_sprint();
 
 		void update_screen_sizes();
