@@ -21,5 +21,7 @@ namespace big
 	{
 		void run_tick();
 		void script_func();
+
+		void god_mode();
 	}
 }

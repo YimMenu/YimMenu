@@ -8,6 +8,7 @@ namespace big
 {
 	void features::run_tick()
 	{
+		god_mode();
 	}
 
 	void features::script_func()
