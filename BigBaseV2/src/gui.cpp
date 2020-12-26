@@ -99,6 +99,9 @@ namespace big
 	{
 		TRY_CLAUSE
 		{
+			// gui/top_bar.cpp
+			render_top_bar();
+
 			// gui/main_window.cpp
 			render_main_window();
 		}

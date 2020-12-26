@@ -13,6 +13,7 @@ namespace big
 		void script_on_tick();
 		static void script_func();
 
+		void render_top_bar();
 		void render_main_window();
 	public:
 		bool m_opened{};
