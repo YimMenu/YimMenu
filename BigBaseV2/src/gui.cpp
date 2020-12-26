@@ -99,13 +99,8 @@ namespace big
 	{
 		TRY_CLAUSE
 		{
-			if (ImGui::Begin("BigBaseV2"))
-			{
-				ImGui::BeginTabBar("tabbar");
-				base_tab::render_base_tab();
-				ImGui::EndTabBar();
-			}
-			ImGui::End();
+			// gui/main_window.cpp
+			render_main_window();
 		}
 		EXCEPT_CLAUSE
 	}

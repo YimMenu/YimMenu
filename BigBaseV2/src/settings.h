@@ -13,10 +13,11 @@ namespace big
 		nlohmann::json options;
 		nlohmann::json default_options =
 		R"({
-			"demo bool": false,
-			"demo int": 1,
-			"demo double": 1.0,
-			"demo combo": 0
+			"god_mode": false,
+			"never_wanted": false,
+			"off_radar": false,
+			"ragdoll": false,
+			"super_sprint": false
 		})"_json;
 
 		bool save()
