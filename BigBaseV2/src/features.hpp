@@ -25,6 +25,7 @@ namespace big
 
 		void god_mode();
 		void never_wanted();
+		void no_idle_kick();
 		void no_ragdoll();
 		void off_radar();
 		void super_sprint();
