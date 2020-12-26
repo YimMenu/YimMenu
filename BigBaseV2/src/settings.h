@@ -15,6 +15,7 @@ namespace big
 		R"({
 			"god_mode": false,
 			"never_wanted": false,
+			"no_bike_fall": false,
 			"no_idle_kick": false,
 			"off_radar": false,
 			"ragdoll": false,

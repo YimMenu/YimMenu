@@ -14,6 +14,7 @@ namespace big
 
 		god_mode();
 		never_wanted();
+		no_bike_fall();
 		no_idle_kick();
 		no_ragdoll();
 		off_radar();

@@ -7,6 +7,8 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Vehicle"))
 		{
+			ImGui::Checkbox("No Bike Fall", g_settings.options["no_bike_fall"].get<bool*>());
+
 			if (ImGui::Button("Repair Vehicle"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
