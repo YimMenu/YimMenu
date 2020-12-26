@@ -18,6 +18,8 @@ namespace big
 			"no_idle_kick": false,
 			"off_radar": false,
 			"ragdoll": false,
+			"rank": 6969,
+			"spoof_rank": false,
 			"super_sprint": false
 		})"_json;
 
