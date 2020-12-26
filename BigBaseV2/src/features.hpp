@@ -25,8 +25,9 @@ namespace big
 
 		void god_mode();
 		void never_wanted();
-		void off_radar();
 		void no_ragdoll();
+		void off_radar();
+		void super_sprint();
 
 		void update_screen_sizes();
 		void update_player_structs();

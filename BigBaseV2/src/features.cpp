@@ -14,8 +14,9 @@ namespace big
 
 		god_mode();
 		never_wanted();
-		off_radar();
 		no_ragdoll();
+		off_radar();
+		super_sprint();
 	}
 
 	void features::script_func()
