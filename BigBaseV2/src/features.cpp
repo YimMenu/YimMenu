@@ -9,6 +9,9 @@ namespace big
 	{
 		g_playerId = PLAYER::PLAYER_ID();
 
+		update_player_structs();
+		update_screen_sizes();
+
 		god_mode();
 		off_radar();
 		no_ragdoll();

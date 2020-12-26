@@ -26,5 +26,8 @@ namespace big
 		void god_mode();
 		void off_radar();
 		void no_ragdoll();
+
+		void update_screen_sizes();
+		void update_player_structs();
 	}
 }
