@@ -107,6 +107,9 @@ namespace big
 
 			// gui/user_sidebar.cpp
 			render_user_sidebar();
+
+			// gui/player_window.cpp
+			render_player_window();
 		}
 		EXCEPT_CLAUSE
 	}
