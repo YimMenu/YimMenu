@@ -7,7 +7,10 @@ namespace big
 {
 	void features::run_tick()
 	{
+		g_playerId = PLAYER::PLAYER_ID();
+
 		god_mode();
+		off_radar();
 		no_ragdoll();
 	}
 
