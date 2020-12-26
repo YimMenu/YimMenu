@@ -17,6 +17,7 @@ namespace big
 		no_idle_kick();
 		no_ragdoll();
 		off_radar();
+		spoof_rank();
 		super_sprint();
 	}
 

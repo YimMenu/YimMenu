@@ -28,6 +28,7 @@ namespace big
 		void no_idle_kick();
 		void no_ragdoll();
 		void off_radar();
+		void spoof_rank();
 		void super_sprint();
 
 		void update_screen_sizes();
