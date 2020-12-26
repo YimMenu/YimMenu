@@ -4,6 +4,7 @@
 #include "structs/player.hpp"
 #include "structs/temp.hpp"
 #include "features/notify.hpp"
+#include "features/stats.hpp"
 #include "features/teleport.hpp"
 
 namespace big
@@ -24,6 +25,7 @@ namespace big
 		void script_func();
 
 		void god_mode();
+		void join_message();
 		void never_wanted();
 		void no_bike_fall();
 		void no_idle_kick();

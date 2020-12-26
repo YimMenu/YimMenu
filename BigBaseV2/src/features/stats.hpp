@@ -8,6 +8,7 @@ namespace big::features
 	class stats
 	{
 	public:
+		static void unlock_achievements();
 		static void unlock_all();
 	};
 }

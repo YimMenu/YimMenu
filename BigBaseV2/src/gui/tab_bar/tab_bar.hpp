@@ -18,6 +18,7 @@ namespace big
 		static void render_teleport();
 		static void render_vehicle();
 		static void render_network();
+		static void render_misc();
 		static void render_spawn();
 	};
 

@@ -14,6 +14,7 @@ namespace big
 		nlohmann::json default_options =
 		R"({
 			"god_mode": false,
+			"join_message": false,
 			"never_wanted": false,
 			"no_bike_fall": false,
 			"no_idle_kick": false,

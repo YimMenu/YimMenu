@@ -1,7 +1,17 @@
 #include "stats.hpp"
+#include "script.hpp"
 
 namespace big::features
 {
+	void stats::unlock_achievements()
+	{
+		for (int i = 1; i < 100; i++) {
+			PLAYER::GIVE_ACHIEVEMENT_TO_PLAYER(i);
+
+			script::get_current()->yield();
+		}
+	}
+
 	void stats::unlock_all()
 	{
 		QUEUE_JOB_BEGIN_CLAUSE()
@@ -228,6 +238,8 @@ namespace big::features
 				strcat(str, tmp);
 				Hash hashs = MISC::GET_HASH_KEY(str);
 				STATS::STAT_SET_INT(hashs, -1, 1);
+
+				script::get_current()->yield();
 			}
 			for (int i = 0; i < 140; i++)
 			{
@@ -245,6 +257,8 @@ namespace big::features
 				strcat(str, tmp);
 				Hash hashs = MISC::GET_HASH_KEY(str);
 				STATS::STAT_SET_INT(hashs, -1, 1);
+
+				script::get_current()->yield();
 			}
 			for (int i = 0; i < 26; i++)
 			{
@@ -263,6 +277,8 @@ namespace big::features
 				strcat(str, tmp);
 				Hash hashs = MISC::GET_HASH_KEY(str);
 				STATS::STAT_SET_INT(hashs, -1, 1);
+
+				script::get_current()->yield();
 			}
 			for (int i = 0; i < 38; i++)
 			{
@@ -280,6 +296,8 @@ namespace big::features
 				strcat(str, tmp);
 				Hash hashs = MISC::GET_HASH_KEY(str);
 				STATS::STAT_SET_INT(hashs, -1, 1);
+
+				script::get_current()->yield();
 			}
 			STATS::STAT_SET_INT(MISC::GET_HASH_KEY("MP1_SCRIPT_INCREASE_STAM"), 100, 1);
 			STATS::STAT_SET_INT(MISC::GET_HASH_KEY("MP1_SCRIPT_INCREASE_STRN"), 100, 1);
