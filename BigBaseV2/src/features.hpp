@@ -2,6 +2,8 @@
 #include "common.hpp"
 #include "structs/player.hpp"
 #include "structs/temp.hpp"
+#include "features/notify.hpp"
+#include "features/teleport.hpp"
 
 namespace big
 {
