@@ -15,6 +15,7 @@ namespace big
 
 		void render_top_bar();
 		void render_main_window();
+		void render_user_sidebar();
 	public:
 		bool m_opened{};
 	};
