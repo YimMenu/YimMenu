@@ -26,7 +26,8 @@ namespace big
 
 			if (ImGui::Checkbox("Spoof Online Rank", g_settings.options["spoof_rank"].get<bool*>()))
 				g_settings.save();
-			if (ImGui::InputInt("Spoof Online Rank", (PINT)g_settings.options["rank"].get<int64_t*>(), 1, 50))
+
+			if (ImGui::InputInt(": Rank", (PINT)g_settings.options["rank"].get<int64_t*>(), 1, 50))
 				g_settings.save();
 
 			ImGui::EndTabItem();
