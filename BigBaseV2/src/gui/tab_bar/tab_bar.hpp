@@ -16,6 +16,7 @@ namespace big
 		static void render_tunables();
 		static void render_teleport();
 		static void render_vehicle();
+		static void render_network();
 	};
 
 }

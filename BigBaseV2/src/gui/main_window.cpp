@@ -14,6 +14,7 @@ namespace big
 			tabbar::render_tunables();
 			tabbar::render_teleport();
 			tabbar::render_vehicle();
+			tabbar::render_network();
 			ImGui::EndTabBar();
 		}
 		ImGui::End();
