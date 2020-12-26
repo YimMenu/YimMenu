@@ -24,6 +24,7 @@ namespace big
 		void script_func();
 
 		void god_mode();
+		void never_wanted();
 		void off_radar();
 		void no_ragdoll();
 

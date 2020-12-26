@@ -13,6 +13,7 @@ namespace big
 		update_screen_sizes();
 
 		god_mode();
+		never_wanted();
 		off_radar();
 		no_ragdoll();
 	}
