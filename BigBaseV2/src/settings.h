@@ -21,6 +21,7 @@ namespace big
 			"off_radar": false,
 			"ragdoll": false,
 			"rank": 6969,
+			"reveal_players": false,
 			"spoof_rank": false,
 			"sticky_tyres": false,
 			"super_sprint": false

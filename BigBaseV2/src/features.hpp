@@ -31,6 +31,7 @@ namespace big
 		void no_idle_kick();
 		void no_ragdoll();
 		void off_radar();
+		void reveal_players();
 		void spoof_rank();
 		void sticky_tyres();
 		void super_sprint();

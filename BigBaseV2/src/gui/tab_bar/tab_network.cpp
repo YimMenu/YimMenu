@@ -9,6 +9,11 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Network"))
 		{
+			if (ImGui::Checkbox("Reveal Players", g_settings.options["reveal_players"].get<bool*>()))
+				g_settings.save();
+
+			ImGui::Separator();
+
 			ImGui::Text("Time: ");
 			ImGui::SliderInt("Hour:", &g_temp.time.hour, 0, 23);
 			ImGui::SliderInt("Minutes:", &g_temp.time.minutes, 0, 59);

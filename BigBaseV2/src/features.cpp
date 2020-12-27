@@ -19,6 +19,7 @@ namespace big
 		no_idle_kick();
 		no_ragdoll();
 		off_radar();
+		reveal_players();
 		spoof_rank();
 		sticky_tyres();
 		super_sprint();
