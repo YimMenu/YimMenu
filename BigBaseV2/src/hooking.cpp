@@ -37,8 +37,9 @@ namespace big
 		m_set_cursor_pos_hook("SetCursorPos", memory::module("user32.dll").get_export("SetCursorPos").as<void*>(), &hooks::set_cursor_pos),
 
 		m_run_script_threads_hook("Script hook", g_pointers->m_run_script_threads, &hooks::run_script_threads),
-		m_convert_thread_to_fiber_hook("ConvertThreadToFiber", memory::module("kernel32.dll").get_export("ConvertThreadToFiber").as<void*>(), &hooks::convert_thread_to_fiber)
+		m_convert_thread_to_fiber_hook("ConvertThreadToFiber", memory::module("kernel32.dll").get_export("ConvertThreadToFiber").as<void*>(), &hooks::convert_thread_to_fiber),
 
+		m_error_screen_hook("Disable Warning/Error Screen", g_pointers->m_error_screen, &hooks::error_screen)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -63,6 +64,9 @@ namespace big
 		m_run_script_threads_hook.enable();
 		m_convert_thread_to_fiber_hook.enable();
 
+		// New hooks enable
+		m_error_screen_hook.enable();
+
 		m_enabled = true;
 	}
 
@@ -76,6 +80,9 @@ namespace big
 		m_set_cursor_pos_hook.disable();
 		SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(m_og_wndproc));
 		m_swapchain_hook.disable();
+
+		// New hooks disable
+		m_error_screen_hook.disable();
 	}
 
 	minhook_keepalive::minhook_keepalive()
