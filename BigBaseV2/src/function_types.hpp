@@ -12,5 +12,6 @@ namespace big::functions
 	using error_screen = void(char* entryHeader, char* entryLine1, int instructionalKey, char* entryLine2, BOOL p4, Any p5, Any* p6, Any* p7, BOOL background);
 	using increment_stat_event = bool(uint64_t net_event_struct, int64_t sender, int64_t a3);
 	using get_player_name = char*(Player player);
-	using sync_local_time_t = void(int h, int m);
+	using script_event_handler = bool(void* events, CNetGamePlayer* sourcePlayer, CNetGamePlayer* targetPlayer);
+	using sync_local_time = void(int h, int m);
 }

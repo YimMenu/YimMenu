@@ -92,6 +92,11 @@ namespace big
 		{
 			m_increment_stat_event = ptr.as<decltype(m_increment_stat_event)>();
 		});
+
+		main_batch.add("Script Event Handler", "40 53 48 81 EC ? ? ? ? 44 8B 81 ? ? ? ? 4C 8B CA 41 8D 40 FF 3D ? ? ? ? 77 42", [this](memory::handle ptr)
+		{
+			m_script_event_handler = ptr.as<decltype(m_script_event_handler)>();
+		});
 			
 		main_batch.run(memory::module(nullptr));
 
