@@ -9,5 +9,6 @@ namespace big::functions
 	using get_native_handler_t = rage::scrNativeHandler(*)(rage::scrNativeRegistrationTable*, rage::scrNativeHash);
 	using fix_vectors_t = void(*)(rage::scrNativeCallContext*);
 
+	using get_player_name = char*(Player player);
 	using sync_local_time_t = void(int h, int m);
 }

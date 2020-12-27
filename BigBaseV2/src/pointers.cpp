@@ -78,6 +78,11 @@ namespace big
 			m_sync_local_time = ptr.as<decltype(m_sync_local_time)>();
 		});
 
+		main_batch.add("Get Player Name", "40 53 48 83 EC 20 80 3D ? ? ? ? ? 8B D9 74 22", [this](memory::handle ptr)
+		{
+			m_get_player_name = ptr.as<decltype(m_get_player_name)>();
+		});
+
 		main_batch.run(memory::module(nullptr));
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);
