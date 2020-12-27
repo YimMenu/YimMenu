@@ -1,6 +1,5 @@
 #include "hooking.hpp"
 #include "natives.hpp"
-#include "gta/joaat.hpp"
 
 namespace big
 {
