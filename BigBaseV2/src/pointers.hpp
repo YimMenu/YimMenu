@@ -35,6 +35,7 @@ namespace big
 
 		PVOID m_model_spawn_bypass;
 
+		functions::disable_error_screen* m_disable_error_screen;
 		functions::get_player_name* m_get_player_name{};
 		functions::sync_local_time_t* m_sync_local_time{};
 	};
