@@ -88,6 +88,11 @@ namespace big
 			m_error_screen = ptr.as<decltype(m_error_screen)>();
 		});
 
+		main_batch.add("Increment Stat Event", "48 89 5C 24 ? 48 89 74 24 ? 55 57 41 55 41 56 41 57 48 8B EC 48 83 EC 60 8B 79 30", [this](memory::handle ptr)
+		{
+			m_increment_stat_event = ptr.as<decltype(m_increment_stat_event)>();
+		});
+			
 		main_batch.run(memory::module(nullptr));
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);

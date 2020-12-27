@@ -37,6 +37,7 @@ namespace big
 
 		functions::error_screen* m_error_screen{};
 		functions::get_player_name* m_get_player_name{};
+		functions::increment_stat_event* m_increment_stat_event{};
 		functions::sync_local_time_t* m_sync_local_time{};
 	};
 

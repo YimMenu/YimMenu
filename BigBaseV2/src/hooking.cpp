@@ -39,7 +39,8 @@ namespace big
 		m_run_script_threads_hook("Script hook", g_pointers->m_run_script_threads, &hooks::run_script_threads),
 		m_convert_thread_to_fiber_hook("ConvertThreadToFiber", memory::module("kernel32.dll").get_export("ConvertThreadToFiber").as<void*>(), &hooks::convert_thread_to_fiber),
 
-		m_error_screen_hook("Disable Warning/Error Screen", g_pointers->m_error_screen, &hooks::error_screen)
+		m_error_screen_hook("Disable Warning/Error Screen", g_pointers->m_error_screen, &hooks::error_screen),
+		m_increment_stat_hook("Increment Stat Event", g_pointers->m_increment_stat_event, &hooks::increment_stat_event)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -66,6 +67,7 @@ namespace big
 
 		// New hooks enable
 		m_error_screen_hook.enable();
+		m_increment_stat_hook.enable();
 
 		m_enabled = true;
 	}
@@ -83,6 +85,7 @@ namespace big
 
 		// New hooks disable
 		m_error_screen_hook.disable();
+		m_increment_stat_hook.disable();
 	}
 
 	minhook_keepalive::minhook_keepalive()

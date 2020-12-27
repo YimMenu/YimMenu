@@ -23,6 +23,7 @@ namespace big
 
 		// New Hook Definitions
 		static void error_screen(char* entryHeader, char* entryLine1, int instructionalKey, char* entryLine2, BOOL p4, Any p5, Any* p6, Any* p7, BOOL background);
+		static bool increment_stat_event(uint64_t net_event_struct, int64_t sender, int64_t a3);
 	};
 
 	struct minhook_keepalive
@@ -54,6 +55,7 @@ namespace big
 
 		// New Detour Hook Definitions
 		detour_hook m_error_screen_hook;
+		detour_hook m_increment_stat_hook;
 	};
 
 	inline hooking *g_hooking{};
