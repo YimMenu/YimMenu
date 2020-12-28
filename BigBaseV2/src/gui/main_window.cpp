@@ -14,6 +14,7 @@ namespace big
 			tabbar::render_tunables();
 			tabbar::render_teleport();
 			tabbar::render_vehicle();
+			tabbar::render_world();
 			tabbar::render_network();
 			tabbar::render_misc();
 			tabbar::render_spawn();
