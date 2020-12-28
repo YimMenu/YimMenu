@@ -10,7 +10,7 @@ namespace big
 		if (bJoinMessage)
 		{
 			for (int i = 0; i < 32; i++) {
-				if (!NETWORK::NETWORK_IS_PLAYER_CONNECTED(i) && ENTITY::DOES_ENTITY_EXIST(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i))) {
+				if (!NETWORK::NETWORK_IS_PLAYER_CONNECTED(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i)) && ENTITY::DOES_ENTITY_EXIST(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i))) {
 					char joinMsg[64];
 					strcpy(joinMsg, "<C>");
 					strcat(joinMsg, g_pointers->m_get_player_name(i));
