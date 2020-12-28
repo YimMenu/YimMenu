@@ -13,7 +13,6 @@ namespace big
 		update_screen_sizes();
 
 		god_mode();
-		join_message();
 		never_wanted();
 		no_bike_fall();
 		no_idle_kick();

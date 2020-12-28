@@ -1,6 +1,7 @@
 #pragma once
 #include "common.hpp"
 #include "fiber_pool.hpp"
+#include "structs/lists.hpp"
 #include "structs/player.hpp"
 #include "structs/temp.hpp"
 #include "features/notify.hpp"
@@ -25,7 +26,7 @@ namespace big
 		void script_func();
 
 		void god_mode();
-		void join_message();
+		void join_message(Player player);
 		void never_wanted();
 		void no_bike_fall();
 		void no_idle_kick();
