@@ -10,6 +10,8 @@ namespace big
 			{
 				if (NETWORK::NETWORK_IS_PLAYER_CONNECTED(i))
 				{
+					if (!g_players[i].is_online) features::join_message((Player)i);
+
 					g_players[i].is_online = true;
 
 					int iNetworkHandle[26];
