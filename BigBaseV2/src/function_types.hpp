@@ -14,4 +14,5 @@ namespace big::functions
 	using get_player_name = char*(Player player);
 	using script_event_handler = bool(void* events, CNetGamePlayer* sourcePlayer, CNetGamePlayer* targetPlayer);
 	using sync_local_time = void(int h, int m);
+	using trigger_script_event = int(bool unk0, uint64_t* args, int argCount, int bitFlags);
 }

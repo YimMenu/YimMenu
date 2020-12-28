@@ -97,6 +97,11 @@ namespace big
 		{
 			m_script_event_handler = ptr.as<decltype(m_script_event_handler)>();
 		});
+
+		main_batch.add("Trigger Script Event", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 81 EC ? ? ? ? 45 8B F0 41 8B F9", [this](memory::handle ptr)
+		{
+			m_trigger_script_event = ptr.as<decltype(m_trigger_script_event)>();
+		});
 			
 		main_batch.run(memory::module(nullptr));
 
