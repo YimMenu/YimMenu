@@ -1,6 +1,7 @@
 #include "gui.hpp"
 #include "imgui.h"
 #include "features.hpp"
+#include "pointers.hpp"
 
 namespace big
 {
@@ -41,13 +42,7 @@ namespace big
 				}QUEUE_JOB_END_CLAUSE
 			}
 
-			/*ImGui::Separator();
 
-			if (ImGui::Button("Eject from Vehicle"))
-			{
-				int64_t args[9] = { -1333236192, g_selectedPlayer, g_selectedPlayer, 0, 0, 0, 0, -1, 0 };
-				g_pointers->m_tse(1, args, 9, 1 << g_selectedPlayer);
-			}
 
 			ImGui::Separator();
 
@@ -66,21 +61,40 @@ namespace big
 				}QUEUE_JOB_END_CLAUSE
 			}
 
-			if (ImGui::Button("Kick (Script Event #1)"))
+			if (ImGui::Button("Kick (Non-Host)"))
 			{
-				int64_t args[4] = { 764638896, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer), 0, 0 };
+				uint64_t args[4] = { 1317868303, (uint64_t)PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer), 0, 0 };
 
-				g_pointers->m_tse(1, args, 4, 1 << g_selectedPlayer);
-
+				g_pointers->m_trigger_script_event(1, args, 4, 1 << g_selectedPlayer);
 			}
 
-			if (ImGui::Button("Kick (Script Event #2)"))
+			if (ImGui::Button("Kick from Vehicle"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					int64_t args[4] = { -345371965, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer), 0, 0 };
+					uint64_t args[2] = { -1333236192, (uint64_t)g_selectedPlayer };
 
-					g_pointers->m_tse(1, args, 4, 1 << g_selectedPlayer);
+					g_pointers->m_trigger_script_event(1, args, 2, 1 << g_selectedPlayer);
+				}QUEUE_JOB_END_CLAUSE
+			}
+
+			if (ImGui::Button("CEO Kick"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					uint64_t ceokick[4] = { -1648921703, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer), 0, 0 };
+
+					g_pointers->m_trigger_script_event(1, ceokick, 4, 1 << g_selectedPlayer);
+				}QUEUE_JOB_END_CLAUSE
+			}
+
+			if (ImGui::Button("CEO Ban"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					uint64_t ceoban[4] = { -738295409, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer), 1, 5 };
+
+					g_pointers->m_trigger_script_event(1, ceoban, 4, 1 << g_selectedPlayer);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -88,11 +102,33 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					int64_t args[4] = { -545396442, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer), 0, 0 };
+					uint64_t args[2] = { -545396442, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer) };
 
-					g_pointers->m_tse(1, args, 4, 1 << g_selectedPlayer);
+					g_pointers->m_trigger_script_event(true, args, 2, 1 << g_selectedPlayer);
 				}QUEUE_JOB_END_CLAUSE
-			}*/
+			}
+
+			if (ImGui::BeginCombo("Invite Location:", location_names[g_temp.teleport_location]))
+			{
+				for (uint8_t i = 0; i < IM_ARRAYSIZE(location_names); i++)
+				{
+					bool is_selected = (g_temp.teleport_location == i);
+					if (ImGui::Selectable(location_names[i], is_selected))
+						g_temp.teleport_location = i;
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+
+				ImGui::EndCombo();
+			}
+			if (ImGui::Button("Send Invite"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					uint64_t args[9] = { -171207973, g_selectedPlayer, 1, -1, 1, location_ids[g_temp.teleport_location], 0,0,0 }; // 1097312011
+					g_pointers->m_trigger_script_event(1, args, 9, 1 << g_selectedPlayer);
+				}QUEUE_JOB_END_CLAUSE
+			}
 
 			ImGui::Separator();
 
