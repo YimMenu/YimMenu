@@ -13,5 +13,7 @@ namespace big
 		int spoofed_rank = 0;
 		game_time time = game_time{};
 		int wanted_level = 0;
+		int teleport_location = 0;
+		int weather_type = 0;
 	};
 }
