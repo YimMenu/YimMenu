@@ -11,7 +11,7 @@ namespace big
 		{
 			QUEUE_JOB_BEGIN_CLAUSE()
 			{
-				*script_global(1590682).at(PLAYER::PLAYER_ID(), 883).at(211).at(6).as<int*>() = g_settings.options["rank"].get<int>();
+				features::functions::spoof_rank(g_settings.options["rank"].get<int>());
 			}QUEUE_JOB_END_CLAUSE
 		}
 	}
