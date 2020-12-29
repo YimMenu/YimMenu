@@ -5,6 +5,8 @@ namespace big
 {
 	void features::join_message(Player player)
 	{
+		if (player == g_playerId) return;
+
 		bool bJoinMessage = g_settings.options["join_message"].get<bool>();
 
 		if (bJoinMessage)
