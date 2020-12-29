@@ -20,6 +20,7 @@ namespace big
 		off_radar();
 		population_modifiers();
 		reveal_players();
+		speedo_meter();
 		spoof_rank();
 		sticky_tyres();
 		super_sprint();

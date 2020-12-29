@@ -4,6 +4,7 @@
 #include "structs/lists.hpp"
 #include "structs/player.hpp"
 #include "structs/temp.hpp"
+#include "features/functions.hpp"
 #include "features/notify.hpp"
 #include "features/stats.hpp"
 #include "features/teleport.hpp"
@@ -34,6 +35,7 @@ namespace big
 		void off_radar();
 		void population_modifiers();
 		void reveal_players();
+		void speedo_meter();
 		void spoof_rank();
 		void sticky_tyres();
 		void super_sprint();

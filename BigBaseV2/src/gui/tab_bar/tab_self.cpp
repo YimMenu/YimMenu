@@ -27,10 +27,8 @@ namespace big
 
 			ImGui::Separator();
 
-			if (ImGui::Checkbox("God Mode", g_settings.options["god_mode"].get<bool*>())
-				|| ImGui::Checkbox("No Ragdoll", g_settings.options["ragdoll"].get<bool*>())
-				|| ImGui::Checkbox("Off-Radar", g_settings.options["off_radar"].get<bool*>())
-				)	g_settings.save();
+			if (ImGui::Checkbox("God Mode", g_settings.options["god_mode"].get<bool*>()) || ImGui::Checkbox("No Ragdoll", g_settings.options["ragdoll"].get<bool*>()))
+				g_settings.save();
 
 			ImGui::Separator();
 

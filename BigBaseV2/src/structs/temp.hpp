@@ -10,6 +10,8 @@ namespace big
 
 	struct temp
 	{
+		int character_slot = 0;
+		int set_level = 0;
 		int spoofed_rank = 0;
 		game_time time = game_time{};
 		int wanted_level = 0;

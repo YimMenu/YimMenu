@@ -6,10 +6,15 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Misc"))
 		{
-			if (ImGui::Checkbox("Player Join Message", g_settings.options["join_message"].get<bool*>()))
-				g_settings.save();
-
-			ImGui::Separator();
+			ImGui::Text("Set Current Character Level:");
+			ImGui::SliderInt("##input_levels_self", &g_temp.set_level, 0, 8000);
+			if (ImGui::Button("Set Level"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					features::functions::set_player_level(g_temp.set_level);
+				}QUEUE_JOB_END_CLAUSE
+			}
 
 			if (ImGui::Button("Unlock Achievements"))
 			{

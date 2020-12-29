@@ -35,7 +35,8 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE(=)
 				{
-					MISC::SET_WEATHER_TYPE_NOW(weather_types[g_temp.weather_type]);
+					MISC::SET_OVERRIDE_WEATHER(weather_types[g_temp.weather_type]);
+					MISC::SET_WEATHER_TYPE_NOW_PERSIST(weather_types[g_temp.weather_type]);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
