@@ -13,8 +13,6 @@
 
 #include <imgui.h>
 
-#include "gui/base_tab.h"
-
 namespace big
 {
 	void gui::dx_init()
