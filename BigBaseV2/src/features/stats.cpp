@@ -225,7 +225,7 @@ namespace big::features
 			for (int i = 0; i < 2; i++)
 			{
 				char tmp[10];
-				char str[10];
+				char str[32];
 
 				sprintf(tmp, "%d", i);
 
@@ -244,7 +244,7 @@ namespace big::features
 			for (int i = 0; i < 140; i++)
 			{
 				char tmp[10];
-				char str[10];
+				char str[32];
 
 				sprintf(tmp, "%d", i);
 
@@ -263,7 +263,7 @@ namespace big::features
 			for (int i = 0; i < 26; i++)
 			{
 				char tmp[10];
-				char str[10];
+				char str[32];
 
 				sprintf(tmp, "%d", i);
 
@@ -283,7 +283,7 @@ namespace big::features
 			for (int i = 0; i < 38; i++)
 			{
 				char tmp[10];
-				char str[10];
+				char str[32];
 
 				sprintf(tmp, "%d", i);
 
