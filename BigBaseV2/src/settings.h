@@ -19,12 +19,16 @@ namespace big
 			"no_bike_fall": false,
 			"no_idle_kick": false,
 			"off_radar": false,
+			"parked_vehicle_density": 1.0,
+			"pedestrian_population": 1.0,
+			"population_modifiers": false,
 			"ragdoll": false,
 			"rank": 6969,
 			"reveal_players": false,
 			"spoof_rank": false,
 			"sticky_tyres": false,
-			"super_sprint": false
+			"super_sprint": false,
+			"vehicle_density": 1.0
 		})"_json;
 
 		bool save()

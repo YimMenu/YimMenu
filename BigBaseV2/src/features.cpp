@@ -18,6 +18,7 @@ namespace big
 		no_idle_kick();
 		no_ragdoll();
 		off_radar();
+		population_modifiers();
 		reveal_players();
 		spoof_rank();
 		sticky_tyres();

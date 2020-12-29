@@ -39,6 +39,28 @@ namespace big
 				}QUEUE_JOB_END_CLAUSE
 			}
 
+			ImGui::Separator();
+
+			if (ImGui::Checkbox("Population Modifiers", g_settings.options["population_modifiers"].get<bool*>()))
+				g_settings.save();
+
+			if (g_settings.options["population_modifiers"].get<bool>())
+			{
+				const double min = 0., max = 2.;
+
+				ImGui::Text("Pedestrian Population");
+				if (ImGui::SliderScalar("##ped_pop", ImGuiDataType_Double, g_settings.options["pedestrian_population"].get<double*>(), &min, &max))
+					g_settings.save();
+
+				ImGui::Text("Parked Vehicle Density:");
+				if (ImGui::SliderScalar("##parked_veh_density", ImGuiDataType_Double, g_settings.options["parked_vehicle_density"].get<double*>(), &min, &max))
+					g_settings.save();
+
+				ImGui::Text("Vehicle Density:");
+				if (ImGui::SliderScalar("##veh_density", ImGuiDataType_Double, g_settings.options["vehicle_density"].get<double*>(), &min, &max))
+					g_settings.save();
+			}
+
 			ImGui::EndTabItem();
 		}
 	}
