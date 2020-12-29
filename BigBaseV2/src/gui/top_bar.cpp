@@ -56,6 +56,22 @@ namespace big
 				ImGui::EndMenu();
 			}
 
+			if (ImGui::BeginMenu("Session"))
+			{
+				for (uint8_t i = 0; i < IM_ARRAYSIZE(sessions); i++)
+				{
+					if (ImGui::MenuItem(sessions[i].descr))
+					{
+						QUEUE_JOB_BEGIN_CLAUSE(=)
+						{
+							features::functions::join_session_type(sessions[i]);
+						}QUEUE_JOB_END_CLAUSE
+					}
+				}
+
+				ImGui::EndMenu();
+			}
+
 			if (ImGui::BeginMenu("Quit"))
 			{
 				if (ImGui::MenuItem("Unload Menu (may crash)"))

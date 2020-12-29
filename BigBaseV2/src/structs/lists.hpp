@@ -1,4 +1,5 @@
 #pragma once
+#include "session_type.hpp"
 
 namespace big
 {
@@ -41,5 +42,18 @@ namespace big
 		"XMAS",
 		"SNOWLIGHT",
 		"BLIZZARD"
+	};
+
+	inline session_type sessions[] = {
+		{ 0,	"Join Public Session"	},
+		{ 1,	"New Public Session"	},
+		{ 2,	"Closed Crew Session"	},
+		{ 3,	"Crew Session"			},
+		{ 6,	"Closed Friend Session"	},
+		{ 9,	"Find Friend Session"	},
+		{ 10,	"Solo Session"			},
+		{ 11,	"Invite Only Session"	},
+		{ 12,	"Join Crew Session"		},
+		{ -1,	"Leave GTA Online"		}
 	};
 }
