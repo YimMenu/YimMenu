@@ -25,6 +25,7 @@ namespace big
 			"ragdoll": false,
 			"rank": 6969,
 			"reveal_players": false,
+			"speedo_type": 0,
 			"spoof_rank": false,
 			"sticky_tyres": false,
 			"super_sprint": false,

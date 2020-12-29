@@ -7,6 +7,28 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Vehicle"))
 		{
+			ImGui::Text("Speedometer:");
+			ImGui::SameLine();
+			static const char* speedo_options[] = { "None", "km/h", "mph" };
+			if (ImGui::BeginCombo("##speedometer", speedo_options[g_settings.options["speedo_type"].get<int64_t>()]))
+			{
+				for (uint8_t i = 0; i < IM_ARRAYSIZE(speedo_options); i++)
+				{
+					bool is_selected = (g_settings.options["speedo_type"].get<int64_t>() == i);
+					if (ImGui::Selectable(speedo_options[i], is_selected))
+					{
+						*g_settings.options["speedo_type"].get<int64_t*>() = i;
+						g_settings.save();
+					}
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+
+				ImGui::EndCombo();
+			}
+
+			ImGui::Separator();
+
 			if (ImGui::Button("Auto Pilot"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
