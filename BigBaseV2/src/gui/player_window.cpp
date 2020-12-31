@@ -33,16 +33,17 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
-					Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer);
-
-					Vector3 location = ENTITY::GET_ENTITY_COORDS(target, true);
-
-					PED::SET_PED_COORDS_KEEP_VEHICLE(player, location.x, location.y, location.z + 1.f);
+					features::teleport::teleport_to_player(g_selectedPlayer);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
-
+			if (ImGui::Button("Teleport into Vehicle"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					features::teleport::teleport_into_player_vehicle(g_selectedPlayer);
+				}QUEUE_JOB_END_CLAUSE
+			}
 
 			ImGui::Separator();
 
@@ -108,7 +109,8 @@ namespace big
 				}QUEUE_JOB_END_CLAUSE
 			}
 
-			if (ImGui::BeginCombo("Invite Location:", location_names[g_temp.teleport_location]))
+			ImGui::Text("Force TP Location:");
+			if (ImGui::BeginCombo("##teleport_location", location_names[g_temp.teleport_location]))
 			{
 				for (uint8_t i = 0; i < IM_ARRAYSIZE(location_names); i++)
 				{
@@ -121,7 +123,7 @@ namespace big
 
 				ImGui::EndCombo();
 			}
-			if (ImGui::Button("Send Invite"))
+			if (ImGui::Button("Teleport to selected location."))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
@@ -141,7 +143,6 @@ namespace big
 					OBJECT::CREATE_AMBIENT_PICKUP(0x1E9A99F8, coords.x, coords.y, coords.z + 0.5f, 0, rand() % 500 + 2000, (Hash)-1666779307, false, true);
 					STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED((Hash)-1666779307);
 				}QUEUE_JOB_END_CLAUSE
-
 			}
 
 			ImGui::End();

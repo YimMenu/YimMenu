@@ -44,7 +44,7 @@ namespace big
 					{
 						Vector3 location = HUD::GET_BLIP_COORDS(blipHandle);
 						// Make sure the AI can reach this
-						location = features::teleport::get_ground_at_3d_coord(location);
+						location = features::teleport::get_ground_at_3dcoord(location);
 
 						TASK::TASK_VEHICLE_DRIVE_TO_COORD(PLAYER::PLAYER_PED_ID(), veh, location.x, location.y, location.z, 35.f, 0, veh, 2883620, 10.f, true);
 					}

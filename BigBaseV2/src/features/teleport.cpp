@@ -2,21 +2,41 @@
 
 namespace big::features::teleport
 {
-	Vector3 get_ground_at_3d_coord(Vector3 location)
+	bool load_ground_at_3dcoord(Vector3 location)
 	{
 		float groundZ;
-		uint16_t attempts = 10;
-		for (uint16_t i = 0; i < attempts; i++)
+		uint8_t attempts = 10;
+		for (uint8_t i = 0; i < attempts; i++)
 		{
 			// Only request a collision after the first try failed because the location might already be loaded on first attempt.
-			if (i)
+			for (uint8_t z = 0; i && z < 1000; z += 100)
 			{
-				for (uint16_t z = 0; z < 1000; z += 100)
-				{
-					STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, z);
+				STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, z);
 
-					script::get_current()->yield();
-				}
+				script::get_current()->yield();
+			}
+
+			if (MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, 1000.f, &groundZ, false, false))
+				return true;
+
+			script::get_current()->yield();
+		}
+
+		return false;
+	}
+
+	Vector3 get_ground_at_3dcoord(Vector3 location)
+	{
+		float groundZ;
+		uint8_t attempts = 10;
+		for (uint8_t i = 0; i < attempts; i++)
+		{
+			// Only request a collision after the first try failed because the location might already be loaded on first attempt.
+			for (uint8_t z = 0; i && z < 1000; z += 100)
+			{
+				STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, (float)z);
+
+				script::get_current()->yield();
 			}
 
 			if (MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, 1000.f, &groundZ, false, false))
@@ -32,23 +52,6 @@ namespace big::features::teleport
 		}
 
 		return location;
-	}
-
-	// Teleport the player (with/without car to a waypoint)
-	bool waypoint()
-	{
-		Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
-
-		Blip blipHandle = HUD::GET_FIRST_BLIP_INFO_ID(8);
-		if (!HUD::DOES_BLIP_EXIST(blipHandle)) return false;
-
-		Vector3 location = HUD::GET_BLIP_COORDS(blipHandle);
-		
-		location = get_ground_at_3d_coord(location);
-
-		PED::SET_PED_COORDS_KEEP_VEHICLE(player, location.x, location.y, location.z);
-
-		return true;
 	}
 
 	bool bring_blip(int blipSprite, int blipColor, int flag)
@@ -107,33 +110,78 @@ namespace big::features::teleport
 		if (!HUD::DOES_BLIP_EXIST(blipHandle) || (blipColor != -1 && HUD::GET_BLIP_COLOUR(blipHandle) != blipColor)) return false;
 
 		Vector3 location = HUD::GET_BLIP_COORDS(blipHandle);
-		float groundZ;
+		location = get_ground_at_3dcoord(location);
 
-		UINT16 attempts = 10;
-		for (UINT16 i = 0; i < attempts; i++)
+		PED::SET_PED_COORDS_KEEP_VEHICLE(player, location.x, location.y, location.z);
+
+		return true;
+	}
+
+	void teleport_into_player_vehicle(Player player)
+	{
+		Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+
+		if (!PED::IS_PED_IN_ANY_VEHICLE(target, true))
 		{
-			// Only request a collision after the first try failed because the location might already be loaded on first attempt.
-			if (i)
-			{
-				for (UINT16 z = 0; z < 1000; z += 100)
-				{
-					STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, z);
+			features::notify::above_map("This player is not in a vehicle right now.");
 
-					script::get_current()->yield();
-				}
-			}
-
-			if (MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, 1000.f, &groundZ, false, false))
-			{
-				location.z = groundZ + 1.f;
-
-				break;
-			}
-
-			if (i == attempts - 1) location.z = 1000.f;
-
-			script::get_current()->yield();
+			return;
 		}
+
+		Vector3 location = ENTITY::GET_ENTITY_COORDS(target, true);
+		
+		for (uint8_t i = 0; !load_ground_at_3dcoord(location); i++)
+			if (i == 5) break;
+
+		Ped current = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
+
+		Vehicle veh;
+		for (veh = 0; !veh; veh = PED::GET_VEHICLE_PED_IS_IN(target, false))
+		{
+			if (!PED::IS_PED_IN_ANY_VEHICLE(target, true))
+			{
+				features::notify::above_map("Player is no longer in a vehicle.");
+
+				return;
+			}
+
+			veh = PED::GET_VEHICLE_PED_IS_IN(target, false);
+
+			if (!veh)
+			{
+				ENTITY::SET_ENTITY_COORDS(current, location.x, location.y, 1000.f, 0, 0, 0, 0);
+
+				script::get_current()->yield(50ms);
+			}
+		}
+
+		int seatIndex = -2;
+		if (VEHICLE::IS_VEHICLE_SEAT_FREE(veh, -1, 0)) seatIndex = -1;
+
+		PED::SET_PED_INTO_VEHICLE(current, veh, seatIndex);
+	}
+
+	void teleport_to_player(Player player)
+	{
+		Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+
+		Vector3 location = ENTITY::GET_ENTITY_COORDS(target, true);
+		load_ground_at_3dcoord(location);
+
+		PED::SET_PED_COORDS_KEEP_VEHICLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), location.x, location.y, location.z);
+	}
+
+	// Teleport the player (with/without car to a waypoint)
+	bool waypoint()
+	{
+		Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
+
+		Blip blipHandle = HUD::GET_FIRST_BLIP_INFO_ID(8);
+		if (!HUD::DOES_BLIP_EXIST(blipHandle)) return false;
+
+		Vector3 location = HUD::GET_BLIP_COORDS(blipHandle);
+
+		location = get_ground_at_3dcoord(location);
 
 		PED::SET_PED_COORDS_KEEP_VEHICLE(player, location.x, location.y, location.z);
 
