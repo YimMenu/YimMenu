@@ -9,11 +9,8 @@ namespace big
 
 		if (bNoIdleKick)
 		{
-			QUEUE_JOB_BEGIN_CLAUSE()
-			{
-				*script_global(1377236).at(1165).as<int*>() = -1;
-				*script_global(1377236).at(1149).as<int*>() = -1;
-			}QUEUE_JOB_END_CLAUSE
+			*script_global(1377236).at(1165).as<int*>() = -1;
+			*script_global(1377236).at(1149).as<int*>() = -1;
 		}
 	}
 }
