@@ -99,23 +99,25 @@ namespace big
 				}
 
 				ImGui::Text("Weather:");
-				ImGui::BeginCombo("##weather", weatherTypes[g_temp.weather_type]);
-				for (uint8_t i = 0; i < IM_ARRAYSIZE(weatherTypes); i++)
+				if (ImGui::BeginCombo("##weather", weatherTypes[g_temp.weather_type]))
 				{
-					bool is_selected = (g_temp.weather_type == i);
-					if (ImGui::Selectable(weatherTypes[i], is_selected))
+					for (uint8_t i = 0; i < IM_ARRAYSIZE(weatherTypes); i++)
 					{
-						g_temp.weather_type = i;
-
-						QUEUE_JOB_BEGIN_CLAUSE(=)
+						bool is_selected = (g_temp.weather_type == i);
+						if (ImGui::Selectable(weatherTypes[i], is_selected))
 						{
-							g_pointers->m_set_session_weather(1, i, 76, 0);
-						}QUEUE_JOB_END_CLAUSE
+							g_temp.weather_type = i;
+
+							QUEUE_JOB_BEGIN_CLAUSE(= )
+							{
+								g_pointers->m_set_session_weather(1, i, 76, 0);
+							}QUEUE_JOB_END_CLAUSE
+						}
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
 					}
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();
+					ImGui::EndCombo();
 				}
-				ImGui::EndCombo();
 
 				ImGui::TreePop();
 			}
