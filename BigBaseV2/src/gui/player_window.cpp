@@ -21,8 +21,7 @@ namespace big
 
 			ImGui::Separator();
 
-			if (ImGui::Checkbox("Spectate Player", &g_temp.spectate_player))
-				;
+			ImGui::Checkbox("Spectate Player", &g_temp.spectate_player);
 
 			ImGui::Separator();
 
@@ -61,7 +60,7 @@ namespace big
 
 			if (ImGui::Button("Kick (Non-Host)"))
 			{
-				uint64_t args[4] = { 1317868303, (uint64_t)PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id), 0, 0 };
+				uint64_t args[4] = { (uint64_t)1317868303, (uint64_t)PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id), 0, 0 };
 
 				g_pointers->m_trigger_script_event(1, args, 4, 1 << g_selectedPlayer.id);
 			}
@@ -70,7 +69,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					uint64_t args[2] = { -1333236192, (uint64_t)g_selectedPlayer.id };
+					uint64_t args[2] = { (uint64_t)RemoteEvents::VehicleKick, (uint64_t)g_selectedPlayer.id };
 
 					g_pointers->m_trigger_script_event(1, args, 2, 1 << g_selectedPlayer.id);
 				}QUEUE_JOB_END_CLAUSE
@@ -80,7 +79,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					uint64_t ceokick[4] = { -1648921703, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id), 0, 0 };
+					uint64_t ceokick[4] = { (uint64_t)RemoteEvents::CeoKick, (uint64_t)PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id), 0, 0 };
 
 					g_pointers->m_trigger_script_event(1, ceokick, 4, 1 << g_selectedPlayer.id);
 				}QUEUE_JOB_END_CLAUSE
@@ -90,7 +89,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					uint64_t ceoban[4] = { -738295409, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id), 1, 5 };
+					uint64_t ceoban[4] = { (uint64_t)RemoteEvents::CeoBan, (uint64_t)PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id), 1, 5 };
 
 					g_pointers->m_trigger_script_event(1, ceoban, 4, 1 << g_selectedPlayer.id);
 				}QUEUE_JOB_END_CLAUSE
@@ -100,7 +99,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					uint64_t args[2] = { -545396442, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id) };
+					uint64_t args[2] = { (uint64_t)RemoteEvents::ForceMission, (uint64_t)PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id) };
 
 					g_pointers->m_trigger_script_event(true, args, 2, 1 << g_selectedPlayer.id);
 				}QUEUE_JOB_END_CLAUSE
@@ -124,7 +123,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					uint64_t args[9] = { -171207973, g_selectedPlayer.id, 1, -1, 1, location_ids[g_temp.teleport_location], 0,0,0 }; // 1097312011
+					uint64_t args[9] = { (uint64_t)-171207973, (uint64_t)g_selectedPlayer.id, 1, (uint64_t)-1, 1, (uint64_t)location_ids[g_temp.teleport_location], 0,0,0 }; // 1097312011
 					g_pointers->m_trigger_script_event(1, args, 9, 1 << g_selectedPlayer.id);
 				}QUEUE_JOB_END_CLAUSE
 			}

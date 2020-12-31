@@ -12,7 +12,10 @@
 namespace big
 {
 	inline Player g_playerId;
-	inline Player g_selectedPlayer = -1;
+	inline Player g_selectedPlayerId;
+
+	inline player g_currentPlayer;
+	inline player g_selectedPlayer;
 	inline player g_players[32];
 
 	// Temporary Variable struct
