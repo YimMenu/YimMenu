@@ -14,8 +14,9 @@ namespace big
 		int set_level = 0;
 		int spoofed_rank = 0;
 		game_time time = game_time{};
-		int wanted_level = 0;
+		bool spectate_player = false;
 		int teleport_location = 0;
+		int wanted_level = 0;
 		int weather_type = 0;
 	};
 }

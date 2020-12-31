@@ -40,6 +40,7 @@ namespace big
 		functions::increment_stat_event* m_increment_stat_event{};
 		functions::script_event_handler* m_script_event_handler{};
 		functions::set_session_weather* m_set_session_weather{};
+		functions::spectate_player* m_spectate_player{};
 		functions::sync_local_time* m_sync_local_time{};
 		functions::trigger_script_event* m_trigger_script_event{};
 	};

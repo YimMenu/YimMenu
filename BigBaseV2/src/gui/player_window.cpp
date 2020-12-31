@@ -29,6 +29,11 @@ namespace big
 
 			ImGui::Separator();
 
+			if (ImGui::Checkbox("Spectate Player", &g_temp.spectate_player))
+				;
+
+			ImGui::Separator();
+
 			if (ImGui::Button("Teleport to Player"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
