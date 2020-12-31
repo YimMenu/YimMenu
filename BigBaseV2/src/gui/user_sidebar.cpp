@@ -14,9 +14,16 @@ namespace big
 
 			ImGui::TextColored({ 255,255,255,255 }, "YOU:");
 
-			if (ImGui::Button(g_players[g_playerId].name, vecButtonWidth))
+			for (uint8_t i = 0; i < 32; i++)
 			{
-				g_selectedPlayer = g_playerId;
+				player player = g_players[i];
+
+				if (player.id == g_playerId) g_currentPlayer = player;
+			}
+			if (ImGui::Button(g_currentPlayer.name, vecButtonWidth))
+			{
+				g_selectedPlayer = g_currentPlayer;
+				g_selectedPlayerId = g_currentPlayer.id;
 			}
 
 			ImGui::Separator();
@@ -35,7 +42,8 @@ namespace big
 
 						if (ImGui::Button(player.name, vecButtonWidth))
 						{
-							g_selectedPlayer = i;
+							g_selectedPlayer = player;
+							g_selectedPlayerId = player.id;
 						}
 					}
 				}
@@ -55,11 +63,12 @@ namespace big
 				{
 					player player = g_players[i];
 
-					if (!player.is_friend && player.is_online && i != g_playerId)
+					if (!player.is_friend && player.is_online && player.id != g_playerId)
 					{
 						if (ImGui::Button(player.name, vecButtonWidth))
 						{
-							g_selectedPlayer = i;
+							g_selectedPlayer = player;
+							g_selectedPlayerId = player.id;
 						}
 					}
 				}

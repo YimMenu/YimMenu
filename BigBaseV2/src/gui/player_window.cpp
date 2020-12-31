@@ -7,24 +7,16 @@ namespace big
 {
 	void gui::render_player_window()
 	{
-		if (g_selectedPlayer == -1) return;
-
-		player player = g_players[g_selectedPlayer];
-		if (!player.is_online)
-		{
-			g_selectedPlayer = -1;
-
-			return;
-		}
+		if (g_selectedPlayer.id != g_selectedPlayerId || !g_selectedPlayer.is_online) return;
 
 		if (ImGui::Begin("Player Options"))
 		{
 			ImGui::Text("Selected player:");
-			ImGui::SameLine(); ImGui::TextColored({ 25,180,38,255 }, player.name);
+			ImGui::SameLine(); ImGui::TextColored({ 25,180,38,255 }, g_selectedPlayer.name);
 
 			if (ImGui::Button("Close"))
 			{
-				g_selectedPlayer = -1;
+				g_selectedPlayerId = -2;
 			}
 
 			ImGui::Separator();
@@ -38,7 +30,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					features::teleport::teleport_to_player(g_selectedPlayer);
+					features::teleport::teleport_to_player(g_selectedPlayer.id);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -46,7 +38,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					features::teleport::teleport_into_player_vehicle(g_selectedPlayer);
+					features::teleport::teleport_into_player_vehicle(g_selectedPlayer.id);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -58,7 +50,7 @@ namespace big
 				{
 					if (NETWORK::NETWORK_IS_HOST())
 					{
-						NETWORK::NETWORK_SESSION_KICK_PLAYER(g_selectedPlayer);
+						NETWORK::NETWORK_SESSION_KICK_PLAYER(g_selectedPlayer.id);
 					}
 					else
 					{
@@ -69,18 +61,18 @@ namespace big
 
 			if (ImGui::Button("Kick (Non-Host)"))
 			{
-				uint64_t args[4] = { 1317868303, (uint64_t)PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer), 0, 0 };
+				uint64_t args[4] = { 1317868303, (uint64_t)PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id), 0, 0 };
 
-				g_pointers->m_trigger_script_event(1, args, 4, 1 << g_selectedPlayer);
+				g_pointers->m_trigger_script_event(1, args, 4, 1 << g_selectedPlayer.id);
 			}
 
 			if (ImGui::Button("Kick from Vehicle"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					uint64_t args[2] = { -1333236192, (uint64_t)g_selectedPlayer };
+					uint64_t args[2] = { -1333236192, (uint64_t)g_selectedPlayer.id };
 
-					g_pointers->m_trigger_script_event(1, args, 2, 1 << g_selectedPlayer);
+					g_pointers->m_trigger_script_event(1, args, 2, 1 << g_selectedPlayer.id);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -88,9 +80,9 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					uint64_t ceokick[4] = { -1648921703, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer), 0, 0 };
+					uint64_t ceokick[4] = { -1648921703, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id), 0, 0 };
 
-					g_pointers->m_trigger_script_event(1, ceokick, 4, 1 << g_selectedPlayer);
+					g_pointers->m_trigger_script_event(1, ceokick, 4, 1 << g_selectedPlayer.id);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -98,9 +90,9 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					uint64_t ceoban[4] = { -738295409, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer), 1, 5 };
+					uint64_t ceoban[4] = { -738295409, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id), 1, 5 };
 
-					g_pointers->m_trigger_script_event(1, ceoban, 4, 1 << g_selectedPlayer);
+					g_pointers->m_trigger_script_event(1, ceoban, 4, 1 << g_selectedPlayer.id);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -108,9 +100,9 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					uint64_t args[2] = { -545396442, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer) };
+					uint64_t args[2] = { -545396442, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id) };
 
-					g_pointers->m_trigger_script_event(true, args, 2, 1 << g_selectedPlayer);
+					g_pointers->m_trigger_script_event(true, args, 2, 1 << g_selectedPlayer.id);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -132,8 +124,8 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					uint64_t args[9] = { -171207973, g_selectedPlayer, 1, -1, 1, location_ids[g_temp.teleport_location], 0,0,0 }; // 1097312011
-					g_pointers->m_trigger_script_event(1, args, 9, 1 << g_selectedPlayer);
+					uint64_t args[9] = { -171207973, g_selectedPlayer.id, 1, -1, 1, location_ids[g_temp.teleport_location], 0,0,0 }; // 1097312011
+					g_pointers->m_trigger_script_event(1, args, 9, 1 << g_selectedPlayer.id);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -143,7 +135,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer), true);
+					Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id), true);
 
 					OBJECT::CREATE_AMBIENT_PICKUP(0x1E9A99F8, coords.x, coords.y, coords.z + 0.5f, 0, rand() % 500 + 2000, (Hash)-1666779307, false, true);
 					STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED((Hash)-1666779307);
