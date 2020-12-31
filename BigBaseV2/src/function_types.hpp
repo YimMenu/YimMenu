@@ -13,6 +13,7 @@ namespace big::functions
 	using increment_stat_event = bool(uint64_t net_event_struct, int64_t sender, int64_t a3);
 	using get_player_name = char*(Player player);
 	using script_event_handler = bool(void* events, CNetGamePlayer* sourcePlayer, CNetGamePlayer* targetPlayer);
+	using set_session_weather = void(char a1, int a2, int a3, int64_t a4);
 	using sync_local_time = void(int h, int m);
 	using trigger_script_event = int(bool unk0, uint64_t* args, int argCount, int bitFlags);
 }

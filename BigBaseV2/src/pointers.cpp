@@ -78,6 +78,11 @@ namespace big
 			m_sync_local_time = ptr.as<decltype(m_sync_local_time)>();
 		});
 
+		main_batch.add("Session Weather", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC 30 40 8A E9", [this](memory::handle ptr)
+		{
+			m_set_session_weather = ptr.as<decltype(m_set_session_weather)>();
+		});
+
 		main_batch.add("Get Player Name", "40 53 48 83 EC 20 80 3D ? ? ? ? ? 8B D9 74 22", [this](memory::handle ptr)
 		{
 			m_get_player_name = ptr.as<decltype(m_get_player_name)>();

@@ -4,6 +4,24 @@
 
 namespace big
 {
+	const char* weatherTypes[] = {
+		"Sunny",
+		"Clear",
+		"Clouds",
+		"Smog",
+		"Fog",
+		"Overcast",
+		"Rain",
+		"Thunder",
+		"Clearing",
+		"Neatral (weird)",
+		"Snow",
+		"Blizzard",
+		"Light Snow",
+		"Christmas",
+		"Halloween"
+	};
+
 	void tabbar::render_online()
 	{
 		if (ImGui::BeginTabItem("Online"))
@@ -78,6 +96,25 @@ namespace big
 						g_pointers->m_sync_local_time(1, 0);
 					}QUEUE_JOB_END_CLAUSE
 				}
+
+				ImGui::Text("Weather:");
+				ImGui::BeginCombo("##weather", weatherTypes[g_temp.weather_type]);
+				for (uint8_t i = 0; i < IM_ARRAYSIZE(weatherTypes); i++)
+				{
+					bool is_selected = (g_temp.weather_type == i);
+					if (ImGui::Selectable(weatherTypes[i], is_selected))
+					{
+						g_temp.weather_type = i;
+
+						QUEUE_JOB_BEGIN_CLAUSE(=)
+						{
+							g_pointers->m_set_session_weather(1, i, 76, 0);
+						}QUEUE_JOB_END_CLAUSE
+					}
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
 
 				ImGui::TreePop();
 			}
