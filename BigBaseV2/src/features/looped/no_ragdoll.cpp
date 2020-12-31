@@ -16,6 +16,7 @@ namespace big
 
 				PED::SET_PED_CAN_RAGDOLL(player, !bNoRagdoll);
 				PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(player, !bNoRagdoll);
+				PED::SET_PED_RAGDOLL_ON_COLLISION(player, !bNoRagdoll);
 			}QUEUE_JOB_END_CLAUSE
 
 			bLastNoRagdoll = bNoRagdoll;
