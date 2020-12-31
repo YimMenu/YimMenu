@@ -112,6 +112,11 @@ namespace big
 		{
 			m_spectate_player = ptr.as<decltype(m_spectate_player)>();
 		});
+
+		main_batch.add("Censor Chat", "E8 ? ? ? ? 83 F8 FF 75 B9", [this](memory::handle ptr)
+		{
+			m_censor_chat = ptr.as<decltype(m_censor_chat)>();
+		});
 			
 		main_batch.run(memory::module(nullptr));
 

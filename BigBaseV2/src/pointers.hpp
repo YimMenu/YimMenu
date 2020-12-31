@@ -35,6 +35,7 @@ namespace big
 
 		PVOID m_model_spawn_bypass;
 
+		functions::censor_chat* m_censor_chat{};
 		functions::error_screen* m_error_screen{};
 		functions::get_player_name* m_get_player_name{};
 		functions::increment_stat_event* m_increment_stat_event{};

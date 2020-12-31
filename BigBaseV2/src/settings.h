@@ -13,6 +13,7 @@ namespace big
 		nlohmann::json options;
 		nlohmann::json default_options =
 		R"({
+			"disable_chat_censoring": false,
 			"god_mode": false,
 			"join_message": false,
 			"never_wanted": false,

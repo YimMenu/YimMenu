@@ -9,6 +9,7 @@ namespace big::functions
 	using get_native_handler_t = rage::scrNativeHandler(*)(rage::scrNativeRegistrationTable*, rage::scrNativeHash);
 	using fix_vectors_t = void(*)(rage::scrNativeCallContext*);
 
+	using censor_chat = int(int64_t chat_menu, const char* user_text, const char** output_text);
 	using error_screen = void(char* entryHeader, char* entryLine1, int instructionalKey, char* entryLine2, BOOL p4, Any p5, Any* p6, Any* p7, BOOL background);
 	using increment_stat_event = bool(uint64_t net_event_struct, int64_t sender, int64_t a3);
 	using get_player_name = char*(Player player);
