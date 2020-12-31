@@ -1686,3 +1686,29 @@ enum PedBones : std::uint32_t
 	FB_R_Lip_Bot_001 = 0xC33B,
 	FB_Tongue_001 = 0xB987
 };
+
+enum RemoteEvents : std::int32_t
+{
+	// new 1.52 shit
+	Bounty = -116602735,
+	CeoBan = -738295409,
+	CeoKick = -1648921703,
+	CeoMoney = -2029779863,
+	ClearWantedLevel = 393068387,
+	FakeDeposit = -1949011582,
+	ForceMission = -545396442,
+	ForceMission2 = 915906776,
+	ForceMission3 = 1764541627,
+	GtaBanner = 639032041,
+	PersonalVehicleDestroyed = 891272013, //arg 3 = value
+	RemoteOffradar = 575518757,
+	RotateCam = 1120313136,
+	SendToCutscene = -1879618040,
+	SendToIsland = 1300962917,
+	SoundSpam = 1097312011,
+	SoundSpam2 = -1162153263,
+	Spectate = -2074614269,
+	Teleport = -171207973,
+	TransactionError = 1302185744,
+	VehicleKick = -1333236192,
+};

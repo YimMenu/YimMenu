@@ -117,6 +117,16 @@ namespace big
 		{
 			m_censor_chat = ptr.as<decltype(m_censor_chat)>();
 		});
+
+		main_batch.add("Get Net player", "48 83 EC 28 33 C0 38 05 ? ? ? ? 74 0A", [this](memory::handle ptr)
+		{
+			m_get_net_game_player = ptr.as<decltype(m_get_net_game_player)>();
+		});
+
+		main_batch.add("Get Event Data", "48 85 C0 74 14 4C 8B 10", [this](memory::handle ptr)
+		{
+			m_get_event_data = ptr.sub(28).as<decltype(m_get_event_data)>();
+		});
 			
 		main_batch.run(memory::module(nullptr));
 

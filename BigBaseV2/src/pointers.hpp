@@ -37,7 +37,9 @@ namespace big
 
 		functions::censor_chat* m_censor_chat{};
 		functions::error_screen* m_error_screen{};
+		functions::get_event_data* m_get_event_data{};
 		functions::get_player_name* m_get_player_name{};
+		functions::get_net_player* m_get_net_game_player{};
 		functions::increment_stat_event* m_increment_stat_event{};
 		functions::script_event_handler* m_script_event_handler{};
 		functions::set_session_weather* m_set_session_weather{};
