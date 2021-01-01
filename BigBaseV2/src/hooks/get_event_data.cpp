@@ -14,7 +14,7 @@ namespace big
 			Player player = (Player)args[1];
 			auto hash = args[0];
 
-			char type[16] = "";
+			char type[32] = "";
 
 			switch (hash)
 			{
@@ -95,10 +95,14 @@ namespace big
 				break;
 			}
 
+			for (int64_t kick_hash : kick_hashes)
+				if (hash == kick_hash)
+					strcpy(type, "General Kick");
+
 			if (strlen(type) != 0)
 			{
 				char msg[128];
-				strcpy(msg, "~g~BLOCKED EVENT~s~\nFrom <C>");
+				strcpy(msg, "~g~BLOCKED EVENT~s~\nFrom: <C>");
 				strcat(msg, g_pointers->m_get_player_name(player));
 				strcat(msg, "</C>\nEvent Type: ~b~");
 				strcat(msg, type);
