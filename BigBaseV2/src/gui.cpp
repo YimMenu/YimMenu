@@ -127,7 +127,14 @@ namespace big
 		{
 			if (g_gui.m_opened)
 			{
-				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+				//PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+				for (int i = 1; i <= 6; i++)
+				{
+					PAD::DISABLE_CONTROL_ACTION(0, i, true);
+				}
+				PAD::DISABLE_CONTROL_ACTION(0, 106, true);
+				PAD::DISABLE_CONTROL_ACTION(0, 329, true);
+				PAD::DISABLE_CONTROL_ACTION(0, 330, true);
 			}
 		}
 		EXCEPT_CLAUSE
