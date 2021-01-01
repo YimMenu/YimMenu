@@ -29,6 +29,7 @@ namespace big
 		void run_tick();
 		void script_func();
 
+		void disable_phone();
 		void god_mode();
 		void join_message(Player player);
 		void never_wanted();
