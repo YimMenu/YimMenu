@@ -60,9 +60,17 @@ namespace big
 
 			if (ImGui::Button("Kick (Non-Host)"))
 			{
-				uint64_t args[4] = { (uint64_t)1317868303, (uint64_t)PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id), 0, 0 };
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					uint64_t args[4] = { 0, (uint64_t)PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id), 0, 0 };
 
-				g_pointers->m_trigger_script_event(1, args, 4, 1 << g_selectedPlayer.id);
+					for (int64_t kick_hash : kick_hashes)
+					{
+						args[0] = kick_hash;
+
+						g_pointers->m_trigger_script_event(1, args, 4, 1 << g_selectedPlayer.id);
+					}
+				}QUEUE_JOB_END_CLAUSE
 			}
 
 			if (ImGui::Button("Kick from Vehicle"))
