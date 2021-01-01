@@ -12,7 +12,7 @@ namespace big
 		{
 			QUEUE_JOB_BEGIN_CLAUSE(= )
 			{
-				if (PAD::IS_CONTROL_PRESSED(0, 32))
+				if (TASK::IS_PED_SPRINTING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId)))
 				{
 					Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
 
@@ -21,6 +21,10 @@ namespace big
 
 					PLAYER::SET_PLAYER_SPRINT(g_playerId, 1);
 					PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(g_playerId, 1.49);
+				}
+				else
+				{
+					PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(g_playerId, 1.0);
 				}
 			}QUEUE_JOB_END_CLAUSE
 		}
