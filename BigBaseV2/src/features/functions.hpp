@@ -10,4 +10,5 @@ namespace big::features::functions
 	void set_car_sell_value(int value);
 	void set_player_level(int level);
 	void spoof_rank(int rank);
+	void toggle_protections(bool toggle);
 }

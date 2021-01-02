@@ -53,4 +53,30 @@ namespace big::features::functions
 	{
 		*script_global(1590682).at(PLAYER::PLAYER_ID(), 883).at(211).at(6).as<int*>() = rank;
 	}
+
+	void toggle_protections(bool toggle)
+	{
+		auto &protections = g_settings.options["settings"]["protections"];
+
+		protections["bounty"] = toggle;
+		protections["ceo_ban"] = toggle;
+		protections["ceo_kick"] = toggle;
+		protections["ceo_money"] = toggle;
+		protections["clear_wanted_level"] = toggle;
+		protections["fake_deposit"] = toggle;
+		protections["force_mission"] = toggle;
+		protections["gta_banner"] = toggle;
+		protections["personal_vehicle_destroyed"] = toggle;
+		protections["remote_off_radar"] = toggle;
+		protections["rotate_cam"] = toggle;
+		protections["send_to_cutscene"] = toggle;
+		protections["send_to_island"] = toggle;
+		protections["sound_spam"] = toggle;
+		protections["spectate"] = toggle;
+		protections["force_teleport"] = toggle;
+		protections["transaction_error"] = toggle;
+		protections["vehicle_kick"] = toggle;
+
+		g_settings.save();
+	}
 }
