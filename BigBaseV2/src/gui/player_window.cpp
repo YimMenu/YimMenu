@@ -114,12 +114,12 @@ namespace big
 			}
 
 			ImGui::Text("Force TP Location:");
-			if (ImGui::BeginCombo("##teleport_location", location_names[g_temp.teleport_location]))
+			if (ImGui::BeginCombo("##teleport_location", locations[g_temp.teleport_location].name))
 			{
-				for (uint8_t i = 0; i < IM_ARRAYSIZE(location_names); i++)
+				for (uint8_t i = 0; i < IM_ARRAYSIZE(locations); i++)
 				{
 					bool is_selected = (g_temp.teleport_location == i);
-					if (ImGui::Selectable(location_names[i], is_selected))
+					if (ImGui::Selectable(locations[i].name, is_selected))
 						g_temp.teleport_location = i;
 					if (is_selected)
 						ImGui::SetItemDefaultFocus();
@@ -131,7 +131,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					int64_t args[9] = { RemoteEvents::Teleport, g_selectedPlayer.id, 1, -1, 1, location_ids[g_temp.teleport_location], 0,0,0 }; // 1097312011
+					int64_t args[9] = { RemoteEvents::Teleport, g_selectedPlayer.id, 1, -1, 1, locations[g_temp.teleport_location].id, 0,0,0 }; // 1097312011
 					g_pointers->m_trigger_script_event(true, args, 9, 1 << g_selectedPlayer.id);
 				}QUEUE_JOB_END_CLAUSE
 			}
