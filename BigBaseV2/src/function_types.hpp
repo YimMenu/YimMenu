@@ -19,5 +19,5 @@ namespace big::functions
 	using set_session_weather = void(char a1, int a2, int a3, int64_t a4);
 	using spectate_player = bool(bool toggle, Ped player);
 	using sync_local_time = void(int h, int m);
-	using trigger_script_event = int(bool unk0, uint64_t* args, int argCount, int bitFlags);
+	using trigger_script_event = int(bool unk0, int64_t* args, int argCount, int bitFlags);
 }

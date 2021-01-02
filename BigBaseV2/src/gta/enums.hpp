@@ -1687,9 +1687,8 @@ enum PedBones : std::uint32_t
 	FB_Tongue_001 = 0xB987
 };
 
-enum RemoteEvents : std::int32_t
+enum RemoteEvents : int64_t
 {
-	// new 1.52 shit
 	Bounty = -116602735,
 	CeoBan = -738295409,
 	CeoKick = -1648921703,
@@ -1700,7 +1699,7 @@ enum RemoteEvents : std::int32_t
 	ForceMission2 = 915906776,
 	ForceMission3 = 1764541627,
 	GtaBanner = 639032041,
-	PersonalVehicleDestroyed = 891272013, //arg 3 = value
+	PersonalVehicleDestroyed = 891272013,
 	RemoteOffradar = 575518757,
 	RotateCam = 1120313136,
 	SendToCutscene = -1879618040,
