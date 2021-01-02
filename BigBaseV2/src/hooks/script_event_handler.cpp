@@ -10,7 +10,8 @@ namespace big
 
 		const auto ScriptEventHash = args[0];
 
-		LOG(INFO) << "Received Script Event " << ScriptEventHash << " from Player " << PLAYER::GET_PLAYER_NAME(SenderID);
+		if (g_settings.options["settings"]["logging"]["script_events"])
+			LOG(INFO) << "Received Script Event " << ScriptEventHash << " from Player " << PLAYER::GET_PLAYER_NAME(SenderID);
 
 		return g_hooking->m_script_event_hook.get_original<decltype(&script_event_handler)>()(NetEventStruct, CNetGamePlayer);
 	}

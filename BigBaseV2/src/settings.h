@@ -53,6 +53,10 @@ namespace big
 					"force_teleport": false,
 					"transaction_error": false,
 					"vehicle_kick": false
+				},
+				"logging": {
+					"get_event_data": false,
+					"script_events": false
 				}
 			}
 		})"_json;

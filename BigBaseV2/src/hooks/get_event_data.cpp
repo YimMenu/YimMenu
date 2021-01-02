@@ -143,14 +143,17 @@ namespace big
 				return false;
 			}
 
-			const char* sender = g_pointers->m_get_player_name(player);
-			LOG(INFO) << "Player: " << sender;
-			LOG(INFO) << "Script hash: " << args[0];
-			LOG(INFO) << "Script event group: " << eventGroup;
-			LOG(INFO) << "Script event index: " << eventIndex;
-			LOG(INFO) << "Script event argcount: " << argCount;
-			for (std::uint32_t i = 0; i < argCount; i++)
-				LOG(INFO) << "Script event args[" << i << "] : " << args[i];
+			if (g_settings.options["settings"]["logging"]["get_event_data"])
+			{
+				const char* sender = g_pointers->m_get_player_name(player);
+				LOG(INFO) << "Player: " << sender;
+				LOG(INFO) << "Script hash: " << args[0];
+				LOG(INFO) << "Script event group: " << eventGroup;
+				LOG(INFO) << "Script event index: " << eventIndex;
+				LOG(INFO) << "Script event argcount: " << argCount;
+				for (std::uint32_t i = 0; i < argCount; i++)
+					LOG(INFO) << "Script event args[" << i << "] : " << args[i];
+			}
 		}
 
 		return result;

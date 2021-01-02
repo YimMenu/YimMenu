@@ -6,6 +6,21 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Settings"))
 		{
+			if (ImGui::TreeNode("Dev Logging"))
+			{
+				auto& logging = g_settings.options["settings"]["logging"];
+
+				if (ImGui::Checkbox("Get Event Data", logging["get_event_data"].get<bool*>()))
+					g_settings.save();
+
+				if (ImGui::Checkbox("Script Events", logging["script_events"].get<bool*>()))
+					g_settings.save();
+
+				ImGui::TreePop();
+			}
+
+			ImGui::Separator();
+
 			if (ImGui::TreeNode("Protections"))
 			{
 				auto &protections = g_settings.options["settings"]["protections"];
