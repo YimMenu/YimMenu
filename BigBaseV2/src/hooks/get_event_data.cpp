@@ -13,92 +13,122 @@ namespace big
 		if (result && player < 32)
 		{
 			auto hash = args[0];
+			auto &protections = g_settings.options["settings"]["protections"];
 
 			char type[32] = "";
 
 			switch (hash)
 			{
 			case RemoteEvents::Bounty:
-				strcpy(type, "Bounty");
+				if (protections["bounty"])
+					strcpy(type, "Bounty");
 
 				break;
 			case RemoteEvents::CeoBan:
-				strcpy(type, "Ceo Ban");
+				if (protections["ceo_ban"])
+					strcpy(type, "Ceo Ban");
 
 				break;
 			case RemoteEvents::CeoKick:
-				strcpy(type, "Ceok Kick");
+				if (protections["ceo_kick"])
+					strcpy(type, "Ceok Kick");
 
 				break;
 			case RemoteEvents::CeoMoney:
-				strcpy(type, "Ceo Money");
+				if (protections["ceo_money"])
+					strcpy(type, "Ceo Money");
 
 				break;
 			case RemoteEvents::ClearWantedLevel:
-				strcpy(type, "Clear Wanted Level");
+				if (protections["clear_wanted_level"])
+					strcpy(type, "Clear Wanted Level");
 
 				break;
 			case RemoteEvents::FakeDeposit:
-				strcpy(type, "Fake Deposit");
+				if (protections["fake_deposit"])
+					strcpy(type, "Fake Deposit");
 
 				break;
 			case RemoteEvents::ForceMission:
 			case RemoteEvents::ForceMission2:
 			case RemoteEvents::ForceMission3:
-				strcpy(type, "Force Mission");
+				if (protections["force_mission"])
+					strcpy(type, "Force Mission");
 
 				break;
 			case RemoteEvents::GtaBanner:
-				strcpy(type, "GTA Banner");
+				if (protections["gta_banner"])
+					strcpy(type, "GTA Banner");
 
 				break;
 			case RemoteEvents::PersonalVehicleDestroyed:
-				strcpy(type, "Personal Vehicle Destroyed");
+				if (protections["personal_vehicle_destroyed"])
+					strcpy(type, "Personal Vehicle Destroyed");
 
 				break;
 			case RemoteEvents::RemoteOffradar:
-				strcpy(type, "Remote Off Radar");
+				if (protections["remote_off_radar"])
+					strcpy(type, "Remote Off Radar");
 
 				break;
 			case RemoteEvents::RotateCam:
-				//strcpy(type, "Rotate Cam");
-				return false;
+				if (protections["rotate_cam"])
+				{
+					//strcpy(type, "Rotate Cam");
+					return false;
+				}
 
 				break;
 			case RemoteEvents::SendToCutscene:
-				strcpy(type, "Send To Cutscene");
+				if (protections["send_to_cutscene"])
+					strcpy(type, "Send To Cutscene");
 
 				break;
 			case RemoteEvents::SendToIsland:
-				strcpy(type, "Send To Island");
+				if (protections["send_to_island"])
+					strcpy(type, "Send To Island");
 
 				break;
 			case RemoteEvents::SoundSpam:
 			case RemoteEvents::SoundSpam2:
-				strcpy(type, "Sound Spam");
+				if (protections["sound_spam"])
+					strcpy(type, "Sound Spam");
 
 				break;
 			case RemoteEvents::Spectate:
-				strcpy(type, "Specate");
+				if (protections["spectate"])
+					strcpy(type, "Specate");
 				
 				break;
 			case RemoteEvents::Teleport:
-				strcpy(type, "Force Teleport");
+				if (protections["force_teleport"])
+					strcpy(type, "Force Teleport");
 
 				break;
 			case RemoteEvents::TransactionError:
-				strcpy(type, "Transaction Error");
+				if (protections["transaction_error"])
+					strcpy(type, "Transaction Error");
 
 				break;
 			case RemoteEvents::VehicleKick:
-				strcpy(type, "Vehicle Kick");
+				if (protections["vehicle_kick"])
+					strcpy(type, "Vehicle Kick");
 
 				break;
 			}
 
-			for (int64_t kick_hash : kick_hashes)
-				if (hash == kick_hash)
-					strcpy(type, "General Kick");
+			if (protections["kick"])
+			{
+				for (int64_t kick_hash : kick_hashes)
+				{
+					if (hash == kick_hash)
+					{
+						sprintf(type, "General Kick (%" PRId64 ")", hash);
+
+						break;
+					}
+				}
+			}
 
 			if (strlen(type) != 0)
 			{
