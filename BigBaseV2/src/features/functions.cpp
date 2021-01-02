@@ -66,6 +66,7 @@ namespace big::features::functions
 		protections["fake_deposit"] = toggle;
 		protections["force_mission"] = toggle;
 		protections["gta_banner"] = toggle;
+		protections["kick"] = toggle;
 		protections["personal_vehicle_destroyed"] = toggle;
 		protections["remote_off_radar"] = toggle;
 		protections["rotate_cam"] = toggle;
