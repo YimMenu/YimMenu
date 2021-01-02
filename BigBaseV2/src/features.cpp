@@ -12,6 +12,7 @@ namespace big
 		update_player_structs();
 		update_screen_sizes();
 
+		disable_phone();
 		god_mode();
 		never_wanted();
 		no_bike_fall();
