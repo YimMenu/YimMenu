@@ -18,6 +18,7 @@ namespace big
 			tabbar::render_online();
 			tabbar::render_misc();
 			tabbar::render_spawn();
+			tabbar::render_settings();
 			ImGui::EndTabBar();
 		}
 		ImGui::End();

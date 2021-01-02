@@ -21,6 +21,7 @@ namespace big
 		static void render_online();
 		static void render_misc();
 		static void render_spawn();
+		static void render_settings();
 	};
 
 }
