@@ -11,6 +11,9 @@ namespace big
 			if (ImGui::Checkbox("No Idle Kick", g_settings.options["no_idle_kick"].get<bool*>()))
 				g_settings.save();
 
+			if (ImGui::Checkbox("Disable Phone Calls", g_settings.options["disable_phone"].get<bool*>()))
+				g_settings.save();
+
 			ImGui::EndTabItem();
 		}
 	}
