@@ -8,10 +8,10 @@ namespace big
 	bool hooks::get_event_data(int32_t eventGroup, int32_t eventIndex, int64_t* args, uint32_t argCount)
 	{		
 		bool result = g_hooking->m_get_event_data.get_original<decltype(&hooks::get_event_data)>()(eventGroup, eventIndex, args, argCount);
+		Player player = (Player)args[1];
 
-		if (result)
+		if (result && player < 32)
 		{
-			Player player = (Player)args[1];
 			auto hash = args[0];
 
 			char type[32] = "";
@@ -61,7 +61,8 @@ namespace big
 
 				break;
 			case RemoteEvents::RotateCam:
-				strcpy(type, "Rotate Cam");
+				//strcpy(type, "Rotate Cam");
+				return false;
 
 				break;
 			case RemoteEvents::SendToCutscene:
