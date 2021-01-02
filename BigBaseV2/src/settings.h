@@ -31,7 +31,30 @@ namespace big
 			"spoof_rank": false,
 			"sticky_tyres": false,
 			"super_sprint": false,
-			"vehicle_density": 1.0
+			"vehicle_density": 1.0,
+			"settings": {
+				"protections": {
+					"bounty": false,
+					"ceo_ban": false,
+					"ceo_kick": false,
+					"ceo_money": false,
+					"clear_wanted_level": false,
+					"fake_deposit": false,
+					"force_mission": false,
+					"gta_banner": false,
+					"kick": false,
+					"personal_vehicle_destroyed": false,
+					"remote_off_radar": false,
+					"rotate_cam": false,
+					"send_to_cutscene": false,
+					"send_to_island": false,
+					"sound_spam": false,
+					"spectate": false,
+					"force_teleport": false,
+					"transaction_error": false,
+					"vehicle_kick": false
+				}
+			}
 		})"_json;
 
 		bool save()
