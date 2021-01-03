@@ -25,6 +25,17 @@ namespace big
 
 			ImGui::Separator();
 
+
+			if (ImGui::Button("Bounty 10k"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					features::functions::set_player_bounty(g_selectedPlayer.id);
+				}QUEUE_JOB_END_CLAUSE
+			}
+
+			ImGui::Separator();
+
 			if (ImGui::Button("Teleport to Player"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
