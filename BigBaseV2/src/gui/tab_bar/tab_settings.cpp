@@ -1,4 +1,5 @@
 #include "tab_bar.hpp"
+#include "pointers.hpp"
 
 namespace big
 {
@@ -15,6 +16,63 @@ namespace big
 
 				if (ImGui::Checkbox("Script Events", logging["script_events"].get<bool*>()))
 					g_settings.save();
+
+				ImGui::Separator();
+
+				static const uint8_t max_count = 64;
+				static char str_args[max_count][38];
+				static int arg_count = 0;
+				static Player target = 0;
+				static char* selected;
+
+				ImGui::Text("Trigger Script Event:");
+
+				ImGui::Text("Target:");
+
+				if (ImGui::BeginCombo("##player_target", selected))
+				{
+					for (int i = 0; i < 32; i++)
+					{
+						bool is_selected = (g_players[i].id == target);
+						if (g_players[i].is_online && ImGui::Selectable(g_players[i].name, is_selected))
+						{
+							selected = g_players[i].name;
+							target = g_players[i].id;
+						}
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndCombo();
+				}
+
+				ImGui::SliderInt(": Argument Count", &arg_count, 0, max_count);
+
+				for (int i = 0; i < arg_count; i++)
+				{
+					char label[16];
+
+					sprintf(label, ": arg #%d", i);
+
+					ImGui::InputText(label, str_args[i], sizeof(str_args[i]));
+				}
+
+				if (ImGui::Button("Send Event"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE(=)
+					{
+
+						int64_t* event_args = new int64_t[arg_count];
+
+						for (int i = 0; i < arg_count; i++)
+						{
+							event_args[i] = strtoll(str_args[i], NULL, 10);
+
+							script::get_current()->yield();
+						}
+
+						g_pointers->m_trigger_script_event(true, event_args, arg_count, 1 << target);
+					}QUEUE_JOB_END_CLAUSE
+				}
 
 				ImGui::TreePop();
 			}
