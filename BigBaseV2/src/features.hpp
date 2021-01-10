@@ -6,6 +6,7 @@
 #include "structs/temp.hpp"
 #include "features/functions.hpp"
 #include "features/notify.hpp"
+#include "features/rid_joiner.hpp"
 #include "features/stats.hpp"
 #include "features/teleport.hpp"
 
@@ -31,7 +32,7 @@ namespace big
 
 		void disable_phone();
 		void god_mode();
-		void join_message(Player player);
+		void join_message();
 		void never_wanted();
 		void no_bike_fall();
 		void no_idle_kick();

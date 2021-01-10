@@ -12,8 +12,11 @@ namespace big
 		update_player_structs();
 		update_screen_sizes();
 
+		g_rid_joiner.look_for_session();
+
 		disable_phone();
 		god_mode();
+		join_message();
 		never_wanted();
 		no_bike_fall();
 		no_idle_kick();

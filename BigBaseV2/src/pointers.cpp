@@ -113,11 +113,6 @@ namespace big
 			m_spectate_player = ptr.as<decltype(m_spectate_player)>();
 		});
 
-		main_batch.add("Censor Chat", "E8 ? ? ? ? 83 F8 FF 75 B9", [this](memory::handle ptr)
-		{
-			m_censor_chat = ptr.as<decltype(m_censor_chat)>();
-		});
-
 		main_batch.add("Get Net player", "48 83 EC 28 33 C0 38 05 ? ? ? ? 74 0A", [this](memory::handle ptr)
 		{
 			m_get_net_game_player = ptr.as<decltype(m_get_net_game_player)>();
@@ -126,6 +121,32 @@ namespace big
 		main_batch.add("Get Event Data", "48 85 C0 74 14 4C 8B 10", [this](memory::handle ptr)
 		{
 			m_get_event_data = ptr.sub(28).as<decltype(m_get_event_data)>();
+		});
+
+		// R* Id
+		main_batch.add("Send Session Info Request", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 83 EC 30 48 83 3D ? ? ? ? ? 8B", [this](memory::handle ptr)
+		{
+			m_send_session_info_request = ptr.as<decltype(m_send_session_info_request)>();
+		});
+
+		main_batch.add("Join Player Via Session Info", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 56 41 57 48 81 EC ? ? ? ? 4C 8B F9 B1 01 49 8B F1 49 8B E8 44 8B F2 E8", [this](memory::handle ptr)
+		{
+			m_join_player_via_session_info = ptr.as<decltype(m_join_player_via_session_info)>();
+		});
+
+		main_batch.add("Rockstar Info", "48 8D 05 ? ? ? ? 4D 69 C0 ? ? ? ? 4C 03 C0 41 83 B8 ? ? ? ? ? 0F 86 ? ? ? ? 83 CD FF 48 8D 15", [this](memory::handle ptr)
+		{
+			m_rs_info = ptr.as<decltype(m_rs_info)>();
+		});
+
+		main_batch.add("Get Session Info From GS", "48 8B C4 48 89 58 08 48 89 68 10 56 57 41 56 48 81 EC ? ? ? ? 48 8B F2 33 D2 49 8B F8 4C 8B F1 44 8D 42", [this](memory::handle ptr)
+		{
+			m_get_session_info_from_gs = ptr.as<decltype(m_get_session_info_from_gs)>();
+		});
+
+		main_batch.add("Read Session Response Hook", "48 8B C4 48 89 58 08 48 89 70 10 48 89 78 18 55 41 54 41 56 48 8D 68 D8 48 81 EC ? ? ? ? 45 33 F6 48 8B F9 45", [this](memory::handle ptr)
+		{
+			m_read_session_response = ptr.as<decltype(m_read_session_response)>();
 		});
 			
 		main_batch.run(memory::module(nullptr));

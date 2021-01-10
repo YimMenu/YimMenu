@@ -2,6 +2,7 @@
 #include "common.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/natives.hpp"
+#include "features/rid_joiner.hpp"
 
 namespace big::functions
 {
@@ -9,7 +10,6 @@ namespace big::functions
 	using get_native_handler_t = rage::scrNativeHandler(*)(rage::scrNativeRegistrationTable*, rage::scrNativeHash);
 	using fix_vectors_t = void(*)(rage::scrNativeCallContext*);
 
-	using censor_chat = int(int64_t chat_menu, const char* user_text, const char** output_text);
 	using error_screen = void(char* entryHeader, char* entryLine1, int instructionalKey, char* entryLine2, BOOL p4, Any p5, Any* p6, Any* p7, BOOL background);
 	using increment_stat_event = bool(uint64_t net_event_struct, int64_t sender, int64_t a3);
 	using get_event_data = bool(int32_t eventGroup, int32_t eventIndex, int64_t* args, uint32_t argCount);
@@ -20,4 +20,10 @@ namespace big::functions
 	using spectate_player = bool(bool toggle, Ped player);
 	using sync_local_time = void(int h, int m);
 	using trigger_script_event = int(bool unk0, int64_t* args, int argCount, int bitFlags);
+
+	// R* Joiner
+	using get_session_info_from_gs = bool(gs_session* session, const char* gs, int a3, int a4);
+	using join_player_via_session_info = void(net_msg_identifier* identifier, gs_session* session_info, int flag);
+	using read_session_response = bool(uint64_t rcx);
+	using send_session_info_request = void(rockstar_identifier* target, int count);
 }

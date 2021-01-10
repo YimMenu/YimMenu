@@ -3,20 +3,26 @@
 
 namespace big
 {
-	void features::join_message(Player player)
+	void features::join_message()
 	{
-		if (player == g_playerId) return;
-
 		bool bJoinMessage = g_settings.options["join_message"].get<bool>();
 
 		if (bJoinMessage)
 		{
-			char joinMsg[64];
-			strcpy(joinMsg, "<C>");
-			strcat(joinMsg, g_pointers->m_get_player_name(player));
-			strcat(joinMsg, "</C> is joining.");
+			for (uint8_t i = 0; i < 32; i++)
+			{
+				if (i == g_playerId) continue;
 
-			features::notify::above_map(joinMsg);
+				if (ENTITY::DOES_ENTITY_EXIST(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i)) && !NETWORK::NETWORK_IS_PLAYER_CONNECTED(i))
+				{
+					char joinMsg[64];
+					strcpy(joinMsg, "<C>");
+					strcat(joinMsg, g_pointers->m_get_player_name(i));
+					strcat(joinMsg, "</C> is joining.");
+
+					features::notify::above_map(joinMsg);
+				}
+			}
 		}
 	}
 }
