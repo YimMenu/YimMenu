@@ -16,7 +16,10 @@ namespace big
 			"disable_phone": false,
 			"disable_chat_censoring": false,
 			"god_mode": false,
-			"gravity_gun": true,
+			"gravity_gun": {
+				"enabled": false,
+				"multiplier": 3.0
+			},
 			"join_message": false,
 			"never_wanted": false,
 			"noclip": {

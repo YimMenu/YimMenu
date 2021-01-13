@@ -7,26 +7,30 @@ namespace big
 	static Vector3 other;
 	static double dist;
 
-	static const float multiplier = 3;
 	static const int scroll = 2;
 	static const int controls[] = { 14, 15, 24 };
 
 	void features::gravity_gun()
 	{
-		bool bGravityGun = g_settings.options["gravity_gun"];
+		bool bGravityGun = g_settings.options["gravity_gun"]["enabled"];
+		double multiplier = g_settings.options["gravity_gun"]["multiplier"];
 
-		if (bGravityGun)
+		Hash currWeapon;
+		WEAPON::GET_CURRENT_PED_WEAPON(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), &currWeapon, 1);
+
+		if (bGravityGun && currWeapon == RAGE_JOAAT("weapon_pistol"))
 		{
 			// ZOOMED IN
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 25))
 			{
+				PLAYER::DISABLE_PLAYER_FIRING(g_playerId, true);
 				for (int control : controls)
 					PAD::DISABLE_CONTROL_ACTION(0, control, true);
 
 				location = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), true);
 
 				// Attack RELEASED
-				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, 24))
+				if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, 24))
 				{
 					if (functions::raycast_entity(&entity))
 					{
@@ -35,7 +39,7 @@ namespace big
 
 						if (dist > 50)
 						{
-							entity = -1;
+							entity = 0;
 
 							notify::above_map("Entity is too far.");
 						}
@@ -48,7 +52,7 @@ namespace big
 					}
 					else
 					{
-						entity = -1;
+						entity = 0;
 
 						features::notify::above_map("No entity found.");
 					}
@@ -56,7 +60,6 @@ namespace big
 
 				if (ENTITY::DOES_ENTITY_EXIST(entity))
 				{
-					// Scroll Away
 					if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 14))
 						dist -= 5;
 					if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 15))
@@ -69,7 +72,7 @@ namespace big
 					other = ENTITY::GET_ENTITY_COORDS(entity, true);
 
 					Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
-					float pitch = functions::deg_to_rad(rot.x - 0); // vertical
+					float pitch = functions::deg_to_rad(rot.x); // vertical
 					// float roll = rot.y;
 					float yaw = functions::deg_to_rad(rot.z + 90); // horizontal
 
@@ -97,76 +100,5 @@ namespace big
 	{
 		double radian = (3.14159265359 / 180) * deg;
 		return (float)radian;
-	}
-
-	Vector3 rotation_to_direction(Vector3 rotation)
-	{
-		float x = deg_to_rad(rotation.x);
-		float z = deg_to_rad(rotation.z);
-
-		float num = abs(cos(x));
-
-		return Vector3
-		{
-			-sin(z) * num,
-			cos(z) * num,
-			sin(x)
-		};
-	}
-
-	Vector3 screen_to_world(Vector3 position, Vector3 rotation, float mouseX, float mouseY, Vector3 &out)
-	{
-		Vector3 direction = rotation_to_direction(rotation);
-
-		Vector3 rotUp = rotation;
-		Vector3 rotDown = rotation;
-		Vector3 rotLeft = rotation;
-		Vector3 rotRight = rotation;
-
-		rotUp.x += 1;
-		rotDown.x -= 1;
-		rotLeft.z -= 1;
-		rotRight.z += 1;
-
-		Vector3 camRight = rotation_to_direction(rotRight) - rotation_to_direction(rotLeft);
-		Vector3 camUp = rotation_to_direction(rotUp) - rotation_to_direction(rotDown);
-
-		float rollRad = -deg_to_rad(rotation.y);
-
-		Vector3 camRightRoll = camRight * cos(rollRad) - camUp * sin(rollRad);
-		Vector3 camUpRoll = camRight * sin(rollRad) + camUp * cos(rollRad);
-
-		Vector3 point3d = position + direction * 1.f + camRightRoll + camUpRoll;
-		float x, y;
-		if (!GRAPHICS::GET_SCREEN_COORD_FROM_WORLD_COORD(point3d.x, point3d.y, point3d.z, &x, &y))
-		{
-			out = direction;
-
-			return position + direction * 1.f;
-		}
-
-		Vector3 point3d_zero = position + direction * 1.f;
-		float x_zero, y_zero;
-		if (!GRAPHICS::GET_SCREEN_COORD_FROM_WORLD_COORD(point3d_zero.x, point3d_zero.y, point3d_zero.z, &x_zero, &y_zero))
-		{
-			out = direction;
-
-			return position + direction * 1.f;
-		}
-
-		const double eps = .001;
-		if (abs(x - x_zero) < eps || abs(y - y_zero) < eps)
-		{
-			out = direction;
-
-			return position + direction * 1.f;
-		}
-
-		float scaleX = (mouseX - x_zero) / (x - x_zero);
-		float scaleY = (mouseY - y_zero) / (y - y_zero);
-
-		Vector3 point3d_ret = position + direction * 1.f + camRightRoll * scaleX + camUpRoll * scaleY;
-		out = direction + camRightRoll * scaleX + camUpRoll * scaleY;
-		return point3d_ret;
 	}
 }

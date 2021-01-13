@@ -14,6 +14,7 @@ namespace big
 	public:
 		// Order in the order that they are rendered/sorted in the UI
 		static void render_self();
+		static void render_weapons();
 		static void render_tunables();
 		static void render_teleport();
 		static void render_vehicle();
