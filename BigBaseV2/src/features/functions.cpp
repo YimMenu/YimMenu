@@ -123,7 +123,8 @@ namespace big::features::functions
 
 	bool take_control_of_entity(Entity ent)
 	{
-		for (uint8_t i = 0; !NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) && i < 3; i++)
+		if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return true;
+		for (uint8_t i = 0; !NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) && i < 5; i++)
 		{
 			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(ent);
 
