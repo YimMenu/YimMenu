@@ -9,9 +9,10 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Spawn"))
 		{
-			ImGui::InputText("Model Name", model, sizeof(model));
-
-			if (ImGui::Button("Spawn"))
+			if (
+				ImGui::InputText("Model Name", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue) ||
+				ImGui::Button("Spawn")
+			)
 			{
 				QUEUE_JOB_BEGIN_CLAUSE(= )
 				{
@@ -19,17 +20,13 @@ namespace big
 
 					if (hash)
 					{
-						int tries = 0;
-						const int max = 100;
-						while (!STREAMING::HAS_MODEL_LOADED(hash) && tries < max)
+						for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
 						{
 							STREAMING::REQUEST_MODEL(hash);
 
-							tries++;
-
 							script::get_current()->yield();
 						}
-						if (tries >= max)
+						if (!STREAMING::HAS_MODEL_LOADED(hash))
 						{
 							features::notify::above_map("~r~Failed to spawn model, did you give an incorrect model?");
 
