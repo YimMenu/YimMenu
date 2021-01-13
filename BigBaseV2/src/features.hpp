@@ -32,8 +32,9 @@ namespace big
 
 		void disable_phone();
 		void god_mode();
-		void join_message();
+		void gravity_gun();
 		void never_wanted();
+		void noclip();
 		void no_bike_fall();
 		void no_idle_kick();
 		void no_ragdoll();
