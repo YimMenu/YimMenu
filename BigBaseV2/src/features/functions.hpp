@@ -12,4 +12,11 @@ namespace big::features::functions
 	void set_player_level(int level);
 	void spoof_rank(int rank);
 	void toggle_protections(bool toggle);
+
+	bool take_control_of_entity(Entity ent);
+
+	BOOL raycast_entity(Entity* ent);
+	float deg_to_rad(float deg);
+	Vector3 rotation_to_direction(Vector3 rotation);
+	double distance_between_vectors(Vector3 a, Vector3 b);
 }

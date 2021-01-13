@@ -120,4 +120,67 @@ namespace big::features::functions
 
 		g_settings.save();
 	}
+
+	bool take_control_of_entity(Entity ent)
+	{
+		for (uint8_t i = 0; !NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) && i < 3; i++)
+		{
+			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(ent);
+
+			script::get_current()->yield();
+		}
+		if (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return false;
+
+		int netHandle = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent);
+		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, true);
+
+		return true;
+	}
+
+	BOOL raycast_entity(Entity* ent)
+	{
+		BOOL hit;
+		Vector3 endCoords;
+		Vector3 surfaceNormal;
+
+		Vector3 camCoords = CAM::GET_GAMEPLAY_CAM_COORD();
+		Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
+		Vector3 dir = rotation_to_direction(rot);
+		Vector3 farCoords;
+
+		farCoords.x = camCoords.x + dir.x * 1000;
+		farCoords.y = camCoords.y + dir.y * 1000;
+		farCoords.z = camCoords.z + dir.z * 1000;
+
+		int ray = SHAPETEST::_START_SHAPE_TEST_RAY(camCoords.x, camCoords.y, camCoords.z, farCoords.x, farCoords.y, farCoords.z, -1, 0, 7);
+		SHAPETEST::GET_SHAPE_TEST_RESULT(ray, &hit, &endCoords, &surfaceNormal, ent);
+
+		return hit;
+	}
+
+	float deg_to_rad(float deg)
+	{
+		double radian = (3.14159265359 / 180) * deg;
+		return (float)radian;
+	}
+
+	Vector3 rotation_to_direction(Vector3 rotation)
+	{
+		float x = deg_to_rad(rotation.x);
+		float z = deg_to_rad(rotation.z);
+
+		float num = abs(cos(x));
+
+		return Vector3
+		{
+			-sin(z) * num,
+			cos(z) * num,
+			sin(x)
+		};
+	}
+
+	double distance_between_vectors(Vector3 a, Vector3 b)
+	{
+		return sqrt(pow((a.x - b.x), 2) + pow((a.y - b.y), 2) + pow((a.z - b.z), 2));
+	}
 }
