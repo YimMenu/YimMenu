@@ -8,13 +8,47 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Weapons"))
 		{
-			if (ImGui::TreeNode("Gravity Gun"))
+			if (ImGui::TreeNode("Custom Weapons"))
 			{
-				if (ImGui::Checkbox("Gravity Gun", g_settings.options["gravity_gun"]["enabled"].get<bool*>()))
-					g_settings.save();
+				uint8_t selected = g_settings.options["custom_gun"]["type"];
 
-				if (ImGui::SliderScalar("Multiplier", ImGuiDataType_Double, g_settings.options["gravity_gun"]["multiplier"].get<double*>(), &min, &max))
-					g_settings.save();
+				if (ImGui::BeginCombo("Weapon", custom_guns[selected].name))
+				{
+					for (custom_gun gun : custom_guns)
+					{
+						if (ImGui::Selectable(gun.name, gun.id == selected))
+						{
+							g_settings.options["custom_gun"]["type"] = gun.id;
+
+							g_settings.save();
+						}
+
+						if (gun.id == selected)
+							ImGui::SetItemDefaultFocus();
+					}
+
+					ImGui::EndCombo();
+				}
+
+				switch (selected)
+				{
+				case 0:
+					ImGui::Text("No custom weapon selected.");
+
+					break;
+
+				case 2:
+					if (ImGui::SliderScalar("Multiplier", ImGuiDataType_Double, g_settings.options["custom_gun"]["gravity_velocity_multiplier"].get<double*>(), &min, &max))
+						g_settings.save();
+
+					break;
+				case 3:
+					ImGui::Text("Set the vehicle model to spawn.");
+
+					
+
+					break;
+				}
 
 				ImGui::TreePop();
 			}
