@@ -6,6 +6,8 @@ namespace big
 	static const float speed = 20.f;
 	static const float headingSpeed = 3.f;
 
+	static bool bLastNoClip;
+
 	void features::noclip()
 	{
 		bool bNoclip = g_settings.options["noclip"]["enabled"];
@@ -18,6 +20,11 @@ namespace big
 
 		if (bNoclip)
 		{
+			functions::take_control_of_entity(ent);
+
+			if (bNoclip != bLastNoClip)
+				ENTITY::SET_ENTITY_COLLISION(ent, false, false);
+
 			for (int control : controls)
 				PAD::DISABLE_CONTROL_ACTION(0, control, true);
 
@@ -58,6 +65,13 @@ namespace big
 
 			ENTITY::SET_ENTITY_VELOCITY(ent, vel.x * fHorizontal, vel.y * fHorizontal, vel.z * fVertical);
 		}
-		ENTITY::SET_ENTITY_COLLISION(ent, !bNoclip, !bNoclip);
+		else if (!bNoclip && bNoclip != bLastNoClip)
+		{
+			functions::take_control_of_entity(ent);
+		
+			ENTITY::SET_ENTITY_COLLISION(ent, true, true);
+		}
+
+		bLastNoClip = bNoclip;
 	}
 }
