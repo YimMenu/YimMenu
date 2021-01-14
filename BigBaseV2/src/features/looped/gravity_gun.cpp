@@ -2,7 +2,7 @@
 
 namespace big
 {
-	static Entity entity = -1;
+	static Entity entity = 0;
 	static Vector3 location;
 	static Vector3 other;
 	static double dist;
@@ -12,14 +12,16 @@ namespace big
 
 	void features::gravity_gun()
 	{
-		bool bGravityGun = g_settings.options["gravity_gun"]["enabled"];
-		double multiplier = g_settings.options["gravity_gun"]["multiplier"];
+		bool bGravityGun = g_settings.options["custom_gun"]["type"] == 2;
+		double multiplier = g_settings.options["custom_gun"]["gravity_velocity_multiplier"];
 
-		Hash currWeapon;
-		WEAPON::GET_CURRENT_PED_WEAPON(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), &currWeapon, 1);
-
-		if (bGravityGun && currWeapon == RAGE_JOAAT("weapon_pistol"))
+		if (bGravityGun)
 		{
+			Hash currWeapon;
+			WEAPON::GET_CURRENT_PED_WEAPON(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), &currWeapon, 1);
+
+			if (currWeapon != RAGE_JOAAT("weapon_pistol") && currWeapon != RAGE_JOAAT("weapon_pistol_mk2")) return;
+
 			// ZOOMED IN
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 25))
 			{
@@ -30,24 +32,33 @@ namespace big
 				location = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), true);
 
 				// Attack RELEASED
-				if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, 24))
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 24) && entity == 0)
 				{
 					if (functions::raycast_entity(&entity))
 					{
-						other = ENTITY::GET_ENTITY_COORDS(entity, true);
-						dist = functions::distance_between_vectors(location, other);
-
-						if (dist > 50)
+						if (ENTITY::IS_ENTITY_A_PED(entity) && PED::IS_PED_A_PLAYER(entity))
 						{
 							entity = 0;
 
-							notify::above_map("Entity is too far.");
+							notify::above_map("You can't move player entities!");
 						}
 						else
 						{
-							functions::take_control_of_entity(entity);
+							other = ENTITY::GET_ENTITY_COORDS(entity, true);
+							dist = functions::distance_between_vectors(location, other);
 
-							features::notify::above_map("Selected entity at crosshair.");
+							if (dist > 50)
+							{
+								entity = 0;
+
+								notify::above_map("Entity is too far.");
+							}
+							else
+							{
+								functions::take_control_of_entity(entity);
+
+								features::notify::above_map("Selected entity at crosshair.");
+							}
 						}
 					}
 					else
@@ -85,11 +96,11 @@ namespace big
 					ENTITY::SET_ENTITY_VELOCITY(entity, (zRot.x - other.x) * multiplier, (zRot.y - other.y) * multiplier, (zRot.z - other.z) * multiplier);
 				}
 			}
-			else if (entity != -1)
+			else if (entity != 0)
 			{
 				ENTITY::SET_ENTITY_COLLISION(entity, true, true);
 
-				entity = -1;
+				entity = 0;
 
 				features::notify::above_map("Released entity.");
 			}
