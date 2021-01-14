@@ -12,8 +12,7 @@ namespace big
 		update_player_structs();
 		update_screen_sizes();
 
-		g_rid_joiner.look_for_session();
-
+		delete_gun();
 		disable_phone();
 		god_mode();
 		gravity_gun();
@@ -30,6 +29,7 @@ namespace big
 		spoof_rank();
 		sticky_tyres();
 		super_sprint();
+		vehicle_gun();
 	}
 
 	void features::script_func()

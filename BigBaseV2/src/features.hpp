@@ -6,7 +6,6 @@
 #include "structs/temp.hpp"
 #include "features/functions.hpp"
 #include "features/notify.hpp"
-#include "features/rid_joiner.hpp"
 #include "features/stats.hpp"
 #include "features/teleport.hpp"
 
@@ -30,6 +29,7 @@ namespace big
 		void run_tick();
 		void script_func();
 
+		void delete_gun();
 		void disable_phone();
 		void god_mode();
 		void gravity_gun();
@@ -46,6 +46,7 @@ namespace big
 		void spoof_rank();
 		void sticky_tyres();
 		void super_sprint();
+		void vehicle_gun();
 
 		void update_screen_sizes();
 		void update_player_structs();
