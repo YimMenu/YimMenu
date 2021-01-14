@@ -15,15 +15,6 @@ namespace big
 		
 		if (bSuperSprint)
 		{
-			Vector3 vel = ENTITY::GET_ENTITY_VELOCITY(player);
-
-			LOG(INFO) << vel.x << " " << vel.y << ", " << vel.z;
-
-			ENTITY::SET_ENTITY_VELOCITY(player, vel.x * 2, vel.y * 2, vel.z);
-		}
-		/*
-		if (bSuperSprint)
-		{
 			float height = ENTITY::GET_ENTITY_HEIGHT_ABOVE_GROUND(player);
 
 			bool flying = height > 5;
@@ -57,7 +48,7 @@ namespace big
 		else if (!bSuperSprint && bSuperSprint != bLastSuperSprint)
 		{
 			PLAYER::SET_RUN_SPRINT_MULTIPLIER_FOR_PLAYER(g_playerId, 1.0);
-		}*/
+		}
 
 		bLastSuperSprint = bSuperSprint;
 	}
