@@ -13,6 +13,8 @@ namespace big::features::functions
 	void spoof_rank(int rank);
 	void toggle_protections(bool toggle);
 
+	Entity spawn_vehicle(const char* model, Vector3 location, float heading);
+
 	bool take_control_of_entity(Entity ent);
 
 	BOOL raycast_entity(Entity* ent);
