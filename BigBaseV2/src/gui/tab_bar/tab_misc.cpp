@@ -1,5 +1,4 @@
 #include "tab_bar.hpp"
-#include "features/rid_joiner.hpp"
 
 namespace big
 {
@@ -7,14 +6,6 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Misc"))
 		{
-			if (ImGui::Button("Join R* Id"))
-			{
-				QUEUE_JOB_BEGIN_CLAUSE()
-				{
-					g_rid_joiner.join_player(143069134);
-				}QUEUE_JOB_END_CLAUSE
-			}
-
 			ImGui::Text("Set Current Character Level:");
 			ImGui::SliderInt("##input_levels_self", &g_temp.set_level, 0, 8000);
 			if (ImGui::Button("Set Level"))
