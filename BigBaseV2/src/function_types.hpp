@@ -2,7 +2,6 @@
 #include "common.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/natives.hpp"
-#include "features/rid_joiner.hpp"
 
 namespace big::functions
 {
@@ -20,10 +19,4 @@ namespace big::functions
 	using spectate_player = bool(bool toggle, Ped player);
 	using sync_local_time = void(int h, int m);
 	using trigger_script_event = int(bool unk0, int64_t* args, int argCount, int bitFlags);
-
-	// R* Joiner
-	using get_session_info_from_gs = bool(gs_session* session, const char* gs, int a3, int a4);
-	using join_player_via_session_info = void(net_msg_identifier* identifier, gs_session* session_info, int flag);
-	using read_session_response = bool(uint64_t rcx);
-	using send_session_info_request = void(rockstar_identifier* target, int count);
 }

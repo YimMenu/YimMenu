@@ -3,7 +3,6 @@
 #include "gta/fwddec.hpp"
 #include "gta/enums.hpp"
 #include "function_types.hpp"
-#include "features/rid_joiner.hpp"
 
 namespace big
 {
@@ -46,12 +45,6 @@ namespace big
 		functions::spectate_player* m_spectate_player{};
 		functions::sync_local_time* m_sync_local_time{};
 		functions::trigger_script_event* m_trigger_script_event{};
-
-		rs_info *m_rs_info{};
-		functions::get_session_info_from_gs* m_get_session_info_from_gs{};
-		functions::join_player_via_session_info* m_join_player_via_session_info{};
-		functions::read_session_response* m_read_session_response{};
-		functions::send_session_info_request* m_send_session_info_request{};
 	};
 
 	inline pointers *g_pointers{};
