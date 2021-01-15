@@ -29,10 +29,15 @@ namespace big
 		void run_tick();
 		void script_func();
 
+		void delete_gun();
+		void gravity_gun();
+		void money_gun();
+		void vehicle_gun();
+
 		void disable_phone();
 		void god_mode();
-		void join_message(Player player);
 		void never_wanted();
+		void noclip();
 		void no_bike_fall();
 		void no_idle_kick();
 		void no_ragdoll();

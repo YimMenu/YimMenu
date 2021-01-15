@@ -22,7 +22,6 @@ namespace big
 		static BOOL set_cursor_pos(int x, int y);
 
 		// New Hook Definitions
-		static int censor_chat(int64_t chat_menu, const char* user_text, const char** output_text);
 		static bool get_event_data(int32_t eventGroup, int32_t eventIndex, int64_t* args, uint32_t argCount);
 		static void error_screen(char* entryHeader, char* entryLine1, int instructionalKey, char* entryLine2, BOOL p4, Any p5, Any* p6, Any* p7, BOOL background);
 		static bool increment_stat_event(uint64_t net_event_struct, int64_t sender, int64_t a3);
@@ -57,7 +56,6 @@ namespace big
 		detour_hook m_convert_thread_to_fiber_hook;
 
 		// New Detour Hook Definitions
-		detour_hook m_censor_chat;
 		detour_hook m_get_event_data;
 		detour_hook m_error_screen_hook;
 		detour_hook m_increment_stat_hook;

@@ -113,11 +113,6 @@ namespace big
 			m_spectate_player = ptr.as<decltype(m_spectate_player)>();
 		});
 
-		main_batch.add("Censor Chat", "E8 ? ? ? ? 83 F8 FF 75 B9", [this](memory::handle ptr)
-		{
-			m_censor_chat = ptr.as<decltype(m_censor_chat)>();
-		});
-
 		main_batch.add("Get Net player", "48 83 EC 28 33 C0 38 05 ? ? ? ? 74 0A", [this](memory::handle ptr)
 		{
 			m_get_net_game_player = ptr.as<decltype(m_get_net_game_player)>();
@@ -126,6 +121,11 @@ namespace big
 		main_batch.add("Get Event Data", "48 85 C0 74 14 4C 8B 10", [this](memory::handle ptr)
 		{
 			m_get_event_data = ptr.sub(28).as<decltype(m_get_event_data)>();
+		});
+
+		main_batch.add("Replay Interface", "48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D", [this](memory::handle ptr)
+		{
+			m_replay_interface = ptr.add(3).rip().as<CReplayInterface**>();
 		});
 			
 		main_batch.run(memory::module(nullptr));

@@ -12,9 +12,13 @@ namespace big
 		update_player_structs();
 		update_screen_sizes();
 
+		delete_gun();
 		disable_phone();
 		god_mode();
+		gravity_gun();
+		money_gun();
 		never_wanted();
+		noclip();
 		no_bike_fall();
 		no_idle_kick();
 		no_ragdoll();
@@ -26,6 +30,7 @@ namespace big
 		spoof_rank();
 		sticky_tyres();
 		super_sprint();
+		vehicle_gun();
 	}
 
 	void features::script_func()

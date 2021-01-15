@@ -39,7 +39,6 @@ namespace big
 		m_run_script_threads_hook("Script hook", g_pointers->m_run_script_threads, &hooks::run_script_threads),
 		m_convert_thread_to_fiber_hook("ConvertThreadToFiber", memory::module("kernel32.dll").get_export("ConvertThreadToFiber").as<void*>(), &hooks::convert_thread_to_fiber),
 
-		m_censor_chat("Censor Chat", g_pointers->m_censor_chat, &hooks::censor_chat),
 		m_get_event_data("Get Event Data", g_pointers->m_get_event_data, &hooks::get_event_data),
 		m_error_screen_hook("Disable Warning/Error Screen", g_pointers->m_error_screen, &hooks::error_screen),
 		m_increment_stat_hook("Increment Stat Event", g_pointers->m_increment_stat_event, &hooks::increment_stat_event),
@@ -69,7 +68,6 @@ namespace big
 		m_convert_thread_to_fiber_hook.enable();
 
 		// New hooks enable
-		m_censor_chat.enable();
 		m_get_event_data.enable();
 		m_error_screen_hook.enable();
 		m_increment_stat_hook.enable();
@@ -90,7 +88,6 @@ namespace big
 		m_swapchain_hook.disable();
 
 		// New hooks disable
-		m_censor_chat.disable();
 		m_get_event_data.disable();
 		m_error_screen_hook.disable();
 		m_increment_stat_hook.disable();

@@ -27,6 +27,21 @@ namespace big
 
 			ImGui::Separator();
 
+			if (ImGui::TreeNode("No Clip"))
+			{
+				if (ImGui::Checkbox("No Clip", g_settings.options["noclip"]["enabled"].get<bool*>()))
+					g_settings.save();
+
+				const double min = 0.0, max = 10.0;
+				if (ImGui::SliderScalar("Horizontal Multiplier", ImGuiDataType_Double, g_settings.options["noclip"]["horizontal"].get<double*>(), &min, &max))
+					g_settings.save();
+				if (ImGui::SliderScalar("Vertical Multiplier", ImGuiDataType_Double, g_settings.options["noclip"]["vertical"].get<double*>(), &min, &max))
+					g_settings.save();
+
+				ImGui::TreePop();
+			}
+			ImGui::Separator();
+
 			if (ImGui::Checkbox("God Mode", g_settings.options["god_mode"].get<bool*>()) || ImGui::Checkbox("No Ragdoll", g_settings.options["ragdoll"].get<bool*>()))
 				g_settings.save();
 

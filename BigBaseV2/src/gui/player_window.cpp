@@ -155,8 +155,15 @@ namespace big
 				{
 					Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id), true);
 
-					OBJECT::CREATE_AMBIENT_PICKUP(0x1E9A99F8, coords.x, coords.y, coords.z + 0.5f, 0, rand() % 500 + 2000, (Hash)-1666779307, false, true);
-					STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED((Hash)-1666779307);
+					features::functions::create_ambient_money(coords, rand() % 500 + 2000);
+				}QUEUE_JOB_END_CLAUSE
+			}
+
+			if (ImGui::Button("Cage"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					features::functions::cage_ped(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id));
 				}QUEUE_JOB_END_CLAUSE
 			}
 

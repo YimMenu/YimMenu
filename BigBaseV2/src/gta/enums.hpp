@@ -1687,6 +1687,17 @@ enum PedBones : std::uint32_t
 	FB_Tongue_001 = 0xB987
 };
 
+enum FreemodePlayerEvents : int64_t
+{
+	PlayerJoined = 1120313136, //args 2 JOINED = 1289518925
+	PlayerPaused = 2383153667,
+	PlayerUnpaused = 3717680613,
+	ChatOpened = 2965958374,
+	ChatClosed = 1841943281,
+	LsCustomsEntered = 2098987581,
+	LsCustomsExit = 465570678,
+};
+
 enum RemoteEvents : int64_t
 {
 	Bounty = -116602735,

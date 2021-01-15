@@ -19,6 +19,7 @@ namespace big
 
 		CPedFactory **m_ped_factory{};
 		CNetworkPlayerMgr **m_network_player_mgr{};
+		CReplayInterface **m_replay_interface{};
 
 		rage::scrNativeRegistrationTable *m_native_registration_table{};
 		functions::get_native_handler_t m_get_native_handler{};
@@ -35,7 +36,6 @@ namespace big
 
 		PVOID m_model_spawn_bypass;
 
-		functions::censor_chat* m_censor_chat{};
 		functions::error_screen* m_error_screen{};
 		functions::get_event_data* m_get_event_data{};
 		functions::get_player_name* m_get_player_name{};

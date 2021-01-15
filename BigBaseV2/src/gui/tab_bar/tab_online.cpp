@@ -46,25 +46,7 @@ namespace big
 
 			if (ImGui::TreeNode("Money"))
 			{
-				ImGui::Text("Instructions:\n\nTake a vehicle from the street.\nGo in LSC and put a tracker on it.\nOpen the sell submenu but don't confirm it.\nOpen this menu and click one of the below buttons.");
-
-				if (ImGui::Button("Set Car Sell Value at 25 million"))
-				{
-					features::functions::set_car_sell_value((int)25e6);
-				}
-
-				if (ImGui::Button("Set Car Sell Value at INT_MAX (2.1 billion)"))
-				{
-					features::functions::set_car_sell_value(INT_MAX);
-				}
-
-				if (ImGui::Button("Reset Vehicle Sell Stats"))
-				{
-					QUEUE_JOB_BEGIN_CLAUSE()
-					{
-						features::functions::reset_vehicle_sell_stats();
-					}QUEUE_JOB_END_CLAUSE
-				}
+				ImGui::Text("Removed because is has been detected...");
 
 				ImGui::TreePop();
 			}
