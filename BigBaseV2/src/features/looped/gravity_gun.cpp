@@ -87,13 +87,13 @@ namespace big
 					// float roll = rot.y;
 					float yaw = functions::deg_to_rad(rot.z + 90); // horizontal
 
-					Vector3 zRot;
+					Vector3 velocity;
 
-					zRot.x = location.x + (dist * cos(pitch) * cos(yaw));
-					zRot.y = location.y + (dist * sin(yaw) * cos(pitch));
-					zRot.z = location.z + (dist * sin(pitch));
+					velocity.x = location.x + (dist * cos(pitch) * cos(yaw)) - other.x;
+					velocity.y = location.y + (dist * sin(yaw) * cos(pitch)) - other.y;
+					velocity.z = location.z + (dist * sin(pitch)) - other.z;
 
-					ENTITY::SET_ENTITY_VELOCITY(entity, (zRot.x - other.x) * multiplier, (zRot.y - other.y) * multiplier, (zRot.z - other.z) * multiplier);
+					ENTITY::SET_ENTITY_VELOCITY(entity, velocity.x * multiplier, velocity.y * multiplier, velocity.z * multiplier);
 				}
 			}
 			else if (entity != 0)
