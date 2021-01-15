@@ -70,3 +70,7 @@ class CNetGamePlayer;
 class CNetworkPlayerMgr;
 class CPlayerInfo;
 class CNetworkObjectMgr;
+
+class CReplayInterface;
+class CObjectInterface;
+class CVehicleInterface;
