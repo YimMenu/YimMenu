@@ -159,6 +159,14 @@ namespace big
 				}QUEUE_JOB_END_CLAUSE
 			}
 
+			if (ImGui::Button("Cage"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					features::functions::cage_ped(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id));
+				}QUEUE_JOB_END_CLAUSE
+			}
+
 			ImGui::End();
 		}
 	}
