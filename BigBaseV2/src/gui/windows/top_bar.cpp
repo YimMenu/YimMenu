@@ -16,11 +16,11 @@ namespace big
 			{
 				if (strlen(player_name) == 0)
 					QUEUE_JOB_BEGIN_CLAUSE(&)
-					{
-						player_name = (char*)PLAYER::GET_PLAYER_NAME(g_playerId);
-					}QUEUE_JOB_END_CLAUSE
+				{
+					player_name = (char*)PLAYER::GET_PLAYER_NAME(g_playerId);
+				}QUEUE_JOB_END_CLAUSE
 
-				ImGui::MenuItem("Logged in as:", NULL, false, false);
+					ImGui::MenuItem("Logged in as:", NULL, false, false);
 				ImGui::MenuItem(player_name, NULL, false, false);
 
 				if (ImGui::MenuItem("Am I lobby host?"))
@@ -68,7 +68,7 @@ namespace big
 				{
 					if (ImGui::MenuItem(sessions[i].descr))
 					{
-						QUEUE_JOB_BEGIN_CLAUSE(=)
+						QUEUE_JOB_BEGIN_CLAUSE(= )
 						{
 							features::functions::join_session_type(sessions[i]);
 						}QUEUE_JOB_END_CLAUSE
