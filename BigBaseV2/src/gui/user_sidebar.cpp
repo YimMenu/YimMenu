@@ -1,10 +1,9 @@
-#include "imgui.h"
-#include "gui.hpp"
+#include "window.hpp"
 #include "features.hpp"
 
 namespace big
 {
-	void gui::render_user_sidebar()
+	void window::render_user_sidebar()
 	{
 		ImGui::SetNextWindowSize({ 350.f, (float)y }, ImGuiCond_Always);
 		ImGui::SetNextWindowPos({ x - 350.f, 0.f }, ImGuiCond_Always);

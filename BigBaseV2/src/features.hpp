@@ -43,7 +43,6 @@ namespace big
 		void no_ragdoll();
 		void off_radar();
 		void population_modifiers();
-		void reveal_players();
 		void spectate_player();
 		void speedo_meter();
 		void spoof_rank();

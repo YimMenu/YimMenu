@@ -9,28 +9,40 @@ namespace big
 	{
 		g_playerId = PLAYER::PLAYER_ID();
 
+		// System
 		update_player_structs();
 		update_screen_sizes();
 
+		// Custom Guns
 		delete_gun();
-		disable_phone();
-		god_mode();
 		gravity_gun();
 		money_gun();
+		vehicle_gun();
+
+		// Tunable
+		disable_phone();
+		no_idle_kick();
+
+		// Self
+		god_mode();
 		never_wanted();
 		noclip();
-		no_bike_fall();
-		no_idle_kick();
 		no_ragdoll();
 		off_radar();
-		population_modifiers();
-		reveal_players();
-		spectate_player();
-		speedo_meter();
-		spoof_rank();
-		sticky_tyres();
 		super_sprint();
-		vehicle_gun();
+		spoof_rank();
+
+		// Vehicle
+		no_bike_fall();
+		speedo_meter();
+		sticky_tyres();
+
+		// World
+		population_modifiers();
+
+		// Util
+		spectate_player();
+
 	}
 
 	void features::script_func()

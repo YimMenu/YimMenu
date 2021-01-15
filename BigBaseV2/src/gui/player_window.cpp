@@ -1,11 +1,10 @@
-#include "gui.hpp"
-#include "imgui.h"
+#include "window.hpp"
 #include "features.hpp"
 #include "pointers.hpp"
 
 namespace big
 {
-	void gui::render_player_window()
+	void window::render_player_window()
 	{
 		if (g_selectedPlayer.id != g_selectedPlayerId || !g_selectedPlayer.is_online) return;
 

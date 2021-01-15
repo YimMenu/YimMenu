@@ -1,6 +1,4 @@
-#include "common.hpp"
-#include "gui.hpp"
-#include "imgui.h"
+#include "window.hpp"
 #include "features.hpp"
 #include "natives.hpp"
 #include "script.hpp"
@@ -10,7 +8,7 @@ namespace big
 {
 	static char* player_name = "";
 
-	void gui::render_top_bar()
+	void window::render_top_bar()
 	{
 		if (ImGui::BeginMainMenuBar())
 		{
@@ -94,14 +92,6 @@ namespace big
 
 				ImGui::EndMenu();
 			}
-
-			/*if (ImGui::BeginMenu("Developer Options"))
-			{
-				ImGui::MenuItem("Scripted Game Event Logging (kick)", NULL, &g_bScriptedGameLogging);
-				ImGui::MenuItem("Event Data Logging (other events)", NULL, &g_bScriptLogging);
-
-				ImGui::EndMenu();
-			}*/
 
 			ImGui::EndMainMenuBar();
 		}

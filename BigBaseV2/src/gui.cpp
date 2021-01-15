@@ -11,6 +11,8 @@
 #include "renderer.hpp"
 #include "script.hpp"
 
+#include "gui/window.hpp"
+
 #include <imgui.h>
 
 namespace big
@@ -103,16 +105,16 @@ namespace big
 		TRY_CLAUSE
 		{
 			// gui/top_bar.cpp
-			render_top_bar();
+			window::render_top_bar();
 
 			// gui/main_window.cpp
-			render_main_window();
+			window::render_main_window();
 
 			// gui/user_sidebar.cpp
-			render_user_sidebar();
+			window::render_user_sidebar();
 
 			// gui/player_window.cpp
-			render_player_window();
+			window::render_player_window();
 		}
 		EXCEPT_CLAUSE
 	}
