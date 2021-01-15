@@ -6,7 +6,7 @@ namespace big
 
 	void features::vehicle_gun()
 	{
-		bool bVehicleGun = g_settings.options["custom_gun"]["type"] == 3;
+		bool bVehicleGun = g_settings.options["custom_gun"]["type"] == 4;
 
 		if (bVehicleGun)
 		{
@@ -25,7 +25,7 @@ namespace big
 
 				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, 24))
 				{
-					Vector3 location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player, 0.f, 10.f, 0.f);
+					Vector3 location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player, 0.f, 15.f, 0.f);
 					Vehicle veh = functions::spawn_vehicle(
 						"bus",
 						location,

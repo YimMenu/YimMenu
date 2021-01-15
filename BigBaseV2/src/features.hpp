@@ -30,9 +30,12 @@ namespace big
 		void script_func();
 
 		void delete_gun();
+		void gravity_gun();
+		void money_gun();
+		void vehicle_gun();
+
 		void disable_phone();
 		void god_mode();
-		void gravity_gun();
 		void never_wanted();
 		void noclip();
 		void no_bike_fall();
@@ -46,7 +49,6 @@ namespace big
 		void spoof_rank();
 		void sticky_tyres();
 		void super_sprint();
-		void vehicle_gun();
 
 		void update_screen_sizes();
 		void update_player_structs();

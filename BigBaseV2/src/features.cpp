@@ -16,6 +16,7 @@ namespace big
 		disable_phone();
 		god_mode();
 		gravity_gun();
+		money_gun();
 		never_wanted();
 		noclip();
 		no_bike_fall();

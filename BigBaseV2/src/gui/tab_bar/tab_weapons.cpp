@@ -42,7 +42,7 @@ namespace big
 						g_settings.save();
 
 					break;
-				case 3:
+				case 4:
 					ImGui::Text("Set the vehicle model to spawn.");
 
 					
