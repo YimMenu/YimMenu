@@ -22,8 +22,7 @@ namespace big
 		{
 			functions::take_control_of_entity(ent);
 
-			if (bNoclip != bLastNoClip)
-				ENTITY::SET_ENTITY_COLLISION(ent, false, false);
+			ENTITY::SET_ENTITY_COLLISION(ent, false, false);
 
 			for (int control : controls)
 				PAD::DISABLE_CONTROL_ACTION(0, control, true);
