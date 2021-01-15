@@ -227,4 +227,12 @@ namespace big::features::functions
 
 		return -1;
 	}
+
+	void create_ambient_money(Vector3 location, int amount)
+	{
+		Hash hash = RAGE_JOAAT("PICKUP_MONEY_PAPER_BAG");
+
+		OBJECT::CREATE_AMBIENT_PICKUP(hash, location.x, location.y, location.z + 0.5f, 0, amount, hash, false, true);
+		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+	}
 }

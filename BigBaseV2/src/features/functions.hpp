@@ -15,6 +15,8 @@ namespace big::features::functions
 
 	Entity spawn_vehicle(const char* model, Vector3 location, float heading);
 
+	void create_ambient_money(Vector3 location, int amount);
+
 	bool take_control_of_entity(Entity ent);
 
 	BOOL raycast_entity(Entity* ent);
