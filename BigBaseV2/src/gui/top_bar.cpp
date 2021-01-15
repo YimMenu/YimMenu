@@ -8,14 +8,22 @@
 
 namespace big
 {
+	static char* player_name = "";
+
 	void gui::render_top_bar()
 	{
 		if (ImGui::BeginMainMenuBar())
 		{
 			if (ImGui::BeginMenu("Info"))
 			{
+				if (strlen(player_name) == 0)
+					QUEUE_JOB_BEGIN_CLAUSE(&)
+					{
+						player_name = (char*)PLAYER::GET_PLAYER_NAME(g_playerId);
+					}QUEUE_JOB_END_CLAUSE
+
 				ImGui::MenuItem("Logged in as:", NULL, false, false);
-				ImGui::MenuItem(g_players[g_playerId].name, NULL, false, false);
+				ImGui::MenuItem(player_name, NULL, false, false);
 
 				if (ImGui::MenuItem("Am I lobby host?"))
 				{
