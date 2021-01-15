@@ -122,6 +122,11 @@ namespace big
 		{
 			m_get_event_data = ptr.sub(28).as<decltype(m_get_event_data)>();
 		});
+
+		main_batch.add("Replay Interface", "48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D", [this](memory::handle ptr)
+		{
+			m_replay_interface = ptr.add(3).rip().as<CReplayInterface**>();
+		});
 			
 		main_batch.run(memory::module(nullptr));
 
