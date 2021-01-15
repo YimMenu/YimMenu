@@ -15,7 +15,7 @@ namespace big
 				ENTITY::SET_ENTITY_INVINCIBLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), bGodMode);
 			}QUEUE_JOB_END_CLAUSE
 
-			bLastGodMode = bGodMode;
+				bLastGodMode = bGodMode;
 		}
 	}
 }

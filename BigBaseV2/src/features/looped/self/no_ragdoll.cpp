@@ -19,7 +19,7 @@ namespace big
 				PED::SET_PED_RAGDOLL_ON_COLLISION(player, !bNoRagdoll);
 			}QUEUE_JOB_END_CLAUSE
 
-			bLastNoRagdoll = bNoRagdoll;
+				bLastNoRagdoll = bNoRagdoll;
 		}
 	}
 }

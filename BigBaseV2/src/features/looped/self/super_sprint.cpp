@@ -12,7 +12,7 @@ namespace big
 		if (PED::IS_PED_IN_ANY_VEHICLE(player, true)) return;
 
 		bool bSuperSprint = g_settings.options["super_sprint"].get<bool>();
-		
+
 		if (bSuperSprint)
 		{
 			float height = ENTITY::GET_ENTITY_HEIGHT_ABOVE_GROUND(player);

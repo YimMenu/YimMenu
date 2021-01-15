@@ -67,7 +67,7 @@ namespace big
 		else if (!bNoclip && bNoclip != bLastNoClip)
 		{
 			functions::take_control_of_entity(ent);
-		
+
 			ENTITY::SET_ENTITY_COLLISION(ent, true, true);
 		}
 
