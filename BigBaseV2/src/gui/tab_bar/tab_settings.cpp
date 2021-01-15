@@ -1,4 +1,4 @@
-#include "tab_bar.hpp"
+#include "gui/tab_bar.hpp"
 #include "pointers.hpp"
 
 namespace big
