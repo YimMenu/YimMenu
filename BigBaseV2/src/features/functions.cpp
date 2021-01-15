@@ -235,4 +235,12 @@ namespace big::features::functions
 		OBJECT::CREATE_AMBIENT_PICKUP(hash, location.x, location.y, location.z + 0.5f, 0, amount, hash, false, true);
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 	}
+
+	void cage_ped(Ped ped)
+	{
+		Hash hash = RAGE_JOAAT("prop_gold_cont_01");
+
+		Vector3 location = ENTITY::GET_ENTITY_COORDS(ped, true);
+		OBJECT::CREATE_OBJECT(hash, location.x, location.y, location.z - 1.f, true, false, false);
+	}
 }
