@@ -13,8 +13,6 @@ namespace big::features::functions
 
 	void join_session_type(session_type session)
 	{
-		features::notify::above_map(session.id == -1 ? "Leaving GTA Online." : "Joining specified session.");
-
 		if (session.id == -1)
 			*script_global(1312443).at(2).as<int*>() = -1;
 		else
@@ -96,7 +94,7 @@ namespace big::features::functions
 
 	void toggle_protections(bool toggle)
 	{
-		auto &protections = g_settings.options["settings"]["protections"];
+		auto &protections = g_settings.options["settings"]["script_protections"];
 
 		protections["bounty"] = toggle;
 		protections["ceo_ban"] = toggle;
