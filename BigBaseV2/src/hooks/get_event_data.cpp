@@ -13,7 +13,7 @@ namespace big
 		if (result && player < 32)
 		{
 			auto hash = args[0];
-			auto &protections = g_settings.options["settings"]["protections"];
+			auto &protections = g_settings.options["settings"]["script_protections"];
 
 			char type[32] = "";
 
@@ -119,6 +119,8 @@ namespace big
 
 			if (protections["kick"])
 			{
+				if (hash == 1317868303 || hash == 495824472) return false;
+
 				for (int64_t kick_hash : kick_hashes)
 				{
 					if (hash == kick_hash)
