@@ -33,7 +33,7 @@ namespace big
 			}
 			if (ImGui::Button("Set Weather"))
 			{
-				QUEUE_JOB_BEGIN_CLAUSE(=)
+				QUEUE_JOB_BEGIN_CLAUSE(= )
 				{
 					MISC::SET_OVERRIDE_WEATHER(weather_types[g_temp.weather_type]);
 					MISC::SET_WEATHER_TYPE_NOW_PERSIST(weather_types[g_temp.weather_type]);

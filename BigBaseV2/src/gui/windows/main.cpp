@@ -1,5 +1,5 @@
-#include "window.hpp"
-#include "tab_bar/tab_bar.hpp"
+#include "gui/window.hpp"
+#include "gui/tab_bar.hpp"
 
 namespace big
 {

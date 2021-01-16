@@ -1,4 +1,5 @@
-#include "window.hpp"
+#include "gui/window.hpp"
+#include "gui/tab_bar.hpp"
 #include "features.hpp"
 #include "pointers.hpp"
 
@@ -8,19 +9,21 @@ namespace big
 	{
 		if (g_selectedPlayer.id != g_selectedPlayerId || !g_selectedPlayer.is_online) return;
 
-		if (ImGui::Begin("Player Options"))
+		char title[64];
+		strcpy(title, "Player Options: ");
+		strcat(title, g_selectedPlayer.name);
+		if (ImGui::Begin(title))
 		{
-			ImGui::Text("Selected player:");
-			ImGui::SameLine(); ImGui::TextColored({ 25,180,38,255 }, g_selectedPlayer.name);
-
 			if (ImGui::Button("Close"))
 			{
 				g_selectedPlayerId = -2;
 			}
 
-			ImGui::Separator();
+			ImGui::BeginTabBar("tabbar_player");
 
-			ImGui::Checkbox("Spectate Player", &g_temp.spectate_player);
+			ImGui::EndTabBar();
+
+			ImGui::Separator();
 
 			ImGui::Separator();
 

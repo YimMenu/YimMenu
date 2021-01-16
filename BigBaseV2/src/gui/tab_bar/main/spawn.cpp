@@ -12,7 +12,7 @@ namespace big
 			if (
 				ImGui::InputText("Model Name", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue) ||
 				ImGui::Button("Spawn")
-			)
+				)
 			{
 				QUEUE_JOB_BEGIN_CLAUSE(= )
 				{

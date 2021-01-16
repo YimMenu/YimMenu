@@ -1,4 +1,4 @@
-#include "window.hpp"
+#include "gui/window.hpp"
 #include "features.hpp"
 #include "natives.hpp"
 #include "script.hpp"

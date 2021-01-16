@@ -1,4 +1,4 @@
-#include "window.hpp"
+#include "gui/window.hpp"
 #include "features.hpp"
 
 namespace big

@@ -58,7 +58,7 @@ namespace big
 
 				if (ImGui::Button("Send Event"))
 				{
-					QUEUE_JOB_BEGIN_CLAUSE(=)
+					QUEUE_JOB_BEGIN_CLAUSE(= )
 					{
 
 						int64_t* event_args = new int64_t[arg_count];
@@ -81,7 +81,7 @@ namespace big
 
 			if (ImGui::TreeNode("Protections"))
 			{
-				auto &protections = g_settings.options["settings"]["protections"];
+				auto& protections = g_settings.options["settings"]["protections"];
 
 				if (
 					ImGui::Checkbox("Bounty", protections["bounty"].get<bool*>()) ||
@@ -103,7 +103,9 @@ namespace big
 					ImGui::Checkbox("Force Teleport", protections["force_teleport"].get<bool*>()) ||
 					ImGui::Checkbox("Transaction Error", protections["transaction_error"].get<bool*>()) ||
 					ImGui::Checkbox("Vehicle Kick", protections["vehicle_kick"].get<bool*>())
-				) { g_settings.save(); }
+					) {
+					g_settings.save();
+				}
 
 				if (ImGui::Button("Enable All"))
 					features::functions::toggle_protections(true);
