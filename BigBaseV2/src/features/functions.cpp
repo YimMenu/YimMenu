@@ -119,6 +119,16 @@ namespace big::features::functions
 		g_settings.save();
 	}
 
+	void delete_entity(Entity ent)
+	{
+		take_control_of_entity(ent);
+
+		ENTITY::DETACH_ENTITY(ent, 1, 1);
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, 0, 0, 0, 0, 0, 0);
+		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(ent, 0, 1);
+		ENTITY::DELETE_ENTITY(&ent);
+	}
+
 	bool take_control_of_entity(Entity ent)
 	{
 		if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return true;

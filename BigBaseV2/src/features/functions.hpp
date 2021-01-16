@@ -13,6 +13,8 @@ namespace big::features::functions
 	void spoof_rank(int rank);
 	void toggle_protections(bool toggle);
 
+	void delete_entity(Entity ent);
+
 	Entity spawn_vehicle(const char* model, Vector3 location, float heading);
 
 	void create_ambient_money(Vector3 location, int amount);
