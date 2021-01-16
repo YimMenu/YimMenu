@@ -6,7 +6,7 @@ namespace big
 	void window::render_user_sidebar()
 	{
 		ImGui::SetNextWindowSize({ 350.f, (float)y }, ImGuiCond_Always);
-		ImGui::SetNextWindowPos({ x - 350.f, 0.f }, ImGuiCond_Always);
+		ImGui::SetNextWindowPos({ x - 350.f, 28.f }, ImGuiCond_Always);
 		if (ImGui::Begin("###player_menu", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav))
 		{
 			auto vecButtonWidth = ImVec2(ImGui::GetWindowSize().x, 0.0f);
