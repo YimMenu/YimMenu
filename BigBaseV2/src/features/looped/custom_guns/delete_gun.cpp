@@ -45,10 +45,7 @@ namespace big
 							{
 								if (functions::take_control_of_entity(entity))
 								{
-									ENTITY::DETACH_ENTITY(entity, 1, 1);
-									ENTITY::SET_ENTITY_COORDS_NO_OFFSET(entity, 0, 0, 0, 0, 0, 0);
-									ENTITY::SET_ENTITY_AS_MISSION_ENTITY(entity, 0, 1);
-									ENTITY::DELETE_ENTITY(&entity);
+									functions::delete_entity(entity);
 								}
 								else notify::above_map("~r~Failed to take control of entity.");
 							}
