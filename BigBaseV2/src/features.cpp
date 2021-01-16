@@ -14,6 +14,7 @@ namespace big
 		update_screen_sizes();
 
 		// Custom Guns
+		cage_gun();
 		delete_gun();
 		gravity_gun();
 		money_gun();
@@ -43,6 +44,9 @@ namespace big
 		// Util
 		spectate_player();
 
+		// Protections
+		replay_interface();
+		//version_mismatch();
 	}
 
 	void features::script_func()

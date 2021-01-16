@@ -29,10 +29,14 @@ namespace big
 		void run_tick();
 		void script_func();
 
+		void cage_gun();
 		void delete_gun();
 		void gravity_gun();
 		void money_gun();
 		void vehicle_gun();
+
+		void replay_interface();
+		void version_mismatch();
 
 		void disable_phone();
 		void god_mode();
