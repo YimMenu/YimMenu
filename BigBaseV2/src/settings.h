@@ -36,7 +36,6 @@ namespace big
 			"population_modifiers": false,
 			"ragdoll": false,
 			"rank": 6969,
-			"reveal_players": false,
 			"speedo_type": 0,
 			"spoof_rank": false,
 			"sticky_tyres": false,
@@ -44,6 +43,10 @@ namespace big
 			"vehicle_density": 1.0,
 			"settings": {
 				"protections": {
+					"cage": false,
+					"version_mismatch": false
+				},
+				"script_protections": {
 					"bounty": false,
 					"ceo_ban": false,
 					"ceo_kick": false,

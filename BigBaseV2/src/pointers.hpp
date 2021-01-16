@@ -2,6 +2,7 @@
 #include "common.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/enums.hpp"
+#include "gta/replay.hpp"
 #include "function_types.hpp"
 
 namespace big
@@ -19,7 +20,7 @@ namespace big
 
 		CPedFactory **m_ped_factory{};
 		CNetworkPlayerMgr **m_network_player_mgr{};
-		CReplayInterface **m_replay_interface{};
+		rage::CReplayInterface **m_replay_interface{};
 
 		rage::scrNativeRegistrationTable *m_native_registration_table{};
 		functions::get_native_handler_t m_get_native_handler{};
@@ -46,6 +47,8 @@ namespace big
 		functions::spectate_player* m_spectate_player{};
 		functions::sync_local_time* m_sync_local_time{};
 		functions::trigger_script_event* m_trigger_script_event{};
+
+		functions::ptr_to_handle* m_ptr_to_handle{};
 	};
 
 	inline pointers *g_pointers{};

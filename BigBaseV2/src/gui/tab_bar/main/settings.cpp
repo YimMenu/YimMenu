@@ -84,6 +84,21 @@ namespace big
 				auto& protections = g_settings.options["settings"]["protections"];
 
 				if (
+					ImGui::Checkbox("Cage Protection", protections["cage"].get<bool*>())// ||
+					//ImGui::Checkbox("Version Mismatch Protection", protections["version_mismatch"].get<bool*>())
+					)
+					g_settings.save();
+
+				ImGui::TreePop();
+			}
+
+			ImGui::Separator();
+
+			if (ImGui::TreeNode("Script Protection"))
+			{
+				auto& protections = g_settings.options["settings"]["script_protections"];
+
+				if (
 					ImGui::Checkbox("Bounty", protections["bounty"].get<bool*>()) ||
 					ImGui::Checkbox("Ceo Ban", protections["ceo_ban"].get<bool*>()) ||
 					ImGui::Checkbox("Ceo Kick", protections["ceo_kick"].get<bool*>()) ||
