@@ -34,9 +34,6 @@ namespace big
 				if (ImGui::Checkbox("Off-Radar", g_settings.options["off_radar"].get<bool*>()))
 					g_settings.save();
 
-				if (ImGui::Checkbox("Reveal Players", g_settings.options["reveal_players"].get<bool*>()))
-					g_settings.save();
-
 				if (ImGui::Checkbox("Player Join Message", g_settings.options["join_message"].get<bool*>()))
 					g_settings.save();
 
