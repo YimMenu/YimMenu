@@ -25,6 +25,9 @@ namespace big
 		static void render_settings();
 
 		static void player_info();
+		static void player_griefing();
+		static void player_teleport();
+		static void player_drop();
 	};
 
 }
