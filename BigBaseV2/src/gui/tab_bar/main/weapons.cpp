@@ -42,6 +42,10 @@ namespace big
 						g_settings.save();
 
 					break;
+				case 3:
+					ImGui::Text("Aim this gun at players to start printing money on them.");
+
+					break;
 				case 4:
 					ImGui::Text("Set the vehicle model to spawn.");
 
