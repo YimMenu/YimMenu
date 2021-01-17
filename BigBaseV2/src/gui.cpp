@@ -10,6 +10,7 @@
 #include "pointers.hpp"
 #include "renderer.hpp"
 #include "script.hpp"
+#include "features/notify.hpp"
 
 #include "gui/window.hpp"
 
@@ -121,6 +122,7 @@ namespace big
 
 	void gui::script_init()
 	{
+		features::notify::above_map("Yim's Menu is ready.");
 	}
 
 	void gui::script_on_tick()
