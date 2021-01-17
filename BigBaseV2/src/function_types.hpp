@@ -1,6 +1,7 @@
 #pragma once
 #include "common.hpp"
 #include "gta/fwddec.hpp"
+#include "gta/replay.hpp"
 #include "gta/natives.hpp"
 
 namespace big::functions
@@ -19,4 +20,6 @@ namespace big::functions
 	using spectate_player = bool(bool toggle, Ped player);
 	using sync_local_time = void(int h, int m);
 	using trigger_script_event = int(bool unk0, int64_t* args, int argCount, int bitFlags);
+
+	using ptr_to_handle = int(rage::CObject* a1);
 }

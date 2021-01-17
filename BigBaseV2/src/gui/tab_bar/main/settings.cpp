@@ -84,6 +84,7 @@ namespace big
 				auto& protections = g_settings.options["settings"]["protections"];
 
 				if (
+					ImGui::Checkbox("Attach Protection", protections["attach"].get<bool*>()) ||
 					ImGui::Checkbox("Cage Protection", protections["cage"].get<bool*>())// ||
 					//ImGui::Checkbox("Version Mismatch Protection", protections["version_mismatch"].get<bool*>())
 					)
