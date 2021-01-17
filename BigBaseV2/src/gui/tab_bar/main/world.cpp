@@ -42,24 +42,27 @@ namespace big
 
 			ImGui::Separator();
 
-			if (ImGui::Checkbox("Population Modifiers", g_settings.options["population_modifiers"].get<bool*>()))
-				g_settings.save();
-
-			if (g_settings.options["population_modifiers"].get<bool>())
+			if (ImGui::TreeNode("World Population"))
 			{
 				const double min = 0., max = 2.;
+				auto& population = g_settings.options["world"]["population"];
+
+				if (ImGui::Checkbox("Enable", population["enabled"].get<bool*>()))
+					g_settings.save();
 
 				ImGui::Text("Pedestrian Population");
-				if (ImGui::SliderScalar("##ped_pop", ImGuiDataType_Double, g_settings.options["pedestrian_population"].get<double*>(), &min, &max))
+				if (ImGui::SliderScalar("##ped_pop", ImGuiDataType_Double, population["pedestrians"].get<double*>(), &min, &max))
 					g_settings.save();
 
 				ImGui::Text("Parked Vehicle Density:");
-				if (ImGui::SliderScalar("##parked_veh_density", ImGuiDataType_Double, g_settings.options["parked_vehicle_density"].get<double*>(), &min, &max))
+				if (ImGui::SliderScalar("##parked_veh_density", ImGuiDataType_Double, population["parked"].get<double*>(), &min, &max))
 					g_settings.save();
 
 				ImGui::Text("Vehicle Density:");
-				if (ImGui::SliderScalar("##veh_density", ImGuiDataType_Double, g_settings.options["vehicle_density"].get<double*>(), &min, &max))
+				if (ImGui::SliderScalar("##veh_density", ImGuiDataType_Double, population["vehicles"].get<double*>(), &min, &max))
 					g_settings.save();
+
+				ImGui::TreePop();
 			}
 
 			ImGui::EndTabItem();

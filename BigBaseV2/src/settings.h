@@ -31,18 +31,15 @@ namespace big
 			"no_bike_fall": false,
 			"no_idle_kick": false,
 			"off_radar": false,
-			"parked_vehicle_density": 1.0,
-			"pedestrian_population": 1.0,
-			"population_modifiers": false,
 			"ragdoll": false,
 			"rank": 6969,
 			"speedo_type": 0,
 			"spoof_rank": false,
 			"sticky_tyres": false,
 			"super_sprint": false,
-			"vehicle_density": 1.0,
 			"settings": {
 				"protections": {
+					"attach": false,
 					"cage": false,
 					"version_mismatch": false
 				},
@@ -70,6 +67,14 @@ namespace big
 				"logging": {
 					"get_event_data": false,
 					"script_events": false
+				}
+			},
+			"world": {
+				"population": {
+					"enabled": false,
+					"pedestrians": 1.0,
+					"parked": 1.0,
+					"vehicles": 1.0
 				}
 			}
 		})"_json;
