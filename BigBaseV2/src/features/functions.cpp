@@ -126,6 +126,7 @@ namespace big::features::functions
 		ENTITY::DETACH_ENTITY(ent, 1, 1);
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, 0, 0, 0, 0, 0, 0);
 		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(ent, 0, 1);
+		ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&ent);
 		ENTITY::DELETE_ENTITY(&ent);
 	}
 
