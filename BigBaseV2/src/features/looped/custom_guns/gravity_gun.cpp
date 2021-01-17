@@ -5,7 +5,7 @@ namespace big
 	static Entity entity = 0;
 	static Vector3 location;
 	static Vector3 other;
-	static double dist;
+	static float dist;
 
 	static const int scroll = 2;
 	static const int controls[] = { 14, 15, 24 };
@@ -45,7 +45,7 @@ namespace big
 						else
 						{
 							other = ENTITY::GET_ENTITY_COORDS(entity, true);
-							dist = functions::distance_between_vectors(location, other);
+							dist = (float)functions::distance_between_vectors(location, other);
 
 							if (dist > 50)
 							{
@@ -93,7 +93,7 @@ namespace big
 					velocity.y = location.y + (dist * sin(yaw) * cos(pitch)) - other.y;
 					velocity.z = location.z + (dist * sin(pitch)) - other.z;
 
-					ENTITY::SET_ENTITY_VELOCITY(entity, velocity.x * multiplier, velocity.y * multiplier, velocity.z * multiplier);
+					ENTITY::SET_ENTITY_VELOCITY(entity, velocity.x * (float)multiplier, velocity.y * (float)multiplier, velocity.z * (float)multiplier);
 				}
 			}
 			else if (entity != 0)
