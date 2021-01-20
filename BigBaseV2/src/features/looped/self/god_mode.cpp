@@ -1,4 +1,5 @@
 #include "features.hpp"
+#include "gta_util.hpp"
 
 namespace big
 {
@@ -10,12 +11,13 @@ namespace big
 
 		if (bGodMode || (!bGodMode && bGodMode != bLastGodMode))
 		{
-			QUEUE_JOB_BEGIN_CLAUSE(= )
-			{
-				ENTITY::SET_ENTITY_INVINCIBLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), bGodMode);
-			}QUEUE_JOB_END_CLAUSE
+			CPed* ped = gta_util::get_local_ped();
 
-				bLastGodMode = bGodMode;
+			ped->m_godmode = bGodMode ? 0x1 : 0x0;
+
+			//ENTITY::SET_ENTITY_INVINCIBLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), bGodMode);
+
+			bLastGodMode = bGodMode;
 		}
 	}
 }
