@@ -19,7 +19,7 @@ namespace big
 			m_is_session_started = ptr.add(3).rip().as<bool*>();
 		});
 
-		main_batch.add("Ped factory", "48 8B 05 ? ? ? ? 48 8B 48 08 48 85 C9 74 52 8B 81", [this](memory::handle ptr)
+		main_batch.add("Ped factory", "48 8B 05 ? ? ? ? 48 8B 50 ? 48 8B C1", [this](memory::handle ptr)
 		{
 			m_ped_factory = ptr.add(3).rip().as<CPedFactory**>();
 		});
