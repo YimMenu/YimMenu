@@ -25,7 +25,7 @@ namespace big::gta_util
 		{
 			if (auto ped = ped_factory->m_local_ped)
 			{
-				return ped->m_playerinfo;
+				return ped->m_player_info;
 			}
 		}
 
