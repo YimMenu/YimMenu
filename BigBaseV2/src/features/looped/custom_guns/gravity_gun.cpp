@@ -94,11 +94,13 @@ namespace big
 					velocity.z = location.z + (dist * sin(pitch)) - other.z;
 
 					ENTITY::SET_ENTITY_VELOCITY(entity, velocity.x * (float)multiplier, velocity.y * (float)multiplier, velocity.z * (float)multiplier);
+					ENTITY::SET_ENTITY_ALPHA(entity, 105, 0);
 				}
 			}
 			else if (entity != 0)
 			{
 				ENTITY::SET_ENTITY_COLLISION(entity, true, true);
+				ENTITY::SET_ENTITY_ALPHA(entity, 255, 0);
 
 				entity = 0;
 
