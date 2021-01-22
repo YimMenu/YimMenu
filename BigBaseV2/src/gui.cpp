@@ -105,17 +105,20 @@ namespace big
 	{
 		TRY_CLAUSE
 		{
-			// gui/top_bar.cpp
+			// gui/window/top_bar.cpp
 			window::render_top_bar();
 
-			// gui/main_window.cpp
+			// gui/window/main.cpp
 			window::render_main_window();
 
-			// gui/user_sidebar.cpp
+			// gui/window/user_sidebar.cpp
 			window::render_user_sidebar();
 
-			// gui/player_window.cpp
+			// gui/window/player.cpp
 			window::render_player_window();
+
+			// gui/window/handling.cpp
+			window::render_handling_window();
 		}
 		EXCEPT_CLAUSE
 	}

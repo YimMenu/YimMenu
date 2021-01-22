@@ -10,5 +10,7 @@ namespace big
 		static void render_main_window();
 		static void render_user_sidebar();
 		static void render_player_window();
+
+		static void render_handling_window();
 	};
 }

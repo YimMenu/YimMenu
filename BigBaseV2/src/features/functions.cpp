@@ -124,8 +124,10 @@ namespace big::features::functions
 		take_control_of_entity(ent);
 
 		ENTITY::DETACH_ENTITY(ent, 1, 1);
+		ENTITY::SET_ENTITY_VISIBLE(ent, false, false);
+		NETWORK::_NETWORK_SET_ENTITY_INVISIBLE_TO_NETWORK(ent, true);
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, 0, 0, 0, 0, 0, 0);
-		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(ent, 0, 1);
+		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(ent, 1, 1);
 		ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&ent);
 		ENTITY::DELETE_ENTITY(&ent);
 	}

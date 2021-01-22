@@ -7,15 +7,15 @@ namespace big
 	{
 		CPed* ped = gta_util::get_local_ped();
 
-		bool bVehGodMode = ped->m_vehicle == nullptr ? false : (ped->m_vehicle->m_godmode & 0x1) == 0x1;
-		if (ImGui::Checkbox("Vehicle God Mode", &bVehGodMode))
-			if (ped->m_vehicle != nullptr)
-				ped->m_vehicle->m_godmode = bVehGodMode ? 0x1 : 0x0;
-
-		ImGui::Separator();
-
 		if (ImGui::BeginTabItem("Vehicle"))
 		{
+			bool bVehGodMode = ped->m_vehicle == nullptr ? false : (ped->m_vehicle->m_godmode & 0x1) == 0x1;
+			if (ImGui::Checkbox("Vehicle God Mode", &bVehGodMode))
+				if (ped->m_vehicle != nullptr)
+					ped->m_vehicle->m_godmode = bVehGodMode ? 0x1 : 0x0;
+
+			ImGui::Separator();
+
 			if (ImGui::TreeNode("Speedometer"))
 			{
 				static const char* speedo_options[] = { "None", "km/h", "mph" };
@@ -39,62 +39,9 @@ namespace big
 				ImGui::TreePop();
 			}
 
-			if (ImGui::TreeNode("Handling"))
-			{
-				CAutomobile* veh = ped->m_vehicle;
+			ImGui::Separator();
 
-				static float fAcceleration = veh == nullptr ? 1.f : veh->m_handling->m_acceleration;
-				if (ImGui::SliderFloat("Acceleration", &fAcceleration, 0.f, 100.f))
-					if (veh != nullptr)
-						veh->m_handling->m_acceleration = fAcceleration;
-
-				static float fBrakeForce = veh == nullptr ? 1.f : veh->m_handling->m_brakeforce;
-				if (ImGui::SliderFloat("Brake Force", &fBrakeForce, 0.f, 100.f))
-					if (veh != nullptr)
-						veh->m_handling->m_brakeforce = fBrakeForce;
-
-				static float fGravity = veh == nullptr ? 1.f : veh->m_gravity;
-				if (ImGui::SliderFloat("Gravity", &fGravity, -24.f, 24.f))
-					if (veh != nullptr)
-						veh->m_gravity = fGravity;
-
-				static float fUpshift = veh == nullptr ? 1.f : veh->m_handling->m_upshift;
-				static float fDownShift = veh == nullptr ? 1.f : veh->m_handling->m_downshift;
-				if (ImGui::SliderFloat("Upshift", &fUpshift, 0.f, 100.f))
-					if (veh != nullptr)
-						veh->m_handling->m_upshift = fUpshift;
-
-				if (ImGui::SliderFloat("Downshift", &fDownShift, 0.f, 100.f))
-					if (veh != nullptr)
-						veh->m_handling->m_downshift = fDownShift;
-
-				static float fMass = veh == nullptr ? 1.f : veh->m_handling->m_mass;
-				if (ImGui::InputFloat("Mass", &fMass))
-					if (veh != nullptr)
-						veh->m_handling->m_mass = fMass;
-
-				static float fTractionCurveMax = veh == nullptr ? 1.f : veh->m_handling->m_traction_curve_max;
-				static float fTractionCurveMin = veh == nullptr ? 1.f : veh->m_handling->m_traction_curve_min;
-				if (ImGui::SliderFloat("Traction Curve Max", &fTractionCurveMax, 0.f, 100.f))
-					if (veh != nullptr)
-						veh->m_handling->m_traction_curve_max = fTractionCurveMax;
-
-				if (ImGui::SliderFloat("Traction Curve Min", &fTractionCurveMin, 0.f, 100.f))
-					if (veh != nullptr)
-						veh->m_handling->m_traction_curve_min = fTractionCurveMin;
-
-				static float fTractionLoss = veh == nullptr ? 1.f : veh->m_handling->m_traction_loss_mult;
-				if (ImGui::SliderFloat("Off-Road Traction Loss (lower better)", &fTractionLoss, 0.f, 2.f))
-					if (veh != nullptr)
-						veh->m_handling->m_traction_loss_mult = fTractionLoss;
-
-				static float fDriveBiasFront = veh == nullptr ? .5f : veh->m_handling->m_drive_bias_front;
-				if (ImGui::SliderFloat("Drive Bias Front", &fDriveBiasFront, 0.f, 1.f))
-					if (veh != nullptr)
-						veh->m_handling->m_drive_bias_front = fDriveBiasFront;
-
-				ImGui::TreePop();
-			}
+			ImGui::Checkbox("Handling", &g_handling_window);
 
 			ImGui::Separator();
 

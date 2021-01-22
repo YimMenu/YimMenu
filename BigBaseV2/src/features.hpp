@@ -8,6 +8,7 @@
 #include "features/notify.hpp"
 #include "features/stats.hpp"
 #include "features/teleport.hpp"
+#include "gta/ped_factory.hpp"
 
 namespace big
 {
@@ -20,6 +21,11 @@ namespace big
 
 	// Temporary Variable struct
 	inline temp g_temp = temp{};
+
+	inline CAutomobile* g_vehicle;
+	inline bool g_in_vehicle = false;
+
+	inline bool g_handling_window = false;
 
 	// Screen Width & Height
 	inline int x, y;
@@ -52,6 +58,8 @@ namespace big
 		void spoof_rank();
 		void sticky_tyres();
 		void super_sprint();
+
+		void handling();
 
 		void update_screen_sizes();
 		void update_player_structs();

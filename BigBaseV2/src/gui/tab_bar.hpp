@@ -28,6 +28,12 @@ namespace big
 		static void player_griefing();
 		static void player_teleport();
 		static void player_drop();
+
+		static void handling_physics();
+		static void handling_transmission();
+		static void handling_brakes();
+		static void handling_traction();
+		static void handling_suspension();
 	};
 
 }

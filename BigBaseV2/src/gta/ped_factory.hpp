@@ -54,11 +54,13 @@ public:
 	uint8_t m_godmode; //0x0189
 	char pad_018A[1722]; //0x018A
 	float m_health; //0x0844
-	char pad_0848[188]; //0x0848
-	float m_health2; //0x0904
-	char pad_0908[48]; //0x0908
+	char pad_0848[192]; //0x0848
+	float m_health2; //0x0908
+	char pad_090C[44]; //0x090C
 	class CHandlingData* m_handling; //0x0938
-	char pad_0940[796]; //0x0940
+	char pad_0940[688]; //0x0940
+	class WheelArray* m_wheels; //0x0BF0
+	char pad_0BF8[100]; //0x0BF8
 	float m_gravity; //0x0C5C
 }; //Size: 0x0C60
 static_assert(sizeof(CAutomobile) == 0xC60);
@@ -124,33 +126,48 @@ public:
 	float m_mass; //0x000C
 	char pad_0010[16]; //0x0010
 	rage::vector3 m_centre_of_mass; //0x0020
-	float m_drive_bias_front; //0x002C
+	char pad_002C[4]; //0x002C
 	rage::vector3 m_inertia_multiplier; //0x0030
-	float m_drive_inertia; //0x003C
+	char pad_003C[4]; //0x003C
 	float m_buoyancy; //0x0040
-	char pad_0044[8]; //0x0044
+	char pad_0044[4]; //0x0044
+	float m_drive_bias_front; //0x0048
 	float m_acceleration; //0x004C
-	char pad_0050[8]; //0x0050
+	uint8_t m_initial_drive_gears; //0x0050
+	char pad_0051[3]; //0x0051
+	float m_drive_inertia; //0x0054
 	float m_upshift; //0x0058
 	float m_downshift; //0x005C
 	float m_initial_drive_force; //0x0060
 	char pad_0064[8]; //0x0064
-	float m_brakeforce; //0x006C
-	char pad_0070[24]; //0x0070
+	float m_brake_force; //0x006C
+	char pad_0070[4]; //0x0070
+	float m_brake_bias; //0x0074
+	char pad_0078[4]; //0x0078
+	float m_handbrake_force; //0x007C
+	char pad_0080[8]; //0x0080
 	float m_traction_curve_max; //0x0088
 	char pad_008C[4]; //0x008C
 	float m_traction_curve_min; //0x0090
-	char pad_0094[36]; //0x0094
+	char pad_0094[12]; //0x0094
+	float m_traction_spring_delta_max; //0x00A0
+	char pad_00A4[4]; //0x00A4
+	float m_low_speed_traction_loss_mult; //0x00A8
+	float m_camber_stiffness; //0x00AC
+	float m_traction_bias_front; //0x00B0
+	char pad_00B4[4]; //0x00B4
 	float m_traction_loss_mult; //0x00B8
 	float m_suspension_force; //0x00BC
 	float m_suspension_comp_damp; //0x00C0
 	float m_suspension_rebound_damp; //0x00C4
 	float m_suspension_upper_limit; //0x00C8
 	float m_suspension_lower_limit; //0x00CC
-	float m_camber_stiffness; //0x00D0
-	char pad_00D4[8]; //0x00D4
+	float m_suspension_raise; //0x00D0
+	float m_suspension_bias_front; //0x00D4
+	char pad_00D8[4]; //0x00D8
 	float m_anti_rollbar_force; //0x00DC
-	char pad_00E0[8]; //0x00E0
+	float m_anti_rollbar_bias_front; //0x00E0
+	char pad_00E4[4]; //0x00E4
 	float m_roll_centre_height_front; //0x00E8
 	float m_roll_centre_height_rear; //0x00EC
 	float m_collision_damage_mult; //0x00F0
@@ -159,8 +176,11 @@ public:
 	float m_engine_damage_mult; //0x00FC
 	float m_petrol_tank_volume; //0x0100
 	float m_oil_volume; //0x0104
-}; //Size: 0x0108
-static_assert(sizeof(CHandlingData) == 0x108);
+	char pad_0108[4]; //0x0108
+	rage::vector3 m_seat_index_dist; //0x010C
+	uint32_t m_monetary_value; //0x0118
+}; //Size: 0x011C
+static_assert(sizeof(CHandlingData) == 0x11C);
 
 class CWeaponInfo
 {
@@ -175,4 +195,25 @@ public:
 	char pad_0000[136]; //0x0000
 }; //Size: 0x0088
 static_assert(sizeof(CPedModelInfo) == 0x88);
+
+class WheelArray
+{
+public:
+	class CWheel* m_wheel1; //0x0000
+	class CWheel* m_wheel2; //0x0008
+	class CWheel* m_wheel3; //0x0010
+	class CWheel* m_wheel4; //0x0018
+	char pad_0020[88]; //0x0020
+}; //Size: 0x0078
+static_assert(sizeof(WheelArray) == 0x78);
+
+class CWheel
+{
+public:
+	char pad_0000[8]; //0x0000
+	float m_camber; //0x0008
+	float m_camber_inverted; //0x000C
+	char pad_0010[552]; //0x0010
+}; //Size: 0x0238
+static_assert(sizeof(CWheel) == 0x238);
 #pragma pack(pop)

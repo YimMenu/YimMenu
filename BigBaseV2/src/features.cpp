@@ -34,6 +34,7 @@ namespace big
 		spoof_rank();
 
 		// Vehicle
+		handling();
 		no_bike_fall();
 		speedo_meter();
 		sticky_tyres();
