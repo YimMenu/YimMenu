@@ -6,8 +6,10 @@ namespace big
 	void window::render_user_sidebar()
 	{
 		static const float height_correction = 28.f;
-		ImGui::SetNextWindowSize({ 350.f, (float)y - height_correction }, ImGuiCond_Always);
-		ImGui::SetNextWindowPos({ x - 350.f, height_correction }, ImGuiCond_Always);
+		static const float width = 170.f;
+
+		ImGui::SetNextWindowSize({ width, (float)y - height_correction }, ImGuiCond_Always);
+		ImGui::SetNextWindowPos({ x - width, height_correction }, ImGuiCond_Always);
 		if (ImGui::Begin("###player_menu", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav))
 		{
 			auto vecButtonWidth = ImVec2(ImGui::GetWindowSize().x - 30.f, 0.0f);
