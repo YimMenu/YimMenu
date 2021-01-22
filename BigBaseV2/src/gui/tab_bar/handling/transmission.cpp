@@ -1,4 +1,5 @@
 #include "gui/tab_bar.hpp"
+#include "features/functions.hpp"
 
 namespace big
 {
@@ -13,6 +14,9 @@ namespace big
 			float fDriveBiasFront = g_vehicle->m_handling->m_drive_bias_front / 2;
 			if (ImGui::SliderFloat("##drive_bias_front", &fDriveBiasFront, 0.f, 1.0f))
 				g_vehicle->m_handling->m_drive_bias_front = fDriveBiasFront * 2;
+
+			ImGui::Text("Steering Lock (degrees)");
+			ImGui::SliderAngle("##steering lock", &g_vehicle->m_handling->m_steering_lock, 0.f, 90.f);
 
 			ImGui::Text("Gears");
 			int nInitialDriveGears = g_vehicle->m_handling->m_initial_drive_gears;
