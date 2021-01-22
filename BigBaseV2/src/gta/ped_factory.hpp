@@ -122,9 +122,13 @@ static_assert(sizeof(CPedWeaponManager) == 0xC0);
 class CHandlingData
 {
 public:
-	char pad_0000[12]; //0x0000
+	char pad_0000[8]; //0x0000
+	uint32_t m_name_hash; //0x0008
 	float m_mass; //0x000C
-	char pad_0010[16]; //0x0010
+	float m_initial_drag_coeff; //0x0010
+	float m_downforce_modifier; //0x0014
+	float m_popup_light_rotation; //0x0018
+	char pad_001C[4]; //0x001C
 	rage::vector3 m_centre_of_mass; //0x0020
 	char pad_002C[4]; //0x002C
 	rage::vector3 m_inertia_multiplier; //0x0030
@@ -139,17 +143,20 @@ public:
 	float m_upshift; //0x0058
 	float m_downshift; //0x005C
 	float m_initial_drive_force; //0x0060
-	char pad_0064[8]; //0x0064
+	float m_drive_max_flat_vel; //0x0064
+	float m_initial_drive_max_flat_vel; //0x0068
 	float m_brake_force; //0x006C
 	char pad_0070[4]; //0x0070
-	float m_brake_bias; //0x0074
-	char pad_0078[4]; //0x0078
+	float m_brake_bias_front; //0x0074
+	float m_brake_bias_rear; //0x0078
 	float m_handbrake_force; //0x007C
-	char pad_0080[8]; //0x0080
+	float m_steering_lock; //0x0080
+	float m_steering_lock_ratio; //0x0084
 	float m_traction_curve_max; //0x0088
-	char pad_008C[4]; //0x008C
+	float m_traction_curve_lateral; //0x008C
 	float m_traction_curve_min; //0x0090
-	char pad_0094[12]; //0x0094
+	float m_traction_curve_ratio; //0x0094
+	char pad_0098[8]; //0x0098
 	float m_traction_spring_delta_max; //0x00A0
 	char pad_00A4[4]; //0x00A4
 	float m_low_speed_traction_loss_mult; //0x00A8
@@ -164,10 +171,10 @@ public:
 	float m_suspension_lower_limit; //0x00CC
 	float m_suspension_raise; //0x00D0
 	float m_suspension_bias_front; //0x00D4
-	char pad_00D8[4]; //0x00D8
+	float m_suspension_bias_rear; //0x00D8
 	float m_anti_rollbar_force; //0x00DC
 	float m_anti_rollbar_bias_front; //0x00E0
-	char pad_00E4[4]; //0x00E4
+	float m_anti_rollbar_bias_rear; //0x00E4
 	float m_roll_centre_height_front; //0x00E8
 	float m_roll_centre_height_rear; //0x00EC
 	float m_collision_damage_mult; //0x00F0
@@ -179,8 +186,15 @@ public:
 	char pad_0108[4]; //0x0108
 	rage::vector3 m_seat_index_dist; //0x010C
 	uint32_t m_monetary_value; //0x0118
-}; //Size: 0x011C
-static_assert(sizeof(CHandlingData) == 0x11C);
+	char pad_011C[8]; //0x011C
+	uint32_t m_str_model_flags; //0x0124
+	uint32_t m_str_handling_flags; //0x0128
+	uint32_t m_str_damage_flags; //0x012C
+	char pad_0130[12]; //0x0130
+	uint32_t m_ai_handling_hash; //0x013C
+	char pad_0140[208]; //0x0140
+}; //Size: 0x0210
+static_assert(sizeof(CHandlingData) == 0x210);
 
 class CWeaponInfo
 {
@@ -192,9 +206,9 @@ static_assert(sizeof(CWeaponInfo) == 0x178);
 class CPedModelInfo
 {
 public:
-	char pad_0000[136]; //0x0000
-}; //Size: 0x0088
-static_assert(sizeof(CPedModelInfo) == 0x88);
+	char pad_0000[96]; //0x0000
+}; //Size: 0x0060
+static_assert(sizeof(CPedModelInfo) == 0x60);
 
 class WheelArray
 {
