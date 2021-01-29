@@ -15,6 +15,11 @@ namespace big
 			if (ImGui::SliderFloat("##drive_bias_front", &fDriveBiasFront, 0.f, 1.0f))
 				g_vehicle->m_handling->m_drive_bias_front = fDriveBiasFront * 2;
 
+			ImGui::Text("Drive Bias (1.0 = rear, 0.0 = front, 0.5 = balanced 4WD)");
+			float fDriveBiasRear = g_vehicle->m_handling->m_drive_bias_rear / 2;
+			if (ImGui::SliderFloat("##drive_bias_rear", &fDriveBiasRear, 0.f, 1.0f))
+				g_vehicle->m_handling->m_drive_bias_rear = fDriveBiasRear * 2;
+
 			ImGui::Text("Steering Lock (degrees)");
 			ImGui::SliderAngle("##steering lock", &g_vehicle->m_handling->m_steering_lock, 0.f, 90.f);
 
