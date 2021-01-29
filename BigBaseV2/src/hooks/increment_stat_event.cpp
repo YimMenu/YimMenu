@@ -4,10 +4,10 @@
 
 namespace big
 {
-	bool hooks::increment_stat_event(uint64_t net_event_struct, int64_t sender, int64_t a3)
+	bool hooks::increment_stat_event(uint64_t net_event_struct, CNetGamePlayer* sender, int64_t a3)
 	{
 		Hash hash = *reinterpret_cast<DWORD*>(net_event_struct + 0x30);
-		Player sender_id = *reinterpret_cast<uint16_t*>(sender + 0x2D);
+		Player sender_id = sender->player_id;
 
 		switch (hash)
 		{
@@ -17,7 +17,7 @@ namespace big
 		case RAGE_JOAAT("MPPLY_TC_ANNOYINGME"):
 		case RAGE_JOAAT("MPPLY_TC_HATE"):
 			char report[64];
-			strcpy(report, "Blocked report from <C>");
+			strcpy(report, "~g~BLOCKED REPORT~s~\nFrom: <C>");
 			strcat(report, PLAYER::GET_PLAYER_NAME(sender_id));
 			strcat(report, "</C>");
 
