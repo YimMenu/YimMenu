@@ -134,7 +134,7 @@ public:
 	rage::vector3 m_inertia_multiplier; //0x0030
 	char pad_003C[4]; //0x003C
 	float m_buoyancy; //0x0040
-	char pad_0044[4]; //0x0044
+	float m_drive_bias_rear; //0x0044
 	float m_drive_bias_front; //0x0048
 	float m_acceleration; //0x004C
 	uint8_t m_initial_drive_gears; //0x0050
