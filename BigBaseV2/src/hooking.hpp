@@ -24,8 +24,9 @@ namespace big
 		// New Hook Definitions
 		static bool get_event_data(int32_t eventGroup, int32_t eventIndex, int64_t* args, uint32_t argCount);
 		static void error_screen(char* entryHeader, char* entryLine1, int instructionalKey, char* entryLine2, BOOL p4, Any p5, Any* p6, Any* p7, BOOL background);
-		static bool increment_stat_event(uint64_t net_event_struct, int64_t sender, int64_t a3);
+		static bool increment_stat_event(uint64_t net_event_struct, CNetGamePlayer* sender, int64_t a3);
 		static bool script_event_handler(std::int64_t NetEventStruct, std::int64_t CNetGamePlayer);
+		static bool send_net_info_to_lobby(rage::netPlayerData* local_player, int64_t a2, int64_t a3, DWORD* a4);
 	};
 
 	struct minhook_keepalive
@@ -60,6 +61,7 @@ namespace big
 		detour_hook m_error_screen_hook;
 		detour_hook m_increment_stat_hook;
 		detour_hook m_script_event_hook;
+		detour_hook m_send_net_info_to_lobby_hook;
 	};
 
 	inline hooking *g_hooking{};

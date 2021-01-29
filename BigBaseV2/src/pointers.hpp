@@ -36,6 +36,7 @@ namespace big
 		IDXGISwapChain **m_swapchain{};
 
 		PVOID m_model_spawn_bypass;
+		PVOID m_send_net_info_to_lobby;
 
 		functions::error_screen* m_error_screen{};
 		functions::get_event_data* m_get_event_data{};

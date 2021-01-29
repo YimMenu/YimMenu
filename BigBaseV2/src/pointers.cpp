@@ -132,6 +132,11 @@ namespace big
 		{
 			m_ptr_to_handle = ptr.as<decltype(m_ptr_to_handle)>();
 		});
+
+		main_batch.add("Send Info To Lobby", "44 8D 47 78 48 8D 54 24 ? 48 8B CB E8", [this](memory::handle ptr)
+		{
+			m_send_net_info_to_lobby = ptr.add(13).rip().as<PVOID>();
+		});
 			
 		main_batch.run(memory::module(nullptr));
 
