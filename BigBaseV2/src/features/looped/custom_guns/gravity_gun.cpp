@@ -99,6 +99,8 @@ namespace big
 			}
 			else if (entity != 0)
 			{
+				functions::take_control_of_entity(entity);
+
 				ENTITY::SET_ENTITY_COLLISION(entity, true, true);
 				ENTITY::SET_ENTITY_ALPHA(entity, 255, 0);
 
