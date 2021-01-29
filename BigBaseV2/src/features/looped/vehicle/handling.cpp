@@ -14,7 +14,7 @@ namespace big
 		if (g_in_vehicle)
 		{
 			Vehicle currVeh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
-			if (veh != currVeh && ped->m_vehicle != NULL)
+			if (veh != currVeh && ped->m_vehicle != nullptr)
 			{
 				veh = currVeh;
 
@@ -22,5 +22,6 @@ namespace big
 				g_vehicle = ped->m_vehicle;
 			}
 		}
+		else g_vehicle = nullptr;
 	}
 }
