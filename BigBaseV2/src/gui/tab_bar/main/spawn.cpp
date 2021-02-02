@@ -3,12 +3,17 @@
 
 namespace big
 {
-	static char model[64];
+	static char model[12];
 
 	void tabbar::render_spawn()
 	{
 		if (ImGui::BeginTabItem("Spawn"))
 		{
+			QUEUE_JOB_BEGIN_CLAUSE()
+			{
+				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+			}QUEUE_JOB_END_CLAUSE
+
 			if (
 				ImGui::InputText("Model Name", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue) ||
 				ImGui::Button("Spawn")
