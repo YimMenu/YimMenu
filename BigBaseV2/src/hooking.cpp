@@ -73,6 +73,7 @@ namespace big
 		m_error_screen_hook.enable();
 		m_increment_stat_hook.enable();
 		m_script_event_hook.enable();
+		m_send_net_info_to_lobby_hook.enable();
 
 		m_enabled = true;
 	}
@@ -93,6 +94,7 @@ namespace big
 		m_error_screen_hook.disable();
 		m_increment_stat_hook.disable();
 		m_script_event_hook.disable();
+		m_send_net_info_to_lobby_hook.disable();
 	}
 
 	minhook_keepalive::minhook_keepalive()
