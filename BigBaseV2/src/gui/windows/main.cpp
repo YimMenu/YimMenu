@@ -5,6 +5,7 @@ namespace big
 {
 	void window::render_main_window()
 	{
+		ImGui::SetNextWindowSize({ 800, 840 }, ImGuiCond_FirstUseEver);
 		if (ImGui::Begin("Yimura's Mod Menu"))
 		{
 			ImGui::BeginTabBar("tabbar");
