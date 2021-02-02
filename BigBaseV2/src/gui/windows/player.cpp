@@ -10,8 +10,9 @@ namespace big
 		char title[64];
 		strcpy(title, "Player Options: ");
 		strcat(title, g_selectedPlayer.name);
+		strcat(title, "###player_options");
 
-		ImGui::SetNextWindowSize({ 350.f, 300.f });
+		ImGui::SetNextWindowSize({ 350.f, 300.f }, ImGuiCond_FirstUseEver);
 		if (ImGui::Begin(title))
 		{
 			if (ImGui::Button("Close"))
