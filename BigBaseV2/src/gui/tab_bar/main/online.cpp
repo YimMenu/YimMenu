@@ -43,7 +43,17 @@ namespace big
 
 			if (ImGui::TreeNode("Money"))
 			{
-				ImGui::Text("Removed because is has been detected...");
+				ImGui::Text("Instructions:\n\nTake a vehicle from the street.\nGo in LSC and put a tracker on it.\nOpen the sell submenu but don't confirm it.\nOpen this menu and click one of the below buttons.");
+
+				if (ImGui::Button("Set Car Sell Value at 5 million"))
+				{
+					features::functions::set_car_sell_value((int)5e6);
+				}
+
+				if (ImGui::Button("Set Car Sell Value at 25 million"))
+				{
+					features::functions::set_car_sell_value((int)25e6);
+				}
 
 				ImGui::TreePop();
 			}
