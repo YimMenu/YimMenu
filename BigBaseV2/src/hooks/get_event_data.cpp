@@ -31,7 +31,7 @@ namespace big
 				break;
 			case RemoteEvents::CeoKick:
 				if (protections["ceo_kick"])
-					strcpy(type, "Ceok Kick");
+					strcpy(type, "Ceo Kick");
 
 				break;
 			case RemoteEvents::CeoMoney:
