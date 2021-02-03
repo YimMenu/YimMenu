@@ -137,7 +137,12 @@ namespace big::features::functions
 		if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return true;
 		for (uint8_t i = 0; !NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) && i < 5; i++)
 		{
+			bool in_spectator = NETWORK::NETWORK_IS_IN_SPECTATOR_MODE();
+			if (in_spectator) NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(0, PLAYER::PLAYER_PED_ID());
+
 			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(ent);
+
+			if (in_spectator) NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(1, PLAYER::PLAYER_PED_ID());
 
 			script::get_current()->yield();
 		}
@@ -244,6 +249,20 @@ namespace big::features::functions
 		Hash hash = RAGE_JOAAT("PICKUP_MONEY_PAPER_BAG");
 
 		OBJECT::CREATE_AMBIENT_PICKUP(hash, location.x, location.y, location.z + 0.5f, 0, amount, hash, false, true);
+		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+	}
+
+	void create_ambient_rp(Vector3 location)
+	{
+		// vw_prop_vw_colle_imporage
+		Hash hash = RAGE_JOAAT("vw_prop_vw_colle_alien");
+		do {
+			STREAMING::REQUEST_MODEL(hash);
+
+			script::get_current()->yield(1ms);
+		} while (!STREAMING::HAS_MODEL_LOADED(hash));
+
+		OBJECT::CREATE_AMBIENT_PICKUP(0x2C014CA6, location.x, location.y, location.z + 0.5f, 0, 10, hash, false, true);
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 	}
 
