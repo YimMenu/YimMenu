@@ -32,9 +32,30 @@ namespace big
 			"no_idle_kick": false,
 			"off_radar": false,
 			"ragdoll": false,
-			"rank": 6969,
 			"speedo_type": 0,
-			"spoof_rank": false,
+			"spoofing": {
+				"name": {
+					"enabled": false,
+					"value": "How dare you!"
+				},
+				"ip_address": {
+					"enabled": false,
+					"address": {
+						"byte0": 69,
+						"byte1": 69,
+						"byte2": 69,
+						"byte3": 69
+					}
+				},
+				"rank": {
+					"enabled": false,
+					"value": 6969
+				},
+				"rockstar_id": {
+					"enabled": false,
+					"value": 69420
+				}
+			},
 			"sticky_tyres": false,
 			"super_sprint": false,
 			"settings": {
