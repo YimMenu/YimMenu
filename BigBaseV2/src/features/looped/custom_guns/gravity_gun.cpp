@@ -57,6 +57,8 @@ namespace big
 							{
 								functions::take_control_of_entity(entity);
 
+								if (ENTITY::IS_ENTITY_A_PED(entity) && !PED::IS_PED_RAGDOLL(entity)) TASK::SET_HIGH_FALL_TASK(entity, 0, 0, 0);
+
 								features::notify::above_map("Selected entity at crosshair.");
 							}
 						}
