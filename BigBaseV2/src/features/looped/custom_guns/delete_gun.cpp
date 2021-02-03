@@ -37,7 +37,7 @@ namespace big
 							Vector3 entLoc = ENTITY::GET_ENTITY_COORDS(entity, true);
 							double dist = functions::distance_between_vectors(player, entLoc);
 
-							if (dist > 50)
+							if (dist > 500)
 							{
 								notify::above_map("Entity is too far.");
 							}

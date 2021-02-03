@@ -47,7 +47,7 @@ namespace big
 							other = ENTITY::GET_ENTITY_COORDS(entity, true);
 							dist = (float)functions::distance_between_vectors(location, other);
 
-							if (dist > 50)
+							if (dist > 500)
 							{
 								entity = 0;
 
