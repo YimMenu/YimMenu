@@ -1,5 +1,6 @@
 #include "gui/tab_bar.hpp"
 #include "pointers.hpp"
+#include "script_global.hpp"
 
 namespace big
 {
@@ -75,6 +76,18 @@ namespace big
 					}QUEUE_JOB_END_CLAUSE
 				}
 
+				if (ImGui::Button("Clear Wanted Level"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						int global = *script_global(1630317).at(g_selectedPlayer.id, 615).at(215).as<int*>();
+
+						int64_t args[3] = { RemoteEvents::ClearWantedLevel, g_selectedPlayer.id, global };
+
+						g_pointers->m_trigger_script_event(true, args, 3, 1 << g_selectedPlayer.id);
+					}QUEUE_JOB_END_CLAUSE
+				}
+
 				if (ImGui::Button("CEO Kick"))
 				{
 					QUEUE_JOB_BEGIN_CLAUSE()
@@ -123,7 +136,7 @@ namespace big
 				{
 					QUEUE_JOB_BEGIN_CLAUSE()
 					{
-						int64_t args[9] = { RemoteEvents::Teleport, g_selectedPlayer.id, 1, -1, 1, locations[g_temp.teleport_location].id, 0,0,0 }; // 1097312011
+						int64_t args[9] = { RemoteEvents::Teleport, g_selectedPlayer.id, 1, -1, 1, locations[g_temp.teleport_location].id, 0,0,0 };
 						g_pointers->m_trigger_script_event(true, args, 9, 1 << g_selectedPlayer.id);
 					}QUEUE_JOB_END_CLAUSE
 				}
