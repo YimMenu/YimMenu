@@ -25,7 +25,7 @@ namespace big
 		static bool get_event_data(int32_t eventGroup, int32_t eventIndex, int64_t* args, uint32_t argCount);
 		static void error_screen(char* entryHeader, char* entryLine1, int instructionalKey, char* entryLine2, BOOL p4, Any p5, Any* p6, Any* p7, BOOL background);
 		static bool increment_stat_event(uint64_t net_event_struct, CNetGamePlayer* sender, int64_t a3);
-		static bool script_event_handler(std::int64_t NetEventStruct, std::int64_t CNetGamePlayer);
+		static bool script_event_handler(std::int64_t NetEventStruct, CNetGamePlayer* net_game_player);
 		static bool send_net_info_to_lobby(rage::netPlayerData* local_player, int64_t a2, int64_t a3, DWORD* a4);
 	};
 

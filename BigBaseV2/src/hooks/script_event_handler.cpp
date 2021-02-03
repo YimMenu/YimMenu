@@ -6,10 +6,10 @@
 
 namespace big
 {
-	bool hooks::script_event_handler(std::int64_t NetEventStruct, std::int64_t CNetGamePlayer)
+	bool hooks::script_event_handler(std::int64_t NetEventStruct, CNetGamePlayer* net_game_player)
 	{
 		auto args = reinterpret_cast<std::int64_t*>(NetEventStruct + 0x70);
-		Player player = *reinterpret_cast<std::int8_t*>(CNetGamePlayer + 0x2D);
+		Player player = net_game_player->player_id;
 
 		int64_t hash = args[0];
 
@@ -35,6 +35,6 @@ namespace big
 				LOG(INFO) << "Arg #" << i << ": " << args[i];
 		}
 
-		return g_hooking->m_script_event_hook.get_original<decltype(&script_event_handler)>()(NetEventStruct, CNetGamePlayer);
+		return g_hooking->m_script_event_hook.get_original<decltype(&script_event_handler)>()(NetEventStruct, net_game_player);
 	}
 }
