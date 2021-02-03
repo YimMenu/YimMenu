@@ -61,11 +61,58 @@ namespace big
 
 			if (ImGui::TreeNode("Spoofing"))
 			{
-				if (ImGui::Checkbox("Spoof Online Rank", g_settings.options["spoof_rank"].get<bool*>()))
+				auto& spoof = g_settings.options["spoofing"];
+
+				if (ImGui::Checkbox("Spoof Name", spoof["name"]["enabled"].get<bool*>()))
+					g_settings.save();
+
+				std::string* sName = spoof["name"]["value"].get<std::string*>();
+				char name[20];
+				strcpy(name, sName->c_str());
+				if (ImGui::InputText("###input_name", name, sizeof(name)))
+				{
+					spoof["name"]["value"] = std::string(name);
+
+					g_settings.save();
+				}
+
+				ImGui::Separator();
+
+				if (ImGui::Checkbox("Spoof Online Rank", spoof["rank"]["enabled"].get<bool*>()))
 					g_settings.save();
 
 				ImGui::Text("Rank:");
-				if (ImGui::InputInt("##rank", (PINT)g_settings.options["rank"].get<int64_t*>(), 1, 50))
+				if (ImGui::InputInt("##rank", (PINT)spoof["rank"]["value"].get<int64_t*>(), 1, 50))
+					g_settings.save();
+
+				ImGui::Separator();
+
+				if (ImGui::Checkbox("Spoof IP Address", spoof["ip_address"]["enabled"].get<bool*>()))
+					g_settings.save();
+
+				ImGui::Text("IP Address:");
+				int ip_address[4];
+				ip_address[0] = spoof["ip_address"]["address"]["byte0"];
+				ip_address[1] = spoof["ip_address"]["address"]["byte1"];
+				ip_address[2] = spoof["ip_address"]["address"]["byte2"];
+				ip_address[3] = spoof["ip_address"]["address"]["byte3"];
+				if (ImGui::SliderInt4("###ip_address_spoof", ip_address, 0, 255))
+				{
+					spoof["ip_address"]["address"]["byte0"] = ip_address[0];
+					spoof["ip_address"]["address"]["byte1"] = ip_address[1];
+					spoof["ip_address"]["address"]["byte2"] = ip_address[2];
+					spoof["ip_address"]["address"]["byte3"] = ip_address[3];
+
+					g_settings.save();
+				}
+
+				ImGui::Separator();
+
+				if (ImGui::Checkbox("Spoof Rockstar ID", spoof["rockstar_id"]["enabled"].get<bool*>()))
+					g_settings.save();
+
+				ImGui::Text("Rockstar ID:");
+				if (ImGui::InputScalar("###rockstar_id_spoof", ImGuiDataType_U64, (PUINT64)spoof["rockstar_id"]["value"].get<uint64_t*>()))
 					g_settings.save();
 
 				ImGui::TreePop();
