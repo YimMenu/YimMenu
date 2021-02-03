@@ -39,6 +39,7 @@ namespace big
 		void delete_gun();
 		void gravity_gun();
 		void money_gun();
+		void repair_gun();
 		void vehicle_gun();
 
 		void replay_interface();
