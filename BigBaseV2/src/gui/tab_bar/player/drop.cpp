@@ -6,6 +6,16 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Drop"))
 		{
+			if (ImGui::Button("Drop RP"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id), true);
+
+					features::functions::create_ambient_rp(coords);
+				}QUEUE_JOB_END_CLAUSE
+			}
+
 			if (ImGui::Button("Drop Money (!)"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
