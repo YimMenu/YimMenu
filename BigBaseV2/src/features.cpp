@@ -18,6 +18,7 @@ namespace big
 		delete_gun();
 		gravity_gun();
 		money_gun();
+		repair_gun();
 		vehicle_gun();
 
 		// Tunable
