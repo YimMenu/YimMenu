@@ -126,9 +126,14 @@ namespace big
 
 	void gui::script_init()
 	{
+		g_custom_text->add_text(RAGE_JOAAT("LOADING_SPLAYER_L"), "Preparing for awesomeness.");
 		g_custom_text->add_text(RAGE_JOAAT("HUD_JOINING"), "Yim's Menu");
 		g_custom_text->add_text(RAGE_JOAAT("HUD_TRANSP"), "Transaction's fucked...");
 		g_custom_text->add_text(RAGE_JOAAT("HUD_QUITTING"), "Leaving are we?");
+
+		g_custom_text->add_text(RAGE_JOAAT("HUD_QUITRACE"), "Are you a pussy?");
+
+		g_custom_text->add_text(RAGE_JOAAT("HUD_SAVDNWARN"), "Rockstar crashed their toaster again...");
 
 		features::notify::above_map("Yim's Menu is ready.");
 	}
