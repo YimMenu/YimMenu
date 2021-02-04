@@ -23,6 +23,7 @@ namespace big
 
 		// New Hook Definitions
 		static bool get_event_data(int32_t eventGroup, int32_t eventIndex, int64_t* args, uint32_t argCount);
+		static const char* get_label_text(void* unk, const char* label);
 		static void error_screen(char* entryHeader, char* entryLine1, int instructionalKey, char* entryLine2, BOOL p4, Any p5, Any* p6, Any* p7, BOOL background);
 		static bool increment_stat_event(uint64_t net_event_struct, CNetGamePlayer* sender, int64_t a3);
 		static bool script_event_handler(std::int64_t NetEventStruct, CNetGamePlayer* net_game_player);
@@ -58,6 +59,7 @@ namespace big
 
 		// New Detour Hook Definitions
 		detour_hook m_get_event_data;
+		detour_hook m_get_label_text;
 		detour_hook m_error_screen_hook;
 		detour_hook m_increment_stat_hook;
 		detour_hook m_script_event_hook;

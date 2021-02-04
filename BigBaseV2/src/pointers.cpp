@@ -133,9 +133,14 @@ namespace big
 			m_ptr_to_handle = ptr.as<decltype(m_ptr_to_handle)>();
 		});
 
-		main_batch.add("Send Info To Lobby", "44 8D 47 78 48 8D 54 24 ? 48 8B CB E8", [this](memory::handle ptr)
+		main_batch.add("Send Net Info To Lobby", "44 8D 47 78 48 8D 54 24 ? 48 8B CB E8", [this](memory::handle ptr)
 		{
 			m_send_net_info_to_lobby = ptr.add(13).rip().as<PVOID>();
+		});
+
+		main_batch.add("Get Label Text", "75 ? E8 ? ? ? ? 8B 0D ? ? ? ? 65 48 8B 04 25 ? ? ? ? BA ? ? ? ? 48 8B 04 C8 8B 0C 02 D1 E9", [this](memory::handle ptr)
+		{
+			m_get_label_text = ptr.sub(19).as<decltype(m_get_label_text)>();
 		});
 			
 		main_batch.run(memory::module(nullptr));

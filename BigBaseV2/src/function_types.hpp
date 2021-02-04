@@ -13,6 +13,7 @@ namespace big::functions
 	using error_screen = void(char* entryHeader, char* entryLine1, int instructionalKey, char* entryLine2, BOOL p4, Any p5, Any* p6, Any* p7, BOOL background);
 	using increment_stat_event = bool(uint64_t net_event_struct, int64_t sender, int64_t a3);
 	using get_event_data = bool(int32_t eventGroup, int32_t eventIndex, int64_t* args, uint32_t argCount);
+	using get_label_text = const char*(void* unk, const char* label);
 	using get_player_name = char*(Player player);
 	using get_net_player = int(Player player);
 	using script_event_handler = bool(void* events, CNetGamePlayer* sourcePlayer, CNetGamePlayer* targetPlayer);

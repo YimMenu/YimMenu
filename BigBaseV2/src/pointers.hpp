@@ -40,6 +40,7 @@ namespace big
 
 		functions::error_screen* m_error_screen{};
 		functions::get_event_data* m_get_event_data{};
+		functions::get_label_text* m_get_label_text{};
 		functions::get_player_name* m_get_player_name{};
 		functions::get_net_player* m_get_net_game_player{};
 		functions::increment_stat_event* m_increment_stat_event{};
