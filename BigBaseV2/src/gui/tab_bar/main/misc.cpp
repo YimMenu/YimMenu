@@ -1,4 +1,5 @@
 #include "gui/tab_bar.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -21,6 +22,17 @@ namespace big
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
 					features::stats::unlock_achievements();
+				}QUEUE_JOB_END_CLAUSE
+			}
+
+			if (ImGui::Button("Max Character Stats"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					int character_index;
+					features::functions::get_active_character_slot(&character_index);
+
+					features::stats::max_stats(character_index);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
