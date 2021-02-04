@@ -124,10 +124,10 @@ namespace big
 				}
 
 				if (ImGui::Button("Enable All"))
-					features::functions::toggle_protections(true);
+					func::toggle_protections(true);
 				ImGui::SameLine();
 				if (ImGui::Button("Disable All"))
-					features::functions::toggle_protections(false);
+					func::toggle_protections(false);
 
 				ImGui::TreePop();
 			}

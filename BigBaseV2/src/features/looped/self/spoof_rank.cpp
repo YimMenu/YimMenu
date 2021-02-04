@@ -11,7 +11,7 @@ namespace big
 		{
 			QUEUE_JOB_BEGIN_CLAUSE()
 			{
-				features::functions::spoof_rank(g_settings.options["rank"].get<int>());
+				func::spoof_rank(g_settings.options["rank"].get<int>());
 			}QUEUE_JOB_END_CLAUSE
 		}
 	}

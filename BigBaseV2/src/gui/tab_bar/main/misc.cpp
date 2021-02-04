@@ -13,7 +13,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					features::functions::set_player_level(g_temp.set_level);
+					func::set_player_level(g_temp.set_level);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -30,7 +30,7 @@ namespace big
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
 					int character_index;
-					features::functions::get_active_character_slot(&character_index);
+					func::get_active_character_slot(&character_index);
 
 					features::stats::max_stats(character_index);
 				}QUEUE_JOB_END_CLAUSE

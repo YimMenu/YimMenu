@@ -3,6 +3,7 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "fiber_pool.hpp"
+#include "structs/lists.hpp"
 
 namespace big
 {
@@ -68,9 +69,11 @@ namespace big
 				{
 					if (ImGui::MenuItem(sessions[i].descr))
 					{
-						QUEUE_JOB_BEGIN_CLAUSE(= )
+						auto session = sessions[i];
+
+						QUEUE_JOB_BEGIN_CLAUSE(&)
 						{
-							features::functions::join_session_type(sessions[i]);
+							func::join_session_type(session);
 						}QUEUE_JOB_END_CLAUSE
 					}
 				}

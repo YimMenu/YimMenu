@@ -47,12 +47,12 @@ namespace big
 
 				if (ImGui::Button("Set Car Sell Value at 5 million"))
 				{
-					features::functions::set_car_sell_value((int)5e6);
+					func::set_car_sell_value((int)5e6);
 				}
 
 				if (ImGui::Button("Set Car Sell Value at 25 million"))
 				{
-					features::functions::set_car_sell_value((int)25e6);
+					func::set_car_sell_value((int)25e6);
 				}
 
 				ImGui::TreePop();

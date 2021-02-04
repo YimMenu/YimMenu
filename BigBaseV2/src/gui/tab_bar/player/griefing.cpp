@@ -12,7 +12,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					features::functions::cage_ped(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id));
+					func::cage_ped(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_selectedPlayer.id));
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -22,7 +22,7 @@ namespace big
 				{
 					QUEUE_JOB_BEGIN_CLAUSE()
 					{
-						features::functions::set_player_bounty(g_selectedPlayer.id);
+						func::set_player_bounty(g_selectedPlayer.id);
 					}QUEUE_JOB_END_CLAUSE
 				}
 

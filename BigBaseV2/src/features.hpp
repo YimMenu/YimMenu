@@ -1,6 +1,7 @@
 #pragma once
 #include "common.hpp"
 #include "fiber_pool.hpp"
+#include "gta/joaat.hpp"
 #include "structs/lists.hpp"
 #include "structs/player.hpp"
 #include "structs/temp.hpp"

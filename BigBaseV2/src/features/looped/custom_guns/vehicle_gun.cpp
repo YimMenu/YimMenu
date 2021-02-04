@@ -26,16 +26,16 @@ namespace big
 				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, 24))
 				{
 					Vector3 location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player, 0.f, 10.f, 0.f);
-					Vehicle veh = functions::spawn_vehicle(
+					Vehicle veh = func::spawn_vehicle(
 						"bus",
 						location,
 						ENTITY::GET_ENTITY_HEADING(player)
 					);
 
 					Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
-					float pitch = functions::deg_to_rad(rot.x); // vertical
+					float pitch = func::deg_to_rad(rot.x); // vertical
 					//float roll = rot.y;
-					float yaw = functions::deg_to_rad(rot.z + 90); // horizontal
+					float yaw = func::deg_to_rad(rot.z + 90); // horizontal
 
 					Vector3 velocity;
 					float dist = 150.f;

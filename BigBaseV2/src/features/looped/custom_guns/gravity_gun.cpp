@@ -34,7 +34,7 @@ namespace big
 				// Attack RELEASED
 				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 24) && entity == 0)
 				{
-					if (functions::raycast_entity(&entity))
+					if (func::raycast_entity(&entity))
 					{
 						if (ENTITY::IS_ENTITY_A_PED(entity) && PED::IS_PED_A_PLAYER(entity))
 						{
@@ -45,7 +45,7 @@ namespace big
 						else
 						{
 							other = ENTITY::GET_ENTITY_COORDS(entity, true);
-							dist = (float)functions::distance_between_vectors(location, other);
+							dist = (float)func::distance_between_vectors(location, other);
 
 							if (dist > 500)
 							{
@@ -55,7 +55,7 @@ namespace big
 							}
 							else
 							{
-								functions::take_control_of_entity(entity);
+								func::take_control_of_entity(entity);
 
 								if (ENTITY::IS_ENTITY_A_PED(entity) && !PED::IS_PED_RAGDOLL(entity)) TASK::SET_HIGH_FALL_TASK(entity, 0, 0, 0);
 
@@ -78,16 +78,16 @@ namespace big
 					if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 15))
 						dist += 5;
 
-					functions::take_control_of_entity(entity);
+					func::take_control_of_entity(entity);
 
 					ENTITY::SET_ENTITY_COLLISION(entity, false, false);
 
 					other = ENTITY::GET_ENTITY_COORDS(entity, true);
 
 					Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
-					float pitch = functions::deg_to_rad(rot.x); // vertical
+					float pitch = func::deg_to_rad(rot.x); // vertical
 					// float roll = rot.y;
-					float yaw = functions::deg_to_rad(rot.z + 90); // horizontal
+					float yaw = func::deg_to_rad(rot.z + 90); // horizontal
 
 					Vector3 velocity;
 
@@ -101,7 +101,7 @@ namespace big
 			}
 			else if (entity != 0)
 			{
-				functions::take_control_of_entity(entity);
+				func::take_control_of_entity(entity);
 
 				ENTITY::SET_ENTITY_COLLISION(entity, true, true);
 				ENTITY::SET_ENTITY_ALPHA(entity, 255, 0);
@@ -111,11 +111,5 @@ namespace big
 				features::notify::above_map("Released entity.");
 			}
 		}
-	}
-
-	float deg_to_rad(float deg)
-	{
-		double radian = (3.14159265359 / 180) * deg;
-		return (float)radian;
 	}
 }

@@ -25,11 +25,11 @@ namespace big
 				{
 					Entity entity;
 
-					if (functions::raycast_entity(&entity))
+					if (func::raycast_entity(&entity))
 					{
 						if (ENTITY::IS_ENTITY_A_PED(entity))
 						{
-							functions::cage_ped(entity);
+							func::cage_ped(entity);
 						}
 					}
 					else features::notify::above_map("No entity found.");

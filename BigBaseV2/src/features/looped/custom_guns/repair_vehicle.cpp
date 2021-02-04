@@ -25,7 +25,7 @@ namespace big
 				{
 					Entity entity;
 
-					if (functions::raycast_entity(&entity))
+					if (func::raycast_entity(&entity))
 					{
 						if (ENTITY::IS_ENTITY_A_VEHICLE(entity))
 						{
@@ -38,7 +38,7 @@ namespace big
 							notify::above_map("Entity is not a vehicle.");
 						}
 					}
-					else features::notify::above_map("No entity found.");
+					else notify::above_map("No entity found.");
 				}
 			}
 		}

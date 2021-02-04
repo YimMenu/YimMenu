@@ -1,4 +1,5 @@
 #pragma once
+
 namespace big
 {
 	struct custom_gun {

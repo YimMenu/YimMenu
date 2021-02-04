@@ -25,7 +25,7 @@ namespace big
 				{
 					Entity entity;
 
-					if (functions::raycast_entity(&entity))
+					if (func::raycast_entity(&entity))
 					{
 						if (ENTITY::IS_ENTITY_A_PED(entity) && PED::IS_PED_A_PLAYER(entity))
 						{
@@ -35,7 +35,7 @@ namespace big
 						{
 							Vector3 player = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), true);
 							Vector3 entLoc = ENTITY::GET_ENTITY_COORDS(entity, true);
-							double dist = functions::distance_between_vectors(player, entLoc);
+							double dist = func::distance_between_vectors(player, entLoc);
 
 							if (dist > 500)
 							{
@@ -43,9 +43,9 @@ namespace big
 							}
 							else
 							{
-								if (functions::take_control_of_entity(entity))
+								if (func::take_control_of_entity(entity))
 								{
-									functions::delete_entity(entity);
+									func::delete_entity(entity);
 								}
 								else notify::above_map("~r~Failed to take control of entity.");
 							}

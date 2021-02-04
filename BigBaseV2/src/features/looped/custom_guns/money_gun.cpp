@@ -32,7 +32,7 @@ namespace big
 
 					QUEUE_JOB_BEGIN_CLAUSE(&)
 					{
-						if (functions::raycast_entity(&entity))
+						if (func::raycast_entity(&entity))
 						{
 							if (!ENTITY::IS_ENTITY_A_PED(entity) || !PED::IS_PED_A_PLAYER(entity))
 							{
@@ -43,7 +43,7 @@ namespace big
 
 							Vector3 location = ENTITY::GET_ENTITY_COORDS(entity, true);
 
-							features::functions::create_ambient_money(location, rand() % 500 + 2000);
+							func::create_ambient_money(location, rand() % 500 + 2000);
 
 							script::get_current()->yield(33ms);
 

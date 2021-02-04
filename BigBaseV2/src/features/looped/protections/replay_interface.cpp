@@ -28,10 +28,10 @@ namespace big
 					ENTITY::IS_ENTITY_ATTACHED_TO_ENTITY(PED::GET_VEHICLE_PED_IS_IN(player, true), ent)
 				)
 			)
-				functions::delete_entity(ent);
+				func::delete_entity(ent);
 
 			if (protections["cage"] && ENTITY::GET_ENTITY_MODEL(ent) == RAGE_JOAAT("prop_gold_cont_01"))
-				functions::delete_entity(ent);
+				func::delete_entity(ent);
 		}
 	}
 }
