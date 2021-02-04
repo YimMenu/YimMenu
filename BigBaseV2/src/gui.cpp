@@ -11,6 +11,7 @@
 #include "renderer.hpp"
 #include "script.hpp"
 #include "features/notify.hpp"
+#include "features/custom_text.hpp"
 
 #include "gui/window.hpp"
 
@@ -125,6 +126,10 @@ namespace big
 
 	void gui::script_init()
 	{
+		g_custom_text->add_text(RAGE_JOAAT("HUD_JOINING"), "Yim's Menu");
+		g_custom_text->add_text(RAGE_JOAAT("HUD_TRANSP"), "Transaction's fucked...");
+		g_custom_text->add_text(RAGE_JOAAT("HUD_QUITTING"), "Leaving are we?");
+
 		features::notify::above_map("Yim's Menu is ready.");
 	}
 
