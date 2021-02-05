@@ -30,7 +30,7 @@ namespace big
 
 				bool friendInLobby = false;
 
-				for (auto& pair : g_players)
+				for (auto pair : g_players)
 				{
 					player player = pair.second;
 
@@ -48,7 +48,7 @@ namespace big
 
 				if (!friendInLobby)
 				{
-					ImGui::TextColored({ 180,180,180,255 }, "	No friends in current lobby.");
+					ImGui::TextColored({ 180,180,180,255 }, "No friends in\ncurrent lobby.");
 				}
 
 				ImGui::Indent();
@@ -60,7 +60,7 @@ namespace big
 			{
 				ImGui::Unindent();
 
-				for (auto& pair : g_players)
+				for (auto pair : g_players)
 				{
 					player player = pair.second;
 
