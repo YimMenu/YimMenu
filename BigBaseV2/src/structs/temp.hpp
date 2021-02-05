@@ -21,6 +21,9 @@ namespace big
 
 		int character_slot = 0;
 
+		int friend_count = 0;
+		int player_count = 0;
+
 		int set_level = 0;
 		int spoofed_rank = 0;
 		int teleport_location = 0;

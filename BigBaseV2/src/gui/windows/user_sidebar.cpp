@@ -24,13 +24,15 @@ namespace big
 
 			ImGui::Separator();
 
-			if (ImGui::TreeNode("Friends"))
+			char title[64];
+			sprintf(title, "Friends (%d)###friend_lists", g_temp.friend_count);
+			if (ImGui::TreeNode(title))
 			{
 				ImGui::Unindent();
 
 				bool friendInLobby = false;
 
-				for (auto pair : g_players)
+				for (auto& pair : g_players)
 				{
 					player player = pair.second;
 
@@ -56,11 +58,12 @@ namespace big
 				ImGui::Separator();
 			}
 
-			if (ImGui::TreeNode("Players"))
+			sprintf(title, "Players (%d)###player_lists", g_temp.player_count);
+			if (ImGui::TreeNode(title))
 			{
 				ImGui::Unindent();
 
-				for (auto pair : g_players)
+				for (auto& pair : g_players)
 				{
 					player player = pair.second;
 

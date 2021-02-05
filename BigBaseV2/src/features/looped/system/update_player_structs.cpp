@@ -37,12 +37,19 @@ namespace big
 
 		std::sort(std::begin(players), std::end(players));
 
+		g_temp.friend_count = 0;
+		g_temp.player_count = 0;
 		g_players.clear();
 		for (uint8_t i = 0; i < 32; i++)
 		{
 			player player = players[i];
 
 			if (player.id == PLAYER::PLAYER_ID()) g_player = player;
+			else if (player.is_online)
+				if (player.is_friend)
+					g_temp.friend_count++;
+				else
+					g_temp.player_count++;
 
 			g_players.emplace(player.id, player);
 		}
