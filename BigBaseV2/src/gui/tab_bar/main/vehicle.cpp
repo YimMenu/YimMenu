@@ -62,9 +62,10 @@ namespace big
 					{
 						Vector3 location = HUD::GET_BLIP_COORDS(blipHandle);
 						// Make sure the AI can reach this
-						location = teleport::get_ground_at_3dcoord(location);
-
-						TASK::TASK_VEHICLE_DRIVE_TO_COORD(PLAYER::PLAYER_PED_ID(), veh, location.x, location.y, location.z, 35.f, 0, veh, 2883620, 10.f, true);
+						if (teleport::load_ground_at_3dcoord(location))
+							TASK::TASK_VEHICLE_DRIVE_TO_COORD(PLAYER::PLAYER_PED_ID(), veh, location.x, location.y, location.z, 35.f, 0, veh, 2883620, 10.f, true);
+						else
+							notify::above_map("Unable to find ground at location.");
 					}
 				}QUEUE_JOB_END_CLAUSE
 			}
@@ -73,11 +74,13 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
+					Ped player = PLAYER::PLAYER_PED_ID();
 
-					Vector3 location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(player, false);
 
-					TASK::TASK_VEHICLE_DRIVE_TO_COORD(PLAYER::PLAYER_PED_ID(), veh, location.x, location.y, location.z, 35.f, 0, veh, 2883620, 10.f, true);
+					Vector3 location = ENTITY::GET_ENTITY_COORDS(player, true);
+
+					TASK::TASK_VEHICLE_DRIVE_TO_COORD(player, veh, location.x, location.y, location.z, 35.f, 0, veh, 2883620, 10.f, true);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
