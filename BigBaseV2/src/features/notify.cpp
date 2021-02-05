@@ -1,8 +1,9 @@
 #include "notify.hpp"
+#include "natives.hpp"
 
-namespace big::features::notify
+namespace big
 {
-	void above_map(const char* text)
+	void notify::above_map(const char* text)
 	{
 		HUD::SET_TEXT_OUTLINE();
 		HUD::BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");

@@ -21,7 +21,7 @@ namespace big
 			strcat(report, PLAYER::GET_PLAYER_NAME(sender_id));
 			strcat(report, "</C>");
 
-			features::notify::above_map(report);
+			notify::above_map(report);
 
 			return true;
 		}

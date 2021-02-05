@@ -1,16 +1,16 @@
-#include "features.hpp"
+#include "features/custom_guns.hpp"
 
 namespace big
 {
 	static const int controls[] = { 14, 15, 24 };
 
-	void features::vehicle_gun()
+	void custom_guns::vehicle_gun()
 	{
 		bool bVehicleGun = g_settings.options["custom_gun"]["type"] == 4;
 
 		if (bVehicleGun)
 		{
-			Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
+			Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id);
 
 			Hash currWeapon;
 			WEAPON::GET_CURRENT_PED_WEAPON(player, &currWeapon, 1);
@@ -19,7 +19,7 @@ namespace big
 
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 25))
 			{
-				PLAYER::DISABLE_PLAYER_FIRING(g_playerId, true);
+				PLAYER::DISABLE_PLAYER_FIRING(g_player.id, true);
 				for (int control : controls)
 					PAD::DISABLE_CONTROL_ACTION(0, control, true);
 
@@ -43,8 +43,6 @@ namespace big
 					velocity.x = dist * cos(pitch) * cos(yaw);
 					velocity.y = dist * sin(yaw) * cos(pitch);
 					velocity.z = dist * sin(pitch);
-
-					script::get_current()->yield();
 
 					ENTITY::SET_ENTITY_ROTATION(veh, rot.x, rot.y, rot.z, 2, 1);
 					ENTITY::SET_ENTITY_VELOCITY(veh, velocity.x, velocity.y, velocity.z);

@@ -10,7 +10,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					Entity player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
+					Entity player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id);
 
 					ENTITY::SET_ENTITY_HEALTH(player, ENTITY::GET_ENTITY_MAX_HEALTH(player), 0);
 				}QUEUE_JOB_END_CLAUSE
@@ -20,7 +20,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					ENTITY::SET_ENTITY_HEALTH(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), 0, 0);
+					ENTITY::SET_ENTITY_HEALTH(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id), 0, 0);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -79,18 +79,18 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					PLAYER::CLEAR_PLAYER_WANTED_LEVEL(g_playerId);
+					PLAYER::CLEAR_PLAYER_WANTED_LEVEL(g_player.id);
 				}QUEUE_JOB_END_CLAUSE
 			}
 			if (ImGui::Button("Cops Ignore"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					if (PLAYER::GET_PLAYER_WANTED_LEVEL(g_playerId) > 0)
+					if (PLAYER::GET_PLAYER_WANTED_LEVEL(g_player.id) > 0)
 					{
-						PLAYER::CLEAR_PLAYER_WANTED_LEVEL(g_playerId);
+						PLAYER::CLEAR_PLAYER_WANTED_LEVEL(g_player.id);
 					}
-					PLAYER::SET_POLICE_IGNORE_PLAYER(g_playerId, true);
+					PLAYER::SET_POLICE_IGNORE_PLAYER(g_player.id, true);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -103,8 +103,8 @@ namespace big
 				{
 					QUEUE_JOB_BEGIN_CLAUSE(= )
 					{
-						PLAYER::SET_PLAYER_WANTED_LEVEL(g_playerId, g_temp.wanted_level, true);
-						PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(g_playerId, true);
+						PLAYER::SET_PLAYER_WANTED_LEVEL(g_player.id, g_temp.wanted_level, true);
+						PLAYER::SET_PLAYER_WANTED_LEVEL_NOW(g_player.id, true);
 					}QUEUE_JOB_END_CLAUSE
 				}
 			}

@@ -1,9 +1,9 @@
 #include "functions.hpp"
-#include "features.hpp"
 #include "gta/joaat.hpp"
 #include "gta/levels.hpp"
 #include "pointers.hpp"
 #include "natives.hpp"
+#include "notify.hpp"
 #include "script.hpp"
 #include "script_global.hpp"
 
@@ -194,7 +194,7 @@ namespace big
 			}
 			if (!STREAMING::HAS_MODEL_LOADED(hash))
 			{
-				features::notify::above_map("~r~Failed to spawn model, did you give an incorrect model?");
+				notify::above_map("~r~Failed to spawn model, did you give an incorrect model?");
 
 				return -1;
 			}

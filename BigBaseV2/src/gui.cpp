@@ -135,7 +135,7 @@ namespace big
 
 		g_custom_text->add_text(RAGE_JOAAT("HUD_SAVDNWARN"), "Rockstar crashed their toaster again...");
 
-		features::notify::above_map("Yim's Menu is ready.");
+		notify::above_map("Yim's Menu is ready.");
 	}
 
 	void gui::script_on_tick()

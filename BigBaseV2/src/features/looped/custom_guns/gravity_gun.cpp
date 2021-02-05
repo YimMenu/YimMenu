@@ -1,4 +1,5 @@
-#include "features.hpp"
+#include "features/custom_guns.hpp"
+#include "features/notify.hpp"
 
 namespace big
 {
@@ -10,7 +11,7 @@ namespace big
 	static const int scroll = 2;
 	static const int controls[] = { 14, 15, 24 };
 
-	void features::gravity_gun()
+	void custom_guns::gravity_gun()
 	{
 		bool bGravityGun = g_settings.options["custom_gun"]["type"] == 2;
 		double multiplier = g_settings.options["custom_gun"]["gravity_velocity_multiplier"];
@@ -18,18 +19,18 @@ namespace big
 		if (bGravityGun)
 		{
 			Hash currWeapon;
-			WEAPON::GET_CURRENT_PED_WEAPON(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), &currWeapon, 1);
+			WEAPON::GET_CURRENT_PED_WEAPON(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id), &currWeapon, 1);
 
 			if (currWeapon != RAGE_JOAAT("weapon_pistol") && currWeapon != RAGE_JOAAT("weapon_pistol_mk2")) return;
 
 			// ZOOMED IN
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 25))
 			{
-				PLAYER::DISABLE_PLAYER_FIRING(g_playerId, true);
+				PLAYER::DISABLE_PLAYER_FIRING(g_player.id, true);
 				for (int control : controls)
 					PAD::DISABLE_CONTROL_ACTION(0, control, true);
 
-				location = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), true);
+				location = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id), true);
 
 				// Attack RELEASED
 				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 24) && entity == 0)
@@ -59,7 +60,7 @@ namespace big
 
 								if (ENTITY::IS_ENTITY_A_PED(entity) && !PED::IS_PED_RAGDOLL(entity)) TASK::SET_HIGH_FALL_TASK(entity, 0, 0, 0);
 
-								features::notify::above_map("Selected entity at crosshair.");
+								notify::above_map("Selected entity at crosshair.");
 							}
 						}
 					}
@@ -67,7 +68,7 @@ namespace big
 					{
 						entity = 0;
 
-						features::notify::above_map("No entity found.");
+						notify::above_map("No entity found.");
 					}
 				}
 
@@ -108,7 +109,7 @@ namespace big
 
 				entity = 0;
 
-				features::notify::above_map("Released entity.");
+				notify::above_map("Released entity.");
 			}
 		}
 	}

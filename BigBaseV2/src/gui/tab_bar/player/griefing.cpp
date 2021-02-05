@@ -1,4 +1,6 @@
 #include "gui/tab_bar.hpp"
+#include "features/functions.hpp"
+#include "features/notify.hpp"
 #include "pointers.hpp"
 #include "script_global.hpp"
 
@@ -41,7 +43,7 @@ namespace big
 						}
 						else
 						{
-							features::notify::above_map("You aren't the host");
+							notify::above_map("You aren't the host");
 						}
 					}QUEUE_JOB_END_CLAUSE
 				}

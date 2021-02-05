@@ -1,9 +1,7 @@
 #pragma once
-#include "natives.hpp"
-#include "script.hpp"
-#include "fiber_pool.hpp"
+#include "common.hpp"
 
-namespace big::features
+namespace big
 {
 	class stats
 	{

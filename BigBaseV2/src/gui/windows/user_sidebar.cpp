@@ -16,16 +16,10 @@ namespace big
 
 			ImGui::TextColored({ 255,255,255,255 }, "YOU:");
 
-			for (uint8_t i = 0; i < 32; i++)
+			if (ImGui::Button(g_player.name, vecButtonWidth))
 			{
-				player player = g_players[i];
-
-				if (player.id == g_playerId) g_currentPlayer = player;
-			}
-			if (ImGui::Button(g_currentPlayer.name, vecButtonWidth))
-			{
-				g_selectedPlayer = g_currentPlayer;
-				g_selectedPlayerId = g_currentPlayer.id;
+				g_selectedPlayer = g_player;
+				g_temp.windows.player = true;
 			}
 
 			ImGui::Separator();
@@ -36,9 +30,9 @@ namespace big
 
 				bool friendInLobby = false;
 
-				for (int i = 0; i < 32; i++)
+				for (auto& pair : g_players)
 				{
-					player player = g_players[i];
+					player player = pair.second;
 
 					if (player.is_friend && player.is_online)
 					{
@@ -47,7 +41,7 @@ namespace big
 						if (ImGui::Button(player.name, vecButtonWidth))
 						{
 							g_selectedPlayer = player;
-							g_selectedPlayerId = player.id;
+							g_temp.windows.player = true;
 						}
 					}
 				}
@@ -66,16 +60,16 @@ namespace big
 			{
 				ImGui::Unindent();
 
-				for (int i = 0; i < 32; i++)
+				for (auto& pair : g_players)
 				{
-					player player = g_players[i];
+					player player = pair.second;
 
-					if (!player.is_friend && player.is_online && player.id != g_playerId)
+					if (!player.is_friend && player.is_online && player.id != g_player.id)
 					{
 						if (ImGui::Button(player.name, vecButtonWidth))
 						{
 							g_selectedPlayer = player;
-							g_selectedPlayerId = player.id;
+							g_temp.windows.player = true;
 						}
 					}
 				}

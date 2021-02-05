@@ -1,9 +1,9 @@
-#include "features.hpp"
+#include "features/tunables.hpp"
 #include "script_global.hpp"
 
 namespace big
 {
-	void features::no_idle_kick()
+	void tunables::no_idle_kick()
 	{
 		bool bNoIdleKick = g_settings.options["no_idle_kick"].get<bool>();
 

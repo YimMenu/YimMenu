@@ -1,4 +1,5 @@
 #include "gui/tab_bar.hpp"
+#include "features/functions.hpp"
 
 namespace big
 {

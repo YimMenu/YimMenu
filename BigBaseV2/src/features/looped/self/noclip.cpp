@@ -1,4 +1,6 @@
-#include "features.hpp"
+#include "features/self.hpp"
+#include "features/functions.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -8,13 +10,13 @@ namespace big
 
 	static bool bLastNoClip;
 
-	void features::noclip()
+	void self::noclip()
 	{
 		bool bNoclip = g_settings.options["noclip"]["enabled"];
 		float fHorizontal = g_settings.options["noclip"]["horizontal"];
 		float fVertical = g_settings.options["noclip"]["vertical"];
 
-		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
+		Entity ent = PLAYER::PLAYER_PED_ID();
 		bool inVehicle = PED::IS_PED_IN_ANY_VEHICLE(ent, true);
 		if (inVehicle) ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
 

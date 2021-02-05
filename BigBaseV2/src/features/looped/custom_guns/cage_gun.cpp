@@ -1,23 +1,24 @@
-#include "features.hpp"
+#include "features/custom_guns.hpp"
+#include "features/notify.hpp"
 
 namespace big
 {
 	static const int controls[] = { 14, 15, 24 };
 
-	void features::cage_gun()
+	void custom_guns::cage_gun()
 	{
 		bool bCageGun = g_settings.options["custom_gun"]["type"] == 5;
 
 		if (bCageGun)
 		{
 			Hash currWeapon;
-			WEAPON::GET_CURRENT_PED_WEAPON(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), &currWeapon, 1);
+			WEAPON::GET_CURRENT_PED_WEAPON(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id), &currWeapon, 1);
 
 			if (currWeapon != RAGE_JOAAT("weapon_pistol") && currWeapon != RAGE_JOAAT("weapon_pistol_mk2")) return;
 
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 25))
 			{
-				PLAYER::DISABLE_PLAYER_FIRING(g_playerId, true);
+				PLAYER::DISABLE_PLAYER_FIRING(g_player.id, true);
 				for (int control : controls)
 					PAD::DISABLE_CONTROL_ACTION(0, control, true);
 
@@ -32,7 +33,7 @@ namespace big
 							func::cage_ped(entity);
 						}
 					}
-					else features::notify::above_map("No entity found.");
+					else notify::above_map("No entity found.");
 				}
 			}
 		}

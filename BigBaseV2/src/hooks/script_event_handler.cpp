@@ -1,8 +1,9 @@
 #include "hooking.hpp"
 #include "features.hpp"
+#include "features/notify.hpp"
+#include "gta/enums.hpp"
 #include "pointers.hpp"
 #include "natives.hpp"
-#include "gta/enums.hpp"
 
 namespace big
 {
@@ -21,7 +22,7 @@ namespace big
 				char join_msg[128];
 				sprintf(join_msg, "<C>%s</C> is joining...", g_pointers->m_get_player_name((Player)args[1]));
 
-				features::notify::above_map(join_msg);
+				notify::above_map(join_msg);
 			}
 		}
 

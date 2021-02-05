@@ -1,12 +1,13 @@
-#include "features.hpp"
+#include "features/sys.hpp"
+#include "fiber_pool.hpp"
 
 namespace big
 {
-	void features::update_screen_sizes()
+	void sys::update_screen_sizes()
 	{
-		QUEUE_JOB_BEGIN_CLAUSE()
+		g_fiber_pool->queue_job([]
 		{
 			GRAPHICS::_GET_ACTIVE_SCREEN_RESOLUTION(&x, &y);
-		}QUEUE_JOB_END_CLAUSE
+		});
 	}
 }

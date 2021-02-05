@@ -1,8 +1,11 @@
 #include "teleport.hpp"
+#include "natives.hpp"
+#include "notify.hpp"
+#include "script.hpp"
 
-namespace big::features::teleport
+namespace big
 {
-	bool load_ground_at_3dcoord(Vector3 location)
+	bool teleport::load_ground_at_3dcoord(Vector3 location)
 	{
 		float groundZ;
 		uint8_t attempts = 10;
@@ -25,7 +28,7 @@ namespace big::features::teleport
 		return false;
 	}
 
-	Vector3 get_ground_at_3dcoord(Vector3 location)
+	Vector3 teleport::get_ground_at_3dcoord(Vector3 location)
 	{
 		float groundZ;
 		uint8_t attempts = 10;
@@ -54,7 +57,7 @@ namespace big::features::teleport
 		return location;
 	}
 
-	bool bring_blip(int blipSprite, int blipColor, int flag)
+	bool teleport::bring_blip(int blipSprite, int blipColor, int flag)
 	{
 		Blip blipHandle = HUD::GET_FIRST_BLIP_INFO_ID(blipSprite);
 		while (HUD::DOES_BLIP_EXIST(blipHandle) && (blipColor != -1 && HUD::GET_BLIP_COLOUR(blipHandle) != blipColor))
@@ -78,14 +81,14 @@ namespace big::features::teleport
 			script::get_current()->yield();
 		}
 
-		Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
+		Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id);
 		location = ENTITY::GET_ENTITY_COORDS(player, true);
 
 		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, true);
 
 		if (!VEHICLE::ARE_ANY_VEHICLE_SEATS_FREE(veh))
 		{
-			features::notify::above_map("The vehicle is full.");
+			notify::above_map("The vehicle is full.");
 			ENTITY::SET_ENTITY_COORDS(player, location.x, location.y, location.z + 3.f, 0, 0, 0, true);
 		}
 		else
@@ -96,9 +99,9 @@ namespace big::features::teleport
 		return true;
 	}
 
-	bool teleport_to_blip(int blipSprite, int blipColor)
+	bool teleport::teleport_to_blip(int blipSprite, int blipColor)
 	{
-		Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
+		Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id);
 
 		Blip blipHandle = HUD::GET_FIRST_BLIP_INFO_ID(blipSprite);
 		while (HUD::DOES_BLIP_EXIST(blipHandle) && (blipColor != -1 && HUD::GET_BLIP_COLOUR(blipHandle) != blipColor))
@@ -117,13 +120,13 @@ namespace big::features::teleport
 		return true;
 	}
 
-	void teleport_into_player_vehicle(Player player)
+	void teleport::teleport_into_player_vehicle(Player player)
 	{
 		Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 
 		if (!PED::IS_PED_IN_ANY_VEHICLE(target, true))
 		{
-			features::notify::above_map("This player is not in a vehicle right now.");
+			notify::above_map("This player is not in a vehicle right now.");
 
 			return;
 		}
@@ -133,14 +136,14 @@ namespace big::features::teleport
 		for (uint8_t i = 0; !load_ground_at_3dcoord(location); i++)
 			if (i == 5) break;
 
-		Ped current = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
+		Ped current = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id);
 
 		Vehicle veh;
 		for (veh = 0; !veh; veh = PED::GET_VEHICLE_PED_IS_IN(target, false))
 		{
 			if (!PED::IS_PED_IN_ANY_VEHICLE(target, true))
 			{
-				features::notify::above_map("Player is no longer in a vehicle.");
+				notify::above_map("Player is no longer in a vehicle.");
 
 				return;
 			}
@@ -161,20 +164,20 @@ namespace big::features::teleport
 		PED::SET_PED_INTO_VEHICLE(current, veh, seatIndex);
 	}
 
-	void teleport_to_player(Player player)
+	void teleport::teleport_to_player(Player player)
 	{
 		Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 
 		Vector3 location = ENTITY::GET_ENTITY_COORDS(target, true);
 		load_ground_at_3dcoord(location);
 
-		PED::SET_PED_COORDS_KEEP_VEHICLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), location.x, location.y, location.z);
+		PED::SET_PED_COORDS_KEEP_VEHICLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id), location.x, location.y, location.z);
 	}
 
 	// Teleport the player (with/without car to a waypoint)
-	bool waypoint()
+	bool teleport::waypoint()
 	{
-		Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
+		Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id);
 
 		Blip blipHandle = HUD::GET_FIRST_BLIP_INFO_ID(8);
 		if (!HUD::DOES_BLIP_EXIST(blipHandle)) return false;

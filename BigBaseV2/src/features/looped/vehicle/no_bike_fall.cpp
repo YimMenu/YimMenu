@@ -1,14 +1,17 @@
-#include "features.hpp"
+#include "features/vehicle.hpp"
+#include "natives.hpp"
 
 namespace big
 {
-	void features::no_bike_fall()
+	static bool bLastNoBikeFall = false;
+
+	void vehicle::no_bike_fall()
 	{
 		bool bNoBikeFall = g_settings.options["no_bike_fall"].get<bool>();
 
-		QUEUE_JOB_BEGIN_CLAUSE(= )
-		{
+		if (bNoBikeFall || bLastNoBikeFall != bNoBikeFall)
 			PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(PLAYER::PLAYER_PED_ID(), bNoBikeFall);
-		}QUEUE_JOB_END_CLAUSE
+
+		bLastNoBikeFall = bNoBikeFall;
 	}
 }

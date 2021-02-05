@@ -1,7 +1,14 @@
 #pragma once
-#include "natives.hpp"
+#include "common.hpp"
 
-namespace big::features::notify
+namespace big
 {
-	void above_map(const char* text);
+	class notify
+	{
+	public:
+		static void above_map(const char* text);
+
+	private:
+
+	};
 }

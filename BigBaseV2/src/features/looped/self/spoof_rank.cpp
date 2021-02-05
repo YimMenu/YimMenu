@@ -1,18 +1,14 @@
-#include "features.hpp"
+#include "features/self.hpp"
+#include "features/functions.hpp"
 #include "script_global.hpp"
 
 namespace big
 {
-	void features::spoof_rank()
+	void self::spoof_rank()
 	{
 		bool bSpoofRank = g_settings.options["spoof_rank"].get<bool>();
 
 		if (bSpoofRank)
-		{
-			QUEUE_JOB_BEGIN_CLAUSE()
-			{
-				func::spoof_rank(g_settings.options["rank"].get<int>());
-			}QUEUE_JOB_END_CLAUSE
-		}
+			func::spoof_rank(g_settings.options["rank"].get<int>());
 	}
 }

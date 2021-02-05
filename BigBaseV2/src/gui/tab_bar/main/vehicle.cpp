@@ -1,4 +1,6 @@
 #include "gui/tab_bar.hpp"
+#include "features/notify.hpp"
+#include "features/teleport.hpp"
 #include "gta_util.hpp"
 
 namespace big
@@ -41,7 +43,7 @@ namespace big
 
 			ImGui::Separator();
 
-			ImGui::Checkbox("Handling", &g_handling_window);
+			ImGui::Checkbox("Handling", &g_temp.windows.handling);
 
 			ImGui::Separator();
 
@@ -53,14 +55,14 @@ namespace big
 					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
 
 					if (!veh)
-						features::notify::above_map("~r~Make sure you are in a vehicle.");
+						notify::above_map("~r~Make sure you are in a vehicle.");
 					else if (!HUD::DOES_BLIP_EXIST(blipHandle))
-						features::notify::above_map("~r~Waypoint needs to be set.");
+						notify::above_map("~r~Waypoint needs to be set.");
 					else
 					{
 						Vector3 location = HUD::GET_BLIP_COORDS(blipHandle);
 						// Make sure the AI can reach this
-						location = features::teleport::get_ground_at_3dcoord(location);
+						location = teleport::get_ground_at_3dcoord(location);
 
 						TASK::TASK_VEHICLE_DRIVE_TO_COORD(PLAYER::PLAYER_PED_ID(), veh, location.x, location.y, location.z, 35.f, 0, veh, 2883620, 10.f, true);
 					}
@@ -89,13 +91,13 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), false);
+					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id), false);
 
 					if (veh)
 					{
 						VEHICLE::SET_VEHICLE_FIXED(veh);
 
-						features::notify::above_map("Vehicle has been repaired.");
+						notify::above_map("Vehicle has been repaired.");
 					}
 				}QUEUE_JOB_END_CLAUSE
 			}
@@ -104,13 +106,13 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), false);
+					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id), false);
 
 					if (veh)
 					{
 						VEHICLE::SET_VEHICLE_DIRT_LEVEL(veh, 0.0);
 
-						features::notify::above_map("Vehicle has been cleaned.");
+						notify::above_map("Vehicle has been cleaned.");
 					}
 				}QUEUE_JOB_END_CLAUSE
 			}
@@ -119,7 +121,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), false);
+					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id), false);
 
 					if (veh)
 					{

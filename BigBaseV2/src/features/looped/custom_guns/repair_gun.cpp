@@ -5,11 +5,11 @@ namespace big
 {
 	static const int controls[] = { 14, 15, 24 };
 
-	void custom_guns::delete_gun()
+	void custom_guns::repair_gun()
 	{
-		bool bDeleteGun = g_settings.options["custom_gun"]["type"] == 1;
+		bool bRepairGun = g_settings.options["custom_gun"]["type"] == 6;
 
-		if (bDeleteGun)
+		if (bRepairGun)
 		{
 			Hash currWeapon;
 			WEAPON::GET_CURRENT_PED_WEAPON(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id), &currWeapon, 1);
@@ -28,28 +28,15 @@ namespace big
 
 					if (func::raycast_entity(&entity))
 					{
-						if (ENTITY::IS_ENTITY_A_PED(entity) && PED::IS_PED_A_PLAYER(entity))
+						if (ENTITY::IS_ENTITY_A_VEHICLE(entity))
 						{
-							notify::above_map("You can't delete player entities!");
+							VEHICLE::SET_VEHICLE_FIXED(entity);
+							VEHICLE::SET_VEHICLE_DEFORMATION_FIXED(entity);
+							VEHICLE::SET_VEHICLE_DIRT_LEVEL(entity, 0.f);
 						}
 						else
 						{
-							Vector3 player = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id), true);
-							Vector3 entLoc = ENTITY::GET_ENTITY_COORDS(entity, true);
-							double dist = func::distance_between_vectors(player, entLoc);
-
-							if (dist > 500)
-							{
-								notify::above_map("Entity is too far.");
-							}
-							else
-							{
-								if (func::take_control_of_entity(entity))
-								{
-									func::delete_entity(entity);
-								}
-								else notify::above_map("~r~Failed to take control of entity.");
-							}
+							notify::above_map("Entity is not a vehicle.");
 						}
 					}
 					else notify::above_map("No entity found.");

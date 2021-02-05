@@ -5,7 +5,7 @@ namespace big
 {
 	void window::render_player_window()
 	{
-		if (g_selectedPlayer.id != g_selectedPlayerId || !g_selectedPlayer.is_online) return;
+		if (g_selectedPlayer.id != g_selectedPlayer.id || !g_selectedPlayer.is_online) return;
 
 		char title[64];
 		strcpy(title, "Player Options: ");
@@ -13,13 +13,8 @@ namespace big
 		strcat(title, "###player_options");
 
 		ImGui::SetNextWindowSize({ 350.f, 300.f }, ImGuiCond_FirstUseEver);
-		if (ImGui::Begin(title))
+		if (g_temp.windows.player && ImGui::Begin(title, &g_temp.windows.player))
 		{
-			if (ImGui::Button("Close"))
-			{
-				g_selectedPlayerId = -2;
-			}
-
 			ImGui::BeginTabBar("tabbar_player");
 			tabbar::player_info();
 			tabbar::player_griefing();

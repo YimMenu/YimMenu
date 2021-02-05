@@ -1,4 +1,5 @@
 #include "gui/tab_bar.hpp"
+#include "features/functions.hpp"
 #include "pointers.hpp"
 #include "script_global.hpp"
 

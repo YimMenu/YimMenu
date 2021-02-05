@@ -1,4 +1,6 @@
-#include "features.hpp"
+#include "features/custom_guns.hpp"
+#include "fiber_pool.hpp"
+#include "script.hpp"
 
 namespace big
 {
@@ -7,13 +9,13 @@ namespace big
 	static bool busy = false;
 	static Entity entity = 0;
 
-	void features::money_gun()
+	void custom_guns::money_gun()
 	{
 		bool bMoneyGun = g_settings.options["custom_gun"]["type"] == 3;
 
 		if (bMoneyGun)
 		{
-			Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
+			Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id);
 
 			Hash currWeapon;
 			WEAPON::GET_CURRENT_PED_WEAPON(player, &currWeapon, 1);
@@ -22,7 +24,7 @@ namespace big
 
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 25))
 			{
-				PLAYER::DISABLE_PLAYER_FIRING(g_playerId, true);
+				PLAYER::DISABLE_PLAYER_FIRING(g_player.id, true);
 				for (int control : controls)
 					PAD::DISABLE_CONTROL_ACTION(0, control, true);
 
@@ -30,7 +32,7 @@ namespace big
 				{
 					busy = true;
 
-					QUEUE_JOB_BEGIN_CLAUSE(&)
+					g_fiber_pool->queue_job([&]
 					{
 						if (func::raycast_entity(&entity))
 						{
@@ -49,7 +51,7 @@ namespace big
 
 							busy = false;
 						}
-					}QUEUE_JOB_END_CLAUSE
+					});	
 				}
 			}
 		}

@@ -1,8 +1,9 @@
-#include "features.hpp"
+#include "features/world.hpp"
+#include "natives.hpp"
 
 namespace big
 {
-	void features::population_modifiers()
+	void world::population_modifiers()
 	{
 		auto& population = g_settings.options["world"]["population"];
 

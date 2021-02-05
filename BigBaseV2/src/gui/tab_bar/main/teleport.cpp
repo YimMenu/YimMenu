@@ -1,4 +1,6 @@
 #include "gui/tab_bar.hpp"
+#include "features/notify.hpp"
+#include "features/teleport.hpp"
 
 namespace big
 {
@@ -10,13 +12,13 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					if (features::teleport::waypoint())
+					if (teleport::waypoint())
 					{
-						features::notify::above_map("You've been teleported.");
+						notify::above_map("You've been teleported.");
 					}
 					else
 					{
-						features::notify::above_map("No waypoint set.");
+						notify::above_map("No waypoint set.");
 					}
 				} QUEUE_JOB_END_CLAUSE
 			}
@@ -25,7 +27,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					features::teleport::teleport_to_blip(1, 5);
+					teleport::teleport_to_blip(1, 5);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -35,7 +37,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					features::teleport::teleport_to_blip(225);
+					teleport::teleport_to_blip(225);
 				}QUEUE_JOB_END_CLAUSE
 			}
 			ImGui::SameLine();
@@ -43,7 +45,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					features::teleport::bring_blip(225, 0);
+					teleport::bring_blip(225, 0);
 				}QUEUE_JOB_END_CLAUSE
 			}
 

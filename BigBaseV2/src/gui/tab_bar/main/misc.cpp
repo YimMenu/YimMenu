@@ -1,4 +1,6 @@
 #include "gui/tab_bar.hpp"
+#include "features/functions.hpp"
+#include "features/stats.hpp"
 #include "natives.hpp"
 
 namespace big
@@ -21,7 +23,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					features::stats::unlock_achievements();
+					stats::unlock_achievements();
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -32,7 +34,7 @@ namespace big
 					int character_index;
 					func::get_active_character_slot(&character_index);
 
-					features::stats::max_stats(character_index);
+					stats::max_stats(character_index);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -40,7 +42,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					features::stats::unlock_all();
+					stats::unlock_all();
 				}QUEUE_JOB_END_CLAUSE
 			}
 

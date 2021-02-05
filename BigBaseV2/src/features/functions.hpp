@@ -1,4 +1,5 @@
 #pragma once
+#include "common.hpp"
 #include "structs/session_type.hpp"
 
 namespace big

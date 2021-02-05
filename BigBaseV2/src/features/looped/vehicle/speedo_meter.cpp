@@ -1,8 +1,9 @@
-#include "features.hpp"
+#include "features/vehicle.hpp"
+#include "natives.hpp"
 
 namespace big
 {
-	void features::speedo_meter()
+	void vehicle::speedo_meter()
 	{
 		static const float x = .9f;
 		static const float y = .72f;
@@ -11,7 +12,7 @@ namespace big
 
 		if (speedo_type == 0 || HUD::IS_PAUSE_MENU_ACTIVE()) return;
 
-		Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId), false);
+		Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id), false);
 
 		if (veh == 0) return;
 

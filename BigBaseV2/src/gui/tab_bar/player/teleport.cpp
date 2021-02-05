@@ -1,4 +1,5 @@
 #include "gui/tab_bar.hpp"
+#include "features/teleport.hpp"
 
 namespace big
 {
@@ -10,7 +11,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					features::teleport::teleport_to_player(g_selectedPlayer.id);
+					teleport::teleport_to_player(g_selectedPlayer.id);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -18,7 +19,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					features::teleport::teleport_into_player_vehicle(g_selectedPlayer.id);
+					teleport::teleport_into_player_vehicle(g_selectedPlayer.id);
 				}QUEUE_JOB_END_CLAUSE
 			}
 

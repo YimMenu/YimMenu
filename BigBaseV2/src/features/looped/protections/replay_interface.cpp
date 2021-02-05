@@ -1,10 +1,14 @@
-#include "features.hpp"
+#include "features/protections.hpp"
+#include "features/functions.hpp"
+#include "gta/joaat.hpp"
 #include "gta/replay.hpp"
 #include "pointers.hpp"
+#include "natives.hpp"
+#include "script.hpp"
 
 namespace big
 {
-	void features::replay_interface()
+	void protections::replay_interface()
 	{
 		Ped player = PLAYER::PLAYER_PED_ID();
 		
@@ -32,6 +36,8 @@ namespace big
 
 			if (protections["cage"] && ENTITY::GET_ENTITY_MODEL(ent) == RAGE_JOAAT("prop_gold_cont_01"))
 				func::delete_entity(ent);
+
+			script::get_current()->yield();
 		}
 	}
 }

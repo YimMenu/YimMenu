@@ -1,4 +1,5 @@
 #include "gui/tab_bar.hpp"
+#include "features/functions.hpp"
 #include "pointers.hpp"
 
 namespace big
@@ -21,7 +22,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE(= )
 				{
-					Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_playerId);
+					Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id);
 					Vector3 location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player, .0, 8.0, .5);
 
 					func::spawn_vehicle((const char*)model, location, ENTITY::GET_ENTITY_HEADING(player) + 90.f);

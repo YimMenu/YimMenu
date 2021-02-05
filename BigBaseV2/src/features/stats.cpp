@@ -1,8 +1,9 @@
 #include "stats.hpp"
-#include "script.hpp"
 #include "gta/joaat.hpp"
+#include "natives.hpp"
+#include "script.hpp"
 
-namespace big::features
+namespace big
 {
 	static const char character_stats[][64] = {
 		"MP%d_SCRIPT_INCREASE_STAM",

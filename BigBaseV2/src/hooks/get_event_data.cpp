@@ -1,4 +1,5 @@
 #include "features.hpp"
+#include "features/notify.hpp"
 #include "hooking.hpp"
 #include "pointers.hpp"
 #include "natives.hpp"
@@ -140,7 +141,7 @@ namespace big
 				strcat(msg, "</C>\nEvent Type: ~b~");
 				strcat(msg, type);
 
-				features::notify::above_map(msg);
+				notify::above_map(msg);
 
 				return false;
 			}
