@@ -192,7 +192,7 @@ namespace big
 
 	Entity func::spawn_vehicle(const char* model, Vector3 location, float heading)
 	{
-		Hash hash = MISC::GET_HASH_KEY(model);
+		Hash hash = rage::joaat(model);
 
 		if (hash)
 		{
