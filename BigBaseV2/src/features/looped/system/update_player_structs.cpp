@@ -1,3 +1,4 @@
+#include "features/functions.hpp"
 #include "features/sys.hpp"
 #include <algorithm>
 #include "fiber_pool.hpp"
@@ -13,7 +14,8 @@ namespace big
 		{
 			if (NETWORK::NETWORK_IS_PLAYER_CONNECTED(i))
 			{
-				// if (!g_players[i].is_online) features::join_message((Player)i);
+				bool exists = g_players.find(i) != g_players.end();
+				if (!exists || (exists && !g_players.at(i).is_online)) func::join_message((Player)i);
 
 				players[i].id = i;
 				players[i].is_online = true;

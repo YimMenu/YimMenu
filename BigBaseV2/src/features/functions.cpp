@@ -68,6 +68,16 @@ namespace big
 		STATS::STAT_GET_INT(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"), statSlot, true);
 	}
 
+	void func::join_message(Player player)
+	{
+		if (!g_settings.options["join_message"]) return;
+
+		char join_msg[64];
+		sprintf(join_msg, "<C>%s</C> is joining...", g_pointers->m_get_player_name(player));
+
+		notify::above_map(join_msg);
+	}
+
 	void func::join_session_type(session_type session)
 	{
 		if (session.id == -1)

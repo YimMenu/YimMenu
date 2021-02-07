@@ -14,6 +14,7 @@ namespace big
 		static void		delete_entity(Entity ent);
 		static double	distance_between_vectors(Vector3 a, Vector3 b);
 		static void		get_active_character_slot(int* statSlot);
+		static void		join_message(Player player);
 		static void		join_session_type(session_type session);
 		static bool		raycast_entity(Entity* ent);
 		static void		reset_vehicle_sell_stats();
