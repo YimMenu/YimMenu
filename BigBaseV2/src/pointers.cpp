@@ -142,6 +142,21 @@ namespace big
 		{
 			m_get_label_text = ptr.sub(19).as<decltype(m_get_label_text)>();
 		});
+
+		main_batch.add("Received Event", "66 41 83 F9 ? 0F 83", [this](memory::handle ptr)
+		{
+			m_received_event = ptr.as<decltype(m_received_event)>();
+		});
+
+		main_batch.add("Read BitBuffer WORD/DWORD", "E8 ? ? ? ? 84 C0 74 1C 48 8D 96 ? ? ? ? 44 8D 43 08 48 8B CF E8", [this](memory::handle ptr)
+		{
+			m_read_bitbuf_dword = ptr.as<decltype(m_read_bitbuf_dword)>();
+		});
+
+		main_batch.add("Received Event Ack", "4C 0F 45 C9 8B 44 24 60", [this](memory::handle ptr)
+		{
+			m_send_event_ack = ptr.as<decltype(m_send_event_ack)>();
+		});
 			
 		main_batch.run(memory::module(nullptr));
 

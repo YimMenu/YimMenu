@@ -13,8 +13,6 @@ namespace big
 			strcpy(name, sName->c_str());
 			memcpy(local_player->m_name, name, sizeof(name));
 		}
-		// const char name[20] = "How dare you!";
-		// memcpy(local_player->m_name, name, sizeof(name));
 		
 		if (spoof["ip_address"]["enabled"])
 		{

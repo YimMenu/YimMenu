@@ -1,7 +1,7 @@
 #pragma once
 #include "common.hpp"
 #include "detour_hook.hpp"
-#include "gta/fwddec.hpp"
+//#include "gta/fwddec.hpp"
 #include "script_hook.hpp"
 #include "vmt_hook.hpp"
 
@@ -28,6 +28,7 @@ namespace big
 		static bool increment_stat_event(uint64_t net_event_struct, CNetGamePlayer* sender, int64_t a3);
 		static bool script_event_handler(std::int64_t NetEventStruct, CNetGamePlayer* net_game_player);
 		static bool send_net_info_to_lobby(rage::netPlayerData* local_player, int64_t a2, int64_t a3, DWORD* a4);
+		static bool received_event(rage::netEventMgr* event_manager, CNetGamePlayer* source_player, CNetGamePlayer* target_player, uint16_t event_id, int event_index, int event_handled_bitset, rage::datBitBuffer* buffer);
 	};
 
 	struct minhook_keepalive
@@ -58,10 +59,11 @@ namespace big
 		detour_hook m_convert_thread_to_fiber_hook;
 
 		// New Detour Hook Definitions
-		detour_hook m_get_event_data;
-		detour_hook m_get_label_text;
+		detour_hook m_get_event_data_hook;
+		detour_hook m_get_label_text_hook;
 		detour_hook m_error_screen_hook;
 		detour_hook m_increment_stat_hook;
+		detour_hook m_received_event_hook;
 		detour_hook m_script_event_hook;
 		detour_hook m_send_net_info_to_lobby_hook;
 	};

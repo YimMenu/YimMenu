@@ -10,6 +10,6 @@ namespace big
 			if (auto text = g_custom_text->get_text(rage::joaat(label)))
 				return text;
 
-		return g_hooking->m_get_label_text.get_original<decltype(&get_label_text)>()(unk, label);
+		return g_hooking->m_get_label_text_hook.get_original<decltype(&get_label_text)>()(unk, label);
 	}
 }
