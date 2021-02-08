@@ -20,10 +20,11 @@ namespace big
 				QUEUE_JOB_BEGIN_CLAUSE(=)
 				{
 					Ped ped = PLAYER::PLAYER_PED_ID();
+					int type = PED::GET_PED_TYPE(ped);
 
 					Vector3 coords = ENTITY::GET_ENTITY_COORDS(ped, true);
 
-					Hash model = rage::joaat("a_f_y_topless_01");
+					Hash model = rage::joaat(player_model);
 
 					for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(model) && i < 100; i++)
 					{
@@ -39,19 +40,18 @@ namespace big
 					}
 
 					*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
-					ped = PED::CREATE_PED(PED_TYPE_NETWORK_PLAYER, model, coords.x + 1.f, coords.y + 1.f, coords.z, 0.f, true, false);
+					Ped new_ped = PED::CREATE_PED(type, model, coords.x, coords.y, coords.z + 1.f, 0.f, true, false);
 					*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
 
 					script::get_current()->yield();
 
+					PLAYER::CHANGE_PLAYER_PED(g_player.id, new_ped, false, false);
+
 					STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(model);
+					ENTITY::_SET_ENTITY_SOMETHING(new_ped, true);
 
-					if (*g_pointers->m_is_session_started)
-					{
-						ENTITY::_SET_ENTITY_SOMETHING(ped, true);
-					}
-
-					PLAYER::CHANGE_PLAYER_PED(g_player.id, ped, true, true);
+					func::take_control_of_entity(ped);
+					func::delete_entity(ped);
 				}QUEUE_JOB_END_CLAUSE
 			}
 
