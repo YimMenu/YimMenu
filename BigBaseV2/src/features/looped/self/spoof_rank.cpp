@@ -6,9 +6,11 @@ namespace big
 {
 	void self::spoof_rank()
 	{
-		bool bSpoofRank = g_settings.options["spoof_rank"].get<bool>();
+		auto& spoofing = g_settings.options["spoofing"]["rank"];
+
+		bool bSpoofRank = spoofing["enabled"].get<bool>();
 
 		if (bSpoofRank)
-			func::spoof_rank(g_settings.options["rank"].get<int>());
+			func::spoof_rank(spoofing["value"].get<int>());
 	}
 }
