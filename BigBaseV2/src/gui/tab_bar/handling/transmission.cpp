@@ -37,8 +37,10 @@ namespace big
 			ImGui::Text("Transmission Output (force)");
 			ImGui::SliderFloat("##initial drive force", &g_vehicle->m_handling->m_initial_drive_force, 0.01f, 2.f);
 
-			ImGui::Text("Max Velocity (broken)");
-			//ImGui::SliderFloat("##initial drive max flat vel", );
+			ImGui::Text("Max Velocity");
+			float fInitialDriveMaxFlatVel = g_vehicle->m_handling->m_initial_drive_max_flat_vel / float(44.444 / 160);
+			if (ImGui::SliderFloat("##initial drive max flat vel", &fInitialDriveMaxFlatVel, 5.f, 200.f))
+				g_vehicle->m_handling->m_initial_drive_max_flat_vel = fInitialDriveMaxFlatVel * float(44.444 / 160);
 
 			ImGui::EndTabItem();
 		}
