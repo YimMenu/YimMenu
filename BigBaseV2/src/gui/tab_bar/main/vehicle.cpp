@@ -7,14 +7,12 @@ namespace big
 {
 	void tabbar::render_vehicle()
 	{
-		CPed* ped = gta_util::get_local_ped();
-
 		if (ImGui::BeginTabItem("Vehicle"))
 		{
-			bool bVehGodMode = ped->m_vehicle == nullptr ? false : (ped->m_vehicle->m_godmode & 0x1) == 0x1;
+			bool bVehGodMode = g_vehicle == nullptr ? false : (g_vehicle->m_godmode & 0x1) == 0x1;
 			if (ImGui::Checkbox("Vehicle God Mode", &bVehGodMode))
-				if (ped->m_vehicle != nullptr)
-					ped->m_vehicle->m_godmode = bVehGodMode ? 0x1 : 0x0;
+				if (g_vehicle != nullptr)
+					g_vehicle->m_godmode = bVehGodMode ? 0x1 : 0x0;
 
 			ImGui::Separator();
 
