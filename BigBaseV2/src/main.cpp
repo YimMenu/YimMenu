@@ -1,6 +1,5 @@
 ﻿#include "common.hpp"
 #include "features.hpp"
-#include "features/custom_text.hpp"
 #include "fiber_pool.hpp"
 #include "gui.hpp"
 #include "logger.hpp"
@@ -45,9 +44,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				auto hooking_instance = std::make_unique<hooking>();
 				LOG(INFO) << "Hooking initialized.";
-
-				auto custom_text_instance = std::make_unique<custom_text>();
-				LOG(INFO) << "Custom Text Initialized.";
 
 				g_settings.load();
 				LOG(INFO) << "Settings Loaded.";
