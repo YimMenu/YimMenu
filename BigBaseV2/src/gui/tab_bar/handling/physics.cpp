@@ -37,7 +37,7 @@ namespace big
 			}
 
 			ImGui::Text("Buoyancy");
-			ImGui::SliderFloat("##buoyancy", &g_vehicle->m_handling->m_buoyancy, 0.01f, 99.f);
+			ImGui::SliderFloat("##buoyancy", &g_vehicle->m_handling->m_buoyancy, .01f, 99.f);
 
 			ImGui::EndTabItem();
 		}

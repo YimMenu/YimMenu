@@ -16,7 +16,7 @@ namespace big
 			ImGui::SliderFloat("##traction spring delta max", &g_vehicle->m_handling->m_traction_spring_delta_max, 0.f, 2.f);
 
 			ImGui::Text("Burnout Multiplier");
-			ImGui::SliderFloat("##low speed traction loss mult", &g_vehicle->m_handling->m_low_speed_traction_loss_mult, 0.f, 2.f);
+			ImGui::SliderFloat("##low speed traction loss mult", &g_vehicle->m_handling->m_low_speed_traction_loss_mult, 0.f, 10.f);
 
 			ImGui::Text("Camber Stiffness (grip when drifting)");
 			ImGui::SliderFloat("##camber stiffness", &g_vehicle->m_handling->m_camber_stiffness, -1.f, 1.f);

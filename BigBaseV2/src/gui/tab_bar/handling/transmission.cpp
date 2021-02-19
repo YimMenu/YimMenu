@@ -21,7 +21,7 @@ namespace big
 				g_vehicle->m_handling->m_drive_bias_rear = fDriveBiasRear * 2;
 
 			ImGui::Text("Steering Lock (degrees)");
-			ImGui::SliderAngle("##steering lock", &g_vehicle->m_handling->m_steering_lock, 0.f, 90.f);
+			ImGui::SliderAngle("##steering lock", &g_vehicle->m_handling->m_steering_lock, -90.f, 90.f);
 
 			ImGui::Text("Gears");
 			int nInitialDriveGears = g_vehicle->m_handling->m_initial_drive_gears;
@@ -37,10 +37,10 @@ namespace big
 			ImGui::Text("Transmission Output (force)");
 			ImGui::SliderFloat("##initial drive force", &g_vehicle->m_handling->m_initial_drive_force, 0.01f, 2.f);
 
-			ImGui::Text("Max Velocity");
+			/*ImGui::Text("Max Velocity");
 			float fInitialDriveMaxFlatVel = g_vehicle->m_handling->m_initial_drive_max_flat_vel / float(44.444 / 160);
 			if (ImGui::SliderFloat("##initial drive max flat vel", &fInitialDriveMaxFlatVel, 5.f, 200.f))
-				g_vehicle->m_handling->m_initial_drive_max_flat_vel = fInitialDriveMaxFlatVel * float(44.444 / 160);
+				g_vehicle->m_handling->m_initial_drive_max_flat_vel = fInitialDriveMaxFlatVel * float(44.444 / 160);*/
 
 			ImGui::EndTabItem();
 		}

@@ -38,10 +38,10 @@ namespace big
 				g_vehicle->m_handling->m_anti_rollbar_bias_front = fAntiRollBarBiasFront * 2;
 
 			ImGui::Text("Roll Centre Height Front");
-			ImGui::SliderFloat("##roll centre height front", &g_vehicle->m_handling->m_roll_centre_height_front, -.2f, .2f);
+			ImGui::SliderFloat("##roll centre height front", &g_vehicle->m_handling->m_roll_centre_height_front, -1.f, 1.f);
 
 			ImGui::Text("Roll Centre Height Back");
-			ImGui::SliderFloat("##roll centre height back", &g_vehicle->m_handling->m_roll_centre_height_rear, -.2f, .2f);
+			ImGui::SliderFloat("##roll centre height back", &g_vehicle->m_handling->m_roll_centre_height_rear, -1.f, 1.f);
 
 			ImGui::EndTabItem();
 		}
