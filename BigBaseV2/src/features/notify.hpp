@@ -8,6 +8,8 @@ namespace big
 	public:
 		static void above_map(const char* text);
 
+		static void blocked_event(const char* name, Player player);
+
 	private:
 
 	};
