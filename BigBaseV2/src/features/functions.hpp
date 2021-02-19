@@ -13,7 +13,10 @@ namespace big
 		static float	deg_to_rad(float deg);
 		static void		delete_entity(Entity ent);
 		static double	distance_between_vectors(Vector3 a, Vector3 b);
+		static void		force_kick_from_vehicle(Player player);
 		static void		get_active_character_slot(int* statSlot);
+		static bool		is_crash_pickup(Hash hash);
+		static bool		is_crash_reward(Hash hash);
 		static void		join_message(Player player);
 		static void		join_session_type(session_type session);
 		static bool		raycast_entity(Entity* ent);
