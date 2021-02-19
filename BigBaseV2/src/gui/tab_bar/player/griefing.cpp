@@ -18,6 +18,19 @@ namespace big
 				}QUEUE_JOB_END_CLAUSE
 			}
 
+			if (ImGui::TreeNode("General"))
+			{
+				if (ImGui::Button("Force Kick from vehicle"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						func::force_kick_from_vehicle(g_selectedPlayer.id);
+					}QUEUE_JOB_END_CLAUSE
+				}
+
+				ImGui::TreePop();
+			}
+
 			if (ImGui::TreeNode("Lester"))
 			{
 				if (ImGui::Button("Bounty 10k"))
