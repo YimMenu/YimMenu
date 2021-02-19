@@ -75,7 +75,7 @@ namespace big
 		m_get_label_text_hook.enable();
 		m_error_screen_hook.enable();
 		m_increment_stat_hook.enable();
-		//m_received_event_hook.enable();
+		m_received_event_hook.enable();
 		m_script_event_hook.enable();
 		m_send_net_info_to_lobby_hook.enable();
 
@@ -98,7 +98,7 @@ namespace big
 		m_get_label_text_hook.disable();
 		m_error_screen_hook.disable();
 		m_increment_stat_hook.disable();
-		//m_received_event_hook.disable();
+		m_received_event_hook.disable();
 		m_script_event_hook.disable();
 		m_send_net_info_to_lobby_hook.disable();
 	}

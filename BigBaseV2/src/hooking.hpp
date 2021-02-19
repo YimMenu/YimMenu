@@ -28,7 +28,16 @@ namespace big
 		static bool increment_stat_event(uint64_t net_event_struct, CNetGamePlayer* sender, int64_t a3);
 		static bool script_event_handler(std::int64_t NetEventStruct, CNetGamePlayer* net_game_player);
 		static bool send_net_info_to_lobby(rage::netPlayerData* local_player, int64_t a2, int64_t a3, DWORD* a4);
-		static bool received_event(rage::netEventMgr* event_manager, CNetGamePlayer* source_player, CNetGamePlayer* target_player, uint16_t event_id, int event_index, int event_handled_bitset, rage::datBitBuffer* buffer);
+		static bool received_event(
+			rage::netEventMgr* event_manager,
+			CNetGamePlayer* source_player,
+			CNetGamePlayer* target_player,
+			uint16_t event_id,
+			int event_index,
+			int event_handled_bitset,
+			int64_t bit_buffer_size,
+			int64_t bit_buffer
+		);
 	};
 
 	struct minhook_keepalive

@@ -143,19 +143,24 @@ namespace big
 			m_get_label_text = ptr.sub(19).as<decltype(m_get_label_text)>();
 		});
 
-		main_batch.add("Received Event", "66 41 83 F9 ? 0F 83", [this](memory::handle ptr)
+		main_batch.add("Received Event", "66 41 83 F9 ? 0F 83 ? ? ? ?", [this](memory::handle ptr)
 		{
 			m_received_event = ptr.as<decltype(m_received_event)>();
 		});
 
-		main_batch.add("Read BitBuffer WORD/DWORD", "E8 ? ? ? ? 84 C0 74 1C 48 8D 96 ? ? ? ? 44 8D 43 08 48 8B CF E8", [this](memory::handle ptr)
+		main_batch.add("Read BitBuffer WORD/DWORD", "48 89 74 24 ? 57 48 83 EC 20 48 8B D9 33 C9 41 8B F0 8A", [this](memory::handle ptr)
 		{
-			m_read_bitbuf_dword = ptr.as<decltype(m_read_bitbuf_dword)>();
+			m_read_bitbuf_dword = ptr.sub(5).as<decltype(m_read_bitbuf_dword)>();
 		});
 
-		main_batch.add("Received Event Ack", "4C 0F 45 C9 8B 44 24 60", [this](memory::handle ptr)
+		main_batch.add("Read BitBuffer Array", "48 89 5C 24 ? 57 48 83 EC 30 41 8B F8 4C", [this](memory::handle ptr)
 		{
-			m_send_event_ack = ptr.as<decltype(m_send_event_ack)>();
+			m_read_bitbuf_array = ptr.as<decltype(m_read_bitbuf_array)>();
+		});
+
+		main_batch.add("Send Event Ack", "48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 7A", [this](memory::handle ptr)
+		{
+			m_send_event_ack = ptr.sub(5).as<decltype(m_send_event_ack)>();
 		});
 			
 		main_batch.run(memory::module(nullptr));

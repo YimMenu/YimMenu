@@ -123,10 +123,10 @@ namespace rage
 			return false;
 		}
 
-		/*inline bool ReadArray(PVOID array, int size)
+		inline bool ReadArray(PVOID array, int size)
 		{
 			return big::g_pointers->m_read_bitbuf_array(this, array, size, 0);
-		}*/
+		}
 
 	public:
 		void* m_data; //0x0000

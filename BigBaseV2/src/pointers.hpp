@@ -44,6 +44,7 @@ namespace big
 		functions::get_player_name* m_get_player_name{};
 		functions::get_net_player* m_get_net_game_player{};
 		functions::increment_stat_event* m_increment_stat_event{};
+		functions::read_bitbuf_array* m_read_bitbuf_array{};
 		functions::read_bitbuf_dword* m_read_bitbuf_dword{};
 		functions::received_event* m_received_event{};
 		functions::script_event_handler* m_script_event_handler{};
