@@ -7,6 +7,7 @@
 #include "features/util.hpp"
 #include "features/vehicle.hpp"
 #include "features/world.hpp"
+#include "pointers.hpp"
 #include "script.hpp"
 
 namespace big
@@ -16,26 +17,29 @@ namespace big
 		// System
 		sys::loop();
 
-		// Custom Guns
-		custom_guns::loop();
-
 		// Protections
 		protections::loop();
 
-		// Self
-		self::loop();
+		if (*g_pointers->m_game_state == eGameState::Playing)
+		{
+			// Custom Guns
+			custom_guns::loop();
 
-		// Tunable
-		tunables::loop();
+			// Self
+			self::loop();
 
-		// Util
-		util::loop();
+			// Tunable
+			tunables::loop();
 
-		// Vehicle
-		vehicle::loop();
+			// Util
+			util::loop();
 
-		// World
-		world::loop();
+			// Vehicle
+			vehicle::loop();
+
+			// World
+			world::loop();
+		}
 	}
 
 	void features::script_func()
