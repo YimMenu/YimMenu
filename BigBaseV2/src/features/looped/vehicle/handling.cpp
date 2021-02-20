@@ -8,12 +8,12 @@ namespace big
 
 	void vehicle::handling()
 	{
-		CPed* ped = gta_util::get_local_ped();
+		if (g_local_ped == nullptr) return;
 
-		g_temp.in_vehicle = ped->m_in_vehicle == 0;
+		g_temp.in_vehicle = g_local_ped->m_in_vehicle == 0;
 
 		if (g_temp.in_vehicle)
-			g_vehicle = ped->m_vehicle;
+			g_vehicle = g_local_ped->m_vehicle;
 		else
 			g_vehicle = nullptr;
 	}

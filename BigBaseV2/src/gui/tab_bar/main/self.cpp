@@ -26,6 +26,18 @@ namespace big
 
 			ImGui::Separator();
 
+			if (ImGui::TreeNode("Frame Flags"))
+			{
+				auto& frame_flags = g_settings.options["frame_flags"];
+
+				ImGui::Checkbox("Explosive Ammo",	frame_flags["explosive_ammo"].get<bool*>());
+				ImGui::Checkbox("Explosive Melee",	frame_flags["explosive_melee"].get<bool*>());
+				ImGui::Checkbox("Fire Ammo",	frame_flags["fire_ammo"].get<bool*>());
+				ImGui::Checkbox("Super Jump",		frame_flags["super_jump"].get<bool*>());
+
+				ImGui::TreePop();
+			}
+
 			if (ImGui::TreeNode("No Clip"))
 			{
 				if (ImGui::Checkbox("No Clip", g_settings.options["noclip"]["enabled"].get<bool*>()))
@@ -39,7 +51,6 @@ namespace big
 
 				ImGui::TreePop();
 			}
-			ImGui::Separator();
 
 			if (ImGui::Checkbox("God Mode", g_settings.options["god_mode"].get<bool*>()) || ImGui::Checkbox("No Ragdoll", g_settings.options["ragdoll"].get<bool*>()))
 				g_settings.save();

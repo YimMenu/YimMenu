@@ -20,6 +20,12 @@ namespace big
 			},
 			"disable_phone": false,
 			"disable_chat_censoring": false,
+			"frame_flags": {
+				"explosive_ammo": false,
+				"explosive_melee": false,
+				"fire_ammo": false,
+				"super_jump": false
+			},
 			"god_mode": false,
 			"join_message": false,
 			"never_wanted": false,

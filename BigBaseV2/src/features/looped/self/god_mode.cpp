@@ -11,9 +11,7 @@ namespace big
 
 		if (bGodMode || (!bGodMode && bGodMode != bLastGodMode))
 		{
-			CPed* ped = gta_util::get_local_ped();
-
-			ped->m_godmode = bGodMode ? 0x1 : 0x0;
+			g_local_ped->m_godmode = bGodMode ? 0x1 : 0x0;
 
 			//ENTITY::SET_ENTITY_INVINCIBLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player.id), bGodMode);
 

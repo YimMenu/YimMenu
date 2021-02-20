@@ -69,6 +69,8 @@ namespace big
 	inline std::atomic_bool g_running{ true };
 
 	// Global Variables
+	inline CPed* g_local_ped;
+
 	inline player g_player;
 	inline player g_selectedPlayer;
 	inline std::unordered_map<Player, player> g_players;

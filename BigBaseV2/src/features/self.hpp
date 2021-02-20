@@ -16,6 +16,7 @@ namespace big
 		static void off_radar();
 		static void spoof_rank();
 		static void super_sprint();
+		static void frame_flags();
 
 	};
 }
