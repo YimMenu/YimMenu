@@ -79,31 +79,38 @@ namespace big
 
 		main_batch.add("Event Register", "48 83 EC 28 E8 ? ? ? ? 48 8B 0D ? ? ? ? 4C 8D 0D ? ? ? ? 4C 8D 05 ? ? ? ? BA 03", [this](memory::handle ptr)
 		{
-				m_event_register = ptr.as<char*>();
+			m_event_register = ptr.as<char*>();
 
-				if (m_event_register)
+			if (m_event_register)
+			{
+				const char* pattern = "\x4C\x8D\x05";
+				for (int i = 0, x = 0, found = 0, matches = 0; found < event_count; i++)
 				{
-					const char* pattern = "\x4C\x8D\x05";
-					for (int i = 0, x = 0, found = 0, matches = 0; found < event_count; i++)
+					if (m_event_register[i] == pattern[x])
 					{
-						if (m_event_register[i] == pattern[x])
+						if (++matches == 3)
 						{
-							if (++matches == 3)
-							{
-								m_event_ptr.push_back((void*)(reinterpret_cast<uint64_t>(m_event_register + i - x) + *reinterpret_cast<int*>(m_event_register + i + 1) + 7));
+							m_event_ptr.push_back((void*)(reinterpret_cast<uint64_t>(m_event_register + i - x) + *reinterpret_cast<int*>(m_event_register + i + 1) + 7));
 
-								found++;
-								x = matches = 0;
-							}
-
-							x++;
-
-							continue;
+							found++;
+							x = matches = 0;
 						}
 
-						x = matches = 0;
+						x++;
+
+						continue;
 					}
+
+					x = matches = 0;
 				}
+			}
+		});
+
+		main_batch.add("Incompatible Version", "48 89 5C 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 ? ? ? ? 48 81 EC ? ? ? ? 33 FF 48 8B DA", [this](memory::handle ptr)
+		{
+			uint8_t* incompatible_version = ptr.add(0x365).as<uint8_t*>();
+
+			memset(incompatible_version, 0x90, 0x1E);
 		});
 		
 		main_batch.run(memory::module(nullptr));
