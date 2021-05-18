@@ -4,6 +4,8 @@
 #include "logger.hpp"
 #include "pointers.hpp"
 
+extern "C" void	_call_asm(void* context, void* function, void* ret);
+
 namespace big
 {
 	native_call_context::native_call_context()
@@ -34,7 +36,8 @@ namespace big
 		{
 			rage::scrNativeHandler handler = it->second;
 
-			handler(&m_call_context);
+			_call_asm(&m_call_context, handler, g_pointers->m_native_return);
+			// handler(&m_call_context);
 			g_pointers->m_fix_vectors(&m_call_context);
 		}
 		else

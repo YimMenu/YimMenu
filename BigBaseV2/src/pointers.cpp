@@ -19,7 +19,7 @@ namespace big
 			m_is_session_started = ptr.add(3).rip().as<bool*>();
 		});
 
-		main_batch.add("Ped factory", "48 8B 05 ? ? ? ? 48 8B 50 ? 48 8B C1", [this](memory::handle ptr)
+		main_batch.add("Ped factory", "48 8B 05 ? ? ? ? 48 8B 48 08 48 85 C9 74 52 8B 81", [this](memory::handle ptr)
 		{
 			m_ped_factory = ptr.add(3).rip().as<CPedFactory**>();
 		});
@@ -71,98 +71,12 @@ namespace big
 			m_model_spawn_bypass = ptr.add(8).as<PVOID>();
 		});
 
-		// My new pointers
-		// Sync Local Time with Session
-		main_batch.add("Sync Local Time", "48 89 5C 24 ? 57 48 83 EC 20 8B F9 48 8B 0D ? ? ? ? 48 8B DA 33 D2", [this](memory::handle ptr)
+		// new pointers
+		main_batch.add("Native Return Spoofer", "FF E3", [this](memory::handle ptr)
 		{
-			m_sync_local_time = ptr.as<decltype(m_sync_local_time)>();
+			m_native_return = ptr.add(0).as<PVOID>();
 		});
-
-		main_batch.add("Session Weather", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC 30 40 8A E9", [this](memory::handle ptr)
-		{
-			m_set_session_weather = ptr.as<decltype(m_set_session_weather)>();
-		});
-
-		main_batch.add("Get Player Name", "40 53 48 83 EC 20 80 3D ? ? ? ? ? 8B D9 74 22", [this](memory::handle ptr)
-		{
-			m_get_player_name = ptr.as<decltype(m_get_player_name)>();
-		});
-
-		main_batch.add("Warning/Error Screen", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 56 41 57 48 83 EC 60 4C 8B F2 48 8B 94 24 ? ? ? ? 33 DB", [this](memory::handle ptr)
-		{
-			m_error_screen = ptr.as<decltype(m_error_screen)>();
-		});
-
-		main_batch.add("Increment Stat Event", "48 89 5C 24 ? 48 89 74 24 ? 55 57 41 55 41 56 41 57 48 8B EC 48 83 EC 60 8B 79 30", [this](memory::handle ptr)
-		{
-			m_increment_stat_event = ptr.as<decltype(m_increment_stat_event)>();
-		});
-
-		main_batch.add("Script Event Handler", "40 53 48 81 EC ? ? ? ? 44 8B 81 ? ? ? ? 4C 8B CA 41 8D 40 FF 3D ? ? ? ? 77 42", [this](memory::handle ptr)
-		{
-			m_script_event_handler = ptr.as<decltype(m_script_event_handler)>();
-		});
-
-		main_batch.add("Trigger Script Event", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 81 EC ? ? ? ? 45 8B F0 41 8B F9", [this](memory::handle ptr)
-		{
-			m_trigger_script_event = ptr.as<decltype(m_trigger_script_event)>();
-		});
-
-		main_batch.add("Spectate Player", "48 89 5C 24 ? 57 48 83 EC 20 41 8A F8 84 C9", [this](memory::handle ptr)
-		{
-			m_spectate_player = ptr.as<decltype(m_spectate_player)>();
-		});
-
-		main_batch.add("Get Net player", "48 83 EC 28 33 C0 38 05 ? ? ? ? 74 0A", [this](memory::handle ptr)
-		{
-			m_get_net_game_player = ptr.as<decltype(m_get_net_game_player)>();
-		});
-
-		main_batch.add("Get Event Data", "48 85 C0 74 14 4C 8B 10", [this](memory::handle ptr)
-		{
-			m_get_event_data = ptr.sub(28).as<decltype(m_get_event_data)>();
-		});
-
-		main_batch.add("Replay Interface", "48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D", [this](memory::handle ptr)
-		{
-			m_replay_interface = ptr.add(3).rip().as<decltype(m_replay_interface)>();
-		});
-
-		main_batch.add("Pointer to Handle", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 8B 15 ? ? ? ? 48 8B F9 48 83 C1 10 33 DB", [this](memory::handle ptr)
-		{
-			m_ptr_to_handle = ptr.as<decltype(m_ptr_to_handle)>();
-		});
-
-		main_batch.add("Send Net Info To Lobby", "44 8D 47 78 48 8D 54 24 ? 48 8B CB E8", [this](memory::handle ptr)
-		{
-			m_send_net_info_to_lobby = ptr.add(13).rip().as<PVOID>();
-		});
-
-		main_batch.add("Get Label Text", "75 ? E8 ? ? ? ? 8B 0D ? ? ? ? 65 48 8B 04 25 ? ? ? ? BA ? ? ? ? 48 8B 04 C8 8B 0C 02 D1 E9", [this](memory::handle ptr)
-		{
-			m_get_label_text = ptr.sub(19).as<decltype(m_get_label_text)>();
-		});
-
-		main_batch.add("Received Event", "66 41 83 F9 ? 0F 83 ? ? ? ?", [this](memory::handle ptr)
-		{
-			m_received_event = ptr.as<decltype(m_received_event)>();
-		});
-
-		main_batch.add("Read BitBuffer WORD/DWORD", "48 89 74 24 ? 57 48 83 EC 20 48 8B D9 33 C9 41 8B F0 8A", [this](memory::handle ptr)
-		{
-			m_read_bitbuf_dword = ptr.sub(5).as<decltype(m_read_bitbuf_dword)>();
-		});
-
-		main_batch.add("Read BitBuffer Array", "48 89 5C 24 ? 57 48 83 EC 30 41 8B F8 4C", [this](memory::handle ptr)
-		{
-			m_read_bitbuf_array = ptr.as<decltype(m_read_bitbuf_array)>();
-		});
-
-		main_batch.add("Send Event Ack", "48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 7A", [this](memory::handle ptr)
-		{
-			m_send_event_ack = ptr.sub(5).as<decltype(m_send_event_ack)>();
-		});
-			
+		
 		main_batch.run(memory::module(nullptr));
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);

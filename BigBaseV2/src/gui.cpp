@@ -10,22 +10,15 @@
 #include "pointers.hpp"
 #include "renderer.hpp"
 #include "script.hpp"
-#include "features/notify.hpp"
-#include "features/custom_text.hpp"
-
-#include "gui/window.hpp"
 
 #include <imgui.h>
+
+#include "gui/base_tab.h"
 
 namespace big
 {
 	void gui::dx_init()
 	{
-		static ImVec4 bgColor = ImVec4(0.105f, 0.1f, 0.1f, .75f);
-		static ImVec4 primary = ImVec4(0.117f, 0.529f, 0.941f, 1.f);
-		static ImVec4 secondary = ImVec4(0.156f, 0.647f, 0.97f, 1.f);
-		static ImVec4 whiteBroken = ImVec4(.972f, .972f, .972f, 1.f);
-
 		auto &style = ImGui::GetStyle();
 		style.WindowPadding = { 10.f, 10.f };
 		style.PopupRounding = 0.f;
@@ -36,17 +29,17 @@ namespace big
 		style.IndentSpacing = 21.f;
 		style.ScrollbarSize = 15.f;
 		style.GrabMinSize = 8.f;
-		style.WindowBorderSize = 0.f;
+		style.WindowBorderSize = 1.f;
 		style.ChildBorderSize = 0.f;
-		style.PopupBorderSize = 0.f;
+		style.PopupBorderSize = 1.f;
 		style.FrameBorderSize = 0.f;
 		style.TabBorderSize = 0.f;
-		style.WindowRounding = 5.f;
-		style.ChildRounding = 2.f;
-		style.FrameRounding = 3.f;
-		style.ScrollbarRounding = 3.f;
+		style.WindowRounding = 0.f;
+		style.ChildRounding = 0.f;
+		style.FrameRounding = 0.f;
+		style.ScrollbarRounding = 0.f;
 		style.GrabRounding = 0.f;
-		style.TabRounding = 3.f;
+		style.TabRounding = 0.f;
 		style.WindowTitleAlign = { 0.5f, 0.5f };
 		style.ButtonTextAlign = { 0.5f, 0.5f };
 		style.DisplaySafeAreaPadding = { 3.f, 3.f };
@@ -54,7 +47,7 @@ namespace big
 		auto &colors = style.Colors;
 		colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
 		colors[ImGuiCol_TextDisabled] = ImVec4(1.00f, 0.90f, 0.19f, 1.00f);
-		colors[ImGuiCol_WindowBg] = bgColor;
+		colors[ImGuiCol_WindowBg] = ImVec4(0.06f, 0.06f, 0.06f, 1.00f);
 		colors[ImGuiCol_ChildBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
 		colors[ImGuiCol_PopupBg] = ImVec4(0.08f, 0.08f, 0.08f, 0.94f);
 		colors[ImGuiCol_Border] = ImVec4(0.30f, 0.30f, 0.30f, 0.50f);
@@ -66,25 +59,25 @@ namespace big
 		colors[ImGuiCol_TitleBgActive] = ImVec4(0.19f, 0.19f, 0.19f, 1.00f);
 		colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.00f, 0.00f, 0.00f, 0.51f);
 		colors[ImGuiCol_MenuBarBg] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
-		colors[ImGuiCol_ScrollbarBg] = colors[ImGuiCol_WindowBg];
-		colors[ImGuiCol_ScrollbarGrab] = primary;
-		colors[ImGuiCol_ScrollbarGrabHovered] = secondary;
-		colors[ImGuiCol_ScrollbarGrabActive] = primary;
+		colors[ImGuiCol_ScrollbarBg] = ImVec4(0.02f, 0.02f, 0.02f, 0.53f);
+		colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.31f, 0.31f, 0.31f, 1.00f);
+		colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.41f, 0.41f, 0.41f, 1.00f);
+		colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.51f, 0.51f, 0.51f, 1.00f);
 		colors[ImGuiCol_CheckMark] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
 		colors[ImGuiCol_SliderGrab] = ImVec4(0.34f, 0.34f, 0.34f, 1.00f);
 		colors[ImGuiCol_SliderGrabActive] = ImVec4(0.39f, 0.38f, 0.38f, 1.00f);
-		colors[ImGuiCol_Button] = primary;
-		colors[ImGuiCol_ButtonHovered] = secondary;
-		colors[ImGuiCol_ButtonActive] = colors[ImGuiCol_ButtonHovered];
+		colors[ImGuiCol_Button] = ImVec4(0.41f, 0.41f, 0.41f, 0.74f);
+		colors[ImGuiCol_ButtonHovered] = ImVec4(0.41f, 0.41f, 0.41f, 0.78f);
+		colors[ImGuiCol_ButtonActive] = ImVec4(0.41f, 0.41f, 0.41f, 0.87f);
 		colors[ImGuiCol_Header] = ImVec4(0.37f, 0.37f, 0.37f, 0.31f);
 		colors[ImGuiCol_HeaderHovered] = ImVec4(0.38f, 0.38f, 0.38f, 0.37f);
 		colors[ImGuiCol_HeaderActive] = ImVec4(0.37f, 0.37f, 0.37f, 0.51f);
 		colors[ImGuiCol_Separator] = ImVec4(0.38f, 0.38f, 0.38f, 0.50f);
 		colors[ImGuiCol_SeparatorHovered] = ImVec4(0.46f, 0.46f, 0.46f, 0.50f);
 		colors[ImGuiCol_SeparatorActive] = ImVec4(0.46f, 0.46f, 0.46f, 0.64f);
-		colors[ImGuiCol_ResizeGrip] = whiteBroken;
-		colors[ImGuiCol_ResizeGripHovered] = ImVec4(1.f, 1.f, 1.f, 1.00f);
-		colors[ImGuiCol_ResizeGripActive] = whiteBroken;
+		colors[ImGuiCol_ResizeGrip] = ImVec4(0.26f, 0.26f, 0.26f, 1.00f);
+		colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.31f, 0.31f, 0.31f, 1.00f);
+		colors[ImGuiCol_ResizeGripActive] = ImVec4(0.35f, 0.35f, 0.35f, 1.00f);
 		colors[ImGuiCol_Tab] = ImVec4(0.21f, 0.21f, 0.21f, 0.86f);
 		colors[ImGuiCol_TabHovered] = ImVec4(0.27f, 0.27f, 0.27f, 0.86f);
 		colors[ImGuiCol_TabActive] = ImVec4(0.34f, 0.34f, 0.34f, 0.86f);
@@ -106,36 +99,19 @@ namespace big
 	{
 		TRY_CLAUSE
 		{
-			// gui/window/top_bar.cpp
-			window::render_top_bar();
-
-			// gui/window/main.cpp
-			window::render_main_window();
-
-			// gui/window/user_sidebar.cpp
-			window::render_user_sidebar();
-
-			// gui/window/player.cpp
-			window::render_player_window();
-
-			// gui/window/handling.cpp
-			window::render_handling_window();
+			if (ImGui::Begin("BigBaseV2"))
+			{
+				ImGui::BeginTabBar("tabbar");
+				base_tab::render_base_tab();
+				ImGui::EndTabBar();
+			}
+			ImGui::End();
 		}
 		EXCEPT_CLAUSE
 	}
 
 	void gui::script_init()
 	{
-		custom_text::add_text(RAGE_JOAAT("LOADING_SPLAYER_L"), "Preparing for awesomeness.");
-		custom_text::add_text(RAGE_JOAAT("HUD_JOINING"), "Yim's Menu");
-		custom_text::add_text(RAGE_JOAAT("HUD_TRANSP"), "Transaction's fucked...");
-		custom_text::add_text(RAGE_JOAAT("HUD_QUITTING"), "Leaving are we?");
-
-		custom_text::add_text(RAGE_JOAAT("HUD_QUITRACE"), "Are you a pussy?");
-
-		custom_text::add_text(RAGE_JOAAT("HUD_SAVDNWARN"), "Rockstar crashed their toaster again...");
-
-		notify::above_map("Yim's Menu is ready.");
 	}
 
 	void gui::script_on_tick()
@@ -144,36 +120,7 @@ namespace big
 		{
 			if (g_gui.m_opened)
 			{
-				//PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-				for (int i = 1; i <= 6; i++)
-				{
-					PAD::DISABLE_CONTROL_ACTION(0, i, true);
-				}
-				PAD::DISABLE_CONTROL_ACTION(0, 106, true);
-				PAD::DISABLE_CONTROL_ACTION(0, 329, true);
-				PAD::DISABLE_CONTROL_ACTION(0, 330, true);
-
-				PAD::DISABLE_CONTROL_ACTION(2, 14, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 15, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 16, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 17, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 24, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 69, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 70, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 84, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 85, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 99, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 92, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 100, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 114, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 115, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 121, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 142, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 241, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 261, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 257, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 262, true);
-				PAD::DISABLE_CONTROL_ACTION(2, 331, true);
+				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 			}
 		}
 		EXCEPT_CLAUSE

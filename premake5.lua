@@ -168,7 +168,6 @@ workspace "BigBaseV2"
     location "BigBaseV2"
     kind "SharedLib"
     language "C++"
-	targetname "YimMenu"
 
     targetdir ("bin/" .. outputdir)
     objdir ("bin/int/" .. outputdir .. "/%{prj.name}")

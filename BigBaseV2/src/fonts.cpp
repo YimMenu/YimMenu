@@ -1,5 +1,5 @@
 #pragma once
-#include "fonts/fonts.hpp"
+#include "fonts.hpp"
 
 const std::uint8_t font_rubik[140732]
 {

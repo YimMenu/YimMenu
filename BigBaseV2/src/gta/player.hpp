@@ -98,7 +98,7 @@ public:
 	uint32_t player; //0x00D0
 };
 
-/*class CPlayerInfo : public rage::fwExtensibleBase
+class CPlayerInfo : public rage::fwExtensibleBase
 {
 public:
 	char pad_0020[20]; //0x0020
@@ -136,7 +136,7 @@ public:
 	char pad_0865[3]; //0x0865
 	int8_t m_wanted_level; //0x0868
 }; //Size: 0x0869
-static_assert(sizeof(CPlayerInfo) == 0x869);*/
+static_assert(sizeof(CPlayerInfo) == 0x869);
 
 static_assert(sizeof(CNonPhysicalPlayerData) == 0x1C);
 #pragma pack(pop)

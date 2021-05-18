@@ -49,12 +49,8 @@
 #include <nlohmann/json.hpp>
 
 #include "logger.hpp"
-#include "settings.h"
 
-#include "gta/ped_factory.hpp"
-#include "structs/lists.hpp"
-#include "structs/player.hpp"
-#include "structs/temp.hpp"
+#include "settings.h"
 
 namespace big
 {
@@ -67,18 +63,4 @@ namespace big
 	inline HANDLE g_main_thread{};
 	inline DWORD g_main_thread_id{};
 	inline std::atomic_bool g_running{ true };
-
-	// Global Variables
-	inline CPed* g_local_ped;
-
-	inline player g_player;
-	inline player g_selectedPlayer;
-	inline std::unordered_map<Player, player> g_players;
-	
-	inline CAutomobile* g_vehicle;
-
-	inline temp g_temp = temp{};
-
-	// screen width and height
-	inline int x, y;
 }
