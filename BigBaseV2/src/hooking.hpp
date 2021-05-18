@@ -2,6 +2,7 @@
 #include "common.hpp"
 #include "detour_hook.hpp"
 #include "gta/fwddec.hpp"
+#include "gta/script_thread.hpp"
 #include "script_hook.hpp"
 #include "vmt_hook.hpp"
 
@@ -20,6 +21,9 @@ namespace big
 
 		static LRESULT wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 		static BOOL set_cursor_pos(int x, int y);
+
+		static rage::eThreadState gta_thread_tick(GtaThread* a1, unsigned int a2);
+		static rage::eThreadState gta_thread_kill(GtaThread* thread);
 	};
 
 	struct minhook_keepalive
@@ -48,6 +52,9 @@ namespace big
 
 		detour_hook m_run_script_threads_hook;
 		detour_hook m_convert_thread_to_fiber_hook;
+
+		detour_hook m_gta_thread_tick_hook;
+		detour_hook m_gta_thread_kill_hook;
 	};
 
 	inline hooking *g_hooking{};

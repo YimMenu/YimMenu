@@ -40,6 +40,9 @@ namespace big
 		std::vector<PVOID> m_event_ptr;
 		unsigned char m_event_restore[event_count];
 		char* m_event_register;
+
+		functions::gta_thread_tick* m_gta_thread_tick{};
+		functions::gta_thread_kill* m_gta_thread_kill{};
 	};
 
 	inline pointers *g_pointers{};

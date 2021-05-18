@@ -112,6 +112,16 @@ namespace big
 
 			memset(incompatible_version, 0x90, 0x1E);
 		});
+
+		main_batch.add("Thread Tick", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 B9 ? ? ? ? ? 8B FA 48 8B D9 74 05", [this](memory::handle ptr)
+		{
+			m_gta_thread_tick = ptr.as<decltype(m_gta_thread_tick)>();
+		});
+
+		main_batch.add("Thread Kill", "48 89 5C 24 ? 57 48 83 EC 20 48 83 B9 ? ? ? ? ? 48 8B D9 74 14", [this](memory::handle ptr)
+		{
+			m_gta_thread_kill = ptr.as<decltype(m_gta_thread_kill)>();
+		});
 		
 		main_batch.run(memory::module(nullptr));
 
