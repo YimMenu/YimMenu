@@ -112,6 +112,8 @@ namespace big
 
 	void gui::script_init()
 	{
+		gta_util::defuse_event(RockstarEvent::REPORT_CASH_SPAWN_EVENT, true);
+		gta_util::defuse_event(RockstarEvent::REPORT_MYSELF_EVENT, true);
 	}
 
 	void gui::script_on_tick()

@@ -35,6 +35,11 @@ namespace big
 
 		PVOID m_model_spawn_bypass;
 		PVOID m_native_return;
+
+		static const int event_count = 87;
+		std::vector<PVOID> m_event_ptr;
+		unsigned char m_event_restore[event_count];
+		char* m_event_register;
 	};
 
 	inline pointers *g_pointers{};
