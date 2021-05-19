@@ -10,18 +10,18 @@ namespace big
 		{
 			if (ImGui::TreeNode("Custom Weapons"))
 			{
-				int selected = (int)g.weapons.custom_weapon;
+				CustomWeapon selected = g.weapons.custom_weapon;
 
-				if (ImGui::BeginCombo("Weapon", custom_weapons[selected].name))
+				if (ImGui::BeginCombo("Weapon", custom_weapons[(int)selected].name))
 				{
 					for (custom_weapon weapon : custom_weapons)
 					{
-						if (ImGui::Selectable(weapon.name, weapon.id == (CustomWeapons)selected))
+						if (ImGui::Selectable(weapon.name, weapon.id == selected))
 						{
 							g.weapons.custom_weapon = weapon.id;
 						}
 
-						if (weapon.id == (CustomWeapons)selected)
+						if (weapon.id == selected)
 							ImGui::SetItemDefaultFocus();
 					}
 
