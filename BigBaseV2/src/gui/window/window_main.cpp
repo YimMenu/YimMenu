@@ -12,6 +12,7 @@ namespace big
 			ImGui::BeginTabBar("tabbar");
 			tab_main::tab_self();
 			tab_main::tab_spawn();
+			tab_main::tab_vehicle();
 			tab_main::tab_weapons();
 			ImGui::EndTabBar();
 		}
