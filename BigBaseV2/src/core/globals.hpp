@@ -1,4 +1,5 @@
 #pragma once
+#include "enums.hpp"
 
 #ifndef GLOBALS_H
 #define GLOBALS_H
@@ -9,7 +10,7 @@ struct globals {
 	};
 
 	struct weapons {
-		int custom_weapon = -1;
+		big::CustomWeapons custom_weapon = big::CustomWeapons::NONE;
 	};
 
 	self self{};

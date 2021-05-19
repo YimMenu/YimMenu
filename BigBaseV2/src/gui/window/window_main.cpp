@@ -1,6 +1,5 @@
 #include "gui/window.hpp"
 #include "imgui.h"
-#include "gui/base_tab.h"
 #include "gui/window/main/tabs.hpp"
 
 namespace big
@@ -13,6 +12,7 @@ namespace big
 			ImGui::BeginTabBar("tabbar");
 			tab_main::tab_self();
 			tab_main::tab_spawn();
+			tab_main::tab_weapons();
 			ImGui::EndTabBar();
 		}
 		ImGui::End();

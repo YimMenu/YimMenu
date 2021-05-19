@@ -8,5 +8,6 @@ namespace big
 	public:
 		static void tab_self();
 		static void tab_spawn();
+		static void tab_weapons();
 	};
 }

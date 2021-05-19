@@ -1,4 +1,5 @@
 #include "backend/looped/looped.hpp"
+#include "core/enums.hpp"
 #include "core/globals.hpp"
 #include "util/entity.hpp"
 #include "util/math.hpp"
@@ -16,7 +17,7 @@ namespace big
 
 	void looped::weapons_gravity_gun()
 	{
-		bool bGravityGun = g.weapons.custom_weapon == 0;
+		bool bGravityGun = g.weapons.custom_weapon == CustomWeapons::GRAVITY_GUN;
 		double multiplier = 3.0;
 
 		if (bGravityGun)
