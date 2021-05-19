@@ -122,6 +122,11 @@ namespace big
 		{
 			m_gta_thread_kill = ptr.as<decltype(m_gta_thread_kill)>();
 		});
+
+		main_batch.add("Increment Stat Event", "", [this](memory::handle ptr)
+		{
+			m_increment_stat_event = ptr.as<decltype(m_increment_stat_event)>();
+		});
 		
 		main_batch.run(memory::module(nullptr));
 

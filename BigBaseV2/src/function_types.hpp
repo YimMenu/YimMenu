@@ -11,4 +11,6 @@ namespace big::functions
 
 	using gta_thread_tick = __int64(GtaThread* a1, unsigned int a2);
 	using gta_thread_kill = __int64(GtaThread* a1);
+
+	using increment_stat_event = bool(uint64_t net_event_struct, int64_t sender, int64_t a3);
 }

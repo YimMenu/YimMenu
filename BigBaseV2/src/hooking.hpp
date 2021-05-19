@@ -24,6 +24,8 @@ namespace big
 
 		static rage::eThreadState gta_thread_tick(GtaThread* a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
+
+		static bool increment_stat_event(uint64_t net_event_struct, CNetGamePlayer* sender, int64_t a3);
 	};
 
 	struct minhook_keepalive
@@ -55,6 +57,8 @@ namespace big
 
 		detour_hook m_gta_thread_tick_hook;
 		detour_hook m_gta_thread_kill_hook;
+
+		detour_hook m_increment_stat_hook;
 	};
 
 	inline hooking *g_hooking{};
