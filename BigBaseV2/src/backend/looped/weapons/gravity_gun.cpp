@@ -17,7 +17,7 @@ namespace big
 
 	void looped::weapons_gravity_gun()
 	{
-		bool bGravityGun = g.weapons.custom_weapon == CustomWeapons::GRAVITY_GUN;
+		bool bGravityGun = g.weapons.custom_weapon == CustomWeapon::GRAVITY_GUN;
 		double multiplier = 3.0;
 
 		if (bGravityGun)

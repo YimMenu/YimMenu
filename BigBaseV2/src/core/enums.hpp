@@ -2,9 +2,16 @@
 
 namespace big
 {
-	enum class CustomWeapons
+	enum class CustomWeapon
 	{
 		NONE,
 		GRAVITY_GUN
+	};
+
+	enum class SpeedoMeter
+	{
+		DISABLED,
+		KMH,
+		MPH
 	};
 }
