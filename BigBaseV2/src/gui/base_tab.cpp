@@ -5,7 +5,8 @@
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "gta_util.hpp"
-#include "ImGuiBitfield.h"
+#include "imguibitfield.h"
+#include "util/vehicle.hpp"
 
 namespace big
 {
@@ -37,29 +38,10 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					constexpr auto hash = RAGE_JOAAT("adder");
-					while (!STREAMING::HAS_MODEL_LOADED(hash))
-					{
-						STREAMING::REQUEST_MODEL(hash);
-						script::get_current()->yield();
-					}
+					Ped player = PLAYER::GET_PLAYER_PED(PLAYER::GET_PLAYER_INDEX());
+					Vector3 location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player, 0.f, 8.f, 0.5f);
 
-					auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
-					*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
-					Vehicle vehicle = VEHICLE::CREATE_VEHICLE(hash, pos.x, pos.y, pos.z, 0.f, TRUE, FALSE, FALSE);
-					*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574; //By writing the "old" bypass to the function, running CREATE_VEHICLE, then restoring it, the anti-cheat does not have enough time to catch the function in a dirty state.
-
-					script::get_current()->yield();
-					STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-					if (*g_pointers->m_is_session_started)
-					{
-						DECORATOR::DECOR_SET_INT(vehicle, "MPBitset", 0);
-						ENTITY::_SET_ENTITY_SOMETHING(vehicle, TRUE); //True means it can be deleted by the engine when switching lobbies/missions/etc, false means the script is expected to clean it up.
-						auto networkId = NETWORK::VEH_TO_NET(vehicle);
-						if (NETWORK::NETWORK_GET_ENTITY_IS_NETWORKED(vehicle))
-							NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true);
-						VEHICLE::SET_VEHICLE_IS_STOLEN(vehicle, FALSE);
-					}
+					vehicle::spawn("adder", location, ENTITY::GET_ENTITY_HEADING(player) + 90.f);
 				}
 				QUEUE_JOB_END_CLAUSE
 			}
