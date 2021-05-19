@@ -1,5 +1,5 @@
 #include "tabs.hpp"
-#include "imgui.h"
+#include "core/globals.hpp"
 
 namespace big
 {
@@ -7,8 +7,7 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Self"))
 		{
-			ImGui::Text("Yeet");
-			//ImGui::Checkbox("No Clip", nullptr);
+			ImGui::Checkbox("No Clip", &g.self.noclip);
 
 			ImGui::EndTabItem();
 		}
