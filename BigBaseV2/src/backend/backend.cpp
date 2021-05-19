@@ -12,5 +12,10 @@ namespace big
 		{
 			looped::self_noclip();
 		}QUEUE_JOB_END_CLAUSE
+
+		QUEUE_JOB_BEGIN_CLAUSE()
+		{
+			looped::weapons_gravity_gun();
+		}QUEUE_JOB_END_CLAUSE
 	}
 }
