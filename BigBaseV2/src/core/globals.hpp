@@ -8,7 +8,12 @@ struct globals {
 		bool noclip = false;
 	};
 
+	struct weapons {
+		int custom_weapon = -1;
+	};
+
 	self self{};
+	weapons weapons{};
 };
 
 extern struct globals g;
