@@ -108,9 +108,9 @@ namespace big
 
 		main_batch.add("Incompatible Version", "48 89 5C 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 ? ? ? ? 48 81 EC ? ? ? ? 33 FF 48 8B DA", [this](memory::handle ptr)
 		{
-			uint8_t* incompatible_version = ptr.add(0x365).as<uint8_t*>();
+			 uint8_t* incompatible_version = ptr.add(0x365).as<uint8_t*>();
 
-			memset(incompatible_version, 0x90, 0x1E);
+			 memset(incompatible_version, 0x90, 0x1E);
 		});
 
 		main_batch.add("Thread Tick", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 B9 ? ? ? ? ? 8B FA 48 8B D9 74 05", [this](memory::handle ptr)
@@ -123,7 +123,7 @@ namespace big
 			m_gta_thread_kill = ptr.as<decltype(m_gta_thread_kill)>();
 		});
 
-		main_batch.add("Increment Stat Event", "", [this](memory::handle ptr)
+		main_batch.add("Increment Stat Event", "48 89 5C 24 ? 48 89 74 24 ? 55 57 41 55 41 56 41 57 48 8B EC 48 83 EC 60 8B 79 30", [this](memory::handle ptr)
 		{
 			m_increment_stat_event = ptr.as<decltype(m_increment_stat_event)>();
 		});
