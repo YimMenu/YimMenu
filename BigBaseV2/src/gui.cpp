@@ -19,10 +19,10 @@ namespace big
 {
 	void gui::dx_init()
 	{
-		static ImVec4 bgColor = ImVec4(0.105f, 0.1f, 0.1f, .75f);
-		static ImVec4 primary = ImVec4(0.117f, 0.529f, 0.941f, 1.f);
-		static ImVec4 secondary = ImVec4(0.156f, 0.647f, 0.97f, 1.f);
-		static ImVec4 whiteBroken = ImVec4(.972f, .972f, .972f, 1.f);
+		static ImVec4 bgColor = ImVec4(0.117f, 0.113f, 0.172f, .75f);
+		static ImVec4 primary = ImVec4(0.172f, 0.380f, 0.909f, 1.f);
+		static ImVec4 secondary = ImVec4(0.443f, 0.654f, 0.819f, 1.f);
+		static ImVec4 whiteBroken = ImVec4(0.792f, 0.784f, 0.827f, 1.f);
 
 		auto& style = ImGui::GetStyle();
 		style.WindowPadding = { 10.f, 10.f };
