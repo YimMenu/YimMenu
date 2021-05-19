@@ -1,13 +1,15 @@
 #include "common.hpp"
 #include "features.hpp"
 #include "logger.hpp"
-#include "natives.hpp"
 #include "script.hpp"
+
+#include "backend/backend.hpp"
 
 namespace big
 {
 	void features::run_tick()
 	{
+		backend::loop();
 	}
 
 	void features::script_func()
