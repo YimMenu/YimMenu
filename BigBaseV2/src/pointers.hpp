@@ -41,6 +41,8 @@ namespace big
 		unsigned char m_event_restore[event_count];
 		char* m_event_register;
 
+		functions::error_screen* m_error_screen{};
+
 		functions::gta_thread_tick* m_gta_thread_tick{};
 		functions::gta_thread_kill* m_gta_thread_kill{};
 

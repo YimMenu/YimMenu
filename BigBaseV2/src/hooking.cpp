@@ -42,7 +42,9 @@ namespace big
 		m_gta_thread_tick_hook("GTA Thread Tick", g_pointers->m_gta_thread_tick, &hooks::gta_thread_tick),
 		m_gta_thread_kill_hook("GTA Thread Kill", g_pointers->m_gta_thread_kill, &hooks::gta_thread_kill),
 
-		m_increment_stat_hook("Increment Stat Event", g_pointers->m_increment_stat_event, &hooks::increment_stat_event)
+		m_increment_stat_hook("Increment Stat Event", g_pointers->m_increment_stat_event, &hooks::increment_stat_event),
+
+		m_error_screen_hook("Error Screen", g_pointers->m_error_screen, &hooks::disable_error_screen)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -72,12 +74,16 @@ namespace big
 
 		m_increment_stat_hook.enable();
 
+		m_error_screen_hook.enable();
+
 		m_enabled = true;
 	}
 
 	void hooking::disable()
 	{
 		m_enabled = false;
+
+		m_error_screen_hook.disable();
 
 		m_increment_stat_hook.disable();
 
