@@ -12,6 +12,7 @@ struct globals {
 	struct self {
 		bool godmode = false;
 		bool noclip = false;
+		bool no_ragdoll = false;
 	};
 
 	struct vehicle {
@@ -31,6 +32,7 @@ struct globals {
 	void from_json(const nlohmann::json& j)
 	{
 		this->self.godmode = j["self"]["godmode"];
+		this->self.no_ragdoll = j["self"]["no_ragdoll"];
 
 		this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
 		this->vehicle.speedo_meter = (SpeedoMeter)j["vehicle"]["speedo_meter"];
@@ -43,7 +45,8 @@ struct globals {
 		return nlohmann::json{
 			{
 				"self", {
-					{ "godmode", this->self.godmode }
+					{ "godmode", this->self.godmode },
+					{ "no_ragdoll", this->self.no_ragdoll }
 				}
 			},
 			{
@@ -110,6 +113,7 @@ struct globals {
 		return true;
 	}
 
+private:
 	bool save()
 	{
 		std::string settings_file = std::getenv("appdata");

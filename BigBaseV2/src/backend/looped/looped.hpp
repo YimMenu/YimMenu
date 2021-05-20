@@ -7,6 +7,7 @@ namespace big
 	public:
 		static void self_godmode();
 		static void self_noclip();
+		static void self_no_ragdoll();
 
 		static void weapons_cage_gun();
 		static void weapons_delete_gun();
