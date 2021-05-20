@@ -5,7 +5,8 @@ namespace big
 	enum class CustomWeapon
 	{
 		NONE,
-		GRAVITY_GUN
+		GRAVITY_GUN,
+		REPAIR_GUN
 	};
 
 	enum class SpeedoMeter
