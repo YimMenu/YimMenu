@@ -14,6 +14,17 @@ namespace big::entity
 		OBJECT::CREATE_OBJECT(hash, location.x, location.y, location.z - 1.f, true, false, false);
 	}
 
+	inline void delete_entity(Entity ent)
+	{
+		ENTITY::DETACH_ENTITY(ent, 1, 1);
+		ENTITY::SET_ENTITY_VISIBLE(ent, false, false);
+		NETWORK::_NETWORK_SET_ENTITY_INVISIBLE_TO_NETWORK(ent, true);
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, 0, 0, 0, 0, 0, 0);
+		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(ent, 1, 1);
+		ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&ent);
+		ENTITY::DELETE_ENTITY(&ent);
+	}
+
 	inline bool raycast(Entity* ent)
 	{
 		BOOL hit;

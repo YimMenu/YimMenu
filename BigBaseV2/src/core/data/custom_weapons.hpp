@@ -8,6 +8,8 @@ struct custom_weapon {
 
 const custom_weapon custom_weapons[] = {
 	{ big::CustomWeapon::NONE, "No weapon" },
+	{ big::CustomWeapon::CAGE_GUN, "Cage Gun" },
+	{ big::CustomWeapon::DELETE_GUN, "Delete Gun" },
 	{ big::CustomWeapon::GRAVITY_GUN, "Gravity Gun" },
 	{ big::CustomWeapon::REPAIR_GUN, "Repair Gun" }
 };
