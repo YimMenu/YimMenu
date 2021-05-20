@@ -7,10 +7,13 @@ namespace big
 {
 	void backend::loop()
 	{
+		g.attempt_save();
+
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::self_godmode();
 		}QUEUE_JOB_END_CLAUSE
+
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::self_noclip();

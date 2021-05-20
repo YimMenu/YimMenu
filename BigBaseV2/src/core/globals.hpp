@@ -6,6 +6,9 @@
 
 using namespace big;
 struct globals {
+	nlohmann::json default_options;
+	nlohmann::json options;
+
 	struct self {
 		bool godmode = false;
 		bool noclip = false;
@@ -59,8 +62,21 @@ struct globals {
 		};
 	}
 
+	void attempt_save()
+	{
+		nlohmann::json& j = this->to_json();
+		if (j != this->options)
+		{
+			this->save();
+
+			this->options = j;
+		}
+	}
+
 	bool load()
 	{
+		this->default_options = this->to_json();
+
 		std::string settings_file = std::getenv("appdata");
 		settings_file += "\\BigBaseV2\\settings.json";
 
@@ -73,31 +89,25 @@ struct globals {
 			file.open(settings_file);
 		}
 
-		nlohmann::json j;
-		file >> j;
-
-		nlohmann::json default_j = this->to_json();
+		file >> this->options;
 
 		bool should_save = false;
-		for (auto& e : default_j.items())
+		for (auto& e : this->default_options.items())
 		{
-			if (j.count(e.key()) == 0)
+			if (this->options.count(e.key()) == 0)
 			{
 				should_save = true;
-				j[e.key()] = e.value();
+				this->options[e.key()] = e.value();
 			}
 		}
+
+		this->from_json(this->options);
 
 		if (should_save)
 		{
 			LOG(INFO) << "Updating settings.";
-
-			default_j.merge_patch(j);
-			j = default_j;
-
 			save();
 		}
-		this->from_json(j);
 
 		return true;
 	}
