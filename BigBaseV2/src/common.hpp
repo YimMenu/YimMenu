@@ -50,7 +50,9 @@
 
 #include "logger.hpp"
 
-#include "settings.h"
+#include "core/globals.hpp"
+#include "gta/player.hpp"
+// #include "settings.h"
 
 namespace big
 {

@@ -45,7 +45,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto hooking_instance = std::make_unique<hooking>();
 				LOG(INFO) << "Hooking initialized.";
 
-				g_settings.load();
+				g.load();
 				LOG(INFO) << "Settings Loaded.";
 
 				g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
