@@ -57,9 +57,9 @@ namespace big
 				{
 					QUEUE_JOB_BEGIN_CLAUSE(&)
 					{
-						notify::above_map("Thanks for using Yim's Mod Menu");
-
 						g_running = false;
+
+						notify::above_map("Thanks for using Yim's Mod Menu");
 					}QUEUE_JOB_END_CLAUSE
 				}
 
