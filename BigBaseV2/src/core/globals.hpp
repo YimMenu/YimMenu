@@ -20,6 +20,7 @@ struct globals {
 
 	struct weapons {
 		CustomWeapon custom_weapon = CustomWeapon::NONE;
+		char vehicle_gun_model[12] = "bus";
 	};
 
 	self self{};

@@ -35,7 +35,7 @@ namespace big
 					location.y += dist * sin(yaw) * cos(pitch);
 					location.z += dist * sin(pitch);
 					Vehicle veh = vehicle::spawn(
-						"bus",
+						(const char*)g.weapons.vehicle_gun_model,
 						location,
 						ENTITY::GET_ENTITY_HEADING(player)
 					);

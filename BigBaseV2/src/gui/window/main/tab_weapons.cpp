@@ -27,6 +27,25 @@ namespace big
 					ImGui::EndCombo();
 				}
 
+				switch (selected)
+				{
+				case CustomWeapon::NONE:
+					break;
+				case CustomWeapon::CAGE_GUN:
+					break;
+				case CustomWeapon::DELETE_GUN:
+					break;
+				case CustomWeapon::GRAVITY_GUN:
+					break;
+				case CustomWeapon::REPAIR_GUN:
+					break;
+				case CustomWeapon::VEHICLE_GUN:
+					ImGui::Text("Shooting Model:");
+					ImGui::InputText("##vehicle_gun_model", g.weapons.vehicle_gun_model, 12);
+
+					break;
+				}
+
 				ImGui::TreePop();
 			}
 
