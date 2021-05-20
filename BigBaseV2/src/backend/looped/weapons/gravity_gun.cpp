@@ -21,9 +21,6 @@ namespace big
 
 		if (bGravityGun)
 		{
-			Hash currWeapon;
-			WEAPON::GET_CURRENT_PED_WEAPON(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PLAYER::PLAYER_PED_ID()), &currWeapon, 1);
-
 			// ZOOMED IN
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 25))
 			{
