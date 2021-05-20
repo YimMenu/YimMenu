@@ -14,6 +14,7 @@
 #include <imgui.h>
 
 #include "gui/gui_main.hpp"
+#include "util/notify.hpp"
 
 namespace big
 {
@@ -113,6 +114,8 @@ namespace big
 	{
 		gta_util::defuse_event(RockstarEvent::REPORT_CASH_SPAWN_EVENT, true);
 		gta_util::defuse_event(RockstarEvent::REPORT_MYSELF_EVENT, true);
+
+		notify::display_help_text("Press INSERT on your keyboard to open Yim's Mod Menu.");
 	}
 
 	void gui::script_on_tick()

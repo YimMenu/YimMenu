@@ -10,4 +10,11 @@ namespace big::notify
 		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
 		HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER(false, false);
 	}
+
+	inline void display_help_text(const char* text)
+	{
+		HUD::BEGIN_TEXT_COMMAND_DISPLAY_HELP("STRING");
+		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
+		HUD::END_TEXT_COMMAND_DISPLAY_HELP(0, 0, 1, -1);
+	}
 }
