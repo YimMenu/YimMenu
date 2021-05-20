@@ -11,7 +11,7 @@ namespace big
 
 		SpeedoMeter speedo_type = g.vehicle.speedo_meter;
 
-		if (speedo_type == SpeedoMeter::DISABLED || HUD::IS_PAUSE_MENU_ACTIVE()) return;
+		if (speedo_type == SpeedoMeter::DISABLED || HUD::IS_PAUSE_MENU_ACTIVE() || HUD::IS_WARNING_MESSAGE_ACTIVE() || CAM::IS_SCREEN_FADED_OUT() || CAM::IS_SCREEN_FADING_OUT() || CAM::IS_SCREEN_FADING_IN()) return;
 
 		Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
 
@@ -31,7 +31,7 @@ namespace big
 			break;
 		}
 
-		sprintf(speed, "%d", (int)veh_speed);
+		sprintf(speed, "%*d", 3, (int)veh_speed);
 
 		HUD::SET_TEXT_FONT(2);
 		HUD::SET_TEXT_SCALE(.9f, .9f);
