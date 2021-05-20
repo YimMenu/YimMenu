@@ -12,6 +12,7 @@ namespace big
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::self_godmode();
+			looped::self_off_radar();
 			looped::self_no_ragdoll();
 		}QUEUE_JOB_END_CLAUSE
 

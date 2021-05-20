@@ -11,6 +11,7 @@ struct globals {
 
 	struct self {
 		bool godmode = false;
+		bool off_radar = false;
 		bool noclip = false;
 		bool no_ragdoll = false;
 	};
@@ -32,6 +33,7 @@ struct globals {
 	void from_json(const nlohmann::json& j)
 	{
 		this->self.godmode = j["self"]["godmode"];
+		this->self.off_radar = j["self"]["off_radar"];
 		this->self.no_ragdoll = j["self"]["no_ragdoll"];
 
 		this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
@@ -46,6 +48,7 @@ struct globals {
 			{
 				"self", {
 					{ "godmode", this->self.godmode },
+					{ "off_radar", this->self.off_radar },
 					{ "no_ragdoll", this->self.no_ragdoll }
 				}
 			},
