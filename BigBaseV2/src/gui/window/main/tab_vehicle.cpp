@@ -1,5 +1,4 @@
 #include "core/data/speedo_meters.hpp"
-#include "core/globals.hpp"
 #include "gui/window/main/tabs.hpp"
 
 namespace big

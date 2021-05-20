@@ -1,5 +1,4 @@
 #include "tabs.hpp"
-#include "core/globals.hpp"
 
 namespace big
 {

@@ -2,7 +2,6 @@
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "script.hpp"
-#include "core/globals.hpp"
 #include "util/entity.hpp"
 
 namespace big

@@ -2,7 +2,6 @@
 #include "fiber_pool.hpp"
 #include "script.hpp"
 #include "looped/looped.hpp"
-#include "core/globals.hpp"
 
 namespace big
 {
