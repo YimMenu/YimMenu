@@ -47,6 +47,8 @@ namespace big
 		functions::gta_thread_kill* m_gta_thread_kill{};
 
 		functions::increment_stat_event* m_increment_stat_event{};
+
+		functions::trigger_script_event* m_trigger_script_event{};
 	};
 
 	inline pointers *g_pointers{};
