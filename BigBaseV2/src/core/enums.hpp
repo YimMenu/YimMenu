@@ -8,6 +8,7 @@ namespace big
 		CAGE_GUN,
 		DELETE_GUN,
 		GRAVITY_GUN,
+		STEAL_VEHICLE_GUN,
 		REPAIR_GUN,
 		VEHICLE_GUN
 	};
