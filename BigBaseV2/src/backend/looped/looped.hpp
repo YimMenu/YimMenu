@@ -15,6 +15,7 @@ namespace big
 		static void weapons_steal_vehicle_gun();
 		static void weapons_vehicle_gun();
 
+		static void vehicle_horn_boost();
 		static void vehicle_speedo_meter();
 	};
 }

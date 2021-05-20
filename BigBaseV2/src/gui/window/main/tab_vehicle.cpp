@@ -32,6 +32,8 @@ namespace big
 				ImGui::TreePop();
 			}
 
+			ImGui::Checkbox("Horn Boost", &g.vehicle.horn_boost);
+
 			ImGui::EndTabItem();
 		}
 	}

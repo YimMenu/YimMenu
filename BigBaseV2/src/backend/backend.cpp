@@ -31,6 +31,7 @@ namespace big
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
+			looped::vehicle_horn_boost();
 			looped::vehicle_speedo_meter();
 		}QUEUE_JOB_END_CLAUSE
 	}

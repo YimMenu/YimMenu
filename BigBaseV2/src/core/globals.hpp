@@ -15,6 +15,7 @@ struct globals {
 	};
 
 	struct vehicle {
+		bool horn_boost = false;
 		SpeedoMeter speedo_meter = SpeedoMeter::DISABLED;
 	};
 
@@ -31,6 +32,7 @@ struct globals {
 	{
 		this->self.godmode = j["self"]["godmode"];
 
+		this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
 		this->vehicle.speedo_meter = (SpeedoMeter)j["vehicle"]["speedo_meter"];
 
 		this->weapons.custom_weapon = (CustomWeapon)j["weapons"]["custom_weapon"];
@@ -41,23 +43,18 @@ struct globals {
 		return nlohmann::json{
 			{
 				"self", {
-					{
-						"godmode", this->self.godmode
-					}
+					{ "godmode", this->self.godmode }
 				}
 			},
 			{
 				"vehicle", {
-					{
-						"speedo_meter", (int)this->vehicle.speedo_meter
-					}
+					{ "horn_boost", this->vehicle.horn_boost },
+					{ "speedo_meter", (int)this->vehicle.speedo_meter }
 				}
 			},
 			{
 				"weapons", {
-					{
-						"custom_weapon", (int)this->weapons.custom_weapon
-					}
+					{ "custom_weapon", (int)this->weapons.custom_weapon }
 				}
 			}
 		};
