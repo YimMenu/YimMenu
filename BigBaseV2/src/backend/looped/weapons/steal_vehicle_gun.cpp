@@ -33,6 +33,7 @@ namespace big
 
 							PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), ent, -1);
 						}
+						else notify::above_map("Entity is not a vehicle.");
 					}
 					else notify::above_map("No entity found.");
 				}
