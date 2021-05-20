@@ -8,7 +8,8 @@ namespace big
 		CAGE_GUN,
 		DELETE_GUN,
 		GRAVITY_GUN,
-		REPAIR_GUN
+		REPAIR_GUN,
+		VEHICLE_GUN
 	};
 
 	enum class SpeedoMeter
