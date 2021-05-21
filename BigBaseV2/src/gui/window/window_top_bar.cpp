@@ -51,6 +51,13 @@ namespace big
 				ImGui::EndMenu();
 			}
 
+			if (ImGui::BeginMenu("Windows"))
+			{
+				ImGui::MenuItem("Main Window", nullptr, &g.window.main);
+
+				ImGui::EndMenu();
+			}
+
 			if (ImGui::BeginMenu("Quit"))
 			{
 				if (ImGui::MenuItem("Unload Menu (may crash)"))

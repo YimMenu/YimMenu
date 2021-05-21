@@ -26,9 +26,14 @@ struct globals {
 		char vehicle_gun_model[12] = "bus";
 	};
 
+	struct window {
+		bool main = true;
+	};
+
 	self self{};
 	vehicle vehicle{};
 	weapons weapons{};
+	window window{};
 
 	void from_json(const nlohmann::json& j)
 	{
