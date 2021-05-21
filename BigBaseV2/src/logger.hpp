@@ -53,7 +53,7 @@ namespace big
 		explicit logger() :
 			m_file_path(std::getenv("appdata")),
 			m_worker(g3::LogWorker::createLogWorker())
-
+		{
 			m_file_path /= "BigBaseV2";
 			std::filesystem::path m_backup_path = m_file_path;
 			m_backup_path /= "Backup";
