@@ -7,6 +7,22 @@
 
 namespace big::vehicle
 {
+	inline void bring(Vehicle veh, Vector3 location, bool put_in = true)
+	{
+		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, 1);
+
+		if (put_in)
+		{
+			script::get_current()->yield(100ms);
+			PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
+		}
+	}
+
+	inline Vehicle get_closest_to_location(Vector3 location, float range, int flags = 70)
+	{
+		return VEHICLE::GET_CLOSEST_VEHICLE(location.x, location.y, location.z, range, 0, flags);
+	}
+
 	inline int spawn(const char* model, Vector3 location, float heading)
 	{
 		Hash hash = rage::joaat(model);
