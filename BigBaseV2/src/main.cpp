@@ -8,21 +8,11 @@
 #include "renderer.hpp"
 #include "script_mgr.hpp"
 
-BOOL WINAPI ctrl_handler(DWORD event)
-{
-	LOG(INFO) << "Received close signal, unloading menu.";
-
-	g_running = false;
-
-	return true;
-}
-
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
 	using namespace big;
 	if (reason == DLL_PROCESS_ATTACH)
 	{
-
 		DisableThreadLibraryCalls(hmod);
 
 		g_hmodule = hmod;
@@ -32,9 +22,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				std::this_thread::sleep_for(1s);
 
 			auto logger_instance = std::make_unique<logger>();
-			SetConsoleCtrlHandler(ctrl_handler, TRUE);
-			DeleteMenu(GetSystemMenu(GetConsoleWindow(), false), SC_CLOSE, MF_BYCOMMAND);
-
 			try
 			{
 				LOG(RAW_GREEN_TO_CONSOLE) << u8R"kek(
