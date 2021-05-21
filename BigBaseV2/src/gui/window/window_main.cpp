@@ -7,7 +7,7 @@ namespace big
 	void window::main()
 	{
 		ImGui::SetNextWindowSize({ 800, 840 }, ImGuiCond_FirstUseEver);
-		if (g.window.main && ImGui::Begin("Yimura's Mod Menu", &g.window.main))
+		if (g.window.main && ImGui::Begin("Yimura's Mod Menu"))
 		{
 			ImGui::BeginTabBar("tabbar");
 			tab_main::tab_self();
@@ -15,7 +15,8 @@ namespace big
 			tab_main::tab_vehicle();
 			tab_main::tab_weapons();
 			ImGui::EndTabBar();
+
+			ImGui::End();
 		}
-		ImGui::End();
 	}
 }

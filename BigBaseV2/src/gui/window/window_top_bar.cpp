@@ -53,7 +53,8 @@ namespace big
 
 			if (ImGui::BeginMenu("Windows"))
 			{
-				ImGui::MenuItem("Main Window", nullptr, &g.window.main);
+				ImGui::MenuItem("Main", nullptr, &g.window.main);
+				ImGui::MenuItem("Logs", nullptr, &g.window.log);
 
 				ImGui::EndMenu();
 			}
@@ -62,12 +63,7 @@ namespace big
 			{
 				if (ImGui::MenuItem("Unload Menu (may crash)"))
 				{
-					QUEUE_JOB_BEGIN_CLAUSE(&)
-					{
-						g_running = false;
-
-						notify::above_map("Thanks for using Yim's Mod Menu");
-					}QUEUE_JOB_END_CLAUSE
+					g_running = false;
 				}
 
 				if (ImGui::MenuItem("Rage Quit (hard crash)"))

@@ -53,17 +53,6 @@ namespace big
 		explicit logger() :
 			m_file_path(std::getenv("appdata")),
 			m_worker(g3::LogWorker::createLogWorker())
-		{
-			if ((m_did_console_exist = AttachConsole(GetCurrentProcessId())) == false)
-				AllocConsole();
-
-			if ((m_console_handle = GetStdHandle(STD_OUTPUT_HANDLE)) != nullptr)
-			{
-				SetConsoleTitleA("Yim's Mod Menu");
-				SetConsoleOutputCP(CP_UTF8);
-
-				m_console_out.open("CONOUT$", std::ios_base::out | std::ios_base::app);
-			}
 
 			m_file_path /= "BigBaseV2";
 			std::filesystem::path m_backup_path = m_file_path;
@@ -130,6 +119,13 @@ namespace big
 			g_logger = nullptr;
 		}
 
+		std::pair<std::unique_ptr<char[]>*, std::size_t> get_messages()
+		{
+			return std::make_pair(m_messages.data(), m_messages.size());
+		}
+		std::vector<std::unique_ptr<char[]>> m_messages;
+		std::mutex m_mutex;
+
 		struct log_sink
 		{
 			std::map<std::string, log_color> log_colors = {
@@ -151,8 +147,17 @@ namespace big
 
 				if (!(level_value & FLAG_NO_CONSOLE))
 				{
-					SetConsoleTextAttribute(g_logger->m_console_handle, static_cast<std::uint16_t>(log_colors[log_message._level.text]));
-					g_logger->m_console_out << log_message.toString(is_raw ? format_raw : format_console) << std::flush;
+					std::lock_guard lock(g_logger->m_mutex);
+
+					const std::string msg = log_message.toString(is_raw ? format_raw : format_console);
+
+					std::size_t size = msg.size() + 1;
+					auto message = std::make_unique<char[]>(size);
+					std::uninitialized_fill_n(message.get(), size, '\0');
+					strcpy(message.get(), msg.c_str());
+					g_logger->m_messages.push_back(
+						std::move(message)
+					);
 				}
 				
 				if (!(level_value & FLAG_NO_DISK))

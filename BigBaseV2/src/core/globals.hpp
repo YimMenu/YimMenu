@@ -28,6 +28,7 @@ struct globals {
 
 	struct window {
 		bool main = true;
+		bool log = false;
 	};
 
 	self self{};

@@ -7,6 +7,8 @@ namespace big
 	{
 		window::top_bar();
 
+		window::log();
+
 		window::main();
 	}
 }
