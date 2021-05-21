@@ -46,6 +46,9 @@ struct globals {
 		this->vehicle.speedo_meter = (SpeedoMeter)j["vehicle"]["speedo_meter"];
 
 		this->weapons.custom_weapon = (CustomWeapon)j["weapons"]["custom_weapon"];
+
+		this->window.log = j["window"]["log"];
+		this->window.main = j["window"]["main"];
 	}
 
 	nlohmann::json to_json()
@@ -67,6 +70,12 @@ struct globals {
 			{
 				"weapons", {
 					{ "custom_weapon", (int)this->weapons.custom_weapon }
+				}
+			},
+			{
+				"window", {
+					{ "log", this->window.log },
+					{ "main", this->window.main }
 				}
 			}
 		};
