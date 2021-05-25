@@ -27,8 +27,6 @@ namespace big
 
 					location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
 
-					entity::take_control_of(veh);
-
 					vehicle::bring(veh, location);
 				}QUEUE_JOB_END_CLAUSE
 			}

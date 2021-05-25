@@ -1,5 +1,7 @@
 #pragma once
+#include "entity.hpp"
 #include "gta/joaat.hpp"
+#include "math.hpp"
 #include "natives.hpp"
 #include "notify.hpp"
 #include "pointers.hpp"
@@ -9,11 +11,15 @@ namespace big::vehicle
 {
 	inline void bring(Vehicle veh, Vector3 location, bool put_in = true)
 	{
+		entity::take_control_of(veh);
+
 		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, 1);
 
 		if (put_in)
 		{
-			script::get_current()->yield(100ms);
+			for (size_t i = 0; i < 100 && math::distance_between_vectors(location, ENTITY::GET_ENTITY_COORDS(veh, true)) > 10; i++)
+				script::get_current()->yield();
+
 			PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
 		}
 	}
