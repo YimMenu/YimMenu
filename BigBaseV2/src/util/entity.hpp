@@ -51,12 +51,8 @@ namespace big::entity
 		if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return true;
 		for (uint8_t i = 0; !NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) && i < 5; i++)
 		{
-			bool in_spectator = NETWORK::NETWORK_IS_IN_SPECTATOR_MODE();
-			if (in_spectator) NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(0, PLAYER::PLAYER_PED_ID());
 
 			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(ent);
-
-			if (in_spectator) NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(1, PLAYER::PLAYER_PED_ID());
 
 			script::get_current()->yield();
 		}
