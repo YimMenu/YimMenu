@@ -30,34 +30,6 @@ namespace big
 
 		switch ((RockstarEvent)event_id)
 		{
-		case RockstarEvent::NETWORK_INCREMENT_STAT_EVENT:
-		{
-			Hash hash;
-			buffer->ReadDword(&hash, 32);
-
-			switch (hash)
-			{
-			case RAGE_JOAAT("MPPLY_GAME_EXPLOITS"):
-			case RAGE_JOAAT("MPPLY_VC_HATE"):
-			case RAGE_JOAAT("MPPLY_EXPLOITS"):
-			case RAGE_JOAAT("MPPLY_TC_ANNOYINGME"):
-			case RAGE_JOAAT("MPPLY_TC_HATE"):
-				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
-				char report[64];
-				strcpy(report, "~g~BLOCKED REPORT~s~\nFrom: <C>");
-				strcat(report, PLAYER::GET_PLAYER_NAME(source_player->player_id));
-				strcat(report, "</C>");
-
-				notify::above_map(report);
-
-				return false;
-			}
-
-			buffer->Seek(0);
-
-			break;
-		}
 		case RockstarEvent::NETWORK_CLEAR_PED_TASKS_EVENT:
 		{
 			if (source_player->player_id < 32)

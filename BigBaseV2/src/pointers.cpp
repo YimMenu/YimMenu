@@ -123,6 +123,11 @@ namespace big
 			m_gta_thread_kill = ptr.as<decltype(m_gta_thread_kill)>();
 		});
 
+		main_batch.add("Increment Stat Event", "48 89 5C 24 ? 48 89 74 24 ? 55 57 41 55 41 56 41 57 48 8B EC 48 83 EC 60 8B 79 30", [this](memory::handle ptr)
+		{
+			m_increment_stat_event = ptr.as<decltype(m_increment_stat_event)>();
+		});
+
 		main_batch.add("Error Screen", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 56 41 57 48 83 EC 60 4C 8B F2 48 8B 94 24 ? ? ? ? 33 DB", [this](memory::handle ptr)
 		{
 			m_error_screen = ptr.as<decltype(m_error_screen)>();
