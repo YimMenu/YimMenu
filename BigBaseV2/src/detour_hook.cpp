@@ -37,7 +37,7 @@ namespace big
 	{
 		if (auto status = MH_EnableHook(m_target); status == MH_OK)
 		{
-			LOG(INFO_TO_FILE) << "Enabled hook '" << m_name << "'.";
+			LOG(INFO) << "Enabled hook '" << m_name << "'.";
 		}
 		else
 		{
