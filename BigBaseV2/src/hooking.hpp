@@ -28,6 +28,17 @@ namespace big
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
 
 		static bool increment_stat_event(uint64_t net_event_struct, CNetGamePlayer* sender, int64_t a3);
+
+		static bool received_event(
+			rage::netEventMgr* event_manager,
+			CNetGamePlayer* source_player,
+			CNetGamePlayer* target_player,
+			uint16_t event_id,
+			int event_index,
+			int event_handled_bitset,
+			int64_t bit_buffer_size,
+			int64_t bit_buffer
+		);
 	};
 
 	struct minhook_keepalive
@@ -63,6 +74,8 @@ namespace big
 		detour_hook m_gta_thread_kill_hook;
 
 		detour_hook m_increment_stat_hook;
+
+		detour_hook m_received_event_hook;
 	};
 
 	inline hooking *g_hooking{};

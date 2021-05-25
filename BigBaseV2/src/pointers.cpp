@@ -137,6 +137,28 @@ namespace big
 		{
 			m_trigger_script_event = ptr.as<decltype(m_trigger_script_event)>();
 		});
+
+		// Received Event Signatures START
+		main_batch.add("Received Event", "66 41 83 F9 ? 0F 83 ? ? ? ?", [this](memory::handle ptr)
+		{
+			m_received_event = ptr.as<decltype(m_received_event)>();
+		});
+
+		main_batch.add("Read BitBuffer WORD/DWORD", "48 89 74 24 ? 57 48 83 EC 20 48 8B D9 33 C9 41 8B F0 8A", [this](memory::handle ptr)
+		{
+			m_read_bitbuf_dword = ptr.sub(5).as<decltype(m_read_bitbuf_dword)>();
+		});
+
+		main_batch.add("Read BitBuffer Array", "48 89 5C 24 ? 57 48 83 EC 30 41 8B F8 4C", [this](memory::handle ptr)
+		{
+			m_read_bitbuf_array = ptr.as<decltype(m_read_bitbuf_array)>();
+		});
+
+		main_batch.add("Send Event Ack", "48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 7A", [this](memory::handle ptr)
+		{
+			m_send_event_ack = ptr.sub(5).as<decltype(m_send_event_ack)>();
+		});
+		// Received Event Signatures END
 		
 		main_batch.run(memory::module(nullptr));
 

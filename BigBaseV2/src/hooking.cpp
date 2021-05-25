@@ -44,7 +44,9 @@ namespace big
 
 		m_increment_stat_hook("Increment Stat Event", g_pointers->m_increment_stat_event, &hooks::increment_stat_event),
 
-		m_error_screen_hook("Error Screen", g_pointers->m_error_screen, &hooks::disable_error_screen)
+		m_error_screen_hook("Error Screen", g_pointers->m_error_screen, &hooks::disable_error_screen),
+
+		m_received_event_hook("Received Event", g_pointers->m_received_event, &hooks::received_event)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -76,12 +78,16 @@ namespace big
 
 		m_error_screen_hook.enable();
 
+		m_received_event_hook.enable();
+
 		m_enabled = true;
 	}
 
 	void hooking::disable()
 	{
 		m_enabled = false;
+
+		m_received_event_hook.disable();
 
 		m_error_screen_hook.disable();
 
