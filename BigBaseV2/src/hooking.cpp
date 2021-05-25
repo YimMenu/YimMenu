@@ -42,8 +42,6 @@ namespace big
 		m_gta_thread_tick_hook("GTA Thread Tick", g_pointers->m_gta_thread_tick, &hooks::gta_thread_tick),
 		m_gta_thread_kill_hook("GTA Thread Kill", g_pointers->m_gta_thread_kill, &hooks::gta_thread_kill),
 
-		m_increment_stat_hook("Increment Stat Event", g_pointers->m_increment_stat_event, &hooks::increment_stat_event),
-
 		m_error_screen_hook("Error Screen", g_pointers->m_error_screen, &hooks::disable_error_screen),
 
 		m_received_event_hook("Received Event", g_pointers->m_received_event, &hooks::received_event)
@@ -74,8 +72,6 @@ namespace big
 		m_gta_thread_kill_hook.enable();
 		m_gta_thread_tick_hook.enable();
 
-		m_increment_stat_hook.enable();
-
 		m_error_screen_hook.enable();
 
 		m_received_event_hook.enable();
@@ -90,8 +86,6 @@ namespace big
 		m_received_event_hook.disable();
 
 		m_error_screen_hook.disable();
-
-		m_increment_stat_hook.disable();
 
 		m_gta_thread_tick_hook.disable();
 		m_gta_thread_kill_hook.disable();
