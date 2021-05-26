@@ -160,7 +160,7 @@ namespace big
 		});
 		// Received Event Signatures END
 
-		main_batch.add("Request Control Of Entity", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? 84 C0", [this](memory::handle ptr)
+		main_batch.add("Request Control Of Entity PATCH", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", [this](memory::handle ptr)
 		{
 			PVOID spectator_check = ptr.add(0x11).as<PVOID>();
 
