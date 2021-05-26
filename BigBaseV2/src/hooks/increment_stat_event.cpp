@@ -4,12 +4,11 @@
 
 namespace big
 {
-	bool hooks::increment_stat_event(uint64_t net_event_struct, CNetGamePlayer* sender, int64_t a3)
+	bool hooks::increment_stat_event(CNetworkIncrementStatEvent* net_event, CNetGamePlayer* sender, int64_t a3)
 	{
-		Hash hash = *reinterpret_cast<DWORD*>(net_event_struct + 0x30);
 		Player sender_id = sender->player_id;
 
-		switch (hash)
+		switch (net_event->m_stat)
 		{
 		case RAGE_JOAAT("MPPLY_GAME_EXPLOITS"):
 		case RAGE_JOAAT("MPPLY_VC_HATE"):
@@ -26,6 +25,6 @@ namespace big
 			return true;
 		}
 
-		return g_hooking->m_increment_stat_hook.get_original<decltype(&increment_stat_event)>()(net_event_struct, sender, a3);
+		return g_hooking->m_increment_stat_hook.get_original<decltype(&increment_stat_event)>()(net_event, sender, a3);
 	}
 }

@@ -2,6 +2,7 @@
 #include "common.hpp"
 #include "detour_hook.hpp"
 #include "gta/fwddec.hpp"
+#include "gta/net_game_event.hpp"
 #include "gta/script_thread.hpp"
 #include "script_hook.hpp"
 #include "vmt_hook.hpp"
@@ -27,7 +28,7 @@ namespace big
 		static rage::eThreadState gta_thread_tick(GtaThread* a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
 
-		static bool increment_stat_event(uint64_t net_event_struct, CNetGamePlayer* sender, int64_t a3);
+		static bool increment_stat_event(CNetworkIncrementStatEvent* net_event_struct, CNetGamePlayer* sender, int64_t a3);
 
 		static bool received_event(
 			rage::netEventMgr* event_manager,

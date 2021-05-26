@@ -202,6 +202,6 @@ class CNetworkIncrementStatEvent : public rage::netGameEvent
 {
 public:
 	Hash m_stat;    // 0x30
-	std::uint32_t m_ammount; // 0x34
+	std::uint32_t m_amount; // 0x34
 };
 #pragma pack(pop)
