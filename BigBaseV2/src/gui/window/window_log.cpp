@@ -1,5 +1,4 @@
 #include "gui/window.hpp"
-#include "gui/window/main/tabs.hpp"
 #include "imgui.h"
 #include "renderer.hpp"
 #include "logger.hpp"
