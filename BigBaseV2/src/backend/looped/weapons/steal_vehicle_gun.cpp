@@ -28,8 +28,13 @@ namespace big
 					{
 						if (ENTITY::IS_ENTITY_A_VEHICLE(ent))
 						{
-							Ped ped = VEHICLE::GET_PED_IN_VEHICLE_SEAT(ent, -1, 0);
-							TASK::CLEAR_PED_TASKS_IMMEDIATELY(ped);
+							for (size_t i = 0; i < 8 && !VEHICLE::IS_VEHICLE_SEAT_FREE(ent, -1, 0); i++)
+							{
+								Ped ped = VEHICLE::GET_PED_IN_VEHICLE_SEAT(ent, -1, 0);
+								TASK::CLEAR_PED_TASKS_IMMEDIATELY(ped);
+
+								script::get_current()->yield();
+							}
 
 							PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), ent, -1);
 						}
