@@ -10,5 +10,6 @@ namespace big
 		static void tab_spawn();
 		static void tab_vehicle();
 		static void tab_weapons();
+		static void tab_teleport();
 	};
 }
