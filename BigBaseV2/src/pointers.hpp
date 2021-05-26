@@ -56,6 +56,8 @@ namespace big
 		functions::received_event* m_received_event{};
 		functions::send_event_ack* m_send_event_ack{};
 		// Received Event Signatures END
+
+		functions::spectate_player* m_spectate_player{};
 	};
 
 	inline pointers *g_pointers{};

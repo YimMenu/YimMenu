@@ -166,6 +166,11 @@ namespace big
 
 			memset(spectator_check, 0x90, 0x4);
 		});
+
+		main_batch.add("Spectate Player", "48 89 5C 24 ? 57 48 83 EC 20 41 8A F8 84 C9", [this](memory::handle ptr)
+		{
+			m_spectate_player = ptr.as<decltype(m_spectate_player)>();
+		});
 		
 		main_batch.run(memory::module(nullptr));
 

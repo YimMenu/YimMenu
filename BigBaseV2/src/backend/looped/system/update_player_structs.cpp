@@ -17,6 +17,7 @@ namespace big
 			{
 				// if (!g.players[i].is_online) // tell user player joined
 
+				g.players[i].id = i;
 				g.players[i].is_online = true;
 
 				int iNetworkHandle[26];

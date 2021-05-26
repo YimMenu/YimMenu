@@ -7,6 +7,7 @@ namespace big
 {
 	struct CPlayer
 	{
+		int32_t id;
 		char name[20];
 
 		bool is_friend = false;
