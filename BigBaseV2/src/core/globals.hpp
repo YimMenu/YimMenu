@@ -1,4 +1,5 @@
 #pragma once
+#include "data/player_struct.hpp"
 #include "enums.hpp"
 
 #ifndef GLOBALS_H
@@ -8,6 +9,10 @@ using namespace big;
 struct globals {
 	nlohmann::json default_options;
 	nlohmann::json options;
+
+	struct player {
+		bool spectating = false;
+	};
 
 	struct self {
 		bool godmode = false;
@@ -29,8 +34,17 @@ struct globals {
 	struct window {
 		bool main = true;
 		bool log = false;
+		bool users = false;
+		bool player = false;
+
+		int x;
+		int y;
 	};
 
+	CPlayer players[32];
+	CPlayer selected_player;
+
+	player player{};
 	self self{};
 	vehicle vehicle{};
 	weapons weapons{};

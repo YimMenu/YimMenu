@@ -10,5 +10,8 @@ namespace big
 		window::log();
 
 		window::main();
+
+		window::player();
+		window::users();
 	}
 }

@@ -8,6 +8,11 @@ namespace big
 	void backend::loop()
 	{
 		g.attempt_save();
+		QUEUE_JOB_BEGIN_CLAUSE()
+		{
+			looped::system_screen_size();
+			looped::system_update_players();
+		}QUEUE_JOB_END_CLAUSE
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
