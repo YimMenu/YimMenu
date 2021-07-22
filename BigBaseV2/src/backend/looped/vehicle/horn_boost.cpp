@@ -15,18 +15,9 @@ namespace big
 
 			if (veh == 0) return;
 
-			Vector3 rot = ENTITY::GET_ENTITY_ROTATION(veh, 2);
-			float pitch = math::deg_to_rad(rot.x); // vertical
-			//float roll = rot.y;
-			float yaw = math::deg_to_rad(rot.z + 90); // horizontal
+			Vector3 velocity = ENTITY::GET_ENTITY_VELOCITY(veh) * 1.05f;
 
-			Vector3 velocity;
-			const float dist = 50.f;
-			velocity.x = dist * cos(pitch) * cos(yaw);
-			velocity.y = dist * sin(yaw) * cos(pitch);
-			velocity.z = dist * sin(pitch);
-
-			ENTITY::SET_ENTITY_VELOCITY(veh, velocity.x, velocity.y, velocity.z);
+			ENTITY::SET_ENTITY_VELOCITY(veh, velocity.x, velocity.y, velocity.z - 0.5f);
 		}
 	}
 }
