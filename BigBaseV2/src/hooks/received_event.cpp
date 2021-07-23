@@ -57,8 +57,8 @@ namespace big
 			{
 				char msg[64];
 				strcpy(msg, "<C>");
-				strcpy(msg, source_player->get_name());
-				strcpy(msg, "</C> is spawning cash.");
+				strcat(msg, source_player->get_name());
+				strcat(msg, "</C> is spawning cash.");
 			}
 
 			break;
@@ -69,8 +69,8 @@ namespace big
 		{
 			char msg[64];
 			strcpy(msg, "Detected <C>");
-			strcpy(msg, source_player->get_name());
-			strcpy(msg, "</C> as cheating.");
+			strcat(msg, source_player->get_name());
+			strcat(msg, "</C> as cheating.");
 
 			notify::above_map(msg);
 
