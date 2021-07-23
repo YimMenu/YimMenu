@@ -8,8 +8,8 @@ namespace big
 	{
 		if (g.self.off_radar)
 		{
-			*script_global(2426097).at(PLAYER::PLAYER_ID(), 443).at(204).as<int*>() = 1;
-			*script_global(2440277).at(70).as<int*>() = NETWORK::GET_NETWORK_TIME();
+			*script_global(2426865).at(PLAYER::PLAYER_ID(), 449).at(209).as<bool*>() = true;
+			*script_global(2441237).at(70).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
 		}
 	}
 }
