@@ -11,6 +11,8 @@ struct globals {
 	nlohmann::json options;
 
 	struct player {
+		int character_slot = 1;
+		int set_level = 130;
 		bool spectating = false;
 	};
 
