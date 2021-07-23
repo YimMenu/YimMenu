@@ -31,13 +31,24 @@ namespace big
 				}QUEUE_JOB_END_CLAUSE
 			}
 
+			ImGui::SameLine();
+			if (ImGui::Button("Repair"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
+
+					vehicle::repair(veh);
+				}QUEUE_JOB_END_CLAUSE
+			}
+
 			if (ImGui::TreeNode("Speedo Meter"))
 			{
 				SpeedoMeter selected = g.vehicle.speedo_meter;
 
-				if (ImGui::BeginCombo("Weapon", speedo_meters[(int)selected].name))
+				if (ImGui::BeginCombo("###speedo_type", speedo_meters[(int)selected].name))
 				{
-					for (speedo_meter speedo : speedo_meters)
+					for (const speedo_meter &speedo : speedo_meters)
 					{
 						if (ImGui::Selectable(speedo.name, speedo.id == selected))
 						{
