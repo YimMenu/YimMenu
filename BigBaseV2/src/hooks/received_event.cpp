@@ -19,9 +19,9 @@ namespace big
 	{
 		rage::datBitBuffer* buffer = new rage::datBitBuffer((void*)bit_buffer, (uint32_t)bit_buffer_size);
 
-		if (event_id > 90) return false;
+		if (event_id > 90u) return false;
 
-		const char* event_name = *(char**)((DWORD64)event_manager + 8i64 * event_id + 241328);
+		const char* event_name = *(char**)((DWORD64)event_manager + 8i64 * event_id + 243376);
 		if (event_name == nullptr || source_player == nullptr || source_player->player_id < 0 || source_player->player_id >= 32)
 		{
 			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
