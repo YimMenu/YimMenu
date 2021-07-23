@@ -55,18 +55,24 @@ namespace big
 
 			if (money >= 2000)
 			{
-				notify::blocked_event(event_name, source_player->player_id);
-
-				// player is spawning modded cash
+				char msg[64];
+				strcpy(msg, "<C>");
+				strcpy(msg, source_player->get_name());
+				strcpy(msg, "</C> is spawning cash.");
 			}
 
 			break;
 		}
+		// player sending this event is a modder
 		case RockstarEvent::NETWORK_CHECK_CODE_CRCS_EVENT:
 		case RockstarEvent::REPORT_MYSELF_EVENT:
 		{
-			notify::blocked_event(event_name, source_player->player_id);
-			// player sending this event is a modder
+			char msg[64];
+			strcpy(msg, "Detected <C>");
+			strcpy(msg, source_player->get_name());
+			strcpy(msg, "</C> as cheating.");
+
+			notify::above_map(msg);
 
 			break;
 		}
@@ -88,47 +94,6 @@ namespace big
 
 		//	return true;
 		//}
-		case RockstarEvent::GAME_CLOCK_EVENT:
-		{
-			uint32_t hour, min, sec;
-			buffer->Seek(21);
-			buffer->ReadDword(&hour, 6);
-			buffer->ReadDword(&min, 7);
-			buffer->ReadDword(&sec, 7);
-
-			if (hour > 23 || min > 59 || sec > 59)
-			{
-				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
-				notify::blocked_event(event_name, source_player->player_id);
-
-				return false;
-			}
-			buffer->Seek(0);
-
-			return true;
-		}
-		case RockstarEvent::GAME_WEATHER_EVENT:
-		{
-			uint32_t propagate, target, weather;
-
-			buffer->ReadDword(&propagate, 1);
-			buffer->ReadDword(&weather, 5);
-			if (!propagate)
-				buffer->ReadDword(&target, 9);
-
-			if (weather > 12)
-			{
-				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
-				notify::blocked_event(event_name, source_player->player_id);
-
-				return false;
-			}
-			buffer->Seek(0);
-
-			return true;
-		}
 		}
 
 		//LOG(INFO) << "Received Event: " << event_name;
