@@ -36,7 +36,7 @@ struct globals {
 	struct window {
 		bool main = true;
 		bool log = false;
-		bool users = false;
+		bool users = true;
 		bool player = false;
 
 		int x;
@@ -67,6 +67,7 @@ struct globals {
 
 		this->window.log = j["window"]["log"];
 		this->window.main = j["window"]["main"];
+		this->window.users = j["window"]["users"];
 	}
 
 	nlohmann::json to_json()
@@ -93,7 +94,8 @@ struct globals {
 			{
 				"window", {
 					{ "log", this->window.log },
-					{ "main", this->window.main }
+					{ "main", this->window.main },
+					{ "users", this->window.users }
 				}
 			}
 		};
@@ -128,15 +130,7 @@ struct globals {
 
 		file >> this->options;
 
-		bool should_save = false;
-		for (auto& e : this->default_options.items())
-		{
-			if (this->options.count(e.key()) == 0)
-			{
-				should_save = true;
-				this->options[e.key()] = e.value();
-			}
-		}
+		bool should_save = this->deep_compare(this->options, this->default_options);
 
 		this->from_json(this->options);
 
@@ -150,6 +144,35 @@ struct globals {
 	}
 
 private:
+	bool deep_compare(nlohmann::json& current_settings, const nlohmann::json& default_settings)
+	{
+		bool should_save = false;
+
+		for (auto& e : default_settings.items())
+		{
+			const std::string &key = e.key();
+
+			if (current_settings.count(key) == 0)
+			{
+				current_settings[key] = e.value();
+
+				should_save = true;
+			}
+			else if (current_settings[key].is_structured() && e.value().is_structured())
+			{
+				if (deep_compare(current_settings[key], e.value()))
+					should_save = true;
+			}
+			else if (current_settings[key].type() != e.value().type()) {
+				current_settings[key] = e.value();
+
+				should_save = true;
+			}
+		}
+
+		return should_save;
+	}
+
 	bool save()
 	{
 		std::string settings_file = std::getenv("appdata");
