@@ -1,6 +1,7 @@
 #include "backend/looped/looped.hpp"
 #include "core/enums.hpp"
 #include "util/entity.hpp"
+#include "util/vehicle.hpp"
 #include "util/notify.hpp"
 
 namespace big
@@ -27,9 +28,7 @@ namespace big
 					{
 						if (ENTITY::IS_ENTITY_A_VEHICLE(entity))
 						{
-							VEHICLE::SET_VEHICLE_FIXED(entity);
-							VEHICLE::SET_VEHICLE_DEFORMATION_FIXED(entity);
-							VEHICLE::SET_VEHICLE_DIRT_LEVEL(entity, 0.f);
+							vehicle::repair(entity);
 						}
 						else
 						{
