@@ -177,7 +177,7 @@ namespace big
 			m_read_bitbuf_array = ptr.as<decltype(m_read_bitbuf_array)>();
 		});
 
-		// Send Event Acknoledge
+		// Send Event Acknowledge
 		main_batch.add("SEA", "48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 7A", [this](memory::handle ptr)
 		{
 			m_send_event_ack = ptr.sub(5).as<decltype(m_send_event_ack)>();
