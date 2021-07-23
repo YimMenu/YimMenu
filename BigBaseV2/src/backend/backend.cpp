@@ -16,6 +16,11 @@ namespace big
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
+			looped::tunables_disable_phone();
+		}QUEUE_JOB_END_CLAUSE
+
+		QUEUE_JOB_BEGIN_CLAUSE()
+		{
 			looped::self_godmode();
 			looped::self_off_radar();
 			looped::self_no_ragdoll();

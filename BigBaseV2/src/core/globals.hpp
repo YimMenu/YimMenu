@@ -10,6 +10,10 @@ struct globals {
 	nlohmann::json default_options;
 	nlohmann::json options;
 
+	struct tunables {
+		bool disable_phone = false;
+	};
+
 	struct player {
 		int character_slot = 1;
 		int set_level = 130;
@@ -48,6 +52,7 @@ struct globals {
 	CPlayer players[32];
 	CPlayer selected_player;
 
+	tunables tunables{};
 	player player{};
 	self self{};
 	vehicle vehicle{};
@@ -56,6 +61,8 @@ struct globals {
 
 	void from_json(const nlohmann::json& j)
 	{
+		this->tunables.disable_phone = j["tunables"]["disable_phone"];
+
 		this->self.godmode = j["self"]["godmode"];
 		this->self.off_radar = j["self"]["off_radar"];
 		this->self.no_ragdoll = j["self"]["no_ragdoll"];
@@ -73,6 +80,11 @@ struct globals {
 	nlohmann::json to_json()
 	{
 		return nlohmann::json{
+			{
+				"tunables", {
+					{ "disable_phone", this->tunables.disable_phone }
+				}
+			},
 			{
 				"self", {
 					{ "godmode", this->self.godmode },

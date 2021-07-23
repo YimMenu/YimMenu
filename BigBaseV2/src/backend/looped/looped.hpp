@@ -5,6 +5,8 @@ namespace big
 {
 	class looped {
 	public:
+		static void tunables_disable_phone();
+
 		static void player_specate();
 
 		static void self_godmode();
