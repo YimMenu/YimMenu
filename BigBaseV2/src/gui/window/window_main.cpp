@@ -15,6 +15,7 @@ namespace big
 			tab_main::tab_teleport();
 			tab_main::tab_vehicle();
 			tab_main::tab_weapons();
+			tab_main::tab_recovery();
 			ImGui::EndTabBar();
 
 			ImGui::End();
