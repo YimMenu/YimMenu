@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <iterator>
 #include "gui/window.hpp"
 #include "imgui.h"
 
@@ -12,7 +14,7 @@ namespace big
 		ImGui::SetNextWindowPos({ g.window.x - width, height_correction }, ImGuiCond_Always);
 		if (ImGui::Begin("###player_menu", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav))
 		{
-			auto vecButtonWidth = ImVec2(ImGui::GetWindowSize().x - 30.f, 0.0f);
+			auto vecButtonWidth = ImVec2(ImGui::GetWindowSize().x - 15.f, 0.0f);
 
 			//ImGui::TextColored({ 255,255,255,255 }, "YOU:");
 
@@ -24,15 +26,19 @@ namespace big
 
 			//ImGui::Separator();
 
+			CPlayer players[32];
+			std::copy(std::begin(g.players), std::end(g.players), std::begin(players));
+			std::sort(std::begin(players), std::end(players));
+
 			char title[64];
-			sprintf(title, "Friends (%d)###friend_lists", 0);
+			sprintf(title, "Friends (%d)###friend_lists", g.friend_count);
 			if (ImGui::TreeNode(title))
 			{
 				ImGui::Unindent();
 
 				bool friendInLobby = false;
 
-				for (auto& player : g.players)
+				for (auto& player : players)
 				{
 					if (player.is_friend && player.is_online)
 					{
@@ -56,12 +62,12 @@ namespace big
 				ImGui::Separator();
 			}
 
-			sprintf(title, "Players (%d)###player_lists", 0);
+			sprintf(title, "Players (%d)###player_lists", g.player_count);
 			if (ImGui::TreeNode(title))
 			{
 				ImGui::Unindent();
 
-				for (auto& player : g.players)
+				for (auto& player : players)
 				{
 					if (!player.is_friend && player.is_online)
 					{
@@ -79,6 +85,5 @@ namespace big
 
 			ImGui::End();
 		}
-
 	}
 }

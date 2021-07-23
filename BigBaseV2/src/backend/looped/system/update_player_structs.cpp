@@ -11,6 +11,9 @@ namespace big
 		if (busy) return;
 		busy = true;
 
+		int friend_count = 0;
+		int player_count = 0;
+
 		for (Player i = 0; i < 32; i++)
 		{
 			if (NETWORK::NETWORK_IS_PLAYER_CONNECTED(i) && i != PLAYER::PLAYER_ID())
@@ -24,7 +27,13 @@ namespace big
 				NETWORK::NETWORK_HANDLE_FROM_PLAYER(i, &iNetworkHandle[0], 13);
 				NETWORK::NETWORK_IS_HANDLE_VALID(&iNetworkHandle[0], 13) && NETWORK::NETWORK_IS_FRIEND(&iNetworkHandle[0]);
 
-				g.players[i].is_friend = NETWORK::NETWORK_IS_HANDLE_VALID(iNetworkHandle, 13) && NETWORK::NETWORK_IS_FRIEND(iNetworkHandle);
+				if (NETWORK::NETWORK_IS_HANDLE_VALID(iNetworkHandle, 13) && NETWORK::NETWORK_IS_FRIEND(iNetworkHandle))
+				{
+					g.players[i].is_friend = true;
+
+					friend_count++;
+				}
+				else player_count++;
 
 				strcpy(g.players[i].name, PLAYER::GET_PLAYER_NAME(i));
 			}
@@ -36,6 +45,9 @@ namespace big
 
 			script::get_current()->yield();
 		}
+
+		g.friend_count = friend_count;
+		g.player_count = player_count;
 
 		busy = false;
 	}

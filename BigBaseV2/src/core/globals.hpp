@@ -43,6 +43,8 @@ struct globals {
 		int y;
 	};
 
+	int friend_count = 0;
+	int player_count = 0;
 	CPlayer players[32];
 	CPlayer selected_player;
 
