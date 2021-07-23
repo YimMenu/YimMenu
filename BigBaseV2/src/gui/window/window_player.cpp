@@ -1,3 +1,4 @@
+#include "player/player_tabs.hpp"
 #include "gui/window.hpp"
 #include "imgui.h"
 
@@ -15,11 +16,9 @@ namespace big
 		ImGui::SetNextWindowSize({ 350.f, 300.f }, ImGuiCond_FirstUseEver);
 		if (g.window.player && ImGui::Begin(title, &g.window.player))
 		{
-			/*ImGui::BeginTabBar("tabbar_player");
-
-			ImGui::EndTabBar();*/
-
-			ImGui::Checkbox("Spectate", &g.player.spectating);
+			ImGui::BeginTabBar("tabbar_player");
+			tab_player::tab_info();
+			ImGui::EndTabBar();
 
 			ImGui::End();
 		}
