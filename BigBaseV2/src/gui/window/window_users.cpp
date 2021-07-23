@@ -12,7 +12,7 @@ namespace big
 
 		ImGui::SetNextWindowSize({ width, (float)g.window.y - height_correction }, ImGuiCond_Always);
 		ImGui::SetNextWindowPos({ g.window.x - width, height_correction }, ImGuiCond_Always);
-		if (ImGui::Begin("###player_menu", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav))
+		if (g.window.users && ImGui::Begin("###player_menu", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav))
 		{
 			auto vecButtonWidth = ImVec2(ImGui::GetWindowSize().x - 15.f, 0.0f);
 
