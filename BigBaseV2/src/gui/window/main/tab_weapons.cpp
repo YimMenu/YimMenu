@@ -13,7 +13,7 @@ namespace big
 
 				if (ImGui::BeginCombo("Weapon", custom_weapons[(int)selected].name))
 				{
-					for (custom_weapon weapon : custom_weapons)
+					for (const custom_weapon &weapon : custom_weapons)
 					{
 						if (ImGui::Selectable(weapon.name, weapon.id == selected))
 						{
