@@ -1,6 +1,6 @@
 #include "core/data/speedo_meters.hpp"
 #include "fiber_pool.hpp"
-#include "gui/window/main/tabs.hpp"
+#include "main_tabs.hpp"
 #include "script.hpp"
 #include "util/blip.hpp"
 #include "util/entity.hpp"

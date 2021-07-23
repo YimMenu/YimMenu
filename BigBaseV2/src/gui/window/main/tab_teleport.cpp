@@ -1,4 +1,4 @@
-#include "tabs.hpp"
+#include "main_tabs.hpp"
 #include "fiber_pool.hpp"
 #include "util/teleport.hpp"
 

@@ -1,6 +1,6 @@
 #include "gui/window.hpp"
 #include "imgui.h"
-#include "gui/window/main/tabs.hpp"
+#include "main/main_tabs.hpp"
 
 namespace big
 {

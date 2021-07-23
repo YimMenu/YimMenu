@@ -1,5 +1,5 @@
 #include "fiber_pool.hpp"
-#include "tabs.hpp"
+#include "main_tabs.hpp"
 #include "script.hpp"
 #include "util/player.hpp"
 

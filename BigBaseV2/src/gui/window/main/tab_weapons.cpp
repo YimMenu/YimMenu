@@ -1,5 +1,5 @@
 #include "core/data/custom_weapons.hpp"
-#include "gui/window/main/tabs.hpp"
+#include "main_tabs.hpp"
 
 namespace big
 {
