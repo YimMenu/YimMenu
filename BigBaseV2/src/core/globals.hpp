@@ -178,7 +178,7 @@ private:
 				if (deep_compare(current_settings[key], e.value()))
 					should_save = true;
 			}
-			else if (current_settings[key].type() != e.value().type()) {
+			else if (!current_settings[key].is_structured() && e.value().is_structured()) {
 				current_settings[key] = e.value();
 
 				should_save = true;
