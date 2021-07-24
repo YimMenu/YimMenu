@@ -16,8 +16,8 @@ namespace big
 		BOOL background
 	)
 	{
-		if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() != RAGE_JOAAT("shop_controller"))
-			return g_hooking->m_error_screen_hook.get_original<decltype(&hooks::disable_error_screen)>()(entryHeader, entryLine1, instructionalKey, entryLine2, p4, p5, p6, p7, background);
-		return;
+		if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("shop_controller")) return;
+
+		return g_hooking->m_error_screen_hook.get_original<decltype(&hooks::disable_error_screen)>()(entryHeader, entryLine1, instructionalKey, entryLine2, p4, p5, p6, p7, background);
 	}
 }
