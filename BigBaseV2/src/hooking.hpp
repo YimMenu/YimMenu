@@ -40,6 +40,9 @@ namespace big
 			int64_t bit_buffer_size,
 			int64_t bit_buffer
 		);
+
+		static bool report_cash_spawn_handler(__int64 creport_cash_spawn_event, CNetGamePlayer* source_player);
+		static void report_cheating_handler(__int64 a1, unsigned int a2, unsigned int a3, unsigned int a4);
 	};
 
 	struct minhook_keepalive
@@ -77,6 +80,9 @@ namespace big
 		detour_hook m_increment_stat_hook;
 
 		detour_hook m_received_event_hook;
+
+		detour_hook m_report_cash_spawn_event_hook;
+		detour_hook m_report_cheating_hook;
 	};
 
 	inline hooking *g_hooking{};

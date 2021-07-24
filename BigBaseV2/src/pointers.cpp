@@ -90,36 +90,6 @@ namespace big
 			m_native_return = ptr.add(0).as<PVOID>();
 		});
 
-		// Event Registry
-		main_batch.add("ER", "48 83 EC 28 E8 ? ? ? ? 48 8B 0D ? ? ? ? 4C 8D 0D ? ? ? ? 4C 8D 05 ? ? ? ? BA 03", [this](memory::handle ptr)
-		{
-			m_event_register = ptr.as<char*>();
-
-			if (m_event_register)
-			{
-				const char* pattern = "\x4C\x8D\x05";
-				for (int i = 0, x = 0, found = 0, matches = 0; found < event_count; i++)
-				{
-					if (m_event_register[i] == pattern[x])
-					{
-						if (++matches == 3)
-						{
-							m_event_ptr.push_back((void*)(reinterpret_cast<uint64_t>(m_event_register + i - x) + *reinterpret_cast<int*>(m_event_register + i + 1) + 7));
-
-							found++;
-							x = matches = 0;
-						}
-
-						x++;
-
-						continue;
-					}
-
-					x = matches = 0;
-				}
-			}
-		});
-
 		// Incompatible Version Fix
 		main_batch.add("IVF", "48 89 5C 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 ? ? ? ? 48 81 EC ? ? ? ? 33 FF 48 8B DA", [this](memory::handle ptr)
 		{
@@ -196,6 +166,18 @@ namespace big
 		main_batch.add("SP", "48 89 5C 24 ? 57 48 83 EC 20 41 8A F8 84 C9", [this](memory::handle ptr)
 		{
 			m_spectate_player = ptr.as<decltype(m_spectate_player)>();
+		});
+
+		// Report Cash Spawn Handler
+		main_batch.add("RCSH", "40 53 48 83 EC 20 48 8B D9 48 85 D2 74 29", [this](memory::handle ptr)
+		{
+			m_report_cash_spawn = ptr.as<decltype(m_report_cash_spawn)>();
+		});
+
+		// Report Myself Handler
+		main_batch.add("RMH", "E8 ? ? ? ? 41 8B 47 0C 39 43 20", [this](memory::handle ptr)
+		{
+			m_report_cheating = ptr.as<decltype(m_report_cheating)>();
 		});
 		
 		main_batch.run(memory::module(nullptr));

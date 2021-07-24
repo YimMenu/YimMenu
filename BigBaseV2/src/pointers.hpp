@@ -36,11 +36,6 @@ namespace big
 		PVOID m_model_spawn_bypass;
 		PVOID m_native_return;
 
-		static const int event_count = 87;
-		std::vector<PVOID> m_event_ptr;
-		unsigned char m_event_restore[event_count];
-		char* m_event_register;
-
 		functions::error_screen* m_error_screen{};
 
 		functions::gta_thread_tick* m_gta_thread_tick{};
@@ -58,6 +53,10 @@ namespace big
 		// Received Event Signatures END
 
 		functions::spectate_player* m_spectate_player{};
+
+		// Net Event Handlers
+		functions::report_cash_spawn* m_report_cash_spawn{};
+		functions::report_cheating* m_report_cheating{};
 	};
 
 	inline pointers *g_pointers{};

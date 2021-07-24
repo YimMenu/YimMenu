@@ -54,7 +54,12 @@ namespace big
 		m_error_screen_hook("ES", g_pointers->m_error_screen, &hooks::disable_error_screen),
 
 		// Received Event
-		m_received_event_hook("RE", g_pointers->m_received_event, &hooks::received_event)
+		m_received_event_hook("RE", g_pointers->m_received_event, &hooks::received_event),
+
+		// Report Cash Spawn Event
+		m_report_cash_spawn_event_hook("RCSE", g_pointers->m_report_cash_spawn, &hooks::report_cash_spawn_handler),
+		// Report Cheating Hook
+		m_report_cheating_hook("RC", g_pointers->m_report_cheating, &hooks::report_cheating_handler)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -88,12 +93,18 @@ namespace big
 
 		m_received_event_hook.enable();
 
+		m_report_cash_spawn_event_hook.enable();
+		m_report_cheating_hook.enable();
+
 		m_enabled = true;
 	}
 
 	void hooking::disable()
 	{
 		m_enabled = false;
+
+		m_report_cheating_hook.disable();
+		m_report_cash_spawn_event_hook.disable();
 
 		m_received_event_hook.disable();
 
