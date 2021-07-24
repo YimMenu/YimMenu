@@ -12,6 +12,7 @@ struct globals {
 
 	struct tunables {
 		bool disable_phone = false;
+		bool no_idle_kick = false;
 	};
 
 	struct player {
@@ -62,6 +63,7 @@ struct globals {
 	void from_json(const nlohmann::json& j)
 	{
 		this->tunables.disable_phone = j["tunables"]["disable_phone"];
+		this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
 
 		this->self.godmode = j["self"]["godmode"];
 		this->self.off_radar = j["self"]["off_radar"];
@@ -82,7 +84,8 @@ struct globals {
 		return nlohmann::json{
 			{
 				"tunables", {
-					{ "disable_phone", this->tunables.disable_phone }
+					{ "disable_phone", this->tunables.disable_phone },
+					{ "no_idle_kick", this->tunables.no_idle_kick }
 				}
 			},
 			{
