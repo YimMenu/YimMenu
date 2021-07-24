@@ -119,12 +119,9 @@ struct globals {
 	void attempt_save()
 	{
 		nlohmann::json& j = this->to_json();
-		if (j != this->options)
-		{
-			this->save();
 
-			this->options = j;
-		}
+		if (deep_compare(this->options, j))
+			this->save();
 	}
 
 	bool load()
@@ -132,7 +129,7 @@ struct globals {
 		this->default_options = this->to_json();
 
 		std::string settings_file = std::getenv("appdata");
-		settings_file += "\\BigBaseV2\\settings.json";
+		settings_file += this->settings_location;
 
 		std::ifstream file(settings_file);
 
@@ -143,7 +140,18 @@ struct globals {
 			file.open(settings_file);
 		}
 
-		file >> this->options;
+		try
+		{
+			file >> this->options;
+		}
+		catch (const std::exception&)
+		{
+			LOG(WARNING) << "Detected corrupt settings, writing default config...";
+
+			this->write_default_config();
+
+			return this->load();
+		}
 
 		bool should_save = this->deep_compare(this->options, this->default_options);
 
@@ -159,6 +167,8 @@ struct globals {
 	}
 
 private:
+	const char* settings_location = "\\BigBaseV2\\settings.json";
+
 	bool deep_compare(nlohmann::json& current_settings, const nlohmann::json& default_settings)
 	{
 		bool should_save = false;
@@ -191,7 +201,7 @@ private:
 	bool save()
 	{
 		std::string settings_file = std::getenv("appdata");
-		settings_file += "\\BigBaseV2\\settings.json";
+		settings_file += this->settings_location;
 
 		std::ofstream file(settings_file, std::ios::out | std::ios::trunc);
 		file << this->to_json().dump(4);
@@ -203,7 +213,7 @@ private:
 	bool write_default_config()
 	{
 		std::string settings_file = std::getenv("appdata");
-		settings_file += "\\BigBaseV2\\settings.json";
+		settings_file += this->settings_location;
 
 		std::ofstream file(settings_file, std::ios::out);
 		file << this->to_json().dump(4);
