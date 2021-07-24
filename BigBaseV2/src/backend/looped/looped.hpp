@@ -6,6 +6,7 @@ namespace big
 	class looped {
 	public:
 		static void tunables_disable_phone();
+		static void tunables_no_idle_kick();
 
 		static void player_specate();
 
