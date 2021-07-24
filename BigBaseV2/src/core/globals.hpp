@@ -120,8 +120,11 @@ struct globals {
 	{
 		nlohmann::json& j = this->to_json();
 
-		if (deep_compare(this->options, j))
+		if (deep_compare(this->options, j, true))
+		{
+			LOG(INFO) << "Settings changed, saving...";
 			this->save();
+		}
 	}
 
 	bool load()
@@ -169,7 +172,7 @@ struct globals {
 private:
 	const char* settings_location = "\\BigBaseV2\\settings.json";
 
-	bool deep_compare(nlohmann::json& current_settings, const nlohmann::json& default_settings)
+	bool deep_compare(nlohmann::json& current_settings, const nlohmann::json& default_settings, bool compare_value = false)
 	{
 		bool should_save = false;
 
@@ -177,7 +180,7 @@ private:
 		{
 			const std::string &key = e.key();
 
-			if (current_settings.count(key) == 0)
+			if (current_settings.count(key) == 0 || (compare_value && current_settings[key] != e.value()))
 			{
 				current_settings[key] = e.value();
 
@@ -185,7 +188,7 @@ private:
 			}
 			else if (current_settings[key].is_structured() && e.value().is_structured())
 			{
-				if (deep_compare(current_settings[key], e.value()))
+				if (deep_compare(current_settings[key], e.value(), compare_value))
 					should_save = true;
 			}
 			else if (!current_settings[key].is_structured() && e.value().is_structured()) {
