@@ -9,23 +9,6 @@
 
 namespace big::gta_util
 {
-	inline void defuse_event(RockstarEvent e, bool toggle)
-	{
-		int event_index = (int)e;
-
-		if (g_pointers->m_event_ptr[event_index] == nullptr) return;
-
-		char* p = (char*)g_pointers->m_event_ptr[event_index];
-		if (toggle)
-		{
-			if (g_pointers->m_event_restore[event_index] == 0)
-				g_pointers->m_event_restore[event_index] = p[0];
-			*p = (unsigned char)0xC3;
-		}
-		else if (g_pointers->m_event_restore[event_index] != 0)
-			*p = g_pointers->m_event_restore[event_index];
-	}
-
 	inline CPed *get_local_ped()
 	{
 		if (auto ped_factory = *g_pointers->m_ped_factory)
