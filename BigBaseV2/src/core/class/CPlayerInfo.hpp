@@ -1,6 +1,7 @@
 #pragma once
 
-#pragma pack(push, 4)
+#pragma pack(push, 1)
+
 class CPlayerInfo
 {
 public:
@@ -32,9 +33,7 @@ public:
 	uint32_t m_frame_flags; //0x01F8
 	char pad_01FC[28]; //0x01FC
 	uint32_t m_player_controls; //0x0218
-	char pad_021C[1588]; //0x021C
-	uint32_t m_npc_ignore; //0x0850
-	char pad_0854[12]; //0x0854
+	char pad_021C[1604]; //0x021C
 	bool m_is_wanted; //0x0860
 	char pad_0861[3]; //0x0861
 	int8_t m_wanted_level_display; //0x0864

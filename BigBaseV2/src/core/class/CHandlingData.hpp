@@ -1,18 +1,19 @@
 #pragma once
 
+#pragma pack(push, 1)
 class CHandlingData
 {
 public:
 	char pad_0000[8]; //0x0000
-	uint32_t m_name_hash; //0x0008
+	uint32_t m_model_hash; //0x0008
 	float m_mass; //0x000C
 	float m_initial_drag_coeff; //0x0010
-	float m_downforce_modifier; //0x0014
+	float m_downforce_multiplier; //0x0014
 	float m_popup_light_rotation; //0x0018
 	char pad_001C[4]; //0x001C
 	rage::vector3 m_centre_of_mass; //0x0020
 	char pad_002C[4]; //0x002C
-	rage::vector3 m_inertia_multiplier; //0x0030
+	rage::vector3 m_inertia_mult; //0x0030
 	char pad_003C[4]; //0x003C
 	float m_buoyancy; //0x0040
 	float m_drive_bias_rear; //0x0044
@@ -24,9 +25,9 @@ public:
 	float m_upshift; //0x0058
 	float m_downshift; //0x005C
 	float m_initial_drive_force; //0x0060
-	float m_drive_max_flat_vel; //0x0064
+	float m_drive_max_flat_velocity; //0x0064
 	float m_initial_drive_max_flat_vel; //0x0068
-	float m_brake_force; //0x006C
+	float m_brakeforce; //0x006C
 	char pad_0070[4]; //0x0070
 	float m_brake_bias_front; //0x0074
 	float m_brake_bias_rear; //0x0078
@@ -66,14 +67,14 @@ public:
 	float m_petrol_tank_volume; //0x0100
 	float m_oil_volume; //0x0104
 	char pad_0108[4]; //0x0108
-	rage::vector3 m_seat_index_dist; //0x010C
+	rage::vector3 m_seat_offset_dist; //0x010C
 	uint32_t m_monetary_value; //0x0118
 	char pad_011C[8]; //0x011C
-	uint32_t m_str_model_flags; //0x0124
-	uint32_t m_str_handling_flags; //0x0128
-	uint32_t m_str_damage_flags; //0x012C
+	uint32_t m_model_flags; //0x0124
+	uint32_t m_handling_flags; //0x0128
+	uint32_t m_damage_flags; //0x012C
 	char pad_0130[12]; //0x0130
 	uint32_t m_ai_handling_hash; //0x013C
-	char pad_0140[208]; //0x0140
-}; //Size: 0x0210
-static_assert(sizeof(CHandlingData) == 0x210);
+}; //Size: 0x0140
+static_assert(sizeof(CHandlingData) == 0x140);
+#pragma pack(pop)

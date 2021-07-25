@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma pack(push, 1)
+
 class CVehicleDrawHandler
 {
 public:
@@ -10,9 +12,9 @@ public:
 	char pad_038D[3]; //0x038D
 	uint8_t m_secondary_color; //0x0390
 	char pad_0391[15]; //0x0391
-	uint8_t m_neon_light_blue; //0x03A0
-	uint8_t m_neon_light_green; //0x03A1
-	uint8_t m_neon_light_red; //0x03A2
+	uint8_t m_neon_blue; //0x03A0
+	uint8_t m_neon_green; //0x03A1
+	uint8_t m_neon_red; //0x03A2
 	char pad_03A3[15]; //0x03A3
 	uint8_t m_spoiler; //0x03B2
 	uint8_t m_bumper_front; //0x03B3
@@ -21,24 +23,24 @@ public:
 	uint8_t m_exhaust; //0x03B6
 	uint8_t m_frame; //0x03B7
 	uint8_t m_grille; //0x03B8
-	uint8_t m_hoods; //0x03B9
+	uint8_t m_hood; //0x03B9
 	uint8_t m_fenders; //0x03BA
 	uint8_t m_bullbars; //0x03BB
 	uint8_t m_roof; //0x03BC
 	char pad_03BD[3]; //0x03BD
 	uint8_t m_ornaments; //0x03C0
 	char pad_03C1[1]; //0x03C1
-	uint8_t m_dial_design; //0x03C2
+	uint8_t m_dail_design; //0x03C2
 	uint8_t m_sunstrips; //0x03C3
 	uint8_t m_seats; //0x03C4
-	uint8_t m_steering_wheels; //0x03C5
+	uint8_t m_steering_wheel; //0x03C5
 	uint8_t m_column_shifter_levers; //0x03C6
 	char pad_03C7[2]; //0x03C7
 	uint8_t m_truck_beds; //0x03C9
 	char pad_03CA[4]; //0x03CA
 	uint8_t m_roll_cages; //0x03CE
 	uint8_t m_skid_plate; //0x03CF
-	uint8_t m_secondary_ligt_surrounds; //0x03D0
+	uint8_t m_secondary_light_surrounds; //0x03D0
 	uint8_t m_hood_accessories; //0x03D1
 	uint8_t m_doors; //0x03D2
 	uint8_t m_snorkel; //0x03D3
@@ -65,7 +67,8 @@ public:
 	uint8_t m_neon_left; //0x0402
 	uint8_t m_neon_right; //0x0403
 	uint8_t m_neon_front; //0x0404
-	uint8_t m_neon_back; //0x0405
-	char pad_0406[1]; //0x0406
-}; //Size: 0x0407
-static_assert(sizeof(CVehicleDrawHandler) == 0x407);
+	uint8_t m_neon_rear; //0x0405
+}; //Size: 0x0406
+static_assert(sizeof(CVehicleDrawHandler) == 0x406);
+
+#pragma pack(pop)

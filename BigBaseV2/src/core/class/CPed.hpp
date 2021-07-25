@@ -1,9 +1,11 @@
 #pragma once
 #include "CAutomobile.hpp"
+#include "CPedModelInfo.hpp"
 #include "CPedWeaponManager.hpp"
 #include "CPlayerInfo.hpp"
 
-#pragma pack(push, 4)
+#pragma pack(push, 1)
+
 class CPed
 {
 public:
@@ -26,25 +28,13 @@ public:
 	rage::vector3 m_velocity; //0x0320
 	char pad_032C[2564]; //0x032C
 	class CAutomobile* m_vehicle; //0x0D30
-	char pad_0D38[896]; //0x0D38
-	uint8_t m_ragdoll; //0x10B8
-	char pad_10B9[15]; //0x10B9
+	char pad_0D38[912]; //0x0D38
 	class CPlayerInfo* m_player_info; //0x10C8
 	char pad_10D0[8]; //0x10D0
 	class CPedWeaponManager* m_weapon_manager; //0x10D8
-	char pad_10E0[919]; //0x10E0
-	uint8_t m_in_vehicle; //0x1477
-	char pad_1478[104]; //0x1478
+	char pad_10E0[1024]; //0x10E0
 	float m_armor; //0x14E0
 }; //Size: 0x14E4
 static_assert(sizeof(CPed) == 0x14E4);
-
-class CPedModelInfo
-{
-public:
-	char pad_0000[24]; //0x0000
-	uint32_t m_model_hash; //0x0018
-}; //Size: 0x001C
-static_assert(sizeof(CPedModelInfo) == 0x1C);
 
 #pragma pack(pop)

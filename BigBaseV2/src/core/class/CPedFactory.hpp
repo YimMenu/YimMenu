@@ -2,7 +2,6 @@
 #include "CPed.hpp"
 
 #pragma pack(push, 1)
-// Created with ReClass.NET 1.2 by KN4CK3R
 
 class CPedFactory
 {
