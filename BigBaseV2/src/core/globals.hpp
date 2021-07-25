@@ -39,8 +39,9 @@ struct globals {
 	};
 
 	struct window {
-		bool main = true;
+		bool handling = false;
 		bool log = false;
+		bool main = true;
 		bool users = true;
 		bool player = false;
 
@@ -74,6 +75,7 @@ struct globals {
 
 		this->weapons.custom_weapon = (CustomWeapon)j["weapons"]["custom_weapon"];
 
+		this->window.handling = j["window"]["handling"];
 		this->window.log = j["window"]["log"];
 		this->window.main = j["window"]["main"];
 		this->window.users = j["window"]["users"];
@@ -108,6 +110,7 @@ struct globals {
 			},
 			{
 				"window", {
+					{ "handling", this->window.handling },
 					{ "log", this->window.log },
 					{ "main", this->window.main },
 					{ "users", this->window.users }
@@ -121,10 +124,7 @@ struct globals {
 		nlohmann::json& j = this->to_json();
 
 		if (deep_compare(this->options, j, true))
-		{
-			LOG(INFO) << "Settings changed, saving...";
 			this->save();
-		}
 	}
 
 	bool load()
