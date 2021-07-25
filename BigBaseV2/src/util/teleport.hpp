@@ -1,8 +1,39 @@
 #include "blip.hpp"
+#include "entity.hpp"
 #include "notify.hpp"
 
 namespace big::teleport
 {
+	inline bool bring_player(Player player)
+	{
+		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+
+		if (ENTITY::IS_ENTITY_DEAD(ent, true))
+		{
+			notify::display_help_text("Target player is dead.");
+
+			return false;
+		}
+
+		if (!PED::IS_PED_IN_ANY_VEHICLE(ent, true))
+		{
+			notify::display_help_text("Target player is not in a vehicle.");
+
+			return false;
+		}
+
+		ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
+
+		Vector3 location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+
+		if (entity::take_control_of(ent))
+			ENTITY::SET_ENTITY_COORDS(ent, location.x, location.y, location.z, 0, 0, 0, 0);
+		else
+			notify::display_help_text("Failed to take control of player vehicle.");
+
+		return true;
+	}
+
 	inline bool load_ground_at_3dcoord(Vector3& location)
 	{
 		float groundZ;
@@ -33,6 +64,40 @@ namespace big::teleport
 		return false;
 	}
 
+	inline bool into_vehicle(Vehicle veh)
+	{
+		if (!veh)
+		{
+			notify::display_help_text("Player is not in a vehicle.");
+
+			return false;
+		}
+
+		int seat_index = 255;
+		if (VEHICLE::IS_VEHICLE_SEAT_FREE(veh, -1, true))
+			seat_index = -1;
+		else if (VEHICLE::IS_VEHICLE_SEAT_FREE(veh, -2, true))
+			seat_index = -2;
+
+		if (seat_index == 255)
+		{
+			notify::display_help_text("No seats are free in the player vehicle.");
+
+			return false;
+		}
+
+		Vector3 location = ENTITY::GET_ENTITY_COORDS(veh, true);
+		load_ground_at_3dcoord(location);
+
+		ENTITY::SET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), location.x, location.y, location.z, 0, 0, 0, 0);
+
+		script::get_current()->yield();
+
+		PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, seat_index);
+
+		return true;
+	}
+
 	inline bool to_blip(int sprite, int color = -1)
 	{
 		Vector3 location;
@@ -45,6 +110,20 @@ namespace big::teleport
 		PED::SET_PED_COORDS_KEEP_VEHICLE(PLAYER::PLAYER_PED_ID(), location.x, location.y, location.z);
 
 		return true;
+	}
+
+	inline bool to_entity(Entity ent)
+	{
+		Vector3 location = ENTITY::GET_ENTITY_COORDS(ent, true);
+
+		PED::SET_PED_COORDS_KEEP_VEHICLE(PLAYER::PLAYER_PED_ID(), location.x, location.y, location.z);
+
+		return true;
+	}
+
+	inline bool to_player(Player player)
+	{
+		return to_entity(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player));
 	}
 
 	inline bool to_waypoint()
