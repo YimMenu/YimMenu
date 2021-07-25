@@ -10,6 +10,7 @@ namespace big
 		window::log();
 
 		window::main();
+		window::handling();
 
 		window::player();
 		window::users();

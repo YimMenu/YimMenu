@@ -15,31 +15,39 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Vehicle"))
 		{
-			if (ImGui::Button("Bring Personal Vehicle"))
+			if (ImGui::TreeNode("General"))
 			{
-				QUEUE_JOB_BEGIN_CLAUSE()
+				if (ImGui::Button("Bring Personal Vehicle"))
 				{
-					Vector3 location;
-					if (!blip::get_blip_location(location, 225, 0)) return notify::above_map("No personal vehicle found, was it destroyed?");
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						Vector3 location;
+						if (!blip::get_blip_location(location, 225, 0)) return notify::above_map("No personal vehicle found, was it destroyed?");
 
-					Vehicle veh = vehicle::get_closest_to_location(location, 5.f);
-					if (veh == 0) return notify::above_map("Invalid vehicle handle...");
+						Vehicle veh = vehicle::get_closest_to_location(location, 5.f);
+						if (veh == 0) return notify::above_map("Invalid vehicle handle...");
 
-					location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+						location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
 
-					vehicle::bring(veh, location);
-				}QUEUE_JOB_END_CLAUSE
-			}
+						vehicle::bring(veh, location);
+					}QUEUE_JOB_END_CLAUSE
+				}
 
-			ImGui::SameLine();
-			if (ImGui::Button("Repair"))
-			{
-				QUEUE_JOB_BEGIN_CLAUSE()
+				ImGui::SameLine();
+				if (ImGui::Button("Repair"))
 				{
-					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
 
-					vehicle::repair(veh);
-				}QUEUE_JOB_END_CLAUSE
+						vehicle::repair(veh);
+					}QUEUE_JOB_END_CLAUSE
+				}
+
+				if (ImGui::Button("Handling"))
+					g.window.handling = true;
+
+				ImGui::TreePop();
 			}
 
 			if (ImGui::TreeNode("Speedo Meter"))

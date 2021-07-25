@@ -5,6 +5,7 @@ namespace big
 	class window {
 	public:
 		static void top_bar();
+		static void handling();
 		static void log();
 		static void main();
 		static void player();
