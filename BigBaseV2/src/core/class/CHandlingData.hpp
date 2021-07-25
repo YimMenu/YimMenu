@@ -1,4 +1,5 @@
 #pragma once
+#include "gta/vector.hpp"
 
 #pragma pack(push, 1)
 class CHandlingData
@@ -27,7 +28,7 @@ public:
 	float m_initial_drive_force; //0x0060
 	float m_drive_max_flat_velocity; //0x0064
 	float m_initial_drive_max_flat_vel; //0x0068
-	float m_brakeforce; //0x006C
+	float m_brake_force; //0x006C
 	char pad_0070[4]; //0x0070
 	float m_brake_bias_front; //0x0074
 	float m_brake_bias_rear; //0x0078

@@ -3,6 +3,7 @@
 #include "CPedModelInfo.hpp"
 #include "CPedWeaponManager.hpp"
 #include "CPlayerInfo.hpp"
+#include "gta/vector.hpp"
 
 #pragma pack(push, 1)
 
