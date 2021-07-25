@@ -8,5 +8,6 @@ namespace big
 	{
 	public:
 		static void tab_info();
+		static void tab_teleport();
 	};
 }

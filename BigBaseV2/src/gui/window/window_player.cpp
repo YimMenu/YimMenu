@@ -18,6 +18,7 @@ namespace big
 		{
 			ImGui::BeginTabBar("tabbar_player");
 			tab_player::tab_info();
+			tab_player::tab_teleport();
 			ImGui::EndTabBar();
 
 			ImGui::End();
