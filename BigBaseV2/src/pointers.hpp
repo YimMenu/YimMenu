@@ -43,6 +43,7 @@ namespace big
 
 		functions::increment_stat_event* m_increment_stat_event{};
 
+		PVOID m_scripted_game_event{};
 		functions::trigger_script_event* m_trigger_script_event{};
 
 		// Received Event Signatures START
