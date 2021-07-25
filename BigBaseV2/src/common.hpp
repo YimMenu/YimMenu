@@ -51,8 +51,9 @@
 #include "logger.hpp"
 
 #include "core/globals.hpp"
+#include "core/class/CPed.hpp"
 #include "gta/player.hpp"
-// #include "settings.h"
+
 
 namespace big
 {
@@ -65,4 +66,6 @@ namespace big
 	inline HANDLE g_main_thread{};
 	inline DWORD g_main_thread_id{};
 	inline std::atomic_bool g_running{ true };
+
+	inline CPed* g_local_player;
 }

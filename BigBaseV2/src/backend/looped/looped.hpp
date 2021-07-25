@@ -16,6 +16,7 @@ namespace big
 		static void self_no_ragdoll();
 
 		static void system_update_players();
+		static void system_update_pointers();
 		static void system_screen_size();
 
 		static void weapons_cage_gun();

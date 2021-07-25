@@ -12,6 +12,8 @@ namespace big
 		{
 			looped::system_screen_size();
 			looped::system_update_players();
+
+			looped::system_update_pointers();
 		}QUEUE_JOB_END_CLAUSE
 
 		QUEUE_JOB_BEGIN_CLAUSE()
