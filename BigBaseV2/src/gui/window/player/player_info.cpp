@@ -8,6 +8,11 @@ namespace big
 		{
 			ImGui::Checkbox("Spectate", &g.player.spectating);
 
+			ImGui::Separator();
+
+			ImGui::Text("Player ID: %d", g.selected_player.id);
+			ImGui::Text("Session Host: %s", g.selected_player.net_player->is_host() ? "Yes" : "No");
+
 			ImGui::EndTabItem();
 		}
 	}
