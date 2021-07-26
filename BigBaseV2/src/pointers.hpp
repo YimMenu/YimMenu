@@ -38,6 +38,8 @@ namespace big
 
 		functions::error_screen* m_error_screen{};
 
+		functions::get_net_game_player* m_get_net_game_player{};
+
 		functions::gta_thread_tick* m_gta_thread_tick{};
 		functions::gta_thread_kill* m_gta_thread_kill{};
 

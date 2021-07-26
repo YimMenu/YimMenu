@@ -185,6 +185,12 @@ namespace big
 		{
 			m_scripted_game_event = ptr.as<decltype(m_scripted_game_event)>();
 		});
+
+		// GET CNetGamePlayer
+		main_batch.add("GCNGP", "48 83 EC ? 33 C0 38 05 ? ? ? ? 74 ? 83 F9", [this](memory::handle ptr)
+		{
+			m_get_net_game_player = ptr.as<decltype(m_get_net_game_player)>();
+		});
 		
 		main_batch.run(memory::module(nullptr));
 
