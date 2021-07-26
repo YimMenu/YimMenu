@@ -6,7 +6,12 @@ namespace big
 {
 	void window::player()
 	{
-		if (!g.selected_player.is_online) return;
+		if (!g.selected_player.is_online || g.selected_player.net_player == nullptr)
+		{
+			g.window.player = false;
+
+			return;
+		}
 
 		char title[64];
 		strcpy(title, "Player Options: ");
