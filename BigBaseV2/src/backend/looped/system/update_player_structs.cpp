@@ -1,6 +1,8 @@
 #include "backend/looped/looped.hpp"
 #include "natives.hpp"
+#include "pointers.hpp"
 #include "script.hpp"
+#include "util/notify.hpp"
 
 namespace big
 {
@@ -11,14 +13,14 @@ namespace big
 		if (busy) return;
 		busy = true;
 
-		int friend_count = 0;
-		int player_count = 0;
+		int friend_count = g.friend_count;
+		int player_count = g.player_count;
 
 		for (Player i = 0; i < 32; i++)
 		{
-			if (NETWORK::NETWORK_IS_PLAYER_CONNECTED(i) && i != PLAYER::PLAYER_ID())
+			if (NETWORK::NETWORK_IS_PLAYER_CONNECTED(i))
 			{
-				// if (!g.players[i].is_online) // tell user player joined
+				if (g.players[i].is_online) continue;
 
 				g.players[i].id = i;
 				g.players[i].is_online = true;
@@ -36,11 +38,18 @@ namespace big
 				else player_count++;
 
 				strcpy(g.players[i].name, PLAYER::GET_PLAYER_NAME(i));
+
+				g.players[i].net_player = g_pointers->m_get_net_game_player(i);
+
+				notify::player_joined(g.players[i]);
 			}
-			else
+			else if (g.players[i].is_online)
 			{
-				g.players[i].is_online = false;
+				if (g.players[i].is_friend) friend_count--;
+				else player_count--;
+
 				g.players[i].is_friend = false;
+				g.players[i].is_online = false;
 			}
 
 			script::get_current()->yield();
