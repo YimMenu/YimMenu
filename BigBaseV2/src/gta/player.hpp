@@ -89,14 +89,22 @@ public:
 class CNetGamePlayer : public rage::netPlayer
 {
 public:
-	char pad_0008[45]; //0x0008
-	int8_t player_id; //0x0035
-	char pad_0036[122]; //0x0036
-	CPlayerInfo* player_info; //0x00B0
-	char pad_00B8[20]; //0x00B8
-	uint32_t bubble_id; //0x00CC
-	uint32_t player; //0x00D0
+	char pad_0x0008[0x10]; //0x0008
+	std::uint32_t msg_id; // 0x18
+	char pad_0x001C[0x4]; //0x001C
+	std::int8_t active_id; //0x0020 
+	std::int8_t player_id; //0x0021 
+	char pad_0x0022[0x6E]; //0x0022
+	BYTE local_player_check;//0x0090
+	char pad_0x00A1[0xF]; //0x0091
+	CPlayerInfo* player_info; //0x00A0 
+
+	inline bool is_local_player()
+	{
+		return local_player_check & 1;
+	}
 };
+static_assert(sizeof(CNetGamePlayer) == 0xA8);
 
 //class CPlayerInfo : public rage::fwExtensibleBase
 //{
