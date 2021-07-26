@@ -10,6 +10,7 @@ namespace big
 
 		static void player_specate();
 
+		static void self_frame_flags();
 		static void self_godmode();
 		static void self_off_radar();
 		static void self_noclip();
