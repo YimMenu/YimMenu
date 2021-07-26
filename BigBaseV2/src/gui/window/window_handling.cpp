@@ -10,7 +10,7 @@ namespace big
 		ImGui::SetNextWindowPos({ 50, 50 }, ImGuiCond_FirstUseEver);
 		if (g.window.handling && ImGui::Begin("Handling", &g.window.handling))
 		{
-			if (g_local_player->m_vehicle == nullptr)
+			if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr)
 			{
 				ImGui::Text("Please enter a vehicle to modify handling.");
 
