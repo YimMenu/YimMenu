@@ -1,4 +1,5 @@
 #pragma once
+#include "gta/player.hpp"
 
 #ifndef PLAYER_STRUCT
 #define PLAYER_STRUCT
@@ -12,6 +13,8 @@ namespace big
 
 		bool is_friend = false;
 		bool is_online = false;
+
+		CNetGamePlayer* net_player;
 
 		bool operator < (const CPlayer& another) const
 		{
