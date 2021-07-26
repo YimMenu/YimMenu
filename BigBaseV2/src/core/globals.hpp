@@ -42,10 +42,19 @@ struct globals {
 	};
 
 	struct self {
+		struct frame_flags {
+			bool explosive_ammo = false;
+			bool explosive_melee = false;
+			bool fire_ammo = false;
+			bool super_jump = false;
+		};
+
 		bool godmode = false;
 		bool off_radar = false;
 		bool noclip = false;
 		bool no_ragdoll = false;
+
+		frame_flags frame_flags{};
 	};
 
 	struct vehicle {
@@ -109,6 +118,11 @@ struct globals {
 		this->self.off_radar = j["self"]["off_radar"];
 		this->self.no_ragdoll = j["self"]["no_ragdoll"];
 
+		this->self.frame_flags.explosive_ammo = j["self"]["frame_flags"]["explosive_ammo"];
+		this->self.frame_flags.explosive_melee = j["self"]["frame_flags"]["explosive_melee"];
+		this->self.frame_flags.fire_ammo = j["self"]["frame_flags"]["fire_ammo"];
+		this->self.frame_flags.super_jump = j["self"]["frame_flags"]["super_jump"];
+
 		this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
 		this->vehicle.speedo_meter = (SpeedoMeter)j["vehicle"]["speedo_meter"];
 
@@ -154,7 +168,16 @@ struct globals {
 				"self", {
 					{ "godmode", this->self.godmode },
 					{ "off_radar", this->self.off_radar },
-					{ "no_ragdoll", this->self.no_ragdoll }
+					{ "no_ragdoll", this->self.no_ragdoll },
+
+					{
+						"frame_flags", {
+							{ "explosive_ammo", this->self.frame_flags.explosive_ammo },
+							{ "explosive_melee", this->self.frame_flags.explosive_melee },
+							{ "fire_ammo", this->self.frame_flags.fire_ammo },
+							{ "super_jump", this->self.frame_flags.super_jump }
+						}
+					}
 				}
 			},
 			{
