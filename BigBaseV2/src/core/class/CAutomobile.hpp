@@ -3,6 +3,7 @@
 #include "CVehicleDrawHandler.hpp"
 
 #pragma pack(push, 1)
+
 class CAutomobile
 {
 public:
@@ -21,8 +22,11 @@ public:
 	class CHandlingData* m_handling; //0x0938
 	char pad_0940[2]; //0x0940
 	uint8_t m_bullet_proof_tyres; //0x0942
-	char pad_0943[793]; //0x0943
+	char pad_0943[1]; //0x0943
+	uint8_t m_deform_god; //0x0944
+	char pad_0945[791]; //0x0945
 	float m_gravity; //0x0C5C
 }; //Size: 0x0C60
 static_assert(sizeof(CAutomobile) == 0xC60);
+
 #pragma pack(pop)

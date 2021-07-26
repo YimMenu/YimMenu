@@ -2,6 +2,7 @@
 #include "gta/vector.hpp"
 
 #pragma pack(push, 1)
+
 class CHandlingData
 {
 public:
@@ -78,4 +79,5 @@ public:
 	uint32_t m_ai_handling_hash; //0x013C
 }; //Size: 0x0140
 static_assert(sizeof(CHandlingData) == 0x140);
+
 #pragma pack(pop)
