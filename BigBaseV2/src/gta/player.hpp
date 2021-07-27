@@ -26,7 +26,7 @@ namespace rage
 	class netPlayerData
 	{
 	public:
-		char pad_0000[16]; //0x0000
+		char pad_0000[48]; //0x0000
 		uint32_t m_sec_key_time; //0x0010
 		netAddress m_lan_ip; //0x0014
 		uint16_t m_lan_port; //0x0018
