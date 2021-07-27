@@ -13,7 +13,7 @@ namespace big
 
 	void looped::self_frame_flags()
 	{
-		if (g_local_player == nullptr) return;
+		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr) return;
 
 		uint32_t& flags = g_local_player->m_player_info->m_frame_flags;
 
