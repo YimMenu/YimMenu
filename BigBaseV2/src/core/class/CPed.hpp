@@ -33,7 +33,9 @@ public:
 	class CPlayerInfo* m_player_info; //0x10C8
 	char pad_10D0[8]; //0x10D0
 	class CPedWeaponManager* m_weapon_manager; //0x10D8
-	char pad_10E0[1024]; //0x10E0
+	char pad_10E0[919]; //0x10E0
+	uint8_t m_in_vehicle; //0x1477
+	char pad_1478[104]; //0x1478
 	float m_armor; //0x14E0
 }; //Size: 0x14E4
 static_assert(sizeof(CPed) == 0x14E4);
