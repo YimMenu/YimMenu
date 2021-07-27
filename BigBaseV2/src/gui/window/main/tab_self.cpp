@@ -36,6 +36,19 @@ namespace big
 				ImGui::TreePop();
 			}
 
+			if (ImGui::TreeNode("Police"))
+			{
+				ImGui::Checkbox("Never Wanted", &g.self.never_wanted);
+
+				if (!g.self.never_wanted)
+				{
+					ImGui::Text("Wanted Level");
+					ImGui::SliderInt("###wanted_level", &g.self.wanted_level, 0, 5);
+				}
+
+				ImGui::TreePop();
+			}
+
 			ImGui::EndTabItem();
 		}
 	}

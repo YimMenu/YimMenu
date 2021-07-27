@@ -28,6 +28,7 @@ namespace big
 			looped::self_frame_flags();
 			looped::self_godmode();
 			looped::self_off_radar();
+			looped::self_police();
 			looped::self_no_ragdoll();
 		}QUEUE_JOB_END_CLAUSE
 

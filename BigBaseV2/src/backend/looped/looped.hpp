@@ -13,6 +13,7 @@ namespace big
 		static void self_frame_flags();
 		static void self_godmode();
 		static void self_off_radar();
+		static void self_police();
 		static void self_noclip();
 		static void self_no_ragdoll();
 
