@@ -42,7 +42,7 @@ namespace big
 			break;
 		case RemoteEvent::FakeDeposit:
 			if (g.protections.fake_deposit)
-				strcpy(type, "Fake Deposit");
+				strcpy(type, "Deposit");
 
 			break;
 		case RemoteEvent::ForceMission:
