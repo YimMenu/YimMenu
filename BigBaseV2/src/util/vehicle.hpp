@@ -33,6 +33,8 @@ namespace big::vehicle
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh)) return false;
 
+		entity::take_control_of(veh);
+
 		VEHICLE::SET_VEHICLE_FIXED(veh);
 		VEHICLE::SET_VEHICLE_DEFORMATION_FIXED(veh);
 		VEHICLE::SET_VEHICLE_DIRT_LEVEL(veh, 0.f);
