@@ -7,7 +7,8 @@
 namespace big
 {
 	static const int controls[] = { 21, 32, 33, 34, 35, 36 };
-	static const float speed = 20.f;
+	static float speed = 20.f;
+	static float mult = 0.f;
 
 	static bool bLastNoclip = false;
 
@@ -65,16 +66,21 @@ namespace big
 			{
 				// freeze entity to prevent drifting when standing still
 				ENTITY::FREEZE_ENTITY_POSITION(ent, true);
+
+				mult = 0.f;
 			}
 			else
 			{
+				if (mult < 20.f)
+					mult += 0.15f;
+
 				ENTITY::FREEZE_ENTITY_POSITION(ent, false);
 
 				Vector3 offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, vel.x, vel.y, 0.f);
 				vel.x = offset.x - cur_pos.x;
 				vel.y = offset.y - cur_pos.y;
 
-				ENTITY::SET_ENTITY_VELOCITY(ent, vel.x * speed, vel.y * speed, vel.z * speed);
+				ENTITY::SET_ENTITY_VELOCITY(ent, vel.x * mult, vel.y * mult, vel.z * mult);
 			}
 		}
 		else if (bNoclip != bLastNoclip)
