@@ -36,7 +36,10 @@ namespace big
 			{
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 
-				notify::blocked_event(event_name, source_player->player_id);
+				char msg[64];
+				strcpy(msg, "<C>");
+				strcat(msg, source_player->get_name());
+				strcat(msg, "</C> possibly attempting at freezing entity.");
 
 				return false;
 			}
@@ -59,6 +62,8 @@ namespace big
 				strcpy(msg, "<C>");
 				strcat(msg, source_player->get_name());
 				strcat(msg, "</C> is spawning cash.");
+				
+				notify::above_map(msg);
 			}
 
 			break;
@@ -75,6 +80,17 @@ namespace big
 			notify::above_map(msg);
 
 			break;
+		}
+		case RockstarEvent::REQUEST_CONTROL_EVENT:
+		{
+			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+
+			char msg[64];
+			strcpy(msg, "Denied player control request from <C>");
+			strcat(msg, source_player->get_name());
+			strcat(msg, "</C>");
+
+			return false;
 		}
 		//case RockstarEvent::GIVE_PICKUP_REWARDS_EVENT:
 		//{
@@ -95,8 +111,6 @@ namespace big
 		//	return true;
 		//}
 		}
-
-		//LOG(INFO) << "Received Event: " << event_name;
 
 		return g_hooking->m_received_event_hook.get_original<decltype(&received_event)>()(event_manager, source_player, target_player, event_id, event_index, event_handled_bitset, bit_buffer_size, bit_buffer);
 	}
