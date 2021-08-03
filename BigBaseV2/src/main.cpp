@@ -24,14 +24,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			auto logger_instance = std::make_unique<logger>();
 			try
 			{
-				LOG(RAW_GREEN_TO_CONSOLE) << u8R"kek(
- ______  _       ______                        ______  
-(____  \(_)     (____  \                      (_____ \ 
- ____)  )_  ____ ____)  ) ____  ___  ____ _   _ ____) )
-|  __  (| |/ _  |  __  ( / _  |/___)/ _  ) | | /_____/ 
-| |__)  ) ( ( | | |__)  | ( | |___ ( (/ / \ V /_______ 
-|______/|_|\_|| |______/ \_||_(___/ \____) \_/(_______)
-          (_____|)kek";
+				LOG(RAW_GREEN_TO_CONSOLE) << "Yim's Menu Initializing";
 				auto pointers_instance = std::make_unique<pointers>();
 				LOG(INFO) << "Pointers initialized.";
 
