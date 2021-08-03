@@ -6,10 +6,7 @@ namespace big
 {
 	void looped::vehicle_speedo_meter()
 	{
-		static const float x = .9f;
-		static const float y = .72f;
-
-		SpeedoMeter speedo_type = g.vehicle.speedo_meter;
+		SpeedoMeter speedo_type = g.vehicle.speedo_meter.type;
 
 		if (speedo_type == SpeedoMeter::DISABLED || HUD::IS_PAUSE_MENU_ACTIVE() || HUD::IS_WARNING_MESSAGE_ACTIVE() || CAM::IS_SCREEN_FADED_OUT() || CAM::IS_SCREEN_FADING_OUT() || CAM::IS_SCREEN_FADING_IN()) return;
 
@@ -31,20 +28,20 @@ namespace big
 			break;
 		}
 
-		sprintf(speed, "%*d", 3, (int)veh_speed);
+		sprintf(speed, "%*d", g.vehicle.speedo_meter.left_side ? 0 : 3, (int)veh_speed);
 
 		HUD::SET_TEXT_FONT(2);
 		HUD::SET_TEXT_SCALE(.9f, .9f);
 		HUD::SET_TEXT_OUTLINE();
 		HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
 		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(speed);
-		HUD::END_TEXT_COMMAND_DISPLAY_TEXT(x, y + .04f, 1);
+		HUD::END_TEXT_COMMAND_DISPLAY_TEXT(g.vehicle.speedo_meter.x, g.vehicle.speedo_meter.y + .04f, 1);
 
 		HUD::SET_TEXT_FONT(2);
 		HUD::SET_TEXT_SCALE(.91f, .91f);
 		HUD::SET_TEXT_OUTLINE();
 		HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
 		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(speed_type);
-		HUD::END_TEXT_COMMAND_DISPLAY_TEXT(x, y, 1);
+		HUD::END_TEXT_COMMAND_DISPLAY_TEXT(g.vehicle.speedo_meter.x, g.vehicle.speedo_meter.y, 1);
 	}
 }

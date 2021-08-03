@@ -52,15 +52,31 @@ namespace big
 
 			if (ImGui::TreeNode("Speedo Meter"))
 			{
-				SpeedoMeter selected = g.vehicle.speedo_meter;
+				SpeedoMeter selected = g.vehicle.speedo_meter.type;
 
+				ImGui::Text("Position");
+
+				float pos[2];
+				pos[0] = g.vehicle.speedo_meter.x;
+				pos[1] = g.vehicle.speedo_meter.y;
+				if (ImGui::SliderFloat2("###speedo_pos", pos, .001f, .999f, "%.3f"))
+				{
+					g.vehicle.speedo_meter.x = pos[0];
+					g.vehicle.speedo_meter.y = pos[1];
+				}
+
+				ImGui::Checkbox("Left Sided", &g.vehicle.speedo_meter.left_side);
+
+				ImGui::Separator();
+
+				ImGui::Text("Type:");
 				if (ImGui::BeginCombo("###speedo_type", speedo_meters[(int)selected].name))
 				{
 					for (const speedo_meter &speedo : speedo_meters)
 					{
 						if (ImGui::Selectable(speedo.name, speedo.id == selected))
 						{
-							g.vehicle.speedo_meter = speedo.id;
+							g.vehicle.speedo_meter.type = speedo.id;
 						}
 
 						if (speedo.id == selected)

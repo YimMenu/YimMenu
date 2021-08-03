@@ -60,8 +60,17 @@ struct globals {
 	};
 
 	struct vehicle {
+		struct speedo_meter {
+			SpeedoMeter type = SpeedoMeter::DISABLED;
+
+			float x = .9f;
+			float y = .72f;
+
+			bool left_side = false;
+		};
+
 		bool horn_boost = false;
-		SpeedoMeter speedo_meter = SpeedoMeter::DISABLED;
+		speedo_meter speedo_meter{};
 	};
 
 	struct weapons {
@@ -127,7 +136,11 @@ struct globals {
 		this->self.frame_flags.super_jump = j["self"]["frame_flags"]["super_jump"];
 
 		this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
-		this->vehicle.speedo_meter = (SpeedoMeter)j["vehicle"]["speedo_meter"];
+
+		this->vehicle.speedo_meter.type = (SpeedoMeter)j["vehicle"]["speedo_meter"]["type"];
+		this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
+		this->vehicle.speedo_meter.x = j["vehicle"]["speedo_meter"]["position_x"];
+		this->vehicle.speedo_meter.y = j["vehicle"]["speedo_meter"]["position_y"];
 
 		this->weapons.custom_weapon = (CustomWeapon)j["weapons"]["custom_weapon"];
 
@@ -187,7 +200,14 @@ struct globals {
 			{
 				"vehicle", {
 					{ "horn_boost", this->vehicle.horn_boost },
-					{ "speedo_meter", (int)this->vehicle.speedo_meter }
+					{
+						"speedo_meter", {
+							{ "type", (int)this->vehicle.speedo_meter.type },
+							{ "left_side", this->vehicle.speedo_meter.left_side },
+							{ "position_x", this->vehicle.speedo_meter.x },
+							{ "position_y", this->vehicle.speedo_meter.y }
+						}
+					}
 				}
 			},
 			{
