@@ -5,7 +5,6 @@ namespace big
 {
 	void looped::system_update_pointers()
 	{
-		if (g_local_player == nullptr)
-			g_local_player = gta_util::get_local_ped();
+		g_local_player = gta_util::get_local_ped();
 	}
 }
