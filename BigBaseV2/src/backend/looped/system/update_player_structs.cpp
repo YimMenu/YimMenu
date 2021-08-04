@@ -18,7 +18,7 @@ namespace big
 
 		for (Player i = 0; i < 32; i++)
 		{
-			if (NETWORK::NETWORK_IS_PLAYER_CONNECTED(i))
+			if (NETWORK::NETWORK_IS_PLAYER_ACTIVE(i))
 			{
 				if (g.players[i].is_online) continue;
 
@@ -27,9 +27,9 @@ namespace big
 
 				int iNetworkHandle[26];
 				NETWORK::NETWORK_HANDLE_FROM_PLAYER(i, &iNetworkHandle[0], 13);
-				NETWORK::NETWORK_IS_HANDLE_VALID(&iNetworkHandle[0], 13) && NETWORK::NETWORK_IS_FRIEND(&iNetworkHandle[0]);
+				bool is_friend = NETWORK::NETWORK_IS_HANDLE_VALID(&iNetworkHandle[0], 13) && NETWORK::NETWORK_IS_FRIEND(&iNetworkHandle[0]);
 
-				if (NETWORK::NETWORK_IS_HANDLE_VALID(iNetworkHandle, 13) && NETWORK::NETWORK_IS_FRIEND(iNetworkHandle))
+				if (is_friend)
 				{
 					g.players[i].is_friend = true;
 
