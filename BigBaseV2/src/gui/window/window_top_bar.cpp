@@ -1,8 +1,9 @@
+#include "fiber_pool.hpp"
 #include "gui/window.hpp"
 #include "imgui.h"
-#include "fiber_pool.hpp"
 #include "script.hpp"
 #include "util/notify.hpp"
+#include "util/session.hpp"
 
 namespace big
 {
@@ -14,6 +15,22 @@ namespace big
 			{
 				ImGui::MenuItem("Logged in as:", NULL, false, false);
 				ImGui::MenuItem(g_local_player == nullptr || g_local_player->m_player_info == nullptr ? "unknown" : g_local_player->m_player_info->m_name, NULL, false, false);
+
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Session"))
+			{
+				for (const SessionType &session_type : sessions)
+				{
+					if (ImGui::MenuItem(session_type.name))
+					{
+						QUEUE_JOB_BEGIN_CLAUSE(&)
+						{
+							session::join_type(session_type);
+						}QUEUE_JOB_END_CLAUSE
+					}
+				}
 
 				ImGui::EndMenu();
 			}
