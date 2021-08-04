@@ -18,12 +18,19 @@ namespace big
 
 		for (Player i = 0; i < 32; i++)
 		{
+			CPlayer& player = g.players[i];
+
 			if (NETWORK::NETWORK_IS_PLAYER_ACTIVE(i))
 			{
-				if (g.players[i].is_online) continue;
+				strcpy(g.players[i].name, PLAYER::GET_PLAYER_NAME(i));
 
-				g.players[i].id = i;
-				g.players[i].is_online = true;
+				player.net_player = g_pointers->m_get_net_game_player(i);
+
+				if (player.is_online)
+					continue;
+
+				player.id = i;
+				player.is_online = true;
 
 				int iNetworkHandle[26];
 				NETWORK::NETWORK_HANDLE_FROM_PLAYER(i, &iNetworkHandle[0], 13);
@@ -31,25 +38,21 @@ namespace big
 
 				if (is_friend)
 				{
-					g.players[i].is_friend = true;
+					player.is_friend = true;
 
 					friend_count++;
 				}
 				else player_count++;
 
-				strcpy(g.players[i].name, PLAYER::GET_PLAYER_NAME(i));
-
-				g.players[i].net_player = g_pointers->m_get_net_game_player(i);
-
 				notify::player_joined(g.players[i]);
 			}
-			else if (g.players[i].is_online)
+			else if (player.is_online)
 			{
-				if (g.players[i].is_friend) friend_count--;
+				if (player.is_friend) friend_count--;
 				else player_count--;
 
-				g.players[i].is_friend = false;
-				g.players[i].is_online = false;
+				player.is_friend = false;
+				player.is_online = false;
 			}
 
 			script::get_current()->yield();
