@@ -6,7 +6,7 @@ namespace big
 {
 	void window::player()
 	{
-		if (!g.selected_player.is_online || g.selected_player.net_player == nullptr)
+		if (!g.selected_player.is_online)
 		{
 			g.window.player = false;
 
