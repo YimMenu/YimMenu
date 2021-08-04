@@ -18,13 +18,15 @@ namespace big
 			}
 
 			ImGui::BeginTabBar("handling_tabbar");
-			tab_handling::tab_phyics();
-			tab_handling::tab_braking();
-			tab_handling::tab_steering();
+			tab_handling::tab_general();
+			tab_handling::tab_other();
+			tab_handling::tab_brakes();
+			tab_handling::tab_gearing();
 			tab_handling::tab_traction();
+			tab_handling::tab_steering();
 			tab_handling::tab_suspension();
-			// rollbars
-			// misc
+			tab_handling::tab_rollbars();
+			tab_handling::tab_roll_centre_height();
 			ImGui::EndTabBar();
 
 			ImGui::End();

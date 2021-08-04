@@ -2,9 +2,9 @@
 
 namespace big
 {
-	void tab_handling::tab_phyics()
+	void tab_handling::tab_general()
 	{
-		if (ImGui::BeginTabItem("Physics"))
+		if (ImGui::BeginTabItem("General"))
 		{
 			ImGui::Text("Gravity");
 			ImGui::SliderFloat("##Gravity", &g_local_player->m_vehicle->m_gravity, -50.f, 50.f);
@@ -22,18 +22,6 @@ namespace big
 				g_local_player->m_vehicle->m_handling->m_centre_of_mass.x = fCenterOfMass[0];
 				g_local_player->m_vehicle->m_handling->m_centre_of_mass.y = fCenterOfMass[1];
 				g_local_player->m_vehicle->m_handling->m_centre_of_mass.z = fCenterOfMass[2];
-			}
-
-			ImGui::Text("Inertia Multiplier");
-			float fInertiaMult[3];
-			fInertiaMult[0] = g_local_player->m_vehicle->m_handling->m_inertia_mult.x;
-			fInertiaMult[1] = g_local_player->m_vehicle->m_handling->m_inertia_mult.y;
-			fInertiaMult[2] = g_local_player->m_vehicle->m_handling->m_inertia_mult.z;
-			if (ImGui::SliderFloat3("##inertia_multiplier", fInertiaMult, -10.f, 10.f))
-			{
-				g_local_player->m_vehicle->m_handling->m_inertia_mult.x = fInertiaMult[0];
-				g_local_player->m_vehicle->m_handling->m_inertia_mult.y = fInertiaMult[1];
-				g_local_player->m_vehicle->m_handling->m_inertia_mult.z = fInertiaMult[2];
 			}
 
 			ImGui::Text("Buoyancy");
