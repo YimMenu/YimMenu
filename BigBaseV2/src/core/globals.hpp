@@ -22,23 +22,33 @@ struct globals {
 	};
 
 	struct protections {
-		bool bounty = true;
-		bool ceo_ban = true;
-		bool ceo_kick = true;
-		bool ceo_money = true;
-		bool clear_wanted_level = true;
-		bool fake_deposit = true;
-		bool force_mission = true;
-		bool force_teleport = true;
-		bool gta_banner = true;
-		bool personal_vehicle_destroyed = true;
-		bool remote_off_radar = true;
-		bool send_to_cutscene = true;
-		bool send_to_island = true;
-		bool sound_spam = true;
-		bool spectate = true;
-		bool transaction_error = true;
-		bool vehicle_kick = true;
+		struct replay_interface {
+			bool attach = false;
+			bool cage = true;
+		};
+
+		struct script_events {
+			bool bounty = true;
+			bool ceo_ban = true;
+			bool ceo_kick = true;
+			bool ceo_money = true;
+			bool clear_wanted_level = true;
+			bool fake_deposit = true;
+			bool force_mission = true;
+			bool force_teleport = true;
+			bool gta_banner = true;
+			bool personal_vehicle_destroyed = true;
+			bool remote_off_radar = true;
+			bool send_to_cutscene = true;
+			bool send_to_island = true;
+			bool sound_spam = true;
+			bool spectate = true;
+			bool transaction_error = true;
+			bool vehicle_kick = true;
+		};
+
+		replay_interface replay_interface{};
+		script_events script_events{};
 	};
 
 	struct self {
@@ -104,23 +114,23 @@ struct globals {
 
 	void from_json(const nlohmann::json& j)
 	{
-		this->protections.bounty = j["protections"]["bounty"];
-		this->protections.ceo_ban = j["protections"]["ceo_ban"];
-		this->protections.ceo_kick = j["protections"]["ceo_kick"];
-		this->protections.ceo_money = j["protections"]["ceo_money"];
-		this->protections.clear_wanted_level = j["protections"]["clear_wanted_level"];
-		this->protections.fake_deposit = j["protections"]["fake_deposit"];
-		this->protections.force_mission = j["protections"]["force_mission"];
-		this->protections.force_teleport = j["protections"]["force_teleport"];
-		this->protections.gta_banner = j["protections"]["gta_banner"];
-		this->protections.personal_vehicle_destroyed = j["protections"]["personal_vehicle_destroyed"];
-		this->protections.remote_off_radar = j["protections"]["remote_off_radar"];
-		this->protections.send_to_cutscene = j["protections"]["send_to_cutscene"];
-		this->protections.send_to_island = j["protections"]["send_to_island"];
-		this->protections.sound_spam = j["protections"]["sound_spam"];
-		this->protections.spectate = j["protections"]["spectate"];
-		this->protections.transaction_error = j["protections"]["transaction_error"];
-		this->protections.vehicle_kick = j["protections"]["vehicle_kick"];
+		this->protections.script_events.bounty = j["protections"]["script_events"]["bounty"];
+		this->protections.script_events.ceo_ban = j["protections"]["script_events"]["ceo_ban"];
+		this->protections.script_events.ceo_kick = j["protections"]["script_events"]["ceo_kick"];
+		this->protections.script_events.ceo_money = j["protections"]["script_events"]["ceo_money"];
+		this->protections.script_events.clear_wanted_level = j["protections"]["script_events"]["clear_wanted_level"];
+		this->protections.script_events.fake_deposit = j["protections"]["script_events"]["fake_deposit"];
+		this->protections.script_events.force_mission = j["protections"]["script_events"]["force_mission"];
+		this->protections.script_events.force_teleport = j["protections"]["script_events"]["force_teleport"];
+		this->protections.script_events.gta_banner = j["protections"]["script_events"]["gta_banner"];
+		this->protections.script_events.personal_vehicle_destroyed = j["protections"]["script_events"]["personal_vehicle_destroyed"];
+		this->protections.script_events.remote_off_radar = j["protections"]["script_events"]["remote_off_radar"];
+		this->protections.script_events.send_to_cutscene = j["protections"]["script_events"]["send_to_cutscene"];
+		this->protections.script_events.send_to_island = j["protections"]["script_events"]["send_to_island"];
+		this->protections.script_events.sound_spam = j["protections"]["script_events"]["sound_spam"];
+		this->protections.script_events.spectate = j["protections"]["script_events"]["spectate"];
+		this->protections.script_events.transaction_error = j["protections"]["script_events"]["transaction_error"];
+		this->protections.script_events.vehicle_kick = j["protections"]["script_events"]["vehicle_kick"];
 
 		this->tunables.disable_phone = j["tunables"]["disable_phone"];
 		this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
@@ -154,24 +164,35 @@ struct globals {
 	{
 		return nlohmann::json{
 			{
-				"protections", {
-					{ "bounty", this->protections.bounty },
-					{ "ceo_ban", this->protections.ceo_ban },
-					{ "ceo_kick", this->protections.ceo_kick },
-					{ "ceo_money", this->protections.ceo_money },
-					{ "clear_wanted_level", this->protections.clear_wanted_level },
-					{ "fake_deposit", this->protections.fake_deposit },
-					{ "force_mission", this->protections.force_mission },
-					{ "force_teleport", this->protections.force_teleport },
-					{ "gta_banner", this->protections.gta_banner },
-					{ "personal_vehicle_destroyed", this->protections.personal_vehicle_destroyed },
-					{ "remote_off_radar", this->protections.remote_off_radar },
-					{ "send_to_cutscene", this->protections.send_to_cutscene },
-					{ "send_to_island", this->protections.send_to_island },
-					{ "sound_spam", this->protections.sound_spam },
-					{ "spectate", this->protections.spectate },
-					{ "transaction_error", this->protections.transaction_error },
-					{ "vehicle_kick", this->protections.vehicle_kick }
+				"protections",
+				{
+					{
+						"replay_interface", {
+							{ "attach", this->protections.replay_interface.attach },
+							{ "cage", this->protections.replay_interface.cage }
+						}
+					},
+					{
+						"script_events", {
+							{ "bounty", this->protections.script_events.bounty },
+							{ "ceo_ban", this->protections.script_events.ceo_ban },
+							{ "ceo_kick", this->protections.script_events.ceo_kick },
+							{ "ceo_money", this->protections.script_events.ceo_money },
+							{ "clear_wanted_level", this->protections.script_events.clear_wanted_level },
+							{ "fake_deposit", this->protections.script_events.fake_deposit },
+							{ "force_mission", this->protections.script_events.force_mission },
+							{ "force_teleport", this->protections.script_events.force_teleport },
+							{ "gta_banner", this->protections.script_events.gta_banner },
+							{ "personal_vehicle_destroyed", this->protections.script_events.personal_vehicle_destroyed },
+							{ "remote_off_radar", this->protections.script_events.remote_off_radar },
+							{ "send_to_cutscene", this->protections.script_events.send_to_cutscene },
+							{ "send_to_island", this->protections.script_events.send_to_island },
+							{ "sound_spam", this->protections.script_events.sound_spam },
+							{ "spectate", this->protections.script_events.spectate },
+							{ "transaction_error", this->protections.script_events.transaction_error },
+							{ "vehicle_kick", this->protections.script_events.vehicle_kick }
+						}
+					}
 				}
 			},
 			{

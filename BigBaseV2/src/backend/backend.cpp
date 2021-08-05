@@ -19,6 +19,11 @@ namespace big
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
+			looped::protections_replay_interface();
+		}QUEUE_JOB_END_CLAUSE
+
+		QUEUE_JOB_BEGIN_CLAUSE()
+		{
 			looped::tunables_disable_phone();
 			looped::tunables_no_idle_kick();
 		}QUEUE_JOB_END_CLAUSE

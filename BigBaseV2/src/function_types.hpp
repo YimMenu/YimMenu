@@ -3,6 +3,7 @@
 #include "gta/fwddec.hpp"
 #include "gta/player.hpp"
 #include "gta/natives.hpp"
+#include "gta/replay.hpp"
 
 namespace big::functions
 {
@@ -20,6 +21,8 @@ namespace big::functions
 	using trigger_script_event = int(int unk0, int64_t* args, int argCount, int bitFlags);
 
 	using increment_stat_event = bool(uint64_t net_event_struct, int64_t sender, int64_t a3);
+
+	using ptr_to_handle = Object(rage::CObject* object);
 
 	// Received Event Signatures START
 	using read_bitbuf_array = bool(rage::datBitBuffer* buffer, PVOID read, int bits, int);

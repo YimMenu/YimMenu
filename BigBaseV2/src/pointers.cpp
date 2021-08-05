@@ -185,6 +185,18 @@ namespace big
 		{
 			m_get_net_game_player = ptr.as<decltype(m_get_net_game_player)>();
 		});
+
+		// Replay Interface
+		main_batch.add("RI", "48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D", [this](memory::handle ptr)
+		{
+			m_replay_interface = ptr.add(3).rip().as<decltype(m_replay_interface)>();
+		});
+
+		// Pointer to Handle
+		main_batch.add("PTH", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 8B 15 ? ? ? ? 48 8B F9 48 83 C1 10 33 DB", [this](memory::handle ptr)
+		{
+			m_ptr_to_handle = ptr.as<decltype(m_ptr_to_handle)>();
+		});
 		
 		main_batch.run(memory::module(nullptr));
 

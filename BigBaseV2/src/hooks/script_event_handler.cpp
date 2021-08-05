@@ -16,87 +16,87 @@ namespace big
 		switch (hash)
 		{
 		case RemoteEvent::Bounty:
-			if (g.protections.bounty)
+			if (g.protections.script_events.bounty)
 				strcpy(type, "Bounty");
 
 			break;
 		case RemoteEvent::CeoBan:
-			if (g.protections.ceo_ban)
+			if (g.protections.script_events.ceo_ban)
 				strcpy(type, "Ceo Ban");
 
 			break;
 		case RemoteEvent::CeoKick:
-			if (g.protections.ceo_kick)
+			if (g.protections.script_events.ceo_kick)
 				strcpy(type, "Ceo Kick");
 
 			break;
 		case RemoteEvent::CeoMoney:
-			if (g.protections.ceo_money)
+			if (g.protections.script_events.ceo_money)
 				strcpy(type, "Ceo Money");
 
 			break;
 		case RemoteEvent::ClearWantedLevel:
-			if (g.protections.clear_wanted_level)
+			if (g.protections.script_events.clear_wanted_level)
 				strcpy(type, "Clear Wanted Level");
 
 			break;
 		case RemoteEvent::FakeDeposit:
-			if (g.protections.fake_deposit)
+			if (g.protections.script_events.fake_deposit)
 				strcpy(type, "Deposit");
 
 			break;
 		case RemoteEvent::ForceMission:
-			if (g.protections.force_mission)
+			if (g.protections.script_events.force_mission)
 				strcpy(type, "Force Mission");
 
 			break;
 		case RemoteEvent::GtaBanner:
-			if (g.protections.gta_banner)
+			if (g.protections.script_events.gta_banner)
 				strcpy(type, "GTA Banner");
 
 			break;
 		case RemoteEvent::PersonalVehicleDestroyed:
-			if (g.protections.personal_vehicle_destroyed)
+			if (g.protections.script_events.personal_vehicle_destroyed)
 				strcpy(type, "Personal Vehicle Destroyed");
 
 			break;
 		case RemoteEvent::RemoteOffradar:
-			if (g.protections.remote_off_radar)
+			if (g.protections.script_events.remote_off_radar)
 				strcpy(type, "Remote Off Radar");
 
 			break;
 		case RemoteEvent::SendToCutscene:
-			if (g.protections.send_to_cutscene)
+			if (g.protections.script_events.send_to_cutscene)
 				strcpy(type, "Send To Cutscene");
 
 			break;
 		case RemoteEvent::SendToIsland:
-			if (g.protections.send_to_island)
+			if (g.protections.script_events.send_to_island)
 				strcpy(type, "Send To Island");
 
 			break;
 		case RemoteEvent::SoundSpam:
-			if (g.protections.sound_spam)
+			if (g.protections.script_events.sound_spam)
 				strcpy(type, "Sound Spam");
 
 			break;
 		case RemoteEvent::Spectate:
-			if (g.protections.spectate)
+			if (g.protections.script_events.spectate)
 				strcpy(type, "Specate");
 
 			break;
 		case RemoteEvent::Teleport:
-			if (g.protections.force_teleport)
+			if (g.protections.script_events.force_teleport)
 				strcpy(type, "Force Teleport");
 
 			break;
 		case RemoteEvent::TransactionError:
-			if (g.protections.transaction_error)
+			if (g.protections.script_events.transaction_error)
 				strcpy(type, "Transaction Error");
 
 			break;
 		case RemoteEvent::VehicleKick:
-			if (g.protections.vehicle_kick)
+			if (g.protections.script_events.vehicle_kick)
 				strcpy(type, "Vehicle Kick");
 
 			break;
