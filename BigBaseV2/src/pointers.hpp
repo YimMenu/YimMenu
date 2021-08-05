@@ -59,7 +59,6 @@ namespace big
 
 		// Net Event Handlers
 		functions::report_cash_spawn* m_report_cash_spawn{};
-		functions::report_cheating* m_report_cheating{};
 	};
 
 	inline pointers *g_pointers{};

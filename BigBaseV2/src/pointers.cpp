@@ -174,12 +174,6 @@ namespace big
 			m_report_cash_spawn = ptr.as<decltype(m_report_cash_spawn)>();
 		});
 
-		// Report Myself Handler
-		main_batch.add("RMH", "E8 ? ? ? ? 41 8B 47 0C 39 43 20", [this](memory::handle ptr)
-		{
-			m_report_cheating = ptr.as<decltype(m_report_cheating)>();
-		});
-
 		// Scripted Game Event Handler
 		main_batch.add("SGEH", "40 53 48 81 EC ? ? ? ? 44 8B 81 ? ? ? ? 4C 8B CA 41 8D 40 FF 3D ? ? ? ? 77 42", [this](memory::handle ptr)
 		{

@@ -41,5 +41,4 @@ namespace big::functions
 
 	// Net Event Handlers
 	using report_cash_spawn = bool(__int64 creport_cash_spawn_event, CNetGamePlayer* source_player);
-	using report_cheating = void(__int64 a1, unsigned int a2, unsigned int a3, unsigned int a4);
 }
