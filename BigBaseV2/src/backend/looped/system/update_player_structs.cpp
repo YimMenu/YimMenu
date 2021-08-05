@@ -13,9 +13,6 @@ namespace big
 		if (busy) return;
 		busy = true;
 
-		int friend_count = g.friend_count;
-		int player_count = g.player_count;
-
 		for (Player i = 0; i < 32; i++)
 		{
 			CPlayer& player = g.players[i];
@@ -40,16 +37,16 @@ namespace big
 				{
 					player.is_friend = true;
 
-					friend_count++;
+					g.friend_count++;
 				}
-				else player_count++;
+				else g.player_count++;
 
-				notify::player_joined(g.players[i]);
+				notify::player_joined(player);
 			}
 			else if (player.is_online)
 			{
-				if (player.is_friend) friend_count--;
-				else player_count--;
+				if (player.is_friend) g.friend_count--;
+				else g.player_count--;
 
 				player.is_friend = false;
 				player.is_online = false;
@@ -57,9 +54,6 @@ namespace big
 
 			script::get_current()->yield();
 		}
-
-		g.friend_count = friend_count;
-		g.player_count = player_count;
 
 		busy = false;
 	}
