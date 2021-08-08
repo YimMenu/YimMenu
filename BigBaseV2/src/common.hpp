@@ -52,8 +52,8 @@
 
 #include "core/globals.hpp"
 #include "core/class/CPed.hpp"
-#include "gta/player.hpp"
 
+#include "services/vehicle_service.hpp"
 
 namespace big
 {
