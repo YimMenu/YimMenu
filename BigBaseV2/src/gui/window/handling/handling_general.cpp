@@ -6,6 +6,13 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("General"))
 		{
+			if (ImGui::Button("Restore Handling Data"))
+			{
+				g_vehicle_service->restore_vehicle();
+			}
+
+			ImGui::Separator();
+
 			ImGui::Text("Gravity");
 			ImGui::SliderFloat("##Gravity", &g_local_player->m_vehicle->m_gravity, -50.f, 50.f);
 

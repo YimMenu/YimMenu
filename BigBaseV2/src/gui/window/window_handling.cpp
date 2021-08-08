@@ -16,6 +16,7 @@ namespace big
 
 				return;
 			}
+			g_vehicle_service->attempt_save();
 
 			ImGui::BeginTabBar("handling_tabbar");
 			tab_handling::tab_general();
