@@ -63,6 +63,7 @@ namespace big
 
 		// Net Event Handlers
 		functions::report_cash_spawn* m_report_cash_spawn{};
+		functions::report_myself_event_sender* m_report_myself_sender{};
 	};
 
 	inline pointers *g_pointers{};

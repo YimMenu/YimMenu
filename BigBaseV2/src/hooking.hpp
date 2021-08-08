@@ -42,6 +42,7 @@ namespace big
 		);
 
 		static bool report_cash_spawn_handler(__int64 creport_cash_spawn_event, CNetGamePlayer* source_player);
+		static void report_myself_event_handler(__int64 a1, unsigned int a2, unsigned int a3, unsigned int a4);
 
 		static bool scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player);
 	};
@@ -83,6 +84,7 @@ namespace big
 		detour_hook m_received_event_hook;
 
 		detour_hook m_report_cash_spawn_event_hook;
+		detour_hook m_report_myself_event_sender_hook;
 
 		detour_hook m_scripted_game_event_hook;
 	};

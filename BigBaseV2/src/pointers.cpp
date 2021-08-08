@@ -197,6 +197,12 @@ namespace big
 		{
 			m_ptr_to_handle = ptr.as<decltype(m_ptr_to_handle)>();
 		});
+
+		// Report Myself Event Sender
+		main_batch.add("RMES", "E8 ? ? ? ? 41 8B 47 0C 39 43 20", [this](memory::handle ptr)
+		{
+			m_report_myself_sender = ptr.as<decltype(m_report_myself_sender)>();
+		});
 		
 		main_batch.run(memory::module(nullptr));
 

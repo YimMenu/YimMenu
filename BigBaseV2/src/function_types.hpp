@@ -18,7 +18,7 @@ namespace big::functions
 	using gta_thread_tick = __int64(GtaThread* a1, unsigned int a2);
 	using gta_thread_kill = __int64(GtaThread* a1);
 
-	using trigger_script_event = int(int unk0, int64_t* args, int argCount, int bitFlags);
+	using trigger_script_event = int(int unk0, int* args, int argCount, int bitFlags);
 
 	using increment_stat_event = bool(uint64_t net_event_struct, int64_t sender, int64_t a3);
 
@@ -44,4 +44,5 @@ namespace big::functions
 
 	// Net Event Handlers
 	using report_cash_spawn = bool(__int64 creport_cash_spawn_event, CNetGamePlayer* source_player);
+	using report_myself_event_sender = void(__int64 a1, unsigned int a2, unsigned int a3, unsigned int a4);
 }
