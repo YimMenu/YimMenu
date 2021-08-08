@@ -13,7 +13,7 @@ namespace big
 		VEHICLE_GUN
 	};
 
-	enum class RemoteEvent : int64_t
+	enum class RemoteEvent
 	{
 		Bounty = -1906146218,
 		CeoBan = 1355230914,
