@@ -22,9 +22,10 @@ namespace big
 					QUEUE_JOB_BEGIN_CLAUSE()
 					{
 						Vector3 location;
-						if (!blip::get_blip_location(location, 225, 0)) return notify::above_map("No personal vehicle found, was it destroyed?");
 
-						Vehicle veh = vehicle::get_closest_to_location(location, 5.f);
+						if (!blip::get_blip_location(location, 225, 0) && !blip::get_blip_location(location, 226, 0)) return notify::above_map("No personal vehicle found, was it destroyed?");
+
+						Vehicle veh = vehicle::get_closest_to_location(location, 2.f);
 						if (veh == 0) return notify::above_map("Invalid vehicle handle...");
 
 						location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
@@ -33,7 +34,6 @@ namespace big
 					}QUEUE_JOB_END_CLAUSE
 				}
 
-				ImGui::SameLine();
 				if (ImGui::Button("Repair"))
 				{
 					QUEUE_JOB_BEGIN_CLAUSE()
@@ -43,6 +43,7 @@ namespace big
 						vehicle::repair(veh);
 					}QUEUE_JOB_END_CLAUSE
 				}
+				ImGui::SameLine();
 
 				if (ImGui::Button("Handling"))
 					g.window.handling = true;
