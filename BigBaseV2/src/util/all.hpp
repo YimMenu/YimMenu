@@ -3,5 +3,7 @@
 #include "entity.hpp"
 #include "math.hpp"
 #include "notify.hpp"
+#include "player.hpp"
+#include "session.hpp"
 #include "teleport.hpp"
 #include "vehicle.hpp"
