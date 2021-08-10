@@ -9,6 +9,7 @@ namespace big
 		static void tab_tunables();
 		static void tab_self();
 		static void tab_recovery();
+		static void tab_settings();
 		static void tab_spawn();
 		static void tab_vehicle();
 		static void tab_weapons();
