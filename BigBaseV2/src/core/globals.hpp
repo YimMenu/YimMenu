@@ -79,6 +79,7 @@ struct globals {
 			bool left_side = false;
 		};
 
+		bool god_mode = false;
 		bool horn_boost = false;
 		speedo_meter speedo_meter{};
 	};
@@ -145,6 +146,7 @@ struct globals {
 		this->self.frame_flags.fire_ammo = j["self"]["frame_flags"]["fire_ammo"];
 		this->self.frame_flags.super_jump = j["self"]["frame_flags"]["super_jump"];
 
+		this->vehicle.god_mode = j["vehicle"]["god_mode"];
 		this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
 
 		this->vehicle.speedo_meter.type = (SpeedoMeter)j["vehicle"]["speedo_meter"]["type"];
@@ -220,6 +222,7 @@ struct globals {
 			},
 			{
 				"vehicle", {
+					{ "god_mode", this->vehicle.god_mode },
 					{ "horn_boost", this->vehicle.horn_boost },
 					{
 						"speedo_meter", {

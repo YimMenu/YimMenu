@@ -17,6 +17,9 @@ namespace big
 		{
 			if (ImGui::TreeNode("General"))
 			{
+				ImGui::Checkbox("God Mode", &g.vehicle.god_mode);
+				ImGui::SameLine();
+
 				if (ImGui::Button("Bring Personal Vehicle"))
 				{
 					QUEUE_JOB_BEGIN_CLAUSE()
