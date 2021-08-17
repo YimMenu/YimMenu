@@ -17,6 +17,11 @@ namespace big
 			looped::system_update_pointers();
 		}QUEUE_JOB_END_CLAUSE
 
+		g_fiber_pool->queue_job([]
+		{
+			looped::api_login_session();
+		});
+
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::protections_replay_interface();
@@ -59,6 +64,7 @@ namespace big
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
+			looped::vehicle_god_mode();
 			looped::vehicle_horn_boost();
 			looped::vehicle_speedo_meter();
 		}QUEUE_JOB_END_CLAUSE

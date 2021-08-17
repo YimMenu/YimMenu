@@ -18,4 +18,10 @@ namespace big
 		static void tab_traction();
 		static void tab_transmission();
 	};
+
+	class modal_handling
+	{
+	public:
+		static void modal_save_handling();
+	};
 }

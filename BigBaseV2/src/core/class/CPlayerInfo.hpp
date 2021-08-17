@@ -5,16 +5,20 @@
 class CPlayerInfo
 {
 public:
-	char pad_0000[52]; //0x0000
-	uint32_t m_internal_ip; //0x0034
-	uint16_t m_internal_port; //0x0038
-	char pad_003A[2]; //0x003A
-	uint32_t m_relay_ip; //0x003C
-	uint16_t m_relay_port; //0x0040
-	char pad_0042[2]; //0x0042
-	uint32_t m_external_ip; //0x0044
-	uint16_t m_external_port; //0x0048
-	char pad_004A[90]; //0x004A
+	char pad_0000[40]; //0x0000
+	uint64_t m_rockstar_id; //0x0028
+	char pad_0030[8]; //0x0030
+	uint32_t m_internal_ip; //0x0038
+	uint16_t m_internal_port; //0x003C
+	char pad_003E[2]; //0x003E
+	uint32_t m_relay_ip; //0x0040
+	uint16_t m_relay_port; //0x0044
+	char pad_0046[2]; //0x0046
+	uint32_t m_external_ip; //0x0048
+	uint16_t m_external_port; //0x004C
+	char pad_004E[66]; //0x004E
+	uint64_t m_rockstar_id2; //0x0090
+	char pad_0098[12]; //0x0098
 	char m_name[20]; //0x00A4
 	char pad_00B8[184]; //0x00B8
 	float m_swim_speed; //0x0170

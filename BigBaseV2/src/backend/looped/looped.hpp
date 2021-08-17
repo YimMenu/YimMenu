@@ -5,6 +5,8 @@ namespace big
 {
 	class looped {
 	public:
+		static void api_login_session();
+
 		static void tunables_disable_phone();
 		static void tunables_no_idle_kick();
 
@@ -30,6 +32,7 @@ namespace big
 		static void weapons_steal_vehicle_gun();
 		static void weapons_vehicle_gun();
 
+		static void vehicle_god_mode();
 		static void vehicle_horn_boost();
 		static void vehicle_speedo_meter();
 	};
