@@ -120,13 +120,17 @@ namespace big
 		bool apply_from_cache(std::string id);
 
 		int attempt_save();
+		std::string get_active_profile(std::uint32_t hash);
 		bool get_by_share_code(const char* share_code);
 		bool publish_profile(const char* name, const char* description);
 		PublishStatus publish_status(PublishStatus new_status = PublishStatus::NONE);
 		bool restore_vehicle();
+		void set_active_profile(std::uint32_t hash, std::string share_code);
+		void set_handling_profile(HandlingProfile& profile);
 
 		bool update_mine(bool force_update = false);
 
+		inline static std::unordered_map<std::uint32_t, std::string> m_active_profiles;
 		inline static std::vector<std::string> m_my_profiles;
 		inline static std::unordered_map<std::string, HandlingProfile> m_handling_profiles;
 

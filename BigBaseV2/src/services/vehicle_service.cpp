@@ -39,6 +39,13 @@ namespace big
 		return 1;
 	}
 
+	std::string vehicle_service::get_active_profile(std::uint32_t hash)
+	{
+		if (auto it = this->m_active_profiles.find(hash); it != this->m_active_profiles.end())
+			return it->second;
+		return std::string("");
+	}
+
 	bool vehicle_service::get_by_share_code(const char* share_code)
 	{
 		static std::string up_to_date = "";
@@ -172,11 +179,27 @@ namespace big
 		if (auto it = m_handling_backup.find(g_local_player->m_vehicle->m_handling->m_model_hash); it != m_handling_backup.end())
 		{
 			*g_local_player->m_vehicle->m_handling = it->second;
+			this->m_active_profiles.erase(g_local_player->m_vehicle->m_handling->m_model_hash);
 
 			return true;
 		}
 
 		return false;
+	}
+
+	void vehicle_service::set_active_profile(std::uint32_t hash, std::string share_code)
+	{
+		if (auto& it = this->m_active_profiles.find(hash); it != this->m_active_profiles.end())
+			it->second = share_code;
+		else
+			this->m_active_profiles.emplace(hash, share_code);
+	}
+
+	void vehicle_service::set_handling_profile(HandlingProfile& profile)
+	{
+		*g_local_player->m_vehicle->m_handling = profile.data;
+
+		this->set_active_profile(profile.handling_hash, profile.share_code);
 	}
 
 	bool vehicle_service::update_mine(bool force_update)

@@ -64,6 +64,9 @@ namespace big
 						{
 							auto& profile = it->second;
 
+							if (profile.share_code == g_vehicle_service->get_active_profile(profile.handling_hash))
+								ImGui::TextColored({ 0.1254f,0.8039f,0.3137f,1.f }, "Active");
+
 							ImGui::BeginGroup();
 
 							ImGui::Text("Name:");
@@ -82,9 +85,7 @@ namespace big
 
 							ImGui::Text("Share Code: %s", profile.share_code.c_str());
 							if (ImGui::Button("Load Profile"))
-							{
-								*g_local_player->m_vehicle->m_handling = profile.data;
-							}
+								g_vehicle_service->set_handling_profile(profile);
 
 							ImGui::EndGroup();
 
@@ -139,9 +140,7 @@ namespace big
 
 						ImGui::Text("Share Code: %s", profile.share_code.c_str());
 						if (ImGui::Button("Load Profile"))
-						{
-							*g_local_player->m_vehicle->m_handling = profile.data;
-						}
+							g_vehicle_service->set_handling_profile(profile);
 
 						ImGui::EndGroup();
 					}
