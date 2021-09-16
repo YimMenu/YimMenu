@@ -1,4 +1,4 @@
-#include "../handling_tabs.hpp"
+#include "../current_profile/current_profile_tabs.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "script.hpp"
