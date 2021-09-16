@@ -2,7 +2,7 @@
 
 namespace big
 {
-	void tab_handling::tab_rollbars()
+	void tab_current_profile::tab_rollbars()
 	{
 		if (ImGui::BeginTabItem("Rollbars"))
 		{

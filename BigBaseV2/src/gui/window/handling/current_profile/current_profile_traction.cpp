@@ -2,7 +2,7 @@
 
 namespace big
 {
-	void tab_handling::tab_traction()
+	void tab_current_profile::tab_traction()
 	{
 		if (ImGui::BeginTabItem("Traction"))
 		{

@@ -2,7 +2,7 @@
 
 namespace big
 {
-	void tab_handling::tab_steering()
+	void tab_current_profile::tab_steering()
 	{
 		if (ImGui::BeginTabItem("Steering"))
 		{

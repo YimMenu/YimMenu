@@ -2,7 +2,7 @@
 
 namespace big
 {
-	void tab_handling::tab_transmission()
+	void tab_current_profile::tab_transmission()
 	{
 		if (ImGui::BeginTabItem("Transmission"))
 		{

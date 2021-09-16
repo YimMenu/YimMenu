@@ -4,7 +4,7 @@
 
 namespace big
 {
-	class tab_handling
+	class tab_current_profile
 	{
 	public:
 		static void tab_brakes();

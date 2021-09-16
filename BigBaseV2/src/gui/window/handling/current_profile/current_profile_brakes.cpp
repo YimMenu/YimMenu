@@ -2,7 +2,7 @@
 
 namespace big
 {
-	void tab_handling::tab_brakes()
+	void tab_current_profile::tab_brakes()
 	{
 		if (ImGui::BeginTabItem("Brakes"))
 		{

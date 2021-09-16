@@ -2,7 +2,7 @@
 
 namespace big
 {
-	void tab_handling::tab_roll_centre_height()
+	void tab_current_profile::tab_roll_centre_height()
 	{
 		if (ImGui::BeginTabItem("Roll Centre Height"))
 		{

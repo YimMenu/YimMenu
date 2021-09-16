@@ -2,7 +2,7 @@
 
 namespace big
 {
-	void tab_handling::tab_suspension()
+	void tab_current_profile::tab_suspension()
 	{
 		if (ImGui::BeginTabItem("Suspension"))
 		{

@@ -2,7 +2,7 @@
 
 namespace big
 {
-	void tab_handling::tab_gearing()
+	void tab_current_profile::tab_gearing()
 	{
 		if (ImGui::BeginTabItem("Gearing"))
 		{

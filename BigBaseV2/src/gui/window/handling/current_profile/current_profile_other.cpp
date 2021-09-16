@@ -2,7 +2,7 @@
 
 namespace big
 {
-	void tab_handling::tab_other()
+	void tab_current_profile::tab_other()
 	{
 		if (ImGui::BeginTabItem("Other"))
 		{

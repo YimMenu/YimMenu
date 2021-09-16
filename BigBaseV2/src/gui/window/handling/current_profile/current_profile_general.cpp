@@ -2,7 +2,7 @@
 
 namespace big
 {
-	void tab_handling::tab_general()
+	void tab_current_profile::tab_general()
 	{
 		if (ImGui::BeginTabItem("General"))
 		{
