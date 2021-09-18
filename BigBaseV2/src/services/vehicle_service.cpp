@@ -1,9 +1,14 @@
 #include "api/api.hpp"
-#include "fiber_pool.hpp"
+#include "thread_pool.hpp"
 #include "vehicle_service.hpp"
 
 namespace big
 {
+	bool safe_to_modify()
+	{
+		return !(g_local_player == nullptr || g_local_player->m_vehicle == nullptr);
+	}
+
 	vehicle_service::vehicle_service()
 	{
 		g_vehicle_service = this;
@@ -53,7 +58,7 @@ namespace big
 		if (m_search_status == SearchStatus::SEARCHING)
 			return false;
 
-		if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr)
+		if (!safe_to_modify())
 			return false;
 
 		if (up_to_date == share_code)
@@ -84,21 +89,9 @@ namespace big
 		return true;
 	}
 
-	bool vehicle_service::publish_profile(const char* name, const char* description)
+	bool vehicle_service::handling_data_to_json(CHandlingData& handling_data, nlohmann::json& out)
 	{
-		if (this->m_publish_status == PublishStatus::SAVED)
-			return true;
-		if (this->m_publish_status == PublishStatus::SAVING)
-			return false;
-
-		if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr) return false;
-
-		this->m_publish_status = PublishStatus::SAVING;
-
-		CHandlingData handling_data = *g_local_player->m_vehicle->m_handling;
-		uint32_t hash = handling_data.m_model_hash;
-
-		nlohmann::json data = {
+		out = {
 			{ "centre_of_mass",
 				{
 					{ "x", handling_data.m_centre_of_mass.x },
@@ -159,8 +152,35 @@ namespace big
 			{ "roll_centre_height_rear", handling_data.m_roll_centre_height_rear }
 		};
 
-		if (api::vehicle::handling::create_profile(hash, name, description, data))
+		return true;
+	}
+
+	bool vehicle_service::publish_profile(const char* name, const char* description, std::string share_code)
+	{
+		if (this->m_publish_status == PublishStatus::SAVED)
+			return true;
+		if (this->m_publish_status == PublishStatus::SAVING)
+			return false;
+
+		if (!safe_to_modify()) return false;
+
+		this->m_publish_status = PublishStatus::SAVING;
+
+		CHandlingData handling_data = *g_local_player->m_vehicle->m_handling;
+		uint32_t hash = handling_data.m_model_hash;
+
+		nlohmann::json data;
+		this->handling_data_to_json(handling_data, data);
+
+		nlohmann::json json;
+		if (!share_code.empty() && api::vehicle::handling::update(hash, name, description, share_code, data))
 			m_publish_status = PublishStatus::SAVED;
+		else if (api::vehicle::handling::create_profile(hash, name, description, data, json))
+		{
+			this->set_active_profile(hash, json["share_code"]);
+
+			m_publish_status = PublishStatus::SAVED;
+		}
 		else m_publish_status = PublishStatus::FAILED;
 
 		return false;
@@ -178,7 +198,8 @@ namespace big
 	{
 		if (auto it = m_handling_backup.find(g_local_player->m_vehicle->m_handling->m_model_hash); it != m_handling_backup.end())
 		{
-			*g_local_player->m_vehicle->m_handling = it->second;
+			if (safe_to_modify())
+				*g_local_player->m_vehicle->m_handling = it->second;
 			this->m_active_profiles.erase(g_local_player->m_vehicle->m_handling->m_model_hash);
 
 			return true;
@@ -197,6 +218,8 @@ namespace big
 
 	void vehicle_service::set_handling_profile(HandlingProfile& profile)
 	{
+		if (!safe_to_modify())
+			return;
 		*g_local_player->m_vehicle->m_handling = profile.data;
 
 		this->set_active_profile(profile.handling_hash, profile.share_code);
@@ -210,7 +233,7 @@ namespace big
 		if (busy)
 			return false;
 
-		if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr)
+		if (!safe_to_modify())
 			return false;
 
 		if (!force_update && up_to_date == g_local_player->m_vehicle->m_handling->m_model_hash)
@@ -218,7 +241,7 @@ namespace big
 
 		busy = true;
 
-		g_fiber_pool->queue_job([&] {
+		g_thread_pool->push([&] {
 			nlohmann::json json;
 			if (!api::vehicle::handling::get_my_handling(g_local_player->m_vehicle->m_handling->m_model_hash, json) || json == nullptr)
 			{

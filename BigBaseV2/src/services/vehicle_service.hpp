@@ -122,7 +122,8 @@ namespace big
 		int attempt_save();
 		std::string get_active_profile(std::uint32_t hash);
 		bool get_by_share_code(const char* share_code);
-		bool publish_profile(const char* name, const char* description);
+		bool handling_data_to_json(CHandlingData& handling_data, nlohmann::json& out);
+		bool publish_profile(const char* name, const char* description, std::string share_code = "");
 		PublishStatus publish_status(PublishStatus new_status = PublishStatus::NONE);
 		bool restore_vehicle();
 		void set_active_profile(std::uint32_t hash, std::string share_code);
