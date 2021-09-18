@@ -23,5 +23,6 @@ namespace big
 	{
 	public:
 		static void modal_save_handling();
+		static void modal_update_handling();
 	};
 }
