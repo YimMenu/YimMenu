@@ -6,17 +6,26 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Current Profile"))
 		{
-			if (ImGui::Button("Save Profile"))
+			if (g_vehicle_service->get_active_profile(g_local_player->m_vehicle->m_handling->m_model_hash).empty())
 			{
-				ImGui::OpenPopup("Save Handling");
+				if (ImGui::Button("Save Profile"))
+				{
+					ImGui::OpenPopup("Save Handling");
+				}
+			}
+			else
+			{
+				if (ImGui::Button("Update Profile"))
+				{
+					ImGui::OpenPopup("Update Handling");
+				}
 			}
 
 			modal_handling::modal_save_handling();
+			modal_handling::modal_update_handling();
 			ImGui::SameLine();
 			if (ImGui::Button("Restore Handling"))
-			{
 				g_vehicle_service->restore_vehicle();
-			}
 
 			ImGui::Separator();
 
