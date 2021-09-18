@@ -1,5 +1,6 @@
 #include "../current_profile/current_profile_tabs.hpp"
 #include "fiber_pool.hpp"
+#include "thread_pool.hpp"
 #include "natives.hpp"
 #include "script.hpp"
 
@@ -7,7 +8,7 @@ namespace big
 {
 	void modal_handling::modal_save_handling()
 	{
-		ImGui::SetNextWindowSize({ 520, 325 }, ImGuiCond_Always);
+		ImGui::SetNextWindowSize({ 520, 325 }, ImGuiCond_FirstUseEver);
 		if (ImGui::BeginPopupModal("Save Handling"))
 		{
 			static char name[32], description[256] = "No description.";
@@ -20,7 +21,7 @@ namespace big
 				return ImGui::EndPopup();
 			case PublishStatus::SAVED:
 				strcpy(name, "");
-				strcpy(description, "");
+				strcpy(description, "No description.");
 
 				g_vehicle_service->publish_status(PublishStatus::IDLE);
 				g_vehicle_service->update_mine(true);
@@ -63,7 +64,7 @@ namespace big
 			ImGui::SameLine();
 			if (ImGui::Button("Save"))
 			{
-				g_fiber_pool->queue_job([&]
+				g_thread_pool->push([&]
 				{
 					g_vehicle_service->publish_profile(name, description);
 				});
