@@ -7,6 +7,7 @@
 #include "pointers.hpp"
 #include "renderer.hpp"
 #include "script_mgr.hpp"
+#include "thread_pool.hpp"
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -40,6 +41,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g.load();
 				LOG(INFO) << "Settings Loaded.";
 
+				auto thread_pool_instance = std::make_unique<thread_pool>();
+				LOG(INFO) << "Thread pool initialized.";
+
 				g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
 				LOG(INFO) << "Scripts registered.";
@@ -54,6 +58,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					std::this_thread::sleep_for(500ms);
 				}
 
+				g_thread_pool->destroy();
+				LOG(INFO) << "Destroyed thread pool.";
+
 				g_hooking->disable();
 				LOG(INFO) << "Hooking disabled.";
 
@@ -61,6 +68,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				g_script_mgr.remove_all_scripts();
 				LOG(INFO) << "Scripts unregistered.";
+
+				thread_pool_instance.reset();
+				LOG(INFO) << "Thread pool uninitialized.";
 
 				hooking_instance.reset();
 				LOG(INFO) << "Hooking uninitialized.";
@@ -73,6 +83,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				pointers_instance.reset();
 				LOG(INFO) << "Pointers uninitialized.";
+
+				vehicle_service_instance.reset();
 			}
 			catch (std::exception const &ex)
 			{
