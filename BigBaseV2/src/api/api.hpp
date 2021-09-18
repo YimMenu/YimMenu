@@ -3,7 +3,7 @@
 
 namespace big::api
 {
-	const std::string domain = "http://localhost:8080/api/v1";
+	const std::string domain = "http://home.damon.sh:8089/api/v1";
 	inline std::string session_id;
 
 	namespace util
@@ -41,7 +41,9 @@ namespace big::api
 	{
 		static bool create_session()
 		{
-			if (g_local_player == nullptr) return false;
+			static std::atomic_bool busy = false;
+			if (busy || g_local_player == nullptr) return false;
+			busy = true;
 
 			const std::string path = "/auth/create_session";
 
@@ -53,22 +55,34 @@ namespace big::api
 				{ "rockstar_id", player_info->m_rockstar_id2 }
 			};
 
-			http::Response res = request.send("POST", body.dump(), {
-				"Content-Type: application/json"
-			});
-
-			nlohmann::json json;
-			if (util::parse_body(res, json))
+			try
 			{
-				session_id = json["data"]["sessionId"].get<std::string>();
+				http::Response res = request.send("POST", body.dump(), {
+					"Content-Type: application/json"
+				}, 10000ms);
 
-				LOG(INFO) << "Create session and received ID: " << session_id.c_str();
+				nlohmann::json json;
+				if (util::parse_body(res, json))
+				{
+					session_id = json["data"]["sessionId"].get<std::string>();
 
-				return true;
+					LOG(INFO) << "Create session and received ID: " << session_id.c_str();
+
+					busy = false;
+					return true;
+				}
+			}
+			catch (const std::exception&)
+			{
+				LOG(INFO) << "Host is down, unable to create session.";
+
+				busy = false;
+				return false;
 			}
 			
 			LOG(INFO) << "Failed to create a session.";
 
+			busy = false;
 			return false;
 		}
 	}
@@ -77,26 +91,29 @@ namespace big::api
 	{
 		namespace handling
 		{
-			static bool create_profile(uint32_t handling_hash, const char* name, const char* description, nlohmann::json &handling_data)
+			static bool create_profile(uint32_t handling_hash, const char* name, const char* description, nlohmann::json& handling_data, nlohmann::json& out)
 			{
+				if (!util::signed_in()) return false;
+
 				const std::string path = "/vehicle/handling/create";
 
 				http::Request request(domain + path);
 
-				nlohmann::json json;
-				json["handling_hash"] = handling_hash;
-				json["name"] = std::string(name);
-				json["description"] = std::string(description);
-				json["data"] = handling_data;
+				out["handling_hash"] = handling_hash;
+				out["name"] = std::string(name);
+				out["description"] = std::string(description);
+				out["data"] = handling_data;
 
-				http::Response res = request.send("POST", json.dump(), {
+				http::Response res = request.send("POST", out.dump(), {
 					util::authorization_header()
 				});
-				return util::parse_body(res, json);
+				return util::parse_body(res, out);
 			}
 
 			static bool get_by_share_code(std::string share_code, nlohmann::json& out)
 			{
+				if (!util::signed_in()) return false;
+
 				const std::string path = "/vehicle/handling/get_by_share_code?share_code=";
 
 				http::Request request(domain + path + share_code);
@@ -110,6 +127,8 @@ namespace big::api
 
 			static bool get_my_handling(uint32_t handling_hash, nlohmann::json &out)
 			{
+				if (!util::signed_in()) return false;
+
 				const std::string path = "/vehicle/handling/get_mine?handling_hash=";
 
 				http::Request request(domain + path + std::to_string(handling_hash));
@@ -119,6 +138,27 @@ namespace big::api
 				});
 
 				return util::parse_body(res, out);
+			}
+
+			static bool update(uint32_t handling_hash, const char* name, const char* description, std::string share_code, nlohmann::json &update)
+			{
+				if (!util::signed_in()) return false;
+
+				const std::string path = "/vehicle/handling/update";
+
+				http::Request request(domain + path);
+				
+				nlohmann::json json;
+				json["handling_hash"] = handling_hash;
+				json["name"] = std::string(name);
+				json["description"] = std::string(description);
+				json["data"] = update;
+				json["share_code"] = share_code;
+
+				http::Response res = request.send("POST", json.dump(), {
+					util::authorization_header()
+				});
+				return util::parse_body(res, update);
 			}
 		}
 	}
