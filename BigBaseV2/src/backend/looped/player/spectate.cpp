@@ -17,12 +17,16 @@ namespace big
 				bReset = true;
 
 				g_pointers->m_spectate_player(false, -1);
+				HUD::SET_MINIMAP_IN_SPECTATOR_MODE(false, -1);
 			}
 
 			return;
 		}
 
-		g_pointers->m_spectate_player(true, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g.selected_player.id));
+		Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g.selected_player.id);
+
+		g_pointers->m_spectate_player(true, target);
+		HUD::SET_MINIMAP_IN_SPECTATOR_MODE(true, target);
 
 		bReset = false;
 	}
