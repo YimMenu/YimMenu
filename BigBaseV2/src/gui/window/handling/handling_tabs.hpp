@@ -8,6 +8,7 @@ namespace big
 	public:
 		static void tab_current_profile();
 		static void tab_my_profiles();
+		static void tab_saved_profiles();
 		static void tab_search();
 	};
 }

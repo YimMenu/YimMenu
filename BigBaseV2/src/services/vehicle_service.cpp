@@ -155,6 +155,28 @@ namespace big
 		return true;
 	}
 
+	bool vehicle_service::load_saved_profiles(bool force_update)
+	{
+		static bool busy = false, up_to_date = false;
+
+		if (busy) return false;
+
+		if (!safe_to_modify())
+			return false;
+		
+		if (!force_update && up_to_date) return true;
+
+		busy = true;
+
+		g_thread_pool->push([]()
+		{
+			//api::vehicle::handling::save_profile()
+
+			busy = false;
+			up_to_date = true;
+		});
+	}
+
 	bool vehicle_service::publish_profile(const char* name, const char* description, std::string share_code)
 	{
 		if (this->m_publish_status == PublishStatus::SAVED)

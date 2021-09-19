@@ -3,7 +3,8 @@
 
 namespace big::api
 {
-	const std::string domain = "http://home.damon.sh:8089/api/v1";
+	//const std::string domain = "http://home.damon.sh:8089/api/v1";
+	const std::string domain = "http://localhost:8080/api/v1";
 	inline std::string session_id;
 
 	namespace util
@@ -138,6 +139,22 @@ namespace big::api
 				});
 
 				return util::parse_body(res, out);
+			}
+
+			static bool save_profile(std::string share_code)
+			{
+				if (!util::signed_in()) return false;
+
+				const std::string path = "/vehicle/handling/save_profile";
+
+				http::Request request(domain + path);
+
+				nlohmann::json body = { { "share_code", share_code } };
+
+				http::Response res = request.send("POST", body.dump(), {
+					util::authorization_header()
+				});
+				return util::parse_body(res, body);
 			}
 
 			static bool update(uint32_t handling_hash, const char* name, const char* description, std::string share_code, nlohmann::json &update)

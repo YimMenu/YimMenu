@@ -1,3 +1,4 @@
+#include "api/api.hpp"
 #include "fiber_pool.hpp"
 #include "handling_tabs.hpp"
 #include "natives.hpp"
@@ -63,6 +64,9 @@ namespace big
 					ImGui::TableNextColumn();
 					if (ImGui::Button("Load Profile"))
 						g_vehicle_service->set_handling_profile(profile);
+					ImGui::SameLine();
+					if (ImGui::Button("Save Profile"))
+						g_thread_pool->push([&] { api::vehicle::handling::save_profile(profile.share_code); });
 
 					ImGui::EndTable();
 				}
