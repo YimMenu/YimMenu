@@ -43,27 +43,28 @@ namespace big
 					if (profile.share_code == g_vehicle_service->get_active_profile(profile.handling_hash))
 						ImGui::TextColored({ 0.1254f,0.8039f,0.3137f,1.f }, "Active");
 
-					ImGui::BeginGroup();
+					ImGui::BeginTable("table", 3, ImGuiTableFlags_SizingStretchProp);
 
+					ImGui::TableNextRow();
+
+					ImGui::TableNextColumn();
 					ImGui::Text("Name:");
-					ImGui::Text("Description:");
-
-					ImGui::EndGroup();
-					ImGui::SameLine();
-					ImGui::BeginGroup();
-
+					ImGui::TableNextColumn();
 					ImGui::Text(profile.name.c_str());
-					ImGui::TextWrapped(profile.description.c_str());
-
-					ImGui::EndGroup();
-					ImGui::SameLine();
-					ImGui::BeginGroup();
-
+					ImGui::TableNextColumn();
 					ImGui::Text("Share Code: %s", profile.share_code.c_str());
+
+					ImGui::TableNextRow();
+
+					ImGui::TableNextColumn();
+					ImGui::Text("Description:");
+					ImGui::TableNextColumn();
+					ImGui::TextWrapped(profile.description.c_str());
+					ImGui::TableNextColumn();
 					if (ImGui::Button("Load Profile"))
 						g_vehicle_service->set_handling_profile(profile);
 
-					ImGui::EndGroup();
+					ImGui::EndTable();
 				}
 
 				break;
