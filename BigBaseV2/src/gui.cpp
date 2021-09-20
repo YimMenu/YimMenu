@@ -121,7 +121,7 @@ namespace big
 		{
 			if (g_gui.m_opened)
 			{
-				for (uint8_t i = 0; i < 6; i++)
+				for (uint8_t i = 0; i <= 6; i++)
 					PAD::DISABLE_CONTROL_ACTION(2, i, true);
 				PAD::DISABLE_CONTROL_ACTION(2, 106, true);
 				PAD::DISABLE_CONTROL_ACTION(2, 329, true);
