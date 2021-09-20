@@ -41,6 +41,7 @@ namespace big
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::self_frame_flags();
+			looped::self_free_cam();
 			looped::self_godmode();
 			looped::self_off_radar();
 			looped::self_police();

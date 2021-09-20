@@ -20,6 +20,7 @@ namespace big
 
 			ImGui::Checkbox("God Mode", &g.self.godmode);
 			ImGui::Checkbox("Off Radar", &g.self.off_radar);
+			ImGui::Checkbox("Free Cam", &g.self.free_cam);
 			ImGui::Checkbox("No Clip", &g.self.noclip);
 			ImGui::Checkbox("No Ragdoll", &g.self.no_ragdoll);
 

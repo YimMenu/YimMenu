@@ -15,6 +15,7 @@ namespace big
 		static void protections_replay_interface();
 
 		static void self_frame_flags();
+		static void self_free_cam();
 		static void self_godmode();
 		static void self_off_radar();
 		static void self_police();

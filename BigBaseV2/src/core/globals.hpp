@@ -60,6 +60,7 @@ struct globals {
 		};
 
 		bool godmode = false;
+		bool free_cam = false;
 		bool off_radar = false;
 		bool never_wanted = false;
 		bool noclip = false;
