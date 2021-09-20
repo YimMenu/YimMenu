@@ -22,6 +22,7 @@ namespace big
 			ImGui::BeginTabBar("handling_profiles");
 			tab_handling::tab_current_profile();
 			tab_handling::tab_my_profiles();
+			tab_handling::tab_saved_profiles();
 			tab_handling::tab_search();
 			ImGui::EndTabBar();
 

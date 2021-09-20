@@ -157,24 +157,48 @@ namespace big
 
 	bool vehicle_service::load_saved_profiles(bool force_update)
 	{
-		static bool busy = false, up_to_date = false;
+		static bool busy = false;
+		static uint32_t up_to_date = -1;
 
-		if (busy) return false;
+		if (busy)
+			return false;
 
 		if (!safe_to_modify())
 			return false;
 		
-		if (!force_update && up_to_date) return true;
+		if (!force_update && up_to_date == g_local_player->m_vehicle->m_handling->m_model_hash)
+			return true;
 
 		busy = true;
 
-		g_thread_pool->push([]()
+		g_thread_pool->push([&]()
 		{
-			//api::vehicle::handling::save_profile()
+				nlohmann::json json;
+				if (!api::vehicle::handling::get_saved_handling(g_local_player->m_vehicle->m_handling->m_model_hash, json) || json == nullptr)
+				{
+					busy = false;
 
-			busy = false;
-			up_to_date = true;
+					return;
+				}
+
+				this->m_saved_profiles.clear();
+				for (auto& el : json["data"])
+				{
+					LOG(INFO) << "Registered profile '" << el["name"].get<std::string>().c_str() << "' with share code " << el["share_code"].get<std::string>().c_str();
+
+					HandlingProfile profile = HandlingProfile(el, g_local_player->m_vehicle->m_handling);
+
+					if (auto it = this->m_handling_profiles.find(el["share_code"]); it != this->m_handling_profiles.end())
+						it->second = profile;
+					else this->m_handling_profiles.emplace(el["share_code"], profile);
+					this->m_saved_profiles.push_back(el["share_code"]);
+				}
+
+				busy = false;
+				up_to_date = g_local_player->m_vehicle->m_handling->m_model_hash;
 		});
+
+		return false;
 	}
 
 	bool vehicle_service::publish_profile(const char* name, const char* description, std::string share_code)
@@ -272,17 +296,17 @@ namespace big
 				return;
 			}
 
-			m_my_profiles.clear();
+			this->m_my_profiles.clear();
 			for (auto& el : json["data"])
 			{
 				LOG(INFO) << "Registered profile '" << el["name"].get<std::string>().c_str() << "' with share code " << el["share_code"].get<std::string>().c_str();
 
 				HandlingProfile profile = HandlingProfile(el, g_local_player->m_vehicle->m_handling);
 
-				if (auto it = m_handling_profiles.find(el["share_code"]); it != m_handling_profiles.end())
+				if (auto it = this->m_handling_profiles.find(el["share_code"]); it != this->m_handling_profiles.end())
 					it->second = profile;
-				else m_handling_profiles.emplace(el["share_code"], profile);
-				m_my_profiles.push_back(el["share_code"]);
+				else this->m_handling_profiles.emplace(el["share_code"], profile);
+				this->m_my_profiles.push_back(el["share_code"]);
 			}
 
 			busy = false;

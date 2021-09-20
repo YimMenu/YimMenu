@@ -3,8 +3,8 @@
 
 namespace big::api
 {
-	//const std::string domain = "http://home.damon.sh:8089/api/v1";
-	const std::string domain = "http://localhost:8080/api/v1";
+	const std::string domain = "http://home.damon.sh:8089/api/v1";
+	//const std::string domain = "http://localhost:8080/api/v1";
 	inline std::string session_id;
 
 	namespace util
@@ -131,6 +131,21 @@ namespace big::api
 				if (!util::signed_in()) return false;
 
 				const std::string path = "/vehicle/handling/get_mine?handling_hash=";
+
+				http::Request request(domain + path + std::to_string(handling_hash));
+
+				http::Response res = request.send("GET", "", {
+					util::authorization_header()
+				});
+
+				return util::parse_body(res, out);
+			}
+
+			static bool get_saved_handling(uint32_t handling_hash, nlohmann::json& out)
+			{
+				if (!util::signed_in()) return false;
+
+				const std::string path = "/vehicle/handling/get_saved?handling_hash=";
 
 				http::Request request(domain + path + std::to_string(handling_hash));
 

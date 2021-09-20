@@ -66,7 +66,14 @@ namespace big
 						g_vehicle_service->set_handling_profile(profile);
 					ImGui::SameLine();
 					if (ImGui::Button("Save Profile"))
-						g_thread_pool->push([&] { api::vehicle::handling::save_profile(profile.share_code); });
+					{
+						g_thread_pool->push([&]
+						{
+							api::vehicle::handling::save_profile(profile.share_code);
+
+							g_vehicle_service->load_saved_profiles(true);
+						});
+					}
 
 					ImGui::EndTable();
 				}

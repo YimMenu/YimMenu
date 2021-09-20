@@ -10,9 +10,9 @@ namespace big
 				ImGui::Text("Loading profiles...");
 			else
 			{
-				if (g_vehicle_service->m_my_profiles.size() == 0)
+				if (g_vehicle_service->m_saved_profiles.size() == 0)
 					ImGui::Text("You have no saved profiles available for this vehicle.");
-				for (auto& key : g_vehicle_service->m_my_profiles)
+				for (auto& key : g_vehicle_service->m_saved_profiles)
 				{
 					if (auto it = g_vehicle_service->m_handling_profiles.find(key); it != g_vehicle_service->m_handling_profiles.end())
 					{
