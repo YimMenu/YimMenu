@@ -5,10 +5,10 @@ namespace big
 {
 	enum eFrameFlags : std::uint32_t
 	{
-		eFrameFlagExplosiveAmmo = 1 << 3,
-		eFrameFlagFireAmmo = 1 << 4,
-		eFrameFlagExplosiveMelee = 1 << 5,
-		eFrameFlagSuperJump = 1 << 6,
+		eFrameFlagExplosiveAmmo = 1 << 11,
+		eFrameFlagFireAmmo = 1 << 12,
+		eFrameFlagExplosiveMelee = 1 << 13,
+		eFrameFlagSuperJump = 1 << 14,
 	};
 
 	void looped::self_frame_flags()
