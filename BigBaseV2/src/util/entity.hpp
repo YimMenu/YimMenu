@@ -49,12 +49,11 @@ namespace big::entity
 	inline bool take_control_of(Entity ent)
 	{
 		if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return true;
-		for (uint8_t i = 0; !NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) && i < 5; i++)
+		for (uint8_t i = 0; !NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) && i < 10; i++)
 		{
-
 			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(ent);
 
-			script::get_current()->yield();
+			script::get_current()->yield(5ms);
 		}
 		if (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return false;
 
