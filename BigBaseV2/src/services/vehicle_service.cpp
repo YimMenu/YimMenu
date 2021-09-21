@@ -212,7 +212,7 @@ namespace big
 			m_publish_status = PublishStatus::SAVED;
 		else if (api::vehicle::handling::create_profile(hash, name, description, data, json))
 		{
-			this->set_active_profile(hash, json["share_code"]);
+			this->set_active_profile(hash, json["data"]["share_code"]);
 
 			m_publish_status = PublishStatus::SAVED;
 		}
