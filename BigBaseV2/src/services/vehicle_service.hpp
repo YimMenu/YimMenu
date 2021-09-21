@@ -117,8 +117,6 @@ namespace big
 		vehicle_service();
 		~vehicle_service();
 
-		bool apply_from_cache(std::string id);
-
 		int attempt_save();
 		std::string get_active_profile(std::uint32_t hash);
 		bool get_by_share_code(const char* share_code);

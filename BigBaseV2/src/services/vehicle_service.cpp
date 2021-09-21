@@ -19,17 +19,6 @@ namespace big
 		g_vehicle_service = nullptr;
 	}
 
-	bool vehicle_service::apply_from_cache(std::string id)
-	{
-		if (auto it = m_handling_profiles.find(id); it != m_handling_profiles.end())
-		{
-			*g_local_player->m_vehicle->m_handling = it->second.data;
-
-			return true;
-		}
-		return false;
-	}
-
 	int vehicle_service::attempt_save()
 	{
 		if (g_local_player == nullptr || g_local_player->m_in_vehicle == 0x10 || g_local_player->m_vehicle == nullptr)
