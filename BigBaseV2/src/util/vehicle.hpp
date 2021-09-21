@@ -6,14 +6,18 @@
 #include "notify.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
+#include "teleport.hpp"
 
 namespace big::vehicle
 {
 	inline void bring(Vehicle veh, Vector3 location, bool put_in = true)
 	{
-		entity::take_control_of(veh);
+		Vector3 vecVehicleLocation = ENTITY::GET_ENTITY_COORDS(veh, true);
+		teleport::load_ground_at_3dcoord(vecVehicleLocation);
 
-		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, 1);
+		if (!entity::take_control_of(veh))
+			notify::above_map("Failed to take control of remote vehicle.");
+		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, 0);
 
 		if (put_in)
 		{
