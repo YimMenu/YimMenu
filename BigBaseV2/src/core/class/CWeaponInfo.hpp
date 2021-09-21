@@ -31,9 +31,12 @@ public:
 	char pad_0138[12]; //0x0138
 	float m_spinup; //0x0144
 	float m_spin; //0x0148
-	char pad_014C[320]; //0x014C
+	char pad_014C[316]; //0x014C
+	float m_lock_on_range; //0x0288
 	float m_weapon_range; //0x028C
-}; //Size: 0x0290
-static_assert(sizeof(CWeaponInfo) == 0x290);
+	char pad_0290[100]; //0x0290
+	float m_accuracy_recoil; //0x02F4
+}; //Size: 0x02F8
+static_assert(sizeof(CWeaponInfo) == 0x2F8);
 
 #pragma pack(pop)
