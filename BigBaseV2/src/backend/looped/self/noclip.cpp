@@ -25,7 +25,7 @@ namespace big
 		// cleanup when changing entities
 		if (prev != ent)
 		{
-			ENTITY::FREEZE_ENTITY_POSITION(ent, false);
+			ENTITY::FREEZE_ENTITY_POSITION(prev, false);
 			ENTITY::SET_ENTITY_COLLISION(prev, true, true);
 
 			prev = ent;
