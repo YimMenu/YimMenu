@@ -203,6 +203,12 @@ namespace big
 		{
 			m_report_myself_sender = ptr.as<decltype(m_report_myself_sender)>();
 		});
+
+		// Blame Explode
+		main_batch.add("BE", "0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8", [this](memory::handle ptr)
+		{
+			m_blame_explode = ptr.as<decltype(m_blame_explode)>();
+		});
 		
 		main_batch.run(memory::module(nullptr));
 
