@@ -5,5 +5,7 @@
 #include "notify.hpp"
 #include "player.hpp"
 #include "session.hpp"
+#include "system.hpp"
 #include "teleport.hpp"
+#include "toxic.hpp"
 #include "vehicle.hpp"
