@@ -24,6 +24,7 @@ namespace big
 			ImGui::BeginTabBar("tabbar_player");
 			tab_player::tab_info();
 			tab_player::tab_teleport();
+			tab_player::tab_toxic();
 			ImGui::EndTabBar();
 
 			ImGui::End();
