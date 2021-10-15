@@ -29,8 +29,8 @@ namespace big
 				player.id = i;
 				player.is_online = true;
 
-				int iNetworkHandle[26];
-				NETWORK::NETWORK_HANDLE_FROM_PLAYER(i, &iNetworkHandle[0], 13);
+				int iNetworkHandle[13];
+				NETWORK::NETWORK_HANDLE_FROM_PLAYER(i, iNetworkHandle, 13);
 				bool is_friend = NETWORK::NETWORK_IS_HANDLE_VALID(&iNetworkHandle[0], 13) && NETWORK::NETWORK_IS_FRIEND(&iNetworkHandle[0]);
 
 				if (is_friend)
