@@ -24,4 +24,9 @@ namespace big::system
 
 		file.close();
 	}
+
+	inline void patch_blame(bool toggle)
+	{
+		*(unsigned short*)g_pointers->m_blame_explode = toggle ? 0xE990 : 0x850F;
+	}
 }
