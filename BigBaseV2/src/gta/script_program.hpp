@@ -113,6 +113,34 @@ namespace rage
 		char m_padding[0x10];            // 0x08
 		std::uint32_t m_size;            // 0x18
 
+		std::list<joaat_t> all_script_hashes()
+		{
+			std::list<rage::joaat_t> hash;
+
+			for (uint32_t i = 0; i < m_size; ++i)
+			{
+				if (m_data[i].m_program != nullptr && m_data[i].m_program->m_name != nullptr)
+				{
+					hash.push_back(m_data[i].m_hash);
+				}
+			}
+			return hash;
+		}
+
+		std::list<std::string> all_script_names()
+		{
+			std::list<std::string> hash;
+
+			for (uint32_t i = 0; i < m_size; ++i)
+			{
+				if (m_data[i].m_program != nullptr && m_data[i].m_program->m_name != nullptr)
+				{
+					hash.push_back(m_data[i].m_program->m_name);
+				}
+			}
+			return hash;
+		}
+
 		scrProgram* find_script(joaat_t hash)
 		{
 			for (std::uint32_t i = 0; i < m_size; ++i)
