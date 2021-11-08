@@ -3,6 +3,7 @@
 #include "gta/fwddec.hpp"
 #include "gta/enums.hpp"
 #include "gta/replay.hpp"
+#include "gta/script_program.hpp"
 #include "function_types.hpp"
 
 namespace big

@@ -63,6 +63,8 @@ namespace big
 		void enable();
 		void disable();
 
+		std::list<script_hook*> m_native_hooks;
+		std::unordered_map<rage::scrNativeHash, rage::scrNativeHandler> m_natives;
 	private:
 		bool m_enabled{};
 		minhook_keepalive m_minhook_keepalive;

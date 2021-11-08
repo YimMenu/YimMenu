@@ -8,6 +8,7 @@
 #include "hooking.hpp"
 #include "memory/module.hpp"
 #include "natives.hpp"
+#include "native_hooks/native_hooks.hpp"
 #include "pointers.hpp"
 #include "renderer.hpp"
 #include "script_mgr.hpp"
