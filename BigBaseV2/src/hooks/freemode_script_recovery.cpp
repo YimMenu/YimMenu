@@ -26,6 +26,8 @@ namespace big
 		{
 			if (result == eThreadState::killed && state == eThreadState::running && !freemode_terminated)
 			{
+				LOG(INFO) << "Freemode script crashed, attempting recovery...";
+
 				result = eThreadState::running;
 
 				memcpy(thread, struct_backup, sizeof(GtaThread));
