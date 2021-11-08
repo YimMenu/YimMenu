@@ -76,7 +76,7 @@ namespace big::vehicle
 			if (*g_pointers->m_is_session_started)
 			{
 				DECORATOR::DECOR_SET_INT(veh, "MPBitset", 0);
-				ENTITY::_SET_ENTITY_SOMETHING(veh, true);
+				ENTITY::SET_ENTITY_CLEANUP_BY_ENGINE_(veh, true);
 				int networkId = NETWORK::VEH_TO_NET(veh);
 				if (NETWORK::NETWORK_GET_ENTITY_IS_NETWORKED(veh))
 					NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true);

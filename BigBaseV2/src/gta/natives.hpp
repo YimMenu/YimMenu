@@ -74,7 +74,7 @@ namespace rage
 }
 
 using Void = void;
-using Any = std::uint32_t;
+using Any = int;
 using Hash = std::uint32_t;
 using Entity = std::int32_t;
 using Player = std::int32_t;

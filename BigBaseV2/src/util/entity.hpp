@@ -18,7 +18,7 @@ namespace big::entity
 	{
 		ENTITY::DETACH_ENTITY(ent, 1, 1);
 		ENTITY::SET_ENTITY_VISIBLE(ent, false, false);
-		NETWORK::_NETWORK_SET_ENTITY_INVISIBLE_TO_NETWORK(ent, true);
+		NETWORK::NETWORK_SET_ENTITY_INVISIBLE_TO_NETWORK_(ent, true);
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, 0, 0, 0, 0, 0, 0);
 		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(ent, 1, 1);
 		ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&ent);
@@ -40,7 +40,7 @@ namespace big::entity
 		farCoords.y = camCoords.y + dir.y * 1000;
 		farCoords.z = camCoords.z + dir.z * 1000;
 
-		int ray = SHAPETEST::_START_SHAPE_TEST_RAY(camCoords.x, camCoords.y, camCoords.z, farCoords.x, farCoords.y, farCoords.z, -1, 0, 7);
+		int ray = SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(camCoords.x, camCoords.y, camCoords.z, farCoords.x, farCoords.y, farCoords.z, -1, 0, 7);
 		SHAPETEST::GET_SHAPE_TEST_RESULT(ray, &hit, &endCoords, &surfaceNormal, ent);
 
 		return (bool)hit;
