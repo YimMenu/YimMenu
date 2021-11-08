@@ -93,9 +93,9 @@ namespace big
 		// Incompatible Version Fix
 		main_batch.add("IVF", "48 89 5C 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 ? ? ? ? 48 81 EC ? ? ? ? 33 FF 48 8B DA", [this](memory::handle ptr)
 		{
-			 uint8_t* incompatible_version = ptr.add(0x365).as<uint8_t*>();
+			 uint8_t* incompatible_version = ptr.add(0x165CEE5 - 0x165CB80).as<uint8_t*>();
 
-			 memset(incompatible_version, 0x90, 0x1E);
+			 memset(incompatible_version, 0x90, 0x165CF03 - 0x165CEE5);
 		});
 
 		// Thread Thick
