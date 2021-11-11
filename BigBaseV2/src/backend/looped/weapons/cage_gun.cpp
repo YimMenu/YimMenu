@@ -15,7 +15,7 @@ namespace big
 		{
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 25))
 			{
-				PLAYER::DISABLE_PLAYER_FIRING(PLAYER::PLAYER_ID(), true);
+				PLAYER::DISABLE_PLAYER_FIRING(PLAYER::GET_PLAYER_INDEX(), true);
 				for (int control : controls)
 					PAD::DISABLE_CONTROL_ACTION(0, control, true);
 

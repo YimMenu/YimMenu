@@ -5,7 +5,7 @@ namespace big
 {
 	bool hooks::report_cash_spawn_handler(__int64 creport_cash_spawn_event, CNetGamePlayer* source_player)
 	{
-		if (source_player->player_id == PLAYER::PLAYER_ID())
+		if (source_player->player_id == PLAYER::GET_PLAYER_INDEX())
 		{
 			LOG(INFO) << "Blocked self report for spawning modded cash";
 
