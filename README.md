@@ -26,7 +26,7 @@ I can't confirm if all hooks are correct as the report myself event hook probabl
 
 To set up the build environment, run the following commands in a terminal:
 ```dos
-git clone git@github.com:Yimura/YimMenu.git --recursive
+git clone git@github.com:Yimura/YimMenu.git --recursive || echo You don't have git installed, install it from https://git-scm.com/download/win
 cd YimMenu
 GenerateProjects.bat
 ```

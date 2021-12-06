@@ -29,6 +29,7 @@ namespace big
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
 
 		static bool increment_stat_event(CNetworkIncrementStatEvent* net_event_struct, CNetGamePlayer* sender, int64_t a3);
+		static bool is_dlc_present(Hash dlc_hash);
 
 		static bool received_event(
 			rage::netEventMgr* event_manager,
@@ -82,6 +83,7 @@ namespace big
 		detour_hook m_gta_thread_kill_hook;
 
 		detour_hook m_increment_stat_hook;
+		detour_hook m_is_dlc_present_hook;
 
 		detour_hook m_received_event_hook;
 

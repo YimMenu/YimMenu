@@ -50,6 +50,8 @@ namespace big
 
 		// Increment Stat Event
 		m_increment_stat_hook("ISE", g_pointers->m_increment_stat_event, &hooks::increment_stat_event),
+		// Is DLC Present
+		m_is_dlc_present_hook("IDP", g_pointers->m_is_dlc_present, &hooks::is_dlc_present),
 
 		// Error Screen
 		m_error_screen_hook("ES", g_pointers->m_error_screen, &hooks::disable_error_screen),

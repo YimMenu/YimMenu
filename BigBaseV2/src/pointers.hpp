@@ -41,6 +41,7 @@ namespace big
 		PVOID m_blame_explode;
 		PVOID m_model_spawn_bypass;
 		PVOID m_native_return;
+		PVOID m_is_dlc_present;
 
 		functions::error_screen* m_error_screen{};
 
