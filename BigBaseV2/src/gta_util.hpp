@@ -1,7 +1,7 @@
 #pragma once
 #include "common.hpp"
 #include "gta/array.hpp"
-#include "core/class/CPedFactory.hpp"
+#include "CPedFactory.hpp"
 #include "gta/player.hpp"
 #include "gta/script_thread.hpp"
 #include "gta/tls_context.hpp"

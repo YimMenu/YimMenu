@@ -51,7 +51,7 @@
 #include "logger.hpp"
 
 #include "core/globals.hpp"
-#include "core/class/CPed.hpp"
+#include "CPed.hpp"
 
 #include "services/vehicle_service.hpp"
 

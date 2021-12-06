@@ -18,3 +18,6 @@
 	path = vendor/g3log
 	url = https://github.com/KjellKod/g3log.git
 	ignore = dirty
+[submodule "vendor/GTAV-Classes"]
+	path = vendor/GTAV-Classes
+	url = https://github.com/Yimura/GTAV-Classes.git
