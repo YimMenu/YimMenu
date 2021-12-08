@@ -17,7 +17,7 @@ namespace big
 		int64_t bit_buffer
 	)
 	{
-		rage::datBitBuffer* buffer = new rage::datBitBuffer((void*)bit_buffer, (uint32_t)bit_buffer_size);
+		auto buffer = std::make_unique<rage::datBitBuffer>((void*)bit_buffer, (uint32_t)bit_buffer_size);
 
 		if (event_id > 90u) return false;
 
