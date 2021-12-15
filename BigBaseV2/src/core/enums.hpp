@@ -103,24 +103,24 @@ namespace big
 
 	enum class eRemoteEvent
 	{
-		Bounty = -1906146218,
-		CeoBan = 1355230914,
+		Bounty = 1294995624,
+		CeoBan = -764524031,
 		CeoKick = -316948135,
-		CeoMoney = 1152266822,
-		ClearWantedLevel = 1187364773,
-		FakeDeposit = 153488394,
-		ForceMission = -1147284669,
-		GtaBanner = 1659915470,
-		PersonalVehicleDestroyed = 299217086,
-		RemoteOffradar = -397188359,
-		RotateCam = -1320260596,
-		SendToCutscene = 1889984715,
-		SendToIsland = -1479371259,
-		SoundSpam = 1537221257,
-		Spectate = -148441291,
-		Teleport = 1249026189,
-		TransactionError = -2041535807,
-		VehicleKick = -1005623606
+		CeoMoney = 1890277845,
+		ClearWantedLevel = -91354030,
+		FakeDeposit = 677240627,
+		ForceMission = 2020588206,
+		GtaBanner = 1572255940,
+		PersonalVehicleDestroyed = 802133775,
+		RemoteOffradar = -391633760,
+		RotateCam = 801199324,
+		SendToCutscene = 1068259786,
+		SendToIsland = -621279188,
+		SoundSpam = 1132878564,
+		Spectate = -1113591308,
+		Teleport = 603406648,
+		TransactionError = -1704141512,
+		VehicleKick = 578856274
 	};
 
 	enum class eSessionType
