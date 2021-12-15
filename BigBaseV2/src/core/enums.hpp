@@ -105,7 +105,7 @@ namespace big
 	{
 		Bounty = 1294995624,
 		CeoBan = -764524031,
-		CeoKick = -316948135,
+		CeoKick = 248967238,
 		CeoMoney = 1890277845,
 		ClearWantedLevel = -91354030,
 		FakeDeposit = 677240627,
