@@ -67,7 +67,7 @@ namespace big
 
 				if (ImGui::MenuItem("Rage Quit (hard crash)"))
 				{
-					exit(0);
+					__debugbreak();
 				}
 
 				ImGui::EndMenu();
