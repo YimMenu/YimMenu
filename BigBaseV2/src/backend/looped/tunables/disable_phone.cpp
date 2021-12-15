@@ -5,6 +5,6 @@ namespace big
 {
 	void looped::tunables_disable_phone()
 	{
-		*script_global(19781).as<bool*>() = g.tunables.disable_phone;
+		*script_global(19937).as<bool*>() = g.tunables.disable_phone;
 	}
 }
