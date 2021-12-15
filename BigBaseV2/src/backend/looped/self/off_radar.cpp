@@ -9,8 +9,8 @@ namespace big
 	{
 		if (g.self.off_radar)
 		{
-			*script_global(2426865).at(PLAYER::GET_PLAYER_INDEX(), 449).at(209).as<int*>() = 1;
-			*script_global(2441237).at(70).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
+			*script_global(2689156).at(PLAYER::GET_PLAYER_INDEX(), 453).at(209).as<int*>() = 1;
+			*script_global(2703656).at(70).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
 		}
 	}
 }
