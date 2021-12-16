@@ -22,7 +22,12 @@ namespace big
 		for (int i = 0; i < max_obj; i++)
 		{
 			rage::CObject* obj = object_interface->get_object(i);
-			if (obj == nullptr) continue;
+			if (obj == nullptr)
+			{
+				script::get_current()->yield();
+
+				continue;
+			}
 
 			Object ent = g_pointers->m_ptr_to_handle(obj);
 
