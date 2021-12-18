@@ -21,6 +21,7 @@ namespace big
 		static void self_police();
 		static void self_noclip();
 		static void self_no_ragdoll();
+		static void self_super_run();
 
 		static void system_update_players();
 		static void system_update_pointers();
