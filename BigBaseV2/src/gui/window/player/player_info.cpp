@@ -12,16 +12,17 @@ namespace big
 
 			ImGui::Text("Player ID: %d", g.selected_player.id);
 
-			CNetGamePlayer* net_player = g.selected_player.net_player;
-			if (net_player != nullptr)
+			
+			if (CNetGamePlayer* net_player = g.selected_player.net_player; net_player != nullptr)
 			{
-				CPlayerInfo* player_info = net_player->player_info;
-				if (player_info != nullptr)
+				if (CPlayerInfo* player_info = net_player->player_info; player_info != nullptr)
 				{
+					netPlayerData& netData = player_info->m_net_player_data;
+
 					ImGui::Text("Session Host: %s", net_player->is_host() ? "Yes" : "No");
 
-					ImGui::Text("Rockstar ID: %d", player_info->m_rockstar_id);
-					ImGui::Text("IP Address: %d.%d.%d.%d:%d", player_info->m_external_ip.m_field1, player_info->m_external_ip.m_field2, player_info->m_external_ip.m_field3, player_info->m_external_ip.m_field4, player_info->m_external_port);
+					ImGui::Text("Rockstar ID: %d", netData.m_rockstar_id);
+					ImGui::Text("IP Address: %d.%d.%d.%d:%d", netData.m_external_ip.m_field1, netData.m_external_ip.m_field2, netData.m_external_ip.m_field3, netData.m_external_ip.m_field4, netData.m_external_port);
 				}
 			}
 
