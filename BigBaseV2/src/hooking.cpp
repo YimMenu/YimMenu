@@ -59,13 +59,8 @@ namespace big
 		// Received Event
 		m_received_event_hook("RE", g_pointers->m_received_event, &hooks::received_event),
 
-		// Report Cash Spawn Event
-		m_report_cash_spawn_event_hook("RCSE", g_pointers->m_report_cash_spawn, &hooks::report_cash_spawn_handler),
-		// Report Myself Event Sender
-		m_report_myself_event_sender_hook("RMES", g_pointers->m_report_myself_sender, &hooks::report_myself_event_handler),
-
 		// Scripted Game Event Hook
-		m_scripted_game_event_hook("SGEH", g_pointers->m_scripted_game_event, &hooks::scripted_game_event)
+		m_scripted_game_event_hook("SGEH", g_pointers->m_scripted_game_event, &hooks::scripted_game_event),
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -99,9 +94,6 @@ namespace big
 
 		m_received_event_hook.enable();
 
-		m_report_cash_spawn_event_hook.enable();
-		m_report_myself_event_sender_hook.enable();
-
 		m_scripted_game_event_hook.enable();
 
 		m_enabled = true;
@@ -112,9 +104,6 @@ namespace big
 		m_enabled = false;
 
 		m_scripted_game_event_hook.disable();
-
-		m_report_myself_event_sender_hook.disable();
-		m_report_cash_spawn_event_hook.disable();
 
 		m_received_event_hook.disable();
 

@@ -168,12 +168,6 @@ namespace big
 			m_spectate_player = ptr.as<decltype(m_spectate_player)>();
 		});
 
-		// Report Cash Spawn Handler
-		main_batch.add("RCSH", "40 53 48 83 EC 20 48 8B D9 48 85 D2 74 29", [this](memory::handle ptr)
-		{
-			m_report_cash_spawn = ptr.as<decltype(m_report_cash_spawn)>();
-		});
-
 		// Scripted Game Event Handler
 		main_batch.add("SGEH", "40 53 48 81 EC ? ? ? ? 44 8B 81 ? ? ? ? 4C 8B CA 41 8D 40 FF 3D ? ? ? ? 77 42", [this](memory::handle ptr)
 		{
@@ -196,12 +190,6 @@ namespace big
 		main_batch.add("PTH", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 8B 15 ? ? ? ? 48 8B F9 48 83 C1 10 33 DB", [this](memory::handle ptr)
 		{
 			m_ptr_to_handle = ptr.as<decltype(m_ptr_to_handle)>();
-		});
-
-		// Report Myself Event Sender
-		main_batch.add("RMES", "E8 ? ? ? ? 41 8B 47 0C 39 43 20", [this](memory::handle ptr)
-		{
-			m_report_myself_sender = ptr.as<decltype(m_report_myself_sender)>();
 		});
 
 		// Blame Explode
