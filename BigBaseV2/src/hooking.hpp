@@ -43,6 +43,7 @@ namespace big
 		);
 
 		static bool scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player);
+		static bool send_net_info_to_lobby(netPlayerData* player, int64_t a2, int64_t a3, DWORD* a4);
 	};
 
 	struct minhook_keepalive
@@ -85,6 +86,7 @@ namespace big
 		detour_hook m_received_event_hook;
 
 		detour_hook m_scripted_game_event_hook;
+		detour_hook m_send_net_info_to_lobby;
 	};
 
 	inline hooking *g_hooking{};

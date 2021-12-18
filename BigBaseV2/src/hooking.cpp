@@ -61,6 +61,9 @@ namespace big
 
 		// Scripted Game Event Hook
 		m_scripted_game_event_hook("SGEH", g_pointers->m_scripted_game_event, &hooks::scripted_game_event),
+
+		// Send NET Info to Lobby
+		m_send_net_info_to_lobby("SNITL", g_pointers->m_send_net_info_to_lobby, &hooks::send_net_info_to_lobby)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -96,12 +99,16 @@ namespace big
 
 		m_scripted_game_event_hook.enable();
 
+		m_send_net_info_to_lobby.enable();
+
 		m_enabled = true;
 	}
 
 	void hooking::disable()
 	{
 		m_enabled = false;
+
+		m_send_net_info_to_lobby.disable();
 
 		m_scripted_game_event_hook.disable();
 

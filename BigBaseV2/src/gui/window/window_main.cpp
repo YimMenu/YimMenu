@@ -17,6 +17,7 @@ namespace big
 			tab_main::tab_vehicle();
 			tab_main::tab_weapons();
 			tab_main::tab_recovery();
+			tab_main::tab_spoofing();
 			tab_main::tab_settings();
 			ImGui::EndTabBar();
 

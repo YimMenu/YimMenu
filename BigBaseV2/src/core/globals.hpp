@@ -70,6 +70,18 @@ struct globals {
 		frame_flags frame_flags{};
 	};
 
+	struct spoofing
+	{
+		bool spoof_username = false;
+		std::string username = "";
+
+		bool spoof_ip = true;
+		int ip_address[4] = { 42, 42, 42, 42};
+
+		bool spoof_rockstar_id = false;
+		uint64_t rockstar_id = 0;
+	};
+
 	struct vehicle {
 		struct speedo_meter {
 			SpeedoMeter type = SpeedoMeter::DISABLED;
@@ -110,6 +122,7 @@ struct globals {
 	player player{};
 	protections protections{};
 	self self{};
+	spoofing spoofing{};
 	vehicle vehicle{};
 	weapons weapons{};
 	window window{};
@@ -146,6 +159,15 @@ struct globals {
 		this->self.frame_flags.explosive_melee = j["self"]["frame_flags"]["explosive_melee"];
 		this->self.frame_flags.fire_ammo = j["self"]["frame_flags"]["fire_ammo"];
 		this->self.frame_flags.super_jump = j["self"]["frame_flags"]["super_jump"];
+
+		this->spoofing.spoof_ip = j["spoofing"]["spoof_ip"];
+		this->spoofing.spoof_rockstar_id = j["spoofing"]["spoof_rockstar_id"];
+		this->spoofing.spoof_username = j["spoofing"]["spoof_username"];
+
+		for (int i = 0; i < 4; i++)
+			this->spoofing.ip_address[i] = j["spoofing"]["ip_address"].at(i);
+		this->spoofing.rockstar_id = j["spoofing"]["rockstar_id"];
+		this->spoofing.username = j["spoofing"]["username"];
 
 		this->vehicle.god_mode = j["vehicle"]["god_mode"];
 		this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
@@ -219,6 +241,21 @@ struct globals {
 							{ "super_jump", this->self.frame_flags.super_jump }
 						}
 					}
+				}
+			},
+			{
+				"spoofing", {
+					{ "spoof_ip", this->spoofing.spoof_ip },
+					{ "spoof_rockstar_id", this->spoofing.spoof_rockstar_id },
+					{ "spoof_username", this->spoofing.spoof_username },
+					{ "ip_address", nlohmann::json::array({
+						this->spoofing.ip_address[0],
+						this->spoofing.ip_address[1],
+						this->spoofing.ip_address[2],
+						this->spoofing.ip_address[3] })
+					},
+					{ "rockstar_id", this->spoofing.rockstar_id },
+					{ "username", this->spoofing.username }
 				}
 			},
 			{
@@ -318,12 +355,12 @@ private:
 
 				should_save = true;
 			}
-			else if (current_settings[key].is_structured() && e.value().is_structured())
+			else if (current_settings[key].is_object() && e.value().is_object())
 			{
 				if (deep_compare(current_settings[key], e.value(), compare_value))
 					should_save = true;
 			}
-			else if (!current_settings[key].is_structured() && e.value().is_structured()) {
+			else if (!current_settings[key].is_object() && e.value().is_object()) {
 				current_settings[key] = e.value();
 
 				should_save = true;

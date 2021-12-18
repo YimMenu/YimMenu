@@ -62,6 +62,8 @@ namespace big
 		functions::send_event_ack* m_send_event_ack{};
 		// Received Event Signatures END
 
+		PVOID m_send_net_info_to_lobby{};
+
 		functions::spectate_player* m_spectate_player{};
 	};
 

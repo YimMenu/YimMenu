@@ -11,6 +11,7 @@ namespace big
 		static void tab_recovery();
 		static void tab_settings();
 		static void tab_spawn();
+		static void tab_spoofing();
 		static void tab_vehicle();
 		static void tab_weapons();
 		static void tab_teleport();
