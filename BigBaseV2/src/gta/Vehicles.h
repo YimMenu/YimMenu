@@ -761,6 +761,7 @@ enum CasinoUpdate : Hash
 	VEHICLE_ZORRUSSO = RAGE_JOAAT("ZORRUSSO")
 };
 
+
 enum CasinoHeist : Hash
 {
 	VEHICLE_ASBO = RAGE_JOAAT("ABSO"),

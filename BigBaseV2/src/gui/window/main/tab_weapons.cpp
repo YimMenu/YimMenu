@@ -3,6 +3,7 @@
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "script.hpp"
+#include "features.hpp"
 
 namespace big
 {
@@ -10,6 +11,10 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Weapons"))
 		{
+			if (ImGui::Checkbox("Unlimited ammo", &features::unlimited_ammo_bool))
+			{
+				features::unlimited_ammo(PLAYER::PLAYER_PED_ID());
+			}
 			if (ImGui::TreeNode("Weapons"))
 			{
 				if (ImGui::Button("impulse 101"))

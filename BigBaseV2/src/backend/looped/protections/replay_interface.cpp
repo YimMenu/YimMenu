@@ -15,7 +15,7 @@ namespace big
 
 		Ped player = PLAYER::PLAYER_PED_ID();
 
-		rage::CReplayInterface* replay_interface = *g_pointers->m_replay_interface;
+		rage::CReplayInterface* replay_interface = g_pointers->m_replay_interface;
 		rage::CObjectInterface* object_interface = replay_interface->m_object_interface;
 
 		const int max_obj = object_interface->m_max_objects;

@@ -1,9 +1,9 @@
-#include "LSCTab.h"
 #include <imgui.h>
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "gta\VehicleValues.h"
 #include "script.hpp"
+#include "gui/window/main/main_tabs.hpp"
 //#include "helpers\NetworkHelper.h"
 
 namespace big
@@ -72,6 +72,19 @@ namespace big
         {
             if (ImGui::BeginTabItem("LSC"))
             {
+                if (ImGui::Button("Max Vehicle"))
+                {
+                    g_fiber_pool->queue_job([]
+                        {
+                            Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
+                            VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
+                            for (int i = 0; i < 50; i++)
+                            {
+                                VEHICLE::SET_VEHICLE_MOD(vehicle, i, VEHICLE::GET_NUM_VEHICLE_MODS(vehicle, i) - 1, false);
+                            }
+                        });
+                }
+                ImGui::Separator();
                 if (ImGui::Checkbox("Bulletproof Tires", &can_tires_burst))
                 {
                     g_fiber_pool->queue_job([]
