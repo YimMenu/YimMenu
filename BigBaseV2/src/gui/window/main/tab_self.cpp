@@ -40,6 +40,35 @@ namespace big
 				ImGui::TreePop();
 			}
 
+			static char model_name[255];
+			ImGui::InputText("##playermodel", model_name, 255);
+			if (ImGui::Button("Player Model2"))
+			{
+				g_fiber_pool->queue_job([]
+					{
+
+						Hash hash = MISC::GET_HASH_KEY(model_name);
+						LOG(INFO) << hash;
+						if (STREAMING::IS_MODEL_VALID(hash)
+							&& STREAMING::IS_MODEL_IN_CDIMAGE(hash))
+						{
+							while (!STREAMING::HAS_MODEL_LOADED(hash))
+							{
+								LOG(INFO) << "REQUEST";
+								STREAMING::REQUEST_MODEL(hash);
+								LOG(INFO) << "REQUESTED";
+								script::get_current()->yield();
+							}
+							LOG(INFO) << "Spawn";
+							PLAYER::SET_PLAYER_MODEL(PLAYER::PLAYER_ID(), hash);
+							PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID());
+							LOG(INFO) << "Spawned";
+						}
+
+						STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+					});
+			}
+
 			if (ImGui::TreeNode("Player Model"))
 			{
 				static char model[32];
@@ -49,34 +78,34 @@ namespace big
 					PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 				}QUEUE_JOB_END_CLAUSE
 
-				if (
-					ImGui::InputText("Model Name###player_ped_model", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue) ||
-					ImGui::Button("Set Player Model###spawn_player_ped_model")
-				)
-				{
-					QUEUE_JOB_BEGIN_CLAUSE(= )
+					if (
+						ImGui::InputText("Model Name###player_ped_model", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue) ||
+						ImGui::Button("Set Player Model###spawn_player_ped_model")
+						)
 					{
-						Hash hash = rage::joaat(model);
-
-						for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+						QUEUE_JOB_BEGIN_CLAUSE(= )
 						{
-							STREAMING::REQUEST_MODEL(hash);
+							Hash hash = rage::joaat(model);
 
+							for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+							{
+								STREAMING::REQUEST_MODEL(hash);
+
+								script::get_current()->yield();
+							}
+							if (!STREAMING::HAS_MODEL_LOADED(hash))
+							{
+								notify::above_map("~r~Failed to spawn model, did you give an incorrect model?");
+
+								return;
+							}
+
+							PLAYER::SET_PLAYER_MODEL(PLAYER::GET_PLAYER_INDEX(), hash);
+							PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID());
 							script::get_current()->yield();
-						}
-						if (!STREAMING::HAS_MODEL_LOADED(hash))
-						{
-							notify::above_map("~r~Failed to spawn model, did you give an incorrect model?");
-
-							return;
-						}
-
-						PLAYER::SET_PLAYER_MODEL(PLAYER::GET_PLAYER_INDEX(), hash);
-						PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID());
-						script::get_current()->yield();
-						STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-					}QUEUE_JOB_END_CLAUSE
-				}
+							STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+						}QUEUE_JOB_END_CLAUSE
+					}
 
 				ImGui::TreePop();
 			}

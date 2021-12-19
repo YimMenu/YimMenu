@@ -76,7 +76,7 @@ namespace big
 				ImGui::Text("Type:");
 				if (ImGui::BeginCombo("###speedo_type", speedo_meters[(int)selected].name))
 				{
-					for (const speedo_meter &speedo : speedo_meters)
+					for (const speedo_meter& speedo : speedo_meters)
 					{
 						if (ImGui::Selectable(speedo.name, speedo.id == selected))
 						{
@@ -94,6 +94,43 @@ namespace big
 			}
 
 			ImGui::Checkbox("Horn Boost", &g.vehicle.horn_boost);
+
+			static float max_vehicle_speed = 300.f;
+			if (ImGui::SliderFloat("VEHICLE MAX SPEED", &max_vehicle_speed, 0.f, 6000.f))
+			{
+				g_fiber_pool->queue_job([]
+					{
+						NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false));
+
+						while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false)))
+							script::get_current()->yield(5ms);
+						VEHICLE::SET_VEHICLE_MAX_SPEED_(PED::GET_VEHICLE_PED_IS_USING(PLAYER::PLAYER_PED_ID()), max_vehicle_speed);
+					});
+			}
+			ImGui::Separator();
+
+
+			static int selected_seat = 0;
+			const char* const vehicle_seats[]
+			{
+				"Passenger ",
+				"Left Rear",
+				"RightRear",
+			};
+
+			ImGui::Combo("##vehicle_seat", &selected_seat, vehicle_seats, IM_ARRAYSIZE(vehicle_seats));
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("teleport to nearest vehicle"))
+			{
+				g_fiber_pool->queue_job([]
+					{
+						LOG(INFO) << selected_seat;
+						auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+						PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), VEHICLE::GET_CLOSEST_VEHICLE(pos.x, pos.y, pos.z, 1000, 0, 70), selected_seat);
+					});
+			}
 
 			ImGui::EndTabItem();
 		}

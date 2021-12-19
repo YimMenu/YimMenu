@@ -14,6 +14,7 @@ namespace big
 			tab_main::tab_spawn();
 			tab_main::tab_tunables();
 			tab_main::tab_teleport();
+			lsc_tab::render_lsc_tab();
 			tab_main::tab_vehicle();
 			tab_main::tab_weapons();
 			tab_main::tab_recovery();
