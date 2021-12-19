@@ -294,7 +294,7 @@ namespace big
 			if (vehicle_ptr == nullptr)
 				continue;
 
-			Vehicle object = g_pointers->m_ptr_to_handle(vehicle_ptr);
+			Vehicle object = g_pointers->m_ptr_to_handle_t(vehicle_ptr);
 			if (object == 0)
 				break;
 

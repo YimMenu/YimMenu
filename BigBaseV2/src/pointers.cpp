@@ -192,6 +192,11 @@ namespace big
 			m_ptr_to_handle = ptr.as<decltype(m_ptr_to_handle)>();
 		});
 
+		main_batch.add("ptr_to_handle", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 8B 15 ? ? ? ? 48 8B F9 48 83 C1 10 33 DB", [this](memory::handle ptr)
+			{
+			m_ptr_to_handle_t = ptr.as<functions::ptr_to_handle_t>();
+			});
+
 		// Blame Explode
 		main_batch.add("BE", "0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8", [this](memory::handle ptr)
 		{
