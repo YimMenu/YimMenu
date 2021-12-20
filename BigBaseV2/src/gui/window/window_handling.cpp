@@ -11,7 +11,7 @@ namespace big
 		ImGui::SetNextWindowPos({ 50, 50 }, ImGuiCond_FirstUseEver);
 		if (g.window.handling && ImGui::Begin("Handling", &g.window.handling))
 		{
-			if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr || g_local_player->m_in_vehicle == 0x10)
+			if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr || g_local_player->m_in_vehicle & (int)ePedTask::TASK_FOOT)
 			{
 				ImGui::Text("Please enter a vehicle.");
 

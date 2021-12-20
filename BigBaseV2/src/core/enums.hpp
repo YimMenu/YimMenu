@@ -101,6 +101,14 @@ namespace big
         EXP_TAG_SUBMARINE_BIG = 82,
     };
 
+    enum class ePedTask
+    {
+        TASK_NONE,
+        TASK_FOOT = 1 << 4,
+        TASK_UNK = 1 << 5,
+        TASK_DRIVING = 1 << 6
+    };
+
 	enum class eRemoteEvent
 	{
 		Bounty = 1294995624,
