@@ -22,11 +22,6 @@ struct globals {
 	};
 
 	struct protections {
-		struct replay_interface {
-			bool attach = false;
-			bool cage = true;
-		};
-
 		struct script_events {
 			bool bounty = true;
 			bool ceo_ban = true;
@@ -47,7 +42,6 @@ struct globals {
 			bool vehicle_kick = true;
 		};
 
-		replay_interface replay_interface{};
 		script_events script_events{};
 	};
 
@@ -104,6 +98,7 @@ struct globals {
 	};
 
 	struct window {
+		bool debug = false;
 		bool handling = false;
 		bool log = false;
 		bool main = true;
@@ -181,6 +176,7 @@ struct globals {
 
 		this->weapons.custom_weapon = (CustomWeapon)j["weapons"]["custom_weapon"];
 
+		this->window.debug = j["window"]["debug"];
 		this->window.handling = j["window"]["handling"];
 		this->window.log = j["window"]["log"];
 		this->window.main = j["window"]["main"];
@@ -193,12 +189,6 @@ struct globals {
 			{
 				"protections",
 				{
-					{
-						"replay_interface", {
-							{ "attach", this->protections.replay_interface.attach },
-							{ "cage", this->protections.replay_interface.cage }
-						}
-					},
 					{
 						"script_events", {
 							{ "bounty", this->protections.script_events.bounty },
@@ -282,6 +272,7 @@ struct globals {
 			},
 			{
 				"window", {
+					{ "debug", this->window.debug },
 					{ "handling", this->window.handling },
 					{ "log", this->window.log },
 					{ "main", this->window.main },
