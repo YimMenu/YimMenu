@@ -43,7 +43,7 @@ namespace big
 		PVOID m_native_return;
 		PVOID m_is_dlc_present;
 
-		functions::error_screen* m_error_screen{};
+		PVOID m_error_screen{};
 
 		functions::get_net_game_player* m_get_net_game_player{};
 

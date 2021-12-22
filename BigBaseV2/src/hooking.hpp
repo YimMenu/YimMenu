@@ -23,7 +23,19 @@ namespace big
 		static LRESULT wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 		static BOOL set_cursor_pos(int x, int y);
 
-		static void disable_error_screen(char* entryHeader, char* entryLine1, int instructionalKey, char* entryLine2, BOOL p4, Any p5, Any* p6, Any* p7, BOOL background);
+		static void set_warning_message_with_header_and_substring_flags(
+			char* entryHeader,
+			char* entryLine1,
+			int instructionalKey,
+			char* entryLine2,
+			BOOL p4,
+			Any p5,
+			Any* additionalIntInfo,
+			const char* additionalTextInfoLine1,
+			const char* additionalTextInfoLine2,
+			BOOL background,
+			int errorCode
+		);
 
 		static rage::eThreadState gta_thread_tick(GtaThread* a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
