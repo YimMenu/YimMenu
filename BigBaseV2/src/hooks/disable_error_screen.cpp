@@ -1,6 +1,7 @@
 #include "gta/joaat.hpp"
 #include "hooking.hpp"
 #include "natives.hpp"
+#include "script_global.hpp"
 
 namespace big
 {
@@ -17,7 +18,14 @@ namespace big
 		Any p9
 	)
 	{
-		if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("shop_controller")) return;
+		if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("shop_controller") && strcmp(entryLine1, "CTALERT_F_2") == 0)
+		{
+			// dismisses popup instead of killing it silently
+			*script_global(4529830).as<int*>() = 0;
+
+			// we still return to prevent our original call from rendering a single frame
+			return;
+		}
 
 		return g_hooking->m_error_screen_hook.get_original<decltype(&hooks::set_warning_message_with_header)>()(
 			entryHeader,
