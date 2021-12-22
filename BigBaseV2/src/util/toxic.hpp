@@ -35,19 +35,18 @@ namespace big::toxic
 	inline void bounty_player(Player target, Player origin, int amount)
 	{
 		const size_t arg_count = 22;
-		int args[22] = {
-			(int)eRemoteEvent::Bounty, // 0
-			origin, // 1 Player in script self
-			target, // 2 Player in script self
-			0, // 3 unk
-			amount, // 4
-			0, // 5 => never set
-			1, // 6 => always 1
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			*script_global(1658176 + 9).as<int*>(),
-			*script_global(1658176 + 10).as<int*>()
+		int args[arg_count] = {
+			(int)eRemoteEvent::Bounty,
+			0,
+			target,
+			0,
+			10000,
+			0, 1, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0,
+			*script_global(1921036 + 9).as<int*>(),
+			*script_global(1921036 + 10).as<int*>()
 		};
 
-		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << origin);
+		g_pointers->m_trigger_script_event(1, args, arg_count, -1);
 	}
 }
