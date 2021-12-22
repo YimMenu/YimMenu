@@ -4,34 +4,32 @@
 
 namespace big
 {
-	void hooks::set_warning_message_with_header_and_substring_flags(
-		char* entryHeader,
-		char* entryLine1,
+	void hooks::set_warning_message_with_header(
+		const char* entryHeader,
+		const char* entryLine1,
 		int instructionalKey,
-		char* entryLine2,
-		BOOL p4,
+		const char* entryLine2,
+		bool p4,
 		Any p5,
-		Any* additionalIntInfo,
-		const char* additionalTextInfoLine1,
-		const char* additionalTextInfoLine2,
-		BOOL background,
-		int errorCode
+		Any* showBackground,
+		Any* p7,
+		bool p8,
+		Any p9
 	)
 	{
 		if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("shop_controller")) return;
 
-		return g_hooking->m_error_screen_hook.get_original<decltype(&hooks::set_warning_message_with_header_and_substring_flags)>()(
+		return g_hooking->m_error_screen_hook.get_original<decltype(&hooks::set_warning_message_with_header)>()(
 			entryHeader,
 			entryLine1,
 			instructionalKey,
 			entryLine2,
 			p4,
 			p5,
-			additionalIntInfo,
-			additionalTextInfoLine1,
-			additionalTextInfoLine2,
-			background,
-			errorCode
+			showBackground,
+			p7,
+			p8,
+			p9
 		);
 	}
 }
