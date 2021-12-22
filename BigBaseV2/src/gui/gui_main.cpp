@@ -9,6 +9,8 @@ namespace big
 
 		window::log();
 
+		window::debug();
+
 		window::main();
 		window::handling();
 
