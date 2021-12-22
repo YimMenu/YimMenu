@@ -5,17 +5,16 @@
 
 namespace big
 {
-	void hooks::set_warning_message_with_header(
-		const char* entryHeader,
-		const char* entryLine1,
+	void hooks::disable_error_screen(
+		char* entryHeader,
+		char* entryLine1,
 		int instructionalKey,
 		const char* entryLine2,
 		bool p4,
 		Any p5,
-		Any* showBackground,
+		Any* p6,
 		Any* p7,
-		bool p8,
-		Any p9
+		BOOL background
 	)
 	{
 		if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("shop_controller") && strcmp(entryLine1, "CTALERT_F_2") == 0)
@@ -27,17 +26,6 @@ namespace big
 			return;
 		}
 
-		return g_hooking->m_error_screen_hook.get_original<decltype(&hooks::set_warning_message_with_header)>()(
-			entryHeader,
-			entryLine1,
-			instructionalKey,
-			entryLine2,
-			p4,
-			p5,
-			showBackground,
-			p7,
-			p8,
-			p9
-		);
+		return g_hooking->m_error_screen_hook.get_original<decltype(&hooks::disable_error_screen)>()(entryHeader, entryLine1, instructionalKey, entryLine2, p4, p5, p6, p7, background);
 	}
 }
