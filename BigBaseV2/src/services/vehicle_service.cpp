@@ -21,7 +21,7 @@ namespace big
 
 	int vehicle_service::attempt_save()
 	{
-		if (g_local_player == nullptr || g_local_player->m_in_vehicle & (int)ePedTask::TASK_FOOT || g_local_player->m_vehicle == nullptr)
+		if (g_local_player == nullptr || g_local_player->m_ped_task_flag & (int)ePedTask::TASK_FOOT || g_local_player->m_vehicle == nullptr)
 			return -1;
 		if (m_handling_backup.find(g_local_player->m_vehicle->m_handling->m_model_hash) != m_handling_backup.end())
 			return 0;
