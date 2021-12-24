@@ -51,6 +51,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_hooking->enable();
 				LOG(INFO) << "Hooking enabled.";
 
+				LOG(INFO) << "Registering service instances...";
+				auto globals_service_instace = std::make_unique<globals_service>();
 				auto vehicle_service_instance = std::make_unique<vehicle_service>();
 
 				while (g_running)
@@ -58,6 +60,12 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					std::this_thread::sleep_for(500ms);
 				}
 
+				LOG(INFO) << "Serviceses uninitialized.";
+				vehicle_service_instance.reset();
+				globals_service_instace.reset();
+
+				// Make sure that all threads created don't have any blocking loops
+				// otherwise make sure that they have stopped executing
 				g_thread_pool->destroy();
 				LOG(INFO) << "Destroyed thread pool.";
 
@@ -83,8 +91,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				pointers_instance.reset();
 				LOG(INFO) << "Pointers uninitialized.";
-
-				vehicle_service_instance.reset();
 			}
 			catch (std::exception const &ex)
 			{
