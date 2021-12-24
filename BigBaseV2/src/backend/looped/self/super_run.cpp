@@ -19,7 +19,8 @@ namespace big
 
 			Vector3 pos = ENTITY::GET_ENTITY_COORDS(player, true);
 
-			Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
+			//Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
+			Vector3 rot = ENTITY::GET_ENTITY_ROTATION(player, 2);
 			float yaw = math::deg_to_rad(rot.z + 90);
 
 			Vector3 offset;
