@@ -309,9 +309,13 @@ struct globals {
 		try
 		{
 			file >> this->options;
+
+			file.close();
 		}
 		catch (const std::exception&)
 		{
+			file.close();
+
 			LOG(WARNING) << "Detected corrupt settings, writing default config...";
 
 			this->write_default_config();

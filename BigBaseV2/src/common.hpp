@@ -53,6 +53,7 @@
 #include "core/globals.hpp"
 #include "CPed.hpp"
 
+#include "services/globals_service.hpp"
 #include "services/vehicle_service.hpp"
 
 namespace big
