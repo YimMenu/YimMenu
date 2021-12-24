@@ -12,19 +12,22 @@ namespace big
 	{
 		backend::loop();
 	}
+	float features::max_vehicle_torque = 5.f;
+	float features::max_vehicle_engine = 5.f;
 
 	bool features::unlimited_ammo_bool = false;
+	bool features::always_jackpot = false;
 
 	void features::unlimited_ammo(Ped ped)
 	{
 
 		if (features::unlimited_ammo_bool)
 		{
-			WEAPON::SET_PED_INFINITE_AMMO(ped, true, 0);
+			WEAPON::SET_PED_INFINITE_AMMO_CLIP(ped, true);
 		}
 		else
 		{
-			WEAPON::SET_PED_INFINITE_AMMO(ped, false, 0);
+			WEAPON::SET_PED_INFINITE_AMMO_CLIP(ped, false);
 		}
 
 	}

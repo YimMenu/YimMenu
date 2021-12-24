@@ -1,7 +1,4 @@
 #pragma once
-
-#include "natives.hpp"
-
 namespace model_attachment
 {
 	struct model_attachment

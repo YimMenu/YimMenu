@@ -1,5 +1,6 @@
 #pragma once
 #include "common.hpp"
+#include "fiber_pool.hpp"
 
 namespace big
 {

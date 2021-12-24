@@ -16,7 +16,6 @@ namespace big
 			tab_main::tab_teleport();
 			lsc_tab::render_lsc_tab();
 			tab_main::tab_vehicle();
-			persist_car::do_presentation_layer();
 			tab_main::tab_weapons();
 			tab_main::tab_recovery();
 			tab_main::tab_spoofing();

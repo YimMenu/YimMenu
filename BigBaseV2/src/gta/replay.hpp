@@ -199,11 +199,12 @@ namespace rage
 	class CVehicleInterface
 	{
 	public:
-		char pad_0000[384]; //0x0000
+		char pad_0000[0x180]; //0x0000
 		class CVehicleList* m_vehicle_list; //0x0180
 		int32_t m_max_vehicles; //0x0188
-		char pad_018C[4]; //0x018C
+		char pad_018C[0x4]; //0x018C
 		int32_t m_cur_vehicles; //0x0190
+		char pad_0x0194[0x74]; //0x0194
 
 		CVehicle* get_vehicle(const int& index)
 		{
@@ -211,7 +212,7 @@ namespace rage
 				return m_vehicle_list->m_vehicles[index].m_vehicle;
 			return nullptr;
 		}
-	}; //Size: 0x0194
+	}; //Size=0x0208
 
 
 	class CReplayInterface

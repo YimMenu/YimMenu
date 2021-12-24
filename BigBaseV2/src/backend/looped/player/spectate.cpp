@@ -15,7 +15,6 @@ namespace big
 			if (!bReset)
 			{
 				bReset = true;
-
 				g_pointers->m_spectate_player(false, -1);
 				HUD::SET_MINIMAP_IN_SPECTATOR_MODE(false, -1);
 			}

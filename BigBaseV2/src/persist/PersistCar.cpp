@@ -1,9 +1,10 @@
 #include "common.hpp"
 #include "PersistCar.h"
-#include "script.hpp"
 #include "imgui.h"
 #include "gui.hpp"
 #include "util/vehicle.hpp"
+#include "script.hpp"
+#include "gta/VehicleValues.h"
 
 
 namespace big
@@ -18,6 +19,7 @@ namespace big
 
 		auto file_path = check_vehicle_folder();
 		file_path /= file_name;
+		LOG(WARNING) << "check folder";
 		std::ofstream file(file_path, std::ios::out | std::ios::trunc);
 		file << get_full_vehicle_json(vehicle).dump(4);
 		file.close();
@@ -70,17 +72,21 @@ namespace big
 		ImGui::BeginGroup();
 		static char vehicle_file_name_input[50]{};
 		ImGui::PushItemWidth(250);
-		ImGui::InputText("Vehicle File Name", vehicle_file_name_input, sizeof(vehicle_file_name_input));
+		ImGui::InputText("Vehicle File Name", vehicle_file_name_input, IM_ARRAYSIZE(vehicle_file_name_input));
 		ImGui::SameLine();
 		if (ImGui::Button("Save Vehicle"))
 		{
-
+			QUEUE_JOB_BEGIN_CLAUSE()
+			{
 				do_save_vehicle(vehicle_file_name_input);
+			} QUEUE_JOB_END_CLAUSE
 		}
 		if (ImGui::Button("Load Vehicle"))
 		{
-
+			QUEUE_JOB_BEGIN_CLAUSE()
+			{
 				do_load_vehicle(selected_vehicle_file);
+			} QUEUE_JOB_END_CLAUSE
 		}
 		ImGui::EndGroup();
 	}
@@ -114,23 +120,7 @@ namespace big
 	Vehicle persist_car::spawn_vehicle(nlohmann::json vehicle_json, Ped ped)
 	{
 		Vehicle vehicle = spawn_vehicle_json(vehicle_json, ped);
-		std::vector<nlohmann::json> model_attachments = vehicle_json["Model Attachments"];
-		for (nlohmann::json model_attachment : model_attachments)
-		{
-			auto attachment = model_attachment.get<model_attachment::model_attachment>();
-			STREAMING::REQUEST_MODEL(attachment.model_hash);
-			Object object = OBJECT::CREATE_OBJECT(attachment.model_hash, 0, 0, 0, TRUE, FALSE, FALSE);
-			ENTITY::ATTACH_ENTITY_TO_ENTITY(object, vehicle, 0, attachment.position.x, attachment.position.y, attachment.position.z, attachment.rotation.x, attachment.rotation.y, attachment.rotation.z, false, false, false, false, 0, true);
-			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(attachment.model_hash);
-		}
-		std::vector<nlohmann::json> vehicle_attachments = vehicle_json["Vehicle Attachments"];
-		for (nlohmann::json vehicle_attachment : vehicle_attachments)
-		{
-			Vehicle vehicle_to_attach = spawn_vehicle_json(vehicle_attachment["Vehicle"], ped);
-			auto attachment = vehicle_attachment["Model Attachment"].get<model_attachment::model_attachment>();
-			ENTITY::ATTACH_ENTITY_TO_ENTITY(vehicle_to_attach, vehicle, 0, attachment.position.x, attachment.position.y, attachment.position.z, attachment.rotation.x, attachment.rotation.y, attachment.rotation.z, false, false, false, false, 0, true);
-			VEHICLE::SET_VEHICLE_IS_CONSIDERED_BY_PLAYER(vehicle_to_attach, false);
-		}
+
 		return vehicle;
 	}
 
@@ -139,7 +129,7 @@ namespace big
 		Hash vehicle_hash = vehicle_json["Vehicle Model Hash"];
 
 		auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
-		Vehicle vehicle = vehicle::spawn((const char*)vehicle_hash, pos, ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID()) + 90.f);
+		Vehicle vehicle = create_vehicle(vehicle_hash, pos.x, pos.y, pos.z, ENTITY::GET_ENTITY_HEADING(ped));
 		VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0.0f);
 		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
 		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(vehicle, FALSE);
@@ -210,6 +200,8 @@ namespace big
 			}
 			VEHICLE::SET_VEHICLE_INTERIOR_COLOR_(vehicle, vehicle_json["Interior Color"]);
 			VEHICLE::SET_VEHICLE_DASHBOARD_COLOR_(vehicle, vehicle_json["Dash Color"]);
+			if (vehicle_json["Clan Logo"] == TRUE)
+				GRAPHICS::DOES_VEHICLE_HAVE_CREW_EMBLEM(vehicle, 0);
 			VEHICLE::SET_VEHICLE_XENON_LIGHTS_COLOR_(vehicle, vehicle_json["Headlight Color"]);
 		}
 		return vehicle;
@@ -218,27 +210,7 @@ namespace big
 	nlohmann::json persist_car::get_full_vehicle_json(Vehicle vehicle)
 	{
 		//The car needs to be rotated at 0,0,0 for the releative offset calculations to be accurate.
-		ENTITY::SET_ENTITY_ROTATION(vehicle, 0, 0, 0, 0, TRUE);
-		script::get_current()->yield();
-		ENTITY::SET_ENTITY_ROTATION(vehicle, 0, 0, 0, 0, TRUE);
 		nlohmann::json vehicle_json = get_vehicle_json(vehicle);
-		vehicle_json["Model Attachments"] = get_model_attachments(vehicle);
-		vehicle_json["Vehicle Attachments"] = get_vehicle_attachents(vehicle);
-		Vehicle tow = VEHICLE::GET_ENTITY_ATTACHED_TO_TOW_TRUCK(vehicle);
-		if (ENTITY::DOES_ENTITY_EXIST(tow))
-		{
-			vehicle_json["Tow"] = get_vehicle_json(tow);
-			vehicle_json["Tow"]["Model Attachments"] = get_model_attachments(tow, true);
-			vehicle_json["Tow"]["Vehicle Attachments"] = get_vehicle_attachents(tow);
-		}
-		if (VEHICLE::IS_VEHICLE_ATTACHED_TO_TRAILER(vehicle))
-		{
-			Vehicle trailer;
-			VEHICLE::GET_VEHICLE_TRAILER_VEHICLE(vehicle, &trailer);
-			vehicle_json["Trailer"] = get_vehicle_json(trailer);
-			vehicle_json["Trailer"]["Model Attachments"] = get_model_attachments(trailer);
-			vehicle_json["Trailer"]["Vehicle Attachments"] = get_vehicle_attachents(trailer);
-		}
 		return vehicle_json;
 	}
 
@@ -284,32 +256,38 @@ namespace big
 
 	nlohmann::json persist_car::get_vehicle_attachents(Vehicle vehicle)
 	{
-		Vehicle trailer;
-		VEHICLE::GET_VEHICLE_TRAILER_VEHICLE(vehicle, &trailer);
+		LOG(WARNING) << "trailer1";
 		std::vector<nlohmann::json> attached_vehicles;
+		LOG(WARNING) << "attatched";
 		rage::CVehicleInterface* vehicle_interface = g_pointers->m_replay_interface->m_vehicle_interface;
+		LOG(WARNING) << "pre obj";
+		LOG(WARNING) << "pos obj";
 		for (int i = 0; i < vehicle_interface->m_max_vehicles; i++)
 		{
+			LOG(WARNING) << "interface";
 			auto* vehicle_ptr = vehicle_interface->get_vehicle(i);
 			if (vehicle_ptr == nullptr)
 				continue;
+
+			LOG(WARNING) << "interface1";
 
 			Vehicle object = g_pointers->m_ptr_to_handle_t(vehicle_ptr);
 			if (object == 0)
 				break;
 
-			if (!ENTITY::IS_ENTITY_ATTACHED_TO_ENTITY(vehicle, object))
-				continue;
+			LOG(WARNING) << "interface2";
 
-			if (object == VEHICLE::GET_ENTITY_ATTACHED_TO_TOW_TRUCK(vehicle) || VEHICLE::IS_VEHICLE_ATTACHED_TO_TOW_TRUCK(object, vehicle))
-				continue;
+			LOG(WARNING) << "interface3";
 
-			if (object == trailer || VEHICLE::IS_VEHICLE_ATTACHED_TO_TRAILER(object))
-				continue;
+			
+
+			LOG(WARNING) << "interface5";
 
 			nlohmann::json model_attachment;
 			model_attachment["Vehicle"] = get_vehicle_json(object);
+			LOG(WARNING) << "get veh json";
 			model_attachment["Model Attachment"] = get_model_attachment(vehicle, object);
+			LOG(WARNING) << "get veh model";
 			attached_vehicles.push_back(model_attachment);
 		}
 		return attached_vehicles;
@@ -424,9 +402,12 @@ namespace big
 		Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
 		if (ENTITY::DOES_ENTITY_EXIST(vehicle))
 		{
+			LOG(WARNING) << "Vehicle Exist";
 			std::string vehicle_file_name = vehicle_file_name_input;
 			vehicle_file_name.append(".json");
+			LOG(WARNING) << "append";
 			persist_car::save_vehicle(vehicle, vehicle_file_name);
+			LOG(WARNING) << "save";
 			ZeroMemory(vehicle_file_name_input, sizeof(vehicle_file_name_input));
 		}
 	}
@@ -438,5 +419,33 @@ namespace big
 			Vehicle vehicle = persist_car::load_vehicle(selected_vehicle_file);
 			selected_vehicle_file.clear();
 		}
+	}
+
+	void persist_car::set_mp_parameters_for_vehicle(Vehicle vehicle)
+	{
+		DECORATOR::DECOR_SET_INT(vehicle, "MPBitset", 0);
+		auto networkId = NETWORK::VEH_TO_NET(vehicle);
+		if (NETWORK::NETWORK_GET_ENTITY_IS_NETWORKED(vehicle))
+			NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true);
+		VEHICLE::SET_VEHICLE_IS_STOLEN(vehicle, FALSE);
+	}
+
+	Vehicle persist_car::create_vehicle(Hash modelHash, float x, float y, float z, float heading)
+	{
+		while (!STREAMING::HAS_MODEL_LOADED(modelHash))
+		{
+			STREAMING::REQUEST_MODEL(modelHash);
+			script::get_current()->yield();
+		}
+		*(unsigned short*)big::g_pointers->m_model_spawn_bypass = 0x9090;
+		Vehicle vehicle = VEHICLE::CREATE_VEHICLE(modelHash, x, y, z, heading, TRUE, FALSE, FALSE);
+		*(unsigned short*)big::g_pointers->m_model_spawn_bypass = 0x0574;
+		script::get_current()->yield(); //This allows the car to initalize so when we write things like radio station, it will overwrite.
+		ENTITY::SET_ENTITY_CLEANUP_BY_ENGINE_(vehicle, TRUE);
+		PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), vehicle, 0);
+		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(modelHash);
+		if (*big::g_pointers->m_is_session_started)
+			set_mp_parameters_for_vehicle(vehicle);
+		return vehicle;
 	}
 }

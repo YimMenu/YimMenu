@@ -5,6 +5,9 @@
 #include "pointers.hpp"
 #include "script.hpp"
 #include "thread_pool.hpp"
+#include "features.hpp"
+#include "script_local.hpp"
+#include "gta_util.hpp"
 
 namespace big
 {
@@ -32,6 +35,24 @@ namespace big
 			looped::tunables_disable_phone();
 			looped::tunables_no_idle_kick();
 		}QUEUE_JOB_END_CLAUSE
+
+			if (features::always_jackpot) {
+				g_fiber_pool->queue_job([] {
+
+					// Basically, Always win the slots, not worth mentioning it.
+
+					gta_util::execute_as_script(RAGE_JOAAT("CASINO_SLOTS"), [] {
+						auto slots_thread = gta_util::find_script_thread(RAGE_JOAAT("CASINO_SLOTS"));
+						for (int i = 1; i <= 195; i++) {
+							auto local1354 = script_local(slots_thread, 1354).at(1);
+							int break_value = *local1354.at(i).as<int*>();
+							if (break_value != 64) {
+								*local1354.at(i).as<int*>() = 6;
+							}
+						}
+						});
+					});
+			}
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{

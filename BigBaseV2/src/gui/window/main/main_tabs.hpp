@@ -1,7 +1,7 @@
 #pragma once
 #include "common.hpp"
 #include "imgui.h"
-
+#include "natives.hpp"
 namespace big
 {
 	class lsc_tab

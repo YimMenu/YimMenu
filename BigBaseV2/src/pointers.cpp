@@ -183,7 +183,7 @@ namespace big
 		// Replay Interface
 		main_batch.add("RI", "48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D", [this](memory::handle ptr)
 		{
-			m_replay_interface = ptr.add(3).rip().as<decltype(m_replay_interface)>();
+				m_replay_interface = *(rage::CReplayInterface**)ptr.add(3).rip().as<PVOID>();
 		});
 
 		// Pointer to Handle

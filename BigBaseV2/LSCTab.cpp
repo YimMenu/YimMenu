@@ -144,9 +144,6 @@ namespace big
                                     {
                                         NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false));
 
-                                        while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false)))
-                                            script::get_current()->yield(5ms);
-
                                         owned_mods[selected_slot] = i;
                                         VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, i - 1, false);
                                     });

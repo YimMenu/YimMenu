@@ -6,6 +6,7 @@
 #include "util/entity.hpp"
 #include "util/notify.hpp"
 #include "util/vehicle.hpp"
+#include "features.hpp"
 
 namespace big
 {
@@ -108,6 +109,20 @@ namespace big
 					});
 			}
 			ImGui::Separator();
+			
+			if (ImGui::SliderFloat("Vehicle torque", &features::max_vehicle_torque, 0.f, 6000.f) ||
+				ImGui::Button("Apply"))
+			{
+		
+					VEHICLE::_SET_VEHICLE_ENGINE_TORQUE_MULTIPLIER(PED::GET_VEHICLE_PED_IS_USING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PLAYER::PLAYER_ID())), features::max_vehicle_torque);
+				
+			}
+			if (ImGui::SliderFloat("Vehicle Engine", &features::max_vehicle_engine, 0.f, 6000.f) ||
+				ImGui::Button("Apply"))
+			{
+					VEHICLE::_SET_VEHICLE_ENGINE_POWER_MULTIPLIER(PED::GET_VEHICLE_PED_IS_USING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PLAYER::PLAYER_ID())), features::max_vehicle_engine);
+			}
+			ImGui::Separator();
 
 
 			static int selected_seat = 0;
@@ -131,6 +146,7 @@ namespace big
 						PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), VEHICLE::GET_CLOSEST_VEHICLE(pos.x, pos.y, pos.z, 1000, 0, 70), selected_seat);
 					});
 			}
+
 
 			ImGui::EndTabItem();
 		}

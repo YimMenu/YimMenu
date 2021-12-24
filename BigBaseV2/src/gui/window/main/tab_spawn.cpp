@@ -3,6 +3,7 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "util/vehicle.hpp"
+#include "persist/PersistCar.h" 
 
 namespace big
 {
@@ -30,6 +31,9 @@ namespace big
 					vehicle::spawn((const char*)model, location, ENTITY::GET_ENTITY_HEADING(player) + 90.f);
 				}QUEUE_JOB_END_CLAUSE
 			}
+
+			ImGui::Separator();
+			persist_car::do_presentation_layer();
 
 			ImGui::EndTabItem();
 		}
