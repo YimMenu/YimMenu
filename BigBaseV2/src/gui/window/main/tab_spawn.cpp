@@ -5,10 +5,6 @@
 #include "util/vehicle.hpp"
 #include "persist/PersistCar.h" 
 
-using namespace std;
-using namespace fmt;
-using namespace rage;
-
 namespace big
 {
 	static char model[12];
