@@ -1,6 +1,7 @@
 #include "main_tabs.hpp"
 #include "util/system.hpp"
 #include "features.hpp"
+#include "fiber_pool.hpp"
 
 namespace big
 {
