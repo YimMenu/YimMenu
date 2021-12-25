@@ -103,6 +103,10 @@ struct globals {
 		char vehicle_gun_model[12] = "bus";
 	};
 
+	struct spawn {
+		char vehicle_id[12] = "bus";
+	};
+
 	struct window {
 		bool handling = false;
 		bool log = false;
