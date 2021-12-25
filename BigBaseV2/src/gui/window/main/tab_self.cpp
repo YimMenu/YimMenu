@@ -23,10 +23,15 @@ namespace big
 			if (ImGui::TreeNode("General"))
 			{
 				ImGui::Checkbox("God Mode", &g.self.godmode);
+				ImGui::SameLine();
 				ImGui::Checkbox("Off Radar", &g.self.off_radar);
+				ImGui::SameLine();
 				ImGui::Checkbox("Free Cam", &g.self.free_cam);
+				
 				ImGui::Checkbox("No Clip", &g.self.noclip);
+				ImGui::SameLine();
 				ImGui::Checkbox("No Ragdoll", &g.self.no_ragdoll);
+				ImGui::SameLine();
 				ImGui::Checkbox("Super Run", &g.self.super_run);
 			}
 
