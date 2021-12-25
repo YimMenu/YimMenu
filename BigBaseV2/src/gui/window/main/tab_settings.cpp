@@ -1,7 +1,4 @@
-//#include "api/api.hpp"
-#include "fiber_pool.hpp"
 #include "main_tabs.hpp"
-#include "util/system.hpp"
 
 namespace big
 {
@@ -9,10 +6,7 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Settings"))
 		{
-			if (ImGui::Button("Dump entrypoints"))
-			{
-				system::dump_entry_points();
-			}
+			ImGui::Text("No settings to be modified as of now");
 
 			ImGui::EndTabItem();
 		}
