@@ -15,6 +15,10 @@ namespace big
 		if (GetAsyncKeyState(VK_F12)) {
 			teleport::to_waypoint();
 		}
+		if (features::unlimited_ammo_bool)
+		{
+			features::unlimited_ammo();
+		}
 		backend::loop();
 	}
 	float features::max_vehicle_torque = 5.f;
@@ -23,10 +27,8 @@ namespace big
 	bool features::unlimited_ammo_bool = false;
 	bool features::always_jackpot = false;
 
-	void features::unlimited_ammo(Ped ped)
+	void features::unlimited_ammo()
 	{
-		if (features::unlimited_ammo_bool)
-		{
 			Hash cur;
 			if (WEAPON::GET_CURRENT_PED_WEAPON(PLAYER::PLAYER_PED_ID(), &cur, 1))
 			{
@@ -43,7 +45,6 @@ namespace big
 					}
 				}
 			}
-		}
 
 	}
 
