@@ -12,6 +12,11 @@ namespace big
 
 			if (ImGui::TreeNode("Username"))
 			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+				}QUEUE_JOB_END_CLAUSE
+
 				ImGui::Checkbox("Spoof Username", &g.spoofing.spoof_username);
 
 				static char name[20];
@@ -28,6 +33,11 @@ namespace big
 
 			if (ImGui::TreeNode("IP Address"))
 			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+				}QUEUE_JOB_END_CLAUSE
+
 				ImGui::Checkbox("Spoof IP", &g.spoofing.spoof_ip);
 
 				ImGui::Text("IP Address:");
@@ -38,8 +48,13 @@ namespace big
 
 			if (ImGui::TreeNode("Rockstar ID"))
 			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+				}QUEUE_JOB_END_CLAUSE
+
 				ImGui::Checkbox("Spoof Rockstar ID", &g.spoofing.spoof_rockstar_id);
-				
+
 				ImGui::Text("Rockstar ID:");
 				ImGui::InputScalar("##rockstar_id_input", ImGuiDataType_U64, &g.spoofing.rockstar_id);
 
