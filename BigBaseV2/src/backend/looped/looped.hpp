@@ -9,6 +9,7 @@ namespace big
 
 		static void tunables_disable_phone();
 		static void tunables_no_idle_kick();
+		static void tunables_casino_rig();
 
 		static void player_specate();
 
@@ -22,6 +23,7 @@ namespace big
 		static void self_noclip();
 		static void self_no_ragdoll();
 		static void self_super_run();
+		static void self_unlimited_ammo();
 
 		static void system_update_players();
 		static void system_update_pointers();

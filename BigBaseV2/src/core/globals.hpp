@@ -13,6 +13,7 @@ struct globals {
 	struct tunables {
 		bool disable_phone = false;
 		bool no_idle_kick = false;
+		bool rig_casino = false;
 	};
 
 	struct player {
@@ -61,6 +62,7 @@ struct globals {
 		bool no_ragdoll = false;
 		bool super_run = false;
 		int wanted_level = 0;
+		bool unlimited_ammo = false;
 
 		frame_flags frame_flags{};
 	};
