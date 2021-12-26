@@ -19,13 +19,20 @@ namespace big
 		{
 			features::unlimited_ammo();
 		}
+		if (features::aimbot_player)
+		{
+			features::Aimbot();
+		}
 		backend::loop();
 	}
 	float features::max_vehicle_torque = 5.f;
 	float features::max_vehicle_engine = 5.f;
 
+	bool features::aimbot_player = false;
 	bool features::unlimited_ammo_bool = false;
 	bool features::always_jackpot = false;
+
+	//SELF
 
 	void features::unlimited_ammo()
 	{
@@ -47,6 +54,47 @@ namespace big
 			}
 
 	}
+
+	void features::Aimbot()
+	{
+		int playerPed = PLAYER::PLAYER_PED_ID();
+
+		for (int i = 0; i < 32; i++)
+		{
+			if (i != PLAYER::PLAYER_ID())
+			{
+				if (PLAYER::IS_PLAYER_FREE_AIMING)
+				{
+					Ped targetPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i);
+					int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i);
+					int playerHandle[2];
+					NETWORK::NETWORK_HANDLE_FROM_PLAYER(i, &playerHandle[0], 13);
+					Vector3 targetPos = ENTITY::GET_ENTITY_COORDS(targetPed, 1);
+					BOOL exists = ENTITY::DOES_ENTITY_EXIST(targetPed);
+					BOOL dead = PLAYER::IS_PLAYER_DEAD(targetPed);
+					BOOL passive = PLAYER::IS_PLAYER_DEAD(targetPed);
+
+					if (exists && !dead && ENTITY::GET_ENTITY_HEALTH(targetPed) > 0 && ENTITY::GET_ENTITY_ALPHA(targetPed) == 255 && !NETWORK::NETWORK_IS_FRIEND(&playerHandle[0]))
+					{
+						float screenX, screenY;
+						BOOL onScreen = GRAPHICS::GET_SCREEN_COORD_FROM_WORLD_COORD(targetPos.x, targetPos.y, targetPos.z, &screenX, &screenY);
+						if (ENTITY::IS_ENTITY_VISIBLE(targetPed) && onScreen)
+						{
+							if (ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(playerPed, targetPed, 17))
+							{
+								Vector3 targetCoords = PED::GET_PED_BONE_COORDS(targetPed, 31086, 0, 0, 0);
+								PED::SET_PED_SHOOTS_AT_COORD(playerPed, targetCoords.x, targetCoords.y, targetCoords.z, 1);
+
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	//VEHICLE
 
 	Vehicle features::ClonePedVehicle(Ped ped)
 	{

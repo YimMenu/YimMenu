@@ -1,7 +1,6 @@
 #include "fiber_pool.hpp"
 #include "util/player.hpp"
 #include "main_tabs.hpp"
-#include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "script.hpp"
 #include "gta_util.hpp"

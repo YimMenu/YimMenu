@@ -4,58 +4,55 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "features.hpp"
+#include "natives.hpp"
 
 namespace big
 {
 	void tab_main::tab_weapons()
 	{
+		static const char* weaponNamesString[] = {
+									"weapon_dagger", "weapon_bat", "weapon_bottle", "weapon_crowbar",
+									"weapon_unarmed", "weapon_flashlight", "weapon_golfclub", "weapon_hammer",
+									"weapon_hatchet", "weapon_knuckle", "weapon_knife", "weapon_machete",
+									"weapon_switchblade", "weapon_nightstick", "weapon_wrench", "weapon_battleaxe",
+									"weapon_poolcue", "weapon_stone_hatchet" "weapon_pistol", "weapon_pistol_mk2",
+									"weapon_combatpistol", "weapon_appistol", "weapon_stungun", "weapon_pistol50",
+									"weapon_snspistol", "weapon_snspistol_mk2", "weapon_heavypistol", "weapon_vintagepistol",
+									"weapon_flaregun", "weapon_marksmanpistol", "weapon_revolver", "weapon_revolver_mk2",
+									"weapon_doubleaction", "weapon_raypistol", "weapon_ceramicpistol", "weapon_navyrevolver"
+									"weapon_microsmg", "weapon_smg", "weapon_smg_mk2", "weapon_assaultsmg",
+									"weapon_combatpdw", "weapon_machinepistol", "weapon_minismg", "weapon_raycarbine"
+									"weapon_pumpshotgun", "weapon_pumpshotgun_mk2", "weapon_sawnoffshotgun", "weapon_assaultshotgun",
+									"weapon_bullpupshotgun", "weapon_musket", "weapon_heavyshotgun", "weapon_dbshotgun",
+									"weapon_autoshotgun" "weapon_assaultrifle", "weapon_assaultrifle_mk2", "weapon_carbinerifle",
+									"weapon_carbinerifle_mk2", "weapon_advancedrifle", "weapon_specialcarbine", "weapon_specialcarbine_mk2",
+									"weapon_bullpuprifle", "weapon_bullpuprifle_mk2", "weapon_compactrifle" "weapon_mg",
+									"weapon_combatmg", "weapon_combatmg_mk2", "weapon_gusenberg" "weapon_sniperrifle",
+									"weapon_heavysniper", "weapon_heavysniper_mk2", "weapon_marksmanrifle", "weapon_marksmanrifle_mk2"
+									"weapon_rpg", "weapon_grenadelauncher", "weapon_grenadelauncher_smoke", "weapon_minigun",
+									"weapon_firework", "weapon_railgun", "weapon_hominglauncher", "weapon_compactlauncher",
+									"weapon_rayminigun" "weapon_grenade", "weapon_bzgas", "weapon_smokegrenade",
+									"weapon_flare", "weapon_molotov", "weapon_stickybomb", "weapon_proxmine",
+									"weapon_snowball", "weapon_pipebomb", "weapon_ball" "weapon_petrolcan",
+									"weapon_fireextinguisher", "weapon_parachute", "weapon_hazardcan", "weapon_militaryrifle",
+									"weapon_combatshotgun", "weapon_gadgetpistol"
+		};
+
 		if (ImGui::BeginTabItem("Weapons"))
 		{
-			if (ImGui::Checkbox("Unlimited ammo", &features::unlimited_ammo_bool))
-			{
-				features::unlimited_ammo();
-			}
+			ImGui::Checkbox("Unlimited ammo", &features::unlimited_ammo_bool);
+			ImGui::Checkbox("Aimbot Players", &features::aimbot_player);
 			if (ImGui::TreeNode("Weapons"))
 			{
-				if (ImGui::Button("impulse 101"))
+				if (ImGui::Button("Give all weapons"))
 				{
 					QUEUE_JOB_BEGIN_CLAUSE()
 					{
-						//PED::_0xB782F8238512BAD5(PLAYER::PLAYER_PED_ID(), nullptr); //This causes a crash at GTA5.exe+5845356 and nothing of value was in the log in the stack dump because of the context switch to GTA 5's memory. If you encounter something similar, you will have to figure out where the crash occured in the GTA 5 exe, and trace back that native, and figure out which function is calling the native that is crashing.
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0xB1CA77B1, 20, false, false);   //weapon_rpg
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0xA284510B, 20, false, false);   //weapon_grenadelauncher
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x42BF8A85, 9999, false, false); //weapon_minigun
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x7F7497E5, 20, false, false);   //weapon_firework
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x6D544C99, 20, false, false);   //weapon_railgun
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x63AB0442, 20, false, false);   //weapon_hominglauncher
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x0781FE4A, 20, false, false);   //weapon_compactlauncher
-
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x9D07F764, 9999, false, false); //weapon_mg
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x7FD62962, 9999, false, false); //weapon_combatmg
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x61012683, 9999, false, false); //weapon_gusenberg
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x0C472FE2, 9999, false, false); //weapon_heavysniper
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0xC734385A, 9999, false, false); //weapon_marksmanrifle
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0xAF113F99, 9999, false, false); //weapon_advancedrifle
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0xA89CB99E, 9999, false, false); //weapon_musket
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x13532244, 9999, false, false); //weapon_microsmg
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x2BE6766B, 9999, false, false); //weapon_smg
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0xEFE7E2DF, 9999, false, false); //weapon_assaultsmg
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x47757124, 20, false, false);   //weapon_flaregun
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x060EC506, 9999, false, false); //weapon_fireextinguisher
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0xFBAB5776, 2, false, false); //gadget_parachute
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x34A67B97, 2, false, false); //weapon_petrolcan
-
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x93E220BD, 30, false, false); //weapon_grenade
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x787F0BB, 9, false, false); //weapon_snowball
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x23C9F95C, 2, false, false); //weapon_ball
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0xBA45E8B8, 30, false, false); //weapon_pipebomb
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0xFDBC8A50, 30, false, false); //weapon_smokegrenade
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x497FACC3, 30, false, false); //weapon_flare
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0x84BD7BFD, 1, false, false); //weapon_crowbar
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0xFBAB5776, 2, false, false); //
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0xFBAB5776, 2, false, false); //
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0xFBAB5776, 2, false, false); //
-						WEAPON::GIVE_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), 0xFBAB5776, 2, false, false); //
+						for (auto name : weaponNamesString)
+						{
+							Hash weaponHash = MISC::GET_HASH_KEY(name);
+								WEAPON::GIVE_DELAYED_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), weaponHash, 9999, 1);
+						}
 					}
 					QUEUE_JOB_END_CLAUSE
 				}
