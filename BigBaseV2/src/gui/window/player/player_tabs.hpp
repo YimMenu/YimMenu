@@ -8,6 +8,7 @@ namespace big
 	{
 	public:
 		static void tab_info();
+		static void tab_vehicle();
 		static void tab_teleport();
 		static void tab_toxic();
 	};

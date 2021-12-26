@@ -13,4 +13,6 @@ namespace big::features
 
 	//VOIDS
 	void unlimited_ammo(Ped ped);
+	Vehicle ClonePedVehicle(Ped ped);
+	extern void BoostStats(Vehicle vehicle);
 }

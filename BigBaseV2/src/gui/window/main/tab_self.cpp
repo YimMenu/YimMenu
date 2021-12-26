@@ -40,35 +40,6 @@ namespace big
 				ImGui::TreePop();
 			}
 
-			static char model_name[255];
-			ImGui::InputText("##playermodel", model_name, 255);
-			if (ImGui::Button("Player Model2"))
-			{
-				g_fiber_pool->queue_job([]
-					{
-
-						Hash hash = MISC::GET_HASH_KEY(model_name);
-						LOG(INFO) << hash;
-						if (STREAMING::IS_MODEL_VALID(hash)
-							&& STREAMING::IS_MODEL_IN_CDIMAGE(hash))
-						{
-							while (!STREAMING::HAS_MODEL_LOADED(hash))
-							{
-								LOG(INFO) << "REQUEST";
-								STREAMING::REQUEST_MODEL(hash);
-								LOG(INFO) << "REQUESTED";
-								script::get_current()->yield();
-							}
-							LOG(INFO) << "Spawn";
-							PLAYER::SET_PLAYER_MODEL(PLAYER::PLAYER_ID(), hash);
-							PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID());
-							LOG(INFO) << "Spawned";
-						}
-
-						STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-					});
-			}
-
 			if (ImGui::TreeNode("Player Model"))
 			{
 				static char model[32];

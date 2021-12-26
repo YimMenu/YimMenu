@@ -73,7 +73,7 @@ namespace big
 		static char vehicle_file_name_input[50]{};
 		ImGui::PushItemWidth(250);
 		ImGui::InputText("Vehicle File Name", vehicle_file_name_input, IM_ARRAYSIZE(vehicle_file_name_input));
-		ImGui::SameLine();
+		//ImGui::SameLine();
 		if (ImGui::Button("Save Vehicle"))
 		{
 			QUEUE_JOB_BEGIN_CLAUSE()
@@ -442,7 +442,7 @@ namespace big
 		*(unsigned short*)big::g_pointers->m_model_spawn_bypass = 0x0574;
 		script::get_current()->yield(); //This allows the car to initalize so when we write things like radio station, it will overwrite.
 		ENTITY::SET_ENTITY_CLEANUP_BY_ENGINE_(vehicle, TRUE);
-		PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), vehicle, 0);
+		PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), vehicle, -1);
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(modelHash);
 		if (*big::g_pointers->m_is_session_started)
 			set_mp_parameters_for_vehicle(vehicle);
