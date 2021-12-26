@@ -67,7 +67,7 @@ namespace big
 				{
 					Ped targetPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i);
 					int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i);
-					int playerHandle[2];
+					int playerHandle[32];
 					NETWORK::NETWORK_HANDLE_FROM_PLAYER(i, &playerHandle[0], 13);
 					Vector3 targetPos = ENTITY::GET_ENTITY_COORDS(targetPed, 1);
 					BOOL exists = ENTITY::DOES_ENTITY_EXIST(targetPed);
