@@ -20,10 +20,6 @@ namespace big
 	float features::max_vehicle_torque = 5.f;
 	float features::max_vehicle_engine = 5.f;
 
-	bool features::always_jackpot = false;
-
-	//VEHICLE
-
 	Vehicle features::ClonePedVehicle(Ped ped)
 	{
 		Vehicle pedVeh = NULL;

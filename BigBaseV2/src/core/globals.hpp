@@ -13,6 +13,7 @@ struct globals {
 	struct tunables {
 		bool disable_phone = false;
 		bool no_idle_kick = false;
+		bool rig_casino = false;
 	};
 
 	struct player {

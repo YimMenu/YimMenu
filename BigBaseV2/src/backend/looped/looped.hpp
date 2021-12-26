@@ -9,6 +9,7 @@ namespace big
 
 		static void tunables_disable_phone();
 		static void tunables_no_idle_kick();
+		static void tunables_casino_rig();
 
 		static void player_specate();
 

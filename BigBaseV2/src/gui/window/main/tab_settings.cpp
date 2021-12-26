@@ -13,12 +13,6 @@ namespace big
 			ImGui::Text("No settings to be modified as of now");
 
 			ImGui::Separator();
-			ImGui::Checkbox("Always Jackpot in Slot Machines", &features::always_jackpot);
-
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("After enabling this option you'll always win in any Slot Machine.");
-
-			ImGui::Separator();
 
 			if (ImGui::Button("Reset cooldown"))
 			{
