@@ -36,8 +36,9 @@ namespace big
 			looped::tunables_no_idle_kick();
 		}QUEUE_JOB_END_CLAUSE
 
+			QUEUE_JOB_BEGIN_CLAUSE()
+			{
 			if (features::always_jackpot) {
-				g_fiber_pool->queue_job([] {
 
 					// Basically, Always win the slots, not worth mentioning it.
 
@@ -50,9 +51,9 @@ namespace big
 								*local1354.at(i).as<int*>() = 6;
 							}
 						}
-						});
 					});
 			}
+		}QUEUE_JOB_END_CLAUSE
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
@@ -63,6 +64,7 @@ namespace big
 			looped::self_police();
 			looped::self_no_ragdoll();
 			looped::self_super_run();
+			looped::self_unlimited_ammo();
 		}QUEUE_JOB_END_CLAUSE
 
 		QUEUE_JOB_BEGIN_CLAUSE()

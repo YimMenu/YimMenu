@@ -40,8 +40,7 @@ namespace big
 
 		if (ImGui::BeginTabItem("Weapons"))
 		{
-			ImGui::Checkbox("Unlimited ammo", &features::unlimited_ammo_bool);
-			ImGui::Checkbox("Aimbot Players", &features::aimbot_player);
+			ImGui::Checkbox("Unlimited ammo", &g.self.unlimited_ammo);
 			if (ImGui::TreeNode("Weapons"))
 			{
 				if (ImGui::Button("Give all weapons"))

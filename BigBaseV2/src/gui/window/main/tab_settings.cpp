@@ -23,9 +23,6 @@ namespace big
 			if (ImGui::Button("Reset cooldown"))
 			{
 				g_fiber_pool->queue_job([] {
-
-					// Variant #1: The most popular and maybe detected (?) variant, i prefer this one, it's straight and... less buggy, but, if you're scared of using it, use the other variants.
-
 					STATS::STAT_SET_INT(RAGE_JOAAT("MPPLY_CASINO_CHIPS_WON_GD"), 0, TRUE);
 					STATS::STAT_SET_INT(RAGE_JOAAT("MPPLY_CASINO_CHIPS_WONTIM"), 0, TRUE);
 					STATS::STAT_SET_INT(RAGE_JOAAT("MPPLY_CASINO_CHIPS_PUR_GD"), 0, TRUE);
@@ -70,11 +67,6 @@ namespace big
 					STATS::STAT_SET_INT(RAGE_JOAAT("MPPLY_CAS_24H_GMBLNG_PX"), 0, TRUE);
 					STATS::STAT_SET_INT(RAGE_JOAAT("MPPLY_CHIPS_COL_TIME"), 0, TRUE);
 					});
-			}
-
-			if (ImGui::Button("Dump entrypoints"))
-			{
-				system::dump_entry_points();
 			}
 
 			ImGui::EndTabItem();
