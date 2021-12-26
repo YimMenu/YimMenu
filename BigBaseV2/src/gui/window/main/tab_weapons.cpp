@@ -13,7 +13,7 @@ namespace big
 		{
 			if (ImGui::Checkbox("Unlimited ammo", &features::unlimited_ammo_bool))
 			{
-				features::unlimited_ammo(PLAYER::PLAYER_PED_ID());
+				features::unlimited_ammo();
 			}
 			if (ImGui::TreeNode("Weapons"))
 			{

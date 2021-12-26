@@ -12,7 +12,7 @@ namespace big::features
 	extern float max_vehicle_engine;
 
 	//VOIDS
-	void unlimited_ammo(Ped ped);
+	void unlimited_ammo();
 	Vehicle ClonePedVehicle(Ped ped);
 	extern void BoostStats(Vehicle vehicle);
 }
