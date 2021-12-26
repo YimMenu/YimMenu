@@ -1,6 +1,7 @@
 #include "gui/window.hpp"
 #include "imgui.h"
 #include "main/main_tabs.hpp"
+#include "LSCTab.h"
 
 namespace big
 {
