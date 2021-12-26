@@ -25,16 +25,6 @@ namespace big
 				}QUEUE_JOB_END_CLAUSE
 			}
 
-			if (ImGui::Button("Teleport into Vehicle"))
-			{
-				QUEUE_JOB_BEGIN_CLAUSE()
-				{
-					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g.selected_player.id), false);
-					
-					teleport::into_vehicle(veh);
-				}QUEUE_JOB_END_CLAUSE
-			}
-
 			ImGui::EndTabItem();
 		}
 	}
