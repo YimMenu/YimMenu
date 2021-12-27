@@ -14,7 +14,7 @@ namespace big
 			if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr || g_local_player->m_ped_task_flag & (int)ePedTask::TASK_FOOT)
 			{
 				ImGui::Text("Please enter a vehicle.");
-
+				ImGui::End();
 				return;
 			}
 			g_vehicle_service->attempt_save();
