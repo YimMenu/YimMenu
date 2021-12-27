@@ -33,6 +33,8 @@ namespace big
 				ImGui::Checkbox("No Ragdoll", &g.self.no_ragdoll);
 				ImGui::SameLine();
 				ImGui::Checkbox("Super Run", &g.self.super_run);
+				
+				ImGui::TreePop();
 			}
 
 			if (ImGui::TreeNode("Frame Flags"))
