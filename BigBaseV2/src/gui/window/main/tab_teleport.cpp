@@ -1,6 +1,7 @@
 #include "main_tabs.hpp"
 #include "fiber_pool.hpp"
 #include "util/teleport.hpp"
+#include <vector>
 
 namespace big
 {
@@ -16,23 +17,16 @@ namespace big
 				}QUEUE_JOB_END_CLAUSE
 			}
 
-			if (ImGui::Button("Waypoint"))
+			if (ImGui::Button("Objective"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					teleport::to_blip(1, 5);
-					teleport::to_blip(57, 5);
-					teleport::to_blip(128, 5);
-					teleport::to_blip(129, 5);
-					teleport::to_blip(130, 5);
-					teleport::to_blip(143, 5);
-					teleport::to_blip(144, 5);
-					teleport::to_blip(145, 5);
-					teleport::to_blip(146, 5);
-					teleport::to_blip(271, 5);
-					teleport::to_blip(286, 5);
-					teleport::to_blip(287, 5);
-					teleport::to_blip(288, 5);
+					std::vector<int> blips = {1, 57, 128, 129, 130, 143, 144, 145, 146, 271, 286, 287, 288};
+					for (int i = 0; i < blips.size(); i++) {
+						if (teleport::to_blip(blips[i], 5)) {
+							break;
+						}
+					}
 				}QUEUE_JOB_END_CLAUSE
 			}
 
