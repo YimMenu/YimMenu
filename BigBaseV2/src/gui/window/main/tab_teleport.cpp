@@ -1,7 +1,6 @@
 #include "main_tabs.hpp"
 #include "fiber_pool.hpp"
 #include "util/teleport.hpp"
-#include <vector>
 
 namespace big
 {
