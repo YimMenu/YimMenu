@@ -21,11 +21,12 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					std::vector<int> blips = {1, 57, 128, 129, 130, 143, 144, 145, 146, 271, 286, 287, 288};
-					for (int i = 0; i < blips.size(); i++) {
+					static const int blips[] = {1, 57, 128, 129, 130, 143, 144, 145, 146, 271, 286, 287, 288};
+					for (int i = 0; i < (sizeof(blips)/sizeof(*blips)); i++) {
 						if (teleport::to_blip(blips[i], 5)) {
 							break;
 						}
+
 					}
 				}QUEUE_JOB_END_CLAUSE
 			}
