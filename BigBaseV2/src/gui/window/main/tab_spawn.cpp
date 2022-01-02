@@ -7,15 +7,15 @@
 
 namespace big
 {
-	static char model[12];
-	static int CommercialListPos = 0;
-	static int BoatListPos = 0;
+	static char model[25];
 	const char* category[] = { "Boats", "Commercials", "Compacts", "Coupes" , "Cycles" , "Emergency" , "Helicopters" , "Industrial" , "Military" , "Motorcycles" , "Muscle" , "Off-Road" ,
 		"Open Wheel" , "Planes" , "SUVs", "Sedans" , "Service" , "Sports" , "Sports Classic" , "Super" , "Trailer" , "Trains", "Utility", "Vans" , "Beach Bum" , "Valentine's Day" 
 	, "Business" , "High Life" , "Hipster" , "Independence Day" , "Festive Surprise", "Next Gen", "LTS", "Flight School", "Lowriders", "Ill-Gotten Gains", "Powerful"
 	, "Finance & Felony" , "Custom Classics" , "Be My Valentine" , "January 2016" , "Festive Surprise 2015", "Executive Vehicles", "Halloween", "Cunning Stunts",
 		"Import/Export", "Bikers Business", "Circuit Vehicle", "Gunrunning", "Smuggler's Run", "The Doomsday Heist" , "Southern SA Super Sport" , "After Hours"
 		, "Arena War" , "Casino Resort" , "Casino Heist" , "Summer Special" , "Cayo Perico", "Contract DLC"};
+
+	const char* vehicle_model = "";
 
 	const char* ImportExport[] = {
 	"elegy", "tempesta", "italigtb", "italigtb2", "nero",
@@ -28,13 +28,17 @@ namespace big
 	"bf400", "brioso", "cliffhanger", "contender", "gargoyle", "le7b", "lynx", "omnis", "rallytruck", "sheava", "tampa2",
 	"trophytruck", "trophytruck2", "tropos", "tyrus" };
 
+	static char* ContractDLC[] = {
+	"CHAMPION", "IGNUS", "ZENO", "COMET7", "BUFFALO4", "MULE5", "CINQUEMILA", "DEITY", "PATRIOT3", "ASTRON", "BALLER7",
+	"GRANGER2", "IWAGEN", "JUBILEE", "YOUGA4", "REEVER", "SHINOBI" };
+
 	const char* Gunrunning[] = {
 	"trailers4", "xa21", "caddy3", "vagner",
 	"phantom3", "technical3", "insurgent3", "apc",
 	"tampa3", "dune3", "trailersmall2", "halftrack",
 	"ardent", "oppressor" };
 
-	const char* SmugglersRun[] = {
+	char* SmugglersRun[] = {
 "visione", "havok", "retinue", "cyclone",
 	"rapidgt3", "vigilante", "alphaz1", "starling",
 	"tula", "havok", "microlight", "rogue", "howard",
@@ -178,7 +182,7 @@ namespace big
 		"bifta", "kalahari", "paradise", "speeder"
 	};
 
-	const char* Boats[] = {
+	inline static const char* Boats[] = {
 	"dinghy", "dinghy2", "dinghy3", "dinghy4", "jetmax", "marquis",
 	 "seashark", "seashark2", "seashark3", "speeder", "speeder2", "squalo",
 	  "submersible", "submersible2", "suntrap", "toro", "toro2", "tropic", "tropic2",
@@ -186,7 +190,7 @@ namespace big
 	};
 
 
-	const char* Commercials[] = {
+	static char* Commercials[] = {
 			"benson", "biff", "cerberus", "cerberus2", "cerberus3", "hauler",
 			 "hauler2", "mule", "mule2", "mule3", "mule4", "packer", "phantom",
 			  "phantom2", "phantom3", "pounder", "pounder2", "stockade", "stockade3",
@@ -373,16 +377,111 @@ namespace big
 								"youga", "youga2", "youga3"
 	};
 
-	int combo_pos = 0;
+	static int combo_pos = 0;
+	static int ContractDLCListPos = 0;
+	static int CayoPericoListPos = 0;
+	static int SummerSpecialListPos = 0;
+	static int DiamondCasinoAndResortListPos = 0;
+	static int TheDiamondCasinoHeistListPos = 0;
+	static int ArenaWarListPos = 0;
+	static int AfterHoursListPos = 0;
+	static int SouthernSanAndreasSuperSportSeriesListPos = 0;
+	static int TheDoomsdayHeistListPos = 0;
+	static int SmugglersRunListPos = 0;
+	static int GunrunningListPos = 0;
+	static int SpecialVehicleCircuitListPos = 0;
+	static int ImportExportListPos = 0;
+	static int CunningStuntsListPos = 0;
+	static int FinanceFelonyListPos = 0;
+	static int Jan2016ListPos = 0;
+	static int FestiveSurpriseListPos = 0;
+	static int NextGenListPos = 0;
+	static int LTSListPos = 0;
+	static int FlightListPos = 0;
+	static int IndependenceListPos = 0;
+	static int HipsterListPos = 0;
+	static int HighListPos = 0;
+	static int BusinessListPos = 0;
+	static int MassacreListPos = 0;
+	static int BeachListPos = 0;
+	static int FestiveSurprise2015ListPos = 0;
+	static int ExecutivesListPos = 0;
+	static int HalloweenListPos = 0;
+	static int LowridersListPos = 0;
+	static int Ill1ListPos = 0;
+	static int Ill2ListPos = 0;
+	static int HeistsListPos = 0;
+	static int BeMyValentineListPos = 0;
+	static int CustomClassicsListPos = 0;
+	static int BikersListPos = 0;
+
+	static int BoatListPos = 0;
+	static int CommercialsListPos = 0;
+	static int CompactsListPos = 0;
+	static int CoupesListPos = 0;
+	static int CyclesListPos = 0;
+	static int EmergencyListPos = 0;
+	static int HelicoptersListPos = 0;
+	static int IndustrialListPos = 0;
+	static int MilitaryListPos = 0;
+	static int MotorCyclesListPos = 0;
+	static int MuscleListPos = 0;
+	static int OffRoadListPos = 0;
+	static int OpenWheelListPos = 0;
+	static int PlanesListPos = 0;
+	static int SUVListPos = 0;
+	static int SedansListPos = 0;
+	static int ServiceListPos = 0;
+	static int SportsListPos = 0;
+	static int SportsClassicListPos = 0;
+	static int SuperListPos = 0;
+	static int TrailerListPos = 0;
+	static int TrainsListPos = 0;
+	static int UtilityListPos = 0;
+	static int VansListPos = 0;
+
+	void spawn_veh(Ped ped, char* name)
+	{
+		static const int DISTANCE_SPAWN = 3;
+
+		auto pos = ENTITY::GET_ENTITY_COORDS(ped, TRUE);
+		auto forward = ENTITY::GET_ENTITY_FORWARD_VECTOR(ped);
+		auto heading = ENTITY::GET_ENTITY_HEADING(ped);
+
+		pos.x += DISTANCE_SPAWN * forward.x;
+		pos.y += DISTANCE_SPAWN * forward.y;
+
+		MISC::GET_GROUND_Z_FOR_3D_COORD(pos.x, pos.y, pos.z, &pos.z, FALSE, false);
+
+		Hash hash_vehicle = MISC::GET_HASH_KEY(name);
+
+		STREAMING::REQUEST_MODEL(hash_vehicle);
+		while (!STREAMING::HAS_MODEL_LOADED(hash_vehicle))
+		{
+			script::get_current()->yield();
+		}
+
+		auto vehicle = VEHICLE::CREATE_VEHICLE(hash_vehicle, pos.x, pos.y, pos.z, heading + 90.0f, TRUE, TRUE, true);
+
+		char __b[256]; sprintf(__b, ",LOG,CREATE_VEHICLE");
+
+		ENTITY::SET_ENTITY_INVINCIBLE(vehicle, TRUE);
+		VEHICLE::SET_VEHICLE_CAN_BE_TARGETTED(vehicle, FALSE);
+		if (VEHICLE::IS_THIS_MODEL_A_PLANE(hash_vehicle))
+		{
+			VEHICLE::SET_PLANE_TURBULENCE_MULTIPLIER(vehicle, 0.0f);
+		}
+
+	}
 
 	void tab_main::tab_spawn()
 	{
 		if (ImGui::BeginTabItem("Spawn"))
 		{
-			QUEUE_JOB_BEGIN_CLAUSE()
-			{
-				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-			}QUEUE_JOB_END_CLAUSE
+			//QUEUE_JOB_BEGIN_CLAUSE()
+			//{
+		//		PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+			//}QUEUE_JOB_END_CLAUSE
 
 			if (
 				ImGui::InputText("Model Name", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue) ||
@@ -402,21 +501,373 @@ namespace big
 			persist_car::do_presentation_layer();
 			ImGui::Separator();
 			ImGui::Combo("Vehicle Category", &combo_pos, category, sizeof(category) / sizeof(*category));
-			if (combo_pos != -1)
-			{
-				switch (combo_pos) {
-				case 0:
-							ImGui::Combo("", &BoatListPos, Boats, sizeof(Boats) / sizeof(*Boats));
-					break;
-				case 1:
-							ImGui::Combo("", &CommercialListPos, Commercials, sizeof(Commercials) / sizeof(*Commercials));
-					break;
-				default:
-					
+
+			switch (combo_pos) {
+			case 0:
+				if (ImGui::Combo("Boats", &BoatListPos, Boats, sizeof(Boats) / sizeof(*Boats)))
+				{
+					vehicle_model = Boats[BoatListPos];
+				}
+				break;
+			case 1:
+				if (ImGui::Combo("Commercial", &CommercialsListPos, Commercials, sizeof(Commercials) / sizeof(*Commercials)))
+				{
+				vehicle_model = Commercials[CommercialsListPos];
+				}
+				break;
+			case 2:
+				if (ImGui::Combo("Compacts", &CompactsListPos, Compacts, sizeof(Compacts) / sizeof(*Compacts)))
+				{
+					vehicle_model = Compacts[CompactsListPos];
+				}
+				break;
+			case 3:
+				if (ImGui::Combo("Coupes", &CoupesListPos, Coupes, sizeof(Coupes) / sizeof(*Coupes)))
+				{
+					vehicle_model = Coupes[CoupesListPos];
+				}
+				break;
+			case 4:
+				if (ImGui::Combo("Cycles", &CyclesListPos, Cycles, sizeof(Cycles) / sizeof(*Cycles)))
+				{
+					vehicle_model = Cycles[CyclesListPos];
+				}
+				break;
+			case 5:
+				if (ImGui::Combo("Emergency", &EmergencyListPos, Emergency, sizeof(Emergency) / sizeof(*Emergency)))
+				{
+					vehicle_model = Emergency[EmergencyListPos];
+				}
+				break;
+			case 6:
+				if (ImGui::Combo("Helicopters", &HelicoptersListPos, Helicopters, sizeof(Helicopters) / sizeof(*Helicopters)))
+				{
+					vehicle_model = Helicopters[HelicoptersListPos];
+				}
+				break;
+			case 7:
+				if (ImGui::Combo("Industrial", &IndustrialListPos, Industrial, sizeof(Industrial) / sizeof(*Industrial)))
+				{
+					vehicle_model = Industrial[IndustrialListPos];
+				}
+				break;
+			case 8:
+				if (ImGui::Combo("Military", &MilitaryListPos, Military, sizeof(Military) / sizeof(*Military)))
+				{
+					vehicle_model = Military[MilitaryListPos];
+				}
+				break;
+			case 9:
+				if (ImGui::Combo("Motorcycles", &MotorCyclesListPos, Motorcycles, sizeof(Motorcycles) / sizeof(*Motorcycles)))
+				{
+					vehicle_model = Motorcycles[MotorCyclesListPos];
+				}
+				break;
+			case 10:
+				if (ImGui::Combo("Muscle", &MuscleListPos, Muscle, sizeof(Muscle) / sizeof(*Muscle)))
+				{
+					vehicle_model = Muscle[MuscleListPos];
+				}
+				break;
+			case 11:
+				if (ImGui::Combo("Off-Road", &OffRoadListPos, OffRoad, sizeof(OffRoad) / sizeof(*OffRoad)))
+				{
+					vehicle_model = OffRoad[OffRoadListPos];
+				}
+				break;
+			case 12:
+				if (ImGui::Combo("Open Wheel", &OpenWheelListPos, OpenWheel, sizeof(OpenWheel) / sizeof(*OpenWheel)))
+				{
+					vehicle_model = OpenWheel[OpenWheelListPos];
+				}
+				break;
+			case 13:
+				if (ImGui::Combo("Planes", &PlanesListPos, Planes, sizeof(Planes) / sizeof(*Planes)))
+				{
+					vehicle_model = Planes[PlanesListPos];
+				}
+				break;
+			case 14:
+				if (ImGui::Combo("SUVs", &SUVListPos, SUVs, sizeof(SUVs) / sizeof(*SUVs)))
+				{
+					vehicle_model = SUVs[SUVListPos];
+				}
+				break;
+			case 15:
+				if (ImGui::Combo("Sedans", &SedansListPos, Sedans, sizeof(Sedans) / sizeof(*Sedans)))
+				{
+					vehicle_model = Sedans[SedansListPos];
+				}
+				break;
+			case 16:
+				if (ImGui::Combo("Service", &ServiceListPos, Service, sizeof(Service) / sizeof(*Service)))
+				{
+					vehicle_model = Service[ServiceListPos];
+				}
+				break;
+			case 17:
+				if (ImGui::Combo("Sports", &SportsListPos, Sports, sizeof(Sports) / sizeof(*Sports)))
+				{
+					vehicle_model = Sports[SportsListPos];
+				}
+				break;
+			case 18:
+				if (ImGui::Combo("Sports Classic", &SportsClassicListPos, SportsClassic, sizeof(SportsClassic) / sizeof(*SportsClassic)))
+				{
+					vehicle_model = SportsClassic[SportsClassicListPos];
+				}
+				break;
+			case 19:
+				if (ImGui::Combo("Super", &SuperListPos, Super, sizeof(Super) / sizeof(*Super)))
+				{
+					vehicle_model = Super[SuperListPos];
+				}
+				break;
+			case 20:
+				if (ImGui::Combo("Trailer", &TrailerListPos, Trailer, sizeof(Trailer) / sizeof(*Trailer)))
+				{
+					vehicle_model = Trailer[TrailerListPos];
+				}
+				break;
+			case 21:
+				if (ImGui::Combo("Trains", &TrainsListPos, Trains, sizeof(Trains) / sizeof(*Trains)))
+				{
+					vehicle_model = Trains[TrainsListPos];
+				}
+				break;
+			case 22:
+				if (ImGui::Combo("Utility", &UtilityListPos, Utility, sizeof(Utility) / sizeof(*Utility)))
+				{
+					vehicle_model = Utility[UtilityListPos];
+				}
+				break;
+			case 23:
+				if (ImGui::Combo("Vans", &VansListPos, Vans, sizeof(Vans) / sizeof(*Vans)))
+				{
+					vehicle_model = Vans[VansListPos];
+				}
+				break;
+			case 24:
+				if (ImGui::Combo("Beach Bum", &BeachListPos, Beach, sizeof(Beach) / sizeof(*Beach)))
+				{
+					vehicle_model = Beach[BeachListPos];
+				}
+				break;
+			case 25:
+				if (ImGui::Combo("Valentine's Day", &MassacreListPos, Massacre, sizeof(Massacre) / sizeof(*Massacre)))
+				{
+					vehicle_model = Massacre[MassacreListPos];
+				}
+				break;
+			case 26:
+				if (ImGui::Combo("Business", &BusinessListPos, Business, sizeof(Business) / sizeof(*Business)))
+				{
+					vehicle_model = Business[BusinessListPos];
+				}
+				break;
+			case 27:
+				if (ImGui::Combo("High Life", &HighListPos, High, sizeof(High) / sizeof(*High)))
+				{
+					vehicle_model = High[HighListPos];
+				}
+				break;
+			case 28:
+				if (ImGui::Combo("Hipster", &HipsterListPos, Hipster, sizeof(Hipster) / sizeof(*Hipster)))
+				{
+					vehicle_model = Hipster[HipsterListPos];
+				}
+				break;
+			case 29:
+				if (ImGui::Combo("Independence Day", &IndependenceListPos, Independence, sizeof(Independence) / sizeof(*Independence)))
+				{
+					vehicle_model = Independence[IndependenceListPos];
+				}
+				break;
+			case 30:
+				if (ImGui::Combo("Festive Surprise", &FestiveSurpriseListPos, FestiveSurprise, sizeof(FestiveSurprise) / sizeof(*FestiveSurprise)))
+				{
+					vehicle_model = FestiveSurprise[FestiveSurpriseListPos];
+				}
+				break;
+			case 31:
+				if (ImGui::Combo("Next Gen", &NextGenListPos, NextGen, sizeof(NextGen) / sizeof(*NextGen)))
+				{
+					vehicle_model = NextGen[NextGenListPos];
+				}
+				break;
+			case 32:
+				if (ImGui::Combo("LTS", &LTSListPos, LTS, sizeof(LTS) / sizeof(*LTS)))
+				{
+					vehicle_model = LTS[LTSListPos];
+				}
+				break;
+			case 33:
+				if (ImGui::Combo("Flight School", &FlightListPos, Flight, sizeof(Flight) / sizeof(*Flight)))
+				{
+					vehicle_model = Flight[FlightListPos];
+				}
+				break;
+			case 34:
+				if (ImGui::Combo("Lowriders", &LowridersListPos, Lowriders, sizeof(Lowriders) / sizeof(*Lowriders)))
+				{
+					vehicle_model = Lowriders[LowridersListPos];
+				}
+				break;
+			case 35:
+				if (ImGui::Combo("Ill-Gotten Gains", &Ill2ListPos, Ill2, sizeof(Ill2) / sizeof(*Ill2)))
+				{
+					vehicle_model = Ill2[Ill2ListPos];
+				}
+				break;
+			case 36:
+				if (ImGui::Combo("Powerful", &HeistsListPos, Heists, sizeof(Heists) / sizeof(*Heists)))
+				{
+					vehicle_model = Heists[HeistsListPos];
+				}
+				break;
+			case 37:
+				if (ImGui::Combo("Finance & Felony", &FinanceFelonyListPos, FinanceFelony, sizeof(FinanceFelony) / sizeof(*FinanceFelony)))
+				{
+					vehicle_model = FinanceFelony[FinanceFelonyListPos];
+				}
+				break;
+			case 38:
+				if (ImGui::Combo("Custom Classics", &CustomClassicsListPos, CustomClassics, sizeof(CustomClassics) / sizeof(*CustomClassics)))
+				{
+					vehicle_model = CustomClassics[CustomClassicsListPos];
+				}
+				break;
+			case 39:
+				if (ImGui::Combo("Be My Valentine", &BeMyValentineListPos, BeMyValentine, sizeof(BeMyValentine) / sizeof(*BeMyValentine)))
+				{
+					vehicle_model = BeMyValentine[BeMyValentineListPos];
+				}
+				break;
+			case 40:
+				if (ImGui::Combo("January 2016", &Jan2016ListPos, Jan2016, sizeof(Jan2016) / sizeof(*Jan2016)))
+				{
+					vehicle_model = Jan2016[Jan2016ListPos];
+				}
+				break;
+			case 41:
+				if (ImGui::Combo("Festive Surprise 2015", &FestiveSurprise2015ListPos, Festive2015, sizeof(Festive2015) / sizeof(*Festive2015)))
+				{
+					vehicle_model = Festive2015[FestiveSurprise2015ListPos];
+				}
+				break;
+			case 42:
+				if (ImGui::Combo("Executive Vehicles", &ExecutivesListPos, Executives, sizeof(Executives) / sizeof(*Executives)))
+				{
+					vehicle_model = Executives[ExecutivesListPos];
+				}
+				break;
+			case 43:
+				if (ImGui::Combo("Halloween", &HalloweenListPos, Halloween, sizeof(Halloween) / sizeof(*Halloween)))
+				{
+					vehicle_model = Halloween[HalloweenListPos];
+				}
+				break;
+			case 44:
+				if (ImGui::Combo("Cunning Stunts", &CunningStuntsListPos, CunningStunts, sizeof(CunningStunts) / sizeof(*CunningStunts)))
+				{
+					vehicle_model = CunningStunts[CunningStuntsListPos];
+				}
+				break;
+			case 45:
+				if (ImGui::Combo("Import/Export", &ImportExportListPos, ImportExport, sizeof(ImportExport) / sizeof(*ImportExport)))
+				{
+					vehicle_model = ImportExport[ImportExportListPos];
+				}
+				break;
+			case 46:
+				if (ImGui::Combo("Bikers Business", &BikersListPos, Bikers, sizeof(Bikers) / sizeof(*Bikers)))
+				{
+					vehicle_model = Bikers[BikersListPos];
+				}
+				break;
+			case 47:
+				if (ImGui::Combo("Circuit Vehicle", &SpecialVehicleCircuitListPos, SpecialVehicleCircuit, sizeof(SpecialVehicleCircuit) / sizeof(*SpecialVehicleCircuit)))
+				{
+					vehicle_model = SpecialVehicleCircuit[SpecialVehicleCircuitListPos];
+				}
+				break;
+			case 48:
+				if (ImGui::Combo("Gunrunning", &GunrunningListPos, Gunrunning, sizeof(Gunrunning) / sizeof(*Gunrunning)))
+				{
+					vehicle_model = Gunrunning[GunrunningListPos];
+				}
+				break;
+			case 49:
+				if (ImGui::Combo("Smuggler's Run", &SmugglersRunListPos, SmugglersRun, sizeof(SmugglersRun) / sizeof(*SmugglersRun)))
+				{
+					vehicle_model = SmugglersRun[SmugglersRunListPos];
+				}
+				break;
+			case 50:
+				if (ImGui::Combo("The Doomsday Heist", &TheDoomsdayHeistListPos, TheDoomsdayHeist, sizeof(TheDoomsdayHeist) / sizeof(*TheDoomsdayHeist)))
+				{
+					vehicle_model = TheDoomsdayHeist[TheDoomsdayHeistListPos];
+				}
+				break;
+			case 51:
+				if (ImGui::Combo("Southern SA Super Sport", &SouthernSanAndreasSuperSportSeriesListPos, SouthernSanAndreasSuperSportSeries, sizeof(SouthernSanAndreasSuperSportSeries) / sizeof(*SouthernSanAndreasSuperSportSeries)))
+				{
+					vehicle_model = SouthernSanAndreasSuperSportSeries[SouthernSanAndreasSuperSportSeriesListPos];
+				}
+				break;
+			case 52:
+				if (ImGui::Combo("After Hours", &AfterHoursListPos, AfterHours, sizeof(AfterHours) / sizeof(*AfterHours)))
+				{
+					vehicle_model = AfterHours[AfterHoursListPos];
+				}
+				break;
+			case 53:
+				if (ImGui::Combo("Arena War", &ArenaWarListPos, ArenaWar, sizeof(ArenaWar) / sizeof(*ArenaWar)))
+				{
+					vehicle_model = ArenaWar[ArenaWarListPos];
+				}
+				break;
+			case 54:
+				if (ImGui::Combo("Casino Resort", &TheDiamondCasinoHeistListPos, TheDiamondCasinoResort, sizeof(TheDiamondCasinoResort) / sizeof(*TheDiamondCasinoResort)))
+				{
+					vehicle_model = TheDiamondCasinoResort[TheDiamondCasinoHeistListPos];
+				}
+				break;
+			case 55:
+				if (ImGui::Combo("Casino Heist", &TheDiamondCasinoHeistListPos, TheDiamondCasinoHeist, sizeof(TheDiamondCasinoHeist) / sizeof(*TheDiamondCasinoHeist)))
+				{
+					vehicle_model = TheDiamondCasinoHeist[TheDiamondCasinoHeistListPos];
+				}
+				break;
+			case 56:
+				if (ImGui::Combo("Summer Special", &SummerSpecialListPos, SummerSpecial, sizeof(SummerSpecial) / sizeof(*SummerSpecial)))
+				{
+					vehicle_model = SummerSpecial[SummerSpecialListPos];
+				}
+				break;
+			case 57:
+				if (ImGui::Combo("Cayo Perico", &CayoPericoListPos, CayoPerico, sizeof(CayoPerico) / sizeof(*CayoPerico)))
+				{
+					vehicle_model = CayoPerico[CayoPericoListPos];
+				}
+				break;
+				case 58:
+					if (ImGui::Combo("Contract DLC", &ContractDLCListPos, ContractDLC, sizeof(ContractDLC) / sizeof(*ContractDLC)))
+					{
+						vehicle_model = ContractDLC[ContractDLCListPos];
+					}
 					break;
 				}
-			}
 
+			if (ImGui::Button("spawn selected vehicle")) {
+				QUEUE_JOB_BEGIN_CLAUSE(= )
+				{
+					Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PLAYER::GET_PLAYER_INDEX());
+					Vector3 location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player, .0, 8.0, .5);
+
+					vehicle::spawn(vehicle_model, location, ENTITY::GET_ENTITY_HEADING(player) + 90.f);
+				}QUEUE_JOB_END_CLAUSE
+			}
 			ImGui::EndTabItem();
 		}
 	}

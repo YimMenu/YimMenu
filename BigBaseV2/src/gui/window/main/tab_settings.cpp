@@ -6,6 +6,49 @@
 
 namespace big
 {
+    static ImVec4 base = ImVec4(0.502f, 0.075f, 0.256f, 1.0f);
+    static ImVec4 bg = ImVec4(0.200f, 0.220f, 0.270f, 1.0f);
+    static ImVec4 text = ImVec4(0.860f, 0.930f, 0.890f, 1.0f);
+    static float high_val = 0.8f;
+    static float mid_val = 0.5f;
+    static float low_val = 0.3f;
+    static float window_offset = -0.2f;
+
+    inline ImVec4 make_high(float alpha) {
+        ImVec4 res(0, 0, 0, alpha);
+        ImGui::ColorConvertRGBtoHSV(base.x, base.y, base.z, res.x, res.y, res.z);
+        res.z = high_val;
+        ImGui::ColorConvertHSVtoRGB(res.x, res.y, res.z, res.x, res.y, res.z);
+        return res;
+    }
+
+    inline ImVec4 make_mid(float alpha) {
+        ImVec4 res(0, 0, 0, alpha);
+        ImGui::ColorConvertRGBtoHSV(base.x, base.y, base.z, res.x, res.y, res.z);
+        res.z = mid_val;
+        ImGui::ColorConvertHSVtoRGB(res.x, res.y, res.z, res.x, res.y, res.z);
+        return res;
+    }
+
+    inline ImVec4 make_low(float alpha) {
+        ImVec4 res(0, 0, 0, alpha);
+        ImGui::ColorConvertRGBtoHSV(base.x, base.y, base.z, res.x, res.y, res.z);
+        res.z = low_val;
+        ImGui::ColorConvertHSVtoRGB(res.x, res.y, res.z, res.x, res.y, res.z);
+        return res;
+    }
+
+    inline ImVec4 make_bg(float alpha, float offset = 0.f) {
+        ImVec4 res(0, 0, 0, alpha);
+        ImGui::ColorConvertRGBtoHSV(bg.x, bg.y, bg.z, res.x, res.y, res.z);
+        res.z += offset;
+        ImGui::ColorConvertHSVtoRGB(res.x, res.y, res.z, res.x, res.y, res.z);
+        return res;
+    }
+
+    inline ImVec4 make_text(float alpha) {
+        return ImVec4(text.x, text.y, text.z, alpha);
+    }
 	void tab_main::tab_settings()
 	{
 		if (ImGui::BeginTabItem("Settings"))
@@ -64,6 +107,7 @@ namespace big
 			}
 
 			ImGui::EndTabItem();
+           
 		}
 	}
 }

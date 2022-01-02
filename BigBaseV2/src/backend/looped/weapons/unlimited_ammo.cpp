@@ -5,7 +5,7 @@ namespace big
 {
 	void looped::self_unlimited_ammo()
 	{
-		bool bUnlimitedammo = g.self.unlimited_ammo;
+		bool bUnlimitedammo = g.weapons.unlimited_ammo;
 		if (!bUnlimitedammo)
 			return;
 

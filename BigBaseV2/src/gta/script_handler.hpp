@@ -22,14 +22,28 @@ namespace rage
 		scriptResourceEntry *m_next; // 0x18
 	};
 
+	class CNetComponentOwners
+	{
+	public:
+		char pad_0000[16]; //0x0000
+		class CNetGamePlayer* m_owner; //0x0010
+	}; //Size: 0x0018
+	static_assert(sizeof(CNetComponentOwners) == 0x18);
+
 	class scriptHandlerNetComponent
 	{
 	public:
 		virtual ~scriptHandlerNetComponent() = default;
 
 	public:
-		scriptHandler *m_script_handler; // 0x08
-	};
+		scriptHandler* m_script_handler; // 0x08
+		char pad_0010[32]; //0x0010
+		class CNetComponentOwners* m_owner_list; //0x0030
+		char pad_0038[16]; //0x0038
+		class CNetGamePlayer* m_previous_owner; //0x0048
+		char pad_0050[296]; //0x0050
+	}; //Size: 0x0178
+	static_assert(sizeof(scriptHandlerNetComponent) == 0x178);
 
 	class scriptHandler
 	{

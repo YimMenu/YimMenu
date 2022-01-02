@@ -45,6 +45,20 @@ namespace big
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("This will kick them from car by clearing task");
 
+			if (ImGui::Button("Delete Vehicle"))
+			{
+				g_fiber_pool->queue_job([]
+					{
+						NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(g.selected_player.id, false));
+
+						while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(g.selected_player.id, false)))
+							script::get_current()->yield(5ms);
+						Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(g.selected_player.id);
+						ENTITY::SET_ENTITY_AS_MISSION_ENTITY(veh, true, true);
+						VEHICLE::DELETE_VEHICLE(&veh);
+					});
+			}
+
 			ImGui::EndTabItem();
 		}
 	}

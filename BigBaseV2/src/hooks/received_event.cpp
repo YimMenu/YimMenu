@@ -31,6 +31,8 @@ namespace big
 		switch ((RockstarEvent)event_id)
 		{
 		case RockstarEvent::NETWORK_CLEAR_PED_TASKS_EVENT:
+		case RockstarEvent::REMOVE_ALL_WEAPONS_EVENT:
+		case RockstarEvent::REMOVE_WEAPON_EVENT:
 		{
 			if (source_player->player_id < 32)
 			{
@@ -39,7 +41,7 @@ namespace big
 				char msg[64];
 				strcpy(msg, "<C>");
 				strcat(msg, source_player->get_name());
-				strcat(msg, "</C> possibly attempting at freezing entity.");
+				strcat(msg, "</C> possibly attempting at freezing entity or removing weapon.");
 
 				return false;
 			}

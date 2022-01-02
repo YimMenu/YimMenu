@@ -123,6 +123,37 @@ namespace big
 					VEHICLE::_SET_VEHICLE_ENGINE_POWER_MULTIPLIER(PED::GET_VEHICLE_PED_IS_USING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PLAYER::PLAYER_ID())), features::max_vehicle_engine);
 			}
 
+			static int selected_door = 0;
+				const char* const vehicle_doors[]
+				{
+					"driver",
+					"Passenger ",
+					"Left Rear",
+					"Right Rear",
+					"hood",
+					"5",
+					"6",
+					"7"
+				};
+				ImGui::Combo("vehicle door", &selected_door, vehicle_doors, IM_ARRAYSIZE(vehicle_doors));
+				if (ImGui::Button("open selected door"))
+				{
+					g_fiber_pool->queue_job([]
+					{
+						VEHICLE::SET_VEHICLE_DOOR_OPEN(PED::GET_VEHICLE_PED_IS_USING(PLAYER::PLAYER_PED_ID()), selected_door, false, true);
+					});
+				}
+
+				ImGui::SameLine();
+
+				if (ImGui::Button("close selected door"))
+				{
+					g_fiber_pool->queue_job([]
+					{
+						VEHICLE::SET_VEHICLE_DOOR_SHUT(PED::GET_VEHICLE_PED_IS_USING(PLAYER::PLAYER_PED_ID()), selected_door, true);
+					});
+				}
+
 			ImGui::EndTabItem();
 		}
 	}

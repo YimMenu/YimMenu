@@ -62,7 +62,6 @@ struct globals {
 		bool no_ragdoll = false;
 		bool super_run = false;
 		int wanted_level = 0;
-		bool unlimited_ammo = false;
 
 		frame_flags frame_flags{};
 	};
@@ -97,6 +96,7 @@ struct globals {
 	struct weapons {
 		CustomWeapon custom_weapon = CustomWeapon::NONE;
 		char vehicle_gun_model[12] = "bus";
+		bool unlimited_ammo = false;
 	};
 
 	struct window {
@@ -177,6 +177,7 @@ struct globals {
 		this->vehicle.speedo_meter.y = j["vehicle"]["speedo_meter"]["position_y"];
 
 		this->weapons.custom_weapon = (CustomWeapon)j["weapons"]["custom_weapon"];
+		this->weapons.unlimited_ammo = j["weapons"]["unlimited_ammo"];
 
 		this->window.debug = j["window"]["debug"];
 		this->window.handling = j["window"]["handling"];
@@ -269,7 +270,8 @@ struct globals {
 			},
 			{
 				"weapons", {
-					{ "custom_weapon", (int)this->weapons.custom_weapon }
+					{ "custom_weapon", (int)this->weapons.custom_weapon },
+					{ "unlimited_ammo", this->weapons.unlimited_ammo }
 				}
 			},
 			{
