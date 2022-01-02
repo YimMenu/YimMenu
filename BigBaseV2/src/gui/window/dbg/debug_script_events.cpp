@@ -2,10 +2,6 @@
 #include "fiber_pool.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
-#include "natives.hpp"
-#include <iostream>
-#include <fmt/format.h>
-#include "gta_util.hpp"
 
 namespace big
 {

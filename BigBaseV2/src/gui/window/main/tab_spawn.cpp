@@ -440,40 +440,6 @@ namespace big
 	static int UtilityListPos = 0;
 	static int VansListPos = 0;
 
-	void spawn_veh(Ped ped, char* name)
-	{
-		static const int DISTANCE_SPAWN = 3;
-
-		auto pos = ENTITY::GET_ENTITY_COORDS(ped, TRUE);
-		auto forward = ENTITY::GET_ENTITY_FORWARD_VECTOR(ped);
-		auto heading = ENTITY::GET_ENTITY_HEADING(ped);
-
-		pos.x += DISTANCE_SPAWN * forward.x;
-		pos.y += DISTANCE_SPAWN * forward.y;
-
-		MISC::GET_GROUND_Z_FOR_3D_COORD(pos.x, pos.y, pos.z, &pos.z, FALSE, false);
-
-		Hash hash_vehicle = MISC::GET_HASH_KEY(name);
-
-		STREAMING::REQUEST_MODEL(hash_vehicle);
-		while (!STREAMING::HAS_MODEL_LOADED(hash_vehicle))
-		{
-			script::get_current()->yield();
-		}
-
-		auto vehicle = VEHICLE::CREATE_VEHICLE(hash_vehicle, pos.x, pos.y, pos.z, heading + 90.0f, TRUE, TRUE, true);
-
-		char __b[256]; sprintf(__b, ",LOG,CREATE_VEHICLE");
-
-		ENTITY::SET_ENTITY_INVINCIBLE(vehicle, TRUE);
-		VEHICLE::SET_VEHICLE_CAN_BE_TARGETTED(vehicle, FALSE);
-		if (VEHICLE::IS_THIS_MODEL_A_PLANE(hash_vehicle))
-		{
-			VEHICLE::SET_PLANE_TURBULENCE_MULTIPLIER(vehicle, 0.0f);
-		}
-
-	}
-
 	void tab_main::tab_spawn()
 	{
 		if (ImGui::BeginTabItem("Spawn"))
