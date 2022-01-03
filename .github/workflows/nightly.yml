@@ -59,7 +59,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           name: Nightly ${{ steps.short_sha.outputs.sha_short }}
-          tag_name: nightly
+          tag_name: nightly_${{ steps.short_sha.outputs.sha_short }}
           body: |
             This nightly release is provided for testing purposes only, there's no warranty provided if your account gets banned online.
 
@@ -73,4 +73,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           keep_latest: 7
-          delete_tag_pattern: nightly
+          delete_tag_pattern: 'nightly_*'
