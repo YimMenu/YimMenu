@@ -59,7 +59,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           name: Nightly Release ${{ steps.vars.outputs.sha_short }}
-          tag_name: nightly_${{ steps.vars.outputs.sha_short }}
+          tag_name: nightly
           body: |
             This nightly release is provided for testing purposes only, there's no warrenty provided if your account gets banned online.
 
@@ -71,4 +71,4 @@ jobs:
       - name: Keep only the last 7 nightly builds, any other nightlies will be removed
         uses: dev-drprasad/delete-older-releases@v0.2.0
         keep_latest: 7
-        delete_tag_pattern: "nightly_*"
+        delete_tag_pattern: nightly
