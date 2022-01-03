@@ -58,13 +58,12 @@ jobs:
       - name: Nightly Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Nightly Release ${{ steps.short_sha.outputs.sha_short }}
+          name: Nightly ${{ steps.short_sha.outputs.sha_short }}
           tag_name: nightly
           body: |
-            This nightly release is provided for testing purposes only, there's no warrenty provided if your account gets banned online.
+            This nightly release is provided for testing purposes only, there's no warranty provided if your account gets banned online.
 
             Use this to test and see if you can run the menu as-is in single player, if it works and you're unable to use your own version check if your build environment is setup correctly.
-          prerelease: true
           files: |
             bin/Release/YimMenu.dll
 
