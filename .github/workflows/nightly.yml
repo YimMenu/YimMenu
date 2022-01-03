@@ -52,13 +52,13 @@ jobs:
         working-directory: bin/Release/
 
       - name: Get commit short sha for nightly name
-        id: short-sha
+        id: short_sha
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
       - name: Nightly Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Nightly Release ${{ steps.vars.outputs.sha_short }}
+          name: Nightly Release ${{ steps.short_sha.outputs.sha_short }}
           tag_name: nightly
           body: |
             This nightly release is provided for testing purposes only, there's no warrenty provided if your account gets banned online.
