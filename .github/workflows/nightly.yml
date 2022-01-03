@@ -1,0 +1,76 @@
+name: Nightly Public Build
+
+on:
+  schedule:
+    # cronjob that triggers every day at 2PM UTC
+    - cron: '0 14 * * *'
+  workflow_dispatch:
+
+jobs:
+  check_date:
+    runs-on: ubuntu-latest
+    name: Check latest commit
+    outputs:
+      should_run: ${{ steps.should_run.outputs.should_run }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - id: should_run
+        continue-on-error: true
+        name: Check if latest commit date is within the previous 24 hours
+        if: ${{ github.event_name == 'schedule' }}
+        run: test -z $(git rev-list  --after="24 hours"  ${{ github.sha }}) && echo "::set-output name=should_run::false"
+
+  build-nightly:
+    runs-on: windows-latest
+    name: Build Nightly
+    needs: check_date
+    if: ${{ needs.check_date.outputs.should_run != 'false' }}
+    steps:
+      - uses: actions/checkout@v2.4.0
+        with:
+          submodules: recursive
+      
+      - name: Setup premake
+        uses: abel0b/setup-premake@v2
+        with:
+          version: "5.0.0-beta1"
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: Generate premake5 project
+        run: premake5 vs2019
+        shell: bash
+
+      - name: Build 64bit release DLL
+        run: |
+          msbuild /p:Configuration=Release /p:Platform=x64 BigBaseV2.sln
+
+      - name: Rename DLL to YimMenu.dll
+        run: ren BigBaseV2.dll YimMenu.dll
+        working-directory: bin/Release/
+
+      - name: Get commit short sha for nightly name
+        id: short_sha
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+      - name: Nightly Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Nightly ${{ steps.short_sha.outputs.sha_short }}
+          tag_name: nightly_${{ steps.short_sha.outputs.sha_short }}
+          body: |
+            This nightly release is provided for testing purposes only, there's no warranty provided if your account gets banned online.
+
+            Use this to test and see if you can run the menu as-is in single player, if it works and you're unable to use your own version check if your build environment is setup correctly.
+          files: |
+            bin/Release/YimMenu.dll
+
+      - name: Keep only the last 7 nightly builds, any other nightlies will be removed
+        uses: dev-drprasad/delete-older-releases@v0.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          keep_latest: 7
+          delete_tag_pattern: 'nightly_*'
