@@ -47,22 +47,28 @@ jobs:
         run: |
           msbuild /p:Configuration=Release /p:Platform=x64 BigBaseV2.sln
 
+      - name: Rename DLL to YimMenu.dll
+        run: ren BigBaseV2.dll YimMenu.dll
+        working-directory: bin/Release/
+
       - name: Get commit short sha for nightly name
         id: short-sha
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
-      - name: Create nightly release
-        id: create_release
-        uses: viperproject/create-nightly-release@v1.1.5
-        env:
-          # This token is provided by Actions, you do not need to create your own token
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Nightly Release
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ steps.vars.outputs.sha_short }}
-          release_name: Nightly Release ${{ steps.vars.outputs.sha_short }}
+          name: Nightly Release ${{ steps.vars.outputs.sha_short }}
+          tag_name: nightly_${{ steps.vars.outputs.sha_short }}
           body: |
-            This nightly release is provided for testing purpose only, there's no warrenty provided if your account gets banned online.
+            This nightly release is provided for testing purposes only, there's no warrenty provided if your account gets banned online.
 
-            Use this to test and see if you can run the menu as-is, if it works and you're unable to use your own version check if your build environment is setup correctly.
-          keep_num: 0
-          keep_tags: false
+            Use this to test and see if you can run the menu as-is in single player, if it works and you're unable to use your own version check if your build environment is setup correctly.
+          prerelease: true
+          files: |
+            bin/Release/YimMenu.dll
+
+      - name: Keep only the last 7 nightly builds, any other nightlies will be removed
+        uses: dev-drprasad/delete-older-releases@v0.2.0
+        keep_latest: 7
+        delete_tag_pattern: 'nightly_*'
