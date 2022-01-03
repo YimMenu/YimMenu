@@ -70,6 +70,8 @@ jobs:
 
       - name: Keep only the last 7 nightly builds, any other nightlies will be removed
         uses: dev-drprasad/delete-older-releases@v0.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           keep_latest: 7
           delete_tag_pattern: nightly
