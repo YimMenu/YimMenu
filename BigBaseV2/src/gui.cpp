@@ -13,7 +13,7 @@
 
 #include <imgui.h>
 
-#include "gui/gui_main.hpp"
+#include "gui/window.hpp"
 #include "util/notify.hpp"
 
 namespace big
@@ -105,7 +105,7 @@ namespace big
 	{
 		TRY_CLAUSE
 		{
-			main_gui::draw();
+			window::draw_all();
 		}
 		EXCEPT_CLAUSE
 	}

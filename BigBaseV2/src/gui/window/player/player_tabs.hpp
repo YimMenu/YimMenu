@@ -2,13 +2,9 @@
 #include "common.hpp"
 #include "imgui.h"
 
-namespace big
+namespace big::tab_player
 {
-	class tab_player
-	{
-	public:
-		static void tab_info();
-		static void tab_teleport();
-		static void tab_toxic();
-	};
+	void tab_info();
+	void tab_teleport();
+	void tab_toxic();
 }

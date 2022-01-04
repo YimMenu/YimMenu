@@ -4,15 +4,15 @@
 
 namespace big
 {
-	struct modal_debug
+	namespace modal_debug
 	{
-		static void modal_new_global();
-	};
+		void modal_new_global();
+	}
 
-	struct tab_debug
+	namespace tab_debug
 	{
-		static void tab_globals();
-		static void tab_script_events();
-		static void _tab_debug();
-	};
+		void tab_globals();
+		void tab_script_events();
+		void _tab_debug();
+	}
 }

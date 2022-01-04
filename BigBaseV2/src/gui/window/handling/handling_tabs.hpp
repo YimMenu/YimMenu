@@ -1,14 +1,10 @@
 #pragma once
 #include "current_profile/current_profile_tabs.hpp"
 
-namespace big
+namespace big::tab_handling
 {
-	class tab_handling
-	{
-	public:
-		static void tab_current_profile();
-		static void tab_my_profiles();
-		static void tab_saved_profiles();
-		static void tab_search();
-	};
+	void tab_current_profile();
+	void tab_my_profiles();
+	void tab_saved_profiles();
+	void tab_search();
 }

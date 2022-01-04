@@ -1,4 +1,5 @@
 #include "fiber_pool.hpp"
+#include "gta/enums.hpp"
 #include "gta_util.hpp"
 #include "player_tabs.hpp"
 #include "natives.hpp"
