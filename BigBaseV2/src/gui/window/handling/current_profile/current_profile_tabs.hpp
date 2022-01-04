@@ -4,25 +4,23 @@
 
 namespace big
 {
-	class tab_current_profile
+	namespace tab_current_profile
 	{
-	public:
-		static void tab_brakes();
-		static void tab_gearing();
-		static void tab_general();
-		static void tab_other();
-		static void tab_rollbars();
-		static void tab_roll_centre_height();
-		static void tab_suspension();
-		static void tab_steering();
-		static void tab_traction();
-		static void tab_transmission();
-	};
+		void tab_brakes();
+		void tab_gearing();
+		void tab_general();
+		void tab_other();
+		void tab_rollbars();
+		void tab_roll_centre_height();
+		void tab_suspension();
+		void tab_steering();
+		void tab_traction();
+		void tab_transmission();
+	}
 
-	class modal_handling
+	namespace modal_handling
 	{
-	public:
-		static void modal_save_handling();
-		static void modal_update_handling();
-	};
+		void modal_save_handling();
+		void modal_update_handling();
+	}
 }
