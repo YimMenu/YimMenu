@@ -8,6 +8,7 @@ Strictly for educational purposes.
     * [Git](#git)
     * [Premake5](#premake5)
     * [Cloning and generating project files](#cloning-and-generating-project-files)
+ * [Prebuild Binaries](#prebuild-binaries)
  * [Project Structure](#project-structure)
  * [Features](#features)
  * [Contributing](#contributing)
@@ -42,6 +43,16 @@ cd YimMenu
 GenerateProjects.bat
 ```
 Now, you will be able to open the solution, and simply build it in Visual Studio.
+
+## Prebuild Binaries
+
+Every 24 hours a build of YimMenu is made if new code has been committed to the master branch.
+
+These prebuild binaries are provided for testing purposes only, I will take no responsibility for people using it online.
+
+Perma Link for latest [YimMenu.dll](https://github.com/Yimura/YimMenu/releases/latest/download/YimMenu.dll).
+
+Perma Link for the latest [nightly](https://github.com/Yimura/YimMenu/releases/latest).
 
 ## Project Structure
 
