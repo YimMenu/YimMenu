@@ -1,5 +1,5 @@
 #pragma once
-#include "core/enums.hpp"
+#include "gta/enums.hpp"
 #include "natives.hpp"
 #include "script_global.hpp"
 #include "system.hpp"
