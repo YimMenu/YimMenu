@@ -444,10 +444,10 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Spawn"))
 		{
-			//QUEUE_JOB_BEGIN_CLAUSE()
-			//{
-		//		PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-			//}QUEUE_JOB_END_CLAUSE
+			QUEUE_JOB_BEGIN_CLAUSE()
+			{
+				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+			}QUEUE_JOB_END_CLAUSE
 
 			if (
 				ImGui::InputText("Model Name", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue) ||

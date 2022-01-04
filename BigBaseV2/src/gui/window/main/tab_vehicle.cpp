@@ -45,6 +45,7 @@ namespace big
 						Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
 
 						vehicle::repair(veh);
+						VEHICLE::SET_VEHICLE_CAN_SAVE_IN_GARAGE(veh, true);
 					}QUEUE_JOB_END_CLAUSE
 				}
 				ImGui::SameLine();
@@ -99,14 +100,12 @@ namespace big
 			static float max_vehicle_speed = 300.f;
 			if (ImGui::SliderFloat("VEHICLE MAX SPEED", &max_vehicle_speed, 0.f, 6000.f))
 			{
-				g_fiber_pool->queue_job([]
-					{
+
 						NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false));
 
 						while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false)))
 							script::get_current()->yield(5ms);
-						VEHICLE::SET_VEHICLE_MAX_SPEED_(PED::GET_VEHICLE_PED_IS_USING(PLAYER::PLAYER_PED_ID()), max_vehicle_speed);
-					});
+						VEHICLE::SET_VEHICLE_MAX_SPEED_(PED::GET_VEHICLE_PED_IS_USING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PLAYER::PLAYER_ID())), max_vehicle_speed);
 			}
 			ImGui::Separator();
 			

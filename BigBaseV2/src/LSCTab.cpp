@@ -110,6 +110,14 @@ namespace big
                         });
                 }
                 ImGui::SameLine();
+                if (ImGui::Button("F1 Wheels"))
+                {
+                    g_fiber_pool->queue_job([]
+                        {
+                            VEHICLE::SET_VEHICLE_WHEEL_TYPE(player_vehicle, WHEEL_TYPE_F1);
+                        });
+                }
+                ImGui::SameLine();
                 if (ImGui::Checkbox("Xenon", &xenon))
                 {
                     g_fiber_pool->queue_job([]

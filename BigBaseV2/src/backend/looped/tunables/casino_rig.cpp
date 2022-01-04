@@ -1,6 +1,8 @@
 #include "backend/looped/looped.hpp"
 #include "gta_util.hpp"
 #include "script_local.hpp"
+#include "fiber_pool.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -16,6 +18,10 @@ namespace big
 					if (break_value != 64) {
 						*local1354.at(i).as<int*>() = 6;
 					}
+				}
+				auto local_3407 = script_local(slots_thread, 3413).at(PLAYER::PLAYER_ID(), 11).at(10).as<int*>();
+				if (*local_3407 == 3) {
+					*script_local(slots_thread, 3413).at(PLAYER::PLAYER_ID(), 11).at(10).as<int*>() = 6;
 				}
 				});
 		}

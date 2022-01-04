@@ -19,6 +19,15 @@ namespace big
 				}QUEUE_JOB_END_CLAUSE
 			}
 
+			if (ImGui::Button("Host Kick"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					NETWORK::NETWORK_SESSION_KICK_PLAYER(g.selected_player.id);
+				}
+				QUEUE_JOB_END_CLAUSE
+			}
+
 			if (ImGui::Button("Steal Outfit"))
 			{
 				g_fiber_pool->queue_job([]

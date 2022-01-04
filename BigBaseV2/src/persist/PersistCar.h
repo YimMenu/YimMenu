@@ -1,7 +1,10 @@
 #pragma once
-#include "common.hpp"
-#include "imgui.h"
+
+#include "natives.hpp"
+#include "services\VehicleHelper.h"
+#include "pointers.hpp"
 #include "ModelAttachment.h"
+
 namespace big
 {
 	class persist_car
@@ -12,8 +15,6 @@ namespace big
 		static std::vector<std::string> list_files();
 		static Vehicle clone_ped_car(Ped ped, Vehicle vehicle);
 		static void do_presentation_layer();
-		static void set_mp_parameters_for_vehicle(Vehicle vehicle);
-		static Vehicle create_vehicle(Hash modelHash, float x, float y, float z, float heading);
 	private:
 		static Vehicle spawn_vehicle_full(nlohmann::json vehicle_json, Ped ped);
 		static Vehicle spawn_vehicle(nlohmann::json vehicle_json, Ped ped);

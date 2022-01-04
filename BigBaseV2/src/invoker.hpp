@@ -35,6 +35,7 @@ namespace big
 		{
 			return *m_call_context.get_return_value<T>();
 		}
+
 	private:
 		native_call_context m_call_context;
 		std::unordered_map<rage::scrNativeHash, rage::scrNativeHandler> m_handler_cache;

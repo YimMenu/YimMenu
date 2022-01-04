@@ -25,6 +25,15 @@ namespace big
 				}QUEUE_JOB_END_CLAUSE
 			}
 
+			if (ImGui::Button("Godmode kill"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					teleport::godmode_kill(g.selected_player.id);
+				}QUEUE_JOB_END_CLAUSE
+			}
+
+
 			ImGui::EndTabItem();
 		}
 	}

@@ -34,6 +34,34 @@ namespace big::teleport
 		return true;
 	}
 
+	inline bool godmode_kill(Player player)
+	{
+		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+
+		if (ENTITY::IS_ENTITY_DEAD(ent, true))
+		{
+			notify::display_help_text("Target player is dead.");
+
+			return false;
+		}
+
+		if (!PED::IS_PED_IN_ANY_VEHICLE(ent, true))
+		{
+			notify::display_help_text("Target player is not in a vehicle.");
+
+			return false;
+		}
+
+		ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
+
+		if (entity::take_control_of(ent))
+			ENTITY::SET_ENTITY_COORDS(ent, 20000, 0, -99, 0, 0, 0, 0);
+		else
+			notify::display_help_text("Failed to take control of player vehicle.");
+
+		return true;
+	}
+
 	inline bool load_ground_at_3dcoord(Vector3& location)
 	{
 		float groundZ;

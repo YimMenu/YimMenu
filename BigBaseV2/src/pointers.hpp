@@ -22,9 +22,8 @@ namespace big
 		CPedFactory **m_ped_factory{};
 		CNetworkPlayerMgr **m_network_player_mgr{};
 
-		rage::CReplayInterface* m_replay_interface{};
-		functions::ptr_to_handle* m_ptr_to_handle{};
-		functions::ptr_to_handle_t m_ptr_to_handle_t{};
+		rage::CReplayInterface** m_replay_interface{};
+		functions::ptr_to_handle_t m_ptr_to_handle{};
 
 		rage::scrNativeRegistrationTable *m_native_registration_table{};
 		functions::get_native_handler_t m_get_native_handler{};
