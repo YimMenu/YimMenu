@@ -64,6 +64,9 @@ jobs:
             This nightly release is provided for testing purposes only, there's no warranty provided if your account gets banned online.
 
             Use this to test and see if you can run the menu as-is in single player, if it works and you're unable to use your own version check if your build environment is setup correctly.
+          
+            If you're going to link externally use the following link to always get the latest version of YimMenu.dll:
+            https://github.com/Yimura/YimMenu/releases/latest/download/YimMenu.dll
           files: |
             bin/Release/YimMenu.dll
 
