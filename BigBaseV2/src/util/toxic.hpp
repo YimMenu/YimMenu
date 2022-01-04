@@ -21,18 +21,6 @@ namespace big::toxic
 		system::patch_blame(false);
 	}
 
-	inline void kick(Player target)
-	{
-		int args[4] = { 0, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target), 0, 0 };
-
-		for (int64_t kick_hash : kick_hashes)
-		{
-			args[0] = kick_hash;
-
-			g_pointers->m_trigger_script_event(true, args, 4, 1 << g.selected_player.id);
-		}
-	}
-
 	inline void blame_explode_player(Player to_blame, Player target, eExplosionType explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
 	{
 		Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target), true);
