@@ -22,30 +22,40 @@ namespace big
 
 			if (ImGui::TreeNode("General"))
 			{
+				ImGui::BeginGroup();
+
 				ImGui::Checkbox("God Mode", &g.self.godmode);
-				ImGui::SameLine();
 				ImGui::Checkbox("Off Radar", &g.self.off_radar);
-				ImGui::SameLine();
 				ImGui::Checkbox("Free Cam", &g.self.free_cam);
-				
+
+				ImGui::EndGroup();
+				ImGui::SameLine();
+				ImGui::BeginGroup();
+
 				ImGui::Checkbox("No Clip", &g.self.noclip);
-				ImGui::SameLine();
 				ImGui::Checkbox("No Ragdoll", &g.self.no_ragdoll);
-				ImGui::SameLine();
 				ImGui::Checkbox("Super Run", &g.self.super_run);
-				
+
+				ImGui::EndGroup();
+
 				ImGui::TreePop();
 			}
 
 			if (ImGui::TreeNode("Frame Flags"))
 			{
+				ImGui::BeginGroup();
+
 				ImGui::Checkbox("Explosive Ammo", &g.self.frame_flags.explosive_ammo);
-				ImGui::SameLine();
 				ImGui::Checkbox("Fire Ammo", &g.self.frame_flags.fire_ammo);
 
-				ImGui::Checkbox("Explosive Melee", &g.self.frame_flags.explosive_melee);
+				ImGui::EndGroup();
 				ImGui::SameLine();
+				ImGui::BeginGroup();
+
+				ImGui::Checkbox("Explosive Melee", &g.self.frame_flags.explosive_melee);
 				ImGui::Checkbox("Super Jump", &g.self.frame_flags.super_jump);
+				
+				ImGui::EndGroup();
 
 				ImGui::TreePop();
 			}
