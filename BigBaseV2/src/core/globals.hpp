@@ -60,6 +60,7 @@ struct globals {
 		bool noclip = false;
 		bool no_ragdoll = false;
 		bool super_run = false;
+		bool force_wanted_level = false;
 		int wanted_level = 0;
 
 		frame_flags frame_flags{};

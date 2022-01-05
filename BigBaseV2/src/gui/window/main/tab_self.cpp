@@ -107,8 +107,10 @@ namespace big
 
 				if (!g.self.never_wanted)
 				{
+					ImGui::Checkbox("Force Wanted Level", &g.self.force_wanted_level);
 					ImGui::Text("Wanted Level");
-					ImGui::SliderInt("###wanted_level", &g.self.wanted_level, 0, 5);
+					if (ImGui::SliderInt("###wanted_level", &g.self.wanted_level, 0, 5) && !g.self.force_wanted_level)
+						g_local_player->m_player_info->m_wanted_level = g.self.wanted_level;
 				}
 
 				ImGui::TreePop();
