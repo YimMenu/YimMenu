@@ -23,8 +23,10 @@ namespace big
 					
 					ImGui::Separator();
 
+					ImGui::Text("Wanted Level: %d", player_info->m_wanted_level);
+					ImGui::Text("Player God Mode: %s", player_info->m_ped->m_godmode ? "Yes" : "No");
 					ImGui::Text("Vehicle God Mode: %s",
-						player_info->m_ped->m_vehicle == nullptr ? "No Car Detected" :
+						player_info->m_ped->m_vehicle == nullptr ? "No vehicle detected" :
 						player_info->m_ped->m_vehicle->m_godmode ? "Yes" : "No"
 					);
 
