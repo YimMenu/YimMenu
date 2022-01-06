@@ -55,6 +55,9 @@ namespace big
 			script::get_current()->yield();
 		}
 
+		if (g.window.player) // update selected player only while the player menu is open
+			g.selected_player = g.players[g.selected_player.id];
+
 		busy = false;
 	}
 }
