@@ -115,14 +115,16 @@ namespace big
 			return true;
 		}
 
-		if (false)
+		if (g.debug.script_event_logging)
 		{
-			LOG(INFO) << "Received Script Event";
+			LOG(INFO) << "== Begin of Script Event ==";
 			LOG(INFO) << "Player: " << player->get_name();
-			LOG(INFO) << "Hash: " << (int64_t)hash;
+			LOG(INFO) << "Hash/Arg #0: " << (int)hash;
 
 			for (int i = 1; i < sizeof(args); i++)
 				LOG(INFO) << "Arg #" << i << ": " << args[i];
+
+			LOG(INFO) << "== End of Script Event ==";
 		}
 
 		return g_hooking->m_scripted_game_event_hook.get_original<decltype(&hooks::scripted_game_event)>()(scripted_game_event, player);
