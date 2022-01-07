@@ -2,6 +2,7 @@
 #include "blip.hpp"
 #include "entity.hpp"
 #include "math.hpp"
+#include "mobile.hpp"
 #include "notify.hpp"
 #include "player.hpp"
 #include "session.hpp"

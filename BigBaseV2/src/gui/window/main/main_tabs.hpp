@@ -1,19 +1,17 @@
 #pragma once
 #include "common.hpp"
 #include "imgui.h"
-#include "natives.hpp"
-namespace big
+
+namespace big::tab_main
 {
-	class tab_main {
-	public:
-		static void tab_tunables();
-		static void tab_self();
-		static void tab_recovery();
-		static void tab_settings();
-		static void tab_spawn();
-		static void tab_spoofing();
-		static void tab_vehicle();
-		static void tab_weapons();
-		static void tab_teleport();
-	};
+	void tab_mobile();
+	void tab_tunables();
+	void tab_self();
+	void tab_recovery();
+	void tab_settings();
+	void tab_spawn();
+	void tab_spoofing();
+	void tab_vehicle();
+	void tab_weapons();
+	void tab_teleport();
 }

@@ -10,6 +10,10 @@ struct globals {
 	nlohmann::json default_options;
 	nlohmann::json options;
 
+	struct debug {
+		bool script_event_logging = false;
+	};
+
 	struct tunables {
 		bool disable_phone = false;
 		bool no_idle_kick = false;
@@ -61,6 +65,7 @@ struct globals {
 		bool noclip = false;
 		bool no_ragdoll = false;
 		bool super_run = false;
+		bool force_wanted_level = false;
 		int wanted_level = 0;
 
 		frame_flags frame_flags{};
@@ -116,6 +121,7 @@ struct globals {
 	CPlayer players[32];
 	CPlayer selected_player;
 
+	debug debug{};
 	tunables tunables{};
 	player player{};
 	protections protections{};
@@ -127,6 +133,8 @@ struct globals {
 
 	void from_json(const nlohmann::json& j)
 	{
+		this->debug.script_event_logging = j["debug"]["script_event_logging"];
+
 		this->protections.script_events.bounty = j["protections"]["script_events"]["bounty"];
 		this->protections.script_events.ceo_ban = j["protections"]["script_events"]["ceo_ban"];
 		this->protections.script_events.ceo_kick = j["protections"]["script_events"]["ceo_kick"];
@@ -189,6 +197,12 @@ struct globals {
 	nlohmann::json to_json()
 	{
 		return nlohmann::json{
+			{
+				"debug",
+				{
+					{ "script_event_logging", this->debug.script_event_logging }
+				}
+			},
 			{
 				"protections",
 				{

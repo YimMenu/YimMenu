@@ -7,6 +7,8 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Debug"))
 		{
+			ImGui::Checkbox("Script Event Logging", &g.debug.script_event_logging);
+
 			if (ImGui::Button("Dump entrypoints"))
 			{
 				system::dump_entry_points();

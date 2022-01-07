@@ -1,9 +1,9 @@
 #pragma once
+#include "natives.hpp"
 
 namespace big
 {
 	class window {
-	public:
 		static void debug();
 		static void top_bar();
 		static void handling();
@@ -11,5 +11,21 @@ namespace big
 		static void main();
 		static void player();
 		static void users();
+
+	public:
+		static void draw_all()
+		{
+			window::top_bar();
+
+			window::log();
+
+			window::debug();
+
+			window::main();
+			window::handling();
+
+			window::player();
+			window::users();
+		}
 	};
 }

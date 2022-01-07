@@ -20,6 +20,17 @@ namespace big
 					netPlayerData& netData = player_info->m_net_player_data;
 
 					ImGui::Text("Session Host: %s", net_player->is_host() ? "Yes" : "No");
+					
+					ImGui::Separator();
+
+					ImGui::Text("Wanted Level: %d", player_info->m_wanted_level);
+					ImGui::Text("Player God Mode: %s", player_info->m_ped->m_godmode ? "Yes" : "No");
+					ImGui::Text("Vehicle God Mode: %s",
+						player_info->m_ped->m_vehicle == nullptr ? "No vehicle detected" :
+						player_info->m_ped->m_vehicle->m_godmode ? "Yes" : "No"
+					);
+
+					ImGui::Separator();
 
 					ImGui::Text("Rockstar ID: %d", netData.m_rockstar_id);
 					ImGui::Text("IP Address: %d.%d.%d.%d:%d", netData.m_external_ip.m_field1, netData.m_external_ip.m_field2, netData.m_external_ip.m_field3, netData.m_external_ip.m_field4, netData.m_external_port);

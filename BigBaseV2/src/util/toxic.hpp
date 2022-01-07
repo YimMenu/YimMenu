@@ -1,5 +1,5 @@
 #pragma once
-#include "core/enums.hpp"
+#include "gta/enums.hpp"
 #include "natives.hpp"
 #include "script_global.hpp"
 #include "system.hpp"
@@ -27,24 +27,19 @@ namespace big::toxic
 		blame_explode_coord(to_blame, coords, explosion_type, damage, is_audible, is_invisible, camera_shake);
 	}
 
-	// param 0 == should send
-	// param 1 == player target
-	// param 2 == amount
-	// param 3 == unk? => always 1
-	// param 4 == if some kind of bit must be set
-	inline void bounty_player(Player target, Player origin, int amount)
+	inline void bounty_player(Player target, int amount)
 	{
 		const size_t arg_count = 22;
 		int args[arg_count] = {
 			(int)eRemoteEvent::Bounty,
-			0,
+			0, // doesn't matter of we set this to something else, the TRIGGER_SCRIPT_EVENT routine will set it to our player id anyways
 			target,
-			0,
+			0, // set by player or NPC?
 			10000,
 			0, 1, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0,
-			*script_global(1921036 + 9).as<int*>(),
-			*script_global(1921036 + 10).as<int*>()
+			*script_global(1921036).at(9).as<int*>(),
+			*script_global(1921036).at(10).as<int*>()
 		};
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, -1);

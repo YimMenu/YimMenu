@@ -2,7 +2,7 @@
 #include "common.hpp"
 #include "imgui.h"
 
-namespace big
+namespace big::tab_player
 {
 	class tab_player
 	{
