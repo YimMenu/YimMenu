@@ -85,10 +85,11 @@ namespace big
 		}
 		else if (bNoclip != bLastNoclip)
 		{
-			entity::take_control_of(ent);
-
-			ENTITY::FREEZE_ENTITY_POSITION(ent, false);
-			ENTITY::SET_ENTITY_COLLISION(ent, true, false);
+			if (entity::take_control_of(ent))
+			{
+				ENTITY::FREEZE_ENTITY_POSITION(ent, false);
+				ENTITY::SET_ENTITY_COLLISION(ent, true, false);
+			}
 		}
 
 		bLastNoclip = bNoclip;

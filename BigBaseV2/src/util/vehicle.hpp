@@ -35,9 +35,7 @@ namespace big::vehicle
 
 	inline bool repair(Vehicle veh)
 	{
-		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh)) return false;
-
-		entity::take_control_of(veh);
+		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh)) return false;
 
 		VEHICLE::SET_VEHICLE_FIXED(veh);
 		VEHICLE::SET_VEHICLE_DEFORMATION_FIXED(veh);

@@ -52,11 +52,12 @@ namespace big
 						}
 						else
 						{
-							entity::take_control_of(ent);
+							if (entity::take_control_of(ent) && ENTITY::IS_ENTITY_A_PED(ent) && !PED::IS_PED_RAGDOLL(ent))
+							{
+								TASK::SET_HIGH_FALL_TASK(ent, 0, 0, 0);
 
-							if (ENTITY::IS_ENTITY_A_PED(ent) && !PED::IS_PED_RAGDOLL(ent)) TASK::SET_HIGH_FALL_TASK(ent, 0, 0, 0);
-
-							notify::above_map("Selected entity at crosshair.");
+								notify::above_map("Selected entity at crosshair.");
+							}
 						}
 					}
 				}
@@ -75,7 +76,7 @@ namespace big
 				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 15))
 					dist += 5;
 
-				entity::take_control_of(ent);
+				if (!entity::take_control_of(ent)) return;
 
 				ENTITY::SET_ENTITY_COLLISION(ent, false, false);
 
