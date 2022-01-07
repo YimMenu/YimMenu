@@ -6,6 +6,8 @@
 #include "gta/script_program.hpp"
 #include "function_types.hpp"
 
+#include "ASI Loader/Pools.h"
+
 namespace big
 {
 	class pointers
@@ -32,7 +34,17 @@ namespace big
 		rage::atArray<GtaThread*> *m_script_threads{};
 		rage::scrProgramTable *m_script_program_table{};
 		functions::run_script_threads_t m_run_script_threads{};
+		//OPENVHOOK
+		functions::register_file_t m_register_file{};
+		functions::get_script_handle_t m_get_script_handle{};
 		std::int64_t **m_script_globals{};
+
+		//OPENVHOOK
+		rage::GenericPool* m_ped_pool{};
+		rage::VehiclePool * m_vehicle_pool{};
+		rage::GenericPool * m_prop_pool{};
+		rage::GenericPool * m_pickup_pool{};
+		rage::GenericPool * m_camera_pool{};
 
 		CGameScriptHandlerMgr **m_script_handler_mgr{};
 

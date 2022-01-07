@@ -9,6 +9,10 @@
 #include "script_mgr.hpp"
 #include "thread_pool.hpp"
 
+//OPENVHOOK
+#include "shv_runner.h"
+#include "ASI Loader/ASILoader.h"
+
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
 	using namespace big;
@@ -46,10 +50,14 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
+				g_script_mgr.add_script(std::make_unique<script>(&shv_runner::script_func));
+				//OPENVHOOK
 				LOG(INFO) << "Scripts registered.";
 
 				g_hooking->enable();
 				LOG(INFO) << "Hooking enabled.";
+				//OPENVHOOK
+				ASILoader::Initialize();
 
 				LOG(INFO) << "Registering service instances...";
 				auto globals_service_instace = std::make_unique<globals_service>();
@@ -92,6 +100,11 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				pointers_instance.reset();
 				LOG(INFO) << "Pointers uninitialized.";
 
+
+				//OPENVHOOK
+
+				shv_runner::shutdown();
+				LOG(INFO) << "ASI plugins unloaded.";
 			}
 			catch (std::exception const &ex)
 			{

@@ -58,6 +58,7 @@ private:
 
 	StateSaver(const StateSaver&);
 };
+
 namespace big
 {
 	class renderer
@@ -71,6 +72,11 @@ namespace big
 		void pre_reset();
 		void post_reset();
 
+
+		//OPENVHOOK
+		bool add_callback(PresentCallback callback) { return m_present_callbacks.insert(callback).second; }
+		bool remove_callback(PresentCallback callback) { return m_present_callbacks.erase(callback) != 0; }
+
 		void wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 	public:
 		ImFont *m_font;
@@ -79,6 +85,11 @@ namespace big
 		comptr<IDXGISwapChain> m_dxgi_swapchain;
 		comptr<ID3D11Device> m_d3d_device;
 		comptr<ID3D11DeviceContext> m_d3d_device_context;
+
+		//OPENVHOOK
+		std::set<PresentCallback>	m_present_callbacks;
+		std::unique_ptr<StateSaver> m_stateSaver;
+		bool m_restoreState = false;
 	};
 
 	inline renderer *g_renderer{};

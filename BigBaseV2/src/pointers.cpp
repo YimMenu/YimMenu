@@ -3,6 +3,8 @@
 #include "pointers.hpp"
 #include "memory/all.hpp"
 
+#include "ASI Loader/Pools.h"
+
 namespace big
 {
 	pointers::pointers()
@@ -10,7 +12,7 @@ namespace big
 		memory::pattern_batch main_batch;
 
 		// Game State
-		main_batch.add("GS", "83 3D ? ? ? ? ? 75 17 8B 43 20 25", [this](memory::handle ptr)
+		main_batch.add("GS", "83 3D ? ? ? ? ? 75 17 8B 43 20", [this](memory::handle ptr)
 		{
 			m_game_state = ptr.add(2).rip().as<eGameState*>();
 		});
@@ -209,6 +211,43 @@ namespace big
 		{
 			m_send_net_info_to_lobby = ptr.sub(0x64).as<decltype(m_send_net_info_to_lobby)>();
 		});
+
+
+		//OPENVHOOK
+		main_batch.add("Register File", "40 88 7C 24 ? E8 ? ? ? ? 0F B7 44 24 ?", [this](memory::handle ptr)
+			{
+			m_register_file = ptr.add(5).as<functions::register_file_t>();
+			});
+		
+			main_batch.add("Get Script Handle", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr)
+				 {
+			m_get_script_handle = ptr.as<functions::get_script_handle_t>();
+			});
+	
+			main_batch.add("Ped Pool", "48 8B 05 ? ? ? ? 41 0F BF C8 0F BF 40 10", [this](memory::handle ptr)
+				 {
+			m_ped_pool = ptr.add(3).as<rage::GenericPool*>();
+			});
+		
+			main_batch.add("Vehicle Pool", "48 8B 05 ? ? ? ? F3 0F 59 F6 48 8B 08", [this](memory::handle ptr)
+			 {
+			m_vehicle_pool = *(rage::VehiclePool**)(*(uintptr_t*)ptr.add(3).rip().as<uintptr_t>());
+			});
+		
+			main_batch.add("Prop Pool", "48 8B 05 ? ? ? ? 8B 78 10 85 FF", [this](memory::handle ptr)
+				 {
+			m_prop_pool = ptr.add(3).rip().as<rage::GenericPool*>();
+			});
+		
+			main_batch.add("Pickup Pool", "4C 8B 05 ? ? ? ? 40 8A F2 8B E9", [this](memory::handle ptr)
+				 {
+			m_pickup_pool = ptr.add(3).rip().as<rage::GenericPool*>();
+			});
+		
+			main_batch.add("Camera Pool", "48 8B C8 EB 02 33 C9 48 85 C9 74 26", [this](memory::handle ptr)
+				 {
+			m_camera_pool = ptr.add(-9).rip().as<rage::GenericPool*>();
+			});
 
 		main_batch.run(memory::module(nullptr));
 
