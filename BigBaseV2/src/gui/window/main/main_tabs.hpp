@@ -4,6 +4,7 @@
 
 namespace big::tab_main
 {
+	void tab_mobile();
 	void tab_tunables();
 	void tab_self();
 	void tab_recovery();

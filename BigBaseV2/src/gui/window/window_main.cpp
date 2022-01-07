@@ -11,6 +11,7 @@ namespace big
 		{
 			ImGui::BeginTabBar("tabbar");
 			tab_main::tab_self();
+			tab_main::tab_mobile();
 			tab_main::tab_spawn();
 			tab_main::tab_tunables();
 			tab_main::tab_teleport();
