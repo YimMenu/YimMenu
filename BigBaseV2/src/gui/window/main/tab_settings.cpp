@@ -10,32 +10,24 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Settings"))
 		{
-			if (ImGui::TreeNode("Protections"))
-			{
-				ImGui::Checkbox("Bounty", &g.protections.script_events.bounty);
-				ImGui::Checkbox("CEO Ban", &g.protections.script_events.ceo_ban);
-				ImGui::Checkbox("CEO Kick", &g.protections.script_events.ceo_kick);
-				ImGui::Checkbox("CEO Money", &g.protections.script_events.ceo_money);
-				ImGui::Checkbox("Wanted Level", &g.protections.script_events.clear_wanted_level);
-				ImGui::Checkbox("Fake Deposit", &g.protections.script_events.fake_deposit);
-				ImGui::Checkbox("Force Mission", &g.protections.script_events.force_mission);
-				ImGui::Checkbox("Force Teleport", &g.protections.script_events.force_teleport);
-				ImGui::Checkbox("GTA Banner", &g.protections.script_events.gta_banner);
-				ImGui::Checkbox("Destroy Personal Vehicle", &g.protections.script_events.personal_vehicle_destroyed);
-				ImGui::Checkbox("Remote Off Radar", &g.protections.script_events.remote_off_radar);
-				ImGui::Checkbox("Send to Cutscene", &g.protections.script_events.send_to_cutscene);
-				ImGui::Checkbox("Send to Island", &g.protections.script_events.send_to_island);
-				ImGui::Checkbox("Sound Spam", &g.protections.script_events.sound_spam);
-				ImGui::Checkbox("Spectate", &g.protections.script_events.spectate);
-				ImGui::Checkbox("Transaction Error", &g.protections.script_events.transaction_error);
-				ImGui::Checkbox("Vehicle Kick", &g.protections.script_events.vehicle_kick);
+			ImGui::Text("No settings to be modified as of now");
+<<<<<<<<< Temporary merge branch 1
+=========
 
-				ImGui::TreePop();
-			}
+			ImGui::Separator();
+			ImGui::Checkbox("Always Jackpot in Slot Machines", &features::always_jackpot);
 
-			if (ImGui::Button("Reset cooldown"))
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("After enabling this option you'll always win in any Slot Machine.");
+
+			ImGui::Separator();
+
+			if(ImGui::Button("Reset cooldown"))
 			{
 				g_fiber_pool->queue_job([] {
+
+					// Variant #1: The most popular and maybe detected (?) variant, i prefer this one, it's straight and... less buggy, but, if you're scared of using it, use the other variants.
+
 					STATS::STAT_SET_INT(RAGE_JOAAT("MPPLY_CASINO_CHIPS_WON_GD"), 0, TRUE);
 					STATS::STAT_SET_INT(RAGE_JOAAT("MPPLY_CASINO_CHIPS_WONTIM"), 0, TRUE);
 					STATS::STAT_SET_INT(RAGE_JOAAT("MPPLY_CASINO_CHIPS_PUR_GD"), 0, TRUE);
@@ -81,7 +73,7 @@ namespace big
 					STATS::STAT_SET_INT(RAGE_JOAAT("MPPLY_CHIPS_COL_TIME"), 0, TRUE);
 					});
 			}
-			ImGui::Text("No settings to be modified as of now");
+>>>>>>>>> Temporary merge branch 2
 
 			ImGui::EndTabItem();
            
