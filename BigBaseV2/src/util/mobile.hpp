@@ -2,13 +2,29 @@
 #include "core/enums.hpp"
 #include "script_global.hpp"
 #include "misc.hpp"
+#include "natives.hpp"
 
 namespace big::mobile
 {
+	inline auto player_global = script_global(2689156);
+	inline auto vehicle_global = script_global(1585844);
+
+	namespace lester
+	{
+		inline void off_radar(bool toggle)
+		{
+			*player_global.at(PLAYER::GET_PLAYER_INDEX(), 453).at(209).as<int*>() = toggle;
+			*script_global(2703656).at(70).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
+		}
+	}
+
+	namespace mechanic
+	{
+
+	}
+
 	namespace mors_mutual
 	{
-		auto vehicle_global = script_global(1585844);
-
 		bool fix_index(int veh_idx); // forward declare func
 		inline int fix_all()
 		{
