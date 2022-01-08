@@ -76,7 +76,12 @@ namespace big
 				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 15))
 					dist += 5;
 
-				if (!entity::take_control_of(ent)) return;
+				if (!entity::take_control_of(ent))
+				{
+					ent = 0;
+
+					return notify::above_map("Failed to take control of entity.");
+				}
 
 				ENTITY::SET_ENTITY_COLLISION(ent, false, false);
 
