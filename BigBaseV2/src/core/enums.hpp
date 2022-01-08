@@ -15,7 +15,7 @@ namespace big
 
 	enum eVehicleFlags
 	{
-		UNK0 = 1 << 0,
+		ACTIVE = 1 << 0,
 		DESTROYED = 1 << 1,
 		HAS_INSURANCE = 1 << 2,
 		IMPOUNDED = 1 << 6,
