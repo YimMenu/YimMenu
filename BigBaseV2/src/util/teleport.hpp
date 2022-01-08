@@ -1,3 +1,4 @@
+#pragma once
 #include "blip.hpp"
 #include "entity.hpp"
 #include "notify.hpp"
@@ -96,6 +97,11 @@ namespace big::teleport
 		PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, seat_index);
 
 		return true;
+	}
+
+	inline void to_coords(Vector3 location)
+	{
+		PED::SET_PED_COORDS_KEEP_VEHICLE(PLAYER::PLAYER_PED_ID(), location.x, location.y, location.z + 1.f);
 	}
 
 	inline bool to_blip(int sprite, int color = -1)
