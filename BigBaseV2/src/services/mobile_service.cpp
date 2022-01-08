@@ -51,14 +51,18 @@ namespace big
 	{
 		for (int i = 0; i < *mobile::vehicle_global.as<int*>(); i++)
 		{
+			script::get_current()->yield();
+
 			auto veh_idx_global = mobile::vehicle_global.at(i, 142);
 
 			Hash hash = *veh_idx_global.at(66).as<Hash*>();
+			auto& it = m_pv_lookup.find(i);
+
 			if (STREAMING::IS_MODEL_A_VEHICLE(hash))
 			{
 				auto veh = std::make_unique<PersonalVehicle>(i, veh_idx_global);
 
-				if (auto& it = m_pv_lookup.find(i); it != m_pv_lookup.end())
+				if (it != m_pv_lookup.end())
 				{
 					m_personal_vehicles.erase(it->second);
 
@@ -70,9 +74,15 @@ namespace big
 
 				m_pv_lookup.emplace(i, veh->get_display_name());
 				m_personal_vehicles.emplace(veh->get_display_name(), std::move(veh));
+
+				continue;
 			}
 
-			script::get_current()->yield();
+			if (it != m_pv_lookup.end())
+			{
+				m_personal_vehicles.erase(it->second);
+				m_pv_lookup.erase(i);
+			}
 		}
 	}
 }
