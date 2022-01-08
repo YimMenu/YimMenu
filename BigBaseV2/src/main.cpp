@@ -57,6 +57,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				LOG(INFO) << "Registering service instances...";
 				auto globals_service_instace = std::make_unique<globals_service>();
+				auto mobile_service_instance = std::make_unique<mobile_service>();
 				auto vehicle_service_instance = std::make_unique<vehicle_service>();
 
 				while (g_running)
@@ -66,6 +67,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				LOG(INFO) << "Serviceses uninitialized.";
 				vehicle_service_instance.reset();
+				mobile_service_instance.reset();
 				globals_service_instace.reset();
 
 				// Make sure that all threads created don't have any blocking loops

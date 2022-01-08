@@ -29,7 +29,7 @@ namespace big
 						if (!blip::get_blip_location(location, 225, 0) && !blip::get_blip_location(location, 226, 0)) return notify::above_map("No personal vehicle found, was it destroyed?");
 
 						Vehicle veh = vehicle::get_closest_to_location(location, 2.f);
-						if (veh == 0) return notify::above_map("Invalid vehicle handle...");
+						if (ENTITY::IS_ENTITY_DEAD(veh, false)) return notify::above_map("Invalid vehicle handle...");
 
 						location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
 
