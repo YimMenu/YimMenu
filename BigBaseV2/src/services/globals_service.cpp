@@ -57,9 +57,6 @@ namespace big
 
 	void globals_service::loop()
 	{
-		// Don't start loop if it's already running...
-		if (m_running) return;
-
 		while (m_running)
 			for (auto& global : m_globals)
 				if (global.m_freeze) global.write();

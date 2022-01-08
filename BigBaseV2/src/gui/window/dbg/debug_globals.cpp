@@ -8,7 +8,7 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Globals"))
 		{
-			if (ImGui::Checkbox("Enable Freezing", &g_globals_service->m_running) && !g_globals_service->m_running)
+			if (ImGui::Checkbox("Enable Freezing", &g_globals_service->m_running) && g_globals_service->m_running)
 				g_thread_pool->push([&]() { g_globals_service->loop(); });
 
 			if (ImGui::Button("Load"))
