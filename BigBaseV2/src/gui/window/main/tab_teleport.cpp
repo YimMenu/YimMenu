@@ -1,6 +1,7 @@
 #include "main_tabs.hpp"
 #include "fiber_pool.hpp"
 #include "util/teleport.hpp"
+#include "persist/PersistTeleport.h"
 
 namespace big
 {
@@ -51,6 +52,8 @@ namespace big
 						PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), VEHICLE::GET_CLOSEST_VEHICLE(pos.x, pos.y, pos.z, 1000, 0, 70), selected_seat);
 					});
 			}
+
+			persist_teleport::do_presentation_layer();
 
 			ImGui::EndTabItem();
 		}
