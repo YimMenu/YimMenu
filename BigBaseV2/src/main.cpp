@@ -9,6 +9,10 @@
 #include "script_mgr.hpp"
 #include "thread_pool.hpp"
 
+#include "services/globals_service.hpp"
+#include "services/mobile_service.hpp"
+#include "services/vehicle_service.hpp"
+
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
 	using namespace big;

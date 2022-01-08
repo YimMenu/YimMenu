@@ -3,6 +3,7 @@
 #include "thread_pool.hpp"
 #include "natives.hpp"
 #include "script.hpp"
+#include "services/vehicle_service.hpp"
 
 namespace big
 {

@@ -2,6 +2,7 @@
 #include "gui/window.hpp"
 #include "handling/handling_tabs.hpp"
 #include "imgui.h"
+#include "services/vehicle_service.hpp"
 
 namespace big
 {
