@@ -27,27 +27,37 @@ namespace big
 
 			for (auto& global : g_globals_service->m_globals)
 			{
+				char label[64];
+
 				ImGui::Separator();
 
-				char label[64];
-				sprintf(label, "Freeze###freeze_%d", global.get_id());
+				sprintf(label, "Freeze##%d", global.get_id());
 				ImGui::Checkbox(label, &global.m_freeze);
+
+				ImGui::BeginGroup();
+
+				ImGui::Text("Name:");
+				ImGui::Text("Value:");
+
+				ImGui::EndGroup();
+
 				ImGui::SameLine();
+
+				ImGui::BeginGroup();
 
 				ImGui::Text(global.m_name.c_str());
-				ImGui::SameLine();
-
+				
 				sprintf(label, "###input_%d", global.get_id());
-				ImGui::PushItemWidth(200.f);
+				ImGui::SetNextItemWidth(200.f);
 				ImGui::InputInt(label, global.get());
-				ImGui::PopItemWidth();
 
-				sprintf(label, "Write###btn_%d", global.get_id());
-				if (ImGui::Button(label))
-					global.write();
+				ImGui::EndGroup();
 
 				ImGui::SameLine();
-				sprintf(label, "Delete##delete_%d", global.get_id());
+
+				ImGui::BeginGroup();
+
+				sprintf(label, "Delete##%d", global.get_id());
 				if (ImGui::Button(label))
 				{
 					for (int i = 0; i < g_globals_service->m_globals.size(); i++)
@@ -56,6 +66,12 @@ namespace big
 
 					break;
 				}
+
+				sprintf(label, "Write###%d", global.get_id());
+				if (ImGui::Button(label))
+					global.write();	
+
+				ImGui::EndGroup();
 			}
 
 			ImGui::EndTabItem();
