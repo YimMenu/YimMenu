@@ -29,7 +29,8 @@ namespace big
 
 		void register_vehicles();
 
-		std::map<int, PersonalVehicle> m_personal_vehicles;
+		std::map<std::string, std::unique_ptr<PersonalVehicle>> m_personal_vehicles;
+		std::map<int, std::string> m_pv_lookup;
 
 	};
 

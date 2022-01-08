@@ -15,9 +15,10 @@ namespace big
 
 	enum eVehicleFlags
 	{
-		ACTIVE = 1 << 0,
+		TRIGGER_SPAWN_TOGGLE = 1 << 0,
 		DESTROYED = 1 << 1,
 		HAS_INSURANCE = 1 << 2,
+		PEGASUS = 1 << 3, // unsure
 		IMPOUNDED = 1 << 6,
 		UNK1 = 1 << 10,
 		UNK2 = 1 << 11,

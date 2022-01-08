@@ -56,10 +56,20 @@ namespace big
 			Hash hash = *veh_idx_global.at(66).as<Hash*>();
 			if (STREAMING::IS_MODEL_A_VEHICLE(hash))
 			{
-				if (auto& it = m_personal_vehicles.find(i); it != m_personal_vehicles.end() && it->second.get_hash() != hash)
-					it->second = PersonalVehicle(i, veh_idx_global);
-				else
-					m_personal_vehicles.emplace(i, PersonalVehicle(i, veh_idx_global));
+				auto veh = std::make_unique<PersonalVehicle>(i, veh_idx_global);
+
+				if (auto& it = m_pv_lookup.find(i); it != m_pv_lookup.end())
+				{
+					m_personal_vehicles.erase(it->second);
+
+					it->second = veh->get_display_name();
+					m_personal_vehicles.emplace(veh->get_display_name(), std::move(veh));
+
+					continue;
+				}
+
+				m_pv_lookup.emplace(i, veh->get_display_name());
+				m_personal_vehicles.emplace(veh->get_display_name(), std::move(veh));
 			}
 
 			script::get_current()->yield();

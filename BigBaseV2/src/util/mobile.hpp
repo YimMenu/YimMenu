@@ -20,7 +20,7 @@ namespace big::mobile
 		{
 			misc::clear_bits(
 				vehicle_global.at(get_current_personal_vehicle(), 142).at(103).as<int*>(),
-				eVehicleFlags::ACTIVE | eVehicleFlags::UNK2
+				eVehicleFlags::TRIGGER_SPAWN_TOGGLE | eVehicleFlags::UNK2
 			);
 		}
 
@@ -94,7 +94,7 @@ namespace big::mobile
 				);
 				misc::set_bits(
 					vehicle_global.at(veh_idx, 142).at(103).as<int*>(),
-					eVehicleFlags::ACTIVE | eVehicleFlags::UNK2
+					eVehicleFlags::TRIGGER_SPAWN_TOGGLE | eVehicleFlags::UNK2
 				);
 			}
 			return can_be_fixed;
