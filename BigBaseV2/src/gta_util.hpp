@@ -9,21 +9,6 @@
 
 namespace big::gta_util
 {
-	static GtaThread* find_script_thread(rage::joaat_t hash)
-	{
-		for (auto thread : *g_pointers->m_script_threads)
-		{
-			if (thread
-				&& thread->m_context.m_thread_id
-				&& thread->m_handler
-				&& thread->m_script_hash == hash)
-			{
-				return thread;
-			}
-		}
-
-		return nullptr;
-	}
 	inline CPed *get_local_ped()
 	{
 		if (auto ped_factory = *g_pointers->m_ped_factory)

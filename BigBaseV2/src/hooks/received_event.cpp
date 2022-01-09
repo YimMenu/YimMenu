@@ -31,8 +31,6 @@ namespace big
 		switch ((RockstarEvent)event_id)
 		{
 		case RockstarEvent::NETWORK_CLEAR_PED_TASKS_EVENT:
-		case RockstarEvent::REMOVE_ALL_WEAPONS_EVENT:
-		case RockstarEvent::REMOVE_WEAPON_EVENT:
 		{
 			if (source_player->player_id < 32)
 			{
@@ -48,6 +46,27 @@ namespace big
 
 			break;
 		}
+
+		case RockstarEvent::REMOTE_SCRIPT_LEAVE_EVENT:
+		{
+			if (source_player->player_id < 32)
+			{
+
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+
+
+
+				char msg[64];
+				strcpy(msg, "<C>");
+				strcat(msg, source_player->get_name());
+				strcat(msg, "</C> possibly attempting to kick you.");
+
+				return false;
+			}
+
+			break;
+		}
+
 		// Don't block this event, we still want to report this player
 		// because if we still report others, our account seems less fishy
 		case RockstarEvent::REPORT_CASH_SPAWN_EVENT:
@@ -93,6 +112,194 @@ namespace big
 			strcat(msg, "</C>");
 
 			return false;
+		}
+
+		case RockstarEvent::GIVE_PICKUP_REWARDS_EVENT:
+		{
+			char msg[64];
+			strcpy(msg, "Detected <C>");
+			strcat(msg, source_player->get_name());
+			strcat(msg, "</C> giving pickups.");
+
+			notify::above_map(msg);
+
+			break;
+		}
+		// player sending this event is a modder
+
+
+		case RockstarEvent::GIVE_WEAPON_EVENT:
+		{
+			if (source_player->player_id < 32)
+			{
+
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+
+
+
+				char msg[64];
+				strcpy(msg, "<C>");
+				strcat(msg, source_player->get_name());
+				strcat(msg, "</C> is giving weapons.");
+
+				return false;
+			}
+
+			break;
+		}
+		case RockstarEvent::REMOVE_WEAPON_EVENT:
+		{
+			if (source_player->player_id < 32)
+			{
+
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+
+
+
+				char msg[64];
+				strcpy(msg, "<C>");
+				strcat(msg, source_player->get_name());
+				strcat(msg, "</C> is removing weapons.");
+
+				return false;
+			}
+
+			break;
+		}
+
+		case RockstarEvent::VEHICLE_COMPONENT_CONTROL_EVENT:
+		{
+			if (source_player->player_id < 32)
+			{
+
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+
+
+
+				char msg[64];
+				strcpy(msg, "<C>");
+				strcat(msg, source_player->get_name());
+				strcat(msg, "</C> is trying to mess with your car.");
+
+				return false;
+			}
+
+			break;
+		}
+		case RockstarEvent::ALTER_WANTED_LEVEL_EVENT:
+		{
+			if (source_player->player_id < 32)
+			{
+
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+
+
+
+				char msg[64];
+				strcpy(msg, "<C>");
+				strcat(msg, source_player->get_name());
+				strcat(msg, "</C> is giving stars.");
+
+				return false;
+			}
+
+			break;
+		}
+		case RockstarEvent::RAGDOLL_REQUEST_EVENT:
+		{
+			if (source_player->player_id < 32)
+			{
+
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+
+
+
+				char msg[64];
+				strcpy(msg, "<C>");
+				strcat(msg, source_player->get_name());
+				strcat(msg, "</C> is ragdolling me.");
+
+				return false;
+			}
+
+			break;
+		}
+
+		case RockstarEvent::REMOVE_ALL_WEAPONS_EVENT:
+		{
+			if (source_player->player_id < 32)
+			{
+
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+
+
+
+				char msg[64];
+				strcpy(msg, "<C>");
+				strcat(msg, source_player->get_name());
+				strcat(msg, "</C> is removing weapons.");
+
+				return false;
+			}
+
+			break;
+		}
+		case RockstarEvent::EXPLOSION_EVENT:
+		{
+			if (source_player->player_id < 32)
+			{
+
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+
+
+
+				char msg[64];
+				strcpy(msg, "<C>");
+				strcat(msg, source_player->get_name());
+				strcat(msg, "</C> is exploding.");
+
+				return false;
+			}
+
+			break;
+		}
+		case RockstarEvent::REQUEST_PHONE_EXPLOSION_EVENT:
+		{
+			if (source_player->player_id < 32)
+			{
+
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+
+
+
+				char msg[64];
+				strcpy(msg, "<C>");
+				strcat(msg, source_player->get_name());
+				strcat(msg, "</C> is exploding.");
+
+				return false;
+			}
+
+			break;
+		}
+		case RockstarEvent::NETWORK_PTFX_EVENT:
+		{
+			if (source_player->player_id < 32)
+			{
+
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+
+
+
+				char msg[64];
+				strcpy(msg, "Crasher/Orbital cannon user:");
+				strcat(msg, source_player->get_name());
+				strcat(msg, "</C> is sus.");
+
+				return false;
+			}
+
+			break;
 		}
 		//case RockstarEvent::GIVE_PICKUP_REWARDS_EVENT:
 		//{

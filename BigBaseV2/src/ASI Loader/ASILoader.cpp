@@ -12,7 +12,6 @@ void ASILoader::Initialize() {
 	currentFolder += "\\BigBaseV2";
 	const std::string asiFolder = currentFolder + "\\OpenHookV";
 
-	const auto loadPlugins = [&]() {
 	const std::string asiSearchQuery = asiFolder + "\\*.asi";
 
 	WIN32_FIND_DATAA fileData;
@@ -24,6 +23,7 @@ void ASILoader::Initialize() {
 			const std::string pluginPath = asiFolder + "\\" + fileData.cFileName;
 
 			LOG(INFO) << "Loading " << pluginPath.c_str();
+
 			PEImage pluginImage;
 			if (!pluginImage.Load(pluginPath)) {
 
@@ -48,29 +48,16 @@ void ASILoader::Initialize() {
 			// Image compatible (now), load it
 			HMODULE module = LoadLibraryA(pluginPath.c_str());
 			if (module) {
-				LOG(INFO) << ("\tLoaded \"%s\" => 0x%p", fileData.cFileName, module);
+				LOG(INFO) << "Loaded " << fileData.cFileName << " -> " HEX_TO_UPPER(module);
 			}
 			else {
-				DWORD errorMessageID = ::GetLastError();
-				if (errorMessageID == 0)
-					LOG(INFO) << ("\tFailed to load");
-
-				LPSTR messageBuffer = nullptr;
-				size_t size = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-					NULL, errorMessageID, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&messageBuffer, 0, NULL);
-
-				std::string message(messageBuffer, size);
-
-				//Free the buffer.
-				LocalFree(messageBuffer);
-				LOG(INFO) << ("\tFailed to load: %s", message.c_str());
+				LOG(FATAL) << "Failed to load";
 			}
 
 		} while (FindNextFileA(fileHandle, &fileData));
 
 		FindClose(fileHandle);
 	}
-};
-	loadPlugins();
+
 	LOG(INFO) << "Finished loading *.asi plugins.";
 }

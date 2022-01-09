@@ -94,6 +94,7 @@ struct globals {
 		};
 
 		bool god_mode = false;
+		bool untargetable = false;
 		bool horn_boost = false;
 		speedo_meter speedo_meter{};
 	};
@@ -177,6 +178,7 @@ struct globals {
 		this->spoofing.username = j["spoofing"]["username"];
 
 		this->vehicle.god_mode = j["vehicle"]["god_mode"];
+		this->vehicle.untargetable = j["vehicle"]["untargetable"];
 		this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
 
 		this->vehicle.speedo_meter.type = (SpeedoMeter)j["vehicle"]["speedo_meter"]["type"];
@@ -271,6 +273,7 @@ struct globals {
 			{
 				"vehicle", {
 					{ "god_mode", this->vehicle.god_mode },
+					{ "untargetable", this->vehicle.untargetable },
 					{ "horn_boost", this->vehicle.horn_boost },
 					{
 						"speedo_meter", {

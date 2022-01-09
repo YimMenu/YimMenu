@@ -19,7 +19,7 @@ namespace big
 			if (ImGui::TreeNode("General"))
 			{
 				ImGui::Checkbox("God Mode", &g.vehicle.god_mode);
-				ImGui::SameLine();
+				ImGui::Checkbox("Untargetable +", &g.vehicle.untargetable);
 
 				if (ImGui::Button("Bring Personal Vehicle"))
 				{
