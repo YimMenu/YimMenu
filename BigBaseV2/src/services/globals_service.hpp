@@ -52,6 +52,8 @@ namespace big
 
 		global(nlohmann::json data)
 		{
+			m_internal_id = ++m_instance_count;
+
 			m_base_address = data["base_address"];
 			m_freeze = data["freeze"];
 			m_name = data["name"];
@@ -63,6 +65,8 @@ namespace big
 
 		global(const char* name, const int base_address, const bool freeze, const int(*offsets)[2], int offset_count)
 		{
+			m_internal_id = ++m_instance_count;
+
 			m_base_address = base_address;
 			m_freeze = freeze;
 			m_name = std::string(name);
@@ -87,6 +91,11 @@ namespace big
 			if (m_freeze)
 				return &m_value;
 			return m_internal_addr;
+		}
+
+		int get_id()
+		{
+			return m_internal_id;
 		}
 
 		void set(int value)
@@ -118,6 +127,9 @@ namespace big
 		}
 
 	private:
+		inline static int m_instance_count;
+
+		int m_internal_id;
 		int* m_internal_addr;
 	};
 

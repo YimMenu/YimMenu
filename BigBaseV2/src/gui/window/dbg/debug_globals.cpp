@@ -8,7 +8,7 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Globals"))
 		{
-			if (ImGui::Checkbox("Enable Freezing", &g_globals_service->m_running) && !g_globals_service->m_running)
+			if (ImGui::Checkbox("Enable Freezing", &g_globals_service->m_running) && g_globals_service->m_running)
 				g_thread_pool->push([&]() { g_globals_service->loop(); });
 
 			if (ImGui::Button("Load"))
@@ -27,35 +27,51 @@ namespace big
 
 			for (auto& global : g_globals_service->m_globals)
 			{
+				char label[64];
+
 				ImGui::Separator();
 
-				char label[64];
-				sprintf(label, "Freeze###freeze_%d", global.m_base_address);
+				sprintf(label, "Freeze##%d", global.get_id());
 				ImGui::Checkbox(label, &global.m_freeze);
+
+				ImGui::BeginGroup();
+
+				ImGui::Text("Name:");
+				ImGui::Text("Value:");
+
+				ImGui::EndGroup();
+
 				ImGui::SameLine();
+
+				ImGui::BeginGroup();
 
 				ImGui::Text(global.m_name.c_str());
-				ImGui::SameLine();
-
-				sprintf(label, "###input_%d", global.m_base_address);
-				ImGui::PushItemWidth(200.f);
+				
+				sprintf(label, "###input_%d", global.get_id());
+				ImGui::SetNextItemWidth(200.f);
 				ImGui::InputInt(label, global.get());
-				ImGui::PopItemWidth();
 
-				sprintf(label, "Write###btn_%d", global.m_base_address);
-				if (ImGui::Button(label))
-					global.write();
+				ImGui::EndGroup();
 
 				ImGui::SameLine();
-				sprintf(label, "Delete##delet_%d", global.m_base_address);
+
+				ImGui::BeginGroup();
+
+				sprintf(label, "Delete##%d", global.get_id());
 				if (ImGui::Button(label))
 				{
 					for (int i = 0; i < g_globals_service->m_globals.size(); i++)
-						if (const auto& it = g_globals_service->m_globals.at(i); it.m_base_address == global.m_base_address && it.m_name == global.m_name)
+						if (auto& it = g_globals_service->m_globals.at(i); it.get_id() == global.get_id())
 							g_globals_service->m_globals.erase(g_globals_service->m_globals.begin() + i);
 
 					break;
 				}
+
+				sprintf(label, "Write###%d", global.get_id());
+				if (ImGui::Button(label))
+					global.write();	
+
+				ImGui::EndGroup();
 			}
 
 			ImGui::EndTabItem();

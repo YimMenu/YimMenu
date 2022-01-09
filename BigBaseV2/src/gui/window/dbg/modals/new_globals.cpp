@@ -80,7 +80,10 @@ namespace big
 			ImGui::SameLine();
 			if (ImGui::Button("Save"))
 			{
-				g_globals_service->m_globals.push_back(global(name, base_address, freeze, offsets, offset_count));
+				auto new_global = global(name, base_address, freeze, offsets, offset_count);
+				new_global.build_cache();
+
+				g_globals_service->m_globals.push_back(new_global);
 
 				strcpy(name, "");
 				freeze = false;
