@@ -1,6 +1,6 @@
 #include "main_tabs.hpp"
 #include "fiber_pool.hpp"
-#include "script_global.hpp"
+#include "util/globals.hpp"
 #include "util/teleport.hpp"
 #include "util/vehicle.hpp"
 
@@ -47,7 +47,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					Vehicle veh = *script_global(2810287).at(298).as<Vehicle*>();
+					Vehicle veh = globals::get_personal_vehicle();
 					if (ENTITY::IS_ENTITY_DEAD(veh, false)) return notify::above_map("Invalid vehicle handle...");
 
 					Vector3 location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
@@ -58,7 +58,7 @@ namespace big
 
 			if (ImGui::Button("Teleport to Personal Vehicle"))
 			{
-				Vehicle veh = *script_global(2810287).at(298).as<Vehicle*>();
+				Vehicle veh = globals::get_personal_vehicle();
 				if (ENTITY::IS_ENTITY_DEAD(veh, false)) return notify::above_map("Invalid vehicle handle...");
 
 				teleport::to_coords(
