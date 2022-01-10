@@ -20,7 +20,7 @@ namespace big::mobile
 		{
 			misc::clear_bits(
 				vehicle_global.at(get_current_personal_vehicle(), 142).at(103).as<int*>(),
-				eVehicleFlags::TRIGGER_SPAWN_TOGGLE | eVehicleFlags::UNK2
+				eVehicleFlags::TRIGGER_SPAWN_TOGGLE | eVehicleFlags::SPAWN_AT_MORS_MUTUAL
 			);
 		}
 
@@ -41,8 +41,44 @@ namespace big::mobile
 
 	namespace mors_mutual
 	{
-		bool fix_index(int veh_idx);
+		inline bool fix_index(int veh_idx, bool spawn_veh = false)
+		{
+			bool can_be_fixed = misc::has_bits_set(
+				vehicle_global.at(veh_idx, 142).at(103).as<int*>(),
+				eVehicleFlags::DESTROYED | eVehicleFlags::HAS_INSURANCE
+			);
+
+			if (can_be_fixed)
+			{
+				misc::clear_bits(
+					vehicle_global.at(veh_idx, 142).at(103).as<int*>(),
+					eVehicleFlags::DESTROYED | eVehicleFlags::IMPOUNDED | eVehicleFlags::UNK2
+				);
+
+				if (spawn_veh)
+				{
+					misc::set_bits(
+						vehicle_global.at(veh_idx, 142).at(103).as<int*>(),
+						eVehicleFlags::TRIGGER_SPAWN_TOGGLE | eVehicleFlags::SPAWN_AT_MORS_MUTUAL
+					);
+				}
+			}
+			return can_be_fixed;
+		}
+
+		inline int fix_all()
+		{
+			int fixed_count = 0;
+
+			const int arr_size = *vehicle_global.as<int*>();
+			for (int i = 0; i < arr_size; i++)
+				if (fix_index(i))
+					fixed_count++;
+
+			return fixed_count;
+		}
 	}
+
 	namespace mechanic
 	{
 		inline void summon_vehicle_by_index(int veh_idx)
@@ -62,42 +98,6 @@ namespace big::mobile
 			GtaThread* freemode_thread = gta_util::find_script_thread(RAGE_JOAAT("freemode"));
 			if (freemode_thread)
 				*script_local(freemode_thread, 17437).at(176).as<int*>() = 0; // spawn vehicle instantly
-		}
-	}
-
-	namespace mors_mutual
-	{
-		bool fix_index(int veh_idx); // forward declare func
-		inline int fix_all()
-		{
-			int fixed_count = 0;
-
-			for (int i = 0; i < *vehicle_global.as<int*>(); i++)
-				if (fix_index(i))
-					fixed_count++;
-
-			return fixed_count;
-		}
-
-		inline bool fix_index(int veh_idx)
-		{
-			bool can_be_fixed = misc::has_bits_set(
-				vehicle_global.at(veh_idx, 142).at(103).as<int*>(),
-				eVehicleFlags::DESTROYED | eVehicleFlags::HAS_INSURANCE
-			);
-
-			if (can_be_fixed)
-			{
-				misc::clear_bits(
-					vehicle_global.at(veh_idx, 142).at(103).as<int*>(),
-					eVehicleFlags::DESTROYED | eVehicleFlags::IMPOUNDED | eVehicleFlags::UNK3
-				);
-				misc::set_bits(
-					vehicle_global.at(veh_idx, 142).at(103).as<int*>(),
-					eVehicleFlags::TRIGGER_SPAWN_TOGGLE | eVehicleFlags::UNK2
-				);
-			}
-			return can_be_fixed;
 		}
 	}
 }
