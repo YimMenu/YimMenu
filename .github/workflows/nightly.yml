@@ -86,7 +86,8 @@ jobs:
       - name: Nightly Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Nightly ${{ steps.short_sha.outputs.sha_short }}
+          name: Nightly [${{ steps.short_sha.outputs.sha_short }}]
+          tag_name: nightly_${{ steps.short_sha.outputs.sha_short }}
           body: |
             **This release has been build by Github Actions**
             [Link to build](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
