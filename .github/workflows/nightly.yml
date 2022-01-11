@@ -21,7 +21,7 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: test -z $(git rev-list  --after="24 hours"  ${{ github.sha }}) && echo "::set-output name=should_run::false"
 
-  build-nightly:
+  build_nightly:
     runs-on: windows-latest
     name: Build Nightly
     needs: check_date
@@ -67,7 +67,7 @@ jobs:
         id: short_sha
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
-  create-release:
+  create_release:
     runs-on: ubuntu-latest
     name: Create Release
     needs: build-nightly
@@ -80,13 +80,13 @@ jobs:
       - name: Echo build sha256
         id: build_sha
         run: |
-          echo "::set-output name=build_sha::$(cat sha256.checksum)"
+          echo "::set-output name=build_sha::$(sha256sum YimMenu.dll)"
           cat sha256.checksum
 
       - name: Nightly Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Nightly [${{ needs.build-nightly.steps.short_sha.outputs.sha_short }}]
+          name: Nightly [${{ needs.build_nightly.steps.short_sha.outputs.sha_short }}]
           tag_name: nightly
           body: |
             **This release has been build by Github Actions**
