@@ -1,4 +1,4 @@
-name: Nightly Public Build
+name: Nightly Build
 
 on:
   schedule:
@@ -53,7 +53,7 @@ jobs:
 
       - name: Generate Hash for binary
         run: powershell.exe "Get-FileHash YimMenu.dll | Select-Object -ExpandProperty Hash | Out-File sha256.checksum"
-        working-director: bin/Release/
+        working-directory: bin/Release/
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
