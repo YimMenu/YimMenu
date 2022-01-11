@@ -105,20 +105,21 @@ jobs:
             ```
             ${{ steps.build_sha.outputs.build_sha }}
             ```
+            To verify the build SHA256 during the action, click the build link, go-to "Create Release", open the Echo build sha256 step and read the sha256.
 
-            Full Commit Hash:
-            ```
-            ${{ needs.build_nightly.outputs.full_sha }}
-            ```
-
-            Compare this build hash with one that you generated yourself from the build artifacts, build artifacts can be found by clicking the link to build.
+            Compare this build hash with one that you generated yourself from the build artifacts.
+            Alternatively you can download the build artifacts, generate a SHA256 checksum and compare it with the below binary.
             Build artifacts ARE NOT automatically the same as release assets since release assets can be modified afterwards.
-
 
             These are nightly builds of YimMenu, they are provided for testing purposes only:
             - Test if your build environment produces a broken BigBaseV2.dll
             - Test if source code is out of date and no longer compatible with the current version of GTA V
 
             If you wish to use this menu as-is you are on your own, no warranty is provided.
+
+            Full Commit Hash:
+            ```
+            ${{ needs.build_nightly.outputs.full_sha }}
+            ```
           files: |
             YimMenu.dll
