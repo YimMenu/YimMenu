@@ -75,7 +75,8 @@ jobs:
       - name: Echo build sha256
         id: build_sha
         run: |
-          echo "::set-output name=build_sha::$(sha256sum YimMenu.dll)"
+          sha256sum YimMenu.dll > sha256.checksum
+          echo "::set-output name=build_sha::$(cat sha256.checksum)"
           cat sha256.checksum
 
       - name: Nightly Release
