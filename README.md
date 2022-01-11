@@ -44,14 +44,6 @@ GenerateProjects.bat
 ```
 Now, you will be able to open the solution, and simply build it in Visual Studio.
 
-## Debugging Binaries
-
-If you fail to create a working build of YimMenu you can try one of the nightly prebuild binaries.
-They are automatically build for testing purposes only, they should not be used online.
-Try and see if these builds work and if they don't create an issue about what isn't working.
-
-[Link to debugging binaries](https://github.com/Yimura/YimMenu/releases/latest)
-
 ## Project Structure
 
 - `api/` contains some basic example of how I'd make REST api calls
