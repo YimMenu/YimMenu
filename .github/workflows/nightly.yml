@@ -63,6 +63,10 @@ jobs:
             bin/Release/YimMenu.dll
             bin/Release/sha256.checksum
 
+      - name: Get commit short sha for nightly name
+        id: short_sha
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
   create-release:
     runs-on: ubuntu-latest
     name: Create Release
@@ -79,15 +83,11 @@ jobs:
           echo "::set-output name=build_sha::$(cat sha256.checksum)"
           cat sha256.checksum
 
-      - name: Get commit short sha for nightly name
-        id: short_sha
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-
       - name: Nightly Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Nightly [${{ steps.short_sha.outputs.sha_short }}]
-          tag_name: nightly_${{ steps.short_sha.outputs.sha_short }}
+          name: Nightly [${{ needs.build-nightly.steps.short_sha.outputs.sha_short }}]
+          tag_name: nightly
           body: |
             **This release has been build by Github Actions**
             [Link to build](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
