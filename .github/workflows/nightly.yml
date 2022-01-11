@@ -84,6 +84,14 @@ jobs:
           echo "::set-output name=build_sha::$(cat sha256.checksum)"
           cat sha256.checksum
 
+      - name: Remove previous Nightly
+        uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        with:
+          delete_release: true
+          tag_name: nightly
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Nightly Release
         uses: softprops/action-gh-release@v1
         with:
