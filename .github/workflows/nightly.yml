@@ -51,17 +51,12 @@ jobs:
         run: ren BigBaseV2.dll YimMenu.dll
         working-directory: bin/Release/
 
-      - name: Generate Hash for binary
-        run: powershell.exe "Get-FileHash YimMenu.dll | Select-Object -ExpandProperty Hash | Out-File sha256.checksum"
-        working-directory: bin/Release/
-
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: binary
           path: |
             bin/Release/YimMenu.dll
-            bin/Release/sha256.checksum
 
       - name: Get commit short sha for nightly name
         id: short_sha
@@ -70,7 +65,7 @@ jobs:
   create_release:
     runs-on: ubuntu-latest
     name: Create Release
-    needs: build-nightly
+    needs: build_nightly
     steps:
       - name: Download Artifact
         uses: actions/download-artifact@v2
