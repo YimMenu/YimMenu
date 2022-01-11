@@ -26,6 +26,9 @@ jobs:
     name: Build Nightly
     needs: check_date
     if: ${{ needs.check_date.outputs.should_run != 'false' }}
+    outputs:
+      full_sha: ${{ steps.var.outputs.full_sha }}
+      short_sha: ${{ steps.var.outputs.short_sha }}
     steps:
       - uses: actions/checkout@v2.4.0
         with:
@@ -58,9 +61,11 @@ jobs:
           path: |
             bin/Release/YimMenu.dll
 
-      - name: Get commit short sha for nightly name
-        id: short_sha
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - name: Generate Build Info
+        id: var
+        run: |
+          echo "::set-output name=full_sha::$(git rev-parse HEAD)"
+          echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
 
   create_release:
     runs-on: ubuntu-latest
@@ -82,7 +87,7 @@ jobs:
       - name: Nightly Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Nightly [${{ needs.build_nightly.steps.short_sha.outputs.sha_short }}]
+          name: Nightly [${{ needs.build_nightly.outputs.short_sha }}]
           tag_name: nightly
           body: |
             **This release has been build by Github Actions**
@@ -92,7 +97,15 @@ jobs:
             ```
             ${{ steps.build_sha.outputs.build_sha }}
             ```
-            Compare this against the build hash found in the build artifacts, build artifacts can NEVER be modified after they occurred.
+
+            Full Commit Hash:
+            ```
+            ${{ needs.build_nightly.outputs.full_sha }}
+            ```
+
+            Compare this build hash with one that you generated yourself from the build artifacts, build artifacts can be found by clicking the link to build.
+            Build artifacts ARE NOT automatically the same as release assets since release assets can be modified afterwards.
+
 
             These are nightly builds of YimMenu, they are provided for testing purposes only:
             - Test if your build environment produces a broken BigBaseV2.dll
@@ -101,10 +114,3 @@ jobs:
             If you wish to use this menu as-is you are on your own, no warranty is provided.
           files: |
             YimMenu.dll
-
-      - name: Keep only latest 3 nightly
-        uses: dev-drprasad/delete-older-releases@v0.2.0
-        with:
-          keep_latest: 3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
