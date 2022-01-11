@@ -20,7 +20,7 @@ namespace big::mobile
 		{
 			misc::clear_bits(
 				vehicle_global.at(get_current_personal_vehicle(), 142).at(103).as<int*>(),
-				eVehicleFlags::TRIGGER_SPAWN_TOGGLE | eVehicleFlags::SPAWN_AT_MORS_MUTUAL
+				eVehicleFlags::TRIGGER_SPAWN_TOGGLE
 			);
 		}
 
