@@ -44,15 +44,13 @@ GenerateProjects.bat
 ```
 Now, you will be able to open the solution, and simply build it in Visual Studio.
 
-## Prebuild Binaries
+## Debugging Binaries
 
-Every 24 hours a build of YimMenu is made if new code has been committed to the master branch.
+If you fail to create a working build of YimMenu you can try one of the nightly prebuild binaries.
+They are automatically build for testing purposes only, they should not be used online.
+Try and see if these builds work and if they don't create an issue about what isn't working.
 
-These prebuild binaries are provided for testing purposes only, I will take no responsibility for people using it online.
-
-Perma Link for latest [YimMenu.dll](https://github.com/Yimura/YimMenu/releases/latest/download/YimMenu.dll).
-
-Perma Link for the latest [nightly](https://github.com/Yimura/YimMenu/releases/latest).
+[Link to debugging binaries](https://github.com/Yimura/YimMenu/releases/latest)
 
 ## Project Structure
 
