@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v2.4.0
         with:
           submodules: recursive
-      
+
       - name: Setup premake
         uses: abel0b/setup-premake@v2
         with:
@@ -51,6 +51,34 @@ jobs:
         run: ren BigBaseV2.dll YimMenu.dll
         working-directory: bin/Release/
 
+      - name: Generate Hash for binary
+        run: powershell.exe "Get-FileHash YimMenu.dll | Select-Object -ExpandProperty Hash | Out-File sha256.checksum"
+        working-director: bin/Release/
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: binary
+          path: |
+            bin/Release/YimMenu.dll
+            bin/Release/sha256.checksum
+
+  create-release:
+    runs-on: ubuntu-latest
+    name: Create Release
+    needs: build-nightly
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: binary
+
+      - name: Echo build sha256
+        id: build_sha
+        run: |
+          echo "::set-output name=build_sha::$(cat sha256.checksum)"
+          cat sha256.checksum
+
       - name: Get commit short sha for nightly name
         id: short_sha
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
@@ -59,21 +87,27 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           name: Nightly ${{ steps.short_sha.outputs.sha_short }}
-          tag_name: nightly_${{ steps.short_sha.outputs.sha_short }}
           body: |
-            This nightly release is provided for testing purposes only, there's no warranty provided if your account gets banned online.
+            **This release has been build by Github Actions**
+            [Link to build](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
-            Use this to test and see if you can run the menu as-is in single player, if it works and you're unable to use your own version check if your build environment is setup correctly.
-          
-            If you're going to link externally use the following link to always get the latest version of YimMenu.dll:
-            https://github.com/Yimura/YimMenu/releases/latest/download/YimMenu.dll
+            Build SHA256:
+            ```
+            ${{ steps.build_sha.outputs.build_sha }}
+            ```
+            Compare this against the build hash found in the build artifacts, build artifacts can NEVER be modified after they occurred.
+
+            These are nightly builds of YimMenu, they are provided for testing purposes only:
+            - Test if your build environment produces a broken BigBaseV2.dll
+            - Test if source code is out of date and no longer compatible with the current version of GTA V
+
+            If you wish to use this menu as-is you are on your own, no warranty is provided.
           files: |
-            bin/Release/YimMenu.dll
+            YimMenu.dll
 
-      - name: Keep only the last 7 nightly builds, any other nightlies will be removed
+      - name: Keep only latest 3 nightly
         uses: dev-drprasad/delete-older-releases@v0.2.0
+        with:
+          keep_latest: 3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          keep_latest: 7
-          delete_tag_pattern: 'nightly_*'
