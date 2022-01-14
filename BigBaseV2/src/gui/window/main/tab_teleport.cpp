@@ -2,6 +2,7 @@
 #include "fiber_pool.hpp"
 #include "util/globals.hpp"
 #include "util/teleport.hpp"
+#include "util/vehicle.hpp"
 #include "persist/PersistTeleport.h"
 
 namespace big
@@ -42,7 +43,6 @@ namespace big
 			ImGui::BeginChild("col2", { 0.f, 0.f });
 
 			ImGui::Text("Vehicles:");
-
 			if (ImGui::Button("Bring Personal Vehicle"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
@@ -55,6 +55,17 @@ namespace big
 					vehicle::bring(veh, location);
 				}QUEUE_JOB_END_CLAUSE
 			}
+
+			if (ImGui::Button("Teleport to Personal Vehicle"))
+			{
+				Vehicle veh = globals::get_personal_vehicle();
+				if (ENTITY::IS_ENTITY_DEAD(veh, false)) return notify::above_map("Invalid vehicle handle...");
+
+				teleport::to_coords(
+					ENTITY::GET_ENTITY_COORDS(veh, true)
+				);
+			}
+			ImGui::EndChild();
 			static int selected_seat;
 			const char* const vehicle_seats[]
 			{
