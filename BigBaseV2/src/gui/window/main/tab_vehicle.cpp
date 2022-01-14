@@ -41,6 +41,16 @@ namespace big
 				ImGui::TreePop();
 			}
 
+			if (ImGui::TreeNode("LS Customs"))
+			{
+				if (ImGui::Button("Start LS Customs"))
+				{
+					g.vehicle.ls_customs = true;
+				}
+
+				ImGui::TreePop();
+			}
+
 			if (ImGui::TreeNode("Speedo Meter"))
 			{
 				SpeedoMeter selected = g.vehicle.speedo_meter.type;

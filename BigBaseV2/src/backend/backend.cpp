@@ -71,5 +71,10 @@ namespace big
 			looped::vehicle_horn_boost();
 			looped::vehicle_speedo_meter();
 		}QUEUE_JOB_END_CLAUSE
+
+		QUEUE_JOB_BEGIN_CLAUSE()
+		{
+			looped::vehicle_ls_customs();
+		}QUEUE_JOB_END_CLAUSE
 	}
 }

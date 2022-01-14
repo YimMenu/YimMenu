@@ -94,6 +94,7 @@ struct globals {
 
 		bool god_mode = false;
 		bool horn_boost = false;
+		bool ls_customs = false; // don't save this to disk
 		speedo_meter speedo_meter{};
 	};
 
