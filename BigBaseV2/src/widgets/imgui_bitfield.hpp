@@ -32,7 +32,7 @@ namespace ImGui
 			type = ImGuiDataType_U64;
 			format = "%p";
 		}
-		
+
 		if (ImGui::InputScalar(name, type, param, NULL, NULL, format.c_str(), ImGuiInputTextFlags_CharsHexadecimal))
 			ret_val = true;
 		size_t bits = (size * 8) - 1ULL;
@@ -66,10 +66,10 @@ namespace ImGui
 				ImGui::Text("%i", i);
 				ImGui::EndGroup();
 			}
-			if(i % 16 != 0)
+			if (i % 16 != 0)
 				ImGui::SameLine();
 		}
-		
+
 		return ret_val;
 	}
 }

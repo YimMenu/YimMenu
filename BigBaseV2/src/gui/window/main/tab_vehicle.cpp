@@ -18,8 +18,13 @@ namespace big
 		{
 			if (ImGui::TreeNode("General"))
 			{
+				ImGui::BeginGroup();
 				ImGui::Checkbox("God Mode", &g.vehicle.god_mode);
+				ImGui::Checkbox("Horn Boost", &g.vehicle.horn_boost);
 				ImGui::Checkbox("Untargetable +", &g.vehicle.untargetable);
+				ImGui::EndGroup();
+				ImGui::SameLine();
+				ImGui::BeginGroup();
 
 				if (ImGui::Button("Repair"))
 				{
@@ -31,10 +36,19 @@ namespace big
 						VEHICLE::SET_VEHICLE_CAN_SAVE_IN_GARAGE(veh, true);
 					}QUEUE_JOB_END_CLAUSE
 				}
-				ImGui::SameLine();
-
 				if (ImGui::Button("Handling"))
 					g.window.handling = true;
+				ImGui::EndGroup();
+
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("LS Customs"))
+			{
+				if (ImGui::Button("Start LS Customs"))
+				{
+					g.vehicle.ls_customs = true;
+				}
 
 				ImGui::TreePop();
 			}
@@ -42,21 +56,6 @@ namespace big
 			if (ImGui::TreeNode("Speedo Meter"))
 			{
 				SpeedoMeter selected = g.vehicle.speedo_meter.type;
-
-				ImGui::Text("Position");
-
-				float pos[2];
-				pos[0] = g.vehicle.speedo_meter.x;
-				pos[1] = g.vehicle.speedo_meter.y;
-				if (ImGui::SliderFloat2("###speedo_pos", pos, .001f, .999f, "%.3f"))
-				{
-					g.vehicle.speedo_meter.x = pos[0];
-					g.vehicle.speedo_meter.y = pos[1];
-				}
-
-				ImGui::Checkbox("Left Sided", &g.vehicle.speedo_meter.left_side);
-
-				ImGui::Separator();
 
 				ImGui::Text("Type:");
 				if (ImGui::BeginCombo("###speedo_type", speedo_meters[(int)selected].name))
@@ -75,10 +74,22 @@ namespace big
 					ImGui::EndCombo();
 				}
 
+				ImGui::Text("Position");
+
+				float pos[2];
+				pos[0] = g.vehicle.speedo_meter.x;
+				pos[1] = g.vehicle.speedo_meter.y;
+				if (ImGui::SliderFloat2("###speedo_pos", pos, .001f, .999f, "%.3f"))
+				{
+					g.vehicle.speedo_meter.x = pos[0];
+					g.vehicle.speedo_meter.y = pos[1];
+				}
+
+				ImGui::Checkbox("Left Sided", &g.vehicle.speedo_meter.left_side);
+
 				ImGui::TreePop();
 			}
 
-			ImGui::Checkbox("Horn Boost", &g.vehicle.horn_boost);
 
 			static float max_vehicle_speed = 300.f;
 			if (ImGui::SliderFloat("VEHICLE MAX SPEED", &max_vehicle_speed, 0.f, 6000.f))

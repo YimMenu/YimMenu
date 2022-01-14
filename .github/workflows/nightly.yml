@@ -1,4 +1,4 @@
-name: Nightly Public Build
+name: Nightly Build
 
 on:
   schedule:
@@ -21,16 +21,19 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: test -z $(git rev-list  --after="24 hours"  ${{ github.sha }}) && echo "::set-output name=should_run::false"
 
-  build-nightly:
+  build_nightly:
     runs-on: windows-latest
     name: Build Nightly
     needs: check_date
     if: ${{ needs.check_date.outputs.should_run != 'false' }}
+    outputs:
+      full_sha: ${{ steps.var.outputs.full_sha }}
+      short_sha: ${{ steps.var.outputs.short_sha }}
     steps:
       - uses: actions/checkout@v2.4.0
         with:
           submodules: recursive
-      
+
       - name: Setup premake
         uses: abel0b/setup-premake@v2
         with:
@@ -51,29 +54,72 @@ jobs:
         run: ren BigBaseV2.dll YimMenu.dll
         working-directory: bin/Release/
 
-      - name: Get commit short sha for nightly name
-        id: short_sha
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: binary
+          path: |
+            bin/Release/YimMenu.dll
+
+      - name: Generate Build Info
+        id: var
+        run: |
+          echo "::set-output name=full_sha::$(git rev-parse HEAD)"
+          echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
+
+  create_release:
+    runs-on: ubuntu-latest
+    name: Create Release
+    needs: build_nightly
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: binary
+
+      - name: Echo build sha256
+        id: build_sha
+        run: |
+          sha256sum YimMenu.dll > sha256.checksum
+          echo "::set-output name=build_sha::$(cat sha256.checksum)"
+          cat sha256.checksum
+
+      - name: Remove previous Nightly
+        uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        with:
+          delete_release: true
+          tag_name: nightly
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Nightly Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Nightly ${{ steps.short_sha.outputs.sha_short }}
-          tag_name: nightly_${{ steps.short_sha.outputs.sha_short }}
+          name: Nightly [${{ needs.build_nightly.outputs.short_sha }}]
+          tag_name: nightly
           body: |
-            This nightly release is provided for testing purposes only, there's no warranty provided if your account gets banned online.
+            **This release has been build by Github Actions**
+            [Link to build](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
-            Use this to test and see if you can run the menu as-is in single player, if it works and you're unable to use your own version check if your build environment is setup correctly.
-          
-            If you're going to link externally use the following link to always get the latest version of YimMenu.dll:
-            https://github.com/Yimura/YimMenu/releases/latest/download/YimMenu.dll
+            Build SHA256:
+            ```
+            ${{ steps.build_sha.outputs.build_sha }}
+            ```
+            To verify the build SHA256 during the action, click the build link, go-to "Create Release", open the Echo build sha256 step and read the sha256.
+
+            Compare this build hash with one that you generated yourself from the build artifacts.
+            Alternatively you can download the build artifacts, generate a SHA256 checksum and compare it with the below binary.
+            Build artifacts ARE NOT automatically the same as release assets since release assets can be modified afterwards.
+
+            These are nightly builds of YimMenu, they are provided for testing purposes only:
+            - Test if your build environment produces a broken BigBaseV2.dll
+            - Test if source code is out of date and no longer compatible with the current version of GTA V
+
+            If you wish to use this menu as-is you are on your own, no warranty is provided.
+
+            Full Commit Hash:
+            ```
+            ${{ needs.build_nightly.outputs.full_sha }}
+            ```
           files: |
-            bin/Release/YimMenu.dll
-
-      - name: Keep only the last 7 nightly builds, any other nightlies will be removed
-        uses: dev-drprasad/delete-older-releases@v0.2.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          keep_latest: 7
-          delete_tag_pattern: 'nightly_*'
+            YimMenu.dll
