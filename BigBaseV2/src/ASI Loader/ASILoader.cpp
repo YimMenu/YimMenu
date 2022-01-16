@@ -47,12 +47,17 @@ void ASILoader::Initialize() {
 
 			// Image compatible (now), load it
 			HMODULE module = LoadLibraryA(pluginPath.c_str());
-			if (module) {
+			if (!module)
+			{
+				DWORD error = ::GetLastError();
+				LOG(INFO) << error;
+				LPSTR messageBuffer = nullptr;
+				FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+					NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&messageBuffer, 0, NULL);
+			}
 				LOG(INFO) << "Loaded " << fileData.cFileName << " -> " HEX_TO_UPPER(module);
-			}
-			else {
-				LOG(FATAL) << "Failed to load";
-			}
+			
+			
 
 		} while (FindNextFileA(fileHandle, &fileData));
 

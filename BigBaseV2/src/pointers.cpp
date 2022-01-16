@@ -244,10 +244,10 @@ namespace big
 			m_pickup_pool = ptr.add(3).rip().as<rage::GenericPool*>();
 			});
 		
-			main_batch.add("Camera Pool", "48 8B C8 EB 02 33 C9 48 85 C9 74 26", [this](memory::handle ptr)
-				 {
-			m_camera_pool = ptr.add(-9).rip().as<rage::GenericPool*>();
-			});
+			//main_batch.add("Camera Pool", "48 8B C8 EB 02 33 C9 48 85 C9 74 26", [this](memory::handle ptr)
+			//	 {
+			//m_camera_pool = ptr.add(-9).rip().as<rage::GenericPool*>();
+		//	});
 
 		main_batch.run(memory::module(nullptr));
 

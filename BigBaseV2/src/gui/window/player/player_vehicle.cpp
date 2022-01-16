@@ -59,6 +59,26 @@ namespace big
 					});
 			}
 
+			if (ImGui::Button("Gift vehicle"))
+			{
+				g_fiber_pool->queue_job([]
+					{
+				Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), true);
+				ENTITY::SET_ENTITY_AS_MISSION_ENTITY(vehicle, TRUE, TRUE);
+				NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle);
+
+				while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(vehicle))
+					script::get_current()->yield(10ms);
+
+				DECORATOR::DECOR_REGISTER("PV_Slot", 3);
+				DECORATOR::DECOR_REGISTER("Player_Vehicle", 3);
+				DECORATOR::DECOR_SET_BOOL(vehicle, "IgnoredByQuickSave", FALSE);
+				DECORATOR::DECOR_SET_INT(vehicle, "Player_Vehicle", NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(g.selected_player.id));
+				VEHICLE::SET_VEHICLE_IS_STOLEN(vehicle, FALSE);
+				notify::above_map("Vehicle Gifted");
+					});
+			}
+
 			ImGui::EndTabItem();
 		}
 	}

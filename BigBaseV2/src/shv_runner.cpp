@@ -16,11 +16,11 @@ namespace big
 
 	void shv_runner::script_func()
 	{
-		while (g_running)
+		while (true)
 		{
 			TRY_CLAUSE
 			{
-				run_tick();
+				shv_runner::run_tick();
 			}EXCEPT_CLAUSE
 			script::get_current()->yield();
 		}

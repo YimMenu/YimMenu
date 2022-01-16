@@ -107,7 +107,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 
 				//OPENVHOOK
-
 				shv_runner::shutdown();
 				LOG(INFO) << "ASI plugins unloaded.";
 			}

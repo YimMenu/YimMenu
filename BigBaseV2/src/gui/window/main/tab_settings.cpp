@@ -3,6 +3,7 @@
 #include "features.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
+#include <widgets/imgui_hotkey.hpp>
 
 
 namespace big
@@ -11,7 +12,6 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Settings"))
 		{
-
 			if (ImGui::TreeNode("Protections"))
 			{
 				ImGui::Checkbox("Bounty", &g.protections.script_events.bounty);

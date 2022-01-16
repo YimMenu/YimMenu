@@ -96,7 +96,7 @@ namespace big
 
 
 		for (auto& function : m_present_callbacks)
-			 {
+			{
 			m_restoreState = m_stateSaver->saveCurrentState(m_d3d_device_context.Get());
 			function(m_dxgi_swapchain.Get());
 			if (m_restoreState)
