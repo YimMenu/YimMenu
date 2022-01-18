@@ -86,13 +86,14 @@ namespace big
 
 				ImGui::BeginGroup();
 
-				if (ImGui::Button("Reload Vehicles"))
+				if (ImGui::Button("Load/Reload Personal Vehicles"))
 				{
 					QUEUE_JOB_BEGIN_CLAUSE()
 					{
 						g_mobile_service->register_vehicles();
 					}QUEUE_JOB_END_CLAUSE
 				}
+				ImGui::Checkbox("Spawn in Vehicle", &g.vehicle.pv_teleport_into);
 
 				ImGui::TreePop();
 			}

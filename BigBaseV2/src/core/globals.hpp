@@ -95,6 +95,7 @@ struct globals {
 		bool god_mode = false;
 		bool horn_boost = false;
 		bool ls_customs = false; // don't save this to disk
+		bool pv_teleport_into = false;
 		speedo_meter speedo_meter{};
 	};
 
@@ -177,6 +178,7 @@ struct globals {
 
 		this->vehicle.god_mode = j["vehicle"]["god_mode"];
 		this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
+		this->vehicle.pv_teleport_into = j["vehicle"]["pv_teleport_into"];
 
 		this->vehicle.speedo_meter.type = (SpeedoMeter)j["vehicle"]["speedo_meter"]["type"];
 		this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
@@ -270,6 +272,7 @@ struct globals {
 				"vehicle", {
 					{ "god_mode", this->vehicle.god_mode },
 					{ "horn_boost", this->vehicle.horn_boost },
+					{ "pv_teleport_into", this->vehicle.pv_teleport_into },
 					{
 						"speedo_meter", {
 							{ "type", (int)this->vehicle.speedo_meter.type },
