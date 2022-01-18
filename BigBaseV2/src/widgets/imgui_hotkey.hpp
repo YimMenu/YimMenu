@@ -174,7 +174,7 @@ namespace ImGui
 		"VK_RMENU"
 	};
 
-	bool Hotkey(const char* label, int* k, const ImVec2& size_arg = {})
+	inline bool Hotkey(const char* label, int* k, const ImVec2& size_arg = {})
 	{
 		ImGuiWindow* window = ImGui::GetCurrentWindow();
 		if (window->SkipItems)
