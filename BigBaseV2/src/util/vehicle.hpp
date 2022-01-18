@@ -16,8 +16,9 @@ namespace big::vehicle
 		teleport::load_ground_at_3dcoord(vecVehicleLocation);
 
 		if (!entity::take_control_of(veh))
-			notify::above_map("Failed to take control of remote vehicle.");
+			return notify::above_map("Failed to take control of remote vehicle.");
 		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, 0);
+		ENTITY::SET_ENTITY_HEADING(veh, ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID()));
 
 		if (put_in)
 		{
