@@ -107,7 +107,7 @@ namespace big
 
 	void renderer::wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	{
-		if (msg == WM_KEYUP && wparam == VK_INSERT)
+		if (msg == WM_KEYUP && wparam == g.settings.hotkeys.menu_toggle)
 		{
 			//Persist and restore the cursor position between menu instances.
 			static POINT cursor_coords{};
@@ -120,10 +120,11 @@ namespace big
 				SetCursorPos(cursor_coords.x, cursor_coords.y);
 			}
 
-			g_gui.m_opened ^= true;
+			g_gui.m_opened = g.settings.hotkeys.editing_menu_toggle || !g_gui.m_opened;
+			if (g.settings.hotkeys.editing_menu_toggle)
+				g.settings.hotkeys.editing_menu_toggle = false;
 		}
-			
-
+		
 		if (g_gui.m_opened)
 		{
 			ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);

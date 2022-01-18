@@ -70,6 +70,17 @@ struct globals {
 		frame_flags frame_flags{};
 	};
 
+	struct settings {
+		struct hotkeys
+		{
+			bool editing_menu_toggle = false;
+			int menu_toggle = VK_INSERT;
+			int teleport_waypoint = 0;
+		};
+
+		hotkeys hotkeys{};
+	};
+
 	struct spoofing
 	{
 		bool spoof_username = false;
@@ -126,6 +137,7 @@ struct globals {
 	player player{};
 	protections protections{};
 	self self{};
+	settings settings{};
 	spoofing spoofing{};
 	vehicle vehicle{};
 	weapons weapons{};
@@ -166,6 +178,8 @@ struct globals {
 		this->self.frame_flags.explosive_melee = j["self"]["frame_flags"]["explosive_melee"];
 		this->self.frame_flags.fire_ammo = j["self"]["frame_flags"]["fire_ammo"];
 		this->self.frame_flags.super_jump = j["self"]["frame_flags"]["super_jump"];
+
+		this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
 
 		this->spoofing.spoof_ip = j["spoofing"]["spoof_ip"];
 		this->spoofing.spoof_rockstar_id = j["spoofing"]["spoof_rockstar_id"];
@@ -249,6 +263,14 @@ struct globals {
 							{ "explosive_melee", this->self.frame_flags.explosive_melee },
 							{ "fire_ammo", this->self.frame_flags.fire_ammo },
 							{ "super_jump", this->self.frame_flags.super_jump }
+						}
+					}
+				}
+			},
+			{
+				"settings", {
+					{ "hotkeys", {
+							{ "menu_toggle", this->settings.hotkeys.menu_toggle }
 						}
 					}
 				}
