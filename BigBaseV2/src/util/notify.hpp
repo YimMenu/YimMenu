@@ -1,5 +1,6 @@
 #pragma once
 #include "natives.hpp"
+#include "script.hpp"
 
 namespace big::notify
 {
@@ -22,6 +23,19 @@ namespace big::notify
 		strcat(msg, "</C>");
 
 		above_map(msg);
+	}
+
+	// Shows a busy spinner till the value at the address equals the value passed or if timeout is hit
+	inline void busy_spinner(const char* text, int* address, int value, int timeout = 15)
+	{
+		HUD::BEGIN_TEXT_COMMAND_BUSYSPINNER_ON("STRING");
+		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
+		HUD::END_TEXT_COMMAND_BUSYSPINNER_ON(3);
+
+		for (size_t i = 0; *address != value && i < (size_t)timeout * 100; i++)
+			script::get_current()->yield(10ms);
+		
+		HUD::BUSYSPINNER_OFF();
 	}
 
 	inline void display_help_text(const char* text)
