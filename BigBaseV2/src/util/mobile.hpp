@@ -1,11 +1,14 @@
 #pragma once
 #include "core/enums.hpp"
+#include "globals.hpp"
 #include "gta_util.hpp"
 #include "misc.hpp"
 #include "natives.hpp"
+#include "notify.hpp"
 #include "script.hpp"
 #include "script_global.hpp"
 #include "script_local.hpp"
+#include "vehicle.hpp"
 
 namespace big::mobile
 {
@@ -83,6 +86,9 @@ namespace big::mobile
 	{
 		inline void summon_vehicle_by_index(int veh_idx)
 		{
+			if (*mechanic_global.at(958).as<int*>() != -1)
+				return notify::display_help_text("Mechanic is not ready to deliver a vehicle right now.");
+
 			// despawn current veh
 			util::despawn_current_personal_vehicle();
 			mors_mutual::fix_index(veh_idx);
@@ -98,6 +104,12 @@ namespace big::mobile
 			GtaThread* freemode_thread = gta_util::find_script_thread(RAGE_JOAAT("freemode"));
 			if (freemode_thread)
 				*script_local(freemode_thread, 17437).at(176).as<int*>() = 0; // spawn vehicle instantly
+
+			// blocking call till vehicle is delivered
+			notify::busy_spinner("Delivering vehicle...", mechanic_global.at(958).as<int*>(), -1);
+
+			if (g.vehicle.pv_teleport_into)
+				vehicle::bring(globals::get_personal_vehicle(), ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true));
 		}
 	}
 }

@@ -1,10 +1,10 @@
 #include "main_tabs.hpp"
+
 #include "util/system.hpp"
 #include "features.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include <widgets/imgui_hotkey.hpp>
-
 
 namespace big
 {
@@ -12,6 +12,27 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Settings"))
 		{
+			if (ImGui::TreeNode("Hotkeys"))
+			{
+				ImGui::PushItemWidth(350.f);
+				ImGui::BeginGroup();
+
+				if (ImGui::Hotkey("Menu Toggle", &g.settings.hotkeys.menu_toggle))
+					g.settings.hotkeys.editing_menu_toggle = true; // make our menu reappear
+
+				ImGui::EndGroup();
+				ImGui::SameLine();
+				ImGui::BeginGroup();
+
+				ImGui::Text("(Below hotkey is not implemented)");
+				ImGui::Hotkey("Teleport to waypoint", &g.settings.hotkeys.teleport_waypoint);
+
+				ImGui::EndGroup();
+				ImGui::PopItemWidth();
+
+				ImGui::TreePop();
+			}
+
 			if (ImGui::TreeNode("Protections"))
 			{
 				ImGui::Checkbox("Bounty", &g.protections.script_events.bounty);
