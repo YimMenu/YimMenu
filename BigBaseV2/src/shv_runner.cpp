@@ -16,7 +16,7 @@ namespace big
 
 	void shv_runner::script_func()
 	{
-		while (true)
+		while (g_running)
 		{
 			TRY_CLAUSE
 			{

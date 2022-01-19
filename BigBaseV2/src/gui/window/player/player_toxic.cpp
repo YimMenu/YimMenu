@@ -29,6 +29,15 @@ namespace big
 				QUEUE_JOB_END_CLAUSE
 			}
 
+			if (ImGui::Button("Send to island"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE(){
+					int args[3] = {
+			(int)eRemoteEvent::SendToIsland, 0, g.selected_player.id};
+					g_pointers->m_trigger_script_event(1, args, 3, -1 << g.selected_player.id);
+				}QUEUE_JOB_END_CLAUSE
+			}
+
 			if (ImGui::Button("Steal Outfit"))
 			{
 				g_fiber_pool->queue_job([]

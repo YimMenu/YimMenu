@@ -32,18 +32,18 @@ void ASILoader::Initialize() {
 			}
 
 			// Image not compatible, needs patching
-			if (!pluginImage.IsOpenVHookCompatible()) {
+			//if (!pluginImage.IsOpenVHookCompatible()) {
 
-				LOG(INFO) << "Detected non compatible image. Patching compatibility.";
+			//	LOG(INFO) << "Detected non compatible image. Patching compatibility.";
 
-				if (pluginImage.PatchCompatibility()) {
-					LOG(INFO) << "Successfully patched.";
-				}
-				else {
-					LOG(FATAL) << "Failed to patch compatibility.";
-					continue;
-				}
-			}
+			//	if (pluginImage.PatchCompatibility()) {
+			//		LOG(INFO) << "Successfully patched.";
+			//	}
+			//	else {
+			//		LOG(FATAL) << "Failed to patch compatibility.";
+			//		continue;
+			//	}
+			//}
 
 			// Image compatible (now), load it
 			HMODULE module = LoadLibraryA(pluginPath.c_str());
