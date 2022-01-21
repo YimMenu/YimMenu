@@ -98,16 +98,22 @@ namespace big
 			 memset(incompatible_version, 0x90, 0x165CF03 - 0x165CEE5);
 		});
 
+		// GTA Thread Start
+		main_batch.add("GTS", "E9 ? ? ? ? CC E8 24 40 53 48", [this](memory::handle ptr)
+		{
+			m_gta_thread_start = ptr.as<PVOID>();
+		});
+
 		// Thread Thick
 		main_batch.add("TT", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 B9 ? ? ? ? ? 8B FA 48 8B D9 74 05", [this](memory::handle ptr)
 		{
-			m_gta_thread_tick = ptr.as<decltype(m_gta_thread_tick)>();
+			m_gta_thread_tick = ptr.as<PVOID>();
 		});
 
 		// Thread Kill
 		main_batch.add("TK", "48 89 5C 24 ? 57 48 83 EC 20 48 83 B9 ? ? ? ? ? 48 8B D9 74 14", [this](memory::handle ptr)
 		{
-			m_gta_thread_kill = ptr.as<decltype(m_gta_thread_kill)>();
+			m_gta_thread_kill = ptr.as<PVOID>();
 		});
 
 		// Increment Stat Event

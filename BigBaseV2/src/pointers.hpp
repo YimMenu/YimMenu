@@ -47,8 +47,9 @@ namespace big
 
 		functions::get_net_game_player* m_get_net_game_player{};
 
-		functions::gta_thread_tick* m_gta_thread_tick{};
-		functions::gta_thread_kill* m_gta_thread_kill{};
+		PVOID m_gta_thread_start{};
+		PVOID m_gta_thread_tick{};
+		PVOID m_gta_thread_kill{};
 
 		functions::increment_stat_event* m_increment_stat_event{};
 
