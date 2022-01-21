@@ -9,6 +9,7 @@
 #include "script_mgr.hpp"
 #include "thread_pool.hpp"
 
+#include "native_hooks/native_hooks.hpp"
 #include "services/globals_service.hpp"
 #include "services/mobile_service.hpp"
 #include "services/vehicle_service.hpp"
@@ -55,20 +56,26 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_hooking->enable();
 				LOG(INFO) << "Hooking enabled.";
 
-				LOG(INFO) << "Registering service instances...";
 				auto globals_service_instace = std::make_unique<globals_service>();
 				auto mobile_service_instance = std::make_unique<mobile_service>();
 				auto vehicle_service_instance = std::make_unique<vehicle_service>();
+				LOG(INFO) << "Registered service instances...";
+
+				auto native_hooks_instance = std::make_unique<native_hooks>();
+				LOG(INFO) << "Dynamic native hooker initialized.";
 
 				while (g_running)
 				{
 					std::this_thread::sleep_for(500ms);
 				}
 
-				LOG(INFO) << "Serviceses uninitialized.";
+				native_hooks_instance.reset();
+				LOG(INFO) << "Dynamic native hooker uninitialized.";
+
 				vehicle_service_instance.reset();
 				mobile_service_instance.reset();
 				globals_service_instace.reset();
+				LOG(INFO) << "Serviceses uninitialized.";
 
 				// Make sure that all threads created don't have any blocking loops
 				// otherwise make sure that they have stopped executing
