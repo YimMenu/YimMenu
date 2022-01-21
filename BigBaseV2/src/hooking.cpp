@@ -8,7 +8,6 @@
 #include "hooking.hpp"
 #include "memory/module.hpp"
 #include "natives.hpp"
-#include "native_hooks/native_hooks.hpp"
 #include "pointers.hpp"
 #include "renderer.hpp"
 #include "script_mgr.hpp"
@@ -47,7 +46,9 @@ namespace big
 		m_scripted_game_event_hook("SGEH", g_pointers->m_scripted_game_event, &hooks::scripted_game_event),
 
 		// Send NET Info to Lobby
-		m_send_net_info_to_lobby("SNITL", g_pointers->m_send_net_info_to_lobby, &hooks::send_net_info_to_lobby)
+		m_send_net_info_to_lobby("SNITL", g_pointers->m_send_net_info_to_lobby, &hooks::send_net_info_to_lobby),
+
+		m_gta_thread_start_hook("GTS", g_pointers->m_gta_thread_start, &hooks::gta_thread_start)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -72,6 +73,7 @@ namespace big
 		m_run_script_threads_hook.enable();
 		m_convert_thread_to_fiber_hook.enable();
 
+		m_gta_thread_start_hook.enable();
 		m_gta_thread_kill_hook.enable();
 		m_gta_thread_tick_hook.enable();
 
@@ -104,6 +106,7 @@ namespace big
 
 		m_gta_thread_tick_hook.disable();
 		m_gta_thread_kill_hook.disable();
+		m_gta_thread_start_hook.disable();
 
 		m_convert_thread_to_fiber_hook.disable();
 		m_run_script_threads_hook.disable();
