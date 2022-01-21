@@ -12,6 +12,7 @@ namespace big
 	namespace tab_debug
 	{
 		void tab_globals();
+		void tab_script_monitor();
 		void tab_script_events();
 		void _tab_debug();
 	}

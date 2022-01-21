@@ -19,8 +19,10 @@ namespace big
 			strcpy(report, "~g~BLOCKED REPORT~s~\nFrom: <C>");
 			strcat(report, PLAYER::GET_PLAYER_NAME(sender_id));
 			strcat(report, "</C>");
-
-			notify::above_map(report);
+			QUEUE_JOB_BEGIN_CLAUSE(= )
+			{
+				notify::above_map(report);
+			}QUEUE_JOB_END_CLAUSE
 
 			return true;
 		}

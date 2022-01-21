@@ -12,7 +12,7 @@ namespace big
 {
 	void features::run_tick()
 	{
-		if (GetAsyncKeyState(VK_F12)) {
+		if (GetAsyncKeyState(g.settings.hotkeys.teleport_waypoint)) {
 			teleport::to_waypoint();
 		}
 		backend::loop();

@@ -76,7 +76,7 @@ struct globals {
 		{
 			bool editing_menu_toggle = false;
 			int menu_toggle = VK_INSERT;
-			int teleport_waypoint = 0;
+			int teleport_waypoint = VK_F12;
 		};
 
 		hotkeys hotkeys{};
