@@ -36,6 +36,7 @@ namespace big
 			Any p9
 		);
 
+		static GtaThread* gta_thread_start(unsigned int** a1, unsigned int a2);
 		static rage::eThreadState gta_thread_tick(GtaThread* a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
 
@@ -73,14 +74,12 @@ namespace big
 		void enable();
 		void disable();
 
-		std::list<script_hook*> m_native_hooks;
-		std::unordered_map<rage::scrNativeHash, rage::scrNativeHandler> m_natives;
 	private:
 		bool m_enabled{};
 		minhook_keepalive m_minhook_keepalive;
 
 		vmt_hook m_swapchain_hook;
-		WNDPROC m_og_wndproc;
+		WNDPROC m_og_wndproc = nullptr;
 		detour_hook m_set_cursor_pos_hook;
 
 		detour_hook m_run_script_threads_hook;
@@ -88,6 +87,7 @@ namespace big
 
 		detour_hook m_error_screen_hook;
 
+		detour_hook m_gta_thread_start_hook;
 		detour_hook m_gta_thread_tick_hook;
 		detour_hook m_gta_thread_kill_hook;
 

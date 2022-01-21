@@ -1,0 +1,37 @@
+#pragma once
+#include "native_hooks.hpp"
+#include "natives.hpp"
+
+namespace big
+{
+	namespace carmod_shop
+	{
+		inline void SET_ENTITY_COORDS(rage::scrNativeCallContext* src)
+		{
+			if (!g.vehicle.ls_customs)
+			{
+				ENTITY::SET_ENTITY_COORDS(
+					src->get_arg<Entity>(0),
+					src->get_arg<float>(1),
+					src->get_arg<float>(2),
+					src->get_arg<float>(3),
+					src->get_arg<BOOL>(4),
+					src->get_arg<BOOL>(5),
+					src->get_arg<BOOL>(6),
+					src->get_arg<BOOL>(7)
+				);
+			}
+		}
+
+		inline void SET_ENTITY_HEADING(rage::scrNativeCallContext* src)
+		{
+			if (!g.vehicle.ls_customs)
+			{
+				ENTITY::SET_ENTITY_HEADING(
+					src->get_arg<Entity>(0),
+					src->get_arg<float>(1)
+				);
+			}
+		}
+	}
+}

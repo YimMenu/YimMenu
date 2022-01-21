@@ -47,6 +47,8 @@ struct globals {
 			bool vehicle_kick = true;
 		};
 
+		bool freemode_terminated = false;
+
 		script_events script_events{};
 	};
 
