@@ -56,21 +56,10 @@ namespace big
 			{
 				if (auto carmod_shop_thread = gta_util::find_script_thread(hash); carmod_shop_thread)
 				{
-					Vector3 loc = ENTITY::GET_ENTITY_COORDS(veh, 1);
-					Vector3 rot = ENTITY::GET_ENTITY_ROTATION(veh, 0);
-					float heading = ENTITY::GET_ENTITY_HEADING(veh);
-
 					*script_local(carmod_shop_thread, 726).at(406).as<int*>() = veh;
 					*script_local(carmod_shop_thread, 2110).as<bool*>() = false; // skips cutscene that's invisible
 
 					*script_local(carmod_shop_thread, 726).at(11).as<int*>() = 4;
-
-					for (int i = 0; math::distance_between_vectors(loc, ENTITY::GET_ENTITY_COORDS(veh, 1)) < 5.f && i < 300; i++)
-						script::get_current()->yield(10ms);
-
-					ENTITY::SET_ENTITY_COORDS(veh, loc.x, loc.y, loc.z, 0, 0, 0, 0);
-					ENTITY::SET_ENTITY_HEADING(veh, heading);
-					VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(veh, 5.f);
 				}
 			}
 		}

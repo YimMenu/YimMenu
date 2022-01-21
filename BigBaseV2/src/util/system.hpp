@@ -25,6 +25,13 @@ namespace big::system
 		file.close();
 	}
 
+	inline uintptr_t get_relative_address(void* ptr)
+	{
+		uintptr_t base_address = memory::module(nullptr).begin().as<uintptr_t>();
+
+		return (uintptr_t)ptr - base_address;
+	}
+
 	inline void patch_blame(bool toggle)
 	{
 		*(unsigned short*)g_pointers->m_blame_explode = toggle ? 0xE990 : 0x850F;
