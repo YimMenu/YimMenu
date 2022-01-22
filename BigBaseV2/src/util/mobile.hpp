@@ -89,6 +89,8 @@ namespace big::mobile
 			if (*mechanic_global.at(958).as<int*>() != -1)
 				return notify::display_help_text("Mechanic is not ready to deliver a vehicle right now.");
 
+			TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::PLAYER_PED_ID());
+
 			// despawn current veh
 			util::despawn_current_personal_vehicle();
 			mors_mutual::fix_index(veh_idx);
