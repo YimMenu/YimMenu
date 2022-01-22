@@ -99,7 +99,7 @@ namespace big
 		});
 
 		// GTA Thread Start
-		main_batch.add("GTS", "E9 ? ? ? ? CC E8 24 40 53 48", [this](memory::handle ptr)
+		main_batch.add("GTS", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 8B FA 85 D2 75 2A 8B 15", [this](memory::handle ptr)
 		{
 			m_gta_thread_start = ptr.as<PVOID>();
 		});
