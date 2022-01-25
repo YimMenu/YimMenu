@@ -21,6 +21,7 @@ namespace big
 
 		CPedFactory **m_ped_factory{};
 		CNetworkPlayerMgr **m_network_player_mgr{};
+		CNetworkObjectMgr** m_network_object_mgr{};
 
 		rage::CReplayInterface** m_replay_interface{};
 		functions::ptr_to_handle* m_ptr_to_handle{};
@@ -50,6 +51,9 @@ namespace big
 		PVOID m_gta_thread_start{};
 		PVOID m_gta_thread_tick{};
 		PVOID m_gta_thread_kill{};
+
+		PVOID m_player_has_joined{};
+		PVOID m_player_has_left{};
 
 		functions::increment_stat_event* m_increment_stat_event{};
 

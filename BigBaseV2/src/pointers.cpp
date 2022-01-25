@@ -215,6 +215,24 @@ namespace big
 		{
 			m_send_net_info_to_lobby = ptr.sub(0x64).as<decltype(m_send_net_info_to_lobby)>();
 		});
+
+		// CNetworkObjectMgr
+		main_batch.add("CNOM", "48 8B 0D ? ? ? ? 45 33 C0 E8 ? ? ? ? 33 FF 4C 8B F0", [this](memory::handle ptr)
+		{
+			m_network_object_mgr = ptr.add(3).rip().as<CNetworkObjectMgr**>();
+		});
+
+		// Player Has Joined
+		main_batch.add("PHJ", "48 8B CA 48 8B F2 FF 50 18 4C 8D 05", [this](memory::handle ptr)
+		{
+			m_player_has_joined = ptr.sub(0x26).as<PVOID>();
+		});
+
+		// Player Has Left
+		main_batch.add("PHL", "4C 8B F1 48 8B CA 48 8B EA FF 50 18 4C 8D 05", [this](memory::handle ptr)
+		{
+			m_player_has_left = ptr.sub(0x26).as<PVOID>();
+		});
 		
 		main_batch.run(memory::module(nullptr));
 
