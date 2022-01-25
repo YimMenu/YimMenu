@@ -24,7 +24,7 @@ namespace big
 		{
 			this->add_native_detour(RAGE_JOAAT("carmod_shop"), 0x06843DA7060A026B, carmod_shop::SET_ENTITY_COORDS);
 			this->add_native_detour(RAGE_JOAAT("carmod_shop"), 0x8E2530AA8ADA980E, carmod_shop::SET_ENTITY_HEADING);
-			this->add_native_detour(RAGE_JOAAT("freemode"), 0x580CE4438479CC61, freemode::NETWORK_CAN_BAIL);
+			this->add_native_detour(RAGE_JOAAT("freemode"), 0x95914459A87EBA28, freemode::NETWORK_BAIL);
 
 			for (auto native_detours_for_script : m_native_registrations)
 				if (GtaThread* thread = gta_util::find_script_thread(native_detours_for_script.first); thread != nullptr && thread->m_context.m_state == rage::eThreadState::running)
