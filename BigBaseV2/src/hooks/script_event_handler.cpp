@@ -70,6 +70,11 @@ namespace big
 				strcpy(type, "Remote Off Radar");
 
 			break;
+		case eRemoteEvent::RotateCam:
+			if (g.protections.script_events.rotate_cam)
+				strcpy(type, "Rotate Cam");
+
+			break;
 		case eRemoteEvent::SendToCutscene:
 			if (g.protections.script_events.send_to_cutscene)
 				strcpy(type, "Send To Cutscene");

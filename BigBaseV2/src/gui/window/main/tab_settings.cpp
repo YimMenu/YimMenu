@@ -42,6 +42,7 @@ namespace big
 				ImGui::Checkbox("Network Bail", &g.protections.script_events.network_bail);
 				ImGui::Checkbox("Destroy Personal Vehicle", &g.protections.script_events.personal_vehicle_destroyed);
 				ImGui::Checkbox("Remote Off Radar", &g.protections.script_events.remote_off_radar);
+				ImGui::Checkbox("Rotate Cam", &g.protections.script_events.rotate_cam);
 				ImGui::Checkbox("Send to Cutscene", &g.protections.script_events.send_to_cutscene);
 				ImGui::Checkbox("Send to Island", &g.protections.script_events.send_to_island);
 				ImGui::Checkbox("Sound Spam", &g.protections.script_events.sound_spam);

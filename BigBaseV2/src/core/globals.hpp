@@ -39,6 +39,7 @@ struct globals {
 			bool network_bail = true;
 			bool personal_vehicle_destroyed = true;
 			bool remote_off_radar = true;
+			bool rotate_cam = true;
 			bool send_to_cutscene = true;
 			bool send_to_island = true;
 			bool sound_spam = true;
@@ -162,6 +163,7 @@ struct globals {
 		this->protections.script_events.network_bail = j["protections"]["script_events"]["network_bail"];
 		this->protections.script_events.personal_vehicle_destroyed = j["protections"]["script_events"]["personal_vehicle_destroyed"];
 		this->protections.script_events.remote_off_radar = j["protections"]["script_events"]["remote_off_radar"];
+		this->protections.script_events.rotate_cam = j["protections"]["script_events"]["rotate_cam"];
 		this->protections.script_events.send_to_cutscene = j["protections"]["script_events"]["send_to_cutscene"];
 		this->protections.script_events.send_to_island = j["protections"]["script_events"]["send_to_island"];
 		this->protections.script_events.sound_spam = j["protections"]["script_events"]["sound_spam"];
@@ -238,6 +240,7 @@ struct globals {
 							{ "network_bail", this->protections.script_events.network_bail },
 							{ "personal_vehicle_destroyed", this->protections.script_events.personal_vehicle_destroyed },
 							{ "remote_off_radar", this->protections.script_events.remote_off_radar },
+							{ "rotate_cam", this->protections.script_events.rotate_cam },
 							{ "send_to_cutscene", this->protections.script_events.send_to_cutscene },
 							{ "send_to_island", this->protections.script_events.send_to_island },
 							{ "sound_spam", this->protections.script_events.sound_spam },
