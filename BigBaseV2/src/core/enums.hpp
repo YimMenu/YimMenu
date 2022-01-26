@@ -43,6 +43,7 @@ namespace big
 		FakeDeposit = 677240627,
 		ForceMission = 2020588206,
 		GtaBanner = 1572255940,
+		NetworkBail = 1228916411,
 		PersonalVehicleDestroyed = 802133775,
 		RemoteOffradar = -391633760,
 		RotateCam = 801199324,

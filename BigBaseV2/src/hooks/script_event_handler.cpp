@@ -55,6 +55,11 @@ namespace big
 				strcpy(type, "GTA Banner");
 
 			break;
+		case eRemoteEvent::NetworkBail:
+			if (g.protections.script_events.network_bail)
+				strcpy(type, "Network Bail");
+
+			break;
 		case eRemoteEvent::PersonalVehicleDestroyed:
 			if (g.protections.script_events.personal_vehicle_destroyed)
 				strcpy(type, "Personal Vehicle Destroyed");

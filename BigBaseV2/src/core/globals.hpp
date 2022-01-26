@@ -36,6 +36,7 @@ struct globals {
 			bool force_mission = true;
 			bool force_teleport = true;
 			bool gta_banner = true;
+			bool network_bail = true;
 			bool personal_vehicle_destroyed = true;
 			bool remote_off_radar = true;
 			bool send_to_cutscene = true;
@@ -158,6 +159,7 @@ struct globals {
 		this->protections.script_events.force_mission = j["protections"]["script_events"]["force_mission"];
 		this->protections.script_events.force_teleport = j["protections"]["script_events"]["force_teleport"];
 		this->protections.script_events.gta_banner = j["protections"]["script_events"]["gta_banner"];
+		this->protections.script_events.network_bail = j["protections"]["script_events"]["network_bail"];
 		this->protections.script_events.personal_vehicle_destroyed = j["protections"]["script_events"]["personal_vehicle_destroyed"];
 		this->protections.script_events.remote_off_radar = j["protections"]["script_events"]["remote_off_radar"];
 		this->protections.script_events.send_to_cutscene = j["protections"]["script_events"]["send_to_cutscene"];
@@ -233,6 +235,7 @@ struct globals {
 							{ "force_mission", this->protections.script_events.force_mission },
 							{ "force_teleport", this->protections.script_events.force_teleport },
 							{ "gta_banner", this->protections.script_events.gta_banner },
+							{ "network_bail", this->protections.script_events.network_bail },
 							{ "personal_vehicle_destroyed", this->protections.script_events.personal_vehicle_destroyed },
 							{ "remote_off_radar", this->protections.script_events.remote_off_radar },
 							{ "send_to_cutscene", this->protections.script_events.send_to_cutscene },

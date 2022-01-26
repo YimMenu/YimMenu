@@ -39,6 +39,7 @@ namespace big
 				ImGui::Checkbox("Force Mission", &g.protections.script_events.force_mission);
 				ImGui::Checkbox("Force Teleport", &g.protections.script_events.force_teleport);
 				ImGui::Checkbox("GTA Banner", &g.protections.script_events.gta_banner);
+				ImGui::Checkbox("Network Bail", &g.protections.script_events.network_bail);
 				ImGui::Checkbox("Destroy Personal Vehicle", &g.protections.script_events.personal_vehicle_destroyed);
 				ImGui::Checkbox("Remote Off Radar", &g.protections.script_events.remote_off_radar);
 				ImGui::Checkbox("Send to Cutscene", &g.protections.script_events.send_to_cutscene);
