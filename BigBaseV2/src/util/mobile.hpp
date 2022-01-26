@@ -97,8 +97,9 @@ namespace big::mobile
 
 			script::get_current()->yield(100ms);
 
-			*mechanic_global.at(911).as<int*>() = 1;
-			*mechanic_global.at(961).as<int*>() = 0;
+			*mechanic_global.at(924).as<int*>() = 1; // disable vehicle node distance check
+			*mechanic_global.at(911).as<int*>() = 1; // tell freemode to spawn our vehicle
+			*mechanic_global.at(961).as<int*>() = 0; // required
 			*mechanic_global.at(958).as<int*>() = veh_idx;
 
 			script::get_current()->yield(100ms);
