@@ -629,7 +629,7 @@ enum WindowTints //m8 do you even int tint?
 #define TIRESMOKE_COLOR_BROWN 180, 130, 97
 #define TIRESMOKE_COLOR_PATRIOT 0, 0, 0
 
-static bool GetVehicleInfoForClanLogo(Hash vehicleModel, rage::vector3& x, rage::vector3& y, rage::vector3& z, float& scale)
+static bool GetVehicleInfoForClanLogo(Hash vehicleModel, rage::fvector3& x, rage::fvector3& y, rage::fvector3& z, float& scale)
 {
     switch (vehicleModel)
     {

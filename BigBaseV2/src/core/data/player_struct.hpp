@@ -1,5 +1,5 @@
 #pragma once
-#include "gta/player.hpp"
+#include "CNetGamePlayer.hpp"
 
 #ifndef PLAYER_STRUCT
 #define PLAYER_STRUCT

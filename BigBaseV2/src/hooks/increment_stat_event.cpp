@@ -6,7 +6,7 @@ namespace big
 {
 	bool hooks::increment_stat_event(CNetworkIncrementStatEvent* net_event, CNetGamePlayer* sender, int64_t a3)
 	{
-		Player sender_id = sender->player_id;
+		Player sender_id = sender->m_player_id;
 
 		switch (net_event->m_stat)
 		{

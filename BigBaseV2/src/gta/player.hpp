@@ -8,62 +8,6 @@
 #pragma pack(push, 1)
 namespace rage
 {
-	class netAddress
-	{
-	public:
-		uint8_t m_field4; //0x0000
-		uint8_t m_field3; //0x0001
-		uint8_t m_field2; //0x0002
-		uint8_t m_field1; //0x0003
-	}; //Size: 0x0004
-	static_assert(sizeof(netAddress) == 0x4);
-
-	class netPlayerData
-	{
-	public:
-		char pad_0000[8]; //0x0000
-		uint64_t m_rockstar_id; //0x0008
-		char pad_0010[52]; //0x0010
-		class netAddress m_relay_ip; //0x0044
-		uint16_t m_relay_port; //0x0048
-		char pad_004A[2]; //0x004A
-		class netAddress m_external_ip; //0x004C
-		uint16_t m_external_port; //0x0050
-		char pad_0052[2]; //0x0052
-		class netAddress m_internal_ip; //0x0054
-		uint16_t m_internal_port; //0x0058
-		char pad_005A[6]; //0x005A
-		uint64_t m_host_token; //0x0060
-		char pad_0068[8]; //0x0068
-		uint64_t m_rockstar_id2; //0x0070
-		char pad_0078[12]; //0x0078
-		char m_name[20]; //0x0084
-	}; //Size: 0x0098
-	static_assert(sizeof(netPlayerData) == 0x98);
-
-	class nonPhysicalPlayerDataBase
-	{
-	public:
-		virtual ~nonPhysicalPlayerDataBase() = default;    // 0 (0x00)
-		virtual void unk_0x08() = 0;                       // 1 (0x08)
-		virtual void unk_0x10() = 0;                       // 2 (0x10)
-		virtual void unk_0x18() = 0;                       // 3 (0x18)
-		virtual void log(netLoggingInterface* logger) = 0; // 4 (0x20)
-	};
-
-	class netPlayer
-	{
-	public:
-		virtual ~netPlayer() = default;            // 0 (0x00)
-		virtual void reset() = 0;                  // 1 (0x08)
-		virtual bool is_valid() const = 0;         // 2 (0x10)
-		virtual const char *get_name() const = 0;  // 3 (0x18)
-		virtual void _0x20() = 0;                  // 4 (0x20)
-		virtual bool is_host() = 0;                // 5 (0x28)
-		virtual netPlayerData *get_net_data() = 0; // 6 (0x30)
-		virtual void _0x38() = 0;                  // 7 (0x38)
-	};
-
 	class netPlayerMgrBase
 	{
 	public:
@@ -75,34 +19,6 @@ namespace gta
 {
 	inline constexpr auto num_players = 32;
 }
-
-class CNonPhysicalPlayerData : public rage::nonPhysicalPlayerDataBase
-{
-public:
-	std::int32_t  m_bubble_id; // 0x08
-	std::int32_t  m_player_id; // 0x0C
-	rage::vector3 m_position;  // 0x10
-};
-
-class CNetGamePlayer : public rage::netPlayer
-{
-public:
-	char pad_0x0008[0x10]; //0x0008
-	std::uint32_t msg_id; // 0x18
-	char pad_0x001C[0x4]; //0x001C
-	std::int8_t active_id; //0x0020 
-	std::int8_t player_id; //0x0021 
-	char pad_0x0022[0x6E]; //0x0022
-	BYTE local_player_check;//0x0090
-	char pad_0x00A1[0xF]; //0x0091
-	CPlayerInfo* player_info; //0x00A0 
-
-	inline bool is_local_player()
-	{
-		return local_player_check & 1;
-	}
-};
-static_assert(sizeof(CNetGamePlayer) == 0xA8);
 
 //class CPlayerInfo : public rage::fwExtensibleBase
 //{
@@ -144,5 +60,4 @@ static_assert(sizeof(CNetGamePlayer) == 0xA8);
 //}; //Size: 0x0869
 //static_assert(sizeof(CPlayerInfo) == 0x869);
 
-static_assert(sizeof(CNonPhysicalPlayerData) == 0x1C);
 #pragma pack(pop)

@@ -1,4 +1,5 @@
 #include "player_tabs.hpp"
+#include "util/misc.hpp"
 
 namespace big
 {
@@ -15,19 +16,19 @@ namespace big
 			
 			if (CNetGamePlayer* net_player = g.selected_player.net_player; net_player != nullptr)
 			{
-				if (CPlayerInfo* player_info = net_player->player_info; player_info != nullptr)
+				if (CPlayerInfo* player_info = net_player->m_player_info; player_info != nullptr)
 				{
-					netPlayerData& netData = player_info->m_net_player_data;
+					rage::netPlayerData& netData = player_info->m_net_player_data;
 
 					ImGui::Text("Session Host: %s", net_player->is_host() ? "Yes" : "No");
 					
 					ImGui::Separator();
 
 					ImGui::Text("Wanted Level: %d", player_info->m_wanted_level);
-					ImGui::Text("Player God Mode: %s", player_info->m_ped->m_godmode ? "Yes" : "No");
+					ImGui::Text("Player God Mode: %s", misc::has_bit_set((int*)&player_info->m_ped->m_damage_bits, 8) ? "Yes" : "No");
 					ImGui::Text("Vehicle God Mode: %s",
 						player_info->m_ped->m_vehicle == nullptr ? "No vehicle detected" :
-						player_info->m_ped->m_vehicle->m_godmode ? "Yes" : "No"
+						misc::has_bit_set((int*)&player_info->m_ped->m_vehicle->m_damage_bits, 8) ? "Yes" : "No"
 					);
 
 					ImGui::Separator();

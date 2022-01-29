@@ -31,6 +31,7 @@ namespace rage
 		std::uint32_t m_stack_size;          // 0x50
 		char m_padding2[0x54];               // 0x54
 	};
+	static_assert(sizeof(scrThreadContext) == 0xA8);
 
 	class scrThread
 	{
@@ -54,8 +55,6 @@ namespace rage
 		scriptHandler *m_handler;                   // 0x110
 		scriptHandlerNetComponent *m_net_component; // 0x118
 	};
-
-	static_assert(sizeof(scrThreadContext) == 0xA8);
 	static_assert(sizeof(scrThread) == 0x120);
 }
 

@@ -22,7 +22,7 @@ namespace big
 		if (event_id > 90u) return false;
 
 		const char* event_name = *(char**)((DWORD64)event_manager + 8i64 * event_id + 243376);
-		if (event_name == nullptr || source_player == nullptr || source_player->player_id < 0 || source_player->player_id >= 32)
+		if (event_name == nullptr || source_player == nullptr || source_player->m_player_id < 0 || source_player->m_player_id >= 32)
 		{
 			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 			return false;
@@ -32,7 +32,7 @@ namespace big
 		{
 		case RockstarEvent::NETWORK_CLEAR_PED_TASKS_EVENT:
 		{
-			if (source_player->player_id < 32)
+			if (source_player->m_player_id < 32)
 			{
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 
