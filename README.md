@@ -38,7 +38,7 @@ Premake5 is used to generate our project files, if you haven't used it before we
 
 Afterwards set up the build environment, run the following commands in a terminal:
 ```dos
-git clone https://github.com/Yimura/YimMenu.git --recursive || echo You don't have git installed, install it from https://git-scm.com/download/win
+git clone https://github.com/Yimura/YimMenu.git --recursive || echo "You don't have git installed, install it from https://git-scm.com/download/win"
 cd YimMenu
 GenerateProjects.bat
 ```
