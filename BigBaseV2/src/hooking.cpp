@@ -18,6 +18,7 @@
 namespace big
 {
 	hooking::hooking() :
+		// Swapchain
 		m_swapchain_hook(*g_pointers->m_swapchain, hooks::swapchain_num_funcs),
 		// SetCursorPos
 		m_set_cursor_pos_hook("SCP", memory::module("user32.dll").get_export("SetCursorPos").as<void*>(), &hooks::set_cursor_pos),
@@ -27,6 +28,8 @@ namespace big
 		// ConvertThreadToFibe
 		m_convert_thread_to_fiber_hook("CTTF", memory::module("kernel32.dll").get_export("ConvertThreadToFiber").as<void*>(), &hooks::convert_thread_to_fiber),
 
+		// GTA Thead Start
+		m_gta_thread_start_hook("GTS", g_pointers->m_gta_thread_start, &hooks::gta_thread_start),
 		// GTA Thread Tick
 		m_gta_thread_tick_hook("GTT", g_pointers->m_gta_thread_tick, &hooks::gta_thread_tick),
 		// GTA Thread Kill
@@ -49,7 +52,10 @@ namespace big
 		// Send NET Info to Lobby
 		m_send_net_info_to_lobby("SNITL", g_pointers->m_send_net_info_to_lobby, &hooks::send_net_info_to_lobby),
 
-		m_gta_thread_start_hook("GTS", g_pointers->m_gta_thread_start, &hooks::gta_thread_start)
+		// Player Has Joined
+		m_player_has_joined_hook("PHJ", g_pointers->m_player_has_joined, &hooks::player_join),
+		// Player Has Left
+		m_player_has_left_hook("PHL", g_pointers->m_player_has_left, &hooks::player_leave)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -78,6 +84,9 @@ namespace big
 		m_gta_thread_kill_hook.enable();
 		m_gta_thread_tick_hook.enable();
 
+		m_player_has_joined_hook.enable();
+		m_player_has_left_hook.enable();
+
 		m_increment_stat_hook.enable();
 
 		m_error_screen_hook.enable();
@@ -104,6 +113,9 @@ namespace big
 		m_error_screen_hook.disable();
 
 		m_increment_stat_hook.disable();
+
+		m_player_has_joined_hook.disable();
+		m_player_has_left_hook.disable();
 
 		m_gta_thread_tick_hook.disable();
 		m_gta_thread_kill_hook.disable();

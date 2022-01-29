@@ -55,6 +55,11 @@ namespace big
 				strcpy(type, "GTA Banner");
 
 			break;
+		case eRemoteEvent::NetworkBail:
+			if (g.protections.script_events.network_bail)
+				strcpy(type, "Network Bail");
+
+			break;
 		case eRemoteEvent::PersonalVehicleDestroyed:
 			if (g.protections.script_events.personal_vehicle_destroyed)
 				strcpy(type, "Personal Vehicle Destroyed");
@@ -63,6 +68,11 @@ namespace big
 		case eRemoteEvent::RemoteOffradar:
 			if (g.protections.script_events.remote_off_radar)
 				strcpy(type, "Remote Off Radar");
+
+			break;
+		case eRemoteEvent::RotateCam:
+			if (g.protections.script_events.rotate_cam)
+				strcpy(type, "Rotate Cam");
 
 			break;
 		case eRemoteEvent::SendToCutscene:

@@ -40,6 +40,9 @@ namespace big
 		static rage::eThreadState gta_thread_tick(GtaThread* a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
 
+		static void player_join(CNetworkObjectMgr* _this, CNetGamePlayer* net_player);
+		static void player_leave(CNetworkObjectMgr* _this, CNetGamePlayer* net_player);
+
 		static bool increment_stat_event(CNetworkIncrementStatEvent* net_event_struct, CNetGamePlayer* sender, int64_t a3);
 		static bool is_dlc_present(Hash dlc_hash);
 
@@ -79,6 +82,7 @@ namespace big
 		minhook_keepalive m_minhook_keepalive;
 
 		vmt_hook m_swapchain_hook;
+
 		WNDPROC m_og_wndproc = nullptr;
 		detour_hook m_set_cursor_pos_hook;
 
@@ -90,6 +94,9 @@ namespace big
 		detour_hook m_gta_thread_start_hook;
 		detour_hook m_gta_thread_tick_hook;
 		detour_hook m_gta_thread_kill_hook;
+
+		detour_hook m_player_has_joined_hook;
+		detour_hook m_player_has_left_hook;
 
 		detour_hook m_increment_stat_hook;
 		detour_hook m_is_dlc_present_hook;

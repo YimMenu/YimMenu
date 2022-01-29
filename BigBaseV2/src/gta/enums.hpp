@@ -3,7 +3,13 @@
 
 enum class eGameState : std::uint32_t
 {
-	Playing = 0
+	Playing,
+	Died,
+	Arrested,
+	FailedMission,
+	LeftGame,
+	Respawn,
+	InMPCutScene
 };
 
 constexpr auto MAX_PLAYERS = 32;

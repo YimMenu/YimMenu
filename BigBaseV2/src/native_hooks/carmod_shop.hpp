@@ -33,5 +33,16 @@ namespace big
 				);
 			}
 		}
+
+		inline void SET_VEHICLE_LIGHTS(rage::scrNativeCallContext* src)
+		{
+			if (!g.vehicle.ls_customs)
+			{
+				VEHICLE::SET_VEHICLE_LIGHTS(
+					src->get_arg<Vehicle>(0),
+					src->get_arg<int>(1)
+				);
+			}
+		}
 	}
 }
