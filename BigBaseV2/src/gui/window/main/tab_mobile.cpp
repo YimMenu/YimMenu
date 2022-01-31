@@ -57,7 +57,7 @@ namespace big
 						auto& personal_veh = it.second;
 
 						std::string lower = label.c_str();
-						std::transform(lower.begin(), lower.end(), lower.begin(), tolower);
+						std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
 
 						if (lower.find(lower_search) != std::string::npos)
 						{
