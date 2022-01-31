@@ -233,6 +233,12 @@ namespace big
 		{
 			m_player_has_left = ptr.sub(0x26).as<PVOID>();
 		});
+
+		// Network Player Mgr Shutdown
+		main_batch.add("NPMS", "41 57 48 81 EC ? ? ? ? 8A 81 ? ? ? ? 48", [this](memory::handle ptr)
+		{
+			m_network_player_mgr_shutdown = ptr.sub(0x17).as<PVOID>();
+		});
 		
 		main_batch.run(memory::module(nullptr));
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "CNetGamePlayer.hpp"
 #include "natives.hpp"
 #include "script.hpp"
 
@@ -45,15 +46,10 @@ namespace big::notify
 		HUD::END_TEXT_COMMAND_DISPLAY_HELP(0, 0, 1, -1);
 	}
 
-	inline void player_joined(CPlayer player)
+	inline void player_joined(CNetGamePlayer* net_game_player)
 	{
-		char msg[64];
-
-		strcpy(msg, "<C>");
-		strcat(msg, player.name);
-		strcat(msg, "</C>");
-		strcat(msg, " joined.");
-
-		above_map(msg);
+		above_map(
+			fmt::format("<C>{}</C> joined.", net_game_player->get_name()).c_str()
+		);
 	}
 }

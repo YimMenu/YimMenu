@@ -1,6 +1,6 @@
 #pragma once
-#include "common.hpp"
 #include "imgui.h"
+#include "services/player_service.hpp"
 
 namespace big::tab_player
 {

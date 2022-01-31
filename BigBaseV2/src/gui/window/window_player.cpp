@@ -4,18 +4,19 @@
 
 namespace big
 {
-	void window::player()
+	void window::w_player()
 	{
-		if (!g.selected_player.is_online)
+		if (g_player_service->m_selected_player == nullptr || !g_player_service->m_selected_player->is_valid())
 		{
 			g.window.player = false;
 
 			return;
 		}
+		else g.window.player = true;
 
 		char title[64];
 		strcpy(title, "Player Options: ");
-		strcat(title, g.selected_player.name);
+		strcat(title, g_player_service->m_selected_player->get_name());
 		strcat(title, "###player_options");
 
 		ImGui::SetNextWindowSize({ 350.f, 300.f }, ImGuiCond_FirstUseEver);
@@ -29,5 +30,8 @@ namespace big
 
 			ImGui::End();
 		}
+
+		if (!g.window.player)
+			g_player_service->m_selected_player = nullptr;
 	}
 }

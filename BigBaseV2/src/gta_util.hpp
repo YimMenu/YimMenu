@@ -1,8 +1,7 @@
 #pragma once
-#include "common.hpp"
 #include "gta/array.hpp"
 #include "CPedFactory.hpp"
-#include "gta/player.hpp"
+#include "CNetworkPlayerMgr.hpp"
 #include "gta/script_thread.hpp"
 #include "gta/tls_context.hpp"
 #include "pointers.hpp"
@@ -30,6 +29,11 @@ namespace big::gta_util
 		}
 
 		return nullptr;
+	}
+
+	inline CNetworkPlayerMgr* get_network_player_mgr()
+	{
+		return *g_pointers->m_network_player_mgr;
 	}
 
 	template <typename F, typename ...Args>

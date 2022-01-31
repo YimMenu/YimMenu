@@ -11,6 +11,7 @@
 
 #include "native_hooks/native_hooks.hpp"
 #include "services/globals_service.hpp"
+#include "services/player_service.hpp"
 #include "services/mobile_service.hpp"
 #include "services/vehicle_service.hpp"
 
@@ -49,46 +50,48 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto thread_pool_instance = std::make_unique<thread_pool>();
 				LOG(INFO) << "Thread pool initialized.";
 
+				auto globals_service_instace = std::make_unique<globals_service>();
+				auto mobile_service_instance = std::make_unique<mobile_service>();
+				auto player_service_instance = std::make_unique<player_service>();
+				auto vehicle_service_instance = std::make_unique<vehicle_service>();
+				LOG(INFO) << "Registered service instances...";
+
 				g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
 				LOG(INFO) << "Scripts registered.";
 
-				g_hooking->enable();
-				LOG(INFO) << "Hooking enabled.";
-
-				auto globals_service_instace = std::make_unique<globals_service>();
-				auto mobile_service_instance = std::make_unique<mobile_service>();
-				auto vehicle_service_instance = std::make_unique<vehicle_service>();
-				LOG(INFO) << "Registered service instances...";
-
 				auto native_hooks_instance = std::make_unique<native_hooks>();
 				LOG(INFO) << "Dynamic native hooker initialized.";
+
+				g_hooking->enable();
+				LOG(INFO) << "Hooking enabled.";
 
 				while (g_running)
 				{
 					std::this_thread::sleep_for(500ms);
 				}
 
-				native_hooks_instance.reset();
-				LOG(INFO) << "Dynamic native hooker uninitialized.";
-
-				vehicle_service_instance.reset();
-				mobile_service_instance.reset();
-				globals_service_instace.reset();
-				LOG(INFO) << "Serviceses uninitialized.";
-
-				// Make sure that all threads created don't have any blocking loops
-				// otherwise make sure that they have stopped executing
-				g_thread_pool->destroy();
-				LOG(INFO) << "Destroyed thread pool.";
-
 				g_hooking->disable();
 				LOG(INFO) << "Hooking disabled.";
 
 				std::this_thread::sleep_for(1000ms);
 
+				native_hooks_instance.reset();
+				LOG(INFO) << "Dynamic native hooker uninitialized.";
+
 				g_script_mgr.remove_all_scripts();
 				LOG(INFO) << "Scripts unregistered.";
+
+				vehicle_service_instance.reset();
+				mobile_service_instance.reset();
+				player_service_instance.reset();
+				globals_service_instace.reset();
+				LOG(INFO) << "Services uninitialized.";
+
+				// Make sure that all threads created don't have any blocking loops
+				// otherwise make sure that they have stopped executing
+				g_thread_pool->destroy();
+				LOG(INFO) << "Destroyed thread pool.";
 
 				thread_pool_instance.reset();
 				LOG(INFO) << "Thread pool uninitialized.";

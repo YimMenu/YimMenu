@@ -34,6 +34,9 @@ namespace big
 		// GTA Thread Kill
 		m_gta_thread_kill_hook("GTK", g_pointers->m_gta_thread_kill, &hooks::gta_thread_kill),
 
+		// Network Player Mgr Shutdown
+		m_network_player_mgr_shutdown_hook("NPMS", g_pointers->m_network_player_mgr_shutdown, &hooks::network_player_mgr_shutdown),
+		
 		// Increment Stat Event
 		m_increment_stat_hook("ISE", g_pointers->m_increment_stat_event, &hooks::increment_stat_event),
 		// Is DLC Present
@@ -83,6 +86,8 @@ namespace big
 		m_gta_thread_kill_hook.enable();
 		m_gta_thread_tick_hook.enable();
 
+		m_network_player_mgr_shutdown_hook.enable();
+
 		m_player_has_joined_hook.enable();
 		m_player_has_left_hook.enable();
 
@@ -115,6 +120,8 @@ namespace big
 
 		m_player_has_joined_hook.disable();
 		m_player_has_left_hook.disable();
+
+		m_network_player_mgr_shutdown_hook.disable();
 
 		m_gta_thread_tick_hook.disable();
 		m_gta_thread_kill_hook.disable();

@@ -1,5 +1,4 @@
 #pragma once
-#include "data/player_struct.hpp"
 #include "enums.hpp"
 
 #ifndef GLOBALS_H
@@ -133,8 +132,6 @@ struct globals {
 
 	int friend_count = 0;
 	int player_count = 0;
-	CPlayer players[32];
-	CPlayer selected_player;
 
 	debug debug{};
 	tunables tunables{};

@@ -40,6 +40,8 @@ namespace big
 		static rage::eThreadState gta_thread_tick(GtaThread* a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
 
+		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
+
 		static void player_join(CNetworkObjectMgr* _this, CNetGamePlayer* net_player);
 		static void player_leave(CNetworkObjectMgr* _this, CNetGamePlayer* net_player);
 
@@ -94,6 +96,8 @@ namespace big
 		detour_hook m_gta_thread_start_hook;
 		detour_hook m_gta_thread_tick_hook;
 		detour_hook m_gta_thread_kill_hook;
+
+		detour_hook m_network_player_mgr_shutdown_hook;
 
 		detour_hook m_player_has_joined_hook;
 		detour_hook m_player_has_left_hook;
