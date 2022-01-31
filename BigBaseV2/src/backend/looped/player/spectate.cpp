@@ -9,7 +9,7 @@ namespace big
 
 	void looped::player_specate()
 	{
-		if (g_player_service->m_selected_player == nullptr || !g.player.spectating)
+		if (g_player_service->m_selected_player == nullptr || !g_player_service->m_selected_player->is_valid() || !g.player.spectating)
 		{
 			if (g.player.spectating) g.player.spectating = false;
 
