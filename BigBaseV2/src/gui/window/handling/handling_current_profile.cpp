@@ -35,6 +35,7 @@ namespace big
 			tab_current_profile::tab_brakes();
 			tab_current_profile::tab_gearing();
 			tab_current_profile::tab_traction();
+			tab_current_profile::tab_transmission();
 			tab_current_profile::tab_steering();
 			tab_current_profile::tab_suspension();
 			tab_current_profile::tab_rollbars();
