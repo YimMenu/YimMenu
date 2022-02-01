@@ -8,6 +8,7 @@ Strictly for educational purposes.
     * [Git](#git)
     * [Premake5](#premake5)
     * [Cloning and generating project files](#cloning-and-generating-project-files)
+ * [Staying Up To Date](#staying-up-to-date)
  * [Prebuild Binaries](#prebuild-binaries)
  * [Project Structure](#project-structure)
  * [Features](#features)
@@ -36,13 +37,34 @@ Premake5 is used to generate our project files, if you haven't used it before we
 
 ### Cloning and generating project files
 
-Afterwards set up the build environment, run the following commands in a terminal:
-```dos
+Clone the repository including submodules:
+```bash
 git clone https://github.com/Yimura/YimMenu.git --recursive || echo "You don't have git installed, install it from https://git-scm.com/download/win"
+```
+
+Go into the directory you just cloned:
+```bash
 cd YimMenu
+```
+
+Generate project files:
+```bash
 GenerateProjects.bat
 ```
+
 Now, you will be able to open the solution, and simply build it in Visual Studio.
+
+## Staying Up To Date
+
+Pull the latest changes from Github:
+```bash
+git pull
+```
+
+Make sure your Visual Studio is closed and regenerate project files:
+```bash
+GenerateProjects.bat
+```
 
 ## Project Structure
 
