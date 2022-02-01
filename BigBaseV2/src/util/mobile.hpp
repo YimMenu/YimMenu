@@ -75,7 +75,7 @@ namespace big::mobile
 
 			const int arr_size = *vehicle_global.as<int*>();
 			for (int i = 0; i < arr_size; i++)
-				if (fix_index(i))
+				if (fix_index(i, true))
 					fixed_count++;
 
 			return fixed_count;
