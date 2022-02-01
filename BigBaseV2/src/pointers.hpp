@@ -71,8 +71,6 @@ namespace big
 		// Received Event Signatures END
 
 		PVOID m_send_net_info_to_lobby{};
-
-		functions::spectate_player* m_spectate_player{};
 	};
 
 	inline pointers *g_pointers{};

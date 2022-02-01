@@ -34,6 +34,4 @@ namespace big::functions
 	);
 	using send_event_ack = void(rage::netEventMgr* event_manager, CNetGamePlayer* source_player, CNetGamePlayer* target_player, int event_index, int event_handled_bitset);
 	// Received Event Signatures END
-
-	using spectate_player = bool(bool toggle, Ped player);
 }

@@ -168,12 +168,6 @@ namespace big
 			memset(spectator_check, 0x90, 0x4);
 		});
 
-		// Spectate Player
-		main_batch.add("SP", "48 89 5C 24 ? 57 48 83 EC 20 41 8A F8 84 C9", [this](memory::handle ptr)
-		{
-			m_spectate_player = ptr.as<decltype(m_spectate_player)>();
-		});
-
 		// Scripted Game Event Handler
 		main_batch.add("SGEH", "40 53 48 81 EC ? ? ? ? 44 8B 81 ? ? ? ? 4C 8B CA 41 8D 40 FF 3D ? ? ? ? 77 42", [this](memory::handle ptr)
 		{
