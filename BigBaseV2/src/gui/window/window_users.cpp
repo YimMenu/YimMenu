@@ -18,7 +18,9 @@ namespace big
 				std::unique_ptr<player>& plyr = item.second;
 				if (ImGui::Button(plyr->get_name(), { ImGui::GetWindowSize().x - 15.f, 0.f }))
 				{
-					g_player_service->m_selected_player = plyr.get();
+					g_player_service->set_selected(plyr.get());
+
+					g.window.player = true;
 				}
 			}
 

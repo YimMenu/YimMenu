@@ -17,8 +17,8 @@ namespace big
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
 					toxic::blame_explode_player(
-						g_player_service->m_selected_player->id(),
-						g_player_service->m_selected_player->id(),
+						g_player_service->get_selected()->id(),
+						g_player_service->get_selected()->id(),
 						eExplosionType::PLANE, 1000, false, true, 0.f
 					);
 				}QUEUE_JOB_END_CLAUSE

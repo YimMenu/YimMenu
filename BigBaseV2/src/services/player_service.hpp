@@ -27,6 +27,8 @@ namespace big
 		bool is_valid();
 
 	protected:
+		bool equals(CNetGamePlayer* net_game_player);
+
 		std::string to_lowercase_identifier();
 
 	};
@@ -34,19 +36,23 @@ namespace big
 	typedef std::map<std::string, std::unique_ptr<player>> player_list;
 	class player_service final
 	{
+		player* m_dummy_player{};
+		player* m_selected_player = nullptr;
 	public:
 		player_list m_players;
-		player* m_selected_player = nullptr;
 
 		player_service();
 		virtual ~player_service();
 
 		void do_cleanup();
 
-		std::unique_ptr<player>& get_by_name(std::string name);
+		player* get_by_name(std::string name);
+		player* get_selected();
 
 		void player_join(CNetGamePlayer* net_game_player);
 		void player_leave(CNetGamePlayer* net_game_player);
+
+		void set_selected(player* plyr);
 
 	};
 

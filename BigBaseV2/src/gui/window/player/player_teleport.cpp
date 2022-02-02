@@ -12,7 +12,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					teleport::to_player(g_player_service->m_selected_player->id());
+					teleport::to_player(g_player_service->get_selected()->id());
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -21,7 +21,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					teleport::bring_player(g_player_service->m_selected_player->id());
+					teleport::bring_player(g_player_service->get_selected()->id());
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -29,7 +29,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->m_selected_player->id()), false);
+					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
 					
 					teleport::into_vehicle(veh);
 				}QUEUE_JOB_END_CLAUSE

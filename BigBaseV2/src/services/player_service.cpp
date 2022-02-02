@@ -20,12 +20,12 @@ namespace big
 
 	const char* player::get_name()
 	{
-		return m_net_game_player->get_name();
+		return m_net_game_player == nullptr ? "" : m_net_game_player->get_name();
 	}
 
 	rage::netPlayerData* player::get_net_data()
 	{
-		return m_net_game_player->get_net_data();
+		return m_net_game_player == nullptr ? false : m_net_game_player->get_net_data();
 	}
 
 	CNetGamePlayer* player::get_net_game_player()
@@ -50,17 +50,22 @@ namespace big
 
 	uint8_t player::id()
 	{
-		return m_net_game_player->m_player_id;
+		return m_net_game_player == nullptr ? -1 : m_net_game_player->m_player_id;
 	}
 
 	bool player::is_host()
 	{
-		return m_net_game_player->is_host();
+		return m_net_game_player == nullptr ? false : m_net_game_player->is_host();
 	}
 
 	bool player::is_valid()
 	{
 		return m_net_game_player == nullptr ? false : m_net_game_player->is_valid();
+	}
+
+	bool player::equals(CNetGamePlayer* net_game_player)
+	{
+		return net_game_player == m_net_game_player;
 	}
 
 	std::string player::to_lowercase_identifier()
@@ -89,17 +94,36 @@ namespace big
 			}
 		}
 
+		m_dummy_player = new player(nullptr);
+
 		g_player_service = this;
 	}
 
 	player_service::~player_service()
 	{
 		g_player_service = nullptr;
+	
+		delete m_dummy_player;
 	}
 
 	void player_service::do_cleanup()
 	{
+		m_selected_player = nullptr;
 		m_players.clear();
+	}
+
+	player* player_service::get_by_name(std::string name)
+	{
+		std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+
+		if (auto it = m_players.find(name); it != m_players.end())
+			return it->second.get();
+		return nullptr;
+	}
+
+	player* player_service::get_selected()
+	{
+		return m_selected_player == nullptr ? m_dummy_player : m_selected_player;
 	}
 
 	void player_service::player_join(CNetGamePlayer* net_game_player)
@@ -118,9 +142,15 @@ namespace big
 	void player_service::player_leave(CNetGamePlayer* net_game_player)
 	{
 		if (net_game_player == nullptr) return;
+		if (m_selected_player && m_selected_player->equals(net_game_player))
+			m_selected_player = nullptr;
 
 		std::unique_ptr<player> plyr = std::make_unique<player>(net_game_player);
-
 		m_players.erase(plyr->to_lowercase_identifier());
+	}
+
+	void player_service::set_selected(player* plyr)
+	{
+		m_selected_player = plyr;
 	}
 }
