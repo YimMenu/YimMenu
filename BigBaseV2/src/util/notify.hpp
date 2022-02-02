@@ -12,7 +12,9 @@ namespace big::notify
 		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
 		HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER(false, false);
 	}
+	inline void above_map(std::string text) { above_map(text.c_str()); }
 
+	// deprecated/unused
 	inline void blocked_event(const char* name, Player player)
 	{
 		char msg[128];
@@ -49,7 +51,7 @@ namespace big::notify
 	inline void player_joined(CNetGamePlayer* net_game_player)
 	{
 		above_map(
-			fmt::format("<C>{}</C> joined.", net_game_player->get_name()).c_str()
+			fmt::format("<C>{}</C> joined.", net_game_player->get_name())
 		);
 	}
 }
