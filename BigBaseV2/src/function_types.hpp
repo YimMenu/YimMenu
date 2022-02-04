@@ -13,7 +13,7 @@ namespace big::functions
 
 	using get_net_game_player = CNetGamePlayer*(Player player);
 
-	using trigger_script_event = void(int event_group, int* args, int arg_count, int player_bits);
+	using trigger_script_event = void(int event_group, int64_t* args, int arg_count, int player_bits);
 
 	using increment_stat_event = bool(uint64_t net_event_struct, int64_t sender, int64_t a3);
 

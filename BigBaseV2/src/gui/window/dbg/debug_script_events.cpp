@@ -9,7 +9,7 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Script Events"))
 		{
-			static int* args;
+			static int64_t* args;
 			static int event_arg_count = 1;
 			static int previous_arg_count;
 			static int event_player_bits;
@@ -24,8 +24,8 @@ namespace big
 
 			if (event_arg_count != previous_arg_count)
 			{
-				int* temp_args = new int[event_arg_count] {0};
-				memcpy(temp_args, args, sizeof(int) * std::min(event_arg_count, previous_arg_count));
+				int64_t* temp_args = new int64_t[event_arg_count] {0};
+				memcpy(temp_args, args, sizeof(int64_t) * std::min(event_arg_count, previous_arg_count));
 
 				delete[] args;
 				args = temp_args;
@@ -42,7 +42,7 @@ namespace big
 
 				char input_arg_name[20];
 				sprintf(input_arg_name, "###input_dynamic_arg_%d", i);
-				ImGui::InputInt(input_arg_name, &args[i]);
+				ImGui::InputScalar(input_arg_name, ImGuiDataType_S64, &args[i]);
 			}
 
 			ImGui::Separator();
