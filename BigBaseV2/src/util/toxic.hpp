@@ -35,7 +35,7 @@ namespace big::toxic
 			0, // doesn't matter of we set this to something else, the TRIGGER_SCRIPT_EVENT routine will set it to our player id anyways
 			target,
 			0, // set by player or NPC?
-			10000,
+			amount,
 			0, 1, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0,
 			*script_global(1921036).at(9).as<int*>(),
