@@ -59,10 +59,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				//OPENVHOOK
 				LOG(INFO) << "Scripts registered.";
 
-				g_hooking->enable();
-				LOG(INFO) << "Hooking enabled.";
 				//OPENVHOOK
 				ASILoader::Initialize();
+
+				
 
 				auto globals_service_instace = std::make_unique<globals_service>();
 				auto mobile_service_instance = std::make_unique<mobile_service>();
@@ -76,10 +76,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				auto native_hooks_instance = std::make_unique<native_hooks>();
 				LOG(INFO) << "Dynamic native hooker initialized.";
-				
 
 				g_hooking->enable();
 				LOG(INFO) << "Hooking enabled.";
+
 
 				while (g_running)
 				{

@@ -22,6 +22,25 @@ namespace big
 				ImGui::Checkbox("God Mode", &g.vehicle.god_mode);
 				ImGui::Checkbox("Horn Boost", &g.vehicle.horn_boost);
 				ImGui::Checkbox("Untargetable +", &g.vehicle.untargetable);
+				if (ImGui::Button("Gift vehicle"))
+				{
+					g_fiber_pool->queue_job([]
+						{
+							Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), true);
+							ENTITY::SET_ENTITY_AS_MISSION_ENTITY(vehicle, TRUE, TRUE);
+							NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle);
+
+							while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(vehicle))
+								script::get_current()->yield(10ms);
+
+							DECORATOR::DECOR_REGISTER("PV_Slot", 3);
+							DECORATOR::DECOR_REGISTER("Player_Vehicle", 3);
+							DECORATOR::DECOR_SET_BOOL(vehicle, "IgnoredByQuickSave", FALSE);
+							DECORATOR::DECOR_SET_INT(vehicle, "Player_Vehicle", PLAYER::NETWORK_PLAYER_ID_TO_INT());
+							VEHICLE::SET_VEHICLE_IS_STOLEN(vehicle, FALSE);
+							notify::above_map("Vehicle Gifted");
+						});
+				}
 				ImGui::EndGroup();
 				ImGui::SameLine();
 				ImGui::BeginGroup();

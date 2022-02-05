@@ -77,30 +77,44 @@ namespace big
 	void hooking::enable()
 	{
 		m_swapchain_hook.enable();
+		LOG(INFO) << "Hooking enabled 1.";
 		m_og_wndproc = reinterpret_cast<WNDPROC>(SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&hooks::wndproc)));
 		m_set_cursor_pos_hook.enable();
+		LOG(INFO) << "Hooking enabled 2.";
 
 		m_run_script_threads_hook.enable();
+		LOG(INFO) << "Hooking enabled. 3";
 		m_convert_thread_to_fiber_hook.enable();
+		LOG(INFO) << "Hooking enabled.4 ";
 
 		m_gta_thread_start_hook.enable();
+		LOG(INFO) << "Hooking enabled. 5";
 		m_gta_thread_kill_hook.enable();
+		LOG(INFO) << "Hooking enabled.6";
 		m_gta_thread_tick_hook.enable();
+		LOG(INFO) << "Hooking enabled.7 ";
 
 		m_network_player_mgr_shutdown_hook.enable();
-
+		LOG(INFO) << "Hooking enabled. 8";
 		m_player_has_joined_hook.enable();
+		LOG(INFO) << "Hooking enabled. 9";
 		m_player_has_left_hook.enable();
+		LOG(INFO) << "Hooking enabled 10.";
 
 		m_increment_stat_hook.enable();
+		LOG(INFO) << "Hooking enabled. 11";
 
 		m_error_screen_hook.enable();
+		LOG(INFO) << "Hooking enabled.1 2";
 
 		m_received_event_hook.enable();
+		LOG(INFO) << "Hooking enabled. 13";
 
 		m_scripted_game_event_hook.enable();
+		LOG(INFO) << "Hooking enabled. 14";
 
 		m_send_net_info_to_lobby.enable();
+		LOG(INFO) << "Hooking enabled. 15";
 
 		m_enabled = true;
 	}
