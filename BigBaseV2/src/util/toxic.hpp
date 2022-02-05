@@ -30,12 +30,12 @@ namespace big::toxic
 	inline void bounty_player(Player target, int amount)
 	{
 		const size_t arg_count = 22;
-		int args[arg_count] = {
+		int64_t args[arg_count] = {
 			(int)eRemoteEvent::Bounty,
 			0, // doesn't matter of we set this to something else, the TRIGGER_SCRIPT_EVENT routine will set it to our player id anyways
 			target,
 			0, // set by player or NPC?
-			10000,
+			amount,
 			0, 1, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0,
 			*script_global(1921036).at(9).as<int*>(),

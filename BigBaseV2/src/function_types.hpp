@@ -16,7 +16,7 @@ namespace big::functions
 
 	using get_net_game_player = CNetGamePlayer*(Player player);
 
-	using trigger_script_event = void(int event_group, int* args, int arg_count, int player_bits);
+	using trigger_script_event = void(int event_group, int64_t* args, int arg_count, int player_bits);
 
 	using increment_stat_event = bool(uint64_t net_event_struct, int64_t sender, int64_t a3);
 
@@ -38,6 +38,4 @@ namespace big::functions
 	);
 	using send_event_ack = void(rage::netEventMgr* event_manager, CNetGamePlayer* source_player, CNetGamePlayer* target_player, int event_index, int event_handled_bitset);
 	// Received Event Signatures END
-
-	using spectate_player = bool(bool toggle, Ped player);
 }

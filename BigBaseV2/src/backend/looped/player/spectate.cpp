@@ -1,6 +1,7 @@
 #include "backend/looped/looped.hpp"
 #include "pointers.hpp"
 #include "natives.hpp"
+#include "services/player_service.hpp"
 
 namespace big
 {
@@ -8,23 +9,24 @@ namespace big
 
 	void looped::player_specate()
 	{
-		if (!g.selected_player.is_online || !g.player.spectating)
+		if (!g_player_service->get_selected()->is_valid() || !g.player.spectating)
 		{
 			if (g.player.spectating) g.player.spectating = false;
 
 			if (!bReset)
 			{
 				bReset = true;
-				g_pointers->m_spectate_player(false, -1);
+
+				NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(false, -1);
 				HUD::SET_MINIMAP_IN_SPECTATOR_MODE(false, -1);
 			}
 
 			return;
 		}
 
-		Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g.selected_player.id);
+		Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
 
-		g_pointers->m_spectate_player(true, target);
+		NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(true, target);
 		HUD::SET_MINIMAP_IN_SPECTATOR_MODE(true, target);
 
 		bReset = false;

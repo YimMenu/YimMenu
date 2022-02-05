@@ -9,7 +9,7 @@ namespace big
 		static void handling();
 		static void log();
 		static void main();
-		static void player();
+		static void w_player();
 		static void users();
 
 	public:
@@ -24,7 +24,7 @@ namespace big
 			window::main();
 			window::handling();
 
-			window::player();
+			window::w_player();
 			window::users();
 		}
 	};

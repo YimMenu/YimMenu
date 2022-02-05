@@ -170,12 +170,6 @@ namespace big
 			memset(spectator_check, 0x90, 0x4);
 		});
 
-		// Spectate Player
-		main_batch.add("SP", "48 89 5C 24 ? 57 48 83 EC 20 41 8A F8 84 C9", [this](memory::handle ptr)
-		{
-			m_spectate_player = ptr.as<decltype(m_spectate_player)>();
-		});
-
 		// Scripted Game Event Handler
 		main_batch.add("SGEH", "40 53 48 81 EC ? ? ? ? 44 8B 81 ? ? ? ? 4C 8B CA 41 8D 40 FF 3D ? ? ? ? 77 42", [this](memory::handle ptr)
 		{
@@ -272,6 +266,12 @@ namespace big
 		main_batch.add("PHL", "4C 8B F1 48 8B CA 48 8B EA FF 50 18 4C 8D 05", [this](memory::handle ptr)
 		{
 			m_player_has_left = ptr.sub(0x26).as<PVOID>();
+		});
+
+		// Network Player Mgr Shutdown
+		main_batch.add("NPMS", "41 57 48 81 EC ? ? ? ? 8A 81 ? ? ? ? 48", [this](memory::handle ptr)
+		{
+			m_network_player_mgr_shutdown = ptr.sub(0x17).as<PVOID>();
 		});
 		
 		main_batch.run(memory::module(nullptr));

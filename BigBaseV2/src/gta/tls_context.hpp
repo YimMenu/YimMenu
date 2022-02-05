@@ -18,6 +18,5 @@ namespace rage
 			return *reinterpret_cast<tlsContext**>(__readgsqword(0x58));
 		}
 	};
-
 	static_assert(sizeof(tlsContext) == 0x838);
 }

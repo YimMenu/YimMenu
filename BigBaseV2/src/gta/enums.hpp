@@ -1,17 +1,6 @@
 #pragma once
 #include <cstdint>
 
-enum class eGameState : std::uint32_t
-{
-	Playing,
-	Died,
-	Arrested,
-	FailedMission,
-	LeftGame,
-	Respawn,
-	InMPCutScene
-};
-
 constexpr auto MAX_PLAYERS = 32;
 
 enum class ControllerInputs : std::uint32_t

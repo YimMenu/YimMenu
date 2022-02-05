@@ -40,6 +40,8 @@ namespace big
 		static rage::eThreadState gta_thread_tick(GtaThread* a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
 
+		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
+
 		static void player_join(CNetworkObjectMgr* _this, CNetGamePlayer* net_player);
 		static void player_leave(CNetworkObjectMgr* _this, CNetGamePlayer* net_player);
 
@@ -58,7 +60,7 @@ namespace big
 		);
 
 		static bool scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player);
-		static bool send_net_info_to_lobby(netPlayerData* player, int64_t a2, int64_t a3, DWORD* a4);
+		static bool send_net_info_to_lobby(rage::netPlayerData* player, int64_t a2, int64_t a3, DWORD* a4);
 	};
 
 	struct minhook_keepalive
@@ -94,6 +96,8 @@ namespace big
 		detour_hook m_gta_thread_start_hook;
 		detour_hook m_gta_thread_tick_hook;
 		detour_hook m_gta_thread_kill_hook;
+
+		detour_hook m_network_player_mgr_shutdown_hook;
 
 		detour_hook m_player_has_joined_hook;
 		detour_hook m_player_has_left_hook;

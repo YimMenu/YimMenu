@@ -12,7 +12,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					teleport::to_player(g.selected_player.id);
+					teleport::to_player(g_player_service->get_selected()->id());
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -21,7 +21,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					teleport::bring_player(g.selected_player.id);
+					teleport::bring_player(g_player_service->get_selected()->id());
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -29,7 +29,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					teleport::godmode_kill(g.selected_player.id);
+					teleport::godmode_kill(g_player_service->get_selected()->id());
 				}QUEUE_JOB_END_CLAUSE
 			}
 

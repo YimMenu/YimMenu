@@ -6,28 +6,6 @@
 
 namespace rage
 {
-	class fwEntity
-	{
-	public:
-		char pad_0000[32]; //0x0000
-		class CBaseModelInfo* m_model_info; //0x0020
-		int8_t m_invisible; //0x0028
-		char pad_0029[7]; //0x0029
-		class CNavigation* m_navigation; //0x0030
-		char pad_0038[1]; //0x0038
-		int8_t m_entity_type; //0x0039
-		char pad_003A[150]; //0x003A
-		class netObject* m_net_object; //0x00D0
-		char pad_00D8[176]; //0x00D8
-		uint32_t m_damage_bits; //0x0188
-
-		bool is_invincible() { return(m_damage_bits & (1 << 8)); }
-		void enable_invincible() { m_damage_bits |= (1 << 8); }
-		void disable_invincible() { m_damage_bits &= ~(1 << 8); }
-	}; //Size: 0x018C
-	static_assert(sizeof(fwEntity) == 0x18C, "fwEntity is not properly sized");
-
-
 	class CVehicle : public fwEntity
 	{
 	public:
@@ -35,18 +13,6 @@ namespace rage
 		//class CPed* m_driver; //0x0C28
 		//class CPed* m_occupants[8]; //0x0C30
 	}; //Size: 0x018C
-
-	class CNavigation
-	{
-	public:
-		char pad_0000[32]; //0x0000
-		float m_heading; //0x0020
-		float m_heading2; //0x0024
-		char pad_0028[8]; //0x0028
-		vector3 m_rotation; //0x0030
-		char pad_003C[20]; //0x003C
-		vector3 m_position; //0x0050
-	}; //Size: 0x005C
 
 	class CPed : public fwEntity
 	{

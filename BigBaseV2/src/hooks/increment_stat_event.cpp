@@ -6,8 +6,6 @@ namespace big
 {
 	bool hooks::increment_stat_event(CNetworkIncrementStatEvent* net_event, CNetGamePlayer* sender, int64_t a3)
 	{
-		Player sender_id = sender->player_id;
-
 		switch (net_event->m_stat)
 		{
 		case RAGE_JOAAT("MPPLY_GAME_EXPLOITS"):
@@ -15,14 +13,9 @@ namespace big
 		case RAGE_JOAAT("MPPLY_EXPLOITS"):
 		case RAGE_JOAAT("MPPLY_TC_ANNOYINGME"):
 		case RAGE_JOAAT("MPPLY_TC_HATE"):
-			char report[64];
-			strcpy(report, "~g~BLOCKED REPORT~s~\nFrom: <C>");
-			strcat(report, PLAYER::GET_PLAYER_NAME(sender_id));
-			strcat(report, "</C>");
-			QUEUE_JOB_BEGIN_CLAUSE(= )
-			{
-				notify::above_map(report);
-			}QUEUE_JOB_END_CLAUSE
+			std::string report = fmt::format("~g~BLOCKED REPORT~s~\nFrom: <C>{}</C>", sender->get_name());
+
+			notify::above_map(report);
 
 			return true;
 		}

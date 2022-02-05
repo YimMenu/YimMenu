@@ -51,6 +51,7 @@
 #include "logger.hpp"
 
 #include "core/globals.hpp"
+#include "gta/natives.hpp"
 #include "CPed.hpp"
 
 namespace big

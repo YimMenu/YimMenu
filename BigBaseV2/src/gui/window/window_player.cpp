@@ -4,22 +4,12 @@
 
 namespace big
 {
-	void window::player()
+	void window::w_player()
 	{
-		if (!g.selected_player.is_online)
-		{
-			g.window.player = false;
-
-			return;
-		}
-
-		char title[64];
-		strcpy(title, "Player Options: ");
-		strcat(title, g.selected_player.name);
-		strcat(title, "###player_options");
+		std::string title = fmt::format("Player Options: {}###player_options", g_player_service->get_selected()->get_name());
 
 		ImGui::SetNextWindowSize({ 350.f, 300.f }, ImGuiCond_FirstUseEver);
-		if (g.window.player && ImGui::Begin(title, &g.window.player))
+		if (g.window.player && g_player_service->get_selected()->is_valid() && ImGui::Begin(title.c_str(), &g.window.player))
 		{
 			ImGui::BeginTabBar("tabbar_player");
 			tab_player::tab_info();
