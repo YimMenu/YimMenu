@@ -8,7 +8,7 @@ namespace big
 {
 	void vehicle_helper::add_clan_logo_to_vehicle(Vehicle vehicle, Ped ped)
 	{
-		rage::vector3 x, y, z;
+		rage::fvector3 x, y, z;
 		float scale;
 		Hash modelHash = ENTITY::GET_ENTITY_MODEL(vehicle);
 		if (GetVehicleInfoForClanLogo(modelHash, x, y, z, scale))

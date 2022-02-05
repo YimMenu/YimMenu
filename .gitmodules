@@ -21,3 +21,6 @@
 [submodule "vendor/GTAV-Classes"]
 	path = vendor/GTAV-Classes
 	url = https://github.com/Yimura/GTAV-Classes.git
+[submodule "GTAV-Classes"]
+	path = GTAV-Classes
+	url = https://github.com/Yimura/GTAV-Classes

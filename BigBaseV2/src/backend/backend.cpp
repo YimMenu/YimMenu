@@ -21,13 +21,8 @@ namespace big
 			looped::system_update_pointers();
 		}QUEUE_JOB_END_CLAUSE
 
-		if (g_local_player != nullptr && !api::util::signed_in())
-		{
-			g_thread_pool->push([]
-			{
-				looped::api_login_session();
-			});
-		}
+			//remove api
+
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
