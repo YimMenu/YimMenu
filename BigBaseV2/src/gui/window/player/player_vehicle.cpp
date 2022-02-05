@@ -13,7 +13,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g.selected_player.id), false);
+					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
 
 					teleport::into_vehicle(veh);
 				}QUEUE_JOB_END_CLAUSE
@@ -23,7 +23,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-				int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g.selected_player.id);
+				int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
 				Vehicle cloned = features::ClonePedVehicle(Handle);
 				features::BoostStats(cloned);
 				}QUEUE_JOB_END_CLAUSE
@@ -37,7 +37,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g.selected_player.id);
+					int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
 					TASK::CLEAR_PED_TASKS_IMMEDIATELY(Handle);
 				}QUEUE_JOB_END_CLAUSE
 
@@ -49,11 +49,11 @@ namespace big
 			{
 				g_fiber_pool->queue_job([]
 					{
-						NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(g.selected_player.id, false));
+						NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(g_player_service->get_selected()->id(), false));
 
-						while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(g.selected_player.id, false)))
+						while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(PED::GET_VEHICLE_PED_IS_IN(g_player_service->get_selected()->id(), false)))
 							script::get_current()->yield(5ms);
-						Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(g.selected_player.id);
+						Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(g_player_service->get_selected()->id());
 						ENTITY::SET_ENTITY_AS_MISSION_ENTITY(veh, true, true);
 						VEHICLE::DELETE_VEHICLE(&veh);
 					});
@@ -73,7 +73,7 @@ namespace big
 				DECORATOR::DECOR_REGISTER("PV_Slot", 3);
 				DECORATOR::DECOR_REGISTER("Player_Vehicle", 3);
 				DECORATOR::DECOR_SET_BOOL(vehicle, "IgnoredByQuickSave", FALSE);
-				DECORATOR::DECOR_SET_INT(vehicle, "Player_Vehicle", NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(g.selected_player.id));
+				DECORATOR::DECOR_SET_INT(vehicle, "Player_Vehicle", NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(g_player_service->get_selected()->id()));
 				VEHICLE::SET_VEHICLE_IS_STOLEN(vehicle, FALSE);
 				notify::above_map("Vehicle Gifted");
 					});

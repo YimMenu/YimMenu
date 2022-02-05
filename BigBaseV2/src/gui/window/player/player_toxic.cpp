@@ -28,7 +28,7 @@ namespace big
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					NETWORK::NETWORK_SESSION_KICK_PLAYER(g.selected_player.id);
+					NETWORK::NETWORK_SESSION_KICK_PLAYER(g_player_service->get_selected()->id());
 				}
 				QUEUE_JOB_END_CLAUSE
 			}
@@ -36,9 +36,9 @@ namespace big
 			if (ImGui::Button("Send to island"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE(){
-					int args[3] = {
-			(int)eRemoteEvent::SendToIsland, 0, g.selected_player.id};
-					g_pointers->m_trigger_script_event(1, args, 3, -1 << g.selected_player.id);
+					int64_t args[3] = {
+			(int)eRemoteEvent::SendToIsland, 0, g_player_service->get_selected()->id()};
+					g_pointers->m_trigger_script_event(1, args, 3, -1 << g_player_service->get_selected()->id());
 				}QUEUE_JOB_END_CLAUSE
 			}
 
@@ -46,7 +46,7 @@ namespace big
 			{
 				g_fiber_pool->queue_job([]
 					{
-						Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g.selected_player.id);
+						Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
 						Ped player_ped = PLAYER::PLAYER_PED_ID();
 						PED::SET_PED_COMPONENT_VARIATION(player_ped, 1, PED::GET_PED_DRAWABLE_VARIATION(ped, 1), PED::GET_PED_TEXTURE_VARIATION(ped, 1), 0);
 						//PED::SET_PED_COMPONENT_VARIATION(player_ped, 3, PED::GET_PED_DRAWABLE_VARIATION(ped, 3), 1, 0);
@@ -163,7 +163,7 @@ namespace big
 			{
 				g_fiber_pool->queue_job([]
 					{
-						auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g.selected_player.id), true);
+						auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), true);
 						FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, expl_selected, 1, isAudible, isInvisible, cameraShake, Enable_damage);
 					});
 			}
