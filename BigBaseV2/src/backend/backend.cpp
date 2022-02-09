@@ -61,6 +61,8 @@ namespace big
 			looped::weapons_steal_vehicle_gun();
 			looped::weapons_repair_gun();
 			looped::weapons_vehicle_gun();
+			looped::weapons_infinite_ammo();
+			looped::weapons_infinite_mag();
 		}QUEUE_JOB_END_CLAUSE
 
 		QUEUE_JOB_BEGIN_CLAUSE()
