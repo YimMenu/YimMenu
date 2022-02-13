@@ -44,5 +44,7 @@ namespace big
 		static void weapons_repair_gun();
 		static void weapons_steal_vehicle_gun();
 		static void weapons_vehicle_gun();
+		static void weapons_infinite_ammo();
+		static void weapons_infinite_mag();
 	};
 }

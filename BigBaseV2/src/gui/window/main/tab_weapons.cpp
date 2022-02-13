@@ -40,6 +40,17 @@ namespace big
 
 		if (ImGui::BeginTabItem("Weapons"))
 		{
+			if (ImGui::TreeNode("Ammo Options"))
+			{
+				ImGui::Checkbox("Infinite Ammo", &g.weapons.infinite_ammo);
+
+				ImGui::SameLine();
+
+				ImGui::Checkbox("Infinite Clip", &g.weapons.infinite_mag);
+
+				ImGui::TreePop();
+			}
+
 			ImGui::Checkbox("Unlimited ammo", &g.weapons.unlimited_ammo);
 			if (ImGui::TreeNode("Weapons"))
 			{
