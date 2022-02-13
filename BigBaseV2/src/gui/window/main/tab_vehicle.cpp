@@ -36,7 +36,7 @@ namespace big
 							DECORATOR::DECOR_REGISTER("PV_Slot", 3);
 							DECORATOR::DECOR_REGISTER("Player_Vehicle", 3);
 							DECORATOR::DECOR_SET_BOOL(vehicle, "IgnoredByQuickSave", FALSE);
-							DECORATOR::DECOR_SET_INT(vehicle, "Player_Vehicle", PLAYER::NETWORK_PLAYER_ID_TO_INT());
+							DECORATOR::DECOR_SET_INT(vehicle, "Player_Vehicle", NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(PLAYER::PLAYER_ID()));
 							VEHICLE::SET_VEHICLE_IS_STOLEN(vehicle, FALSE);
 							notify::above_map("Vehicle Gifted");
 						});

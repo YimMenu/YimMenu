@@ -9,6 +9,14 @@ namespace big
 		if (!bUnlimitedammo)
 			return;
 
+		Hash weaponHash;
+		auto const ped = PLAYER::PLAYER_PED_ID();
+
+		WEAPON::GET_CURRENT_PED_WEAPON(ped, &weaponHash, 1);
+		if (weaponHash != RAGE_JOAAT("WEAPON_UNARMED")) {
+			WEAPON::GIVE_WEAPON_TO_PED(ped, weaponHash, 9999, false, false);
+		}
+
 	Hash cur;
 	if (WEAPON::GET_CURRENT_PED_WEAPON(PLAYER::PLAYER_PED_ID(), &cur, 1))
 	{

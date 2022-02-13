@@ -5,6 +5,7 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "util/toxic.hpp"
+#include "script_local.hpp"
 
 namespace big
 {
@@ -33,12 +34,19 @@ namespace big
 				QUEUE_JOB_END_CLAUSE
 			}
 
+			if (ImGui::Button("Bounty player"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE() {
+				toxic::bounty_player(g_player_service->get_selected()->id(), 10000);
+				}QUEUE_JOB_END_CLAUSE
+			}
+
 			if (ImGui::Button("Send to island"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE(){
 					int64_t args[3] = {
 			(int)eRemoteEvent::SendToIsland, 0, g_player_service->get_selected()->id()};
-					g_pointers->m_trigger_script_event(1, args, 3, -1 << g_player_service->get_selected()->id());
+					g_pointers->m_trigger_script_event(1, args, 3, 1 << g_player_service->get_selected()->id());
 				}QUEUE_JOB_END_CLAUSE
 			}
 

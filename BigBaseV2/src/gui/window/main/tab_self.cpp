@@ -35,6 +35,16 @@ namespace big
 				ImGui::Checkbox("No Clip", &g.self.noclip);
 				ImGui::Checkbox("No Ragdoll", &g.self.no_ragdoll);
 				ImGui::Checkbox("Super Run", &g.self.super_run);
+				ImGui::EndGroup();
+
+				if (ImGui::TreeNode("Aimbot"))
+				{
+					ImGui::Checkbox("ESP", &g.self.esp);
+					ImGui::Checkbox("AIM", &g.self.aim);
+
+
+					ImGui::TreePop();
+				}
 				
 				ImGui::TreePop();
 			}

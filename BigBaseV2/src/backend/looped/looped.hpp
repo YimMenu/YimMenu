@@ -24,6 +24,8 @@ namespace big
 		static void self_no_ragdoll();
 		static void self_super_run();
 		static void self_unlimited_ammo();
+		static void self_aim();
+		static void self_esp();
 
 		static void system_update_players();
 		static void system_update_pointers();

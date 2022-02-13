@@ -3,8 +3,8 @@
 
 namespace big::api
 {
-	const std::string domain = "http://home.damon.sh:8089/api/v1";
-	//const std::string domain = "http://localhost:8080/api/v1";
+	//const std::string domain = "http://home.damon.sh:8089/api/v1";
+	const std::string domain = "http://localhost:8080/api/v1";
 	inline std::string session_id;
 
 	namespace util

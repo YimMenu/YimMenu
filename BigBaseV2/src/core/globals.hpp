@@ -70,6 +70,9 @@ struct globals {
 		bool super_run = false;
 		bool force_wanted_level = false;
 		int wanted_level = 0;
+		bool esp = false;
+		bool aim = false;
+		bool friends = false;
 
 		frame_flags frame_flags{};
 	};
@@ -179,6 +182,8 @@ struct globals {
 		this->self.never_wanted = j["self"]["never_wanted"];
 		this->self.no_ragdoll = j["self"]["no_ragdoll"];
 		this->self.super_run = j["self"]["super_run"];
+		this->self.aim = j["self"]["aim"];
+		this->self.esp = j["self"]["esp"];
 
 		this->self.frame_flags.explosive_ammo = j["self"]["frame_flags"]["explosive_ammo"];
 		this->self.frame_flags.explosive_melee = j["self"]["frame_flags"]["explosive_melee"];
@@ -264,6 +269,8 @@ struct globals {
 					{ "godmode", this->self.godmode },
 					{ "off_radar", this->self.off_radar },
 					{ "never_wanted", this->self.never_wanted },
+					{ "aim", this->self.aim },
+					{ "esp", this->self.esp },
 					{ "no_ragdoll", this->self.no_ragdoll },
 					{ "super_run", this->self.super_run },
 

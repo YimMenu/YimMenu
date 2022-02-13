@@ -20,10 +20,18 @@ namespace big
 
 			looped::system_update_pointers();
 		}QUEUE_JOB_END_CLAUSE
-
-			//remove api
-
-
+		//	if (g_local_player != nullptr && !api::util::signed_in())
+		//	{
+			//	g_thread_pool->push([]
+			//		{
+			//			looped::api_login_session();
+			//		});
+		//	}
+		QUEUE_JOB_BEGIN_CLAUSE()
+		{
+			looped::self_esp();
+			looped::self_aim();
+		}QUEUE_JOB_END_CLAUSE
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::tunables_disable_phone();
@@ -45,7 +53,7 @@ namespace big
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
-			//looped::player_specate();
+			looped::player_specate();
 		}QUEUE_JOB_END_CLAUSE
 
 		QUEUE_JOB_BEGIN_CLAUSE()

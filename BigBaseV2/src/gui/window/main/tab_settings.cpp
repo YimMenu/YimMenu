@@ -5,6 +5,9 @@
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include <widgets/imgui_hotkey.hpp>
+#include "script.hpp"
+#include "util/toxic.hpp"
+#include "services/player_service.hpp"
 
 namespace big
 {
@@ -60,7 +63,18 @@ namespace big
 
 			ImGui::Separator();
 
-			if (ImGui::Button("Reset cooldown"))
+			if (ImGui::Button("Bounty All Players"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE() {
+					for (int i = 0; i < 32; ++i) {
+						if (ENTITY::DOES_ENTITY_EXIST(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i))) {
+							toxic::bounty_player(i, 10000);
+						}
+					}
+				}QUEUE_JOB_END_CLAUSE
+			}
+
+			if (ImGui::Button("Reset casino cooldown"))
 			{
 				g_fiber_pool->queue_job([] {
 					STATS::STAT_SET_INT(RAGE_JOAAT("MPPLY_CASINO_CHIPS_WON_GD"), 0, TRUE);
