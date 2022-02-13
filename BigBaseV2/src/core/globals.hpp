@@ -116,8 +116,8 @@ struct globals {
 	struct weapons {
 		CustomWeapon custom_weapon = CustomWeapon::NONE;
 		char vehicle_gun_model[12] = "bus";
-		bool infinite_ammo {};
-		bool infinite_mag {};
+		bool infinite_ammo = false;
+		bool infinite_mag = false;
 	};
 
 	struct window {
@@ -205,8 +205,8 @@ struct globals {
 		this->vehicle.speedo_meter.y = j["vehicle"]["speedo_meter"]["position_y"];
 
 		this->weapons.custom_weapon = (CustomWeapon)j["weapons"]["custom_weapon"];
-		this->weapons.custom_weapon = j["weapons"]["infinite_ammo"];
-		this->weapons.custom_weapon = j["weapons"]["infinite_mag"];
+		this->weapons.infinite_ammo = j["weapons"]["infinite_ammo"];
+		this->weapons.infinite_mag = j["weapons"]["infinite_mag"];
 
 		this->window.debug = j["window"]["debug"];
 		this->window.handling = j["window"]["handling"];
@@ -317,8 +317,8 @@ struct globals {
 			{
 				"weapons", {
 					{ "custom_weapon", (int)this->weapons.custom_weapon },
-					{ "infinite_ammo", (int)this->weapons.infinite_ammo },
-					{ "infinite_mag", (int)this->weapons.infinite_mag }
+					{ "infinite_ammo", this->weapons.infinite_ammo },
+					{ "infinite_mag", this->weapons.infinite_mag }
 				}
 			},
 			{
