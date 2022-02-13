@@ -1,8 +1,6 @@
 #include "backend/looped/looped.hpp"
-#include "core/enums.hpp"
-#include "util/entity.hpp"
-#include "util/math.hpp"
-#include "util/notify.hpp"
+#include "gta/joaat.hpp"
+#include "natives.hpp"
 
 namespace big
 {
