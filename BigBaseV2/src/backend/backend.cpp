@@ -48,7 +48,6 @@ namespace big
 			looped::self_police();
 			looped::self_no_ragdoll();
 			looped::self_super_run();
-			looped::self_unlimited_ammo();
 		}QUEUE_JOB_END_CLAUSE
 
 		QUEUE_JOB_BEGIN_CLAUSE()

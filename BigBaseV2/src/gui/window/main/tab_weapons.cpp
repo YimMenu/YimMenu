@@ -51,7 +51,6 @@ namespace big
 				ImGui::TreePop();
 			}
 
-			ImGui::Checkbox("Unlimited ammo", &g.weapons.unlimited_ammo);
 			if (ImGui::TreeNode("Weapons"))
 			{
 				if (ImGui::Button("Give all weapons"))

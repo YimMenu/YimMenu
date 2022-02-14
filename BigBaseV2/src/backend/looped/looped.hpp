@@ -23,7 +23,6 @@ namespace big
 		static void self_noclip();
 		static void self_no_ragdoll();
 		static void self_super_run();
-		static void self_unlimited_ammo();
 		static void self_aim();
 		static void self_esp();
 

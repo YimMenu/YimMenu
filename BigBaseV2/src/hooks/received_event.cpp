@@ -80,6 +80,16 @@ namespace big
 
 			return false;
 		}
+		case RockstarEvent::REMOVE_ALL_WEAPONS_EVENT:
+		case RockstarEvent::REMOVE_WEAPON_EVENT:
+		{
+			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+
+			std::string msg = fmt::format("Denied weapon removal from <C>{}</C>", source_player->get_name());
+			notify::above_map(msg);
+
+			return false;
+		}
 		//case RockstarEvent::GIVE_PICKUP_REWARDS_EVENT:
 		//{
 		//	uint32_t amount, hash;
