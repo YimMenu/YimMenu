@@ -25,7 +25,7 @@ namespace big
 
 	rage::netPlayerData* player::get_net_data()
 	{
-		return m_net_game_player == nullptr ? false : m_net_game_player->get_net_data();
+		return m_net_game_player == nullptr ? nullptr : m_net_game_player->get_net_data();
 	}
 
 	CNetGamePlayer* player::get_net_game_player()
