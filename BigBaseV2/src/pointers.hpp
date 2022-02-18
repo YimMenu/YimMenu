@@ -1,6 +1,7 @@
 #pragma once
 #include "common.hpp"
 #include "CNetworkPlayerMgr.hpp"
+#include "FriendRegistry.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/enums.hpp"
 #include "gta/replay.hpp"
@@ -46,6 +47,8 @@ namespace big
 		PVOID m_is_dlc_present;
 
 		PVOID m_error_screen{};
+
+		FriendRegistry* m_friend_registry{};
 
 		functions::get_net_game_player* m_get_net_game_player{};
 
