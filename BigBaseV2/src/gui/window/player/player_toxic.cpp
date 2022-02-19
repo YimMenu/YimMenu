@@ -5,6 +5,7 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "util/toxic.hpp"
+#include "util/vehicle.hpp"
 #include "script_local.hpp"
 
 namespace big
@@ -50,6 +51,15 @@ namespace big
 				}QUEUE_JOB_END_CLAUSE
 			}
 
+			if (ImGui::Button("Send Network Bail"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE() {
+					int64_t args[3] = {
+			(int)eRemoteEvent::NetworkBail, g_player_service->get_selected()->id(),* script_global(1893548).at(1).at(g_player_service->get_selected()->id() * 600).at(511).as<int*>() };
+					g_pointers->m_trigger_script_event(1, args, 3, 1 << g_player_service->get_selected()->id());
+				}QUEUE_JOB_END_CLAUSE
+			}
+
 			if (ImGui::Button("Steal Outfit"))
 			{
 				g_fiber_pool->queue_job([]
@@ -72,116 +82,6 @@ namespace big
 
 
 			}
-			static char* exlosions[] = {
-		"GRENADE",
-		"GRENADELAUNCHER",
-		"STICKYBOMB",
-		"MOLOTOV",
-		"ROCKET",
-		"TANKSHELL",
-		"HI_OCTANE",
-		"CAR",
-		"PLANE",
-		"PETROL_PUMP",
-		"BIKE",
-		"DIR_STEAM",
-		"DIR_FLAME",
-		"DIR_WATER_HYDRANT",
-		"DIR_GAS_CANISTER",
-		"BOAT",
-		"SHIP_DESTROY",
-		"TRUCK",
-		"BULLET",
-		"SMOKEGRENADELAUNCHER",
-		"SMOKEGRENADE",
-		"BZGAS",
-		"FLARE",
-		"GAS_CANISTER",
-		"EXTINGUISHER",
-		"_0x988620B8",
-		"EXP_TAG_TRAIN",
-		"EXP_TAG_BARREL",
-		"EXP_TAG_PROPANE",
-		"EXP_TAG_BLIMP",
-		"EXP_TAG_DIR_FLAME_EXPLODE",
-		"EXP_TAG_TANKER",
-		"PLANE_ROCKET",
-		"EXP_TAG_VEHICLE_BULLET",
-		"EXP_TAG_GAS_TANK",
-		"EXP_TAG_BIRD_CRAP",
-		"EXP_TAG_RAILGUN",
-		"EXP_TAG_BLIMP2",
-		"EXP_TAG_FIREWORK",
-		"EXP_TAG_SNOWBALL",
-		"EXP_TAG_PROXMINE",
-		"EXP_TAG_VALKYRIE_CANNON",
-		"EXP_TAG_AIR_DEFENCE",
-		"EXP_TAG_PIPEBOMB",
-		"EXP_TAG_VEHICLEMINE",
-		"EXP_TAG_EXPLOSIVEAMMO",
-		"EXP_TAG_APCSHELL",
-		"EXP_TAG_BOMB_CLUSTER",
-		"EXP_TAG_BOMB_GAS",
-		"EXP_TAG_BOMB_INCENDIARY",
-		"EXP_TAG_BOMB_STANDARD",
-		"EXP_TAG_TORPEDO",
-		"EXP_TAG_TORPEDO_UNDERWATER",
-		"EXP_TAG_BOMBUSHKA_CANNON",
-		"EXP_TAG_BOMB_CLUSTER_SECONDARY",
-		"EXP_TAG_HUNTER_BARRAGE",
-		"EXP_TAG_HUNTER_CANNON",
-		"EXP_TAG_ROGUE_CANNON",
-		"EXP_TAG_MINE_UNDERWATER",
-		"EXP_TAG_ORBITAL_CANNON",
-		"EXP_TAG_BOMB_STANDARD_WIDE",
-		"EXP_TAG_EXPLOSIVEAMMO_SHOTGUN",
-		"EXP_TAG_OPPRESSOR2_CANNON",
-		"EXP_TAG_MORTAR_KINETIC",
-		"EXP_TAG_VEHICLEMINE_KINETIC",
-		"EXP_TAG_VEHICLEMINE_EMP",
-		"EXP_TAG_VEHICLEMINE_SPIKE",
-		"EXP_TAG_VEHICLEMINE_SLICK",
-		"EXP_TAG_VEHICLEMINE_TAR",
-		"EXP_TAG_SCRIPT_DRONE",
-		"EXP_TAG_RAYGUN",
-		"EXP_TAG_BURIEDMINE",
-		"EXP_TAG_SCRIPT_MISSILE",
-		"EXP_TAG_RCTANK_ROCKET",
-		"EXP_TAG_BOMB_WATER",
-		"EXP_TAG_BOMB_WATER_SECONDARY",
-		"_0xF728C4A9",
-		"_0xBAEC056F",
-		"EXP_TAG_FLASHGRENADE",
-		"EXP_TAG_STUNGRENADE",
-		"_0x763D3B3B",
-		"EXP_TAG_SCRIPT_MISSILE_LARGE",
-		"EXP_TAG_SUBMARINE_BIG", };
-
-			static int expl_selected = 0;
-
-			ImGui::Separator();
-
-			ImGui::Combo("##type", &expl_selected, exlosions, sizeof(exlosions) / sizeof(*exlosions));
-			static bool isAudible = false;
-			static bool isInvisible = false;
-			static bool Enable_damage = false;
-			static float cameraShake = 0.f;
-
-			if (ImGui::Button("Spawn explosion"))
-			{
-				g_fiber_pool->queue_job([]
-					{
-						auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), true);
-						FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, expl_selected, 1, isAudible, isInvisible, cameraShake, Enable_damage);
-					});
-			}
-			ImGui::SameLine();
-			ImGui::Checkbox("isAudible", &isAudible);
-			ImGui::SameLine();
-			ImGui::Checkbox("isInvisible", &isInvisible);
-			ImGui::SameLine();
-			ImGui::Checkbox("Enable_damage", &Enable_damage);
-			ImGui::SliderFloat("cameraShake", &cameraShake, 0.f, 100.f);
 
 			ImGui::EndTabItem();
 		}

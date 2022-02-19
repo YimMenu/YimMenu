@@ -2,6 +2,10 @@
 #include "blip.hpp"
 #include "entity.hpp"
 #include "notify.hpp"
+#include <gta/blip.hpp>
+#include "natives.hpp"
+#include "gta/enums.hpp"
+#include "gta/Weapons.h"
 
 namespace big::teleport
 {
@@ -165,6 +169,16 @@ namespace big::teleport
 		if (!to_blip((int)BlipIcons::Waypoint))
 		{
 			notify::above_map("Failed to find waypoint position");
+
+			return false;
+		}
+		return true;
+	}
+	inline bool to_objective()
+	{
+		if (!to_blip((int)BlipIcons::Circle2, BlipColors::YellowMission) || !to_blip(BlipIcons::Circle, BlipColors::YellowMission))
+		{
+			notify::above_map("Failed to find objective position");
 
 			return false;
 		}

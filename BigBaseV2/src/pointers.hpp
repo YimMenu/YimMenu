@@ -8,6 +8,7 @@
 #include "function_types.hpp"
 
 #include "ASI Loader/Pools.h"
+#include <gta/blip.hpp>
 
 namespace big
 {
@@ -47,6 +48,7 @@ namespace big
 		rage::GenericPool * m_prop_pool{};
 		rage::GenericPool * m_pickup_pool{};
 		rage::GenericPool * m_camera_pool{};
+		BlipList* pBlipList;
 
 		CGameScriptHandlerMgr **m_script_handler_mgr{};
 

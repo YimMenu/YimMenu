@@ -818,7 +818,7 @@ enum class RockstarEvent : uint16_t
 	NETWORK_CHECK_CATALOG_CRC
 };
 
-enum class BlipIcons
+enum BlipIcons
 {
 	Null,
 	Circle,
@@ -1278,7 +1278,7 @@ enum class BlipIcons
 	ZR380
 };
 
-enum class BlipColors
+enum BlipColors
 {
 	None,
 	Red,

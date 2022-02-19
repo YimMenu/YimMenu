@@ -4,6 +4,7 @@
 #include "memory/all.hpp"
 
 #include "ASI Loader/Pools.h"
+#include "gta/blip.hpp"
 
 namespace big
 {
@@ -273,6 +274,11 @@ namespace big
 		{
 			m_network_player_mgr_shutdown = ptr.sub(0x17).as<PVOID>();
 		});
+
+		main_batch.add("BlipList", "4C 8D 05 ? ? ? ? 0F B7 C1", [this](memory::handle ptr)
+			{
+				pBlipList = ptr.add(3).rip().as<BlipList*>();
+			});
 		
 		main_batch.run(memory::module(nullptr));
 
