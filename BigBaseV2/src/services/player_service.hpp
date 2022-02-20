@@ -9,6 +9,7 @@ namespace big
 
 		CNetGamePlayer* m_net_game_player = nullptr;
 		std::string m_identifier;
+		bool m_is_friend;
 
 	public:
 		player(CNetGamePlayer* net_game_player);
@@ -23,6 +24,7 @@ namespace big
 
 		uint8_t id();
 
+		bool is_friend();
 		bool is_host();
 		bool is_valid();
 

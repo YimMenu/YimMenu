@@ -1,4 +1,5 @@
 #include "gta_util.hpp"
+#include "friends_service.hpp"
 #include "player_service.hpp"
 #include "util/notify.hpp"
 
@@ -58,6 +59,12 @@ namespace big
 		return m_net_game_player == nullptr ? false : m_net_game_player->is_host();
 	}
 
+	bool player::is_friend()
+	{
+		return m_is_friend;
+	}
+
+
 	bool player::is_valid()
 	{
 		return m_net_game_player == nullptr ? false : m_net_game_player->is_valid();
@@ -85,6 +92,7 @@ namespace big
 				if (CNetGamePlayer* net_game_player = network_player_mgr->m_player_list[i]; net_game_player != nullptr)
 				{
 					std::unique_ptr<player> plyr = std::make_unique<player>(net_game_player);
+					plyr->m_is_friend = friends_service::is_friend(plyr);
 
 					m_players.emplace(
 						plyr->to_lowercase_identifier(),
@@ -132,6 +140,7 @@ namespace big
 		notify::player_joined(net_game_player);
 
 		std::unique_ptr<player> plyr = std::make_unique<player>(net_game_player);
+		plyr->m_is_friend = friends_service::is_friend(plyr);
 
 		m_players.emplace(
 			plyr->to_lowercase_identifier(),
