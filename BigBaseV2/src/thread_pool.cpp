@@ -2,7 +2,7 @@
 
 namespace big
 {
-	thread_pool::thread_pool() : m_accept_jobs(true), m_data_condition(), m_job_stack(), m_lock()
+	thread_pool::thread_pool() : m_accept_jobs(true)
 	{
 		this->m_managing_thread = std::thread(&thread_pool::create, this);
 
@@ -16,42 +16,39 @@ namespace big
 
 	void thread_pool::create()
 	{
-		int thread_count = std::thread::hardware_concurrency();
+		const std::uint32_t thread_count = std::thread::hardware_concurrency();
 
-		LOG(INFO) << "Allocating " << thread_count << " threads in thread pool.";
+		LOG(G3LOG_DEBUG) << "Allocating " << thread_count << " threads in thread pool.";
 		this->m_thread_pool.reserve(thread_count);
 
-		for (int i = 0; i < thread_count; i++)
-			this->m_thread_pool.push_back(std::thread(&thread_pool::run, this));
+		for (std::uint32_t i = 0; i < thread_count; i++)
+			this->m_thread_pool.emplace_back(std::thread(&thread_pool::run, this));
 	}
 
 	void thread_pool::destroy()
 	{
 		this->m_managing_thread.join();
 
-		this->done();
-
-		for (int i = 0; i < this->m_thread_pool.size(); i++)
-			this->m_thread_pool.at(i).join();
-	}
-
-	void thread_pool::done()
-	{
-		std::unique_lock<std::mutex> lock(this->m_lock);
-		this->m_accept_jobs = false;
-
-		lock.unlock();
+		{
+			std::unique_lock lock(m_lock);
+			this->m_accept_jobs = false;
+		}
 		this->m_data_condition.notify_all();
+
+		for (auto& thread : m_thread_pool)
+			thread.join();
+
+		m_thread_pool.clear();
 	}
 
 	void thread_pool::push(std::function<void()> func)
 	{
 		if (func)
 		{
-			std::unique_lock<std::mutex> lock(this->m_lock);
-			this->m_job_stack.push(std::move(func));
-
-			lock.unlock();
+			{
+				std::unique_lock lock(this->m_lock);
+				this->m_job_stack.push(std::move(func));
+			}
 			this->m_data_condition.notify_all();
 		}
 	}
@@ -60,17 +57,17 @@ namespace big
 	{
 		for (;;)
 		{
-			std::unique_lock<std::mutex> lock(this->m_lock);
+			std::unique_lock lock(this->m_lock);
 
 			this->m_data_condition.wait(lock, [this]()
 			{
 				return !this->m_job_stack.empty() || !this->m_accept_jobs;
 			});
 
-			if (!this->m_accept_jobs) return;
+			if (!this->m_accept_jobs) break;
 			if (this->m_job_stack.empty()) continue;
 
-			auto job = std::move(this->m_job_stack.top());
+			std::function<void()> job = std::move(this->m_job_stack.top());
 			this->m_job_stack.pop();
 			lock.unlock();
 
@@ -84,6 +81,6 @@ namespace big
 			}
 		}
 
-		LOG(INFO) << "Thread " << std::this_thread::get_id() << " exiting...";
+		LOG(G3LOG_DEBUG) << "Thread " << std::this_thread::get_id() << " exiting...";
 	}
 }
