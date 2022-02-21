@@ -1,5 +1,4 @@
 #include "common.hpp"
-#include "logger.hpp"
 #include "pointers.hpp"
 #include "memory/all.hpp"
 
@@ -274,6 +273,12 @@ namespace big
 		{
 			m_network_player_mgr_shutdown = ptr.sub(0x17).as<PVOID>();
 		});
+
+		main_batch.add("FR", "3B 0D ? ? ? ? 73 13 48 63 C9", [this](memory::handle ptr)
+		{
+			m_friend_registry = ptr.add(2).rip().as<FriendRegistry*>();
+		});
+		
 
 		main_batch.add("BlipList", "4C 8D 05 ? ? ? ? 0F B7 C1", [this](memory::handle ptr)
 			{

@@ -114,8 +114,9 @@ namespace big
 
 		if (strlen(type) != 0)
 		{
-			std::string msg = fmt::format("~g~BLOCKED SCRIPT EVENT~s~\nFrom: <C>{}</C>\nEvent Type: ~b~{}", player->get_name(), type);
-			notify::above_map(msg);
+			notify::above_map(
+				fmt::format("~g~BLOCKED SCRIPT EVENT~s~\nFrom: <C>{}</C>\nEvent Type: ~b~{}", player->get_name(), type)
+			);
 
 			return true;
 		}

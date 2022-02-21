@@ -21,7 +21,7 @@ workspace "BigBaseV2"
   IncludeDir["GTAV_Classes"] = "vendor/GTAV-Classes"
   
   CppVersion = "C++17"
-  MsvcToolset = "v142"
+  MsvcToolset = "v143"
   WindowsSdkVersion = "10.0"
   
   function DeclareMSVCOptions()
@@ -73,18 +73,18 @@ workspace "BigBaseV2"
     
     files
     {
-      "vendor/%{prj.name}/imgui.cpp",
-      "vendor/%{prj.name}/imgui_demo.cpp",
-      "vendor/%{prj.name}/imgui_draw.cpp",
-      "vendor/%{prj.name}/imgui_tables.cpp",
-      "vendor/%{prj.name}/imgui_widgets.cpp",
-      "vendor/%{prj.name}/backends/imgui_impl_dx11.cpp",
-      "vendor/%{prj.name}/backends/imgui_impl_win32.cpp"
+		"vendor/%{prj.name}/imgui.cpp",
+		"vendor/%{prj.name}/imgui_demo.cpp",
+		"vendor/%{prj.name}/imgui_draw.cpp",
+		"vendor/%{prj.name}/imgui_tables.cpp",
+		"vendor/%{prj.name}/imgui_widgets.cpp",
+		"vendor/%{prj.name}/backends/imgui_impl_dx11.cpp",
+		"vendor/%{prj.name}/backends/imgui_impl_win32.cpp"
     }
 
     includedirs
     {
-      "vendor/%{prj.name}"
+		"vendor/%{prj.name}"
     }
 
     DeclareMSVCOptions()
