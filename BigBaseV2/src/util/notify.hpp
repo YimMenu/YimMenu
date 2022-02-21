@@ -5,14 +5,13 @@
 
 namespace big::notify
 {
-	inline void above_map(const char* text)
+	inline void above_map(std::string_view text)
 	{
 		HUD::SET_TEXT_OUTLINE();
 		HUD::BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");
-		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
+		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.data());
 		HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER(false, false);
 	}
-	inline void above_map(std::string text) { above_map(text.c_str()); }
 
 	// deprecated/unused
 	inline void blocked_event(const char* name, Player player)
@@ -29,10 +28,10 @@ namespace big::notify
 	}
 
 	// Shows a busy spinner till the value at the address equals the value passed or if timeout is hit
-	inline void busy_spinner(const char* text, int* address, int value, int timeout = 15)
+	inline void busy_spinner(std::string_view text, int* address, int value, int timeout = 15)
 	{
 		HUD::BEGIN_TEXT_COMMAND_BUSYSPINNER_ON("STRING");
-		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
+		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.data());
 		HUD::END_TEXT_COMMAND_BUSYSPINNER_ON(3);
 
 		for (size_t i = 0; *address != value && i < (size_t)timeout * 100; i++)
@@ -41,10 +40,10 @@ namespace big::notify
 		HUD::BUSYSPINNER_OFF();
 	}
 
-	inline void display_help_text(const char* text)
+	inline void display_help_text(std::string_view text)
 	{
 		HUD::BEGIN_TEXT_COMMAND_DISPLAY_HELP("STRING");
-		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
+		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.data());
 		HUD::END_TEXT_COMMAND_DISPLAY_HELP(0, 0, 1, -1);
 	}
 

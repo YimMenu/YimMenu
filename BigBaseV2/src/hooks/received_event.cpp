@@ -35,9 +35,10 @@ namespace big
 			if (source_player->m_player_id < 32)
 			{
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
-				std::string msg = fmt::format("<C>{}</C> possible attempt at freezing entity.", source_player->get_name());
-				notify::above_map(msg);
+				
+				notify::above_map(
+					fmt::format("<C>{}</C> possible attempt at freezing entity.", source_player->get_name())
+				);
 
 				return false;
 			}
@@ -56,8 +57,9 @@ namespace big
 
 			if (money >= 2000)
 			{
-				std::string msg = fmt::format("<C>{}</C> is spawning cash.", source_player->get_name());
-				notify::above_map(msg);
+				notify::above_map(
+					fmt::format("<C>{}</C> is spawning cash.", source_player->get_name())
+				);
 			}
 
 			break;
@@ -66,17 +68,19 @@ namespace big
 		case RockstarEvent::NETWORK_CHECK_CODE_CRCS_EVENT:
 		case RockstarEvent::REPORT_MYSELF_EVENT:
 		{
-			std::string msg = fmt::format("Detected <C>{}</C> as cheating.", source_player->get_name());
-			notify::above_map(msg);
+			notify::above_map(
+				fmt::format("Detected <C>{}</C> as cheating.", source_player->get_name())
+			);
 
 			break;
 		}
 		case RockstarEvent::REQUEST_CONTROL_EVENT:
 		{
 			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
-			std::string msg = fmt::format("Denied player control request from <C>{}</C>", source_player->get_name());
-			notify::above_map(msg);
+			
+			notify::above_map(
+				fmt::format("Denied player control request from <C>{}</C>", source_player->get_name())
+			);
 
 			return false;
 		}
