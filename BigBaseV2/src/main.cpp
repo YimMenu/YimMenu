@@ -28,10 +28,17 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			while (!FindWindow(L"grcWindow", L"Grand Theft Auto V"))
 				std::this_thread::sleep_for(1s);
 
-			auto logger_instance = std::make_unique<logger>();
+			std::filesystem::path base_dir = std::getenv("appdata");
+			base_dir /= "BigBaseV2";
+			auto file_manager_instance = std::make_unique<file_manager>(base_dir);
+
+			auto logger_instance = std::make_unique<logger>(
+				"YimMenu",
+				file_manager_instance->get_project_file("./cout.log")
+			);
 			try
 			{
-				LOG(RAW_GREEN_TO_CONSOLE) << "Yim's Menu Initializing";
+				LOG(INFO) << "Yim's Menu Initializing";
 				auto pointers_instance = std::make_unique<pointers>();
 				LOG(INFO) << "Pointers initialized.";
 
@@ -67,14 +74,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				LOG(INFO) << "Hooking enabled.";
 
 				while (g_running)
-				{
 					std::this_thread::sleep_for(500ms);
-				}
 
 				g_hooking->disable();
 				LOG(INFO) << "Hooking disabled.";
-
-				std::this_thread::sleep_for(1000ms);
 
 				native_hooks_instance.reset();
 				LOG(INFO) << "Dynamic native hooker uninitialized.";
@@ -83,14 +86,18 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				LOG(INFO) << "Scripts unregistered.";
 
 				vehicle_service_instance.reset();
+				LOG(INFO) << "Vehicle Service reset.";
 				mobile_service_instance.reset();
+				LOG(INFO) << "Mobile Service reset.";
 				player_service_instance.reset();
+				LOG(INFO) << "Player Service reset.";
 				globals_service_instace.reset();
+				LOG(INFO) << "Globals Service reset.";
 				LOG(INFO) << "Services uninitialized.";
 
 				// Make sure that all threads created don't have any blocking loops
 				// otherwise make sure that they have stopped executing
-				g_thread_pool->destroy();
+				thread_pool_instance->destroy();
 				LOG(INFO) << "Destroyed thread pool.";
 
 				thread_pool_instance.reset();
@@ -111,11 +118,15 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			catch (std::exception const &ex)
 			{
 				LOG(WARNING) << ex.what();
-				MessageBoxA(nullptr, ex.what(), nullptr, MB_OK | MB_ICONEXCLAMATION);
 			}
 
 			LOG(INFO) << "Farewell!";
+			logger_instance->destroy();
 			logger_instance.reset();
+
+			file_manager_instance.reset();
+
+			std::this_thread::sleep_for(10s);
 
 			CloseHandle(g_main_thread);
 			FreeLibraryAndExitThread(g_hmodule, 0);
