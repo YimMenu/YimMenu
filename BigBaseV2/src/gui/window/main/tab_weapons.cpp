@@ -31,7 +31,7 @@ namespace big
 							else
 							{
 								srand((unsigned int)time(NULL));
-								MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(blip->x + 0.1f, blip->y, blip->z - 0.15f, blip->x - 0.1f, blip->y, blip->z + 1, 1000, TRUE, weaponList[rand() % (sizeof(weaponList) / 4)], PLAYER::PLAYER_PED_ID(), TRUE, TRUE, 1.0f);
+								MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(blip->x + 0.1f, blip->y, blip->z - 0.15f, blip->x - 0.1f, blip->y, blip->z + 1, 10000, TRUE, weaponList[rand() % (sizeof(weaponList) / 4)], PLAYER::PLAYER_PED_ID(), TRUE, TRUE, 1.0f);
 							}
 							notify::above_map("Killed Enemies");
 						}
@@ -40,7 +40,6 @@ namespace big
 						((blip->m_color == BlipColors::Red || blip->m_color == BlipColors::RedMission) && (blip->m_icon == PLANE || blip->m_icon == Motorcycle || blip->m_icon == BlipIcons::PersonalVehicleCar || blip->m_icon == Helicopter2 || blip->m_icon == Jet || blip->m_icon == PlayerHelicopter || blip->m_icon == PlaneDrop)))
 					{
 						FIRE::ADD_OWNED_EXPLOSION(PLAYER::PLAYER_PED_ID(), blip->x, blip->y, blip->z, TANKER, 1000.0f, FALSE, TRUE, 0.0f);
-						notify::above_map("Blew them up");
 					}
 				}
 			}
