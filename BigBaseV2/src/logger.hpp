@@ -74,7 +74,7 @@ namespace big
 					// terminal like behaviour enable full color support
 					console_mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | DISABLE_NEWLINE_AUTO_RETURN;
 					// prevent clicking in terminal from suspending our main thread
-					//console_mode &= ~(ENABLE_QUICK_EDIT_MODE);
+					console_mode &= ~(ENABLE_QUICK_EDIT_MODE);
 
 					SetConsoleMode(m_console_handle, console_mode);
 				}
