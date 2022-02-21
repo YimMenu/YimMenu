@@ -11,6 +11,7 @@ namespace big
 
 		ImGui::SetNextWindowSize({ width, (float)g.window.y - height_correction }, ImGuiCond_Always);
 		ImGui::SetNextWindowPos({ g.window.x - width, height_correction }, ImGuiCond_Always);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.f);
 		if (g.window.users && ImGui::Begin("###player_menu", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav))
 		{
 			ImGui::Text("Friends:");
@@ -39,5 +40,6 @@ namespace big
 
 			ImGui::End();
 		}
+		ImGui::PopStyleVar();
 	}
 }
