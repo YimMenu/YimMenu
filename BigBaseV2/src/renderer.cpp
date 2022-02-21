@@ -1,6 +1,6 @@
 #include "common.hpp"
+#include "file_manager.hpp"
 #include "fonts/fonts.hpp"
-#include "logger.hpp"
 #include "gui.hpp"
 #include "pointers.hpp"
 #include "renderer.hpp"
@@ -28,18 +28,7 @@ namespace big
 
 		m_d3d_device->GetImmediateContext(m_d3d_device_context.GetAddressOf());
 
-		auto file_path = std::filesystem::path(std::getenv("appdata"));
-		file_path /= "BigBaseV2";
-		if (!std::filesystem::exists(file_path))
-		{
-			std::filesystem::create_directory(file_path);
-		}
-		else if (!std::filesystem::is_directory(file_path))
-		{
-			std::filesystem::remove(file_path);
-			std::filesystem::create_directory(file_path);
-		}
-		file_path /= "imgui.ini";
+		auto file_path = g_file_manager->get_project_file("./imgui.ini").get_path();
 		
 		ImGuiContext* ctx = ImGui::CreateContext();
 
