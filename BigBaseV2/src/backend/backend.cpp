@@ -70,6 +70,7 @@ namespace big
 			looped::vehicle_despawn_bypass();
 			looped::vehicle_god_mode();
 			looped::vehicle_horn_boost();
+			looped::vehicle_is_targetable();
 			looped::vehicle_speedo_meter();
 		}QUEUE_JOB_END_CLAUSE
 

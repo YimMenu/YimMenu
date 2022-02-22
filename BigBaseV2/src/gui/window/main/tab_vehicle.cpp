@@ -2,9 +2,6 @@
 #include "fiber_pool.hpp"
 #include "main_tabs.hpp"
 #include "script.hpp"
-#include "util/blip.hpp"
-#include "util/entity.hpp"
-#include "util/notify.hpp"
 #include "util/vehicle.hpp"
 
 namespace big
@@ -18,6 +15,7 @@ namespace big
 			if (ImGui::TreeNode("General"))
 			{
 				ImGui::BeginGroup();
+				ImGui::Checkbox("Can Be Targeted", &g->vehicle.is_targetable);
 				ImGui::Checkbox("God Mode", &g->vehicle.god_mode);
 				ImGui::Checkbox("Horn Boost", &g->vehicle.horn_boost);
 
