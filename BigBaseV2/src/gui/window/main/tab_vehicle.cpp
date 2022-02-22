@@ -18,8 +18,8 @@ namespace big
 			if (ImGui::TreeNode("General"))
 			{
 				ImGui::BeginGroup();
-				ImGui::Checkbox("God Mode", &g.vehicle.god_mode);
-				ImGui::Checkbox("Horn Boost", &g.vehicle.horn_boost);
+				ImGui::Checkbox("God Mode", &g->vehicle.god_mode);
+				ImGui::Checkbox("Horn Boost", &g->vehicle.horn_boost);
 
 				ImGui::EndGroup();
 				ImGui::SameLine();
@@ -35,7 +35,7 @@ namespace big
 					}QUEUE_JOB_END_CLAUSE
 				}
 				if (ImGui::Button("Handling"))
-					g.window.handling = true;
+					g->window.handling = true;
 				ImGui::EndGroup();
 
 				ImGui::TreePop();
@@ -45,7 +45,7 @@ namespace big
 			{
 				if (ImGui::Button("Start LS Customs"))
 				{
-					g.vehicle.ls_customs = true;
+					g->vehicle.ls_customs = true;
 				}
 
 				ImGui::TreePop();
@@ -53,7 +53,7 @@ namespace big
 
 			if (ImGui::TreeNode("Speedo Meter"))
 			{
-				SpeedoMeter selected = g.vehicle.speedo_meter.type;
+				SpeedoMeter selected = g->vehicle.speedo_meter.type;
 
 				ImGui::Text("Type:");
 				if (ImGui::BeginCombo("###speedo_type", speedo_meters[(int)selected].name))
@@ -62,7 +62,7 @@ namespace big
 					{
 						if (ImGui::Selectable(speedo.name, speedo.id == selected))
 						{
-							g.vehicle.speedo_meter.type = speedo.id;
+							g->vehicle.speedo_meter.type = speedo.id;
 						}
 
 						if (speedo.id == selected)
@@ -75,15 +75,15 @@ namespace big
 				ImGui::Text("Position");
 
 				float pos[2];
-				pos[0] = g.vehicle.speedo_meter.x;
-				pos[1] = g.vehicle.speedo_meter.y;
+				pos[0] = g->vehicle.speedo_meter.x;
+				pos[1] = g->vehicle.speedo_meter.y;
 				if (ImGui::SliderFloat2("###speedo_pos", pos, .001f, .999f, "%.3f"))
 				{
-					g.vehicle.speedo_meter.x = pos[0];
-					g.vehicle.speedo_meter.y = pos[1];
+					g->vehicle.speedo_meter.x = pos[0];
+					g->vehicle.speedo_meter.y = pos[1];
 				}
 
-				ImGui::Checkbox("Left Sided", &g.vehicle.speedo_meter.left_side);
+				ImGui::Checkbox("Left Sided", &g->vehicle.speedo_meter.left_side);
 
 				ImGui::TreePop();
 			}

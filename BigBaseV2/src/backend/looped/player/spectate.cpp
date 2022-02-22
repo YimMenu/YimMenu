@@ -9,9 +9,9 @@ namespace big
 
 	void looped::player_specate()
 	{
-		if (!g_player_service->get_selected()->is_valid() || !g.player.spectating)
+		if (!g_player_service->get_selected()->is_valid() || !g->player.spectating)
 		{
-			if (g.player.spectating) g.player.spectating = false;
+			if (g->player.spectating) g->player.spectating = false;
 
 			if (!bReset)
 			{

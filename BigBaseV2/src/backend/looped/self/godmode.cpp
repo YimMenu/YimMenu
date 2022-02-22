@@ -7,13 +7,13 @@ namespace big
 
 	void looped::self_godmode()
 	{
-		bool bGodMode = g.self.godmode;
+		bool bGodMode = g->self.godmode;
 
 		if (bGodMode || (!bGodMode && bGodMode != bLastGodMode))
 		{
-			ENTITY::SET_ENTITY_INVINCIBLE(PLAYER::PLAYER_PED_ID(), g.self.godmode);
+			ENTITY::SET_ENTITY_INVINCIBLE(PLAYER::PLAYER_PED_ID(), g->self.godmode);
 
-			bLastGodMode = g.self.godmode;
+			bLastGodMode = g->self.godmode;
 		}
 	}
 }

@@ -111,7 +111,7 @@ namespace big::mobile
 			// blocking call till vehicle is delivered
 			notify::busy_spinner("Delivering vehicle...", mechanic_global.at(958).as<int*>(), -1);
 
-			if (g.vehicle.pv_teleport_into)
+			if (g->vehicle.pv_teleport_into)
 				vehicle::bring(globals::get_personal_vehicle(), ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true));
 		}
 	}

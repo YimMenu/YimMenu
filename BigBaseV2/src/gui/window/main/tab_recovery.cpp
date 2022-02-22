@@ -10,12 +10,12 @@ namespace big
 		if (ImGui::BeginTabItem("Recovery"))
 		{
 			ImGui::Text("Set Current Character Level:");
-			ImGui::SliderInt("##input_levels_self", &g.player.set_level, 0, 8000);
+			ImGui::SliderInt("##input_levels_self", &g->player.set_level, 0, 8000);
 			if (ImGui::Button("Set Level"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE()
 				{
-					player::set_player_level(g.player.set_level);
+					player::set_player_level(g->player.set_level);
 				}QUEUE_JOB_END_CLAUSE
 			}
 

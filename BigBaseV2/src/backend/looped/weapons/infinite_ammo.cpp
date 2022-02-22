@@ -6,7 +6,7 @@ namespace big
 {
 	void looped::weapons_infinite_ammo()
 	{
-		if (g.weapons.infinite_ammo) {
+		if (g->weapons.infinite_ammo) {
 			Hash weaponHash;
 			auto const ped = PLAYER::PLAYER_PED_ID();
 

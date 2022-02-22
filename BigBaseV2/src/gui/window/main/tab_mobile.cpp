@@ -27,7 +27,7 @@ namespace big
 
 			if (ImGui::TreeNode("Lester"))
 			{
-				ImGui::Checkbox("Off Radar", &g.self.off_radar);
+				ImGui::Checkbox("Off Radar", &g->self.off_radar);
 
 				ImGui::TreePop();
 			}
@@ -92,7 +92,7 @@ namespace big
 						g_mobile_service->register_vehicles();
 					}QUEUE_JOB_END_CLAUSE
 				}
-				ImGui::Checkbox("Spawn in Vehicle", &g.vehicle.pv_teleport_into);
+				ImGui::Checkbox("Spawn in Vehicle", &g->vehicle.pv_teleport_into);
 
 				ImGui::TreePop();
 			}

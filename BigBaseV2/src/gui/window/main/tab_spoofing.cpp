@@ -17,16 +17,16 @@ namespace big
 					PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 				}QUEUE_JOB_END_CLAUSE
 
-				ImGui::Checkbox("Spoof Username", &g.spoofing.spoof_username);
+				ImGui::Checkbox("Spoof Username", &g->spoofing.spoof_username);
 
 				static char name[20];
-				strcpy_s(name, sizeof(name), g.spoofing.username.c_str());
+				strcpy_s(name, sizeof(name), g->spoofing.username.c_str());
 
 				ImGui::Text("Username:");
 				ImGui::InputText("##username_input", name, sizeof(name));
 
-				if (name != g.spoofing.username)
-					g.spoofing.username = std::string(name);
+				if (name != g->spoofing.username)
+					g->spoofing.username = std::string(name);
 
 				ImGui::TreePop();
 			}
@@ -38,10 +38,10 @@ namespace big
 					PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 				}QUEUE_JOB_END_CLAUSE
 
-				ImGui::Checkbox("Spoof IP", &g.spoofing.spoof_ip);
+				ImGui::Checkbox("Spoof IP", &g->spoofing.spoof_ip);
 
 				ImGui::Text("IP Address:");
-				ImGui::DragInt4("##ip_fields", g.spoofing.ip_address, 0, 255);
+				ImGui::DragInt4("##ip_fields", g->spoofing.ip_address, 0, 255);
 
 				ImGui::TreePop();
 			}
@@ -53,10 +53,10 @@ namespace big
 					PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 				}QUEUE_JOB_END_CLAUSE
 
-				ImGui::Checkbox("Spoof Rockstar ID", &g.spoofing.spoof_rockstar_id);
+				ImGui::Checkbox("Spoof Rockstar ID", &g->spoofing.spoof_rockstar_id);
 
 				ImGui::Text("Rockstar ID:");
-				ImGui::InputScalar("##rockstar_id_input", ImGuiDataType_U64, &g.spoofing.rockstar_id);
+				ImGui::InputScalar("##rockstar_id_input", ImGuiDataType_U64, &g->spoofing.rockstar_id);
 
 				ImGui::TreePop();
 			}

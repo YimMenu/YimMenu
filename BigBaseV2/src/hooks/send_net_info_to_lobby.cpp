@@ -9,21 +9,21 @@ namespace big
 		{
 			LOG(INFO) << "HOOKS | Sending spoofed values to lobby.";
 
-			if (g.spoofing.spoof_username)
-				memcpy(player->m_name, g.spoofing.username.c_str(), sizeof(player->m_name));
+			if (g->spoofing.spoof_username)
+				memcpy(player->m_name, g->spoofing.username.c_str(), sizeof(player->m_name));
 
-			if (g.spoofing.spoof_ip)
+			if (g->spoofing.spoof_ip)
 			{
-				player->m_external_ip.m_field1 = g.spoofing.ip_address[0];
-				player->m_external_ip.m_field2 = g.spoofing.ip_address[1];
-				player->m_external_ip.m_field3 = g.spoofing.ip_address[2];
-				player->m_external_ip.m_field4 = g.spoofing.ip_address[3];
+				player->m_external_ip.m_field1 = g->spoofing.ip_address[0];
+				player->m_external_ip.m_field2 = g->spoofing.ip_address[1];
+				player->m_external_ip.m_field3 = g->spoofing.ip_address[2];
+				player->m_external_ip.m_field4 = g->spoofing.ip_address[3];
 			}
 
-			if (g.spoofing.spoof_rockstar_id)
+			if (g->spoofing.spoof_rockstar_id)
 			{
-				player->m_rockstar_id = g.spoofing.rockstar_id;
-				player->m_rockstar_id2 = g.spoofing.rockstar_id;
+				player->m_rockstar_id = g->spoofing.rockstar_id;
+				player->m_rockstar_id2 = g->spoofing.rockstar_id;
 			}
 		}
 

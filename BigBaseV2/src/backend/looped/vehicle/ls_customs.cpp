@@ -16,7 +16,7 @@ namespace big
 		busy = true;
 
 		constexpr int hash = RAGE_JOAAT("carmod_shop");
-		if (g.vehicle.ls_customs && g.vehicle.ls_customs == state)
+		if (g->vehicle.ls_customs && g->vehicle.ls_customs == state)
 		{
 			if (
 				auto carmod_shop_thread = gta_util::find_script_thread(hash);
@@ -24,19 +24,19 @@ namespace big
 				*script_local(carmod_shop_thread, 726).at(11).as<int*>() != 4
 				)
 			{
-				g.vehicle.ls_customs = false;
+				g->vehicle.ls_customs = false;
 
 				*script_local(carmod_shop_thread, 726).as<int*>() = 1; // cleanup
 			}
 		}
 
-		if (g.vehicle.ls_customs && g.vehicle.ls_customs != state)
+		if (g->vehicle.ls_customs && g->vehicle.ls_customs != state)
 		{
 			Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(PLAYER::PLAYER_PED_ID());
 			if (!ENTITY::DOES_ENTITY_EXIST(veh) || ENTITY::IS_ENTITY_DEAD(veh, false))
 			{
 				busy = false;
-				g.vehicle.ls_customs = false;
+				g->vehicle.ls_customs = false;
 
 				notify::above_map("You aren't in a vehicle.");
 
@@ -65,6 +65,6 @@ namespace big
 		}
 
 		busy = false;
-		state = g.vehicle.ls_customs;
+		state = g->vehicle.ls_customs;
 	}
 }

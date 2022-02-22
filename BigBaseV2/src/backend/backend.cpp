@@ -10,7 +10,7 @@ namespace big
 {
 	void backend::loop()
 	{
-		g.attempt_save();
+		g->attempt_save();
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::system_screen_size();
