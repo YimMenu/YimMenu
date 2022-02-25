@@ -5,13 +5,13 @@ namespace big
 {
 	class components
 	{
-		static void custom_text(const char*, ImFont*);
+		static void custom_text(const std::string_view, ImFont*);
 	public:
-		static bool nav_button(const char*);
-		static bool button(const char*);
-		static void small_text(const char*);
-		static void sub_title(const char*);
-		static void title(const char*);
-		static void button(const char*, std::function<void()>);
+		static bool nav_button(const std::string_view);
+		static bool button(const std::string_view);
+		static void small_text(const std::string_view);
+		static void sub_title(const std::string_view);
+		static void title(const std::string_view);
+		static void button(const std::string_view, std::function<void()>);
 	};
 }

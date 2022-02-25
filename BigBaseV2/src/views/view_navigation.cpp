@@ -14,6 +14,8 @@ namespace big
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.172f, 0.380f, 0.909f, 1.f));
 			components::title("Menu");
 			ImGui::PopStyleColor();
+			
+			components::small_text(fmt::format("Welcome {}", g_local_player == nullptr || g_local_player->m_player_info == nullptr ? "unknown" : g_local_player->m_player_info->m_net_player_data.m_name).c_str());
 
 			for (auto& navItem : nav) {
 				const bool curTab = navItem.tab == current_tab->tab;

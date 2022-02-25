@@ -3,7 +3,7 @@
 
 namespace big
 {
-	void components::title(const char* text) {
-		components::custom_text(text, g->window.font_title);
+	void components::title(const std::string_view text) {
+		components::custom_text(text.data(), g->window.font_title);
 	}
 }

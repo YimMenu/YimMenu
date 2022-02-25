@@ -5,6 +5,7 @@
 #include "util/entity.hpp"
 #include "util/player.hpp"
 #include "util/notify.hpp"	
+#include "util/session.hpp"
 
 namespace big
 {
@@ -20,6 +21,7 @@ namespace big
 			ImGui::Checkbox("God Mode", &g->self.godmode);
 			ImGui::Checkbox("Off Radar", &g->self.off_radar);
 			ImGui::Checkbox("Free Cam", &g->self.free_cam);
+			ImGui::Checkbox("Disable Phone", &g->tunables.disable_phone);
 
 			ImGui::EndGroup();
 			ImGui::SameLine();
@@ -28,6 +30,7 @@ namespace big
 			ImGui::Checkbox("No Clip", &g->self.noclip);
 			ImGui::Checkbox("No Ragdoll", &g->self.no_ragdoll);
 			ImGui::Checkbox("Super Run", &g->self.super_run);
+			ImGui::Checkbox("No Idle Kick", &g->tunables.no_idle_kick);
 
 			ImGui::EndGroup();
 
@@ -104,6 +107,22 @@ namespace big
 			}
 
 			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Extra's")) {
+
+			components::button("Skip Cutscene", [] {
+				CUTSCENE::STOP_CUTSCENE_IMMEDIATELY();
+				});
+
+			ImGui::Text("Session");
+			for (const SessionType& session_type : sessions)
+			{
+				components::button(session_type.name, [session_type] {
+					session::join_type(session_type);
+					});
+			}
+
 		}
 	}
 }

@@ -3,9 +3,9 @@
 
 namespace big
 {
-	void components::custom_text(const char* text, ImFont* font) {
+	void components::custom_text(const std::string_view text, ImFont* font) {
 		ImGui::PushFont(font);
-		ImGui::TextWrapped(text);
+		ImGui::TextWrapped(text.data());
 		ImGui::PopFont();
 	}
 }
