@@ -45,6 +45,8 @@ namespace big
 		m_font = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 20.f, &font_cfg);
 		m_monospace_font = ImGui::GetIO().Fonts->AddFontDefault();
 
+		g->window.font_title = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 40.f, &font_cfg);
+
 		g_gui.dx_init();
 		g_renderer = this;
 	}
