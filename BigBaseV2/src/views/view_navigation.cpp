@@ -16,10 +16,17 @@ namespace big
 			ImGui::PopStyleColor();
 
 			for (auto& navItem : nav) {
+				const bool curTab = navItem.tab == current_tab->tab;
+				if (curTab)
+					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
+
 				if (components::nav_button(navItem.name)) {
 					current_tab = &navItem;
 					g->window.switched_view = true;
 				}
+
+				if (curTab)
+					ImGui::PopStyleColor();
 			}
 
 			static navigation_struct playerPage = { tabs::PLAYER, "Player", view::view_player };

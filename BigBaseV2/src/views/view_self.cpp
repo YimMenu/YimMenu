@@ -9,8 +9,6 @@
 namespace big
 {
 	void view::self() {
-		ImGui::Text("Self");
-
 		components::button("Suicide", [] {
 			ENTITY::SET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID(), 0, 0);
 			});

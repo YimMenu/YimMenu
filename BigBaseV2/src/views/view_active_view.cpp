@@ -38,6 +38,7 @@ namespace big
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
 			if (current_tab->tab != tabs::NONE) {
 				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.06f, 0.05f, 0.07f, 1.00f));
+				components::sub_title(current_tab->name);
 				current_tab->func();
 				ImGui::PopStyleColor();
 			}

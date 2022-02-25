@@ -6,7 +6,7 @@ namespace big
 {
 	void view::spoofing()
 	{ 
-		ImGui::Text("To spoof any of the below credentials you need to reconnect with the lobby.");
+		components::small_text("To spoof any of the below credentials you need to reconnect with the lobby.");
 
 		if (ImGui::TreeNode("Username"))
 		{
