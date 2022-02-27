@@ -7,7 +7,7 @@ namespace big
 {
 	void looped::vehicle_horn_boost()
 	{
-		if (!g.vehicle.horn_boost) return;
+		if (!g->vehicle.horn_boost) return;
 
 		if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_HORN))
 		{

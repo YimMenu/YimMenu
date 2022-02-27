@@ -19,10 +19,10 @@ namespace big::player
 
 	inline void set_player_level(int level)
 	{
-		get_active_character_slot(&g.player.character_slot);
+		get_active_character_slot(&g->player.character_slot);
 
 		char level_string[64];
-		sprintf(level_string, "MP%d_CHAR_SET_RP_GIFT_ADMIN", g.player.character_slot);
+		sprintf(level_string, "MP%d_CHAR_SET_RP_GIFT_ADMIN", g->player.character_slot);
 
 		STATS::STAT_SET_INT(rage::joaat(level_string), levels[level - 1], 0);
 	}

@@ -9,7 +9,7 @@ namespace big
 
 	void looped::weapons_vehicle_gun()
 	{
-		bool bVehicleGun = g.weapons.custom_weapon == CustomWeapon::VEHICLE_GUN;
+		bool bVehicleGun = g->weapons.custom_weapon == CustomWeapon::VEHICLE_GUN;
 
 		if (bVehicleGun)
 		{
@@ -35,7 +35,7 @@ namespace big
 					location.y += dist * sin(yaw) * cos(pitch);
 					location.z += dist * sin(pitch);
 					Vehicle veh = vehicle::spawn(
-						(const char*)g.weapons.vehicle_gun_model,
+						(const char*)g->weapons.vehicle_gun_model,
 						location,
 						ENTITY::GET_ENTITY_HEADING(player)
 					);

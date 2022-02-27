@@ -10,7 +10,7 @@ namespace big
 
 	void looped::weapons_steal_vehicle_gun()
 	{
-		bool bStealVehicleGun = g.weapons.custom_weapon == CustomWeapon::STEAL_VEHICLE_GUN;
+		bool bStealVehicleGun = g->weapons.custom_weapon == CustomWeapon::STEAL_VEHICLE_GUN;
 
 		if (bStealVehicleGun)
 		{

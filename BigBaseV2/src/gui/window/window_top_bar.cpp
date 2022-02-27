@@ -51,10 +51,10 @@ namespace big
 
 			if (ImGui::BeginMenu("Windows"))
 			{
-				ImGui::MenuItem("Main", nullptr, &g.window.main);
-				ImGui::MenuItem("Players", nullptr, &g.window.users);
-				ImGui::MenuItem("Logs", nullptr, &g.window.log);
-				ImGui::MenuItem("Debug", nullptr, &g.window.debug);
+				ImGui::MenuItem("Main", nullptr, &g->window.main);
+				ImGui::MenuItem("Players", nullptr, &g->window.users);
+				ImGui::MenuItem("Logs", nullptr, &g->window.log);
+				ImGui::MenuItem("Debug", nullptr, &g->window.debug);
 
 				ImGui::EndMenu();
 			}

@@ -7,7 +7,7 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Info"))
 		{
-			ImGui::Checkbox("Spectate", &g.player.spectating);
+			ImGui::Checkbox("Spectate", &g->player.spectating);
 
 			ImGui::Separator();
 

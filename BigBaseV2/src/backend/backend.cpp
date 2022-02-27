@@ -13,7 +13,7 @@ namespace big
 {
 	void backend::loop()
 	{
-		g.attempt_save();
+		g->attempt_save();
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::system_screen_size();
@@ -78,6 +78,7 @@ namespace big
 			looped::vehicle_god_mode();
 			looped::vehicle_untargetable();
 			looped::vehicle_horn_boost();
+			looped::vehicle_is_targetable();
 			looped::vehicle_speedo_meter();
 		}QUEUE_JOB_END_CLAUSE
 

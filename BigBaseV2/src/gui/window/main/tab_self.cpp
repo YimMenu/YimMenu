@@ -53,15 +53,15 @@ namespace big
 			{
 				ImGui::BeginGroup();
 
-				ImGui::Checkbox("Explosive Ammo", &g.self.frame_flags.explosive_ammo);
-				ImGui::Checkbox("Fire Ammo", &g.self.frame_flags.fire_ammo);
+				ImGui::Checkbox("Explosive Ammo", &g->self.frame_flags.explosive_ammo);
+				ImGui::Checkbox("Fire Ammo", &g->self.frame_flags.fire_ammo);
 
 				ImGui::EndGroup();
 				ImGui::SameLine();
 				ImGui::BeginGroup();
 
-				ImGui::Checkbox("Explosive Melee", &g.self.frame_flags.explosive_melee);
-				ImGui::Checkbox("Super Jump", &g.self.frame_flags.super_jump);
+				ImGui::Checkbox("Explosive Melee", &g->self.frame_flags.explosive_melee);
+				ImGui::Checkbox("Super Jump", &g->self.frame_flags.super_jump);
 				
 				ImGui::EndGroup();
 
@@ -111,14 +111,14 @@ namespace big
 
 			if (ImGui::TreeNode("Police"))
 			{
-				ImGui::Checkbox("Never Wanted", &g.self.never_wanted);
+				ImGui::Checkbox("Never Wanted", &g->self.never_wanted);
 
-				if (!g.self.never_wanted)
+				if (!g->self.never_wanted)
 				{
-					ImGui::Checkbox("Force Wanted Level", &g.self.force_wanted_level);
+					ImGui::Checkbox("Force Wanted Level", &g->self.force_wanted_level);
 					ImGui::Text("Wanted Level");
-					if (ImGui::SliderInt("###wanted_level", &g.self.wanted_level, 0, 5) && !g.self.force_wanted_level)
-						g_local_player->m_player_info->m_wanted_level = g.self.wanted_level;
+					if (ImGui::SliderInt("###wanted_level", &g->self.wanted_level, 0, 5) && !g->self.force_wanted_level)
+						g_local_player->m_player_info->m_wanted_level = g->self.wanted_level;
 				}
 
 				ImGui::TreePop();

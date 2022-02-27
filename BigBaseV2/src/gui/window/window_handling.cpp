@@ -10,7 +10,7 @@ namespace big
 	{
 		ImGui::SetNextWindowSize({ 500, 250 }, ImGuiCond_FirstUseEver);
 		ImGui::SetNextWindowPos({ 50, 50 }, ImGuiCond_FirstUseEver);
-		if (g.window.handling && ImGui::Begin("Handling", &g.window.handling))
+		if (g->window.handling && ImGui::Begin("Handling", &g->window.handling))
 		{
 			if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr || g_local_player->m_ped_task_flag & (int)ePedTask::TASK_FOOT)
 			{

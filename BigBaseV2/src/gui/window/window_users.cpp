@@ -9,9 +9,10 @@ namespace big
 		static const float height_correction = 28.f;
 		static const float width = 170.f;
 
-		ImGui::SetNextWindowSize({ width, (float)g.window.y - height_correction }, ImGuiCond_Always);
-		ImGui::SetNextWindowPos({ g.window.x - width, height_correction }, ImGuiCond_Always);
-		if (g.window.users && ImGui::Begin("###player_menu", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav))
+		ImGui::SetNextWindowSize({ width, (float)g->window.y - height_correction }, ImGuiCond_Always);
+		ImGui::SetNextWindowPos({ g->window.x - width, height_correction }, ImGuiCond_Always);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.f);
+		if (g->window.users && ImGui::Begin("###player_menu", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav))
 		{
 			ImGui::Text("Friends:");
 			for (auto& item : g_player_service->m_players)
@@ -21,7 +22,7 @@ namespace big
 				{
 					g_player_service->set_selected(plyr.get());
 
-					g.window.player = true;
+					g->window.player = true;
 				}
 			}
 
@@ -33,11 +34,12 @@ namespace big
 				{
 					g_player_service->set_selected(plyr.get());
 
-					g.window.player = true;
+					g->window.player = true;
 				}
 			}
 
 			ImGui::End();
 		}
+		ImGui::PopStyleVar();
 	}
 }

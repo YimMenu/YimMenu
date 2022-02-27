@@ -5,7 +5,7 @@ namespace big
 {
 	void window::debug()
 	{
-		if (g.window.debug && ImGui::Begin("Dev"))
+		if (g->window.debug && ImGui::Begin("Dev"))
 		{
 			ImGui::BeginTabBar("dev_tabbar");
 			tab_debug::_tab_debug();

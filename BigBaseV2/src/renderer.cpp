@@ -1,6 +1,6 @@
 #include "common.hpp"
+#include "file_manager.hpp"
 #include "fonts/fonts.hpp"
-#include "logger.hpp"
 #include "gui.hpp"
 #include "pointers.hpp"
 #include "renderer.hpp"
@@ -28,18 +28,7 @@ namespace big
 
 		m_d3d_device->GetImmediateContext(m_d3d_device_context.GetAddressOf());
 
-		auto file_path = std::filesystem::path(std::getenv("appdata"));
-		file_path /= "BigBaseV2";
-		if (!std::filesystem::exists(file_path))
-		{
-			std::filesystem::create_directory(file_path);
-		}
-		else if (!std::filesystem::is_directory(file_path))
-		{
-			std::filesystem::remove(file_path);
-			std::filesystem::create_directory(file_path);
-		}
-		file_path /= "imgui.ini";
+		auto file_path = g_file_manager->get_project_file("./imgui.ini").get_path();
 		
 		ImGuiContext* ctx = ImGui::CreateContext();
 
@@ -116,7 +105,7 @@ namespace big
 
 	void renderer::wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	{
-		if (msg == WM_KEYUP && wparam == g.settings.hotkeys.menu_toggle)
+		if (msg == WM_KEYUP && wparam == g->settings.hotkeys.menu_toggle)
 		{
 			//Persist and restore the cursor position between menu instances.
 			static POINT cursor_coords{};
@@ -129,9 +118,9 @@ namespace big
 				SetCursorPos(cursor_coords.x, cursor_coords.y);
 			}
 
-			g_gui.m_opened = g.settings.hotkeys.editing_menu_toggle || !g_gui.m_opened;
-			if (g.settings.hotkeys.editing_menu_toggle)
-				g.settings.hotkeys.editing_menu_toggle = false;
+			g_gui.m_opened = g->settings.hotkeys.editing_menu_toggle || !g_gui.m_opened;
+			if (g->settings.hotkeys.editing_menu_toggle)
+				g->settings.hotkeys.editing_menu_toggle = false;
 		}
 		
 		if (g_gui.m_opened)

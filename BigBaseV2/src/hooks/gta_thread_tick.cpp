@@ -10,7 +10,7 @@ namespace big
 	{
 		rage::eThreadState state = thread->m_context.m_state;
 
-		if (thread->m_script_hash == RAGE_JOAAT("freemode") && state == rage::eThreadState::running && !g.protections.freemode_terminated)
+		if (thread->m_script_hash == RAGE_JOAAT("freemode") && state == rage::eThreadState::running && !g->protections.freemode_terminated)
 		{
 			memcpy(struct_backup, (void*)thread, sizeof(GtaThread));
 			if (thread->m_stack)
@@ -21,7 +21,7 @@ namespace big
 
 		if (thread->m_script_hash == RAGE_JOAAT("freemode"))
 		{
-			if (result == rage::eThreadState::killed && state == rage::eThreadState::running && !g.protections.freemode_terminated)
+			if (result == rage::eThreadState::killed && state == rage::eThreadState::running && !g->protections.freemode_terminated)
 			{
 				LOG(INFO) << "Freemode script crashed, attempting recovery...";
 
@@ -32,7 +32,7 @@ namespace big
 					memcpy(thread->m_stack, stack_buffer, thread->m_context.m_stack_size);
 			}
 
-			if (g.protections.freemode_terminated) g.protections.freemode_terminated = !(result == rage::eThreadState::running);
+			if (g->protections.freemode_terminated) g->protections.freemode_terminated = !(result == rage::eThreadState::running);
 		}
 
 		return result;

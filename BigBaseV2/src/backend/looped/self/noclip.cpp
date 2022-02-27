@@ -16,7 +16,7 @@ namespace big
 	static Vector3 rot{};
 
 	void looped::self_noclip() {
-		bool bNoclip = g.self.noclip;
+		bool bNoclip = g->self.noclip;
 
 		Entity ent = PLAYER::PLAYER_PED_ID();
 		bool bInVehicle = PED::IS_PED_IN_ANY_VEHICLE(ent, true);

@@ -18,9 +18,9 @@ namespace big
 		if (g_local_player == nullptr) return;
 
 		Entity ent = PLAYER::PLAYER_PED_ID();
-		if (!g.self.free_cam && !bLastFreeCam) return;
+		if (!g->self.free_cam && !bLastFreeCam) return;
 
-		if (g.self.free_cam && !bLastFreeCam)
+		if (g->self.free_cam && !bLastFreeCam)
 		{
 			cCam = CAM::CREATE_CAM("DEFAULT_SCRIPTED_CAMERA", 0);
 
@@ -34,7 +34,7 @@ namespace big
 
 			bLastFreeCam = true;
 		}
-		else if (!g.self.free_cam && bLastFreeCam)
+		else if (!g->self.free_cam && bLastFreeCam)
 		{
 			CAM::SET_CAM_ACTIVE(cCam, false);
 			CAM::RENDER_SCRIPT_CAMS(false, true, 500, true, true, 0);

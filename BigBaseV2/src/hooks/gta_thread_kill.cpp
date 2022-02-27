@@ -10,7 +10,7 @@ namespace big
 		g_native_hooks->do_cleanup_for_thread(thread);
 
 		if (thread->m_script_hash == RAGE_JOAAT("freemode"))
-			g.protections.freemode_terminated = !(result == rage::eThreadState::running);
+			g->protections.freemode_terminated = !(result == rage::eThreadState::running);
 
 		return result;
 	}
