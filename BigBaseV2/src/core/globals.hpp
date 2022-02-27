@@ -72,6 +72,9 @@ namespace big
 		bool super_run = false;
 		bool force_wanted_level = false;
 		int wanted_level = 0;
+		bool esp = false;
+		bool aim = false;
+		bool friends = false;
 
 			frame_flags frame_flags{};
 		};
@@ -81,7 +84,7 @@ namespace big
 		{
 			bool editing_menu_toggle = false;
 			int menu_toggle = VK_INSERT;
-			int teleport_waypoint = 0;
+			int teleport_waypoint = VK_F12;
 		};
 
 			hotkeys hotkeys{};
@@ -93,7 +96,7 @@ namespace big
 			std::string username = "";
 
 			bool spoof_ip = true;
-			int ip_address[4] = { 42, 42, 42, 42 };
+			int ip_address[4] = { 42, 42, 42, 42};
 
 			bool spoof_rockstar_id = false;
 			uint64_t rockstar_id = 0;
