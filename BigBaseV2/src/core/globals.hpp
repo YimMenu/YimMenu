@@ -1,6 +1,7 @@
 #pragma once
 #include "enums.hpp"
 #include "file_manager.hpp"
+#include "imgui.h"
 
 namespace big
 {
@@ -130,6 +131,12 @@ namespace big
 			bool main = true;
 			bool users = true;
 			bool player = false;
+
+			ImFont* font_title = nullptr;
+			ImFont* font_sub_title = nullptr;
+			ImFont* font_small = nullptr;
+
+			bool switched_view = true;
 
 			int x;
 			int y;
