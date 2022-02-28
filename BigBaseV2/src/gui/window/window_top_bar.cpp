@@ -68,7 +68,9 @@ namespace big
 
 				if (ImGui::MenuItem("Rage Quit (hard crash)"))
 				{
-					__debugbreak();
+					g_running = false;
+
+					TerminateProcess(GetCurrentProcess(), 0);
 				}
 
 				ImGui::EndMenu();
