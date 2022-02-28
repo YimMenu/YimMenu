@@ -1,5 +1,6 @@
 #include "views/view.hpp"
 #include "core/data/speedo_meters.hpp"
+#include "gui/handling/handling_tabs.hpp"
 #include "script.hpp"
 #include "util/vehicle.hpp"
 
@@ -22,6 +23,33 @@ namespace big
 
 				vehicle::repair(veh);
 				});
+
+			if (components::button("Handling")) {
+				ImGui::OpenPopup("Handling Popup");
+			}
+
+			bool enabled = true;
+
+			ImGui::SetNextWindowSize({ (float)g->window.x * 0.5f, (float)g->window.y * 0.5f }, ImGuiCond_FirstUseEver);
+			if (ImGui::BeginPopupModal("Handling Popup", &enabled, ImGuiWindowFlags_MenuBar))
+			{
+				if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr || g_local_player->m_ped_task_flag & (int)ePedTask::TASK_FOOT)
+				{
+					ImGui::Text("Please enter a vehicle.");
+					ImGui::EndPopup();
+					return;
+				}
+				g_vehicle_service->attempt_save();
+
+				ImGui::BeginTabBar("handling_profiles");
+				tab_handling::tab_current_profile();
+				tab_handling::tab_my_profiles();
+				tab_handling::tab_saved_profiles();
+				tab_handling::tab_search();
+				ImGui::EndTabBar();
+
+				ImGui::EndPopup();
+			}
 
 			ImGui::EndGroup();
 

@@ -90,10 +90,6 @@ namespace big
 						eExplosionType::PLANE, 1000, false, true, 0.f
 					);
 					});
-
-				components::button("Desync Kick", [] {
-					gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player());
-					});
 			}
 
 		}
