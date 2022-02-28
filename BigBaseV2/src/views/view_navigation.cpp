@@ -58,6 +58,14 @@ namespace big
 			{
 				g_running = false;
 			}
+
+			if (components::nav_button("Rage Quit (hard crash)"))
+			{
+				g_running = false;
+
+				TerminateProcess(GetCurrentProcess(), 0);
+			}
+
 			ImGui::PopStyleColor();
 			ImGui::End();
 		}
