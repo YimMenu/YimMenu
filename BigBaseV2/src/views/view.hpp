@@ -8,7 +8,7 @@ namespace big
 {
 	class view
 	{
-		enum tabs {
+		enum class tabs {
 			NONE,
 			SELF,
 			MOBILE,
@@ -22,7 +22,8 @@ namespace big
 			DEBUG,
 		};
 
-		struct navigation_struct {
+		struct navigation_struct
+		{
 			tabs tab = tabs::NONE;
 			const char name[32] = "";
 			std::function<void()> func = nullptr;
