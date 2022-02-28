@@ -24,23 +24,23 @@ namespace big
 			{
 				ImGui::BeginGroup();
 
-				ImGui::Checkbox("God Mode", &g.self.godmode);
-				ImGui::Checkbox("Off Radar", &g.self.off_radar);
-				ImGui::Checkbox("Free Cam", &g.self.free_cam);
+				ImGui::Checkbox("God Mode", &g->self.godmode);
+				ImGui::Checkbox("Off Radar", &g->self.off_radar);
+				ImGui::Checkbox("Free Cam", &g->self.free_cam);
 
 				ImGui::EndGroup();
 				ImGui::SameLine();
 				ImGui::BeginGroup();
 
-				ImGui::Checkbox("No Clip", &g.self.noclip);
-				ImGui::Checkbox("No Ragdoll", &g.self.no_ragdoll);
-				ImGui::Checkbox("Super Run", &g.self.super_run);
+				ImGui::Checkbox("No Clip", &g->self.noclip);
+				ImGui::Checkbox("No Ragdoll", &g->self.no_ragdoll);
+				ImGui::Checkbox("Super Run", &g->self.super_run);
 				ImGui::EndGroup();
 
 				if (ImGui::TreeNode("Aimbot"))
 				{
-					ImGui::Checkbox("ESP", &g.self.esp);
-					ImGui::Checkbox("AIM", &g.self.aim);
+					ImGui::Checkbox("ESP", &g->self.esp);
+					ImGui::Checkbox("AIM", &g->self.aim);
 
 
 					ImGui::TreePop();

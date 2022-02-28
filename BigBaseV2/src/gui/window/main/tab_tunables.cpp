@@ -13,9 +13,9 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Tunables"))
 		{
-			ImGui::Checkbox("Disable Phone", &g.tunables.disable_phone);
-			ImGui::Checkbox("No Idle Kick", &g.tunables.no_idle_kick);
-			ImGui::Checkbox("Always Jackpot in Slot Machines", &g.tunables.rig_casino);
+			ImGui::Checkbox("Disable Phone", &g->tunables.disable_phone);
+			ImGui::Checkbox("No Idle Kick", &g->tunables.no_idle_kick);
+			ImGui::Checkbox("Always Jackpot in Slot Machines", &g->tunables.rig_casino);
 
 			ImGui::EndTabItem();
 		}

@@ -8,7 +8,7 @@ namespace big
 {
 	void looped::tunables_casino_rig()
 	{
-		if (g.tunables.rig_casino)
+		if (g->tunables.rig_casino)
 		{
 			gta_util::execute_as_script(RAGE_JOAAT("CASINO_SLOTS"), [] {
 				auto slots_thread = gta_util::find_script_thread(RAGE_JOAAT("CASINO_SLOTS"));

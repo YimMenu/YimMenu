@@ -51,6 +51,13 @@ namespace big
 				}QUEUE_JOB_END_CLAUSE
 			}
 
+			if (ImGui::Button("Desync Kick"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE(){
+					gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player());
+				}QUEUE_JOB_END_CLAUSE
+			}
+
 			if (ImGui::Button("Send Network Bail"))
 			{
 				QUEUE_JOB_BEGIN_CLAUSE() {

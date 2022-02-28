@@ -32,7 +32,6 @@ namespace big
 
 		static void vehicle_despawn_bypass();
 		static void vehicle_god_mode();
-		static void vehicle_untargetable();
 		static void vehicle_horn_boost();
 		static void vehicle_is_targetable();
 		static void vehicle_ls_customs();

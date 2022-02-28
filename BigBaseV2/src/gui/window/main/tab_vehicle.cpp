@@ -16,8 +16,8 @@ namespace big
 			if (ImGui::TreeNode("General"))
 			{
 				ImGui::BeginGroup();
-				ImGui::Checkbox("God Mode", &g.vehicle.god_mode);
-				ImGui::Checkbox("Horn Boost", &g.vehicle.horn_boost);
+				ImGui::Checkbox("God Mode", &g->vehicle.god_mode);
+				ImGui::Checkbox("Horn Boost", &g->vehicle.horn_boost);
 				ImGui::Checkbox("Can Be Targeted", &g->vehicle.is_targetable);
 				if (ImGui::Button("Gift vehicle"))
 				{

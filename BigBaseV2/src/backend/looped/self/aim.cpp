@@ -25,12 +25,12 @@ namespace big
 						NETWORK::NETWORK_HANDLE_FROM_PLAYER(i, iNetworkHandle, 13);
 						bool is_friend = NETWORK::NETWORK_IS_HANDLE_VALID(&iNetworkHandle[0], 13) && NETWORK::NETWORK_IS_FRIEND(&iNetworkHandle[0]);
 						bool ff = false;
-						if (g.self.friends)
+						if (g->self.friends)
 						{
 							ff = true;
 
 						}
-						else if (!g.self.friends)
+						else if (!g->self.friends)
 						{
 							if (is_friend)
 							{
@@ -70,12 +70,12 @@ namespace big
 	void looped::self_aim()
 	{
 		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr) return;
-		bool bchek = g.self.aim;
+		bool bchek = g->self.aim;
 		if (bchek || (!bchek && bchek != boolaim))
 		{
 
-			aim(g.self.aim);
-			bchek = g.self.aim;
+			aim(g->self.aim);
+			bchek = g->self.aim;
 
 
 

@@ -103,13 +103,13 @@ namespace big
 	void looped::self_esp()
 	{
 		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr) return;
-		bool bchek = g.self.esp;
+		bool bchek = g->self.esp;
 		if (bchek || (!bchek && bchek != bEsp))
 		{
 			Ped self = PLAYER::PLAYER_PED_ID();
 
-			esp(self, g.self.esp);
-			bchek = g.self.esp;
+			esp(self, g->self.esp);
+			bchek = g->self.esp;
 
 
 
