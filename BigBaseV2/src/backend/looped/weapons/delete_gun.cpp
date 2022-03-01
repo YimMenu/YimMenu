@@ -45,7 +45,7 @@ namespace big
 								{
 									entity::delete_entity(entity);
 								}
-								else g_notification_service->push_error("Weapons", "~r~Failed to take control of entity.");
+								else g_notification_service->push_error("Weapons", "Failed to take control of entity.");
 							}
 						}
 					}
