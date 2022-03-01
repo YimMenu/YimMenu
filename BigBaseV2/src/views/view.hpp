@@ -40,6 +40,7 @@ namespace big
 		static void settings();
 		static void spoofing();
 		static void navigation();
+		static void notifications();
 		static void active_view();
 
 		inline static animator window_animator = animator();
@@ -66,6 +67,11 @@ namespace big
 		{
 			active_view();
 			navigation();
+		}
+
+		static void always()
+		{
+			notifications();
 		}
 	};
 }

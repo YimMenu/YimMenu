@@ -2,7 +2,6 @@
 #include "gta_util.hpp"
 #include "script_local.hpp"
 #include "util/math.hpp"
-#include "util/notify.hpp"
 #include "util/scripts.hpp"
 
 namespace big
@@ -38,7 +37,7 @@ namespace big
 				busy = false;
 				g->vehicle.ls_customs = false;
 
-				notify::above_map("You aren't in a vehicle.");
+				g_notification_service->push_warning("LS Customs", "You aren't in a vehicle.");
 
 				return;
 			}

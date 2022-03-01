@@ -83,6 +83,7 @@ namespace big
 		{
 			g_gui.dx_on_tick();
 		}
+		g_gui.always_draw();
 
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

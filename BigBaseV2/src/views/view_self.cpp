@@ -4,7 +4,6 @@
 #include "script_global.hpp"
 #include "util/entity.hpp"
 #include "util/player.hpp"
-#include "util/notify.hpp"	
 #include "util/session.hpp"
 
 namespace big
@@ -79,7 +78,7 @@ namespace big
 					}
 					if (!STREAMING::HAS_MODEL_LOADED(hash))
 					{
-						notify::above_map("~r~Failed to spawn model, did you give an incorrect model?");
+						g_notification_service->push_error("Self", "Failed to spawn model, did you give an incorrect model ? ");
 
 						return;
 					}

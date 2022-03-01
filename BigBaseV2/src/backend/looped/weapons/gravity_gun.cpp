@@ -2,7 +2,6 @@
 #include "core/enums.hpp"
 #include "util/entity.hpp"
 #include "util/math.hpp"
-#include "util/notify.hpp"
 
 namespace big
 {
@@ -37,7 +36,7 @@ namespace big
 					{
 						ent = 0;
 
-						notify::above_map("You can't move player entities!");
+						g_notification_service->push_warning("Weapons", "You can't move player entities!");
 					}
 					else
 					{
@@ -48,7 +47,7 @@ namespace big
 						{
 							ent = 0;
 
-							notify::above_map("Entity is too far.");
+							g_notification_service->push_warning("Weapons", "Entity is too far.");
 						}
 						else
 						{
@@ -56,7 +55,7 @@ namespace big
 							{
 								TASK::SET_HIGH_FALL_TASK(ent, 0, 0, 0);
 
-								notify::above_map("Selected entity at crosshair.");
+								g_notification_service->push_warning("Weapons", "Selected entity at crosshair.");
 							}
 						}
 					}
@@ -65,7 +64,7 @@ namespace big
 				{
 					ent = 0;
 
-					notify::above_map("No entity found.");
+					g_notification_service->push_warning("Weapons", "No entity found.");
 				}
 			}
 
@@ -80,7 +79,7 @@ namespace big
 				{
 					ent = 0;
 
-					return notify::above_map("Failed to take control of entity.");
+					return g_notification_service->push_warning("Weapons", "Failed to take control of entity.");
 				}
 
 				ENTITY::SET_ENTITY_COLLISION(ent, false, false);
@@ -109,7 +108,7 @@ namespace big
 
 			ent = 0;
 
-			notify::above_map("Released entity.");
+			g_notification_service->push("Weapons", "Released entity.");
 		}
 	}
 }
