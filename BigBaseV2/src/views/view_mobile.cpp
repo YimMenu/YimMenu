@@ -2,7 +2,6 @@
 #include "fiber_pool.hpp"
 #include "script.hpp"
 #include "util/mobile.hpp"
-#include "util/notify.hpp"
 #include "services/mobile_service.hpp"
 
 namespace big
@@ -10,8 +9,8 @@ namespace big
 	void view::mobile() {
 		components::button("Mors Mutual Fix All Vehicles", [] {
 			int amount_fixed = mobile::mors_mutual::fix_all();
-			notify::above_map(
-				fmt::format("<C>{}</C> vehicle{} been fixed.", amount_fixed, amount_fixed == 1 ? " has" : "s have")
+			g_notification_service->push("Mobile",
+				fmt::format("{} vehicle{} been fixed.", amount_fixed, amount_fixed == 1 ? " has" : "s have")
 			);
 			});
 

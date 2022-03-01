@@ -14,7 +14,7 @@
 #include <imgui.h>
 
 #include "views/view.hpp"
-#include "util/notify.hpp"
+#include "services/notification_service.hpp"
 
 namespace big
 {
@@ -87,9 +87,18 @@ namespace big
 		EXCEPT_CLAUSE
 	}
 
+	void gui::always_draw()
+	{
+		TRY_CLAUSE
+		{
+			view::always();
+		}
+		EXCEPT_CLAUSE
+	}
+
 	void gui::script_init()
 	{
-		notify::display_help_text("Press INSERT on your keyboard to open Yim's Mod Menu.");
+		g_notification_service->push("Welcome", "Loaded YimMenu. Press INSERT to open");
 	}
 
 	void gui::script_on_tick()

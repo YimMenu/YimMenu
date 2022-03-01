@@ -14,6 +14,7 @@
 #include "services/globals_service.hpp"
 #include "services/player_service.hpp"
 #include "services/mobile_service.hpp"
+#include "services/notification_service.hpp"
 #include "services/vehicle_service.hpp"
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
@@ -64,6 +65,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				auto globals_service_instace = std::make_unique<globals_service>();
 				auto mobile_service_instance = std::make_unique<mobile_service>();
+				auto notification_service_instance = std::make_unique<notification_service>();
 				auto player_service_instance = std::make_unique<player_service>();
 				auto vehicle_service_instance = std::make_unique<vehicle_service>();
 				LOG(INFO) << "Registered service instances...";

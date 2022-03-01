@@ -54,6 +54,8 @@
 #include "gta/natives.hpp"
 #include "CPed.hpp"
 
+#include "services/notification_service.hpp"
+
 namespace big
 {
 	using namespace std::chrono_literals;

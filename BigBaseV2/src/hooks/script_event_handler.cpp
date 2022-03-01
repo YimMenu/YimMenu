@@ -1,6 +1,5 @@
 #include "hooking.hpp"
 #include "gta/enums.hpp"
-#include "util/notify.hpp"
 
 namespace big
 {
@@ -114,8 +113,8 @@ namespace big
 
 		if (strlen(type) != 0)
 		{
-			notify::above_map(
-				fmt::format("~g~BLOCKED SCRIPT EVENT~s~\nFrom: <C>{}</C>\nEvent Type: ~b~{}", player->get_name(), type)
+			g_notification_service->push_warning("Protection",
+				fmt::format("BLOCKED SCRIPT EVENT\nFrom: {}\nEvent Type: {}", player->get_name(), type)
 			);
 
 			return true;

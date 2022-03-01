@@ -2,7 +2,6 @@
 #include "core/enums.hpp"
 #include "util/entity.hpp"
 #include "util/vehicle.hpp"
-#include "util/notify.hpp"
 
 namespace big
 {
@@ -32,10 +31,10 @@ namespace big
 						}
 						else
 						{
-							notify::above_map("Entity is not a vehicle.");
+							g_notification_service->push_warning("Weapons", "Entity is not a vehicle.");
 						}
 					}
-					else notify::above_map("No entity found.");
+					else g_notification_service->push_warning("Weapons", "No entity found.");
 				}
 			}
 		}

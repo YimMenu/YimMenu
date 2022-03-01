@@ -28,7 +28,7 @@ namespace big
 
 		components::button("Bring Personal Vehicle", [] {
 			Vehicle veh = globals::get_personal_vehicle();
-			if (ENTITY::IS_ENTITY_DEAD(veh, false)) return notify::above_map("Invalid vehicle handle...");
+			if (ENTITY::IS_ENTITY_DEAD(veh, false)) return g_notification_service->push_error("Teleport", "Invalid vehicle handle...");
 
 			Vector3 location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
 
@@ -37,7 +37,7 @@ namespace big
 
 		components::button("Teleport to Personal Vehicle", [] {
 			Vehicle veh = globals::get_personal_vehicle();
-			if (ENTITY::IS_ENTITY_DEAD(veh, false)) return notify::above_map("Invalid vehicle handle...");
+			if (ENTITY::IS_ENTITY_DEAD(veh, false)) return g_notification_service->push_error("Teleport", "Invalid vehicle handle...");
 
 			teleport::to_coords(
 				ENTITY::GET_ENTITY_COORDS(veh, true)
