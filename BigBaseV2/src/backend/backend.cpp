@@ -41,6 +41,8 @@ namespace big
 			looped::self_police();
 			looped::self_no_ragdoll();
 			looped::self_super_run();
+			looped::self_invisibility();
+			looped::self_clean_player();
 		}QUEUE_JOB_END_CLAUSE
 
 		QUEUE_JOB_BEGIN_CLAUSE()
@@ -57,7 +59,10 @@ namespace big
 		{
 			looped::weapons_cage_gun();
 			looped::weapons_delete_gun();
+			looped::weapons_force_crosshairs();
 			looped::weapons_gravity_gun();
+			looped::weapons_no_recoil();
+			looped::weapons_no_spread();
 			looped::weapons_steal_vehicle_gun();
 			looped::weapons_repair_gun();
 			looped::weapons_vehicle_gun();

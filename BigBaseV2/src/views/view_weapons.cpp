@@ -15,6 +15,21 @@ namespace big
 			ImGui::TreePop();
 		}
 
+		if (ImGui::TreeNode("Misc"))
+		{
+			ImGui::Checkbox("Force Crosshairs", &g->weapons.force_crosshairs);
+
+			ImGui::SameLine();
+
+			ImGui::Checkbox("No Recoil", &g->weapons.no_recoil);
+
+			ImGui::SameLine();
+
+			ImGui::Checkbox("No Spread", &g->weapons.no_spread);
+
+			ImGui::TreePop();
+		}
+		
 		if (ImGui::TreeNode("Custom Weapons"))
 		{
 			CustomWeapon selected = g->weapons.custom_weapon;

@@ -32,6 +32,24 @@ namespace big
 			ImGui::Checkbox("No Idle Kick", &g->tunables.no_idle_kick);
 
 			ImGui::EndGroup();
+			ImGui::SameLine();
+			ImGui::BeginGroup();
+
+			ImGui::Checkbox("Invisibility", &g->self.invisibility);
+			ImGui::Checkbox("Keep Player Clean", &g->self.clean_player);
+			if (ImGui::Button("Clean Player"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					PED::CLEAR_PED_BLOOD_DAMAGE(PLAYER::PLAYER_PED_ID());
+					PED::CLEAR_PED_WETNESS(PLAYER::PLAYER_PED_ID());
+					PED::CLEAR_PED_ENV_DIRT(PLAYER::PLAYER_PED_ID());
+					PED::RESET_PED_VISIBLE_DAMAGE(PLAYER::PLAYER_PED_ID());
+				}
+				QUEUE_JOB_END_CLAUSE
+			}
+
+			ImGui::EndGroup();
 
 			ImGui::TreePop();
 		}

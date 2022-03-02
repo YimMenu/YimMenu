@@ -64,6 +64,8 @@ namespace big
 			};
 
 			bool godmode = false;
+			bool invisibility = false;
+			bool clean_player = false;
 			bool free_cam = false;
 			bool off_radar = false;
 			bool never_wanted = false;
@@ -120,8 +122,11 @@ namespace big
 		struct weapons {
 			CustomWeapon custom_weapon = CustomWeapon::NONE;
 			char vehicle_gun_model[12] = "bus";
+			bool force_crosshairs = false;
 			bool infinite_ammo = false;
 			bool infinite_mag = false;
+			bool no_recoil = false;
+			bool no_spread = false;
 		};
 
 		struct window {
@@ -196,6 +201,8 @@ namespace big
 			this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
 
 			this->self.godmode = j["self"]["godmode"];
+			this->self.invisibility = j["self"]["invisibility"];
+			this->self.invisibility = j["self"]["clean_player"];
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.never_wanted = j["self"]["never_wanted"];
 			this->self.no_ragdoll = j["self"]["no_ragdoll"];
@@ -228,8 +235,11 @@ namespace big
 			this->vehicle.speedo_meter.y = j["vehicle"]["speedo_meter"]["position_y"];
 
 			this->weapons.custom_weapon = (CustomWeapon)j["weapons"]["custom_weapon"];
+			this->weapons.force_crosshairs = j["weapons"]["force_crosshairs"];
 			this->weapons.infinite_ammo = j["weapons"]["infinite_ammo"];
 			this->weapons.infinite_mag = j["weapons"]["infinite_mag"];
+			this->weapons.no_recoil = j["weapons"]["no_recoil"];
+			this->weapons.no_spread = j["weapons"]["no_spread"];
 
 			this->window.debug = j["window"]["debug"];
 			this->window.handling = j["window"]["handling"];
@@ -284,6 +294,8 @@ namespace big
 				{
 					"self", {
 						{ "godmode", this->self.godmode },
+						{ "invisibility", this->self.invisibility },
+						{ "clean_player", this->self.clean_player },
 						{ "off_radar", this->self.off_radar },
 						{ "never_wanted", this->self.never_wanted },
 						{ "no_ragdoll", this->self.no_ragdoll },
@@ -341,8 +353,11 @@ namespace big
 				{
 					"weapons", {
 						{ "custom_weapon", (int)this->weapons.custom_weapon },
+						{ "force_crosshairs", this->weapons.force_crosshairs },
 						{ "infinite_ammo", this->weapons.infinite_ammo },
-						{ "infinite_mag", this->weapons.infinite_mag }
+						{ "infinite_mag", this->weapons.infinite_mag },
+						{ "no_recoil", this->weapons.no_recoil },
+						{ "no_spread", this->weapons.no_spread }
 					}
 				},
 				{
