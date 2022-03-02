@@ -40,6 +40,7 @@ namespace big
 		static void weapons_delete_gun();
 		static void weapons_force_crosshairs();
 		static void weapons_gravity_gun();
+		static void weapons_increased_damage();
 		static void weapons_no_recoil();
 		static void weapons_no_spread();
 		static void weapons_repair_gun();

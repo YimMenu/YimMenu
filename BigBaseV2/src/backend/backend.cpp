@@ -61,6 +61,7 @@ namespace big
 			looped::weapons_delete_gun();
 			looped::weapons_force_crosshairs();
 			looped::weapons_gravity_gun();
+			looped::weapons_increased_damage();
 			looped::weapons_no_recoil();
 			looped::weapons_no_spread();
 			looped::weapons_steal_vehicle_gun();

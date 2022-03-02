@@ -40,10 +40,10 @@ namespace big
 			{
 				if (!is_recoil_value_cached(cur_weapon_hash))
 				{
-					og_recoil_values.push_back({ cur_weapon_hash, weapon_mgr->m_weapon_info->m_accuracy_recoil });
+					og_recoil_values.push_back({ cur_weapon_hash, weapon_mgr->m_weapon_info->m_explosion_shake_amplitude });
 				}
 				
-				weapon_mgr->m_weapon_info->m_accuracy_recoil = get_recoil_value(cur_weapon_hash);
+				weapon_mgr->m_weapon_info->m_explosion_shake_amplitude = get_recoil_value(cur_weapon_hash); // m_explosion_shake_amplitude is the right offset in https://github.com/Yimura/GTAV-Classes
 			}
 		}
 	}
