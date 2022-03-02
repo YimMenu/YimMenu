@@ -9,17 +9,18 @@ namespace big
 	class view
 	{
 		enum class tabs {
-			NONE,
-			SELF,
+			DEBUG,
 			MOBILE,
-			SPAWN,
-			WEAPONS,
-			SPOOFING,
+			NONE,
+			PLAYER,
+			SELF,
+			SESSION,
 			SETTINGS,
+			SPAWN,
+			SPOOFING,
 			TELEPORT,
 			VEHICLE,
-			PLAYER,
-			DEBUG,
+			WEAPONS,
 		};
 
 		struct navigation_struct
@@ -29,19 +30,20 @@ namespace big
 			std::function<void()> func = nullptr;
 		};
 
-		static void self();
-		static void vehicle();
+		static void active_view();
 		static void debug();
-		static void view_player();
-		static void weapons();
 		static void mobile();
-		static void teleport();
-		static void spawn();
-		static void settings();
-		static void spoofing();
 		static void navigation();
 		static void notifications();
-		static void active_view();
+		static void self();
+		static void session();
+		static void settings();
+		static void spawn();
+		static void spoofing();
+		static void teleport();
+		static void vehicle();
+		static void view_player();
+		static void weapons();
 
 		inline static animator window_animator = animator();
 
@@ -57,6 +59,7 @@ namespace big
 			{ tabs::VEHICLE, "Vehicle", view::vehicle },
 			{ tabs::WEAPONS, "Weapons", view::weapons },
 			{ tabs::SPOOFING, "Spoofing", view::spoofing },
+			{ tabs::SESSION, "Session", view::session },
 			{ tabs::SETTINGS, "Settings", view::settings },
 			{ tabs::DEBUG, "Debug", view::debug },
 			{ tabs::PLAYER, "Players", view::view_player },

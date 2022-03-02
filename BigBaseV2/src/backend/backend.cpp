@@ -61,13 +61,13 @@ namespace big
 			looped::weapons_delete_gun();
 			looped::weapons_force_crosshairs();
 			looped::weapons_gravity_gun();
-			looped::weapons_infinite_ammo();
 			looped::weapons_increased_damage();
+			looped::weapons_infinite_ammo();
 			looped::weapons_infinite_mag();
-			looped::weapons_no_spread();
 			looped::weapons_no_recoil();
-			looped::weapons_steal_vehicle_gun();
+			looped::weapons_no_spread();
 			looped::weapons_repair_gun();
+			looped::weapons_steal_vehicle_gun();
 			looped::weapons_vehicle_gun();
 		}QUEUE_JOB_END_CLAUSE
 
