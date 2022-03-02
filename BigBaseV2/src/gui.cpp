@@ -80,20 +80,12 @@ namespace big
 
 	void gui::dx_on_tick()
 	{
-		TRY_CLAUSE
-		{
-			view::root();
-		}
-		EXCEPT_CLAUSE
+		view::root();
 	}
 
 	void gui::always_draw()
 	{
-		TRY_CLAUSE
-		{
-			view::always();
-		}
-		EXCEPT_CLAUSE
+		view::always();
 	}
 
 	void gui::script_init()

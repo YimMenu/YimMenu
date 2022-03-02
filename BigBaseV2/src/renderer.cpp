@@ -79,11 +79,13 @@ namespace big
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
+		g_gui.always_draw();
+
 		if (g_gui.m_opened)
 		{
 			g_gui.dx_on_tick();
 		}
-		g_gui.always_draw();
+		
 
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
