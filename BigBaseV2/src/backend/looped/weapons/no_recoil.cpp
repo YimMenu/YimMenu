@@ -31,6 +31,11 @@ namespace big
 
 	void looped::weapons_no_recoil()
 	{
+		if (!g_local_player)
+		{
+			return;
+		}
+
 		auto* const weapon_mgr = g_local_player->m_weapon_manager;
 		if (weapon_mgr)
 		{
