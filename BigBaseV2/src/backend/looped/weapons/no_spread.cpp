@@ -1,13 +1,12 @@
-#include "pointers.hpp"
-#include "CPedFactory.hpp"
 #include "backend/looped/looped.hpp"
+#include "pointers.hpp"
 
 namespace big
 {
 	static std::vector<std::pair<uint32_t, float>> og_spread_values{};
 	static uint32_t prev_weapon_hash{};
 
-	auto is_spread_value_cached(uint32_t hash)
+	bool is_spread_value_cached(uint32_t hash)
 	{
 		return std::find_if(og_spread_values.begin(), og_spread_values.end(), [hash](auto const entry)
 			{
@@ -23,7 +22,7 @@ namespace big
 			})->second;
 	}
 
-	auto get_spread_value(uint32_t hash)
+	float get_spread_value(uint32_t hash)
 	{
 		return g->weapons.no_spread
 			? 0.f
@@ -32,7 +31,7 @@ namespace big
 
 	void looped::weapons_no_spread()
 	{
-		auto* const weapon_mgr = (*g_pointers->m_ped_factory)->m_local_ped->m_weapon_manager;
+		auto* const weapon_mgr = g_local_player->m_weapon_manager;
 		if (weapon_mgr)
 		{
 			auto const cur_weapon_hash = weapon_mgr->m_selected_weapon_hash;

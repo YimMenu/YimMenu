@@ -1,9 +1,8 @@
 #include "core/data/custom_weapons.hpp"
-#include "views/view.hpp"
-#include "script.hpp"
-#include "gta/Weapons.h"
-
 #include "fiber_pool.hpp"
+#include "gta/Weapons.h"
+#include "script.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -43,12 +42,7 @@ namespace big
 				QUEUE_JOB_END_CLAUSE
 			}
 
-			float damage_slider;
-			damage_slider = g->weapons.increased_damage;
-			if (ImGui::SliderFloat("Damage Multiplier", &damage_slider, 1.f, 10.f, "%.1f"))
-			{
-				g->weapons.increased_damage = damage_slider;
-			}
+			ImGui::SliderFloat("Damage Multiplier", &g->weapons.increased_damage, 1.f, 10.f, "%.1f");
 			
 			ImGui::TreePop();
 		}

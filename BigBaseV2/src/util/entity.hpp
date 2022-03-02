@@ -14,6 +14,14 @@ namespace big::entity
 		OBJECT::CREATE_OBJECT(hash, location.x, location.y, location.z - 1.f, true, false, false);
 	}
 
+	inline void clean_ped(Ped ped)
+	{
+		PED::CLEAR_PED_BLOOD_DAMAGE(PLAYER::PLAYER_PED_ID());
+		PED::CLEAR_PED_WETNESS(PLAYER::PLAYER_PED_ID());
+		PED::CLEAR_PED_ENV_DIRT(PLAYER::PLAYER_PED_ID());
+		PED::RESET_PED_VISIBLE_DAMAGE(PLAYER::PLAYER_PED_ID());
+	}
+
 	inline void delete_entity(Entity ent)
 	{
 		ENTITY::DETACH_ENTITY(ent, 1, 1);
