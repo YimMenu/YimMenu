@@ -63,14 +63,16 @@ namespace big
 				bool super_jump = false;
 			};
 
-			bool godmode = false;
+			bool clean_player = false;
+			bool force_wanted_level = false;
 			bool free_cam = false;
-			bool off_radar = false;
+			bool godmode = false;
+			bool invisibility = false;
 			bool never_wanted = false;
 			bool noclip = false;
 			bool no_ragdoll = false;
+			bool off_radar = false;
 			bool super_run = false;
-			bool force_wanted_level = false;
 			int wanted_level = 0;
 
 			frame_flags frame_flags{};
@@ -119,9 +121,13 @@ namespace big
 
 		struct weapons {
 			CustomWeapon custom_weapon = CustomWeapon::NONE;
-			char vehicle_gun_model[12] = "bus";
+			bool force_crosshairs = false;
 			bool infinite_ammo = false;
 			bool infinite_mag = false;
+			float increased_damage = 1;
+			bool no_recoil = false;
+			bool no_spread = false;
+			char vehicle_gun_model[12] = "bus";
 		};
 
 		struct window {
@@ -195,10 +201,12 @@ namespace big
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
 			this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
 
+			this->self.clean_player = j["self"]["clean_player"];
 			this->self.godmode = j["self"]["godmode"];
-			this->self.off_radar = j["self"]["off_radar"];
-			this->self.never_wanted = j["self"]["never_wanted"];
+			this->self.invisibility = j["self"]["invisibility"];
 			this->self.no_ragdoll = j["self"]["no_ragdoll"];
+			this->self.never_wanted = j["self"]["never_wanted"];
+			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
 
 			this->self.frame_flags.explosive_ammo = j["self"]["frame_flags"]["explosive_ammo"];
@@ -228,8 +236,12 @@ namespace big
 			this->vehicle.speedo_meter.y = j["vehicle"]["speedo_meter"]["position_y"];
 
 			this->weapons.custom_weapon = (CustomWeapon)j["weapons"]["custom_weapon"];
+			this->weapons.force_crosshairs = j["weapons"]["force_crosshairs"];
 			this->weapons.infinite_ammo = j["weapons"]["infinite_ammo"];
+			this->weapons.increased_damage = j["weapons"]["increased_damage"];
 			this->weapons.infinite_mag = j["weapons"]["infinite_mag"];
+			this->weapons.no_recoil = j["weapons"]["no_recoil"];
+			this->weapons.no_spread = j["weapons"]["no_spread"];
 
 			this->window.debug = j["window"]["debug"];
 			this->window.handling = j["window"]["handling"];
@@ -283,10 +295,12 @@ namespace big
 				},
 				{
 					"self", {
+						{ "clean_player", this->self.clean_player },
 						{ "godmode", this->self.godmode },
-						{ "off_radar", this->self.off_radar },
+						{ "invisibility", this->self.invisibility },
 						{ "never_wanted", this->self.never_wanted },
 						{ "no_ragdoll", this->self.no_ragdoll },
+						{ "off_radar", this->self.off_radar },
 						{ "super_run", this->self.super_run },
 
 						{
@@ -341,8 +355,12 @@ namespace big
 				{
 					"weapons", {
 						{ "custom_weapon", (int)this->weapons.custom_weapon },
+						{ "force_crosshairs", this->weapons.force_crosshairs },
+						{ "increased_damage", this->weapons.increased_damage },
 						{ "infinite_ammo", this->weapons.infinite_ammo },
-						{ "infinite_mag", this->weapons.infinite_mag }
+						{ "infinite_mag", this->weapons.infinite_mag },
+						{ "no_recoil", this->weapons.no_recoil },
+						{ "no_spread", this->weapons.no_spread }
 					}
 				},
 				{

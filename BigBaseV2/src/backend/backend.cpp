@@ -34,12 +34,14 @@ namespace big
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
+			looped::self_clean_player();
 			looped::self_frame_flags();
 			looped::self_free_cam();
 			looped::self_godmode();
+			looped::self_invisibility();
+			looped::self_no_ragdoll();
 			looped::self_off_radar();
 			looped::self_police();
-			looped::self_no_ragdoll();
 			looped::self_super_run();
 		}QUEUE_JOB_END_CLAUSE
 
@@ -57,12 +59,16 @@ namespace big
 		{
 			looped::weapons_cage_gun();
 			looped::weapons_delete_gun();
+			looped::weapons_force_crosshairs();
 			looped::weapons_gravity_gun();
+			looped::weapons_infinite_ammo();
+			looped::weapons_increased_damage();
+			looped::weapons_infinite_mag();
+			looped::weapons_no_spread();
+			looped::weapons_no_recoil();
 			looped::weapons_steal_vehicle_gun();
 			looped::weapons_repair_gun();
 			looped::weapons_vehicle_gun();
-			looped::weapons_infinite_ammo();
-			looped::weapons_infinite_mag();
 		}QUEUE_JOB_END_CLAUSE
 
 		QUEUE_JOB_BEGIN_CLAUSE()

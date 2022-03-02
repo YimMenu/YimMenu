@@ -14,13 +14,15 @@ namespace big
 
 		static void protections_replay_interface();
 
+		static void self_clean_player();
 		static void self_frame_flags();
 		static void self_free_cam();
 		static void self_godmode();
-		static void self_off_radar();
-		static void self_police();
+		static void self_invisibility();
 		static void self_noclip();
 		static void self_no_ragdoll();
+		static void self_off_radar();
+		static void self_police();
 		static void self_super_run();
 
 		static void system_update_players();
@@ -36,11 +38,15 @@ namespace big
 
 		static void weapons_cage_gun();
 		static void weapons_delete_gun();
+		static void weapons_force_crosshairs();
 		static void weapons_gravity_gun();
+		static void weapons_increased_damage();
+		static void weapons_infinite_ammo();
+		static void weapons_infinite_mag();
+		static void weapons_no_recoil();
+		static void weapons_no_spread();
 		static void weapons_repair_gun();
 		static void weapons_steal_vehicle_gun();
 		static void weapons_vehicle_gun();
-		static void weapons_infinite_ammo();
-		static void weapons_infinite_mag();
 	};
 }

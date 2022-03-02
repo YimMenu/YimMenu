@@ -1,4 +1,7 @@
 #include "core/data/custom_weapons.hpp"
+#include "fiber_pool.hpp"
+#include "gta/Weapons.h"
+#include "script.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -15,6 +18,35 @@ namespace big
 			ImGui::TreePop();
 		}
 
+		if (ImGui::TreeNode("Misc"))
+		{
+			ImGui::Checkbox("Force Crosshairs", &g->weapons.force_crosshairs);
+
+			ImGui::SameLine();
+
+			ImGui::Checkbox("No Recoil", &g->weapons.no_recoil);
+
+			ImGui::SameLine();
+
+			ImGui::Checkbox("No Spread", &g->weapons.no_spread);
+
+			if (ImGui::Button("Get All Weapons"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					for (auto const& weapon : weapon_list) {
+						WEAPON::GIVE_DELAYED_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), weapon, 9999, false);
+					}
+					WEAPON::GIVE_DELAYED_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), -72657034, 0, true);
+				}
+				QUEUE_JOB_END_CLAUSE
+			}
+
+			ImGui::SliderFloat("Damage Multiplier", &g->weapons.increased_damage, 1.f, 10.f, "%.1f");
+			
+			ImGui::TreePop();
+		}
+		
 		if (ImGui::TreeNode("Custom Weapons"))
 		{
 			CustomWeapon selected = g->weapons.custom_weapon;

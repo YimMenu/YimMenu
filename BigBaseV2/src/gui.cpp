@@ -11,7 +11,9 @@
 #include "renderer.hpp"
 #include "script.hpp"
 
+
 #include <imgui.h>
+#include "widgets/imgui_hotkey.hpp"
 
 #include "views/view.hpp"
 #include "services/notification_service.hpp"
@@ -90,7 +92,7 @@ namespace big
 
 	void gui::script_init()
 	{
-		g_notification_service->push("Welcome", "Loaded YimMenu. Press INSERT to open");
+		g_notification_service->push("Welcome", fmt::format("Loaded YimMenu. Press {} to open", ImGui::key_names[g->settings.hotkeys.menu_toggle]));	
 	}
 
 	void gui::script_on_tick()
