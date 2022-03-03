@@ -1,10 +1,6 @@
-#include "views/view.hpp"
 #include "fiber_pool.hpp"
-#include "script.hpp"
-#include "script_global.hpp"
 #include "util/entity.hpp"
-#include "util/player.hpp"
-#include "util/session.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -128,15 +124,6 @@ namespace big
 			components::button("Skip Cutscene", [] {
 				CUTSCENE::STOP_CUTSCENE_IMMEDIATELY();
 				});
-
-			ImGui::Text("Session");
-			for (const SessionType& session_type : sessions)
-			{
-				components::button(session_type.name, [session_type] {
-					session::join_type(session_type);
-					});
-			}
-
 		}
 	}
 }
