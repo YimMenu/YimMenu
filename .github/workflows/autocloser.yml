@@ -1,0 +1,38 @@
+name: Autocloser
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  autoclose:
+    runs-on: ubuntu-latest
+    name: Autocloser
+    steps:
+    - name: Autoclose issue that does not follow template
+      uses: actions/github-script@v6
+      env:
+        message: "this issue was automatically closed because it did not follow the issue template.\n\nIf you believe this is an error, please re-open it!"
+        pattern: "(.*Describe the bug.*To Reproduce.*Expected behavior.*Logs.*Build.*)|(.*Is your feature request related to a problem. Please describe..*Describe the solution you'd like.*Provide Reasoning.*)"
+      with:
+        script: |
+          const { message, pattern } = process.env
+          if (!context.payload.sender) return;
+
+          const body = context.payload.issue.body;
+          const templateRegex = new RegExp(pattern, "s")
+
+          if (!body || !body.match(templateRegex)) {
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `@${context.payload.sender.login}, ${message}`
+            })
+            github.rest.issues.update({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'closed'
+            })
+          }
