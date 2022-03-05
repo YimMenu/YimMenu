@@ -54,6 +54,7 @@ namespace big
 
 			
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.69f, 0.29f, 0.29f, 1.00f));
+			ImGui::Checkbox("Always Jackpot in Slot Machines", &g->tunables.rig_casino);
 			if (components::nav_button("Unload"))
 			{
 				g_running = false;

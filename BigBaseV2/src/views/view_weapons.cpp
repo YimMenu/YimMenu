@@ -3,9 +3,48 @@
 #include "gta/Weapons.h"
 #include "script.hpp"
 #include "views/view.hpp"
+#include "features.hpp"
+#include "natives.hpp"
+#include "util/teleport.hpp"
+#include "pointers.hpp"
 
 namespace big
 {
+	void KillTargets()
+	{
+		for (int i = 0; i <= 1000; i++)
+		{
+			Blip_t* blip = g_pointers->pBlipList->m_Blips[i].m_pBlip;
+			if (blip)
+			{
+				if (blip->m_color != BlipColors::Blue) //Don't hit friendlies.
+				{
+					if (blip->m_icon == BlipIcons::Cop || blip->m_icon == BlipIcons::Enemy || (blip->m_icon == BlipIcons::Circle && blip->m_color == BlipColors::Red))
+					{
+						static bool bShoot = false;
+						bShoot = !bShoot;
+						if (bShoot)
+						{
+							static Hash weaponList[] = { WEAPON_ADVANCEDRIFLE, WEAPON_APPISTOL, WEAPON_ASSAULTRIFLE, WEAPON_ASSAULTSMG, WEAPON_CARBINERIFLE, WEAPON_COMBATMG, WEAPON_COMBATPDW, WEAPON_COMBATPISTOL, WEAPON_HEAVYPISTOL, WEAPON_HEAVYSNIPER, WEAPON_MARKSMANRIFLE, WEAPON_MG, WEAPON_MICROSMG, WEAPON_PISTOL, WEAPON_PISTOL50, WEAPON_SMG, WEAPON_SNIPERRIFLE, WEAPON_SNSPISTOL, WEAPON_SPECIALCARBINE, WEAPON_MINIGUN };
+							if (blip->m_scale_x >= 1.0f)
+								FIRE::ADD_OWNED_EXPLOSION(PLAYER::PLAYER_PED_ID(), blip->x, blip->y, blip->z, TANKER, 1000.0f, FALSE, TRUE, 0.0f);
+							else
+							{
+								srand((unsigned int)time(NULL));
+								MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(blip->x + 0.1f, blip->y, blip->z - 0.15f, blip->x - 0.1f, blip->y, blip->z + 1, 10000, TRUE, weaponList[rand() % (sizeof(weaponList) / 4)], PLAYER::PLAYER_PED_ID(), TRUE, TRUE, 1.0f);
+							}
+							notify::above_map("Killed Enemies");
+						}
+					}
+					if ((blip->m_color == BlipColors::None && (blip->m_icon == EnemyHelicopter || blip->m_icon == PoliceHelicopter)) ||
+						((blip->m_color == BlipColors::Red || blip->m_color == BlipColors::RedMission) && (blip->m_icon == PLANE || blip->m_icon == Motorcycle || blip->m_icon == BlipIcons::PersonalVehicleCar || blip->m_icon == Helicopter2 || blip->m_icon == Jet || blip->m_icon == PlayerHelicopter || blip->m_icon == PlaneDrop)))
+					{
+						FIRE::ADD_OWNED_EXPLOSION(PLAYER::PLAYER_PED_ID(), blip->x, blip->y, blip->z, TANKER, 1000.0f, FALSE, TRUE, 0.0f);
+					}
+				}
+			}
+		}
+	}
 	void view::weapons() {
 		if (ImGui::TreeNode("Ammo Options"))
 		{
@@ -29,6 +68,13 @@ namespace big
 			ImGui::SameLine();
 
 			ImGui::Checkbox("No Spread", &g->weapons.no_spread);
+
+			if (ImGui::Button("Kill enemies"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE() {
+					KillTargets();
+				}QUEUE_JOB_END_CLAUSE
+			}
 
 			if (ImGui::Button("Get All Weapons"))
 			{
