@@ -17,6 +17,46 @@ namespace big
 		if (g_player_service->get_selected()->is_valid())
 		{
 
+			if (ImGui::TreeNode("Misc")) {
+
+				components::button("Steal Outfit", [] {
+					Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+					if (ENTITY::GET_ENTITY_MODEL(PLAYER::PLAYER_PED_ID()) != ENTITY::GET_ENTITY_MODEL(target)) {
+						g_notification_service->push("Error", "Model mismatch, use steal identity instead.");
+						return;
+					}
+					for (int i = 0; i < 12; i++) {
+						PED::SET_PED_COMPONENT_VARIATION
+						(
+							PLAYER::PLAYER_PED_ID(),
+							i,
+							PED::GET_PED_DRAWABLE_VARIATION(target, i),
+							PED::GET_PED_TEXTURE_VARIATION(target, i),
+							PED::GET_PED_PALETTE_VARIATION(target, i)
+						);
+					}
+
+				});
+
+				ImGui::SameLine();
+
+				components::button("Steal Identity", [] {
+					Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+
+					int max_health = ENTITY::GET_ENTITY_MAX_HEALTH(PLAYER::PLAYER_PED_ID());
+					int current_health = ENTITY::GET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID());
+					int current_armor = PED::GET_PED_ARMOUR(PLAYER::PLAYER_PED_ID());
+
+					PLAYER::SET_PLAYER_MODEL(PLAYER::PLAYER_ID(), ENTITY::GET_ENTITY_MODEL(target));
+					PED::CLONE_PED_TO_TARGET(target, PLAYER::PLAYER_PED_ID());
+					ENTITY::SET_ENTITY_MAX_HEALTH(PLAYER::PLAYER_PED_ID(), max_health);
+					ENTITY::SET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID(), current_health, 0);
+					PED::SET_PED_ARMOUR(PLAYER::PLAYER_PED_ID(), current_armor);
+				});
+
+				ImGui::TreePop();
+			}
+
 			if (ImGui::TreeNode("Info")) {
 
 				ImGui::Text("Player ID: %d", g_player_service->get_selected()->id());
@@ -60,6 +100,8 @@ namespace big
 
 				ImGui::TreePop();
 			}
+
+
 
 			if (ImGui::TreeNode("Teleport")) {
 
