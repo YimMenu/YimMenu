@@ -89,7 +89,7 @@ namespace big
 			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 
 			std::string msg = fmt::format("Denied weapon removal from <C>{}</C>", source_player->get_name());
-			notify::above_map(msg);
+			g_notification_service->push_warning("Protection", msg);
 
 			return false;
 		}

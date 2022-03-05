@@ -3,7 +3,6 @@
 #include "natives.hpp"
 #include "gta\VehicleValues.h"
 #include "script.hpp"
-#include "gui/window/main/main_tabs.hpp"
 #include "LSCTab.h"
 //#include "helpers\NetworkHelper.h"
 

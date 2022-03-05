@@ -1,15 +1,29 @@
 #pragma once
+#include "CItemInfo.hpp"
 
-class CAmmoInfo
+enum class eAmmoSpecialType : int32_t
+{
+	None,
+	ArmorPiercing,
+	Explosive,
+	FMJ,
+	HollowPoint,
+	Incendiary,
+	Tracer
+};
+
+class CAmmoInfo : public CItemInfo
 {
 public:
-	char pad_0000[12]; //0x0000
-	uint32_t m_projectile_type; //0x000C
-	uint32_t m_ammo_name_hash; //0x0010
-	uint32_t m_ammo_model_hash; //0x0014
-	char pad_0018[16]; //0x0018
-	uint32_t m_max_ammo; //0x0028
-	char pad_002C[44]; //0x002C
+	int32_t m_ammo_max; //0x0020
+	int32_t m_ammo_max_50; //0x0024
+	int32_t m_ammo_max_100; //0x0028
+	int32_t m_ammo_max_mp; //0x002C
+	int32_t m_ammo_max_50_mp; //0x0030
+	int32_t m_ammo_max_100_mp; //0x0034
+	uint32_t m_ammo_flags; //0x0038
+	eAmmoSpecialType m_ammo_special_type; //0x003C
+	char pad_0040[24]; //0x0040
 	float m_missile_speed; //0x0058
 	char pad_005C[284]; //0x005C
 	uint32_t m_lock_on_time; //0x0178

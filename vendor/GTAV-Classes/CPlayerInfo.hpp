@@ -1,7 +1,7 @@
 #pragma once
 #include "netPlayerData.hpp"
 
-enum eGameState : int32_t
+enum class eGameState : int32_t
 {
 	Invalid = -1,
 	Playing,

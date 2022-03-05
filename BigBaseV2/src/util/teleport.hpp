@@ -178,7 +178,7 @@ namespace big::teleport
 	{
 		if (!to_blip((int)BlipIcons::Circle2, BlipColors::YellowMission) || !to_blip(BlipIcons::Circle, BlipColors::YellowMission))
 		{
-			notify::above_map("Failed to find objective position");
+			g_notification_service->push_warning("Teleport", "Failed to find objective position");
 
 			return false;
 		}

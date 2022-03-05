@@ -33,7 +33,7 @@ namespace big
 								srand((unsigned int)time(NULL));
 								MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(blip->x + 0.1f, blip->y, blip->z - 0.15f, blip->x - 0.1f, blip->y, blip->z + 1, 10000, TRUE, weaponList[rand() % (sizeof(weaponList) / 4)], PLAYER::PLAYER_PED_ID(), TRUE, TRUE, 1.0f);
 							}
-							notify::above_map("Killed Enemies");
+							g_notification_service->push_warning("Nuker", "Killed Enemies");
 						}
 					}
 					if ((blip->m_color == BlipColors::None && (blip->m_icon == EnemyHelicopter || blip->m_icon == PoliceHelicopter)) ||

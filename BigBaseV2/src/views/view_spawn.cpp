@@ -3,6 +3,7 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "util/vehicle.hpp"
+#include "persist/PersistCar.h"
 
 namespace big
 {
