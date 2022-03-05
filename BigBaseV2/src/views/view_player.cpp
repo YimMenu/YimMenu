@@ -101,8 +101,6 @@ namespace big
 				ImGui::TreePop();
 			}
 
-
-
 			if (ImGui::TreeNode("Teleport")) {
 
 				components::button("Teleport", [] {
