@@ -92,6 +92,15 @@ namespace big
 			
 			ImGui::TreePop();
 		}
+
+		if (ImGui::TreeNode("Aimbot"))
+		{
+			ImGui::Checkbox("ESP", &g->self.esp);
+			ImGui::Checkbox("AIM", &g->self.aim);
+
+
+			ImGui::TreePop();
+		}
 		
 		if (ImGui::TreeNode("Custom Weapons"))
 		{

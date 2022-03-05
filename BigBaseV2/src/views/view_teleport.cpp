@@ -14,15 +14,29 @@ namespace big
 			teleport::to_waypoint();
 			});
 
-		components::button("Objective", [] {
-			static const int blips[] = { 1, 57, 128, 129, 130, 143, 144, 145, 146, 271, 286, 287, 288 };
-			for (int i = 0; i < (sizeof(blips) / sizeof(*blips)); i++) {
-				if (teleport::to_blip(blips[i], 5)) {
-					break;
+		if (ImGui::Button("Objective"))
+		{
+			QUEUE_JOB_BEGIN_CLAUSE()
+			{
+				for (int i = 0; i <= 1000; i++)
+				{
+					Blip_t* blip = g_pointers->pBlipList->m_Blips[i].m_pBlip;
+					if (blip)
+					{
+						if ((blip->m_color == BlipColors::Mission && blip->m_icon == Circle) ||
+							(blip->m_color == BlipColors::YellowMission && blip->m_icon == Circle) ||
+							(blip->m_color == BlipColors::YellowMission2 && (blip->m_icon == Circle || blip->m_icon == BlipIcons::DollarSign)) ||
+							(blip->m_color == BlipColors::None && blip->m_icon == BlipIcons::RaceFlagWithArrow) ||
+							(blip->m_color == BlipColors::Green && blip->m_icon == Circle) ||
+							(blip->m_icon == BlipIcons::Crate))
+						{
+							PED::SET_PED_COORDS_KEEP_VEHICLE(PLAYER::PLAYER_PED_ID(), blip->x, blip->y, blip->z);
+							break; //During a race there's sometimes 2 yellow markers. We want the first one.
+						}
+					}
 				}
-
-			}
-			});
+			}QUEUE_JOB_END_CLAUSE
+		}
 
 		ImGui::Text("Vehicles:");
 
@@ -43,5 +57,28 @@ namespace big
 				ENTITY::GET_ENTITY_COORDS(veh, true)
 			);
 			});
+		static int selected_seat;
+		const char* const vehicle_seats[]
+		{
+			"Passenger ",
+			"Left Rear",
+			"RightRear",
+		};
+
+		ImGui::Combo("##vehicle_seat", &selected_seat, vehicle_seats, IM_ARRAYSIZE(vehicle_seats));
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("teleport to nearest vehicle"))
+		{
+			g_fiber_pool->queue_job([]
+				{
+					LOG(INFO) << selected_seat;
+					auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+					PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), VEHICLE::GET_CLOSEST_VEHICLE(pos.x, pos.y, pos.z, 1000, 0, 70), selected_seat);
+				});
+		}
+
+		ImGui::EndTabItem();
 	}
 }

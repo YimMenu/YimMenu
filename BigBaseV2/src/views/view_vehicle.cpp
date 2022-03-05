@@ -3,6 +3,7 @@
 #include "gui/handling/handling_tabs.hpp"
 #include "script.hpp"
 #include "util/vehicle.hpp"
+#include "features.hpp"
 
 namespace big
 {
@@ -13,6 +14,25 @@ namespace big
 			ImGui::Checkbox("Can Be Targeted", &g->vehicle.is_targetable);
 			ImGui::Checkbox("God Mode", &g->vehicle.god_mode);
 			ImGui::Checkbox("Horn Boost", &g->vehicle.horn_boost);
+			if (ImGui::Button("Gift vehicle"))
+			{
+				g_fiber_pool->queue_job([]
+					{
+						Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), true);
+						ENTITY::SET_ENTITY_AS_MISSION_ENTITY(vehicle, TRUE, TRUE);
+						NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle);
+
+						while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(vehicle))
+							script::get_current()->yield(10ms);
+
+						DECORATOR::DECOR_REGISTER("PV_Slot", 3);
+						DECORATOR::DECOR_REGISTER("Player_Vehicle", 3);
+						DECORATOR::DECOR_SET_BOOL(vehicle, "IgnoredByQuickSave", FALSE);
+						DECORATOR::DECOR_SET_INT(vehicle, "Player_Vehicle", NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(PLAYER::PLAYER_ID()));
+						VEHICLE::SET_VEHICLE_IS_STOLEN(vehicle, FALSE);
+						notify::above_map("Vehicle Gifted");
+					});
+			}
 
 			ImGui::EndGroup();
 			ImGui::SameLine();
@@ -98,6 +118,34 @@ namespace big
 			}
 
 			ImGui::Checkbox("Left Sided", &g->vehicle.speedo_meter.left_side);
+
+			static float max_vehicle_speed = 300.f;
+			if (ImGui::SliderFloat("VEHICLE MAX SPEED", &max_vehicle_speed, 0.f, 6000.f))
+			{
+				Player playerPed = PLAYER::PLAYER_PED_ID();
+				Vehicle vehicle = PED::GET_VEHICLE_PED_IS_USING(playerPed);
+
+				NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(vehicle);
+
+				while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(vehicle))
+					script::get_current()->yield(10ms);
+
+				ENTITY::SET_ENTITY_MAX_SPEED(vehicle, max_vehicle_speed);
+			}
+			ImGui::Separator();
+
+			if (ImGui::SliderFloat("Vehicle torque", &features::max_vehicle_torque, 0.f, 6000.f) ||
+				ImGui::Button("Apply"))
+			{
+
+				VEHICLE::_SET_VEHICLE_ENGINE_TORQUE_MULTIPLIER(PED::GET_VEHICLE_PED_IS_USING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PLAYER::PLAYER_ID())), features::max_vehicle_torque);
+
+			}
+			if (ImGui::SliderFloat("Vehicle Engine", &features::max_vehicle_engine, 0.f, 6000.f) ||
+				ImGui::Button("Apply"))
+			{
+				VEHICLE::_SET_VEHICLE_ENGINE_POWER_MULTIPLIER(PED::GET_VEHICLE_PED_IS_USING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PLAYER::PLAYER_ID())), features::max_vehicle_engine);
+			}
 
 			ImGui::TreePop();
 		}
