@@ -1,7 +1,6 @@
 #include "backend/looped/looped.hpp"
 #include "core/enums.hpp"
 #include "util/entity.hpp"
-#include "util/notify.hpp"
 
 namespace big
 {
@@ -30,7 +29,7 @@ namespace big
 							entity::cage_ped(entity);
 						}
 					}
-					else notify::above_map("No entity found.");
+					else g_notification_service->push_error("Weapons", "No entity found.");
 				}
 			}
 		}

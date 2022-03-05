@@ -2,7 +2,6 @@
 #include "core/enums.hpp"
 #include "util/entity.hpp"
 #include "util/math.hpp"
-#include "util/notify.hpp"
 
 namespace big
 {
@@ -28,7 +27,7 @@ namespace big
 					{
 						if (ENTITY::IS_ENTITY_A_PED(entity) && PED::IS_PED_A_PLAYER(entity))
 						{
-							notify::above_map("You can't delete player entities!");
+							g_notification_service->push_error("Weapons", "You can't delete player entities!");
 						}
 						else
 						{
@@ -38,7 +37,7 @@ namespace big
 
 							if (dist > 500)
 							{
-								notify::above_map("Entity is too far.");
+								g_notification_service->push_error("Weapons", "Entity is too far.");
 							}
 							else
 							{
@@ -46,11 +45,11 @@ namespace big
 								{
 									entity::delete_entity(entity);
 								}
-								else notify::above_map("~r~Failed to take control of entity.");
+								else g_notification_service->push_error("Weapons", "Failed to take control of entity.");
 							}
 						}
 					}
-					else notify::above_map("No entity found.");
+					else g_notification_service->push_error("Weapons", "No entity found.");
 				}
 			}
 		}

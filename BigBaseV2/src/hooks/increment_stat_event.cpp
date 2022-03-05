@@ -1,6 +1,5 @@
 #include "hooking.hpp"
 #include "natives.hpp"
-#include "util/notify.hpp"
 
 namespace big
 {
@@ -13,9 +12,9 @@ namespace big
 		case RAGE_JOAAT("MPPLY_EXPLOITS"):
 		case RAGE_JOAAT("MPPLY_TC_ANNOYINGME"):
 		case RAGE_JOAAT("MPPLY_TC_HATE"):
-			std::string report = fmt::format("~g~BLOCKED REPORT~s~\nFrom: <C>{}</C>", sender->get_name());
+			std::string report = fmt::format("From: {}", sender->get_name());
 
-			notify::above_map(report);
+			g_notification_service->push_warning("BLOCKED REPORT", report);
 
 			return true;
 		}
