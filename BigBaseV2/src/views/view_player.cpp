@@ -35,7 +35,6 @@ namespace big
 							PED::GET_PED_PALETTE_VARIATION(target, i)
 						);
 					}
-
 				});
 
 				ImGui::SameLine();
@@ -53,6 +52,14 @@ namespace big
 					ENTITY::SET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID(), current_health, 0);
 					PED::SET_PED_ARMOUR(PLAYER::PLAYER_PED_ID(), current_armor);
 				});
+
+				components::button("Clear Wanted Level", [] {
+					toxic::clear_wanted_player(g_player_service->get_selected()->id());
+				});
+
+				ImGui::SameLine();
+
+				ImGui::Checkbox("Never Wanted", &g->player.player_never_wanted);
 
 				ImGui::TreePop();
 			}
@@ -105,19 +112,19 @@ namespace big
 
 				components::button("Teleport", [] {
 					teleport::to_player(g_player_service->get_selected()->id());
-					});
+				});
 
 				ImGui::SameLine();
 
 				components::button("Bring", [] {
 					teleport::bring_player(g_player_service->get_selected()->id());
-					});
+				});
 
 				components::button("Teleport into Vehicle", [] {
 					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
 
 					teleport::into_vehicle(veh);
-					});
+				});
 
 				ImGui::TreePop();
 			}
@@ -129,7 +136,7 @@ namespace big
 						g_player_service->get_selected()->id(),
 						eExplosionType::PLANE, 1000, false, true, 0.f
 					);
-					});
+				});
 			}
 
 		}

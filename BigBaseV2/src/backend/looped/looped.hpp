@@ -10,6 +10,7 @@ namespace big
 		static void tunables_disable_phone();
 		static void tunables_no_idle_kick();
 
+		static void player_never_wanted();
 		static void player_specate();
 
 		static void protections_replay_interface();
