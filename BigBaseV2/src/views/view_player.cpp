@@ -18,6 +18,54 @@ namespace big
 		if (g_player_service->get_selected()->is_valid())
 		{
 
+			if (ImGui::TreeNode("Misc")) {
+
+				components::button("Steal Outfit", [] {
+					Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+					if (ENTITY::GET_ENTITY_MODEL(PLAYER::PLAYER_PED_ID()) != ENTITY::GET_ENTITY_MODEL(target)) {
+						g_notification_service->push("Error", "Model mismatch, use steal identity instead.");
+						return;
+					}
+					for (int i = 0; i < 12; i++) {
+						PED::SET_PED_COMPONENT_VARIATION
+						(
+							PLAYER::PLAYER_PED_ID(),
+							i,
+							PED::GET_PED_DRAWABLE_VARIATION(target, i),
+							PED::GET_PED_TEXTURE_VARIATION(target, i),
+							PED::GET_PED_PALETTE_VARIATION(target, i)
+						);
+					}
+					});
+
+				ImGui::SameLine();
+
+				components::button("Steal Identity", [] {
+					Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+
+					int max_health = ENTITY::GET_ENTITY_MAX_HEALTH(PLAYER::PLAYER_PED_ID());
+					int current_health = ENTITY::GET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID());
+					int current_armor = PED::GET_PED_ARMOUR(PLAYER::PLAYER_PED_ID());
+
+					PLAYER::SET_PLAYER_MODEL(PLAYER::PLAYER_ID(), ENTITY::GET_ENTITY_MODEL(target));
+					PED::CLONE_PED_TO_TARGET(target, PLAYER::PLAYER_PED_ID());
+					ENTITY::SET_ENTITY_MAX_HEALTH(PLAYER::PLAYER_PED_ID(), max_health);
+					ENTITY::SET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID(), current_health, 0);
+					PED::SET_PED_ARMOUR(PLAYER::PLAYER_PED_ID(), current_armor);
+					});
+
+				components::button("Clear Wanted Level", [] {
+					toxic::clear_wanted_player(g_player_service->get_selected()->id());
+					});
+
+				ImGui::SameLine();
+
+				ImGui::Checkbox("Never Wanted", &g->player.player_never_wanted);
+
+				ImGui::TreePop();
+			}
+
+
 			if (ImGui::TreeNode("Info")) {
 
 				ImGui::Text("Player ID: %d", g_player_service->get_selected()->id());
@@ -175,26 +223,6 @@ namespace big
 				(int)eRemoteEvent::NetworkBail, g_player_service->get_selected()->id(),*script_global(1893548).at(1).at(g_player_service->get_selected()->id() * 600).at(511).as<int*>() };
 						g_pointers->m_trigger_script_event(1, args, 3, 1 << g_player_service->get_selected()->id());
 					}QUEUE_JOB_END_CLAUSE
-				}
-				if (ImGui::Button("Steal Outfit"))
-				{
-					g_fiber_pool->queue_job([]
-						{
-							Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
-							Ped player_ped = PLAYER::PLAYER_PED_ID();
-							PED::SET_PED_COMPONENT_VARIATION(player_ped, 1, PED::GET_PED_DRAWABLE_VARIATION(ped, 1), PED::GET_PED_TEXTURE_VARIATION(ped, 1), 0);
-							//PED::SET_PED_COMPONENT_VARIATION(player_ped, 3, PED::GET_PED_DRAWABLE_VARIATION(ped, 3), 1, 0);
-							PED::SET_PED_COMPONENT_VARIATION(player_ped, 4, PED::GET_PED_DRAWABLE_VARIATION(ped, 4), PED::GET_PED_TEXTURE_VARIATION(ped, 4), 0);
-							//PED::SET_PED_COMPONENT_VARIATION(player_ped, 5, PED::GET_PED_DRAWABLE_VARIATION(ped, 5), 1, 0);
-							PED::SET_PED_COMPONENT_VARIATION(player_ped, 6, PED::GET_PED_DRAWABLE_VARIATION(ped, 6), PED::GET_PED_TEXTURE_VARIATION(ped, 6), 0);
-							PED::SET_PED_COMPONENT_VARIATION(player_ped, 7, PED::GET_PED_DRAWABLE_VARIATION(ped, 7), PED::GET_PED_TEXTURE_VARIATION(ped, 7), 0);
-							PED::SET_PED_COMPONENT_VARIATION(player_ped, 8, PED::GET_PED_DRAWABLE_VARIATION(ped, 8), PED::GET_PED_TEXTURE_VARIATION(ped, 8), 0);
-							PED::SET_PED_COMPONENT_VARIATION(player_ped, 9, PED::GET_PED_DRAWABLE_VARIATION(ped, 9), PED::GET_PED_TEXTURE_VARIATION(ped, 9), 0);
-							PED::SET_PED_COMPONENT_VARIATION(player_ped, 10, PED::GET_PED_DRAWABLE_VARIATION(ped, 10), PED::GET_PED_TEXTURE_VARIATION(ped, 10), 0);
-							PED::SET_PED_COMPONENT_VARIATION(player_ped, 11, PED::GET_PED_DRAWABLE_VARIATION(ped, 11), PED::GET_PED_TEXTURE_VARIATION(ped, 11), 0);
-							PED::SET_PED_PROP_INDEX(player_ped, 0, PED::GET_PED_PROP_INDEX(ped, 0), PED::GET_PED_PROP_TEXTURE_INDEX(ped, 0), true);
-							PED::SET_PED_PROP_INDEX(player_ped, 1, PED::GET_PED_PROP_INDEX(ped, 1), PED::GET_PED_PROP_TEXTURE_INDEX(ped, 1), true);
-						});
 				}
 				ImGui::TreePop();
 			}

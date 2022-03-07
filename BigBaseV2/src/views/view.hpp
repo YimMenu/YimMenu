@@ -17,6 +17,7 @@ namespace big
 			SESSION,
 			SETTINGS,
 			SPAWN,
+			LSC,
 			SPOOFING,
 			TELEPORT,
 			VEHICLE,
@@ -37,6 +38,7 @@ namespace big
 		static void notifications();
 		static void self();
 		static void session();
+		static void lsc();
 		static void settings();
 		static void spawn();
 		static void spoofing();
@@ -57,6 +59,7 @@ namespace big
 			{ tabs::SPAWN, "Spawn", view::spawn },
 			{ tabs::TELEPORT, "Teleport", view::teleport },
 			{ tabs::VEHICLE, "Vehicle", view::vehicle },
+			{ tabs::LSC, "Los Santos Customs", view::lsc },
 			{ tabs::WEAPONS, "Weapons", view::weapons },
 			{ tabs::SPOOFING, "Spoofing", view::spoofing },
 			{ tabs::SESSION, "Session", view::session },
