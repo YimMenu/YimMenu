@@ -80,6 +80,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_hooking->enable();
 				LOG(INFO) << "Hooking enabled.";
 
+				g_running = true;
+
 				while (g_running)
 					std::this_thread::sleep_for(500ms);
 

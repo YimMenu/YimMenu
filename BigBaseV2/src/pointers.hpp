@@ -50,6 +50,8 @@ namespace big
 
 		FriendRegistry* m_friend_registry{};
 
+		functions::get_screen_coords_for_world_coords* m_get_screen_coords_for_world_coords{};
+
 		functions::get_net_game_player* m_get_net_game_player{};
 
 		PVOID m_gta_thread_start{};
@@ -60,6 +62,8 @@ namespace big
 
 		PVOID m_player_has_joined{};
 		PVOID m_player_has_left{};
+
+		functions::get_gameplay_cam_coords* m_get_gamplay_cam_coords;
 
 		functions::increment_stat_event* m_increment_stat_event{};
 
