@@ -148,6 +148,18 @@ namespace big
 			int y;
 		};
 
+		struct esp
+		{
+			float render_distance = 600.f;
+			bool tracer = true;
+			bool box = true;
+			bool health = true;
+			bool god = true;
+			bool distance = true;
+			bool name = true;
+			ImU32 color = 3359983061;
+		};
+
 	public:
 		int friend_count = 0;
 		int player_count = 0;
@@ -162,6 +174,7 @@ namespace big
 		vehicle vehicle{};
 		weapons weapons{};
 		window window{};
+		esp esp{};
 
 		menu_settings(file save_file)
 			: m_save_file(std::move(save_file))
@@ -248,6 +261,15 @@ namespace big
 			this->window.log = j["window"]["log"];
 			this->window.main = j["window"]["main"];
 			this->window.users = j["window"]["users"];
+
+			this->esp.color = j["esp"]["color"];
+			this->esp.box = j["esp"]["box"];
+			this->esp.distance = j["esp"]["distance"];
+			this->esp.god = j["esp"]["god"];
+			this->esp.health = j["esp"]["health"];
+			this->esp.name = j["esp"]["name"];
+			this->esp.render_distance = j["esp"]["render_distance"];
+			this->esp.tracer = j["esp"]["tracer"];
 		}
 
 		nlohmann::json to_json()
@@ -370,6 +392,18 @@ namespace big
 						{ "log", this->window.log },
 						{ "main", this->window.main },
 						{ "users", this->window.users }
+					}
+				},
+				{
+					"esp", {
+						{ "render_distance", this->esp.render_distance },
+						{ "color", this->esp.color },
+						{ "distance", this->esp.distance },
+						{ "box", this->esp.box },
+						{ "god", this->esp.god },
+						{ "health", this->esp.health },
+						{ "name", this->esp.name },
+						{ "tracer", this->esp.tracer }
 					}
 				}
 			};

@@ -55,21 +55,29 @@ namespace big
 
 					const float esp_side_x = esp_x + (67.5f * multplr);
 
+					ImVec2 name_pos = { esp_side_x, esp_y - (175.f * multplr) };
+
+					if (g->esp.distance)
+						name_pos = { esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 25.f };
+
 					float health_perc = (plyr->get_ped()->m_health - 100) / (plyr->get_ped()->m_maxhealth - 100);
 					health_perc = health_perc < 0.f ? 0.f : health_perc;
 						
-					if (distance > 150.f)
-						draw_list->AddLine({ (float)g->window.x * 0.5f, (float)g->window.y }, { esp_x, esp_y }, ImColor(0.69f, 0.29f, 0.29f, 1.00f));
+					if (distance > 150.f && g->esp.tracer)
+						draw_list->AddLine({ (float)g->window.x * 0.5f, (float)g->window.y }, { esp_x, esp_y }, g->esp.color);
 
-					if (distance < 200.f)
-						draw_list->AddRect({ esp_x - (62.5f * multplr), esp_y - (175.f * multplr) }, { esp_x - (62.5f * multplr) + (125.f * multplr), esp_y - (175.f * multplr) + (350.f * multplr) }, ImColor(0.69f, 0.29f, 0.29f, 1.00f));
+					if (distance < 200.f && g->esp.box)
+						draw_list->AddRect({ esp_x - (62.5f * multplr), esp_y - (175.f * multplr) }, { esp_x - (62.5f * multplr) + (125.f * multplr), esp_y - (175.f * multplr) + (350.f * multplr) }, g->esp.color);
 
-					draw_list->AddText({ esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 25.f }, ImColor(0.69f, 0.29f, 0.29f, 1.00f), plyr->get_name());
-					draw_list->AddText({ esp_side_x, esp_y - (175.f * multplr) }, ImColor(0.69f, 0.29f, 0.29f, 1.00f), fmt::format("{}m", (int)distance).c_str());
+					if (g->esp.name)
+						draw_list->AddText(name_pos, g->esp.color, plyr->get_name());
 
-					if (god)
+					if (g->esp.distance)
+						draw_list->AddText({ esp_side_x, esp_y - (175.f * multplr) }, g->esp.color, fmt::format("{}m", (int)distance).c_str());
+
+					if (god && g->esp.god)
 						draw_list->AddText({ esp_side_x, esp_y - (175.f * multplr) + 20.f }, health_red, "GOD");
-					else
+					else if (g->esp.health)
 					{
 						draw_list->AddLine({ esp_side_x, esp_y - (175.f * multplr) + 25.f }, { esp_side_x + (100.f), esp_y - (175.f * multplr) + 25.f }, health_perc == 0.f ? death_bg : health_perc < 0.25f ? health_red_bg : health_perc < 0.5f ? health_yellow_bg : health_green_bg, 4);
 						draw_list->AddLine({ esp_side_x, esp_y - (175.f * multplr) + 25.f }, { esp_side_x + (100.f * health_perc), esp_y - (175.f * multplr) + 25.f }, health_perc < 0.25f ? health_red : health_perc < 0.65f ? health_yellow : health_green, 4);
