@@ -7,6 +7,8 @@ namespace big
 	public:
 		static void api_login_session();
 
+		static void hud_transition_state();
+
 		static void tunables_disable_phone();
 		static void tunables_no_idle_kick();
 
