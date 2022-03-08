@@ -89,10 +89,29 @@ namespace big
 						g_player_service->get_selected()->id(),
 						eExplosionType::PLANE, 1000, false, true, 0.f
 					);
-					});
-			}
+				});
 
+				components::button("Taze", [] {
+					Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+					int currentAttempt = 0;
+					int maxAttempts = 20;
+					while (!ENTITY::IS_ENTITY_DEAD(target, false))
+					{
+						if (currentAttempt >= maxAttempts)
+						{
+							break;
+						}
+						else
+						{
+							Vector3 destination = PED::GET_PED_BONE_COORDS(target, 0 /*SKEL_ROOT*/, 0.0f, 0.0f, 0.0f);
+							Vector3 origin = PED::GET_PED_BONE_COORDS(target, 57005 /*SKEL_R_Hand*/, 0.0f, 0.0f, 0.2f);
+							Hash tazerHash = MISC::GET_HASH_KEY((char*)"WEAPON_STUNGUN");
+							MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 1, 0, tazerHash, PLAYER::PLAYER_PED_ID(), false, false, 1);
+							currentAttempt++;
+						}
+					}
+				});
+			}
 		}
-		
 	}
 }
