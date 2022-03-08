@@ -151,7 +151,9 @@ namespace big
 		struct esp
 		{
 			bool enabled = true;
-			float render_distance = 600.f;
+			float global_render_distance[2] = {0.f, 600.f};
+			float tracer_render_distance[2] = {200.f, 600.f};
+			float box_render_distance[2] = {0.f, 150.f};
 			bool tracer = true;
 			bool box = true;
 			bool health = true;
@@ -270,7 +272,12 @@ namespace big
 			this->esp.god = j["esp"]["god"];
 			this->esp.health = j["esp"]["health"];
 			this->esp.name = j["esp"]["name"];
-			this->esp.render_distance = j["esp"]["render_distance"];
+			for (int i = 0; i < 2; i++)
+				this->esp.global_render_distance[i] = j["esp"]["global_render_distance"].at(i);
+			for (int i = 0; i < 2; i++)
+				this->esp.tracer_render_distance[i] = j["esp"]["tracer_render_distance"].at(i);
+			for (int i = 0; i < 2; i++)
+				this->esp.box_render_distance[i] = j["esp"]["box_render_distance"].at(i);
 			this->esp.tracer = j["esp"]["tracer"];
 		}
 
@@ -399,7 +406,18 @@ namespace big
 				{
 					"esp", {
 						{ "enabled", this->esp.enabled },
-						{ "render_distance", this->esp.render_distance },
+						{ "global_render_distance", nlohmann::json::array({
+						this->esp.global_render_distance[0],
+						this->esp.global_render_distance[1] })
+						},
+						{ "tracer_render_distance", nlohmann::json::array({
+						this->esp.tracer_render_distance[0],
+						this->esp.tracer_render_distance[1] })
+						},
+						{ "box_render_distance", nlohmann::json::array({
+						this->esp.box_render_distance[0],
+						this->esp.box_render_distance[1] })
+						},
 						{ "color", this->esp.color },
 						{ "distance", this->esp.distance },
 						{ "box", this->esp.box },

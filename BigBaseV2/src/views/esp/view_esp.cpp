@@ -44,9 +44,9 @@ namespace big
 				float screen_y;
 
 				const float distance = calculate_distance(player_pos);
-				const float multplr = distance > 600.f ? -1.f : 6.17757f / distance;
+				const float multplr = distance > g->esp.global_render_distance[1] ? -1.f : 6.17757f / distance;
 
-				if (multplr == -1.f) continue;
+				if (multplr == -1.f || g->esp.global_render_distance[0] > distance) continue;
 
 				bool god = misc::has_bit_set((int*)&plyr->get_ped()->m_damage_bits, 8);
 
@@ -65,10 +65,10 @@ namespace big
 					float health_perc = (plyr->get_ped()->m_health - 100) / (plyr->get_ped()->m_maxhealth - 100);
 					health_perc = health_perc < 0.f ? 0.f : health_perc;
 						
-					if (distance > 150.f && g->esp.tracer)
+					if (distance < g->esp.tracer_render_distance[1] && distance > g->esp.tracer_render_distance[0] && g->esp.tracer)
 						draw_list->AddLine({ (float)g->window.x * 0.5f, (float)g->window.y }, { esp_x, esp_y }, g->esp.color);
 
-					if (distance < 200.f && g->esp.box)
+					if (distance < g->esp.box_render_distance[1] && distance > g->esp.box_render_distance[0] && g->esp.box)
 						draw_list->AddRect({ esp_x - (62.5f * multplr), esp_y - (175.f * multplr) }, { esp_x - (62.5f * multplr) + (125.f * multplr), esp_y - (175.f * multplr) + (350.f * multplr) }, g->esp.color);
 
 					if (g->esp.name)
