@@ -20,6 +20,7 @@ namespace big
 
 		if (ImGui::TreeNode("ESP Settings"))
 		{
+			ImGui::Checkbox("ESP Enabled", &g->esp.enabled);
 			ImGui::Checkbox("Tracer", &g->esp.tracer);
 			ImGui::Checkbox("Box ESP", &g->esp.box);
 			ImGui::Checkbox("Show Player Distance", &g->esp.distance);

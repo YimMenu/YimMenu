@@ -150,6 +150,7 @@ namespace big
 
 		struct esp
 		{
+			bool enabled = true;
 			float render_distance = 600.f;
 			bool tracer = true;
 			bool box = true;
@@ -262,6 +263,7 @@ namespace big
 			this->window.main = j["window"]["main"];
 			this->window.users = j["window"]["users"];
 
+			this->esp.enabled = j["esp"]["enabled"];
 			this->esp.color = j["esp"]["color"];
 			this->esp.box = j["esp"]["box"];
 			this->esp.distance = j["esp"]["distance"];
@@ -396,6 +398,7 @@ namespace big
 				},
 				{
 					"esp", {
+						{ "enabled", this->esp.enabled },
 						{ "render_distance", this->esp.render_distance },
 						{ "color", this->esp.color },
 						{ "distance", this->esp.distance },
