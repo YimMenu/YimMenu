@@ -44,7 +44,7 @@ namespace big::toxic
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, -1);
 	}
-
+  
 	inline void taze_player(const Player player)
 	{
 		const Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
@@ -57,5 +57,17 @@ namespace big::toxic
 
 			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 1, 0, RAGE_JOAAT("WEAPON_STUNGUN"), PLAYER::PLAYER_PED_ID(), false, true, 1);
 		}
+	}
+
+	inline void clear_wanted_player(Player target)
+	{
+		constexpr size_t arg_count = 3;
+		int64_t args[arg_count] = {
+			(int)eRemoteEvent::ClearWantedLevel,
+			0,
+			*script_global(1893548).at(target, 600).at(511).as<int*>()
+		};
+
+		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
 	}
 }

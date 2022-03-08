@@ -3,6 +3,7 @@
 #include "services/player_service.hpp"
 #include "gta_util.hpp"
 #include "util/misc.hpp"
+#include "util/ped.hpp"
 #include "util/teleport.hpp"
 
 namespace big
@@ -13,9 +14,40 @@ namespace big
 		
 		ImGui::Text(title.c_str());
 		ImGui::Checkbox("Spectate", &g->player.spectating);
+
+		if (ImGui::TreeNode("Misc")) {
+
+			components::button("Clear Wanted Level", [] {
+				toxic::clear_wanted_player(g_player_service->get_selected()->id());
+				});
+
+			ImGui::SameLine();
+
+			ImGui::Checkbox("Never Wanted", &g->player.player_never_wanted);
+
+			ImGui::TreePop();
+		}
 		
 		if (g_player_service->get_selected()->is_valid())
 		{
+
+			if (ImGui::TreeNode("Misc")) {
+				components::button("Steal Outfit", [] {
+					ped::steal_outfit(
+						PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
+					);
+				});
+
+				ImGui::SameLine();
+
+				components::button("Steal Identity", [] {
+					ped::steal_identity(
+						PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
+					);
+				});
+
+				ImGui::TreePop();
+			}
 
 			if (ImGui::TreeNode("Info")) {
 
