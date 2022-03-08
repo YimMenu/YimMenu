@@ -14,6 +14,19 @@ namespace big
 		
 		ImGui::Text(title.c_str());
 		ImGui::Checkbox("Spectate", &g->player.spectating);
+
+		if (ImGui::TreeNode("Misc")) {
+
+			components::button("Clear Wanted Level", [] {
+				toxic::clear_wanted_player(g_player_service->get_selected()->id());
+				});
+
+			ImGui::SameLine();
+
+			ImGui::Checkbox("Never Wanted", &g->player.player_never_wanted);
+
+			ImGui::TreePop();
+		}
 		
 		if (g_player_service->get_selected()->is_valid())
 		{
