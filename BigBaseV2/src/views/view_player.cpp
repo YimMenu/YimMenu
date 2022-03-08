@@ -121,10 +121,12 @@ namespace big
 						g_player_service->get_selected()->id(),
 						eExplosionType::PLANE, 1000, false, true, 0.f
 					);
-					});
-			}
+				});
 
+				components::button("Taze", [] {
+					toxic::taze_player(g_player_service->get_selected()->id());
+				});
+			}
 		}
-		
 	}
 }
