@@ -44,4 +44,16 @@ namespace big::toxic
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, -1);
 	}
+
+	inline void clear_wanted_player(Player target)
+	{
+		constexpr size_t arg_count = 3;
+		int64_t args[arg_count] = {
+			(int)eRemoteEvent::ClearWantedLevel,
+			0,
+			*script_global(1893548).at(target, 600).at(511).as<int*>()
+		};
+
+		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
+	}
 }
