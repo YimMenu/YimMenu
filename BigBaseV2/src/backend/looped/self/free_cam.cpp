@@ -39,6 +39,7 @@ namespace big
 			CAM::SET_CAM_ACTIVE(cCam, false);
 			CAM::RENDER_SCRIPT_CAMS(false, true, 500, true, true, 0);
 			CAM::DESTROY_CAM(cCam, false);
+			STREAMING::SET_FOCUS_ENTITY(PLAYER::PLAYER_PED_ID());
 
 			bLastFreeCam = false;
 
@@ -86,6 +87,7 @@ namespace big
 		vecPosition.z += vecChange.z * mult;
 
 		CAM::SET_CAM_COORD(cCam, vecPosition.x, vecPosition.y, vecPosition.z);
+		STREAMING::SET_FOCUS_POS_AND_VEL(vecPosition.x, vecPosition.y, vecPosition.z, 0.f, 0.f, 0.f);
 
 		vecRot = CAM::GET_GAMEPLAY_CAM_ROT(2);
 		CAM::SET_CAM_ROT(cCam, vecRot.x, vecRot.y, vecRot.z, 2);
