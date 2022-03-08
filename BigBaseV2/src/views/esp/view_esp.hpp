@@ -6,7 +6,7 @@ namespace big
 
 	class esp
 	{
-		static float calculate_size(rage::fvector3);
+		static float calculate_distance(rage::fvector3);
 	public:
 		static void draw();
 	};
