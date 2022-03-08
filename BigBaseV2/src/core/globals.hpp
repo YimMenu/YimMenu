@@ -149,6 +149,21 @@ namespace big
 			int y;
 		};
 
+		struct esp
+		{
+			bool enabled = true;
+			float global_render_distance[2] = {0.f, 600.f};
+			float tracer_render_distance[2] = {200.f, 600.f};
+			float box_render_distance[2] = {0.f, 150.f};
+			bool tracer = true;
+			bool box = true;
+			bool health = true;
+			bool god = true;
+			bool distance = true;
+			bool name = true;
+			ImU32 color = 3359983061;
+		};
+
 	public:
 		int friend_count = 0;
 		int player_count = 0;
@@ -163,6 +178,7 @@ namespace big
 		vehicle vehicle{};
 		weapons weapons{};
 		window window{};
+		esp esp{};
 
 		menu_settings(file save_file)
 			: m_save_file(std::move(save_file))
@@ -249,6 +265,21 @@ namespace big
 			this->window.log = j["window"]["log"];
 			this->window.main = j["window"]["main"];
 			this->window.users = j["window"]["users"];
+
+			this->esp.enabled = j["esp"]["enabled"];
+			this->esp.color = j["esp"]["color"];
+			this->esp.box = j["esp"]["box"];
+			this->esp.distance = j["esp"]["distance"];
+			this->esp.god = j["esp"]["god"];
+			this->esp.health = j["esp"]["health"];
+			this->esp.name = j["esp"]["name"];
+			for (int i = 0; i < 2; i++)
+				this->esp.global_render_distance[i] = j["esp"]["global_render_distance"].at(i);
+			for (int i = 0; i < 2; i++)
+				this->esp.tracer_render_distance[i] = j["esp"]["tracer_render_distance"].at(i);
+			for (int i = 0; i < 2; i++)
+				this->esp.box_render_distance[i] = j["esp"]["box_render_distance"].at(i);
+			this->esp.tracer = j["esp"]["tracer"];
 		}
 
 		nlohmann::json to_json()
@@ -371,6 +402,30 @@ namespace big
 						{ "log", this->window.log },
 						{ "main", this->window.main },
 						{ "users", this->window.users }
+					}
+				},
+				{
+					"esp", {
+						{ "enabled", this->esp.enabled },
+						{ "global_render_distance", nlohmann::json::array({
+						this->esp.global_render_distance[0],
+						this->esp.global_render_distance[1] })
+						},
+						{ "tracer_render_distance", nlohmann::json::array({
+						this->esp.tracer_render_distance[0],
+						this->esp.tracer_render_distance[1] })
+						},
+						{ "box_render_distance", nlohmann::json::array({
+						this->esp.box_render_distance[0],
+						this->esp.box_render_distance[1] })
+						},
+						{ "color", this->esp.color },
+						{ "distance", this->esp.distance },
+						{ "box", this->esp.box },
+						{ "god", this->esp.god },
+						{ "health", this->esp.health },
+						{ "name", this->esp.name },
+						{ "tracer", this->esp.tracer }
 					}
 				}
 			};

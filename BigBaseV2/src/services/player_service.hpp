@@ -15,6 +15,9 @@ namespace big
 		player(CNetGamePlayer* net_game_player);
 		virtual ~player() = default;
 
+		float screen_position_x = -1.f;
+		float screen_position_y = -1.f;
+
 		CAutomobile* get_current_vehicle();
 		const char* get_name();
 		rage::netPlayerData* get_net_data();
