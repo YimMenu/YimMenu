@@ -85,9 +85,7 @@ namespace big
 		if (last_state == eTransitionState::TRANSITION_STATE_MAX)
 			last_state = state;
 
-		if (state == eTransitionState::TRANSITION_STATE_EMPTY || state > eTransitionState::TRANSITION_STATE_DLC_INTRO_BINK)
-			return;
-		if (last_state == state)
+		if (last_state == state || state == eTransitionState::TRANSITION_STATE_EMPTY || state > eTransitionState::TRANSITION_STATE_DLC_INTRO_BINK)
 			return;
 
 		if (HUD::BUSYSPINNER_IS_ON())
