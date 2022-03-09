@@ -38,11 +38,19 @@ namespace big
 				ImGui::Checkbox("Show Player Godmode", &g->esp.god);
 				ImGui::Checkbox("Show Player Health", &g->esp.health);
 				ImGui::Checkbox("Show Player Name", &g->esp.name);
-				static ImVec4 col = ImVec4(114.0f / 255.0f, 144.0f / 255.0f, 154.0f / 255.0f, 200.0f / 255.0f);
-				if (ImGui::ColorPicker4("##picker", (float*)&col, ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoSmallPreview))
+				
+				static ImVec4 col_esp = ImGui::ColorConvertU32ToFloat4(g->esp.color);
+				static ImVec4 col_friend = ImGui::ColorConvertU32ToFloat4(g->esp.friend_color);
+				if (ImGui::ColorEdit4("ESP Color##esp_picker", (float*)&col_esp, ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoSidePreview))
 				{
-					g->esp.color = ImGui::ColorConvertFloat4ToU32(col);
+					g->esp.color = ImGui::ColorConvertFloat4ToU32(col_esp);
 				}
+				if (ImGui::ColorEdit4("Friend ESP Color##friend_picker", (float*)&col_friend, ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoSidePreview))
+				{
+					g->esp.friend_color = ImGui::ColorConvertFloat4ToU32(col_friend);
+				}
+
+
 			}
 			
 			ImGui::TreePop();

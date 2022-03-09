@@ -57,6 +57,11 @@ namespace big
 
 					ImVec2 name_pos = { esp_side_x, esp_y - (175.f * multplr) };
 
+					ImU32 esp_color = g->esp.color;
+
+					if (plyr->is_friend())
+						esp_color = g->esp.friend_color;
+
 					if (g->esp.distance)
 						name_pos = { esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 25.f };
 
@@ -64,16 +69,16 @@ namespace big
 					health_perc = health_perc < 0.f ? 0.f : health_perc;
 						
 					if (distance < g->esp.tracer_render_distance[1] && distance > g->esp.tracer_render_distance[0] && g->esp.tracer)
-						draw_list->AddLine({ (float)g->window.x * 0.5f, (float)g->window.y }, { esp_x, esp_y }, g->esp.color);
+						draw_list->AddLine({ (float)g->window.x * 0.5f, (float)g->window.y }, { esp_x, esp_y }, esp_color);
 
 					if (distance < g->esp.box_render_distance[1] && distance > g->esp.box_render_distance[0] && g->esp.box)
-						draw_list->AddRect({ esp_x - (62.5f * multplr), esp_y - (175.f * multplr) }, { esp_x - (62.5f * multplr) + (125.f * multplr), esp_y - (175.f * multplr) + (350.f * multplr) }, g->esp.color);
+						draw_list->AddRect({ esp_x - (62.5f * multplr), esp_y - (175.f * multplr) }, { esp_x - (62.5f * multplr) + (125.f * multplr), esp_y - (175.f * multplr) + (350.f * multplr) }, esp_color);
 
 					if (g->esp.name)
-						draw_list->AddText(name_pos, g->esp.color, plyr->get_name());
+						draw_list->AddText(name_pos, esp_color, plyr->get_name());
 
 					if (g->esp.distance)
-						draw_list->AddText({ esp_side_x, esp_y - (175.f * multplr) }, g->esp.color, fmt::format("{}m", (int)distance).c_str());
+						draw_list->AddText({ esp_side_x, esp_y - (175.f * multplr) }, esp_color, fmt::format("{}m", (int)distance).c_str());
 
 					if (god && g->esp.god)
 						draw_list->AddText({ esp_side_x, esp_y - (175.f * multplr) + 20.f }, health_red, "GOD");

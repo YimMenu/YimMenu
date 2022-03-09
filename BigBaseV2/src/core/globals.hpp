@@ -162,6 +162,7 @@ namespace big
 			bool distance = true;
 			bool name = true;
 			ImU32 color = 3359983061;
+			ImU32 friend_color = 3359983061;
 		};
 
 	public:
@@ -268,6 +269,7 @@ namespace big
 
 			this->esp.enabled = j["esp"]["enabled"];
 			this->esp.color = j["esp"]["color"];
+			this->esp.friend_color = j["esp"]["friend_color"];
 			this->esp.box = j["esp"]["box"];
 			this->esp.distance = j["esp"]["distance"];
 			this->esp.god = j["esp"]["god"];
@@ -420,6 +422,7 @@ namespace big
 						this->esp.box_render_distance[1] })
 						},
 						{ "color", this->esp.color },
+						{ "friend_color", this->esp.friend_color },
 						{ "distance", this->esp.distance },
 						{ "box", this->esp.box },
 						{ "god", this->esp.god },
