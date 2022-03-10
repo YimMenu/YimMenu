@@ -4,6 +4,7 @@
 #include "util/math.hpp"
 #include "gta_util.hpp"
 #include "util/misc.hpp"
+#include "services/context_menu_service.hpp"
 
 namespace big
 {

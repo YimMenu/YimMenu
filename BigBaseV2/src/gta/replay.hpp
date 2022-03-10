@@ -83,6 +83,15 @@ namespace rage
 		class CPed* m_local_ped; //0x0008
 	}; //Size: 0x0010
 
+	//CUSTOM CLASS TO IMPROVE R* SHIT CLASS STRUCTURE
+	class CEntityHandle {
+	public:
+		class fwEntity* m_entity_ptr; //0x0000
+		int32_t m_handle; //0x0008
+		char pad_000C[4]; //0x000C
+	}; //Size: 0x0010
+	static_assert(sizeof(CEntityHandle) == 0x10, "CEntityHandle is not properly sized");
+
 	class CObjectHandle
 	{
 	public:
@@ -127,7 +136,8 @@ namespace rage
 	class CPedList
 	{
 	public:
-		class CPedHandle m_peds[256]; //0x0000
+		//CHANGED FROM CPedHandle
+		class CEntityHandle m_peds[256]; //0x0000 
 	}; //Size: 0x1000
 
 	class CPedInterface
@@ -139,10 +149,10 @@ namespace rage
 		char pad_010C[4]; //0x010C
 		int32_t m_cur_peds; //0x0110
 
-		CPed* get_ped(const int& index)
+		fwEntity* get_ped(const int& index)
 		{
 			if (index < m_max_peds)
-				return m_ped_list->m_peds[index].m_ped;
+				return m_ped_list->m_peds[index].m_entity_ptr;
 			return nullptr;
 		}
 	}; //Size: 0x0114
@@ -159,7 +169,8 @@ namespace rage
 	class CVehicleList
 	{
 	public:
-		class CVehicleHandle m_vehicles[300]; //0x0000
+		//CHANGED FROM CVehicleHandle
+		class CEntityHandle m_vehicles[300]; //0x0000
 	}; //Size: 0x12C0
 
 	class CVehicleInterface
@@ -171,10 +182,10 @@ namespace rage
 		char pad_018C[4]; //0x018C
 		int32_t m_cur_vehicles; //0x0190
 
-		CVehicle* get_vehicle(const int& index)
+		fwEntity* get_vehicle(const int& index)
 		{
 			if (index < m_max_vehicles)
-				return m_vehicle_list->m_vehicles[index].m_vehicle;
+				return m_vehicle_list->m_vehicles[index].m_entity_ptr;
 			return nullptr;
 		}
 	}; //Size: 0x0194
