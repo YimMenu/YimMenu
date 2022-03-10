@@ -9,11 +9,19 @@ namespace big
 	{
 		bool bInvisibility = g->self.invisibility;
 
-		if (bInvisibility || (!bInvisibility && bInvisibility != bLastInvisibility))
+		if (NETWORK::NETWORK_IS_SESSION_STARTED() || !g->self.local_visibility)
 		{
-			ENTITY::SET_ENTITY_VISIBLE(PLAYER::PLAYER_PED_ID(), !g->self.invisibility, 0);
+			if (bInvisibility || (!bInvisibility && bInvisibility != bLastInvisibility))
+			{
+				ENTITY::SET_ENTITY_VISIBLE(PLAYER::PLAYER_PED_ID(), !g->self.invisibility, 0);
 
-			bLastInvisibility = g->self.invisibility;
+				bLastInvisibility = g->self.invisibility;
+			}
+		}
+
+		if (g->self.local_visibility)
+		{
+			NETWORK::SET_ENTITY_LOCALLY_VISIBLE(PLAYER::PLAYER_PED_ID());
 		}
 	}
 }
