@@ -12,13 +12,25 @@ namespace big
 		nlohmann::json default_options;
 		nlohmann::json options;
 
-		struct debug {
+		struct debug
+		{
 			bool script_event_logging = false;
 		};
 
-		struct tunables {
-			bool disable_phone = false;
-			bool no_idle_kick = false;
+		struct esp
+		{
+			bool enabled = true;
+			float global_render_distance[2] = { 0.f, 600.f };
+			float tracer_render_distance[2] = { 200.f, 600.f };
+			float box_render_distance[2] = { 0.f, 150.f };
+			bool tracer = true;
+			bool box = true;
+			bool health = true;
+			bool god = true;
+			bool distance = true;
+			bool name = true;
+			ImU32 color = 3359983061;
+			ImU32 friend_color = 3359983061;
 		};
 
 		struct player {
@@ -102,6 +114,11 @@ namespace big
 			uint64_t rockstar_id = 0;
 		};
 
+		struct tunables {
+			bool disable_phone = false;
+			bool no_idle_kick = false;
+		};
+
 		struct vehicle {
 			struct speedo_meter {
 				SpeedoMeter type = SpeedoMeter::DISABLED;
@@ -147,22 +164,6 @@ namespace big
 
 			int x;
 			int y;
-		};
-
-		struct esp
-		{
-			bool enabled = true;
-			float global_render_distance[2] = {0.f, 600.f};
-			float tracer_render_distance[2] = {200.f, 600.f};
-			float box_render_distance[2] = {0.f, 150.f};
-			bool tracer = true;
-			bool box = true;
-			bool health = true;
-			bool god = true;
-			bool distance = true;
-			bool name = true;
-			ImU32 color = 3359983061;
-			ImU32 friend_color = 3359983061;
 		};
 
 	public:

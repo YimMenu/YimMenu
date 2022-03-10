@@ -4,6 +4,7 @@
 #include "util/math.hpp"
 #include "gta_util.hpp"
 #include "util/misc.hpp"
+#include "services/context_menu_service.hpp"
 
 namespace big
 {
@@ -30,6 +31,26 @@ namespace big
 		if (ImGui::Begin("draw_window", nullptr, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMouseInputs | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoFocusOnAppearing))
 		{
 			ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+			if (g_context_menu_service->enabled)
+			{
+				float context_screen_x;
+				float context_screen_y;
+
+				rage::fvector3& context_target_pos = g_context_menu_service->pointer->m_navigation->m_position;
+
+				const float context_target_distance = calculate_distance(context_target_pos);
+				const float context_target_multplr = context_target_distance > g->esp.global_render_distance[1] ? -1.f : 6.17757f / context_target_distance;
+
+				if (g_pointers->m_get_screen_coords_for_world_coords(context_target_pos.data, &context_screen_x, &context_screen_y))
+
+				for (int i = 0; i < g_context_menu_service->options.size(); i++)
+				{
+					context_option co = g_context_menu_service->options.at(i);
+					draw_list->AddText({ (float)g->window.x * context_screen_x + (67.5f * context_target_multplr), (float)g->window.y * context_screen_y - (175.f * context_target_multplr) + (20.f * i) + 20.f }, g_context_menu_service->current_option == i ? g->esp.friend_color : g->esp.color, co.name.c_str());
+				}
+			}
+
 			for (auto& item : g_player_service->m_players)
 			{
 				const std::unique_ptr<player>& plyr = item.second;
