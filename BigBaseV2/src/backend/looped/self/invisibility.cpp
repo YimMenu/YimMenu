@@ -19,7 +19,7 @@ namespace big
 			}
 		}
 
-		if (g->self.local_visibility)
+		if (g->self.local_visibility && NETWORK::NETWORK_IS_SESSION_STARTED())
 		{
 			NETWORK::SET_ENTITY_LOCALLY_VISIBLE(PLAYER::PLAYER_PED_ID());
 		}

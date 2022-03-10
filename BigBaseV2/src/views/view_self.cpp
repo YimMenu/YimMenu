@@ -32,7 +32,7 @@ namespace big
 			ImGui::BeginGroup();
 
 			ImGui::Checkbox("Invisibility", &g->self.invisibility);
-			if (g->self.invisibility && !NETWORK::NETWORK_IS_SESSION_STARTED())
+			if (g->self.invisibility && NETWORK::NETWORK_IS_SESSION_STARTED())
 			{
 				ImGui::Checkbox("Locally Visible", &g->self.local_visibility);
 			}
