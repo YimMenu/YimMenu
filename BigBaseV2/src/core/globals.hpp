@@ -79,6 +79,11 @@ namespace big
 			frame_flags frame_flags{};
 		};
 
+		struct session {
+			bool override_time = false;
+			int custom_time[3] = { 0, 0, 0 };
+		};
+
 		struct settings {
 			struct hotkeys
 			{
@@ -174,6 +179,7 @@ namespace big
 		player player{};
 		protections protections{};
 		self self{};
+		session session{};
 		settings settings{};
 		spoofing spoofing{};
 		vehicle vehicle{};
