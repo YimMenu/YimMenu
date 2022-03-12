@@ -27,6 +27,7 @@ namespace big
 				ImGui::PopStyleColor(2);
 				ImGui::PopStyleVar();
 			}
+			ImGui::End();
 		}
 	}
 }

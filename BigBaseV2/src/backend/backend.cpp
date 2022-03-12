@@ -34,6 +34,11 @@ namespace big
 		}QUEUE_JOB_END_CLAUSE
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
+			looped::hud_transition_state();
+		}QUEUE_JOB_END_CLAUSE
+
+		QUEUE_JOB_BEGIN_CLAUSE()
+		{
 			looped::tunables_disable_phone();
 			looped::tunables_no_idle_kick();
 			looped::tunables_casino_rig();
