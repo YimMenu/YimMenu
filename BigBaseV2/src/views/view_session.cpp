@@ -60,10 +60,10 @@ namespace big
 
 			if (g->session.override_time)
 			{
-				ImGui::SliderInt("Hour", &g->session.custom_time[0], 0, 23);
-				ImGui::SliderInt("Minute", &g->session.custom_time[1], 0, 59);
-				ImGui::SliderInt("Second", &g->session.custom_time[2], 0, 59);
-				NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(g->session.custom_time[0], g->session.custom_time[1], g->session.custom_time[2]);
+				ImGui::SliderInt("Hour", &g->session.custom_time.hour, 0, 23);
+				ImGui::SliderInt("Minute", &g->session.custom_time.minute, 0, 59);
+				ImGui::SliderInt("Second", &g->session.custom_time.second, 0, 59);
+				NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(g->session.custom_time.hour, g->session.custom_time.minute, g->session.custom_time.second);
 			}
 			else
 			{

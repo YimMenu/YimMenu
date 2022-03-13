@@ -79,9 +79,13 @@ namespace big
 			frame_flags frame_flags{};
 		};
 
-		struct session {
-			bool override_time = false;
-			int custom_time[3] = { 0, 0, 0 };
+		struct session
+		{
+			bool override_time = {};
+			struct 
+			{
+				int hour{}, minute{}, second{}; 
+			} custom_time;
 		};
 
 		struct settings {
