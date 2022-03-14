@@ -89,6 +89,12 @@ namespace big
 			hotkeys hotkeys{};
 		};
 
+		struct spawn
+		{
+			bool preview_vehicle = false;
+			bool spawn_inside = false;
+		};
+
 		struct spoofing
 		{
 			bool spoof_username = false;
@@ -158,6 +164,7 @@ namespace big
 		protections protections{};
 		self self{};
 		settings settings{};
+		spawn spawn{};
 		spoofing spoofing{};
 		vehicle vehicle{};
 		weapons weapons{};
@@ -215,6 +222,9 @@ namespace big
 			this->self.frame_flags.super_jump = j["self"]["frame_flags"]["super_jump"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
+
+			this->spawn.preview_vehicle = j["spawn"]["preview_vehicle"];
+			this->spawn.spawn_inside = j["spawn"]["spawn_inside"];
 
 			this->spoofing.spoof_ip = j["spoofing"]["spoof_ip"];
 			this->spoofing.spoof_rockstar_id = j["spoofing"]["spoof_rockstar_id"];
@@ -319,6 +329,12 @@ namespace big
 								{ "menu_toggle", this->settings.hotkeys.menu_toggle }
 							}
 						}
+					}
+				},
+				{
+					"spawn", {
+						{ "preview_vehicle", this->spawn.preview_vehicle },
+						{ "spawn_inside", this->spawn.spawn_inside }
 					}
 				},
 				{
