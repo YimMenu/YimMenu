@@ -1,29 +1,72 @@
 #include "views/view.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
-#include "script.hpp"
+#include "services/vehicle_preview_service.hpp"
 #include "util/vehicle.hpp"
 
 namespace big
 {
-	static char model[12];
+	static char model[12] = "";
+
+	bool does_search_match(std::string& input, const std::string& search)
+	{
+		std::transform(input.begin(), input.end(), input.begin(), ::tolower);
+
+		return input.find(search) != std::string::npos;
+	}
 
 	void view::spawn() {
-		g_fiber_pool->queue_job([] {
-			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-			});
+		ImGui::Checkbox("Preview", &g->spawn.preview_vehicle);
+		ImGui::SameLine();
+		ImGui::Checkbox("Spawn In", &g->spawn.spawn_inside);
 
-		if (
-			ImGui::InputText("Model Name", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue) ||
-			ImGui::Button("Spawn")
-			)
+		components::input_text_with_hint("Model Name", "Search", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, []
 		{
-			g_fiber_pool->queue_job([] {
-				Ped player = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PLAYER::GET_PLAYER_INDEX());
-				Vector3 location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player, .0, 8.0, .5);
+			const auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(), 2.f, 2.f, 0.f);
+			const Vehicle veh = vehicle::spawn(model, location, g_local_player->m_player_info->m_ped->m_navigation->m_heading + 90.f);
 
-				vehicle::spawn((const char*)model, location, ENTITY::GET_ENTITY_HEADING(player) + 90.f);
-				});
+			if (g->spawn.spawn_inside)
+				PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
+		});
+		if (ImGui::ListBoxHeader("###vehicles", { ImGui::GetWindowWidth(), ImGui::GetWindowHeight() }))
+		{
+			if (!g_vehicle_preview_service->get_vehicle_list().is_null())
+			{
+				for (auto& item : g_vehicle_preview_service->get_vehicle_list())
+				{
+					if (item["Name"].is_null() || item["DisplayName"].is_null())
+						continue;
+
+					std::string name = item["Name"];
+					std::string display_name = item["DisplayName"];
+
+					std::string manufacturer;
+					std::string search = model;
+					std::transform(search.begin(), search.end(), search.begin(), ::tolower);
+
+					if (!item["ManufacturerDisplayName"].is_null())
+						manufacturer = item["ManufacturerDisplayName"];
+
+					if (search.empty() ||
+						does_search_match(name, search) ||
+						does_search_match(display_name, search) ||
+						does_search_match(manufacturer, search))
+					{
+						components::selectable(item["DisplayName"], item["Name"] == search, [&item]
+						{
+							const auto location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+							const Vehicle veh = vehicle::spawn(item["Name"], location, 0.f);
+
+							if (g->spawn.spawn_inside)
+								PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
+						});
+
+						if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
+							g_vehicle_preview_service->set_preview_vehicle(item);
+					}
+				}
+			}
+			else ImGui::Text("No vehicles in registry.");
 		}
 	}
 }
