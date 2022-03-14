@@ -104,7 +104,7 @@ namespace rage
 	class CObjectList
 	{
 	public:
-		class CObjectHandle m_objects[2300]; //0x0000
+		class CEntityHandle m_objects[2300]; //0x0000
 	}; //Size: 0x8FC0
 
 	class CObjectInterface
@@ -116,10 +116,10 @@ namespace rage
 		char pad_0164[4]; //0x0164
 		int32_t m_cur_objects; //0x0168
 
-		rage::CObject* get_object(const int& index)
+		rage::fwEntity* get_object(const int& index)
 		{
 			if (index < m_max_objects)
-				return m_object_list->m_objects[index].m_object;
+				return m_object_list->m_objects[index].m_entity_ptr;
 			return nullptr;
 		}
 	}; //Size: 0x016C

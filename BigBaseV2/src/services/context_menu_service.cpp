@@ -8,11 +8,51 @@ namespace big
 	context_menu_service::context_menu_service()
 	{
 		g_context_menu_service = this;
+		load_shared();
 	}
 
 	context_menu_service::~context_menu_service()
 	{
 		g_context_menu_service = nullptr;
+	}
+
+	void context_menu_service::load_shared()
+	{
+		for (auto& item : options)
+		{
+			if (item.first == ContextEntityType::SHARED) continue;
+			item.second.options.insert(item.second.options.end(), options.at(ContextEntityType::SHARED).options.begin(), options.at(ContextEntityType::SHARED).options.end());
+
+			int max_size = 0;
+			for (auto& option : item.second.options)
+			{
+				max_size = (float)(max_size < option.name.length() ? option.name.length() : max_size);
+			}
+
+			LOG(INFO) << (int)item.second.options.size();
+
+			item.second.menu_size = { (10.f * max_size) + 10.f , 2 * (10.f * (float)item.second.options.size()) + 10.f  };
+		}
+	}
+
+
+	s_context_menu* context_menu_service::get_context_menu()
+	{
+		if (pointer && pointer->m_model_info)
+			switch (pointer->m_model_info->m_entity_type)
+			{
+			case (int)eEntityType::PED:
+					if (((CPed*)pointer)->m_vehicle)
+					{
+						pointer = ((CPed*)pointer)->m_vehicle;
+						return &options.at(ContextEntityType::VEHICLE);
+					}
+					return &options.at(ContextEntityType::PED);
+				case (int)eEntityType::VEHICLE:
+					return &options.at(ContextEntityType::VEHICLE);
+				default:
+					return &options.at(ContextEntityType::SHARED);
+			}
 	}
 
 	double context_menu_service::distance_to_middle_of_screen(rage::vector2 screenpos) {
@@ -45,23 +85,27 @@ namespace big
 		if (replay) {
 			rage::CVehicleInterface* vehinterface = replay->m_vehicle_interface;
 			rage::CPedInterface* pedinterface = replay->m_ped_interface;
-			//CObjectInterface* objinterface = this->replay->m_object_interface;
+			rage::CObjectInterface* objinterface = replay->m_object_interface;
 
-			if (vehinterface && pedinterface  /* && objinterface*/) {
+			if (vehinterface && pedinterface && objinterface) {
 
 				int vehinterfacesize = vehinterface->m_max_vehicles;
 				int pedinterfacesize = pedinterface->m_max_peds;
-				//int objectinterfacesize = objinterface->m_max_objects;
-				rage::CEntityHandle* allentities = new rage::CEntityHandle[vehinterfacesize + pedinterfacesize /* + objectinterfacesize*/];
+				int objectinterfacesize = objinterface->m_max_objects;
+				rage::CEntityHandle* allentities = new rage::CEntityHandle[vehinterfacesize + pedinterfacesize + objectinterfacesize];
 
-				std::copy(pedinterface->m_ped_list->m_peds, pedinterface->m_ped_list->m_peds + pedinterfacesize,
-				          std::copy(vehinterface->m_vehicle_list->m_vehicles, vehinterface->m_vehicle_list->m_vehicles + vehinterfacesize, allentities));
+				std::copy(pedinterface->m_ped_list->m_peds, pedinterface->m_ped_list->m_peds + pedinterfacesize, allentities);
+				std::copy(vehinterface->m_vehicle_list->m_vehicles, vehinterface->m_vehicle_list->m_vehicles + vehinterfacesize, allentities + pedinterfacesize);
+				std::copy(objinterface->m_object_list->m_objects, objinterface->m_object_list->m_objects + objectinterfacesize, allentities + pedinterfacesize + vehinterfacesize);
 
-				for (int i = 0; i < vehinterfacesize + pedinterfacesize; i++)
+				for (int i = 0; i < vehinterfacesize + pedinterfacesize + objectinterfacesize; i++)
 				{
 					if (allentities[i].m_entity_ptr) {
 						temp_pointer = allentities[i].m_entity_ptr;
 						temp_handle = g_pointers->m_ptr_to_handle(temp_pointer);
+
+						if (!temp_pointer->m_navigation) continue;
+
 						pos = temp_pointer->m_navigation->m_position;
 						HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos.x, pos.y, pos.z, &screenpos.x, &screenpos.y);
 						if (distance_to_middle_of_screen(screenpos) < distance &&
