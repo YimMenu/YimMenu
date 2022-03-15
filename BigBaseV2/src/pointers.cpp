@@ -89,14 +89,6 @@ namespace big
 			m_native_return = ptr.add(0).as<PVOID>();
 		});
 
-		// Incompatible Version Fix
-		main_batch.add("IVF", "48 89 5C 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 ? ? ? ? 48 81 EC ? ? ? ? 33 FF 48 8B DA", [this](memory::handle ptr)
-		{
-			 uint8_t* incompatible_version = ptr.add(0x165CEE5 - 0x165CB80).as<uint8_t*>();
-
-			 memset(incompatible_version, 0x90, 0x165CF03 - 0x165CEE5);
-		});
-
 		// GTA Thread Start
 		main_batch.add("GTS", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 8B FA 85 D2 75 2A 8B 15", [this](memory::handle ptr)
 		{
@@ -239,15 +231,15 @@ namespace big
 		});
 
 		main_batch.add("GET_SCREEN_COORDS_FROM_WORLD_COORDS", "E8 ? ? ? ? 84 C0 74 19 F3 0F 10 44 24", [this](memory::handle ptr)
-			{
-				m_get_screen_coords_for_world_coords = ptr.add(1).rip().as<functions::get_screen_coords_for_world_coords*>();
-			});
+		{
+			m_get_screen_coords_for_world_coords = ptr.add(1).rip().as<functions::get_screen_coords_for_world_coords*>();
+		});
 
 		// Get Gameplay Cam Coords
 		main_batch.add("GGCC", "40 53 48 83 EC 20 48 8B D9 E8 ? ? ? ? 8B 90 ? ? ? ? 89 13 8B 90 ? ? ? ? 8B 80 ? ? ? ? 89 43 10 89 53 08 48 8B C3 48 83 C4 20 5B C3", [this](memory::handle ptr)
-			{
-				m_get_gamplay_cam_coords = ptr.as<functions::get_gameplay_cam_coords*>();
-			});
+		{
+			m_get_gamplay_cam_coords = ptr.as<functions::get_gameplay_cam_coords*>();
+		});
 
 		
 		main_batch.run(memory::module(nullptr));
