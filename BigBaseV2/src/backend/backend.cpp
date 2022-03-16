@@ -40,7 +40,6 @@ namespace big
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::self_clean_player();
-			looped::self_frame_flags();
 			looped::self_free_cam();
 			looped::self_godmode();
 			looped::self_invisibility();
@@ -63,6 +62,7 @@ namespace big
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
+			looped::weapons_ammo_special_type();
 			looped::weapons_cage_gun();
 			looped::weapons_delete_gun();
 			looped::weapons_force_crosshairs();

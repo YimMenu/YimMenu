@@ -18,7 +18,6 @@ namespace big
 		static void protections_replay_interface();
 
 		static void self_clean_player();
-		static void self_frame_flags();
 		static void self_free_cam();
 		static void self_godmode();
 		static void self_invisibility();
@@ -39,6 +38,7 @@ namespace big
 		static void vehicle_ls_customs();
 		static void vehicle_speedo_meter();
 
+		static void weapons_ammo_special_type();
 		static void weapons_cage_gun();
 		static void weapons_delete_gun();
 		static void weapons_force_crosshairs();
