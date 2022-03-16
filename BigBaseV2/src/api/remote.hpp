@@ -10,7 +10,7 @@ namespace big::remote
 		try
 		{
 			http::Request req(file_url.data());
-			http::Response res = req.send("GET", "", {}, 2500ms);
+			http::Response res = req.send("GET", "", {}, 10s);
 
 			std::ostream_iterator<std::uint8_t> outputIter(file);
 			std::copy(res.body.begin(), res.body.end(), outputIter);
