@@ -225,12 +225,14 @@ namespace big
 			m_network_player_mgr_shutdown = ptr.sub(0x17).as<PVOID>();
 		});
 
+		// FriendRegistry
 		main_batch.add("FR", "3B 0D ? ? ? ? 73 13 48 63 C9", [this](memory::handle ptr)
 		{
 			m_friend_registry = ptr.add(2).rip().as<FriendRegistry*>();
 		});
 
-		main_batch.add("GET_SCREEN_COORDS_FROM_WORLD_COORDS", "E8 ? ? ? ? 84 C0 74 19 F3 0F 10 44 24", [this](memory::handle ptr)
+		// GET_SCREEN_COORDS_FROM_WORLD_COORDS
+		main_batch.add("GSCFWC", "E8 ? ? ? ? 84 C0 74 19 F3 0F 10 44 24", [this](memory::handle ptr)
 		{
 			m_get_screen_coords_for_world_coords = ptr.add(1).rip().as<functions::get_screen_coords_for_world_coords*>();
 		});
@@ -241,6 +243,11 @@ namespace big
 			m_get_gamplay_cam_coords = ptr.as<functions::get_gameplay_cam_coords*>();
 		});
 
+		// net array handler - version mismatch patch
+		main_batch.add("NAH", "44 8B E0 89 45 F4 48 8B 03 48 8B CB FF 90", [this](memory::handle ptr)
+		{
+			m_net_array_handler = ptr.sub(0x3C).as<PVOID>();
+		});
 		
 		main_batch.run(memory::module(nullptr));
 
