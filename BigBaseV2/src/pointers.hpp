@@ -41,6 +41,9 @@ namespace big
 
 		IDXGISwapChain **m_swapchain{};
 
+		int* m_resolution_x;
+		int* m_resolution_y;
+
 		PVOID m_blame_explode;
 		PVOID m_model_spawn_bypass;
 		PVOID m_native_return;

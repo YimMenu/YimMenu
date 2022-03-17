@@ -248,6 +248,12 @@ namespace big
 		{
 			m_net_array_handler = ptr.sub(0x3C).as<PVOID>();
 		});
+
+		main_batch.add("SCREEN_RESOLUTION", "66 0F 6E 0D ? ? ? ? 0F B7 3D", [this](memory::handle ptr)
+		{
+			m_resolution_x = ptr.sub(4).rip().as<int*>();
+			m_resolution_y = ptr.add(4).rip().as<int*>();
+		});
 		
 		main_batch.run(memory::module(nullptr));
 
