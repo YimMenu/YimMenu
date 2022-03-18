@@ -13,5 +13,12 @@ namespace big
 		static void sub_title(const std::string_view);
 		static void title(const std::string_view);
 		static void button(const std::string_view, std::function<void()>);
+
+		static void input_text_with_hint(const std::string_view label, const std::string_view hint, char* buf, size_t buf_size, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
+
+		static bool selectable(const std::string_view, bool);
+		static bool selectable(const std::string_view, bool, ImGuiSelectableFlags);
+		static void selectable(const std::string_view, bool, std::function<void()>);
+		static void selectable(const std::string_view, bool, ImGuiSelectableFlags, std::function<void()>);
 	};
 }

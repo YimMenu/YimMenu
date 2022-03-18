@@ -1,4 +1,5 @@
 #pragma once
+#include "CAmmoInfo.hpp"
 #include "enums.hpp"
 #include "file_manager.hpp"
 #include "imgui.h"
@@ -57,13 +58,6 @@ namespace big
 		};
 
 		struct self {
-			struct frame_flags {
-				bool explosive_ammo = false;
-				bool explosive_melee = false;
-				bool fire_ammo = false;
-				bool super_jump = false;
-			};
-
 			bool clean_player = false;
 			bool force_wanted_level = false;
 			bool free_cam = false;
@@ -75,8 +69,6 @@ namespace big
 			bool off_radar = false;
 			bool super_run = false;
 			int wanted_level = 0;
-
-			frame_flags frame_flags{};
 		};
 
 		struct session
@@ -97,6 +89,12 @@ namespace big
 			};
 
 			hotkeys hotkeys{};
+		};
+
+		struct spawn
+		{
+			bool preview_vehicle = false;
+			bool spawn_inside = false;
 		};
 
 		struct spoofing
@@ -130,6 +128,12 @@ namespace big
 		};
 
 		struct weapons {
+			struct ammo_special
+			{
+				bool toggle = false;
+				eAmmoSpecialType type = eAmmoSpecialType::None;
+			} ammo_special;
+
 			CustomWeapon custom_weapon = CustomWeapon::NONE;
 			bool force_crosshairs = false;
 			bool infinite_ammo = false;
@@ -185,6 +189,7 @@ namespace big
 		self self{};
 		session session{};
 		settings settings{};
+		spawn spawn{};
 		spoofing spoofing{};
 		vehicle vehicle{};
 		weapons weapons{};
@@ -237,12 +242,10 @@ namespace big
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
 
-			this->self.frame_flags.explosive_ammo = j["self"]["frame_flags"]["explosive_ammo"];
-			this->self.frame_flags.explosive_melee = j["self"]["frame_flags"]["explosive_melee"];
-			this->self.frame_flags.fire_ammo = j["self"]["frame_flags"]["fire_ammo"];
-			this->self.frame_flags.super_jump = j["self"]["frame_flags"]["super_jump"];
-
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
+
+			this->spawn.preview_vehicle = j["spawn"]["preview_vehicle"];
+			this->spawn.spawn_inside = j["spawn"]["spawn_inside"];
 
 			this->spoofing.spoof_ip = j["spoofing"]["spoof_ip"];
 			this->spoofing.spoof_rockstar_id = j["spoofing"]["spoof_rockstar_id"];
@@ -270,6 +273,9 @@ namespace big
 			this->weapons.infinite_mag = j["weapons"]["infinite_mag"];
 			this->weapons.no_recoil = j["weapons"]["no_recoil"];
 			this->weapons.no_spread = j["weapons"]["no_spread"];
+
+			this->weapons.ammo_special.type = (eAmmoSpecialType)j["weapons"]["ammo_special"]["type"];
+			this->weapons.ammo_special.toggle = j["weapons"]["ammo_special"]["toggle"];
 
 			this->window.debug = j["window"]["debug"];
 			this->window.handling = j["window"]["handling"];
@@ -345,16 +351,7 @@ namespace big
 						{ "never_wanted", this->self.never_wanted },
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
-						{ "super_run", this->self.super_run },
-
-						{
-							"frame_flags", {
-								{ "explosive_ammo", this->self.frame_flags.explosive_ammo },
-								{ "explosive_melee", this->self.frame_flags.explosive_melee },
-								{ "fire_ammo", this->self.frame_flags.fire_ammo },
-								{ "super_jump", this->self.frame_flags.super_jump }
-							}
-						}
+						{ "super_run", this->self.super_run }
 					}
 				},
 				{
@@ -363,6 +360,12 @@ namespace big
 								{ "menu_toggle", this->settings.hotkeys.menu_toggle }
 							}
 						}
+					}
+				},
+				{
+					"spawn", {
+						{ "preview_vehicle", this->spawn.preview_vehicle },
+						{ "spawn_inside", this->spawn.spawn_inside }
 					}
 				},
 				{
@@ -398,6 +401,12 @@ namespace big
 				},
 				{
 					"weapons", {
+						{ "ammo_special", {
+							{ "toggle", this->weapons.ammo_special.toggle },
+							{ "type", (int)this->weapons.ammo_special.type },
+								
+							}
+						},
 						{ "custom_weapon", (int)this->weapons.custom_weapon },
 						{ "force_crosshairs", this->weapons.force_crosshairs },
 						{ "increased_damage", this->weapons.increased_damage },

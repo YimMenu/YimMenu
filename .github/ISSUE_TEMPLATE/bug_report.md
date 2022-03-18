@@ -24,6 +24,7 @@ A clear and concise description of what you expected to happen.
 Add screenshots here,  you may remove this section if there are no screenshots applicable.
 
 **Logs**
+<!-- No logs or -->
 ```
 <paste your logs here>
 ```

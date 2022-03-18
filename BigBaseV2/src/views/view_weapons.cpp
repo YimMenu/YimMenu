@@ -2,6 +2,7 @@
 #include "fiber_pool.hpp"
 #include "gta/Weapons.h"
 #include "script.hpp"
+#include "core/data/special_ammo_types.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -46,7 +47,30 @@ namespace big
 			
 			ImGui::TreePop();
 		}
-		
+
+		if (ImGui::TreeNode("Ammo Special"))
+		{
+			ImGui::Checkbox("Enable Special Ammo", &g->weapons.ammo_special.toggle);
+
+			eAmmoSpecialType selected = g->weapons.ammo_special.type;
+
+			if (ImGui::BeginCombo("Ammo Special", SPECIAL_AMMOS[(int)selected].name))
+			{
+				for (const auto& special_ammo : SPECIAL_AMMOS)
+				{
+					if (ImGui::Selectable(special_ammo.name, special_ammo.type == selected))
+						g->weapons.ammo_special.type = special_ammo.type;
+
+					if (special_ammo.type == selected)
+						ImGui::SetItemDefaultFocus();
+				}
+
+				ImGui::EndCombo();
+			}
+
+			ImGui::TreePop();
+		}
+
 		if (ImGui::TreeNode("Custom Weapons"))
 		{
 			CustomWeapon selected = g->weapons.custom_weapon;
@@ -69,16 +93,6 @@ namespace big
 
 			switch (selected)
 			{
-			case CustomWeapon::NONE:
-				break;
-			case CustomWeapon::CAGE_GUN:
-				break;
-			case CustomWeapon::DELETE_GUN:
-				break;
-			case CustomWeapon::GRAVITY_GUN:
-				break;
-			case CustomWeapon::REPAIR_GUN:
-				break;
 			case CustomWeapon::VEHICLE_GUN:
 				ImGui::Text("Shooting Model:");
 				ImGui::InputText("##vehicle_gun_model", g->weapons.vehicle_gun_model, 12);
