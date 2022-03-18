@@ -55,7 +55,6 @@ namespace big
 
 		if (ImGui::TreeNode("Local Time"))
 		{
-
 			ImGui::Checkbox("Override Time", &g->session.override_time);
 
 			if (g->session.override_time)
@@ -63,11 +62,6 @@ namespace big
 				ImGui::SliderInt("Hour", &g->session.custom_time.hour, 0, 23);
 				ImGui::SliderInt("Minute", &g->session.custom_time.minute, 0, 59);
 				ImGui::SliderInt("Second", &g->session.custom_time.second, 0, 59);
-				NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(g->session.custom_time.hour, g->session.custom_time.minute, g->session.custom_time.second);
-			}
-			else
-			{
-				NETWORK::NETWORK_CLEAR_CLOCK_TIME_OVERRIDE();
 			}
 
 			ImGui::TreePop();
