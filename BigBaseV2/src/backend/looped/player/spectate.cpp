@@ -18,6 +18,8 @@ namespace big
 
 				NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(false, -1);
 				HUD::SET_MINIMAP_IN_SPECTATOR_MODE(false, -1);
+
+				ENTITY::FREEZE_ENTITY_POSITION(PLAYER::PLAYER_PED_ID(), true);
 			}
 
 			return;
@@ -27,6 +29,8 @@ namespace big
 
 		NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(true, target);
 		HUD::SET_MINIMAP_IN_SPECTATOR_MODE(true, target);
+
+		ENTITY::FREEZE_ENTITY_POSITION(PLAYER::PLAYER_PED_ID(), false);
 
 		bReset = false;
 	}
