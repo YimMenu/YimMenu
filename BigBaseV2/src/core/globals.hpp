@@ -71,6 +71,15 @@ namespace big
 			int wanted_level = 0;
 		};
 
+		struct session
+		{
+			bool override_time = {};
+			struct 
+			{
+				int hour{}, minute{}, second{}; 
+			} custom_time;
+		};
+
 		struct settings {
 			struct hotkeys
 			{
@@ -178,6 +187,7 @@ namespace big
 		player player{};
 		protections protections{};
 		self self{};
+		session session{};
 		settings settings{};
 		spawn spawn{};
 		spoofing spoofing{};

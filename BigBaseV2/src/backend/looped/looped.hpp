@@ -27,6 +27,8 @@ namespace big
 		static void self_police();
 		static void self_super_run();
 
+		static void session_local_time();
+
 		static void system_update_players();
 		static void system_update_pointers();
 		static void system_screen_size();

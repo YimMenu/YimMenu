@@ -51,6 +51,11 @@ namespace big
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
+			looped::session_local_time();
+		}QUEUE_JOB_END_CLAUSE
+
+		QUEUE_JOB_BEGIN_CLAUSE()
+		{
 			looped::player_never_wanted();
 			looped::player_specate();
 		}QUEUE_JOB_END_CLAUSE
