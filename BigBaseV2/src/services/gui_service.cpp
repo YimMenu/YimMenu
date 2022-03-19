@@ -12,15 +12,22 @@ namespace big
 		g_gui_service = nullptr;
 	}
 
-	navigation_struct gui_service::get_selected() {
-		if (current_tab.at(0) == tabs::NONE)
-			return { "", nullptr };
-		navigation_struct current_nav = nav.at(current_tab.at(0));
-		if (current_tab.size() > 1) {
-			if (auto opt = nav.find(current_nav.sub_nav.at()); opt != nav.end()) {
-				current_nav = opt->first;
+	navigation_struct* gui_service::get_selected()
+	{
+		navigation_struct tab_none = { "", nullptr };
+		if (current_tab.empty() || current_tab.at(0) == tabs::NONE)
+			return &tab_none;
+
+		navigation_struct* current_nav = &nav.at(current_tab.at(0));
+		if (current_tab.size() > 1)
+		{
+			for (const tabs& t : current_tab)
+			{
+				if (t == current_tab.at(0)) continue;
+				current_nav = &current_nav->sub_nav.at(t);
 			}
 		}
+
 		return current_nav;
 	}
 
@@ -36,7 +43,14 @@ namespace big
 
 	void gui_service::set_selected(tabs tab)
 	{
-		current_tab = tab;
+		if (current_tab.empty()) return current_tab.push_back(tab);
+		if (auto it = get_selected()->sub_nav.find(tab); it != get_selected()->sub_nav.end())
+			current_tab.push_back(tab);
+		else
+		{
+			current_tab.pop_back();
+			set_selected(tab);
+		}
 	}
 
 	std::unordered_map<tabs, navigation_struct> gui_service::get_navigation()
