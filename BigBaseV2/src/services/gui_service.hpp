@@ -28,18 +28,15 @@ namespace big
 
 	class gui_service final
 	{
-		std::vector<tabs> current_tab{ tabs::SELF, tabs::WEAPONS };
+		std::vector<tabs> current_tab{};
 		bool switched_view = true;
 
 		std::unordered_map<tabs, navigation_struct> nav = {
-			{
-				tabs::SELF,
-				{
-					"Self",view::self, {
-						{ tabs::WEAPONS, {"Weapons", view::weapons}},
-					}
-				}
-			},
+			{tabs::SELF, { "Self",view::self, {
+				{ tabs::WEAPONS, {"Weapons", view::weapons, {
+					{ tabs::SETTINGS, {"Settings", view::settings}}
+				}}},
+			}}},
 			{tabs::NETWORK, { "Network", nullptr, {
 				{tabs::SPOOFING, { "Spoofing", view::spoofing }},
 				{tabs::SESSION, { "Session", view::session }},
@@ -49,7 +46,7 @@ namespace big
 		gui_service();
 		virtual ~gui_service();
 
-		navigation_struct get_selected();
+		navigation_struct* get_selected();
 		std::vector<tabs> get_selected_tab();
 		bool has_switched_view();
 		void set_selected(tabs);
