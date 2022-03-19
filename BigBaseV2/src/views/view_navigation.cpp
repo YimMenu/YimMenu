@@ -1,37 +1,29 @@
+#include "services/gui_service.hpp"
 #include "views/view.hpp"
 #include "services/player_service.hpp"
 
 namespace big
 {
 	void view::navigation() {
-		ImGui::SetNextWindowPos({ 0.f, 0.f }, ImGuiCond_Always);
-		ImGui::SetNextWindowSize({ (float)*g_pointers->m_resolution_x * 0.15f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
+		ImGui::SetNextWindowPos({ 10.f, 100.f }, ImGuiCond_Always);
+		ImGui::SetNextWindowSize({ ((float)*g_pointers->m_resolution_x / 2554.f) * 250.f, 0.f }, ImGuiCond_Always);
 
 		if (ImGui::Begin("navigation", 0, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav))
 		{
-			components::title("Yim");
-			ImGui::SameLine(0, 0);
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.172f, 0.380f, 0.909f, 1.f));
-			components::title("Menu");
-			ImGui::PopStyleColor();
-			
-			components::small_text(fmt::format("Welcome {}", g_local_player == nullptr || g_local_player->m_player_info == nullptr ? "unknown" : g_local_player->m_player_info->m_net_player_data.m_name).c_str());
-
-			for (auto& navItem : nav) {
-				const bool curTab = navItem.tab == current_tab->tab;
+			for (auto& navItem : g_gui_service->get_navigation()) {
+				const bool curTab = navItem.first == g_gui_service->get_selected_tab();
 				if (curTab)
 					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
 
-				if (components::nav_button(navItem.name)) {
-					current_tab = &navItem;
-					g->window.switched_view = true;
-				}
+				if (components::nav_button(navItem.second.name))
+					g_gui_service->set_selected(navItem.first);
 
 				if (curTab)
 					ImGui::PopStyleColor();
+					
 			}
 
-			static navigation_struct playerPage = { tabs::PLAYER, "Player", view::view_player };
+			/*static navigation_struct playerPage = { tabs::PLAYER, "Player", view::view_player };
 
 			if (ImGui::BeginListBox("players", {(float)*g_pointers->m_resolution_x * 0.15f - 30, (float)*g_pointers->m_resolution_y * 0.3f})) {
 				for (auto& item : g_player_service->m_players)
@@ -50,24 +42,8 @@ namespace big
 				}
 
 				ImGui::EndListBox();
-			}
-
-			
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.69f, 0.29f, 0.29f, 1.00f));
-			if (components::nav_button("Unload"))
-			{
-				g_running = false;
-			}
-
-			if (components::nav_button("Rage Quit (hard crash)"))
-			{
-				g_running = false;
-
-				TerminateProcess(GetCurrentProcess(), 0);
-			}
-
-			ImGui::PopStyleColor();
+			}*/
+			ImGui::End();
 		}
-		ImGui::End();
 	}
 }
