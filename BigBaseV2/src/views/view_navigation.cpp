@@ -38,6 +38,5 @@ namespace big
 			}*/
 			ImGui::End();
 		}
-		ImGui::End();
 	}
 }
