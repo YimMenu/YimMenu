@@ -6,21 +6,12 @@ namespace big
 {
 	void view::navigation() {
 		ImGui::SetNextWindowPos({ 10.f, 100.f }, ImGuiCond_Always);
-		ImGui::SetNextWindowSize({ ((float)*g_pointers->m_resolution_x / 2554.f) * 250.f, 0.f }, ImGuiCond_Always);
+		ImGui::SetNextWindowSize({ 250.f, 0.f }, ImGuiCond_Always);
 
 		if (ImGui::Begin("navigation", 0, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav))
 		{
-			for (auto& navItem : g_gui_service->get_navigation()) {
-				const bool curTab = navItem.first == g_gui_service->get_selected_tab();
-				if (curTab)
-					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
-
-				if (components::nav_button(navItem.second.name))
-					g_gui_service->set_selected(navItem.first);
-
-				if (curTab)
-					ImGui::PopStyleColor();
-					
+			for (std::pair<tabs, navigation_struct> navItem : g_gui_service->get_navigation()) {
+				components::nav_item(navItem, 0);
 			}
 
 			/*static navigation_struct playerPage = { tabs::PLAYER, "Player", view::view_player };
