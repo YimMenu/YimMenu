@@ -33,17 +33,6 @@ namespace big
 				{
 					MISC::CLEAR_OVERRIDE_WEATHER();
 				});
-			}
-
-			if (ImGui::ListBox("", &g->session.local_weather, session::weathers, 15))
-			{
-				g_fiber_pool->queue_job([]
-				{
-					session::local_weather();
-				});
-			}
-
-			ImGui::TreePop();
 		}
 	}
 }
