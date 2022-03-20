@@ -8,99 +8,88 @@
 namespace big
 {
 	void view::weapons() {
-		if (ImGui::TreeNode("Ammo Options"))
+		components::small_text("Ammo");
+		ImGui::Checkbox("Infinite Ammo", &g->weapons.infinite_ammo);
+
+		ImGui::SameLine();
+
+		ImGui::Checkbox("Infinite Clip", &g->weapons.infinite_mag);
+
+		ImGui::Checkbox("Enable Special Ammo", &g->weapons.ammo_special.toggle);
+
+		eAmmoSpecialType selected_ammo = g->weapons.ammo_special.type;
+
+		if (ImGui::BeginCombo("Ammo Special", SPECIAL_AMMOS[(int)selected_ammo].name))
 		{
-			ImGui::Checkbox("Infinite Ammo", &g->weapons.infinite_ammo);
+			for (const auto& special_ammo : SPECIAL_AMMOS)
+			{
+				if (ImGui::Selectable(special_ammo.name, special_ammo.type == selected_ammo))
+					g->weapons.ammo_special.type = special_ammo.type;
 
-			ImGui::SameLine();
+				if (special_ammo.type == selected_ammo)
+					ImGui::SetItemDefaultFocus();
+			}
 
-			ImGui::Checkbox("Infinite Clip", &g->weapons.infinite_mag);
-
-			ImGui::TreePop();
+			ImGui::EndCombo();
 		}
 
-		if (ImGui::TreeNode("Misc"))
+		ImGui::Separator();
+
+		components::small_text("Misc");
+
+		ImGui::Checkbox("Force Crosshairs", &g->weapons.force_crosshairs);
+
+		ImGui::SameLine();
+
+		ImGui::Checkbox("No Recoil", &g->weapons.no_recoil);
+
+		ImGui::SameLine();
+
+		ImGui::Checkbox("No Spread", &g->weapons.no_spread);
+
+		if (ImGui::Button("Get All Weapons"))
 		{
-			ImGui::Checkbox("Force Crosshairs", &g->weapons.force_crosshairs);
-
-			ImGui::SameLine();
-
-			ImGui::Checkbox("No Recoil", &g->weapons.no_recoil);
-
-			ImGui::SameLine();
-
-			ImGui::Checkbox("No Spread", &g->weapons.no_spread);
-
-			if (ImGui::Button("Get All Weapons"))
+			QUEUE_JOB_BEGIN_CLAUSE()
 			{
-				QUEUE_JOB_BEGIN_CLAUSE()
-				{
-					for (auto const& weapon : weapon_list) {
-						WEAPON::GIVE_DELAYED_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), weapon, 9999, false);
-					}
-					WEAPON::GIVE_DELAYED_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), -72657034, 0, true);
+				for (auto const& weapon : weapon_list) {
+					WEAPON::GIVE_DELAYED_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), weapon, 9999, false);
 				}
-				QUEUE_JOB_END_CLAUSE
+				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), -72657034, 0, true);
 			}
-
-			ImGui::SliderFloat("Damage Multiplier", &g->weapons.increased_damage, 1.f, 10.f, "%.1f");
-			
-			ImGui::TreePop();
+			QUEUE_JOB_END_CLAUSE
 		}
 
-		if (ImGui::TreeNode("Ammo Special"))
+		ImGui::SliderFloat("Damage Multiplier", &g->weapons.increased_damage, 1.f, 10.f, "%.1f");
+
+		ImGui::Separator();
+
+		components::small_text("Custom Weapons");
+
+		CustomWeapon selected = g->weapons.custom_weapon;
+
+		if (ImGui::BeginCombo("Weapon", custom_weapons[(int)selected].name))
 		{
-			ImGui::Checkbox("Enable Special Ammo", &g->weapons.ammo_special.toggle);
-
-			eAmmoSpecialType selected = g->weapons.ammo_special.type;
-
-			if (ImGui::BeginCombo("Ammo Special", SPECIAL_AMMOS[(int)selected].name))
+			for (const custom_weapon& weapon : custom_weapons)
 			{
-				for (const auto& special_ammo : SPECIAL_AMMOS)
+				if (ImGui::Selectable(weapon.name, weapon.id == selected))
 				{
-					if (ImGui::Selectable(special_ammo.name, special_ammo.type == selected))
-						g->weapons.ammo_special.type = special_ammo.type;
-
-					if (special_ammo.type == selected)
-						ImGui::SetItemDefaultFocus();
+					g->weapons.custom_weapon = weapon.id;
 				}
 
-				ImGui::EndCombo();
+				if (weapon.id == selected)
+					ImGui::SetItemDefaultFocus();
 			}
 
-			ImGui::TreePop();
+			ImGui::EndCombo();
 		}
 
-		if (ImGui::TreeNode("Custom Weapons"))
+		switch (selected)
 		{
-			CustomWeapon selected = g->weapons.custom_weapon;
+		case CustomWeapon::VEHICLE_GUN:
+			ImGui::Text("Shooting Model:");
+			ImGui::InputText("##vehicle_gun_model", g->weapons.vehicle_gun_model, 12);
 
-			if (ImGui::BeginCombo("Weapon", custom_weapons[(int)selected].name))
-			{
-				for (const custom_weapon& weapon : custom_weapons)
-				{
-					if (ImGui::Selectable(weapon.name, weapon.id == selected))
-					{
-						g->weapons.custom_weapon = weapon.id;
-					}
-
-					if (weapon.id == selected)
-						ImGui::SetItemDefaultFocus();
-				}
-
-				ImGui::EndCombo();
-			}
-
-			switch (selected)
-			{
-			case CustomWeapon::VEHICLE_GUN:
-				ImGui::Text("Shooting Model:");
-				ImGui::InputText("##vehicle_gun_model", g->weapons.vehicle_gun_model, 12);
-
-				break;
-			}
-
-			ImGui::TreePop();
+			break;
 		}
 	}
 }

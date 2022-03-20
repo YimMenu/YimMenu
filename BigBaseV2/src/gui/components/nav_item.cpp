@@ -24,5 +24,7 @@ namespace big
 				nav_item(item, nested+1);
 			}
 		}
+
+		g_gui_service->increment_nav_size();
 	}
 }
