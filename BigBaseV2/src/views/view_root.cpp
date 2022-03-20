@@ -6,7 +6,7 @@ namespace big
 	{
 		view::heading();
 		view::navigation();
-		//view::player_navigation();
+		view::players();
 		view::active_view();
 	}
 }

@@ -19,6 +19,7 @@ namespace big
 	public:
 		static void active_view();
 		static void debug();
+		static void esp_settings();
 		static void heading();
 		static void mobile();
 		static void navigation();
@@ -33,6 +34,7 @@ namespace big
 		static void teleport();
 		static void vehicle();
 		static void view_player();
+		static void players();
 		static void weapons();
 
 		static void always()

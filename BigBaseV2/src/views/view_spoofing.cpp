@@ -8,52 +8,47 @@ namespace big
 	{ 
 		components::small_text("To spoof any of the below credentials you need to reconnect with the lobby.");
 
-		if (ImGui::TreeNode("Username"))
-		{
-			g_fiber_pool->queue_job([] {
-				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-				});
+		components::small_text("Username");
 
-				ImGui::Checkbox("Spoof Username", &g->spoofing.spoof_username);
+		g_fiber_pool->queue_job([] {
+			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+			});
 
-			static char name[20];
-			strcpy_s(name, sizeof(name), g->spoofing.username.c_str());
+			ImGui::Checkbox("Spoof Username", &g->spoofing.spoof_username);
 
-			ImGui::Text("Username:");
-			ImGui::InputText("##username_input", name, sizeof(name));
+		static char name[20];
+		strcpy_s(name, sizeof(name), g->spoofing.username.c_str());
 
-			if (name != g->spoofing.username)
-				g->spoofing.username = std::string(name);
+		ImGui::Text("Username:");
+		ImGui::InputText("##username_input", name, sizeof(name));
 
-			ImGui::TreePop();
-		}
+		if (name != g->spoofing.username)
+			g->spoofing.username = std::string(name);
 
-		if (ImGui::TreeNode("IP Address"))
-		{
-			g_fiber_pool->queue_job([] {
-				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-				});
+		ImGui::Separator();
 
-			ImGui::Checkbox("Spoof IP", &g->spoofing.spoof_ip);
+		components::small_text("IP Address");
 
-			ImGui::Text("IP Address:");
-			ImGui::DragInt4("##ip_fields", g->spoofing.ip_address, 0, 255);
+		g_fiber_pool->queue_job([] {
+			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+			});
 
-			ImGui::TreePop();
-		}
+		ImGui::Checkbox("Spoof IP", &g->spoofing.spoof_ip);
 
-		if (ImGui::TreeNode("Rockstar ID"))
-		{
-			g_fiber_pool->queue_job([] {
-				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-				});
+		ImGui::Text("IP Address:");
+		ImGui::DragInt4("##ip_fields", g->spoofing.ip_address, 0, 255);
 
-				ImGui::Checkbox("Spoof Rockstar ID", &g->spoofing.spoof_rockstar_id);
+		ImGui::Separator();
 
-			ImGui::Text("Rockstar ID:");
-			ImGui::InputScalar("##rockstar_id_input", ImGuiDataType_U64, &g->spoofing.rockstar_id);
+		components::small_text("Rockstar ID");
 
-			ImGui::TreePop();
-		}
+		g_fiber_pool->queue_job([] {
+			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+			});
+
+			ImGui::Checkbox("Spoof Rockstar ID", &g->spoofing.spoof_rockstar_id);
+
+		ImGui::Text("Rockstar ID:");
+		ImGui::InputScalar("##rockstar_id_input", ImGuiDataType_U64, &g->spoofing.rockstar_id);
 	}
 }

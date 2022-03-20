@@ -21,10 +21,7 @@ namespace big
 			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 		});
 
-		if (
-			ImGui::InputText("Model Name###player_ped_model", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue) ||
-			components::button("Set Player Model###spawn_player_ped_model")
-			)
+		components::input_text_with_hint("Model Name###player_ped_model", "Player Model Name", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, []
 		{
 			g_fiber_pool->queue_job([] {Hash hash = rage::joaat(model);
 
@@ -46,7 +43,9 @@ namespace big
 			script::get_current()->yield();
 			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 			});
-		}
+		});
+
+		ImGui::Separator();
 
 		components::small_text("General");
 
@@ -82,6 +81,8 @@ namespace big
 		}
 
 		ImGui::EndGroup();
+
+		ImGui::Separator();
 
 		components::small_text("Police");
 

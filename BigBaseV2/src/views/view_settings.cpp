@@ -14,20 +14,17 @@ namespace big
 	}
 
 	void view::settings() {
-		if (ImGui::TreeNode("Hotkeys"))
-		{
-			ImGui::PushItemWidth(350.f);
+		components::small_text("Hotkeys");
 
-			if (ImGui::Hotkey("Menu Toggle", &g->settings.hotkeys.menu_toggle))
-				g->settings.hotkeys.editing_menu_toggle = true; // make our menu reappear
+		ImGui::PushItemWidth(350.f);
 
-			ImGui::Text("(Below hotkey is not implemented)");
-			ImGui::Hotkey("Teleport to waypoint", &g->settings.hotkeys.teleport_waypoint);
+		if (ImGui::Hotkey("Menu Toggle", &g->settings.hotkeys.menu_toggle))
+			g->settings.hotkeys.editing_menu_toggle = true; // make our menu reappear
 
-			ImGui::PopItemWidth();
+		ImGui::Text("(Below hotkey is not implemented)");
+		ImGui::Hotkey("Teleport to waypoint", &g->settings.hotkeys.teleport_waypoint);
 
-			ImGui::TreePop();
-		}
+		ImGui::PopItemWidth();
 
 		if (ImGui::TreeNode("Protections"))
 		{

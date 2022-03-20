@@ -53,6 +53,23 @@ namespace big
 		}
 	}
 
+	void gui_service::set_nav_size(int nav_size)
+	{
+		nav_ctr = nav_size;
+	}
+
+	void gui_service::increment_nav_size()
+	{
+		nav_ctr++;
+	}
+
+
+	void gui_service::reset_nav_size()
+	{
+		nav_ctr = 0;
+	}
+
+
 	std::unordered_map<tabs, navigation_struct> gui_service::get_navigation()
 	{
 		return nav;
