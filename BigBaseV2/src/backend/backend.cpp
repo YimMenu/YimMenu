@@ -2,7 +2,6 @@
 #include "backend.hpp"
 #include "fiber_pool.hpp"
 #include "looped/looped.hpp"
-#include "pointers.hpp"
 #include "script.hpp"
 #include "thread_pool.hpp"
 
@@ -40,7 +39,6 @@ namespace big
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::self_clean_player();
-			looped::self_frame_flags();
 			looped::self_free_cam();
 			looped::self_godmode();
 			looped::self_invisibility();
@@ -52,8 +50,13 @@ namespace big
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
+			looped::session_local_time();
+		}QUEUE_JOB_END_CLAUSE
+
+		QUEUE_JOB_BEGIN_CLAUSE()
+		{
 			looped::player_never_wanted();
-			looped::player_specate();
+			looped::player_spectate();
 		}QUEUE_JOB_END_CLAUSE
 
 		QUEUE_JOB_BEGIN_CLAUSE()
@@ -63,6 +66,7 @@ namespace big
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
+			looped::weapons_ammo_special_type();
 			looped::weapons_cage_gun();
 			looped::weapons_delete_gun();
 			looped::weapons_force_crosshairs();

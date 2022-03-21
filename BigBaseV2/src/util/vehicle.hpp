@@ -44,11 +44,9 @@ namespace big::vehicle
 		return true;
 	}
 
-	inline int spawn(const char* model, Vector3 location, float heading)
+	inline int spawn(std::string_view model, Vector3 location, float heading, bool is_networked = true)
 	{
-		Hash hash = rage::joaat(model);
-
-		if (hash)
+		if (const Hash hash = rage::joaat(model.data()); hash)
 		{
 			for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
 			{
@@ -64,7 +62,7 @@ namespace big::vehicle
 			}
 
 			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
-			Vehicle veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, true, false, false);
+			Vehicle veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, false, false);
 			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
 
 			script::get_current()->yield();

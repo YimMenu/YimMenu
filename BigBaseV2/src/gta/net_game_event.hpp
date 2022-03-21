@@ -15,7 +15,7 @@ namespace rage
 			m_data = data;
 			m_f8 = 0;
 			m_maxBit = size * 8;
-			m_unkBit = 0;
+			m_bitsRead = 0;
 			m_curBit = 0;
 			m_unk2Bit = 0;
 			m_flagBits = 0;
@@ -23,7 +23,7 @@ namespace rage
 
 		inline uint32_t GetPosition()
 		{
-			return m_unkBit;
+			return m_bitsRead;
 		}
 
 		inline bool Seek(uint32_t bits)
@@ -34,7 +34,7 @@ namespace rage
 
 				if (bits <= length)
 				{
-					m_unkBit = bits;
+					m_bitsRead = bits;
 				}
 			}
 
@@ -132,10 +132,12 @@ namespace rage
 		void* m_data; //0x0000
 		uint32_t m_f8; //0x0008
 		uint32_t m_maxBit; //0x000C
-		uint32_t m_unkBit; //0x0010
+		uint32_t m_bitsRead; //0x0010
 		uint32_t m_curBit; //0x0014
 		uint32_t m_unk2Bit; //0x0018
 		uint8_t m_flagBits; //0x001C
+		char pad_0x01D[3];
+		uint32_t m_f20;
 	};
 
 	class netGameEvent

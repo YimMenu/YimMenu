@@ -34,7 +34,10 @@ namespace big
 			{
 				const std::unique_ptr<player>& plyr = item.second;
 
-				if (plyr->id() == gta_util::get_network_player_mgr()->m_local_net_player->m_player_id || !plyr->is_valid() || plyr->get_ped() == nullptr) continue;
+				if (plyr->id() == gta_util::get_network_player_mgr()->m_local_net_player->m_player_id ||
+					!plyr->is_valid() || 
+					!plyr->get_ped() || 
+					!plyr->get_ped()->m_navigation) continue;
 
 				rage::fvector3& player_pos = plyr->get_ped()->m_navigation->m_position;
 

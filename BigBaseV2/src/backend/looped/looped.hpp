@@ -13,12 +13,11 @@ namespace big
 		static void tunables_no_idle_kick();
 
 		static void player_never_wanted();
-		static void player_specate();
+		static void player_spectate();
 
 		static void protections_replay_interface();
 
 		static void self_clean_player();
-		static void self_frame_flags();
 		static void self_free_cam();
 		static void self_godmode();
 		static void self_invisibility();
@@ -27,6 +26,8 @@ namespace big
 		static void self_off_radar();
 		static void self_police();
 		static void self_super_run();
+
+		static void session_local_time();
 
 		static void system_update_players();
 		static void system_update_pointers();
@@ -39,6 +40,7 @@ namespace big
 		static void vehicle_ls_customs();
 		static void vehicle_speedo_meter();
 
+		static void weapons_ammo_special_type();
 		static void weapons_cage_gun();
 		static void weapons_delete_gun();
 		static void weapons_force_crosshairs();

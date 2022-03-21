@@ -20,6 +20,11 @@ namespace big
 			if (ImGui::Button("Save"))
 				g_globals_service->save();
 
+			components::button("Network Bail", []
+			{
+				NETWORK::NETWORK_BAIL(16, 0, 0);
+			});
+
 			ImGui::SameLine();
 			if (ImGui::Button("Add Global"))
 			{
