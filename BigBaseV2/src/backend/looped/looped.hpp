@@ -13,7 +13,7 @@ namespace big
 		static void tunables_no_idle_kick();
 
 		static void player_never_wanted();
-		static void player_specate();
+		static void player_spectate();
 
 		static void protections_replay_interface();
 

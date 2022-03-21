@@ -1,7 +1,6 @@
 #include "gta_util.hpp"
 #include "friends_service.hpp"
 #include "player_service.hpp"
-#include "util/notify.hpp"
 
 namespace big
 {
@@ -137,7 +136,6 @@ namespace big
 	void player_service::player_join(CNetGamePlayer* net_game_player)
 	{
 		if (net_game_player == nullptr) return;
-		notify::player_joined(net_game_player);
 
 		std::unique_ptr<player> plyr = std::make_unique<player>(net_game_player);
 		plyr->m_is_friend = friends_service::is_friend(plyr);
