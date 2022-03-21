@@ -203,14 +203,14 @@ namespace big
 						g_pointers->m_trigger_script_event(1, args, 3, 1 << g_player_service->get_selected()->id());
 					}QUEUE_JOB_END_CLAUSE
 				}
-				ImGui::TreePop();
-			}
-				});
-
 				components::button("Taze", [] {
 					toxic::taze_player(g_player_service->get_selected()->id());
-				});
+					});
+				ImGui::TreePop();
 			}
+
+				
+			
 		}
 	}
 }
