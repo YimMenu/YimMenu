@@ -19,6 +19,8 @@ namespace big
 		ImGui::Checkbox("Preview", &g->spawn.preview_vehicle);
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn In", &g->spawn.spawn_inside);
+		ImGui::SameLine();
+		ImGui::Checkbox("Spawn Maxed", &g->spawn.spawn_maxed);
 
 		components::input_text_with_hint("Model Name", "Search", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, []
 		{
@@ -27,6 +29,16 @@ namespace big
 
 			if (g->spawn.spawn_inside)
 				PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
+
+			if (g->spawn.spawn_maxed)
+			{
+				VEHICLE::SET_VEHICLE_MOD_KIT(veh, 0);
+				for (int i = 0; i < 50; i++)
+				{
+					VEHICLE::SET_VEHICLE_MOD(veh, i, VEHICLE::GET_NUM_VEHICLE_MODS(veh, i) - 1, false);
+				}
+			}
+
 		});
 		if (ImGui::ListBoxHeader("###vehicles", { ImGui::GetWindowWidth(), ImGui::GetWindowHeight() }))
 		{
@@ -59,6 +71,16 @@ namespace big
 
 							if (g->spawn.spawn_inside)
 								PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
+
+							if (g->spawn.spawn_maxed)
+							{
+								VEHICLE::SET_VEHICLE_MOD_KIT(veh, 0);
+								for (int i = 0; i < 50; i++)
+								{
+									VEHICLE::SET_VEHICLE_MOD(veh, i, VEHICLE::GET_NUM_VEHICLE_MODS(veh, i) - 1, false);
+								}
+							}
+
 						});
 
 						if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
