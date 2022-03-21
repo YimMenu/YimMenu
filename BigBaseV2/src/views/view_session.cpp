@@ -80,7 +80,11 @@ namespace big
 
 			if (ImGui::ListBox("", &g->session.local_weather, session::weathers, 15))
 			{
-				session::local_weather();
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					session::local_weather();
+				}
+				QUEUE_JOB_END_CLAUSE
 			}
 
 			ImGui::TreePop();
