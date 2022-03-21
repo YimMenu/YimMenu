@@ -22,6 +22,8 @@ namespace big::session
 
 	void local_weather()
 	{
+		MISC::CLEAR_OVERRIDE_WEATHER();
+
 		MISC::SET_OVERRIDE_WEATHER(weathers[g->session.local_weather]);
 
 		*script_global(262145).at(4723).as<bool*>() = g->session.local_weather == 13;

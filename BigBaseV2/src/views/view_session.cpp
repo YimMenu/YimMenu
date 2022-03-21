@@ -71,20 +71,18 @@ namespace big
 		{
 			if (ImGui::Button("Clear Override"))
 			{
-				QUEUE_JOB_BEGIN_CLAUSE()
+				g_fiber_pool->queue_job([]
 				{
 					MISC::CLEAR_OVERRIDE_WEATHER();
-				}
-				QUEUE_JOB_END_CLAUSE
+				});
 			}
 
 			if (ImGui::ListBox("", &g->session.local_weather, session::weathers, 15))
 			{
-				QUEUE_JOB_BEGIN_CLAUSE()
+				g_fiber_pool->queue_job([]
 				{
 					session::local_weather();
-				}
-				QUEUE_JOB_END_CLAUSE
+				});
 			}
 
 			ImGui::TreePop();
