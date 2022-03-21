@@ -127,7 +127,7 @@ namespace big
 
 		// Received Event Signatures START
 		// Received Event Hook
-		main_batch.add("REH", "66 41 83 F9 ? 0F 83 ? ? ? ?", [this](memory::handle ptr)
+		main_batch.add("REH", "66 41 83 F9 ? 0F 83", [this](memory::handle ptr)
 		{
 			m_received_event = ptr.as<decltype(m_received_event)>();
 		});

@@ -1,5 +1,4 @@
 #include "hooking.hpp"
-#include "natives.hpp"
 
 namespace big
 {
@@ -8,13 +7,17 @@ namespace big
 		switch (net_event->m_stat)
 		{
 		case RAGE_JOAAT("MPPLY_GAME_EXPLOITS"):
-		case RAGE_JOAAT("MPPLY_VC_HATE"):
 		case RAGE_JOAAT("MPPLY_EXPLOITS"):
+		case RAGE_JOAAT("MPPLY_VC_HATE"):
 		case RAGE_JOAAT("MPPLY_TC_ANNOYINGME"):
 		case RAGE_JOAAT("MPPLY_TC_HATE"):
-			std::string report = fmt::format("From: {}", sender->get_name());
+			const std::string report = fmt::format("From: {}", sender->get_name());
 
-			g_notification_service->push_warning("BLOCKED REPORT", report);
+			if (g->notifications.reports.log)
+				LOG(INFO) << "Blocked report; " << report;
+
+			if (g->notifications.reports.notify)
+				g_notification_service->push_warning("BLOCKED REPORT", report);
 
 			return true;
 		}
