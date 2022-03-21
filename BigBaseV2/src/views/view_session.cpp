@@ -66,5 +66,14 @@ namespace big
 
 			ImGui::TreePop();
 		}
+		if (ImGui::TreeNode("Local Weather"))
+		{
+			//ImGui::Text("BLIZZARD");
+			components::button("BLIZZARD", [] {
+				session::local_weather();
+				});
+
+		ImGui::TreePop();
+		}
 	}
 }
