@@ -84,4 +84,21 @@ namespace big::vehicle
 
 		return -1;
 	}
+
+	inline void telport_into_veh(Vehicle veh)
+	{
+		PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
+	}
+
+	inline void max_vehicle(Vehicle veh)
+	{
+		VEHICLE::SET_VEHICLE_MOD_KIT(veh, 0);
+		for (int i = 0; i < 50; i++)
+		{
+			VEHICLE::SET_VEHICLE_MOD(veh, i, VEHICLE::GET_NUM_VEHICLE_MODS(veh, i) - 1, true);
+			//VEHICLE::SET_VEHICLE_WINDOW_TINT(veh, 1);
+
+		}
+	}
+
 }

@@ -70,15 +70,13 @@ namespace big
 							const Vehicle veh = vehicle::spawn(item["Name"], location, 0.f);
 
 							if (g->spawn.spawn_inside)
-								PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
+							{
+								vehicle::telport_into_veh(veh);
+							}
 
 							if (g->spawn.spawn_maxed)
 							{
-								VEHICLE::SET_VEHICLE_MOD_KIT(veh, 0);
-								for (int i = 0; i < 50; i++)
-								{
-									VEHICLE::SET_VEHICLE_MOD(veh, i, VEHICLE::GET_NUM_VEHICLE_MODS(veh, i) - 1, false);
-								}
+								vehicle::max_vehicle(veh);
 							}
 
 						});
