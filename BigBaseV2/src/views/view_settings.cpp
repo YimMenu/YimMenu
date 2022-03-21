@@ -62,7 +62,6 @@ namespace big
 			ImGui::Checkbox("Transaction Error", &g->protections.script_events.transaction_error);
 			ImGui::Checkbox("Vehicle Kick", &g->protections.script_events.vehicle_kick);
 			ImGui::EndGroup();
-
 			ImGui::TreePop();
 		}
 
