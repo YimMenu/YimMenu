@@ -24,7 +24,7 @@ namespace big
 					ped::steal_outfit(
 						PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
 					);
-				});
+					});
 
 				ImGui::SameLine();
 
@@ -32,11 +32,11 @@ namespace big
 					ped::steal_identity(
 						PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
 					);
-				});
+					});
 
 				components::button("Clear Wanted Level", [] {
 					toxic::clear_wanted_player(g_player_service->get_selected()->id());
-				});
+					});
 
 				ImGui::SameLine();
 
@@ -206,11 +206,7 @@ namespace big
 				components::button("Taze", [] {
 					toxic::taze_player(g_player_service->get_selected()->id());
 					});
-				ImGui::TreePop();
-			}
-
-				
-			
+			}	
 		}
 	}
 }

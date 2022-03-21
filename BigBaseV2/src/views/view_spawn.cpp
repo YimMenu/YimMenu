@@ -7,7 +7,7 @@
 
 namespace big
 {
-	static char model[25];
+	static char model[25] = "";
 	const char* category[] = { "Boats", "Commercials", "Compacts", "Coupes" , "Cycles" , "Emergency" , "Helicopters" , "Industrial" , "Military" , "Motorcycles" , "Muscle" , "Off-Road" ,
 		"Open Wheel" , "Planes" , "SUVs", "Sedans" , "Service" , "Sports" , "Sports Classic" , "Super" , "Trailer" , "Trains", "Utility", "Vans" , "Beach Bum" , "Valentine's Day"
 	, "Business" , "High Life" , "Hipster" , "Independence Day" , "Festive Surprise", "Next Gen", "LTS", "Flight School", "Lowriders", "Ill-Gotten Gains", "Powerful"
@@ -453,13 +453,13 @@ namespace big
 		ImGui::Checkbox("Spawn In", &g->spawn.spawn_inside);
 
 		components::input_text_with_hint("Model Name", "Search", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, []
-		{
-			const auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(), 2.f, 2.f, 0.f);
-			const Vehicle veh = vehicle::spawn(model, location, g_local_player->m_player_info->m_ped->m_navigation->m_heading + 90.f);
+			{
+				const auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(), 2.f, 2.f, 0.f);
+				const Vehicle veh = vehicle::spawn(model, location, g_local_player->m_player_info->m_ped->m_navigation->m_heading + 90.f);
 
-			if (g->spawn.spawn_inside)
-				PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
-		});
+				if (g->spawn.spawn_inside)
+					PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
+			});
 		if (ImGui::ListBoxHeader("###vehicles", { ImGui::GetWindowWidth(), ImGui::GetWindowHeight() }))
 		{
 			if (!g_vehicle_preview_service->get_vehicle_list().is_null())
@@ -485,13 +485,13 @@ namespace big
 						does_search_match(manufacturer, search))
 					{
 						components::selectable(item["DisplayName"], item["Name"] == search, [&item]
-						{
-							const auto location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
-							const Vehicle veh = vehicle::spawn(item["Name"], location, 0.f);
+							{
+								const auto location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+								const Vehicle veh = vehicle::spawn(item["Name"], location, 0.f);
 
-							if (g->spawn.spawn_inside)
-								PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
-						});
+								if (g->spawn.spawn_inside)
+									PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
+							});
 
 						if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
 							g_vehicle_preview_service->set_preview_vehicle(item);
@@ -500,6 +500,7 @@ namespace big
 			}
 			else ImGui::Text("No vehicles in registry.");
 		}
+	
 
 		ImGui::Separator();
 		persist_car::do_presentation_layer();
