@@ -47,7 +47,6 @@ namespace big
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::self_clean_player();
-			looped::self_frame_flags();
 			looped::self_free_cam();
 			looped::self_godmode();
 			looped::self_invisibility();
@@ -55,6 +54,11 @@ namespace big
 			looped::self_off_radar();
 			looped::self_police();
 			looped::self_super_run();
+		}QUEUE_JOB_END_CLAUSE
+
+		QUEUE_JOB_BEGIN_CLAUSE()
+		{
+			looped::session_local_time();
 		}QUEUE_JOB_END_CLAUSE
 
 		QUEUE_JOB_BEGIN_CLAUSE()
@@ -70,6 +74,7 @@ namespace big
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
+			looped::weapons_ammo_special_type();
 			looped::weapons_cage_gun();
 			looped::weapons_delete_gun();
 			looped::weapons_force_crosshairs();

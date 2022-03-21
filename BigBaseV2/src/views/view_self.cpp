@@ -47,25 +47,6 @@ namespace big
 			ImGui::TreePop();
 		}
 
-		if (ImGui::TreeNode("Frame Flags"))
-		{
-			ImGui::BeginGroup();
-
-			ImGui::Checkbox("Explosive Ammo", &g->self.frame_flags.explosive_ammo);
-			ImGui::Checkbox("Fire Ammo", &g->self.frame_flags.fire_ammo);
-
-			ImGui::EndGroup();
-			ImGui::SameLine();
-			ImGui::BeginGroup();
-
-			ImGui::Checkbox("Explosive Melee", &g->self.frame_flags.explosive_melee);
-			ImGui::Checkbox("Super Jump", &g->self.frame_flags.super_jump);
-
-			ImGui::EndGroup();
-
-			ImGui::TreePop();
-		}
-
 		if (ImGui::TreeNode("Player Model"))
 		{
 			static char model[32];

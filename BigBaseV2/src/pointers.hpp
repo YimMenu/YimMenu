@@ -55,6 +55,9 @@ namespace big
 
 		IDXGISwapChain **m_swapchain{};
 
+		int* m_resolution_x;
+		int* m_resolution_y;
+
 		PVOID m_blame_explode;
 		PVOID m_model_spawn_bypass;
 		PVOID m_native_return;
@@ -73,6 +76,7 @@ namespace big
 		PVOID m_gta_thread_kill{};
 
 		PVOID m_network_player_mgr_shutdown;
+		PVOID m_net_array_handler;
 
 		PVOID m_player_has_joined{};
 		PVOID m_player_has_left{};
