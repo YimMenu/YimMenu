@@ -93,11 +93,16 @@ namespace big::vehicle
 	inline void max_vehicle(Vehicle veh)
 	{
 		VEHICLE::SET_VEHICLE_MOD_KIT(veh, 0);
+		VEHICLE::TOGGLE_VEHICLE_MOD(veh, 17 /* UNK17 */, TRUE);
+		VEHICLE::TOGGLE_VEHICLE_MOD(veh, 18 /* Turbo */, TRUE);
+		VEHICLE::TOGGLE_VEHICLE_MOD(veh, 19 /* UNK19 */, TRUE);
+		VEHICLE::TOGGLE_VEHICLE_MOD(veh, 20 /* Tire Smoke */, TRUE);
+		VEHICLE::TOGGLE_VEHICLE_MOD(veh, 17 /* UNK21 */, TRUE);
+		VEHICLE::TOGGLE_VEHICLE_MOD(veh, 17 /* Xenon Headlights */, TRUE);
+		VEHICLE::SET_VEHICLE_WINDOW_TINT(veh, 1);
 		for (int i = 0; i < 50; i++)
 		{
 			VEHICLE::SET_VEHICLE_MOD(veh, i, VEHICLE::GET_NUM_VEHICLE_MODS(veh, i) - 1, true);
-			//VEHICLE::SET_VEHICLE_WINDOW_TINT(veh, 1);
-
 		}
 	}
 
