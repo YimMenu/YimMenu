@@ -42,7 +42,7 @@ namespace big
 
 		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
 
-		static bool net_array_handler(__int64 netArrayHandlerBaseMgr, unsigned __int8* a2, rage::datBitBuffer* datbitbuffer, unsigned int bytes_to_read, __int16 a5);
+		static bool net_array_handler(__int64 netArrayHandlerBaseMgr, CNetGamePlayer* a2, rage::datBitBuffer* datbitbuffer, unsigned int bytes_to_read, __int16 a5);
 
 		static void player_join(CNetworkObjectMgr* _this, CNetGamePlayer* net_player);
 		static void player_leave(CNetworkObjectMgr* _this, CNetGamePlayer* net_player);
