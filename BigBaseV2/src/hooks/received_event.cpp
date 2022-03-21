@@ -1,7 +1,6 @@
 #include "gta/enums.hpp"
 #include "gta/net_game_event.hpp"
 #include "hooking.hpp"
-#include "natives.hpp"
 
 namespace big
 {

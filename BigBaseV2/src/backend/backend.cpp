@@ -2,7 +2,6 @@
 #include "backend.hpp"
 #include "fiber_pool.hpp"
 #include "looped/looped.hpp"
-#include "pointers.hpp"
 #include "script.hpp"
 #include "thread_pool.hpp"
 
@@ -57,7 +56,7 @@ namespace big
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::player_never_wanted();
-			looped::player_specate();
+			looped::player_spectate();
 		}QUEUE_JOB_END_CLAUSE
 
 		QUEUE_JOB_BEGIN_CLAUSE()
