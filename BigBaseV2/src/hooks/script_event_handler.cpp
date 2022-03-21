@@ -1,123 +1,181 @@
 #include "hooking.hpp"
-#include "gta/enums.hpp"
 
 namespace big
 {
+	void format_string(std::string_view player_name, std::string_view protection_type, bool should_log, bool should_notify)
+	{
+		if (should_log)
+			LOG(WARNING) << "BLOCKED_SCRIPT_EVENT";
+
+		if (should_notify)
+			g_notification_service->push_warning("Script Event Protection",
+				fmt::format("From: {}\nEvent Type: {}", player_name.data(), protection_type.data())
+			);
+	}
+
 	bool hooks::scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player)
 	{
 		auto args = scripted_game_event->m_args;
 
-		eRemoteEvent hash = (eRemoteEvent)args[0];
+		const eRemoteEvent hash = static_cast<eRemoteEvent>(args[0]);
+		const char* player_name = player->get_name();
 
-		char type[32] = "";
-
+		const auto& notify = g->notifications.script_event_handler;
 
 		switch (hash)
 		{
 		case eRemoteEvent::Bounty:
 			if (g->protections.script_events.bounty)
-				strcpy(type, "Bounty");
+			{
+				format_string(player_name, "Bounty", notify.bounty.log, notify.bounty.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::CeoBan:
 			if (g->protections.script_events.ceo_ban)
-				strcpy(type, "Ceo Ban");
+			{
+				format_string(player_name, "Ceo Ban", notify.ceo_ban.log, notify.ceo_ban.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::CeoKick:
 			if (g->protections.script_events.ceo_kick)
-				strcpy(type, "Ceo Kick");
+			{
+				format_string(player_name, "Ceo Kick", notify.ceo_kick.log, notify.ceo_kick.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::CeoMoney:
 			if (g->protections.script_events.ceo_money)
-				strcpy(type, "Ceo Money");
+			{
+				format_string(player_name, "Ceo Money", notify.ceo_money.log, notify.ceo_money.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::ClearWantedLevel:
 			if (g->protections.script_events.clear_wanted_level)
-				strcpy(type, "Clear Wanted Level");
+			{
+				format_string(player_name, "Clear Wanted Level", notify.clear_wanted_level.log, notify.clear_wanted_level.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::FakeDeposit:
 			if (g->protections.script_events.fake_deposit)
-				strcpy(type, "Deposit");
+			{
+				format_string(player_name, "Fake Deposit", notify.fake_deposit.log, notify.fake_deposit.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::ForceMission:
 			if (g->protections.script_events.force_mission)
-				strcpy(type, "Force Mission");
+			{
+				format_string(player_name, "Force Mission", notify.force_mission.log, notify.force_mission.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::GtaBanner:
 			if (g->protections.script_events.gta_banner)
-				strcpy(type, "GTA Banner");
+			{
+				format_string(player_name, "GTA Banner", notify.gta_banner.log, notify.gta_banner.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::NetworkBail:
 			if (g->protections.script_events.network_bail)
-				strcpy(type, "Network Bail");
+			{
+				format_string(player_name, "Network Bail", notify.network_bail.log, notify.network_bail.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::PersonalVehicleDestroyed:
 			if (g->protections.script_events.personal_vehicle_destroyed)
-				strcpy(type, "Personal Vehicle Destroyed");
+			{
+				format_string(player_name, "Personal Vehicle Destroyed", notify.personal_vehicle_destroyed.log, notify.personal_vehicle_destroyed.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::RemoteOffradar:
 			if (g->protections.script_events.remote_off_radar)
-				strcpy(type, "Remote Off Radar");
+			{
+				format_string(player_name, "Off Radar", notify.remote_off_radar.log, notify.remote_off_radar.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::RotateCam:
 			if (g->protections.script_events.rotate_cam)
-				strcpy(type, "Rotate Cam");
+			{
+				format_string(player_name, "Rotate Cam", notify.rotate_cam.log, notify.rotate_cam.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::SendToCutscene:
 			if (g->protections.script_events.send_to_cutscene)
-				strcpy(type, "Send To Cutscene");
+			{
+				format_string(player_name, "Send to Cutscene", notify.send_to_cutscene.log, notify.send_to_cutscene.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::SendToIsland:
 			if (g->protections.script_events.send_to_island)
-				strcpy(type, "Send To Island");
+			{
+				format_string(player_name, "Send to Island", notify.send_to_island.log, notify.send_to_island.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::SoundSpam:
 			if (g->protections.script_events.sound_spam)
-				strcpy(type, "Sound Spam");
+			{
+				format_string(player_name, "Sound Spamn", notify.sound_spam.log, notify.sound_spam.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::Spectate:
 			if (g->protections.script_events.spectate)
-				strcpy(type, "Specate");
+			{
+				format_string(player_name, "Spectate", notify.spectate.log, notify.spectate.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::Teleport:
 			if (g->protections.script_events.force_teleport)
-				strcpy(type, "Force Teleport");
+			{
+				format_string(player_name, "Apartment Invite", notify.force_teleport.log, notify.force_teleport.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::TransactionError:
 			if (g->protections.script_events.transaction_error)
-				strcpy(type, "Transaction Error");
+			{
+				format_string(player_name, "Transaction Error", notify.transaction_error.log, notify.transaction_error.notify);
 
+				return true;
+			}
 			break;
 		case eRemoteEvent::VehicleKick:
 			if (g->protections.script_events.vehicle_kick)
-				strcpy(type, "Vehicle Kick");
+			{
+				format_string(player_name, "Vehicle Kick", notify.vehicle_kick.log, notify.vehicle_kick.notify);
 
+				return true;
+			}
 			break;
-		}
-
-		if (strlen(type) != 0)
-		{
-			g_notification_service->push_warning("Protection",
-				fmt::format("BLOCKED SCRIPT EVENT\nFrom: {}\nEvent Type: {}", player->get_name(), type)
-			);
-
-			return true;
 		}
 
 		if (g->debug.script_event_logging)

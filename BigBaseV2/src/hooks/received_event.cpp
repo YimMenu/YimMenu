@@ -33,10 +33,14 @@ namespace big
 			if (source_player->m_player_id < 32)
 			{
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-				
-				g_notification_service->push_warning("Protection",
-					fmt::format("{} possible attempt at freezing entity.", source_player->get_name())
-				);
+
+				if (g->notifications.received_event.clear_ped_task.log)
+					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent CLEAR_PED_TASKS event.";
+
+				if (g->notifications.received_event.clear_ped_task.notify)
+					g_notification_service->push_warning("Protection",
+						fmt::format("{} possible attempt at freezing entity.", source_player->get_name())
+					);
 
 				return false;
 			}
@@ -55,9 +59,13 @@ namespace big
 
 			if (money >= 2000)
 			{
-				g_notification_service->push_warning("Protection",
-					fmt::format("{} is spawning cash.", source_player->get_name())
-				);
+				if (g->notifications.received_event.report_cash_spawn.log)
+					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent REPORT_CASH_SPAWN event.";
+
+				if (g->notifications.received_event.report_cash_spawn.notify)
+					g_notification_service->push_warning("Protection",
+						fmt::format("{} is spawning cash.", source_player->get_name())
+					);
 			}
 
 			break;
@@ -66,40 +74,30 @@ namespace big
 		case RockstarEvent::NETWORK_CHECK_CODE_CRCS_EVENT:
 		case RockstarEvent::REPORT_MYSELF_EVENT:
 		{
-			g_notification_service->push_warning("Protection",
-				fmt::format("Detected {} as cheating.", source_player->get_name())
-			);
+			if (g->notifications.received_event.modder_detect.log)
+				LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent modder event.";
+
+			if (g->notifications.received_event.modder_detect.notify)
+				g_notification_service->push_warning("Protection",
+					fmt::format("Detected {} as cheating.", source_player->get_name())
+				);
 
 			break;
 		}
 		case RockstarEvent::REQUEST_CONTROL_EVENT:
 		{
 			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-			
-			g_notification_service->push_warning("Protection",
-				fmt::format("Denied player control request from {}", source_player->get_name())
-			);
+
+			if (g->notifications.received_event.request_control_event.log)
+				LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent modder event.";
+
+			if (g->notifications.received_event.request_control_event.notify)
+				g_notification_service->push_warning("Protection",
+					fmt::format("Denied player control request from {}", source_player->get_name())
+				);
 
 			return false;
 		}
-		//case RockstarEvent::GIVE_PICKUP_REWARDS_EVENT:
-		//{
-		//	uint32_t amount, hash;
-		//	buffer->ReadDword(&amount, 3);
-		//	buffer->ReadDword(&hash, 32);
-
-		//	if (func::is_crash_reward(hash) && func::is_crash_pickup(hash))
-		//	{
-		//		g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
-		//		notify::blocked_event(event_name, source_player->player_id);
-
-		//		return false;
-		//	}
-		//	buffer->Seek(0);
-
-		//	return true;
-		//}
 		}
 
 		return g_hooking->m_received_event_hook.get_original<decltype(&received_event)>()(event_manager, source_player, target_player, event_id, event_index, event_handled_bitset, bit_buffer_size, bit_buffer);

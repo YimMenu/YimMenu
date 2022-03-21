@@ -7,8 +7,6 @@ namespace big
 		// check so we're 100% sure we modify data only for ourselves
 		if (g_local_player->m_player_info->m_net_player_data.m_rockstar_id == player->m_rockstar_id)
 		{
-			LOG(INFO) << "HOOKS | Sending spoofed values to lobby.";
-
 			if (g->spoofing.spoof_username)
 				memcpy(player->m_name, g->spoofing.username.c_str(), sizeof(player->m_name));
 
@@ -25,6 +23,11 @@ namespace big
 				player->m_rockstar_id = g->spoofing.rockstar_id;
 				player->m_rockstar_id2 = g->spoofing.rockstar_id;
 			}
+
+			if (g->notifications.send_net_info_to_lobby.log)
+				LOG(INFO) << "Sending spoofed values to session host";
+			if (g->notifications.send_net_info_to_lobby.notify)
+				g_notification_service->push("Player Info Spoofing", "Sent spoofed values to lobby host.");
 		}
 
 		return g_hooking->m_send_net_info_to_lobby.get_original<decltype(&hooks::send_net_info_to_lobby)>()(player, a2, a3, a4);
