@@ -1,3 +1,4 @@
+#include "fiber_pool.hpp"
 #include "util/session.hpp"
 #include "views/view.hpp"
 
@@ -68,12 +69,21 @@ namespace big
 		}
 		if (ImGui::TreeNode("Local Weather"))
 		{
-			//ImGui::Text("BLIZZARD");
-			components::button("BLIZZARD", [] {
-				session::local_weather();
-				});
+			if (ImGui::Button("Clear Override"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					MISC::CLEAR_OVERRIDE_WEATHER();
+				}
+				QUEUE_JOB_END_CLAUSE
+			}
 
-		ImGui::TreePop();
+			if (ImGui::ListBox("", &g->session.local_weather, session::weathers, 15))
+			{
+				session::local_weather();
+			}
+
+			ImGui::TreePop();
 		}
 	}
 }
