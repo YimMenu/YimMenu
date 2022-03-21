@@ -32,11 +32,7 @@ namespace big
 
 			if (g->spawn.spawn_maxed)
 			{
-				VEHICLE::SET_VEHICLE_MOD_KIT(veh, 0);
-				for (int i = 0; i < 50; i++)
-				{
-					VEHICLE::SET_VEHICLE_MOD(veh, i, VEHICLE::GET_NUM_VEHICLE_MODS(veh, i) - 1, false);
-				}
+				vehicle::max_vehicle(veh);
 			}
 
 		});
