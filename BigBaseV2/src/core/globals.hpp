@@ -132,7 +132,9 @@ namespace big
 
 		struct session
 		{
+			int local_weather = 0;
 			bool override_time = {};
+			bool override_weather = false;
 			struct 
 			{
 				int hour{}, minute{}, second{}; 
