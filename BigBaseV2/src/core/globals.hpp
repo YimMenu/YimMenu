@@ -133,7 +133,9 @@ namespace big
 
 		struct session
 		{
+			int local_weather = 0;
 			bool override_time = {};
+			bool override_weather = false;
 			struct 
 			{
 				int hour{}, minute{}, second{}; 
@@ -155,6 +157,7 @@ namespace big
 		{
 			bool preview_vehicle = false;
 			bool spawn_inside = false;
+			bool spawn_maxed = false;
 		};
 
 		struct spoofing
@@ -393,6 +396,7 @@ namespace big
 
 			this->spawn.preview_vehicle = j["spawn"]["preview_vehicle"];
 			this->spawn.spawn_inside = j["spawn"]["spawn_inside"];
+			this->spawn.spawn_maxed = j["spawn"]["spawn_maxed"];
 
 			this->spoofing.spoof_ip = j["spoofing"]["spoof_ip"];
 			this->spoofing.spoof_rockstar_id = j["spoofing"]["spoof_rockstar_id"];
@@ -572,7 +576,8 @@ namespace big
 				{
 					"spawn", {
 						{ "preview_vehicle", this->spawn.preview_vehicle },
-						{ "spawn_inside", this->spawn.spawn_inside }
+						{ "spawn_inside", this->spawn.spawn_inside },
+						{ "spawn_maxed", this->spawn.spawn_maxed}
 					}
 				},
 				{
