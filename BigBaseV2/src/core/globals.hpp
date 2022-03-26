@@ -20,7 +20,7 @@ namespace big
 		struct tunables {
 			bool disable_phone = false;
 			bool no_idle_kick = false;
-			bool rig_casino = false;
+			bool rig_casino = false; 
 		};
 
 		struct notifications
@@ -147,7 +147,7 @@ namespace big
 			{
 				bool editing_menu_toggle = false;
 				int menu_toggle = VK_INSERT;
-				int teleport_waypoint = 0;
+				int teleport_waypoint = VK_F12;
 			};
 
 			hotkeys hotkeys{};

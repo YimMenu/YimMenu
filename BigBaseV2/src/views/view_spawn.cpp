@@ -3,6 +3,7 @@
 #include "natives.hpp"
 #include "services/vehicle_preview_service.hpp"
 #include "util/vehicle.hpp"
+#include "persist/PersistCar.h"
 
 namespace big
 {
@@ -16,6 +17,12 @@ namespace big
 	}
 
 	void view::spawn() {
+		if(ImGui::TreeNode("Persist Vehicle"))
+		{
+			persist_car::do_presentation_layer();
+			ImGui::TreePop();
+		}
+		ImGui::Separator();
 		ImGui::Checkbox("Preview", &g->spawn.preview_vehicle);
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn In", &g->spawn.spawn_inside);
