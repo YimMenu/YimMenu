@@ -67,7 +67,7 @@ namespace big
 			}
 
 			ImGui::PopStyleColor();
-			ImGui::End();
 		}
+		ImGui::End();
 	}
 }

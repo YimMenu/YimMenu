@@ -85,6 +85,10 @@ namespace big
 		if (last_state == eTransitionState::TRANSITION_STATE_MAX)
 			last_state = state;
 
+		// When freemode script loaded remove loading screen.
+		if (state == eTransitionState::TRANSITION_STATE_WAIT_JOIN_FM_SESSION && DLC::GET_IS_LOADING_SCREEN_ACTIVE())
+			SCRIPT::SHUTDOWN_LOADING_SCREEN();
+
 		if (last_state == state || state == eTransitionState::TRANSITION_STATE_EMPTY || state > eTransitionState::TRANSITION_STATE_DLC_INTRO_BINK)
 			return;
 
