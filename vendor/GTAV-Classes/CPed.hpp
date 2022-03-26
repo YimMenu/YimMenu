@@ -19,11 +19,11 @@ public:
 	char pad_02A4[124]; //0x02A4
 	rage::fvector3 m_velocity; //0x0320
 	char pad_032C[2564]; //0x032C
-	class CAutomobile *m_vehicle; //0x0D30
+	class CAutomobile* m_vehicle; //0x0D30
 	char pad_0D38[912]; //0x0D38
-	class CPlayerInfo *m_player_info; //0x10C8
+	class CPlayerInfo* m_player_info; //0x10C8
 	char pad_10D0[8]; //0x10D0
-	class CPedWeaponManager *m_weapon_manager; //0x10D8
+	class CPedWeaponManager* m_weapon_manager; //0x10D8
 	char pad_10E0[907]; //0x10E0
 	uint8_t m_ped_task_flag; //0x146B
 	char pad_146C[196]; //0x146C
