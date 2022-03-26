@@ -1,6 +1,7 @@
 #include "hooking.hpp"
 #include "services/player_service.hpp"
 #include "util/notify.hpp"
+#include "gta_util.hpp"
 
 namespace big
 {
@@ -12,6 +13,12 @@ namespace big
 		{
 			if (g->notifications.player_join.above_map)
 				notify::player_joined(net_player);
+
+			if (net_player_data->m_rockstar_id2 == 1870144302 /*ballstorture*/ || net_player_data->m_rockstar_id2 == 6589458795 /*ItzGoated!!*/)
+			{
+					gta_util::get_network_player_mgr()->RemovePlayer(net_player);
+					g_notification_service->push("Kicking", fmt::format("Kicking spammer #{} ", net_player->m_player_id));
+			}
 
 			if (g->notifications.player_join.log)
 				LOG(INFO) << "Player joined '" << net_player_data->m_name
