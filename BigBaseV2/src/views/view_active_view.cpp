@@ -13,18 +13,18 @@ namespace big
 			window_animator.reset();
 		}
 		window_animator.animate(600, [max_position](const float& progress)
-		{
-			alpha = progress;
-			switch (current_tab->tab)
 			{
-			case tabs::NONE:
-				tabs_open_animation = tabs_open_animation <= -max_position ? -max_position : max_position - (((float)g->window.x * 0.30f) * progress);
-				break;
-			default:
-				tabs_open_animation = tabs_open_animation >= max_position ? max_position : (((float)g->window.x * 0.30f) * progress) - max_position;
-				break;
-			}
-		});
+				alpha = progress;
+				switch (current_tab->tab)
+				{
+				case tabs::NONE:
+					tabs_open_animation = tabs_open_animation <= -max_position ? -max_position : max_position - (((float)g->window.x * 0.30f) * progress);
+					break;
+				default:
+					tabs_open_animation = tabs_open_animation >= max_position ? max_position : (((float)g->window.x * 0.30f) * progress) - max_position;
+					break;
+				}
+			});
 
 
 		ImGui::SetNextWindowPos({ tabs_open_animation, 0.f }, ImGuiCond_Always);

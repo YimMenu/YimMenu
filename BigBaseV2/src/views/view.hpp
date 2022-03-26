@@ -64,7 +64,6 @@ namespace big
 			{ tabs::SPAWN, "Spawn", view::spawn },
 			{ tabs::TELEPORT, "Teleport", view::teleport },
 			{ tabs::VEHICLE, "Vehicle", view::vehicle },
-			{ tabs::LSC, "Los Santos Customs", view::lsc },
 			{ tabs::WEAPONS, "Weapons", view::weapons },
 			{ tabs::SPOOFING, "Spoofing", view::spoofing },
 			{ tabs::SESSION, "Session", view::session },

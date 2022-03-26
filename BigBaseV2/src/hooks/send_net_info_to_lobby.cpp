@@ -5,7 +5,7 @@ namespace big
 	bool hooks::send_net_info_to_lobby(rage::netPlayerData* player, int64_t a2, int64_t a3, DWORD* a4)
 	{
 		// check so we're 100% sure we modify data only for ourselves
-		//if (g_local_player->m_player_info->m_net_player_data.m_rockstar_id == player->m_rockstar_id)
+		if (g_local_player->m_player_info->m_net_player_data.m_rockstar_id == player->m_rockstar_id)
 		{
 			if (g->spoofing.spoof_username)
 				memcpy(player->m_name, g->spoofing.username.c_str(), sizeof(player->m_name));

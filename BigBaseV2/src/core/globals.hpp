@@ -17,11 +17,11 @@ namespace big
 			bool script_event_logging = false;
 		};
 
-	struct tunables {
-		bool disable_phone = false;
-		bool no_idle_kick = false;
-		bool rig_casino = false;
-	};
+		struct tunables {
+			bool disable_phone = false;
+			bool no_idle_kick = false;
+			bool rig_casino = false;
+		};
 
 		struct notifications
 		{
@@ -68,7 +68,7 @@ namespace big
 			pair net_array_error{};
 			pair network_player_mgr_shutdown{};
 
-			struct 
+			struct
 			{
 				bool above_map = true;
 				bool log = false;
@@ -129,9 +129,6 @@ namespace big
 			bool off_radar = false;
 			bool super_run = false;
 			int wanted_level = 0;
-			bool esp = false;
-			bool aim = false;
-			bool friends = false;
 		};
 
 		struct session
@@ -139,19 +136,19 @@ namespace big
 			int local_weather = 0;
 			bool override_time = {};
 			bool override_weather = false;
-			struct 
+			struct
 			{
-				int hour{}, minute{}, second{}; 
+				int hour{}, minute{}, second{};
 			} custom_time;
 		};
 
-	struct settings {
-		struct hotkeys
-		{
-			bool editing_menu_toggle = false;
-			int menu_toggle = VK_INSERT;
-			int teleport_waypoint = VK_F12;
-		};
+		struct settings {
+			struct hotkeys
+			{
+				bool editing_menu_toggle = false;
+				int menu_toggle = VK_INSERT;
+				int teleport_waypoint = 0;
+			};
 
 			hotkeys hotkeys{};
 		};
@@ -169,7 +166,7 @@ namespace big
 			std::string username = "";
 
 			bool spoof_ip = true;
-			int ip_address[4] = { 42, 42, 42, 42};
+			int ip_address[4] = { 42, 42, 42, 42 };
 
 			bool spoof_rockstar_id = false;
 			uint64_t rockstar_id = 0;
@@ -231,9 +228,9 @@ namespace big
 		struct esp
 		{
 			bool enabled = true;
-			float global_render_distance[2] = {0.f, 600.f};
-			float tracer_render_distance[2] = {200.f, 600.f};
-			float box_render_distance[2] = {0.f, 150.f};
+			float global_render_distance[2] = { 0.f, 600.f };
+			float tracer_render_distance[2] = { 200.f, 600.f };
+			float box_render_distance[2] = { 0.f, 150.f };
 			bool tracer = true;
 			bool box = true;
 			bool health = true;
@@ -393,8 +390,6 @@ namespace big
 			this->self.never_wanted = j["self"]["never_wanted"];
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
-			this->self.aim = j["self"]["aim"];
-			this->self.esp = j["self"]["esp"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
 
@@ -563,8 +558,6 @@ namespace big
 						{ "godmode", this->self.godmode },
 						{ "invisibility", this->self.invisibility },
 						{ "never_wanted", this->self.never_wanted },
-						{ "aim", this->self.aim },
-						{ "esp", this->self.esp },
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
 						{ "super_run", this->self.super_run }
@@ -621,7 +614,7 @@ namespace big
 						{ "ammo_special", {
 							{ "toggle", this->weapons.ammo_special.toggle },
 							{ "type", (int)this->weapons.ammo_special.type },
-								
+
 							}
 						},
 						{ "custom_weapon", (int)this->weapons.custom_weapon },
@@ -677,7 +670,7 @@ namespace big
 			if (deep_compare(this->options, j, true))
 				this->save();
 		}
-	
+
 		bool load()
 		{
 			this->default_options = this->to_json();

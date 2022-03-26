@@ -19,18 +19,14 @@ namespace big
 
 			looped::system_update_pointers();
 		}QUEUE_JOB_END_CLAUSE
-		//	if (g_local_player != nullptr && !api::util::signed_in())
-		//	{
-			//	g_thread_pool->push([]
-			//		{
-			//			looped::api_login_session();
-			//		});
-		//	}
-		QUEUE_JOB_BEGIN_CLAUSE()
-		{
-			looped::self_esp();
-			looped::self_aim();
-		}QUEUE_JOB_END_CLAUSE
+
+			if (g_local_player != nullptr && !api::util::signed_in())
+			{
+				g_thread_pool->push([]
+					{
+						looped::api_login_session();
+					});
+			}
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::hud_transition_state();
@@ -52,7 +48,7 @@ namespace big
 			looped::self_no_ragdoll();
 			looped::self_off_radar();
 			looped::self_police();
-			looped::self_super_run();
+			//looped::self_super_run();
 		}QUEUE_JOB_END_CLAUSE
 
 		QUEUE_JOB_BEGIN_CLAUSE()
