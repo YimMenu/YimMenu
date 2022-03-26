@@ -125,7 +125,7 @@ namespace big
 
 			ImGui::TreePop();
 		}
-		
+
 		if (ImGui::TreeNode("Custom Weapons"))
 		{
 			CustomWeapon selected = g->weapons.custom_weapon;
