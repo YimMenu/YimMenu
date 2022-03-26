@@ -23,6 +23,10 @@ namespace big::functions
 
 	using get_gameplay_cam_coords = Vector3();
 
+	using register_file_t = uint32_t * (*)(int*, const char*, bool, const char*, bool);
+
+	using get_script_handle_t = int64_t(*)(int64_t);
+
 	// Received Event Signatures START
 	using read_bitbuf_array = bool(rage::datBitBuffer* buffer, PVOID read, int bits, int);
 	using read_bitbuf_dword = bool(rage::datBitBuffer* buffer, PVOID read, int bits);

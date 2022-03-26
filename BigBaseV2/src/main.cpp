@@ -9,6 +9,8 @@
 #include "renderer.hpp"
 #include "script_mgr.hpp"
 #include "thread_pool.hpp"
+#include "shv_runner.hpp"
+#include "asi_loader/asi_loader.hpp"
 
 #include "native_hooks/native_hooks.hpp"
 #include "services/globals_service.hpp"
@@ -74,7 +76,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
+				g_script_mgr.add_script(std::make_unique<script>(&shv_runner::script_func));
 				LOG(INFO) << "Scripts registered.";
+
 
 				auto native_hooks_instance = std::make_unique<native_hooks>();
 				LOG(INFO) << "Dynamic native hooker initialized.";
@@ -83,6 +87,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				LOG(INFO) << "Hooking enabled.";
 
 				g_running = true;
+
+				asi_loader::initialize();
 
 				while (g_running)
 					std::this_thread::sleep_for(500ms);
@@ -127,6 +133,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				pointers_instance.reset();
 				LOG(INFO) << "Pointers uninitialized.";
+
+				shv_runner::shutdown();
+				LOG(INFO) << "ASI plugins unloaded.";
 			}
 			catch (std::exception const &ex)
 			{
