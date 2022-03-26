@@ -97,6 +97,7 @@ namespace big::vehicle
 		VEHICLE::TOGGLE_VEHICLE_MOD(veh, 20 /* Tire Smoke */, TRUE);
 		VEHICLE::TOGGLE_VEHICLE_MOD(veh, 17 /* Xenon Headlights */, TRUE);
 		VEHICLE::SET_VEHICLE_WINDOW_TINT(veh, 1);
+		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(veh, false);
 		for (int i = 0; i < 50; i++)
 		{
 			VEHICLE::SET_VEHICLE_MOD(veh, i, VEHICLE::GET_NUM_VEHICLE_MODS(veh, i) - 1, true);
