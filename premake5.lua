@@ -148,7 +148,7 @@ workspace "BigBaseV2"
 		if(file == nil) then
 			premake.error("Failed to locate vendor directories. Try doing git pull --recurse-submodules.")
 		end
-		file:write("// AUTO GENERATED MACRO DEFINITIONS FOR G3LOG\n\n\n/* ==========================================================================\n*2015 by KjellKod.cc. This is PUBLIC DOMAIN to use at your own risk and comes\n* with no warranties. This code is yours to share, use and modify with no\n\n*strings attached and no restrictions or obligations.\n* \n* For more information see g3log/LICENSE or refer refer to http://unlicense.org\n\n*============================================================================*/\n#pragma once\n\n\n// CMake induced definitions below. See g3log/Options.cmake for details.");
+		file:write("#pragma once");
 	end
 	
     files
@@ -161,6 +161,23 @@ workspace "BigBaseV2"
 	{
 	  "vendor/%{prj.name}/src/crashhandler_unix.cpp"
 	}
+
+    DeclareMSVCOptions()
+    DeclareDebugOptions()
+	
+  project "cpp-url"
+    location "vendor/%{prj.name}"
+    kind "StaticLib"
+    language "C++"
+
+    targetdir ("bin/lib/" .. outputdir)
+    objdir ("bin/lib/int/" .. outputdir .. "/%{prj.name}")
+
+    files
+    {
+      "vendor/%{prj.name}/url.hpp",
+	  "vendor/%{prj.name}/url.cpp",
+    }
 
     DeclareMSVCOptions()
     DeclareDebugOptions()
@@ -193,6 +210,8 @@ workspace "BigBaseV2"
       "%{IncludeDir.ImGuiImpl}",
       "%{IncludeDir.g3log}",
       "%{IncludeDir.GTAV_Classes}",
+	  "vendor/cpp-httplib",
+	  "vendor/cpp-url",
       "%{prj.name}/src"
     }
 
@@ -206,7 +225,8 @@ workspace "BigBaseV2"
       "fmtlib",
       "MinHook",
       "ImGui",
-      "g3log"
+      "g3log",
+	  "cpp-url"
     }
 
     pchheader "%{PrecompiledHeaderInclude}"
