@@ -21,3 +21,10 @@
 [submodule "vendor/GTAV-Classes"]
 	path = vendor/GTAV-Classes
 	url = https://github.com/Yimura/GTAV-Classes.git
+[submodule "vendor/cpp-httplib"]
+	path = vendor/cpp-httplib
+	url = https://github.com/yhirose/cpp-httplib.git
+	ignore = dirty
+[submodule "vendor/cpp-url"]
+	path = vendor/cpp-url
+	url = https://github.com/chmike/CxxUrl.git
