@@ -56,6 +56,8 @@
 
 #include "services/notification_service.hpp"
 
+#define CPPHTTPLIB_OPENSSL_SUPPORT // enable HTTPS support
+
 namespace big
 {
 	using namespace std::chrono_literals;
