@@ -28,3 +28,4 @@
 [submodule "vendor/cpp-url"]
 	path = vendor/cpp-url
 	url = https://github.com/chmike/CxxUrl.git
+	ignore = dirty
