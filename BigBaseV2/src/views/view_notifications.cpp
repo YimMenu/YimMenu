@@ -5,8 +5,8 @@ namespace big
 {
 	void view::notifications()
 	{
-		ImGui::SetNextWindowSize({ (float)g->window.x * 0.2f, (float)g->window.y });
-		ImGui::SetNextWindowPos({ (float)g->window.x - (float)g->window.x * 0.2f, 0 });
+		ImGui::SetNextWindowSize({ (float)*g_pointers->m_resolution_x * 0.2f, (float)*g_pointers->m_resolution_y });
+		ImGui::SetNextWindowPos({ (float)*g_pointers->m_resolution_x - (float)*g_pointers->m_resolution_x * 0.2f, 0 });
 		if (ImGui::Begin("notifications", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMouseInputs | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBringToFrontOnFocus))
 		{
 			std::vector<notification> notifications = g_notification_service->get();

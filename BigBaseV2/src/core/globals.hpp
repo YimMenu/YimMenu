@@ -219,9 +219,6 @@ namespace big
 			ImFont* font_small = nullptr;
 
 			bool switched_view = true;
-
-			int x;
-			int y;
 		};
 
 		struct esp
