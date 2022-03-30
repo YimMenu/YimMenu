@@ -67,6 +67,9 @@ namespace big
 		PVOID m_player_has_joined{};
 		PVOID m_player_has_left{};
 
+		PVOID m_get_player_network_id{};
+		PVOID m_join_pattern{};
+
 		functions::get_gameplay_cam_coords* m_get_gamplay_cam_coords;
 
 		functions::increment_stat_event* m_increment_stat_event{};
