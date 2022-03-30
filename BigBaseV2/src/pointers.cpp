@@ -8,6 +8,12 @@ namespace big
 	{
 		memory::pattern_batch main_batch;
 
+		main_batch.add("SCREEN_RESOLUTION", "66 0F 6E 0D ? ? ? ? 0F B7 3D", [this](memory::handle ptr)
+		{
+			m_resolution_x = ptr.sub(4).rip().as<int*>();
+			m_resolution_y = ptr.add(4).rip().as<int*>();
+		});
+
 		// Game State
 		main_batch.add("GS", "83 3D ? ? ? ? ? 75 17 8B 43 20 25", [this](memory::handle ptr)
 		{
@@ -247,12 +253,6 @@ namespace big
 		main_batch.add("NAH", "44 8B E0 89 45 F4 48 8B 03 48 8B CB FF 90", [this](memory::handle ptr)
 		{
 			m_net_array_handler = ptr.sub(0x3C).as<PVOID>();
-		});
-
-		main_batch.add("SCREEN_RESOLUTION", "66 0F 6E 0D ? ? ? ? 0F B7 3D", [this](memory::handle ptr)
-		{
-			m_resolution_x = ptr.sub(4).rip().as<int*>();
-			m_resolution_y = ptr.add(4).rip().as<int*>();
 		});
 		
 		main_batch.run(memory::module(nullptr));
