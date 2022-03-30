@@ -75,6 +75,7 @@ namespace big
 								vehicle::max_vehicle(veh);
 							}
 
+							g_vehicle_preview_service->stop_preview();
 						});
 
 						if (g->spawn.preview_vehicle && ImGui::IsItemHovered())

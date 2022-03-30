@@ -46,7 +46,7 @@ namespace big
 		
 		g_fiber_pool->queue_job([this]
 		{
-			while (g_running && g->spawn.preview_vehicle && g_gui.m_opened)
+			while (g_running && m_running && g->spawn.preview_vehicle && g_gui.m_opened)
 			{
 				auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(), 2.5f, 2.5f, .5f);
 				if (m_current_veh == -1)
@@ -97,6 +97,11 @@ namespace big
 
 		if (!m_running)
 			g_thread_pool->push([this] { preview_loop(); });
+	}
+
+	void vehicle_preview_service::stop_preview()
+	{
+		m_running = false;
 	}
 
 	void vehicle_preview_service::load()
