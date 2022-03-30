@@ -18,7 +18,10 @@ namespace big
 		{
 			g_thread_pool->push([this]()
 			{
-				if (remote::download_binary("http://github-proxy.damon.sh/DurtyFree/gta-v-data-dumps/master/vehicles.json", m_vehicle_file.get_path()))
+				if (remote::download_binary(
+					"https://raw.githubusercontent.com/DurtyFree/gta-v-data-dumps/master/vehicles.json",
+					m_vehicle_file.get_path()
+				))
 					this->load();
 				else
 					LOG(WARNING) << "Failed to download vehicles.json data...";
@@ -92,6 +95,7 @@ namespace big
 			m_current_veh = -1;
 		});
 
+		busy = false;
 		m_running = false;
 	}
 

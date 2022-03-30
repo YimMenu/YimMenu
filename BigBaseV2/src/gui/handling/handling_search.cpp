@@ -4,6 +4,7 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "thread_pool.hpp"
+#include "api/api_vehicle.hpp"
 
 namespace big
 {
@@ -16,7 +17,7 @@ namespace big
 				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 			}QUEUE_JOB_END_CLAUSE
 
-				static char search[13];
+			static char search[13];
 			ImGui::InputTextWithHint("##search_share_code", "Search by share code", search, sizeof(search));
 			ImGui::SameLine();
 			if (ImGui::Button("Search"))
@@ -37,7 +38,7 @@ namespace big
 
 				break;
 			case SearchStatus::FOUND:
-				if (auto it = g_vehicle_service->m_handling_profiles.find(search); it != g_vehicle_service->m_handling_profiles.end())
+				if (const auto& it = g_vehicle_service->m_handling_profiles.find(search); it != g_vehicle_service->m_handling_profiles.end())
 				{
 					auto& profile = it->second;
 
@@ -67,12 +68,11 @@ namespace big
 					ImGui::SameLine();
 					if (ImGui::Button("Save Profile"))
 					{
-						g_thread_pool->push([&]
-							{
-								api::vehicle::handling::save_profile(profile.share_code);
-
+						/*g_thread_pool->push([&profile]
+						{
+							if (g_api->vehicle->update_saved_handling_profile(profile.share_code))
 								g_vehicle_service->load_saved_profiles(true);
-							});
+						});*/
 					}
 
 					ImGui::EndTable();

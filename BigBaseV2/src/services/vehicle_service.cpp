@@ -54,7 +54,7 @@ namespace big
 			return true;
 		m_search_status = SearchStatus::SEARCHING;
 
-		nlohmann::json json;
+		/*nlohmann::json json;
 		if (api::vehicle::handling::get_by_share_code(std::string(share_code), json))
 		{
 			if (json["data"].is_null())
@@ -73,7 +73,7 @@ namespace big
 				m_search_status = SearchStatus::FOUND;
 			}
 		}
-		else m_search_status = SearchStatus::FAILED;
+		else*/ m_search_status = SearchStatus::FAILED;
 
 		return true;
 	}
@@ -160,7 +160,7 @@ namespace big
 
 		busy = true;
 
-		g_thread_pool->push([&]()
+		/*g_thread_pool->push([&]()
 		{
 				nlohmann::json json;
 				if (!api::vehicle::handling::get_saved_handling(g_local_player->m_vehicle->m_handling->m_model_hash, json) || json == nullptr)
@@ -185,7 +185,7 @@ namespace big
 
 				busy = false;
 				up_to_date = g_local_player->m_vehicle->m_handling->m_model_hash;
-		});
+		});*/
 
 		return false;
 	}
@@ -207,7 +207,7 @@ namespace big
 		nlohmann::json data;
 		this->handling_data_to_json(handling_data, data);
 
-		nlohmann::json json;
+		/*nlohmann::json json;
 		if (!share_code.empty() && api::vehicle::handling::update(hash, name, description, share_code, data))
 			m_publish_status = PublishStatus::SAVED;
 		else if (api::vehicle::handling::create_profile(hash, name, description, data, json))
@@ -216,7 +216,7 @@ namespace big
 
 			m_publish_status = PublishStatus::SAVED;
 		}
-		else m_publish_status = PublishStatus::FAILED;
+		else*/ m_publish_status = PublishStatus::FAILED;
 
 		return false;
 	}
@@ -276,7 +276,7 @@ namespace big
 
 		busy = true;
 
-		g_thread_pool->push([&] {
+		/*g_thread_pool->push([&] {
 			nlohmann::json json;
 			if (!api::vehicle::handling::get_my_handling(g_local_player->m_vehicle->m_handling->m_model_hash, json) || json == nullptr)
 			{
@@ -300,7 +300,7 @@ namespace big
 
 			busy = false;
 			up_to_date = g_local_player->m_vehicle->m_handling->m_model_hash;
-		});
+		});*/
 
 		return false;
 	}
