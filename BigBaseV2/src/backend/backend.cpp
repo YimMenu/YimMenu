@@ -1,9 +1,7 @@
-#include "api/api.hpp"
 #include "backend.hpp"
 #include "fiber_pool.hpp"
 #include "looped/looped.hpp"
 #include "script.hpp"
-#include "thread_pool.hpp"
 
 namespace big
 {
@@ -16,14 +14,6 @@ namespace big
 
 			looped::system_update_pointers();
 		}QUEUE_JOB_END_CLAUSE
-
-		if (g_local_player != nullptr && !api::util::signed_in())
-		{
-			g_thread_pool->push([]
-			{
-				looped::api_login_session();
-			});
-		}
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
