@@ -10,6 +10,7 @@
 #include "script_mgr.hpp"
 #include "thread_pool.hpp"
 
+#include "api/api.hpp"
 #include "native_hooks/native_hooks.hpp"
 #include "services/globals_service.hpp"
 #include "services/player_service.hpp"
@@ -64,6 +65,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto thread_pool_instance = std::make_unique<thread_pool>();
 				LOG(INFO) << "Thread pool initialized.";
 
+				auto api_instance = std::make_unique<api::api>("https://spyral.dev");
+				LOG(INFO) << "API initialized.";
+
 				auto globals_service_instace = std::make_unique<globals_service>();
 				auto mobile_service_instance = std::make_unique<mobile_service>();
 				auto notification_service_instance = std::make_unique<notification_service>();
@@ -81,8 +85,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				g_hooking->enable();
 				LOG(INFO) << "Hooking enabled.";
-
-				g_running = true;
 
 				while (g_running)
 					std::this_thread::sleep_for(500ms);
@@ -108,6 +110,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				LOG(INFO) << "Globals Service reset.";
 				LOG(INFO) << "Services uninitialized.";
 
+				api_instance.reset();
+				LOG(INFO) << "API uninitialized.";
+
 				// Make sure that all threads created don't have any blocking loops
 				// otherwise make sure that they have stopped executing
 				thread_pool_instance->destroy();
@@ -131,6 +136,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			catch (std::exception const &ex)
 			{
 				LOG(WARNING) << ex.what();
+
+				g_running = false;
 			}
 
 			LOG(INFO) << "Farewell!";
