@@ -1,5 +1,5 @@
 #pragma once
-#include "api/http_request.hpp"
+#include "util/http.hpp"
 
 namespace big::remote
 {
@@ -9,11 +9,8 @@ namespace big::remote
 
 		try
 		{
-			http::Request req(file_url.data());
-			http::Response res = req.send("GET", "", {}, 10s);
-
-			std::ostream_iterator<std::uint8_t> outputIter(file);
-			std::copy(res.body.begin(), res.body.end(), outputIter);
+			auto result = web::get(file_url, 10s);
+			file << result->body;
 		}
 		catch (const std::exception& e)
 		{
