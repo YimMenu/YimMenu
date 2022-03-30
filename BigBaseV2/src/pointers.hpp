@@ -2,6 +2,7 @@
 #include "common.hpp"
 #include "CNetworkPlayerMgr.hpp"
 #include "FriendRegistry.hpp"
+#include "ScInfo.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/enums.hpp"
 #include "gta/replay.hpp"
@@ -52,6 +53,7 @@ namespace big
 		PVOID m_error_screen{};
 
 		FriendRegistry* m_friend_registry{};
+		ScInfo* m_sc_info{};
 
 		functions::get_screen_coords_for_world_coords* m_get_screen_coords_for_world_coords{};
 

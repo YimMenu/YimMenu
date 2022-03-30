@@ -254,6 +254,12 @@ namespace big
 			m_resolution_x = ptr.sub(4).rip().as<int*>();
 			m_resolution_y = ptr.add(4).rip().as<int*>();
 		});
+
+		// Social Club Info
+		main_batch.add("SCI", "48 8B D3 48 8D 4C 24 20 48 69 D2 C0 0E", [this](memory::handle ptr)
+		{
+			m_sc_info = ptr.sub(4).rip().as<ScInfo*>();
+		});
 		
 		main_batch.run(memory::module(nullptr));
 
