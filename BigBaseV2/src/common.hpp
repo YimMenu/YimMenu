@@ -68,7 +68,7 @@ namespace big
 	inline HMODULE g_hmodule{};
 	inline HANDLE g_main_thread{};
 	inline DWORD g_main_thread_id{};
-	inline std::atomic_bool g_running{ false };
+	inline std::atomic_bool g_running{ true };
 
 	inline CPed* g_local_player;
 }
