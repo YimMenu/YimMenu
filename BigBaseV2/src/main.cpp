@@ -86,12 +86,13 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_hooking->enable();
 				LOG(INFO) << "Hooking enabled.";
 
-				g_running = true;
-
 				asi_loader::initialize();
 
 				while (g_running)
 					std::this_thread::sleep_for(500ms);
+
+				shv_runner::shutdown();
+				LOG(INFO) << "ASI plugins unloaded.";
 
 				g_hooking->disable();
 				LOG(INFO) << "Hooking disabled.";
@@ -133,9 +134,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				pointers_instance.reset();
 				LOG(INFO) << "Pointers uninitialized.";
-
-				shv_runner::shutdown();
-				LOG(INFO) << "ASI plugins unloaded.";
 			}
 			catch (std::exception const &ex)
 			{
