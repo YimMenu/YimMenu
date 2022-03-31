@@ -1,6 +1,4 @@
 #include "common.hpp"
-#include "logger.hpp"
-#include "natives.hpp"
 #include "script.hpp"
 #include "shv_runner.hpp"
 
@@ -8,7 +6,7 @@ namespace big
 {
 	void shv_runner::run_tick()
 	{
-		for (auto func : scripts)
+		for (const auto& func : scripts)
 		{
 			func.second();
 		}
@@ -22,15 +20,16 @@ namespace big
 			{
 				run_tick();
 			}EXCEPT_CLAUSE
-				script::get_current()->yield();
+
+			script::get_current()->yield();
 		}
 	}
 
 	void shv_runner::shutdown()
 	{
-		for (auto& iter : big::shv_runner::scripts)
+		for (const auto& iter : scripts)
 		{
-			big::shv_runner::scripts.erase(iter.first);
+			scripts.erase(iter.first);
 			FreeLibrary(iter.first);
 			CloseHandle(iter.first);
 		}
