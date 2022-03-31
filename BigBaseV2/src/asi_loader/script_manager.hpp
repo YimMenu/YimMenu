@@ -105,5 +105,5 @@ enum eGameVersion : int
 
 namespace script_manager {
 
-	void					WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	void WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 }
