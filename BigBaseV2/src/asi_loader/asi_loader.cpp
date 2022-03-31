@@ -1,63 +1,53 @@
 #include "asi_loader.hpp"
+#include "file_manager.hpp"
 #include "logger.hpp"
-#include "util\pe_image.hpp"
+#include "util/pe_image.hpp"
 
 using namespace big;
 
 void asi_loader::initialize() {
 
-	LOG(INFO) << "Loading *.asi plugins.";
+    LOG(INFO) << "Loading *.asi plugins.";
 
-	std::string currentFolder = std::getenv("appdata");
-	currentFolder += "\\BigBaseV2";
-	const std::string asiFolder = currentFolder + "\\OpenHookV";
+    const auto asi_folder = g_file_manager->get_project_folder("./OpenHookV");
 
-	const std::string asiSearchQuery = asiFolder + "\\*.asi";
+    for (const auto& item : std::filesystem::directory_iterator(asi_folder.get_path()))
+    {
+        if (item.is_directory())
+            continue;
 
-	WIN32_FIND_DATAA fileData;
-	HANDLE fileHandle = FindFirstFileA(asiSearchQuery.c_str(), &fileData);
-	if (fileHandle != INVALID_HANDLE_VALUE) {
+        const auto path = item.path();
+        if (path.extension() != ".asi")
+            continue;
 
-		do {
+        utility::pe_image plugin_image;
+        if (!plugin_image.Load(path.string()))
+        {
+            LOG(WARNING) << "Failed to load image: " << path.filename();
 
-			const std::string pluginPath = asiFolder + "\\" + fileData.cFileName;
+            continue;
+        }
 
-			LOG(INFO) << "Loading " << pluginPath.c_str();
+        if (!plugin_image.IsOpenVHookCompatible())
+        {
+            LOG(INFO) << "ASI is not compatible, patching imports...";
 
-			utility::pe_image pluginImage;
-			if (!pluginImage.Load(pluginPath)) {
+            if (!plugin_image.PatchCompatibility())
+            {
+                LOG(WARNING) << "Failed to patch image: " << path.filename();
 
-				LOG(FATAL) << "Failed to load image.";
-				continue;
-			}
+                continue;
+            }
+        }
+        const auto hmod = LoadLibraryA(path.string().c_str());
+        if (!hmod)
+        {
+            LOG(WARNING) << "Failed to load image: " << path.filename();
 
-			// Image not compatible, needs patching
-			if (!pluginImage.IsOpenVHookCompatible()) {
+            continue;
+        }
+        LOG(INFO) << "Loaded image: " << path.filename() << " -> " << HEX_TO_UPPER(hmod);
+    }
 
-				LOG(INFO) << "Detected non compatible image. Patching compatibility.";
-
-				if (pluginImage.PatchCompatibility()) {
-					LOG(INFO) << "Successfully patched.";
-				}
-				else {
-					LOG(FATAL) << "Failed to patch compatibility.";
-					continue;
-				}
-			}
-
-			// Image compatible (now), load it
-			HMODULE module = LoadLibraryA(pluginPath.c_str());
-			if (module) {
-				LOG(INFO) << "Loaded " << fileData.cFileName << " -> " HEX_TO_UPPER(module);
-			}
-			else {
-				LOG(FATAL) << "Failed to load";
-			}
-
-		} while (FindNextFileA(fileHandle, &fileData));
-
-		FindClose(fileHandle);
-	}
-
-	LOG(INFO) << "Finished loading *.asi plugins.";
+    LOG(INFO) << "Finished loading *.asi plugins.";
 }
