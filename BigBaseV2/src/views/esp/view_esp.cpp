@@ -26,7 +26,7 @@ namespace big
 		static ImColor health_red_bg = ImColor(0.69f, 0.29f, 0.29f, 0.5f);
 		static ImColor health_red = ImColor(0.69f, 0.29f, 0.29f, 1.f);
 
-		ImGui::SetNextWindowSize({ (float)g->window.x, (float)g->window.y });
+		ImGui::SetNextWindowSize({ (float)*g_pointers->m_resolution_x, (float)*g_pointers->m_resolution_y });
 		if (ImGui::Begin("draw_window", nullptr, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMouseInputs | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoFocusOnAppearing))
 		{
 			ImDrawList* draw_list = ImGui::GetWindowDrawList();
@@ -53,8 +53,8 @@ namespace big
 
 				if (g_pointers->m_get_screen_coords_for_world_coords(player_pos.data, &screen_x, &screen_y))
 				{
-					const float esp_x = (float)g->window.x * screen_x;
-					const float esp_y = (float)g->window.y * screen_y;
+					const float esp_x = (float)*g_pointers->m_resolution_x * screen_x;
+					const float esp_y = (float)*g_pointers->m_resolution_y * screen_y;
 
 					const float esp_side_x = esp_x + (67.5f * multplr);
 
@@ -72,7 +72,7 @@ namespace big
 					health_perc = health_perc < 0.f ? 0.f : health_perc;
 						
 					if (distance < g->esp.tracer_render_distance[1] && distance > g->esp.tracer_render_distance[0] && g->esp.tracer)
-						draw_list->AddLine({ (float)g->window.x * 0.5f, (float)g->window.y }, { esp_x, esp_y }, esp_color);
+						draw_list->AddLine({ (float)*g_pointers->m_resolution_x * 0.5f, (float)*g_pointers->m_resolution_y }, { esp_x, esp_y }, esp_color);
 
 					if (distance < g->esp.box_render_distance[1] && distance > g->esp.box_render_distance[0] && g->esp.box)
 						draw_list->AddRect({ esp_x - (62.5f * multplr), esp_y - (175.f * multplr) }, { esp_x - (62.5f * multplr) + (125.f * multplr), esp_y - (175.f * multplr) + (350.f * multplr) }, esp_color);

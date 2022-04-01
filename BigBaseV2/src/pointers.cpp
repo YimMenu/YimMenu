@@ -11,6 +11,12 @@ namespace big
 	{
 		memory::pattern_batch main_batch;
 
+		main_batch.add("SCREEN_RESOLUTION", "66 0F 6E 0D ? ? ? ? 0F B7 3D", [this](memory::handle ptr)
+		{
+			m_resolution_x = ptr.sub(4).rip().as<int*>();
+			m_resolution_y = ptr.add(4).rip().as<int*>();
+		});
+
 		// Game State
 		main_batch.add("GS", "83 3D ? ? ? ? ? 75 17 8B 43 20", [this](memory::handle ptr)
 		{

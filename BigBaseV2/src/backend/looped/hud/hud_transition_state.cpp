@@ -95,6 +95,10 @@ namespace big
 		if (HUD::BUSYSPINNER_IS_ON())
 			HUD::BUSYSPINNER_OFF();
 
+		// sometimes when going into a single player mission or transition this one remains on screen permanently
+		if (state == eTransitionState::TRANSITION_STATE_TERMINATE_MAINTRANSITION)
+			return;
+
 		HUD::BEGIN_TEXT_COMMAND_BUSYSPINNER_ON("STRING");
 		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(
 			fmt::format("{} | {}", transition_states[(int)state], state).c_str()
