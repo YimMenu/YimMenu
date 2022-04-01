@@ -80,7 +80,7 @@ namespace big
 		});
 
 		// Model Spawn Bypass
-		main_batch.add("MSB", "48 8B C8 FF 52 30 84 C0 74 05 48", [this](memory::handle ptr)
+		main_batch.add("MSB", "48 8B C8 FF 52 30 84 C0 ? ? 48", [this](memory::handle ptr)
 		{
 			m_model_spawn_bypass = ptr.add(8).as<PVOID>();
 		});
@@ -259,7 +259,7 @@ namespace big
 		});
 
 		//OPENVHOOK
-		main_batch.add("Register File", "40 88 7C 24 ? E8 ? ? ? ? 0F B7 44 24 ?", [this](memory::handle ptr)
+		main_batch.add("Register File", "40 88 7C 24 ? E8 ? ? ? ? 0F B7 44 24", [this](memory::handle ptr)
 			{
 				m_register_file = ptr.add(5).as<functions::register_file_t>();
 			});
@@ -289,10 +289,10 @@ namespace big
 				m_pickup_pool = ptr.add(3).rip().as<rage::GenericPool*>();
 			});
 
-		//main_batch.add("Camera Pool", "48 8B C8 EB 02 33 C9 48 85 C9 74 26", [this](memory::handle ptr)
-		//	 {
-		//m_camera_pool = ptr.add(-9).rip().as<rage::GenericPool*>();
-	//	});
+		main_batch.add("Camera Pool", "48 8B C8 EB 02 33 C9 48 85 C9 74 26", [this](memory::handle ptr)
+			{
+				m_camera_pool = ptr.sub(9).rip().as<rage::GenericPool*>();
+			});
 		
 
 		main_batch.add("BlipList", "4C 8D 05 ? ? ? ? 0F B7 C1", [this](memory::handle ptr)

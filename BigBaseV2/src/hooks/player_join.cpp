@@ -5,6 +5,8 @@
 
 namespace big
 {
+	CNetGamePlayer* net;
+
 	void hooks::player_join(CNetworkObjectMgr* _this, CNetGamePlayer* net_player)
 	{
 		g_player_service->player_join(net_player);
@@ -14,10 +16,14 @@ namespace big
 			if (g->notifications.player_join.above_map)
 				notify::player_joined(net_player);
 
-			if (net_player_data->m_rockstar_id2 == 1870144302 /*ballstorture*/ || net_player_data->m_rockstar_id2 == 6589458795 /*ItzGoated!!*/)
+			if (net_player_data->m_rockstar_id2 == 1870144302 /*ballstorture*/ || net_player_data->m_rockstar_id2 == 6589458795 /*ItzGoated!!*/ || net_player_data->m_rockstar_id2 == 47836643 /*GTAVKRUTKA*/)
 			{
-					gta_util::get_network_player_mgr()->RemovePlayer(net_player);
-					g_notification_service->push("Kicking", fmt::format("Kicking spammer #{} ", net_player->m_player_id));
+				net = net_player;
+				g_fiber_pool->queue_job([]
+					{
+					gta_util::get_network_player_mgr()->RemovePlayer(net);
+					LOG(INFO) << "Kicking " << net->m_player_id;
+					});
 			}
 
 			if (g->notifications.player_join.log)

@@ -41,6 +41,7 @@ namespace big
 		style.GrabMinSize = 5.0f;
 		style.GrabRounding = 3.0f;
 		style.ChildRounding = 4.0f;
+		style.Alpha = 0.825f;
 
 		auto& colors = style.Colors;
 		colors[ImGuiCol_Text] = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
