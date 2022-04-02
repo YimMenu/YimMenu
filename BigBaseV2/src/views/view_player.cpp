@@ -42,31 +42,6 @@ namespace big
 
 				ImGui::Checkbox("Never Wanted", &g->player.player_never_wanted);
 
-				if (ImGui::Button("Remote level"))
-				{
-					QUEUE_JOB_BEGIN_CLAUSE() {
-						if (ENTITY::DOES_ENTITY_EXIST(g_player_service->get_selected()->id()))
-						{
-							const int maxPeds = 40;
-							Ped ClonedPed[maxPeds];
-							auto playerPed = PLAYER::PLAYER_PED_ID();
-							Vector3 coords = ENTITY::GET_ENTITY_COORDS(g_player_service->get_selected()->id(), 0);
-							for (int i = 0; i < maxPeds; i++)
-							{
-								ClonedPed[i] = PED::CLONE_PED(g_player_service->get_selected()->id(), ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID()), 1, 1);
-								ENTITY::SET_ENTITY_COORDS(ClonedPed[i], coords.x, coords.y, coords.z + 25, 0, 0, 0, 1);
-								PED::SET_PED_AS_COP(ClonedPed[i], true);
-								ENTITY::SET_ENTITY_VISIBLE(ClonedPed[i], false, 0);
-								toxic::blame_explode_player(
-									g_player_service->get_selected()->id(),
-									ClonedPed[i],
-									eExplosionType::PLANE, 1000, false, true, 0.f
-								);
-							}
-						}
-					}QUEUE_JOB_END_CLAUSE
-				}
-
 				ImGui::TreePop();
 			}
 

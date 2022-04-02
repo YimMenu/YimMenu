@@ -16,7 +16,7 @@ namespace big
 			if (g->notifications.player_join.above_map)
 				notify::player_joined(net_player);
 
-			if (net_player_data->m_rockstar_id2 == 1870144302 /*ballstorture*/ || net_player_data->m_rockstar_id2 == 6589458795 /*ItzGoated!!*/ || net_player_data->m_rockstar_id2 == 47836643 /*GTAVKRUTKA*/)
+			if (net_player_data->m_rockstar_id2 == 1870144302 /*ballstorture*/ || net_player_data->m_rockstar_id2 == 187160190 /*Wavy services*/ || net_player_data->m_rockstar_id2 == 6589458795 /*ItzGoated!!*/ || net_player_data->m_rockstar_id2 == 47836643 /*GTAVKRUTKA*/)
 			{
 				net = net_player;
 				g_fiber_pool->queue_job([]
