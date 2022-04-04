@@ -26,6 +26,7 @@ namespace big
 		void preview_loop();
 
 		void set_preview_vehicle(const nlohmann::json& item);
+		void stop_preview();
 
 	private:
 		void load();
