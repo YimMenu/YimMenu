@@ -28,7 +28,7 @@ namespace big
 			if (g->spawn.spawn_inside)
 				PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
 		});
-		if (ImGui::ListBoxHeader("###vehicles", { ImGui::GetWindowWidth(), ImGui::GetWindowHeight() }))
+		if (ImGui::ListBoxHeader("###vehicles"))
 		{
 			if (!g_vehicle_preview_service->get_vehicle_list().is_null())
 			{
