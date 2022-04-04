@@ -5,6 +5,7 @@ namespace big
 {
 	enum class tabs {
 		ESP_SETTINGS,
+		GUI_SETTINGS,
 		DEBUG,
 		MOBILE,
 		NONE,
@@ -48,6 +49,7 @@ namespace big
 				{ tabs::SESSION, { "Session", view::session }},
 			}}},
 			{tabs::SETTINGS, { "Settings", view::settings, {
+				{ tabs::GUI_SETTINGS, { "GUI", view::gui_settings}},
 				{ tabs::ESP_SETTINGS, { "ESP", view::esp_settings}},
 				{ tabs::DEBUG, { "Debug", view::debug }},
 			}}},

@@ -20,6 +20,7 @@ namespace big
 		static void active_view();
 		static void debug();
 		static void esp_settings();
+		static void gui_settings();
 		static void heading();
 		static void mobile();
 		static void navigation();
