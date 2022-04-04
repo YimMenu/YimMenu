@@ -40,14 +40,14 @@ namespace big
 			}
 		}
 
-		dl->AddRectFilled({ g->window.x - 360.f, 10.f + start_pos }, { g->window.x - 10.f, start_pos + 45.f + total_size }, g->window.color);
-		dl->AddRectFilledMultiColor({ g->window.x - 360.f, 10.f + start_pos }, { g->window.x - 255.f, start_pos + 45.f + total_size }, fadeBegin, fadeEnd, fadeEnd, fadeBegin);
+		dl->AddRectFilled({ (float)*g_pointers->m_resolution_x - 360.f, 10.f + start_pos }, { (float)*g_pointers->m_resolution_x - 10.f, start_pos + 45.f + total_size }, g->window.color);
+		dl->AddRectFilledMultiColor({ (float)*g_pointers->m_resolution_x - 360.f, 10.f + start_pos }, { (float)*g_pointers->m_resolution_x - 255.f, start_pos + 45.f + total_size }, fadeBegin, fadeEnd, fadeEnd, fadeBegin);
 
-		dl->AddText(g->window.font_sub_title, 22.f, { g->window.x - 350.f, 15.f + start_pos }, textCol, title.c_str());
+		dl->AddText(g->window.font_sub_title, 22.f, { (float)*g_pointers->m_resolution_x - 350.f, 15.f + start_pos }, textCol, title.c_str());
 		int i = 0;
 		for (std::string txt : split_points)
 		{
-			dl->AddText({ g->window.x - 350.f, 40.f + (i * 20.f) + start_pos}, textCol, txt.c_str());
+			dl->AddText({ (float)*g_pointers->m_resolution_x - 350.f, 40.f + (i * 20.f) + start_pos}, textCol, txt.c_str());
 			i++;
 		}
 
@@ -91,6 +91,6 @@ namespace big
 				ImGui::PopStyleVar();
 			}
 			ImGui::End();
-		}*/
+		} */
 	}
 }
