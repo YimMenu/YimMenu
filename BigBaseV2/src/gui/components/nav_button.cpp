@@ -1,4 +1,5 @@
 #include "gui/components/components.hpp"
+#include "pointers.hpp"
 
 namespace big
 {
@@ -8,7 +9,7 @@ namespace big
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.f));
 		ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, { 0.f, 0.5f });
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 0, 5 });
-		bool result = ImGui::Button(text.data(), {((float)g->window.x * 0.15f) - 30, 0});
+		bool result = ImGui::Button(text.data(), {((float)*g_pointers->m_resolution_x * 0.15f) - 30, 0});
 		ImGui::PopStyleVar(2);
 		ImGui::PopStyleColor(2);
 

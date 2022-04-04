@@ -12,8 +12,6 @@ namespace big
 		g->attempt_save();
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
-			looped::system_screen_size();
-
 			looped::system_update_pointers();
 		}QUEUE_JOB_END_CLAUSE
 

@@ -30,7 +30,7 @@ namespace big
 
 			bool enabled = true;
 
-			ImGui::SetNextWindowSize({ (float)g->window.x * 0.5f, (float)g->window.y * 0.5f }, ImGuiCond_FirstUseEver);
+			ImGui::SetNextWindowSize({ (float)*g_pointers->m_resolution_x * 0.5f, (float)*g_pointers->m_resolution_y * 0.5f }, ImGuiCond_FirstUseEver);
 			if (ImGui::BeginPopupModal("Handling Popup", &enabled, ImGuiWindowFlags_MenuBar))
 			{
 				if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr || g_local_player->m_ped_task_flag & (int)ePedTask::TASK_FOOT)

@@ -5,7 +5,7 @@ namespace big
 {
 	void view::navigation() {
 		ImGui::SetNextWindowPos({ 0.f, 0.f }, ImGuiCond_Always);
-		ImGui::SetNextWindowSize({ (float)g->window.x * 0.15f, (float)g->window.y }, ImGuiCond_Always);
+		ImGui::SetNextWindowSize({ (float)*g_pointers->m_resolution_x * 0.15f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
 
 		if (ImGui::Begin("navigation", 0, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav))
 		{
@@ -33,7 +33,7 @@ namespace big
 
 			static navigation_struct playerPage = { tabs::PLAYER, "Player", view::view_player };
 
-			if (ImGui::BeginListBox("players", {(float)g->window.x * 0.15f - 30, (float)g->window.y * 0.3f})) {
+			if (ImGui::BeginListBox("players", {(float)*g_pointers->m_resolution_x * 0.15f - 30, (float)*g_pointers->m_resolution_y * 0.3f})) {
 				for (auto& item : g_player_service->m_players)
 				{
 					std::unique_ptr<player>& plyr = item.second;

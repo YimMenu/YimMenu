@@ -1,4 +1,5 @@
 #include "hooking.hpp"
+#include "gta_util.hpp"
 
 namespace big
 {
@@ -115,7 +116,9 @@ namespace big
 		case eRemoteEvent::RotateCam:
 			if (g->protections.script_events.rotate_cam)
 			{
-				format_string(player_name, "Rotate Cam", notify.rotate_cam.log, notify.rotate_cam.notify);
+				if (CNetworkPlayerMgr* player_mgr = gta_util::get_network_player_mgr(); player_mgr != nullptr)
+					if (args[2] == player_mgr->m_local_net_player->m_player_id)
+						format_string(player_name, "Rotate Cam", notify.rotate_cam.log, notify.rotate_cam.notify);
 
 				return true;
 			}
