@@ -1,12 +1,12 @@
 #include "asi_loader.hpp"
 #include "file_manager.hpp"
 #include "logger.hpp"
-#include "util/pe_image.hpp"
+#include "pe_image.hpp"
 
 using namespace big;
 
-void asi_loader::initialize() {
-
+void asi_loader::initialize()
+{
     LOG(INFO) << "Loading *.asi plugins.";
 
     const auto asi_folder = g_file_manager->get_project_folder("./OpenHookV");
@@ -20,19 +20,19 @@ void asi_loader::initialize() {
         if (path.extension() != ".asi")
             continue;
 
-        utility::pe_image plugin_image;
-        if (!plugin_image.Load(path.string()))
+        pe_image plugin_image(path.string());
+        if (!plugin_image.load())
         {
             LOG(WARNING) << "Failed to load image: " << path.filename();
 
             continue;
         }
 
-        if (!plugin_image.IsOpenVHookCompatible())
+        if (!plugin_image.is_openvhook_compatible())
         {
             LOG(INFO) << "ASI is not compatible, patching imports...";
 
-            if (!plugin_image.PatchCompatibility())
+            if (!plugin_image.patch_image())
             {
                 LOG(WARNING) << "Failed to patch image: " << path.filename();
 
