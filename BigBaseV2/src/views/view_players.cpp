@@ -13,7 +13,7 @@ namespace big
 		{
 			float window_height = g_player_service->m_players.size() * 35.f;
 
-			window_height = window_height + window_pos > (float)g->window.y - 10.f ? (float)g->window.y - (window_pos + 40.f) : window_height;
+			window_height = window_height + window_pos > (float)*g_pointers->m_resolution_y - 10.f ? (float)*g_pointers->m_resolution_y - (window_pos + 40.f) : window_height;
 
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, { 0.f, 0.f, 0.f, 0.f });
 			ImGui::PushStyleColor(ImGuiCol_ScrollbarBg, { 0.f, 0.f, 0.f, 0.f });
