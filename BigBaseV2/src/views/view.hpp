@@ -26,6 +26,7 @@ namespace big
 		static void heading();
 		static void mobile();
 		static void navigation();
+		//static void player_navigation();
 		static void notifications();
 		static void root();
 		static void self();
