@@ -21,10 +21,11 @@ namespace big
 		static void debug();
 		static void esp_settings();
 		static void gui_settings();
+		static void notification_settings();
+		static void protection_settings();
 		static void heading();
 		static void mobile();
 		static void navigation();
-		//static void player_navigation();
 		static void notifications();
 		static void root();
 		static void self();

@@ -1,4 +1,4 @@
-#include "view.hpp"
+#include "views/view.hpp"
 #include "services/gui_service.hpp"
 
 namespace big
