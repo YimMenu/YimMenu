@@ -13,6 +13,7 @@ namespace big
 			ImGui::Checkbox("Can Be Targeted", &g->vehicle.is_targetable);
 			ImGui::Checkbox("God Mode", &g->vehicle.god_mode);
 			ImGui::Checkbox("Horn Boost", &g->vehicle.horn_boost);
+			ImGui::Checkbox("Drive On Water", &g->vehicle.drive_on_water);
 
 			ImGui::EndGroup();
 			ImGui::SameLine();
