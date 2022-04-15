@@ -116,6 +116,15 @@ namespace big
 			script_events script_events{};
 		};
 
+		struct rgb {
+			bool fade = false;
+			bool spasm = false;
+			int r = 255;
+			int g = 0;
+			int b = 0;
+			int speed = 0;
+		};
+
 		struct self {
 			bool clean_player = false;
 			bool force_wanted_level = false;
@@ -157,7 +166,7 @@ namespace big
 			bool preview_vehicle = false;
 			bool spawn_inside = false;
 			bool spawn_maxed = false;
-		};
+		}; 
 
 		struct spoofing
 		{
@@ -186,6 +195,7 @@ namespace big
 			bool is_targetable = true;
 			bool ls_customs = false; // don't save this to disk
 			bool pv_teleport_into = false;
+			int rainbow_paint = 0;
 			speedo_meter speedo_meter{};
 		};
 
@@ -246,6 +256,7 @@ namespace big
 		notifications notifications{};
 		player player{};
 		protections protections{};
+		rgb rgb{};
 		self self{};
 		session session{};
 		settings settings{};
@@ -376,6 +387,13 @@ namespace big
 				script_handler.vehicle_kick = script_handler_j["vehicle_kick"];
 			}
 
+			this->rgb.fade = j["rgb"]["fade"];
+			this->rgb.spasm = j["rgb"]["spasm"];
+			this->rgb.r = j["rgb"]["r"];
+			this->rgb.g = j["rgb"]["g"];
+			this->rgb.b = j["rgb"]["b"];
+			this->rgb.speed = j["rgb"]["speed"];
+
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
 			this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
 
@@ -406,6 +424,7 @@ namespace big
 			this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
 			this->vehicle.pv_teleport_into = j["vehicle"]["pv_teleport_into"];
+			this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
 
 			this->vehicle.speedo_meter.type = (SpeedoMeter)j["vehicle"]["speedo_meter"]["type"];
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
@@ -543,6 +562,16 @@ namespace big
 					}
 				},
 				{
+					"rgb", {
+					{ "fade", this->rgb.fade },
+					{ "spasm", this->rgb.spasm },
+					{ "r", this->rgb.r },
+					{ "g", this->rgb.g },
+					{ "b", this->rgb.b },
+					{ "speed", this->rgb.speed }
+					}
+				},
+				{
 					"tunables", {
 						{ "disable_phone", this->tunables.disable_phone },
 						{ "no_idle_kick", this->tunables.no_idle_kick }
@@ -595,6 +624,7 @@ namespace big
 						{ "horn_boost", this->vehicle.horn_boost },
 						{ "is_targetable", this->vehicle.is_targetable },
 						{ "pv_teleport_into", this->vehicle.pv_teleport_into },
+						{ "rainbow_paint", this->vehicle.rainbow_paint },
 						{
 							"speedo_meter", {
 								{ "type", (int)this->vehicle.speedo_meter.type },
