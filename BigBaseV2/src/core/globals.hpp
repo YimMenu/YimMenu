@@ -1,4 +1,5 @@
 #pragma once
+#include "CAmmoInfo.hpp"
 #include "enums.hpp"
 #include "file_manager.hpp"
 #include "imgui.h"
@@ -19,6 +20,65 @@ namespace big
 		struct tunables {
 			bool disable_phone = false;
 			bool no_idle_kick = false;
+		};
+
+		struct notifications
+		{
+			struct pair
+			{
+				bool log = false;
+				bool notify = false;
+			};
+
+			struct
+			{
+				pair clear_ped_task{};
+				pair report_cash_spawn{};
+				pair modder_detect{};
+				pair request_control_event{};
+			} received_event{};
+
+			struct
+			{
+				pair bounty{};
+				pair ceo_ban{};
+				pair ceo_kick{};
+				pair ceo_money{};
+				pair clear_wanted_level{};
+				pair fake_deposit{};
+				pair force_mission{};
+				pair force_teleport{};
+				pair gta_banner{};
+				pair network_bail{};
+				pair personal_vehicle_destroyed{};
+				pair remote_off_radar{};
+				pair rotate_cam{};
+				pair send_to_cutscene{};
+				pair send_to_island{};
+				pair sound_spam{};
+				pair spectate{};
+				pair transaction_error{};
+				pair vehicle_kick{};
+			} script_event_handler{};
+
+			pair gta_thread_kill{};
+			pair gta_thread_start{};
+
+			pair net_array_error{};
+			pair network_player_mgr_shutdown{};
+
+			struct 
+			{
+				bool above_map = true;
+				bool log = false;
+				bool notify = false;
+			} player_join;
+			pair player_leave{};
+
+			pair reports{};
+
+			pair send_net_info_to_lobby{};
+			pair transaction_rate_limit{};
 		};
 
 		struct player {
@@ -57,13 +117,6 @@ namespace big
 		};
 
 		struct self {
-			struct frame_flags {
-				bool explosive_ammo = false;
-				bool explosive_melee = false;
-				bool fire_ammo = false;
-				bool super_jump = false;
-			};
-
 			bool clean_player = false;
 			bool force_wanted_level = false;
 			bool free_cam = false;
@@ -75,8 +128,17 @@ namespace big
 			bool off_radar = false;
 			bool super_run = false;
 			int wanted_level = 0;
+		};
 
-			frame_flags frame_flags{};
+		struct session
+		{
+			int local_weather = 0;
+			bool override_time = {};
+			bool override_weather = false;
+			struct 
+			{
+				int hour{}, minute{}, second{}; 
+			} custom_time;
 		};
 
 		struct settings {
@@ -88,6 +150,13 @@ namespace big
 			};
 
 			hotkeys hotkeys{};
+		};
+
+		struct spawn
+		{
+			bool preview_vehicle = false;
+			bool spawn_inside = false;
+			bool spawn_maxed = false;
 		};
 
 		struct spoofing
@@ -121,6 +190,12 @@ namespace big
 		};
 
 		struct weapons {
+			struct ammo_special
+			{
+				bool toggle = false;
+				eAmmoSpecialType type = eAmmoSpecialType::None;
+			} ammo_special;
+
 			CustomWeapon custom_weapon = CustomWeapon::NONE;
 			bool force_crosshairs = false;
 			bool infinite_ammo = false;
@@ -144,9 +219,6 @@ namespace big
 			ImFont* font_small = nullptr;
 
 			bool switched_view = true;
-
-			int x;
-			int y;
 		};
 
 		struct esp
@@ -171,10 +243,13 @@ namespace big
 
 		debug debug{};
 		tunables tunables{};
+		notifications notifications{};
 		player player{};
 		protections protections{};
 		self self{};
+		session session{};
 		settings settings{};
+		spawn spawn{};
 		spoofing spoofing{};
 		vehicle vehicle{};
 		weapons weapons{};
@@ -196,25 +271,110 @@ namespace big
 		{
 			this->debug.script_event_logging = j["debug"]["script_event_logging"];
 
-			this->protections.script_events.bounty = j["protections"]["script_events"]["bounty"];
-			this->protections.script_events.ceo_ban = j["protections"]["script_events"]["ceo_ban"];
-			this->protections.script_events.ceo_kick = j["protections"]["script_events"]["ceo_kick"];
-			this->protections.script_events.ceo_money = j["protections"]["script_events"]["ceo_money"];
-			this->protections.script_events.clear_wanted_level = j["protections"]["script_events"]["clear_wanted_level"];
-			this->protections.script_events.fake_deposit = j["protections"]["script_events"]["fake_deposit"];
-			this->protections.script_events.force_mission = j["protections"]["script_events"]["force_mission"];
-			this->protections.script_events.force_teleport = j["protections"]["script_events"]["force_teleport"];
-			this->protections.script_events.gta_banner = j["protections"]["script_events"]["gta_banner"];
-			this->protections.script_events.network_bail = j["protections"]["script_events"]["network_bail"];
-			this->protections.script_events.personal_vehicle_destroyed = j["protections"]["script_events"]["personal_vehicle_destroyed"];
-			this->protections.script_events.remote_off_radar = j["protections"]["script_events"]["remote_off_radar"];
-			this->protections.script_events.rotate_cam = j["protections"]["script_events"]["rotate_cam"];
-			this->protections.script_events.send_to_cutscene = j["protections"]["script_events"]["send_to_cutscene"];
-			this->protections.script_events.send_to_island = j["protections"]["script_events"]["send_to_island"];
-			this->protections.script_events.sound_spam = j["protections"]["script_events"]["sound_spam"];
-			this->protections.script_events.spectate = j["protections"]["script_events"]["spectate"];
-			this->protections.script_events.transaction_error = j["protections"]["script_events"]["transaction_error"];
-			this->protections.script_events.vehicle_kick = j["protections"]["script_events"]["vehicle_kick"];
+			g->notifications.gta_thread_kill.log = j["notifications"]["gta_thread_kill"]["log"];
+			g->notifications.gta_thread_kill.notify = j["notifications"]["gta_thread_kill"]["notify"];
+			g->notifications.gta_thread_start.log = j["notifications"]["gta_thread_start"]["log"];
+			g->notifications.gta_thread_start.notify = j["notifications"]["gta_thread_start"]["notify"];
+
+			g->notifications.net_array_error.log = j["notifications"]["net_array_error"]["log"];
+			g->notifications.net_array_error.notify = j["notifications"]["net_array_error"]["notify"];
+
+			g->notifications.network_player_mgr_shutdown.log = j["notifications"]["network_player_mgr_shutdown"]["log"];
+			g->notifications.network_player_mgr_shutdown.notify = j["notifications"]["network_player_mgr_shutdown"]["notify"];
+
+			g->notifications.player_join.above_map = j["notifications"]["player_join"]["above_map"];
+			g->notifications.player_join.log = j["notifications"]["player_join"]["log"];
+			g->notifications.player_join.notify = j["notifications"]["player_join"]["notify"];
+
+			g->notifications.player_leave.log = j["notifications"]["player_leave"]["log"];
+			g->notifications.player_leave.notify = j["notifications"]["player_leave"]["notify"];
+
+			g->notifications.received_event.clear_ped_task.log = j["notifications"]["received_event"]["clear_ped_task"]["log"];
+			g->notifications.received_event.clear_ped_task.notify = j["notifications"]["received_event"]["clear_ped_task"]["notify"];
+			g->notifications.received_event.modder_detect.log = j["notifications"]["received_event"]["modder_detect"]["log"];
+			g->notifications.received_event.modder_detect.notify = j["notifications"]["received_event"]["modder_detect"]["notify"];
+			g->notifications.received_event.request_control_event.log = j["notifications"]["received_event"]["request_control_event"]["log"];
+			g->notifications.received_event.request_control_event.notify = j["notifications"]["received_event"]["request_control_event"]["notify"];
+			g->notifications.received_event.report_cash_spawn.log = j["notifications"]["received_event"]["report_cash_spawn"]["log"];
+			g->notifications.received_event.report_cash_spawn.notify = j["notifications"]["received_event"]["report_cash_spawn"]["notify"];
+
+			g->notifications.reports.log = j["notifications"]["reports"]["log"];
+			g->notifications.reports.notify = j["notifications"]["reports"]["notify"];
+
+			{
+				const auto& script_handler_j = j["notifications"]["script_event_handler"];
+				auto& script_handler = this->notifications.script_event_handler;
+
+				script_handler.bounty.log = script_handler_j["bounty"]["log"];
+				script_handler.bounty.notify = script_handler_j["bounty"]["notify"];
+				script_handler.ceo_ban.log = script_handler_j["ceo_ban"]["log"];
+				script_handler.ceo_ban.notify = script_handler_j["ceo_ban"]["notify"];
+				script_handler.ceo_kick.log = script_handler_j["ceo_kick"]["log"];
+				script_handler.ceo_kick.notify = script_handler_j["ceo_kick"]["notify"];
+				script_handler.ceo_money.log = script_handler_j["ceo_money"]["log"];
+				script_handler.ceo_money.notify = script_handler_j["ceo_money"]["notify"];
+				script_handler.clear_wanted_level.log = script_handler_j["clear_wanted_level"]["log"];
+				script_handler.clear_wanted_level.notify = script_handler_j["clear_wanted_level"]["notify"];
+				script_handler.fake_deposit.log = script_handler_j["fake_deposit"]["log"];
+				script_handler.fake_deposit.notify = script_handler_j["fake_deposit"]["notify"];
+				script_handler.force_mission.log = script_handler_j["force_mission"]["log"];
+				script_handler.force_mission.notify = script_handler_j["force_mission"]["notify"];
+				script_handler.force_teleport.log = script_handler_j["force_teleport"]["log"];
+				script_handler.force_teleport.notify = script_handler_j["force_teleport"]["notify"];
+				script_handler.gta_banner.log = script_handler_j["gta_banner"]["log"];
+				script_handler.gta_banner.notify = script_handler_j["gta_banner"]["notify"];
+				script_handler.network_bail.log = script_handler_j["network_bail"]["log"];
+				script_handler.network_bail.notify = script_handler_j["network_bail"]["notify"];
+				script_handler.personal_vehicle_destroyed.log = script_handler_j["personal_vehicle_destroyed"]["log"];
+				script_handler.personal_vehicle_destroyed.notify = script_handler_j["personal_vehicle_destroyed"]["notify"];
+				script_handler.remote_off_radar.log = script_handler_j["remote_off_radar"]["log"];
+				script_handler.remote_off_radar.notify = script_handler_j["remote_off_radar"]["notify"];
+				script_handler.rotate_cam.log = script_handler_j["rotate_cam"]["log"];
+				script_handler.rotate_cam.notify = script_handler_j["rotate_cam"]["notify"];
+				script_handler.send_to_cutscene.log = script_handler_j["send_to_cutscene"]["log"];
+				script_handler.send_to_cutscene.notify = script_handler_j["send_to_cutscene"]["notify"];
+				script_handler.send_to_island.log = script_handler_j["send_to_island"]["log"];
+				script_handler.send_to_island.notify = script_handler_j["send_to_island"]["notify"];
+				script_handler.sound_spam.log = script_handler_j["sound_spam"]["log"];
+				script_handler.sound_spam.notify = script_handler_j["sound_spam"]["notify"];
+				script_handler.spectate.log = script_handler_j["spectate"]["log"];
+				script_handler.spectate.notify = script_handler_j["spectate"]["notify"];
+				script_handler.transaction_error.log = script_handler_j["transaction_error"]["log"];
+				script_handler.transaction_error.notify = script_handler_j["transaction_error"]["notify"];
+				script_handler.vehicle_kick.log = script_handler_j["vehicle_kick"]["log"];
+				script_handler.vehicle_kick.notify = script_handler_j["vehicle_kick"]["notify"];
+			}
+
+			g->notifications.send_net_info_to_lobby.log = j["notifications"]["send_net_info_to_lobby"]["log"];
+			g->notifications.send_net_info_to_lobby.notify = j["notifications"]["send_net_info_to_lobby"]["notify"];
+
+			g->notifications.transaction_rate_limit.log = j["notifications"]["transaction_rate_limit"]["log"];
+			g->notifications.transaction_rate_limit.notify = j["notifications"]["transaction_rate_limit"]["notify"];
+
+			{
+				const auto& script_handler_j = j["protections"]["script_events"];
+				auto& script_handler = this->protections.script_events;
+
+				script_handler.bounty = script_handler_j["bounty"];
+				script_handler.ceo_ban = script_handler_j["ceo_ban"];
+				script_handler.ceo_kick = script_handler_j["ceo_kick"];
+				script_handler.ceo_money = script_handler_j["ceo_money"];
+				script_handler.clear_wanted_level = script_handler_j["clear_wanted_level"];
+				script_handler.fake_deposit = script_handler_j["fake_deposit"];
+				script_handler.force_mission = script_handler_j["force_mission"];
+				script_handler.force_teleport = script_handler_j["force_teleport"];
+				script_handler.gta_banner = script_handler_j["gta_banner"];
+				script_handler.network_bail = script_handler_j["network_bail"];
+				script_handler.personal_vehicle_destroyed = script_handler_j["personal_vehicle_destroyed"];
+				script_handler.remote_off_radar = script_handler_j["remote_off_radar"];
+				script_handler.rotate_cam = script_handler_j["rotate_cam"];
+				script_handler.send_to_cutscene = script_handler_j["send_to_cutscene"];
+				script_handler.send_to_island = script_handler_j["send_to_island"];
+				script_handler.sound_spam = script_handler_j["sound_spam"];
+				script_handler.spectate = script_handler_j["spectate"];
+				script_handler.transaction_error = script_handler_j["transaction_error"];
+				script_handler.vehicle_kick = script_handler_j["vehicle_kick"];
+			}
 
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
 			this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
@@ -227,12 +387,11 @@ namespace big
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
 
-			this->self.frame_flags.explosive_ammo = j["self"]["frame_flags"]["explosive_ammo"];
-			this->self.frame_flags.explosive_melee = j["self"]["frame_flags"]["explosive_melee"];
-			this->self.frame_flags.fire_ammo = j["self"]["frame_flags"]["fire_ammo"];
-			this->self.frame_flags.super_jump = j["self"]["frame_flags"]["super_jump"];
-
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
+
+			this->spawn.preview_vehicle = j["spawn"]["preview_vehicle"];
+			this->spawn.spawn_inside = j["spawn"]["spawn_inside"];
+			this->spawn.spawn_maxed = j["spawn"]["spawn_maxed"];
 
 			this->spoofing.spoof_ip = j["spoofing"]["spoof_ip"];
 			this->spoofing.spoof_rockstar_id = j["spoofing"]["spoof_rockstar_id"];
@@ -261,6 +420,9 @@ namespace big
 			this->weapons.no_recoil = j["weapons"]["no_recoil"];
 			this->weapons.no_spread = j["weapons"]["no_spread"];
 
+			this->weapons.ammo_special.type = (eAmmoSpecialType)j["weapons"]["ammo_special"]["type"];
+			this->weapons.ammo_special.toggle = j["weapons"]["ammo_special"]["toggle"];
+
 			this->window.debug = j["window"]["debug"];
 			this->window.handling = j["window"]["handling"];
 			this->window.log = j["window"]["log"];
@@ -286,6 +448,17 @@ namespace big
 
 		nlohmann::json to_json()
 		{
+			constexpr auto return_notify_pair = [](const notifications::pair& notify_pair) -> auto
+			{
+				return nlohmann::json{
+					{ "log", notify_pair.log },
+					{ "notify", notify_pair.notify }
+				};
+			};
+
+			const auto& script_handler_notifications = this->notifications.script_event_handler;
+			const auto& script_handler_protections = this->protections.script_events;
+
 			return nlohmann::json{
 				{
 					"debug",
@@ -294,29 +467,77 @@ namespace big
 					}
 				},
 				{
+					"notifications", {
+						{ "gta_thread_kill", return_notify_pair(g->notifications.gta_thread_kill) },
+						{ "gta_thread_start", return_notify_pair(g->notifications.gta_thread_start) },
+						{"net_array_error", return_notify_pair(g->notifications.net_array_error)},
+						{ "network_player_mgr_shutdown", return_notify_pair(g->notifications.network_player_mgr_shutdown) },
+						{ "player_join", {
+								{ "above_map", g->notifications.player_join.above_map },
+								{ "log", g->notifications.player_join.log },
+								{ "notify", g->notifications.player_join.notify }
+							}
+						},
+						{ "player_leave", return_notify_pair(g->notifications.player_leave) },
+						{
+							"received_event", {
+								{ "clear_ped_task", return_notify_pair(g->notifications.received_event.clear_ped_task) },
+								{ "modder_detect", return_notify_pair(g->notifications.received_event.modder_detect) },
+								{ "report_cash_spawn", return_notify_pair(g->notifications.received_event.report_cash_spawn) },
+								{ "request_control_event", return_notify_pair(g->notifications.received_event.request_control_event) }
+							}
+						},
+						{ "reports", return_notify_pair(g->notifications.reports) },
+						{ "script_event_handler", {
+								{ "bounty", return_notify_pair(script_handler_notifications.bounty) },
+								{ "ceo_ban", return_notify_pair(script_handler_notifications.ceo_ban) },
+								{ "ceo_kick", return_notify_pair(script_handler_notifications.ceo_kick) },
+								{ "ceo_money", return_notify_pair(script_handler_notifications.ceo_money) },
+								{ "clear_wanted_level", return_notify_pair(script_handler_notifications.clear_wanted_level) },
+								{ "fake_deposit", return_notify_pair(script_handler_notifications.fake_deposit) },
+								{ "force_mission", return_notify_pair(script_handler_notifications.force_mission) },
+								{ "force_teleport", return_notify_pair(script_handler_notifications.force_teleport) },
+								{ "gta_banner", return_notify_pair(script_handler_notifications.gta_banner) },
+								{ "network_bail", return_notify_pair(script_handler_notifications.network_bail) },
+								{ "personal_vehicle_destroyed", return_notify_pair(script_handler_notifications.personal_vehicle_destroyed) },
+								{ "remote_off_radar", return_notify_pair(script_handler_notifications.remote_off_radar) },
+								{ "rotate_cam", return_notify_pair(script_handler_notifications.rotate_cam) },
+								{ "send_to_cutscene", return_notify_pair(script_handler_notifications.send_to_cutscene) },
+								{ "send_to_island", return_notify_pair(script_handler_notifications.send_to_island) },
+								{ "sound_spam", return_notify_pair(script_handler_notifications.sound_spam) },
+								{ "spectate", return_notify_pair(script_handler_notifications.spectate) },
+								{ "transaction_error", return_notify_pair(script_handler_notifications.transaction_error) },
+								{ "vehicle_kick", return_notify_pair(script_handler_notifications.vehicle_kick) }
+							}
+						},
+						{ "send_net_info_to_lobby", return_notify_pair(g->notifications.send_net_info_to_lobby) },
+						{ "transaction_rate_limit", return_notify_pair(g->notifications.transaction_rate_limit) }
+					}
+				},
+				{
 					"protections",
 					{
 						{
 							"script_events", {
-								{ "bounty", this->protections.script_events.bounty },
-								{ "ceo_ban", this->protections.script_events.ceo_ban },
-								{ "ceo_kick", this->protections.script_events.ceo_kick },
-								{ "ceo_money", this->protections.script_events.ceo_money },
-								{ "clear_wanted_level", this->protections.script_events.clear_wanted_level },
-								{ "fake_deposit", this->protections.script_events.fake_deposit },
-								{ "force_mission", this->protections.script_events.force_mission },
-								{ "force_teleport", this->protections.script_events.force_teleport },
-								{ "gta_banner", this->protections.script_events.gta_banner },
-								{ "network_bail", this->protections.script_events.network_bail },
-								{ "personal_vehicle_destroyed", this->protections.script_events.personal_vehicle_destroyed },
-								{ "remote_off_radar", this->protections.script_events.remote_off_radar },
-								{ "rotate_cam", this->protections.script_events.rotate_cam },
-								{ "send_to_cutscene", this->protections.script_events.send_to_cutscene },
-								{ "send_to_island", this->protections.script_events.send_to_island },
-								{ "sound_spam", this->protections.script_events.sound_spam },
-								{ "spectate", this->protections.script_events.spectate },
-								{ "transaction_error", this->protections.script_events.transaction_error },
-								{ "vehicle_kick", this->protections.script_events.vehicle_kick }
+								{ "bounty", script_handler_protections.bounty },
+								{ "ceo_ban", script_handler_protections.ceo_ban },
+								{ "ceo_kick", script_handler_protections.ceo_kick },
+								{ "ceo_money", script_handler_protections.ceo_money },
+								{ "clear_wanted_level", script_handler_protections.clear_wanted_level },
+								{ "fake_deposit", script_handler_protections.fake_deposit },
+								{ "force_mission", script_handler_protections.force_mission },
+								{ "force_teleport", script_handler_protections.force_teleport },
+								{ "gta_banner", script_handler_protections.gta_banner },
+								{ "network_bail", script_handler_protections.network_bail },
+								{ "personal_vehicle_destroyed", script_handler_protections.personal_vehicle_destroyed },
+								{ "remote_off_radar", script_handler_protections.remote_off_radar },
+								{ "rotate_cam", script_handler_protections.rotate_cam },
+								{ "send_to_cutscene", script_handler_protections.send_to_cutscene },
+								{ "send_to_island", script_handler_protections.send_to_island },
+								{ "sound_spam", script_handler_protections.sound_spam },
+								{ "spectate", script_handler_protections.spectate },
+								{ "transaction_error", script_handler_protections.transaction_error },
+								{ "vehicle_kick", script_handler_protections.vehicle_kick }
 							}
 						}
 					}
@@ -335,16 +556,7 @@ namespace big
 						{ "never_wanted", this->self.never_wanted },
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
-						{ "super_run", this->self.super_run },
-
-						{
-							"frame_flags", {
-								{ "explosive_ammo", this->self.frame_flags.explosive_ammo },
-								{ "explosive_melee", this->self.frame_flags.explosive_melee },
-								{ "fire_ammo", this->self.frame_flags.fire_ammo },
-								{ "super_jump", this->self.frame_flags.super_jump }
-							}
-						}
+						{ "super_run", this->self.super_run }
 					}
 				},
 				{
@@ -353,6 +565,13 @@ namespace big
 								{ "menu_toggle", this->settings.hotkeys.menu_toggle }
 							}
 						}
+					}
+				},
+				{
+					"spawn", {
+						{ "preview_vehicle", this->spawn.preview_vehicle },
+						{ "spawn_inside", this->spawn.spawn_inside },
+						{ "spawn_maxed", this->spawn.spawn_maxed}
 					}
 				},
 				{
@@ -388,6 +607,12 @@ namespace big
 				},
 				{
 					"weapons", {
+						{ "ammo_special", {
+							{ "toggle", this->weapons.ammo_special.toggle },
+							{ "type", (int)this->weapons.ammo_special.type },
+								
+							}
+						},
 						{ "custom_weapon", (int)this->weapons.custom_weapon },
 						{ "force_crosshairs", this->weapons.force_crosshairs },
 						{ "increased_damage", this->weapons.increased_damage },

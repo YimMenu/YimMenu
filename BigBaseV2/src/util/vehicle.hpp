@@ -44,11 +44,9 @@ namespace big::vehicle
 		return true;
 	}
 
-	inline int spawn(const char* model, Vector3 location, float heading)
+	inline int spawn(std::string_view model, Vector3 location, float heading, bool is_networked = true)
 	{
-		Hash hash = rage::joaat(model);
-
-		if (hash)
+		if (const Hash hash = rage::joaat(model.data()); hash)
 		{
 			for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
 			{
@@ -64,7 +62,7 @@ namespace big::vehicle
 			}
 
 			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
-			Vehicle veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, true, false, false);
+			Vehicle veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, false, false);
 			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
 
 			script::get_current()->yield();
@@ -86,4 +84,24 @@ namespace big::vehicle
 
 		return -1;
 	}
+
+	inline void telport_into_veh(Vehicle veh)
+	{
+		PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
+	}
+
+	inline void max_vehicle(Vehicle veh)
+	{
+		VEHICLE::SET_VEHICLE_MOD_KIT(veh, 0);
+		VEHICLE::TOGGLE_VEHICLE_MOD(veh, 18 /* Turbo */, TRUE);
+		VEHICLE::TOGGLE_VEHICLE_MOD(veh, 20 /* Tire Smoke */, TRUE);
+		VEHICLE::TOGGLE_VEHICLE_MOD(veh, 17 /* Xenon Headlights */, TRUE);
+		VEHICLE::SET_VEHICLE_WINDOW_TINT(veh, 1);
+		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(veh, false);
+		for (int i = 0; i < 50; i++)
+		{
+			VEHICLE::SET_VEHICLE_MOD(veh, i, VEHICLE::GET_NUM_VEHICLE_MODS(veh, i) - 1, true);
+		}
+	}
+
 }

@@ -20,6 +20,11 @@ namespace big
 	{
 		if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("shop_controller") && strcmp(entryLine1, "CTALERT_F_2") == 0)
 		{
+			if (g->notifications.transaction_rate_limit.log)
+				LOG(WARNING) << "Received transaction rate limit";
+			if (g->notifications.transaction_rate_limit.notify)
+				g_notification_service->push_warning("Transaction Rate Limit", "You're receiving transaction rate limits, whatever you're doing do it less.");
+
 			// dismisses popup instead of killing it silently
 			*script_global(4529830).as<int*>() = 0;
 

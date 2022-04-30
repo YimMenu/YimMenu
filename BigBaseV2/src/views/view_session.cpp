@@ -1,3 +1,4 @@
+#include "fiber_pool.hpp"
 #include "util/session.hpp"
 #include "views/view.hpp"
 
@@ -38,7 +39,7 @@ namespace big
 				ImGui::Checkbox("Show Player Godmode", &g->esp.god);
 				ImGui::Checkbox("Show Player Health", &g->esp.health);
 				ImGui::Checkbox("Show Player Name", &g->esp.name);
-				
+
 				static ImVec4 col_esp = ImGui::ColorConvertU32ToFloat4(g->esp.color);
 				static ImVec4 col_friend = ImGui::ColorConvertU32ToFloat4(g->esp.friend_color);
 				if (ImGui::ColorEdit4("ESP Color##esp_picker", (float*)&col_esp, ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoSidePreview))
@@ -49,10 +50,41 @@ namespace big
 				{
 					g->esp.friend_color = ImGui::ColorConvertFloat4ToU32(col_friend);
 				}
-
-
 			}
-			
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Local Time"))
+		{
+			ImGui::Checkbox("Override Time", &g->session.override_time);
+
+			if (g->session.override_time)
+			{
+				ImGui::SliderInt("Hour", &g->session.custom_time.hour, 0, 23);
+				ImGui::SliderInt("Minute", &g->session.custom_time.minute, 0, 59);
+				ImGui::SliderInt("Second", &g->session.custom_time.second, 0, 59);
+			}
+
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Local Weather"))
+		{
+			if (ImGui::Button("Clear Override"))
+			{
+				g_fiber_pool->queue_job([]
+				{
+					MISC::CLEAR_OVERRIDE_WEATHER();
+				});
+			}
+
+			if (ImGui::ListBox("", &g->session.local_weather, session::weathers, 15))
+			{
+				g_fiber_pool->queue_job([]
+				{
+					session::local_weather();
+				});
+			}
+
 			ImGui::TreePop();
 		}
 	}
