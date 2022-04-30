@@ -78,7 +78,7 @@ namespace big::toxic
 
 			Vector3 location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
 
-			if (entity::take_control_of(ent))
+			if (NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(ent))
 				ENTITY::APPLY_FORCE_TO_ENTITY(ent, 1, 0.f, 0.f, 50000.f, 0.f, 0.f, 0.f, 0, 0, 1, 1, 0, 1);
 			else
 				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
