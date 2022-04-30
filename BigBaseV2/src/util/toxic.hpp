@@ -3,6 +3,7 @@
 #include "natives.hpp"
 #include "script_global.hpp"
 #include "system.hpp"
+#include "entity.hpp"
 
 namespace big::toxic
 {
@@ -58,6 +59,32 @@ namespace big::toxic
 			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 1, 0, RAGE_JOAAT("WEAPON_STUNGUN"), PLAYER::PLAYER_PED_ID(), false, true, 1);
 		}
 	}
+
+	inline void kick_from_vehicle(const Player player)
+	{
+		const Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+
+		TASK::CLEAR_PED_TASKS_IMMEDIATELY(target);
+	}
+
+	inline void flying_vehicle(const Player player)
+	{
+		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+
+		if (!PED::IS_PED_IN_ANY_VEHICLE(ent, true))
+			g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
+		else {
+			ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
+
+			Vector3 location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+
+			if (entity::take_control_of(ent))
+				ENTITY::APPLY_FORCE_TO_ENTITY(ent, 1, 0.f, 0.f, 50000.f, 0.f, 0.f, 0.f, 0, 0, 1, 1, 0, 1);
+			else
+				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+		}
+	}
+
 
 	inline void clear_wanted_player(Player target)
 	{
