@@ -32,6 +32,7 @@ namespace big
 		static void system_update_pointers();
 
 		static void vehicle_despawn_bypass();
+		static void vehicle_drive_on_water();
 		static void vehicle_god_mode();
 		static void vehicle_horn_boost();
 		static void vehicle_is_targetable();

@@ -82,6 +82,7 @@ namespace big
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::vehicle_despawn_bypass();
+			looped::vehicle_drive_on_water();
 			looped::vehicle_god_mode();
 			looped::vehicle_horn_boost();
 			looped::vehicle_is_targetable();
