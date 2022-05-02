@@ -1,5 +1,4 @@
 #pragma once
-#include "gta/enums.hpp"
 #include "natives.hpp"
 #include "script.hpp"
 
