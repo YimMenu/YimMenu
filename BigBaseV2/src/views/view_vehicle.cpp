@@ -51,7 +51,7 @@ namespace big
 
 				ImGui::EndPopup();
 			}
-
+			ImGui::EndGroup();
 			ImGui::TreePop();
 		}
 
@@ -59,7 +59,7 @@ namespace big
 		{
 			ImGui::ListBox("RGB Type", &g->vehicle.rainbow_paint, vehicle::rgb_types, 3);
 
-			if (g->vehicle.rainbow_paint != 0)
+			if (g->vehicle.rainbow_paint)
 			{
 				ImGui::SliderInt("RGB Speed", &g->rgb.speed, 1, 10);
 			}
