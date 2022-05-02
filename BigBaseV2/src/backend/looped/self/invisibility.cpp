@@ -15,5 +15,20 @@ namespace big
 
 			bLastInvisibility = g->self.invisibility;
 		}
+
+		if (NETWORK::NETWORK_IS_SESSION_STARTED())
+		{
+			if (g->self.invisibility && g->self.local_visibility)
+			{
+				NETWORK::SET_ENTITY_LOCALLY_VISIBLE(PLAYER::PLAYER_PED_ID());
+			}
+		}
+		else 
+		{
+			if (g->self.local_visibility)
+			{
+				ENTITY::SET_ENTITY_VISIBLE(PLAYER::PLAYER_PED_ID(), true, 0);
+			}
+		}
 	}
 }

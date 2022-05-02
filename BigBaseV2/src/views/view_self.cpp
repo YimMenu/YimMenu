@@ -32,6 +32,11 @@ namespace big
 			ImGui::BeginGroup();
 
 			ImGui::Checkbox("Invisibility", &g->self.invisibility);
+			if (g->self.invisibility)
+			{
+				ImGui::Checkbox("Locally Visible", &g->self.local_visibility);
+			}
+
 			ImGui::Checkbox("Keep Player Clean", &g->self.clean_player);
 			if (ImGui::Button("Clean Player"))
 			{
