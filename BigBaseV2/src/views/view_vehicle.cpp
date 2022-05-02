@@ -23,7 +23,7 @@ namespace big
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
 
 				vehicle::repair(veh);
-				});
+			});
 
 			if (components::button("Handling")) {
 				ImGui::OpenPopup("Handling Popup");
@@ -52,7 +52,17 @@ namespace big
 				ImGui::EndPopup();
 			}
 
-			ImGui::EndGroup();
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Paint"))
+		{
+			ImGui::ListBox("RGB Type", &g->vehicle.rainbow_paint, vehicle::rgb_types, 3);
+
+			if (g->vehicle.rainbow_paint != 0)
+			{
+				ImGui::SliderInt("RGB Speed", &g->rgb.speed, 1, 10);
+			}
 
 			ImGui::TreePop();
 		}

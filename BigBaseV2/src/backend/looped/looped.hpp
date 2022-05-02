@@ -9,6 +9,9 @@ namespace big
 
 		static void hud_transition_state();
 
+		static void rgb_synced_fade();
+		static void rgb_synced_spasm();
+
 		static void tunables_disable_phone();
 		static void tunables_no_idle_kick();
 
@@ -37,6 +40,7 @@ namespace big
 		static void vehicle_horn_boost();
 		static void vehicle_is_targetable();
 		static void vehicle_ls_customs();
+		static void vehicle_rainbow_paint();
 		static void vehicle_speedo_meter();
 
 		static void weapons_ammo_special_type();

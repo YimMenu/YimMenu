@@ -30,6 +30,12 @@ namespace big
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
+			looped::rgb_synced_fade();
+			looped::rgb_synced_spasm();
+		}QUEUE_JOB_END_CLAUSE
+
+		QUEUE_JOB_BEGIN_CLAUSE()
+		{
 			looped::tunables_disable_phone();
 			looped::tunables_no_idle_kick();
 		}QUEUE_JOB_END_CLAUSE
@@ -86,6 +92,7 @@ namespace big
 			looped::vehicle_god_mode();
 			looped::vehicle_horn_boost();
 			looped::vehicle_is_targetable();
+			looped::vehicle_rainbow_paint();
 			looped::vehicle_speedo_meter();
 		}QUEUE_JOB_END_CLAUSE
 
