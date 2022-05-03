@@ -91,9 +91,7 @@ namespace big
 						draw_list->AddLine({ esp_side_x, esp_y - (175.f * multplr) + 25.f }, { esp_side_x + (100.f * health_perc), esp_y - (175.f * multplr) + 25.f }, health_perc < 0.25f ? health_red : health_perc < 0.65f ? health_yellow : health_green, 4);
 					}
 				}
-
 			}
 		}
-		ImGui::End();
 	}
 }
