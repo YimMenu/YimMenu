@@ -10,10 +10,7 @@ namespace big
 	void backend::loop()
 	{
 		g->attempt_save();
-		QUEUE_JOB_BEGIN_CLAUSE()
-		{
-			looped::system_update_pointers();
-		}QUEUE_JOB_END_CLAUSE
+		looped::system_update_pointers();
 
 		if (g_local_player != nullptr && !api::util::signed_in())
 		{
