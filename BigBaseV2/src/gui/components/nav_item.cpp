@@ -18,10 +18,10 @@ namespace big
 		if (curTab && !navItem.second.sub_nav.empty())
 		{
 			ImDrawList* dl = ImGui::GetForegroundDrawList();
-			dl->AddRectFilled({ 10.f, ImGui::GetCursorPosY() + 100.f }, { 10.f + 250.f, ImGui::GetCursorPosY() + 110.f + (30.f * navItem.second.sub_nav.size()) }, ImGui::ColorConvertFloat4ToU32({ 1.f, 1.f, 1.f, .15f }));
+			dl->AddRectFilled({ 10.f, ImGui::GetCursorPosY() + 100.f }, { 10.f + 250.f, ImGui::GetCursorPosY() + 100.f + ((navItem.second.sub_nav.size() * ImGui::CalcTextSize("A").y) + (navItem.second.sub_nav.size() * (ImGui::GetStyle().ItemInnerSpacing.y * 2))) }, ImGui::ColorConvertFloat4ToU32({ 1.f, 1.f, 1.f, .15f }));
 			for (std::pair<tabs, navigation_struct> item : navItem.second.sub_nav)
 			{
-				nav_item(item, nested+1);
+				nav_item(item, nested + 1);
 			}
 		}
 

@@ -33,6 +33,7 @@ namespace big
 				{
 					MISC::CLEAR_OVERRIDE_WEATHER();
 				});
+			}
 		}
 	}
 }
