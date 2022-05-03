@@ -7,7 +7,7 @@ namespace big
 	{
 		const Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
 
-		if (veh != 0 && g->vehicle.rainbow_paint != 0)
+		if (veh && g->vehicle.rainbow_paint)
 		{
 			if (g->vehicle.rainbow_paint == 1)
 			{

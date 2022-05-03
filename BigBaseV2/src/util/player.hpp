@@ -8,8 +8,8 @@ namespace big::player
 {
 	inline void easy_way_out()
 	{
-		*script_global(262145 + 27907).as<int*>() = 0;
-		*script_global(262145 + 27908).as<int*>() = 0;
+		*script_global(262145 + 28073).as<int*>() = 0;
+		*script_global(262145 + 28074).as<int*>() = 0;
 	}
 
 	inline void get_active_character_slot(int *character_slot)
