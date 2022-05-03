@@ -26,10 +26,10 @@ namespace big
 		static ImColor health_red_bg = ImColor(0.69f, 0.29f, 0.29f, 0.5f);
 		static ImColor health_red = ImColor(0.69f, 0.29f, 0.29f, 1.f);
 
-		ImGui::SetNextWindowSize({ (float)*g_pointers->m_resolution_x, (float)*g_pointers->m_resolution_y });
-		if (ImGui::Begin("draw_window", nullptr, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMouseInputs | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoFocusOnAppearing))
+		ImDrawList* draw_list = ImGui::GetBackgroundDrawList();
+
+		if (draw_list)
 		{
-			ImDrawList* draw_list = ImGui::GetWindowDrawList();
 			for (auto& item : g_player_service->m_players)
 			{
 				const std::unique_ptr<player>& plyr = item.second;
@@ -91,9 +91,7 @@ namespace big
 						draw_list->AddLine({ esp_side_x, esp_y - (175.f * multplr) + 25.f }, { esp_side_x + (100.f * health_perc), esp_y - (175.f * multplr) + 25.f }, health_perc < 0.25f ? health_red : health_perc < 0.65f ? health_yellow : health_green, 4);
 					}
 				}
-
 			}
 		}
-		ImGui::End();
 	}
 }
