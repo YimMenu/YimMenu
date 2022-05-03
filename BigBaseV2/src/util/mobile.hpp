@@ -106,7 +106,7 @@ namespace big::mobile
 
 			GtaThread* freemode_thread = gta_util::find_script_thread(RAGE_JOAAT("freemode"));
 			if (freemode_thread)
-				*script_local(freemode_thread, 17437).at(176).as<int*>() = 0; // spawn vehicle instantly
+				*script_local(freemode_thread, 18196).at(176).as<int*>() = 0; // spawn vehicle instantly
 
 			// blocking call till vehicle is delivered
 			notify::busy_spinner("Delivering vehicle...", mechanic_global.at(958).as<int*>(), -1);
