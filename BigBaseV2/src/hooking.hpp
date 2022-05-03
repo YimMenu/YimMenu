@@ -110,8 +110,7 @@ namespace big
 		detour_hook m_is_dlc_present_hook;
 
 		detour_hook m_received_event_hook;
-
-		detour_hook m_scripted_game_event_hook;
+		
 		detour_hook m_send_net_info_to_lobby;
 	};
 

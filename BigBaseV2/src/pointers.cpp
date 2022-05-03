@@ -165,12 +165,6 @@ namespace big
 			memset(spectator_check, 0x90, 0x4);
 		});
 
-		// Scripted Game Event Handler
-		main_batch.add("SGEH", "40 53 48 81 EC ? ? ? ? 44 8B 81 ? ? ? ? 4C 8B CA 41 8D 40 FF 3D ? ? ? ? 77 42", [this](memory::handle ptr)
-		{
-			m_scripted_game_event = ptr.as<decltype(m_scripted_game_event)>();
-		});
-
 		// GET CNetGamePlayer
 		main_batch.add("GCNGP", "48 83 EC ? 33 C0 38 05 ? ? ? ? 74 ? 83 F9", [this](memory::handle ptr)
 		{

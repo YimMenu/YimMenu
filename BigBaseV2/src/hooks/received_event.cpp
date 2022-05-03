@@ -15,11 +15,17 @@ namespace big
 		int64_t bit_buffer
 	)
 	{
-		auto buffer = std::make_unique<rage::datBitBuffer>((void*)bit_buffer, (uint32_t)bit_buffer_size);
+		const auto buffer = std::make_unique<rage::datBitBuffer>(
+			reinterpret_cast<void*>(bit_buffer), static_cast<int32_t>(bit_buffer_size));
 
-		if (event_id > 90u) return false;
+		if (event_id > 91u)
+		{
+			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 
-		const char* event_name = *(char**)((DWORD64)event_manager + 8i64 * event_id + 243376);
+			return false;
+		}
+
+		const auto event_name = *(char**)((DWORD64)event_manager + 8i64 * event_id + 243376);
 		if (event_name == nullptr || source_player == nullptr || source_player->m_player_id < 0 || source_player->m_player_id >= 32)
 		{
 			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
@@ -28,6 +34,22 @@ namespace big
 
 		switch ((RockstarEvent)event_id)
 		{
+		case RockstarEvent::SCRIPTED_GAME_EVENT:
+		{
+			const auto scripted_game_event = std::make_unique<CScriptedGameEvent>();
+			buffer->ReadDword(&scripted_game_event->m_args_size, 32);
+			if (scripted_game_event->m_args_size - 1 <= 0x1AF)
+				buffer->ReadArray(&scripted_game_event->m_args, 8 * scripted_game_event->m_args_size);
+
+			if (hooks::scripted_game_event(scripted_game_event.get(), source_player))
+			{
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+
+				return false;
+			}
+
+			break;
+		}
 		case RockstarEvent::NETWORK_CLEAR_PED_TASKS_EVENT:
 		{
 			if (source_player->m_player_id < 32)
