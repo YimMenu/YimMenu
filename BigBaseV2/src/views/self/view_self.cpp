@@ -7,7 +7,7 @@ namespace big
 	void view::self() {
 		components::button("Suicide", [] {
 			ENTITY::SET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID(), 0, 0);
-			});
+		});
 
 		ImGui::SameLine();
 
@@ -16,32 +16,28 @@ namespace big
 		});
 
 		static char model[32];
-
-		g_fiber_pool->queue_job([] {
-			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-		});
-
 		components::input_text_with_hint("Model Name###player_ped_model", "Player Model Name", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, []
 		{
-			g_fiber_pool->queue_job([] {Hash hash = rage::joaat(model);
+			g_fiber_pool->queue_job([] {
+				const Hash hash = rage::joaat(model);
 
-			for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
-			{
-				STREAMING::REQUEST_MODEL(hash);
+				for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+				{
+					STREAMING::REQUEST_MODEL(hash);
 
+					script::get_current()->yield();
+				}
+				if (!STREAMING::HAS_MODEL_LOADED(hash))
+				{
+					g_notification_service->push_error("Self", "Failed to spawn model, did you give an incorrect model ? ");
+
+					return;
+				}
+
+				PLAYER::SET_PLAYER_MODEL(PLAYER::GET_PLAYER_INDEX(), hash);
+				PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID());
 				script::get_current()->yield();
-			}
-			if (!STREAMING::HAS_MODEL_LOADED(hash))
-			{
-				g_notification_service->push_error("Self", "Failed to spawn model, did you give an incorrect model ? ");
-
-				return;
-			}
-
-			PLAYER::SET_PLAYER_MODEL(PLAYER::GET_PLAYER_INDEX(), hash);
-			PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID());
-			script::get_current()->yield();
-			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+				STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 			});
 		});
 
