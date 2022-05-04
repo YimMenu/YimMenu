@@ -1,6 +1,5 @@
 #include "views/view.hpp"
 #include "fiber_pool.hpp"
-#include "script.hpp"
 #include "util/mobile.hpp"
 #include "services/mobile_service.hpp"
 
@@ -12,7 +11,7 @@ namespace big
 			g_notification_service->push("Mobile",
 				fmt::format("{} vehicle{} been fixed.", amount_fixed, amount_fixed == 1 ? " has" : "s have")
 			);
-			});
+		});
 
 		ImGui::Separator();
 
