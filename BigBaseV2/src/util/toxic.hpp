@@ -58,6 +58,13 @@ namespace big::toxic
 			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 1, 0, RAGE_JOAAT("WEAPON_STUNGUN"), PLAYER::PLAYER_PED_ID(), false, true, 1);
 		}
 	}
+	
+	inline void kick_from_vehicle(const Player player)
+	{
+		const Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+
+		TASK::CLEAR_PED_TASKS_IMMEDIATELY(target);
+	}
 
 	inline void clear_wanted_player(Player target)
 	{
