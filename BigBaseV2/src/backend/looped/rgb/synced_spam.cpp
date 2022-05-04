@@ -9,7 +9,7 @@ namespace big
 
         if (g->rgb.spasm)
         {
-            g->rgb.r = rand()%256;
+            g->rgb.r = rand() % 256;
             g->rgb.g = rand() % 256;
             g->rgb.b = rand() % 256;
         }
