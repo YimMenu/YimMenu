@@ -16,13 +16,11 @@ namespace big
 			return;
 		}
 
-		QUEUE_JOB_BEGIN_CLAUSE()
+		static char search[13];
+		components::input_text_with_hint("##search_share_code", "Search by share code", search, sizeof(search), ImGuiInputTextFlags_EnterReturnsTrue, []
 		{
-			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-		}QUEUE_JOB_END_CLAUSE
-
-			static char search[13];
-		ImGui::InputTextWithHint("##search_share_code", "Search by share code", search, sizeof(search));
+			g_thread_pool->push([&] { g_vehicle_service->get_by_share_code(search); });
+		});
 		ImGui::SameLine();
 		if (ImGui::Button("Search"))
 			g_thread_pool->push([&] { g_vehicle_service->get_by_share_code(search); });
