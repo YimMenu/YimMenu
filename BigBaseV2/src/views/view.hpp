@@ -13,33 +13,26 @@ namespace big
 {
 	class view
 	{
-		enum class tabs {
-			DEBUG,
-			MOBILE,
-			NONE,
-			PLAYER,
-			SELF,
-			SESSION,
-			SETTINGS,
-			SPAWN,
-			SPOOFING,
-			TELEPORT,
-			VEHICLE,
-			WEAPONS,
-		};
+		inline static animator window_animator = animator();
+		inline static ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav;
 
-		struct navigation_struct
-		{
-			tabs tab = tabs::NONE;
-			const char name[32] = "";
-			std::function<void()> func = nullptr;
-		};
-
+	public:
 		static void active_view();
 		static void debug();
+		static void esp_settings();
+		static void gui_settings();
+		static void handling_current_profile();
+		static void handling_my_profiles();
+		static void handling_saved_profiles();
+		static void handling_search();
+		static void notification_settings();
+		static void protection_settings();
+		static void heading();
 		static void mobile();
 		static void navigation();
+		//static void player_navigation();
 		static void notifications();
+		static void root();
 		static void self();
 		static void session();
 		static void settings();
@@ -48,34 +41,8 @@ namespace big
 		static void teleport();
 		static void vehicle();
 		static void view_player();
+		static void players();
 		static void weapons();
-
-		inline static animator window_animator = animator();
-
-		inline static navigation_struct initial_tab{};
-
-		inline static navigation_struct* current_tab = &initial_tab;
-
-		inline static navigation_struct nav[] = {
-			{ tabs::SELF, "Self", view::self },
-			{ tabs::MOBILE, "Mobile", view::mobile },
-			{ tabs::SPAWN, "Spawn", view::spawn },
-			{ tabs::TELEPORT, "Teleport", view::teleport },
-			{ tabs::VEHICLE, "Vehicle", view::vehicle },
-			{ tabs::WEAPONS, "Weapons", view::weapons },
-			{ tabs::SPOOFING, "Spoofing", view::spoofing },
-			{ tabs::SESSION, "Session", view::session },
-			{ tabs::SETTINGS, "Settings", view::settings },
-			{ tabs::DEBUG, "Debug", view::debug },
-			{ tabs::PLAYER, "Players", view::view_player },
-		};
-
-	public:
-		static void root()
-		{
-			active_view();
-			navigation();
-		}
 
 		static void always()
 		{

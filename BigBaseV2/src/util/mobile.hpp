@@ -37,7 +37,7 @@ namespace big::mobile
 	{
 		inline void off_radar(bool toggle)
 		{
-			*player_global.at(PLAYER::GET_PLAYER_INDEX(), 453).at(209).as<int*>() = toggle;
+			*player_global.at(PLAYER::GET_PLAYER_INDEX(), 451).at(207).as<int*>() = toggle;
 			*script_global(2703660).at(56).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
 		}
 	}
