@@ -194,6 +194,7 @@ namespace big
 			bool drive_on_water = false;
 			bool god_mode = false;
 			bool horn_boost = false;
+			bool instant_brake = false;
 			bool is_targetable = true;
 			bool ls_customs = false; // don't save this to disk
 			bool pv_teleport_into = false;
