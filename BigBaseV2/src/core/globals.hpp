@@ -226,6 +226,8 @@ namespace big
 			bool users = true;
 			bool player = false;
 
+			ImU32 color = 3357612055;
+
 			ImFont* font_title = nullptr;
 			ImFont* font_sub_title = nullptr;
 			ImFont* font_small = nullptr;
@@ -446,6 +448,7 @@ namespace big
 			this->weapons.ammo_special.type = (eAmmoSpecialType)j["weapons"]["ammo_special"]["type"];
 			this->weapons.ammo_special.toggle = j["weapons"]["ammo_special"]["toggle"];
 
+			this->window.color = j["window"]["color"];
 			this->window.debug = j["window"]["debug"];
 			this->window.handling = j["window"]["handling"];
 			this->window.log = j["window"]["log"];
@@ -660,6 +663,7 @@ namespace big
 				},
 				{
 					"window", {
+						{ "color", this->window.color },
 						{ "debug", this->window.debug },
 						{ "handling", this->window.handling },
 						{ "log", this->window.log },

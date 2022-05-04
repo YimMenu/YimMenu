@@ -12,6 +12,7 @@
 
 #include "native_hooks/native_hooks.hpp"
 #include "services/globals_service.hpp"
+#include "services/gui_service.hpp"
 #include "services/player_service.hpp"
 #include "services/mobile_service.hpp"
 #include "services/notification_service.hpp"
@@ -70,6 +71,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto player_service_instance = std::make_unique<player_service>();
 				auto vehicle_preview_service_instance = std::make_unique<vehicle_preview_service>();
 				auto vehicle_service_instance = std::make_unique<vehicle_service>();
+				auto gui_service_instance = std::make_unique<gui_service>();
 				LOG(INFO) << "Registered service instances...";
 
 				g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
@@ -96,6 +98,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_script_mgr.remove_all_scripts();
 				LOG(INFO) << "Scripts unregistered.";
 
+				gui_service_instance.reset();
+				LOG(INFO) << "Gui Service reset.";
 				vehicle_service_instance.reset();
 				LOG(INFO) << "Vehicle Service reset.";
 				vehicle_preview_service_instance.reset();

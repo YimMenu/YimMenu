@@ -16,6 +16,8 @@ namespace big
 	}
 
 	void view::spawn() {
+		ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
+
 		ImGui::Checkbox("Preview", &g->spawn.preview_vehicle);
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn In", &g->spawn.spawn_inside);
@@ -36,7 +38,7 @@ namespace big
 			}
 
 		});
-		if (ImGui::ListBoxHeader("###vehicles", { ImGui::GetWindowWidth(), ImGui::GetWindowHeight() }))
+		if (ImGui::ListBoxHeader("###vehicles"))
 		{
 			if (!g_vehicle_preview_service->get_vehicle_list().is_null())
 			{
@@ -82,6 +84,7 @@ namespace big
 							g_vehicle_preview_service->set_preview_vehicle(item);
 					}
 				}
+				ImGui::ListBoxFooter();
 			}
 			else ImGui::Text("No vehicles in registry.");
 		}
