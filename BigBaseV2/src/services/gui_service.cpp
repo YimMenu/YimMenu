@@ -69,7 +69,6 @@ namespace big
 		nav_ctr = 0;
 	}
 
-
 	std::unordered_map<tabs, navigation_struct> gui_service::get_navigation()
 	{
 		return nav;
