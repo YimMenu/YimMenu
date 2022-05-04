@@ -1,5 +1,4 @@
 #include "backend/looped/looped.hpp"
-#include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/math.hpp"
 
@@ -11,12 +10,6 @@ namespace big
 
 	void looped::self_super_run()
 	{
-
-	// g_local_player->m_player_info->m_run_speed is bwoke
-
-	/*
-	
-	
 		if (g->self.super_run && PAD::IS_CONTROL_PRESSED(0, 21))
 		{
 			if (run_speed < run_cap) run_speed += .5f;
@@ -56,8 +49,5 @@ namespace big
 		}
 
 		super_run_state = g->self.super_run;
-
-	*/
-
 	}
 }
