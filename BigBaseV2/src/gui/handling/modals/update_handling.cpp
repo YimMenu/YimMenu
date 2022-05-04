@@ -56,7 +56,7 @@ namespace big
 				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 			}QUEUE_JOB_END_CLAUSE
 
-				ImGui::BeginGroup();
+			ImGui::BeginGroup();
 
 			ImGui::Text("Name:");
 			ImGui::Text("Description:");

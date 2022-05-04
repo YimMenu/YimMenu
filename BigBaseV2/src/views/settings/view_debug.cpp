@@ -43,7 +43,7 @@ namespace big
 
 			g_fiber_pool->queue_job([] {
 				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-				});
+			});
 
 			ImGui::Text("Name:");
 			ImGui::InputText("##modal_global_name", name, sizeof(name));
