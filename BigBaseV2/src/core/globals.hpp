@@ -194,6 +194,7 @@ namespace big
 			bool drive_on_water = false;
 			bool god_mode = false;
 			bool horn_boost = false;
+			bool instant_brake = false;
 			bool is_targetable = true;
 			bool ls_customs = false; // don't save this to disk
 			bool pv_teleport_into = false;
@@ -428,6 +429,7 @@ namespace big
 			this->vehicle.drive_on_water = j["vehicle"]["drive_on_water"];
 			this->vehicle.god_mode = j["vehicle"]["god_mode"];
 			this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
+			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
 			this->vehicle.pv_teleport_into = j["vehicle"]["pv_teleport_into"];
 			this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
@@ -631,6 +633,7 @@ namespace big
 						{ "drive_on_water", this->vehicle.drive_on_water },
 						{ "god_mode", this->vehicle.god_mode },
 						{ "horn_boost", this->vehicle.horn_boost },
+						{ "instant_brake", this->vehicle.instant_brake },
 						{ "is_targetable", this->vehicle.is_targetable },
 						{ "pv_teleport_into", this->vehicle.pv_teleport_into },
 						{ "rainbow_paint", this->vehicle.rainbow_paint },
