@@ -254,7 +254,19 @@ namespace big
 		{
 			m_net_array_handler = ptr.sub(0x3C).as<PVOID>();
 		});
-		
+
+		// Chat recieve
+		main_batch.add("CR", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 30 49 8B F0 4D 8B C1", [this](memory::handle ptr)
+		{
+			m_chat_receive = ptr.as<PVOID>();
+		});
+
+		// Chat censor
+		main_batch.add("CS", "E8 ? ? ? ? 83 F8 FF 75 B9", [this](memory::handle ptr)
+		{
+			m_censor_chat_text = ptr.add(1).rip().as<PVOID>();
+		});
+
 		main_batch.run(memory::module(nullptr));
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);

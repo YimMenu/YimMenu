@@ -67,6 +67,8 @@ namespace big
 			pair net_array_error{};
 			pair network_player_mgr_shutdown{};
 
+			pair chat_recieve{};
+
 			struct 
 			{
 				bool above_map = true;
@@ -109,6 +111,7 @@ namespace big
 				bool spectate = true;
 				bool transaction_error = true;
 				bool vehicle_kick = true;
+				
 			};
 
 			bool freemode_terminated = false;
@@ -179,6 +182,8 @@ namespace big
 
 			bool spoof_rockstar_id = false;
 			uint64_t rockstar_id = 0;
+
+			bool spoof_chat_censor = false;
 		};
 
 		struct vehicle {
@@ -291,6 +296,9 @@ namespace big
 			g->notifications.gta_thread_kill.notify = j["notifications"]["gta_thread_kill"]["notify"];
 			g->notifications.gta_thread_start.log = j["notifications"]["gta_thread_start"]["log"];
 			g->notifications.gta_thread_start.notify = j["notifications"]["gta_thread_start"]["notify"];
+
+			g->notifications.chat_recieve.log = j["notifications"]["chat_recieve"]["log"];
+			g->notifications.chat_recieve.notify = j["notifications"]["chat_recieve"]["notify"];
 
 			g->notifications.net_array_error.log = j["notifications"]["net_array_error"]["log"];
 			g->notifications.net_array_error.notify = j["notifications"]["net_array_error"]["notify"];
@@ -420,6 +428,7 @@ namespace big
 			this->spoofing.spoof_ip = j["spoofing"]["spoof_ip"];
 			this->spoofing.spoof_rockstar_id = j["spoofing"]["spoof_rockstar_id"];
 			this->spoofing.spoof_username = j["spoofing"]["spoof_username"];
+			this->spoofing.spoof_chat_censor = j["spoofing"]["spoof_chat_censor"];
 
 			for (int i = 0; i < 4; i++)
 				this->spoofing.ip_address[i] = j["spoofing"]["ip_address"].at(i);
@@ -498,8 +507,9 @@ namespace big
 					"notifications", {
 						{ "gta_thread_kill", return_notify_pair(g->notifications.gta_thread_kill) },
 						{ "gta_thread_start", return_notify_pair(g->notifications.gta_thread_start) },
-						{"net_array_error", return_notify_pair(g->notifications.net_array_error)},
+						{ "net_array_error", return_notify_pair(g->notifications.net_array_error) },
 						{ "network_player_mgr_shutdown", return_notify_pair(g->notifications.network_player_mgr_shutdown) },
+						{ "chat_recieve", return_notify_pair(g->notifications.chat_recieve) },
 						{ "player_join", {
 								{ "above_map", g->notifications.player_join.above_map },
 								{ "log", g->notifications.player_join.log },
@@ -618,6 +628,7 @@ namespace big
 						{ "spoof_ip", this->spoofing.spoof_ip },
 						{ "spoof_rockstar_id", this->spoofing.spoof_rockstar_id },
 						{ "spoof_username", this->spoofing.spoof_username },
+						{ "spoof_chat_censor", this->spoofing.spoof_chat_censor },
 						{ "ip_address", nlohmann::json::array({
 							this->spoofing.ip_address[0],
 							this->spoofing.ip_address[1],
