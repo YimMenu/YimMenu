@@ -38,8 +38,8 @@ namespace big::toxic
 			amount,
 			0, 1, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0,
-			*script_global(1921036).at(9).as<int*>(),
-			*script_global(1921036).at(10).as<int*>()
+			* script_global(1921039).at(9).as<int*>(),
+			* script_global(1921039).at(10).as<int*>()
 		};
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, -1);
@@ -58,6 +58,13 @@ namespace big::toxic
 			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 1, 0, RAGE_JOAAT("WEAPON_STUNGUN"), PLAYER::PLAYER_PED_ID(), false, true, 1);
 		}
 	}
+	
+	inline void kick_from_vehicle(const Player player)
+	{
+		const Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+
+		TASK::CLEAR_PED_TASKS_IMMEDIATELY(target);
+	}
 
 	inline void clear_wanted_player(Player target)
 	{
@@ -65,7 +72,7 @@ namespace big::toxic
 		int64_t args[arg_count] = {
 			(int)eRemoteEvent::ClearWantedLevel,
 			0,
-			*script_global(1893548).at(target, 600).at(511).as<int*>()
+			*script_global(1893551).at(target, 599).at(510).as<int*>()
 		};
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);

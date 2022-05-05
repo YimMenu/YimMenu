@@ -117,15 +117,25 @@ namespace big
 			script_events script_events{};
 		};
 
+		struct rgb {
+			bool fade = false;
+			bool spasm = false;
+			int r = 255;
+			int g = 0;
+			int b = 0;
+			int speed = 0;
+		};
+
 		struct self {
 			bool clean_player = false;
 			bool force_wanted_level = false;
 			bool free_cam = false;
 			bool godmode = false;
 			bool invisibility = false;
+			bool local_visibility = true;
 			bool never_wanted = false;
-			bool noclip = false;
 			bool no_ragdoll = false;
+			bool noclip = false;
 			bool off_radar = false;
 			bool super_run = false;
 			int wanted_level = 0;
@@ -158,7 +168,7 @@ namespace big
 			bool preview_vehicle = false;
 			bool spawn_inside = false;
 			bool spawn_maxed = false;
-		};
+		}; 
 
 		struct spoofing
 		{
@@ -182,11 +192,13 @@ namespace big
 				bool left_side = false;
 			};
 
+			bool drive_on_water = false;
 			bool god_mode = false;
 			bool horn_boost = false;
 			bool is_targetable = true;
 			bool ls_customs = false; // don't save this to disk
 			bool pv_teleport_into = false;
+			int rainbow_paint = 0;
 			speedo_meter speedo_meter{};
 		};
 
@@ -214,6 +226,8 @@ namespace big
 			bool main = true;
 			bool users = true;
 			bool player = false;
+
+			ImU32 color = 3357612055;
 
 			ImFont* font_title = nullptr;
 			ImFont* font_sub_title = nullptr;
@@ -247,6 +261,7 @@ namespace big
 		notifications notifications{};
 		player player{};
 		protections protections{};
+		rgb rgb{};
 		self self{};
 		session session{};
 		settings settings{};
@@ -377,14 +392,22 @@ namespace big
 				script_handler.vehicle_kick = script_handler_j["vehicle_kick"];
 			}
 
+			this->rgb.fade = j["rgb"]["fade"];
+			this->rgb.spasm = j["rgb"]["spasm"];
+			this->rgb.r = j["rgb"]["r"];
+			this->rgb.g = j["rgb"]["g"];
+			this->rgb.b = j["rgb"]["b"];
+			this->rgb.speed = j["rgb"]["speed"];
+
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
 			this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
 
 			this->self.clean_player = j["self"]["clean_player"];
 			this->self.godmode = j["self"]["godmode"];
 			this->self.invisibility = j["self"]["invisibility"];
-			this->self.no_ragdoll = j["self"]["no_ragdoll"];
+			this->self.local_visibility = j["self"]["local_visibility"];
 			this->self.never_wanted = j["self"]["never_wanted"];
+			this->self.no_ragdoll = j["self"]["no_ragdoll"];
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
 
@@ -403,10 +426,12 @@ namespace big
 			this->spoofing.rockstar_id = j["spoofing"]["rockstar_id"];
 			this->spoofing.username = j["spoofing"]["username"];
 
+			this->vehicle.drive_on_water = j["vehicle"]["drive_on_water"];
 			this->vehicle.god_mode = j["vehicle"]["god_mode"];
 			this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
 			this->vehicle.pv_teleport_into = j["vehicle"]["pv_teleport_into"];
+			this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
 
 			this->vehicle.speedo_meter.type = (SpeedoMeter)j["vehicle"]["speedo_meter"]["type"];
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
@@ -424,6 +449,7 @@ namespace big
 			this->weapons.ammo_special.type = (eAmmoSpecialType)j["weapons"]["ammo_special"]["type"];
 			this->weapons.ammo_special.toggle = j["weapons"]["ammo_special"]["toggle"];
 
+			this->window.color = j["window"]["color"];
 			this->window.debug = j["window"]["debug"];
 			this->window.handling = j["window"]["handling"];
 			this->window.log = j["window"]["log"];
@@ -544,6 +570,16 @@ namespace big
 					}
 				},
 				{
+					"rgb", {
+					{ "fade", this->rgb.fade },
+					{ "spasm", this->rgb.spasm },
+					{ "r", this->rgb.r },
+					{ "g", this->rgb.g },
+					{ "b", this->rgb.b },
+					{ "speed", this->rgb.speed }
+					}
+				},
+				{
 					"tunables", {
 						{ "disable_phone", this->tunables.disable_phone },
 						{ "no_idle_kick", this->tunables.no_idle_kick }
@@ -554,6 +590,7 @@ namespace big
 						{ "clean_player", this->self.clean_player },
 						{ "godmode", this->self.godmode },
 						{ "invisibility", this->self.invisibility },
+						{ "local_visibility", this->self.local_visibility },
 						{ "never_wanted", this->self.never_wanted },
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
@@ -592,10 +629,12 @@ namespace big
 				},
 				{
 					"vehicle", {
+						{ "drive_on_water", this->vehicle.drive_on_water },
 						{ "god_mode", this->vehicle.god_mode },
 						{ "horn_boost", this->vehicle.horn_boost },
 						{ "is_targetable", this->vehicle.is_targetable },
 						{ "pv_teleport_into", this->vehicle.pv_teleport_into },
+						{ "rainbow_paint", this->vehicle.rainbow_paint },
 						{
 							"speedo_meter", {
 								{ "type", (int)this->vehicle.speedo_meter.type },
@@ -625,6 +664,7 @@ namespace big
 				},
 				{
 					"window", {
+						{ "color", this->window.color },
 						{ "debug", this->window.debug },
 						{ "handling", this->window.handling },
 						{ "log", this->window.log },

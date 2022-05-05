@@ -13,10 +13,7 @@ namespace big
 	void backend::loop()
 	{
 		g->attempt_save();
-		QUEUE_JOB_BEGIN_CLAUSE()
-		{
-			looped::system_update_pointers();
-		}QUEUE_JOB_END_CLAUSE
+		looped::system_update_pointers();
 
 			if (g_local_player != nullptr && !api::util::signed_in())
 			{
@@ -28,6 +25,12 @@ namespace big
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::hud_transition_state();
+		}QUEUE_JOB_END_CLAUSE
+
+		QUEUE_JOB_BEGIN_CLAUSE()
+		{
+			looped::rgb_synced_fade();
+			looped::rgb_synced_spasm();
 		}QUEUE_JOB_END_CLAUSE
 
 		QUEUE_JOB_BEGIN_CLAUSE()
@@ -85,9 +88,11 @@ namespace big
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::vehicle_despawn_bypass();
+			looped::vehicle_drive_on_water();
 			looped::vehicle_god_mode();
 			looped::vehicle_horn_boost();
 			looped::vehicle_is_targetable();
+			looped::vehicle_rainbow_paint();
 			looped::vehicle_speedo_meter();
 		}QUEUE_JOB_END_CLAUSE
 
