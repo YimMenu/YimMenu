@@ -26,9 +26,7 @@ namespace big
 		static ImColor health_red_bg = ImColor(0.69f, 0.29f, 0.29f, 0.5f);
 		static ImColor health_red = ImColor(0.69f, 0.29f, 0.29f, 1.f);
 
-		ImDrawList* draw_list = ImGui::GetBackgroundDrawList();
-
-		if (draw_list)
+		if (const auto draw_list = ImGui::GetBackgroundDrawList(); draw_list)
 		{
 			for (auto& item : g_player_service->m_players)
 			{

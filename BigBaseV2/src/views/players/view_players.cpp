@@ -11,7 +11,8 @@ namespace big
 		ImGui::SetNextWindowPos({ 10.f, window_pos });
 		if (ImGui::Begin("playerlist", nullptr, window_flags))
 		{
-			float window_height = g_player_service->m_players.size() * 35.f;
+			const auto player_count = g_player_service->m_players.size();
+			float window_height = (ImGui::CalcTextSize("A").y + ImGui::GetStyle().ItemInnerSpacing.y * 2 + 6.5f) * player_count;
 
 			window_height = window_height + window_pos > (float)*g_pointers->m_resolution_y - 10.f ? (float)*g_pointers->m_resolution_y - (window_pos + 40.f) : window_height;
 
@@ -20,7 +21,7 @@ namespace big
 			if (ImGui::BeginListBox("##players", { 250.f - ImGui::GetStyle().WindowPadding.x * 2 , window_height })) {
 				for (auto& item : g_player_service->m_players)
 				{
-					std::unique_ptr<player>& plyr = item.second;
+					const auto& plyr = item.second;
 					if (plyr->is_host())
 						ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
 					if (ImGui::Button(plyr->get_name(), { ImGui::GetWindowSize().x - 15.f, 0.f }))

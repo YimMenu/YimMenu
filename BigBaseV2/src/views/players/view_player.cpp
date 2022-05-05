@@ -125,6 +125,10 @@ namespace big
 				components::button("Kick From Vehicle", [] {
 					toxic::kick_from_vehicle(g_player_service->get_selected()->id());
 				});
+        
+        components::button("Flying Vehicle", [] {
+					toxic::flying_vehicle(g_player_service->get_selected()->id());
+				});
 			}
 		}
 	}

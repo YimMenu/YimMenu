@@ -42,8 +42,6 @@ namespace big
 		style.GrabRounding = 3.0f;
 		style.ChildRounding = 4.0f;
 
-		LOG(INFO) << (int32_t)g->window.color;
-
 		auto& colors = style.Colors;
 		colors[ImGuiCol_Text] = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
 		colors[ImGuiCol_TextDisabled] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
