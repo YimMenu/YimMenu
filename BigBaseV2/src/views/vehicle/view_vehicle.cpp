@@ -35,6 +35,8 @@ namespace big
 			ImGui::TreePop();
 		}
 
+		ImGui::Checkbox("Turn Signals", &g->vehicle.turn_signals);
+
 		ImGui::EndGroup();
 
 		ImGui::Separator();

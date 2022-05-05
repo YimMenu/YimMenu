@@ -197,6 +197,7 @@ namespace big
 			bool is_targetable = true;
 			bool ls_customs = false; // don't save this to disk
 			bool pv_teleport_into = false;
+			bool turn_signals = false;
 			int rainbow_paint = 0;
 			speedo_meter speedo_meter{};
 		};
@@ -431,6 +432,7 @@ namespace big
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
 			this->vehicle.pv_teleport_into = j["vehicle"]["pv_teleport_into"];
 			this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
+			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
 
 			this->vehicle.speedo_meter.type = (SpeedoMeter)j["vehicle"]["speedo_meter"]["type"];
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
@@ -634,6 +636,7 @@ namespace big
 						{ "is_targetable", this->vehicle.is_targetable },
 						{ "pv_teleport_into", this->vehicle.pv_teleport_into },
 						{ "rainbow_paint", this->vehicle.rainbow_paint },
+						{ "turn_signals", this->vehicle.turn_signals },
 						{
 							"speedo_meter", {
 								{ "type", (int)this->vehicle.speedo_meter.type },

@@ -91,6 +91,7 @@ namespace big
 			looped::vehicle_is_targetable();
 			looped::vehicle_rainbow_paint();
 			looped::vehicle_speedo_meter();
+			looped::vehicle_turn_signal();
 		}QUEUE_JOB_END_CLAUSE
 
 		QUEUE_JOB_BEGIN_CLAUSE()
