@@ -59,7 +59,12 @@ namespace big
 		// Player Has Joined
 		m_player_has_joined_hook("PHJ", g_pointers->m_player_has_joined, &hooks::player_join),
 		// Player Has Left
-		m_player_has_left_hook("PHL", g_pointers->m_player_has_left, &hooks::player_leave)
+		m_player_has_left_hook("PHL", g_pointers->m_player_has_left, &hooks::player_leave),
+
+		// Chat recieve
+		m_chat_receive_hook("CR", g_pointers->m_chat_receive, &hooks::chat_receive),
+		// Chat censor
+		m_censor_chat_text_hook("CS", g_pointers->m_censor_chat_text, &hooks::censor_chat_text)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -105,12 +110,20 @@ namespace big
 
 		m_send_net_info_to_lobby.enable();
 
+		m_chat_receive_hook.enable();
+
+		m_censor_chat_text_hook.enable();
+
 		m_enabled = true;
 	}
 
 	void hooking::disable()
 	{
 		m_enabled = false;
+
+		m_censor_chat_text_hook.disable();
+
+		m_chat_receive_hook.disable();
 
 		m_send_net_info_to_lobby.disable();
 

@@ -50,5 +50,9 @@ namespace big
 
 		ImGui::Text("Rockstar ID:");
 		ImGui::InputScalar("##rockstar_id_input", ImGuiDataType_U64, &g->spoofing.rockstar_id);
+
+		ImGui::Separator();
+
+		ImGui::Checkbox("Spoof chat censorhip", &g->spoofing.spoof_chat_censor);
 	}
 }
