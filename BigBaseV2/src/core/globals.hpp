@@ -191,6 +191,7 @@ namespace big
 				bool left_side = false;
 			};
 
+			bool auto_turn_signals = false;
 			bool drive_on_water = false;
 			bool god_mode = false;
 			bool horn_boost = false;
@@ -427,6 +428,7 @@ namespace big
 			this->spoofing.rockstar_id = j["spoofing"]["rockstar_id"];
 			this->spoofing.username = j["spoofing"]["username"];
 
+			this->vehicle.auto_turn_signals = j["vehicle"]["auto_turn_signals"];
 			this->vehicle.drive_on_water = j["vehicle"]["drive_on_water"];
 			this->vehicle.god_mode = j["vehicle"]["god_mode"];
 			this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
@@ -632,6 +634,7 @@ namespace big
 				},
 				{
 					"vehicle", {
+						{ "auto_turn_signals", this->vehicle.auto_turn_signals },
 						{ "drive_on_water", this->vehicle.drive_on_water },
 						{ "god_mode", this->vehicle.god_mode },
 						{ "horn_boost", this->vehicle.horn_boost },

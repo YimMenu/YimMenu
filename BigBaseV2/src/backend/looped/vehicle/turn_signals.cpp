@@ -1,4 +1,5 @@
 #include "backend/looped/looped.hpp"
+#include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "script.hpp"
@@ -59,6 +60,7 @@ void update_key_state(key_state& key_last_tick)
 	}
 }
 
+
 void update_key_states()
 {
 	update_key_state(left_signal_key);
@@ -104,19 +106,36 @@ inline void set_turn_signals(int signal_state, bool on)
 
 namespace big
 {
+	static bool b_last_turn_signals = false;
+
 	void looped::vehicle_turn_signal()
 	{
-
 		static bool hazzards = false;
+		bool b_turn_signals = g->vehicle.turn_signals;
+
+		if (!b_turn_signals && b_turn_signals != b_last_turn_signals)
+		{
+			VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false), 0, 0);
+			VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false), 1, 0);
+		}
+
+		if (g->vehicle.turn_signals)
+		{
+			static bool ran_once = []
+			{
+				g_notification_service->push_warning("Instructions", "Manual: J = Left, L = Right, K = Toggle Hazzards");
+				return true;
+			}();
+		}
 
 		update_key_states();
 
-		if (left_signal_key.state == key_state::just_pressed)
+		if (left_signal_key.state == key_state::just_pressed || g->vehicle.auto_turn_signals && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_LEFT_ONLY))
 		{
 			set_turn_signals(signal_state::left, true);
 		}
 		
-		if (right_signal_key.state == key_state::just_pressed)
+		if (right_signal_key.state == key_state::just_pressed || g->vehicle.auto_turn_signals && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_RIGHT_ONLY))
 		{
 			set_turn_signals(signal_state::right, true);
 		}
@@ -126,23 +145,32 @@ namespace big
 			set_turn_signals(signal_state::hazzards, true);
 			hazzards = true;
 		}
-		else if (hazzards_key.state == key_state::just_pressed && hazzards)
+		else if (hazzards_key.state == key_state::just_pressed && hazzards || !g->vehicle.turn_signals)
 		{
 			set_turn_signals(signal_state::hazzards, false);
 			hazzards = false;
 		}
 
-		
-		if (PAD::IS_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_VEH_MOVE_RIGHT_ONLY))
-		{
-			script::get_current()->yield(1500ms);
-			set_turn_signals(signal_state::right, false);
-		}
 
 		if (PAD::IS_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_VEH_MOVE_LEFT_ONLY))
 		{
+			if(g->vehicle.turn_signals)
+			{
 			script::get_current()->yield(1500ms);
+			}
 			set_turn_signals(signal_state::left, false);
 		}
+
+		if (PAD::IS_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_VEH_MOVE_RIGHT_ONLY))
+		{
+			if (g->vehicle.turn_signals)
+			{
+				script::get_current()->yield(1500ms);
+			}
+			set_turn_signals(signal_state::right, false);
+		}
+
+		b_last_turn_signals = g->vehicle.turn_signals;
+
 	}
 }

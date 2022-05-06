@@ -38,6 +38,11 @@ namespace big
 
 		ImGui::Checkbox("Turn Signals", &g->vehicle.turn_signals);
 
+		if (g->vehicle.turn_signals)
+		{
+			ImGui::Checkbox("Auto Signal", &g->vehicle.auto_turn_signals);
+		}
+
 		ImGui::EndGroup();
 
 		ImGui::Separator();
