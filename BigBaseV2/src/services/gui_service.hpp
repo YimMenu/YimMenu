@@ -21,6 +21,7 @@ namespace big
 		SESSION,
 		SETTINGS,
 		SPAWN,
+		LSC,
 		SPOOFING,
 		TELEPORT,
 		VEHICLE,
@@ -53,6 +54,7 @@ namespace big
 					{ tabs::HANDLING_SAVED_PROFILE, {"Saved Profiles", view::handling_saved_profiles } },
 					{ tabs::HANDLING_SEARCH, {"Search Handling", view::handling_search } },
 				}}},
+				{ tabs::LSC, { "LSC", view::lsc }},
 				{ tabs::SPAWN, { "Spawn", view::spawn }},
 			}}},
 			{tabs::NETWORK, { "Network", nullptr, {
