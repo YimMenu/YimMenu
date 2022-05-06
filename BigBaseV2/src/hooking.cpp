@@ -61,7 +61,7 @@ namespace big
 		// Player Has Left
 		m_player_has_left_hook("PHL", g_pointers->m_player_has_left, &hooks::player_leave),
 
-		// Chat recieve
+		// Chat receive
 		m_chat_receive_hook("CR", g_pointers->m_chat_receive, &hooks::chat_receive),
 		// Chat censor
 		m_censor_chat_text_hook("CS", g_pointers->m_censor_chat_text, &hooks::censor_chat_text)

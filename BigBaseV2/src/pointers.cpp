@@ -255,7 +255,7 @@ namespace big
 			m_net_array_handler = ptr.sub(0x3C).as<PVOID>();
 		});
 
-		// Chat recieve
+		// Chat receive
 		main_batch.add("CR", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 30 49 8B F0 4D 8B C1", [this](memory::handle ptr)
 		{
 			m_chat_receive = ptr.as<PVOID>();

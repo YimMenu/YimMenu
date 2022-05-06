@@ -10,10 +10,10 @@ namespace big
 		{
 			std::string message = fmt::format("Duplicate message purged: {}", msg);
 
-			if (g->notifications.chat_recieve.log)
+			if (g->notifications.chat_receive.log)
 				LOG(WARNING) << message;
 
-			if (g->notifications.chat_recieve.notify)
+			if (g->notifications.chat_receive.notify)
 				g_notification_service->push_warning("Protections", message);
 
 			return nullptr; //Blocks the message from appearing in chat

@@ -125,6 +125,10 @@ namespace big
 				components::button("Kick From Vehicle", [] {
 					toxic::kick_from_vehicle(g_player_service->get_selected()->id());
 				});
+
+				components::button("Desync from host", [] {
+					gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player());
+				});
 			}
 		}
 	}
