@@ -37,12 +37,10 @@ void update_key_state(key_state& key_last_tick)
 		{
 		case key_state::up:
 			key_last_tick.state = key_state::just_pressed;
-			LOG(INFO) << key_last_tick.v_key << " updated to " << std::to_string(key_last_tick.state);
 			break;
 
 		case key_state::just_pressed:
 			key_last_tick.state = key_state::down;
-			LOG(INFO) << key_last_tick.v_key << " updated to " << std::to_string(key_last_tick.state);
 			break;
 		}
 	}
@@ -52,12 +50,10 @@ void update_key_state(key_state& key_last_tick)
 		{
 		case key_state::down:
 			key_last_tick.state = key_state::just_released;
-			LOG(INFO) << key_last_tick.v_key << " updated to " << (int)key_last_tick.state;
 			break;
 
 		case key_state::just_released:
 			key_last_tick.state = key_state::up;
-			LOG(INFO) << key_last_tick.v_key << " updated to " << (int)key_last_tick.state;
 			break;
 		}
 	}
