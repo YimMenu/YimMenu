@@ -104,4 +104,6 @@ namespace big::vehicle
 		}
 	}
 
+	static constexpr char const* rgb_types[] = { "Off", "Fade", "Spasm" };
+
 }

@@ -1,5 +1,4 @@
 #include "backend/looped/looped.hpp"
-#include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/math.hpp"
 
