@@ -64,7 +64,7 @@ namespace big
 					{
 						components::selectable(item["DisplayName"], item["Name"] == search, [&item]
 						{
-							const auto location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+							const auto location = self::pos;
 							const Vehicle veh = vehicle::spawn(item["Name"], location, 0.f);
 
 							if (g->spawn.spawn_inside)

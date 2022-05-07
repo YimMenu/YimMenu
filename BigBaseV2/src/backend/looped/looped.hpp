@@ -32,6 +32,7 @@ namespace big
 
 		static void session_local_time();
 		
+		static void system_self_globals();
 		static void system_update_pointers();
 
 		static void vehicle_despawn_bypass();
