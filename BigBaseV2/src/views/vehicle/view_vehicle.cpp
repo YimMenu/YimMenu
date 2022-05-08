@@ -4,6 +4,7 @@
 #include "script.hpp"
 #include "util/vehicle.hpp"
 
+
 namespace big
 {
 	void view::vehicle() {
@@ -24,7 +25,10 @@ namespace big
 		});
 		
 		components::button("Instant in personal vehicle", [] {
-			vehicle::go_into_personal_vehicle();
+			if(*g_pointers->m_is_session_started)
+				vehicle::go_into_personal_vehicle();
+
+			g_notification_service->push_warning("WARNING", "Go into GTA V Online to use this option");
 		});
         
 		if (ImGui::TreeNode("Paint"))
