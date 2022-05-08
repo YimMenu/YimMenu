@@ -76,7 +76,7 @@ namespace big
 		// Received Event Signatures START
 		functions::read_bitbuf_array* m_read_bitbuf_array{};
 		functions::read_bitbuf_dword* m_read_bitbuf_dword{};
-		functions::received_event* m_received_event{};
+		PVOID m_received_event{};
 		functions::send_event_ack* m_send_event_ack{};
 		// Received Event Signatures END
 

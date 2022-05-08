@@ -57,8 +57,8 @@ namespace big
 			uint16_t event_id,
 			int event_index,
 			int event_handled_bitset,
-			int64_t bit_buffer_size,
-			int64_t bit_buffer
+			int unk,
+			rage::datBitBuffer* bit_buffer
 		);
 
 		static bool scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player);
