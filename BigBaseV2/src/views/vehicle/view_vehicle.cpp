@@ -21,7 +21,11 @@ namespace big
 		components::button("Repair", [] {
 
 			vehicle::repair(self::veh);
-			});
+		});
+		
+		components::button("Instant in personal vehicle", [] {
+			vehicle::go_into_personal_vehicle();
+		});
         
 		if (ImGui::TreeNode("Paint"))
 		{
