@@ -16,10 +16,10 @@ namespace big
 
 	bool hooks::scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player)
 	{
-		auto args = scripted_game_event->m_args;
+		const auto args = scripted_game_event->m_args;
 
-		const eRemoteEvent hash = static_cast<eRemoteEvent>(args[0]);
-		const char* player_name = player->get_name();
+		const auto hash = static_cast<eRemoteEvent>(args[0]);
+		const auto player_name = player->get_name();
 
 		const auto& notify = g->notifications.script_event_handler;
 
@@ -187,12 +187,12 @@ namespace big
 			LOG(INFO) << "Player: " << player->get_name();
 			LOG(INFO) << "Hash/Arg #0: " << (int)hash;
 
-			for (int i = 1; i < sizeof(args); i++)
+			for (std::size_t i = 1; i < sizeof(args); i++)
 				LOG(INFO) << "Arg #" << i << ": " << args[i];
 
 			LOG(INFO) << "== End of Script Event ==";
 		}
 
-		return g_hooking->m_scripted_game_event_hook.get_original<decltype(&hooks::scripted_game_event)>()(scripted_game_event, player);
+		return false;
 	}
 }
