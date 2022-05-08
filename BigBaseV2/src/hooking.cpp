@@ -50,9 +50,6 @@ namespace big
 		// Received Event
 		m_received_event_hook("RE", g_pointers->m_received_event, &hooks::received_event),
 
-		// Scripted Game Event Hook
-		m_scripted_game_event_hook("SGEH", g_pointers->m_scripted_game_event, &hooks::scripted_game_event),
-
 		// Send NET Info to Lobby
 		m_send_net_info_to_lobby("SNITL", g_pointers->m_send_net_info_to_lobby, &hooks::send_net_info_to_lobby),
 
@@ -101,8 +98,6 @@ namespace big
 
 		m_received_event_hook.enable();
 
-		m_scripted_game_event_hook.enable();
-
 		m_send_net_info_to_lobby.enable();
 
 		m_enabled = true;
@@ -113,8 +108,6 @@ namespace big
 		m_enabled = false;
 
 		m_send_net_info_to_lobby.disable();
-
-		m_scripted_game_event_hook.disable();
 
 		m_received_event_hook.disable();
 

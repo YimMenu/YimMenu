@@ -57,8 +57,8 @@ namespace big
 			uint16_t event_id,
 			int event_index,
 			int event_handled_bitset,
-			int64_t bit_buffer_size,
-			int64_t bit_buffer
+			int unk,
+			rage::datBitBuffer* bit_buffer
 		);
 
 		static bool scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player);
@@ -110,8 +110,7 @@ namespace big
 		detour_hook m_is_dlc_present_hook;
 
 		detour_hook m_received_event_hook;
-
-		detour_hook m_scripted_game_event_hook;
+		
 		detour_hook m_send_net_info_to_lobby;
 	};
 
