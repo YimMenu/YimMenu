@@ -39,17 +39,14 @@ namespace big
 
 		ImGui::Separator();
 
-		if (ImGui::TreeNode("Auto Drive"))
-		{
-			components::button("Drive To Waypoint", [] {
+		components::small_text("Auto Drive");
 
-				g->vehicle.auto_drive_to_waypoint = true;
-			});
+		components::button("Drive To Waypoint", [] {
 
-			//ImGui::ListBox("Driving Style", &g->vehicle.rainbow_paint, vehicle::rgb_types, 3);
+			g->vehicle.auto_drive_to_waypoint = true;
+		});
 
-			ImGui::TreePop();
-		}
+		//ImGui::ListBox("Driving Style", &g->vehicle.rainbow_paint, vehicle::rgb_types, 3);
 
 		ImGui::Separator();
 

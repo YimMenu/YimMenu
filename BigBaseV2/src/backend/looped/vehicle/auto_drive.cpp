@@ -10,10 +10,12 @@ namespace big
 	{
 		static Vector3 location;
 		static bool running = true;
+		static bool ran_once = false;
 
 		if (g->vehicle.auto_drive_to_waypoint)
 		{
 			running = false;
+			ran_once = true;
 
 			if (!blip::get_blip_location(location, (int)BlipIcons::Waypoint))
 			{
@@ -33,7 +35,7 @@ namespace big
 
 				g_notification_service->push_warning("Auto Drive", "Starting Route To Destination");
 
-				TASK::TASK_VEHICLE_DRIVE_TO_COORD(self::ped, self::veh, location.x, location.x, location.x, 30.f, 1, ENTITY::GET_ENTITY_MODEL(self::veh), 525244, 1, true);
+				TASK::TASK_VEHICLE_DRIVE_TO_COORD(self::ped, self::veh, location.x, location.y, location.z, 30.f, 10, ENTITY::GET_ENTITY_MODEL(self::veh), 525244, 20, true);
 				
 				g->vehicle.auto_drive_to_waypoint = false;
 
@@ -47,7 +49,10 @@ namespace big
 			{
 				g->vehicle.auto_drive_to_waypoint = false;
 
-				g_notification_service->push_warning("Warning", "Drive Cancled");
+				if (ran_once)
+				{
+					g_notification_service->push_warning("Warning", "Drive Cancled");
+				}
 
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 
