@@ -9,6 +9,11 @@
 
 namespace big::vehicle
 {
+	inline void go_into_personal_vehicle()
+	{
+		*script_global(2671447).at(8).as<int*>() = 1;
+	}
+	
 	inline void bring(Vehicle veh, Vector3 location, bool put_in = true)
 	{
 		Vector3 vecVehicleLocation = ENTITY::GET_ENTITY_COORDS(veh, true);
