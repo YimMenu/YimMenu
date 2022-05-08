@@ -254,6 +254,12 @@ namespace big
 		{
 			m_net_array_handler = ptr.sub(0x3C).as<PVOID>();
 		});
+
+		// Some Anticheat Thing
+		main_batch.add("SAT", "89 05 ? ? ? ? 48 8D 05 ? ? ? ? 48 6B DB 38 48 03 D8", [this](memory::handle ptr)
+		{
+			m_some_anticheat_thing = ptr.add(2).rip().add(0x14).as<std::uint16_t*>();
+		});
 		
 		main_batch.run(memory::module(nullptr));
 
