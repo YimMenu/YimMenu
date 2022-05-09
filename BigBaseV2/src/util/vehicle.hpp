@@ -106,4 +106,6 @@ namespace big::vehicle
 
 	static constexpr char const* rgb_types[] = { "Off", "Fade", "Spasm" };
 
+	static constexpr int driving_styles[] = { 444, 525116, 787260 };
+	static constexpr char const* driving_style_names[] = { "Safe-ish", "Normal", "Hit Everything" };
 }
