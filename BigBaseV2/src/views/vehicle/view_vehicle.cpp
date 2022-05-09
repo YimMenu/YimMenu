@@ -19,9 +19,8 @@ namespace big
 		ImGui::BeginGroup();
 
 		components::button("Repair", [] {
-			Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
 
-			vehicle::repair(veh);
+			vehicle::repair(self::veh);
 			});
         
 		if (ImGui::TreeNode("Paint"))

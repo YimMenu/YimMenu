@@ -165,12 +165,6 @@ namespace big
 			memset(spectator_check, 0x90, 0x4);
 		});
 
-		// Scripted Game Event Handler
-		main_batch.add("SGEH", "40 53 48 81 EC ? ? ? ? 44 8B 81 ? ? ? ? 4C 8B CA 41 8D 40 FF 3D ? ? ? ? 77 42", [this](memory::handle ptr)
-		{
-			m_scripted_game_event = ptr.as<decltype(m_scripted_game_event)>();
-		});
-
 		// GET CNetGamePlayer
 		main_batch.add("GCNGP", "48 83 EC ? 33 C0 38 05 ? ? ? ? 74 ? 83 F9", [this](memory::handle ptr)
 		{
@@ -253,6 +247,12 @@ namespace big
 		main_batch.add("NAH", "44 8B E0 89 45 F4 48 8B 03 48 8B CB FF 90", [this](memory::handle ptr)
 		{
 			m_net_array_handler = ptr.sub(0x3C).as<PVOID>();
+		});
+
+		// Some Anticheat Thing
+		main_batch.add("SAT", "89 05 ? ? ? ? 48 8D 05 ? ? ? ? 48 6B DB 38 48 03 D8", [this](memory::handle ptr)
+		{
+			m_some_anticheat_thing = ptr.add(2).rip().add(0x14).as<std::uint16_t*>();
 		});
 		
 		main_batch.run(memory::module(nullptr));

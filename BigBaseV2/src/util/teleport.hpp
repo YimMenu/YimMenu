@@ -24,10 +24,8 @@ namespace big::teleport
 
 		ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
 
-		Vector3 location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
-
 		if (entity::take_control_of(ent))
-			ENTITY::SET_ENTITY_COORDS(ent, location.x, location.y, location.z, 0, 0, 0, 0);
+			ENTITY::SET_ENTITY_COORDS(ent, self::pos.x, self::pos.y, self::pos.z, 0, 0, 0, 0);
 		else
 			g_notification_service->push_warning("Teleport", "Failed to take control of player vehicle.");
 

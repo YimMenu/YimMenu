@@ -31,9 +31,8 @@ namespace big
 						}
 						else
 						{
-							Vector3 player = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
 							Vector3 entLoc = ENTITY::GET_ENTITY_COORDS(entity, true);
-							double dist = math::distance_between_vectors(player, entLoc);
+							double dist = math::distance_between_vectors(self::pos, entLoc);
 
 							if (dist > 500)
 							{

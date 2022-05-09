@@ -14,27 +14,24 @@ namespace big
 		{
 			if (run_speed < run_cap) run_speed += .5f;
 
-			Ped player = PLAYER::PLAYER_PED_ID();
-
-			Vector3 pos = ENTITY::GET_ENTITY_COORDS(player, true);
 
 			//Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
-			Vector3 rot = ENTITY::GET_ENTITY_ROTATION(player, 2);
+			Vector3 rot = ENTITY::GET_ENTITY_ROTATION(self::ped, 2);
 			float yaw = math::deg_to_rad(rot.z + 90);
 
 			Vector3 offset;
-			offset.x = pos.x + (run_speed * cos(yaw));
-			offset.y = pos.y + (run_speed * sin(yaw));
-			offset.z = pos.z + .2f;
+			offset.x = self::pos.x + (run_speed * cos(yaw));
+			offset.y = self::pos.y + (run_speed * sin(yaw));
+			offset.z = self::pos.z + .2f;
 
 			float groundZ;
 			MISC::GET_GROUND_Z_FOR_3D_COORD(offset.x, offset.y, 1000.f, &groundZ, false, false);
-			if (groundZ < pos.z)
+			if (groundZ < self::pos.z)
 				offset.z = groundZ;
 
-			Vector3 vel = offset - pos;
+			Vector3 vel = offset - self::pos;
 
-			ENTITY::SET_ENTITY_VELOCITY(player, vel.x, vel.y, vel.z);
+			ENTITY::SET_ENTITY_VELOCITY(self::ped, vel.x, vel.y, vel.z);
 
 			g_local_player->m_player_info->m_run_speed = .7f;
 		}

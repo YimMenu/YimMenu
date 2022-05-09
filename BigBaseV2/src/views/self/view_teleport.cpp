@@ -30,9 +30,7 @@ namespace big
 			Vehicle veh = globals::get_personal_vehicle();
 			if (ENTITY::IS_ENTITY_DEAD(veh, false)) return g_notification_service->push_error("Teleport", "Invalid vehicle handle...");
 
-			Vector3 location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
-
-			vehicle::bring(veh, location);
+			vehicle::bring(veh, self::pos);
 			});
 
 		components::button("Teleport to Personal Vehicle", [] {

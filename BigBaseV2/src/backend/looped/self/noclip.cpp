@@ -36,7 +36,6 @@ namespace big
 			for (int control : controls)
 				PAD::DISABLE_CONTROL_ACTION(0, control, true);
 
-			Vector3 cur_pos = ENTITY::GET_ENTITY_COORDS(ent, true);
 			Vector3 vel = { 0.f, 0.f, 0.f };
 			float heading = 0.f;
 
@@ -77,8 +76,8 @@ namespace big
 				ENTITY::FREEZE_ENTITY_POSITION(ent, false);
 
 				Vector3 offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, vel.x, vel.y, 0.f);
-				vel.x = offset.x - cur_pos.x;
-				vel.y = offset.y - cur_pos.y;
+				vel.x = offset.x - self::pos.x;
+				vel.y = offset.y - self::pos.y;
 
 				ENTITY::SET_ENTITY_VELOCITY(ent, vel.x * mult, vel.y * mult, vel.z * mult);
 			}
