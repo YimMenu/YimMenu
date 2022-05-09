@@ -13,7 +13,6 @@ namespace big
 
 		if (bVehicleGun)
 		{
-			Ped player = PLAYER::PLAYER_PED_ID();
 
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 25))
 			{
@@ -23,7 +22,7 @@ namespace big
 
 				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, 24))
 				{
-					Vector3 location = ENTITY::GET_ENTITY_COORDS(player, true);
+					Vector3 location = self::pos;
 
 					Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
 					float pitch = math::deg_to_rad(rot.x); // vertical
@@ -37,7 +36,7 @@ namespace big
 					Vehicle veh = vehicle::spawn(
 						(const char*)g->weapons.vehicle_gun_model,
 						location,
-						ENTITY::GET_ENTITY_HEADING(player)
+						ENTITY::GET_ENTITY_HEADING(self::ped)
 					);
 
 					Vector3 velocity;
