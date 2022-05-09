@@ -1,6 +1,7 @@
 #pragma once
 #include "blip.hpp"
 #include "entity.hpp"
+#include "gta/enums.hpp"
 
 namespace big::teleport
 {
@@ -151,7 +152,7 @@ namespace big::teleport
 		if (to_blip((int)BlipIcons::CrateDrop)) return true;
 		static const int blips[] = { 1, 57, 128, 129, 130, 143, 144, 145, 146, 271, 286, 287, 288 };
 		for (int i = 0; i < (sizeof(blips) / sizeof(*blips)); i++) {
-			if (teleport::to_blip(blips[i], 5)) {
+			if (to_blip(blips[i], 5)) {
 				return true;
 			}
 		}
