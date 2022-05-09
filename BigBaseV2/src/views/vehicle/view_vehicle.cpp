@@ -5,6 +5,7 @@
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
 
+
 namespace big
 {
 	void view::vehicle() {
@@ -22,7 +23,14 @@ namespace big
 		components::button("Repair", [] {
 
 			vehicle::repair(self::veh);
-			});
+		});
+		
+		components::button("Instant in personal vehicle", [] {
+			if (!*g_pointers->m_is_session_started) return g_notification_service->push_warning("WARNING", "Go into GTA V Online to use this option");
+
+			vehicle::go_into_personal_vehicle();
+				
+		});
         
 		if (ImGui::TreeNode("Paint"))
 		{
