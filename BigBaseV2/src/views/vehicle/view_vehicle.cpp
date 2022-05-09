@@ -1,8 +1,9 @@
-#include "views/view.hpp"
 #include "core/data/speedo_meters.hpp"
+#include "fiber_pool.hpp"
 #include "gui/handling/handling_tabs.hpp"
 #include "script.hpp"
 #include "util/vehicle.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -46,7 +47,31 @@ namespace big
 			g->vehicle.auto_drive_to_waypoint = true;
 		});
 
-		//ImGui::ListBox("Driving Style", &g->vehicle.rainbow_paint, vehicle::rgb_types, 3);
+		components::button("Wander", [] {
+
+			g->vehicle.auto_drive_wander = true;
+		});
+
+		ImGui::SliderInt("Top Speed", &g->vehicle.auto_drive_speed, 1, 200);
+
+		components::button("E-Stop", [] {
+
+			QUEUE_JOB_BEGIN_CLAUSE()
+			{
+				g->vehicle.auto_drive_to_waypoint = false;
+				g->vehicle.auto_drive_wander = false;
+				VEHICLE::SET_VEHICLE_FORWARD_SPEED(self::veh, 0);
+				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
+				TASK::CLEAR_PED_TASKS(self::ped);
+			}
+			QUEUE_JOB_END_CLAUSE
+		});
+
+		if (ImGui::ListBox("Driving Style", &g->vehicle.driving_style_id, vehicle::driving_style_names, 3))
+		{
+			g->vehicle.driving_style_flags = vehicle::driving_styles[g->vehicle.driving_style_id];
+			g_notification_service->push_warning("Auto Drive", fmt::format("Driving style set to {}.", vehicle::driving_style_names[g->vehicle.driving_style_id]));
+		}
 
 		ImGui::Separator();
 
