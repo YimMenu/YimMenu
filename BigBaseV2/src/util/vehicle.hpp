@@ -6,7 +6,7 @@
 #include "pointers.hpp"
 #include "script.hpp"
 #include "teleport.hpp"
-#include <script_global.hpp>
+#include "script_global.hpp"
 
 namespace big::vehicle
 {
