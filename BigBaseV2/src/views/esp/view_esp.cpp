@@ -100,11 +100,9 @@ namespace big
 						draw_list->AddText({ esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 40.f }, ImColor(1.f, 0.f, 0.f, 1.f), "GOD");
 					else
 						if (g->esp.health) 
-							//LOG(INFO) << plyr->get_ped()->m_health << " | " << plyr->get_ped()->m_maxhealth;
 							draw_list->AddLine({ esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 5.f }, { esp_x - (62.5f * multplr) + (125.f * multplr), esp_y + (175.f * multplr) + 5.f }, health_perc == 0.f ? death_bg : health_perc < 0.25f ? health_red_bg : health_perc < 0.65f ? health_yellow_bg : health_green_bg, 4);
 							draw_list->AddLine({ esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 5.f }, { esp_x - (62.5f * multplr) + (125.f * multplr) * health_perc, esp_y + (175.f * multplr) + 5.f }, health_perc < 0.25f ? health_red : health_perc < 0.65f ? health_yellow : health_green, 4);
 						if (g->esp.armor && plyr->get_ped()->m_armor > 0) 
-							//LOG(INFO) << plyr->get_ped()->m_armor << " | " << "50";
 							draw_list->AddLine({ esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 10.f }, { esp_x - (62.5f * multplr) + (125.f * multplr), esp_y + (175.f * multplr) + 10.f }, armor_blue_bg, 4);
 							draw_list->AddLine({ esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 10.f }, { esp_x - (62.5f * multplr) + (125.f * multplr) * armor_perc, esp_y + (175.f * multplr) + 10.f }, armor_blue, 4);
 				}
