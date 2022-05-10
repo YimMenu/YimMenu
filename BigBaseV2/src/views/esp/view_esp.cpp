@@ -58,8 +58,7 @@ namespace big
 					const float esp_side_x = esp_x + (67.5f * multplr);
 
 					std::string name_str = "";
-					ImVec2 name_pos = { esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 20.f }; //{ esp_side_x, esp_y - (175.f * multplr) };
-
+					ImVec2 name_pos = { esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 20.f };
 					ImU32 esp_color;
 
 					if (plyr->is_friend()) 

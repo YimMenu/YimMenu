@@ -36,10 +36,10 @@ namespace big
 			static ImVec4 col_default = ImGui::ColorConvertU32ToFloat4(g->esp.default_color);
 			static ImVec4 col_friend = ImGui::ColorConvertU32ToFloat4(g->esp.friend_color);
 
-			ImGui::Text("Distance threshold (meters) (near, far)");
+			ImGui::Text("Distance threshold (min, max)");
 			ImGui::SliderFloat2("###Distance threshold", g->esp.distance_threshold, g->esp.global_render_distance[0], g->esp.global_render_distance[1]);
 
-			if (ImGui::TreeNode("ESP Colors (rgba)"))
+			if (ImGui::TreeNode("ESP Colors (RGBA)"))
 			{
 				ImGui::Text("Enemy Color:");
 				if (ImGui::ColorEdit4("###Enemy ESP Color##esp_picker", (float*)&col_enemy, ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoSidePreview))
