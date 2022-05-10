@@ -36,6 +36,7 @@ namespace big
 				pair report_cash_spawn{};
 				pair modder_detect{};
 				pair request_control_event{};
+				pair vehicle_temp_action{};
 			} received_event{};
 
 			struct
@@ -318,6 +319,8 @@ namespace big
 			g->notifications.received_event.request_control_event.notify = j["notifications"]["received_event"]["request_control_event"]["notify"];
 			g->notifications.received_event.report_cash_spawn.log = j["notifications"]["received_event"]["report_cash_spawn"]["log"];
 			g->notifications.received_event.report_cash_spawn.notify = j["notifications"]["received_event"]["report_cash_spawn"]["notify"];
+			g->notifications.received_event.vehicle_temp_action.log = j["notifications"]["received_event"]["vehicle_temp_action"]["log"];
+			g->notifications.received_event.vehicle_temp_action.notify = j["notifications"]["received_event"]["vehicle_temp_action"]["notify"];
 
 			g->notifications.reports.log = j["notifications"]["reports"]["log"];
 			g->notifications.reports.notify = j["notifications"]["reports"]["notify"];
@@ -521,7 +524,8 @@ namespace big
 								{ "clear_ped_task", return_notify_pair(g->notifications.received_event.clear_ped_task) },
 								{ "modder_detect", return_notify_pair(g->notifications.received_event.modder_detect) },
 								{ "report_cash_spawn", return_notify_pair(g->notifications.received_event.report_cash_spawn) },
-								{ "request_control_event", return_notify_pair(g->notifications.received_event.request_control_event) }
+								{ "request_control_event", return_notify_pair(g->notifications.received_event.request_control_event) },
+								{ "vehicle_temp_action", return_notify_pair(g->notifications.received_event.vehicle_temp_action) }
 							}
 						},
 						{ "reports", return_notify_pair(g->notifications.reports) },
