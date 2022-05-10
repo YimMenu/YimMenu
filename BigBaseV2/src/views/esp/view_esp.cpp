@@ -4,7 +4,6 @@
 #include "util/math.hpp"
 #include "gta_util.hpp"
 #include "util/misc.hpp"
-#include "services/context_menu_service.hpp"
 
 namespace big
 {
@@ -36,7 +35,7 @@ namespace big
 				float screen_x;
 				float screen_y;
 
-				const float distance = calculate_distance(player_pos);
+				const float distance = math::calculate_distance_from_game_cam(player_pos);
 				const float multplr = distance > g->esp.global_render_distance[1] ? -1.f : 6.17757f / distance;
 
 				if (multplr == -1.f || g->esp.global_render_distance[0] > distance) continue;

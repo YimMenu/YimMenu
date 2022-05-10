@@ -39,20 +39,23 @@ namespace big
 	s_context_menu* context_menu_service::get_context_menu()
 	{
 		if (pointer && pointer->m_model_info)
-			switch (pointer->m_model_info->m_entity_type)
+			switch (pointer->m_model_info->m_model_type)
 			{
-			case (int)eEntityType::PED:
-					if (((CPed*)pointer)->m_vehicle)
+			case (int)eModelType::Ped:
+					if (((CPed*)pointer)->m_vehicle && ((CPed*)pointer)->m_ped_task_flag & (int)ePedTask::TASK_DRIVING)
 					{
 						pointer = ((CPed*)pointer)->m_vehicle;
 						return &options.at(ContextEntityType::VEHICLE);
 					}
+					if (((CPed*)pointer)->m_player_info)
+						return &options.at(ContextEntityType::PLAYER);
 					return &options.at(ContextEntityType::PED);
-				case (int)eEntityType::VEHICLE:
+				case (int)eModelType::Vehicle:
 					return &options.at(ContextEntityType::VEHICLE);
 				default:
 					return &options.at(ContextEntityType::SHARED);
 			}
+		return nullptr;
 	}
 
 	double context_menu_service::distance_to_middle_of_screen(rage::vector2 screenpos) {

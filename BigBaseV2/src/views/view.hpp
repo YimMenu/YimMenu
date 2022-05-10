@@ -48,6 +48,7 @@ namespace big
 		static void always()
 		{
 			esp::draw();
+			context_menu();
 			notifications();
 		}
 	};
