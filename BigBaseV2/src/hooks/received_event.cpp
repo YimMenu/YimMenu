@@ -44,6 +44,7 @@ namespace big
 
 				return false;
 			}
+			buffer->Seek(0);
 
 			break;
 		}
