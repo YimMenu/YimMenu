@@ -13,9 +13,13 @@ namespace big
 		nlohmann::json default_options;
 		nlohmann::json options;
 
-		struct debug
-		{
+		struct debug {
 			bool script_event_logging = false;
+		};
+
+		struct tunables {
+			bool disable_phone = false;
+			bool no_idle_kick = false;
 		};
 
 		struct notifications
@@ -42,12 +46,10 @@ namespace big
 				pair ceo_kick{};
 				pair ceo_money{};
 				pair clear_wanted_level{};
-				pair crash{};
 				pair fake_deposit{};
 				pair force_mission{};
 				pair force_teleport{};
 				pair gta_banner{};
-				pair mc_teleport{};
 				pair network_bail{};
 				pair personal_vehicle_destroyed{};
 				pair remote_off_radar{};
@@ -66,7 +68,7 @@ namespace big
 			pair net_array_error{};
 			pair network_player_mgr_shutdown{};
 
-			struct
+			struct 
 			{
 				bool above_map = true;
 				bool log = false;
@@ -78,7 +80,6 @@ namespace big
 
 			pair send_net_info_to_lobby{};
 			pair transaction_rate_limit{};
-			pair invalid_sync{};
 		};
 
 		struct player {
@@ -95,12 +96,10 @@ namespace big
 				bool ceo_kick = true;
 				bool ceo_money = true;
 				bool clear_wanted_level = true;
-				bool crash = true;
 				bool fake_deposit = true;
 				bool force_mission = true;
 				bool force_teleport = true;
 				bool gta_banner = true;
-				bool mc_teleport = true;
 				bool network_bail = true;
 				bool personal_vehicle_destroyed = true;
 				bool remote_off_radar = true;
@@ -112,6 +111,8 @@ namespace big
 				bool transaction_error = true;
 				bool vehicle_kick = true;
 			};
+
+			bool freemode_terminated = false;
 
 			script_events script_events{};
 		};
@@ -145,9 +146,9 @@ namespace big
 			int local_weather = 0;
 			bool override_time = {};
 			bool override_weather = false;
-			struct
+			struct 
 			{
-				int hour{}, minute{}, second{};
+				int hour{}, minute{}, second{}; 
 			} custom_time;
 		};
 
@@ -167,7 +168,7 @@ namespace big
 			bool preview_vehicle = false;
 			bool spawn_inside = false;
 			bool spawn_maxed = false;
-		};
+		}; 
 
 		struct spoofing
 		{
@@ -181,11 +182,6 @@ namespace big
 			uint64_t rockstar_id = 0;
 		};
 
-		struct tunables {
-			bool disable_phone = false;
-			bool no_idle_kick = false;
-		};
-
 		struct vehicle {
 			struct speedo_meter {
 				SpeedoMeter type = SpeedoMeter::DISABLED;
@@ -196,18 +192,8 @@ namespace big
 				bool left_side = false;
 			};
 
-			struct fly
-			{
-				bool dont_stop = false;
-				bool enabled = false;
-				bool no_collision = false;
-				bool stop_on_exit = false;
-				float speed = 1;
-			};
-
 			bool auto_drive_to_waypoint = false;
 			bool auto_drive_wander = false;
-			bool auto_turn_signals = false;
 			bool drive_on_water = false;
 			bool god_mode = false;
 			bool horn_boost = false;
@@ -215,14 +201,11 @@ namespace big
 			bool is_targetable = true;
 			bool ls_customs = false; // don't save this to disk
 			bool pv_teleport_into = false;
-			bool seatbelt = false;
-			bool turn_signals = false;
 			int auto_drive_speed = 1;
-			int driving_style_flags = 525116;
+			int driving_style_flags = 443;
 			int driving_style_id = 0;
 			int rainbow_paint = 0;
 			speedo_meter speedo_meter{};
-			fly fly{};
 		};
 
 		struct weapons {
@@ -262,26 +245,17 @@ namespace big
 		struct esp
 		{
 			bool enabled = true;
-			bool hide_self = true;
-			float global_render_distance[2] = { 0.f, 600.f };
-			float tracer_render_distance[2] = { 200.f, 600.f };
-			float box_render_distance[2] = { 0.f, 150.f };
+			float global_render_distance[2] = {0.f, 600.f};
+			float tracer_render_distance[2] = {200.f, 600.f};
+			float box_render_distance[2] = {0.f, 150.f};
 			bool tracer = true;
-			float tracer_draw_position[2] = { 0.5f, 1.f };
 			bool box = true;
 			bool health = true;
-			bool armor = true;
 			bool god = true;
 			bool distance = true;
 			bool name = true;
-			bool change_esp_color_from_dist = false;
-			bool scale_health_from_dist = false;
-			bool scale_armor_from_dist = false;
-			float distance_threshold[2] = { 100.f, 200.f };
-			ImU32 enemy_color = 4281479904;
-			ImU32 enemy_near_color = 4283794943;
-			ImU32 default_color = 4285713522;
-			ImU32 friend_color = 4293244509;
+			ImU32 color = 3359983061;
+			ImU32 friend_color = 3359983061;
 		};
 
 	public:
@@ -351,9 +325,6 @@ namespace big
 			g->notifications.reports.log = j["notifications"]["reports"]["log"];
 			g->notifications.reports.notify = j["notifications"]["reports"]["notify"];
 
-			g->notifications.invalid_sync.notify = j["notifications"]["invalid_sync"]["notify"];
-			g->notifications.invalid_sync.log = j["notifications"]["invalid_sync"]["log"];
-
 			{
 				const auto& script_handler_j = j["notifications"]["script_event_handler"];
 				auto& script_handler = this->notifications.script_event_handler;
@@ -368,8 +339,6 @@ namespace big
 				script_handler.ceo_money.notify = script_handler_j["ceo_money"]["notify"];
 				script_handler.clear_wanted_level.log = script_handler_j["clear_wanted_level"]["log"];
 				script_handler.clear_wanted_level.notify = script_handler_j["clear_wanted_level"]["notify"];
-				script_handler.crash.log = script_handler_j["crash"]["log"];
-				script_handler.crash.notify = script_handler_j["crash"]["notify"];
 				script_handler.fake_deposit.log = script_handler_j["fake_deposit"]["log"];
 				script_handler.fake_deposit.notify = script_handler_j["fake_deposit"]["notify"];
 				script_handler.force_mission.log = script_handler_j["force_mission"]["log"];
@@ -378,8 +347,6 @@ namespace big
 				script_handler.force_teleport.notify = script_handler_j["force_teleport"]["notify"];
 				script_handler.gta_banner.log = script_handler_j["gta_banner"]["log"];
 				script_handler.gta_banner.notify = script_handler_j["gta_banner"]["notify"];
-				script_handler.mc_teleport.log = script_handler_j["mc_teleport"]["log"];
-				script_handler.mc_teleport.notify = script_handler_j["mc_teleport"]["notify"];
 				script_handler.network_bail.log = script_handler_j["network_bail"]["log"];
 				script_handler.network_bail.notify = script_handler_j["network_bail"]["notify"];
 				script_handler.personal_vehicle_destroyed.log = script_handler_j["personal_vehicle_destroyed"]["log"];
@@ -417,12 +384,10 @@ namespace big
 				script_handler.ceo_kick = script_handler_j["ceo_kick"];
 				script_handler.ceo_money = script_handler_j["ceo_money"];
 				script_handler.clear_wanted_level = script_handler_j["clear_wanted_level"];
-				script_handler.crash = script_handler_j["crash"];
 				script_handler.fake_deposit = script_handler_j["fake_deposit"];
 				script_handler.force_mission = script_handler_j["force_mission"];
 				script_handler.force_teleport = script_handler_j["force_teleport"];
 				script_handler.gta_banner = script_handler_j["gta_banner"];
-				script_handler.mc_teleport = script_handler_j["mc_teleport"];
 				script_handler.network_bail = script_handler_j["network_bail"];
 				script_handler.personal_vehicle_destroyed = script_handler_j["personal_vehicle_destroyed"];
 				script_handler.remote_off_radar = script_handler_j["remote_off_radar"];
@@ -470,30 +435,21 @@ namespace big
 			this->spoofing.username = j["spoofing"]["username"];
 
 			this->vehicle.auto_drive_speed = j["vehicle"]["auto_drive_speed"];
-			this->vehicle.auto_drive_to_waypoint = j["vehicle"]["auto_drive_to_waypoint"];
 			this->vehicle.auto_drive_wander = j["vehicle"]["auto_drive_wander"];
-			this->vehicle.auto_turn_signals = j["vehicle"]["auto_turn_signals"];
-			this->vehicle.drive_on_water = j["vehicle"]["drive_on_water"];
+			this->vehicle.auto_drive_to_waypoint = j["vehicle"]["auto_drive_to_waypoint"];
 			this->vehicle.driving_style_id = j["vehicle"]["driving_style"];
+			this->vehicle.drive_on_water = j["vehicle"]["drive_on_water"];
 			this->vehicle.god_mode = j["vehicle"]["god_mode"];
 			this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
 			this->vehicle.pv_teleport_into = j["vehicle"]["pv_teleport_into"];
 			this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
-			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
-			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
 
 			this->vehicle.speedo_meter.type = (SpeedoMeter)j["vehicle"]["speedo_meter"]["type"];
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
 			this->vehicle.speedo_meter.x = j["vehicle"]["speedo_meter"]["position_x"];
 			this->vehicle.speedo_meter.y = j["vehicle"]["speedo_meter"]["position_y"];
-
-			this->vehicle.fly.dont_stop = j["vehicle"]["fly"]["dont_stop"];
-			this->vehicle.fly.enabled = j["vehicle"]["fly"]["enabled"];
-			this->vehicle.fly.no_collision = j["vehicle"]["fly"]["no_collision"];
-			this->vehicle.fly.speed = j["vehicle"]["fly"]["speed"];
-			this->vehicle.fly.stop_on_exit = j["vehicle"]["fly"]["stop_on_exit"];
 
 			this->weapons.custom_weapon = (CustomWeapon)j["weapons"]["custom_weapon"];
 			this->weapons.force_crosshairs = j["weapons"]["force_crosshairs"];
@@ -514,20 +470,13 @@ namespace big
 			this->window.users = j["window"]["users"];
 
 			this->esp.enabled = j["esp"]["enabled"];
-			this->esp.hide_self = j["esp"]["hide_self"];
-			this->esp.enemy_color = j["esp"]["enemy_color"];
-			this->esp.enemy_near_color = j["esp"]["enemy_near_color"];
-			this->esp.default_color = j["esp"]["default_color"];
+			this->esp.color = j["esp"]["color"];
 			this->esp.friend_color = j["esp"]["friend_color"];
 			this->esp.box = j["esp"]["box"];
 			this->esp.distance = j["esp"]["distance"];
 			this->esp.god = j["esp"]["god"];
 			this->esp.health = j["esp"]["health"];
-			this->esp.armor = j["esp"]["armor"];
 			this->esp.name = j["esp"]["name"];
-			this->esp.change_esp_color_from_dist = j["esp"]["change_esp_color_from_dist"];
-			this->esp.scale_health_from_dist = j["esp"]["scale_health_from_dist"];
-			this->esp.scale_armor_from_dist = j["esp"]["scale_armor_from_dist"];
 			for (int i = 0; i < 2; i++)
 				this->esp.global_render_distance[i] = j["esp"]["global_render_distance"].at(i);
 			for (int i = 0; i < 2; i++)
@@ -535,10 +484,6 @@ namespace big
 			for (int i = 0; i < 2; i++)
 				this->esp.box_render_distance[i] = j["esp"]["box_render_distance"].at(i);
 			this->esp.tracer = j["esp"]["tracer"];
-			for (int i = 0; i < 2; i++)
-				this->esp.tracer_draw_position[i] = j["esp"]["tracer_draw_position"].at(i);
-			for (int i = 0; i < 2; i++)
-				this->esp.distance_threshold[i] = j["esp"]["distance_threshold"].at(i);
 		}
 
 		nlohmann::json to_json()
@@ -590,12 +535,10 @@ namespace big
 								{ "ceo_kick", return_notify_pair(script_handler_notifications.ceo_kick) },
 								{ "ceo_money", return_notify_pair(script_handler_notifications.ceo_money) },
 								{ "clear_wanted_level", return_notify_pair(script_handler_notifications.clear_wanted_level) },
-								{ "crash", return_notify_pair(script_handler_notifications.crash) },
 								{ "fake_deposit", return_notify_pair(script_handler_notifications.fake_deposit) },
 								{ "force_mission", return_notify_pair(script_handler_notifications.force_mission) },
 								{ "force_teleport", return_notify_pair(script_handler_notifications.force_teleport) },
 								{ "gta_banner", return_notify_pair(script_handler_notifications.gta_banner) },
-								{ "mc_teleport", return_notify_pair(script_handler_notifications.mc_teleport) },
 								{ "network_bail", return_notify_pair(script_handler_notifications.network_bail) },
 								{ "personal_vehicle_destroyed", return_notify_pair(script_handler_notifications.personal_vehicle_destroyed) },
 								{ "remote_off_radar", return_notify_pair(script_handler_notifications.remote_off_radar) },
@@ -609,8 +552,7 @@ namespace big
 							}
 						},
 						{ "send_net_info_to_lobby", return_notify_pair(g->notifications.send_net_info_to_lobby) },
-						{ "transaction_rate_limit", return_notify_pair(g->notifications.transaction_rate_limit) },
-						{ "invalid_sync", return_notify_pair(g->notifications.invalid_sync) }
+						{ "transaction_rate_limit", return_notify_pair(g->notifications.transaction_rate_limit) }
 					}
 				},
 				{
@@ -623,12 +565,10 @@ namespace big
 								{ "ceo_kick", script_handler_protections.ceo_kick },
 								{ "ceo_money", script_handler_protections.ceo_money },
 								{ "clear_wanted_level", script_handler_protections.clear_wanted_level },
-								{ "crash", script_handler_protections.crash },
 								{ "fake_deposit", script_handler_protections.fake_deposit },
 								{ "force_mission", script_handler_protections.force_mission },
 								{ "force_teleport", script_handler_protections.force_teleport },
 								{ "gta_banner", script_handler_protections.gta_banner },
-								{ "mc_teleport", script_handler_protections.mc_teleport },
 								{ "network_bail", script_handler_protections.network_bail },
 								{ "personal_vehicle_destroyed", script_handler_protections.personal_vehicle_destroyed },
 								{ "remote_off_radar", script_handler_protections.remote_off_radar },
@@ -704,35 +644,22 @@ namespace big
 				{
 					"vehicle", {
 						{ "auto_drive_speed", this->vehicle.auto_drive_speed },
-						{ "auto_drive_to_waypoint", this->vehicle.auto_drive_to_waypoint },
 						{ "auto_drive_wander", this->vehicle.auto_drive_wander },
-						{ "auto_turn_signals", this->vehicle.auto_turn_signals },
-						{ "drive_on_water", this->vehicle.drive_on_water },
 						{ "driving_style", this->vehicle.driving_style_id },
+						{ "auto_drive_to_waypoint", this->vehicle.auto_drive_to_waypoint },
+						{ "drive_on_water", this->vehicle.drive_on_water },
 						{ "god_mode", this->vehicle.god_mode },
 						{ "horn_boost", this->vehicle.horn_boost },
 						{ "instant_brake", this->vehicle.instant_brake },
 						{ "is_targetable", this->vehicle.is_targetable },
 						{ "pv_teleport_into", this->vehicle.pv_teleport_into },
 						{ "rainbow_paint", this->vehicle.rainbow_paint },
-						{ "turn_signals", this->vehicle.turn_signals },
-						{ "seatbelt", this->vehicle.seatbelt },
 						{
 							"speedo_meter", {
 								{ "type", (int)this->vehicle.speedo_meter.type },
 								{ "left_side", this->vehicle.speedo_meter.left_side },
 								{ "position_x", this->vehicle.speedo_meter.x },
-								{ "position_y", this->vehicle.speedo_meter.y },
-							}
-						},
-						{
-							"fly",
-							{
-								{ "no_collision", this->vehicle.fly.no_collision },
-								{ "dont_stop", this->vehicle.fly.dont_stop },
-								{ "enabled", this->vehicle.fly.enabled },
-								{ "stop_on_exit", this->vehicle.fly.stop_on_exit },
-								{ "speed", this->vehicle.fly.speed },
+								{ "position_y", this->vehicle.speedo_meter.y }
 							}
 						}
 					}
@@ -742,6 +669,7 @@ namespace big
 						{ "ammo_special", {
 							{ "toggle", this->weapons.ammo_special.toggle },
 							{ "type", (int)this->weapons.ammo_special.type },
+								
 							}
 						},
 						{ "custom_weapon", (int)this->weapons.custom_weapon },
@@ -766,7 +694,6 @@ namespace big
 				{
 					"esp", {
 						{ "enabled", this->esp.enabled },
-						{ "hide_self", this->esp.hide_self },
 						{ "global_render_distance", nlohmann::json::array({
 						this->esp.global_render_distance[0],
 						this->esp.global_render_distance[1] })
@@ -779,28 +706,14 @@ namespace big
 						this->esp.box_render_distance[0],
 						this->esp.box_render_distance[1] })
 						},
-						{ "enemy_color", this->esp.enemy_color },
-						{ "enemy_near_color", this->esp.enemy_near_color },
-						{ "default_color", this->esp.default_color },
+						{ "color", this->esp.color },
 						{ "friend_color", this->esp.friend_color },
 						{ "distance", this->esp.distance },
 						{ "box", this->esp.box },
 						{ "god", this->esp.god },
 						{ "health", this->esp.health },
-						{ "armor", this->esp.armor },
 						{ "name", this->esp.name },
-						{ "tracer", this->esp.tracer },
-						{ "change_esp_color_from_dist", this->esp.change_esp_color_from_dist },
-						{ "scale_health_from_dist", this->esp.scale_health_from_dist },
-						{ "scale_armor_from_dist", this->esp.scale_armor_from_dist },
-						{ "tracer_draw_position", nlohmann::json::array({
-						this->esp.tracer_draw_position[0],
-						this->esp.tracer_draw_position[1] })
-						},
-						{ "distance_threshold", nlohmann::json::array({
-						this->esp.distance_threshold[0],
-						this->esp.distance_threshold[1] })
-						}
+						{ "tracer", this->esp.tracer }
 					}
 				}
 			};
@@ -813,7 +726,7 @@ namespace big
 			if (deep_compare(this->options, j, true))
 				this->save();
 		}
-
+	
 		bool load()
 		{
 			this->default_options = this->to_json();
