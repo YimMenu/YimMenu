@@ -35,7 +35,7 @@ namespace big
 
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 				TASK::CLEAR_PED_TASKS(self::ped);
-				TASK::TASK_VEHICLE_DRIVE_WANDER(self::ped, self::veh, (float)g->vehicle.auto_drive_speed, g->vehicle.driving_style_flags);
+				TASK::TASK_VEHICLE_DRIVE_WANDER(self::ped, self::veh, static_cast<float>(g->vehicle.auto_drive_speed), g->vehicle.driving_style_flags);
 
 				current_driving_style = g->vehicle.driving_style_flags;
 				current_speed = g->vehicle.auto_drive_speed;
