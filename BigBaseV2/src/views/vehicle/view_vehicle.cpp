@@ -67,7 +67,7 @@ namespace big
 			QUEUE_JOB_END_CLAUSE
 		});
 
-		if (ImGui::ListBox("Driving Style", &g->vehicle.driving_style_id, vehicle::driving_style_names, 3))
+		if (ImGui::ListBox("Driving Style", &g->vehicle.driving_style_id, vehicle::driving_style_names, 2))
 		{
 			g->vehicle.driving_style_flags = vehicle::driving_styles[g->vehicle.driving_style_id];
 			g_notification_service->push_warning("Auto Drive", fmt::format("Driving style set to {}.", vehicle::driving_style_names[g->vehicle.driving_style_id]));

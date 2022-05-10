@@ -2,6 +2,7 @@
 #include "natives.hpp"
 #include "util/blip.hpp"
 #include "util/entity.hpp"
+#include "util/vehicle.hpp"
 #include "gta/enums.hpp"
 
 namespace big
@@ -9,13 +10,17 @@ namespace big
 	void looped::vehicle_auto_drive()
 	{
 		static Vector3 location;
-		static bool running = true;
+		static bool driving_to_wp = true;
 		static bool wandering = true;
 		static bool ran_once = false;
+		static int changing_driving_styles = false;
+		static int current_driving_style = false;
+		static int current_speed;
 
 		if (g->vehicle.auto_drive_to_waypoint)
 		{
-			running = false;
+			driving_to_wp = false;
+			wandering = false;
 			ran_once = true;
 
 			if (!blip::get_blip_location(location, (int)BlipIcons::Waypoint))
@@ -31,17 +36,21 @@ namespace big
 			{
 				blip::get_blip_location(location, (int)BlipIcons::Waypoint);
 
-				g_notification_service->push_warning("Auto Drive", "Starting Route To Destination");
-
-				g_notification_service->push_warning("Auto Drive", "Start driving or leave car to take back control.");
+				if (!changing_driving_styles)
+				{
+					g_notification_service->push_warning("Auto Drive", "Starting Route To Destination");
+					g_notification_service->push_warning("Auto Drive", "Start driving or leave car to take back control.");
+				}
 
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
+				TASK::TASK_VEHICLE_DRIVE_TO_COORD(self::ped, self::veh, location.x, location.y, location.z, (float)g->vehicle.auto_drive_speed, 5, ENTITY::GET_ENTITY_MODEL(self::veh), g->vehicle.driving_style_flags, 20, true);
 
-				TASK::TASK_VEHICLE_DRIVE_TO_COORD(self::ped, self::veh, location.x, location.y, location.z, (int)g->vehicle.auto_drive_speed, 5, ENTITY::GET_ENTITY_MODEL(self::veh), g->vehicle.driving_style_flags, 20, true);
+				current_driving_style = g->vehicle.driving_style_flags;
+				current_speed = g->vehicle.auto_drive_speed;
 
 				g->vehicle.auto_drive_to_waypoint = false;
 
-				running = true;
+				driving_to_wp = true;
 			}
 		}
 
@@ -63,14 +72,18 @@ namespace big
 				g->vehicle.auto_drive_wander = false;
 
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
-
 				TASK::CLEAR_PED_TASKS(self::ped);
+				TASK::TASK_VEHICLE_DRIVE_WANDER(self::ped, self::veh, (float)g->vehicle.auto_drive_speed, g->vehicle.driving_style_flags);
 
-				TASK::TASK_VEHICLE_DRIVE_WANDER(self::ped, self::veh, (int)g->vehicle.auto_drive_speed, g->vehicle.driving_style_flags);
+				current_driving_style = g->vehicle.driving_style_flags;
+				current_speed = g->vehicle.auto_drive_speed;
 
 				wandering = true;
 
-				g_notification_service->push_warning("Starting Wondering", "Start driving or leave car to take back control.");
+				if (!changing_driving_styles)
+				{
+					g_notification_service->push_warning("Starting Wondering", "Start driving or leave car to take back control.");
+				}
 			}
 		}
 
@@ -80,15 +93,16 @@ namespace big
 			{
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 				TASK::CLEAR_PED_TASKS(self::ped);
+
 				g_notification_service->push_warning("Warning", "Wandering Stopped");
 				g->vehicle.auto_drive_wander = false;
 				wandering = false;
 			}
 		}
 
-		if (running)
+		if (driving_to_wp)
 		{
-			if (!blip::get_blip_location(location, (int)BlipIcons::Waypoint) || PAD::IS_CONTROL_PRESSED(0, 75) || PAD::IS_CONTROL_PRESSED(0, 63) || PAD::IS_CONTROL_PRESSED(0, 64))
+			if (!blip::get_blip_location(location, (int)BlipIcons::Waypoint) || PAD::IS_CONTROL_PRESSED(0, 63) || PAD::IS_CONTROL_PRESSED(0, 64) || PAD::IS_CONTROL_PRESSED(0, 71) || PAD::IS_CONTROL_PRESSED(0, 72) || PAD::IS_CONTROL_PRESSED(0, 75) || PAD::IS_CONTROL_PRESSED(0, 76))
 			{
 				if (!blip::get_blip_location(location, (int)BlipIcons::Waypoint))
 				{
@@ -105,8 +119,33 @@ namespace big
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 				TASK::CLEAR_PED_TASKS(self::ped);
 
-				running = false;
+				driving_to_wp = false;
 			}
+
+			if (!ran_once)
+			{
+				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
+				TASK::CLEAR_PED_TASKS(self::ped);
+				driving_to_wp = false;
+			}
+		}
+
+		if (((wandering || driving_to_wp) && ran_once))
+		{
+			if ((current_driving_style != g->vehicle.driving_style_flags) || (current_speed != g->vehicle.auto_drive_speed))
+			{
+				changing_driving_styles = true;
+
+				if (wandering)
+				{
+					g->vehicle.auto_drive_wander = true;
+				}
+				else
+				{
+					g->vehicle.auto_drive_to_waypoint = true;
+				}
+			}
+			LOG(INFO) << "Ran Change Type";
 		}
 	}
 }

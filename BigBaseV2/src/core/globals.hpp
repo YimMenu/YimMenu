@@ -196,7 +196,7 @@ namespace big
 			int auto_drive_speed = 1;
 			bool drive_on_water = false;
 			int driving_style_id = 0;
-			int driving_style_flags = 525116;
+			int driving_style_flags = 443;
 			bool god_mode = false;
 			bool horn_boost = false;
 			bool instant_brake = false;
