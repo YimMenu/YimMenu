@@ -7,11 +7,10 @@
 
 namespace big
 {
-	void looped::vehicle_auto_drive()
+	void looped::vehicle_auto_drive_to_waypoint()
 	{
 		static Vector3 location;
 		static bool driving_to_wp = true;
-		static bool wandering = true;
 		static bool ran_once = false;
 		static int changing_driving_styles = false;
 		static int current_driving_style = false;
@@ -19,9 +18,8 @@ namespace big
 
 		if (g->vehicle.auto_drive_to_waypoint)
 		{
-			driving_to_wp = false;
-			wandering = false;
 			ran_once = true;
+			driving_to_wp = false;
 
 			if (!blip::get_blip_location(location, (int)BlipIcons::Waypoint))
 			{
@@ -43,6 +41,7 @@ namespace big
 				}
 
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
+				TASK::CLEAR_PED_TASKS(self::ped);
 				TASK::TASK_VEHICLE_DRIVE_TO_COORD(self::ped, self::veh, location.x, location.y, location.z, (float)g->vehicle.auto_drive_speed, 5, ENTITY::GET_ENTITY_MODEL(self::veh), g->vehicle.driving_style_flags, 20, true);
 
 				current_driving_style = g->vehicle.driving_style_flags;
@@ -51,52 +50,6 @@ namespace big
 				g->vehicle.auto_drive_to_waypoint = false;
 
 				driving_to_wp = true;
-			}
-		}
-
-		if (g->vehicle.auto_drive_wander)
-		{
-			ran_once = true;
-			wandering = false;
-
-			if (!self::veh)
-			{
-				g_notification_service->push_warning("Warning", "Please be in a car first then try again.");
-
-				g->vehicle.auto_drive_wander = false;
-
-				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
-			}
-			else
-			{
-				g->vehicle.auto_drive_wander = false;
-
-				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
-				TASK::CLEAR_PED_TASKS(self::ped);
-				TASK::TASK_VEHICLE_DRIVE_WANDER(self::ped, self::veh, (float)g->vehicle.auto_drive_speed, g->vehicle.driving_style_flags);
-
-				current_driving_style = g->vehicle.driving_style_flags;
-				current_speed = g->vehicle.auto_drive_speed;
-
-				wandering = true;
-
-				if (!changing_driving_styles)
-				{
-					g_notification_service->push_warning("Starting Wondering", "Start driving or leave car to take back control.");
-				}
-			}
-		}
-
-		if (wandering && ran_once)
-		{
-			if (PAD::IS_CONTROL_PRESSED(0, 63) || PAD::IS_CONTROL_PRESSED(0, 64) || PAD::IS_CONTROL_PRESSED(0, 71) || PAD::IS_CONTROL_PRESSED(0, 72) || PAD::IS_CONTROL_PRESSED(0, 75) || PAD::IS_CONTROL_PRESSED(0, 76))
-			{
-				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
-				TASK::CLEAR_PED_TASKS(self::ped);
-
-				g_notification_service->push_warning("Warning", "Wandering Stopped");
-				g->vehicle.auto_drive_wander = false;
-				wandering = false;
 			}
 		}
 
@@ -128,24 +81,14 @@ namespace big
 				TASK::CLEAR_PED_TASKS(self::ped);
 				driving_to_wp = false;
 			}
-		}
-
-		if (((wandering || driving_to_wp) && ran_once))
-		{
-			if ((current_driving_style != g->vehicle.driving_style_flags) || (current_speed != g->vehicle.auto_drive_speed))
+			else
 			{
-				changing_driving_styles = true;
-
-				if (wandering)
+				if ((current_driving_style != g->vehicle.driving_style_flags) || (current_speed != g->vehicle.auto_drive_speed))
 				{
-					g->vehicle.auto_drive_wander = true;
-				}
-				else
-				{
+					changing_driving_styles = true;
 					g->vehicle.auto_drive_to_waypoint = true;
 				}
 			}
-			LOG(INFO) << "Ran Change Type";
 		}
 	}
 }
