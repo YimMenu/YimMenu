@@ -38,25 +38,32 @@ namespace big
 		g_mobile_service->refresh_personal_vehicles();
 		if (ImGui::ListBoxHeader("##personal_veh_list", { 400.f, 500.f }))
 		{
-			const auto personal_veh_idx = mobile::util::get_current_personal_vehicle();
-			for (const auto& it : g_mobile_service->personal_vehicles())
+			if (g_mobile_service->personal_vehicles().empty())
 			{
-				const auto& label = it.first;
-				const auto& personal_veh = it.second;
-
-				auto lower = label;
-				std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
-
-				if (lower.find(lower_search) != std::string::npos)
+				ImGui::Text("No personal vehicle found, are you online?");
+			}
+			else
+			{
+				const auto personal_veh_idx = mobile::util::get_current_personal_vehicle();
+				for (const auto& it : g_mobile_service->personal_vehicles())
 				{
-					if (ImGui::Selectable(label.c_str(), personal_veh->get_id() == personal_veh_idx))
-					{
-						strcpy(search, "");
-						lower_search = search;
+					const auto& label = it.first;
+					const auto& personal_veh = it.second;
 
-						g_fiber_pool->queue_job([&personal_veh] {
-							personal_veh->summon();
-						});
+					auto lower = label;
+					std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+
+					if (lower.find(lower_search) != std::string::npos)
+					{
+						if (ImGui::Selectable(label.c_str(), personal_veh->get_id() == personal_veh_idx))
+						{
+							strcpy(search, "");
+							lower_search = search;
+
+							g_fiber_pool->queue_job([&personal_veh] {
+								personal_veh->summon();
+								});
+						}
 					}
 				}
 			}
