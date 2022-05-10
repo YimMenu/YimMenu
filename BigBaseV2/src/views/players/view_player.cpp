@@ -92,19 +92,19 @@ namespace big
 
 				components::button("Teleport", [] {
 					teleport::to_player(g_player_service->get_selected()->id());
-					});
+				});
 
 				ImGui::SameLine();
 
 				components::button("Bring", [] {
 					teleport::bring_player(g_player_service->get_selected()->id());
-					});
+				});
 
 				components::button("Teleport into Vehicle", [] {
 					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
 
 					teleport::into_vehicle(veh);
-					});
+				});
 
 				ImGui::TreePop();
 			}
@@ -126,9 +126,11 @@ namespace big
 					toxic::kick_from_vehicle(g_player_service->get_selected()->id());
 				});
         
-        components::button("Flying Vehicle", [] {
+				components::button("Flying Vehicle", [] {
 					toxic::flying_vehicle(g_player_service->get_selected()->id());
 				});
+
+				ImGui::TreePop();
 			}
 		}
 	}
