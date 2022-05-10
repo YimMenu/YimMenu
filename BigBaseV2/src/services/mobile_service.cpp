@@ -48,7 +48,8 @@ namespace big
 	void mobile_service::refresh_personal_vehicles()
 	{
 		const auto now = std::chrono::high_resolution_clock::now();
-		if (now - m_last_update < 10s) return;
+		if (std::chrono::duration_cast<std::chrono::seconds>(now - m_last_update) < 10s) return;
+		m_last_update = std::chrono::high_resolution_clock::now();
 
 		g_fiber_pool->queue_job([this]
 		{
