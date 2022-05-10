@@ -40,7 +40,7 @@ namespace big
 		{
 			if (g_mobile_service->personal_vehicles().empty())
 			{
-				ImGui::Text("No personal vehicle found, are you online?");
+				ImGui::Text("No personal vehicles found, are you online?");
 			}
 			else
 			{
@@ -62,7 +62,7 @@ namespace big
 
 							g_fiber_pool->queue_job([&personal_veh] {
 								personal_veh->summon();
-								});
+							});
 						}
 					}
 				}
