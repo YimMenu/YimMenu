@@ -1,6 +1,7 @@
 #pragma once
 #include "blip.hpp"
 #include "entity.hpp"
+#include "gta/enums.hpp"
 
 namespace big::teleport
 {
@@ -138,5 +139,24 @@ namespace big::teleport
 			return false;
 		}
 		return true;
+	}
+
+	inline bool to_objective()
+	{
+		if (to_blip((int)BlipIcons::Circle, (int)BlipColors::YellowMission)) return true;
+		if (to_blip((int)BlipIcons::Circle, (int)BlipColors::YellowMission2)) return true;
+		if (to_blip((int)BlipIcons::Circle, (int)BlipColors::Mission)) return true;
+		if (to_blip((int)BlipIcons::RaceFinish, (int)BlipColors::None)) return true;
+		if (to_blip((int)BlipIcons::Circle, (int)BlipColors::Green)) return true;
+		if (to_blip((int)BlipIcons::Circle, (int)BlipColors::Blue)) return true;
+		if (to_blip((int)BlipIcons::CrateDrop)) return true;
+		static const int blips[] = { 1, 57, 128, 129, 130, 143, 144, 145, 146, 271, 286, 287, 288 };
+		for (int i = 0; i < (sizeof(blips) / sizeof(*blips)); i++) {
+			if (to_blip(blips[i], 5)) {
+				return true;
+			}
+		}
+		g_notification_service->push_warning("Teleport", "Failed to find objective position");
+		return false;
 	}
 }
