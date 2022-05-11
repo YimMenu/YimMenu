@@ -25,7 +25,7 @@ jobs:
 
       - name: Build 64bit release DLL
         run: |
-          msbuild /p:Configuration=Release /p:Platform=x64 BigBaseV2.sln -m
+          msbuild /p:Configuration=Release /p:Platform=x64 BigBaseV2.sln -m /warnaserror
 
       - name: Check if DLL got built
         run: if (-Not (Test-Path -path "bin/Release/BigBaseV2.dll")) {throw 1}
