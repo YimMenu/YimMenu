@@ -37,7 +37,8 @@ namespace big
 
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 
-				TASK::TASK_VEHICLE_DRIVE_TO_COORD(self::ped, self::veh, location.x, location.y, location.z, (int)g->vehicle.auto_drive_speed, 5, ENTITY::GET_ENTITY_MODEL(self::veh), g->vehicle.driving_style_flags, 20, true);
+				TASK::TASK_VEHICLE_DRIVE_TO_COORD(self::ped, self::veh, location.x, location.y, location.z,
+												  static_cast<float>(g->vehicle.auto_drive_speed), 5, ENTITY::GET_ENTITY_MODEL(self::veh), g->vehicle.driving_style_flags, 20, true);
 
 				g->vehicle.auto_drive_to_waypoint = false;
 
@@ -66,7 +67,7 @@ namespace big
 
 				TASK::CLEAR_PED_TASKS(self::ped);
 
-				TASK::TASK_VEHICLE_DRIVE_WANDER(self::ped, self::veh, (int)g->vehicle.auto_drive_speed, g->vehicle.driving_style_flags);
+				TASK::TASK_VEHICLE_DRIVE_WANDER(self::ped, self::veh, static_cast<float>(g->vehicle.auto_drive_speed), g->vehicle.driving_style_flags);
 
 				wandering = true;
 

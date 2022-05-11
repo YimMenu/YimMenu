@@ -4,7 +4,7 @@
 
 namespace big
 {
-	bool hooks::received_event(
+	void hooks::received_event(
 		rage::netEventMgr* event_manager,
 		CNetGamePlayer* source_player,
 		CNetGamePlayer* target_player,
@@ -19,18 +19,51 @@ namespace big
 		{
 			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 
-			return false;
+			return;
 		}
 
 		const auto event_name = *(char**)((DWORD64)event_manager + 8i64 * event_id + 243376);
 		if (event_name == nullptr || source_player == nullptr || source_player->m_player_id < 0 || source_player->m_player_id >= 32)
 		{
 			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-			return false;
+			return;
 		}
 
 		switch ((RockstarEvent)event_id)
 		{
+		case RockstarEvent::SCRIPT_ENTITY_STATE_CHANGE_EVENT:
+		{
+			uint16_t entity;
+			buffer->ReadWord(&entity, 13);
+			uint32_t type;
+			buffer->ReadDword(&type, 4);
+			uint32_t unk;
+			buffer->ReadDword(&unk, 32);
+
+			if (type == 6)
+			{
+				uint16_t unk2;
+				buffer->ReadWord(&unk2, 13);
+				uint32_t action;
+				buffer->ReadDword(&action, 8);
+
+				if (action >= 16 && action <= 18)
+				{
+					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+
+					if (g->notifications.received_event.vehicle_temp_action.log)
+						LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << "sent TASK_VEHICLE_TEMP_ACTION crash.";
+
+					if (g->notifications.received_event.vehicle_temp_action.notify)
+						g_notification_service->push_warning("Protection",
+							fmt::format("{} sent TASK_VEHICLE_TEMP_ACTION crash.", source_player->get_name()));
+
+					return;
+				}
+			}
+			buffer->Seek(0);
+			break;
+		}
 		case RockstarEvent::SCRIPTED_GAME_EVENT:
 		{
 			const auto scripted_game_event = std::make_unique<CScriptedGameEvent>();
@@ -42,8 +75,9 @@ namespace big
 			{
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 
-				return false;
+				return;
 			}
+			buffer->Seek(0);
 
 			break;
 		}
@@ -61,7 +95,7 @@ namespace big
 						fmt::format("{} possible attempt at freezing entity.", source_player->get_name())
 					);
 
-				return false;
+				return;
 			}
 
 			break;
@@ -115,7 +149,7 @@ namespace big
 					fmt::format("Denied player control request from {}", source_player->get_name())
 				);
 
-			return false;
+			return;
 		}
 		}
 

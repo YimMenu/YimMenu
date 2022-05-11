@@ -4,6 +4,8 @@ on:
   pull_request:
     types: [closed]
 
+permissions: write-all
+
 jobs:
   autolock:
 #     if: ${{ github.event.pull_request.merged }} # Uncomment if you want it to run only when a PR gets MERGED
