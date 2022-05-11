@@ -257,6 +257,9 @@ namespace big
 			bool god = true;
 			bool distance = true;
 			bool name = true;
+			bool change_esp_color_from_dist = false;
+			bool scale_health_from_dist = false;
+			bool scale_armor_from_dist = false;
 			float distance_threshold[2] = { 100.f, 200.f };
 			ImU32 enemy_color = 4281479904;
 			ImU32 enemy_near_color = 4283794943;
@@ -487,6 +490,9 @@ namespace big
 			this->esp.health = j["esp"]["health"];
 			this->esp.armor = j["esp"]["armor"];
 			this->esp.name = j["esp"]["name"];
+			this->esp.change_esp_color_from_dist = j["esp"]["change_esp_color_from_dist"];
+			this->esp.scale_health_from_dist = j["esp"]["scale_health_from_dist"];
+			this->esp.scale_armor_from_dist = j["esp"]["scale_armor_from_dist"];
 			for (int i = 0; i < 2; i++)
 				this->esp.global_render_distance[i] = j["esp"]["global_render_distance"].at(i);
 			for (int i = 0; i < 2; i++)
@@ -732,6 +738,9 @@ namespace big
 						{ "armor", this->esp.armor },
 						{ "name", this->esp.name },
 						{ "tracer", this->esp.tracer },
+						{ "change_esp_color_from_dist", this->esp.change_esp_color_from_dist },
+						{ "scale_health_from_dist", this->esp.scale_health_from_dist },
+						{ "scale_armor_from_dist", this->esp.scale_armor_from_dist },
 						{ "tracer_draw_position", nlohmann::json::array({
 						this->esp.tracer_draw_position[0],
 						this->esp.tracer_draw_position[1] })
