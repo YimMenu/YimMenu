@@ -1,0 +1,24 @@
+name: Autolocker
+
+on:
+  pull_request_target:
+    types: [closed]
+
+permissions: write-all
+
+jobs:
+  autolock:
+#     if: ${{ github.event.pull_request.merged }} # Uncomment if you want it to run only when a PR gets MERGED
+    runs-on: ubuntu-latest
+    name: Autolocker
+    steps:
+    - name: Autolock PRs that got merged or closed
+      uses: actions/github-script@v6
+      with:
+        script: |     
+            github.rest.issues.lock({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              lock_reason: "resolved" // ["off-topic", "too heated", "resolved", "spam"]
+            })

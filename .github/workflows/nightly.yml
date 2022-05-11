@@ -48,7 +48,7 @@ jobs:
 
       - name: Build 64bit release DLL
         run: |
-          msbuild /p:Configuration=Release /p:Platform=x64 BigBaseV2.sln
+          msbuild /p:Configuration=Release /p:Platform=x64 BigBaseV2.sln /warnaserror
 
       - name: Rename DLL to YimMenu.dll
         run: ren BigBaseV2.dll YimMenu.dll

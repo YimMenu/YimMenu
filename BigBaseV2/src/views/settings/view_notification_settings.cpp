@@ -4,7 +4,7 @@ namespace big
 {
 	void draw_pair_option(const std::string_view name, decltype(g->notifications.gta_thread_kill)& option)
 	{
-		ImGui::Text(name.data());
+		ImGui::Text("%s", name.data());
 
 		ImGui::PushID(name.data());
 		ImGui::Checkbox("Log", &option.log);
@@ -40,13 +40,14 @@ namespace big
 		ImGui::BeginGroup();
 		draw_pair_option("Clear Ped Tasks", received_event.clear_ped_task);
 		draw_pair_option("Modder Detection", received_event.modder_detect);
+		draw_pair_option("Report Cash Spawn", received_event.report_cash_spawn);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
-		draw_pair_option("Report Cash Spawn", received_event.report_cash_spawn);
 		draw_pair_option("Request Control Event", received_event.request_control_event);
+		draw_pair_option("Vehicle Temp Action", received_event.vehicle_temp_action);
 		ImGui::EndGroup();
 			
 
