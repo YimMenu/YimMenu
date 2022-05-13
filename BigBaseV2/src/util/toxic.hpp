@@ -13,7 +13,7 @@ namespace big::toxic
 		FIRE::ADD_OWNED_EXPLOSION(
 			PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(to_blame),
 			pos.x, pos.y, pos.z,
-			(int)explosion_type,
+			explosion_type,
 			damage,
 			is_audible,
 			is_invisible,
@@ -32,8 +32,8 @@ namespace big::toxic
 	{
 		const size_t arg_count = 22;
 		int64_t args[arg_count] = {
-			(int)eRemoteEvent::Bounty,
-			0, // doesn't matter of we set this to something else, the TRIGGER_SCRIPT_EVENT routine will set it to our player id anyways
+			static_cast<int64_t>(eRemoteEvent::Bounty),
+			self::id,
 			target,
 			0, // set by player or NPC?
 			amount,
@@ -88,8 +88,8 @@ namespace big::toxic
 	{
 		constexpr size_t arg_count = 3;
 		int64_t args[arg_count] = {
-			(int)eRemoteEvent::ClearWantedLevel,
-			0,
+			static_cast<int64_t>(eRemoteEvent::ClearWantedLevel),
+			self::id,
 			*script_global(1893551).at(target, 599).at(510).as<int*>()
 		};
 
