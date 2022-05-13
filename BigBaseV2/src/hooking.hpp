@@ -50,7 +50,7 @@ namespace big
 		static bool increment_stat_event(CNetworkIncrementStatEvent* net_event_struct, CNetGamePlayer* sender, int64_t a3);
 		static bool is_dlc_present(Hash dlc_hash);
 
-		static bool received_event(
+		static void received_event(
 			rage::netEventMgr* event_manager,
 			CNetGamePlayer* source_player,
 			CNetGamePlayer* target_player,

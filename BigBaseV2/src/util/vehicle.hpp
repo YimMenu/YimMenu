@@ -6,9 +6,15 @@
 #include "pointers.hpp"
 #include "script.hpp"
 #include "teleport.hpp"
+#include "script_global.hpp"
 
 namespace big::vehicle
 {
+	inline void go_into_personal_vehicle()
+	{
+		*script_global(2671447).at(8).as<int*>() = 1;
+	}
+	
 	inline void bring(Vehicle veh, Vector3 location, bool put_in = true)
 	{
 		Vector3 vecVehicleLocation = ENTITY::GET_ENTITY_COORDS(veh, true);
@@ -106,4 +112,6 @@ namespace big::vehicle
 
 	static constexpr char const* rgb_types[] = { "Off", "Fade", "Spasm" };
 
+	static constexpr int driving_styles[] = { 444, 525116, 787260 };
+	static constexpr char const* driving_style_names[] = { "Safe-ish", "Normal", "Hit Everything" };
 }

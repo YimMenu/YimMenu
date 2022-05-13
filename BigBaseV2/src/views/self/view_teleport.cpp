@@ -14,29 +14,9 @@ namespace big
 			teleport::to_waypoint();
 			});
 
-		if (ImGui::Button("Objective"))
-		{
-			QUEUE_JOB_BEGIN_CLAUSE()
-			{
-				for (int i = 0; i <= 1000; i++)
-				{
-					Blip_t* blip = g_pointers->pBlipList->m_Blips[i].m_pBlip;
-					if (blip)
-					{
-						if ((blip->m_color == BlipColors::Mission && blip->m_icon == Circle) ||
-							(blip->m_color == BlipColors::YellowMission && blip->m_icon == Circle) ||
-							(blip->m_color == BlipColors::YellowMission2 && (blip->m_icon == Circle || blip->m_icon == BlipIcons::DollarSign)) ||
-							(blip->m_color == BlipColors::None && blip->m_icon == BlipIcons::RaceFlagWithArrow) ||
-							(blip->m_color == BlipColors::Green && blip->m_icon == Circle) ||
-							(blip->m_icon == BlipIcons::Crate))
-						{
-							PED::SET_PED_COORDS_KEEP_VEHICLE(PLAYER::PLAYER_PED_ID(), blip->x, blip->y, blip->z);
-							break; //During a race there's sometimes 2 yellow markers. We want the first one.
-						}
-					}
-				}
-			}QUEUE_JOB_END_CLAUSE
-		}
+		components::button("Objective", [] {
+			teleport::to_objective();
+			});
 
 		ImGui::Text("Vehicles:");
 
