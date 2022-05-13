@@ -76,8 +76,6 @@ namespace big::toxic
 		else {
 			ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
 
-			Vector3 location = self::pos;
-
 			if (entity::take_control_of(ent))
 				ENTITY::APPLY_FORCE_TO_ENTITY(ent, 1, 0.f, 0.f, 50000.f, 0.f, 0.f, 0.f, 0, 0, 1, 1, 0, 1);
 			else
