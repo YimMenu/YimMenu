@@ -99,9 +99,9 @@ namespace big
 							g_vehicle_preview_service->set_preview_vehicle(item);
 					}
 				}
-				ImGui::ListBoxFooter();
 			}
 			else ImGui::Text("No vehicles in registry.");
+			ImGui::ListBoxFooter();
 		}
 	}
 }
