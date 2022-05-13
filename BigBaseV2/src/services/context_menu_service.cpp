@@ -26,7 +26,7 @@ namespace big
 			int max_size = 0;
 			for (auto& option : item.second.options)
 			{
-				max_size = (float)(max_size < option.name.length() ? option.name.length() : max_size);
+				max_size = (int)(max_size < option.name.length() ? option.name.length() : max_size);
 			}
 
 			LOG(INFO) << (int)item.second.options.size();

@@ -33,7 +33,7 @@ namespace big
 			if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_NEXT))
 				cm->current_option = cm->options.size() <= cm->current_option + 1 ? 0 : cm->current_option + 1;
 			if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV))
-				cm->current_option = 0 > cm->current_option - 1 ? cm->options.size() - 1 : cm->current_option - 1;
+				cm->current_option = 0 > cm->current_option - 1 ? (int)cm->options.size() - 1 : cm->current_option - 1;
 			if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) ||
 				PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_SPECIAL_ABILITY))
 			{
