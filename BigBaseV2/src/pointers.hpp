@@ -50,8 +50,6 @@ namespace big
 		PVOID m_is_dlc_present;
 		PVOID m_network_group_override;
 
-		PVOID m_error_screen{};
-
 		FriendRegistry* m_friend_registry{};
 
 		functions::get_screen_coords_for_world_coords* m_get_screen_coords_for_world_coords{};

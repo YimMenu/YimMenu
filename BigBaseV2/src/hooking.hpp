@@ -23,19 +23,6 @@ namespace big
 		static LRESULT wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 		static BOOL set_cursor_pos(int x, int y);
 
-		static void set_warning_message_with_header(
-			const char* entryHeader,
-			const char* entryLine1,
-			int instructionalKey,
-			const char* entryLine2,
-			bool p4,
-			Any p5,
-			Any* showBackground,
-			Any* p7,
-			bool p8,
-			Any p9
-		);
-
 		static GtaThread* gta_thread_start(unsigned int** a1, unsigned int a2);
 		static rage::eThreadState gta_thread_tick(GtaThread* a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
@@ -94,8 +81,6 @@ namespace big
 
 		detour_hook m_run_script_threads_hook;
 		detour_hook m_convert_thread_to_fiber_hook;
-
-		detour_hook m_error_screen_hook;
 
 		detour_hook m_gta_thread_start_hook;
 		detour_hook m_gta_thread_tick_hook;
