@@ -37,15 +37,16 @@ namespace big
 		// Network Player Mgr Shutdown
 		m_network_player_mgr_shutdown_hook("NPMS", g_pointers->m_network_player_mgr_shutdown, &hooks::network_player_mgr_shutdown),
 
-		m_net_array_handler_hook("net_array_handler", g_pointers->m_net_array_handler, &hooks::net_array_handler),
+		// Network Group Override
+		m_network_group_override("NGO", g_pointers->m_network_group_override, &hooks::network_group_override),
+
+		// Net Array Handler
+		m_net_array_handler_hook("NAH", g_pointers->m_net_array_handler, &hooks::net_array_handler),
 
 		// Increment Stat Event
 		m_increment_stat_hook("ISE", g_pointers->m_increment_stat_event, &hooks::increment_stat_event),
 		// Is DLC Present
 		m_is_dlc_present_hook("IDP", g_pointers->m_is_dlc_present, &hooks::is_dlc_present),
-
-		// Error Screen
-		m_error_screen_hook("ES", g_pointers->m_error_screen, &hooks::set_warning_message_with_header),
 
 		// Received Event
 		m_received_event_hook("RE", g_pointers->m_received_event, &hooks::received_event),
@@ -94,8 +95,6 @@ namespace big
 
 		m_increment_stat_hook.enable();
 
-		m_error_screen_hook.enable();
-
 		m_received_event_hook.enable();
 
 		m_send_net_info_to_lobby.enable();
@@ -110,8 +109,6 @@ namespace big
 		m_send_net_info_to_lobby.disable();
 
 		m_received_event_hook.disable();
-
-		m_error_screen_hook.disable();
 
 		m_increment_stat_hook.disable();
 
