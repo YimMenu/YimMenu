@@ -10,7 +10,6 @@ namespace big
 	void backend::loop()
 	{
 		g->attempt_save();
-		looped::system_anticheat_bypass();
 		looped::system_self_globals();
 		looped::system_update_pointers();
 
