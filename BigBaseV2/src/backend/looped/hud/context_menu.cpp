@@ -22,7 +22,7 @@ namespace big
 			PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_SELECT_PREV_WEAPON, true);
 			PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_NEXT, true);
 			PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV, true);
-			PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_PHONE, true);
+			PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_ATTACK, true);
 			PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_SPECIAL_ABILITY, true);
 
 			g_context_menu_service->get_entity_closest_to_screen_center();
@@ -34,14 +34,11 @@ namespace big
 				cm->current_option = cm->options.size() <= cm->current_option + 1 ? 0 : cm->current_option + 1;
 			if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV))
 				cm->current_option = 0 > cm->current_option - 1 ? cm->options.size() - 1 : cm->current_option - 1;
-			if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_PHONE) ||
+			if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) ||
 				PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_SPECIAL_ABILITY))
 			{
 				if (!g_context_menu_service->pointer) return;
-				if (entity::take_control_of(g_context_menu_service->handle))
-				{
-					cm->options.at(cm->current_option).command();
-				}
+				cm->options.at(cm->current_option).command();
 			}
 		}
 	}

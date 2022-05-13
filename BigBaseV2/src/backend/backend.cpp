@@ -25,7 +25,6 @@ namespace big
 
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
-			looped::context_menu();
 			looped::hud_transition_state();
 		}QUEUE_JOB_END_CLAUSE
 

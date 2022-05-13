@@ -48,11 +48,17 @@ namespace big
 			ContextEntityType::VEHICLE,
 			0,{}, {
 			{"KILL ENGINE", [this] {
-					VEHICLE::SET_VEHICLE_ENGINE_HEALTH(this->handle, 0.f);
-					VEHICLE::SET_VEHICLE_ENGINE_ON(this->handle, false, true, false);
+					if (entity::take_control_of(this->handle))
+					{
+						VEHICLE::SET_VEHICLE_ENGINE_HEALTH(this->handle, 0.f);
+						VEHICLE::SET_VEHICLE_ENGINE_ON(this->handle, false, true, false);
+					}
 				}},
 			{"DELETE", [this] {
-					entity::delete_entity(this->handle);
+					if (entity::take_control_of(this->handle))
+					{
+						entity::delete_entity(this->handle);
+					}
 				}},
 			{ "TP INTO", [this]{
 				teleport::into_vehicle(this->handle);
@@ -80,6 +86,10 @@ namespace big
 				{"EXPLODE", [this] {
 					rage::fvector3 pos = this->pointer->m_navigation->m_position;
 					FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 1, 1000, 1, 0, 1, 0);
+					}},
+				{"TP TO", [this] {
+					rage::fvector3 pos = this->pointer->m_navigation->m_position;
+					teleport::to_coords({ pos.x, pos.y, pos.z });
 					}},
 			}
 		};
