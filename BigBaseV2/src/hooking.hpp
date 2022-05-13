@@ -42,6 +42,8 @@ namespace big
 
 		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
 
+		static void network_group_override(std::int64_t a1, std::int64_t a2, std::int64_t a3);
+
 		static bool net_array_handler(__int64 netArrayHandlerBaseMgr, CNetGamePlayer* a2, rage::datBitBuffer* datbitbuffer, unsigned int bytes_to_read, __int16 a5);
 
 		static void player_join(CNetworkObjectMgr* _this, CNetGamePlayer* net_player);
@@ -100,6 +102,8 @@ namespace big
 		detour_hook m_gta_thread_kill_hook;
 
 		detour_hook m_network_player_mgr_shutdown_hook;
+
+		detour_hook m_network_group_override;
 
 		detour_hook m_net_array_handler_hook;
 

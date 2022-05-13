@@ -248,6 +248,12 @@ namespace big
 		{
 			m_net_array_handler = ptr.sub(0x3C).as<PVOID>();
 		});
+
+		// Network Group Override
+		main_batch.add("NGO", "44 89 81 ? ? ? ? 89 91 ? ? ? ? C6 05", [this](memory::handle ptr)
+		{
+			m_network_group_override = ptr.as<PVOID>();
+		});
 		
 		main_batch.run(memory::module(nullptr));
 
