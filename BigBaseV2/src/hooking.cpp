@@ -48,9 +48,6 @@ namespace big
 		// Is DLC Present
 		m_is_dlc_present_hook("IDP", g_pointers->m_is_dlc_present, &hooks::is_dlc_present),
 
-		// Error Screen
-		m_error_screen_hook("ES", g_pointers->m_error_screen, &hooks::set_warning_message_with_header),
-
 		// Received Event
 		m_received_event_hook("RE", g_pointers->m_received_event, &hooks::received_event),
 
@@ -98,8 +95,6 @@ namespace big
 
 		m_increment_stat_hook.enable();
 
-		m_error_screen_hook.enable();
-
 		m_received_event_hook.enable();
 
 		m_send_net_info_to_lobby.enable();
@@ -114,8 +109,6 @@ namespace big
 		m_send_net_info_to_lobby.disable();
 
 		m_received_event_hook.disable();
-
-		m_error_screen_hook.disable();
 
 		m_increment_stat_hook.disable();
 
