@@ -18,22 +18,6 @@ namespace big
 			bool script_event_logging = false;
 		};
 
-		struct esp
-		{
-			bool enabled = true;
-			float global_render_distance[2] = { 0.f, 600.f };
-			float tracer_render_distance[2] = { 200.f, 600.f };
-			float box_render_distance[2] = { 0.f, 150.f };
-			bool tracer = true;
-			bool box = true;
-			bool health = true;
-			bool god = true;
-			bool distance = true;
-			bool name = true;
-			ImU32 color = 3359983061;
-			ImU32 friend_color = 3359983061;
-		};
-
 		struct notifications
 		{
 			struct pair
@@ -48,6 +32,7 @@ namespace big
 				pair report_cash_spawn{};
 				pair modder_detect{};
 				pair request_control_event{};
+				pair vehicle_temp_action{};
 			} received_event{};
 
 			struct
@@ -258,6 +243,31 @@ namespace big
 			bool switched_view = true;
 		};
 
+		struct esp
+		{
+			bool enabled = true;
+			bool hide_self = true;
+			float global_render_distance[2] = { 0.f, 600.f };
+			float tracer_render_distance[2] = { 200.f, 600.f };
+			float box_render_distance[2] = { 0.f, 150.f };
+			bool tracer = true;
+			float tracer_draw_position[2] = { 0.5f, 1.f };
+			bool box = true;
+			bool health = true;
+			bool armor = true;
+			bool god = true;
+			bool distance = true;
+			bool name = true;
+			bool change_esp_color_from_dist = false;
+			bool scale_health_from_dist = false;
+			bool scale_armor_from_dist = false;
+			float distance_threshold[2] = { 100.f, 200.f };
+			ImU32 enemy_color = 4281479904;
+			ImU32 enemy_near_color = 4283794943;
+			ImU32 default_color = 4285713522;
+			ImU32 friend_color = 4293244509;
+		};
+
 	public:
 		int friend_count = 0;
 		int player_count = 0;
@@ -319,6 +329,8 @@ namespace big
 			g->notifications.received_event.request_control_event.notify = j["notifications"]["received_event"]["request_control_event"]["notify"];
 			g->notifications.received_event.report_cash_spawn.log = j["notifications"]["received_event"]["report_cash_spawn"]["log"];
 			g->notifications.received_event.report_cash_spawn.notify = j["notifications"]["received_event"]["report_cash_spawn"]["notify"];
+			g->notifications.received_event.vehicle_temp_action.log = j["notifications"]["received_event"]["vehicle_temp_action"]["log"];
+			g->notifications.received_event.vehicle_temp_action.notify = j["notifications"]["received_event"]["vehicle_temp_action"]["notify"];
 
 			g->notifications.reports.log = j["notifications"]["reports"]["log"];
 			g->notifications.reports.notify = j["notifications"]["reports"]["notify"];
@@ -468,13 +480,20 @@ namespace big
 			this->window.users = j["window"]["users"];
 
 			this->esp.enabled = j["esp"]["enabled"];
-			this->esp.color = j["esp"]["color"];
+			this->esp.hide_self = j["esp"]["hide_self"];
+			this->esp.enemy_color = j["esp"]["enemy_color"];
+			this->esp.enemy_near_color = j["esp"]["enemy_near_color"];
+			this->esp.default_color = j["esp"]["default_color"];
 			this->esp.friend_color = j["esp"]["friend_color"];
 			this->esp.box = j["esp"]["box"];
 			this->esp.distance = j["esp"]["distance"];
 			this->esp.god = j["esp"]["god"];
 			this->esp.health = j["esp"]["health"];
+			this->esp.armor = j["esp"]["armor"];
 			this->esp.name = j["esp"]["name"];
+			this->esp.change_esp_color_from_dist = j["esp"]["change_esp_color_from_dist"];
+			this->esp.scale_health_from_dist = j["esp"]["scale_health_from_dist"];
+			this->esp.scale_armor_from_dist = j["esp"]["scale_armor_from_dist"];
 			for (int i = 0; i < 2; i++)
 				this->esp.global_render_distance[i] = j["esp"]["global_render_distance"].at(i);
 			for (int i = 0; i < 2; i++)
@@ -482,6 +501,10 @@ namespace big
 			for (int i = 0; i < 2; i++)
 				this->esp.box_render_distance[i] = j["esp"]["box_render_distance"].at(i);
 			this->esp.tracer = j["esp"]["tracer"];
+			for (int i = 0; i < 2; i++)
+				this->esp.tracer_draw_position[i] = j["esp"]["tracer_draw_position"].at(i);
+			for (int i = 0; i < 2; i++)
+				this->esp.distance_threshold[i] = j["esp"]["distance_threshold"].at(i);
 		}
 
 		nlohmann::json to_json()
@@ -522,7 +545,8 @@ namespace big
 								{ "clear_ped_task", return_notify_pair(g->notifications.received_event.clear_ped_task) },
 								{ "modder_detect", return_notify_pair(g->notifications.received_event.modder_detect) },
 								{ "report_cash_spawn", return_notify_pair(g->notifications.received_event.report_cash_spawn) },
-								{ "request_control_event", return_notify_pair(g->notifications.received_event.request_control_event) }
+								{ "request_control_event", return_notify_pair(g->notifications.received_event.request_control_event) },
+								{ "vehicle_temp_action", return_notify_pair(g->notifications.received_event.vehicle_temp_action) }
 							}
 						},
 						{ "reports", return_notify_pair(g->notifications.reports) },
@@ -691,6 +715,7 @@ namespace big
 				{
 					"esp", {
 						{ "enabled", this->esp.enabled },
+						{ "hide_self", this->esp.hide_self },
 						{ "global_render_distance", nlohmann::json::array({
 						this->esp.global_render_distance[0],
 						this->esp.global_render_distance[1] })
@@ -703,14 +728,28 @@ namespace big
 						this->esp.box_render_distance[0],
 						this->esp.box_render_distance[1] })
 						},
-						{ "color", this->esp.color },
+						{ "enemy_color", this->esp.enemy_color },
+						{ "enemy_near_color", this->esp.enemy_near_color },
+						{ "default_color", this->esp.default_color },
 						{ "friend_color", this->esp.friend_color },
 						{ "distance", this->esp.distance },
 						{ "box", this->esp.box },
 						{ "god", this->esp.god },
 						{ "health", this->esp.health },
+						{ "armor", this->esp.armor },
 						{ "name", this->esp.name },
-						{ "tracer", this->esp.tracer }
+						{ "tracer", this->esp.tracer },
+						{ "change_esp_color_from_dist", this->esp.change_esp_color_from_dist },
+						{ "scale_health_from_dist", this->esp.scale_health_from_dist },
+						{ "scale_armor_from_dist", this->esp.scale_armor_from_dist },
+						{ "tracer_draw_position", nlohmann::json::array({
+						this->esp.tracer_draw_position[0],
+						this->esp.tracer_draw_position[1] })
+						},
+						{ "distance_threshold", nlohmann::json::array({
+						this->esp.distance_threshold[0],
+						this->esp.distance_threshold[1] })
+						}
 					}
 				}
 			};
