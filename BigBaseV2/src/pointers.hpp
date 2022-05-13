@@ -44,12 +44,11 @@ namespace big
 		int* m_resolution_x;
 		int* m_resolution_y;
 
-		std::uint16_t* m_some_anticheat_thing{};
-
 		PVOID m_blame_explode;
 		PVOID m_model_spawn_bypass;
 		PVOID m_native_return;
 		PVOID m_is_dlc_present;
+		PVOID m_network_group_override;
 
 		PVOID m_error_screen{};
 
