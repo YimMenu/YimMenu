@@ -121,6 +121,18 @@ namespace big
 					}QUEUE_JOB_END_CLAUSE
 
 				}
+
+				if (ImGui::Button("Crash them while in car"))
+				{
+					QUEUE_JOB_BEGIN_CLAUSE()
+					{
+						int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+						Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(Handle, false);
+						TASK::TASK_VEHICLE_TEMP_ACTION(Handle, vehicle, 18, 600);
+					}QUEUE_JOB_END_CLAUSE
+
+				}
+
 				if (ImGui::Button("Gift vehicle"))
 				{
 					g_fiber_pool->queue_job([]
