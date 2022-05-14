@@ -57,7 +57,12 @@ namespace big
 		// Player Has Joined
 		m_player_has_joined_hook("PHJ", g_pointers->m_player_has_joined, &hooks::player_join),
 		// Player Has Left
-		m_player_has_left_hook("PHL", g_pointers->m_player_has_left, &hooks::player_leave)
+		m_player_has_left_hook("PHL", g_pointers->m_player_has_left, &hooks::player_leave),
+
+		// Get Players Network ID
+		m_get_player_network_id("GPNI", g_pointers->m_get_player_network_id, &hooks::join_player),
+		// Join Player
+		m_join_pattern("JP", g_pointers->m_join_pattern, &hooks::join_player)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -101,6 +106,9 @@ namespace big
 
 		m_send_net_info_to_lobby.enable();
 
+		m_get_player_network_id.enable();
+		m_join_pattern.enable();
+
 		m_enabled = true;
 	}
 
@@ -118,6 +126,9 @@ namespace big
 
 		m_player_has_joined_hook.disable();
 		m_player_has_left_hook.disable();
+
+		m_get_player_network_id.disable();
+		m_join_pattern.disable();
 
 		m_net_array_handler_hook.disable();
 

@@ -257,6 +257,19 @@ namespace big
 		{
 			m_some_anticheat_thing = ptr.add(2).rip().add(0x14).as<std::uint16_t*>();
 		});
+
+		// Gets the Players Network ID
+		main_batch.add("GPNI", "80 F9 20 73 13 48 8B", [this](memory::handle ptr)
+			{
+				m_get_player_network_id = ptr.as<decltype(m_get_player_network_id)>();
+			});
+
+		// RID of Player to Join
+		main_batch.add("JP", "48 8B C4 48 89 58 10 48 89 70 18 48 89 78 20 48 89 48 08 55 41 54 41 55 41 56 41 57 48 8D 68 A8 48 81 EC ? ? ? ? 33 DB", [this](memory::handle ptr)
+			{
+				m_join_pattern = ptr.as<decltype(m_join_pattern)>();
+			});
+
 		
 
 		main_batch.add("SCREEN_RESOLUTION", "66 0F 6E 0D ? ? ? ? 0F B7 3D", [this](memory::handle ptr)

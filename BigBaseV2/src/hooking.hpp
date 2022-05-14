@@ -63,6 +63,9 @@ namespace big
 
 		static bool scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player);
 		static bool send_net_info_to_lobby(rage::netPlayerData* player, int64_t a2, int64_t a3, DWORD* a4);
+
+		static int join_player(__int64 a1, int a2, __int64* a3, int a4);
+
 	};
 
 	struct minhook_keepalive
@@ -112,6 +115,9 @@ namespace big
 		detour_hook m_received_event_hook;
 		
 		detour_hook m_send_net_info_to_lobby;
+
+		detour_hook m_join_pattern;
+		detour_hook m_get_player_network_id;
 	};
 
 	inline hooking *g_hooking{};
