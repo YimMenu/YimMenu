@@ -216,8 +216,9 @@ namespace big
 		}
 
 		components::button("Send Event", [] {
+			args[1] = self::id; // prevent detection from AC
 			g_pointers->m_trigger_script_event(1, args, event_arg_count, event_everyone ? -1 : 1 << event_player_bits);
-			});
+		});
 
 		components::small_text("Debug");
 

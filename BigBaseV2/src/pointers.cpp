@@ -122,12 +122,6 @@ namespace big
 			m_increment_stat_event = ptr.as<decltype(m_increment_stat_event)>();
 		});
 
-		// Error Screen Hook
-		main_batch.add("ESH", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 56 41 57 48 83 EC 60 4C 8B F2 48 8B 94 24 ? ? ? ? 33 DB", [this](memory::handle ptr)
-		{
-			m_error_screen = ptr.as<decltype(m_error_screen)>();
-		});
-
 		// Trigger Script Event
 		main_batch.add("TSE", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 81 EC ? ? ? ? 45 8B F0 41 8B F9", [this](memory::handle ptr)
 		{
@@ -252,10 +246,10 @@ namespace big
 			m_net_array_handler = ptr.sub(0x3C).as<PVOID>();
 		});
 
-		// Some Anticheat Thing
-		main_batch.add("SAT", "89 05 ? ? ? ? 48 8D 05 ? ? ? ? 48 6B DB 38 48 03 D8", [this](memory::handle ptr)
+		// Network Group Override
+		main_batch.add("NGO", "44 89 81 ? ? ? ? 89 91 ? ? ? ? C6 05", [this](memory::handle ptr)
 		{
-			m_some_anticheat_thing = ptr.add(2).rip().add(0x14).as<std::uint16_t*>();
+			m_network_group_override = ptr.as<PVOID>();
 		});
 
 		// Gets the Players Network ID

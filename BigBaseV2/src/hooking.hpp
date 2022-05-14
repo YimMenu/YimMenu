@@ -23,24 +23,13 @@ namespace big
 		static LRESULT wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 		static BOOL set_cursor_pos(int x, int y);
 
-		static void set_warning_message_with_header(
-			const char* entryHeader,
-			const char* entryLine1,
-			int instructionalKey,
-			const char* entryLine2,
-			bool p4,
-			Any p5,
-			Any* showBackground,
-			Any* p7,
-			bool p8,
-			Any p9
-		);
-
 		static GtaThread* gta_thread_start(unsigned int** a1, unsigned int a2);
 		static rage::eThreadState gta_thread_tick(GtaThread* a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
 
 		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
+
+		static void network_group_override(std::int64_t a1, std::int64_t a2, std::int64_t a3);
 
 		static bool net_array_handler(__int64 netArrayHandlerBaseMgr, CNetGamePlayer* a2, rage::datBitBuffer* datbitbuffer, unsigned int bytes_to_read, __int16 a5);
 
@@ -96,13 +85,13 @@ namespace big
 		detour_hook m_run_script_threads_hook;
 		detour_hook m_convert_thread_to_fiber_hook;
 
-		detour_hook m_error_screen_hook;
-
 		detour_hook m_gta_thread_start_hook;
 		detour_hook m_gta_thread_tick_hook;
 		detour_hook m_gta_thread_kill_hook;
 
 		detour_hook m_network_player_mgr_shutdown_hook;
+
+		detour_hook m_network_group_override;
 
 		detour_hook m_net_array_handler_hook;
 
