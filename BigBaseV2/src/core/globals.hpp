@@ -168,8 +168,6 @@ namespace big
 			bool preview_vehicle = false;
 			bool spawn_inside = false;
 			bool spawn_maxed = false;
-			bool delete_last_spawn = false;
-			int last_spawn = 0;
 		}; 
 
 		struct spoofing
