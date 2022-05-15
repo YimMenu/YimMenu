@@ -46,10 +46,12 @@ namespace big
 				pair ceo_kick{};
 				pair ceo_money{};
 				pair clear_wanted_level{};
+				pair crash{};
 				pair fake_deposit{};
 				pair force_mission{};
 				pair force_teleport{};
 				pair gta_banner{};
+				pair mc_teleport{};
 				pair network_bail{};
 				pair personal_vehicle_destroyed{};
 				pair remote_off_radar{};
@@ -96,10 +98,12 @@ namespace big
 				bool ceo_kick = true;
 				bool ceo_money = true;
 				bool clear_wanted_level = true;
+				bool crash = true;
 				bool fake_deposit = true;
 				bool force_mission = true;
 				bool force_teleport = true;
 				bool gta_banner = true;
+				bool mc_teleport = true;
 				bool network_bail = true;
 				bool personal_vehicle_destroyed = true;
 				bool remote_off_radar = true;
@@ -348,6 +352,8 @@ namespace big
 				script_handler.ceo_money.notify = script_handler_j["ceo_money"]["notify"];
 				script_handler.clear_wanted_level.log = script_handler_j["clear_wanted_level"]["log"];
 				script_handler.clear_wanted_level.notify = script_handler_j["clear_wanted_level"]["notify"];
+				script_handler.crash.log = script_handler_j["crash"]["log"];
+				script_handler.crash.notify = script_handler_j["crash"]["notify"];
 				script_handler.fake_deposit.log = script_handler_j["fake_deposit"]["log"];
 				script_handler.fake_deposit.notify = script_handler_j["fake_deposit"]["notify"];
 				script_handler.force_mission.log = script_handler_j["force_mission"]["log"];
@@ -356,6 +362,8 @@ namespace big
 				script_handler.force_teleport.notify = script_handler_j["force_teleport"]["notify"];
 				script_handler.gta_banner.log = script_handler_j["gta_banner"]["log"];
 				script_handler.gta_banner.notify = script_handler_j["gta_banner"]["notify"];
+				script_handler.mc_teleport.log = script_handler_j["mc_teleport"]["log"];
+				script_handler.mc_teleport.notify = script_handler_j["mc_teleport"]["notify"];
 				script_handler.network_bail.log = script_handler_j["network_bail"]["log"];
 				script_handler.network_bail.notify = script_handler_j["network_bail"]["notify"];
 				script_handler.personal_vehicle_destroyed.log = script_handler_j["personal_vehicle_destroyed"]["log"];
@@ -393,10 +401,12 @@ namespace big
 				script_handler.ceo_kick = script_handler_j["ceo_kick"];
 				script_handler.ceo_money = script_handler_j["ceo_money"];
 				script_handler.clear_wanted_level = script_handler_j["clear_wanted_level"];
+				script_handler.crash = script_handler_j["crash"];
 				script_handler.fake_deposit = script_handler_j["fake_deposit"];
 				script_handler.force_mission = script_handler_j["force_mission"];
 				script_handler.force_teleport = script_handler_j["force_teleport"];
 				script_handler.gta_banner = script_handler_j["gta_banner"];
+				script_handler.mc_teleport = script_handler_j["mc_teleport"];
 				script_handler.network_bail = script_handler_j["network_bail"];
 				script_handler.personal_vehicle_destroyed = script_handler_j["personal_vehicle_destroyed"];
 				script_handler.remote_off_radar = script_handler_j["remote_off_radar"];
@@ -555,10 +565,12 @@ namespace big
 								{ "ceo_kick", return_notify_pair(script_handler_notifications.ceo_kick) },
 								{ "ceo_money", return_notify_pair(script_handler_notifications.ceo_money) },
 								{ "clear_wanted_level", return_notify_pair(script_handler_notifications.clear_wanted_level) },
+								{ "crash", return_notify_pair(script_handler_notifications.crash) },
 								{ "fake_deposit", return_notify_pair(script_handler_notifications.fake_deposit) },
 								{ "force_mission", return_notify_pair(script_handler_notifications.force_mission) },
 								{ "force_teleport", return_notify_pair(script_handler_notifications.force_teleport) },
 								{ "gta_banner", return_notify_pair(script_handler_notifications.gta_banner) },
+								{ "mc_teleport", return_notify_pair(script_handler_notifications.mc_teleport) },
 								{ "network_bail", return_notify_pair(script_handler_notifications.network_bail) },
 								{ "personal_vehicle_destroyed", return_notify_pair(script_handler_notifications.personal_vehicle_destroyed) },
 								{ "remote_off_radar", return_notify_pair(script_handler_notifications.remote_off_radar) },
@@ -585,10 +597,12 @@ namespace big
 								{ "ceo_kick", script_handler_protections.ceo_kick },
 								{ "ceo_money", script_handler_protections.ceo_money },
 								{ "clear_wanted_level", script_handler_protections.clear_wanted_level },
+								{ "crash", script_handler_protections.crash },
 								{ "fake_deposit", script_handler_protections.fake_deposit },
 								{ "force_mission", script_handler_protections.force_mission },
 								{ "force_teleport", script_handler_protections.force_teleport },
 								{ "gta_banner", script_handler_protections.gta_banner },
+								{ "mc_teleport", script_handler_protections.mc_teleport },
 								{ "network_bail", script_handler_protections.network_bail },
 								{ "personal_vehicle_destroyed", script_handler_protections.personal_vehicle_destroyed },
 								{ "remote_off_radar", script_handler_protections.remote_off_radar },
