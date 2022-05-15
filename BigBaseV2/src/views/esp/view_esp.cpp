@@ -65,10 +65,10 @@ namespace big
 						esp_color = g->esp.friend_color;
 					}
 					else if (g->esp.change_esp_color_from_dist) {
-						if (distance >= g->esp.distance_threshold[0] && distance < g->esp.distance_threshold[1])
-							esp_color = g->esp.enemy_near_color;
-						else
+						if (distance <= g->esp.distance_threshold[0])
 							esp_color = g->esp.enemy_color;
+						else if (distance >= g->esp.distance_threshold[0] && distance < g->esp.distance_threshold[1])
+							esp_color = g->esp.enemy_near_color;
 					}
 
 					float armor_perc = plyr->get_ped()->m_armor / 50;
@@ -110,13 +110,15 @@ namespace big
 							}
 						}
 						if (g->esp.armor && plyr->get_ped()->m_armor > 0) {
+							float offset = 5.f;
+							offset = g->esp.health ? 10.f : 5.f;
 							if (g->esp.scale_armor_from_dist) {
-								draw_list->AddLine({ esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 10.f }, { esp_x - (62.5f * multplr) + (125.f * multplr), esp_y + (175.f * multplr) + 10.f }, armor_blue_bg, 4);
-								draw_list->AddLine({ esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 10.f }, { esp_x - (62.5f * multplr) + (125.f * multplr) * armor_perc, esp_y + (175.f * multplr) + 10.f }, armor_blue, 4);
+								draw_list->AddLine({ esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + offset }, { esp_x - (62.5f * multplr) + (125.f * multplr), esp_y + (175.f * multplr) + offset }, armor_blue_bg, 4);
+								draw_list->AddLine({ esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + offset }, { esp_x - (62.5f * multplr) + (125.f * multplr) * armor_perc, esp_y + (175.f * multplr) + offset }, armor_blue, 4);
 							}
 							else {
-								draw_list->AddLine({ esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 10.f }, { esp_x - (62.5f * multplr) + (100.f), esp_y + (175.f * multplr) + 10.f }, armor_blue_bg, 4);
-								draw_list->AddLine({ esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 10.f }, { esp_x - (62.5f * multplr) + (100.f * armor_perc), esp_y + (175.f * multplr) + 10.f }, armor_blue, 4);
+								draw_list->AddLine({ esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + offset }, { esp_x - (62.5f * multplr) + (100.f), esp_y + (175.f * multplr) + offset }, armor_blue_bg, 4);
+								draw_list->AddLine({ esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + offset }, { esp_x - (62.5f * multplr) + (100.f * armor_perc), esp_y + (175.f * multplr) + offset }, armor_blue, 4);
 							}
 						}
 					}
