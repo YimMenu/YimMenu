@@ -60,7 +60,7 @@ namespace big
 		draw_pair_option("CEO Ban", script_event_handler.ceo_ban);
 		draw_pair_option("CEO Kick", script_event_handler.ceo_kick);
 		draw_pair_option("CEO Money", script_event_handler.ceo_money);
-		draw_pair_option("Wanted Level", script_event_handler.clear_wanted_level);
+		draw_pair_option("Destroy Personal Vehicle", script_event_handler.personal_vehicle_destroyed);
 		draw_pair_option("Fake Deposit", script_event_handler.fake_deposit);
 		draw_pair_option("Force Mission", script_event_handler.force_mission);
 		ImGui::EndGroup();
@@ -70,21 +70,23 @@ namespace big
 		ImGui::BeginGroup();
 		draw_pair_option("Force Teleport", script_event_handler.force_teleport);
 		draw_pair_option("GTA Banner", script_event_handler.gta_banner);
+		draw_pair_option("MC Teleport", script_event_handler.mc_teleport);
 		draw_pair_option("Network Bail", script_event_handler.network_bail);
-		draw_pair_option("Destroy Personal Vehicle", script_event_handler.personal_vehicle_destroyed);
 		draw_pair_option("Remote Off Radar", script_event_handler.remote_off_radar);
 		draw_pair_option("Rotate Cam", script_event_handler.rotate_cam);
+		draw_pair_option("Send to Cutscene", script_event_handler.send_to_cutscene);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
-		draw_pair_option("Send to Cutscene", script_event_handler.send_to_cutscene);
 		draw_pair_option("Send to Island", script_event_handler.send_to_island);
 		draw_pair_option("Sound Spam", script_event_handler.sound_spam);
 		draw_pair_option("Spectate", script_event_handler.spectate);
 		draw_pair_option("Transaction Error", script_event_handler.transaction_error);
+		draw_pair_option("TSE Crash", script_event_handler.crash);
 		draw_pair_option("Vehicle Kick", script_event_handler.vehicle_kick);
+		draw_pair_option("Wanted Level", script_event_handler.clear_wanted_level);
 		ImGui::EndGroup();
 
 		components::small_text("Other");
