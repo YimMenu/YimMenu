@@ -38,6 +38,7 @@ namespace big
 		static void vehicle_auto_drive();
 		static void vehicle_despawn_bypass();
 		static void vehicle_drive_on_water();
+		static void vehicle_fly();
 		static void vehicle_god_mode();
 		static void vehicle_horn_boost();
 		static void vehicle_instant_brake();
