@@ -20,6 +20,8 @@ namespace big
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
+		ImGui::Checkbox("Seatbelt", &g->vehicle.seatbelt);
+
 		components::button("Repair", [] {
 
 			vehicle::repair(self::veh);
