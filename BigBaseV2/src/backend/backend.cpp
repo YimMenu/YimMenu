@@ -88,6 +88,7 @@ namespace big
 			looped::vehicle_auto_drive();
 			looped::vehicle_despawn_bypass();
 			looped::vehicle_drive_on_water();
+			looped::vehicle_fly();
 			looped::vehicle_god_mode();
 			looped::vehicle_horn_boost();
 			looped::vehicle_instant_brake();

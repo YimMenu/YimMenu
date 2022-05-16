@@ -70,7 +70,7 @@ namespace big
 			pair net_array_error{};
 			pair network_player_mgr_shutdown{};
 
-			struct 
+			struct
 			{
 				bool above_map = true;
 				bool log = false;
@@ -150,9 +150,9 @@ namespace big
 			int local_weather = 0;
 			bool override_time = {};
 			bool override_weather = false;
-			struct 
+			struct
 			{
-				int hour{}, minute{}, second{}; 
+				int hour{}, minute{}, second{};
 			} custom_time;
 		};
 
@@ -172,7 +172,7 @@ namespace big
 			bool preview_vehicle = false;
 			bool spawn_inside = false;
 			bool spawn_maxed = false;
-		}; 
+		};
 
 		struct spoofing
 		{
@@ -196,6 +196,15 @@ namespace big
 				bool left_side = false;
 			};
 
+			struct fly
+			{
+				bool dont_stop = false;
+				bool enabled = false;
+				bool no_collision = false;
+				bool stop_on_exit = false;
+				float speed = 1;
+			};
+
 			bool auto_drive_to_waypoint = false;
 			bool auto_drive_wander = false;
 			int auto_drive_speed = 1;
@@ -210,6 +219,7 @@ namespace big
 			bool pv_teleport_into = false;
 			int rainbow_paint = 0;
 			speedo_meter speedo_meter{};
+			fly fly{};
 		};
 
 		struct weapons {
@@ -470,6 +480,12 @@ namespace big
 			this->vehicle.speedo_meter.x = j["vehicle"]["speedo_meter"]["position_x"];
 			this->vehicle.speedo_meter.y = j["vehicle"]["speedo_meter"]["position_y"];
 
+			this->vehicle.fly.dont_stop = j["vehicle"]["fly"]["dont_stop"];
+			this->vehicle.fly.enabled = j["vehicle"]["fly"]["enabled"];
+			this->vehicle.fly.no_collision = j["vehicle"]["fly"]["no_collision"];
+			this->vehicle.fly.speed = j["vehicle"]["fly"]["speed"];
+			this->vehicle.fly.stop_on_exit = j["vehicle"]["fly"]["stop_on_exit"];
+
 			this->weapons.custom_weapon = (CustomWeapon)j["weapons"]["custom_weapon"];
 			this->weapons.force_crosshairs = j["weapons"]["force_crosshairs"];
 			this->weapons.infinite_ammo = j["weapons"]["infinite_ammo"];
@@ -693,7 +709,17 @@ namespace big
 								{ "type", (int)this->vehicle.speedo_meter.type },
 								{ "left_side", this->vehicle.speedo_meter.left_side },
 								{ "position_x", this->vehicle.speedo_meter.x },
-								{ "position_y", this->vehicle.speedo_meter.y }
+								{ "position_y", this->vehicle.speedo_meter.y },
+							}
+						},
+						{
+							"fly",
+							{
+								{ "no_collision", this->vehicle.fly.no_collision },
+								{ "dont_stop", this->vehicle.fly.dont_stop },
+								{ "enabled", this->vehicle.fly.enabled },
+								{ "stop_on_exit", this->vehicle.fly.stop_on_exit },
+								{ "speed", this->vehicle.fly.speed },
 							}
 						}
 					}
@@ -703,7 +729,6 @@ namespace big
 						{ "ammo_special", {
 							{ "toggle", this->weapons.ammo_special.toggle },
 							{ "type", (int)this->weapons.ammo_special.type },
-								
 							}
 						},
 						{ "custom_weapon", (int)this->weapons.custom_weapon },
@@ -775,7 +800,7 @@ namespace big
 			if (deep_compare(this->options, j, true))
 				this->save();
 		}
-	
+
 		bool load()
 		{
 			this->default_options = this->to_json();
