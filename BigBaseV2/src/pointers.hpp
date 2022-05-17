@@ -49,6 +49,7 @@ namespace big
 		PVOID m_native_return;
 		PVOID m_is_dlc_present;
 		PVOID m_network_group_override;
+		PUSHORT m_spectator_check;
 
 		FriendRegistry* m_friend_registry{};
 

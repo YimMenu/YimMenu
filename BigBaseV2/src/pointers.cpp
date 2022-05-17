@@ -154,9 +154,7 @@ namespace big
 		// Request Control of Entity PATCH
 		main_batch.add("RCOE-Patch", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", [this](memory::handle ptr)
 		{
-			PVOID spectator_check = ptr.add(0x11).as<PVOID>();
-
-			memset(spectator_check, 0x90, 0x4);
+			m_spectator_check = ptr.add(0x13).as<PUSHORT>();
 		});
 
 		// GET CNetGamePlayer
@@ -255,11 +253,15 @@ namespace big
 		if (!m_hwnd)
 			throw std::runtime_error("Failed to find the game's window.");
 
+		*m_spectator_check = 0x9090;
+
 		g_pointers = this;
 	}
 
 	pointers::~pointers()
 	{
+		*m_spectator_check = 0x6A75;
+
 		g_pointers = nullptr;
 	}
 }
