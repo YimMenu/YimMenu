@@ -157,12 +157,6 @@ namespace big
 			m_spectator_check = ptr.add(0x13).as<PUSHORT>();
 		});
 
-		// GET CNetGamePlayer
-		main_batch.add("GCNGP", "48 83 EC ? 33 C0 38 05 ? ? ? ? 74 ? 83 F9", [this](memory::handle ptr)
-		{
-			m_get_net_game_player = ptr.as<decltype(m_get_net_game_player)>();
-		});
-
 		// Replay Interface
 		main_batch.add("RI", "48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D", [this](memory::handle ptr)
 		{
