@@ -26,44 +26,6 @@ namespace rage
 		class CPlayerInfo* m_player_info; //0x10C8
 	};
 
-	class CPlayerInfo
-	{
-	public:
-		char pad_0000[52]; //0x0000
-		uint32_t m_internal_ip; //0x0034
-		uint16_t m_internal_port; //0x0038
-		char pad_003A[2]; //0x003A
-		uint32_t m_relay_ip; //0x003C
-		uint16_t m_relay_port; //0x0040
-		char pad_0042[2]; //0x0042
-		uint32_t m_external_ip; //0x0044
-		uint16_t m_external_port; //0x0048
-		char pad_004A[30]; //0x004A
-		uint64_t m_rockstar_id; //0x0068
-		char pad_0070[12]; //0x0070
-		char m_name[20]; //0x007C
-		char pad_0090[184]; //0x0090
-		float m_swim_speed; //0x0148
-		float m_run_speed; //0x014C
-		char pad_0150[81]; //0x0150
-		bool m_is_rockstar_dev; //0x01A1
-		char pad_01A2[1]; //0x01A2
-		bool m_is_cheater; //0x01A3
-		char pad_01A4[11]; //0x01A4
-		bool m_is_online; //0x01AF
-		char pad_01B0[24]; //0x01B0
-		class CPed* m_ped; //0x01C8
-		char pad_01D0[40]; //0x01D0
-		uint32_t m_frame_flags; //0x01F8
-		char pad_01FC[28]; //0x01FC
-		uint32_t m_player_controls; //0x0218
-		char pad_021C[1524]; //0x021C
-		bool m_is_wanted; //0x0810
-		char pad_0811[3]; //0x0811
-		int32_t m_wanted_level_display; //0x0814
-		int32_t m_wanted_level; //0x0818
-	}; //Size: 0x081C
-
 	class CObject : public fwEntity
 	{
 	public:
