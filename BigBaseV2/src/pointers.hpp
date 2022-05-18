@@ -56,7 +56,6 @@ namespace big
 		functions::get_screen_coords_for_world_coords* m_get_screen_coords_for_world_coords{};
 
 		PVOID m_gta_thread_start{};
-		PVOID m_gta_thread_tick{};
 		PVOID m_gta_thread_kill{};
 
 		PVOID m_network_player_mgr_shutdown;

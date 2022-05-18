@@ -101,13 +101,7 @@ namespace big
 			m_gta_thread_start = ptr.as<PVOID>();
 		});
 
-		// Thread Thick
-		main_batch.add("TT", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 B9 ? ? ? ? ? 8B FA 48 8B D9 74 05", [this](memory::handle ptr)
-		{
-			m_gta_thread_tick = ptr.as<PVOID>();
-		});
-
-		// Thread Kill
+		// GTA Thread Kill
 		main_batch.add("TK", "48 89 5C 24 ? 57 48 83 EC 20 48 83 B9 ? ? ? ? ? 48 8B D9 74 14", [this](memory::handle ptr)
 		{
 			m_gta_thread_kill = ptr.as<PVOID>();
@@ -240,8 +234,38 @@ namespace big
 		{
 			m_network_group_override = ptr.as<PVOID>();
 		});
-		
-		main_batch.run(memory::module(nullptr));
+
+		auto mem_region = memory::module(nullptr);
+		main_batch.run(mem_region);
+
+		/**
+		 * Freemode thread restorer through VM patch
+		 */
+		if (auto pat1 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
+		{
+			*pat1.add(2).as<uint32_t*>() = 0xc9310272;
+			*pat1.add(6).as<uint16_t*>() = 0x9090;
+		}
+
+		if (auto pat2 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 49 03 fa"))
+		{
+			*pat2.add(2).as<uint32_t*>() = 0xc9310272;
+			*pat2.add(6).as<uint16_t*>() = 0x9090;
+		}
+
+		auto pat3 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 48 ff c7");
+		for (auto& handle : pat3)
+		{
+			*handle.add(2).as<uint32_t*>() = 0xd2310272;
+			*handle.add(6).as<uint16_t*>() = 0x9090;
+		}
+
+		auto pat4 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 49 03 fa");
+		for (auto& handle : pat4)
+		{
+			*handle.add(2).as<uint32_t*>() = 0xd2310272;
+			*handle.add(6).as<uint16_t*>() = 0x9090;
+		}
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);
 		if (!m_hwnd)
