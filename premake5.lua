@@ -109,6 +109,27 @@ workspace "BigBaseV2"
 
 		DeclareMSVCOptions()
 		DeclareDebugOptions()
+
+	project "GTAV-Classes"
+		location "vendor/%{prj.name}"
+		kind "StaticLib"
+		language "C++"
+
+		targetdir ("bin/lib/" .. outputdir)
+		objdir ("bin/lib/int/" .. outputdir .. "/%{prj.name}")
+
+		files
+		{
+			"vendor/%{prj.name}/**.hpp"
+		}
+
+		includedirs
+		{
+			"vendor/%{prj.name}"
+		}
+
+		DeclareMSVCOptions()
+		DeclareDebugOptions()
    
 	project "ImGui"
 		location "vendor/%{prj.name}"
