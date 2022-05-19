@@ -149,6 +149,7 @@ namespace big
 		main_batch.add("RCOE-Patch", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", [this](memory::handle ptr)
 		{
 			m_spectator_check = ptr.add(0x13).as<PUSHORT>();
+			*m_spectator_check = 0x9090;
 		});
 
 		// Replay Interface
@@ -270,8 +271,6 @@ namespace big
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);
 		if (!m_hwnd)
 			throw std::runtime_error("Failed to find the game's window.");
-
-		*m_spectator_check = 0x9090;
 
 		g_pointers = this;
 	}
