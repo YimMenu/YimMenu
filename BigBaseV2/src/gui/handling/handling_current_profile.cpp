@@ -14,14 +14,14 @@ namespace big
 
 		if (g_vehicle_service->get_active_profile(g_local_player->m_vehicle->m_handling->m_model_hash).empty())
 		{
-			if (ImGui::Button("Save Profile"))
+			if (components::button("Save Profile"))
 			{
 				ImGui::OpenPopup("Save Handling");
 			}
 		}
 		else
 		{
-			if (ImGui::Button("Update Profile"))
+			if (components::button("Update Profile"))
 			{
 				ImGui::OpenPopup("Update Handling");
 			}
@@ -30,8 +30,10 @@ namespace big
 		modal_handling::modal_save_handling();
 		modal_handling::modal_update_handling();
 		ImGui::SameLine();
-		if (ImGui::Button("Restore Handling"))
+
+		components::button("Restore Handling", [] {
 			g_vehicle_service->restore_vehicle();
+		});
 
 		ImGui::Separator();
 

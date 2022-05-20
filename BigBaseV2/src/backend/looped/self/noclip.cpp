@@ -18,9 +18,8 @@ namespace big
 	void looped::self_noclip() {
 		bool bNoclip = g->self.noclip;
 
-		Entity ent = PLAYER::PLAYER_PED_ID();
-		bool bInVehicle = PED::IS_PED_IN_ANY_VEHICLE(ent, true);
-		if (bInVehicle) ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
+		Vector3 location = self::pos;
+		Entity ent = self::veh != NULL ? self::veh : self::ped;
 
 		// cleanup when changing entities
 		if (prev != ent)
@@ -76,8 +75,8 @@ namespace big
 				ENTITY::FREEZE_ENTITY_POSITION(ent, false);
 
 				Vector3 offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, vel.x, vel.y, 0.f);
-				vel.x = offset.x - self::pos.x;
-				vel.y = offset.y - self::pos.y;
+				vel.x = offset.x - location.x;
+				vel.y = offset.y - location.y;
 
 				ENTITY::SET_ENTITY_VELOCITY(ent, vel.x * mult, vel.y * mult, vel.z * mult);
 			}

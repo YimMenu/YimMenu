@@ -5,7 +5,7 @@ namespace big
 {
 	void looped::weapons_increased_damage()
 	{
-		auto const player_ped = PLAYER::PLAYER_PED_ID();
+		auto const player_ped = self::ped;
 
 		if (g->weapons.increased_damage != 1) {
 			Hash weapon{}; 

@@ -47,14 +47,16 @@ namespace big
 
 		ImGui::Checkbox("No Spread", &g->weapons.no_spread);
 
-		if (ImGui::Button("Get All Weapons"))
+		if (components::button("Get All Weapons"))
 		{
 			QUEUE_JOB_BEGIN_CLAUSE()
 			{
+				Ped ped = self::ped;
+
 				for (auto const& weapon : weapon_list) {
-					WEAPON::GIVE_DELAYED_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), weapon, 9999, false);
+					WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon, 9999, false);
 				}
-				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), -72657034, 0, true);
+				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, -72657034, 0, true);
 			}
 			QUEUE_JOB_END_CLAUSE
 		}

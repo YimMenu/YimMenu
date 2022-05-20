@@ -31,7 +31,7 @@ namespace big
 
 		if (g->vehicle.ls_customs && g->vehicle.ls_customs != state)
 		{
-			Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(PLAYER::PLAYER_PED_ID());
+			Vehicle veh = self::veh;
 			if (!ENTITY::DOES_ENTITY_EXIST(veh) || ENTITY::IS_ENTITY_DEAD(veh, false))
 			{
 				busy = false;

@@ -22,15 +22,17 @@ namespace big::vehicle
 
 		if (!entity::take_control_of(veh))
 			return g_notification_service->push_warning("Vehicle", "Failed to take control of remote vehicle.");
+		Ped ped = self::ped;
+
 		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, 0);
-		ENTITY::SET_ENTITY_HEADING(veh, ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID()));
+		ENTITY::SET_ENTITY_HEADING(veh, ENTITY::GET_ENTITY_HEADING(ped));
 
 		if (put_in)
 		{
 			for (size_t i = 0; i < 100 && math::distance_between_vectors(location, ENTITY::GET_ENTITY_COORDS(veh, true)) > 10; i++)
 				script::get_current()->yield();
 
-			PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
+			PED::SET_PED_INTO_VEHICLE(ped, veh, -1);
 		}
 	}
 
@@ -93,7 +95,7 @@ namespace big::vehicle
 
 	inline void telport_into_veh(Vehicle veh)
 	{
-		PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
+		PED::SET_PED_INTO_VEHICLE(self::ped, veh, -1);
 	}
 
 	inline void max_vehicle(Vehicle veh)

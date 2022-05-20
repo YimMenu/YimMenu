@@ -8,7 +8,7 @@ namespace big
 	{
 		if (g->weapons.infinite_ammo) {
 			Hash weaponHash;
-			auto const ped = PLAYER::PLAYER_PED_ID();
+			auto const ped = self::ped;
 
 			WEAPON::GET_CURRENT_PED_WEAPON(ped, &weaponHash, 1);
 			if (weaponHash != RAGE_JOAAT("WEAPON_UNARMED")) {

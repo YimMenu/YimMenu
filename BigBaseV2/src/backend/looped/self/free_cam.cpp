@@ -17,8 +17,9 @@ namespace big
 	{
 		if (g_local_player == nullptr) return;
 
-		Entity ent = PLAYER::PLAYER_PED_ID();
 		if (!g->self.free_cam && !bLastFreeCam) return;
+
+		Vehicle vehicle = self::veh;
 
 		if (g->self.free_cam && !bLastFreeCam)
 		{
@@ -27,7 +28,7 @@ namespace big
 			vecPosition = CAM::GET_GAMEPLAY_CAM_COORD();
 			vecRot = CAM::GET_GAMEPLAY_CAM_ROT(2);
 
-			ENTITY::FREEZE_ENTITY_POSITION(PED::GET_VEHICLE_PED_IS_USING(PLAYER::PLAYER_PED_ID()), true);
+			ENTITY::FREEZE_ENTITY_POSITION(vehicle, true);
 			CAM::SET_CAM_COORD(cCam, vecPosition.x, vecPosition.y, vecPosition.z);
 			CAM::SET_CAM_ROT(cCam, vecRot.x, vecRot.y, vecRot.z, 2);
 			CAM::SET_CAM_ACTIVE(cCam, true);
@@ -37,11 +38,11 @@ namespace big
 		}
 		else if (!g->self.free_cam && bLastFreeCam)
 		{
-			ENTITY::FREEZE_ENTITY_POSITION(PED::GET_VEHICLE_PED_IS_USING(PLAYER::PLAYER_PED_ID()), false);
+			ENTITY::FREEZE_ENTITY_POSITION(vehicle, false);
 			CAM::SET_CAM_ACTIVE(cCam, false);
 			CAM::RENDER_SCRIPT_CAMS(false, true, 500, true, true, 0);
 			CAM::DESTROY_CAM(cCam, false);
-			STREAMING::SET_FOCUS_ENTITY(PLAYER::PLAYER_PED_ID());
+			STREAMING::SET_FOCUS_ENTITY(self::ped);
 
 			bLastFreeCam = false;
 

@@ -4,6 +4,7 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "services/vehicle_service.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -41,7 +42,7 @@ namespace big
 				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 			}QUEUE_JOB_END_CLAUSE
 
-				ImGui::BeginGroup();
+			ImGui::BeginGroup();
 
 			ImGui::Text("Name:");
 			ImGui::Text("Description:");
@@ -55,7 +56,7 @@ namespace big
 
 			ImGui::EndGroup();
 
-			if (ImGui::Button("Cancel"))
+			if (components::button("Cancel"))
 			{
 				strcpy(name, "");
 				strcpy(description, "No description.");
@@ -63,12 +64,12 @@ namespace big
 				ImGui::CloseCurrentPopup();
 			}
 			ImGui::SameLine();
-			if (ImGui::Button("Save"))
+			if (components::button("Save"))
 			{
 				g_thread_pool->push([&]
-					{
-						g_vehicle_service->publish_profile(name, description);
-					});
+				{
+					g_vehicle_service->publish_profile(name, description);
+				});
 			}
 
 			ImGui::EndPopup();

@@ -17,7 +17,7 @@ namespace big
 		
 		if (g_player_service->get_selected()->is_valid())
 		{
-			// if (ImGui::Button("Desync")) { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player()); }
+			//components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player()); });
 
 			if (ImGui::TreeNode("Misc")) {
 				components::button("Steal Outfit", [] {

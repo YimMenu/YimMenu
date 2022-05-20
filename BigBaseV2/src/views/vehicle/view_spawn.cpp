@@ -26,11 +26,11 @@ namespace big
 
 		components::input_text_with_hint("Model Name", "Search", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, []
 		{
-			const auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(), 2.f, 2.f, 0.f);
+			const auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 2.f, 2.f, 0.f);
 			const Vehicle veh = vehicle::spawn(model, location, g_local_player->m_player_info->m_ped->m_navigation->m_heading + 90.f);
 
 			if (g->spawn.spawn_inside)
-				PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
+				PED::SET_PED_INTO_VEHICLE(self::ped, veh, -1);
 
 			if (g->spawn.spawn_maxed)
 			{
@@ -82,6 +82,8 @@ namespace big
 
 						if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
 							g_vehicle_preview_service->set_preview_vehicle(item);
+						else if (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered())
+							g_vehicle_preview_service->stop_preview();
 					}
 				}
 				ImGui::ListBoxFooter();

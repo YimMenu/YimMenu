@@ -44,7 +44,7 @@ namespace big
 					ImGui::TableNextColumn();
 					ImGui::TextWrapped(profile.description.c_str());
 					ImGui::TableNextColumn();
-					if (ImGui::Button("Load Profile"))
+					if (components::button("Load Profile"))
 						g_vehicle_service->set_handling_profile(profile);
 
 					ImGui::EndTable();

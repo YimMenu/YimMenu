@@ -21,11 +21,11 @@ namespace big
 		// ZOOMED IN
 		if (bGravityGun && PAD::IS_DISABLED_CONTROL_PRESSED(0, 25))
 		{
-			PLAYER::DISABLE_PLAYER_FIRING(PLAYER::GET_PLAYER_INDEX(), true);
+			PLAYER::DISABLE_PLAYER_FIRING(self::id, true);
 			for (int control : controls)
 				PAD::DISABLE_CONTROL_ACTION(0, control, true);
 
-			location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+			location = self::pos;
 
 			// Attack RELEASED
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 24) && ent == 0)

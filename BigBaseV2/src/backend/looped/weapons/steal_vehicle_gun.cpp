@@ -11,11 +11,11 @@ namespace big
 	{
 		if (const bool bStealVehicleGun = g->weapons.custom_weapon == CustomWeapon::STEAL_VEHICLE_GUN; bStealVehicleGun)
 		{
-			Ped player = PLAYER::PLAYER_PED_ID();
+			Ped player = self::ped;
 
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 25))
 			{
-				PLAYER::DISABLE_PLAYER_FIRING(PLAYER::GET_PLAYER_INDEX(), true);
+				PLAYER::DISABLE_PLAYER_FIRING(self::id, true);
 				for (const int control : controls)
 					PAD::DISABLE_CONTROL_ACTION(0, control, true);
 
@@ -33,7 +33,7 @@ namespace big
 								script::get_current()->yield(100ms);
 							}
 
-							PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), ent, -1);
+							PED::SET_PED_INTO_VEHICLE(player, ent, -1);
 						}
 						else g_notification_service->push_warning("Weapons", "Entity is not a vehicle.");
 					}
