@@ -24,7 +24,6 @@ namespace big
 		static BOOL set_cursor_pos(int x, int y);
 
 		static GtaThread* gta_thread_start(unsigned int** a1, unsigned int a2);
-		static rage::eThreadState gta_thread_tick(GtaThread* a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
 
 		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
@@ -83,7 +82,6 @@ namespace big
 		detour_hook m_convert_thread_to_fiber_hook;
 
 		detour_hook m_gta_thread_start_hook;
-		detour_hook m_gta_thread_tick_hook;
 		detour_hook m_gta_thread_kill_hook;
 
 		detour_hook m_network_player_mgr_shutdown_hook;

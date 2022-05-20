@@ -29,8 +29,6 @@ namespace big
 
 		// GTA Thead Start
 		m_gta_thread_start_hook("GTS", g_pointers->m_gta_thread_start, &hooks::gta_thread_start),
-		// GTA Thread Tick
-		m_gta_thread_tick_hook("GTT", g_pointers->m_gta_thread_tick, &hooks::gta_thread_tick),
 		// GTA Thread Kill
 		m_gta_thread_kill_hook("GTK", g_pointers->m_gta_thread_kill, &hooks::gta_thread_kill),
 
@@ -84,7 +82,6 @@ namespace big
 
 		m_gta_thread_start_hook.enable();
 		m_gta_thread_kill_hook.enable();
-		m_gta_thread_tick_hook.enable();
 
 		m_network_player_mgr_shutdown_hook.enable();
 
@@ -119,7 +116,6 @@ namespace big
 
 		m_network_player_mgr_shutdown_hook.disable();
 
-		m_gta_thread_tick_hook.disable();
 		m_gta_thread_kill_hook.disable();
 		m_gta_thread_start_hook.disable();
 

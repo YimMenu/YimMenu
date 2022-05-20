@@ -38,12 +38,14 @@ namespace big
 		static void vehicle_auto_drive();
 		static void vehicle_despawn_bypass();
 		static void vehicle_drive_on_water();
+		static void vehicle_fly();
 		static void vehicle_god_mode();
 		static void vehicle_horn_boost();
 		static void vehicle_instant_brake();
 		static void vehicle_is_targetable();
 		static void vehicle_ls_customs();
 		static void vehicle_rainbow_paint();
+		static void vehicle_seatbelt();
 		static void vehicle_speedo_meter();
 
 		static void weapons_ammo_special_type();
