@@ -55,7 +55,11 @@ namespace big
 		// Player Has Joined
 		m_player_has_joined_hook("PHJ", g_pointers->m_player_has_joined, &hooks::player_join),
 		// Player Has Left
-		m_player_has_left_hook("PHL", g_pointers->m_player_has_left, &hooks::player_leave)
+		m_player_has_left_hook("PHL", g_pointers->m_player_has_left, &hooks::player_leave),
+		// Receive Net Message
+		m_receive_net_message_hook("RNM", g_pointers->m_receive_net_message, &hooks::receive_net_message),
+		//Get Network Event Data
+		m_get_network_event_data_hook("GNED", g_pointers->m_get_network_event_data, &hooks::get_network_event_data)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -96,12 +100,18 @@ namespace big
 
 		m_send_net_info_to_lobby.enable();
 
+		m_receive_net_message_hook.enable();
+		m_get_network_event_data_hook.enable();
+
 		m_enabled = true;
 	}
 
 	void hooking::disable()
 	{
 		m_enabled = false;
+
+		m_get_network_event_data_hook.disable();
+		m_receive_net_message_hook.disable();
 
 		m_send_net_info_to_lobby.disable();
 

@@ -52,6 +52,8 @@ namespace big
 		void do_cleanup();
 
 		player* get_by_name(std::string name);
+		player* get_by_msg_id(uint32_t msg_id);
+		player* get_by_host_token(uint64_t token);
 		player* get_selected();
 
 		void player_join(CNetGamePlayer* net_game_player);
