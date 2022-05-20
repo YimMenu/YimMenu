@@ -4,7 +4,7 @@ namespace big
 {
 	void hooks::get_network_event_data(__int64 a1, rage::CEventNetwork* net_event)
 	{
-		unsigned int event_type = net_event->get_type();
+		__int64 event_type = net_event->get_type();
 
 		switch (event_type) {
 			case 161: //CEventNetworkRemovedFromSessionDueToComplaints
