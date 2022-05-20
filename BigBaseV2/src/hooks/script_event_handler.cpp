@@ -130,6 +130,11 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::RotateCam:
+			if (g->protections.script_events.crash && args[2] == 537560473) {
+				format_string(player_name, "Crash - Rotate Cam", notify.crash.log, notify.crash.notify);
+				return true;
+			}
+
 			if (g->protections.script_events.rotate_cam)
 			{
 				if (CNetworkPlayerMgr* player_mgr = gta_util::get_network_player_mgr(); player_mgr != nullptr)
@@ -195,6 +200,36 @@ namespace big
 				return true;
 			}
 			break;
+		case eRemoteEvent::Unknown1:
+			if (g->protections.script_events.crash && args[2] >= 32) {
+				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				return true;
+			}
+			break;
+		case eRemoteEvent::Unknown2:
+			if (g->protections.script_events.crash && (args[2] >= 62 || args[3] >= 32)) {
+				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				return true;
+			}
+			break;
+		case eRemoteEvent::Unknown3:
+			if (g->protections.script_events.crash && args[2] >= 62) {
+				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				return true;
+			}
+			break;
+		case eRemoteEvent::Unknown4:
+		case eRemoteEvent::Unknown5:
+			if (g->protections.script_events.crash && args[2] >= 20) {
+				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				return true;
+			}
+			break;
+		case eRemoteEvent::Unknown6:
+			if (g->protections.script_events.crash) {
+				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				return true;
+			}
 		}
 
 		if (g->debug.script_event_logging)
