@@ -95,4 +95,16 @@ namespace big::toxic
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
 	}
+
+	inline void send_to_cayo_perico(const Player target)
+	{
+		constexpr size_t arg_count = 3;
+		int64_t args[arg_count] = {
+			static_cast<int64_t>(eRemoteEvent::SendToIsland),
+			self::id,
+			target
+		};
+
+		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
+	}
 }
