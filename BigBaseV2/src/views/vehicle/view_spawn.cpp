@@ -88,9 +88,9 @@ namespace big
 							g_vehicle_preview_service->stop_preview();
 					}
 				}
-				ImGui::ListBoxFooter();
 			}
 			else ImGui::Text("No vehicles in registry.");
+			ImGui::ListBoxFooter();
 		}
 	}
 }
