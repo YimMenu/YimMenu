@@ -24,9 +24,10 @@ namespace big::teleport
 		}
 
 		ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
+		Vector3 location = self::pos;
 
 		if (entity::take_control_of(ent))
-			ENTITY::SET_ENTITY_COORDS(ent, self::pos.x, self::pos.y, self::pos.z, 0, 0, 0, 0);
+			ENTITY::SET_ENTITY_COORDS(ent, location.x, location.y, location.z, 0, 0, 0, 0);
 		else
 			g_notification_service->push_warning("Teleport", "Failed to take control of player vehicle.");
 
@@ -88,18 +89,20 @@ namespace big::teleport
 		Vector3 location = ENTITY::GET_ENTITY_COORDS(veh, true);
 		load_ground_at_3dcoord(location);
 
-		ENTITY::SET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), location.x, location.y, location.z, 0, 0, 0, 0);
+		Ped ped = self::ped;
+
+		ENTITY::SET_ENTITY_COORDS(ped, location.x, location.y, location.z, 0, 0, 0, 0);
 
 		script::get_current()->yield();
 
-		PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, seat_index);
+		PED::SET_PED_INTO_VEHICLE(ped, veh, seat_index);
 
 		return true;
 	}
 
 	inline void to_coords(Vector3 location)
 	{
-		PED::SET_PED_COORDS_KEEP_VEHICLE(PLAYER::PLAYER_PED_ID(), location.x, location.y, location.z + 1.f);
+		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z + 1.f);
 	}
 
 	inline bool to_blip(int sprite, int color = -1)
@@ -111,7 +114,7 @@ namespace big::teleport
 
 		load_ground_at_3dcoord(location);
 
-		PED::SET_PED_COORDS_KEEP_VEHICLE(PLAYER::PLAYER_PED_ID(), location.x, location.y, location.z);
+		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
 
 		return true;
 	}
@@ -120,7 +123,7 @@ namespace big::teleport
 	{
 		Vector3 location = ENTITY::GET_ENTITY_COORDS(ent, true);
 
-		PED::SET_PED_COORDS_KEEP_VEHICLE(PLAYER::PLAYER_PED_ID(), location.x, location.y, location.z);
+		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
 
 		return true;
 	}

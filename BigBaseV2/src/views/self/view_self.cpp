@@ -5,8 +5,10 @@
 namespace big
 {
 	void view::self() {
+		static Ped ped = self::ped;
+
 		components::button("Suicide", [] {
-			ENTITY::SET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID(), 0, 0);
+			ENTITY::SET_ENTITY_HEALTH(ped, 0, 0);
 		});
 
 		ImGui::SameLine();
@@ -35,7 +37,7 @@ namespace big
 				}
 
 				PLAYER::SET_PLAYER_MODEL(PLAYER::GET_PLAYER_INDEX(), hash);
-				PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID());
+				PED::SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
 				script::get_current()->yield();
 				STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 			});
@@ -76,7 +78,7 @@ namespace big
 		{
 			QUEUE_JOB_BEGIN_CLAUSE()
 			{
-				entity::clean_ped(PLAYER::PLAYER_PED_ID());
+				entity::clean_ped(ped);
 			}
 			QUEUE_JOB_END_CLAUSE
 		}

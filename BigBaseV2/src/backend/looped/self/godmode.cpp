@@ -11,7 +11,7 @@ namespace big
 
 		if (bGodMode || (!bGodMode && bGodMode != bLastGodMode))
 		{
-			ENTITY::SET_ENTITY_INVINCIBLE(PLAYER::PLAYER_PED_ID(), g->self.godmode);
+			ENTITY::SET_ENTITY_INVINCIBLE(self::ped, g->self.godmode);
 
 			bLastGodMode = g->self.godmode;
 		}

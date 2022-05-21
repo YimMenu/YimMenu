@@ -48,7 +48,7 @@ namespace big
 		{
 			while (g_running && m_running && g->spawn.preview_vehicle && g_gui.m_opened)
 			{
-				auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(), 2.5f, 2.5f, .5f);
+				auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 2.5f, 2.5f, .5f);
 				if (m_current_veh == -1)
 				{
 					m_new_model = false;
