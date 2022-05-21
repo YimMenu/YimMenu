@@ -84,6 +84,8 @@ namespace big
 
 						if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
 							g_vehicle_preview_service->set_preview_vehicle(item);
+						else if (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered())
+							g_vehicle_preview_service->stop_preview();
 					}
 				}
 				ImGui::ListBoxFooter();

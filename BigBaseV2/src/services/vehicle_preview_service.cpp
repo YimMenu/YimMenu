@@ -57,6 +57,8 @@ namespace big
 					ENTITY::FREEZE_ENTITY_POSITION(m_current_veh, true);
 					ENTITY::SET_ENTITY_ALPHA(m_current_veh, 0, 0);
 					ENTITY::SET_ENTITY_COLLISION(m_current_veh, false, false);
+					ENTITY::SET_CAN_CLIMB_ON_ENTITY(m_current_veh, false);
+					OBJECT::SET_OBJECT_ALLOW_LOW_LOD_BUOYANCY(m_current_veh, false);
 				}
 				else if (m_new_model)
 				{
