@@ -91,11 +91,13 @@ namespace big
 			looped::vehicle_auto_drive();
 			looped::vehicle_despawn_bypass();
 			looped::vehicle_drive_on_water();
+			looped::vehicle_fly();
 			looped::vehicle_god_mode();
 			looped::vehicle_horn_boost();
 			looped::vehicle_instant_brake();
 			looped::vehicle_is_targetable();
 			looped::vehicle_rainbow_paint();
+			looped::vehicle_seatbelt();
 			looped::vehicle_speedo_meter();
 		}QUEUE_JOB_END_CLAUSE
 

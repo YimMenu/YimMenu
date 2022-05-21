@@ -104,13 +104,7 @@ namespace big
 			m_gta_thread_start = ptr.as<PVOID>();
 		});
 
-		// Thread Thick
-		main_batch.add("TT", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 B9 ? ? ? ? ? 8B FA 48 8B D9 74 05", [this](memory::handle ptr)
-		{
-			m_gta_thread_tick = ptr.as<PVOID>();
-		});
-
-		// Thread Kill
+		// GTA Thread Kill
 		main_batch.add("TK", "48 89 5C 24 ? 57 48 83 EC 20 48 83 B9 ? ? ? ? ? 48 8B D9 74 14", [this](memory::handle ptr)
 		{
 			m_gta_thread_kill = ptr.as<PVOID>();
@@ -157,15 +151,8 @@ namespace big
 		// Request Control of Entity PATCH
 		main_batch.add("RCOE-Patch", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", [this](memory::handle ptr)
 		{
-			PVOID spectator_check = ptr.add(0x11).as<PVOID>();
-
-			memset(spectator_check, 0x90, 0x4);
-		});
-
-		// GET CNetGamePlayer
-		main_batch.add("GCNGP", "48 83 EC ? 33 C0 38 05 ? ? ? ? 74 ? 83 F9", [this](memory::handle ptr)
-		{
-			m_get_net_game_player = ptr.as<decltype(m_get_net_game_player)>();
+			m_spectator_check = ptr.add(0x13).as<PUSHORT>();
+			*m_spectator_check = 0x9090;
 		});
 
 		// Replay Interface
@@ -302,6 +289,50 @@ namespace big
 		
 		main_batch.run(memory::module(nullptr));
 
+		//Receive Net Message
+		main_batch.add("RNM", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 20 4C 8B 71 50 33 ED", [this](memory::handle ptr)
+		{
+			m_receive_net_message = ptr.as<PVOID>();
+		});
+
+		//Get Network Event Data
+		main_batch.add("GNED", "E9 ? ? ? ? E9 ? ? ? ? E9 ? ? ? ? E9 ? ? ? ? E9 ? ? ? ? CC FF 50 28", [this](memory::handle ptr)
+		{
+			m_get_network_event_data = ptr.as<PVOID>();
+		});
+
+		auto mem_region = memory::module(nullptr);
+		main_batch.run(mem_region);
+
+		/**
+		 * Freemode thread restorer through VM patch
+		 */
+		if (auto pat1 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
+		{
+			*pat1.add(2).as<uint32_t*>() = 0xc9310272;
+			*pat1.add(6).as<uint16_t*>() = 0x9090;
+		}
+
+		if (auto pat2 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 49 03 fa"))
+		{
+			*pat2.add(2).as<uint32_t*>() = 0xc9310272;
+			*pat2.add(6).as<uint16_t*>() = 0x9090;
+		}
+
+		auto pat3 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 48 ff c7");
+		for (auto& handle : pat3)
+		{
+			*handle.add(2).as<uint32_t*>() = 0xd2310272;
+			*handle.add(6).as<uint16_t*>() = 0x9090;
+		}
+
+		auto pat4 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 49 03 fa");
+		for (auto& handle : pat4)
+		{
+			*handle.add(2).as<uint32_t*>() = 0xd2310272;
+			*handle.add(6).as<uint16_t*>() = 0x9090;
+		}
+
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);
 		if (!m_hwnd)
 			throw std::runtime_error("Failed to find the game's window.");
@@ -311,6 +342,8 @@ namespace big
 
 	pointers::~pointers()
 	{
+		*m_spectator_check = 0x6A75;
+
 		g_pointers = nullptr;
 	}
 }

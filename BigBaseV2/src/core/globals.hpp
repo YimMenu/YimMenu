@@ -47,10 +47,12 @@ namespace big
 				pair ceo_kick{};
 				pair ceo_money{};
 				pair clear_wanted_level{};
+				pair crash{};
 				pair fake_deposit{};
 				pair force_mission{};
 				pair force_teleport{};
 				pair gta_banner{};
+				pair mc_teleport{};
 				pair network_bail{};
 				pair personal_vehicle_destroyed{};
 				pair remote_off_radar{};
@@ -97,10 +99,12 @@ namespace big
 				bool ceo_kick = true;
 				bool ceo_money = true;
 				bool clear_wanted_level = true;
+				bool crash = true;
 				bool fake_deposit = true;
 				bool force_mission = true;
 				bool force_teleport = true;
 				bool gta_banner = true;
+				bool mc_teleport = true;
 				bool network_bail = true;
 				bool personal_vehicle_destroyed = true;
 				bool remote_off_radar = true;
@@ -112,8 +116,6 @@ namespace big
 				bool transaction_error = true;
 				bool vehicle_kick = true;
 			};
-
-			bool freemode_terminated = false;
 
 			script_events script_events{};
 		};
@@ -169,7 +171,7 @@ namespace big
 			bool preview_vehicle = false;
 			bool spawn_inside = false;
 			bool spawn_maxed = false;
-		}; 
+		};
 
 		struct spoofing
 		{
@@ -193,6 +195,15 @@ namespace big
 				bool left_side = false;
 			};
 
+			struct fly
+			{
+				bool dont_stop = false;
+				bool enabled = false;
+				bool no_collision = false;
+				bool stop_on_exit = false;
+				float speed = 1;
+			};
+
 			bool auto_drive_to_waypoint = false;
 			bool auto_drive_wander = false;
 			int auto_drive_speed = 1;
@@ -206,7 +217,9 @@ namespace big
 			bool ls_customs = false; // don't save this to disk
 			bool pv_teleport_into = false;
 			int rainbow_paint = 0;
+			bool seatbelt = false;
 			speedo_meter speedo_meter{};
+			fly fly{};
 		};
 
 		struct weapons {
@@ -349,6 +362,8 @@ namespace big
 				script_handler.ceo_money.notify = script_handler_j["ceo_money"]["notify"];
 				script_handler.clear_wanted_level.log = script_handler_j["clear_wanted_level"]["log"];
 				script_handler.clear_wanted_level.notify = script_handler_j["clear_wanted_level"]["notify"];
+				script_handler.crash.log = script_handler_j["crash"]["log"];
+				script_handler.crash.notify = script_handler_j["crash"]["notify"];
 				script_handler.fake_deposit.log = script_handler_j["fake_deposit"]["log"];
 				script_handler.fake_deposit.notify = script_handler_j["fake_deposit"]["notify"];
 				script_handler.force_mission.log = script_handler_j["force_mission"]["log"];
@@ -357,6 +372,8 @@ namespace big
 				script_handler.force_teleport.notify = script_handler_j["force_teleport"]["notify"];
 				script_handler.gta_banner.log = script_handler_j["gta_banner"]["log"];
 				script_handler.gta_banner.notify = script_handler_j["gta_banner"]["notify"];
+				script_handler.mc_teleport.log = script_handler_j["mc_teleport"]["log"];
+				script_handler.mc_teleport.notify = script_handler_j["mc_teleport"]["notify"];
 				script_handler.network_bail.log = script_handler_j["network_bail"]["log"];
 				script_handler.network_bail.notify = script_handler_j["network_bail"]["notify"];
 				script_handler.personal_vehicle_destroyed.log = script_handler_j["personal_vehicle_destroyed"]["log"];
@@ -394,10 +411,12 @@ namespace big
 				script_handler.ceo_kick = script_handler_j["ceo_kick"];
 				script_handler.ceo_money = script_handler_j["ceo_money"];
 				script_handler.clear_wanted_level = script_handler_j["clear_wanted_level"];
+				script_handler.crash = script_handler_j["crash"];
 				script_handler.fake_deposit = script_handler_j["fake_deposit"];
 				script_handler.force_mission = script_handler_j["force_mission"];
 				script_handler.force_teleport = script_handler_j["force_teleport"];
 				script_handler.gta_banner = script_handler_j["gta_banner"];
+				script_handler.mc_teleport = script_handler_j["mc_teleport"];
 				script_handler.network_bail = script_handler_j["network_bail"];
 				script_handler.personal_vehicle_destroyed = script_handler_j["personal_vehicle_destroyed"];
 				script_handler.remote_off_radar = script_handler_j["remote_off_radar"];
@@ -455,11 +474,18 @@ namespace big
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
 			this->vehicle.pv_teleport_into = j["vehicle"]["pv_teleport_into"];
 			this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
+			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
 
 			this->vehicle.speedo_meter.type = (SpeedoMeter)j["vehicle"]["speedo_meter"]["type"];
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
 			this->vehicle.speedo_meter.x = j["vehicle"]["speedo_meter"]["position_x"];
 			this->vehicle.speedo_meter.y = j["vehicle"]["speedo_meter"]["position_y"];
+
+			this->vehicle.fly.dont_stop = j["vehicle"]["fly"]["dont_stop"];
+			this->vehicle.fly.enabled = j["vehicle"]["fly"]["enabled"];
+			this->vehicle.fly.no_collision = j["vehicle"]["fly"]["no_collision"];
+			this->vehicle.fly.speed = j["vehicle"]["fly"]["speed"];
+			this->vehicle.fly.stop_on_exit = j["vehicle"]["fly"]["stop_on_exit"];
 
 			this->weapons.custom_weapon = (CustomWeapon)j["weapons"]["custom_weapon"];
 			this->weapons.force_crosshairs = j["weapons"]["force_crosshairs"];
@@ -556,10 +582,12 @@ namespace big
 								{ "ceo_kick", return_notify_pair(script_handler_notifications.ceo_kick) },
 								{ "ceo_money", return_notify_pair(script_handler_notifications.ceo_money) },
 								{ "clear_wanted_level", return_notify_pair(script_handler_notifications.clear_wanted_level) },
+								{ "crash", return_notify_pair(script_handler_notifications.crash) },
 								{ "fake_deposit", return_notify_pair(script_handler_notifications.fake_deposit) },
 								{ "force_mission", return_notify_pair(script_handler_notifications.force_mission) },
 								{ "force_teleport", return_notify_pair(script_handler_notifications.force_teleport) },
 								{ "gta_banner", return_notify_pair(script_handler_notifications.gta_banner) },
+								{ "mc_teleport", return_notify_pair(script_handler_notifications.mc_teleport) },
 								{ "network_bail", return_notify_pair(script_handler_notifications.network_bail) },
 								{ "personal_vehicle_destroyed", return_notify_pair(script_handler_notifications.personal_vehicle_destroyed) },
 								{ "remote_off_radar", return_notify_pair(script_handler_notifications.remote_off_radar) },
@@ -586,10 +614,12 @@ namespace big
 								{ "ceo_kick", script_handler_protections.ceo_kick },
 								{ "ceo_money", script_handler_protections.ceo_money },
 								{ "clear_wanted_level", script_handler_protections.clear_wanted_level },
+								{ "crash", script_handler_protections.crash },
 								{ "fake_deposit", script_handler_protections.fake_deposit },
 								{ "force_mission", script_handler_protections.force_mission },
 								{ "force_teleport", script_handler_protections.force_teleport },
 								{ "gta_banner", script_handler_protections.gta_banner },
+								{ "mc_teleport", script_handler_protections.mc_teleport },
 								{ "network_bail", script_handler_protections.network_bail },
 								{ "personal_vehicle_destroyed", script_handler_protections.personal_vehicle_destroyed },
 								{ "remote_off_radar", script_handler_protections.remote_off_radar },
@@ -675,12 +705,23 @@ namespace big
 						{ "is_targetable", this->vehicle.is_targetable },
 						{ "pv_teleport_into", this->vehicle.pv_teleport_into },
 						{ "rainbow_paint", this->vehicle.rainbow_paint },
+						{ "seatbelt", this->vehicle.seatbelt },
 						{
 							"speedo_meter", {
 								{ "type", (int)this->vehicle.speedo_meter.type },
 								{ "left_side", this->vehicle.speedo_meter.left_side },
 								{ "position_x", this->vehicle.speedo_meter.x },
-								{ "position_y", this->vehicle.speedo_meter.y }
+								{ "position_y", this->vehicle.speedo_meter.y },
+							}
+						},
+						{
+							"fly",
+							{
+								{ "no_collision", this->vehicle.fly.no_collision },
+								{ "dont_stop", this->vehicle.fly.dont_stop },
+								{ "enabled", this->vehicle.fly.enabled },
+								{ "stop_on_exit", this->vehicle.fly.stop_on_exit },
+								{ "speed", this->vehicle.fly.speed },
 							}
 						}
 					}
@@ -690,7 +731,6 @@ namespace big
 						{ "ammo_special", {
 							{ "toggle", this->weapons.ammo_special.toggle },
 							{ "type", (int)this->weapons.ammo_special.type },
-
 							}
 						},
 						{ "custom_weapon", (int)this->weapons.custom_weapon },

@@ -24,7 +24,6 @@ namespace big
 		static BOOL set_cursor_pos(int x, int y);
 
 		static GtaThread* gta_thread_start(unsigned int** a1, unsigned int a2);
-		static rage::eThreadState gta_thread_tick(GtaThread* a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
 
 		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
@@ -52,9 +51,8 @@ namespace big
 
 		static bool scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player);
 		static bool send_net_info_to_lobby(rage::netPlayerData* player, int64_t a2, int64_t a3, DWORD* a4);
-
-		static int join_player(__int64 a1, int a2, __int64* a3, int a4);
-
+		static bool receive_net_message(void* netConnectionManager, void* a2, rage::netConnection::InFrame* frame);
+		static void get_network_event_data(__int64 a1, rage::CEventNetwork* net_event);
 	};
 
 	struct minhook_keepalive
@@ -86,7 +84,6 @@ namespace big
 		detour_hook m_convert_thread_to_fiber_hook;
 
 		detour_hook m_gta_thread_start_hook;
-		detour_hook m_gta_thread_tick_hook;
 		detour_hook m_gta_thread_kill_hook;
 
 		detour_hook m_network_player_mgr_shutdown_hook;
@@ -104,6 +101,8 @@ namespace big
 		detour_hook m_received_event_hook;
 		
 		detour_hook m_send_net_info_to_lobby;
+		detour_hook m_receive_net_message_hook;
+		detour_hook m_get_network_event_data_hook;
 	};
 
 	inline hooking *g_hooking{};
