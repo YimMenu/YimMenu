@@ -1,6 +1,7 @@
 #include "backend/looped/looped.hpp"
 #include "natives.hpp"
 #include "util/entity.hpp"
+#include "gta/enums.hpp"
 
 namespace big
 {
@@ -19,14 +20,14 @@ namespace big
         float locspeed = (g->vehicle.fly.speed * 10);
         float locspeed2 = g->vehicle.fly.speed;
 
-        if (PAD::IS_CONTROL_PRESSED(0, 61))
+        if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_UP_ONLY))
         {
             locspeed = (locspeed * 2);
             locspeed2 = (locspeed2 * 2);
         }
 
 
-        if (PAD::IS_CONTROL_PRESSED(2, 71))
+        if (PAD::IS_CONTROL_PRESSED(2, (int)ControllerInputs::INPUT_VEH_ACCELERATE))
         {
             if (g->vehicle.fly.dont_stop)
             {
@@ -38,10 +39,10 @@ namespace big
             }
         }
 
-        if (PAD::IS_CONTROL_PRESSED(2, 72))
+        if (PAD::IS_CONTROL_PRESSED(2, (int)ControllerInputs::INPUT_VEH_BRAKE))
         {
             float lsp = g->vehicle.fly.speed;
-            if (!PAD::IS_CONTROL_PRESSED(0, 61))
+            if (!PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_UP_ONLY))
             {
                 lsp = (g->vehicle.fly.speed * 2);
             }
@@ -55,10 +56,10 @@ namespace big
             }
         }
 
-        if (PAD::IS_CONTROL_PRESSED(2, 63))
+        if (PAD::IS_CONTROL_PRESSED(2, (int)ControllerInputs::INPUT_VEH_MOVE_LEFT_ONLY))
         {
             float lsp = ((0 - g->vehicle.fly.speed) * 2);
-            if (!PAD::IS_CONTROL_PRESSED(0, 61))
+            if (!PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_UP_ONLY))
             {
                 lsp = (0 - g->vehicle.fly.speed);
             }
@@ -72,10 +73,10 @@ namespace big
             }
         }
 
-        if (PAD::IS_CONTROL_PRESSED(2, 64))
+        if (PAD::IS_CONTROL_PRESSED(2, (int)ControllerInputs::INPUT_VEH_MOVE_RIGHT_ONLY))
         {
             float lsp = g->vehicle.fly.speed;
-            if (!PAD::IS_CONTROL_PRESSED(0, 61))
+            if (!PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_UP_ONLY))
             {
                 lsp = (g->vehicle.fly.speed * 2);
             }
@@ -89,7 +90,7 @@ namespace big
             }
         }
 
-        if (!g->vehicle.fly.dont_stop && !PAD::IS_CONTROL_PRESSED(2, 71) && !PAD::IS_CONTROL_PRESSED(2, 72))
+        if (!g->vehicle.fly.dont_stop && !PAD::IS_CONTROL_PRESSED(2, (int)ControllerInputs::INPUT_VEH_ACCELERATE) && !PAD::IS_CONTROL_PRESSED(2, (int)ControllerInputs::INPUT_VEH_BRAKE))
         {
             VEHICLE::SET_VEHICLE_FORWARD_SPEED(vehicle, 0.0);
         }

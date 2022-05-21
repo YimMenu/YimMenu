@@ -1,4 +1,5 @@
 #include "backend/looped/looped.hpp"
+#include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/math.hpp"
 
@@ -10,7 +11,7 @@ namespace big
 
 	void looped::self_super_run()
 	{
-		if (g->self.super_run && PAD::IS_CONTROL_PRESSED(0, 21))
+		if (g->self.super_run && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
 		{
 			if (run_speed < run_cap) run_speed += .5f;
 
@@ -41,7 +42,7 @@ namespace big
 		{
 			g_local_player->m_player_info->m_run_speed = 1.f;
 		}
-		else if (PAD::IS_CONTROL_JUST_RELEASED(0, 21))
+		else if (PAD::IS_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_SPRINT))
 		{
 			run_speed = 10.f;
 			g_local_player->m_player_info->m_run_speed = 1.f;
