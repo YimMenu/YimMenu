@@ -78,6 +78,9 @@ namespace big
 		// Received Event Signatures END
 
 		PVOID m_send_net_info_to_lobby{};
+
+		PVOID m_receive_net_message{};
+		PVOID m_get_network_event_data{};
 	};
 
 	inline pointers *g_pointers{};
