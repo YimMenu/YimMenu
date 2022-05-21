@@ -144,8 +144,6 @@ namespace big
 
 		struct session
 		{
-			uint64_t rid_to_join;
-			bool joiner = false;
 			int local_weather = 0;
 			bool override_time = {};
 			bool override_weather = false;

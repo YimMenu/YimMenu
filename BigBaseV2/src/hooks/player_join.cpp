@@ -16,17 +16,6 @@ namespace big
 			if (g->notifications.player_join.above_map)
 				notify::player_joined(net_player);
 
-			//Spammer auto Desync
-			if (net_player_data->m_rockstar_id2 == 1870144302 /*ballstorture*/ || net_player_data->m_rockstar_id2 == 206464061 /*DesktopKitty*/ || net_player_data->m_rockstar_id2 == 187160190 /*Wavy services*/ || net_player_data->m_rockstar_id2 == 6589458795 /*ItzGoated!!*/ || net_player_data->m_rockstar_id2 == 797367953 /*GTAVKRUTKA*/)
-			{
-				net = net_player;
-				g_fiber_pool->queue_job([]
-					{
-					gta_util::get_network_player_mgr()->RemovePlayer(net);
-					LOG(INFO) << "Kicking " << net->m_player_id;
-					});
-			}
-
 			if (g->notifications.player_join.log)
 				LOG(INFO) << "Player joined '" << net_player_data->m_name
 						  << "' taking slot #" << (int)net_player->m_player_id

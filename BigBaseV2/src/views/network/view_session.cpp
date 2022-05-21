@@ -13,18 +13,6 @@ namespace big
 				});
 		}
 
-		if (ImGui::TreeNode("RID Joiner"))
-		{
-			ImGui::Checkbox("Enable", &g->session.joiner);
-
-			g_notification_service->push("Warning", "After setting RID go to ONLINE > CREWS > CREW MEMBERS, \nthen selected an random crew member, hit JOIN game ");
-			ImGui::Text("Rockstar ID:");
-			ImGui::InputScalar("##rockstar_id_input", ImGuiDataType_U64, &g->session.rid_to_join);
-
-			ImGui::TreePop();
-
-		}
-
 		if (ImGui::TreeNode("Local Time"))
 		{
 			ImGui::Checkbox("Override Time", &g->session.override_time);

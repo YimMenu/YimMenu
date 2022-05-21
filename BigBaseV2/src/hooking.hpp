@@ -104,9 +104,6 @@ namespace big
 		detour_hook m_received_event_hook;
 		
 		detour_hook m_send_net_info_to_lobby;
-
-		detour_hook m_join_pattern;
-		detour_hook m_get_player_network_id;
 	};
 
 	inline hooking *g_hooking{};
