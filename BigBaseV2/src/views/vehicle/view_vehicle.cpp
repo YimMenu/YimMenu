@@ -2,6 +2,7 @@
 #include "fiber_pool.hpp"
 #include "gui/handling/handling_tabs.hpp"
 #include "script.hpp"
+#include "util/notify.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
 
@@ -26,6 +27,15 @@ namespace big
 
 			vehicle::repair(self::veh);
 			});
+
+		components::button("Gift Current Vehicle", [] {
+
+			const auto vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), true);
+			DECORATOR::DECOR_SET_INT(vehicle, "Player_Vehicle", NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(PLAYER::PLAYER_ID()));
+			notify::above_map("Vehicle Gifted");
+			});
+
+		ImGui::SameLine();
 
 		components::button("Instant in personal vehicle", [] {
 			if (!*g_pointers->m_is_session_started) return g_notification_service->push_warning("WARNING", "Go into GTA V Online to use this option");

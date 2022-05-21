@@ -3,6 +3,7 @@
 #include "services/player_service.hpp"
 #include "gta_util.hpp"
 #include "util/misc.hpp"
+#include "util/notify.hpp"
 #include "util/ped.hpp"
 #include "util/teleport.hpp"
 
@@ -41,6 +42,12 @@ namespace big
 				ImGui::SameLine();
 
 				ImGui::Checkbox("Never Wanted", &g->player.player_never_wanted);
+
+				components::button("Gift Current Vehicle", [] {
+					const auto vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), true);
+					DECORATOR::DECOR_SET_INT(vehicle, "Player_Vehicle", NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(g_player_service->get_selected()->id()));
+					notify::above_map("Vehicle Gifted");
+				});
 
 				ImGui::TreePop();
 			}
