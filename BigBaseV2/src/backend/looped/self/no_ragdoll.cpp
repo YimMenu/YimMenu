@@ -5,13 +5,6 @@ namespace big
 {
 	void looped::self_no_ragdoll()
 	{
-		Ped player = self::ped;
-
-		if (g->self.no_ragdoll) {
-			PED::SET_PED_CAN_RAGDOLL(player, !g->self.no_ragdoll);
-			PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(player, !g->self.no_ragdoll);
-			PED::SET_PED_RAGDOLL_ON_COLLISION(player, !g->self.no_ragdoll);
-		}
-			
+		PED::SET_PED_CAN_RAGDOLL(self::ped, !g->self.no_ragdoll);
 	}
 }
