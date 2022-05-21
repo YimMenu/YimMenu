@@ -236,6 +236,18 @@ namespace big
 			m_network_group_override = ptr.as<PVOID>();
 		});
 
+		//Receive Net Message
+		main_batch.add("RNM", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 20 4C 8B 71 50 33 ED", [this](memory::handle ptr)
+		{
+			m_receive_net_message = ptr.as<PVOID>();
+		});
+
+		//Get Network Event Data
+		main_batch.add("GNED", "E9 ? ? ? ? E9 ? ? ? ? E9 ? ? ? ? E9 ? ? ? ? E9 ? ? ? ? CC FF 50 28", [this](memory::handle ptr)
+		{
+			m_get_network_event_data = ptr.as<PVOID>();
+		});
+
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
 
