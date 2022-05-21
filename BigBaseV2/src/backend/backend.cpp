@@ -102,5 +102,10 @@ namespace big
 		{
 			looped::vehicle_ls_customs();
 		}QUEUE_JOB_END_CLAUSE
+
+		QUEUE_JOB_BEGIN_CLAUSE()
+		{
+			looped::hotkey_tp_waypoint();
+		}QUEUE_JOB_END_CLAUSE
 	}
 }
