@@ -53,6 +53,14 @@ namespace big
 			}
 			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, -72657034, 0, true);
 		});
+		ImGui::SameLine();
+		components::button("Remove Current Weapon", [] {
+			Hash weaponHash;
+			WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weaponHash, 1);
+			if (weaponHash != RAGE_JOAAT("WEAPON_UNARMED")) {
+				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, weaponHash);
+			}
+		});
 
 		ImGui::SliderFloat("Damage Multiplier", &g->weapons.increased_damage, 1.f, 10.f, "%.1f");
 
