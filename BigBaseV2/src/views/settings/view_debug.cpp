@@ -15,10 +15,10 @@ namespace big
 		if (ImGui::Checkbox("Enable Freezing", &g_globals_service->m_running) && g_globals_service->m_running)
 			g_thread_pool->push([&]() { g_globals_service->loop(); });
 
-		if (ImGui::Button("Load"))
+		if (components::button("Load"))
 			g_globals_service->load();
 		ImGui::SameLine();
-		if (ImGui::Button("Save"))
+		if (components::button("Save"))
 			g_globals_service->save();
 
 		components::button("Network Bail", []
@@ -27,7 +27,7 @@ namespace big
 		});
 
 		ImGui::SameLine();
-		if (ImGui::Button("Add Global"))
+		if (components::button("Add Global"))
 		{
 			ImGui::OpenPopup("New Global");
 		}
@@ -87,7 +87,7 @@ namespace big
 			}
 			ImGui::PopItemWidth();
 
-			if (ImGui::Button("Cancel"))
+			if (components::button("Cancel"))
 			{
 				strcpy(name, "");
 				freeze = false;
@@ -99,7 +99,7 @@ namespace big
 				ImGui::CloseCurrentPopup();
 			}
 			ImGui::SameLine();
-			if (ImGui::Button("Save"))
+			if (components::button("Save"))
 			{
 				auto new_global = global(name, base_address, freeze, offsets, offset_count);
 				new_global.build_cache();
@@ -152,7 +152,7 @@ namespace big
 			ImGui::BeginGroup();
 
 			sprintf(label, "Delete##%d", global.get_id());
-			if (ImGui::Button(label))
+			if (components::button(label))
 			{
 				for (int i = 0; i < g_globals_service->m_globals.size(); i++)
 					if (auto& it = g_globals_service->m_globals.at(i); it.get_id() == global.get_id())
@@ -162,7 +162,7 @@ namespace big
 			}
 
 			sprintf(label, "Write###%d", global.get_id());
-			if (ImGui::Button(label))
+			if (components::button(label))
 				global.write();
 
 			ImGui::EndGroup();
@@ -224,7 +224,7 @@ namespace big
 
 		ImGui::Checkbox("Script Event Logging", &g->debug.script_event_logging);
 
-		if (ImGui::Button("Dump entrypoints"))
+		if (components::button("Dump entrypoints"))
 		{
 			system::dump_entry_points();
 		}

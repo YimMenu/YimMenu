@@ -16,12 +16,12 @@ namespace big::entity
 
 	inline void clean_ped(Ped ped)
 	{
-		Ped ped = self::ped;
+		Ped player_ped = self::ped;
 
-		PED::CLEAR_PED_BLOOD_DAMAGE(ped);
-		PED::CLEAR_PED_WETNESS(ped);
-		PED::CLEAR_PED_ENV_DIRT(ped);
-		PED::RESET_PED_VISIBLE_DAMAGE(ped);
+		PED::CLEAR_PED_BLOOD_DAMAGE(player_ped);
+		PED::CLEAR_PED_WETNESS(player_ped);
+		PED::CLEAR_PED_ENV_DIRT(player_ped);
+		PED::RESET_PED_VISIBLE_DAMAGE(player_ped);
 	}
 
 	inline void delete_entity(Entity ent)
