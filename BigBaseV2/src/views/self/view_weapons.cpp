@@ -19,7 +19,7 @@ namespace big
 
 		eAmmoSpecialType selected_ammo = g->weapons.ammo_special.type;
 
-		if (ImGui::BeginCombo("Ammo Special", SPECIAL_AMMOS[(int)selected_ammo].name))
+		if (ImGui::BeginCombo("Special Ammo", SPECIAL_AMMOS[(int)selected_ammo].name))
 		{
 			for (const auto& special_ammo : SPECIAL_AMMOS)
 			{

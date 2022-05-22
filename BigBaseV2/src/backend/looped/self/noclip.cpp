@@ -1,5 +1,6 @@
 #include "backend/looped/looped.hpp"
 #include "fiber_pool.hpp"
+#include "gta/enums.hpp"
 #include "natives.hpp"
 #include "script.hpp"
 #include "util/entity.hpp"
@@ -39,22 +40,22 @@ namespace big
 			float heading = 0.f;
 
 			// Left Shift
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 21))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
 				vel.z += speed / 2;
 			// Left Control
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 36))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_DUCK))
 				vel.z -= speed / 2;
 			// Forward
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 32))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_UP_ONLY))
 				vel.y += speed;
 			// Backward
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 33))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_DOWN_ONLY))
 				vel.y -= speed;
 			// Left
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 34))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_LEFT_ONLY))
 				vel.x -= speed;
 			// Right
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 35))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_RIGHT_ONLY))
 				vel.x += speed;
 
 			rot = CAM::GET_GAMEPLAY_CAM_ROT(2);

@@ -1,4 +1,5 @@
 #include "backend/looped/looped.hpp"
+#include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/math.hpp"
 
@@ -57,22 +58,22 @@ namespace big
 		Vector3 vecChange = { 0.f, 0.f, 0.f };
 
 		// Left Shift
-		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 21))
+		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
 			vecChange.z += speed / 2;
 		// Left Control
-		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 36))
+		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_DUCK))
 			vecChange.z -= speed / 2;
 		// Forward
-		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 32))
+		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_UP_ONLY))
 			vecChange.y += speed;
 		// Backward
-		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 33))
+		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_DOWN_ONLY))
 			vecChange.y -= speed;
 		// Left
-		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 34))
+		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_LEFT_ONLY))
 			vecChange.x -= speed;
 		// Right
-		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 35))
+		if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_RIGHT_ONLY))
 			vecChange.x += speed;
 
 		if (vecChange.x == 0.f && vecChange.y == 0.f && vecChange.z == 0.f)
