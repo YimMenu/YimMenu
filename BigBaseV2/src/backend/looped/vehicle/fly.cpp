@@ -1,7 +1,7 @@
 #include "backend/looped/looped.hpp"
+#include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/entity.hpp"
-#include "gta/enums.hpp"
 
 namespace big
 {
@@ -11,7 +11,6 @@ namespace big
     void do_vehicle_fly()
     {
         Vehicle vehicle = self::veh;
-        Ped ped = ped;
 
         Vector3 cam_pos = CAM::GET_GAMEPLAY_CAM_ROT(0);
         ENTITY::SET_ENTITY_ROTATION(vehicle, cam_pos.x, cam_pos.y, cam_pos.z, 1, true);
@@ -22,8 +21,8 @@ namespace big
 
         if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_UP_ONLY))
         {
-            locspeed = (locspeed * 2);
-            locspeed2 = (locspeed2 * 2);
+            locspeed *= 2;
+            locspeed2 *= 2;
         }
 
 
@@ -95,7 +94,7 @@ namespace big
             VEHICLE::SET_VEHICLE_FORWARD_SPEED(vehicle, 0.0);
         }
 
-        if (TASK::GET_IS_TASK_ACTIVE(ped, 2))
+        if (TASK::GET_IS_TASK_ACTIVE(self::ped, 2))
         {
             g->vehicle.fly.enabled = false;
             VEHICLE::SET_VEHICLE_GRAVITY(vehicle, true);
