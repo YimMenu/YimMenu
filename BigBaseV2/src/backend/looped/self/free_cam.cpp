@@ -51,7 +51,20 @@ namespace big
 		}
 
 		PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-		const int controls[] = { 1, 2, 3, 4, 5, 6, 270, 271, 272, 273 };
+
+		const int controls[] = {
+			(int)ControllerInputs::INPUT_LOOK_LR,
+			(int)ControllerInputs::INPUT_LOOK_UD,
+			(int)ControllerInputs::INPUT_LOOK_UP_ONLY,
+			(int)ControllerInputs::INPUT_LOOK_DOWN_ONLY,
+			(int)ControllerInputs::INPUT_LOOK_LEFT_ONLY,
+			(int)ControllerInputs::INPUT_LOOK_RIGHT_ONLY,
+			(int)ControllerInputs::INPUT_LOOK_LEFT,
+			(int)ControllerInputs::INPUT_LOOK_RIGHT,
+			(int)ControllerInputs::INPUT_LOOK_UP,
+			(int)ControllerInputs::INPUT_LOOK_DOWN
+		};
+
 		for (int control : controls)
 			PAD::ENABLE_CONTROL_ACTION(2, control, true);
 

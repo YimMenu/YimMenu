@@ -7,7 +7,15 @@
 
 namespace big
 {
-	static const int controls[] = { 21, 32, 33, 34, 35, 36 };
+	static const int controls[] = {
+		(int)ControllerInputs::INPUT_SPRINT,
+		(int)ControllerInputs::INPUT_MOVE_UP_ONLY,
+		(int)ControllerInputs::INPUT_MOVE_DOWN_ONLY,
+		(int)ControllerInputs::INPUT_MOVE_LEFT_ONLY,
+		(int)ControllerInputs::INPUT_MOVE_RIGHT_ONLY,
+		(int)ControllerInputs::INPUT_DUCK
+	};
+
 	static float speed = 20.f;
 	static float mult = 0.f;
 
