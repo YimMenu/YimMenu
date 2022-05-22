@@ -21,6 +21,8 @@ namespace big
 			});
 		}
 
+		looped::context_menu();
+
 		QUEUE_JOB_BEGIN_CLAUSE()
 		{
 			looped::hud_transition_state();

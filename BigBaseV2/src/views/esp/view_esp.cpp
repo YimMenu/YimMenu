@@ -4,16 +4,10 @@
 #include "util/math.hpp"
 #include "gta_util.hpp"
 #include "util/misc.hpp"
+#include "services/context_menu_service.hpp"
 
 namespace big
 {
-	float esp::calculate_distance(rage::fvector3 player_position)
-	{
-		const Vector3 plyr_coords = { player_position.x, player_position.y, player_position.z };
-		const Vector3 cam_coords = g_pointers->m_get_gamplay_cam_coords();
-
-		return (float)math::distance_between_vectors(plyr_coords, cam_coords);
-	}
 
 	void esp::draw() {
 		if (!g->esp.enabled) return;
@@ -43,7 +37,7 @@ namespace big
 
 				float screen_x, screen_y;
 
-				const float distance = calculate_distance(player_pos);
+				const float distance = math::calculate_distance_from_game_cam(player_pos);
 				const float multplr = distance > g->esp.global_render_distance[1] ? -1.f : 6.17757f / distance;
 
 				if (multplr == -1.f || g->esp.global_render_distance[0] > distance) continue;

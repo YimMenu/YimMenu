@@ -13,6 +13,17 @@ namespace big
 		VEHICLE_GUN
 	};
 
+	enum class eEntityType
+	{
+		UNK_0,
+		UNK_1,
+		UNK_2,
+		UNK_3,
+		UNK_4,
+		VEHICLE,
+		PED,
+	};
+
 	enum class eTransitionState
 	{
 		TRANSITION_STATE_EMPTY,
