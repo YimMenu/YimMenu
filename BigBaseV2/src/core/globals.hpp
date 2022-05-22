@@ -207,18 +207,20 @@ namespace big
 
 			bool auto_drive_to_waypoint = false;
 			bool auto_drive_wander = false;
-			int auto_drive_speed = 1;
+			bool auto_turn_signals = false;
 			bool drive_on_water = false;
-			int driving_style_id = 0;
-			int driving_style_flags = 525116;
 			bool god_mode = false;
 			bool horn_boost = false;
 			bool instant_brake = false;
 			bool is_targetable = true;
 			bool ls_customs = false; // don't save this to disk
 			bool pv_teleport_into = false;
-			int rainbow_paint = 0;
 			bool seatbelt = false;
+			bool turn_signals = false;
+			int auto_drive_speed = 1;
+			int driving_style_flags = 525116;
+			int driving_style_id = 0;
+			int rainbow_paint = 0;
 			speedo_meter speedo_meter{};
 			fly fly{};
 		};
@@ -468,10 +470,11 @@ namespace big
 			this->spoofing.username = j["spoofing"]["username"];
 
 			this->vehicle.auto_drive_speed = j["vehicle"]["auto_drive_speed"];
-			this->vehicle.auto_drive_wander = j["vehicle"]["auto_drive_wander"];
 			this->vehicle.auto_drive_to_waypoint = j["vehicle"]["auto_drive_to_waypoint"];
-			this->vehicle.driving_style_id = j["vehicle"]["driving_style"];
+			this->vehicle.auto_drive_wander = j["vehicle"]["auto_drive_wander"];
+			this->vehicle.auto_turn_signals = j["vehicle"]["auto_turn_signals"];
 			this->vehicle.drive_on_water = j["vehicle"]["drive_on_water"];
+			this->vehicle.driving_style_id = j["vehicle"]["driving_style"];
 			this->vehicle.god_mode = j["vehicle"]["god_mode"];
 			this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
@@ -479,6 +482,7 @@ namespace big
 			this->vehicle.pv_teleport_into = j["vehicle"]["pv_teleport_into"];
 			this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
 			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
+			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
 
 			this->vehicle.speedo_meter.type = (SpeedoMeter)j["vehicle"]["speedo_meter"]["type"];
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
@@ -700,16 +704,18 @@ namespace big
 				{
 					"vehicle", {
 						{ "auto_drive_speed", this->vehicle.auto_drive_speed },
-						{ "auto_drive_wander", this->vehicle.auto_drive_wander },
-						{ "driving_style", this->vehicle.driving_style_id },
 						{ "auto_drive_to_waypoint", this->vehicle.auto_drive_to_waypoint },
+						{ "auto_drive_wander", this->vehicle.auto_drive_wander },
+						{ "auto_turn_signals", this->vehicle.auto_turn_signals },
 						{ "drive_on_water", this->vehicle.drive_on_water },
+						{ "driving_style", this->vehicle.driving_style_id },
 						{ "god_mode", this->vehicle.god_mode },
 						{ "horn_boost", this->vehicle.horn_boost },
 						{ "instant_brake", this->vehicle.instant_brake },
 						{ "is_targetable", this->vehicle.is_targetable },
 						{ "pv_teleport_into", this->vehicle.pv_teleport_into },
 						{ "rainbow_paint", this->vehicle.rainbow_paint },
+						{ "turn_signals", this->vehicle.turn_signals },
 						{ "seatbelt", this->vehicle.seatbelt },
 						{
 							"speedo_meter", {
