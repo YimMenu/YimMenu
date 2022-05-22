@@ -20,6 +20,5 @@ namespace big
 				looped::api_login_session();
 			});
 		}
-
 	}
 }

@@ -7,6 +7,7 @@ namespace big
 	public:
 		static void api_login_session();
 
+		static void context_menu();
 		static void hud_transition_state();
 
 		static void rgb_synced_fade();

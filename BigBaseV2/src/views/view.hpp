@@ -43,10 +43,12 @@ namespace big
 		static void view_player();
 		static void players();
 		static void weapons();
+		static void context_menu();
 
 		static void always()
 		{
 			esp::draw();
+			context_menu();
 			notifications();
 		}
 	};
