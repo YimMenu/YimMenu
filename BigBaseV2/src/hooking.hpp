@@ -53,6 +53,9 @@ namespace big
 		static bool send_net_info_to_lobby(rage::netPlayerData* player, int64_t a2, int64_t a3, DWORD* a4);
 		static bool receive_net_message(void* netConnectionManager, void* a2, rage::netConnection::InFrame* frame);
 		static void get_network_event_data(__int64 a1, rage::CEventNetwork* net_event);
+
+		//SYNC
+		static signed __int64 received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, unsigned __int16 sync_type, unsigned __int16 obj_id, rage::datBitBuffer* a6, unsigned __int16 a7, unsigned int timestamp);
 	};
 
 	struct minhook_keepalive
@@ -99,10 +102,12 @@ namespace big
 		detour_hook m_is_dlc_present_hook;
 
 		detour_hook m_received_event_hook;
+		detour_hook m_received_clone_sync_hook;
 		
 		detour_hook m_send_net_info_to_lobby;
 		detour_hook m_receive_net_message_hook;
 		detour_hook m_get_network_event_data_hook;
+
 	};
 
 	inline hooking *g_hooking{};

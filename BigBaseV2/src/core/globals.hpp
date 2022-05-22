@@ -78,6 +78,7 @@ namespace big
 
 			pair send_net_info_to_lobby{};
 			pair transaction_rate_limit{};
+			pair invalid_sync{};
 		};
 
 		struct player {
@@ -348,6 +349,9 @@ namespace big
 			g->notifications.reports.log = j["notifications"]["reports"]["log"];
 			g->notifications.reports.notify = j["notifications"]["reports"]["notify"];
 
+			g->notifications.invalid_sync.notify = j["notifications"]["invalid_sync"]["notify"];
+			g->notifications.invalid_sync.log = j["notifications"]["invalid_sync"]["log"];
+
 			{
 				const auto& script_handler_j = j["notifications"]["script_event_handler"];
 				auto& script_handler = this->notifications.script_event_handler;
@@ -601,7 +605,8 @@ namespace big
 							}
 						},
 						{ "send_net_info_to_lobby", return_notify_pair(g->notifications.send_net_info_to_lobby) },
-						{ "transaction_rate_limit", return_notify_pair(g->notifications.transaction_rate_limit) }
+						{ "transaction_rate_limit", return_notify_pair(g->notifications.transaction_rate_limit) },
+						{ "invalid_sync", return_notify_pair(g->notifications.invalid_sync) }
 					}
 				},
 				{

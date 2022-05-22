@@ -58,6 +58,8 @@ namespace big
 		m_player_has_left_hook("PHL", g_pointers->m_player_has_left, &hooks::player_leave),
 		// Receive Net Message
 		m_receive_net_message_hook("RNM", g_pointers->m_receive_net_message, &hooks::receive_net_message),
+		// Received clone sync
+		m_received_clone_sync_hook("RCS", g_pointers->m_received_clone_sync, &hooks::received_clone_sync),
 		//Get Network Event Data
 		m_get_network_event_data_hook("GNED", g_pointers->m_get_network_event_data, &hooks::get_network_event_data)
 	{
@@ -103,12 +105,16 @@ namespace big
 		m_receive_net_message_hook.enable();
 		m_get_network_event_data_hook.enable();
 
+		m_received_clone_sync_hook.enable();
+
 		m_enabled = true;
 	}
 
 	void hooking::disable()
 	{
 		m_enabled = false;
+
+		m_received_clone_sync_hook.disable();
 
 		m_get_network_event_data_hook.disable();
 		m_receive_net_message_hook.disable();
