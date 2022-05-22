@@ -39,7 +39,7 @@ namespace big
 		{
 			switch (m_pointer->m_model_info->m_model_type)
 			{
-			case eModelType::Object: // Object
+			case eModelType::Object1: // Object
 			{
 				return &options.at(ContextEntityType::OBJECT);
 			}

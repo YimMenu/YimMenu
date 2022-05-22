@@ -3,12 +3,13 @@
 enum class eModelType : std::uint8_t
 {
     UNK_0,
-    UNK_1,
+    Object1,
     UNK_2,
     UNK_3,
-    UNK_4,
+    Weapon,
     Vehicle,
     Ped,
+    Plant = 129
 };
 
 #pragma pack(push, 2)

@@ -21,6 +21,7 @@ namespace big::functions
 	using increment_stat_event = bool(uint64_t net_event_struct, int64_t sender, int64_t a3);
 
 	using ptr_to_handle = Entity(void* entity);
+	using ptr_to_handle_t = Entity(*)(PVOID);
 
 	using get_screen_coords_for_world_coords = bool(float* world_coords, float* out_x, float* out_y);
 

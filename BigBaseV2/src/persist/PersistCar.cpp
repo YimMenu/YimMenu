@@ -270,7 +270,7 @@ namespace big
 		int numObj = object_interface->m_max_objects;
 		for (int i = 0; i < numObj; i++)
 		{
-			rage::CObject* pCObject = object_interface->get_object(i);
+			rage::fwEntity* pCObject = object_interface->get_object(i);
 			if (pCObject == nullptr)
 				continue;
 
