@@ -65,6 +65,14 @@ namespace big
 				return true;
 			}
 			break;
+		case eRemoteEvent::Crash:
+			if (g->protections.script_events.crash)
+			{
+				format_string(player_name, "TSE Crash", notify.crash.log, notify.crash.notify);
+
+				return true;
+			}
+			break;
 		case eRemoteEvent::FakeDeposit:
 			if (g->protections.script_events.fake_deposit)
 			{
@@ -85,6 +93,14 @@ namespace big
 			if (g->protections.script_events.gta_banner)
 			{
 				format_string(player_name, "GTA Banner", notify.gta_banner.log, notify.gta_banner.notify);
+
+				return true;
+			}
+			break;
+		case eRemoteEvent::MCTeleport:
+			if (g->protections.script_events.mc_teleport)
+			{
+				format_string(player_name, "MC Teleport", notify.mc_teleport.log, notify.mc_teleport.notify);
 
 				return true;
 			}

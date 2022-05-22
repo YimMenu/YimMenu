@@ -9,7 +9,7 @@ namespace big
 		ImGui::Checkbox("CEO Ban", &g->protections.script_events.ceo_ban);
 		ImGui::Checkbox("CEO Kick", &g->protections.script_events.ceo_kick);
 		ImGui::Checkbox("CEO Money", &g->protections.script_events.ceo_money);
-		ImGui::Checkbox("Wanted Level", &g->protections.script_events.clear_wanted_level);
+		ImGui::Checkbox("TSE Crash", &g->protections.script_events.crash);
 		ImGui::Checkbox("Fake Deposit", &g->protections.script_events.fake_deposit);
 		ImGui::Checkbox("Force Mission", &g->protections.script_events.force_mission);
 		ImGui::EndGroup();
@@ -19,6 +19,7 @@ namespace big
 		ImGui::BeginGroup();
 		ImGui::Checkbox("Force Teleport", &g->protections.script_events.force_teleport);
 		ImGui::Checkbox("GTA Banner", &g->protections.script_events.gta_banner);
+		ImGui::Checkbox("MC Teleport", &g->protections.script_events.mc_teleport);
 		ImGui::Checkbox("Network Bail", &g->protections.script_events.network_bail);
 		ImGui::Checkbox("Personal Vehicle Destroyed", &g->protections.script_events.personal_vehicle_destroyed);
 		ImGui::Checkbox("Remote Off Radar", &g->protections.script_events.remote_off_radar);
@@ -34,6 +35,7 @@ namespace big
 		ImGui::Checkbox("Spectate", &g->protections.script_events.spectate);
 		ImGui::Checkbox("Transaction Error", &g->protections.script_events.transaction_error);
 		ImGui::Checkbox("Vehicle Kick", &g->protections.script_events.vehicle_kick);
+		ImGui::Checkbox("Wanted Level", &g->protections.script_events.clear_wanted_level);
 		ImGui::EndGroup();
 	}
 
