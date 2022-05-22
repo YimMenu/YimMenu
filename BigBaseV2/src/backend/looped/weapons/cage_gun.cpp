@@ -1,10 +1,15 @@
 #include "backend/looped/looped.hpp"
 #include "core/enums.hpp"
+#include "gta/enums.hpp"
 #include "util/entity.hpp"
 
 namespace big
 {
-	static const int controls[] = { 14, 15, 24 };
+	static const int controls[] = {
+		(int)ControllerInputs::INPUT_WEAPON_WHEEL_NEXT,
+		(int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV,
+		(int)ControllerInputs::INPUT_ATTACK
+	};
 
 	void looped::weapons_cage_gun()
 	{
@@ -12,13 +17,13 @@ namespace big
 
 		if (bCageGun)
 		{
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 25))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
-				PLAYER::DISABLE_PLAYER_FIRING(PLAYER::GET_PLAYER_INDEX(), true);
+				PLAYER::DISABLE_PLAYER_FIRING(self::id, true);
 				for (int control : controls)
 					PAD::DISABLE_CONTROL_ACTION(0, control, true);
 
-				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, 24))
+				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
 				{
 					Entity entity;
 

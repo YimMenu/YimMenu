@@ -19,7 +19,7 @@ namespace big
 
 		eAmmoSpecialType selected_ammo = g->weapons.ammo_special.type;
 
-		if (ImGui::BeginCombo("Ammo Special", SPECIAL_AMMOS[(int)selected_ammo].name))
+		if (ImGui::BeginCombo("Special Ammo", SPECIAL_AMMOS[(int)selected_ammo].name))
 		{
 			for (const auto& special_ammo : SPECIAL_AMMOS)
 			{
@@ -47,17 +47,20 @@ namespace big
 
 		ImGui::Checkbox("No Spread", &g->weapons.no_spread);
 
-		if (ImGui::Button("Get All Weapons"))
-		{
-			QUEUE_JOB_BEGIN_CLAUSE()
-			{
-				for (auto const& weapon : weapon_list) {
-					WEAPON::GIVE_DELAYED_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), weapon, 9999, false);
-				}
-				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(PLAYER::PLAYER_PED_ID(), -72657034, 0, true);
+		components::button("Get All Weapons", [] {
+			for (auto const& weapon : weapon_list) {
+				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon, 9999, false);
 			}
-			QUEUE_JOB_END_CLAUSE
-		}
+			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, -72657034, 0, true);
+		});
+		ImGui::SameLine();
+		components::button("Remove Current Weapon", [] {
+			Hash weaponHash;
+			WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weaponHash, 1);
+			if (weaponHash != RAGE_JOAAT("WEAPON_UNARMED")) {
+				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, weaponHash);
+			}
+		});
 
 		ImGui::SliderFloat("Damage Multiplier", &g->weapons.increased_damage, 1.f, 10.f, "%.1f");
 
