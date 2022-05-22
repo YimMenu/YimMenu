@@ -13,14 +13,9 @@ namespace big
 		nlohmann::json default_options;
 		nlohmann::json options;
 
-		struct debug {
+		struct debug
+		{
 			bool script_event_logging = false;
-		};
-
-		struct tunables {
-			bool disable_phone = false;
-			bool no_idle_kick = false;
-			bool rig_casino = false; 
 		};
 
 		struct notifications
@@ -183,6 +178,12 @@ namespace big
 
 			bool spoof_rockstar_id = false;
 			uint64_t rockstar_id = 0;
+		};
+
+		struct tunables {
+			bool disable_phone = false;
+			bool no_idle_kick = false;
+			bool rig_casino = false;
 		};
 
 		struct vehicle {

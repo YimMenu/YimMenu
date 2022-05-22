@@ -11,6 +11,7 @@
 #include "thread_pool.hpp"
 
 #include "native_hooks/native_hooks.hpp"
+#include "services/context_menu_service.hpp"
 #include "services/globals_service.hpp"
 #include "services/gui_service.hpp"
 #include "services/player_service.hpp"
@@ -22,6 +23,8 @@
 //OPENVHOOK
 #include "shv_runner.h"
 #include "ASI Loader/ASILoader.h"
+#include "backend/backend.hpp"
+
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
 	using namespace big;
@@ -56,7 +59,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto renderer_instance = std::make_unique<renderer>();
 				LOG(INFO) << "Renderer initialized.";
 
-				auto fiber_pool_instance = std::make_unique<fiber_pool>(10);
+				auto fiber_pool_instance = std::make_unique<fiber_pool>(11);
 				LOG(INFO) << "Fiber pool initialized.";
 
 				auto hooking_instance = std::make_unique<hooking>();
@@ -79,6 +82,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				
 
+				auto context_menu_service_instance = std::make_unique<context_menu_service>();
 				auto globals_service_instace = std::make_unique<globals_service>();
 				auto mobile_service_instance = std::make_unique<mobile_service>();
 				auto notification_service_instance = std::make_unique<notification_service>();
@@ -90,6 +94,18 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
+
+				g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::vehicles_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::misc_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::remote_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::noclip_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::lscustoms_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::vehiclefly_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::rgbrandomizer_loop));
+
+
 				LOG(INFO) << "Scripts registered.";
 
 				auto native_hooks_instance = std::make_unique<native_hooks>();
@@ -124,6 +140,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				LOG(INFO) << "Player Service reset.";
 				globals_service_instace.reset();
 				LOG(INFO) << "Globals Service reset.";
+				context_menu_service_instance.reset();
+				LOG(INFO) << "Context Service reset.";
 				LOG(INFO) << "Services uninitialized.";
 
 				// Make sure that all threads created don't have any blocking loops
