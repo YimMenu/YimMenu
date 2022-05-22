@@ -48,7 +48,7 @@ namespace big
 
 		if (g->vehicle.turn_signals)
 		{
-			ImGui::Checkbox("Auto Signal", &g->vehicle.auto_turn_signals);
+			ImGui::Checkbox("Fully Automatic Signal", &g->vehicle.auto_turn_signals);
 		}
 
 		ImGui::EndGroup();
