@@ -31,43 +31,53 @@ namespace big
 
 	class context_menu_service final
 	{
-		double distance_to_middle_of_screen(rage::vector2);
+	private:
+		static double distance_to_middle_of_screen(const rage::vector2& screen_pos);
+
 	public:
 		context_menu_service();
-		virtual ~context_menu_service();
+		~context_menu_service();
+
+		context_menu_service(const context_menu_service&) = delete;
+		context_menu_service(context_menu_service&&) noexcept = delete;
+		context_menu_service& operator=(const context_menu_service&) = delete;
+		context_menu_service& operator=(context_menu_service&&) noexcept = delete;
 
 		bool enabled = false;
+		s_context_menu* get_context_menu();
 		void get_entity_closest_to_screen_center();
 		void load_shared();
-		s_context_menu* get_context_menu();
 
-		Entity handle;
-		rage::fwEntity* pointer;
+		Entity m_handle;
+		rage::fwEntity* m_pointer;
 
 		s_context_menu vehicle_menu{
 			ContextEntityType::VEHICLE,
 			0,{}, {
 			{"KILL ENGINE", [this] {
-					if (entity::take_control_of(this->handle))
+					if (entity::take_control_of(m_handle))
 					{
-						VEHICLE::SET_VEHICLE_ENGINE_HEALTH(this->handle, 0.f);
-						VEHICLE::SET_VEHICLE_ENGINE_ON(this->handle, false, true, false);
+						VEHICLE::SET_VEHICLE_ENGINE_HEALTH(m_handle, 0.f);
+						VEHICLE::SET_VEHICLE_ENGINE_ON(m_handle, false, true, false);
 					}
 				}},
 			{"DELETE", [this] {
-					if (entity::take_control_of(this->handle))
+					if (entity::take_control_of(m_handle))
 					{
-						entity::delete_entity(this->handle);
+						entity::delete_entity(m_handle);
 					}
 				}},
-			{ "TP INTO", [this]{
-				teleport::into_vehicle(this->handle);
+			{ "TP INTO", [this] {
+				teleport::into_vehicle(m_handle);
 				}}
-
 		} };
 
 		s_context_menu ped_menu{
 			ContextEntityType::PED,
+			0,{}, {}};
+
+		s_context_menu object_menu{
+			ContextEntityType::OBJECT,
 			0,{}, {}};
 
 		s_context_menu player_menu{
@@ -75,7 +85,7 @@ namespace big
 			0,{}, {
 				{"STEAL IDENTITY", [this]
 				{
-					ped::steal_identity(this->handle);
+					ped::steal_identity(m_handle);
 				}}
 			} };
 
@@ -84,11 +94,11 @@ namespace big
 			0,
 			{}, {
 				{"EXPLODE", [this] {
-					rage::fvector3 pos = this->pointer->m_navigation->m_position;
+					rage::fvector3 pos = m_pointer->m_navigation->m_position;
 					FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 1, 1000, 1, 0, 1, 0);
 					}},
 				{"TP TO", [this] {
-					rage::fvector3 pos = this->pointer->m_navigation->m_position;
+					rage::fvector3 pos = m_pointer->m_navigation->m_position;
 					teleport::to_coords({ pos.x, pos.y, pos.z });
 					}},
 			}
@@ -99,9 +109,8 @@ namespace big
 			{ContextEntityType::PLAYER, player_menu},
 			{ContextEntityType::PED, ped_menu},
 			{ContextEntityType::SHARED, shared_menu},
+			{ContextEntityType::OBJECT, object_menu}
 		};
-
-		
 	};
 
 	inline context_menu_service* g_context_menu_service{};

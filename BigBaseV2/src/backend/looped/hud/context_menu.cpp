@@ -1,7 +1,7 @@
-#include "backend/looped/looped.hpp"
-#include "natives.hpp"
-#include "gta/enums.hpp"
 #include "services/context_menu_service.hpp"
+#include "backend/looped/looped.hpp"
+#include "gta/enums.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -24,20 +24,23 @@ namespace big
 			PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV, true);
 			PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_ATTACK, true);
 			PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_SPECIAL_ABILITY, true);
+			PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_VEH_MOUSE_CONTROL_OVERRIDE, true);
 
 			g_context_menu_service->get_entity_closest_to_screen_center();
 
-
-			s_context_menu* cm = g_context_menu_service->get_context_menu();
+			const auto cm = g_context_menu_service->get_context_menu();
+			if (cm == nullptr)
+				return;
 
 			if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_NEXT))
 				cm->current_option = cm->options.size() <= cm->current_option + 1 ? 0 : cm->current_option + 1;
 			if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV))
-				cm->current_option = 0 > cm->current_option - 1 ? (int)cm->options.size() - 1 : cm->current_option - 1;
+				cm->current_option = 0 > cm->current_option - 1 ? static_cast<int>(cm->options.size()) - 1 : cm->current_option - 1;
 			if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) ||
 				PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_SPECIAL_ABILITY))
 			{
-				if (!g_context_menu_service->pointer) return;
+				if (!g_context_menu_service->m_pointer)
+					return;
 				cm->options.at(cm->current_option).command();
 			}
 		}
