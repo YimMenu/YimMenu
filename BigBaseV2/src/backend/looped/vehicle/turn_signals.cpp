@@ -81,24 +81,23 @@ inline void set_turn_signals(int signal_state, bool on)
 {
 	static constexpr int off = 0;
 
-	if (const Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
-		veh != 0 && big::g->vehicle.turn_signals)
+	if (self::veh && big::g->vehicle.turn_signals)
 	{
 		switch (signal_state)
 		{
 		case signal_state::hazzards:
-			VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(veh, signal_state::left, on);
-			VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(veh, signal_state::right, on);
+			VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(self::veh, signal_state::left, on);
+			VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(self::veh, signal_state::right, on);
 			break;
 
 		case signal_state::right:
-			VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(veh, signal_state::left, off);
-			VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(veh, signal_state::right, on);
+			VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(self::veh, signal_state::left, off);
+			VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(self::veh, signal_state::right, on);
 			break;
 
 		case signal_state::left:
-			VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(veh, signal_state::left, on);
-			VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(veh, signal_state::right, off);
+			VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(self::veh, signal_state::left, on);
+			VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(self::veh, signal_state::right, off);
 			break;
 		}
 	}
