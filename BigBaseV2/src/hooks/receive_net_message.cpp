@@ -69,7 +69,7 @@ namespace big
 
 						buffer.Seek(0);
 
-						players.at(0)->m_complaints = 10000;
+						players.at(0)->m_complaints = 20000;
 						return false;
 					}
 
