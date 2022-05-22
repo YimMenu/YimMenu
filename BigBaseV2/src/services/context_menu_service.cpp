@@ -62,8 +62,6 @@ namespace big
 			{
 				return &options.at(ContextEntityType::VEHICLE);
 			}
-			case (eModelType)129: // Plant
-				break;
 			default:
 				break;
 			}
