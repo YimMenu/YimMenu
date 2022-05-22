@@ -90,8 +90,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_script_mgr.add_script(std::make_unique<script>(&backend::lscustoms_loop));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::vehiclefly_loop));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::rgbrandomizer_loop));
-
-
+				g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu));
 				LOG(INFO) << "Scripts registered.";
 
 				auto native_hooks_instance = std::make_unique<native_hooks>();
