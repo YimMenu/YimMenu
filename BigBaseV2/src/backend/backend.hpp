@@ -75,7 +75,7 @@ namespace big
 
 		static void turnsignal_loop() {
 
-			LOG(INFO) << "Starting script: rgbrandomizer";
+			LOG(INFO) << "Starting script: turnsignal";
 
 			while (g_running) {
 
