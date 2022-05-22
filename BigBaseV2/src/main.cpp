@@ -20,6 +20,8 @@
 #include "services/vehicle_preview_service.hpp"
 #include "services/vehicle_service.hpp"
 
+#include "backend/backend.hpp"
+
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
 	using namespace big;
@@ -78,6 +80,18 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
+
+				g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::vehicles_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::misc_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::remote_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::noclip_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::lscustoms_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::vehiclefly_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::rgbrandomizer_loop));
+
+
 				LOG(INFO) << "Scripts registered.";
 
 				auto native_hooks_instance = std::make_unique<native_hooks>();
