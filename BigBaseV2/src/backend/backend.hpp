@@ -61,13 +61,25 @@ namespace big
 				looped::vehicle_drive_on_water();
 				looped::vehicle_god_mode();
 				looped::vehicle_horn_boost();
-				looped::vehicle_turn_signals();
 				looped::vehicle_instant_brake();
 				looped::vehicle_is_targetable();
 				looped::vehicle_rainbow_paint();
 				looped::vehicle_seatbelt();
 				looped::vehicle_speedo_meter();
 				
+
+				script::get_current()->yield();
+			}
+
+		}
+
+		static void turnsignal_loop() {
+
+			LOG(INFO) << "Starting script: rgbrandomizer";
+
+			while (g_running) {
+
+				looped::vehicle_turn_signals();
 
 				script::get_current()->yield();
 			}
