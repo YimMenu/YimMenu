@@ -28,4 +28,14 @@ namespace big::functions
 	using read_bitbuf_dword = bool(rage::datBitBuffer* buffer, PVOID read, int bits);
 	using send_event_ack = void(rage::netEventMgr* event_manager, CNetGamePlayer* source_player, CNetGamePlayer* target_player, int event_index, int event_handled_bitset);
 	// Received Event Signatures END
+
+	//Sync signatures START
+	using get_sync_type_info = const char* (uint16_t sync_type, char a2);
+
+	using get_sync_tree_for_type = __int64(CNetworkObjectMgr* mgr, uint16_t sync_type);
+
+	using get_net_object = rage::netObject* (__fastcall)(CNetworkObjectMgr* mgr, int16_t id, bool unk3);
+
+	using get_net_object_for_player = rage::netObject* (__fastcall) (CNetworkObjectMgr*, int16_t, CNetGamePlayer*, bool);
+	//Sync signatures END
 }

@@ -77,10 +77,19 @@ namespace big
 		functions::send_event_ack* m_send_event_ack{};
 		// Received Event Signatures END
 
+		//Sync Signatures START
+		PVOID m_received_clone_sync;
+		functions::get_sync_tree_for_type* m_get_sync_tree_for_type{};
+		functions::get_sync_type_info* m_get_sync_type_info{};
+		functions::get_net_object* m_get_net_object{};
+		functions::get_net_object_for_player* m_get_net_object_for_player{};
+		//Sync Signatures END
+
 		PVOID m_send_net_info_to_lobby{};
 
 		PVOID m_receive_net_message{};
 		PVOID m_get_network_event_data{};
+	
 	};
 
 	inline pointers *g_pointers{};
