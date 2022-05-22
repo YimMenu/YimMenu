@@ -39,11 +39,7 @@ namespace big
 		{
 			switch (m_pointer->m_model_info->m_model_type)
 			{
-			case eModelType::UNK_1: // Object
-			{
-				return &options.at(ContextEntityType::OBJECT);
-			}
-			case eModelType::UNK_4: // Weapon
+			case eModelType::Object: // Object
 			{
 				return &options.at(ContextEntityType::OBJECT);
 			}
