@@ -7,7 +7,7 @@ namespace big
 	{
 		if (GetAsyncKeyState(g->settings.hotkeys.teleport_waypoint)) {
 			teleport::to_waypoint();
-			script::get_current()->yield(300ms);
+			//script::get_current()->yield(300ms);
 		}
 	}
 }
