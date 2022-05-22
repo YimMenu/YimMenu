@@ -12,7 +12,7 @@ namespace big
 			g->settings.hotkeys.editing_menu_toggle = true; // make our menu reappear
 
 		ImGui::Hotkey("Teleport to waypoint", &g->settings.hotkeys.teleport_waypoint);
-
+		
 		ImGui::PopItemWidth();
 	}
 }
