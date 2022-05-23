@@ -128,6 +128,28 @@ namespace big
 		return nullptr;
 	}
 
+	player* player_service::get_by_msg_id(uint32_t msg_id)
+	{
+		std::map<std::string, std::unique_ptr<player>>::iterator it;
+		for (it = m_players.begin(); it != m_players.end(); it++)
+		{
+			if (it->second.get()->get_net_game_player()->m_msg_id == msg_id)
+				return it->second.get();
+		}
+		return nullptr;
+	}
+
+	player* player_service::get_by_host_token(uint64_t token)
+	{
+		std::map<std::string, std::unique_ptr<player>>::iterator it;
+		for (it = m_players.begin(); it != m_players.end(); it++)
+		{
+			if (it->second.get()->get_net_data()->m_host_token == token)
+				return it->second.get();
+		}
+		return nullptr;
+	}
+
 	player* player_service::get_selected()
 	{
 		return m_selected_player == nullptr ? m_dummy_player : m_selected_player;

@@ -1,4 +1,4 @@
-﻿#include "common.hpp"
+#include "common.hpp"
 #include "core/globals.hpp"
 #include "features.hpp"
 #include "fiber_pool.hpp"
@@ -13,12 +13,16 @@
 #include "asi_loader/asi_loader.hpp"
 
 #include "native_hooks/native_hooks.hpp"
+#include "services/context_menu_service.hpp"
 #include "services/globals_service.hpp"
+#include "services/gui_service.hpp"
 #include "services/player_service.hpp"
 #include "services/mobile_service.hpp"
 #include "services/notification_service.hpp"
 #include "services/vehicle_preview_service.hpp"
 #include "services/vehicle_service.hpp"
+
+#include "backend/backend.hpp"
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -45,6 +49,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				"YimMenu",
 				file_manager_instance->get_project_file("./cout.log")
 			);
+
+			EnableMenuItem(GetSystemMenu(FindWindowA(NULL, "YimMenu"), 0), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+
 			try
 			{
 				LOG(INFO) << "Yim's Menu Initializing";
@@ -54,7 +61,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto renderer_instance = std::make_unique<renderer>();
 				LOG(INFO) << "Renderer initialized.";
 
-				auto fiber_pool_instance = std::make_unique<fiber_pool>(10);
+				auto fiber_pool_instance = std::make_unique<fiber_pool>(11);
 				LOG(INFO) << "Fiber pool initialized.";
 
 				auto hooking_instance = std::make_unique<hooking>();
@@ -66,17 +73,30 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto thread_pool_instance = std::make_unique<thread_pool>();
 				LOG(INFO) << "Thread pool initialized.";
 
+				auto context_menu_service_instance = std::make_unique<context_menu_service>();
 				auto globals_service_instace = std::make_unique<globals_service>();
 				auto mobile_service_instance = std::make_unique<mobile_service>();
 				auto notification_service_instance = std::make_unique<notification_service>();
 				auto player_service_instance = std::make_unique<player_service>();
 				auto vehicle_preview_service_instance = std::make_unique<vehicle_preview_service>();
 				auto vehicle_service_instance = std::make_unique<vehicle_service>();
+				auto gui_service_instance = std::make_unique<gui_service>();
 				LOG(INFO) << "Registered service instances...";
 
 				g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
 				g_script_mgr.add_script(std::make_unique<script>(&shv_runner::script_func));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::vehicles_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::misc_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::remote_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::noclip_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::lscustoms_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::vehiclefly_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::rgbrandomizer_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::turnsignal_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu));
 				LOG(INFO) << "Scripts registered.";
 
 
@@ -103,6 +123,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_script_mgr.remove_all_scripts();
 				LOG(INFO) << "Scripts unregistered.";
 
+				gui_service_instance.reset();
+				LOG(INFO) << "Gui Service reset.";
 				vehicle_service_instance.reset();
 				LOG(INFO) << "Vehicle Service reset.";
 				vehicle_preview_service_instance.reset();
@@ -113,6 +135,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				LOG(INFO) << "Player Service reset.";
 				globals_service_instace.reset();
 				LOG(INFO) << "Globals Service reset.";
+				context_menu_service_instance.reset();
+				LOG(INFO) << "Context Service reset.";
 				LOG(INFO) << "Services uninitialized.";
 
 				// Make sure that all threads created don't have any blocking loops

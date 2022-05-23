@@ -3,6 +3,7 @@
 #include "natives.hpp"
 #include "script_global.hpp"
 #include "system.hpp"
+#include "entity.hpp"
 
 namespace big::toxic
 {
@@ -12,7 +13,7 @@ namespace big::toxic
 		FIRE::ADD_OWNED_EXPLOSION(
 			PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(to_blame),
 			pos.x, pos.y, pos.z,
-			(int)explosion_type,
+			explosion_type,
 			damage,
 			is_audible,
 			is_invisible,
@@ -31,15 +32,15 @@ namespace big::toxic
 	{
 		const size_t arg_count = 22;
 		int64_t args[arg_count] = {
-			(int)eRemoteEvent::Bounty,
-			0, // doesn't matter of we set this to something else, the TRIGGER_SCRIPT_EVENT routine will set it to our player id anyways
+			static_cast<int64_t>(eRemoteEvent::Bounty),
+			self::id,
 			target,
 			0, // set by player or NPC?
 			amount,
 			0, 1, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0,
-			*script_global(1921036).at(9).as<int*>(),
-			*script_global(1921036).at(10).as<int*>()
+			* script_global(1921039).at(9).as<int*>(),
+			* script_global(1921039).at(10).as<int*>()
 		};
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, -1);
@@ -55,17 +56,41 @@ namespace big::toxic
 			const Vector3 destination = PED::GET_PED_BONE_COORDS(target, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 0.0f);
 			const Vector3 origin = PED::GET_PED_BONE_COORDS(target, (int)PedBones::SKEL_R_Hand, 0.0f, 0.0f, 0.2f);
 
-			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 1, 0, RAGE_JOAAT("WEAPON_STUNGUN"), PLAYER::PLAYER_PED_ID(), false, true, 1);
+			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 1, 0, RAGE_JOAAT("WEAPON_STUNGUN"), self::ped, false, true, 1);
 		}
 	}
+	
+	inline void kick_from_vehicle(const Player player)
+	{
+		const Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+
+		TASK::CLEAR_PED_TASKS_IMMEDIATELY(target);
+	}
+	
+	inline void flying_vehicle(const Player player)
+	{
+		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+
+		if (!PED::IS_PED_IN_ANY_VEHICLE(ent, true))
+			g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
+		else {
+			ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
+
+			if (entity::take_control_of(ent))
+				ENTITY::APPLY_FORCE_TO_ENTITY(ent, 1, 0.f, 0.f, 50000.f, 0.f, 0.f, 0.f, 0, 0, 1, 1, 0, 1);
+			else
+				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+		}
+	}
+
 
 	inline void clear_wanted_player(Player target)
 	{
 		constexpr size_t arg_count = 3;
 		int64_t args[arg_count] = {
-			(int)eRemoteEvent::ClearWantedLevel,
-			0,
-			*script_global(1893548).at(target, 600).at(511).as<int*>()
+			static_cast<int64_t>(eRemoteEvent::ClearWantedLevel),
+			self::id,
+			*script_global(1893551).at(target, 599).at(510).as<int*>()
 		};
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);

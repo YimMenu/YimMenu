@@ -13,6 +13,17 @@ namespace big
 		VEHICLE_GUN
 	};
 
+	enum class eEntityType
+	{
+		UNK_0,
+		UNK_1,
+		UNK_2,
+		UNK_3,
+		UNK_4,
+		VEHICLE,
+		PED,
+	};
+
 	enum class eTransitionState
 	{
 		TRANSITION_STATE_EMPTY,
@@ -114,9 +125,11 @@ namespace big
 		CeoKick = 248967238,
 		CeoMoney = 1890277845,
 		ClearWantedLevel = -91354030,
+		Crash = -1386010354,
 		FakeDeposit = 677240627,
 		ForceMission = 2020588206,
 		GtaBanner = 1572255940,
+		MCTeleport = 962740265,
 		NetworkBail = 1228916411,
 		PersonalVehicleDestroyed = 802133775,
 		RemoteOffradar = -391633760,

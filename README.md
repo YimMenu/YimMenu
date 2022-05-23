@@ -9,7 +9,6 @@ Strictly for educational purposes.
     * [Premake5](#premake5)
     * [Cloning and generating project files](#cloning-and-generating-project-files)
  * [Staying Up To Date](#staying-up-to-date)
- * [Prebuild Binaries](#prebuild-binaries)
  * [Project Structure](#project-structure)
  * [Features](#features)
  * [Contributing](#contributing)
@@ -58,7 +57,7 @@ Now, you will be able to open the solution, and simply build it in Visual Studio
 
 Pull the latest changes from Github:
 ```bash
-git pull
+git pull && git submodule update
 ```
 
 Make sure your Visual Studio is closed and regenerate project files:

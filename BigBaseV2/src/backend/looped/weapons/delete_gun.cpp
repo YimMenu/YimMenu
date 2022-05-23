@@ -1,11 +1,16 @@
 #include "backend/looped/looped.hpp"
 #include "core/enums.hpp"
+#include "gta/enums.hpp"
 #include "util/entity.hpp"
 #include "util/math.hpp"
 
 namespace big
 {
-	static const int controls[] = { 14, 15, 24 };
+	static const int controls[] = {
+		(int)ControllerInputs::INPUT_WEAPON_WHEEL_NEXT,
+		(int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV,
+		(int)ControllerInputs::INPUT_ATTACK
+	};
 
 	void looped::weapons_delete_gun()
 	{
@@ -13,13 +18,13 @@ namespace big
 
 		if (bCageGun)
 		{
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 25))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
-				PLAYER::DISABLE_PLAYER_FIRING(PLAYER::GET_PLAYER_INDEX(), true);
+				PLAYER::DISABLE_PLAYER_FIRING(self::id, true);
 				for (int control : controls)
 					PAD::DISABLE_CONTROL_ACTION(0, control, true);
 
-				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, 24))
+				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
 				{
 					Entity entity;
 
@@ -31,9 +36,8 @@ namespace big
 						}
 						else
 						{
-							Vector3 player = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
 							Vector3 entLoc = ENTITY::GET_ENTITY_COORDS(entity, true);
-							double dist = math::distance_between_vectors(player, entLoc);
+							double dist = math::distance_between_vectors(self::pos, entLoc);
 
 							if (dist > 500)
 							{

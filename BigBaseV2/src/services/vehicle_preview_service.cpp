@@ -42,27 +42,23 @@ namespace big
 	{
 		if (m_running)
 			return;
-		
 		m_running = true;
-		static bool busy = false;
-		while (g_running && g->spawn.preview_vehicle && g_gui.m_opened)
+		
+		g_fiber_pool->queue_job([this]
 		{
-			if (busy)
-				continue;
-			busy = true;
-
-			g_fiber_pool->queue_job([this]
+			while (g_running && m_running && g->spawn.preview_vehicle && g_gui.m_opened)
 			{
-				auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(), 2.5f, 2.5f, .5f);
+				auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 2.5f, 2.5f, .5f);
 				if (m_current_veh == -1)
 				{
+					m_new_model = false;
 					location.z = -10.f;
 					m_current_veh = vehicle::spawn(m_model, location, 0.f, false);
 					ENTITY::FREEZE_ENTITY_POSITION(m_current_veh, true);
 					ENTITY::SET_ENTITY_ALPHA(m_current_veh, 0, 0);
 					ENTITY::SET_ENTITY_COLLISION(m_current_veh, false, false);
-
-					m_new_model = false;
+					ENTITY::SET_CAN_CLIMB_ON_ENTITY(m_current_veh, false);
+					OBJECT::SET_OBJECT_ALLOW_LOW_LOD_BUOYANCY(m_current_veh, false);
 				}
 				else if (m_new_model)
 				{
@@ -81,18 +77,13 @@ namespace big
 
 				if (m_heading += 0.5f; m_heading > 359) m_heading = 0;
 
-				busy = false;
-			});
-		}
+				script::get_current()->yield();
+			}
 
-		g_fiber_pool->queue_job([this]
-		{
 			entity::delete_entity(m_current_veh);
-
 			m_current_veh = -1;
+			m_running = false;
 		});
-
-		m_running = false;
 	}
 
 
@@ -107,6 +98,11 @@ namespace big
 
 		if (!m_running)
 			g_thread_pool->push([this] { preview_loop(); });
+	}
+
+	void vehicle_preview_service::stop_preview()
+	{
+		m_running = false;
 	}
 
 	void vehicle_preview_service::load()

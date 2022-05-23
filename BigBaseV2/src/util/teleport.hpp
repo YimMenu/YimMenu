@@ -1,6 +1,7 @@
 #pragma once
 #include "blip.hpp"
 #include "entity.hpp"
+#include "gta/enums.hpp"
 
 namespace big::teleport
 {
@@ -23,8 +24,7 @@ namespace big::teleport
 		}
 
 		ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
-
-		Vector3 location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+		Vector3 location = self::pos;
 
 		if (entity::take_control_of(ent))
 			ENTITY::SET_ENTITY_COORDS(ent, location.x, location.y, location.z, 0, 0, 0, 0);
@@ -89,18 +89,20 @@ namespace big::teleport
 		Vector3 location = ENTITY::GET_ENTITY_COORDS(veh, true);
 		load_ground_at_3dcoord(location);
 
-		ENTITY::SET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), location.x, location.y, location.z, 0, 0, 0, 0);
+		Ped ped = self::ped;
+
+		ENTITY::SET_ENTITY_COORDS(ped, location.x, location.y, location.z, 0, 0, 0, 0);
 
 		script::get_current()->yield();
 
-		PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, seat_index);
+		PED::SET_PED_INTO_VEHICLE(ped, veh, seat_index);
 
 		return true;
 	}
 
 	inline void to_coords(Vector3 location)
 	{
-		PED::SET_PED_COORDS_KEEP_VEHICLE(PLAYER::PLAYER_PED_ID(), location.x, location.y, location.z + 1.f);
+		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z + 1.f);
 	}
 
 	inline bool to_blip(int sprite, int color = -1)
@@ -112,7 +114,7 @@ namespace big::teleport
 
 		load_ground_at_3dcoord(location);
 
-		PED::SET_PED_COORDS_KEEP_VEHICLE(PLAYER::PLAYER_PED_ID(), location.x, location.y, location.z);
+		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
 
 		return true;
 	}
@@ -121,7 +123,7 @@ namespace big::teleport
 	{
 		Vector3 location = ENTITY::GET_ENTITY_COORDS(ent, true);
 
-		PED::SET_PED_COORDS_KEEP_VEHICLE(PLAYER::PLAYER_PED_ID(), location.x, location.y, location.z);
+		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
 
 		return true;
 	}
@@ -140,5 +142,24 @@ namespace big::teleport
 			return false;
 		}
 		return true;
+	}
+
+	inline bool to_objective()
+	{
+		if (to_blip((int)BlipIcons::Circle, (int)BlipColors::YellowMission)) return true;
+		if (to_blip((int)BlipIcons::Circle, (int)BlipColors::YellowMission2)) return true;
+		if (to_blip((int)BlipIcons::Circle, (int)BlipColors::Mission)) return true;
+		if (to_blip((int)BlipIcons::RaceFinish, (int)BlipColors::None)) return true;
+		if (to_blip((int)BlipIcons::Circle, (int)BlipColors::Green)) return true;
+		if (to_blip((int)BlipIcons::Circle, (int)BlipColors::Blue)) return true;
+		if (to_blip((int)BlipIcons::CrateDrop)) return true;
+		static const int blips[] = { 1, 57, 128, 129, 130, 143, 144, 145, 146, 271, 286, 287, 288 };
+		for (int i = 0; i < (sizeof(blips) / sizeof(*blips)); i++) {
+			if (to_blip(blips[i], 5)) {
+				return true;
+			}
+		}
+		g_notification_service->push_warning("Teleport", "Failed to find objective position");
+		return false;
 	}
 }

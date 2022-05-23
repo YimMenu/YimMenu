@@ -77,7 +77,7 @@ namespace big
 		"DLC Intro Bink",
 	};
 
-	auto transition_state = script_global(1574980);
+	auto transition_state = script_global(1574988);
 	eTransitionState last_state = eTransitionState::TRANSITION_STATE_MAX;
 	void looped::hud_transition_state()
 	{
@@ -94,6 +94,10 @@ namespace big
 
 		if (HUD::BUSYSPINNER_IS_ON())
 			HUD::BUSYSPINNER_OFF();
+
+		// sometimes when going into a single player mission or transition this one remains on screen permanently
+		if (state == eTransitionState::TRANSITION_STATE_TERMINATE_MAINTRANSITION)
+			return;
 
 		HUD::BEGIN_TEXT_COMMAND_BUSYSPINNER_ON("STRING");
 		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(

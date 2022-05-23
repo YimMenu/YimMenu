@@ -17,6 +17,7 @@ namespace big
 		
 		if (g_player_service->get_selected()->is_valid())
 		{
+			//components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player()); });
 
 			if (ImGui::TreeNode("Misc")) {
 				components::button("Steal Outfit", [] {
@@ -92,19 +93,19 @@ namespace big
 
 				components::button("Teleport", [] {
 					teleport::to_player(g_player_service->get_selected()->id());
-					});
+				});
 
 				ImGui::SameLine();
 
 				components::button("Bring", [] {
 					teleport::bring_player(g_player_service->get_selected()->id());
-					});
+				});
 
 				components::button("Teleport into Vehicle", [] {
 					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
 
 					teleport::into_vehicle(veh);
-					});
+				});
 
 				ImGui::TreePop();
 			}
@@ -121,6 +122,16 @@ namespace big
 				components::button("Taze", [] {
 					toxic::taze_player(g_player_service->get_selected()->id());
 				});
+				
+				components::button("Kick From Vehicle", [] {
+					toxic::kick_from_vehicle(g_player_service->get_selected()->id());
+				});
+        
+				components::button("Flying Vehicle", [] {
+					toxic::flying_vehicle(g_player_service->get_selected()->id());
+				});
+
+				ImGui::TreePop();
 			}
 		}
 	}

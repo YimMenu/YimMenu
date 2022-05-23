@@ -10,12 +10,10 @@ namespace big
 
 		if (speedo_type == SpeedoMeter::DISABLED || HUD::IS_PAUSE_MENU_ACTIVE() || HUD::IS_WARNING_MESSAGE_ACTIVE() || CAM::IS_SCREEN_FADED_OUT() || CAM::IS_SCREEN_FADING_OUT() || CAM::IS_SCREEN_FADING_IN()) return;
 
-		Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
-
-		if (veh == 0) return;
+		if (self::veh == 0) return;
 
 		char speed_type[16], speed[16];
-		float veh_speed = ENTITY::GET_ENTITY_SPEED(veh);
+		float veh_speed = ENTITY::GET_ENTITY_SPEED(self::veh);
 		switch (speedo_type)
 		{
 		case SpeedoMeter::KMH:

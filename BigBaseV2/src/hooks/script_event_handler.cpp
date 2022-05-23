@@ -1,4 +1,5 @@
 #include "hooking.hpp"
+#include "gta_util.hpp"
 
 namespace big
 {
@@ -15,10 +16,10 @@ namespace big
 
 	bool hooks::scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player)
 	{
-		auto args = scripted_game_event->m_args;
+		const auto args = scripted_game_event->m_args;
 
-		const eRemoteEvent hash = static_cast<eRemoteEvent>(args[0]);
-		const char* player_name = player->get_name();
+		const auto hash = static_cast<eRemoteEvent>(args[0]);
+		const auto player_name = player->get_name();
 
 		const auto& notify = g->notifications.script_event_handler;
 
@@ -64,6 +65,14 @@ namespace big
 				return true;
 			}
 			break;
+		case eRemoteEvent::Crash:
+			if (g->protections.script_events.crash)
+			{
+				format_string(player_name, "TSE Crash", notify.crash.log, notify.crash.notify);
+
+				return true;
+			}
+			break;
 		case eRemoteEvent::FakeDeposit:
 			if (g->protections.script_events.fake_deposit)
 			{
@@ -84,6 +93,14 @@ namespace big
 			if (g->protections.script_events.gta_banner)
 			{
 				format_string(player_name, "GTA Banner", notify.gta_banner.log, notify.gta_banner.notify);
+
+				return true;
+			}
+			break;
+		case eRemoteEvent::MCTeleport:
+			if (g->protections.script_events.mc_teleport)
+			{
+				format_string(player_name, "MC Teleport", notify.mc_teleport.log, notify.mc_teleport.notify);
 
 				return true;
 			}
@@ -115,7 +132,9 @@ namespace big
 		case eRemoteEvent::RotateCam:
 			if (g->protections.script_events.rotate_cam)
 			{
-				format_string(player_name, "Rotate Cam", notify.rotate_cam.log, notify.rotate_cam.notify);
+				if (CNetworkPlayerMgr* player_mgr = gta_util::get_network_player_mgr(); player_mgr != nullptr)
+					if (args[2] == player_mgr->m_local_net_player->m_player_id)
+						format_string(player_name, "Rotate Cam", notify.rotate_cam.log, notify.rotate_cam.notify);
 
 				return true;
 			}
@@ -184,12 +203,12 @@ namespace big
 			LOG(INFO) << "Player: " << player->get_name();
 			LOG(INFO) << "Hash/Arg #0: " << (int)hash;
 
-			for (int i = 1; i < sizeof(args); i++)
+			for (std::size_t i = 1; i < sizeof(args); i++)
 				LOG(INFO) << "Arg #" << i << ": " << args[i];
 
 			LOG(INFO) << "== End of Script Event ==";
 		}
 
-		return g_hooking->m_scripted_game_event_hook.get_original<decltype(&hooks::scripted_game_event)>()(scripted_game_event, player);
+		return false;
 	}
 }

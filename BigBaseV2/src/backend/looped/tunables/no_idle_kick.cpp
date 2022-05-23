@@ -7,8 +7,8 @@ namespace big
 	{
 		if (g->tunables.no_idle_kick)
 		{
-			*script_global(1644209).at(1149).as<int*>() = 0;
-			*script_global(1644209).at(1165).as<int*>() = 0;
+			*script_global(1644218).at(1149).as<int*>() = 0;
+			*script_global(1644218).at(1165).as<int*>() = 0;
 		}
 	}
 }

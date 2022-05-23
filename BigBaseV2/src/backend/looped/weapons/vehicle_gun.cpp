@@ -5,7 +5,11 @@
 
 namespace big
 {
-	static const int controls[] = { 14, 15, 24 };
+	static const int controls[] = {
+		(int)ControllerInputs::INPUT_WEAPON_WHEEL_NEXT,
+		(int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV,
+		(int)ControllerInputs::INPUT_ATTACK
+	};
 
 	void looped::weapons_vehicle_gun()
 	{
@@ -13,17 +17,16 @@ namespace big
 
 		if (bVehicleGun)
 		{
-			Ped player = PLAYER::PLAYER_PED_ID();
 
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 25))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
-				PLAYER::DISABLE_PLAYER_FIRING(PLAYER::GET_PLAYER_INDEX(), true);
+				PLAYER::DISABLE_PLAYER_FIRING(self::id, true);
 				for (int control : controls)
 					PAD::DISABLE_CONTROL_ACTION(0, control, true);
 
-				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, 24))
+				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
 				{
-					Vector3 location = ENTITY::GET_ENTITY_COORDS(player, true);
+					Vector3 location = self::pos;
 
 					Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
 					float pitch = math::deg_to_rad(rot.x); // vertical
@@ -37,7 +40,7 @@ namespace big
 					Vehicle veh = vehicle::spawn(
 						(const char*)g->weapons.vehicle_gun_model,
 						location,
-						ENTITY::GET_ENTITY_HEADING(player)
+						ENTITY::GET_ENTITY_HEADING(self::ped)
 					);
 
 					Vector3 velocity;
