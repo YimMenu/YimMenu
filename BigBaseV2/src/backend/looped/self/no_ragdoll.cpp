@@ -3,15 +3,17 @@
 
 namespace big
 {
+	static bool bLastNoRagdoll = false;
+
 	void looped::self_no_ragdoll()
 	{
-		Ped player = PLAYER::PLAYER_PED_ID();
+		bool bNoRagdoll = g->self.no_ragdoll;
 
-		if (g->self.no_ragdoll) {
-			PED::SET_PED_CAN_RAGDOLL(player, !g->self.no_ragdoll);
-			PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(player, !g->self.no_ragdoll);
-			PED::SET_PED_RAGDOLL_ON_COLLISION(player, !g->self.no_ragdoll);
+		if (bNoRagdoll || (!bNoRagdoll && bNoRagdoll != bLastNoRagdoll))
+		{
+			PED::SET_PED_CAN_RAGDOLL(self::ped, !g->self.no_ragdoll);
+
+			bLastNoRagdoll = g->self.no_ragdoll;
 		}
-			
 	}
 }

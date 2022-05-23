@@ -1,19 +1,19 @@
 #include "backend/looped/looped.hpp"
-#include "gta/joaat.hpp"
 #include "natives.hpp"
 
 namespace big
 {
+	static bool bLastInfiniteAmmo = false;
+
 	void looped::weapons_infinite_ammo()
 	{
-		if (g->weapons.infinite_ammo) {
-			Hash weaponHash;
-			auto const ped = PLAYER::PLAYER_PED_ID();
+		bool bInfiniteAmmo = g->weapons.infinite_ammo;
 
-			WEAPON::GET_CURRENT_PED_WEAPON(ped, &weaponHash, 1);
-			if (weaponHash != RAGE_JOAAT("WEAPON_UNARMED")) {
-				WEAPON::GIVE_WEAPON_TO_PED(ped, weaponHash, 9999, false, false);
-			}
+		if (bInfiniteAmmo || (!bInfiniteAmmo && bInfiniteAmmo != bLastInfiniteAmmo))
+		{
+			WEAPON::SET_PED_INFINITE_AMMO(self::ped, g->weapons.infinite_ammo, NULL);
+
+			bLastInfiniteAmmo = g->weapons.infinite_ammo;
 		}
 	}
 }

@@ -10,7 +10,7 @@ namespace big
 		{
 			components::button(session_type.name, [session_type] {
 				session::join_type(session_type);
-				});
+			});
 		}
 
 		if (ImGui::TreeNode("Local Time"))
@@ -28,13 +28,9 @@ namespace big
 		}
 		if (ImGui::TreeNode("Local Weather"))
 		{
-			if (ImGui::Button("Clear Override"))
-			{
-				g_fiber_pool->queue_job([]
-				{
-					MISC::CLEAR_OVERRIDE_WEATHER();
-				});
-			}
+			components::button("Clear Override", [] {
+				MISC::CLEAR_OVERRIDE_WEATHER();
+			});
 
 			if(ImGui::ListBox("", &g->session.local_weather, session::weathers, 15))
 			{

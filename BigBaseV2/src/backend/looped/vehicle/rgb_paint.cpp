@@ -6,8 +6,10 @@ namespace big
 	void looped::vehicle_rainbow_paint()
 	{
 
-		if (self::veh && g->vehicle.rainbow_paint)
+		if (g->vehicle.rainbow_paint)
 		{
+			Vehicle vehicle = self::veh;
+
 			if (g->vehicle.rainbow_paint == 1)
 			{
 				g->rgb.fade = true;
@@ -19,8 +21,8 @@ namespace big
 				g->rgb.fade = false;
 			}
 
-			VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(self::veh, g->rgb.r, g->rgb.g, g->rgb.b);
-			VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(self::veh, g->rgb.r, g->rgb.g, g->rgb.b);
+			VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(vehicle, g->rgb.r, g->rgb.g, g->rgb.b);
+			VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(vehicle, g->rgb.r, g->rgb.g, g->rgb.b);
 		}
 	}
 }

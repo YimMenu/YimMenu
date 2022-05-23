@@ -73,6 +73,19 @@ namespace big
 
 		}
 
+		static void turnsignal_loop() {
+
+			LOG(INFO) << "Starting script: turnsignal";
+
+			while (g_running) {
+
+				looped::vehicle_turn_signals();
+
+				script::get_current()->yield();
+			}
+
+		}
+
 		static void rgbrandomizer_loop() {
 
 			LOG(INFO) << "Starting script: rgbrandomizer";

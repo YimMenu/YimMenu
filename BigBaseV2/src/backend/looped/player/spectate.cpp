@@ -8,6 +8,9 @@ namespace big
 
 	void looped::player_spectate()
 	{
+		Vehicle vehicle = self::veh;
+		Ped ped = self::ped;
+
 		if (!g_player_service->get_selected()->is_valid() || !g->player.spectating)
 		{
 			if (g->player.spectating) g->player.spectating = false;
@@ -18,8 +21,8 @@ namespace big
 
 				NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(false, -1);
 				HUD::SET_MINIMAP_IN_SPECTATOR_MODE(false, -1);
-				ENTITY::FREEZE_ENTITY_POSITION(PLAYER::PLAYER_PED_ID(), false);
-				ENTITY::FREEZE_ENTITY_POSITION(PED::GET_VEHICLE_PED_IS_USING(PLAYER::PLAYER_PED_ID()), false);
+				ENTITY::FREEZE_ENTITY_POSITION(ped, false);
+				ENTITY::FREEZE_ENTITY_POSITION(vehicle, false);
 			}
 
 			return;
@@ -29,8 +32,8 @@ namespace big
 
 		NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(true, target);
 		HUD::SET_MINIMAP_IN_SPECTATOR_MODE(true, target);
-		ENTITY::FREEZE_ENTITY_POSITION(PLAYER::PLAYER_PED_ID(), true);
-		ENTITY::FREEZE_ENTITY_POSITION(PED::GET_VEHICLE_PED_IS_USING(PLAYER::PLAYER_PED_ID()), true);
+		ENTITY::FREEZE_ENTITY_POSITION(ped, true);
+		ENTITY::FREEZE_ENTITY_POSITION(vehicle, true);
 
 		bReset = false;
 	}
