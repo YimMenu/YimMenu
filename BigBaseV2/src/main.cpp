@@ -81,6 +81,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto gui_service_instance = std::make_unique<gui_service>();
 				LOG(INFO) << "Registered service instances...";
 
+<<<<<<< Updated upstream
 				g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
 
@@ -95,6 +96,21 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_script_mgr.add_script(std::make_unique<script>(&backend::rgbrandomizer_loop));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::turnsignal_loop));
 				g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu));
+=======
+				g_script_mgr.add_script(std::make_unique<script>(&features::script_func, "Main", nullptr));
+				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "Main_Gui", nullptr));
+
+				g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop, "Self", &g_script_self));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop, "Weapons", &g_script_weapons));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::vehicles_loop, "Vehicles", &g_script_vehicles));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::misc_loop, "Misc", &g_script_misc));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::remote_loop, "Remote", &g_script_remote));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::noclip_loop, "No Clip", &g_script_noclip));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::lscustoms_loop, "Ls customs", &g_script_lscustoms));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::vehiclefly_loop, "Vehiclefly", &g_script_vehiclefly));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::rgbrandomizer_loop, "Rgb randomizer", &g_script_rgbrandomizer));
+				g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu, "Context menu", &g_script_contextmenu));
+>>>>>>> Stashed changes
 				LOG(INFO) << "Scripts registered.";
 
 				auto native_hooks_instance = std::make_unique<native_hooks>();

@@ -11,8 +11,11 @@ namespace big
 {
 	void script_mgr::add_script(std::unique_ptr<script> script)
 	{
+		if (script)
+			LOG(INFO) << "Added script " << script->m_name;
 		std::lock_guard lock(m_mutex);
 		m_scripts.push_back(std::move(script));
+		
 	}
 
 	void script_mgr::remove_all_scripts()

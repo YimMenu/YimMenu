@@ -18,10 +18,12 @@ namespace big
 		LOG(FATAL) << "Exception Code: " << HEX_TO_UPPER(exp->ExceptionRecord->ExceptionCode) << " Exception Offset: " << HEX_TO_UPPER(offset) << " Fault Module Name: " << buffer;
 	}
 
-	script::script(func_t func, std::optional<std::size_t> stack_size) :
+	script::script(func_t func, const char* name, bool* enabled, std::optional<std::size_t> stack_size) :
 		m_func(func),
 		m_script_fiber(nullptr),
-		m_main_fiber(nullptr)
+		m_main_fiber(nullptr),
+		m_name(name),
+		m_enabled(enabled)
 	{
 		m_script_fiber = CreateFiber(stack_size.has_value() ? stack_size.value() : 0, [](void* param)
 		{

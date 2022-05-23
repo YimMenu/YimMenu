@@ -11,17 +11,18 @@ namespace big
 
 		static void self_loop() {
 
-			LOG(INFO) << "Starting script: Self";
-
 			while (g_running) {
-				looped::self_clean_player();
-				looped::self_free_cam();
-				looped::self_godmode();
-				looped::self_invisibility();
-				looped::self_no_ragdoll();
-				looped::self_off_radar();
-				looped::self_police();
-				looped::self_super_run();
+
+				if (script::get_current()->get_enabled_pointer() == nullptr || *script::get_current()->get_enabled_pointer()) {
+					looped::self_clean_player();
+					looped::self_free_cam();
+					looped::self_godmode();
+					looped::self_invisibility();
+					looped::self_no_ragdoll();
+					looped::self_off_radar();
+					looped::self_police();
+					looped::self_super_run();
+				}
 
 				script::get_current()->yield();
 			}
@@ -30,22 +31,23 @@ namespace big
 		}
 		static void weapons_loop() {
 
-			LOG(INFO) << "Starting script: Weapons";
-
 			while (g_running) {
-				looped::weapons_ammo_special_type();
-				looped::weapons_cage_gun();
-				looped::weapons_delete_gun();
-				looped::weapons_force_crosshairs();
-				looped::weapons_gravity_gun();
-				looped::weapons_increased_damage();
-				looped::weapons_infinite_ammo();
-				looped::weapons_infinite_mag();
-				looped::weapons_no_recoil();
-				looped::weapons_no_spread();
-				looped::weapons_repair_gun();
-				looped::weapons_steal_vehicle_gun();
-				looped::weapons_vehicle_gun();
+
+				if (script::get_current()->get_enabled_pointer() == nullptr || *script::get_current()->get_enabled_pointer()) {
+					looped::weapons_ammo_special_type();
+					looped::weapons_cage_gun();
+					looped::weapons_delete_gun();
+					looped::weapons_force_crosshairs();
+					looped::weapons_gravity_gun();
+					looped::weapons_increased_damage();
+					looped::weapons_infinite_ammo();
+					looped::weapons_infinite_mag();
+					looped::weapons_no_recoil();
+					looped::weapons_no_spread();
+					looped::weapons_repair_gun();
+					looped::weapons_steal_vehicle_gun();
+					looped::weapons_vehicle_gun();
+				}
 
 				script::get_current()->yield();
 			}
@@ -53,19 +55,20 @@ namespace big
 		}
 		static void vehicles_loop() {
 
-			LOG(INFO) << "Starting script: Vehicles";
-
 			while (g_running) {
-				looped::vehicle_auto_drive();
-				looped::vehicle_despawn_bypass();
-				looped::vehicle_drive_on_water();
-				looped::vehicle_god_mode();
-				looped::vehicle_horn_boost();
-				looped::vehicle_instant_brake();
-				looped::vehicle_is_targetable();
-				looped::vehicle_rainbow_paint();
-				looped::vehicle_seatbelt();
-				looped::vehicle_speedo_meter();
+
+				if (script::get_current()->get_enabled_pointer() == nullptr || *script::get_current()->get_enabled_pointer()) {
+					looped::vehicle_auto_drive();
+					looped::vehicle_despawn_bypass();
+					looped::vehicle_drive_on_water();
+					looped::vehicle_god_mode();
+					looped::vehicle_horn_boost();
+					looped::vehicle_instant_brake();
+					looped::vehicle_is_targetable();
+					looped::vehicle_rainbow_paint();
+					looped::vehicle_seatbelt();
+					looped::vehicle_speedo_meter();
+				}
 				
 
 				script::get_current()->yield();
@@ -88,12 +91,12 @@ namespace big
 
 		static void rgbrandomizer_loop() {
 
-			LOG(INFO) << "Starting script: rgbrandomizer";
-
 			while (g_running) {
 
-				looped::rgb_synced_fade();
-				looped::rgb_synced_spasm();
+				if (script::get_current()->get_enabled_pointer() == nullptr || *script::get_current()->get_enabled_pointer()) {
+					looped::rgb_synced_fade();
+					looped::rgb_synced_spasm();
+				}
 
 				script::get_current()->yield();
 			}
@@ -102,14 +105,14 @@ namespace big
 
 		static void misc_loop() {
 
-			LOG(INFO) << "Starting script: Miscellaneous";
-
 			while (g_running) {
 				
-				looped::hud_transition_state();
-				looped::tunables_disable_phone();
-				looped::tunables_no_idle_kick();
-				looped::session_local_time();
+				if (script::get_current()->get_enabled_pointer() == nullptr || *script::get_current()->get_enabled_pointer()) {
+					looped::hud_transition_state();
+					looped::tunables_disable_phone();
+					looped::tunables_no_idle_kick();
+					looped::session_local_time();
+				}
 
 				script::get_current()->yield();
 			}
@@ -118,12 +121,12 @@ namespace big
 
 		static void remote_loop() {
 
-			LOG(INFO) << "Starting script: Remote";
-
 			while (g_running) {
 
-				looped::player_never_wanted();
-				looped::player_spectate();
+				if (script::get_current()->get_enabled_pointer() == nullptr || *script::get_current()->get_enabled_pointer()) {
+					looped::player_never_wanted();
+					looped::player_spectate();
+				}
 
 				script::get_current()->yield();
 			}
@@ -132,11 +135,11 @@ namespace big
 
 		static void noclip_loop() {
 
-			LOG(INFO) << "Starting script: No clip";
-
 			while (g_running) {
 
-				looped::self_noclip();
+				if (script::get_current()->get_enabled_pointer() == nullptr || *script::get_current()->get_enabled_pointer()) {
+					looped::self_noclip();
+				}
 
 				script::get_current()->yield();
 			}
@@ -145,11 +148,11 @@ namespace big
 
 		static void lscustoms_loop() {
 
-			LOG(INFO) << "Starting script: Ls customs";
-
 			while (g_running) {
 
-				looped::vehicle_ls_customs();
+				if (script::get_current()->get_enabled_pointer() == nullptr || *script::get_current()->get_enabled_pointer()) {
+					looped::vehicle_ls_customs();
+				}
 
 				script::get_current()->yield();
 			}
@@ -158,11 +161,11 @@ namespace big
 
 		static void vehiclefly_loop() {
 
-			LOG(INFO) << "Starting script: Vehicle fly";
-
 			while (g_running) {
 
-				looped::vehicle_fly();
+				if (script::get_current()->get_enabled_pointer() == nullptr || *script::get_current()->get_enabled_pointer()) {
+					looped::vehicle_fly();
+				}
 
 				script::get_current()->yield();
 			}
