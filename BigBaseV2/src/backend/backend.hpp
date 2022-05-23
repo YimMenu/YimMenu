@@ -78,12 +78,11 @@ namespace big
 
 		static void turnsignal_loop() {
 
-			LOG(INFO) << "Starting script: turnsignal";
-
 			while (g_running) {
 
-				looped::vehicle_turn_signals();
-
+				if (script::get_current()->get_enabled_pointer() == nullptr || *script::get_current()->get_enabled_pointer()) {
+					looped::vehicle_turn_signals();
+				}
 				script::get_current()->yield();
 			}
 

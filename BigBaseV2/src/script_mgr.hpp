@@ -15,6 +15,7 @@ namespace big
 	inline bool g_script_vehiclefly = true;
 	inline bool g_script_rgbrandomizer = true;
 	inline bool g_script_contextmenu = true;
+	inline bool g_script_turnsignal = true;
 
 	class script_mgr
 	{
