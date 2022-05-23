@@ -5,7 +5,6 @@
 #include "script.hpp"
 #include "views/view.hpp"
 #include "services/VehicleHelper.h"
-//#include "helpers\NetworkHelper.h"
 
 namespace big
 {
