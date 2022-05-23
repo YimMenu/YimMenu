@@ -89,6 +89,7 @@ namespace big
 		m_gta_thread_start_hook.enable();
 		m_gta_thread_kill_hook.enable();
 
+		m_network_group_override.enable();
 		m_network_player_mgr_shutdown_hook.enable();
 
 		m_net_array_handler_hook.enable();
@@ -131,6 +132,7 @@ namespace big
 		m_net_array_handler_hook.disable();
 
 		m_network_player_mgr_shutdown_hook.disable();
+		m_network_group_override.disable();
 
 		m_gta_thread_kill_hook.disable();
 		m_gta_thread_start_hook.disable();
