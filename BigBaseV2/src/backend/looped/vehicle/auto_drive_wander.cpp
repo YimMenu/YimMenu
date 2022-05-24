@@ -1,9 +1,9 @@
 #include "backend/looped/looped.hpp"
+#include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/blip.hpp"
 #include "util/entity.hpp"
 #include "util/vehicle.hpp"
-#include "gta/enums.hpp"
 
 namespace big
 {
