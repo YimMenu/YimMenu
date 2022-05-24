@@ -1,4 +1,4 @@
-﻿#include "common.hpp"
+#include "common.hpp"
 #include "core/globals.hpp"
 #include "features.hpp"
 #include "fiber_pool.hpp"
@@ -9,6 +9,8 @@
 #include "renderer.hpp"
 #include "script_mgr.hpp"
 #include "thread_pool.hpp"
+#include "shv_runner.hpp"
+#include "asi_loader/asi_loader.hpp"
 
 #include "native_hooks/native_hooks.hpp"
 #include "services/context_menu_service.hpp"
@@ -83,7 +85,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
-
+				g_script_mgr.add_script(std::make_unique<script>(&shv_runner::script_func));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::vehicles_loop));
@@ -97,16 +99,20 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu));
 				LOG(INFO) << "Scripts registered.";
 
+
 				auto native_hooks_instance = std::make_unique<native_hooks>();
 				LOG(INFO) << "Dynamic native hooker initialized.";
 
 				g_hooking->enable();
 				LOG(INFO) << "Hooking enabled.";
 
-				g_running = true;
+				asi_loader::initialize();
 
 				while (g_running)
 					std::this_thread::sleep_for(500ms);
+
+				shv_runner::shutdown();
+				LOG(INFO) << "ASI plugins unloaded.";
 
 				g_hooking->disable();
 				LOG(INFO) << "Hooking disabled.";

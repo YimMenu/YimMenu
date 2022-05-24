@@ -1,11 +1,12 @@
+#include "asi_loader/script_manager.hpp"
 #include "common.hpp"
 #include "function_types.hpp"
-#include "logger.hpp"
 #include "gta/array.hpp"
 #include "gta/player.hpp"
 #include "gta/script_thread.hpp"
 #include "gui.hpp"
 #include "hooking.hpp"
+#include "logger.hpp"
 #include "memory/module.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
@@ -162,6 +163,7 @@ namespace big
 			if (g_running)
 			{
 				g_script_mgr.tick();
+				//wndproc(hwnd, msg, wparam, lparam);
 			}
 
 			return g_hooking->m_run_script_threads_hook.get_original<functions::run_script_threads_t>()(ops_to_execute);
@@ -229,6 +231,7 @@ namespace big
 			if (g_running)
 			{
 				g_renderer->wndproc(hwnd, msg, wparam, lparam);
+				script_manager::WndProc(hwnd, msg, wparam, lparam);
 			}
 
 			return CallWindowProcW(g_hooking->m_og_wndproc, hwnd, msg, wparam, lparam);
