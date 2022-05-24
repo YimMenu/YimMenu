@@ -56,7 +56,8 @@ namespace big
 			LOG(INFO) << "Starting script: Vehicles";
 
 			while (g_running) {
-				looped::vehicle_auto_drive();
+				looped::vehicle_auto_drive_to_waypoint();
+				looped::vehicle_auto_drive_wander();
 				looped::vehicle_despawn_bypass();
 				looped::vehicle_drive_on_water();
 				looped::vehicle_god_mode();
@@ -66,7 +67,7 @@ namespace big
 				looped::vehicle_rainbow_paint();
 				looped::vehicle_seatbelt();
 				looped::vehicle_speedo_meter();
-				
+
 
 				script::get_current()->yield();
 			}
@@ -105,7 +106,7 @@ namespace big
 			LOG(INFO) << "Starting script: Miscellaneous";
 
 			while (g_running) {
-				
+
 				looped::hud_transition_state();
 				looped::tunables_disable_phone();
 				looped::tunables_no_idle_kick();

@@ -218,7 +218,7 @@ namespace big
 			bool seatbelt = false;
 			bool turn_signals = false;
 			int auto_drive_speed = 1;
-			int driving_style_flags = 525116;
+			int driving_style_flags = 443;
 			int driving_style_id = 0;
 			int rainbow_paint = 0;
 			speedo_meter speedo_meter{};
