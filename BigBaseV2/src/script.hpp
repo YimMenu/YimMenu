@@ -8,14 +8,14 @@ namespace big
 	public:
 		using func_t = void(*)();
 	public:
-		explicit script(func_t func, const char* name, bool* enabled, std::optional<std::size_t> stack_size = std::nullopt);
+		explicit script(func_t func, std::string_view name, bool* enabled, std::optional<std::size_t> stack_size = std::nullopt);
 		~script();
 
 		void tick();
 		void yield(std::optional<std::chrono::high_resolution_clock::duration> time = std::nullopt);
 		static script* get_current();
 		static void script_exception_handler(PEXCEPTION_POINTERS exp);
-		const char* m_name;
+		std::string_view m_name;
 		void toggle_script(bool toggle) { if (m_enabled != nullptr) *this->m_enabled = toggle; }
 		bool* get_enabled_pointer() { return m_enabled; }
 	private:

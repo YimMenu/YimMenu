@@ -16,7 +16,7 @@ namespace big
 		components::small_text("These scripts are responsible for all looped features,\nOnly disable if you know what you are doing.");
 
 		for (auto& s : g_script_mgr.get_scripts_data()) {
-			if (ImGui::Checkbox(s->m_name, s->get_enabled_pointer())) g_notification_service->push(std::string(s->m_name).append(" script"), *s->get_enabled_pointer() ? "Resumed" : "Halted");
+			if (ImGui::Checkbox(s->m_name.data(), s->get_enabled_pointer())) g_notification_service->push(std::string(s->m_name).append(" script"), *s->get_enabled_pointer() ? "Resumed" : "Halted");
 		}
 
 		ImGui::EndGroup();
