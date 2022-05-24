@@ -1,8 +1,8 @@
 #include "views/view.hpp"
-#include "util/toxic.hpp"
 #include "services/player_service.hpp"
 #include "gta_util.hpp"
 #include "util/misc.hpp"
+#include "util/globals.hpp"
 #include "util/ped.hpp"
 #include "util/teleport.hpp"
 
@@ -35,7 +35,7 @@ namespace big
 				});
 
 				components::button("Clear Wanted Level", [] {
-					toxic::clear_wanted_player(g_player_service->get_selected()->id());
+					globals::clear_wanted_player(g_player_service->get_selected()->id());
 				});
 
 				ImGui::SameLine();
@@ -105,30 +105,6 @@ namespace big
 					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
 
 					teleport::into_vehicle(veh);
-				});
-
-				ImGui::TreePop();
-			}
-
-			if (ImGui::TreeNode("Toxic")) {
-				components::button("Explode Self", [] {
-					toxic::blame_explode_player(
-						g_player_service->get_selected()->id(),
-						g_player_service->get_selected()->id(),
-						eExplosionType::PLANE, 1000, false, true, 0.f
-					);
-				});
-
-				components::button("Taze", [] {
-					toxic::taze_player(g_player_service->get_selected()->id());
-				});
-				
-				components::button("Kick From Vehicle", [] {
-					toxic::kick_from_vehicle(g_player_service->get_selected()->id());
-				});
-        
-				components::button("Flying Vehicle", [] {
-					toxic::flying_vehicle(g_player_service->get_selected()->id());
 				});
 
 				ImGui::TreePop();
