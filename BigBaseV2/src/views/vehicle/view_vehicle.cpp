@@ -24,13 +24,13 @@ namespace big
 
 		components::button("Repair", [] {
 			vehicle::repair(self::veh);
-		});
+			});
 
 		components::button("Instant in personal vehicle", [] {
 			if (!*g_pointers->m_is_session_started) return g_notification_service->push_warning("WARNING", "Go into GTA V Online to use this option");
 
 			vehicle::go_into_personal_vehicle();
-		});
+			});
 
 		if (ImGui::TreeNode("Paint"))
 		{
@@ -58,24 +58,27 @@ namespace big
 		components::small_text("Auto Drive");
 
 		components::button("Drive To Waypoint", [] {
+
 			g->vehicle.auto_drive_to_waypoint = true;
-		});
+			});
 
 		components::button("Wander", [] {
+
 			g->vehicle.auto_drive_wander = true;
-		});
+			});
 
 		ImGui::SliderInt("Top Speed", &g->vehicle.auto_drive_speed, 1, 200);
 
 		components::button("E-Stop", [] {
-			g->vehicle.auto_drive_to_waypoint = false;
-			g->vehicle.auto_drive_wander = false;
-			VEHICLE::SET_VEHICLE_FORWARD_SPEED(self::veh, 0);
-			TASK::CLEAR_VEHICLE_TASKS_(self::veh);
-			TASK::CLEAR_PED_TASKS(self::ped);
-		});
 
-		if (ImGui::ListBox("Driving Style", &g->vehicle.driving_style_id, vehicle::driving_style_names, 3))
+				g->vehicle.auto_drive_to_waypoint = false;
+				g->vehicle.auto_drive_wander = false;
+				VEHICLE::SET_VEHICLE_FORWARD_SPEED(self::veh, 0);
+				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
+				TASK::CLEAR_PED_TASKS(self::ped);
+			});
+
+		if (ImGui::ListBox("Driving Style", &g->vehicle.driving_style_id, vehicle::driving_style_names, 2))
 		{
 			g->vehicle.driving_style_flags = vehicle::driving_styles[g->vehicle.driving_style_id];
 			g_notification_service->push_warning("Auto Drive", fmt::format("Driving style set to {}.", vehicle::driving_style_names[g->vehicle.driving_style_id]));

@@ -36,7 +36,8 @@ namespace big
 		static void system_self_globals();
 		static void system_update_pointers();
 
-		static void vehicle_auto_drive();
+		static void vehicle_auto_drive_to_waypoint();
+		static void vehicle_auto_drive_wander();
 		static void vehicle_despawn_bypass();
 		static void vehicle_drive_on_water();
 		static void vehicle_fly();
