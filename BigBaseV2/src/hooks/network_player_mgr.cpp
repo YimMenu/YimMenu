@@ -11,6 +11,8 @@ namespace big
 			g_notification_service->push("Network Player Manager", "Entering session and initializing player data.");
 
 		g_hooking->m_network_player_mgr_init_hook.get_original<decltype(&hooks::network_player_mgr_init)>()(_this, a2, a3, a4);
+
+		g_player_service->player_join(_this->m_local_net_player);
 	}
 
 	void hooks::network_player_mgr_shutdown(CNetworkPlayerMgr* _this)
