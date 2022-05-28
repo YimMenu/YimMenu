@@ -140,7 +140,13 @@ namespace big
 		Spectate = -1113591308,
 		Teleport = 603406648,
 		TransactionError = -1704141512,
-		VehicleKick = 578856274
+		VehicleKick = 578856274,
+		Unknown1 = -145306724,
+		Unknown2 = -581037897,
+		Unknown3 = 1757755807,
+		Unknown4 = 436475575,
+		Unknown5 = 990606644,
+		Unknown6 = 69874647
 	};
 
 	enum class eSessionType
