@@ -1,5 +1,6 @@
 #include "backend/looped/looped.hpp"
 #include "core/enums.hpp"
+#include "gta/enums.hpp"
 #include "util/entity.hpp"
 #include "util/math.hpp"
 
@@ -11,7 +12,11 @@ namespace big
 	static float dist;
 
 	static const int scroll = 0;
-	static const int controls[] = { 14, 15, 24 };
+	static const int controls[] = {
+		(int)ControllerInputs::INPUT_WEAPON_WHEEL_NEXT,
+		(int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV,
+		(int)ControllerInputs::INPUT_ATTACK
+	};
 
 	void looped::weapons_gravity_gun()
 	{
@@ -19,16 +24,16 @@ namespace big
 		double multiplier = 3.0;
 
 		// ZOOMED IN
-		if (bGravityGun && PAD::IS_DISABLED_CONTROL_PRESSED(0, 25))
+		if (bGravityGun && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 		{
-			PLAYER::DISABLE_PLAYER_FIRING(PLAYER::GET_PLAYER_INDEX(), true);
+			PLAYER::DISABLE_PLAYER_FIRING(self::id, true);
 			for (int control : controls)
 				PAD::DISABLE_CONTROL_ACTION(0, control, true);
 
-			location = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+			location = self::pos;
 
 			// Attack RELEASED
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 24) && ent == 0)
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) && ent == 0)
 			{
 				if (entity::raycast(&ent))
 				{
@@ -70,9 +75,9 @@ namespace big
 
 			if (ENTITY::DOES_ENTITY_EXIST(ent))
 			{
-				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 14))
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_NEXT))
 					dist -= 5;
-				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 15))
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV))
 					dist += 5;
 
 				if (!entity::take_control_of(ent))

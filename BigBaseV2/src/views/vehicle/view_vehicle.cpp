@@ -23,7 +23,6 @@ namespace big
 		ImGui::Checkbox("Seatbelt", &g->vehicle.seatbelt);
 
 		components::button("Repair", [] {
-
 			vehicle::repair(self::veh);
 			});
 
@@ -31,7 +30,6 @@ namespace big
 			if (!*g_pointers->m_is_session_started) return g_notification_service->push_warning("WARNING", "Go into GTA V Online to use this option");
 
 			vehicle::go_into_personal_vehicle();
-
 			});
 
 		if (ImGui::TreeNode("Paint"))
@@ -44,6 +42,13 @@ namespace big
 			}
 
 			ImGui::TreePop();
+		}
+
+		ImGui::Checkbox("Turn Signals", &g->vehicle.turn_signals);
+
+		if (g->vehicle.turn_signals)
+		{
+			ImGui::Checkbox("Fully Automatic Signal", &g->vehicle.auto_turn_signals);
 		}
 
 		ImGui::EndGroup();
@@ -66,18 +71,14 @@ namespace big
 
 		components::button("E-Stop", [] {
 
-			QUEUE_JOB_BEGIN_CLAUSE()
-			{
 				g->vehicle.auto_drive_to_waypoint = false;
 				g->vehicle.auto_drive_wander = false;
 				VEHICLE::SET_VEHICLE_FORWARD_SPEED(self::veh, 0);
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 				TASK::CLEAR_PED_TASKS(self::ped);
-			}
-			QUEUE_JOB_END_CLAUSE
 			});
 
-		if (ImGui::ListBox("Driving Style", &g->vehicle.driving_style_id, vehicle::driving_style_names, 3))
+		if (ImGui::ListBox("Driving Style", &g->vehicle.driving_style_id, vehicle::driving_style_names, 2))
 		{
 			g->vehicle.driving_style_flags = vehicle::driving_styles[g->vehicle.driving_style_id];
 			g_notification_service->push_warning("Auto Drive", fmt::format("Driving style set to {}.", vehicle::driving_style_names[g->vehicle.driving_style_id]));

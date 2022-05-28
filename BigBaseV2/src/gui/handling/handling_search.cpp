@@ -22,7 +22,7 @@ namespace big
 			g_thread_pool->push([&] { g_vehicle_service->get_by_share_code(search); });
 		});
 		ImGui::SameLine();
-		if (ImGui::Button("Search"))
+		if (components::button("Search"))
 			g_thread_pool->push([&] { g_vehicle_service->get_by_share_code(search); });
 
 		switch (g_vehicle_service->m_search_status)
@@ -65,17 +65,17 @@ namespace big
 				ImGui::TableNextColumn();
 				ImGui::TextWrapped(profile.description.c_str());
 				ImGui::TableNextColumn();
-				if (ImGui::Button("Load Profile"))
+				if (components::button("Load Profile"))
 					g_vehicle_service->set_handling_profile(profile);
 				ImGui::SameLine();
-				if (ImGui::Button("Save Profile"))
+				if (components::button("Save Profile"))
 				{
 					g_thread_pool->push([&]
-						{
-							api::vehicle::handling::save_profile(profile.share_code);
+					{
+						api::vehicle::handling::save_profile(profile.share_code);
 
-							g_vehicle_service->load_saved_profiles(true);
-						});
+						g_vehicle_service->load_saved_profiles(true);
+					});
 				}
 
 				ImGui::EndTable();

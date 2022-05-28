@@ -16,9 +16,9 @@ namespace big
 		if (g_local_player != nullptr && !api::util::signed_in())
 		{
 			g_thread_pool->push([]
-			{
-				looped::api_login_session();
-			});
+				{
+					looped::api_login_session();
+				});
 		}
 	}
 }
