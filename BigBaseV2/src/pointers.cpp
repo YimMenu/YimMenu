@@ -200,10 +200,16 @@ namespace big
 			m_player_has_left = ptr.sub(0x26).as<PVOID>();
 		});
 
-		// Network Player Mgr Shutdown
-		main_batch.add("NPMS", "41 57 48 81 EC ? ? ? ? 8A 81 ? ? ? ? 48", [this](memory::handle ptr)
+		// Network Player Mgr Init
+		main_batch.add("NPMI", "41 56 48 83 EC ? 48 8B F1 B9 ? ? ? ? 49 8B F9 41 8B E8 4C 8B F2 E8", [this](memory::handle ptr)
 		{
-			m_network_player_mgr_shutdown = ptr.sub(0x17).as<PVOID>();
+			m_network_player_mgr_init = ptr.sub(0x13).as<decltype(m_network_player_mgr_init)>();
+		});
+
+		// Network Player Mgr Shutdown
+		main_batch.add("NPMS", "48 8D 9F ? ? ? ? EB ? 48 8B 13 48 85 D2 74 ? 48 8B CB E8 ? ? ? ? 48 83 7B ? ? 75 ? 48 8D 9F", [this](memory::handle ptr)
+		{
+			m_network_player_mgr_shutdown = ptr.sub(0x1A).as<decltype(m_network_player_mgr_shutdown)>();
 		});
 
 		// FriendRegistry

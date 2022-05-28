@@ -26,6 +26,7 @@ namespace big
 		static GtaThread* gta_thread_start(unsigned int** a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
 
+		static void network_player_mgr_init(CNetworkPlayerMgr* _this, std::uint64_t a2, std::uint32_t a3, std::uint32_t a4[4]);
 		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
 
 		static void network_group_override(std::int64_t a1, std::int64_t a2, std::int64_t a3);
@@ -89,6 +90,7 @@ namespace big
 		detour_hook m_gta_thread_start_hook;
 		detour_hook m_gta_thread_kill_hook;
 
+		detour_hook m_network_player_mgr_init_hook;
 		detour_hook m_network_player_mgr_shutdown_hook;
 
 		detour_hook m_network_group_override;

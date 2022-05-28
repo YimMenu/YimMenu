@@ -31,6 +31,8 @@ namespace big
 		ImGui::SameLine();
 
 		draw_pair_option("Player Leave", g->notifications.player_leave);
+
+		draw_pair_option("Init", g->notifications.network_player_mgr_init);
 		draw_pair_option("Shutdown", g->notifications.network_player_mgr_shutdown);
 
 		components::small_text("Received Event");

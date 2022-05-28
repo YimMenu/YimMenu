@@ -32,6 +32,8 @@ namespace big
 		// GTA Thread Kill
 		m_gta_thread_kill_hook("GTK", g_pointers->m_gta_thread_kill, &hooks::gta_thread_kill),
 
+		// Network Player Mgr Init
+		m_network_player_mgr_init_hook("NPMI", g_pointers->m_network_player_mgr_init, &hooks::network_player_mgr_init),
 		// Network Player Mgr Shutdown
 		m_network_player_mgr_shutdown_hook("NPMS", g_pointers->m_network_player_mgr_shutdown, &hooks::network_player_mgr_shutdown),
 
@@ -90,6 +92,8 @@ namespace big
 		m_gta_thread_kill_hook.enable();
 
 		m_network_group_override.enable();
+
+		m_network_player_mgr_init_hook.enable();
 		m_network_player_mgr_shutdown_hook.enable();
 
 		m_net_array_handler_hook.enable();
@@ -131,7 +135,9 @@ namespace big
 
 		m_net_array_handler_hook.disable();
 
+		m_network_player_mgr_init_hook.disable();
 		m_network_player_mgr_shutdown_hook.disable();
+
 		m_network_group_override.disable();
 
 		m_gta_thread_kill_hook.disable();

@@ -58,6 +58,7 @@ namespace big
 		PVOID m_gta_thread_start{};
 		PVOID m_gta_thread_kill{};
 
+		PVOID m_network_player_mgr_init;
 		PVOID m_network_player_mgr_shutdown;
 		PVOID m_net_array_handler;
 
