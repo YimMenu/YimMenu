@@ -230,6 +230,12 @@ namespace big
 			m_get_gamplay_cam_coords = ptr.sub(0xE).as<functions::get_gameplay_cam_coords*>();
 		});
 
+		// Give Pickup Reward
+		main_batch.add("GPR", "48 89 5C 24 ? 57 48 83 EC 20 8B F9 48 8B 0D ? ? ? ? 8B DA B2 01 E8 ? ? ? ? 48 8B 0D ? ? ? ? E8 ? ? ? ? 48 8B C8 33 C0 48 85 C9 74 0A 44 8B C3 8B D7 E8 ? ? ? ? 48 8B 0D ? ? ? ? 48 8B D0 48 8B 5C 24 ? 48 83 C4 20 5F E9 ? ? ? ?", [this](memory::handle ptr)
+		{
+			m_give_pickup_rewards = ptr.as<decltype(m_give_pickup_rewards)>();
+		});
+
 		// net array handler - version mismatch patch
 		main_batch.add("NAH", "44 8B E0 89 45 F4 48 8B 03 48 8B CB FF 90", [this](memory::handle ptr)
 		{
