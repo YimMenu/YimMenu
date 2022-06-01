@@ -7,100 +7,53 @@
 
 namespace big
 {
-
 	void aim(bool boolean)
 	{
-		if (boolean)
+		if (!boolean)
 		{
-			Player player = self::id;
-			Ped playerPed = self::ped;
+			return;
+		}
 
-			for (auto& item : g_player_service->m_players)
+		for (auto& item : g_player_service->m_players)
+		{
+			if (auto const& plyr = item.second;
+				plyr->id() != self::id && GetAsyncKeyState(VK_LBUTTON))
 			{
-				const auto& plyr = item.second;
-				if (plyr->id() != self::id)
+				if (auto const targetPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
+					ENTITY::DOES_ENTITY_EXIST(targetPed) && ENTITY::GET_ENTITY_HEALTH(targetPed) > 0)
 				{
-					if (GetAsyncKeyState(VK_LBUTTON))
+					auto const playerPos = ENTITY::GET_ENTITY_COORDS(self::ped, true);
+					auto const targetPos = ENTITY::GET_ENTITY_COORDS(targetPed, true);
+
+					float screenX, screenY;
+					if (auto const distance = SYSTEM::VDIST(playerPos.x, playerPos.y, playerPos.z, targetPos.x, targetPos.y, targetPos.z);
+						GRAPHICS::GET_SCREEN_COORD_FROM_WORLD_COORD(targetPos.x, targetPos.y, targetPos.z, &screenX, &screenY)
+						&& ENTITY::IS_ENTITY_VISIBLE(targetPed)
+						&& (distance < 500 && distance > 2)
+						&& ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, targetPed, 17))
 					{
-						Ped targetPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
-						bool ff = true;
-						BOOL exists = ENTITY::DOES_ENTITY_EXIST(targetPed);
-
-
-						Vector3 targetPos = ENTITY::GET_ENTITY_COORDS(targetPed, true);
-						int health = ENTITY::GET_ENTITY_HEALTH(targetPed);
-						Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(playerPed, true);
-						float distance = MISC::GET_DISTANCE_BETWEEN_COORDS(playerCoords.x, playerCoords.y, playerCoords.z, targetPos.x, targetPos.y, targetPos.z, TRUE);
-						if (exists && health > 0 && ff)
-						{
-							float screenX, screenY;
-							BOOL onScreen = GRAPHICS::GET_SCREEN_COORD_FROM_WORLD_COORD(targetPos.x, targetPos.y, targetPos.z, &screenX, &screenY);
-							if (ENTITY::IS_ENTITY_VISIBLE(targetPed) && onScreen && (distance < 500 && distance > 2))
-							{
-								if (ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(playerPed, targetPed, 17))
-								{
-									Vector3 targetCoords = PED::GET_PED_BONE_COORDS(targetPed, 31086, 0, 0, 0); //For Head ->31086, For Neck ->39317
-									PED::SET_PED_SHOOTS_AT_COORD(playerPed, targetCoords.x, targetCoords.y, targetCoords.z, true);
-								}
-							}
-						}
+						auto const targetCoords = PED::GET_PED_BONE_COORDS(targetPed, 31086, 0, 0, 0); //For Head ->31086, For Neck ->39317
+						PED::SET_PED_SHOOTS_AT_COORD(self::ped, targetCoords.x, targetCoords.y, targetCoords.z, true);
 					}
 				}
 			}
-
-			//for (int i = 0; i < 32; i++)
-			//{
-			//	if (i != player)
-			//	{
-			//		if (GetAsyncKeyState(VK_LBUTTON))
-			//		{
-
-			//			Ped targetPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i);
-			//			bool ff = true;
-			//			BOOL exists = ENTITY::DOES_ENTITY_EXIST(targetPed);
-
-
-			//			Vector3 targetPos = ENTITY::GET_ENTITY_COORDS(targetPed, true);
-			//			int health = ENTITY::GET_ENTITY_HEALTH(targetPed);
-			//			Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(playerPed, true);
-			//			float distance = MISC::GET_DISTANCE_BETWEEN_COORDS(playerCoords.x, playerCoords.y, playerCoords.z, targetPos.x, targetPos.y, targetPos.z, TRUE);
-			//			if (exists && health > 0 && ff)
-			//			{
-			//				float screenX, screenY;
-			//				BOOL onScreen = GRAPHICS::GET_SCREEN_COORD_FROM_WORLD_COORD(targetPos.x, targetPos.y, targetPos.z, &screenX, &screenY);
-			//				if (ENTITY::IS_ENTITY_VISIBLE(targetPed) && onScreen && (distance < 500 && distance > 2))
-			//				{
-			//					if (ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(playerPed, targetPed, 17))
-			//					{
-			//						Vector3 targetCoords = PED::GET_PED_BONE_COORDS(targetPed, 31086, 0, 0, 0); //For Head ->31086, For Neck ->39317
-			//						PED::SET_PED_SHOOTS_AT_COORD(playerPed, targetCoords.x, targetCoords.y, targetCoords.z, true);
-			//					}
-			//				}
-			//			}
-			//		}
-			//	}
-			//}
-
 		}
-
 	}
-
 
 	bool boolaim = false;
 	void looped::self_aim()
 	{
-		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr) return;
-		bool bchek = g->self.aim;
-		if (bchek || (!bchek && bchek != boolaim))
+		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr)
 		{
-
-			aim(g->self.aim);
-			bchek = g->self.aim;
-
-
-
+			return;
 		}
 
+		bool bchek = g->self.aim;
 
+		if (bchek || (!bchek && bchek != boolaim))
+		{
+			aim(g->self.aim);
+			bchek = g->self.aim;
+		}
 	}
 }
