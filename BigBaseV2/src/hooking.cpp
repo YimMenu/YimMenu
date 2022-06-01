@@ -29,11 +29,11 @@ namespace big
 
 		// GTA Thead Start
 		m_gta_thread_start_hook("GTS", g_pointers->m_gta_thread_start, &hooks::gta_thread_start),
-		// GTA Thread Tick
-		m_gta_thread_tick_hook("GTT", g_pointers->m_gta_thread_tick, &hooks::gta_thread_tick),
 		// GTA Thread Kill
 		m_gta_thread_kill_hook("GTK", g_pointers->m_gta_thread_kill, &hooks::gta_thread_kill),
 
+		// Network Player Mgr Init
+		m_network_player_mgr_init_hook("NPMI", g_pointers->m_network_player_mgr_init, &hooks::network_player_mgr_init),
 		// Network Player Mgr Shutdown
 		m_network_player_mgr_shutdown_hook("NPMS", g_pointers->m_network_player_mgr_shutdown, &hooks::network_player_mgr_shutdown),
 
@@ -57,7 +57,13 @@ namespace big
 		// Player Has Joined
 		m_player_has_joined_hook("PHJ", g_pointers->m_player_has_joined, &hooks::player_join),
 		// Player Has Left
-		m_player_has_left_hook("PHL", g_pointers->m_player_has_left, &hooks::player_leave)
+		m_player_has_left_hook("PHL", g_pointers->m_player_has_left, &hooks::player_leave),
+		// Receive Net Message
+		m_receive_net_message_hook("RNM", g_pointers->m_receive_net_message, &hooks::receive_net_message),
+		// Received clone sync
+		m_received_clone_sync_hook("RCS", g_pointers->m_received_clone_sync, &hooks::received_clone_sync),
+		//Get Network Event Data
+		m_get_network_event_data_hook("GNED", g_pointers->m_get_network_event_data, &hooks::get_network_event_data)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -84,8 +90,10 @@ namespace big
 
 		m_gta_thread_start_hook.enable();
 		m_gta_thread_kill_hook.enable();
-		m_gta_thread_tick_hook.enable();
 
+		m_network_group_override.enable();
+
+		m_network_player_mgr_init_hook.enable();
 		m_network_player_mgr_shutdown_hook.enable();
 
 		m_net_array_handler_hook.enable();
@@ -99,12 +107,22 @@ namespace big
 
 		m_send_net_info_to_lobby.enable();
 
+		m_receive_net_message_hook.enable();
+		m_get_network_event_data_hook.enable();
+
+		m_received_clone_sync_hook.enable();
+
 		m_enabled = true;
 	}
 
 	void hooking::disable()
 	{
 		m_enabled = false;
+
+		m_received_clone_sync_hook.disable();
+
+		m_get_network_event_data_hook.disable();
+		m_receive_net_message_hook.disable();
 
 		m_send_net_info_to_lobby.disable();
 
@@ -117,9 +135,11 @@ namespace big
 
 		m_net_array_handler_hook.disable();
 
+		m_network_player_mgr_init_hook.disable();
 		m_network_player_mgr_shutdown_hook.disable();
 
-		m_gta_thread_tick_hook.disable();
+		m_network_group_override.disable();
+
 		m_gta_thread_kill_hook.disable();
 		m_gta_thread_start_hook.disable();
 

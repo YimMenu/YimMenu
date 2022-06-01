@@ -26,44 +26,6 @@ namespace rage
 		class CPlayerInfo* m_player_info; //0x10C8
 	};
 
-	class CPlayerInfo
-	{
-	public:
-		char pad_0000[52]; //0x0000
-		uint32_t m_internal_ip; //0x0034
-		uint16_t m_internal_port; //0x0038
-		char pad_003A[2]; //0x003A
-		uint32_t m_relay_ip; //0x003C
-		uint16_t m_relay_port; //0x0040
-		char pad_0042[2]; //0x0042
-		uint32_t m_external_ip; //0x0044
-		uint16_t m_external_port; //0x0048
-		char pad_004A[30]; //0x004A
-		uint64_t m_rockstar_id; //0x0068
-		char pad_0070[12]; //0x0070
-		char m_name[20]; //0x007C
-		char pad_0090[184]; //0x0090
-		float m_swim_speed; //0x0148
-		float m_run_speed; //0x014C
-		char pad_0150[81]; //0x0150
-		bool m_is_rockstar_dev; //0x01A1
-		char pad_01A2[1]; //0x01A2
-		bool m_is_cheater; //0x01A3
-		char pad_01A4[11]; //0x01A4
-		bool m_is_online; //0x01AF
-		char pad_01B0[24]; //0x01B0
-		class CPed* m_ped; //0x01C8
-		char pad_01D0[40]; //0x01D0
-		uint32_t m_frame_flags; //0x01F8
-		char pad_01FC[28]; //0x01FC
-		uint32_t m_player_controls; //0x0218
-		char pad_021C[1524]; //0x021C
-		bool m_is_wanted; //0x0810
-		char pad_0811[3]; //0x0811
-		int32_t m_wanted_level_display; //0x0814
-		int32_t m_wanted_level; //0x0818
-	}; //Size: 0x081C
-
 	class CObject : public fwEntity
 	{
 	public:
@@ -83,6 +45,15 @@ namespace rage
 		class CPed* m_local_ped; //0x0008
 	}; //Size: 0x0010
 
+	//CUSTOM CLASS TO IMPROVE R* SHIT CLASS STRUCTURE
+	class CEntityHandle {
+	public:
+		class fwEntity* m_entity_ptr; //0x0000
+		int32_t m_handle; //0x0008
+		char pad_000C[4]; //0x000C
+	}; //Size: 0x0010
+	static_assert(sizeof(CEntityHandle) == 0x10, "CEntityHandle is not properly sized");
+
 	class CObjectHandle
 	{
 	public:
@@ -95,7 +66,7 @@ namespace rage
 	class CObjectList
 	{
 	public:
-		class CObjectHandle m_objects[2300]; //0x0000
+		class CEntityHandle m_objects[2300]; //0x0000
 	}; //Size: 0x8FC0
 
 	class CObjectInterface
@@ -107,10 +78,10 @@ namespace rage
 		char pad_0164[4]; //0x0164
 		int32_t m_cur_objects; //0x0168
 
-		rage::CObject* get_object(const int& index)
+		rage::fwEntity* get_object(const int& index)
 		{
 			if (index < m_max_objects)
-				return m_object_list->m_objects[index].m_object;
+				return m_object_list->m_objects[index].m_entity_ptr;
 			return nullptr;
 		}
 	}; //Size: 0x016C
@@ -127,7 +98,8 @@ namespace rage
 	class CPedList
 	{
 	public:
-		class CPedHandle m_peds[256]; //0x0000
+		//CHANGED FROM CPedHandle
+		class CEntityHandle m_peds[256]; //0x0000 
 	}; //Size: 0x1000
 
 	class CPedInterface
@@ -139,10 +111,10 @@ namespace rage
 		char pad_010C[4]; //0x010C
 		int32_t m_cur_peds; //0x0110
 
-		CPed* get_ped(const int& index)
+		fwEntity* get_ped(const int& index)
 		{
 			if (index < m_max_peds)
-				return m_ped_list->m_peds[index].m_ped;
+				return m_ped_list->m_peds[index].m_entity_ptr;
 			return nullptr;
 		}
 	}; //Size: 0x0114
@@ -159,7 +131,8 @@ namespace rage
 	class CVehicleList
 	{
 	public:
-		class CVehicleHandle m_vehicles[300]; //0x0000
+		//CHANGED FROM CVehicleHandle
+		class CEntityHandle m_vehicles[300]; //0x0000
 	}; //Size: 0x12C0
 
 	class CVehicleInterface
@@ -171,10 +144,10 @@ namespace rage
 		char pad_018C[4]; //0x018C
 		int32_t m_cur_vehicles; //0x0190
 
-		CVehicle* get_vehicle(const int& index)
+		fwEntity* get_vehicle(const int& index)
 		{
 			if (index < m_max_vehicles)
-				return m_vehicle_list->m_vehicles[index].m_vehicle;
+				return m_vehicle_list->m_vehicles[index].m_entity_ptr;
 			return nullptr;
 		}
 	}; //Size: 0x0194

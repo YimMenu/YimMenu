@@ -13,6 +13,17 @@ namespace big
 		VEHICLE_GUN
 	};
 
+	enum class eEntityType
+	{
+		UNK_0,
+		UNK_1,
+		UNK_2,
+		UNK_3,
+		UNK_4,
+		VEHICLE,
+		PED,
+	};
+
 	enum class eTransitionState
 	{
 		TRANSITION_STATE_EMPTY,
@@ -114,9 +125,11 @@ namespace big
 		CeoKick = 248967238,
 		CeoMoney = 1890277845,
 		ClearWantedLevel = -91354030,
+		Crash = -1386010354,
 		FakeDeposit = 677240627,
 		ForceMission = 2020588206,
 		GtaBanner = 1572255940,
+		MCTeleport = 962740265,
 		NetworkBail = 1228916411,
 		PersonalVehicleDestroyed = 802133775,
 		RemoteOffradar = -391633760,
@@ -127,7 +140,13 @@ namespace big
 		Spectate = -1113591308,
 		Teleport = 603406648,
 		TransactionError = -1704141512,
-		VehicleKick = 578856274
+		VehicleKick = 578856274,
+		Unknown1 = -145306724,
+		Unknown2 = -581037897,
+		Unknown3 = 1757755807,
+		Unknown4 = 436475575,
+		Unknown5 = 990606644,
+		Unknown6 = 69874647
 	};
 
 	enum class eSessionType

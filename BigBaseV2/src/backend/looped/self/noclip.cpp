@@ -1,12 +1,21 @@
 #include "backend/looped/looped.hpp"
 #include "fiber_pool.hpp"
+#include "gta/enums.hpp"
 #include "natives.hpp"
 #include "script.hpp"
 #include "util/entity.hpp"
 
 namespace big
 {
-	static const int controls[] = { 21, 32, 33, 34, 35, 36 };
+	static const int controls[] = {
+		(int)ControllerInputs::INPUT_SPRINT,
+		(int)ControllerInputs::INPUT_MOVE_UP_ONLY,
+		(int)ControllerInputs::INPUT_MOVE_DOWN_ONLY,
+		(int)ControllerInputs::INPUT_MOVE_LEFT_ONLY,
+		(int)ControllerInputs::INPUT_MOVE_RIGHT_ONLY,
+		(int)ControllerInputs::INPUT_DUCK
+	};
+
 	static float speed = 20.f;
 	static float mult = 0.f;
 
@@ -18,9 +27,8 @@ namespace big
 	void looped::self_noclip() {
 		bool bNoclip = g->self.noclip;
 
-		Entity ent = PLAYER::PLAYER_PED_ID();
-		bool bInVehicle = PED::IS_PED_IN_ANY_VEHICLE(ent, true);
-		if (bInVehicle) ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
+		Vector3 location = self::pos;
+		Entity ent = self::veh != NULL ? self::veh : self::ped;
 
 		// cleanup when changing entities
 		if (prev != ent)
@@ -40,22 +48,22 @@ namespace big
 			float heading = 0.f;
 
 			// Left Shift
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 21))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
 				vel.z += speed / 2;
 			// Left Control
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 36))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_DUCK))
 				vel.z -= speed / 2;
 			// Forward
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 32))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_UP_ONLY))
 				vel.y += speed;
 			// Backward
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 33))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_DOWN_ONLY))
 				vel.y -= speed;
 			// Left
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 34))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_LEFT_ONLY))
 				vel.x -= speed;
 			// Right
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, 35))
+			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_RIGHT_ONLY))
 				vel.x += speed;
 
 			rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
@@ -76,8 +84,8 @@ namespace big
 				ENTITY::FREEZE_ENTITY_POSITION(ent, false);
 
 				Vector3 offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, vel.x, vel.y, 0.f);
-				vel.x = offset.x - self::pos.x;
-				vel.y = offset.y - self::pos.y;
+				vel.x = offset.x - location.x;
+				vel.y = offset.y - location.y;
 
 				ENTITY::SET_ENTITY_VELOCITY(ent, vel.x * mult, vel.y * mult, vel.z * mult);
 			}
