@@ -11,8 +11,8 @@ namespace big
 		if (ImGui::Hotkey("Menu Toggle", &g->settings.hotkeys.menu_toggle))
 			g->settings.hotkeys.editing_menu_toggle = true; // make our menu reappear
 
-		ImGui::Text("(Below hotkey is not implemented)");
 		ImGui::Hotkey("Teleport to waypoint", &g->settings.hotkeys.teleport_waypoint);
+		ImGui::Hotkey("Teleport to objective", &g->settings.hotkeys.teleport_objective);
 
 		ImGui::PopItemWidth();
 	}
