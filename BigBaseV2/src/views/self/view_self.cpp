@@ -76,6 +76,7 @@ namespace big
 		components::button("Clean Player", [] {
 			entity::clean_ped(self::ped);
 		});
+		ImGui::Checkbox("Aimbot", &g->self.aim);
 
 		ImGui::EndGroup();
 

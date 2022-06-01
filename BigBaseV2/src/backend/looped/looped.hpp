@@ -30,6 +30,7 @@ namespace big
 		static void self_off_radar();
 		static void self_police();
 		static void self_super_run();
+		static void self_aim();
 
 		static void session_local_time();
 

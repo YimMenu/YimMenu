@@ -139,6 +139,7 @@ namespace big
 			bool noclip = false;
 			bool off_radar = false;
 			bool super_run = false;
+			bool aim = false;
 			int wanted_level = 0;
 		};
 
@@ -673,7 +674,8 @@ namespace big
 						{ "never_wanted", this->self.never_wanted },
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
-						{ "super_run", this->self.super_run }
+						{ "super_run", this->self.super_run },
+						{ "aim", this->self.aim}
 					}
 				},
 				{

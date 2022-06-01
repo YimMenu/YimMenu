@@ -22,6 +22,8 @@ namespace big
 				looped::self_off_radar();
 				looped::self_police();
 				looped::self_super_run();
+				looped::self_aim();
+
 
 				script::get_current()->yield();
 			}
