@@ -26,7 +26,7 @@ namespace big
 			vehicle::repair(self::veh);
 			});
 
-		components::button("Instant in personal vehicle", [] {
+		components::button("Instant in PV", [] {
 			if (!*g_pointers->m_is_session_started) return g_notification_service->push_warning("WARNING", "Go into GTA V Online to use this option");
 
 			vehicle::go_into_personal_vehicle();
@@ -61,6 +61,7 @@ namespace big
 
 			g->vehicle.auto_drive_to_waypoint = true;
 			});
+		ImGui::SameLine();
 
 		components::button("Wander", [] {
 
