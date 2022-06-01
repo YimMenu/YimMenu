@@ -86,7 +86,7 @@ namespace big
 				}
 				ImGui::ListBoxFooter();
 			}
-			else ImGui::Text("No vehicles in registry.");	
+			else ImGui::Text("No vehicles in registry.");
 		}
 	}
 }

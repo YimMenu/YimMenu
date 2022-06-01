@@ -1,17 +1,9 @@
 #include "fiber_pool.hpp"
 #include "util/entity.hpp"
 #include "views/view.hpp"
-#include "services/ped_list_service.hpp"
 
 namespace big
 {
-	bool does_search_match_ped_list(std::string& input, const std::string& search)
-	{
-		std::transform(input.begin(), input.end(), input.begin(), ::tolower);
-
-		return input.find(search) != std::string::npos;
-	}
-
 	void view::self() {
 		components::button("Suicide", [] {
 			ENTITY::SET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID(), 0, 0);
@@ -24,72 +16,30 @@ namespace big
 		});
 
 		static char model[32];
-		components::input_text_with_hint("Model Name##player_ped_model", "Search", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, []
+		components::input_text_with_hint("Model Name###player_ped_model", "Player Model Name", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, []
 		{
-			const Hash hash = rage::joaat(model);
+			g_fiber_pool->queue_job([] {
+				const Hash hash = rage::joaat(model);
 
-			for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
-			{
-				STREAMING::REQUEST_MODEL(hash);
-
-				script::get_current()->yield();
-			}
-			if (!STREAMING::HAS_MODEL_LOADED(hash))
-			{
-				g_notification_service->push_error("Self", "Failed to spawn model, did you give an incorrect model ? ");
-
-				return;
-			}
-
-			PLAYER::SET_PLAYER_MODEL(PLAYER::GET_PLAYER_INDEX(), hash);
-			PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID());
-			script::get_current()->yield();
-			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-		});
-		if (ImGui::ListBoxHeader("###ped_list"))
-		{
-			if (!g_ped_list_service->get_ped_list().is_null())
-			{
-				for (auto& item : g_ped_list_service->get_ped_list())
+				for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
 				{
-					if (item["Name"].is_null())
-						continue;
+					STREAMING::REQUEST_MODEL(hash);
 
-					std::string name = item["Name"];
-
-					std::string search = model;
-					std::transform(search.begin(), search.end(), search.begin(), ::tolower);
-
-					if (search.empty() ||
-						does_search_match_ped_list(name, search))
-					{
-						components::selectable(item["Name"], item["Name"] == search, [&item]
-						{
-							const Hash hash = rage::joaat(item["Name"]);
-
-							for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
-							{
-								STREAMING::REQUEST_MODEL(hash);
-
-								script::get_current()->yield();
-							}
-							if (!STREAMING::HAS_MODEL_LOADED(hash))
-							{
-								g_notification_service->push_error("Self", "Failed to spawn model, did you give an incorrect model ? ");
-
-								return;
-							}
-
-							PLAYER::SET_PLAYER_MODEL(PLAYER::GET_PLAYER_INDEX(), hash);
-							PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID());
-							script::get_current()->yield();
-							STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-						});
-					}
+					script::get_current()->yield();
 				}
-			}
-			ImGui::ListBoxFooter();
-		}
+				if (!STREAMING::HAS_MODEL_LOADED(hash))
+				{
+					g_notification_service->push_error("Self", "Failed to spawn model, did you give an incorrect model ? ");
+
+					return;
+				}
+
+				PLAYER::SET_PLAYER_MODEL(PLAYER::GET_PLAYER_INDEX(), hash);
+				PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID());
+				script::get_current()->yield();
+				STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+				});
+		});
 
 		ImGui::Separator();
 
