@@ -142,6 +142,8 @@ namespace big
 	{
 		while (g_running)
 		{
+			if (!g->context_menu.enabled) return;
+
 			if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_VEH_DUCK))
 			{
 				g_context_menu_service->enabled = !g_context_menu_service->enabled;
