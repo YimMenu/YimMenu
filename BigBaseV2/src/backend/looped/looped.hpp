@@ -65,5 +65,9 @@ namespace big
 		static void weapons_repair_gun();
 		static void weapons_steal_vehicle_gun();
 		static void weapons_vehicle_gun();
+
+		static void hotkeys_input();
+		static void hotkeys_teleport_waypoint();
+		static void hotkeys_teleport_objective();
 	};
 }

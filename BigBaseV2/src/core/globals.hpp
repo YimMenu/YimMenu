@@ -140,6 +140,7 @@ namespace big
 			bool off_radar = false;
 			bool super_run = false;
 			bool aim = false;
+			bool aimbot_exclude_friend = true;
 			int wanted_level = 0;
 		};
 
@@ -160,6 +161,9 @@ namespace big
 				bool editing_menu_toggle = false;
 				int menu_toggle = VK_INSERT;
 				int teleport_waypoint = 0;
+				bool teleport_waypoint_triggered = false;
+				int teleport_objective = 0;
+				bool teleport_objective_triggered = false;
 			};
 
 			hotkeys hotkeys{};
@@ -262,6 +266,11 @@ namespace big
 			bool switched_view = true;
 		};
 
+		struct context_menu
+		{
+			bool enabled = true;
+		};
+
 		struct esp
 		{
 			bool enabled = true;
@@ -305,6 +314,7 @@ namespace big
 		vehicle vehicle{};
 		weapons weapons{};
 		window window{};
+		context_menu context_menu{};
 		esp esp{};
 
 		menu_settings(file save_file)
@@ -459,8 +469,11 @@ namespace big
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
 			this->self.aim = j["self"]["aim"];
+			this->self.aimbot_exclude_friend = j["self"]["aimbot_exclude_friend"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
+			this->settings.hotkeys.teleport_waypoint = j["settings"]["hotkeys"]["teleport_waypoint"];
+			this->settings.hotkeys.teleport_objective = j["settings"]["hotkeys"]["teleport_objective"];
 
 			this->spawn.preview_vehicle = j["spawn"]["preview_vehicle"];
 			this->spawn.spawn_inside = j["spawn"]["spawn_inside"];
@@ -518,6 +531,8 @@ namespace big
 			this->window.log = j["window"]["log"];
 			this->window.main = j["window"]["main"];
 			this->window.users = j["window"]["users"];
+
+			this->context_menu.enabled = j["context_menu"]["enabled"];
 
 			this->esp.enabled = j["esp"]["enabled"];
 			this->esp.hide_self = j["esp"]["hide_self"];
@@ -676,13 +691,16 @@ namespace big
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
 						{ "super_run", this->self.super_run },
-						{ "aim", this->self.aim}
+						{ "aim", this->self.aim },
+						{ "aimbot_exclude_friend", this->self.aimbot_exclude_friend }
 					}
 				},
 				{
 					"settings", {
 						{ "hotkeys", {
-								{ "menu_toggle", this->settings.hotkeys.menu_toggle }
+								{ "menu_toggle", this->settings.hotkeys.menu_toggle },
+								{ "teleport_waypoint", this->settings.hotkeys.teleport_waypoint },
+								{ "teleport_objective", this->settings.hotkeys.teleport_objective }
 							}
 						}
 					}
@@ -769,6 +787,11 @@ namespace big
 						{ "log", this->window.log },
 						{ "main", this->window.main },
 						{ "users", this->window.users }
+					}
+				},
+				{
+					"context_menu", {
+						{"enabled", this->context_menu.enabled}
 					}
 				},
 				{

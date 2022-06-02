@@ -7,7 +7,7 @@
 
 namespace big
 {
-	void backend::loop()
+    void backend::loop()
 	{
 		g->attempt_save();
 		looped::system_self_globals();

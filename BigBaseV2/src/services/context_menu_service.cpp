@@ -142,6 +142,13 @@ namespace big
 	{
 		while (g_running)
 		{
+			if (!g->context_menu.enabled) {
+				g_context_menu_service->enabled = false;
+
+				script::get_current()->yield();
+				continue;
+			}
+
 			if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_VEH_DUCK))
 			{
 				g_context_menu_service->enabled = !g_context_menu_service->enabled;
@@ -179,7 +186,7 @@ namespace big
 					PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_SPECIAL_ABILITY))
 				{
 					if (!g_context_menu_service->m_pointer)
-						return;
+						continue;
 					cm->options.at(cm->current_option).command();
 				}
 			}

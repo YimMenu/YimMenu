@@ -77,6 +77,10 @@ namespace big
 			entity::clean_ped(self::ped);
 		});
 		ImGui::Checkbox("Aimbot", &g->self.aim);
+		if (g->self.aim)
+		{
+			ImGui::Checkbox("Exclude Friends", &g->self.aimbot_exclude_friend);
+		}
 
 		ImGui::EndGroup();
 

@@ -171,6 +171,28 @@ namespace big
 			}
 
 		}
+		static void hotkeys_input() {
+			LOG(INFO) << "Starting script: Hotkeys input";
+
+			while (g_running) {
+
+				looped::hotkeys_input();
+
+				script::get_current()->yield();
+			}
+		}
+
+		static void hotkeys_loop() {
+			LOG(INFO) << "Starting script: Hotkeys loop";
+
+			while (g_running) {
+
+				looped::hotkeys_teleport_waypoint();
+				looped::hotkeys_teleport_objective();
+
+				script::get_current()->yield();
+			}
+		}
 
 	};
 }

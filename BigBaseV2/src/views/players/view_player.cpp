@@ -119,6 +119,8 @@ namespace big
 					);
 				});
 
+				ImGui::SameLine();
+
 				components::button("Taze", [] {
 					toxic::taze_player(g_player_service->get_selected()->id());
 				});
