@@ -5,6 +5,7 @@ namespace big
 {
 	enum class tabs {
 		ESP_SETTINGS,
+		CONTEXT_MENU_SETTINGS,
 		GUI_SETTINGS,
 		HANDLING_SEARCH,
 		HANDLING_SAVED_PROFILE,
@@ -60,6 +61,7 @@ namespace big
 				{ tabs::SESSION, { "Session", view::session }},
 			}}},
 			{tabs::SETTINGS, { "Settings", view::settings, {
+				{ tabs::CONTEXT_MENU_SETTINGS, { "Context Menu", view::context_menu_settings}},
 				{ tabs::ESP_SETTINGS, { "ESP", view::esp_settings}},
 				{ tabs::GUI_SETTINGS, { "GUI", view::gui_settings}},
 				{ tabs::NOTIFICATION_SETTINGS, { "Notifications", view::notification_settings}},
