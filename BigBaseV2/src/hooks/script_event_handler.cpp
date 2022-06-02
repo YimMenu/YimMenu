@@ -80,6 +80,14 @@ namespace big
 
 				return true;
 			}
+			if (g->protections.script_events.crash && args[2] <=-1996063584 || args[2] >= 1999997397 || args[2] >-129985365 && args[2] < 22963135 || args[3] <= -1 || args[3] >= 385999 ||
+				args[4] <= -1 || args[4] >= 166000 || args[4] > 269 && args[4] < 133000 || args[5] <= -1 || args[5] >= 1351433445 || args[5] > 1 && args[5] < 1121433410 || args[6] <= -1 || args[6] >= 1951345490 || 
+				args[7] <= -1 || args[7] >= 116 || args[8] <= -1 || args[8] >= 1 || args[9] <= -1 || args[9] >= 1 || args[6] > 2 && args[2] < 77777777)
+			{
+				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+
+				return true;
+			}
 			break;
 		case eRemoteEvent::ForceMission:
 			if (g->protections.script_events.force_mission)
@@ -230,6 +238,52 @@ namespace big
 				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
 				return true;
 			}
+			break;
+		case eRemoteEvent::CrashMultiple:
+			if (g->protections.script_events.crash || args[2] <= -1 || args[2] >= 1 ||
+				args[3] <= -2 || args[3] >= 0 || args[4] <= 3 || args[4] >= 5 || args[5] <= 172 || args[5] >= 174 || args[6] <= 20 || args[6] >= 510 || args[7] <= 62 || args[7] >= 64 ||
+				args[11] <= -1 || args[11] >= 1 || args[12] <= -1 || args[12] >= 1 || args[13] <= -1 || args[13] >= 1)
+			{
+				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+
+				return true;
+			}
+			break;
+		case eRemoteEvent::CrashMultiple3:
+			if (g->protections.script_events.crash && args[2] <= -1986324736 || args[2] >= 1747413822 || args[2] > -9999999 && args[2] < 77777777 || args[3] <= -1986324736 || args[3] >= 1777712108 ||
+				args[3] >-9999999 && args[3] < 77777777 || args[4] <= -1673857408 || args[4] >= 1780088064 || args[4] >-9999999 && args[4] < 77777777 || args[6] <= -2588888790 || args[6] >= 2100146067)
+			{
+				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+
+				return true;
+			}
+			break;
+		case eRemoteEvent::Crash4:
+		case eRemoteEvent::Crash5:
+		case eRemoteEvent::Crash6:
+		case eRemoteEvent::Crash7:
+		case eRemoteEvent::Crash8:
+		case eRemoteEvent::Crash10:
+			if (g->protections.script_events.crash) {
+				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				return true;
+			}
+			break;
+		case eRemoteEvent::CrashMultiple2:
+			if (g->protections.script_events.crash && args[2] <= -1 || args[2] >= 50 || args[3] <= -1 || args[3] >= 50)
+			{
+				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				return true;
+			}
+			break;
+		case eRemoteEvent::CrashMultiple5:
+			if (g->protections.script_events.crash && args[2] <= 115831 || args[2] >= 9999449 || args[3] <= -1 || args[3] >= 1 ||
+				args[4] <= -1 || args[4] >=3 || args[5] <= -1 || args[5] >= 101 || args[6] <= -1 || args[6] >= 3 || args[7] <= -1 || args[7] >= 1)
+			{
+				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				return true;
+			}
+			break;
 		}
 
 		if (g->debug.script_event_logging)

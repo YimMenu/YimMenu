@@ -146,7 +146,19 @@ namespace big
 		Unknown3 = 1757755807,
 		Unknown4 = 436475575,
 		Unknown5 = 990606644,
-		Unknown6 = 69874647
+		Unknown6 = 69874647,
+		Crash4 = -1715193475,
+		Crash5 = 1258808115,
+		Crash6 = 998716537,
+		Crash7 = 163598572,
+		Crash8 = -1056683619,
+		Crash10 = -393294520,
+		CrashMultiple = 704979198,
+		CrashMultiple2 = -1970125962,
+		CrashMultiple3 = 2112408256,
+		CrashMultiple5 = -2113023004
+
+
 	};
 
 	enum class eSessionType
