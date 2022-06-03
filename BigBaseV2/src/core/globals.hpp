@@ -139,7 +139,7 @@ namespace big
 			bool noclip = false;
 			bool off_radar = false;
 			bool super_run = false;
-			bool aim = false;
+			bool aimbot = false;
 			bool aimbot_exclude_friend = true;
 			int wanted_level = 0;
 		};
@@ -468,7 +468,7 @@ namespace big
 			this->self.no_ragdoll = j["self"]["no_ragdoll"];
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
-			this->self.aim = j["self"]["aim"];
+			this->self.aimbot = j["self"]["aimbot"];
 			this->self.aimbot_exclude_friend = j["self"]["aimbot_exclude_friend"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -691,7 +691,7 @@ namespace big
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
 						{ "super_run", this->self.super_run },
-						{ "aim", this->self.aim },
+						{ "aimbot", this->self.aimbot },
 						{ "aimbot_exclude_friend", this->self.aimbot_exclude_friend }
 					}
 				},

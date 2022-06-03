@@ -76,8 +76,8 @@ namespace big
 		components::button("Clean Player", [] {
 			entity::clean_ped(self::ped);
 		});
-		ImGui::Checkbox("Aimbot", &g->self.aim);
-		if (g->self.aim)
+		ImGui::Checkbox("Aimbot", &g->self.aimbot);
+		if (g->self.aimbot)
 		{
 			ImGui::Checkbox("Exclude Friends", &g->self.aimbot_exclude_friend);
 		}
