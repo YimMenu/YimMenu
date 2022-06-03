@@ -256,37 +256,49 @@ namespace big
 
 		//Received clone sync
 		main_batch.add("RCS", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 40 4C 8B F2", [this](memory::handle ptr)
-			{
-				m_received_clone_sync = ptr.as<decltype(m_received_clone_sync)>();
-			});
+		{
+			m_received_clone_sync = ptr.as<decltype(m_received_clone_sync)>();
+		});
 
 		//Get sync type info
 		main_batch.add("GSTI", "44 0F B7 C1 4C 8D 0D ? ? ? ?", [this](memory::handle ptr)
-			{
-				m_get_sync_type_info = ptr.as<decltype(m_get_sync_type_info)>();
-			});
+		{
+			m_get_sync_type_info = ptr.as<decltype(m_get_sync_type_info)>();
+		});
 
 		//Get sync tree for type
 		main_batch.add("GSTFT", "0F B7 CA 83 F9 07", [this](memory::handle ptr)
-			{
-				m_get_sync_tree_for_type = ptr.as<decltype(m_get_sync_tree_for_type)>();
-			});
+		{
+			m_get_sync_tree_for_type = ptr.as<decltype(m_get_sync_tree_for_type)>();
+		});
 
 		//Get net object
 		main_batch.add("GNO", "E8 ? ? ? ? 0F B7 53 7C", [this](memory::handle ptr)
-			{
-				m_get_net_object = ptr.add(1).rip().as<decltype(m_get_net_object)>();
-			});
+		{
+			m_get_net_object = ptr.add(1).rip().as<decltype(m_get_net_object)>();
+		});
 
 		//Get net object for player
 		main_batch.add("GNOFP", "41 80 78 ? FF 74 2D 41 0F B6 40", [this](memory::handle ptr)
-			{
-				m_get_net_object_for_player = ptr.as<decltype(m_get_net_object_for_player)>();
-			});
+		{
+			m_get_net_object_for_player = ptr.as<decltype(m_get_net_object_for_player)>();
+		});
 
+		// CTunables
+		main_batch.add("T", "BF 02 00 00 00 44 8B C7", [this](memory::handle ptr)
+		{
+			m_tunables = ptr.sub(4).rip().as<decltype(m_tunables)>();
+		});
 
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
+
+		// Credits: @brunph
+		if (auto bonus_string = mem_region.scan("62 6F 6E 75 73 00"); bonus_string)
+		{
+			const auto patch = "nyeee";
+			std::memcpy(bonus_string.as<void*>(), patch, sizeof(patch));
+		}
 
 		/**
 		 * Freemode thread restorer through VM patch
