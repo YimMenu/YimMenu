@@ -156,7 +156,8 @@ namespace big
 		CrashMultiple = 704979198,
 		CrashMultiple2 = -1970125962,
 		CrashMultiple3 = 2112408256,
-		CrashMultiple5 = -2113023004
+		CrashMultiple5 = -2113023004,
+		Freeze = 1463943751
 
 
 	};

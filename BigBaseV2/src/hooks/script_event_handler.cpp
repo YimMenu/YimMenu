@@ -243,6 +243,14 @@ namespace big
 			}
 			break;
 
+		case eRemoteEvent::Freeze:
+			if (g->protections.script_events.crash && args[1] == 5) 
+			{
+				g_notification_service->push_warning("Protection", fmt::format("Denied freeze from  {}", player_name));
+				return true;
+			}
+			break;
+
 		}
 
 		if (g->debug.script_event_logging)
