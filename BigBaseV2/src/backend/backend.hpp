@@ -170,5 +170,18 @@ namespace big
 
 		}
 
+		static void protection() {
+
+			LOG(INFO) << "Starting script: Protection";
+
+			while (g_running) {
+				looped::protections_replay_interface();
+
+				script::get_current()->yield();
+			}
+
+
+		}
+
 	};
 }
