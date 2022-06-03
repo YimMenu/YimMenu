@@ -29,7 +29,7 @@ namespace big
 			Ped ped = self::ped;
 
 			const auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ped, 2.f, 2.f, 0.f);
-			const Vehicle veh = vehicle::spawn(model, location, g_local_player->m_player_info->m_ped->m_navigation->m_heading + 90.f);
+			const Vehicle veh = vehicle::spawn(model, location, g_local_player->m_player_info->m_ped->m_navigation->m_right.x + 90.f);
 
 			if (g->spawn.spawn_inside)
 				PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
