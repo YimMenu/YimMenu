@@ -10,6 +10,7 @@ namespace big
 	void looped::self_aimbot()
 	{
 		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr) return;
+		if (g_local_player->m_health < 100.0) return;
 		if (g->self.aimbot)
 		{
 			for (auto& item : g_player_service->m_players)
