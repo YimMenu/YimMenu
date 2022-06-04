@@ -14,7 +14,7 @@ namespace big
 	class view
 	{
 		inline static animator window_animator = animator();
-		inline static ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav;
+		inline static ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse;
 
 	public:
 		static void active_view();
@@ -44,6 +44,8 @@ namespace big
 		static void players();
 		static void weapons();
 		static void context_menu();
+		static void debug_c();
+		static void menu_bar();
 
 		static void always()
 		{

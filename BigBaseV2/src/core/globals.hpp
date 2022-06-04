@@ -16,6 +16,8 @@ namespace big
 		struct debug
 		{
 			bool script_event_logging = false;
+			bool sort_scripts = false;
+			bool with_args = false;
 		};
 
 		struct notifications
@@ -139,6 +141,7 @@ namespace big
 			bool noclip = false;
 			bool off_radar = false;
 			bool super_run = false;
+			bool allow_ragdoll = false;
 			int wanted_level = 0;
 		};
 
@@ -185,7 +188,10 @@ namespace big
 
 		struct tunables {
 			bool disable_phone = false;
+			bool phone_anim = false;
 			bool no_idle_kick = false;
+			bool fast_join = false;
+			bool no_loading = false;
 		};
 
 		struct vehicle {
@@ -251,6 +257,8 @@ namespace big
 			bool main = true;
 			bool users = true;
 			bool player = false;
+			bool custom = false;
+			bool docker_space = false;
 
 			ImU32 color = 3357612055;
 
@@ -447,7 +455,10 @@ namespace big
 			this->rgb.speed = j["rgb"]["speed"];
 
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
+			this->tunables.phone_anim = j["tunables"]["phone_anim"];
 			this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
+			this->tunables.fast_join = j["tunables"]["fast_join"];
+			this->tunables.no_loading = j["tunables"]["no_loading"];
 
 			this->self.clean_player = j["self"]["clean_player"];
 			this->self.godmode = j["self"]["godmode"];
@@ -457,6 +468,7 @@ namespace big
 			this->self.no_ragdoll = j["self"]["no_ragdoll"];
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
+			this->self.allow_ragdoll = j["self"]["allow_ragdoll"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
 
@@ -513,6 +525,7 @@ namespace big
 			this->window.color = j["window"]["color"];
 			this->window.debug = j["window"]["debug"];
 			this->window.handling = j["window"]["handling"];
+			this->window.docker_space = j["window"]["docker_space"];
 			this->window.log = j["window"]["log"];
 			this->window.main = j["window"]["main"];
 			this->window.users = j["window"]["users"];
@@ -661,7 +674,10 @@ namespace big
 				{
 					"tunables", {
 						{ "disable_phone", this->tunables.disable_phone },
-						{ "no_idle_kick", this->tunables.no_idle_kick }
+						{ "phone_anim", this->tunables.phone_anim },
+						{ "no_idle_kick", this->tunables.no_idle_kick },
+						{ "fast_join", this->tunables.fast_join },
+						{ "no_loading", this->tunables.no_loading }
 					}
 				},
 				{
@@ -673,7 +689,8 @@ namespace big
 						{ "never_wanted", this->self.never_wanted },
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
-						{ "super_run", this->self.super_run }
+						{ "super_run", this->self.super_run },
+						{ "allow_ragdoll", this->self.allow_ragdoll }
 					}
 				},
 				{
@@ -763,6 +780,7 @@ namespace big
 						{ "color", this->window.color },
 						{ "debug", this->window.debug },
 						{ "handling", this->window.handling },
+						{ "docker_space", this->window.docker_space },
 						{ "log", this->window.log },
 						{ "main", this->window.main },
 						{ "users", this->window.users }

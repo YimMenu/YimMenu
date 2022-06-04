@@ -1,3 +1,4 @@
+#include "asi_loader/pools/pools.hpp"
 #include "common.hpp"
 #include "pointers.hpp"
 #include "memory/all.hpp"
@@ -82,8 +83,8 @@ namespace big
 			m_swapchain = ptr.add(3).rip().as<IDXGISwapChain**>();
 		});
 
-		// Model Spawn Bypass
-		main_batch.add("MSB", "48 8B C8 FF 52 30 84 C0 74 05 48", [this](memory::handle ptr)
+		// Model Spawn Bypass - the two "? ?" are for people that loaded menyoo
+		main_batch.add("MSB", "48 8B C8 FF 52 30 84 C0 ? ? 48", [this](memory::handle ptr)
 		{
 			m_model_spawn_bypass = ptr.add(8).as<PVOID>();
 		});
@@ -241,6 +242,43 @@ namespace big
 		{
 			m_network_group_override = ptr.as<PVOID>();
 		});
+		
+		//Begin SHV
+		main_batch.add("Register File", "40 88 7C 24 ? E8 ? ? ? ? 0F B7 44 24", [this](memory::handle ptr)
+		{
+			m_register_file = ptr.add(5).as<functions::register_file_t>();
+		});
+
+		main_batch.add("Get Script Handle", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr)
+		{
+			m_get_script_handle = ptr.as<functions::get_script_handle_t>();
+		});
+
+		main_batch.add("Ped Pool", "48 8B 05 ? ? ? ? 41 0F BF C8", [this](memory::handle ptr)
+		{
+			m_ped_pool = ptr.add(3).as<rage::GenericPool*>();
+		});
+
+		main_batch.add("Vehicle Pool", "48 8B 05 ? ? ? ? F3 0F 59 F6 48 8B 08", [this](memory::handle ptr)
+		{
+			m_vehicle_pool = *(rage::VehiclePool**)(*(uintptr_t*)ptr.add(3).rip().as<uintptr_t>());
+		});
+
+		main_batch.add("Prop Pool", "48 8B 05 ? ? ? ? 8B 78 10 85 FF", [this](memory::handle ptr)
+		{
+			m_prop_pool = ptr.add(3).rip().as<rage::GenericPool*>();
+		});
+
+		main_batch.add("Pickup Pool", "4C 8B 05 ? ? ? ? 40 8A F2 8B E9", [this](memory::handle ptr)
+		{
+			m_pickup_pool = ptr.add(3).rip().as<rage::GenericPool*>();
+		});
+
+		main_batch.add("Camera Pool", "48 8B C8 EB 02 33 C9 48 85 C9 74 26", [this](memory::handle ptr)
+		{
+			m_camera_pool = ptr.sub(9).rip().as<rage::GenericPool*>();
+		});
+		//END SHV
 
 		//Receive Net Message
 		main_batch.add("RNM", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 20 4C 8B 71 50 33 ED", [this](memory::handle ptr)

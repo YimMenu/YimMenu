@@ -30,8 +30,10 @@ namespace big
 		static void self_off_radar();
 		static void self_police();
 		static void self_super_run();
+		static void ragdoll_mp();
 
 		static void session_local_time();
+		static void fast_join();
 
 		static void system_self_globals();
 		static void system_update_pointers();

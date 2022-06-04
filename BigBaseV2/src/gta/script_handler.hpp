@@ -29,7 +29,12 @@ namespace rage
 
 	public:
 		scriptHandler *m_script_handler; // 0x08
-	};
+		char pad_0010[32]; //0x0010
+		class CNetComponentOwners* m_owner_list; //0x0030
+		char pad_0038[16]; //0x0038
+		class CNetGamePlayer* m_previous_owner; //0x0048
+		char pad_0050[296]; //0x0050
+	}; //Size: 0x0178
 
 	class scriptHandler
 	{

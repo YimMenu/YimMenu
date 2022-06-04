@@ -78,9 +78,6 @@ namespace big
 		std::vector<tabs> get_selected_tab();
 		bool has_switched_view();
 		void set_selected(tabs);
-		void set_nav_size(int);
-		void increment_nav_size();
-		void reset_nav_size();
 		std::unordered_map<tabs, navigation_struct> get_navigation();
 	};
 

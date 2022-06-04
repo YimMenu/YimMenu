@@ -1,4 +1,6 @@
 #pragma once
+#include "native_hooks.hpp"
+#include "natives.hpp"
 
 namespace big
 {

@@ -23,6 +23,7 @@ namespace big
 	public:
 		native_hooks()
 		{
+			//add_native_detour(RAGE_JOAAT("animal_controller"), 0xDC38CC1E35B6A5D7, shop_controller::NETWORK_IS_ACTIVITY_SESSION);
 			add_native_detour(RAGE_JOAAT("carmod_shop"), 0x06843DA7060A026B, carmod_shop::SET_ENTITY_COORDS);
 			add_native_detour(RAGE_JOAAT("carmod_shop"), 0x8E2530AA8ADA980E, carmod_shop::SET_ENTITY_HEADING);
 			add_native_detour(RAGE_JOAAT("carmod_shop"), 0x34E710FF01247C5A, carmod_shop::SET_VEHICLE_LIGHTS);

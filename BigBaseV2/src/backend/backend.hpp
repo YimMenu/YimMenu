@@ -22,6 +22,7 @@ namespace big
 				looped::self_off_radar();
 				looped::self_police();
 				looped::self_super_run();
+				looped::ragdoll_mp();
 
 				script::get_current()->yield();
 			}
@@ -111,6 +112,7 @@ namespace big
 				looped::tunables_disable_phone();
 				looped::tunables_no_idle_kick();
 				looped::session_local_time();
+				looped::fast_join();
 
 				script::get_current()->yield();
 			}

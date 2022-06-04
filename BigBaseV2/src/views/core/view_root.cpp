@@ -1,12 +1,17 @@
 #include "views/view.hpp"
+#include "gui.hpp"
 
 namespace big
 {
 	void view::root()
 	{
-		view::heading();
-		view::navigation();
-		view::players();
-		view::active_view();
+		if (g->window.main) 
+		{
+			view::navigation();
+			view::players();
+			view::active_view();
+		}
+		view::debug_c();
+		view::menu_bar();
 	}
 }

@@ -35,6 +35,11 @@ namespace big
 		{
 			return *m_call_context.get_return_value<T>();
 		}
+		
+		PVOID get_return_address()
+		{
+			return m_call_context.get_return_pointer();
+		}
 	private:
 		native_call_context m_call_context;
 		std::unordered_map<rage::scrNativeHash, rage::scrNativeHandler> m_handler_cache;

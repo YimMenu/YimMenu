@@ -12,7 +12,7 @@ workspace "BigBaseV2"
 	outputdir = "%{cfg.buildcfg}"
 
 	CppVersion = "C++17"
-	MsvcToolset = "v143"
+	MsvcToolset = "v142"
 	WindowsSdkVersion = "10.0"
   
 	function DeclareMSVCOptions()

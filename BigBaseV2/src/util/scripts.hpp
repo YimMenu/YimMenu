@@ -27,6 +27,13 @@ namespace big::scripts
 		return thread_id;
 	}
 
+	inline int start_script(int hash, int stack_size)
+	{
+		int thread_id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH(hash, stack_size);
+		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(hash);
+		return thread_id;
+	}
+
 	inline bool wait_till_loaded(int hash)
 	{
 		if (is_loaded(hash)) return true;
