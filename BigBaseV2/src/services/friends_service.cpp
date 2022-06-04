@@ -13,7 +13,7 @@ namespace big
 		g_friends_service = nullptr;
 	}
 
-	bool friends_service::is_friend(const std::unique_ptr<player>& plyr)
+	bool friends_service::is_friend(const player_ptr& plyr)
 	{
 		const std::uint64_t rockstar_id = plyr->get_net_data()->m_rockstar_id2;
 		for (std::uint32_t i = 0; i < g_pointers->m_friend_registry->m_friend_count; i++)

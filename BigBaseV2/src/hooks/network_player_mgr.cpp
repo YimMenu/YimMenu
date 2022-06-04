@@ -12,7 +12,7 @@ namespace big
 
 		g_hooking->m_network_player_mgr_init_hook.get_original<decltype(&hooks::network_player_mgr_init)>()(_this, a2, a3, a4);
 
-		g_player_service->player_join(_this->m_local_net_player);
+		g_player_service->player_join(_this->m_local_net_player, true);
 	}
 
 	void hooks::network_player_mgr_shutdown(CNetworkPlayerMgr* _this)

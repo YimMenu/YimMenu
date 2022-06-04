@@ -9,7 +9,7 @@ namespace big
 		friends_service();
 		virtual ~friends_service();
 
-		static bool is_friend(const std::unique_ptr<player>& plyr);
+		static bool is_friend(const player_ptr& plyr);
 	};
 
 	inline friends_service* g_friends_service{};

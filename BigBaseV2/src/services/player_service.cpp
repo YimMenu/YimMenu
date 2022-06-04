@@ -92,14 +92,19 @@ namespace big
 		if (!network_player_mgr)
 			return;
 
-		auto net_game_player = network_player_mgr->m_local_net_player;
-		if (!net_game_player)
+		const auto network_self = network_player_mgr->m_local_net_player;
+		if (!network_self)
 			return;
+
+		player_join(network_self, true);
 
 		for (uint16_t i = 0; i < network_player_mgr->m_player_limit; ++i)
 		{
-			net_game_player = network_player_mgr->m_player_list[i];
-			player_join(net_game_player);
+			const auto network_player = network_player_mgr->m_player_list[i];
+			if (network_player == network_self)
+				continue;
+
+			player_join(network_player, false);
 		}
 	}
 
@@ -113,6 +118,7 @@ namespace big
 	void player_service::do_cleanup()
 	{
 		m_selected_player = nullptr;
+		m_self.reset();
 		m_players.clear();
 	}
 
@@ -127,8 +133,7 @@ namespace big
 
 	player* player_service::get_by_msg_id(uint32_t msg_id)
 	{
-		std::map<std::string, std::unique_ptr<player>>::iterator it;
-		for (it = m_players.begin(); it != m_players.end(); it++)
+		for (auto it = m_players.begin(); it != m_players.end(); it++)
 		{
 			if (it->second.get()->get_net_game_player()->m_msg_id == msg_id)
 				return it->second.get();
@@ -138,8 +143,7 @@ namespace big
 
 	player* player_service::get_by_host_token(uint64_t token)
 	{
-		std::map<std::string, std::unique_ptr<player>>::iterator it;
-		for (it = m_players.begin(); it != m_players.end(); it++)
+		for (auto it = m_players.begin(); it != m_players.end(); it++)
 		{
 			if (it->second.get()->get_net_data()->m_host_token == token)
 				return it->second.get();
@@ -152,12 +156,16 @@ namespace big
 		return m_selected_player == nullptr ? m_dummy_player : m_selected_player;
 	}
 
-	void player_service::player_join(CNetGamePlayer* net_game_player)
+	void player_service::player_join(CNetGamePlayer* net_game_player, const bool self)
 	{
 		if (net_game_player == nullptr) return;
 
-		std::unique_ptr<player> plyr = std::make_unique<player>(net_game_player);
-		plyr->m_is_friend = friends_service::is_friend(plyr);
+		auto plyr = std::make_shared<player>(net_game_player);
+
+		if (self)
+			m_self = plyr;
+		else
+			plyr->m_is_friend = friends_service::is_friend(plyr);
 
 		m_players.emplace(
 			plyr->to_lowercase_identifier(),
@@ -171,7 +179,7 @@ namespace big
 		if (m_selected_player && m_selected_player->equals(net_game_player))
 			m_selected_player = nullptr;
 
-		std::unique_ptr<player> plyr = std::make_unique<player>(net_game_player);
+		auto plyr = std::make_unique<player>(net_game_player);
 		m_players.erase(plyr->to_lowercase_identifier());
 	}
 

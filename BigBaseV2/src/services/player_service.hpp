@@ -38,25 +38,33 @@ namespace big
 
 	};
 
-	typedef std::map<std::string, std::unique_ptr<player>> player_list;
+	using player_ptr = std::shared_ptr<player>;
+	using players = std::map<std::string, player_ptr>;
+
 	class player_service final
 	{
+		player_ptr m_self;
+
 		player* m_dummy_player{};
 		player* m_selected_player = nullptr;
 	public:
-		player_list m_players;
+		players m_players;
 
 		player_service();
 		virtual ~player_service();
 
 		void do_cleanup();
 
+		const player_ptr& get_self() const {
+			return m_self;
+		};
+
 		player* get_by_name(std::string name);
 		player* get_by_msg_id(uint32_t msg_id);
 		player* get_by_host_token(uint64_t token);
 		player* get_selected();
 
-		void player_join(CNetGamePlayer* net_game_player);
+		void player_join(CNetGamePlayer* net_game_player, const bool self);
 		void player_leave(CNetGamePlayer* net_game_player);
 
 		void set_selected(player* plyr);

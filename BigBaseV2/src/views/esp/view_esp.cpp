@@ -26,7 +26,7 @@ namespace big
 		{
 			for (auto& item : g_player_service->m_players)
 			{
-				const std::unique_ptr<player>& plyr = item.second;
+				const auto& plyr = item.second;
 
 				if (g->esp.hide_self && plyr->id() == gta_util::get_network_player_mgr()->m_local_net_player->m_player_id ||
 					!plyr->is_valid() ||
