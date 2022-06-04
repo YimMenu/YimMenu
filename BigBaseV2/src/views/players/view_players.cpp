@@ -5,20 +5,10 @@ namespace big
 {
 	void view::players()
 	{
-		float window_pos = 110.f + g_gui_service->nav_ctr * ImGui::CalcTextSize("W").y + g_gui_service->nav_ctr * ImGui::GetStyle().ItemSpacing.y + g_gui_service->nav_ctr * ImGui::GetStyle().ItemInnerSpacing.y + ImGui::GetStyle().WindowPadding.y;
-
-		ImGui::SetNextWindowSize({ 250.f, 0.f });
-		ImGui::SetNextWindowPos({ 10.f, window_pos });
 		if (ImGui::Begin("playerlist", nullptr, window_flags))
 		{
 			const auto player_count = g_player_service->m_players.size();
-			float window_height = (ImGui::CalcTextSize("A").y + ImGui::GetStyle().ItemInnerSpacing.y * 2 + 6.5f) * player_count;
-
-			window_height = window_height + window_pos > (float)*g_pointers->m_resolution_y - 10.f ? (float)*g_pointers->m_resolution_y - (window_pos + 40.f) : window_height;
-
-			ImGui::PushStyleColor(ImGuiCol_FrameBg, { 0.f, 0.f, 0.f, 0.f });
-			ImGui::PushStyleColor(ImGuiCol_ScrollbarBg, { 0.f, 0.f, 0.f, 0.f });
-			if (ImGui::BeginListBox("##players", { 250.f - ImGui::GetStyle().WindowPadding.x * 2 , window_height })) {
+			if (ImGui::BeginListBox("##players", { 250.f - ImGui::GetStyle().WindowPadding.x * 2 , 500 })) {
 				for (auto& item : g_player_service->m_players)
 				{
 					const auto& plyr = item.second;

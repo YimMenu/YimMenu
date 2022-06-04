@@ -270,6 +270,11 @@ namespace big
 			bool switched_view = true;
 		};
 
+		struct context_menu
+		{
+			bool enabled = true;
+		};
+
 		struct esp
 		{
 			bool enabled = true;
@@ -313,6 +318,7 @@ namespace big
 		vehicle vehicle{};
 		weapons weapons{};
 		window window{};
+		context_menu context_menu{};
 		esp esp{};
 
 		menu_settings(file save_file)
@@ -531,6 +537,8 @@ namespace big
 			this->window.log = j["window"]["log"];
 			this->window.main = j["window"]["main"];
 			this->window.users = j["window"]["users"];
+
+			this->context_menu.enabled = j["context_menu"]["enabled"];
 
 			this->esp.enabled = j["esp"]["enabled"];
 			this->esp.hide_self = j["esp"]["hide_self"];
@@ -787,6 +795,11 @@ namespace big
 						{ "log", this->window.log },
 						{ "main", this->window.main },
 						{ "users", this->window.users }
+					}
+				},
+				{
+					"context_menu", {
+						{"enabled", this->context_menu.enabled}
 					}
 				},
 				{

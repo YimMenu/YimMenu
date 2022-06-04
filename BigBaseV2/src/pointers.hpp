@@ -1,12 +1,15 @@
 #pragma once
+#include "common.hpp"
+#include "atSingleton.hpp"
 #include "asi_loader/pools/pools.hpp"
 #include "CNetworkPlayerMgr.hpp"
-#include "common.hpp"
+#include "CTunables.hpp"
 #include "FriendRegistry.hpp"
-#include "function_types.hpp"
+#include "gta/fwddec.hpp"
 #include "gta/enums.hpp"
 #include "gta/replay.hpp"
 #include "gta/script_program.hpp"
+#include "function_types.hpp"
 
 namespace big
 {
@@ -24,6 +27,7 @@ namespace big
 		CPedFactory** m_ped_factory{};
 		CNetworkPlayerMgr** m_network_player_mgr{};
 		CNetworkObjectMgr** m_network_object_mgr{};
+		rage::atSingleton<rage::CTunables>* m_tunables{};
 
 		rage::CReplayInterface** m_replay_interface{};
 		functions::ptr_to_handle* m_ptr_to_handle{};
