@@ -16,7 +16,11 @@ namespace big
 			{
 				STREAMING::STOP_PLAYER_SWITCH();
 				*script_global::script_global(1574988).as<eTransitionState*>() = eTransitionState::TRANSITION_STATE_FM_FINAL_SETUP_PLAYER;
-				script::get_current()->yield(1500ms);
+				script::get_current()->yield(500ms);
+				STREAMING::STOP_PLAYER_SWITCH();
+			}
+			if (*script_global::script_global(1574988).as<eTransitionState*>() == eTransitionState::TRANSITION_STATE_SP_SWOOP_UP)
+			{
 				STREAMING::STOP_PLAYER_SWITCH();
 			}
 		}

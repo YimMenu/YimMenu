@@ -162,6 +162,7 @@ namespace big
 				bool editing_menu_toggle = false;
 				int menu_toggle = VK_INSERT;
 				int teleport_waypoint = 0;
+				int pie_menu = 0;
 			};
 
 			hotkeys hotkeys{};
@@ -471,6 +472,7 @@ namespace big
 			this->self.allow_ragdoll = j["self"]["allow_ragdoll"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
+			this->settings.hotkeys.pie_menu = j["settings"]["hotkeys"]["pie_menu"];
 
 			this->spawn.preview_vehicle = j["spawn"]["preview_vehicle"];
 			this->spawn.spawn_inside = j["spawn"]["spawn_inside"];
@@ -696,7 +698,8 @@ namespace big
 				{
 					"settings", {
 						{ "hotkeys", {
-								{ "menu_toggle", this->settings.hotkeys.menu_toggle }
+								{ "menu_toggle", this->settings.hotkeys.menu_toggle },
+								{ "pie_menu", this->settings.hotkeys.pie_menu }
 							}
 						}
 					}

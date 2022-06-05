@@ -110,6 +110,7 @@ namespace big
 
 				looped::hud_transition_state();
 				looped::tunables_disable_phone();
+				looped::phone_anim();
 				looped::tunables_no_idle_kick();
 				looped::session_local_time();
 				looped::fast_join();

@@ -5,6 +5,7 @@
 #include "native_hooks/carmod_shop.hpp"
 #include "native_hooks/freemode.hpp"
 #include "native_hooks/shop_controller.hpp"
+#include "native_hooks/maintransition.hpp"
 #include "script_hook.hpp"
 
 namespace big
@@ -29,6 +30,7 @@ namespace big
 			add_native_detour(RAGE_JOAAT("carmod_shop"), 0x34E710FF01247C5A, carmod_shop::SET_VEHICLE_LIGHTS);
 			add_native_detour(RAGE_JOAAT("carmod_shop"), 0x767FBC2AC802EF3D, carmod_shop::STAT_GET_INT);
 			add_native_detour(RAGE_JOAAT("freemode"), 0x95914459A87EBA28, freemode::NETWORK_BAIL);
+			add_native_detour(RAGE_JOAAT("maintransition"), 0xAAB3200ED59016BC, maintransition::SWITCH_OUT_PLAYER_);
 			add_native_detour(RAGE_JOAAT("shop_controller"), 0xDC38CC1E35B6A5D7, shop_controller::SET_WARNING_MESSAGE_WITH_HEADER);
 
 			for (const auto& native_detours_for_script : m_native_registrations)

@@ -165,17 +165,29 @@ namespace big
                     ImGui::Checkbox("Fast Join", &g->tunables.fast_join);
                     ImGui::SameLine();
                     ImGui::Checkbox("Phone Anim", &g->tunables.phone_anim);
-
-                    components::button("use_phone", [] {
-                        TASK::TASK_USE_MOBILE_PHONE(PLAYER::PLAYER_PED_ID(), 1, 1);
-                    });
+                    ImGui::SameLine();
+                    ImGui::Checkbox("Jump Ragdoll", &g->self.allow_ragdoll);
+                    
                     if (ImGui::Checkbox("No loading", &g->tunables.no_loading)) 
                     {
                         QUEUE_JOB_BEGIN_CLAUSE()
                         {
                             SCRIPT::SET_NO_LOADING_SCREEN(g->tunables.no_loading);
+                            if (CAM::IS_SCREEN_FADED_OUT()) {
+                                CAM::DO_SCREEN_FADE_IN(100);
+                            }
                         } QUEUE_JOB_END_CLAUSE
                     }
+                    
+                    components::button("SP Map", [] {
+                        DLC::ON_ENTER_SP();
+                    });
+
+                    ImGui::SameLine();
+
+                    components::button("MP Map", [] {
+                        DLC::ON_ENTER_MP();
+                    });
                 }
                 ImGui::End();
 

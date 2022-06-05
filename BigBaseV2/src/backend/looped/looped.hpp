@@ -14,6 +14,7 @@ namespace big
 		static void rgb_synced_spasm();
 
 		static void tunables_disable_phone();
+		static void phone_anim();
 		static void tunables_no_idle_kick();
 
 		static void player_never_wanted();
