@@ -112,6 +112,7 @@ namespace big
 				looped::tunables_disable_phone();
 				looped::phone_anim();
 				looped::tunables_no_idle_kick();
+				looped::script_starter();
 				looped::session_local_time();
 				looped::fast_join();
 

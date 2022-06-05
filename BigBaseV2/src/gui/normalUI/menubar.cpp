@@ -68,7 +68,7 @@ namespace big
             {
                 ImGui::MenuItem("Main", nullptr, &g->window.main);
                 ImGui::MenuItem("DockerSpace", nullptr, &g->window.docker_space);
-                ImGui::MenuItem("Logs", nullptr, &g->window.log);
+                ImGui::MenuItem("Overlay", nullptr, &g->window.overlay);
                 ImGui::MenuItem("Debug", nullptr, &g->window.debug);
 
                 ImGui::EndMenu();

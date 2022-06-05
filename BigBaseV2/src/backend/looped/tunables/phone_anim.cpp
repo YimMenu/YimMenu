@@ -8,11 +8,20 @@ namespace big
 	{
 		if(g->tunables.phone_anim)
 		{
-			if (!PED::GET_PED_CONFIG_FLAG(PLAYER::PLAYER_PED_ID(), 244, false))
+			if (!PED::GET_PED_CONFIG_FLAG(self::ped, 244, false) && !ENTITY::IS_ENTITY_DEAD(self::ped, false))
 			{
-				PED::SET_PED_CONFIG_FLAG(PLAYER::PLAYER_PED_ID(), 244, false);
-				PED::SET_PED_CONFIG_FLAG(PLAYER::PLAYER_PED_ID(), 243, false);
-				PED::SET_PED_CONFIG_FLAG(PLAYER::PLAYER_PED_ID(), 242, false);
+				PED::SET_PED_CONFIG_FLAG(self::ped, 244, false);
+				PED::SET_PED_CONFIG_FLAG(self::ped, 243, false);
+				PED::SET_PED_CONFIG_FLAG(self::ped, 242, false);
+			}
+		}
+		if (g->tunables.fly_thru_windscreen)
+		{
+			if (!PED::GET_PED_CONFIG_FLAG(self::ped, 32, false) && !ENTITY::IS_ENTITY_DEAD(self::ped, false))
+			{
+				PED::SET_PED_CONFIG_FLAG(self::ped, 32, true);
+				PED::SET_PED_CONFIG_FLAG(self::ped, 250, true);
+				PED::SET_PED_CONFIG_FLAG(self::ped, 36, true);
 			}
 		}
 	}

@@ -22,6 +22,14 @@ namespace rage
 		scriptResourceEntry *m_next; // 0x18
 	};
 
+	class CNetComponentOwners
+	{
+	public:
+		char pad_0000[16]; //0x0000
+		class CNetGamePlayer* m_owner; //0x0010
+	}; //Size: 0x0018
+	static_assert(sizeof(CNetComponentOwners) == 0x18);
+
 	class scriptHandlerNetComponent
 	{
 	public:

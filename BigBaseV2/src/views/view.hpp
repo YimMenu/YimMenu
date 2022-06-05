@@ -47,6 +47,7 @@ namespace big
 		static void context_menu();
 		static void debug_c();
 		static void menu_bar();
+		static void overlay();
 		//static void pie_menu();
 
 		static void always()
@@ -54,6 +55,8 @@ namespace big
 			esp::draw();
 			context_menu();
 			notifications();
+			if (g->window.overlay)
+				view::overlay();
 		}
 	};
 }

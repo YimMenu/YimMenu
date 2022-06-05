@@ -189,10 +189,15 @@ namespace big
 
 		struct tunables {
 			bool disable_phone = false;
+			int phone_type = 0;
 			bool phone_anim = false;
+			bool fly_thru_windscreen = false;
 			bool no_idle_kick = false;
 			bool fast_join = false;
 			bool no_loading = false;
+			bool ambiant_ufos = false;
+			bool ambiant_blimp = false;
+			bool cable_cars = false;
 		};
 
 		struct vehicle {
@@ -260,6 +265,7 @@ namespace big
 			bool player = false;
 			bool custom = false;
 			bool docker_space = false;
+			bool overlay = false;
 
 			ImU32 color = 3357612055;
 
@@ -463,9 +469,13 @@ namespace big
 
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
 			this->tunables.phone_anim = j["tunables"]["phone_anim"];
+			this->tunables.fly_thru_windscreen = j["tunables"]["fly_thru_windscreen"];
 			this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
 			this->tunables.fast_join = j["tunables"]["fast_join"];
 			this->tunables.no_loading = j["tunables"]["no_loading"];
+			this->tunables.ambiant_ufos = j["tunables"]["ambiant_ufos"];
+			this->tunables.ambiant_blimp = j["tunables"]["ambiant_blimp"];
+			this->tunables.cable_cars = j["tunables"]["cable_cars"];
 
 			this->self.clean_player = j["self"]["clean_player"];
 			this->self.godmode = j["self"]["godmode"];
@@ -534,6 +544,7 @@ namespace big
 			this->window.debug = j["window"]["debug"];
 			this->window.handling = j["window"]["handling"];
 			this->window.docker_space = j["window"]["docker_space"];
+			this->window.overlay = j["window"]["overlay"];
 			this->window.log = j["window"]["log"];
 			this->window.main = j["window"]["main"];
 			this->window.users = j["window"]["users"];
@@ -685,9 +696,13 @@ namespace big
 					"tunables", {
 						{ "disable_phone", this->tunables.disable_phone },
 						{ "phone_anim", this->tunables.phone_anim },
+						{ "fly_thru_windscreen", this->tunables.fly_thru_windscreen },
 						{ "no_idle_kick", this->tunables.no_idle_kick },
 						{ "fast_join", this->tunables.fast_join },
-						{ "no_loading", this->tunables.no_loading }
+						{ "no_loading", this->tunables.no_loading },
+						{ "ambiant_ufos", this->tunables.ambiant_ufos },
+						{ "ambiant_blimp", this->tunables.ambiant_blimp },
+						{ "cable_cars", this->tunables.cable_cars }
 					}
 				},
 				{
@@ -792,6 +807,7 @@ namespace big
 						{ "debug", this->window.debug },
 						{ "handling", this->window.handling },
 						{ "docker_space", this->window.docker_space },
+						{ "overlay", this->window.overlay },
 						{ "log", this->window.log },
 						{ "main", this->window.main },
 						{ "users", this->window.users }

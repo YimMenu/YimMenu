@@ -5,7 +5,7 @@
 #include "native_hooks/carmod_shop.hpp"
 #include "native_hooks/freemode.hpp"
 #include "native_hooks/shop_controller.hpp"
-#include "native_hooks/maintransition.hpp"
+#include "native_hooks/animal_controller.hpp"
 #include "script_hook.hpp"
 
 namespace big
@@ -24,13 +24,14 @@ namespace big
 	public:
 		native_hooks()
 		{
-			//add_native_detour(RAGE_JOAAT("animal_controller"), 0xDC38CC1E35B6A5D7, shop_controller::NETWORK_IS_ACTIVITY_SESSION);
+			add_native_detour(RAGE_JOAAT("animal_controller"), 0x10FAB35428CCC9D7, animal_controller::NETWORK_IS_GAME_IN_PROGRESS);
+			add_native_detour(RAGE_JOAAT("vehicle_gen_controller"), 0x10FAB35428CCC9D7, animal_controller::NETWORK_IS_GAME_IN_PROGRESS);
 			add_native_detour(RAGE_JOAAT("carmod_shop"), 0x06843DA7060A026B, carmod_shop::SET_ENTITY_COORDS);
 			add_native_detour(RAGE_JOAAT("carmod_shop"), 0x8E2530AA8ADA980E, carmod_shop::SET_ENTITY_HEADING);
 			add_native_detour(RAGE_JOAAT("carmod_shop"), 0x34E710FF01247C5A, carmod_shop::SET_VEHICLE_LIGHTS);
 			add_native_detour(RAGE_JOAAT("carmod_shop"), 0x767FBC2AC802EF3D, carmod_shop::STAT_GET_INT);
 			add_native_detour(RAGE_JOAAT("freemode"), 0x95914459A87EBA28, freemode::NETWORK_BAIL);
-			add_native_detour(RAGE_JOAAT("maintransition"), 0xAAB3200ED59016BC, maintransition::SWITCH_OUT_PLAYER_);
+			//add_native_detour(RAGE_JOAAT("maintransition"), 0xAAB3200ED59016BC, maintransition::SWITCH_OUT_PLAYER_);
 			add_native_detour(RAGE_JOAAT("shop_controller"), 0xDC38CC1E35B6A5D7, shop_controller::SET_WARNING_MESSAGE_WITH_HEADER);
 
 			for (const auto& native_detours_for_script : m_native_registrations)

@@ -49,9 +49,9 @@ namespace big
                     if (selected_thread)
                     {
                         if (auto net_component = selected_thread->m_net_component)
-                            //if (auto owner_list = net_component->m_owner_list)
-                                //if (auto owner = owner_list->m_owner)
-                                    //ImGui::Text(fmt::format("Host: {}", owner->get_name()).c_str());
+                            if (auto owner_list = net_component->m_owner_list)
+                                if (auto owner = owner_list->m_owner)
+                                    ImGui::Text(fmt::format("Host: {}", owner->get_name()).c_str());
                             if (ImGui::Button(fmt::format("Script Pointer: 0x{:X}", (DWORD64)selected_thread).c_str()))
                                 ImGui::SetClipboardText(fmt::format("0x{:X}", (DWORD64)selected_thread).c_str());
                         if (ImGui::Button(fmt::format("m_stack: 0x{:X}", (DWORD64)selected_thread->m_stack).c_str()))
@@ -167,7 +167,17 @@ namespace big
                     ImGui::Checkbox("Phone Anim", &g->tunables.phone_anim);
                     ImGui::SameLine();
                     ImGui::Checkbox("Jump Ragdoll", &g->self.allow_ragdoll);
+                    ImGui::SameLine();
+                    ImGui::Checkbox("Fly Thru Windscreen", &g->tunables.fly_thru_windscreen);
+                    ImGui::SameLine();
+                    ImGui::Checkbox("Ambiant Ufos", &g->tunables.ambiant_ufos);
                     
+                    ImGui::Checkbox("Ambiant Blimps", &g->tunables.ambiant_blimp);
+                    ImGui::SameLine();
+                    ImGui::Checkbox("Cable Cars", &g->tunables.cable_cars);
+
+                    ImGui::Separator();
+
                     if (ImGui::Checkbox("No loading", &g->tunables.no_loading)) 
                     {
                         QUEUE_JOB_BEGIN_CLAUSE()
@@ -188,6 +198,24 @@ namespace big
                     components::button("MP Map", [] {
                         DLC::ON_ENTER_MP();
                     });
+
+                    ImGui::SameLine();
+
+                    static bool prologue_map = false;
+                    if (ImGui::Checkbox("Prologue Map", &prologue_map))
+                    {
+                        QUEUE_JOB_BEGIN_CLAUSE()
+                        {
+                            HUD::SET_MINIMAP_IN_PROLOGUE(prologue_map);
+                        } QUEUE_JOB_END_CLAUSE
+                    }
+
+                    /*static char phone_types{"franklin", "Traver", "Broken Michael"};
+                    if (ImGui::Combo("Phone type", g->tunables.phone_type, &phone_types)) {
+                        QUEUE_JOB_BEGIN_CLAUSE() {
+
+                        } QUEUE_JOB_END_CLAUSE
+                    }*/
                 }
                 ImGui::End();
 
