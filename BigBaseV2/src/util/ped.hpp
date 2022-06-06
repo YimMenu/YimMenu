@@ -63,6 +63,43 @@ namespace big::ped
 		return -1;
 	}
 
+	inline int spawn_in_vehicle(std::string_view model, Vehicle veh, bool is_networked = true)
+	{
+		if (const Hash hash = rage::joaat(model.data()); hash)
+		{
+			for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+			{
+				STREAMING::REQUEST_MODEL(hash);
+
+				script::get_current()->yield();
+			}
+			if (!STREAMING::HAS_MODEL_LOADED(hash))
+			{
+				g_notification_service->push_warning("Spawn", "Failed to spawn model, did you give an incorrect model?");
+
+				return -1;
+			}
+
+			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
+			Ped ped = PED::CREATE_PED_INSIDE_VEHICLE(veh, 0, hash, -1, is_networked, false);
+			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
+
+			script::get_current()->yield();
+
+			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+
+			if (*g_pointers->m_is_session_started)
+			{
+				DECORATOR::DECOR_SET_INT(ped, "MPBitset", 0);
+				ENTITY::SET_ENTITY_CLEANUP_BY_ENGINE_(ped, true);
+			}
+
+			return ped;
+		}
+
+		return -1;
+	}
+
 	inline void steal_identity(const Ped target)
 	{
 		Ped ped = self::ped;
