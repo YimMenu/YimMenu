@@ -175,6 +175,9 @@ namespace big
                     ImGui::Checkbox("Ambiant Blimps", &g->tunables.ambiant_blimp);
                     ImGui::SameLine();
                     ImGui::Checkbox("Cable Cars", &g->tunables.cable_cars);
+                    ImGui::SameLine();
+                    ImGui::Checkbox("Vehicle Flares", &g->vehicle.flares);
+                    
 
                     ImGui::Separator();
 

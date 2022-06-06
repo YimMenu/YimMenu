@@ -231,6 +231,7 @@ namespace big
 			bool pv_teleport_into = false;
 			bool seatbelt = false;
 			bool turn_signals = false;
+			bool flares = false;
 			int auto_drive_speed = 1;
 			int driving_style_flags = 443;
 			int driving_style_id = 0;
@@ -517,6 +518,7 @@ namespace big
 			this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
 			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
 			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
+			this->vehicle.flares = j["vehicle"]["flares"];
 
 			this->vehicle.speedo_meter.type = (SpeedoMeter)j["vehicle"]["speedo_meter"]["type"];
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
@@ -764,6 +766,7 @@ namespace big
 						{ "pv_teleport_into", this->vehicle.pv_teleport_into },
 						{ "rainbow_paint", this->vehicle.rainbow_paint },
 						{ "turn_signals", this->vehicle.turn_signals },
+						{ "flares", this->vehicle.flares },
 						{ "seatbelt", this->vehicle.seatbelt },
 						{
 							"speedo_meter", {

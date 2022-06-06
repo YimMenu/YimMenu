@@ -68,6 +68,7 @@ namespace big
 				looped::vehicle_rainbow_paint();
 				looped::vehicle_seatbelt();
 				looped::vehicle_speedo_meter();
+				looped::vehicle_flares();
 
 
 				script::get_current()->yield();
