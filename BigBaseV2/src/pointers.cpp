@@ -332,11 +332,11 @@ namespace big
 		main_batch.run(mem_region);
 
 		// Credits: @brunph
-		if (auto bonus_string = mem_region.scan("62 6F 6E 75 73 00"); bonus_string)
+		/*if (auto bonus_string = mem_region.scan("62 6F 6E 75 73 00"); bonus_string)
 		{
 			const auto patch = "nyeee";
 			std::memcpy(bonus_string.as<void*>(), patch, sizeof(patch));
-		}
+		}*/
 
 		/**
 		 * Freemode thread restorer through VM patch
