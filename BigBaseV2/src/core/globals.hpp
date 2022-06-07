@@ -198,6 +198,7 @@ namespace big
 			bool ambiant_ufos = false;
 			bool ambiant_blimp = false;
 			bool cable_cars = false;
+			bool always_controll = false;
 		};
 
 		struct vehicle {
@@ -477,6 +478,7 @@ namespace big
 			this->tunables.ambiant_ufos = j["tunables"]["ambiant_ufos"];
 			this->tunables.ambiant_blimp = j["tunables"]["ambiant_blimp"];
 			this->tunables.cable_cars = j["tunables"]["cable_cars"];
+			this->tunables.always_controll = j["tunables"]["always_controll"];
 
 			this->self.clean_player = j["self"]["clean_player"];
 			this->self.godmode = j["self"]["godmode"];
@@ -704,7 +706,8 @@ namespace big
 						{ "no_loading", this->tunables.no_loading },
 						{ "ambiant_ufos", this->tunables.ambiant_ufos },
 						{ "ambiant_blimp", this->tunables.ambiant_blimp },
-						{ "cable_cars", this->tunables.cable_cars }
+						{ "cable_cars", this->tunables.cable_cars },
+						{ "always_controll", this->tunables.always_controll }
 					}
 				},
 				{

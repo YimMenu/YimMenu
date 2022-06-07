@@ -46,6 +46,7 @@ namespace big
                 Hash hash = rage::joaat("cablecar");
                 if (!scripts::is_running(hash))
                 {
+                    LOG(INFO) << "trying to start cablecar";
                     scripts::request_script(hash);
                     if (scripts::wait_till_loaded(hash))
                     {

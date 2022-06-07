@@ -16,13 +16,8 @@ namespace big
 			{
 				STREAMING::STOP_PLAYER_SWITCH();
 				*script_global::script_global(1574988).as<eTransitionState*>() = eTransitionState::TRANSITION_STATE_FM_FINAL_SETUP_PLAYER;
-				script::get_current()->yield(500ms);
+				script::get_current()->yield(1500ms);
 				STREAMING::STOP_PLAYER_SWITCH();
-			}
-			if (*script_global::script_global(1574988).as<eTransitionState*>() > eTransitionState::TRANSITION_STATE_LOOK_FOR_FRESH_JOIN_FM && (*script_global::script_global(1574988).as<eTransitionState*>() > eTransitionState::TRANSITION_STATE_IS_FM_AND_TRANSITION_READY))
-			{
-				STREAMING::STOP_PLAYER_SWITCH();
-				PAD::ENABLE_ALL_CONTROL_ACTIONS(0);
 			}
 		}
 	}

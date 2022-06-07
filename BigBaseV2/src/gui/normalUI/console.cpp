@@ -177,6 +177,8 @@ namespace big
                     ImGui::Checkbox("Cable Cars", &g->tunables.cable_cars);
                     ImGui::SameLine();
                     ImGui::Checkbox("Vehicle Flares", &g->vehicle.flares);
+                    ImGui::SameLine();
+                    ImGui::Checkbox("Always Controll", &g->tunables.always_controll);
                     
 
                     ImGui::Separator();
