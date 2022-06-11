@@ -49,6 +49,8 @@ void DLL_EXPORT nativeInit(uint64_t hash)
 	big::g_native_invoker.begin_call();
 	if (hash == 0x43A66C31C68491C0)
 		hash = 0x50FAC3A3E030A6E1;
+	if (hash == 0x239528EACDC3E7DE)
+		hash = 0x3882114BDE571AD4;
 	g_hash = hash;
 }
 

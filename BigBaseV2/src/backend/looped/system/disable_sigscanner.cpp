@@ -6,6 +6,11 @@ namespace big
 	// credits: @brunph
 	void looped::system_disable_sigscanner()
 	{
+		if (*(unsigned short*)g_pointers->m_model_spawn_bypass == 0x9090) 
+		{
+			LOG(WARNING) << "stop vehicle bypass";
+			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
+		}
 		/*if (g_pointers->m_tunables->isValid())
 		{
 			if (const auto ptr = g_pointers->m_tunables->getInstance(); ptr)
