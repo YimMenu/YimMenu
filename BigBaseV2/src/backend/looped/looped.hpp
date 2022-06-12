@@ -32,8 +32,7 @@ namespace big
 		static void self_super_run();
 
 		static void session_local_time();
-
-		static void system_disable_sigscanner();
+		
 		static void system_self_globals();
 		static void system_update_pointers();
 
