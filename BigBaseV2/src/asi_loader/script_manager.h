@@ -1,4 +1,3 @@
-
 #pragma once
 
 enum eGameVersion : int
@@ -104,7 +103,7 @@ enum eGameVersion : int
 	VER_UNK = -1
 };
 
-namespace script_manager {
+namespace ScriptManager {
 
-	void WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	void					WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 }

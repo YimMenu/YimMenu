@@ -52,7 +52,7 @@ namespace big::vehicle
 		return true;
 	}
 
-	inline int spawn(std::string_view model, Vector3 location, float heading, bool is_networked = true)
+	inline int spawn(std::string_view model, Vector3 location, float heading, bool is_networked = true, bool clean_up = true)
 	{
 		if (const Hash hash = rage::joaat(model.data()); hash)
 		{
@@ -80,7 +80,7 @@ namespace big::vehicle
 			if (*g_pointers->m_is_session_started)
 			{
 				DECORATOR::DECOR_SET_INT(veh, "MPBitset", 0);
-				ENTITY::SET_ENTITY_CLEANUP_BY_ENGINE_(veh, true);
+				ENTITY::SET_ENTITY_CLEANUP_BY_ENGINE_(veh, clean_up);
 				int networkId = NETWORK::VEH_TO_NET(veh);
 				if (NETWORK::NETWORK_GET_ENTITY_IS_NETWORKED(veh))
 					NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true);

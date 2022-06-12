@@ -117,6 +117,7 @@ namespace big
 				looped::session_local_time();
 				looped::fast_join();
 				looped::always_controll();
+				looped::pie_menu();
 
 				script::get_current()->yield();
 			}

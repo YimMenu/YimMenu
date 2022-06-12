@@ -8,4 +8,4 @@ namespace big::shv_runner
 	void shutdown();
 
 	inline std::map<HMODULE, void(*)()> scripts;
-} 
+}

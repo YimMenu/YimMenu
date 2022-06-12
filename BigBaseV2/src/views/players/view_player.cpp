@@ -243,10 +243,10 @@ namespace big
 					ImGui::SameLine();
 					components::button("Spawn Grifer Lazer", [] {
 						Ped ply = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
-						Vector3 pos = ENTITY::GET_ENTITY_COORDS(ply, true);
+						Vector3 pos = ENTITY::GET_ENTITY_COORDS(ply, true) + Vector3(0,0, 500);
 						float heading = ENTITY::GET_ENTITY_HEADING(PED::IS_PED_IN_ANY_VEHICLE(ply, false) ? PED::GET_VEHICLE_PED_IS_IN(ply, false) : ply);
 
-						Vehicle veh = vehicle::spawn("lazer", pos, heading, true);
+						Vehicle veh = vehicle::spawn("lazer", pos, heading, true, false);
 						VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
 						VEHICLE::CONTROL_LANDING_GEAR(veh, 3);
 

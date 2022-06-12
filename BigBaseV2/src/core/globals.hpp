@@ -283,6 +283,13 @@ namespace big
 			bool enabled = true;
 		};
 
+		struct pie_menu
+		{
+			bool enabled = true;
+			bool active = false;
+			bool selected = false;
+		};
+
 		struct esp
 		{
 			bool enabled = true;
@@ -327,6 +334,7 @@ namespace big
 		weapons weapons{};
 		window window{};
 		context_menu context_menu{};
+		pie_menu pie_menu{};
 		esp esp{};
 
 		menu_settings(file save_file)

@@ -1,7 +1,7 @@
 #pragma once
 #include "common.hpp"
 #include "atSingleton.hpp"
-#include "asi_loader/pools/pools.hpp"
+#include "asi_loader/pools.h"
 #include "CNetworkPlayerMgr.hpp"
 #include "CTunables.hpp"
 #include "FriendRegistry.hpp"

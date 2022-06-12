@@ -48,7 +48,7 @@ namespace big
 		static void debug_c();
 		static void menu_bar();
 		static void overlay();
-		//static void pie_menu();
+		static void pie_menu();
 
 		static void always()
 		{
@@ -56,7 +56,10 @@ namespace big
 			context_menu();
 			notifications();
 			if (g->window.overlay)
-				view::overlay();
+				overlay();
+			if (g->pie_menu.active)
+				pie_menu();
+
 		}
 	};
 }

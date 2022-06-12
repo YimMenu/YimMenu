@@ -1,10 +1,10 @@
 #include "script.hpp"
 #include "invoker.hpp"
 #include "pointers.hpp"
-#include "shv_runner.hpp"
-#include "script_manager.hpp"
+#include "shv_runner.h"
+#include "script_manager.h"
 #include <set>
-#include "pools/pools.hpp"
+#include "pools.h"
 #include "renderer.hpp"
 
 #define DLL_EXPORT __declspec( dllexport )
@@ -22,8 +22,8 @@ void DLL_EXPORT scriptRegister(HMODULE module, void(*function)())
 
 void DLL_EXPORT scriptUnregister(void(*function)())
 {
-	for (auto iter : big::shv_runner::scripts)
-		if (function == iter.second)
+	for(auto iter : big::shv_runner::scripts)
+		if(function == iter.second)
 			big::shv_runner::scripts.erase(iter.first);
 }
 
@@ -49,9 +49,6 @@ void DLL_EXPORT nativeInit(uint64_t hash)
 	big::g_native_invoker.begin_call();
 	if (hash == 0x43A66C31C68491C0)
 		hash = 0x50FAC3A3E030A6E1;
-	if (hash == 0x239528EACDC3E7DE)
-		hash = 0x3882114BDE571AD4;
-
 	g_hash = hash;
 }
 
@@ -80,7 +77,7 @@ void DLL_EXPORT keyboardHandlerUnregister(TKeyboardFn function)
 	g_keyboardFunctions.erase(function);
 }
 
-void script_manager::WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+void ScriptManager::WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 	if (uMsg == WM_KEYDOWN || uMsg == WM_KEYUP || uMsg == WM_SYSKEYDOWN || uMsg == WM_SYSKEYUP) {
 

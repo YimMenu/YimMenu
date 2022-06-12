@@ -9,8 +9,8 @@
 #include "renderer.hpp"
 #include "script_mgr.hpp"
 #include "thread_pool.hpp"
-#include "shv_runner.hpp"
-#include "asi_loader/asi_loader.hpp"
+#include "shv_runner.h"
+#include "asi_loader/asi_loader.h"
 
 #include "native_hooks/native_hooks.hpp"
 #include "services/context_menu_service.hpp"
@@ -107,7 +107,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					LOG(INFO) << "Hooking enabled.";
 
 					g_running = true;
-					asi_loader::initialize();
+					ASILoader::Initialize();
 
 					while (g_running)
 						std::this_thread::sleep_for(500ms);

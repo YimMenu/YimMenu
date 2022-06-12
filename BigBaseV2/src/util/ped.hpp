@@ -63,7 +63,7 @@ namespace big::ped
 		return -1;
 	}
 
-	inline int spawn_in_vehicle(std::string_view model, Vehicle veh, bool is_networked = true)
+	inline int spawn_in_vehicle(std::string_view model, Vehicle veh, bool is_networked = true, bool clean_up = true)
 	{
 		if (const Hash hash = rage::joaat(model.data()); hash)
 		{
@@ -91,7 +91,7 @@ namespace big::ped
 			if (*g_pointers->m_is_session_started)
 			{
 				DECORATOR::DECOR_SET_INT(ped, "MPBitset", 0);
-				ENTITY::SET_ENTITY_CLEANUP_BY_ENGINE_(ped, true);
+				ENTITY::SET_ENTITY_CLEANUP_BY_ENGINE_(ped, clean_up);
 			}
 
 			return ped;
@@ -113,5 +113,23 @@ namespace big::ped
 		ENTITY::SET_ENTITY_MAX_HEALTH(ped, max_health);
 		ENTITY::SET_ENTITY_HEALTH(ped, current_health, 0);
 		PED::SET_PED_ARMOUR(ped, current_armor);
+	}
+
+	inline void play_anim(Ped ped, std::string_view name, std::string_view dict, int flag)
+	{
+			if (STREAMING::DOES_ANIM_DICT_EXIST(dict.data()) && STREAMING::HAS_ANIM_DICT_LOADED(dict.data()))
+			{
+				STREAMING::REQUEST_ANIM_DICT(dict.data());
+
+				script::get_current()->yield();
+			}
+			if (!STREAMING::HAS_ANIM_DICT_LOADED(dict.data()))
+			{
+				g_notification_service->push_warning("Animation", "Failed to load dict, did you give an incorrect dict?");
+				return;
+			}
+			TASK::TASK_PLAY_ANIM(ped, name.data(), dict.data(), 4.0f, -4.0f, -1, flag, 1, 0, 0, 0);
+
+			STREAMING::HAS_ANIM_DICT_LOADED(dict.data());
 	}
 }

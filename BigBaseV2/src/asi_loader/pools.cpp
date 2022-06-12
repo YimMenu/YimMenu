@@ -1,4 +1,4 @@
-#include "pools.hpp"
+#include "pools.h"
 #include "pointers.hpp"
 
 namespace rage
@@ -115,4 +115,4 @@ namespace rage
 
 		return (int)entities.size();
 	}
-} 
+}

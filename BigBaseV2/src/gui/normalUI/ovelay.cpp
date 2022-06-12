@@ -29,11 +29,10 @@ namespace big
         {
             
             ImGui::Text("Players: %i", g_player_service->m_players.size());
-            ImGui::Text("Scripts: %i", sizeof(&g_pointers->m_script_threads));
             //ImGui::Text("Speed: (%.1f)", ENTITY::GET_ENTITY_SPEED(self::ped));
             ImGui::Text("Coords: (X:%.1f, Y:%.1f, Z:%.1f)", self::pos.x, self::pos.y, self::pos.z);
             ImGui::Separator();
-            ImGui::Text("FPS: %.1f Frame Time %.1f", ImGui::GetIO().Framerate, 1000.0f / ImGui::GetIO().Framerate);
+            ImGui::Text("FPS: %.1f  Frame Time: %.1f", ImGui::GetIO().Framerate, 1000.0f / ImGui::GetIO().Framerate);
 
 
             if (ImGui::BeginPopupContextWindow())

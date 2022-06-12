@@ -1,7 +1,5 @@
 #pragma once
 
-#pragma once
-
 enum EntityPoolType : uint16_t
 {
 	PoolTypeVehicle = 1,
@@ -66,4 +64,4 @@ namespace rage
 	int GetAllWorld(EntityPoolType type, int max, int* arr);
 
 	std::vector<Entity> GetAllWorld(EntityPoolType type, int max);
-}; 
+};

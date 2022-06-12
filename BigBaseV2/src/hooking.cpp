@@ -1,4 +1,4 @@
-#include "asi_loader/script_manager.hpp"
+#include "asi_loader/script_manager.h"
 #include "common.hpp"
 #include "function_types.hpp"
 #include "gta/array.hpp"
@@ -237,7 +237,7 @@ namespace big
 			if (g_running)
 			{
 				g_renderer->wndproc(hwnd, msg, wparam, lparam);
-				script_manager::WndProc(hwnd, msg, wparam, lparam);
+				ScriptManager::WndProc(hwnd, msg, wparam, lparam);
 			}
 
 			return CallWindowProcW(g_hooking->m_og_wndproc, hwnd, msg, wparam, lparam);
