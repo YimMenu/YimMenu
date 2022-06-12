@@ -284,21 +284,8 @@ namespace big
 			m_get_net_object_for_player = ptr.as<decltype(m_get_net_object_for_player)>();
 		});
 
-		// CTunables
-		main_batch.add("T", "BF 02 00 00 00 44 8B C7", [this](memory::handle ptr)
-		{
-			m_tunables = ptr.sub(4).rip().as<decltype(m_tunables)>();
-		});
-
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
-
-		// Credits: @brunph
-		if (auto bonus_string = mem_region.scan("62 6F 6E 75 73 00"); bonus_string)
-		{
-			const auto patch = "nyeee";
-			std::memcpy(bonus_string.as<void*>(), patch, sizeof(patch));
-		}
 
 		/**
 		 * Freemode thread restorer through VM patch
