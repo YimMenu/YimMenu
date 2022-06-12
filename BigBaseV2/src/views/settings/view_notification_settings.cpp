@@ -41,7 +41,7 @@ namespace big
 
 		ImGui::BeginGroup();
 		draw_pair_option("Clear Ped Tasks", received_event.clear_ped_task);
-		draw_pair_option("Modder Detection", received_event.modder_detect);
+		draw_pair_option("Detect Modder Events", received_event.modder_detect);
 		draw_pair_option("Report Cash Spawn", received_event.report_cash_spawn);
 		ImGui::EndGroup();
 
