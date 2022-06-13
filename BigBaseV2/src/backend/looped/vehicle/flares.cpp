@@ -9,7 +9,7 @@ namespace big
 	{
 		if (!g->vehicle.flares) return;
 
-		if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_FLY_COUNTER) && self::veh)
+		if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SCRIPTED_FLY_ZUP) && self::veh)
 		{
 			Hash hash = rage::joaat("weapon_flaregun");
 			STREAMING::REQUEST_MODEL(hash);

@@ -8,8 +8,8 @@ namespace big
 	{
 		if (*(unsigned short*)g_pointers->m_model_spawn_bypass == 0x9090) 
 		{
-			LOG(WARNING) << "stop vehicle bypass";
 			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
+			LOG(WARNING) << "stop vehicle bypass";
 		}
 		/*if (g_pointers->m_tunables->isValid())
 		{
