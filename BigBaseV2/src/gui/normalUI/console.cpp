@@ -10,6 +10,7 @@
 #include "fiber_pool.hpp"
 #include "util/scripts.hpp"
 #include "script_global.hpp"
+#include "core/data/explosion_types.hpp"
 
 namespace big
 {
@@ -177,13 +178,17 @@ namespace big
                     ImGui::SameLine();
                     ImGui::Checkbox("Cable Cars", &g->tunables.cable_cars);
                     ImGui::SameLine();
-                    ImGui::Checkbox("Vehicle Flares", &g->vehicle.flares);
-                    ImGui::SameLine();
-                    ImGui::Checkbox("Vehicle Chaff", &g->vehicle.chaff);
-
                     ImGui::Checkbox("Always Controll", &g->tunables.always_controll);
                     ImGui::SameLine();
                     ImGui::Checkbox("Utility Wheel", &g->pie_menu.enabled);
+
+                    ImGui::Checkbox("Vehicle Flares", &g->vehicle.flares);
+                    ImGui::SameLine();
+                    ImGui::Checkbox("Vehicle Chaff", &g->vehicle.chaff);
+                    ImGui::SameLine();
+                    ImGui::Checkbox("Vehicle Bombs", &g->vehicle.bombs);
+                    ImGui::Text("Bomb Type");
+                    ImGui::Combo("###bomb_model", &g->vehicle.bomb_type, *weapon_types);
 
                     ImGui::Separator();
 

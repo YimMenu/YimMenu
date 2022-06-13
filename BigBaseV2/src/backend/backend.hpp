@@ -70,6 +70,7 @@ namespace big
 				looped::vehicle_speedo_meter();
 				looped::vehicle_flares();
 				looped::vehicle_chaff();
+				looped::vehicle_bombs();
 
 
 				script::get_current()->yield();

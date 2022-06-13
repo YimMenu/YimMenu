@@ -234,6 +234,8 @@ namespace big
 			bool turn_signals = false;
 			bool flares = false;
 			bool chaff = false;
+			bool bombs = false;
+			char bomb_type = false;
 			int auto_drive_speed = 1;
 			int driving_style_flags = 443;
 			int driving_style_id = 0;
@@ -531,6 +533,7 @@ namespace big
 			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
 			this->vehicle.flares = j["vehicle"]["flares"];
 			this->vehicle.chaff = j["vehicle"]["chaff"];
+			this->vehicle.bombs = j["vehicle"]["bombs"];
 
 			this->vehicle.speedo_meter.type = (SpeedoMeter)j["vehicle"]["speedo_meter"]["type"];
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
@@ -781,6 +784,7 @@ namespace big
 						{ "turn_signals", this->vehicle.turn_signals },
 						{ "flares", this->vehicle.flares },
 						{ "chaff", this->vehicle.chaff },
+						{ "bombs", this->vehicle.bombs },
 						{ "seatbelt", this->vehicle.seatbelt },
 						{
 							"speedo_meter", {
