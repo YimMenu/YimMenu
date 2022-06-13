@@ -69,6 +69,7 @@ namespace big
 				looped::vehicle_seatbelt();
 				looped::vehicle_speedo_meter();
 				looped::vehicle_flares();
+				looped::vehicle_chaff();
 
 
 				script::get_current()->yield();

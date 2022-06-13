@@ -179,8 +179,10 @@ namespace big
                     ImGui::SameLine();
                     ImGui::Checkbox("Vehicle Flares", &g->vehicle.flares);
                     ImGui::SameLine();
-                    ImGui::Checkbox("Always Controll", &g->tunables.always_controll);
+                    ImGui::Checkbox("Vehicle Chaff", &g->vehicle.chaff);
 
+                    ImGui::Checkbox("Always Controll", &g->tunables.always_controll);
+                    ImGui::SameLine();
                     ImGui::Checkbox("Utility Wheel", &g->pie_menu.enabled);
 
                     ImGui::Separator();
@@ -224,20 +226,20 @@ namespace big
                         } QUEUE_JOB_END_CLAUSE
                     }*/
                 }
-                ImGui::End();
 
                 if (ImGui::CollapsingHeader("Useles Shit"))
                 {
                     components::button("RC Tank", [] {
                         *script_global(2810701).at(6709).as<int*>() = 1;
-                    });
+                        });
 
                     components::button("RC Bandito", [] {
                         *script_global(2810701).at(6708).as<int*>() = 1;
-                    });
+                        });
 
 
                 }
+
                 ImGui::End();
             }
         }
