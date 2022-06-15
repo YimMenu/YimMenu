@@ -100,6 +100,10 @@ namespace big
 					teleport::bring_player(g_player_service->get_selected()->id());
 				});
 
+				components::button("Godmode kill", [] {
+					teleport::teleport_player(g_player_service->get_selected()->id(), Vector3(9999, -500, 9999));
+				});
+
 				components::button("Teleport into Vehicle", [] {
 					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
 
