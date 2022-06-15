@@ -354,6 +354,7 @@ namespace big
 		void from_json(const nlohmann::json& j)
 		{
 			this->debug.script_event_logging = j["debug"]["script_event_logging"];
+			this->debug.sort_scripts = j["debug"]["sort_scripts"];
 
 			g->notifications.gta_thread_kill.log = j["notifications"]["gta_thread_kill"]["log"];
 			g->notifications.gta_thread_kill.notify = j["notifications"]["gta_thread_kill"]["notify"];
@@ -613,7 +614,9 @@ namespace big
 				{
 					"debug",
 					{
-						{ "script_event_logging", this->debug.script_event_logging }
+						{ "script_event_logging", this->debug.script_event_logging },
+						{ "sort_scripts", this->debug.sort_scripts }
+
 					}
 				},
 				{

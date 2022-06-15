@@ -5,7 +5,6 @@
 #include "CNetworkPlayerMgr.hpp"
 #include "CTunables.hpp"
 #include "FriendRegistry.hpp"
-#include "detectionBuffer.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/enums.hpp"
 #include "gta/replay.hpp"

@@ -187,8 +187,9 @@ namespace big
                     ImGui::Checkbox("Vehicle Chaff", &g->vehicle.chaff);
                     ImGui::SameLine();
                     ImGui::Checkbox("Vehicle Bombs", &g->vehicle.bombs);
-                    ImGui::Text("Bomb Type");
-                    ImGui::Combo("###bomb_model", &g->vehicle.bomb_type, *weapon_types);
+                    ImGui::Text("Bomb Type:");
+                    ImGui::InputText("###bomb_model", &g->vehicle.bomb_type, 64);
+                    //ImGui::Combo("###bomb_model", &g->vehicle.bomb_type, *weapon_types);
 
                     ImGui::Separator();
 
@@ -232,18 +233,6 @@ namespace big
                     }*/
                 }
 
-                if (ImGui::CollapsingHeader("Useles Shit"))
-                {
-                    components::button("RC Tank", [] {
-                        *script_global(2810701).at(6709).as<int*>() = 1;
-                        });
-
-                    components::button("RC Bandito", [] {
-                        *script_global(2810701).at(6708).as<int*>() = 1;
-                        });
-
-
-                }
 
                 ImGui::End();
             }

@@ -1,4 +1,4 @@
-//#include "api/api.hpp"
+#include "api/api.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "script.hpp"
@@ -72,7 +72,7 @@ namespace big
 				{
 					g_thread_pool->push([&]
 					{
-						//api::vehicle::handling::save_profile(profile.share_code);
+						api::vehicle::handling::save_profile(profile.share_code);
 
 						g_vehicle_service->load_saved_profiles(true);
 					});
