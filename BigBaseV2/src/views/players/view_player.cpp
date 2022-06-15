@@ -119,6 +119,32 @@ namespace big
 					components::button("Host Kick", [] {
 						NETWORK::NETWORK_SESSION_KICK_PLAYER(g_player_service->get_selected()->id());
 					});
+
+					components::button("Ped Crash", [] {
+						Ped ped = ped::spawn("slod_human", ENTITY::GET_ENTITY_COORDS(g_player_service->get_selected()->id(), false), 0);
+						script::get_current()->yield(3s);
+						entity::delete_entity(ped);
+					});
+
+					ImGui::SameLine();
+
+					components::button("Vehicle Crash", [] {
+						Vehicle veh = vehicle::spawn("arbitergt", ENTITY::GET_ENTITY_COORDS(g_player_service->get_selected()->id(), false), 0);
+						script::get_current()->yield(3s);
+						entity::delete_entity(veh);
+					});
+
+					ImGui::SameLine();
+
+					components::button("TSE Crash", [] {
+						constexpr size_t arg_count = 2;
+						int64_t args[arg_count] = {
+							static_cast<int64_t>(eRemoteEvent::Crash),
+							self::id,
+						};
+
+						g_pointers->m_trigger_script_event(1, args, arg_count, 1 << g_player_service->get_selected()->id());
+					});
 				}
 				
 
