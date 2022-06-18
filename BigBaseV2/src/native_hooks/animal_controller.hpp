@@ -8,7 +8,6 @@ namespace big
 	{
 		inline void NETWORK_IS_GAME_IN_PROGRESS(rage::scrNativeCallContext* src)
 		{
-			LOG(INFO) << "online false";
 			src->set_return_value<BOOL>(0);
 		}
 	}
