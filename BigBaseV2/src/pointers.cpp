@@ -153,6 +153,12 @@ namespace big
 			*m_spectator_check = 0x9090;
 		});
 
+		// GET CNetGamePlayer
+		main_batch.add("GCNGP", "48 83 EC ? 33 C0 38 05 ? ? ? ? 74 ? 83 F9", [this](memory::handle ptr)
+		{
+			m_get_net_game_player = ptr.as<decltype(m_get_net_game_player)>();
+		});
+
 		// Replay Interface
 		main_batch.add("RI", "48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D", [this](memory::handle ptr)
 		{
@@ -279,6 +285,16 @@ namespace big
 			m_camera_pool = ptr.sub(9).rip().as<rage::GenericPool*>();
 		});
 		//END SHV
+
+		main_batch.add("TMR", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 48 81 EC ? ? ? ? 80 3D ? ? ? ? ? 49 8B F0 48 8B EA", [this](memory::handle ptr)
+		{
+			m_text_message_received = ptr.as<PVOID>();
+		});
+
+		main_batch.add("GGHFS", "48 8B C4 48 89 58 08 48 89 70 10 48 89 78 18 4C 89 70 20 55 48 8B EC 48 83 EC 40 48 8B F1 48 8D 4D E0 4D", [this](memory::handle ptr)
+		{
+			m_get_gamer_handle_from_something = ptr.as<functions::get_gamer_handle_from_something>();
+		});
 
 		//Receive Net Message
 		main_batch.add("RNM", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 20 4C 8B 71 50 33 ED", [this](memory::handle ptr)

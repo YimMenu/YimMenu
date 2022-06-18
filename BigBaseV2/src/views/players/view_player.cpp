@@ -6,6 +6,7 @@
 #include "util/ped.hpp"
 #include "util/vehicle.hpp"
 #include "util/teleport.hpp"
+#include "util/toxic.hpp"
 
 namespace big
 {
@@ -85,6 +86,14 @@ namespace big
 					);
 				}
 
+				components::button("Open Profile", [] {
+					int Handle;
+					int Handle_size;
+
+					NETWORK::NETWORK_HANDLE_FROM_PLAYER(g_player_service->get_selected()->id(), &Handle, Handle_size);
+					NETWORK::NETWORK_SHOW_PROFILE_UI(&Handle);
+				});
+
 				ImGui::TreePop();
 			}
 
@@ -101,7 +110,9 @@ namespace big
 				});
 
 				components::button("Godmode kill", [] {
-					teleport::teleport_player(g_player_service->get_selected()->id(), Vector3(9999, -500, 9999));
+					teleport::teleport_player(g_player_service->get_selected()->id(), Vector3(8110, 20, 0));
+					script::get_current()->yield(1s);
+					entity::delete_entity(PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false));
 				});
 
 				components::button("Teleport into Vehicle", [] {
@@ -116,7 +127,7 @@ namespace big
 			if (ImGui::TreeNode("Toxic")) {
 
 				if (ImGui::TreeNode("Shit")) {
-					components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player()); });
+					components::button("Desync", [] { toxic::desync_kick(g_player_service->get_selected()->get_net_game_player()); });
 
 					ImGui::SameLine();
 

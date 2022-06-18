@@ -48,6 +48,10 @@ namespace big
 		rage::GenericPool* m_prop_pool{};
 		rage::GenericPool* m_pickup_pool{};
 		rage::GenericPool* m_camera_pool{};
+
+		PVOID m_text_message_received;
+		functions::get_gamer_handle_from_something m_get_gamer_handle_from_something{};
+
 		CGameScriptHandlerMgr **m_script_handler_mgr{};
 
 		IDXGISwapChain **m_swapchain{};
@@ -65,6 +69,8 @@ namespace big
 		FriendRegistry* m_friend_registry{};
 
 		functions::get_screen_coords_for_world_coords* m_get_screen_coords_for_world_coords{};
+
+		functions::get_net_game_player* m_get_net_game_player{};
 
 		PVOID m_gta_thread_start{};
 		PVOID m_gta_thread_kill{};

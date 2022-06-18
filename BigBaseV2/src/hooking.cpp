@@ -63,6 +63,8 @@ namespace big
 		m_receive_net_message_hook("RNM", g_pointers->m_receive_net_message, &hooks::receive_net_message),
 		// Received clone sync
 		m_received_clone_sync_hook("RCS", g_pointers->m_received_clone_sync, &hooks::received_clone_sync),
+		// 
+		m_text_message_received_hook("TMR", g_pointers->m_text_message_received, &hooks::text_message_received),
 		//Get Network Event Data
 		m_get_network_event_data_hook("GNED", g_pointers->m_get_network_event_data, &hooks::get_network_event_data)
 	{
@@ -113,12 +115,16 @@ namespace big
 
 		m_received_clone_sync_hook.enable();
 
+		m_text_message_received_hook.enable();
+
 		m_enabled = true;
 	}
 
 	void hooking::disable()
 	{
 		m_enabled = false;
+
+		m_text_message_received_hook.disable();
 
 		m_received_clone_sync_hook.disable();
 

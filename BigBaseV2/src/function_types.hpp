@@ -27,6 +27,8 @@ namespace big::functions
 
 	using get_script_handle_t = int64_t(*)(int64_t);
 
+	using get_gamer_handle_from_something = bool(*)(void* something, uint64_t* gamer_handle, size_t size_of_buffer, size_t* required_size);
+
 	// Received Event Signatures START
 	using read_bitbuf_array = bool(rage::datBitBuffer* buffer, PVOID read, int bits, int);
 	using read_bitbuf_dword = bool(rage::datBitBuffer* buffer, PVOID read, int bits);
