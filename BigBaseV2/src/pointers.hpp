@@ -51,6 +51,8 @@ namespace big
 
 		PVOID m_text_message_received;
 		functions::get_gamer_handle_from_something m_get_gamer_handle_from_something{};
+		__int64* m_send_chat_ptr{};
+		functions::send_chat_message* m_send_chat_message{};
 
 		CGameScriptHandlerMgr **m_script_handler_mgr{};
 

@@ -231,8 +231,13 @@ namespace big
 
                         } QUEUE_JOB_END_CLAUSE
                     }*/
-                }
 
+                    static char message[255] = "";
+                    components::input_text_with_hint("Message", "", message, sizeof(message), ImGuiInputTextFlags_EnterReturnsTrue, []
+                    {
+                        LOG(INFO) << g_pointers->m_send_chat_message(*g_pointers->m_send_chat_ptr + 0x78, (__int64)g_local_player->m_player_info + 0x88, message, false) << message;
+                    });
+                }
 
                 ImGui::End();
             }

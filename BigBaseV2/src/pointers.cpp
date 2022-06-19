@@ -296,6 +296,18 @@ namespace big
 			m_get_gamer_handle_from_something = ptr.as<functions::get_gamer_handle_from_something>();
 		});
 
+		//Send Chat Ptr
+		main_batch.add("SCP", "48 8B 0D ? ? ? ? 48 8D 97 ? ? ? ? E8 ? ? ? ? 48 8B CF", [this](memory::handle ptr)
+			{
+				m_send_chat_ptr = ptr.add(3).rip().as<__int64*>();
+			});
+
+		//Send Chat Message
+		main_batch.add("SCM", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 20 4C 89 40 18 57 48 83 EC 20 33 DB 41 F6 D9 49 8B F0 1B C0 48 8B EA 48 8B F9 F7 D8", [this](memory::handle ptr)
+			{
+				m_send_chat_message = ptr.as<decltype(m_send_chat_message)>();
+			});
+
 		//Receive Net Message
 		main_batch.add("RNM", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 20 4C 8B 71 50 33 ED", [this](memory::handle ptr)
 		{
