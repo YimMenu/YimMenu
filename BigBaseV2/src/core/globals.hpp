@@ -288,7 +288,7 @@ namespace big
 
 		struct pie_menu
 		{
-			bool enabled = true;
+			bool enabled = false;
 			bool active = false;
 			bool selected = false;
 		};

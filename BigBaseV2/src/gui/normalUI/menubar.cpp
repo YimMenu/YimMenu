@@ -1,6 +1,7 @@
 #include "views/view.hpp"
 #include "natives.hpp"
 #include "fiber_pool.hpp"
+#include "util/session.hpp"
 
 namespace big
 {
@@ -24,6 +25,23 @@ namespace big
                 }
                 ImGui::EndMenu();
             }
+
+            if (ImGui::BeginMenu("Session"))
+            {
+                for (const SessionType& session_type : sessions)
+                {
+                    if (ImGui::MenuItem(session_type.name))
+                    {
+                        QUEUE_JOB_BEGIN_CLAUSE(&)
+                        {
+                            session::join_type(session_type);
+                        }QUEUE_JOB_END_CLAUSE
+                    }
+                }
+
+                ImGui::EndMenu();
+            }
+
             if (ImGui::BeginMenu("Extra"))
             {
                 if (ImGui::MenuItem("Skip Cutscene"))

@@ -9,6 +9,7 @@
 #include "natives.hpp"
 #include "fiber_pool.hpp"
 #include "util/scripts.hpp"
+#include "util/session.hpp"
 #include "script_global.hpp"
 #include "core/data/explosion_types.hpp"
 
@@ -89,59 +90,43 @@ namespace big
                     static int args_how = 3;
 
                     ImGui::Checkbox("Args?", &g->debug.with_args);
-                    if (g->debug.with_args) 
+                    ImGui::InputText("Script Name", script_name, 64);
+                    if (g->debug.with_args)
                     {
-                        ImGui::InputText("Script Name", script_name, 64);
                         ImGui::InputInt4("Args", args);
                         ImGui::InputInt("Ammount of args", &args_how);
-                        ImGui::InputInt("Buffer Size", &buffer_size);
+                    }
+                    ImGui::InputInt("Buffer Size", &buffer_size);
 
-                        if (ImGui::Button("Start"))
+                    if (ImGui::Button("Start"))
+                    {
+                        QUEUE_JOB_BEGIN_CLAUSE()
                         {
-                            QUEUE_JOB_BEGIN_CLAUSE()
+                            if (const Hash hash = rage::joaat(script_name); hash)
                             {
-                                if (const Hash hash = rage::joaat(script_name); hash)
+                                scripts::request_script(hash);
+                                if (scripts::wait_till_loaded(hash))
                                 {
-                                    scripts::request_script(hash);
-                                    if (scripts::wait_till_loaded(hash))
+                                    if (g->debug.with_args)
                                     {
                                         scripts::start_script_with_args(hash, args, args_how, buffer_size);
-
-                                        scripts::wait_till_running(hash);
-                                    }
-                                }
-                            } QUEUE_JOB_END_CLAUSE
-                        }
-                    }
-                    else
-                    {
-                        ImGui::InputText("Script Name", script_name, 64);
-                        ImGui::InputInt("Buffer Size", &buffer_size);
-
-                        if (ImGui::Button("Start"))
-                        {
-                            QUEUE_JOB_BEGIN_CLAUSE()
-                            {
-                                if (const Hash hash = rage::joaat(script_name); hash)
-                                {
-                                    scripts::request_script(hash);
-                                    if (scripts::wait_till_loaded(hash))
+                                    } else 
                                     {
                                         scripts::start_script(hash, buffer_size);
-
-                                        scripts::wait_till_running(hash);
                                     }
+                                    scripts::wait_till_running(hash);
                                 }
-                            } QUEUE_JOB_END_CLAUSE
-                        }
+                            }
+                        } QUEUE_JOB_END_CLAUSE
                     }
-                    ImGui::Separator();
+                    
+                    /*ImGui::Separator();
 
                     ImGui::Text("REGISTER_WORLD_POINT_SCRIPT_BRAIN");
 
                     static char script_name2[64];
                     static float activationRange = 200.0f;
-                    ImGui::InputText("Script Name ###2", script_name2, 64);
+                    components::input_text_with_hint("###Script Name 2", "Script Name", script_name2, 64);
                     ImGui::InputFloat("Activation Range", &activationRange);
 
                     if (ImGui::Button("Start"))
@@ -160,7 +145,7 @@ namespace big
                             }
                         } QUEUE_JOB_END_CLAUSE
                     }
-                    ImGui::EndGroup();
+                    ImGui::EndGroup();*/
                 }
                 if (ImGui::CollapsingHeader("Custom Settings"))
                 {
@@ -188,7 +173,7 @@ namespace big
                     ImGui::SameLine();
                     ImGui::Checkbox("Vehicle Bombs", &g->vehicle.bombs);
                     ImGui::Text("Bomb Type:");
-                    ImGui::InputText("###bomb_model", &g->vehicle.bomb_type, 64);
+                    components::input_text_with_hint("###bomb_model", "", &g->vehicle.bomb_type, 64);
                     //ImGui::Combo("###bomb_model", &g->vehicle.bomb_type, *weapon_types);
 
                     ImGui::Separator();
@@ -231,6 +216,13 @@ namespace big
 
                         } QUEUE_JOB_END_CLAUSE
                     }*/
+                    static int event_id;
+                    ImGui::InputInt("###event_id", &event_id);
+                    ImGui::SameLine();
+                    components::button("Start Event", []
+                    {
+                        session::force_script_on_lobby(event_id);
+                    });
 
                     static char message[255] = "";
                     components::input_text_with_hint("Message", "", message, sizeof(message), ImGuiInputTextFlags_EnterReturnsTrue, []
