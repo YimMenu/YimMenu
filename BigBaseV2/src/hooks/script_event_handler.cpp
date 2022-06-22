@@ -144,6 +144,21 @@ namespace big
 				return true;
 			}
 			break;
+		case eRemoteEvent::SendToCayo:
+			if (args[2] == 0 && args[3] == 0 && args[4] == 3 && args[5] == 1 && args[6] == 0)
+			{
+				if (g->protections.script_events.send_to_island)
+				{
+					format_string(player_name, "Send to Cayo Beach", notify.send_to_island.log, notify.send_to_island.notify);
+
+					return true;
+				}
+				break;
+			}
+
+			format_string(player_name, "TSE Freeze", notify.tse_freeze.log, notify.tse_freeze.notify);
+
+			return true;
 		case eRemoteEvent::SendToCutscene:
 			if (g->protections.script_events.send_to_cutscene)
 			{

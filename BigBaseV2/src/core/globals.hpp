@@ -57,6 +57,7 @@ namespace big
 				pair sound_spam{};
 				pair spectate{};
 				pair transaction_error{};
+				pair tse_freeze{};
 				pair vehicle_kick{};
 			} script_event_handler{};
 
@@ -408,6 +409,8 @@ namespace big
 				script_handler.spectate.notify = script_handler_j["spectate"]["notify"];
 				script_handler.transaction_error.log = script_handler_j["transaction_error"]["log"];
 				script_handler.transaction_error.notify = script_handler_j["transaction_error"]["notify"];
+				script_handler.tse_freeze.log = script_handler_j["tse_freeze"]["log"];
+				script_handler.tse_freeze.notify = script_handler_j["tse_freeze"]["notify"];
 				script_handler.vehicle_kick.log = script_handler_j["vehicle_kick"]["log"];
 				script_handler.vehicle_kick.notify = script_handler_j["vehicle_kick"]["notify"];
 			}
@@ -618,6 +621,7 @@ namespace big
 								{ "sound_spam", return_notify_pair(script_handler_notifications.sound_spam) },
 								{ "spectate", return_notify_pair(script_handler_notifications.spectate) },
 								{ "transaction_error", return_notify_pair(script_handler_notifications.transaction_error) },
+								{ "tse_freeze", return_notify_pair(script_handler_notifications.tse_freeze) },
 								{ "vehicle_kick", return_notify_pair(script_handler_notifications.vehicle_kick) }
 							}
 						},
