@@ -18,13 +18,15 @@ namespace big
 	void view::spawn() {
 		ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
 
-		ImGui::Checkbox("Preview", &g->spawn.preview_vehicle);
-		ImGui::SameLine();
+		
 		ImGui::Checkbox("Spawn In", &g->spawn.spawn_inside);
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn Maxed", &g->spawn.spawn_maxed);
-
+		ImGui::Checkbox("Preview", &g->spawn.preview_vehicle);
+		ImGui::SameLine();
 		ImGui::Checkbox("Delete Last Spawn", &g->spawn.delete_last_spawn);
+
+		ImGui::Separator();
 
 		components::input_text_with_hint("Model Name", "Search", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, []
 		{
@@ -49,7 +51,7 @@ namespace big
 			g->spawn.last_spawn = veh;
 
 		});
-		if (ImGui::ListBoxHeader("###vehicles"))
+		if (ImGui::ListBoxHeader("###vehicles", { 245.f, 500.f }))
 		{
 			if (!g_vehicle_preview_service->get_vehicle_list().is_null())
 			{

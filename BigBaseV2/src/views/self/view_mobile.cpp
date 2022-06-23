@@ -15,11 +15,11 @@ namespace big
 
 		ImGui::Separator();
 
-		components::small_text("Lester");
+		/*components::small_text("Lester");
 
 		ImGui::Checkbox("Off Radar", &g->self.off_radar);
 
-		ImGui::Separator();
+		ImGui::Separator();*/
 
 		components::small_text("Mechanic - Personal Vehicles");
 
