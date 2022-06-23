@@ -24,6 +24,8 @@ namespace big
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn Maxed", &g->spawn.spawn_maxed);
 
+		ImGui::Checkbox("Delete Last Spawn", &g->spawn.delete_last_spawn);
+
 		components::input_text_with_hint("Model Name", "Search", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, []
 		{
 			Ped ped = self::ped;
@@ -38,6 +40,13 @@ namespace big
 			{
 				vehicle::max_vehicle(veh);
 			}
+
+			if (g->spawn.delete_last_spawn)
+			{
+				entity::delete_entity(g->spawn.last_spawn);
+			}
+
+			g->spawn.last_spawn = veh;
 
 		});
 		if (ImGui::ListBoxHeader("###vehicles"))
@@ -78,6 +87,12 @@ namespace big
 							{
 								vehicle::max_vehicle(veh);
 							}
+							if (g->spawn.delete_last_spawn)
+							{
+								entity::delete_entity(g->spawn.last_spawn);
+							}
+
+							g->spawn.last_spawn = veh;
 
 							g_vehicle_preview_service->stop_preview();
 						});

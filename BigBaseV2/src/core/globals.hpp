@@ -175,6 +175,8 @@ namespace big
 			bool preview_vehicle = false;
 			bool spawn_inside = false;
 			bool spawn_maxed = false;
+			bool delete_last_spawn = false;
+			int last_spawn = 0;
 		};
 
 		struct spoofing
@@ -481,6 +483,7 @@ namespace big
 			this->spawn.preview_vehicle = j["spawn"]["preview_vehicle"];
 			this->spawn.spawn_inside = j["spawn"]["spawn_inside"];
 			this->spawn.spawn_maxed = j["spawn"]["spawn_maxed"];
+			this->spawn.delete_last_spawn = j["spawn"]["delete_last_spawn"];
 
 			this->spoofing.spoof_ip = j["spoofing"]["spoof_ip"];
 			this->spoofing.spoof_rockstar_id = j["spoofing"]["spoof_rockstar_id"];
@@ -713,7 +716,8 @@ namespace big
 					"spawn", {
 						{ "preview_vehicle", this->spawn.preview_vehicle },
 						{ "spawn_inside", this->spawn.spawn_inside },
-						{ "spawn_maxed", this->spawn.spawn_maxed}
+						{ "spawn_maxed", this->spawn.spawn_maxed},
+						{ "delete_last_spawn", this->spawn.delete_last_spawn}
 					}
 				},
 				{
