@@ -146,7 +146,7 @@ namespace big
 		// Received Event Signatures END
 
 		// Request Control of Entity PATCH
-		main_batch.add("RCOE-Patch", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8", [this](memory::handle ptr)
+		main_batch.add("RCOE-Patch", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", [this](memory::handle ptr)
 		{
 			m_spectator_check = ptr.add(0x13).as<PUSHORT>();
 			*m_spectator_check = 0x9090;
