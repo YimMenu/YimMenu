@@ -15,25 +15,41 @@ namespace big
 	void view::notification_settings()
 	{
 		components::small_text("GTA Threads");
-
+		ImGui::BeginGroup();
 		draw_pair_option("Terminate", g->notifications.gta_thread_kill);
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
 		draw_pair_option("Start", g->notifications.gta_thread_start);
+		ImGui::EndGroup();
 			
 
 		components::small_text("Network Player Manager");
 
+		
 		ImGui::Text("Player Join");
 
 		ImGui::Checkbox("Above Map", &g->notifications.player_join.above_map);
 		ImGui::Checkbox("Log", &g->notifications.player_join.log);
 		ImGui::Checkbox("Notify", &g->notifications.player_join.notify);
+				
+		ImGui::BeginGroup();
+		draw_pair_option("Player Leave", g->notifications.player_leave);
+		ImGui::EndGroup();
 
 		ImGui::SameLine();
 
-		draw_pair_option("Player Leave", g->notifications.player_leave);
-
+		ImGui::BeginGroup();
 		draw_pair_option("Init", g->notifications.network_player_mgr_init);
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
 		draw_pair_option("Shutdown", g->notifications.network_player_mgr_shutdown);
+		ImGui::EndGroup();
 
 		components::small_text("Received Event");
 
@@ -94,10 +110,22 @@ namespace big
 
 		components::small_text("Other");
 
+		ImGui::BeginGroup();
 		draw_pair_option("Net Array Error", g->notifications.net_array_error);
+		draw_pair_option("Rate Limit", g->notifications.transaction_rate_limit);
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
 		draw_pair_option("Reports", g->notifications.reports);
-		draw_pair_option("Transaction Error / Rate Limit", g->notifications.transaction_rate_limit);
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
 		draw_pair_option("Invalid sync", g->notifications.invalid_sync);
+		ImGui::EndGroup();				
 			
 	}
 

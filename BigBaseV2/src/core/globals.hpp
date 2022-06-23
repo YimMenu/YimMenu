@@ -80,8 +80,8 @@ namespace big
 			pair reports{};
 
 			pair send_net_info_to_lobby{};
-			pair transaction_rate_limit{};
 			pair invalid_sync{};
+			pair transaction_rate_limit{};			
 		};
 
 		struct player {
@@ -635,8 +635,8 @@ namespace big
 							}
 						},
 						{ "send_net_info_to_lobby", return_notify_pair(g->notifications.send_net_info_to_lobby) },
-						{ "transaction_rate_limit", return_notify_pair(g->notifications.transaction_rate_limit) },
-						{ "invalid_sync", return_notify_pair(g->notifications.invalid_sync) }
+						{ "invalid_sync", return_notify_pair(g->notifications.invalid_sync) },
+						{ "transaction_rate_limit", return_notify_pair(g->notifications.transaction_rate_limit) }						
 					}
 				},
 				{
