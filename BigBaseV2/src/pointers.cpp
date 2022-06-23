@@ -59,9 +59,9 @@ namespace big
 		});
 
 		// Script Programs
-		main_batch.add("SP", "44 8B 0D ? ? ? ? 4C 8B 1D ? ? ? ? 48 8B 1D ? ? ? ? 41 83 F8 FF 74 3F 49 63 C0 42 0F B6 0C 18 81 E1", [this](memory::handle ptr)
+		main_batch.add("SP", "48 8B 1D ? ? ? ? 41 83 F8 FF", [this](memory::handle ptr)
 		{
-			m_script_program_table = ptr.add(17).rip().as<decltype(m_script_program_table)>();
+			m_script_program_table = ptr.add(3).rip().as<decltype(m_script_program_table)>();
 		});
 
 		// Script Global
@@ -108,15 +108,15 @@ namespace big
 		});
 
 		// Increment Stat Event
-		main_batch.add("ISE", "48 89 5C 24 ? 48 89 74 24 ? 55 57 41 55 41 56 41 57 48 8B EC 48 83 EC 60 8B 79 30", [this](memory::handle ptr)
+		main_batch.add("ISE", "48 83 EC 60 8B 79 30 4C 8B F1", [this](memory::handle ptr)
 		{
-			m_increment_stat_event = ptr.as<decltype(m_increment_stat_event)>();
+			m_increment_stat_event = ptr.sub(0x15).as<decltype(m_increment_stat_event)>();
 		});
 
 		// Trigger Script Event
-		main_batch.add("TSE", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 81 EC ? ? ? ? 45 8B F0 41 8B F9", [this](memory::handle ptr)
+		main_batch.add("TSE", "45 8B F0 41 8B F9 48 8B EA", [this](memory::handle ptr)
 		{
-			m_trigger_script_event = ptr.as<decltype(m_trigger_script_event)>();
+			m_trigger_script_event = ptr.sub(0x1C).as<decltype(m_trigger_script_event)>();
 		});
 
 		// Received Event Signatures START
@@ -153,15 +153,15 @@ namespace big
 		});
 
 		// Replay Interface
-		main_batch.add("RI", "48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D", [this](memory::handle ptr)
+		main_batch.add("RI", "0F B7 44 24 ? 66 89 44 4E", [this](memory::handle ptr)
 		{
-			m_replay_interface = ptr.add(3).rip().as<decltype(m_replay_interface)>();
+			m_replay_interface = ptr.add(0x1C).rip().as<decltype(m_replay_interface)>();
 		});
 
 		// Pointer to Handle
-		main_batch.add("PTH", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 8B 15 ? ? ? ? 48 8B F9 48 83 C1 10 33 DB", [this](memory::handle ptr)
+		main_batch.add("PTH", "48 8B F9 48 83 C1 10 33 DB", [this](memory::handle ptr)
 		{
-			m_ptr_to_handle = ptr.as<decltype(m_ptr_to_handle)>();
+			m_ptr_to_handle = ptr.sub(0x15).as<decltype(m_ptr_to_handle)>();
 		});
 
 		// Blame Explode
@@ -177,9 +177,9 @@ namespace big
 		});
 
 		// Send NET Info to Lobby
-		main_batch.add("SNITL", "44 8B 6C 24 ? 45 8B C6 48 8D 4E 70 41 8B D5 45 2B C5 4C 8D 4C 24 ? 03 D5 44 2B C5 49 03 D4 E8 ? ? ? ? 84 C0 74 69", [this](memory::handle ptr)
+		main_batch.add("SNITL", "33 DB 48 83 C1 68 45 8B F0 ", [this](memory::handle ptr)
 		{
-			m_send_net_info_to_lobby = ptr.sub(0x64).as<decltype(m_send_net_info_to_lobby)>();
+			m_send_net_info_to_lobby = ptr.sub(0x26).as<decltype(m_send_net_info_to_lobby)>();
 		});
 
 		// CNetworkObjectMgr
@@ -225,9 +225,9 @@ namespace big
 		});
 
 		// Get Gameplay Cam Coords
-		main_batch.add("GGCC", "40 53 48 83 EC 20 48 8B D9 E8 ? ? ? ? 8B 90 ? ? ? ? 89 13 8B 90 ? ? ? ? 8B 80 ? ? ? ? 89 43 10 89 53 08 48 8B C3 48 83 C4 20 5B C3", [this](memory::handle ptr)
+		main_batch.add("GGCC", "8B 90 ? ? ? ? 89 13", [this](memory::handle ptr)
 		{
-			m_get_gamplay_cam_coords = ptr.as<functions::get_gameplay_cam_coords*>();
+			m_get_gamplay_cam_coords = ptr.sub(0xE).as<functions::get_gameplay_cam_coords*>();
 		});
 
 		// net array handler - version mismatch patch
@@ -243,9 +243,9 @@ namespace big
 		});
 
 		//Receive Net Message
-		main_batch.add("RNM", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 20 4C 8B 71 50 33 ED", [this](memory::handle ptr)
+		main_batch.add("RNM", "48 83 EC 20 4C 8B 71 50 33 ED", [this](memory::handle ptr)
 		{
-			m_receive_net_message = ptr.as<PVOID>();
+			m_receive_net_message = ptr.sub(0x19).as<PVOID>();
 		});
 
 		//Get Network Event Data
@@ -254,34 +254,14 @@ namespace big
 			m_get_network_event_data = ptr.as<PVOID>();
 		});
 
-		//Received clone sync
-		main_batch.add("RCS", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 40 4C 8B F2", [this](memory::handle ptr)
+		//Received clone sync & Get sync tree for type & Get net object for player & Get sync type info & Get net object
+		main_batch.add("RCS/GSTFT/GNOFP/GNO/GSTI", "4C 8B F2 41 0F B7 D1 45 0F B7 E1", [this](memory::handle ptr)
 		{
-			m_received_clone_sync = ptr.as<decltype(m_received_clone_sync)>();
-		});
-
-		//Get sync type info
-		main_batch.add("GSTI", "44 0F B7 C1 4C 8D 0D ? ? ? ?", [this](memory::handle ptr)
-		{
-			m_get_sync_type_info = ptr.as<decltype(m_get_sync_type_info)>();
-		});
-
-		//Get sync tree for type
-		main_batch.add("GSTFT", "0F B7 CA 83 F9 07", [this](memory::handle ptr)
-		{
-			m_get_sync_tree_for_type = ptr.as<decltype(m_get_sync_tree_for_type)>();
-		});
-
-		//Get net object
-		main_batch.add("GNO", "E8 ? ? ? ? 0F B7 53 7C", [this](memory::handle ptr)
-		{
-			m_get_net_object = ptr.add(1).rip().as<decltype(m_get_net_object)>();
-		});
-
-		//Get net object for player
-		main_batch.add("GNOFP", "41 80 78 ? FF 74 2D 41 0F B6 40", [this](memory::handle ptr)
-		{
-			m_get_net_object_for_player = ptr.as<decltype(m_get_net_object_for_player)>();
+			m_received_clone_sync = ptr.sub(0x1D).as<decltype(m_received_clone_sync)>();
+			m_get_sync_tree_for_type = ptr.add(0x14).rip().as<decltype(m_get_sync_tree_for_type)>(); // 0F B7 CA 83 F9 07 .as()
+			m_get_net_object_for_player = ptr.add(0x4C).rip().as<decltype(m_get_net_object_for_player)>(); // 41 80 78 ? FF 74 2D 41 0F B6 40 .as()
+			m_get_net_object = ptr.add(0x62).rip().as<decltype(m_get_net_object)>(); // E8 ? ? ? ? 0F B7 53 7C .add(1).rip().as()
+			m_get_sync_type_info = ptr.add(0x78).rip().as<decltype(m_get_sync_type_info)>(); // 44 0F B7 C1 4C 8D 0D .as()
 		});
 
 		auto mem_region = memory::module(nullptr);
