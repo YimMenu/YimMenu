@@ -59,9 +59,9 @@ namespace big
 		});
 
 		// Script Programs
-		main_batch.add("SP", "41 83 F8 FF 74 3F 49 63 C0 42 0F B6 0C 18 81 E1", [this](memory::handle ptr)
+		main_batch.add("SP", "48 8B 1D ? ? ? ? 41 83 F8 FF", [this](memory::handle ptr)
 		{
-			m_script_program_table = ptr.sub(4).rip().as<decltype(m_script_program_table)>();
+			m_script_program_table = ptr.add(3).rip().as<decltype(m_script_program_table)>();
 		});
 
 		// Script Global
