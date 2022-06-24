@@ -12,7 +12,7 @@ namespace big
 		ImGui::SameLine();
 
 		components::button("Heal", [] {
-			ENTITY::SET_ENTITY_HEALTH(self::ped, 500, 0);
+			ENTITY::SET_ENTITY_HEALTH(self::ped, PED::GET_PED_MAX_HEALTH(self::ped), 0);
 			PED::SET_PED_ARMOUR(self::ped, 100);
 		});
 
