@@ -48,14 +48,15 @@ namespace big
 
 	class player_service final
 	{
+	
 		CNetGamePlayer** m_self;
-
+	
 		players m_players;
 
 		player_ptr m_dummy = std::make_shared<player>(nullptr);
 		player_ptr m_selected_player;
+	
 	public:
-
 		player_service();
 		~player_service();
 		

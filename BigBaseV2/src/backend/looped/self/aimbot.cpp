@@ -13,7 +13,7 @@ namespace big
 		if (g_local_player->m_health < 100.0) return;
 		if (g->self.aimbot)
 		{
-			for (auto& item : g_player_service->m_players)
+			for (auto& item : g_player_service->players())
 			{
 				if (auto const& plyr = item.second;
 					plyr->id() != self::id && GetAsyncKeyState(VK_LBUTTON))
