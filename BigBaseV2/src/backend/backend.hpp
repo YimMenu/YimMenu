@@ -2,18 +2,21 @@
 #include "common.hpp"
 #include "looped/looped.hpp"
 #include "script.hpp"
+#include "services/context_menu_service.hpp"
 
 namespace big
 {
-	class backend {
+	class backend
+	{
 	public:
 		static void loop();
 
-		static void self_loop() {
-
+		static void self_loop()
+		{
 			LOG(INFO) << "Starting script: Self";
 
-			while (g_running) {
+			while (g_running)
+			{
 				looped::self_clean_player();
 				looped::self_free_cam();
 				looped::self_godmode();
@@ -25,14 +28,14 @@ namespace big
 
 				script::get_current()->yield();
 			}
-
-
 		}
-		static void weapons_loop() {
 
+		static void weapons_loop()
+		{
 			LOG(INFO) << "Starting script: Weapons";
 
-			while (g_running) {
+			while (g_running)
+			{
 				looped::weapons_ammo_special_type();
 				looped::weapons_cage_gun();
 				looped::weapons_delete_gun();
@@ -49,13 +52,14 @@ namespace big
 
 				script::get_current()->yield();
 			}
-
 		}
-		static void vehicles_loop() {
 
+		static void vehicles_loop()
+		{
 			LOG(INFO) << "Starting script: Vehicles";
 
-			while (g_running) {
+			while (g_running)
+			{
 				looped::vehicle_auto_drive_to_waypoint();
 				looped::vehicle_auto_drive_wander();
 				looped::vehicle_despawn_bypass();
@@ -68,45 +72,41 @@ namespace big
 				looped::vehicle_seatbelt();
 				looped::vehicle_speedo_meter();
 
-
 				script::get_current()->yield();
 			}
-
 		}
 
-		static void turnsignal_loop() {
-
+		static void turnsignal_loop()
+		{
 			LOG(INFO) << "Starting script: turnsignal";
 
-			while (g_running) {
-
+			while (g_running)
+			{
 				looped::vehicle_turn_signals();
 
 				script::get_current()->yield();
 			}
-
 		}
 
-		static void rgbrandomizer_loop() {
-
+		static void rgbrandomizer_loop()
+		{
 			LOG(INFO) << "Starting script: rgbrandomizer";
 
-			while (g_running) {
-
+			while (g_running)
+			{
 				looped::rgb_synced_fade();
 				looped::rgb_synced_spasm();
 
 				script::get_current()->yield();
 			}
-
 		}
 
-		static void misc_loop() {
-
+		static void misc_loop()
+		{
 			LOG(INFO) << "Starting script: Miscellaneous";
 
-			while (g_running) {
-
+			while (g_running)
+			{
 				looped::hud_transition_state();
 				looped::tunables_disable_phone();
 				looped::tunables_no_idle_kick();
@@ -114,61 +114,72 @@ namespace big
 
 				script::get_current()->yield();
 			}
-
 		}
 
-		static void remote_loop() {
-
+		static void remote_loop()
+		{
 			LOG(INFO) << "Starting script: Remote";
 
-			while (g_running) {
-
+			while (g_running)
+			{
 				looped::player_never_wanted();
 				looped::player_spectate();
 
 				script::get_current()->yield();
 			}
-
 		}
 
-		static void noclip_loop() {
-
+		static void noclip_loop()
+		{
 			LOG(INFO) << "Starting script: No clip";
 
-			while (g_running) {
-
+			while (g_running)
+			{
 				looped::self_noclip();
 
 				script::get_current()->yield();
 			}
-
 		}
 
-		static void lscustoms_loop() {
-
+		static void lscustoms_loop()
+		{
 			LOG(INFO) << "Starting script: Ls customs";
 
-			while (g_running) {
-
+			while (g_running)
+			{
 				looped::vehicle_ls_customs();
 
 				script::get_current()->yield();
 			}
-
 		}
 
-		static void vehiclefly_loop() {
-
+		static void vehiclefly_loop()
+		{
 			LOG(INFO) << "Starting script: Vehicle fly";
 
-			while (g_running) {
-
+			while (g_running)
+			{
 				looped::vehicle_fly();
 
 				script::get_current()->yield();
 			}
-
 		}
 
+		static void disable_control_action_loop()
+		{
+			LOG(INFO) << "Starting script: Disable Control Action";
+
+			while (g_running)
+			{
+				looped::self_free_cam_disable_control_action();
+				looped::self_noclip_disable_control_action();
+
+				looped::custom_gun_disable_control_action();
+
+				context_menu_service::disable_control_action_loop();
+
+				script::get_current()->yield();
+			}
+		}
 	};
 }

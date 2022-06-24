@@ -12,28 +12,19 @@ namespace big
 	static float dist;
 
 	static const int scroll = 0;
-	static const int controls[] = {
-		(int)ControllerInputs::INPUT_WEAPON_WHEEL_NEXT,
-		(int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV,
-		(int)ControllerInputs::INPUT_ATTACK
-	};
 
 	void looped::weapons_gravity_gun()
 	{
-		bool bGravityGun = g->weapons.custom_weapon == CustomWeapon::GRAVITY_GUN;
-		double multiplier = 3.0;
+		bool is_gravity_gun_selected = g->weapons.custom_weapon == CustomWeapon::GRAVITY_GUN;
+		constexpr double multiplier = 3.0;
 
-		// ZOOMED IN
-		if (bGravityGun && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+		auto is_zoomed_in = is_gravity_gun_selected && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM);
+		if (is_zoomed_in)
 		{
-			PLAYER::DISABLE_PLAYER_FIRING(self::id, true);
-			for (int control : controls)
-				PAD::DISABLE_CONTROL_ACTION(0, control, true);
-
 			location = self::pos;
 
-			// Attack RELEASED
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) && ent == 0)
+			auto is_attack_released = PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) && ent == 0;
+			if (is_attack_released)
 			{
 				if (entity::raycast(&ent))
 				{
