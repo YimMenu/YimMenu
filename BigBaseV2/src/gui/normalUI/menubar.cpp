@@ -85,7 +85,7 @@ namespace big
             if (ImGui::BeginMenu("Windows"))
             {
                 ImGui::MenuItem("Main", nullptr, &g->window.main);
-                ImGui::MenuItem("DockerSpace", nullptr, &g->window.docker_space);
+                ImGui::MenuItem("Score Controller", nullptr, &g->window.score_controller);
                 ImGui::MenuItem("Overlay", nullptr, &g->window.overlay);
                 ImGui::MenuItem("Debug", nullptr, &g->window.debug);
 
@@ -94,19 +94,6 @@ namespace big
 
 
             ImGui::EndMainMenuBar();
-            if (g->window.docker_space) 
-            {
-                if (ImGui::Begin("DockSpace"))
-                {
-                    // Submit the DockSpace
-                    ImGuiIO& io = ImGui::GetIO();
-                    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
-                    {
-                        ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-                        ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f));
-                    }
-                }
-            }
         }
     }
 }

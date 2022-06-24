@@ -49,6 +49,7 @@ namespace big
 		static void menu_bar();
 		static void overlay();
 		static void pie_menu();
+		static void score_controller();
 
 		static void always()
 		{

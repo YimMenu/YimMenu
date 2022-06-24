@@ -199,6 +199,10 @@ namespace big
 			bool ambiant_blimp = false;
 			bool cable_cars = false;
 			bool always_controll = false;
+
+			char supportingevent[30] = "BTL_IDLE";
+			char intensity[20] = "";
+			char music_event[30] = "";
 		};
 
 		struct vehicle {
@@ -269,8 +273,8 @@ namespace big
 			bool users = true;
 			bool player = false;
 			bool custom = false;
-			bool docker_space = false;
 			bool overlay = false;
+			bool score_controller = false;
 
 			ImU32 color = 3357612055;
 
@@ -561,7 +565,6 @@ namespace big
 			this->window.color = j["window"]["color"];
 			this->window.debug = j["window"]["debug"];
 			this->window.handling = j["window"]["handling"];
-			this->window.docker_space = j["window"]["docker_space"];
 			this->window.overlay = j["window"]["overlay"];
 			this->window.log = j["window"]["log"];
 			this->window.main = j["window"]["main"];
@@ -830,8 +833,6 @@ namespace big
 						{ "color", this->window.color },
 						{ "debug", this->window.debug },
 						{ "handling", this->window.handling },
-						{ "docker_space", this->window.docker_space },
-						{ "overlay", this->window.overlay },
 						{ "log", this->window.log },
 						{ "main", this->window.main },
 						{ "users", this->window.users }

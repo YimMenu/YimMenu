@@ -90,19 +90,9 @@ namespace big
                     static int args_how = 3;
 
                     ImGui::Checkbox("Args?", &g->debug.with_args);
-                    ImGui::InputText("Script Name", script_name, 64);
-                    if (g->debug.with_args)
-                    {
-                        ImGui::InputInt4("Args", args);
-                        ImGui::InputInt("Ammount of args", &args_how);
-                    }
-                    ImGui::InputInt("Buffer Size", &buffer_size);
-
-                    if (ImGui::Button("Start"))
-                    {
-                        QUEUE_JOB_BEGIN_CLAUSE()
-                        {
-                            if (const Hash hash = rage::joaat(script_name); hash)
+                    components::input_text_with_hint("###scipt_name", "Script Name", script_name, 64, ImGuiInputTextFlags_EnterReturnsTrue, []
+					{
+						if (const Hash hash = rage::joaat(script_name); hash)
                             {
                                 scripts::request_script(hash);
                                 if (scripts::wait_till_loaded(hash))
@@ -117,36 +107,17 @@ namespace big
                                     scripts::wait_till_running(hash);
                                 }
                             }
-                        } QUEUE_JOB_END_CLAUSE
-                    }
-                    
-                    /*ImGui::Separator();
-
-                    ImGui::Text("REGISTER_WORLD_POINT_SCRIPT_BRAIN");
-
-                    static char script_name2[64];
-                    static float activationRange = 200.0f;
-                    components::input_text_with_hint("###Script Name 2", "Script Name", script_name2, 64);
-                    ImGui::InputFloat("Activation Range", &activationRange);
-
-                    if (ImGui::Button("Start"))
+					});
+                    if (g->debug.with_args)
                     {
-                        QUEUE_JOB_BEGIN_CLAUSE()
-                        {
-                            if (const Hash hash = rage::joaat(script_name2); hash)
-                            {
-                                scripts::request_script(hash);
-                                if (scripts::wait_till_loaded(hash))
-                                {
-                                    BRAIN::REGISTER_WORLD_POINT_SCRIPT_BRAIN(script_name2, activationRange, 1);
-
-                                    scripts::wait_till_running(hash);
-                                }
-                            }
-                        } QUEUE_JOB_END_CLAUSE
+                        ImGui::InputInt4("Args", args);
+                        ImGui::InputInt("Ammount of args", &args_how);
                     }
-                    ImGui::EndGroup();*/
+                    ImGui::InputInt("Buffer Size", &buffer_size);
+                    
+                    ImGui::Separator();
                 }
+				
                 if (ImGui::CollapsingHeader("Custom Settings"))
                 {
                     ImGui::Checkbox("Fast Join", &g->tunables.fast_join);
@@ -209,7 +180,13 @@ namespace big
                             HUD::SET_MINIMAP_IN_PROLOGUE(prologue_map);
                         } QUEUE_JOB_END_CLAUSE
                     }
+					
+					ImGui::SameLine();
 
+                    components::button("Speed limit", [] {
+                        ENTITY::SET_ENTITY_MAX_SPEED(self::veh, 2000);
+                        VEHICLE::SET_VEHICLE_MAX_SPEED_(self::veh, 2000);
+                    });
                     /*static char phone_types{"franklin", "Traver", "Broken Michael"};
                     if (ImGui::Combo("Phone type", g->tunables.phone_type, &phone_types)) {
                         QUEUE_JOB_BEGIN_CLAUSE() {

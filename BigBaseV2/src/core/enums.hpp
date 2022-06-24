@@ -136,6 +136,7 @@ namespace big
 		RotateCam = 801199324,
 		SendToCutscene = 1068259786,
 		SendToIsland = -621279188,
+		SendToCayo = 1463943751,
 		SoundSpam = 1132878564,
 		Spectate = -1113591308,
 		Teleport = 603406648,

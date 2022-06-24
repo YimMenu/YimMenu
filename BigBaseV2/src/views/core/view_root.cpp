@@ -13,5 +13,6 @@ namespace big
 		}
 		view::debug_c();
 		view::menu_bar();
+		view::score_controller();
 	}
 }
