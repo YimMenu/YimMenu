@@ -155,7 +155,7 @@ namespace big
 		// Replay Interface
 		main_batch.add("RI", "0F B7 44 24 ? 66 89 44 4E", [this](memory::handle ptr)
 		{
-			m_replay_interface = ptr.add(0x1C).rip().as<decltype(m_replay_interface)>();
+			m_replay_interface = ptr.add(0x1F).rip().as<decltype(m_replay_interface)>();
 		});
 
 		// Pointer to Handle
