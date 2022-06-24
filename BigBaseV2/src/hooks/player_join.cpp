@@ -6,7 +6,7 @@ namespace big
 {
 	void hooks::player_join(CNetworkObjectMgr* _this, CNetGamePlayer* net_player)
 	{
-		g_player_service->player_join(net_player, false);
+		g_player_service->player_join(net_player);
 
 		if (const rage::netPlayerData* net_player_data = net_player->get_net_data(); net_player_data)
 		{

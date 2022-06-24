@@ -10,7 +10,7 @@ namespace big
 
 		if (ImGui::Button(plyr->get_name(), { ImGui::GetWindowSize().x - 15.f, 0.f }))
 		{
-			g_player_service->set_selected(plyr.get());
+			g_player_service->set_selected(plyr);
 			g_gui_service->set_selected(tabs::PLAYER);
 			g->window.switched_view = true;
 		}
@@ -27,7 +27,7 @@ namespace big
 		ImGui::SetNextWindowPos({ 10.f, window_pos });
 		if (ImGui::Begin("playerlist", nullptr, window_flags))
 		{
-			const auto player_count = g_player_service->m_players.size();
+			const auto player_count = g_player_service->players().size() + 1;
 
 			// https://github.com/ocornut/imgui/issues/4399
 			float window_height = 1.f;
@@ -38,25 +38,19 @@ namespace big
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, { 0.f, 0.f, 0.f, 0.f });
 			ImGui::PushStyleColor(ImGuiCol_ScrollbarBg, { 0.f, 0.f, 0.f, 0.f });
 
-			if (ImGui::BeginListBox("##players", { 250.f - ImGui::GetStyle().WindowPadding.x * 2 , window_height })) {
-				const auto& self = g_player_service->get_self();
-				if (self)
-					player_button(self);
+			if (ImGui::BeginListBox("##players", { 250.f - ImGui::GetStyle().WindowPadding.x * 2 , window_height }))
+			{
+				player_button(g_player_service->get_self());
 
 				ImGui::Separator();
 
-				for (const auto& item : g_player_service->m_players)
-				{
-					if (item.second != self) {
-						player_button(item.second);
-					}
-				}
+				for (const auto& [_, player] : g_player_service->players())
+					player_button(player);
 
 				ImGui::EndListBox();
 			}
 			ImGui::PopStyleColor(2);
-
-			ImGui::End();
 		}
+		ImGui::End();
 	}
 }
