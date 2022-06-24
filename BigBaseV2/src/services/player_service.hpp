@@ -12,54 +12,74 @@ namespace big
 		bool m_is_friend;
 
 	public:
-		player(CNetGamePlayer* net_game_player);
-		virtual ~player() = default;
+		explicit player(CNetGamePlayer* net_game_player);
+		~player() = default;
+		
+		player(const player&) = default;
+		player(player&&) noexcept = default;
+		player& operator=(const player&) = default;
+		player& operator=(player&&) noexcept = default;
 
 		float screen_position_x = -1.f;
 		float screen_position_y = -1.f;
 
-		CAutomobile* get_current_vehicle();
-		const char* get_name();
-		rage::netPlayerData* get_net_data();
-		CNetGamePlayer* get_net_game_player();
-		CPed* get_ped();
-		CPlayerInfo* get_player_info();
+		[[nodiscard]] CAutomobile* get_current_vehicle() const;
+		[[nodiscard]] const char* get_name() const;
+		[[nodiscard]] rage::netPlayerData* get_net_data() const;
+		[[nodiscard]] CNetGamePlayer* get_net_game_player() const;
+		[[nodiscard]] CPed* get_ped() const;
+		[[nodiscard]] CPlayerInfo* get_player_info() const;
 
-		uint8_t id();
+		[[nodiscard]] uint8_t id() const;
 
-		bool is_friend();
-		bool is_host();
-		bool is_valid();
+		[[nodiscard]] bool is_friend() const;
+		[[nodiscard]] bool is_host() const;
+		[[nodiscard]] bool is_valid() const;
 
 	protected:
-		bool equals(CNetGamePlayer* net_game_player);
+		bool equals(const CNetGamePlayer* net_game_player) const;
 
-		std::string to_lowercase_identifier();
+		[[nodiscard]] std::string to_lowercase_identifier() const;
 
 	};
 
-	typedef std::map<std::string, std::unique_ptr<player>> player_list;
+	using player_ptr = std::shared_ptr<player>;
+	using players = std::map<std::string, player_ptr>;
+
 	class player_service final
 	{
-		player* m_dummy_player{};
-		player* m_selected_player = nullptr;
+		CNetGamePlayer** m_self;
+
+		players m_players;
+
+		player_ptr m_dummy = std::make_shared<player>(nullptr);
+		player_ptr m_selected_player;
 	public:
-		player_list m_players;
 
 		player_service();
-		virtual ~player_service();
+		~player_service();
+		
+		player_service(const player_service&) = delete;
+		player_service(player_service&&) noexcept = delete;
+		player_service& operator=(const player_service&) = delete;
+		player_service& operator=(player_service&&) noexcept = delete;
 
 		void do_cleanup();
 
-		player* get_by_name(std::string name);
-		player* get_by_msg_id(uint32_t msg_id);
-		player* get_by_host_token(uint64_t token);
-		player* get_selected();
+		[[nodiscard]] player_ptr get_self() const;
+
+		[[nodiscard]] player_ptr get_by_name(std::string name);
+		[[nodiscard]] player_ptr get_by_msg_id(uint32_t msg_id) const;
+		[[nodiscard]] player_ptr get_by_host_token(uint64_t token) const;
+		[[nodiscard]] player_ptr get_selected() const;
 
 		void player_join(CNetGamePlayer* net_game_player);
 		void player_leave(CNetGamePlayer* net_game_player);
 
-		void set_selected(player* plyr);
+		players& players()
+		{ return m_players; }
+
+		void set_selected(player_ptr plyr);
 
 	};
 
