@@ -1,5 +1,4 @@
 #pragma once
-#include "player_service.hpp"
 
 namespace big
 {
@@ -7,9 +6,14 @@ namespace big
 	{
 	public:
 		friends_service();
-		virtual ~friends_service();
+		~friends_service();
+		
+		friends_service(const friends_service&) = delete;
+		friends_service(friends_service&&) noexcept = delete;
+		friends_service& operator=(const friends_service&) = delete;
+		friends_service& operator=(friends_service&&) noexcept = delete;
 
-		static bool is_friend(const std::unique_ptr<player>& plyr);
+		[[nodiscard]] static bool is_friend(CNetGamePlayer* net_player);
 	};
 
 	inline friends_service* g_friends_service{};
