@@ -40,8 +40,7 @@ namespace big
 
 			if (g->spawn.spawn_maxed)
 				vehicle::max_vehicle(veh);
-			}
-
+			
 			if (g->spawn.delete_last_spawn)
 			{
 				entity::delete_entity(g->spawn.last_spawn);
@@ -49,11 +48,9 @@ namespace big
 
 			g->spawn.last_spawn = veh;
 
-		//});
-		//if (ImGui::ListBoxHeader("###vehicles", { 245.f, 500.f }))
 		});
 		// arbitrary subtraction this looked nice so idc, works for all resolutions as well
-		if (ImGui::ListBoxHeader("###vehicles", { 0, static_cast<float>(*g_pointers->m_resolution_y - 260)}))
+		if (ImGui::ListBoxHeader("###vehicles", { 0, static_cast<float>(*g_pointers->m_resolution_y - 520)}))
 		{
 			if (!g_vehicle_preview_service->get_vehicle_list().is_null())
 			{
