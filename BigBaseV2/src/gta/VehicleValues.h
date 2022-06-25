@@ -22,7 +22,8 @@ enum WheelTypes
     WHEEL_TYPE_BIKEWHEELS,
     WHEEL_TYPE_HIGHEND,
     WHEEL_TYPE_BENNYS_ORIGINAL,
-    WHEEL_TYPE_BENNYS_BESPOKE
+    WHEEL_TYPE_BENNYS_BESPOKE,
+    WHEEL_TYPE_F1
 };
 
 enum VehicleWeapons
@@ -759,7 +760,7 @@ static bool GetVehicleInfoForClanLogo(Hash vehicleModel, rage::fvector3& x, rage
             z = { -1.0f, 0.0f, 0.0f };
             scale = 0.2f;
             return true;
-        case VEHICLE_BULLET:
+        case VEHICLE_BULLETGT:
             x = { -1.57f, 0.07f, 0.16f };
             y = { 1.0f, 0.0f, 0.0f };
             z = { 0.0f, -1.0f, 0.0f };
