@@ -110,7 +110,6 @@ namespace big
 					const auto pos = temp_pointer->m_navigation->m_position;
 					HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos.x, pos.y, pos.z, &screen_pos.x, &screen_pos.y);
 					if (distance_to_middle_of_screen(screen_pos) < distance &&
-						ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(PLAYER::PLAYER_PED_ID(), temp_handle, 17) &&
 						temp_handle != PLAYER::PLAYER_PED_ID()) {
 						m_handle = temp_handle;
 						m_pointer = temp_pointer;
@@ -138,6 +137,31 @@ namespace big
 			menu.menu_size = { (10.f * static_cast<float>(max_size)) + 10.f , 2 * (10.f * static_cast<float>(menu.options.size())) + 10.f };
 		}
 	}
+
+	static const ControllerInputs controls[] =
+	{
+		ControllerInputs::INPUT_NEXT_WEAPON,
+		ControllerInputs::INPUT_PREV_WEAPON,
+		ControllerInputs::INPUT_VEH_NEXT_RADIO,
+		ControllerInputs::INPUT_VEH_SELECT_NEXT_WEAPON,
+		ControllerInputs::INPUT_SELECT_NEXT_WEAPON,
+		ControllerInputs::INPUT_SELECT_PREV_WEAPON,
+		ControllerInputs::INPUT_WEAPON_WHEEL_NEXT,
+		ControllerInputs::INPUT_WEAPON_WHEEL_PREV,
+		ControllerInputs::INPUT_ATTACK,
+		ControllerInputs::INPUT_SPECIAL_ABILITY,
+		ControllerInputs::INPUT_VEH_MOUSE_CONTROL_OVERRIDE,
+	};
+
+	void context_menu_service::disable_control_action_loop()
+	{
+		if (g_context_menu_service->enabled)
+		{
+			for (const auto& control : controls)
+				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(control), true);
+		}
+	}
+
 	void context_menu_service::context_menu()
 	{
 		while (g_running)
@@ -156,18 +180,6 @@ namespace big
 
 			if (g_context_menu_service->enabled)
 			{
-				PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_NEXT_WEAPON, true);
-				PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_PREV_WEAPON, true);
-				PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_VEH_NEXT_RADIO, true);
-				PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_VEH_SELECT_NEXT_WEAPON, true);
-				PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_SELECT_NEXT_WEAPON, true);
-				PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_SELECT_PREV_WEAPON, true);
-				PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_NEXT, true);
-				PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV, true);
-				PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_ATTACK, true);
-				PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_SPECIAL_ABILITY, true);
-				PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_VEH_MOUSE_CONTROL_OVERRIDE, true);
-
 				g_context_menu_service->get_entity_closest_to_screen_center();
 
 				const auto cm = g_context_menu_service->get_context_menu();

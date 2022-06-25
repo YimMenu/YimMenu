@@ -48,6 +48,7 @@ namespace big
 		void get_entity_closest_to_screen_center();
 		void load_shared();
 
+		static void disable_control_action_loop();
 		static void context_menu();
 
 		Entity m_handle;

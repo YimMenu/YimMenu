@@ -14,6 +14,33 @@ namespace big
 	static Vector3 vecPosition;
 	static Vector3 vecRot;
 
+	static const ControllerInputs controls[] =
+	{
+		ControllerInputs::INPUT_LOOK_LR,
+		ControllerInputs::INPUT_LOOK_UD,
+		ControllerInputs::INPUT_LOOK_UP_ONLY,
+		ControllerInputs::INPUT_LOOK_DOWN_ONLY,
+		ControllerInputs::INPUT_LOOK_LEFT_ONLY,
+		ControllerInputs::INPUT_LOOK_RIGHT_ONLY,
+		ControllerInputs::INPUT_LOOK_LEFT,
+		ControllerInputs::INPUT_LOOK_RIGHT,
+		ControllerInputs::INPUT_LOOK_UP,
+		ControllerInputs::INPUT_LOOK_DOWN
+	};
+
+	void looped::self_free_cam_disable_control_action()
+	{
+		if (g_local_player == nullptr) return;
+
+		if (g->self.free_cam && !bLastFreeCam)
+		{
+			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+
+			for (const auto& control : controls)
+				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(control), true);
+		}
+	}
+
 	void looped::self_free_cam()
 	{
 		if (g_local_player == nullptr) return;
@@ -49,24 +76,6 @@ namespace big
 
 			return;
 		}
-
-		PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-
-		const int controls[] = {
-			(int)ControllerInputs::INPUT_LOOK_LR,
-			(int)ControllerInputs::INPUT_LOOK_UD,
-			(int)ControllerInputs::INPUT_LOOK_UP_ONLY,
-			(int)ControllerInputs::INPUT_LOOK_DOWN_ONLY,
-			(int)ControllerInputs::INPUT_LOOK_LEFT_ONLY,
-			(int)ControllerInputs::INPUT_LOOK_RIGHT_ONLY,
-			(int)ControllerInputs::INPUT_LOOK_LEFT,
-			(int)ControllerInputs::INPUT_LOOK_RIGHT,
-			(int)ControllerInputs::INPUT_LOOK_UP,
-			(int)ControllerInputs::INPUT_LOOK_DOWN
-		};
-
-		for (int control : controls)
-			PAD::ENABLE_CONTROL_ACTION(2, control, true);
 
 		Vector3 vecChange = { 0.f, 0.f, 0.f };
 
