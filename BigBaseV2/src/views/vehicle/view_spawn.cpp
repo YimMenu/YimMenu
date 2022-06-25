@@ -45,7 +45,6 @@ namespace big
 			{
 				entity::delete_entity(g->spawn.last_spawn);
 			}
-
 			g->spawn.last_spawn = veh;
 
 		});
