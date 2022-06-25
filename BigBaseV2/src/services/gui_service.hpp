@@ -11,6 +11,7 @@ namespace big
 		HANDLING_SAVED_PROFILE,
 		HANDLING_MY_PROFILES,
 		HANDLING_CURRENT_PROFILE,
+		LSC,
 		NOTIFICATION_SETTINGS,
 		PROTECTION_SETTINGS,
 		DEBUG,
@@ -54,6 +55,7 @@ namespace big
 					{ tabs::HANDLING_SAVED_PROFILE, {"Saved Profiles", view::handling_saved_profiles } },
 					{ tabs::HANDLING_SEARCH, {"Search Handling", view::handling_search } },
 				}}},
+				{ tabs::LSC, {"LSC", view::lsc }},
 				{ tabs::SPAWN, { "Spawn", view::spawn }},
 			}}},
 			{tabs::NETWORK, { "Network", nullptr, {
