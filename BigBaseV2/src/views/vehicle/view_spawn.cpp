@@ -26,21 +26,19 @@ namespace big
 
 		components::input_text_with_hint("Model Name", "Search", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, []
 		{
-			Ped ped = self::ped;
+			const auto ped = self::ped;
 
 			const auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ped, 2.f, 2.f, 0.f);
-			const Vehicle veh = vehicle::spawn(model, location, g_local_player->m_player_info->m_ped->m_navigation->m_right.x + 90.f);
+			const auto veh = vehicle::spawn(model, location, g_local_player->m_player_info->m_ped->m_navigation->m_right.x + 90.f);
 
 			if (g->spawn.spawn_inside)
 				PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
 
 			if (g->spawn.spawn_maxed)
-			{
 				vehicle::max_vehicle(veh);
-			}
-
 		});
-		if (ImGui::ListBoxHeader("###vehicles"))
+		// arbitrary subtraction this looked nice so idc, works for all resolutions as well
+		if (ImGui::ListBoxHeader("###vehicles", { 0, static_cast<float>(*g_pointers->m_resolution_y - 260)}))
 		{
 			if (!g_vehicle_preview_service->get_vehicle_list().is_null())
 			{
