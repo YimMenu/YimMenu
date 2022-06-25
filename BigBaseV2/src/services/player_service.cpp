@@ -104,6 +104,7 @@ namespace big
 
 	void player_service::do_cleanup()
 	{
+		m_selected_player = m_dummy;
 		m_players.clear();
 	}
 
