@@ -1,8 +1,6 @@
 #include "api/api.hpp"
 #include "backend.hpp"
-#include "fiber_pool.hpp"
 #include "looped/looped.hpp"
-#include "script.hpp"
 #include "thread_pool.hpp"
 #include "features.hpp"
 #include "script_local.hpp"

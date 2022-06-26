@@ -5,11 +5,13 @@ namespace big
 {
 	enum class tabs {
 		ESP_SETTINGS,
+		CONTEXT_MENU_SETTINGS,
 		GUI_SETTINGS,
 		HANDLING_SEARCH,
 		HANDLING_SAVED_PROFILE,
 		HANDLING_MY_PROFILES,
 		HANDLING_CURRENT_PROFILE,
+		LSC,
 		NOTIFICATION_SETTINGS,
 		PROTECTION_SETTINGS,
 		DEBUG,
@@ -54,7 +56,7 @@ namespace big
 					{ tabs::HANDLING_SAVED_PROFILE, {"Saved Profiles", view::handling_saved_profiles } },
 					{ tabs::HANDLING_SEARCH, {"Search Handling", view::handling_search } },
 				}}},
-				{ tabs::LSC, { "LSC", view::lsc }},
+				{ tabs::LSC, {"LSC", view::lsc }},
 				{ tabs::SPAWN, { "Spawn", view::spawn }},
 			}}},
 			{tabs::NETWORK, { "Network", nullptr, {
@@ -62,6 +64,7 @@ namespace big
 				{ tabs::SESSION, { "Session", view::session }},
 			}}},
 			{tabs::SETTINGS, { "Settings", view::settings, {
+				{ tabs::CONTEXT_MENU_SETTINGS, { "Context Menu", view::context_menu_settings}},
 				{ tabs::ESP_SETTINGS, { "ESP", view::esp_settings}},
 				{ tabs::GUI_SETTINGS, { "GUI", view::gui_settings}},
 				{ tabs::NOTIFICATION_SETTINGS, { "Notifications", view::notification_settings}},

@@ -1,8 +1,8 @@
 #include "views/view.hpp"
-#include "util/toxic.hpp"
 #include "services/player_service.hpp"
 #include "gta_util.hpp"
 #include "util/misc.hpp"
+#include "util/globals.hpp"
 #include "util/ped.hpp"
 #include "util/teleport.hpp"
 #include "features.hpp"
@@ -36,8 +36,8 @@ namespace big
 					});
 
 				components::button("Clear Wanted Level", [] {
-					toxic::clear_wanted_player(g_player_service->get_selected()->id());
-					});
+					globals::clear_wanted_player(g_player_service->get_selected()->id());
+				});
 
 				ImGui::SameLine();
 

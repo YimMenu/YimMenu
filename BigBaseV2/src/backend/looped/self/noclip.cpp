@@ -7,13 +7,14 @@
 
 namespace big
 {
-	static const int controls[] = {
-		(int)ControllerInputs::INPUT_SPRINT,
-		(int)ControllerInputs::INPUT_MOVE_UP_ONLY,
-		(int)ControllerInputs::INPUT_MOVE_DOWN_ONLY,
-		(int)ControllerInputs::INPUT_MOVE_LEFT_ONLY,
-		(int)ControllerInputs::INPUT_MOVE_RIGHT_ONLY,
-		(int)ControllerInputs::INPUT_DUCK
+	static const ControllerInputs controls[] =
+	{
+		ControllerInputs::INPUT_SPRINT,
+		ControllerInputs::INPUT_MOVE_UP_ONLY,
+		ControllerInputs::INPUT_MOVE_DOWN_ONLY,
+		ControllerInputs::INPUT_MOVE_LEFT_ONLY,
+		ControllerInputs::INPUT_MOVE_RIGHT_ONLY,
+		ControllerInputs::INPUT_DUCK
 	};
 
 	static float speed = 20.f;
@@ -24,7 +25,17 @@ namespace big
 	static Entity prev = -1;
 	static Vector3 rot{};
 
-	void looped::self_noclip() {
+	void looped::self_noclip_disable_control_action()
+	{
+		if (g->self.noclip)
+		{
+			for (const auto& control : controls)
+				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(control), true);
+		}
+	}
+
+	void looped::self_noclip()
+	{
 		bool bNoclip = g->self.noclip;
 
 		Vector3 location = self::pos;
@@ -41,9 +52,6 @@ namespace big
 
 		if (bNoclip)
 		{
-			for (int control : controls)
-				PAD::DISABLE_CONTROL_ACTION(0, control, true);
-
 			Vector3 vel = { 0.f, 0.f, 0.f };
 			float heading = 0.f;
 

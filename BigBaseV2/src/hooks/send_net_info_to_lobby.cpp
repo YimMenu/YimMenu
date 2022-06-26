@@ -4,8 +4,10 @@ namespace big
 {
 	bool hooks::send_net_info_to_lobby(rage::netPlayerData* player, int64_t a2, int64_t a3, DWORD* a4)
 	{
+		const bool is_local_player = g_local_player->m_player_info->m_net_player_data.m_rockstar_id == player->m_rockstar_id;
+
 		// check so we're 100% sure we modify data only for ourselves
-		if (g_local_player->m_player_info->m_net_player_data.m_rockstar_id == player->m_rockstar_id)
+		if (is_local_player)
 		{
 			if (g->spoofing.spoof_username)
 				memcpy(player->m_name, g->spoofing.username.c_str(), sizeof(player->m_name));
@@ -30,6 +32,12 @@ namespace big
 				g_notification_service->push("Player Info Spoofing", "Sent spoofed values to lobby host.");
 		}
 
-		return g_hooking->m_send_net_info_to_lobby.get_original<decltype(&hooks::send_net_info_to_lobby)>()(player, a2, a3, a4);
+		const auto result = g_hooking->m_send_net_info_to_lobby.get_original<decltype(&hooks::send_net_info_to_lobby)>()(player, a2, a3, a4);
+
+		// restore player name to prevent detection of spoofed name
+		if (is_local_player && g->spoofing.spoof_username)
+			memcpy(player->m_name, g_local_player->m_player_info->m_net_player_data.m_name, sizeof(player->m_name));
+
+		return result;
 	}
 }

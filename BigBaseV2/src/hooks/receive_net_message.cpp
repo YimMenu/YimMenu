@@ -34,8 +34,7 @@ namespace big
 			buffer.m_flagBits = 1;
 			rage::netConnection::MessageType msg_type;
 
-			player* player = g_player_service->get_by_msg_id(frame->m_msg_id);
-			
+			const auto player = g_player_service->get_by_msg_id(frame->m_msg_id);
 			if (player && get_message_type(msg_type, buffer))
 			{
 				switch (msg_type)

@@ -47,7 +47,7 @@ namespace big
 				uint32_t action;
 				buffer->ReadDword(&action, 8);
 
-				if (action >= 16 && action <= 18)
+				if (action >= 15 && action <= 18)
 				{
 					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 

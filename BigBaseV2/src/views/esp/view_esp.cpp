@@ -1,10 +1,9 @@
 #include "view_esp.hpp"
+#include "gta_util.hpp"
 #include "pointers.hpp"
 #include "services/player_service.hpp"
 #include "util/math.hpp"
-#include "gta_util.hpp"
 #include "util/misc.hpp"
-#include "services/context_menu_service.hpp"
 
 namespace big
 {
@@ -24,16 +23,14 @@ namespace big
 
 		if (const auto draw_list = ImGui::GetBackgroundDrawList(); draw_list)
 		{
-			for (auto& item : g_player_service->m_players)
+			for (const auto& [_, plyr] : g_player_service->players())
 			{
-				const std::unique_ptr<player>& plyr = item.second;
-
 				if (g->esp.hide_self && plyr->id() == gta_util::get_network_player_mgr()->m_local_net_player->m_player_id ||
 					!plyr->is_valid() ||
 					!plyr->get_ped() ||
 					!plyr->get_ped()->m_navigation) continue;
 
-				rage::fvector3& player_pos = plyr->get_ped()->m_navigation->m_position;
+				auto& player_pos = plyr->get_ped()->m_navigation->m_position;
 
 				float screen_x, screen_y;
 
@@ -49,9 +46,9 @@ namespace big
 					const float esp_x = (float)*g_pointers->m_resolution_x * screen_x;
 					const float esp_y = (float)*g_pointers->m_resolution_y * screen_y;
 
-					const float esp_side_x = esp_x + (67.5f * multplr);
+					// const float esp_side_x = esp_x + (67.5f * multplr); // unused?
 
-					std::string name_str = "";
+					std::string name_str;
 					ImVec2 name_pos = { esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 20.f };
 					ImU32 esp_color = g->esp.default_color;
 
