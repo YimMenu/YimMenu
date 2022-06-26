@@ -178,7 +178,7 @@ namespace big
 				out
 					<< "[" << msg.timestamp("%H:%M:%S") << "]"
 					<< AddColorToStream(color)
-					<< "[" << std::setw(7) << msg.level() << "/"
+					<< "[" << msg.level() << "/"
 					<< msg.file() << ":" << msg.line() << "]"
 					<< ResetStreamColor
 					<< ": ";
@@ -192,7 +192,7 @@ namespace big
 
 				out
 					<< "[" << msg.timestamp("%H:%M:%S") << "]"
-					<< "[" << std::setw(7) << msg.level() << "/"
+					<< "[" << msg.level() << "/"
 					<< msg.file() << ":" << msg.line() << "]"
 					<< ": ";
 

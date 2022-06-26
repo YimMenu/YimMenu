@@ -1,6 +1,8 @@
 #pragma once
 #include "common.hpp"
+#include "atSingleton.hpp"
 #include "CNetworkPlayerMgr.hpp"
+#include "CTunables.hpp"
 #include "FriendRegistry.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/enums.hpp"
@@ -58,6 +60,7 @@ namespace big
 		PVOID m_gta_thread_start{};
 		PVOID m_gta_thread_kill{};
 
+		PVOID m_network_player_mgr_init;
 		PVOID m_network_player_mgr_shutdown;
 		PVOID m_net_array_handler;
 

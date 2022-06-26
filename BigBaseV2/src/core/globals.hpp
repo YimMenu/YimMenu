@@ -57,6 +57,7 @@ namespace big
 				pair sound_spam{};
 				pair spectate{};
 				pair transaction_error{};
+				pair tse_freeze{};
 				pair vehicle_kick{};
 			} script_event_handler{};
 
@@ -64,6 +65,8 @@ namespace big
 			pair gta_thread_start{};
 
 			pair net_array_error{};
+
+			pair network_player_mgr_init{};
 			pair network_player_mgr_shutdown{};
 
 			struct
@@ -218,7 +221,7 @@ namespace big
 			bool seatbelt = false;
 			bool turn_signals = false;
 			int auto_drive_speed = 1;
-			int driving_style_flags = 525116;
+			int driving_style_flags = 443;
 			int driving_style_id = 0;
 			int rainbow_paint = 0;
 			speedo_meter speedo_meter{};
@@ -257,6 +260,11 @@ namespace big
 			ImFont* font_small = nullptr;
 
 			bool switched_view = true;
+		};
+
+		struct context_menu
+		{
+			bool enabled = true;
 		};
 
 		struct esp
@@ -302,6 +310,7 @@ namespace big
 		vehicle vehicle{};
 		weapons weapons{};
 		window window{};
+		context_menu context_menu{};
 		esp esp{};
 
 		menu_settings(file save_file)
@@ -327,6 +336,8 @@ namespace big
 			g->notifications.net_array_error.log = j["notifications"]["net_array_error"]["log"];
 			g->notifications.net_array_error.notify = j["notifications"]["net_array_error"]["notify"];
 
+			g->notifications.network_player_mgr_init.log = j["notifications"]["network_player_mgr_init"]["log"];
+			g->notifications.network_player_mgr_init.notify = j["notifications"]["network_player_mgr_init"]["notify"];
 			g->notifications.network_player_mgr_shutdown.log = j["notifications"]["network_player_mgr_shutdown"]["log"];
 			g->notifications.network_player_mgr_shutdown.notify = j["notifications"]["network_player_mgr_shutdown"]["notify"];
 
@@ -398,6 +409,8 @@ namespace big
 				script_handler.spectate.notify = script_handler_j["spectate"]["notify"];
 				script_handler.transaction_error.log = script_handler_j["transaction_error"]["log"];
 				script_handler.transaction_error.notify = script_handler_j["transaction_error"]["notify"];
+				script_handler.tse_freeze.log = script_handler_j["tse_freeze"]["log"];
+				script_handler.tse_freeze.notify = script_handler_j["tse_freeze"]["notify"];
 				script_handler.vehicle_kick.log = script_handler_j["vehicle_kick"]["log"];
 				script_handler.vehicle_kick.notify = script_handler_j["vehicle_kick"]["notify"];
 			}
@@ -513,6 +526,8 @@ namespace big
 			this->window.main = j["window"]["main"];
 			this->window.users = j["window"]["users"];
 
+			this->context_menu.enabled = j["context_menu"]["enabled"];
+
 			this->esp.enabled = j["esp"]["enabled"];
 			this->esp.hide_self = j["esp"]["hide_self"];
 			this->esp.enemy_color = j["esp"]["enemy_color"];
@@ -566,6 +581,7 @@ namespace big
 						{ "gta_thread_kill", return_notify_pair(g->notifications.gta_thread_kill) },
 						{ "gta_thread_start", return_notify_pair(g->notifications.gta_thread_start) },
 						{"net_array_error", return_notify_pair(g->notifications.net_array_error)},
+						{ "network_player_mgr_init", return_notify_pair(g->notifications.network_player_mgr_init) },
 						{ "network_player_mgr_shutdown", return_notify_pair(g->notifications.network_player_mgr_shutdown) },
 						{ "player_join", {
 								{ "above_map", g->notifications.player_join.above_map },
@@ -605,6 +621,7 @@ namespace big
 								{ "sound_spam", return_notify_pair(script_handler_notifications.sound_spam) },
 								{ "spectate", return_notify_pair(script_handler_notifications.spectate) },
 								{ "transaction_error", return_notify_pair(script_handler_notifications.transaction_error) },
+								{ "tse_freeze", return_notify_pair(script_handler_notifications.tse_freeze) },
 								{ "vehicle_kick", return_notify_pair(script_handler_notifications.vehicle_kick) }
 							}
 						},
@@ -761,6 +778,11 @@ namespace big
 						{ "log", this->window.log },
 						{ "main", this->window.main },
 						{ "users", this->window.users }
+					}
+				},
+				{
+					"context_menu", {
+						{"enabled", this->context_menu.enabled}
 					}
 				},
 				{

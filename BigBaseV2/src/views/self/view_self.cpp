@@ -8,6 +8,13 @@ namespace big
 		components::button("Suicide", [] {
 			ENTITY::SET_ENTITY_HEALTH(self::ped, 0, 0);
 		});
+		
+		ImGui::SameLine();
+
+		components::button("Heal", [] {
+			ENTITY::SET_ENTITY_HEALTH(self::ped, PED::GET_PED_MAX_HEALTH(self::ped), 0);
+			PED::SET_PED_ARMOUR(self::ped, PLAYER::GET_PLAYER_MAX_ARMOUR(self::id));
+		});
 
 		ImGui::SameLine();
 

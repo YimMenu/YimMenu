@@ -8,8 +8,8 @@ namespace big
 
 	void looped::player_spectate()
 	{
-		Vehicle vehicle = self::veh;
-		Ped ped = self::ped;
+		const auto vehicle = self::veh;
+		const auto ped = self::ped;
 
 		if (!g_player_service->get_selected()->is_valid() || !g->player.spectating)
 		{
