@@ -25,9 +25,11 @@ namespace big
 		static void protections_replay_interface();
 
 		static void self_clean_player();
+		static void self_free_cam_disable_control_action();
 		static void self_free_cam();
 		static void self_godmode();
 		static void self_invisibility();
+		static void self_noclip_disable_control_action();
 		static void self_noclip();
 		static void self_no_ragdoll();
 		static void self_off_radar();
@@ -63,6 +65,7 @@ namespace big
 
 		static void weapons_ammo_special_type();
 		static void weapons_cage_gun();
+		static void custom_gun_disable_control_action();
 		static void weapons_delete_gun();
 		static void weapons_force_crosshairs();
 		static void weapons_gravity_gun();

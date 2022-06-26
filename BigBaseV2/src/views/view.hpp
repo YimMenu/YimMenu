@@ -41,6 +41,7 @@ namespace big
 		static void spoofing();
 		static void teleport();
 		static void vehicle();
+		static void lsc();
 		static void view_player();
 		static void players();
 		static void weapons();

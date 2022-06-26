@@ -83,21 +83,22 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					auto gui_service_instance = std::make_unique<gui_service>();
 					LOG(INFO) << "Registered service instances...";
 
-					g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
-					g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
-					g_script_mgr.add_script(std::make_unique<script>(&shv_runner::script_func));
-					g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop));
-					g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop));
-					g_script_mgr.add_script(std::make_unique<script>(&backend::vehicles_loop));
-					g_script_mgr.add_script(std::make_unique<script>(&backend::misc_loop));
-					g_script_mgr.add_script(std::make_unique<script>(&backend::remote_loop));
-					g_script_mgr.add_script(std::make_unique<script>(&backend::noclip_loop));
-					g_script_mgr.add_script(std::make_unique<script>(&backend::lscustoms_loop));
-					g_script_mgr.add_script(std::make_unique<script>(&backend::vehiclefly_loop));
-					g_script_mgr.add_script(std::make_unique<script>(&backend::rgbrandomizer_loop));
-					g_script_mgr.add_script(std::make_unique<script>(&backend::turnsignal_loop));
-					g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu));
-					LOG(INFO) << "Scripts registered.";
+				g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
+				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
+
+				g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::vehicles_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::misc_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::remote_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::noclip_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::lscustoms_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::vehiclefly_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::rgbrandomizer_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::turnsignal_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::disable_control_action_loop));
+				g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu));
+				LOG(INFO) << "Scripts registered.";
 
 
 					auto native_hooks_instance = std::make_unique<native_hooks>();

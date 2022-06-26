@@ -27,8 +27,8 @@ namespace big
         ImGui::SetNextWindowBgAlpha(0.35f); // Transparent background
         if (ImGui::Begin("overlay", &g->window.overlay, window_flags))
         {
-            
-            ImGui::Text("Players: %i", g_player_service->m_players.size());
+            const auto player_count = g_player_service->players().size() + 1;
+            ImGui::Text("Players: %i", player_count);
             //ImGui::Text("Speed: (%.1f)", ENTITY::GET_ENTITY_SPEED(self::ped));
             ImGui::Text("Coords: (X:%.1f, Y:%.1f, Z:%.1f)", self::pos.x, self::pos.y, self::pos.z);
             ImGui::Separator();
