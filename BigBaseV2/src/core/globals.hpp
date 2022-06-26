@@ -204,6 +204,7 @@ namespace big
 				float y = .72f;
 
 				bool left_side = false;
+				bool type_text = false;
 			};
 
 			struct fly
@@ -513,6 +514,7 @@ namespace big
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
 			this->vehicle.speedo_meter.x = j["vehicle"]["speedo_meter"]["position_x"];
 			this->vehicle.speedo_meter.y = j["vehicle"]["speedo_meter"]["position_y"];
+			this->vehicle.speedo_meter.type_text = j["vehicle"]["speedo_meter"]["type_text"];
 
 			this->vehicle.fly.dont_stop = j["vehicle"]["fly"]["dont_stop"];
 			this->vehicle.fly.enabled = j["vehicle"]["fly"]["enabled"];
@@ -757,6 +759,7 @@ namespace big
 								{ "left_side", this->vehicle.speedo_meter.left_side },
 								{ "position_x", this->vehicle.speedo_meter.x },
 								{ "position_y", this->vehicle.speedo_meter.y },
+								{ "type_text", this->vehicle.speedo_meter.type_text },
 							}
 						},
 						{

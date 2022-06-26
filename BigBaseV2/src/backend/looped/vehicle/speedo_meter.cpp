@@ -21,7 +21,7 @@ namespace big
 			strcpy(speed_type, "kph");
 			break;
 		case SpeedoMeter::MPH:
-			veh_speed *= 2.2369;
+			veh_speed *= 2.23694;
 			strcpy(speed_type, "mph");
 			break;
 		}
@@ -34,5 +34,15 @@ namespace big
 		HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
 		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(speed);
 		HUD::END_TEXT_COMMAND_DISPLAY_TEXT(g->vehicle.speedo_meter.x, g->vehicle.speedo_meter.y + .04f, 1);
+
+		if (g->vehicle.speedo_meter.type_text)
+		{
+			HUD::SET_TEXT_FONT(2);
+			HUD::SET_TEXT_SCALE(.91f, .91f);
+			HUD::SET_TEXT_OUTLINE();
+			HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
+			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(speed_type);
+			HUD::END_TEXT_COMMAND_DISPLAY_TEXT(g->vehicle.speedo_meter.x, g->vehicle.speedo_meter.y, 1);
+		}
 	}
 }

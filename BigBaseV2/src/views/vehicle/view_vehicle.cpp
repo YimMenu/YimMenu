@@ -142,5 +142,8 @@ namespace big
 		}
 
 		ImGui::Checkbox("Left Sided", &g->vehicle.speedo_meter.left_side);
+		ImGui::SameLine();
+		ImGui::Checkbox("Type Text", &g->vehicle.speedo_meter.type_text);
+
 	}
 }
