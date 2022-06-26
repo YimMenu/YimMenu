@@ -9,6 +9,7 @@
 
 namespace big
 {
+	int d_speed = 50;
 	void view::vehicle() {
 		ImGui::BeginGroup();
 		ImGui::Checkbox("Can Be Targeted", &g->vehicle.is_targetable);
@@ -75,30 +76,90 @@ namespace big
 
 		ImGui::Separator();
 
-		components::small_text("Auto Drive");
-
-		components::button("Drive To Waypoint", [] {
-			g->vehicle.auto_drive_to_waypoint = true;
-		});
-
-		components::button("Wander", [] {
-			g->vehicle.auto_drive_wander = true;
-		});
-
-		ImGui::SliderInt("Top Speed", &g->vehicle.auto_drive_speed, 1, 200);
-
-		components::button("E-Stop", [] {
-			g->vehicle.auto_drive_to_waypoint = false;
-			g->vehicle.auto_drive_wander = false;
-			VEHICLE::SET_VEHICLE_FORWARD_SPEED(self::veh, 0);
-			TASK::CLEAR_VEHICLE_TASKS_(self::veh);
-			TASK::CLEAR_PED_TASKS(self::ped);
-		});
-
-		if (ImGui::ListBox("Driving Style", &g->vehicle.driving_style_id, vehicle::driving_style_names, 3))
+		if (ImGui::TreeNode("Auto-Pilot"))
 		{
-			g->vehicle.driving_style_flags = vehicle::driving_styles[g->vehicle.driving_style_id];
-			g_notification_service->push_warning("Auto Drive", fmt::format("Driving style set to {}.", vehicle::driving_style_names[g->vehicle.driving_style_id]));
+			ImGui::SliderInt("##d_speed", &d_speed, 20, 200);
+
+			ImGui::SameLine();
+
+			ImGui::Text("Driving Speed");
+
+			const char* d_modes[] = { "Normal", "Rush", "Ignore Lights", "Overtake Traffic", "Avoid Traffic", "Avoid More Traffic" };
+
+			static int item_ap = 0;
+			ImGui::Combo("Driving Mode", &item_ap, d_modes, IM_ARRAYSIZE(d_modes));
+
+			if (ImGui::Button("Start Driving"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					int dBehaviour = 0;
+					const char* modeName;
+
+					if (PED::IS_PED_SITTING_IN_VEHICLE(PLAYER::PLAYER_PED_ID(), PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false)))
+					{
+						Blip waypointBlip = HUD::GET_FIRST_BLIP_INFO_ID(8);
+						Vector3 coord = HUD::GET_BLIP_INFO_ID_COORD(waypointBlip);
+
+						if (HUD::IS_BLIP_ON_MINIMAP(waypointBlip))
+						{
+							switch (item_ap)
+							{
+							case 0:
+								dBehaviour = 786603;
+								modeName = "Normal";
+								break;
+							case 1:
+								dBehaviour = 1074528293;
+								modeName = "Rush";
+								break;
+							case 2:
+								dBehaviour = 2883621;
+								modeName = "Ignore Lights";
+								break;
+							case 3:
+								dBehaviour = 5;
+								modeName = "Overtake Traffic";
+								break;
+							case 4:
+								dBehaviour = 786468;
+								modeName = "Avoid Traffic";
+								break;
+							case 5:
+								dBehaviour = 6;
+								modeName = "Avoid More Traffic";
+								break;
+							default:
+								dBehaviour = 786603;
+								modeName = "Normal";
+								break;
+							}
+							TASK::TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(PLAYER::GET_PLAYER_PED(PLAYER::PLAYER_ID()), PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false), coord.x, coord.y, coord.z, d_speed, dBehaviour, 5.0f);
+							notify::display_help_text("Auto-Pilot : Driving To Waypoint.");
+						}
+						else
+						{
+							notify::display_help_text("Auto-Pilot : No Waypoint  Set.");
+						}
+					}
+					else
+					{
+						notify::display_help_text("Auto-Pilot : Player Not In Vehicle.");
+					}
+				}QUEUE_JOB_END_CLAUSE
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Stop Driving"))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					TASK::CLEAR_PED_TASKS(PLAYER::PLAYER_PED_ID());
+					notify::display_help_text("Auto-Pilot : Canceled.");
+				}QUEUE_JOB_END_CLAUSE
+			}
+			ImGui::TreePop();
 		}
 
 		ImGui::Separator();

@@ -1,6 +1,7 @@
 #include "fiber_pool.hpp"
 #include "util/entity.hpp"
 #include "views/view.hpp"
+#include "script_global.hpp"
 
 namespace big
 {
@@ -91,6 +92,66 @@ namespace big
 			ImGui::Text("Wanted Level");
 			if (ImGui::SliderInt("###wanted_level", &g->self.wanted_level, 0, 5) && !g->self.force_wanted_level)
 				g_local_player->m_player_info->m_wanted_level = g->self.wanted_level;
+		}
+
+		ImGui::Separator();
+
+		components::small_text("Globals");
+
+		ImGui::BeginGroup();
+
+		if (ImGui::Button("Instant B.S.T."))
+		{
+			QUEUE_JOB_BEGIN_CLAUSE()
+			{
+				*script_global(2703660).at(3576).as<int*>() = 5;
+			}QUEUE_JOB_END_CLAUSE
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Ballistic Loadout"))
+		{
+			QUEUE_JOB_BEGIN_CLAUSE()
+			{
+				*script_global(2810701).at(884).as<int*>() = 1;
+			}QUEUE_JOB_END_CLAUSE
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Airstrike"))
+		{
+			QUEUE_JOB_BEGIN_CLAUSE()
+			{
+				*script_global(2810701).at(4455).as<int*>() = 1;
+			}QUEUE_JOB_END_CLAUSE
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Backup Heli"))
+		{
+			QUEUE_JOB_BEGIN_CLAUSE()
+			{
+				*script_global(2810701).at(4454).as<int*>() = 1;
+			}QUEUE_JOB_END_CLAUSE
+		}
+
+		if (ImGui::TreeNode("Multipliers"))
+		{
+			ImGui::BeginGroup();
+
+			ImGui::Text("Regen. Speed Multiplier : ");
+			if (ImGui::SliderInt("###regen_mpx", &g->self.regen_mpx, 1, 10))
+			{
+				QUEUE_JOB_BEGIN_CLAUSE()
+				{
+					PLAYER::SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER(PLAYER::PLAYER_ID(), (float)g->self.regen_mpx);
+				}QUEUE_JOB_END_CLAUSE
+			}
+
+			ImGui::EndGroup();
 		}
 	}
 }

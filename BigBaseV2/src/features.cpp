@@ -76,17 +76,13 @@ namespace big
 						VEHICLE::SET_VEHICLE_MOD(playerVeh, i, VEHICLE::GET_VEHICLE_MOD(pedVeh, i), VEHICLE::GET_VEHICLE_MOD_VARIATION(pedVeh, i));
 				}
 				int tireSmokeColor[3], pearlescentColor, wheelColor;
-				int HUDColour, HUDLightsColour;
 				VEHICLE::SET_VEHICLE_XENON_LIGHTS_COLOR_(playerVeh, VEHICLE::GET_VEHICLE_XENON_LIGHTS_COLOR_(pedVeh));
-				//VEHICLE::SET_VEHICLE_INTERIOR_COLOR_(playerVeh, VEHICLE::GET_VEHICLE_INTERIOR_COLOR_(pedVeh, &HUDColour)); //TODO
-				//VEHICLE::SET_VEHICLE_DASHBOARD_COLOR_(playerVeh, VEHICLE::GET_VEHICLE_DASHBOARD_COLOR_(pedVeh, &HUDLightsColour));
 				VEHICLE::GET_VEHICLE_TYRE_SMOKE_COLOR(pedVeh, &tireSmokeColor[0], &tireSmokeColor[1], &tireSmokeColor[2]);
 				VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(playerVeh, tireSmokeColor[0], tireSmokeColor[1], tireSmokeColor[2]);
 				VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(playerVeh, VEHICLE::GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(pedVeh));
 				VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(playerVeh, VEHICLE::GET_VEHICLE_NUMBER_PLATE_TEXT(pedVeh));
 				VEHICLE::GET_VEHICLE_EXTRA_COLOURS(pedVeh, &pearlescentColor, &wheelColor);
 				VEHICLE::SET_VEHICLE_EXTRA_COLOURS(playerVeh, pearlescentColor, wheelColor);
-				//VEHICLE::_SET_HEADLIGHT_COLOR(playerVeh, VEHICLE::_GET_HEADLIGHT_COLOR(playerVeh));
 				if (VEHICLE::IS_VEHICLE_A_CONVERTIBLE(pedVeh, 0))
 				{
 					int convertableState = VEHICLE::GET_CONVERTIBLE_ROOF_STATE(pedVeh);

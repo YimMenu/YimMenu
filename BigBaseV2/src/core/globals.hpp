@@ -137,6 +137,7 @@ namespace big
 			bool noclip = false;
 			bool off_radar = false;
 			bool super_run = false;
+			int regen_mpx = 1;
 			int wanted_level = 0;
 		};
 
