@@ -85,7 +85,7 @@ namespace big
             if (ImGui::BeginMenu("Windows"))
             {
                 ImGui::MenuItem("Main", nullptr, &g->window.main);
-                ImGui::MenuItem("Score Controller", nullptr, &g->window.score_controller);
+                //ImGui::MenuItem("Score Controller", nullptr, &g->window.score_controller);
                 ImGui::MenuItem("Overlay", nullptr, &g->window.overlay);
                 ImGui::MenuItem("Debug", nullptr, &g->window.debug);
 

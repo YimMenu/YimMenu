@@ -86,14 +86,6 @@ namespace big
 					);
 				}
 
-				components::button("Open Profile", [] {
-					int Handle;
-					int Handle_size;
-
-					NETWORK::NETWORK_HANDLE_FROM_PLAYER(g_player_service->get_selected()->id(), &Handle, Handle_size);
-					NETWORK::NETWORK_SHOW_PROFILE_UI(&Handle);
-				});
-
 				ImGui::TreePop();
 			}
 

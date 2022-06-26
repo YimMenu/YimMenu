@@ -162,7 +162,7 @@ namespace big
 		// Replay Interface
 		main_batch.add("RI", "0F B7 44 24 ? 66 89 44 4E", [this](memory::handle ptr)
 		{
-			m_replay_interface = ptr.add(0x1F).rip().as<decltype(m_replay_interface)>();
+			m_replay_interface = ptr.add(0x1C).rip().as<decltype(m_replay_interface)>();
 		});
 
 		// Pointer to Handle
@@ -328,12 +328,6 @@ namespace big
 			m_get_net_object_for_player = ptr.add(0x4C).rip().as<decltype(m_get_net_object_for_player)>(); // 41 80 78 ? FF 74 2D 41 0F B6 40 .as()
 			m_get_net_object = ptr.add(0x62).rip().as<decltype(m_get_net_object)>(); // E8 ? ? ? ? 0F B7 53 7C .add(1).rip().as()
 			m_get_sync_type_info = ptr.add(0x78).rip().as<decltype(m_get_sync_type_info)>(); // 44 0F B7 C1 4C 8D 0D .as()
-		});
-
-		// CTunables
-		main_batch.add("T", "BF 02 00 00 00 44 8B C7", [this](memory::handle ptr)
-		{
-			m_tunables = ptr.sub(4).rip().as<decltype(m_tunables)>();
 		});
 
 		auto mem_region = memory::module(nullptr);
