@@ -9,7 +9,7 @@ namespace big
 	{
 		for (std::size_t i = 0; i < num_fibers; ++i)
 		{
-			g_script_mgr.add_script(std::make_unique<script>(&fiber_func, "Fiber script", nullptr));
+			g_script_mgr.add_script(std::make_unique<script>(&fiber_func));
 		}
 
 		g_fiber_pool = this;

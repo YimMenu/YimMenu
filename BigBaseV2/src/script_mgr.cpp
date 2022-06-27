@@ -11,17 +11,19 @@ namespace big
 {
 	void script_mgr::add_script(std::unique_ptr<script> script)
 	{
-		if (script)
-			LOG(INFO) << "Added script " << script->m_name;
 		std::lock_guard lock(m_mutex);
 		m_scripts.push_back(std::move(script));
-		
 	}
 
 	void script_mgr::remove_all_scripts()
 	{
 		std::lock_guard lock(m_mutex);
 		m_scripts.clear();
+	}
+
+	script_list& script_mgr::scripts()
+	{
+		return m_scripts;
 	}
 
 	void script_mgr::tick()
@@ -35,9 +37,8 @@ namespace big
 		static bool ensure_native_handlers = (g_native_invoker.cache_handlers(), true);
 
 		std::lock_guard lock(m_mutex);
-		for (auto const &script : m_scripts)
-		{
-			script->tick();
-		}
+		for (auto const& script : m_scripts)
+			if (script->is_enabled())
+				script->tick();
 	}
 }

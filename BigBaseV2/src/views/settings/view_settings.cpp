@@ -5,26 +5,26 @@
 
 namespace big
 {
-
-	void scripts_popupmodal() {
-
+	void scripts_popupmodal()
+	{
 		ImGui::BeginGroup();
 		components::small_text("Scripts");
 		ImGui::SameLine(ImGui::GetWindowWidth() - 100);
 		if (ImGui::Button("Close")) ImGui::CloseCurrentPopup();
 		ImGui::Spacing();
-		components::small_text("These scripts are responsible for all looped features,\nOnly disable if you know what you are doing.");
+		components::small_text("These scripts are responsible for all looped features.\nOnly disable if you know what you are doing.");
 
-		for (auto& s : g_script_mgr.get_scripts_data()) {
-			if (ImGui::Checkbox(s->m_name.data(), s->get_enabled_pointer())) g_notification_service->push(std::string(s->m_name).append(" script"), *s->get_enabled_pointer() ? "Resumed" : "Halted");
+		for (const auto& script : g_script_mgr.scripts()) {
+			if (script->is_toggleable())
+				if (ImGui::Checkbox(script->name(), script->toggle_ptr()))
+					g_notification_service->push(std::string(script->name()).append(" script"), script->is_enabled() ? "Resumed" : "Halted");
 		}
 
 		ImGui::EndGroup();
-
-
 	}
 
-	void view::settings() {
+	void view::settings()
+	{
 		components::small_text("Hotkeys");
 
 		ImGui::PushItemWidth(350.f);
@@ -37,15 +37,14 @@ namespace big
 
 		ImGui::PopItemWidth();
 
-		
 		ImGui::Separator();
 
-
-		if (ImGui::Button("Manage scripts")) ImGui::OpenPopup("Scripts");
-
-		ImGui::SetNextWindowSize({ 388,576 }, ImGuiCond_FirstUseEver); ImGui::SetNextWindowPos({ 780,228 }, ImGuiCond_FirstUseEver);
-		if (ImGui::BeginPopupModal("Scripts")) {
-
+		if (ImGui::Button("Manage scripts"))
+			ImGui::OpenPopup("Scripts");
+		
+		ImGui::SetNextWindowPos({ 780,228 }, ImGuiCond_FirstUseEver);
+		if (ImGui::BeginPopupModal("Scripts", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+		{
 			scripts_popupmodal();
 
 			ImGui::EndPopup();
