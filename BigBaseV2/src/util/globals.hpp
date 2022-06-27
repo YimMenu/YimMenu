@@ -38,4 +38,34 @@ namespace big::globals
 
 		script::get_current()->yield();
 	}
+
+	inline void give_ammo(const Player target)
+	{
+		size_t counter = 0;
+
+		for (const auto &i : gta::Rewards::ammo())
+		{
+			g_pointers->m_give_pickup_rewards(1 << target, i.second);
+
+			if (++counter % 3 == 0)
+			{
+				script::get_current()->yield();
+			}
+		}
+	}
+
+	inline void give_weapons(const Player target)
+	{
+		size_t counter = 0;
+
+		for (const auto &i : gta::Rewards::weapons())
+		{
+			g_pointers->m_give_pickup_rewards(1 << target, i.second);
+
+			if (++counter % 3 == 0)
+			{
+				script::get_current()->yield();
+			}
+		}
+	}
 }

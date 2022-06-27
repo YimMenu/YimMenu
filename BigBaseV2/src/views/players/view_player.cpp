@@ -52,6 +52,16 @@ namespace big
 					globals::give_armour(g_player_service->get_selected()->id());
 				});
 
+				components::button("Give Ammo", [] {
+					globals::give_ammo(g_player_service->get_selected()->id());
+				});
+
+				ImGui::SameLine();
+
+				components::button("Give Weapons", [] {
+					globals::give_weapons(g_player_service->get_selected()->id());
+				});
+
 				ImGui::TreePop();
 			}
 
