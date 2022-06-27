@@ -14,9 +14,11 @@ namespace big::vehicle
 	{
 		*script_global(2671447).at(8).as<int*>() = 1;
 	}
-	
+
 	inline void bring(Vehicle veh, Vector3 location, bool put_in = true)
 	{
+		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh)) return g_notification_service->push_error("Vehicle", "Invalid handle");
+
 		Vector3 vecVehicleLocation = ENTITY::GET_ENTITY_COORDS(veh, true);
 		teleport::load_ground_at_3dcoord(vecVehicleLocation);
 
