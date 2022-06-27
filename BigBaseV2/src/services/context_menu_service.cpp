@@ -69,6 +69,70 @@ namespace big
 		return nullptr;
 	}
 
+	static void draw_boxes(Vector3 position, Vector3 dimensions, Vector3 forward_vector, Vector3 right_vector, Vector3 up_vector, int colour)
+	{
+		Vector3 FUR, BLL;
+		FUR.x = position.x + dimensions.y * forward_vector.x + dimensions.x * right_vector.x + dimensions.z * up_vector.x;
+		FUR.y = position.y + dimensions.y * forward_vector.y + dimensions.x * right_vector.y + dimensions.z * up_vector.y;
+		FUR.z = position.z + dimensions.y * forward_vector.z + dimensions.x * right_vector.z + dimensions.z * up_vector.z;
+
+		BLL.x = position.x - dimensions.y * forward_vector.x - dimensions.x * right_vector.x - dimensions.z * up_vector.x;
+		BLL.y = position.y - dimensions.y * forward_vector.y - dimensions.x * right_vector.y - dimensions.z * up_vector.y;
+		BLL.z = position.z - dimensions.y * forward_vector.z - dimensions.x * right_vector.z - dimensions.z * up_vector.z;
+
+		Vector3 edge1 = BLL;
+		Vector3 edge2;
+		Vector3 edge3;
+		Vector3 edge4;
+		Vector3 edge5 = FUR;
+		Vector3 edge6;
+		Vector3 edge7;
+		Vector3 edge8;
+
+		int green = colour * 255;
+		int blue = abs(colour - 1) * 255;
+
+		edge2.x = edge1.x + 2 * dimensions.y * forward_vector.x;
+		edge2.y = edge1.y + 2 * dimensions.y * forward_vector.y;
+		edge2.z = edge1.z + 2 * dimensions.y * forward_vector.z;
+
+		edge3.x = edge2.x + 2 * dimensions.z * up_vector.x;
+		edge3.y = edge2.y + 2 * dimensions.z * up_vector.y;
+		edge3.z = edge2.z + 2 * dimensions.z * up_vector.z;
+
+		edge4.x = edge1.x + 2 * dimensions.z * up_vector.x;
+		edge4.y = edge1.y + 2 * dimensions.z * up_vector.y;
+		edge4.z = edge1.z + 2 * dimensions.z * up_vector.z;
+
+		edge6.x = edge5.x - 2 * dimensions.y * forward_vector.x;
+		edge6.y = edge5.y - 2 * dimensions.y * forward_vector.y;
+		edge6.z = edge5.z - 2 * dimensions.y * forward_vector.z;
+
+		edge7.x = edge6.x - 2 * dimensions.z * up_vector.x;
+		edge7.y = edge6.y - 2 * dimensions.z * up_vector.y;
+		edge7.z = edge6.z - 2 * dimensions.z * up_vector.z;
+
+		edge8.x = edge5.x - 2 * dimensions.z * up_vector.x;
+		edge8.y = edge5.y - 2 * dimensions.z * up_vector.y;
+		edge8.z = edge5.z - 2 * dimensions.z * up_vector.z;
+
+
+		GRAPHICS::DRAW_LINE(edge1.x, edge1.y, edge1.z, edge2.x, edge2.y, edge2.z, 0, green, blue, 200);
+		GRAPHICS::DRAW_LINE(edge1.x, edge1.y, edge1.z, edge4.x, edge4.y, edge4.z, 0, green, blue, 200);
+		GRAPHICS::DRAW_LINE(edge2.x, edge2.y, edge2.z, edge3.x, edge3.y, edge3.z, 0, green, blue, 200);
+		GRAPHICS::DRAW_LINE(edge3.x, edge3.y, edge3.z, edge4.x, edge4.y, edge4.z, 0, green, blue, 200);
+
+		GRAPHICS::DRAW_LINE(edge5.x, edge5.y, edge5.z, edge6.x, edge6.y, edge6.z, 0, green, blue, 200);
+		GRAPHICS::DRAW_LINE(edge5.x, edge5.y, edge5.z, edge8.x, edge8.y, edge8.z, 0, green, blue, 200);
+		GRAPHICS::DRAW_LINE(edge6.x, edge6.y, edge6.z, edge7.x, edge7.y, edge7.z, 0, green, blue, 200);
+		GRAPHICS::DRAW_LINE(edge7.x, edge7.y, edge7.z, edge8.x, edge8.y, edge8.z, 0, green, blue, 200);
+
+		GRAPHICS::DRAW_LINE(edge1.x, edge1.y, edge1.z, edge7.x, edge7.y, edge7.z, 0, green, blue, 200);
+		GRAPHICS::DRAW_LINE(edge2.x, edge2.y, edge2.z, edge8.x, edge8.y, edge8.z, 0, green, blue, 200);
+		GRAPHICS::DRAW_LINE(edge3.x, edge3.y, edge3.z, edge5.x, edge5.y, edge5.z, 0, green, blue, 200);
+		GRAPHICS::DRAW_LINE(edge4.x, edge4.y, edge4.z, edge6.x, edge6.y, edge6.z, 0, green, blue, 200);
+	}
+
 	void context_menu_service::get_entity_closest_to_screen_center()
 	{
 		if (const auto replay = *g_pointers->m_replay_interface; replay)
@@ -86,7 +150,7 @@ namespace big
 
 				const auto ptr = all_entities.get();
 				std::uint32_t offset = 0;
-				std::copy(ped_interface->m_ped_list->m_peds, ped_interface->m_ped_list->m_peds + ped_interface_size,ptr);
+				std::copy(ped_interface->m_ped_list->m_peds, ped_interface->m_ped_list->m_peds + ped_interface_size, ptr);
 				offset += ped_interface_size;
 
 				std::copy(veh_interface->m_vehicle_list->m_vehicles, veh_interface->m_vehicle_list->m_vehicles + veh_interface_size, ptr + offset);
@@ -96,6 +160,7 @@ namespace big
 				offset += obj_interface_size;
 
 				double distance = 1;
+				bool got_an_entity = false;
 				rage::vector2 screen_pos{};
 				for (std::uint32_t i = 0; i < offset; i++)
 				{
@@ -110,11 +175,25 @@ namespace big
 					const auto pos = temp_pointer->m_navigation->m_position;
 					HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos.x, pos.y, pos.z, &screen_pos.x, &screen_pos.y);
 					if (distance_to_middle_of_screen(screen_pos) < distance &&
-						temp_handle != PLAYER::PLAYER_PED_ID()) {
+						ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(PLAYER::PLAYER_PED_ID(), temp_handle, 17) &&
+						temp_handle != PLAYER::PLAYER_PED_ID())
+					{
 						m_handle = temp_handle;
 						m_pointer = temp_pointer;
 						distance = distance_to_middle_of_screen(screen_pos);
+						got_an_entity = true;
 					}
+				}
+
+				if (got_an_entity)
+				{
+					const auto hash = ENTITY::GET_ENTITY_MODEL(m_handle);
+					Vector3 min, max;
+					MISC::GET_MODEL_DIMENSIONS(hash, &min, &max);
+					Vector3 forward, up, right, pos;
+					ENTITY::GET_ENTITY_MATRIX(m_handle, &forward, &right, &up, &pos);
+					auto dimensions = (max - min) * 0.5f;
+					draw_boxes(pos, dimensions, forward, right, up, 1);
 				}
 			}
 		}
@@ -180,6 +259,8 @@ namespace big
 
 			if (g_context_menu_service->enabled)
 			{
+				HUD::SHOW_HUD_COMPONENT_THIS_FRAME(14 /*RETICLE*/);
+
 				g_context_menu_service->get_entity_closest_to_screen_center();
 
 				const auto cm = g_context_menu_service->get_context_menu();
