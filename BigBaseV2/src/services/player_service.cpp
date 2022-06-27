@@ -138,9 +138,14 @@ namespace big
 		return m_selected_player;
 	}
 
-	player_ptr player_service::get_self() const
+	player_ptr player_service::get_self()
 	{
-		return std::make_shared<player>(*m_self);
+		if (!m_self_ptr || !m_self_ptr->equals(*m_self))
+		{
+			m_self_ptr = std::make_shared<player>(*m_self);
+		}
+
+		return m_self_ptr;
 	}
 
 	void player_service::player_join(CNetGamePlayer* net_game_player)
