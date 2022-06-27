@@ -42,6 +42,16 @@ namespace big
 
 				ImGui::Checkbox("Never Wanted", &g->player.player_never_wanted);
 
+				components::button("Give Health", [] {
+					globals::give_health(g_player_service->get_selected()->id());
+				});
+
+				ImGui::SameLine();
+
+				components::button("Give Armour", [] {
+					globals::give_armour(g_player_service->get_selected()->id());
+				});
+
 				ImGui::TreePop();
 			}
 
