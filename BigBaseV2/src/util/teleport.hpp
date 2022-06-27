@@ -66,9 +66,9 @@ namespace big::teleport
 
 	inline bool into_vehicle(Vehicle veh)
 	{
-		if (!veh)
+		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh))
 		{
-			g_notification_service->push_warning("Teleport", "Player is not in a vehicle.");
+			g_notification_service->push_warning("Teleport", "Invalid vehicle handle");
 
 			return false;
 		}
@@ -112,7 +112,8 @@ namespace big::teleport
 		if (!blip::get_blip_location(location, sprite, color))
 			return false;
 
-		load_ground_at_3dcoord(location);
+		if (sprite == (int)BlipIcons::Waypoint)
+			load_ground_at_3dcoord(location);
 
 		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
 
@@ -154,8 +155,10 @@ namespace big::teleport
 		if (to_blip((int)BlipIcons::Circle, (int)BlipColors::Blue)) return true;
 		if (to_blip((int)BlipIcons::CrateDrop)) return true;
 		static const int blips[] = { 1, 57, 128, 129, 130, 143, 144, 145, 146, 271, 286, 287, 288 };
-		for (int i = 0; i < (sizeof(blips) / sizeof(*blips)); i++) {
-			if (to_blip(blips[i], 5)) {
+		for (const auto& blip : blips)
+		{
+			if (to_blip(blip, 5))
+			{
 				return true;
 			}
 		}
