@@ -14,7 +14,7 @@ namespace big
 	public:
 		explicit player(CNetGamePlayer* net_game_player);
 		~player() = default;
-		
+
 		player(const player&) = default;
 		player(player&&) noexcept = default;
 		player& operator=(const player&) = default;
@@ -51,6 +51,8 @@ namespace big
 	
 		CNetGamePlayer** m_self;
 	
+		player_ptr m_self_ptr;
+
 		players m_players;
 
 		player_ptr m_dummy = std::make_shared<player>(nullptr);
@@ -59,7 +61,7 @@ namespace big
 	public:
 		player_service();
 		~player_service();
-		
+
 		player_service(const player_service&) = delete;
 		player_service(player_service&&) noexcept = delete;
 		player_service& operator=(const player_service&) = delete;
@@ -67,7 +69,7 @@ namespace big
 
 		void do_cleanup();
 
-		[[nodiscard]] player_ptr get_self() const;
+		[[nodiscard]] player_ptr get_self();
 
 		[[nodiscard]] player_ptr get_by_name(std::string name);
 		[[nodiscard]] player_ptr get_by_msg_id(uint32_t msg_id) const;
