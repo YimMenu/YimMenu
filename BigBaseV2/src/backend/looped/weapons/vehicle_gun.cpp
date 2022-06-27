@@ -2,7 +2,7 @@
 #include "core/enums.hpp"
 #include "util/math.hpp"
 #include "util/vehicle.hpp"
-#include <gui.hpp>
+#include "gui.hpp"
 
 namespace big
 {
@@ -12,7 +12,7 @@ namespace big
 	{
 		const bool is_vehicle_gun_selected = g->weapons.custom_weapon == CustomWeapon::VEHICLE_GUN;
 
-		auto time_now = std::chrono::steady_clock::now();
+		const auto time_now = std::chrono::steady_clock::now();
 
 		const auto elapsed_time_in_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_now - last_time).count();
 
