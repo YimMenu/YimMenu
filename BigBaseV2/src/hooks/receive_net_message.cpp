@@ -70,11 +70,11 @@ namespace big
 
 						if (!players.empty())
 						{
-							const auto player = players.at(0);
+							const auto& player = players.at(0);
 							if (player && player->is_valid())
 							{
 								player->m_complaints = 65535;
-								g_notification_service->push_warning("Blocked Kick", std::string("Blocked desync kick from ") + players.at(0)->get_name());
+								g_notification_service->push_warning("Blocked Kick", std::string("Blocked desync kick from ") + player->get_name());
 							}
 						}
 
