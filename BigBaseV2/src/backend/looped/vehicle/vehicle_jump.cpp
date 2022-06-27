@@ -8,7 +8,7 @@ namespace big
 	{
 		if (!g->vehicle.vehicle_jump) return;
 
-		const auto& vehicle = self::veh;
+		const auto vehicle = self::veh;
 
 		if (!vehicle || !ENTITY::IS_ENTITY_A_VEHICLE(vehicle))
 		{
