@@ -27,7 +27,6 @@ namespace big
 
 	bool hooks::receive_net_message(void* netConnectionManager, void* a2, rage::netConnection::InFrame* frame)
 	{
-
 		if (frame->get_type() == 4)
 		{
 			rage::datBitBuffer buffer((uint8_t*)frame->m_data, frame->m_length);
@@ -59,16 +58,26 @@ namespace big
 								buffer.ReadQWord(&array_element, 64);
 								host_token_list.push_back(array_element);
 
-								if (CNetGamePlayer* net_player = g_player_service->get_by_host_token(array_element)->get_net_game_player())
-									players.push_back(net_player);
-
+								const auto big_player = g_player_service->get_by_host_token(array_element);
+								if (big_player)
+									if (CNetGamePlayer* net_player = big_player->get_net_game_player())
+										players.push_back(net_player);
 							}
 
 						}
 
 						buffer.Seek(0);
 
-						players.at(0)->m_complaints = 10000;
+						if (!players.empty())
+						{
+							const auto& player = players.at(0);
+							if (player && player->is_valid())
+							{
+								player->m_complaints = 65535;
+								g_notification_service->push_warning("Blocked Kick", std::string("Blocked desync kick from ") + player->get_name());
+							}
+						}
+
 						return false;
 					}
 
