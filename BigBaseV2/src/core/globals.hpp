@@ -265,6 +265,11 @@ namespace big
 		struct context_menu
 		{
 			bool enabled = true;
+
+			ImU32 selected_option_color = 4278255360;
+
+			bool bounding_box_enabled = true;
+			ImU32 bounding_box_color = 4278255360;
 		};
 
 		struct esp
@@ -527,6 +532,9 @@ namespace big
 			this->window.users = j["window"]["users"];
 
 			this->context_menu.enabled = j["context_menu"]["enabled"];
+			this->context_menu.selected_option_color = j["context_menu"]["selected_option_color"];
+			this->context_menu.bounding_box_enabled = j["context_menu"]["bounding_box_enabled"];
+			this->context_menu.bounding_box_color = j["context_menu"]["bounding_box_color"];
 
 			this->esp.enabled = j["esp"]["enabled"];
 			this->esp.hide_self = j["esp"]["hide_self"];
@@ -782,7 +790,10 @@ namespace big
 				},
 				{
 					"context_menu", {
-						{"enabled", this->context_menu.enabled}
+						{"enabled", this->context_menu.enabled},
+						{ "selected_option_color", this->context_menu.selected_option_color },
+						{ "bounding_box_enabled", this->context_menu.bounding_box_enabled },
+						{ "bounding_box_color", this->context_menu.bounding_box_color },
 					}
 				},
 				{
