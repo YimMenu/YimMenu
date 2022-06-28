@@ -2,6 +2,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "gta/replay.hpp"
+#include <gui.hpp>
 
 namespace big
 {
@@ -14,6 +15,79 @@ namespace big
 	context_menu_service::~context_menu_service()
 	{
 		g_context_menu_service = nullptr;
+	}
+
+	void context_menu_service::fill_model_bounding_box_screen_space()
+	{
+		Vector3 forward, right, up, pos;
+		ENTITY::GET_ENTITY_MATRIX(m_handle, &forward, &right, &up, &pos);
+
+		const auto hash = ENTITY::GET_ENTITY_MODEL(m_handle);
+		Vector3 min, max;
+		MISC::GET_MODEL_DIMENSIONS(hash, &min, &max);
+		const auto dimensions = (max - min) * 0.5f;
+
+		const auto& position = m_pointer->m_position;
+
+		rage::fvector3 front_upper_right, back_lower_left;
+		front_upper_right.x = position.x + dimensions.y * forward.x + dimensions.x * right.x + dimensions.z * up.x;
+		front_upper_right.y = position.y + dimensions.y * forward.y + dimensions.x * right.y + dimensions.z * up.y;
+		front_upper_right.z = position.z + dimensions.y * forward.z + dimensions.x * right.z + dimensions.z * up.z;
+
+		back_lower_left.x = position.x - dimensions.y * forward.x - dimensions.x * right.x - dimensions.z * up.x;
+		back_lower_left.y = position.y - dimensions.y * forward.y - dimensions.x * right.y - dimensions.z * up.y;
+		back_lower_left.z = position.z - dimensions.y * forward.z - dimensions.x * right.z - dimensions.z * up.z;
+
+		rage::fvector3 edge1 = back_lower_left;
+		rage::fvector3 edge2, edge3, edge4;
+
+		rage::fvector3 edge5 = front_upper_right;
+		rage::fvector3 edge6, edge7, edge8;
+
+		edge2.x = edge1.x + 2 * dimensions.y * forward.x;
+		edge2.y = edge1.y + 2 * dimensions.y * forward.y;
+		edge2.z = edge1.z + 2 * dimensions.y * forward.z;
+
+		edge3.x = edge2.x + 2 * dimensions.z * up.x;
+		edge3.y = edge2.y + 2 * dimensions.z * up.y;
+		edge3.z = edge2.z + 2 * dimensions.z * up.z;
+
+		edge4.x = edge1.x + 2 * dimensions.z * up.x;
+		edge4.y = edge1.y + 2 * dimensions.z * up.y;
+		edge4.z = edge1.z + 2 * dimensions.z * up.z;
+
+		edge6.x = edge5.x - 2 * dimensions.y * forward.x;
+		edge6.y = edge5.y - 2 * dimensions.y * forward.y;
+		edge6.z = edge5.z - 2 * dimensions.y * forward.z;
+
+		edge7.x = edge6.x - 2 * dimensions.z * up.x;
+		edge7.y = edge6.y - 2 * dimensions.z * up.y;
+		edge7.z = edge6.z - 2 * dimensions.z * up.z;
+
+		edge8.x = edge5.x - 2 * dimensions.z * up.x;
+		edge8.y = edge5.y - 2 * dimensions.z * up.y;
+		edge8.z = edge5.z - 2 * dimensions.z * up.z;
+
+		static auto imgui_world_to_screen = [](rage::fvector3& world_input, ImVec2& screen_result)
+		{
+			const auto res = GRAPHICS::GET_SCREEN_COORD_FROM_WORLD_COORD(world_input.x, world_input.y, world_input.z, &screen_result.x, &screen_result.y);
+			if (res)
+			{
+				screen_result.x = static_cast<float>(*g_pointers->m_resolution_x) * screen_result.x;
+				screen_result.y = static_cast<float>(*g_pointers->m_resolution_y) * screen_result.y;
+			}
+		};
+
+		auto& box = m_model_bounding_box_screen_space;
+		imgui_world_to_screen(edge1, box.edge1);
+		imgui_world_to_screen(edge2, box.edge2);
+		imgui_world_to_screen(edge3, box.edge3);
+		imgui_world_to_screen(edge4, box.edge4);
+
+		imgui_world_to_screen(edge5, box.edge5);
+		imgui_world_to_screen(edge6, box.edge6);
+		imgui_world_to_screen(edge7, box.edge7);
+		imgui_world_to_screen(edge8, box.edge8);
 	}
 
 	double context_menu_service::distance_to_middle_of_screen(const rage::vector2& screen_pos)
@@ -39,7 +113,7 @@ namespace big
 		{
 			switch (m_pointer->m_model_info->m_model_type)
 			{
-			case eModelType::Object: // Object
+			case eModelType::Object:
 			{
 				return &options.at(ContextEntityType::OBJECT);
 			}
@@ -67,70 +141,6 @@ namespace big
 			}
 		}
 		return nullptr;
-	}
-
-	static void draw_boxes(Vector3 position, Vector3 dimensions, Vector3 forward_vector, Vector3 right_vector, Vector3 up_vector, int colour)
-	{
-		Vector3 FUR, BLL;
-		FUR.x = position.x + dimensions.y * forward_vector.x + dimensions.x * right_vector.x + dimensions.z * up_vector.x;
-		FUR.y = position.y + dimensions.y * forward_vector.y + dimensions.x * right_vector.y + dimensions.z * up_vector.y;
-		FUR.z = position.z + dimensions.y * forward_vector.z + dimensions.x * right_vector.z + dimensions.z * up_vector.z;
-
-		BLL.x = position.x - dimensions.y * forward_vector.x - dimensions.x * right_vector.x - dimensions.z * up_vector.x;
-		BLL.y = position.y - dimensions.y * forward_vector.y - dimensions.x * right_vector.y - dimensions.z * up_vector.y;
-		BLL.z = position.z - dimensions.y * forward_vector.z - dimensions.x * right_vector.z - dimensions.z * up_vector.z;
-
-		Vector3 edge1 = BLL;
-		Vector3 edge2;
-		Vector3 edge3;
-		Vector3 edge4;
-		Vector3 edge5 = FUR;
-		Vector3 edge6;
-		Vector3 edge7;
-		Vector3 edge8;
-
-		int green = colour * 255;
-		int blue = abs(colour - 1) * 255;
-
-		edge2.x = edge1.x + 2 * dimensions.y * forward_vector.x;
-		edge2.y = edge1.y + 2 * dimensions.y * forward_vector.y;
-		edge2.z = edge1.z + 2 * dimensions.y * forward_vector.z;
-
-		edge3.x = edge2.x + 2 * dimensions.z * up_vector.x;
-		edge3.y = edge2.y + 2 * dimensions.z * up_vector.y;
-		edge3.z = edge2.z + 2 * dimensions.z * up_vector.z;
-
-		edge4.x = edge1.x + 2 * dimensions.z * up_vector.x;
-		edge4.y = edge1.y + 2 * dimensions.z * up_vector.y;
-		edge4.z = edge1.z + 2 * dimensions.z * up_vector.z;
-
-		edge6.x = edge5.x - 2 * dimensions.y * forward_vector.x;
-		edge6.y = edge5.y - 2 * dimensions.y * forward_vector.y;
-		edge6.z = edge5.z - 2 * dimensions.y * forward_vector.z;
-
-		edge7.x = edge6.x - 2 * dimensions.z * up_vector.x;
-		edge7.y = edge6.y - 2 * dimensions.z * up_vector.y;
-		edge7.z = edge6.z - 2 * dimensions.z * up_vector.z;
-
-		edge8.x = edge5.x - 2 * dimensions.z * up_vector.x;
-		edge8.y = edge5.y - 2 * dimensions.z * up_vector.y;
-		edge8.z = edge5.z - 2 * dimensions.z * up_vector.z;
-
-
-		GRAPHICS::DRAW_LINE(edge1.x, edge1.y, edge1.z, edge2.x, edge2.y, edge2.z, 0, green, blue, 200);
-		GRAPHICS::DRAW_LINE(edge1.x, edge1.y, edge1.z, edge4.x, edge4.y, edge4.z, 0, green, blue, 200);
-		GRAPHICS::DRAW_LINE(edge2.x, edge2.y, edge2.z, edge3.x, edge3.y, edge3.z, 0, green, blue, 200);
-		GRAPHICS::DRAW_LINE(edge3.x, edge3.y, edge3.z, edge4.x, edge4.y, edge4.z, 0, green, blue, 200);
-
-		GRAPHICS::DRAW_LINE(edge5.x, edge5.y, edge5.z, edge6.x, edge6.y, edge6.z, 0, green, blue, 200);
-		GRAPHICS::DRAW_LINE(edge5.x, edge5.y, edge5.z, edge8.x, edge8.y, edge8.z, 0, green, blue, 200);
-		GRAPHICS::DRAW_LINE(edge6.x, edge6.y, edge6.z, edge7.x, edge7.y, edge7.z, 0, green, blue, 200);
-		GRAPHICS::DRAW_LINE(edge7.x, edge7.y, edge7.z, edge8.x, edge8.y, edge8.z, 0, green, blue, 200);
-
-		GRAPHICS::DRAW_LINE(edge1.x, edge1.y, edge1.z, edge7.x, edge7.y, edge7.z, 0, green, blue, 200);
-		GRAPHICS::DRAW_LINE(edge2.x, edge2.y, edge2.z, edge8.x, edge8.y, edge8.z, 0, green, blue, 200);
-		GRAPHICS::DRAW_LINE(edge3.x, edge3.y, edge3.z, edge5.x, edge5.y, edge5.z, 0, green, blue, 200);
-		GRAPHICS::DRAW_LINE(edge4.x, edge4.y, edge4.z, edge6.x, edge6.y, edge6.z, 0, green, blue, 200);
 	}
 
 	void context_menu_service::get_entity_closest_to_screen_center()
@@ -187,13 +197,7 @@ namespace big
 
 				if (got_an_entity)
 				{
-					const auto hash = ENTITY::GET_ENTITY_MODEL(m_handle);
-					Vector3 min, max;
-					MISC::GET_MODEL_DIMENSIONS(hash, &min, &max);
-					Vector3 forward, up, right, pos;
-					ENTITY::GET_ENTITY_MATRIX(m_handle, &forward, &right, &up, &pos);
-					auto dimensions = (max - min) * 0.5f;
-					draw_boxes(pos, dimensions, forward, right, up, 1);
+					fill_model_bounding_box_screen_space();
 				}
 			}
 		}
@@ -245,9 +249,16 @@ namespace big
 	{
 		while (g_running)
 		{
-			if (!g->context_menu.enabled) {
+			if (!g->context_menu.enabled)
+			{
 				g_context_menu_service->enabled = false;
 
+				script::get_current()->yield();
+				continue;
+			}
+
+			if (g_gui.m_opened)
+			{
 				script::get_current()->yield();
 				continue;
 			}
@@ -267,7 +278,6 @@ namespace big
 				if (cm == nullptr)
 				{
 					script::get_current()->yield();
-
 					continue;
 				}
 
@@ -279,7 +289,10 @@ namespace big
 					PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_SPECIAL_ABILITY))
 				{
 					if (!g_context_menu_service->m_pointer)
+					{
+						script::get_current()->yield();
 						continue;
+					}
 					cm->options.at(cm->current_option).command();
 				}
 			}

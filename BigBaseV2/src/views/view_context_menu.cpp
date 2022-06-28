@@ -3,6 +3,27 @@
 
 namespace big
 {
+	static void draw_model_bounding_box(ImDrawList* draw_list, const model_bounding_box_screen_space& m_model_bounding_box_screen_space)
+	{
+		const auto& box = g_context_menu_service->m_model_bounding_box_screen_space;
+		const auto& color = g->context_menu.bounding_box_color;
+
+		draw_list->AddLine(box.edge1, box.edge2, color);
+		draw_list->AddLine(box.edge1, box.edge4, color);
+		draw_list->AddLine(box.edge2, box.edge3, color);
+		draw_list->AddLine(box.edge3, box.edge4, color);
+
+		draw_list->AddLine(box.edge5, box.edge6, color);
+		draw_list->AddLine(box.edge5, box.edge8, color);
+		draw_list->AddLine(box.edge6, box.edge7, color);
+		draw_list->AddLine(box.edge7, box.edge8, color);
+
+		draw_list->AddLine(box.edge1, box.edge7, color);
+		draw_list->AddLine(box.edge2, box.edge8, color);
+		draw_list->AddLine(box.edge3, box.edge5, color);
+		draw_list->AddLine(box.edge4, box.edge6, color);
+	}
+
 	void view::context_menu()
 	{
 		if (const auto draw_list = ImGui::GetBackgroundDrawList(); draw_list)
@@ -35,8 +56,11 @@ namespace big
 					for (std::uint32_t i = 0; i < cm->options.size(); i++)
 					{
 						const auto co = cm->options.at(i);
-						draw_list->AddText({ cm_start_x + 7.f, cm_start_y + (20.f * static_cast<float>(i)) + 5.f }, cm->current_option == i ? ImGui::ColorConvertFloat4ToU32({ 0.f, 1.f, 0.f, 1.f }) : ImGui::ColorConvertFloat4ToU32({ 1.f, 1.f, 1.f, 1.f }), co.name.c_str());
+						draw_list->AddText({ cm_start_x + 7.f, cm_start_y + (20.f * static_cast<float>(i)) + 5.f }, cm->current_option == i ? g->context_menu.selected_option_color : ImGui::ColorConvertFloat4ToU32({ 1.f, 1.f, 1.f, 1.f }), co.name.c_str());
 					}
+
+					if (g->context_menu.bounding_box_enabled)
+						draw_model_bounding_box(draw_list, g_context_menu_service->m_model_bounding_box_screen_space);
 				}
 			}
 		}
