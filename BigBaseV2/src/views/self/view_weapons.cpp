@@ -89,8 +89,10 @@ namespace big
 		switch (selected)
 		{
 		case CustomWeapon::VEHICLE_GUN:
-			ImGui::Text("Shooting Model:");
-			ImGui::InputText("##vehicle_gun_model", g->weapons.vehicle_gun_model, 12);
+			components::input_text_with_hint(
+				"Shooting Model",
+				"Name of the vehicle model",
+				g->weapons.vehicle_gun_model, sizeof(g->weapons.vehicle_gun_model));
 
 			break;
 		}
