@@ -1,9 +1,10 @@
 #include "backend/looped/looped.hpp"
-#include "pointers.hpp"
+#include "services/players/player_service.hpp"
+//#include "pointers.hpp"
 #include "natives.hpp"
-#include "script_global.hpp"
-#include "./views/view.hpp"
-#include "util/misc.hpp"
+//#include "script_global.hpp"
+//#include "./views/view.hpp"
+//#include "util/misc.hpp"
 
 namespace big
 {

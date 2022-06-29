@@ -11,14 +11,14 @@
 #include "thread_pool.hpp"
 
 #include "native_hooks/native_hooks.hpp"
-#include "services/context_menu_service.hpp"
-#include "services/globals_service.hpp"
-#include "services/gui_service.hpp"
-#include "services/player_service.hpp"
-#include "services/mobile_service.hpp"
-#include "services/notification_service.hpp"
-#include "services/vehicle_preview_service.hpp"
-#include "services/vehicle_service.hpp"
+#include "services/context_menu/context_menu_service.hpp"
+#include "services/globals/globals_service.hpp"
+#include "services/gui/gui_service.hpp"
+#include "services/mobile/mobile_service.hpp"
+#include "services/players/player_service.hpp"
+#include "services/notifications/notification_service.hpp"
+#include "services/vehicle_preview/vehicle_preview_service.hpp"
+#include "services/vehicle/vehicle_service.hpp"
 
 #include "backend/backend.hpp"
 

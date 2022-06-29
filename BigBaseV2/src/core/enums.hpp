@@ -13,6 +13,16 @@ namespace big
 		VEHICLE_GUN
 	};
 
+	enum class ContextEntityType : uint8_t
+	{
+		NONE = 0,
+		PED = 1 << 0,
+		PLAYER = 1 << 1,
+		VEHICLE = 1 << 2,
+		OBJECT = 1 << 3,
+		SHARED = 1 << 4
+	};
+
 	enum class eEntityType
 	{
 		UNK_0,

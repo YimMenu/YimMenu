@@ -1,6 +1,6 @@
-#include "friends_service.hpp"
 #include "gta_util.hpp"
 #include "player_service.hpp"
+#include "services/friends/friends_service.hpp"
 
 namespace big
 {

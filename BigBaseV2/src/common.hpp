@@ -54,7 +54,7 @@
 #include "gta/natives.hpp"
 #include "CPed.hpp"
 
-#include "services/notification_service.hpp"
+#include "services/notifications/notification_service.hpp"
 
 namespace big
 {

@@ -1,11 +1,6 @@
 #pragma once
-#include "imgui.h"
-#include "natives.hpp"
-#include "pointers.hpp"
-#include "util/animator.hpp"
 #include "gui/components/components.hpp"
-#include "script.hpp"
-#include "services/player_service.hpp"
+#include "util/animator.hpp"
 #include "views/esp/view_esp.hpp"
 
 
