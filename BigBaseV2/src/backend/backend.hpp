@@ -20,6 +20,8 @@ namespace big
 		static void noclip_loop();
 		static void lscustoms_loop();
 		static void vehiclefly_loop();
+		static void hotkeys_input();
+		static void hotkeys_loop();
 		static void disable_control_action_loop();
 	};
 }

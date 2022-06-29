@@ -35,6 +35,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				while (!FindWindow(L"grcWindow", L"Grand Theft Auto V"))
 					std::this_thread::sleep_for(1s);
 
+				g_hwnd = FindWindow(L"grcWindow", L"Grand Theft Auto V");
+
 				std::filesystem::path base_dir = std::getenv("appdata");
 				base_dir /= "BigBaseV2";
 				auto file_manager_instance = std::make_unique<file_manager>(base_dir);
@@ -94,6 +96,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					g_script_mgr.add_script(std::make_unique<script>(&backend::vehiclefly_loop, "Vehicle Fly"));
 					g_script_mgr.add_script(std::make_unique<script>(&backend::rgbrandomizer_loop, "RGB Randomizer"));
 					g_script_mgr.add_script(std::make_unique<script>(&backend::turnsignal_loop, "Turn Signals"));
+					g_script_mgr.add_script(std::make_unique<script>(&backend::hotkeys_input, "Hotkeys Input"));
+					g_script_mgr.add_script(std::make_unique<script>(&backend::hotkeys_loop, "Hotkeys Loop"));
 					g_script_mgr.add_script(std::make_unique<script>(&backend::disable_control_action_loop, "Disable Controls"));
 					g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu, "Context Menu"));
 					LOG(INFO) << "Scripts registered.";
