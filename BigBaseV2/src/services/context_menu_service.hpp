@@ -6,15 +6,6 @@
 
 namespace big
 {
-	enum class ContextEntityType
-	{
-		PED,
-		PLAYER,
-		VEHICLE,
-		OBJECT,
-		SHARED
-	};
-
 	struct context_option
 	{
 		std::string name;
@@ -29,9 +20,16 @@ namespace big
 		std::vector<context_option> options;
 	};
 
+	struct model_bounding_box_screen_space
+	{
+		ImVec2 edge1, edge2, edge3, edge4;
+		ImVec2 edge5, edge6, edge7, edge8;
+	};
+
 	class context_menu_service final
 	{
 	private:
+		void fill_model_bounding_box_screen_space();
 		static double distance_to_middle_of_screen(const rage::vector2& screen_pos);
 
 	public:
@@ -53,6 +51,7 @@ namespace big
 
 		Entity m_handle;
 		rage::fwEntity* m_pointer;
+		model_bounding_box_screen_space m_model_bounding_box_screen_space;
 
 		s_context_menu vehicle_menu{
 			ContextEntityType::VEHICLE,
