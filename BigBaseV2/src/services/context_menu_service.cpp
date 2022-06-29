@@ -277,7 +277,8 @@ namespace big
 				const auto cm = g_context_menu_service->get_context_menu();
 				if (cm == nullptr)
 				{
-					g_context_menu_service->enabled = !g_context_menu_service->enabled;
+					script::get_current()->yield();
+					continue;
 				}
 				else
 				{
