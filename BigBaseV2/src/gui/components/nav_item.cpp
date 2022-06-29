@@ -1,5 +1,5 @@
 #include "components.hpp"
-#include "services/gui_service.hpp"
+#include "services/gui/gui_service.hpp"
 
 namespace big
 {
