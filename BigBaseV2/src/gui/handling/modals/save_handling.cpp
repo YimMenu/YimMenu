@@ -3,7 +3,7 @@
 #include "thread_pool.hpp"
 #include "natives.hpp"
 #include "script.hpp"
-#include "services/vehicle_service.hpp"
+#include "services/vehicle/vehicle_service.hpp"
 #include "views/view.hpp"
 
 namespace big

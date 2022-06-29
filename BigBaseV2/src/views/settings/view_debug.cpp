@@ -1,11 +1,10 @@
-#include "views/view.hpp"
-#include "services/globals_service.hpp"
-#include "thread_pool.hpp"
 #include "fiber_pool.hpp"
-#include "pointers.hpp"
-#include "script.hpp"
-#include "util/system.hpp"
 #include "natives.hpp"
+#include "pointers.hpp"
+#include "services/globals/globals_service.hpp"
+#include "thread_pool.hpp"
+#include "util/system.hpp"
+#include "views/view.hpp"
 
 namespace big
 {

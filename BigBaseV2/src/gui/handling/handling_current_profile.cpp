@@ -1,5 +1,5 @@
 #include "current_profile/current_profile_tabs.hpp"
-#include "services/vehicle_service.hpp"
+#include "services/vehicle/vehicle_service.hpp"
 #include "views/view.hpp"
 
 namespace big
