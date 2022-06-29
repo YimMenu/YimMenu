@@ -6,15 +6,6 @@
 
 namespace big
 {
-	enum class ContextEntityType
-	{
-		PED,
-		PLAYER,
-		VEHICLE,
-		OBJECT,
-		SHARED
-	};
-
 	struct context_option
 	{
 		std::string name;
