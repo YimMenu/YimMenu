@@ -86,7 +86,7 @@ namespace big
 
 				const auto ptr = all_entities.get();
 				std::uint32_t offset = 0;
-				std::copy(ped_interface->m_ped_list->m_peds, ped_interface->m_ped_list->m_peds + ped_interface_size,ptr);
+				std::copy(ped_interface->m_ped_list->m_peds, ped_interface->m_ped_list->m_peds + ped_interface_size, ptr);
 				offset += ped_interface_size;
 
 				std::copy(veh_interface->m_vehicle_list->m_vehicles, veh_interface->m_vehicle_list->m_vehicles + veh_interface_size, ptr + offset);
@@ -188,7 +188,15 @@ namespace big
 					g_context_menu_service->enabled = !g_context_menu_service->enabled;
 				}
 
-				if (g_context_menu_service->enabled)
+				if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_NEXT))
+					cm->current_option = cm->options.size() <= cm->current_option + 1 ? 0 : cm->current_option + 1;
+				if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV))
+					cm->current_option = 0 > cm->current_option - 1 ? static_cast<int>(cm->options.size()) - 1 : cm->current_option - 1;
+				if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) ||
+					PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_SPECIAL_ABILITY))
+
+
+
 				{
 					if (!g_context_menu_service->m_pointer)
 						continue;
