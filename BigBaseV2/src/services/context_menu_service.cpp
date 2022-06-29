@@ -279,17 +279,26 @@ namespace big
 				{
 					g_context_menu_service->enabled = !g_context_menu_service->enabled;
 				}
-
-				if (g_context_menu_service->enabled)
+				else
 				{
-					if (!g_context_menu_service->m_pointer)
+					if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_NEXT))
+						cm->current_option = cm->options.size() <= cm->current_option + 1 ? 0 : cm->current_option + 1;
+					if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV))
+						cm->current_option = 0 > cm->current_option - 1 ? static_cast<int>(cm->options.size()) - 1 : cm->current_option - 1;
+
+					if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) ||
+						PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_SPECIAL_ABILITY))
 					{
-						script::get_current()->yield();
-						continue;
+						if (!g_context_menu_service->m_pointer)
+						{
+							continue;
+						}
+
+						cm->options.at(cm->current_option).command();
 					}
-					cm->options.at(cm->current_option).command();
 				}
 			}
+
 			script::get_current()->yield();
 		}
 	}
