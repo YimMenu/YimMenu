@@ -3,6 +3,7 @@
 #include "pointers.hpp"
 #include "gta/replay.hpp"
 #include "gui.hpp"
+#include "util/misc.hpp"
 
 namespace big
 {
@@ -68,13 +69,23 @@ namespace big
 		edge8.y = edge5.y - 2 * dimensions.z * up.y;
 		edge8.z = edge5.z - 2 * dimensions.z * up.z;
 
-		static auto imgui_world_to_screen = [](rage::fvector3& world_input, ImVec2& screen_result)
+		auto any_fail = false;
+		static auto imgui_world_to_screen = [&any_fail](rage::fvector3& world_input, ImVec2& screen_result)
 		{
-			const auto res = GRAPHICS::GET_SCREEN_COORD_FROM_WORLD_COORD(world_input.x, world_input.y, world_input.z, &screen_result.x, &screen_result.y);
-			if (res)
+			if (any_fail)
+			{
+				return;
+			}
+
+			const auto success = GRAPHICS::GET_SCREEN_COORD_FROM_WORLD_COORD(world_input.x, world_input.y, world_input.z, &screen_result.x, &screen_result.y);
+			if (success)
 			{
 				screen_result.x = static_cast<float>(*g_pointers->m_resolution_x) * screen_result.x;
 				screen_result.y = static_cast<float>(*g_pointers->m_resolution_y) * screen_result.y;
+			}
+			else
+			{
+				any_fail = true;
 			}
 		};
 
@@ -88,6 +99,11 @@ namespace big
 		imgui_world_to_screen(edge6, box.edge6);
 		imgui_world_to_screen(edge7, box.edge7);
 		imgui_world_to_screen(edge8, box.edge8);
+
+		if (any_fail)
+		{
+			box = {};
+		}
 	}
 
 	double context_menu_service::distance_to_middle_of_screen(const rage::vector2& screen_pos)
@@ -115,6 +131,10 @@ namespace big
 			{
 			case eModelType::Object:
 			{
+				if (!misc::has_bits_set(&g->context_menu.allowed_entity_types, static_cast<uint8_t>(ContextEntityType::OBJECT)))
+				{
+					break;
+				}
 				return &options.at(ContextEntityType::OBJECT);
 			}
 			case eModelType::Ped:
@@ -124,16 +144,39 @@ namespace big
 					if (ped->m_ped_task_flag & static_cast<uint8_t>(ePedTask::TASK_DRIVING) &&
 						ped->m_vehicle)
 					{
+						if (!misc::has_bits_set(&g->context_menu.allowed_entity_types, static_cast<uint8_t>(ContextEntityType::VEHICLE)))
+						{
+							break;
+						}
+
 						m_pointer = ped->m_vehicle;
 						return &options.at(ContextEntityType::VEHICLE);
 					}
 					if (ped->m_player_info)
+					{
+						if (!misc::has_bits_set(&g->context_menu.allowed_entity_types, static_cast<uint8_t>(ContextEntityType::PLAYER)))
+						{
+							break;
+						}
+
 						return &options.at(ContextEntityType::PLAYER);
+					}
 				}
+
+				if (!misc::has_bits_set(&g->context_menu.allowed_entity_types, static_cast<uint8_t>(ContextEntityType::PED)))
+				{
+					break;
+				}
+
 				return &options.at(ContextEntityType::PED);
 			}
 			case eModelType::Vehicle:
 			{
+				if (!misc::has_bits_set(&g->context_menu.allowed_entity_types, static_cast<uint8_t>(ContextEntityType::VEHICLE)))
+				{
+					break;
+				}
+
 				return &options.at(ContextEntityType::VEHICLE);
 			}
 			default:
