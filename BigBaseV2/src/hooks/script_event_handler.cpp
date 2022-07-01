@@ -6,7 +6,7 @@ namespace big
 	void format_string(std::string_view player_name, std::string_view protection_type, bool should_log, bool should_notify)
 	{
 		if (should_log)
-			LOG(WARNING) << fmt::format("BLOCKED_SCRIPT_EVENT From: {}\nEvent Type: {}", player_name.data(), protection_type.data());
+			LOG(WARNING) << fmt::format("BLOCKED_SCRIPT_EVENT From: {} Event Type: {}", player_name.data(), protection_type.data());
 
 		if (should_notify)
 			g_notification_service->push_warning("Script Event Protection",
