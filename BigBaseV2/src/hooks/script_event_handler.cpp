@@ -309,7 +309,7 @@ namespace big
 					(args[3] > -9999999 || args[3] < 77777777) ||
 					(args[4] <= -1673857408 || args[4] >= 1780088064) ||
 					(args[4] > -9999999 || args[4] < 77777777) ||
-					(args[6] <= -2588888790 || args[6] >= 2100146067)
+					(args[6] <= -2588888790LL || args[6] >= 2100146067)
 				) {
 					format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
 
