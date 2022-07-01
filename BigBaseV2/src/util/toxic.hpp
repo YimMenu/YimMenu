@@ -60,6 +60,20 @@ namespace big::toxic
 		}
 	}
 
+	inline void emp_player(const Player player)
+	{
+		const Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+
+		constexpr auto max_attempts = 20;
+		for (size_t attempts = 0; attempts < max_attempts && !ENTITY::IS_ENTITY_DEAD(target, false); attempts++)
+		{
+			const Vector3 destination = PED::GET_PED_BONE_COORDS(target, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 0.0f);
+			const Vector3 origin = PED::GET_PED_BONE_COORDS(target, (int)PedBones::SKEL_R_Hand, 0.0f, 0.0f, 0.2f);
+
+			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 0, 0, RAGE_JOAAT("WEAPON_EMPLAUNCHER"), self::ped, false, true, 0);
+		}
+	}
+
 	inline void kick_from_vehicle(const Player player)
 	{
 		const Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);

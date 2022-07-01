@@ -126,6 +126,10 @@ namespace big
 					toxic::taze_player(g_player_service->get_selected()->id());
 				});
 
+				components::button("EMP", [] {
+					toxic::emp_player(g_player_service->get_selected()->id());
+					});
+
 				components::button("Kick From Vehicle", [] {
 					toxic::kick_from_vehicle(g_player_service->get_selected()->id());
 				});
