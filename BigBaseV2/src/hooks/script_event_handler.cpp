@@ -6,7 +6,7 @@ namespace big
 	void format_string(std::string_view player_name, std::string_view protection_type, bool should_log, bool should_notify)
 	{
 		if (should_log)
-			LOG(WARNING) << "BLOCKED_SCRIPT_EVENT";
+			LOG(WARNING) << fmt::format("BLOCKED_SCRIPT_EVENT From: {}\nEvent Type: {}", player_name.data(), protection_type.data());
 
 		if (should_notify)
 			g_notification_service->push_warning("Script Event Protection",
@@ -153,12 +153,14 @@ namespace big
 
 					return true;
 				}
-				break;
 			}
+			else 
+			{
+				format_string(player_name, "TSE Freeze", notify.tse_freeze.log, notify.tse_freeze.notify);
 
-			format_string(player_name, "TSE Freeze", notify.tse_freeze.log, notify.tse_freeze.notify);
-
-			return true;
+				return true;
+			}
+			break;
 		case eRemoteEvent::SendToCutscene:
 			if (g->protections.script_events.send_to_cutscene)
 			{
@@ -217,21 +219,21 @@ namespace big
 			break;
 		case eRemoteEvent::Unknown1:
 			if (g->protections.script_events.crash && args[2] >= 32) {
-				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				format_string(player_name, "Crash - #" + std::to_string(args[0]), notify.crash.log, notify.crash.notify);
 
 				return true;
 			}
 			break;
 		case eRemoteEvent::Unknown2:
 			if (g->protections.script_events.crash && (args[2] >= 62 || args[3] >= 32)) {
-				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				format_string(player_name, "Crash - #" + std::to_string(args[0]), notify.crash.log, notify.crash.notify);
 
 				return true;
 			}
 			break;
 		case eRemoteEvent::Unknown3:
 			if (g->protections.script_events.crash && args[2] >= 62) {
-				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				format_string(player_name, "Crash - #" + std::to_string(args[0]), notify.crash.log, notify.crash.notify);
 
 				return true;
 			}
@@ -239,37 +241,39 @@ namespace big
 		case eRemoteEvent::Unknown4:
 		case eRemoteEvent::Unknown5:
 			if (g->protections.script_events.crash && args[2] >= 20) {
-				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				format_string(player_name, "Crash - #" + std::to_string(args[0]), notify.crash.log, notify.crash.notify);
 
 				return true;
 			}
 			break;
 		case eRemoteEvent::Unknown6:
 			if (g->protections.script_events.crash) {
-				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				format_string(player_name, "Crash - #" + std::to_string(args[0]), notify.crash.log, notify.crash.notify);
 
 				return true;
 			}
 			break;
 		case eRemoteEvent::SEC3:
-			if (g->protections.script_events.crash) {
-				if (
+			if (
+				g->protections.script_events.crash &&
+				(
 					(args[2] <= 115831 || args[2] >= 9999449) ||
 					(args[3] <= -1 || args[3] >= 1) ||
 					(args[4] <= -1 || args[4] >= 3) ||
 					(args[5] <= -1 || args[5] >= 101) ||
 					(args[6] <= -1 || args[6] >= 3) ||
 					(args[7] <= -1 || args[7] >= 1)
-				) {
-					format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				)
+			) {
+				format_string(player_name, "Crash - #" + std::to_string(args[0]), notify.crash.log, notify.crash.notify);
 
-					return true;
-				}
+				return true;
 			}
 			break;
 		case eRemoteEvent::SEC6:
-			if (g->protections.script_events.crash) {
-				if (
+			if (
+				g->protections.script_events.crash &&
+				(
 					(args[2] <= -1 || args[2] >= 1) ||
 					(args[3] <= -2 || args[3] >= 0) ||
 					(args[4] <= 3 || args[4] >= 5) ||
@@ -279,80 +283,82 @@ namespace big
 					(args[11] <= -1 || args[11] >= 1) ||
 					(args[12] <= -1 || args[12] >= 1) ||
 					(args[13] <= -1 || args[13] >= 1)
-				) {
-					format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				)
+			) {
+				format_string(player_name, "Crash - #" + std::to_string(args[0]), notify.crash.log, notify.crash.notify);
 
-					return true;
-				}
+				return true;
 			}
 			break;
 		case eRemoteEvent::SEC7:
 			if (g->protections.script_events.crash) {
-				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				format_string(player_name, "Crash - #" + std::to_string(args[0]), notify.crash.log, notify.crash.notify);
 
 				return true;
 			}
 			break;
 		case eRemoteEvent::SEC8:
 			if (g->protections.script_events.crash) {
-				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				format_string(player_name, "Crash - #" + std::to_string(args[0]), notify.crash.log, notify.crash.notify);
 
 				return true;
 			}
 			break;
 		case eRemoteEvent::SEC9:
-			if (g->protections.script_events.crash) {
-				if (
+			if (
+				g->protections.script_events.crash &&
+				(
 					(args[2] <= -1986324736 || args[2] >= 1747413822) ||
 					(args[2] > -9999999 || args[2] < 77777777) ||
 					(args[3] <= -1986324736 || args[3] >= 1777712108) ||
 					(args[3] > -9999999 || args[3] < 77777777) ||
 					(args[4] <= -1673857408 || args[4] >= 1780088064) ||
 					(args[4] > -9999999 || args[4] < 77777777) ||
-					(args[6] <= -2588888790LL || args[6] >= 2100146067)
-				) {
-					format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+					(args[6] <= (0LL - 2588888790LL) || args[6] >= 2100146067)
+				)
+			) {
+				format_string(player_name, "Crash - #" + std::to_string(args[0]), notify.crash.log, notify.crash.notify);
 
-					return true;
-				}
+				return true;
 			}
 			break;
 		case eRemoteEvent::SEC10:
 			if (g->protections.script_events.crash) {
-				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				format_string(player_name, "Crash - #" + std::to_string(args[0]), notify.crash.log, notify.crash.notify);
 
 				return true;
 			}
 			break;
 		case eRemoteEvent::SEC11:
 			if (g->protections.script_events.crash) {
-				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				format_string(player_name, "Crash - #" + std::to_string(args[0]), notify.crash.log, notify.crash.notify);
 
 				return true;
 			}
 			break;
 		case eRemoteEvent::SEC12:
-			if (g->protections.script_events.crash) {
-				if (
+			if (
+				g->protections.script_events.crash &&
+				(
 					(args[2] <= -1 || args[2] >= 50) ||
 					(args[3] <= -1 || args[3] >= 50)
-				) {
-					format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				)
+			) {
+				format_string(player_name, "Crash - #" + std::to_string(args[0]), notify.crash.log, notify.crash.notify);
 
-					return true;
-				}
+				return true;
 			}
 			break;
 		case eRemoteEvent::SEC13:
 			if (g->protections.script_events.crash) {
-				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				format_string(player_name, "Crash - #" + std::to_string(args[0]), notify.crash.log, notify.crash.notify);
 
 				return true;
 			}
 			break;
 		case eRemoteEvent::Spaghettios:
 			if (g->protections.script_events.crash) {
-				format_string(player_name, "Crash - #" + args[0], notify.crash.log, notify.crash.notify);
+				format_string(player_name, "Crash - #" + std::to_string(args[0]), notify.crash.log, notify.crash.notify);
 
 				return true;
 			}
@@ -372,7 +378,6 @@ namespace big
 
 				return true;
 			}
-			break;
 		}
 
 
