@@ -55,6 +55,7 @@ namespace big
 		ImGui::BeginGroup();
 
 		ImGui::Checkbox("God Mode", &g->self.godmode);
+		ImGui::Checkbox("Bulletproof", &g->self.bulletproof);
 		ImGui::Checkbox("Off Radar", &g->self.off_radar);
 		ImGui::Checkbox("Free Cam", &g->self.free_cam);
 		ImGui::Checkbox("Disable Phone", &g->tunables.disable_phone);

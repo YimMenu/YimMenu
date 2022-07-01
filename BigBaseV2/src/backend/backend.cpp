@@ -31,6 +31,7 @@ namespace big
 			looped::self_clean_player();
 			looped::self_free_cam();
 			looped::self_godmode();
+			looped::self_bulletproof();
 			looped::self_invisibility();
 			looped::self_no_ragdoll();
 			looped::self_off_radar();
