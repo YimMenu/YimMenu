@@ -10,7 +10,9 @@ namespace big
 		if (plyr->is_host())
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
 
-		if (ImGui::Button(plyr->get_name(), { ImGui::GetWindowSize().x - 15.f, 0.f }))
+		std::string btnLbl = std::string(plyr->get_name()) + "##player" + std::to_string(plyr->id());
+
+		if (ImGui::Button(btnLbl.c_str(), {ImGui::GetWindowSize().x - 15.f, 0.f}))
 		{
 			g_player_service->set_selected(plyr);
 			g_gui_service->set_selected(tabs::PLAYER);
