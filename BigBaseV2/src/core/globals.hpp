@@ -134,6 +134,7 @@ namespace big
 			bool force_wanted_level = false;
 			bool free_cam = false;
 			bool godmode = false;
+			bool bulletproof = false;
 			bool invisibility = false;
 			bool local_visibility = true;
 			bool never_wanted = false;
