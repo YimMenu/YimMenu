@@ -1,6 +1,7 @@
 #include "fiber_pool.hpp"
 #include "natives.hpp"
-#include "services/vehicle_helper.h"
+#include "script.hpp"
+#include "services/vehicle_helper/vehicle_helper.hpp"
 #include "views/view.hpp"
 
 namespace big

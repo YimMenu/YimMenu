@@ -13,6 +13,16 @@ namespace big
 		VEHICLE_GUN
 	};
 
+	enum class ContextEntityType : uint8_t
+	{
+		NONE = 0,
+		PED = 1 << 0,
+		PLAYER = 1 << 1,
+		VEHICLE = 1 << 2,
+		OBJECT = 1 << 3,
+		SHARED = 1 << 4
+	};
+
 	enum class eEntityType
 	{
 		UNK_0,
@@ -94,8 +104,7 @@ namespace big
 		TRANSITION_STATE_WAITING_FOR_EXTERNAL_TERMINATION_CALL,
 		TRANSITION_STATE_TERMINATE_MAINTRANSITION,
 		TRANSITION_STATE_WAIT_FOR_DIRTY_LOAD_CONFIRM,
-		TRANSITION_STATE_DLC_INTRO_BINK,
-		TRANSITION_STATE_MAX = INT_MAX
+		TRANSITION_STATE_DLC_INTRO_BINK
 	};
 
 	enum eVehicleFlags
@@ -147,7 +156,20 @@ namespace big
 		Unknown3 = 1757755807,
 		Unknown4 = 436475575,
 		Unknown5 = 990606644,
-		Unknown6 = 69874647
+		Unknown6 = 69874647,
+
+		SEC3 = -2113023004,
+		SEC6 = 704979198,
+		SEC7 = -1715193475,
+		SEC8 = 1258808115,
+		SEC9 = 2112408256,
+		SEC10 = 998716537,
+		SEC11 = 163598572,
+		SEC12 = -1970125962,
+		SEC13 = -1056683619,
+		Spaghettios = -393294520,
+		ForceMission2 = -1525161016,
+		SHKick = -786546101
 	};
 
 	enum class eSessionType
@@ -169,5 +191,18 @@ namespace big
 		DISABLED,
 		KMH,
 		MPH
+	};
+
+	enum class eEntityProofs : uint32_t
+	{
+		BULLET     = 1 << 4,
+		FIRE       = 1 << 5,
+		COLLISION  = 1 << 6,
+		MELEE      = 1 << 7,
+		GOD        = 1 << 8,
+		EXPLOSION  = 1 << 11,
+		STEAM      = 1 << 15,
+		DROWN      = 1 << 16,
+		WATER      = 1 << 24,
 	};
 }

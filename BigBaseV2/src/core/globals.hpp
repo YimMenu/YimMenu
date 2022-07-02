@@ -3,6 +3,7 @@
 #include "enums.hpp"
 #include "file_manager.hpp"
 #include "imgui.h"
+#include <bitset>
 
 namespace big
 {
@@ -141,6 +142,16 @@ namespace big
 			bool off_radar = false;
 			bool super_run = false;
 			int wanted_level = 0;
+
+			bool proof_bullet = false;
+			bool proof_fire = false;
+			bool proof_collision = false;
+			bool proof_melee = false;
+			bool proof_explosion = false;
+			bool proof_steam = false;
+			bool proof_drown = false;
+			bool proof_water = false;
+			uint32_t proof_mask = 0;
 		};
 
 		struct session
@@ -266,6 +277,17 @@ namespace big
 		struct context_menu
 		{
 			bool enabled = true;
+
+			uint8_t allowed_entity_types =
+				static_cast<uint8_t>(ContextEntityType::PED) |
+				static_cast<uint8_t>(ContextEntityType::PLAYER) |
+				static_cast<uint8_t>(ContextEntityType::VEHICLE) |
+				static_cast<uint8_t>(ContextEntityType::OBJECT);
+
+			ImU32 selected_option_color = 4278255360;
+
+			bool bounding_box_enabled = true;
+			ImU32 bounding_box_color = 4278255360;
 		};
 
 		struct esp
@@ -529,6 +551,10 @@ namespace big
 			this->window.users = j["window"]["users"];
 
 			this->context_menu.enabled = j["context_menu"]["enabled"];
+			this->context_menu.allowed_entity_types = j["context_menu"]["allowed_entity_types"];
+			this->context_menu.selected_option_color = j["context_menu"]["selected_option_color"];
+			this->context_menu.bounding_box_enabled = j["context_menu"]["bounding_box_enabled"];
+			this->context_menu.bounding_box_color = j["context_menu"]["bounding_box_color"];
 
 			this->esp.enabled = j["esp"]["enabled"];
 			this->esp.hide_self = j["esp"]["hide_self"];
@@ -785,7 +811,11 @@ namespace big
 				},
 				{
 					"context_menu", {
-						{"enabled", this->context_menu.enabled}
+						{"enabled", this->context_menu.enabled},
+						{ "allowed_entity_types", this->context_menu.allowed_entity_types },
+						{ "selected_option_color", this->context_menu.selected_option_color },
+						{ "bounding_box_enabled", this->context_menu.bounding_box_enabled },
+						{ "bounding_box_color", this->context_menu.bounding_box_color },
 					}
 				},
 				{
