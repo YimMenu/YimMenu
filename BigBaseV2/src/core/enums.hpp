@@ -157,7 +157,20 @@ namespace big
 		Unknown3 = 1757755807,
 		Unknown4 = 436475575,
 		Unknown5 = 990606644,
-		Unknown6 = 69874647
+		Unknown6 = 69874647,
+
+		SEC3 = -2113023004,
+		SEC6 = 704979198,
+		SEC7 = -1715193475,
+		SEC8 = 1258808115,
+		SEC9 = 2112408256,
+		SEC10 = 998716537,
+		SEC11 = 163598572,
+		SEC12 = -1970125962,
+		SEC13 = -1056683619,
+		Spaghettios = -393294520,
+		ForceMission2 = -1525161016,
+		SHKick = -786546101
 	};
 
 	enum class eSessionType
