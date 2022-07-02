@@ -64,7 +64,7 @@ namespace big::toxic
 	{
 		const Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 
-		constexpr auto max_attempts = 20;
+		constexpr auto max_attempts = 2;
 		for (size_t attempts = 0; attempts < max_attempts && !ENTITY::IS_ENTITY_DEAD(target, false); attempts++)
 		{
 			const Vector3 destination = PED::GET_PED_BONE_COORDS(target, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 0.0f);
