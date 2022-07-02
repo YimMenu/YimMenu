@@ -1,9 +1,5 @@
 #pragma once
-
-#include "script.hpp"
 #include "script_global.hpp"
-
-#include "gta/PickupRewards.h"
 #include "util/system.hpp"
 
 namespace big::globals
@@ -23,49 +19,5 @@ namespace big::globals
 		};
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
-	}
-
-	inline void give_health(const Player target)
-	{
-		g_pointers->m_give_pickup_rewards(1 << target, gta::Rewards::misc().at("HEALTH"));
-
-		script::get_current()->yield();
-	}
-
-	inline void give_armour(const Player target)
-	{
-		g_pointers->m_give_pickup_rewards(1 << target, gta::Rewards::misc().at("ARMOUR"));
-
-		script::get_current()->yield();
-	}
-
-	inline void give_ammo(const Player target)
-	{
-		size_t counter = 0;
-
-		for (const auto &i : gta::Rewards::ammo())
-		{
-			g_pointers->m_give_pickup_rewards(1 << target, i.second);
-
-			if (++counter % 3 == 0)
-			{
-				script::get_current()->yield();
-			}
-		}
-	}
-
-	inline void give_weapons(const Player target)
-	{
-		size_t counter = 0;
-
-		for (const auto &i : gta::Rewards::weapons())
-		{
-			g_pointers->m_give_pickup_rewards(1 << target, i.second);
-
-			if (++counter % 3 == 0)
-			{
-				script::get_current()->yield();
-			}
-		}
 	}
 }
