@@ -10,12 +10,14 @@ namespace big
 		if (plyr->is_host())
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
 
-		if (ImGui::Button(plyr->get_name(), { ImGui::GetWindowSize().x - 15.f, 0.f }))
+		ImGui::PushID(plyr->id());
+		if (ImGui::Button(plyr->get_name(), {ImGui::GetWindowSize().x - 15.f, 0.f}))
 		{
 			g_player_service->set_selected(plyr);
 			g_gui_service->set_selected(tabs::PLAYER);
 			g->window.switched_view = true;
 		}
+		ImGui::PopID();
 
 		if (plyr->is_host())
 			ImGui::PopStyleColor();
