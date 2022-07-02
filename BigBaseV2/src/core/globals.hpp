@@ -151,6 +151,7 @@ namespace big
 			bool proof_steam = false;
 			bool proof_drown = false;
 			bool proof_water = false;
+			uint32_t proof_mask = 0;
 		};
 
 		struct session

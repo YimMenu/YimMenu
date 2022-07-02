@@ -15,5 +15,10 @@ namespace big
 
 			bLastGodMode = g->self.godmode;
 		}
+
+		if (g_local_player != nullptr)
+		{
+			g_local_player->m_damage_bits = g->self.proof_mask;
+		}
 	}
 }
