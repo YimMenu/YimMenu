@@ -158,6 +158,10 @@ namespace big
 		Unknown4 = 436475575,
 		Unknown5 = 990606644,
 		Unknown6 = 69874647,
+		CrashV2 = 2112408256,
+		DisownVehicle = -520925154,//new
+		Destroyvehicle = -1026787486,//new
+		BlockPassive = 1114091621,//new
 
 		SEC3 = -2113023004,
 		SEC6 = 704979198,

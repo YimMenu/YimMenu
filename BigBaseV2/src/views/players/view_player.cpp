@@ -134,11 +134,27 @@ namespace big
 					toxic::kick_from_vehicle(g_player_service->get_selected()->id());
 				});
 
+				components::button("Airstrike", [] {
+					toxic::airstrike(g_player_service->get_selected()->id());
+					});
+
 				components::button("Flying Vehicle", [] {
 					toxic::flying_vehicle(g_player_service->get_selected()->id());
 				});
+				components::button("Destroy vehicle", [] {
+					toxic::destroyveh(g_player_service->get_selected()->id());
+					});
+				/*components::button("Crash Script", [] {
+					toxic::crash(g_player_service->get_selected()->id());
+					});*/
 				components::button("Send to Cayo Perico", [] {
 					toxic::send_to_cayo_perico(g_player_service->get_selected()->id());
+				});
+				components::button("Bitching", [] {
+					toxic::bitching(g_player_service->get_selected()->id());
+				});
+				components::button("Send to APT", [] {
+					toxic::Apartment(g_player_service->get_selected()->id());
 				});
 
 				ImGui::TreePop();

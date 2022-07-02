@@ -57,6 +57,10 @@ namespace big
 				pair send_to_island{};
 				pair sound_spam{};
 				pair spectate{};
+				pair crash2{};
+				pair disownvehicle{};
+				pair destroyvehicle{};
+				pair blockpassive{};
 				pair transaction_error{};
 				pair tse_freeze{};
 				pair vehicle_kick{};
@@ -115,6 +119,10 @@ namespace big
 				bool spectate = true;
 				bool transaction_error = true;
 				bool vehicle_kick = true;
+				bool crash2 = true;
+				bool disownvehicle = true;
+				bool destroyvehicle = true;
+				bool blockpassive = true;
 			};
 
 			script_events script_events{};
@@ -434,6 +442,14 @@ namespace big
 				script_handler.tse_freeze.notify = script_handler_j["tse_freeze"]["notify"];
 				script_handler.vehicle_kick.log = script_handler_j["vehicle_kick"]["log"];
 				script_handler.vehicle_kick.notify = script_handler_j["vehicle_kick"]["notify"];
+				script_handler.crash2.log = script_handler_j["crash2"]["log"];
+				script_handler.crash2.notify = script_handler_j["crash2"]["notify"];
+				script_handler.disownvehicle.log = script_handler_j["disownvehicle"]["log"];
+				script_handler.disownvehicle.notify = script_handler_j["disownvehicle"]["notify"];
+				script_handler.destroyvehicle.log = script_handler_j["destroyvehicle"]["log"];
+				script_handler.destroyvehicle.notify = script_handler_j["destroyvehicle"]["notify"];
+				script_handler.blockpassive.log = script_handler_j["blockpassive"]["log"];
+				script_handler.blockpassive.notify = script_handler_j["blockpassive"]["notify"];
 			}
 
 			g->notifications.send_net_info_to_lobby.log = j["notifications"]["send_net_info_to_lobby"]["log"];
@@ -467,6 +483,10 @@ namespace big
 				script_handler.spectate = script_handler_j["spectate"];
 				script_handler.transaction_error = script_handler_j["transaction_error"];
 				script_handler.vehicle_kick = script_handler_j["vehicle_kick"];
+				script_handler.crash2 = script_handler_j["crash2"];
+				script_handler.disownvehicle = script_handler_j["disownvehicle"];
+				script_handler.destroyvehicle = script_handler_j["destroyvehicle"];
+				script_handler.blockpassive = script_handler_j["blockpassive"];
 			}
 
 			this->rgb.fade = j["rgb"]["fade"];
@@ -654,7 +674,11 @@ namespace big
 								{ "spectate", return_notify_pair(script_handler_notifications.spectate) },
 								{ "transaction_error", return_notify_pair(script_handler_notifications.transaction_error) },
 								{ "tse_freeze", return_notify_pair(script_handler_notifications.tse_freeze) },
-								{ "vehicle_kick", return_notify_pair(script_handler_notifications.vehicle_kick) }
+								{ "vehicle_kick", return_notify_pair(script_handler_notifications.vehicle_kick) },
+								{ "crash2", return_notify_pair(script_handler_notifications.crash2) },
+								{ "disownvehicle", return_notify_pair(script_handler_notifications.disownvehicle) },
+								{ "destroyvehicle", return_notify_pair(script_handler_notifications.destroyvehicle) },
+								{ "blockpassive", return_notify_pair(script_handler_notifications.blockpassive) }
 							}
 						},
 						{ "send_net_info_to_lobby", return_notify_pair(g->notifications.send_net_info_to_lobby) },
@@ -687,7 +711,11 @@ namespace big
 								{ "sound_spam", script_handler_protections.sound_spam },
 								{ "spectate", script_handler_protections.spectate },
 								{ "transaction_error", script_handler_protections.transaction_error },
-								{ "vehicle_kick", script_handler_protections.vehicle_kick }
+								{ "vehicle_kick", script_handler_protections.vehicle_kick },
+								{ "crash2", script_handler_protections.crash2 },
+								{ "disownvehicle", script_handler_protections.disownvehicle },
+								{ "destroyvehicle", script_handler_protections.destroyvehicle },
+								{ "blockpassive", script_handler_protections.blockpassive }
 							}
 						}
 					}

@@ -104,6 +104,10 @@ namespace big
 		draw_pair_option("Transaction Error", script_event_handler.transaction_error);
 		draw_pair_option("TSE Crash", script_event_handler.crash);
 		draw_pair_option("TSE Freeze", script_event_handler.tse_freeze);
+		draw_pair_option("CrashV2", script_event_handler.crash2);
+		draw_pair_option("Disown Personal Vehicle", script_event_handler.disownvehicle);
+		draw_pair_option("Destroy Personal Vehicle", script_event_handler.destroyvehicle);
+		draw_pair_option("Block Passive", script_event_handler.blockpassive);
 		draw_pair_option("Vehicle Kick", script_event_handler.vehicle_kick);
 		draw_pair_option("Wanted Level", script_event_handler.clear_wanted_level);
 		ImGui::EndGroup();
