@@ -193,4 +193,17 @@ namespace big
 		KMH,
 		MPH
 	};
+
+	enum class eEntityProofs : uint32_t
+	{
+		BULLET     = 1 << 4,
+		FIRE       = 1 << 5,
+		COLLISION  = 1 << 6,
+		MELEE      = 1 << 7,
+		GOD        = 1 << 8,
+		EXPLOSION  = 1 << 11,
+		STEAM      = 1 << 15,
+		DROWN      = 1 << 16,
+		WATER      = 1 << 24,
+	};
 }
