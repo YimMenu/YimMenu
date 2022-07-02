@@ -78,32 +78,43 @@ namespace big
 	};
 
 	auto transition_state = script_global(1574988);
-	eTransitionState last_state = eTransitionState::TRANSITION_STATE_MAX;
+	eTransitionState last_state = eTransitionState::TRANSITION_STATE_EMPTY;
 	void looped::hud_transition_state()
 	{
 		const auto state = *transition_state.as<eTransitionState*>();
-		if (last_state == eTransitionState::TRANSITION_STATE_MAX)
-			last_state = state;
 
 		// When freemode script loaded remove loading screen.
-		if (state == eTransitionState::TRANSITION_STATE_WAIT_JOIN_FM_SESSION && DLC::GET_IS_LOADING_SCREEN_ACTIVE())
+		if (state == eTransitionState::TRANSITION_STATE_WAIT_JOIN_FM_SESSION
+			&& DLC::GET_IS_LOADING_SCREEN_ACTIVE())
+		{
 			SCRIPT::SHUTDOWN_LOADING_SCREEN();
+		}
 
-		if (last_state == state || state == eTransitionState::TRANSITION_STATE_EMPTY || state > eTransitionState::TRANSITION_STATE_DLC_INTRO_BINK)
+		if (last_state == state
+			|| state == eTransitionState::TRANSITION_STATE_EMPTY
+			|| state > eTransitionState::TRANSITION_STATE_DLC_INTRO_BINK)
+		{
 			return;
+		}
 
 		if (HUD::BUSYSPINNER_IS_ON())
+		{
 			HUD::BUSYSPINNER_OFF();
+		}
 
 		// sometimes when going into a single player mission or transition this one remains on screen permanently
 		if (state == eTransitionState::TRANSITION_STATE_TERMINATE_MAINTRANSITION)
+		{
 			return;
+		}
 
-		HUD::BEGIN_TEXT_COMMAND_BUSYSPINNER_ON("STRING");
-		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(
-			fmt::format("{} | {}", transition_states[(int)state], state).c_str()
-		);
-		HUD::END_TEXT_COMMAND_BUSYSPINNER_ON(5);
+		if ((int)state > 0 && (int)std::size(transition_states))
+		{
+			HUD::BEGIN_TEXT_COMMAND_BUSYSPINNER_ON("STRING");
+			auto const spinner_text = fmt::format("{} | {}", transition_states[(int)state], state);
+			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(spinner_text.c_str());
+			HUD::END_TEXT_COMMAND_BUSYSPINNER_ON(5);
+		}
 
 		last_state = state;
 	}
