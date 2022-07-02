@@ -2,8 +2,6 @@
 
 namespace big
 {
-	class player;
-
 	class esp
 	{
 	public:
