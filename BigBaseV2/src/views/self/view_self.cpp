@@ -55,7 +55,6 @@ namespace big
 		ImGui::BeginGroup();
 
 		ImGui::Checkbox("God Mode", &g->self.godmode);
-		ImGui::Checkbox("Bulletproof", &g->self.bulletproof);
 		ImGui::Checkbox("Off Radar", &g->self.off_radar);
 		ImGui::Checkbox("Free Cam", &g->self.free_cam);
 		ImGui::Checkbox("Disable Phone", &g->tunables.disable_phone);
@@ -97,8 +96,107 @@ namespace big
 		{
 			ImGui::Checkbox("Force Wanted Level", &g->self.force_wanted_level);
 			ImGui::Text("Wanted Level");
-			if (ImGui::SliderInt("###wanted_level", &g->self.wanted_level, 0, 5) && !g->self.force_wanted_level)
+			if (
+				ImGui::SliderInt("###wanted_level", &g->self.wanted_level, 0, 5) &&
+				!g->self.force_wanted_level &&
+				g_local_player != nullptr
+			) {
 				g_local_player->m_player_info->m_wanted_level = g->self.wanted_level;
+			}
+		}
+
+		ImGui::Separator();
+
+		components::small_text("Proofs");
+
+		ImGui::BeginGroup();
+
+		ImGui::Checkbox("Bullet", &g->self.proof_bullet);
+		ImGui::Checkbox("Fire", &g->self.proof_fire);
+
+		ImGui::EndGroup();
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+
+		ImGui::Checkbox("Collision", &g->self.proof_collision);
+		ImGui::Checkbox("Melee", &g->self.proof_melee);
+
+		ImGui::EndGroup();
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+
+		ImGui::Checkbox("Explosion", &g->self.proof_explosion);
+		ImGui::Checkbox("Steam", &g->self.proof_steam);
+
+		ImGui::EndGroup();
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+
+		ImGui::Checkbox("Drown", &g->self.proof_drown);
+		ImGui::Checkbox("Water", &g->self.proof_water);
+
+		ImGui::EndGroup();
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+
+		components::button("Check all", [] {
+			g->self.proof_bullet = true;
+			g->self.proof_fire = true;
+			g->self.proof_collision = true;
+			g->self.proof_melee = true;
+			g->self.proof_explosion = true;
+			g->self.proof_steam = true;
+			g->self.proof_drown = true;
+			g->self.proof_water = true;
+		});
+		components::button("Uncheck all", [] {
+			g->self.proof_bullet = false;
+			g->self.proof_fire = false;
+			g->self.proof_collision = false;
+			g->self.proof_melee = false;
+			g->self.proof_explosion = false;
+			g->self.proof_steam = false;
+			g->self.proof_drown = false;
+			g->self.proof_water = false;
+		});
+
+		ImGui::EndGroup();
+
+		uint32_t proof_mask = 0;
+		if (g->self.proof_bullet)
+		{
+			proof_mask |= static_cast<int>(eEntityProofs::BULLET);
+		}
+		if (g->self.proof_fire)
+		{
+			proof_mask |= static_cast<int>(eEntityProofs::FIRE);
+		}
+		if (g->self.proof_collision)
+		{
+			proof_mask |= static_cast<int>(eEntityProofs::COLLISION);
+		}
+		if (g->self.proof_melee)
+		{
+			proof_mask |= static_cast<int>(eEntityProofs::MELEE);
+		}
+		if (g->self.proof_explosion)
+		{
+			proof_mask |= static_cast<int>(eEntityProofs::EXPLOSION);
+		}
+		if (g->self.proof_steam)
+		{
+			proof_mask |= static_cast<int>(eEntityProofs::STEAM);
+		}
+		if (g->self.proof_drown)
+		{
+			proof_mask |= static_cast<int>(eEntityProofs::DROWN);
+		}
+		if (g->self.proof_water)
+		{
+			proof_mask |= static_cast<int>(eEntityProofs::WATER);
+		}
+		if (g_local_player != nullptr) {
+			g_local_player->m_damage_bits = proof_mask;
 		}
 	}
 }

@@ -25,7 +25,6 @@ namespace big
 		static void self_free_cam_disable_control_action();
 		static void self_free_cam();
 		static void self_godmode();
-		static void self_bulletproof();
 		static void self_invisibility();
 		static void self_noclip_disable_control_action();
 		static void self_noclip();

@@ -134,7 +134,6 @@ namespace big
 			bool force_wanted_level = false;
 			bool free_cam = false;
 			bool godmode = false;
-			bool bulletproof = false;
 			bool invisibility = false;
 			bool local_visibility = true;
 			bool never_wanted = false;
@@ -143,6 +142,15 @@ namespace big
 			bool off_radar = false;
 			bool super_run = false;
 			int wanted_level = 0;
+
+			bool proof_bullet = false;
+			bool proof_fire = false;
+			bool proof_collision = false;
+			bool proof_melee = false;
+			bool proof_explosion = false;
+			bool proof_steam = false;
+			bool proof_drown = false;
+			bool proof_water = false;
 		};
 
 		struct session
