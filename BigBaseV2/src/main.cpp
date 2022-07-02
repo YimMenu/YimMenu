@@ -10,17 +10,17 @@
 #include "script_mgr.hpp"
 #include "thread_pool.hpp"
 
+#include "backend/backend.hpp"
 #include "native_hooks/native_hooks.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/globals/globals_service.hpp"
 #include "services/gui/gui_service.hpp"
 #include "services/mobile/mobile_service.hpp"
+#include "services/pickups/pickup_service.hpp"
 #include "services/players/player_service.hpp"
 #include "services/notifications/notification_service.hpp"
 #include "services/vehicle_preview/vehicle_preview_service.hpp"
 #include "services/vehicle/vehicle_service.hpp"
-
-#include "backend/backend.hpp"
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -75,6 +75,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					auto globals_service_instace = std::make_unique<globals_service>();
 					auto mobile_service_instance = std::make_unique<mobile_service>();
 					auto notification_service_instance = std::make_unique<notification_service>();
+					auto pickup_service_instance = std::make_unique<pickup_service>();
 					auto player_service_instance = std::make_unique<player_service>();
 					auto vehicle_preview_service_instance = std::make_unique<vehicle_preview_service>();
 					auto vehicle_service_instance = std::make_unique<vehicle_service>();
@@ -128,6 +129,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					LOG(INFO) << "Mobile Service reset.";
 					player_service_instance.reset();
 					LOG(INFO) << "Player Service reset.";
+					pickup_service_instance.reset();
+					LOG(INFO) << "Pickup Service reset.";
 					globals_service_instace.reset();
 					LOG(INFO) << "Globals Service reset.";
 					context_menu_service_instance.reset();
