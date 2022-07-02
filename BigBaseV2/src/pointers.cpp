@@ -231,9 +231,9 @@ namespace big
 		});
 
 		// Give Pickup Reward
-		main_batch.add("GPR", "48 89 5C 24 ? 57 48 83 EC 20 8B F9 48 8B 0D ? ? ? ? 8B DA B2 01 E8 ? ? ? ? 48 8B 0D ? ? ? ? E8 ? ? ? ? 48 8B C8 33 C0 48 85 C9 74 0A 44 8B C3 8B D7 E8 ? ? ? ? 48 8B 0D ? ? ? ? 48 8B D0 48 8B 5C 24 ? 48 83 C4 20 5F E9 ? ? ? ?", [this](memory::handle ptr)
+		main_batch.add("GPR", "48 8B C8 33 C0 48 85 C9 74 0A 44 8B C3 8B D7 E8", [this](memory::handle ptr)
 		{
-			m_give_pickup_rewards = ptr.as<decltype(m_give_pickup_rewards)>();
+			m_give_pickup_rewards = ptr.sub(0x28).as<decltype(m_give_pickup_rewards)>();
 		});
 
 		// net array handler - version mismatch patch
