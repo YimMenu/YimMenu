@@ -204,6 +204,8 @@ namespace big
 			}
 			if (g->self.proof_water) {
 				g->self.proof_mask |= static_cast<int>(eEntityProofs::WATER);
+                                g_local_player->m_vehicle->m_damage_bits |= static_cast<int>(eEntityProofs::WATERPROOF);
+
 			}
 		}
 	}
