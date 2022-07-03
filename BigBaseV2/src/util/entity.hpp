@@ -25,7 +25,7 @@ namespace big::entity
 			{
 				STREAMING::REQUEST_MODEL(hash);
 				for (int i = 0; i < 32; i++) {
-					i = self::ped;
+					i = self::id;
 
 					if (STREAMING::HAS_MODEL_LOADED(hash))
 					{
