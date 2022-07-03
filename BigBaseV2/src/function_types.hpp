@@ -23,6 +23,8 @@ namespace big::functions
 
 	using get_gameplay_cam_coords = Vector3();
 
+	using give_pickup_rewards = void(int players, uint32_t hash);
+
 	// Received Event Signatures START
 	using read_bitbuf_array = bool(rage::datBitBuffer* buffer, PVOID read, int bits, int);
 	using read_bitbuf_dword = bool(rage::datBitBuffer* buffer, PVOID read, int bits);

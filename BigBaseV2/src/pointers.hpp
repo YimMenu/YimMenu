@@ -69,6 +69,8 @@ namespace big
 
 		functions::get_gameplay_cam_coords* m_get_gamplay_cam_coords;
 
+		functions::give_pickup_rewards* m_give_pickup_rewards{};
+
 		functions::increment_stat_event* m_increment_stat_event{};
 		
 		functions::trigger_script_event* m_trigger_script_event{};
