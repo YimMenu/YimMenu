@@ -313,8 +313,11 @@ namespace big
 
 			if (g_context_menu_service->enabled)
 			{
-				HUD::SHOW_HUD_COMPONENT_THIS_FRAME(14 /*RETICLE*/);
-
+				if (g->context_menu.crosshair)
+				{
+					HUD::SHOW_HUD_COMPONENT_THIS_FRAME(14 /*RETICLE*/);
+				}
+				
 				g_context_menu_service->get_entity_closest_to_screen_center();
 
 				const auto cm = g_context_menu_service->get_context_menu();
