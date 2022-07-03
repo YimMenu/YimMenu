@@ -6,6 +6,7 @@
 #include "util/misc.hpp"
 #include "util/ped.hpp"
 #include "util/teleport.hpp"
+#include "util/entity.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -184,7 +185,14 @@ namespace big
 				components::button("Send to APT", [] {
 					toxic::Apartment(g_player_service->get_selected()->id());
 				});
-
+				
+				components::button("Kick to SP", [] {
+					toxic::KICK_TO_SP(g_player_service->get_selected()->id());
+				});
+				
+				components::button("Attach Toilet", [] {
+					entity::Attach_Object_To_Ped(g_player_service->get_selected()->id(), ("prop_air_bigradar"));
+				});
 				ImGui::TreePop();
 			}
 		}

@@ -57,7 +57,6 @@ namespace big::toxic
 		{
 			const Vector3 destination = PED::GET_PED_BONE_COORDS(target, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 0.0f);
 			const Vector3 origin = PED::GET_PED_BONE_COORDS(target, (int)PedBones::SKEL_R_Hand, 0.0f, 0.0f, 0.2f);
-
 			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 1, 0, RAGE_JOAAT("WEAPON_STUNGUN"), self::ped, false, true, 1);
 		}
 	}
@@ -72,7 +71,7 @@ namespace big::toxic
 			const Vector3 destination = PED::GET_PED_BONE_COORDS(target, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 0.0f);
 			const Vector3 origin = PED::GET_PED_BONE_COORDS(target, (int)PedBones::SKEL_R_Hand, 0.0f, 0.0f, 0.1f);
 
-			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 0, 0, RAGE_JOAAT("WEAPON_EMPLAUNCHER"), self::id, false, true, 0);
+			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 2, 0, RAGE_JOAAT("WEAPON_EMPLAUNCHER"), self::id, false, true, 0);
 		}
 	}
 
@@ -147,8 +146,8 @@ namespace big::toxic
 		else {
 			std::int64_t args[4] = { static_cast<int64_t>(eRemoteEvent::Destroyvehicle), pid, pid, pid };
 			g_pointers->m_trigger_script_event(1, args, 4, 1 << pid);
-			std::int64_t args2[10] = { static_cast<int64_t>(eRemoteEvent::VehicleKick), pid, pid, 0, 0, 0, 0, 1, pid, std::min(2147483647, MISC::GET_FRAME_COUNT()) };
-			g_pointers->m_trigger_script_event(1, args2, 10, 1 << pid);
+			//std::int64_t args2[10] = { static_cast<int64_t>(eRemoteEvent::VehicleKick), pid, pid, 0, 0, 0, 0, 1, pid, std::min(2147483647, MISC::GET_FRAME_COUNT()) };
+			//g_pointers->m_trigger_script_event(1, args2, 10, 1 << pid);
 		}
 	}
 
@@ -196,4 +195,11 @@ namespace big::toxic
 		std::int64_t args1[9] = { static_cast<int64_t>(eRemoteEvent::Teleport), player, player, 1, 0, 69, 1, 1, 1 };
 		g_pointers->m_trigger_script_event(1, args1, 9, 1 << player);
 	}
+
+	inline void KICK_TO_SP(Player player)
+	{
+		std::int64_t argarr[4] = { static_cast<int64_t>(eRemoteEvent::SEC10), player, 0, 0 };
+		g_pointers->m_trigger_script_event(1, argarr, sizeof(argarr)/ sizeof(argarr[0]), 1 << player);
+	}
+
 }

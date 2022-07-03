@@ -115,7 +115,12 @@ namespace big
 					}},
 				{"CAGE", [this] {
 					rage::fvector3 pos = m_pointer->m_navigation->m_position;
-					entity::cage_ped(m_handle);
+					entity::cage_ped(m_handle);	
+				}},
+
+				{"Attach", [this] {
+					rage::fvector3 pos = m_pointer->m_navigation->m_position;
+					entity::Attach_Object_To_Ped(m_handle, ("prop_air_bigradar"));
 				}},
 			}
 		};

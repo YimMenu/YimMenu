@@ -13,6 +13,38 @@ namespace big::entity
 		OBJECT::CREATE_OBJECT(hash, location.x, location.y, location.z - 1.f, true, false, false);
 	}
 
+	inline void Attach_Object_To_Ped(Ped ped, char* ObjectName)
+	{
+		int attachobj[100];
+		int nuattach = 1;
+		Vector3 pos = ENTITY::GET_ENTITY_COORDS(ped, true);
+		int hash = MISC::GET_HASH_KEY(ObjectName);
+		if (STREAMING::IS_MODEL_IN_CDIMAGE(hash))
+		{
+			if (STREAMING::IS_MODEL_VALID(hash))
+			{
+				STREAMING::REQUEST_MODEL(hash);
+				for (int i = 0; i < 32; i++) {
+					i = self::ped;
+
+					if (STREAMING::HAS_MODEL_LOADED(hash))
+					{
+						attachobj[nuattach] = OBJECT::CREATE_OBJECT(hash, pos.x, pos.y, pos.z, true, false, false);
+
+						ENTITY::ATTACH_ENTITY_TO_ENTITY(attachobj[nuattach], ped, 31086, 0, 0, 0, 0, 0, 0, true, false, true, false, 2, true);
+						nuattach++;
+						//if (nuattach >= 101) { nuattach = 1; }
+
+						/*if (ENTITY::DOES_ENTITY_EXIST(attachobj[nuattach]))
+						{
+
+						}*/
+					}
+				}
+			}
+		}
+	}
+
 	inline void clean_ped(Ped ped)
 	{
 		Ped player_ped = self::ped;
