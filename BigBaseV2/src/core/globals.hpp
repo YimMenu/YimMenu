@@ -293,6 +293,7 @@ namespace big
 		struct context_menu
 		{
 			bool enabled = true;
+			bool crosshair = false;
 
 			uint8_t allowed_entity_types =
 				static_cast<uint8_t>(ContextEntityType::PED) |
@@ -585,6 +586,7 @@ namespace big
 			this->window.users = j["window"]["users"];
 
 			this->context_menu.enabled = j["context_menu"]["enabled"];
+			this->context_menu.crosshair = j["context_menu"]["crosshair"];
 			this->context_menu.allowed_entity_types = j["context_menu"]["allowed_entity_types"];
 			this->context_menu.selected_option_color = j["context_menu"]["selected_option_color"];
 			this->context_menu.bounding_box_enabled = j["context_menu"]["bounding_box_enabled"];
@@ -859,7 +861,8 @@ namespace big
 				},
 				{
 					"context_menu", {
-						{"enabled", this->context_menu.enabled},
+						{ "enabled", this->context_menu.enabled },
+						{ "crosshair", this->context_menu.crosshair },
 						{ "allowed_entity_types", this->context_menu.allowed_entity_types },
 						{ "selected_option_color", this->context_menu.selected_option_color },
 						{ "bounding_box_enabled", this->context_menu.bounding_box_enabled },

@@ -5,10 +5,12 @@ namespace big
 {
 	void view::context_menu_settings()
 	{
-		ImGui::Checkbox("Context Menu Enabled", &g->context_menu.enabled);
+		ImGui::Checkbox("Telekinesis", &g->context_menu.enabled);
 
 		if (g->context_menu.enabled)
 		{
+			ImGui::SameLine();
+			ImGui::Checkbox("Force Crosshair", &g->context_menu.crosshair);
 			ImGui::Text("Allowed Entity Types:");
 			ImGui::CheckboxFlags("Object", reinterpret_cast<int*>(&g->context_menu.allowed_entity_types), static_cast<int>(ContextEntityType::OBJECT));
 			ImGui::SameLine();
