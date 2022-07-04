@@ -2,24 +2,55 @@
 #include "services/gui/gui_service.hpp"
 #include "services/players/player_service.hpp"
 #include "views/view.hpp"
+#include "fonts/fonts.hpp"
+#include <renderer.hpp>
+#include <natives.hpp>
 
 namespace big
 {
 	static void player_button(const player_ptr& plyr)
 	{
-		if (plyr->is_host())
+		bool playerSelected = plyr == g_player_service->get_selected();
+
+		bool isHost = false;
+		bool isInVehicle = false;
+
+		if (plyr->is_valid()) {
+			isHost = plyr->is_host();
+			isInVehicle = plyr->get_current_vehicle() != nullptr;
+
+			/*Entity plyrPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
+			if (ENTITY::DOES_ENTITY_EXIST(plyrPed)) {
+				if (PED::IS_PED_IN_ANY_VEHICLE(plyrPed, true)) {
+					isInVehicle = true;
+				}
+			}*/
+		}
+
+		std::string playerIcons = std::string(isHost ? FONT_ICON_HOST : FONT_ICON_CLIENT) +
+			std::string(isInVehicle ? FONT_ICON_VEHICLE : FONT_ICON_WALK);
+
+		ImGui::PushFont(g_renderer->m_font_icons);
+		ImGui::Text(playerIcons.c_str());
+		ImGui::PopFont();
+		ImGui::SameLine();
+
+
+		if (playerSelected)
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
 
+		ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, { 0.0, 0.5 });
 		ImGui::PushID(plyr->id());
-		if (ImGui::Button(plyr->get_name(), {ImGui::GetWindowSize().x - 15.f, 0.f}))
+		if (ImGui::Button(plyr->get_name(), { ImGui::GetWindowSize().x - 70.f, 0.f }))
 		{
 			g_player_service->set_selected(plyr);
 			g_gui_service->set_selected(tabs::PLAYER);
 			g->window.switched_view = true;
 		}
 		ImGui::PopID();
+		ImGui::PopStyleVar();
 
-		if (plyr->is_host())
+		if (playerSelected)
 			ImGui::PopStyleColor();
 	}
 
@@ -27,7 +58,7 @@ namespace big
 	{
 		float window_pos = 110.f + g_gui_service->nav_ctr * ImGui::CalcTextSize("W").y + g_gui_service->nav_ctr * ImGui::GetStyle().ItemSpacing.y + g_gui_service->nav_ctr * ImGui::GetStyle().ItemInnerSpacing.y + ImGui::GetStyle().WindowPadding.y;
 
-		ImGui::SetNextWindowSize({ 250.f, 0.f });
+		ImGui::SetNextWindowSize({ 300.f, 0.f });
 		ImGui::SetNextWindowPos({ 10.f, window_pos });
 		if (ImGui::Begin("playerlist", nullptr, window_flags))
 		{
@@ -39,7 +70,7 @@ namespace big
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, { 0.f, 0.f, 0.f, 0.f });
 			ImGui::PushStyleColor(ImGuiCol_ScrollbarBg, { 0.f, 0.f, 0.f, 0.f });
 
-			if (ImGui::BeginListBox("##players", { 250.f - ImGui::GetStyle().WindowPadding.x * 2 , window_height }))
+			if (ImGui::BeginListBox("##players", { 300.f - ImGui::GetStyle().WindowPadding.x * 2 , window_height }))
 			{
 				player_button(g_player_service->get_self());
 
