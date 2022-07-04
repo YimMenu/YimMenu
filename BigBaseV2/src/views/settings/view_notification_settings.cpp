@@ -82,6 +82,7 @@ namespace big
 		draw_pair_option("Fake Deposit", script_event_handler.fake_deposit);
 		draw_pair_option("Force Mission", script_event_handler.force_mission);
 		draw_pair_option("Force Teleport", script_event_handler.force_teleport);
+		draw_pair_option("Block Passive", script_event_handler.blockpassive);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
@@ -94,6 +95,8 @@ namespace big
 		draw_pair_option("Rotate Cam", script_event_handler.rotate_cam);
 		draw_pair_option("Send to Cutscene", script_event_handler.send_to_cutscene);
 		draw_pair_option("Send to Island", script_event_handler.send_to_island);
+		draw_pair_option("Vehicle Kick", script_event_handler.vehicle_kick);
+		draw_pair_option("Wanted Level", script_event_handler.clear_wanted_level);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
@@ -107,9 +110,6 @@ namespace big
 		draw_pair_option("CrashV2", script_event_handler.crash2);
 		draw_pair_option("Disown Personal Vehicle", script_event_handler.disownvehicle);
 		draw_pair_option("Destroy Personal Vehicle", script_event_handler.destroyvehicle);
-		draw_pair_option("Block Passive", script_event_handler.blockpassive);
-		draw_pair_option("Vehicle Kick", script_event_handler.vehicle_kick);
-		draw_pair_option("Wanted Level", script_event_handler.clear_wanted_level);
 		ImGui::EndGroup();
 
 		components::small_text("Other");
