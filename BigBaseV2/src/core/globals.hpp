@@ -87,7 +87,6 @@ namespace big
 
 		struct player {
 			int character_slot = 1;
-			bool player_never_wanted = false;
 			int set_level = 130;
 			bool spectating = false;
 		};

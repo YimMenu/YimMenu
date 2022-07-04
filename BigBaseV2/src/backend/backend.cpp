@@ -134,7 +134,11 @@ namespace big
 
 		while (g_running)
 		{
-			looped::player_never_wanted();
+			g_player_service->iterate([](const player_entry &entry)
+			{
+				looped::player_never_wanted(entry.second);
+			});
+
 			looped::player_spectate();
 
 			script::get_current()->yield();

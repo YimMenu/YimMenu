@@ -6,6 +6,7 @@ namespace big
 	class player;
 
 	using player_ptr = std::shared_ptr<player>;
+	using player_entry = std::pair<std::string, player_ptr>;
 	using players = std::map<std::string, player_ptr>;
 
 	class player_service final
@@ -42,6 +43,9 @@ namespace big
 
 		players& players()
 		{ return m_players; }
+
+		void iterate(const std::function< void(const player_entry &entry) > func)
+		{ for (const auto &iter : m_players) func(iter); }
 
 		void set_selected(player_ptr plyr);
 
