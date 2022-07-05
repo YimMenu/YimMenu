@@ -46,7 +46,7 @@ namespace big
 		ImGuiWindow* window = ImGui::GetCurrentWindow();
 		ImGui::PushFont(g_renderer->m_font_icons);
 		ImVec2 iconsSize = ImGui::CalcTextSize(playerIconsCStr, playerIconsCStr + playerIcons.size());
-		ImVec2 iconsPos(window->DC.CursorPos.x + 300.0f - 32.0f - iconsSize.x, window->DC.CursorPos.y + 4.0f);
+		ImVec2 iconsPos(window->DC.CursorPos.x + 300.0f - 32.0f - iconsSize.x, window->DC.CursorPos.y + 2.0f);
 		ImRect iconsBox(iconsPos, iconsPos + iconsSize);
 		ImGui::PopFont();
 
