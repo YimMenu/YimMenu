@@ -25,13 +25,6 @@ namespace big
 			isHost = plyr->is_host();
 			isFriend = plyr->is_friend();
 			isInVehicle = plyr->get_current_vehicle() != nullptr;
-
-			/*Entity plyrPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
-			if (ENTITY::DOES_ENTITY_EXIST(plyrPed)) {
-				if (PED::IS_PED_IN_ANY_VEHICLE(plyrPed, true)) {
-					isInVehicle = true;
-				}
-			}*/
 		}
 
 		// generate icons string
