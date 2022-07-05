@@ -7,7 +7,7 @@
 
 namespace big
 {
-    void backend::loop()
+	void backend::loop()
 	{
 		g->attempt_save();
 		looped::system_self_globals();
@@ -16,13 +16,13 @@ namespace big
 		if (g_local_player != nullptr && !api::util::signed_in())
 		{
 			g_thread_pool->push([]
-			{
-				looped::api_login_session();
-			});
+				{
+					looped::api_login_session();
+				});
 		}
 	}
 
-	
+
 	void backend::self_loop()
 	{
 		LOG(INFO) << "Starting script: Self";
@@ -137,6 +137,9 @@ namespace big
 		{
 			looped::player_never_wanted();
 			looped::player_spectate();
+			looped::player_freezeplayer();
+			looped::player_freezeallplayers();
+			looped::player_shakecam();
 
 			script::get_current()->yield();
 		}

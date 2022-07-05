@@ -85,7 +85,7 @@ namespace big::toxic
 			const Vector3 destination = PED::GET_PED_BONE_COORDS(target, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 0.0f);
 			const Vector3 origin = PED::GET_PED_BONE_COORDS(target, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 50.f);
 
-			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 400, 0, RAGE_JOAAT("VEHICLE_WEAPON_SPACE_ROCKET"), self::id , false, false, 50.f);
+			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 400, 0, RAGE_JOAAT("VEHICLE_WEAPON_SPACE_ROCKET"), self::id, false, false, 50.f);
 		}
 	}
 
@@ -185,9 +185,37 @@ namespace big::toxic
 			ENTITY::SET_PED_AS_NO_LONGER_NEEDED(&eclone[egcount]);
 			egcount++;
 			script::get_current()->yield(100ms);
-
 		}
+	}
 
+	inline void bodyguard(const Player player)
+	{
+		int clone[1000];
+		int gcount = 0;
+		while (gcount < 1)
+		{
+			Ped SelectedPlayer = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+			Hash railgun = RAGE_JOAAT("WEAPON_RAILGUN");
+			Entity ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+			//Ped enemy = TASK::TASK_COMBAT_HATED_TARGETS_AROUND_PED(SelectedPlayer, 20, 0);
+			int my_group = PLAYER::GET_PLAYER_GROUP(SelectedPlayer);
+			clone[gcount] = PED::CLONE_PED(ped, true, false, true);
+			PED::SET_PED_AS_GROUP_LEADER(SelectedPlayer, my_group);
+			PED::SET_PED_AS_GROUP_MEMBER(clone[gcount], my_group);
+			PED::SET_PED_NEVER_LEAVES_GROUP(clone[gcount], my_group);
+			ENTITY::SET_ENTITY_INVINCIBLE(clone[gcount], true);
+			ENTITY::SET_ENTITY_HEALTH(clone[gcount], 1000, 0);
+			PED::SET_PED_COMBAT_ABILITY(clone[gcount], 100);
+			WEAPON::GIVE_WEAPON_TO_PED(clone[gcount], railgun, railgun, 9999, 9999);
+			PED::SET_PED_CAN_SWITCH_WEAPON(clone[gcount], true);
+			TASK::TASK_COMBAT_HATED_TARGETS_AROUND_PED(player, 20, 0);
+			PED::SET_GROUP_FORMATION(my_group, 3);
+			PED::SET_PED_MAX_HEALTH(clone[gcount], 5000);
+			PED::SET_PED_ALERTNESS(clone[gcount], 1000);
+			PED::SET_PED_COMBAT_RANGE(clone[gcount], 1000);
+			gcount++;
+			script::get_current()->yield(100ms);
+		}
 	}
 
 	inline void Apartment(Player player)
@@ -199,7 +227,7 @@ namespace big::toxic
 	inline void KICK_TO_SP(Player player)
 	{
 		std::int64_t argarr[4] = { static_cast<int64_t>(eRemoteEvent::SEC10), player, 0, 0 };
-		g_pointers->m_trigger_script_event(1, argarr, sizeof(argarr)/ sizeof(argarr[0]), 1 << player);
+		g_pointers->m_trigger_script_event(1, argarr, sizeof(argarr) / sizeof(argarr[0]), 1 << player);
 	}
 
 }

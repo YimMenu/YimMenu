@@ -18,6 +18,9 @@ namespace big
 
 		static void player_never_wanted();
 		static void player_spectate();
+		static void player_freezeplayer();
+		static void player_freezeallplayers();
+		static void player_shakecam();
 
 		static void protections_replay_interface();
 

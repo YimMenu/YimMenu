@@ -8,7 +8,7 @@ namespace big
 	void view::self() {
 		components::button("Suicide", [] {
 			ENTITY::SET_ENTITY_HEALTH(self::ped, 0, 0);
-		});
+			});
 
 		ImGui::SameLine();
 
@@ -29,7 +29,7 @@ namespace big
 			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "MP_CHAR_ARMOUR_3_COUNT"), 10, true);
 			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "MP_CHAR_ARMOUR_4_COUNT"), 10, true);
 			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "MP_CHAR_ARMOUR_5_COUNT"), 10, true);
-		});
+			});
 
 		ImGui::SameLine();
 
@@ -93,7 +93,7 @@ namespace big
 
 		components::button("Clean Player", [] {
 			entity::clean_ped(self::ped);
-		});
+			});
 		ImGui::Checkbox("Aimbot", &g->self.aimbot);
 		if (g->self.aimbot)
 		{
@@ -180,7 +180,8 @@ namespace big
 		g->self.proof_mask = 0;
 		if (g->self.godmode) {
 			g->self.proof_mask |= static_cast<int>(eEntityProofs::GOD);
-		} else {
+		}
+		else {
 			if (g->self.proof_bullet) {
 				g->self.proof_mask |= static_cast<int>(eEntityProofs::BULLET);
 			}

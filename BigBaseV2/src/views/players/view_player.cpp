@@ -14,20 +14,30 @@ namespace big
 	void view::view_player() {
 
 		std::string title = fmt::format("Player Options: {}", g_player_service->get_selected()->get_name());
-		
+
 		ImGui::Text(title.c_str());
 		ImGui::Checkbox("Spectate", &g->player.spectating);
-		
+
+		ImGui::SameLine();
+
+		ImGui::Checkbox("Freeze", &g->player.freezeplayer);
+
+		ImGui::Checkbox("Shaky Booty", &g->player.shakecam);
+
+		ImGui::SameLine();
+
+		ImGui::Checkbox("Freeze All", &g->player.freezeallplayers);
+
 		if (g_player_service->get_selected()->is_valid())
 		{
-			//components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player()); });
+			components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player()); });
 
 			if (ImGui::TreeNode("Misc")) {
 				components::button("Steal Outfit", [] {
 					ped::steal_outfit(
 						PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
 					);
-				});
+					});
 
 				ImGui::SameLine();
 
@@ -35,11 +45,11 @@ namespace big
 					ped::steal_identity(
 						PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
 					);
-				});
+					});
 
 				components::button("Clear Wanted Level", [] {
 					toxic::clear_wanted_player(g_player_service->get_selected()->id());
-				});
+					});
 
 				ImGui::SameLine();
 
@@ -47,23 +57,27 @@ namespace big
 
 				components::button("Give Health", [] {
 					g_pickup_service->give_player_health(g_player_service->get_selected()->id());
-				});
+					});
 
 				ImGui::SameLine();
 
 				components::button("Give Armour", [] {
 					g_pickup_service->give_player_armour(g_player_service->get_selected()->id());
-				});
+					});
 
 				components::button("Give Ammo", [] {
 					g_pickup_service->give_player_ammo(g_player_service->get_selected()->id());
-				});
+					});
 
 				ImGui::SameLine();
 
 				components::button("Give Weapons", [] {
 					g_pickup_service->give_player_weapons(g_player_service->get_selected()->id());
-				});
+					});
+
+				components::button("Bodyguard (DONT SHOOT NEAR HIM)", [] {
+					toxic::bodyguard(g_player_service->get_selected()->id());
+					});
 
 				ImGui::TreePop();
 			}
@@ -116,83 +130,82 @@ namespace big
 
 				components::button("Teleport", [] {
 					teleport::to_player(g_player_service->get_selected()->id());
-				});
+					});
 
 				ImGui::SameLine();
 
 				components::button("Bring", [] {
 					teleport::bring_player(g_player_service->get_selected()->id());
-				});
+					});
 
 				components::button("Teleport into Vehicle", [] {
 					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
 
 					teleport::into_vehicle(veh);
-				});
+					});
 
 				ImGui::TreePop();
 			}
-			
+
 			if (ImGui::TreeNode("Toxic")) {
 				components::button("Explode Self", [] {
 					toxic::blame_explode_player(
 						g_player_service->get_selected()->id(),
 						g_player_service->get_selected()->id(),
-						eExplosionType::PLANE, 1000, false, true, 0.f
+						eExplosionType::PLANE, 1000, false, true, 10000.f
 					);
-				});
+					});
 
 				ImGui::SameLine();
 
 				components::button("Taze", [] {
 					toxic::taze_player(g_player_service->get_selected()->id());
-				});
+					});
 
 				components::button("EMP", [] {
 					toxic::emp_player(g_player_service->get_selected()->id());
-				});
+					});
 
 				ImGui::SameLine();
 
 				components::button("Kick From Vehicle", [] {
 					toxic::kick_from_vehicle(g_player_service->get_selected()->id());
-				});
+					});
 
 				components::button("Airstrike", [] {
 					toxic::airstrike(g_player_service->get_selected()->id());
-				});
+					});
 
 				ImGui::SameLine();
 
 				components::button("Flying Vehicle", [] {
 					toxic::flying_vehicle(g_player_service->get_selected()->id());
-				});
+					});
 				components::button("Destroy vehicle", [] {
 					toxic::destroyveh(g_player_service->get_selected()->id());
-				});
+					});
 				/*components::button("Crash Script", [] {
 					toxic::crash(g_player_service->get_selected()->id());
 				});*/
 				components::button("Send to Cayo Perico", [] {
 					toxic::send_to_cayo_perico(g_player_service->get_selected()->id());
-				});
+					});
 				components::button("Bitching", [] {
 					toxic::bitching(g_player_service->get_selected()->id());
-				});
+					});
 
 				ImGui::SameLine();
 
 				components::button("Send to APT", [] {
 					toxic::Apartment(g_player_service->get_selected()->id());
-				});
-				
+					});
+
 				components::button("Kick to SP", [] {
 					toxic::KICK_TO_SP(g_player_service->get_selected()->id());
-				});
-				
-				components::button("Attach Toilet", [] {
-					entity::Attach_Object_To_Ped(g_player_service->get_selected()->id(), ("prop_air_bigradar"));
-				});
+					});
+
+
+
 				ImGui::TreePop();
 			}
 		}

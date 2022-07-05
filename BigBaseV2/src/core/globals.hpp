@@ -86,7 +86,7 @@ namespace big
 
 			pair send_net_info_to_lobby{};
 			pair invalid_sync{};
-			pair transaction_rate_limit{};			
+			pair transaction_rate_limit{};
 		};
 
 		struct player {
@@ -94,6 +94,9 @@ namespace big
 			bool player_never_wanted = false;
 			int set_level = 130;
 			bool spectating = false;
+			bool freezeplayer = false;
+			bool freezeallplayers = false;
+			bool shakecam = false;
 		};
 
 		struct protections {
@@ -695,7 +698,7 @@ namespace big
 						},
 						{ "send_net_info_to_lobby", return_notify_pair(g->notifications.send_net_info_to_lobby) },
 						{ "invalid_sync", return_notify_pair(g->notifications.invalid_sync) },
-						{ "transaction_rate_limit", return_notify_pair(g->notifications.transaction_rate_limit) }						
+						{ "transaction_rate_limit", return_notify_pair(g->notifications.transaction_rate_limit) }
 					}
 				},
 				{

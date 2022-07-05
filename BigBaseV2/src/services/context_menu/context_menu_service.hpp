@@ -77,7 +77,15 @@ namespace big
 
 		s_context_menu ped_menu{
 			ContextEntityType::PED,
-			0,{}, {}};
+			0,{}, {
+			{"DELETE", [this] {
+					if (entity::take_control_of(m_handle))
+					{
+						entity::delete_entity(m_handle);
+					}
+				}}
+			} };
+
 
 		s_context_menu object_menu{
 			ContextEntityType::OBJECT,
@@ -88,7 +96,7 @@ namespace big
 						entity::delete_entity(m_handle);
 					}
 				}}
-			}};
+			} };
 
 		s_context_menu player_menu{
 			ContextEntityType::PLAYER,
@@ -97,7 +105,7 @@ namespace big
 				{
 					ped::steal_identity(m_handle);
 				}},
-				
+
 			} };
 
 		s_context_menu shared_menu{
@@ -108,19 +116,14 @@ namespace big
 					rage::fvector3 pos = m_pointer->m_navigation->m_position;
 					FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 1, 1000, 1, 0, 1, 0);
 					}},
-				
+
 				{"TP TO", [this] {
 					rage::fvector3 pos = m_pointer->m_navigation->m_position;
 					teleport::to_coords({ pos.x, pos.y, pos.z });
 					}},
 				{"CAGE", [this] {
 					rage::fvector3 pos = m_pointer->m_navigation->m_position;
-					entity::cage_ped(m_handle);	
-				}},
-
-				{"Attach", [this] {
-					rage::fvector3 pos = m_pointer->m_navigation->m_position;
-					entity::Attach_Object_To_Ped(m_handle, ("prop_air_bigradar"));
+					entity::cage_ped(m_handle);
 				}},
 			}
 		};
