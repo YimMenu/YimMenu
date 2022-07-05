@@ -21,7 +21,7 @@ namespace big
 			
 			for (std::pair<tabs, navigation_struct> item : navItem.second.sub_nav)
 			{
-				dl->AddRectFilled({ 10.f, ImGui::GetCursorPosY() + 100.f }, { 10.f + 250.f, ImGui::GetCursorPosY() + 100.f + ImGui::CalcTextSize("A").y + ImGui::GetStyle().ItemInnerSpacing.y * 2 }, ImGui::ColorConvertFloat4ToU32({ 1.f, 1.f, 1.f, .15f + (.075f * nested)}));
+				dl->AddRectFilled({ 10.f, ImGui::GetCursorPosY() + 100.f }, { 10.f + 300.f, ImGui::GetCursorPosY() + 100.f + ImGui::CalcTextSize("A").y + ImGui::GetStyle().ItemInnerSpacing.y * 2 }, ImGui::ColorConvertFloat4ToU32({ 1.f, 1.f, 1.f, .15f + (.075f * nested)}));
 				nav_item(item, nested + 1);
 			}
 		}

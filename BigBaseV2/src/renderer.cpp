@@ -16,7 +16,7 @@ namespace big
 	renderer::renderer() :
 		m_dxgi_swapchain(*g_pointers->m_swapchain)
 	{
-		void *d3d_device{};
+		void* d3d_device{};
 		if (SUCCEEDED(m_dxgi_swapchain->GetDevice(__uuidof(ID3D11Device), &d3d_device)))
 		{
 			m_d3d_device.Attach(static_cast<ID3D11Device*>(d3d_device));
@@ -29,7 +29,7 @@ namespace big
 		m_d3d_device->GetImmediateContext(m_d3d_device_context.GetAddressOf());
 
 		auto file_path = g_file_manager->get_project_file("./imgui.ini").get_path();
-		
+
 		ImGuiContext* ctx = ImGui::CreateContext();
 
 		static std::string path = file_path.make_preferred().string();
@@ -38,15 +38,19 @@ namespace big
 		ImGui_ImplDX11_Init(m_d3d_device.Get(), m_d3d_device_context.Get());
 		ImGui_ImplWin32_Init(g_pointers->m_hwnd);
 
-		ImFontConfig font_cfg{};
-		font_cfg.FontDataOwnedByAtlas = false;
-		std::strcpy(font_cfg.Name, "Storopia");
+		ImFontConfig font_storopia_cfg{};
+		font_storopia_cfg.FontDataOwnedByAtlas = false;
+		std::strcpy(font_storopia_cfg.Name, "Storopia");
+		m_font = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 20.f, &font_storopia_cfg);
 
-		m_font = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 20.f, &font_cfg);
+		g->window.font_title = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 40.f, &font_storopia_cfg);
+		g->window.font_sub_title = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 30.f, &font_storopia_cfg);
+		g->window.font_small = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 17.5f, &font_storopia_cfg);
 
-		g->window.font_title = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 40.f, &font_cfg);
-		g->window.font_sub_title = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 30.f, &font_cfg);
-		g->window.font_small = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 17.5f, &font_cfg);
+		ImFontConfig font_icons_cfg{};
+		font_icons_cfg.FontDataOwnedByAtlas = false;
+		std::strcpy(font_icons_cfg.Name, "Icons");
+		m_font_icons = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_icons), sizeof(font_icons), 24.f, &font_icons_cfg);
 
 		g_gui.dx_init();
 		g_renderer = this;
@@ -84,7 +88,7 @@ namespace big
 		{
 			g_gui.dx_on_tick();
 		}
-		
+
 
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -119,7 +123,7 @@ namespace big
 			if (g->settings.hotkeys.editing_menu_toggle)
 				g->settings.hotkeys.editing_menu_toggle = false;
 		}
-		
+
 		if (g_gui.m_opened)
 		{
 			ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);

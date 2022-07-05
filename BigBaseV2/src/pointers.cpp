@@ -107,12 +107,6 @@ namespace big
 			m_gta_thread_kill = ptr.as<PVOID>();
 		});
 
-		// Increment Stat Event
-		main_batch.add("ISE", "48 83 EC 60 8B 79 30 4C 8B F1", [this](memory::handle ptr)
-		{
-			m_increment_stat_event = ptr.sub(0x15).as<decltype(m_increment_stat_event)>();
-		});
-
 		// Trigger Script Event
 		main_batch.add("TSE", "45 8B F0 41 8B F9 48 8B EA", [this](memory::handle ptr)
 		{
@@ -230,6 +224,12 @@ namespace big
 			m_get_gamplay_cam_coords = ptr.sub(0xE).as<functions::get_gameplay_cam_coords*>();
 		});
 
+		// Give Pickup Reward
+		main_batch.add("GPR", "48 8B C8 33 C0 48 85 C9 74 0A 44 8B C3 8B D7 E8", [this](memory::handle ptr)
+		{
+			m_give_pickup_rewards = ptr.sub(0x28).as<decltype(m_give_pickup_rewards)>();
+		});
+
 		// net array handler - version mismatch patch
 		main_batch.add("NAH", "44 8B E0 89 45 F4 48 8B 03 48 8B CB FF 90", [this](memory::handle ptr)
 		{
@@ -262,6 +262,42 @@ namespace big
 			m_get_net_object_for_player = ptr.add(0x4C).rip().as<decltype(m_get_net_object_for_player)>(); // 41 80 78 ? FF 74 2D 41 0F B6 40 .as()
 			m_get_net_object = ptr.add(0x62).rip().as<decltype(m_get_net_object)>(); // E8 ? ? ? ? 0F B7 53 7C .add(1).rip().as()
 			m_get_sync_type_info = ptr.add(0x78).rip().as<decltype(m_get_sync_type_info)>(); // 44 0F B7 C1 4C 8D 0D .as()
+		});
+
+		// Model Hash Table
+		main_batch.add("MHT", "4C 03 05 ? ? ? ? EB 03", [this](memory::handle ptr)
+		{
+			m_model_table = ptr.add(3).rip().as<HashTable<CBaseModelInfo*>*>();
+
+			// sample code to iterator models
+			/*for (int i = 0; i < m_model_table->m_size; ++i)
+			{
+				for (auto node = m_model_table->m_lookup_table[i]; node; node = node->m_next)
+				{
+					if (const auto table_idx = node->m_idx; table_idx < m_model_table->m_size)
+					{
+						if (const auto model = m_model_table->m_data[table_idx]; model && model->m_model_type == eModelType::Vehicle)
+						{
+
+						}
+					}
+				}
+			}*/
+
+			// sample code to get a specific model
+			/*auto adder_hash = RAGE_JOAAT("adder");
+			for (auto i = m_model_table->m_lookup_table[adder_hash % m_model_table->m_lookup_key]; i; i = i->m_next)
+			{
+				if (i->m_hash == adder_hash)
+				{
+					if (const auto model = m_model_table->m_data[i->m_idx]; model)
+					{
+						LOG(G3LOG_DEBUG) << "Found Model: " << HEX_TO_UPPER(model->m_model_hash) << " => type: " << (int)model->m_model_type;
+
+						break;
+					}
+				}
+			}*/
 		});
 
 		auto mem_region = memory::module(nullptr);
