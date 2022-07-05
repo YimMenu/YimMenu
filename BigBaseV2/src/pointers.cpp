@@ -270,6 +270,42 @@ namespace big
 			m_get_sync_type_info = ptr.add(0x78).rip().as<decltype(m_get_sync_type_info)>(); // 44 0F B7 C1 4C 8D 0D .as()
 		});
 
+		// Model Hash Table
+		main_batch.add("MHT", "4C 03 05 ? ? ? ? EB 03", [this](memory::handle ptr)
+		{
+			m_model_table = ptr.add(3).rip().as<HashTable<CBaseModelInfo*>*>();
+
+			// sample code to iterator models
+			/*for (int i = 0; i < m_model_table->m_size; ++i)
+			{
+				for (auto node = m_model_table->m_lookup_table[i]; node; node = node->m_next)
+				{
+					if (const auto table_idx = node->m_idx; table_idx < m_model_table->m_size)
+					{
+						if (const auto model = m_model_table->m_data[table_idx]; model && model->m_model_type == eModelType::Vehicle)
+						{
+
+						}
+					}
+				}
+			}*/
+
+			// sample code to get a specific model
+			/*auto adder_hash = RAGE_JOAAT("adder");
+			for (auto i = m_model_table->m_lookup_table[adder_hash % m_model_table->m_lookup_key]; i; i = i->m_next)
+			{
+				if (i->m_hash == adder_hash)
+				{
+					if (const auto model = m_model_table->m_data[i->m_idx]; model)
+					{
+						LOG(G3LOG_DEBUG) << "Found Model: " << HEX_TO_UPPER(model->m_model_hash) << " => type: " << (int)model->m_model_type;
+
+						break;
+					}
+				}
+			}*/
+		});
+
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
 
