@@ -1,9 +1,8 @@
 #pragma once
 #include "common.hpp"
-#include "atSingleton.hpp"
 #include "CNetworkPlayerMgr.hpp"
-#include "CTunables.hpp"
 #include "FriendRegistry.hpp"
+#include "HashTable.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/enums.hpp"
 #include "gta/replay.hpp"
@@ -56,6 +55,8 @@ namespace big
 		FriendRegistry* m_friend_registry{};
 
 		functions::get_screen_coords_for_world_coords* m_get_screen_coords_for_world_coords{};
+
+		HashTable<CBaseModelInfo*>* m_model_table;
 
 		PVOID m_gta_thread_start{};
 		PVOID m_gta_thread_kill{};
