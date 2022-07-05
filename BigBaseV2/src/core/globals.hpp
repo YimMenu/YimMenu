@@ -1,5 +1,6 @@
 #pragma once
 #include "CAmmoInfo.hpp"
+#include "CWeaponInfo.hpp"
 #include "enums.hpp"
 #include "file_manager.hpp"
 #include "imgui.h"
@@ -244,6 +245,7 @@ namespace big
 			{
 				bool toggle = false;
 				eAmmoSpecialType type = eAmmoSpecialType::None;
+				eImpactType impactType = eImpactType::DEFAULT_BULLETS;
 			} ammo_special;
 
 			CustomWeapon custom_weapon = CustomWeapon::NONE;
