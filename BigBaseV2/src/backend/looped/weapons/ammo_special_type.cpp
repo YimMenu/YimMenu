@@ -23,14 +23,14 @@ namespace big
 
 			// check if the player changed their weapon
 			if (pModifiedWeapon != pWeapon) {
-				// backup the bullet and impact type of the new weapon
+				// apply the original bullet and impact type to the old weapon
 				if (pModifiedWeapon != nullptr) {
 					pModifiedWeapon->m_damage_type = modifiedWeaponDamageType;
 					pModifiedWeapon->m_impact_type = modifiedWeaponImpactType;
 					pModifiedWeapon->m_ammo_info->m_ammo_special_type = modifiedWeaponAmmoType;
 				}
 
-				// apply the original bullet and impact type to the old weapon
+				// backup the bullet and impact type of the new weapon
 				pModifiedWeapon = pWeapon;
 				modifiedWeaponDamageType = pWeapon->m_damage_type;
 				modifiedWeaponImpactType = pWeapon->m_impact_type;
