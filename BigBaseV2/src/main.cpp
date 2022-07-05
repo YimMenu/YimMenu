@@ -1,6 +1,5 @@
 #include "common.hpp"
 #include "core/globals.hpp"
-#include "features.hpp"
 #include "fiber_pool.hpp"
 #include "gui.hpp"
 #include "logger.hpp"
@@ -82,9 +81,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					auto gui_service_instance = std::make_unique<gui_service>();
 					LOG(INFO) << "Registered service instances...";
 
-					g_script_mgr.add_script(std::make_unique<script>(&features::script_func, "Backend Main", false));
 					g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
-
+					
+					g_script_mgr.add_script(std::make_unique<script>(&backend::loop, "Backend Loop", false));
 					g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop, "Self"));
 					g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop, "Weapon"));
 					g_script_mgr.add_script(std::make_unique<script>(&backend::vehicles_loop, "Vehicle"));

@@ -215,13 +215,13 @@ namespace big
 		// GET_SCREEN_COORDS_FROM_WORLD_COORDS
 		main_batch.add("GSCFWC", "E8 ? ? ? ? 84 C0 74 19 F3 0F 10 44 24", [this](memory::handle ptr)
 		{
-			m_get_screen_coords_for_world_coords = ptr.add(1).rip().as<functions::get_screen_coords_for_world_coords*>();
+			m_get_screen_coords_for_world_coords = ptr.add(1).rip().as<functions::get_screen_coords_for_world_coords>();
 		});
 
 		// Get Gameplay Cam Coords
 		main_batch.add("GGCC", "8B 90 ? ? ? ? 89 13", [this](memory::handle ptr)
 		{
-			m_get_gamplay_cam_coords = ptr.sub(0xE).as<functions::get_gameplay_cam_coords*>();
+			m_get_gamplay_cam_coords = ptr.sub(0xE).as<Vector3*>();
 		});
 
 		// Give Pickup Reward
