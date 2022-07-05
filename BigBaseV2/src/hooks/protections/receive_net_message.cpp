@@ -4,7 +4,7 @@
 
 namespace big
 {
-	bool get_mssg_type(rage::eNetMessage& msgType, rage::datBitBuffer& buffer)
+	bool get_msg_type(rage::eNetMessage& msgType, rage::datBitBuffer& buffer)
 	{
 		uint32_t pos;
 		uint32_t magic;
@@ -29,7 +29,7 @@ namespace big
 			buffer.m_flagBits = 1;
 			rage::eNetMessage msgType;
 			const auto player = g_player_service->get_by_msg_id(frame->m_msg_id);
-			if (player && get_mssg_type(msgType, buffer))
+			if (player && get_msg_type(msgType, buffer))
 			{
 				switch (msgType)
 				{
