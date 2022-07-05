@@ -36,6 +36,8 @@ namespace big
 		[[nodiscard]] bool is_host() const;
 		[[nodiscard]] bool is_valid() const;
 
+		bool never_wanted = false;
+
 	protected:
 		bool equals(const CNetGamePlayer* net_game_player) const;
 
