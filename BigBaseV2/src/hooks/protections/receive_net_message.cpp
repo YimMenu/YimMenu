@@ -4,7 +4,7 @@
 
 namespace big
 {
-	bool getMessageType(rage::eNetMessage& msgType, rage::datBitBuffer& buffer)
+	bool get_mssg_type(rage::eNetMessage& msgType, rage::datBitBuffer& buffer)
 	{
 		uint32_t pos;
 		uint32_t magic;
@@ -29,7 +29,7 @@ namespace big
 			buffer.m_flagBits = 1;
 			rage::eNetMessage msgType;
 			const auto player = g_player_service->get_by_msg_id(frame->m_msg_id);
-			if (player && getMessageType(msgType, buffer))
+			if (player && get_mssg_type(msgType, buffer))
 			{
 				switch (msgType)
 				{
@@ -45,16 +45,6 @@ namespace big
 						buffer.Seek(0);
 						return false;
 					}
-					case rage::eNetMessage::CMsgTextMessage:
-					{
-						char textBuffer[0x100]{};
-						uint64_t peerId{};
-						bool isTeam{};
-						buffer.ReadString(textBuffer, 0x100);
-						buffer.ReadPeerId(&peerId);
-						buffer.ReadBool(&isTeam);
-						g_notification_service->push_warning("Chat", fmt::format("{} [{}]: {}", player->get_name(), isTeam ? HUD::GET_LABEL_TEXT_("MP_CHAT_TEAM") : HUD::GET_LABEL_TEXT_("MP_CHAT_ALL"), textBuffer));
-					} break;
 				}
 			}
 		}
