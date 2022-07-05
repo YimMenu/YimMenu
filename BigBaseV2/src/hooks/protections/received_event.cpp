@@ -31,6 +31,20 @@ namespace big
 
 		switch ((RockstarEvent)event_id)
 		{
+		case RockstarEvent::NETWORK_INCREMENT_STAT_EVENT:
+		{
+			const auto increment_stat_event = std::make_unique<CNetworkIncrementStatEvent>();
+			buffer->ReadDword(&increment_stat_event->m_stat, 0x20);
+			buffer->ReadDword(&increment_stat_event->m_amount, 0x20);
+			if (hooks::increment_stat_event(increment_stat_event.get(), source_player))
+			{
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+
+				return;
+			}
+			buffer->Seek(0);
+			break;
+		}
 		case RockstarEvent::SCRIPT_ENTITY_STATE_CHANGE_EVENT:
 		{
 			uint16_t entity;
@@ -151,6 +165,8 @@ namespace big
 
 			return;
 		}
+		default:
+			break;
 		}
 
 		return g_hooking->m_received_event_hook.get_original<decltype(&received_event)>()(event_manager, source_player, target_player, event_id, event_index, event_handled_bitset, unk, buffer);
