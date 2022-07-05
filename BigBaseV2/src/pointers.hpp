@@ -29,12 +29,12 @@ namespace big
 
 		functions::ptr_to_handle m_ptr_to_handle{};
 		rage::scrNativeRegistrationTable* m_native_registration_table{};
-		functions::get_native_handler_t m_get_native_handler{};
-		functions::fix_vectors_t m_fix_vectors{};
+		functions::get_native_handler m_get_native_handler{};
+		functions::fix_vectors m_fix_vectors{};
 
 		rage::atArray<GtaThread*>* m_script_threads{};
 		rage::scrProgramTable* m_script_program_table{};
-		functions::run_script_threads_t m_run_script_threads{};
+		functions::run_script_threads m_run_script_threads{};
 		std::int64_t** m_script_globals{};
 
 		CGameScriptHandlerMgr** m_script_handler_mgr{};
@@ -67,15 +67,26 @@ namespace big
 		PVOID m_player_has_joined{};
 		PVOID m_player_has_left{};
 
-		Vector3* m_get_gamplay_cam_coords;
+		functions::get_gameplay_cam_coords m_get_gameplay_cam_coords;
 
 		functions::give_pickup_rewards m_give_pickup_rewards{};
 		
 		functions::trigger_script_event m_trigger_script_event{};
 
-		// Received Event Signatures START
-		functions::read_bitbuf_array m_read_bitbuf_array{};
+		// Bitbuffer Read/Write START
 		functions::read_bitbuf_dword m_read_bitbuf_dword{};
+		functions::read_bitbuf_string m_read_bitbuf_string{};
+		functions::read_bitbuf_bool m_read_bitbuf_bool{};
+		functions::read_bitbuf_array m_read_bitbuf_array{};
+		functions::write_bitbuf_qword m_write_bitbuf_qword{};
+		functions::write_bitbuf_dword m_write_bitbuf_dword{};
+		functions::write_bitbuf_int64 m_write_bitbuf_int64{};
+		functions::write_bitbuf_int32 m_write_bitbuf_int32{};
+		functions::write_bitbuf_bool m_write_bitbuf_bool{};
+		functions::write_bitbuf_array m_write_bitbuf_array{};
+		// Bitbuffer Read/Write END
+		
+		// Received Event Signatures START
 		PVOID m_received_event{};
 		functions::send_event_ack m_send_event_ack{};
 		// Received Event Signatures END

@@ -7,137 +7,152 @@
 namespace rage
 {
 	class netPlayer;
+
 	class datBitBuffer
 	{
 	public:
-		inline datBitBuffer(void* data, uint32_t size)
-		{
+		datBitBuffer(uint8_t* data, uint32_t size) {
 			m_data = data;
-			m_f8 = 0;
+			m_bitOffset = 0;
 			m_maxBit = size * 8;
 			m_bitsRead = 0;
 			m_curBit = 0;
-			m_unk2Bit = 0;
+			m_highestBitsRead = 0;
 			m_flagBits = 0;
 		}
-
-		inline uint32_t GetPosition()
-		{
+		uint32_t GetPosition() {
 			return m_bitsRead;
 		}
-
-		inline bool Seek(uint32_t bits)
-		{
-			if (bits >= 0)
-			{
+		bool Seek(uint32_t bits) {
+			if (bits >= 0) {
 				uint32_t length = (m_flagBits & 1) ? m_maxBit : m_curBit;
-
 				if (bits <= length)
-				{
 					m_bitsRead = bits;
-				}
 			}
-
 			return false;
 		}
-
-		inline int GetDataLength()
-		{
+		bool WriteBool(bool integer) {
+			return big::g_pointers->m_write_bitbuf_bool(this, integer, 1);
+		}
+		bool ReadBool(bool* integer) {
+			return big::g_pointers->m_read_bitbuf_bool(this, integer, 1);
+		}
+		bool ReadPeerId(uint64_t* integer) {
+			return this->ReadQWord(integer, 0x32);
+		}
+		uint64_t ReadBits(size_t numBits) {
+			auto const totalBits = (m_flagBits & 1) ? m_maxBit : m_curBit;
+			if ((m_flagBits & 2) || m_bitsRead + numBits > totalBits)
+				return 0;
+			auto const bufPos = m_bitsRead + m_bitOffset;
+			auto const initialBitOffset = bufPos & 0b111;
+			auto const start = &m_data[bufPos / 8];
+			auto const next = &start[1];
+			auto result = (start[0] << initialBitOffset) & 0xff;
+			for (auto i = 0; i < (numBits - 1) / 8; i++) {
+				result <<= 8;
+				result |= next[i] << initialBitOffset;
+			}
+			if (initialBitOffset)
+				result |= next[0] >> (8 - initialBitOffset);
+			m_bitsRead += numBits;
+			if (m_bitsRead > m_highestBitsRead)
+				m_highestBitsRead = m_bitsRead;
+			return result >> ((8 - numBits) % 8);
+		}
+		int GetDataLength() {
 			int leftoverBit = (m_curBit % 8) ? 1 : 0;
-
 			return (m_curBit / 8) + leftoverBit;
 		}
-
-		inline bool ReadByte(uint8_t* integer, int bits)
-		{
+		bool ReadString(char* string, int bits) {
+			return big::g_pointers->m_read_bitbuf_string(this, string, bits);
+		}
+		bool WriteByte(uint8_t integer, int bits) {
+			return big::g_pointers->m_write_bitbuf_dword(this, integer, bits);
+		}
+		bool ReadByte(uint8_t* integer, int bits) {
 			uint32_t read;
-			if (big::g_pointers->m_read_bitbuf_dword(this, &read, bits))
-			{
+			if (big::g_pointers->m_read_bitbuf_dword(this, &read, bits)) {
 				*integer = read;
 				return true;
 			}
 			return false;
 		}
-
-		inline bool ReadWord(uint16_t* integer, int bits)
-		{
+		bool WriteWord(uint16_t integer, int bits) {
+			return big::g_pointers->m_write_bitbuf_dword(this, integer, bits);
+		}
+		bool ReadWord(uint16_t* integer, int bits) {
 			uint32_t read;
-			if (big::g_pointers->m_read_bitbuf_dword(this, &read, bits))
-			{
+			if (big::g_pointers->m_read_bitbuf_dword(this, &read, bits)) {
 				*integer = read;
 				return true;
 			}
 			return false;
 		}
-
-		inline bool ReadDword(uint32_t* integer, int bits)
-		{
+		bool WriteDword(uint32_t integer, int bits) {
+			return big::g_pointers->m_write_bitbuf_dword(this, integer, bits);
+		}
+		bool ReadDword(uint32_t* integer, int bits) {
 			return big::g_pointers->m_read_bitbuf_dword(this, integer, bits);
 		}
-
-		inline bool ReadInt32(int32_t* integer, int bits)
-		{
+		bool WriteInt32(int32_t integer, int bits) {
+			return big::g_pointers->m_write_bitbuf_int32(this, integer, bits);
+		}
+		bool ReadInt32(int32_t* integer, int bits) {
 			int32_t v8;
 			int32_t v9;
-			if (ReadDword((uint32_t*)&v8, 1u) && ReadDword((uint32_t*)&v9, bits - 1))
-			{
+			if (ReadDword((uint32_t*)&v8, 1u) && ReadDword((uint32_t*)&v9, bits - 1)) {
 				*integer = v8 + (v9 ^ -v8);
 				return true;
 			}
 			return false;
 		}
-
-		inline bool ReadQWord(uint64_t* integer, int bits)
-		{
-			if (bits <= 32)
-			{
-				uint32_t v10{};
-				if (ReadDword(&v10, bits))
-				{
+		bool WriteQWord(uint64_t integer, int bits) {
+			return big::g_pointers->m_write_bitbuf_qword(this, integer, bits);
+		}
+		bool ReadQWord(uint64_t* integer, int bits) {
+			if (bits <= 32) {
+				uint32_t v10;
+				if (ReadDword(&v10, bits)) {
 					*integer = v10;
 					return true;
 				}
-				return false;
 			}
-			else
-			{
-				uint32_t v10{}, v11{};
-				if (ReadDword(&v11, 32u) && ReadDword(&v10, bits - 32u))
-				{
+			else {
+				uint32_t v10, v11;
+				if (ReadDword(&v11, 32u) && ReadDword(&v10, bits - 32u)) {
 					*integer = v11 | ((uint64_t)v10 << 32);
 					return true;
 				}
-				return false;
 			}
+			return false;
 		}
-
-		inline bool ReadInt64(int64_t* integer, int bits)
-		{
+		bool WriteInt64(int64_t integer, int bits) {
+			return big::g_pointers->m_write_bitbuf_int64(this, integer, bits);
+		}
+		bool ReadInt64(int64_t* integer, int bits) {
 			uint32_t v8;
 			uint64_t v9;
-			if (ReadDword(&v8, 1u) && ReadQWord(&v9, bits - 1))
-			{
+			if (ReadDword(&v8, 1u) && ReadQWord(&v9, bits - 1)) {
 				*integer = v8 + (v9 ^ -(int64_t)v8);
 				return true;
 			}
 			return false;
 		}
-
-		inline bool ReadArray(PVOID array, int size)
-		{
+		bool WriteArray(uint8_t* array, int size) {
+			return big::g_pointers->m_write_bitbuf_array(this, array, size, 0);
+		}
+		bool ReadArray(PVOID array, int size) {
 			return big::g_pointers->m_read_bitbuf_array(this, array, size, 0);
 		}
-
 	public:
-		void* m_data; //0x0000
-		uint32_t m_f8; //0x0008
+		uint8_t* m_data; //0x0000
+		uint32_t m_bitOffset; //0x0008
 		uint32_t m_maxBit; //0x000C
 		uint32_t m_bitsRead; //0x0010
 		uint32_t m_curBit; //0x0014
-		uint32_t m_unk2Bit; //0x0018
+		uint32_t m_highestBitsRead; //0x0018
 		uint8_t m_flagBits; //0x001C
-		char pad_0x01D[3];
-		uint32_t m_f20;
 	};
 
 	namespace netConnection {

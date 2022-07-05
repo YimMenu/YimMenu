@@ -156,7 +156,7 @@ namespace big
 				g_script_mgr.tick();
 			}
 
-			return g_hooking->m_run_script_threads_hook.get_original<functions::run_script_threads_t>()(ops_to_execute);
+			return g_hooking->m_run_script_threads_hook.get_original<functions::run_script_threads>()(ops_to_execute);
 		} EXCEPT_CLAUSE
 		return false;
 	}
