@@ -1,18 +1,13 @@
 #pragma once
 
 extern const unsigned char font_storopia[89888];
-extern const unsigned char font_icons[2368];
+extern const unsigned char font_icons[7880];
 
-#define FONT_ICON_FRIEND       "a"
-#define FONT_ICON_NOTFRIEND    "b"
+#define FONT_ICON_FRIEND       "A"
+#define FONT_ICON_NOTFRIEND    "B"
 
-#define FONT_ICON_CLIENT       "c"
-#define FONT_ICON_HOST         "d"
+#define FONT_ICON_CLIENT       "C"
+#define FONT_ICON_HOST         "D"
 
-#define FONT_ICON_VEHICLE      "e"
-#define FONT_ICON_WALK         "f"
-
-#define FONT_ICON_HP           "g"
-#define FONT_ICON_ARMOR        "h"
-
-#define FONT_ICON_WANTED       "i"
+#define FONT_ICON_VEHICLE      "E"
+#define FONT_ICON_WALK         "F"
