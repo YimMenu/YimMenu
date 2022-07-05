@@ -107,12 +107,6 @@ namespace big
 			m_gta_thread_kill = ptr.as<PVOID>();
 		});
 
-		// Increment Stat Event
-		main_batch.add("ISE", "48 83 EC 60 8B 79 30 4C 8B F1", [this](memory::handle ptr)
-		{
-			m_increment_stat_event = ptr.sub(0x15).as<decltype(m_increment_stat_event)>();
-		});
-
 		// Trigger Script Event
 		main_batch.add("TSE", "45 8B F0 41 8B F9 48 8B EA", [this](memory::handle ptr)
 		{
