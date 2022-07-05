@@ -2,16 +2,21 @@
 
 namespace big
 {
-	bool hooks::increment_stat_event(CNetworkIncrementStatEvent* net_event, CNetGamePlayer* sender, int64_t a3)
+	bool hooks::increment_stat_event(CNetworkIncrementStatEvent* net_event, CNetGamePlayer* sender)
 	{
 		switch (net_event->m_stat)
 		{
-		case RAGE_JOAAT("MPPLY_GAME_EXPLOITS"):
+		case RAGE_JOAAT("MPPLY_BAD_CREW_STATUS"):
+		case RAGE_JOAAT("MPPLY_BAD_CREW_MOTTO"):
+		case RAGE_JOAAT("MPPLY_BAD_CREW_NAME"):
+		case RAGE_JOAAT("MPPLY_BAD_CREW_EMBLEM"):
 		case RAGE_JOAAT("MPPLY_EXPLOITS"):
-		case RAGE_JOAAT("MPPLY_VC_HATE"):
+		case RAGE_JOAAT("MPPLY_GAME_EXPLOITS"):
 		case RAGE_JOAAT("MPPLY_TC_ANNOYINGME"):
 		case RAGE_JOAAT("MPPLY_TC_HATE"):
-			const std::string report = fmt::format("From: {}", sender->get_name());
+		case RAGE_JOAAT("MPPLY_VC_ANNOYINGME"):
+		case RAGE_JOAAT("MPPLY_VC_HATE"):
+			const auto report = fmt::format("From: {}", sender->get_name());
 
 			if (g->notifications.reports.log)
 				LOG(INFO) << "Blocked report; " << report;
@@ -22,6 +27,6 @@ namespace big
 			return true;
 		}
 
-		return g_hooking->m_increment_stat_hook.get_original<decltype(&increment_stat_event)>()(net_event, sender, a3);
+		return false;
 	}
 }
