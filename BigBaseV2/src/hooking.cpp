@@ -19,13 +19,9 @@ namespace big
 	hooking::hooking() :
 		// Swapchain
 		m_swapchain_hook(*g_pointers->m_swapchain, hooks::swapchain_num_funcs),
-		// SetCursorPos
-		m_set_cursor_pos_hook("SCP", memory::module("user32.dll").get_export("SetCursorPos").as<void*>(), &hooks::set_cursor_pos),
 
 		// Script Hook
 		m_run_script_threads_hook("SH", g_pointers->m_run_script_threads, &hooks::run_script_threads),
-		// ConvertThreadToFibe
-		m_convert_thread_to_fiber_hook("CTTF", memory::module("kernel32.dll").get_export("ConvertThreadToFiber").as<void*>(), &hooks::convert_thread_to_fiber),
 
 		// GTA Thead Start
 		m_gta_thread_start_hook("GTS", g_pointers->m_gta_thread_start, &hooks::gta_thread_start),
@@ -80,11 +76,9 @@ namespace big
 	void hooking::enable()
 	{
 		m_swapchain_hook.enable();
-		m_og_wndproc = reinterpret_cast<WNDPROC>(SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&hooks::wndproc)));
-		m_set_cursor_pos_hook.enable();
+		m_og_wndproc = WNDPROC(SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, LONG_PTR(&hooks::wndproc)));
 
 		m_run_script_threads_hook.enable();
-		m_convert_thread_to_fiber_hook.enable();
 
 		m_gta_thread_start_hook.enable();
 		m_gta_thread_kill_hook.enable();
@@ -137,10 +131,8 @@ namespace big
 		m_gta_thread_kill_hook.disable();
 		m_gta_thread_start_hook.disable();
 
-		m_convert_thread_to_fiber_hook.disable();
 		m_run_script_threads_hook.disable();
 
-		m_set_cursor_pos_hook.disable();
 		SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(m_og_wndproc));
 		m_swapchain_hook.disable();
 	}
@@ -164,34 +156,8 @@ namespace big
 				g_script_mgr.tick();
 			}
 
-			return g_hooking->m_run_script_threads_hook.get_original<functions::run_script_threads_t>()(ops_to_execute);
+			return g_hooking->m_run_script_threads_hook.get_original<functions::run_script_threads>()(ops_to_execute);
 		} EXCEPT_CLAUSE
 		return false;
-	}
-
-	void *hooks::convert_thread_to_fiber(void *param)
-	{
-		TRY_CLAUSE
-		{
-			if (IsThreadAFiber())
-			{
-				return GetCurrentFiber();
-			}
-
-			return g_hooking->m_convert_thread_to_fiber_hook.get_original<decltype(&convert_thread_to_fiber)>()(param);
-		} EXCEPT_CLAUSE
-		return nullptr;
-	}
-
-	BOOL hooks::set_cursor_pos(int x, int y)
-	{
-		TRY_CLAUSE
-		{
-			if (g_gui.m_opened)
-				return true;
-
-			return g_hooking->m_set_cursor_pos_hook.get_original<decltype(&set_cursor_pos)>()(x, y);
-		} EXCEPT_CLAUSE
-		return FALSE;
 	}
 }
