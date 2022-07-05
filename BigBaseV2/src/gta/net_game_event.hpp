@@ -31,15 +31,6 @@ namespace rage
 			}
 			return false;
 		}
-		bool WriteBool(bool integer) {
-			return big::g_pointers->m_write_bitbuf_bool(this, integer, 1);
-		}
-		bool ReadBool(bool* integer) {
-			return big::g_pointers->m_read_bitbuf_bool(this, integer, 1);
-		}
-		bool ReadPeerId(uint64_t* integer) {
-			return this->ReadQWord(integer, 0x32);
-		}
 		uint64_t ReadBits(size_t numBits) {
 			auto const totalBits = (m_flagBits & 1) ? m_maxBit : m_curBit;
 			if ((m_flagBits & 2) || m_bitsRead + numBits > totalBits)
@@ -59,6 +50,15 @@ namespace rage
 			if (m_bitsRead > m_highestBitsRead)
 				m_highestBitsRead = m_bitsRead;
 			return result >> ((8 - numBits) % 8);
+		}
+		bool WriteBool(bool integer) {
+			return big::g_pointers->m_write_bitbuf_bool(this, integer, 1);
+		}
+		bool ReadBool(bool* integer) {
+			return big::g_pointers->m_read_bitbuf_bool(this, integer, 1);
+		}
+		bool ReadPeerId(uint64_t* integer) {
+			return this->ReadQWord(integer, 0x32);
 		}
 		int GetDataLength() {
 			int leftoverBit = (m_curBit % 8) ? 1 : 0;
