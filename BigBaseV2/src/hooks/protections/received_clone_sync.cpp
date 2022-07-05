@@ -26,14 +26,7 @@ namespace big {
 	*/
 	
 
-	signed __int64 hooks::received_clone_sync(CNetworkObjectMgr* mgr,
-		CNetGamePlayer* src,
-		CNetGamePlayer* dst,
-		unsigned __int16 sync_type,
-		unsigned __int16 obj_id,
-		rage::datBitBuffer* buffer,
-		unsigned __int16 a7,
-		unsigned int timestamp) {
+	int64_t hooks::received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, uint16_t sync_type, uint16_t obj_id, rage::datBitBuffer* buffer, uint16_t unk, uint32_t timestamp) {
 
 		auto sync_tree = g_pointers->m_get_sync_tree_for_type(mgr, sync_type);
 		auto tree_name = g_pointers->m_get_sync_type_info(sync_type, 0);
@@ -53,14 +46,15 @@ namespace big {
 
 
 		if (invalidsync) {
-
-			if (g->notifications.invalid_sync.log) LOG(WARNING) << "Invalid sync: " << "Type: " << sync_type << " Tree name: " << tree_name << " From: " << src->get_name();
-			if (g->notifications.invalid_sync.notify) g_notification_service->push_warning("Invalid sync " + std::string(src->get_name()), "Type: " + std::to_string(sync_type) + "\nType name: " + tree_name);
+			if (g->notifications.invalid_sync.log)
+				LOG(WARNING) << "Invalid sync: " << "Type: " << sync_type << " Tree name: " << tree_name << " From: " << src->get_name();
+			if (g->notifications.invalid_sync.notify)
+				g_notification_service->push_warning(fmt::format("Invalid Sync from {}", src->get_name()), fmt::format("Type {} in sync tree {}", sync_type, tree_name));
 
 			return 2;
 		}
 
-		auto result = g_hooking->m_received_clone_sync_hook.get_original<decltype(&received_clone_sync)>()(mgr, src, dst, sync_type, obj_id, buffer, a7, timestamp);
+		auto result = g_hooking->m_received_clone_sync_hook.get_original<decltype(&received_clone_sync)>()(mgr, src, dst, sync_type, obj_id, buffer, unk, timestamp);
 
 		return result;
 

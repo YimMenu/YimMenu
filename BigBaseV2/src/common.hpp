@@ -45,6 +45,7 @@
 #include <optional>
 #include <variant>
 
+#define FMT_HEADER_ONLY
 #include <fmt/format.h>
 #include <nlohmann/json.hpp>
 

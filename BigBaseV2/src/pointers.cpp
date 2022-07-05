@@ -42,20 +42,20 @@ namespace big
 		main_batch.add("NH", "48 8D 0D ? ? ? ? 48 8B 14 FA E8 ? ? ? ? 48 85 C0 75 0A", [this](memory::handle ptr)
 		{
 			m_native_registration_table = ptr.add(3).rip().as<rage::scrNativeRegistrationTable*>();
-			m_get_native_handler = ptr.add(12).rip().as<functions::get_native_handler_t>();
+			m_get_native_handler = ptr.add(12).rip().as<functions::get_native_handler>();
 		});
 
 		// Fix Vectors
 		main_batch.add("FV", "83 79 18 00 48 8B D1 74 4A FF 4A 18 48 63 4A 18 48 8D 41 04 48 8B 4C CA", [this](memory::handle ptr)
 		{
-			m_fix_vectors = ptr.as<functions::fix_vectors_t>();
+			m_fix_vectors = ptr.as<functions::fix_vectors>();
 		});
 
 		// Script Threads
 		main_batch.add("ST", "45 33 F6 8B E9 85 C9 B8", [this](memory::handle ptr)
 		{
 			m_script_threads = ptr.sub(4).rip().sub(8).as<decltype(m_script_threads)>();
-			m_run_script_threads = ptr.sub(0x1F).as<functions::run_script_threads_t>();
+			m_run_script_threads = ptr.sub(0x1F).as<functions::run_script_threads>();
 		});
 
 		// Script Programs
@@ -120,6 +120,13 @@ namespace big
 			m_received_event = ptr.as<decltype(m_received_event)>();
 		});
 
+		// Send Event Acknowledge
+		main_batch.add("SEA", "48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 7A", [this](memory::handle ptr)
+		{
+				m_send_event_ack = ptr.sub(5).as<decltype(m_send_event_ack)>();
+		});
+		// Received Event Signatures END
+
 		// Read Bitbugger WORD/DWORD
 		main_batch.add("RBWD", "48 89 74 24 ? 57 48 83 EC 20 48 8B D9 33 C9 41 8B F0 8A", [this](memory::handle ptr)
 		{
@@ -132,12 +139,65 @@ namespace big
 			m_read_bitbuf_array = ptr.as<decltype(m_read_bitbuf_array)>();
 		});
 
-		// Send Event Acknowledge
-		main_batch.add("SEA", "48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 7A", [this](memory::handle ptr)
+		// Read Bitbuffer WORD/DWORD
+		main_batch.add("RBD", "48 89 74 24 ? 57 48 83 EC 20 48 8B D9 33 C9 41 8B F0 8A", [this](memory::handle ptr)
 		{
-			m_send_event_ack = ptr.sub(5).as<decltype(m_send_event_ack)>();
+			m_read_bitbuf_dword = ptr.sub(5).as<decltype(m_read_bitbuf_dword)>();
 		});
-		// Received Event Signatures END
+
+		// Read Bitbuffer String
+		main_batch.add("RBS", "E8 ? ? ? ? 48 8D 4F 3C", [this](memory::handle ptr)
+		{
+			m_read_bitbuf_string = ptr.add(1).rip().as<decltype(m_read_bitbuf_string)>();
+		});
+
+		// Read Bitbuffer Boolean
+		main_batch.add("RBB", "E8 ? ? ? ? 84 C0 74 2D 48 8D 57 20", [this](memory::handle ptr)
+		{
+			m_read_bitbuf_bool = ptr.add(1).rip().as<decltype(m_read_bitbuf_bool)>();
+		});
+
+		// Read Bitbuffer Arrau
+		main_batch.add("RBA", "48 89 5C 24 ? 57 48 83 EC 30 41 8B F8 4C", [this](memory::handle ptr) 
+		{
+			m_read_bitbuf_array = ptr.as<decltype(m_read_bitbuf_array)>();
+		});
+
+		// Write Bitbuffer WORD/DWORD
+		main_batch.add("WBD", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 83 EC 20 8B EA BF 01 ? ? ?", [this](memory::handle ptr)
+		{
+			m_write_bitbuf_dword = ptr.as<decltype(m_write_bitbuf_dword)>();
+		});
+
+		// Write Bitbuffer QWORD
+		main_batch.add("WBQ", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 41 8B F0 48 8B EA 48 8B D9 41 83 F8 20", [this](memory::handle ptr)
+		{
+			m_write_bitbuf_qword = ptr.as<decltype(	m_write_bitbuf_qword)>();
+		});
+
+		// Write Bitbuffer Int64
+		main_batch.add("WBI64", "E8 ? ? ? ? 8A 53 39 48 8B CF", [this](memory::handle ptr)
+		{
+			m_write_bitbuf_int64 = ptr.add(1).rip().as<decltype(m_write_bitbuf_int64)>();
+		});
+
+		// Write Bitbuffer Int32
+		main_batch.add("WBI32", "E8 ? ? ? ? 8A 53 74", [this](memory::handle ptr)
+		{
+			m_write_bitbuf_int32 = ptr.add(1).rip().as<decltype(m_write_bitbuf_int32)>();
+		});
+
+		// Write Bitbuffer Boolean
+		main_batch.add("WBB", "E8 ? ? ? ? 8A 57 39", [this](memory::handle ptr)
+		{
+			m_write_bitbuf_bool = ptr.add(1).rip().as<decltype(m_write_bitbuf_bool)>();
+		});
+
+		// Write Bitbuffer Array
+		main_batch.add("WBA", "E8 ? ? ? ? 01 7E 08", [this](memory::handle ptr)
+		{
+			m_write_bitbuf_array = ptr.add(1).rip().as<decltype(m_write_bitbuf_array)>();
+		});
 
 		// Request Control of Entity PATCH
 		main_batch.add("RCOE-Patch", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", [this](memory::handle ptr)
@@ -215,13 +275,13 @@ namespace big
 		// GET_SCREEN_COORDS_FROM_WORLD_COORDS
 		main_batch.add("GSCFWC", "E8 ? ? ? ? 84 C0 74 19 F3 0F 10 44 24", [this](memory::handle ptr)
 		{
-			m_get_screen_coords_for_world_coords = ptr.add(1).rip().as<functions::get_screen_coords_for_world_coords*>();
+			m_get_screen_coords_for_world_coords = ptr.add(1).rip().as<functions::get_screen_coords_for_world_coords>();
 		});
 
 		// Get Gameplay Cam Coords
 		main_batch.add("GGCC", "8B 90 ? ? ? ? 89 13", [this](memory::handle ptr)
 		{
-			m_get_gamplay_cam_coords = ptr.sub(0xE).as<functions::get_gameplay_cam_coords*>();
+			m_get_gameplay_cam_coords = ptr.sub(0xE).as<functions::get_gameplay_cam_coords>();
 		});
 
 		// Give Pickup Reward
