@@ -1,6 +1,6 @@
 #include "backend/looped/looped.hpp"
-#include "services/player_service.hpp"
-#include "util/globals.hpp"
+#include "util/toxic.hpp"
+#include "services/players/player_service.hpp"
 
 namespace big
 {
@@ -8,7 +8,7 @@ namespace big
 	{
 		if (g->player.player_never_wanted && g_player_service->get_selected()->is_valid())
 		{
-			globals::clear_wanted_player(g_player_service->get_selected()->id());
+			toxic::clear_wanted_player(g_player_service->get_selected()->id());
 		}
 	}
 }

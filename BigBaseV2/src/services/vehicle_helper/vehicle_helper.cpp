@@ -1,7 +1,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
-#include "vehicle_helper.h"
+#include "vehicle_helper.hpp"
 
 namespace big
 {

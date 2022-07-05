@@ -3,6 +3,7 @@
 #include "enums.hpp"
 #include "file_manager.hpp"
 #include "imgui.h"
+#include <bitset>
 
 namespace big
 {
@@ -56,6 +57,10 @@ namespace big
 				pair send_to_island{};
 				pair sound_spam{};
 				pair spectate{};
+				pair crash2{};
+				pair disownvehicle{};
+				pair destroyvehicle{};
+				pair blockpassive{};
 				pair transaction_error{};
 				pair tse_freeze{};
 				pair vehicle_kick{};
@@ -80,8 +85,8 @@ namespace big
 			pair reports{};
 
 			pair send_net_info_to_lobby{};
-			pair transaction_rate_limit{};
 			pair invalid_sync{};
+			pair transaction_rate_limit{};			
 		};
 
 		struct player {
@@ -114,6 +119,10 @@ namespace big
 				bool spectate = true;
 				bool transaction_error = true;
 				bool vehicle_kick = true;
+				bool crash2 = true;
+				bool disownvehicle = true;
+				bool destroyvehicle = true;
+				bool blockpassive = true;
 			};
 
 			script_events script_events{};
@@ -140,7 +149,19 @@ namespace big
 			bool noclip = false;
 			bool off_radar = false;
 			bool super_run = false;
+			bool aimbot = false;
+			bool aimbot_exclude_friend = true;
 			int wanted_level = 0;
+
+			bool proof_bullet = false;
+			bool proof_fire = false;
+			bool proof_collision = false;
+			bool proof_melee = false;
+			bool proof_explosion = false;
+			bool proof_steam = false;
+			bool proof_drown = false;
+			bool proof_water = false;
+			uint32_t proof_mask = 0;
 		};
 
 		struct session
@@ -160,6 +181,9 @@ namespace big
 				bool editing_menu_toggle = false;
 				int menu_toggle = VK_INSERT;
 				int teleport_waypoint = 0;
+				bool teleport_waypoint_triggered = false;
+				int teleport_objective = 0;
+				bool teleport_objective_triggered = false;
 			};
 
 			hotkeys hotkeys{};
@@ -170,6 +194,8 @@ namespace big
 			bool preview_vehicle = false;
 			bool spawn_inside = false;
 			bool spawn_maxed = false;
+			bool delete_last_spawn = false;
+			int last_spawn = 0;
 		};
 
 		struct spoofing
@@ -197,6 +223,7 @@ namespace big
 				float y = .72f;
 
 				bool left_side = false;
+				bool type_text = false;
 			};
 
 			struct fly
@@ -214,6 +241,7 @@ namespace big
 			bool drive_on_water = false;
 			bool god_mode = false;
 			bool horn_boost = false;
+			bool vehicle_jump = false;
 			bool instant_brake = false;
 			bool is_targetable = true;
 			bool ls_customs = false; // don't save this to disk
@@ -265,6 +293,18 @@ namespace big
 		struct context_menu
 		{
 			bool enabled = true;
+			bool crosshair = false;
+
+			uint8_t allowed_entity_types =
+				static_cast<uint8_t>(ContextEntityType::PED) |
+				static_cast<uint8_t>(ContextEntityType::PLAYER) |
+				static_cast<uint8_t>(ContextEntityType::VEHICLE) |
+				static_cast<uint8_t>(ContextEntityType::OBJECT);
+
+			ImU32 selected_option_color = 4278255360;
+
+			bool bounding_box_enabled = true;
+			ImU32 bounding_box_color = 4278255360;
 		};
 
 		struct esp
@@ -413,6 +453,14 @@ namespace big
 				script_handler.tse_freeze.notify = script_handler_j["tse_freeze"]["notify"];
 				script_handler.vehicle_kick.log = script_handler_j["vehicle_kick"]["log"];
 				script_handler.vehicle_kick.notify = script_handler_j["vehicle_kick"]["notify"];
+				script_handler.crash2.log = script_handler_j["crash2"]["log"];
+				script_handler.crash2.notify = script_handler_j["crash2"]["notify"];
+				script_handler.disownvehicle.log = script_handler_j["disownvehicle"]["log"];
+				script_handler.disownvehicle.notify = script_handler_j["disownvehicle"]["notify"];
+				script_handler.destroyvehicle.log = script_handler_j["destroyvehicle"]["log"];
+				script_handler.destroyvehicle.notify = script_handler_j["destroyvehicle"]["notify"];
+				script_handler.blockpassive.log = script_handler_j["blockpassive"]["log"];
+				script_handler.blockpassive.notify = script_handler_j["blockpassive"]["notify"];
 			}
 
 			g->notifications.send_net_info_to_lobby.log = j["notifications"]["send_net_info_to_lobby"]["log"];
@@ -446,6 +494,10 @@ namespace big
 				script_handler.spectate = script_handler_j["spectate"];
 				script_handler.transaction_error = script_handler_j["transaction_error"];
 				script_handler.vehicle_kick = script_handler_j["vehicle_kick"];
+				script_handler.crash2 = script_handler_j["crash2"];
+				script_handler.disownvehicle = script_handler_j["disownvehicle"];
+				script_handler.destroyvehicle = script_handler_j["destroyvehicle"];
+				script_handler.blockpassive = script_handler_j["blockpassive"];
 			}
 
 			this->rgb.fade = j["rgb"]["fade"];
@@ -466,12 +518,17 @@ namespace big
 			this->self.no_ragdoll = j["self"]["no_ragdoll"];
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
+			this->self.aimbot = j["self"]["aimbot"];
+			this->self.aimbot_exclude_friend = j["self"]["aimbot_exclude_friend"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
+			this->settings.hotkeys.teleport_waypoint = j["settings"]["hotkeys"]["teleport_waypoint"];
+			this->settings.hotkeys.teleport_objective = j["settings"]["hotkeys"]["teleport_objective"];
 
 			this->spawn.preview_vehicle = j["spawn"]["preview_vehicle"];
 			this->spawn.spawn_inside = j["spawn"]["spawn_inside"];
 			this->spawn.spawn_maxed = j["spawn"]["spawn_maxed"];
+			this->spawn.delete_last_spawn = j["spawn"]["delete_last_spawn"];
 
 			this->spoofing.spoof_ip = j["spoofing"]["spoof_ip"];
 			this->spoofing.spoof_rockstar_id = j["spoofing"]["spoof_rockstar_id"];
@@ -490,6 +547,7 @@ namespace big
 			this->vehicle.driving_style_id = j["vehicle"]["driving_style"];
 			this->vehicle.god_mode = j["vehicle"]["god_mode"];
 			this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
+			this->vehicle.vehicle_jump = j["vehicle"]["vehicle_jump"];
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
 			this->vehicle.pv_teleport_into = j["vehicle"]["pv_teleport_into"];
@@ -501,6 +559,7 @@ namespace big
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
 			this->vehicle.speedo_meter.x = j["vehicle"]["speedo_meter"]["position_x"];
 			this->vehicle.speedo_meter.y = j["vehicle"]["speedo_meter"]["position_y"];
+			this->vehicle.speedo_meter.type_text = j["vehicle"]["speedo_meter"]["type_text"];
 
 			this->vehicle.fly.dont_stop = j["vehicle"]["fly"]["dont_stop"];
 			this->vehicle.fly.enabled = j["vehicle"]["fly"]["enabled"];
@@ -527,6 +586,11 @@ namespace big
 			this->window.users = j["window"]["users"];
 
 			this->context_menu.enabled = j["context_menu"]["enabled"];
+			this->context_menu.crosshair = j["context_menu"]["crosshair"];
+			this->context_menu.allowed_entity_types = j["context_menu"]["allowed_entity_types"];
+			this->context_menu.selected_option_color = j["context_menu"]["selected_option_color"];
+			this->context_menu.bounding_box_enabled = j["context_menu"]["bounding_box_enabled"];
+			this->context_menu.bounding_box_color = j["context_menu"]["bounding_box_color"];
 
 			this->esp.enabled = j["esp"]["enabled"];
 			this->esp.hide_self = j["esp"]["hide_self"];
@@ -622,12 +686,16 @@ namespace big
 								{ "spectate", return_notify_pair(script_handler_notifications.spectate) },
 								{ "transaction_error", return_notify_pair(script_handler_notifications.transaction_error) },
 								{ "tse_freeze", return_notify_pair(script_handler_notifications.tse_freeze) },
-								{ "vehicle_kick", return_notify_pair(script_handler_notifications.vehicle_kick) }
+								{ "vehicle_kick", return_notify_pair(script_handler_notifications.vehicle_kick) },
+								{ "crash2", return_notify_pair(script_handler_notifications.crash2) },
+								{ "disownvehicle", return_notify_pair(script_handler_notifications.disownvehicle) },
+								{ "destroyvehicle", return_notify_pair(script_handler_notifications.destroyvehicle) },
+								{ "blockpassive", return_notify_pair(script_handler_notifications.blockpassive) }
 							}
 						},
 						{ "send_net_info_to_lobby", return_notify_pair(g->notifications.send_net_info_to_lobby) },
-						{ "transaction_rate_limit", return_notify_pair(g->notifications.transaction_rate_limit) },
-						{ "invalid_sync", return_notify_pair(g->notifications.invalid_sync) }
+						{ "invalid_sync", return_notify_pair(g->notifications.invalid_sync) },
+						{ "transaction_rate_limit", return_notify_pair(g->notifications.transaction_rate_limit) }						
 					}
 				},
 				{
@@ -655,7 +723,11 @@ namespace big
 								{ "sound_spam", script_handler_protections.sound_spam },
 								{ "spectate", script_handler_protections.spectate },
 								{ "transaction_error", script_handler_protections.transaction_error },
-								{ "vehicle_kick", script_handler_protections.vehicle_kick }
+								{ "vehicle_kick", script_handler_protections.vehicle_kick },
+								{ "crash2", script_handler_protections.crash2 },
+								{ "disownvehicle", script_handler_protections.disownvehicle },
+								{ "destroyvehicle", script_handler_protections.destroyvehicle },
+								{ "blockpassive", script_handler_protections.blockpassive }
 							}
 						}
 					}
@@ -685,13 +757,17 @@ namespace big
 						{ "never_wanted", this->self.never_wanted },
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
-						{ "super_run", this->self.super_run }
+						{ "super_run", this->self.super_run },
+						{ "aimbot", this->self.aimbot },
+						{ "aimbot_exclude_friend", this->self.aimbot_exclude_friend }
 					}
 				},
 				{
 					"settings", {
 						{ "hotkeys", {
-								{ "menu_toggle", this->settings.hotkeys.menu_toggle }
+								{ "menu_toggle", this->settings.hotkeys.menu_toggle },
+								{ "teleport_waypoint", this->settings.hotkeys.teleport_waypoint },
+								{ "teleport_objective", this->settings.hotkeys.teleport_objective }
 							}
 						}
 					}
@@ -700,7 +776,8 @@ namespace big
 					"spawn", {
 						{ "preview_vehicle", this->spawn.preview_vehicle },
 						{ "spawn_inside", this->spawn.spawn_inside },
-						{ "spawn_maxed", this->spawn.spawn_maxed}
+						{ "spawn_maxed", this->spawn.spawn_maxed},
+						{ "delete_last_spawn", this->spawn.delete_last_spawn}
 					}
 				},
 				{
@@ -728,6 +805,7 @@ namespace big
 						{ "driving_style", this->vehicle.driving_style_id },
 						{ "god_mode", this->vehicle.god_mode },
 						{ "horn_boost", this->vehicle.horn_boost },
+						{ "vehicle_jump", this->vehicle.vehicle_jump },
 						{ "instant_brake", this->vehicle.instant_brake },
 						{ "is_targetable", this->vehicle.is_targetable },
 						{ "pv_teleport_into", this->vehicle.pv_teleport_into },
@@ -740,6 +818,7 @@ namespace big
 								{ "left_side", this->vehicle.speedo_meter.left_side },
 								{ "position_x", this->vehicle.speedo_meter.x },
 								{ "position_y", this->vehicle.speedo_meter.y },
+								{ "type_text", this->vehicle.speedo_meter.type_text },
 							}
 						},
 						{
@@ -782,7 +861,12 @@ namespace big
 				},
 				{
 					"context_menu", {
-						{"enabled", this->context_menu.enabled}
+						{ "enabled", this->context_menu.enabled },
+						{ "crosshair", this->context_menu.crosshair },
+						{ "allowed_entity_types", this->context_menu.allowed_entity_types },
+						{ "selected_option_color", this->context_menu.selected_option_color },
+						{ "bounding_box_enabled", this->context_menu.bounding_box_enabled },
+						{ "bounding_box_color", this->context_menu.bounding_box_color },
 					}
 				},
 				{

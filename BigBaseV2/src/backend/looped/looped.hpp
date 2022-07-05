@@ -32,6 +32,7 @@ namespace big
 		static void self_off_radar();
 		static void self_police();
 		static void self_super_run();
+		static void self_aimbot();
 
 		static void session_local_time();
 
@@ -45,6 +46,7 @@ namespace big
 		static void vehicle_fly();
 		static void vehicle_god_mode();
 		static void vehicle_horn_boost();
+		static void vehicle_jump();
 		static void vehicle_instant_brake();
 		static void vehicle_is_targetable();
 		static void vehicle_ls_customs();
@@ -67,5 +69,9 @@ namespace big
 		static void weapons_repair_gun();
 		static void weapons_steal_vehicle_gun();
 		static void weapons_vehicle_gun();
+
+		static void hotkeys_input();
+		static void hotkeys_teleport_waypoint();
+		static void hotkeys_teleport_objective();
 	};
 }

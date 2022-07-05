@@ -1,7 +1,7 @@
-#include "views/view.hpp"
 #include "fiber_pool.hpp"
+#include "services/mobile/mobile_service.hpp"
 #include "util/mobile.hpp"
-#include "services/mobile_service.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -15,11 +15,11 @@ namespace big
 
 		ImGui::Separator();
 
-		components::small_text("Lester");
+		/*components::small_text("Lester");
 
 		ImGui::Checkbox("Off Radar", &g->self.off_radar);
 
-		ImGui::Separator();
+		ImGui::Separator();*/
 
 		components::small_text("Mechanic - Personal Vehicles");
 

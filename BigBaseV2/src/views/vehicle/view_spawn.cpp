@@ -1,7 +1,7 @@
 #include "views/view.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
-#include "services/vehicle_preview_service.hpp"
+#include "services/vehicle_preview/vehicle_preview_service.hpp"
 #include "util/vehicle.hpp"
 
 namespace big
@@ -18,11 +18,15 @@ namespace big
 	void view::spawn() {
 		ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
 
-		ImGui::Checkbox("Preview", &g->spawn.preview_vehicle);
-		ImGui::SameLine();
+		
 		ImGui::Checkbox("Spawn In", &g->spawn.spawn_inside);
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn Maxed", &g->spawn.spawn_maxed);
+		ImGui::Checkbox("Preview", &g->spawn.preview_vehicle);
+		ImGui::SameLine();
+		ImGui::Checkbox("Delete Last Spawn", &g->spawn.delete_last_spawn);
+
+		ImGui::Separator();
 
 		components::input_text_with_hint("Model Name", "Search", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, []
 		{
@@ -36,9 +40,16 @@ namespace big
 
 			if (g->spawn.spawn_maxed)
 				vehicle::max_vehicle(veh);
+			
+			if (g->spawn.delete_last_spawn)
+			{
+				entity::delete_entity(g->spawn.last_spawn);
+			}
+			g->spawn.last_spawn = veh;
+
 		});
 		// arbitrary subtraction this looked nice so idc, works for all resolutions as well
-		if (ImGui::ListBoxHeader("###vehicles", { 0, static_cast<float>(*g_pointers->m_resolution_y - 260)}))
+		if (ImGui::ListBoxHeader("###vehicles", { 0, static_cast<float>(*g_pointers->m_resolution_y - 520)}))
 		{
 			if (!g_vehicle_preview_service->get_vehicle_list().is_null())
 			{
@@ -76,6 +87,12 @@ namespace big
 							{
 								vehicle::max_vehicle(veh);
 							}
+							if (g->spawn.delete_last_spawn)
+							{
+								entity::delete_entity(g->spawn.last_spawn);
+							}
+
+							g->spawn.last_spawn = veh;
 
 							g_vehicle_preview_service->stop_preview();
 						});

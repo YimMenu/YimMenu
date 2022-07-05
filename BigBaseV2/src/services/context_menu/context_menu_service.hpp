@@ -1,20 +1,12 @@
 #pragma once
 #include "natives.hpp"
 #include "util/entity.hpp"
+#include "util/toxic.hpp"
 #include "util/ped.hpp"
 #include "util/teleport.hpp"
 
 namespace big
 {
-	enum class ContextEntityType
-	{
-		PED,
-		PLAYER,
-		VEHICLE,
-		OBJECT,
-		SHARED
-	};
-
 	struct context_option
 	{
 		std::string name;
@@ -29,9 +21,16 @@ namespace big
 		std::vector<context_option> options;
 	};
 
+	struct model_bounding_box_screen_space
+	{
+		ImVec2 edge1, edge2, edge3, edge4;
+		ImVec2 edge5, edge6, edge7, edge8;
+	};
+
 	class context_menu_service final
 	{
 	private:
+		void fill_model_bounding_box_screen_space();
 		static double distance_to_middle_of_screen(const rage::vector2& screen_pos);
 
 	public:
@@ -53,6 +52,7 @@ namespace big
 
 		Entity m_handle;
 		rage::fwEntity* m_pointer;
+		model_bounding_box_screen_space m_model_bounding_box_screen_space;
 
 		s_context_menu vehicle_menu{
 			ContextEntityType::VEHICLE,
@@ -81,7 +81,14 @@ namespace big
 
 		s_context_menu object_menu{
 			ContextEntityType::OBJECT,
-			0,{}, {}};
+			0,{}, {
+			{"DELETE", [this] {
+					if (entity::take_control_of(m_handle))
+					{
+						entity::delete_entity(m_handle);
+					}
+				}}
+			}};
 
 		s_context_menu player_menu{
 			ContextEntityType::PLAYER,
@@ -89,7 +96,8 @@ namespace big
 				{"STEAL IDENTITY", [this]
 				{
 					ped::steal_identity(m_handle);
-				}}
+				}},
+				
 			} };
 
 		s_context_menu shared_menu{
@@ -100,10 +108,20 @@ namespace big
 					rage::fvector3 pos = m_pointer->m_navigation->m_position;
 					FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 1, 1000, 1, 0, 1, 0);
 					}},
+				
 				{"TP TO", [this] {
 					rage::fvector3 pos = m_pointer->m_navigation->m_position;
 					teleport::to_coords({ pos.x, pos.y, pos.z });
 					}},
+				{"CAGE", [this] {
+					rage::fvector3 pos = m_pointer->m_navigation->m_position;
+					entity::cage_ped(m_handle);	
+				}},
+
+				{"Attach", [this] {
+					rage::fvector3 pos = m_pointer->m_navigation->m_position;
+					entity::Attach_Object_To_Ped(m_handle, ("prop_air_bigradar"));
+				}},
 			}
 		};
 

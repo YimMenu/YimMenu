@@ -15,25 +15,41 @@ namespace big
 	void view::notification_settings()
 	{
 		components::small_text("GTA Threads");
-
+		ImGui::BeginGroup();
 		draw_pair_option("Terminate", g->notifications.gta_thread_kill);
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
 		draw_pair_option("Start", g->notifications.gta_thread_start);
+		ImGui::EndGroup();
 			
 
 		components::small_text("Network Player Manager");
 
+		
 		ImGui::Text("Player Join");
 
 		ImGui::Checkbox("Above Map", &g->notifications.player_join.above_map);
 		ImGui::Checkbox("Log", &g->notifications.player_join.log);
 		ImGui::Checkbox("Notify", &g->notifications.player_join.notify);
+				
+		ImGui::BeginGroup();
+		draw_pair_option("Player Leave", g->notifications.player_leave);
+		ImGui::EndGroup();
 
 		ImGui::SameLine();
 
-		draw_pair_option("Player Leave", g->notifications.player_leave);
-
+		ImGui::BeginGroup();
 		draw_pair_option("Init", g->notifications.network_player_mgr_init);
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
 		draw_pair_option("Shutdown", g->notifications.network_player_mgr_shutdown);
+		ImGui::EndGroup();
 
 		components::small_text("Received Event");
 
@@ -66,6 +82,7 @@ namespace big
 		draw_pair_option("Fake Deposit", script_event_handler.fake_deposit);
 		draw_pair_option("Force Mission", script_event_handler.force_mission);
 		draw_pair_option("Force Teleport", script_event_handler.force_teleport);
+		draw_pair_option("Block Passive", script_event_handler.blockpassive);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
@@ -78,6 +95,8 @@ namespace big
 		draw_pair_option("Rotate Cam", script_event_handler.rotate_cam);
 		draw_pair_option("Send to Cutscene", script_event_handler.send_to_cutscene);
 		draw_pair_option("Send to Island", script_event_handler.send_to_island);
+		draw_pair_option("Vehicle Kick", script_event_handler.vehicle_kick);
+		draw_pair_option("Wanted Level", script_event_handler.clear_wanted_level);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
@@ -88,16 +107,34 @@ namespace big
 		draw_pair_option("Transaction Error", script_event_handler.transaction_error);
 		draw_pair_option("TSE Crash", script_event_handler.crash);
 		draw_pair_option("TSE Freeze", script_event_handler.tse_freeze);
-		draw_pair_option("Vehicle Kick", script_event_handler.vehicle_kick);
-		draw_pair_option("Wanted Level", script_event_handler.clear_wanted_level);
+		draw_pair_option("CrashV2", script_event_handler.crash2);
+		draw_pair_option("Disown Personal Vehicle", script_event_handler.disownvehicle);
+		draw_pair_option("Destroy Personal Vehicle", script_event_handler.destroyvehicle);
 		ImGui::EndGroup();
 
 		components::small_text("Other");
 
+		ImGui::BeginGroup();
 		draw_pair_option("Net Array Error", g->notifications.net_array_error);
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
 		draw_pair_option("Reports", g->notifications.reports);
-		draw_pair_option("Transaction Error / Rate Limit", g->notifications.transaction_rate_limit);
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
 		draw_pair_option("Invalid sync", g->notifications.invalid_sync);
+		ImGui::EndGroup();	
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
+		draw_pair_option("Rate Limit", g->notifications.transaction_rate_limit);
+		ImGui::EndGroup();
 			
 	}
 

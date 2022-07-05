@@ -54,7 +54,7 @@
 #include "gta/natives.hpp"
 #include "CPed.hpp"
 
-#include "services/notification_service.hpp"
+#include "services/notifications/notification_service.hpp"
 
 namespace big
 {
@@ -63,6 +63,7 @@ namespace big
 	template <typename T>
 	using comptr = Microsoft::WRL::ComPtr<T>;
 
+	inline HWND g_hwnd{};
 	inline HMODULE g_hmodule{};
 	inline HANDLE g_main_thread{};
 	inline DWORD g_main_thread_id{};

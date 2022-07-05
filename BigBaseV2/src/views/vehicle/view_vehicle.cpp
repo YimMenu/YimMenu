@@ -13,6 +13,7 @@ namespace big
 		ImGui::Checkbox("Can Be Targeted", &g->vehicle.is_targetable);
 		ImGui::Checkbox("God Mode", &g->vehicle.god_mode);
 		ImGui::Checkbox("Horn Boost", &g->vehicle.horn_boost);
+		ImGui::Checkbox("Vehicle Jump", &g->vehicle.vehicle_jump);
 		ImGui::Checkbox("Instant Brake", &g->vehicle.instant_brake);
 		ImGui::Checkbox("Drive On Water", &g->vehicle.drive_on_water);
 
@@ -26,7 +27,7 @@ namespace big
 			vehicle::repair(self::veh);
 			});
 
-		components::button("Instant in personal vehicle", [] {
+		components::button("Instant in PV", [] {
 			if (!*g_pointers->m_is_session_started) return g_notification_service->push_warning("WARNING", "Go into GTA V Online to use this option");
 
 			vehicle::go_into_personal_vehicle();
@@ -61,6 +62,7 @@ namespace big
 
 			g->vehicle.auto_drive_to_waypoint = true;
 			});
+		ImGui::SameLine();
 
 		components::button("Wander", [] {
 
@@ -141,5 +143,8 @@ namespace big
 		}
 
 		ImGui::Checkbox("Left Sided", &g->vehicle.speedo_meter.left_side);
+		ImGui::SameLine();
+		ImGui::Checkbox("Type Text", &g->vehicle.speedo_meter.type_text);
+
 	}
 }
