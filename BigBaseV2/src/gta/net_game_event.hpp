@@ -31,6 +31,15 @@ namespace rage
 			}
 			return false;
 		}
+		bool WriteBool(bool integer) {
+			return big::g_pointers->m_write_bitbuf_bool(this, integer, 1);
+		}
+		bool ReadBool(bool* integer) {
+			return big::g_pointers->m_read_bitbuf_bool(this, integer, 1);
+		}
+		bool ReadPeerId(uint64_t* integer) {
+			return this->ReadQWord(integer, 0x32);
+		}
 		uint64_t ReadBits(size_t numBits) {
 			auto const totalBits = (m_flagBits & 1) ? m_maxBit : m_curBit;
 			if ((m_flagBits & 2) || m_bitsRead + numBits > totalBits)
@@ -40,25 +49,16 @@ namespace rage
 			auto const start = &m_data[bufPos / 8];
 			auto const next = &start[1];
 			auto result = (start[0] << initialBitOffset) & 0xff;
-			for (auto i = 0; i < (numBits - 1) / 8; i++) {
+			for (auto i = 0; i < ((numBits - 1) / 8); i++) {
 				result <<= 8;
 				result |= next[i] << initialBitOffset;
 			}
 			if (initialBitOffset)
 				result |= next[0] >> (8 - initialBitOffset);
-			m_bitsRead += numBits;
+			m_bitsRead += static_cast<uint32_t>(numBits);
 			if (m_bitsRead > m_highestBitsRead)
 				m_highestBitsRead = m_bitsRead;
 			return result >> ((8 - numBits) % 8);
-		}
-		bool WriteBool(bool integer) {
-			return big::g_pointers->m_write_bitbuf_bool(this, integer, 1);
-		}
-		bool ReadBool(bool* integer) {
-			return big::g_pointers->m_read_bitbuf_bool(this, integer, 1);
-		}
-		bool ReadPeerId(uint64_t* integer) {
-			return this->ReadQWord(integer, 0x32);
 		}
 		int GetDataLength() {
 			int leftoverBit = (m_curBit % 8) ? 1 : 0;

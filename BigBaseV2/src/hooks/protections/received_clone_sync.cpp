@@ -1,6 +1,5 @@
 #include "hooking.hpp"
 #include "core/globals.hpp"
-#include <format>
 
 namespace big {
 
