@@ -1,10 +1,11 @@
-#include "views/view.hpp"
-#include "services/player_service.hpp"
 #include "gta_util.hpp"
-#include "util/misc.hpp"
+#include "services/pickups/pickup_service.hpp"
+#include "services/players/player_service.hpp"
 #include "util/globals.hpp"
+#include "util/misc.hpp"
 #include "util/ped.hpp"
 #include "util/teleport.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -40,7 +41,27 @@ namespace big
 
 				ImGui::SameLine();
 
-				ImGui::Checkbox("Never Wanted", &g->player.player_never_wanted);
+				ImGui::Checkbox("Never Wanted", &g_player_service->get_selected()->never_wanted);
+
+				components::button("Give Health", [] {
+					g_pickup_service->give_player_health(g_player_service->get_selected()->id());
+				});
+
+				ImGui::SameLine();
+
+				components::button("Give Armour", [] {
+					g_pickup_service->give_player_armour(g_player_service->get_selected()->id());
+				});
+
+				components::button("Give Ammo", [] {
+					g_pickup_service->give_player_ammo(g_player_service->get_selected()->id());
+				});
+
+				ImGui::SameLine();
+
+				components::button("Give Weapons", [] {
+					g_pickup_service->give_player_weapons(g_player_service->get_selected()->id());
+				});
 
 				ImGui::TreePop();
 			}

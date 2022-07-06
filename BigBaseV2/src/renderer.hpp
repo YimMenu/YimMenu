@@ -80,8 +80,9 @@ namespace big
 		void wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 	public:
 		ImFont* m_font;
-		ImFont *m_font_title;
-		ImFont *m_monospace_font;
+		ImFont* m_font_title;
+		ImFont* m_monospace_font;
+		ImFont* m_font_icons;
 	private:
 		comptr<IDXGISwapChain> m_dxgi_swapchain;
 		comptr<ID3D11Device> m_d3d_device;
@@ -93,5 +94,5 @@ namespace big
 		bool m_restoreState = false;
 	};
 
-	inline renderer *g_renderer{};
+	inline renderer* g_renderer{};
 }

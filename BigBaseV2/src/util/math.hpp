@@ -32,7 +32,7 @@ namespace big::math
 	inline float calculate_distance_from_game_cam (rage::fvector3 player_position)
 	{
 		const Vector3 plyr_coords = { player_position.x, player_position.y, player_position.z };
-		const Vector3 cam_coords = g_pointers->m_get_gamplay_cam_coords();
+		const Vector3 cam_coords = g_pointers->m_get_gameplay_cam_coords();
 
 		return (float)distance_between_vectors(plyr_coords, cam_coords);
 	}
