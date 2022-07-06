@@ -5,7 +5,6 @@
 #include "util/globals.hpp"
 #include "util/ped.hpp"
 #include "util/teleport.hpp"
-#include "features.hpp"
 
 namespace big
 {
@@ -115,22 +114,22 @@ namespace big
 			{
 				if (ImGui::Button("Kick out of car"))
 				{
-					QUEUE_JOB_BEGIN_CLAUSE()
-					{
+					g_fiber_pool->queue_job([]
+						{
 						int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
 						TASK::CLEAR_PED_TASKS_IMMEDIATELY(Handle);
-					}QUEUE_JOB_END_CLAUSE
+						});
 
 				}
 
 				if (ImGui::Button("Crash them while in car"))
 				{
-					QUEUE_JOB_BEGIN_CLAUSE()
-					{
+					g_fiber_pool->queue_job([]
+						{
 						int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
 						Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(Handle, false);
 						TASK::TASK_VEHICLE_TEMP_ACTION(Handle, vehicle, 18, 600);
-					}QUEUE_JOB_END_CLAUSE
+						});
 
 				}
 
@@ -153,81 +152,6 @@ namespace big
 							notify::above_map("Vehicle Gifted");
 						});
 				}
-
-				if (ImGui::Button("Clone Vehicle"))
-				{
-					QUEUE_JOB_BEGIN_CLAUSE()
-					{
-						int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
-						Vehicle cloned = features::ClonePedVehicle(Handle);
-						features::BoostStats(cloned);
-					}QUEUE_JOB_END_CLAUSE
-
-
-				}
-				ImGui::TreePop();
-			}
-
-			if (ImGui::TreeNode("Toxic")) {
-				components::button("Explode Self", [] {
-					toxic::blame_explode_player(
-						g_player_service->get_selected()->id(),
-						g_player_service->get_selected()->id(),
-						eExplosionType::PLANE, 1000, false, true, 0.f
-					);
-					});
-				if (ImGui::Button("Host Kick"))
-				{
-					QUEUE_JOB_BEGIN_CLAUSE()
-					{
-						NETWORK::NETWORK_SESSION_KICK_PLAYER(g_player_service->get_selected()->id());
-					}
-					QUEUE_JOB_END_CLAUSE
-				}
-
-				if (ImGui::Button("Bounty player"))
-				{
-					QUEUE_JOB_BEGIN_CLAUSE() {
-						toxic::bounty_player(g_player_service->get_selected()->id(), 10000);
-					}QUEUE_JOB_END_CLAUSE
-				}
-
-				if (ImGui::Button("Send to island"))
-				{
-					QUEUE_JOB_BEGIN_CLAUSE() {
-						int64_t args[3] = {
-				(int)eRemoteEvent::SendToIsland, 0, g_player_service->get_selected()->id() };
-						g_pointers->m_trigger_script_event(1, args, 3, 1 << g_player_service->get_selected()->id());
-					}QUEUE_JOB_END_CLAUSE
-				}
-
-				if (ImGui::Button("Desync Kick"))
-				{
-					QUEUE_JOB_BEGIN_CLAUSE() {
-						gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player());
-					}QUEUE_JOB_END_CLAUSE
-				}
-
-				if (ImGui::Button("Send Network Bail"))
-				{
-					QUEUE_JOB_BEGIN_CLAUSE() {
-						int64_t args[3] = {
-				(int)eRemoteEvent::NetworkBail, g_player_service->get_selected()->id(),*script_global(1893548).at(1).at(g_player_service->get_selected()->id() * 600).at(511).as<int*>() };
-						g_pointers->m_trigger_script_event(1, args, 3, 1 << g_player_service->get_selected()->id());
-					}QUEUE_JOB_END_CLAUSE
-				}
-				components::button("Taze", [] {
-					toxic::taze_player(g_player_service->get_selected()->id());
-				});
-				
-				components::button("Kick From Vehicle", [] {
-					toxic::kick_from_vehicle(g_player_service->get_selected()->id());
-				});
-        
-				components::button("Flying Vehicle", [] {
-					toxic::flying_vehicle(g_player_service->get_selected()->id());
-				});
-
 				ImGui::TreePop();
 			}
 		}

@@ -178,17 +178,20 @@ namespace big
 		}
 		ImGui::Separator();
 
-		if (ImGui::SliderFloat("Vehicle torque", &features::max_vehicle_torque, 0.f, 6000.f) ||
+		static float max_vehicle_torque = 10.f;
+		static float max_vehicle_engine = 10.f;
+
+		if (ImGui::SliderFloat("Vehicle torque", &max_vehicle_torque, 0.f, 6000.f) ||
 			ImGui::Button("Apply"))
 		{
 
-			VEHICLE::SET_VEHICLE_CHEAT_POWER_INCREASE(PED::GET_VEHICLE_PED_IS_USING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PLAYER::PLAYER_ID())), features::max_vehicle_torque);
+			VEHICLE::SET_VEHICLE_CHEAT_POWER_INCREASE(PED::GET_VEHICLE_PED_IS_USING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PLAYER::PLAYER_ID())), max_vehicle_torque);
 
 		}
-		if (ImGui::SliderFloat("Vehicle Engine", &features::max_vehicle_engine, 0.f, 6000.f) ||
+		if (ImGui::SliderFloat("Vehicle Engine", &max_vehicle_engine, 0.f, 6000.f) ||
 			ImGui::Button("Apply"))
 		{
-			VEHICLE::MODIFY_VEHICLE_TOP_SPEED(PED::GET_VEHICLE_PED_IS_USING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PLAYER::PLAYER_ID())), features::max_vehicle_engine);
+			VEHICLE::MODIFY_VEHICLE_TOP_SPEED(PED::GET_VEHICLE_PED_IS_USING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(PLAYER::PLAYER_ID())), max_vehicle_engine);
 		}
 	}
 }

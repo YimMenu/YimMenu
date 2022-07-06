@@ -1,7 +1,7 @@
 #pragma once
 
 #include "natives.hpp"
-#include "services\VehicleHelper.h"
+#include "services\vehicle_helper.h"
 #include "pointers.hpp"
 #include "ModelAttachment.h"
 

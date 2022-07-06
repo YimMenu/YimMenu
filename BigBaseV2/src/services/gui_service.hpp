@@ -23,7 +23,6 @@ namespace big
 		SESSION,
 		SETTINGS,
 		SPAWN,
-		LSC,
 		SPOOFING,
 		TELEPORT,
 		VEHICLE,
