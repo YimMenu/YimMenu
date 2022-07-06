@@ -56,11 +56,16 @@ namespace big
 
 		ImGui::Separator();
 
-		static char name[20];
-		ImGui::Text("Vehicle Text:");
-		ImGui::InputText("##vehicle text", name, sizeof(name));
-
-		VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(self::veh, name);
+		static char model[8];
+		components::input_text_with_hint("Vehicle\nLicense Text###vehicle_license_text", "Vehicle License Text", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, [] {
+			g_fiber_pool->queue_job([] {
+				const Hash hash = rage::joaat(model);				
+				if (!STREAMING::HAS_MODEL_LOADED(hash)) {
+					VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(self::veh, model);
+					return;
+				}
+				});
+			});
 
 		ImGui::Separator();
 
