@@ -21,11 +21,6 @@
 #include "services/vehicle_preview/vehicle_preview_service.hpp"
 #include "services/vehicle/vehicle_service.hpp"
 
-//OPENVHOOK
-#include "shv_runner.h"
-#include "ASI Loader/ASILoader.h"
-#include "backend/backend.hpp"
-
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
 	using namespace big;
@@ -75,16 +70,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					auto thread_pool_instance = std::make_unique<thread_pool>();
 					LOG(INFO) << "Thread pool initialized.";
 
-				g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
-				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
-				g_script_mgr.add_script(std::make_unique<script>(&shv_runner::script_func));
-				//OPENVHOOK
-				LOG(INFO) << "Scripts registered.";
-
-				//OPENVHOOK
-				ASILoader::Initialize();
-
-				LOG(INFO) << "Registered service instances...";
 					auto context_menu_service_instance = std::make_unique<context_menu_service>();
 					auto globals_service_instace = std::make_unique<globals_service>();
 					auto mobile_service_instance = std::make_unique<mobile_service>();
@@ -97,7 +82,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					LOG(INFO) << "Registered service instances...";
 
 					g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
-					
+
 					g_script_mgr.add_script(std::make_unique<script>(&backend::loop, "Backend Loop", false));
 					g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop, "Self"));
 					g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop, "Weapon"));
@@ -170,9 +155,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 					pointers_instance.reset();
 					LOG(INFO) << "Pointers uninitialized.";
-					//OPENVHOOK
-					shv_runner::shutdown();
-					LOG(INFO) << "ASI plugins unloaded.";
 				}
 				catch (std::exception const& ex)
 				{
@@ -189,7 +171,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				CloseHandle(g_main_thread);
 				FreeLibraryAndExitThread(g_hmodule, 0);
-			}, nullptr, 0, &g_main_thread_id);
+			}, nullptr, 0, & g_main_thread_id);
 	}
 
 	return true;

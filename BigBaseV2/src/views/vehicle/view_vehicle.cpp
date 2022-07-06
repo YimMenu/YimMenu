@@ -3,7 +3,6 @@
 #include "gui/handling/handling_tabs.hpp"
 #include "script.hpp"
 #include "util/vehicle.hpp"
-#include "features.hpp"
 #include "views/view.hpp"
 
 

@@ -16,8 +16,8 @@ namespace big
 		static constexpr auto swapchain_num_funcs = 19;
 		static constexpr auto swapchain_present_index = 8;
 		static constexpr auto swapchain_resizebuffers_index = 13;
-		static HRESULT swapchain_present(IDXGISwapChain *this_, UINT sync_interval, UINT flags);
-		static HRESULT swapchain_resizebuffers(IDXGISwapChain *this_, UINT buffer_count, UINT width, UINT height, DXGI_FORMAT new_format, UINT swapchain_flags);
+		static HRESULT swapchain_present(IDXGISwapChain* this_, UINT sync_interval, UINT flags);
+		static HRESULT swapchain_resizebuffers(IDXGISwapChain* this_, UINT buffer_count, UINT width, UINT height, DXGI_FORMAT new_format, UINT swapchain_flags);
 
 		static LRESULT wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 

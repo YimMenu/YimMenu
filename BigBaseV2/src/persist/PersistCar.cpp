@@ -5,6 +5,9 @@
 #include "gui.hpp"
 #include "fiber_pool.hpp"
 #include "pointers.hpp"
+#include "services/vehicle_helper/vehicle_helper.hpp"
+#include <gta/VehicleValues.h>
+
 
 
 namespace big

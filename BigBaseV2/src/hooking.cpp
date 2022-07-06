@@ -11,8 +11,7 @@
 #include "pointers.hpp"
 #include "renderer.hpp"
 #include "script_mgr.hpp"
-//OPENVHOOK
-#include "ASI Loader/ScriptManager.h"
+
 #include <MinHook.h>
 
 namespace big
@@ -39,7 +38,7 @@ namespace big
 
 		// Net Array Handler
 		m_net_array_handler_hook("NAH", g_pointers->m_net_array_handler, &hooks::net_array_handler),
-		
+
 		// Is DLC Present
 		m_is_dlc_present_hook("IDP", g_pointers->m_is_dlc_present, &hooks::is_dlc_present),
 
@@ -159,6 +158,6 @@ namespace big
 
 			return g_hooking->m_run_script_threads_hook.get_original<functions::run_script_threads>()(ops_to_execute);
 		} EXCEPT_CLAUSE
-		return false;
+			return false;
 	}
 }

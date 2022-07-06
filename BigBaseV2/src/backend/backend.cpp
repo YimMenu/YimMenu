@@ -4,7 +4,6 @@
 #include "api/api.hpp"
 #include "looped/looped.hpp"
 #include "services/context_menu/context_menu_service.hpp"
-#include "features.hpp"
 #include "script_local.hpp"
 #include "gta_util.hpp"
 
