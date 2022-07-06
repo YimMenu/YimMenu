@@ -60,6 +60,7 @@ namespace big
 				});
 			});
 
+
 		ImGui::Separator();
 
 		components::small_text("General");

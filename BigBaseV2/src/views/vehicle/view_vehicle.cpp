@@ -56,6 +56,14 @@ namespace big
 
 		ImGui::Separator();
 
+		static char name[20];
+		ImGui::Text("Vehicle Text:");
+		ImGui::InputText("##vehicle text", name, sizeof(name));
+
+		VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(self::veh, name);
+
+		ImGui::Separator();
+
 		components::small_text("Auto Drive");
 
 		components::button("Drive To Waypoint", [] {
