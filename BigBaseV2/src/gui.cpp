@@ -83,11 +83,6 @@ namespace big
 		view::always();
 	}
 
-	void gui::script_init()
-	{
-		g_notification_service->push("Welcome", fmt::format("Loaded YimMenu. Press {} to open", ImGui::key_names[g->settings.hotkeys.menu_toggle]));	
-	}
-
 	void gui::script_on_tick()
 	{
 		TRY_CLAUSE
@@ -128,7 +123,7 @@ namespace big
 
 	void gui::script_func()
 	{
-		g_gui.script_init();
+		g_notification_service->push("Welcome", fmt::format("Loaded YimMenu. Press {} to open", ImGui::key_names[g->settings.hotkeys.menu_toggle]));
 		while (true)
 		{
 			g_gui.script_on_tick();

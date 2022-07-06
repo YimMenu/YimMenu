@@ -19,7 +19,7 @@ namespace big
 		}
 		else
 		{
-			throw std::runtime_error(fmt::format("Failed to create hook '{}' at 0x{:X} (error: {})", m_name, reinterpret_cast<std::uintptr_t>(m_target), MH_StatusToString(status)));
+			throw std::runtime_error(fmt::format("Failed to create hook '{}' at 0x{:X} (error: {})", m_name, uintptr_t(m_target), MH_StatusToString(status)));
 		}
 	}
 
@@ -41,7 +41,7 @@ namespace big
 		}
 		else
 		{
-			throw std::runtime_error(fmt::format("Failed to enable hook 0x{:X} ({})", reinterpret_cast<std::uintptr_t>(m_target), MH_StatusToString(status)));
+			throw std::runtime_error(fmt::format("Failed to enable hook 0x{:X} ({})", uintptr_t(m_target), MH_StatusToString(status)));
 		}
 	}
 
@@ -66,20 +66,14 @@ namespace big
 
 	void detour_hook::fix_hook_address()
 	{
-		__try
-		{
+		__try {
 			auto ptr = memory::handle(m_target);
 			while (ptr.as<std::uint8_t&>() == 0xE9)
-			{
 				ptr = ptr.add(1).rip();
-			}
-
 			m_target = ptr.as<void*>();
 		}
-		__except (exp_handler(GetExceptionInformation(), m_name))
-		{
-			[this]()
-			{
+		__except (exp_handler(GetExceptionInformation(), m_name)) {
+			[this]() {
 				throw std::runtime_error(fmt::format("Failed to fix hook address for '{}'", m_name));
 			}();
 		}

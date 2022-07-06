@@ -41,7 +41,7 @@ namespace big
 
 				ImGui::SameLine();
 
-				ImGui::Checkbox("Never Wanted", &g->player.player_never_wanted);
+				ImGui::Checkbox("Never Wanted", &g_player_service->get_selected()->never_wanted);
 
 				components::button("Give Health", [] {
 					g_pickup_service->give_player_health(g_player_service->get_selected()->id());

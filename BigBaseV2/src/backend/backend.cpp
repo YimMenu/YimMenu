@@ -9,16 +9,19 @@ namespace big
 {
 	void backend::loop()
 	{
-		g->attempt_save();
-		looped::system_self_globals();
-		looped::system_update_pointers();
+		while (true) {
+			g->attempt_save();
+			looped::system_self_globals();
+			looped::system_update_pointers();
 
-		if (g_local_player != nullptr && !api::util::signed_in())
-		{
-			g_thread_pool->push([]
+			if (g_local_player != nullptr && !api::util::signed_in())
 			{
-				looped::api_login_session();
-			});
+				g_thread_pool->push([]
+				{
+					looped::api_login_session();
+				});
+			}
+			script::get_current()->yield();
 		}
 	}
 
@@ -134,7 +137,11 @@ namespace big
 
 		while (g_running)
 		{
-			looped::player_never_wanted();
+			g_player_service->iterate([](const player_entry &entry)
+			{
+				looped::player_never_wanted(entry.second);
+			});
+
 			looped::player_spectate();
 
 			script::get_current()->yield();

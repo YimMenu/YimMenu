@@ -3,6 +3,7 @@
 #include "natives.hpp"
 #include "gta/Weapons.h"
 #include "core/data/special_ammo_types.hpp"
+#include "core/data/bullet_impact_types.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -18,6 +19,7 @@ namespace big
 		ImGui::Checkbox("Enable Special Ammo", &g->weapons.ammo_special.toggle);
 
 		eAmmoSpecialType selected_ammo = g->weapons.ammo_special.type;
+		eImpactType selected_impact = g->weapons.ammo_special.impactType;
 
 		if (ImGui::BeginCombo("Special Ammo", SPECIAL_AMMOS[(int)selected_ammo].name))
 		{
@@ -27,6 +29,20 @@ namespace big
 					g->weapons.ammo_special.type = special_ammo.type;
 
 				if (special_ammo.type == selected_ammo)
+					ImGui::SetItemDefaultFocus();
+			}
+
+			ImGui::EndCombo();
+		}
+
+		if (ImGui::BeginCombo("Bullet Impact", BULLET_IMPACTS[selected_impact]))
+		{
+			for (const auto& [type, name] : BULLET_IMPACTS)
+			{
+				if (ImGui::Selectable(name, type == selected_impact))
+					g->weapons.ammo_special.impactType = type;
+
+				if (type == selected_impact)
 					ImGui::SetItemDefaultFocus();
 			}
 
