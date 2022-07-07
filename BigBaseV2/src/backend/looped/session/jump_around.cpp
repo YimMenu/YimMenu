@@ -9,11 +9,8 @@ namespace big
 		const int ArrSize = ElementAmount * 2 + 2;
 		if (g->session.jumparound) {
 			Vehicle* vehs = new Vehicle[ArrSize];
-			Ped* peds = new Ped[ArrSize];
 			vehs[0] = ElementAmount;
-			peds[0] = ElementAmount;
 			int VehFound = PED::GET_PED_NEARBY_VEHICLES(PLAYER::PLAYER_PED_ID(), vehs);
-			int PedFound = PED::GET_PED_NEARBY_PEDS(PLAYER::PLAYER_PED_ID(), peds, -1);
 
 			for (int i = 0; i < VehFound; i++)
 			{
@@ -23,7 +20,6 @@ namespace big
 					if (VEHICLE::IS_VEHICLE_ON_ALL_WHEELS(vehs[OffsetID]))
 					{
 						ENTITY::APPLY_FORCE_TO_ENTITY(vehs[OffsetID], 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0);
-						ENTITY::APPLY_FORCE_TO_ENTITY(peds[OffsetID], 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0);
 					}
 				}
 			}
