@@ -20,7 +20,7 @@ namespace big
 			g_notification_service->push("Mobile",
 				fmt::format("{} vehicle{} been fixed.", amount_fixed, amount_fixed == 1 ? " has" : "s have")
 			);
-			});
+		});
 
 		ImGui::Separator();
 
@@ -33,24 +33,19 @@ namespace big
 		static char search[64];
 		static std::string lower_search;
 
-		if (ImGui::InputTextWithHint("Model Name", "Search", search, sizeof(search)))
-		{
+		if (ImGui::InputTextWithHint("Model Name", "Search", search, sizeof(search))) {
 			lower_search = search;
 			std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
 		}
 
 		g_mobile_service->refresh_personal_vehicles();
-		if (ImGui::ListBoxHeader("##personal_veh_list", { 0, static_cast<float>(*g_pointers->m_resolution_y - 400) }))
+		if (ImGui::ListBoxHeader("##personal_veh_list", { 0, static_cast<float>(*g_pointers->m_resolution_y - 400) })) 
 		{
-			if (g_mobile_service->personal_vehicles().empty())
-			{
+			if (g_mobile_service->personal_vehicles().empty()) {
 				ImGui::Text("No personal vehicles found, \nare you online?");
-			}
-			else
-			{
+			} else {
 				const auto personal_veh_idx = mobile::util::get_current_personal_vehicle();
-				for (const auto& it : g_mobile_service->personal_vehicles())
-				{
+				for (const auto& it : g_mobile_service->personal_vehicles()) {
 					const auto& label = it.first;
 					const auto& personal_veh = it.second;
 					auto item = g_vehicle_preview_service->find_vehicle_item_by_hash(personal_veh->get_hash());
@@ -64,8 +59,7 @@ namespace big
 						display_name.find(lower_search) != std::string::npos ||
 						display_manufacturer.find(lower_search) != std::string::npos
 					) {
-						if (ImGui::Selectable(label.c_str(), personal_veh->get_id() == personal_veh_idx))
-						{
+						if (ImGui::Selectable(label.c_str(), personal_veh->get_id() == personal_veh_idx)) {
 							strcpy(search, "");
 							lower_search = search;
 

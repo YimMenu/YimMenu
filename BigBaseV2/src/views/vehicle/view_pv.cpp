@@ -49,21 +49,20 @@ namespace big
 						display_name.find(lower_search) != std::string::npos ||
 						display_manufacturer.find(lower_search) != std::string::npos
 					) {
-						if (ImGui::Selectable(label.c_str(), false))
-						{
-							strcpy(search, "");
-							lower_search = search;
-
+						if (ImGui::Selectable(label.c_str(), false)) {
 							g_fiber_pool->queue_job([&personal_veh] {
 								auto vehicle_idx = personal_veh->get_vehicle_idx();
-
 								auto veh_data = vehicle::get_vehicle_data_from_vehicle_idx(vehicle_idx);
 
-								Vector3 spawn_location = self::pos;
-								if (!g->clone_pv.spawn_inside) {
-									spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 5.f, 0.f);
+								float y_offset = 0;
+
+								if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, false)) {
+									y_offset = 10.f;
+								} else if (!g->spawn.spawn_inside) {
+									y_offset = 5.f;
 								}
 
+								Vector3 spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, y_offset, 0.f);
 								float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 								auto veh = vehicle::clone(veh_data, personal_veh->get_plate(), spawn_location, spawn_heading);

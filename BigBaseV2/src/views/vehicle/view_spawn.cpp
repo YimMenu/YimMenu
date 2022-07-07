@@ -42,11 +42,15 @@ namespace big
 
 						components::selectable(item.dispaly_name + "##" + std::to_string(item.hash), false, [&item_name] {
 
-							Vector3 spawn_location = self::pos;
-							if (!g->spawn.spawn_inside) {
-								spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 5.f, 0.f);
+							float y_offset = 0;
+
+							if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, false)) {
+								y_offset = 10.f;
+							} else if (!g->spawn.spawn_inside) {
+								y_offset = 5.f;
 							}
 
+							Vector3 spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, y_offset, 0.f);
 							float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 							const Vehicle veh = vehicle::spawn(item_name, spawn_location, spawn_heading);
