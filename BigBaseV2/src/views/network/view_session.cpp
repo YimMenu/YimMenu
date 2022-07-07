@@ -49,5 +49,9 @@ namespace big
 
 			ImGui::TreePop();
 		}
+
+		ImGui::Separator();
+
+		ImGui::Checkbox("Sechs Mode", &g->session.jumparound);
 	}
 }

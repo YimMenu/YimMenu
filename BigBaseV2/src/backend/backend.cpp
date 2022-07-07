@@ -130,6 +130,7 @@ namespace big
 			looped::tunables_no_idle_kick();
 			looped::session_local_time();
 			looped::session_slowmotion();
+			looped::session_jumparound();
 
 			script::get_current()->yield();
 		}

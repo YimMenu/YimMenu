@@ -174,6 +174,8 @@ namespace big
 			bool override_time = {};
 			bool override_weather = false;
 			bool slowmotion = false;
+			bool jumparound = false;
+
 			struct
 			{
 				int hour{}, minute{}, second{};
