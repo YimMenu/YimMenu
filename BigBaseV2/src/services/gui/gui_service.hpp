@@ -58,7 +58,7 @@ namespace big
 				}}},
 				{ tabs::LSC, {"LSC", view::lsc }},
 				{ tabs::SPAWN, { "Spawn", view::spawn }},
-				{ tabs::PV, { "Clone Personal Vehicle", view::pv }},
+				{ tabs::PV, { "Personal Vehicle", view::pv }},
 			}}},
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},
