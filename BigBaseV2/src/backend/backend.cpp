@@ -129,6 +129,7 @@ namespace big
 			looped::tunables_disable_phone();
 			looped::tunables_no_idle_kick();
 			looped::session_local_time();
+			looped::session_slowmotion();
 
 			script::get_current()->yield();
 		}
