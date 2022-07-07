@@ -4,13 +4,18 @@
 
 namespace big
 {
-	void view::session() {
-		
-		for (const SessionType& session_type : sessions)
+	void view::session()
+	{
+		components::small_text("Session Switcher");
+		if (ImGui::ListBoxHeader("###session_switch"))
 		{
-			components::button(session_type.name, [session_type] {
-				session::join_type(session_type);
-			});
+			for (const auto& session_type : sessions)
+			{
+				components::selectable(session_type.name, false, [session_type] {
+					session::join_type(session_type);
+				});
+			}
+			ImGui::EndListBox();
 		}
 		if (ImGui::TreeNode("Local Time"))
 		{
