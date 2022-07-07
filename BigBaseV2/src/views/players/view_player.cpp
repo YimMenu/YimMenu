@@ -27,11 +27,7 @@ namespace big
 		ImGui::SameLine();
 
 		ImGui::Checkbox("Freeze All", &g->player.freezeallplayers);
-
-		if (g_player_service->get_selected()->is_valid())
-		{
-			components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player()); });
-
+				
 			if (ImGui::TreeNode("Misc")) {
 				components::button("Steal Outfit", [] {
 					ped::steal_outfit(
@@ -202,7 +198,7 @@ namespace big
 					toxic::crash(g_player_service->get_selected()->id());
 				});*/
 
-				components::button("Send to Cayo Perico", [] {
+				components::button("Send to Cayo", [] {
 					toxic::send_to_cayo_perico(g_player_service->get_selected()->id());
 					});
 				
@@ -211,6 +207,12 @@ namespace big
 				components::button("Bitching", [] {
 					toxic::bitching(g_player_service->get_selected()->id());
 					});
+
+				ImGui::SameLine();
+
+				if (g_player_service->get_selected()->is_valid())
+				{
+					components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player()); });
 								
 				ImGui::TreePop();
 			}
