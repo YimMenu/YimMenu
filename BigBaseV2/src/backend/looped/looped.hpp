@@ -39,6 +39,7 @@ namespace big
 		static void self_police();
 		static void self_super_run();
 		static void self_aimbot();
+		static void self_mobileradio();
 
 		static void session_local_time();
 

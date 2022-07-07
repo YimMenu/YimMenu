@@ -41,6 +41,8 @@ namespace big
 			looped::self_police();
 			looped::self_super_run();
 			looped::self_aimbot();
+			looped::self_mobileradio();
+
 			script::get_current()->yield();
 		}
 	}
