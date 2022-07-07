@@ -37,6 +37,10 @@ namespace big
 			CUTSCENE::STOP_CUTSCENE_IMMEDIATELY();
 			});
 
+		ImGui::SameLine();
+
+		ImGui::Checkbox("Mobile Radio", &g->self.mobileradio);
+
 		static char model[32];
 		components::input_text_with_hint("Model Name###player_ped_model", "Player Model Name", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, [] {
 			g_fiber_pool->queue_job([] {
@@ -59,7 +63,6 @@ namespace big
 				STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 				});
 			});
-
 
 		ImGui::Separator();
 
