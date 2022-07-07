@@ -57,7 +57,7 @@ namespace big
 					) {
 						if (ImGui::Selectable(label.c_str(), false)) {
 
-							if (&g->clone_pv.spawn_clone) {
+							if (g->clone_pv.spawn_clone) {
 								g_fiber_pool->queue_job([&personal_veh] {
 									auto vehicle_idx = personal_veh->get_vehicle_idx();
 									auto veh_data = vehicle::get_vehicle_data_from_vehicle_idx(vehicle_idx);
