@@ -20,6 +20,7 @@ namespace big
 		if (ImGui::TreeNode("Local Time"))
 		{
 			ImGui::Checkbox("Override Time", &g->session.override_time);
+			ImGui::Checkbox("Slow Motion", &g->session.slowmotion);
 
 			if (g->session.override_time)
 			{

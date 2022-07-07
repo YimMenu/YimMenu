@@ -155,6 +155,7 @@ namespace big
 			bool aimbot = false;
 			bool aimbot_exclude_friend = true;
 			int wanted_level = 0;
+			bool mobileradio = false;
 
 			bool proof_bullet = false;
 			bool proof_fire = false;
@@ -172,6 +173,7 @@ namespace big
 			int local_weather = 0;
 			bool override_time = {};
 			bool override_weather = false;
+			bool slowmotion = false;
 			struct
 			{
 				int hour{}, minute{}, second{};
@@ -524,6 +526,7 @@ namespace big
 			this->self.super_run = j["self"]["super_run"];
 			this->self.aimbot = j["self"]["aimbot"];
 			this->self.aimbot_exclude_friend = j["self"]["aimbot_exclude_friend"];
+			this->self.mobileradio = j["self"]["mobileradio"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
 			this->settings.hotkeys.teleport_waypoint = j["settings"]["hotkeys"]["teleport_waypoint"];
@@ -763,7 +766,8 @@ namespace big
 						{ "off_radar", this->self.off_radar },
 						{ "super_run", this->self.super_run },
 						{ "aimbot", this->self.aimbot },
-						{ "aimbot_exclude_friend", this->self.aimbot_exclude_friend }
+						{ "aimbot_exclude_friend", this->self.aimbot_exclude_friend },
+						{ "mobileradio", this->self.mobileradio }
 					}
 				},
 				{
