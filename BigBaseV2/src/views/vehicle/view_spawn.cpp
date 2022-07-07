@@ -18,13 +18,14 @@ namespace big
 		static char search[64];
 		static std::string lower_search;
 
+		ImGui::SetNextItemWidth(300.f);
 		if (ImGui::InputTextWithHint("Model Name", "Search", search, sizeof(search))) {
 			lower_search = search;
 			std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
 		}
 
 		// arbitrary subtraction this looked nice so idc, works for all resolutions as well
-		if (ImGui::ListBoxHeader("###vehicles", { 0, static_cast<float>(*g_pointers->m_resolution_y - 260)})) {
+		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 260)})) {
 			if (g_vehicle_preview_service->get_vehicle_map().size() > 0) {
 
 				for (auto& [hash, item] : g_vehicle_preview_service->get_vehicle_map()) {

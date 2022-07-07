@@ -13,12 +13,18 @@ namespace big
 		ImGui::Checkbox("Preview", &g->clone_pv.preview_vehicle);
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn In", &g->clone_pv.spawn_inside);
-		ImGui::SameLine();
-		ImGui::Checkbox("Spawn Maxed", &g->clone_pv.spawn_maxed);
+
+		ImGui::Checkbox("Spawn Clone", &g->clone_pv.spawn_clone);
+		if (g->clone_pv.spawn_clone) {
+			ImGui::SameLine();
+			ImGui::Checkbox("Spawn Maxed", &g->clone_pv.spawn_maxed);
+		}
+
 
 		static char search[64];
 		static std::string lower_search;
 
+		ImGui::SetNextItemWidth(300.f);
 		if (ImGui::InputTextWithHint("Model Name", "Search", search, sizeof(search))) {
 			lower_search = search;
 			std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
@@ -26,7 +32,7 @@ namespace big
 		
 
 		g_mobile_service->refresh_personal_vehicles();
-		if (ImGui::ListBoxHeader("##personal_veh_list", { 0, static_cast<float>(*g_pointers->m_resolution_y - 260) })) {
+		if (ImGui::ListBoxHeader("##personal_veh_list", { 300, static_cast<float>(*g_pointers->m_resolution_y - 300) })) {
 
 			if (g_mobile_service->personal_vehicles().empty()) {
 
@@ -50,33 +56,42 @@ namespace big
 						display_manufacturer.find(lower_search) != std::string::npos
 					) {
 						if (ImGui::Selectable(label.c_str(), false)) {
-							g_fiber_pool->queue_job([&personal_veh] {
-								auto vehicle_idx = personal_veh->get_vehicle_idx();
-								auto veh_data = vehicle::get_vehicle_data_from_vehicle_idx(vehicle_idx);
 
-								float y_offset = 0;
+							if (&g->clone_pv.spawn_clone) {
+								g_fiber_pool->queue_job([&personal_veh] {
+									auto vehicle_idx = personal_veh->get_vehicle_idx();
+									auto veh_data = vehicle::get_vehicle_data_from_vehicle_idx(vehicle_idx);
 
-								if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, false)) {
-									y_offset = 10.f;
-								} else if (!g->spawn.spawn_inside) {
-									y_offset = 5.f;
-								}
+									float y_offset = 0;
 
-								Vector3 spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, y_offset, 0.f);
-								float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
+									if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, false)) {
+										y_offset = 10.f;
+									}
+									else if (!g->spawn.spawn_inside) {
+										y_offset = 5.f;
+									}
 
-								auto veh = vehicle::clone(veh_data, personal_veh->get_plate(), spawn_location, spawn_heading);
+									Vector3 spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, y_offset, 0.f);
+									float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
-								if (g->clone_pv.spawn_inside)
-								{
-									vehicle::telport_into_veh(veh);
-								}
+									auto veh = vehicle::clone(veh_data, personal_veh->get_plate(), spawn_location, spawn_heading);
 
-								if (g->clone_pv.spawn_maxed)
-								{
-									vehicle::max_vehicle(veh);
-								}
-							});
+									if (g->clone_pv.spawn_inside) {
+										vehicle::telport_into_veh(veh);
+									}
+
+									if (g->clone_pv.spawn_maxed) {
+										vehicle::max_vehicle(veh);
+									}
+								});
+							} else {
+								strcpy(search, "");
+								lower_search = search;
+
+								g_fiber_pool->queue_job([&personal_veh] {
+									personal_veh->summon();
+								});
+							}
 						}
 
 						if (g->clone_pv.preview_vehicle && ImGui::IsItemHovered()) {

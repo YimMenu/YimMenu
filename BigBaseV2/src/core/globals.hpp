@@ -176,12 +176,6 @@ namespace big
 			hotkeys hotkeys{};
 		};
 
-		struct mobile
-		{
-			bool preview_vehicle = false;
-			bool spawn_inside = false;
-		};
-
 		struct spawn
 		{
 			bool preview_vehicle = false;
@@ -193,6 +187,7 @@ namespace big
 		{
 			bool preview_vehicle = false;
 			bool spawn_inside = false;
+			bool spawn_clone = false;
 			bool spawn_maxed = false;
 		};
 
@@ -341,7 +336,6 @@ namespace big
 		self self{};
 		session session{};
 		settings settings{};
-		mobile mobile{};
 		spawn spawn{};
 		clone_pv clone_pv{};
 		spoofing spoofing{};
@@ -516,12 +510,10 @@ namespace big
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
 
-			this->mobile.preview_vehicle = j["spawn"]["preview_vehicle"];
-			this->mobile.spawn_inside = j["spawn"]["spawn_inside"];
-
-			this->clone_pv.preview_vehicle = j["spawn"]["preview_vehicle"];
-			this->clone_pv.spawn_inside = j["spawn"]["spawn_inside"];
-			this->clone_pv.spawn_maxed = j["spawn"]["spawn_maxed"];
+			this->clone_pv.preview_vehicle = j["clone_pv"]["preview_vehicle"];
+			this->clone_pv.spawn_inside = j["clone_pv"]["spawn_inside"];
+			this->clone_pv.spawn_clone = j["clone_pv"]["spawn_clone"];
+			this->clone_pv.spawn_maxed = j["clone_pv"]["spawn_maxed"];
 
 			this->spawn.preview_vehicle = j["spawn"]["preview_vehicle"];
 			this->spawn.spawn_inside = j["spawn"]["spawn_inside"];
@@ -765,16 +757,11 @@ namespace big
 					}
 				},
 				{
-					"mobile", {
-						{ "preview_vehicle", this->mobile.preview_vehicle },
-						{ "spawn_inside", this->mobile.spawn_inside }
-					}
-				},
-				{
 					"clone_pv", {
 						{ "preview_vehicle", this->clone_pv.preview_vehicle },
 						{ "spawn_inside", this->clone_pv.spawn_inside },
-						{ "spawn_maxed", this->clone_pv.spawn_maxed}
+						{ "spawn_clone", this->clone_pv.spawn_clone },
+						{ "spawn_maxed", this->clone_pv.spawn_maxed }
 					}
 				},
 				{
