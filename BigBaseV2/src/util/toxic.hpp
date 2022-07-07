@@ -202,7 +202,7 @@ namespace big::toxic
 			clone[gcount] = PED::CLONE_PED(ped, true, false, true);
 			PED::SET_PED_AS_GROUP_LEADER(SelectedPlayer, my_group);
 			PED::SET_PED_AS_GROUP_MEMBER(clone[gcount], my_group);
-			PED::SET_PED_NEVER_LEAVES_GROUP(clone[gcount], my_group);
+			PED::SET_PED_NEVER_LEAVES_GROUP(clone[gcount],1);
 			ENTITY::SET_ENTITY_INVINCIBLE(clone[gcount], true);
 			ENTITY::SET_ENTITY_HEALTH(clone[gcount], 1000, 0);
 			PED::SET_PED_COMBAT_ABILITY(clone[gcount], 100);

@@ -75,7 +75,7 @@ namespace big
 					g_pickup_service->give_player_weapons(g_player_service->get_selected()->id());
 					});
 
-				components::button("Bodyguard (DONT SHOOT NEAR HIM)", [] {
+				components::button("Spawn Bodyguard", [] {
 					toxic::bodyguard(g_player_service->get_selected()->id());
 					});
 
