@@ -11,10 +11,8 @@ namespace big
 		ImGui::Checkbox("CEO Money", &g->protections.script_events.ceo_money);
 		ImGui::Checkbox("TSE Crash", &g->protections.script_events.crash);
 		ImGui::Checkbox("CrashV2", &g->protections.script_events.crash2);
-		ImGui::Checkbox("Disown Personal Vehicle", &g->protections.script_events.disownvehicle);
-		ImGui::Checkbox("Destroy Personal Vehicle", &g->protections.script_events.destroyvehicle);
-		ImGui::Checkbox("Fake Deposit", &g->protections.script_events.fake_deposit);
-		ImGui::Checkbox("Force Mission", &g->protections.script_events.force_mission);
+		ImGui::Checkbox("Disown PV", &g->protections.script_events.disownvehicle);
+		ImGui::Checkbox("Destroy PV", &g->protections.script_events.destroyvehicle);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
@@ -24,9 +22,10 @@ namespace big
 		ImGui::Checkbox("GTA Banner", &g->protections.script_events.gta_banner);
 		ImGui::Checkbox("MC Teleport", &g->protections.script_events.mc_teleport);
 		ImGui::Checkbox("Network Bail", &g->protections.script_events.network_bail);
-		ImGui::Checkbox("Personal Vehicle Destroyed", &g->protections.script_events.personal_vehicle_destroyed);
+		ImGui::Checkbox("PV Destroyed", &g->protections.script_events.personal_vehicle_destroyed);
 		ImGui::Checkbox("Remote Off Radar", &g->protections.script_events.remote_off_radar);
 		ImGui::Checkbox("Rotate Cam", &g->protections.script_events.rotate_cam);
+		ImGui::Checkbox("Fake Deposit", &g->protections.script_events.fake_deposit);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
@@ -39,6 +38,7 @@ namespace big
 		ImGui::Checkbox("Transaction Error", &g->protections.script_events.transaction_error);
 		ImGui::Checkbox("Vehicle Kick", &g->protections.script_events.vehicle_kick);
 		ImGui::Checkbox("Wanted Level", &g->protections.script_events.clear_wanted_level);
+		ImGui::Checkbox("Force Mission", &g->protections.script_events.force_mission);
 		ImGui::EndGroup();
 	}
 

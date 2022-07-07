@@ -88,6 +88,22 @@ namespace big
 							}
 						});
 				}
+				ImGui::SameLine();
+
+				if (components::button("Max Performance"))
+				{
+					g_fiber_pool->queue_job([]
+						{
+							Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
+							VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
+							int num[6] = { 0, 11, 12, 13, 15, 16 };
+							for (int i = 0; i < 6; i++)
+							{
+								VEHICLE::SET_VEHICLE_MOD(vehicle, num[i], VEHICLE::GET_NUM_VEHICLE_MODS(vehicle, num[i]) - 1, false);
+							}
+							VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TURBO, true);
+						});
+				}
 				ImGui::Separator();
 				if (ImGui::Checkbox("Bulletproof Tires", &can_tires_burst))
 				{

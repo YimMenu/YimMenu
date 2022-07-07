@@ -15,7 +15,6 @@ namespace big
 		ImGui::Checkbox("Horn Boost", &g->vehicle.horn_boost);
 		ImGui::Checkbox("Vehicle Jump", &g->vehicle.vehicle_jump);
 		ImGui::Checkbox("Instant Brake", &g->vehicle.instant_brake);
-		ImGui::Checkbox("Drive On Water", &g->vehicle.drive_on_water);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
@@ -26,6 +25,8 @@ namespace big
 		components::button("Repair", [] {
 			vehicle::repair(self::veh);
 			});
+
+		ImGui::SameLine();
 
 		components::button("Instant in PV", [] {
 			if (!*g_pointers->m_is_session_started) return g_notification_service->push_warning("WARNING", "Go into GTA V Online to use this option");
@@ -52,12 +53,14 @@ namespace big
 			ImGui::Checkbox("Fully Automatic Signal", &g->vehicle.auto_turn_signals);
 		}
 
+		ImGui::Checkbox("Drive On Water", &g->vehicle.drive_on_water);
+
 		ImGui::EndGroup();
 
 		ImGui::Separator();
 
 		static char model[8];
-		components::input_text_with_hint("Vehicle\nLicense Text###vehicle_license_text", "Vehicle License Text", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, [] {
+		components::input_text_with_hint("###vehicle_license_text", "Vehicle License Text", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, [] {
 			g_fiber_pool->queue_job([] {
 				const Hash hash = rage::joaat(model);				
 				if (!STREAMING::HAS_MODEL_LOADED(hash)) {
