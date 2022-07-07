@@ -86,6 +86,8 @@ namespace big
 							{
 								VEHICLE::SET_VEHICLE_MOD(vehicle, i, VEHICLE::GET_NUM_VEHICLE_MODS(vehicle, i) - 1, false);
 							}
+							VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, 18, true);
+							VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, 22, true);
 						});
 				}
 				ImGui::SameLine();
@@ -101,9 +103,25 @@ namespace big
 							{
 								VEHICLE::SET_VEHICLE_MOD(vehicle, num[i], VEHICLE::GET_NUM_VEHICLE_MODS(vehicle, num[i]) - 1, false);
 							}
-							VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TURBO, true);
+							VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, MOD_TURBO, true);
 						});
 				}
+
+				ImGui::SameLine();
+
+				if (components::button("Downgrade Vehicle"))
+				{
+					g_fiber_pool->queue_job([]
+						{
+							Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
+							VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
+							for (int i = 0; i < 50; i++)
+							{
+								VEHICLE::REMOVE_VEHICLE_MOD(vehicle, i);
+							}
+						});
+				}
+
 				ImGui::Separator();
 				if (ImGui::Checkbox("Bulletproof Tires", &can_tires_burst))
 				{
