@@ -88,8 +88,8 @@ namespace big
 							}
 						});
 				}
-				ImGui::SameLine();
 
+				ImGui::SameLine();
 				if (components::button("Max Performance"))
 				{
 					g_fiber_pool->queue_job([]
@@ -104,6 +104,7 @@ namespace big
 							VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TURBO, true);
 						});
 				}
+
 				ImGui::Separator();
 				if (ImGui::Checkbox("Bulletproof Tires", &can_tires_burst))
 				{
@@ -112,6 +113,7 @@ namespace big
 							VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(player_vehicle, !can_tires_burst);
 						});
 				}
+
 				ImGui::SameLine();
 				if (ImGui::Checkbox("Tiresmoke", &tiresmoke))
 				{
@@ -120,6 +122,7 @@ namespace big
 							VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TIRESMOKE, tiresmoke);
 						});
 				}
+
 				ImGui::SameLine();
 				if (ImGui::Checkbox("Turbo", &turbo))
 				{
