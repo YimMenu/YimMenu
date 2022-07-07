@@ -127,17 +127,11 @@ namespace big::vehicle
 		return -1;
 	}
 
-	inline Vehicle clone(std::map<int, int>& data, const char* plate, Vector3 location, float heading)
+	inline Vehicle clone(std::map<int, int32_t>& data, const char* plate, Vector3 location, float heading)
 	{
 		Vector3 tmpLocation = { location.x, location.y, 1200.0f };
 		if (location.z > 1000.0f && location.z < 1400.0) {
 			tmpLocation.z = 800.0f;
-		}
-
-		for (const auto& [idx, val] : data) {
-			if (idx > 0 && idx < 142) {
-				*spawn_global.at(27).at(idx).as<int*>() = val;
-			}
 		}
 
 		if (plate == nullptr) {
@@ -145,19 +139,26 @@ namespace big::vehicle
 		}
 
 		// plate
-		strcpy(spawn_global.at(27).at(1).as<char*>(), plate);
+		strncpy(spawn_global.at(27).at(1).as<char*>(), plate, 8);
+
+		// vehicle data
+		for (const auto& [idx, val] : data) {
+			if (idx >= 0 && idx < 142) {
+				*spawn_global.at(27).at(idx).as<int32_t*>() = val;
+			}
+		}
 
 		// permission fix
-		*spawn_global.at(27).at(19).as<int*>() = -1;
-		*spawn_global.at(27).at(60).as<int*>() = 1;
-		*spawn_global.at(27).at(77).as<int*>() = 4030726305;
+		*spawn_global.at(27).at(19).as<int32_t*>() = -1;
+		*spawn_global.at(27).at(60).as<int32_t*>() = 1;
+		*spawn_global.at(27).at(77).as<int32_t*>() = 4030726305;
 
 		// personal car flag
-		*spawn_global.at(27).at(94).as<int*>() = 2;
-		*spawn_global.at(27).at(95).as<int*>() = 14;
+		*spawn_global.at(27).at(94).as<int32_t*>() = 2;
+		*spawn_global.at(27).at(95).as<int32_t*>() = 14;
 
 		// mmi
-		*spawn_global.at(27).at(103).as<int*>() = 0;
+		*spawn_global.at(27).at(103).as<int32_t*>() = 0;
 
 		// spawn location
 		*spawn_global.at(7).at(0).as<float*>() = tmpLocation.x;
@@ -168,8 +169,8 @@ namespace big::vehicle
 		*spawn_global.at(3).as<int*>() = 0;
 
 		// spawn signal
-		int* spawn_signal = spawn_global.at(2).as<int*>();
-		*spawn_global.at(5).as<int*>() = 1;
+		int* spawn_signal = spawn_global.at(2).as<int32_t*>();
+		*spawn_global.at(5).as<int32_t*>() = 1;
 		*spawn_signal = 1;
 
 		// wait until the vehicle is spawned
@@ -194,15 +195,16 @@ namespace big::vehicle
 		return veh;
 	}
 
-	inline std::map<int, int> get_vehicle_data_from_vehicle_idx(script_global vehicle_idx)
+	inline std::map<int, int32_t> get_vehicle_data_from_vehicle_idx(script_global vehicle_idx)
 	{
-		std::map<int, int> veh_data;
+		std::map<int, int32_t> veh_data;
 
 		for (int i = 0; i < 142; i++) {
-			if (i != 1 || i != 19 || i != 60 || i != 77 || i != 103) {
-				veh_data[i] = *vehicle_idx.at(i).as<int*>();
-			}
+			veh_data[i] = *vehicle_idx.at(i).as<int32_t*>();
 		}
+
+		veh_data.erase(1); veh_data.erase(19); veh_data.erase(60); veh_data.erase(77); 
+		veh_data.erase(94); veh_data.erase(95); veh_data.erase(103);
 
 		return veh_data;
 	}
@@ -220,9 +222,12 @@ namespace big::vehicle
 		VEHICLE::TOGGLE_VEHICLE_MOD(veh, 17 /* Xenon Headlights */, TRUE);
 		VEHICLE::SET_VEHICLE_WINDOW_TINT(veh, 1);
 		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(veh, false);
-		for (int i = 0; i < 50; i++)
-		{
-			VEHICLE::SET_VEHICLE_MOD(veh, i, VEHICLE::GET_NUM_VEHICLE_MODS(veh, i) - 1, true);
+		for (int i = 0; i < 50; i++) {
+			if (
+				i != eVehicleModType::VMT_LIVERY_MOD
+			) {
+				VEHICLE::SET_VEHICLE_MOD(veh, i, VEHICLE::GET_NUM_VEHICLE_MODS(veh, i) - 1, true);
+			}
 		}
 	}
 
