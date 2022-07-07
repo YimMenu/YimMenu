@@ -33,9 +33,9 @@ namespace big
 		g_vehicle_preview_service = nullptr;
 	}
 
-	nlohmann::json& vehicle_preview_service::get_vehicle_list()
+	std::map<Hash, vehicle_preview_item>& vehicle_preview_service::get_vehicle_map()
 	{
-		return m_all_vehicles;
+		return m_hash_veh_map;
 	}
 
 	void vehicle_preview_service::preview_loop()
@@ -48,7 +48,7 @@ namespace big
 		{
 			while (g_running && m_running && g->spawn.preview_vehicle && g_gui.m_opened)
 			{
-				auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 2.5f, 2.5f, .5f);
+				auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 5.f, .5f);
 				if (m_current_veh == -1)
 				{
 					m_new_model = false;
@@ -87,17 +87,27 @@ namespace big
 	}
 
 
-	void vehicle_preview_service::set_preview_vehicle(const nlohmann::json& item)
+	void vehicle_preview_service::set_preview_vehicle(const vehicle_preview_item& item)
 	{
-		if (m_model != item["Name"])
-		{
-			m_model = item["Name"];
+		if (item.name != "") {
+			if (m_model != item.name) {
+				m_model = item.name;
+				m_new_model = true;
+			}
 
-			m_new_model = true;
+			if (!m_running) {
+				g_thread_pool->push([this] { preview_loop(); });
+			}
+		}
+	}
+
+	const vehicle_preview_item& vehicle_preview_service::find_vehicle_item_by_hash(int hash)
+	{
+		if (m_hash_veh_map.count(hash)) {
+			return m_hash_veh_map[hash];
 		}
 
-		if (!m_running)
-			g_thread_pool->push([this] { preview_loop(); });
+		return empty_item;
 	}
 
 	void vehicle_preview_service::stop_preview()
@@ -108,6 +118,7 @@ namespace big
 	void vehicle_preview_service::load()
 	{
 		std::ifstream file(m_vehicle_file.get_path());
+		nlohmann::json m_all_vehicles;
 
 		try
 		{
@@ -116,6 +127,28 @@ namespace big
 		catch (const std::exception& ex)
 		{
 			LOG(WARNING) << "Failed to load vehicles.json:\n" << ex.what();
+		}
+
+		for (auto& item_json : m_all_vehicles)
+		{
+			if (item_json["SignedHash"].is_null() || item_json["Name"].is_null())
+				continue;
+
+			Hash signed_hash = item_json["SignedHash"];
+			std::string name = item_json["Name"];
+			vehicle_preview_item item = { name, name, "", signed_hash };
+
+			if (!item_json["DisplayName"].is_null()) {
+				item.dispaly_name = item_json["DisplayName"];
+			}
+
+			if (!item_json["ManufacturerDisplayName"].is_null()) {
+				item.display_manufacturer = item_json["ManufacturerDisplayName"];
+			} else if (!item_json["Manufacturer"].is_null()) {
+				item.display_manufacturer = item_json["Manufacturer"];
+			}
+
+			m_hash_veh_map[signed_hash] = item;
 		}
 	}
 }

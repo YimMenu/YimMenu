@@ -33,6 +33,7 @@ namespace big
 		static void session();
 		static void settings();
 		static void spawn();
+		static void pv();
 		static void spoofing();
 		static void teleport();
 		static void vehicle();
