@@ -1,22 +1,26 @@
+#include "script_global.hpp"
+
+
 #pragma once
 
 namespace big
 {
-	class script_global;
-
 	class personal_vehicle final
 	{
 		std::string m_name;
 		int m_id;
+		script_global m_vehicle_idx;
 		Hash m_hash;
 		int* m_state_bitfield;
 
 	public:
 		personal_vehicle(int idx, script_global vehicle_idx);
 
+		[[nodiscard]] char* get_plate();
 		[[nodiscard]] std::string get_display_name() const;
 		[[nodiscard]] Hash get_hash() const;
 		[[nodiscard]] int get_id() const;
+		[[nodiscard]] script_global get_vehicle_idx() const;
 
 		void summon() const;
 	};

@@ -7,12 +7,16 @@
 namespace big
 {
 	personal_vehicle::personal_vehicle(int idx, script_global vehicle_idx)
-		: m_id(idx)
+		: m_id(idx), m_vehicle_idx(vehicle_idx)
 	{
-		m_hash = *vehicle_idx.at(66).as<Hash*>();
-		m_state_bitfield = vehicle_idx.at(103).as<int*>();
+		m_hash = *m_vehicle_idx.at(66).as<Hash*>();
+		m_state_bitfield = m_vehicle_idx.at(103).as<int*>();
+		m_name = std::string(HUD::GET_LABEL_TEXT_(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_hash))) + " (" + get_plate() + ")";
+	}
 
-		m_name = HUD::GET_LABEL_TEXT_(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_hash));
+	char* personal_vehicle::get_plate()
+	{
+		return m_vehicle_idx.at(1).as<char*>();
 	}
 
 	std::string personal_vehicle::get_display_name() const
@@ -28,6 +32,11 @@ namespace big
 	int personal_vehicle::get_id() const
 	{
 		return m_id;
+	}
+
+	script_global personal_vehicle::get_vehicle_idx() const
+	{
+		return m_vehicle_idx;
 	}
 
 	void personal_vehicle::summon() const

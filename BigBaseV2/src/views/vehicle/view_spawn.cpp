@@ -6,15 +6,6 @@
 
 namespace big
 {
-	static char model[12] = "";
-
-	bool does_search_match(std::string& input, const std::string& search)
-	{
-		std::transform(input.begin(), input.end(), input.begin(), ::tolower);
-
-		return input.find(search) != std::string::npos;
-	}
-
 	void view::spawn() {
 		ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
 
@@ -24,66 +15,58 @@ namespace big
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn Maxed", &g->spawn.spawn_maxed);
 
-		components::input_text_with_hint("Model Name", "Search", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, []
-		{
-			const auto ped = self::ped;
+		static char search[64];
+		static std::string lower_search;
 
-			const auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ped, 2.f, 2.f, 0.f);
-			const auto veh = vehicle::spawn(model, location, g_local_player->m_player_info->m_ped->m_navigation->m_right.x + 90.f);
+		if (ImGui::InputTextWithHint("Model Name", "Search", search, sizeof(search))) {
+			lower_search = search;
+			std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
+		}
 
-			if (g->spawn.spawn_inside)
-				PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1);
-
-			if (g->spawn.spawn_maxed)
-				vehicle::max_vehicle(veh);
-		});
 		// arbitrary subtraction this looked nice so idc, works for all resolutions as well
-		if (ImGui::ListBoxHeader("###vehicles", { 0, static_cast<float>(*g_pointers->m_resolution_y - 260)}))
-		{
-			if (!g_vehicle_preview_service->get_vehicle_list().is_null())
-			{
-				for (auto& item : g_vehicle_preview_service->get_vehicle_list())
-				{
-					if (item["Name"].is_null() || item["DisplayName"].is_null())
-						continue;
+		if (ImGui::ListBoxHeader("###vehicles", { 0, static_cast<float>(*g_pointers->m_resolution_y - 260)})) {
+			if (g_vehicle_preview_service->get_vehicle_map().size() > 0) {
 
-					std::string name = item["Name"];
-					std::string display_name = item["DisplayName"];
+				for (auto& [hash, item] : g_vehicle_preview_service->get_vehicle_map()) {
+					std::string display_name = item.dispaly_name;
+					std::string display_manufacturer = item.display_manufacturer;
 
-					std::string manufacturer;
-					std::string search = model;
-					std::transform(search.begin(), search.end(), search.begin(), ::tolower);
+					std::transform(display_name.begin(), display_name.end(), display_name.begin(), ::tolower);
+					std::transform(display_manufacturer.begin(), display_manufacturer.end(), display_manufacturer.begin(), ::tolower);
 
-					if (!item["ManufacturerDisplayName"].is_null())
-						manufacturer = item["ManufacturerDisplayName"];
+					if (
+						display_name.find(lower_search) != std::string::npos ||
+						display_manufacturer.find(lower_search) != std::string::npos
+					) {
+						std::string& item_name = item.name;
 
-					if (search.empty() ||
-						does_search_match(name, search) ||
-						does_search_match(display_name, search) ||
-						does_search_match(manufacturer, search))
-					{
-						components::selectable(item["DisplayName"], item["Name"] == search, [&item]
-						{
-							const auto location = self::pos;
-							const Vehicle veh = vehicle::spawn(item["Name"], location, 0.f);
+						components::selectable(item.dispaly_name + "##" + std::to_string(item.hash), false, [&item_name] {
 
-							if (g->spawn.spawn_inside)
-							{
+							Vector3 spawn_location = self::pos;
+							if (!g->spawn.spawn_inside) {
+								spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 5.f, 0.f);
+							}
+
+							float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
+
+							const Vehicle veh = vehicle::spawn(item_name, spawn_location, spawn_heading);
+
+							if (g->spawn.spawn_inside) {
 								vehicle::telport_into_veh(veh);
 							}
 
-							if (g->spawn.spawn_maxed)
-							{
+							if (g->spawn.spawn_maxed) {
 								vehicle::max_vehicle(veh);
 							}
 
 							g_vehicle_preview_service->stop_preview();
 						});
 
-						if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
+						if (g->spawn.preview_vehicle && ImGui::IsItemHovered()) {
 							g_vehicle_preview_service->set_preview_vehicle(item);
-						else if (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered())
+						} else if (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered()) {
 							g_vehicle_preview_service->stop_preview();
+						}
 					}
 				}
 			}
