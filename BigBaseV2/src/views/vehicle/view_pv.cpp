@@ -90,7 +90,7 @@ namespace big
 										y_offset = 5.f;
 									}
 
-									Vector3 spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, y_offset, 0.f);
+									auto spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, y_offset, 0.f);
 									float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 									char* spawn_plate = plate;
@@ -99,7 +99,7 @@ namespace big
 										spawn_plate = personal_veh->get_plate();
 									}
 
-									Vehicle veh = vehicle::clone(veh_data, spawn_location, spawn_heading);
+									auto veh = vehicle::clone(veh_data, spawn_location, spawn_heading);
 
 									if (g->clone_pv.spawn_inside)
 									{

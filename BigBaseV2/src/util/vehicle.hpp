@@ -21,12 +21,12 @@ namespace big::vehicle
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh)) return g_notification_service->push_error("Vehicle", "Invalid handle");
 
-		Vector3 vecVehicleLocation = ENTITY::GET_ENTITY_COORDS(veh, true);
+		auto vecVehicleLocation = ENTITY::GET_ENTITY_COORDS(veh, true);
 		teleport::load_ground_at_3dcoord(vecVehicleLocation);
 
 		if (!entity::take_control_of(veh))
 			return g_notification_service->push_warning("Vehicle", "Failed to take control of remote vehicle.");
-		Ped ped = self::ped;
+		auto ped = self::ped;
 
 		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, 0);
 		ENTITY::SET_ENTITY_HEADING(veh, ENTITY::GET_ENTITY_HEADING(ped));
@@ -105,7 +105,7 @@ namespace big::vehicle
 
 	inline int spawn(std::string_view model, Vector3 location, float heading, bool is_networked = true)
 	{
-		if (const Hash hash = rage::joaat(model.data()); hash)
+		if (const auto hash = rage::joaat(model.data()); hash)
 		{
 			for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
 			{
@@ -121,7 +121,7 @@ namespace big::vehicle
 			}
 
 			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
-			Vehicle veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, false, false);
+			auto veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, false, false);
 			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
 
 			script::get_current()->yield();
@@ -198,7 +198,7 @@ namespace big::vehicle
 			return 0;
 		}
 
-		Vehicle veh = vehicle::get_closest_to_location(tmpLocation, 200);
+		auto veh = vehicle::get_closest_to_location(tmpLocation, 200);
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh))
 		{
 			g_notification_service->push_error("Vehicle", "Unable to clone vehicle");
