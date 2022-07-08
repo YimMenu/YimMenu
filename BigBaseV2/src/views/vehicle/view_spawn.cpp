@@ -19,9 +19,9 @@ namespace big
 		strncpy(plate, g->spawn.plate.c_str(), 9);
 
 		ImGui::SetNextItemWidth(300.f);
-		if (ImGui::InputTextWithHint("Plate", "Plate Number", plate, sizeof(plate))) {
+		components::input_text_with_hint("Plate", "Plate Number", plate, sizeof(plate), ImGuiInputTextFlags_None, [] {
 			g->spawn.plate = plate;
-		}
+		});
 
 		static char search[64];
 		static std::string lower_search;
