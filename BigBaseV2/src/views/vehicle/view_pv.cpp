@@ -50,14 +50,12 @@ namespace big
 			if (g_mobile_service->personal_vehicles().empty())
 			{
 				ImGui::Text("No personal vehicles found, \nare you online?");
-
 			}
 			else
 			{
 
 				for (const auto& it : g_mobile_service->personal_vehicles())
 				{
-
 					const auto& label = it.first;
 					const auto& personal_veh = it.second;
 					auto item = g_vehicle_preview_service->find_vehicle_item_by_hash(personal_veh->get_hash());
@@ -82,7 +80,8 @@ namespace big
 
 									float y_offset = 0;
 
-									if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, false)) {
+									if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, false))
+									{
 										y_offset = 10.f;
 									}
 									else if (!g->spawn.spawn_inside)

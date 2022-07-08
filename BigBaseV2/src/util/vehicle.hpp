@@ -82,7 +82,10 @@ namespace big::vehicle
 
 	inline bool set_plate(Vehicle veh, const char* plate)
 	{
-		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh)) return false;
+		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh))
+		{
+			return false;
+		}
 
 		if (plate != nullptr && plate[0] != 0)
 		{
@@ -94,7 +97,10 @@ namespace big::vehicle
 
 	inline bool repair(Vehicle veh)
 	{
-		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh)) return false;
+		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh))
+		{
+			return false;
+		}
 
 		VEHICLE::SET_VEHICLE_FIXED(veh);
 		VEHICLE::SET_VEHICLE_DEFORMATION_FIXED(veh);
@@ -113,6 +119,7 @@ namespace big::vehicle
 
 				script::get_current()->yield();
 			}
+
 			if (!STREAMING::HAS_MODEL_LOADED(hash))
 			{
 				g_notification_service->push_warning("Spawn", "Failed to spawn model, did you give an incorrect model?");
