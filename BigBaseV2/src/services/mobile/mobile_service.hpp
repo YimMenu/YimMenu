@@ -5,11 +5,12 @@ namespace big
 {
 	class personal_vehicle final
 	{
-		std::string m_name;
-		int m_id;
-		script_global m_vehicle_idx;
 		Hash m_hash;
+		int m_id;
+		std::string m_name;
+		std::string m_plate;
 		int* m_state_bitfield;
+		script_global m_vehicle_idx;
 
 	public:
 		personal_vehicle(int idx, script_global vehicle_idx);

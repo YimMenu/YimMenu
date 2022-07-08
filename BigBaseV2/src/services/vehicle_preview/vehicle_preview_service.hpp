@@ -3,9 +3,14 @@
 
 namespace big
 {
-	struct vehicle_preview_item {
+	class vehicle_preview_item {
+
+	public:
+		vehicle_preview_item(nlohmann::json& item_json);
+		~vehicle_preview_item();
+
 		std::string name;
-		std::string dispaly_name;
+		std::string display_name;
 		std::string display_manufacturer;
 		Hash hash;
 	};
@@ -33,8 +38,8 @@ namespace big
 
 		void preview_loop();
 
-		void set_preview_vehicle(const vehicle_preview_item& item);
 		const vehicle_preview_item& find_vehicle_item_by_hash(int hash);
+		void set_preview_vehicle(const vehicle_preview_item& item);
 
 		void stop_preview();
 

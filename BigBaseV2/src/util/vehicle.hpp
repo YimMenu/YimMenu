@@ -48,7 +48,7 @@ namespace big::vehicle
 			{
 				const auto veh_interface_size = veh_interface->m_max_vehicles;
 
-				double min_dist = range + 1;
+				float min_dist = range + 1;
 				int32_t m_handle = 0;
 
 				for (int32_t i = 0; i < veh_interface_size; i++)
@@ -64,7 +64,7 @@ namespace big::vehicle
 					auto veh_pos_arr = veh_ptr->m_navigation->m_position;
 					Vector3 veh_pos(veh_pos_arr.x, veh_pos_arr.y, veh_pos_arr.z);
 
-					auto dist = math::distance_between_vectors(veh_pos, location);
+					float dist = math::distance_between_vectors(veh_pos, location);
 
 					if (dist < min_dist)
 					{

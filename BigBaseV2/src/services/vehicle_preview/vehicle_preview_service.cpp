@@ -9,6 +9,28 @@
 
 namespace big
 {
+	vehicle_preview_item::vehicle_preview_item(nlohmann::json& item_json)
+	{
+		this->name = item_json["Name"];
+		this->display_name = item_json["Name"];
+		this->display_manufacturer = "";
+		this->hash = item_json["SignedHash"];
+
+		if (!item_json["DisplayName"].is_null())
+		{
+			this->display_name = item_json["DisplayName"];
+		}
+
+		if (!item_json["ManufacturerDisplayName"].is_null())
+		{
+			this->display_manufacturer = item_json["ManufacturerDisplayName"];
+		}
+		else if (!item_json["Manufacturer"].is_null())
+		{
+			this->display_manufacturer = item_json["Manufacturer"];
+		}
+	}
+
 	vehicle_preview_service::vehicle_preview_service() :
 		m_vehicle_file(g_file_manager->get_project_file("./lib/vehicles.json"))
 	{
@@ -89,7 +111,7 @@ namespace big
 
 	void vehicle_preview_service::set_preview_vehicle(const vehicle_preview_item& item)
 	{
-		if (item.name != "")
+		if (!item.name.empty())
 		{
 			if (m_model != item.name)
 			{
@@ -122,40 +144,23 @@ namespace big
 	void vehicle_preview_service::load()
 	{
 		std::ifstream file(m_vehicle_file.get_path());
-		nlohmann::json m_all_vehicles;
+		nlohmann::json all_vehicles;
 
 		try
 		{
-			file >> m_all_vehicles;
+			file >> all_vehicles;
 		}
 		catch (const std::exception& ex)
 		{
 			LOG(WARNING) << "Failed to load vehicles.json:\n" << ex.what();
 		}
 
-		for (auto& item_json : m_all_vehicles)
+		for (auto& item_json : all_vehicles)
 		{
 			if (item_json["SignedHash"].is_null() || item_json["Name"].is_null())
 				continue;
 
-			Hash signed_hash = item_json["SignedHash"];
-			std::string name = item_json["Name"];
-			vehicle_preview_item item = { name, name, "", signed_hash };
-
-			if (!item_json["DisplayName"].is_null())
-			{
-				item.dispaly_name = item_json["DisplayName"];
-			}
-
-			if (!item_json["ManufacturerDisplayName"].is_null())
-			{
-				item.display_manufacturer = item_json["ManufacturerDisplayName"];
-			}
-			else if (!item_json["Manufacturer"].is_null()) {
-				item.display_manufacturer = item_json["Manufacturer"];
-			}
-
-			m_hash_veh_map[signed_hash] = item;
+			m_hash_veh_map[item_json["SignedHash"]] = vehicle_preview_item(item_json);
 		}
 	}
 }
