@@ -17,13 +17,15 @@ namespace big
 		static char plate[9] = { 0 };
 
 		ImGui::Checkbox("Spawn Clone", &g->clone_pv.spawn_clone);
-		if (g->clone_pv.spawn_clone) {
+		if (g->clone_pv.spawn_clone)
+		{
 			ImGui::SameLine();
 			ImGui::Checkbox("Spawn Maxed", &g->clone_pv.spawn_maxed);
 
 			strncpy(plate, g->clone_pv.plate.c_str(), 9);
 			ImGui::Checkbox("Clone PV Plate", &g->clone_pv.clone_plate);
-			if (!g->clone_pv.clone_plate) {
+			if (!g->clone_pv.clone_plate)
+			{
 				ImGui::SetNextItemWidth(300.f);
 
 				components::input_text_with_hint("Plate", "Plate Number", plate, sizeof(plate), ImGuiInputTextFlags_None, [] {
@@ -42,15 +44,19 @@ namespace big
 		});
 
 		g_mobile_service->refresh_personal_vehicles();
-		if (ImGui::ListBoxHeader("##personal_veh_list", { 300, static_cast<float>(*g_pointers->m_resolution_y - 300) })) {
+		if (ImGui::ListBoxHeader("##personal_veh_list", { 300, static_cast<float>(*g_pointers->m_resolution_y - 300) }))
+		{
 
-			if (g_mobile_service->personal_vehicles().empty()) {
-
+			if (g_mobile_service->personal_vehicles().empty())
+			{
 				ImGui::Text("No personal vehicles found, \nare you online?");
 
-			} else {
+			}
+			else
+			{
 
-				for (const auto& it : g_mobile_service->personal_vehicles()) {
+				for (const auto& it : g_mobile_service->personal_vehicles())
+				{
 
 					const auto& label = it.first;
 					const auto& personal_veh = it.second;
@@ -67,7 +73,8 @@ namespace big
 					) {
 						if (ImGui::Selectable(label.c_str(), false)) {
 
-							if (g->clone_pv.spawn_clone) {
+							if (g->clone_pv.spawn_clone)
+							{
 								g_fiber_pool->queue_job([&personal_veh] {
 									auto vehicle_idx = personal_veh->get_vehicle_idx();
 									auto veh_data = vehicle::get_vehicle_data_from_vehicle_idx(vehicle_idx);
@@ -101,7 +108,9 @@ namespace big
 
 									vehicle::set_plate(veh, spawn_plate);
 								});
-							} else {
+							}
+							else
+							{
 								strcpy(search, "");
 								lower_search = search;
 
@@ -111,9 +120,12 @@ namespace big
 							}
 						}
 
-						if (g->clone_pv.preview_vehicle && ImGui::IsItemHovered()) {
+						if (g->clone_pv.preview_vehicle && ImGui::IsItemHovered())
+						{
 							g_vehicle_preview_service->set_preview_vehicle(item);
-						} else if (g->clone_pv.preview_vehicle && !ImGui::IsAnyItemHovered()) {
+						}
+						else if (g->clone_pv.preview_vehicle && !ImGui::IsAnyItemHovered())
+						{
 							g_vehicle_preview_service->stop_preview();
 						}
 					}

@@ -42,27 +42,32 @@ namespace big::vehicle
 
 	inline Vehicle get_closest_to_location(Vector3 location, float range)
 	{
-		if (const auto replay = *g_pointers->m_replay_interface; replay) {
-			if (const auto veh_interface = replay->m_vehicle_interface; veh_interface) {
+		if (const auto replay = *g_pointers->m_replay_interface; replay)
+		{
+			if (const auto veh_interface = replay->m_vehicle_interface; veh_interface)
+			{
 				const auto veh_interface_size = veh_interface->m_max_vehicles;
 
 				double min_dist = range + 1;
 				int32_t m_handle = 0;
 
-				for (int32_t i = 0; i < veh_interface_size; i++) {
+				for (int32_t i = 0; i < veh_interface_size; i++)
+				{
 					auto veh_entity = veh_interface->m_vehicle_list->m_vehicles[i];
 					auto veh_ptr = veh_entity.m_entity_ptr;
 
-					if (!veh_ptr || !veh_ptr->m_navigation) {
+					if (!veh_ptr || !veh_ptr->m_navigation)
+					{
 						continue;
 					}
 
 					auto veh_pos_arr = veh_ptr->m_navigation->m_position;
 					Vector3 veh_pos(veh_pos_arr.x, veh_pos_arr.y, veh_pos_arr.z);
 
-					auto dist = big::math::distance_between_vectors(veh_pos, location);
+					auto dist = math::distance_between_vectors(veh_pos, location);
 
-					if (dist < min_dist) {
+					if (dist < min_dist)
+					{
 						min_dist = dist;
 						m_handle = g_pointers->m_ptr_to_handle(veh_ptr);
 					}
@@ -79,7 +84,8 @@ namespace big::vehicle
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh)) return false;
 
-		if (plate != nullptr && plate[0] != 0) {
+		if (plate != nullptr && plate[0] != 0)
+		{
 			VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(veh, plate);
 		}
 
@@ -141,13 +147,16 @@ namespace big::vehicle
 	inline Vehicle clone(std::map<int, int32_t>& data, Vector3 location, float heading)
 	{
 		Vector3 tmpLocation = { location.x, location.y, 1200.0f };
-		if (location.z > 1000.0f && location.z < 1400.0) {
+		if (location.z > 1000.0f && location.z < 1400.0)
+		{
 			tmpLocation.z = 800.0f;
 		}
 
 		// vehicle data
-		for (const auto& [idx, val] : data) {
-			if (idx >= 0 && idx < 142) {
+		for (const auto& [idx, val] : data)
+		{
+			if (idx >= 0 && idx < 142)
+			{
 				*spawn_global.at(27).at(idx).as<int32_t*>() = val;
 			}
 		}
@@ -178,17 +187,20 @@ namespace big::vehicle
 		*spawn_signal = 1;
 
 		// wait until the vehicle is spawned
-		for (size_t retry = 0; *spawn_signal != 0 && retry < 200; retry++) {
+		for (size_t retry = 0; *spawn_signal != 0 && retry < 200; retry++)
+		{
 			script::get_current()->yield(10ms);
 		}
 
-		if (*spawn_signal == 1) {
+		if (*spawn_signal == 1)
+		{
 			g_notification_service->push_error("Vehicle", "Unable to clone vehicle");
 			return 0;
 		}
 
-		Vehicle veh = big::vehicle::get_closest_to_location(tmpLocation, 200);
-		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh)) {
+		Vehicle veh = vehicle::get_closest_to_location(tmpLocation, 200);
+		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh))
+		{
 			g_notification_service->push_error("Vehicle", "Unable to clone vehicle");
 			return 0;
 		}
@@ -203,11 +215,12 @@ namespace big::vehicle
 	{
 		std::map<int, int32_t> veh_data;
 
-		for (int i = 0; i < 142; i++) {
+		for (int i = 0; i < 142; i++)
+		{
 			veh_data[i] = *vehicle_idx.at(i).as<int32_t*>();
 		}
 
-		veh_data.erase(1); veh_data.erase(19); veh_data.erase(60); veh_data.erase(77); 
+		veh_data.erase(1); veh_data.erase(19); veh_data.erase(60); veh_data.erase(77);
 		veh_data.erase(94); veh_data.erase(95); veh_data.erase(103);
 
 		return veh_data;
@@ -226,7 +239,9 @@ namespace big::vehicle
 		VEHICLE::TOGGLE_VEHICLE_MOD(veh, 17 /* Xenon Headlights */, TRUE);
 		VEHICLE::SET_VEHICLE_WINDOW_TINT(veh, 1);
 		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(veh, false);
-		for (int i = 0; i < 50; i++) {
+
+		for (int i = 0; i < 50; i++)
+		{
 			if (
 				i != eVehicleModType::VMT_LIVERY_MOD
 			) {

@@ -14,11 +14,6 @@ namespace big
 		m_name = std::string(HUD::GET_LABEL_TEXT_(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_hash))) + " (" + get_plate() + ")";
 	}
 
-	char* personal_vehicle::get_plate()
-	{
-		return m_vehicle_idx.at(1).as<char*>();
-	}
-
 	std::string personal_vehicle::get_display_name() const
 	{
 		return m_name + "##" + std::to_string(m_id);
@@ -32,6 +27,11 @@ namespace big
 	int personal_vehicle::get_id() const
 	{
 		return m_id;
+	}
+
+	char* personal_vehicle::get_plate()
+	{
+		return m_vehicle_idx.at(1).as<char*>();
 	}
 
 	script_global personal_vehicle::get_vehicle_idx() const
@@ -60,8 +60,7 @@ namespace big
 		if (std::chrono::duration_cast<std::chrono::seconds>(now - m_last_update) < 10s) return;
 		m_last_update = std::chrono::high_resolution_clock::now();
 
-		g_fiber_pool->queue_job([this]
-		{
+		g_fiber_pool->queue_job([this] {
 			register_vehicles();
 		});
 	}
@@ -84,7 +83,7 @@ namespace big
 			if (STREAMING::IS_MODEL_A_VEHICLE(hash))
 			{
 				auto veh = std::make_unique<personal_vehicle>(i, veh_idx_global);
-				
+
 				if (exists)
 				{
 					// vehicle name is no longer the same, update the vehicle at that index

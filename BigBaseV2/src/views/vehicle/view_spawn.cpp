@@ -33,8 +33,10 @@ namespace big
 		});
 
 		// arbitrary subtraction this looked nice so idc, works for all resolutions as well
-		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 260)})) {
-			if (g_vehicle_preview_service->get_vehicle_map().size() > 0) {
+		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 260) }))
+		{
+			if (g_vehicle_preview_service->get_vehicle_map().size() > 0)
+			{
 
 				for (auto& [hash, item] : g_vehicle_preview_service->get_vehicle_map()) {
 					std::string display_name = item.dispaly_name;
@@ -55,7 +57,9 @@ namespace big
 
 							if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, false)) {
 								y_offset = 10.f;
-							} else if (!g->spawn.spawn_inside) {
+							}
+							else if (!g->spawn.spawn_inside)
+							{
 								y_offset = 5.f;
 							}
 
@@ -64,11 +68,13 @@ namespace big
 
 							const Vehicle veh = vehicle::spawn(item_name, spawn_location, spawn_heading);
 
-							if (g->spawn.spawn_inside) {
+							if (g->spawn.spawn_inside)
+							{
 								vehicle::telport_into_veh(veh);
 							}
 
-							if (g->spawn.spawn_maxed) {
+							if (g->spawn.spawn_maxed)
+							{
 								vehicle::max_vehicle(veh);
 							}
 
@@ -77,15 +83,21 @@ namespace big
 							g_vehicle_preview_service->stop_preview();
 						});
 
-						if (g->spawn.preview_vehicle && ImGui::IsItemHovered()) {
+						if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
+						{
 							g_vehicle_preview_service->set_preview_vehicle(item);
-						} else if (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered()) {
+						}
+						else if (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered())
+						{
 							g_vehicle_preview_service->stop_preview();
 						}
 					}
 				}
 			}
-			else ImGui::Text("No vehicles in registry.");
+			else
+			{
+				ImGui::Text("No vehicles in registry.");
+			}
 			ImGui::ListBoxFooter();
 		}
 	}
