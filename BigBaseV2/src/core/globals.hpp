@@ -97,6 +97,7 @@ namespace big
 			bool freezeplayer = false;
 			bool freezeallplayers = false;
 			bool shakecam = false;
+			bool chase = false;
 		};
 
 		struct protections {

@@ -75,6 +75,13 @@ namespace big
 					toxic::bodyguard(g_player_service->get_selected()->id());
 					});
 
+				ImGui::SameLine();
+
+				components::button("Chase", [] {
+
+					g->player.chase = true;
+					});
+
 				ImGui::TreePop();
 			}
 
