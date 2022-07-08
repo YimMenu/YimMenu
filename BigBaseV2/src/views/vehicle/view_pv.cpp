@@ -14,10 +14,21 @@ namespace big
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn In", &g->clone_pv.spawn_inside);
 
+		static char plate[9] = { 0 };
+
 		ImGui::Checkbox("Spawn Clone", &g->clone_pv.spawn_clone);
 		if (g->clone_pv.spawn_clone) {
 			ImGui::SameLine();
 			ImGui::Checkbox("Spawn Maxed", &g->clone_pv.spawn_maxed);
+
+			strncpy(plate, g->clone_pv.plate.c_str(), 9);
+			ImGui::Checkbox("Clone PV Plate", &g->clone_pv.clone_plate);
+			if (!g->clone_pv.clone_plate) {
+				ImGui::SetNextItemWidth(300.f);
+				if (ImGui::InputTextWithHint("Plate", "Plate Number", plate, sizeof(plate))) {
+					g->clone_pv.plate = plate;
+				}
+			}
 		}
 
 
@@ -74,7 +85,12 @@ namespace big
 									Vector3 spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, y_offset, 0.f);
 									float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
-									auto veh = vehicle::clone(veh_data, personal_veh->get_plate(), spawn_location, spawn_heading);
+									char* spawn_plate = plate;
+									if (g->clone_pv.clone_plate) {
+										spawn_plate = personal_veh->get_plate();
+									}
+
+									Vehicle veh = vehicle::clone(veh_data, spawn_plate, spawn_location, spawn_heading);
 
 									if (g->clone_pv.spawn_inside) {
 										vehicle::telport_into_veh(veh);

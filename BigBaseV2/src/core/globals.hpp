@@ -181,6 +181,7 @@ namespace big
 			bool preview_vehicle = false;
 			bool spawn_inside = false;
 			bool spawn_maxed = false;
+			std::string plate = "";
 		};
 
 		struct clone_pv
@@ -189,6 +190,8 @@ namespace big
 			bool spawn_inside = false;
 			bool spawn_clone = false;
 			bool spawn_maxed = false;
+			bool clone_plate = false;
+			std::string plate = "";
 		};
 
 		struct spoofing
@@ -510,14 +513,17 @@ namespace big
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
 
+			this->spawn.preview_vehicle = j["spawn"]["preview_vehicle"];
+			this->spawn.spawn_inside = j["spawn"]["spawn_inside"];
+			this->spawn.spawn_maxed = j["spawn"]["spawn_maxed"];
+			this->spawn.plate = j["spawn"]["plate"];
+
 			this->clone_pv.preview_vehicle = j["clone_pv"]["preview_vehicle"];
 			this->clone_pv.spawn_inside = j["clone_pv"]["spawn_inside"];
 			this->clone_pv.spawn_clone = j["clone_pv"]["spawn_clone"];
 			this->clone_pv.spawn_maxed = j["clone_pv"]["spawn_maxed"];
-
-			this->spawn.preview_vehicle = j["spawn"]["preview_vehicle"];
-			this->spawn.spawn_inside = j["spawn"]["spawn_inside"];
-			this->spawn.spawn_maxed = j["spawn"]["spawn_maxed"];
+			this->clone_pv.clone_plate = j["clone_pv"]["clone_plate"];
+			this->clone_pv.plate = j["clone_pv"]["plate"];
 
 			this->spoofing.spoof_ip = j["spoofing"]["spoof_ip"];
 			this->spoofing.spoof_rockstar_id = j["spoofing"]["spoof_rockstar_id"];
@@ -761,14 +767,17 @@ namespace big
 						{ "preview_vehicle", this->clone_pv.preview_vehicle },
 						{ "spawn_inside", this->clone_pv.spawn_inside },
 						{ "spawn_clone", this->clone_pv.spawn_clone },
-						{ "spawn_maxed", this->clone_pv.spawn_maxed }
+						{ "spawn_maxed", this->clone_pv.spawn_maxed },
+						{ "clone_plate", this->clone_pv.clone_plate },
+						{ "plate", this->clone_pv.plate }
 					}
 				},
 				{
 					"spawn", {
 						{ "preview_vehicle", this->spawn.preview_vehicle },
 						{ "spawn_inside", this->spawn.spawn_inside },
-						{ "spawn_maxed", this->spawn.spawn_maxed}
+						{ "spawn_maxed", this->spawn.spawn_maxed},
+						{ "plate", this->spawn.plate }
 					}
 				},
 				{

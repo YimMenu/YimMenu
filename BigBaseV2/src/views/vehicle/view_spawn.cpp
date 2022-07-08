@@ -15,6 +15,14 @@ namespace big
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn Maxed", &g->spawn.spawn_maxed);
 
+		static char plate[9] = { 0 };
+		strncpy(plate, g->spawn.plate.c_str(), 9);
+
+		ImGui::SetNextItemWidth(300.f);
+		if (ImGui::InputTextWithHint("Plate", "Plate Number", plate, sizeof(plate))) {
+			g->spawn.plate = plate;
+		}
+
 		static char search[64];
 		static std::string lower_search;
 
@@ -54,7 +62,7 @@ namespace big
 							Vector3 spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, y_offset, 0.f);
 							float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
-							const Vehicle veh = vehicle::spawn(item_name, spawn_location, spawn_heading);
+							const Vehicle veh = vehicle::spawn(item_name, plate, spawn_location, spawn_heading);
 
 							if (g->spawn.spawn_inside) {
 								vehicle::telport_into_veh(veh);
