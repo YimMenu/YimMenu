@@ -25,22 +25,21 @@ namespace big
 			ImGui::Checkbox("Clone PV Plate", &g->clone_pv.clone_plate);
 			if (!g->clone_pv.clone_plate) {
 				ImGui::SetNextItemWidth(300.f);
-				if (ImGui::InputTextWithHint("Plate", "Plate Number", plate, sizeof(plate))) {
+
+				components::input_text_with_hint("Plate", "Plate Number", plate, sizeof(plate), ImGuiInputTextFlags_None, [] {
 					g->clone_pv.plate = plate;
-				}
+				});
 			}
 		}
-
 
 		static char search[64];
 		static std::string lower_search;
 
 		ImGui::SetNextItemWidth(300.f);
-		if (ImGui::InputTextWithHint("Model Name", "Search", search, sizeof(search))) {
+		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None, [] {
 			lower_search = search;
 			std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
-		}
-		
+		});
 
 		g_mobile_service->refresh_personal_vehicles();
 		if (ImGui::ListBoxHeader("##personal_veh_list", { 300, static_cast<float>(*g_pointers->m_resolution_y - 300) })) {
