@@ -71,6 +71,7 @@ namespace big
 						display_name.find(lower_search) != std::string::npos ||
 						display_manufacturer.find(lower_search) != std::string::npos
 					) {
+						ImGui::PushID(personal_veh->get_id());
 						if (ImGui::Selectable(label.c_str(), false)) {
 
 							if (g->clone_pv.spawn_clone)
@@ -84,7 +85,8 @@ namespace big
 									if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, false)) {
 										y_offset = 10.f;
 									}
-									else if (!g->spawn.spawn_inside) {
+									else if (!g->spawn.spawn_inside)
+									{
 										y_offset = 5.f;
 									}
 
@@ -92,17 +94,20 @@ namespace big
 									float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 									char* spawn_plate = plate;
-									if (g->clone_pv.clone_plate) {
+									if (g->clone_pv.clone_plate)
+									{
 										spawn_plate = personal_veh->get_plate();
 									}
 
 									Vehicle veh = vehicle::clone(veh_data, spawn_location, spawn_heading);
 
-									if (g->clone_pv.spawn_inside) {
+									if (g->clone_pv.spawn_inside)
+									{
 										vehicle::telport_into_veh(veh);
 									}
 
-									if (g->clone_pv.spawn_maxed) {
+									if (g->clone_pv.spawn_maxed)
+									{
 										vehicle::max_vehicle(veh);
 									}
 
@@ -119,6 +124,7 @@ namespace big
 								});
 							}
 						}
+						ImGui::PopID();
 
 						if (g->clone_pv.preview_vehicle && ImGui::IsItemHovered())
 						{

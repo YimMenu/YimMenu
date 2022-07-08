@@ -51,11 +51,13 @@ namespace big
 					) {
 						std::string& item_name = item.name;
 
-						components::selectable(item.dispaly_name + "##" + std::to_string(item.hash), false, [&item_name] {
+						ImGui::PushID(item.hash);
+						components::selectable(item.dispaly_name, false, [&item_name] {
 
 							float y_offset = 0;
 
-							if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, false)) {
+							if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, false))
+							{
 								y_offset = 10.f;
 							}
 							else if (!g->spawn.spawn_inside)
@@ -82,6 +84,7 @@ namespace big
 
 							g_vehicle_preview_service->stop_preview();
 						});
+						ImGui::PopID();
 
 						if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
 						{
