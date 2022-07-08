@@ -90,7 +90,7 @@ namespace big
 										spawn_plate = personal_veh->get_plate();
 									}
 
-									Vehicle veh = vehicle::clone(veh_data, spawn_plate, spawn_location, spawn_heading);
+									Vehicle veh = vehicle::clone(veh_data, spawn_location, spawn_heading);
 
 									if (g->clone_pv.spawn_inside) {
 										vehicle::telport_into_veh(veh);
@@ -99,6 +99,8 @@ namespace big
 									if (g->clone_pv.spawn_maxed) {
 										vehicle::max_vehicle(veh);
 									}
+
+									vehicle::set_plate(veh, spawn_plate);
 								});
 							} else {
 								strcpy(search, "");

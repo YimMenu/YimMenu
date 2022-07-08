@@ -75,6 +75,17 @@ namespace big::vehicle
 		return 0;
 	}
 
+	inline bool set_plate(Vehicle veh, const char* plate)
+	{
+		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh)) return false;
+
+		if (plate != nullptr && plate[0] != 0) {
+			VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(veh, plate);
+		}
+
+		return true;
+	}
+
 	inline bool repair(Vehicle veh)
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh)) return false;
@@ -86,7 +97,7 @@ namespace big::vehicle
 		return true;
 	}
 
-	inline int spawn(std::string_view model, const char* plate, Vector3 location, float heading, bool is_networked = true)
+	inline int spawn(std::string_view model, Vector3 location, float heading, bool is_networked = true)
 	{
 		if (const Hash hash = rage::joaat(model.data()); hash)
 		{
@@ -106,10 +117,6 @@ namespace big::vehicle
 			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
 			Vehicle veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, false, false);
 			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
-
-			if (plate[0] != 0) {
-				VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(veh, plate);
-			}
 
 			script::get_current()->yield();
 
@@ -131,19 +138,12 @@ namespace big::vehicle
 		return -1;
 	}
 
-	inline Vehicle clone(std::map<int, int32_t>& data, const char* plate, Vector3 location, float heading)
+	inline Vehicle clone(std::map<int, int32_t>& data, Vector3 location, float heading)
 	{
 		Vector3 tmpLocation = { location.x, location.y, 1200.0f };
 		if (location.z > 1000.0f && location.z < 1400.0) {
 			tmpLocation.z = 800.0f;
 		}
-
-		if (plate == nullptr) {
-			plate = "";
-		}
-
-		// plate
-		strncpy(spawn_global.at(27).at(1).as<char*>(), plate, 8);
 
 		// vehicle data
 		for (const auto& [idx, val] : data) {
@@ -158,8 +158,8 @@ namespace big::vehicle
 		*spawn_global.at(27).at(77).as<int32_t*>() = 4030726305;
 
 		// personal car flag
-		*spawn_global.at(27).at(94).as<int32_t*>() = 2;
-		*spawn_global.at(27).at(95).as<int32_t*>() = 14;
+		*spawn_global.at(27).at(94).as<int32_t*>() = 0;
+		*spawn_global.at(27).at(95).as<int32_t*>() = 0;
 
 		// mmi
 		*spawn_global.at(27).at(103).as<int32_t*>() = 0;

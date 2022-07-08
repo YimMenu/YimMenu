@@ -53,7 +53,7 @@ namespace big
 				{
 					m_new_model = false;
 					location.z = -10.f;
-					m_current_veh = vehicle::spawn(m_model, "", location, 0.f, false);
+					m_current_veh = vehicle::spawn(m_model, location, 0.f, false);
 					ENTITY::FREEZE_ENTITY_POSITION(m_current_veh, true);
 					ENTITY::SET_ENTITY_ALPHA(m_current_veh, 0, 0);
 					ENTITY::SET_ENTITY_COLLISION(m_current_veh, false, false);
