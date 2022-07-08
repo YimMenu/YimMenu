@@ -122,15 +122,16 @@ namespace big
 
 		void pre_reset();
 		void post_reset();
-		
+
 		bool add_callback(PresentCallback callback) { return m_present_callbacks.insert(callback).second; }
 		bool remove_callback(PresentCallback callback) { return m_present_callbacks.erase(callback) != 0; }
 
 		void wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 	public:
 		ImFont* m_font;
-		ImFont *m_font_title;
-		ImFont *m_monospace_font;
+		ImFont* m_font_title;
+		ImFont* m_monospace_font;
+		ImFont* m_font_icons;
 	private:
 		comptr<IDXGISwapChain> m_dxgi_swapchain;
 		comptr<ID3D11Device> m_d3d_device;
@@ -138,8 +139,8 @@ namespace big
 		std::set<PresentCallback>	m_present_callbacks;
 		std::unique_ptr<state_saver> m_state_saver;
 		bool m_restoreState = false;
-		
+
 	};
 
-	inline renderer *g_renderer{};
+	inline renderer* g_renderer{};
 }

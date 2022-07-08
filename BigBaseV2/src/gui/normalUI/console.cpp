@@ -193,13 +193,6 @@ namespace big
 
                         } QUEUE_JOB_END_CLAUSE
                     }*/
-                    static int event_id;
-                    ImGui::InputInt("###event_id", &event_id);
-                    ImGui::SameLine();
-                    components::button("Start Event", []
-                    {
-                        session::force_script_on_lobby(event_id);
-                    });
 
                     static char message[255] = "";
                     components::input_text_with_hint("Message", "", message, sizeof(message), ImGuiInputTextFlags_EnterReturnsTrue, []

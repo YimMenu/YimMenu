@@ -1,6 +1,7 @@
 #include "views/view.hpp"
 #include "natives.hpp"
 #include "fiber_pool.hpp"
+#include "services/players/player_service.hpp"
 
 namespace big
 {

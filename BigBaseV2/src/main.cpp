@@ -1,6 +1,5 @@
-﻿#include "common.hpp"
+#include "common.hpp"
 #include "core/globals.hpp"
-#include "features.hpp"
 #include "fiber_pool.hpp"
 #include "gui.hpp"
 #include "logger.hpp"
@@ -12,17 +11,17 @@
 #include "shv_runner.h"
 #include "asi_loader/asi_loader.h"
 
-#include "native_hooks/native_hooks.hpp"
-#include "services/context_menu_service.hpp"
-#include "services/globals_service.hpp"
-#include "services/gui_service.hpp"
-#include "services/player_service.hpp"
-#include "services/mobile_service.hpp"
-#include "services/notification_service.hpp"
-#include "services/vehicle_preview_service.hpp"
-#include "services/vehicle_service.hpp"
-
 #include "backend/backend.hpp"
+#include "native_hooks/native_hooks.hpp"
+#include "services/context_menu/context_menu_service.hpp"
+#include "services/globals/globals_service.hpp"
+#include "services/gui/gui_service.hpp"
+#include "services/mobile/mobile_service.hpp"
+#include "services/pickups/pickup_service.hpp"
+#include "services/players/player_service.hpp"
+#include "services/notifications/notification_service.hpp"
+#include "services/vehicle_preview/vehicle_preview_service.hpp"
+#include "services/vehicle/vehicle_service.hpp"
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -77,29 +76,30 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					auto globals_service_instace = std::make_unique<globals_service>();
 					auto mobile_service_instance = std::make_unique<mobile_service>();
 					auto notification_service_instance = std::make_unique<notification_service>();
+					auto pickup_service_instance = std::make_unique<pickup_service>();
 					auto player_service_instance = std::make_unique<player_service>();
 					auto vehicle_preview_service_instance = std::make_unique<vehicle_preview_service>();
 					auto vehicle_service_instance = std::make_unique<vehicle_service>();
 					auto gui_service_instance = std::make_unique<gui_service>();
 					LOG(INFO) << "Registered service instances...";
 
-				g_script_mgr.add_script(std::make_unique<script>(&features::script_func));
-				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
-
-				g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop));
-				g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop));
-				g_script_mgr.add_script(std::make_unique<script>(&backend::vehicles_loop));
-				g_script_mgr.add_script(std::make_unique<script>(&backend::misc_loop));
-				g_script_mgr.add_script(std::make_unique<script>(&backend::remote_loop));
-				g_script_mgr.add_script(std::make_unique<script>(&backend::noclip_loop));
-				g_script_mgr.add_script(std::make_unique<script>(&backend::lscustoms_loop));
-				g_script_mgr.add_script(std::make_unique<script>(&backend::vehiclefly_loop));
-				g_script_mgr.add_script(std::make_unique<script>(&backend::rgbrandomizer_loop));
-				g_script_mgr.add_script(std::make_unique<script>(&backend::turnsignal_loop));
-				g_script_mgr.add_script(std::make_unique<script>(&backend::disable_control_action_loop));
-				g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu));
-				LOG(INFO) << "Scripts registered.";
-
+					g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
+					g_script_mgr.add_script(std::make_unique<script>(&shv_runner::script_func));
+					
+					g_script_mgr.add_script(std::make_unique<script>(&backend::loop, "Backend Loop", false));
+					g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop, "Self"));
+					g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop, "Weapon"));
+					g_script_mgr.add_script(std::make_unique<script>(&backend::vehicles_loop, "Vehicle"));
+					g_script_mgr.add_script(std::make_unique<script>(&backend::misc_loop, "Miscellaneous"));
+					g_script_mgr.add_script(std::make_unique<script>(&backend::remote_loop, "Remote"));
+					g_script_mgr.add_script(std::make_unique<script>(&backend::noclip_loop, "No Clip"));
+					g_script_mgr.add_script(std::make_unique<script>(&backend::lscustoms_loop, "LS Customs"));
+					g_script_mgr.add_script(std::make_unique<script>(&backend::vehiclefly_loop, "Vehicle Fly"));
+					g_script_mgr.add_script(std::make_unique<script>(&backend::rgbrandomizer_loop, "RGB Randomizer"));
+					g_script_mgr.add_script(std::make_unique<script>(&backend::turnsignal_loop, "Turn Signals"));
+					g_script_mgr.add_script(std::make_unique<script>(&backend::disable_control_action_loop, "Disable Controls"));
+					g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu, "Context Menu"));
+					LOG(INFO) << "Scripts registered.";
 
 					auto native_hooks_instance = std::make_unique<native_hooks>();
 					LOG(INFO) << "Dynamic native hooker initialized.";
@@ -109,6 +109,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 					g_running = true;
 					ASILoader::Initialize();
+					LOG(INFO) << "ASI Loader initialized.";
 
 					while (g_running)
 						std::this_thread::sleep_for(500ms);
@@ -135,6 +136,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					LOG(INFO) << "Mobile Service reset.";
 					player_service_instance.reset();
 					LOG(INFO) << "Player Service reset.";
+					pickup_service_instance.reset();
+					LOG(INFO) << "Pickup Service reset.";
 					globals_service_instace.reset();
 					LOG(INFO) << "Globals Service reset.";
 					context_menu_service_instance.reset();

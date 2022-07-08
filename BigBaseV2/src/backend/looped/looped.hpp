@@ -1,5 +1,8 @@
 #pragma once
+
 #include "common.hpp"
+
+#include "services/players/player_service.hpp"
 
 namespace big
 {
@@ -19,7 +22,7 @@ namespace big
 		static void tunables_no_idle_kick();
 		static void always_controll();
 
-		static void player_never_wanted();
+		static void player_never_wanted(const player_ptr &player);
 		static void player_spectate();
 
 		static void protections_replay_interface();
@@ -52,6 +55,7 @@ namespace big
 		static void vehicle_fly();
 		static void vehicle_god_mode();
 		static void vehicle_horn_boost();
+		static void vehicle_jump();
 		static void vehicle_instant_brake();
 		static void vehicle_is_targetable();
 		static void vehicle_ls_customs();

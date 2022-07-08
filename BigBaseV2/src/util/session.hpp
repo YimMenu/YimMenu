@@ -29,16 +29,4 @@ namespace big::session
 
 		*script_global(262145).at(4723).as<bool*>() = g->session.local_weather == 13;
 	}
-
-	inline void force_script_on_lobby(int script_id)
-	{
-		if (auto launcher = gta_util::find_script_thread(rage::joaat_t("am_launcher")))
-		{
-			//if (!session::force_script_host(self::id, "am_launcher"))
-				//return;
-
-			*script_global(2775756).at(3).at(1).as<int*>() = script_id;
-			*script_global(2775756).at(2).as<int*>() = 6;
-		}
-	}
 }

@@ -4,9 +4,8 @@ workspace "BigBaseV2"
 
 	configurations
 	{
-		"Debug",
-		"Release",
-		"Dist"
+		-- "Debug", -- Debug isn't buildable and causes confusion for new people
+		"Release"
 	}
 
 	outputdir = "%{cfg.buildcfg}"
@@ -239,10 +238,6 @@ workspace "BigBaseV2"
 		    defines { "DEBUG" }
 
 		filter "configurations:Release"
-		    flags { "NoManifest" }
-		    defines { "RELEASE" }
-		    optimize "speed"
-		filter "configurations:Dist"
 		    flags { "FatalWarnings", "NoManifest" }
-		    defines { "DIST" }
+		    defines { "RELEASE" }
 		    optimize "speed"

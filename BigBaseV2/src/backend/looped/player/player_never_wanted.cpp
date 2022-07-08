@@ -1,14 +1,14 @@
 #include "backend/looped/looped.hpp"
-#include "services/player_service.hpp"
+#include "services/players/player_service.hpp"
 #include "util/globals.hpp"
 
 namespace big
 {
-	void looped::player_never_wanted()
+	void looped::player_never_wanted(const player_ptr &player)
 	{
-		if (g->player.player_never_wanted && g_player_service->get_selected()->is_valid())
+		if (player->never_wanted)
 		{
-			globals::clear_wanted_player(g_player_service->get_selected()->id());
+			globals::clear_wanted_player(player->id());
 		}
 	}
 }

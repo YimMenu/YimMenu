@@ -21,6 +21,11 @@ namespace big
 		m_scripts.clear();
 	}
 
+	script_list& script_mgr::scripts()
+	{
+		return m_scripts;
+	}
+
 	void script_mgr::tick()
 	{
 		gta_util::execute_as_script(RAGE_JOAAT("main_persistent"), std::mem_fn(&script_mgr::tick_internal), this);
@@ -32,9 +37,8 @@ namespace big
 		static bool ensure_native_handlers = (g_native_invoker.cache_handlers(), true);
 
 		std::lock_guard lock(m_mutex);
-		for (auto const &script : m_scripts)
-		{
-			script->tick();
-		}
+		for (auto const& script : m_scripts)
+			if (script->is_enabled())
+				script->tick();
 	}
 }

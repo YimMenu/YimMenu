@@ -1,8 +1,10 @@
 #pragma once
 #include "CAmmoInfo.hpp"
+#include "CWeaponInfo.hpp"
 #include "enums.hpp"
 #include "file_manager.hpp"
 #include "imgui.h"
+#include <bitset>
 
 namespace big
 {
@@ -88,7 +90,6 @@ namespace big
 
 		struct player {
 			int character_slot = 1;
-			bool player_never_wanted = false;
 			int set_level = 130;
 			bool spectating = false;
 		};
@@ -144,6 +145,16 @@ namespace big
 			bool super_run = false;
 			bool allow_ragdoll = false;
 			int wanted_level = 0;
+
+			bool proof_bullet = false;
+			bool proof_fire = false;
+			bool proof_collision = false;
+			bool proof_melee = false;
+			bool proof_explosion = false;
+			bool proof_steam = false;
+			bool proof_drown = false;
+			bool proof_water = false;
+			uint32_t proof_mask = 0;
 		};
 
 		struct session
@@ -231,6 +242,7 @@ namespace big
 			bool drive_on_water = false;
 			bool god_mode = false;
 			bool horn_boost = false;
+			bool vehicle_jump = false;
 			bool instant_brake = false;
 			bool is_targetable = true;
 			bool ls_customs = false; // don't save this to disk
@@ -254,6 +266,7 @@ namespace big
 			{
 				bool toggle = false;
 				eAmmoSpecialType type = eAmmoSpecialType::None;
+				eImpactType impactType = eImpactType::DEFAULT_BULLETS;
 			} ammo_special;
 
 			CustomWeapon custom_weapon = CustomWeapon::NONE;
@@ -289,6 +302,17 @@ namespace big
 		struct context_menu
 		{
 			bool enabled = true;
+
+			uint8_t allowed_entity_types =
+				static_cast<uint8_t>(ContextEntityType::PED) |
+				static_cast<uint8_t>(ContextEntityType::PLAYER) |
+				static_cast<uint8_t>(ContextEntityType::VEHICLE) |
+				static_cast<uint8_t>(ContextEntityType::OBJECT);
+
+			ImU32 selected_option_color = 4278255360;
+
+			bool bounding_box_enabled = true;
+			ImU32 bounding_box_color = 4278255360;
 		};
 
 		struct pie_menu
@@ -533,6 +557,7 @@ namespace big
 			this->vehicle.driving_style_id = j["vehicle"]["driving_style"];
 			this->vehicle.god_mode = j["vehicle"]["god_mode"];
 			this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
+			this->vehicle.vehicle_jump = j["vehicle"]["vehicle_jump"];
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
 			this->vehicle.pv_teleport_into = j["vehicle"]["pv_teleport_into"];
@@ -574,6 +599,10 @@ namespace big
 			this->window.users = j["window"]["users"];
 
 			this->context_menu.enabled = j["context_menu"]["enabled"];
+			this->context_menu.allowed_entity_types = j["context_menu"]["allowed_entity_types"];
+			this->context_menu.selected_option_color = j["context_menu"]["selected_option_color"];
+			this->context_menu.bounding_box_enabled = j["context_menu"]["bounding_box_enabled"];
+			this->context_menu.bounding_box_color = j["context_menu"]["bounding_box_color"];
 
 			this->esp.enabled = j["esp"]["enabled"];
 			this->esp.hide_self = j["esp"]["hide_self"];
@@ -787,6 +816,7 @@ namespace big
 						{ "driving_style", this->vehicle.driving_style_id },
 						{ "god_mode", this->vehicle.god_mode },
 						{ "horn_boost", this->vehicle.horn_boost },
+						{ "vehicle_jump", this->vehicle.vehicle_jump },
 						{ "instant_brake", this->vehicle.instant_brake },
 						{ "is_targetable", this->vehicle.is_targetable },
 						{ "pv_teleport_into", this->vehicle.pv_teleport_into },
@@ -845,7 +875,11 @@ namespace big
 				},
 				{
 					"context_menu", {
-						{"enabled", this->context_menu.enabled}
+						{"enabled", this->context_menu.enabled},
+						{ "allowed_entity_types", this->context_menu.allowed_entity_types },
+						{ "selected_option_color", this->context_menu.selected_option_color },
+						{ "bounding_box_enabled", this->context_menu.bounding_box_enabled },
+						{ "bounding_box_color", this->context_menu.bounding_box_color },
 					}
 				},
 				{

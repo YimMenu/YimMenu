@@ -6,34 +6,44 @@
 
 namespace big
 {
-	void view::teleport() {
-
+	void view::teleport()
+	{
 		ImGui::Text("Blips:");
 
-		components::button("Waypoint", [] {
+		components::button("Waypoint", []
+		{
 			teleport::to_waypoint();
-			});
+		});
 
-		components::button("Objective", [] {
+		components::button("Objective", []
+		{
 			teleport::to_objective();
-			});
+		});
 
 		ImGui::Text("Vehicles:");
 
-		components::button("Bring Personal Vehicle", [] {
+		components::button("Teleport to Last Vehicle", []
+		{
+			if (g_local_player && g_local_player->m_vehicle)
+			{
+				const Vehicle veh = g_pointers->m_ptr_to_handle(g_local_player->m_vehicle);
+
+				teleport::into_vehicle(veh);
+			}
+		});
+
+		components::button("Bring Personal Vehicle", []
+		{
 			Vehicle veh = globals::get_personal_vehicle();
-			if (ENTITY::IS_ENTITY_DEAD(veh, false)) return g_notification_service->push_error("Teleport", "Invalid vehicle handle...");
 
 			vehicle::bring(veh, self::pos);
-			});
+		});
 
-		components::button("Teleport to Personal Vehicle", [] {
+		components::button("Teleport to Personal Vehicle", []
+		{
 			Vehicle veh = globals::get_personal_vehicle();
-			if (ENTITY::IS_ENTITY_DEAD(veh, false)) return g_notification_service->push_error("Teleport", "Invalid vehicle handle...");
 
-			teleport::to_coords(
-				ENTITY::GET_ENTITY_COORDS(veh, true)
-			);
-			});
+			teleport::into_vehicle(veh);
+		});
 	}
 }

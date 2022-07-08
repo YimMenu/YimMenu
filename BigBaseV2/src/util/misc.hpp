@@ -16,7 +16,13 @@ namespace big::misc
 	{
 		return *address & 1 << pos;
 	}
-	
+
+	template<typename T>
+	inline bool has_bits_set(T* address, T bits)
+	{
+		return (*address & bits) == bits;
+	}
+
 	inline bool has_bits_set(int* address, int bits)
 	{
 		return (*address & bits) == bits;
