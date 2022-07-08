@@ -9,6 +9,14 @@
 
 namespace big
 {
+	vehicle_preview_item::vehicle_preview_item()
+	{
+		this->name = "";
+		this->display_name = "";
+		this->display_manufacturer = "";
+		this->hash = 0;
+	}
+
 	vehicle_preview_item::vehicle_preview_item(nlohmann::json& item_json)
 	{
 		this->name = item_json["Name"];

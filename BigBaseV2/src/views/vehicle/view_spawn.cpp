@@ -39,7 +39,7 @@ namespace big
 			{
 
 				for (auto& [hash, item] : g_vehicle_preview_service->get_vehicle_map()) {
-					std::string display_name = item.dispaly_name;
+					std::string display_name = item.display_name;
 					std::string display_manufacturer = item.display_manufacturer;
 
 					std::transform(display_name.begin(), display_name.end(), display_name.begin(), ::tolower);
@@ -52,7 +52,7 @@ namespace big
 						std::string& item_name = item.name;
 
 						ImGui::PushID(item.hash);
-						components::selectable(item.dispaly_name, false, [&item_name] {
+						components::selectable(item.display_name, false, [&item_name] {
 
 							float y_offset = 0;
 

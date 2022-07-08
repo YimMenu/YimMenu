@@ -35,7 +35,7 @@ namespace big
 		return m_id;
 	}
 
-	char* personal_vehicle::get_plate() const
+	const char* personal_vehicle::get_plate() const
 	{
 		return m_plate;
 	}

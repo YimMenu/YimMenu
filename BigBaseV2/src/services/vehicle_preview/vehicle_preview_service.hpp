@@ -6,8 +6,8 @@ namespace big
 	class vehicle_preview_item {
 
 	public:
+		vehicle_preview_item();
 		vehicle_preview_item(nlohmann::json& item_json);
-		~vehicle_preview_item();
 
 		std::string name;
 		std::string display_name;
@@ -23,7 +23,7 @@ namespace big
 		std::mutex m_mutex;
 
 		std::map<Hash, vehicle_preview_item> m_hash_veh_map;
-		const vehicle_preview_item empty_item = {"", "", "", 0};
+		const vehicle_preview_item empty_item = vehicle_preview_item();
 
 		Vehicle m_current_veh = -1;
 		std::string m_model;

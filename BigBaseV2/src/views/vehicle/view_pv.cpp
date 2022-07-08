@@ -92,7 +92,7 @@ namespace big
 									auto spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, y_offset, 0.f);
 									float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
-									char* spawn_plate = plate;
+									const char* spawn_plate = plate;
 									if (g->clone_pv.clone_plate)
 									{
 										spawn_plate = personal_veh->get_plate();
