@@ -50,17 +50,17 @@ namespace big
 				{ tabs::MOBILE, {"Mobile", view::mobile}},
 				{ tabs::TELEPORT, {"Teleport", view::teleport}},
 			}}},
-			{tabs::VEHICLE, {"Vehicle", view::vehicle, {
+			{tabs::VEHICLE, { "Vehicle", view::vehicle, {
 				{ tabs::HANDLING, {"Handling", view::handling_current_profile, {
 					{ tabs::HANDLING_CURRENT_PROFILE, {"Current Profile", view::handling_current_profile } },
 					{ tabs::HANDLING_MY_PROFILES, {"My Profiles", view::handling_my_profiles } },
 					{ tabs::HANDLING_SAVED_PROFILE, {"Saved Profiles", view::handling_saved_profiles } },
 					{ tabs::HANDLING_SEARCH, {"Search Handling", view::handling_search } },
 				}}},
-				{ tabs::LSC, {"LSC", view::lsc }},
-				{ tabs::AUTO_DRIVE, { "Auto Drive", view::auto_drive }},
+				{ tabs::LSC, { "LS Customs", view::lsc }},
 				{ tabs::SPAWN, { "Spawn", view::spawn }},
 				{ tabs::PV, { "Personal Vehicle", view::pv }},
+				{ tabs::AUTO_DRIVE, { "Auto Drive", view::auto_drive }},
 			}}},
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},

@@ -167,14 +167,6 @@ namespace big
 
 		ImGui::Separator();
 
-		components::small_text("LS Customs");
-
-		components::button("Start LS Customs", [] {
-			g->vehicle.ls_customs = true;
-		});
-
-		ImGui::Separator();
-
 		components::small_text("Speedo Meter");
 
 		SpeedoMeter selected = g->vehicle.speedo_meter.type;
