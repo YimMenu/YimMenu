@@ -97,7 +97,9 @@ namespace big
 			bool freezeplayer = false;
 			bool freezeallplayers = false;
 			bool shakecam = false;
-			bool chase = false;
+			bool car_chase = false;
+			bool heli_chase = false;
+			bool plane_chase = false;
 		};
 
 		struct protections {

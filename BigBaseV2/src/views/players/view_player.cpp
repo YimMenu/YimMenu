@@ -77,10 +77,28 @@ namespace big
 
 				ImGui::SameLine();
 
-				components::button("Chase", [] {
+				
+				if (ImGui::TreeNode("Chase"))
+				{
+					components::button("Car Chase", [] {
 
-					g->player.chase = true;
-					});
+						g->player.car_chase = true;
+						});
+
+					ImGui::SameLine();
+
+					components::button("Plane Chase", [] {
+
+						g->player.plane_chase = true;
+						});
+
+					ImGui::SameLine();
+
+					components::button(" Heli Chase", [] {
+
+						g->player.heli_chase = true;
+						});
+				}
 
 				ImGui::TreePop();
 			}

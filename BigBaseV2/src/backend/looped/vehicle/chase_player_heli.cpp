@@ -7,48 +7,39 @@
 
 namespace big
 {
-	void looped::player_chase()
+	void looped::player_heli_chase()
 	{
 		static bool chasing = true;
 		static bool ran_once = false;
 		Ped PlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
 		Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
 
-		if (g->player.chase)
+		if (g->player.heli_chase)
 		{
 			ran_once = true;
 			chasing = false;
 
 			if (!self::veh)
 			{
-				g_notification_service->push_warning("Warning", "Please be in a car first then try again.");
+				g_notification_service->push_warning("Warning", "Please be in a Heli first then try again.");
 
-				g->player.chase = false;
-
-				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
-			}
-
-			else if (!veh) {
-				g_notification_service->push_warning("Warning", "Player is not in a Vehicle.");
-
-				g->player.chase = false;
+				g->player.heli_chase = false;
 
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 			}
 
 			else
 			{
-				g->player.chase = false;
+				g->player.heli_chase = false;
 
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 				TASK::CLEAR_PED_TASKS(self::ped);
-				TASK::TASK_VEHICLE_CHASE(self::ped, PlayerPed);
-
+				TASK::TASK_HELI_CHASE(self::ped, PlayerPed, 0.0, 0.0, 20.0);
 
 				chasing = true;
 
 
-					g_notification_service->push_warning("Starting to Chase", "Start driving or leave car to take back control.");
+				g_notification_service->push_warning("Starting to Chase", "Start driving or leave Heli to take back control.");
 			}
 		}
 

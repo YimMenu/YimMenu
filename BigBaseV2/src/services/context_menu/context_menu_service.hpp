@@ -83,7 +83,15 @@ namespace big
 					{
 						entity::delete_entity(m_handle);
 					}
-				}}
+				}},
+			{"STEAL IDENTITY", [this]
+				{
+					ped::steal_identity(m_handle);
+				}},
+			{"STEAL IDENTITY", [this]
+				{
+					ped::steal_outfit(m_handle);
+				}},
 			} };
 
 

@@ -152,7 +152,9 @@ namespace big
 			looped::player_freezeplayer();
 			looped::player_freezeallplayers();
 			looped::player_shakecam();
-			looped::player_chase();
+			looped::player_vehicle_chase();
+			looped::player_heli_chase();
+			looped::player_plane_chase();
 
 			script::get_current()->yield();
 		}
