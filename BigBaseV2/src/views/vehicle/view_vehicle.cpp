@@ -35,7 +35,7 @@ namespace big
 
 		if (ImGui::TreeNode("Paint"))
 		{
-			ImGui::SetNextItemWidth(150.f);
+			ImGui::SetNextItemWidth(130.f);
 			ImGui::ListBox("RGB Type", &g->vehicle.rainbow_paint, vehicle::rgb_types, 3);
 
 			if (g->vehicle.rainbow_paint)
