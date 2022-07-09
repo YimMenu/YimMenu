@@ -40,6 +40,7 @@ namespace big
 
 			if (g->vehicle.rainbow_paint)
 			{
+				ImGui::SetNextItemWidth(160.f);
 				ImGui::SliderInt("RGB Speed", &g->rgb.speed, 1, 10);
 			}
 

@@ -14,8 +14,10 @@ namespace big
 			return;
 		}
 
-		if (g->vehicle.god_mode && g_local_player->m_ped_task_flag & (int)ePedTask::TASK_DRIVING)
-		{
+		if (
+			(g->vehicle.god_mode || g->vehicle.proof_collision) &&
+			g_local_player->m_ped_task_flag & (int)ePedTask::TASK_DRIVING
+		) {
 			g_local_player->m_vehicle->m_deform_god = 0x8C;
 		}
 		else
@@ -43,19 +45,14 @@ namespace big
 			{
 				water::reset_ped_oxygen_time(g_local_player);
 				
-				if (water_collision_ptr != nullptr)
+				if (water_collision_ptr != nullptr && *water_collision_ptr != 0.f)
 				{
-					if (*water_collision_ptr > 1.f)
-					{
-						last_water_collistion_strength = *water_collision_ptr;
-						*water_collision_ptr = 0;
-					}
+					last_water_collistion_strength = *water_collision_ptr;
+					*water_collision_ptr = 0;
 				}
 
 				return;
 			}
-
-			return;
 		}
 
 		if (last_water_collistion_strength != 0 && water_collision_ptr != nullptr)

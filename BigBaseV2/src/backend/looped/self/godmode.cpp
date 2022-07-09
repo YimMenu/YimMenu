@@ -34,13 +34,10 @@ namespace big
 			{
 				water::reset_ped_oxygen_time(g_local_player);
 
-				if (water_collision_ptr != nullptr)
+				if (water_collision_ptr != nullptr && *water_collision_ptr != 0.f)
 				{
-					if (*water_collision_ptr != 0.f)
-					{
-						last_water_collistion_strength = *water_collision_ptr;
-						*water_collision_ptr = 0;
-					}
+					last_water_collistion_strength = *water_collision_ptr;
+					*water_collision_ptr = 0;
 				}
 
 				return;

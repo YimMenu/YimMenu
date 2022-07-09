@@ -102,25 +102,6 @@ namespace big
 
 		ImGui::Separator();
 
-		components::small_text("Police");
-
-		ImGui::Checkbox("Never Wanted", &g->self.never_wanted);
-
-		if (!g->self.never_wanted)
-		{
-			ImGui::Checkbox("Force Wanted Level", &g->self.force_wanted_level);
-			ImGui::Text("Wanted Level");
-			if (
-				ImGui::SliderInt("###wanted_level", &g->self.wanted_level, 0, 5) &&
-				!g->self.force_wanted_level &&
-				g_local_player != nullptr
-			) {
-				g_local_player->m_player_info->m_wanted_level = g->self.wanted_level;
-			}
-		}
-
-		ImGui::Separator();
-
 		components::small_text("Proofs");
 
 		if (ImGui::Button("Check all"))
@@ -176,6 +157,26 @@ namespace big
 		ImGui::Checkbox("Water", &g->self.proof_water);
 
 		ImGui::EndGroup();
+
+		ImGui::Separator();
+
+		components::small_text("Police");
+
+		ImGui::Checkbox("Never Wanted", &g->self.never_wanted);
+
+		if (!g->self.never_wanted)
+		{
+			ImGui::Checkbox("Force Wanted Level", &g->self.force_wanted_level);
+			ImGui::Text("Wanted Level");
+			if (
+				ImGui::SliderInt("###wanted_level", &g->self.wanted_level, 0, 5) &&
+				!g->self.force_wanted_level &&
+				g_local_player != nullptr
+				) {
+				g_local_player->m_player_info->m_wanted_level = g->self.wanted_level;
+			}
+		}
+
 
 		g->self.proof_mask = 0;
 		if (g->self.god_mode)
