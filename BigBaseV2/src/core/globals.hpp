@@ -347,6 +347,12 @@ namespace big
 			ImU32 friend_color = 4293244509;
 		};
 
+		/*struct natives
+		{
+			bool player_switch = false;
+			int player_switch_type = 0;
+		};*/
+
 	public:
 		int friend_count = 0;
 		int player_count = 0;
@@ -368,6 +374,7 @@ namespace big
 		context_menu context_menu{};
 		pie_menu pie_menu{};
 		esp esp{};
+		//natives natives{};
 
 		menu_settings(file save_file)
 			: m_save_file(std::move(save_file))
