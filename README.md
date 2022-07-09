@@ -2,12 +2,12 @@
 A mod menu base for Grand Theft Auto V.
 Strictly for educational purposes.
 
+this is my personal fork of YimMenu
+nothing good here
+
 ## Table of contents
 
  * [How to build](#how-to-build)
-    * [Git](#git)
-    * [Premake5](#premake5)
-    * [Cloning and generating project files](#cloning-and-generating-project-files)
  * [Staying Up To Date](#staying-up-to-date)
  * [Project Structure](#project-structure)
  * [Features](#features)
@@ -15,54 +15,18 @@ Strictly for educational purposes.
 
 ## How to build
 
-Requirements:
-
- * [git](#git)
- * [premake5](#premake5)
-
-If you have both of the above requirements you can skip to [cloning the git repo and generating the project files](#cloning-and-generating-project-files).
-
-### Git
-
-If you haven't installed git on your system go and do so it is **REQUIRED** for setting up a working build environment.
-
-[Download Link](https://git-scm.com/download/win)
-
-### Premake5
-
-Premake5 is used to generate our project files, if you haven't used it before we will need to download and add it to our [System Path](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/).
-
-[Download Link](https://premake.github.io/download/)
-
-### Cloning and generating project files
-
-Clone the repository including submodules:
 ```bash
-git clone https://github.com/YimMenu/YimMenu.git --recursive || echo "You don't have git installed, install it from https://git-scm.com/download/win"
-```
+git clone https://github.com/tupoy-ya/YimMenu.git --recursive
+premake5 vs2019
 
-Go into the directory you just cloned:
-```bash
-cd YimMenu
 ```
-
-Generate project files:
-```bash
-GenerateProjects.bat
-```
-
-Now, you will be able to open the solution, and simply build it in Visual Studio.
 
 ## Staying Up To Date
 
 Pull the latest changes from Github:
 ```bash
 git pull && git submodule update
-```
-
-Make sure your Visual Studio is closed and regenerate project files:
-```bash
-GenerateProjects.bat
+premake5 vs2019
 ```
 
 ## Project Structure
@@ -71,9 +35,10 @@ GenerateProjects.bat
 - `backend/` all features that should be ran in a loop are in here sorted by category
 - `gui/` includes everything related to UI elements
 - `hooks/` function hooks
-- `native_hooks/` hooks to natives, currently not implemented
+- `native_hooks/` hooks to natives
 - `services/` service files to interact and maintain stuff
 - `util/` general utility functions to keep code as compact and as much in one place as possible
+- `views/` shitty ui that i'm to lazy to get rid of
 
 ## Features
 
@@ -87,8 +52,27 @@ Below is an incomplete list of feature that I believe are notable to this "base"
  - Includes basic code samples to interact with an api
  - ReClass.NET structures implemented, accessible from a global called g_local_player defined in `common.hpp`
 
+## TODO
+
+[x] jump ragdol
+[x] phone animation
+[] phone selection
+[] pie menu
+[] imgui ui
+[] animals
+[] blimps and planes
+[] cable cars
+[] Ambient ufos
+
+[] better esp
+[x] crash
+[] godmode kill
+[] protection
+
+[] port to C++
+
 ## Contributing
 
-You're free to contribute to YimMenu as long as the feature are useful, non-toxic and do not contain anything money related that might get the menu targetted by Take2.
+You're free to contribute to YimMenu as long as the features are useful, non-toxic and do not contain anything money related that might get the menu targetted by Take2.
 
 Make sure to read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
