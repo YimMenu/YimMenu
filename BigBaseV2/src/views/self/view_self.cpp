@@ -5,7 +5,8 @@
 
 namespace big
 {
-	void view::self() {
+	void view::self()
+	{
 		components::button("Suicide", [] {
 			ENTITY::SET_ENTITY_HEALTH(self::ped, 0, 0);
 		});
@@ -42,12 +43,14 @@ namespace big
 			g_fiber_pool->queue_job([] {
 				const Hash hash = rage::joaat(model);
 
-				for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++) {
+				for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+				{
 					STREAMING::REQUEST_MODEL(hash);
 
 					script::get_current()->yield();
 				}
-				if (!STREAMING::HAS_MODEL_LOADED(hash)) {
+				if (!STREAMING::HAS_MODEL_LOADED(hash))
+				{
 					g_notification_service->push_error("Self", "Failed to spawn model, did you give an incorrect model ? ");
 
 					return;

@@ -8,7 +8,8 @@
 
 namespace big
 {
-	void view::vehicle() {
+	void view::vehicle()
+	{
 		ImGui::BeginGroup();
 		ImGui::Checkbox("Can Be Targeted", &g->vehicle.is_targetable);
 		ImGui::Checkbox("God Mode", &g->vehicle.god_mode);
@@ -16,25 +17,25 @@ namespace big
 		ImGui::Checkbox("Vehicle Jump", &g->vehicle.vehicle_jump);
 		ImGui::Checkbox("Instant Brake", &g->vehicle.instant_brake);
 		ImGui::Checkbox("Drive On Water", &g->vehicle.drive_on_water);
+		ImGui::Checkbox("Seatbelt", &g->vehicle.seatbelt);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("Seatbelt", &g->vehicle.seatbelt);
-
 		components::button("Repair", [] {
 			vehicle::repair(self::veh);
-			});
-
-		components::button("Instant in personal vehicle", [] {
+		});
+		ImGui::SameLine();
+		components::button("Instant in PV", [] {
 			if (!*g_pointers->m_is_session_started) return g_notification_service->push_warning("WARNING", "Go into GTA V Online to use this option");
 
 			vehicle::go_into_personal_vehicle();
-			});
+		});
 
 		if (ImGui::TreeNode("Paint"))
 		{
+			ImGui::SetNextItemWidth(120.f);
 			ImGui::ListBox("RGB Type", &g->vehicle.rainbow_paint, vehicle::rgb_types, 3);
 
 			if (g->vehicle.rainbow_paint)
@@ -46,7 +47,6 @@ namespace big
 		}
 
 		ImGui::Checkbox("Turn Signals", &g->vehicle.turn_signals);
-
 		if (g->vehicle.turn_signals)
 		{
 			ImGui::Checkbox("Fully Automatic Signal", &g->vehicle.auto_turn_signals);
@@ -58,7 +58,8 @@ namespace big
 
 		components::small_text("Proofs");
 
-		if (ImGui::Button("Check all")) {
+		if (ImGui::Button("Check all"))
+		{
 			g->vehicle.proof_bullet = true;
 			g->vehicle.proof_fire = true;
 			g->vehicle.proof_collision = true;
@@ -71,7 +72,8 @@ namespace big
 
 		ImGui::SameLine();
 
-		if (ImGui::Button("Uncheck all")) {
+		if (ImGui::Button("Uncheck all"))
+		{
 			g->vehicle.proof_bullet = false;
 			g->vehicle.proof_fire = false;
 			g->vehicle.proof_collision = false;
@@ -156,25 +158,22 @@ namespace big
 		components::small_text("Auto Drive");
 
 		components::button("Drive To Waypoint", [] {
-
 			g->vehicle.auto_drive_to_waypoint = true;
-			});
+		});
 
 		components::button("Wander", [] {
-
 			g->vehicle.auto_drive_wander = true;
-			});
+		});
 
 		ImGui::SliderInt("Top Speed", &g->vehicle.auto_drive_speed, 1, 200);
 
 		components::button("E-Stop", [] {
-
 				g->vehicle.auto_drive_to_waypoint = false;
 				g->vehicle.auto_drive_wander = false;
 				VEHICLE::SET_VEHICLE_FORWARD_SPEED(self::veh, 0);
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 				TASK::CLEAR_PED_TASKS(self::ped);
-			});
+		});
 
 		if (ImGui::ListBox("Driving Style", &g->vehicle.driving_style_id, vehicle::driving_style_names, 2))
 		{
@@ -202,7 +201,7 @@ namespace big
 
 		components::button("Start LS Customs", [] {
 			g->vehicle.ls_customs = true;
-			});
+		});
 
 		ImGui::Separator();
 
