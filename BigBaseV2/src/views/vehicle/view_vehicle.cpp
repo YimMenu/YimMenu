@@ -117,40 +117,37 @@ namespace big
 		{
 			g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::GOD);
 		}
-		else
+		if (g->vehicle.proof_bullet)
 		{
-			if (g->vehicle.proof_bullet)
-			{
-				g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::BULLET);
-			}
-			if (g->vehicle.proof_fire)
-			{
-				g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::FIRE);
-			}
-			if (g->vehicle.proof_collision)
-			{
-				g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::COLLISION);
-			}
-			if (g->vehicle.proof_melee)
-			{
-				g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::MELEE);
-			}
-			if (g->vehicle.proof_explosion)
-			{
-				g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::EXPLOSION);
-			}
-			if (g->vehicle.proof_steam)
-			{
-				g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::STEAM);
-			}
-			if (g->vehicle.proof_drown)
-			{
-				g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::DROWN);
-			}
-			if (g->vehicle.proof_water)
-			{
-				g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::WATER);
-			}
+			g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::BULLET);
+		}
+		if (g->vehicle.proof_fire)
+		{
+			g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::FIRE);
+		}
+		if (g->vehicle.proof_collision)
+		{
+			g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::COLLISION);
+		}
+		if (g->vehicle.proof_melee)
+		{
+			g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::MELEE);
+		}
+		if (g->vehicle.proof_explosion)
+		{
+			g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::EXPLOSION);
+		}
+		if (g->vehicle.proof_steam)
+		{
+			g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::STEAM);
+		}
+		if (g->vehicle.proof_drown)
+		{
+			g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::DROWN);
+		}
+		if (g->vehicle.proof_water)
+		{
+			g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::WATER);
 		}
 
 		ImGui::Separator();

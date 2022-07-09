@@ -28,7 +28,7 @@ namespace big
 		if (changedOrEnabledProofBits)
 		{
 			uint32_t unchangedBits = g_local_player->m_damage_bits & ~changedOrEnabledProofBits;
-			g_local_player->m_damage_bits = unchangedBits | proofBits;
+			g_local_player->m_vehicle->m_damage_bits = unchangedBits | proofBits;
 			lastProofBits = proofBits;
 		}
 	}

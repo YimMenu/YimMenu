@@ -181,40 +181,38 @@ namespace big
 		if (g->self.god_mode)
 		{
 			g->self.proof_mask |= static_cast<int>(eEntityProofs::GOD);
-		} else
+		}
+		if (g->self.proof_bullet)
 		{
-			if (g->self.proof_bullet)
-			{
-				g->self.proof_mask |= static_cast<int>(eEntityProofs::BULLET);
-			}
-			if (g->self.proof_fire)
-			{
-				g->self.proof_mask |= static_cast<int>(eEntityProofs::FIRE);
-			}
-			if (g->self.proof_collision)
-			{
-				g->self.proof_mask |= static_cast<int>(eEntityProofs::COLLISION);
-			}
-			if (g->self.proof_melee)
-			{
-				g->self.proof_mask |= static_cast<int>(eEntityProofs::MELEE);
-			}
-			if (g->self.proof_explosion)
-			{
-				g->self.proof_mask |= static_cast<int>(eEntityProofs::EXPLOSION);
-			}
-			if (g->self.proof_steam)
-			{
-				g->self.proof_mask |= static_cast<int>(eEntityProofs::STEAM);
-			}
-			if (g->self.proof_drown)
-			{
-				g->self.proof_mask |= static_cast<int>(eEntityProofs::DROWN);
-			}
-			if (g->self.proof_water)
-			{
-				g->self.proof_mask |= static_cast<int>(eEntityProofs::WATER);
-			}
+			g->self.proof_mask |= static_cast<int>(eEntityProofs::BULLET);
+		}
+		if (g->self.proof_fire)
+		{
+			g->self.proof_mask |= static_cast<int>(eEntityProofs::FIRE);
+		}
+		if (g->self.proof_collision)
+		{
+			g->self.proof_mask |= static_cast<int>(eEntityProofs::COLLISION);
+		}
+		if (g->self.proof_melee)
+		{
+			g->self.proof_mask |= static_cast<int>(eEntityProofs::MELEE);
+		}
+		if (g->self.proof_explosion)
+		{
+			g->self.proof_mask |= static_cast<int>(eEntityProofs::EXPLOSION);
+		}
+		if (g->self.proof_steam)
+		{
+			g->self.proof_mask |= static_cast<int>(eEntityProofs::STEAM);
+		}
+		if (g->self.proof_drown)
+		{
+			g->self.proof_mask |= static_cast<int>(eEntityProofs::DROWN);
+		}
+		if (g->self.proof_water)
+		{
+			g->self.proof_mask |= static_cast<int>(eEntityProofs::WATER);
 		}
 	}
 }
