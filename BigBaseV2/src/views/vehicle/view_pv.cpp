@@ -13,18 +13,26 @@ namespace big
 		ImGui::Checkbox("Preview", &g->clone_pv.preview_vehicle);
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn In", &g->clone_pv.spawn_inside);
+		ImGui::SameLine();
 
 		static char plate[9] = { 0 };
+		int num_of_rows = 2;
 
 		ImGui::Checkbox("Spawn Clone", &g->clone_pv.spawn_clone);
 		if (g->clone_pv.spawn_clone)
 		{
-			ImGui::SameLine();
+			num_of_rows = 4;
+
 			ImGui::Checkbox("Spawn Maxed", &g->clone_pv.spawn_maxed);
 
+			ImGui::SameLine();
 			strncpy(plate, g->clone_pv.plate.c_str(), 9);
 			ImGui::Checkbox("Clone PV Plate", &g->clone_pv.clone_plate);
-			if (!g->clone_pv.clone_plate)
+			if (g->clone_pv.clone_plate)
+			{
+				num_of_rows = 3;
+			}
+			else
 			{
 				ImGui::SetNextItemWidth(300.f);
 
@@ -44,7 +52,7 @@ namespace big
 		});
 
 		g_mobile_service->refresh_personal_vehicles();
-		if (ImGui::ListBoxHeader("##personal_veh_list", { 300, static_cast<float>(*g_pointers->m_resolution_y - 300) }))
+		if (ImGui::ListBoxHeader("##personal_veh_list", { 300, static_cast<float>(*g_pointers->m_resolution_y - 184 - 38 * num_of_rows) }))
 		{
 
 			if (g_mobile_service->personal_vehicles().empty())

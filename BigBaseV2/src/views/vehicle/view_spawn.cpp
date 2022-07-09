@@ -33,12 +33,15 @@ namespace big
 		});
 
 		// arbitrary subtraction this looked nice so idc, works for all resolutions as well
-		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 260) }))
+		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 184 - 38 * 3) }))
 		{
-			if (g_vehicle_preview_service->get_vehicle_map().size() > 0)
+
+			auto item_arr = g_vehicle_preview_service->get_vehicle_preview_item_arr();
+
+			if (item_arr.size() > 0)
 			{
 
-				for (auto& [hash, item] : g_vehicle_preview_service->get_vehicle_map()) {
+				for (auto& item : item_arr) {
 					std::string display_name = item.display_name;
 					std::string display_manufacturer = item.display_manufacturer;
 

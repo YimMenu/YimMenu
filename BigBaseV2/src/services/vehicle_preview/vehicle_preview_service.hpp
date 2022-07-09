@@ -22,7 +22,8 @@ namespace big
 		std::condition_variable m_cond;
 		std::mutex m_mutex;
 
-		std::map<Hash, vehicle_preview_item> m_hash_veh_map;
+		std::map<Hash, int> m_hash_idx_map;
+		std::vector<vehicle_preview_item> m_vehicle_preview_item_arr;
 		const vehicle_preview_item empty_item = vehicle_preview_item();
 
 		Vehicle m_current_veh = -1;
@@ -34,13 +35,11 @@ namespace big
 		vehicle_preview_service();
 		~vehicle_preview_service();
 
-		std::map<Hash, vehicle_preview_item>& get_vehicle_map();
-
-		void preview_loop();
-
 		const vehicle_preview_item& find_vehicle_item_by_hash(int hash);
+		std::vector<vehicle_preview_item>& get_vehicle_preview_item_arr();
 		void set_preview_vehicle(const vehicle_preview_item& item);
 
+		void preview_loop();
 		void stop_preview();
 
 	private:

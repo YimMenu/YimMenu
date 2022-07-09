@@ -63,9 +63,45 @@ namespace big
 		g_vehicle_preview_service = nullptr;
 	}
 
-	std::map<Hash, vehicle_preview_item>& vehicle_preview_service::get_vehicle_map()
+	const vehicle_preview_item& vehicle_preview_service::find_vehicle_item_by_hash(int hash)
 	{
-		return m_hash_veh_map;
+		int idx = -1;
+
+		if (m_hash_idx_map.count(hash))
+		{
+			idx = m_hash_idx_map[hash];
+		}
+
+		if (idx == -1)
+		{
+			return empty_item;
+		}
+		else
+		{
+			return m_vehicle_preview_item_arr[idx];
+		}
+	}
+
+	std::vector<vehicle_preview_item>& vehicle_preview_service::get_vehicle_preview_item_arr()
+	{
+		return m_vehicle_preview_item_arr;
+	}
+
+	void vehicle_preview_service::set_preview_vehicle(const vehicle_preview_item& item)
+	{
+		if (!item.name.empty())
+		{
+			if (m_model != item.name)
+			{
+				m_model = item.name;
+				m_new_model = true;
+			}
+
+			if (!m_running)
+			{
+				g_thread_pool->push([this] { preview_loop(); });
+			}
+		}
 	}
 
 	void vehicle_preview_service::preview_loop()
@@ -116,34 +152,6 @@ namespace big
 			});
 	}
 
-
-	void vehicle_preview_service::set_preview_vehicle(const vehicle_preview_item& item)
-	{
-		if (!item.name.empty())
-		{
-			if (m_model != item.name)
-			{
-				m_model = item.name;
-				m_new_model = true;
-			}
-
-			if (!m_running)
-			{
-				g_thread_pool->push([this] { preview_loop(); });
-			}
-		}
-	}
-
-	const vehicle_preview_item& vehicle_preview_service::find_vehicle_item_by_hash(int hash)
-	{
-		if (m_hash_veh_map.count(hash))
-		{
-			return m_hash_veh_map[hash];
-		}
-
-		return empty_item;
-	}
-
 	void vehicle_preview_service::stop_preview()
 	{
 		m_running = false;
@@ -151,6 +159,9 @@ namespace big
 
 	void vehicle_preview_service::load()
 	{
+		m_hash_idx_map.clear();
+		m_vehicle_preview_item_arr.clear();
+
 		std::ifstream file(m_vehicle_file.get_path());
 		nlohmann::json all_vehicles;
 
@@ -165,10 +176,18 @@ namespace big
 
 		for (auto& item_json : all_vehicles)
 		{
-			if (item_json["SignedHash"].is_null() || item_json["Name"].is_null())
+			if (
+				item_json["SignedHash"].is_null() ||
+				item_json["Name"].is_null() ||
+				!item_json["Bones"].is_array() ||
+				item_json["Bones"][0] == "stub"
+			)
+			{
 				continue;
+			}
 
-			m_hash_veh_map[item_json["SignedHash"]] = vehicle_preview_item(item_json);
+			m_hash_idx_map[item_json["SignedHash"]] = (int)m_vehicle_preview_item_arr.size();
+			m_vehicle_preview_item_arr.push_back(vehicle_preview_item(item_json));
 		}
 	}
 }
