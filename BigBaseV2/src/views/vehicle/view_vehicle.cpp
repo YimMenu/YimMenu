@@ -56,6 +56,103 @@ namespace big
 
 		ImGui::Separator();
 
+		components::small_text("Proofs");
+
+		if (ImGui::Button("Check all")) {
+			g->vehicle.proof_bullet = true;
+			g->vehicle.proof_fire = true;
+			g->vehicle.proof_collision = true;
+			g->vehicle.proof_melee = true;
+			g->vehicle.proof_explosion = true;
+			g->vehicle.proof_steam = true;
+			g->vehicle.proof_drown = true;
+			g->vehicle.proof_water = true;
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Uncheck all")) {
+			g->vehicle.proof_bullet = false;
+			g->vehicle.proof_fire = false;
+			g->vehicle.proof_collision = false;
+			g->vehicle.proof_melee = false;
+			g->vehicle.proof_explosion = false;
+			g->vehicle.proof_steam = false;
+			g->vehicle.proof_drown = false;
+			g->vehicle.proof_water = false;
+		}
+
+		ImGui::BeginGroup();
+
+		ImGui::Checkbox("Bullet", &g->vehicle.proof_bullet);
+		ImGui::Checkbox("Fire", &g->vehicle.proof_fire);
+
+		ImGui::EndGroup();
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+
+		ImGui::Checkbox("Collision", &g->vehicle.proof_collision);
+		ImGui::Checkbox("Melee", &g->vehicle.proof_melee);
+
+		ImGui::EndGroup();
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+
+		ImGui::Checkbox("Explosion", &g->vehicle.proof_explosion);
+		ImGui::Checkbox("Steam", &g->vehicle.proof_steam);
+
+		ImGui::EndGroup();
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+
+		ImGui::Checkbox("Drown", &g->vehicle.proof_drown);
+		ImGui::Checkbox("Water", &g->vehicle.proof_water);
+
+		ImGui::EndGroup();
+
+		g->vehicle.proof_mask = 0;
+		if (g->vehicle.god_mode)
+		{
+			g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::GOD);
+		}
+		else
+		{
+			if (g->vehicle.proof_bullet)
+			{
+				g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::BULLET);
+			}
+			if (g->vehicle.proof_fire)
+			{
+				g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::FIRE);
+			}
+			if (g->vehicle.proof_collision)
+			{
+				g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::COLLISION);
+			}
+			if (g->vehicle.proof_melee)
+			{
+				g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::MELEE);
+			}
+			if (g->vehicle.proof_explosion)
+			{
+				g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::EXPLOSION);
+			}
+			if (g->vehicle.proof_steam)
+			{
+				g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::STEAM);
+			}
+			if (g->vehicle.proof_drown)
+			{
+				g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::DROWN);
+			}
+			if (g->vehicle.proof_water)
+			{
+				g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::WATER);
+			}
+		}
+
+		ImGui::Separator();
+
 		components::small_text("Auto Drive");
 
 		components::button("Drive To Waypoint", [] {
