@@ -27,7 +27,7 @@ namespace big
 		const vehicle_preview_item empty_item = vehicle_preview_item();
 
 		Vehicle m_current_veh = -1;
-		std::string m_model;
+		Hash m_model_hash;
 		bool m_new_model = false;
 		float m_heading = 0.f;
 		bool m_running = false;

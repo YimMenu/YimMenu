@@ -52,10 +52,8 @@ namespace big
 						display_name.find(lower_search) != std::string::npos ||
 						display_manufacturer.find(lower_search) != std::string::npos
 					) {
-						std::string& item_name = item.name;
-
-						ImGui::PushID(item.hash);
-						components::selectable(item.display_name, false, [&item_name] {
+						//ImGui::PushID(item.hash);
+						components::selectable(item.display_name, false, [item] {
 
 							float y_offset = 0;
 
@@ -71,7 +69,7 @@ namespace big
 							Vector3 spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, y_offset, 0.f);
 							float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
-							const Vehicle veh = vehicle::spawn(item_name, spawn_location, spawn_heading);
+							const Vehicle veh = vehicle::spawn(item.hash, spawn_location, spawn_heading);
 
 							if (g->spawn.spawn_inside)
 							{
@@ -87,7 +85,7 @@ namespace big
 
 							g_vehicle_preview_service->stop_preview();
 						});
-						ImGui::PopID();
+						//ImGui::PopID();
 
 						if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
 						{
