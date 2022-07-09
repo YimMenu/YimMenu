@@ -20,6 +20,7 @@ namespace big
 			bool script_event_logging = false;
 			bool sort_scripts = false;
 			bool with_args = false;
+			bool asi_plugins_loaded = false;
 		};
 
 		struct notifications

@@ -1,6 +1,7 @@
 #include "asi_loader.h"
 #include "logger.hpp"
 #include "pe_image.h"
+#include "core/globals.hpp"
 
 using namespace Utility;
 
@@ -48,6 +49,7 @@ void ASILoader::Initialize() {
 			// Image compatible (now), load it
 			HMODULE module = LoadLibraryA(pluginPath.c_str());
 			if (module) {
+				big::g->debug.asi_plugins_loaded = true;
 				LOG(INFO) << "Loaded " << fileData.cFileName << " -> " HEX_TO_UPPER(module);
 			}
 			else {

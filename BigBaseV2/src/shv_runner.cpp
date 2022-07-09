@@ -34,5 +34,6 @@ namespace big
 			FreeLibrary(iter.first);
 			CloseHandle(iter.first);
 		}
+		big::g->debug.asi_plugins_loaded = false;
 	}
 }
