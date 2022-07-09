@@ -22,7 +22,7 @@ namespace big
 		this->name = item_json["Name"];
 		this->display_name = item_json["Name"];
 		this->display_manufacturer = "";
-		this->hash = item_json["SignedHash"];
+		this->hash = item_json["Hash"];
 
 		if (!item_json["DisplayName"].is_null())
 		{
@@ -89,11 +89,11 @@ namespace big
 
 	void vehicle_preview_service::set_preview_vehicle(const vehicle_preview_item& item)
 	{
-		if (!item.name.empty())
+		if (item.hash != 0)
 		{
-			if (m_model != item.name)
+			if (m_model_hash != item.hash)
 			{
-				m_model = item.name;
+				m_model_hash = item.hash;
 				m_new_model = true;
 			}
 
@@ -114,12 +114,12 @@ namespace big
 			{
 				while (g_running && m_running && g->spawn.preview_vehicle && g_gui.m_opened)
 				{
-					auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 5.f, .5f);
+					auto location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 10.f, .5f);
 					if (m_current_veh == -1)
 					{
 						m_new_model = false;
 						location.z = -10.f;
-						m_current_veh = vehicle::spawn(m_model, location, 0.f, false);
+						m_current_veh = vehicle::spawn(m_model_hash, location, 0.f, false);
 						ENTITY::FREEZE_ENTITY_POSITION(m_current_veh, true);
 						ENTITY::SET_ENTITY_ALPHA(m_current_veh, 0, 0);
 						ENTITY::SET_ENTITY_COLLISION(m_current_veh, false, false);
@@ -135,7 +135,9 @@ namespace big
 					else
 					{
 						if (const int alpha = ENTITY::GET_ENTITY_ALPHA(m_current_veh); alpha < 250)
+						{
 							ENTITY::SET_ENTITY_ALPHA(m_current_veh, std::min<int>(255, alpha + 10), 0);
+						}
 
 						ENTITY::SET_ENTITY_HEADING(m_current_veh, m_heading);
 						ENTITY::SET_ENTITY_COORDS(m_current_veh, location.x, location.y, location.z, 0, 0, 0, 0);
@@ -177,7 +179,7 @@ namespace big
 		for (auto& item_json : all_vehicles)
 		{
 			if (
-				item_json["SignedHash"].is_null() ||
+				item_json["Hash"].is_null() ||
 				item_json["Name"].is_null() ||
 				!item_json["Bones"].is_array() ||
 				item_json["Bones"][0] == "stub"

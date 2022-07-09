@@ -109,46 +109,41 @@ namespace big::vehicle
 		return true;
 	}
 
-	inline int spawn(std::string_view model, Vector3 location, float heading, bool is_networked = true)
+	inline int spawn(Hash hash, Vector3 location, float heading, bool is_networked = true)
 	{
-		if (const auto hash = rage::joaat(model.data()); hash)
+		for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
 		{
-			for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
-			{
-				STREAMING::REQUEST_MODEL(hash);
-
-				script::get_current()->yield();
-			}
-
-			if (!STREAMING::HAS_MODEL_LOADED(hash))
-			{
-				g_notification_service->push_warning("Spawn", "Failed to spawn model, did you give an incorrect model?");
-
-				return -1;
-			}
-
-			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
-			auto veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, false, false);
-			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
+			STREAMING::REQUEST_MODEL(hash);
 
 			script::get_current()->yield();
-
-			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-
-			if (*g_pointers->m_is_session_started)
-			{
-				DECORATOR::DECOR_SET_INT(veh, "MPBitset", 0);
-				ENTITY::SET_ENTITY_CLEANUP_BY_ENGINE_(veh, true);
-				int networkId = NETWORK::VEH_TO_NET(veh);
-				if (NETWORK::NETWORK_GET_ENTITY_IS_NETWORKED(veh))
-					NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true);
-				VEHICLE::SET_VEHICLE_IS_STOLEN(veh, false);
-			}
-
-			return veh;
 		}
 
-		return -1;
+		if (!STREAMING::HAS_MODEL_LOADED(hash))
+		{
+			g_notification_service->push_warning("Spawn", "Failed to spawn model, did you give an incorrect model?");
+
+			return -1;
+		}
+
+		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
+		auto veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, false, false);
+		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
+
+		script::get_current()->yield();
+
+		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+
+		if (*g_pointers->m_is_session_started)
+		{
+			DECORATOR::DECOR_SET_INT(veh, "MPBitset", 0);
+			ENTITY::SET_ENTITY_CLEANUP_BY_ENGINE_(veh, true);
+			int networkId = NETWORK::VEH_TO_NET(veh);
+			if (NETWORK::NETWORK_GET_ENTITY_IS_NETWORKED(veh))
+				NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true);
+			VEHICLE::SET_VEHICLE_IS_STOLEN(veh, false);
+		}
+
+		return veh;
 	}
 
 	inline Vehicle clone(std::map<int, int32_t>& data, Vector3 location, float heading)
