@@ -16,7 +16,7 @@ namespace big
 		float* water_collision_ptr = nullptr;
 		if (g_local_player->m_navigation != nullptr)
 		{
-			water_collision_ptr = water::get_water_collision_ptr(g_local_player->m_vehicle->m_navigation);
+			water_collision_ptr = water::get_water_collision_ptr(g_local_player->m_navigation);
 		}
 
 		uint32_t bits = g->self.proof_mask;
