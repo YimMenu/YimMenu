@@ -753,7 +753,7 @@ namespace big
 				},
 				{
 					"self", {
-						{ "godmode", this->self.god_mode },
+						{ "god_mode", this->self.god_mode },
 						{ "proof_bullet", this->self.proof_bullet },
 						{ "proof_fire", this->self.proof_fire },
 						{ "proof_collision", this->self.proof_collision },
@@ -815,7 +815,7 @@ namespace big
 				},
 				{
 					"vehicle", {
-						{ "godmode", this->vehicle.god_mode },
+						{ "god_mode", this->vehicle.god_mode },
 						{ "proof_bullet", this->vehicle.proof_bullet },
 						{ "proof_fire", this->vehicle.proof_fire },
 						{ "proof_collision", this->vehicle.proof_collision },
