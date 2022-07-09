@@ -32,7 +32,7 @@ namespace big
 
 	void hooks::text_message_received(void* a1, char* message, void* something)
 	{
-		/*bool found = false;
+		bool found = false;
 		if (strlen(message) > 20)
 		{
 			for (auto v : spam)
@@ -43,8 +43,9 @@ namespace big
 					break;
 				}
 			}
-		}*/
+		}
 
+		LOG(INFO) << "Chat," << message;
 
 		g_hooking->m_text_message_received_hook.get_original<decltype(&hooks::text_message_received)>()(a1, message, something);
 		return;

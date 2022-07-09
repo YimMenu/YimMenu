@@ -191,10 +191,10 @@ namespace big
 				std::stringstream out;
 
 				out
-					<< "[" << msg.timestamp("%H:%M:%S") << "]"
-					<< "[" << msg.level() << "/"
-					<< msg.file() << ":" << msg.line() << "]"
-					<< ": ";
+					<< msg.timestamp("%H:%M:%S") << ","
+					<< msg.level() << ","
+					<< msg.file() << ":" << msg.line()
+					<< ",";
 
 				return out.str();
 			}

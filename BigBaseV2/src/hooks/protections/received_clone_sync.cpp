@@ -47,7 +47,7 @@ namespace big {
 
 		if (invalidsync) {
 			if (g->notifications.invalid_sync.log)
-				LOG(WARNING) << "Invalid sync: " << "Type: " << sync_type << " Tree name: " << tree_name << " From: " << src->get_name();
+				LOG(WARNING) << "Invalid sync," << " Type: " << sync_type << ", Tree name: " << tree_name << ", From: " << src->get_name();
 			if (g->notifications.invalid_sync.notify)
 				g_notification_service->push_warning(fmt::format("Invalid Sync from {}", src->get_name()), fmt::format("Type {} in sync tree {}", sync_type, tree_name));
 

@@ -10,8 +10,8 @@ namespace big
 		if (const rage::netPlayerData* net_player_data = net_player->get_net_data(); net_player_data)
 		{
 			if (g->notifications.player_leave.log)
-				LOG(INFO) << "Player left '" << net_player_data->m_name
-						  << "' freeing slot #" << (int)net_player->m_player_id
+				LOG(INFO) << "Player left '" << net_player_data->m_name << ","
+						  << "' freeing slot #" << (int)net_player->m_player_id << ","
 						  << " with Rockstar ID: " << net_player_data->m_rockstar_id2;
 			if (g->notifications.player_leave.notify)
 				g_notification_service->push("Player Left", fmt::format("{} freeing slot #{} with Rockstar ID: {}", net_player_data->m_name, net_player->m_player_id, net_player_data->m_rockstar_id2));

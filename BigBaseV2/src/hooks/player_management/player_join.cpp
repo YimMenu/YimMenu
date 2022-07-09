@@ -14,8 +14,8 @@ namespace big
 				notify::player_joined(net_player);
 
 			if (g->notifications.player_join.log)
-				LOG(INFO) << "Player joined '" << net_player_data->m_name
-						  << "' taking slot #" << (int)net_player->m_player_id
+				LOG(INFO) << "Player joined '" << net_player_data->m_name << ","
+						  << "' taking slot #" << (int)net_player->m_player_id << ","
 						  << " with Rockstar ID: " << net_player_data->m_rockstar_id2;
 
 			if (g->notifications.player_join.notify)
