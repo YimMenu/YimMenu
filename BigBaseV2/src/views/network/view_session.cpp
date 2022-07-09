@@ -21,6 +21,10 @@ namespace big
 		{
 			ImGui::Checkbox("Override Time", &g->session.override_time);
 			ImGui::Checkbox("Slow Motion", &g->session.slowmotion);
+			if(g->session.slowmotion)
+			{
+				ImGui::SliderFloat("Slow_Mo Speed", &g->session.slow_mo, 0.0f, 1.f);
+			}
 
 			if (g->session.override_time)
 			{

@@ -176,6 +176,7 @@ namespace big
 			bool override_weather = false;
 			bool slowmotion = false;
 			bool jumparound = false;
+			float slow_mo = 1.f;
 
 			struct
 			{
@@ -256,6 +257,7 @@ namespace big
 			bool pv_teleport_into = false;
 			bool seatbelt = false;
 			bool turn_signals = false;
+			bool keep_vehicle_repaired = false;
 			int auto_drive_speed = 1;
 			int driving_style_flags = 443;
 			int driving_style_id = 0;

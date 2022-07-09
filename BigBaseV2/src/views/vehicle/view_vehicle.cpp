@@ -16,6 +16,8 @@ namespace big
 		ImGui::Checkbox("Vehicle Jump", &g->vehicle.vehicle_jump);
 		ImGui::Checkbox("Instant Brake", &g->vehicle.instant_brake);
 
+		ImGui::Checkbox("Drive On Water", &g->vehicle.drive_on_water);
+
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
@@ -34,6 +36,8 @@ namespace big
 			vehicle::go_into_personal_vehicle();
 			});
 
+		ImGui::Checkbox("Keep Vehicle Repaired", &g->vehicle.keep_vehicle_repaired);
+
 		if (ImGui::TreeNode("Paint"))
 		{
 			ImGui::ListBox("RGB Type", &g->vehicle.rainbow_paint, vehicle::rgb_types, 3);
@@ -47,13 +51,10 @@ namespace big
 		}
 
 		ImGui::Checkbox("Turn Signals", &g->vehicle.turn_signals);
-
 		if (g->vehicle.turn_signals)
 		{
 			ImGui::Checkbox("Fully Automatic Signal", &g->vehicle.auto_turn_signals);
 		}
-
-		ImGui::Checkbox("Drive On Water", &g->vehicle.drive_on_water);
 
 		ImGui::EndGroup();
 
