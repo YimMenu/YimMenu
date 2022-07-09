@@ -88,7 +88,7 @@ namespace big
 				{
 					ped::steal_identity(m_handle);
 				}},
-			{"STEAL IDENTITY", [this]
+			{"STEAL OUTFIT", [this]
 				{
 					ped::steal_outfit(m_handle);
 				}},
