@@ -144,7 +144,7 @@ namespace big
                     ImGui::SameLine();
                     ImGui::Checkbox("Vehicle Bombs", &g->vehicle.bombs);
                     ImGui::Text("Bomb Type:");
-                    components::input_text_with_hint("###bomb_model", "", &g->vehicle.bomb_type, 64);
+                    components::input_text_with_hint("###bomb_model", "", g->vehicle.bomb_type, 64);
                     //ImGui::Combo("###bomb_model", &g->vehicle.bomb_type, *weapon_types);
 
                     ImGui::Separator();

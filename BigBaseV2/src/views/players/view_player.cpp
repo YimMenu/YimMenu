@@ -126,7 +126,7 @@ namespace big
 				components::button("Godmode kill", [] {
 					teleport::teleport_player(g_player_service->get_selected()->id(), Vector3(8110, 20, 0));
 					script::get_current()->yield(1s);
-					entity::delete_entity(PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false));
+					entity::delete_entity_notp(PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false));
 				});
 
 				components::button("Teleport into Vehicle", [] {
@@ -152,7 +152,7 @@ namespace big
 					components::button("Ped Crash", [] {
 						Ped ped = ped::spawn("slod_human", ENTITY::GET_ENTITY_COORDS(g_player_service->get_selected()->id(), false), 0);
 						script::get_current()->yield(3s);
-						entity::delete_entity(ped);
+						entity::delete_entity_notp(ped);
 					});
 
 					ImGui::SameLine();
@@ -160,7 +160,7 @@ namespace big
 					components::button("Vehicle Crash", [] {
 						Vehicle veh = vehicle::spawn("arbitergt", ENTITY::GET_ENTITY_COORDS(g_player_service->get_selected()->id(), false), 0);
 						script::get_current()->yield(3s);
-						entity::delete_entity(veh);
+						entity::delete_entity_notp(veh);
 					});
 
 					ImGui::SameLine();
@@ -331,7 +331,7 @@ namespace big
 						TASK::TASK_COMBAT_PED(ped, ply, 0, 16);
 
 						PED::SET_PED_FIRING_PATTERN(ped, 0xC6EE6B4C);
-						});
+					});
 				}
 
 				ImGui::TreePop();

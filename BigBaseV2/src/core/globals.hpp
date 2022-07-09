@@ -252,7 +252,7 @@ namespace big
 			bool flares = false;
 			bool chaff = false;
 			bool bombs = false;
-			char bomb_type = false;
+			char bomb_type[30] = "";
 			int auto_drive_speed = 1;
 			int driving_style_flags = 443;
 			int driving_style_id = 0;

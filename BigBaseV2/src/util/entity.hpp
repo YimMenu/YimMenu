@@ -35,6 +35,14 @@ namespace big::entity
 		ENTITY::DELETE_ENTITY(&ent);
 	}
 
+	inline void delete_entity_notp(Entity ent)
+	{
+		ENTITY::DETACH_ENTITY(ent, 1, 1);
+		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(ent, 1, 1);
+		ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&ent);
+		ENTITY::DELETE_ENTITY(&ent);
+	}
+
 	inline bool raycast(Entity* ent)
 	{
 		BOOL hit;
