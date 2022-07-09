@@ -181,6 +181,17 @@ namespace big
 			bool preview_vehicle = false;
 			bool spawn_inside = false;
 			bool spawn_maxed = false;
+			std::string plate = "";
+		};
+
+		struct clone_pv
+		{
+			bool preview_vehicle = false;
+			bool spawn_inside = false;
+			bool spawn_clone = false;
+			bool spawn_maxed = false;
+			bool clone_plate = false;
+			std::string plate = "";
 		};
 
 		struct spoofing
@@ -228,8 +239,7 @@ namespace big
 			bool vehicle_jump = false;
 			bool instant_brake = false;
 			bool is_targetable = true;
-			bool ls_customs = false; // don't save this to disk
-			bool pv_teleport_into = false;
+			bool ls_customs = false; // don't save this to dis
 			bool seatbelt = false;
 			bool turn_signals = false;
 			int auto_drive_speed = 1;
@@ -330,6 +340,7 @@ namespace big
 		session session{};
 		settings settings{};
 		spawn spawn{};
+		clone_pv clone_pv{};
 		spoofing spoofing{};
 		vehicle vehicle{};
 		weapons weapons{};
@@ -490,12 +501,29 @@ namespace big
 			this->self.no_ragdoll = j["self"]["no_ragdoll"];
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
+			this->self.proof_bullet = j["self"]["proof_bullet"];
+			this->self.proof_fire = j["self"]["proof_fire"];
+			this->self.proof_collision = j["self"]["proof_collision"];
+			this->self.proof_melee = j["self"]["proof_melee"];
+			this->self.proof_explosion = j["self"]["proof_explosion"];
+			this->self.proof_steam = j["self"]["proof_steam"];
+			this->self.proof_drown = j["self"]["proof_drown"];
+			this->self.proof_water = j["self"]["proof_water"];
+			this->self.proof_mask = j["self"]["proof_mask"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
 
 			this->spawn.preview_vehicle = j["spawn"]["preview_vehicle"];
 			this->spawn.spawn_inside = j["spawn"]["spawn_inside"];
 			this->spawn.spawn_maxed = j["spawn"]["spawn_maxed"];
+			this->spawn.plate = j["spawn"]["plate"];
+
+			this->clone_pv.preview_vehicle = j["clone_pv"]["preview_vehicle"];
+			this->clone_pv.spawn_inside = j["clone_pv"]["spawn_inside"];
+			this->clone_pv.spawn_clone = j["clone_pv"]["spawn_clone"];
+			this->clone_pv.spawn_maxed = j["clone_pv"]["spawn_maxed"];
+			this->clone_pv.clone_plate = j["clone_pv"]["clone_plate"];
+			this->clone_pv.plate = j["clone_pv"]["plate"];
 
 			this->spoofing.spoof_ip = j["spoofing"]["spoof_ip"];
 			this->spoofing.spoof_rockstar_id = j["spoofing"]["spoof_rockstar_id"];
@@ -517,7 +545,6 @@ namespace big
 			this->vehicle.vehicle_jump = j["vehicle"]["vehicle_jump"];
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
-			this->vehicle.pv_teleport_into = j["vehicle"]["pv_teleport_into"];
 			this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
 			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
 			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
@@ -609,7 +636,7 @@ namespace big
 					"notifications", {
 						{ "gta_thread_kill", return_notify_pair(g->notifications.gta_thread_kill) },
 						{ "gta_thread_start", return_notify_pair(g->notifications.gta_thread_start) },
-						{"net_array_error", return_notify_pair(g->notifications.net_array_error)},
+						{ "net_array_error", return_notify_pair(g->notifications.net_array_error) },
 						{ "network_player_mgr_init", return_notify_pair(g->notifications.network_player_mgr_init) },
 						{ "network_player_mgr_shutdown", return_notify_pair(g->notifications.network_player_mgr_shutdown) },
 						{ "player_join", {
@@ -714,7 +741,17 @@ namespace big
 						{ "never_wanted", this->self.never_wanted },
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
-						{ "super_run", this->self.super_run }
+						{ "super_run", this->self.super_run },
+
+						{ "proof_bullet", this->self.proof_bullet },
+						{ "proof_fire", this->self.proof_fire },
+						{ "proof_collision", this->self.proof_collision },
+						{ "proof_melee", this->self.proof_melee },
+						{ "proof_explosion", this->self.proof_explosion },
+						{ "proof_steam", this->self.proof_steam },
+						{ "proof_drown", this->self.proof_drown },
+						{ "proof_water", this->self.proof_water },
+						{ "proof_mask", this->self.proof_mask }
 					}
 				},
 				{
@@ -726,10 +763,21 @@ namespace big
 					}
 				},
 				{
+					"clone_pv", {
+						{ "preview_vehicle", this->clone_pv.preview_vehicle },
+						{ "spawn_inside", this->clone_pv.spawn_inside },
+						{ "spawn_clone", this->clone_pv.spawn_clone },
+						{ "spawn_maxed", this->clone_pv.spawn_maxed },
+						{ "clone_plate", this->clone_pv.clone_plate },
+						{ "plate", this->clone_pv.plate }
+					}
+				},
+				{
 					"spawn", {
 						{ "preview_vehicle", this->spawn.preview_vehicle },
 						{ "spawn_inside", this->spawn.spawn_inside },
-						{ "spawn_maxed", this->spawn.spawn_maxed}
+						{ "spawn_maxed", this->spawn.spawn_maxed},
+						{ "plate", this->spawn.plate }
 					}
 				},
 				{
@@ -760,7 +808,6 @@ namespace big
 						{ "vehicle_jump", this->vehicle.vehicle_jump },
 						{ "instant_brake", this->vehicle.instant_brake },
 						{ "is_targetable", this->vehicle.is_targetable },
-						{ "pv_teleport_into", this->vehicle.pv_teleport_into },
 						{ "rainbow_paint", this->vehicle.rainbow_paint },
 						{ "turn_signals", this->vehicle.turn_signals },
 						{ "seatbelt", this->vehicle.seatbelt },

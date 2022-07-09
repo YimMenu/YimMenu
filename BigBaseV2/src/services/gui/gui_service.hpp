@@ -23,6 +23,7 @@ namespace big
 		SESSION,
 		SETTINGS,
 		SPAWN,
+		PV,
 		SPOOFING,
 		TELEPORT,
 		VEHICLE,
@@ -57,6 +58,7 @@ namespace big
 				}}},
 				{ tabs::LSC, {"LSC", view::lsc }},
 				{ tabs::SPAWN, { "Spawn", view::spawn }},
+				{ tabs::PV, { "Personal Vehicle", view::pv }},
 			}}},
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},
