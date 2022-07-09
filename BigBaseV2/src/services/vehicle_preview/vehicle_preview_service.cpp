@@ -89,7 +89,7 @@ namespace big
 
 	void vehicle_preview_service::set_preview_vehicle(const vehicle_preview_item& item)
 	{
-		if (!item.hash != 0)
+		if (item.hash != 0)
 		{
 			if (m_model_hash != item.hash)
 			{
