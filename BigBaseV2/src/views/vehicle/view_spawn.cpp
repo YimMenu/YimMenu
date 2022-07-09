@@ -6,7 +6,8 @@
 
 namespace big
 {
-	void view::spawn() {
+	void view::spawn()
+	{
 		ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
 
 		ImGui::Checkbox("Preview", &g->spawn.preview_vehicle);
