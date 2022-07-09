@@ -15,21 +15,34 @@ namespace big
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn Maxed", &g->spawn.spawn_maxed);
 
+		static char plate[9] = { 0 };
+		strncpy(plate, g->spawn.plate.c_str(), 9);
+
+		ImGui::SetNextItemWidth(300.f);
+		components::input_text_with_hint("Plate", "Plate Number", plate, sizeof(plate), ImGuiInputTextFlags_None, [] {
+			g->spawn.plate = plate;
+		});
+
 		static char search[64];
 		static std::string lower_search;
 
 		ImGui::SetNextItemWidth(300.f);
-		if (ImGui::InputTextWithHint("Model Name", "Search", search, sizeof(search))) {
+		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None, [] {
 			lower_search = search;
 			std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
-		}
+		});
 
 		// arbitrary subtraction this looked nice so idc, works for all resolutions as well
-		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 260)})) {
-			if (g_vehicle_preview_service->get_vehicle_map().size() > 0) {
+		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 184 - 38 * 3) }))
+		{
 
-				for (auto& [hash, item] : g_vehicle_preview_service->get_vehicle_map()) {
-					std::string display_name = item.dispaly_name;
+			auto item_arr = g_vehicle_preview_service->get_vehicle_preview_item_arr();
+
+			if (item_arr.size() > 0)
+			{
+
+				for (auto& item : item_arr) {
+					std::string display_name = item.display_name;
 					std::string display_manufacturer = item.display_manufacturer;
 
 					std::transform(display_name.begin(), display_name.end(), display_name.begin(), ::tolower);
@@ -41,13 +54,17 @@ namespace big
 					) {
 						std::string& item_name = item.name;
 
-						components::selectable(item.dispaly_name + "##" + std::to_string(item.hash), false, [&item_name] {
+						ImGui::PushID(item.hash);
+						components::selectable(item.display_name, false, [&item_name] {
 
 							float y_offset = 0;
 
-							if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, false)) {
+							if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, false))
+							{
 								y_offset = 10.f;
-							} else if (!g->spawn.spawn_inside) {
+							}
+							else if (!g->spawn.spawn_inside)
+							{
 								y_offset = 5.f;
 							}
 
@@ -56,26 +73,37 @@ namespace big
 
 							const Vehicle veh = vehicle::spawn(item_name, spawn_location, spawn_heading);
 
-							if (g->spawn.spawn_inside) {
+							if (g->spawn.spawn_inside)
+							{
 								vehicle::telport_into_veh(veh);
 							}
 
-							if (g->spawn.spawn_maxed) {
+							if (g->spawn.spawn_maxed)
+							{
 								vehicle::max_vehicle(veh);
 							}
 
+							vehicle::set_plate(veh, plate);
+
 							g_vehicle_preview_service->stop_preview();
 						});
+						ImGui::PopID();
 
-						if (g->spawn.preview_vehicle && ImGui::IsItemHovered()) {
+						if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
+						{
 							g_vehicle_preview_service->set_preview_vehicle(item);
-						} else if (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered()) {
+						}
+						else if (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered())
+						{
 							g_vehicle_preview_service->stop_preview();
 						}
 					}
 				}
 			}
-			else ImGui::Text("No vehicles in registry.");
+			else
+			{
+				ImGui::Text("No vehicles in registry.");
+			}
 			ImGui::ListBoxFooter();
 		}
 	}

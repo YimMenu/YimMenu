@@ -3,9 +3,14 @@
 
 namespace big
 {
-	struct vehicle_preview_item {
+	class vehicle_preview_item {
+
+	public:
+		vehicle_preview_item();
+		vehicle_preview_item(nlohmann::json& item_json);
+
 		std::string name;
-		std::string dispaly_name;
+		std::string display_name;
 		std::string display_manufacturer;
 		Hash hash;
 	};
@@ -17,8 +22,9 @@ namespace big
 		std::condition_variable m_cond;
 		std::mutex m_mutex;
 
-		std::map<Hash, vehicle_preview_item> m_hash_veh_map;
-		const vehicle_preview_item empty_item = {"", "", "", 0};
+		std::map<Hash, int> m_hash_idx_map;
+		std::vector<vehicle_preview_item> m_vehicle_preview_item_arr;
+		const vehicle_preview_item empty_item = vehicle_preview_item();
 
 		Vehicle m_current_veh = -1;
 		std::string m_model;
@@ -29,13 +35,11 @@ namespace big
 		vehicle_preview_service();
 		~vehicle_preview_service();
 
-		std::map<Hash, vehicle_preview_item>& get_vehicle_map();
+		const vehicle_preview_item& find_vehicle_item_by_hash(int hash);
+		std::vector<vehicle_preview_item>& get_vehicle_preview_item_arr();
+		void set_preview_vehicle(const vehicle_preview_item& item);
 
 		void preview_loop();
-
-		void set_preview_vehicle(const vehicle_preview_item& item);
-		const vehicle_preview_item& find_vehicle_item_by_hash(int hash);
-
 		void stop_preview();
 
 	private:

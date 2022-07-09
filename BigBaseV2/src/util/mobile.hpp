@@ -112,7 +112,8 @@ namespace big::mobile
 			// blocking call till vehicle is delivered
 			notify::busy_spinner("Delivering vehicle...", mechanic_global.at(958).as<int*>(), -1);
 
-			if (g->clone_pv.spawn_inside) {
+			if (g->clone_pv.spawn_inside)
+			{
 				big::vehicle::bring(globals::get_personal_vehicle(), self::pos, true);
 			}
 		}

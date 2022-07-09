@@ -69,6 +69,7 @@ namespace big
 
 	void view::players()
 	{
+		if (!*g_pointers->m_is_session_started) return;
 		float window_pos = 110.f + g_gui_service->nav_ctr * ImGui::CalcTextSize("W").y + g_gui_service->nav_ctr * ImGui::GetStyle().ItemSpacing.y + g_gui_service->nav_ctr * ImGui::GetStyle().ItemInnerSpacing.y + ImGui::GetStyle().WindowPadding.y;
 
 		ImGui::SetNextWindowSize({ 300.f, 0.f });
