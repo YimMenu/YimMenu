@@ -177,7 +177,6 @@ namespace big
 			}
 		}
 
-
 		g->self.proof_mask = 0;
 		if (g->self.god_mode)
 		{
