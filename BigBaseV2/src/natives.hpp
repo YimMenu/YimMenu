@@ -5981,7 +5981,7 @@ namespace VEHICLE
 	static int GET_NUMBER_OF_VEHICLE_COLOURS(Vehicle vehicle) { return invoke<int>(0x3B963160CD65D41E, vehicle); } // 0x3B963160CD65D41E 0xF2442EE2 b323
 	static void SET_VEHICLE_COLOUR_COMBINATION(Vehicle vehicle, int colorCombination) { invoke<void>(0x33E8CD3322E2FE31, vehicle, colorCombination); } // 0x33E8CD3322E2FE31 0xA557AEAD b323
 	static int GET_VEHICLE_COLOUR_COMBINATION(Vehicle vehicle) { return invoke<int>(0x6A842D197F845D56, vehicle); } // 0x6A842D197F845D56 0x77AC1B4C b323
-	static void SET_VEHICLE_XENON_LIGHTS_COLOR_(Vehicle vehicle, int colorIndex) { invoke<void>(0xE41033B25D003A07, vehicle, colorIndex); } // 0xE41033B25D003A07  b1604
+	static void SET_VEHICLE_XENON_LIGHTS_COLOR_(Vehicle vehicle, int colorindex) { invoke<void>(0xE41033B25D003A07, vehicle, colorindex); } // 0xE41033B25D003A07  b1604
 	static int GET_VEHICLE_XENON_LIGHTS_COLOR_(Vehicle vehicle) { return invoke<int>(0x3DFF319A831E0CDB, vehicle); } // 0x3DFF319A831E0CDB  b1604
 	static void SET_VEHICLE_IS_CONSIDERED_BY_PLAYER(Vehicle vehicle, BOOL toggle) { invoke<void>(0x31B927BBC44156CD, vehicle, toggle); } // 0x31B927BBC44156CD 0x14413319 b323
 	static void N0xBE5C1255A1830FF5(Vehicle vehicle, BOOL toggle) { invoke<void>(0xBE5C1255A1830FF5, vehicle, toggle); } // 0xBE5C1255A1830FF5 0xA6D8D7A5 b323

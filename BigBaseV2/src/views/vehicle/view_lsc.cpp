@@ -208,6 +208,16 @@ namespace big
 						});
 				}
 
+				static int headlightcolor{};
+				static char* headlightcolor_combo[] = { "White" ,"Blue" ,"ElectricBlue", "Mint Green" ,"Lime Green" ,"Yellow" ,"Golden Shower" ,"Orange" ,"Red" ,"Hot Pink" ,"Purple" ,"Blacklight", "Crew"};
+				if (ImGui::Combo("Headlight Color", &headlightcolor, headlightcolor_combo, IM_ARRAYSIZE(headlightcolor_combo)))
+				{
+					g_fiber_pool->queue_job([]
+						{
+							VEHICLE::SET_VEHICLE_XENON_LIGHTS_COLOR_(player_vehicle, headlightcolor);
+						});
+				}
+
 
 				static int main_color{};
 				ImGui::RadioButton("Primary Color", &main_color, 0);

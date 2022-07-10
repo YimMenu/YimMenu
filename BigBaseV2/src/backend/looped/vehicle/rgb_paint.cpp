@@ -21,8 +21,14 @@ namespace big
 				g->rgb.fade = false;
 			}
 
+
 			VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(vehicle, g->rgb.r, g->rgb.g, g->rgb.b);
 			VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(vehicle, g->rgb.r, g->rgb.g, g->rgb.b);
+			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, 0, 1);
+			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, 1, 1);
+			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, 2, 1);
+			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, 3, 1);
+			VEHICLE::SET_VEHICLE_NEON_LIGHTS_COLOUR_(vehicle, g->rgb.r, g->rgb.g, g->rgb.b);
 		}
 	}
 }
