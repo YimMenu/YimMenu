@@ -244,7 +244,7 @@ namespace big
 				SpeedoMeter type = SpeedoMeter::DISABLED;
 
 				float x = .9f;
-				float y = .72f;
+				float y = .52f;
 
 				bool left_side = false;
 				bool type_text = false;
@@ -256,7 +256,7 @@ namespace big
 				bool enabled = false;
 				bool no_collision = false;
 				bool stop_on_exit = false;
-				float speed = 1;
+				float speed = 100;
 			};
 
 			bool auto_drive_to_waypoint = false;
@@ -272,10 +272,13 @@ namespace big
 			bool seatbelt = false;
 			bool turn_signals = false;
 			bool keep_vehicle_repaired = false;
-			int auto_drive_speed = 1;
-			int driving_style_flags = 443;
-			int driving_style_id = 0;
-			int rainbow_paint = 0;
+			int auto_drive_speed = 100;
+			int driving_style_flags = 787260;
+			int driving_style_id = 1;
+			bool rainbow_primary = false;
+			bool rainbow_secondary = false;
+			bool rainbow_neon = false;
+			int rainbow_paint = 0; //fade
 			speedo_meter speedo_meter{};
 			fly fly{};
 		};
@@ -595,6 +598,7 @@ namespace big
 			this->vehicle.vehicle_jump = j["vehicle"]["vehicle_jump"];
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
+			this->vehicle.keep_vehicle_repaired = j["vehicle"]["keep_vehicle_repaired"];
 			this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
 			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
 			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
@@ -875,6 +879,7 @@ namespace big
 						{ "vehicle_jump", this->vehicle.vehicle_jump },
 						{ "instant_brake", this->vehicle.instant_brake },
 						{ "is_targetable", this->vehicle.is_targetable },
+						{ "keep_vehicle_repaired", this->vehicle.keep_vehicle_repaired },
 						{ "rainbow_paint", this->vehicle.rainbow_paint },
 						{ "turn_signals", this->vehicle.turn_signals },
 						{ "seatbelt", this->vehicle.seatbelt },

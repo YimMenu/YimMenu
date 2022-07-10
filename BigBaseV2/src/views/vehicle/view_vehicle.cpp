@@ -38,15 +38,17 @@ namespace big
 
 		ImGui::Checkbox("Keep Vehicle Repaired", &g->vehicle.keep_vehicle_repaired);
 
-		if (ImGui::TreeNode("Paint"))
+		if (ImGui::TreeNode("RGB"))
 		{
-			ImGui::ListBox("RGB Type", &g->vehicle.rainbow_paint, vehicle::rgb_types, 3);
-
-			if (g->vehicle.rainbow_paint)
-			{
+			ImGui::Checkbox("Primary", &g->vehicle.rainbow_primary);
+			ImGui::SameLine();
+			ImGui::Checkbox("Neon", &g->vehicle.rainbow_neon);
+			ImGui::Checkbox("Secondary", &g->vehicle.rainbow_secondary);
+			if (g->vehicle.rainbow_primary || g->vehicle.rainbow_neon || g->vehicle.rainbow_secondary) {
+				ImGui::ListBox("RGB Type", &g->vehicle.rainbow_paint, vehicle::rgb_types, 2);
 				ImGui::SliderInt("RGB Speed", &g->rgb.speed, 1, 10);
 			}
-
+			
 			ImGui::TreePop();
 		}
 
