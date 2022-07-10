@@ -218,6 +218,12 @@ namespace big
 						});
 				}
 
+				ImGui::Checkbox("Vehicle Light Intensity", &g->vehicle.headlightmul);
+				if (g->vehicle.headlightmul)
+				{
+					ImGui::SliderFloat("", &g->vehicle.headlightmul_val, 0.0f, 1000.f);
+				}
+
 
 				static int main_color{};
 				ImGui::RadioButton("Primary Color", &main_color, 0);

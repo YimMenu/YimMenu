@@ -272,6 +272,8 @@ namespace big
 			bool seatbelt = false;
 			bool turn_signals = false;
 			bool keep_vehicle_repaired = false;
+			bool headlightmul = false;
+			float headlightmul_val = 1.f;
 			int auto_drive_speed = 100;
 			int driving_style_flags = 787260;
 			int driving_style_id = 1;

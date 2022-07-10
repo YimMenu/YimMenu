@@ -67,6 +67,7 @@ namespace big
 		static void vehicle_speedo_meter();
 		static void vehicle_turn_signals();
 		static void vehicle_keep_vehicle_repaired();
+		static void vehicle_headlightmul();
 
 		static void weapons_ammo_special_type();
 		static void weapons_cage_gun();

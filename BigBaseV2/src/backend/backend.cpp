@@ -90,6 +90,7 @@ namespace big
 			looped::vehicle_seatbelt();
 			looped::vehicle_speedo_meter();
 			looped::vehicle_keep_vehicle_repaired();
+			looped::vehicle_headlightmul();
 
 			script::get_current()->yield();
 		}
