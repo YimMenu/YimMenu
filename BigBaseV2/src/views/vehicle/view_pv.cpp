@@ -42,6 +42,8 @@ namespace big
 					g->clone_pv.plate = plate;
 				});
 			}
+			ImGui::SameLine();
+			ImGui::Checkbox("Delete Last Clone", &g->clone_pv.delete_last_clone);
 		}
 
 		static char search[64];
