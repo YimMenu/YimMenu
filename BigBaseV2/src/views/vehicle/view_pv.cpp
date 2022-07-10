@@ -40,6 +40,8 @@ namespace big
 					g->clone_pv.plate = plate;
 				});
 			}
+			ImGui::SameLine();
+			ImGui::Checkbox("Delete Last Clone", &g->clone_pv.delete_last_clone);
 		}
 
 		static char search[64];
@@ -117,6 +119,12 @@ namespace big
 									{
 										vehicle::max_vehicle(veh);
 									}
+									if (g->clone_pv.delete_last_clone)
+									{
+										entity::delete_entity(g->clone_pv.last_clone);
+									}
+
+									g->clone_pv.last_clone = veh;
 
 									vehicle::set_plate(veh, spawn_plate);
 								});
