@@ -217,6 +217,8 @@ namespace big
 			bool spawn_clone = false;
 			bool spawn_maxed = false;
 			bool clone_plate = false;
+			bool delete_last_clone = false;
+			int last_clone = 0;
 			std::string plate = "";
 		};
 
@@ -569,6 +571,7 @@ namespace big
 			this->clone_pv.spawn_inside = j["clone_pv"]["spawn_inside"];
 			this->clone_pv.spawn_clone = j["clone_pv"]["spawn_clone"];
 			this->clone_pv.spawn_maxed = j["clone_pv"]["spawn_maxed"];
+			this->clone_pv.spawn_maxed = j["clone_pv"]["delete_last_clone"];
 			this->clone_pv.clone_plate = j["clone_pv"]["clone_plate"];
 			this->clone_pv.plate = j["clone_pv"]["plate"];
 
@@ -830,6 +833,7 @@ namespace big
 						{ "spawn_inside", this->clone_pv.spawn_inside },
 						{ "spawn_clone", this->clone_pv.spawn_clone },
 						{ "spawn_maxed", this->clone_pv.spawn_maxed },
+						{ "delete_last_clone", this->clone_pv.delete_last_clone },
 						{ "clone_plate", this->clone_pv.clone_plate },
 						{ "plate", this->clone_pv.plate }
 					}
