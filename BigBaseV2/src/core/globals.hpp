@@ -237,6 +237,7 @@ namespace big
 		struct tunables {
 			bool disable_phone = false;
 			bool no_idle_kick = false;
+			bool fast_join = false;
 		};
 
 		struct vehicle {
@@ -540,6 +541,7 @@ namespace big
 
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
 			this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
+			this->tunables.fast_join = j["tunables"]["fast_join"];
 
 			this->self.clean_player = j["self"]["clean_player"];
 			this->self.godmode = j["self"]["godmode"];
@@ -795,7 +797,8 @@ namespace big
 				{
 					"tunables", {
 						{ "disable_phone", this->tunables.disable_phone },
-						{ "no_idle_kick", this->tunables.no_idle_kick }
+						{ "no_idle_kick", this->tunables.no_idle_kick },
+						{ "fast_join", this->tunables.fast_join }
 					}
 				},
 				{

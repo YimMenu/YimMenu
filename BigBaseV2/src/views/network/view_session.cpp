@@ -57,5 +57,6 @@ namespace big
 		ImGui::Separator();
 
 		ImGui::Checkbox("Sechs Mode", &g->session.jumparound);
+		ImGui::Checkbox("Fast Join", &g->tunables.fast_join);
 	}
 }
