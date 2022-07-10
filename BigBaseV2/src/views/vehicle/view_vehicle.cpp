@@ -4,49 +4,62 @@
 #include "script.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
-
+#include "util/mobile.hpp"
 
 namespace big
 {
 	void view::vehicle()
 	{
+		components::button("MMI Fix All PV", [] {
+			int amount_fixed = mobile::mors_mutual::fix_all();
+			g_notification_service->push("Mobile",
+				fmt::format("{} vehicle{} been fixed.", amount_fixed, amount_fixed == 1 ? " has" : "s have")
+			);
+		});
+		ImGui::SameLine();
+		components::button("Repair", [] {
+			vehicle::repair(self::veh);
+		});
+
+		ImGui::Separator();
+
+		components::button("Teleport to PV", [] {
+			Vehicle veh = globals::get_personal_vehicle();
+			teleport::into_vehicle(veh);
+		});
+		ImGui::SameLine();
+		components::button("Bring PV", [] {
+			Vehicle veh = globals::get_personal_vehicle();
+			vehicle::bring(veh, self::pos, true);
+		});
+		ImGui::SameLine();
+		components::button("Bring Closest Vehicle", [] {
+			Vehicle veh = vehicle::get_closest_to_location(self::pos, 200);
+			vehicle::bring(veh, self::pos, true, -1);
+		});
+
+		ImGui::Separator();
+
+		components::small_text("General");
+
 		ImGui::BeginGroup();
-		ImGui::Checkbox("Can Be Targeted", &g->vehicle.is_targetable);
 		ImGui::Checkbox("God Mode", &g->vehicle.god_mode);
 		ImGui::Checkbox("Horn Boost", &g->vehicle.horn_boost);
 		ImGui::Checkbox("Vehicle Jump", &g->vehicle.vehicle_jump);
-		ImGui::Checkbox("Instant Brake", &g->vehicle.instant_brake);
-		ImGui::Checkbox("Drive On Water", &g->vehicle.drive_on_water);
-		ImGui::Checkbox("Seatbelt", &g->vehicle.seatbelt);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		components::button("Repair", [] {
-			vehicle::repair(self::veh);
-		});
+		ImGui::Checkbox("Instant Brake", &g->vehicle.instant_brake);
+		ImGui::Checkbox("Can Be Targeted", &g->vehicle.is_targetable);
+		ImGui::Checkbox("Drive On Water", &g->vehicle.drive_on_water);
+
+		ImGui::EndGroup();
 		ImGui::SameLine();
-		components::button("Instant in PV", [] {
-			if (!*g_pointers->m_is_session_started) return g_notification_service->push_warning("WARNING", "Go into GTA V Online to use this option");
+		ImGui::BeginGroup();
 
-			vehicle::go_into_personal_vehicle();
-		});
-
-		if (ImGui::TreeNode("Paint"))
-		{
-			ImGui::SetNextItemWidth(130.f);
-			ImGui::ListBox("RGB Type", &g->vehicle.rainbow_paint, vehicle::rgb_types, 3);
-
-			if (g->vehicle.rainbow_paint)
-			{
-				ImGui::SetNextItemWidth(160.f);
-				ImGui::SliderInt("RGB Speed", &g->rgb.speed, 1, 10);
-			}
-
-			ImGui::TreePop();
-		}
-
+		ImGui::Checkbox("Seatbelt", &g->vehicle.seatbelt);
 		ImGui::Checkbox("Turn Signals", &g->vehicle.turn_signals);
 		if (g->vehicle.turn_signals)
 		{
@@ -113,6 +126,48 @@ namespace big
 
 		ImGui::EndGroup();
 
+		ImGui::Separator();
+
+		components::small_text("Speedo Meter");
+
+		SpeedoMeter* speed_meter_type_ptr = &g->vehicle.speedo_meter.type;
+
+		if (ImGui::BeginCombo("Format", speedo_meters[(int)*speed_meter_type_ptr].name))
+		{
+			for (const speedo_meter& speedo : speedo_meters)
+			{
+				if (ImGui::Selectable(speedo.name, speedo.id == *speed_meter_type_ptr))
+				{
+					*speed_meter_type_ptr = speedo.id;
+				}
+
+				if (speedo.id == *speed_meter_type_ptr)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+
+		if (*speed_meter_type_ptr != SpeedoMeter::DISABLED)
+		{
+			ImGui::Text("Position (X, Y)");
+
+			float pos[2] = { g->vehicle.speedo_meter.x, g->vehicle.speedo_meter.y };
+
+			if (ImGui::SliderFloat2("###speedo_pos", pos, .001f, .999f, "%.3f"))
+			{
+				g->vehicle.speedo_meter.x = pos[0];
+				g->vehicle.speedo_meter.y = pos[1];
+			}
+
+			ImGui::SameLine();
+
+			ImGui::Checkbox("Left Sided", &g->vehicle.speedo_meter.left_side);
+		}
+
+
 		g->vehicle.proof_mask = 0;
 		if (g->vehicle.god_mode)
 		{
@@ -150,55 +205,5 @@ namespace big
 		{
 			g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::WATER);
 		}
-
-		ImGui::Separator();
-
-		components::small_text("Vehicle Fly");
-
-		ImGui::Checkbox("Enabled", &g->vehicle.fly.enabled);
-		ImGui::SameLine();
-		ImGui::Checkbox("Disable Collision", &g->vehicle.fly.no_collision);
-
-		ImGui::Checkbox("Don't Stop", &g->vehicle.fly.dont_stop);
-		ImGui::SameLine();
-		ImGui::Checkbox("Stop On Exit", &g->vehicle.fly.stop_on_exit);
-
-		ImGui::SliderFloat("Speed", &g->vehicle.fly.speed, 1.f, 100.f, "%.0f", 1);
-
-		ImGui::Separator();
-
-		components::small_text("Speedo Meter");
-
-		SpeedoMeter selected = g->vehicle.speedo_meter.type;
-
-		ImGui::Text("Type:");
-		if (ImGui::BeginCombo("###speedo_type", speedo_meters[(int)selected].name))
-		{
-			for (const speedo_meter& speedo : speedo_meters)
-			{
-				if (ImGui::Selectable(speedo.name, speedo.id == selected))
-				{
-					g->vehicle.speedo_meter.type = speedo.id;
-				}
-
-				if (speedo.id == selected)
-					ImGui::SetItemDefaultFocus();
-			}
-
-			ImGui::EndCombo();
-		}
-
-		ImGui::Text("Position");
-
-		float pos[2];
-		pos[0] = g->vehicle.speedo_meter.x;
-		pos[1] = g->vehicle.speedo_meter.y;
-		if (ImGui::SliderFloat2("###speedo_pos", pos, .001f, .999f, "%.3f"))
-		{
-			g->vehicle.speedo_meter.x = pos[0];
-			g->vehicle.speedo_meter.y = pos[1];
-		}
-
-		ImGui::Checkbox("Left Sided", &g->vehicle.speedo_meter.left_side);
 	}
 }
