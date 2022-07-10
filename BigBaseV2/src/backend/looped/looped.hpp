@@ -47,7 +47,6 @@ namespace big
 		static void session_local_time();
 		static void session_slowmotion();
 		static void session_jumparound();
-		static void fast_join();
 
 		static void system_self_globals();
 		static void system_update_pointers();

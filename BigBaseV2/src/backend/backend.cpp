@@ -133,7 +133,6 @@ namespace big
 			looped::session_local_time();
 			looped::session_slowmotion();
 			looped::session_jumparound();
-			looped::fast_join();
 
 			script::get_current()->yield();
 		}
