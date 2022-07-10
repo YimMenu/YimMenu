@@ -3,6 +3,18 @@
 
 namespace big
 {
+	class vehicle_preview_item {
+
+	public:
+		vehicle_preview_item();
+		vehicle_preview_item(nlohmann::json& item_json);
+
+		std::string name;
+		std::string display_name;
+		std::string display_manufacturer;
+		Hash hash;
+	};
+
 	class vehicle_preview_service
 	{
 		file m_vehicle_file;
@@ -10,10 +22,12 @@ namespace big
 		std::condition_variable m_cond;
 		std::mutex m_mutex;
 
-		nlohmann::json m_all_vehicles;
+		std::map<Hash, int> m_hash_idx_map;
+		std::vector<vehicle_preview_item> m_vehicle_preview_item_arr;
+		const vehicle_preview_item empty_item = vehicle_preview_item();
 
 		Vehicle m_current_veh = -1;
-		std::string m_model;
+		Hash m_model_hash;
 		bool m_new_model = false;
 		float m_heading = 0.f;
 		bool m_running = false;
@@ -21,11 +35,11 @@ namespace big
 		vehicle_preview_service();
 		~vehicle_preview_service();
 
-		nlohmann::json& get_vehicle_list();
+		const vehicle_preview_item& find_vehicle_item_by_hash(int hash);
+		std::vector<vehicle_preview_item>& get_vehicle_preview_item_arr();
+		void set_preview_vehicle(const vehicle_preview_item& item);
 
 		void preview_loop();
-
-		void set_preview_vehicle(const nlohmann::json& item);
 		void stop_preview();
 
 	private:
