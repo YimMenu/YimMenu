@@ -14,11 +14,11 @@ namespace big
 
 		components::button("Drive To Waypoint", [] {
 			g->vehicle.auto_drive_to_waypoint = true;
-			});
+		});
 		ImGui::SameLine();
 		components::button("Wander", [] {
 			g->vehicle.auto_drive_wander = true;
-			});
+		});
 		ImGui::SameLine();
 		components::button("Emergency Stop", [] {
 			g->vehicle.auto_drive_to_waypoint = false;
@@ -26,7 +26,7 @@ namespace big
 			VEHICLE::SET_VEHICLE_FORWARD_SPEED(self::veh, 0);
 			TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 			TASK::CLEAR_PED_TASKS(self::ped);
-			});
+		});
 
 		ImGui::SliderInt("Top Speed", &g->vehicle.auto_drive_speed, 1, 200);
 
