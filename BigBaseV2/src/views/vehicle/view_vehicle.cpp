@@ -80,7 +80,6 @@ namespace big
 			g->vehicle.proof_melee = true;
 			g->vehicle.proof_explosion = true;
 			g->vehicle.proof_steam = true;
-			g->vehicle.proof_drown = true;
 			g->vehicle.proof_water = true;
 		}
 
@@ -94,7 +93,6 @@ namespace big
 			g->vehicle.proof_melee = false;
 			g->vehicle.proof_explosion = false;
 			g->vehicle.proof_steam = false;
-			g->vehicle.proof_drown = false;
 			g->vehicle.proof_water = false;
 		}
 
@@ -121,7 +119,6 @@ namespace big
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("Drown", &g->vehicle.proof_drown);
 		ImGui::Checkbox("Water", &g->vehicle.proof_water);
 
 		ImGui::EndGroup();
@@ -196,10 +193,6 @@ namespace big
 		if (g->vehicle.proof_steam)
 		{
 			g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::STEAM);
-		}
-		if (g->vehicle.proof_drown)
-		{
-			g->vehicle.proof_mask |= static_cast<int>(eEntityProofs::DROWN);
 		}
 		if (g->vehicle.proof_water)
 		{

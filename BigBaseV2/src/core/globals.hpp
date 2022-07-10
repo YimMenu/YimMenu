@@ -237,7 +237,6 @@ namespace big
 			bool proof_melee = false;
 			bool proof_explosion = false;
 			bool proof_steam = false;
-			bool proof_drown = false;
 			bool proof_water = false;
 			uint32_t proof_mask = 0;
 
@@ -560,7 +559,6 @@ namespace big
 			this->vehicle.proof_melee = j["vehicle"]["proof_melee"];
 			this->vehicle.proof_explosion = j["vehicle"]["proof_explosion"];
 			this->vehicle.proof_steam = j["vehicle"]["proof_steam"];
-			this->vehicle.proof_drown = j["vehicle"]["proof_drown"];
 			this->vehicle.proof_water = j["vehicle"]["proof_water"];
 			this->vehicle.proof_mask = j["vehicle"]["proof_mask"];
 			this->vehicle.auto_drive_speed = j["vehicle"]["auto_drive_speed"];
@@ -841,7 +839,6 @@ namespace big
 						{ "proof_melee", this->vehicle.proof_melee },
 						{ "proof_explosion", this->vehicle.proof_explosion },
 						{ "proof_steam", this->vehicle.proof_steam },
-						{ "proof_drown", this->vehicle.proof_drown },
 						{ "proof_water", this->vehicle.proof_water },
 						{ "proof_mask", this->vehicle.proof_mask },
 						{ "auto_drive_speed", this->vehicle.auto_drive_speed },
