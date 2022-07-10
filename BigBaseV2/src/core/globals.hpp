@@ -799,7 +799,7 @@ namespace big
 						{ "super_run", this->self.super_run },
 						{ "aimbot", this->self.aimbot },
 						{ "aimbot_exclude_friend", this->self.aimbot_exclude_friend },
-						{ "mobileradio", this->self.mobileradio }
+						{ "mobileradio", this->self.mobileradio },
 
 						{ "proof_bullet", this->self.proof_bullet },
 						{ "proof_fire", this->self.proof_fire },
@@ -837,7 +837,7 @@ namespace big
 						{ "preview_vehicle", this->spawn.preview_vehicle },
 						{ "spawn_inside", this->spawn.spawn_inside },
 						{ "spawn_maxed", this->spawn.spawn_maxed},
-						{ "delete_last_spawn", this->spawn.delete_last_spawn}
+						{ "delete_last_spawn", this->spawn.delete_last_spawn},
 						{ "plate", this->spawn.plate }
 					}
 				},
