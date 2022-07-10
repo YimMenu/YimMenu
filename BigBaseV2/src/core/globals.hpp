@@ -796,7 +796,7 @@ namespace big
 				{
 					"tunables", {
 						{ "disable_phone", this->tunables.disable_phone },
-						{ "no_idle_kick", this->tunables.no_idle_kick }
+						{ "no_idle_kick", this->tunables.no_idle_kick },
 					}
 				},
 				{
