@@ -31,5 +31,8 @@ namespace big
 			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, 3, 1);
 			VEHICLE::SET_VEHICLE_NEON_LIGHTS_COLOUR_(vehicle, g->rgb.r, g->rgb.g, g->rgb.b);
 		}
+		if (g->vehicle.rainbow_smoke) {
+			VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(vehicle, g->rgb.r, g->rgb.g, g->rgb.b);
+		}
 	}
 }

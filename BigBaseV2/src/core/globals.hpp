@@ -280,6 +280,7 @@ namespace big
 			bool rainbow_primary = false;
 			bool rainbow_secondary = false;
 			bool rainbow_neon = false;
+			bool rainbow_smoke = false;
 			int rainbow_paint = 0; //fade
 			speedo_meter speedo_meter{};
 			fly fly{};

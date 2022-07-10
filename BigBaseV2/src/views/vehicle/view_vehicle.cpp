@@ -44,7 +44,10 @@ namespace big
 			ImGui::SameLine();
 			ImGui::Checkbox("Neon", &g->vehicle.rainbow_neon);
 			ImGui::Checkbox("Secondary", &g->vehicle.rainbow_secondary);
-			if (g->vehicle.rainbow_primary || g->vehicle.rainbow_neon || g->vehicle.rainbow_secondary) {
+			ImGui::SameLine();
+			ImGui::Checkbox("Smoke", &g->vehicle.rainbow_smoke);
+
+			if (g->vehicle.rainbow_primary || g->vehicle.rainbow_neon || g->vehicle.rainbow_secondary || g->vehicle.rainbow_smoke) {
 				ImGui::ListBox("RGB Type", &g->vehicle.rainbow_paint, vehicle::rgb_types, 2);
 				ImGui::SliderInt("RGB Speed", &g->rgb.speed, 1, 10);
 			}
