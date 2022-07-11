@@ -76,8 +76,10 @@ namespace big
 						{
 							std::string name = vehicle_helper::get_mod_name(mod, slot, count, player_vehicle);
 
+							// remove repetitive wheel mods
 							if (slot == MOD_FRONTWHEEL || slot == MOD_REARWHEEL)
 							{
+								// exit the loop if the mod is already in the list
 								if (names.size() > 0 && names[1] == name)
 								{
 									break;
