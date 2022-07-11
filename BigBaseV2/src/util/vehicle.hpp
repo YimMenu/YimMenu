@@ -7,6 +7,7 @@
 #include "script.hpp"
 #include "teleport.hpp"
 #include "script_global.hpp"
+#include "gta\VehicleValues.h"
 
 namespace big::vehicle
 {
@@ -264,7 +265,7 @@ namespace big::vehicle
 		for (int i = 0; i < 50; i++)
 		{
 			if (
-				i != eVehicleModType::VMT_LIVERY_MOD
+				i != MOD_LIVERY
 			) {
 				VEHICLE::SET_VEHICLE_MOD(veh, i, VEHICLE::GET_NUM_VEHICLE_MODS(veh, i) - 1, true);
 			}

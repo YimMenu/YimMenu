@@ -106,7 +106,7 @@ namespace big
 			return HUD::GET_LABEL_TEXT_("CMM_MOD_S11");
 		case MOD_TRUNK:
 			return HUD::GET_LABEL_TEXT_("CMM_MOD_S12");
-		case MOD_HYDRAULICS:
+		case MOD_HYDRO:
 			return HUD::GET_LABEL_TEXT_("CMM_MOD_S13");
 		case MOD_ENGINEBLOCK:
 			return HUD::GET_LABEL_TEXT_("CMM_MOD_S14");

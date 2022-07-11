@@ -131,7 +131,7 @@ namespace big
 
 		if (ImGui::BeginCombo("Format", speedo_meters[(int)*speed_meter_type_ptr].name))
 		{
-			for (const speedo_meter& speedo : speedo_meters)
+			for (const auto& speedo : speedo_meters)
 			{
 				if (ImGui::Selectable(speedo.name, speedo.id == *speed_meter_type_ptr))
 				{

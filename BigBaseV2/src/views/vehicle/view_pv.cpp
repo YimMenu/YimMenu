@@ -88,7 +88,7 @@ namespace big
 
 									float y_offset = 0;
 
-									if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, false))
+									if (self::veh != 0)
 									{
 										y_offset = 10.f;
 									}
