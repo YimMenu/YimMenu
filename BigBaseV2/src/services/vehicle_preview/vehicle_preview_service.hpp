@@ -35,7 +35,7 @@ namespace big
 		vehicle_preview_service();
 		~vehicle_preview_service();
 
-		const vehicle_preview_item& find_vehicle_item_by_hash(int hash);
+		const vehicle_preview_item& find_vehicle_item_by_hash(Hash hash);
 		std::vector<vehicle_preview_item>& get_vehicle_preview_item_arr();
 		void set_preview_vehicle(const vehicle_preview_item& item);
 
