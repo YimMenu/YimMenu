@@ -7,6 +7,7 @@
 #include "script.hpp"
 #include "teleport.hpp"
 #include "script_global.hpp"
+#include "gta\VehicleValues.h"
 
 namespace big::vehicle
 {
@@ -17,7 +18,7 @@ namespace big::vehicle
 		*script_global(2671447).at(8).as<int*>() = 1;
 	}
 
-	inline void bring(Vehicle veh, Vector3 location, bool put_in = true)
+	inline void bring(Vehicle veh, Vector3 location, bool put_in = true, int seatIdx = -1)
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh)) return g_notification_service->push_error("Vehicle", "Invalid handle");
 
@@ -36,7 +37,21 @@ namespace big::vehicle
 			for (size_t i = 0; i < 100 && math::distance_between_vectors(location, ENTITY::GET_ENTITY_COORDS(veh, true)) > 10; i++)
 				script::get_current()->yield();
 
-			PED::SET_PED_INTO_VEHICLE(ped, veh, -1);
+			auto driver_ped = VEHICLE::GET_PED_IN_VEHICLE_SEAT(veh, -1, false);
+
+			if (driver_ped != 0)
+			{
+				if (PED::GET_PED_TYPE(driver_ped) == ePedType::PED_TYPE_NETWORK_PLAYER)
+				{
+					TASK::CLEAR_PED_TASKS_IMMEDIATELY(driver_ped);
+				}
+				else
+				{
+					entity::delete_entity(driver_ped);
+				}
+			}
+
+			PED::SET_PED_INTO_VEHICLE(ped, veh, seatIdx);
 		}
 	}
 
@@ -48,7 +63,7 @@ namespace big::vehicle
 			{
 				const auto veh_interface_size = veh_interface->m_max_vehicles;
 
-				float min_dist = range + 1;
+				float min_dist = FLT_MAX;
 				int32_t m_handle = 0;
 
 				for (int32_t i = 0; i < veh_interface_size; i++)
@@ -68,8 +83,13 @@ namespace big::vehicle
 
 					if (dist < min_dist)
 					{
-						min_dist = dist;
-						m_handle = g_pointers->m_ptr_to_handle(veh_ptr);
+						int32_t tmp_handle = g_pointers->m_ptr_to_handle(veh_ptr);
+
+						if (entity::take_control_of(tmp_handle))
+						{
+							min_dist = dist;
+							m_handle = tmp_handle;
+						}
 					}
 				}
 
@@ -245,7 +265,7 @@ namespace big::vehicle
 		for (int i = 0; i < 50; i++)
 		{
 			if (
-				i != eVehicleModType::VMT_LIVERY_MOD
+				i != MOD_LIVERY
 			) {
 				VEHICLE::SET_VEHICLE_MOD(veh, i, VEHICLE::GET_NUM_VEHICLE_MODS(veh, i) - 1, true);
 			}
