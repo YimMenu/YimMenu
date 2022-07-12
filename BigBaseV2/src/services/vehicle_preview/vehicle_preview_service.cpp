@@ -40,20 +40,32 @@ namespace big
 	}
 
 	vehicle_preview_service::vehicle_preview_service() :
-		m_vehicle_file(g_file_manager->get_project_file("./lib/vehicles.json"))
+		m_vehicle_file(g_file_manager->get_project_file("./lib/vehicles.json")),
+		m_vehicle_file_etag(g_file_manager->get_project_file("./lib/vehicles_etag.txt"))
 	{
 		if (m_vehicle_file.exists())
-			this->load();
-		else
 		{
-			g_thread_pool->push([this]()
-				{
-					if (remote::download_binary("http://github-proxy.damon.sh/DurtyFree/gta-v-data-dumps/master/vehicles.json", m_vehicle_file.get_path()))
-						this->load();
-					else
-						LOG(WARNING) << "Failed to download vehicles.json data...";
-				});
+			this->load();
+			LOG(INFO) << "Vehicle data loaded.";
 		}
+
+		g_thread_pool->push([this]() {
+			bool ret = remote::update_binary(
+				"http://github-proxy.damon.sh/DurtyFree/gta-v-data-dumps/master/vehicles.json",
+				m_vehicle_file.get_path(),
+				m_vehicle_file_etag.get_path()
+			);
+
+			if (ret)
+			{
+				this->load();
+				LOG(INFO) << "Vehicle data updated.";
+			}
+			else if (!m_vehicle_file.exists())
+			{
+				LOG(WARNING) << "Failed to download vehicles.json data...";
+			}
+		});
 
 		g_vehicle_preview_service = this;
 	}
