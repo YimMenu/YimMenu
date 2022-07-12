@@ -184,6 +184,7 @@ namespace big::vehicle
 		}
 
 		// permission fix
+		*spawn_global.at(27).at(1).as<int32_t*>() = 0;
 		*spawn_global.at(27).at(19).as<int32_t*>() = -1;
 		*spawn_global.at(27).at(60).as<int32_t*>() = 1;
 		*spawn_global.at(27).at(77).as<int32_t*>() = 4030726305;
