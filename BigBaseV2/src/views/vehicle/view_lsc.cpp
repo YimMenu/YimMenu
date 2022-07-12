@@ -12,9 +12,9 @@ namespace big
 	void view::lsc()
 	{
 		static Vehicle player_vehicle = 0;
-		static std::vector<std::string> slot_display_names{};
-		static std::map<int, int> owned_mods{};
-		static std::map<int, std::vector<std::string>> mod_display_names{};
+		static std::map<int, int> owned_mods;
+		static std::map<int, std::string> slot_display_names;
+		static std::map<int, std::map<int, std::string>> mod_display_names{};
 		static int selected_slot = -1;
 		static bool can_tires_burst{}, tiresmoke{}, turbo{}, xenon{};
 		static int primary_color{}, secondary_color{}, pearlescent{}, wheel_color{}, interior_color{}, dashboard_color{};
@@ -25,8 +25,8 @@ namespace big
 		if (self::veh == 0)
 		{
 			player_vehicle = 0;
-			slot_display_names.clear();
 			owned_mods.clear();
+			slot_display_names.clear();
 			mod_display_names.clear();
 
 			ImGui::Text("Please enter a vehicle.");
@@ -37,8 +37,8 @@ namespace big
 			if (player_vehicle != self::veh)
 			{
 				player_vehicle = 0;
-				slot_display_names.clear();
 				owned_mods.clear();
+				slot_display_names.clear();
 				mod_display_names.clear();
 
 				if (!HUD::HAS_THIS_ADDITIONAL_TEXT_LOADED("MOD_MNU", 10))
@@ -62,40 +62,49 @@ namespace big
 				VEHICLE::GET_VEHICLE_INTERIOR_COLOR_(player_vehicle, &interior_color);
 				VEHICLE::GET_VEHICLE_DASHBOARD_COLOR_(player_vehicle, &dashboard_color);
 
-				std::vector<std::string> dsp_names{};
+
 				for (int slot = MOD_SPOILERS; slot <= MOD_LIVERY; slot++)
 				{
 					int count = VEHICLE::GET_NUM_VEHICLE_MODS(player_vehicle, slot);
 					if (count > 0)
 					{
-						owned_mods[slot] = (VEHICLE::GET_VEHICLE_MOD(player_vehicle, selected_slot) + 1);
-						dsp_names.push_back(vehicle_helper::get_mod_slot_name(slot, player_vehicle));
+						owned_mods[slot] = VEHICLE::GET_VEHICLE_MOD(player_vehicle, slot);
 
-						std::vector<std::string> names;
+						std::string slot_name = vehicle_helper::get_mod_slot_name(slot, player_vehicle);
+						if (slot_name.empty())
+						{
+							continue;
+						}
+						slot_display_names[slot] = slot_name;
+
+						std::map<int, std::string> mod_names;
 						for (int mod = -1; mod < count; mod++)
 						{
-							std::string name = vehicle_helper::get_mod_name(mod, slot, count, player_vehicle);
-
-							// remove repetitive wheel mods
-							if (slot == MOD_FRONTWHEEL || slot == MOD_REARWHEEL)
+							std::string mod_name = vehicle_helper::get_mod_name(mod, slot, count, player_vehicle);
+							if (mod_name.empty())
 							{
-								// exit the loop if the mod is already in the list
-								if (names.size() > 0 && names[1] == name)
+								continue;
+							}
+
+							bool repeated = false;
+
+							for (const auto& it : mod_names)
+							{
+								if (it.second == mod_name)
 								{
+									repeated = true;
 									break;
 								}
 							}
 
-							names.push_back(name);
+							if (!repeated)
+							{
+								mod_names[mod] = mod_name;
+							}
 						}
-						mod_display_names[slot] = names;
-					}
-					else
-					{
-						dsp_names.push_back("");
+						mod_display_names[slot] = mod_names;
 					}
 				}
-				slot_display_names = dsp_names;
 			}
 		});
 
@@ -112,6 +121,9 @@ namespace big
 		{
 			g_fiber_pool->queue_job([] {
 				vehicle::max_vehicle(self::veh);
+
+				// refresh mod names
+				player_vehicle = 0;
 			});
 		}
 
@@ -212,34 +224,32 @@ namespace big
 
 		if (ImGui::ListBoxHeader("Slot", ImVec2(200, 200)))
 		{
-			for (int slot = MOD_SPOILERS; slot <= MOD_LIVERY; slot++)
+			for (const auto& [slot, name] : slot_display_names)
 			{
-				if (slot_display_names[slot].empty())
-					continue;
-				if (ImGui::Selectable(slot_display_names[slot].c_str(), slot == selected_slot))
+				if (ImGui::Selectable(name.c_str(), slot == selected_slot))
 				{
 					selected_slot = slot;
 				}
 			}
 			ImGui::ListBoxFooter();
 		}
+
 		if (selected_slot != -1)
 		{
 			ImGui::SameLine();
 			if (ImGui::ListBoxHeader("Mod", ImVec2(200, 200)))
 			{
-				for (int i = 0; i < mod_display_names[selected_slot].size(); i++)
+				for (const auto& it : mod_display_names[selected_slot])
 				{
-					if (mod_display_names[selected_slot][i].empty())
-						continue;
+					const auto& mod = it.first;
+					const auto& name = it.second;
 
-					if (ImGui::Selectable(mod_display_names[selected_slot][i].c_str(), i == owned_mods[selected_slot]))
+					if (ImGui::Selectable(name.c_str(), mod == owned_mods[selected_slot]))
 					{
-						g_fiber_pool->queue_job([i] {
+						g_fiber_pool->queue_job([&mod] {
 							NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(self::veh);
-
-							owned_mods[selected_slot] = i;
-							VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, i - 1, false);
+							VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
+							owned_mods[selected_slot] = VEHICLE::GET_VEHICLE_MOD(player_vehicle, selected_slot);
 						});
 					}
 				}
