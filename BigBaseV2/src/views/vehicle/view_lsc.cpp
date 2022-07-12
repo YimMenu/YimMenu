@@ -4,6 +4,7 @@
 #include "services/vehicle_helper/vehicle_helper.hpp"
 #include "views/view.hpp"
 #include "util/vehicle.hpp"
+#include "core/data/vehicle_plate_types.hpp"
 #include "core/data/vehicle_wheel_types.hpp"
 #include <imgui_internal.h>
 
@@ -16,11 +17,24 @@ namespace big
 		static std::map<int, std::string> slot_display_names;
 		static std::map<int, std::map<int, std::string>> mod_display_names{};
 		static int selected_slot = -1;
-		static bool can_tires_burst{}, tiresmoke{}, turbo{}, xenon{};
-		static int primary_color{}, secondary_color{}, pearlescent{}, wheel_color{}, interior_color{}, dashboard_color{};
+
+		static bool can_tires_burst = false;
+		static bool tiresmoke = false;
+		static bool turbo = false;
+		static bool xenon = false;
+
+		static int primary_color = 0; 
+		static int secondary_color = 0; 
+		static int pearlescent = 0; 
+		static int wheel_color = 0; 
+		static int interior_color = 0; 
+		static int dashboard_color = 0;
+
+		static int plate_type = -1;
+		static int wheel_type = -1;
+
 		static Hash veh_model_hash = 0;
 		static bool is_bike = false;
-		static int wheel_type = -1;
 
 		if (self::veh == 0)
 		{
@@ -53,8 +67,10 @@ namespace big
 				tiresmoke = VEHICLE::IS_TOGGLE_MOD_ON(player_vehicle, MOD_TYRE_SMOKE);
 				turbo = VEHICLE::IS_TOGGLE_MOD_ON(player_vehicle, MOD_TURBO);
 				xenon = VEHICLE::IS_TOGGLE_MOD_ON(player_vehicle, MOD_XENON_LIGHTS);
-				veh_model_hash = g_local_player->m_vehicle->m_model_info->m_model_hash;
+				plate_type = VEHICLE::GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(player_vehicle);
 				wheel_type = VEHICLE::GET_VEHICLE_WHEEL_TYPE(player_vehicle);
+
+				veh_model_hash = g_local_player->m_vehicle->m_model_info->m_model_hash;
 				is_bike = VEHICLE::IS_THIS_MODEL_A_BIKE(veh_model_hash) || VEHICLE::IS_THIS_MODEL_A_BICYCLE(veh_model_hash);
 
 				VEHICLE::GET_VEHICLE_COLOURS(player_vehicle, &primary_color, &secondary_color);
@@ -170,6 +186,31 @@ namespace big
 			g_fiber_pool->queue_job([] {
 				vehicle::set_plate(self::veh, plate);
 			});
+		}
+
+		ImGui::SetNextItemWidth(200);
+		if (ImGui::BeginCombo("Plate Style", vehicle_plate_types[plate_type].name))
+		{
+			for (int i = 0; i < PLATE_TYPE_SIZE; i++)
+			{
+				auto item = vehicle_plate_types[i];
+
+				if (ImGui::Selectable(item.name, (int)item.type == plate_type))
+				{
+					if (plate_type != item.type)
+					{
+						plate_type = item.type;
+						VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(player_vehicle, plate_type);
+					}
+				}
+
+				if (item.type == plate_type)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
 		}
 
 
