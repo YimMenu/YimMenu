@@ -19,6 +19,12 @@ namespace big
 		static std::map<std::string, std::vector<int>> front_wheel_map;
 		static std::map<std::string, std::vector<int>> rear_wheel_map;
 
+		static int primary_color_rgb[3] = { 255, 255, 255 };
+		static int secondary_color_rgb[3] = { 255, 255, 255 };
+		static int tire_smoke_color_rgb[3] = { 255, 255, 255 };
+		static int neon_light_color_rgb[3] = { 255, 255, 255 };
+
+
 		static int selected_slot = -1;
 		static int front_wheel_mod = -1;
 		static int rear_wheel_mod = -1;
@@ -83,6 +89,11 @@ namespace big
 				neon_right = VEHICLE::IS_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_RIGHT);
 				neon_front = VEHICLE::IS_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_FRONT);
 				neon_back = VEHICLE::IS_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_BACK);
+
+				VEHICLE::GET_VEHICLE_CUSTOM_PRIMARY_COLOUR(player_vehicle, &primary_color_rgb[0], &primary_color_rgb[1], &primary_color_rgb[2]);
+				VEHICLE::GET_VEHICLE_CUSTOM_SECONDARY_COLOUR(player_vehicle, &secondary_color_rgb[0], &secondary_color_rgb[1], &secondary_color_rgb[2]);
+				VEHICLE::GET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, &tire_smoke_color_rgb[0], &tire_smoke_color_rgb[1], &tire_smoke_color_rgb[2]);
+				VEHICLE::GET_VEHICLE_NEON_LIGHTS_COLOUR_(player_vehicle, &neon_light_color_rgb[0], &neon_light_color_rgb[1], &neon_light_color_rgb[2]);
 
 				VEHICLE::GET_VEHICLE_COLOURS(player_vehicle, &primary_color, &secondary_color);
 				VEHICLE::GET_VEHICLE_EXTRA_COLOURS(player_vehicle, &pearlescent, &wheel_color);
@@ -194,23 +205,17 @@ namespace big
 
 		if (ImGui::Checkbox("Bulletproof Tires", &can_tires_burst))
 		{
-			g_fiber_pool->queue_job([] {
-				VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(player_vehicle, !can_tires_burst);
-			});
+			VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(player_vehicle, !can_tires_burst);
 		}
 		ImGui::SameLine();
 		if (ImGui::Checkbox("Turbo", &turbo))
 		{
-			g_fiber_pool->queue_job([] {
-				VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TURBO, turbo);
-			});
+			VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TURBO, turbo);
 		}
 		ImGui::SameLine();
 		if (ImGui::Checkbox("Tiresmoke", &tiresmoke))
 		{
-			g_fiber_pool->queue_job([] {
-				VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TYRE_SMOKE, tiresmoke);
-			});
+			VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TYRE_SMOKE, tiresmoke);
 		}
 
 		ImGui::Separator();
@@ -320,37 +325,27 @@ namespace big
 
 		if (ImGui::Checkbox("Headlight##headlight_en", &xenon))
 		{
-			g_fiber_pool->queue_job([] {
-				VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_XENON_LIGHTS, xenon);
-			});
+			VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_XENON_LIGHTS, xenon);
 		}
 		ImGui::SameLine();
 		if (ImGui::Checkbox("Left", &neon_left))
 		{
-			g_fiber_pool->queue_job([] {
-				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_LEFT, neon_left);
-			});
+			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_LEFT, neon_left);
 		}
 		ImGui::SameLine();
 		if (ImGui::Checkbox("Right", &neon_right))
 		{
-			g_fiber_pool->queue_job([] {
-				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_RIGHT, neon_right);
-			});
+			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_RIGHT, neon_right);
 		}
 		ImGui::SameLine();
 		if (ImGui::Checkbox("Front", &neon_front))
 		{
-			g_fiber_pool->queue_job([] {
-				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_FRONT, neon_front);
-			});
+			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_FRONT, neon_front);
 		}
 		ImGui::SameLine();
 		if (ImGui::Checkbox("Back", &neon_back))
 		{
-			g_fiber_pool->queue_job([] {
-				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_BACK, neon_back);
-			});
+			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_BACK, neon_back);
 		}
 		ImGui::SameLine();
 		components::button("Check All##neon_check_all", [] {
@@ -374,32 +369,19 @@ namespace big
 
 
 		static int color_to_change = 0;
-		static int custom_color_need_update = 1;
 		static int color_type = 8;
 
 		ImGui::BeginGroup();
 
-		if (ImGui::RadioButton("Primary", &color_to_change, 0))
-		{
-			custom_color_need_update = 1;
-		}
-		if (ImGui::RadioButton("Secondary", &color_to_change, 1))
-		{
-			custom_color_need_update = 1;
-		}
+		ImGui::RadioButton("Primary", &color_to_change, 0);
+		ImGui::RadioButton("Secondary", &color_to_change, 1);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		if (ImGui::RadioButton("Tire Smake", &color_to_change, 2))
-		{
-			custom_color_need_update = 1;
-		}
-		if (ImGui::RadioButton("Neon", &color_to_change, 3))
-		{
-			custom_color_need_update = 1;
-		}
+		ImGui::RadioButton("Tire Smake", &color_to_change, 2);
+		ImGui::RadioButton("Neon", &color_to_change, 3);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
@@ -409,10 +391,7 @@ namespace big
 		{
 			ImGui::BeginDisabled();
 		}
-		if (ImGui::RadioButton("Headlight##headlight_col", &color_to_change, 4))
-		{
-			custom_color_need_update = 1;
-		}
+		ImGui::RadioButton("Headlight##headlight_col", &color_to_change, 4);
 		if (!xenon)
 		{
 			ImGui::EndDisabled();
@@ -429,7 +408,6 @@ namespace big
 		if (color_to_change == 4 && !xenon)
 		{
 			color_to_change = 0;
-			custom_color_need_update = 1;
 			color_type = 8;
 		}
 
@@ -447,7 +425,6 @@ namespace big
 				if (ImGui::Selectable("Custom", color_type == 8, ImGuiSelectableFlags_SelectOnClick))
 				{
 					color_type = 8;
-					custom_color_need_update = 1;
 				}
 				if (ImGui::Selectable("Chrome", color_type == 0))
 				{
@@ -500,36 +477,24 @@ namespace big
 			// custom color
 
 			static float color[3] = { 1, 1, 1 };
+			auto color_rgb = primary_color_rgb;
 
-			if (custom_color_need_update == 1)
+			if (color_to_change == 1)
 			{
-				g_fiber_pool->queue_job([] {
-					int color_get[3];
-
-					if (color_to_change == 0)
-					{
-						VEHICLE::GET_VEHICLE_CUSTOM_PRIMARY_COLOUR(player_vehicle, &color_get[0], &color_get[1], &color_get[2]);
-					}
-					else if (color_to_change == 1)
-					{
-						VEHICLE::GET_VEHICLE_CUSTOM_SECONDARY_COLOUR(player_vehicle, &color_get[0], &color_get[1], &color_get[2]);
-					}
-					else if (color_to_change == 2)
-					{
-						VEHICLE::GET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, &color_get[0], &color_get[1], &color_get[2]);
-					}
-					else if (color_to_change == 3)
-					{
-						VEHICLE::GET_VEHICLE_NEON_LIGHTS_COLOUR_(player_vehicle, &color_get[0], &color_get[1], &color_get[2]);
-					}
-
-					color[0] = (float)color_get[0] / 255;
-					color[1] = (float)color_get[1] / 255;
-					color[2] = (float)color_get[2] / 255;
-				});
-
-				custom_color_need_update = 0;
+				color_rgb = secondary_color_rgb;
 			}
+			else if (color_to_change == 2)
+			{
+				color_rgb = tire_smoke_color_rgb;
+			}
+			else if (color_to_change == 3)
+			{
+				color_rgb = neon_light_color_rgb;
+			}
+
+			color[0] = (float)color_rgb[0] / 255;
+			color[1] = (float)color_rgb[1] / 255;
+			color[2] = (float)color_rgb[2] / 255;
 
 			if (color_to_change == 2)
 			{
@@ -539,13 +504,10 @@ namespace big
 					{
 						if (ImGui::Selectable(name.c_str(), false))
 						{
-							color[0] = (float)rgb[0] / 255;
-							color[1] = (float)rgb[1] / 255;
-							color[2] = (float)rgb[2] / 255;
-
-							g_fiber_pool->queue_job([] {
-								VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, (int)(color[0] * 255), (int)(color[1] * 255), (int)(color[2] * 255));
-							});
+							VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, rgb[0], rgb[1], rgb[2]);
+							color_rgb[0] = rgb[0];
+							color_rgb[1] = rgb[1];
+							color_rgb[2] = rgb[2];
 						}
 
 					}
@@ -561,13 +523,10 @@ namespace big
 					{
 						if (ImGui::Selectable(name.c_str(), false))
 						{
-							color[0] = (float)rgb[0] / 255;
-							color[1] = (float)rgb[1] / 255;
-							color[2] = (float)rgb[2] / 255;
-
-							g_fiber_pool->queue_job([] {
-								VEHICLE::SET_VEHICLE_NEON_LIGHTS_COLOUR_(player_vehicle, (int)(color[0] * 255), (int)(color[1] * 255), (int)(color[2] * 255));
-							});
+							VEHICLE::SET_VEHICLE_NEON_LIGHTS_COLOUR_(player_vehicle, rgb[0], rgb[1], rgb[2]);
+							color_rgb[0] = rgb[0];
+							color_rgb[1] = rgb[1];
+							color_rgb[2] = rgb[2];
 						}
 					}
 
@@ -579,23 +538,25 @@ namespace big
 			ImGui::SetNextItemWidth(212);
 			if (ImGui::ColorPicker3("Custom VehColor", color, ImGuiColorEditFlags_NoAlpha | ImGuiColorEditFlags_NoDragDrop | ImGuiColorEditFlags_NoOptions | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_DisplayHex))
 			{
-				g_fiber_pool->queue_job([] {
-					switch (color_to_change)
-					{
-					case 0:
-						VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(player_vehicle, (int)(color[0] * 255), (int)(color[1] * 255), (int)(color[2] * 255));
-						break;
-					case 1:
-						VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(player_vehicle, (int)(color[0] * 255), (int)(color[1] * 255), (int)(color[2] * 255));
-						break;
-					case 2:
-						VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, (int)(color[0] * 255), (int)(color[1] * 255), (int)(color[2] * 255));
-						break;
-					case 3:
-						VEHICLE::SET_VEHICLE_NEON_LIGHTS_COLOUR_(player_vehicle, (int)(color[0] * 255), (int)(color[1] * 255), (int)(color[2] * 255));
-						break;
-					}
-				});
+				color_rgb[0] = (int)(color[0] * 255);
+				color_rgb[1] = (int)(color[1] * 255);
+				color_rgb[2] = (int)(color[2] * 255);
+
+				switch (color_to_change)
+				{
+				case 0:
+					VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(player_vehicle, color_rgb[0], color_rgb[1], color_rgb[2]);
+					break;
+				case 1:
+					VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(player_vehicle, color_rgb[0], color_rgb[1], color_rgb[2]);
+					break;
+				case 2:
+					VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, color_rgb[0], color_rgb[1], color_rgb[2]);
+					break;
+				case 3:
+					VEHICLE::SET_VEHICLE_NEON_LIGHTS_COLOUR_(player_vehicle, color_rgb[0], color_rgb[1], color_rgb[2]);
+					break;
+				}
 			}
 		}
 		else
@@ -645,9 +606,7 @@ namespace big
 							secondary_color = COLOR_CHROME;
 						}
 
-						g_fiber_pool->queue_job([] {
-							VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
-						});
+						VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
 					}
 					break;
 				}
@@ -668,9 +627,7 @@ namespace big
 								secondary_color = color;
 							}
 
-							g_fiber_pool->queue_job([] {
-								VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
-							});
+							VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
 						}
 
 					}
@@ -693,9 +650,7 @@ namespace big
 								secondary_color = color;
 							}
 
-							g_fiber_pool->queue_job([] {
-								VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
-							});
+							VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
 						}
 
 					}
@@ -718,9 +673,7 @@ namespace big
 								secondary_color = color;
 							}
 
-							g_fiber_pool->queue_job([] {
-								VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
-							});
+							VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
 						}
 
 					}
@@ -735,9 +688,7 @@ namespace big
 							selected_color = color;
 							pearlescent = color;
 
-							g_fiber_pool->queue_job([] {
-								VEHICLE::SET_VEHICLE_EXTRA_COLOURS(player_vehicle, pearlescent, wheel_color);
-							});
+							VEHICLE::SET_VEHICLE_EXTRA_COLOURS(player_vehicle, pearlescent, wheel_color);
 						}
 
 					}
@@ -752,9 +703,7 @@ namespace big
 							selected_color = color;
 							wheel_color = color;
 
-							g_fiber_pool->queue_job([] {
-								VEHICLE::SET_VEHICLE_EXTRA_COLOURS(player_vehicle, pearlescent, wheel_color);
-							});
+							VEHICLE::SET_VEHICLE_EXTRA_COLOURS(player_vehicle, pearlescent, wheel_color);
 						}
 
 					}
@@ -769,9 +718,7 @@ namespace big
 							selected_color = color;
 							interior_color = color;
 
-							g_fiber_pool->queue_job([] {
-								VEHICLE::SET_VEHICLE_INTERIOR_COLOR_(player_vehicle, interior_color);
-							});
+							VEHICLE::SET_VEHICLE_INTERIOR_COLOR_(player_vehicle, interior_color);
 						}
 
 					}
@@ -786,9 +733,7 @@ namespace big
 							selected_color = color;
 							dashboard_color = color;
 
-							g_fiber_pool->queue_job([] {
-								VEHICLE::SET_VEHICLE_DASHBOARD_COLOR_(player_vehicle, dashboard_color);
-							});
+							VEHICLE::SET_VEHICLE_DASHBOARD_COLOR_(player_vehicle, dashboard_color);
 						}
 
 					}
@@ -803,9 +748,7 @@ namespace big
 							selected_color = color;
 							headlight_color = color;
 
-							g_fiber_pool->queue_job([] {
-								VEHICLE::SET_VEHICLE_XENON_LIGHTS_COLOR_(player_vehicle, headlight_color);
-							});
+							VEHICLE::SET_VEHICLE_XENON_LIGHTS_COLOR_(player_vehicle, headlight_color);
 						}
 
 					}
