@@ -53,40 +53,42 @@ namespace big
 						display_name.find(lower_search) != std::string::npos ||
 						display_manufacturer.find(lower_search) != std::string::npos
 					) {
-						//ImGui::PushID(item.hash);
+						ImGui::PushID(item.hash);
 						components::selectable(item.display_name, false, [item] {
 
-							float y_offset = 0;
+							g_fiber_pool->queue_job([&item] {
+								float y_offset = 0;
 
-							if (self::veh != 0)
-							{
-								y_offset = 10.f;
-							}
-							else if (!g->spawn.spawn_inside)
-							{
-								y_offset = 5.f;
-							}
+								if (self::veh != 0)
+								{
+									y_offset = 10.f;
+								}
+								else if (!g->spawn.spawn_inside)
+								{
+									y_offset = 5.f;
+								}
 
-							Vector3 spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, y_offset, 0.f);
-							float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
+								Vector3 spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, y_offset, 0.f);
+								float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
-							const Vehicle veh = vehicle::spawn(item.hash, spawn_location, spawn_heading);
+								const Vehicle veh = vehicle::spawn(item.hash, spawn_location, spawn_heading);
 
-							if (g->spawn.spawn_inside)
-							{
-								vehicle::telport_into_veh(veh);
-							}
+								if (g->spawn.spawn_inside)
+								{
+									vehicle::telport_into_veh(veh);
+								}
 
-							if (g->spawn.spawn_maxed)
-							{
-								vehicle::max_vehicle(veh);
-							}
+								if (g->spawn.spawn_maxed)
+								{
+									vehicle::max_vehicle(veh);
+								}
 
-							vehicle::set_plate(veh, plate);
+								vehicle::set_plate(veh, plate);
+							});
 
 							g_vehicle_preview_service->stop_preview();
 						});
-						//ImGui::PopID();
+						ImGui::PopID();
 
 						if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
 						{

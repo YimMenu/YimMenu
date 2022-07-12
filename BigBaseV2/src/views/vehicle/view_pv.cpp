@@ -52,7 +52,7 @@ namespace big
 		});
 
 		g_mobile_service->refresh_personal_vehicles();
-		if (ImGui::ListBoxHeader("##personal_veh_list", { 300, static_cast<float>(*g_pointers->m_resolution_y - 184 - 38 * num_of_rows) }))
+		if (ImGui::ListBoxHeader("###personal_veh_list", { 300, static_cast<float>(*g_pointers->m_resolution_y - 184 - 38 * num_of_rows) }))
 		{
 
 			if (g_mobile_service->personal_vehicles().empty())
@@ -77,8 +77,10 @@ namespace big
 						display_name.find(lower_search) != std::string::npos ||
 						display_manufacturer.find(lower_search) != std::string::npos
 					) {
-						ImGui::PushID(personal_veh->get_id());
+						ImGui::PushID('v' << 24 & personal_veh->get_id());
 						if (ImGui::Selectable(label.c_str(), false)) {
+
+							LOG(WARNING) << g->clone_pv.preview_vehicle;
 
 							if (g->clone_pv.spawn_clone)
 							{
@@ -130,6 +132,8 @@ namespace big
 									personal_veh->summon();
 								});
 							}
+
+							g_vehicle_preview_service->stop_preview();
 						}
 						ImGui::PopID();
 

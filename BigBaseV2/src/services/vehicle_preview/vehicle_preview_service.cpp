@@ -188,7 +188,7 @@ namespace big
 				continue;
 			}
 
-			m_hash_idx_map[item_json["SignedHash"]] = (int)m_vehicle_preview_item_arr.size();
+			m_hash_idx_map[item_json["Hash"]] = (int)m_vehicle_preview_item_arr.size();
 			m_vehicle_preview_item_arr.push_back(vehicle_preview_item(item_json));
 		}
 	}
