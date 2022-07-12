@@ -173,7 +173,7 @@ namespace big
 			{
 				g_fiber_pool->queue_job([] {
 					VEHICLE::SET_VEHICLE_WINDOW_TINT(player_vehicle, windowtint);
-					});
+				});
 			}
 
 			ImGui::SetNextItemWidth(200);
@@ -279,12 +279,11 @@ namespace big
 		ImGui::SameLine();
 		if (ImGui::Button("Remove Custom Color"))
 		{
-			g_fiber_pool->queue_job([]
-				{
-					VEHICLE::CLEAR_VEHICLE_CUSTOM_PRIMARY_COLOUR(player_vehicle);
-					VEHICLE::CLEAR_VEHICLE_CUSTOM_SECONDARY_COLOUR(player_vehicle);
-					VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
-				});
+			g_fiber_pool->queue_job([] {
+				VEHICLE::CLEAR_VEHICLE_CUSTOM_PRIMARY_COLOUR(player_vehicle);
+				VEHICLE::CLEAR_VEHICLE_CUSTOM_SECONDARY_COLOUR(player_vehicle);
+				VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
+			});
 		}
 
 		ImGui::Separator();
@@ -354,21 +353,20 @@ namespace big
 			ImGui::SetNextItemWidth(212);
 			if (ImGui::ColorPicker3("Custom VehColor", color, ImGuiColorEditFlags_NoAlpha | ImGuiColorEditFlags_NoDragDrop | ImGuiColorEditFlags_NoOptions | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_DisplayHex))
 			{
-				g_fiber_pool->queue_job([]
+				g_fiber_pool->queue_job([] {
+					switch (color_to_change)
 					{
-						switch (color_to_change)
-						{
-						case 0:
-							VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(player_vehicle, (int)(color[0] * 255), (int)(color[1] * 255), (int)(color[2] * 255));
-							break;
-						case 1:
-							VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(player_vehicle, (int)(color[0] * 255), (int)(color[1] * 255), (int)(color[2] * 255));
-							break;
-						case 2:
-							VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, (int)(color[0] * 255), (int)(color[1] * 255), (int)(color[2] * 255));
-							break;
-						}
-					});
+					case 0:
+						VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(player_vehicle, (int)(color[0] * 255), (int)(color[1] * 255), (int)(color[2] * 255));
+						break;
+					case 1:
+						VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(player_vehicle, (int)(color[0] * 255), (int)(color[1] * 255), (int)(color[2] * 255));
+						break;
+					case 2:
+						VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, (int)(color[0] * 255), (int)(color[1] * 255), (int)(color[2] * 255));
+						break;
+					}
+				});
 			}
 
 			if (color_btn_clicked == 1)

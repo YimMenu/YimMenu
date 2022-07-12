@@ -92,7 +92,7 @@ namespace big
 									{
 										y_offset = 10.f;
 									}
-									else if (!g->spawn.spawn_inside)
+									else if (!g->clone_pv.spawn_inside)
 									{
 										y_offset = 5.f;
 									}
