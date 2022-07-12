@@ -2,57 +2,61 @@
 #include "core/enums.hpp"
 #include "util/math.hpp"
 #include "util/vehicle.hpp"
+#include "gui.hpp"
 
 namespace big
 {
-	static const int controls[] = {
-		(int)ControllerInputs::INPUT_WEAPON_WHEEL_NEXT,
-		(int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV,
-		(int)ControllerInputs::INPUT_ATTACK
-	};
+	static auto last_time = std::chrono::steady_clock::now();
 
 	void looped::weapons_vehicle_gun()
 	{
-		bool bVehicleGun = g->weapons.custom_weapon == CustomWeapon::VEHICLE_GUN;
+		const bool is_vehicle_gun_selected = g->weapons.custom_weapon == CustomWeapon::VEHICLE_GUN;
 
-		if (bVehicleGun)
+		const auto time_now = std::chrono::steady_clock::now();
+
+		const auto elapsed_time_in_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_now - last_time).count();
+
+		if (is_vehicle_gun_selected &&
+			!g_gui.m_opened &&
+			elapsed_time_in_ms >= 100 &&
+			PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK))
 		{
+			Vector3 location = self::pos;
 
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+			constexpr int rotation_order = 2;
+
+			Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(rotation_order);
+			float pitch = math::deg_to_rad(rot.x); // vertical
+			//float roll = rot.y;
+			float yaw = math::deg_to_rad(rot.z + 90); // horizontal
+
+			float dist = 10.f;
+			location.x += dist * cos(pitch) * cos(yaw);
+			location.y += dist * sin(yaw) * cos(pitch);
+			location.z += dist * sin(pitch);
+			Vehicle veh = vehicle::spawn(
+				rage::joaat((const char*)g->weapons.vehicle_gun_model),
+				location,
+				ENTITY::GET_ENTITY_HEADING(self::ped)
+			);
+
+			dist = 150.f;
+			Vector3 velocity
 			{
-				PLAYER::DISABLE_PLAYER_FIRING(self::id, true);
-				for (int control : controls)
-					PAD::DISABLE_CONTROL_ACTION(0, control, true);
+				dist * cos(pitch) * cos(yaw),
+				dist * sin(yaw) * cos(pitch),
+				dist * sin(pitch)
+			};
 
-				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
-				{
-					Vector3 location = self::pos;
+			ENTITY::SET_ENTITY_ROTATION(veh, rot.x, rot.y, rot.z, rotation_order, 1);
+			ENTITY::SET_ENTITY_VELOCITY(veh, velocity.x, velocity.y, velocity.z);
 
-					Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
-					float pitch = math::deg_to_rad(rot.x); // vertical
-					//float roll = rot.y;
-					float yaw = math::deg_to_rad(rot.z + 90); // horizontal
+			// flagging the veh as no longer needed so that the game can remove it
+			// when reaching the maximum vehicle limit,
+			// allowing the vehicle gun to keep working
+			ENTITY::SET_VEHICLE_AS_NO_LONGER_NEEDED(&veh);
 
-					float dist = 10.f;
-					location.x += dist * cos(pitch) * cos(yaw);
-					location.y += dist * sin(yaw) * cos(pitch);
-					location.z += dist * sin(pitch);
-					Vehicle veh = vehicle::spawn(
-						(const char*)g->weapons.vehicle_gun_model,
-						location,
-						ENTITY::GET_ENTITY_HEADING(self::ped)
-					);
-
-					Vector3 velocity;
-					dist = 150.f;
-					velocity.x = dist * cos(pitch) * cos(yaw);
-					velocity.y = dist * sin(yaw) * cos(pitch);
-					velocity.z = dist * sin(pitch);
-
-					ENTITY::SET_ENTITY_ROTATION(veh, rot.x, rot.y, rot.z, 2, 1);
-					ENTITY::SET_ENTITY_VELOCITY(veh, velocity.x, velocity.y, velocity.z);
-				}
-			}
+			last_time = time_now;
 		}
 	}
 }

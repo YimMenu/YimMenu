@@ -1,11 +1,6 @@
 #pragma once
-#include "imgui.h"
-#include "natives.hpp"
-#include "pointers.hpp"
-#include "util/animator.hpp"
 #include "gui/components/components.hpp"
-#include "script.hpp"
-#include "services/player_service.hpp"
+#include "util/animator.hpp"
 #include "views/esp/view_esp.hpp"
 
 
@@ -20,6 +15,7 @@ namespace big
 		static void active_view();
 		static void debug();
 		static void esp_settings();
+		static void context_menu_settings();
 		static void gui_settings();
 		static void handling_current_profile();
 		static void handling_my_profiles();
@@ -37,9 +33,11 @@ namespace big
 		static void session();
 		static void settings();
 		static void spawn();
+		static void pv();
 		static void spoofing();
 		static void teleport();
 		static void vehicle();
+		static void lsc();
 		static void view_player();
 		static void players();
 		static void weapons();

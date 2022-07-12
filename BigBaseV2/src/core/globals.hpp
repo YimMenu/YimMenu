@@ -1,8 +1,10 @@
 #pragma once
 #include "CAmmoInfo.hpp"
+#include "CWeaponInfo.hpp"
 #include "enums.hpp"
 #include "file_manager.hpp"
 #include "imgui.h"
+#include <bitset>
 
 namespace big
 {
@@ -57,6 +59,7 @@ namespace big
 				pair sound_spam{};
 				pair spectate{};
 				pair transaction_error{};
+				pair tse_freeze{};
 				pair vehicle_kick{};
 			} script_event_handler{};
 
@@ -64,6 +67,8 @@ namespace big
 			pair gta_thread_start{};
 
 			pair net_array_error{};
+
+			pair network_player_mgr_init{};
 			pair network_player_mgr_shutdown{};
 
 			struct
@@ -83,7 +88,6 @@ namespace big
 
 		struct player {
 			int character_slot = 1;
-			bool player_never_wanted = false;
 			int set_level = 130;
 			bool spectating = false;
 		};
@@ -138,6 +142,16 @@ namespace big
 			bool off_radar = false;
 			bool super_run = false;
 			int wanted_level = 0;
+
+			bool proof_bullet = false;
+			bool proof_fire = false;
+			bool proof_collision = false;
+			bool proof_melee = false;
+			bool proof_explosion = false;
+			bool proof_steam = false;
+			bool proof_drown = false;
+			bool proof_water = false;
+			uint32_t proof_mask = 0;
 		};
 
 		struct session
@@ -167,6 +181,17 @@ namespace big
 			bool preview_vehicle = false;
 			bool spawn_inside = false;
 			bool spawn_maxed = false;
+			std::string plate = "";
+		};
+
+		struct clone_pv
+		{
+			bool preview_vehicle = false;
+			bool spawn_inside = false;
+			bool spawn_clone = false;
+			bool spawn_maxed = false;
+			bool clone_plate = false;
+			std::string plate = "";
 		};
 
 		struct spoofing
@@ -211,10 +236,10 @@ namespace big
 			bool drive_on_water = false;
 			bool god_mode = false;
 			bool horn_boost = false;
+			bool vehicle_jump = false;
 			bool instant_brake = false;
 			bool is_targetable = true;
-			bool ls_customs = false; // don't save this to disk
-			bool pv_teleport_into = false;
+			bool ls_customs = false; // don't save this to dis
 			bool seatbelt = false;
 			bool turn_signals = false;
 			int auto_drive_speed = 1;
@@ -230,6 +255,7 @@ namespace big
 			{
 				bool toggle = false;
 				eAmmoSpecialType type = eAmmoSpecialType::None;
+				eImpactType impactType = eImpactType::DEFAULT_BULLETS;
 			} ammo_special;
 
 			CustomWeapon custom_weapon = CustomWeapon::NONE;
@@ -257,6 +283,22 @@ namespace big
 			ImFont* font_small = nullptr;
 
 			bool switched_view = true;
+		};
+
+		struct context_menu
+		{
+			bool enabled = true;
+
+			uint8_t allowed_entity_types =
+				static_cast<uint8_t>(ContextEntityType::PED) |
+				static_cast<uint8_t>(ContextEntityType::PLAYER) |
+				static_cast<uint8_t>(ContextEntityType::VEHICLE) |
+				static_cast<uint8_t>(ContextEntityType::OBJECT);
+
+			ImU32 selected_option_color = 4278255360;
+
+			bool bounding_box_enabled = true;
+			ImU32 bounding_box_color = 4278255360;
 		};
 
 		struct esp
@@ -298,10 +340,12 @@ namespace big
 		session session{};
 		settings settings{};
 		spawn spawn{};
+		clone_pv clone_pv{};
 		spoofing spoofing{};
 		vehicle vehicle{};
 		weapons weapons{};
 		window window{};
+		context_menu context_menu{};
 		esp esp{};
 
 		menu_settings(file save_file)
@@ -327,6 +371,8 @@ namespace big
 			g->notifications.net_array_error.log = j["notifications"]["net_array_error"]["log"];
 			g->notifications.net_array_error.notify = j["notifications"]["net_array_error"]["notify"];
 
+			g->notifications.network_player_mgr_init.log = j["notifications"]["network_player_mgr_init"]["log"];
+			g->notifications.network_player_mgr_init.notify = j["notifications"]["network_player_mgr_init"]["notify"];
 			g->notifications.network_player_mgr_shutdown.log = j["notifications"]["network_player_mgr_shutdown"]["log"];
 			g->notifications.network_player_mgr_shutdown.notify = j["notifications"]["network_player_mgr_shutdown"]["notify"];
 
@@ -398,6 +444,8 @@ namespace big
 				script_handler.spectate.notify = script_handler_j["spectate"]["notify"];
 				script_handler.transaction_error.log = script_handler_j["transaction_error"]["log"];
 				script_handler.transaction_error.notify = script_handler_j["transaction_error"]["notify"];
+				script_handler.tse_freeze.log = script_handler_j["tse_freeze"]["log"];
+				script_handler.tse_freeze.notify = script_handler_j["tse_freeze"]["notify"];
 				script_handler.vehicle_kick.log = script_handler_j["vehicle_kick"]["log"];
 				script_handler.vehicle_kick.notify = script_handler_j["vehicle_kick"]["notify"];
 			}
@@ -453,12 +501,29 @@ namespace big
 			this->self.no_ragdoll = j["self"]["no_ragdoll"];
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
+			this->self.proof_bullet = j["self"]["proof_bullet"];
+			this->self.proof_fire = j["self"]["proof_fire"];
+			this->self.proof_collision = j["self"]["proof_collision"];
+			this->self.proof_melee = j["self"]["proof_melee"];
+			this->self.proof_explosion = j["self"]["proof_explosion"];
+			this->self.proof_steam = j["self"]["proof_steam"];
+			this->self.proof_drown = j["self"]["proof_drown"];
+			this->self.proof_water = j["self"]["proof_water"];
+			this->self.proof_mask = j["self"]["proof_mask"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
 
 			this->spawn.preview_vehicle = j["spawn"]["preview_vehicle"];
 			this->spawn.spawn_inside = j["spawn"]["spawn_inside"];
 			this->spawn.spawn_maxed = j["spawn"]["spawn_maxed"];
+			this->spawn.plate = j["spawn"]["plate"];
+
+			this->clone_pv.preview_vehicle = j["clone_pv"]["preview_vehicle"];
+			this->clone_pv.spawn_inside = j["clone_pv"]["spawn_inside"];
+			this->clone_pv.spawn_clone = j["clone_pv"]["spawn_clone"];
+			this->clone_pv.spawn_maxed = j["clone_pv"]["spawn_maxed"];
+			this->clone_pv.clone_plate = j["clone_pv"]["clone_plate"];
+			this->clone_pv.plate = j["clone_pv"]["plate"];
 
 			this->spoofing.spoof_ip = j["spoofing"]["spoof_ip"];
 			this->spoofing.spoof_rockstar_id = j["spoofing"]["spoof_rockstar_id"];
@@ -477,9 +542,9 @@ namespace big
 			this->vehicle.driving_style_id = j["vehicle"]["driving_style"];
 			this->vehicle.god_mode = j["vehicle"]["god_mode"];
 			this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
+			this->vehicle.vehicle_jump = j["vehicle"]["vehicle_jump"];
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
-			this->vehicle.pv_teleport_into = j["vehicle"]["pv_teleport_into"];
 			this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
 			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
 			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
@@ -512,6 +577,12 @@ namespace big
 			this->window.log = j["window"]["log"];
 			this->window.main = j["window"]["main"];
 			this->window.users = j["window"]["users"];
+
+			this->context_menu.enabled = j["context_menu"]["enabled"];
+			this->context_menu.allowed_entity_types = j["context_menu"]["allowed_entity_types"];
+			this->context_menu.selected_option_color = j["context_menu"]["selected_option_color"];
+			this->context_menu.bounding_box_enabled = j["context_menu"]["bounding_box_enabled"];
+			this->context_menu.bounding_box_color = j["context_menu"]["bounding_box_color"];
 
 			this->esp.enabled = j["esp"]["enabled"];
 			this->esp.hide_self = j["esp"]["hide_self"];
@@ -565,7 +636,8 @@ namespace big
 					"notifications", {
 						{ "gta_thread_kill", return_notify_pair(g->notifications.gta_thread_kill) },
 						{ "gta_thread_start", return_notify_pair(g->notifications.gta_thread_start) },
-						{"net_array_error", return_notify_pair(g->notifications.net_array_error)},
+						{ "net_array_error", return_notify_pair(g->notifications.net_array_error) },
+						{ "network_player_mgr_init", return_notify_pair(g->notifications.network_player_mgr_init) },
 						{ "network_player_mgr_shutdown", return_notify_pair(g->notifications.network_player_mgr_shutdown) },
 						{ "player_join", {
 								{ "above_map", g->notifications.player_join.above_map },
@@ -605,6 +677,7 @@ namespace big
 								{ "sound_spam", return_notify_pair(script_handler_notifications.sound_spam) },
 								{ "spectate", return_notify_pair(script_handler_notifications.spectate) },
 								{ "transaction_error", return_notify_pair(script_handler_notifications.transaction_error) },
+								{ "tse_freeze", return_notify_pair(script_handler_notifications.tse_freeze) },
 								{ "vehicle_kick", return_notify_pair(script_handler_notifications.vehicle_kick) }
 							}
 						},
@@ -668,7 +741,17 @@ namespace big
 						{ "never_wanted", this->self.never_wanted },
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
-						{ "super_run", this->self.super_run }
+						{ "super_run", this->self.super_run },
+
+						{ "proof_bullet", this->self.proof_bullet },
+						{ "proof_fire", this->self.proof_fire },
+						{ "proof_collision", this->self.proof_collision },
+						{ "proof_melee", this->self.proof_melee },
+						{ "proof_explosion", this->self.proof_explosion },
+						{ "proof_steam", this->self.proof_steam },
+						{ "proof_drown", this->self.proof_drown },
+						{ "proof_water", this->self.proof_water },
+						{ "proof_mask", this->self.proof_mask }
 					}
 				},
 				{
@@ -680,10 +763,21 @@ namespace big
 					}
 				},
 				{
+					"clone_pv", {
+						{ "preview_vehicle", this->clone_pv.preview_vehicle },
+						{ "spawn_inside", this->clone_pv.spawn_inside },
+						{ "spawn_clone", this->clone_pv.spawn_clone },
+						{ "spawn_maxed", this->clone_pv.spawn_maxed },
+						{ "clone_plate", this->clone_pv.clone_plate },
+						{ "plate", this->clone_pv.plate }
+					}
+				},
+				{
 					"spawn", {
 						{ "preview_vehicle", this->spawn.preview_vehicle },
 						{ "spawn_inside", this->spawn.spawn_inside },
-						{ "spawn_maxed", this->spawn.spawn_maxed}
+						{ "spawn_maxed", this->spawn.spawn_maxed},
+						{ "plate", this->spawn.plate }
 					}
 				},
 				{
@@ -711,9 +805,9 @@ namespace big
 						{ "driving_style", this->vehicle.driving_style_id },
 						{ "god_mode", this->vehicle.god_mode },
 						{ "horn_boost", this->vehicle.horn_boost },
+						{ "vehicle_jump", this->vehicle.vehicle_jump },
 						{ "instant_brake", this->vehicle.instant_brake },
 						{ "is_targetable", this->vehicle.is_targetable },
-						{ "pv_teleport_into", this->vehicle.pv_teleport_into },
 						{ "rainbow_paint", this->vehicle.rainbow_paint },
 						{ "turn_signals", this->vehicle.turn_signals },
 						{ "seatbelt", this->vehicle.seatbelt },
@@ -761,6 +855,15 @@ namespace big
 						{ "log", this->window.log },
 						{ "main", this->window.main },
 						{ "users", this->window.users }
+					}
+				},
+				{
+					"context_menu", {
+						{"enabled", this->context_menu.enabled},
+						{ "allowed_entity_types", this->context_menu.allowed_entity_types },
+						{ "selected_option_color", this->context_menu.selected_option_color },
+						{ "bounding_box_enabled", this->context_menu.bounding_box_enabled },
+						{ "bounding_box_color", this->context_menu.bounding_box_color },
 					}
 				},
 				{

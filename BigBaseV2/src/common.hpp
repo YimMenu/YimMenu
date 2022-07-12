@@ -45,6 +45,7 @@
 #include <optional>
 #include <variant>
 
+#define FMT_HEADER_ONLY
 #include <fmt/format.h>
 #include <nlohmann/json.hpp>
 
@@ -54,7 +55,7 @@
 #include "gta/natives.hpp"
 #include "CPed.hpp"
 
-#include "services/notification_service.hpp"
+#include "services/notifications/notification_service.hpp"
 
 namespace big
 {

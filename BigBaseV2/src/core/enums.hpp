@@ -13,6 +13,16 @@ namespace big
 		VEHICLE_GUN
 	};
 
+	enum class ContextEntityType : uint8_t
+	{
+		NONE = 0,
+		PED = 1 << 0,
+		PLAYER = 1 << 1,
+		VEHICLE = 1 << 2,
+		OBJECT = 1 << 3,
+		SHARED = 1 << 4
+	};
+
 	enum class eEntityType
 	{
 		UNK_0,
@@ -94,8 +104,7 @@ namespace big
 		TRANSITION_STATE_WAITING_FOR_EXTERNAL_TERMINATION_CALL,
 		TRANSITION_STATE_TERMINATE_MAINTRANSITION,
 		TRANSITION_STATE_WAIT_FOR_DIRTY_LOAD_CONFIRM,
-		TRANSITION_STATE_DLC_INTRO_BINK,
-		TRANSITION_STATE_MAX = INT_MAX
+		TRANSITION_STATE_DLC_INTRO_BINK
 	};
 
 	enum eVehicleFlags
@@ -108,6 +117,60 @@ namespace big
 		UNK1 = 1 << 10,
 		SPAWN_AT_MORS_MUTUAL = 1 << 11,
 		UNK2 = 1 << 16
+	};
+
+	enum eVehicleModType
+	{
+		VMT_SPOILER = 0,
+		VMT_BUMPER_F = 1,
+		VMT_BUMPER_R = 2,
+		VMT_SKIRT = 3,
+		VMT_EXHAUST = 4,
+		VMT_CHASSIS = 5,
+		VMT_GRILL = 6,
+		VMT_BONNET = 7,
+		VMT_WING_L = 8,
+		VMT_WING_R = 9,
+		VMT_ROOF = 10,
+		VMT_ENGINE = 11,
+		VMT_BRAKES = 12,
+		VMT_GEARBOX = 13,
+		VMT_HORN = 14,
+		VMT_SUSPENSION = 15,
+		VMT_ARMOUR = 16,
+		VMT_NITROUS = 17,
+		VMT_TURBO = 18,
+		VMT_SUBWOOFER = 19,
+		VMT_TYRE_SMOKE = 20,
+		VMT_HYDRAULICS = 21,
+		VMT_XENON_LIGHTS = 22,
+		VMT_WHEELS = 23,
+		VMT_WHEELS_REAR_OR_HYDRAULICS = 24,
+		VMT_PLTHOLDER = 25,
+		VMT_PLTVANITY = 26,
+		VMT_INTERIOR1 = 27,
+		VMT_INTERIOR2 = 28,
+		VMT_INTERIOR3 = 29,
+		VMT_INTERIOR4 = 30,
+		VMT_INTERIOR5 = 31,
+		VMT_SEATS = 32,
+		VMT_STEERING = 33,
+		VMT_KNOB = 34,
+		VMT_PLAQUE = 35,
+		VMT_ICE = 36,
+		VMT_TRUNK = 37,
+		VMT_HYDRO = 38,
+		VMT_ENGINEBAY1 = 39,
+		VMT_ENGINEBAY2 = 40,
+		VMT_ENGINEBAY3 = 41,
+		VMT_CHASSIS2 = 42,
+		VMT_CHASSIS3 = 43,
+		VMT_CHASSIS4 = 44,
+		VMT_CHASSIS5 = 45,
+		VMT_DOOR_L = 46,
+		VMT_DOOR_R = 47,
+		VMT_LIVERY_MOD = 48,
+		VMT_LIGHTBAR = 49
 	};
 
     enum class ePedTask
@@ -136,11 +199,31 @@ namespace big
 		RotateCam = 801199324,
 		SendToCutscene = 1068259786,
 		SendToIsland = -621279188,
+		SendToCayo = 1463943751,
 		SoundSpam = 1132878564,
 		Spectate = -1113591308,
 		Teleport = 603406648,
 		TransactionError = -1704141512,
-		VehicleKick = 578856274
+		VehicleKick = 578856274,
+		Unknown1 = -145306724,
+		Unknown2 = -581037897,
+		Unknown3 = 1757755807,
+		Unknown4 = 436475575,
+		Unknown5 = 990606644,
+		Unknown6 = 69874647,
+
+		SEC3 = -2113023004,
+		SEC6 = 704979198,
+		SEC7 = -1715193475,
+		SEC8 = 1258808115,
+		SEC9 = 2112408256,
+		SEC10 = 998716537,
+		SEC11 = 163598572,
+		SEC12 = -1970125962,
+		SEC13 = -1056683619,
+		Spaghettios = -393294520,
+		ForceMission2 = -1525161016,
+		SHKick = -786546101
 	};
 
 	enum class eSessionType
@@ -162,5 +245,18 @@ namespace big
 		DISABLED,
 		KMH,
 		MPH
+	};
+
+	enum class eEntityProofs : uint32_t
+	{
+		BULLET     = 1 << 4,
+		FIRE       = 1 << 5,
+		COLLISION  = 1 << 6,
+		MELEE      = 1 << 7,
+		GOD        = 1 << 8,
+		EXPLOSION  = 1 << 11,
+		STEAM      = 1 << 15,
+		DROWN      = 1 << 16,
+		WATER      = 1 << 24,
 	};
 }
