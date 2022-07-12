@@ -133,7 +133,6 @@ namespace big
 			bool clean_player = false;
 			bool force_wanted_level = false;
 			bool free_cam = false;
-			bool godmode = false;
 			bool invisibility = false;
 			bool local_visibility = true;
 			bool never_wanted = false;
@@ -143,6 +142,7 @@ namespace big
 			bool super_run = false;
 			int wanted_level = 0;
 
+			bool god_mode = false;
 			bool proof_bullet = false;
 			bool proof_fire = false;
 			bool proof_collision = false;
@@ -230,11 +230,20 @@ namespace big
 				float speed = 1;
 			};
 
+			bool god_mode = false;
+			bool proof_bullet = false;
+			bool proof_fire = false;
+			bool proof_collision = false;
+			bool proof_melee = false;
+			bool proof_explosion = false;
+			bool proof_steam = false;
+			bool proof_water = false;
+			uint32_t proof_mask = 0;
+
 			bool auto_drive_to_waypoint = false;
 			bool auto_drive_wander = false;
 			bool auto_turn_signals = false;
 			bool drive_on_water = false;
-			bool god_mode = false;
 			bool horn_boost = false;
 			bool vehicle_jump = false;
 			bool instant_brake = false;
@@ -493,8 +502,17 @@ namespace big
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
 			this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
 
+			this->self.god_mode = j["self"]["god_mode"];
+			this->self.proof_bullet = j["self"]["proof_bullet"];
+			this->self.proof_fire = j["self"]["proof_fire"];
+			this->self.proof_collision = j["self"]["proof_collision"];
+			this->self.proof_melee = j["self"]["proof_melee"];
+			this->self.proof_explosion = j["self"]["proof_explosion"];
+			this->self.proof_steam = j["self"]["proof_steam"];
+			this->self.proof_drown = j["self"]["proof_drown"];
+			this->self.proof_water = j["self"]["proof_water"];
+			this->self.proof_mask = j["self"]["proof_mask"];
 			this->self.clean_player = j["self"]["clean_player"];
-			this->self.godmode = j["self"]["godmode"];
 			this->self.invisibility = j["self"]["invisibility"];
 			this->self.local_visibility = j["self"]["local_visibility"];
 			this->self.never_wanted = j["self"]["never_wanted"];
@@ -534,13 +552,21 @@ namespace big
 			this->spoofing.rockstar_id = j["spoofing"]["rockstar_id"];
 			this->spoofing.username = j["spoofing"]["username"];
 
+			this->vehicle.god_mode = j["vehicle"]["god_mode"];
+			this->vehicle.proof_bullet = j["vehicle"]["proof_bullet"];
+			this->vehicle.proof_fire = j["vehicle"]["proof_fire"];
+			this->vehicle.proof_collision = j["vehicle"]["proof_collision"];
+			this->vehicle.proof_melee = j["vehicle"]["proof_melee"];
+			this->vehicle.proof_explosion = j["vehicle"]["proof_explosion"];
+			this->vehicle.proof_steam = j["vehicle"]["proof_steam"];
+			this->vehicle.proof_water = j["vehicle"]["proof_water"];
+			this->vehicle.proof_mask = j["vehicle"]["proof_mask"];
 			this->vehicle.auto_drive_speed = j["vehicle"]["auto_drive_speed"];
 			this->vehicle.auto_drive_to_waypoint = j["vehicle"]["auto_drive_to_waypoint"];
 			this->vehicle.auto_drive_wander = j["vehicle"]["auto_drive_wander"];
 			this->vehicle.auto_turn_signals = j["vehicle"]["auto_turn_signals"];
 			this->vehicle.drive_on_water = j["vehicle"]["drive_on_water"];
 			this->vehicle.driving_style_id = j["vehicle"]["driving_style"];
-			this->vehicle.god_mode = j["vehicle"]["god_mode"];
 			this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
 			this->vehicle.vehicle_jump = j["vehicle"]["vehicle_jump"];
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
@@ -734,8 +760,17 @@ namespace big
 				},
 				{
 					"self", {
+						{ "god_mode", this->self.god_mode },
+						{ "proof_bullet", this->self.proof_bullet },
+						{ "proof_fire", this->self.proof_fire },
+						{ "proof_collision", this->self.proof_collision },
+						{ "proof_melee", this->self.proof_melee },
+						{ "proof_explosion", this->self.proof_explosion },
+						{ "proof_steam", this->self.proof_steam },
+						{ "proof_drown", this->self.proof_drown },
+						{ "proof_water", this->self.proof_water },
+						{ "proof_mask", this->self.proof_mask },
 						{ "clean_player", this->self.clean_player },
-						{ "godmode", this->self.godmode },
 						{ "invisibility", this->self.invisibility },
 						{ "local_visibility", this->self.local_visibility },
 						{ "never_wanted", this->self.never_wanted },
@@ -797,13 +832,21 @@ namespace big
 				},
 				{
 					"vehicle", {
+						{ "god_mode", this->vehicle.god_mode },
+						{ "proof_bullet", this->vehicle.proof_bullet },
+						{ "proof_fire", this->vehicle.proof_fire },
+						{ "proof_collision", this->vehicle.proof_collision },
+						{ "proof_melee", this->vehicle.proof_melee },
+						{ "proof_explosion", this->vehicle.proof_explosion },
+						{ "proof_steam", this->vehicle.proof_steam },
+						{ "proof_water", this->vehicle.proof_water },
+						{ "proof_mask", this->vehicle.proof_mask },
 						{ "auto_drive_speed", this->vehicle.auto_drive_speed },
 						{ "auto_drive_to_waypoint", this->vehicle.auto_drive_to_waypoint },
 						{ "auto_drive_wander", this->vehicle.auto_drive_wander },
 						{ "auto_turn_signals", this->vehicle.auto_turn_signals },
 						{ "drive_on_water", this->vehicle.drive_on_water },
 						{ "driving_style", this->vehicle.driving_style_id },
-						{ "god_mode", this->vehicle.god_mode },
 						{ "horn_boost", this->vehicle.horn_boost },
 						{ "vehicle_jump", this->vehicle.vehicle_jump },
 						{ "instant_brake", this->vehicle.instant_brake },

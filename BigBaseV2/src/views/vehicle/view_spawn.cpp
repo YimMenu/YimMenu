@@ -6,7 +6,8 @@
 
 namespace big
 {
-	void view::spawn() {
+	void view::spawn()
+	{
 		ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
 
 		ImGui::Checkbox("Preview", &g->spawn.preview_vehicle);
@@ -52,12 +53,12 @@ namespace big
 						display_name.find(lower_search) != std::string::npos ||
 						display_manufacturer.find(lower_search) != std::string::npos
 					) {
-						//ImGui::PushID(item.hash);
+						ImGui::PushID(item.hash);
 						components::selectable(item.display_name, false, [item] {
 
 							float y_offset = 0;
 
-							if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, false))
+							if (self::veh != 0)
 							{
 								y_offset = 10.f;
 							}
@@ -85,7 +86,7 @@ namespace big
 
 							g_vehicle_preview_service->stop_preview();
 						});
-						//ImGui::PopID();
+						ImGui::PopID();
 
 						if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
 						{
