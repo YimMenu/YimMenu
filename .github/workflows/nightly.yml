@@ -111,7 +111,7 @@ jobs:
             Alternatively you can download the build artifacts, generate a SHA256 checksum and compare it with the below binary.
             Build artifacts ARE NOT automatically the same as release assets since release assets can be modified afterwards.
 
-            These are nightly builds of YimMenu, they are provided for testing purposes only:
+            These are nightly builds of SechsMenu, they are provided for testing purposes only:
             - Test if your build environment produces a broken BigBaseV2.dll
             - Test if source code is out of date and no longer compatible with the current version of GTA V
 
@@ -122,4 +122,4 @@ jobs:
             ${{ needs.build_nightly.outputs.full_sha }}
             ```
           files: |
-            YimMenu.dll
+            SechsMenu.dll
