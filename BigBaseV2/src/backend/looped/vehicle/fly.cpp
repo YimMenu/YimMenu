@@ -17,12 +17,10 @@ namespace big
         ENTITY::SET_ENTITY_COLLISION(vehicle, !g->vehicle.fly.no_collision, true);
 
         float locspeed = g->vehicle.fly.speed;
-        float locspeed2 = g->vehicle.fly.speed;
 
         if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_UP_ONLY))
         {
             locspeed *= 2;
-            locspeed2 *= 2;
         }
 
 
