@@ -240,7 +240,6 @@ namespace big
 			}
 			ImGui::ListBoxFooter();
 		}
-
 		if (selected_slot != -1)
 		{
 			static auto wheel_stock_mod = &front_wheel_stock_mod;
@@ -449,7 +448,15 @@ namespace big
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		ImGui::RadioButton("Tire Smake", &color_to_change, 2);
+		if (!tiresmoke)
+		{
+			ImGui::BeginDisabled();
+		}
+		ImGui::RadioButton("Tire Smoke", &color_to_change, 2);
+		if (!tiresmoke)
+		{
+			ImGui::EndDisabled();
+		}
 		ImGui::RadioButton("Neon", &color_to_change, 3);
 
 		ImGui::EndGroup();
@@ -474,8 +481,10 @@ namespace big
 			});
 		}
 
-		if (color_to_change == 4 && !xenon)
-		{
+		if (
+			(color_to_change == 4 && !xenon) ||
+			(color_to_change == 2 && !tiresmoke)
+		) {
 			color_to_change = 0;
 			color_type = 8;
 		}
