@@ -384,27 +384,37 @@ namespace big
 
 		if (ImGui::Checkbox("Headlight##headlight_en", &xenon))
 		{
-			VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_XENON_LIGHTS, xenon);
+			g_fiber_pool->queue_job([] {
+				VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_XENON_LIGHTS, xenon);
+			});
 		}
 		ImGui::SameLine();
 		if (ImGui::Checkbox("Left", &neon_left))
 		{
-			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_LEFT, neon_left);
+			g_fiber_pool->queue_job([] {
+				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_LEFT, neon_left);
+			});
 		}
 		ImGui::SameLine();
 		if (ImGui::Checkbox("Right", &neon_right))
 		{
-			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_RIGHT, neon_right);
+			g_fiber_pool->queue_job([] {
+				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_RIGHT, neon_right);
+			});
 		}
 		ImGui::SameLine();
 		if (ImGui::Checkbox("Front", &neon_front))
 		{
-			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_FRONT, neon_front);
+			g_fiber_pool->queue_job([] {
+				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_FRONT, neon_front);
+			});
 		}
 		ImGui::SameLine();
 		if (ImGui::Checkbox("Back", &neon_back))
 		{
-			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_BACK, neon_back);
+			g_fiber_pool->queue_job([] {
+				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_BACK, neon_back);
+			});
 		}
 		ImGui::SameLine();
 		components::button("Check All##neon_check_all", [] {
@@ -559,11 +569,16 @@ namespace big
 			{
 				if (ImGui::ListBoxHeader("##tire_smoke_rgb", ImVec2(200, 254)))
 				{
-					for (const auto& [name, rgb] : lsc_tire_smoke_rgb)
+					for (const auto& it : lsc_tire_smoke_rgb)
 					{
+						auto& name = it.first;
+						auto& rgb = it.second;
+
 						if (ImGui::Selectable(name.c_str(), false))
 						{
-							VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, rgb[0], rgb[1], rgb[2]);
+							g_fiber_pool->queue_job([&rgb] {
+								VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, rgb[0], rgb[1], rgb[2]);
+							});
 							color_rgb[0] = rgb[0];
 							color_rgb[1] = rgb[1];
 							color_rgb[2] = rgb[2];
@@ -578,11 +593,16 @@ namespace big
 			{
 				if (ImGui::ListBoxHeader("##neon_rgb", ImVec2(200, 254)))
 				{
-					for (const auto& [name, rgb] : lsc_neon_rgb)
+					for (const auto& it : lsc_neon_rgb)
 					{
+						auto& name = it.first;
+						auto& rgb = it.second;
+
 						if (ImGui::Selectable(name.c_str(), false))
 						{
-							VEHICLE::SET_VEHICLE_NEON_LIGHTS_COLOUR_(player_vehicle, rgb[0], rgb[1], rgb[2]);
+							g_fiber_pool->queue_job([&rgb] {
+								VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, rgb[0], rgb[1], rgb[2]);
+							});
 							color_rgb[0] = rgb[0];
 							color_rgb[1] = rgb[1];
 							color_rgb[2] = rgb[2];
@@ -601,21 +621,23 @@ namespace big
 				color_rgb[1] = (int)(color[1] * 255);
 				color_rgb[2] = (int)(color[2] * 255);
 
-				switch (color_to_change)
-				{
-				case 0:
-					VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(player_vehicle, color_rgb[0], color_rgb[1], color_rgb[2]);
-					break;
-				case 1:
-					VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(player_vehicle, color_rgb[0], color_rgb[1], color_rgb[2]);
-					break;
-				case 2:
-					VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, color_rgb[0], color_rgb[1], color_rgb[2]);
-					break;
-				case 3:
-					VEHICLE::SET_VEHICLE_NEON_LIGHTS_COLOUR_(player_vehicle, color_rgb[0], color_rgb[1], color_rgb[2]);
-					break;
-				}
+				g_fiber_pool->queue_job([&color_rgb] {
+					switch (color_to_change)
+					{
+					case 0:
+						VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(player_vehicle, color_rgb[0], color_rgb[1], color_rgb[2]);
+						break;
+					case 1:
+						VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(player_vehicle, color_rgb[0], color_rgb[1], color_rgb[2]);
+						break;
+					case 2:
+						VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, color_rgb[0], color_rgb[1], color_rgb[2]);
+						break;
+					case 3:
+						VEHICLE::SET_VEHICLE_NEON_LIGHTS_COLOUR_(player_vehicle, color_rgb[0], color_rgb[1], color_rgb[2]);
+						break;
+					}
+				});
 			}
 		}
 		else
@@ -665,7 +687,9 @@ namespace big
 							secondary_color = COLOR_CHROME;
 						}
 
-						VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
+						g_fiber_pool->queue_job([] {
+							VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
+						});
 					}
 					break;
 				}
@@ -686,7 +710,9 @@ namespace big
 								secondary_color = color;
 							}
 
-							VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
+							g_fiber_pool->queue_job([] {
+								VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
+							});
 						}
 
 					}
@@ -709,7 +735,9 @@ namespace big
 								secondary_color = color;
 							}
 
-							VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
+							g_fiber_pool->queue_job([] {
+								VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
+							});
 						}
 
 					}
@@ -732,9 +760,10 @@ namespace big
 								secondary_color = color;
 							}
 
-							VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
+							g_fiber_pool->queue_job([] {
+								VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, primary_color, secondary_color);
+							});
 						}
-
 					}
 					break;
 				}
@@ -747,9 +776,10 @@ namespace big
 							selected_color = color;
 							pearlescent = color;
 
-							VEHICLE::SET_VEHICLE_EXTRA_COLOURS(player_vehicle, pearlescent, wheel_color);
+							g_fiber_pool->queue_job([] {
+								VEHICLE::SET_VEHICLE_EXTRA_COLOURS(player_vehicle, pearlescent, wheel_color);
+							});
 						}
-
 					}
 					break;
 				}
@@ -762,9 +792,10 @@ namespace big
 							selected_color = color;
 							wheel_color = color;
 
-							VEHICLE::SET_VEHICLE_EXTRA_COLOURS(player_vehicle, pearlescent, wheel_color);
+							g_fiber_pool->queue_job([] {
+								VEHICLE::SET_VEHICLE_EXTRA_COLOURS(player_vehicle, pearlescent, wheel_color);
+							});
 						}
-
 					}
 					break;
 				}
@@ -777,9 +808,10 @@ namespace big
 							selected_color = color;
 							interior_color = color;
 
-							VEHICLE::SET_VEHICLE_INTERIOR_COLOR_(player_vehicle, interior_color);
+							g_fiber_pool->queue_job([] {
+								VEHICLE::SET_VEHICLE_INTERIOR_COLOR_(player_vehicle, interior_color);
+							});
 						}
-
 					}
 					break;
 				}
@@ -792,9 +824,10 @@ namespace big
 							selected_color = color;
 							dashboard_color = color;
 
-							VEHICLE::SET_VEHICLE_DASHBOARD_COLOR_(player_vehicle, dashboard_color);
+							g_fiber_pool->queue_job([] {
+								VEHICLE::SET_VEHICLE_DASHBOARD_COLOR_(player_vehicle, dashboard_color);
+							});
 						}
-
 					}
 					break;
 				}
@@ -807,9 +840,10 @@ namespace big
 							selected_color = color;
 							headlight_color = color;
 
-							VEHICLE::SET_VEHICLE_XENON_LIGHTS_COLOR_(player_vehicle, headlight_color);
+							g_fiber_pool->queue_job([] {
+								VEHICLE::SET_VEHICLE_XENON_LIGHTS_COLOR_(player_vehicle, headlight_color);
+							});
 						}
-
 					}
 					break;
 				}
