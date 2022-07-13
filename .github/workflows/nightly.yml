@@ -50,8 +50,8 @@ jobs:
         run: |
           msbuild /p:Configuration=Release /p:Platform=x64 BigBaseV2.sln /warnaserror
 
-      - name: Rename DLL to YimMenu.dll
-        run: ren BigBaseV2.dll YimMenu.dll
+      - name: Rename DLL to SechsMenu.dll
+        run: ren BigBaseV2.dll SechsMenu.dll
         working-directory: bin/Release/
 
       - name: Upload Artifact
@@ -59,7 +59,7 @@ jobs:
         with:
           name: binary
           path: |
-            bin/Release/YimMenu.dll
+            bin/Release/SechsMenu.dll
 
       - name: Generate Build Info
         id: var
@@ -80,7 +80,7 @@ jobs:
       - name: Echo build sha256
         id: build_sha
         run: |
-          sha256sum YimMenu.dll > sha256.checksum
+          sha256sum SechsMenu.dll > sha256.checksum
           echo "::set-output name=build_sha::$(cat sha256.checksum)"
           cat sha256.checksum
 
