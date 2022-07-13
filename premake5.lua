@@ -1,6 +1,6 @@
-workspace "BigBaseV2"
+workspace "SechsMenu"
 	architecture "x64"
-	startproject "BigBaseV2"
+	startproject "SechsMenu"
 
 	configurations
 	{
@@ -180,8 +180,8 @@ workspace "BigBaseV2"
 		DeclareMSVCOptions()
 		DeclareDebugOptions()
 
-	project "BigBaseV2"
-		location "BigBaseV2"
+	project "SechsMenu"
+		location "SechsMenu"
 		kind "SharedLib"
 		language "C++"
 
