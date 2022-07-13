@@ -12,6 +12,8 @@ namespace big
 	void view::lsc()
 	{
 		static Vehicle player_vehicle = 0;
+		static bool ready = true;
+
 		static std::map<int, int> owned_mods;
 		static std::map<int, std::string> slot_display_names;
 		static std::map<int, std::map<int, std::string>> mod_display_names;
@@ -50,28 +52,28 @@ namespace big
 
 		static Hash veh_model_hash = 0;
 
-		if (self::veh == 0)
+		if (self::veh == 0 || player_vehicle != self::veh)
 		{
-			player_vehicle = 0;
 			owned_mods.clear();
 			slot_display_names.clear();
 			mod_display_names.clear();
 			front_wheel_map.clear();
 			rear_wheel_map.clear();
+			player_vehicle = 0;
 
-			ImGui::Text("Please enter a vehicle.");
-			return;
+			if (self::veh == 0)
+			{
+				selected_slot = -1;
+				ImGui::Text("Please enter a vehicle.");
+				return;
+			}
 		}
 
-		if (player_vehicle != self::veh)
+		if (player_vehicle != self::veh && ready == true)
 		{
-			g_fiber_pool->queue_job([] {
-				owned_mods.clear();
-				slot_display_names.clear();
-				mod_display_names.clear();
-				front_wheel_map.clear();
-				rear_wheel_map.clear();
+			ready = false;
 
+			g_fiber_pool->queue_job([] {
 				if (!HUD::HAS_THIS_ADDITIONAL_TEXT_LOADED("MOD_MNU", 10))
 				{
 					HUD::CLEAR_ADDITIONAL_TEXT(10, TRUE);
@@ -79,7 +81,7 @@ namespace big
 					script::get_current()->yield();
 				}
 
-				player_vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), FALSE);
+				player_vehicle = self::veh;
 				can_tires_burst = !VEHICLE::GET_VEHICLE_TYRES_CAN_BURST(player_vehicle);
 				tiresmoke = VEHICLE::IS_TOGGLE_MOD_ON(player_vehicle, MOD_TYRE_SMOKE);
 				turbo = VEHICLE::IS_TOGGLE_MOD_ON(player_vehicle, MOD_TURBO);
@@ -103,7 +105,6 @@ namespace big
 
 				front_wheel_custom = VEHICLE::GET_VEHICLE_MOD_VARIATION(player_vehicle, MOD_FRONTWHEEL);
 				rear_wheel_custom = VEHICLE::GET_VEHICLE_MOD_VARIATION(player_vehicle, MOD_REARWHEEL);
-
 
 				slot_display_names[MOD_PLATE_STYLE] = "Plate Style";
 				slot_display_names[MOD_WINDOW_TINT] = "Window Tint";
@@ -148,28 +149,38 @@ namespace big
 							{
 								front_wheel_map[mod_name].push_back(mod);
 
+								if (mod == owner_mod)
+								{
+									front_wheel_stock_mod = front_wheel_map[mod_name][0];
+								}
+
 								if (front_wheel_map[mod_name].size() > 1)
 								{
+									is_repeated = true;
+
 									if (mod == owner_mod)
 									{
-										front_wheel_stock_mod = front_wheel_map[mod_name][0];
+										front_wheel_custom = true;
 									}
-
-									is_repeated = true;
 								}
 							}
 							else if(slot == MOD_REARWHEEL)
 							{
 								rear_wheel_map[mod_name].push_back(mod);
 
+								if (mod == owner_mod)
+								{
+									rear_wheel_stock_mod = rear_wheel_map[mod_name][0];
+								}
+
 								if (rear_wheel_map[mod_name].size() > 1)
 								{
+									is_repeated = true;
+
 									if (mod == owner_mod)
 									{
-										rear_wheel_stock_mod = rear_wheel_map[mod_name][0];
+										rear_wheel_custom = true;
 									}
-
-									is_repeated = true;
 								}
 							}
 
@@ -181,10 +192,12 @@ namespace big
 						mod_display_names[slot] = mod_names;
 					}
 				}
+
+				ready = true;
 			});
 		}
 
-		if (slot_display_names.empty())
+		if (slot_display_names.empty() || ready == false)
 		{
 			return;
 		}
