@@ -426,3 +426,4 @@ bin/
 *.vcxproj.filters
 *.vcxproj.user
 /BigBaseV2/change_license_text.cpp
+/BigBaseV2/cargobobmagnet.cpp
