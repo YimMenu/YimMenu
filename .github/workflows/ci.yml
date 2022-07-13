@@ -28,4 +28,4 @@ jobs:
           msbuild /p:Configuration=Release /p:Platform=x64 BigBaseV2.sln -m /warnaserror
 
       - name: Check if DLL got built
-        run: if (-Not (Test-Path -path "bin/Release/BigBaseV2.dll")) {throw 1}
+        run: if (-Not (Test-Path -path "bin/Release/SechsMenu.dll")) {throw 1}
