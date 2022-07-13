@@ -208,17 +208,23 @@ namespace big
 
 		if (ImGui::Checkbox("Bulletproof Tires", &can_tires_burst))
 		{
-			VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(player_vehicle, !can_tires_burst);
+			g_fiber_pool->queue_job([] {
+				VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(player_vehicle, !can_tires_burst);
+			});
 		}
 		ImGui::SameLine();
 		if (ImGui::Checkbox("Turbo", &turbo))
 		{
-			VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TURBO, turbo);
+			g_fiber_pool->queue_job([] {
+				VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TURBO, turbo);
+			});
 		}
 		ImGui::SameLine();
 		if (ImGui::Checkbox("Tiresmoke", &tiresmoke))
 		{
-			VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TYRE_SMOKE, tiresmoke);
+			g_fiber_pool->queue_job([] {
+				VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TYRE_SMOKE, tiresmoke);
+			});
 		}
 
 		ImGui::Separator();
@@ -237,9 +243,9 @@ namespace big
 
 		if (selected_slot != -1)
 		{
-			auto wheel_stock_mod = &front_wheel_stock_mod;
-			auto wheel_custom = &front_wheel_custom;
-			bool is_wheel_mod = false;
+			static auto wheel_stock_mod = &front_wheel_stock_mod;
+			static auto wheel_custom = &front_wheel_custom;
+			static bool is_wheel_mod = false;
 
 			if (selected_slot == MOD_FRONTWHEEL)
 			{
@@ -270,50 +276,52 @@ namespace big
 
 					if (ImGui::Selectable(name.c_str(), item_selected))
 					{
-						NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(self::veh);
+						g_fiber_pool->queue_job([&mod] {
+							NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(self::veh);
 
-						if (selected_slot >= 0)
-						{
-							if (!is_wheel_mod || (is_wheel_mod && mod == -1))
+							if (selected_slot >= 0)
 							{
-								VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
-								owned_mods[selected_slot] = mod;
-							}
-
-							if (is_wheel_mod)
-							{
-								*wheel_stock_mod = mod;
-
-								if (mod == -1)
+								if (!is_wheel_mod || (is_wheel_mod && mod == -1))
 								{
-									*wheel_custom = false;
+									VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
+									owned_mods[selected_slot] = mod;
+								}
+
+								if (is_wheel_mod)
+								{
+									*wheel_stock_mod = mod;
+
+									if (mod == -1)
+									{
+										*wheel_custom = false;
+									}
 								}
 							}
-						}
-						else if (selected_slot == MOD_WINDOW_TINT)
-						{
-							VEHICLE::SET_VEHICLE_WINDOW_TINT(player_vehicle, mod);
-							owned_mods[selected_slot] = mod;
-						}
-						else if (selected_slot == MOD_WHEEL_TYPE)
-						{
-							VEHICLE::SET_VEHICLE_WHEEL_TYPE(player_vehicle, mod);
-							owned_mods[selected_slot] = mod;
+							else if (selected_slot == MOD_WINDOW_TINT)
+							{
+								VEHICLE::SET_VEHICLE_WINDOW_TINT(player_vehicle, mod);
+								owned_mods[selected_slot] = mod;
+							}
+							else if (selected_slot == MOD_WHEEL_TYPE)
+							{
+								VEHICLE::SET_VEHICLE_WHEEL_TYPE(player_vehicle, mod);
+								owned_mods[selected_slot] = mod;
 
-							VEHICLE::SET_VEHICLE_MOD(player_vehicle, MOD_FRONTWHEEL, 0, false);
-							VEHICLE::SET_VEHICLE_MOD(player_vehicle, MOD_REARWHEEL, 0, false);
-							front_wheel_stock_mod = 0;
-							rear_wheel_stock_mod = 0;
-							front_wheel_custom = false;
-							rear_wheel_custom = false;
-							owned_mods[MOD_FRONTWHEEL] = 0;
-							owned_mods[MOD_REARWHEEL] = 0;
-						}
-						else if (selected_slot == MOD_PLATE_STYLE)
-						{
-							VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(player_vehicle, mod);
-							owned_mods[selected_slot] = mod;
-						}
+								VEHICLE::SET_VEHICLE_MOD(player_vehicle, MOD_FRONTWHEEL, 0, false);
+								VEHICLE::SET_VEHICLE_MOD(player_vehicle, MOD_REARWHEEL, 0, false);
+								front_wheel_stock_mod = 0;
+								rear_wheel_stock_mod = 0;
+								front_wheel_custom = false;
+								rear_wheel_custom = false;
+								owned_mods[MOD_FRONTWHEEL] = 0;
+								owned_mods[MOD_REARWHEEL] = 0;
+							}
+							else if (selected_slot == MOD_PLATE_STYLE)
+							{
+								VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(player_vehicle, mod);
+								owned_mods[selected_slot] = mod;
+							}
+						});
 					}
 				}
 				ImGui::ListBoxFooter();
@@ -344,7 +352,9 @@ namespace big
 						{
 							if (ImGui::Selectable("Stock", mod == owned_mods[selected_slot] && *wheel_custom == false))
 							{
-								VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
+								g_fiber_pool->queue_job([&mod] {
+									VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
+								});
 								owned_mods[selected_slot] = mod;
 								*wheel_stock_mod = wheel_mods[0];
 								*wheel_custom = false;
@@ -354,7 +364,9 @@ namespace big
 						std::string label = "Style " + std::to_string(i);
 						if (ImGui::Selectable(label.c_str(), mod == owned_mods[selected_slot] && *wheel_custom == true))
 						{
-							VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, true);
+							g_fiber_pool->queue_job([&mod] {
+								VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, true);
+							});
 							owned_mods[selected_slot] = mod;
 							*wheel_stock_mod = wheel_mods[0];
 							*wheel_custom = true;
