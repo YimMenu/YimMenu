@@ -142,6 +142,37 @@ namespace big
 				player_vehicle = 0;
 			});
 		}
+		ImGui::SameLine();
+		if (components::button("Max Performance"))
+		{
+			g_fiber_pool->queue_job([]
+				{
+					Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
+					VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
+					int num[6] = { 0, 11, 12, 13, 15, 16 };
+					for (int i = 0; i < 6; i++)
+					{
+						VEHICLE::SET_VEHICLE_MOD(vehicle, num[i], VEHICLE::GET_NUM_VEHICLE_MODS(vehicle, num[i]) - 1, false);
+					}
+					VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, MOD_TURBO, true);
+				});
+		}
+
+		ImGui::SameLine();
+
+		if (components::button("Downgrade Vehicle"))
+		{
+			g_fiber_pool->queue_job([]
+				{
+					Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false);
+					VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
+					for (int i = 0; i < 50; i++)
+					{
+						VEHICLE::REMOVE_VEHICLE_MOD(vehicle, i);
+					}
+				});
+		}
+
 
 		ImGui::Separator();
 		components::small_text("Mod Options");
@@ -176,7 +207,7 @@ namespace big
 
 
 		static char plate[9] = { 0 };
-		ImGui::SetNextItemWidth(200.f);
+		ImGui::SetNextItemWidth(160.f);
 		components::input_text_with_hint("##plate", "Plate Number", plate, sizeof(plate), ImGuiInputTextFlags_None, [] {
 			g->spawn.plate = plate;
 		});
@@ -188,7 +219,8 @@ namespace big
 			});
 		}
 
-		ImGui::SetNextItemWidth(200);
+		ImGui::BeginGroup();
+		ImGui::SetNextItemWidth(160);
 		if (ImGui::BeginCombo("Plate Style", vehicle_plate_types[plate_type].name))
 		{
 			for (int i = 0; i < PLATE_TYPE_SIZE; i++)
@@ -212,16 +244,14 @@ namespace big
 
 			ImGui::EndCombo();
 		}
-
-
-
+		
 
 		if (!is_bike)
 		{
 			static int windowtint{};
 			static char* windowtint_combo[] = { "None", "Black", "Dark", "Light" };
 
-			ImGui::SetNextItemWidth(200);
+			ImGui::SetNextItemWidth(160);
 			if (ImGui::Combo("Window Tint", &windowtint, windowtint_combo, IM_ARRAYSIZE(windowtint_combo)))
 			{
 				g_fiber_pool->queue_job([] {
@@ -229,7 +259,7 @@ namespace big
 				});
 			}
 
-			ImGui::SetNextItemWidth(200);
+			ImGui::SetNextItemWidth(160);
 			if (ImGui::BeginCombo("Wheel Type", vehicle_wheel_types[wheel_type].c_str()))
 			{
 				for (const auto& [type, name] : vehicle_wheel_types)
@@ -260,10 +290,20 @@ namespace big
 				ImGui::EndCombo();
 			}
 		}
+		ImGui::EndGroup();
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+		ImGui::Checkbox("Vehicle Light Intensity", &g->vehicle.headlightmul);
+		if (g->vehicle.headlightmul)
+		{
+			ImGui::SetNextItemWidth(300);
+			ImGui::SliderFloat("", &g->vehicle.headlightmul_val, 0.0f, 1000.f);
+		}
+		ImGui::EndGroup();
 
 		ImGui::Separator();
 
-		if (ImGui::ListBoxHeader("Slot", ImVec2(200, 200)))
+		if (ImGui::ListBoxHeader("Slot", ImVec2(160, 200)))
 		{
 			for (const auto& [slot, name] : slot_display_names)
 			{

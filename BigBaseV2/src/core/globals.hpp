@@ -284,13 +284,13 @@ namespace big
 			bool headlightmul = false;
 			float headlightmul_val = 1.f;
 			int auto_drive_speed = 100;
-			int driving_style_flags = 787260;
+			int driving_style_flags = 525117;
 			int driving_style_id = 1;
+			int rainbow_paint = 0;
 			bool rainbow_primary = false;
 			bool rainbow_secondary = false;
 			bool rainbow_neon = false;
-			bool rainbow_smoke = false;
-			int rainbow_paint = 0; //fade
+			bool rainbow_smoke = false;			
 			speedo_meter speedo_meter{};
 			fly fly{};
 		};
@@ -628,7 +628,11 @@ namespace big
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
 			this->vehicle.keep_vehicle_repaired = j["vehicle"]["keep_vehicle_repaired"];
-			this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
+			//this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
+			this->vehicle.rainbow_primary = j["vehicle"]["rainbow_primary"];
+			this->vehicle.rainbow_secondary = j["vehicle"]["rainbow_secondary"];
+			this->vehicle.rainbow_neon = j["vehicle"]["rainbow_neon"];
+			this->vehicle.rainbow_smoke = j["vehicle"]["rainbow_smoke"];
 			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
 			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
 
@@ -926,7 +930,11 @@ namespace big
 						{ "instant_brake", this->vehicle.instant_brake },
 						{ "is_targetable", this->vehicle.is_targetable },
 						{ "keep_vehicle_repaired", this->vehicle.keep_vehicle_repaired },
-						{ "rainbow_paint", this->vehicle.rainbow_paint },
+						//{ "rainbow_paint", this->vehicle.rainbow_paint },
+						{ "rainbow_primary", this->vehicle.rainbow_primary },
+						{ "rainbow_secondary", this->vehicle.rainbow_secondary },
+						{ "rainbow_neon", this->vehicle.rainbow_neon },
+						{ "rainbow_smoke", this->vehicle.rainbow_smoke },
 						{ "turn_signals", this->vehicle.turn_signals },
 						{ "seatbelt", this->vehicle.seatbelt },
 						{
