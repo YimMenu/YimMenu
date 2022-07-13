@@ -63,10 +63,9 @@ namespace big
 			return;
 		}
 
-		g_fiber_pool->queue_job([] {
-			if (player_vehicle != self::veh)
-			{
-				player_vehicle = 0;
+		if (player_vehicle != self::veh)
+		{
+			g_fiber_pool->queue_job([] {
 				owned_mods.clear();
 				slot_display_names.clear();
 				mod_display_names.clear();
@@ -137,6 +136,8 @@ namespace big
 						std::map<int, std::string> mod_names;
 						for (int mod = -1; mod < count; mod++)
 						{
+							bool is_repeated = false;
+
 							std::string mod_name = vehicle_helper::get_mod_name(mod, slot, count, player_vehicle);
 							if (mod_name.empty() || mod_name == "NULL")
 							{
@@ -147,28 +148,41 @@ namespace big
 							{
 								front_wheel_map[mod_name].push_back(mod);
 
-								if (front_wheel_map[mod_name].size() > 0 && mod == owner_mod)
+								if (front_wheel_map[mod_name].size() > 1)
 								{
-									front_wheel_stock_mod = front_wheel_map[mod_name][0];
+									if (mod == owner_mod)
+									{
+										front_wheel_stock_mod = front_wheel_map[mod_name][0];
+									}
+
+									is_repeated = true;
 								}
 							}
 							else if(slot == MOD_REARWHEEL)
 							{
 								rear_wheel_map[mod_name].push_back(mod);
 
-								if (rear_wheel_map[mod_name].size() > 0 && mod == owner_mod)
+								if (rear_wheel_map[mod_name].size() > 1)
 								{
-									rear_wheel_stock_mod = rear_wheel_map[mod_name][0];
+									if (mod == owner_mod)
+									{
+										rear_wheel_stock_mod = rear_wheel_map[mod_name][0];
+									}
+
+									is_repeated = true;
 								}
 							}
 
-							mod_names[mod] = mod_name;
+							if (!is_repeated)
+							{
+								mod_names[mod] = mod_name;
+							}
 						}
 						mod_display_names[slot] = mod_names;
 					}
 				}
-			}
-		});
+			});
+		}
 
 		if (slot_display_names.empty())
 		{
@@ -284,20 +298,13 @@ namespace big
 
 							if (selected_slot >= 0)
 							{
-								if (!is_wheel_mod || (is_wheel_mod && mod == -1))
-								{
-									VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
-									owned_mods[selected_slot] = mod;
-								}
+								VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
+								owned_mods[selected_slot] = mod;
 
 								if (is_wheel_mod)
 								{
 									*wheel_stock_mod = mod;
-
-									if (mod == -1)
-									{
-										*wheel_custom = false;
-									}
+									*wheel_custom = false;
 								}
 							}
 							else if (selected_slot == MOD_WINDOW_TINT)
@@ -308,16 +315,9 @@ namespace big
 							else if (selected_slot == MOD_WHEEL_TYPE)
 							{
 								VEHICLE::SET_VEHICLE_WHEEL_TYPE(player_vehicle, mod);
-								owned_mods[selected_slot] = VEHICLE::GET_VEHICLE_WHEEL_TYPE(player_vehicle);
-
 								VEHICLE::SET_VEHICLE_MOD(player_vehicle, MOD_FRONTWHEEL, 0, false);
 								VEHICLE::SET_VEHICLE_MOD(player_vehicle, MOD_REARWHEEL, 0, false);
-								front_wheel_stock_mod = VEHICLE::GET_VEHICLE_MOD(player_vehicle, MOD_FRONTWHEEL);
-								rear_wheel_stock_mod = VEHICLE::GET_VEHICLE_MOD(player_vehicle, MOD_REARWHEEL);
-								front_wheel_custom = false;
-								rear_wheel_custom = false;
-								owned_mods[MOD_FRONTWHEEL] = front_wheel_stock_mod;
-								owned_mods[MOD_REARWHEEL] = rear_wheel_stock_mod;
+								player_vehicle = 0;
 							}
 							else if (selected_slot == MOD_PLATE_STYLE)
 							{
@@ -349,7 +349,7 @@ namespace big
 
 					for (int i = 0; i < wheel_mods.size(); i++)
 					{
-						auto mod = wheel_mods[i];
+						int& mod = wheel_mods[i];
 
 						if (i == 0)
 						{
@@ -357,22 +357,18 @@ namespace big
 							{
 								g_fiber_pool->queue_job([&mod] {
 									VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
+									player_vehicle = 0;
 								});
-								owned_mods[selected_slot] = mod;
-								*wheel_stock_mod = wheel_mods[0];
-								*wheel_custom = false;
 							}
 						}
 
-						std::string label = "Style " + std::to_string(i);
+						std::string label = "Style " + std::to_string(mod);
 						if (ImGui::Selectable(label.c_str(), mod == owned_mods[selected_slot] && *wheel_custom == true))
 						{
 							g_fiber_pool->queue_job([&mod] {
 								VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, true);
+								player_vehicle = 0;
 							});
-							owned_mods[selected_slot] = mod;
-							*wheel_stock_mod = wheel_mods[0];
-							*wheel_custom = true;
 						}
 					}
 					ImGui::ListBoxFooter();
