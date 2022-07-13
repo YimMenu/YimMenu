@@ -50,10 +50,6 @@ jobs:
         run: |
           msbuild /p:Configuration=Release /p:Platform=x64 BigBaseV2.sln /warnaserror
 
-      - name: Rename DLL to SechsMenu.dll
-        run: ren BigBaseV2.dll SechsMenu.dll
-        working-directory: bin/Release/
-
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
@@ -112,7 +108,7 @@ jobs:
             Build artifacts ARE NOT automatically the same as release assets since release assets can be modified afterwards.
 
             These are nightly builds of SechsMenu, they are provided for testing purposes only:
-            - Test if your build environment produces a broken BigBaseV2.dll
+            - Test if your build environment produces a broken SechsMenu.dll
             - Test if source code is out of date and no longer compatible with the current version of GTA V
 
             If you wish to use this menu as-is you are on your own, no warranty is provided.
