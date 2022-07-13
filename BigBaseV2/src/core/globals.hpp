@@ -55,7 +55,7 @@ namespace big
 				pair remote_off_radar{};
 				pair rotate_cam{};
 				pair send_to_cutscene{};
-				pair send_to_island{};
+				pair send_to_location{};
 				pair sound_spam{};
 				pair spectate{};
 				pair transaction_error{};
@@ -110,7 +110,7 @@ namespace big
 				bool remote_off_radar = true;
 				bool rotate_cam = true;
 				bool send_to_cutscene = true;
-				bool send_to_island = true;
+				bool send_to_location = true;
 				bool sound_spam = true;
 				bool spectate = true;
 				bool transaction_error = true;
@@ -446,8 +446,8 @@ namespace big
 				script_handler.rotate_cam.notify = script_handler_j["rotate_cam"]["notify"];
 				script_handler.send_to_cutscene.log = script_handler_j["send_to_cutscene"]["log"];
 				script_handler.send_to_cutscene.notify = script_handler_j["send_to_cutscene"]["notify"];
-				script_handler.send_to_island.log = script_handler_j["send_to_island"]["log"];
-				script_handler.send_to_island.notify = script_handler_j["send_to_island"]["notify"];
+				script_handler.send_to_location.log = script_handler_j["send_to_location"]["log"];
+				script_handler.send_to_location.notify = script_handler_j["send_to_location"]["notify"];
 				script_handler.sound_spam.log = script_handler_j["sound_spam"]["log"];
 				script_handler.sound_spam.notify = script_handler_j["sound_spam"]["notify"];
 				script_handler.spectate.log = script_handler_j["spectate"]["log"];
@@ -486,7 +486,7 @@ namespace big
 				script_handler.remote_off_radar = script_handler_j["remote_off_radar"];
 				script_handler.rotate_cam = script_handler_j["rotate_cam"];
 				script_handler.send_to_cutscene = script_handler_j["send_to_cutscene"];
-				script_handler.send_to_island = script_handler_j["send_to_island"];
+				script_handler.send_to_location = script_handler_j["send_to_location"];
 				script_handler.sound_spam = script_handler_j["sound_spam"];
 				script_handler.spectate = script_handler_j["spectate"];
 				script_handler.transaction_error = script_handler_j["transaction_error"];
@@ -702,7 +702,7 @@ namespace big
 								{ "remote_off_radar", return_notify_pair(script_handler_notifications.remote_off_radar) },
 								{ "rotate_cam", return_notify_pair(script_handler_notifications.rotate_cam) },
 								{ "send_to_cutscene", return_notify_pair(script_handler_notifications.send_to_cutscene) },
-								{ "send_to_island", return_notify_pair(script_handler_notifications.send_to_island) },
+								{ "send_to_location", return_notify_pair(script_handler_notifications.send_to_location) },
 								{ "sound_spam", return_notify_pair(script_handler_notifications.sound_spam) },
 								{ "spectate", return_notify_pair(script_handler_notifications.spectate) },
 								{ "transaction_error", return_notify_pair(script_handler_notifications.transaction_error) },
@@ -736,7 +736,7 @@ namespace big
 								{ "remote_off_radar", script_handler_protections.remote_off_radar },
 								{ "rotate_cam", script_handler_protections.rotate_cam },
 								{ "send_to_cutscene", script_handler_protections.send_to_cutscene },
-								{ "send_to_island", script_handler_protections.send_to_island },
+								{ "send_to_location", script_handler_protections.send_to_location },
 								{ "sound_spam", script_handler_protections.sound_spam },
 								{ "spectate", script_handler_protections.spectate },
 								{ "transaction_error", script_handler_protections.transaction_error },
