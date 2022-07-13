@@ -122,4 +122,4 @@ jobs:
             ${{ needs.build_nightly.outputs.full_sha }}
             ```
           files: |
-            YimMenu.dll
+            SechsMenu.dll
