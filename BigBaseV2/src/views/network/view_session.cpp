@@ -20,17 +20,18 @@ namespace big
 		if (ImGui::TreeNode("Local Time"))
 		{
 			ImGui::Checkbox("Override Time", &g->session.override_time);
-			ImGui::Checkbox("Slow Motion", &g->session.slowmotion);
-			if(g->session.slowmotion)
-			{
-				ImGui::SliderFloat("Slow_Mo Speed", &g->session.slow_mo, 0.0f, 1.f);
-			}
-
+			
 			if (g->session.override_time)
 			{
 				ImGui::SliderInt("Hour", &g->session.custom_time.hour, 0, 23);
 				ImGui::SliderInt("Minute", &g->session.custom_time.minute, 0, 59);
 				ImGui::SliderInt("Second", &g->session.custom_time.second, 0, 59);
+			}
+
+			ImGui::Checkbox("Slow Motion", &g->session.slowmotion);
+			if (g->session.slowmotion)
+			{
+				ImGui::SliderFloat("Slow_Mo Speed", &g->session.slow_mo, 0.0f, 1.f);
 			}
 
 			ImGui::TreePop();
