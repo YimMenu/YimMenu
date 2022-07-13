@@ -186,12 +186,14 @@ namespace big
 		LEAVE_ONLINE = -1
 	};
 
-	enum class SpeedoMeter
+	enum class SpeedUnit : uint32_t
 	{
-		DISABLED,
-		KMH,
-		MPH
+		KMPH,
+		MIPH,
+		MPS
 	};
+
+
 
 	enum class eEntityProofs : uint32_t
 	{
