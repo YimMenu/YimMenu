@@ -10,7 +10,7 @@ namespace big::system
 		DWORD64 base_address = memory::module(nullptr).begin().as<DWORD64>();
 
 		std::string path = std::getenv("appdata");
-		path += "\\BigBaseV2\\entrypoints.txt";
+		path += "\\SechsMenu\\entrypoints.txt";
 
 		std::ofstream file;
 		file.open(path, std::ios::out |std::ios::trunc);

@@ -37,7 +37,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_hwnd = FindWindow(L"grcWindow", L"Grand Theft Auto V");
 
 				std::filesystem::path base_dir = std::getenv("appdata");
-				base_dir /= "BigBaseV2";
+				base_dir /= "SechsMenu";
 				auto file_manager_instance = std::make_unique<file_manager>(base_dir);
 
 				auto globals_instance = std::make_unique<menu_settings>(
@@ -45,15 +45,15 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					);
 
 				auto logger_instance = std::make_unique<logger>(
-					"YimMenu",
+					"SechsMenu",
 					file_manager_instance->get_project_file("./cout.log")
 					);
 
-				EnableMenuItem(GetSystemMenu(FindWindowA(NULL, "YimMenu"), 0), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+				EnableMenuItem(GetSystemMenu(FindWindowA(NULL, "SechsMenu"), 0), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 
 				try
 				{
-					LOG(INFO) << "Yim's Menu Initializing";
+					LOG(INFO) << "SechsMenu Initializing";
 					auto pointers_instance = std::make_unique<pointers>();
 					LOG(INFO) << "Pointers initialized.";
 
