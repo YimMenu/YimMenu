@@ -24,10 +24,11 @@ namespace big
 		static int tire_smoke_color_rgb[3] = { 255, 255, 255 };
 		static int neon_light_color_rgb[3] = { 255, 255, 255 };
 
-
 		static int selected_slot = -1;
-		static int front_wheel_mod = -1;
-		static int rear_wheel_mod = -1;
+		static int front_wheel_stock_mod = -1;
+		static bool front_wheel_custom = false;
+		static int rear_wheel_stock_mod = -1;
+		static bool rear_wheel_custom = false;
 
 		static bool can_tires_burst = false;
 		static bool tiresmoke = false;
@@ -101,18 +102,22 @@ namespace big
 				VEHICLE::GET_VEHICLE_DASHBOARD_COLOR_(player_vehicle, &dashboard_color);
 				headlight_color = VEHICLE::GET_VEHICLE_XENON_LIGHTS_COLOR_(player_vehicle);
 
+				front_wheel_custom = VEHICLE::GET_VEHICLE_MOD_VARIATION(player_vehicle, MOD_FRONTWHEEL);
+				rear_wheel_custom = VEHICLE::GET_VEHICLE_MOD_VARIATION(player_vehicle, MOD_REARWHEEL);
+
+
 				slot_display_names[MOD_PLATE_STYLE] = "Plate Style";
-				slot_display_names[MOD_WHEEL_TYPE] = "Wheel Type";
 				slot_display_names[MOD_WINDOW_TINT] = "Window Tint";
+				slot_display_names[MOD_WHEEL_TYPE] = "Wheel Type";
 
 				owned_mods[MOD_PLATE_STYLE] = VEHICLE::GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(player_vehicle);
 				mod_display_names[MOD_PLATE_STYLE].insert(lsc_plate_styles.begin(), lsc_plate_styles.end());
 
-				owned_mods[MOD_WHEEL_TYPE] = VEHICLE::GET_VEHICLE_WHEEL_TYPE(player_vehicle);
-				mod_display_names[MOD_WHEEL_TYPE].insert(lsc_wheel_styles.begin(), lsc_wheel_styles.end());
-
 				owned_mods[MOD_WINDOW_TINT] = VEHICLE::GET_VEHICLE_WINDOW_TINT(player_vehicle);
 				mod_display_names[MOD_WINDOW_TINT].insert(lsc_window_tint_types.begin(), lsc_window_tint_types.end());
+
+				owned_mods[MOD_WHEEL_TYPE] = VEHICLE::GET_VEHICLE_WHEEL_TYPE(player_vehicle);
+				mod_display_names[MOD_WHEEL_TYPE].insert(lsc_wheel_styles.begin(), lsc_wheel_styles.end());
 
 				for (int slot = MOD_SPOILERS; slot <= MOD_LIVERY; slot++)
 				{
@@ -144,8 +149,7 @@ namespace big
 
 								if (front_wheel_map[mod_name].size() > 0 && mod == owner_mod)
 								{
-									owned_mods[slot] = front_wheel_map[mod_name][0];
-									front_wheel_mod = mod;
+									front_wheel_stock_mod = front_wheel_map[mod_name][0];
 								}
 							}
 							else if(slot == MOD_REARWHEEL)
@@ -154,8 +158,7 @@ namespace big
 
 								if (rear_wheel_map[mod_name].size() > 0 && mod == owner_mod)
 								{
-									owned_mods[slot] = rear_wheel_map[mod_name][0];
-									rear_wheel_mod = mod;
+									rear_wheel_stock_mod = rear_wheel_map[mod_name][0];
 								}
 							}
 
@@ -234,6 +237,22 @@ namespace big
 
 		if (selected_slot != -1)
 		{
+			auto wheel_stock_mod = &front_wheel_stock_mod;
+			auto wheel_custom = &front_wheel_custom;
+			bool is_wheel_mod = false;
+
+			if (selected_slot == MOD_FRONTWHEEL)
+			{
+				is_wheel_mod = true;
+			}
+			else if (selected_slot == MOD_REARWHEEL)
+			{
+				wheel_stock_mod = &rear_wheel_stock_mod;
+				wheel_custom = &rear_wheel_custom;
+				is_wheel_mod = true;
+			}
+
+
 			ImGui::SameLine();
 			if (ImGui::ListBoxHeader("Mod", ImVec2(200, 200)))
 			{
@@ -242,75 +261,103 @@ namespace big
 					const auto& mod = it.first;
 					const auto& name = it.second;
 
-					if (ImGui::Selectable(name.c_str(), mod == owned_mods[selected_slot]))
-					{
-						owned_mods[selected_slot] = mod;
+					bool item_selected = mod == owned_mods[selected_slot];
 
-						g_fiber_pool->queue_job([&mod] {
-							NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(self::veh);
-							if (selected_slot >= 0)
+					if (is_wheel_mod)
+					{
+						item_selected = mod == *wheel_stock_mod;
+					}
+
+					if (ImGui::Selectable(name.c_str(), item_selected))
+					{
+						NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(self::veh);
+
+						if (selected_slot >= 0)
+						{
+							if (!is_wheel_mod || (is_wheel_mod && mod == -1))
 							{
 								VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
+								owned_mods[selected_slot] = mod;
 							}
-							else if (selected_slot == MOD_WINDOW_TINT)
+
+							if (is_wheel_mod)
 							{
-								VEHICLE::SET_VEHICLE_WINDOW_TINT(player_vehicle, mod);
+								*wheel_stock_mod = mod;
+
+								if (mod == -1)
+								{
+									*wheel_custom = false;
+								}
 							}
-							else if (selected_slot == MOD_WHEEL_TYPE)
-							{
-								VEHICLE::SET_VEHICLE_WHEEL_TYPE(player_vehicle, mod);
-								VEHICLE::SET_VEHICLE_MOD(player_vehicle, MOD_FRONTWHEEL, 0, false);
-								owned_mods[MOD_FRONTWHEEL] = 0;
-							}
-							else if (selected_slot == MOD_PLATE_STYLE)
-							{
-								VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(player_vehicle, mod);
-							}
-						});
+						}
+						else if (selected_slot == MOD_WINDOW_TINT)
+						{
+							VEHICLE::SET_VEHICLE_WINDOW_TINT(player_vehicle, mod);
+							owned_mods[selected_slot] = mod;
+						}
+						else if (selected_slot == MOD_WHEEL_TYPE)
+						{
+							VEHICLE::SET_VEHICLE_WHEEL_TYPE(player_vehicle, mod);
+							owned_mods[selected_slot] = mod;
+
+							VEHICLE::SET_VEHICLE_MOD(player_vehicle, MOD_FRONTWHEEL, 0, false);
+							VEHICLE::SET_VEHICLE_MOD(player_vehicle, MOD_REARWHEEL, 0, false);
+							front_wheel_stock_mod = 0;
+							rear_wheel_stock_mod = 0;
+							front_wheel_custom = false;
+							rear_wheel_custom = false;
+							owned_mods[MOD_FRONTWHEEL] = 0;
+							owned_mods[MOD_REARWHEEL] = 0;
+						}
+						else if (selected_slot == MOD_PLATE_STYLE)
+						{
+							VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(player_vehicle, mod);
+							owned_mods[selected_slot] = mod;
+						}
 					}
 				}
 				ImGui::ListBoxFooter();
 			}
 
 			if (
-				selected_slot == MOD_FRONTWHEEL ||
-				selected_slot == MOD_REARWHEEL
+				is_wheel_mod && *wheel_stock_mod != -1
 			) {
 				auto wheel_map = front_wheel_map;
-				auto wheel_mod = front_wheel_mod;
 
 				if (selected_slot == MOD_REARWHEEL)
 				{
 					wheel_map = rear_wheel_map;
-					wheel_mod = rear_wheel_mod;
 				}
 
 
 				ImGui::SameLine();
 				if (ImGui::ListBoxHeader("Style", ImVec2(200, 200)))
 				{
-					std::string mod_name = mod_display_names[selected_slot][owned_mods[selected_slot]];
+					std::string mod_name = mod_display_names[selected_slot][*wheel_stock_mod];
 					auto wheel_mods = wheel_map[mod_name];
 
 					for (int i = 0; i < wheel_mods.size(); i++)
 					{
 						auto mod = wheel_mods[i];
 
-						std::string label = "Style " + std::to_string(i);
+						if (i == 0)
+						{
+							if (ImGui::Selectable("Stock", mod == owned_mods[selected_slot] && *wheel_custom == false))
+							{
+								VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
+								owned_mods[selected_slot] = mod;
+								*wheel_stock_mod = wheel_mods[0];
+								*wheel_custom = false;
+							}
+						}
 
-						if (ImGui::Selectable(label.c_str(), mod == wheel_mod))
+						std::string label = "Style " + std::to_string(i);
+						if (ImGui::Selectable(label.c_str(), mod == owned_mods[selected_slot] && *wheel_custom == true))
 						{
 							VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, true);
-							owned_mods[selected_slot] = wheel_mods[0];
-
-							if (selected_slot == MOD_FRONTWHEEL)
-							{
-								front_wheel_mod = mod;
-							}
-							else
-							{
-								rear_wheel_mod = mod;
-							}
+							owned_mods[selected_slot] = mod;
+							*wheel_stock_mod = wheel_mods[0];
+							*wheel_custom = true;
 						}
 					}
 					ImGui::ListBoxFooter();

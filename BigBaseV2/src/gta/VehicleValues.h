@@ -384,9 +384,9 @@ enum VehicleModType
 
 enum CustomVehicleModType
 {
-    MOD_WINDOW_TINT = -100,
     MOD_WHEEL_TYPE = -101,
-    MOD_PLATE_STYLE = -102
+    MOD_PLATE_STYLE = -102,
+    MOD_WINDOW_TINT = -103
 };
 
 
