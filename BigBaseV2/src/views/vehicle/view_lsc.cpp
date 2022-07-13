@@ -437,7 +437,7 @@ namespace big
 
 
 		static int color_to_change = 0;
-		static int color_type = 8;
+		int color_type = 8;
 
 		ImGui::BeginGroup();
 
@@ -630,7 +630,7 @@ namespace big
 				color_rgb[1] = (int)(color[1] * 255);
 				color_rgb[2] = (int)(color[2] * 255);
 
-				g_fiber_pool->queue_job([&color_rgb] {
+				g_fiber_pool->queue_job([color_rgb] {
 					switch (color_to_change)
 					{
 					case 0:
