@@ -1,6 +1,6 @@
 workspace "SechsMenu"
 	architecture "x64"
-	startproject "SechsMenu"
+	startproject "BigBaseV2"
 
 	configurations
 	{
@@ -133,6 +133,7 @@ workspace "SechsMenu"
 	project "ImGui"
 		location "vendor/%{prj.name}"
 		kind "StaticLib"
+
 		language "C++"
 
 		targetdir ("bin/lib/" .. outputdir)
@@ -181,24 +182,24 @@ workspace "SechsMenu"
 		DeclareDebugOptions()
 
 	project "SechsMenu"
-		location "SechsMenu"
+		location "BigBaseV2"
 		kind "SharedLib"
 		language "C++"
 
 		targetdir ("bin/" .. outputdir)
-		objdir ("bin/int/" .. outputdir .. "/%{prj.name}")
+		objdir ("bin/int/" .. outputdir .. "/BigBaseV2")
 	 
 		files
 		{
-		    "%{prj.name}/src/**.hpp",
-		    "%{prj.name}/src/**.h",
-		    "%{prj.name}/src/**.cpp",
-		    "%{prj.name}/src/**.asm"
+		    "BigBaseV2/src/**.hpp",
+		    "BigBaseV2/src/**.h",
+		    "BigBaseV2/src/**.cpp",
+		    "BigBaseV2/src/**.asm"
 		}
 
 		includedirs
 		{
-			"%{prj.name}/src/",
+			"BigBaseV2/src/",
 		    "vendor/fmtlib/include",
 		    "vendor/g3log/src",
 		    "vendor/GTAV-Classes",
@@ -221,7 +222,7 @@ workspace "SechsMenu"
 		}
 
 		pchheader "common.hpp"
-		pchsource "%{prj.name}/src/common.cpp"
+		pchsource "BigBaseV2/src/common.cpp"
 
 		forceincludes { -- microsoft bad
 		    "common.hpp"
