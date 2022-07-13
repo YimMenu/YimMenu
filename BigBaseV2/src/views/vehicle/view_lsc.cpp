@@ -138,7 +138,7 @@ namespace big
 						for (int mod = -1; mod < count; mod++)
 						{
 							std::string mod_name = vehicle_helper::get_mod_name(mod, slot, count, player_vehicle);
-							if (mod_name.empty())
+							if (mod_name.empty() || mod_name == "NULL")
 							{
 								continue;
 							}
@@ -256,6 +256,10 @@ namespace big
 				wheel_custom = &rear_wheel_custom;
 				is_wheel_mod = true;
 			}
+			else
+			{
+				is_wheel_mod = false;
+			}
 
 
 			ImGui::SameLine();
@@ -304,16 +308,16 @@ namespace big
 							else if (selected_slot == MOD_WHEEL_TYPE)
 							{
 								VEHICLE::SET_VEHICLE_WHEEL_TYPE(player_vehicle, mod);
-								owned_mods[selected_slot] = mod;
+								owned_mods[selected_slot] = VEHICLE::GET_VEHICLE_WHEEL_TYPE(player_vehicle);
 
 								VEHICLE::SET_VEHICLE_MOD(player_vehicle, MOD_FRONTWHEEL, 0, false);
 								VEHICLE::SET_VEHICLE_MOD(player_vehicle, MOD_REARWHEEL, 0, false);
-								front_wheel_stock_mod = 0;
-								rear_wheel_stock_mod = 0;
+								front_wheel_stock_mod = VEHICLE::GET_VEHICLE_MOD(player_vehicle, MOD_FRONTWHEEL);
+								rear_wheel_stock_mod = VEHICLE::GET_VEHICLE_MOD(player_vehicle, MOD_REARWHEEL);
 								front_wheel_custom = false;
 								rear_wheel_custom = false;
-								owned_mods[MOD_FRONTWHEEL] = 0;
-								owned_mods[MOD_REARWHEEL] = 0;
+								owned_mods[MOD_FRONTWHEEL] = front_wheel_stock_mod;
+								owned_mods[MOD_REARWHEEL] = rear_wheel_stock_mod;
 							}
 							else if (selected_slot == MOD_PLATE_STYLE)
 							{
