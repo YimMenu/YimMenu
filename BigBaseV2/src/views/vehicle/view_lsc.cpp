@@ -450,7 +450,7 @@ namespace big
 
 
 		static int color_to_change = 0;
-		int color_type = 8;
+		static int color_type = 8;
 
 		ImGui::BeginGroup();
 
@@ -509,6 +509,11 @@ namespace big
 
 		if (color_to_change == 0 || color_to_change == 1)
 		{
+			if (color_type > 8)
+			{
+				color_type = 8;
+			}
+
 			// primary and secondary color
 
 			if (ImGui::ListBoxHeader("##colors", ImVec2(200, 254)))
