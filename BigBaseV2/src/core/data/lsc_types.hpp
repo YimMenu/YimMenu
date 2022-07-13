@@ -22,7 +22,9 @@ static const std::map<int, std::string> lsc_wheel_styles = {
 	{ WHEEL_TYPE_HIGHEND, "High End" },
 	{ WHEEL_TYPE_BENNYS_ORIGINAL, "Bennys Original" },
 	{ WHEEL_TYPE_BENNYS_BESPOKE, "Bennys Bespoke" },
-	{ WHEEL_TYPE_F1, "F1" }
+	{ WHEEL_TYPE_OPEN_WHEEL, "Open Wheel" },
+	{ WHEEL_TYPE_STREET, "Street" },
+	{ WHEEL_TYPE_TRACK, "Track" }
 };
 
 static const std::map<int, std::string> lsc_window_tint_types = {
