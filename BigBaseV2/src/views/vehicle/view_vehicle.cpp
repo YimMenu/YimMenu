@@ -25,7 +25,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::button("Teleport to PV", [] {
+		components::button("Teleport in PV", [] {
 			Vehicle veh = globals::get_personal_vehicle();
 			teleport::into_vehicle(veh);
 		});
