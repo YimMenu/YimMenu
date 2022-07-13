@@ -38,12 +38,12 @@ Premake5 is used to generate our project files, if you haven't used it before we
 
 Clone the repository including submodules:
 ```bash
-git clone https://github.com/howdoiusekeyboard/YimMenu.git --recursive || echo "You don't have git installed, install it from https://git-scm.com/download/win"
+git clone https://github.com/howdoiusekeyboard/SechsMenu.git --recursive || echo "You don't have git installed, install it from https://git-scm.com/download/win"
 ```
 
 Go into the directory you just cloned:
 ```bash
-cd YimMenu
+cd SechsMenu
 ```
 
 Generate project files:
@@ -89,6 +89,6 @@ Below is an incomplete list of feature that I believe are notable to this "base"
 
 ## Contributing
 
-You're free to contribute to YimMenu as long as the feature are useful, non-toxic and do not contain anything money related that might get the menu targetted by Take2.
+You're free to contribute to SechsMenu as long as the feature are useful, and do not contain anything money related that might get the menu targetted by Take2.
 
 Make sure to read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
