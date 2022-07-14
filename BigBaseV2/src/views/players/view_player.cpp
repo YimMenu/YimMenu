@@ -164,6 +164,15 @@ namespace big
 
 					teleport::into_vehicle(veh);
 					});
+				
+				components::button("Teleport with Paracute", [] {
+					Hash parachute = RAGE_JOAAT("GADGET_PARACHUTE");
+					Ped SelectedPlayer = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+					WEAPON::GIVE_WEAPON_TO_PED(self::ped, parachute, 0, false, true);
+					Vector3 TargetCoords = teleport::GetEntityCoords(SelectedPlayer);
+					TargetCoords.z += 80.f;
+					teleport::TPtoCoords(self::ped, TargetCoords, false, true);
+					});
 
 				ImGui::TreePop();
 			}
@@ -235,9 +244,22 @@ namespace big
 
 				ImGui::SameLine();
 
+				components::button("Burst Tires", [] {
+					int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+					if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0))
+					{
+						toxic::BurstTires(Handle);
+					}
+					else
+					{
+						g_notification_service->push_warning("Warning", "Player is not in a Vehicle.");
+					}
+					});
+
 				if (g_player_service->get_selected()->is_valid())
 				{
-					components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player()); });
+					components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player()); 
+					});
 								
 				ImGui::TreePop();
 			}

@@ -165,4 +165,58 @@ namespace big::teleport
 		g_notification_service->push_warning("Teleport", "Failed to find objective position");
 		return false;
 	}
+
+	inline void TPtoCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight, bool IgnoreCurrentPedVehicle)  //G4E Function
+	{
+		Entity TargetEntity = e;
+
+		if (ENTITY::IS_ENTITY_A_PED(TargetEntity))
+		{
+			if (PED::IS_PED_IN_ANY_VEHICLE(TargetEntity, false) && !IgnoreCurrentPedVehicle)
+			{
+				TargetEntity = PED::GET_VEHICLE_PED_IS_USING(TargetEntity);
+			}
+		}
+		if (ENTITY::IS_AN_ENTITY(TargetEntity))
+		{
+			entity::take_control_of(TargetEntity);
+		}
+
+		if (!AutoCorrectGroundHeight)
+		{
+			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, coords.z, false, false, true);
+		}
+		else							//NOT NEEDED BUT UwU
+		{
+			bool GroundFound = false;
+			static std::array<float, 21> GroundCheckHeight = { 0.0, 50.0, 100.0, 150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.00 };
+
+			for (const float& CurrentHeight : GroundCheckHeight)
+			{
+				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, CurrentHeight, false, false, true);
+				if (MISC::GET_GROUND_Z_FOR_3D_COORD(coords.x, coords.y, CurrentHeight, &coords.z, false, false))
+				{
+					GroundFound = true;
+					coords.z += 3.0f;
+					break;
+				}
+			}
+
+			if (!GroundFound)
+			{
+				Vector3 ClosestRoadCoord;
+				if (PATHFIND::GET_CLOSEST_ROAD(coords.x, coords.y, coords.z, 1.0f, 1,
+					&ClosestRoadCoord, &ClosestRoadCoord, NULL, NULL, NULL, NULL))
+				{
+					coords = ClosestRoadCoord;
+				}
+			}
+			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, coords.z, false, false, true);
+		}
+	}
+
+	inline Vector3 GetEntityCoords(Entity entity)
+	{
+		return ENTITY::GET_ENTITY_COORDS(entity, false);
+	}
 }

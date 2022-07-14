@@ -195,7 +195,7 @@ namespace big::toxic
 		while (gcount < 1)
 		{
 			Ped SelectedPlayer = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
-			Hash railgun = RAGE_JOAAT("WEAPON_RAILGUN");
+			Hash railgun = RAGE_JOAAT("WEAPON_MINIGUN");
 			Entity ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 			//Ped enemy = TASK::TASK_COMBAT_HATED_TARGETS_AROUND_PED(SelectedPlayer, 20, 0);
 			int my_group = PLAYER::GET_PLAYER_GROUP(SelectedPlayer);
@@ -209,7 +209,7 @@ namespace big::toxic
 			WEAPON::GIVE_WEAPON_TO_PED(clone[gcount], railgun, railgun, 9999, 9999);
 			PED::SET_PED_CAN_SWITCH_WEAPON(clone[gcount], true);
 			TASK::TASK_COMBAT_HATED_TARGETS_AROUND_PED(player, 20, 0);
-			PED::SET_GROUP_FORMATION(my_group, 3);
+			PED::SET_GROUP_FORMATION(my_group, 1);
 			PED::SET_PED_MAX_HEALTH(clone[gcount], 5000);
 			PED::SET_PED_ALERTNESS(clone[gcount], 1000);
 			PED::SET_PED_COMBAT_RANGE(clone[gcount], 1000);
@@ -230,4 +230,17 @@ namespace big::toxic
 		g_pointers->m_trigger_script_event(1, argarr, sizeof(argarr) / sizeof(argarr[0]), 1 << player);
 	}
 
+	inline void BurstTires(Player player) 
+	{
+		if (PED::IS_PED_IN_ANY_VEHICLE(player, false))
+		{
+			entity::take_control_of(PED::GET_VEHICLE_PED_IS_USING(player));
+			VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(PED::GET_VEHICLE_PED_IS_USING(player), true);
+			static int tireID = 0;
+			for (tireID = 0; tireID < 8; tireID++)
+			{
+				VEHICLE::SET_VEHICLE_TYRE_BURST(PED::GET_VEHICLE_PED_IS_USING(player), tireID, true, 1000.0);
+			}
+		}
+	}
 }
