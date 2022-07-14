@@ -1,6 +1,6 @@
 workspace "BigBaseV2"
 	architecture "x64"
-	startproject "BigBaseV2"
+	startproject "SechsMenu"
 
 	configurations
 	{
