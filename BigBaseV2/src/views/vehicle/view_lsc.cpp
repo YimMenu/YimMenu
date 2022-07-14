@@ -556,7 +556,7 @@ namespace big
 
 		if (color_to_change == 0 || color_to_change == 1)
 		{
-			if (color_type > 8)
+			if (color_type > 3)
 			{
 				color_type = 8;
 			}
