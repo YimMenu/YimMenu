@@ -1,10 +1,10 @@
-#include "core/data/speedo_meters.hpp"
 #include "fiber_pool.hpp"
 #include "gui/handling/handling_tabs.hpp"
 #include "script.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
 #include "util/mobile.hpp"
+#include "core/data/speed_units.hpp"
 
 namespace big
 {
@@ -28,7 +28,16 @@ namespace big
 			TASK::CLEAR_PED_TASKS(self::ped);
 		});
 
-		ImGui::SliderInt("Top Speed", &g->vehicle.auto_drive_speed, 1, 200);
+		float auto_drive_speed_user_unit = vehicle::mps_to_speed(g->vehicle.auto_drive_speed, g->vehicle.speed_unit);
+		if (ImGui::SliderFloat(
+			fmt::format("Top Speed({})", speed_unit_strings[(int)g->vehicle.speed_unit]).c_str(),
+			&auto_drive_speed_user_unit,
+			vehicle::mps_to_speed(0.f, g->vehicle.speed_unit),
+			vehicle::mps_to_speed(150.f, g->vehicle.speed_unit),
+			"%.1f"
+		)) {
+			g->vehicle.auto_drive_speed = vehicle::speed_to_mps(auto_drive_speed_user_unit, g->vehicle.speed_unit);
+		}
 
 		if (ImGui::BeginCombo("Driving Style", vehicle::driving_style_names[g->vehicle.driving_style_id]))
 		{
@@ -37,6 +46,7 @@ namespace big
 				if (ImGui::Selectable(vehicle::driving_style_names[i], g->vehicle.driving_style_id == i))
 				{
 					g->vehicle.driving_style_id = i;
+					g->vehicle.driving_style_flags = vehicle::driving_styles[g->vehicle.driving_style_id];
 					g_notification_service->push_warning("Auto Drive", fmt::format("Driving style set to {}.", vehicle::driving_style_names[i]));
 				}
 
@@ -98,6 +108,15 @@ namespace big
 
 		ImGui::EndGroup();
 
-		ImGui::SliderFloat("Speed", &g->vehicle.fly.speed, 1.f, 100.f, "%.0f", 1);
+		float fly_speed_user_unit = vehicle::mps_to_speed(g->vehicle.fly.speed, g->vehicle.speed_unit);
+		if (ImGui::SliderFloat(
+			fmt::format("Speed({})", speed_unit_strings[(int)g->vehicle.speed_unit]).c_str(),
+			&fly_speed_user_unit,
+			vehicle::mps_to_speed(0.f, g->vehicle.speed_unit),
+			vehicle::mps_to_speed(150.f, g->vehicle.speed_unit),
+			"%.1f"
+		)) {
+			g->vehicle.fly.speed = vehicle::speed_to_mps(fly_speed_user_unit, g->vehicle.speed_unit);
+		}
 	}
 }

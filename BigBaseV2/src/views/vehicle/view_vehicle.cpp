@@ -1,10 +1,10 @@
-#include "core/data/speedo_meters.hpp"
 #include "fiber_pool.hpp"
 #include "gui/handling/handling_tabs.hpp"
 #include "script.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
 #include "util/mobile.hpp"
+#include "core/data/speed_units.hpp"
 
 namespace big
 {
@@ -23,7 +23,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::button("Teleport to PV", [] {
+		components::button("Teleport in PV", [] {
 			Vehicle veh = globals::get_personal_vehicle();
 			teleport::into_vehicle(veh);
 		});
@@ -125,29 +125,33 @@ namespace big
 
 		ImGui::Separator();
 
+		components::small_text("Speed Unit");
+
+		ImGui::RadioButton(
+			speed_unit_strings[(int)SpeedUnit::KMPH].c_str(), 
+			(int*)&g->vehicle.speed_unit, 
+			(int)SpeedUnit::KMPH
+		);
+		ImGui::SameLine();
+		ImGui::RadioButton(
+			speed_unit_strings[(int)SpeedUnit::MIPH].c_str(), 
+			(int*)&g->vehicle.speed_unit, 
+			(int)SpeedUnit::MIPH
+		);
+		ImGui::SameLine();
+		ImGui::RadioButton(
+			speed_unit_strings[(int)SpeedUnit::MPS].c_str(), 
+			(int*)&g->vehicle.speed_unit, 
+			(int)SpeedUnit::MPS
+		);
+
+		ImGui::Separator();
+
 		components::small_text("Speedo Meter");
 
-		SpeedoMeter* speed_meter_type_ptr = &g->vehicle.speedo_meter.type;
+		ImGui::Checkbox("Enabled", &g->vehicle.speedo_meter.enabled);
 
-		if (ImGui::BeginCombo("Format", speedo_meters[(int)*speed_meter_type_ptr].name))
-		{
-			for (const auto& speedo : speedo_meters)
-			{
-				if (ImGui::Selectable(speedo.name, speedo.id == *speed_meter_type_ptr))
-				{
-					*speed_meter_type_ptr = speedo.id;
-				}
-
-				if (speedo.id == *speed_meter_type_ptr)
-				{
-					ImGui::SetItemDefaultFocus();
-				}
-			}
-
-			ImGui::EndCombo();
-		}
-
-		if (*speed_meter_type_ptr != SpeedoMeter::DISABLED)
+		if (g->vehicle.speedo_meter.enabled)
 		{
 			ImGui::Text("Position (X, Y)");
 
@@ -163,7 +167,6 @@ namespace big
 
 			ImGui::Checkbox("Left Sided", &g->vehicle.speedo_meter.left_side);
 		}
-
 
 		g->vehicle.proof_mask = 0;
 		if (g->vehicle.god_mode)
