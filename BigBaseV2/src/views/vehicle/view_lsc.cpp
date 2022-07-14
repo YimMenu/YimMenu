@@ -6,7 +6,6 @@
 #include "views/view.hpp"
 #include "util/vehicle.hpp"
 #include <imgui_internal.h>
-#include <thread>
 
 namespace big
 {
