@@ -284,12 +284,22 @@ namespace big
 		ImGui::SetNextItemWidth(200.f);
 		components::input_text_with_hint("##plate", "Plate Number", plate, sizeof(plate), ImGuiInputTextFlags_None);
 		ImGui::SameLine();
-		if (components::button("Change Plate Number"))
+		if (components::button("Change"))
 		{
 			g_fiber_pool->queue_job([] {
 				vehicle::set_plate(self::veh, plate);
 			});
 		}
+
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+		ImGui::Checkbox("Headlight Intensity", &g->vehicle.headlightmul);
+		if (g->vehicle.headlightmul)
+		{
+			ImGui::SetNextItemWidth(300);
+			ImGui::SliderFloat("Multiplier", &g->vehicle.headlightmul_val, 0.0f, 1000.f);
+		}
+		ImGui::EndGroup();
 
 		ImGui::Separator();
 		components::small_text("Mod Options");
@@ -518,12 +528,24 @@ namespace big
 			neon_front = true;
 			neon_back = true;
 
-			g_fiber_pool->queue_job([] {
-				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_LEFT, neon_left);
-				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_RIGHT, neon_right);
-				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_FRONT, neon_front);
-				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_BACK, neon_back);
-			});
+			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_LEFT, neon_left);
+			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_RIGHT, neon_right);
+			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_FRONT, neon_front);
+			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_BACK, neon_back);
+		});
+
+		ImGui::SameLine();
+		components::button("Uncheck All##neon_uncheck_all", [] {
+			neon_left = false;
+			neon_right = false;
+			neon_front = false;
+			neon_back = false;
+			
+			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_LEFT, neon_left);
+			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_RIGHT, neon_right);
+			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_FRONT, neon_front);
+			VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(player_vehicle, NEON_BACK, neon_back);
+
 		});
 
 		ImGui::Separator();
@@ -534,7 +556,8 @@ namespace big
 
 		if (
 			(color_to_change == 7 && !xenon) ||
-			(color_to_change == 5 && !tiresmoke)
+			(color_to_change == 5 && !tiresmoke) ||
+			(color_to_change == 8 && !neon_left && !neon_right && !neon_front && !neon_back)
 		) {
 			color_to_change = 0;
 			color_type = 8;
@@ -603,11 +626,18 @@ namespace big
 			{
 				ImGui::EndDisabled();
 			}
-
+			if (!neon_left && !neon_right && !neon_front && !neon_back)
+			{
+				ImGui::BeginDisabled();
+			}
 			if (ImGui::Selectable("Neon", color_to_change == 8))
 			{
 				color_to_change = 8;
 				color_type = 8;
+			}
+			if (!neon_left && !neon_right && !neon_front && !neon_back)
+			{
+				ImGui::EndDisabled();
 			}
 
 			ImGui::ListBoxFooter();
@@ -732,7 +762,7 @@ namespace big
 						if (ImGui::Selectable(name.c_str(), false))
 						{
 							g_fiber_pool->queue_job([&rgb] {
-								VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, rgb[0], rgb[1], rgb[2]);
+								VEHICLE::SET_VEHICLE_NEON_LIGHTS_COLOUR_(player_vehicle, rgb[0], rgb[1], rgb[2]);
 							});
 							color_rgb[0] = rgb[0];
 							color_rgb[1] = rgb[1];
