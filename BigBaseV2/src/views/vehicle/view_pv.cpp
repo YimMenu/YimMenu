@@ -16,12 +16,12 @@ namespace big
 		ImGui::SameLine();
 
 		static char plate[9] = { 0 };
-		int num_of_rows = 2;
+		int num_of_rows = 3;
 
 		ImGui::Checkbox("Spawn Clone", &g->clone_pv.spawn_clone);
 		if (g->clone_pv.spawn_clone)
 		{
-			num_of_rows = 4;
+			num_of_rows = 5;
 
 			ImGui::Checkbox("Spawn Maxed", &g->clone_pv.spawn_maxed);
 
@@ -30,7 +30,7 @@ namespace big
 			ImGui::Checkbox("Clone PV Plate", &g->clone_pv.clone_plate);
 			if (g->clone_pv.clone_plate)
 			{
-				num_of_rows = 3;
+				num_of_rows = 4;
 			}
 			else
 			{
@@ -41,6 +41,35 @@ namespace big
 				});
 			}
 		}
+
+
+		static int selected_class = -1;
+		auto class_arr = g_vehicle_preview_service->get_vehicle_class_arr();
+
+		ImGui::SetNextItemWidth(300.f);
+		if (ImGui::BeginCombo("Vehicle Class", selected_class == -1 ? "ALL" : class_arr[selected_class].c_str()))
+		{
+			if (ImGui::Selectable("ALL", selected_class == -1))
+			{
+				selected_class = -1;
+			}
+
+			for (int i = 0; i < class_arr.size(); i++)
+			{
+				if (ImGui::Selectable(class_arr[i].c_str(), selected_class == i))
+				{
+					selected_class = i;
+				}
+
+				if (selected_class == i)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+
 
 		static char search[64];
 		static std::string lower_search;
@@ -61,22 +90,24 @@ namespace big
 			}
 			else
 			{
-
 				for (const auto& it : g_mobile_service->personal_vehicles())
 				{
 					const auto& label = it.first;
 					const auto& personal_veh = it.second;
 					auto item = g_vehicle_preview_service->find_vehicle_item_by_hash(personal_veh->get_hash());
 
+					std::string clazz = item.clazz;
 					std::string display_name = label;
 					std::string display_manufacturer = item.display_manufacturer;
 					std::transform(display_name.begin(), display_name.end(), display_name.begin(), ::tolower);
 					std::transform(display_manufacturer.begin(), display_manufacturer.end(), display_manufacturer.begin(), ::tolower);
 
-					if (
+					if ((
+						selected_class == -1 || class_arr[selected_class] == clazz
+					) && (
 						display_name.find(lower_search) != std::string::npos ||
 						display_manufacturer.find(lower_search) != std::string::npos
-					) {
+					)) {
 						ImGui::PushID('v' << 24 & personal_veh->get_id());
 
 						components::selectable(label, false, [&personal_veh] {

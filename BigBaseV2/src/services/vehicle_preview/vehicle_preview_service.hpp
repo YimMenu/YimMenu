@@ -12,6 +12,7 @@ namespace big
 		std::string name;
 		std::string display_name;
 		std::string display_manufacturer;
+		std::string clazz;
 		Hash hash;
 	};
 
@@ -24,6 +25,7 @@ namespace big
 		std::mutex m_mutex;
 
 		std::map<Hash, int> m_hash_idx_map;
+		std::vector<std::string> m_vehicle_class_arr;
 		std::vector<vehicle_preview_item> m_vehicle_preview_item_arr;
 		const vehicle_preview_item empty_item = vehicle_preview_item();
 
@@ -37,6 +39,7 @@ namespace big
 		~vehicle_preview_service();
 
 		const vehicle_preview_item& find_vehicle_item_by_hash(Hash hash);
+		std::vector<std::string>& get_vehicle_class_arr();
 		std::vector<vehicle_preview_item>& get_vehicle_preview_item_arr();
 		void set_preview_vehicle(const vehicle_preview_item& item);
 
