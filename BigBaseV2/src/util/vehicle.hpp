@@ -18,6 +18,36 @@ namespace big::vehicle
 		*script_global(2671447).at(8).as<int*>() = 1;
 	}
 
+	inline float mps_to_speed(float mps, SpeedUnit speed_unit)
+	{
+		switch (speed_unit)
+		{
+		case SpeedUnit::KMPH:
+			return mps * 3.6f;
+			break;
+		case SpeedUnit::MIPH:
+			return mps * 2.2369f;
+			break;
+		}
+
+		return mps;
+	}
+
+	inline float speed_to_mps(float speed, SpeedUnit speed_unit)
+	{
+		switch (speed_unit)
+		{
+		case SpeedUnit::KMPH:
+			return speed / 3.6f;
+			break;
+		case SpeedUnit::MIPH:
+			return speed / 2.2369f;
+			break;
+		}
+
+		return speed;
+	}
+
 	inline void bring(Vehicle veh, Vector3 location, bool put_in = true, int seatIdx = -1)
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh)) return g_notification_service->push_error("Vehicle", "Invalid handle");
@@ -184,6 +214,7 @@ namespace big::vehicle
 		}
 
 		// permission fix
+		*spawn_global.at(27).at(1).as<int32_t*>() = 0;
 		*spawn_global.at(27).at(19).as<int32_t*>() = -1;
 		*spawn_global.at(27).at(60).as<int32_t*>() = 1;
 		*spawn_global.at(27).at(77).as<int32_t*>() = 4030726305;

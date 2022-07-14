@@ -18,6 +18,7 @@ namespace big
 	class vehicle_preview_service
 	{
 		file m_vehicle_file;
+		file m_vehicle_file_etag;
 
 		std::condition_variable m_cond;
 		std::mutex m_mutex;

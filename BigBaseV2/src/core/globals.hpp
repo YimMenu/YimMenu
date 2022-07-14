@@ -241,11 +241,10 @@ namespace big
 
 		struct vehicle {
 			struct speedo_meter {
-				SpeedoMeter type = SpeedoMeter::DISABLED;
-
 				float x = .9f;
 				float y = .52f;
 
+				bool enabled = false;
 				bool left_side = false;
 				bool type_text = false;
 			};
@@ -258,6 +257,8 @@ namespace big
 				bool stop_on_exit = false;
 				float speed = 100;
 			};
+
+			SpeedUnit speed_unit = SpeedUnit::MIPH;
 
 			bool god_mode = false;
 			bool proof_bullet = false;
@@ -283,9 +284,9 @@ namespace big
 			bool keep_vehicle_repaired = false;
 			bool headlightmul = false;
 			float headlightmul_val = 1.f;
-			int auto_drive_speed = 100;
-			int driving_style_flags = 525117;
-			int driving_style_id = 1;
+			float auto_drive_speed = 1;
+			int driving_style_flags = 443;
+			int driving_style_id = 0;
 			int rainbow_paint = 0;
 			bool rainbow_primary = false;
 			bool rainbow_secondary = false;
@@ -608,6 +609,7 @@ namespace big
 			this->spoofing.rockstar_id = j["spoofing"]["rockstar_id"];
 			this->spoofing.username = j["spoofing"]["username"];
 
+			this->vehicle.speed_unit = (SpeedUnit)j["vehicle"]["speed_unit"];
 			this->vehicle.god_mode = j["vehicle"]["god_mode"];
 			this->vehicle.proof_bullet = j["vehicle"]["proof_bullet"];
 			this->vehicle.proof_fire = j["vehicle"]["proof_fire"];
@@ -622,7 +624,8 @@ namespace big
 			this->vehicle.auto_drive_wander = j["vehicle"]["auto_drive_wander"];
 			this->vehicle.auto_turn_signals = j["vehicle"]["auto_turn_signals"];
 			this->vehicle.drive_on_water = j["vehicle"]["drive_on_water"];
-			this->vehicle.driving_style_id = j["vehicle"]["driving_style"];
+			this->vehicle.driving_style_id = j["vehicle"]["driving_style_id"];
+			this->vehicle.driving_style_flags = j["vehicle"]["driving_style_flag"];
 			this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
 			this->vehicle.vehicle_jump = j["vehicle"]["vehicle_jump"];
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
@@ -636,7 +639,7 @@ namespace big
 			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
 			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
 
-			this->vehicle.speedo_meter.type = (SpeedoMeter)j["vehicle"]["speedo_meter"]["type"];
+			this->vehicle.speedo_meter.enabled = j["vehicle"]["speedo_meter"]["enabled"];
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
 			this->vehicle.speedo_meter.x = j["vehicle"]["speedo_meter"]["position_x"];
 			this->vehicle.speedo_meter.y = j["vehicle"]["speedo_meter"]["position_y"];
@@ -910,6 +913,7 @@ namespace big
 				},
 				{
 					"vehicle", {
+						{ "speed_unit", this->vehicle.speed_unit },
 						{ "god_mode", this->vehicle.god_mode },
 						{ "proof_bullet", this->vehicle.proof_bullet },
 						{ "proof_fire", this->vehicle.proof_fire },
@@ -924,7 +928,8 @@ namespace big
 						{ "auto_drive_wander", this->vehicle.auto_drive_wander },
 						{ "auto_turn_signals", this->vehicle.auto_turn_signals },
 						{ "drive_on_water", this->vehicle.drive_on_water },
-						{ "driving_style", this->vehicle.driving_style_id },
+						{ "driving_style_id", this->vehicle.driving_style_id },
+						{ "driving_style_flag", this->vehicle.driving_style_flags },
 						{ "horn_boost", this->vehicle.horn_boost },
 						{ "vehicle_jump", this->vehicle.vehicle_jump },
 						{ "instant_brake", this->vehicle.instant_brake },
@@ -939,7 +944,7 @@ namespace big
 						{ "seatbelt", this->vehicle.seatbelt },
 						{
 							"speedo_meter", {
-								{ "type", (int)this->vehicle.speedo_meter.type },
+								{ "enabled", this->vehicle.speedo_meter.enabled },
 								{ "left_side", this->vehicle.speedo_meter.left_side },
 								{ "position_x", this->vehicle.speedo_meter.x },
 								{ "position_y", this->vehicle.speedo_meter.y },
