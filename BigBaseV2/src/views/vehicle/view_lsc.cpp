@@ -26,6 +26,7 @@ namespace big
 		static int neon_light_color_rgb[3] = { 255, 255, 255 };
 
 		static int selected_slot = -1;
+		static bool is_bennys = false;
 		static int front_wheel_stock_mod = -1;
 		static bool front_wheel_custom = false;
 		static int rear_wheel_stock_mod = -1;
@@ -124,6 +125,11 @@ namespace big
 				tmp_owned_mods[MOD_WHEEL_TYPE] = VEHICLE::GET_VEHICLE_WHEEL_TYPE(player_vehicle);
 				tmp_mod_display_names[MOD_WHEEL_TYPE].insert(lsc_wheel_styles.begin(), lsc_wheel_styles.end());
 
+				is_bennys = tmp_owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_ORIGINAL ||
+					tmp_owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_BESPOKE ||
+					tmp_owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_OPEN_WHEEL ||
+					tmp_owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_STREET ||
+					tmp_owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_TRACK;
 
 				for (int slot = MOD_SPOILERS; slot <= MOD_LIVERY; slot++)
 				{
@@ -153,6 +159,20 @@ namespace big
 
 							if (slot == MOD_FRONTWHEEL)
 							{
+								if (is_bennys)
+								{
+									if (mod_name.rfind("Chrome ", 0) == 0)
+									{
+										std::string new_mod_name = mod_name.substr(7);
+
+										if (tmp_front_wheel_map[new_mod_name].size() > 0)
+										{
+											mod_name = new_mod_name;
+										}
+
+									}
+								}
+
 								tmp_front_wheel_map[mod_name].push_back(mod);
 
 								if (mod == owner_mod)
@@ -164,9 +184,12 @@ namespace big
 								{
 									is_repeated = true;
 
-									if (mod == owner_mod)
+									if (!is_bennys)
 									{
-										front_wheel_custom = true;
+										if (mod == owner_mod)
+										{
+											front_wheel_custom = true;
+										}
 									}
 								}
 							}
@@ -305,7 +328,7 @@ namespace big
 			ImGui::BeginGroup();
 
 			components::small_text("Mod");
-			if (ImGui::ListBoxHeader("##mod", ImVec2(200, 200)))
+			if (ImGui::ListBoxHeader("##mod", ImVec2(240, 200)))
 			{
 				for (const auto& it : mod_display_names[selected_slot])
 				{
@@ -383,22 +406,30 @@ namespace big
 					{
 						int& mod = wheel_mods[i];
 
-						if (i == 0)
+						bool should_custom = false;
+
+						// bennys fix
+						if (!is_bennys)
 						{
-							if (ImGui::Selectable("Stock", mod == owned_mods[selected_slot] && *wheel_custom == false))
+							if (i == 0)
 							{
-								g_fiber_pool->queue_job([&mod] {
-									VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
-									player_vehicle = 0;
-								});
+								if (ImGui::Selectable("Stock", mod == owned_mods[selected_slot] && *wheel_custom == false))
+								{
+									g_fiber_pool->queue_job([&mod] {
+										VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
+										player_vehicle = 0;
+										});
+								}
 							}
+
+							should_custom = true;
 						}
 
 						std::string label = "Style " + std::to_string(mod);
-						if (ImGui::Selectable(label.c_str(), mod == owned_mods[selected_slot] && *wheel_custom == true))
+						if (ImGui::Selectable(label.c_str(), mod == owned_mods[selected_slot] && *wheel_custom == should_custom))
 						{
-							g_fiber_pool->queue_job([&mod] {
-								VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, true);
+							g_fiber_pool->queue_job([&mod, should_custom] {
+								VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, should_custom);
 								player_vehicle = 0;
 							});
 						}
@@ -576,7 +607,6 @@ namespace big
 						if (color_to_change == 0)
 						{
 							VEHICLE::CLEAR_VEHICLE_CUSTOM_PRIMARY_COLOUR(player_vehicle);
-
 						}
 						else
 						{
