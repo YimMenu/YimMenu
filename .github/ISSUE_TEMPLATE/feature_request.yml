@@ -23,7 +23,7 @@ body:
   attributes:
     label: Reason
     description: Provide Reasoning
-    placeholder: "Tell us why you'd want for us to add this to YimMenu."
+    placeholder: "Tell us why you'd want for us to add this to SechsMenu."
   validations:
     required: true
 - type: textarea
