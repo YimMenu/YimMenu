@@ -129,7 +129,7 @@ namespace big::toxic
 	{
 		constexpr size_t arg_count = 3;
 		int64_t args[arg_count] = {
-			static_cast<int64_t>(eRemoteEvent::SendToIsland),
+			static_cast<int64_t>(eRemoteEvent::SendToCayoPerico),//SendToLocation
 			self::id,
 			target
 		};
