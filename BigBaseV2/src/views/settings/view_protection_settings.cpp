@@ -30,7 +30,7 @@ namespace big
 
 		ImGui::BeginGroup();
 		ImGui::Checkbox("Send to Cutscene", &g->protections.script_events.send_to_cutscene);
-		ImGui::Checkbox("Send to Island", &g->protections.script_events.send_to_island);
+		ImGui::Checkbox("Send to Location", &g->protections.script_events.send_to_location);
 		ImGui::Checkbox("Sound Spam", &g->protections.script_events.sound_spam);
 		ImGui::Checkbox("Spectate", &g->protections.script_events.spectate);
 		ImGui::Checkbox("Transaction Error", &g->protections.script_events.transaction_error);
