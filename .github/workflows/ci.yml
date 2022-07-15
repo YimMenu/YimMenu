@@ -29,3 +29,14 @@ jobs:
 
       - name: Check if DLL got built
         run: if (-Not (Test-Path -path "bin/Release/SechsMenu.dll")) {throw 1}
+
+      - name: Rename DLL to SechsMenu-dev-{GITHUB_SHA}.dll
+        run: ren SechsMenu.dll SechsMenu-dev-${{github.sha}}.dll
+        working-directory: bin/Release/
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: binary
+          path: |
+            bin/Release/SechsMenu-dev-*.dll
