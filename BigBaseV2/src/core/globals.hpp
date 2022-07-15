@@ -158,6 +158,7 @@ namespace big
 			bool aimbot_exclude_friend = true;
 			int wanted_level = 0;
 			bool mobileradio = false;
+			bool SuperMan_salman_ka_fan = false;
 
 			bool god_mode = false;
 			bool proof_bullet = false;

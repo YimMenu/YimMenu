@@ -72,4 +72,25 @@ namespace big::entity
 
 		return true;
 	}
+
+	inline void RequestNetworkControlOfEntity(Entity entity)
+	{
+		int EntityTick = 0;
+		int IdTick = 0;
+		while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(entity) && EntityTick <= 25)
+		{
+			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(entity);
+			EntityTick++;
+		}
+		if (NETWORK::NETWORK_IS_SESSION_STARTED())
+		{
+			int netID = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity);
+			while (!NETWORK::NETWORK_HAS_CONTROL_OF_NETWORK_ID(netID) && IdTick <= 25)
+			{
+				NETWORK::NETWORK_REQUEST_CONTROL_OF_NETWORK_ID(netID);
+				IdTick++;
+			}
+			NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netID, true);
+		}
+	}
 }

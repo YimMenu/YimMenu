@@ -243,4 +243,13 @@ namespace big::toxic
 			}
 		}
 	}
+
+	inline void ApplyForceToEntity(Entity e, float x, float y, float z)
+	{
+		if (e != self::id && NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(e) == false) 
+		{ 
+			entity::RequestNetworkControlOfEntity(e);
+		}
+		ENTITY::APPLY_FORCE_TO_ENTITY(e, 1, x, y, z, 0, 0, 0, 0, 1, 1, 1, 0, 1);
+	}
 }

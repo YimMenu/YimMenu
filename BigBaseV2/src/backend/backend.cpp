@@ -42,6 +42,7 @@ namespace big
 			looped::self_super_run();
 			looped::self_aimbot();
 			looped::self_mobileradio();
+			looped::self_SuperMan_salman_ka_fan();
 
 			script::get_current()->yield();
 		}

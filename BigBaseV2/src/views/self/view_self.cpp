@@ -86,6 +86,7 @@ namespace big
 		ImGui::Checkbox("No Ragdoll", &g->self.no_ragdoll);
 		ImGui::Checkbox("Super Run", &g->self.super_run);
 		ImGui::Checkbox("No Idle Kick", &g->tunables.no_idle_kick);
+		ImGui::Checkbox("Super Man", &g->self.SuperMan_salman_ka_fan);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
