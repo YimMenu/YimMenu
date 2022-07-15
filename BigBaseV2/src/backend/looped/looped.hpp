@@ -13,6 +13,7 @@ namespace big
 		static void context_menu();
 		static void hud_transition_state();
 		static void pie_menu();
+		static void hud_chat();
 
 		static void rgb_synced_fade();
 		static void rgb_synced_spasm();

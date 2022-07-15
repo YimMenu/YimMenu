@@ -37,7 +37,7 @@ namespace big
 		rage::atArray<GtaThread*>* m_script_threads{};
 		rage::scrProgramTable* m_script_program_table{};
 		functions::run_script_threads m_run_script_threads{};
-		functions::register_file_t m_register_file{}; 
+		functions::register_file_t m_register_file{};
 		functions::get_script_handle_t m_get_script_handle{};
 		std::int64_t** m_script_globals{};
 		rage::GenericPool* m_ped_pool{};
@@ -46,8 +46,8 @@ namespace big
 		rage::GenericPool* m_pickup_pool{};
 		rage::GenericPool* m_camera_pool{};
 
-		PVOID m_text_message_received;
-		functions::get_gamer_handle_from_something m_get_gamer_handle_from_something{};
+		__int64* m_chat_receive{};
+		functions::chat_player_id* m_chat_player_id;
 		__int64* m_send_chat_ptr{};
 		functions::send_chat_message* m_send_chat_message{};
 

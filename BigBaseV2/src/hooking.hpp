@@ -34,7 +34,7 @@ namespace big
 		static void player_join(CNetworkObjectMgr* _this, CNetGamePlayer* net_player);
 		static void player_leave(CNetworkObjectMgr* _this, CNetGamePlayer* net_player);
 
-		static void text_message_received(void* a1, char* message, void* something);
+		static __int64* chat_receive(__int64 chat_pointer, __int64 unk2, __int64 peerId, const char* msg, char IsTeam);
 
 		static bool is_dlc_present(Hash dlc_hash);
 
@@ -104,7 +104,7 @@ namespace big
 
 		detour_hook m_received_event_hook;
 		detour_hook m_received_clone_sync_hook;
-		detour_hook m_text_message_received_hook;
+		detour_hook m_chat_message_received_hook;
 		
 		detour_hook m_send_net_info_to_lobby;
 		detour_hook m_receive_net_message_hook;

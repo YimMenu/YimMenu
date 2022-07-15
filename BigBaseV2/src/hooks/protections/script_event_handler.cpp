@@ -383,12 +383,10 @@ namespace big
 
 		if (g->debug.script_event_logging)
 		{
-			LOG(INFO) << "SE, ";
-			LOG(INFO) << player->get_name();
-			LOG(INFO) << "Hash/Arg #0: " << (int)hash << ", ";
+			LOG(INFO) << "SE, " << player->get_name() << ", Hash " << (int)hash << ", ";
 
 			for (std::size_t i = 1; i < sizeof(args); i++)
-				LOG(INFO) << "Arg #" << i << ": " << args[i] << ", ";
+				LOG(INFO) << "Arg " << i << ": " << args[i] << ", ";
 		}
 
 		return false;

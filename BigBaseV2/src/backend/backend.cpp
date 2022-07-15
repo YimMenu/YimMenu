@@ -135,6 +135,7 @@ namespace big
 
 			looped::fast_join();
 			looped::pie_menu();
+			looped::hud_chat();
 			looped::phone_anim();
 
 			script::get_current()->yield();

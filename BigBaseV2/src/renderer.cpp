@@ -50,7 +50,12 @@ namespace big
 		ImFontConfig font_icons_cfg{};
 		font_icons_cfg.FontDataOwnedByAtlas = false;
 		std::strcpy(font_icons_cfg.Name, "Icons");
-		m_font_icons = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_icons), sizeof(font_icons), 24.f, &font_icons_cfg);
+		m_font_icons = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_icons), sizeof(font_icons), 20.f, &font_icons_cfg);
+
+		ImFontConfig font_agave_cfg{};
+		font_agave_cfg.FontDataOwnedByAtlas = false;
+		std::strcpy(font_agave_cfg.Name, "Agave");
+		g->window.font_chat = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedBase85TTF(font_agave, 17.5f, &font_agave_cfg, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 
 		g_gui.dx_init();
 		g_renderer = this;
@@ -67,7 +72,7 @@ namespace big
 
 	void renderer::on_present()
 	{
-		if (g_gui.m_opened || g->pie_menu.active)
+		if (g_gui.m_opened || g->pie_menu.active || g->window.chat)
 		{
 			ImGui::GetIO().MouseDrawCursor = true;
 			ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
@@ -132,7 +137,7 @@ namespace big
 				g->settings.hotkeys.editing_menu_toggle = false;
 		}
 		
-		if (g_gui.m_opened || g->pie_menu.active)
+		if (g_gui.m_opened || g->pie_menu.active || g->window.chat)
 		{
 			ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);
 		}

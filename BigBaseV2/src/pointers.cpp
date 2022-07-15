@@ -346,14 +346,15 @@ namespace big
 		});
 		//END SHV
 
-		main_batch.add("TMR", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 48 81 EC ? ? ? ? 80 3D ? ? ? ? ? 49 8B F0 48 8B EA", [this](memory::handle ptr)
+		//Chat Receive
+		main_batch.add("CR", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 30 49 8B F0 4D 8B C1", [this](memory::handle ptr)
 		{
-			m_text_message_received = ptr.as<PVOID>();
+			m_chat_receive = ptr.as<__int64*>();
 		});
 
-		main_batch.add("GGHFS", "48 8B C4 48 89 58 08 48 89 70 10 48 89 78 18 4C 89 70 20 55 48 8B EC 48 83 EC 40 48 8B F1 48 8D 4D E0 4D", [this](memory::handle ptr)
+		main_batch.add("GCPID", "48 8B D1 48 8B 0D ? ? ? ? 41 B0 01 E9", [this](memory::handle ptr)
 		{
-			m_get_gamer_handle_from_something = ptr.as<functions::get_gamer_handle_from_something>();
+			m_chat_player_id = ptr.as<decltype(m_chat_player_id)>();
 		});
 
 		//Send Chat Ptr

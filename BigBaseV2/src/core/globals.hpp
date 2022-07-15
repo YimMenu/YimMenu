@@ -290,12 +290,14 @@ namespace big
 			bool custom = false;
 			bool overlay = false;
 			bool score_controller = false;
+			bool chat = false;
 
 			ImU32 color = 3357612055;
 
 			ImFont* font_title = nullptr;
 			ImFont* font_sub_title = nullptr;
 			ImFont* font_small = nullptr;
+			ImFont* font_chat = nullptr;
 
 			bool switched_view = true;
 		};
