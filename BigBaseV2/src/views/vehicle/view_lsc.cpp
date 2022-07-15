@@ -88,7 +88,7 @@ namespace big
 					{
 						int owner_mod = owned_mods[slot];
 
-						std::string slot_name = vehicle_helper::get_mod_slot_name(model, player_vehicle, slot) + std::to_string(slot);
+						std::string slot_name = vehicle_helper::get_mod_slot_name(model, player_vehicle, slot);
 						if (slot_name.empty())
 						{
 							continue;
@@ -106,7 +106,7 @@ namespace big
 
 							bool is_repeated = false;
 
-							std::string mod_name = vehicle_helper::get_mod_name(model, player_vehicle, slot, mod, count) + std::to_string(mod);
+							std::string mod_name = vehicle_helper::get_mod_name(model, player_vehicle, slot, mod, count);
 
 							if (mod_name.empty() || mod_name == "NULL")
 							{
