@@ -391,6 +391,29 @@ namespace big
 			if (g->protections.script_events.blockpassive)
 			{
 				format_string(player_name, "Block Passive", notify.blockpassive.log, notify.blockpassive.notify);
+				return true;
+			}
+			break;
+		case eRemoteEvent::DisownVehicle:
+			if (g->protections.script_events.disownvehicle)
+			{
+				format_string(player_name, "Disown Personal Vehicle", notify.disownvehicle.log, notify.disownvehicle.notify);
+
+				return true;
+			}
+			break;
+		case eRemoteEvent::Destroyvehicle:
+			if (g->protections.script_events.destroyvehicle)
+			{
+				format_string(player_name, "Destroy Personal Vehicle", notify.destroyvehicle.log, notify.destroyvehicle.notify);
+
+				return true;
+			}
+			break;
+		case eRemoteEvent::BlockPassive:
+			if (g->protections.script_events.blockpassive)
+			{
+				format_string(player_name, "Block Passive", notify.blockpassive.log, notify.blockpassive.notify);
 
 				return true;
 			}
