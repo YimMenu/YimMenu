@@ -87,8 +87,8 @@ workspace "BigBaseV2"
 		    "vendor/%{prj.name}/src"
 		}
 
-		if(file_exists("vendor\\g3log\\src\\g3log\\generated_definitions.hpp") == false) then
-			file = io.open("vendor\\g3log\\src\\g3log\\generated_definitions.hpp", "w")
+		if(file_exists("vendor/g3log/src/g3log/generated_definitions.hpp") == false) then
+			file = io.open("vendor/g3log/src/g3log/generated_definitions.hpp", "w")
 			if(file == nil) then
 				premake.error("Failed to locate vendor directories. Try doing git pull --recurse-submodules.")
 			end
@@ -153,14 +153,14 @@ workspace "BigBaseV2"
 			"vendor/%{prj.name}"
 		}
 		
+		DeclareMSVCOptions()
+		DeclareDebugOptions()
+
 		defines {
 			"IMGUI_DISABLE_DEMO_WINDOWS",
 			"IMGUI_DISABLE_METRICS_WINDOW",
-			"IM_ASSERT(_EXPR) ((void)(_EXPR))"
+			"IM_ASSERT(_EXPR) /*(_EXPR)*/",
 		}
-
-		DeclareMSVCOptions()
-		DeclareDebugOptions()
 
 	project "MinHook"
 		location "vendor/%{prj.name}"
@@ -217,11 +217,12 @@ workspace "BigBaseV2"
 		    "fmtlib",
 		    "g3log",
 		    "ImGui",
-		    "MinHook"
+		    "MinHook",
+			"stdc++"
 		}
 
 		pchheader "common.hpp"
-		pchsource "%{prj.name}/src/common.cpp"
+		-- pchsource "%{prj.name}/src/common.cpp"
 
 		forceincludes { -- microsoft bad
 		    "common.hpp"

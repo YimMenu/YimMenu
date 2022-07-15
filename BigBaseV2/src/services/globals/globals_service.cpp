@@ -41,7 +41,7 @@ namespace big
 		try
 		{
 			nlohmann::json j;
-			j << file;
+			file >> j;
 
 			this->build(j);
 		}

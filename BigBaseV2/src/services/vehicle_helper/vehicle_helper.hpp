@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gta\VehicleValues.h"
+#include "gta/VehicleValues.h"
 
 namespace big
 {

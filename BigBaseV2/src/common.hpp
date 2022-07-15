@@ -1,8 +1,10 @@
-#pragma once
+#ifndef COMMON_INC
+#define COMMON_INC
 
-#include <SDKDDKVer.h>
-#include <Windows.h>
-#include <D3D11.h>
+#include <sdkddkver.h>
+#include <winsock2.h>
+#include <windows.h>
+#include <d3d11.h>
 #include <wrl/client.h>
 
 #include <cinttypes>
@@ -79,3 +81,5 @@ namespace self
 	inline Vector3 pos;
 	inline Vehicle veh;
 }
+
+#endif

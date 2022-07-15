@@ -13,7 +13,7 @@ namespace big
 
 		std::string title = fmt::format("Player Options: {}", g_player_service->get_selected()->get_name());
 		
-		ImGui::Text(title.c_str());
+		ImGui::Text("%s", title.c_str());
 		ImGui::Checkbox("Spectate", &g->player.spectating);
 		
 		if (g_player_service->get_selected()->is_valid())
@@ -96,7 +96,7 @@ namespace big
 
 				if (rage::netPlayerData* net_player_data = g_player_service->get_selected()->get_net_data(); net_player_data != nullptr)
 				{
-					ImGui::Text("Rockstar ID: %d", net_player_data->m_rockstar_id);
+					ImGui::Text("Rockstar ID: %lld", net_player_data->m_rockstar_id);
 					ImGui::Text(
 						"IP Address: %d.%d.%d.%d:%d",
 						net_player_data->m_external_ip.m_field1,

@@ -28,6 +28,6 @@ namespace memory
 
 	handle module::get_export(std::string_view symbol_name)
 	{
-		return GetProcAddress(m_base.as<HMODULE>(), symbol_name.data());
+		return reinterpret_cast<void*>(GetProcAddress(m_base.as<HMODULE>(), symbol_name.data()));
 	}
 }

@@ -39,7 +39,7 @@ namespace big
 		bool bNoclip = g->self.noclip;
 
 		Vector3 location = self::pos;
-		Entity ent = self::veh != NULL ? self::veh : self::ped;
+		Entity ent = self::veh != 0 ? self::veh : self::ped;
 
 		// cleanup when changing entities
 		if (prev != ent)

@@ -11,7 +11,11 @@ namespace big
 			ImGui::BeginGroup();
 			ImGui::Text("Welcome");
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.172f, 0.380f, 0.909f, 1.f));
-			ImGui::Text(g_local_player == nullptr || g_local_player->m_player_info == nullptr ? "unknown" : g_local_player->m_player_info->m_net_player_data.m_name);
+			ImGui::Text(
+				"%s",
+				g_local_player == nullptr ||
+				g_local_player->m_player_info == nullptr
+					? "unknown" : g_local_player->m_player_info->m_net_player_data.m_name);
 			ImGui::PopStyleColor();
 			ImGui::EndGroup();
 			ImGui::SameLine();

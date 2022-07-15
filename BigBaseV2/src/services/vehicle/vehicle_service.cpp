@@ -245,7 +245,7 @@ namespace big
 
 	void vehicle_service::set_active_profile(std::uint32_t hash, std::string share_code)
 	{
-		if (auto& it = this->m_active_profiles.find(hash); it != this->m_active_profiles.end())
+		if (const auto& it = this->m_active_profiles.find(hash); it != this->m_active_profiles.end())
 			it->second = share_code;
 		else
 			this->m_active_profiles.emplace(hash, share_code);

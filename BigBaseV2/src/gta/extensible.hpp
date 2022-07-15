@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include "ref_aware.hpp"
+#include "gta/joaat.hpp"
 
 namespace rage
 {
@@ -34,7 +35,7 @@ namespace rage
 		bool is_of_type()
 		{
 			static auto name = (typeid(T).name()) + 6; // Skip "class "
-			static auto name_hash = util::joaat(name);
+			static auto name_hash = rage::joaat(name);
 
 			return is_of_type(name_hash);
 		}

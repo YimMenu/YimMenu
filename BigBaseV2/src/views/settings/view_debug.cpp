@@ -138,7 +138,7 @@ namespace big
 
 			ImGui::BeginGroup();
 
-			ImGui::Text(global.m_name.c_str());
+			ImGui::Text("%s", global.m_name.c_str());
 
 			sprintf(label, "###input_%d", global.get_id());
 			ImGui::SetNextItemWidth(200.f);

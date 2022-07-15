@@ -37,12 +37,12 @@ namespace big
 				ImGui::Separator();
 			}
 
-			QUEUE_JOB_BEGIN_CLAUSE()
+			g_fiber_pool->queue_job([]
 			{
 				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-			}QUEUE_JOB_END_CLAUSE
+			});
 
-				ImGui::BeginGroup();
+			ImGui::BeginGroup();
 
 			ImGui::Text("Name:");
 			ImGui::Text("Description:");

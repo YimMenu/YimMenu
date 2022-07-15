@@ -68,7 +68,7 @@ namespace big
 		m_program = program;
 		s_map.emplace(m_program, this);
 		m_vmt_hook = std::make_unique<vmt_hook>(m_program, 3);
-		m_vmt_hook->hook(0, &scrprogram_dtor);
+		m_vmt_hook->hook(0, (void*)&scrprogram_dtor);
 
 		for (auto [replacement_hash, replacement_handler] : m_native_replacements)
 		{
@@ -79,12 +79,12 @@ namespace big
 			if (!og_handler)
 				continue;
 
-			auto handler_ptr = m_program->get_address_of_native_entrypoint(og_handler);
+			auto handler_ptr = m_program->get_address_of_native_entrypoint((void*)og_handler);
 			if (!handler_ptr)
 				continue;
 
 			m_native_handler_ptrs.emplace(hash, reinterpret_cast<rage::scrNativeHandler*>(handler_ptr));
-			*handler_ptr = replacement_handler;
+			*handler_ptr = (void*)replacement_handler;
 		}
 	}
 

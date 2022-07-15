@@ -32,14 +32,14 @@ namespace big
 		file get_project_file(std::filesystem::path file_path)
 		{
 			if (file_path.is_absolute())
-				throw std::exception("Project files are relative to the BaseDir, don't use absolute paths!");
+				throw std::runtime_error("Project files are relative to the BaseDir, don't use absolute paths!");
 
 			return file(this, file_path);
 		}
 		folder get_project_folder(std::filesystem::path folder_path)
 		{
 			if (folder_path.is_absolute())
-				throw std::exception("Project folders are relative to the BaseDir, don't use absolute paths!");
+				throw std::runtime_error("Project folders are relative to the BaseDir, don't use absolute paths!");
 
 			return folder(this, folder_path);
 		}

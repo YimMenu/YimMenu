@@ -1,5 +1,5 @@
 #pragma once
-#include "gta\joaat.hpp"
+#include "gta/joaat.hpp"
 
 namespace big
 {

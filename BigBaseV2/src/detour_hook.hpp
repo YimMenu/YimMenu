@@ -30,6 +30,6 @@ namespace big
 	template <typename T>
 	inline T detour_hook::get_original()
 	{
-		return static_cast<T>(m_original);
+		return reinterpret_cast<T>(m_original);
 	}
 }

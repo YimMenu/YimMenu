@@ -22,7 +22,7 @@ namespace big
 			return;
 		}
 
-		const auto event_name = *(char**)((DWORD64)event_manager + 8i64 * event_id + 243376);
+		const auto event_name = *(char**)((DWORD64)event_manager + 8 * event_id + 243376);
 		if (event_name == nullptr || source_player == nullptr || source_player->m_player_id < 0 || source_player->m_player_id >= 32)
 		{
 			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
