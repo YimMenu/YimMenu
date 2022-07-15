@@ -140,7 +140,7 @@ namespace big
 
 			if (g->notifications.received_event.modder_detect.notify)
 				g_notification_service->push_warning("Protection",
-					fmt::format("Detected {} as cheating.", source_player->get_name())
+					fmt::format("{} sent out a modder event.", source_player->get_name())
 				);
 
 			break;
