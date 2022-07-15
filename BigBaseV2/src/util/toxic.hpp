@@ -195,7 +195,7 @@ namespace big::toxic
 		while (gcount < 1)
 		{
 			Ped SelectedPlayer = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
-			Hash railgun = RAGE_JOAAT("WEAPON_MINIGUN");
+			Hash railgun = RAGE_JOAAT("WEAPON_RAILGUN");
 			Entity ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 			//Ped enemy = TASK::TASK_COMBAT_HATED_TARGETS_AROUND_PED(SelectedPlayer, 20, 0);
 			int my_group = PLAYER::GET_PLAYER_GROUP(SelectedPlayer);

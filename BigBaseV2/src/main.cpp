@@ -20,6 +20,7 @@
 #include "services/notifications/notification_service.hpp"
 #include "services/vehicle_preview/vehicle_preview_service.hpp"
 #include "services/vehicle/vehicle_service.hpp"
+#include "services/players/ped_list_service.hpp"
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -79,6 +80,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					auto pickup_service_instance = std::make_unique<pickup_service>();
 					auto player_service_instance = std::make_unique<player_service>();
 					auto vehicle_preview_service_instance = std::make_unique<vehicle_preview_service>();
+					auto ped_list_service_instance = std::make_unique<ped_list_service>();
 					auto vehicle_service_instance = std::make_unique<vehicle_service>();
 					auto gui_service_instance = std::make_unique<gui_service>();
 					LOG(INFO) << "Registered service instances...";
@@ -124,6 +126,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 					gui_service_instance.reset();
 					LOG(INFO) << "Gui Service reset.";
+					ped_list_service_instance.reset();
+					LOG(INFO) << "Ped List Service reset.";
 					vehicle_service_instance.reset();
 					LOG(INFO) << "Vehicle Service reset.";
 					vehicle_preview_service_instance.reset();
