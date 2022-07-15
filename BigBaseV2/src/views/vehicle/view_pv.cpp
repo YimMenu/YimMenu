@@ -136,7 +136,7 @@ namespace big
 									spawn_plate = personal_veh->get_plate();
 								}
 
-								auto veh = vehicle::clone_from_vehiclie_data(veh_data, spawn_location, spawn_heading);
+								auto veh = vehicle::clone_from_vehicle_data(veh_data, spawn_location, spawn_heading);
 
 								if (g->clone_pv.spawn_maxed)
 								{

@@ -199,7 +199,7 @@ namespace big::vehicle
 		return veh;
 	}
 
-	inline Vehicle clone_from_vehiclie_data(std::map<int, int32_t>& data, Vector3 location, float heading)
+	inline Vehicle clone_from_vehicle_data(std::map<int, int32_t>& data, Vector3 location, float heading)
 	{
 		Vector3 tmpLocation = { location.x, location.y, 1200.0f };
 		if (location.z > 1000.0f && location.z < 1400.0)
