@@ -22,37 +22,8 @@ namespace big
 		}
 	}
 
-	void vehicle_helper::set_mp_parameters_for_vehicle(Vehicle vehicle)
+	const char* vehicle_helper::get_mod_slot_name(Hash model, Vehicle vehicle, int mod_slot)
 	{
-		DECORATOR::DECOR_SET_INT(vehicle, "MPBitset", 0);
-		auto networkId = NETWORK::VEH_TO_NET(vehicle);
-		if (NETWORK::NETWORK_GET_ENTITY_IS_NETWORKED(vehicle))
-			NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true);
-		VEHICLE::SET_VEHICLE_IS_STOLEN(vehicle, FALSE);
-	}
-
-	Vehicle vehicle_helper::create_vehicle(Hash modelHash, float x, float y, float z, float heading)
-	{
-		while (!STREAMING::HAS_MODEL_LOADED(modelHash))
-		{
-			STREAMING::REQUEST_MODEL(modelHash);
-			script::get_current()->yield();
-		}
-		*(unsigned short*)big::g_pointers->m_model_spawn_bypass = 0x9090;
-		Vehicle vehicle = VEHICLE::CREATE_VEHICLE(modelHash, x, y, z, heading, TRUE, FALSE, FALSE);
-		*(unsigned short*)big::g_pointers->m_model_spawn_bypass = 0x0574;
-		script::get_current()->yield(); //This allows the car to initalize so when we write things like radio station, it will overwrite.
-		ENTITY::SET_ENTITY_CLEANUP_BY_ENGINE_(vehicle, TRUE);
-		PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), vehicle, -1);
-		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(modelHash);
-		if (*big::g_pointers->m_is_session_started)
-			set_mp_parameters_for_vehicle(vehicle);
-		return vehicle;
-	}
-
-	const char* vehicle_helper::get_mod_slot_name(int mod_slot, Vehicle vehicle)
-	{
-		Hash model = ENTITY::GET_ENTITY_MODEL(vehicle);
 		switch (mod_slot)
 		{
 		case MOD_HOOD:
@@ -181,7 +152,7 @@ namespace big
 		{46, "HORN_XM15_1"}, {47, "HORN_XM15_2"}, {48, "HORN_XM15_3"}
 	};
 
-	const char* vehicle_helper::get_mod_name(int mod, int mod_slot, int mod_count, Vehicle vehicle)
+	const char* vehicle_helper::get_mod_name(Hash model, Vehicle vehicle, int mod_slot, int mod, int mod_count)
 	{
 		if (mod_count == 0)
 			return "";
@@ -195,7 +166,7 @@ namespace big
 			}
 			return "";
 		}
-		Hash model = ENTITY::GET_ENTITY_MODEL(vehicle);
+
 		if (mod_slot == MOD_FRONTWHEEL || mod_slot == MOD_REARWHEEL)
 		{
 			if (mod == -1)
@@ -227,6 +198,8 @@ namespace big
 		case MOD_TRANSMISSION:
 			return HUD::GET_LABEL_TEXT_(fmt::format("CMOD_GBX_{}", (mod + 1)).c_str());
 		}
+
+
 		if (mod > -1)
 		{
 			if (mod_slot == MOD_SIDESKIRT && VEHICLE::GET_NUM_VEHICLE_MODS(vehicle, MOD_SIDESKIRT) < 2)
@@ -257,5 +230,43 @@ namespace big
 			}
 			return HUD::GET_LABEL_TEXT_("CMOD_DEF_0");
 		}
+	}
+
+
+	static const std::map<Hash, std::map<int, std::vector<int32_t>>> mod_blacklists = {
+		{ VEHICLE_BANSHEE, { 
+			{ MOD_SPOILERS, { 3, 4 } },
+			{ MOD_COLUMNSHIFTERLEVERS, { 0, 1, 2 } },
+			{ MOD_SPEAKERS, { 0 } },
+			{ MOD_LIVERY, { 15, 16 } }
+		} },
+		{ VEHICLE_SENTINEL, {
+			{ MOD_SPOILERS, { 4, 5 } },
+			{ MOD_COLUMNSHIFTERLEVERS, { 0, 1, 2 } },
+			{ MOD_SPEAKERS, { 0 } },
+			{ MOD_LIVERY, { 0, 1 } }
+		} }
+	};
+
+	bool vehicle_helper::check_mod_blacklist(Hash model, int mod_slot, int mod)
+	{
+		if (mod_blacklists.find(model) == mod_blacklists.end())
+		{
+			return false;
+		}
+
+		auto veh_slot_blacklist = mod_blacklists.find(model)->second;
+		if (veh_slot_blacklist.find(mod_slot) == veh_slot_blacklist.end())
+		{
+			return false;
+		}
+
+		auto veh_mod_blacklist = veh_slot_blacklist.find(mod_slot)->second;
+		if (std::find(veh_mod_blacklist.begin(), veh_mod_blacklist.end(), mod) != veh_mod_blacklist.end())
+		{
+			return true;
+		}
+
+		return false;
 	}
 }
