@@ -81,6 +81,8 @@ namespace big
 					HUD::REQUEST_ADDITIONAL_TEXT("MOD_MNU", 10);
 					script::get_current()->yield();
 				}
+				
+				VEHICLE::SET_VEHICLE_MOD_KIT(player_vehicle, 0);
 
 				VEHICLE::GET_VEHICLE_COLOURS(player_vehicle, &primary_color, &secondary_color);
 				VEHICLE::GET_VEHICLE_EXTRA_COLOURS(player_vehicle, &pearlescent, &wheel_color);
