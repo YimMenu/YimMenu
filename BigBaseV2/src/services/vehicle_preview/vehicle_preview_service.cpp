@@ -14,6 +14,7 @@ namespace big
 		this->name = "";
 		this->display_name = "";
 		this->display_manufacturer = "";
+		this->clazz = "";
 		this->hash = 0;
 	}
 
@@ -22,6 +23,7 @@ namespace big
 		this->name = item_json["Name"];
 		this->display_name = item_json["Name"];
 		this->display_manufacturer = "";
+		this->clazz = "";
 		this->hash = item_json["Hash"];
 
 		if (!item_json["DisplayName"].is_null())
@@ -36,6 +38,16 @@ namespace big
 		else if (!item_json["Manufacturer"].is_null())
 		{
 			this->display_manufacturer = item_json["Manufacturer"];
+		}
+		
+		if (!item_json["Class"].is_null())
+		{
+			this->clazz = item_json["Class"];
+
+			if (this->clazz == "COMPACTS")
+			{
+				this->clazz = "COMPACT";
+			}
 		}
 	}
 
@@ -92,6 +104,11 @@ namespace big
 		{
 			return m_vehicle_preview_item_arr[idx];
 		}
+	}
+
+	std::vector<std::string>& vehicle_preview_service::get_vehicle_class_arr()
+	{
+		return m_vehicle_class_arr;
 	}
 
 	std::vector<vehicle_preview_item>& vehicle_preview_service::get_vehicle_preview_item_arr()
@@ -189,6 +206,7 @@ namespace big
 			LOG(WARNING) << "Failed to load vehicles.json:\n" << ex.what();
 		}
 
+
 		for (auto& item_json : all_vehicles)
 		{
 			if (
@@ -201,8 +219,18 @@ namespace big
 				continue;
 			}
 
+			auto item = vehicle_preview_item(item_json);
+
 			m_hash_idx_map[item_json["Hash"]] = (int)m_vehicle_preview_item_arr.size();
-			m_vehicle_preview_item_arr.push_back(vehicle_preview_item(item_json));
+
+			m_vehicle_preview_item_arr.push_back(item);
+
+			if (std::find(m_vehicle_class_arr.begin(), m_vehicle_class_arr.end(), item.clazz) == m_vehicle_class_arr.end())
+			{
+				m_vehicle_class_arr.push_back(item.clazz);
+			}
+
+			std::sort(m_vehicle_class_arr.begin(), m_vehicle_class_arr.end());
 		}
 	}
 }
