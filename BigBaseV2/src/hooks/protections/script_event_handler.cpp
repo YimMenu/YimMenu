@@ -144,19 +144,10 @@ namespace big
 				return true;
 			}
 			break;
-		case eRemoteEvent::SendToCayo:
-			if (args[2] == 0 && args[3] == 0 && args[4] == 3 && args[5] == 1 && args[6] == 0)
+		case eRemoteEvent::SendToCayoPerico:
+			if (g->protections.script_events.send_to_location)
 			{
-				if (g->protections.script_events.send_to_island)
-				{
-					format_string(player_name, "Send to Cayo Beach", notify.send_to_island.log, notify.send_to_island.notify);
-
-					return true;
-				}
-			}
-			else 
-			{
-				format_string(player_name, "TSE Freeze", notify.tse_freeze.log, notify.tse_freeze.notify);
+				format_string(player_name, "Send to Cayo Perico", notify.send_to_location.log, notify.send_to_location.notify);
 
 				return true;
 			}
@@ -169,14 +160,44 @@ namespace big
 				return true;
 			}
 			break;
-		case eRemoteEvent::SendToIsland:
-			if (g->protections.script_events.send_to_island)
+		case eRemoteEvent::SendToLocation:
+		{
+			bool known_location = false;
+
+			if (args[2] == 0 && args[3] == 0)
 			{
-				format_string(player_name, "Send to Island", notify.send_to_island.log, notify.send_to_island.notify);
+				if (args[4] == 4 && args[5] == 0)
+				{
+					known_location = true;
+
+					if (g->protections.script_events.send_to_location)
+					{
+						format_string(player_name, "Send to Beach", notify.send_to_location.log, notify.send_to_location.notify);
+
+						return true;
+					}
+				}
+				else if ((args[4] == 3 || args[4] == 4) && args[5] == 1)
+				{
+					known_location = true;
+
+					if (g->protections.script_events.send_to_location)
+					{
+						format_string(player_name, "Send to Cayo Perico", notify.send_to_location.log, notify.send_to_location.notify);
+
+						return true;
+					}
+				}
+			}
+
+			if (!known_location)
+			{
+				format_string(player_name, "TSE Freeze", notify.tse_freeze.log, notify.tse_freeze.notify);
 
 				return true;
 			}
 			break;
+		}
 		case eRemoteEvent::SoundSpam:
 			if (g->protections.script_events.sound_spam)
 			{

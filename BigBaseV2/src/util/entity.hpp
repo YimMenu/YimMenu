@@ -1,5 +1,6 @@
 #pragma once
 #include "gta/joaat.hpp"
+#include "gta/replay.hpp"
 #include "natives.hpp"
 #include "script.hpp"
 #include "math.hpp"

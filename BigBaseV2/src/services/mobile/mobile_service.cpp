@@ -7,12 +7,17 @@
 namespace big
 {
 	personal_vehicle::personal_vehicle(int idx, script_global vehicle_idx)
-		: m_id(idx)
+		: m_id(idx), m_vehicle_idx(vehicle_idx)
 	{
-		m_hash = *vehicle_idx.at(66).as<Hash*>();
-		m_state_bitfield = vehicle_idx.at(103).as<int*>();
+		m_plate = m_vehicle_idx.at(1).as<char*>();
+		m_hash = *m_vehicle_idx.at(66).as<Hash*>();
+		m_state_bitfield = m_vehicle_idx.at(103).as<int*>();
 
-		m_name = HUD::GET_LABEL_TEXT_(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_hash));
+		m_name = fmt::format(
+			"{} ({})", 
+			HUD::GET_LABEL_TEXT_(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_hash)), 
+			m_plate
+		);
 	}
 
 	std::string personal_vehicle::get_display_name() const
@@ -28,6 +33,16 @@ namespace big
 	int personal_vehicle::get_id() const
 	{
 		return m_id;
+	}
+
+	const char* personal_vehicle::get_plate() const
+	{
+		return m_plate;
+	}
+
+	script_global personal_vehicle::get_vehicle_idx() const
+	{
+		return m_vehicle_idx;
 	}
 
 	void personal_vehicle::summon() const
@@ -51,8 +66,7 @@ namespace big
 		if (std::chrono::duration_cast<std::chrono::seconds>(now - m_last_update) < 10s) return;
 		m_last_update = std::chrono::high_resolution_clock::now();
 
-		g_fiber_pool->queue_job([this]
-		{
+		g_fiber_pool->queue_job([this] {
 			register_vehicles();
 		});
 	}
@@ -75,7 +89,7 @@ namespace big
 			if (STREAMING::IS_MODEL_A_VEHICLE(hash))
 			{
 				auto veh = std::make_unique<personal_vehicle>(i, veh_idx_global);
-				
+
 				if (exists)
 				{
 					// vehicle name is no longer the same, update the vehicle at that index

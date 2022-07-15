@@ -158,7 +158,7 @@ namespace big
 					ImGui::SameLine();
 
 					components::button("Vehicle Crash", [] {
-						Vehicle veh = vehicle::spawn("arbitergt", ENTITY::GET_ENTITY_COORDS(g_player_service->get_selected()->id(), false), 0);
+						Vehicle veh = vehicle::spawn(rage::joaat("arbitergt"), ENTITY::GET_ENTITY_COORDS(g_player_service->get_selected()->id(), false), 0);
 						script::get_current()->yield(3s);
 						entity::delete_entity_notp(veh);
 					});
@@ -255,7 +255,7 @@ namespace big
 						Vector3 pos = ENTITY::GET_ENTITY_COORDS(ply, true);
 						float heading = ENTITY::GET_ENTITY_HEADING(PED::IS_PED_IN_ANY_VEHICLE(ply, false) ? PED::GET_VEHICLE_PED_IS_IN(ply, false) : ply);
 
-						Vehicle veh = vehicle::spawn("oppressormk2", pos, heading, true);
+						Vehicle veh = vehicle::spawn(rage::joaat("oppressormk2"), pos, heading, true);
 						VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
 						vehicle::max_vehicle(veh);
 						ENTITY::SET_ENTITY_PROOFS(veh, false, true, true, false, false, false, false, false);
@@ -301,7 +301,7 @@ namespace big
 						Vector3 pos = ENTITY::GET_ENTITY_COORDS(ply, true) + Vector3(0,0, 500);
 						float heading = ENTITY::GET_ENTITY_HEADING(PED::IS_PED_IN_ANY_VEHICLE(ply, false) ? PED::GET_VEHICLE_PED_IS_IN(ply, false) : ply);
 
-						Vehicle veh = vehicle::spawn("lazer", pos, heading, true, false);
+						Vehicle veh = vehicle::spawn(rage::joaat("lazer"), pos, heading, true);
 						VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
 						VEHICLE::CONTROL_LANDING_GEAR(veh, 3);
 

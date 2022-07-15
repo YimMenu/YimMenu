@@ -58,7 +58,7 @@ namespace big
 				pair remote_off_radar{};
 				pair rotate_cam{};
 				pair send_to_cutscene{};
-				pair send_to_island{};
+				pair send_to_location{};
 				pair sound_spam{};
 				pair spectate{};
 				pair transaction_error{};
@@ -113,7 +113,7 @@ namespace big
 				bool remote_off_radar = true;
 				bool rotate_cam = true;
 				bool send_to_cutscene = true;
-				bool send_to_island = true;
+				bool send_to_location = true;
 				bool sound_spam = true;
 				bool spectate = true;
 				bool transaction_error = true;
@@ -136,7 +136,6 @@ namespace big
 			bool clean_player = false;
 			bool force_wanted_level = false;
 			bool free_cam = false;
-			bool godmode = false;
 			bool invisibility = false;
 			bool local_visibility = true;
 			bool never_wanted = false;
@@ -147,6 +146,7 @@ namespace big
 			bool allow_ragdoll = false;
 			int wanted_level = 0;
 
+			bool god_mode = false;
 			bool proof_bullet = false;
 			bool proof_fire = false;
 			bool proof_collision = false;
@@ -186,6 +186,17 @@ namespace big
 			bool preview_vehicle = false;
 			bool spawn_inside = false;
 			bool spawn_maxed = false;
+			std::string plate = "";
+		};
+
+		struct clone_pv
+		{
+			bool preview_vehicle = false;
+			bool spawn_inside = false;
+			bool spawn_clone = false;
+			bool spawn_maxed = false;
+			bool clone_plate = false;
+			std::string plate = "";
 		};
 
 		struct spoofing
@@ -220,11 +231,10 @@ namespace big
 
 		struct vehicle {
 			struct speedo_meter {
-				SpeedoMeter type = SpeedoMeter::DISABLED;
-
 				float x = .9f;
 				float y = .72f;
 
+				bool enabled = false;
 				bool left_side = false;
 			};
 
@@ -237,24 +247,34 @@ namespace big
 				float speed = 1;
 			};
 
+			SpeedUnit speed_unit = SpeedUnit::MIPH;
+
+			bool god_mode = false;
+			bool proof_bullet = false;
+			bool proof_fire = false;
+			bool proof_collision = false;
+			bool proof_melee = false;
+			bool proof_explosion = false;
+			bool proof_steam = false;
+			bool proof_water = false;
+			uint32_t proof_mask = 0;
+
 			bool auto_drive_to_waypoint = false;
 			bool auto_drive_wander = false;
 			bool auto_turn_signals = false;
 			bool drive_on_water = false;
-			bool god_mode = false;
 			bool horn_boost = false;
 			bool vehicle_jump = false;
 			bool instant_brake = false;
 			bool is_targetable = true;
-			bool ls_customs = false; // don't save this to disk
-			bool pv_teleport_into = false;
+			bool ls_customs = false; // don't save this to dis
 			bool seatbelt = false;
 			bool turn_signals = false;
 			bool flares = false;
 			bool chaff = false;
 			bool bombs = false;
 			char bomb_type[30] = "";
-			int auto_drive_speed = 1;
+			float auto_drive_speed = 1;
 			int driving_style_flags = 443;
 			int driving_style_id = 0;
 			int rainbow_paint = 0;
@@ -370,6 +390,7 @@ namespace big
 		session session{};
 		settings settings{};
 		spawn spawn{};
+		clone_pv clone_pv{};
 		spoofing spoofing{};
 		vehicle vehicle{};
 		weapons weapons{};
@@ -468,8 +489,8 @@ namespace big
 				script_handler.rotate_cam.notify = script_handler_j["rotate_cam"]["notify"];
 				script_handler.send_to_cutscene.log = script_handler_j["send_to_cutscene"]["log"];
 				script_handler.send_to_cutscene.notify = script_handler_j["send_to_cutscene"]["notify"];
-				script_handler.send_to_island.log = script_handler_j["send_to_island"]["log"];
-				script_handler.send_to_island.notify = script_handler_j["send_to_island"]["notify"];
+				script_handler.send_to_location.log = script_handler_j["send_to_location"]["log"];
+				script_handler.send_to_location.notify = script_handler_j["send_to_location"]["notify"];
 				script_handler.sound_spam.log = script_handler_j["sound_spam"]["log"];
 				script_handler.sound_spam.notify = script_handler_j["sound_spam"]["notify"];
 				script_handler.spectate.log = script_handler_j["spectate"]["log"];
@@ -508,7 +529,7 @@ namespace big
 				script_handler.remote_off_radar = script_handler_j["remote_off_radar"];
 				script_handler.rotate_cam = script_handler_j["rotate_cam"];
 				script_handler.send_to_cutscene = script_handler_j["send_to_cutscene"];
-				script_handler.send_to_island = script_handler_j["send_to_island"];
+				script_handler.send_to_location = script_handler_j["send_to_location"];
 				script_handler.sound_spam = script_handler_j["sound_spam"];
 				script_handler.spectate = script_handler_j["spectate"];
 				script_handler.transaction_error = script_handler_j["transaction_error"];
@@ -533,14 +554,32 @@ namespace big
 			this->tunables.cable_cars = j["tunables"]["cable_cars"];
 			this->tunables.always_controll = j["tunables"]["always_controll"];
 
+			this->self.god_mode = j["self"]["god_mode"];
+			this->self.proof_bullet = j["self"]["proof_bullet"];
+			this->self.proof_fire = j["self"]["proof_fire"];
+			this->self.proof_collision = j["self"]["proof_collision"];
+			this->self.proof_melee = j["self"]["proof_melee"];
+			this->self.proof_explosion = j["self"]["proof_explosion"];
+			this->self.proof_steam = j["self"]["proof_steam"];
+			this->self.proof_drown = j["self"]["proof_drown"];
+			this->self.proof_water = j["self"]["proof_water"];
+			this->self.proof_mask = j["self"]["proof_mask"];
 			this->self.clean_player = j["self"]["clean_player"];
-			this->self.godmode = j["self"]["godmode"];
 			this->self.invisibility = j["self"]["invisibility"];
 			this->self.local_visibility = j["self"]["local_visibility"];
 			this->self.never_wanted = j["self"]["never_wanted"];
 			this->self.no_ragdoll = j["self"]["no_ragdoll"];
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
+			this->self.proof_bullet = j["self"]["proof_bullet"];
+			this->self.proof_fire = j["self"]["proof_fire"];
+			this->self.proof_collision = j["self"]["proof_collision"];
+			this->self.proof_melee = j["self"]["proof_melee"];
+			this->self.proof_explosion = j["self"]["proof_explosion"];
+			this->self.proof_steam = j["self"]["proof_steam"];
+			this->self.proof_drown = j["self"]["proof_drown"];
+			this->self.proof_water = j["self"]["proof_water"];
+			this->self.proof_mask = j["self"]["proof_mask"];
 			this->self.allow_ragdoll = j["self"]["allow_ragdoll"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -549,6 +588,14 @@ namespace big
 			this->spawn.preview_vehicle = j["spawn"]["preview_vehicle"];
 			this->spawn.spawn_inside = j["spawn"]["spawn_inside"];
 			this->spawn.spawn_maxed = j["spawn"]["spawn_maxed"];
+			this->spawn.plate = j["spawn"]["plate"];
+
+			this->clone_pv.preview_vehicle = j["clone_pv"]["preview_vehicle"];
+			this->clone_pv.spawn_inside = j["clone_pv"]["spawn_inside"];
+			this->clone_pv.spawn_clone = j["clone_pv"]["spawn_clone"];
+			this->clone_pv.spawn_maxed = j["clone_pv"]["spawn_maxed"];
+			this->clone_pv.clone_plate = j["clone_pv"]["clone_plate"];
+			this->clone_pv.plate = j["clone_pv"]["plate"];
 
 			this->spoofing.spoof_ip = j["spoofing"]["spoof_ip"];
 			this->spoofing.spoof_rockstar_id = j["spoofing"]["spoof_rockstar_id"];
@@ -559,18 +606,27 @@ namespace big
 			this->spoofing.rockstar_id = j["spoofing"]["rockstar_id"];
 			this->spoofing.username = j["spoofing"]["username"];
 
+			this->vehicle.speed_unit = (SpeedUnit)j["vehicle"]["speed_unit"];
+			this->vehicle.god_mode = j["vehicle"]["god_mode"];
+			this->vehicle.proof_bullet = j["vehicle"]["proof_bullet"];
+			this->vehicle.proof_fire = j["vehicle"]["proof_fire"];
+			this->vehicle.proof_collision = j["vehicle"]["proof_collision"];
+			this->vehicle.proof_melee = j["vehicle"]["proof_melee"];
+			this->vehicle.proof_explosion = j["vehicle"]["proof_explosion"];
+			this->vehicle.proof_steam = j["vehicle"]["proof_steam"];
+			this->vehicle.proof_water = j["vehicle"]["proof_water"];
+			this->vehicle.proof_mask = j["vehicle"]["proof_mask"];
 			this->vehicle.auto_drive_speed = j["vehicle"]["auto_drive_speed"];
 			this->vehicle.auto_drive_to_waypoint = j["vehicle"]["auto_drive_to_waypoint"];
 			this->vehicle.auto_drive_wander = j["vehicle"]["auto_drive_wander"];
 			this->vehicle.auto_turn_signals = j["vehicle"]["auto_turn_signals"];
 			this->vehicle.drive_on_water = j["vehicle"]["drive_on_water"];
-			this->vehicle.driving_style_id = j["vehicle"]["driving_style"];
-			this->vehicle.god_mode = j["vehicle"]["god_mode"];
+			this->vehicle.driving_style_id = j["vehicle"]["driving_style_id"];
+			this->vehicle.driving_style_flags = j["vehicle"]["driving_style_flag"];
 			this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
 			this->vehicle.vehicle_jump = j["vehicle"]["vehicle_jump"];
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
-			this->vehicle.pv_teleport_into = j["vehicle"]["pv_teleport_into"];
 			this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
 			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
 			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
@@ -578,7 +634,7 @@ namespace big
 			this->vehicle.chaff = j["vehicle"]["chaff"];
 			this->vehicle.bombs = j["vehicle"]["bombs"];
 
-			this->vehicle.speedo_meter.type = (SpeedoMeter)j["vehicle"]["speedo_meter"]["type"];
+			this->vehicle.speedo_meter.enabled = j["vehicle"]["speedo_meter"]["enabled"];
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
 			this->vehicle.speedo_meter.x = j["vehicle"]["speedo_meter"]["position_x"];
 			this->vehicle.speedo_meter.y = j["vehicle"]["speedo_meter"]["position_y"];
@@ -668,7 +724,7 @@ namespace big
 					"notifications", {
 						{ "gta_thread_kill", return_notify_pair(g->notifications.gta_thread_kill) },
 						{ "gta_thread_start", return_notify_pair(g->notifications.gta_thread_start) },
-						{"net_array_error", return_notify_pair(g->notifications.net_array_error)},
+						{ "net_array_error", return_notify_pair(g->notifications.net_array_error) },
 						{ "network_player_mgr_init", return_notify_pair(g->notifications.network_player_mgr_init) },
 						{ "network_player_mgr_shutdown", return_notify_pair(g->notifications.network_player_mgr_shutdown) },
 						{ "player_join", {
@@ -705,7 +761,7 @@ namespace big
 								{ "remote_off_radar", return_notify_pair(script_handler_notifications.remote_off_radar) },
 								{ "rotate_cam", return_notify_pair(script_handler_notifications.rotate_cam) },
 								{ "send_to_cutscene", return_notify_pair(script_handler_notifications.send_to_cutscene) },
-								{ "send_to_island", return_notify_pair(script_handler_notifications.send_to_island) },
+								{ "send_to_location", return_notify_pair(script_handler_notifications.send_to_location) },
 								{ "sound_spam", return_notify_pair(script_handler_notifications.sound_spam) },
 								{ "spectate", return_notify_pair(script_handler_notifications.spectate) },
 								{ "transaction_error", return_notify_pair(script_handler_notifications.transaction_error) },
@@ -739,7 +795,7 @@ namespace big
 								{ "remote_off_radar", script_handler_protections.remote_off_radar },
 								{ "rotate_cam", script_handler_protections.rotate_cam },
 								{ "send_to_cutscene", script_handler_protections.send_to_cutscene },
-								{ "send_to_island", script_handler_protections.send_to_island },
+								{ "send_to_location", script_handler_protections.send_to_location },
 								{ "sound_spam", script_handler_protections.sound_spam },
 								{ "spectate", script_handler_protections.spectate },
 								{ "transaction_error", script_handler_protections.transaction_error },
@@ -774,15 +830,34 @@ namespace big
 				},
 				{
 					"self", {
+						{ "god_mode", this->self.god_mode },
+						{ "proof_bullet", this->self.proof_bullet },
+						{ "proof_fire", this->self.proof_fire },
+						{ "proof_collision", this->self.proof_collision },
+						{ "proof_melee", this->self.proof_melee },
+						{ "proof_explosion", this->self.proof_explosion },
+						{ "proof_steam", this->self.proof_steam },
+						{ "proof_drown", this->self.proof_drown },
+						{ "proof_water", this->self.proof_water },
+						{ "proof_mask", this->self.proof_mask },
 						{ "clean_player", this->self.clean_player },
-						{ "godmode", this->self.godmode },
 						{ "invisibility", this->self.invisibility },
 						{ "local_visibility", this->self.local_visibility },
 						{ "never_wanted", this->self.never_wanted },
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
 						{ "super_run", this->self.super_run },
-						{ "allow_ragdoll", this->self.allow_ragdoll }
+						{ "allow_ragdoll", this->self.allow_ragdoll },
+
+						{ "proof_bullet", this->self.proof_bullet },
+						{ "proof_fire", this->self.proof_fire },
+						{ "proof_collision", this->self.proof_collision },
+						{ "proof_melee", this->self.proof_melee },
+						{ "proof_explosion", this->self.proof_explosion },
+						{ "proof_steam", this->self.proof_steam },
+						{ "proof_drown", this->self.proof_drown },
+						{ "proof_water", this->self.proof_water },
+						{ "proof_mask", this->self.proof_mask }
 					}
 				},
 				{
@@ -795,10 +870,21 @@ namespace big
 					}
 				},
 				{
+					"clone_pv", {
+						{ "preview_vehicle", this->clone_pv.preview_vehicle },
+						{ "spawn_inside", this->clone_pv.spawn_inside },
+						{ "spawn_clone", this->clone_pv.spawn_clone },
+						{ "spawn_maxed", this->clone_pv.spawn_maxed },
+						{ "clone_plate", this->clone_pv.clone_plate },
+						{ "plate", this->clone_pv.plate }
+					}
+				},
+				{
 					"spawn", {
 						{ "preview_vehicle", this->spawn.preview_vehicle },
 						{ "spawn_inside", this->spawn.spawn_inside },
-						{ "spawn_maxed", this->spawn.spawn_maxed}
+						{ "spawn_maxed", this->spawn.spawn_maxed},
+						{ "plate", this->spawn.plate }
 					}
 				},
 				{
@@ -818,18 +904,27 @@ namespace big
 				},
 				{
 					"vehicle", {
+						{ "speed_unit", this->vehicle.speed_unit },
+						{ "god_mode", this->vehicle.god_mode },
+						{ "proof_bullet", this->vehicle.proof_bullet },
+						{ "proof_fire", this->vehicle.proof_fire },
+						{ "proof_collision", this->vehicle.proof_collision },
+						{ "proof_melee", this->vehicle.proof_melee },
+						{ "proof_explosion", this->vehicle.proof_explosion },
+						{ "proof_steam", this->vehicle.proof_steam },
+						{ "proof_water", this->vehicle.proof_water },
+						{ "proof_mask", this->vehicle.proof_mask },
 						{ "auto_drive_speed", this->vehicle.auto_drive_speed },
 						{ "auto_drive_to_waypoint", this->vehicle.auto_drive_to_waypoint },
 						{ "auto_drive_wander", this->vehicle.auto_drive_wander },
 						{ "auto_turn_signals", this->vehicle.auto_turn_signals },
 						{ "drive_on_water", this->vehicle.drive_on_water },
-						{ "driving_style", this->vehicle.driving_style_id },
-						{ "god_mode", this->vehicle.god_mode },
+						{ "driving_style_id", this->vehicle.driving_style_id },
+						{ "driving_style_flag", this->vehicle.driving_style_flags },
 						{ "horn_boost", this->vehicle.horn_boost },
 						{ "vehicle_jump", this->vehicle.vehicle_jump },
 						{ "instant_brake", this->vehicle.instant_brake },
 						{ "is_targetable", this->vehicle.is_targetable },
-						{ "pv_teleport_into", this->vehicle.pv_teleport_into },
 						{ "rainbow_paint", this->vehicle.rainbow_paint },
 						{ "turn_signals", this->vehicle.turn_signals },
 						{ "flares", this->vehicle.flares },
@@ -838,7 +933,7 @@ namespace big
 						{ "seatbelt", this->vehicle.seatbelt },
 						{
 							"speedo_meter", {
-								{ "type", (int)this->vehicle.speedo_meter.type },
+								{ "enabled", this->vehicle.speedo_meter.enabled },
 								{ "left_side", this->vehicle.speedo_meter.left_side },
 								{ "position_x", this->vehicle.speedo_meter.x },
 								{ "position_y", this->vehicle.speedo_meter.y },
