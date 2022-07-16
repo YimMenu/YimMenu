@@ -402,7 +402,7 @@ namespace big::vehicle
 		Hash vehicle = VEHICLE_CARGOBOB3;
 		Vehicle veh = vehicle::spawn(vehicle, pos, heading, true);
 		VEHICLE::CREATE_PICK_UP_ROPE_FOR_CARGOBOB(veh, 1);
-		telport_into_veh(veh);
+		teleport_into_vehicle(veh);
 
 	}
 

@@ -329,11 +329,8 @@ namespace big
 					});
 
 				ImGui::SameLine();
-
-
-				if (g_player_service->get_selected()->is_valid())
-				{
-					components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player()); 
+				
+				components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player());
 					});
 
 
@@ -391,8 +388,9 @@ namespace big
 					auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), true);
 					FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 13, 1, false, true, 0, false);
 					});
-								
+
 				ImGui::TreePop();
+				
 			}
 		}
 	}
