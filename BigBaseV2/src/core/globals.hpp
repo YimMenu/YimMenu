@@ -237,6 +237,7 @@ namespace big
 
 		struct tunables {
 			bool disable_phone = false;
+			bool phone_anim = false;
 			bool no_idle_kick = false;
 		};
 

@@ -70,7 +70,7 @@ namespace big
 		});
 
 		// arbitrary subtraction this looked nice so idc, works for all resolutions as well
-		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 230 - 38 * 4) }))
+		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 230 - 38 * 5) }))
 		{
 
 			auto item_arr = g_vehicle_preview_service->get_vehicle_preview_item_arr();

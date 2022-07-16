@@ -53,6 +53,7 @@ namespace big
 		ImGui::Checkbox("Off Radar", &g->self.off_radar);
 		ImGui::Checkbox("Free Cam", &g->self.free_cam);
 		ImGui::Checkbox("Disable Phone", &g->tunables.disable_phone);
+		ImGui::Checkbox("Phone Anim", &g->tunables.phone_anim);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
