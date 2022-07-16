@@ -61,8 +61,6 @@ namespace big
 
 		ImGui::Separator();
 
-		//components::small_text("Rainbow Paint");
-
 		if (ImGui::TreeNode("Rainbow Paint"))
 		{
 			ImGui::Checkbox("Primary", &g->vehicle.rainbow_primary);
