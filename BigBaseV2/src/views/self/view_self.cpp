@@ -2,6 +2,7 @@
 #include "util/entity.hpp"
 #include "util/player.hpp"
 #include "views/view.hpp"
+#include "util/ped.hpp"
 
 namespace big
 {

@@ -5,6 +5,7 @@
 #include "util/toxic.hpp"
 #include "util/misc.hpp"
 #include "util/ped.hpp"
+#include "util/vehicle.hpp"
 #include "util/teleport.hpp"
 #include "util/entity.hpp"
 #include "views/view.hpp"
@@ -27,241 +28,255 @@ namespace big
 		ImGui::SameLine();
 
 		ImGui::Checkbox("Freeze All", &g->player.freezeallplayers);
-
-		if (ImGui::TreeNode("Misc")) {
-			components::button("Steal Outfit", [] {
-				ped::steal_outfit(
-					PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
-				);
-				});
-
-			ImGui::SameLine();
-
-			components::button("Steal Identity", [] {
-				ped::steal_identity(
-					PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
-				);
-				});
-
-			components::button("Clear Wanted Level", [] {
-				toxic::clear_wanted_player(g_player_service->get_selected()->id());
-				});
-
-			ImGui::SameLine();
-
-			ImGui::Checkbox("Never Wanted", &g_player_service->get_selected()->never_wanted);
-
-			components::button("Give Health", [] {
-				g_pickup_service->give_player_health(g_player_service->get_selected()->id());
-				});
-
-			ImGui::SameLine();
-
-			components::button("Give Armour", [] {
-				g_pickup_service->give_player_armour(g_player_service->get_selected()->id());
-				});
-
-			components::button("Give Ammo", [] {
-				g_pickup_service->give_player_ammo(g_player_service->get_selected()->id());
-				});
-
-			ImGui::SameLine();
-
-			components::button("Give Weapons", [] {
-				g_pickup_service->give_player_weapons(g_player_service->get_selected()->id());
-				});
-
-			components::button("Spawn Bodyguard", [] {
-				toxic::bodyguard(g_player_service->get_selected()->id());
-				});
-
-			ImGui::SameLine();
-
-
-			if (ImGui::TreeNode("Chase"))
-			{
-				components::button("Car Chase", [] {
-
-					g->player.car_chase = true;
+				
+			if (ImGui::TreeNode("Misc")) {
+				components::button("Steal Outfit", [] {
+					ped::steal_outfit(
+						PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
+					);
 					});
 
 				ImGui::SameLine();
 
-				components::button("Plane Chase", [] {
+				components::button("Steal Identity", [] {
+					ped::steal_identity(
+						PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
+					);
+					});
 
-					g->player.plane_chase = true;
+				components::button("Clear Wanted Level", [] {
+					toxic::clear_wanted_player(g_player_service->get_selected()->id());
 					});
 
 				ImGui::SameLine();
 
-				components::button(" Heli Chase", [] {
+				ImGui::Checkbox("Never Wanted", &g_player_service->get_selected()->never_wanted);
 
-					g->player.heli_chase = true;
+				components::button("Give Health", [] {
+					g_pickup_service->give_player_health(g_player_service->get_selected()->id());
 					});
-			}
 
-			ImGui::TreePop();
-		}
+				ImGui::SameLine();
 
-		if (ImGui::TreeNode("Info")) {
+				components::button("Give Armour", [] {
+					g_pickup_service->give_player_armour(g_player_service->get_selected()->id());
+					});
 
-			ImGui::Text("Player ID: %d", g_player_service->get_selected()->id());
+				components::button("Give Ammo", [] {
+					g_pickup_service->give_player_ammo(g_player_service->get_selected()->id());
+					});
 
-			ImGui::Text("Session Host: %s", g_player_service->get_selected()->is_host() ? "Yes" : "No");
+				ImGui::SameLine();
 
-			ImGui::Separator();
+				components::button("Give Weapons", [] {
+					g_pickup_service->give_player_weapons(g_player_service->get_selected()->id());
+					});
 
-			if (CPlayerInfo* player_info = g_player_service->get_selected()->get_player_info(); player_info != nullptr)
-			{
-				ImGui::Text("Wanted Level: %d", player_info->m_wanted_level);
-			}
+				components::button("Spawn Bodyguard", [] {
+					toxic::bodyguard(g_player_service->get_selected()->id());
+					});
 
-			if (CPed* ped = g_player_service->get_selected()->get_ped(); ped != nullptr)
-			{
-				ImGui::Text("Player God Mode: %s",
-					misc::has_bit_set((int*)&ped->m_damage_bits, 8) ? "Yes" : "No"
-				);
-			}
-
-			CAutomobile* vehicle = g_player_service->get_selected()->get_current_vehicle();
-			ImGui::Text("Vehicle God Mode: %s",
-				vehicle == nullptr ? "No vehicle detected" :
-				misc::has_bit_set((int*)&vehicle->m_damage_bits, 8) ? "Yes" : "No"
-			);
-
-			ImGui::Separator();
-
-			if (rage::netPlayerData* net_player_data = g_player_service->get_selected()->get_net_data(); net_player_data != nullptr)
-			{
-				ImGui::Text("Rockstar ID: %d", net_player_data->m_rockstar_id);
-				ImGui::Text(
-					"IP Address: %d.%d.%d.%d:%d",
-					net_player_data->m_external_ip.m_field1,
-					net_player_data->m_external_ip.m_field2,
-					net_player_data->m_external_ip.m_field3,
-					net_player_data->m_external_ip.m_field4,
-					net_player_data->m_external_port
-				);
-			}
-
-			ImGui::TreePop();
-		}
-
-		if (ImGui::TreeNode("Teleport")) {
-
-			components::button("Teleport", [] {
-				teleport::to_player(g_player_service->get_selected()->id());
-				});
-
-			ImGui::SameLine();
-
-			components::button("Bring", [] {
-				teleport::bring_player(g_player_service->get_selected()->id());
-				});
-
-			components::button("Teleport into Vehicle", [] {
-				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
-
-				teleport::into_vehicle(veh);
-				});
-
-			components::button("Teleport with Paracute", [] {
-				Hash parachute = RAGE_JOAAT("GADGET_PARACHUTE");
-				Ped SelectedPlayer = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
-				WEAPON::GIVE_WEAPON_TO_PED(self::ped, parachute, 0, false, true);
-				Vector3 TargetCoords = teleport::GetEntityCoords(SelectedPlayer);
-				TargetCoords.z += 80.f;
-				teleport::TPtoCoords(self::ped, TargetCoords, false, true);
-				});
-
-			ImGui::TreePop();
-		}
-
-		if (ImGui::TreeNode("Toxic")) {
-			components::button("Explode Self", [] {
-				toxic::blame_explode_player(
-					g_player_service->get_selected()->id(),
-					g_player_service->get_selected()->id(),
-					eExplosionType::PLANE, 1000, false, true, 10000.f
-				);
-				});
-
-			ImGui::SameLine();
-
-			components::button("Taze", [] {
-				toxic::taze_player(g_player_service->get_selected()->id());
-				});
-
-			ImGui::SameLine();
-
-			components::button("Kick to SP", [] {
-				toxic::KICK_TO_SP(g_player_service->get_selected()->id());
-				});
-
-			components::button("EMP", [] {
-				toxic::emp_player(g_player_service->get_selected()->id());
-				});
-
-			ImGui::SameLine();
-
-			components::button("Kick From Vehicle", [] {
-				toxic::kick_from_vehicle(g_player_service->get_selected()->id());
-				});
-
-			components::button("Airstrike", [] {
-				toxic::airstrike(g_player_service->get_selected()->id());
-				});
-
-			ImGui::SameLine();
-
-			components::button("Flying Vehicle", [] {
-				toxic::flying_vehicle(g_player_service->get_selected()->id());
-				});
-
-			components::button("Destroy vehicle", [] {
-				toxic::destroyveh(g_player_service->get_selected()->id());
-				});
-
-			ImGui::SameLine();
-
-			components::button("Send to APT", [] {
-				toxic::Apartment(g_player_service->get_selected()->id());
-				});
-
-			/*components::button("Crash Script", [] {
-				toxic::crash(g_player_service->get_selected()->id());
-			});*/
-
-			components::button("Send to Cayo", [] {
-				toxic::send_to_cayo_perico(g_player_service->get_selected()->id());
-				});
-
-			ImGui::SameLine();
-
-			components::button("Bitching", [] {
-				toxic::bitching(g_player_service->get_selected()->id());
-				});
-
-			ImGui::SameLine();
-
-			components::button("Burst Tires", [] {
-				int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
-				if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0))
+				ImGui::SameLine();
+				
+				if (ImGui::TreeNode("Chase"))
 				{
-					toxic::BurstTires(Handle);
-				}
-				else
-				{
-					g_notification_service->push_warning("Warning", "Player is not in a Vehicle.");
-				}
-				});
+					components::button("Car Chase", [] {
 
-			if (g_player_service->get_selected()->is_valid())
-			{
-				components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player());
+						g->player.car_chase = true;
+						});
+
+					ImGui::SameLine();
+
+					components::button("Plane Chase", [] {
+
+						g->player.plane_chase = true;
+						});
+
+					ImGui::SameLine();
+
+					components::button(" Heli Chase", [] {
+
+						g->player.heli_chase = true;
+						});
+				}
+
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Info")) {
+
+				ImGui::Text("Player ID: %d", g_player_service->get_selected()->id());
+
+				ImGui::Text("Session Host: %s", g_player_service->get_selected()->is_host() ? "Yes" : "No");
+
+				ImGui::Separator();
+
+				if (CPlayerInfo* player_info = g_player_service->get_selected()->get_player_info(); player_info != nullptr)
+				{
+					ImGui::Text("Wanted Level: %d", player_info->m_wanted_level);
+				}
+
+				if (CPed* ped = g_player_service->get_selected()->get_ped(); ped != nullptr)
+				{
+					ImGui::Text("Player God Mode: %s",
+						misc::has_bit_set((int*)&ped->m_damage_bits, 8) ? "Yes" : "No"
+					);
+				}
+
+				CAutomobile* vehicle = g_player_service->get_selected()->get_current_vehicle();
+				ImGui::Text("Vehicle God Mode: %s",
+					vehicle == nullptr ? "No vehicle detected" :
+					misc::has_bit_set((int*)&vehicle->m_damage_bits, 8) ? "Yes" : "No"
+				);
+
+				ImGui::Separator();
+
+				if (rage::netPlayerData* net_player_data = g_player_service->get_selected()->get_net_data(); net_player_data != nullptr)
+				{
+					ImGui::Text("Rockstar ID: %d", net_player_data->m_rockstar_id);
+					ImGui::Text(
+						"IP Address: %d.%d.%d.%d:%d",
+						net_player_data->m_external_ip.m_field1,
+						net_player_data->m_external_ip.m_field2,
+						net_player_data->m_external_ip.m_field3,
+						net_player_data->m_external_ip.m_field4,
+						net_player_data->m_external_port
+					);
+				}
+
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Teleport")) {
+
+				components::button("Teleport", [] {
+					teleport::to_player(g_player_service->get_selected()->id());
 					});
 
 				ImGui::SameLine();
+
+				components::button("Bring", [] {
+					teleport::bring_player(g_player_service->get_selected()->id());
+					});
+
+				components::button("Teleport into Vehicle", [] {
+					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
+
+					teleport::into_vehicle(veh);
+					});
+				
+				components::button("Teleport with Paracute", [] {
+					Hash parachute = RAGE_JOAAT("GADGET_PARACHUTE");
+					Ped SelectedPlayer = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+					WEAPON::GIVE_WEAPON_TO_PED(self::ped, parachute, 0, false, true);
+					Vector3 TargetCoords = teleport::GetEntityCoords(SelectedPlayer);
+					TargetCoords.z += 80.f;
+					teleport::TPtoCoords(self::ped, TargetCoords, false, true);
+					});
+
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Vehicle"))
+			{
+				components::button("Slingshot", [] {
+					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
+					if (entity::take_control_of(veh))
+						VEHICLE::SET_VEHICLE_FORWARD_SPEED(veh, VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(ENTITY::GET_ENTITY_MODEL(veh)) * 2);
+					});
+
+				ImGui::SameLine();
+
+				components::button("Burst Tires", [] {
+					int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+					if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0))
+					{
+						toxic::BurstTires(Handle);
+					}
+					else
+					{
+						g_notification_service->push_warning("Warning", "Player is not in a Vehicle.");
+					}
+					});
+
+				ImGui::SameLine();
+
+				components::button("Flying Vehicle", [] {
+					toxic::flying_vehicle(g_player_service->get_selected()->id());
+					});
+
+				components::button("Destroy vehicle", [] {
+					toxic::destroyveh(g_player_service->get_selected()->id());
+					});
+
+				ImGui::SameLine();
+
+				components::button("Kick From Vehicle", [] {
+					toxic::kick_from_vehicle(g_player_service->get_selected()->id());
+					});
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Toxic")) {
+				components::button("Explode Self", [] {
+					toxic::blame_explode_player(
+						g_player_service->get_selected()->id(),
+						g_player_service->get_selected()->id(),
+						eExplosionType::PLANE, 1000, false, true, 10000.f
+					);
+					});
+
+				ImGui::SameLine();
+
+				components::button("Taze", [] {
+					toxic::taze_player(g_player_service->get_selected()->id());
+					});
+
+				ImGui::SameLine();
+
+				components::button("Kick to SP", [] {
+					toxic::KICK_TO_SP(g_player_service->get_selected()->id());
+					});
+
+				components::button("EMP", [] {
+					toxic::emp_player(g_player_service->get_selected()->id());
+					});
+
+				ImGui::SameLine();
+
+				components::button("Airstrike", [] {
+					toxic::airstrike(g_player_service->get_selected()->id());
+					});
+
+				ImGui::SameLine();
+
+
+				components::button("Send to APT", [] {
+					toxic::Apartment(g_player_service->get_selected()->id());
+					});
+
+				/*components::button("Crash Script", [] {
+					toxic::crash(g_player_service->get_selected()->id());
+				});*/
+
+				components::button("Send to Cayo", [] {
+					toxic::send_to_cayo_perico(g_player_service->get_selected()->id());
+					});
+				
+				ImGui::SameLine();
+
+				components::button("Bitching", [] {
+					toxic::bitching(g_player_service->get_selected()->id());
+					});
+
+				ImGui::SameLine();
+
+
+				if (g_player_service->get_selected()->is_valid())
+				{
+					components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player()); 
+					});
+
 
 				components::button("CEO Kick", [] {
 					toxic::CEO_KICK(g_player_service->get_selected()->id());
@@ -275,6 +290,48 @@ namespace big
 					g_notification_service->push_warning("Warning", "Player has been CEO Banned");
 					});
 
+				ImGui::SameLine();
+
+				components::button("Send Jet", [] {              //2Take1 wala
+					Ped ply = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+					Vector3 pos = ENTITY::GET_ENTITY_COORDS(ply, true) + Vector3(0, 0, 500);
+					float heading = ENTITY::GET_ENTITY_HEADING(PED::IS_PED_IN_ANY_VEHICLE(ply, false) ? PED::GET_VEHICLE_PED_IS_IN(ply, false) : ply);
+
+					Vehicle veh = vehicle::spawn("lazer", pos, heading, true, false);
+					VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
+					VEHICLE::CONTROL_LANDING_GEAR(veh, 3);
+
+					static const Hash playerGroup = rage::joaat("PLAYER");
+					static const Hash civGroup = rage::joaat("CIVMALE");
+					static const Hash femCivGroup = rage::joaat("CIVFEMALE");
+
+					Hash relationshipGroup;
+					PED::ADD_RELATIONSHIP_GROUP("_HOSTILE_JESUS", &relationshipGroup);
+					PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, playerGroup);
+					PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, civGroup);
+					PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, femCivGroup);
+
+					Ped ped = ped::spawn_in_vehicle("u_m_m_jesus_01", veh, true);
+
+					PED::SET_PED_RELATIONSHIP_GROUP_HASH(ped, relationshipGroup);
+					PED::SET_PED_HEARING_RANGE(ped, 9999.f);
+					PED::SET_PED_CONFIG_FLAG(ped, 281, true);
+
+
+					TASK::TASK_PLANE_MISSION(ped, veh, 0, ply, 0, 0, 0, 6, 0.0, 0.0, 0.0, 2500.0, -1500.0, 0);
+
+					WEAPON::GIVE_WEAPON_TO_PED(ped, rage::joaat("WEAPON_RAILGUN"), 9999, true, true);
+					TASK::TASK_COMBAT_PED(ped, ply, 0, 16);
+
+					PED::SET_PED_FIRING_PATTERN(ped, 0xC6EE6B4C);
+					});
+
+				components::button("Ragdoll", [] {
+					TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()));
+					auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), true);
+					FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 13, 1, false, true, 0, false);
+					});
+								
 				ImGui::TreePop();
 			}
 		}
