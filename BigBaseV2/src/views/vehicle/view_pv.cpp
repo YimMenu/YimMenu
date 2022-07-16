@@ -147,7 +147,7 @@ namespace big
 
 								if (g->clone_pv.spawn_inside)
 								{
-									vehicle::telport_into_veh(veh);
+									vehicle::teleport_into_vehicle(veh);
 								}
 							}
 							else

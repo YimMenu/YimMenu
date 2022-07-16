@@ -113,7 +113,7 @@ namespace big
 
 							if (g->spawn.spawn_inside)
 							{
-								vehicle::telport_into_veh(veh);
+								vehicle::teleport_into_vehicle(veh);
 							}
 
 							g_vehicle_preview_service->stop_preview();

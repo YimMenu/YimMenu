@@ -348,7 +348,7 @@ namespace big::vehicle
 		return owned_mods;
 	}
 
-	inline void telport_into_veh(Vehicle veh)
+	inline void teleport_into_vehicle(Vehicle veh)
 	{
 		PED::SET_PED_INTO_VEHICLE(self::ped, veh, -1);
 	}
