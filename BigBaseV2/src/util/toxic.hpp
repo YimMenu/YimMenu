@@ -6,6 +6,7 @@
 #include "entity.hpp"
 #include "util/teleport.hpp"
 #include "gta_util.hpp"
+#include "util/vehicle.hpp"
 
 namespace big::toxic
 {

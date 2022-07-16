@@ -9,6 +9,7 @@
 #include "util/teleport.hpp"
 #include "util/entity.hpp"
 #include "views/view.hpp"
+#include "gta/VehicleValues.h"
 
 namespace big
 {
@@ -296,8 +297,9 @@ namespace big
 					Ped ply = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
 					Vector3 pos = ENTITY::GET_ENTITY_COORDS(ply, true) + Vector3(0, 0, 500);
 					float heading = ENTITY::GET_ENTITY_HEADING(PED::IS_PED_IN_ANY_VEHICLE(ply, false) ? PED::GET_VEHICLE_PED_IS_IN(ply, false) : ply);
+					Hash plane = VEHICLE_LAZER;
 
-					Vehicle veh = vehicle::spawn("lazer", pos, heading, true, false);
+					Vehicle veh = vehicle::spawn(plane, pos, heading, true);
 					VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
 					VEHICLE::CONTROL_LANDING_GEAR(veh, 3);
 

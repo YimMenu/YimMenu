@@ -121,7 +121,7 @@ namespace big::ped
 			script::get_current()->yield();
 		}
 		if (!STREAMING::HAS_ANIM_DICT_LOADED(dict.data()))
-		{
+		{	
 			g_notification_service->push_warning("Animation", "Failed to load dict, did you give an incorrect dict?");
 			return;
 		}

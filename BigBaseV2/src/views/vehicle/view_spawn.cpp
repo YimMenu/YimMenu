@@ -17,6 +17,9 @@ namespace big
 		ImGui::Checkbox("Preview", &g->spawn.preview_vehicle);
 		ImGui::SameLine();
 		ImGui::Checkbox("Delete Last Spawn", &g->spawn.delete_last_spawn);
+		components::button("Spawn Cargobob(Magnet)", [] {
+			vehicle::cargobobmagnet();
+		});
 
 		ImGui::Separator();
 
