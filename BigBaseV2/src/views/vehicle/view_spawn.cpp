@@ -104,17 +104,17 @@ namespace big
 
 							const Vehicle veh = vehicle::spawn(item.hash, spawn_location, spawn_heading);
 
-							if (g->spawn.spawn_inside)
-							{
-								vehicle::telport_into_veh(veh);
-							}
-
 							if (g->spawn.spawn_maxed)
 							{
 								vehicle::max_vehicle(veh);
 							}
 
 							vehicle::set_plate(veh, plate);
+
+							if (g->spawn.spawn_inside)
+							{
+								vehicle::teleport_into_vehicle(veh);
+							}
 
 							g_vehicle_preview_service->stop_preview();
 						});

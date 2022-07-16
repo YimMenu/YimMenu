@@ -386,9 +386,44 @@ enum VehicleModType
 
 enum CustomVehicleModType
 {
-    MOD_WHEEL_TYPE = -101,
-    MOD_PLATE_STYLE = -102,
-    MOD_WINDOW_TINT = -103
+    MOD_MODEL_HASH        = -100,
+
+    MOD_WHEEL_TYPE        = -101,
+    MOD_PLATE_STYLE       = -102,
+    MOD_WINDOW_TINT       = -103,
+
+    MOD_FRONTWHEEL_VAR    = -104,
+    MOD_REARWHEEL_VAR     = -105,
+
+    MOD_NEON_FRONT_ON     = -106,
+    MOD_NEON_BACK_ON      = -107,
+    MOD_NEON_LEFT_ON      = -108,
+    MOD_NEON_RIGHT_ON     = -109,
+    MOD_TIRE_CAN_BURST    = -110,
+
+    MOD_PRIMARY_COL       = -111,
+    MOD_SECONDARY_COL     = -112,
+    MOD_PEARLESCENT_COL   = -113,
+    MOD_WHEEL_COL         = -114,
+    MOD_INTERIOR_COL      = -115,
+    MOD_DASHBOARD_COL     = -116,
+    MOD_XENON_COL         = -117,
+
+    MOD_PRIMARY_COL_R     = -118,
+    MOD_PRIMARY_COL_G     = -119,
+    MOD_PRIMARY_COL_B     = -120,
+
+    MOD_SECONDARY_COL_R   = -121,
+    MOD_SECONDARY_COL_G   = -122,
+    MOD_SECONDARY_COL_B   = -123,
+
+    MOD_TIRESMOKE_COL_R   = -124,
+    MOD_TIRESMOKE_COL_G   = -125,
+    MOD_TIRESMOKE_COL_B   = -126,
+
+    MOD_NEON_COL_R        = -127,
+    MOD_NEON_COL_G        = -128,
+    MOD_NEON_COL_B        = -129,
 };
 
 
@@ -448,7 +483,13 @@ enum VehicleModHorns
     HORN_XMAS2,
     HORN_XMAS2_BACKGROUND,
     HORN_XMAS3,
-    HORN_XMAS3_BACKGROUND
+    HORN_XMAS3_BACKGROUND,
+    HORN_LOW_LONG,
+    HORN_LOW_SHORT,
+    HORN_MID_LONG,
+    HORN_MID_SHORT,
+    HORN_HIGH_LONG,
+    HORN_HIGH_SHORT
 };
 
 enum VehicleAddonLevel
