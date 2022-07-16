@@ -252,4 +252,16 @@ namespace big::toxic
 		}
 		ENTITY::APPLY_FORCE_TO_ENTITY(e, 1, x, y, z, 0, 0, 0, 0, 1, 1, 1, 0, 1);
 	}
+
+	inline void CEO_BAN(Player player)
+	{
+		std::int64_t argarr[4] = { static_cast<int64_t>(eRemoteEvent::CeoBan), player, 1, 5 };
+		g_pointers->m_trigger_script_event(1, argarr, sizeof(argarr) / sizeof(argarr[0]), 1 << player);
+	}
+
+	inline void CEO_KICK(Player player)
+	{
+		std::int64_t argarr[4] = { static_cast<int64_t>(eRemoteEvent::CeoKick), player, 1, 5 };
+		g_pointers->m_trigger_script_event(1, argarr, sizeof(argarr) / sizeof(argarr[0]), 1 << player);
+	}
 }
