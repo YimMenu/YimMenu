@@ -18,8 +18,6 @@ namespace big
 		
 		if (g_player_service->get_selected()->is_valid())
 		{
-			//components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player()); });
-
 			if (ImGui::TreeNode("Misc")) {
 				components::button("Steal Outfit", [] {
 					ped::steal_outfit(
@@ -79,18 +77,76 @@ namespace big
 					ImGui::Text("Wanted Level: %d", player_info->m_wanted_level);
 				}
 
+				uint32_t ped_damage_bits = 0;
+				uint32_t ped_task_flag = 0;
+				uint32_t veh_damage_bits = 0;
+				std::string mode_str = "";
+
 				if (CPed* ped = g_player_service->get_selected()->get_ped(); ped != nullptr)
 				{
-					ImGui::Text("Player God Mode: %s",
-						misc::has_bit_set((int*)&ped->m_damage_bits, 8) ? "Yes" : "No"
-					);
+					ped_damage_bits = ped->m_damage_bits;
+					ped_task_flag = ped->m_ped_task_flag;
 				}
 
-				CAutomobile* vehicle = g_player_service->get_selected()->get_current_vehicle();
-				ImGui::Text("Vehicle God Mode: %s",
-					vehicle == nullptr ? "No vehicle detected" :
-					misc::has_bit_set((int*)&vehicle->m_damage_bits, 8) ? "Yes" : "No"
-				);
+				if (ped_damage_bits & (uint32_t)eEntityProofs::GOD)
+				{
+					mode_str = "God";
+				}
+				else
+				{
+					if (ped_damage_bits & (uint32_t)eEntityProofs::BULLET)
+					{
+						mode_str += "Bullet, ";
+					}
+					if (ped_damage_bits & (uint32_t)eEntityProofs::EXPLOSION)
+					{
+						mode_str += "Explosion, ";
+					}
+				}
+
+				if (mode_str.empty())
+				{
+					mode_str = "No";
+				}
+
+				ImGui::Text("Player God Mode: %s", mode_str.c_str());
+
+				mode_str = "";
+
+				if (CAutomobile* vehicle = g_player_service->get_selected()->get_current_vehicle(); vehicle != nullptr)
+				{
+					veh_damage_bits = vehicle->m_damage_bits;
+				}
+
+				if (ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING)
+				{
+					if (veh_damage_bits & (uint32_t)eEntityProofs::GOD)
+					{
+						mode_str = "God";
+					}
+					else
+					{
+						if (veh_damage_bits & (uint32_t)eEntityProofs::COLLISION)
+						{
+							mode_str += "Collision, ";
+						}
+						if (veh_damage_bits & (uint32_t)eEntityProofs::EXPLOSION)
+						{
+							mode_str += "Explosion, ";
+						}
+					}
+
+					if (mode_str.empty())
+					{
+						mode_str = "No";
+					}
+				}
+				else
+				{
+					mode_str = "No vehicle detected";
+				}
+
+				ImGui::Text("Vehicle God Mode: %s", mode_str.c_str());
 
 				ImGui::Separator();
 
