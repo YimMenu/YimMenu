@@ -24,7 +24,8 @@ namespace big
 		if (plyr->is_valid()) {
 			isHost = plyr->is_host();
 			isFriend = plyr->is_friend();
-			isInVehicle = plyr->get_current_vehicle() != nullptr;
+			isInVehicle = (plyr->get_ped() != nullptr) && 
+				(plyr->get_ped()->m_ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING);
 		}
 
 		// generate icons string
@@ -49,7 +50,7 @@ namespace big
 
 		ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, { 0.0, 0.5 });
 		ImGui::PushID(plyr->id());
-		if (ImGui::Button(plyr->get_name(), { 300.0f - 15.0f - ImGui::GetStyle().ScrollbarSize, 0.f }))
+		if (ImGui::Button(plyr->get_name(), {300.0f - 15.0f - ImGui::GetStyle().ScrollbarSize, 0.f}))
 		{
 			g_player_service->set_selected(plyr);
 			g_gui_service->set_selected(tabs::PLAYER);
