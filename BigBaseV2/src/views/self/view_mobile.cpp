@@ -3,6 +3,7 @@
 #include "util/player.hpp"
 #include "views/view.hpp"
 #include "services/players/ped_list_service.hpp"
+#include "gta/Weapons.h"
 
 namespace big
 {
@@ -35,6 +36,8 @@ namespace big
 			});*/
 		static int selected_class = -1;
 		auto class_arr = g_ped_list_service->get_pedtype_arr();
+
+		ImGui::Checkbox("Give All Weapon", &g->self.give_all_weapon);
 
 		//ImGui::SetNextItemWidth(300.f);
 		if (ImGui::BeginCombo("Pedtype", selected_class == -1 ? "ALL" : class_arr[selected_class].c_str()))
@@ -79,6 +82,17 @@ namespace big
 			PED::SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
 			script::get_current()->yield();
 			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+
+			script::get_current()->yield();
+
+			if (g->self.give_all_weapon)
+			{
+				if (PED::GET_PED_TYPE(self::ped) == ePedType::PED_TYPE_ANIMAL) return;
+				for (auto const& weapon : weapon_list) {
+					WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon, 9999, false);
+				}
+				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, -72657034, 0, true);
+			}
 		};
 		components::input_text_with_hint("Model Name###player_ped_model", "Search", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, [=]
 			{

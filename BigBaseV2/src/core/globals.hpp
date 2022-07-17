@@ -171,6 +171,8 @@ namespace big
 			bool proof_drown = false;
 			bool proof_water = false;
 			uint32_t proof_mask = 0;
+
+			bool give_all_weapon = false;
 		};
 
 		struct session
@@ -585,6 +587,7 @@ namespace big
 			this->self.proof_drown = j["self"]["proof_drown"];
 			this->self.proof_water = j["self"]["proof_water"];
 			this->self.proof_mask = j["self"]["proof_mask"];
+			this->self.give_all_weapon = j["self"]["give_all_weapon"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
 			this->settings.hotkeys.teleport_waypoint = j["settings"]["hotkeys"]["teleport_waypoint"];
@@ -867,7 +870,8 @@ namespace big
 						{ "proof_steam", this->self.proof_steam },
 						{ "proof_drown", this->self.proof_drown },
 						{ "proof_water", this->self.proof_water },
-						{ "proof_mask", this->self.proof_mask }
+						{ "proof_mask", this->self.proof_mask },
+						{ "give_all_weapon", this->self.give_all_weapon }
 					}
 				},
 				{
