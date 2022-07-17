@@ -60,28 +60,31 @@ namespace big
 			ImGui::EndCombo();
 		}
 
+		const auto SET_PLAYER_MODEL = [](Ped ped, Hash hash) 
+		{
+			for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+			{
+				STREAMING::REQUEST_MODEL(hash);
 
-		components::input_text_with_hint("Model Name###player_ped_model", "Search", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, []
+				script::get_current()->yield();
+			}
+			if (!STREAMING::HAS_MODEL_LOADED(hash))
+			{
+				g_notification_service->push_error("Self", "Failed to spawn model, did you give an incorrect model ? ");
+
+				return;
+			}
+
+			PLAYER::SET_PLAYER_MODEL(PLAYER::GET_PLAYER_INDEX(), hash);
+			PED::SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
+			script::get_current()->yield();
+			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+		};
+		components::input_text_with_hint("Model Name###player_ped_model", "Search", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, [=]
 			{
 				const Hash hash = rage::joaat(model);
 
-				for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
-				{
-					STREAMING::REQUEST_MODEL(hash);
-
-					script::get_current()->yield();
-				}
-				if (!STREAMING::HAS_MODEL_LOADED(hash))
-				{
-					g_notification_service->push_error("Self", "Failed to spawn model, did you give an incorrect model ? ");
-
-					return;
-				}
-
-				PLAYER::SET_PLAYER_MODEL(PLAYER::GET_PLAYER_INDEX(), hash);
-				PED::SET_PED_DEFAULT_COMPONENT_VARIATION(self::ped);
-				script::get_current()->yield();
-				STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+				SET_PLAYER_MODEL(self::ped, hash);
 			});
 		if (ImGui::ListBoxHeader("###peds"))
 		{
@@ -103,27 +106,11 @@ namespace big
 						(search.empty() ||
 							does_search_match(name, search)))
 					{
-						components::selectable(item["Name"], item["Name"] == search, [&item]
+						components::selectable(item["Name"], item["Name"] == search, [=]
 							{
 								const Hash hash = item["Hash"];
 
-								for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
-								{
-									STREAMING::REQUEST_MODEL(hash);
-
-									script::get_current()->yield();
-								}
-								if (!STREAMING::HAS_MODEL_LOADED(hash))
-								{
-									g_notification_service->push_error("Self", "Failed to spawn model, did you give an incorrect model ? ");
-
-									return;
-								}
-
-								PLAYER::SET_PLAYER_MODEL(PLAYER::GET_PLAYER_INDEX(), hash);
-								PED::SET_PED_DEFAULT_COMPONENT_VARIATION(self::ped);
-								script::get_current()->yield();
-								STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+								SET_PLAYER_MODEL(self::ped, hash);
 							});
 					}
 				}
