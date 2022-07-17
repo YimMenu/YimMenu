@@ -49,7 +49,7 @@ namespace big::remote
 			std::string local_etag = "";
 			std::string remote_etag = "";
 
-			std::vector<std::string> headers = { "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/533.2 (KHTML, like Gecko) Chrome/6.0" };
+			const std::vector<std::string> headers = { "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/533.2 (KHTML, like Gecko) Chrome/6.0" };
 
 			try {
 

@@ -1,30 +1,10 @@
 #pragma once
 #include "file_manager/file.hpp"
+#include "vehicle_item.hpp"
+#include "ped_item.hpp"
 
 namespace big
 {
-	class vehicle_item {
-	public:
-		vehicle_item();
-		vehicle_item(nlohmann::json& item_json);
-
-		std::string name;
-		std::string display_name;
-		std::string display_manufacturer;
-		std::string clazz;
-		Hash hash;
-	};
-
-	class ped_item {
-	public:
-		ped_item();
-		ped_item(nlohmann::json& item_json);
-
-		std::string name;
-		std::string ped_type;
-		Hash hash;
-	};
-
 	class gta_data_service
 	{
 		file m_vehicle_file;

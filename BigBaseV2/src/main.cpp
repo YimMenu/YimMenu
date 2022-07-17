@@ -122,6 +122,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 					gui_service_instance.reset();
 					LOG(INFO) << "Gui Service reset.";
+					gta_data_service_instance.reset();
+					LOG(INFO) << "GTA Data Service reset.";
 					vehicle_service_instance.reset();
 					LOG(INFO) << "Vehicle Service reset.";
 					vehicle_preview_service_instance.reset();
