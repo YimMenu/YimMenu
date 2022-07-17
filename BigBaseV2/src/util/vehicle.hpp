@@ -410,4 +410,6 @@ namespace big::vehicle
 
 	static constexpr int driving_styles[] = { 443, 525117 };
 	static constexpr char const* driving_style_names[] = { "Law-Abiding", "The Road Is Yours" };
+
+	static constexpr char const* chase_id[] = { "Off", "Car", "Heli", "Plane" };
 }

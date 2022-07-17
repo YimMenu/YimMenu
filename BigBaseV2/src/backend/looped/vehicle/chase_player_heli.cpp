@@ -39,7 +39,7 @@ namespace big
 				chasing = true;
 
 
-				g_notification_service->push_warning("Starting to Chase", "Start flying or leave Heli to take back control.");
+				g_notification_service->push_warning("Starting to Chase", "Leave Heli or start flying to take back control.");
 			}
 		}
 

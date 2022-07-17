@@ -15,13 +15,11 @@ namespace big
 {
 	void view::view_player() {
 
-		std::string title = fmt::format("Player Options: {}", g_player_service->get_selected()->get_name());
-
-		ImGui::Text(title.c_str());
-		ImGui::Checkbox("Spectate", &g->player.spectating);		
-		
-		if (g_player_service->get_selected()->is_valid())
+		if (g_player_service->get_selected()->is_valid())		
 		{
+			std::string title = fmt::format("Player Options: {}", g_player_service->get_selected()->get_name());
+			ImGui::Text(title.c_str());
+			ImGui::Checkbox("Spectate", &g->player.spectating);
 			ImGui::SameLine();
 			ImGui::Checkbox("Freeze", &g->player.freezeplayer);
 
@@ -77,28 +75,33 @@ namespace big
 					toxic::bodyguard(g_player_service->get_selected()->id());
 					});
 
-				ImGui::SameLine();
-				
-				if (ImGui::TreeNode("Chase"))
+				ImGui::SameLine();				
+				ImGui::SetNextItemWidth(100);
+				if (ImGui::BeginCombo("Chase", vehicle::chase_id[g->vehicle.chase_style]))
 				{
-					components::button("Car Chase", [] {
+					for (int i = 0; i < 4; i++)
+					{
+						bool itemSelected = g->vehicle.chase_style == i;
+						if (ImGui::Selectable(vehicle::chase_id[i], itemSelected))
+						{
+							g->vehicle.chase_style = i;
+							if (g->vehicle.chase_style == 1) {
+								g->player.car_chase = true;
+							}
+							else if (g->vehicle.chase_style == 2) {
+								g->player.heli_chase = true;
+							}
+							else if (g->vehicle.chase_style == 3) {
+								g->player.plane_chase = true;
+							}
+						}
+						if (itemSelected)
+						{
+							ImGui::SetItemDefaultFocus();
+						}
+					}
 
-						g->player.car_chase = true;
-						});
-
-					ImGui::SameLine();
-
-					components::button("Plane Chase", [] {
-
-						g->player.plane_chase = true;
-						});
-
-					ImGui::SameLine();
-
-					components::button(" Heli Chase", [] {
-
-						g->player.heli_chase = true;
-						});
+					ImGui::EndCombo();
 				}
 
 				ImGui::TreePop();
@@ -389,8 +392,7 @@ namespace big
 					FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 13, 1, false, true, 0, false);
 					});
 
-				ImGui::TreePop();
-				
+				ImGui::TreePop();				
 			}
 		}
 	}

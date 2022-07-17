@@ -38,7 +38,7 @@ namespace big
 				if (!changing_driving_styles)
 				{
 					g_notification_service->push_warning("Auto Drive", "Starting Route To Destination");
-					g_notification_service->push_warning("Auto Drive", "Start driving or leave car to take back control.");
+					g_notification_service->push_warning("Auto Drive", "Leave car or start driving to take back control.");
 				}
 
 				current_speed = g->vehicle.auto_drive_speed;
