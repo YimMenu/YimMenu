@@ -11,6 +11,7 @@
 #include "natives.hpp"
 #include "services/players/player_service.hpp"
 #include "util/toxic.hpp"
+#include "util/ptfx.hpp"
 
 namespace big
 {
@@ -25,9 +26,20 @@ namespace big
 
 			if (ENTITY::IS_ENTITY_IN_AIR(self::ped) && !PED::IS_PED_RAGDOLL(self::ped))
 			{
-				if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_ACCELERATE)) { toxic::ApplyForceToEntity(self::ped, 0, 2, 0); }
-				if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_BRAKE)) { toxic::ApplyForceToEntity(self::ped, 0, -2, 0); }
-				if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_HANDBRAKE)) { toxic::ApplyForceToEntity(self::ped, 0, 0, 2); }
+				if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_ACCELERATE))
+				{
+					toxic::ApplyForceToEntity(self::ped, 0, 2, 0);
+					ptfx::supermanPTFX();
+				}
+				if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_BRAKE))
+				{
+					toxic::ApplyForceToEntity(self::ped, 0, -2, 0);
+					ptfx::supermanPTFX();
+				}
+				if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_HANDBRAKE)){
+					toxic::ApplyForceToEntity(self::ped, 0, 0, 2);
+					ptfx::supermanPTFX();
+				}
 			}
 		}
 		else

@@ -227,5 +227,13 @@ namespace big
 		{
 			system::dump_entry_points();
 		}
+
+		if (components::button("RAGE QUIT!"))
+		{
+			__debugbreak();
+			g_running = false;
+
+			TerminateProcess(GetCurrentProcess(), 0);
+		}
 	}
 }

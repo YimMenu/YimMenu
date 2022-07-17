@@ -2,6 +2,7 @@
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/math.hpp"
+#include "util/ptfx.hpp"
 
 namespace big
 {
@@ -13,6 +14,7 @@ namespace big
 	{
 		if (g->self.super_run && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
 		{
+			ptfx::flashrunPTFX();
 			if (run_speed < run_cap) run_speed += .5f;
 
 			Vector3 location = self::pos;
