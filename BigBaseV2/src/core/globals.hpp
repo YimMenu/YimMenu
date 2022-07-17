@@ -97,6 +97,7 @@ namespace big
 			bool freezeplayer = false;
 			bool freezeallplayers = false;
 			bool shakecam = false;
+
 			bool car_chase = false;
 			bool heli_chase = false;
 			bool plane_chase = false;
@@ -237,6 +238,7 @@ namespace big
 
 		struct tunables {
 			bool disable_phone = false;
+			bool phone_anim = false;
 			bool no_idle_kick = false;
 		};
 
@@ -283,6 +285,7 @@ namespace big
 			bool seatbelt = false;
 			bool turn_signals = false;
 			bool keep_vehicle_repaired = false;
+			int chase_style = 0;
 			bool headlightmul = false;
 			float headlightmul_val = 1.f;
 			float auto_drive_speed = 1;

@@ -5,29 +5,29 @@
 #include "util/toxic.hpp"
 #include "util/misc.hpp"
 #include "util/ped.hpp"
+#include "util/vehicle.hpp"
 #include "util/teleport.hpp"
 #include "util/entity.hpp"
 #include "views/view.hpp"
+#include "gta/VehicleValues.h"
 
 namespace big
 {
 	void view::view_player() {
 
-		std::string title = fmt::format("Player Options: {}", g_player_service->get_selected()->get_name());
+		if (g_player_service->get_selected()->is_valid())		
+		{
+			std::string title = fmt::format("Player Options: {}", g_player_service->get_selected()->get_name());
+			ImGui::Text(title.c_str());
+			ImGui::Checkbox("Spectate", &g->player.spectating);
+			ImGui::SameLine();
+			ImGui::Checkbox("Freeze", &g->player.freezeplayer);
 
-		ImGui::Text(title.c_str());
-		ImGui::Checkbox("Spectate", &g->player.spectating);
+			ImGui::Checkbox("Shaky Booty", &g->player.shakecam);
 
-		ImGui::SameLine();
+			ImGui::SameLine();
+			ImGui::Checkbox("Freeze All", &g->player.freezeallplayers);
 
-		ImGui::Checkbox("Freeze", &g->player.freezeplayer);
-
-		ImGui::Checkbox("Shaky Booty", &g->player.shakecam);
-
-		ImGui::SameLine();
-
-		ImGui::Checkbox("Freeze All", &g->player.freezeallplayers);
-				
 			if (ImGui::TreeNode("Misc")) {
 				components::button("Steal Outfit", [] {
 					ped::steal_outfit(
@@ -75,29 +75,33 @@ namespace big
 					toxic::bodyguard(g_player_service->get_selected()->id());
 					});
 
-				ImGui::SameLine();
-
-				
-				if (ImGui::TreeNode("Chase"))
+				ImGui::SameLine();				
+				ImGui::SetNextItemWidth(100);
+				if (ImGui::BeginCombo("Chase", vehicle::chase_id[g->vehicle.chase_style]))
 				{
-					components::button("Car Chase", [] {
+					for (int i = 0; i < 4; i++)
+					{
+						bool itemSelected = g->vehicle.chase_style == i;
+						if (ImGui::Selectable(vehicle::chase_id[i], itemSelected))
+						{
+							g->vehicle.chase_style = i;
+							if (g->vehicle.chase_style == 1) {
+								g->player.car_chase = true;
+							}
+							else if (g->vehicle.chase_style == 2) {
+								g->player.heli_chase = true;
+							}
+							else if (g->vehicle.chase_style == 3) {
+								g->player.plane_chase = true;
+							}
+						}
+						if (itemSelected)
+						{
+							ImGui::SetItemDefaultFocus();
+						}
+					}
 
-						g->player.car_chase = true;
-						});
-
-					ImGui::SameLine();
-
-					components::button("Plane Chase", [] {
-
-						g->player.plane_chase = true;
-						});
-
-					ImGui::SameLine();
-
-					components::button(" Heli Chase", [] {
-
-						g->player.heli_chase = true;
-						});
+					ImGui::EndCombo();
 				}
 
 				ImGui::TreePop();
@@ -116,18 +120,76 @@ namespace big
 					ImGui::Text("Wanted Level: %d", player_info->m_wanted_level);
 				}
 
+				uint32_t ped_damage_bits = 0;
+				uint32_t ped_task_flag = 0;
+				uint32_t veh_damage_bits = 0;
+				std::string mode_str = "";
+
 				if (CPed* ped = g_player_service->get_selected()->get_ped(); ped != nullptr)
 				{
-					ImGui::Text("Player God Mode: %s",
-						misc::has_bit_set((int*)&ped->m_damage_bits, 8) ? "Yes" : "No"
-					);
+					ped_damage_bits = ped->m_damage_bits;
+					ped_task_flag = ped->m_ped_task_flag;
 				}
 
-				CAutomobile* vehicle = g_player_service->get_selected()->get_current_vehicle();
-				ImGui::Text("Vehicle God Mode: %s",
-					vehicle == nullptr ? "No vehicle detected" :
-					misc::has_bit_set((int*)&vehicle->m_damage_bits, 8) ? "Yes" : "No"
-				);
+				if (ped_damage_bits & (uint32_t)eEntityProofs::GOD)
+				{
+					mode_str = "God";
+				}
+				else
+				{
+					if (ped_damage_bits & (uint32_t)eEntityProofs::BULLET)
+					{
+						mode_str += "Bullet, ";
+					}
+					if (ped_damage_bits & (uint32_t)eEntityProofs::EXPLOSION)
+					{
+						mode_str += "Explosion, ";
+					}
+				}
+
+				if (mode_str.empty())
+				{
+					mode_str = "No";
+				}
+
+				ImGui::Text("Player God Mode: %s", mode_str.c_str());
+
+				mode_str = "";
+
+				if (CAutomobile* vehicle = g_player_service->get_selected()->get_current_vehicle(); vehicle != nullptr)
+				{
+					veh_damage_bits = vehicle->m_damage_bits;
+				}
+
+				if (ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING)
+				{
+					if (veh_damage_bits & (uint32_t)eEntityProofs::GOD)
+					{
+						mode_str = "God";
+					}
+					else
+					{
+						if (veh_damage_bits & (uint32_t)eEntityProofs::COLLISION)
+						{
+							mode_str += "Collision, ";
+						}
+						if (veh_damage_bits & (uint32_t)eEntityProofs::EXPLOSION)
+						{
+							mode_str += "Explosion, ";
+						}
+					}
+
+					if (mode_str.empty())
+					{
+						mode_str = "No";
+					}
+				}
+				else
+				{
+					mode_str = "No vehicle detected";
+				}
+
+				ImGui::Text("Vehicle God Mode: %s", mode_str.c_str());
 
 				ImGui::Separator();
 
@@ -177,6 +239,46 @@ namespace big
 				ImGui::TreePop();
 			}
 
+			if (ImGui::TreeNode("Vehicle"))
+			{
+				components::button("Slingshot", [] {
+					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
+					if (entity::take_control_of(veh))
+						VEHICLE::SET_VEHICLE_FORWARD_SPEED(veh, VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(ENTITY::GET_ENTITY_MODEL(veh)) * 2);
+					});
+
+				ImGui::SameLine();
+
+				components::button("Burst Tires", [] {
+					int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+					if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0))
+					{
+						toxic::BurstTires(Handle);
+					}
+					else
+					{
+						g_notification_service->push_warning("Warning", "Player is not in a Vehicle.");
+					}
+					});
+
+				ImGui::SameLine();
+
+				components::button("Flying Vehicle", [] {
+					toxic::flying_vehicle(g_player_service->get_selected()->id());
+					});
+
+				components::button("Destroy vehicle", [] {
+					toxic::destroyveh(g_player_service->get_selected()->id());
+					});
+
+				ImGui::SameLine();
+
+				components::button("Kick From Vehicle", [] {
+					toxic::kick_from_vehicle(g_player_service->get_selected()->id());
+					});
+				ImGui::TreePop();
+			}
+
 			if (ImGui::TreeNode("Toxic")) {
 				components::button("Explode Self", [] {
 					toxic::blame_explode_player(
@@ -204,25 +306,12 @@ namespace big
 
 				ImGui::SameLine();
 
-				components::button("Kick From Vehicle", [] {
-					toxic::kick_from_vehicle(g_player_service->get_selected()->id());
-					});
-
 				components::button("Airstrike", [] {
 					toxic::airstrike(g_player_service->get_selected()->id());
 					});
 
 				ImGui::SameLine();
 
-				components::button("Flying Vehicle", [] {
-					toxic::flying_vehicle(g_player_service->get_selected()->id());
-					});
-
-				components::button("Destroy vehicle", [] {
-					toxic::destroyveh(g_player_service->get_selected()->id());
-					});
-
-				ImGui::SameLine();
 
 				components::button("Send to APT", [] {
 					toxic::Apartment(g_player_service->get_selected()->id());
@@ -243,25 +332,67 @@ namespace big
 					});
 
 				ImGui::SameLine();
-
-				components::button("Burst Tires", [] {
-					int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
-					if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0))
-					{
-						toxic::BurstTires(Handle);
-					}
-					else
-					{
-						g_notification_service->push_warning("Warning", "Player is not in a Vehicle.");
-					}
+				
+				components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player());
 					});
 
-				if (g_player_service->get_selected()->is_valid())
-				{
-					components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player()); 
+
+				components::button("CEO Kick", [] {
+					toxic::CEO_KICK(g_player_service->get_selected()->id());
+					g_notification_service->push_warning("Warning", "Player has been CEO Kicked");
 					});
-								
-				ImGui::TreePop();
+
+				ImGui::SameLine();
+
+				components::button("CEO Ban", [] {
+					toxic::CEO_BAN(g_player_service->get_selected()->id());
+					g_notification_service->push_warning("Warning", "Player has been CEO Banned");
+					});
+
+				ImGui::SameLine();
+
+				components::button("Send Jet", [] {              //2Take1 wala
+					Ped ply = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+					Vector3 pos = ENTITY::GET_ENTITY_COORDS(ply, true) + Vector3(0, 0, 500);
+					float heading = ENTITY::GET_ENTITY_HEADING(PED::IS_PED_IN_ANY_VEHICLE(ply, false) ? PED::GET_VEHICLE_PED_IS_IN(ply, false) : ply);
+					Hash plane = VEHICLE_LAZER;
+
+					Vehicle veh = vehicle::spawn(plane, pos, heading, true);
+					VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
+					VEHICLE::CONTROL_LANDING_GEAR(veh, 3);
+
+					static const Hash playerGroup = rage::joaat("PLAYER");
+					static const Hash civGroup = rage::joaat("CIVMALE");
+					static const Hash femCivGroup = rage::joaat("CIVFEMALE");
+
+					Hash relationshipGroup;
+					PED::ADD_RELATIONSHIP_GROUP("_HOSTILE_JESUS", &relationshipGroup);
+					PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, playerGroup);
+					PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, civGroup);
+					PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, femCivGroup);
+
+					Ped ped = ped::spawn_in_vehicle("u_m_m_jesus_01", veh, true);
+
+					PED::SET_PED_RELATIONSHIP_GROUP_HASH(ped, relationshipGroup);
+					PED::SET_PED_HEARING_RANGE(ped, 9999.f);
+					PED::SET_PED_CONFIG_FLAG(ped, 281, true);
+
+
+					TASK::TASK_PLANE_MISSION(ped, veh, 0, ply, 0, 0, 0, 6, 0.0, 0.0, 0.0, 2500.0, -1500.0, 0);
+
+					WEAPON::GIVE_WEAPON_TO_PED(ped, rage::joaat("WEAPON_RAILGUN"), 9999, true, true);
+					TASK::TASK_COMBAT_PED(ped, ply, 0, 16);
+
+					PED::SET_PED_FIRING_PATTERN(ped, 0xC6EE6B4C);
+					});
+
+				components::button("Ragdoll", [] {
+					TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()));
+					auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), true);
+					FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 13, 1, false, true, 0, false);
+					});
+
+				ImGui::TreePop();				
 			}
 		}
 	}

@@ -47,7 +47,7 @@ namespace big
 				chasing = true;
 
 
-				g_notification_service->push_warning("Starting to Chase", "Start driving or leave car to take back control.");
+				g_notification_service->push_warning("Starting to Chase", "Leave car or start driving to take back control.");
 			}
 		}
 

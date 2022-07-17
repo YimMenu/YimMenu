@@ -43,7 +43,7 @@ namespace big
 
 				if (!changing_driving_styles)
 				{
-					g_notification_service->push_warning("Starting Wondering", "Start driving or leave car to take back control.");
+					g_notification_service->push_warning("Starting Wandering", "Leave car or start driving to take back control.");
 				}
 			}
 		}

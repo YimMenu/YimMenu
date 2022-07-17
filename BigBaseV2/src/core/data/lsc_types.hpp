@@ -163,6 +163,18 @@ static const std::map<int, std::string> lsc_headlight_colors = {
 	{ XENON_BACKLIGHT, "Backlight" }
 };
 
+static const std::map<int, std::string> lsc_missing_horns = {
+	{ HORN_XMAS_BACKGROUND, "Festival Loop 1 Bg" },
+	{ HORN_XMAS2_BACKGROUND, "Festival Loop 2 Bg" },
+	{ HORN_XMAS3_BACKGROUND, "Festival Loop 3 Bg" },
+	{ HORN_LOW_LONG, "Low (Long)" },
+	{ HORN_LOW_SHORT, "Low (Short)" },
+	{ HORN_MID_LONG, "Mid (Long)" },
+	{ HORN_MID_SHORT, "Mid (Short)" },
+	{ HORN_HIGH_LONG, "High (Long)" },
+	{ HORN_HIGH_SHORT, "High (Short)" }
+};
+
 static const std::map<std::string, std::vector<int>> lsc_tire_smoke_rgb = {
 	{ "White", { TIRESMOKE_COLOR_WHITE } },
 	{ "Black", { TIRESMOKE_COLOR_BLACK } },

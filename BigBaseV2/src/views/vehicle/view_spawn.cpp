@@ -17,6 +17,9 @@ namespace big
 		ImGui::Checkbox("Preview", &g->spawn.preview_vehicle);
 		ImGui::SameLine();
 		ImGui::Checkbox("Delete Last Spawn", &g->spawn.delete_last_spawn);
+		components::button("Spawn Cargobob(Magnet)", [] {
+			vehicle::cargobobmagnet();
+		});
 
 		ImGui::Separator();
 
@@ -67,7 +70,7 @@ namespace big
 		});
 
 		// arbitrary subtraction this looked nice so idc, works for all resolutions as well
-		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 230 - 38 * 4) }))
+		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 186 - 38 * 6) }))
 		{
 
 			auto item_arr = g_vehicle_preview_service->get_vehicle_preview_item_arr();
@@ -108,11 +111,6 @@ namespace big
 
 							const Vehicle veh = vehicle::spawn(item.hash, spawn_location, spawn_heading);
 
-							if (g->spawn.spawn_inside)
-							{
-								vehicle::telport_into_veh(veh);
-							}
-
 							if (g->spawn.spawn_maxed)
 							{
 								vehicle::max_vehicle(veh);
@@ -125,6 +123,11 @@ namespace big
 							g->spawn.last_spawn = veh;
 
 							vehicle::set_plate(veh, plate);
+
+							if (g->spawn.spawn_inside)
+							{
+								vehicle::teleport_into_vehicle(veh);
+							}
 
 							g_vehicle_preview_service->stop_preview();
 						});

@@ -39,7 +39,7 @@ namespace big
 
 				if (multplr == -1.f || g->esp.global_render_distance[0] > distance) continue;
 
-				bool god = misc::has_bit_set((int*)&plyr->get_ped()->m_damage_bits, 8);
+				uint32_t ped_damage_bits = plyr->get_ped()->m_damage_bits;
 
 				if (g_pointers->m_get_screen_coords_for_world_coords(player_pos.data, &screen_x, &screen_y))
 				{
@@ -86,10 +86,34 @@ namespace big
 
 					draw_list->AddText(name_pos, esp_color, name_str.c_str());
 
-					if (god && g->esp.god) {
-						draw_list->AddText({ esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 40.f }, ImColor(1.f, 0.f, 0.f, 1.f), "GOD");
+					if (ped_damage_bits && g->esp.god) {
+						std::string mode_str = "";
+
+						if (ped_damage_bits & (uint32_t)eEntityProofs::GOD)
+						{
+							mode_str = "GOD";
+						}
+						else
+						{
+							if (ped_damage_bits & (uint32_t)eEntityProofs::BULLET)
+							{
+								mode_str += "BULLET ";
+							}
+							if (ped_damage_bits & (uint32_t)eEntityProofs::EXPLOSION)
+							{
+								mode_str += "EXPLOSION ";
+							}
+						}
+
+						if (!mode_str.empty())
+						{
+							draw_list->AddText({ esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 40.f }, ImColor(1.f, 0.f, 0.f, 1.f), mode_str.c_str());
+						}
 					}
-					else {
+					else
+					{
+
+
 						if (g->esp.health) {
 							if (g->esp.scale_health_from_dist) {
 								draw_list->AddLine({ esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 5.f }, { esp_x - (62.5f * multplr) + (125.f * multplr), esp_y + (175.f * multplr) + 5.f }, health_perc == 0.f ? death_bg : health_perc < 0.25f ? health_red_bg : health_perc < 0.65f ? health_yellow_bg : health_green_bg, 4);

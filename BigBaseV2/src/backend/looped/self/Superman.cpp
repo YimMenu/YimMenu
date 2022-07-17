@@ -30,5 +30,7 @@ namespace big
 				if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_HANDBRAKE)) { toxic::ApplyForceToEntity(self::ped, 0, 0, 2); }
 			}
 		}
+		else
+			ENTITY::SET_ENTITY_INVINCIBLE(self::ped, false);
 	}
 }
