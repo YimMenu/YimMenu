@@ -40,27 +40,25 @@ namespace big
 
 		static char model[32];
 		components::input_text_with_hint("Model Name###player_ped_model", "Player Model Name", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, [] {
-			g_fiber_pool->queue_job([] {
-				const Hash hash = rage::joaat(model);
+			const Hash hash = rage::joaat(model);
 
-				for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
-				{
-					STREAMING::REQUEST_MODEL(hash);
+			for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+			{
+				STREAMING::REQUEST_MODEL(hash);
 
-					script::get_current()->yield();
-				}
-				if (!STREAMING::HAS_MODEL_LOADED(hash))
-				{
-					g_notification_service->push_error("Self", "Failed to spawn model, did you give an incorrect model ? ");
-
-					return;
-				}
-
-				PLAYER::SET_PLAYER_MODEL(PLAYER::GET_PLAYER_INDEX(), hash);
-				PED::SET_PED_DEFAULT_COMPONENT_VARIATION(self::ped);
 				script::get_current()->yield();
-				STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-			});
+			}
+			if (!STREAMING::HAS_MODEL_LOADED(hash))
+			{
+				g_notification_service->push_error("Self", "Failed to spawn model, did you give an incorrect model ? ");
+
+				return;
+			}
+
+			PLAYER::SET_PLAYER_MODEL(PLAYER::GET_PLAYER_INDEX(), hash);
+			PED::SET_PED_DEFAULT_COMPONENT_VARIATION(self::ped);
+			script::get_current()->yield();
+			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 		});
 
 		ImGui::Separator();
