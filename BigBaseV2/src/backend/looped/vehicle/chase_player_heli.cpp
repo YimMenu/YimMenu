@@ -13,13 +13,14 @@ namespace big
 		static bool ran_once = false;
 		Ped PlayerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
 		Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
+		Hash check = ENTITY::GET_ENTITY_MODEL(self::veh);
 
 		if (g->player.heli_chase)
 		{
 			ran_once = true;
 			chasing = false;
 
-			if (!self::veh)
+			if (!VEHICLE::IS_THIS_MODEL_A_HELI(check))
 			{
 				g_notification_service->push_warning("Warning", "Please be in a Heli first then try again.");
 
@@ -27,7 +28,6 @@ namespace big
 
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 			}
-
 			else
 			{
 				g->player.heli_chase = false;
