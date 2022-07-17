@@ -40,7 +40,6 @@ namespace big
 			CUTSCENE::STOP_CUTSCENE_IMMEDIATELY();
 		});
 
-
 		ImGui::Separator();
 
 		components::small_text("Player Model Changer");
@@ -145,16 +144,13 @@ namespace big
 			for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
 			{
 				STREAMING::REQUEST_MODEL(hash);
-
 				script::get_current()->yield();
 			}
 			if (!STREAMING::HAS_MODEL_LOADED(hash))
 			{
 				g_notification_service->push_error("Self", "Failed to spawn model, did you give an incorrect model ? ");
-
 				return;
 			}
-
 			PLAYER::SET_PLAYER_MODEL(PLAYER::GET_PLAYER_INDEX(), hash);
 			PED::SET_PED_DEFAULT_COMPONENT_VARIATION(self::ped);
 			script::get_current()->yield();
