@@ -133,44 +133,43 @@ namespace big
 
 		ImGui::Separator();
 
-		if (ImGui::TreeNode("Rainbow Paint"))
-		{
-			ImGui::Checkbox("Primary", &g->vehicle.rainbow_primary);
-			ImGui::SameLine();
-			ImGui::Checkbox("Neon", &g->vehicle.rainbow_neon);
-			ImGui::Checkbox("Secondary", &g->vehicle.rainbow_secondary);
-			ImGui::SameLine();
-			ImGui::Checkbox("Smoke", &g->vehicle.rainbow_smoke);
+		components::small_text("Rainbow Paint");
 
-			if (g->vehicle.rainbow_primary || g->vehicle.rainbow_neon || g->vehicle.rainbow_secondary || g->vehicle.rainbow_smoke) {
-				ImGui::SetNextItemWidth(120);
-				if (ImGui::BeginCombo("RGB Type", vehicle::rgb_types[g->vehicle.rainbow_paint]))
+		ImGui::Checkbox("Primary", &g->vehicle.rainbow_primary);
+		ImGui::SameLine();
+		ImGui::Checkbox("Secondary", &g->vehicle.rainbow_secondary);
+		ImGui::SameLine();
+		ImGui::Checkbox("Neon", &g->vehicle.rainbow_neon);
+		ImGui::SameLine();
+		ImGui::Checkbox("Smoke", &g->vehicle.rainbow_smoke);
+
+		if (g->vehicle.rainbow_primary || g->vehicle.rainbow_neon || g->vehicle.rainbow_secondary || g->vehicle.rainbow_smoke) {
+			ImGui::SetNextItemWidth(120);
+			if (ImGui::BeginCombo("RGB Type", vehicle::rgb_types[g->vehicle.rainbow_paint]))
+			{
+				for (int i = 0; i < 3; i++)
 				{
-					for (int i = 0; i < 3; i++)
+					bool itemSelected = g->vehicle.rainbow_paint == i;
+
+					if (ImGui::Selectable(vehicle::rgb_types[i], itemSelected))
 					{
-						bool itemSelected = g->vehicle.rainbow_paint == i;
-
-						if (ImGui::Selectable(vehicle::rgb_types[i], itemSelected))
-						{
-							g->vehicle.rainbow_paint = i;
-						}
-
-						if (itemSelected)
-						{
-							ImGui::SetItemDefaultFocus();
-						}
+						g->vehicle.rainbow_paint = i;
 					}
 
-					ImGui::EndCombo();
+					if (itemSelected)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
 				}
-				if (g->vehicle.rainbow_paint != 0)
-				{
-					ImGui::SameLine();
-					ImGui::SetNextItemWidth(150);
-					ImGui::SliderInt("RGB Speed", &g->rgb.speed, 1, 10);
-				}
+
+				ImGui::EndCombo();
 			}
-			ImGui::TreePop();
+			if (g->vehicle.rainbow_paint != 0)
+			{
+				ImGui::SameLine();
+				ImGui::SetNextItemWidth(150);
+				ImGui::SliderInt("RGB Speed", &g->rgb.speed, 1, 10);
+			}
 		}
 
 		ImGui::Separator();
