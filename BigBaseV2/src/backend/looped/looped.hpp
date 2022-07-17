@@ -25,9 +25,7 @@ namespace big
 		static void player_freezeplayer();
 		static void player_freezeallplayers();
 		static void player_shakecam();
-		static void player_vehicle_chase();
-		static void player_heli_chase();
-		static void player_plane_chase();
+		static void player_chase();
 
 		static void protections_replay_interface();
 

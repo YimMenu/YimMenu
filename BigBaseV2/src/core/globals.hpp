@@ -101,6 +101,7 @@ namespace big
 			bool car_chase = false;
 			bool heli_chase = false;
 			bool plane_chase = false;
+			bool chase = false;
 		};
 
 		struct protections {

@@ -7,7 +7,7 @@
 
 namespace big
 {
-	void looped::player_plane_chase()
+	void looped::player_chase()
 	{
 		static bool chasing = true;
 		static bool ran_once = false;
@@ -15,22 +15,42 @@ namespace big
 		Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
 		Hash check = ENTITY::GET_ENTITY_MODEL(self::veh);
 
-		if (g->player.plane_chase)
+		if (g->player.chase)
 		{
 			ran_once = true;
 			chasing = false;
 
-			if (!VEHICLE::IS_THIS_MODEL_A_PLANE(check))
+			if (VEHICLE::IS_THIS_MODEL_A_HELI(check))
 			{
-				g_notification_service->push_warning("Warning", "Please be in a Plane first then try again.");
-
-				g->player.plane_chase = false;
+				g->player.chase = false;
 
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
+				TASK::CLEAR_PED_TASKS(self::ped);
+				TASK::TASK_HELI_CHASE(self::ped, PlayerPed, 0.0, 0.0, 20.0);
+
+				chasing = true;
+
+
+				g_notification_service->push_warning("Starting to Chase", "Leave Heli or start flying to take back control.");
 			}
-			else
+
+			else if (VEHICLE::IS_THIS_MODEL_A_CAR(check))
 			{
-				g->player.plane_chase = false;
+				g->player.chase = false;
+
+				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
+				TASK::CLEAR_PED_TASKS(self::ped);
+				TASK::TASK_VEHICLE_CHASE(self::ped, PlayerPed);
+
+				chasing = true;
+
+
+				g_notification_service->push_warning("Starting to Chase", "Leave Car or start driving to take back control.");
+			}
+
+			else if (VEHICLE::IS_THIS_MODEL_A_PLANE(check))
+			{
+				g->player.chase = false;
 
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 				TASK::CLEAR_PED_TASKS(self::ped);
@@ -40,6 +60,13 @@ namespace big
 
 
 				g_notification_service->push_warning("Starting to Chase", "Leave Plane or start flying to take back control.");
+			}
+
+			else
+			{
+				chasing = false;
+
+				g_notification_service->push_warning("Warning", "Please be in a vehicle first then try again.");
 			}
 		}
 

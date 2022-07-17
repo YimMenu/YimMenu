@@ -76,35 +76,16 @@ namespace big
 					});
 
 				ImGui::SameLine();				
-				ImGui::SetNextItemWidth(100);
-				if (ImGui::BeginCombo("Chase", vehicle::chase_id[g->vehicle.chase_style]))
-				{
-					for (int i = 0; i < 4; i++)
+				
+				components::button("Chase", [] {
+					if (!self::veh) 
 					{
-						bool itemSelected = g->vehicle.chase_style == i;
-						if (ImGui::Selectable(vehicle::chase_id[i], itemSelected))
-						{
-							g->vehicle.chase_style = i;
-							if (g->vehicle.chase_style == 1) {
-								g->player.car_chase = true;
-							}
-							else if (g->vehicle.chase_style == 2) {
-								g->player.heli_chase = true;
-							}
-							else if (g->vehicle.chase_style == 3) {
-								g->player.plane_chase = true;
-							}
-						}
-						if (itemSelected)
-						{
-							ImGui::SetItemDefaultFocus();
-						}
+						g->player.chase = false;
+						g_notification_service->push_warning("Warning", "Please be in a vehicle first then try again.");
 					}
-
-					ImGui::EndCombo();
-				}
-
-				ImGui::TreePop();
+					else
+						g->player.chase = true;
+				});
 			}
 
 			if (ImGui::TreeNode("Info")) {
