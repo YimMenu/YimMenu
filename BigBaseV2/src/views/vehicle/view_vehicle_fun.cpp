@@ -137,9 +137,9 @@ namespace big
 
 		ImGui::Checkbox("Primary", &g->vehicle.rainbow_primary);
 		ImGui::SameLine();
-		ImGui::Checkbox("Neon", &g->vehicle.rainbow_neon);
-		ImGui::SameLine();
 		ImGui::Checkbox("Secondary", &g->vehicle.rainbow_secondary);
+		ImGui::SameLine();
+		ImGui::Checkbox("Neon", &g->vehicle.rainbow_neon);
 		ImGui::SameLine();
 		ImGui::Checkbox("Smoke", &g->vehicle.rainbow_smoke);
 
