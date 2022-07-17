@@ -228,6 +228,7 @@ namespace big
 			system::dump_entry_points();
 		}
 
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.69f, 0.29f, 0.29f, 1.00f));
 		if (components::button("RAGE QUIT!"))
 		{
 			__debugbreak();
@@ -235,5 +236,6 @@ namespace big
 
 			TerminateProcess(GetCurrentProcess(), 0);
 		}
+		ImGui::PopStyleColor();
 	}
 }

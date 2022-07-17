@@ -8,38 +8,13 @@
 namespace big
 {
 	void view::ped_model() {
-		//ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
 
 		static char model[32];
-		/*components::input_text_with_hint("Model Name###player_ped_model", "Player Model Name", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, [] {
-			g_fiber_pool->queue_job([] {
-				const Hash hash = rage::joaat(model);
-
-				for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
-				{
-					STREAMING::REQUEST_MODEL(hash);
-
-					script::get_current()->yield();
-				}
-				if (!STREAMING::HAS_MODEL_LOADED(hash))
-				{
-					g_notification_service->push_error("Self", "Failed to spawn model, did you give an incorrect model ? ");
-
-					return;
-				}
-
-				PLAYER::SET_PLAYER_MODEL(PLAYER::GET_PLAYER_INDEX(), hash);
-				PED::SET_PED_DEFAULT_COMPONENT_VARIATION(self::ped);
-				script::get_current()->yield();
-				STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-				});
-			});*/
 		static int selected_class = -1;
 		auto class_arr = g_ped_list_service->get_pedtype_arr();
 
 		ImGui::Checkbox("Give All Weapon", &g->self.give_all_weapon);
 
-		//ImGui::SetNextItemWidth(300.f);
 		if (ImGui::BeginCombo("Pedtype", selected_class == -1 ? "ALL" : class_arr[selected_class].c_str()))
 		{
 			if (ImGui::Selectable("ALL", selected_class == -1))
@@ -63,7 +38,7 @@ namespace big
 			ImGui::EndCombo();
 		}
 
-		const auto SET_PLAYER_MODEL = [](Ped ped, Hash hash) 
+		const auto SET_PLAYER_MODEL = [](Ped ped, Hash hash)
 		{
 			for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
 			{
@@ -87,19 +62,19 @@ namespace big
 
 			if (g->self.give_all_weapon)
 			{
-				if (PED::GET_PED_TYPE(self::ped) == ePedType::PED_TYPE_ANIMAL) return;
-				for (auto const& weapon : weapon_list) {
-					WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon, 9999, false);
+				if (PED::GET_PED_TYPE(self::ped) != ePedType::PED_TYPE_ANIMAL) {
+					for (auto const& weapon : weapon_list) {
+						WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon, 9999, false);
+					}
+					WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, -72657034, 0, true);
 				}
-				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, -72657034, 0, true);
 			}
 		};
-		components::input_text_with_hint("Model Name###player_ped_model", "Search", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, [=]
-			{
-				const Hash hash = rage::joaat(model);
+		components::input_text_with_hint("Model Name###player_ped_model", "Search", model, sizeof(model), ImGuiInputTextFlags_EnterReturnsTrue, [=] {
+			const Hash hash = rage::joaat(model);
 
-				SET_PLAYER_MODEL(self::ped, hash);
-			});
+			SET_PLAYER_MODEL(self::ped, hash);
+		});
 		if (ImGui::ListBoxHeader("###peds"))
 		{
 			if (!g_ped_list_service->get_ped_list().is_null())
@@ -115,22 +90,18 @@ namespace big
 					std::string search = model;
 					std::transform(search.begin(), search.end(), search.begin(), ::tolower);
 
-					if ((selected_class == -1 || class_arr[selected_class] == pedtype)
-						&&
-						(search.empty() ||
-							does_search_match(name, search)))
+					if ((selected_class == -1 || class_arr[selected_class] == pedtype) && (search.empty() || does_search_match(name, search)))
 					{
-						components::selectable(item["Name"], item["Name"] == search, [=]
-							{
-								const Hash hash = item["Hash"];
+						components::selectable(item["Name"], item["Name"] == search, [=] {
+							const Hash hash = item["Hash"];
 
-								SET_PLAYER_MODEL(self::ped, hash);
-							});
+							SET_PLAYER_MODEL(self::ped, hash);
+						});
 					}
 				}
 			}
 			else ImGui::Text("No peds in registry.");
 			ImGui::ListBoxFooter();
-		}		
+		}
 	}
 }

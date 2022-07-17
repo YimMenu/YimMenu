@@ -4,12 +4,12 @@ namespace big
 {
 	void view::heading()
 	{
-		ImGui::SetNextWindowSize({ 300.f, 85.f });
-		ImGui::SetNextWindowPos({ 10.f, 8.f });
+		ImGui::SetNextWindowSize({ 300.f, 80.f });
+		ImGui::SetNextWindowPos({ 10.f, 10.f });
 		if (ImGui::Begin("menu_heading", nullptr, window_flags | ImGuiWindowFlags_NoScrollbar))
 		{
 			ImGui::BeginGroup();
-			ImGui::Text("Welcome to\nSechsMenu");
+			ImGui::Text("Welcome");
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.172f, 0.380f, 0.909f, 1.f));
 			ImGui::Text(g_local_player == nullptr || g_local_player->m_player_info == nullptr ? "unknown" : g_local_player->m_player_info->m_net_player_data.m_name);
 			ImGui::PopStyleColor();
