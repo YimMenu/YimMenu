@@ -6,6 +6,7 @@
 #include "core/data/bullet_impact_types.hpp"
 #include "views/view.hpp"
 #include "util/system.hpp"
+#include "core/data/WpnComp.h"
 
 namespace big
 {
@@ -23,8 +24,6 @@ namespace big
 		eImpactType selected_impact = g->weapons.ammo_special.impactType;
 
 		ImGui::SameLine();
-
-		
 
 		if (ImGui::BeginCombo("Special Ammo", SPECIAL_AMMOS[(int)selected_ammo].name))
 		{
@@ -82,6 +81,13 @@ namespace big
 				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, weaponHash);
 			}
 		});
+		ImGui::SameLine();
+		components::button("Upgrade All Weapons", [] {
+			for (auto const& i : WpnUpg::WpnUpgArrays::MaxUpgradeWeapon)
+			{
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(self::ped, i.WeaponHash, MISC::GET_HASH_KEY(system::StringToChar(i.UpgradeHash)));
+			}
+			});
 
 		ImGui::SliderFloat("Damage Multiplier", &g->weapons.increased_damage, 1.f, 10.f, "%.1f");
 
