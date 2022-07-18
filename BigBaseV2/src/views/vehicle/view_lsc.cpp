@@ -225,10 +225,12 @@ namespace big
 		ImGui::Separator();
 		components::small_text("Mod Options");
 
-		if (ImGui::Checkbox("Bulletproof Tires", (bool*)&owned_mods[MOD_TIRE_CAN_BURST]))
+		bool is_bulletproof_tires = !owned_mods[MOD_TIRE_CAN_BURST];
+		if (ImGui::Checkbox("Bulletproof Tires", (bool*)&is_bulletproof_tires))
 		{
-			g_fiber_pool->queue_job([] {
-				VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(player_vehicle, !owned_mods[MOD_TIRE_CAN_BURST]);
+			g_fiber_pool->queue_job([is_bulletproof_tires] {
+				owned_mods[MOD_TIRE_CAN_BURST] = (int32_t)!is_bulletproof_tires;
+				VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(player_vehicle, owned_mods[MOD_TIRE_CAN_BURST]);
 			});
 		}
 		ImGui::SameLine();

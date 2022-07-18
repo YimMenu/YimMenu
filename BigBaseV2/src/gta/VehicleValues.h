@@ -424,6 +424,9 @@ enum CustomVehicleModType
     MOD_NEON_COL_R        = -127,
     MOD_NEON_COL_G        = -128,
     MOD_NEON_COL_B        = -129,
+
+    MOD_PRIMARY_CUSTOM    = -130,
+    MOD_SECONDARY_CUSTOM  = -131,
 };
 
 

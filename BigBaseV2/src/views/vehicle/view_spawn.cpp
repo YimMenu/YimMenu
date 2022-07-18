@@ -2,6 +2,7 @@
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "services/vehicle_preview/vehicle_preview_service.hpp"
+#include "services/players/player_service.hpp"
 #include "util/vehicle.hpp"
 
 namespace big
@@ -65,6 +66,52 @@ namespace big
 		// arbitrary subtraction this looked nice so idc, works for all resolutions as well
 		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 184 - 38 * 4) }))
 		{
+			if (self::veh)
+			{
+				auto veh_ptr = g_player_service->get_self()->get_current_vehicle();
+
+				if (veh_ptr != nullptr)
+				{
+					auto item = g_vehicle_preview_service->find_vehicle_item_by_hash(veh_ptr->m_model_info->m_model_hash);
+
+					components::selectable("Current Vehicle [" + item.display_name + "]", false, [] {
+						Vector3 spawn_location = vehicle::get_spawn_location(g->spawn.spawn_inside);
+						float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
+
+						auto owned_mods = vehicle::get_owned_mods_from_vehicle(self::veh);
+						auto veh = vehicle::clone_from_owned_mods(owned_mods, spawn_location, spawn_heading);
+
+						if (!veh)
+						{
+							g_notification_service->push_error("Vehicle", "Unable to clone vehicle");
+							return;
+						}
+
+						if (g->spawn.spawn_maxed)
+						{
+							vehicle::max_vehicle(veh);
+						}
+
+						vehicle::set_plate(veh, plate);
+
+						if (g->spawn.spawn_inside)
+						{
+							vehicle::teleport_into_vehicle(veh);
+						}
+
+						g_vehicle_preview_service->stop_preview();
+					});
+
+					if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
+					{
+						g_vehicle_preview_service->set_preview_vehicle(item);
+					}
+					else if (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered())
+					{
+						g_vehicle_preview_service->stop_preview();
+					}
+				}
+			}
 
 			auto item_arr = g_vehicle_preview_service->get_vehicle_preview_item_arr();
 
@@ -88,18 +135,7 @@ namespace big
 						ImGui::PushID(item.hash);
 						components::selectable(item.display_name, false, [item] {
 
-							float y_offset = 0;
-
-							if (self::veh != 0)
-							{
-								y_offset = 10.f;
-							}
-							else if (!g->spawn.spawn_inside)
-							{
-								y_offset = 5.f;
-							}
-
-							Vector3 spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, y_offset, 0.f);
+							Vector3 spawn_location = vehicle::get_spawn_location(g->spawn.spawn_inside);
 							float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 							const Vehicle veh = vehicle::spawn(item.hash, spawn_location, spawn_heading);
