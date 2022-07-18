@@ -189,14 +189,17 @@ namespace big
 		ImGui::EndGroup();
 
 		float fly_speed_user_unit = vehicle::mps_to_speed(g->vehicle.fly.speed, g->vehicle.speed_unit);
-		if (ImGui::SliderFloat(
-			fmt::format("Speed({})", speed_unit_strings[(int)g->vehicle.speed_unit]).c_str(),
-			&fly_speed_user_unit,
-			vehicle::mps_to_speed(0.f, g->vehicle.speed_unit),
-			vehicle::mps_to_speed(150.f, g->vehicle.speed_unit),
-			"%.1f"
-		)) {
-			g->vehicle.fly.speed = vehicle::speed_to_mps(fly_speed_user_unit, g->vehicle.speed_unit);
+
+		if (!g->vehicle.fly.dont_stop) {
+			if (ImGui::SliderFloat(
+				fmt::format("Speed({})", speed_unit_strings[(int)g->vehicle.speed_unit]).c_str(),
+				&fly_speed_user_unit,
+				vehicle::mps_to_speed(0.f, g->vehicle.speed_unit),
+				vehicle::mps_to_speed(150.f, g->vehicle.speed_unit),
+				"%.1f"
+			)) {
+				g->vehicle.fly.speed = vehicle::speed_to_mps(fly_speed_user_unit, g->vehicle.speed_unit);
+			}
 		}
 	}
 }
