@@ -68,11 +68,11 @@ namespace big
 		{
 			if (self::veh)
 			{
-				auto veh_ptr = g_player_service->get_self()->get_current_vehicle();
+				auto veh_hash = ENTITY::GET_ENTITY_MODEL(self::veh);
 
-				if (veh_ptr != nullptr)
+				if (veh_hash)
 				{
-					auto item = g_vehicle_preview_service->find_vehicle_item_by_hash(veh_ptr->m_model_info->m_model_hash);
+					auto item = g_vehicle_preview_service->find_vehicle_item_by_hash(veh_hash);
 
 					components::selectable("Current Vehicle [" + item.display_name + "]", false, [] {
 						Vector3 spawn_location = vehicle::get_spawn_location(g->spawn.spawn_inside);
