@@ -20,7 +20,8 @@ namespace big
 	void looped::custom_gun_disable_control_action()
 	{
 		bool is_custom_gun_selected = g->weapons.custom_weapon != CustomWeapon::NONE;
-		if (is_custom_gun_selected)
+		bool cartoon = g->weapons.custom_weapon != CustomWeapon::CARTOON_GUN;
+		if (is_custom_gun_selected && cartoon)
 		{
 			for (const auto& control : attack_controls)
 				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(control), true);

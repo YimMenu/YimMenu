@@ -93,4 +93,22 @@ namespace big::entity
 			NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netID, true);
 		}
 	}
+
+	inline void KillNearbyPeds()
+	{
+		const int ElementAmount = 10;
+		const int ArrSize = ElementAmount * 4 + 4;
+		Ped* peds = new Ped[ArrSize];
+		peds[0] = ElementAmount;
+		int PedFound = PED::GET_PED_NEARBY_PEDS(PLAYER::PLAYER_PED_ID(), peds, -1);
+
+		for (int i = 0; i < PedFound; i++)
+		{
+			int OffsetID = i * 2 + 2;
+			const Vector3 destination = PED::GET_PED_BONE_COORDS(peds[OffsetID], (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 0.0f);
+			const Vector3 origin = PED::GET_PED_BONE_COORDS(peds[OffsetID], (int)PedBones::SKEL_R_Hand, 0.0f, 0.0f, 0.2f);
+			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 500, 0, RAGE_JOAAT("WEAPON_STUNGUN"), self::ped, false, true, 1);
+		}
+	}
+
 }

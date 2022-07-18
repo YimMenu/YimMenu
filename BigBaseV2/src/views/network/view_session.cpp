@@ -1,6 +1,7 @@
 #include "fiber_pool.hpp"
 #include "util/session.hpp"
 #include "views/view.hpp"
+#include "util/entity.hpp"
 
 namespace big
 {
@@ -58,5 +59,10 @@ namespace big
 		ImGui::Separator();
 
 		ImGui::Checkbox("Sechs Mode", &g->session.jumparound);
+		ImGui::Checkbox("Rainbow Traffic", &g->session.rainbowtraffic);
+
+		components::button("Kill Peds", [] {
+			entity::KillNearbyPeds();
+		});
 	}
 }

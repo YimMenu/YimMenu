@@ -43,10 +43,12 @@ namespace big
 		static void self_aimbot();
 		static void self_mobileradio();
 		static void self_SuperMan_salman_ka_fan();
+		static void self_ignoreplayer();
 
 		static void session_local_time();
 		static void session_slowmotion();
 		static void session_jumparound();
+		static void session_rainbowtraffic();
 
 		static void system_self_globals();
 		static void system_update_pointers();
@@ -71,6 +73,7 @@ namespace big
 
 		static void weapons_ammo_special_type();
 		static void weapons_cage_gun();
+		static void weapons_cartoon_gun();
 		static void custom_gun_disable_control_action();
 		static void weapons_delete_gun();
 		static void weapons_force_crosshairs();

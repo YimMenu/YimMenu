@@ -161,6 +161,7 @@ namespace big
 			int wanted_level = 0;
 			bool mobileradio = false;
 			bool SuperMan_salman_ka_fan = false;
+			bool ignoreplayer = false;
 
 			bool god_mode = false;
 			bool proof_bullet = false;
@@ -183,6 +184,7 @@ namespace big
 			bool override_weather = false;
 			bool slowmotion = false;
 			bool jumparound = false;
+			bool rainbowtraffic = false;
 			float slow_mo = 1.f;
 
 			struct
@@ -579,6 +581,7 @@ namespace big
 			this->self.aimbot = j["self"]["aimbot"];
 			this->self.aimbot_exclude_friend = j["self"]["aimbot_exclude_friend"];
 			this->self.mobileradio = j["self"]["mobileradio"];
+			this->self.ignoreplayer = j["self"]["ignoreplayer"];
 			this->self.proof_bullet = j["self"]["proof_bullet"];
 			this->self.proof_fire = j["self"]["proof_fire"];
 			this->self.proof_collision = j["self"]["proof_collision"];
@@ -862,6 +865,7 @@ namespace big
 						{ "aimbot", this->self.aimbot },
 						{ "aimbot_exclude_friend", this->self.aimbot_exclude_friend },
 						{ "mobileradio", this->self.mobileradio },
+						{ "ignoreplayer", this->self.ignoreplayer},
 
 						{ "proof_bullet", this->self.proof_bullet },
 						{ "proof_fire", this->self.proof_fire },

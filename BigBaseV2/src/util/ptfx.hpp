@@ -11,7 +11,7 @@ namespace big::ptfx
 	inline void supermanPTFX()
 	{
 		STREAMING::REQUEST_NAMED_PTFX_ASSET("scr_rcbarry2");
-		//STREAMING::REQUEST_NAMED_PTFX_ASSET("core");
+		STREAMING::REQUEST_NAMED_PTFX_ASSET("core");
 		if (STREAMING::HAS_NAMED_PTFX_ASSET_LOADED("scr_rcbarry2"))
 		{
 			//Foot
@@ -23,15 +23,15 @@ namespace big::ptfx
 			GRAPHICS::USE_PARTICLE_FX_ASSET("scr_rcbarry2");
 			GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("sp_clown_appear_trails", RightF.x, RightF.y, RightF.z, 0, 0, 0, 2, false, false, false, false);
 
-			//HELP FINDING A GOOD PTFX!!!
-			/*/Hand
+			/*//HELP FINDING A GOOD PTFX!!!
+			//Hand
 			auto const LeftH = PED::GET_PED_BONE_COORDS(self::ped, (int)PedBones::SKEL_L_Hand, 0, 0, 0);
-			GRAPHICS::USE_PARTICLE_FX_ASSET("core");
-			GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("muz_buzzard", LeftH.x, LeftH.y, LeftH.z, 0, 0, 0, 2, false, false, false, false);
+			GRAPHICS::USE_PARTICLE_FX_ASSET("scr_rcbarry2");
+			GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_clown_death", LeftH.x, LeftH.y, LeftH.z, 0, 0, 0, 2, false, false, false, false);
 
 			auto const RightH = PED::GET_PED_BONE_COORDS(self::ped, (int)PedBones::SKEL_R_Hand, 0, 0, 0);
-			GRAPHICS::USE_PARTICLE_FX_ASSET("core");
-			GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("muz_buzzard", RightH.x, RightH.y, RightH.z, 0, 0, 0, 2, false, false, false, false);*/
+			GRAPHICS::USE_PARTICLE_FX_ASSET("scr_rcbarry2");
+			GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_clown_death", RightH.x, RightH.y, RightH.z, 0, 0, 0, 2, false, false, false, false);*/
 		}
 	}
 
@@ -57,6 +57,19 @@ namespace big::ptfx
 			auto const RightH = PED::GET_PED_BONE_COORDS(self::ped, (int)PedBones::SKEL_L_Hand, 0, 0, 0);
 			GRAPHICS::USE_PARTICLE_FX_ASSET("core");
 			GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("ent_ray_prologue_elec_crackle_sp", RightH.x, RightH.y, RightH.z, 0, 0, 0, 2, false, false, false, false);
+		}
+	}
+
+	inline void cartoongun()
+	{
+		STREAMING::REQUEST_NAMED_PTFX_ASSET("scr_rcbarry2");
+		if (STREAMING::HAS_NAMED_PTFX_ASSET_LOADED("scr_rcbarry2"))
+		{
+			Vector3 vec0, vec1;
+			Entity WpEnt = WEAPON::GET_CURRENT_PED_WEAPON_ENTITY_INDEX(self::ped, 0);
+			GRAPHICS::USE_PARTICLE_FX_ASSET("scr_rcbarry2");
+			GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_ENTITY("muz_clown", WpEnt, (vec0.x - vec1.x) / 2.0f + 0.7f, 0.f, 0.f, 0.f, 180.f, 0.f, 1.f, true, true, true);
+
 		}
 	}
 }

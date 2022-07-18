@@ -54,6 +54,7 @@ namespace big
 		ImGui::Checkbox("Free Cam", &g->self.free_cam);
 		ImGui::Checkbox("Disable Phone", &g->tunables.disable_phone);
 		ImGui::Checkbox("Phone Anim", &g->tunables.phone_anim);
+		ImGui::Checkbox("Everyone Ignores", &g->self.ignoreplayer);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();

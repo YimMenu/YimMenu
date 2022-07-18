@@ -42,7 +42,9 @@ namespace big
 				}
 			}
 		}
-		else
+		else if (g->self.god_mode == false && g->self.SuperMan_salman_ka_fan == false)
+		{
 			ENTITY::SET_ENTITY_INVINCIBLE(self::ped, false);
+		}
 	}
 }

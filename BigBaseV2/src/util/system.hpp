@@ -36,4 +36,9 @@ namespace big::system
 	{
 		*(unsigned short*)g_pointers->m_blame_explode = toggle ? 0xE990 : 0x850F;
 	}
+
+	inline char* StringToChar(std::string String)
+	{
+		return _strdup(String.c_str());
+	}
 }

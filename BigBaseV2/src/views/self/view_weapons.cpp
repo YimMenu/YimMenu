@@ -5,6 +5,7 @@
 #include "core/data/special_ammo_types.hpp"
 #include "core/data/bullet_impact_types.hpp"
 #include "views/view.hpp"
+#include "util/system.hpp"
 
 namespace big
 {
@@ -20,6 +21,10 @@ namespace big
 
 		eAmmoSpecialType selected_ammo = g->weapons.ammo_special.type;
 		eImpactType selected_impact = g->weapons.ammo_special.impactType;
+
+		ImGui::SameLine();
+
+		
 
 		if (ImGui::BeginCombo("Special Ammo", SPECIAL_AMMOS[(int)selected_ammo].name))
 		{

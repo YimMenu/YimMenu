@@ -43,6 +43,7 @@ namespace big
 			looped::self_aimbot();
 			looped::self_mobileradio();
 			looped::self_SuperMan_salman_ka_fan();
+			looped::self_ignoreplayer();
 
 			script::get_current()->yield();
 		}
@@ -56,6 +57,7 @@ namespace big
 		{
 			looped::weapons_ammo_special_type();
 			looped::weapons_cage_gun();
+			looped::weapons_cartoon_gun();
 			looped::weapons_delete_gun();
 			looped::weapons_force_crosshairs();
 			looped::weapons_gravity_gun();
@@ -134,6 +136,7 @@ namespace big
 			looped::session_local_time();			
 			looped::session_slowmotion();
 			looped::session_jumparound();
+			looped::session_rainbowtraffic();
 
 			looped::tunables_phone_anim();
 
