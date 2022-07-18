@@ -36,4 +36,14 @@ namespace big::math
 
 		return (float)distance_between_vectors(plyr_coords, cam_coords);
 	}
+	inline int random(int min, int max) //range : [min, max]
+	{
+		static bool first = true;
+		if (first)
+		{
+			srand(time(NULL)); //seeding for the first time only!
+			first = false;
+		}
+		return min + rand() % ((max + 1) - min);
+	}
 }
