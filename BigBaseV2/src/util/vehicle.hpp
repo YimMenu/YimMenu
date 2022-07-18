@@ -234,13 +234,10 @@ namespace big::vehicle
 
 		// permission fix
 		*spawn_global.at(27).at(1).as<int32_t*>() = 0;
-		*spawn_global.at(27).at(19).as<int32_t*>() = -1;
-		*spawn_global.at(27).at(60).as<int32_t*>() = 1;
-		*spawn_global.at(27).at(77).as<int32_t*>() = 4030726305;
 
 		// personal car flag
-		*spawn_global.at(27).at(94).as<int32_t*>() = 0;
-		*spawn_global.at(27).at(95).as<int32_t*>() = 0;
+		*spawn_global.at(27).at(94).as<int32_t*>() = 14;
+		*spawn_global.at(27).at(95).as<int32_t*>() = 2;
 
 		// mmi
 		*spawn_global.at(27).at(103).as<int32_t*>() = 0;
@@ -292,8 +289,7 @@ namespace big::vehicle
 			veh_data[i] = *vehicle_idx.at(i).as<int32_t*>();
 		}
 
-		veh_data.erase(1); veh_data.erase(19); veh_data.erase(60); veh_data.erase(77);
-		veh_data.erase(94); veh_data.erase(95); veh_data.erase(103);
+		veh_data.erase(1); veh_data.erase(94); veh_data.erase(95); veh_data.erase(103);
 
 		return veh_data;
 	}
