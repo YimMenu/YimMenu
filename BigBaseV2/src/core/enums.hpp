@@ -144,8 +144,8 @@ namespace big
 		RemoteOffradar = -391633760,
 		RotateCam = 801199324,
 		SendToCutscene = 1068259786,
-		SendToIsland = -621279188,
-		SendToCayo = 1463943751,
+		SendToCayoPerico = -621279188,
+		SendToLocation = 1463943751,
 		SoundSpam = 1132878564,
 		Spectate = -1113591308,
 		Teleport = 603406648,
@@ -203,12 +203,14 @@ namespace big
 		LEAVE_ONLINE = -1
 	};
 
-	enum class SpeedoMeter
+	enum class SpeedUnit : uint32_t
 	{
-		DISABLED,
-		KMH,
-		MPH
+		KMPH,
+		MIPH,
+		MPS
 	};
+
+
 
 	enum class eEntityProofs : uint32_t
 	{
@@ -221,5 +223,38 @@ namespace big
 		STEAM      = 1 << 15,
 		DROWN      = 1 << 16,
 		WATER      = 1 << 24,
+	};
+	enum ePedType : uint32_t
+	{
+		PED_TYPE_PLAYER_0,
+		PED_TYPE_PLAYER_1,
+		PED_TYPE_NETWORK_PLAYER,
+		PED_TYPE_PLAYER_2,
+		PED_TYPE_CIVMALE,
+		PED_TYPE_CIVFEMALE,
+		PED_TYPE_COP,
+		PED_TYPE_GANG_ALBANIAN,
+		PED_TYPE_GANG_BIKER_1,
+		PED_TYPE_GANG_BIKER_2,
+		PED_TYPE_GANG_ITALIAN,
+		PED_TYPE_GANG_RUSSIAN,
+		PED_TYPE_GANG_RUSSIAN_2,
+		PED_TYPE_GANG_IRISH,
+		PED_TYPE_GANG_JAMAICAN,
+		PED_TYPE_GANG_AFRICAN_AMERICAN,
+		PED_TYPE_GANG_KOREAN,
+		PED_TYPE_GANG_CHINESE_JAPANESE,
+		PED_TYPE_GANG_PUERTO_RICAN,
+		PED_TYPE_DEALER,
+		PED_TYPE_MEDIC,
+		PED_TYPE_FIREMAN,
+		PED_TYPE_CRIMINAL,
+		PED_TYPE_BUM,
+		PED_TYPE_PROSTITUTE,
+		PED_TYPE_SPECIAL,
+		PED_TYPE_MISSION,
+		PED_TYPE_SWAT,
+		PED_TYPE_ANIMAL,
+		PED_TYPE_ARMY
 	};
 }

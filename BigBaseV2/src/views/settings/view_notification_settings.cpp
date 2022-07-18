@@ -77,7 +77,7 @@ namespace big
 		draw_pair_option("Remote Off Radar", script_event_handler.remote_off_radar);
 		draw_pair_option("Rotate Cam", script_event_handler.rotate_cam);
 		draw_pair_option("Send to Cutscene", script_event_handler.send_to_cutscene);
-		draw_pair_option("Send to Island", script_event_handler.send_to_island);
+		draw_pair_option("Send to Location", script_event_handler.send_to_location);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();

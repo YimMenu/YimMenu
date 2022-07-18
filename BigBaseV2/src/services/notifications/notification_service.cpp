@@ -14,7 +14,7 @@ namespace big
 
 	void notification_service::push(notification n)
 	{
-		this->notifications.emplace(std::hash<std::string>{}(n.message), n);
+		this->notifications.emplace(std::hash<std::string>{}(n.message + n.title), n);
 	}
 
 	void notification_service::push(std::string title, std::string message)

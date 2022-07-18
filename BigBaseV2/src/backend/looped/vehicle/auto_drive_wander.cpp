@@ -14,7 +14,7 @@ namespace big
 		static bool ran_once = false;
 		static int changing_driving_styles = false;
 		static int current_driving_style = false;
-		static int current_speed;
+		static float current_speed;
 
 		if (g->vehicle.auto_drive_wander)
 		{
@@ -32,13 +32,12 @@ namespace big
 			else
 			{
 				g->vehicle.auto_drive_wander = false;
+				current_speed = g->vehicle.auto_drive_speed;
+				current_driving_style = g->vehicle.driving_style_flags;
 
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 				TASK::CLEAR_PED_TASKS(self::ped);
-				TASK::TASK_VEHICLE_DRIVE_WANDER(self::ped, self::veh, static_cast<float>(g->vehicle.auto_drive_speed), g->vehicle.driving_style_flags);
-
-				current_driving_style = g->vehicle.driving_style_flags;
-				current_speed = g->vehicle.auto_drive_speed;
+				TASK::TASK_VEHICLE_DRIVE_WANDER(self::ped, self::veh, current_speed, current_driving_style);
 
 				wandering = true;
 

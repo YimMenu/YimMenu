@@ -14,7 +14,7 @@ namespace big
 		static bool ran_once = false;
 		static int changing_driving_styles = false;
 		static int current_driving_style = false;
-		static int current_speed;
+		static float current_speed;
 
 		if (g->vehicle.auto_drive_to_waypoint)
 		{
@@ -41,12 +41,17 @@ namespace big
 					g_notification_service->push_warning("Auto Drive", "Start driving or leave car to take back control.");
 				}
 
+				current_speed = g->vehicle.auto_drive_speed;
+				current_driving_style = g->vehicle.driving_style_flags;
+
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 				TASK::CLEAR_PED_TASKS(self::ped);
-				TASK::TASK_VEHICLE_DRIVE_TO_COORD(self::ped, self::veh, location.x, location.y, location.z, static_cast<float>(g->vehicle.auto_drive_speed), 5, ENTITY::GET_ENTITY_MODEL(self::veh), g->vehicle.driving_style_flags, 20, true);
-
-				current_driving_style = g->vehicle.driving_style_flags;
-				current_speed = g->vehicle.auto_drive_speed;
+				TASK::TASK_VEHICLE_DRIVE_TO_COORD(
+					self::ped, self::veh, 
+					location.x, location.y, location.z, current_speed, 
+					5, ENTITY::GET_ENTITY_MODEL(self::veh), 
+					current_driving_style, 20, true
+				);
 
 				g->vehicle.auto_drive_to_waypoint = false;
 

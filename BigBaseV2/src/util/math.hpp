@@ -9,9 +9,9 @@ namespace big::math
 		return (float)radian;
 	}
 
-	inline double distance_between_vectors(Vector3 a, Vector3 b)
+	inline float distance_between_vectors(Vector3 a, Vector3 b)
 	{
-		return sqrt(pow((a.x - b.x), 2) + pow((a.y - b.y), 2) + pow((a.z - b.z), 2));
+		return (float)sqrt(pow((a.x - b.x), 2) + pow((a.y - b.y), 2) + pow((a.z - b.z), 2));
 	}
 
 	inline Vector3 rotation_to_direction(Vector3 rotation)

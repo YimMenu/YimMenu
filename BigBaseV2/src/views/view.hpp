@@ -34,6 +34,8 @@ namespace big
 		static void lsc();
 		static void settings();
 		static void spawn();
+		static void pv();
+		static void vehicle_fun();
 		static void spoofing();
 		static void teleport();
 		static void vehicle();

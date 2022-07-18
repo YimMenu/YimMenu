@@ -35,7 +35,7 @@ namespace big
 			location.y += dist * sin(yaw) * cos(pitch);
 			location.z += dist * sin(pitch);
 			Vehicle veh = vehicle::spawn(
-				(const char*)g->weapons.vehicle_gun_model,
+				rage::joaat((const char*)g->weapons.vehicle_gun_model),
 				location,
 				ENTITY::GET_ENTITY_HEADING(self::ped)
 			);

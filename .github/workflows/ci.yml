@@ -29,3 +29,14 @@ jobs:
 
       - name: Check if DLL got built
         run: if (-Not (Test-Path -path "bin/Release/BigBaseV2.dll")) {throw 1}
+
+      - name: Rename DLL to YimMenu-dev-{GITHUB_SHA}.dll
+        run: ren BigBaseV2.dll YimMenu-dev-${{github.sha}}.dll
+        working-directory: bin/Release/
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: binary
+          path: |
+            bin/Release/YimMenu-dev-*.dll
