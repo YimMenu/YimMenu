@@ -71,14 +71,6 @@ namespace big
 	inline std::atomic_bool g_running{ false };
 
 	inline CPed* g_local_player;
-
-
-	static bool does_search_match(std::string& input, const std::string& search)
-	{
-		std::transform(input.begin(), input.end(), input.begin(), ::tolower);
-
-		return input.find(search) != std::string::npos;
-	}
 }
 
 namespace self

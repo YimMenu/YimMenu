@@ -15,7 +15,7 @@ namespace big
 		NOTIFICATION_SETTINGS,
 		PROTECTION_SETTINGS,
 		DEBUG,
-		PED_MODEL,
+		MOBILE,
 		NONE,
 		NETWORK,
 		PLAYER,
@@ -47,7 +47,7 @@ namespace big
 		std::unordered_map<tabs, navigation_struct> nav = {
 			{tabs::SELF, { "Self",view::self, {
 				{ tabs::WEAPONS, { "Weapons", view::weapons }},
-				{ tabs::PED_MODEL, {"Ped Model", view::ped_model}},
+				{ tabs::MOBILE, {"Mobile", view::mobile}},
 				{ tabs::TELEPORT, {"Teleport", view::teleport}},
 			}}},
 			{tabs::VEHICLE, { "Vehicle", view::vehicle, {
