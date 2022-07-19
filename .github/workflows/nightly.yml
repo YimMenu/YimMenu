@@ -7,25 +7,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  check_date:
-    runs-on: ubuntu-latest
-    name: Check latest commit
-    outputs:
-      should_run: ${{ steps.should_run.outputs.should_run }}
-    steps:
-      - uses: actions/checkout@v2
-
-      - id: should_run
-        continue-on-error: true
-        name: Check if latest commit date is within the previous 24 hours
-        if: ${{ github.event_name == 'schedule' }}
-        run: test -z $(git rev-list  --after="24 hours"  ${{ github.sha }}) && echo "::set-output name=should_run::false"
-
   build_nightly:
     runs-on: windows-latest
     name: Build Nightly
-    needs: check_date
-    if: ${{ needs.check_date.outputs.should_run != 'false' }}
     outputs:
       full_sha: ${{ steps.var.outputs.full_sha }}
       short_sha: ${{ steps.var.outputs.short_sha }}
@@ -67,10 +51,53 @@ jobs:
           echo "::set-output name=full_sha::$(git rev-parse HEAD)"
           echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
 
+  check_detections:
+    runs-on: ubuntu-latest
+    name: Check for detections in Binary and notify if necesarry
+    needs: build_nightly
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: binary
+
+      - name: Test file for detected bits
+        id: detections
+        uses: yimura/gtav-sigscan-action@v0.0.2
+        with:
+          file: ./YimMenu.dll
+
+      - name: Notify on Discord
+        if: ${{ steps.detections.outputs.is_detected == 'true' }}
+        uses: tsickert/discord-webhook@v4.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          embed-title: YimMenu has been detected by the sigscanner!
+          embed-description: |
+            The following bits have been detected:
+            ```yml
+            ${{ steps.detections.outputs.detected_string }}
+            ```
+  check_date:
+    runs-on: ubuntu-latest
+    name: Check latest commit
+    needs: build_nightly
+    outputs:
+      should_run: ${{ steps.should_run.outputs.should_run }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - id: should_run
+        continue-on-error: true
+        name: Check if latest commit date is within the previous 24 hours
+        if: ${{ github.event_name == 'schedule' }}
+        run: test -z $(git rev-list  --after="24 hours"  ${{ github.sha }}) && echo "::set-output name=should_run::false"
+
   create_release:
     runs-on: ubuntu-latest
     name: Create Release
-    needs: build_nightly
+    needs: check_date
+    if: ${{ needs.check_date.outputs.should_run != 'false' }}
     steps:
       - name: Download Artifact
         uses: actions/download-artifact@v2
