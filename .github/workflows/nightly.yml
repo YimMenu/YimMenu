@@ -61,18 +61,19 @@ jobs:
         id: detections
         uses: yimura/gtav-sigscan-action@v0.0.2
         with:
-          file: ./YimMenu.dll
+          file: ./SechsMenu.dll
 
       - name: Notify on Discord
         if: ${{ steps.detections.outputs.is_detected == 'true' }}
         uses: tsickert/discord-webhook@v4.0.0
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          embed-title: YimMenu has been detected by the sigscanner!
+          embed-title: SechsMenu has been detected by the sigscanner!
           embed-description: |
             The following bits have been detected:
             ```yml
             ${{ steps.detections.outputs.detected_string }}
+            @𝙴𝙻𝙴𝚅𝙴𝙽#4439 is nub
             ```
   check_date:
     runs-on: ubuntu-latest
