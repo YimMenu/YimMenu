@@ -68,7 +68,7 @@ namespace big
 
 				if (veh_hash)
 				{
-					auto item = g_vehicle_preview_service->find_vehicle_item_by_hash(veh_hash);
+					auto item = g_gta_data_service->find_vehicle_by_hash(veh_hash);
 
 					components::selectable("Current Vehicle [" + item.display_name + "]", false, [] {
 						Vector3 spawn_location = vehicle::get_spawn_location(g->spawn.spawn_inside);
