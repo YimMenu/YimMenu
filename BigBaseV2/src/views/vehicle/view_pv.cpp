@@ -44,7 +44,7 @@ namespace big
 
 
 		static int selected_class = -1;
-		auto class_arr = g_vehicle_preview_service->get_vehicle_class_arr();
+		auto class_arr = g_gta_data_service->get_vehicle_class_arr();
 
 		ImGui::SetNextItemWidth(300.f);
 		if (ImGui::BeginCombo("Vehicle Class", selected_class == -1 ? "ALL" : class_arr[selected_class].c_str()))
@@ -72,29 +72,27 @@ namespace big
 
 
 		static char search[64];
-		static std::string lower_search;
 
 		ImGui::SetNextItemWidth(300.f);
-		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None, [] {
-			lower_search = search;
-			std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
-		});
+		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None);
 
 		g_mobile_service->refresh_personal_vehicles();
 		if (ImGui::ListBoxHeader("###personal_veh_list", { 300, static_cast<float>(*g_pointers->m_resolution_y - 184 - 38 * num_of_rows) }))
 		{
-
 			if (g_mobile_service->personal_vehicles().empty())
 			{
 				ImGui::Text("No personal vehicles found, \nare you online?");
 			}
 			else
 			{
+				std::string lower_search = search;
+				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
+
 				for (const auto& it : g_mobile_service->personal_vehicles())
 				{
 					const auto& label = it.first;
 					const auto& personal_veh = it.second;
-					auto item = g_vehicle_preview_service->find_vehicle_item_by_hash(personal_veh->get_hash());
+					auto item = g_gta_data_service->find_vehicle_by_hash(personal_veh->get_hash());
 
 					std::string clazz = item.clazz;
 					std::string display_name = label;
@@ -153,7 +151,6 @@ namespace big
 							else
 							{
 								strcpy(search, "");
-								lower_search = search;
 
 								personal_veh->summon();
 							}

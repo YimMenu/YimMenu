@@ -26,7 +26,7 @@ namespace big
 
 
 		static int selected_class = -1;
-		auto class_arr = g_vehicle_preview_service->get_vehicle_class_arr();
+		auto class_arr = g_gta_data_service->get_vehicle_class_arr();
 
 		ImGui::SetNextItemWidth(300.f);
 		if (ImGui::BeginCombo("Vehicle Class", selected_class == -1 ? "ALL" : class_arr[selected_class].c_str()))
@@ -54,22 +54,20 @@ namespace big
 
 
 		static char search[64];
-		static std::string lower_search;
 
 		ImGui::SetNextItemWidth(300.f);
-		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None, [] {
-			lower_search = search;
-			std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
-		});
+		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None);
 
 		// arbitrary subtraction this looked nice so idc, works for all resolutions as well
 		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 184 - 38 * 4) }))
 		{
 
-			auto item_arr = g_vehicle_preview_service->get_vehicle_preview_item_arr();
+			auto item_arr = g_gta_data_service->get_vehicle_arr();
 
 			if (item_arr.size() > 0)
 			{
+				std::string lower_search = search;
+				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
 
 				for (auto& item : item_arr) {
 					std::string display_name = item.display_name;

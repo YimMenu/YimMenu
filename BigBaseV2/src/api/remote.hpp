@@ -49,6 +49,8 @@ namespace big::remote
 			std::string local_etag = "";
 			std::string remote_etag = "";
 
+			const std::vector<std::string> headers = { "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/533.2 (KHTML, like Gecko) Chrome/6.0" };
+
 			try {
 
 				{
@@ -61,7 +63,7 @@ namespace big::remote
 				if (!local_etag.empty())
 				{
 					http::Request req(file_url.data());
-					http::Response res = req.send("HEAD", "", { "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/533.2 (KHTML, like Gecko) Chrome/6.0" }, 10s);
+					http::Response res = req.send("HEAD", "", headers, 15s);
 
 					remote_etag = get_etag_from_headers(res.headers);
 
@@ -77,7 +79,7 @@ namespace big::remote
 			}
 
 			http::Request req(file_url.data());
-			http::Response res = req.send("GET", "", {}, 10s);
+			http::Response res = req.send("GET", "", headers, 30s);
 
 			std::ofstream file_ofstream(file_location, std::ios::binary | std::ios::trunc);
 			std::ostream_iterator<std::uint8_t> file_out_iter(file_ofstream);
