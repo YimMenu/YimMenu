@@ -14,6 +14,7 @@
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/globals/globals_service.hpp"
 #include "services/gui/gui_service.hpp"
+#include "services/gta_data/gta_data_service.hpp"
 #include "services/mobile/mobile_service.hpp"
 #include "services/pickups/pickup_service.hpp"
 #include "services/players/player_service.hpp"
@@ -79,6 +80,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					auto notification_service_instance = std::make_unique<notification_service>();
 					auto pickup_service_instance = std::make_unique<pickup_service>();
 					auto player_service_instance = std::make_unique<player_service>();
+					auto gta_data_service_instance = std::make_unique<gta_data_service>();
 					auto vehicle_preview_service_instance = std::make_unique<vehicle_preview_service>();
 					auto ped_list_service_instance = std::make_unique<ped_list_service>();
 					auto vehicle_service_instance = std::make_unique<vehicle_service>();
@@ -128,6 +130,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					LOG(INFO) << "Gui Service reset.";
 					ped_list_service_instance.reset();
 					LOG(INFO) << "Ped List Service reset.";
+					gta_data_service_instance.reset();
+					LOG(INFO) << "GTA Data Service reset.";
 					vehicle_service_instance.reset();
 					LOG(INFO) << "Vehicle Service reset.";
 					vehicle_preview_service_instance.reset();

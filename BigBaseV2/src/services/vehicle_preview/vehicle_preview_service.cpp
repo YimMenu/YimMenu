@@ -1,6 +1,4 @@
-#include "api/remote.hpp"
 #include "fiber_pool.hpp"
-#include "file_manager.hpp"
 #include "gui.hpp"
 #include "thread_pool.hpp"
 #include "util/entity.hpp"
@@ -9,76 +7,8 @@
 
 namespace big
 {
-	vehicle_preview_item::vehicle_preview_item()
+	vehicle_preview_service::vehicle_preview_service()
 	{
-		this->name = "";
-		this->display_name = "";
-		this->display_manufacturer = "";
-		this->clazz = "";
-		this->hash = 0;
-	}
-
-	vehicle_preview_item::vehicle_preview_item(nlohmann::json& item_json)
-	{
-		this->name = item_json["Name"];
-		this->display_name = item_json["Name"];
-		this->display_manufacturer = "";
-		this->clazz = "";
-		this->hash = item_json["Hash"];
-
-		if (!item_json["DisplayName"].is_null())
-		{
-			this->display_name = item_json["DisplayName"];
-		}
-
-		if (!item_json["ManufacturerDisplayName"].is_null())
-		{
-			this->display_manufacturer = item_json["ManufacturerDisplayName"];
-		}
-		else if (!item_json["Manufacturer"].is_null())
-		{
-			this->display_manufacturer = item_json["Manufacturer"];
-		}
-		
-		if (!item_json["Class"].is_null())
-		{
-			this->clazz = item_json["Class"];
-
-			if (this->clazz == "COMPACTS")
-			{
-				this->clazz = "COMPACT";
-			}
-		}
-	}
-
-	vehicle_preview_service::vehicle_preview_service() :
-		m_vehicle_file(g_file_manager->get_project_file("./lib/vehicles.json")),
-		m_vehicle_file_etag(g_file_manager->get_project_file("./lib/vehicles_etag.txt"))
-	{
-		if (m_vehicle_file.exists())
-		{
-			this->load();
-			LOG(INFO) << "Vehicle data loaded.";
-		}
-
-		g_thread_pool->push([this]() {
-			bool ret = remote::update_binary(
-				"http://github-proxy.damon.sh/DurtyFree/gta-v-data-dumps/master/vehicles.json",
-				m_vehicle_file.get_path(),
-				m_vehicle_file_etag.get_path()
-			);
-
-			if (ret)
-			{
-				this->load();
-				LOG(INFO) << "Vehicle data updated.";
-			}
-			else if (!m_vehicle_file.exists())
-			{
-				LOG(WARNING) << "Failed to download vehicles.json data...";
-			}
-		});
-
 		g_vehicle_preview_service = this;
 	}
 
@@ -87,36 +17,7 @@ namespace big
 		g_vehicle_preview_service = nullptr;
 	}
 
-	const vehicle_preview_item& vehicle_preview_service::find_vehicle_item_by_hash(Hash hash)
-	{
-		int idx = -1;
-
-		if (m_hash_idx_map.count(hash))
-		{
-			idx = m_hash_idx_map[hash];
-		}
-
-		if (idx == -1)
-		{
-			return empty_item;
-		}
-		else
-		{
-			return m_vehicle_preview_item_arr[idx];
-		}
-	}
-
-	std::vector<std::string>& vehicle_preview_service::get_vehicle_class_arr()
-	{
-		return m_vehicle_class_arr;
-	}
-
-	std::vector<vehicle_preview_item>& vehicle_preview_service::get_vehicle_preview_item_arr()
-	{
-		return m_vehicle_preview_item_arr;
-	}
-
-	void vehicle_preview_service::set_preview_vehicle(const vehicle_preview_item& item)
+	void vehicle_preview_service::set_preview_vehicle(const vehicle_item& item)
 	{
 		if (item.hash != 0)
 		{
@@ -187,50 +88,5 @@ namespace big
 	void vehicle_preview_service::stop_preview()
 	{
 		m_running = false;
-	}
-
-	void vehicle_preview_service::load()
-	{
-		m_hash_idx_map.clear();
-		m_vehicle_preview_item_arr.clear();
-
-		std::ifstream file(m_vehicle_file.get_path());
-		nlohmann::json all_vehicles;
-
-		try
-		{
-			file >> all_vehicles;
-		}
-		catch (const std::exception& ex)
-		{
-			LOG(WARNING) << "Failed to load vehicles.json:\n" << ex.what();
-		}
-
-
-		for (auto& item_json : all_vehicles)
-		{
-			if (
-				item_json["Hash"].is_null() ||
-				item_json["Name"].is_null() ||
-				!item_json["Bones"].is_array() ||
-				item_json["Bones"][0] == "stub"
-			)
-			{
-				continue;
-			}
-
-			auto item = vehicle_preview_item(item_json);
-
-			m_hash_idx_map[item_json["Hash"]] = (int)m_vehicle_preview_item_arr.size();
-
-			m_vehicle_preview_item_arr.push_back(item);
-
-			if (std::find(m_vehicle_class_arr.begin(), m_vehicle_class_arr.end(), item.clazz) == m_vehicle_class_arr.end())
-			{
-				m_vehicle_class_arr.push_back(item.clazz);
-			}
-
-			std::sort(m_vehicle_class_arr.begin(), m_vehicle_class_arr.end());
-		}
 	}
 }
