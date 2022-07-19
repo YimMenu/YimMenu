@@ -154,7 +154,7 @@ namespace big
 			bool never_wanted = false;
 			bool no_ragdoll = false;
 			bool noclip = false;
-			bool off_radar = false;
+			bool off_radar = false;	
 			bool super_run = false;
 			bool aimbot = false;
 			bool aimbot_exclude_friend = true;
@@ -162,6 +162,7 @@ namespace big
 			bool mobileradio = false;
 			bool SuperMan_salman_ka_fan = false;
 			bool ignoreplayer = false;
+			int animlist = 0;
 
 			bool god_mode = false;
 			bool proof_bullet = false;

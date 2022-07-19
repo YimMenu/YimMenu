@@ -110,5 +110,4 @@ namespace big::entity
 			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 500, 0, RAGE_JOAAT("WEAPON_STUNGUN"), self::ped, false, true, 1);
 		}
 	}
-
 }

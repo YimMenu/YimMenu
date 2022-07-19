@@ -85,6 +85,9 @@ namespace big
 			for (auto const& i : WpnUpg::WpnUpgArrays::MaxUpgradeWeapon) {
 				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(self::ped, i.WeaponHash, MISC::GET_HASH_KEY(system::StringToChar(i.UpgradeHash)));
 			}
+			for (auto const& weapon : weapon_list) {
+				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon, 9999, false);
+			}
 		});
 
 		ImGui::SliderFloat("Damage Multiplier", &g->weapons.increased_damage, 1.f, 10.f, "%.1f");

@@ -112,23 +112,20 @@ namespace big::ped
 		return -1;
 	}
 
-	inline void play_anim(Ped ped, std::string_view name, std::string_view dict, int flag)                //NEED FIX
+	inline void play_anim(char* Dict, char* ID)
 	{
-		if (STREAMING::DOES_ANIM_DICT_EXIST(dict.data()) && STREAMING::HAS_ANIM_DICT_LOADED(dict.data()))
+		STREAMING::REQUEST_ANIM_DICT(Dict);
+		if (STREAMING::HAS_ANIM_DICT_LOADED(Dict))
 		{
-			STREAMING::REQUEST_ANIM_DICT(dict.data());
-
-			script::get_current()->yield();
+			g_notification_service->push_warning("Animation", "Playing Animation");
 		}
-		if (!STREAMING::HAS_ANIM_DICT_LOADED(dict.data()))
+		if (!STREAMING::HAS_ANIM_DICT_LOADED(Dict))
 		{	
-			g_notification_service->push_warning("Animation", "Failed to load dict, did you give an incorrect dict?");
 			return;
 		}
-		TASK::TASK_PLAY_ANIM(ped, dict.data(), name.data(), 4.0f, -4.0f, -1, flag, 1, 0, 0, 0);
-
-		STREAMING::HAS_ANIM_DICT_LOADED(dict.data());
+		TASK::TASK_PLAY_ANIM(PLAYER::PLAYER_PED_ID(), Dict, ID, 4.0f, -4.0f, -1, 1, 1, 0, 0, 0);
 	}
 
+	static constexpr char const* animlistID[] = { "Sechs F", "Sechs M", "Private Dance", "Pole Dance", "Push Ups", "Sit Ups", "Celebrate", "Shocked", "Suicide 1", "Suicide 2", "Showering" };
 	static constexpr char const* give_weapon[] = { "None", "Stock", "Upgraded" };
 }
