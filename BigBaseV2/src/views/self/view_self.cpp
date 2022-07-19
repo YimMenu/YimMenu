@@ -6,8 +6,6 @@
 
 namespace big
 {
-	char* ID;
-	char* Dict;
 	void view::self()
 	{
 		components::button("Suicide", [] {
@@ -164,83 +162,6 @@ namespace big
 				g_local_player->m_player_info->m_wanted_level = g->self.wanted_level;
 			}
 		}
-
-		ImGui::Separator();
-
-		components::small_text("Ped Animations");
-
-		components::button("Play Animation", [] {
-			ped::play_anim(Dict, ID);
-			});
-
-		ImGui::SameLine();
-
-		components::button("Stop Animation", [] {
-			TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::PLAYER_PED_ID());
-			TASK::CLEAR_PED_TASKS(PLAYER::PLAYER_PED_ID());
-			TASK::CLEAR_PED_SECONDARY_TASK(PLAYER::PLAYER_PED_ID());
-			});
-
-		if (ImGui::BeginCombo("##Anims", ped::animlistID[g->self.animlist]))
-		{
-			for (int i = 0; i < 12; i++)
-			{
-				bool itemSelected = g->self.animlist == i;
-				if (ImGui::Selectable(ped::animlistID[i], itemSelected))
-				{
-					g->self.animlist = i;
-					if (g->self.animlist == 0) {
-						Dict = "rcmpaparazzo_2";
-						ID = "shag_loop_poppy";
-					}
-					else if (g->self.animlist == 1) {
-						Dict = "rcmpaparazzo_2";
-						ID = "shag_loop_a";
-					}
-					else if (g->self.animlist == 2) {
-						Dict = "mini@strip_club@private_dance@part1";
-						ID = "priv_dance_p1";
-					}
-					else if (g->self.animlist == 3) {
-						Dict = "mini@strip_club@pole_dance@pole_dance1";
-						ID = "pd_dance_01";
-					}
-					else if (g->self.animlist == 4) {
-						Dict = "amb@world_human_push_ups@male@base";
-						ID = "base";
-					}
-					else if (g->self.animlist == 5) {
-						Dict = "amb@world_human_sit_ups@male@base";
-						ID = "base";
-					}
-					else if (g->self.animlist == 6) {
-						Dict = "rcmfanatic1celebrate";
-						ID = "celebrate";
-					}
-					else if (g->self.animlist == 7) {
-						Dict = "ragdoll@human";
-						ID = "electrocute";
-					}
-					else if (g->self.animlist == 8) {
-						Dict = "mp_suicide";
-						ID = "pistol";
-					}
-					else if (g->self.animlist == 9) {
-						Dict = "mp_suicide";
-						ID = "pill";
-					}
-					else if (g->self.animlist == 10) {
-						Dict = "mp_safehouseshower@male@";
-						ID = "male_shower_idle_b";
-					}
-				}
-				if (itemSelected)
-				{
-					ImGui::SetItemDefaultFocus();
-				}
-			}
-		}
-		ImGui::EndCombo();
 
 		g->self.proof_mask = 0;
 		if (g->self.god_mode)
