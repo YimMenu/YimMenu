@@ -174,7 +174,7 @@ namespace big
 			bool proof_water = false;
 			uint32_t proof_mask = 0;
 
-			bool give_all_weapon = false;
+			int give_weapon_id = 0;
 		};
 
 		struct session
@@ -591,7 +591,7 @@ namespace big
 			this->self.proof_drown = j["self"]["proof_drown"];
 			this->self.proof_water = j["self"]["proof_water"];
 			this->self.proof_mask = j["self"]["proof_mask"];
-			this->self.give_all_weapon = j["self"]["give_all_weapon"];
+			this->self.give_weapon_id = j["self"]["give_weapon_id"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
 			this->settings.hotkeys.teleport_waypoint = j["settings"]["hotkeys"]["teleport_waypoint"];
@@ -642,7 +642,6 @@ namespace big
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
 			this->vehicle.keep_vehicle_repaired = j["vehicle"]["keep_vehicle_repaired"];
-			//this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
 			this->vehicle.rainbow_primary = j["vehicle"]["rainbow_primary"];
 			this->vehicle.rainbow_secondary = j["vehicle"]["rainbow_secondary"];
 			this->vehicle.rainbow_neon = j["vehicle"]["rainbow_neon"];
@@ -876,7 +875,7 @@ namespace big
 						{ "proof_drown", this->self.proof_drown },
 						{ "proof_water", this->self.proof_water },
 						{ "proof_mask", this->self.proof_mask },
-						{ "give_all_weapon", this->self.give_all_weapon }
+						{ "give_weapon_id", this->self.give_weapon_id }
 					}
 				},
 				{
@@ -948,7 +947,6 @@ namespace big
 						{ "instant_brake", this->vehicle.instant_brake },
 						{ "is_targetable", this->vehicle.is_targetable },
 						{ "keep_vehicle_repaired", this->vehicle.keep_vehicle_repaired },
-						//{ "rainbow_paint", this->vehicle.rainbow_paint },
 						{ "rainbow_primary", this->vehicle.rainbow_primary },
 						{ "rainbow_secondary", this->vehicle.rainbow_secondary },
 						{ "rainbow_neon", this->vehicle.rainbow_neon },

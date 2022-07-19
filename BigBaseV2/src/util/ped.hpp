@@ -129,4 +129,6 @@ namespace big::ped
 
 		STREAMING::HAS_ANIM_DICT_LOADED(dict.data());
 	}
+
+	static constexpr char const* give_weapon[] = { "None", "Stock", "Upgraded" };
 }

@@ -24,7 +24,7 @@ namespace big
 		static void notification_settings();
 		static void protection_settings();
 		static void heading();
-		static void mobile();
+		static void ped();
 		static void navigation();
 		//static void player_navigation();
 		static void notifications();
