@@ -67,6 +67,34 @@ jobs:
           echo "::set-output name=full_sha::$(git rev-parse HEAD)"
           echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
 
+  check_detections:
+    runs-on: ubuntu-latest
+    name: Check for detections in Binary and notify if necesarry
+    needs: build_nightly
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: binary
+
+      - name: Test file for detected bits
+        id: detections
+        uses: yimura/gtav-sigscan-action@v0.0.1
+        with:
+          file: ./YimMenu.dll
+
+      - name: Notify on Discord
+        if: ${{ steps.detections.outputs.is_detected == 'true' }}
+        uses: tsickert/discord-webhook@v4.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          embed-title: YimMenu has been detected by the sigscanner!
+          embed-description: |
+            The following bits have been detected:
+            ```yml
+            ${{ steps.detections.outputs.detected_string }}
+            ```
+
   create_release:
     runs-on: ubuntu-latest
     name: Create Release
