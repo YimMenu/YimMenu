@@ -44,6 +44,7 @@ namespace big
 		static void self_mobileradio();
 		static void self_SuperMan_salman_ka_fan();
 		static void self_ignoreplayer();
+		static void self_disablehud();
 
 		static void session_local_time();
 		static void session_slowmotion();

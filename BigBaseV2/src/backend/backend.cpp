@@ -44,6 +44,7 @@ namespace big
 			looped::self_mobileradio();
 			looped::self_SuperMan_salman_ka_fan();
 			looped::self_ignoreplayer();
+			looped::self_disablehud();
 
 			script::get_current()->yield();
 		}

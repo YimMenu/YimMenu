@@ -65,6 +65,7 @@ namespace big
 		ImGui::Checkbox("Flash Run", &g->self.super_run);
 		ImGui::Checkbox("No Idle Kick", &g->tunables.no_idle_kick);
 		ImGui::Checkbox("Super Man", &g->self.SuperMan_salman_ka_fan);
+		ImGui::Checkbox("Disable HUD", &g->self.disablehud);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();

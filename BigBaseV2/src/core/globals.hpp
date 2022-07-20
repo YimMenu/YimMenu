@@ -162,6 +162,7 @@ namespace big
 			bool mobileradio = false;
 			bool SuperMan_salman_ka_fan = false;
 			bool ignoreplayer = false;
+			bool disablehud = false;
 			int animlist = 0;
 			int scenelist = 0;
 
