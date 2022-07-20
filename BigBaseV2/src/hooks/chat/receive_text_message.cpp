@@ -11,7 +11,7 @@ namespace big
         CNetGamePlayer* PlayerID = (CNetGamePlayer*)(g_pointers->m_chat_player_id(peerId, &unk2, peerId));
 
         //Add the message to the list
-        log_msg(msg, PlayerID->get_net_data()->m_name);
+        //log_msg((char*)msg, PlayerID->get_net_data()->m_name);
 
         LOG(INFO) << PlayerID->get_net_data()->m_rockstar_id2 << ", " << PlayerID->get_net_data()->m_name << ", " << msg << ", " << IsTeam;
         
