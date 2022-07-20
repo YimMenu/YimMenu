@@ -163,6 +163,7 @@ namespace big
 			bool SuperMan_salman_ka_fan = false;
 			bool ignoreplayer = false;
 			int animlist = 0;
+			int scenelist = 0;
 
 			bool god_mode = false;
 			bool proof_bullet = false;

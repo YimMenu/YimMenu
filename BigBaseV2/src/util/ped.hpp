@@ -126,6 +126,20 @@ namespace big::ped
 		TASK::TASK_PLAY_ANIM(PLAYER::PLAYER_PED_ID(), Dict, ID, 4.0f, -4.0f, -1, 1, 1, 0, 0, 0);
 	}
 
+	inline void play_scenario(char* Scene)
+	{
+		TASK::TASK_START_SCENARIO_IN_PLACE(PLAYER::PLAYER_PED_ID(), Scene, 0, true);
+	}
+
 	static constexpr char const* animlistID[] = { "Sechs F", "Sechs M", "Private Dance", "Pole Dance", "Push Ups", "Sit Ups", "Celebrate", "Shocked", "Suicide 1", "Suicide 2", "Showering" };
+	
+	static constexpr char const* scenelist[] = { "Coffee", "Smoke", "Binocular", "Freeway", "Slumped", "Standing", "Wash", "Park Attendant", "Cheering", "Clipboard", "Drill", "Cop Idle", 
+		"Drinking", "Drug Dealer", "Drug Dealer Hard", "Film SHocking", "Leaf Blower", "Gardener", "Golf Player", "Guard Patrol", "Guard Stand", "Guard Stand Army", "Hammering", "Hangout", 
+		"Hiker", "Hiker Standing", "Human Statue", "Janitor", "Jogging", "Jog Standing", "Leaning", "Maid Clean", "Flex", "Free Weights", "Musician", "Paparazzi", "Partying", "Picnic", 
+		"Prostitute High Class", "Prostitute Low Class", "Pushups", "Seat Ledge", "Seat Ledge Nom Nom", "Seat Steps", "Seat Wall", "Seat Wall Eating", "Security Torch", "Situps", "Smoking", 
+		"Smoking Pot", "Stand Fire", "Fishing", "Impatient", "Impatient Upright", "Stand Mobile", "Stand Mobile Upright", "Strip Watch Stand", "Stupor", "Sunbathe", "Sunbathe Back", 
+		"Tennis Player", "Tourist Map", "Tourist mobile", "Welding", "Window Shop", "Yoga", "Aim", "BBQ", "BIN", "Shopping Cart", "Chin Ups", "Parking Meter", "Seat Bar", "Seat bench", 
+		"Bench Press", "Strip Watch", "Medic Kneel", "Tend to Dead", "Time of Death", "Crowd Control", "Investigate" };
+	
 	static constexpr char const* give_weapon[] = { "None", "Stock", "Upgraded" };
 }
