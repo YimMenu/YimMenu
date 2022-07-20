@@ -15,11 +15,12 @@ namespace big
 {
 	void view::view_player() {
 
+		std::string title = fmt::format("Player Options: {}", g_player_service->get_selected()->get_name());
+		ImGui::Text(title.c_str());
 		if (g_player_service->get_selected()->is_valid())		
 		{
-			std::string title = fmt::format("Player Options: {}", g_player_service->get_selected()->get_name());
-			ImGui::Text(title.c_str());
 			ImGui::Checkbox("Spectate", &g->player.spectating);
+
 			ImGui::SameLine();
 			ImGui::Checkbox("Freeze", &g->player.freezeplayer);
 
@@ -86,6 +87,8 @@ namespace big
 					else
 						g->player.chase = true;
 				});
+
+				ImGui::TreePop();
 			}
 
 			if (ImGui::TreeNode("Info")) {
@@ -281,8 +284,10 @@ namespace big
 					toxic::KICK_TO_SP(g_player_service->get_selected()->id());
 					});
 
-				components::button("EMP", [] {
-					toxic::emp_player(g_player_service->get_selected()->id());
+				components::button("Ragdoll", [] {
+					TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()));
+					auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), true);
+					FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 13, 1, false, true, 0, false);
 					});
 
 				ImGui::SameLine();
@@ -314,13 +319,19 @@ namespace big
 
 				ImGui::SameLine();
 				
-				components::button("Desync", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player());
+				components::button("Chal BSDK", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player());
 					});
 
 
 				components::button("CEO Kick", [] {
 					toxic::CEO_KICK(g_player_service->get_selected()->id());
 					g_notification_service->push_warning("Warning", "Player has been CEO Kicked");
+					});
+
+				ImGui::SameLine();
+
+				components::button("EMP", [] {
+					toxic::emp_player(g_player_service->get_selected()->id());
 					});
 
 				ImGui::SameLine();
@@ -366,16 +377,6 @@ namespace big
 
 					PED::SET_PED_FIRING_PATTERN(ped, 0xC6EE6B4C);
 					});
-
-				components::button("Ragdoll", [] {
-					TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()));
-					auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), true);
-					FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 13, 1, false, true, 0, false);
-					});
-
-				ImGui::SameLine();
-
-				
 
 				ImGui::TreePop();				
 			}
