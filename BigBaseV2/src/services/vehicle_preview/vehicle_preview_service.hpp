@@ -9,7 +9,7 @@ namespace big
 		std::condition_variable m_cond;
 		std::mutex m_mutex;
 
-		Vehicle m_current_veh = -1;
+		Vehicle m_current_veh = 0;
 		Hash m_model_hash;
 		bool m_new_model = false;
 		float m_heading = 0.f;
