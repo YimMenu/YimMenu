@@ -263,14 +263,12 @@ namespace big::vehicle
 
 		if (*spawn_signal == 1)
 		{
-			g_notification_service->push_error("Vehicle", "Unable to clone vehicle");
 			return 0;
 		}
 
 		auto veh = vehicle::get_closest_to_location(tmpLocation, 200);
-		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh))
+		if (veh == 0)
 		{
-			g_notification_service->push_error("Vehicle", "Unable to clone vehicle");
 			return 0;
 		}
 

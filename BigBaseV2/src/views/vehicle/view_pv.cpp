@@ -125,16 +125,23 @@ namespace big
 
 								auto veh = vehicle::clone_from_vehicle_data(veh_data, spawn_location, spawn_heading);
 
-								if (g->clone_pv.spawn_maxed)
+								if (veh == 0)
 								{
-									vehicle::max_vehicle(veh);
+									g_notification_service->push_error("Vehicle", "Unable to spawn vehicle");
 								}
-
-								vehicle::set_plate(veh, spawn_plate);
-
-								if (g->clone_pv.spawn_inside)
+								else
 								{
-									vehicle::teleport_into_vehicle(veh);
+									if (g->spawn.spawn_maxed)
+									{
+										vehicle::max_vehicle(veh);
+									}
+
+									vehicle::set_plate(veh, plate);
+
+									if (g->spawn.spawn_inside)
+									{
+										vehicle::teleport_into_vehicle(veh);
+									}
 								}
 							}
 							else
