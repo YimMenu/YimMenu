@@ -81,7 +81,7 @@ namespace big
 					owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_STREET ||
 					owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_TRACK;
 
-				for (int slot = MOD_SPOILERS; slot <= MOD_LIVERY; slot++)
+				for (int slot = MOD_SPOILERS; slot <= MOD_LIGHTBAR; slot++)
 				{
 					int count = VEHICLE::GET_NUM_VEHICLE_MODS(player_vehicle, slot);
 					if (count > 0)

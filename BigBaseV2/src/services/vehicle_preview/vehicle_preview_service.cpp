@@ -65,8 +65,8 @@ namespace big
 				}
 				else if (m_new_model)
 				{
-					entity::delete_entity(m_current_veh);
-					m_current_veh = 0;
+					ENTITY::DETACH_ENTITY(m_current_veh, 1, 1);
+					ENTITY::DELETE_ENTITY(&m_current_veh);
 				}
 				else
 				{
@@ -84,7 +84,7 @@ namespace big
 					m_heading = 0;
 				}
 
-				script::get_current()->yield();
+				script::get_current()->yield(15ms);
 			}
 
 			entity::delete_entity(m_current_veh);

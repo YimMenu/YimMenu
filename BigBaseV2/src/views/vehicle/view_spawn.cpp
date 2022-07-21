@@ -59,40 +59,48 @@ namespace big
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None);
 
-		// arbitrary subtraction this looked nice so idc, works for all resolutions as well
+
 		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 184 - 38 * 4) }))
 		{
 			if (self::veh)
 			{
-				auto veh_hash = ENTITY::GET_ENTITY_MODEL(self::veh);
+				static auto veh_hash = 0;
+				
+				g_fiber_pool->queue_job([] {
+					veh_hash = ENTITY::GET_ENTITY_MODEL(self::veh);
+				});
 
 				if (veh_hash)
 				{
 					auto item = g_gta_data_service->find_vehicle_by_hash(veh_hash);
 
 					components::selectable("Current Vehicle [" + item.display_name + "]", false, [] {
-						Vector3 spawn_location = vehicle::get_spawn_location(g->spawn.spawn_inside);
-						float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
-
-						auto owned_mods = vehicle::get_owned_mods_from_vehicle(self::veh);
-						auto veh = vehicle::clone_from_owned_mods(owned_mods, spawn_location, spawn_heading);
-
-						if (veh == 0)
+						if (self::veh)
 						{
-							g_notification_service->push_error("Vehicle", "Unable to spawn vehicle");
-						}
-						else
-						{
-							if (g->spawn.spawn_maxed)
+							Vector3 spawn_location = vehicle::get_spawn_location(g->spawn.spawn_inside);
+							float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
+
+							auto owned_mods = vehicle::get_owned_mods_from_vehicle(self::veh);
+
+							auto veh = vehicle::clone_from_owned_mods(owned_mods, spawn_location, spawn_heading);
+
+							if (veh == 0)
 							{
-								vehicle::max_vehicle(veh);
+								g_notification_service->push_error("Vehicle", "Unable to spawn vehicle");
 							}
-
-							vehicle::set_plate(veh, plate);
-
-							if (g->spawn.spawn_inside)
+							else
 							{
-								vehicle::teleport_into_vehicle(veh);
+								if (g->spawn.spawn_maxed)
+								{
+									vehicle::max_vehicle(veh);
+								}
+
+								vehicle::set_plate(veh, plate);
+
+								if (g->spawn.spawn_inside)
+								{
+									vehicle::teleport_into_vehicle(veh);
+								}
 							}
 						}
 

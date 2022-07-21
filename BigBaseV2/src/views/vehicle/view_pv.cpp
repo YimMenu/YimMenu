@@ -111,11 +111,11 @@ namespace big
 						components::selectable(label, false, [&personal_veh] {
 							if (g->clone_pv.spawn_clone)
 							{
-								auto vehicle_idx = personal_veh->get_vehicle_idx();
-								auto veh_data = vehicle::get_vehicle_data_from_vehicle_idx(vehicle_idx);
-
 								Vector3 spawn_location = vehicle::get_spawn_location(g->spawn.spawn_inside);
 								float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
+
+								auto vehicle_idx = personal_veh->get_vehicle_idx();
+								auto owned_mods = vehicle::get_owned_mods_from_vehicle_idx(vehicle_idx);
 
 								const char* spawn_plate = plate;
 								if (g->clone_pv.clone_plate)
@@ -123,7 +123,7 @@ namespace big
 									spawn_plate = personal_veh->get_plate();
 								}
 
-								auto veh = vehicle::clone_from_vehicle_data(veh_data, spawn_location, spawn_heading);
+								auto veh = vehicle::clone_from_owned_mods(owned_mods, spawn_location, spawn_heading);
 
 								if (veh == 0)
 								{
@@ -131,14 +131,14 @@ namespace big
 								}
 								else
 								{
-									if (g->spawn.spawn_maxed)
+									if (g->clone_pv.spawn_maxed)
 									{
 										vehicle::max_vehicle(veh);
 									}
 
 									vehicle::set_plate(veh, plate);
 
-									if (g->spawn.spawn_inside)
+									if (g->clone_pv.spawn_inside)
 									{
 										vehicle::teleport_into_vehicle(veh);
 									}

@@ -381,7 +381,9 @@ enum VehicleModType
     MOD_TANK,
     MOD_WINDOWS,
     MOD_DOORS,
-    MOD_LIVERY
+    MOD_LIVERY,
+    MOD_LIGHTBAR,
+
 };
 
 enum CustomVehicleModType
@@ -427,6 +429,22 @@ enum CustomVehicleModType
 
     MOD_PRIMARY_CUSTOM    = -130,
     MOD_SECONDARY_CUSTOM  = -131,
+
+    MOD_EXTRA_0           = -200,
+    MOD_EXTRA_1           = -201,
+    MOD_EXTRA_2           = -202,
+    MOD_EXTRA_3           = -203,
+    MOD_EXTRA_4           = -204,
+    MOD_EXTRA_5           = -205,
+    MOD_EXTRA_6           = -206,
+    MOD_EXTRA_7           = -207,
+    MOD_EXTRA_8           = -208,
+    MOD_EXTRA_9           = -209,
+    MOD_EXTRA_10          = -210,
+    MOD_EXTRA_11          = -211,
+    MOD_EXTRA_12          = -212,
+    MOD_EXTRA_13          = -213,
+    MOD_EXTRA_14          = -214
 };
 
 

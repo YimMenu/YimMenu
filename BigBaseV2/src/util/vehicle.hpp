@@ -195,8 +195,7 @@ namespace big::vehicle
 
 		if (!STREAMING::HAS_MODEL_LOADED(hash))
 		{
-			g_notification_service->push_warning("Spawn", "Failed to spawn model, did you give an incorrect model?");
-			return -1;
+			return 0;
 		}
 
 		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
@@ -292,6 +291,121 @@ namespace big::vehicle
 		return veh_data;
 	}
 
+	inline std::map<int, int32_t> get_owned_mods_from_vehicle_idx(script_global vehicle_idx)
+	{
+		std::map<int, int32_t> owned_mods;
+
+		for (int i = MOD_SECONDARY_CUSTOM; i <= MOD_MODEL_HASH; i++)
+		{
+			owned_mods[i] = 0;
+		}
+
+		int32_t val_32 = *vehicle_idx.at(32).as<int32_t*>();
+		int32_t val_77 = *vehicle_idx.at(77).as<int32_t*>();
+
+
+		owned_mods[MOD_MODEL_HASH] = *vehicle_idx.at(66).as<int32_t*>();
+
+		owned_mods[MOD_PLATE_STYLE] = *vehicle_idx.at(0).as<int32_t*>();
+		owned_mods[MOD_WINDOW_TINT] = *vehicle_idx.at(65).as<int32_t*>();
+		owned_mods[MOD_WHEEL_TYPE] = *vehicle_idx.at(69).as<int32_t*>();
+
+
+		owned_mods[MOD_PRIMARY_COL] = *vehicle_idx.at(5).as<int32_t*>();
+		owned_mods[MOD_SECONDARY_COL] = *vehicle_idx.at(6).as<int32_t*>();
+		owned_mods[MOD_PEARLESCENT_COL] = *vehicle_idx.at(7).as<int32_t*>();
+		owned_mods[MOD_WHEEL_COL] = *vehicle_idx.at(8).as<int32_t*>();
+		owned_mods[MOD_INTERIOR_COL] = *vehicle_idx.at(97).as<int32_t*>();
+		owned_mods[MOD_DASHBOARD_COL] = *vehicle_idx.at(99).as<int32_t*>();
+
+
+		//CUSTOM PRIMARY
+		owned_mods[MOD_PRIMARY_CUSTOM] = (val_77 & (1 << 13)) != 0;
+		if (owned_mods[MOD_PRIMARY_CUSTOM])
+		{
+			owned_mods[MOD_PRIMARY_COL_R] = *vehicle_idx.at(71).as<int32_t*>();
+			owned_mods[MOD_PRIMARY_COL_G] = *vehicle_idx.at(72).as<int32_t*>();
+			owned_mods[MOD_PRIMARY_COL_B] = *vehicle_idx.at(73).as<int32_t*>();
+		}
+
+
+		//CUSTOM SECONDARY
+		owned_mods[MOD_SECONDARY_CUSTOM] = (val_77 & (1 << 12)) != 0;
+		if (owned_mods[MOD_SECONDARY_CUSTOM])
+		{
+			owned_mods[MOD_SECONDARY_COL_R] = *vehicle_idx.at(71).as<int32_t*>();
+			owned_mods[MOD_SECONDARY_COL_G] = *vehicle_idx.at(72).as<int32_t*>();
+			owned_mods[MOD_SECONDARY_COL_B] = *vehicle_idx.at(73).as<int32_t*>();
+		}
+
+
+		// TIRE SMOKE
+		owned_mods[MOD_TIRESMOKE_COL_R] = *vehicle_idx.at(62).as<int32_t*>();
+		owned_mods[MOD_TIRESMOKE_COL_G] = *vehicle_idx.at(63).as<int32_t*>();
+		owned_mods[MOD_TIRESMOKE_COL_B] = *vehicle_idx.at(64).as<int32_t*>();
+		owned_mods[MOD_TYRE_SMOKE] = !(
+			owned_mods[MOD_TIRESMOKE_COL_R] == 255 &&
+			owned_mods[MOD_TIRESMOKE_COL_G] == 255 &&
+			owned_mods[MOD_TIRESMOKE_COL_B] == 255
+		);
+
+
+		// XENON
+		if (val_32 > 0)
+		{
+			owned_mods[MOD_XENON_LIGHTS] = 1;
+			owned_mods[MOD_XENON_COL] = val_32 - 2;
+		}
+		else
+		{
+			owned_mods[MOD_XENON_LIGHTS] = 0;
+		}
+
+
+		// NEON
+		owned_mods[MOD_NEON_LEFT_ON] = (val_77 & (1 << 30)) != 0;
+		owned_mods[MOD_NEON_RIGHT_ON] = (val_77 & (1 << 31)) != 0;
+		owned_mods[MOD_NEON_FRONT_ON] = (val_77 & (1 << 28)) != 0;
+		owned_mods[MOD_NEON_BACK_ON] = (val_77 & (1 << 29)) != 0;
+		owned_mods[MOD_NEON_COL_R] = *vehicle_idx.at(74).as<int32_t*>();
+		owned_mods[MOD_NEON_COL_G] = *vehicle_idx.at(75).as<int32_t*>();
+		owned_mods[MOD_NEON_COL_B] = *vehicle_idx.at(76).as<int32_t*>();
+
+
+		owned_mods[MOD_TIRE_CAN_BURST] = (val_77 & (1 << 9)) == 0;
+		owned_mods[MOD_TURBO] = *vehicle_idx.at(28).as<int32_t*>() != 0;
+
+
+		owned_mods[MOD_FRONTWHEEL_VAR] = *vehicle_idx.at(60).as<int32_t*>() != 0;
+		owned_mods[MOD_REARWHEEL_VAR] = *vehicle_idx.at(61).as<int32_t*>() != 0;
+
+
+		// OTHER MODS
+		for (int slot = MOD_SPOILERS; slot <= MOD_LIGHTBAR; slot++)
+		{
+			if (slot == MOD_TURBO || slot == MOD_TYRE_SMOKE || slot == MOD_XENON_LIGHTS)
+			{
+				continue;
+			}
+
+			int32_t val = *vehicle_idx.at(10 + slot).as<int32_t*>() - 1;
+			if (val != -1)
+			{
+				owned_mods[slot] = val;
+			}
+		}
+
+		// EXTRA
+		for (int extra = MOD_EXTRA_9; extra <= MOD_EXTRA_1; extra++)
+		{
+			int gta_extra_id = (extra - MOD_EXTRA_0) * -1;
+			owned_mods[extra] = val_77 >> (gta_extra_id - 1) & 1;
+		}
+
+		return owned_mods;
+	}
+
+
 	inline Vehicle clone_from_owned_mods(std::map<int, int32_t> owned_mods, Vector3 location, float heading, bool is_networked = true)
 	{
 		auto vehicle = spawn(owned_mods[MOD_MODEL_HASH], location, heading, is_networked);
@@ -309,10 +423,12 @@ namespace big::vehicle
 		}
 
 		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
+		script::get_current()->yield(10ms);
 
 		VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(vehicle, owned_mods[MOD_PLATE_STYLE]);
 		VEHICLE::SET_VEHICLE_WINDOW_TINT(vehicle, owned_mods[MOD_WINDOW_TINT]);
 		VEHICLE::SET_VEHICLE_WHEEL_TYPE(vehicle, owned_mods[MOD_WHEEL_TYPE]);
+		script::get_current()->yield(10ms);
 
 		VEHICLE::SET_VEHICLE_COLOURS(vehicle, owned_mods[MOD_PRIMARY_COL], owned_mods[MOD_SECONDARY_COL]);
 		VEHICLE::SET_VEHICLE_EXTRA_COLOURS(vehicle, owned_mods[MOD_PEARLESCENT_COL], owned_mods[MOD_WHEEL_COL]);
@@ -337,32 +453,33 @@ namespace big::vehicle
 
 		if (owned_mods[MOD_TYRE_SMOKE])
 		{
-			VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, MOD_TYRE_SMOKE, owned_mods[MOD_TYRE_SMOKE]);
 			VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(
 				vehicle, owned_mods[MOD_TIRESMOKE_COL_R],
 				owned_mods[MOD_TIRESMOKE_COL_G], owned_mods[MOD_TIRESMOKE_COL_B]
 			);
+			VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, MOD_TYRE_SMOKE, owned_mods[MOD_TYRE_SMOKE]);
 		}
 
 		if (owned_mods[MOD_XENON_LIGHTS])
 		{
-			VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, MOD_XENON_LIGHTS, owned_mods[MOD_XENON_LIGHTS]);
 			VEHICLE::SET_VEHICLE_XENON_LIGHTS_COLOR_(vehicle, owned_mods[MOD_XENON_COL]);
+			VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, MOD_XENON_LIGHTS, owned_mods[MOD_XENON_LIGHTS]);
 		}
 
+		VEHICLE::SET_VEHICLE_NEON_LIGHTS_COLOUR_(
+			vehicle, owned_mods[MOD_NEON_COL_R],
+			owned_mods[MOD_NEON_COL_G], owned_mods[MOD_NEON_COL_B]
+		);
 		VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, NEON_LEFT, owned_mods[MOD_NEON_LEFT_ON]);
 		VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, NEON_RIGHT, owned_mods[MOD_NEON_RIGHT_ON]);
 		VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, NEON_FRONT, owned_mods[MOD_NEON_FRONT_ON]);
 		VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, NEON_BACK, owned_mods[MOD_NEON_BACK_ON]);
-		VEHICLE::SET_VEHICLE_NEON_LIGHTS_COLOUR_(
-			vehicle, owned_mods[MOD_NEON_COL_R],
-			owned_mods[MOD_NEON_COL_B], owned_mods[MOD_NEON_COL_B]
-		);
+
 
 		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(vehicle, owned_mods[MOD_TIRE_CAN_BURST]);
 		VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, MOD_TURBO, owned_mods[MOD_TURBO]);
 
-		for (int slot = MOD_SPOILERS; slot <= MOD_LIVERY; slot++)
+		for (int slot = MOD_SPOILERS; slot <= MOD_LIGHTBAR; slot++)
 		{
 			if (owned_mods.count(slot) && owned_mods[slot] != -1)
 			{
@@ -378,6 +495,15 @@ namespace big::vehicle
 				}
 
 				VEHICLE::SET_VEHICLE_MOD(vehicle, slot, owned_mods[slot], custom_tire);
+			}
+		}
+
+		for (int extra = MOD_EXTRA_14; extra <= MOD_EXTRA_1; extra++)
+		{
+			int gta_extra_id = (extra - MOD_EXTRA_0) * -1;
+			if (owned_mods.count(extra) && VEHICLE::DOES_EXTRA_EXIST(vehicle, gta_extra_id))
+			{
+				VEHICLE::SET_VEHICLE_EXTRA(vehicle, gta_extra_id, owned_mods[extra] == 0);
 			}
 		}
 
@@ -434,7 +560,7 @@ namespace big::vehicle
 		owned_mods[MOD_XENON_LIGHTS] = VEHICLE::IS_TOGGLE_MOD_ON(vehicle, MOD_XENON_LIGHTS);
 		if (owned_mods[MOD_XENON_LIGHTS])
 		{
-			owned_mods[MOD_XENON_COL] = VEHICLE::GET_VEHICLE_XENON_LIGHTS_COLOR_(vehicle);
+			owned_mods[MOD_XENON_COL] = (int8_t)VEHICLE::GET_VEHICLE_XENON_LIGHTS_COLOR_(vehicle);
 		}
 
 		owned_mods[MOD_NEON_LEFT_ON] = VEHICLE::IS_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, NEON_LEFT);
@@ -443,7 +569,7 @@ namespace big::vehicle
 		owned_mods[MOD_NEON_BACK_ON] = VEHICLE::IS_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, NEON_BACK);
 		VEHICLE::GET_VEHICLE_NEON_LIGHTS_COLOUR_(
 			vehicle, &owned_mods[MOD_NEON_COL_R],
-			&owned_mods[MOD_NEON_COL_B], &owned_mods[MOD_NEON_COL_B]
+			&owned_mods[MOD_NEON_COL_G], &owned_mods[MOD_NEON_COL_B]
 		);
 
 		owned_mods[MOD_TIRE_CAN_BURST] = VEHICLE::GET_VEHICLE_TYRES_CAN_BURST(vehicle);
@@ -452,7 +578,7 @@ namespace big::vehicle
 		owned_mods[MOD_FRONTWHEEL_VAR] = VEHICLE::GET_VEHICLE_MOD_VARIATION(vehicle, MOD_FRONTWHEEL);
 		owned_mods[MOD_REARWHEEL_VAR] = VEHICLE::GET_VEHICLE_MOD_VARIATION(vehicle, MOD_REARWHEEL);
 
-		for (int slot = MOD_SPOILERS; slot <= MOD_LIVERY; slot++)
+		for (int slot = MOD_SPOILERS; slot <= MOD_LIGHTBAR; slot++)
 		{
 			int count = VEHICLE::GET_NUM_VEHICLE_MODS(vehicle, slot);
 			if (count > 0)
@@ -463,6 +589,14 @@ namespace big::vehicle
 				{
 					owned_mods[slot] = val;
 				}
+			}
+		}
+
+		for (int extra = MOD_EXTRA_14; extra <= MOD_EXTRA_1; extra++)
+		{
+			if (VEHICLE::DOES_EXTRA_EXIST(vehicle, (extra - MOD_EXTRA_0) * -1))
+			{
+				owned_mods[extra] = VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(vehicle, extra);
 			}
 		}
 
@@ -479,13 +613,14 @@ namespace big::vehicle
 		Hash model = ENTITY::GET_ENTITY_MODEL(veh);
 
 		VEHICLE::SET_VEHICLE_MOD_KIT(veh, 0);
-		VEHICLE::TOGGLE_VEHICLE_MOD(veh, 18 /* Turbo */, TRUE);
-		VEHICLE::TOGGLE_VEHICLE_MOD(veh, 20 /* Tire Smoke */, TRUE);
-		VEHICLE::TOGGLE_VEHICLE_MOD(veh, 17 /* Xenon Headlights */, TRUE);
+
+		VEHICLE::TOGGLE_VEHICLE_MOD(veh, MOD_TURBO, TRUE);
+		VEHICLE::TOGGLE_VEHICLE_MOD(veh, MOD_TYRE_SMOKE, TRUE);
+		VEHICLE::TOGGLE_VEHICLE_MOD(veh, MOD_XENON_LIGHTS, TRUE);
 		VEHICLE::SET_VEHICLE_WINDOW_TINT(veh, 1);
 		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(veh, false);
 
-		for (int slot = MOD_SPOILERS; slot <= MOD_LIVERY; slot++)
+		for (int slot = MOD_SPOILERS; slot <= MOD_LIGHTBAR; slot++)
 		{
 			if (slot == MOD_LIVERY) {
 				continue;
