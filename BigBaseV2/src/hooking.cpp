@@ -57,7 +57,11 @@ namespace big
 		// Received clone sync
 		m_received_clone_sync_hook("RCS", g_pointers->m_received_clone_sync, &hooks::received_clone_sync),
 		//Get Network Event Data
-		m_get_network_event_data_hook("GNED", g_pointers->m_get_network_event_data, &hooks::get_network_event_data)
+		m_get_network_event_data_hook("GNED", g_pointers->m_get_network_event_data, &hooks::get_network_event_data),
+		// Get Players Network ID
+		m_get_player_network_id("GPNI", g_pointers->m_get_player_network_id, &hooks::join_player),
+		// Join Player
+		m_join_pattern("JP", g_pointers->m_join_pattern, &hooks::join_player)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -97,6 +101,9 @@ namespace big
 
 		m_send_net_info_to_lobby.enable();
 
+		m_get_player_network_id.enable();
+		m_join_pattern.enable();
+
 		m_receive_net_message_hook.enable();
 		m_get_network_event_data_hook.enable();
 
@@ -120,6 +127,9 @@ namespace big
 
 		m_player_has_joined_hook.disable();
 		m_player_has_left_hook.disable();
+
+		m_get_player_network_id.disable();
+		m_join_pattern.disable();
 
 		m_net_array_handler_hook.disable();
 

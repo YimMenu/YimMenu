@@ -296,6 +296,18 @@ namespace big
 			m_net_array_handler = ptr.sub(0x3C).as<PVOID>();
 		});
 
+		// Gets the Players Network ID
+		main_batch.add("GPNI", "80 F9 20 73 13 48 8B", [this](memory::handle ptr)
+			{
+				m_get_player_network_id = ptr.as<decltype(m_get_player_network_id)>();
+		});
+
+		// RID of Player to Join
+		main_batch.add("JP", "48 8B C4 48 89 58 10 48 89 70 18 48 89 78 20 48 89 48 08 55 41 54 41 55 41 56 41 57 48 8D 68 A8 48 81 EC ? ? ? ? 33 DB", [this](memory::handle ptr)
+			{
+				m_join_pattern = ptr.as<decltype(m_join_pattern)>();
+		});
+
 		// Network Group Override
 		main_batch.add("NGO", "44 89 81 ? ? ? ? 89 91 ? ? ? ? C6 05", [this](memory::handle ptr)
 		{
