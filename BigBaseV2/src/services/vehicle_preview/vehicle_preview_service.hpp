@@ -13,6 +13,7 @@ namespace big
 		Hash m_model_hash;
 		bool m_new_model = false;
 		float m_heading = 0.f;
+		bool m_loop_running = false;
 		bool m_running = false;
 	public:
 		vehicle_preview_service();

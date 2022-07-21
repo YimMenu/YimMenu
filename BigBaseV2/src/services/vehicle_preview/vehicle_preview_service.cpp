@@ -27,16 +27,13 @@ namespace big
 				m_new_model = true;
 			}
 
-			if (!m_running)
-			{
-				g_thread_pool->push([this] { preview_loop(); });
-			}
+			preview_loop();
 		}
 	}
 
 	void vehicle_preview_service::preview_loop()
 	{
-		if (m_running)
+		if (m_running || m_loop_running)
 		{
 			return;
 		}
@@ -44,6 +41,8 @@ namespace big
 		m_running = true;
 
 		g_fiber_pool->queue_job([this] {
+			m_loop_running = true;
+
 			while (
 				g_running && m_running && g_gui.m_opened &&
 				(g->spawn.preview_vehicle || g->clone_pv.preview_vehicle)
@@ -91,6 +90,7 @@ namespace big
 			entity::delete_entity(m_current_veh);
 			m_current_veh = 0;
 			m_running = false;
+			m_loop_running = false;
 		});
 	}
 
