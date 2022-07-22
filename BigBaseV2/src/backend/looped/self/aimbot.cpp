@@ -34,8 +34,10 @@ namespace big
 							&& (distance < 500 && distance > 2)
 							&& ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, targetPed, 17))
 						{
+							Vector3 selfPed = ENTITY::GET_ENTITY_COORDS(self::ped, true);
 							auto const targetCoords = PED::GET_PED_BONE_COORDS(targetPed, 31086, 0, 0, 0); //For Head ->31086, For Neck ->39317
 							PED::SET_PED_SHOOTS_AT_COORD(self::ped, targetCoords.x, targetCoords.y, targetCoords.z, true);
+							GRAPHICS::DRAW_LINE(selfPed.x, selfPed.y, selfPed.z, targetCoords.x, targetCoords.y, targetCoords.z, 208, 0, 240, 255);
 						}
 					}
 				}
