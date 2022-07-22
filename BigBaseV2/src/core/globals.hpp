@@ -562,6 +562,7 @@ namespace big
 			this->rgb.speed = j["rgb"]["speed"];
 
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
+			this->tunables.phone_anim = j["tunables"]["phone_anim"];
 			this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
 
 			this->self.god_mode = j["self"]["god_mode"];
@@ -842,6 +843,7 @@ namespace big
 				{
 					"tunables", {
 						{ "disable_phone", this->tunables.disable_phone },
+						{ "phone_anim", this->tunables.phone_anim },
 						{ "no_idle_kick", this->tunables.no_idle_kick }
 					}
 				},
