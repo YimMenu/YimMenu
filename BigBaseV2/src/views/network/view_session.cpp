@@ -58,18 +58,6 @@ namespace big
 
 		ImGui::Separator();
 
-		components::small_text("Rid Joiner");
-
-		ImGui::Checkbox("Enable", &g->session.joiner);
-
-		if (g->session.joiner == true) {
-			g_notification_service->push("RID Joiner", "Join a Crew Player");
-		}
-		ImGui::Text("Rockstar ID:");
-		ImGui::InputScalar("##rockstar_id_input", ImGuiDataType_U64, &g->session.rid_to_join);
-
-		ImGui::Separator();
-
 		ImGui::Checkbox("Sechs Mode", &g->session.jumparound);
 		ImGui::Checkbox("Rainbow Traffic", &g->session.rainbowtraffic);
 

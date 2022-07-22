@@ -54,7 +54,6 @@ namespace big
 		static bool send_net_info_to_lobby(rage::netPlayerData* player, int64_t a2, int64_t a3, DWORD* a4);
 		static bool receive_net_message(void* netConnectionManager, void* a2, rage::netConnection::InFrame* frame);
 		static void get_network_event_data(int64_t unk, rage::CEventNetwork* net_event);
-		static int join_player(__int64 a1, int a2, __int64* a3, int a4);
 
 		//SYNC
 		static int64_t received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, uint16_t sync_type, uint16_t obj_id, rage::datBitBuffer* bufer, uint16_t unk, uint32_t timestamp);
@@ -107,8 +106,6 @@ namespace big
 		detour_hook m_send_net_info_to_lobby;
 		detour_hook m_receive_net_message_hook;
 		detour_hook m_get_network_event_data_hook;
-		detour_hook m_join_pattern;
-		detour_hook m_get_player_network_id;
 
 	};
 
