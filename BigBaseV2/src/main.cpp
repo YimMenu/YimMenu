@@ -54,7 +54,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				try
 				{
-					LOG(INFO) << "SechsMenu Initializing";
+					LOG(INFO) << "SechsMenu Initializing\n  ___                 _              __  __                          \n / __|   ___    __   | |_     ___   |  `/  |  ___   _ _    _  _   \n `__ `  / -_)  / _|  | ' `   (_-<   | |`/| | / -_) | ' `  | +| |  \n |___/  `___|  `__|_ |_||_|  /__/_  |_|__|_| `___| |_||_|  `_,_|  ";
 					auto pointers_instance = std::make_unique<pointers>();
 					LOG(INFO) << "Pointers initialized.";
 
