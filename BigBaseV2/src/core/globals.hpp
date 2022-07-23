@@ -524,15 +524,6 @@ namespace big
 			this->self.no_ragdoll = j["self"]["no_ragdoll"];
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
-			this->self.proof_bullet = j["self"]["proof_bullet"];
-			this->self.proof_fire = j["self"]["proof_fire"];
-			this->self.proof_collision = j["self"]["proof_collision"];
-			this->self.proof_melee = j["self"]["proof_melee"];
-			this->self.proof_explosion = j["self"]["proof_explosion"];
-			this->self.proof_steam = j["self"]["proof_steam"];
-			this->self.proof_drown = j["self"]["proof_drown"];
-			this->self.proof_water = j["self"]["proof_water"];
-			this->self.proof_mask = j["self"]["proof_mask"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
 
@@ -788,16 +779,6 @@ namespace big
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
 						{ "super_run", this->self.super_run },
-
-						{ "proof_bullet", this->self.proof_bullet },
-						{ "proof_fire", this->self.proof_fire },
-						{ "proof_collision", this->self.proof_collision },
-						{ "proof_melee", this->self.proof_melee },
-						{ "proof_explosion", this->self.proof_explosion },
-						{ "proof_steam", this->self.proof_steam },
-						{ "proof_drown", this->self.proof_drown },
-						{ "proof_water", this->self.proof_water },
-						{ "proof_mask", this->self.proof_mask }
 					}
 				},
 				{
