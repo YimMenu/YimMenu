@@ -106,8 +106,8 @@ namespace big
 						display_name.find(lower_search) != std::string::npos ||
 						display_manufacturer.find(lower_search) != std::string::npos
 					)) {
-						ImGui::PushID('v' << 24 & personal_veh->get_id());
 
+						ImGui::PushID('v' << 24 & personal_veh->get_id());
 						components::selectable(label, false, [&personal_veh] {
 							if (g->clone_pv.spawn_clone)
 							{
@@ -147,7 +147,6 @@ namespace big
 							else
 							{
 								strcpy(search, "");
-
 								personal_veh->summon();
 							}
 
@@ -157,7 +156,11 @@ namespace big
 
 						if (g->clone_pv.preview_vehicle && ImGui::IsItemHovered())
 						{
-							g_vehicle_preview_service->set_preview_vehicle(item);
+							g_fiber_pool->queue_job([&personal_veh] {
+								g_vehicle_preview_service->set_preview_vehicle(
+									vehicle::get_owned_mods_from_vehicle_idx(personal_veh->get_vehicle_idx())
+								);
+							});
 						}
 						else if (g->clone_pv.preview_vehicle && !ImGui::IsAnyItemHovered())
 						{

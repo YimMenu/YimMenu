@@ -31,6 +31,27 @@ namespace big
 		}
 	}
 
+	void vehicle_preview_service::set_preview_vehicle(const std::map<int, int32_t>& owned_mods)
+	{
+
+		auto hash_item = owned_mods.find(MOD_MODEL_HASH);
+
+		if (hash_item == owned_mods.end())
+		{
+			return;
+		}
+
+		if (m_model_hash != hash_item->second)
+		{
+			m_owned_mods.clear();
+			m_owned_mods.insert(owned_mods.begin(), owned_mods.end());
+			m_model_hash = hash_item->second;
+			m_new_model = true;
+		}
+
+		preview_loop();
+	}
+
 	void vehicle_preview_service::preview_loop()
 	{
 		if (m_running || m_loop_running)
@@ -52,7 +73,16 @@ namespace big
 				{
 					m_new_model = false;
 					location.z = -10.f;
-					m_current_veh = vehicle::spawn(m_model_hash, location, 0.f, false);
+
+					if (m_owned_mods.empty())
+					{
+						m_current_veh = vehicle::spawn(m_model_hash, location, 0.f, false);
+					}
+					else
+					{
+						m_current_veh = vehicle::clone_from_owned_mods(m_owned_mods, location, 0.f, false);
+						m_owned_mods.clear();
+					}
 
 					if (m_current_veh)
 					{
