@@ -594,9 +594,10 @@ namespace big::vehicle
 
 		for (int extra = MOD_EXTRA_14; extra <= MOD_EXTRA_1; extra++)
 		{
-			if (VEHICLE::DOES_EXTRA_EXIST(vehicle, (extra - MOD_EXTRA_0) * -1))
+			int gta_extra_id = (extra - MOD_EXTRA_0) * -1;
+			if (VEHICLE::DOES_EXTRA_EXIST(vehicle, gta_extra_id))
 			{
-				owned_mods[extra] = VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(vehicle, extra);
+				owned_mods[extra] = VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(vehicle, gta_extra_id);
 			}
 		}
 
