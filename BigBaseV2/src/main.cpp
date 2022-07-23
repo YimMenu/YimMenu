@@ -45,9 +45,12 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					file_manager_instance->get_project_file("./settings.json")
 					);
 
+				g->load();
+				//bool state = ();
 				auto logger_instance = std::make_unique<logger>(
 					"SechsMenu",
-					file_manager_instance->get_project_file("./cout.log")
+					file_manager_instance->get_project_file("./cout.log"),
+					g->window.console
 					);
 
 				EnableMenuItem(GetSystemMenu(FindWindowA(NULL, "SechsMenu"), 0), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
@@ -67,8 +70,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					auto hooking_instance = std::make_unique<hooking>();
 					LOG(INFO) << "Hooking initialized.";
 
-					g->load();
-					LOG(INFO) << "Settings Loaded.";
+					
+					//LOG(INFO) << "Settings Loaded.";//
 
 					auto thread_pool_instance = std::make_unique<thread_pool>();
 					LOG(INFO) << "Thread pool initialized.";

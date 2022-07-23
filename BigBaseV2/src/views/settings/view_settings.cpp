@@ -50,5 +50,10 @@ namespace big
 			ImGui::EndPopup();
 		}
 		
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Enable Dev Console", &g->window.console)) { g_notification_service->push_warning("Warning", "Reinject Menu to see changes"); }
+		//if (g->window.console) {
+			//g_notification_service->push_warning("Warning", "Reinject Menu to see changes");
+		
 	}
 }
