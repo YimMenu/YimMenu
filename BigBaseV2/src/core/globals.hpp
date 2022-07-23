@@ -586,6 +586,7 @@ namespace big
 			this->self.aimbot_exclude_friend = j["self"]["aimbot_exclude_friend"];
 			this->self.mobileradio = j["self"]["mobileradio"];
 			this->self.ignoreplayer = j["self"]["ignoreplayer"];
+			this->self.disablehud = j["self"]["disablehud"];
 			this->self.proof_bullet = j["self"]["proof_bullet"];
 			this->self.proof_fire = j["self"]["proof_fire"];
 			this->self.proof_collision = j["self"]["proof_collision"];
@@ -870,6 +871,7 @@ namespace big
 						{ "aimbot_exclude_friend", this->self.aimbot_exclude_friend },
 						{ "mobileradio", this->self.mobileradio },
 						{ "ignoreplayer", this->self.ignoreplayer},
+						{ "disablehud", this->self.disablehud},
 
 						{ "proof_bullet", this->self.proof_bullet },
 						{ "proof_fire", this->self.proof_fire },
