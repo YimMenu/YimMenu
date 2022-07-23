@@ -115,7 +115,7 @@ namespace big
 								float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 								auto vehicle_idx = personal_veh->get_vehicle_idx();
-								auto veh_data = vehicle::get_vehicle_data_from_vehicle_idx(vehicle_idx);
+								auto owned_mods = vehicle::get_owned_mods_from_vehicle_idx(vehicle_idx);
 
 								const char* spawn_plate = plate;
 								if (g->clone_pv.clone_plate)
@@ -123,7 +123,7 @@ namespace big
 									spawn_plate = personal_veh->get_plate();
 								}
 
-								auto veh = vehicle::clone_from_vehicle_data(veh_data, spawn_location, spawn_heading);
+								auto veh = vehicle::clone_from_owned_mods(owned_mods, spawn_location, spawn_heading);
 
 								if (veh == 0)
 								{
