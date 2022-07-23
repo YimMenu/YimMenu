@@ -1,5 +1,6 @@
 #pragma once
 #include "natives.hpp"
+#include "script.hpp"
 
 namespace big::ped
 {
