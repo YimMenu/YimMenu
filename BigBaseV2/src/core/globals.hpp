@@ -587,15 +587,6 @@ namespace big
 			this->self.mobileradio = j["self"]["mobileradio"];
 			this->self.ignoreplayer = j["self"]["ignoreplayer"];
 			this->self.disablehud = j["self"]["disablehud"];
-			this->self.proof_bullet = j["self"]["proof_bullet"];
-			this->self.proof_fire = j["self"]["proof_fire"];
-			this->self.proof_collision = j["self"]["proof_collision"];
-			this->self.proof_melee = j["self"]["proof_melee"];
-			this->self.proof_explosion = j["self"]["proof_explosion"];
-			this->self.proof_steam = j["self"]["proof_steam"];
-			this->self.proof_drown = j["self"]["proof_drown"];
-			this->self.proof_water = j["self"]["proof_water"];
-			this->self.proof_mask = j["self"]["proof_mask"];
 			this->self.give_weapon_id = j["self"]["give_weapon_id"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -872,16 +863,6 @@ namespace big
 						{ "mobileradio", this->self.mobileradio },
 						{ "ignoreplayer", this->self.ignoreplayer},
 						{ "disablehud", this->self.disablehud},
-
-						{ "proof_bullet", this->self.proof_bullet },
-						{ "proof_fire", this->self.proof_fire },
-						{ "proof_collision", this->self.proof_collision },
-						{ "proof_melee", this->self.proof_melee },
-						{ "proof_explosion", this->self.proof_explosion },
-						{ "proof_steam", this->self.proof_steam },
-						{ "proof_drown", this->self.proof_drown },
-						{ "proof_water", this->self.proof_water },
-						{ "proof_mask", this->self.proof_mask },
 						{ "give_weapon_id", this->self.give_weapon_id }
 					}
 				},
