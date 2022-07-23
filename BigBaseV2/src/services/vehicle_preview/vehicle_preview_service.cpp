@@ -81,7 +81,6 @@ namespace big
 					else
 					{
 						m_current_veh = vehicle::clone_from_owned_mods(m_owned_mods, location, 0.f, false);
-						m_owned_mods.clear();
 					}
 
 					if (m_current_veh)
@@ -126,6 +125,7 @@ namespace big
 
 	void vehicle_preview_service::stop_preview()
 	{
+		m_owned_mods.clear();
 		m_running = false;
 	}
 }
