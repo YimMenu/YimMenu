@@ -165,6 +165,7 @@ namespace big
 			bool disablehud = false;
 			int animlist = 0;
 			int scenelist = 0;
+			int visionList = 0;
 
 			bool god_mode = false;
 			bool proof_bullet = false;

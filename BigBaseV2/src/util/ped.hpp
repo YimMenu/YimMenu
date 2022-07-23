@@ -140,6 +140,8 @@ namespace big::ped
 		"Smoking Pot", "Stand Fire", "Fishing", "Impatient", "Impatient Upright", "Stand Mobile", "Stand Mobile Upright", "Strip Watch Stand", "Stupor", "Sunbathe", "Sunbathe Back", 
 		"Tennis Player", "Tourist Map", "Tourist mobile", "Welding", "Window Shop", "Yoga", "Aim", "BBQ", "BIN", "Shopping Cart", "Chin Ups", "Parking Meter", "Seat Bar", "Seat bench", 
 		"Bench Press", "Strip Watch", "Medic Kneel", "Tend to Dead", "Time of Death", "Crowd Control", "Investigate" };
+
+	static constexpr char const* visionList[] = { "Camera View", "Stoned", "RedMist", "Cocaine", "Drug Gas", "Wobbly", "Drunk", "Bloom", "Contrast", "Nostalgic", "Hallucination", "Low Graphics", "Chop View", "AAAAAAAA"};
 	
 	static constexpr char const* give_weapon[] = { "None", "Stock", "Upgraded" };
 }

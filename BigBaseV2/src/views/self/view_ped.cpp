@@ -13,6 +13,7 @@ namespace big
 	char* Dict;
 	char* ID;
 	char* Scene;
+	char* modifier;
 
 	void view::ped() {
 		ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
@@ -516,6 +517,81 @@ namespace big
 					}
 				}
 				if (itemSelected1)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+
+		ImGui::Separator();
+
+		components::small_text("Visuals");
+
+		components::button("Change", [] {
+			GRAPHICS::SET_TIMECYCLE_MODIFIER(modifier);
+		});
+
+		ImGui::SameLine();
+
+		components::button("Reset", [] {
+			GRAPHICS::CLEAR_TIMECYCLE_MODIFIER();
+		});
+
+		if (ImGui::BeginCombo("Visuals##Visuals", ped::visionList[g->self.visionList]))
+		{
+			for (int i = 0; i <= 13; i++)
+			{
+				bool itemSelected = g->self.visionList == i;
+				if (ImGui::Selectable(ped::visionList[i], itemSelected))
+				{
+					g->self.visionList = i;
+					if (g->self.visionList == 0) {
+						modifier = "CAMERA_secuirity_FUZZ";
+					}
+					else if (g->self.visionList == 1) {
+						modifier = "stoned";
+					}
+					else if (g->self.visionList == 2) {
+						modifier = "REDMIST";
+					}
+					else if (g->self.visionList == 3) {
+						modifier = "drug_flying_base";
+					}
+					else if (g->self.visionList == 4) {
+						modifier = "DRUG_gas_huffin";
+					}
+					else if (g->self.visionList == 5) {
+						modifier = "drug_wobbly";
+					}
+					else if (g->self.visionList == 6) {
+						modifier = "Drunk";
+					}
+					else if (g->self.visionList == 7) {
+						modifier = "Bloom";
+					}
+					else if (g->self.visionList == 8) {
+						modifier = "PlayerSwitchPulse";
+					}
+					else if (g->self.visionList == 9) {
+						modifier = "MP_Killstreak";
+					}
+					else if (g->self.visionList == 10) {
+						modifier = "player_transition";
+					}
+					else if (g->self.visionList == 11) {
+						modifier = "cinema_001";
+					}
+					else if (g->self.visionList == 12) {
+						modifier = "CHOP";
+					}
+					else if (g->self.visionList == 13) {
+						modifier = "BarryFadeOut";
+					}
+
+
+				}
+				if (itemSelected)
 				{
 					ImGui::SetItemDefaultFocus();
 				}
