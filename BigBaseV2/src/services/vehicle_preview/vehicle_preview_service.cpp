@@ -21,6 +21,8 @@ namespace big
 	{
 		if (item.hash != 0)
 		{
+			m_owned_mods.clear();
+
 			if (m_model_hash != item.hash)
 			{
 				m_model_hash = item.hash;
@@ -33,23 +35,21 @@ namespace big
 
 	void vehicle_preview_service::set_preview_vehicle(const std::map<int, int32_t>& owned_mods)
 	{
-
 		auto hash_item = owned_mods.find(MOD_MODEL_HASH);
 
-		if (hash_item == owned_mods.end())
-		{
-			return;
-		}
-
-		if (m_model_hash != hash_item->second)
-		{
+		if (
+			m_owned_mods.size() != owned_mods.size() ||
+			!std::equal(m_owned_mods.begin(), m_owned_mods.end(), owned_mods.begin())
+		) {
 			m_owned_mods.clear();
+
+			auto hash_item = owned_mods.find(MOD_MODEL_HASH);
 			m_owned_mods.insert(owned_mods.begin(), owned_mods.end());
 			m_model_hash = hash_item->second;
 			m_new_model = true;
-		}
 
-		preview_loop();
+			preview_loop();
+		}
 	}
 
 	void vehicle_preview_service::preview_loop()
@@ -118,6 +118,8 @@ namespace big
 
 			entity::delete_entity(m_current_veh);
 			m_current_veh = 0;
+			m_model_hash = 0;
+			m_owned_mods.clear();
 			m_running = false;
 			m_loop_running = false;
 		});
