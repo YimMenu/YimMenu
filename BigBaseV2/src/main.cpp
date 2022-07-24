@@ -46,7 +46,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					);
 
 				g->load();
-				//bool state = ();
 				auto logger_instance = std::make_unique<logger>(
 					"SechsMenu",
 					file_manager_instance->get_project_file("./cout.log"),
@@ -71,7 +70,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 					LOG(INFO) << "Hooking initialized.";
 
 					
-					//LOG(INFO) << "Settings Loaded.";//
+					LOG(INFO) << "Settings Loaded.";
 
 					auto thread_pool_instance = std::make_unique<thread_pool>();
 					LOG(INFO) << "Thread pool initialized.";
