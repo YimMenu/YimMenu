@@ -20,7 +20,7 @@ namespace big
 			m_game_state = ptr.add(2).rip().as<eGameState*>();
 		});
 
-		// Is session active
+		// Is Session Active
 		main_batch.add("ISA", "40 38 35 ? ? ? ? 75 0E 4C 8B C3 49 8B D7 49 8B CE", [this](memory::handle ptr)
 		{
 			m_is_session_started = ptr.add(3).rip().as<bool*>();
@@ -88,7 +88,8 @@ namespace big
 			m_model_spawn_bypass = ptr.add(8).as<PVOID>();
 		});
 
-		// new pointers
+		// New pointers
+		
 		// Native Return Spoofer
 		main_batch.add("NRF", "FF E3", [this](memory::handle ptr)
 		{
@@ -114,6 +115,7 @@ namespace big
 		});
 
 		// Received Event Signatures START
+		
 		// Received Event Hook
 		main_batch.add("REH", "66 41 83 F9 ? 0F 83", [this](memory::handle ptr)
 		{
@@ -125,9 +127,10 @@ namespace big
 		{
 				m_send_event_ack = ptr.sub(5).as<decltype(m_send_event_ack)>();
 		});
+
 		// Received Event Signatures END
 
-		// Read Bitbugger WORD/DWORD
+		// Read Bitbuffer WORD/DWORD
 		main_batch.add("RBWD", "48 89 74 24 ? 57 48 83 EC 20 48 8B D9 33 C9 41 8B F0 8A", [this](memory::handle ptr)
 		{
 			m_read_bitbuf_dword = ptr.sub(5).as<decltype(m_read_bitbuf_dword)>();
@@ -137,12 +140,6 @@ namespace big
 		main_batch.add("RBA", "48 89 5C 24 ? 57 48 83 EC 30 41 8B F8 4C", [this](memory::handle ptr)
 		{
 			m_read_bitbuf_array = ptr.as<decltype(m_read_bitbuf_array)>();
-		});
-
-		// Read Bitbuffer WORD/DWORD
-		main_batch.add("RBD", "48 89 74 24 ? 57 48 83 EC 20 48 8B D9 33 C9 41 8B F0 8A", [this](memory::handle ptr)
-		{
-			m_read_bitbuf_dword = ptr.sub(5).as<decltype(m_read_bitbuf_dword)>();
 		});
 
 		// Read Bitbuffer String
@@ -157,7 +154,7 @@ namespace big
 			m_read_bitbuf_bool = ptr.add(1).rip().as<decltype(m_read_bitbuf_bool)>();
 		});
 
-		// Read Bitbuffer Arrau
+		// Read Bitbuffer Array
 		main_batch.add("RBA", "48 89 5C 24 ? 57 48 83 EC 30 41 8B F8 4C", [this](memory::handle ptr) 
 		{
 			m_read_bitbuf_array = ptr.as<decltype(m_read_bitbuf_array)>();
@@ -278,7 +275,7 @@ namespace big
 			m_get_screen_coords_for_world_coords = ptr.add(1).rip().as<functions::get_screen_coords_for_world_coords>();
 		});
 
-		// Get Gameplay Cam Coords
+		// GET_GAMEPLAY_CAM_COORDS
 		main_batch.add("GGCC", "8B 90 ? ? ? ? 89 13", [this](memory::handle ptr)
 		{
 			m_get_gameplay_cam_coords = ptr.sub(0xE).as<functions::get_gameplay_cam_coords>();
@@ -290,7 +287,7 @@ namespace big
 			m_give_pickup_rewards = ptr.sub(0x28).as<decltype(m_give_pickup_rewards)>();
 		});
 
-		// net array handler - version mismatch patch
+		// Net Array Handler - Version mismatch patch
 		main_batch.add("NAH", "44 8B E0 89 45 F4 48 8B 03 48 8B CB FF 90", [this](memory::handle ptr)
 		{
 			m_net_array_handler = ptr.sub(0x3C).as<PVOID>();
@@ -302,19 +299,19 @@ namespace big
 			m_network_group_override = ptr.as<PVOID>();
 		});
 
-		//Receive Net Message
+		// Receive Net Message
 		main_batch.add("RNM", "48 83 EC 20 4C 8B 71 50 33 ED", [this](memory::handle ptr)
 		{
 			m_receive_net_message = ptr.sub(0x19).as<PVOID>();
 		});
 
-		//Get Network Event Data
+		// Get Network Event Data
 		main_batch.add("GNED", "E9 ? ? ? ? E9 ? ? ? ? E9 ? ? ? ? E9 ? ? ? ? E9 ? ? ? ? CC FF 50 28", [this](memory::handle ptr)
 		{
 			m_get_network_event_data = ptr.as<PVOID>();
 		});
 
-		//Received clone sync & Get sync tree for type & Get net object for player & Get sync type info & Get net object
+		// Received clone sync & Get sync tree for type & Get net object for player & Get sync type info & Get net object
 		main_batch.add("RCS/GSTFT/GNOFP/GNO/GSTI", "4C 8B F2 41 0F B7 D1 45 0F B7 E1", [this](memory::handle ptr)
 		{
 			m_received_clone_sync = ptr.sub(0x1D).as<decltype(m_received_clone_sync)>();
@@ -365,7 +362,8 @@ namespace big
 
 		/**
 		 * Freemode thread restorer through VM patch
-		 */
+		*/
+
 		if (auto pat1 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
 		{
 			*pat1.add(2).as<uint32_t*>() = 0xc9310272;
@@ -393,6 +391,7 @@ namespace big
 		}
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);
+
 		if (!m_hwnd)
 			throw std::runtime_error("Failed to find the game's window.");
 
