@@ -185,11 +185,11 @@ namespace big
 				BOOL bModOn = !vehicle_json[mod_names[i]].is_null();
 				if (bModOn == TRUE)
 				{
-					if (i == MOD_TIRESMOKE)
+					if (i == MOD_TYRE_SMOKE)
 					{
 						std::vector<int> tire_smoke_color = vehicle_json["Tire Smoke Color"];
 						VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(vehicle, tire_smoke_color[0], tire_smoke_color[1], tire_smoke_color[2]);
-						VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, MOD_TIRESMOKE, TRUE);
+						VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, MOD_TYRE_SMOKE, TRUE);
 					}
 					else if (vehicle_json[mod_names[i]].is_array())
 					{
@@ -375,7 +375,7 @@ namespace big
 			for (int i = MOD_SPOILERS; i <= MOD_LIVERY; i++)
 			{
 				BOOL is_mod_on = VEHICLE::IS_TOGGLE_MOD_ON(vehicle, i);
-				if (i == MOD_TIRESMOKE && is_mod_on == TRUE)
+				if (i == MOD_TYRE_SMOKE && is_mod_on == TRUE)
 				{
 					int tire_smoke_color[3]{};
 					VEHICLE::GET_VEHICLE_TYRE_SMOKE_COLOR(vehicle, &tire_smoke_color[0], &tire_smoke_color[1], &tire_smoke_color[2]);

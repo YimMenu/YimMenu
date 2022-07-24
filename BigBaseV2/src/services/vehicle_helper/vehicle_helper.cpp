@@ -152,6 +152,7 @@ namespace big
 		{46, "HORN_XM15_1"}, {47, "HORN_XM15_2"}, {48, "HORN_XM15_3"}
 	};
 
+
 	const char* vehicle_helper::get_mod_name(Hash model, Vehicle vehicle, int mod_slot, int mod, int mod_count)
 	{
 		if (mod_count == 0)
@@ -268,5 +269,33 @@ namespace big
 		}
 
 		return false;
+	}
+
+	void vehicle_helper::set_mp_parameters_for_vehicle(Vehicle vehicle)
+	{
+		DECORATOR::DECOR_SET_INT(vehicle, "MPBitset", 0);
+		auto networkId = NETWORK::VEH_TO_NET(vehicle);
+		if (NETWORK::NETWORK_GET_ENTITY_IS_NETWORKED(vehicle))
+			NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true);
+		VEHICLE::SET_VEHICLE_IS_STOLEN(vehicle, FALSE);
+	}
+
+	Vehicle vehicle_helper::create_vehicle(Hash modelHash, float x, float y, float z, float heading)
+	{
+		while (!STREAMING::HAS_MODEL_LOADED(modelHash))
+		{
+			STREAMING::REQUEST_MODEL(modelHash);
+			script::get_current()->yield();
+		}
+		*(unsigned short*)big::g_pointers->m_model_spawn_bypass = 0x9090;
+		Vehicle vehicle = VEHICLE::CREATE_VEHICLE(modelHash, x, y, z, heading, TRUE, FALSE, FALSE);
+		*(unsigned short*)big::g_pointers->m_model_spawn_bypass = 0x0574;
+		script::get_current()->yield(); //This allows the car to initalize so when we write things like radio station, it will overwrite.
+		ENTITY::SET_ENTITY_CLEANUP_BY_ENGINE_(vehicle, TRUE);
+		PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), vehicle, -1);
+		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(modelHash);
+		if (*big::g_pointers->m_is_session_started)
+			set_mp_parameters_for_vehicle(vehicle);
+		return vehicle;
 	}
 }
