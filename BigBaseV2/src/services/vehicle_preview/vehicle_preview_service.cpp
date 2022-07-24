@@ -17,14 +17,15 @@ namespace big
 		g_vehicle_preview_service = nullptr;
 	}
 
-	void vehicle_preview_service::set_preview_vehicle(const vehicle_item& item)
+	void vehicle_preview_service::set_preview_vehicle(const vehicle_item& item, bool spawn_max)
 	{
 		if (item.hash != 0)
 		{
 			m_owned_mods.clear();
 
-			if (m_model_hash != item.hash)
+			if (m_model_hash != item.hash || m_spawn_max != spawn_max)
 			{
+				m_spawn_max = spawn_max;
 				m_model_hash = item.hash;
 				m_new_model = true;
 			}
@@ -33,18 +34,21 @@ namespace big
 		}
 	}
 
-	void vehicle_preview_service::set_preview_vehicle(const std::map<int, int32_t>& owned_mods)
+	void vehicle_preview_service::set_preview_vehicle(const std::map<int, int32_t>& owned_mods, bool spawn_max)
 	{
 		auto hash_item = owned_mods.find(MOD_MODEL_HASH);
 
 		if (
+			m_spawn_max != spawn_max ||
 			m_owned_mods.size() != owned_mods.size() ||
 			!std::equal(m_owned_mods.begin(), m_owned_mods.end(), owned_mods.begin())
 		) {
 			m_owned_mods.clear();
+			m_owned_mods.insert(owned_mods.begin(), owned_mods.end());
 
 			auto hash_item = owned_mods.find(MOD_MODEL_HASH);
-			m_owned_mods.insert(owned_mods.begin(), owned_mods.end());
+
+			m_spawn_max = spawn_max;
 			m_model_hash = hash_item->second;
 			m_new_model = true;
 
@@ -85,6 +89,11 @@ namespace big
 
 					if (m_current_veh)
 					{
+						if (m_spawn_max)
+						{
+							vehicle::max_vehicle(m_current_veh);
+						}
+
 						ENTITY::FREEZE_ENTITY_POSITION(m_current_veh, true);
 						ENTITY::SET_ENTITY_ALPHA(m_current_veh, 0, 0);
 						ENTITY::SET_ENTITY_COLLISION(m_current_veh, false, false);

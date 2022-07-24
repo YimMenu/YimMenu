@@ -111,7 +111,8 @@ namespace big
 					{
 						g_fiber_pool->queue_job([] {
 							g_vehicle_preview_service->set_preview_vehicle(
-								vehicle::get_owned_mods_from_vehicle(self::veh)
+								vehicle::get_owned_mods_from_vehicle(self::veh),
+								g->spawn.spawn_maxed
 							);
 						});
 					}
@@ -176,7 +177,7 @@ namespace big
 
 						if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
 						{
-							g_vehicle_preview_service->set_preview_vehicle(item);
+							g_vehicle_preview_service->set_preview_vehicle(item, g->spawn.spawn_maxed);
 						}
 						else if (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered())
 						{

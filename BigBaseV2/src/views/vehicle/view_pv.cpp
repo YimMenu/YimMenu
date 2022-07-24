@@ -158,7 +158,8 @@ namespace big
 						{
 							g_fiber_pool->queue_job([&personal_veh] {
 								g_vehicle_preview_service->set_preview_vehicle(
-									vehicle::get_owned_mods_from_vehicle_idx(personal_veh->get_vehicle_idx())
+									vehicle::get_owned_mods_from_vehicle_idx(personal_veh->get_vehicle_idx()),
+									g->clone_pv.spawn_maxed
 								);
 							});
 						}
