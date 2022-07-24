@@ -36,4 +36,20 @@ namespace big::math
 
 		return (float)distance_between_vectors(plyr_coords, cam_coords);
 	}
+
+	inline Vector3 addVec(Vector3 vector, Vector3 vector2)
+	{
+		vector.x += vector2.x;
+		vector.y += vector2.y;
+		vector.z += vector2.z;
+		return vector;
+	}
+
+	inline Vector3 MulVec(Vector3 vector, float c)
+	{
+		vector.x *= c;
+		vector.y *= c;
+		vector.z *= c;
+		return vector;
+	}
 }

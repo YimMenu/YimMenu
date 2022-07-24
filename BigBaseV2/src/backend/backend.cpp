@@ -70,6 +70,8 @@ namespace big
 			looped::weapons_repair_gun();
 			looped::weapons_steal_vehicle_gun();
 			looped::weapons_vehicle_gun();
+			looped::weapons_pewpew_gun();
+			looped::weapons_remote_pewpew();
 
 			script::get_current()->yield();
 		}

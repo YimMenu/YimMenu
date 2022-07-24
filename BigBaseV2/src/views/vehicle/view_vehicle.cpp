@@ -46,7 +46,7 @@ namespace big
 
 		ImGui::BeginGroup();
 		ImGui::Checkbox("God Mode", &g->vehicle.god_mode);
-		ImGui::Checkbox("Horn Boost", &g->vehicle.horn_boost);
+		ImGui::Checkbox("Fart Boost", &g->vehicle.horn_boost);
 		ImGui::Checkbox("Vehicle Jump", &g->vehicle.vehicle_jump);
 
 		ImGui::EndGroup();

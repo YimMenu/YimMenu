@@ -87,6 +87,8 @@ namespace big
 		static void weapons_repair_gun();
 		static void weapons_steal_vehicle_gun();
 		static void weapons_vehicle_gun();
+		static void weapons_pewpew_gun();
+		static void weapons_remote_pewpew();
 
 		static void hotkeys_input();
 		static void hotkeys_teleport_waypoint();

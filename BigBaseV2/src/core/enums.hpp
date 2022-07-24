@@ -11,7 +11,8 @@ namespace big
 		STEAL_VEHICLE_GUN,
 		REPAIR_GUN,
 		VEHICLE_GUN,
-		CARTOON_GUN
+		CARTOON_GUN,
+		PEWPEW_GUN
 	};
 
 	enum class ContextEntityType : uint8_t

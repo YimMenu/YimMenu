@@ -325,6 +325,7 @@ namespace big
 			bool no_recoil = false;
 			bool no_spread = false;
 			char vehicle_gun_model[12] = "bus";
+			bool remote_pewpew = false;
 		};
 
 		struct window {

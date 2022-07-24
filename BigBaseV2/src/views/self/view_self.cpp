@@ -52,6 +52,14 @@ namespace big
 		ImGui::Checkbox("God Mode", &g->self.god_mode);
 		ImGui::Checkbox("Off Radar", &g->self.off_radar);
 		ImGui::Checkbox("Free Cam", &g->self.free_cam);
+		if (g->self.free_cam)
+			ImGui::Checkbox("Remote Pew Pew?", &g->weapons.remote_pewpew);
+		if (g->weapons.remote_pewpew) {
+			g->weapons.force_crosshairs = true;
+		}
+		else
+			g->weapons.force_crosshairs = false;
+		
 		ImGui::Checkbox("Disable Phone", &g->tunables.disable_phone);
 		ImGui::Checkbox("Phone Anim", &g->tunables.phone_anim);
 		ImGui::Checkbox("Everyone Ignores", &g->self.ignoreplayer);
