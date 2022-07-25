@@ -26,7 +26,6 @@ namespace big
 		static void heading();
 		static void ped();
 		static void navigation();
-		//static void player_navigation();
 		static void notifications();
 		static void root();
 		static void self();
@@ -36,7 +35,6 @@ namespace big
 		static void pv();
 		static void vehicle_fun();
 		static void spoofing();
-		static void teleport();
 		static void vehicle();
 		static void lsc();
 		static void view_player();

@@ -26,7 +26,6 @@ namespace big
 		PV,
 		VEHICLE_FUN,
 		SPOOFING,
-		TELEPORT,
 		VEHICLE,
 		WEAPONS,
 		HANDLING,
@@ -48,7 +47,6 @@ namespace big
 			{tabs::SELF, { "Self",view::self, {
 				{ tabs::WEAPONS, { "Weapons", view::weapons }},
 				{ tabs::PED, {"Ped", view::ped}},
-				{ tabs::TELEPORT, {"Teleport", view::teleport}},
 			}}},
 			{tabs::VEHICLE, { "Vehicle", view::vehicle, {
 				{ tabs::HANDLING, {"Handling", view::handling_current_profile, {

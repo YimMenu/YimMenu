@@ -97,11 +97,7 @@ namespace big
 			bool freezeplayer = false;
 			bool freezeallplayers = false;
 			bool shakecam = false;
-
-			bool car_chase = false;
-			bool heli_chase = false;
-			bool plane_chase = false;
-			bool chase = false;
+			bool chase = false;			
 		};
 
 		struct protections {
@@ -146,9 +142,9 @@ namespace big
 		};
 
 		struct self {
-			bool clean_player = false;
 			bool force_wanted_level = false;
 			bool free_cam = false;
+			bool pew_pew_crosshair = false;
 			bool invisibility = false;
 			bool local_visibility = true;
 			bool never_wanted = false;
@@ -159,10 +155,12 @@ namespace big
 			bool aimbot = false;
 			bool aimbot_exclude_friend = true;
 			int wanted_level = 0;
-			bool mobileradio = false;
+			
 			bool SuperMan_salman_ka_fan = false;
-			bool ignoreplayer = false;
-			bool disablehud = false;
+			bool ragdoll_toggle = false;
+			bool god_mode_toggle = false;
+			bool seatbelt_toggle = false;
+			
 			int animlist = 0;
 			int scenelist = 0;
 			int visionList = 0;
@@ -248,6 +246,10 @@ namespace big
 		struct tunables {
 			bool disable_phone = false;
 			bool phone_anim = false;
+			bool clean_player = false;
+			bool mobileradio = false;
+			bool ignoreplayer = false;
+			bool disablehud = false;
 			bool no_idle_kick = false;
 		};
 
@@ -294,7 +296,6 @@ namespace big
 			bool seatbelt = false;
 			bool turn_signals = false;
 			bool keep_vehicle_repaired = false;
-			int chase_style = 0;
 			bool headlightmul = false;
 			float headlightmul_val = 1.f;
 			float auto_drive_speed = 1;
@@ -566,6 +567,10 @@ namespace big
 
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
 			this->tunables.phone_anim = j["tunables"]["phone_anim"];
+			this->tunables.clean_player = j["tunables"]["clean_player"];
+			this->tunables.mobileradio = j["tunables"]["mobileradio"];
+			this->tunables.ignoreplayer = j["tunables"]["ignoreplayer"];
+			this->tunables.disablehud = j["tunables"]["disablehud"];
 			this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
 
 			this->self.god_mode = j["self"]["god_mode"];
@@ -578,7 +583,6 @@ namespace big
 			this->self.proof_drown = j["self"]["proof_drown"];
 			this->self.proof_water = j["self"]["proof_water"];
 			this->self.proof_mask = j["self"]["proof_mask"];
-			this->self.clean_player = j["self"]["clean_player"];
 			this->self.invisibility = j["self"]["invisibility"];
 			this->self.local_visibility = j["self"]["local_visibility"];
 			this->self.never_wanted = j["self"]["never_wanted"];
@@ -587,9 +591,6 @@ namespace big
 			this->self.super_run = j["self"]["super_run"];
 			this->self.aimbot = j["self"]["aimbot"];
 			this->self.aimbot_exclude_friend = j["self"]["aimbot_exclude_friend"];
-			this->self.mobileradio = j["self"]["mobileradio"];
-			this->self.ignoreplayer = j["self"]["ignoreplayer"];
-			this->self.disablehud = j["self"]["disablehud"];
 			this->self.give_weapon_id = j["self"]["give_weapon_id"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -840,6 +841,10 @@ namespace big
 					"tunables", {
 						{ "disable_phone", this->tunables.disable_phone },
 						{ "phone_anim", this->tunables.phone_anim },
+						{ "clean_player", this->tunables.clean_player },
+						{ "ignoreplayer", this->tunables.ignoreplayer},
+						{ "disablehud", this->tunables.disablehud},
+						{ "mobileradio", this->tunables.mobileradio },
 						{ "no_idle_kick", this->tunables.no_idle_kick }
 					}
 				},
@@ -855,7 +860,6 @@ namespace big
 						{ "proof_drown", this->self.proof_drown },
 						{ "proof_water", this->self.proof_water },
 						{ "proof_mask", this->self.proof_mask },
-						{ "clean_player", this->self.clean_player },
 						{ "invisibility", this->self.invisibility },
 						{ "local_visibility", this->self.local_visibility },
 						{ "never_wanted", this->self.never_wanted },
@@ -864,9 +868,6 @@ namespace big
 						{ "super_run", this->self.super_run },
 						{ "aimbot", this->self.aimbot },
 						{ "aimbot_exclude_friend", this->self.aimbot_exclude_friend },
-						{ "mobileradio", this->self.mobileradio },
-						{ "ignoreplayer", this->self.ignoreplayer},
-						{ "disablehud", this->self.disablehud},
 						{ "give_weapon_id", this->self.give_weapon_id }
 					}
 				},

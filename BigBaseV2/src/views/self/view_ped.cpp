@@ -185,6 +185,7 @@ namespace big
 			//TASK::CLEAR_PED_SECONDARY_TASK(PLAYER::PLAYER_PED_ID());
 			});
 
+		ImGui::SetNextItemWidth(300.f);
 		if (ImGui::BeginCombo("Anims##Anims", ped::animlistName[g->self.animlist]))
 		{
 			for (int i = 0; i < 11; i++)
@@ -222,6 +223,7 @@ namespace big
 			TASK::CLEAR_PED_SECONDARY_TASK(PLAYER::PLAYER_PED_ID());
 		});
 
+		ImGui::SetNextItemWidth(300.f);
 		if (ImGui::BeginCombo("Scenes##Scenes", ped::scenelist[g->self.scenelist]))
 		{
 			for (int i = 0; i < 81; i++)
@@ -254,6 +256,7 @@ namespace big
 			GRAPHICS::CLEAR_TIMECYCLE_MODIFIER();
 		});
 
+		ImGui::SetNextItemWidth(300.f);
 		if (ImGui::BeginCombo("Visuals##Visuals", ped::visionList[g->self.visionList]))
 		{
 			for (int i = 0; i < 14; i++)

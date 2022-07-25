@@ -1,7 +1,7 @@
-#include "fiber_pool.hpp"
 #include "util/entity.hpp"
 #include "util/local_player.hpp"
 #include "views/view.hpp"
+#include "util/teleport.hpp"
 #include "util/ped.hpp"
 
 namespace big
@@ -41,28 +41,34 @@ namespace big
 
 		ImGui::SameLine();
 
-		ImGui::Checkbox("Mobile Radio", &g->self.mobileradio);
+		ImGui::Checkbox("Mobile Radio", &g->tunables.mobileradio);
 
 		ImGui::Separator();
+		
+		components::small_text("Teleport Blips");
+		
+		components::button("Waypoint", []
+			{
+				teleport::to_waypoint();
+			});
+		
+		ImGui::SameLine();
 
+		components::button("Objective", []
+			{
+				teleport::to_objective();
+			});
+		
+		ImGui::Separator();
+		
 		components::small_text("General");
 
 		ImGui::BeginGroup();
 
 		ImGui::Checkbox("God Mode", &g->self.god_mode);
 		ImGui::Checkbox("Off Radar", &g->self.off_radar);
-		ImGui::Checkbox("Free Cam", &g->self.free_cam);
-		if (g->self.free_cam)
-			ImGui::Checkbox("Remote Pew Pew?", &g->weapons.remote_pewpew);
-		if (g->weapons.remote_pewpew) {
-			g->weapons.force_crosshairs = true;
-		}
-		else
-			g->weapons.force_crosshairs = false;
-		
-		ImGui::Checkbox("Disable Phone", &g->tunables.disable_phone);
-		ImGui::Checkbox("Phone Anim", &g->tunables.phone_anim);
-		ImGui::Checkbox("Everyone Ignores", &g->self.ignoreplayer);
+		ImGui::Checkbox("Flash Run", &g->self.super_run);
+		ImGui::Checkbox("Super Man", &g->self.SuperMan_salman_ka_fan);	
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
@@ -70,11 +76,24 @@ namespace big
 
 		ImGui::Checkbox("No Clip", &g->self.noclip);
 		ImGui::Checkbox("No Ragdoll", &g->self.no_ragdoll);
-		ImGui::Checkbox("Flash Run", &g->self.super_run);
-		ImGui::Checkbox("No Idle Kick", &g->tunables.no_idle_kick);
-		ImGui::Checkbox("Super Man", &g->self.SuperMan_salman_ka_fan);
-		ImGui::Checkbox("Disable HUD", &g->self.disablehud);
-
+		ImGui::Checkbox("Free Cam", &g->self.free_cam);
+		if (g->self.free_cam) {
+			ImGui::Checkbox("Remote Pew Pew?", &g->weapons.remote_pewpew);
+		}
+		else {
+			g->weapons.remote_pewpew = false;
+		}
+		/*
+		if (g->weapons.remote_pewpew) {
+			
+		}
+		else {
+			if (g->self.pew_pew_crosshair) {
+				g->weapons.force_crosshairs = false;
+				g->self.pew_pew_crosshair = false;
+			}
+		}*/
+		
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
@@ -83,18 +102,40 @@ namespace big
 		if (g->self.invisibility) {
 			ImGui::Checkbox("Locally Visible", &g->self.local_visibility);
 		}
-
-		ImGui::Checkbox("Keep Player Clean", &g->self.clean_player);
-
-		components::button("Clean Player", [] {
-			entity::clean_ped(self::ped);
-			});
 		ImGui::Checkbox("Aimbot", &g->self.aimbot);
 		if (g->self.aimbot) {
 			ImGui::Checkbox("Exclude Friends", &g->self.aimbot_exclude_friend);
 		}
 
 		ImGui::EndGroup();
+		ImGui::Separator();
+		
+		components::small_text("Misc");
+		
+		ImGui::BeginGroup();
+		
+		ImGui::Checkbox("Disable Phone", &g->tunables.disable_phone);
+		ImGui::Checkbox("Phone Anim", &g->tunables.phone_anim);
+		ImGui::Checkbox("Everyone Ignores", &g->tunables.ignoreplayer);
+
+		ImGui::EndGroup();
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+		
+		ImGui::Checkbox("No Idle Kick", &g->tunables.no_idle_kick);
+		ImGui::Checkbox("Disable HUD", &g->tunables.disablehud);
+		
+		ImGui::EndGroup();
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+		
+		ImGui::Checkbox("Keep Player Clean", &g->tunables.clean_player);
+
+		components::button("Clean Player", [] {
+			entity::clean_ped(self::ped);
+			});	
+		ImGui::EndGroup();
+		
 		ImGui::Separator();
 
 		components::small_text("Proofs");

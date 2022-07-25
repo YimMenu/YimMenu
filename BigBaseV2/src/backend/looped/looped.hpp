@@ -10,7 +10,6 @@ namespace big
 	public:
 		static void api_login_session();
 
-		static void context_menu();
 		static void hud_transition_state();
 
 		static void rgb_synced_fade();
@@ -18,6 +17,10 @@ namespace big
 
 		static void tunables_disable_phone();
 		static void tunables_phone_anim();
+		static void tunables_clean_player();
+		static void tunables_ignoreplayer();
+		static void tunables_mobileradio();
+		static void tunables_disablehud();
 		static void tunables_no_idle_kick();
 
 		static void player_never_wanted(const player_ptr &player);
@@ -27,9 +30,6 @@ namespace big
 		static void player_shakecam();
 		static void player_chase();
 
-		static void protections_replay_interface();
-
-		static void self_clean_player();
 		static void self_free_cam_disable_control_action();
 		static void self_free_cam();
 		static void self_godmode();
@@ -41,10 +41,7 @@ namespace big
 		static void self_police();
 		static void self_super_run();
 		static void self_aimbot();
-		static void self_mobileradio();
 		static void self_SuperMan_salman_ka_fan();
-		static void self_ignoreplayer();
-		static void self_disablehud();
 
 		static void session_local_time();
 		static void session_slowmotion();

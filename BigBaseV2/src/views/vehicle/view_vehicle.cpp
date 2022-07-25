@@ -31,6 +31,12 @@ namespace big
 			teleport::into_vehicle(veh);
 		});
 		ImGui::SameLine();
+		components::button("Teleport in Last Vehicle", [] {
+			if (g_local_player && g_local_player->m_vehicle) {
+				const Vehicle veh = g_pointers->m_ptr_to_handle(g_local_player->m_vehicle);
+				teleport::into_vehicle(veh);
+			}
+		});
 		components::button("Bring PV", [] {
 			Vehicle veh = globals::get_personal_vehicle();
 			vehicle::bring(veh, self::pos, true);

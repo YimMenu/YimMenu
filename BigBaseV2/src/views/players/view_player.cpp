@@ -94,8 +94,10 @@ namespace big
 			if (ImGui::TreeNode("Info")) {
 
 				ImGui::Text("Player ID: %d", g_player_service->get_selected()->id());
+				
+				ImGui::SameLine();
 
-				ImGui::Text("Session Host: %s", g_player_service->get_selected()->is_host() ? "Yes" : "No");
+				ImGui::Text("         Session Host: %s", g_player_service->get_selected()->is_host() ? "Yes" : "No");
 
 				ImGui::Separator();
 
@@ -121,13 +123,18 @@ namespace big
 				}
 				else
 				{
+					bool comma1 = false;
 					if (ped_damage_bits & (uint32_t)eEntityProofs::BULLET)
 					{
-						mode_str += "Bullet, ";
+						mode_str += "Bullet";
+						comma1 = true;
 					}
 					if (ped_damage_bits & (uint32_t)eEntityProofs::EXPLOSION)
 					{
-						mode_str += "Explosion, ";
+						if (comma1) {
+							mode_str += ", ";
+						}
+						mode_str += "Explosion";
 					}
 				}
 
@@ -153,13 +160,18 @@ namespace big
 					}
 					else
 					{
+						bool comma2 = false;
 						if (veh_damage_bits & (uint32_t)eEntityProofs::COLLISION)
 						{
-							mode_str += "Collision, ";
+							mode_str += "Collision";
+							comma2 = true;
 						}
 						if (veh_damage_bits & (uint32_t)eEntityProofs::EXPLOSION)
 						{
-							mode_str += "Explosion, ";
+							if (comma2) {
+								mode_str += ", ";
+							}
+							mode_str += "Explosion";
 						}
 					}
 
@@ -200,16 +212,18 @@ namespace big
 					});
 
 				ImGui::SameLine();
-
-				components::button("Bring", [] {
-					teleport::bring_player(g_player_service->get_selected()->id());
-					});
-
-				components::button("Teleport into Vehicle", [] {
+				
+				components::button("Teleport in Vehicle", [] {
 					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
 
 					teleport::into_vehicle(veh);
 					});
+				
+				components::button("Bring", [] {
+					teleport::bring_player(g_player_service->get_selected()->id());
+					});
+				
+				ImGui::SameLine();
 				
 				components::button("Teleport with Paracute", [] {
 					Hash parachute = RAGE_JOAAT("GADGET_PARACHUTE");

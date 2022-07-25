@@ -4,8 +4,8 @@
 
 namespace big
 {
-	void looped::self_disablehud() {
-		if (g->self.disablehud) {
+	void looped::tunables_disablehud() {
+		if (g->tunables.disablehud) {
 			HUD::HIDE_HUD_AND_RADAR_THIS_FRAME();
 		}
 		else 

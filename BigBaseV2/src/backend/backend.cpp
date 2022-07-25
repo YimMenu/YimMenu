@@ -32,7 +32,7 @@ namespace big
 
 		while (g_running)
 		{
-			looped::self_clean_player();
+			looped::tunables_clean_player();
 			looped::self_free_cam();
 			looped::self_godmode();
 			looped::self_invisibility();
@@ -41,10 +41,7 @@ namespace big
 			looped::self_police();
 			looped::self_super_run();
 			looped::self_aimbot();
-			looped::self_mobileradio();
 			looped::self_SuperMan_salman_ka_fan();
-			looped::self_ignoreplayer();
-			looped::self_disablehud();
 
 			script::get_current()->yield();
 		}
@@ -135,13 +132,16 @@ namespace big
 		{
 			looped::hud_transition_state();
 			looped::tunables_disable_phone();
+			looped::tunables_ignoreplayer();
+			looped::tunables_phone_anim();
+			looped::tunables_mobileradio();
+			looped::tunables_disablehud();
+			
 			looped::tunables_no_idle_kick();
 			looped::session_local_time();			
 			looped::session_slowmotion();
 			looped::session_jumparound();
 			looped::session_rainbowtraffic();
-
-			looped::tunables_phone_anim();
 
 			script::get_current()->yield();
 		}

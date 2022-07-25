@@ -4,8 +4,8 @@
 
 namespace big
 {
-	void looped::self_ignoreplayer() {
-		if (g->self.ignoreplayer) {
+	void looped::tunables_ignoreplayer() {
+		if (g->tunables.ignoreplayer) {
 			PLAYER::SET_EVERYONE_IGNORE_PLAYER(self::id, 1);
 		}
 		else
