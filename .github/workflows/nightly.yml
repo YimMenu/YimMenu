@@ -96,7 +96,7 @@ jobs:
   create_release:
     runs-on: ubuntu-latest
     name: Create Release
-    needs: check_date
+    needs: [ check_date, build_nightly ]
     if: ${{ needs.check_date.outputs.should_run != 'false' }}
     steps:
       - name: Download Artifact
