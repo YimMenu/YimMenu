@@ -1,8 +1,5 @@
 #pragma once
-#include "gta/joaat.hpp"
-#include "gta/replay.hpp"
 #include "natives.hpp"
-#include "script.hpp"
 #include "util/math.hpp"
 
 //https://www.youtube.com/watch?v=k6z4Y5DBb-g  <- All Effects

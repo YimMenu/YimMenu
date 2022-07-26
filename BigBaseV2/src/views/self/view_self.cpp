@@ -1,8 +1,6 @@
-#include "util/entity.hpp"
 #include "util/local_player.hpp"
 #include "views/view.hpp"
 #include "util/teleport.hpp"
-#include "util/ped.hpp"
 
 namespace big
 {
@@ -83,16 +81,6 @@ namespace big
 		else {
 			g->weapons.remote_pewpew = false;
 		}
-		/*
-		if (g->weapons.remote_pewpew) {
-			
-		}
-		else {
-			if (g->self.pew_pew_crosshair) {
-				g->weapons.force_crosshairs = false;
-				g->self.pew_pew_crosshair = false;
-			}
-		}*/
 		
 		ImGui::EndGroup();
 		ImGui::SameLine();

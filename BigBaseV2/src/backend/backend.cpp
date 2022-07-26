@@ -32,7 +32,6 @@ namespace big
 
 		while (g_running)
 		{
-			looped::tunables_clean_player();
 			looped::self_free_cam();
 			looped::self_godmode();
 			looped::self_invisibility();
@@ -131,6 +130,7 @@ namespace big
 		while (g_running)
 		{
 			looped::hud_transition_state();
+			looped::tunables_clean_player();
 			looped::tunables_disable_phone();
 			looped::tunables_ignoreplayer();
 			looped::tunables_phone_anim();

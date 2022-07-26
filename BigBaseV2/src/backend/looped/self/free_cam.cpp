@@ -76,9 +76,6 @@ namespace big
 
 			return;
 		}
-		//if (!g->weapons.force_crosshairs && g->weapons.remote_pewpew) {
-			//HUD::SHOW_HUD_COMPONENT_THIS_FRAME(14 /*RETICLE*/);
-		//}
 		Vector3 vecChange = { 0.f, 0.f, 0.f };
 
 		// Left Shift

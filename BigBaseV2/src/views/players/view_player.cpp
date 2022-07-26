@@ -123,7 +123,7 @@ namespace big
 				}
 				else
 				{
-					bool comma1 = false;
+					static bool comma1 = false;
 					if (ped_damage_bits & (uint32_t)eEntityProofs::BULLET)
 					{
 						mode_str += "Bullet";
@@ -160,7 +160,7 @@ namespace big
 					}
 					else
 					{
-						bool comma2 = false;
+						static bool comma2 = false;
 						if (veh_damage_bits & (uint32_t)eEntityProofs::COLLISION)
 						{
 							mode_str += "Collision";

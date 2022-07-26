@@ -1,5 +1,4 @@
 #include "backend/looped/looped.hpp"
-#include "core/enums.hpp"
 #include "util/math.hpp"
 #include "util/vehicle.hpp"
 #include "gui.hpp"
