@@ -77,7 +77,7 @@ namespace big
 		"DLC Intro Bink",
 	};
 
-	auto transition_state = script_global(1574988);
+	auto transition_state = script_global(1574991);
 	eTransitionState last_state = eTransitionState::TRANSITION_STATE_EMPTY;
 	void looped::hud_transition_state()
 	{
