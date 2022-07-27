@@ -265,9 +265,9 @@ namespace big
 					toxic::flying_vehicle(g_player_service->get_selected()->id());
 					});
 
-				components::button("Destroy vehicle", [] {
+				/*components::button("Destroy vehicle", [] {
 					toxic::destroyveh(g_player_service->get_selected()->id());
-					});
+					});*/
 
 				ImGui::SameLine();
 
