@@ -126,50 +126,39 @@ namespace big
         TASK_UNK = 1 << 5,
         TASK_DRIVING = 1 << 6
     };
-
+	
 	enum class eRemoteEvent
 	{
-		Bounty = 1294995624,
-		CeoBan = -764524031,
-		CeoKick = 248967238,
-		CeoMoney = 1890277845,
-		ClearWantedLevel = -91354030,
-		Crash = -1386010354,
-		FakeDeposit = 677240627,
-		ForceMission = 2020588206,
-		GtaBanner = 1572255940,
-		MCTeleport = 962740265,
-		NetworkBail = 1228916411,
-		PersonalVehicleDestroyed = 802133775,
-		RemoteOffradar = -391633760,
-		RotateCam = 801199324,
-		SendToCutscene = 1068259786,
-		SendToCayoPerico = -621279188,
-		SendToLocation = 1463943751,
-		SoundSpam = 1132878564,
-		Spectate = -1113591308,
-		Teleport = 603406648,
-		TransactionError = -1704141512,
-		VehicleKick = 578856274,
-		Unknown1 = -145306724,
-		Unknown2 = -581037897,
-		Unknown3 = 1757755807,
-		Unknown4 = 436475575,
-		Unknown5 = 990606644,
-		Unknown6 = 69874647,
+		Bounty = 1294995624, // (137, "FM_TXT_BNTY0", iVar1, PLAYER::GET_PLAYER_NAME(Var2.f_1), "", 5000, Var2.f_6);
+		CeoBan = 1240068495, // mpply_vipgameplaydisabledtimer
+		CeoKick = -1425016400, // BGDISMISSED
+		CeoMoney = 547083265, // Goon_Paid_Large
+		ClearWantedLevel = 1449852136,
+		FakeDeposit = -1529596656, // TICK_ATTVAN
+		ForceMission = -283041276, // ), Var0.f_2, 1))
+		ForceMission2 = -1908874529,
+		GtaBanner = 145637109, // NETWORK::NETWORK_IS_SCRIPT_ACTIVE("BUSINESS_BATTLES", -1, true, 0) second one
+		NetworkBail = 1674887089, // NETWORK::NETWORK_BAIL(16, 0, 0); xref func
+		PersonalVehicleDestroyed = -1838276770, // PLYVEH_INS_DES1
+		RemoteOffradar = -1973627888, // NETWORK::GET_TIME_DIFFERENCE(NETWORK::GET_NETWORK_TIME(), Var0.f_2)
+		RotateCam = -1388926377, // CnCTG_IN_BF
+		SendToCutscene = 2131601101, // (bVar3, bVar4, 125f, 1)
+		SendToCayoPerico = 1361475530, // CELL_HI_INV
+		SendToLocation = 1214823473, // &Var222, 11);
+		SHKick = 1037001637,
+		SoundSpam = 1111927333, // CELL_APTINVYACHT
+		Spectate = -2131157870, // SPEC_TCK1
+		Teleport = -1390976345, // Mission_Pass_Notify
+		TransactionError = -768108950, // NETWORK_RECEIVE_PLAYER_JOBSHARE_CASH
+		VehicleKick = -714268990, // PIM_RFMOC
+		Kick = 1674887089,
+		GiveCollectible = -1178972880, // DLC_SUM20_HIDDEN_COLLECTIBLES xref
+		ChangeMCRole = 656530441, // _PLAYSTATS_CHANGE_MC_ROLE
+		DisableRecording = 867047895, // GET_FINAL_RENDERED_CAM_COORD
+		MCTeleport = -555356783, // NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(PLAYER::PLAYER_ID()) == (first one)
 
-		SEC3 = -2113023004,
-		SEC6 = 704979198,
-		SEC7 = -1715193475,
-		SEC8 = 1258808115,
-		SEC9 = 2112408256,
-		SEC10 = 998716537,
-		SEC11 = 163598572,
-		SEC12 = -1970125962,
-		SEC13 = -1056683619,
-		Spaghettios = -393294520,
-		ForceMission2 = -1525161016,
-		SHKick = -786546101
+		Crash = -1386010354, // SET_NO_LOADING_SCREEN, xref it
+		Crash2 = 1348481963,
 	};
 
 	enum class eSessionType

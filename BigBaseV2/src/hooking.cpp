@@ -35,9 +35,6 @@ namespace big
 
 		// Network Group Override
 		m_network_group_override("NGO", g_pointers->m_network_group_override, &hooks::network_group_override),
-
-		// Net Array Handler
-		m_net_array_handler_hook("NAH", g_pointers->m_net_array_handler, &hooks::net_array_handler),
 		
 		// Is DLC Present
 		m_is_dlc_present_hook("IDP", g_pointers->m_is_dlc_present, &hooks::is_dlc_present),
@@ -88,8 +85,6 @@ namespace big
 		m_network_player_mgr_init_hook.enable();
 		m_network_player_mgr_shutdown_hook.enable();
 
-		m_net_array_handler_hook.enable();
-
 		m_player_has_joined_hook.enable();
 		m_player_has_left_hook.enable();
 
@@ -120,8 +115,6 @@ namespace big
 
 		m_player_has_joined_hook.disable();
 		m_player_has_left_hook.disable();
-
-		m_net_array_handler_hook.disable();
 
 		m_network_player_mgr_init_hook.disable();
 		m_network_player_mgr_shutdown_hook.disable();

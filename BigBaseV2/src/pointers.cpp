@@ -30,6 +30,8 @@ namespace big
 		main_batch.add("PF", "48 8B 05 ? ? ? ? 48 8B 48 08 48 85 C9 74 52 8B 81", [this](memory::handle ptr)
 		{
 			m_ped_factory = ptr.add(3).rip().as<CPedFactory**>();
+
+			LOG(G3LOG_DEBUG) << "CPedFactory => [" << HEX_TO_UPPER(m_ped_factory) << "]";
 		});
 
 		// Network Player Manager
@@ -68,6 +70,8 @@ namespace big
 		main_batch.add("SG", "48 8D 15 ? ? ? ? 4C 8B C0 E8 ? ? ? ? 48 85 FF 48 89 1D", [this](memory::handle ptr)
 		{
 			m_script_globals = ptr.add(3).rip().as<std::int64_t**>();
+
+			LOG(G3LOG_DEBUG) << "ScriptGlobals => [" << HEX_TO_UPPER(m_script_globals) << "]";
 		});
 
 		// Game Script Handle Manager
@@ -206,7 +210,9 @@ namespace big
 		// Replay Interface
 		main_batch.add("RI", "0F B7 44 24 ? 66 89 44 4E", [this](memory::handle ptr)
 		{
-			m_replay_interface = ptr.add(0x1F).rip().as<decltype(m_replay_interface)>();
+			m_replay_interface = ptr.add(0x1F).rip().as<rage::CReplayInterface**>();
+
+			LOG(G3LOG_DEBUG) << "rage::CReplayInterface => [" << HEX_TO_UPPER(m_replay_interface) << "]";
 		});
 
 		// Pointer to Handle
@@ -264,9 +270,11 @@ namespace big
 		});
 
 		// FriendRegistry
-		main_batch.add("FR", "3B 0D ? ? ? ? 73 13 48 63 C9", [this](memory::handle ptr)
+		main_batch.add("FR", "3B 0D ? ? ? ? 73 17", [this](memory::handle ptr)
 		{
 			m_friend_registry = ptr.add(2).rip().as<FriendRegistry*>();
+
+			LOG(G3LOG_DEBUG) << "FriendRegistry => [" << HEX_TO_UPPER(m_friend_registry) << "]";
 		});
 
 		// GET_SCREEN_COORDS_FROM_WORLD_COORDS
@@ -287,12 +295,6 @@ namespace big
 			m_give_pickup_rewards = ptr.sub(0x28).as<decltype(m_give_pickup_rewards)>();
 		});
 
-		// Net Array Handler - Version mismatch patch
-		main_batch.add("NAH", "44 8B E0 89 45 F4 48 8B 03 48 8B CB FF 90", [this](memory::handle ptr)
-		{
-			m_net_array_handler = ptr.sub(0x3C).as<PVOID>();
-		});
-
 		// Network Group Override
 		main_batch.add("NGO", "44 89 81 ? ? ? ? 89 91 ? ? ? ? C6 05", [this](memory::handle ptr)
 		{
@@ -306,25 +308,27 @@ namespace big
 		});
 
 		// Get Network Event Data
-		main_batch.add("GNED", "E9 ? ? ? ? E9 ? ? ? ? E9 ? ? ? ? E9 ? ? ? ? E9 ? ? ? ? CC FF 50 28", [this](memory::handle ptr)
+		main_batch.add("GNED", "53 43 52 49 50 54 5F 4E 45 54 57 4F 52 4B", [this](memory::handle ptr)
 		{
-			m_get_network_event_data = ptr.as<PVOID>();
+			m_get_network_event_data = *ptr.sub(0x38).as<void**>();
 		});
 
 		// Received clone sync & Get sync tree for type & Get net object for player & Get sync type info & Get net object
-		main_batch.add("RCS/GSTFT/GNOFP/GNO/GSTI", "4C 8B F2 41 0F B7 D1 45 0F B7 E1", [this](memory::handle ptr)
+		main_batch.add("RCS/GSTFT/GNOFP/GNO/GSTI", "4C 8B FA 41 0F B7 D1", [this](memory::handle ptr)
 		{
 			m_received_clone_sync = ptr.sub(0x1D).as<decltype(m_received_clone_sync)>();
 			m_get_sync_tree_for_type = ptr.add(0x14).rip().as<decltype(m_get_sync_tree_for_type)>(); // 0F B7 CA 83 F9 07 .as()
-			m_get_net_object_for_player = ptr.add(0x4C).rip().as<decltype(m_get_net_object_for_player)>(); // 41 80 78 ? FF 74 2D 41 0F B6 40 .as()
-			m_get_net_object = ptr.add(0x62).rip().as<decltype(m_get_net_object)>(); // E8 ? ? ? ? 0F B7 53 7C .add(1).rip().as()
-			m_get_sync_type_info = ptr.add(0x78).rip().as<decltype(m_get_sync_type_info)>(); // 44 0F B7 C1 4C 8D 0D .as()
+			m_get_net_object_for_player = ptr.add(0x60).rip().as<decltype(m_get_net_object_for_player)>(); // 41 80 78 ? FF 74 2D 41 0F B6 40 .as()
+			m_get_net_object = ptr.add(0x76).rip().as<decltype(m_get_net_object)>(); // E8 ? ? ? ? 0F B7 53 7C .add(1).rip().as()
+			m_get_sync_type_info = ptr.add(0x8C).rip().as<decltype(m_get_sync_type_info)>(); // 44 0F B7 C1 4C 8D 0D .as()
 		});
 
 		// Model Hash Table
 		main_batch.add("MHT", "4C 03 05 ? ? ? ? EB 03", [this](memory::handle ptr)
 		{
 			m_model_table = ptr.add(3).rip().as<HashTable<CBaseModelInfo*>*>();
+
+			LOG(G3LOG_DEBUG) << "HashTable => [" << HEX_TO_UPPER(m_model_table) << "]";
 
 			// sample code to iterator models
 			/*for (int i = 0; i < m_model_table->m_size; ++i)
