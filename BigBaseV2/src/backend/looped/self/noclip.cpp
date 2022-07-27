@@ -2,7 +2,6 @@
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
-#include "script.hpp"
 #include "util/entity.hpp"
 
 namespace big
@@ -36,10 +35,10 @@ namespace big
 
 	void looped::self_noclip()
 	{
-		bool bNoclip = g->self.noclip;
+		const auto bNoclip = g->self.noclip;
 
-		Vector3 location = self::pos;
-		Entity ent = self::veh != NULL ? self::veh : self::ped;
+		const auto location = self::pos;
+		const Entity ent = (self::veh != 0 && g_local_player->m_ped_task_flag & (int)ePedTask::TASK_DRIVING) ? self::veh : self::ped;
 
 		// cleanup when changing entities
 		if (prev != ent)
@@ -53,7 +52,6 @@ namespace big
 		if (bNoclip)
 		{
 			Vector3 vel = { 0.f, 0.f, 0.f };
-			float heading = 0.f;
 
 			// Left Shift
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
@@ -91,7 +89,7 @@ namespace big
 
 				ENTITY::FREEZE_ENTITY_POSITION(ent, false);
 
-				Vector3 offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, vel.x, vel.y, 0.f);
+				const auto offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, vel.x, vel.y, 0.f);
 				vel.x = offset.x - location.x;
 				vel.y = offset.y - location.y;
 
