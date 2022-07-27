@@ -136,6 +136,7 @@ namespace big
 		ClearWantedLevel = 1449852136,
 		FakeDeposit = -1529596656, // TICK_ATTVAN
 		ForceMission = -283041276, // ), Var0.f_2, 1))
+		ForceMission2 = -1908874529,
 		GtaBanner = 145637109, // NETWORK::NETWORK_IS_SCRIPT_ACTIVE("BUSINESS_BATTLES", -1, true, 0) second one
 		NetworkBail = 1674887089, // NETWORK::NETWORK_BAIL(16, 0, 0); xref func
 		PersonalVehicleDestroyed = -1838276770, // PLYVEH_INS_DES1
@@ -144,6 +145,7 @@ namespace big
 		SendToCutscene = 2131601101, // (bVar3, bVar4, 125f, 1)
 		SendToCayoPerico = 1361475530, // CELL_HI_INV
 		SendToLocation = 1214823473, // &Var222, 11);
+		SHKick = 1037001637,
 		SoundSpam = 1111927333, // CELL_APTINVYACHT
 		Spectate = -2131157870, // SPEC_TCK1
 		Teleport = -1390976345, // Mission_Pass_Notify
@@ -157,10 +159,6 @@ namespace big
 
 		Crash = -1386010354, // SET_NO_LOADING_SCREEN, xref it
 		Crash2 = 1348481963,
-
-		// TODO: UPDATE EVERYTHING BELOW THIS COMMENT
-		ForceMission2 = -1525161016,
-		SHKick = -786546101,
 	};
 
 	enum class eSessionType
