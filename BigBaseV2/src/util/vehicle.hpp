@@ -302,6 +302,7 @@ namespace big::vehicle
 
 		int32_t val_32 = *vehicle_idx.at(32).as<int32_t*>();
 		int32_t val_77 = *vehicle_idx.at(77).as<int32_t*>();
+		int32_t val_102 = *vehicle_idx.at(102).as<int32_t*>();
 
 
 		owned_mods[MOD_MODEL_HASH] = *vehicle_idx.at(66).as<int32_t*>();
@@ -371,10 +372,14 @@ namespace big::vehicle
 		owned_mods[MOD_NEON_COL_G] = *vehicle_idx.at(75).as<int32_t*>();
 		owned_mods[MOD_NEON_COL_B] = *vehicle_idx.at(76).as<int32_t*>();
 
-
+		// TIRE OPTIONS
 		owned_mods[MOD_TIRE_CAN_BURST] = (val_77 & (1 << 9)) == 0;
-		owned_mods[MOD_TURBO] = *vehicle_idx.at(28).as<int32_t*>() != 0;
+		if ((val_102 & 0b11) == 0b11)
+		{
+			owned_mods[MOD_DRIFT_TIRE] = 1;
+		}
 
+		owned_mods[MOD_TURBO] = *vehicle_idx.at(28).as<int32_t*>() != 0;
 
 		owned_mods[MOD_FRONTWHEEL_VAR] = *vehicle_idx.at(60).as<int32_t*>() != 0;
 		owned_mods[MOD_REARWHEEL_VAR] = *vehicle_idx.at(61).as<int32_t*>() != 0;
@@ -477,6 +482,7 @@ namespace big::vehicle
 
 
 		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(vehicle, owned_mods[MOD_TIRE_CAN_BURST]);
+		VEHICLE::SET_DRIFT_TYRES_ENABLED_(vehicle, owned_mods[MOD_DRIFT_TIRE]);
 		VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, MOD_TURBO, owned_mods[MOD_TURBO]);
 
 		for (int slot = MOD_SPOILERS; slot <= MOD_LIGHTBAR; slot++)
@@ -573,6 +579,7 @@ namespace big::vehicle
 		);
 
 		owned_mods[MOD_TIRE_CAN_BURST] = VEHICLE::GET_VEHICLE_TYRES_CAN_BURST(vehicle);
+		owned_mods[MOD_DRIFT_TIRE] = VEHICLE::GET_DRIFT_TYRES_ENABLED_(vehicle);
 		owned_mods[MOD_TURBO] = VEHICLE::IS_TOGGLE_MOD_ON(vehicle, MOD_TURBO);
 
 		owned_mods[MOD_FRONTWHEEL_VAR] = VEHICLE::GET_VEHICLE_MOD_VARIATION(vehicle, MOD_FRONTWHEEL);

@@ -27,7 +27,7 @@ namespace big
 
 		if (self::veh == 0 || player_vehicle != self::veh)
 		{
-			if (self::veh == 0)
+			if (self::veh == 0 )
 			{
 				owned_mods.clear();
 				slot_display_names.clear();
@@ -233,6 +233,15 @@ namespace big
 				VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(player_vehicle, owned_mods[MOD_TIRE_CAN_BURST]);
 			});
 		}
+
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Low Grip Tires", (bool*)&owned_mods[MOD_DRIFT_TIRE]))
+		{
+			g_fiber_pool->queue_job([] {
+				VEHICLE::SET_DRIFT_TYRES_ENABLED_(player_vehicle, owned_mods[MOD_DRIFT_TIRE]);
+			});
+		}
+
 		ImGui::SameLine();
 		if (ImGui::Checkbox("Turbo", (bool*)&owned_mods[MOD_TURBO]))
 		{
