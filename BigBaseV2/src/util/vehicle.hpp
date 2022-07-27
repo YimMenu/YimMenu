@@ -12,7 +12,7 @@
 
 namespace big::vehicle
 {
-	inline auto spawn_global = script_global(2725269);
+	inline auto spawn_global = script_global(2725439);
 
 	inline void go_into_personal_vehicle()
 	{
