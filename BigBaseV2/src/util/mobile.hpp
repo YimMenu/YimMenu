@@ -12,9 +12,9 @@
 
 namespace big::mobile
 {
-	inline auto player_global = script_global(2689224);
-	inline auto mechanic_global = script_global(2810701);
-	inline auto vehicle_global = script_global(1585853);
+	inline auto player_global = script_global(2689235);
+	inline auto mechanic_global = script_global(2815059);
+	inline auto vehicle_global = script_global(1585857);
 
 	namespace util
 	{
@@ -37,8 +37,8 @@ namespace big::mobile
 	{
 		inline void off_radar(bool toggle)
 		{
-			*player_global.at(PLAYER::GET_PLAYER_INDEX(), 451).at(207).as<int*>() = toggle;
-			*script_global(2703660).at(56).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
+			*player_global.at(PLAYER::GET_PLAYER_INDEX(), 453).at(208).as<int*>() = toggle;
+			*script_global(2703735).at(56).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
 		}
 	}
 
