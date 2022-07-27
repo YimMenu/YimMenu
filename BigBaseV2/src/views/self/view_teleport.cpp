@@ -1,6 +1,7 @@
 #include "views/view.hpp"
 #include "fiber_pool.hpp"
 #include "util/globals.hpp"
+#include "util/mobile.hpp"
 #include "util/teleport.hpp"
 #include "util/vehicle.hpp"
 
@@ -34,14 +35,14 @@ namespace big
 
 		components::button("Bring Personal Vehicle", []
 		{
-			Vehicle veh = globals::get_personal_vehicle();
+			Vehicle veh = mobile::mechanic::get_personal_vehicle();
 
 			vehicle::bring(veh, self::pos);
 		});
 
 		components::button("Teleport to Personal Vehicle", []
 		{
-			Vehicle veh = globals::get_personal_vehicle();
+			Vehicle veh = mobile::mechanic::get_personal_vehicle();
 
 			teleport::into_vehicle(veh);
 		});

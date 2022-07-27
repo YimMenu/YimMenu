@@ -4,11 +4,6 @@
 
 namespace big::globals
 {
-	inline Vehicle get_personal_vehicle()
-	{
-		return *script_global(2815059).at(298).as<Vehicle*>();
-	}
-
 	inline void clear_wanted_player(Player target)
 	{
 		constexpr size_t arg_count = 3;
