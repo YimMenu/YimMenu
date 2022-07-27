@@ -1,6 +1,6 @@
 #include "fiber_pool.hpp"
 #include "util/entity.hpp"
-#include "util/player.hpp"
+#include "util/local_player.hpp"
 #include "views/view.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include <imgui_internal.h>
@@ -23,7 +23,7 @@ namespace big
 		ImGui::SameLine();
 
 		components::button("Fill Inventory", [] {
-			std::string mpPrefix = player::get_mp_prefix();
+			std::string mpPrefix = local_player::get_mp_prefix();
 			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "NO_BOUGHT_YUM_SNACKS"), 30, true);
 			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "NO_BOUGHT_HEALTH_SNACKS"), 15, true);
 			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "NO_BOUGHT_EPIC_SNACKS"), 5, true);
