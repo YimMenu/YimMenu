@@ -3,28 +3,6 @@
 
 namespace big::remote
 {
-	inline bool get_remote_file_etag(const std::string_view file_url)
-	{
-		try
-		{
-			http::Request req(file_url.data());
-			http::Response res = req.send("HEAD", "", { "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/533.2 (KHTML, like Gecko) Chrome/6.0" }, 10s);
-
-			for (auto& header : res.headers)
-			{
-				LOG(WARNING) << header;
-			}
-		}
-		catch (const std::exception& e)
-		{
-			LOG(INFO) << "Failed to download binary, is the host down?: " << e.what();
-
-			return false;
-		}
-
-		return true;
-	}
-
 	inline std::string get_etag_from_headers(std::vector<std::string> headers)
 	{
 		std::string remote_etag = "";

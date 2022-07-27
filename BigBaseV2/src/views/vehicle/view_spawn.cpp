@@ -58,9 +58,69 @@ namespace big
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None);
 
-		// arbitrary subtraction this looked nice so idc, works for all resolutions as well
+
 		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 184 - 38 * 4) }))
 		{
+			if (self::veh)
+			{
+				static auto veh_hash = 0;
+				
+				g_fiber_pool->queue_job([] {
+					veh_hash = ENTITY::GET_ENTITY_MODEL(self::veh);
+				});
+
+				if (veh_hash)
+				{
+					auto item = g_gta_data_service->find_vehicle_by_hash(veh_hash);
+
+					components::selectable("Current Vehicle [" + item.display_name + "]", false, [] {
+						if (self::veh)
+						{
+							Vector3 spawn_location = vehicle::get_spawn_location(g->spawn.spawn_inside);
+							float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
+
+							auto owned_mods = vehicle::get_owned_mods_from_vehicle(self::veh);
+
+							auto veh = vehicle::clone_from_owned_mods(owned_mods, spawn_location, spawn_heading);
+
+							if (veh == 0)
+							{
+								g_notification_service->push_error("Vehicle", "Unable to spawn vehicle");
+							}
+							else
+							{
+								if (g->spawn.spawn_maxed)
+								{
+									vehicle::max_vehicle(veh);
+								}
+
+								vehicle::set_plate(veh, plate);
+
+								if (g->spawn.spawn_inside)
+								{
+									vehicle::teleport_into_vehicle(veh);
+								}
+							}
+						}
+
+						g_vehicle_preview_service->stop_preview();
+					});
+
+					if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
+					{
+						g_fiber_pool->queue_job([] {
+							g_vehicle_preview_service->set_preview_vehicle(
+								vehicle::get_owned_mods_from_vehicle(self::veh),
+								g->spawn.spawn_maxed
+							);
+						});
+					}
+					else if (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered())
+					{
+						g_vehicle_preview_service->stop_preview();
+					}
+				}
+			}
 
 			auto item_arr = g_gta_data_service->get_vehicle_arr();
 
@@ -86,32 +146,28 @@ namespace big
 						ImGui::PushID(item.hash);
 						components::selectable(item.display_name, false, [item] {
 
-							float y_offset = 0;
-
-							if (self::veh != 0)
-							{
-								y_offset = 10.f;
-							}
-							else if (!g->spawn.spawn_inside)
-							{
-								y_offset = 5.f;
-							}
-
-							Vector3 spawn_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, y_offset, 0.f);
+							Vector3 spawn_location = vehicle::get_spawn_location(g->spawn.spawn_inside);
 							float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 							const Vehicle veh = vehicle::spawn(item.hash, spawn_location, spawn_heading);
 
-							if (g->spawn.spawn_maxed)
+							if (veh == 0)
 							{
-								vehicle::max_vehicle(veh);
+								g_notification_service->push_error("Vehicle", "Unable to spawn vehicle");
 							}
-
-							vehicle::set_plate(veh, plate);
-
-							if (g->spawn.spawn_inside)
+							else
 							{
-								vehicle::teleport_into_vehicle(veh);
+								if (g->spawn.spawn_maxed)
+								{
+									vehicle::max_vehicle(veh);
+								}
+
+								vehicle::set_plate(veh, plate);
+
+								if (g->spawn.spawn_inside)
+								{
+									vehicle::teleport_into_vehicle(veh);
+								}
 							}
 
 							g_vehicle_preview_service->stop_preview();
@@ -120,7 +176,7 @@ namespace big
 
 						if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
 						{
-							g_vehicle_preview_service->set_preview_vehicle(item);
+							g_vehicle_preview_service->set_preview_vehicle(item, g->spawn.spawn_maxed);
 						}
 						else if (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered())
 						{

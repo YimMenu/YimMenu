@@ -381,7 +381,9 @@ enum VehicleModType
     MOD_TANK,
     MOD_WINDOWS,
     MOD_DOORS,
-    MOD_LIVERY
+    MOD_LIVERY,
+    MOD_LIGHTBAR,
+
 };
 
 enum CustomVehicleModType
@@ -400,30 +402,50 @@ enum CustomVehicleModType
     MOD_NEON_LEFT_ON      = -108,
     MOD_NEON_RIGHT_ON     = -109,
     MOD_TIRE_CAN_BURST    = -110,
+    MOD_DRIFT_TIRE        = -111,
 
-    MOD_PRIMARY_COL       = -111,
-    MOD_SECONDARY_COL     = -112,
-    MOD_PEARLESCENT_COL   = -113,
-    MOD_WHEEL_COL         = -114,
-    MOD_INTERIOR_COL      = -115,
-    MOD_DASHBOARD_COL     = -116,
-    MOD_XENON_COL         = -117,
+    MOD_PRIMARY_COL       = -112,
+    MOD_SECONDARY_COL     = -113,
+    MOD_PEARLESCENT_COL   = -114,
+    MOD_WHEEL_COL         = -115,
+    MOD_INTERIOR_COL      = -116,
+    MOD_DASHBOARD_COL     = -117,
+    MOD_XENON_COL         = -118,
 
-    MOD_PRIMARY_COL_R     = -118,
-    MOD_PRIMARY_COL_G     = -119,
-    MOD_PRIMARY_COL_B     = -120,
+    MOD_PRIMARY_COL_R     = -119,
+    MOD_PRIMARY_COL_G     = -120,
+    MOD_PRIMARY_COL_B     = -121,
 
-    MOD_SECONDARY_COL_R   = -121,
-    MOD_SECONDARY_COL_G   = -122,
-    MOD_SECONDARY_COL_B   = -123,
+    MOD_SECONDARY_COL_R   = -122,
+    MOD_SECONDARY_COL_G   = -123,
+    MOD_SECONDARY_COL_B   = -124,
 
-    MOD_TIRESMOKE_COL_R   = -124,
-    MOD_TIRESMOKE_COL_G   = -125,
-    MOD_TIRESMOKE_COL_B   = -126,
+    MOD_TIRESMOKE_COL_R   = -125,
+    MOD_TIRESMOKE_COL_G   = -126,
+    MOD_TIRESMOKE_COL_B   = -127,
 
-    MOD_NEON_COL_R        = -127,
-    MOD_NEON_COL_G        = -128,
-    MOD_NEON_COL_B        = -129,
+    MOD_NEON_COL_R        = -128,
+    MOD_NEON_COL_G        = -129,
+    MOD_NEON_COL_B        = -130,
+
+    MOD_PRIMARY_CUSTOM    = -131,
+    MOD_SECONDARY_CUSTOM  = -132,
+
+    MOD_EXTRA_0           = -200,
+    MOD_EXTRA_1           = -201,
+    MOD_EXTRA_2           = -202,
+    MOD_EXTRA_3           = -203,
+    MOD_EXTRA_4           = -204,
+    MOD_EXTRA_5           = -205,
+    MOD_EXTRA_6           = -206,
+    MOD_EXTRA_7           = -207,
+    MOD_EXTRA_8           = -208,
+    MOD_EXTRA_9           = -209,
+    MOD_EXTRA_10          = -210,
+    MOD_EXTRA_11          = -211,
+    MOD_EXTRA_12          = -212,
+    MOD_EXTRA_13          = -213,
+    MOD_EXTRA_14          = -214
 };
 
 
