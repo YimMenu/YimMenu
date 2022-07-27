@@ -12,11 +12,11 @@
 
 namespace big::vehicle
 {
-	inline auto spawn_global = script_global(2725269);
+	inline auto spawn_global = script_global(2725439);
 
 	inline void go_into_personal_vehicle()
 	{
-		*script_global(2671447).at(8).as<int*>() = 1;
+		*script_global(2671449).at(8).as<int*>() = 1;
 	}
 
 	inline float mps_to_speed(float mps, SpeedUnit speed_unit)

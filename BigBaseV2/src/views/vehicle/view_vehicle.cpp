@@ -1,6 +1,5 @@
 #include "fiber_pool.hpp"
 #include "gui/handling/handling_tabs.hpp"
-#include "script.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
 #include "util/mobile.hpp"
@@ -24,12 +23,12 @@ namespace big
 		ImGui::Separator();
 
 		components::button("Teleport in PV", [] {
-			Vehicle veh = globals::get_personal_vehicle();
+			Vehicle veh = mobile::mechanic::get_personal_vehicle();
 			teleport::into_vehicle(veh);
 		});
 		ImGui::SameLine();
 		components::button("Bring PV", [] {
-			Vehicle veh = globals::get_personal_vehicle();
+			Vehicle veh = mobile::mechanic::get_personal_vehicle();
 			vehicle::bring(veh, self::pos, true);
 		});
 		ImGui::SameLine();

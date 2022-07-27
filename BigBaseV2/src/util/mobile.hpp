@@ -12,9 +12,9 @@
 
 namespace big::mobile
 {
-	inline auto player_global = script_global(2689224);
-	inline auto mechanic_global = script_global(2810701);
-	inline auto vehicle_global = script_global(1585853);
+	inline auto player_global = script_global(2689235);
+	inline auto mechanic_global = script_global(2815059);
+	inline auto vehicle_global = script_global(1585857);
 
 	namespace util
 	{
@@ -37,8 +37,8 @@ namespace big::mobile
 	{
 		inline void off_radar(bool toggle)
 		{
-			*player_global.at(PLAYER::GET_PLAYER_INDEX(), 451).at(207).as<int*>() = toggle;
-			*script_global(2703660).at(56).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
+			*player_global.at(PLAYER::GET_PLAYER_INDEX(), 453).at(208).as<int*>() = toggle;
+			*script_global(2703735).at(56).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
 		}
 	}
 
@@ -84,6 +84,11 @@ namespace big::mobile
 
 	namespace mechanic
 	{
+		inline Vehicle get_personal_vehicle()
+		{
+			return *mechanic_global.at(298).as<Vehicle*>();
+		}
+
 		inline void summon_vehicle_by_index(int veh_idx)
 		{
 			if (*mechanic_global.at(958).as<int*>() != -1)
@@ -107,14 +112,14 @@ namespace big::mobile
 
 			GtaThread* freemode_thread = gta_util::find_script_thread(RAGE_JOAAT("freemode"));
 			if (freemode_thread)
-				*script_local(freemode_thread, 18196).at(176).as<int*>() = 0; // spawn vehicle instantly
+				*script_local(freemode_thread, 18399).at(176).as<int*>() = 0; // spawn vehicle instantly
 
 			// blocking call till vehicle is delivered
 			notify::busy_spinner("Delivering vehicle...", mechanic_global.at(958).as<int*>(), -1);
 
 			if (g->clone_pv.spawn_inside)
 			{
-				big::vehicle::bring(globals::get_personal_vehicle(), self::pos, true);
+				big::vehicle::bring(get_personal_vehicle(), self::pos, true);
 			}
 		}
 	}

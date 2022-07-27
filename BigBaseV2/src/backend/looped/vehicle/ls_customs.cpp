@@ -20,12 +20,12 @@ namespace big
 			if (
 				auto carmod_shop_thread = gta_util::find_script_thread(hash);
 				carmod_shop_thread &&
-				*script_local(carmod_shop_thread, 726).at(11).as<int*>() != 4
+				*script_local(carmod_shop_thread, 728).at(11).as<int*>() != 4
 				)
 			{
 				g->vehicle.ls_customs = false;
 
-				*script_local(carmod_shop_thread, 726).as<int*>() = 1; // cleanup
+				*script_local(carmod_shop_thread, 728).as<int*>() = 1; // cleanup
 			}
 		}
 
@@ -55,10 +55,10 @@ namespace big
 			{
 				if (auto carmod_shop_thread = gta_util::find_script_thread(hash); carmod_shop_thread)
 				{
-					*script_local(carmod_shop_thread, 726).at(406).as<int*>() = veh;
-					*script_local(carmod_shop_thread, 2110).as<bool*>() = false; // skips cutscene that's invisible
+					*script_local(carmod_shop_thread, 728).at(406).as<int*>() = veh;
+					*script_local(carmod_shop_thread, 2149).as<bool*>() = false; // skips cutscene that's invisible
 
-					*script_local(carmod_shop_thread, 726).at(11).as<int*>() = 4;
+					*script_local(carmod_shop_thread, 728).at(11).as<int*>() = 4;
 				}
 			}
 		}
