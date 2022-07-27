@@ -239,13 +239,6 @@ namespace big
 				return true;
 			}
 			break;
-		case eRemoteEvent::Spaghettios:
-			if (g->protections.script_events.crash) {
-				format_string(player_name, "Crash - #" + std::to_string(args[0]), notify.crash.log, notify.crash.notify);
-
-				return true;
-			}
-			break;
 		case eRemoteEvent::ForceMission2:
 			if (g->protections.script_events.force_mission)
 			{

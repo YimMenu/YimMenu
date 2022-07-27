@@ -142,28 +142,23 @@ namespace big
 		RemoteOffradar = -1973627888, // NETWORK::GET_TIME_DIFFERENCE(NETWORK::GET_NETWORK_TIME(), Var0.f_2)
 		RotateCam = -1388926377, // CnCTG_IN_BF
 		SendToCutscene = 2131601101, // (bVar3, bVar4, 125f, 1)
-		SendToIsland = 1361475530, // CELL_HI_INV
-		SendToCayo = 1214823473, // &Var222, 11);
+		SendToCayoPerico = 1361475530, // CELL_HI_INV
+		SendToLocation = 1214823473, // &Var222, 11);
 		SoundSpam = 1111927333, // CELL_APTINVYACHT
 		Spectate = -2131157870, // SPEC_TCK1
 		Teleport = -1390976345, // Mission_Pass_Notify
 		TransactionError = -768108950, // NETWORK_RECEIVE_PLAYER_JOBSHARE_CASH
 		VehicleKick = -714268990, // PIM_RFMOC
 		Kick = 1674887089,
-		Crash = -1386010354, // SET_NO_LOADING_SCREEN, xref it
 		GiveCollectible = -1178972880, // DLC_SUM20_HIDDEN_COLLECTIBLES xref
 		ChangeMCRole = 656530441, // _PLAYSTATS_CHANGE_MC_ROLE
 		DisableRecording = 867047895, // GET_FINAL_RENDERED_CAM_COORD
 		MCTeleport = -555356783, // NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(PLAYER::PLAYER_ID()) == (first one)
 
-		// UNTESTED
-		SendToLocation = 1214823473,
+		Crash = -1386010354, // SET_NO_LOADING_SCREEN, xref it
+		Crash2 = 1348481963,
 
 		// TODO: UPDATE EVERYTHING BELOW THIS COMMENT
-		SendToCayoPerico = -621279188,
-
-		Crash2 = 1348481963,
-		Spaghettios = -393294520,
 		ForceMission2 = -1525161016,
 		SHKick = -786546101,
 	};
