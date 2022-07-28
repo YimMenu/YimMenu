@@ -278,7 +278,7 @@ namespace big
 			LOG(WARNING) << "Failed to load weapons.json:\n" << ex.what();
 		}
 
-		constexpr Hash hash_black_list_arr[] = {
+		constexpr Hash hash_blacklist_arr[] = {
 			RAGE_JOAAT("WEAPON_DIGISCANNER"),
 			RAGE_JOAAT("WEAPON_GARBAGEBAG"),
 			RAGE_JOAAT("WEAPON_HANDCUFFS"),
@@ -298,7 +298,7 @@ namespace big
 				continue;
 			}
 
-			if (EXIST_IN_ARRAY(hash_black_list_arr, item_json["Hash"]))
+			if (EXIST_IN_ARRAY(hash_blacklist_arr, item_json["Hash"]))
 			{
 				continue;
 			}
