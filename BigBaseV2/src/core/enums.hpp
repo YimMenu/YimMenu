@@ -162,6 +162,9 @@ namespace big
 
 		Crash = -1386010354, // SET_NO_LOADING_SCREEN, xref it
 		Crash2 = 1348481963,
+		Destroyvehicle = -2126830022,
+		DisownVehicle = -306558546,
+		BlockPassive = 65268844
 	};
 
 	enum class eSessionType
