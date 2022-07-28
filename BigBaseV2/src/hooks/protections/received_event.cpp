@@ -31,6 +31,21 @@ namespace big
 
 		switch (static_cast<eNetworkEvents>(event_id))
 		{
+		case eNetworkEvents::CKickVotesEvent:
+		{
+			std::uint32_t player_bitfield;
+			buffer->ReadDword(&player_bitfield, 32);
+			if (player_bitfield & 1 << target_player->m_player_id)
+			{
+				if (g->notifications.received_event.kick_vote.log)
+					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " is voting to kick us.";
+				if (g->notifications.received_event.kick_vote.notify)
+					g_notification_service->push_warning("Kick Vote",
+						fmt::format("{} is voting to kick us.", source_player->get_name()));
+			}
+			buffer->Seek(0);
+			break;
+		}
 		case eNetworkEvents::CNetworkIncrementStatEvent:
 		{
 			const auto increment_stat_event = std::make_unique<CNetworkIncrementStatEvent>();
@@ -61,7 +76,7 @@ namespace big
 				if (action >= 15 && action <= 18) {
 					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					if (g->notifications.received_event.vehicle_temp_action.log)
-						LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << "sent TASK_VEHICLE_TEMP_ACTION crash.";
+						LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent TASK_VEHICLE_TEMP_ACTION crash.";
 					if (g->notifications.received_event.vehicle_temp_action.notify)
 						g_notification_service->push_warning("Protection",
 							fmt::format("{} sent TASK_VEHICLE_TEMP_ACTION crash.", source_player->get_name()));

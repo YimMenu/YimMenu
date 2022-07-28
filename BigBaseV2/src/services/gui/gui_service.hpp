@@ -25,6 +25,7 @@ namespace big
 		SPAWN,
 		PV,
 		VEHICLE_FUN,
+		PERSIST_CAR,
 		SPOOFING,
 		TELEPORT,
 		VEHICLE,
@@ -61,6 +62,7 @@ namespace big
 				{ tabs::SPAWN, { "Spawn", view::spawn }},
 				{ tabs::PV, { "Personal Vehicle", view::pv }},
 				{ tabs::VEHICLE_FUN, { "Fun Features", view::vehicle_fun }},
+				{ tabs::PERSIST_CAR, { "Persist Car", view::persist_car }},
 			}}},
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},
