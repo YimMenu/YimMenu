@@ -31,6 +31,7 @@ namespace big
 			struct
 			{
 				pair clear_ped_task{};
+				pair kick_vote{};
 				pair report_cash_spawn{};
 				pair modder_detect{};
 				pair request_control_event{};
@@ -69,8 +70,6 @@ namespace big
 
 			pair gta_thread_kill{};
 			pair gta_thread_start{};
-
-			pair net_array_error{};
 
 			pair network_player_mgr_init{};
 			pair network_player_mgr_shutdown{};
@@ -431,9 +430,6 @@ namespace big
 			g->notifications.gta_thread_start.log = j["notifications"]["gta_thread_start"]["log"];
 			g->notifications.gta_thread_start.notify = j["notifications"]["gta_thread_start"]["notify"];
 
-			g->notifications.net_array_error.log = j["notifications"]["net_array_error"]["log"];
-			g->notifications.net_array_error.notify = j["notifications"]["net_array_error"]["notify"];
-
 			g->notifications.network_player_mgr_init.log = j["notifications"]["network_player_mgr_init"]["log"];
 			g->notifications.network_player_mgr_init.notify = j["notifications"]["network_player_mgr_init"]["notify"];
 			g->notifications.network_player_mgr_shutdown.log = j["notifications"]["network_player_mgr_shutdown"]["log"];
@@ -448,6 +444,8 @@ namespace big
 
 			g->notifications.received_event.clear_ped_task.log = j["notifications"]["received_event"]["clear_ped_task"]["log"];
 			g->notifications.received_event.clear_ped_task.notify = j["notifications"]["received_event"]["clear_ped_task"]["notify"];
+			g->notifications.received_event.kick_vote.log = j["notifications"]["received_event"]["kick_vote"]["log"];
+			g->notifications.received_event.kick_vote.notify = j["notifications"]["received_event"]["kick_vote"]["notify"];
 			g->notifications.received_event.modder_detect.log = j["notifications"]["received_event"]["modder_detect"]["log"];
 			g->notifications.received_event.modder_detect.notify = j["notifications"]["received_event"]["modder_detect"]["notify"];
 			g->notifications.received_event.request_control_event.log = j["notifications"]["received_event"]["request_control_event"]["log"];
@@ -739,7 +737,6 @@ namespace big
 					"notifications", {
 						{ "gta_thread_kill", return_notify_pair(g->notifications.gta_thread_kill) },
 						{ "gta_thread_start", return_notify_pair(g->notifications.gta_thread_start) },
-						{ "net_array_error", return_notify_pair(g->notifications.net_array_error) },
 						{ "network_player_mgr_init", return_notify_pair(g->notifications.network_player_mgr_init) },
 						{ "network_player_mgr_shutdown", return_notify_pair(g->notifications.network_player_mgr_shutdown) },
 						{ "player_join", {
@@ -752,6 +749,7 @@ namespace big
 						{
 							"received_event", {
 								{ "clear_ped_task", return_notify_pair(g->notifications.received_event.clear_ped_task) },
+								{ "kick_vote", return_notify_pair(g->notifications.received_event.kick_vote) },
 								{ "modder_detect", return_notify_pair(g->notifications.received_event.modder_detect) },
 								{ "report_cash_spawn", return_notify_pair(g->notifications.received_event.report_cash_spawn) },
 								{ "request_control_event", return_notify_pair(g->notifications.received_event.request_control_event) },
