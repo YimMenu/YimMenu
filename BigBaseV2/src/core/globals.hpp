@@ -67,8 +67,6 @@ namespace big
 			pair gta_thread_kill{};
 			pair gta_thread_start{};
 
-			pair net_array_error{};
-
 			pair network_player_mgr_init{};
 			pair network_player_mgr_shutdown{};
 
@@ -383,9 +381,6 @@ namespace big
 			g->notifications.gta_thread_start.log = j["notifications"]["gta_thread_start"]["log"];
 			g->notifications.gta_thread_start.notify = j["notifications"]["gta_thread_start"]["notify"];
 
-			g->notifications.net_array_error.log = j["notifications"]["net_array_error"]["log"];
-			g->notifications.net_array_error.notify = j["notifications"]["net_array_error"]["notify"];
-
 			g->notifications.network_player_mgr_init.log = j["notifications"]["network_player_mgr_init"]["log"];
 			g->notifications.network_player_mgr_init.notify = j["notifications"]["network_player_mgr_init"]["notify"];
 			g->notifications.network_player_mgr_shutdown.log = j["notifications"]["network_player_mgr_shutdown"]["log"];
@@ -667,7 +662,6 @@ namespace big
 					"notifications", {
 						{ "gta_thread_kill", return_notify_pair(g->notifications.gta_thread_kill) },
 						{ "gta_thread_start", return_notify_pair(g->notifications.gta_thread_start) },
-						{ "net_array_error", return_notify_pair(g->notifications.net_array_error) },
 						{ "network_player_mgr_init", return_notify_pair(g->notifications.network_player_mgr_init) },
 						{ "network_player_mgr_shutdown", return_notify_pair(g->notifications.network_player_mgr_shutdown) },
 						{ "player_join", {

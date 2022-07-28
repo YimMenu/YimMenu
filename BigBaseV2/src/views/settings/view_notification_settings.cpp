@@ -93,8 +93,7 @@ namespace big
 		ImGui::EndGroup();
 
 		components::small_text("Other");
-
-		draw_pair_option("Net Array Error", g->notifications.net_array_error);
+		
 		draw_pair_option("Reports", g->notifications.reports);
 		draw_pair_option("Transaction Error / Rate Limit", g->notifications.transaction_rate_limit);
 		draw_pair_option("Invalid sync", g->notifications.invalid_sync);
