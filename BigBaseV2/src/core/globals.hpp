@@ -31,6 +31,7 @@ namespace big
 			struct
 			{
 				pair clear_ped_task{};
+				pair kick_vote{};
 				pair report_cash_spawn{};
 				pair modder_detect{};
 				pair request_control_event{};
@@ -399,6 +400,8 @@ namespace big
 
 			g->notifications.received_event.clear_ped_task.log = j["notifications"]["received_event"]["clear_ped_task"]["log"];
 			g->notifications.received_event.clear_ped_task.notify = j["notifications"]["received_event"]["clear_ped_task"]["notify"];
+			g->notifications.received_event.kick_vote.log = j["notifications"]["received_event"]["kick_vote"]["log"];
+			g->notifications.received_event.kick_vote.notify = j["notifications"]["received_event"]["kick_vote"]["notify"];
 			g->notifications.received_event.modder_detect.log = j["notifications"]["received_event"]["modder_detect"]["log"];
 			g->notifications.received_event.modder_detect.notify = j["notifications"]["received_event"]["modder_detect"]["notify"];
 			g->notifications.received_event.request_control_event.log = j["notifications"]["received_event"]["request_control_event"]["log"];
@@ -677,6 +680,7 @@ namespace big
 						{
 							"received_event", {
 								{ "clear_ped_task", return_notify_pair(g->notifications.received_event.clear_ped_task) },
+								{ "kick_vote", return_notify_pair(g->notifications.received_event.kick_vote) },
 								{ "modder_detect", return_notify_pair(g->notifications.received_event.modder_detect) },
 								{ "report_cash_spawn", return_notify_pair(g->notifications.received_event.report_cash_spawn) },
 								{ "request_control_event", return_notify_pair(g->notifications.received_event.request_control_event) },
