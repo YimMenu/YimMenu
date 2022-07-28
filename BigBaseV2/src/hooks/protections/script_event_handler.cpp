@@ -247,7 +247,7 @@ namespace big
 				return true;
 			}
 			break;
-		/*case eRemoteEvent::DisownVehicle:
+		case eRemoteEvent::DisownVehicle:
 			if (g->protections.script_events.disownvehicle)
 			{
 				format_string(player_name, "Disown Personal Vehicle", notify.disownvehicle.log, notify.disownvehicle.notify);
@@ -262,7 +262,7 @@ namespace big
 
 				return true;
 			}
-			break;*/
+			break;
 		case eRemoteEvent::SHKick:
 			if (g->protections.script_events.network_bail)
 			{
