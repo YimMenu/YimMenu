@@ -162,9 +162,6 @@ namespace big
 
 		Crash = -1386010354, // SET_NO_LOADING_SCREEN, xref it
 		Crash2 = 1348481963,
-		Destroyvehicle = -2126830022,
-		DisownVehicle = -306558546,
-		BlockPassive = 65268844,
 	};
 
 	enum class eSessionType
@@ -178,7 +175,7 @@ namespace big
 		SOLO,
 		INVITE_ONLY,
 		JOIN_CREW,
-		LEAVE_ONLINE = -1,
+		LEAVE_ONLINE = -1
 	};
 
 	enum class SpeedUnit : uint32_t
