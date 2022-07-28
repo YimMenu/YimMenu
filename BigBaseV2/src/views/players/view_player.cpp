@@ -1,7 +1,6 @@
 #include "gta_util.hpp"
 #include "services/pickups/pickup_service.hpp"
 #include "services/players/player_service.hpp"
-#include "util/globals.hpp"
 #include "util/toxic.hpp"
 #include "util/misc.hpp"
 #include "util/ped.hpp"

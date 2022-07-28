@@ -1,18 +1,13 @@
 #include "backend/looped/looped.hpp"
 #include "services/players/player_service.hpp"
-//#include "pointers.hpp"
 #include "natives.hpp"
-//#include "script_global.hpp"
-//#include "./views/view.hpp"
-//#include "util/misc.hpp"
 
 namespace big
 {
 	void looped::self_aimbot()
 	{
 		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr) return;
-		if (g_local_player->m_health < 100.0) return;
-		if (g->self.aimbot)
+		if (g->self.aimbot && !NETWORK::NETWORK_IS_IN_SPECTATOR_MODE() && !NETWORK::NETWORK_IS_ACTIVITY_SPECTATOR() && !HUD::IS_PAUSE_MENU_ACTIVE() && !ENTITY::IS_ENTITY_DEAD(self::ped, false))
 		{
 			for (auto& item : g_player_service->players())
 			{
