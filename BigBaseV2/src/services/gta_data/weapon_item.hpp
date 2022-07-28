@@ -9,7 +9,11 @@ namespace big
 		weapon_item(nlohmann::json& item_json);
 
 		std::string name;
+		bool throwable;
 		std::string weapon_type;
+
 		Hash hash;
+		Hash reward_hash;
+		Hash reward_ammo_hash;
 	};
 }

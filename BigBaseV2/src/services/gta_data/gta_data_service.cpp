@@ -2,7 +2,6 @@
 #include "file_manager.hpp"
 #include "thread_pool.hpp"
 #include "gta_data_service.hpp"
-#include <gta/joaat.hpp>
 
 #define EXIST_IN_ARRAY(arr, val) (std::find(std::begin(arr), std::end(arr), val) != std::end(arr))
 
@@ -10,10 +9,12 @@ namespace big
 {
 	gta_data_service::gta_data_service()
 	{
+		const std::string url_prefix = "http://github-proxy.damon.sh/DurtyFree/gta-v-data-dumps/master/";
+
 		load_from_file(
 			"./lib/vehicles.json",
 			"./lib/vehicles_etag.txt",
-			"http://github-proxy.damon.sh/DurtyFree/gta-v-data-dumps/master/vehicles.json",
+			url_prefix + "vehicles.json",
 			&gta_data_service::load_vehicles,
 			"Vehicle"
 		);
@@ -21,7 +22,7 @@ namespace big
 		load_from_file(
 			"./lib/peds.json",
 			"./lib/peds_etag.txt",
-			"http://github-proxy.damon.sh/DurtyFree/gta-v-data-dumps/master/peds.json",
+			url_prefix + "peds.json",
 			&gta_data_service::load_peds,
 			"Ped"
 		);
@@ -29,7 +30,7 @@ namespace big
 		load_from_file(
 			"./lib/weapons.json",
 			"./lib/weapons_etag.txt",
-			"http://github-proxy.damon.sh/DurtyFree/gta-v-data-dumps/master/weapons.json",
+			url_prefix + "weapons.json",
 			&gta_data_service::load_weapons,
 			"Weapon"
 		);
@@ -279,13 +280,16 @@ namespace big
 		}
 
 		constexpr Hash hash_blacklist_arr[] = {
+			RAGE_JOAAT("WEAPON_BIRD_CRAP"),
 			RAGE_JOAAT("WEAPON_DIGISCANNER"),
 			RAGE_JOAAT("WEAPON_GARBAGEBAG"),
+			RAGE_JOAAT("WEAPON_GRENADELAUNCHER_SMOKE"),
 			RAGE_JOAAT("WEAPON_HANDCUFFS"),
 			RAGE_JOAAT("WEAPON_METALDETECTOR"),
 			RAGE_JOAAT("GADGET_NIGHTVISION"),
 			RAGE_JOAAT("GADGET_PARACHUTE"),
 			RAGE_JOAAT("WEAPON_TACTICALRIFLE"),
+			RAGE_JOAAT("WEAPON_TRANQUILIZER"),
 			RAGE_JOAAT("WEAPON_STINGER")
 		};
 
@@ -293,7 +297,8 @@ namespace big
 		{
 			if (
 				item_json["Hash"].is_null() ||
-				item_json["Name"].is_null()
+				item_json["Name"].is_null() ||
+				item_json["IsVehicleWeapon"]
 			) {
 				continue;
 			}

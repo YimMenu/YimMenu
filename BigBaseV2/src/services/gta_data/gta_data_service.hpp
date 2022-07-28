@@ -3,6 +3,7 @@
 #include "vehicle_item.hpp"
 #include "ped_item.hpp"
 #include "weapon_item.hpp"
+#include "gta/joaat.hpp"
 
 namespace big
 {
