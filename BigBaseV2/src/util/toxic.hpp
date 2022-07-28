@@ -139,7 +139,7 @@ namespace big::toxic
 		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
 	}
 
-	inline void destroyveh(Player pid)
+	/*inline void destroyveh(Player pid)
 	{
 		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(pid);
 
@@ -148,11 +148,10 @@ namespace big::toxic
 		else {
 			std::int64_t args[4] = { static_cast<int64_t>(eRemoteEvent::Destroyvehicle), pid, pid, pid };
 			g_pointers->m_trigger_script_event(1, args, 4, 1 << pid);
-			std::int64_t args2[10] = { static_cast<int64_t>(eRemoteEvent::VehicleKick), pid, pid, 0, 0, 0, 0, 1, pid, std::min(2147483647, MISC::GET_FRAME_COUNT()) };
-			g_pointers->m_trigger_script_event(1, args2, 10, 1 << pid);
-			g_notification_service->push("Toxic", "Destroyed Player Vehicle");
+			//std::int64_t args2[10] = { static_cast<int64_t>(eRemoteEvent::VehicleKick), pid, pid, 0, 0, 0, 0, 1, pid, std::min(2147483647, MISC::GET_FRAME_COUNT()) };
+			//g_pointers->m_trigger_script_event(1, args2, 10, 1 << pid);
 		}
-	}
+	}*/
 
 	inline void kick(const Player player)
 	{
