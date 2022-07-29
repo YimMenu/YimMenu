@@ -28,13 +28,16 @@ namespace big
 
 		components::small_text("Network Player Manager");
 
-		
+		ImGui::BeginGroup();
 		ImGui::Text("Player Join");
 
 		ImGui::Checkbox("Above Map", &g->notifications.player_join.above_map);
 		ImGui::Checkbox("Log", &g->notifications.player_join.log);
 		ImGui::Checkbox("Notify", &g->notifications.player_join.notify);
+		ImGui::EndGroup();
 				
+		ImGui::SameLine();
+		
 		ImGui::BeginGroup();
 		draw_pair_option("Player Leave", g->notifications.player_leave);
 		ImGui::EndGroup();
@@ -82,7 +85,6 @@ namespace big
 		draw_pair_option("Fake Deposit", script_event_handler.fake_deposit);
 		draw_pair_option("Force Mission", script_event_handler.force_mission);
 		draw_pair_option("Force Teleport", script_event_handler.force_teleport);
-		draw_pair_option("Block Passive", script_event_handler.blockpassive);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
@@ -90,7 +92,6 @@ namespace big
 		ImGui::BeginGroup();
 		draw_pair_option("GTA Banner", script_event_handler.gta_banner);
 		draw_pair_option("MC Teleport", script_event_handler.mc_teleport);
-		draw_pair_option("Network Bail", script_event_handler.network_bail);
 		draw_pair_option("Remote Off Radar", script_event_handler.remote_off_radar);
 		draw_pair_option("Rotate Cam", script_event_handler.rotate_cam);
 		draw_pair_option("Send to Cutscene", script_event_handler.send_to_cutscene);		
@@ -104,10 +105,10 @@ namespace big
 		ImGui::BeginGroup();
 		draw_pair_option("Sound Spam", script_event_handler.sound_spam);
 		draw_pair_option("Spectate", script_event_handler.spectate);
+		draw_pair_option("Network Bail", script_event_handler.network_bail);
 		draw_pair_option("Transaction Error", script_event_handler.transaction_error);
 		draw_pair_option("TSE Crash", script_event_handler.crash);
 		draw_pair_option("TSE Freeze", script_event_handler.tse_freeze);
-		draw_pair_option("CrashV2", script_event_handler.crash2);
 		draw_pair_option("Disown Personal Vehicle", script_event_handler.disownvehicle);
 		draw_pair_option("Destroy Personal Vehicle", script_event_handler.destroyvehicle);
 		ImGui::EndGroup();
@@ -128,6 +129,12 @@ namespace big
 
 		ImGui::BeginGroup();
 		draw_pair_option("Rate Limit", g->notifications.transaction_rate_limit);
-		ImGui::EndGroup();			
+		ImGui::EndGroup();		
+		
+		ImGui::SameLine();
+		
+		ImGui::BeginGroup();
+		draw_pair_option("Block Passive", script_event_handler.blockpassive);
+		ImGui::EndGroup();
 	}
 }

@@ -10,9 +10,9 @@ namespace big
 		ImGui::Checkbox("CEO Kick", &g->protections.script_events.ceo_kick);
 		ImGui::Checkbox("CEO Money", &g->protections.script_events.ceo_money);
 		ImGui::Checkbox("TSE Crash", &g->protections.script_events.crash);
-		ImGui::Checkbox("CrashV2", &g->protections.script_events.crash2);
 		ImGui::Checkbox("Disown PV", &g->protections.script_events.disownvehicle);
 		ImGui::Checkbox("Destroy PV", &g->protections.script_events.destroyvehicle);
+		ImGui::Checkbox("Vehicle Kick", &g->protections.script_events.vehicle_kick);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
@@ -36,7 +36,6 @@ namespace big
 		ImGui::Checkbox("Sound Spam", &g->protections.script_events.sound_spam);
 		ImGui::Checkbox("Spectate", &g->protections.script_events.spectate);
 		ImGui::Checkbox("Transaction Error", &g->protections.script_events.transaction_error);
-		ImGui::Checkbox("Vehicle Kick", &g->protections.script_events.vehicle_kick);
 		ImGui::Checkbox("Wanted Level", &g->protections.script_events.clear_wanted_level);
 		ImGui::Checkbox("Force Mission", &g->protections.script_events.force_mission);
 		ImGui::EndGroup();

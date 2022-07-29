@@ -59,7 +59,6 @@ namespace big
 				pair send_to_location{};
 				pair sound_spam{};
 				pair spectate{};
-				pair crash2{};
 				pair disownvehicle{};
 				pair destroyvehicle{};
 				pair blockpassive{};
@@ -122,7 +121,6 @@ namespace big
 				bool spectate = true;
 				bool transaction_error = true;
 				bool vehicle_kick = true;
-				bool crash2 = true;
 				bool disownvehicle = true;
 				bool destroyvehicle = true;
 				bool blockpassive = true;
@@ -509,8 +507,6 @@ namespace big
 				script_handler.tse_freeze.notify = script_handler_j["tse_freeze"]["notify"];
 				script_handler.vehicle_kick.log = script_handler_j["vehicle_kick"]["log"];
 				script_handler.vehicle_kick.notify = script_handler_j["vehicle_kick"]["notify"];
-				script_handler.crash2.log = script_handler_j["crash2"]["log"];
-				script_handler.crash2.notify = script_handler_j["crash2"]["notify"];
 				script_handler.disownvehicle.log = script_handler_j["disownvehicle"]["log"];
 				script_handler.disownvehicle.notify = script_handler_j["disownvehicle"]["notify"];
 				script_handler.destroyvehicle.log = script_handler_j["destroyvehicle"]["log"];
@@ -550,7 +546,6 @@ namespace big
 				script_handler.spectate = script_handler_j["spectate"];
 				script_handler.transaction_error = script_handler_j["transaction_error"];
 				script_handler.vehicle_kick = script_handler_j["vehicle_kick"];
-				script_handler.crash2 = script_handler_j["crash2"];
 				script_handler.disownvehicle = script_handler_j["disownvehicle"];
 				script_handler.destroyvehicle = script_handler_j["destroyvehicle"];
 				script_handler.blockpassive = script_handler_j["blockpassive"];
@@ -780,7 +775,6 @@ namespace big
 								{ "transaction_error", return_notify_pair(script_handler_notifications.transaction_error) },
 								{ "tse_freeze", return_notify_pair(script_handler_notifications.tse_freeze) },
 								{ "vehicle_kick", return_notify_pair(script_handler_notifications.vehicle_kick) },
-								{ "crash2", return_notify_pair(script_handler_notifications.crash2) },
 								{ "disownvehicle", return_notify_pair(script_handler_notifications.disownvehicle) },
 								{ "destroyvehicle", return_notify_pair(script_handler_notifications.destroyvehicle) },
 								{ "blockpassive", return_notify_pair(script_handler_notifications.blockpassive) }
@@ -817,7 +811,6 @@ namespace big
 								{ "spectate", script_handler_protections.spectate },
 								{ "transaction_error", script_handler_protections.transaction_error },
 								{ "vehicle_kick", script_handler_protections.vehicle_kick },
-								{ "crash2", script_handler_protections.crash2 },
 								{ "disownvehicle", script_handler_protections.disownvehicle },
 								{ "destroyvehicle", script_handler_protections.destroyvehicle },
 								{ "blockpassive", script_handler_protections.blockpassive }

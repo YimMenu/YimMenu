@@ -10,11 +10,11 @@ namespace big
 	{
 		ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
 
-		
-		ImGui::Checkbox("Spawn In", &g->spawn.spawn_inside);
-		ImGui::SameLine();
-		ImGui::Checkbox("Spawn Maxed", &g->spawn.spawn_maxed);
+
 		ImGui::Checkbox("Preview", &g->spawn.preview_vehicle);
+		ImGui::SameLine();
+		ImGui::Checkbox("Spawn In", &g->spawn.spawn_inside);
+		ImGui::Checkbox("Spawn Maxed", &g->spawn.spawn_maxed);
 		ImGui::SameLine();
 		ImGui::Checkbox("Delete Last Spawn", &g->spawn.delete_last_spawn);
 		components::button("Spawn Cargobob(Magnet)", [] {
