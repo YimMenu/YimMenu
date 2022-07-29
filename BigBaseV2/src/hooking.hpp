@@ -21,6 +21,8 @@ namespace big
 
 		static LRESULT wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
+		static const char* get_label_text(void* unk, const char* label);
+
 		static GtaThread* gta_thread_start(unsigned int** a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
 
@@ -82,6 +84,8 @@ namespace big
 		WNDPROC m_og_wndproc = nullptr;
 
 		detour_hook m_run_script_threads_hook;
+
+		detour_hook m_get_label_text;
 
 		detour_hook m_gta_thread_start_hook;
 		detour_hook m_gta_thread_kill_hook;

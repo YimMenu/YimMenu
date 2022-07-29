@@ -50,6 +50,7 @@ namespace big
 		PVOID m_is_dlc_present;
 		PVOID m_network_group_override;
 		PUSHORT m_spectator_check;
+		PVOID m_get_label_text;
 
 		FriendRegistry* m_friend_registry{};
 
