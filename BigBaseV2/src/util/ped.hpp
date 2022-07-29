@@ -1,6 +1,7 @@
 #pragma once
 #include "natives.hpp"
 #include "script.hpp"
+#include "pointers.hpp"
 
 namespace big::ped
 {
@@ -36,5 +37,29 @@ namespace big::ped
 		ENTITY::SET_ENTITY_MAX_HEALTH(self::ped, max_health);
 		ENTITY::SET_ENTITY_HEALTH(self::ped, current_health, 0);
 		PED::SET_PED_ARMOUR(self::ped, current_armor);
+	}
+
+	inline Ped spawn(ePedType pedType, Hash hash, Vector3 location, float heading, bool is_networked = true)
+	{
+		for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+		{
+			STREAMING::REQUEST_MODEL(hash);
+			script::get_current()->yield();
+		}
+
+		if (!STREAMING::HAS_MODEL_LOADED(hash))
+		{
+			return 0;
+		}
+
+		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
+		auto ped = PED::CREATE_PED(pedType, hash, location.x, location.y, location.z, heading, is_networked, false);
+		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
+
+		script::get_current()->yield();
+
+		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+
+		return ped;
 	}
 }

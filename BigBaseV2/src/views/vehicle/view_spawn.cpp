@@ -1,7 +1,8 @@
 #include "views/view.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
-#include "services/vehicle_preview/vehicle_preview_service.hpp"
+#include "services/gta_data/gta_data_service.hpp"
+#include "services/model_preview/model_preview_service.hpp"
 #include "util/vehicle.hpp"
 
 namespace big
@@ -10,18 +11,24 @@ namespace big
 	{
 		ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
 
-		ImGui::Checkbox("Preview", &g->spawn.preview_vehicle);
+		if (ImGui::Checkbox("Preview", &g->spawn.preview_vehicle))
+		{
+			if (!g->spawn.preview_vehicle)
+			{
+				g_model_preview_service->stop_preview();
+			}
+		}
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn In", &g->spawn.spawn_inside);
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn Maxed", &g->spawn.spawn_maxed);
 
-		static char plate[9] = { 0 };
-		strncpy(plate, g->spawn.plate.c_str(), 9);
+		static char plate_buf[9] = { 0 };
+		strncpy(plate_buf, g->spawn.plate.c_str(), 9);
 
 		ImGui::SetNextItemWidth(300.f);
-		components::input_text_with_hint("Plate", "Plate Number", plate, sizeof(plate), ImGuiInputTextFlags_None, [] {
-			g->spawn.plate = plate;
+		components::input_text_with_hint("Plate", "Plate Number", plate_buf, sizeof(plate_buf), ImGuiInputTextFlags_None, [] {
+			g->spawn.plate = plate_buf;
 		});
 
 
@@ -94,7 +101,7 @@ namespace big
 									vehicle::max_vehicle(veh);
 								}
 
-								vehicle::set_plate(veh, plate);
+								vehicle::set_plate(veh, plate_buf);
 
 								if (g->spawn.spawn_inside)
 								{
@@ -103,21 +110,21 @@ namespace big
 							}
 						}
 
-						g_vehicle_preview_service->stop_preview();
+						g_model_preview_service->stop_preview();
 					});
 
-					if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
+					if (!g->spawn.preview_vehicle || (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered()))
+					{
+						g_model_preview_service->stop_preview();
+					}
+					else if (ImGui::IsItemHovered())
 					{
 						g_fiber_pool->queue_job([] {
-							g_vehicle_preview_service->set_preview_vehicle(
+							g_model_preview_service->show_vehicle(
 								vehicle::get_owned_mods_from_vehicle(self::veh),
 								g->spawn.spawn_maxed
 							);
 						});
-					}
-					else if (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered())
-					{
-						g_vehicle_preview_service->stop_preview();
 					}
 				}
 			}
@@ -162,7 +169,7 @@ namespace big
 									vehicle::max_vehicle(veh);
 								}
 
-								vehicle::set_plate(veh, plate);
+								vehicle::set_plate(veh, plate_buf);
 
 								if (g->spawn.spawn_inside)
 								{
@@ -170,17 +177,17 @@ namespace big
 								}
 							}
 
-							g_vehicle_preview_service->stop_preview();
+							g_model_preview_service->stop_preview();
 						});
 						ImGui::PopID();
 
-						if (g->spawn.preview_vehicle && ImGui::IsItemHovered())
+						if (!g->spawn.preview_vehicle || (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered()))
 						{
-							g_vehicle_preview_service->set_preview_vehicle(item, g->spawn.spawn_maxed);
+							g_model_preview_service->stop_preview();
 						}
-						else if (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered())
+						else if (ImGui::IsItemHovered())
 						{
-							g_vehicle_preview_service->stop_preview();
+							g_model_preview_service->show_vehicle(item.hash, g->spawn.spawn_maxed);
 						}
 					}
 				}
