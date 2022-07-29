@@ -240,8 +240,8 @@ namespace big
 			bool proof_water = false;
 			uint32_t proof_mask = 0;
 
-			bool auto_drive_to_waypoint = false;
-			bool auto_drive_wander = false;
+			AutoDriveDestination auto_drive_destination = AutoDriveDestination::STOPPED;
+			AutoDriveStyle auto_drive_style = AutoDriveStyle::LAW_ABIDING;
 			bool auto_turn_signals = false;
 			bool drive_on_water = false;
 			bool horn_boost = false;
@@ -252,7 +252,6 @@ namespace big
 			bool seatbelt = false;
 			bool turn_signals = false;
 			float auto_drive_speed = 1;
-			int driving_style_id = 0;
 			int rainbow_paint = 0;
 			bool rainbow_primary = false;
 			bool rainbow_secondary = false;
@@ -555,8 +554,8 @@ namespace big
 			this->vehicle.proof_steam = j["vehicle"]["proof_steam"];
 			this->vehicle.proof_water = j["vehicle"]["proof_water"];
 			this->vehicle.proof_mask = j["vehicle"]["proof_mask"];
+			this->vehicle.auto_drive_style = j["vehicle"]["auto_drive_style"];
 			this->vehicle.auto_drive_speed = j["vehicle"]["auto_drive_speed"];
-			this->vehicle.driving_style_id = j["vehicle"]["driving_style_id"];
 			this->vehicle.auto_turn_signals = j["vehicle"]["auto_turn_signals"];
 			this->vehicle.drive_on_water = j["vehicle"]["drive_on_water"];
 			this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
@@ -828,8 +827,8 @@ namespace big
 						{ "proof_steam", this->vehicle.proof_steam },
 						{ "proof_water", this->vehicle.proof_water },
 						{ "proof_mask", this->vehicle.proof_mask },
+						{ "auto_drive_style", this->vehicle.auto_drive_style },
 						{ "auto_drive_speed", this->vehicle.auto_drive_speed },
-						{ "driving_style_id", this->vehicle.driving_style_id },
 						{ "auto_turn_signals", this->vehicle.auto_turn_signals },
 						{ "drive_on_water", this->vehicle.drive_on_water },
 						{ "horn_boost", this->vehicle.horn_boost },

@@ -9,47 +9,58 @@ namespace big
 {
 	void looped::vehicle_auto_drive()
 	{
-		static constexpr int driving_styles[] = { 443, 524861 };
+		static std::map<AutoDriveStyle, int> driving_style_flags = {
+			{AutoDriveStyle::LAW_ABIDING, 443},
+			{AutoDriveStyle::THE_ROAD_IS_YOURS, 524861}
+		};
 
 		static int changing_driving_styles = false;
-		static int current_driving_style = 443;
+		static AutoDriveDestination current_destination = AutoDriveDestination::STOPPED;
+		static int current_driving_flag = driving_style_flags[AutoDriveStyle::LAW_ABIDING];
 		static float current_speed = 8;
 		static Vector3 waypoint;
 
-		static bool driving_to_wp = false;
 		static bool wandering = false;
 
-		if (g->vehicle.auto_drive_to_waypoint || g->vehicle.auto_drive_wander)
+		if (g->vehicle.auto_drive_destination != AutoDriveDestination::STOPPED)
 		{
-			driving_to_wp = g->vehicle.auto_drive_to_waypoint;
-			wandering = g->vehicle.auto_drive_wander;
-
+			current_destination = g->vehicle.auto_drive_destination;
+			g->vehicle.auto_drive_destination = AutoDriveDestination::STOPPED;
 			changing_driving_styles = true;
-			g->vehicle.auto_drive_wander = false;
-			g->vehicle.auto_drive_to_waypoint = false;
 		}
 
-		if (!self::veh && (driving_to_wp || wandering))
+		if (!self::veh && current_destination != AutoDriveDestination::STOPPED)
 		{
-			wandering = false;
-			driving_to_wp = false;
+			current_destination = AutoDriveDestination::STOPPED;
 			changing_driving_styles = false;
 			g_notification_service->push_warning("Warning", "Please be in a car first then try again.");
 		}
 		else if (
-			current_driving_style != driving_styles[g->vehicle.driving_style_id] || 
+			current_driving_flag != driving_style_flags[g->vehicle.auto_drive_style] ||
 			current_speed != g->vehicle.auto_drive_speed
 		) {
 			changing_driving_styles = true;
 		}
 
-		if (driving_to_wp || wandering)
+		if (current_destination != AutoDriveDestination::STOPPED)
 		{
 			Vector3 last_waypoint = waypoint;
-			bool is_waypoint_exist = blip::get_blip_location(waypoint, (int)BlipIcons::Waypoint);
+			bool is_waypoint_exist = false;
+			bool to_waypoint = false;
+			
+			if (current_destination == AutoDriveDestination::OBJECTITVE)
+			{
+				to_waypoint = true;
+				is_waypoint_exist = blip::get_objective_location(waypoint);
+			}
+			else if (current_destination == AutoDriveDestination::WAYPOINT)
+			{
+				to_waypoint = true;
+				is_waypoint_exist = blip::get_blip_location(waypoint, (int)BlipIcons::Waypoint);
+			}
 
 			if (
-				driving_to_wp && 
+				is_waypoint_exist &&
 				(
 					last_waypoint.x != waypoint.x || 
 					last_waypoint.y != waypoint.y || 
@@ -60,7 +71,11 @@ namespace big
 			}
 
 			if (
-				((driving_to_wp && !is_waypoint_exist) || wandering) &&
+				(
+					current_destination == AutoDriveDestination::EMERGENCY_STOP ||
+					(to_waypoint && !is_waypoint_exist) ||
+					!to_waypoint
+				) &&
 				(
 					PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_LEFT_ONLY) ||
 					PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_RIGHT_ONLY) ||
@@ -68,54 +83,48 @@ namespace big
 					PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_BRAKE) ||
 					PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_EXIT) ||
 					PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_HANDBRAKE)
-					)
-				) {
+				)
+			) {
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 				TASK::CLEAR_PED_TASKS(self::ped);
 
-				if (driving_to_wp)
+				if (current_destination == AutoDriveDestination::EMERGENCY_STOP)
 				{
-					VEHICLE::SET_VEHICLE_FORWARD_SPEED(self::veh, 8);
+					VEHICLE::SET_VEHICLE_FORWARD_SPEED(self::veh, 0);
 				}
 
-				driving_to_wp = false;
-				wandering = false;
-				g_notification_service->push_warning("Warning", "Auto Drive Stopped");
+				current_destination = AutoDriveDestination::STOPPED;
+
+				if (to_waypoint && !is_waypoint_exist)
+				{
+					g_notification_service->push_warning("Warning", "No Waypoint found please set one first.");
+				}
+				else
+				{
+					g_notification_service->push_warning("Warning", "Auto Drive Stopped");
+				}
 			}
 			else if (changing_driving_styles)
 			{
 				current_speed = g->vehicle.auto_drive_speed;
-				current_driving_style = driving_styles[g->vehicle.driving_style_id];
+				current_driving_flag = driving_style_flags[g->vehicle.auto_drive_style];
 				changing_driving_styles = false;
 
+				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
+				TASK::CLEAR_PED_TASKS(self::ped);
 
-				if (driving_to_wp)
+				if (to_waypoint)
 				{
-					if (!is_waypoint_exist)
-					{
-						g_notification_service->push_warning("Warning", "No Waypoint found please set one first.");
-						driving_to_wp = false;
-					}
+					TASK::TASK_VEHICLE_DRIVE_TO_COORD(
+						self::ped, self::veh,
+						waypoint.x, waypoint.y, waypoint.z, current_speed,
+						5, ENTITY::GET_ENTITY_MODEL(self::veh),
+						current_driving_flag, 20, true
+					);
 				}
-
-				if (driving_to_wp || wandering)
+				else
 				{
-					TASK::CLEAR_VEHICLE_TASKS_(self::veh);
-					TASK::CLEAR_PED_TASKS(self::ped);
-
-					if (driving_to_wp)
-					{
-						TASK::TASK_VEHICLE_DRIVE_TO_COORD(
-							self::ped, self::veh,
-							waypoint.x, waypoint.y, waypoint.z, current_speed,
-							5, ENTITY::GET_ENTITY_MODEL(self::veh),
-							current_driving_style, 20, true
-						);
-					}
-					else if (wandering)
-					{
-						TASK::TASK_VEHICLE_DRIVE_WANDER(self::ped, self::veh, current_speed, current_driving_style);
-					}
+					TASK::TASK_VEHICLE_DRIVE_WANDER(self::ped, self::veh, current_speed, current_driving_flag);
 				}
 			}
 		}

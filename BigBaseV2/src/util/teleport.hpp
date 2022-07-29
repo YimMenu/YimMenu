@@ -147,22 +147,16 @@ namespace big::teleport
 
 	inline bool to_objective()
 	{
-		if (to_blip((int)BlipIcons::Circle, (int)BlipColors::YellowMission)) return true;
-		if (to_blip((int)BlipIcons::Circle, (int)BlipColors::YellowMission2)) return true;
-		if (to_blip((int)BlipIcons::Circle, (int)BlipColors::Mission)) return true;
-		if (to_blip((int)BlipIcons::RaceFinish, (int)BlipColors::None)) return true;
-		if (to_blip((int)BlipIcons::Circle, (int)BlipColors::Green)) return true;
-		if (to_blip((int)BlipIcons::Circle, (int)BlipColors::Blue)) return true;
-		if (to_blip((int)BlipIcons::CrateDrop)) return true;
-		static const int blips[] = { 1, 57, 128, 129, 130, 143, 144, 145, 146, 271, 286, 287, 288 };
-		for (const auto& blip : blips)
+		Vector3 location;
+
+		if (!blip::get_objective_location(location))
 		{
-			if (to_blip(blip, 5))
-			{
-				return true;
-			}
+			g_notification_service->push_warning("Teleport", "Failed to find objective position");
+			return false;
 		}
-		g_notification_service->push_warning("Teleport", "Failed to find objective position");
+
+		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
+
 		return false;
 	}
 }

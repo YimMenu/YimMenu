@@ -175,14 +175,27 @@ namespace big
 		LEAVE_ONLINE = -1
 	};
 
-	enum class SpeedUnit : uint32_t
+	enum class SpeedUnit
 	{
 		KMPH,
 		MIPH,
 		MPS
 	};
 
+	enum class AutoDriveDestination
+	{
+		STOPPED,
+		OBJECTITVE,
+		WAYPOINT,
+		WANDER,
+		EMERGENCY_STOP
+	};
 
+	enum class AutoDriveStyle
+	{
+		LAW_ABIDING,
+		THE_ROAD_IS_YOURS
+	};
 
 	enum class eEntityProofs : uint32_t
 	{
