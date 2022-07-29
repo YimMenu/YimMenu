@@ -1,0 +1,140 @@
+{
+    "clan_logo": 0,
+    "dash_color": 0,
+    "headlight_color": 255,
+    "interior_color": 0,
+    "MOD_TURBO": "TOGGLE",
+    "model_attachments": [
+        {
+            "model_hash": 148511758,
+            "position_x": 0.0,
+            "position_y": -0.69012451171875,
+            "position_z": 2.089996337890625,
+            "rotation_x": -2.605816602706909,
+            "rotation_y": 1.8621212244033813,
+            "rotation_z": 90.00407409667969
+        },
+        {
+            "model_hash": 148511758,
+            "position_x": -6.103515625e-05,
+            "position_y": -5.99993896484375,
+            "position_z": 2.0899810791015625,
+            "rotation_x": -2.7836790084838867,
+            "rotation_y": -20.12026023864746,
+            "rotation_z": 90.90734100341797
+        },
+        {
+            "model_hash": 148511758,
+            "position_x": 0.0001220703125,
+            "position_y": -3.35003662109375,
+            "position_z": 2.4999961853027344,
+            "rotation_x": -2.6487717628479004,
+            "rotation_y": -9.129404067993164,
+            "rotation_z": 90.43842315673828
+        },
+        {
+            "model_hash": 148511758,
+            "position_x": -0.50006103515625,
+            "position_y": -3.35009765625,
+            "position_z": 3.0000038146972656,
+            "rotation_x": -2.6487717628479004,
+            "rotation_y": -9.129404067993164,
+            "rotation_z": 90.43842315673828
+        },
+        {
+            "model_hash": 148511758,
+            "position_x": -1.0,
+            "position_y": -3.349853515625,
+            "position_z": 3.4999961853027344,
+            "rotation_x": -2.6487717628479004,
+            "rotation_y": -9.129404067993164,
+            "rotation_z": 90.43842315673828
+        },
+        {
+            "model_hash": 148511758,
+            "position_x": -1.5,
+            "position_y": -3.35015869140625,
+            "position_z": 4.249996185302734,
+            "rotation_x": 40.35122299194336,
+            "rotation_y": -9.129395484924316,
+            "rotation_z": 90.43843078613281
+        },
+        {
+            "model_hash": 148511758,
+            "position_x": -2.0,
+            "position_y": -3.3499755859375,
+            "position_z": 5.0,
+            "rotation_x": 20.60122299194336,
+            "rotation_y": -9.129410743713379,
+            "rotation_z": 90.43844604492188
+        },
+        {
+            "model_hash": 148511758,
+            "position_x": -2.49993896484375,
+            "position_y": -3.35009765625,
+            "position_z": 5.75,
+            "rotation_x": 28.601219177246094,
+            "rotation_y": -9.12939453125,
+            "rotation_z": 90.43843078613281
+        },
+        {
+            "model_hash": 148511758,
+            "position_x": -2.99993896484375,
+            "position_y": -3.3499755859375,
+            "position_z": 6.249996185302734,
+            "rotation_x": 15.851222038269043,
+            "rotation_y": -9.12939453125,
+            "rotation_z": 90.43841552734375
+        },
+        {
+            "model_hash": 148511758,
+            "position_x": -3.5,
+            "position_y": -3.34991455078125,
+            "position_z": 6.500003814697266,
+            "rotation_x": 15.851222038269043,
+            "rotation_y": -9.12939453125,
+            "rotation_z": 90.43841552734375
+        },
+        {
+            "model_hash": 148511758,
+            "position_x": -4.49993896484375,
+            "position_y": -3.35009765625,
+            "position_z": 6.999992370605469,
+            "rotation_x": 15.851222038269043,
+            "rotation_y": -9.12939453125,
+            "rotation_z": 90.43841552734375
+        },
+        {
+            "model_hash": 148511758,
+            "position_x": -6.24993896484375,
+            "position_y": -3.35003662109375,
+            "position_z": 7.5,
+            "rotation_x": 6.601225852966309,
+            "rotation_y": -9.129404067993164,
+            "rotation_z": 90.43842315673828
+        }
+    ],
+    "neon_color": [
+        255,
+        0,
+        255
+    ],
+    "neon_lights": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "pearlescent_color": 111,
+    "plate_text": "BIG RIG ",
+    "plate_text_index": 1,
+    "primary_color": 64,
+    "radio_station": "RADIO_16_SILVERLAKE",
+    "secondary_color": 40,
+    "vehicle_attachments": [],
+    "vehicle_extras": [],
+    "vehicle_model_hash": 1353720154,
+    "vehicle_window_tint": -1,
+    "wheel_color": 156,
+    "wheel_type": 0
+}

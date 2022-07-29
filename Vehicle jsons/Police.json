@@ -1,0 +1,61 @@
+{
+    "clan_logo": 0,
+    "dash_color": 0,
+    "headlight_color": 255,
+    "interior_color": 0,
+    "MOD_ARMOR": [
+        4,
+        0
+    ],
+    "MOD_BRAKES": [
+        2,
+        0
+    ],
+    "MOD_ENGINE": [
+        3,
+        0
+    ],
+    "MOD_SUSPENSION": [
+        3,
+        0
+    ],
+    "MOD_TRANSMISSION": [
+        2,
+        0
+    ],
+    "MOD_TURBO": "TOGGLE",
+    "model_attachments": [],
+    "neon_color": [
+        255,
+        0,
+        255
+    ],
+    "neon_lights": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "pearlescent_color": 1,
+    "plate_text": "03SWO343",
+    "plate_text_index": 4,
+    "primary_color": 111,
+    "radio_station": "RADIO_19_USER",
+    "secondary_color": 0,
+    "vehicle_attachments": [],
+    "vehicle_extras": [
+        [
+            1,
+            false
+        ],
+        [
+            12,
+            false
+        ]
+    ],
+    "vehicle_livery": 5,
+    "vehicle_model_hash": 1912215274,
+    "vehicle_window_tint": -1,
+    "wheel_color": 156,
+    "wheel_type": 0
+}

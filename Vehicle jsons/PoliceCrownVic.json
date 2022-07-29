@@ -1,0 +1,61 @@
+{
+    "clan_logo": 0,
+    "dash_color": 0,
+    "headlight_color": 255,
+    "interior_color": 0,
+    "MOD_ARMOR": [
+        4,
+        0
+    ],
+    "MOD_BRAKES": [
+        2,
+        0
+    ],
+    "MOD_ENGINE": [
+        3,
+        0
+    ],
+    "MOD_SUSPENSION": [
+        3,
+        0
+    ],
+    "MOD_TRANSMISSION": [
+        2,
+        0
+    ],
+    "MOD_TURBO": "TOGGLE",
+    "model_attachments": [],
+    "neon_color": [
+        255,
+        0,
+        255
+    ],
+    "neon_lights": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "pearlescent_color": 0,
+    "plate_text": "65YMY075",
+    "plate_text_index": 4,
+    "primary_color": 134,
+    "radio_station": "RADIO_16_SILVERLAKE",
+    "secondary_color": 134,
+    "vehicle_attachments": [],
+    "vehicle_extras": [
+        [
+            1,
+            false
+        ],
+        [
+            2,
+            true
+        ]
+    ],
+    "vehicle_livery": 2,
+    "vehicle_model_hash": 2046537925,
+    "vehicle_window_tint": -1,
+    "wheel_color": 156,
+    "wheel_type": 1
+}
