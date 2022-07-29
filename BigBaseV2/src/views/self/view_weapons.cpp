@@ -1,6 +1,6 @@
 #include "core/data/custom_weapons.hpp"
-#include "fiber_pool.hpp"
 #include "natives.hpp"
+#include "gta/Weapons.h"
 #include "core/data/special_ammo_types.hpp"
 #include "core/data/bullet_impact_types.hpp"
 #include "services/gta_data/gta_data_service.hpp"

@@ -30,6 +30,7 @@ namespace big
 			ImGui::Checkbox("Clone PV Plate", &g->clone_pv.clone_plate);
 			ImGui::SameLine();
 			ImGui::Checkbox("Delete Last Clone", &g->clone_pv.delete_last_clone);
+			ImGui::Separator();
 			if (g->clone_pv.clone_plate)
 			{
 				num_of_rows = 4;
@@ -79,7 +80,7 @@ namespace big
 		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None);
 
 		g_mobile_service->refresh_personal_vehicles();
-		if (ImGui::ListBoxHeader("###personal_veh_list", { 300, static_cast<float>(*g_pointers->m_resolution_y - 184 - 38 * num_of_rows) }))
+		if (ImGui::ListBoxHeader("###personal_veh_list", { 300, static_cast<float>(*g_pointers->m_resolution_y - 186 - 38 * num_of_rows) }))
 		{
 			if (g_mobile_service->personal_vehicles().empty())
 			{

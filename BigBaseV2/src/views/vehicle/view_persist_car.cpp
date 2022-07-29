@@ -45,10 +45,10 @@ namespace big
 
 		const auto vehicle_files = persist_car_service::list_files();
 
-		ImGui::PushItemWidth(250);
+		ImGui::BeginGroup();
 		ImGui::Text("Saved Vehicles");
 
-		if (ImGui::ListBoxHeader("##empty", ImVec2(200, 200)))
+		if (ImGui::ListBoxHeader("##empty", { 300, static_cast<float>(*g_pointers->m_resolution_y - 188 - 38 * 6) }))
 		{
 			for (const auto& pair : vehicle_files)
 			{
@@ -58,28 +58,30 @@ namespace big
 
 			ImGui::ListBoxFooter();
 		}
-
+		
+		components::button("Load Vehicle", []
+		{
+			load_vehicle(selected_vehicle_file);
+		});
+		
+		ImGui::EndGroup();
 		ImGui::SameLine();
-
 		ImGui::BeginGroup();
+		
+		ImGui::Text("Vehicle File Name");
 		static char vehicle_file_name_input[50]{};
 
 		ImGui::PushItemWidth(250);
 		components::input_text_with_hint(
-			"Vehicle File Name",
+			"",
 			"Ex: My Cool Car",
 			vehicle_file_name_input, IM_ARRAYSIZE(vehicle_file_name_input));
 
-		ImGui::SameLine();
+		ImGui::PopItemWidth();
 
 		components::button("Save Vehicle", []
 		{
 			save_vehicle(vehicle_file_name_input);
-		});
-
-		components::button("Load Vehicle", []
-		{
-			load_vehicle(selected_vehicle_file);
 		});
 
 		ImGui::EndGroup();

@@ -132,10 +132,11 @@ namespace big
 			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 			if (g->self.give_weapon_id == 1 || g->self.give_weapon_id == 2) {
 				if (PED::GET_PED_TYPE(self::ped) != ePedType::PED_TYPE_ANIMAL) {
-					for (auto const& weapon : weapon_list) {
-						WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon, 9999, false);
+					for (auto const& weapon : g_gta_data_service->get_weapon_arr()) {
+						WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.hash, 9999, false);
 					}
-					WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, -72657034, 0, true);
+					constexpr auto parachute_hash = RAGE_JOAAT("GADGET_PARACHUTE");
+					WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, parachute_hash, 0, true);
 					if (g->self.give_weapon_id == 2) {
 						for (auto const& i : WpnUpg::WpnUpgArrays::MaxUpgradeWeapon) {
 							WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(self::ped, i.WeaponHash, MISC::GET_HASH_KEY(system::StringToChar(i.UpgradeHash)));
@@ -253,6 +254,7 @@ namespace big
 
 		components::button("Reset", [] {
 			GRAPHICS::CLEAR_TIMECYCLE_MODIFIER();
+			g->self.visionList = 0;
 		});
 
 		ImGui::SetNextItemWidth(300.f);
