@@ -67,6 +67,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto fiber_pool_instance = std::make_unique<fiber_pool>(11);
 				LOG(INFO) << "Fiber pool initialized.";
 
+				auto hooking_instance = std::make_unique<hooking>();
+				LOG(INFO) << "Hooking initialized.";
+
 				LOG(INFO) << "Settings Loaded.";
 
 				auto thread_pool_instance = std::make_unique<thread_pool>();
