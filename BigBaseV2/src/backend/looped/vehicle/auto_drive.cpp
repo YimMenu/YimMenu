@@ -18,9 +18,8 @@ namespace big
 		static AutoDriveDestination current_destination = AutoDriveDestination::STOPPED;
 		static int current_driving_flag = driving_style_flags[AutoDriveStyle::LAW_ABIDING];
 		static float current_speed = 8;
+		static bool started = false;
 		static Vector3 waypoint;
-
-		static bool wandering = false;
 
 		if (g->vehicle.auto_drive_destination != AutoDriveDestination::STOPPED)
 		{
@@ -89,7 +88,7 @@ namespace big
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 				TASK::CLEAR_PED_TASKS(self::ped);
 
-				if (!interupted)
+				if (!interupted && started)
 				{
 					VEHICLE::SET_VEHICLE_FORWARD_SPEED(self::veh, 0);
 				}
@@ -104,6 +103,8 @@ namespace big
 				{
 					g_notification_service->push_warning("Warning", "Auto Drive Stopped");
 				}
+
+				started = false;
 			}
 			else if (changing_driving_styles)
 			{
@@ -124,6 +125,8 @@ namespace big
 				{
 					TASK::TASK_VEHICLE_DRIVE_WANDER(self::ped, self::veh, current_speed, current_driving_flag);
 				}
+
+				started = true;
 			}
 		}
 	}
