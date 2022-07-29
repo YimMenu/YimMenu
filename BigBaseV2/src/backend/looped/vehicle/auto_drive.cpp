@@ -46,22 +46,22 @@ namespace big
 		if (current_destination != AutoDriveDestination::STOPPED)
 		{
 			Vector3 last_waypoint = waypoint;
-			bool is_waypoint_exist = false;
+			bool does_waypoint_exist = false;
 			bool to_waypoint = false;
 			
 			if (current_destination == AutoDriveDestination::OBJECTITVE)
 			{
 				to_waypoint = true;
-				is_waypoint_exist = blip::get_objective_location(waypoint);
+				does_waypoint_exist = blip::get_objective_location(waypoint);
 			}
 			else if (current_destination == AutoDriveDestination::WAYPOINT)
 			{
 				to_waypoint = true;
-				is_waypoint_exist = blip::get_blip_location(waypoint, (int)BlipIcons::Waypoint);
+				does_waypoint_exist = blip::get_blip_location(waypoint, (int)BlipIcons::Waypoint);
 			}
 
 			if (
-				is_waypoint_exist &&
+				does_waypoint_exist &&
 				(
 					last_waypoint.x != waypoint.x || 
 					last_waypoint.y != waypoint.y || 
@@ -82,7 +82,7 @@ namespace big
 
 			if (
 				current_destination == AutoDriveDestination::EMERGENCY_STOP ||
-				(to_waypoint && !is_waypoint_exist) ||
+				(to_waypoint && !does_waypoint_exist) ||
 				interupted
 			) {
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
@@ -95,7 +95,7 @@ namespace big
 
 				current_destination = AutoDriveDestination::STOPPED;
 
-				if (to_waypoint && !is_waypoint_exist)
+				if (to_waypoint && !does_waypoint_exist)
 				{
 					g_notification_service->push_warning("Warning", "No Waypoint found please set one first.");
 				}
