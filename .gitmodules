@@ -12,7 +12,7 @@
 	ignore = dirty
 [submodule "vendor/g3log"]
 	path = vendor/g3log
-	url = https://github.com/KjellKod/g3log.git
+	url = https://github.com/YimMenu/g3log.git
 	ignore = dirty
 [submodule "vendor/GTAV-Classes"]
 	path = vendor/GTAV-Classes
