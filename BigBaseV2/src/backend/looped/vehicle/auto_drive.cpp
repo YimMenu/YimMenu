@@ -11,7 +11,7 @@ namespace big
 	{
 		static std::map<AutoDriveStyle, int> driving_style_flags = {
 			{AutoDriveStyle::LAW_ABIDING, 443},
-			{AutoDriveStyle::THE_ROAD_IS_YOURS, 524861}
+			{AutoDriveStyle::THE_ROAD_IS_YOURS, 787004}
 		};
 
 		static int changing_driving_styles = false;
@@ -112,11 +112,10 @@ namespace big
 
 				if (to_waypoint)
 				{
-					TASK::TASK_VEHICLE_DRIVE_TO_COORD(
+					TASK::TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(
 						self::ped, self::veh,
 						waypoint.x, waypoint.y, waypoint.z, current_speed,
-						5, ENTITY::GET_ENTITY_MODEL(self::veh),
-						current_driving_flag, 20, true
+						current_driving_flag, 20
 					);
 				}
 				else
