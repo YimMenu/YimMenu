@@ -72,22 +72,24 @@ namespace big
 				changing_driving_styles = true;
 			}
 
+			bool interupted = (
+				PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_LEFT_ONLY) ||
+				PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_RIGHT_ONLY) ||
+				PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_ACCELERATE) ||
+				PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_BRAKE) ||
+				PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_EXIT) ||
+				PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_HANDBRAKE)
+			);
+
 			if (
 				current_destination == AutoDriveDestination::EMERGENCY_STOP ||
 				(to_waypoint && !is_waypoint_exist) ||
-				(
-					PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_LEFT_ONLY) ||
-					PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_RIGHT_ONLY) ||
-					PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_ACCELERATE) ||
-					PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_BRAKE) ||
-					PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_EXIT) ||
-					PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_HANDBRAKE)
-				)
+				interupted
 			) {
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
 				TASK::CLEAR_PED_TASKS(self::ped);
 
-				if (current_destination == AutoDriveDestination::EMERGENCY_STOP)
+				if (!interupted)
 				{
 					VEHICLE::SET_VEHICLE_FORWARD_SPEED(self::veh, 0);
 				}
