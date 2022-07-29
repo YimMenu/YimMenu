@@ -1,9 +1,10 @@
 #include "core/data/custom_weapons.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
-#include "gta/Weapons.h"
 #include "core/data/special_ammo_types.hpp"
 #include "core/data/bullet_impact_types.hpp"
+#include "services/gta_data/gta_data_service.hpp"
+#include "gta/joaat.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -26,10 +27,14 @@ namespace big
 			for (const auto& special_ammo : SPECIAL_AMMOS)
 			{
 				if (ImGui::Selectable(special_ammo.name, special_ammo.type == selected_ammo))
+				{
 					g->weapons.ammo_special.type = special_ammo.type;
+				}
 
 				if (special_ammo.type == selected_ammo)
+				{
 					ImGui::SetItemDefaultFocus();
+				}
 			}
 
 			ImGui::EndCombo();
@@ -40,10 +45,14 @@ namespace big
 			for (const auto& [type, name] : BULLET_IMPACTS)
 			{
 				if (ImGui::Selectable(name, type == selected_impact))
+				{
 					g->weapons.ammo_special.impactType = type;
+				}
 
 				if (type == selected_impact)
+				{
 					ImGui::SetItemDefaultFocus();
+				}
 			}
 
 			ImGui::EndCombo();
@@ -64,16 +73,20 @@ namespace big
 		ImGui::Checkbox("No Spread", &g->weapons.no_spread);
 
 		components::button("Get All Weapons", [] {
-			for (auto const& weapon : weapon_list) {
-				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon, 9999, false);
+			for (auto const& weapon : g_gta_data_service->get_weapon_arr())
+			{
+				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.hash, 9999, false);
 			}
-			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, -72657034, 0, true);
+
+			constexpr auto parachute_hash = RAGE_JOAAT("GADGET_PARACHUTE");
+			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, parachute_hash, 0, true);
 		});
 		ImGui::SameLine();
 		components::button("Remove Current Weapon", [] {
 			Hash weaponHash;
 			WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weaponHash, 1);
-			if (weaponHash != RAGE_JOAAT("WEAPON_UNARMED")) {
+			if (weaponHash != RAGE_JOAAT("WEAPON_UNARMED"))
+			{
 				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, weaponHash);
 			}
 		});
@@ -96,7 +109,9 @@ namespace big
 				}
 
 				if (weapon.id == selected)
+				{
 					ImGui::SetItemDefaultFocus();
+				}
 			}
 
 			ImGui::EndCombo();
@@ -108,7 +123,8 @@ namespace big
 			components::input_text_with_hint(
 				"Shooting Model",
 				"Name of the vehicle model",
-				g->weapons.vehicle_gun_model, sizeof(g->weapons.vehicle_gun_model));
+				g->weapons.vehicle_gun_model, sizeof(g->weapons.vehicle_gun_model)
+			);
 
 			break;
 		}
