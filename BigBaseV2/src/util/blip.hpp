@@ -12,9 +12,7 @@ namespace big::blip
 			blip = HUD::GET_FIRST_BLIP_INFO_ID(sprite);
 			HUD::DOES_BLIP_EXIST(blip) && color != -1 && HUD::GET_BLIP_COLOUR(blip) != color;
 			blip = HUD::GET_NEXT_BLIP_INFO_ID(sprite)
-		) {
-			script::get_current()->yield();
-		}
+		);
 
 		if (!HUD::DOES_BLIP_EXIST(blip) || (color != -1 && HUD::GET_BLIP_COLOUR(blip) != color)) return false;
 

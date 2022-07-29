@@ -39,6 +39,8 @@ namespace big
 			current_driving_flag != driving_style_flags[g->vehicle.auto_drive_style] ||
 			current_speed != g->vehicle.auto_drive_speed
 		) {
+			current_driving_flag = driving_style_flags[g->vehicle.auto_drive_style];
+			current_speed = g->vehicle.auto_drive_speed;
 			changing_driving_styles = true;
 		}
 
@@ -71,11 +73,8 @@ namespace big
 			}
 
 			if (
-				(
-					current_destination == AutoDriveDestination::EMERGENCY_STOP ||
-					(to_waypoint && !is_waypoint_exist) ||
-					!to_waypoint
-				) &&
+				current_destination == AutoDriveDestination::EMERGENCY_STOP ||
+				(to_waypoint && !is_waypoint_exist) ||
 				(
 					PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_LEFT_ONLY) ||
 					PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_RIGHT_ONLY) ||
@@ -106,8 +105,6 @@ namespace big
 			}
 			else if (changing_driving_styles)
 			{
-				current_speed = g->vehicle.auto_drive_speed;
-				current_driving_flag = driving_style_flags[g->vehicle.auto_drive_style];
 				changing_driving_styles = false;
 
 				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
