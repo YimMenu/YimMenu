@@ -1,0 +1,3886 @@
+{
+    "clan_logo": 0,
+    "dash_color": 0,
+    "headlight_color": 0,
+    "interior_color": 0,
+    "MOD_ARMOR": [
+        4,
+        0
+    ],
+    "MOD_BRAKES": [
+        2,
+        0
+    ],
+    "MOD_ENGINE": [
+        3,
+        0
+    ],
+    "MOD_EXHAUST": [
+        2,
+        0
+    ],
+    "MOD_FRONTBUMPER": [
+        1,
+        0
+    ],
+    "MOD_FRONTWHEEL": [
+        39,
+        0
+    ],
+    "MOD_HOOD": [
+        1,
+        0
+    ],
+    "MOD_HORNS": [
+        44,
+        0
+    ],
+    "MOD_REARBUMPER": [
+        1,
+        0
+    ],
+    "MOD_ROOF": [
+        0,
+        0
+    ],
+    "MOD_SIDESKIRT": [
+        0,
+        0
+    ],
+    "MOD_TRANSMISSION": [
+        2,
+        0
+    ],
+    "MOD_TURBO": "TOGGLE",
+    "MOD_XENONHEADLIGHTS": "TOGGLE",
+    "model_attachments": [],
+    "neon_color": [
+        255,
+        0,
+        255
+    ],
+    "neon_lights": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "pearlescent_color": 0,
+    "plate_text": "FUCK YEA",
+    "plate_text_index": 1,
+    "primary_color": 120,
+    "radio_station": "OFF",
+    "secondary_color": 120,
+    "tire_smoke_color": [
+        255,
+        255,
+        255
+    ],
+    "vehicle_attachments": [
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 6.800048828125,
+                "position_y": 0.0,
+                "position_z": 0.0,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -6.800048828125,
+                "position_y": 0.0,
+                "position_z": 0.0,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "45YCE691",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 6.800048828125,
+                "position_y": -2.6399993896484375,
+                "position_z": 4.400001525878906,
+                "rotation_x": -80.9999771118164,
+                "rotation_y": 0.0,
+                "rotation_z": -0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -6.77996826171875,
+                "position_y": -2.6399993896484375,
+                "position_z": 4.400001525878906,
+                "rotation_x": -80.9999771118164,
+                "rotation_y": 0.0,
+                "rotation_z": -0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -6.77996826171875,
+                "position_y": -3.339996337890625,
+                "position_z": 12.000007629394531,
+                "rotation_x": -80.9999771118164,
+                "rotation_y": 0.0,
+                "rotation_z": -0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -6.679931640625,
+                "position_y": -3.94000244140625,
+                "position_z": 16.5,
+                "rotation_x": 23.480093002319336,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 6.820068359375,
+                "position_y": -3.339996337890625,
+                "position_z": 12.000007629394531,
+                "rotation_x": -80.9999771118164,
+                "rotation_y": 0.0,
+                "rotation_z": -0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -3.179931640625,
+                "position_y": -3.94000244140625,
+                "position_z": 16.5,
+                "rotation_x": 23.480093002319336,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 0.320068359375,
+                "position_y": -3.94000244140625,
+                "position_z": 16.5,
+                "rotation_x": 23.480093002319336,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 3.820068359375,
+                "position_y": -3.94000244140625,
+                "position_z": 16.5,
+                "rotation_x": 23.480093002319336,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 6.9200439453125,
+                "position_y": -3.94000244140625,
+                "position_z": 16.5,
+                "rotation_x": 23.480093002319336,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -7.179931640625,
+                "position_y": -0.94000244140625,
+                "position_z": 21.600021362304688,
+                "rotation_x": 98.11905670166016,
+                "rotation_y": 3.1511094675806817e-06,
+                "rotation_z": 179.99996948242188
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -7.179931640625,
+                "position_y": -2.44000244140625,
+                "position_z": 28.30004119873047,
+                "rotation_x": -54.11970901489258,
+                "rotation_y": 0.0,
+                "rotation_z": -0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -3.679931640625,
+                "position_y": -2.44000244140625,
+                "position_z": 28.30004119873047,
+                "rotation_x": -54.11970901489258,
+                "rotation_y": 0.0,
+                "rotation_z": -0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -0.179931640625,
+                "position_y": -2.44000244140625,
+                "position_z": 28.30004119873047,
+                "rotation_x": -54.11970901489258,
+                "rotation_y": 0.0,
+                "rotation_z": -0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 3.320068359375,
+                "position_y": -2.44000244140625,
+                "position_z": 28.30004119873047,
+                "rotation_x": -54.11970901489258,
+                "rotation_y": 0.0,
+                "rotation_z": -0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 6.820068359375,
+                "position_y": -2.44000244140625,
+                "position_z": 28.30004119873047,
+                "rotation_x": -54.11970901489258,
+                "rotation_y": 0.0,
+                "rotation_z": -0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 8.52001953125,
+                "position_y": -4.5399932861328125,
+                "position_z": 30.600051879882813,
+                "rotation_x": -35.7427864074707,
+                "rotation_y": 88.76805877685547,
+                "rotation_z": 54.26348876953125
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -9.0799560546875,
+                "position_y": -4.5399932861328125,
+                "position_z": 30.600051879882813,
+                "rotation_x": -135.56398010253906,
+                "rotation_y": -88.59973907470703,
+                "rotation_z": 45.572547912597656
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -9.0799560546875,
+                "position_y": -4.239990234375,
+                "position_z": 31.900054931640625,
+                "rotation_x": -23.980358123779297,
+                "rotation_y": -2.0282077457522973e-05,
+                "rotation_z": -89.99998474121094
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 7.9200439453125,
+                "position_y": -4.44000244140625,
+                "position_z": 31.900054931640625,
+                "rotation_x": -24.0830020904541,
+                "rotation_y": 0.8217012286186218,
+                "rotation_z": 89.63273620605469
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -14.97991943359375,
+                "position_y": -4.5399932861328125,
+                "position_z": 28.600051879882813,
+                "rotation_x": 90.00000762939453,
+                "rotation_y": -50.98036575317383,
+                "rotation_z": 179.99996948242188
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 14.02008056640625,
+                "position_y": -4.5399932861328125,
+                "position_z": 28.600051879882813,
+                "rotation_x": 89.99996185302734,
+                "rotation_y": 49.91908264160156,
+                "rotation_z": 179.9999542236328
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -17.27996826171875,
+                "position_y": -3.339996337890625,
+                "position_z": 24.60002899169922,
+                "rotation_x": -35.12272644042969,
+                "rotation_y": -4.093042850494385,
+                "rotation_z": 2.8742029666900635
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -17.3800048828125,
+                "position_y": 2.3600006103515625,
+                "position_z": 22.000022888183594,
+                "rotation_x": -9.254569053649902,
+                "rotation_y": -4.935239315032959,
+                "rotation_z": 0.8031120896339417
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 16.7200927734375,
+                "position_y": 2.3600006103515625,
+                "position_z": 22.000022888183594,
+                "rotation_x": -9.254569053649902,
+                "rotation_y": -4.935239315032959,
+                "rotation_z": 0.8031120896339417
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 15.62005615234375,
+                "position_y": 7.3600006103515625,
+                "position_z": 20.800018310546875,
+                "rotation_x": -9.254569053649902,
+                "rotation_y": -4.935239315032959,
+                "rotation_z": 29.80310821533203
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -16.0799560546875,
+                "position_y": 7.3600006103515625,
+                "position_z": 20.800018310546875,
+                "rotation_x": -9.254568099975586,
+                "rotation_y": -4.935239315032959,
+                "rotation_z": -28.19704246520996
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -0.179931640625,
+                "position_y": -6.239990234375,
+                "position_z": 33.200035095214844,
+                "rotation_x": -48.61979675292969,
+                "rotation_y": 0.0,
+                "rotation_z": -0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 6.9200439453125,
+                "position_y": -6.839996337890625,
+                "position_z": 19.50000762939453,
+                "rotation_x": 90.48008728027344,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 3.4200439453125,
+                "position_y": -6.839996337890625,
+                "position_z": 19.50000762939453,
+                "rotation_x": 90.48008728027344,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -0.0799560546875,
+                "position_y": -6.839996337890625,
+                "position_z": 19.50000762939453,
+                "rotation_x": 90.48008728027344,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -3.5799560546875,
+                "position_y": -6.839996337890625,
+                "position_z": 19.50000762939453,
+                "rotation_x": 90.48008728027344,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -6.77996826171875,
+                "position_y": -6.839996337890625,
+                "position_z": 19.50000762939453,
+                "rotation_x": 90.48008728027344,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -6.77996826171875,
+                "position_y": -5.44000244140625,
+                "position_z": 26.400039672851563,
+                "rotation_x": 72.38035583496094,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -3.27996826171875,
+                "position_y": -5.44000244140625,
+                "position_z": 26.400039672851563,
+                "rotation_x": 72.38035583496094,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 0.22003173828125,
+                "position_y": -5.44000244140625,
+                "position_z": 26.400039672851563,
+                "rotation_x": 72.38035583496094,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 3.72003173828125,
+                "position_y": -5.44000244140625,
+                "position_z": 26.400039672851563,
+                "rotation_x": 72.38035583496094,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 7.22003173828125,
+                "position_y": -5.44000244140625,
+                "position_z": 26.400039672851563,
+                "rotation_x": 72.38035583496094,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 7.820068359375,
+                "position_y": -4.839996337890625,
+                "position_z": 20.5,
+                "rotation_x": 90.4800796508789,
+                "rotation_y": 1.0015292417620003e-07,
+                "rotation_z": 89.99998474121094
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 7.820068359375,
+                "position_y": -2.44000244140625,
+                "position_z": 21.600006103515625,
+                "rotation_x": 90.4800796508789,
+                "rotation_y": 1.0015292417620003e-07,
+                "rotation_z": 89.99998474121094
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 7.72003173828125,
+                "position_y": -3.7400054931640625,
+                "position_z": 25.600006103515625,
+                "rotation_x": -89.48015594482422,
+                "rotation_y": 0.008166608400642872,
+                "rotation_z": -90.9000015258789
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -7.67999267578125,
+                "position_y": -3.7400054931640625,
+                "position_z": 25.600006103515625,
+                "rotation_x": -90.5198745727539,
+                "rotation_y": -0.005443355534225702,
+                "rotation_z": 89.4001235961914
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -7.97998046875,
+                "position_y": -2.44000244140625,
+                "position_z": 21.600006103515625,
+                "rotation_x": 90.4800796508789,
+                "rotation_y": -6.601025233976543e-06,
+                "rotation_z": -90.0000228881836
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -7.5799560546875,
+                "position_y": -5.5399932861328125,
+                "position_z": 19.79999542236328,
+                "rotation_x": 90.4800796508789,
+                "rotation_y": -6.601025233976543e-06,
+                "rotation_z": -90.0000228881836
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -3.679931640625,
+                "position_y": -0.94000244140625,
+                "position_z": 21.600021362304688,
+                "rotation_x": 98.11905670166016,
+                "rotation_y": 3.1511094675806817e-06,
+                "rotation_z": 179.99996948242188
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -0.179931640625,
+                "position_y": -0.94000244140625,
+                "position_z": 21.600021362304688,
+                "rotation_x": 98.11905670166016,
+                "rotation_y": 3.1511094675806817e-06,
+                "rotation_z": 179.99996948242188
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 3.320068359375,
+                "position_y": -0.94000244140625,
+                "position_z": 21.600021362304688,
+                "rotation_x": 98.11905670166016,
+                "rotation_y": 3.1511094675806817e-06,
+                "rotation_z": 179.99996948242188
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": 6.820068359375,
+                "position_y": -0.94000244140625,
+                "position_z": 21.600021362304688,
+                "rotation_x": 98.11905670166016,
+                "rotation_y": 3.1511094675806817e-06,
+                "rotation_z": 179.99996948242188
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 782665360,
+                "position_x": -0.14996337890625,
+                "position_y": -6.0399932861328125,
+                "position_z": 30.900054931640625,
+                "rotation_x": -66.6195068359375,
+                "rotation_y": 0.0,
+                "rotation_z": -0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 0,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 132,
+                "plate_text": "02SHJ554",
+                "plate_text_index": 4,
+                "primary_color": 131,
+                "radio_station": "OFF",
+                "secondary_color": 132,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ],
+                    [
+                        6,
+                        false
+                    ],
+                    [
+                        7,
+                        false
+                    ],
+                    [
+                        8,
+                        false
+                    ],
+                    [
+                        9,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 782665360,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        }
+    ],
+    "vehicle_extras": [],
+    "vehicle_model_hash": 1663218586,
+    "vehicle_window_tint": 1,
+    "wheel_color": 0,
+    "wheel_type": 7
+}
