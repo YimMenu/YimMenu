@@ -57,10 +57,8 @@ namespace big
 		{
 			return empty_vehicle_item;
 		}
-		else
-		{
-			return m_vehicle_item_arr[idx];
-		}
+		
+		return m_vehicle_item_arr[idx];
 	}
 
 	const std::vector<std::string>& gta_data_service::get_vehicle_class_arr()
@@ -87,10 +85,8 @@ namespace big
 		{
 			return empty_ped_item;
 		}
-		else
-		{
-			return m_ped_item_arr[idx];
-		}
+		
+		return m_ped_item_arr[idx];
 	}
 
 	const std::vector<std::string>& gta_data_service::get_ped_type_arr()
@@ -117,10 +113,8 @@ namespace big
 		{
 			return empty_weapon_item;
 		}
-		else
-		{
-			return m_weapon_item_arr[idx];
-		}
+		
+		return m_weapon_item_arr[idx];
 	}
 
 	const std::vector<std::string>& gta_data_service::get_weapon_type_arr()
@@ -196,8 +190,7 @@ namespace big
 				item_json["Name"].is_null() ||
 				!item_json["Bones"].is_array() ||
 				item_json["Bones"][0] == "stub"
-				)
-			{
+			) {
 				continue;
 			}
 
@@ -240,8 +233,7 @@ namespace big
 			if (
 				item_json["Hash"].is_null() ||
 				item_json["Name"].is_null()
-			)
-			{
+			) {
 				continue;
 			}
 

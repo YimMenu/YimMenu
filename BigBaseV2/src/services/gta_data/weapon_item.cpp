@@ -17,6 +17,7 @@ namespace big
 	{
 		this->name = item_json["Name"];
 		this->throwable = false;
+		this->weapon_type = "NULL";
 
 		if (
 			item_json.contains("TranslatedLabel") &&
@@ -26,11 +27,7 @@ namespace big
 			this->name = item_json["TranslatedLabel"]["English"];
 		}
 
-		if (item_json["Category"].is_null())
-		{
-			this->weapon_type = "NULL";
-		}
-		else
+		if (!item_json["Category"].is_null())
 		{
 			this->weapon_type = item_json["Category"];
 		}
