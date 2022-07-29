@@ -1,5 +1,5 @@
 #pragma once
-#include "CAmmoInfo.hpp"
+#include "weapon/CAmmoInfo.hpp"
 
 struct SpecialAmmo
 {

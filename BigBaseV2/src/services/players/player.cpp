@@ -1,5 +1,5 @@
 #include "player.hpp"
-#include "CNetGamePlayer.hpp"
+#include "network/CNetGamePlayer.hpp"
 #include "services/friends/friends_service.hpp"
 
 namespace big

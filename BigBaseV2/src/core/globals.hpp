@@ -1,6 +1,6 @@
 #pragma once
-#include "CAmmoInfo.hpp"
-#include "CWeaponInfo.hpp"
+#include "weapon/CAmmoInfo.hpp"
+#include "weapon/CWeaponInfo.hpp"
 #include "enums.hpp"
 #include "file_manager.hpp"
 #include "imgui.h"
