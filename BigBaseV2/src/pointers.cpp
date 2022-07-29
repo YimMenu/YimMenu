@@ -361,7 +361,7 @@ namespace big
 			}*/
 		});
 
-		// Allocate Memory for label and return label
+		// Get Label Text
 		main_batch.add("GLT", "75 ? E8 ? ? ? ? 8B 0D ? ? ? ? 65 48 8B 04 25 ? ? ? ? BA ? ? ? ? 48 8B 04 C8 8B 0C 02 D1 E9", [this](memory::handle ptr)
 		{
 			m_get_label_text = ptr.sub(19).as<PVOID>();
