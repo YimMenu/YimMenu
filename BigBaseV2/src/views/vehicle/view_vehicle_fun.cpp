@@ -111,15 +111,15 @@ namespace big
 			g->vehicle.auto_drive_speed = vehicle::speed_to_mps(auto_drive_speed_user_unit, g->vehicle.speed_unit);
 		}
 
-		if (ImGui::BeginCombo("Driving Style", vehicle::driving_style_names[g->vehicle.driving_style_id]))
+		static constexpr char const* driving_style_names[] = { "Law-Abiding", "The Road Is Yours" };
+		if (ImGui::BeginCombo("Driving Style", driving_style_names[g->vehicle.driving_style_id]))
 		{
 			for (int i = 0; i < 2; i++)
 			{
-				if (ImGui::Selectable(vehicle::driving_style_names[i], g->vehicle.driving_style_id == i))
+				if (ImGui::Selectable(driving_style_names[i], g->vehicle.driving_style_id == i))
 				{
 					g->vehicle.driving_style_id = i;
-					g->vehicle.driving_style_flags = vehicle::driving_styles[g->vehicle.driving_style_id];
-					g_notification_service->push_warning("Auto Drive", fmt::format("Driving style set to {}.", vehicle::driving_style_names[i]));
+					g_notification_service->push_warning("Auto Drive", fmt::format("Driving style set to {}.", driving_style_names[i]));
 				}
 
 				if (g->vehicle.driving_style_id == i)
@@ -145,13 +145,15 @@ namespace big
 
 		if (g->vehicle.rainbow_primary || g->vehicle.rainbow_neon || g->vehicle.rainbow_secondary || g->vehicle.rainbow_smoke) {
 			ImGui::SetNextItemWidth(120);
-			if (ImGui::BeginCombo("RGB Type", vehicle::rgb_types[g->vehicle.rainbow_paint]))
+
+			static constexpr char const* rgb_types[] = { "Off", "Fade", "Spasm" };
+			if (ImGui::BeginCombo("RGB Type", rgb_types[g->vehicle.rainbow_paint]))
 			{
 				for (int i = 0; i < 3; i++)
 				{
 					bool itemSelected = g->vehicle.rainbow_paint == i;
 
-					if (ImGui::Selectable(vehicle::rgb_types[i], itemSelected))
+					if (ImGui::Selectable(rgb_types[i], itemSelected))
 					{
 						g->vehicle.rainbow_paint = i;
 					}
