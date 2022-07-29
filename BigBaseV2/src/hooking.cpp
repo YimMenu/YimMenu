@@ -23,6 +23,9 @@ namespace big
 		// Script Hook
 		m_run_script_threads_hook("SH", g_pointers->m_run_script_threads, &hooks::run_script_threads),
 
+		// Get Label Text
+		m_get_label_text("GLT", g_pointers->m_get_label_text, &hooks::get_label_text),
+
 		// GTA Thead Start
 		m_gta_thread_start_hook("GTS", g_pointers->m_gta_thread_start, &hooks::gta_thread_start),
 		// GTA Thread Kill
@@ -77,6 +80,8 @@ namespace big
 
 		m_run_script_threads_hook.enable();
 
+		m_get_label_text.enable();
+
 		m_gta_thread_start_hook.enable();
 		m_gta_thread_kill_hook.enable();
 
@@ -123,6 +128,8 @@ namespace big
 
 		m_gta_thread_kill_hook.disable();
 		m_gta_thread_start_hook.disable();
+
+		m_get_label_text.disable();
 
 		m_run_script_threads_hook.disable();
 
