@@ -140,7 +140,7 @@ namespace big
 						}
 
 						ENTITY::FREEZE_ENTITY_POSITION(m_current_ent, true);
-						ENTITY::SET_ENTITY_ALPHA(m_current_ent, 0, 0);
+						ENTITY::SET_ENTITY_ALPHA(m_current_ent, 0, false);
 						ENTITY::SET_ENTITY_COLLISION(m_current_ent, false, false);
 						ENTITY::SET_CAN_CLIMB_ON_ENTITY(m_current_ent, false);
 						OBJECT::SET_OBJECT_ALLOW_LOW_LOD_BUOYANCY(m_current_ent, false);
@@ -153,9 +153,9 @@ namespace big
 				}
 				else
 				{
-					if (const int alpha = ENTITY::GET_ENTITY_ALPHA(m_current_ent); alpha < 220)
+					if (const int alpha = ENTITY::GET_ENTITY_ALPHA(m_current_ent); alpha < 255)
 					{
-						ENTITY::SET_ENTITY_ALPHA(m_current_ent, std::min<int>(220, alpha + 10), 0);
+						ENTITY::SET_ENTITY_ALPHA(m_current_ent, std::min<int>(255, alpha + 10), false);
 					}
 
 					ENTITY::SET_ENTITY_HEADING(m_current_ent, m_heading);
