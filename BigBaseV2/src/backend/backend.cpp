@@ -74,8 +74,7 @@ namespace big
 
 		while (g_running)
 		{
-			looped::vehicle_auto_drive_to_waypoint();
-			looped::vehicle_auto_drive_wander();
+			looped::vehicle_auto_drive();
 			looped::vehicle_despawn_bypass();
 			looped::vehicle_drive_on_water();
 			looped::vehicle_god_mode();
