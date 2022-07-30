@@ -16,7 +16,7 @@ namespace big
 		const int selected_ped_type, 
 		const char* ped_model_buf, 
 		const std::string selected_ped_player, 
-		const std::string selected_ped_location,
+		const std::string selected_ped_for,
 		const bool is_bodyguard
 	) {
 		Hash hash = 0;
@@ -51,7 +51,7 @@ namespace big
 		}
 
 
-		if (selected_ped_location.empty())
+		if (selected_ped_for.empty())
 		{
 			location = self::pos;
 			player = self::id;
@@ -59,7 +59,7 @@ namespace big
 		}
 		else
 		{
-			auto plyr = g_player_service->get_by_name(selected_ped_location);
+			auto plyr = g_player_service->get_by_name(selected_ped_for);
 			if (!plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation)
 			{
 				g_notification_service->push_error("Ped", "Invalid Online Player.");
@@ -147,13 +147,13 @@ namespace big
 		auto weapon_type_arr = g_gta_data_service->get_weapon_type_arr();
 		auto weapon_arr = g_gta_data_service->get_weapon_arr();
 
-		static std::string selected_ped_location = "";
+		static std::string selected_ped_for = "";
 		auto player_arr = g_player_service->players();
 
 		if (!*g_pointers->m_is_session_started)
 		{
 			selected_ped_player = "";
-			selected_ped_location = "";
+			selected_ped_for = "";
 		}
 		else
 		{
@@ -162,9 +162,9 @@ namespace big
 				selected_ped_player = "";
 			}
 
-			if (player_arr.count(selected_ped_location) == 0)
+			if (player_arr.count(selected_ped_for) == 0)
 			{
-				selected_ped_location = "";
+				selected_ped_for = "";
 			}
 		}
 
@@ -475,20 +475,20 @@ namespace big
 		ImGui::Separator();
 
 
-		components::sub_title("Spawn Location");
+		components::sub_title("Spawn For");
 		{
 			if (ImGui::BeginCombo(
-				"##ped_location",
-				selected_ped_location.empty() ?
+				"##ped_for",
+				selected_ped_for.empty() ?
 				"Self" :
-				player_arr.find(selected_ped_location)->second->get_name()
+				player_arr.find(selected_ped_for)->second->get_name()
 			)) {
-				if (ImGui::Selectable("Self", selected_ped_location.empty()))
+				if (ImGui::Selectable("Self", selected_ped_for.empty()))
 				{
-					selected_ped_location = "";
+					selected_ped_for = "";
 				}
 
-				if (selected_ped_location.empty())
+				if (selected_ped_for.empty())
 				{
 					ImGui::SetItemDefaultFocus();
 				}
@@ -498,13 +498,13 @@ namespace big
 					for (auto& [name, player] : player_arr)
 					{
 						ImGui::PushID(player->id());
-						if (ImGui::Selectable(name.c_str(), selected_ped_location == name))
+						if (ImGui::Selectable(name.c_str(), selected_ped_for == name))
 						{
-							selected_ped_location = name;
+							selected_ped_for = name;
 						}
 						ImGui::PopID();
 
-						if (selected_ped_location == name)
+						if (selected_ped_for == name)
 						{
 							ImGui::SetItemDefaultFocus();
 						}
@@ -553,7 +553,7 @@ namespace big
 		ImGui::SameLine();
 
 		components::button("Spawn Ped", [] {
-			Ped ped = spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player, selected_ped_location, false);
+			Ped ped = spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player, selected_ped_for, false);
 
 			if (ped)
 			{
@@ -564,7 +564,7 @@ namespace big
 		ImGui::SameLine();
 
 		components::button("Spawn Bodyguard", [] {
-			Ped ped = spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player, selected_ped_location, true);
+			Ped ped = spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player, selected_ped_for, true);
 
 			if (ped)
 			{
