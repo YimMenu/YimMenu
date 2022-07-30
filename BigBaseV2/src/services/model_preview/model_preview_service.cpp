@@ -155,7 +155,7 @@ namespace big
 				{
 					if (const int alpha = ENTITY::GET_ENTITY_ALPHA(m_current_ent); alpha < 255)
 					{
-						ENTITY::SET_ENTITY_ALPHA(m_current_ent, std::min<int>(255, alpha + 10), false);
+						ENTITY::SET_ENTITY_ALPHA(m_current_ent, std::min<int>(255, alpha + 20), false);
 					}
 
 					ENTITY::SET_ENTITY_HEADING(m_current_ent, m_heading);
