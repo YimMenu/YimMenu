@@ -1,0 +1,202 @@
+{
+    "clan_logo": 0,
+    "custom_primary_color": [
+        0,
+        0,
+        0
+    ],
+    "custom_secondary_color": [
+        0,
+        0,
+        0
+    ],
+    "dash_color": 0,
+    "headlight_color": 255,
+    "interior_color": 0,
+    "model_attachments": [
+        {
+            "model_hash": 932490441,
+            "position_x": 0.0,
+            "position_y": 0.0,
+            "position_z": -0.20000004768371582,
+            "rotation_x": 0.0,
+            "rotation_y": 0.0,
+            "rotation_z": 0.0
+        },
+        {
+            "model_hash": 3365286072,
+            "position_x": -0.5999755859375,
+            "position_y": 1.5999755859375,
+            "position_z": 0.20000004768371582,
+            "rotation_x": 0.0,
+            "rotation_y": 0.0,
+            "rotation_z": 87.99999237060547
+        },
+        {
+            "model_hash": 3365286072,
+            "position_x": 0.5999755859375,
+            "position_y": 1.5999755859375,
+            "position_z": 0.20000004768371582,
+            "rotation_x": 0.0,
+            "rotation_y": 0.0,
+            "rotation_z": 87.99999237060547
+        },
+        {
+            "model_hash": 1141389967,
+            "position_x": 0.300048828125,
+            "position_y": 0.40997314453125,
+            "position_z": 0.5,
+            "rotation_x": -45.30000305175781,
+            "rotation_y": 1.600825925152094e-07,
+            "rotation_z": -178.99998474121094
+        },
+        {
+            "model_hash": 4002804312,
+            "position_x": -0.9000244140625,
+            "position_y": -1.20001220703125,
+            "position_z": 0.0,
+            "rotation_x": 0.0,
+            "rotation_y": 0.0,
+            "rotation_z": 85.99999237060547
+        },
+        {
+            "model_hash": 1141389967,
+            "position_x": -0.300048828125,
+            "position_y": 0.40997314453125,
+            "position_z": 0.5,
+            "rotation_x": -45.30000305175781,
+            "rotation_y": 1.600825925152094e-07,
+            "rotation_z": -178.99998474121094
+        },
+        {
+            "model_hash": 4002804312,
+            "position_x": 0.9200439453125,
+            "position_y": -1.20001220703125,
+            "position_z": 0.009999990463256836,
+            "rotation_x": 0.0,
+            "rotation_y": 0.0,
+            "rotation_z": -91.99998474121094
+        },
+        {
+            "model_hash": 1742463912,
+            "position_x": -0.75,
+            "position_y": 0.70001220703125,
+            "position_z": -0.2999999523162842,
+            "rotation_x": 89.99999237060547,
+            "rotation_y": 0.0,
+            "rotation_z": 0.0
+        },
+        {
+            "model_hash": 1742463912,
+            "position_x": 0.75,
+            "position_y": 0.70001220703125,
+            "position_z": -0.2999999523162842,
+            "rotation_x": 89.99999237060547,
+            "rotation_y": 0.0,
+            "rotation_z": 0.0
+        }
+    ],
+    "neon_color": [
+        255,
+        0,
+        255
+    ],
+    "neon_lights": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "pearlescent_color": 38,
+    "plate_text": "   SM   ",
+    "plate_text_index": 1,
+    "primary_color": 28,
+    "radio_station": "RADIO_04_PUNK",
+    "secondary_color": 34,
+    "vehicle_attachments": [
+        {
+            "model_attachment": {
+                "model_hash": 3863274624,
+                "position_x": 0.0,
+                "position_y": 0.0,
+                "position_z": -0.20000004768371582,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "custom_primary_color": [
+                    0,
+                    0,
+                    0
+                ],
+                "custom_secondary_color": [
+                    0,
+                    0,
+                    0
+                ],
+                "dash_color": 0,
+                "headlight_color": 255,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 0,
+                "plate_text": "   SM   ",
+                "plate_text_index": 1,
+                "primary_color": 3,
+                "radio_station": "RADIO_04_PUNK",
+                "secondary_color": 3,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ],
+                    [
+                        4,
+                        false
+                    ],
+                    [
+                        5,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 3863274624,
+                "vehicle_window_tint": 5,
+                "wheel_color": 156,
+                "wheel_type": 5
+            }
+        }
+    ],
+    "vehicle_extras": [
+        [
+            1,
+            false
+        ],
+        [
+            2,
+            false
+        ]
+    ],
+    "vehicle_model_hash": 37348240,
+    "vehicle_window_tint": -1,
+    "wheel_color": 156,
+    "wheel_type": 1
+}

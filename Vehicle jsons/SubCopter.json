@@ -1,0 +1,79 @@
+{
+    "custom_primary_color": [
+        255,
+        149,
+        0
+    ],
+    "custom_secondary_color": [
+        0,
+        0,
+        0
+    ],
+    "model_attachments": [],
+    "pearlescent_color": 5,
+    "plate_text": "22BRY195",
+    "plate_text_index": 4,
+    "primary_color": 0,
+    "radio_station": "RADIO_22_DLC_BATTLE_MIX1_RADIO",
+    "secondary_color": 0,
+    "vehicle_attachments": [
+        {
+            "model_attachment": {
+                "model_hash": 771711535,
+                "position_x": 0.0,
+                "position_y": 1.0,
+                "position_z": 0.7999999523162842,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "custom_primary_color": [
+                    0,
+                    0,
+                    0
+                ],
+                "custom_secondary_color": [
+                    0,
+                    0,
+                    0
+                ],
+                "pearlescent_color": 122,
+                "plate_text": "49TBK181",
+                "plate_text_index": 4,
+                "primary_color": 132,
+                "radio_station": "RADIO_22_DLC_BATTLE_MIX1_RADIO",
+                "secondary_color": 0,
+                "vehicle_extras": [],
+                "vehicle_model_hash": 771711535,
+                "vehicle_window_tint": 5,
+                "wheel_color": 156
+            }
+        }
+    ],
+    "vehicle_extras": [
+        [
+            1,
+            false
+        ],
+        [
+            2,
+            false
+        ],
+        [
+            7,
+            false
+        ],
+        [
+            8,
+            false
+        ],
+        [
+            9,
+            false
+        ]
+    ],
+    "vehicle_model_hash": 788747387,
+    "vehicle_window_tint": -1,
+    "wheel_color": 156
+}

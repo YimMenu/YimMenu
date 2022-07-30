@@ -1,0 +1,266 @@
+{
+    "clan_logo": 0,
+    "custom_primary_color": [
+        255,
+        255,
+        255
+    ],
+    "custom_secondary_color": [
+        255,
+        255,
+        255
+    ],
+    "dash_color": 0,
+    "headlight_color": 255,
+    "interior_color": 0,
+    "model_attachments": [],
+    "neon_color": [
+        255,
+        0,
+        255
+    ],
+    "neon_lights": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "pearlescent_color": 3,
+    "plate_text": "05AYD661",
+    "plate_text_index": 0,
+    "primary_color": 89,
+    "radio_station": "RADIO_02_POP",
+    "secondary_color": 89,
+    "vehicle_attachments": [
+        {
+            "model_attachment": {
+                "model_hash": 534258863,
+                "position_x": 0.0,
+                "position_y": 0.0,
+                "position_z": 0.029999732971191406,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "custom_primary_color": [
+                    255,
+                    255,
+                    255
+                ],
+                "custom_secondary_color": [
+                    255,
+                    255,
+                    255
+                ],
+                "dash_color": 0,
+                "headlight_color": 255,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 0,
+                "plate_text": "60IPH162",
+                "plate_text_index": 4,
+                "primary_color": 132,
+                "radio_station": "RADIO_02_POP",
+                "secondary_color": 132,
+                "vehicle_extras": [],
+                "vehicle_model_hash": 534258863,
+                "vehicle_window_tint": -1,
+                "wheel_color": 0,
+                "wheel_type": 4
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 534258863,
+                "position_x": -0.0999755859375,
+                "position_y": 0.0,
+                "position_z": 0.029999732971191406,
+                "rotation_x": 0.0,
+                "rotation_y": 41.09999465942383,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 255,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 0,
+                "plate_text": "60UZQ500",
+                "plate_text_index": 4,
+                "primary_color": 132,
+                "radio_station": "RADIO_02_POP",
+                "secondary_color": 132,
+                "vehicle_extras": [],
+                "vehicle_model_hash": 534258863,
+                "vehicle_window_tint": -1,
+                "wheel_color": 0,
+                "wheel_type": 4
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 534258863,
+                "position_x": 0.0999755859375,
+                "position_y": 0.0,
+                "position_z": 0.029999732971191406,
+                "rotation_x": 0.0,
+                "rotation_y": -41.400001525878906,
+                "rotation_z": -0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 255,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 0,
+                "plate_text": "84IYJ275",
+                "plate_text_index": 4,
+                "primary_color": 132,
+                "radio_station": "RADIO_02_POP",
+                "secondary_color": 132,
+                "vehicle_extras": [],
+                "vehicle_model_hash": 534258863,
+                "vehicle_window_tint": -1,
+                "wheel_color": 0,
+                "wheel_type": 4
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 3449006043,
+                "position_x": 1.4100341796875,
+                "position_y": 0.0,
+                "position_z": -0.1700000762939453,
+                "rotation_x": -179.989990234375,
+                "rotation_y": 0.0,
+                "rotation_z": -0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "custom_primary_color": [
+                    255,
+                    255,
+                    255
+                ],
+                "custom_secondary_color": [
+                    255,
+                    255,
+                    255
+                ],
+                "dash_color": 0,
+                "headlight_color": 255,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 111,
+                "plate_text": "44MRS326",
+                "plate_text_index": 0,
+                "primary_color": 111,
+                "radio_station": "RADIO_02_POP",
+                "secondary_color": 29,
+                "vehicle_extras": [],
+                "vehicle_model_hash": 3449006043,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 3
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 3449006043,
+                "position_x": -1.4100341796875,
+                "position_y": 0.0,
+                "position_z": -0.1700000762939453,
+                "rotation_x": -179.989990234375,
+                "rotation_y": 0.0,
+                "rotation_z": -0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "custom_primary_color": [
+                    255,
+                    255,
+                    255
+                ],
+                "custom_secondary_color": [
+                    255,
+                    255,
+                    255
+                ],
+                "dash_color": 0,
+                "headlight_color": 255,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 111,
+                "plate_text": "08DMZ627",
+                "plate_text_index": 0,
+                "primary_color": 111,
+                "radio_station": "RADIO_02_POP",
+                "secondary_color": 64,
+                "vehicle_extras": [],
+                "vehicle_model_hash": 3449006043,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 3
+            }
+        }
+    ],
+    "vehicle_extras": [],
+    "vehicle_model_hash": 1663218586,
+    "vehicle_window_tint": -1,
+    "wheel_color": 0,
+    "wheel_type": 7
+}

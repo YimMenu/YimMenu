@@ -1,0 +1,100 @@
+{
+    "clan_logo": 0,
+    "custom_primary_color": [
+        0,
+        0,
+        0
+    ],
+    "custom_secondary_color": [
+        0,
+        0,
+        0
+    ],
+    "dash_color": 0,
+    "headlight_color": 255,
+    "interior_color": 0,
+    "model_attachments": [
+        {
+            "model_hash": 232216084,
+            "position_x": 0.0,
+            "position_y": -0.0001220703125,
+            "position_z": -0.4016685485839844,
+            "rotation_x": 0.0,
+            "rotation_y": 0.0,
+            "rotation_z": 0.0
+        }
+    ],
+    "neon_color": [
+        255,
+        0,
+        255
+    ],
+    "neon_lights": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "pearlescent_color": 111,
+    "plate_text": "01ZJD607",
+    "plate_text_index": 0,
+    "primary_color": 111,
+    "radio_station": "RADIO_16_SILVERLAKE",
+    "secondary_color": 111,
+    "vehicle_attachments": [
+        {
+            "model_attachment": {
+                "model_hash": 1886712733,
+                "position_x": 0.0,
+                "position_y": -0.0001220703125,
+                "position_z": -0.4016685485839844,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "custom_primary_color": [
+                    0,
+                    0,
+                    0
+                ],
+                "custom_secondary_color": [
+                    0,
+                    0,
+                    0
+                ],
+                "dash_color": 0,
+                "headlight_color": 255,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 1,
+                "plate_text": "02XXI263",
+                "plate_text_index": 0,
+                "primary_color": 42,
+                "radio_station": "RADIO_16_SILVERLAKE",
+                "secondary_color": 1,
+                "vehicle_extras": [],
+                "vehicle_model_hash": 1886712733,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        }
+    ],
+    "vehicle_extras": [],
+    "vehicle_model_hash": 3449006043,
+    "vehicle_window_tint": 5,
+    "wheel_color": 156,
+    "wheel_type": 3
+}

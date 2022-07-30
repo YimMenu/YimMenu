@@ -1,0 +1,85 @@
+{
+    "clan_logo": 0,
+    "dash_color": 0,
+    "headlight_color": 255,
+    "interior_color": 0,
+    "model_attachments": [
+        {
+            "model_hash": 1543894721,
+            "position_x": 0.0,
+            "position_y": 0.0,
+            "position_z": -0.5,
+            "rotation_x": 0.0,
+            "rotation_y": 0.0,
+            "rotation_z": -179.99998474121094
+        },
+        {
+            "model_hash": 173430006,
+            "position_x": 0.0,
+            "position_y": 0.0,
+            "position_z": 0.0,
+            "rotation_x": 0.0,
+            "rotation_y": 0.0,
+            "rotation_z": 0.0
+        },
+        {
+            "model_hash": 4002804312,
+            "position_x": -0.969970703125,
+            "position_y": 1.0,
+            "position_z": -0.25,
+            "rotation_x": -0.0,
+            "rotation_y": 0.0,
+            "rotation_z": -89.0
+        },
+        {
+            "model_hash": 4002804312,
+            "position_x": -1.0,
+            "position_y": -1.0999755859375,
+            "position_z": -0.23999977111816406,
+            "rotation_x": -0.0,
+            "rotation_y": 0.0,
+            "rotation_z": -89.0
+        },
+        {
+            "model_hash": 4002804312,
+            "position_x": 0.969970703125,
+            "position_y": 1.0,
+            "position_z": -0.23999977111816406,
+            "rotation_x": 0.0,
+            "rotation_y": 0.0,
+            "rotation_z": 89.0
+        },
+        {
+            "model_hash": 4002804312,
+            "position_x": 1.0,
+            "position_y": -1.0999755859375,
+            "position_z": -0.23999977111816406,
+            "rotation_x": 0.0,
+            "rotation_y": 0.0,
+            "rotation_z": 89.0
+        }
+    ],
+    "neon_color": [
+        255,
+        0,
+        255
+    ],
+    "neon_lights": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "pearlescent_color": 3,
+    "plate_text": "63PAA695",
+    "plate_text_index": 0,
+    "primary_color": 28,
+    "radio_station": "RADIO_02_POP",
+    "secondary_color": 28,
+    "vehicle_attachments": [],
+    "vehicle_extras": [],
+    "vehicle_model_hash": 1663218586,
+    "vehicle_window_tint": -1,
+    "wheel_color": 0,
+    "wheel_type": 7
+}

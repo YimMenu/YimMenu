@@ -1,0 +1,130 @@
+{
+    "clan_logo": 0,
+    "dash_color": 0,
+    "headlight_color": 255,
+    "interior_color": 0,
+    "model_attachments": [
+        {
+            "model_hash": 4181064950,
+            "position_x": -1.06005859375,
+            "position_y": -0.0999755859375,
+            "position_z": 0.46000003814697266,
+            "rotation_x": 90.99999237060547,
+            "rotation_y": 0.0,
+            "rotation_z": 0.0
+        },
+        {
+            "model_hash": 3760607069,
+            "position_x": -0.9000244140625,
+            "position_y": 0.6099853515625,
+            "position_z": 0.6200001239776611,
+            "rotation_x": 180.0,
+            "rotation_y": 80.00003051757813,
+            "rotation_z": 180.0
+        },
+        {
+            "model_hash": 648185618,
+            "position_x": 0.9000244140625,
+            "position_y": 0.79998779296875,
+            "position_z": 0.4100000858306885,
+            "rotation_x": -25.0,
+            "rotation_y": 0.0,
+            "rotation_z": -0.0
+        }
+    ],
+    "neon_color": [
+        255,
+        0,
+        255
+    ],
+    "neon_lights": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "pearlescent_color": 35,
+    "plate_text": "08HFP253",
+    "plate_text_index": 3,
+    "primary_color": 45,
+    "radio_station": "RADIO_22_DLC_BATTLE_MIX1_RADIO",
+    "secondary_color": 40,
+    "vehicle_attachments": [
+        {
+            "model_attachment": {
+                "model_hash": 833469436,
+                "position_x": 0.0,
+                "position_y": -2.0,
+                "position_z": 1.1000001430511475,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "MOD_ENGINE": [
+                    3,
+                    0
+                ],
+                "MOD_FRONTWHEEL": [
+                    18,
+                    1
+                ],
+                "MOD_HORNS": [
+                    14,
+                    0
+                ],
+                "MOD_SUSPENSION": [
+                    3,
+                    0
+                ],
+                "MOD_TRANSMISSION": [
+                    2,
+                    0
+                ],
+                "MOD_TURBO": "TOGGLE",
+                "MOD_XENONHEADLIGHTS": "TOGGLE",
+                "clan_logo": 0,
+                "custom_primary_color": [
+                    8,
+                    17,
+                    30
+                ],
+                "custom_secondary_color": [
+                    0,
+                    30,
+                    1
+                ],
+                "dash_color": 0,
+                "headlight_color": 255,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 92,
+                "plate_text": " SOLITAR",
+                "plate_text_index": 1,
+                "primary_color": 12,
+                "radio_station": "RADIO_22_DLC_BATTLE_MIX1_RADIO",
+                "secondary_color": 53,
+                "vehicle_extras": [],
+                "vehicle_model_hash": 833469436,
+                "vehicle_window_tint": 5,
+                "wheel_color": 0,
+                "wheel_type": 1
+            }
+        }
+    ],
+    "vehicle_extras": [],
+    "vehicle_model_hash": 1353720154,
+    "vehicle_window_tint": -1,
+    "wheel_color": 156,
+    "wheel_type": 0
+}

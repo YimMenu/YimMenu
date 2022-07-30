@@ -1,0 +1,75 @@
+{
+    "clan_logo": 0,
+    "dash_color": 0,
+    "headlight_color": 255,
+    "interior_color": 0,
+    "model_attachments": [],
+    "neon_color": [
+        255,
+        0,
+        255
+    ],
+    "neon_lights": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "pearlescent_color": 111,
+    "plate_text": "00FWD484",
+    "plate_text_index": 0,
+    "primary_color": 111,
+    "radio_station": "RADIO_01_CLASS_ROCK",
+    "secondary_color": 64,
+    "vehicle_attachments": [
+        {
+            "model_attachment": {
+                "model_hash": 3089277354,
+                "position_x": 0.0,
+                "position_y": 0.0,
+                "position_z": 0.0,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 255,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 0,
+                "plate_text": "80HSK762",
+                "plate_text_index": 4,
+                "primary_color": 132,
+                "radio_station": "RADIO_01_CLASS_ROCK",
+                "secondary_color": 0,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 3089277354,
+                "vehicle_window_tint": 5,
+                "wheel_color": 156,
+                "wheel_type": 0
+            }
+        }
+    ],
+    "vehicle_extras": [],
+    "vehicle_model_hash": 3449006043,
+    "vehicle_window_tint": -1,
+    "wheel_color": 156,
+    "wheel_type": 3
+}

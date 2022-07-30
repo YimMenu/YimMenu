@@ -1,0 +1,94 @@
+{
+    "clan_logo": 0,
+    "dash_color": 0,
+    "headlight_color": 255,
+    "interior_color": 0,
+    "model_attachments": [
+        {
+            "model_hash": 932490441,
+            "position_x": 0.0,
+            "position_y": 1.6099853515625,
+            "position_z": -0.11999988555908203,
+            "rotation_x": -11.999999046325684,
+            "rotation_y": 0.0,
+            "rotation_z": -0.0
+        },
+        {
+            "model_hash": 3365286072,
+            "position_x": -0.5999755859375,
+            "position_y": 1.5999755859375,
+            "position_z": 0.19999980926513672,
+            "rotation_x": 0.0,
+            "rotation_y": 0.0,
+            "rotation_z": 87.99999237060547
+        },
+        {
+            "model_hash": 3365286072,
+            "position_x": 0.5999755859375,
+            "position_y": 1.5999755859375,
+            "position_z": 0.19999980926513672,
+            "rotation_x": 0.0,
+            "rotation_y": 0.0,
+            "rotation_z": 87.99999237060547
+        },
+        {
+            "model_hash": 4002804312,
+            "position_x": -0.93994140625,
+            "position_y": 1.32000732421875,
+            "position_z": -0.25,
+            "rotation_x": 10.169649124145508,
+            "rotation_y": -27.62557029724121,
+            "rotation_z": 82.24519348144531
+        },
+        {
+            "model_hash": 4002804312,
+            "position_x": -0.949951171875,
+            "position_y": -1.34002685546875,
+            "position_z": -0.25,
+            "rotation_x": 11.36461067199707,
+            "rotation_y": 37.45092010498047,
+            "rotation_z": 93.9681167602539
+        },
+        {
+            "model_hash": 4002804312,
+            "position_x": 0.949951171875,
+            "position_y": 1.33001708984375,
+            "position_z": -0.23000001907348633,
+            "rotation_x": 12.203296661376953,
+            "rotation_y": 25.48767852783203,
+            "rotation_z": -83.68314361572266
+        },
+        {
+            "model_hash": 4002804312,
+            "position_x": 0.9599609375,
+            "position_y": -1.30999755859375,
+            "position_z": -0.23000001907348633,
+            "rotation_x": 10.627582550048828,
+            "rotation_y": 19.68349838256836,
+            "rotation_z": -88.38355255126953
+        }
+    ],
+    "neon_color": [
+        255,
+        0,
+        255
+    ],
+    "neon_lights": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "pearlescent_color": 3,
+    "plate_text": "48JYT594",
+    "plate_text_index": 0,
+    "primary_color": 73,
+    "radio_station": "RADIO_02_POP",
+    "secondary_color": 73,
+    "vehicle_attachments": [],
+    "vehicle_extras": [],
+    "vehicle_model_hash": 1663218586,
+    "vehicle_window_tint": -1,
+    "wheel_color": 0,
+    "wheel_type": 7
+}

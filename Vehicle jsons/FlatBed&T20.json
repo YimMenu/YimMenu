@@ -1,0 +1,98 @@
+{
+    "clan_logo": 0,
+    "dash_color": 0,
+    "headlight_color": 255,
+    "interior_color": 0,
+    "model_attachments": [
+        {
+            "model_hash": 4181064950,
+            "position_x": -1.06005859375,
+            "position_y": -0.0999755859375,
+            "position_z": 0.45999956130981445,
+            "rotation_x": 90.99999237060547,
+            "rotation_y": 0.0,
+            "rotation_z": 0.0
+        },
+        {
+            "model_hash": 3760607069,
+            "position_x": -0.9000244140625,
+            "position_y": 0.6099853515625,
+            "position_z": 0.6200003623962402,
+            "rotation_x": 180.0,
+            "rotation_y": 80.00003051757813,
+            "rotation_z": 180.0
+        },
+        {
+            "model_hash": 648185618,
+            "position_x": 0.9000244140625,
+            "position_y": 0.79998779296875,
+            "position_z": 0.4100003242492676,
+            "rotation_x": -25.0,
+            "rotation_y": 0.0,
+            "rotation_z": -0.0
+        }
+    ],
+    "neon_color": [
+        255,
+        0,
+        255
+    ],
+    "neon_lights": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "pearlescent_color": 35,
+    "plate_text": "85MTN482",
+    "plate_text_index": 3,
+    "primary_color": 45,
+    "radio_station": "RADIO_16_SILVERLAKE",
+    "secondary_color": 40,
+    "vehicle_attachments": [
+        {
+            "model_attachment": {
+                "model_hash": 1663218586,
+                "position_x": 0.0,
+                "position_y": -2.0,
+                "position_z": 1.0999999046325684,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "dash_color": 0,
+                "headlight_color": 255,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 3,
+                "plate_text": "SOLITARY",
+                "plate_text_index": 0,
+                "primary_color": 3,
+                "radio_station": "RADIO_16_SILVERLAKE",
+                "secondary_color": 3,
+                "vehicle_extras": [],
+                "vehicle_model_hash": 1663218586,
+                "vehicle_window_tint": 5,
+                "wheel_color": 0,
+                "wheel_type": 7
+            }
+        }
+    ],
+    "vehicle_extras": [],
+    "vehicle_model_hash": 1353720154,
+    "vehicle_window_tint": -1,
+    "wheel_color": 156,
+    "wheel_type": 0
+}

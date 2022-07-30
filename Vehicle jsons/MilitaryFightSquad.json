@@ -1,0 +1,280 @@
+{
+    "model_attachments": [],
+    "pearlescent_color": 8,
+    "plate_text": "07VOA317",
+    "plate_text_index": 0,
+    "primary_color": 121,
+    "radio_station": "RADIO_04_PUNK",
+    "secondary_color": 121,
+    "vehicle_attachments": [
+        {
+            "model_attachment": {
+                "model_hash": 970385471,
+                "position_x": 0.0,
+                "position_y": 15.5411376953125,
+                "position_z": 0.029999732971191406,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "pearlescent_color": 8,
+                "plate_text": "81AWD654",
+                "plate_text_index": 0,
+                "primary_color": 121,
+                "radio_station": "RADIO_04_PUNK",
+                "secondary_color": 121,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 970385471,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 970385471,
+                "position_x": 0.0,
+                "position_y": 30.5411376953125,
+                "position_z": 0.029999732971191406,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "pearlescent_color": 8,
+                "plate_text": "20HYY112",
+                "plate_text_index": 0,
+                "primary_color": 121,
+                "radio_station": "RADIO_04_PUNK",
+                "secondary_color": 121,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 970385471,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 970385471,
+                "position_x": -15.0,
+                "position_y": 15.5411376953125,
+                "position_z": 0.029999732971191406,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "pearlescent_color": 8,
+                "plate_text": "64DTV097",
+                "plate_text_index": 0,
+                "primary_color": 121,
+                "radio_station": "RADIO_04_PUNK",
+                "secondary_color": 121,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 970385471,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 970385471,
+                "position_x": 15.0,
+                "position_y": 15.5411376953125,
+                "position_z": 0.029999732971191406,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "pearlescent_color": 8,
+                "plate_text": "07NUG025",
+                "plate_text_index": 0,
+                "primary_color": 121,
+                "radio_station": "RADIO_04_PUNK",
+                "secondary_color": 121,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 970385471,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 970385471,
+                "position_x": 15.0,
+                "position_y": 0.0,
+                "position_z": 0.029999732971191406,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "pearlescent_color": 8,
+                "plate_text": "00QBX876",
+                "plate_text_index": 0,
+                "primary_color": 121,
+                "radio_station": "RADIO_04_PUNK",
+                "secondary_color": 121,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 970385471,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 970385471,
+                "position_x": 30.0,
+                "position_y": 0.0,
+                "position_z": 0.029999732971191406,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "pearlescent_color": 8,
+                "plate_text": "83NSZ428",
+                "plate_text_index": 0,
+                "primary_color": 121,
+                "radio_station": "RADIO_04_PUNK",
+                "secondary_color": 121,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 970385471,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 970385471,
+                "position_x": -15.0,
+                "position_y": 0.0,
+                "position_z": 0.029999732971191406,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "pearlescent_color": 8,
+                "plate_text": "46SAI011",
+                "plate_text_index": 0,
+                "primary_color": 121,
+                "radio_station": "RADIO_04_PUNK",
+                "secondary_color": 121,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 970385471,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156
+            }
+        },
+        {
+            "model_attachment": {
+                "model_hash": 970385471,
+                "position_x": -30.0,
+                "position_y": 0.0,
+                "position_z": 0.029999732971191406,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "pearlescent_color": 8,
+                "plate_text": "40JDA676",
+                "plate_text_index": 0,
+                "primary_color": 121,
+                "radio_station": "RADIO_04_PUNK",
+                "secondary_color": 121,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 970385471,
+                "vehicle_window_tint": -1,
+                "wheel_color": 156
+            }
+        }
+    ],
+    "vehicle_extras": [
+        [
+            1,
+            false
+        ],
+        [
+            2,
+            false
+        ]
+    ],
+    "vehicle_model_hash": 970385471,
+    "vehicle_window_tint": -1,
+    "wheel_color": 156
+}

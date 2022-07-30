@@ -1,0 +1,83 @@
+{
+    "clan_logo": 0,
+    "custom_primary_color": [
+        0,
+        0,
+        0
+    ],
+    "custom_secondary_color": [
+        0,
+        0,
+        0
+    ],
+    "dash_color": 0,
+    "headlight_color": 255,
+    "interior_color": 0,
+    "model_attachments": [],
+    "neon_color": [
+        255,
+        0,
+        255
+    ],
+    "neon_lights": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "pearlescent_color": 42,
+    "plate_text": "06LFS140",
+    "plate_text_index": 0,
+    "primary_color": 38,
+    "radio_station": "RADIO_13_JAZZ",
+    "secondary_color": 38,
+    "vehicle_attachments": [
+        {
+            "model_attachment": {
+                "model_hash": 1030400667,
+                "position_x": 0.0,
+                "position_y": 0.0,
+                "position_z": 0.0,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "custom_primary_color": [
+                    0,
+                    0,
+                    0
+                ],
+                "custom_secondary_color": [
+                    0,
+                    0,
+                    0
+                ],
+                "pearlescent_color": 2,
+                "plate_text": "   SM   ",
+                "plate_text_index": 3,
+                "primary_color": 132,
+                "radio_station": "RADIO_13_JAZZ",
+                "secondary_color": 126,
+                "vehicle_extras": [],
+                "vehicle_model_hash": 1030400667,
+                "vehicle_window_tint": 5,
+                "wheel_color": 156
+            }
+        }
+    ],
+    "vehicle_extras": [
+        [
+            10,
+            true
+        ],
+        [
+            11,
+            false
+        ]
+    ],
+    "vehicle_model_hash": 3663206819,
+    "vehicle_window_tint": -1,
+    "wheel_color": 38,
+    "wheel_type": 7
+}

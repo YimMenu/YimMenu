@@ -1,0 +1,103 @@
+{
+    "clan_logo": 0,
+    "custom_primary_color": [
+        0,
+        0,
+        0
+    ],
+    "custom_secondary_color": [
+        0,
+        0,
+        0
+    ],
+    "dash_color": 0,
+    "headlight_color": 255,
+    "interior_color": 0,
+    "model_attachments": [],
+    "neon_color": [
+        255,
+        0,
+        255
+    ],
+    "neon_lights": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "pearlescent_color": 4,
+    "plate_text": "SOLITARY",
+    "plate_text_index": 2,
+    "primary_color": 0,
+    "radio_station": "RADIO_18_90S_ROCK",
+    "secondary_color": 33,
+    "vehicle_attachments": [
+        {
+            "model_attachment": {
+                "model_hash": 117401876,
+                "position_x": 0.0,
+                "position_y": 0.0,
+                "position_z": 0.0,
+                "rotation_x": 0.0,
+                "rotation_y": 0.0,
+                "rotation_z": 0.0
+            },
+            "vehicle": {
+                "clan_logo": 0,
+                "custom_primary_color": [
+                    0,
+                    0,
+                    0
+                ],
+                "custom_secondary_color": [
+                    0,
+                    0,
+                    0
+                ],
+                "dash_color": 0,
+                "headlight_color": 255,
+                "interior_color": 0,
+                "neon_color": [
+                    255,
+                    0,
+                    255
+                ],
+                "neon_lights": [
+                    false,
+                    false,
+                    false,
+                    false
+                ],
+                "pearlescent_color": 0,
+                "plate_text": "SOLITARY",
+                "plate_text_index": 2,
+                "primary_color": 58,
+                "radio_station": "RADIO_18_90S_ROCK",
+                "secondary_color": 0,
+                "vehicle_extras": [
+                    [
+                        1,
+                        false
+                    ],
+                    [
+                        2,
+                        false
+                    ],
+                    [
+                        3,
+                        false
+                    ]
+                ],
+                "vehicle_model_hash": 117401876,
+                "vehicle_window_tint": 5,
+                "wheel_color": 156,
+                "wheel_type": 2
+            }
+        }
+    ],
+    "vehicle_extras": [],
+    "vehicle_model_hash": 758895617,
+    "vehicle_window_tint": -1,
+    "wheel_color": 156,
+    "wheel_type": 2
+}
