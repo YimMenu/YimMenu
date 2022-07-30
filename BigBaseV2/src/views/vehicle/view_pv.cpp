@@ -2,7 +2,8 @@
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "services/mobile/mobile_service.hpp"
-#include "services/vehicle_preview/vehicle_preview_service.hpp"
+#include "services/gta_data/gta_data_service.hpp"
+#include "services/model_preview/model_preview_service.hpp"
 #include "util/vehicle.hpp"
 
 namespace big
@@ -10,12 +11,18 @@ namespace big
 	void view::pv() {
 		ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
 
-		ImGui::Checkbox("Preview", &g->clone_pv.preview_vehicle);
+		if (ImGui::Checkbox("Preview", &g->clone_pv.preview_vehicle))
+		{
+			if (!g->clone_pv.preview_vehicle)
+			{
+				g_model_preview_service->stop_preview();
+			}
+		}
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn In", &g->clone_pv.spawn_inside);
 		ImGui::SameLine();
 
-		static char plate[9] = { 0 };
+		static char plate_buf[9] = { 0 };
 		int num_of_rows = 3;
 
 		ImGui::Checkbox("Spawn Clone", &g->clone_pv.spawn_clone);
@@ -26,7 +33,6 @@ namespace big
 			ImGui::Checkbox("Spawn Maxed", &g->clone_pv.spawn_maxed);
 
 			ImGui::SameLine();
-			strncpy(plate, g->clone_pv.plate.c_str(), 9);
 			ImGui::Checkbox("Clone PV Plate", &g->clone_pv.clone_plate);
 			if (g->clone_pv.clone_plate)
 			{
@@ -36,8 +42,9 @@ namespace big
 			{
 				ImGui::SetNextItemWidth(300.f);
 
-				components::input_text_with_hint("Plate", "Plate Number", plate, sizeof(plate), ImGuiInputTextFlags_None, [] {
-					g->clone_pv.plate = plate;
+				strncpy(plate_buf, g->clone_pv.plate.c_str(), 9);
+				components::input_text_with_hint("Plate", "Plate Number", plate_buf, sizeof(plate_buf), ImGuiInputTextFlags_None, [] {
+					g->clone_pv.plate = plate_buf;
 				});
 			}
 		}
@@ -117,10 +124,10 @@ namespace big
 								auto vehicle_idx = personal_veh->get_vehicle_idx();
 								auto owned_mods = vehicle::get_owned_mods_from_vehicle_idx(vehicle_idx);
 
-								const char* spawn_plate = plate;
+								const char* spawn_plate_buf = plate_buf;
 								if (g->clone_pv.clone_plate)
 								{
-									spawn_plate = personal_veh->get_plate();
+									spawn_plate_buf = personal_veh->get_plate();
 								}
 
 								auto veh = vehicle::clone_from_owned_mods(owned_mods, spawn_location, spawn_heading);
@@ -136,7 +143,7 @@ namespace big
 										vehicle::max_vehicle(veh);
 									}
 
-									vehicle::set_plate(veh, plate);
+									vehicle::set_plate(veh, spawn_plate_buf);
 
 									if (g->clone_pv.spawn_inside)
 									{
@@ -150,22 +157,22 @@ namespace big
 								personal_veh->summon();
 							}
 
-							g_vehicle_preview_service->stop_preview();
+							g_model_preview_service->stop_preview();
 						});
 						ImGui::PopID();
 
-						if (g->clone_pv.preview_vehicle && ImGui::IsItemHovered())
+						if (!g->spawn.preview_vehicle || (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered()))
+						{
+							g_model_preview_service->stop_preview();
+						}
+						else if (ImGui::IsItemHovered())
 						{
 							g_fiber_pool->queue_job([&personal_veh] {
-								g_vehicle_preview_service->set_preview_vehicle(
+								g_model_preview_service->show_vehicle(
 									vehicle::get_owned_mods_from_vehicle_idx(personal_veh->get_vehicle_idx()),
 									g->clone_pv.spawn_maxed
 								);
 							});
-						}
-						else if (g->clone_pv.preview_vehicle && !ImGui::IsAnyItemHovered())
-						{
-							g_vehicle_preview_service->stop_preview();
 						}
 					}
 				}

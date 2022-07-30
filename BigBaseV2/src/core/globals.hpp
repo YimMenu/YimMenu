@@ -140,7 +140,7 @@ namespace big
 			bool off_radar = false;
 			bool super_run = false;
 			int wanted_level = 0;
-
+			bool preview_ped = false;
 			bool god_mode = false;
 			bool proof_bullet = false;
 			bool proof_fire = false;
@@ -520,6 +520,7 @@ namespace big
 			this->self.no_ragdoll = j["self"]["no_ragdoll"];
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
+			this->self.preview_ped = j["self"]["preview_ped"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
 
@@ -772,6 +773,7 @@ namespace big
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
 						{ "super_run", this->self.super_run },
+						{ "preview_ped", this->self.preview_ped }
 					}
 				},
 				{
