@@ -42,7 +42,7 @@ namespace big
 
 					seats = tmp_seats;
 					ready = true;
-					});
+				});
 			}
 
 			if (seats.size() == 0)
@@ -73,7 +73,7 @@ namespace big
 
 					components::button(name, [idx] {
 						PED::SET_PED_INTO_VEHICLE(self::ped, self::veh, idx);
-						});
+					});
 					if (!it.second)
 					{
 						ImGui::EndDisabled();
