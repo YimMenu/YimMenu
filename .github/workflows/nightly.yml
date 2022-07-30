@@ -63,7 +63,7 @@ jobs:
 
       - name: Test file for detected bits
         id: detections
-        uses: yimura/gtav-sigscan-action@v0.0.2
+        uses: yimura/gtav-sigscan-action@v0.0.3
         with:
           file: ./YimMenu.dll
 

@@ -1,13 +1,11 @@
 #pragma once
 #include "common.hpp"
-#include "CNetworkPlayerMgr.hpp"
-#include "FriendRegistry.hpp"
-#include "HashTable.hpp"
-#include "gta/fwddec.hpp"
-#include "gta/enums.hpp"
-#include "gta/replay.hpp"
-#include "gta/script_program.hpp"
+#include "base/HashTable.hpp"
 #include "function_types.hpp"
+#include "gta/fwddec.hpp"
+#include "gta/replay.hpp"
+#include "network/CNetworkPlayerMgr.hpp"
+#include "socialclub/FriendRegistry.hpp"
 
 namespace big
 {
