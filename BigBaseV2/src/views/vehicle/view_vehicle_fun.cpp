@@ -84,22 +84,6 @@ namespace big
 
 		components::small_text("Auto Drive");
 
-		components::button("Drive To Waypoint", [] {
-			g->vehicle.auto_drive_to_waypoint = true;
-		});
-		ImGui::SameLine();
-		components::button("Wander", [] {
-			g->vehicle.auto_drive_wander = true;
-		});
-		ImGui::SameLine();
-		components::button("Emergency Stop", [] {
-			g->vehicle.auto_drive_to_waypoint = false;
-			g->vehicle.auto_drive_wander = false;
-			VEHICLE::SET_VEHICLE_FORWARD_SPEED(self::veh, 0);
-			TASK::CLEAR_VEHICLE_TASKS_(self::veh);
-			TASK::CLEAR_PED_TASKS(self::ped);
-		});
-
 		float auto_drive_speed_user_unit = vehicle::mps_to_speed(g->vehicle.auto_drive_speed, g->vehicle.speed_unit);
 		if (ImGui::SliderFloat(
 			fmt::format("Top Speed({})", speed_unit_strings[(int)g->vehicle.speed_unit]).c_str(),
@@ -111,24 +95,40 @@ namespace big
 			g->vehicle.auto_drive_speed = vehicle::speed_to_mps(auto_drive_speed_user_unit, g->vehicle.speed_unit);
 		}
 
-		if (ImGui::BeginCombo("Driving Style", vehicle::driving_style_names[g->vehicle.driving_style_id]))
+		static constexpr char const* driving_style_names[] = { "Law-Abiding", "The Road Is Yours" };
+		if (ImGui::BeginCombo("Driving Style", driving_style_names[(int)g->vehicle.auto_drive_style]))
 		{
 			for (int i = 0; i < 2; i++)
 			{
-				if (ImGui::Selectable(vehicle::driving_style_names[i], g->vehicle.driving_style_id == i))
+				if (ImGui::Selectable(driving_style_names[i], g->vehicle.auto_drive_style == (AutoDriveStyle)i))
 				{
-					g->vehicle.driving_style_id = i;
-					g->vehicle.driving_style_flags = vehicle::driving_styles[g->vehicle.driving_style_id];
-					g_notification_service->push_warning("Auto Drive", fmt::format("Driving style set to {}.", vehicle::driving_style_names[i]));
+					g->vehicle.auto_drive_style = (AutoDriveStyle)i;
+					g_notification_service->push_warning("Auto Drive", fmt::format("Driving style set to {}.", driving_style_names[i]));
 				}
 
-				if (g->vehicle.driving_style_id == i)
+				if (g->vehicle.auto_drive_style == (AutoDriveStyle)i)
 				{
 					ImGui::SetItemDefaultFocus();
 				}
 			}
 
 			ImGui::EndCombo();
+		}
+
+		if (components::button("To Objective")) {
+			g->vehicle.auto_drive_destination = AutoDriveDestination::OBJECTITVE;
+		}
+		ImGui::SameLine();
+		if (components::button("To Waypoint")) {
+			g->vehicle.auto_drive_destination = AutoDriveDestination::WAYPOINT;
+		}
+		ImGui::SameLine();
+		if (components::button("Wander")) {
+			g->vehicle.auto_drive_destination = AutoDriveDestination::WANDER;
+		}
+		ImGui::SameLine();
+		if (components::button("Emergency Stop")) {
+			g->vehicle.auto_drive_destination = AutoDriveDestination::EMERGENCY_STOP;
 		}
 
 		ImGui::Separator();
@@ -145,13 +145,15 @@ namespace big
 
 		if (g->vehicle.rainbow_primary || g->vehicle.rainbow_neon || g->vehicle.rainbow_secondary || g->vehicle.rainbow_smoke) {
 			ImGui::SetNextItemWidth(120);
-			if (ImGui::BeginCombo("RGB Type", vehicle::rgb_types[g->vehicle.rainbow_paint]))
+
+			static constexpr char const* rgb_types[] = { "Off", "Fade", "Spasm" };
+			if (ImGui::BeginCombo("RGB Type", rgb_types[g->vehicle.rainbow_paint]))
 			{
 				for (int i = 0; i < 3; i++)
 				{
 					bool itemSelected = g->vehicle.rainbow_paint == i;
 
-					if (ImGui::Selectable(vehicle::rgb_types[i], itemSelected))
+					if (ImGui::Selectable(rgb_types[i], itemSelected))
 					{
 						g->vehicle.rainbow_paint = i;
 					}
