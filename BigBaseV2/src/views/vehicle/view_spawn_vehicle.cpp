@@ -7,7 +7,7 @@
 
 namespace big
 {
-	void view::spawn()
+	void view::spawn_vehicle()
 	{
 		ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
 
@@ -66,7 +66,7 @@ namespace big
 		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None);
 
 
-		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 184 - 38 * 4) }))
+		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 188 - 38 * 4) }))
 		{
 			if (self::veh)
 			{

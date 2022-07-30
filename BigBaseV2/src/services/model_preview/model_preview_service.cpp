@@ -19,6 +19,7 @@ namespace big
 
 	void model_preview_service::show_ped(Hash hash)
 	{
+		m_ped_clone = 0;
 		m_veh_model_hash = 0;
 		m_veh_owned_mods.clear();
 
@@ -35,9 +36,29 @@ namespace big
 		}
 	}
 
+	void model_preview_service::show_ped(Hash hash, Ped clone)
+	{
+		m_veh_model_hash = 0;
+		m_veh_owned_mods.clear();
+
+		if (m_ped_model_hash != hash || m_ped_clone != clone)
+		{
+			m_ped_model_hash = hash;
+			m_ped_clone = clone;
+
+			if (m_ped_model_hash != 0)
+			{
+				m_new_model = true;
+
+				preview_loop();
+			}
+		}
+	}
+
 	void model_preview_service::show_vehicle(Hash hash, bool spawn_max)
 	{
 		m_ped_model_hash = 0;
+		m_ped_clone = 0;
 		m_veh_owned_mods.clear();
 
 		if (m_veh_model_hash != hash || m_veh_spawn_max != spawn_max)
@@ -57,6 +78,7 @@ namespace big
 	void model_preview_service::show_vehicle(const std::map<int, int32_t>& owned_mods, bool spawn_max)
 	{
 		m_ped_model_hash = 0;
+		m_ped_clone = 0;
 
 		if (
 			m_veh_spawn_max != spawn_max ||
@@ -114,7 +136,8 @@ namespace big
 
 					if (m_ped_model_hash)
 					{
-						m_current_ent = ped::spawn(ePedType::PED_TYPE_ARMY, m_ped_model_hash, location, 0.f, false);
+						m_current_ent = ped::spawn(ePedType::PED_TYPE_ARMY, m_ped_model_hash, m_ped_clone, location, 0.f, false);
+
 						ENTITY::SET_ENTITY_HEALTH(m_current_ent, 0, 0);
 						script::get_current()->yield(20ms);
 						PED::RESURRECT_PED(m_current_ent);

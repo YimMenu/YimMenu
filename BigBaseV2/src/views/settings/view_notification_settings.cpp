@@ -14,13 +14,13 @@ namespace big
 
 	void view::notification_settings()
 	{
-		components::small_text("GTA Threads");
+		components::sub_title("GTA Threads");
 
 		draw_pair_option("Terminate", g->notifications.gta_thread_kill);
 		draw_pair_option("Start", g->notifications.gta_thread_start);
 			
 
-		components::small_text("Network Player Manager");
+		components::sub_title("Network Player Manager");
 
 		ImGui::Text("Player Join");
 
@@ -35,7 +35,7 @@ namespace big
 		draw_pair_option("Init", g->notifications.network_player_mgr_init);
 		draw_pair_option("Shutdown", g->notifications.network_player_mgr_shutdown);
 
-		components::small_text("Received Event");
+		components::sub_title("Received Event");
 
 		auto& received_event = g->notifications.received_event;
 
@@ -53,7 +53,7 @@ namespace big
 		draw_pair_option("Vehicle Temp Action", received_event.vehicle_temp_action);
 		ImGui::EndGroup();
 
-		components::small_text("Script Event Handler");
+		components::sub_title("Script Event Handler");
 
 		auto& script_event_handler = g->notifications.script_event_handler;
 
@@ -92,7 +92,7 @@ namespace big
 		draw_pair_option("Wanted Level", script_event_handler.clear_wanted_level);
 		ImGui::EndGroup();
 
-		components::small_text("Other");
+		components::sub_title("Other");
 		
 		draw_pair_option("Reports", g->notifications.reports);
 		draw_pair_option("Transaction Error / Rate Limit", g->notifications.transaction_rate_limit);
