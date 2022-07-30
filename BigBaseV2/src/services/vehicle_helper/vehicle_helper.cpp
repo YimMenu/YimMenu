@@ -236,13 +236,13 @@ namespace big
 	static const std::map<Hash, std::map<int, std::vector<int32_t>>> mod_blacklists = {
 		{ VEHICLE_BANSHEE, { 
 			{ MOD_SPOILERS, { 3, 4 } },
-			{ MOD_COLUMNSHIFTERLEVERS, { 0, 1, 2 } },
+			{ MOD_COLUMNSHIFTERLEVERS, { 0, 1, 2, 3 } },
 			{ MOD_SPEAKERS, { 0 } },
 			{ MOD_LIVERY, { 15, 16 } }
 		} },
 		{ VEHICLE_SENTINEL, {
 			{ MOD_SPOILERS, { 4, 5 } },
-			{ MOD_COLUMNSHIFTERLEVERS, { 0, 1, 2 } },
+			{ MOD_COLUMNSHIFTERLEVERS, { 0, 1, 2, 3 } },
 			{ MOD_SPEAKERS, { 0 } },
 			{ MOD_LIVERY, { 0, 1 } }
 		} }

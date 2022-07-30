@@ -53,7 +53,7 @@
 
 #include "core/globals.hpp"
 #include "gta/natives.hpp"
-#include "CPed.hpp"
+#include "ped/CPed.hpp"
 
 #include "services/notifications/notification_service.hpp"
 
