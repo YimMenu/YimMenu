@@ -258,7 +258,7 @@ namespace big
 								auto player = item.second;
 
 								ImGui::PushID(player->id());
-								if (ImGui::Selectable(name.c_str(), selected_ped_player == name))
+								if (ImGui::Selectable(player->get_name(), selected_ped_player == name))
 								{
 									selected_ped_player = name;
 									g_model_preview_service->stop_preview();
@@ -498,7 +498,7 @@ namespace big
 					for (auto& [name, player] : player_arr)
 					{
 						ImGui::PushID(player->id());
-						if (ImGui::Selectable(name.c_str(), selected_ped_for == name))
+						if (ImGui::Selectable(player->get_name(), selected_ped_for == name))
 						{
 							selected_ped_for = name;
 						}
