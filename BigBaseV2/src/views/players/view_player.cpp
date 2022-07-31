@@ -200,7 +200,6 @@ namespace big
 						net_player_data->m_external_port
 					);
 				}
-
 				ImGui::TreePop();
 			}
 

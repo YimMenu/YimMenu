@@ -856,7 +856,7 @@ namespace big
 						{ "super_run", this->self.super_run },
 						{ "aimbot", this->self.aimbot },
 						{ "aimbot_exclude_friend", this->self.aimbot_exclude_friend },
-						{ "give_weapon_id", this->self.give_weapon_id }
+						{ "give_weapon_id", this->self.give_weapon_id },
 						{ "preview_ped", this->self.preview_ped }
 					}
 				},

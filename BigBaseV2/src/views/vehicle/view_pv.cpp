@@ -153,7 +153,7 @@ namespace big
 
 									g->clone_pv.last_clone = veh;
 
-									vehicle::set_plate(veh, plate);
+									vehicle::set_plate(veh, spawn_plate_buf);
 
 									if (g->clone_pv.spawn_inside)
 									{

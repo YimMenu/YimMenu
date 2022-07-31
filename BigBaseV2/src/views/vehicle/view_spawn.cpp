@@ -20,14 +20,8 @@ namespace big
 		}
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn In", &g->spawn.spawn_inside);
-		ImGui::Checkbox("Spawn Maxed", &g->spawn.spawn_maxed);
 		ImGui::SameLine();
-		ImGui::Checkbox("Delete Last Spawn", &g->spawn.delete_last_spawn);
-		components::button("Spawn Cargobob(Magnet)", [] {
-			vehicle::cargobobmagnet();
-		});
-
-		ImGui::Separator();
+		ImGui::Checkbox("Spawn Maxed", &g->spawn.spawn_maxed);
 
 		static char plate_buf[9] = { 0 };
 		strncpy(plate_buf, g->spawn.plate.c_str(), 9);
@@ -35,7 +29,7 @@ namespace big
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("Plate", "Plate Number", plate_buf, sizeof(plate_buf), ImGuiInputTextFlags_None, [] {
 			g->spawn.plate = plate_buf;
-		});
+			});
 
 
 		static int selected_class = -1;
@@ -71,16 +65,16 @@ namespace big
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None);
 
-		// arbitrary subtraction this looked nice so idc, works for all resolutions as well
-		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 186 - 38 * 6) }))
+
+		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 184 - 38 * 4) }))
 		{
 			if (self::veh)
 			{
 				static auto veh_hash = 0;
-				
+
 				g_fiber_pool->queue_job([] {
 					veh_hash = ENTITY::GET_ENTITY_MODEL(self::veh);
-				});
+					});
 
 				if (veh_hash)
 				{
@@ -117,7 +111,7 @@ namespace big
 						}
 
 						g_model_preview_service->stop_preview();
-					});
+						});
 
 					if (!g->spawn.preview_vehicle || (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered()))
 					{
@@ -130,7 +124,7 @@ namespace big
 								vehicle::get_owned_mods_from_vehicle(self::veh),
 								g->spawn.spawn_maxed
 							);
-						});
+							});
 					}
 				}
 			}
@@ -152,10 +146,10 @@ namespace big
 
 					if ((
 						selected_class == -1 || class_arr[selected_class] == clazz
-					) && (
-						display_name.find(lower_search) != std::string::npos ||
-						display_manufacturer.find(lower_search) != std::string::npos
-					)) {
+						) && (
+							display_name.find(lower_search) != std::string::npos ||
+							display_manufacturer.find(lower_search) != std::string::npos
+							)) {
 						ImGui::PushID(item.hash);
 						components::selectable(item.display_name, false, [item] {
 
@@ -175,14 +169,7 @@ namespace big
 									vehicle::max_vehicle(veh);
 								}
 
-								if (g->spawn.delete_last_spawn)
-								{
-								entity::delete_entity(g->spawn.last_spawn);
-								}
-
-								g->spawn.last_spawn = veh;
-
-								vehicle::set_plate(veh, plate);
+								vehicle::set_plate(veh, plate_buf);
 
 								if (g->spawn.spawn_inside)
 								{
@@ -191,7 +178,7 @@ namespace big
 							}
 
 							g_model_preview_service->stop_preview();
-						});
+							});
 						ImGui::PopID();
 
 						if (!g->spawn.preview_vehicle || (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered()))

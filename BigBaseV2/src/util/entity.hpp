@@ -4,6 +4,7 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "math.hpp"
+#include "gta/enums.hpp"
 
 namespace big::entity
 {

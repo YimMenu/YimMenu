@@ -1,6 +1,7 @@
 #pragma once
 #include "natives.hpp"
 #include "util/math.hpp"
+#include "gta/enums.hpp"
 
 //https://www.youtube.com/watch?v=k6z4Y5DBb-g  <- All Effects
 namespace big::ptfx

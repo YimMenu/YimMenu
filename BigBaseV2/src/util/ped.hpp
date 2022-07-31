@@ -1,6 +1,10 @@
 #pragma once
 #include "natives.hpp"
 #include "pointers.hpp"
+#include "util/entity.hpp"
+#include "services/gta_data/gta_data_service.hpp"
+#include "util/system.hpp"
+#include "fiber_pool.hpp"
 
 namespace big::ped
 {
@@ -88,6 +92,11 @@ namespace big::ped
 		}
 		TASK::TASK_PLAY_ANIM(PLAYER::PLAYER_PED_ID(), Dict, ID, 4.0f, -4.0f, -1, 1, 1, 0, 0, 0);
 	}
+
+	inline void play_scenario(char* Scene)
+	{
+		TASK::TASK_START_SCENARIO_IN_PLACE(PLAYER::PLAYER_PED_ID(), Scene, 0, true);
+	}
 	
 	inline Ped spawn(ePedType pedType, Hash hash, Vector3 location, float heading, bool is_networked = true)
 	{
@@ -111,11 +120,6 @@ namespace big::ped
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 
 		return ped;
-	}
-	
-	inline void play_scenario(char* Scene)
-	{
-		TASK::TASK_START_SCENARIO_IN_PLACE(PLAYER::PLAYER_PED_ID(), Scene, 0, true);
 	}
 
 	static constexpr char const* animlistName[] = { "Sechs F", "Sechs M", "Private Dance", "Pole Dance", "Push Ups", "Sit Ups", "Celebrate", "Shocked", "Suicide Pistol", "Suicide Pill", "Showering" };
