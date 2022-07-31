@@ -287,6 +287,7 @@ namespace big
 			bool player = false;
 
 			ImU32 color = 3357612055;
+			float gui_scale = 1.f;
 
 			ImFont* font_title = nullptr;
 			ImFont* font_sub_title = nullptr;
@@ -602,6 +603,7 @@ namespace big
 			this->weapons.ammo_special.toggle = j["weapons"]["ammo_special"]["toggle"];
 
 			this->window.color = j["window"]["color"];
+			this->window.gui_scale = j["window"]["gui_scale"];
 			this->window.debug = j["window"]["debug"];
 			this->window.handling = j["window"]["handling"];
 			this->window.log = j["window"]["log"];
@@ -895,6 +897,7 @@ namespace big
 				{
 					"window", {
 						{ "color", this->window.color },
+						{ "gui_scale", this->window.gui_scale },
 						{ "debug", this->window.debug },
 						{ "handling", this->window.handling },
 						{ "log", this->window.log },

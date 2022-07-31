@@ -96,13 +96,13 @@ namespace big
 		int nav_ctr = 0;
 
 		navigation_struct* get_selected();
-		std::vector<tabs> get_selected_tab();
+		std::vector<tabs>& get_selected_tab();
 		bool has_switched_view();
 		void set_selected(tabs);
 		void set_nav_size(int);
 		void increment_nav_size();
 		void reset_nav_size();
-		std::map<tabs, navigation_struct> get_navigation();
+		std::map<tabs, navigation_struct>& get_navigation();
 	};
 
 	inline gui_service* g_gui_service{};
