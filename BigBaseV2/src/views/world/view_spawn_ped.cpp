@@ -15,8 +15,8 @@ namespace big
 	Ped spawn_ped_at_location(
 		const int selected_ped_type, 
 		const char* ped_model_buf, 
-		const std::string selected_ped_player, 
-		const std::string selected_ped_for,
+		const Player selected_ped_player_id, 
+		const Player selected_ped_for_player_id,
 		const bool is_bodyguard
 	) {
 		Hash hash = 0;
@@ -27,21 +27,21 @@ namespace big
 
 		if (selected_ped_type == -2)
 		{
-			if (selected_ped_player.empty())
+			if (selected_ped_player_id == -1)
 			{
 				clone = self::ped;
 				hash = ENTITY::GET_ENTITY_MODEL(clone);
 			}
 			else
 			{
-				auto player = g_player_service->get_by_name(selected_ped_player);
-				if (!player->is_valid() || !player->get_ped() || !player->get_ped()->m_navigation)
+				auto plyr = g_player_service->get_by_id(selected_ped_player_id);
+				if (plyr == nullptr || !plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation)
 				{
 					g_notification_service->push_error("Ped", "Invalid Online Player.");
 					return 0;
 				}
 
-				clone = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
+				clone = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
 				hash = ENTITY::GET_ENTITY_MODEL(clone);
 			}
 		}
@@ -51,7 +51,7 @@ namespace big
 		}
 
 
-		if (selected_ped_for.empty())
+		if (selected_ped_for_player_id == -1)
 		{
 			location = self::pos;
 			player = self::id;
@@ -59,8 +59,8 @@ namespace big
 		}
 		else
 		{
-			auto plyr = g_player_service->get_by_name(selected_ped_for);
-			if (!plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation)
+			auto plyr = g_player_service->get_by_id(selected_ped_for_player_id);
+			if (plyr == nullptr || !plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation)
 			{
 				g_notification_service->push_error("Ped", "Invalid Online Player.");
 				return 0;
@@ -136,7 +136,7 @@ namespace big
 		static int selected_ped_type = -2;
 		static bool ped_model_dropdown_open = false;
 		static char ped_model_buf[64];
-		static std::string selected_ped_player = "";
+		static Player selected_ped_player_id = -1;
 
 		auto ped_type_arr = g_gta_data_service->get_ped_type_arr();
 		auto ped_arr = g_gta_data_service->get_ped_arr();
@@ -147,24 +147,24 @@ namespace big
 		auto weapon_type_arr = g_gta_data_service->get_weapon_type_arr();
 		auto weapon_arr = g_gta_data_service->get_weapon_arr();
 
-		static std::string selected_ped_for = "";
+		static Player selected_ped_for_player_id = -1;
 		auto player_arr = g_player_service->players();
 
 		if (!*g_pointers->m_is_session_started)
 		{
-			selected_ped_player = "";
-			selected_ped_for = "";
+			selected_ped_player_id = -1;
+			selected_ped_for_player_id = -1;
 		}
 		else
 		{
-			if (player_arr.count(selected_ped_player) == 0)
+			if (g_player_service->get_by_id(selected_ped_player_id) == nullptr)
 			{
-				selected_ped_player = "";
+				selected_ped_player_id = -1;
 			}
 
-			if (player_arr.count(selected_ped_for) == 0)
+			if (g_player_service->get_by_id(selected_ped_for_player_id) == nullptr)
 			{
-				selected_ped_for = "";
+				selected_ped_for_player_id = -1;
 			}
 		}
 
@@ -223,13 +223,13 @@ namespace big
 					ImGui::SetNextItemWidth(240.f);
 					if (ImGui::BeginCombo(
 						"##ped_player",
-						selected_ped_player.empty() ?
+						selected_ped_player_id == -1 ?
 						"Self" :
-						player_arr.find(selected_ped_player)->second->get_name()
+						g_player_service->get_by_id(selected_ped_player_id)->get_name()
 					)) {
-						if (ImGui::Selectable("Self", selected_ped_player.empty()))
+						if (ImGui::Selectable("Self", selected_ped_player_id == -1))
 						{
-							selected_ped_player = "";
+							selected_ped_player_id = -1;
 							g_model_preview_service->stop_preview();
 						}
 						else if (!g->spawn_ped.preview_ped || (g->spawn_ped.preview_ped && !ImGui::IsAnyItemHovered()))
@@ -245,7 +245,7 @@ namespace big
 								});
 						}
 
-						if (selected_ped_player.empty())
+						if (selected_ped_player_id == -1)
 						{
 							ImGui::SetItemDefaultFocus();
 						}
@@ -254,13 +254,13 @@ namespace big
 						{
 							for (auto& item : player_arr)
 							{
-								auto name = item.first;
-								auto player = item.second;
+								auto plyr = item.second;
+								auto plyr_id = plyr->id();
 
-								ImGui::PushID(player->id());
-								if (ImGui::Selectable(player->get_name(), selected_ped_player == name))
+								ImGui::PushID(plyr_id);
+								if (ImGui::Selectable(plyr->get_name(), selected_ped_player_id == plyr_id))
 								{
-									selected_ped_player = name;
+									selected_ped_player_id = plyr_id;
 									g_model_preview_service->stop_preview();
 								}
 								else if (!g->spawn_ped.preview_ped || (g->spawn_ped.preview_ped && !ImGui::IsAnyItemHovered()))
@@ -269,12 +269,12 @@ namespace big
 								}
 								else if (ImGui::IsItemHovered())
 								{
-									g_fiber_pool->queue_job([name] {
+									g_fiber_pool->queue_job([plyr_id] {
 
-										auto player = g_player_service->get_by_name(name);
-										if (player)
+										auto plyr = g_player_service->get_by_id(plyr_id);
+										if (plyr)
 										{
-											Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
+											Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
 											Hash hash = ENTITY::GET_ENTITY_MODEL(ped);
 											g_model_preview_service->show_ped(hash, ped);
 										}
@@ -283,7 +283,7 @@ namespace big
 								}
 								ImGui::PopID();
 
-								if (selected_ped_player == name)
+								if (selected_ped_player_id == plyr_id)
 								{
 									ImGui::SetItemDefaultFocus();
 								}
@@ -479,32 +479,34 @@ namespace big
 		{
 			if (ImGui::BeginCombo(
 				"##ped_for",
-				selected_ped_for.empty() ?
+				selected_ped_for_player_id == -1 ?
 				"Self" :
-				player_arr.find(selected_ped_for)->second->get_name()
+				g_player_service->get_by_id(selected_ped_for_player_id)->get_name()
 			)) {
-				if (ImGui::Selectable("Self", selected_ped_for.empty()))
+				if (ImGui::Selectable("Self", selected_ped_for_player_id == -1))
 				{
-					selected_ped_for = "";
+					selected_ped_for_player_id = -1;
 				}
 
-				if (selected_ped_for.empty())
+				if (selected_ped_for_player_id == -1)
 				{
 					ImGui::SetItemDefaultFocus();
 				}
 
 				if (*g_pointers->m_is_session_started)
 				{
-					for (auto& [name, player] : player_arr)
+					for (auto& [_, plyr] : player_arr)
 					{
-						ImGui::PushID(player->id());
-						if (ImGui::Selectable(player->get_name(), selected_ped_for == name))
+						auto plyr_id = plyr->id();
+
+						ImGui::PushID(plyr_id);
+						if (ImGui::Selectable(plyr->get_name(), selected_ped_for_player_id == plyr_id))
 						{
-							selected_ped_for = name;
+							selected_ped_for_player_id = plyr_id;
 						}
 						ImGui::PopID();
 
-						if (selected_ped_for == name)
+						if (selected_ped_for_player_id == plyr_id)
 						{
 							ImGui::SetItemDefaultFocus();
 						}
@@ -528,12 +530,12 @@ namespace big
 		components::button("Change Player Model", [] {
 			if (selected_ped_type == -2)
 			{
-				if (!selected_ped_player.empty())
+				if (selected_ped_player_id != -1)
 				{
-					auto player = g_player_service->get_by_name(selected_ped_player);
-					if (player)
+					auto plyr = g_player_service->get_by_id(selected_ped_player_id);
+					if (plyr)
 					{
-						Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
+						Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
 						ped::steal_identity(ped);
 					}
 				}
@@ -553,7 +555,7 @@ namespace big
 		ImGui::SameLine();
 
 		components::button("Spawn Ped", [] {
-			Ped ped = spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player, selected_ped_for, false);
+			Ped ped = spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, selected_ped_for_player_id, false);
 
 			if (ped)
 			{
@@ -564,7 +566,7 @@ namespace big
 		ImGui::SameLine();
 
 		components::button("Spawn Bodyguard", [] {
-			Ped ped = spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player, selected_ped_for, true);
+			Ped ped = spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, selected_ped_for_player_id, true);
 
 			if (ped)
 			{
