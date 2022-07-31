@@ -112,7 +112,7 @@ namespace big::teleport
 		if (!blip::get_blip_location(location, sprite, color))
 			return false;
 
-		if (sprite == (int)BlipIcons::Waypoint)
+		if (sprite == (int)BlipIcons::WAYPOINT)
 			load_ground_at_3dcoord(location);
 
 		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
@@ -136,7 +136,7 @@ namespace big::teleport
 
 	inline bool to_waypoint()
 	{
-		if (!to_blip((int)BlipIcons::Waypoint))
+		if (!to_blip((int)BlipIcons::WAYPOINT))
 		{
 			g_notification_service->push_warning("Teleport", "Failed to find waypoint position");
 
