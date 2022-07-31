@@ -161,7 +161,7 @@ namespace big
 						});
 						ImGui::PopID();
 
-						if (!g->spawn_vehicle.preview_vehicle || (g->spawn_vehicle.preview_vehicle && !ImGui::IsAnyItemHovered()))
+						if (!g->clone_pv.preview_vehicle || (g->clone_pv.preview_vehicle && !ImGui::IsAnyItemHovered()))
 						{
 							g_model_preview_service->stop_preview();
 						}
