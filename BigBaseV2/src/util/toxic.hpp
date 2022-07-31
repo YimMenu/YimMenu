@@ -247,6 +247,45 @@ namespace big::toxic
 		}
 	}
 
+	inline void LockDoors(Player player)
+	{
+		int lockStatus = VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(player);
+		if (PED::IS_PED_IN_ANY_VEHICLE(player, false))
+		{
+			entity::take_control_of(PED::GET_VEHICLE_PED_IS_USING(player));
+			VEHICLE::SET_VEHICLE_DOORS_LOCKED(PED::GET_VEHICLE_PED_IS_USING(player), 4);
+		}
+	}
+
+	inline void UnLockDoors(Player player)
+	{
+		if (PED::IS_PED_IN_ANY_VEHICLE(player, false))
+		{
+			entity::take_control_of(PED::GET_VEHICLE_PED_IS_USING(player));
+			VEHICLE::SET_VEHICLE_DOORS_LOCKED(PED::GET_VEHICLE_PED_IS_USING(player), 0);
+		}
+	}
+
+	inline void ModelCrash(const Player player)
+	{
+		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+		Vector3 playerCoords = ENTITY::GET_ENTITY_COORDS(ped, true);
+		Vector3 selfCoords = ENTITY::GET_ENTITY_COORDS(self::ped, true);
+		Vector3 location = Vector3(-4036, 8000, 1); //Away from Peds
+		float Heading = ENTITY::GET_ENTITY_HEADING(player);
+		Hash hash = VEHICLE_CYCLONE2; //Dont change unless its a invalid Car
+		//Script starts here
+		teleport::to_coords(location);
+		script::get_current()->yield(3s);
+		Vehicle veh = vehicle::spawn(hash, playerCoords, Heading, true);
+		g_notification_service->push("Toxic", "Crash Model Spawned to Player");
+		script::get_current()->yield(3s);
+		entity::delete_entity(veh);
+		g_notification_service->push("Toxic", "Deleted Invalid Model");
+		script::get_current()->yield(5s);
+		teleport::to_coords(selfCoords);
+	}
+
 	inline void ApplyForceToEntity(Entity e, float x, float y, float z)
 	{
 		if (e != self::id && NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(e) == false) 

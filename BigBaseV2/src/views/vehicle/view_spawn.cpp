@@ -23,6 +23,13 @@ namespace big
 		ImGui::SameLine();
 		ImGui::Checkbox("Spawn Maxed", &g->spawn.spawn_maxed);
 
+		ImGui::Checkbox("Delete Last Spawn", &g->spawn.delete_last_spawn);
+		components::button("Spawn Cargobob(Magnet)", [] {
+			vehicle::cargobobmagnet();
+			});
+
+		ImGui::Separator();
+
 		static char plate_buf[9] = { 0 };
 		strncpy(plate_buf, g->spawn.plate.c_str(), 9);
 

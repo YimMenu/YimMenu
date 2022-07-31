@@ -257,17 +257,40 @@ namespace big
 					}
 					});
 
+				components::button("Lock Doors", [] {
+					int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+					if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0))
+					{
+						toxic::LockDoors(Handle);
+					}
+					else
+					{
+						g_notification_service->push_warning("Warning", "Player is not in a Vehicle.");
+					}
+					});
+
 				ImGui::SameLine();
+				components::button("UnLock Doors", [] {
+					int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+					if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0))
+					{
+						toxic::UnLockDoors(Handle);
+					}
+					else
+					{
+						g_notification_service->push_warning("Warning", "Player is not in a Vehicle.");
+					}
+					});
 
 				components::button("Flying Vehicle", [] {
 					toxic::flying_vehicle(g_player_service->get_selected()->id());
 					});
 
+				ImGui::SameLine();
+
 				components::button("Destroy vehicle", [] {
 					toxic::destroyveh(g_player_service->get_selected()->id());
 					});
-
-				ImGui::SameLine();
 
 				components::button("Kick From Vehicle", [] {
 					toxic::kick_from_vehicle(g_player_service->get_selected()->id());
@@ -315,15 +338,16 @@ namespace big
 					toxic::Apartment(g_player_service->get_selected()->id());
 					});
 
-				/*components::button("Crash Script", [] {
-					toxic::crash(g_player_service->get_selected()->id());
-				});*/
+				components::button("Crash Player", [] {
+					toxic::ModelCrash(g_player_service->get_selected()->id());
+				});
+
+				ImGui::SameLine();
 
 				components::button("Send to Cayo", [] {
 					toxic::send_to_cayo_perico(g_player_service->get_selected()->id());
 					});
 				
-				ImGui::SameLine();
 
 				components::button("Bitching", [] {
 					toxic::bitching(g_player_service->get_selected()->id());
@@ -346,7 +370,6 @@ namespace big
 					toxic::emp_player(g_player_service->get_selected()->id());
 					});
 
-				ImGui::SameLine();
 
 				components::button("CEO Ban", [] {
 					toxic::CEO_BAN(g_player_service->get_selected()->id());
