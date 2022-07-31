@@ -140,7 +140,6 @@ namespace big
 			bool off_radar = false;
 			bool super_run = false;
 			int wanted_level = 0;
-			bool preview_ped = false;
 			bool god_mode = false;
 			bool proof_bullet = false;
 			bool proof_fire = false;
@@ -175,7 +174,7 @@ namespace big
 			hotkeys hotkeys{};
 		};
 
-		struct spawn
+		struct spawn_vehicle
 		{
 			bool preview_vehicle = false;
 			bool spawn_inside = false;
@@ -339,6 +338,11 @@ namespace big
 			ImU32 friend_color = 4293244509;
 		};
 
+		struct spawn_ped
+		{
+			bool preview_ped = false;
+		};
+
 	public:
 		int friend_count = 0;
 		int player_count = 0;
@@ -352,8 +356,9 @@ namespace big
 		self self{};
 		session session{};
 		settings settings{};
-		spawn spawn{};
+		spawn_vehicle spawn_vehicle{};
 		clone_pv clone_pv{};
+		spawn_ped spawn_ped{};
 		spoofing spoofing{};
 		vehicle vehicle{};
 		weapons weapons{};
@@ -522,14 +527,13 @@ namespace big
 			this->self.no_ragdoll = j["self"]["no_ragdoll"];
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
-			this->self.preview_ped = j["self"]["preview_ped"];
 
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
 
-			this->spawn.preview_vehicle = j["spawn"]["preview_vehicle"];
-			this->spawn.spawn_inside = j["spawn"]["spawn_inside"];
-			this->spawn.spawn_maxed = j["spawn"]["spawn_maxed"];
-			this->spawn.plate = j["spawn"]["plate"];
+			this->spawn_vehicle.preview_vehicle = j["spawn_vehicle"]["preview_vehicle"];
+			this->spawn_vehicle.spawn_inside = j["spawn_vehicle"]["spawn_inside"];
+			this->spawn_vehicle.spawn_maxed = j["spawn_vehicle"]["spawn_maxed"];
+			this->spawn_vehicle.plate = j["spawn_vehicle"]["plate"];
 
 			this->clone_pv.preview_vehicle = j["clone_pv"]["preview_vehicle"];
 			this->clone_pv.spawn_inside = j["clone_pv"]["spawn_inside"];
@@ -537,6 +541,8 @@ namespace big
 			this->clone_pv.spawn_maxed = j["clone_pv"]["spawn_maxed"];
 			this->clone_pv.clone_plate = j["clone_pv"]["clone_plate"];
 			this->clone_pv.plate = j["clone_pv"]["plate"];
+
+			this->spawn_ped.preview_ped = j["spawn_ped"]["preview_ped"];
 
 			this->spoofing.spoof_ip = j["spoofing"]["spoof_ip"];
 			this->spoofing.spoof_rockstar_id = j["spoofing"]["spoof_rockstar_id"];
@@ -775,7 +781,6 @@ namespace big
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
 						{ "super_run", this->self.super_run },
-						{ "preview_ped", this->self.preview_ped }
 					}
 				},
 				{
@@ -797,11 +802,16 @@ namespace big
 					}
 				},
 				{
-					"spawn", {
-						{ "preview_vehicle", this->spawn.preview_vehicle },
-						{ "spawn_inside", this->spawn.spawn_inside },
-						{ "spawn_maxed", this->spawn.spawn_maxed},
-						{ "plate", this->spawn.plate }
+					"spawn_vehicle", {
+						{ "preview_vehicle", this->spawn_vehicle.preview_vehicle },
+						{ "spawn_inside", this->spawn_vehicle.spawn_inside },
+						{ "spawn_maxed", this->spawn_vehicle.spawn_maxed},
+						{ "plate", this->spawn_vehicle.plate }
+					}
+				},
+				{
+					"spawn_ped", {
+						{ "preview_ped", this->spawn_ped.preview_ped },
 					}
 				},
 				{

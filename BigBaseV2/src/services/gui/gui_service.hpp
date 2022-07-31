@@ -21,10 +21,10 @@ namespace big
 		SPAWN_VEHICLE,
 		PV,
 		PERSIST_CAR,
-
-		FUN,
-		SPAWN_PED,
 		FUN_VEHICLE,
+
+		WORLD,
+		SPAWN_PED,
 
 		NETWORK,
 		SESSION,
@@ -70,10 +70,10 @@ namespace big
 				{ tabs::SPAWN_VEHICLE, { "Spawn Vehicle", view::spawn_vehicle }},
 				{ tabs::PV, { "Personal Vehicle", view::pv }},
 				{ tabs::PERSIST_CAR, { "Persist Car", view::persist_car }},
+				{ tabs::FUN_VEHICLE, { "Fun Features", view::fun_vehicle }},
 			}}},
-			{ tabs::FUN, { "Fun Features", nullptr, {
+			{ tabs::WORLD, { "World", nullptr, {
 				{ tabs::SPAWN_PED, { "Spawn Ped", view::spawn_ped }},
-				{ tabs::FUN_VEHICLE, { "Fun Vehicle", view::fun_vehicle }},
 			}}},
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},

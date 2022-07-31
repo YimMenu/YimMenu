@@ -118,7 +118,7 @@ namespace big
 						components::selectable(label, false, [&personal_veh] {
 							if (g->clone_pv.spawn_clone)
 							{
-								Vector3 spawn_location = vehicle::get_spawn_location(g->spawn.spawn_inside);
+								Vector3 spawn_location = vehicle::get_spawn_location(g->spawn_vehicle.spawn_inside);
 								float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 								auto vehicle_idx = personal_veh->get_vehicle_idx();
@@ -161,7 +161,7 @@ namespace big
 						});
 						ImGui::PopID();
 
-						if (!g->spawn.preview_vehicle || (g->spawn.preview_vehicle && !ImGui::IsAnyItemHovered()))
+						if (!g->spawn_vehicle.preview_vehicle || (g->spawn_vehicle.preview_vehicle && !ImGui::IsAnyItemHovered()))
 						{
 							g_model_preview_service->stop_preview();
 						}
