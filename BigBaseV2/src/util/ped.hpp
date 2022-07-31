@@ -1,5 +1,6 @@
 #pragma once
 #include "natives.hpp"
+#include "pointers.hpp"
 
 namespace big::ped
 {
@@ -87,7 +88,31 @@ namespace big::ped
 		}
 		TASK::TASK_PLAY_ANIM(PLAYER::PLAYER_PED_ID(), Dict, ID, 4.0f, -4.0f, -1, 1, 1, 0, 0, 0);
 	}
+	
+	inline Ped spawn(ePedType pedType, Hash hash, Vector3 location, float heading, bool is_networked = true)
+	{
+		for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+		{
+			STREAMING::REQUEST_MODEL(hash);
+			script::get_current()->yield();
+		}
 
+		if (!STREAMING::HAS_MODEL_LOADED(hash))
+		{
+			return 0;
+		}
+
+		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
+		auto ped = PED::CREATE_PED(pedType, hash, location.x, location.y, location.z, heading, is_networked, false);
+		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
+
+		script::get_current()->yield();
+
+		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+
+		return ped;
+	}
+	
 	inline void play_scenario(char* Scene)
 	{
 		TASK::TASK_START_SCENARIO_IN_PLACE(PLAYER::PLAYER_PED_ID(), Scene, 0, true);
@@ -129,28 +154,4 @@ namespace big::ped
 	
 	
 	static constexpr char const* give_weapon[] = { "None", "Stock", "Upgraded" };
-	
-	inline Ped spawn(ePedType pedType, Hash hash, Vector3 location, float heading, bool is_networked = true)
-	{
-		for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
-		{
-			STREAMING::REQUEST_MODEL(hash);
-			script::get_current()->yield();
-		}
-
-		if (!STREAMING::HAS_MODEL_LOADED(hash))
-		{
-			return 0;
-		}
-
-		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
-		auto ped = PED::CREATE_PED(pedType, hash, location.x, location.y, location.z, heading, is_networked, false);
-		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
-
-		script::get_current()->yield();
-
-		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-
-		return ped;
-	}
 }
