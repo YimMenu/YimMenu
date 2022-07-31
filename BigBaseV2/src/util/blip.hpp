@@ -23,13 +23,13 @@ namespace big::blip
 
 	inline bool get_objective_location(Vector3& location)
 	{
-		if (get_blip_location(location, (int)BlipIcons::Circle, (int)BlipColors::YellowMission)) return true;
-		if (get_blip_location(location, (int)BlipIcons::Circle, (int)BlipColors::YellowMission2)) return true;
-		if (get_blip_location(location, (int)BlipIcons::Circle, (int)BlipColors::Mission)) return true;
-		if (get_blip_location(location, (int)BlipIcons::RaceFinish, (int)BlipColors::None)) return true;
-		if (get_blip_location(location, (int)BlipIcons::Circle, (int)BlipColors::Green)) return true;
-		if (get_blip_location(location, (int)BlipIcons::Circle, (int)BlipColors::Blue)) return true;
-		if (get_blip_location(location, (int)BlipIcons::CrateDrop)) return true;
+		if (get_blip_location(location, (int)BlipIcons::LEVEL, (int)BlipColors::YellowMission)) return true;
+		if (get_blip_location(location, (int)BlipIcons::LEVEL, (int)BlipColors::YellowMission2)) return true;
+		if (get_blip_location(location, (int)BlipIcons::LEVEL, (int)BlipColors::Mission)) return true;
+		if (get_blip_location(location, (int)BlipIcons::RACEFLAG, (int)BlipColors::None)) return true;
+		if (get_blip_location(location, (int)BlipIcons::LEVEL, (int)BlipColors::Green)) return true;
+		if (get_blip_location(location, (int)BlipIcons::LEVEL, (int)BlipColors::Blue)) return true;
+		if (get_blip_location(location, (int)BlipIcons::CRATEDROP)) return true;
 
 		static const int blips[] = { 1, 57, 128, 129, 130, 143, 144, 145, 146, 271, 286, 287, 288 };
 		for (const auto& blip : blips)
