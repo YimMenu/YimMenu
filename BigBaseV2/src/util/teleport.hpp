@@ -105,21 +105,6 @@ namespace big::teleport
 		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z + 1.f);
 	}
 
-	inline bool to_blip(int sprite, int color = -1)
-	{
-		Vector3 location;
-
-		if (!blip::get_blip_location(location, sprite, color))
-			return false;
-
-		if (sprite == (int)BlipIcons::WAYPOINT)
-			load_ground_at_3dcoord(location);
-
-		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
-
-		return true;
-	}
-
 	inline bool to_entity(Entity ent)
 	{
 		Vector3 location = ENTITY::GET_ENTITY_COORDS(ent, true);
@@ -136,12 +121,21 @@ namespace big::teleport
 
 	inline bool to_waypoint()
 	{
-		if (!to_blip((int)BlipIcons::WAYPOINT))
+		Vector3 location;
+
+		std::vector<blip::blip_search> blip_search_arr = {
+			{BlipIcons::WAYPOINT, {  } }
+		};
+
+		if (!blip::get_blip_location(blip_search_arr, location))
 		{
 			g_notification_service->push_warning("Teleport", "Failed to find waypoint position");
-
 			return false;
 		}
+
+		load_ground_at_3dcoord(location);
+		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
+
 		return true;
 	}
 

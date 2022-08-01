@@ -57,7 +57,12 @@ namespace big
 			else if (current_destination == AutoDriveDestination::WAYPOINT)
 			{
 				to_waypoint = true;
-				does_waypoint_exist = blip::get_blip_location(waypoint, (int)BlipIcons::WAYPOINT);
+
+				std::vector<blip::blip_search> blip_search_arr = {
+					{BlipIcons::WAYPOINT, {  } }
+				};
+
+				does_waypoint_exist = blip::get_blip_location(blip_search_arr, waypoint);
 			}
 
 			if (
