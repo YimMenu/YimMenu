@@ -6,8 +6,6 @@
 #include "util/ped.hpp"
 #include "util/system.hpp"
 #include "core/data/WpnComp.h"
-#include "fiber_pool.hpp"
-#include "util/local_player.hpp"
 #include "services/model_preview/model_preview_service.hpp"
 
 namespace big

@@ -24,6 +24,7 @@ namespace big
 		ImGui::Checkbox("Spawn Maxed", &g->spawn.spawn_maxed);
 
 		ImGui::Checkbox("Delete Last Spawn", &g->spawn.delete_last_spawn);
+		ImGui::SameLine();
 		components::button("Spawn Cargobob(Magnet)", [] {
 			vehicle::cargobobmagnet();
 			});
@@ -73,7 +74,7 @@ namespace big
 		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None);
 
 
-		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 184 - 38 * 4) }))
+		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 186 - 38 * 5) }))
 		{
 			if (self::veh)
 			{
@@ -175,6 +176,13 @@ namespace big
 								{
 									vehicle::max_vehicle(veh);
 								}
+
+								if (g->spawn.delete_last_spawn)
+								{
+									entity::delete_entity(g->spawn.last_spawn);
+								}
+
+								g->spawn.last_spawn = veh;
 
 								vehicle::set_plate(veh, plate_buf);
 

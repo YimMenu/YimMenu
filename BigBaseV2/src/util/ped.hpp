@@ -2,9 +2,6 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "util/entity.hpp"
-#include "services/gta_data/gta_data_service.hpp"
-#include "util/system.hpp"
-#include "fiber_pool.hpp"
 
 namespace big::ped
 {

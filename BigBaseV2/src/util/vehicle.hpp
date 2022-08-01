@@ -1,13 +1,8 @@
 #pragma once
-#include "entity.hpp"
-#include "gta/joaat.hpp"
 #include "math.hpp"
 #include "natives.hpp"
-#include "pointers.hpp"
-#include "script.hpp"
 #include "teleport.hpp"
 #include "script_global.hpp"
-#include "gta\VehicleValues.h"
 #include "services/vehicle_helper/vehicle_helper.hpp"
 
 namespace big::vehicle
@@ -659,7 +654,7 @@ namespace big::vehicle
 		}
 	}
 
-	inline void cargobobmagnet()				//MF works
+	inline void cargobobmagnet()
 	{
 		Vector3 pos = ENTITY::GET_ENTITY_COORDS(self::ped, true);
 		float heading = ENTITY::GET_ENTITY_HEADING(PED::IS_PED_IN_ANY_VEHICLE(self::ped, false) ? PED::GET_VEHICLE_PED_IS_IN(self::ped, false) : self::ped);
@@ -669,11 +664,6 @@ namespace big::vehicle
 		teleport_into_vehicle(veh);
 
 	}
-
-	static constexpr char const* rgb_types[] = { "Off", "Fade", "Spasm" };
-
-	static constexpr int driving_styles[] = { 443, 525117 };
-	static constexpr char const* driving_style_names[] = { "Law-Abiding", "The Road Is Yours" };
 
 	static constexpr char const* chase_id[] = { "Off", "Car", "Heli", "Plane" };
 }
