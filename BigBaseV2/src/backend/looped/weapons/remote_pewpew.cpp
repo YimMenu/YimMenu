@@ -16,8 +16,8 @@ namespace big
 		if (g->self.free_cam == true &&
 			g->weapons.remote_pewpew &&
 			!g_gui.m_opened &&
-			elapsed_time_in_ms >= 100
-			&& !HUD::IS_PAUSE_MENU_ACTIVE())
+			elapsed_time_in_ms >= 100 &&
+			!HUD::IS_PAUSE_MENU_ACTIVE())
 		{
 			if (!g->weapons.force_crosshairs) {
 				g->weapons.force_crosshairs = true;

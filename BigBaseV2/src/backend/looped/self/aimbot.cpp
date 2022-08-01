@@ -1,13 +1,15 @@
 #include "backend/looped/looped.hpp"
 #include "services/players/player_service.hpp"
 #include "natives.hpp"
+#include "gui.hpp"
 
 namespace big
 {
 	void looped::self_aimbot()
 	{
 		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr) return;
-		if (g->self.aimbot && !NETWORK::NETWORK_IS_IN_SPECTATOR_MODE() && !NETWORK::NETWORK_IS_ACTIVITY_SPECTATOR() && !HUD::IS_PAUSE_MENU_ACTIVE() && !ENTITY::IS_ENTITY_DEAD(self::ped, false))
+		if (g->self.aimbot && !NETWORK::NETWORK_IS_IN_SPECTATOR_MODE() && !NETWORK::NETWORK_IS_ACTIVITY_SPECTATOR() && 
+			!HUD::IS_PAUSE_MENU_ACTIVE() && !ENTITY::IS_ENTITY_DEAD(self::ped, false) && !g_gui.m_opened)
 		{
 			for (auto& item : g_player_service->players())
 			{

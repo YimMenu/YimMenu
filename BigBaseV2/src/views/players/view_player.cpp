@@ -319,6 +319,7 @@ namespace big
 					toxic::KICK_TO_SP(g_player_service->get_selected()->id());
 					});
 
+
 				components::button("Ragdoll", [] {
 					TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()));
 					auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), true);
@@ -333,12 +334,12 @@ namespace big
 
 				ImGui::SameLine();
 
-
 				components::button("Send to APT", [] {
 					toxic::Apartment(g_player_service->get_selected()->id());
 					});
 
-				components::button("Crash Player", [] {
+
+				components::button("Crash", [] {
 					toxic::ModelCrash(g_player_service->get_selected()->id());
 				});
 
@@ -348,14 +349,21 @@ namespace big
 					toxic::send_to_cayo_perico(g_player_service->get_selected()->id());
 					});
 				
+				ImGui::SameLine();
+
+				components::button("Chal BSDK", [] {
+					gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player());
+					});
+
 
 				components::button("Bitching", [] {
 					toxic::bitching(g_player_service->get_selected()->id());
 					});
 
 				ImGui::SameLine();
-				
-				components::button("Chal BSDK", [] { gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player());
+
+				components::button("EMP", [] {
+					toxic::emp_player(g_player_service->get_selected()->id());
 					});
 
 
@@ -365,11 +373,6 @@ namespace big
 					});
 
 				ImGui::SameLine();
-
-				components::button("EMP", [] {
-					toxic::emp_player(g_player_service->get_selected()->id());
-					});
-
 
 				components::button("CEO Ban", [] {
 					toxic::CEO_BAN(g_player_service->get_selected()->id());
