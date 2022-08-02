@@ -417,9 +417,19 @@ namespace big
 						selected_ped_weapon_type = SPAWN_PED_ALL_WEAPONS;
 					}
 
+					if (selected_ped_weapon_hash == SPAWN_PED_ALL_WEAPONS)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
+
 					if (ImGui::Selectable("NO WEAPONS", selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS))
 					{
 						selected_ped_weapon_type = SPAWN_PED_NO_WEAPONS;
+					}
+
+					if (selected_ped_weapon_hash == SPAWN_PED_NO_WEAPONS)
+					{
+						ImGui::SetItemDefaultFocus();
 					}
 
 					for (int i = 0; i < weapon_type_arr.size(); i++)
@@ -450,35 +460,40 @@ namespace big
 				ImGui::SetNextItemWidth(240.f);
 				if (ImGui::BeginCombo(
 					"##ped_weapon", 
+					selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS ?
+					"NO WEAPONS" :
 					selected_ped_weapon_hash == 0 ? 
 					"ALL" : 
 					g_gta_data_service->find_weapon_by_hash(selected_ped_weapon_hash).name.c_str()
 				)) {
-					if (ImGui::Selectable("ALL", selected_ped_weapon_hash == 0))
+					if (selected_ped_weapon_type != SPAWN_PED_NO_WEAPONS)
 					{
-						selected_ped_weapon_hash = 0;
-					}
-
-					if (selected_ped_weapon_hash == 0)
-					{
-						ImGui::SetItemDefaultFocus();
-					}
-
-					for (auto& weapon : weapon_arr)
-					{
-						if (
-							selected_ped_weapon_type == -1 || 
-							weapon.weapon_type == weapon_type_arr[selected_ped_weapon_type]
-						) {
-							if (ImGui::Selectable(weapon.name.c_str(), weapon.hash == selected_ped_weapon_hash))
-							{
-								selected_ped_weapon_hash = weapon.hash;
-							}
+						if (ImGui::Selectable("ALL", selected_ped_weapon_hash == 0))
+						{
+							selected_ped_weapon_hash = 0;
 						}
 
-						if (selected_ped_weapon_hash == weapon.hash)
+						if (selected_ped_weapon_hash == 0)
 						{
 							ImGui::SetItemDefaultFocus();
+						}
+
+						for (auto& weapon : weapon_arr)
+						{
+							if (
+								selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ||
+								weapon.weapon_type == weapon_type_arr[selected_ped_weapon_type]
+							) {
+								if (ImGui::Selectable(weapon.name.c_str(), weapon.hash == selected_ped_weapon_hash))
+								{
+									selected_ped_weapon_hash = weapon.hash;
+								}
+							}
+
+							if (selected_ped_weapon_hash == weapon.hash)
+							{
+								ImGui::SetItemDefaultFocus();
+							}
 						}
 					}
 
