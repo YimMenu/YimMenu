@@ -17,7 +17,7 @@ namespace big
 		{
 			if (item_location.x != location.x || item_location.y != location.y || item_location.z != location.z)
 			{
-				if (math::distance_between_vectors(item_location, location) < 0.5f)
+				if (math::distance_between_vectors(item_location, location) < 2.0f)
 				{
 					return false;
 				}

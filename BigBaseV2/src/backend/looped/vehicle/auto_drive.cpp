@@ -94,7 +94,7 @@ namespace big
 
 			update_ticks++;
 
-			if (update_ticks > 1000)
+			if (update_ticks > 5000)
 			{
 				update_ticks = 0;
 			}

@@ -9,7 +9,7 @@
 namespace big::blip
 {
 	struct blip_search {
-		BlipIcons spite;
+		BlipIcons sprite;
 		std::vector<BlipColors> colors;
 	};
 
@@ -17,7 +17,7 @@ namespace big::blip
 	{
 		for (auto& item : blip_search_arr)
 		{
-			Blip blip = HUD::GET_FIRST_BLIP_INFO_ID((int)item.spite);
+			Blip blip = HUD::GET_FIRST_BLIP_INFO_ID((int)item.sprite);
 
 			while (HUD::DOES_BLIP_EXIST(blip))
 			{
@@ -39,9 +39,11 @@ namespace big::blip
 						location.z += 1.5f;
 						return true;
 					}
+
+					LOG(WARNING) << (int)item.sprite << " " << (int)color_idx;
 				}
 
-				blip = HUD::GET_NEXT_BLIP_INFO_ID((int)item.spite);
+				blip = HUD::GET_NEXT_BLIP_INFO_ID((int)item.sprite);
 			}
 		}
 
@@ -51,7 +53,7 @@ namespace big::blip
 	inline bool get_objective_location(Vector3& location)
 	{
 		const std::vector<blip_search> blip_search_arr = {
-			{ BlipIcons::LEVEL, { BlipColors::YELLOW_MISSION, BlipColors::YELLOW_MISSION_2, BlipColors::YELLOW_MISSION_3, BlipColors::GREEN, BlipColors::BLUE } },
+			{ BlipIcons::LEVEL, { BlipColors::YELLOW_MISSION, BlipColors::YELLOW_MISSION_2, BlipColors::YELLOW_MISSION_3, BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::RACEFLAG, { } },
 			{ BlipIcons::RACE, { } },
 			{ BlipIcons::CRATEDROP, { } },
@@ -59,10 +61,10 @@ namespace big::blip
 			{ BlipIcons::GANG_COPS, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::GANG_MEXICANS, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::GANG_BIKERS, { BlipColors::YELLOW_MISSION } },
-			{ BlipIcons::OBJECTIVE_BLUE, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::OBJECTIVE_GREEN, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::OBJECTIVE_RED, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::OBJECTIVE_YELLOW, { BlipColors::YELLOW_MISSION } },
+			{ BlipIcons::OBJECTIVE_BLUE, { BlipColors::BLUE, BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::ONMISSION_COPS, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::ONMISSION_LOST, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::ONMISSION_VAGOS, { BlipColors::YELLOW_MISSION } },
@@ -72,8 +74,11 @@ namespace big::blip
 			{ BlipIcons::CRIM_CUFF_KEYS, {  } },
 			{ BlipIcons::CAMERA, {  } },
 			{ BlipIcons::HANDCUFF_KEYS_BIKERS, {  } },
+			{ BlipIcons::GANG_VEHICLE, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::PLAYERSTATE_KEYHOLDER, {  } },
-			{ BlipIcons::FRIEND, {  } },
+			{ BlipIcons::FRIEND, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
+			{ BlipIcons::GETAWAY_CAR, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
+			{ BlipIcons::GANG_ATTACK_PACKAGE, {  } },
 			{ BlipIcons::GANG_ATTACK_PACKAGE, {  } },
 			// { BlipIcons::CAPTURE_THE_FLAG, {  } },
 			{ BlipIcons::TEMP_3, {  } },
@@ -83,14 +88,15 @@ namespace big::blip
 			{ BlipIcons::DEAD_DROP, {  } },
 			{ BlipIcons::ASSAULT_PACKAGE, {  } },
 			{ BlipIcons::HUNT_THE_BOSS, {  } },
-			{ BlipIcons::CONTRABAND, { BlipColors::GREEN, BlipColors::BLUE } },
-			{ BlipIcons::PACKAGE, { BlipColors::GREEN, BlipColors::BLUE } },
-			{ BlipIcons::DRUGS_PACKAGE, { BlipColors::GREEN, BlipColors::BLUE } },
-			{ BlipIcons::SUPPLIES, { BlipColors::GREEN, BlipColors::BLUE_PICKUP } },
-			{ BlipIcons::SM_CARGO, { BlipColors::GREEN, BlipColors::BLUE } },
+			{ BlipIcons::BELLY_OF_THE_BEAST, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
+			{ BlipIcons::CONTRABAND, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
+			{ BlipIcons::PACKAGE, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
+			{ BlipIcons::DRUGS_PACKAGE, { BlipColors::GREEN,BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
+			{ BlipIcons::SUPPLIES, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
+			{ BlipIcons::SM_CARGO, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::TF_CHECKPOINT, {  } },
 			{ BlipIcons::CAMERA_2, {  } }, 
-			{ BlipIcons::NHP_BAG, { BlipColors::GREEN, BlipColors::BLUE } },
+			{ BlipIcons::NHP_BAG, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::KEYCARD, {  } },
 			{ BlipIcons::ISLAND_HEIST_PREP, {  } },
 			{ BlipIcons::CAR_ROBBERY_PREP, {  } },
