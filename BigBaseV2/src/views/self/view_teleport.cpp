@@ -9,42 +9,60 @@ namespace big
 {
 	void view::teleport()
 	{
-		ImGui::Text("Blips:");
-
-		components::button("Waypoint", []
-		{
+		components::button("Waypoint", [] {
 			teleport::to_waypoint();
 		});
 
-		components::button("Objective", []
-		{
+		ImGui::SameLine();
+
+		components::button("Objective", [] {
 			teleport::to_objective();
 		});
 
-		ImGui::Text("Vehicles:");
+		ImGui::Separator();
 
-		components::button("Teleport to Last Vehicle", []
+		components::sub_title("Property");
+
+
+		static bool ready = true;
+		static int update_ticks = 0;
+		static std::map<std::string, Vector3> property_list;
+
+		if (ready == true)
 		{
-			if (g_local_player && g_local_player->m_vehicle)
+			if (update_ticks == 0)
 			{
-				const Vehicle veh = g_pointers->m_ptr_to_handle(g_local_player->m_vehicle);
+				ready = false;
 
-				teleport::into_vehicle(veh);
+				g_fiber_pool->queue_job([] {
+					property_list.clear();
+					blip::get_property_list(property_list);
+
+					ready = true;
+				});
 			}
-		});
 
-		components::button("Bring Personal Vehicle", []
+			update_ticks++;
+
+			if (update_ticks > 1000)
+			{
+				update_ticks = 0;
+			}
+		}
+
+		if (ImGui::ListBoxHeader("##property_list", { 300, 300 }))
 		{
-			Vehicle veh = mobile::mechanic::get_personal_vehicle();
+			for (auto& it : property_list)
+			{
+				const auto& name = it.first;
+				const auto& location = it.second;
 
-			vehicle::bring(veh, self::pos);
-		});
+				components::selectable(name, false, [&location] {
+					teleport::to_coords(location);
+				});
+			}
 
-		components::button("Teleport to Personal Vehicle", []
-		{
-			Vehicle veh = mobile::mechanic::get_personal_vehicle();
-
-			teleport::into_vehicle(veh);
-		});
+			ImGui::ListBoxFooter();
+		}
 	}
 }

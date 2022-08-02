@@ -1653,22 +1653,23 @@ enum class BlipIcons
 
 enum class BlipColors
 {
-	None,
-	Red,
-	Green,
-	Blue,
-	PlayerColor,
-	YellowMission,
-	FriendlyVehicle = 0x26,
-	MichaelColor = 0x2A,
-	FranklinColor,
-	TravorColor,
-	BlipColorEnemy = 0x31,
-	MissionVehicle = 0x36,
-	RedMission = 0x3B,
-	YellowMission2 = 0x3C,
-	Mission = 0x42,
-	WaypointColor = 0x54
+	WHITE_0,
+	RED = 1,
+	GREEN = 2,
+	BLUE = 3,
+	WHITE_PLAYER = 4,
+	YELLOW_MISSION = 5,
+	RED_ENEMY = 49,
+	RED_MISSION = 49,
+	BLUE_PICKUP = 57,
+	YELLOW_MISSION_2 = 60,
+	YELLOW_MISSION_3 = 66,
+	WAYPOINT = 83,
+
+
+	MICHAEL = 42,
+	FRANKLIN = 43,
+	TREVOR = 44
 };
 
 enum class BlipDisplayBits
