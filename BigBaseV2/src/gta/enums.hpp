@@ -1648,7 +1648,8 @@ enum class BlipIcons
 	DEITY = 823,
 	D_CHAMPION = 824,
 	BUFFALO4 = 825,
-	AGENCY = 826
+	AGENCY = 826,
+	MC_BAR_SUPPLIES = 827,
 };
 
 enum class BlipColors
@@ -1659,13 +1660,11 @@ enum class BlipColors
 	BLUE = 3,
 	WHITE_PLAYER = 4,
 	YELLOW_MISSION = 5,
-	RED_ENEMY = 49,
 	RED_MISSION = 49,
 	BLUE_PICKUP = 57,
 	YELLOW_MISSION_2 = 60,
 	YELLOW_MISSION_3 = 66,
 	WAYPOINT = 83,
-
 
 	MICHAEL = 42,
 	FRANKLIN = 43,

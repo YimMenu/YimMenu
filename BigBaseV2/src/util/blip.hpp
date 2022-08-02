@@ -27,6 +27,9 @@ namespace big::blip
 					location.z += 1.5f;
 
 					BlipColors color_idx = (BlipColors)HUD::GET_BLIP_COLOUR(blip);
+
+					LOG(WARNING) << (int)item.sprite << " " << (int)color_idx;
+
 					return true;
 				}
 				else
@@ -44,6 +47,20 @@ namespace big::blip
 				}
 
 				blip = HUD::GET_NEXT_BLIP_INFO_ID((int)item.sprite);
+			}
+		}
+
+		for (int i = 823; i < 900; i++)
+		{
+			Blip blip = HUD::GET_FIRST_BLIP_INFO_ID(i);
+
+			while (HUD::DOES_BLIP_EXIST(blip))
+			{
+				BlipColors color_idx = (BlipColors)HUD::GET_BLIP_COLOUR(blip);
+
+				LOG(WARNING) << i << " " << (int)color_idx;
+
+				blip = HUD::GET_NEXT_BLIP_INFO_ID(i);
 			}
 		}
 
@@ -77,6 +94,7 @@ namespace big::blip
 			{ BlipIcons::GANG_VEHICLE, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::PLAYERSTATE_KEYHOLDER, {  } },
 			{ BlipIcons::FRIEND, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
+			{ BlipIcons::PLANE_DROP, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::GETAWAY_CAR, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::GANG_ATTACK_PACKAGE, {  } },
 			{ BlipIcons::GANG_ATTACK_PACKAGE, {  } },
@@ -92,6 +110,7 @@ namespace big::blip
 			{ BlipIcons::CONTRABAND, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::PACKAGE, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::DRUGS_PACKAGE, { BlipColors::GREEN,BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
+			{ BlipIcons::REG_PAPERS, { BlipColors::GREEN,BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::SUPPLIES, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::SM_CARGO, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::TF_CHECKPOINT, {  } },
@@ -103,6 +122,7 @@ namespace big::blip
 			{ BlipIcons::SECURITY_CONTRACT, {  } },
 			{ BlipIcons::SAFE, {  } },
 			{ BlipIcons::EXPLOSIVE_CHARGE, {  } },
+			{ BlipIcons::MC_BAR_SUPPLIES, { BlipColors::BLUE_PICKUP } }
 		};
 
 		return get_blip_location(blip_search_arr, location);
