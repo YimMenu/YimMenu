@@ -15,12 +15,12 @@ namespace big
 	{
 		for (auto& [item_name, item_location] : g->teleport.property_list)
 		{
-			if (item_location.x != location.x || item_location.y != location.y || item_location.z != location.z)
-			{
-				if (math::distance_between_vectors(item_location, location) < 2.0f)
-				{
-					return false;
-				}
+			if (
+				abs(item_location.x - location.x) < 1.f && 
+				abs(item_location.y - location.y) < 1.f && 
+				abs(item_location.z - location.z) < 2.f
+			) {
+				return false;
 			}
 		}
 
