@@ -26,6 +26,7 @@ namespace big
 
 		static bool ready = true;
 		static int update_ticks = 0;
+		static BlipColors last_player_color = BlipColors::WHITE_0;
 		static std::map<std::string, Vector3> property_list;
 
 		if (ready == true)
@@ -35,9 +36,7 @@ namespace big
 				ready = false;
 
 				g_fiber_pool->queue_job([] {
-					property_list.clear();
-					blip::get_property_list(property_list);
-
+					last_player_color = blip::update_property_list(last_player_color, property_list);
 					ready = true;
 				});
 			}

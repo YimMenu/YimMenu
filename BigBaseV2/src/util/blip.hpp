@@ -13,6 +13,11 @@ namespace big::blip
 		std::vector<BlipColors> colors;
 	};
 
+	struct blip_hardcoded {
+		std::string name;
+		Vector3 location;
+	};
+
 	inline bool get_blip_location(const std::vector<blip_search>& blip_search_arr, Vector3& location)
 	{
 		LOG(WARNING) << "POS: " << self::pos.x << " " << self::pos.y << " " << self::pos.z;
@@ -117,13 +122,14 @@ namespace big::blip
 		return get_blip_location(blip_search_arr, location);
 	}
 
-	inline void get_property_list(std::map<std::string, Vector3>& list)
+	inline BlipColors update_property_list(BlipColors last_player_color, std::map<std::string, Vector3>& list)
 	{
 		BlipColors player_color = BlipColors::WHITE_PLAYER;
 
 		if (!self::ped)
 		{
-			return;
+			list.clear();
+			return BlipColors::WHITE_0;
 		}
 
 		auto player_ped_type = PED::GET_PED_TYPE(self::ped);
@@ -144,6 +150,11 @@ namespace big::blip
 		{
 			Blip player_blip = HUD::GET_MAIN_PLAYER_BLIP_ID();
 			player_color = (BlipColors)HUD::GET_BLIP_COLOUR(player_blip);
+		}
+
+		if (last_player_color != player_color)
+		{
+			list.clear();
 		}
 
 		const std::map<BlipIcons, std::string> property_items = {
@@ -171,12 +182,17 @@ namespace big::blip
 			{ BlipIcons::NHP_BASE, "Facility" },
 			{ BlipIcons::BAT_CLUB_PROPERTY, "Nightclub" },
 			{ BlipIcons::ARENA_WORKSHOP, "Arena Workshop" },
-			{ BlipIcons::CASINO, "Casino" },
 			{ BlipIcons::ARCADE, "Arcade" },
 			{ BlipIcons::SUB2, "Kosatka" },
 			{ BlipIcons::AUTO_SHOP_PROPERTY, "Auto Shop" },
 			{ BlipIcons::AGENCY, "Agency" },
 		};
+
+		const std::map<BlipIcons, blip_hardcoded> hardcoded_items = {
+			{ BlipIcons::CASINO, { "Casino", { 924.25f, 46.75f, 79.8f } } },
+			{ BlipIcons::CAR_MEET, { "LS Car Meet", { 780.44f, -1867.65f, 27.99f } } },
+		};
+
 
 		for (auto& [sprite, name] : property_items)
 		{
@@ -230,5 +246,18 @@ namespace big::blip
 				blip = HUD::GET_NEXT_BLIP_INFO_ID((int)sprite);
 			}
 		}
+
+		for (auto& [sprite, item] : hardcoded_items)
+		{
+			Blip blip = HUD::GET_FIRST_BLIP_INFO_ID((int)sprite);
+
+			while (HUD::DOES_BLIP_EXIST(blip))
+			{
+				list[item.name] = item.location;
+				break;
+			}
+		}
+
+		return player_color;
 	}
 }

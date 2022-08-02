@@ -20,18 +20,27 @@ namespace big
 		static float current_speed = 8;
 		static bool started = false;
 		static Vector3 waypoint;
+		static bool does_waypoint_exist = false;
+		static bool to_waypoint = false;
+		static int update_ticks = 0;
 
 		if (g->vehicle.auto_drive_destination != AutoDriveDestination::STOPPED)
 		{
 			current_destination = g->vehicle.auto_drive_destination;
 			g->vehicle.auto_drive_destination = AutoDriveDestination::STOPPED;
 			changing_driving_styles = true;
+			does_waypoint_exist = false;
+			to_waypoint = false;
+			update_ticks = 0;
 		}
 
 		if (!self::veh && current_destination != AutoDriveDestination::STOPPED)
 		{
 			current_destination = AutoDriveDestination::STOPPED;
 			changing_driving_styles = false;
+			does_waypoint_exist = false;
+			to_waypoint = false;
+			update_ticks = 0;
 			g_notification_service->push_warning("Warning", "Please be in a car first then try again.");
 		}
 		else if (
@@ -41,39 +50,53 @@ namespace big
 			current_driving_flag = driving_style_flags[g->vehicle.auto_drive_style];
 			current_speed = g->vehicle.auto_drive_speed;
 			changing_driving_styles = true;
+			does_waypoint_exist = false;
+			to_waypoint = false;
+			update_ticks = 0;
 		}
 
 		if (current_destination != AutoDriveDestination::STOPPED)
 		{
 			Vector3 last_waypoint = waypoint;
-			bool does_waypoint_exist = false;
-			bool to_waypoint = false;
-			
-			if (current_destination == AutoDriveDestination::OBJECTITVE)
+
+			if (update_ticks == 0)
 			{
-				to_waypoint = true;
-				does_waypoint_exist = blip::get_objective_location(waypoint);
+				does_waypoint_exist = false;
+				to_waypoint = false;
+
+				if (current_destination == AutoDriveDestination::OBJECTITVE)
+				{
+					to_waypoint = true;
+					does_waypoint_exist = blip::get_objective_location(waypoint);
+				}
+				else if (current_destination == AutoDriveDestination::WAYPOINT)
+				{
+					to_waypoint = true;
+
+					std::vector<blip::blip_search> blip_search_arr = {
+						{BlipIcons::WAYPOINT, {  } }
+					};
+
+					does_waypoint_exist = blip::get_blip_location(blip_search_arr, waypoint);
+				}
+
+				if (
+					does_waypoint_exist &&
+					(
+						last_waypoint.x != waypoint.x ||
+						last_waypoint.y != waypoint.y ||
+						last_waypoint.z != waypoint.z
+						)
+					) {
+					changing_driving_styles = true;
+				}
 			}
-			else if (current_destination == AutoDriveDestination::WAYPOINT)
+
+			update_ticks++;
+
+			if (update_ticks > 1000)
 			{
-				to_waypoint = true;
-
-				std::vector<blip::blip_search> blip_search_arr = {
-					{BlipIcons::WAYPOINT, {  } }
-				};
-
-				does_waypoint_exist = blip::get_blip_location(blip_search_arr, waypoint);
-			}
-
-			if (
-				does_waypoint_exist &&
-				(
-					last_waypoint.x != waypoint.x || 
-					last_waypoint.y != waypoint.y || 
-					last_waypoint.z != waypoint.z
-				)
-			) {
-				changing_driving_styles = true;
+				update_ticks = 0;
 			}
 
 			bool interupted = (
