@@ -15,25 +15,18 @@ namespace big::blip
 
 	inline bool get_blip_location(const std::vector<blip_search>& blip_search_arr, Vector3& location)
 	{
-		LOG(WARNING) << "POS: " << self::pos.x << " " << self::pos.y << " " << self::pos.z;
-
 		for (auto& item : blip_search_arr)
 		{
 			Blip blip = HUD::GET_FIRST_BLIP_INFO_ID((int)item.spite);
 
 			while (HUD::DOES_BLIP_EXIST(blip))
 			{
-				LOG(WARNING) << "POI: " << (int)item.spite;
-
 				if (item.colors.size() == 0)
 				{
 					location = HUD::GET_BLIP_COORDS(blip);
 					location.z += 1.5f;
 
 					BlipColors color_idx = (BlipColors)HUD::GET_BLIP_COLOUR(blip);
-					LOG(WARNING) << "POI: 0T " << (int)color_idx;
-					LOG(WARNING) << "POS2: " << location.x << " " << location.y << " " << location.z;
-
 					return true;
 				}
 				else
@@ -44,21 +37,13 @@ namespace big::blip
 					{
 						location = HUD::GET_BLIP_COORDS(blip);
 						location.z += 1.5f;
-
-						LOG(WARNING) << "POI: T " << (int)color_idx;
-						LOG(WARNING) << "POS2: " << location.x << " " << location.y << " " << location.z;
-
 						return true;
 					}
-
-					LOG(WARNING) << "POI: 1T " << (int)color_idx;
 				}
 
 				blip = HUD::GET_NEXT_BLIP_INFO_ID((int)item.spite);
 			}
 		}
-
-		LOG(WARNING) << "POI: F";
 
 		return false;
 	}
