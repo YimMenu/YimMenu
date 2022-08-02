@@ -176,6 +176,29 @@ namespace big
 
 		ImGui::Separator();
 
+		static constexpr char const* boost_behavior[] = { "Default", "Instant Refil", "Infinite" };
+		if (ImGui::BeginCombo("Boost Behavior", boost_behavior[g->vehicle.boost_behavior]))
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				bool itemSelected = g->vehicle.boost_behavior == i;
+
+				if (ImGui::Selectable(boost_behavior[i], itemSelected))
+				{
+					g->vehicle.boost_behavior = i;
+				}
+
+				if (itemSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+
+		ImGui::Separator();
+
 		components::small_text("Vehicle Fly");
 
 		ImGui::BeginGroup();
