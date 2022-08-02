@@ -4,6 +4,7 @@
 #include "enums.hpp"
 #include "file_manager.hpp"
 #include "imgui.h"
+#include "natives.hpp"
 #include <bitset>
 
 namespace big
@@ -210,6 +211,11 @@ namespace big
 			bool no_idle_kick = false;
 		};
 
+		struct teleport {
+			std::map<std::string, Vector3> property_list;
+			bool updated = true;
+		};
+
 		struct vehicle {
 			struct speedo_meter {
 				float x = .9f;
@@ -353,6 +359,7 @@ namespace big
 		spawn spawn{};
 		clone_pv clone_pv{};
 		spoofing spoofing{};
+		teleport teleport{};
 		vehicle vehicle{};
 		weapons weapons{};
 		window window{};

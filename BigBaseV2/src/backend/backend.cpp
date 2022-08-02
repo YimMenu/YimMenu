@@ -171,6 +171,18 @@ namespace big
 		}
 	}
 
+	void backend::teleport_loop()
+	{
+		LOG(INFO) << "Starting script: Teleport";
+
+		while (g_running)
+		{
+			looped::teleport_property_list();
+
+			script::get_current()->yield();
+		}
+	}
+
 	void backend::vehiclefly_loop()
 	{
 		LOG(INFO) << "Starting script: Vehicle fly";

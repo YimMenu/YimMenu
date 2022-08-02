@@ -36,6 +36,8 @@ namespace big
 		static void self_police();
 		static void self_super_run();
 
+		static void teleport_property_list();
+
 		static void session_local_time();
 
 		static void system_self_globals();

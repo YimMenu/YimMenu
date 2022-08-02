@@ -24,21 +24,13 @@ namespace big
 		components::sub_title("Property");
 
 
-		static bool ready = true;
 		static int update_ticks = 0;
-		static BlipColors last_player_color = BlipColors::WHITE_0;
-		static std::map<std::string, Vector3> property_list;
 
-		if (ready == true)
+		if (g->teleport.updated == true)
 		{
 			if (update_ticks == 0)
 			{
-				ready = false;
-
-				g_fiber_pool->queue_job([] {
-					last_player_color = blip::update_property_list(last_player_color, property_list);
-					ready = true;
-				});
+				g->teleport.updated = false;
 			}
 
 			update_ticks++;
@@ -51,7 +43,7 @@ namespace big
 
 		if (ImGui::ListBoxHeader("##property_list", { 300, 300 }))
 		{
-			for (auto& it : property_list)
+			for (auto& it : g->teleport.property_list)
 			{
 				const auto& name = it.first;
 				const auto& location = it.second;
