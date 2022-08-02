@@ -2,6 +2,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "gta/enums.hpp"
+#include "util/math.hpp"
 
 namespace big
 {
@@ -9,6 +10,22 @@ namespace big
 		std::string name;
 		Vector3 location;
 	};
+
+	bool teleport_check_location(Vector3 location)
+	{
+		for (auto& [item_name, item_location] : g->teleport.property_list)
+		{
+			if (item_location.x != location.x || item_location.y != location.y || item_location.z != location.z)
+			{
+				if (math::distance_between_vectors(item_location, location) < 0.5f)
+				{
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
 
 	void looped::teleport_property_list()
 	{
@@ -25,6 +42,8 @@ namespace big
 			last_player_color = BlipColors::WHITE_0;
 			return;
 		}
+
+		HUD::HIDE_MINIMAP_INTERIOR_MAP_THIS_FRAME();
 
 		BlipColors player_color = BlipColors::WHITE_PLAYER;
 		auto player_ped_type = PED::GET_PED_TYPE(self::ped);
@@ -105,13 +124,16 @@ namespace big
 				) {
 					Vector3 location = HUD::GET_BLIP_COORDS(blip);
 
-					Hash street_hash;
-					Hash street_crossing_hash;
-					PATHFIND::GET_STREET_NAME_AT_COORD(location.x, location.y, location.z, &street_hash, &street_crossing_hash);
+					if (teleport_check_location(location))
+					{
+						Hash street_hash;
+						Hash street_crossing_hash;
+						PATHFIND::GET_STREET_NAME_AT_COORD(location.x, location.y, location.z, &street_hash, &street_crossing_hash);
 
-					const char* street_name = HUD::GET_STREET_NAME_FROM_HASH_KEY(street_hash);
+						const char* street_name = HUD::GET_STREET_NAME_FROM_HASH_KEY(street_hash);
 
-					g->teleport.property_list[name + " (" + street_name + ")"] = location;
+						g->teleport.property_list[name + " (" + street_name + ")"] = location;
+					}
 				}
 
 				blip = HUD::GET_NEXT_BLIP_INFO_ID((int)sprite);
@@ -134,7 +156,11 @@ namespace big
 					color_idx == BlipColors::WHITE_PLAYER
 				) {
 					Vector3 location = HUD::GET_BLIP_COORDS(blip);
-					g->teleport.property_list[name] = location;
+
+					if (teleport_check_location(location))
+					{
+						g->teleport.property_list[name] = location;
+					}
 				}
 
 				blip = HUD::GET_NEXT_BLIP_INFO_ID((int)sprite);

@@ -41,7 +41,7 @@ namespace big
 			}
 		}
 
-		if (ImGui::ListBoxHeader("##property_list", { 300, 300 }))
+		if (ImGui::ListBoxHeader("##property_list", { 300, 400 }))
 		{
 			for (auto& it : g->teleport.property_list)
 			{
