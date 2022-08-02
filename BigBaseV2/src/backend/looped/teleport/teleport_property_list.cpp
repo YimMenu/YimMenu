@@ -102,7 +102,7 @@ namespace big
 					color_idx == BlipColors::WHITE_0 ||
 					color_idx == BlipColors::GREEN ||
 					color_idx == BlipColors::WHITE_PLAYER
-					) {
+				) {
 					Vector3 location = HUD::GET_BLIP_COORDS(blip);
 
 					Hash street_hash;
@@ -132,7 +132,7 @@ namespace big
 					color_idx == BlipColors::WHITE_0 ||
 					color_idx == BlipColors::GREEN ||
 					color_idx == BlipColors::WHITE_PLAYER
-					) {
+				) {
 					Vector3 location = HUD::GET_BLIP_COORDS(blip);
 					g->teleport.property_list[name] = location;
 				}
