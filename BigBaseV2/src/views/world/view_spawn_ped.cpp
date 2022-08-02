@@ -10,6 +10,10 @@
 
 #include <imgui_internal.h>
 
+
+#define SPAWN_PED_ALL_WEAPONS -1
+#define SPAWN_PED_NO_WEAPONS -2
+
 namespace big
 {
 	Ped spawn_ped_at_location(
@@ -114,11 +118,16 @@ namespace big
 		const int selected_ped_weapon_type, 
 		const Hash selected_ped_weapon_hash
 	) {
+		if (selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS)
+		{
+			return;
+		}
+
 		auto weapon_type_arr = g_gta_data_service->get_weapon_type_arr();
 		for (auto& weapon : g_gta_data_service->get_weapon_arr())
 		{
 			if (
-				selected_ped_weapon_type == -1 ||
+				selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ||
 				weapon.weapon_type == weapon_type_arr[selected_ped_weapon_type]
 			) {
 				if (
@@ -142,7 +151,7 @@ namespace big
 		auto ped_arr = g_gta_data_service->get_ped_arr();
 
 
-		static int selected_ped_weapon_type = -1;
+		static int selected_ped_weapon_type = SPAWN_PED_ALL_WEAPONS;
 		static Hash selected_ped_weapon_hash = 0;
 		auto weapon_type_arr = g_gta_data_service->get_weapon_type_arr();
 		auto weapon_arr = g_gta_data_service->get_weapon_arr();
@@ -397,13 +406,20 @@ namespace big
 				ImGui::SetNextItemWidth(160.f);
 				if (ImGui::BeginCombo(
 					"##ped_weapon_type", 
-					selected_ped_weapon_type == -1 ? 
+					selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ? 
 					"ALL" : 
+					selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS ?
+					"NO WEAPONS" :
 					weapon_type_arr[selected_ped_weapon_type].c_str()
 				)) {
-					if (ImGui::Selectable("ALL", selected_ped_weapon_type == -1))
+					if (ImGui::Selectable("ALL", selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS))
 					{
-						selected_ped_weapon_type = -1;
+						selected_ped_weapon_type = SPAWN_PED_ALL_WEAPONS;
+					}
+
+					if (ImGui::Selectable("NO WEAPONS", selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS))
+					{
+						selected_ped_weapon_type = SPAWN_PED_NO_WEAPONS;
 					}
 
 					for (int i = 0; i < weapon_type_arr.size(); i++)
