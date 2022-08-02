@@ -99,6 +99,7 @@ namespace big::blip
 			{ BlipIcons::GANG_ATTACK_PACKAGE, {  } },
 			{ BlipIcons::GANG_ATTACK_PACKAGE, {  } },
 			// { BlipIcons::CAPTURE_THE_FLAG, {  } },
+			{ BlipIcons::PLAYER_PLANE, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::TEMP_3, {  } },
 			{ BlipIcons::TEMP_4, { BlipColors::RED_MISSION_2 } },
 			{ BlipIcons::TEMP_5, {  } },
