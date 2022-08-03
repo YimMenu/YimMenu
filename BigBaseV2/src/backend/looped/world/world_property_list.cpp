@@ -29,7 +29,7 @@ namespace big
 
 	void looped::world_property_list()
 	{
-		static BlipColors last_player_color = BlipColors::WHITE_0;
+		static BlipColors last_player_color = BlipColors::WAYPOINT;
 
 		if (g->world.property_list_updated)
 		{
@@ -39,7 +39,7 @@ namespace big
 		if (!self::ped)
 		{
 			g->world.property_list.clear();
-			last_player_color = BlipColors::WHITE_0;
+			last_player_color = BlipColors::WAYPOINT;
 			return;
 		}
 
@@ -70,6 +70,8 @@ namespace big
 		{
 			g->world.property_list.clear();
 		}
+
+		last_player_color = player_color;
 
 		const std::map<BlipIcons, std::string> property_items = {
 			{ BlipIcons::SAFEHOUSE, "Safe House" },
@@ -178,7 +180,6 @@ namespace big
 			}
 		}
 
-		last_player_color = player_color;
 		g->world.property_list_updated = true;
 	}
 }

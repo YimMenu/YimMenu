@@ -40,7 +40,7 @@ namespace big::blip
 					if (std::find(colors.begin(), colors.end(), color_idx) != colors.end())
 					{
 						location = HUD::GET_BLIP_COORDS(blip);
-						location.z += 1.5f;
+						location.z += .5f;
 						return true;
 					}
 

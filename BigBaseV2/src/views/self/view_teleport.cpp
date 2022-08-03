@@ -163,7 +163,7 @@ namespace big
 								{
 									const Vector3 destination = PED::GET_PED_BONE_COORDS(ped, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 0.0f);
 									Vector3 origin = PED::GET_PED_BONE_COORDS(ped, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 1.0f);
-									MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 10000, true, RAGE_JOAAT("WEAPON_SNIPERRIFLE"), self::ped, true, false, 10000);
+									MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 10000, true, RAGE_JOAAT("WEAPON_SNIPERRIFLE"), self::ped, false, false, 10000);
 									script::get_current()->yield(50ms);
 								}
 							}
