@@ -81,6 +81,7 @@ namespace big::blip
 			{ BlipIcons::HANDCUFF_KEYS_BIKERS, {  } },
 			{ BlipIcons::PLAYERSTATE_KEYHOLDER, {  } },
 			{ BlipIcons::GANG_ATTACK_PACKAGE, {  } },
+			{ BlipIcons::PLAYER_BOAT, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::TEMP_3, {  } },
 			{ BlipIcons::TEMP_4, { BlipColors::RED_MISSION_2 } },
 			{ BlipIcons::TEMP_5, {  } },
