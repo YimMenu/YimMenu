@@ -1,5 +1,6 @@
 #pragma once
 #include "script_global.hpp"
+#include "services/gta_data/gta_data_service.hpp"
 
 namespace big
 {
@@ -13,7 +14,7 @@ namespace big
 		script_global m_vehicle_idx;
 
 	public:
-		personal_vehicle(int idx, script_global vehicle_idx);
+		personal_vehicle(int idx, script_global vehicle_idx, vehicle_item& item);
 
 		[[nodiscard]] std::string get_display_name() const;
 		[[nodiscard]] Hash get_hash() const;

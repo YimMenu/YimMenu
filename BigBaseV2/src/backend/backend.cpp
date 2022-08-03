@@ -177,6 +177,7 @@ namespace big
 
 		while (g_running)
 		{
+			looped::teleport_mission_object_list();
 			looped::teleport_property_list();
 
 			script::get_current()->yield();

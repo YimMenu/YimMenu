@@ -31,7 +31,7 @@ namespace big
 	{
 		static BlipColors last_player_color = BlipColors::WHITE_0;
 
-		if (g->teleport.updated)
+		if (g->teleport.property_list_updated)
 		{
 			return;
 		}
@@ -179,6 +179,6 @@ namespace big
 		}
 
 		last_player_color = player_color;
-		g->teleport.updated = true;
+		g->teleport.property_list_updated = true;
 	}
 }

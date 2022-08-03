@@ -13,22 +13,23 @@ namespace big::blip
 		std::vector<BlipColors> colors;
 	};
 
-	inline bool get_blip_location(const std::vector<blip_search>& blip_search_arr, Vector3& location)
+	inline bool get_blip_location(const std::map<BlipIcons, std::vector<BlipColors>>& blips_to_search, Vector3& location)
 	{
-		for (auto& item : blip_search_arr)
+
+		for (auto& [sprite, colors] : blips_to_search)
 		{
-			Blip blip = HUD::GET_FIRST_BLIP_INFO_ID((int)item.sprite);
+			Blip blip = HUD::GET_FIRST_BLIP_INFO_ID((int)sprite);
 
 			while (HUD::DOES_BLIP_EXIST(blip))
 			{
-				if (item.colors.size() == 0)
+				if (colors.size() == 0)
 				{
 					location = HUD::GET_BLIP_COORDS(blip);
 					location.z += 1.5f;
 
 					BlipColors color_idx = (BlipColors)HUD::GET_BLIP_COLOUR(blip);
 
-					LOG(WARNING) << (int)item.sprite << " " << (int)color_idx;
+					LOG(WARNING) << (int)sprite << " " << (int)color_idx;
 
 					return true;
 				}
@@ -36,31 +37,17 @@ namespace big::blip
 				{
 					BlipColors color_idx = (BlipColors)HUD::GET_BLIP_COLOUR(blip);
 
-					if (std::find(item.colors.begin(), item.colors.end(), color_idx) != item.colors.end())
+					if (std::find(colors.begin(), colors.end(), color_idx) != colors.end())
 					{
 						location = HUD::GET_BLIP_COORDS(blip);
 						location.z += 1.5f;
 						return true;
 					}
 
-					LOG(WARNING) << (int)item.sprite << " " << (int)color_idx;
+					LOG(WARNING) << (int)sprite << " " << (int)color_idx;
 				}
 
-				blip = HUD::GET_NEXT_BLIP_INFO_ID((int)item.sprite);
-			}
-		}
-
-		for (int i = 823; i < 900; i++)
-		{
-			Blip blip = HUD::GET_FIRST_BLIP_INFO_ID(i);
-
-			while (HUD::DOES_BLIP_EXIST(blip))
-			{
-				BlipColors color_idx = (BlipColors)HUD::GET_BLIP_COLOUR(blip);
-
-				LOG(WARNING) << i << " " << (int)color_idx;
-
-				blip = HUD::GET_NEXT_BLIP_INFO_ID(i);
+				blip = HUD::GET_NEXT_BLIP_INFO_ID((int)sprite);
 			}
 		}
 
@@ -69,11 +56,13 @@ namespace big::blip
 
 	inline bool get_objective_location(Vector3& location)
 	{
-		const std::vector<blip_search> blip_search_arr = {
+		const std::map<BlipIcons, std::vector<BlipColors>> checkpoints = {
+			// checkpoints
 			{ BlipIcons::LEVEL, { BlipColors::YELLOW_MISSION, BlipColors::YELLOW_MISSION_2, BlipColors::YELLOW_MISSION_3, BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
+			{ BlipIcons::CRATEDROP, { } },
 			{ BlipIcons::RACEFLAG, { } },
 			{ BlipIcons::RACE, { } },
-			{ BlipIcons::CRATEDROP, { } },
+			{ BlipIcons::TF_CHECKPOINT, {  } },
 			{ BlipIcons::COP_PLAYER, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::GANG_COPS, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::GANG_MEXICANS, { BlipColors::YELLOW_MISSION } },
@@ -85,21 +74,13 @@ namespace big::blip
 			{ BlipIcons::ONMISSION_COPS, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::ONMISSION_LOST, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::ONMISSION_VAGOS, { BlipColors::YELLOW_MISSION } },
-			{ BlipIcons::TF_CHECKPOINT, {  } },
-			{ BlipIcons::AP, { BlipColors::YELLOW_MISSION } },
 
+			//pickups
 			{ BlipIcons::CRIM_CUFF_KEYS, {  } },
 			{ BlipIcons::CAMERA, {  } },
 			{ BlipIcons::HANDCUFF_KEYS_BIKERS, {  } },
-			{ BlipIcons::GANG_VEHICLE, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::PLAYERSTATE_KEYHOLDER, {  } },
-			{ BlipIcons::FRIEND, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
-			{ BlipIcons::PLANE_DROP, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
-			{ BlipIcons::GETAWAY_CAR, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::GANG_ATTACK_PACKAGE, {  } },
-			{ BlipIcons::GANG_ATTACK_PACKAGE, {  } },
-			// { BlipIcons::CAPTURE_THE_FLAG, {  } },
-			{ BlipIcons::PLAYER_PLANE, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::TEMP_3, {  } },
 			{ BlipIcons::TEMP_4, { BlipColors::RED_MISSION_2 } },
 			{ BlipIcons::TEMP_5, {  } },
@@ -107,26 +88,58 @@ namespace big::blip
 			{ BlipIcons::DEAD_DROP, {  } },
 			{ BlipIcons::ASSAULT_PACKAGE, {  } },
 			{ BlipIcons::HUNT_THE_BOSS, {  } },
-			{ BlipIcons::BELLY_OF_THE_BEAST, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::CONTRABAND, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::PACKAGE, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
-			{ BlipIcons::DRUGS_PACKAGE, { BlipColors::GREEN,BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
+			{ BlipIcons::DRUGS_PACKAGE, {  } },
 			{ BlipIcons::REG_PAPERS, { BlipColors::GREEN,BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::SUPPLIES, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::SM_CARGO, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
-			{ BlipIcons::TF_CHECKPOINT, {  } },
 			{ BlipIcons::NHP_BAG, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
-			{ BlipIcons::BAT_TRUCK, { BlipColors::BLUE_PICKUP } },
-			{ BlipIcons::CAMERA_2, {  } }, 
+			{ BlipIcons::CAMERA_2, {  } },
 			{ BlipIcons::KEYCARD, {  } },
 			{ BlipIcons::ISLAND_HEIST_PREP, {  } },
 			{ BlipIcons::CAR_ROBBERY_PREP, {  } },
 			{ BlipIcons::SECURITY_CONTRACT, {  } },
 			{ BlipIcons::SAFE, {  } },
 			{ BlipIcons::EXPLOSIVE_CHARGE, {  } },
-			{ BlipIcons::MC_BAR_SUPPLIES, { BlipColors::BLUE_PICKUP } }
+
+			//race flags
+			{ BlipIcons::RACEFLAG, { } },
+			{ BlipIcons::RACE, { } },
+			{ BlipIcons::TF_CHECKPOINT, {  } }
 		};
 
-		return get_blip_location(blip_search_arr, location);
+		if (get_blip_location(checkpoints, location))
+		{
+			return true;
+		}
+
+		for (int sprite = 0; sprite <= (int)BlipIcons::MC_BAR_SUPPLIES; sprite++)
+		{
+			if (checkpoints.count((BlipIcons)sprite))
+			{
+				continue;
+			}
+
+			Blip blip = HUD::GET_FIRST_BLIP_INFO_ID(sprite);
+
+			while (HUD::DOES_BLIP_EXIST(blip))
+			{
+				BlipColors color_idx = (BlipColors)HUD::GET_BLIP_COLOUR(blip);
+
+				if (color_idx == BlipColors::BLUE_PICKUP)
+				{
+					location = HUD::GET_BLIP_COORDS(blip);
+					location.z += 1.5f;
+					return true;
+				}
+
+				LOG(WARNING) << (int)sprite << " " << (int)color_idx;
+
+				blip = HUD::GET_NEXT_BLIP_INFO_ID(sprite);
+			}
+		}
+
+		return false;
 	}
 }

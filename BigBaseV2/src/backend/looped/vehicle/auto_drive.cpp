@@ -73,11 +73,11 @@ namespace big
 				{
 					to_waypoint = true;
 
-					std::vector<blip::blip_search> blip_search_arr = {
+					const std::map<BlipIcons, std::vector<BlipColors>> checkpoints = {
 						{BlipIcons::WAYPOINT, {  } }
 					};
 
-					does_waypoint_exist = blip::get_blip_location(blip_search_arr, waypoint);
+					does_waypoint_exist = blip::get_blip_location(checkpoints, waypoint);
 				}
 
 				if (
@@ -94,7 +94,7 @@ namespace big
 
 			update_ticks++;
 
-			if (update_ticks > 5000)
+			if (update_ticks > 1200)
 			{
 				update_ticks = 0;
 			}

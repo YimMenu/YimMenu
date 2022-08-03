@@ -123,11 +123,11 @@ namespace big::teleport
 	{
 		Vector3 location;
 
-		std::vector<blip::blip_search> blip_search_arr = {
+		const std::map<BlipIcons, std::vector<BlipColors>> checkpoints = {
 			{BlipIcons::WAYPOINT, {  } }
 		};
 
-		if (!blip::get_blip_location(blip_search_arr, location))
+		if (!blip::get_blip_location(checkpoints, location))
 		{
 			g_notification_service->push_warning("Teleport", "Failed to find waypoint position");
 			return false;

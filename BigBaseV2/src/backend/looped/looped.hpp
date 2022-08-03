@@ -36,6 +36,7 @@ namespace big
 		static void self_police();
 		static void self_super_run();
 
+		static void teleport_mission_object_list();
 		static void teleport_property_list();
 
 		static void session_local_time();

@@ -1,12 +1,10 @@
 #include "mobile_service.hpp"
-#include "fiber_pool.hpp"
-#include "natives.hpp"
 #include "script.hpp"
 #include "util/mobile.hpp"
 
 namespace big
 {
-	personal_vehicle::personal_vehicle(int idx, script_global vehicle_idx)
+	personal_vehicle::personal_vehicle(int idx, script_global vehicle_idx, vehicle_item& veh_item)
 		: m_id(idx), m_vehicle_idx(vehicle_idx)
 	{
 		m_plate = m_vehicle_idx.at(1).as<char*>();
@@ -15,7 +13,7 @@ namespace big
 
 		m_name = fmt::format(
 			"{} ({})", 
-			HUD::GET_LABEL_TEXT_(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_hash)), 
+			veh_item.display_name,
 			m_plate
 		);
 	}
@@ -66,9 +64,7 @@ namespace big
 		if (std::chrono::duration_cast<std::chrono::seconds>(now - m_last_update) < 10s) return;
 		m_last_update = std::chrono::high_resolution_clock::now();
 
-		g_fiber_pool->queue_job([this] {
-			register_vehicles();
-		});
+		register_vehicles();
 	}
 
 	void mobile_service::register_vehicles()
@@ -76,19 +72,17 @@ namespace big
 		const auto array_size = *mobile::vehicle_global.as<int*>();
 		for (int i = 0; i < array_size; i++)
 		{
-			if (i % 100 == 0)
-				script::get_current()->yield();
-
 			auto veh_idx_global = mobile::vehicle_global.at(i, 142);
 
 			const auto hash = *veh_idx_global.at(66).as<Hash*>();
 			const auto& it = m_pv_lookup.find(i);
 			const auto exists = it != m_pv_lookup.end();
 
-			// double check if model is a vehicle
-			if (STREAMING::IS_MODEL_A_VEHICLE(hash))
+			auto veh_item = g_gta_data_service->find_vehicle_by_hash(hash);
+
+			if (veh_item.hash)
 			{
-				auto veh = std::make_unique<personal_vehicle>(i, veh_idx_global);
+				auto veh = std::make_unique<personal_vehicle>(i, veh_idx_global, veh_item);
 
 				if (exists)
 				{

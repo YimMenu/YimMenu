@@ -213,7 +213,13 @@ namespace big
 
 		struct teleport {
 			std::map<std::string, Vector3> property_list;
-			bool updated = true;
+			bool property_list_updated = true;
+
+			std::map<Vehicle, Hash> mission_veh_list;
+			bool mission_veh_list_updated = true;
+
+			std::map<Ped, Hash> mission_ped_list;
+			bool mission_ped_list_updated = true;
 		};
 
 		struct vehicle {
