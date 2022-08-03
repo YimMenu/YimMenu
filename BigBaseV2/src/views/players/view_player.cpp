@@ -28,7 +28,8 @@ namespace big
 			ImGui::SameLine();
 			ImGui::Checkbox("Freeze All", &g->player.freezeallplayers);
 
-			if (ImGui::TreeNode("Misc")) {
+			if (ImGui::TreeNode("Misc")) 
+			{
 				components::button("Steal Outfit", [] {
 					ped::steal_outfit(
 						PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
@@ -78,8 +79,7 @@ namespace big
 				ImGui::SameLine();				
 				
 				components::button("Chase", [] {
-					if (!self::veh) 
-					{
+					if (!self::veh) {
 						g->player.chase = false;
 						g_notification_service->push_warning("Warning", "Please be in a vehicle first then try again.");
 					}
@@ -90,8 +90,8 @@ namespace big
 				ImGui::TreePop();
 			}
 
-			if (ImGui::TreeNode("Info")) {
-
+			if (ImGui::TreeNode("Info")) 
+			{
 				ImGui::Text("Player ID: %d", g_player_service->get_selected()->id());
 				
 				ImGui::SameLine();
@@ -100,8 +100,7 @@ namespace big
 
 				ImGui::Separator();
 
-				if (CPlayerInfo* player_info = g_player_service->get_selected()->get_player_info(); player_info != nullptr)
-				{
+				if (CPlayerInfo* player_info = g_player_service->get_selected()->get_player_info(); player_info != nullptr) {
 					ImGui::Text("Wanted Level: %d", player_info->m_wanted_level);
 				}
 
@@ -116,12 +115,10 @@ namespace big
 					ped_task_flag = ped->m_ped_task_flag;
 				}
 
-				if (ped_damage_bits & (uint32_t)eEntityProofs::GOD)
-				{
+				if (ped_damage_bits & (uint32_t)eEntityProofs::GOD) {
 					mode_str = "God";
 				}
-				else
-				{
+				else {
 					static bool comma1 = false;
 					if (ped_damage_bits & (uint32_t)eEntityProofs::BULLET)
 					{
@@ -137,8 +134,7 @@ namespace big
 					}
 				}
 
-				if (mode_str.empty())
-				{
+				if (mode_str.empty()) {
 					mode_str = "No";
 				}
 
@@ -146,27 +142,21 @@ namespace big
 
 				mode_str = "";
 
-				if (CAutomobile* vehicle = g_player_service->get_selected()->get_current_vehicle(); vehicle != nullptr)
-				{
+				if (CAutomobile* vehicle = g_player_service->get_selected()->get_current_vehicle(); vehicle != nullptr) {
 					veh_damage_bits = vehicle->m_damage_bits;
 				}
 
-				if (ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING)
-				{
-					if (veh_damage_bits & (uint32_t)eEntityProofs::GOD)
-					{
+				if (ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING) {
+					if (veh_damage_bits & (uint32_t)eEntityProofs::GOD) {
 						mode_str = "God";
 					}
-					else
-					{
+					else {
 						static bool comma2 = false;
-						if (veh_damage_bits & (uint32_t)eEntityProofs::COLLISION)
-						{
+						if (veh_damage_bits & (uint32_t)eEntityProofs::COLLISION) {
 							mode_str += "Collision";
 							comma2 = true;
 						}
-						if (veh_damage_bits & (uint32_t)eEntityProofs::EXPLOSION)
-						{
+						if (veh_damage_bits & (uint32_t)eEntityProofs::EXPLOSION) {
 							if (comma2) {
 								mode_str += ", ";
 							}
@@ -174,13 +164,11 @@ namespace big
 						}
 					}
 
-					if (mode_str.empty())
-					{
+					if (mode_str.empty()) {
 						mode_str = "No";
 					}
 				}
-				else
-				{
+				else {
 					mode_str = "No vehicle detected";
 				}
 
@@ -188,8 +176,7 @@ namespace big
 
 				ImGui::Separator();
 
-				if (rage::netPlayerData* net_player_data = g_player_service->get_selected()->get_net_data(); net_player_data != nullptr)
-				{
+				if (rage::netPlayerData* net_player_data = g_player_service->get_selected()->get_net_data(); net_player_data != nullptr) {
 					ImGui::Text("Rockstar ID: %d", net_player_data->m_rockstar_id);
 					ImGui::Text(
 						"IP Address: %d.%d.%d.%d:%d",
@@ -198,13 +185,13 @@ namespace big
 						net_player_data->m_external_ip.m_field3,
 						net_player_data->m_external_ip.m_field4,
 						net_player_data->m_external_port
-					);
-				}
+					);}
+
 				ImGui::TreePop();
 			}
 
-			if (ImGui::TreeNode("Teleport")) {
-
+			if (ImGui::TreeNode("Teleport")) 
+			{
 				components::button("Teleport", [] {
 					teleport::to_player(g_player_service->get_selected()->id());
 					});
@@ -247,27 +234,21 @@ namespace big
 
 				components::button("Burst Tires", [] {
 					int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
-					if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0))
-					{
+					if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) {
 						toxic::BurstTires(Handle);
 					}
-					else
-					{
+					else {
 						g_notification_service->push_warning("Warning", "Player is not in a Vehicle.");
-					}
-					});
+					}});
 
 				components::button("Lock Doors", [] {
 					int Handle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
-					if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0))
-					{
+					if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0)) {
 						toxic::LockDoors(Handle);
 					}
-					else
-					{
+					else {
 						g_notification_service->push_warning("Warning", "Player is not in a Vehicle.");
-					}
-					});
+					}});
 
 				ImGui::SameLine();
 				components::button("UnLock Doors", [] {
@@ -295,10 +276,12 @@ namespace big
 				components::button("Kick From Vehicle", [] {
 					toxic::kick_from_vehicle(g_player_service->get_selected()->id());
 					});
+
 				ImGui::TreePop();
 			}
 
-			if (ImGui::TreeNode("Toxic")) {
+			if (ImGui::TreeNode("Toxic")) 
+			{
 				components::button("Explode Self", [] {
 					toxic::blame_explode_player(
 						g_player_service->get_selected()->id(),
@@ -341,14 +324,13 @@ namespace big
 
 				components::button("Crash", [] {
 					toxic::ModelCrash(g_player_service->get_selected()->id());
-				});
-
-				components::button("Bramhastra Crash", []
-					{
-						toxic::crash_target(g_player_service->get_selected()->id());
 					});
 
 				ImGui::SameLine();
+
+				components::button("Bramhastra Crash", []{
+						toxic::crash_target(g_player_service->get_selected()->id());
+					});
 
 				components::button("Send to Cayo", [] {
 					toxic::send_to_cayo_perico(g_player_service->get_selected()->id());
@@ -358,6 +340,12 @@ namespace big
 
 				components::button("Chal BSDK", [] {
 					gta_util::get_network_player_mgr()->RemovePlayer(g_player_service->get_selected()->get_net_game_player());
+					});
+
+				ImGui::SameLine();
+
+				components::button("Ear Rape", [] {
+					toxic::EarRape();
 					});
 
 
@@ -371,6 +359,11 @@ namespace big
 					toxic::emp_player(g_player_service->get_selected()->id());
 					});
 
+				ImGui::SameLine();
+
+				components::button("Send RCTANK", [] {
+					toxic::Spawn_G4E(VEHICLE_MINITANK, 1);
+					});
 
 				components::button("CEO Kick", [] {
 					toxic::CEO_KICK(g_player_service->get_selected()->id());
@@ -388,14 +381,6 @@ namespace big
 
 				components::button("Send Jet", [] {
 					toxic::Spawn_G4E(VEHICLE_HYDRA, 500);
-				});
-
-				components::button("Send RCTANK", [] {
-					toxic::Spawn_G4E(VEHICLE_MINITANK, 1);
-				});
-
-				components::button("EAR RAPE", [] {
-					toxic::EarRape();
 					});
 
 				ImGui::TreePop();				

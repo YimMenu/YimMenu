@@ -2,6 +2,9 @@
 #include "util/session.hpp"
 #include "views/view.hpp"
 #include "util/entity.hpp"
+#include "util/toxic.hpp"
+#include "services/players/player_service.hpp"
+#include "gta_util.hpp"
 
 namespace big
 {
@@ -64,5 +67,24 @@ namespace big
 		components::button("Kill Peds", [] {
 			entity::KillNearbyPeds();
 		});
+
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.69f, 0.29f, 0.29f, 1.00f));
+		if (*g_pointers->m_is_session_started)
+		{
+			components::button("Kick all", []
+			{
+				for (const auto& [_, player] : g_player_service->players())
+				{
+					gta_util::get_network_player_mgr()->RemovePlayer(player->get_net_game_player());
+
+					LOG(G3LOG_DEBUG) << fmt::format("Sent desync to {}", player->get_name());
+
+					script::get_current()->yield();
+				}
+			});
+		}
+		ImGui::PopStyleColor();
 	}
 }

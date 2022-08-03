@@ -14,37 +14,8 @@ namespace big::toxic
 {
 	inline static std::vector<int64_t> crash_hashes =
 	{
-		1480548969,
-		931221602,
-		668886109,
-		-51486976,
-		1992522613,
-		-1338917610,
-		1115266513,
-		-1529596656,
-		-2093023277,
-		-1539131577,
-		495813132,
-		-2085190907,
-		1488038476,
-		1674887089,
-		1007883955,
-		597430116,
-		893081016,
-		886128956,
-		526822748,
-		-637352381,
-		-1991423686,
-		-1013989798,
-		-803535423,
-		1037001637,
-		-397256754,
-		1111927333,
-		-1388926377,
-		-1908874529,
-		-283041276,
-		-768108950,
-		-547323955
+		1480548969, 931221602, 668886109, -51486976, 1992522613, -1338917610, 1115266513, -1529596656, -2093023277, -1539131577, 495813132, -2085190907, 1488038476, 1674887089, 1007883955, 597430116, 
+		893081016, 886128956, 526822748, -637352381, -1991423686, -1013989798, -803535423, 1037001637, -397256754, 1111927333, -1388926377, -1908874529, -283041276, -768108950, -547323955
 	};
 
 	inline void blame_explode_coord(Player to_blame, Vector3 pos, eExplosionType explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
@@ -386,7 +357,7 @@ namespace big::toxic
 		AUDIO::PLAY_SOUND_FROM_COORD(1, "BED", plyrCoords.x, plyrCoords.y, plyrCoords.z, "WASTEDSOUNDS", true, 0, false);
 	}
 
-	inline void crash_target(int target) //thanks to c1lxa
+	inline void crash_target(int target) //thanks to cl1xa
 	{
 		//Wave I
 		int64_t args1[] = { 526822748, -1, 500000, 849451549, -1, -1 };
