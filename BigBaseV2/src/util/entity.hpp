@@ -7,6 +7,45 @@
 
 namespace big::entity
 {
+	inline bool take_control_of(Entity ent)
+	{
+		if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return true;
+		for (uint8_t i = 0; !NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) && i < 10; i++)
+		{
+			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(ent);
+			script::get_current()->yield(10ms);
+		}
+		if (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return false;
+
+		int netHandle = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent);
+		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, true);
+
+		return true;
+	}
+
+	inline bool bring_entity(Entity ent)
+	{
+		if (ENTITY::IS_ENTITY_A_PED(ent))
+		{
+			Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(ent, false);
+
+			if (veh)
+			{
+				ent = veh;
+			}
+		}
+
+		Vector3 location = self::pos;
+
+		if (entity::take_control_of(ent))
+		{
+			ENTITY::SET_ENTITY_COORDS(ent, location.x, location.y, location.z, 0, 0, 0, 0);
+			return true;
+		}
+
+		return false;
+	}
+
 	inline void cage_ped(Ped ped)
 	{
 		Hash hash = RAGE_JOAAT("prop_gold_cont_01");
@@ -55,22 +94,5 @@ namespace big::entity
 		SHAPETEST::GET_SHAPE_TEST_RESULT(ray, &hit, &endCoords, &surfaceNormal, ent);
 
 		return (bool)hit;
-	}
-
-	inline bool take_control_of(Entity ent)
-	{
-		if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return true;
-		for (uint8_t i = 0; !NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) && i < 10; i++)
-		{
-			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(ent);
-
-			script::get_current()->yield(5ms);
-		}
-		if (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return false;
-
-		int netHandle = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent);
-		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, true);
-
-		return true;
 	}
 }

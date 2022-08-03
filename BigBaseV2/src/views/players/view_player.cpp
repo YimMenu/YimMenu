@@ -4,7 +4,7 @@
 #include "util/globals.hpp"
 #include "util/misc.hpp"
 #include "util/ped.hpp"
-#include "util/teleport.hpp"
+#include "util/vehicle.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -181,7 +181,7 @@ namespace big
 				components::button("Teleport into Vehicle", [] {
 					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
 
-					teleport::into_vehicle(veh);
+					vehicle::put_in(self::ped, veh, true);
 				});
 
 				ImGui::TreePop();

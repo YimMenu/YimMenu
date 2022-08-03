@@ -74,7 +74,7 @@ namespace big::vehicle
 		VEHICLE::SET_VEHICLE_IS_STOLEN(veh, FALSE);
 	}
 
-	inline void bring(Vehicle veh, Vector3 location, bool put_in = true, int seatIdx = -1)
+	inline void bring(Vehicle veh, Vector3 location)
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh)) return g_notification_service->push_error("Vehicle", "Invalid handle");
 
@@ -82,32 +82,50 @@ namespace big::vehicle
 		teleport::load_ground_at_3dcoord(vecVehicleLocation);
 
 		if (!entity::take_control_of(veh))
-			return g_notification_service->push_warning("Vehicle", "Failed to take control of remote vehicle.");
+		{
+			return g_notification_service->push_warning("Vehicle", "Failed to take control of the vehicle.");
+		}
+
 		auto ped = self::ped;
 
 		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, 0);
 		ENTITY::SET_ENTITY_HEADING(veh, ENTITY::GET_ENTITY_HEADING(ped));
+	}
 
-		if (put_in)
+	inline void put_in(Ped ped, Vehicle veh, bool any_seat = false, int seat_idx = -1)
+	{
+		for (size_t i = 0; i < 100 && math::distance_between_vectors(ENTITY::GET_ENTITY_COORDS(ped, true), ENTITY::GET_ENTITY_COORDS(veh, true)) > 10; i++)
+			script::get_current()->yield();
+
+		if (any_seat)
 		{
-			for (size_t i = 0; i < 100 && math::distance_between_vectors(location, ENTITY::GET_ENTITY_COORDS(veh, true)) > 10; i++)
-				script::get_current()->yield();
+			Hash model = ENTITY::GET_ENTITY_MODEL(veh);
+			int num_of_seats = VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(model);
 
-			auto driver_ped = VEHICLE::GET_PED_IN_VEHICLE_SEAT(veh, -1, false);
-
-			if (driver_ped != 0)
+			for (int i = -1; i < num_of_seats - 1; i++)
 			{
-				if (PED::GET_PED_TYPE(driver_ped) == ePedType::PED_TYPE_NETWORK_PLAYER)
+				if (VEHICLE::IS_VEHICLE_SEAT_FREE(self::veh, i, true))
 				{
-					TASK::CLEAR_PED_TASKS_IMMEDIATELY(driver_ped);
-				}
-				else
-				{
-					entity::delete_entity(driver_ped);
+					PED::SET_PED_INTO_VEHICLE(ped, veh, seat_idx);
+					return;
 				}
 			}
 
-			PED::SET_PED_INTO_VEHICLE(ped, veh, seatIdx);
+			return g_notification_service->push_warning("Vehicle", "No free seats.");
+		}
+		else
+		{
+			auto seat_ped = VEHICLE::GET_PED_IN_VEHICLE_SEAT(veh, seat_idx, false);
+
+			if (seat_ped != 0)
+			{
+				if (!entity::take_control_of(ped))
+					return g_notification_service->push_warning("Vehicle", "Failed to take control of the ped.");
+
+				TASK::CLEAR_PED_TASKS_IMMEDIATELY(seat_ped);
+			}
+
+			PED::SET_PED_INTO_VEHICLE(ped, veh, seat_idx);
 		}
 	}
 

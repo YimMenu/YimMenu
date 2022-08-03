@@ -119,7 +119,8 @@ namespace big::mobile
 
 			if (g->clone_pv.spawn_inside)
 			{
-				big::vehicle::bring(get_personal_vehicle(), self::pos, true);
+				big::vehicle::bring(get_personal_vehicle(), self::pos);
+				big::vehicle::put_in(self::ped, get_personal_vehicle());
 			}
 		}
 	}

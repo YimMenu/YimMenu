@@ -24,17 +24,19 @@ namespace big
 
 		components::button("Teleport in PV", [] {
 			Vehicle veh = mobile::mechanic::get_personal_vehicle();
-			teleport::into_vehicle(veh);
+			vehicle::put_in(self::ped, veh, true);
 		});
 		ImGui::SameLine();
 		components::button("Bring PV", [] {
 			Vehicle veh = mobile::mechanic::get_personal_vehicle();
-			vehicle::bring(veh, self::pos, true);
+			vehicle::bring(veh, self::pos);
+			vehicle::put_in(self::ped, veh);
 		});
 		ImGui::SameLine();
 		components::button("Bring Closest Vehicle", [] {
 			Vehicle veh = vehicle::get_closest_to_location(self::pos, 200);
-			vehicle::bring(veh, self::pos, true, -1);
+			vehicle::bring(veh, self::pos);
+			vehicle::put_in(self::ped, veh);
 		});
 
 		ImGui::Separator();

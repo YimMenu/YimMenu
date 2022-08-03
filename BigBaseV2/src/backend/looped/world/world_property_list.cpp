@@ -6,14 +6,14 @@
 
 namespace big
 {
-	struct teleport_hardcoded_item {
+	struct world_hardcoded_item {
 		std::string name;
 		Vector3 location;
 	};
 
-	bool teleport_check_location(Vector3 location)
+	bool world_check_location(Vector3 location)
 	{
-		for (auto& [item_name, item_location] : g->teleport.property_list)
+		for (auto& [item_name, item_location] : g->world.property_list)
 		{
 			if (
 				abs(item_location.x - location.x) < 1.f && 
@@ -27,18 +27,18 @@ namespace big
 		return true;
 	}
 
-	void looped::teleport_property_list()
+	void looped::world_property_list()
 	{
 		static BlipColors last_player_color = BlipColors::WHITE_0;
 
-		if (g->teleport.property_list_updated)
+		if (g->world.property_list_updated)
 		{
 			return;
 		}
 
 		if (!self::ped)
 		{
-			g->teleport.property_list.clear();
+			g->world.property_list.clear();
 			last_player_color = BlipColors::WHITE_0;
 			return;
 		}
@@ -68,7 +68,7 @@ namespace big
 
 		if (last_player_color != player_color)
 		{
-			g->teleport.property_list.clear();
+			g->world.property_list.clear();
 		}
 
 		const std::map<BlipIcons, std::string> property_items = {
@@ -102,7 +102,7 @@ namespace big
 			{ BlipIcons::AGENCY, "Agency" },
 		};
 
-		const std::map<BlipIcons, teleport_hardcoded_item> hardcoded_items = {
+		const std::map<BlipIcons, world_hardcoded_item> hardcoded_items = {
 			{ BlipIcons::CASINO, { "Casino", { 924.25f, 46.75f, 79.8f } } },
 			{ BlipIcons::CAR_MEET, { "LS Car Meet", { 780.44f, -1867.65f, 27.99f } } },
 		};
@@ -124,7 +124,7 @@ namespace big
 				) {
 					Vector3 location = HUD::GET_BLIP_COORDS(blip);
 
-					if (teleport_check_location(location))
+					if (world_check_location(location))
 					{
 						Hash street_hash;
 						Hash street_crossing_hash;
@@ -132,7 +132,7 @@ namespace big
 
 						const char* street_name = HUD::GET_STREET_NAME_FROM_HASH_KEY(street_hash);
 
-						g->teleport.property_list[name + " (" + street_name + ")"] = location;
+						g->world.property_list[name + " (" + street_name + ")"] = location;
 					}
 				}
 
@@ -157,9 +157,9 @@ namespace big
 				) {
 					Vector3 location = HUD::GET_BLIP_COORDS(blip);
 
-					if (teleport_check_location(location))
+					if (world_check_location(location))
 					{
-						g->teleport.property_list[name] = location;
+						g->world.property_list[name] = location;
 					}
 				}
 
@@ -173,12 +173,12 @@ namespace big
 
 			while (HUD::DOES_BLIP_EXIST(blip))
 			{
-				g->teleport.property_list[item.name] = item.location;
+				g->world.property_list[item.name] = item.location;
 				break;
 			}
 		}
 
 		last_player_color = player_color;
-		g->teleport.property_list_updated = true;
+		g->world.property_list_updated = true;
 	}
 }

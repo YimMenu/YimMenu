@@ -212,6 +212,10 @@ namespace big
 		};
 
 		struct teleport {
+
+		};
+
+		struct world {
 			std::map<std::string, Vector3> property_list;
 			bool property_list_updated = true;
 
@@ -366,6 +370,7 @@ namespace big
 		clone_pv clone_pv{};
 		spoofing spoofing{};
 		teleport teleport{};
+		world world{};
 		vehicle vehicle{};
 		weapons weapons{};
 		window window{};

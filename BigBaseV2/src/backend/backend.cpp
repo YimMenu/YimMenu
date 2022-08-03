@@ -171,14 +171,14 @@ namespace big
 		}
 	}
 
-	void backend::teleport_loop()
+	void backend::world_loop()
 	{
-		LOG(INFO) << "Starting script: Teleport";
+		LOG(INFO) << "Starting script: World";
 
 		while (g_running)
 		{
-			looped::teleport_mission_object_list();
-			looped::teleport_property_list();
+			looped::world_mission_object_list();
+			looped::world_property_list();
 
 			script::get_current()->yield();
 		}

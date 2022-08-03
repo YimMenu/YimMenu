@@ -16,7 +16,7 @@ namespace big
 		static void remote_loop();
 		static void noclip_loop();
 		static void lscustoms_loop();
-		static void teleport_loop();
+		static void world_loop();
 		static void vehiclefly_loop();
 		static void disable_control_action_loop();
 	};

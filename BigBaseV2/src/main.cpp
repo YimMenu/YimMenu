@@ -95,7 +95,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_script_mgr.add_script(std::make_unique<script>(&backend::remote_loop, "Remote"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::noclip_loop, "No Clip"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::lscustoms_loop, "LS Customs"));
-				g_script_mgr.add_script(std::make_unique<script>(&backend::teleport_loop, "Teleport"));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::world_loop, "World"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::vehiclefly_loop, "Vehicle Fly"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::rgbrandomizer_loop, "RGB Randomizer"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::turnsignal_loop, "Turn Signals"));

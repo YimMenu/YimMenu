@@ -2,7 +2,7 @@
 #include "natives.hpp"
 #include "util/entity.hpp"
 #include "util/ped.hpp"
-#include "util/teleport.hpp"
+#include "util/vehicle.hpp"
 
 namespace big
 {
@@ -70,7 +70,7 @@ namespace big
 					}
 				}},
 			{ "TP INTO", [this] {
-				teleport::into_vehicle(m_handle);
+				vehicle::put_in(self::ped, m_handle, true);
 				}}
 		} };
 
