@@ -164,11 +164,11 @@ namespace big
 					}
 				}
 
-				ImGui::Checkbox("Bring Ped", &bring);
-				ImGui::Checkbox("Kill Ped", &kill);
-
 				ImGui::ListBoxFooter();
 			}
+
+			ImGui::Checkbox("Bring Ped", &bring);
+			ImGui::Checkbox("Kill Ped", &kill);
 
 			ImGui::EndTabItem();
 		}

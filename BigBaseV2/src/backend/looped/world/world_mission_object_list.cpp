@@ -68,8 +68,19 @@ namespace big
 						{
 							Hash model = ped_ptr->m_model_info->m_model_hash;
 
-							if (model == RAGE_JOAAT("MP_M_Freemode_01") || model == RAGE_JOAAT("MP_F_Freemode_01"))
-							{
+							if (
+								model == RAGE_JOAAT("MP_M_Freemode_01") || 
+								model == RAGE_JOAAT("MP_F_Freemode_01") ||
+								model == RAGE_JOAAT("S_M_M_AmmyCoyntry") ||
+								model == RAGE_JOAAT("U_M_Y_Tattoo_01") ||
+								model == RAGE_JOAAT("S_M_M_HairDress_01") ||
+								model == RAGE_JOAAT("S_F_M_Fembarber_01") ||
+								model == RAGE_JOAAT("MP_M_ShopKeep_01") ||
+								model == RAGE_JOAAT("S_F_M_Shop_HIGH") ||
+								model == RAGE_JOAAT("S_F_Y_Shop_MID") ||
+								model == RAGE_JOAAT("S_F_Y_Shop_LOW") ||
+								model == RAGE_JOAAT("S_M_M_AutoShop_01")
+							) {
 								continue;
 							}
 
