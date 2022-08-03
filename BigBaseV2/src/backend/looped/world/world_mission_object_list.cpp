@@ -2,6 +2,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "gta/enums.hpp"
+#include "gta/joaat.hpp"
 #include "util/math.hpp"
 
 namespace big
@@ -65,6 +66,13 @@ namespace big
 
 						if (ENTITY::IS_ENTITY_A_MISSION_ENTITY(ped))
 						{
+							Hash model = ped_ptr->m_model_info->m_model_hash;
+
+							if (model == RAGE_JOAAT("MP_M_Freemode_01") || model == RAGE_JOAAT("MP_F_Freemode_01"))
+							{
+								continue;
+							}
+
 							g->world.mission_ped_list[ped] = ped_ptr->m_model_info->m_model_hash;
 						}
 					}

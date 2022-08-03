@@ -2,9 +2,27 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "pointers.hpp"
+#include "entity.hpp"
 
 namespace big::ped
 {
+	inline bool bring(Ped ped)
+	{
+		if (ENTITY::IS_ENTITY_A_PED(ped))
+		{
+			Vector3 location = self::pos;
+
+			if (entity::take_control_of(ped))
+			{
+				TASK::CLEAR_PED_TASKS_IMMEDIATELY(ped);
+				ENTITY::SET_ENTITY_COORDS(ped, location.x, location.y, location.z, 0, 0, 0, 0);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	inline void steal_outfit(const Ped target)
 	{
 		Ped ped = self::ped;

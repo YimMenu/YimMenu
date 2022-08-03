@@ -1,5 +1,5 @@
 #include "backend/looped/looped.hpp"
-#include "core/enums.hpp"
+#include "gta/enums.hpp"
 #include "util/entity.hpp"
 #include "util/vehicle.hpp"
 

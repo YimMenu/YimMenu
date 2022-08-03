@@ -5,7 +5,6 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
-#include "teleport.hpp"
 #include "script_global.hpp"
 #include "gta\VehicleValues.h"
 #include "services/vehicle_helper/vehicle_helper.hpp"
@@ -79,7 +78,6 @@ namespace big::vehicle
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh)) return g_notification_service->push_error("Vehicle", "Invalid handle");
 
 		auto vecVehicleLocation = ENTITY::GET_ENTITY_COORDS(veh, true);
-		teleport::load_ground_at_3dcoord(vecVehicleLocation);
 
 		if (!entity::take_control_of(veh))
 		{

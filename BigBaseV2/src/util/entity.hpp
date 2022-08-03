@@ -23,29 +23,6 @@ namespace big::entity
 		return true;
 	}
 
-	inline bool bring_entity(Entity ent)
-	{
-		if (ENTITY::IS_ENTITY_A_PED(ent))
-		{
-			Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(ent, false);
-
-			if (veh)
-			{
-				ent = veh;
-			}
-		}
-
-		Vector3 location = self::pos;
-
-		if (entity::take_control_of(ent))
-		{
-			ENTITY::SET_ENTITY_COORDS(ent, location.x, location.y, location.z, 0, 0, 0, 0);
-			return true;
-		}
-
-		return false;
-	}
-
 	inline void cage_ped(Ped ped)
 	{
 		Hash hash = RAGE_JOAAT("prop_gold_cont_01");

@@ -2,7 +2,7 @@
 #include "natives.hpp"
 #include "util/entity.hpp"
 #include "util/ped.hpp"
-#include "util/vehicle.hpp"
+#include "util/teleport.hpp"
 
 namespace big
 {

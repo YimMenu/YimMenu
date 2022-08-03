@@ -4,7 +4,7 @@
 #include "util/globals.hpp"
 #include "util/misc.hpp"
 #include "util/ped.hpp"
-#include "util/vehicle.hpp"
+#include "util/teleport.hpp"
 #include "views/view.hpp"
 
 namespace big

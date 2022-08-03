@@ -1,14 +1,26 @@
 #pragma once
 #include "blip.hpp"
-#include "entity.hpp"
+#include "vehicle.hpp"
 #include "gta/enums.hpp"
 
 namespace big::teleport
 {
-	inline bool bring_player(Player player)
+	inline void bring_player(Player player)
 	{
-		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
-		return entity::bring_entity(ent);
+		Ped ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+
+		if (ENTITY::IS_ENTITY_DEAD(ent, true))
+		{
+			return g_notification_service->push_warning("Teleport", "Target player is dead.");
+		}
+
+		if (!PED::IS_PED_IN_ANY_VEHICLE(ent, true))
+		{
+			return g_notification_service->push_warning("Teleport", "Target player is not in a vehicle.");
+		}
+
+		Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(ent, false);
+		vehicle::bring(veh, self::pos);
 	}
 
 	inline bool load_ground_at_3dcoord(Vector3& location)
@@ -50,7 +62,7 @@ namespace big::teleport
 	{
 		Vector3 location = ENTITY::GET_ENTITY_COORDS(ent, true);
 
-		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
+		to_coords(location);
 
 		return true;
 	}
@@ -75,7 +87,7 @@ namespace big::teleport
 		}
 
 		load_ground_at_3dcoord(location);
-		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
+		to_coords(location);
 
 		return true;
 	}
@@ -90,7 +102,7 @@ namespace big::teleport
 			return false;
 		}
 
-		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
+		to_coords(location);
 
 		return false;
 	}

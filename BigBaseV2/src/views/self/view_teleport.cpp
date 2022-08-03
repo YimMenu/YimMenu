@@ -1,6 +1,7 @@
 #include "views/view.hpp"
 #include "util/globals.hpp"
 #include "util/mobile.hpp"
+#include "util/ped.hpp"
 #include "util/teleport.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 
@@ -26,7 +27,7 @@ namespace big
 				}
 			}
 
-			if (ImGui::ListBoxHeader("##property_list", { 300, 400 }))
+			if (ImGui::ListBoxHeader("##property_list", { 320, 400 }))
 			{
 				for (auto& it : g->world.property_list)
 				{
@@ -68,7 +69,7 @@ namespace big
 				}
 			}
 
-			if (ImGui::ListBoxHeader("##mission_vehicles", { 300, 400 }))
+			if (ImGui::ListBoxHeader("##mission_vehicles", { 320, 400 }))
 			{
 				for (auto& it : g->world.mission_veh_list)
 				{
@@ -114,6 +115,8 @@ namespace big
 		if (ImGui::BeginTabItem("Mission Peds"))
 		{
 			static int update_ticks = 0;
+			static bool kill = false;
+			static bool bring = false;
 
 			if (g->world.mission_ped_list_updated == true)
 			{
@@ -130,7 +133,7 @@ namespace big
 				}
 			}
 
-			if (ImGui::ListBoxHeader("##mission_peds", { 300, 400 }))
+			if (ImGui::ListBoxHeader("##mission_peds", { 320, 400 }))
 			{
 				for (auto& it : g->world.mission_ped_list)
 				{
@@ -143,11 +146,26 @@ namespace big
 					{
 						ImGui::PushID(ped);
 						components::selectable(item.name, false, [ped] {
-							teleport::to_entity(ped);
+							if (bring)
+							{
+								ped::bring(ped);
+							}
+							else
+							{
+								teleport::to_entity(ped);
+							}
+
+							if (kill)
+							{
+
+							}
 						});
 						ImGui::PopID();
 					}
 				}
+
+				ImGui::Checkbox("Bring Ped", &bring);
+				ImGui::Checkbox("Kill Ped", &kill);
 
 				ImGui::ListBoxFooter();
 			}
