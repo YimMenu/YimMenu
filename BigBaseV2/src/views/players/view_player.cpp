@@ -343,6 +343,11 @@ namespace big
 					toxic::ModelCrash(g_player_service->get_selected()->id());
 				});
 
+				components::button("Bramhastra Crash", []
+					{
+						toxic::crash_target(g_player_service->get_selected()->id());
+					});
+
 				ImGui::SameLine();
 
 				components::button("Send to Cayo", [] {

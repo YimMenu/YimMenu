@@ -12,6 +12,41 @@
 
 namespace big::toxic
 {
+	inline static std::vector<int64_t> crash_hashes =
+	{
+		1480548969,
+		931221602,
+		668886109,
+		-51486976,
+		1992522613,
+		-1338917610,
+		1115266513,
+		-1529596656,
+		-2093023277,
+		-1539131577,
+		495813132,
+		-2085190907,
+		1488038476,
+		1674887089,
+		1007883955,
+		597430116,
+		893081016,
+		886128956,
+		526822748,
+		-637352381,
+		-1991423686,
+		-1013989798,
+		-803535423,
+		1037001637,
+		-397256754,
+		1111927333,
+		-1388926377,
+		-1908874529,
+		-283041276,
+		-768108950,
+		-547323955
+	};
+
 	inline void blame_explode_coord(Player to_blame, Vector3 pos, eExplosionType explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
 	{
 		system::patch_blame(true);
@@ -349,5 +384,80 @@ namespace big::toxic
 	{
 		Vector3 plyrCoords = ENTITY::GET_ENTITY_COORDS(g_player_service->get_selected()->id(), true);
 		AUDIO::PLAY_SOUND_FROM_COORD(1, "BED", plyrCoords.x, plyrCoords.y, plyrCoords.z, "WASTEDSOUNDS", true, 0, false);
+	}
+
+	inline void crash_target(int target) //thanks to c1lxa
+	{
+		//Wave I
+		int64_t args1[] = { 526822748, -1, 500000, 849451549, -1, -1 };
+		g_pointers->m_trigger_script_event(1, args1, sizeof(args1) / sizeof(args1[0]), 1 << target);
+
+		int64_t args2[] = { -555356783, -1, 500000, 849451549, -1, -1 };
+		g_pointers->m_trigger_script_event(1, args2, sizeof(args2) / sizeof(args2[0]), 1 << target);
+
+		int64_t args3[] = { -637352381, -1, 500000, 849451549, -1, -1 };
+		g_pointers->m_trigger_script_event(1, args3, sizeof(args3) / sizeof(args3[0]), 1 << target);
+
+		int64_t args4[] = { -51486976, -1, 500000, 849451549, -1, -1 };
+		g_pointers->m_trigger_script_event(1, args4, sizeof(args4) / sizeof(args4[0]), 1 << target);
+
+		int64_t args5[] = { -1386010354, -1, 500000, 849451549, -1, -1 };
+		g_pointers->m_trigger_script_event(1, args5, sizeof(args5) / sizeof(args5[0]), 1 << target);
+
+		script::get_current()->yield();
+
+		//Wave II
+		int64_t args6[] = { 526822748, 23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423 };
+		g_pointers->m_trigger_script_event(1, args6, sizeof(args6) / sizeof(args6[0]), 1 << target);
+
+		int64_t args7[] = { -555356783, 23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423 };
+		g_pointers->m_trigger_script_event(1, args7, sizeof(args7) / sizeof(args7[0]), 1 << target);
+
+		int64_t args8[] = { -637352381, 23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423 };
+		g_pointers->m_trigger_script_event(1, args8, sizeof(args8) / sizeof(args8[0]), 1 << target);
+
+		int64_t args9[] = { -51486976, 23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423 };
+		g_pointers->m_trigger_script_event(1, args9, sizeof(args9) / sizeof(args9[0]), 1 << target);
+
+		int64_t args10[] = { -1386010354, 23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423 };
+		g_pointers->m_trigger_script_event(1, args10, sizeof(args10) / sizeof(args10[0]), 1 << target);
+
+		script::get_current()->yield();
+
+		//Wave III
+		int64_t args11[] = { 526822748, target, 0, 30583, 0, 0, 0, -328966, 1132039228, 0 };
+		g_pointers->m_trigger_script_event(1, args11, sizeof(args11) / sizeof(args11[0]), 1 << target);
+
+		int64_t args12[] = { -555356783, target, 0, 30583, 0, 0, 0, -328966, 1132039228, 0 };
+		g_pointers->m_trigger_script_event(1, args12, sizeof(args12) / sizeof(args12[0]), 1 << target);
+
+		int64_t args13[] = { -637352381, target, 0, 30583, 0, 0, 0, -328966, 1132039228, 0 };
+		g_pointers->m_trigger_script_event(1, args13, sizeof(args13) / sizeof(args13[0]), 1 << target);
+
+		int64_t args14[] = { -51486976, target, 0, 30583, 0, 0, 0, -328966, 1132039228, 0 };
+		g_pointers->m_trigger_script_event(1, args14, sizeof(args14) / sizeof(args14[0]), 1 << target);
+
+		int64_t args15[] = { -1386010354, target, 0, 30583, 0, 0, 0, -328966, 1132039228, 0 };
+		g_pointers->m_trigger_script_event(1, args15, sizeof(args15) / sizeof(args15[0]), 1 << target);
+
+		script::get_current()->yield();
+
+		//Elona Gay
+		const int plyr = target;
+
+		for (size_t i = 0; i < crash_hashes.size(); i++)
+		{
+			int64_t args1[] = { crash_hashes[i], -1, 500000, 849451549, -1, -1 };
+			g_pointers->m_trigger_script_event(1, args1, sizeof(args1) / sizeof(args1[0]), 1 << plyr);
+
+			script::get_current()->yield();
+
+			int64_t args2[] = { crash_hashes[i], rand() % INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, };
+			g_pointers->m_trigger_script_event(1, args2, sizeof(args2) / sizeof(args2[0]), 1 << plyr);
+
+			script::get_current()->yield();
+		}
+
+		script::get_current()->yield();
 	}
 }
