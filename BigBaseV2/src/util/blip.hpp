@@ -96,11 +96,13 @@ namespace big::blip
 			{ BlipIcons::SUPPLIES, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::SM_CARGO, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::NHP_BAG, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
+			{ BlipIcons::BAT_CARGO, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::CAMERA_2, {  } },
 			{ BlipIcons::KEYCARD, {  } },
 			{ BlipIcons::ISLAND_HEIST_PREP, {  } },
 			{ BlipIcons::CAR_ROBBERY_PREP, {  } },
 			{ BlipIcons::SECURITY_CONTRACT, {  } },
+			{ BlipIcons::PASSWORD, { BlipColors::GREEN } },
 			{ BlipIcons::SAFE, {  } },
 			{ BlipIcons::EXPLOSIVE_CHARGE, {  } },
 

@@ -27,7 +27,7 @@ namespace big
 				}
 			}
 
-			if (ImGui::ListBoxHeader("##property_list", { 320, 400 }))
+			if (ImGui::ListBoxHeader("##property_list", { 350, 400 }))
 			{
 				for (auto& it : g->world.property_list)
 				{
@@ -69,7 +69,7 @@ namespace big
 				}
 			}
 
-			if (ImGui::ListBoxHeader("##mission_vehicles", { 320, 400 }))
+			if (ImGui::ListBoxHeader("##mission_vehicles", { 350, 400 }))
 			{
 				for (auto& it : g->world.mission_veh_list)
 				{
@@ -133,7 +133,7 @@ namespace big
 				}
 			}
 
-			if (ImGui::ListBoxHeader("##mission_peds", { 320, 400 }))
+			if (ImGui::ListBoxHeader("##mission_peds", { 350, 400 }))
 			{
 				for (auto& it : g->world.mission_ped_list)
 				{
@@ -162,7 +162,7 @@ namespace big
 								for (int i = 0; i < 3; i++)
 								{
 									const Vector3 destination = PED::GET_PED_BONE_COORDS(ped, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 0.0f);
-									Vector3 origin = PED::GET_PED_BONE_COORDS(ped, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 100.0f);
+									Vector3 origin = PED::GET_PED_BONE_COORDS(ped, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 1.0f);
 									MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 10000, true, RAGE_JOAAT("WEAPON_SNIPERRIFLE"), self::ped, true, false, 10000);
 									script::get_current()->yield(50ms);
 								}
