@@ -7,22 +7,6 @@
 
 namespace big::entity
 {
-	inline bool take_control_of(Entity ent)
-	{
-		if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return true;
-		for (uint8_t i = 0; !NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) && i < 10; i++)
-		{
-			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(ent);
-			script::get_current()->yield(10ms);
-		}
-		if (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return false;
-
-		int netHandle = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent);
-		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, true);
-
-		return true;
-	}
-
 	inline void cage_ped(Ped ped)
 	{
 		Hash hash = RAGE_JOAAT("prop_gold_cont_01");
@@ -71,5 +55,21 @@ namespace big::entity
 		SHAPETEST::GET_SHAPE_TEST_RESULT(ray, &hit, &endCoords, &surfaceNormal, ent);
 
 		return (bool)hit;
+	}
+
+	inline bool take_control_of(Entity ent)
+	{
+		if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return true;
+		for (uint8_t i = 0; !NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) && i < 10; i++)
+		{
+			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(ent);
+			script::get_current()->yield(10ms);
+		}
+		if (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return false;
+
+		int netHandle = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent);
+		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, true);
+
+		return true;
 	}
 }
