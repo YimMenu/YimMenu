@@ -21,7 +21,7 @@ namespace big
 
 				update_ticks++;
 
-				if (update_ticks > 1600)
+				if (update_ticks > 1200)
 				{
 					update_ticks = 0;
 				}
@@ -51,8 +51,9 @@ namespace big
 		if (ImGui::BeginTabItem("Mission Vehicles"))
 		{
 			static int update_ticks = 0;
-			static bool teleport_into = false;
 			static bool bring = false;
+			static bool teleport_into = false;
+			static bool take_driver_seat = false;
 
 			if (g->world.mission_veh_list_updated == true)
 			{
@@ -63,7 +64,7 @@ namespace big
 
 				update_ticks++;
 
-				if (update_ticks > 800)
+				if (update_ticks > 600)
 				{
 					update_ticks = 0;
 				}
@@ -93,7 +94,7 @@ namespace big
 							
 							if (teleport_into)
 							{
-								vehicle::put_in(self::ped, veh);
+								vehicle::put_in(self::ped, veh, take_driver_seat == false);
 							}
 						});
 						ImGui::PopID();
@@ -105,6 +106,10 @@ namespace big
 
 			ImGui::Checkbox("Bring Vehicle", &bring);
 			ImGui::Checkbox("Teleport into Vehicle", &teleport_into);
+			if (teleport_into)
+			{
+				ImGui::Checkbox("Take driver seat", &take_driver_seat);
+			}
 
 			ImGui::EndTabItem();
 		}
@@ -127,7 +132,7 @@ namespace big
 
 				update_ticks++;
 
-				if (update_ticks > 800)
+				if (update_ticks > 600)
 				{
 					update_ticks = 0;
 				}
