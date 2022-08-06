@@ -23,7 +23,9 @@ enum WheelTypes
     WHEEL_TYPE_HIGHEND,
     WHEEL_TYPE_BENNYS_ORIGINAL,
     WHEEL_TYPE_BENNYS_BESPOKE,
-    WHEEL_TYPE_F1
+    WHEEL_TYPE_OPEN_WHEEL,
+    WHEEL_TYPE_STREET,
+    WHEEL_TYPE_TRACK
 };
 
 enum VehicleWeapons
@@ -348,6 +350,12 @@ enum VehicleModType
     MOD_HORNS,
     MOD_SUSPENSION,
     MOD_ARMOR,
+    MOD_NITROUS = 17,
+    MOD_TURBO = 18,
+    MOD_SUBWOOFER = 19,
+    MOD_TYRE_SMOKE = 20,
+    MOD_HYDRAULICS = 21,
+    MOD_XENON_LIGHTS = 22,
     MOD_FRONTWHEEL = 23,
     MOD_REARWHEEL,
     MOD_PLATEHOLDER,
@@ -363,7 +371,7 @@ enum VehicleModType
     MOD_PLAQUES,
     MOD_SPEAKERS,
     MOD_TRUNK,
-    MOD_HYDRAULICS,
+    MOD_HYDRO,
     MOD_ENGINEBLOCK,
     MOD_AIRFILTER,
     MOD_STRUTS,
@@ -373,17 +381,75 @@ enum VehicleModType
     MOD_TANK,
     MOD_WINDOWS,
     MOD_DOORS,
-    MOD_LIVERY
+    MOD_LIVERY,
+    MOD_LIGHTBAR,
+
 };
+
+enum CustomVehicleModType
+{
+    MOD_MODEL_HASH        = -100,
+
+    MOD_WHEEL_TYPE        = -101,
+    MOD_PLATE_STYLE       = -102,
+    MOD_WINDOW_TINT       = -103,
+
+    MOD_FRONTWHEEL_VAR    = -104,
+    MOD_REARWHEEL_VAR     = -105,
+
+    MOD_NEON_FRONT_ON     = -106,
+    MOD_NEON_BACK_ON      = -107,
+    MOD_NEON_LEFT_ON      = -108,
+    MOD_NEON_RIGHT_ON     = -109,
+    MOD_TIRE_CAN_BURST    = -110,
+    MOD_DRIFT_TIRE        = -111,
+
+    MOD_PRIMARY_COL       = -112,
+    MOD_SECONDARY_COL     = -113,
+    MOD_PEARLESCENT_COL   = -114,
+    MOD_WHEEL_COL         = -115,
+    MOD_INTERIOR_COL      = -116,
+    MOD_DASHBOARD_COL     = -117,
+    MOD_XENON_COL         = -118,
+
+    MOD_PRIMARY_COL_R     = -119,
+    MOD_PRIMARY_COL_G     = -120,
+    MOD_PRIMARY_COL_B     = -121,
+
+    MOD_SECONDARY_COL_R   = -122,
+    MOD_SECONDARY_COL_G   = -123,
+    MOD_SECONDARY_COL_B   = -124,
+
+    MOD_TIRESMOKE_COL_R   = -125,
+    MOD_TIRESMOKE_COL_G   = -126,
+    MOD_TIRESMOKE_COL_B   = -127,
+
+    MOD_NEON_COL_R        = -128,
+    MOD_NEON_COL_G        = -129,
+    MOD_NEON_COL_B        = -130,
+
+    MOD_PRIMARY_CUSTOM    = -131,
+    MOD_SECONDARY_CUSTOM  = -132,
+
+    MOD_EXTRA_0           = -200,
+    MOD_EXTRA_1           = -201,
+    MOD_EXTRA_2           = -202,
+    MOD_EXTRA_3           = -203,
+    MOD_EXTRA_4           = -204,
+    MOD_EXTRA_5           = -205,
+    MOD_EXTRA_6           = -206,
+    MOD_EXTRA_7           = -207,
+    MOD_EXTRA_8           = -208,
+    MOD_EXTRA_9           = -209,
+    MOD_EXTRA_10          = -210,
+    MOD_EXTRA_11          = -211,
+    MOD_EXTRA_12          = -212,
+    MOD_EXTRA_13          = -213,
+    MOD_EXTRA_14          = -214
+};
+
 
 static const char* mod_names[] = { "MOD_SPOILERS", "MOD_FRONTBUMPER", "MOD_REARBUMPER", "MOD_SIDESKIRT", "MOD_EXHAUST", "MOD_FRAME", "MOD_GRILLE", "MOD_HOOD", "MOD_FENDER", "MOD_RIGHTFENDER", "MOD_ROOF", "MOD_ENGINE", "MOD_BRAKES", "MOD_TRANSMISSION", "MOD_HORNS", "MOD_SUSPENSION", "MOD_ARMOR", "", "MOD_TURBO", "", "MOD_TIRESMOKE", "", "MOD_XENONHEADLIGHTS", "MOD_FRONTWHEEL", "MOD_REARWHEEL", "MOD_PLATEHOLDER", "MOD_VANITYPLATES", "MOD_TRIMDESIGN", "MOD_ORNAMENTS", "MOD_DASHBOARD", "MOD_DIALDESIGN", "MOD_DOORSPEAKERS", "MOD_SEATS", "MOD_STEERINGWHEELS", "MOD_COLUMNSHIFTERLEVERS", "MOD_PLAQUES", "MOD_SPEAKERS", "MOD_TRUNK", "MOD_HYDRAULICS", "MOD_ENGINEBLOCK", "MOD_AIRFILTER", "MOD_STRUTS", "MOD_ARCHCOVER", "MOD_AERIALS", "MOD_TRIM", "MOD_TANK", "MOD_WINDOWS", "", "MOD_LIVERY" };
-
-enum VehicleToggleModType
-{
-    MOD_TURBO = 18,
-    MOD_TIRESMOKE = 20,
-    MOD_XENONHEADLIGHTS = 22
-};
 
 enum VehicleModHorns
 {
@@ -439,7 +505,13 @@ enum VehicleModHorns
     HORN_XMAS2,
     HORN_XMAS2_BACKGROUND,
     HORN_XMAS3,
-    HORN_XMAS3_BACKGROUND
+    HORN_XMAS3_BACKGROUND,
+    HORN_LOW_LONG,
+    HORN_LOW_SHORT,
+    HORN_MID_LONG,
+    HORN_MID_SHORT,
+    HORN_HIGH_LONG,
+    HORN_HIGH_SHORT
 };
 
 enum VehicleAddonLevel
@@ -602,6 +674,24 @@ enum WindowTints //m8 do you even int tint?
     WINDOWTINT_STOCK,
     WINDOWTINT_LIMO,
     WINDOWTINT_GREEN
+};
+
+enum HeadlightColors
+{
+    XENON_DEFAULT = -1,
+    XENON_WHITE,
+    XENON_BLUE,
+    XENON_ELECTRIC_BLUE,
+    XENON_MINT_GREEN,
+    XENON_LIME_GREEN,
+    XENON_YELLOW,
+    XENON_GOLDEN_SHOWER,
+    XENON_ORANGE,
+    XENON_RED,
+    XENON_PONY_PINK,
+    XENON_HOT_PINK,
+    XENON_PURPLE,
+    XENON_BACKLIGHT
 };
 
 #define NEON_COLOR_WHITE 222, 222, 255

@@ -1,13 +1,11 @@
 #pragma once
 #include "common.hpp"
-#include "CNetworkPlayerMgr.hpp"
-#include "FriendRegistry.hpp"
-#include "HashTable.hpp"
-#include "gta/fwddec.hpp"
-#include "gta/enums.hpp"
-#include "gta/replay.hpp"
-#include "gta/script_program.hpp"
+#include "base/HashTable.hpp"
 #include "function_types.hpp"
+#include "gta/fwddec.hpp"
+#include "gta/replay.hpp"
+#include "network/CNetworkPlayerMgr.hpp"
+#include "socialclub/FriendRegistry.hpp"
 
 namespace big
 {
@@ -50,6 +48,7 @@ namespace big
 		PVOID m_is_dlc_present;
 		PVOID m_network_group_override;
 		PUSHORT m_spectator_check;
+		PVOID m_get_label_text;
 
 		FriendRegistry* m_friend_registry{};
 
@@ -62,7 +61,6 @@ namespace big
 
 		PVOID m_network_player_mgr_init;
 		PVOID m_network_player_mgr_shutdown;
-		PVOID m_net_array_handler;
 
 		PVOID m_player_has_joined{};
 		PVOID m_player_has_left{};

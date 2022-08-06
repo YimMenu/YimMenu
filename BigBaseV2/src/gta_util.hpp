@@ -1,9 +1,8 @@
 #pragma once
 #include "gta/array.hpp"
-#include "CPedFactory.hpp"
-#include "CNetworkPlayerMgr.hpp"
 #include "gta/script_thread.hpp"
 #include "gta/tls_context.hpp"
+#include "ped/CPedFactory.hpp"
 #include "pointers.hpp"
 
 namespace big::gta_util

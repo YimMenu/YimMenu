@@ -41,17 +41,17 @@ namespace big
 
 		ImGui::BeginGroup();
 		draw_pair_option("Clear Ped Tasks", received_event.clear_ped_task);
+		draw_pair_option("Kick Votes Notification", received_event.kick_vote);
 		draw_pair_option("Detect Modder Events", received_event.modder_detect);
-		draw_pair_option("Report Cash Spawn", received_event.report_cash_spawn);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
+		draw_pair_option("Report Cash Spawn", received_event.report_cash_spawn);
 		draw_pair_option("Request Control Event", received_event.request_control_event);
 		draw_pair_option("Vehicle Temp Action", received_event.vehicle_temp_action);
 		ImGui::EndGroup();
-			
 
 		components::small_text("Script Event Handler");
 
@@ -77,7 +77,7 @@ namespace big
 		draw_pair_option("Remote Off Radar", script_event_handler.remote_off_radar);
 		draw_pair_option("Rotate Cam", script_event_handler.rotate_cam);
 		draw_pair_option("Send to Cutscene", script_event_handler.send_to_cutscene);
-		draw_pair_option("Send to Island", script_event_handler.send_to_island);
+		draw_pair_option("Send to Location", script_event_handler.send_to_location);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
@@ -93,12 +93,10 @@ namespace big
 		ImGui::EndGroup();
 
 		components::small_text("Other");
-
-		draw_pair_option("Net Array Error", g->notifications.net_array_error);
+		
 		draw_pair_option("Reports", g->notifications.reports);
 		draw_pair_option("Transaction Error / Rate Limit", g->notifications.transaction_rate_limit);
 		draw_pair_option("Invalid sync", g->notifications.invalid_sync);
-			
 	}
 
 }

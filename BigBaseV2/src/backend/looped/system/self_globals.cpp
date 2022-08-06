@@ -11,6 +11,13 @@ namespace big
 
 		self::pos = ENTITY::GET_ENTITY_COORDS(self::ped, false /*Unused*/);
 
-		self::veh = PED::GET_VEHICLE_PED_IS_IN(self::ped, false);
+		if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, 0))
+		{
+			self::veh = PED::GET_VEHICLE_PED_IS_IN(self::ped, false);
+		}
+		else
+		{
+			self::veh = 0;
+		}
 	}
 }

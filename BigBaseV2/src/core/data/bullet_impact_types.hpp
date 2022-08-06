@@ -1,5 +1,4 @@
 #pragma once
-#include "CAmmoInfo.hpp"
 
 std::map<eImpactType, const char*> BULLET_IMPACTS = {
 	{ eImpactType::DEFAULT_BULLETS, "DEFAULT_BULLETS" },
