@@ -25,11 +25,11 @@ namespace big::blip
 				if (colors.size() == 0)
 				{
 					location = HUD::GET_BLIP_COORDS(blip);
-					location.z += 1.5f;
+					location.z += .2f;
 
 					BlipColors color_idx = (BlipColors)HUD::GET_BLIP_COLOUR(blip);
 
-					LOG(WARNING) << (int)sprite << " " << (int)color_idx;
+					LOG(WARNING) << (int)sprite << " 1 " << (int)color_idx;
 
 					return true;
 				}
@@ -37,14 +37,15 @@ namespace big::blip
 				{
 					BlipColors color_idx = (BlipColors)HUD::GET_BLIP_COLOUR(blip);
 
+					LOG(WARNING) << (int)sprite << " " << (int)color_idx;
+
 					if (std::find(colors.begin(), colors.end(), color_idx) != colors.end())
 					{
 						location = HUD::GET_BLIP_COORDS(blip);
-						location.z += .5f;
+						location.z += .2f;
 						return true;
 					}
 
-					LOG(WARNING) << (int)sprite << " " << (int)color_idx;
 				}
 
 				blip = HUD::GET_NEXT_BLIP_INFO_ID((int)sprite);
@@ -56,14 +57,11 @@ namespace big::blip
 
 	inline bool get_objective_location(Vector3& location)
 	{
-		const std::map<BlipIcons, std::vector<BlipColors>> checkpoints = {
+		const std::map<BlipIcons, std::vector<BlipColors>> primary_checkpoints = {
 			// checkpoints
-			{ BlipIcons::LEVEL, { BlipColors::YELLOW_MISSION, BlipColors::YELLOW_MISSION_2, BlipColors::YELLOW_MISSION_3, BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
-			{ BlipIcons::CRATEDROP, { } },
-			{ BlipIcons::RACEFLAG, { } },
-			{ BlipIcons::RACE, { } },
-			{ BlipIcons::TF_CHECKPOINT, {  } },
+			{ BlipIcons::LEVEL, { BlipColors::YELLOW_MISSION, BlipColors::YELLOW_MISSION_2, BlipColors::YELLOW_MISSION_3 } },
 			{ BlipIcons::COP_PLAYER, { BlipColors::YELLOW_MISSION } },
+			{ BlipIcons::RANDOM_CHARACTER, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::GANG_COPS, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::GANG_MEXICANS, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::GANG_BIKERS, { BlipColors::YELLOW_MISSION } },
@@ -74,14 +72,19 @@ namespace big::blip
 			{ BlipIcons::ONMISSION_COPS, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::ONMISSION_LOST, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::ONMISSION_VAGOS, { BlipColors::YELLOW_MISSION } },
+			{ BlipIcons::CRATEDROP, { } },
+			{ BlipIcons::RACEFLAG, { } },
+			{ BlipIcons::RACE, { } },
+			{ BlipIcons::TF_CHECKPOINT, {  } },
+		};
 
-			//pickups
+		const std::map<BlipIcons, std::vector<BlipColors>> secondary_checkpoints = {
+			{ BlipIcons::LEVEL, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::CRIM_CUFF_KEYS, {  } },
 			{ BlipIcons::CAMERA, {  } },
 			{ BlipIcons::HANDCUFF_KEYS_BIKERS, {  } },
 			{ BlipIcons::PLAYERSTATE_KEYHOLDER, {  } },
 			{ BlipIcons::GANG_ATTACK_PACKAGE, {  } },
-			{ BlipIcons::PLAYER_BOAT, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::TEMP_3, {  } },
 			{ BlipIcons::TEMP_4, { BlipColors::RED_MISSION_2 } },
 			{ BlipIcons::TEMP_5, {  } },
@@ -91,7 +94,6 @@ namespace big::blip
 			{ BlipIcons::ASSAULT_PACKAGE, {  } },
 			{ BlipIcons::HUNT_THE_BOSS, {  } },
 			{ BlipIcons::CONTRABAND, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
-			{ BlipIcons::VIP, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::PACKAGE, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::DRUGS_PACKAGE, {  } },
 			{ BlipIcons::LAPTOP, { BlipColors::GREEN, BlipColors::YELLOW_MISSION, BlipColors::YELLOW_MISSION_2, BlipColors::YELLOW_MISSION_3 } },
@@ -102,6 +104,7 @@ namespace big::blip
 			{ BlipIcons::BAT_CARGO, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::BAT_KEYPAD, { BlipColors::GREEN, BlipColors::YELLOW_MISSION, BlipColors::YELLOW_MISSION_2, BlipColors::YELLOW_MISSION_3 } },
 			{ BlipIcons::RUCKSACK, {  } },
+			{ BlipIcons::SHIPPING_CONTAINER, { BlipColors::RED_MISSION_2 } },
 			{ BlipIcons::CAMERA_2, {  } },
 			{ BlipIcons::KEYCARD, {  } },
 			{ BlipIcons::ISLAND_HEIST_PREP, {  } },
@@ -110,22 +113,24 @@ namespace big::blip
 			{ BlipIcons::PASSWORD, { BlipColors::GREEN } },
 			{ BlipIcons::SAFE, {  } },
 			{ BlipIcons::EXPLOSIVE_CHARGE, {  } },
-
-			//race flags
-			{ BlipIcons::RACEFLAG, { } },
-			{ BlipIcons::RACE, { } },
-			{ BlipIcons::TF_CHECKPOINT, {  } }
 		};
 
-		if (get_blip_location(checkpoints, location))
+		if (get_blip_location(primary_checkpoints, location))
+		{
+			return true;
+		}
+
+		if (get_blip_location(secondary_checkpoints, location))
 		{
 			return true;
 		}
 
 		for (int sprite = 0; sprite <= (int)BlipIcons::MC_BAR_SUPPLIES; sprite++)
 		{
-			if (checkpoints.count((BlipIcons)sprite))
-			{
+			if (
+				primary_checkpoints.count((BlipIcons)sprite) || 
+				secondary_checkpoints.count((BlipIcons)sprite)
+			) {
 				continue;
 			}
 
@@ -133,16 +138,19 @@ namespace big::blip
 
 			while (HUD::DOES_BLIP_EXIST(blip))
 			{
-				BlipColors color_idx = (BlipColors)HUD::GET_BLIP_COLOUR(blip);
-
-				if (color_idx == BlipColors::BLUE_PICKUP)
+				if (HUD::IS_BLIP_ON_MINIMAP(blip))
 				{
-					location = HUD::GET_BLIP_COORDS(blip);
-					location.z += 1.5f;
-					return true;
-				}
+					BlipColors color_idx = (BlipColors)HUD::GET_BLIP_COLOUR(blip);
 
-				LOG(WARNING) << (int)sprite << " " << (int)color_idx;
+					LOG(WARNING) << (int)sprite << " " << (int)color_idx;
+
+					if (color_idx == BlipColors::BLUE || color_idx == BlipColors::BLUE_PICKUP)
+					{
+						location = HUD::GET_BLIP_COORDS(blip);
+						location.z += .2f;
+						return true;
+					}
+				}
 
 				blip = HUD::GET_NEXT_BLIP_INFO_ID(sprite);
 			}

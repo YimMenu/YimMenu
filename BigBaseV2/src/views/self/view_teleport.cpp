@@ -1,3 +1,4 @@
+#include "fiber_pool.hpp"
 #include "views/view.hpp"
 #include "util/globals.hpp"
 #include "util/mobile.hpp"
@@ -94,7 +95,7 @@ namespace big
 							
 							if (teleport_into)
 							{
-								vehicle::put_in(self::ped, veh, take_driver_seat == false);
+								vehicle::put_in(self::ped, veh, false, take_driver_seat ? -1 : 0);
 							}
 						});
 						ImGui::PopID();
@@ -163,14 +164,9 @@ namespace big
 							if (kill)
 							{
 								script::get_current()->yield(100ms);
-
-								for (int i = 0; i < 3; i++)
-								{
-									const Vector3 destination = PED::GET_PED_BONE_COORDS(ped, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 0.0f);
-									Vector3 origin = PED::GET_PED_BONE_COORDS(ped, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 1.0f);
-									MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 10000, true, RAGE_JOAAT("WEAPON_SNIPERRIFLE"), self::ped, false, false, 10000);
-									script::get_current()->yield(50ms);
-								}
+								const Vector3 destination = PED::GET_PED_BONE_COORDS(ped, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 0.0f);
+								Vector3 origin = PED::GET_PED_BONE_COORDS(ped, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 1.0f);
+								MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 10000, true, RAGE_JOAAT("WEAPON_SNIPERRIFLE"), self::ped, false, false, 10000);
 							}
 						});
 						ImGui::PopID();
@@ -182,6 +178,32 @@ namespace big
 
 			ImGui::Checkbox("Bring Ped", &bring);
 			ImGui::Checkbox("Kill Ped", &kill);
+			if (ImGui::Button("Kill Attackers"))
+			{
+				for (auto& it : g->world.mission_ped_list)
+				{
+					const auto& ped = it.first;
+					const auto& model = it.second;
+
+					g_fiber_pool->queue_job([ped] {
+
+						bool is_in_combat = PED::IS_PED_IN_COMBAT(ped, self::ped);
+
+						if (is_in_combat || PED::GET_RELATIONSHIP_BETWEEN_PEDS(self::ped, ped) > 4)
+						{
+							if (bring)
+							{
+								ped::bring(ped);
+								script::get_current()->yield(100ms);
+							}
+
+							const Vector3 destination = PED::GET_PED_BONE_COORDS(ped, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 0.0f);
+							Vector3 origin = PED::GET_PED_BONE_COORDS(ped, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 1.0f);
+							MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 10000, true, RAGE_JOAAT("WEAPON_SNIPERRIFLE"), self::ped, false, false, 10000);
+						}
+					});
+				}
+			}
 
 			ImGui::EndTabItem();
 		}

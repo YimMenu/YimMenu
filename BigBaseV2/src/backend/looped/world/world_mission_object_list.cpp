@@ -29,10 +29,10 @@ namespace big
 							continue;
 						}
 
-						Vehicle veh = g_pointers->m_ptr_to_handle(veh_ptr);
-
-						if (ENTITY::IS_ENTITY_A_MISSION_ENTITY(veh))
+						if (veh_ptr->m_mission_bits & 0b0100)
 						{
+							Vehicle veh = g_pointers->m_ptr_to_handle(veh_ptr);
+
 							g->world.mission_veh_list[veh] = veh_ptr->m_model_info->m_model_hash;
 						}
 					}
@@ -64,12 +64,16 @@ namespace big
 
 						Ped ped = g_pointers->m_ptr_to_handle(ped_ptr);
 
-						if (ENTITY::IS_ENTITY_A_MISSION_ENTITY(ped))
+						if (ped_ptr->m_mission_bits & 0b0100 || PED::IS_PED_IN_COMBAT(ped, self::ped))
 						{
+							Ped ped = g_pointers->m_ptr_to_handle(ped_ptr);
 							Hash model = ped_ptr->m_model_info->m_model_hash;
 
 							if (
-								model == RAGE_JOAAT("MP_M_Freemode_01") || 
+								model == RAGE_JOAAT("Player_Zero") ||
+								model == RAGE_JOAAT("Player_One") ||
+								model == RAGE_JOAAT("Player_Two") ||
+								model == RAGE_JOAAT("MP_M_Freemode_01") ||
 								model == RAGE_JOAAT("MP_F_Freemode_01") ||
 								model == RAGE_JOAAT("S_M_M_AmmyCountry") ||
 								model == RAGE_JOAAT("U_M_Y_Tattoo_01") ||
@@ -81,8 +85,11 @@ namespace big
 								model == RAGE_JOAAT("S_F_Y_Shop_LOW") ||
 								model == RAGE_JOAAT("S_M_M_AutoShop_01")
 							) {
+								LOG(WARNING) << "S " << ped_ptr << " " << ped_ptr->m_mission_bits;
 								continue;
 							}
+
+							LOG(WARNING) << "M " << ped_ptr << " " << ped_ptr->m_mission_bits;
 
 							g->world.mission_ped_list[ped] = ped_ptr->m_model_info->m_model_hash;
 						}

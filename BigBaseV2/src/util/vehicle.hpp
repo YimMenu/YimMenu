@@ -92,24 +92,25 @@ namespace big::vehicle
 
 	inline void put_in(Ped ped, Vehicle veh, bool any_seat = false, int seat_idx = -1)
 	{
-		for (size_t i = 0; i < 100 && math::distance_between_vectors(ENTITY::GET_ENTITY_COORDS(ped, true), ENTITY::GET_ENTITY_COORDS(veh, true)) > 10; i++)
-			script::get_current()->yield();
+		for (int i = 0; i < 10 && !entity::take_control_of(veh); i++)
+		{
+			script::get_current()->yield(20ms);
+		}
 
 		if (any_seat)
 		{
-			Hash model = ENTITY::GET_ENTITY_MODEL(veh);
-			int num_of_seats = VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(model);
+			int num_of_seats = VEHICLE::GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(veh);
 
-			for (int i = -1; i < num_of_seats - 1; i++)
+			for (int i = -1; i < num_of_seats; i++)
 			{
-				if (VEHICLE::IS_VEHICLE_SEAT_FREE(self::veh, i, true))
+				if (VEHICLE::IS_VEHICLE_SEAT_FREE(veh, i, true))
 				{
-					PED::SET_PED_INTO_VEHICLE(ped, veh, seat_idx);
+					PED::SET_PED_INTO_VEHICLE(ped, veh, i);
 					return;
 				}
 			}
 
-			return g_notification_service->push_warning("Vehicle", "No free seats.");
+			g_notification_service->push_warning("Vehicle", "No free seats.");
 		}
 		else
 		{
@@ -117,13 +118,15 @@ namespace big::vehicle
 
 			if (seat_ped != 0)
 			{
-				if (!entity::take_control_of(ped))
-					return g_notification_service->push_warning("Vehicle", "Failed to take control of the ped.");
-
 				TASK::CLEAR_PED_TASKS_IMMEDIATELY(seat_ped);
 			}
 
 			PED::SET_PED_INTO_VEHICLE(ped, veh, seat_idx);
+
+			if (VEHICLE::GET_PED_IN_VEHICLE_SEAT(veh, seat_idx, true) != ped)
+			{
+				g_notification_service->push_warning("Vehicle", "Seat occupied.");
+			}
 		}
 	}
 
