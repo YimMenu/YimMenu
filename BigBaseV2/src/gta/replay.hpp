@@ -6,37 +6,10 @@
 
 namespace rage
 {
-	class CVehicle : public fwEntity
-	{
-	public:
-		char pad_018C[2716]; //0x018C
-		//class CPed* m_driver; //0x0C28
-		//class CPed* m_occupants[8]; //0x0C30
-	}; //Size: 0x018C
-
-	class CPed : public fwEntity
-	{
-	public:
-		char pad_018C[2972]; //0x018C
-		class CVehicle* m_last_vehicle; //0x0D28
-		char pad_0D30[908]; //0x0D30
-		int8_t m_decal_index; //0x10BC
-		int8_t m_decal_info; //0x10BD
-		char pad_10BE[10]; //0x10BE
-		class CPlayerInfo* m_player_info; //0x10C8
-	};
-
 	class CObject : public fwEntity
 	{
 	public:
 	}; //Size: 0x018C
-
-	class CBaseModelInfo
-	{
-	public:
-		char pad_0000[24]; //0x0000
-		uint32_t m_model; //0x0018
-	}; //Size: 0x001C
 
 	class CPedFactory
 	{
@@ -122,7 +95,7 @@ namespace rage
 	class CVehicleHandle
 	{
 	public:
-		class CVehicle* m_vehicle; //0x0000
+		class CAutomobile* m_vehicle; //0x0000
 		int32_t m_handle; //0x0008
 		char pad_000C[4]; //0x000C
 	}; //Size: 0x0010
