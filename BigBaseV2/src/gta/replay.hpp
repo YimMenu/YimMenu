@@ -11,13 +11,6 @@ namespace rage
 	public:
 	}; //Size: 0x018C
 
-	class CBaseModelInfo
-	{
-	public:
-		char pad_0000[24]; //0x0000
-		uint32_t m_model; //0x0018
-	}; //Size: 0x001C
-
 	class CPedFactory
 	{
 	public:
