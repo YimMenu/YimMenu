@@ -177,8 +177,7 @@ namespace big
 
 		while (g_running)
 		{
-			looped::world_mission_object_list();
-			looped::world_property_list();
+			looped::world_object_loop();
 
 			script::get_current()->yield();
 		}

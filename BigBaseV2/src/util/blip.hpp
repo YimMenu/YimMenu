@@ -25,7 +25,7 @@ namespace big::blip
 				if (colors.size() == 0)
 				{
 					location = HUD::GET_BLIP_COORDS(blip);
-					location.z += .2f;
+					location.z += .1f;
 
 					BlipColors color_idx = (BlipColors)HUD::GET_BLIP_COLOUR(blip);
 
@@ -42,7 +42,7 @@ namespace big::blip
 					if (std::find(colors.begin(), colors.end(), color_idx) != colors.end())
 					{
 						location = HUD::GET_BLIP_COORDS(blip);
-						location.z += .2f;
+						location.z += .1f;
 						return true;
 					}
 
@@ -79,7 +79,7 @@ namespace big::blip
 		};
 
 		const std::map<BlipIcons, std::vector<BlipColors>> secondary_checkpoints = {
-			{ BlipIcons::LEVEL, { BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
+			{ BlipIcons::LEVEL, { BlipColors::ORACLE_BLUE, BlipColors::ORACLE_BLUE_2, BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::CRIM_CUFF_KEYS, {  } },
 			{ BlipIcons::CAMERA, {  } },
 			{ BlipIcons::HANDCUFF_KEYS_BIKERS, {  } },
@@ -147,7 +147,7 @@ namespace big::blip
 					if (color_idx == BlipColors::BLUE || color_idx == BlipColors::BLUE_PICKUP)
 					{
 						location = HUD::GET_BLIP_COORDS(blip);
-						location.z += .2f;
+						location.z += .1f;
 						return true;
 					}
 				}

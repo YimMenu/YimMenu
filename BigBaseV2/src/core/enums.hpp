@@ -25,13 +25,21 @@ namespace big
 
 	enum class eEntityType
 	{
-		UNK_0,
-		UNK_1,
-		UNK_2,
-		UNK_3,
-		UNK_4,
-		VEHICLE,
+		NO_ENTITY,
 		PED,
+		VEHICLE,
+		OBJECT,
+	};
+
+	enum class eBlipType
+	{
+		PED = 1,
+		VEHICLE,
+		OBJECT,
+		COORD,
+		UNK,
+		PICKUP,
+		RADIUS
 	};
 
 	enum class eTransitionState

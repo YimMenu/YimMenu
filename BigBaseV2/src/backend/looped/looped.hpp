@@ -36,8 +36,7 @@ namespace big
 		static void self_police();
 		static void self_super_run();
 
-		static void world_mission_object_list();
-		static void world_property_list();
+		static void world_object_loop();
 
 		static void session_local_time();
 
