@@ -31,12 +31,25 @@ namespace big
 	void looped::world_object_loop()
 	{
 		static BlipColors last_player_color = BlipColors::WAYPOINT;
+		auto replay = *g_pointers->m_replay_interface;
 
-		if (!self::ped)
+		if (!self::ped || !replay)
 		{
 			LOG(WARNING) << "P: CLEAR 1";
-			g->world.property_list.clear();
 			last_player_color = BlipColors::WAYPOINT;
+
+			g->world.property_list.clear();
+			g->world.property_list_updated = false;
+
+			g->world.mission_veh_list.clear();
+			g->world.mission_veh_list_updated = false;
+
+			g->world.mission_ped_list.clear();
+			g->world.mission_ped_list_updated = false;
+
+			g->world.pickup_list.clear();
+			g->world.pickup_list_updated = false;
+
 			return;
 		}
 
@@ -184,29 +197,21 @@ namespace big
 		{
 			g->world.mission_veh_list.clear();
 
-			if (const auto replay = *g_pointers->m_replay_interface; replay)
+			if (const auto veh_interface = replay->m_vehicle_interface; veh_interface)
 			{
-				if (const auto veh_interface = replay->m_vehicle_interface; veh_interface)
+				const auto veh_interface_size = veh_interface->m_cur_vehicles;
+
+				for (int32_t i = 0; i < veh_interface_size; i++)
 				{
-					const auto veh_interface_size = veh_interface->m_max_vehicles;
+					auto veh_ptr = veh_interface->get_vehicle(i);
 
-					for (int32_t i = 0; i < veh_interface_size; i++)
+					if (!veh_ptr || !(veh_ptr->m_mission_bits & 0b0100) || !veh_ptr->m_navigation || !veh_ptr->m_model_info)
 					{
-						auto veh_entity = veh_interface->m_vehicle_list->m_vehicles[i];
-						CAutomobile* veh_ptr = (CAutomobile*)veh_entity.m_entity_ptr;
-
-						if (!veh_ptr || !veh_ptr->m_navigation || !veh_ptr->m_model_info)
-						{
-							continue;
-						}
-
-						if (veh_ptr->m_mission_bits & 0b0100)
-						{
-							Vehicle veh = g_pointers->m_ptr_to_handle(veh_ptr);
-
-							g->world.mission_veh_list[veh] = veh_ptr->m_model_info->m_model_hash;
-						}
+						continue;
 					}
+
+					Vehicle veh = g_pointers->m_ptr_to_handle(veh_ptr);
+					g->world.mission_veh_list[veh] = veh_ptr->m_model_info->m_model_hash;
 				}
 			}
 
@@ -218,6 +223,7 @@ namespace big
 			g->world.mission_ped_list.clear();
 
 			const std::vector<BlipIcons> ped_sprites = {
+				BlipIcons::LEVEL,
 				BlipIcons::AI
 			};
 
@@ -232,9 +238,7 @@ namespace big
 					if (
 						color_idx == BlipColors::RED
 					) {
-						Entity ent = HUD::GET_BLIP_INFO_ID_ENTITY_INDEX(blip);
-
-						if (ent != 0)
+						if (const auto ent = HUD::GET_BLIP_INFO_ID_ENTITY_INDEX(blip); ent)
 						{
 							eEntityType ent_type = (eEntityType)ENTITY::GET_ENTITY_TYPE(ent);
 
@@ -262,61 +266,77 @@ namespace big
 				}
 			}
 
-
-			if (const auto replay = *g_pointers->m_replay_interface; replay)
+			if (const auto ped_interface = replay->m_ped_interface; ped_interface)
 			{
-				if (const auto ped_interface = replay->m_ped_interface; ped_interface)
+				const auto ped_interface_size = ped_interface->m_cur_peds;
+
+				for (int32_t i = 0; i < ped_interface_size; i++)
 				{
-					const auto ped_interface_size = ped_interface->m_max_peds;
+					auto ped_ptr = ped_interface->get_ped(i);
 
-					for (int32_t i = 0; i < ped_interface_size; i++)
+					if (!ped_ptr || !ped_ptr->m_navigation || !ped_ptr->m_model_info)
 					{
-						auto ped_entity = ped_interface->m_ped_list->m_peds[i];
-						CPed* ped_ptr = (CPed*)ped_entity.m_entity_ptr;
+						continue;
+					}
 
-						if (!ped_ptr || !ped_ptr->m_navigation || !ped_ptr->m_model_info)
-						{
-							continue;
-						}
+					Ped ped = g_pointers->m_ptr_to_handle(ped_ptr);
+					Hash model = ped_ptr->m_model_info->m_model_hash;
 
-						Ped ped = g_pointers->m_ptr_to_handle(ped_ptr);
+					bool skip = false;
 
-						if (ped_ptr->m_mission_bits & 0b0100)
-						{
-							Ped ped = g_pointers->m_ptr_to_handle(ped_ptr);
-							Hash model = ped_ptr->m_model_info->m_model_hash;
+					if (
+						model == RAGE_JOAAT("Player_Zero") ||
+						model == RAGE_JOAAT("Player_One") ||
+						model == RAGE_JOAAT("Player_Two") ||
+						model == RAGE_JOAAT("MP_M_Freemode_01") ||
+						model == RAGE_JOAAT("MP_F_Freemode_01") ||
+						model == RAGE_JOAAT("S_M_M_AmmyCountry") ||
+						model == RAGE_JOAAT("U_M_Y_Tattoo_01") ||
+						model == RAGE_JOAAT("S_M_M_HairDress_01") ||
+						model == RAGE_JOAAT("S_F_M_Fembarber_01") ||
+						model == RAGE_JOAAT("MP_M_ShopKeep_01") ||
+						model == RAGE_JOAAT("S_F_M_Shop_HIGH") ||
+						model == RAGE_JOAAT("S_F_Y_Shop_MID") ||
+						model == RAGE_JOAAT("S_F_Y_Shop_LOW") ||
+						model == RAGE_JOAAT("S_M_M_AutoShop_01")
+					) {
+						skip = true;
+					}
 
-							bool skip = false;
-
-							if (
-								model == RAGE_JOAAT("Player_Zero") ||
-								model == RAGE_JOAAT("Player_One") ||
-								model == RAGE_JOAAT("Player_Two") ||
-								model == RAGE_JOAAT("MP_M_Freemode_01") ||
-								model == RAGE_JOAAT("MP_F_Freemode_01") ||
-								model == RAGE_JOAAT("S_M_M_AmmyCountry") ||
-								model == RAGE_JOAAT("U_M_Y_Tattoo_01") ||
-								model == RAGE_JOAAT("S_M_M_HairDress_01") ||
-								model == RAGE_JOAAT("S_F_M_Fembarber_01") ||
-								model == RAGE_JOAAT("MP_M_ShopKeep_01") ||
-								model == RAGE_JOAAT("S_F_M_Shop_HIGH") ||
-								model == RAGE_JOAAT("S_F_Y_Shop_MID") ||
-								model == RAGE_JOAAT("S_F_Y_Shop_LOW") ||
-								model == RAGE_JOAAT("S_M_M_AutoShop_01")
-							) {
-								skip = true;
-							}
-
-							if (PED::IS_PED_IN_COMBAT(ped, self::ped) || !skip)
-							{
-								g->world.mission_ped_list[ped] = ped_ptr->m_model_info->m_model_hash;
-							}
-						}
+					if (PED::IS_PED_IN_COMBAT(ped, self::ped) || (!skip && (ped_ptr->m_mission_bits & 0b0100)))
+					{
+						g->world.mission_ped_list[ped] = ped_ptr->m_model_info->m_model_hash;
 					}
 				}
 			}
 
 			g->world.mission_ped_list_updated = true;
+		}
+
+
+		if (!g->world.pickup_list_updated)
+		{
+			g->world.pickup_list.clear();
+
+			if (const auto pickup_interface = replay->m_pickup_interface; pickup_interface)
+			{
+				const auto pickup_interface_size = pickup_interface->m_cur_pickups;
+
+				for (int32_t i = 0; i < pickup_interface_size; i++)
+				{
+					auto pickup_ptr = pickup_interface->get_pickup(i);
+
+					if (!pickup_ptr || !(pickup_ptr->m_mission_bits & 0b0100) || !pickup_ptr->m_navigation || !pickup_ptr->m_model_info)
+					{
+						continue;
+					}
+
+					Object pickup = g_pointers->m_ptr_to_handle(pickup_ptr);
+					g->world.pickup_list[pickup] = pickup_ptr->m_model_info->m_model_hash;
+				}
+			}
+
+			g->world.pickup_list_updated = true;
 		}
 
 	}

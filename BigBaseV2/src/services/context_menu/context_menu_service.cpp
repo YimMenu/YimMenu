@@ -196,20 +196,20 @@ namespace big
 
 			if (veh_interface && ped_interface && obj_interface)
 			{
-				const auto veh_interface_size = veh_interface->m_max_vehicles;
-				const auto ped_interface_size = ped_interface->m_max_peds;
-				const auto obj_interface_size = obj_interface->m_max_objects;
+				const auto veh_interface_size = veh_interface->m_cur_vehicles;
+				const auto ped_interface_size = ped_interface->m_cur_peds;
+				const auto obj_interface_size = obj_interface->m_cur_objects;
 				const auto all_entities = std::make_unique<rage::CEntityHandle[]>(veh_interface_size + ped_interface_size + obj_interface_size);
 
 				const auto ptr = all_entities.get();
 				std::uint32_t offset = 0;
-				std::copy(ped_interface->m_ped_list->m_peds, ped_interface->m_ped_list->m_peds + ped_interface_size, ptr);
+				std::copy(ped_interface->m_ped_list->m_entities, ped_interface->m_ped_list->m_entities + ped_interface_size, ptr);
 				offset += ped_interface_size;
 
-				std::copy(veh_interface->m_vehicle_list->m_vehicles, veh_interface->m_vehicle_list->m_vehicles + veh_interface_size, ptr + offset);
+				std::copy(veh_interface->m_vehicle_list->m_entities, veh_interface->m_vehicle_list->m_entities + veh_interface_size, ptr + offset);
 				offset += veh_interface_size;
 
-				std::copy(obj_interface->m_object_list->m_objects, obj_interface->m_object_list->m_objects + obj_interface_size, ptr + offset);
+				std::copy(obj_interface->m_object_list->m_entities, obj_interface->m_object_list->m_entities + obj_interface_size, ptr + offset);
 				offset += obj_interface_size;
 
 				double distance = 1;

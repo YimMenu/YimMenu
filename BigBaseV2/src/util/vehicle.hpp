@@ -136,15 +136,14 @@ namespace big::vehicle
 		{
 			if (const auto veh_interface = replay->m_vehicle_interface; veh_interface)
 			{
-				const auto veh_interface_size = veh_interface->m_max_vehicles;
+				const auto veh_interface_size = veh_interface->m_cur_vehicles;
 
 				float min_dist = FLT_MAX;
-				int32_t m_handle = 0;
+				Vehicle m_handle = 0;
 
 				for (int32_t i = 0; i < veh_interface_size; i++)
 				{
-					auto veh_entity = veh_interface->m_vehicle_list->m_vehicles[i];
-					auto veh_ptr = veh_entity.m_entity_ptr;
+					auto veh_ptr = veh_interface->get_vehicle(i);
 
 					if (!veh_ptr || !veh_ptr->m_navigation)
 					{
@@ -158,7 +157,7 @@ namespace big::vehicle
 
 					if (dist < min_dist)
 					{
-						int32_t tmp_handle = g_pointers->m_ptr_to_handle(veh_ptr);
+						Vehicle tmp_handle = g_pointers->m_ptr_to_handle(veh_ptr);
 
 						if (entity::take_control_of(tmp_handle))
 						{

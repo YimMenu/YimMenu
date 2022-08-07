@@ -224,6 +224,9 @@ namespace big
 
 			std::map<Ped, Hash> mission_ped_list;
 			bool mission_ped_list_updated = true;
+
+			std::map<Object, Hash> pickup_list;
+			bool pickup_list_updated = true;
 		};
 
 		struct vehicle {

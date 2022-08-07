@@ -106,6 +106,7 @@ namespace big
 			}
 
 			ImGui::Checkbox("Bring Vehicle", &bring);
+			ImGui::SameLine();
 			ImGui::Checkbox("Teleport into Vehicle", &teleport_into);
 			if (teleport_into)
 			{
@@ -147,45 +148,54 @@ namespace big
 					const auto& model = it.second;
 
 					auto item = g_gta_data_service->find_ped_by_hash(model);
+					std::string ped_model_name = item.name;
 
-					if (item.hash)
+					if (!item.hash)
 					{
-						ImGui::PushID(ped);
-						components::selectable(item.name, false, [ped] {
-							if (bring)
-							{
-								ped::bring(ped);
-							}
-							else
-							{
-								teleport::to_entity(ped);
-							}
-
-							if (kill)
-							{
-								script::get_current()->yield(100ms);
-								const Vector3 destination = PED::GET_PED_BONE_COORDS(ped, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 0.0f);
-								Vector3 origin = PED::GET_PED_BONE_COORDS(ped, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 1.0f);
-								MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 10000, true, RAGE_JOAAT("WEAPON_SNIPERRIFLE"), self::ped, false, false, 10000);
-							}
-						});
-						ImGui::PopID();
+						ped_model_name = std::to_string(model);
 					}
+
+					ImGui::PushID(ped);
+					components::selectable(ped_model_name, false, [ped] {
+						if (bring)
+						{
+							ped::bring(ped);
+						}
+						else
+						{
+							teleport::to_entity(ped);
+						}
+
+						if (kill)
+						{
+							script::get_current()->yield(100ms);
+							const Vector3 destination = PED::GET_PED_BONE_COORDS(ped, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 0.0f);
+							Vector3 origin = PED::GET_PED_BONE_COORDS(ped, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 1.0f);
+							MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 10000, true, RAGE_JOAAT("WEAPON_SNIPERRIFLE"), self::ped, false, false, 10000);
+						}
+					});
+					ImGui::PopID();
 				}
 
 				ImGui::ListBoxFooter();
 			}
 
 			ImGui::Checkbox("Bring Ped", &bring);
+			ImGui::SameLine();
 			ImGui::Checkbox("Kill Ped", &kill);
+
 			if (ImGui::Button("Kill Attackers"))
 			{
 				for (auto& it : g->world.mission_ped_list)
 				{
 					const auto& ped = it.first;
-					const auto& model = it.second;
 
 					g_fiber_pool->queue_job([ped] {
+
+						if (ENTITY::IS_ENTITY_DEAD(ped, 1))
+						{
+							return;
+						}
 
 						bool is_in_combat = PED::IS_PED_IN_COMBAT(ped, self::ped);
 
@@ -209,6 +219,63 @@ namespace big
 		}
 	}
 
+	void pickup_list_tab()
+	{
+		if (ImGui::BeginTabItem("Pick-ups"))
+		{
+			static int update_ticks = 0;
+			static bool bring = false;
+
+			if (g->world.pickup_list_updated == true)
+			{
+				if (update_ticks == 0)
+				{
+					g->world.pickup_list_updated = false;
+				}
+
+				update_ticks++;
+
+				if (update_ticks > 600)
+				{
+					update_ticks = 0;
+				}
+			}
+
+			if (ImGui::ListBoxHeader("##pickups", { 350, 400 }))
+			{
+				for (auto& it : g->world.pickup_list)
+				{
+					const auto& object = it.first;
+					const auto& model = it.second;
+
+					std::string object_model_name = std::to_string(model);
+
+
+					ImGui::PushID(object);
+					components::selectable(object_model_name, false, [object] {
+						if (bring)
+						{
+							auto location = self::pos;
+							ENTITY::SET_ENTITY_COORDS(object, location.x, location.y, location.z, 0, 0, 0, 0);
+						}
+						else
+						{
+							teleport::to_entity(object);
+						}
+					});
+					ImGui::PopID();
+				}
+
+				ImGui::ListBoxFooter();
+			}
+
+			ImGui::Checkbox("Bring Object", &bring);
+
+
+			ImGui::EndTabItem();
+		}
+	}
+
 	void view::teleport()
 	{
 		components::button("Waypoint", [] {
@@ -227,6 +294,7 @@ namespace big
 		property_list_tab();
 		mission_vehicle_list_tab();
 		mission_ped_list_tab();
+		pickup_list_tab();
 		ImGui::EndTabBar();
 	}
 }
