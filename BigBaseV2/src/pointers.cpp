@@ -6,7 +6,7 @@ namespace big
 {
 	pointers::pointers()
 	{
-		memory::pattern_batch main_batch;
+		memory::batch main_batch;
 
 		main_batch.add("SCREEN_RESOLUTION", "66 0F 6E 0D ? ? ? ? 0F B7 3D", [this](memory::handle ptr)
 		{
