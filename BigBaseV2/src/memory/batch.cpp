@@ -1,16 +1,16 @@
 #include "../common.hpp"
 #include "../logger.hpp"
-#include "pattern_batch.hpp"
+#include "batch.hpp"
 #include "range.hpp"
 
 namespace memory
 {
-	void pattern_batch::add(std::string name, pattern pattern, std::function<void(handle)> callback)
+	void batch::add(std::string name, pattern pattern, std::function<void(handle)> callback)
 	{
 		m_entries.emplace_back(std::move(name), std::move(pattern), std::move(callback));
 	}
 
-	void pattern_batch::run(range region)
+	void batch::run(range region)
 	{
 		bool all_found = true;
 		for (auto& entry : m_entries)
