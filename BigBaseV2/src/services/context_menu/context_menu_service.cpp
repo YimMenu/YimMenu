@@ -196,9 +196,9 @@ namespace big
 
 			if (veh_interface && ped_interface && obj_interface)
 			{
-				const auto veh_interface_size = veh_interface->m_cur_vehicles;
-				const auto ped_interface_size = ped_interface->m_cur_peds;
-				const auto obj_interface_size = obj_interface->m_cur_objects;
+				const auto veh_interface_size = veh_interface->m_max_vehicles;
+				const auto ped_interface_size = ped_interface->m_max_peds;
+				const auto obj_interface_size = obj_interface->m_max_objects;
 				const auto all_entities = std::make_unique<rage::CEntityHandle[]>(veh_interface_size + ped_interface_size + obj_interface_size);
 
 				const auto ptr = all_entities.get();

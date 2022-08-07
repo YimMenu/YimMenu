@@ -248,8 +248,7 @@ namespace big
 					const auto& object = it.first;
 					const auto& model = it.second;
 
-					std::string object_model_name = std::to_string(model);
-
+					std::string object_model_name = g_gta_data_service->find_object_name_by_hash(model);
 
 					ImGui::PushID(object);
 					components::selectable(object_model_name, false, [object] {

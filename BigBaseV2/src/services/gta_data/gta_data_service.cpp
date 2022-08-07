@@ -12,11 +12,11 @@ namespace big
 		const std::string url_prefix = "http://github-proxy.damon.sh/DurtyFree/gta-v-data-dumps/master/";
 
 		load_from_file(
-			"./lib/vehicles.json",
-			"./lib/vehicles_etag.txt",
-			url_prefix + "vehicles.json",
-			&gta_data_service::load_vehicles,
-			"Vehicle"
+			"./lib/ObjectList.ini",
+			"./lib/ObjectList_etag.txt",
+			url_prefix + "ObjectList.ini",
+			&gta_data_service::load_objs,
+			"Object"
 		);
 
 		load_from_file(
@@ -25,6 +25,14 @@ namespace big
 			url_prefix + "peds.json",
 			&gta_data_service::load_peds,
 			"Ped"
+		);
+
+		load_from_file(
+			"./lib/vehicles.json",
+			"./lib/vehicles_etag.txt",
+			url_prefix + "vehicles.json",
+			&gta_data_service::load_vehicles,
+			"Vehicle"
 		);
 
 		load_from_file(
@@ -41,6 +49,16 @@ namespace big
 	gta_data_service::~gta_data_service()
 	{
 		g_gta_data_service = nullptr;
+	}
+
+	const std::string gta_data_service::find_object_name_by_hash(Hash hash)
+	{
+		if (auto it = m_obj_hash_map.find(hash); it != m_obj_hash_map.end())
+		{
+			return it->second;
+		}
+
+		return std::to_string(hash);
 	}
 
 
@@ -164,48 +182,26 @@ namespace big
 		});
 	}
 
-	void gta_data_service::load_vehicles(file file_to_load)
+
+
+	void gta_data_service::load_objs(file file_to_load)
 	{
-		m_vehicle_class_arr.clear();
-		m_vehicle_hash_idx_map.clear();
-		m_vehicle_item_arr.clear();
+		m_obj_hash_map.clear();
 
 		std::ifstream file(file_to_load.get_path());
-		nlohmann::json all_vehicles;
+
+		std::string obj;
 
 		try
 		{
-			file >> all_vehicles;
+			while (file >> obj)
+			{
+				m_obj_hash_map[rage::joaat(obj)] = obj;
+			}
 		}
 		catch (const std::exception& ex)
 		{
-			LOG(WARNING) << "Failed to load vehicles.json:\n" << ex.what();
-		}
-
-
-		for (auto& item_json : all_vehicles)
-		{
-			if (
-				item_json["Hash"].is_null() ||
-				item_json["Name"].is_null() ||
-				!item_json["Bones"].is_array() ||
-				item_json["Bones"][0] == "stub"
-			) {
-				continue;
-			}
-
-			auto item = vehicle_item(item_json);
-
-			m_vehicle_hash_idx_map[item_json["Hash"]] = (int)m_vehicle_item_arr.size();
-
-			m_vehicle_item_arr.push_back(item);
-
-			if (std::find(m_vehicle_class_arr.begin(), m_vehicle_class_arr.end(), item.clazz) == m_vehicle_class_arr.end())
-			{
-				m_vehicle_class_arr.push_back(item.clazz);
-			}
-
-			std::sort(m_vehicle_class_arr.begin(), m_vehicle_class_arr.end());
+			LOG(WARNING) << "Failed to load ObjectList.ini:\n" << ex.what();
 		}
 	}
 
@@ -249,6 +245,52 @@ namespace big
 			}
 
 			std::sort(m_ped_type_arr.begin(), m_ped_type_arr.end());
+		}
+	}
+
+
+	void gta_data_service::load_vehicles(file file_to_load)
+	{
+		m_vehicle_class_arr.clear();
+		m_vehicle_hash_idx_map.clear();
+		m_vehicle_item_arr.clear();
+
+		std::ifstream file(file_to_load.get_path());
+		nlohmann::json all_vehicles;
+
+		try
+		{
+			file >> all_vehicles;
+		}
+		catch (const std::exception& ex)
+		{
+			LOG(WARNING) << "Failed to load vehicles.json:\n" << ex.what();
+		}
+
+
+		for (auto& item_json : all_vehicles)
+		{
+			if (
+				item_json["Hash"].is_null() ||
+				item_json["Name"].is_null() ||
+				!item_json["Bones"].is_array() ||
+				item_json["Bones"][0] == "stub"
+			) {
+				continue;
+			}
+
+			auto item = vehicle_item(item_json);
+
+			m_vehicle_hash_idx_map[item_json["Hash"]] = (int)m_vehicle_item_arr.size();
+
+			m_vehicle_item_arr.push_back(item);
+
+			if (std::find(m_vehicle_class_arr.begin(), m_vehicle_class_arr.end(), item.clazz) == m_vehicle_class_arr.end())
+			{
+				m_vehicle_class_arr.push_back(item.clazz);
+			}
+
+			std::sort(m_vehicle_class_arr.begin(), m_vehicle_class_arr.end());
 		}
 	}
 

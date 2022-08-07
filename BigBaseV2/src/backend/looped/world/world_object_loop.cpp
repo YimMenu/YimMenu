@@ -199,7 +199,7 @@ namespace big
 
 			if (const auto veh_interface = replay->m_vehicle_interface; veh_interface)
 			{
-				const auto veh_interface_size = veh_interface->m_cur_vehicles;
+				const auto veh_interface_size = veh_interface->m_max_vehicles;
 
 				for (int32_t i = 0; i < veh_interface_size; i++)
 				{
@@ -268,7 +268,7 @@ namespace big
 
 			if (const auto ped_interface = replay->m_ped_interface; ped_interface)
 			{
-				const auto ped_interface_size = ped_interface->m_cur_peds;
+				const auto ped_interface_size = ped_interface->m_max_peds;
 
 				for (int32_t i = 0; i < ped_interface_size; i++)
 				{
@@ -290,7 +290,8 @@ namespace big
 						model == RAGE_JOAAT("Player_Two") ||
 						model == RAGE_JOAAT("MP_M_Freemode_01") ||
 						model == RAGE_JOAAT("MP_F_Freemode_01") ||
-						model == RAGE_JOAAT("S_M_M_AmmyCountry") ||
+						model == RAGE_JOAAT("S_M_M_AmmuCountry") ||
+						model == RAGE_JOAAT("S_M_Y_AmmuCity_01") ||
 						model == RAGE_JOAAT("U_M_Y_Tattoo_01") ||
 						model == RAGE_JOAAT("S_M_M_HairDress_01") ||
 						model == RAGE_JOAAT("S_F_M_Fembarber_01") ||
@@ -318,15 +319,39 @@ namespace big
 		{
 			g->world.pickup_list.clear();
 
+			const std::vector<BlipIcons> pickup_sprites = {
+				BlipIcons::CONTRABAND
+			};
+
+			for (auto& sprite : pickup_sprites)
+			{
+				Blip blip = HUD::GET_FIRST_BLIP_INFO_ID((int)sprite);
+
+				while (HUD::DOES_BLIP_EXIST(blip))
+				{
+					if (const auto ent = HUD::GET_BLIP_INFO_ID_ENTITY_INDEX(blip); ent)
+					{
+						eEntityType ent_type = (eEntityType)ENTITY::GET_ENTITY_TYPE(ent);
+
+						if (ent_type == eEntityType::OBJECT)
+						{
+							g->world.pickup_list[ent] = ENTITY::GET_ENTITY_MODEL(ent);
+						}
+					}
+
+					blip = HUD::GET_NEXT_BLIP_INFO_ID((int)sprite);
+				}
+			}
+
 			if (const auto pickup_interface = replay->m_pickup_interface; pickup_interface)
 			{
-				const auto pickup_interface_size = pickup_interface->m_cur_pickups;
+				const auto pickup_interface_size = pickup_interface->m_max_pickups;
 
 				for (int32_t i = 0; i < pickup_interface_size; i++)
 				{
 					auto pickup_ptr = pickup_interface->get_pickup(i);
 
-					if (!pickup_ptr || !(pickup_ptr->m_mission_bits & 0b0100) || !pickup_ptr->m_navigation || !pickup_ptr->m_model_info)
+					if (!pickup_ptr || !pickup_ptr->m_navigation || !pickup_ptr->m_model_info)
 					{
 						continue;
 					}

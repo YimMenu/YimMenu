@@ -68,7 +68,7 @@ namespace big::blip
 			{ BlipIcons::OBJECTIVE_GREEN, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::OBJECTIVE_RED, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::OBJECTIVE_YELLOW, { BlipColors::YELLOW_MISSION } },
-			{ BlipIcons::OBJECTIVE_BLUE, { BlipColors::BLUE, BlipColors::YELLOW_MISSION } },
+			{ BlipIcons::OBJECTIVE_BLUE, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::ONMISSION_COPS, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::ONMISSION_LOST, { BlipColors::YELLOW_MISSION } },
 			{ BlipIcons::ONMISSION_VAGOS, { BlipColors::YELLOW_MISSION } },
@@ -81,6 +81,7 @@ namespace big::blip
 		const std::map<BlipIcons, std::vector<BlipColors>> secondary_checkpoints = {
 			{ BlipIcons::LEVEL, { BlipColors::ORACLE_BLUE, BlipColors::ORACLE_BLUE_2, BlipColors::GREEN, BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::CRIM_CUFF_KEYS, {  } },
+			{ BlipIcons::OBJECTIVE_BLUE, { BlipColors::BLUE, BlipColors::BLUE_PICKUP } },
 			{ BlipIcons::CAMERA, {  } },
 			{ BlipIcons::HANDCUFF_KEYS_BIKERS, {  } },
 			{ BlipIcons::PLAYERSTATE_KEYHOLDER, {  } },
