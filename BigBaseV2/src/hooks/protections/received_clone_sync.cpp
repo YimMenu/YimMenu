@@ -68,7 +68,7 @@ namespace big {
 				}
 				else
 				{
-					if (auto game_obj = net_obj->GetGameObject())
+					if (auto game_obj = net_obj->GetGameObject(); game_obj)
 					{
 						if (auto model_info = game_obj->m_model_info)
 						{
