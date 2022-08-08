@@ -1,6 +1,8 @@
 #include "hooking.hpp"
 #include "core/globals.hpp"
 #include <natives.hpp>
+#include <network/netObject.hpp>
+#include <rage/fwEntity.hpp>
 
 namespace big {
 
