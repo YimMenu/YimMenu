@@ -11,39 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     name: Update GTA Data
     steps:
-      - uses: actions/checkout@v2.4.0
+      - name: Setup Node.js
+        uses: actions/setup-node@v3.4.1
+      
+      - name: checkout repo
+        uses: actions/checkout@v2.4.2
+
+      - name: Generate header files
+        run: cd ".github/workflows/gen_gta_service_files" && npm ci && npm start
+        
+      - name: Move header files
+        run: ls && cp -R "./.github/workflows/gen_gta_service_files/dist/BigBaseV2" ./
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          submodules: recursive
-
-      - name: Setup premake
-        uses: abel0b/setup-premake@v2
-        with:
-          version: "5.0.0-beta1"
-
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
-
-      - name: Generate premake5 project
-        run: premake5 vs2019
-        shell: bash
-
-      - name: Build 64bit release DLL
-        run: |
-          msbuild /p:Configuration=Release /p:Platform=x64 BigBaseV2.sln /warnaserror
-
-      - name: Rename DLL to YimMenu.dll
-        run: ren BigBaseV2.dll YimMenu.dll
-        working-directory: bin/Release/
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: binary
-          path: |
-            bin/Release/YimMenu.dll
-
-      - name: Generate Build Info
-        id: var
-        run: |
-          echo "::set-output name=full_sha::$(git rev-parse HEAD)"
-          echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
+          commit_message: "Updated GTA data."
+          commit_user_name: "Action"
+          commit_user_email: "actions@github.com"
