@@ -28,3 +28,5 @@ jobs:
 
       - name: Commit changes
         uses: swinton/commit@v2.0.0
+        with:
+          commit-message: "Updated GTA data."
