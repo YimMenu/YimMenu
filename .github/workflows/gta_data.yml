@@ -22,9 +22,6 @@ jobs:
         
       - name: Move header files
         run: ls && cp -R "./.github/workflows/gen_gta_service_files/dist/BigBaseV2" ./
-        
-      - name: Check if file exist
-        run: ls BigBaseV2/src/services/gta_data
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
