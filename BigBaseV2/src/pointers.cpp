@@ -245,18 +245,6 @@ namespace big
 			m_network_object_mgr = ptr.add(3).rip().as<CNetworkObjectMgr**>();
 		});
 
-		// Player Has Joined
-		main_batch.add("PHJ", "48 8B CA 48 8B F2 FF 50 18 4C 8D 05", [this](memory::handle ptr)
-		{
-			m_player_has_joined = ptr.sub(0x26).as<PVOID>();
-		});
-
-		// Player Has Left
-		main_batch.add("PHL", "4C 8B F1 48 8B CA 48 8B EA FF 50 18 4C 8D 05", [this](memory::handle ptr)
-		{
-			m_player_has_left = ptr.sub(0x26).as<PVOID>();
-		});
-
 		// Network Player Mgr Init
 		main_batch.add("NPMI", "41 56 48 83 EC ? 48 8B F1 B9 ? ? ? ? 49 8B F9 41 8B E8 4C 8B F2 E8", [this](memory::handle ptr)
 		{
@@ -310,7 +298,13 @@ namespace big
 		// Get Network Event Data
 		main_batch.add("GNED", "53 43 52 49 50 54 5F 4E 45 54 57 4F 52 4B", [this](memory::handle ptr)
 		{
-			m_get_network_event_data = *ptr.sub(0x38).as<void**>();
+			m_get_network_event_data = *ptr.sub(0x38).as<PVOID*>();
+		});
+
+		// Assign Physical Index
+		main_batch.add("API", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 54 41 55 41 56 41 57 48 83 EC 20 41 8A E8", [this](memory::handle ptr)
+		{
+			m_assign_physical_index = ptr.as<PVOID>();
 		});
 
 		// Received clone sync & Get sync tree for type & Get net object for player & Get sync type info & Get net object
@@ -318,7 +312,6 @@ namespace big
 		{
 			m_received_clone_sync = ptr.sub(0x1D).as<decltype(m_received_clone_sync)>();
 			m_get_sync_tree_for_type = ptr.add(0x14).rip().as<decltype(m_get_sync_tree_for_type)>(); // 0F B7 CA 83 F9 07 .as()
-			m_get_net_object_for_player = ptr.add(0x60).rip().as<decltype(m_get_net_object_for_player)>(); // 41 80 78 ? FF 74 2D 41 0F B6 40 .as()
 			m_get_net_object = ptr.add(0x76).rip().as<decltype(m_get_net_object)>(); // E8 ? ? ? ? 0F B7 53 7C .add(1).rip().as()
 			m_get_sync_type_info = ptr.add(0x8C).rip().as<decltype(m_get_sync_type_info)>(); // 44 0F B7 C1 4C 8D 0D .as()
 		});

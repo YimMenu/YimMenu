@@ -48,10 +48,8 @@ namespace big
 		// Send NET Info to Lobby
 		m_send_net_info_to_lobby("SNITL", g_pointers->m_send_net_info_to_lobby, &hooks::send_net_info_to_lobby),
 
-		// Player Has Joined
-		m_player_has_joined_hook("PHJ", g_pointers->m_player_has_joined, &hooks::player_join),
-		// Player Has Left
-		m_player_has_left_hook("PHL", g_pointers->m_player_has_left, &hooks::player_leave),
+		// Assign Physical Index
+		m_assign_physical_index_hook("PHJ", g_pointers->m_assign_physical_index, &hooks::assign_physical_index),
 		// Receive Net Message
 		m_receive_net_message_hook("RNM", g_pointers->m_receive_net_message, &hooks::receive_net_message),
 		// Received clone sync
@@ -90,8 +88,7 @@ namespace big
 		m_network_player_mgr_init_hook.enable();
 		m_network_player_mgr_shutdown_hook.enable();
 
-		m_player_has_joined_hook.enable();
-		m_player_has_left_hook.enable();
+		m_assign_physical_index_hook.enable();
 
 		m_received_event_hook.enable();
 
@@ -118,8 +115,7 @@ namespace big
 
 		m_received_event_hook.disable();
 
-		m_player_has_joined_hook.disable();
-		m_player_has_left_hook.disable();
+		m_assign_physical_index_hook.disable();
 
 		m_network_player_mgr_init_hook.disable();
 		m_network_player_mgr_shutdown_hook.disable();
@@ -135,16 +131,6 @@ namespace big
 
 		SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(m_og_wndproc));
 		m_swapchain_hook.disable();
-	}
-
-	minhook_keepalive::minhook_keepalive()
-	{
-		MH_Initialize();
-	}
-
-	minhook_keepalive::~minhook_keepalive()
-	{
-		MH_Uninitialize();
 	}
 
 	bool hooks::run_script_threads(std::uint32_t ops_to_execute)
