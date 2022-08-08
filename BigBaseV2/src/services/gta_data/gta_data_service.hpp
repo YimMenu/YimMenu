@@ -1,51 +1,43 @@
 #pragma once
-#include "file_manager/file.hpp"
 #include "vehicle_item.hpp"
 #include "ped_item.hpp"
 #include "weapon_item.hpp"
-#include "gta/joaat.hpp"
 
 namespace big
 {
 	class gta_data_service
 	{
-		std::vector<std::string> m_vehicle_class_arr;
-		std::map<Hash, int> m_vehicle_hash_idx_map;
-		std::vector<vehicle_item> m_vehicle_item_arr;
-		const vehicle_item empty_vehicle_item = vehicle_item();
+        static const std::map<Hash, const char*> m_object_hash_map;
 
-		std::vector<std::string> m_ped_type_arr;
-		std::map<Hash, int> m_ped_hash_idx_map;
-		std::vector<ped_item> m_ped_item_arr;
-		const ped_item empty_ped_item = ped_item();
+        static const std::vector<const char*> m_vehicle_class_arr;
+		static const std::map<const Hash, const int> m_vehicle_hash_idx_map;
+		static const std::vector<const vehicle_item> m_vehicle_item_arr;
+        static const std::vector<const char*> m_vehicle_manufacturer_arr;
 
-		std::vector<std::string> m_weapon_type_arr;
-		std::map<Hash, int> m_weapon_hash_idx_map;
-		std::vector<weapon_item> m_weapon_item_arr;
-		const weapon_item empty_weapon_item = weapon_item();
+        static const std::vector<const char*> m_ped_type_arr;
+		static const std::map<const Hash, const int> m_ped_hash_idx_map;
+		static const std::vector<const ped_item> m_ped_item_arr;
+
+		static const std::vector<const char*> m_weapon_type_arr;
+		static const std::map<const Hash, const int> m_weapon_hash_idx_map;
+		static const std::vector<const weapon_item> m_weapon_item_arr;
 
 	public:
 		gta_data_service();
 		~gta_data_service();
 
 		const vehicle_item& find_vehicle_by_hash(Hash hash);
-		const std::vector<std::string>& get_vehicle_class_arr();
-		const std::vector<vehicle_item>& get_vehicle_arr();
+		const std::vector<const char*>& get_vehicle_class_arr();
+        const std::vector<const char*>& get_vehicle_manufacturer_arr();
+		const std::vector<const vehicle_item>& get_vehicle_arr();
 
 		const ped_item& find_ped_by_hash(Hash hash);
-		const std::vector<std::string>& get_ped_type_arr();
-		const std::vector<ped_item>& get_ped_arr();
+		const std::vector<const char*>& get_ped_type_arr();
+		const std::vector<const ped_item>& get_ped_arr();
 
 		const weapon_item& find_weapon_by_hash(Hash hash);
-		const std::vector<std::string>& get_weapon_type_arr();
-		const std::vector<weapon_item>& get_weapon_arr();
-
-	private:
-		void load_from_file(std::string file_path, std::string etag_path, std::string url, void(gta_data_service::* load_func)(file), std::string data_name);
-
-		void load_vehicles(file file_to_load);
-		void load_peds(file file_to_load);
-		void load_weapons(file file_to_load);
+		const std::vector<const char*>& get_weapon_type_arr();
+		const std::vector<const weapon_item>& get_weapon_arr();
 	};
 
 	inline gta_data_service* g_gta_data_service{};

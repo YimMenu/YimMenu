@@ -1,40 +1,10 @@
-#include "api/remote.hpp"
-#include "file_manager.hpp"
 #include "thread_pool.hpp"
 #include "gta_data_service.hpp"
-
-#define EXIST_IN_ARRAY(arr, val) (std::find(std::begin(arr), std::end(arr), val) != std::end(arr))
 
 namespace big
 {
 	gta_data_service::gta_data_service()
 	{
-		const std::string url_prefix = "http://github-proxy.damon.sh/DurtyFree/gta-v-data-dumps/master/";
-
-		load_from_file(
-			"./lib/vehicles.json",
-			"./lib/vehicles_etag.txt",
-			url_prefix + "vehicles.json",
-			&gta_data_service::load_vehicles,
-			"Vehicle"
-		);
-
-		load_from_file(
-			"./lib/peds.json",
-			"./lib/peds_etag.txt",
-			url_prefix + "peds.json",
-			&gta_data_service::load_peds,
-			"Ped"
-		);
-
-		load_from_file(
-			"./lib/weapons.json",
-			"./lib/weapons_etag.txt",
-			url_prefix + "weapons.json",
-			&gta_data_service::load_weapons,
-			"Weapon"
-		);
-
 		g_gta_data_service = this;
 	}
 

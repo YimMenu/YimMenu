@@ -1,0 +1,26 @@
+{
+  "name": "gen_gta_service_files",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "asynckit": "^0.4.0",
+    "axios": "^0.27.2",
+    "follow-redirects": "^1.15.1",
+    "form-data": "^4.0.0",
+    "delayed-stream": "^1.0.0",
+    "graceful-fs": "^4.2.10",
+    "fs-extra": "^10.1.0",
+    "combined-stream": "^1.0.8",
+    "universalify": "^2.0.0",
+    "mime-db": "^1.52.0",
+    "jsonfile": "^6.1.0",
+    "mime-types": "^2.1.35"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "GPL-2.0-only"
+}

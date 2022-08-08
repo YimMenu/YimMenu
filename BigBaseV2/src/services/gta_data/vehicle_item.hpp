@@ -1,17 +1,32 @@
 #pragma once
-#include "file_manager/file.hpp"
+#include ""
 
-namespace big
+namespace big::gta_data_service
 {
 	class vehicle_item {
-	public:
-		vehicle_item();
-		vehicle_item(nlohmann::json& item_json);
+    public:
+        const Hash hash;
+        const int class_idx;
+		const char* name;
+		const int manufacturer_idx;
 
-		std::string name;
-		std::string display_name;
-		std::string display_manufacturer;
-		std::string clazz;
-		Hash hash;
+        vehicle_item(const Hash hash, const int class_idx, const char* name, const int manufacturer_idx) : 
+            hash(hash),
+            class_idx(class_idx),
+            name(name),
+            manufacturer_idx(manufacturer_idx)
+        { }
+
+		~vehicle_item() { }
+
+        const char* get_class()
+        {
+            return gta_data_service::m_vehicle_class_arr[class_idx];
+        }
+
+        const char* get_manufacturer()
+        {
+            return gta_data_service::m_vehicle_m_vehicle_manufacturer_arr_arr[manufacturer_idx];
+        }
 	};
 }

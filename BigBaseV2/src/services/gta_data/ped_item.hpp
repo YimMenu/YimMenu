@@ -1,15 +1,25 @@
 #pragma once
-#include "file_manager/file.hpp"
+#include ""
 
-namespace big
+namespace big::gta_data_service
 {
 	class ped_item {
-	public:
-		ped_item();
-		ped_item(nlohmann::json& item_json);
+    public:
+        const Hash hash;
+        const int type_idx;
+		const char* name;
 
-		std::string name;
-		std::string ped_type;
-		Hash hash;
+        ped_item(const Hash hash, const int type_idx, const char* name) : 
+            hash(hash),
+            type_idx(type_idx),
+            name(name)
+        { }
+
+		~ped_item() { }
+
+        const char* get_type()
+        {
+            return gta_data_service::m_ped_type_arr[type_idx];
+        }
 	};
 }
