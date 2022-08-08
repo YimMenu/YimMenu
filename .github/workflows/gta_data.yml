@@ -27,6 +27,8 @@ jobs:
         run: ls BigBaseV2/src/services/gta_data
 
       - name: Commit changes
-        uses: swinton/commit@v2.0.0
+        uses: zwaldowski/git-commit-action@v1
         with:
           commit-message: "Updated GTA data."
+          author_name: "Action"
+          author_email: "actions@github.com"
