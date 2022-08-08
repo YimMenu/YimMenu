@@ -29,7 +29,7 @@ namespace big {
 		break;
 	*/
 	
-	CBaseModelInfo* get_model_data(rage::joaat_t hash) {
+	const CVehicleModelInfo* get_model_data(rage::joaat_t hash) {
 		auto modelTble = g_pointers->m_model_table;
 		for (auto i = modelTble->m_lookup_table[hash % modelTble->m_lookup_key]; i; i = i->m_next)
 		{
@@ -37,13 +37,13 @@ namespace big {
 			{
 				if (const auto model = modelTble->m_data[i->m_idx]; model)
 				{
-					return model;
+					return reinterpret_cast<CVehicleModelInfo*>(model);
 				}
 			}
 		}
 		return nullptr;
 	}
-	int64_t hooks::received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, uint16_t sync_type, uint16_t obj_id, rage::datBitBuffer* buffer, uint16_t unk, uint32_t timestamp) {
+	int64_t hooks::received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eObjType sync_type, uint16_t obj_id, rage::datBitBuffer* buffer, uint16_t unk, uint32_t timestamp) {
 		if (auto sync_tree = g_pointers->m_get_sync_tree_for_type(mgr, sync_type); sync_tree && NETWORK::NETWORK_IS_SESSION_ACTIVE())
 		{
 			if (auto net_obj = g_pointers->m_get_net_object(mgr, obj_id, true); net_obj)
@@ -51,7 +51,7 @@ namespace big {
 				auto tree_name = g_pointers->m_get_sync_type_info(sync_type, 0);
 				bool invalidsync = false;
 
-				if (sync_type < 0 || sync_type > 14)
+				if (sync_type < eObjType::carObjType || sync_type > eObjType::unkObjType14)
 				{
 					if (g->notifications.out_of_allowed_range_sync_type.log)
 						LOG(WARNING) << "Out of range sync: " << "Type: " << sync_type << " Tree name: " << tree_name << " From: " << src->get_name();
@@ -67,36 +67,28 @@ namespace big {
 
 					return 2;
 				}
-				else
+				else if (auto game_obj = net_obj->GetGameObject(); game_obj)
 				{
-					if (auto game_obj = net_obj->GetGameObject(); game_obj)
+					if (auto model_info = game_obj->m_model_info)
 					{
-						if (auto model_info = game_obj->m_model_info)
+						if (!STREAMING::IS_MODEL_VALID(model_info->m_model_hash))
 						{
-							if (!STREAMING::IS_MODEL_VALID(model_info->m_model_hash))
-							{
-								return 2;
-							}
-							//This hurts me, but Yim, go make a fucking CVehicleModelInfo class. Please.
-							if (*reinterpret_cast<uint64_t*>(reinterpret_cast<uint64_t>(model_info) + 0x340) != *reinterpret_cast<uint64_t*>(reinterpret_cast<uint64_t>(get_model_data(model_info->m_model_hash)) + 0x340))
-							{
-								return 2;
-							}
-							if (model_info->m_model_type != get_model_data(model_info->m_model_hash)->m_model_type)
-							{
-								return 2;
-							}
-							//Since we can access model hashes, we can also block the sync of stuff like SLOD. I can't be asked to implement this further, so I'll leave this comment for those who want to add it.
+							return 2;
+						}
+						else if (reinterpret_cast<CVehicleModelInfo*>(model_info)->m_vehicle_type != get_model_data(model_info->m_model_hash)->m_vehicle_type)
+						{
+							return 2;
+						}
+						else if (model_info->m_model_type != get_model_data(model_info->m_model_hash)->m_model_type)
+						{
+							return 2;
 						}
 					}
 				}
 			}
-			else
+			else if (sync_type != eObjType::pedObjType) //We don't want to not sync a player, so we ensure it's not a ped
 			{
-				if (sync_tree != 6) //We don't want to not sync a player, so we ensure it's not a ped
-				{
-					return 2;
-				}
+				return 2;
 			}
 		}
 		return g_hooking->m_received_clone_sync_hook.get_original<decltype(&received_clone_sync)>()(mgr, src, dst, sync_type, obj_id, buffer, unk, timestamp);

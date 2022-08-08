@@ -17,9 +17,14 @@ namespace rage
 		constexpr joaat_t operator()()
 		{
 			joaat_t hash = 0;
-			for (std::size_t i = 0; i < CharCount; ++i)
-				hash += joaat_to_lower(data[i]), hash += (hash << 10), hash ^= (hash >> 6);
-			hash += (hash << 3), hash ^= (hash >> 11), hash += (hash << 15);
+			for (std::size_t i = 0; i < CharCount; ++i) {
+				hash += joaat_to_lower(data[i]);
+				hash += (hash << 10);
+				hash ^= (hash >> 6);
+			}
+			hash += (hash << 3);
+			hash ^= (hash >> 11);
+			hash += (hash << 15);
 			return hash;
 		}
 	};
@@ -27,9 +32,14 @@ namespace rage
 	inline joaat_t joaat(std::string_view str)
 	{
 		joaat_t hash = 0;
-		for (auto c : str)
-			hash += joaat_to_lower(c), hash += (hash << 10), hash ^= (hash >> 6);
-		hash += (hash << 3), hash ^= (hash >> 11), hash += (hash << 15);
+		for (auto c : str) {
+			hash += joaat_to_lower(c);
+			hash += (hash << 10);
+			hash ^= (hash >> 6);
+		}
+		hash += (hash << 3);
+		hash ^= (hash >> 11);
+		hash += (hash << 15);
 		return hash;
 	}
 }
