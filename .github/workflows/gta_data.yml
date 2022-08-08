@@ -26,3 +26,5 @@ jobs:
       - name: Check if file exist
         run: ls BigBaseV2/src/services/gta_data
 
+      - name: Commit changes
+        uses: swinton/commit@v2.0.0
