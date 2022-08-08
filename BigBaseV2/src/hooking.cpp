@@ -49,7 +49,7 @@ namespace big
 		m_send_net_info_to_lobby("SNITL", g_pointers->m_send_net_info_to_lobby, &hooks::send_net_info_to_lobby),
 
 		// Assign Physical Index
-		m_assign_physical_index_hook("PHJ", g_pointers->m_assign_physical_index, &hooks::assign_physical_index),
+		m_assign_physical_index_hook("API", g_pointers->m_assign_physical_index, &hooks::assign_physical_index),
 		// Receive Net Message
 		m_receive_net_message_hook("RNM", g_pointers->m_receive_net_message, &hooks::receive_net_message),
 		// Received clone sync
