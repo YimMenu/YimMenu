@@ -29,6 +29,6 @@ jobs:
       - name: Commit changes
         uses: zwaldowski/git-commit-action@v1
         with:
-          commit-message: "Updated GTA data."
+          commit_message: "Updated GTA data."
           author_name: "Action"
           author_email: "actions@github.com"
