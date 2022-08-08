@@ -75,6 +75,10 @@ namespace big
 		components::button("Get All Weapons", [] {
 			for (auto const& weapon : g_gta_data_service->get_weapon_arr())
 			{
+				if (!weapon.hash)
+				{
+					continue;
+				}
 				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.hash, 9999, false);
 			}
 

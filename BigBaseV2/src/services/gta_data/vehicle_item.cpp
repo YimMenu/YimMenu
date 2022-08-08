@@ -14,11 +14,21 @@ namespace big::gta_data_service
 
     const char* vehicle_item::get_class()
     {
+        if (class_idx <= -1)
+        {
+            return "";
+        }
+
         return vehicle_class_arr[class_idx];
     }
 
     const char* vehicle_item::get_manufacturer()
     {
+        if (manufacturer_idx <= -1)
+        {
+            return "";
+        }
+
         return vehicle_manufacturer_arr[manufacturer_idx];
     }
 }

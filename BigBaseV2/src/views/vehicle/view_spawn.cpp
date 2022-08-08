@@ -137,6 +137,11 @@ namespace big
 				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
 
 				for (auto& item : item_arr) {
+					if (!item.hash)
+					{
+						continue;
+					}
+
 					std::string name = item.name;
 					std::string manufacturer = item.get_manufacturer();
 					std::string clazz = item.get_class();

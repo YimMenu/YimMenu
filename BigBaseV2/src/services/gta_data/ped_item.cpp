@@ -13,6 +13,11 @@ namespace big::gta_data_service
 
     const char* ped_item::get_type()
     {
+        if (type_idx <= -1)
+        {
+            return "";
+        }
+
         return ped_type_arr[type_idx];
     }
 }

@@ -107,6 +107,11 @@ namespace big
 
 				for (auto& item : ped_arr)
 				{
+					if (!item.hash)
+					{
+						continue;
+					}
+
 					std::string type = item.get_type();
 					std::string name = item.name;
 
