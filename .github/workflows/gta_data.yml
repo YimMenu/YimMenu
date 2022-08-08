@@ -17,5 +17,5 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v2.4.2
 
-      - run: cd workflows/gen_gta_service_files && npm ci && npm start && ls
+      - run: cd ".github/workflows/gen_gta_service_files" && npm ci && npm start && ls
 
