@@ -44,7 +44,7 @@ namespace big {
 		return nullptr;
 	}
 	int64_t hooks::received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eObjType sync_type, uint16_t obj_id, rage::datBitBuffer* buffer, uint16_t unk, uint32_t timestamp) {
-		if (auto sync_tree = g_pointers->m_get_sync_tree_for_type(mgr, sync_type); sync_tree && NETWORK::NETWORK_IS_SESSION_ACTIVE())
+		if (auto sync_tree = g_pointers->m_get_sync_tree_for_type(mgr, sync_type); sync_tree && *g_pointers->m_is_session_started)
 		{
 			if (auto net_obj = g_pointers->m_get_net_object(mgr, obj_id, true); net_obj)
 			{
