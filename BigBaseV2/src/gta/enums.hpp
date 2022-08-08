@@ -19,7 +19,7 @@ enum eObjType : uint16_t {
 	trailerObjType = 12,
 	trainObjType = 13,
 	unkObjType14 = 14,
-	unkObjType = -1
+	unkObjType = 69
 };
 enum class ControllerInputs : std::uint32_t
 {
