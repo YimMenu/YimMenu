@@ -4,7 +4,7 @@
 namespace big::gta_data_service
 {
 
-static const std::vector<const ped_item> ped_item_arr = {
+static const std::vector<ped_item> ped_item_arr = {
 	{ 0, -1, "" }, 
 	{ 3462393972, 0, "A_C_Boar" }, 
 	{ 1462895032, 0, "A_C_Cat_01" }, 

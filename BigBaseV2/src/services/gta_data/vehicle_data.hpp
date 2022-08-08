@@ -4,7 +4,7 @@
 namespace big::gta_data_service
 {
 
-static const std::vector<const vehicle_item> vehicle_item_arr = {
+static const std::vector<vehicle_item> vehicle_item_arr = {
 	{ 0, -1, "", -1 }, 
 	{ 3400983137, 17, "10F", 35 }, 
 	{ 274946574, 17, "10F Widebody", 35 }, 

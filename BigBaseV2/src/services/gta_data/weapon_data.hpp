@@ -4,7 +4,7 @@
 namespace big::gta_data_service
 {
 
-static const std::vector<const weapon_item> weapon_item_arr = {
+static const std::vector<weapon_item> weapon_item_arr = {
 	{ 0, -1, "", false, 0, 0 }, 
 	{ 584646201, 5, "AP Pistol", false, 712350450, 1239927582 }, 
 	{ 2937143193, 6, "Advanced Rifle", false, 636088799, 2720352226 }, 
