@@ -110,6 +110,7 @@ namespace big
 			ImGui::Checkbox("Teleport into Vehicle", &teleport_into);
 			if (teleport_into)
 			{
+				ImGui::SameLine();
 				ImGui::Checkbox("Take driver seat", &take_driver_seat);
 			}
 
@@ -183,7 +184,7 @@ namespace big
 			ImGui::Checkbox("Bring Ped", &bring);
 			ImGui::SameLine();
 			ImGui::Checkbox("Kill Ped", &kill);
-
+			ImGui::SameLine();
 			if (ImGui::Button("Kill Attackers"))
 			{
 				for (auto& it : g->world.mission_ped_list)
@@ -269,7 +270,6 @@ namespace big
 			}
 
 			ImGui::Checkbox("Bring Object", &bring);
-
 
 			ImGui::EndTabItem();
 		}

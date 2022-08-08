@@ -319,30 +319,6 @@ namespace big
 		{
 			g->world.pickup_list.clear();
 
-			const std::vector<BlipIcons> pickup_sprites = {
-				BlipIcons::CONTRABAND
-			};
-
-			for (auto& sprite : pickup_sprites)
-			{
-				Blip blip = HUD::GET_FIRST_BLIP_INFO_ID((int)sprite);
-
-				while (HUD::DOES_BLIP_EXIST(blip))
-				{
-					if (const auto ent = HUD::GET_BLIP_INFO_ID_ENTITY_INDEX(blip); ent)
-					{
-						eEntityType ent_type = (eEntityType)ENTITY::GET_ENTITY_TYPE(ent);
-
-						if (ent_type == eEntityType::OBJECT)
-						{
-							g->world.pickup_list[ent] = ENTITY::GET_ENTITY_MODEL(ent);
-						}
-					}
-
-					blip = HUD::GET_NEXT_BLIP_INFO_ID((int)sprite);
-				}
-			}
-
 			if (const auto pickup_interface = replay->m_pickup_interface; pickup_interface)
 			{
 				const auto pickup_interface_size = pickup_interface->m_max_pickups;
