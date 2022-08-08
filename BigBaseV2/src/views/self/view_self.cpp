@@ -53,7 +53,7 @@ namespace big
 		auto ped_arr = g_gta_data_service->get_ped_arr();
 
 		ImGui::SetNextItemWidth(300.f);
-		if (ImGui::BeginCombo("Ped Type", selected_ped_type == -1 ? "ALL" : ped_type_arr[selected_ped_type].c_str()))
+		if (ImGui::BeginCombo("Ped Type", selected_ped_type == -1 ? "ALL" : ped_type_arr[selected_ped_type]))
 		{
 			if (ImGui::Selectable("ALL", selected_ped_type == -1))
 			{
@@ -62,7 +62,7 @@ namespace big
 
 			for (int i = 0; i < ped_type_arr.size(); i++)
 			{
-				if (ImGui::Selectable(ped_type_arr[i].c_str(), selected_ped_type == i))
+				if (ImGui::Selectable(ped_type_arr[i], selected_ped_type == i))
 				{
 					selected_ped_type = i;
 					ped_model_buf[0] = 0;
@@ -107,24 +107,24 @@ namespace big
 
 				for (auto& item : ped_arr)
 				{
-					std::string ped_type = item.ped_type;
+					std::string type = item.get_type();
 					std::string name = item.name;
 
 					std::transform(name.begin(), name.end(), name.begin(), tolower);
 
 					if ((
-						selected_ped_type == -1 || ped_type_arr[selected_ped_type] == ped_type
+						selected_ped_type == -1 || ped_type_arr[selected_ped_type] == type
 					) && (
 						name.find(lower_search) != std::string::npos
 					)) {
 
 						bool selectable_highlighted = lower_search == name;
-						bool selectable_clicked = ImGui::Selectable(item.name.c_str(), selectable_highlighted);
+						bool selectable_clicked = ImGui::Selectable(item.name, selectable_highlighted);
 						ped_model_dropdown_focused |= ImGui::IsItemFocused();
 
 						if (selectable_clicked)
 						{
-							strncpy(ped_model_buf, item.name.c_str(), 64);
+							strncpy(ped_model_buf, item.name, 64);
 							ped_model_dropdown_open = false;
 							ped_model_dropdown_focused = false;
 						}

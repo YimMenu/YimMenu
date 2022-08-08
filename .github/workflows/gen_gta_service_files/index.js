@@ -18,18 +18,6 @@ function joaat(key) {
     return hash>>>0;
 }
 
-async function read_etag(path) {
-    let etag = "";
-
-    try {
-        etag = await fs.readFile(path);
-    } catch (err) {
-        etag = "";
-    }
-
-    return etag;
-}
-
 function remove_last_n(str, n) {
     return str.substring(0, str.length - n);
 }
@@ -44,21 +32,9 @@ function title_case(str) {
 }
 
 
-async function check_update(url, etag_path, output_path, gen_callback) {
+async function check_update(url, output_path, gen_callback) {
     try {
-        let etag = await read_etag(etag_path);
-
         let response = await axios({
-            url: url,
-            method: 'HEAD'
-        });
-
-        if (response.headers['etag'] == etag) {
-            console.log('"' + output_path + '" is up to date.');
-            return;
-        }
-
-        response = await axios({
             url: url,
             method: 'GET',
             responseType: 'arraybuffer'
@@ -78,14 +54,6 @@ async function check_update(url, etag_path, output_path, gen_callback) {
             return;
         }
 
-        try {
-            await fs.writeFile(etag_path, response.headers['etag']);
-        } catch (e) {
-            console.log('Failed to generate "' + etag_path + '".');
-            console.log(e);
-            return;
-        }
-
         console.log('"' + output_path + '" updated.');
     } catch (e) {
         console.log('Failed to connect to "' + url + '".');
@@ -96,26 +64,73 @@ async function check_update(url, etag_path, output_path, gen_callback) {
 async function gen_objects() {
     await check_update(
         'https://raw.githubusercontent.com/DurtyFree/gta-v-data-dumps/master/ObjectList.ini',
-        path.resolve(__dirname, './etag_objects.txt'),
         path.resolve(__dirname, './dist/BigBaseV2/src/services/gta_data/object_data.hpp'),
         (text_data) => {
 
-            let object_hash_map_str = 'gta_data_service::m_object_hash_map = {\n';
-            object_hash_map_str += `\t{ 0, "" } \n`;
+            let keyword_whitelist_set = new Set([
+                'crate', 'money', 'cash', 'weed', 'meth', 'coke', 'bag',
+                'pickup', 'health', 'case', 'ammo', 'parachute', 'phone',
+                'cctv_cam', 'keys', 'card', 'box', 'choc', 'snack', 'ld_scrap'
+            ]);
+
+            let keyword_blacklist_set = new Set([
+                'propint', 'terrain', 'elecbox', 'windowbox', 'postbox', 'boxpile',
+                'cratepile', 'watercrate', 'mb_crate', 'cash_crate', 'seaweed', 
+                'bagloader', 'beachbag', 'cementbags', 'crate_l', 'crate_m',
+                'v_serv_', 'v_re', 'v_med_', 'v_ind_', 'v_ilev_', 'v_corp_',
+                'v_club_', 'v_6', 'v_4', 'v_3', 'v_2',  'v_1', 'urbanweeds',
+                'prop_weeds', 'prop_weeddry', 'prop_weeddead', 'casino_phone',
+                'bucket', 'fan', 'weed_med', 'weed_lrg', 'weed_drying', '_chair',
+                '_table', 'tray_', 'weed_bud', 'prtmachine', 'moneypack', 'pallet',
+                'cashpile', 'methtrailer', 'rubweed', 'ex_cash_', 'crates', 
+                'ex_prop_crate', 'prop_crate_0', 'prop_crate_1', 'stack',
+                'trinket', 'jukebox', 'trolley', '_powder', '_spatula', 
+                '_scale', '_press', '_sweed'
+            ]);
+
+
+            let object_hash_map_str = 'static const std::map<Hash, const char*> object_hash_map = {\n';
+            object_hash_map_str += `\t{ 0, "" }, \n`;
 
             let lines = text_data.split('\n');
             for (let line of lines) {
                 if (!line) {
                     continue;
                 }
+
+                let is_weapon = line.startsWith('w_');
+
+                let skip = false;
+
+                if (!is_weapon) {
+                    skip = true;
+
+                    for (let keyword of keyword_whitelist_set) {
+                        if (line.includes(keyword)) {
+                            skip = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (!skip) {
+                    for (let keyword of keyword_blacklist_set) {
+                        if (line.includes(keyword)) {
+                            skip = true;
+                            break;
+                        }
+                    }
+                }
                 
-                object_hash_map_str += `\t{ ${joaat(line)}, "${line}" } \n`;
+                if (!skip) {
+                    object_hash_map_str += `\t{ ${joaat(line)}, "${line}" }, \n`;
+                }
             }
 
             object_hash_map_str = remove_last_n(object_hash_map_str, 3);
             object_hash_map_str += `\n};\n\n`;
-    
-            return '#include "gta_data_service.hpp"\n\n' + object_hash_map_str;
+
+            return 'namespace big::gta_data_service\n{\n\n' + object_hash_map_str + '};\n';
         }
     );
 }
@@ -123,14 +138,13 @@ async function gen_objects() {
 async function gen_peds() {
     await check_update(
         'https://raw.githubusercontent.com/DurtyFree/gta-v-data-dumps/master/peds.json',
-        path.resolve(__dirname, './etag_peds.txt'),
         path.resolve(__dirname, './dist/BigBaseV2/src/services/gta_data/ped_data.hpp'),
         (text_data) => {
             let json_data = JSON.parse(text_data);
 
-            let ped_hash_map_str = 'gta_data_service::m_ped_hash_idx_map = {\n';
-            let ped_arr_str = 'gta_data_service::m_ped_item_arr = {\n';
-            let ped_type_str = 'gta_data_service::m_ped_type_arr = {\n';
+            let ped_arr_str = 'static const std::vector<const ped_item> ped_item_arr = {\n';
+            let ped_hash_map_str = 'static const std::map<const Hash, const int> ped_hash_idx_map = {\n';
+            let ped_type_str = 'static const std::vector<const char*> ped_type_arr = {\n';
 
             let num_of_items = 0;
             let ped_type_set = new Set();
@@ -203,8 +217,11 @@ async function gen_peds() {
     
             ped_type_str = remove_last_n(ped_type_str, 3);
             ped_type_str += `\n};\n\n`;
-    
-            return '#include "gta_data_service.hpp"\n\n' + ped_arr_str + ped_hash_map_str + ped_type_str;
+
+            return  '#pragma once\n#include "ped_item.hpp"\n\n' + 
+                    'namespace big::gta_data_service\n{\n\n' + 
+                    ped_arr_str + ped_hash_map_str + ped_type_str +
+                    '};\n';
         }
     );
 }
@@ -212,15 +229,14 @@ async function gen_peds() {
 async function gen_vehicles() {
     await check_update(
         'https://raw.githubusercontent.com/DurtyFree/gta-v-data-dumps/master/vehicles.json',
-        path.resolve(__dirname, './etag_vehicles.txt'),
         path.resolve(__dirname, './dist/BigBaseV2/src/services/gta_data/vehicle_data.hpp'),
         (text_data) => {
             let json_data = JSON.parse(text_data);
 
-            let veh_hash_map_str = 'gta_data_service::m_vehicle_hash_idx_map = {\n';
-            let veh_arr_str = 'gta_data_service::m_vehicle_item_arr = {\n';
-            let veh_class_str = 'gta_data_service::m_vehicle_class_arr = {\n';
-            let veh_maker_arr_str = 'gta_data_service::m_vehicle_manufacturer_arr = {\n';
+            let veh_arr_str = 'static const std::vector<const vehicle_item> vehicle_item_arr = {\n';
+            let veh_hash_map_str = 'static const std::map<const Hash, const int> vehicle_hash_idx_map = {\n';
+            let veh_class_str = 'static const std::vector<const char*> vehicle_class_arr = {\n';
+            let veh_maker_arr_str = 'static const std::vector<const char*> vehicle_manufacturer_arr = {\n';
     
             let num_of_items = 0;
             let veh_class_set = new Set();
@@ -352,8 +368,11 @@ async function gen_vehicles() {
 
             veh_maker_arr_str = remove_last_n(veh_maker_arr_str, 3);
             veh_maker_arr_str += `\n};\n\n`;
-    
-            return '#include "gta_data_service.hpp"\n\n' + veh_arr_str + veh_hash_map_str + veh_class_str + veh_maker_arr_str;
+
+            return  '#pragma once\n#include "vehicle_item.hpp"\n\n' + 
+            'namespace big::gta_data_service\n{\n\n' + 
+            veh_arr_str + veh_hash_map_str + veh_class_str + veh_maker_arr_str +
+            '};\n';
         }
     );
 }
@@ -361,7 +380,6 @@ async function gen_vehicles() {
 async function gen_weapon() {
     await check_update(
         'https://raw.githubusercontent.com/DurtyFree/gta-v-data-dumps/master/weapons.json',
-        path.resolve(__dirname, './etag_weapons.txt'),
         path.resolve(__dirname, './dist/BigBaseV2/src/services/gta_data/weapon_data.hpp'),
         (text_data) => {
             let json_data = JSON.parse(text_data);
@@ -379,9 +397,9 @@ async function gen_weapon() {
                 joaat("WEAPON_STINGER")
             ]);
 
-            let weapon_hash_map_str = 'gta_data_service::m_weapon_hash_idx_map = {\n';
-            let weapon_arr_str = 'gta_data_service::m_weapon_item_arr = {\n';
-            let weapon_type_str = 'gta_data_service::m_weapon_type_arr = {\n';
+            let weapon_arr_str = 'static const std::vector<const weapon_item> weapon_item_arr = {\n';
+            let weapon_hash_map_str = 'static const std::map<const Hash, const int> weapon_hash_idx_map = {\n';
+            let weapon_type_str = 'static const std::vector<const char*> weapon_type_arr = {\n';
 
             let num_of_items = 0;
             let weapon_type_set = new Set();
@@ -505,7 +523,10 @@ async function gen_weapon() {
             weapon_type_str = remove_last_n(weapon_type_str, 3);
             weapon_type_str += `\n};\n\n`;
 
-            return '#include "gta_data_service.hpp"\n\n' + weapon_arr_str + weapon_hash_map_str + weapon_type_str;
+            return  '#pragma once\n#include "weapon_item.hpp"\n\n' + 
+            'namespace big::gta_data_service\n{\n\n' + 
+            weapon_arr_str + weapon_hash_map_str + weapon_type_str +
+            '};\n';
         }
     );
 }

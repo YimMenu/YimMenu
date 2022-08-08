@@ -1,6 +1,7 @@
 #include "pickup_service.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
+#include "gta/joaat.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 
 namespace big

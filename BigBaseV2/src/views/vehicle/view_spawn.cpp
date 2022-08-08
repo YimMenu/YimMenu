@@ -36,7 +36,7 @@ namespace big
 		auto class_arr = g_gta_data_service->get_vehicle_class_arr();
 
 		ImGui::SetNextItemWidth(300.f);
-		if (ImGui::BeginCombo("Vehicle Class", selected_class == -1 ? "ALL" : class_arr[selected_class].c_str()))
+		if (ImGui::BeginCombo("Vehicle Class", selected_class == -1 ? "ALL" : class_arr[selected_class]))
 		{
 			if (ImGui::Selectable("ALL", selected_class == -1))
 			{
@@ -45,7 +45,7 @@ namespace big
 
 			for (int i = 0; i < class_arr.size(); i++)
 			{
-				if (ImGui::Selectable(class_arr[i].c_str(), selected_class == i))
+				if (ImGui::Selectable(class_arr[i], selected_class == i))
 				{
 					selected_class = i;
 				}
@@ -80,7 +80,7 @@ namespace big
 				{
 					auto item = g_gta_data_service->find_vehicle_by_hash(veh_hash);
 
-					components::selectable("Current Vehicle [" + item.display_name + "]", false, [] {
+					components::selectable("Current Vehicle [" + std::string(item.name) + "]", false, [] {
 						if (self::veh)
 						{
 							Vector3 spawn_location = vehicle::get_spawn_location(g->spawn.spawn_inside);
@@ -137,21 +137,21 @@ namespace big
 				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
 
 				for (auto& item : item_arr) {
-					std::string display_name = item.display_name;
-					std::string display_manufacturer = item.display_manufacturer;
-					std::string clazz = item.clazz;
+					std::string name = item.name;
+					std::string manufacturer = item.get_manufacturer();
+					std::string clazz = item.get_class();
 
-					std::transform(display_name.begin(), display_name.end(), display_name.begin(), ::tolower);
-					std::transform(display_manufacturer.begin(), display_manufacturer.end(), display_manufacturer.begin(), ::tolower);
+					std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+					std::transform(manufacturer.begin(), manufacturer.end(), manufacturer.begin(), ::tolower);
 
 					if ((
 						selected_class == -1 || class_arr[selected_class] == clazz
 					) && (
-						display_name.find(lower_search) != std::string::npos ||
-						display_manufacturer.find(lower_search) != std::string::npos
+						name.find(lower_search) != std::string::npos ||
+						manufacturer.find(lower_search) != std::string::npos
 					)) {
 						ImGui::PushID(item.hash);
-						components::selectable(item.display_name, false, [item] {
+						components::selectable(item.name, false, [item] {
 
 							Vector3 spawn_location = vehicle::get_spawn_location(g->spawn.spawn_inside);
 							float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
