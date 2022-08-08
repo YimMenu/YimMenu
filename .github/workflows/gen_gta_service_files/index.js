@@ -142,7 +142,7 @@ async function gen_peds() {
         (text_data) => {
             let json_data = JSON.parse(text_data);
 
-            let ped_arr_str = 'static const std::vector<const ped_item> ped_item_arr = {\n';
+            let ped_arr_str = 'static const std::vector<ped_item> ped_item_arr = {\n';
             let ped_hash_map_str = 'static const std::map<const Hash, const int> ped_hash_idx_map = {\n';
             let ped_type_str = 'static const std::vector<const char*> ped_type_arr = {\n';
 
@@ -233,7 +233,7 @@ async function gen_vehicles() {
         (text_data) => {
             let json_data = JSON.parse(text_data);
 
-            let veh_arr_str = 'static const std::vector<const vehicle_item> vehicle_item_arr = {\n';
+            let veh_arr_str = 'static const std::vector<vehicle_item> vehicle_item_arr = {\n';
             let veh_hash_map_str = 'static const std::map<const Hash, const int> vehicle_hash_idx_map = {\n';
             let veh_class_str = 'static const std::vector<const char*> vehicle_class_arr = {\n';
             let veh_maker_arr_str = 'static const std::vector<const char*> vehicle_manufacturer_arr = {\n';
@@ -397,7 +397,7 @@ async function gen_weapon() {
                 joaat("WEAPON_STINGER")
             ]);
 
-            let weapon_arr_str = 'static const std::vector<const weapon_item> weapon_item_arr = {\n';
+            let weapon_arr_str = 'static const std::vector<weapon_item> weapon_item_arr = {\n';
             let weapon_hash_map_str = 'static const std::map<const Hash, const int> weapon_hash_idx_map = {\n';
             let weapon_type_str = 'static const std::vector<const char*> weapon_type_arr = {\n';
 
