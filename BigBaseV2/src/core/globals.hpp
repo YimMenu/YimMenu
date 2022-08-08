@@ -244,7 +244,7 @@ namespace big
 			AutoDriveStyle auto_drive_style = AutoDriveStyle::LAW_ABIDING;
 			float auto_drive_speed = 1;
 			bool auto_turn_signals = false;
-			int boost_behavior = 0;
+			eBoostBehaviors boost_behavior = eBoostBehaviors::DEFAULT;
 			bool drive_on_water = false;
 			bool horn_boost = false;
 			bool instant_brake = false;

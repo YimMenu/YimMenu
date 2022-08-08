@@ -1,4 +1,5 @@
 #include "backend/looped/looped.hpp"
+#include "core/enums.hpp"
 #include "natives.hpp"
 
 namespace big
@@ -9,14 +10,15 @@ namespace big
 
 		if (vehicle && VEHICLE::GET_HAS_ROCKET_BOOST_(self::veh))
 		{
-			if (g->vehicle.boost_behavior == 1 && vehicle->m_boost == 0.f) // No Boost Refil Time
+			if (g->vehicle.boost_behavior == eBoostBehaviors::INSTANT_REFIL && vehicle->m_boost == 0.f) // No Boost Refil Time
 			{
 				vehicle->m_boost = 1.f;
 			}
-			else if (g->vehicle.boost_behavior == 2) // Infinite Boost
+			else if (g->vehicle.boost_behavior == eBoostBehaviors::INSTANT_REFIL) // Infinite Boost
 			{
 				if (vehicle->m_boost_state)
 				{
+					vehicle->m_boost_allow_recharge = true;
 					vehicle->m_boost = 1.f;
 				}
 			}

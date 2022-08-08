@@ -2,6 +2,13 @@
 
 namespace big
 {
+	enum class eBoostBehaviors
+	{
+		DEFAULT,
+		INSTANT_REFIL,
+		INFINITE_BOOST
+	};
+
 	enum class CustomWeapon
 	{
 		NONE,
