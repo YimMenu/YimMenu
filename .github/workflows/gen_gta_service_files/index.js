@@ -70,7 +70,8 @@ async function gen_objects() {
             let keyword_whitelist_set = new Set([
                 'crate', 'money', 'cash', 'weed', 'meth', 'coke', 'bag',
                 'pickup', 'health', 'case', 'ammo', 'parachute', 'phone',
-                'cctv_cam', 'keys', 'card', 'box', 'choc', 'snack', 'ld_scrap'
+                'cctv_cam', 'keys', 'card', 'box', 'choc', 'snack', 
+                'ld_scrap', 'vw_prop_vw_colle_'
             ]);
 
             let keyword_blacklist_set = new Set([
