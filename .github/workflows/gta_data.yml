@@ -21,7 +21,7 @@ jobs:
         run: cd ".github/workflows/gen_gta_service_files" && npm ci && npm start
         
       - name: Move header files
-        run: cd ../../.. && cp -R ".github/workflows/gen_gta_service_files/dist/BigBaseV2" ./
+        run: cd "./../../.." && ls && cp -R "./.github/workflows/gen_gta_service_files/dist/BigBaseV2" ./
         
       - name: Check if file exist
         run: ls BigBaseV2/src/services/gta_data
