@@ -14,7 +14,7 @@ namespace big::gta_data_service
 
     weapon_item::~weapon_item() { }
 
-    const char* weapon_item::get_type()
+    const char* weapon_item::get_type() const
     {
         if (type_idx <= -1)
         {

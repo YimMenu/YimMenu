@@ -12,7 +12,7 @@ namespace big::gta_data_service
 
     vehicle_item::~vehicle_item() { }
 
-    const char* vehicle_item::get_class()
+    const char* vehicle_item::get_class() const
     {
         if (class_idx <= -1)
         {
@@ -22,7 +22,7 @@ namespace big::gta_data_service
         return vehicle_class_arr[class_idx];
     }
 
-    const char* vehicle_item::get_manufacturer()
+    const char* vehicle_item::get_manufacturer() const
     {
         if (manufacturer_idx <= -1)
         {

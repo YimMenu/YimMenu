@@ -11,7 +11,7 @@ namespace big::gta_data_service
 
     ped_item::~ped_item() { }
 
-    const char* ped_item::get_type()
+    const char* ped_item::get_type() const
     {
         if (type_idx <= -1)
         {

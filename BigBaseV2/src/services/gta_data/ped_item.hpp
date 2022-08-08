@@ -12,6 +12,6 @@ namespace big::gta_data_service
         ped_item(const Hash hash, const int type_idx, const char* name);
         ~ped_item();
 
-        const char* get_type();
+        const char* get_type() const;
 	};
 }
