@@ -13,30 +13,29 @@ jobs:
     steps:
       - name: Setup Node.js
         uses: actions/setup-node@v3.4.1
-        
-      - name: Determine default branch
-        run: |
-          DEFAULT_BRANCH=$(git remote show origin | awk '/HEAD branch/ {print $NF}')
-          echo "default_branch=$DEFAULT_BRANCH" >> $GITHUB_ENV
       
       - name: checkout repo
         uses: actions/checkout@v2.4.2
         with:
           token: ${{ secrets.ACTION_KEY }}
           
-      - name: Reset action
+      - name: Determine default branch
+        run: |
+          DEFAULT_BRANCH=$(git remote show origin | awk '/HEAD branch/ {print $NF}')
+          echo "default_branch=$DEFAULT_BRANCH" >> $GITHUB_ENV
+          
+      - name: Reset action branch
         run: git branch -f action ${{ github.event.repository.default_branch }}
         
-      - name: Switch to action
+      - name: Switch to action branch
         run: git checkout action
 
-      - name: Generate header files
-        run: cd ".github/workflows/gen_gta_service_files" && npm ci && npm start
-        
-      - name: Move header files
-        run: ls && cp -R "./.github/workflows/gen_gta_service_files/dist/BigBaseV2" ./
+      - name: Generate gta data files
+        run: |
+          cd ".github/workflows/gen_gta_service_files" && npm ci && npm start
+          cp -R "./.github/workflows/gen_gta_service_files/dist/BigBaseV2" ./
 
-      - name: Push action branch
+      - name: Push to action branch
         run: git push -f origin action
 
       - name: Commit & create PR request
