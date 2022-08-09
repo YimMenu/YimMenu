@@ -62,9 +62,6 @@ namespace big
 		PVOID m_network_player_mgr_init;
 		PVOID m_network_player_mgr_shutdown;
 
-		PVOID m_player_has_joined{};
-		PVOID m_player_has_left{};
-
 		functions::get_gameplay_cam_coords m_get_gameplay_cam_coords;
 
 		functions::give_pickup_rewards m_give_pickup_rewards{};
@@ -94,13 +91,13 @@ namespace big
 		functions::get_sync_tree_for_type m_get_sync_tree_for_type{};
 		functions::get_sync_type_info m_get_sync_type_info{};
 		functions::get_net_object m_get_net_object{};
-		functions::get_net_object_for_player m_get_net_object_for_player{};
 		//Sync Signatures END
 
 		PVOID m_send_net_info_to_lobby{};
 
 		PVOID m_receive_net_message{};
 		PVOID m_get_network_event_data{};
+		PVOID m_assign_physical_index{};
 	};
 
 	inline pointers* g_pointers{};

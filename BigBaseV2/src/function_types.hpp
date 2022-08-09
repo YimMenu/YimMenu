@@ -48,7 +48,5 @@ namespace big::functions
 	using get_sync_tree_for_type = int64_t(*)(CNetworkObjectMgr* mgr, uint16_t sync_type);
 
 	using get_net_object = rage::netObject*(*)(CNetworkObjectMgr* mgr, int16_t id, bool unk3);
-
-	using get_net_object_for_player = rage::netObject*(*)(CNetworkObjectMgr*, int16_t, CNetGamePlayer*, bool);
 	//Sync signatures END
 }

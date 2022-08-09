@@ -48,10 +48,8 @@ namespace big
 		// Send NET Info to Lobby
 		m_send_net_info_to_lobby("SNITL", g_pointers->m_send_net_info_to_lobby, &hooks::send_net_info_to_lobby),
 
-		// Player Has Joined
-		m_player_has_joined_hook("PHJ", g_pointers->m_player_has_joined, &hooks::player_join),
-		// Player Has Left
-		m_player_has_left_hook("PHL", g_pointers->m_player_has_left, &hooks::player_leave),
+		// Assign Physical Index
+		m_assign_physical_index_hook("API", g_pointers->m_assign_physical_index, &hooks::assign_physical_index),
 		// Receive Net Message
 		m_receive_net_message_hook("RNM", g_pointers->m_receive_net_message, &hooks::receive_net_message),
 		// Received clone sync
@@ -79,28 +77,21 @@ namespace big
 		m_og_wndproc = WNDPROC(SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, LONG_PTR(&hooks::wndproc)));
 
 		m_run_script_threads_hook.enable();
-
 		m_get_label_text.enable();
-
 		m_gta_thread_start_hook.enable();
 		m_gta_thread_kill_hook.enable();
-
 		m_network_group_override.enable();
-
 		m_network_player_mgr_init_hook.enable();
 		m_network_player_mgr_shutdown_hook.enable();
-
-		m_player_has_joined_hook.enable();
-		m_player_has_left_hook.enable();
-
+		m_assign_physical_index_hook.enable();
 		m_received_event_hook.enable();
-
+		m_is_dlc_present_hook.enable();
 		m_send_net_info_to_lobby.enable();
-
 		m_receive_net_message_hook.enable();
 		m_get_network_event_data_hook.enable();
-
 		m_received_clone_sync_hook.enable();
+
+		MH_ApplyQueued();
 
 		m_enabled = true;
 	}
@@ -110,41 +101,24 @@ namespace big
 		m_enabled = false;
 
 		m_received_clone_sync_hook.disable();
-
 		m_get_network_event_data_hook.disable();
 		m_receive_net_message_hook.disable();
-
 		m_send_net_info_to_lobby.disable();
-
 		m_received_event_hook.disable();
-
-		m_player_has_joined_hook.disable();
-		m_player_has_left_hook.disable();
-
+		m_is_dlc_present_hook.disable();
+		m_assign_physical_index_hook.disable();
 		m_network_player_mgr_init_hook.disable();
 		m_network_player_mgr_shutdown_hook.disable();
-
 		m_network_group_override.disable();
-
 		m_gta_thread_kill_hook.disable();
 		m_gta_thread_start_hook.disable();
-
 		m_get_label_text.disable();
-
 		m_run_script_threads_hook.disable();
+
+		MH_ApplyQueued();
 
 		SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(m_og_wndproc));
 		m_swapchain_hook.disable();
-	}
-
-	minhook_keepalive::minhook_keepalive()
-	{
-		MH_Initialize();
-	}
-
-	minhook_keepalive::~minhook_keepalive()
-	{
-		MH_Uninitialize();
 	}
 
 	bool hooks::run_script_threads(std::uint32_t ops_to_execute)
@@ -152,10 +126,7 @@ namespace big
 		TRY_CLAUSE
 		{
 			if (g_running)
-			{
 				g_script_mgr.tick();
-			}
-
 			return g_hooking->m_run_script_threads_hook.get_original<functions::run_script_threads>()(ops_to_execute);
 		} EXCEPT_CLAUSE
 		return false;
