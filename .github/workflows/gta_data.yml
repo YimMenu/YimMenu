@@ -20,7 +20,7 @@ jobs:
           token: ${{ secrets.ACTION_KEY }}
           
       - name: Reset action
-        run: git branch -f origin/action ${{ github.event.repository.default_branch }} && git push -f origin action
+        run: git branch -f action ${{ github.event.repository.default_branch }} && git push -f origin action
         
       - name: Switch to action
         run: git checkout action
