@@ -14,7 +14,7 @@ namespace big
 			{
 				vehicle->m_boost = 1.f;
 			}
-			else if (g->vehicle.boost_behavior == eBoostBehaviors::INSTANT_REFIL) // Infinite Boost
+			else if (g->vehicle.boost_behavior == eBoostBehaviors::INFINITE_BOOST) // Infinite Boost
 			{
 				if (vehicle->m_boost_state)
 				{
