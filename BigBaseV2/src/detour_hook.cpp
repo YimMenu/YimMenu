@@ -12,49 +12,26 @@ namespace big
 		m_detour(detour)
 	{
 		fix_hook_address();
-
-		if (auto status = MH_CreateHook(m_target, m_detour, &m_original); status == MH_OK)
-		{
-			LOG(INFO) << "Created hook '" << m_name << "'.";
-		}
-		else
-		{
+		if (auto status = MH_CreateHook(m_target, m_detour, &m_original); status != MH_OK)
 			throw std::runtime_error(fmt::format("Failed to create hook '{}' at 0x{:X} (error: {})", m_name, uintptr_t(m_target), MH_StatusToString(status)));
-		}
 	}
 
 	detour_hook::~detour_hook() noexcept
 	{
-		if (m_target)
-		{
-			MH_RemoveHook(m_target);
-		}
-
-		LOG(INFO) << "Removed hook '" << m_name << "'.";
+		if (auto status = MH_RemoveHook(m_target); status != MH_OK)
+			LOG(FATAL) << "Failed to remove hook '" << m_name << "' at 0x" << HEX_TO_UPPER(uintptr_t(m_target)) << "(error: " << m_name << ")";
 	}
 
 	void detour_hook::enable()
 	{
-		if (auto status = MH_EnableHook(m_target); status == MH_OK)
-		{
-			LOG(INFO) << "Enabled hook '" << m_name << "'.";
-		}
-		else
-		{
+		if (auto status = MH_QueueEnableHook(m_target); status != MH_OK)
 			throw std::runtime_error(fmt::format("Failed to enable hook 0x{:X} ({})", uintptr_t(m_target), MH_StatusToString(status)));
-		}
 	}
 
 	void detour_hook::disable()
 	{
-		if (auto status = MH_DisableHook(m_target); status == MH_OK)
-		{
-			LOG(INFO) << "Disabled hook '" << m_name << "'.";
-		}
-		else
-		{
+		if (auto status = MH_QueueDisableHook(m_target); status != MH_OK)
 			LOG(WARNING) << "Failed to disable hook '" << m_name << "'.";
-		}
 	}
 
 	DWORD exp_handler(PEXCEPTION_POINTERS exp, std::string const& name)

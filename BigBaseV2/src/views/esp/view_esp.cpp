@@ -62,11 +62,8 @@ namespace big
 							esp_color = g->esp.enemy_near_color;
 					}
 
-					float armor_perc = plyr->get_ped()->m_armor / 50;
-					armor_perc = armor_perc < 0.f ? 0.f : armor_perc;
-
-					float health_perc = (plyr->get_ped()->m_health - 100) / (plyr->get_ped()->m_maxhealth - 100);
-					health_perc = health_perc < 0.f ? 0.f : health_perc;
+					float armor_perc = plyr->get_ped()->m_armor / 100.f;
+					float health_perc = plyr->get_ped()->m_health / (plyr->get_ped()->m_maxhealth + 0.001f);
 
 					if (distance < g->esp.tracer_render_distance[1] && distance > g->esp.tracer_render_distance[0] && g->esp.tracer)
 						draw_list->AddLine({ (float)*g_pointers->m_resolution_x * g->esp.tracer_draw_position[0], (float)*g_pointers->m_resolution_y * g->esp.tracer_draw_position[1] }, { esp_x, esp_y }, esp_color);
@@ -86,7 +83,7 @@ namespace big
 
 					draw_list->AddText(name_pos, esp_color, name_str.c_str());
 
-					if (ped_damage_bits && g->esp.god) {
+					if (g->esp.god) {
 						std::string mode_str = "";
 
 						if (ped_damage_bits & (uint32_t)eEntityProofs::GOD)
@@ -110,10 +107,9 @@ namespace big
 							draw_list->AddText({ esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 40.f }, ImColor(1.f, 0.f, 0.f, 1.f), mode_str.c_str());
 						}
 					}
-					else
+
+					if (!(ped_damage_bits & (uint32_t)eEntityProofs::GOD))
 					{
-
-
 						if (g->esp.health) {
 							if (g->esp.scale_health_from_dist) {
 								draw_list->AddLine({ esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 5.f }, { esp_x - (62.5f * multplr) + (125.f * multplr), esp_y + (175.f * multplr) + 5.f }, health_perc == 0.f ? death_bg : health_perc < 0.25f ? health_red_bg : health_perc < 0.65f ? health_yellow_bg : health_green_bg, 4);
