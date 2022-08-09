@@ -75,6 +75,7 @@ namespace big
 		while (g_running)
 		{
 			looped::vehicle_auto_drive();
+			looped::vehicle_boost_behavior();
 			looped::vehicle_despawn_bypass();
 			looped::vehicle_drive_on_water();
 			looped::vehicle_god_mode();

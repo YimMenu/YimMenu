@@ -1,10 +1,11 @@
+#include "core/data/speed_units.hpp"
+#include "core/enums.hpp"
 #include "fiber_pool.hpp"
 #include "gui/handling/handling_tabs.hpp"
 #include "script.hpp"
+#include "util/mobile.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
-#include "util/mobile.hpp"
-#include "core/data/speed_units.hpp"
 
 namespace big
 {
@@ -36,7 +37,7 @@ namespace big
 
 				seats = tmp_seats;
 				ready = true;
-			});
+				});
 		}
 
 
@@ -70,7 +71,7 @@ namespace big
 
 				components::button(name, [idx] {
 					PED::SET_PED_INTO_VEHICLE(self::ped, self::veh, idx);
-				});
+					});
 				if (!it.second)
 				{
 					ImGui::EndDisabled();
@@ -172,6 +173,29 @@ namespace big
 				ImGui::SetNextItemWidth(150);
 				ImGui::SliderInt("RGB Speed", &g->rgb.speed, 1, 10);
 			}
+		}
+
+		ImGui::Separator();
+
+		static constexpr char const* boost_behaviors[] = { "Default", "Instant Refill", "Infinite" };
+		if (ImGui::BeginCombo("Boost Behavior", boost_behaviors[static_cast<int>(g->vehicle.boost_behavior)]))
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				bool itemSelected = g->vehicle.boost_behavior == static_cast<eBoostBehaviors>(i);
+
+				if (ImGui::Selectable(boost_behaviors[i], itemSelected))
+				{
+					g->vehicle.boost_behavior = static_cast<eBoostBehaviors>(i);
+				}
+
+				if (itemSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
 		}
 
 		ImGui::Separator();
