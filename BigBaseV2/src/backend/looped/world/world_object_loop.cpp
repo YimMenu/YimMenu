@@ -74,7 +74,7 @@ namespace big
 			player_color = (BlipColors)HUD::GET_BLIP_COLOUR(player_blip);
 		}
 
-		if (last_player_color != player_color)
+		if (player_color != BlipColors::RED_MISSION_2 && last_player_color != player_color)
 		{
 			LOG(WARNING) << "P: CLEAR 2";
 			g->world.property_list.clear();
