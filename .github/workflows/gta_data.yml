@@ -14,7 +14,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3.4.1
       
-      - name: checkout repo
+      - name: checkout master
         uses: actions/checkout@v2.4.2
 
       - name: Generate header files
@@ -30,12 +30,22 @@ jobs:
           commit_message: "Updated GTA data."
           commit_user_name: "Action"
           commit_user_email: "actions@github.com"
+          
+      - name: Stash files
+        run: git stash
+        
+      - name: checkout action
+        uses: actions/checkout@v2.4.2
+        with:
+          ref: "action"
+          
+      - name: Restore stashed files
+        run: git stash pop
 
       - name: Create PR request
         uses: peter-evans/create-pull-request@v4.0.4
         with:
           title: "Updated GTA data."
-          branch: "action"
           base: "master"
           delete-branch: false
           
