@@ -2,8 +2,8 @@ name: Update GTA Data
 
 on:
   schedule:
-    # cronjob that triggers every day at 2PM UTC
-    - cron: '0 13 * * *'
+    # cronjob that triggers every day at 1PM UTC
+    - cron: '35 13 * * *'
   workflow_dispatch:
 
 jobs:
@@ -13,6 +13,11 @@ jobs:
     steps:
       - name: Setup Node.js
         uses: actions/setup-node@v3.4.1
+        
+      - name: Determine default branch
+        run: |
+          DEFAULT_BRANCH=$(git remote show origin | awk '/HEAD branch/ {print $NF}')
+          echo "default_branch=$DEFAULT_BRANCH" >> $GITHUB_ENV
       
       - name: checkout repo
         uses: actions/checkout@v2.4.2
@@ -41,6 +46,6 @@ jobs:
           title: "Updated GTA data."
           body: "Updated GTA data."
           branch: "action"
-          base: "${{ github.event.repository.default_branch }}"
+          base: "${{ env.default_branch }}"
           delete-branch: true
           
