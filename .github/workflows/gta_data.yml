@@ -31,6 +31,9 @@ jobs:
         with:
           ref: "action"
           
+      - name: Restore stashed files
+        run: git stash pop
+          
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
@@ -38,14 +41,12 @@ jobs:
           commit_message: "Updated GTA data."
           commit_user_name: "Action"
           commit_user_email: "actions@github.com"
-          
-      - name: Restore stashed files
-        run: git stash pop
 
       - name: Create PR request
         uses: peter-evans/create-pull-request@v4.0.4
         with:
           title: "Updated GTA data."
+          branch: "action"
           base: "${{ env.GITHUB_REF_NAME }}"
           delete-branch: false
           
