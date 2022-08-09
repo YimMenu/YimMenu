@@ -16,20 +16,21 @@ jobs:
       
       - name: checkout repo
         uses: actions/checkout@v2.4.2
+        with:
+          ref: "origin/action"
+          
+      - name: Hard reset
+        run: git reset --hard ${{ github.event.repository.default_branch }}
 
       - name: Generate header files
         run: cd ".github/workflows/gen_gta_service_files" && npm ci && npm start
         
       - name: Move header files
         run: ls && cp -R "./.github/workflows/gen_gta_service_files/dist/BigBaseV2" ./
-        
-      - name: Switch to action branch
-        run: git symbolic-ref HEAD refs/heads/action && git reset
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          branch: "action"
           commit_message: "Updated GTA data."
           commit_user_name: "Action"
           commit_user_email: "actions@github.com"
