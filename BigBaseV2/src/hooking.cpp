@@ -86,6 +86,8 @@ namespace big
 		m_gta_thread_kill_hook.enable();
 
 		m_network_group_override.enable();
+		
+		m_is_dlc_present_hook.enable();
 
 		m_network_player_mgr_init_hook.enable();
 		m_network_player_mgr_shutdown_hook.enable();
@@ -125,6 +127,8 @@ namespace big
 		m_network_player_mgr_shutdown_hook.disable();
 
 		m_network_group_override.disable();
+		
+		m_is_dlc_present_hook.disable();
 
 		m_gta_thread_kill_hook.disable();
 		m_gta_thread_start_hook.disable();
