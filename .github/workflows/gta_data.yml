@@ -16,6 +16,8 @@ jobs:
       
       - name: checkout repo
         uses: actions/checkout@v2.4.2
+        with:
+          token: ${{ secrets.ACTION_KEY }}
           
       - name: Reset action
         run: git branch -f action ${{ github.event.repository.default_branch }} && git push -f origin action
