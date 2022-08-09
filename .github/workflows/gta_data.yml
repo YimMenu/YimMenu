@@ -31,9 +31,10 @@ jobs:
         run: git checkout action
 
       - name: Generate gta data files
-        run: |
-          cd ".github/workflows/gen_gta_service_files" && npm ci && npm start && 
-          cp -R "./.github/workflows/gen_gta_service_files/dist/BigBaseV2" ./
+        run: cd ".github/workflows/gen_gta_service_files" && npm ci && npm start
+          
+      - name: Move gta data files
+        run: cp -R "./.github/workflows/gen_gta_service_files/dist/BigBaseV2" ./
 
       - name: Push to action branch
         run: git push -f origin action
