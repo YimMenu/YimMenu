@@ -37,8 +37,9 @@ jobs:
       - name: Create PR request
         uses: peter-evans/create-pull-request@v4.0.4
         with:
+          commit-message: "Updated GTA data."
           title: "Updated GTA data."
-          body: ""
+          body: "Updated GTA data."
           branch: "action"
           base: "${{ github.event.repository.default_branch }}"
           delete-branch: true
