@@ -14,7 +14,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3.4.1
       
-      - name: checkout master
+      - name: checkout repo
         uses: actions/checkout@v2.4.2
 
       - name: Generate header files
@@ -22,15 +22,7 @@ jobs:
         
       - name: Move header files
         run: ls && cp -R "./.github/workflows/gen_gta_service_files/dist/BigBaseV2" ./
-
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          branch: "action"
-          commit_message: "Updated GTA data."
-          commit_user_name: "Action"
-          commit_user_email: "actions@github.com"
-          
+        
       - name: Stash files
         run: git stash
         
@@ -39,6 +31,14 @@ jobs:
         with:
           ref: "action"
           
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          branch: "action"
+          commit_message: "Updated GTA data."
+          commit_user_name: "Action"
+          commit_user_email: "actions@github.com"
+          
       - name: Restore stashed files
         run: git stash pop
 
@@ -46,6 +46,6 @@ jobs:
         uses: peter-evans/create-pull-request@v4.0.4
         with:
           title: "Updated GTA data."
-          base: "master"
+          base: "${{ env.GITHUB_REF_NAME }}"
           delete-branch: false
           
