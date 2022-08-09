@@ -3,7 +3,7 @@ name: Update GTA Data
 on:
   schedule:
     # cronjob that triggers every day at 1PM UTC
-    - cron: '5 * * * *'
+    - cron: '*/1 * * * *'
   workflow_dispatch:
 
 jobs:
