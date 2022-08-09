@@ -242,21 +242,22 @@ namespace big
 
 			AutoDriveDestination auto_drive_destination = AutoDriveDestination::STOPPED;
 			AutoDriveStyle auto_drive_style = AutoDriveStyle::LAW_ABIDING;
+			float auto_drive_speed = 1;
 			bool auto_turn_signals = false;
+			eBoostBehaviors boost_behavior = eBoostBehaviors::DEFAULT;
 			bool drive_on_water = false;
 			bool horn_boost = false;
-			bool vehicle_jump = false;
 			bool instant_brake = false;
 			bool is_targetable = true;
-			bool ls_customs = false; // don't save this to dis
-			bool seatbelt = false;
-			bool turn_signals = false;
-			float auto_drive_speed = 1;
+			bool ls_customs = false; // don't save this to disk
+			bool rainbow_neon = false;
 			int rainbow_paint = 0;
 			bool rainbow_primary = false;
 			bool rainbow_secondary = false;
-			bool rainbow_neon = false;
 			bool rainbow_smoke = false;
+			bool seatbelt = false;
+			bool turn_signals = false;
+			bool vehicle_jump = false;
 			speedo_meter speedo_meter{};
 			fly fly{};
 		};
@@ -555,6 +556,7 @@ namespace big
 			this->vehicle.proof_steam = j["vehicle"]["proof_steam"];
 			this->vehicle.proof_water = j["vehicle"]["proof_water"];
 			this->vehicle.proof_mask = j["vehicle"]["proof_mask"];
+			this->vehicle.boost_behavior = j["vehicle"]["boost_behavior"];
 			this->vehicle.auto_drive_style = j["vehicle"]["auto_drive_style"];
 			this->vehicle.auto_drive_speed = j["vehicle"]["auto_drive_speed"];
 			this->vehicle.auto_turn_signals = j["vehicle"]["auto_turn_signals"];
@@ -832,6 +834,7 @@ namespace big
 						{ "auto_drive_style", this->vehicle.auto_drive_style },
 						{ "auto_drive_speed", this->vehicle.auto_drive_speed },
 						{ "auto_turn_signals", this->vehicle.auto_turn_signals },
+						{ "boost_behavior", this->vehicle.boost_behavior },
 						{ "drive_on_water", this->vehicle.drive_on_water },
 						{ "horn_boost", this->vehicle.horn_boost },
 						{ "vehicle_jump", this->vehicle.vehicle_jump },
