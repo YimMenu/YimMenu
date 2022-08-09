@@ -26,6 +26,16 @@ jobs:
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
+          branch: "action"
           commit_message: "Updated GTA data."
           commit_user_name: "Action"
           commit_user_email: "actions@github.com"
+
+      - name: Create PR request
+        uses: peter-evans/create-pull-request@v4.0.4
+        with:
+          title: "Updated GTA data."
+          branch: "action"
+          base: "master"
+          delete-branch: false
+          
