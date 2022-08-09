@@ -82,6 +82,8 @@ namespace big
 
 			pair send_net_info_to_lobby{};
 			pair transaction_rate_limit{};
+			pair mismatch_sync_type{};
+			pair out_of_allowed_range_sync_type{};
 			pair invalid_sync{};
 		};
 
@@ -707,6 +709,8 @@ namespace big
 						},
 						{ "send_net_info_to_lobby", return_notify_pair(g->notifications.send_net_info_to_lobby) },
 						{ "transaction_rate_limit", return_notify_pair(g->notifications.transaction_rate_limit) },
+						{ "mismatch_sync_type", return_notify_pair(g->notifications.mismatch_sync_type) },
+						{ "out_of_allowed_range_sync_type", return_notify_pair(g->notifications.out_of_allowed_range_sync_type) },
 						{ "invalid_sync", return_notify_pair(g->notifications.invalid_sync) }
 					}
 				},
