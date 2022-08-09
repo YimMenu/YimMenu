@@ -23,17 +23,9 @@ jobs:
       - name: Move header files
         run: ls && cp -R "./.github/workflows/gen_gta_service_files/dist/BigBaseV2" ./
         
-      - name: Stash files
-        run: git stash
-        
-      - name: checkout action
-        uses: actions/checkout@v2.4.2
-        with:
-          ref: "action"
-          
-      - name: Restore stashed files
-        run: git stash pop
-          
+      - name: Switch to action branch
+        run: git checkout --detach && git reset --soft action && git checkout action
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
