@@ -31,10 +31,10 @@ jobs:
       - name: Move header files
         run: ls && cp -R "./.github/workflows/gen_gta_service_files/dist/BigBaseV2" ./
 
-      - name: Commit changes
+      - name: Push action branch
         run: git push -f origin action
 
-      - name: Create PR request
+      - name: Commit & create PR request
         uses: peter-evans/create-pull-request@v4.0.4
         with:
           commit-message: "Updated GTA data."
