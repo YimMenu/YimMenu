@@ -1,3 +1,4 @@
+#include "core/enums.hpp"
 #include "fiber_pool.hpp"
 #include "script.hpp"
 #include "views/view.hpp"
@@ -32,10 +33,9 @@ namespace big
 
 					std::map<int, bool> tmp_seats;
 
-					Hash model = ENTITY::GET_ENTITY_MODEL(self::veh);
-					int num_of_seats = VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(model);
+					int num_of_seats = VEHICLE::GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(self::veh);
 
-					for (int i = -1; i < num_of_seats - 1; i++)
+					for (int i = -1; i < num_of_seats; i++)
 					{
 						tmp_seats[i] = VEHICLE::IS_VEHICLE_SEAT_FREE(self::veh, i, true);
 					}
@@ -178,6 +178,29 @@ namespace big
 				ImGui::SliderInt("RGB Speed", &g->rgb.speed, 1, 10);
 			}
 		}
+		ImGui::Separator();
+
+		static constexpr char const* boost_behaviors[] = { "Default", "Instant Refill", "Infinite" };
+		if (ImGui::BeginCombo("Boost Behavior", boost_behaviors[static_cast<int>(g->vehicle.boost_behavior)]))
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				bool itemSelected = g->vehicle.boost_behavior == static_cast<eBoostBehaviors>(i);
+
+				if (ImGui::Selectable(boost_behaviors[i], itemSelected))
+				{
+					g->vehicle.boost_behavior = static_cast<eBoostBehaviors>(i);
+				}
+
+				if (itemSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+
 		ImGui::Separator();
 
 
