@@ -24,7 +24,7 @@ jobs:
         run: ls && cp -R "./.github/workflows/gen_gta_service_files/dist/BigBaseV2" ./
         
       - name: Switch to action branch
-        run: git reset action
+        run: git reset origin/action
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
