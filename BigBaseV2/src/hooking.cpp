@@ -85,6 +85,7 @@ namespace big
 		m_network_player_mgr_shutdown_hook.enable();
 		m_assign_physical_index_hook.enable();
 		m_received_event_hook.enable();
+		m_is_dlc_present_hook.enable();
 		m_send_net_info_to_lobby.enable();
 		m_receive_net_message_hook.enable();
 		m_get_network_event_data_hook.enable();
@@ -104,6 +105,7 @@ namespace big
 		m_receive_net_message_hook.disable();
 		m_send_net_info_to_lobby.disable();
 		m_received_event_hook.disable();
+		m_is_dlc_present_hook.disable();
 		m_assign_physical_index_hook.disable();
 		m_network_player_mgr_init_hook.disable();
 		m_network_player_mgr_shutdown_hook.disable();
