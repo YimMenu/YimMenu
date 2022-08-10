@@ -129,22 +129,22 @@ namespace big
 				}
 			}
 
-			auto item_arr = g_gta_data_service->get_vehicle_arr();
+			auto vehicle_arr = g_gta_data_service->get_vehicle_arr();
 
-			if (item_arr.size() > 0)
+			if (vehicle_arr.size() > 0)
 			{
 				std::string lower_search = search;
 				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
 
-				for (auto& item : item_arr) {
-					if (!item.hash)
+				for (auto& vehicle : vehicle_arr) {
+					if (!vehicle.hash)
 					{
 						continue;
 					}
 
-					std::string name = item.name;
-					std::string manufacturer = item.get_manufacturer();
-					std::string clazz = item.get_class();
+					std::string name = vehicle.name;
+					std::string manufacturer = vehicle.get_manufacturer();
+					std::string clazz = vehicle.get_class();
 
 					std::transform(name.begin(), name.end(), name.begin(), ::tolower);
 					std::transform(manufacturer.begin(), manufacturer.end(), manufacturer.begin(), ::tolower);
@@ -155,13 +155,13 @@ namespace big
 						name.find(lower_search) != std::string::npos ||
 						manufacturer.find(lower_search) != std::string::npos
 					)) {
-						ImGui::PushID(item.hash);
-						components::selectable(item.name, false, [item] {
+						ImGui::PushID(vehicle.hash);
+						components::selectable(vehicle.name, false, [vehicle] {
 
 							Vector3 spawn_location = vehicle::get_spawn_location(g->spawn_vehicle.spawn_inside);
 							float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
-							const Vehicle veh = vehicle::spawn(item.hash, spawn_location, spawn_heading);
+							const Vehicle veh = vehicle::spawn(vehicle.hash, spawn_location, spawn_heading);
 
 							if (veh == 0)
 							{
@@ -192,7 +192,7 @@ namespace big
 						}
 						else if (ImGui::IsItemHovered())
 						{
-							g_model_preview_service->show_vehicle(item.hash, g->spawn_vehicle.spawn_maxed);
+							g_model_preview_service->show_vehicle(vehicle.hash, g->spawn_vehicle.spawn_maxed);
 						}
 					}
 				}

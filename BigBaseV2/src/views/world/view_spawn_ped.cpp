@@ -3,6 +3,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "views/view.hpp"
+#include "gta/joaat.hpp"
 #include "util/ped.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "services/model_preview/model_preview_service.hpp"
@@ -126,9 +127,14 @@ namespace big
 		auto weapon_type_arr = g_gta_data_service->get_weapon_type_arr();
 		for (auto& weapon : g_gta_data_service->get_weapon_arr())
 		{
+			if (!weapon.hash)
+			{
+				continue;
+			}
+
 			if (
 				selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ||
-				weapon.weapon_type == weapon_type_arr[selected_ped_weapon_type]
+				weapon.get_type() == weapon_type_arr[selected_ped_weapon_type]
 			) {
 				if (
 					selected_ped_weapon_hash == 0 ||
@@ -189,7 +195,7 @@ namespace big
 					"##ped_type", 
 					selected_ped_type == -1 ? "ALL" : 
 					selected_ped_type == -2 ? "ONLINE PLAYER" : 
-					ped_type_arr[selected_ped_type].c_str()
+					ped_type_arr[selected_ped_type]
 				)) {
 
 					if (ImGui::Selectable("ONLINE PLAYER", selected_ped_type == -2))
@@ -204,7 +210,7 @@ namespace big
 
 					for (int i = 0; i < ped_type_arr.size(); i++)
 					{
-						if (ImGui::Selectable(ped_type_arr[i].c_str(), selected_ped_type == i))
+						if (ImGui::Selectable(ped_type_arr[i], selected_ped_type == i))
 						{
 							selected_ped_type = i;
 							ped_model_buf[0] = 0;
@@ -345,10 +351,15 @@ namespace big
 							ImGui::BringWindowToDisplayFront(ImGui::GetCurrentWindow());
 							ped_model_dropdown_focused |= ImGui::IsWindowFocused();
 
-							for (auto& item : ped_arr)
+							for (auto& ped : ped_arr)
 							{
-								std::string ped_type = item.ped_type;
-								std::string name = item.name;
+								if (!ped.hash)
+								{
+									continue;
+								}
+
+								std::string ped_type = ped.get_type();
+								std::string name = ped.name;
 
 								std::transform(name.begin(), name.end(), name.begin(), tolower);
 
@@ -359,12 +370,12 @@ namespace big
 								)) {
 
 									bool selectable_highlighted = lower_search == name;
-									bool selectable_clicked = ImGui::Selectable(item.name.c_str(), selectable_highlighted);
+									bool selectable_clicked = ImGui::Selectable(ped.name, selectable_highlighted);
 									ped_model_dropdown_focused |= ImGui::IsItemFocused();
 
 									if (selectable_clicked)
 									{
-										strncpy(ped_model_buf, item.name.c_str(), 64);
+										strncpy(ped_model_buf, ped.name, 64);
 										ped_model_dropdown_open = false;
 										ped_model_dropdown_focused = false;
 									}
@@ -377,7 +388,7 @@ namespace big
 									if (ImGui::IsItemHovered())
 									{
 										item_hovered = true;
-										g_model_preview_service->show_ped(item.hash);
+										g_model_preview_service->show_ped(ped.hash);
 									}
 								}
 							}
@@ -410,7 +421,7 @@ namespace big
 					"ALL" : 
 					selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS ?
 					"NO WEAPONS" :
-					weapon_type_arr[selected_ped_weapon_type].c_str()
+					weapon_type_arr[selected_ped_weapon_type]
 				)) {
 					if (ImGui::Selectable("ALL", selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS))
 					{
@@ -434,7 +445,7 @@ namespace big
 
 					for (int i = 0; i < weapon_type_arr.size(); i++)
 					{
-						if (ImGui::Selectable(weapon_type_arr[i].c_str(), selected_ped_weapon_type == i))
+						if (ImGui::Selectable(weapon_type_arr[i], selected_ped_weapon_type == i))
 						{
 							selected_ped_weapon_type = i;
 							selected_ped_weapon_hash = 0;
@@ -464,7 +475,7 @@ namespace big
 					"NO WEAPONS" :
 					selected_ped_weapon_hash == 0 ? 
 					"ALL" : 
-					g_gta_data_service->find_weapon_by_hash(selected_ped_weapon_hash).name.c_str()
+					g_gta_data_service->find_weapon_by_hash(selected_ped_weapon_hash).name
 				)) {
 					if (selected_ped_weapon_type != SPAWN_PED_NO_WEAPONS)
 					{
@@ -480,11 +491,16 @@ namespace big
 
 						for (auto& weapon : weapon_arr)
 						{
+							if (!weapon.hash)
+							{
+								continue;
+							}
+
 							if (
 								selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ||
-								weapon.weapon_type == weapon_type_arr[selected_ped_weapon_type]
+								weapon.get_type() == weapon_type_arr[selected_ped_weapon_type]
 							) {
-								if (ImGui::Selectable(weapon.name.c_str(), weapon.hash == selected_ped_weapon_hash))
+								if (ImGui::Selectable(weapon.name, weapon.hash == selected_ped_weapon_hash))
 								{
 									selected_ped_weapon_hash = weapon.hash;
 								}
