@@ -75,11 +75,10 @@ namespace big
 		components::button("Get All Weapons", [] {
 			for (auto const& weapon : g_gta_data_service->get_weapon_arr())
 			{
-				if (!weapon.hash)
+				if (weapon.hash)
 				{
-					continue;
+					WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.hash, 9999, false);
 				}
-				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.hash, 9999, false);
 			}
 
 			constexpr auto parachute_hash = RAGE_JOAAT("GADGET_PARACHUTE");

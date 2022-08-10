@@ -127,14 +127,12 @@ namespace big
 		auto weapon_type_arr = g_gta_data_service->get_weapon_type_arr();
 		for (auto& weapon : g_gta_data_service->get_weapon_arr())
 		{
-			if (!weapon.hash)
-			{
-				continue;
-			}
-
 			if (
-				selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ||
-				weapon.get_type() == weapon_type_arr[selected_ped_weapon_type]
+				weapon.hash && 
+				(
+					selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ||
+					weapon.get_type() == weapon_type_arr[selected_ped_weapon_type]
+				)
 			) {
 				if (
 					selected_ped_weapon_hash == 0 ||
@@ -491,14 +489,12 @@ namespace big
 
 						for (auto& weapon : weapon_arr)
 						{
-							if (!weapon.hash)
-							{
-								continue;
-							}
-
 							if (
-								selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ||
-								weapon.get_type() == weapon_type_arr[selected_ped_weapon_type]
+								weapon.hash &&
+								(
+									selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ||
+									weapon.get_type() == weapon_type_arr[selected_ped_weapon_type]
+								)
 							) {
 								if (ImGui::Selectable(weapon.name, weapon.hash == selected_ped_weapon_hash))
 								{

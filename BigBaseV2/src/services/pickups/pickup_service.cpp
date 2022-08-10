@@ -40,7 +40,7 @@ namespace big
 	{
 		for (const auto& weapon : g_gta_data_service->get_weapon_arr())
 		{
-			if (!weapon.hash && (weapon.reward_ammo_hash != 0 || weapon.throwable))
+			if (weapon.hash && (weapon.reward_ammo_hash != 0 || weapon.throwable))
 			{
 				g_pointers->m_give_pickup_rewards(targets, weapon.reward_ammo_hash);
 				script::get_current()->yield(20ms);
