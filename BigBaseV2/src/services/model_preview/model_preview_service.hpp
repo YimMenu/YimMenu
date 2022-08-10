@@ -15,6 +15,7 @@ namespace big
 		bool m_veh_spawn_max = false;
 
 		Hash m_ped_model_hash = 0;
+		Ped m_ped_clone = 0;
 
 		bool m_new_model = false;
 		float m_heading = 0.f;
@@ -25,6 +26,7 @@ namespace big
 		~model_preview_service();
 
 		void show_ped(Hash hash);
+		void show_ped(Hash hash, Ped clone);
 
 		void show_vehicle(Hash hash, bool spawn_max);
 		void show_vehicle(const std::map<int, int32_t>& owned_mods, bool spawn_max);

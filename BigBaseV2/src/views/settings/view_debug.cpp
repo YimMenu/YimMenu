@@ -9,7 +9,7 @@
 namespace big
 {
 	void view::debug() {
-		components::small_text("Globals");
+		components::sub_title("Globals");
 
 		if (ImGui::Checkbox("Enable Freezing", &g_globals_service->m_running) && g_globals_service->m_running)
 			g_thread_pool->push([&]() { g_globals_service->loop(); });
@@ -167,7 +167,7 @@ namespace big
 			ImGui::EndGroup();
 		}
 
-		components::small_text("Scripting Events");
+		components::sub_title("Scripting Events");
 
 		static int64_t* args;
 		static int event_arg_count = 1;
@@ -219,7 +219,7 @@ namespace big
 			g_pointers->m_trigger_script_event(1, args, event_arg_count, event_everyone ? -1 : 1 << event_player_bits);
 		});
 
-		components::small_text("Debug");
+		components::sub_title("Debug");
 
 		ImGui::Checkbox("Script Event Logging", &g->debug.script_event_logging);
 

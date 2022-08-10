@@ -31,7 +31,7 @@ namespace big
 		return current_nav;
 	}
 
-	std::vector<tabs> gui_service::get_selected_tab()
+	std::vector<tabs>& gui_service::get_selected_tab()
 	{
 		return current_tab;
 	}
@@ -69,7 +69,7 @@ namespace big
 		nav_ctr = 0;
 	}
 
-	std::unordered_map<tabs, navigation_struct> gui_service::get_navigation()
+	std::map<tabs, navigation_struct>& gui_service::get_navigation()
 	{
 		return nav;
 	}

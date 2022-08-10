@@ -4,40 +4,48 @@
 namespace big
 {
 	enum class tabs {
-		ESP_SETTINGS,
-		CONTEXT_MENU_SETTINGS,
-		GUI_SETTINGS,
+		NONE,
+
+		SELF,
+		WEAPONS,
+		TELEPORT,
+		MOBILE,
+
+		VEHICLE,
+		HANDLING,
 		HANDLING_SEARCH,
 		HANDLING_SAVED_PROFILE,
 		HANDLING_MY_PROFILES,
 		HANDLING_CURRENT_PROFILE,
 		LSC,
+		SPAWN_VEHICLE,
+		PV,
+		PERSIST_CAR,
+		FUN_VEHICLE,
+
+		WORLD,
+		SPAWN_PED,
+
+		NETWORK,
+		SESSION,
+		SPOOFING,
+
+		SETTINGS,
+		CONTEXT_MENU_SETTINGS,
+		ESP_SETTINGS,
+		GUI_SETTINGS,
 		NOTIFICATION_SETTINGS,
 		PROTECTION_SETTINGS,
 		DEBUG,
-		MOBILE,
-		NONE,
-		NETWORK,
-		PLAYER,
-		SELF,
-		SESSION,
-		SETTINGS,
-		SPAWN,
-		PV,
-		VEHICLE_FUN,
-		PERSIST_CAR,
-		SPOOFING,
-		TELEPORT,
-		VEHICLE,
-		WEAPONS,
-		HANDLING,
+
+		PLAYER
 	};
 
 	struct navigation_struct
 	{
 		const char name[32] = "";
 		std::function<void()> func = nullptr;
-		std::unordered_map<tabs, navigation_struct> sub_nav{};
+		std::map<tabs, navigation_struct> sub_nav{};
 	};
 
 	class gui_service final
@@ -45,7 +53,7 @@ namespace big
 		std::vector<tabs> current_tab{};
 		bool switched_view = true;
 
-		std::unordered_map<tabs, navigation_struct> nav = {
+		std::map<tabs, navigation_struct> nav = {
 			{tabs::SELF, { "Self",view::self, {
 				{ tabs::WEAPONS, { "Weapons", view::weapons }},
 				{ tabs::MOBILE, {"Mobile", view::mobile}},
@@ -59,10 +67,13 @@ namespace big
 					{ tabs::HANDLING_SEARCH, {"Search Handling", view::handling_search } },
 				}}},
 				{ tabs::LSC, { "LS Customs", view::lsc }},
-				{ tabs::SPAWN, { "Spawn", view::spawn }},
+				{ tabs::SPAWN_VEHICLE, { "Spawn Vehicle", view::spawn_vehicle }},
 				{ tabs::PV, { "Personal Vehicle", view::pv }},
-				{ tabs::VEHICLE_FUN, { "Fun Features", view::vehicle_fun }},
 				{ tabs::PERSIST_CAR, { "Persist Car", view::persist_car }},
+				{ tabs::FUN_VEHICLE, { "Fun Features", view::fun_vehicle }},
+			}}},
+			{ tabs::WORLD, { "World", nullptr, {
+				{ tabs::SPAWN_PED, { "Spawn Ped", view::spawn_ped }},
 			}}},
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},
@@ -85,13 +96,13 @@ namespace big
 		int nav_ctr = 0;
 
 		navigation_struct* get_selected();
-		std::vector<tabs> get_selected_tab();
+		std::vector<tabs>& get_selected_tab();
 		bool has_switched_view();
 		void set_selected(tabs);
 		void set_nav_size(int);
 		void increment_nav_size();
 		void reset_nav_size();
-		std::unordered_map<tabs, navigation_struct> get_navigation();
+		std::map<tabs, navigation_struct>& get_navigation();
 	};
 
 	inline gui_service* g_gui_service{};

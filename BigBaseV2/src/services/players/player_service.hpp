@@ -35,6 +35,7 @@ namespace big
 
 		[[nodiscard]] player_ptr get_by_name(std::string name);
 		[[nodiscard]] player_ptr get_by_msg_id(uint32_t msg_id) const;
+		[[nodiscard]] player_ptr get_by_id(uint32_t id) const;
 		[[nodiscard]] player_ptr get_by_host_token(uint64_t token) const;
 		[[nodiscard]] player_ptr get_selected() const;
 
