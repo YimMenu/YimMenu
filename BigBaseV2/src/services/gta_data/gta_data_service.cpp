@@ -166,10 +166,6 @@ namespace big
 
 	void gta_data_service::load_vehicles(file file_to_load)
 	{
-		m_vehicle_class_arr.clear();
-		m_vehicle_hash_idx_map.clear();
-		m_vehicle_item_arr.clear();
-
 		std::ifstream file(file_to_load.get_path());
 		nlohmann::json all_vehicles;
 
@@ -180,8 +176,12 @@ namespace big
 		catch (const std::exception& ex)
 		{
 			LOG(WARNING) << "Failed to load vehicles.json:\n" << ex.what();
+			return;
 		}
 
+		m_vehicle_class_arr.clear();
+		m_vehicle_hash_idx_map.clear();
+		m_vehicle_item_arr.clear();
 
 		for (auto& item_json : all_vehicles)
 		{
@@ -212,10 +212,6 @@ namespace big
 
 	void gta_data_service::load_peds(file file_to_load)
 	{
-		m_ped_type_arr.clear();
-		m_ped_hash_idx_map.clear();
-		m_ped_item_arr.clear();
-
 		std::ifstream file(file_to_load.get_path());
 		nlohmann::json all_peds;
 
@@ -226,7 +222,13 @@ namespace big
 		catch (const std::exception& ex)
 		{
 			LOG(WARNING) << "Failed to load peds.json:\n" << ex.what();
+			return;
 		}
+
+		m_ped_type_arr.clear();
+		m_ped_hash_idx_map.clear();
+		m_ped_item_arr.clear();
+
 
 		for (auto& item_json : all_peds)
 		{
@@ -255,10 +257,6 @@ namespace big
 
 	void gta_data_service::load_weapons(file file_to_load)
 	{
-		m_weapon_type_arr.clear();
-		m_weapon_hash_idx_map.clear();
-		m_weapon_item_arr.clear();
-
 		std::ifstream file(file_to_load.get_path());
 		nlohmann::json all_weapons;
 
@@ -269,7 +267,12 @@ namespace big
 		catch (const std::exception& ex)
 		{
 			LOG(WARNING) << "Failed to load weapons.json:\n" << ex.what();
+			return;
 		}
+
+		m_weapon_type_arr.clear();
+		m_weapon_hash_idx_map.clear();
+		m_weapon_item_arr.clear();
 
 		constexpr Hash hash_blacklist_arr[] = {
 			RAGE_JOAAT("WEAPON_BIRD_CRAP"),
