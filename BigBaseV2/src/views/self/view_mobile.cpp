@@ -8,7 +8,7 @@ namespace big
 	void view::mobile() {
 		ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
 
-		components::small_text("Lester");
+		components::sub_title("Lester");
 
 		ImGui::Checkbox("Off Radar", &g->self.off_radar);
 

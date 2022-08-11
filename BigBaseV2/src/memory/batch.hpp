@@ -5,11 +5,11 @@
 
 namespace memory
 {
-	class pattern_batch
+	class batch
 	{
 	public:
-		explicit pattern_batch() = default;
-		~pattern_batch() noexcept = default;
+		explicit batch() = default;
+		~batch() noexcept = default;
 
 		void add(std::string name, pattern pattern, std::function<void(memory::handle)> callback);
 		void run(range region);

@@ -2,9 +2,6 @@
 #include "util/entity.hpp"
 #include "util/local_player.hpp"
 #include "views/view.hpp"
-#include "services/gta_data/gta_data_service.hpp"
-#include "services/model_preview/model_preview_service.hpp"
-#include <imgui_internal.h>
 
 namespace big
 {
@@ -43,148 +40,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::small_text("Player Model Changer");
-
-		static int selected_ped_type = -1;
-		static bool ped_model_dropdown_open = false;
-		static char ped_model_buf[64];
-
-		auto ped_type_arr = g_gta_data_service->get_ped_type_arr();
-		auto ped_arr = g_gta_data_service->get_ped_arr();
-
-		ImGui::SetNextItemWidth(300.f);
-		if (ImGui::BeginCombo("Ped Type", selected_ped_type == -1 ? "ALL" : ped_type_arr[selected_ped_type].c_str()))
-		{
-			if (ImGui::Selectable("ALL", selected_ped_type == -1))
-			{
-				selected_ped_type = -1;
-			}
-
-			for (int i = 0; i < ped_type_arr.size(); i++)
-			{
-				if (ImGui::Selectable(ped_type_arr[i].c_str(), selected_ped_type == i))
-				{
-					selected_ped_type = i;
-					ped_model_buf[0] = 0;
-				}
-
-				if (selected_ped_type == i)
-				{
-					ImGui::SetItemDefaultFocus();
-				}
-			}
-
-			ImGui::EndCombo();
-		}
-
-		ImGui::SetNextItemWidth(300.f);
-
-		components::input_text_with_hint("Model Name##player_model_name", "Model Name", ped_model_buf, sizeof(ped_model_buf), ImGuiInputTextFlags_EnterReturnsTrue, [] {
-			ped_model_dropdown_open = false;
-		});
-
-		bool ped_model_dropdown_focused = ImGui::IsItemActive();
-
-		if (ImGui::IsItemActivated())
-		{
-			ped_model_dropdown_open = true;
-		}
-
-		if (ped_model_dropdown_open)
-		{
-			bool is_open = true;
-			bool item_hovered = false;
-
-			std::string lower_search = ped_model_buf;
-			std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
-
-			ImGui::SetNextWindowPos({ ImGui::GetItemRectMin().x, ImGui::GetItemRectMax().y });
-			ImGui::SetNextWindowSize({ 300, 300 });
-			if (ImGui::Begin("##player_model_popup", &is_open, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_Tooltip))
-			{
-				ImGui::BringWindowToDisplayFront(ImGui::GetCurrentWindow());
-				ped_model_dropdown_focused |= ImGui::IsWindowFocused();
-
-				for (auto& item : ped_arr)
-				{
-					std::string ped_type = item.ped_type;
-					std::string name = item.name;
-
-					std::transform(name.begin(), name.end(), name.begin(), tolower);
-
-					if ((
-						selected_ped_type == -1 || ped_type_arr[selected_ped_type] == ped_type
-					) && (
-						name.find(lower_search) != std::string::npos
-					)) {
-
-						bool selectable_highlighted = lower_search == name;
-						bool selectable_clicked = ImGui::Selectable(item.name.c_str(), selectable_highlighted);
-						ped_model_dropdown_focused |= ImGui::IsItemFocused();
-
-						if (selectable_clicked)
-						{
-							strncpy(ped_model_buf, item.name.c_str(), 64);
-							ped_model_dropdown_open = false;
-							ped_model_dropdown_focused = false;
-						}
-
-						if (selectable_highlighted)
-						{
-							ImGui::SetItemDefaultFocus();
-						}
-
-						if (ImGui::IsItemHovered())
-						{
-							item_hovered = true;
-							g_model_preview_service->show_ped(item.hash);
-						}
-					}
-				}
-				ImGui::End();
-			}
-
-			ped_model_dropdown_open = ped_model_dropdown_focused;
-
-			if (!g->self.preview_ped || (g->self.preview_ped && (!item_hovered || !ped_model_dropdown_open)))
-			{
-				g_model_preview_service->stop_preview();
-			}
-		}
-
-		if (ImGui::Checkbox("Preview", &g->self.preview_ped))
-		{
-			if (!g->self.preview_ped)
-			{
-				g_model_preview_service->stop_preview();
-			}
-		}
-		ImGui::SameLine();
-		components::button("Change Player Model", [] {
-			const Hash hash = rage::joaat(ped_model_buf);
-
-			for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
-			{
-				STREAMING::REQUEST_MODEL(hash);
-				script::get_current()->yield();
-			}
-			if (!STREAMING::HAS_MODEL_LOADED(hash))
-			{
-				g_notification_service->push_error("Self", "Failed to spawn model, did you give an incorrect model ? ");
-				return;
-			}
-			PLAYER::SET_PLAYER_MODEL(PLAYER::GET_PLAYER_INDEX(), hash);
-			PED::SET_PED_DEFAULT_COMPONENT_VARIATION(self::ped);
-			script::get_current()->yield();
-			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-		});
-
-
-
-
-		ImGui::Separator();
-
-		components::small_text("General");
+		components::sub_title("General");
 
 		ImGui::BeginGroup();
 
@@ -221,7 +77,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::small_text("Proofs");
+		components::sub_title("Proofs");
 
 		if (ImGui::Button("Check all"))
 		{
@@ -279,7 +135,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::small_text("Police");
+		components::sub_title("Police");
 
 		ImGui::Checkbox("Never Wanted", &g->self.never_wanted);
 

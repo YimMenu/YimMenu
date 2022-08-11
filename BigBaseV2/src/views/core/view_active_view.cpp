@@ -15,7 +15,8 @@ namespace big
 		if (ImGui::Begin("main", nullptr, window_flags))
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
-			components::sub_title(g_gui_service->get_selected()->name);
+			components::title(g_gui_service->get_selected()->name);
+			ImGui::Separator();
 			g_gui_service->get_selected()->func();
 			ImGui::PopStyleVar();
 		}
