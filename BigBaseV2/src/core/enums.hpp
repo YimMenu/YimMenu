@@ -179,6 +179,7 @@ namespace big
 		SOLO,
 		INVITE_ONLY,
 		JOIN_CREW,
+		SC_TV,
 		LEAVE_ONLINE = -1
 	};
 
