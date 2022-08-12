@@ -39,132 +39,136 @@ namespace big
 
 		ImGui::Separator();
 
-		components::small_text("General");
-
-		ImGui::BeginGroup();
-		ImGui::Checkbox("God Mode", &g->vehicle.god_mode);
-		ImGui::Checkbox("Horn Boost", &g->vehicle.horn_boost);
-		ImGui::Checkbox("Vehicle Jump", &g->vehicle.vehicle_jump);
-
-		ImGui::EndGroup();
-		ImGui::SameLine();
-		ImGui::BeginGroup();
-
-		ImGui::Checkbox("Instant Brake", &g->vehicle.instant_brake);
-		ImGui::Checkbox("Can Be Targeted", &g->vehicle.is_targetable);
-		ImGui::Checkbox("Drive On Water", &g->vehicle.drive_on_water);
-
-		ImGui::EndGroup();
-		ImGui::SameLine();
-		ImGui::BeginGroup();
-
-		ImGui::Checkbox("Seatbelt", &g->vehicle.seatbelt);
-		ImGui::Checkbox("Turn Signals", &g->vehicle.turn_signals);
-		if (g->vehicle.turn_signals)
+		components::sub_title("General");
 		{
-			ImGui::Checkbox("Fully Automatic Signal", &g->vehicle.auto_turn_signals);
-		}
+			ImGui::BeginGroup();
+			ImGui::Checkbox("God Mode", &g->vehicle.god_mode);
+			ImGui::Checkbox("Horn Boost", &g->vehicle.horn_boost);
+			ImGui::Checkbox("Vehicle Jump", &g->vehicle.vehicle_jump);
 
-		ImGui::EndGroup();
+			ImGui::EndGroup();
+			ImGui::SameLine();
+			ImGui::BeginGroup();
 
-		ImGui::Separator();
+			ImGui::Checkbox("Instant Brake", &g->vehicle.instant_brake);
+			ImGui::Checkbox("Can Be Targeted", &g->vehicle.is_targetable);
+			ImGui::Checkbox("Drive On Water", &g->vehicle.drive_on_water);
 
-		components::small_text("Proofs");
+			ImGui::EndGroup();
+			ImGui::SameLine();
+			ImGui::BeginGroup();
 
-		if (ImGui::Button("Check all"))
-		{
-			g->vehicle.proof_bullet = true;
-			g->vehicle.proof_fire = true;
-			g->vehicle.proof_collision = true;
-			g->vehicle.proof_melee = true;
-			g->vehicle.proof_explosion = true;
-			g->vehicle.proof_steam = true;
-			g->vehicle.proof_water = true;
-		}
-
-		ImGui::SameLine();
-
-		if (ImGui::Button("Uncheck all"))
-		{
-			g->vehicle.proof_bullet = false;
-			g->vehicle.proof_fire = false;
-			g->vehicle.proof_collision = false;
-			g->vehicle.proof_melee = false;
-			g->vehicle.proof_explosion = false;
-			g->vehicle.proof_steam = false;
-			g->vehicle.proof_water = false;
-		}
-
-		ImGui::BeginGroup();
-
-		ImGui::Checkbox("Bullet", &g->vehicle.proof_bullet);
-		ImGui::Checkbox("Fire", &g->vehicle.proof_fire);
-
-		ImGui::EndGroup();
-		ImGui::SameLine();
-		ImGui::BeginGroup();
-
-		ImGui::Checkbox("Collision", &g->vehicle.proof_collision);
-		ImGui::Checkbox("Melee", &g->vehicle.proof_melee);
-
-		ImGui::EndGroup();
-		ImGui::SameLine();
-		ImGui::BeginGroup();
-
-		ImGui::Checkbox("Explosion", &g->vehicle.proof_explosion);
-		ImGui::Checkbox("Steam", &g->vehicle.proof_steam);
-
-		ImGui::EndGroup();
-		ImGui::SameLine();
-		ImGui::BeginGroup();
-
-		ImGui::Checkbox("Water", &g->vehicle.proof_water);
-
-		ImGui::EndGroup();
-
-		ImGui::Separator();
-
-		components::small_text("Speed Unit");
-
-		ImGui::RadioButton(
-			speed_unit_strings[(int)SpeedUnit::KMPH].c_str(), 
-			(int*)&g->vehicle.speed_unit, 
-			(int)SpeedUnit::KMPH
-		);
-		ImGui::SameLine();
-		ImGui::RadioButton(
-			speed_unit_strings[(int)SpeedUnit::MIPH].c_str(), 
-			(int*)&g->vehicle.speed_unit, 
-			(int)SpeedUnit::MIPH
-		);
-		ImGui::SameLine();
-		ImGui::RadioButton(
-			speed_unit_strings[(int)SpeedUnit::MPS].c_str(), 
-			(int*)&g->vehicle.speed_unit, 
-			(int)SpeedUnit::MPS
-		);
-
-		ImGui::Separator();
-
-		components::small_text("Speedo Meter");
-
-		ImGui::Checkbox("Enabled", &g->vehicle.speedo_meter.enabled);
-
-		if (g->vehicle.speedo_meter.enabled)
-		{
-			ImGui::Text("Position (X, Y)");
-
-			float pos[2] = { g->vehicle.speedo_meter.x, g->vehicle.speedo_meter.y };
-
-			if (ImGui::SliderFloat2("###speedo_pos", pos, .001f, .999f, "%.3f"))
+			ImGui::Checkbox("Seatbelt", &g->vehicle.seatbelt);
+			ImGui::Checkbox("Turn Signals", &g->vehicle.turn_signals);
+			if (g->vehicle.turn_signals)
 			{
-				g->vehicle.speedo_meter.x = pos[0];
-				g->vehicle.speedo_meter.y = pos[1];
+				ImGui::Checkbox("Fully Automatic Signal", &g->vehicle.auto_turn_signals);
+			}
+
+			ImGui::EndGroup();
+		}
+		ImGui::Separator();
+
+
+		components::sub_title("Proofs");
+		{
+			if (ImGui::Button("Check all"))
+			{
+				g->vehicle.proof_bullet = true;
+				g->vehicle.proof_fire = true;
+				g->vehicle.proof_collision = true;
+				g->vehicle.proof_melee = true;
+				g->vehicle.proof_explosion = true;
+				g->vehicle.proof_steam = true;
+				g->vehicle.proof_water = true;
 			}
 
 			ImGui::SameLine();
 
-			ImGui::Checkbox("Left Sided", &g->vehicle.speedo_meter.left_side);
+			if (ImGui::Button("Uncheck all"))
+			{
+				g->vehicle.proof_bullet = false;
+				g->vehicle.proof_fire = false;
+				g->vehicle.proof_collision = false;
+				g->vehicle.proof_melee = false;
+				g->vehicle.proof_explosion = false;
+				g->vehicle.proof_steam = false;
+				g->vehicle.proof_water = false;
+			}
+
+			ImGui::BeginGroup();
+
+			ImGui::Checkbox("Bullet", &g->vehicle.proof_bullet);
+			ImGui::Checkbox("Fire", &g->vehicle.proof_fire);
+
+			ImGui::EndGroup();
+			ImGui::SameLine();
+			ImGui::BeginGroup();
+
+			ImGui::Checkbox("Collision", &g->vehicle.proof_collision);
+			ImGui::Checkbox("Melee", &g->vehicle.proof_melee);
+
+			ImGui::EndGroup();
+			ImGui::SameLine();
+			ImGui::BeginGroup();
+
+			ImGui::Checkbox("Explosion", &g->vehicle.proof_explosion);
+			ImGui::Checkbox("Steam", &g->vehicle.proof_steam);
+
+			ImGui::EndGroup();
+			ImGui::SameLine();
+			ImGui::BeginGroup();
+
+			ImGui::Checkbox("Water", &g->vehicle.proof_water);
+
+			ImGui::EndGroup();
+		}
+		ImGui::Separator();
+
+
+		components::sub_title("Speed Unit");
+		{
+			ImGui::RadioButton(
+				speed_unit_strings[(int)SpeedUnit::KMPH].c_str(),
+				(int*)&g->vehicle.speed_unit,
+				(int)SpeedUnit::KMPH
+			);
+			ImGui::SameLine();
+			ImGui::RadioButton(
+				speed_unit_strings[(int)SpeedUnit::MIPH].c_str(),
+				(int*)&g->vehicle.speed_unit,
+				(int)SpeedUnit::MIPH
+			);
+			ImGui::SameLine();
+			ImGui::RadioButton(
+				speed_unit_strings[(int)SpeedUnit::MPS].c_str(),
+				(int*)&g->vehicle.speed_unit,
+				(int)SpeedUnit::MPS
+			);
+		}
+		ImGui::Separator();
+
+
+		components::sub_title("Speedo Meter");
+		{
+			ImGui::Checkbox("Enabled", &g->vehicle.speedo_meter.enabled);
+
+			if (g->vehicle.speedo_meter.enabled)
+			{
+				ImGui::Text("Position (X, Y)");
+
+				float pos[2] = { g->vehicle.speedo_meter.x, g->vehicle.speedo_meter.y };
+
+				if (ImGui::SliderFloat2("###speedo_pos", pos, .001f, .999f, "%.3f"))
+				{
+					g->vehicle.speedo_meter.x = pos[0];
+					g->vehicle.speedo_meter.y = pos[1];
+				}
+
+				ImGui::SameLine();
+
+				ImGui::Checkbox("Left Sided", &g->vehicle.speedo_meter.left_side);
+			}
 		}
 
 		g->vehicle.proof_mask = 0;

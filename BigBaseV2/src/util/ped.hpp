@@ -5,13 +5,30 @@
 
 namespace big::ped
 {
-	inline void steal_outfit(const Ped target)
+	inline bool change_player_model(const Hash hash)
+	{
+		for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+		{
+			STREAMING::REQUEST_MODEL(hash);
+			script::get_current()->yield();
+		}
+		if (!STREAMING::HAS_MODEL_LOADED(hash))
+		{
+			return false;
+		}
+		PLAYER::SET_PLAYER_MODEL(self::id, hash);
+		script::get_current()->yield();
+		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+
+		return true;
+	}
+
+	inline bool steal_outfit(const Ped target)
 	{
 		Ped ped = self::ped;
 		
 		if (ENTITY::GET_ENTITY_MODEL(ped) != ENTITY::GET_ENTITY_MODEL(target)) {
-			g_notification_service->push("Error", "Model mismatch, use steal identity instead.");
-			return;
+			return false;
 		}
 		for (int i = 0; i < 12; i++) {
 			PED::SET_PED_COMPONENT_VARIATION
@@ -23,6 +40,8 @@ namespace big::ped
 				PED::GET_PED_PALETTE_VARIATION(target, i)
 			);
 		}
+
+		return true;
 	}
 
 	inline void steal_identity(const Ped target)
@@ -39,7 +58,7 @@ namespace big::ped
 		PED::SET_PED_ARMOUR(self::ped, current_armor);
 	}
 
-	inline Ped spawn(ePedType pedType, Hash hash, Vector3 location, float heading, bool is_networked = true)
+	inline Ped spawn(ePedType pedType, Hash hash, Hash clone, Vector3 location, float heading, bool is_networked = true)
 	{
 		for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
 		{
@@ -57,6 +76,11 @@ namespace big::ped
 		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
 
 		script::get_current()->yield();
+
+		if (clone)
+		{
+			PED::CLONE_PED_TO_TARGET(clone, ped);
+		}
 
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 

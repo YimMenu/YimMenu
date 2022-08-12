@@ -30,6 +30,7 @@ namespace big
 		if (!item_json["Category"].is_null())
 		{
 			this->weapon_type = item_json["Category"];
+			this->weapon_type = this->weapon_type.substr(6);
 		}
 
 		this->hash = item_json["Hash"];
@@ -61,7 +62,7 @@ namespace big
 			}
 		}
 
-		if (this->weapon_type == "GROUP_MELEE" || this->weapon_type == "GROUP_UNARMED" || is_gun)
+		if (this->weapon_type == "MELEE" || this->weapon_type == "UNARMED" || is_gun)
 		{
 			this->reward_hash = rage::joaat((reward_prefix + std::string(item_json["Name"])).c_str());
 

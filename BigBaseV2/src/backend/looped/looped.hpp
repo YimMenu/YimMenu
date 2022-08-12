@@ -42,6 +42,7 @@ namespace big
 		static void system_update_pointers();
 
 		static void vehicle_auto_drive();
+		static void vehicle_boost_behavior();
 		static void vehicle_despawn_bypass();
 		static void vehicle_drive_on_water();
 		static void vehicle_fly();

@@ -223,7 +223,7 @@ namespace big
 		}
 
 		ImGui::Separator();
-		components::small_text("Mod Options");
+		components::sub_title("Mod Options");
 
 		bool is_bulletproof_tires = !owned_mods[MOD_TIRE_CAN_BURST];
 		if (ImGui::Checkbox("Bulletproof Tires", (bool*)&is_bulletproof_tires))
@@ -261,7 +261,7 @@ namespace big
 
 		ImGui::BeginGroup();
 
-		components::small_text("Slot");
+		components::sub_title("Slot");
 		if (ImGui::ListBoxHeader("##slot", ImVec2(200, 200)))
 		{
 			for (const auto& [slot, name] : slot_display_names)
@@ -300,7 +300,7 @@ namespace big
 			ImGui::SameLine();
 			ImGui::BeginGroup();
 
-			components::small_text("Mod");
+			components::sub_title("Mod");
 			if (ImGui::ListBoxHeader("##mod", ImVec2(240, 200)))
 			{
 				for (const auto& it : mod_display_names[selected_slot])
@@ -369,7 +369,7 @@ namespace big
 				ImGui::SameLine();
 				ImGui::BeginGroup();
 
-				components::small_text("Style");
+				components::sub_title("Style");
 				if (ImGui::ListBoxHeader("##style", ImVec2(200, 200)))
 				{
 					std::string mod_name = mod_display_names[selected_slot][*wheel_stock_mod];
@@ -417,7 +417,7 @@ namespace big
 
 
 		ImGui::Separator();
-		components::small_text("Neon Light Options");
+		components::sub_title("Neon Light Options");
 
 		if (ImGui::Checkbox("Headlight##headlight_en", (bool*)&owned_mods[MOD_XENON_LIGHTS]))
 		{
@@ -483,7 +483,7 @@ namespace big
 		});
 
 		ImGui::Separator();
-		components::small_text("Color Options");
+		components::sub_title("Color Options");
 
 		static int color_to_change = 0;
 		static int color_type = 8;
