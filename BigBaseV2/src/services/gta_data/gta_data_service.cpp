@@ -168,8 +168,8 @@ namespace big
 
 						try
 						{
-							std::ofstream file_etag_ofstream(file_path, std::ios::binary | std::ios::trunc);
-							file_etag_ofstream << "";
+							std::ofstream file_ofstream(file_path, std::ios::binary | std::ios::trunc);
+							file_ofstream << "";
 
 							std::ofstream file_etag_ofstream(etag_path, std::ios::binary | std::ios::trunc);
 							file_etag_ofstream << "";
