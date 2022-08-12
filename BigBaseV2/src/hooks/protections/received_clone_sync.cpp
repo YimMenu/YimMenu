@@ -67,7 +67,7 @@ namespace big {
 	}
 
 	inline bool is_model_a_cage_model(uint32_t model) {
-		for (int i = 0; i < sizeof(crash_models) / sizeof(uint32_t); i++)
+		for (int i = 0; i < sizeof(cage_models) / sizeof(uint32_t); i++)
 		{
 			if (cage_models[i] == model) return true;
 		}
