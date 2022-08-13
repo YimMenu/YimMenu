@@ -129,65 +129,71 @@ namespace big
 
 	void gta_data_service::load_from_file(std::string file_path, std::string etag_path, std::string url, bool(gta_data_service::* load_func)(file), std::string data_name)
 	{
-		file file_to_load(g_file_manager->get_project_file(file_path));
-		file file_etag(g_file_manager->get_project_file(etag_path));
-		bool success = false;
-
-		if (file_to_load.exists())
+		try
 		{
-			if ((this->*load_func)(file_to_load))
-			{
-				LOG(INFO) << "Data loaded: " + data_name;
-				success = true;
-			}
-			else
-			{
-				LOG(INFO) << "Data invalid: " + data_name;
+			auto file_to_load = g_file_manager->get_project_file(file_path);
+			auto file_etag = g_file_manager->get_project_file(etag_path);
+			auto file_to_load_path = file_to_load.get_path();
+			auto file_etag_path = file_etag.get_path();
 
-				try
+			if (file_to_load.exists())
+			{
+				if ((this->*load_func)(file_to_load))
 				{
-					std::filesystem::remove(file_to_load.get_path());
-					std::filesystem::remove(file_etag.get_path());
+					LOG(INFO) << "Data loaded: " + data_name;
 				}
-				catch (...) {}
+				else
+				{
+					std::filesystem::remove(file_to_load_path);
+					std::filesystem::remove(file_etag_path);
+					throw std::exception();
+				}
 			}
+		}
+		catch (...)
+		{
+			LOG(WARNING) << "Data invalid: " + data_name;
 		}
 
 		g_thread_pool->push([this, file_path, etag_path, url, load_func, data_name]() {
-			file file_to_load(g_file_manager->get_project_file(file_path));
-			file file_etag(g_file_manager->get_project_file(etag_path));
-
-			for (int retry = 0; retry < 2; retry++)
+			try
 			{
-				bool ret = remote::update_binary(
-					url,
-					file_to_load.get_path(),
-					file_etag.get_path()
-				);
+				auto file_to_load = g_file_manager->get_project_file(file_path);
+				auto file_etag = g_file_manager->get_project_file(etag_path);
+				auto file_to_load_path = file_to_load.get_path();
+				auto file_etag_path = file_etag.get_path();
 
-				if (ret)
+				for (int retry = 0; retry < 2; retry++)
 				{
-					if ((this->*load_func)(file_to_load))
+					bool ret = remote::update_binary(
+						url,
+						file_to_load_path,
+						file_etag_path
+					);
+
+					if (ret)
 					{
-						LOG(INFO) << "Data loaded: " + data_name;
+						if ((this->*load_func)(file_to_load))
+						{
+							LOG(INFO) << "Data loaded: " + data_name;
+						}
+						else
+						{
+							std::filesystem::remove(file_to_load_path);
+							std::filesystem::remove(file_etag_path);
+							throw std::exception();
+						}
+						break;
 					}
 					else
 					{
-						LOG(INFO) << "Data invalid: " + data_name;
-
-						try
-						{
-							std::filesystem::remove(file_to_load.get_path());
-							std::filesystem::remove(file_etag.get_path());
-						}
-						catch (...) { }
+						throw std::exception();
 					}
-					break;
 				}
-				else if (!file_to_load.exists())
-				{
-					LOG(WARNING) << "Failed to download data: " + data_name;
-				}
+			}
+			catch (...)
+			{
+				LOG(WARNING) << "Data invalid: " + data_name;
 			}
 		});
 	}

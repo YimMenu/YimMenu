@@ -41,7 +41,7 @@ namespace big::remote
 				if (!local_etag.empty())
 				{
 					http::Request req(file_url.data());
-					http::Response res = req.send("HEAD", "", headers, 15s);
+					http::Response res = req.send("HEAD", "", headers, 30s);
 
 					remote_etag = get_etag_from_headers(res.headers);
 
@@ -53,7 +53,7 @@ namespace big::remote
 			}
 			catch (const std::exception& e)
 			{
-				LOG(INFO) << "Update Error: " << e.what();
+				LOG(WARNING) << "Update Error: " << e.what();
 			}
 
 			http::Request req(file_url.data());
@@ -77,7 +77,7 @@ namespace big::remote
 		}
 		catch (const std::exception& e)
 		{
-			LOG(INFO) << "Failed to download binary, is the host down?: " << e.what();
+			LOG(WARNING) << "Update Error: " << e.what();
 		}
 
 		return false;
