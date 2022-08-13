@@ -10,7 +10,7 @@ namespace big
 	gta_data_service::gta_data_service()
 	{
 		g_thread_pool->push([this] {
-			while (g_running)
+			while (!g_running)
 				std::this_thread::sleep_for(1s);
 
 			const std::string url_prefix = "http://github-proxy.damon.sh/DurtyFree/gta-v-data-dumps/master/";
