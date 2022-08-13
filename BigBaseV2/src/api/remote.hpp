@@ -59,16 +59,21 @@ namespace big::remote
 			http::Request req(file_url.data());
 			http::Response res = req.send("GET", "", headers, 30s);
 
-			std::ofstream file_ofstream(file_location, std::ios::binary | std::ios::trunc);
-			std::ostream_iterator<std::uint8_t> file_out_iter(file_ofstream);
-			std::copy(res.body.begin(), res.body.end(), file_out_iter);
+			if (res.status == http::Response::Status::Ok)
+			{
+				std::ofstream file_ofstream(file_location, std::ios::binary | std::ios::trunc);
+				std::ostream_iterator<std::uint8_t> file_out_iter(file_ofstream);
+				std::copy(res.body.begin(), res.body.end(), file_out_iter);
 
-			remote_etag = get_etag_from_headers(res.headers);
+				remote_etag = get_etag_from_headers(res.headers);
 
-			std::ofstream file_etag_ofstream(etag_location, std::ios::binary | std::ios::trunc);
-			file_etag_ofstream << remote_etag;
+				std::ofstream file_etag_ofstream(etag_location, std::ios::binary | std::ios::trunc);
+				file_etag_ofstream << remote_etag;
 
-			return true;
+				return true;
+			}
+
+			return false;
 		}
 		catch (const std::exception& e)
 		{
