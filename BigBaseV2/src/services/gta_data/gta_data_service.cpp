@@ -1,3 +1,4 @@
+#include <filesystem>
 #include "api/remote.hpp"
 #include "file_manager.hpp"
 #include "thread_pool.hpp"
@@ -42,7 +43,6 @@ namespace big
 	{
 		g_gta_data_service = nullptr;
 	}
-
 
 	const vehicle_item& gta_data_service::find_vehicle_by_hash(Hash hash)
 	{
@@ -168,11 +168,8 @@ namespace big
 
 						try
 						{
-							std::ofstream file_ofstream(file_path, std::ios::binary | std::ios::trunc);
-							file_ofstream << "";
-
-							std::ofstream file_etag_ofstream(etag_path, std::ios::binary | std::ios::trunc);
-							file_etag_ofstream << "";
+							std::filesystem::remove(file_to_load.get_path());
+							std::filesystem::remove(file_etag.get_path());
 						}
 						catch (...) { }
 					}
@@ -197,7 +194,7 @@ namespace big
 
 			if (!all_vehicles.is_array())
 			{
-				throw "Invalid json format.";
+				throw std::exception("Invalid json format.");
 			}
 
 			m_vehicle_class_arr.clear();
@@ -250,7 +247,7 @@ namespace big
 
 			if (!all_peds.is_array())
 			{
-				throw "Invalid json format.";
+				throw std::exception("Invalid json format.");
 			}
 
 			m_ped_type_arr.clear();
@@ -301,7 +298,7 @@ namespace big
 
 			if (!all_weapons.is_array())
 			{
-				throw "Invalid json format.";
+				throw std::exception("Invalid json format.");
 			}
 
 			m_weapon_type_arr.clear();
