@@ -121,15 +121,6 @@ namespace big
 			script_events script_events{};
 		};
 
-		struct rgb {
-			bool fade = false;
-			bool spasm = false;
-			int r = 255;
-			int g = 0;
-			int b = 0;
-			int speed = 0;
-		};
-
 		struct self {
 			bool clean_player = false;
 			bool force_wanted_level = false;
@@ -229,6 +220,15 @@ namespace big
 				float speed = 1;
 			};
 
+			struct rainbow_paint {
+				RainbowPaintType type = RainbowPaintType::Off;
+				bool neon = false;
+				bool primary = false;
+				bool secondary = false;
+				bool smoke = false;
+				int speed = 0;
+			};
+
 			SpeedUnit speed_unit = SpeedUnit::MIPH;
 
 			bool god_mode = false;
@@ -251,15 +251,11 @@ namespace big
 			bool instant_brake = false;
 			bool is_targetable = true;
 			bool ls_customs = false; // don't save this to disk
-			bool rainbow_neon = false;
-			int rainbow_paint = 0;
-			bool rainbow_primary = false;
-			bool rainbow_secondary = false;
-			bool rainbow_smoke = false;
 			bool seatbelt = false;
 			bool turn_signals = false;
 			bool vehicle_jump = false;
 			speedo_meter speedo_meter{};
+			rainbow_paint rainbow_paint{};
 			fly fly{};
 		};
 
@@ -356,7 +352,6 @@ namespace big
 		notifications notifications{};
 		player player{};
 		protections protections{};
-		rgb rgb{};
 		self self{};
 		session session{};
 		settings settings{};
@@ -504,13 +499,6 @@ namespace big
 				script_handler.vehicle_kick = script_handler_j["vehicle_kick"];
 			}
 
-			this->rgb.fade = j["rgb"]["fade"];
-			this->rgb.spasm = j["rgb"]["spasm"];
-			this->rgb.r = j["rgb"]["r"];
-			this->rgb.g = j["rgb"]["g"];
-			this->rgb.b = j["rgb"]["b"];
-			this->rgb.speed = j["rgb"]["speed"];
-
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
 			this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
 
@@ -576,11 +564,6 @@ namespace big
 			this->vehicle.vehicle_jump = j["vehicle"]["vehicle_jump"];
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
-			this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
-			this->vehicle.rainbow_primary = j["vehicle"]["rainbow_primary"];
-			this->vehicle.rainbow_secondary = j["vehicle"]["rainbow_secondary"];
-			this->vehicle.rainbow_neon = j["vehicle"]["rainbow_neon"];
-			this->vehicle.rainbow_smoke = j["vehicle"]["rainbow_smoke"];
 			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
 			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
 
@@ -588,6 +571,13 @@ namespace big
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
 			this->vehicle.speedo_meter.x = j["vehicle"]["speedo_meter"]["position_x"];
 			this->vehicle.speedo_meter.y = j["vehicle"]["speedo_meter"]["position_y"];
+
+			this->vehicle.rainbow_paint.type = j["vehicle"]["rainbow_paint"]["type"];
+			this->vehicle.rainbow_paint.speed = j["vehicle"]["rainbow_paint"]["speed"];
+			this->vehicle.rainbow_paint.neon = j["vehicle"]["rainbow_paint"]["neon"];
+			this->vehicle.rainbow_paint.primary = j["vehicle"]["rainbow_paint"]["primary"];
+			this->vehicle.rainbow_paint.secondary = j["vehicle"]["rainbow_paint"]["secondary"];
+			this->vehicle.rainbow_paint.smoke = j["vehicle"]["rainbow_paint"]["smoke"];
 
 			this->vehicle.fly.dont_stop = j["vehicle"]["fly"]["dont_stop"];
 			this->vehicle.fly.enabled = j["vehicle"]["fly"]["enabled"];
@@ -755,16 +745,6 @@ namespace big
 					}
 				},
 				{
-					"rgb", {
-					{ "fade", this->rgb.fade },
-					{ "spasm", this->rgb.spasm },
-					{ "r", this->rgb.r },
-					{ "g", this->rgb.g },
-					{ "b", this->rgb.b },
-					{ "speed", this->rgb.speed }
-					}
-				},
-				{
 					"tunables", {
 						{ "disable_phone", this->tunables.disable_phone },
 						{ "no_idle_kick", this->tunables.no_idle_kick }
@@ -858,19 +838,26 @@ namespace big
 						{ "vehicle_jump", this->vehicle.vehicle_jump },
 						{ "instant_brake", this->vehicle.instant_brake },
 						{ "is_targetable", this->vehicle.is_targetable },
-						{ "rainbow_paint", this->vehicle.rainbow_paint },
-						{ "rainbow_primary", this->vehicle.rainbow_primary },
-						{ "rainbow_secondary", this->vehicle.rainbow_secondary },
-						{ "rainbow_neon", this->vehicle.rainbow_neon },
-						{ "rainbow_smoke", this->vehicle.rainbow_smoke },
 						{ "turn_signals", this->vehicle.turn_signals },
 						{ "seatbelt", this->vehicle.seatbelt },
 						{
-							"speedo_meter", {
+							"speedo_meter",
+							{
 								{ "enabled", this->vehicle.speedo_meter.enabled },
 								{ "left_side", this->vehicle.speedo_meter.left_side },
 								{ "position_x", this->vehicle.speedo_meter.x },
 								{ "position_y", this->vehicle.speedo_meter.y },
+							}
+						},
+						{
+							"rainbow_paint",
+							{
+								{ "type", this->vehicle.rainbow_paint.type },
+								{ "speed", this->vehicle.rainbow_paint.speed },
+								{ "neon", this->vehicle.rainbow_paint.neon },
+								{ "primary", this->vehicle.rainbow_paint.primary },
+								{ "secondary", this->vehicle.rainbow_paint.secondary },
+								{ "smoke", this->vehicle.rainbow_paint.smoke }
 							}
 						},
 						{
