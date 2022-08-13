@@ -130,16 +130,26 @@ namespace big
 	void gta_data_service::load_from_file(std::string file_path, std::string etag_path, std::string url, bool(gta_data_service::* load_func)(file), std::string data_name)
 	{
 		file file_to_load(g_file_manager->get_project_file(file_path));
+		file file_etag(g_file_manager->get_project_file(etag_path));
+		bool success = false;
 
 		if (file_to_load.exists())
 		{
 			if ((this->*load_func)(file_to_load))
 			{
 				LOG(INFO) << "Data loaded: " + data_name;
+				success = true;
 			}
 			else
 			{
 				LOG(INFO) << "Data invalid: " + data_name;
+
+				try
+				{
+					std::filesystem::remove(file_to_load.get_path());
+					std::filesystem::remove(file_etag.get_path());
+				}
+				catch (...) {}
 			}
 		}
 
