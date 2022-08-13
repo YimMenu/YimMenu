@@ -22,27 +22,25 @@ namespace big::remote
 
 	inline bool update_binary(const std::string_view file_url, const std::filesystem::path& file_location, const std::filesystem::path& etag_location)
 	{
-		try
-		{
-			std::string local_etag = "";
-			std::string remote_etag = "";
+		std::string local_etag = "";
+		std::string remote_etag = "";
 
-			const std::vector<std::string> headers = { "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/533.2 (KHTML, like Gecko) Chrome/6.0" };
+		try {
 
-			try {
+			{
+				std::ifstream file_etag_ifstream(etag_location, std::ios::binary);
+				std::stringstream file_etag_stringstream;
+				file_etag_stringstream << file_etag_ifstream.rdbuf();
+				local_etag = file_etag_stringstream.str();
+			}
 
+			if (!local_etag.empty())
+			{
+				http::Request req(file_url.data());
+				http::Response res = req.send("HEAD", "", {}, 20s);
+
+				if (res.status == http::Response::Status::Ok)
 				{
-					std::ifstream file_etag_ifstream(etag_location, std::ios::binary);
-					std::stringstream file_etag_stringstream;
-					file_etag_stringstream << file_etag_ifstream.rdbuf();
-					local_etag = file_etag_stringstream.str();
-				}
-
-				if (!local_etag.empty())
-				{
-					http::Request req(file_url.data());
-					http::Response res = req.send("HEAD", "", headers, 30s);
-
 					remote_etag = get_etag_from_headers(res.headers);
 
 					if (remote_etag == local_etag)
@@ -50,14 +48,21 @@ namespace big::remote
 						return false;
 					}
 				}
+				else
+				{
+					throw std::exception(std::to_string(res.status).c_str());
+				}
 			}
-			catch (const std::exception& e)
-			{
-				LOG(WARNING) << "Update Error: " << e.what();
-			}
+		}
+		catch (const std::exception& e)
+		{
+			LOG(WARNING) << "Update Error (HEAD): " << e.what();
+		}
 
+		try
+		{
 			http::Request req(file_url.data());
-			http::Response res = req.send("GET", "", headers, 30s);
+			http::Response res = req.send("GET", "", {}, 20s);
 
 			if (res.status == http::Response::Status::Ok)
 			{
@@ -72,12 +77,14 @@ namespace big::remote
 
 				return true;
 			}
-
-			return false;
+			else
+			{
+				throw std::exception(std::to_string(res.status).c_str());
+			}
 		}
 		catch (const std::exception& e)
 		{
-			LOG(WARNING) << "Update Error: " << e.what();
+			LOG(WARNING) << "Update Error (GET): " << e.what();
 		}
 
 		return false;

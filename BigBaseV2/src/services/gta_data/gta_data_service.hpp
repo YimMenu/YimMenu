@@ -41,11 +41,14 @@ namespace big
 		const std::vector<weapon_item>& get_weapon_arr();
 
 	private:
-		void load_from_file(std::string file_path, std::string etag_path, std::string url, bool(gta_data_service::* load_func)(file), std::string data_name);
+		void load_from_file(
+			std::string file_path, std::string etag_path, std::string url, 
+			bool(gta_data_service::* load_func)(std::filesystem::path), std::string data_name
+		);
 
-		bool load_vehicles(file file_to_load);
-		bool load_peds(file file_to_load);
-		bool load_weapons(file file_to_load);
+		bool load_vehicles(std::filesystem::path path);
+		bool load_peds(std::filesystem::path path);
+		bool load_weapons(std::filesystem::path path);
 	};
 
 	inline gta_data_service* g_gta_data_service{};

@@ -9,31 +9,40 @@ namespace big
 {
 	gta_data_service::gta_data_service()
 	{
-		const std::string url_prefix = "http://github-proxy.damon.sh/DurtyFree/gta-v-data-dumps/master/";
+		g_thread_pool->push([this] {
+			while (g_running)
+				std::this_thread::sleep_for(1s);
 
-		load_from_file(
-			"./lib/vehicles.json",
-			"./lib/vehicles_etag.txt",
-			url_prefix + "vehicles.json",
-			&gta_data_service::load_vehicles,
-			"Vehicle"
-		);
+			const std::string url_prefix = "http://github-proxy.damon.sh/DurtyFree/gta-v-data-dumps/master/";
 
-		load_from_file(
-			"./lib/peds.json",
-			"./lib/peds_etag.txt",
-			url_prefix + "peds.json",
-			&gta_data_service::load_peds,
-			"Ped"
-		);
+			this->load_from_file(
+				"./lib/vehicles.json",
+				"./lib/vehicles_etag.txt",
+				url_prefix + "vehicles.json",
+				&gta_data_service::load_vehicles,
+				"Vehicle"
+			);
 
-		load_from_file(
-			"./lib/weapons.json",
-			"./lib/weapons_etag.txt",
-			url_prefix + "weapons.json",
-			&gta_data_service::load_weapons,
-			"Weapon"
-		);
+			std::this_thread::sleep_for(1s);
+
+			this->load_from_file(
+				"./lib/peds.json",
+				"./lib/peds_etag.txt",
+				url_prefix + "peds.json",
+				&gta_data_service::load_peds,
+				"Ped"
+			);
+
+			std::this_thread::sleep_for(1s);
+
+			this->load_from_file(
+				"./lib/weapons.json",
+				"./lib/weapons_etag.txt",
+				url_prefix + "weapons.json",
+				&gta_data_service::load_weapons,
+				"Weapon"
+			);
+		});
 
 		g_gta_data_service = this;
 	}
@@ -127,18 +136,20 @@ namespace big
 	}
 
 
-	void gta_data_service::load_from_file(std::string file_path, std::string etag_path, std::string url, bool(gta_data_service::* load_func)(file), std::string data_name)
-	{
+	void gta_data_service::load_from_file(
+		std::string file_path, std::string etag_path, std::string url,
+		bool(gta_data_service::* load_func)(std::filesystem::path), std::string data_name
+	) {
+		file file_to_load(g_file_manager->get_project_file(file_path));
+		file file_etag(g_file_manager->get_project_file(etag_path));
+		auto file_to_load_path = file_to_load.get_path();
+		auto file_etag_path = file_etag.get_path();
+
 		try
 		{
-			auto file_to_load = g_file_manager->get_project_file(file_path);
-			auto file_etag = g_file_manager->get_project_file(etag_path);
-			auto file_to_load_path = file_to_load.get_path();
-			auto file_etag_path = file_etag.get_path();
-
 			if (file_to_load.exists())
 			{
-				if ((this->*load_func)(file_to_load))
+				if ((this->*load_func)(file_to_load_path))
 				{
 					LOG(INFO) << "Data loaded: " + data_name;
 				}
@@ -146,7 +157,7 @@ namespace big
 				{
 					std::filesystem::remove(file_to_load_path);
 					std::filesystem::remove(file_etag_path);
-					throw std::exception();
+					throw std::exception("");
 				}
 			}
 		}
@@ -155,39 +166,31 @@ namespace big
 			LOG(WARNING) << "Data invalid: " + data_name;
 		}
 
-		g_thread_pool->push([this, file_path, etag_path, url, load_func, data_name]() {
+		for (int retry = 0; retry < 2 && g_running; retry++)
+		{
+			LOG(INFO) << "Checking update (attempt: " << (retry + 1) << "/3): " << data_name;
+
 			try
 			{
-				auto file_to_load = g_file_manager->get_project_file(file_path);
-				auto file_etag = g_file_manager->get_project_file(etag_path);
-				auto file_to_load_path = file_to_load.get_path();
-				auto file_etag_path = file_etag.get_path();
+				bool ret = remote::update_binary(
+					url,
+					file_to_load_path,
+					file_etag_path
+				);
 
-				for (int retry = 0; retry < 2; retry++)
+				if (ret)
 				{
-					bool ret = remote::update_binary(
-						url,
-						file_to_load_path,
-						file_etag_path
-					);
+					LOG(INFO) << "Data updated: " << data_name;
 
-					if (ret)
+					if ((this->*load_func)(file_to_load_path))
 					{
-						if ((this->*load_func)(file_to_load))
-						{
-							LOG(INFO) << "Data loaded: " + data_name;
-						}
-						else
-						{
-							std::filesystem::remove(file_to_load_path);
-							std::filesystem::remove(file_etag_path);
-							throw std::exception();
-						}
+						LOG(INFO) << "Data loaded: " + data_name;
 						break;
 					}
 					else
 					{
-						throw std::exception();
+						std::filesystem::remove(file_to_load_path);
+						std::filesystem::remove(file_etag_path);
 					}
 				}
 			}
@@ -195,12 +198,12 @@ namespace big
 			{
 				LOG(WARNING) << "Data invalid: " + data_name;
 			}
-		});
+		}
 	}
 
-	bool gta_data_service::load_vehicles(file file_to_load)
+	bool gta_data_service::load_vehicles(std::filesystem::path path)
 	{
-		std::ifstream file(file_to_load.get_path());
+		std::ifstream file(path);
 		nlohmann::json all_vehicles;
 
 		try
@@ -251,9 +254,9 @@ namespace big
 	}
 
 
-	bool gta_data_service::load_peds(file file_to_load)
+	bool gta_data_service::load_peds(std::filesystem::path path)
 	{
-		std::ifstream file(file_to_load.get_path());
+		std::ifstream file(path);
 		nlohmann::json all_peds;
 
 		try
@@ -302,9 +305,9 @@ namespace big
 	}
 
 
-	bool gta_data_service::load_weapons(file file_to_load)
+	bool gta_data_service::load_weapons(std::filesystem::path path)
 	{
-		std::ifstream file(file_to_load.get_path());
+		std::ifstream file(path);
 		nlohmann::json all_weapons;
 
 		try
