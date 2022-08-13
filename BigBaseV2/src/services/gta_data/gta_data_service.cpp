@@ -145,28 +145,9 @@ namespace big
 		auto file_to_load_path = file_to_load.get_path();
 		auto file_etag_path = file_etag.get_path();
 
-		try
-		{
-			if (file_to_load.exists())
-			{
-				if ((this->*load_func)(file_to_load_path))
-				{
-					LOG(INFO) << "Data loaded: " + data_name;
-				}
-				else
-				{
-					std::filesystem::remove(file_to_load_path);
-					std::filesystem::remove(file_etag_path);
-					throw std::exception("");
-				}
-			}
-		}
-		catch (...)
-		{
-			LOG(WARNING) << "Data invalid: " + data_name;
-		}
+		bool up_to_date = false;
 
-		for (int retry = 0; retry < 2 && g_running; retry++)
+		for (int retry = 0; retry < 3 && g_running; retry++)
 		{
 			LOG(INFO) << "Checking update (attempt: " << (retry + 1) << "/3): " << data_name;
 
@@ -180,6 +161,8 @@ namespace big
 
 				if (ret)
 				{
+					up_to_date = true;
+
 					LOG(INFO) << "Data updated: " << data_name;
 
 					if ((this->*load_func)(file_to_load_path))
@@ -197,6 +180,34 @@ namespace big
 			catch (...)
 			{
 				LOG(WARNING) << "Data invalid: " + data_name;
+			}
+
+			std::this_thread::sleep_for(2s);
+		}
+
+		if (!up_to_date)
+		{
+			LOG(WARNING) << "Data not updated: " + data_name;
+
+			try
+			{
+				if (file_to_load.exists())
+				{
+					if ((this->*load_func)(file_to_load_path))
+					{
+						LOG(INFO) << "Cache loaded: " + data_name;
+					}
+					else
+					{
+						std::filesystem::remove(file_to_load_path);
+						std::filesystem::remove(file_etag_path);
+						throw std::exception("");
+					}
+				}
+			}
+			catch (...)
+			{
+				LOG(WARNING) << "Cache invalid: " + data_name;
 			}
 		}
 	}

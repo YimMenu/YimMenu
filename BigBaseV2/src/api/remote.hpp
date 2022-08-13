@@ -45,7 +45,7 @@ namespace big::remote
 
 					if (remote_etag == local_etag)
 					{
-						return false;
+						return true;
 					}
 				}
 				else
