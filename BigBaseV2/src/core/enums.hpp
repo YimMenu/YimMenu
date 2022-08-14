@@ -190,6 +190,13 @@ namespace big
 		MPS
 	};
 
+	enum class RainbowPaintType
+	{
+		Off,
+		Fade,
+		Spasm
+	};
+
 	enum class AutoDriveDestination
 	{
 		STOPPED,

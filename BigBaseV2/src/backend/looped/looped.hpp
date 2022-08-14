@@ -13,9 +13,6 @@ namespace big
 		static void context_menu();
 		static void hud_transition_state();
 
-		static void rgb_synced_fade();
-		static void rgb_synced_spasm();
-
 		static void tunables_disable_phone();
 		static void tunables_no_idle_kick();
 
