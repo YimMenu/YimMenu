@@ -1,15 +1,13 @@
 #pragma once
 #include "common.hpp"
-#include "atSingleton.hpp"
-#include "asi_loader/pools.h"
-#include "CNetworkPlayerMgr.hpp"
-#include "FriendRegistry.hpp"
-#include "HashTable.hpp"
-#include "gta/fwddec.hpp"
-#include "gta/enums.hpp"
-#include "gta/replay.hpp"
-#include "gta/script_program.hpp"
+#include "base/HashTable.hpp"
 #include "function_types.hpp"
+#include "gta/fwddec.hpp"
+#include "gta/replay.hpp"
+#include "network/CNetworkPlayerMgr.hpp"
+#include "socialclub/FriendRegistry.hpp"
+
+#include "asi_loader/pools.h"
 
 namespace big
 {
@@ -64,6 +62,7 @@ namespace big
 		PVOID m_is_dlc_present;
 		PVOID m_network_group_override;
 		PUSHORT m_spectator_check;
+		PVOID m_get_label_text;
 
 		FriendRegistry* m_friend_registry{};
 
@@ -78,10 +77,6 @@ namespace big
 
 		PVOID m_network_player_mgr_init;
 		PVOID m_network_player_mgr_shutdown;
-		PVOID m_net_array_handler;
-
-		PVOID m_player_has_joined{};
-		PVOID m_player_has_left{};
 
 		functions::get_gameplay_cam_coords m_get_gameplay_cam_coords;
 
@@ -112,13 +107,13 @@ namespace big
 		functions::get_sync_tree_for_type m_get_sync_tree_for_type{};
 		functions::get_sync_type_info m_get_sync_type_info{};
 		functions::get_net_object m_get_net_object{};
-		functions::get_net_object_for_player m_get_net_object_for_player{};
 		//Sync Signatures END
 
 		PVOID m_send_net_info_to_lobby{};
 
 		PVOID m_receive_net_message{};
 		PVOID m_get_network_event_data{};
+		PVOID m_assign_physical_index{};
 	};
 
 	inline pointers* g_pointers{};

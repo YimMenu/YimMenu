@@ -42,11 +42,7 @@ namespace rage
 
 	class fwRefAwareBase;
 	class fwExtensibleBase;
-	class fwEntity;
 	class fwArchetype;
-
-	class CVehicle;
-	class CPed;
 }
 
 class GtaThread;

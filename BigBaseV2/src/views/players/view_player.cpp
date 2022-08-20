@@ -9,6 +9,8 @@
 #include "util/vehicle.hpp"
 #include "util/teleport.hpp"
 #include "util/toxic.hpp"
+#include "gta/joaat.hpp"
+#include "core/enums.hpp"
 
 namespace big
 {
@@ -80,18 +82,76 @@ namespace big
 					ImGui::Text("Wanted Level: %d", player_info->m_wanted_level);
 				}
 
+				uint32_t ped_damage_bits = 0;
+				uint32_t ped_task_flag = 0;
+				uint32_t veh_damage_bits = 0;
+				std::string mode_str = "";
+
 				if (CPed* ped = g_player_service->get_selected()->get_ped(); ped != nullptr)
 				{
-					ImGui::Text("Player God Mode: %s",
-						misc::has_bit_set((int*)&ped->m_damage_bits, 8) ? "Yes" : "No"
-					);
+					ped_damage_bits = ped->m_damage_bits;
+					ped_task_flag = ped->m_ped_task_flag;
 				}
 
-				CAutomobile* vehicle = g_player_service->get_selected()->get_current_vehicle();
-				ImGui::Text("Vehicle God Mode: %s",
-					vehicle == nullptr ? "No vehicle detected" :
-					misc::has_bit_set((int*)&vehicle->m_damage_bits, 8) ? "Yes" : "No"
-				);
+				if (ped_damage_bits & (uint32_t)eEntityProofs::GOD)
+				{
+					mode_str = "God";
+				}
+				else
+				{
+					if (ped_damage_bits & (uint32_t)eEntityProofs::BULLET)
+					{
+						mode_str += "Bullet, ";
+					}
+					if (ped_damage_bits & (uint32_t)eEntityProofs::EXPLOSION)
+					{
+						mode_str += "Explosion, ";
+					}
+				}
+
+				if (mode_str.empty())
+				{
+					mode_str = "No";
+				}
+
+				ImGui::Text("Player God Mode: %s", mode_str.c_str());
+
+				mode_str = "";
+
+				if (CAutomobile* vehicle = g_player_service->get_selected()->get_current_vehicle(); vehicle != nullptr)
+				{
+					veh_damage_bits = vehicle->m_damage_bits;
+				}
+
+				if (ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING)
+				{
+					if (veh_damage_bits & (uint32_t)eEntityProofs::GOD)
+					{
+						mode_str = "God";
+					}
+					else
+					{
+						if (veh_damage_bits & (uint32_t)eEntityProofs::COLLISION)
+						{
+							mode_str += "Collision, ";
+						}
+						if (veh_damage_bits & (uint32_t)eEntityProofs::EXPLOSION)
+						{
+							mode_str += "Explosion, ";
+						}
+					}
+
+					if (mode_str.empty())
+					{
+						mode_str = "No";
+					}
+				}
+				else
+				{
+					mode_str = "No vehicle detected";
+				}
+
+				ImGui::Text("Vehicle God Mode: %s", mode_str.c_str());
 
 				ImGui::Separator();
 
@@ -150,7 +210,7 @@ namespace big
 					});
 
 					components::button("Ped Crash", [] {
-						Ped ped = ped::spawn("slod_human", ENTITY::GET_ENTITY_COORDS(g_player_service->get_selected()->id(), false), 0);
+						Ped ped = ped::spawn(ePedType::PED_TYPE_PROSTITUTE, rage::joaat("slod_human"), 0, ENTITY::GET_ENTITY_COORDS(g_player_service->get_selected()->id(), false), 0);
 						script::get_current()->yield(3s);
 						entity::delete_entity_notp(ped);
 					});
@@ -224,7 +284,7 @@ namespace big
 						PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, civGroup);
 						PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, femCivGroup);
 
-						Ped ped = ped::spawn("u_m_m_jesus_01", pos, 0, true);
+						Ped ped = ped::spawn(ePedType::PED_TYPE_CRIMINAL, rage::joaat("u_m_m_jesus_01"), 0, pos, 0);
 
 						if (PED::IS_PED_IN_ANY_VEHICLE(ply, false))
 						{

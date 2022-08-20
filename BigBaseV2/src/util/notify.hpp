@@ -1,5 +1,5 @@
 #pragma once
-#include "CNetGamePlayer.hpp"
+#include "network/CNetGamePlayer.hpp"
 #include "natives.hpp"
 #include "script.hpp"
 

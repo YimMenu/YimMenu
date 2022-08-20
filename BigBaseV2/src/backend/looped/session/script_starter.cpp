@@ -5,6 +5,7 @@
 #include "util/scripts.hpp"
 #include "script.hpp"
 #include "core/enums.hpp"
+#include "gta/joaat.hpp"
 
 namespace big
 {

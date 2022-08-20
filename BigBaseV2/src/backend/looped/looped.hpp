@@ -15,9 +15,6 @@ namespace big
 		static void pie_menu();
 		static void hud_chat();
 
-		static void rgb_synced_fade();
-		static void rgb_synced_spasm();
-
 		static void tunables_disable_phone();
 		static void phone_anim();
 		static void tunables_no_idle_kick();
@@ -49,8 +46,8 @@ namespace big
 		static void system_self_globals();
 		static void system_update_pointers();
 
-		static void vehicle_auto_drive_to_waypoint();
-		static void vehicle_auto_drive_wander();
+		static void vehicle_auto_drive();
+		static void vehicle_boost_behavior();
 		static void vehicle_despawn_bypass();
 		static void vehicle_drive_on_water();
 		static void vehicle_fly();

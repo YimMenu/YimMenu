@@ -6,6 +6,8 @@
 #include "gta/script_thread.hpp"
 #include "script_hook.hpp"
 #include "vmt_hook.hpp"
+#include "MinHook.h"
+#include "gta/enums.hpp"
 
 namespace big
 {
@@ -21,6 +23,8 @@ namespace big
 
 		static LRESULT wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
+		static const char* get_label_text(void* unk, const char* label);
+
 		static GtaThread* gta_thread_start(unsigned int** a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
 
@@ -28,11 +32,6 @@ namespace big
 		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
 
 		static void network_group_override(std::int64_t a1, std::int64_t a2, std::int64_t a3);
-
-		static bool net_array_handler(__int64 netArrayHandlerBaseMgr, CNetGamePlayer* a2, rage::datBitBuffer* datbitbuffer, unsigned int bytes_to_read, __int16 a5);
-
-		static void player_join(CNetworkObjectMgr* _this, CNetGamePlayer* net_player);
-		static void player_leave(CNetworkObjectMgr* _this, CNetGamePlayer* net_player);
 
 		static __int64* chat_receive(__int64 chat_pointer, __int64 unk2, __int64 peerId, const char* msg, char IsTeam);
 
@@ -57,14 +56,23 @@ namespace big
 		static bool receive_net_message(void* netConnectionManager, void* a2, rage::netConnection::InFrame* frame);
 		static void get_network_event_data(int64_t unk, rage::CEventNetwork* net_event);
 
+		static void* assign_physical_index(CNetworkPlayerMgr* netPlayerMgr, CNetGamePlayer* player, uint8_t new_index);
+
 		//SYNC
-		static int64_t received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, uint16_t sync_type, uint16_t obj_id, rage::datBitBuffer* bufer, uint16_t unk, uint32_t timestamp);
+		static int64_t received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eObjType sync_type, uint16_t obj_id, rage::datBitBuffer* bufer, uint16_t unk, uint32_t timestamp);
 	};
 
-	struct minhook_keepalive
+	class minhook_keepalive
 	{
-		minhook_keepalive();
-		~minhook_keepalive();
+	public:
+		minhook_keepalive()
+		{
+			MH_Initialize();
+		}
+		~minhook_keepalive()
+		{
+			MH_Uninitialize();
+		}
 	};
 
 	class hooking
@@ -87,6 +95,8 @@ namespace big
 
 		detour_hook m_run_script_threads_hook;
 
+		detour_hook m_get_label_text;
+
 		detour_hook m_gta_thread_start_hook;
 		detour_hook m_gta_thread_kill_hook;
 
@@ -95,10 +105,7 @@ namespace big
 
 		detour_hook m_network_group_override;
 
-		detour_hook m_net_array_handler_hook;
-
-		detour_hook m_player_has_joined_hook;
-		detour_hook m_player_has_left_hook;
+		detour_hook m_assign_physical_index_hook;
 		
 		detour_hook m_is_dlc_present_hook;
 

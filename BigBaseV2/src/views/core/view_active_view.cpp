@@ -9,7 +9,8 @@ namespace big
 
 		if (ImGui::Begin("main", nullptr, window_flags))
 		{
-			components::sub_title(g_gui_service->get_selected()->name);
+			components::title(g_gui_service->get_selected()->name);
+			ImGui::Separator();
 			g_gui_service->get_selected()->func();
 		}
 	}

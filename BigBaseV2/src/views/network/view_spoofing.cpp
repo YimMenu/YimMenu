@@ -8,7 +8,7 @@ namespace big
 	{ 
 		components::small_text("To spoof any of the below credentials you need to reconnect with the lobby.");
 
-		components::small_text("Username");
+		components::sub_title("Username");
 
 		g_fiber_pool->queue_job([] {
 			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
@@ -27,7 +27,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::small_text("IP Address");
+		components::sub_title("IP Address");
 
 		g_fiber_pool->queue_job([] {
 			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
@@ -40,7 +40,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::small_text("Rockstar ID");
+		components::sub_title("Rockstar ID");
 
 		g_fiber_pool->queue_job([] {
 			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);

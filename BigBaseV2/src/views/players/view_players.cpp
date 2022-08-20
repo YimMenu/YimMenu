@@ -3,13 +3,12 @@
 #include "services/players/player_service.hpp"
 #include "views/view.hpp"
 #include "fonts/fonts.hpp"
-#include <renderer.hpp>
-#include <natives.hpp>
+#include "natives.hpp"
+#include "fiber_pool.hpp"
 
 #define IMGUI_DEFINE_PLACEMENT_NEW
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui_internal.h>
-#include "fiber_pool.hpp"
 
 namespace big
 {
@@ -24,7 +23,8 @@ namespace big
 		if (plyr->is_valid()) {
 			isHost = plyr->is_host();
 			isFriend = plyr->is_friend();
-			isInVehicle = plyr->get_current_vehicle() != nullptr;
+			isInVehicle = (plyr->get_ped() != nullptr) && 
+				(plyr->get_ped()->m_ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING);
 		}
 
 		// generate icons string
@@ -37,7 +37,7 @@ namespace big
 
 		// calculate icons width
 		ImGuiWindow* window = ImGui::GetCurrentWindow();
-		ImGui::PushFont(g_renderer->m_font_icons);
+		ImGui::PushFont(g->window.font_icon);
 		ImVec2 iconsSize = ImGui::CalcTextSize(playerIconsCStr, playerIconsCStr + playerIcons.size());
 		ImVec2 iconsPos(window->DC.CursorPos.x + 300.0f - 32.0f - iconsSize.x, window->DC.CursorPos.y + 2.0f);
 		ImRect iconsBox(iconsPos, iconsPos + iconsSize);
@@ -45,11 +45,13 @@ namespace big
 
 
 		if (playerSelected)
+		{
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
+		}
 
 		ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, { 0.0, 0.5 });
 		ImGui::PushID(plyr->id());
-		if (ImGui::Button(plyr->get_name(), { 300.0f - 15.0f - ImGui::GetStyle().ScrollbarSize, 0.f }))
+		if (ImGui::Button(plyr->get_name(), {300.0f - 15.0f - ImGui::GetStyle().ScrollbarSize, 0.f}))
 		{
 			g_player_service->set_selected(plyr);
 			g_gui_service->set_selected(tabs::PLAYER);
@@ -62,7 +64,7 @@ namespace big
 			ImGui::PopStyleColor();
 
 		// render icons on top of the player button
-		ImGui::PushFont(g_renderer->m_font_icons);
+		ImGui::PushFont(g->window.font_icon);
 		ImGui::RenderTextWrapped(iconsBox.Min, playerIconsCStr, playerIconsCStr + playerIcons.size(), iconsSize.x);
 		ImGui::PopFont();
 	}

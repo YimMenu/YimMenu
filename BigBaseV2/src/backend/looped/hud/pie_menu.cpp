@@ -2,6 +2,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "gta/replay.hpp"
+#include "gta/enums.hpp"
 
 namespace big
 {
