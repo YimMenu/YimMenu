@@ -11,7 +11,7 @@ namespace big
 		uint16_t event_id,
 		int event_index,
 		int event_handled_bitset,
-		int unk,
+		int buffer_size,
 		rage::datBitBuffer* buffer
 	)
 	{
@@ -178,6 +178,6 @@ namespace big
 			break;
 		}
 
-		return g_hooking->m_received_event_hook.get_original<decltype(&received_event)>()(event_manager, source_player, target_player, event_id, event_index, event_handled_bitset, unk, buffer);
+		return g_hooking->m_received_event_hook.get_original<decltype(&received_event)>()(event_manager, source_player, target_player, event_id, event_index, event_handled_bitset, buffer_size, buffer);
 	}
 }
