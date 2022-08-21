@@ -44,7 +44,6 @@ namespace big
 		rage::GenericPool* m_pickup_pool{};
 		rage::GenericPool* m_camera_pool{};
 
-		__int64* m_chat_receive{};
 		functions::chat_player_id* m_chat_player_id;
 		__int64* m_send_chat_ptr{};
 		functions::send_chat_message* m_send_chat_message{};
@@ -59,7 +58,6 @@ namespace big
 		PVOID m_blame_explode;
 		PVOID m_model_spawn_bypass;
 		PVOID m_native_return;
-		PVOID m_is_dlc_present;
 		PVOID m_network_group_override;
 		PUSHORT m_spectator_check;
 		PVOID m_get_label_text;

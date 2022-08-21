@@ -2,7 +2,7 @@
 #include "natives.hpp"
 #include "fiber_pool.hpp"
 #include "util/session.hpp"
-#include "asi_loader/asi_loader.h"
+#include "asi_loader/asi_scripts.h"
 #include "shv_runner.h"
 
 namespace big

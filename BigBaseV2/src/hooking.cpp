@@ -39,9 +39,6 @@ namespace big
 		// Network Group Override
 		m_network_group_override("NGO", g_pointers->m_network_group_override, &hooks::network_group_override),
 
-		// Is DLC Present
-		m_is_dlc_present_hook("IDP", g_pointers->m_is_dlc_present, &hooks::is_dlc_present),
-
 		// Received Event
 		m_received_event_hook("RE", g_pointers->m_received_event, &hooks::received_event),
 
@@ -54,8 +51,6 @@ namespace big
 		m_receive_net_message_hook("RNM", g_pointers->m_receive_net_message, &hooks::receive_net_message),
 		// Received clone sync
 		m_received_clone_sync_hook("RCS", g_pointers->m_received_clone_sync, &hooks::received_clone_sync),
-		// 
-		m_chat_message_received_hook("CR", g_pointers->m_chat_receive, &hooks::chat_receive),
 		//Get Network Event Data
 		m_get_network_event_data_hook("GNED", g_pointers->m_get_network_event_data, &hooks::get_network_event_data)
 	{
@@ -91,7 +86,6 @@ namespace big
 		m_receive_net_message_hook.enable();
 		m_get_network_event_data_hook.enable();
 		m_received_clone_sync_hook.enable();
-		m_chat_message_received_hook.enable();
 
 		MH_ApplyQueued();
 
@@ -102,7 +96,6 @@ namespace big
 	{
 		m_enabled = false;
 
-		m_chat_message_received_hook.disable();
 
 		m_received_clone_sync_hook.disable();
 		m_get_network_event_data_hook.disable();

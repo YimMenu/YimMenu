@@ -9,10 +9,11 @@
 #include "script_mgr.hpp"
 #include "thread_pool.hpp"
 #include "shv_runner.h"
-#include "asi_loader/asi_loader.h"
+#include "asi_loader/asi_scripts.h"
 
 #include "backend/backend.hpp"
 #include "native_hooks/native_hooks.hpp"
+#include "services/anti_cheat/anti_cheat_service.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/custom_text/custom_text_service.hpp"
 #include "services/globals/globals_service.hpp"
@@ -74,6 +75,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto thread_pool_instance = std::make_unique<thread_pool>();
 				LOG(INFO) << "Thread pool initialized.";
 
+				auto anti_cheat_service_instance = std::make_unique<anti_cheat_service>();
 				auto context_menu_service_instance = std::make_unique<context_menu_service>();
 				auto custom_text_service_instance = std::make_unique<custom_text_service>();
 				auto globals_service_instace = std::make_unique<globals_service>();
@@ -91,6 +93,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_script_mgr.add_script(std::make_unique<script>(&shv_runner::script_func));
 				
 				g_script_mgr.add_script(std::make_unique<script>(&backend::loop, "Backend Loop", false));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::anti_cheat, "Anti-Cheat Loop", false));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop, "Self"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop, "Weapon"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::vehicles_loop, "Vehicle"));

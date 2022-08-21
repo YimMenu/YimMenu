@@ -1,8 +1,8 @@
 #include "views/view.hpp"
-#include "services/players/player_service.hpp"
 #include "gta_util.hpp"
 #include "services/pickups/pickup_service.hpp"
 #include "services/players/player_service.hpp"
+#include "services/anti_cheat/anti_cheat_service.hpp"
 #include "util/globals.hpp"
 #include "util/misc.hpp"
 #include "util/ped.hpp"
@@ -395,6 +395,10 @@ namespace big
 				}
 
 				ImGui::TreePop();
+
+				components::button("Test AC", [] {
+					g_anti_cheat_service->modder_check(g_player_service->get_selected()->id());
+				});
 			}
 		}
 	}
