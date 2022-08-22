@@ -30,6 +30,10 @@ namespace big
 				return false;
 
 		m_modders.push_back({ cplayer->get_name(), cplayer->get_net_data()->m_rockstar_id2, score });
+
+		LOG(INFO) << cplayer->get_name() << ", " << cplayer->get_net_data()->m_rockstar_id2 << ", " << score;
+
+		g_notification_service->push("Modder Detected", cplayer->get_name());
 		return true;
 	}
 
@@ -90,12 +94,9 @@ namespace big
 				score++;
 		}
 
-		if (score >= 4 && !is_player_in_moddb(net_player_data->m_rockstar_id2)) 
+		if (score > 5 && !is_player_in_moddb(net_player_data->m_rockstar_id2)) 
 		{
-			m_modders.push_back({ cplayer->get_name(), net_player_data->m_rockstar_id2, score });
-			LOG(INFO) << cplayer->get_name() << ", " << net_player_data->m_rockstar_id2 << ", " << score;
-
-			g_notification_service->push("Modder Detected", cplayer->get_name()); // TODO: This is stupid why call it here
+			mark_as_modder(cplayer->id(), score);
 		}
 		else if (is_player_in_moddb(net_player_data->m_rockstar_id2))
 		{
