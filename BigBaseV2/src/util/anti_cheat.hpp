@@ -72,8 +72,8 @@ namespace big::anti_cheat
 	// Damage Modifiers Check (skidded)
 	inline bool is_using_damage_mods(CPlayerInfo* player_info)
 	{
-		if (player_info->m_melee_damage_mult != 1.f
-			|| player_info->m_melee_weapon_damage_mult != 1.f
+		if (player_info->m_melee_damage_mult > 1.f
+			|| player_info->m_melee_weapon_damage_mult > 1.f
 			|| player_info->m_weapon_damage_mult != 0.72f)
 		{
 			return true;
@@ -85,8 +85,8 @@ namespace big::anti_cheat
 	// Movement Modifiers Check (skidded)
 	inline bool is_using_movement_mods(CPlayerInfo* player_info)
 	{
-		if (player_info->m_run_speed != 1.f
-			|| player_info->m_swim_speed != 1.f)
+		if (player_info->m_run_speed > 1.f
+			|| player_info->m_swim_speed > 1.f)
 		{
 			return true;
 		}

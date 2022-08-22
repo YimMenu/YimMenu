@@ -168,6 +168,11 @@ namespace big
 					);
 				}
 
+				ImGui::Text("Level: %d", *script_global(1853348).at(g_player_service->get_selected()->id(), 834).at(205).at(6).as<int*>());
+
+				ImGui::Text("Money Bank: %d", *script_global(1853348).at(g_player_service->get_selected()->id(), 834).at(205).at(56).as<int64_t*>());
+
+
 				ImGui::TreePop();
 			}
 

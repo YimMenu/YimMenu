@@ -1,6 +1,7 @@
 #include "pointers.hpp"
 #include "services/gui/gui_service.hpp"
 #include "services/players/player_service.hpp"
+#include "services/anti_cheat/anti_cheat_service.hpp"
 #include "views/view.hpp"
 #include "fonts/fonts.hpp"
 #include "natives.hpp"
@@ -19,8 +20,10 @@ namespace big
 		bool isHost = false;
 		bool isFriend = false;
 		bool isInVehicle = false;
+		bool isModder = false;
 
 		if (plyr->is_valid()) {
+			isModder = g_anti_cheat_service->is_player_in_moddb(plyr->get_net_data()->m_rockstar_id2);
 			isHost = plyr->is_host();
 			isFriend = plyr->is_friend();
 			isInVehicle = (plyr->get_ped() != nullptr) && 
@@ -28,9 +31,10 @@ namespace big
 		}
 
 		// generate icons string
-		std::string playerIcons = std::string(isHost ? FONT_ICON_HOST : FONT_ICON_CLIENT) +
-			std::string(isFriend ? FONT_ICON_FRIEND : FONT_ICON_NOTFRIEND) +
-			std::string(isInVehicle ? FONT_ICON_VEHICLE : FONT_ICON_WALK);
+		std::string playerIcons = std::string(isHost ? FONT_ICON_HOST : "") +
+			std::string(isModder ? FONT_ICON_NOTFRIEND : "") +
+			std::string(isFriend ? FONT_ICON_FRIEND : "") +
+			std::string(isInVehicle ? FONT_ICON_VEHICLE : "");
 
 		const char* playerIconsCStr = playerIcons.c_str();
 
@@ -72,16 +76,13 @@ namespace big
 	void view::players()
 	{
 		if (!*g_pointers->m_is_session_started) return;
-		float window_pos = 110.f + g_gui_service->nav_ctr * ImGui::CalcTextSize("W").y + g_gui_service->nav_ctr * ImGui::GetStyle().ItemSpacing.y + g_gui_service->nav_ctr * ImGui::GetStyle().ItemInnerSpacing.y + ImGui::GetStyle().WindowPadding.y;
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 2.0f, 2.0f });
 
 		if (ImGui::Begin("playerlist", nullptr, window_flags))
 		{
-			const auto player_count = g_player_service->players().size() + 1;
 
-			float window_height = (ImGui::CalcTextSize("A").y + ImGui::GetStyle().ItemInnerSpacing.y * 2 + 6.0f) * player_count + 10.0f;
-			window_height = window_height + window_pos > (float)*g_pointers->m_resolution_y - 10.f ? (float)*g_pointers->m_resolution_y - (window_pos + 40.f) : window_height;
+			float window_height = (ImGui::CalcTextSize("A").y + ImGui::GetStyle().ItemInnerSpacing.y * 2 + 6.0f) * 32 + 10.0f;
 
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, { 0.f, 0.f, 0.f, 0.f });
 			ImGui::PushStyleColor(ImGuiCol_ScrollbarBg, { 0.f, 0.f, 0.f, 0.f });
