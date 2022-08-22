@@ -1,6 +1,7 @@
 #include "gta/enums.hpp"
 #include "gta/net_game_event.hpp"
 #include "hooking.hpp"
+#include "services/anti_cheat/anti_cheat_service.hpp"
 
 namespace big
 {
@@ -142,6 +143,17 @@ namespace big
 					g_notification_service->push_warning("Protection",
 						fmt::format("{} is spawning cash.", source_player->get_name())
 					);
+
+				uint64_t rid = source_player->get_net_data()->m_rockstar_id2;
+				if (g_anti_cheat_service->is_player_in_moddb(rid))
+				{
+					if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
+						g_anti_cheat_service->add_score_to_modder(rid, 5);
+				}
+				else
+				{
+					g_anti_cheat_service->mark_as_modder(source_player->m_player_id, 5);
+				}
 			}
 
 			break;
@@ -157,6 +169,16 @@ namespace big
 				g_notification_service->push_warning("Protection",
 					fmt::format("{} sent out a modder event.", source_player->get_name())
 				);
+			uint64_t rid = source_player->get_net_data()->m_rockstar_id2;
+			if (g_anti_cheat_service->is_player_in_moddb(rid))
+			{
+				if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
+					g_anti_cheat_service->add_score_to_modder(rid, 5);
+			}
+			else
+			{
+				g_anti_cheat_service->mark_as_modder(source_player->m_player_id, 5);
+			}
 
 			break;
 		}

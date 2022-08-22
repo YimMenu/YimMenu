@@ -166,12 +166,15 @@ namespace big
 						net_player_data->m_external_ip.m_field4,
 						net_player_data->m_external_port
 					);
+
+					if (g_anti_cheat_service->is_player_in_moddb(net_player_data->m_rockstar_id2)) {
+						ImGui::Text("AC Score: %d", g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(net_player_data->m_rockstar_id2)].score);
+					}
 				}
 
 				ImGui::Text("Level: %d", *script_global(1853348).at(g_player_service->get_selected()->id(), 834).at(205).at(6).as<int*>());
 
 				ImGui::Text("Money Bank: %d", *script_global(1853348).at(g_player_service->get_selected()->id(), 834).at(205).at(56).as<int64_t*>());
-
 
 				ImGui::TreePop();
 			}

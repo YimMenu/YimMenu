@@ -1,5 +1,6 @@
 #include "hooking.hpp"
 #include "gta_util.hpp"
+#include "services/anti_cheat/anti_cheat_service.hpp"
 
 namespace big
 {
@@ -133,6 +134,18 @@ namespace big
 		case eRemoteEvent::RotateCam:
 			if (g->protections.script_events.crash && args[2] == 537560473) {
 				format_string(player_name, "Crash - Rotate Cam", notify.crash.log, notify.crash.notify);
+
+				uint64_t rid = player->get_net_data()->m_rockstar_id2;
+				if (g_anti_cheat_service->is_player_in_moddb(rid))
+				{
+					if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
+						g_anti_cheat_service->add_score_to_modder(rid, 5);
+				}
+				else
+				{
+					g_anti_cheat_service->mark_as_modder(player->m_player_id, 5);
+				}
+
 				return true;
 			}
 
@@ -149,6 +162,17 @@ namespace big
 			if (g->protections.script_events.send_to_location)
 			{
 				format_string(player_name, "Send to Cayo Perico", notify.send_to_location.log, notify.send_to_location.notify);
+
+				uint64_t rid = player->get_net_data()->m_rockstar_id2;
+				if (g_anti_cheat_service->is_player_in_moddb(rid))
+				{
+					if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
+						g_anti_cheat_service->add_score_to_modder(rid, 3);
+				}
+				else
+				{
+					g_anti_cheat_service->mark_as_modder(player->m_player_id, 3);
+				}
 
 				return true;
 			}
@@ -186,6 +210,17 @@ namespace big
 					{
 						format_string(player_name, "Send to Cayo Perico", notify.send_to_location.log, notify.send_to_location.notify);
 
+						uint64_t rid = player->get_net_data()->m_rockstar_id2;
+						if (g_anti_cheat_service->is_player_in_moddb(rid))
+						{
+							if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
+								g_anti_cheat_service->add_score_to_modder(rid, 3);
+						}
+						else
+						{
+							g_anti_cheat_service->mark_as_modder(player->m_player_id, 3);
+						}
+
 						return true;
 					}
 				}
@@ -219,6 +254,17 @@ namespace big
 			if (g->protections.script_events.force_teleport)
 			{
 				format_string(player_name, "Apartment Invite", notify.force_teleport.log, notify.force_teleport.notify);
+
+				uint64_t rid = player->get_net_data()->m_rockstar_id2;
+				if (g_anti_cheat_service->is_player_in_moddb(rid))
+				{
+					if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
+						g_anti_cheat_service->add_score_to_modder(rid, 4);
+				}
+				else
+				{
+					g_anti_cheat_service->mark_as_modder(player->m_player_id, 4);
+				}
 
 				return true;
 			}
