@@ -2,6 +2,7 @@
 #include "util/session.hpp"
 #include "views/view.hpp"
 #include "logger.hpp"
+#include "services/player_database/player_database_service.hpp"
 
 namespace big
 {
@@ -79,6 +80,33 @@ namespace big
 			}
 
 			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Kakashka"))
+		{
+			if (!g_player_database_service->player_list_().empty())
+			{
+				if (ImGui::ListBoxHeader("###player_select"))
+				{
+					for (const auto& [name, rid, relationship, _] : g_player_database_service->player_list_())
+					{
+						components::selectable(name, false, [rid = rid] {
+							LOG(G3LOG_DEBUG) << rid;
+							session::join_by_rockstar_id(rid);
+						});
+					}
+					ImGui::EndListBox();
+				}
+			}
+			static char name[16] = "";
+			static int rid = 0;
+			static char relationship[16] = "";
+			components::input_text_with_hint("###name", "Name", name, 16);
+			ImGui::InputInt("RID", &rid);
+			components::input_text_with_hint("###relationship", "Relationship", relationship, 16);
+			components::button("Add", [] {
+				g_player_database_service->add_player_to_db(rid, name, relationship);
+			});
 		}
 	}
 }

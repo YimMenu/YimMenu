@@ -7,7 +7,7 @@
 namespace big
 {
 	struct modder_player {
-		const char* player_name;
+		std::string player_name;
 		uint64_t rid;
 		int score;
 	};

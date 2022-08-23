@@ -48,6 +48,11 @@ namespace big
 		ImGui::PopFont();
 
 
+		if (isModder)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.9f, 0.f, 0.f, 1.f));
+		}
+
 		if (playerSelected)
 		{
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
