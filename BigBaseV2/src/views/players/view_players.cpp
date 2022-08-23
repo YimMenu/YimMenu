@@ -69,6 +69,9 @@ namespace big
 		ImGui::PopID();
 		ImGui::PopStyleVar();
 
+		if (isModder)
+			ImGui::PopStyleColor();
+
 		if (playerSelected)
 			ImGui::PopStyleColor();
 

@@ -1,5 +1,6 @@
 #pragma 
 #include "anti_cheat_service.hpp"
+#include "services/player_database/player_database_service.hpp"
 
 namespace big
 {
@@ -30,6 +31,7 @@ namespace big
 				return false;
 
 		m_modders.push_back({ cplayer->get_name(), cplayer->get_net_data()->m_rockstar_id2, score });
+		g_player_database_service->add_player_to_db(cplayer->get_net_data()->m_rockstar_id2, cplayer->get_name(), "Modder", player);
 
 		LOG(INFO) << cplayer->get_name() << ", " << cplayer->get_net_data()->m_rockstar_id2 << ", " << score;
 
@@ -94,7 +96,7 @@ namespace big
 				score++;
 		}
 
-		if (score > 5 && !is_player_in_moddb(net_player_data->m_rockstar_id2)) 
+		if (score >= 4 && !is_player_in_moddb(net_player_data->m_rockstar_id2)) 
 		{
 			mark_as_modder(cplayer->id(), score);
 		}

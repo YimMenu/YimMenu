@@ -56,7 +56,7 @@ namespace big::session
 				g->session.session_join_queued = true;
 				g->session.session_info = result.m_session_info;
 				join_type({ eSessionType::NEW_PUBLIC, "" });
-				script::get_current()->yield(200ms);
+				script::get_current()->yield(500ms);
 				if (SCRIPT::GET_NUMBER_OF_REFERENCES_OF_SCRIPT_WITH_NAME_HASH_(rage::joaat("maintransition")) == 0)
 				{
 					g->session.session_join_queued = false;

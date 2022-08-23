@@ -82,31 +82,58 @@ namespace big
 			ImGui::TreePop();
 		}
 
-		if (ImGui::TreeNode("Kakashka"))
+		if (ImGui::TreeNode("Player DataBase"))
 		{
-			if (!g_player_database_service->player_list_().empty())
+			static char search[64];
+
+			components::input_text_with_hint("Player Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None);
+
+			if (ImGui::ListBoxHeader("###player_list"))
 			{
-				if (ImGui::ListBoxHeader("###player_select"))
+				if (g_player_database_service->player_list_().empty())
 				{
-					for (const auto& [name, rid, relationship, _] : g_player_database_service->player_list_())
+					ImGui::Text("Player DataBase is empty");
+				}
+				else
+				{
+					std::string lower_search = search;
+					std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
+
+					for (const auto& player : g_player_database_service->player_list_())
 					{
-						components::selectable(name, false, [rid = rid] {
-							LOG(G3LOG_DEBUG) << rid;
-							session::join_by_rockstar_id(rid);
-						});
+						const auto& name = player.player_name;
+						const auto& relationship = player.relationship;
+						const auto& rid = player.rid;
+
+						std::string name_d = name;
+						std::string rid_d = std::to_string(rid);
+						std::transform(name_d.begin(), name_d.end(), name_d.begin(), ::tolower);
+
+						if (name.find(lower_search) != std::string::npos ||
+							rid_d.find(lower_search) != std::string::npos)
+						{
+							components::selectable(name, false, [rid] {
+
+								strcpy(search, "");
+								session::join_by_rockstar_id(rid);
+							});
+						}
 					}
-					ImGui::EndListBox();
 				}
 			}
-			static char name[16] = "";
-			static int rid = 0;
-			static char relationship[16] = "";
-			components::input_text_with_hint("###name", "Name", name, 16);
-			ImGui::InputInt("RID", &rid);
-			components::input_text_with_hint("###relationship", "Relationship", relationship, 16);
-			components::button("Add", [] {
-				g_player_database_service->add_player_to_db(rid, name, relationship);
-			});
+			if (ImGui::TreeNode("Manual Add"))
+			{
+				static char name[16] = "";
+				static int rid = 0;
+				static char relationship[16] = "";
+				components::input_text_with_hint("###name", "Name", name, 16);
+				ImGui::InputInt("RID", &rid);
+				components::input_text_with_hint("###relationship", "Relationship", relationship, 16);
+				components::button("Add", [] {
+					g_player_database_service->add_player_to_db(rid, name, relationship);
+					});
+
+			}
 		}
 	}
 }
