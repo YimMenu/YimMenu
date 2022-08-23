@@ -12,10 +12,10 @@ namespace big
 		if (g->tunables.fast_join)
 		{
 			// run every tick
-			if (*script_global::script_global(1574988).as<eTransitionState*>() == eTransitionState::TRANSITION_STATE_IS_FM_AND_TRANSITION_READY)
+			if (*script_global::script_global(1574991).as<eTransitionState*>() == eTransitionState::TRANSITION_STATE_IS_FM_AND_TRANSITION_READY)
 			{
 				STREAMING::STOP_PLAYER_SWITCH();
-				*script_global::script_global(1574988).as<eTransitionState*>() = eTransitionState::TRANSITION_STATE_FM_FINAL_SETUP_PLAYER;
+				*script_global::script_global(1574991).as<eTransitionState*>() = eTransitionState::TRANSITION_STATE_FM_FINAL_SETUP_PLAYER;
 				script::get_current()->yield(1500ms);
 				STREAMING::STOP_PLAYER_SWITCH();
 			}

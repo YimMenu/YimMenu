@@ -345,6 +345,24 @@ namespace big
 			m_send_chat_message = ptr.as<decltype(m_send_chat_message)>();
 		});
 
+		// Network
+		main_batch.add("N", "48 8B 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 84 C0 75 17 48 8B 0D ? ? ? ? 48 8B D7", [this](memory::handle ptr)
+		{
+			m_network = ptr.add(3).rip().as<Network**>();
+		});
+
+		// Get Session By Gamer Handle
+		main_batch.add("SGSBGH", "E8 ? ? ? ? 84 C0 0F 84 ? ? ? ? 8B 05 ? ? ? ? 48 8D 4C 24", [this](memory::handle ptr)
+		{
+			m_start_get_session_by_gamer_handle = ptr.add(1).rip().as<functions::start_get_session_by_gamer_handle>();
+		});
+
+		// Join Session By Info
+		main_batch.add("JSBI", "E8 ? ? ? ? 0F B6 CB 84 C0 41 0F 44 CD", [this](memory::handle ptr)
+		{
+			m_join_session_by_info = ptr.add(1).rip().as<functions::join_session_by_info>();
+		});
+
 		// Receive Net Message
 		main_batch.add("RNM", "48 83 EC 20 4C 8B 71 50 33 ED", [this](memory::handle ptr)
 		{

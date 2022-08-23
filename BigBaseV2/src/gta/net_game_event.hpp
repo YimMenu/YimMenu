@@ -267,7 +267,8 @@ namespace rage
 		CMsg_0x89 = 0x89,
 		CMsg_0x86 = 0x86,
 	};
-	namespace netConnection {
+	namespace netConnection
+	{
 		class InFrame
 		{
 		public:
@@ -279,13 +280,15 @@ namespace rage
 
 			char pad_0008[56]; //0x0008
 			uint32_t m_msg_id; //0x0040
-			char pad_0044[4]; //0x0044
+			uint32_t m_connection_identifier; //0x0044
 			InFrame* m_this; //0x0048
-			char pad_0050[40]; //0x0050
+			uint64_t m_peer_id; //0x0050
+			char pad_0050[32]; //0x0058
 			uint32_t m_length; //0x0078
 			char pad_007C[4]; //0x007C
 			void* m_data; //0x0080
 		};
+		static_assert(sizeof(rage::netConnection::InFrame) == 0x88);
 	}
 
 	class CEventNetwork

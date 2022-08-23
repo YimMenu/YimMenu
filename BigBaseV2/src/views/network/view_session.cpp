@@ -1,22 +1,54 @@
 #include "fiber_pool.hpp"
 #include "util/session.hpp"
 #include "views/view.hpp"
+#include "logger.hpp"
 
 namespace big
 {
 	void view::session()
 	{
-		components::sub_title("Session Switcher");
-		if (ImGui::ListBoxHeader("###session_switch"))
+		if (ImGui::TreeNode("Session Switcher"))
 		{
-			for (const auto& session_type : sessions)
+			if (ImGui::ListBoxHeader("###session_switch"))
 			{
-				components::selectable(session_type.name, false, [session_type] {
-					session::join_type(session_type);
-				});
+				for (const auto& session_type : sessions)
+				{
+					components::selectable(session_type.name, false, [session_type] {
+						session::join_type(session_type);
+					});
+				}
+				ImGui::EndListBox();
 			}
-			ImGui::EndListBox();
 		}
+
+		if (ImGui::TreeNode("RID Joiner"))
+		{
+			static int rid = 0;
+			ImGui::InputInt("RID", &rid);
+			components::button("Join", [] {
+				session::join_by_rockstar_id(rid);
+			});
+
+			/*components::button("INFO_D", [] {
+				rage::rlGamerHandle player_handle(rid);
+				rage::rlSessionByGamerTaskResult result;
+				bool success = false;
+				int state = 0;
+				if (g_pointers->m_start_get_session_by_gamer_handle(0, &player_handle, 1, &result, 1, &success, &state))
+				{
+					while (state == 1)
+						script::get_current()->yield();
+
+					if (state == 3 && success)
+					{
+						g->session.session_info = result.m_session_info;
+						LOG(G3LOG_DEBUG) << "Session host RID: " << g->session.session_info.m_rockstar_id;
+						return;
+					}
+				}
+			});*/
+		}
+
 		if (ImGui::TreeNode("Local Time"))
 		{
 			ImGui::Checkbox("Override Time", &g->session.override_time);

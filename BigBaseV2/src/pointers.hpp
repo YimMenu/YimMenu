@@ -48,6 +48,10 @@ namespace big
 		__int64* m_send_chat_ptr{};
 		functions::send_chat_message* m_send_chat_message{};
 
+		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
+		functions::join_session_by_info m_join_session_by_info;
+		Network** m_network{};
+
 		CGameScriptHandlerMgr **m_script_handler_mgr{};
 
 		IDXGISwapChain** m_swapchain{};

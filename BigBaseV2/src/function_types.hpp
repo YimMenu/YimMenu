@@ -4,6 +4,7 @@
 #include "gta/player.hpp"
 #include "gta/natives.hpp"
 #include "gta/replay.hpp"
+#include "session/session.hpp"
 
 namespace big::functions
 {
@@ -45,6 +46,9 @@ namespace big::functions
 	using chat_player_id = CNetGamePlayer * (__int64 a1, __int64* a2, __int64 a3);
 
 	using send_chat_message = bool(__int64 ptr, __int64 peerId, const char* message, bool isTeam);
+
+	using start_get_session_by_gamer_handle = bool(*)(int metric_manager, rage::rlGamerHandle* handles, int count, rage::rlSessionByGamerTaskResult* result, int unk, bool* success, int* state);
+	using join_session_by_info = bool(*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
 
 	// Received Event Signatures START
 	using send_event_ack = void(*)(rage::netEventMgr* event_manager, CNetGamePlayer* source_player, CNetGamePlayer* target_player, int event_index, int event_handled_bitset);

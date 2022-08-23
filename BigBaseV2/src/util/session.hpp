@@ -4,6 +4,7 @@
 #include "script.hpp"
 #include "natives.hpp"
 #include "gta_util.hpp"
+#include "pointers.hpp"
 
 namespace big::session
 {
@@ -30,5 +31,41 @@ namespace big::session
 		MISC::SET_OVERRIDE_WEATHER(weathers[g->session.local_weather]);
 
 		*script_global(262145).at(4723).as<bool*>() = g->session.local_weather == 13;
+	}
+
+	inline void join_by_rockstar_id(uint64_t rid) // Skidded from maybegreat48
+	{
+		if (SCRIPT::GET_NUMBER_OF_REFERENCES_OF_SCRIPT_WITH_NAME_HASH_(rage::joaat("maintransition")) != 0 ||
+			STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
+		{
+			g_notification_service->push_warning("RID Joiner", "Cannot RID join now");
+			return;
+		}
+
+		rage::rlGamerHandle player_handle(rid);
+		rage::rlSessionByGamerTaskResult result;
+		bool success = false;
+		int state = 0;
+		if (g_pointers->m_start_get_session_by_gamer_handle(0, &player_handle, 1, &result, 1, &success, &state))
+		{
+			while (state == 1)
+				script::get_current()->yield();
+
+			if (state == 3 && success)
+			{
+				g->session.session_join_queued = true;
+				g->session.session_info = result.m_session_info;
+				join_type({ eSessionType::NEW_PUBLIC, "" });
+				script::get_current()->yield(200ms);
+				if (SCRIPT::GET_NUMBER_OF_REFERENCES_OF_SCRIPT_WITH_NAME_HASH_(rage::joaat("maintransition")) == 0)
+				{
+					g->session.session_join_queued = false;
+					g_notification_service->push_error("RID Joiner", "RID join failed, unable to launch maintransition");
+				}
+				return;
+			}
+		}
+
+		g_notification_service->push_warning("RID Joiner", "RID join failed");
 	}
 }
