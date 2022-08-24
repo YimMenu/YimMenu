@@ -34,13 +34,13 @@ namespace big
 		static T get_model(const rage::joaat_t hash)
 		{
 			const auto model_table = g_pointers->m_model_table;
-			for (auto i = m_model_table->m_lookup_table[adder_hash % m_model_table->m_lookup_key]; i; i = i->m_next)
+			for (auto i = model_table->m_lookup_table[hash % model_table->m_lookup_key]; i; i = i->m_next)
 			{
 				if (i->m_hash == hash)
 				{
-					if (const auto model = m_model_table->m_data[i->m_idx]; model)
+					if (const auto model = model_table->m_data[i->m_idx]; model)
 					{
-						return model;
+						return reinterpret_cast<T>(model);
 					}
 				}
 			}
