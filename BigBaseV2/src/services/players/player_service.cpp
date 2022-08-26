@@ -46,7 +46,7 @@ namespace big
 		return nullptr;
 	}
 
-	player_ptr player_service::get_by_id(uint32_t id) const
+	player_ptr player_service::get_by_id(Player id) const
 	{
 		for (const auto& [name, player] : m_players)
 			if (player->id() == id)

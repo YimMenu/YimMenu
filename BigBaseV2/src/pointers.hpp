@@ -44,10 +44,13 @@ namespace big
 		rage::GenericPool* m_pickup_pool{};
 		rage::GenericPool* m_camera_pool{};
 
-		__int64* m_chat_receive{};
 		functions::chat_player_id* m_chat_player_id;
 		__int64* m_send_chat_ptr{};
 		functions::send_chat_message* m_send_chat_message{};
+
+		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
+		functions::join_session_by_info m_join_session_by_info;
+		Network** m_network{};
 
 		CGameScriptHandlerMgr **m_script_handler_mgr{};
 
@@ -59,7 +62,6 @@ namespace big
 		PVOID m_blame_explode;
 		PVOID m_model_spawn_bypass;
 		PVOID m_native_return;
-		PVOID m_is_dlc_present;
 		PVOID m_network_group_override;
 		PUSHORT m_spectator_check;
 		PVOID m_get_label_text;
@@ -107,8 +109,6 @@ namespace big
 		functions::get_sync_tree_for_type m_get_sync_tree_for_type{};
 		functions::get_sync_type_info m_get_sync_type_info{};
 		functions::get_net_object m_get_net_object{};
-		functions::get_net_object_for_player m_get_net_object_for_player{};
-		functions::read_bitbuffer_into_sync_tree m_read_bitbuffer_into_sync_tree{};
 		//Sync Signatures END
 
 		PVOID m_send_net_info_to_lobby{};

@@ -4,6 +4,7 @@
 #include "gta/player.hpp"
 #include "gta/natives.hpp"
 #include "gta/replay.hpp"
+#include "session/session.hpp"
 
 namespace big::functions
 {
@@ -46,6 +47,9 @@ namespace big::functions
 
 	using send_chat_message = bool(__int64 ptr, __int64 peerId, const char* message, bool isTeam);
 
+	using start_get_session_by_gamer_handle = bool(*)(int metric_manager, rage::rlGamerHandle* handles, int count, rage::rlSessionByGamerTaskResult* result, int unk, bool* success, int* state);
+	using join_session_by_info = bool(*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
+
 	// Received Event Signatures START
 	using send_event_ack = void(*)(rage::netEventMgr* event_manager, CNetGamePlayer* source_player, CNetGamePlayer* target_player, int event_index, int event_handled_bitset);
 	// Received Event Signatures END
@@ -53,12 +57,8 @@ namespace big::functions
 	//Sync signatures START
 	using get_sync_type_info = const char*(*)(uint16_t sync_type, char a2);
 
-	using get_sync_tree_for_type = rage::netSyncTree*(*)(CNetworkObjectMgr* mgr, uint16_t sync_type);
+	using get_sync_tree_for_type = int64_t(*)(CNetworkObjectMgr* mgr, uint16_t sync_type);
 
-	using get_net_object = rage::netObject*(*)(CNetworkObjectMgr* mgr, int16_t id, bool can_delete_be_pending);
-
-	using get_net_object_for_player = rage::netObject*(*)(CNetworkObjectMgr*, int16_t, CNetGamePlayer*, bool);
-
-	using read_bitbuffer_into_sync_tree = void(*)(rage::netSyncTree* tree, uint64_t flag, uint32_t flag2, rage::datBitBuffer* buffer, uint64_t netLogStub);
+	using get_net_object = rage::netObject*(*)(CNetworkObjectMgr* mgr, int16_t id, bool unk3);
 	//Sync signatures END
 }

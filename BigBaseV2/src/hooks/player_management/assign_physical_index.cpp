@@ -1,5 +1,6 @@
 #include "hooking.hpp"
 #include "services/players/player_service.hpp"
+#include "services/player_database/player_database_service.hpp"
 #include "util/notify.hpp"
 
 namespace big
@@ -35,6 +36,9 @@ namespace big
 
 			if (g->notifications.player_join.notify)
 				g_notification_service->push("Player Joined", fmt::format("{} taking slot #{} with Rockstar ID: {}", net_player_data->m_name, player->m_player_id, net_player_data->m_rockstar_id2));
+
+			// TODO: Add togle for this
+			g_player_database_service->add_player_to_db(net_player_data->m_rockstar_id2, net_player_data->m_name, "Random");
 		}
 		return returnResult;
 	}

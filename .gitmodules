@@ -16,7 +16,7 @@
 	ignore = dirty
 [submodule "vendor/GTAV-Classes"]
 	path = vendor/GTAV-Classes
-	url = https://github.com/Yimura/GTAV-Classes.git
+	url = https://github.com/tupoy-ya/GTAV-Classes.git
 	ignore = dirty
 [submodule "vendor/ImGui"]
 	path = vendor/ImGui

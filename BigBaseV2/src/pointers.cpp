@@ -234,12 +234,6 @@ namespace big
 			m_blame_explode = ptr.as<decltype(m_blame_explode)>();
 		});
 
-		// Is DLC Present
-		main_batch.add("IDP", "48 89 5C 24 ? 57 48 83 EC ? 81 F9", [this](memory::handle ptr)
-			{
-				m_is_dlc_present = ptr.as<decltype(m_is_dlc_present)>();
-			});
-
 		// Send NET Info to Lobby
 		main_batch.add("SNITL", "33 DB 48 83 C1 68 45 8B F0 ", [this](memory::handle ptr)
 		{
@@ -333,12 +327,6 @@ namespace big
 		});
 		//END SHV
 
-		//Chat Receive
-		main_batch.add("CR", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 30 49 8B F8 44 8B", [this](memory::handle ptr)
-		{
-			m_chat_receive = ptr.as<__int64*>();
-		});
-
 		// Get Chat Player Id
 		main_batch.add("GCPID", "48 8B D1 48 8B 0D ? ? ? ? 41 B0 01 E9", [this](memory::handle ptr)
 		{
@@ -355,6 +343,24 @@ namespace big
 		main_batch.add("SCM", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 20 4C 89 40 18 57 48 83 EC 20 33 DB 41 F6 D9 49 8B F0 1B C0 48 8B EA 48 8B F9 F7 D8", [this](memory::handle ptr)
 		{
 			m_send_chat_message = ptr.as<decltype(m_send_chat_message)>();
+		});
+
+		// Network
+		main_batch.add("N", "48 8B 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 84 C0 75 17 48 8B 0D ? ? ? ? 48 8B D7", [this](memory::handle ptr)
+		{
+			m_network = ptr.add(3).rip().as<Network**>();
+		});
+
+		// Get Session By Gamer Handle
+		main_batch.add("SGSBGH", "E8 ? ? ? ? 84 C0 0F 84 ? ? ? ? 8B 05 ? ? ? ? 48 8D 4C 24", [this](memory::handle ptr)
+		{
+			m_start_get_session_by_gamer_handle = ptr.add(1).rip().as<functions::start_get_session_by_gamer_handle>();
+		});
+
+		// Join Session By Info
+		main_batch.add("JSBI", "E8 ? ? ? ? 0F B6 CB 84 C0 41 0F 44 CD", [this](memory::handle ptr)
+		{
+			m_join_session_by_info = ptr.add(1).rip().as<functions::join_session_by_info>();
 		});
 
 		// Receive Net Message
@@ -382,12 +388,6 @@ namespace big
 			m_get_sync_tree_for_type = ptr.add(0x14).rip().as<decltype(m_get_sync_tree_for_type)>(); // 0F B7 CA 83 F9 07 .as()
 			m_get_net_object = ptr.add(0x76).rip().as<decltype(m_get_net_object)>(); // E8 ? ? ? ? 0F B7 53 7C .add(1).rip().as()
 			m_get_sync_type_info = ptr.add(0x8C).rip().as<decltype(m_get_sync_type_info)>(); // 44 0F B7 C1 4C 8D 0D .as()
-		});
-
-		// Read Bitbuffer Into Sync Tree
-		main_batch.add("RBIST", "E8 ? ? ? ? 48 8B BC 24 B0 00 00 00", [this](memory::handle ptr)
-		{
-			m_read_bitbuffer_into_sync_tree = ptr.add(1).rip().as<functions::read_bitbuffer_into_sync_tree>();
 		});
 
 		// Model Hash Table

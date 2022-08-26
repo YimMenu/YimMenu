@@ -1,8 +1,8 @@
 #include "views/view.hpp"
-#include "services/players/player_service.hpp"
 #include "gta_util.hpp"
 #include "services/pickups/pickup_service.hpp"
 #include "services/players/player_service.hpp"
+#include "services/anti_cheat/anti_cheat_service.hpp"
 #include "util/globals.hpp"
 #include "util/misc.hpp"
 #include "util/ped.hpp"
@@ -166,7 +166,15 @@ namespace big
 						net_player_data->m_external_ip.m_field4,
 						net_player_data->m_external_port
 					);
+
+					if (g_anti_cheat_service->is_player_in_moddb(net_player_data->m_rockstar_id2)) {
+						ImGui::Text("AC Score: %d", g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(net_player_data->m_rockstar_id2)].score);
+					}
 				}
+
+				ImGui::Text("Level: %d", *script_global(1853348).at(g_player_service->get_selected()->id(), 834).at(205).at(6).as<int*>());
+
+				ImGui::Text("Money Bank: %d", *script_global(1853348).at(g_player_service->get_selected()->id(), 834).at(205).at(56).as<int64_t*>());
 
 				ImGui::TreePop();
 			}
@@ -395,6 +403,10 @@ namespace big
 				}
 
 				ImGui::TreePop();
+
+				components::button("Test AC", [] {
+					g_anti_cheat_service->modder_check(g_player_service->get_selected()->id());
+				});
 			}
 		}
 	}

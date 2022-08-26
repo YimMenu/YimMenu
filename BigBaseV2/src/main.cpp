@@ -9,10 +9,11 @@
 #include "script_mgr.hpp"
 #include "thread_pool.hpp"
 #include "shv_runner.h"
-#include "asi_loader/asi_loader.h"
+#include "asi_loader/asi_scripts.h"
 
 #include "backend/backend.hpp"
 #include "native_hooks/native_hooks.hpp"
+#include "services/anti_cheat/anti_cheat_service.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/custom_text/custom_text_service.hpp"
 #include "services/globals/globals_service.hpp"
@@ -21,6 +22,7 @@
 #include "services/mobile/mobile_service.hpp"
 #include "services/pickups/pickup_service.hpp"
 #include "services/players/player_service.hpp"
+#include "services/player_database/player_database_service.hpp"
 #include "services/notifications/notification_service.hpp"
 #include "services/model_preview/model_preview_service.hpp"
 #include "services/vehicle/vehicle_service.hpp"
@@ -74,6 +76,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto thread_pool_instance = std::make_unique<thread_pool>();
 				LOG(INFO) << "Thread pool initialized.";
 
+				auto anti_cheat_service_instance = std::make_unique<anti_cheat_service>();
 				auto context_menu_service_instance = std::make_unique<context_menu_service>();
 				auto custom_text_service_instance = std::make_unique<custom_text_service>();
 				auto globals_service_instace = std::make_unique<globals_service>();
@@ -81,6 +84,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto notification_service_instance = std::make_unique<notification_service>();
 				auto pickup_service_instance = std::make_unique<pickup_service>();
 				auto player_service_instance = std::make_unique<player_service>();
+				auto player_database_service_instance = std::make_unique<player_database_service>();
 				auto gta_data_service_instance = std::make_unique<gta_data_service>();
 				auto model_preview_service_instance = std::make_unique<model_preview_service>();
 				auto vehicle_service_instance = std::make_unique<vehicle_service>();
@@ -91,6 +95,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_script_mgr.add_script(std::make_unique<script>(&shv_runner::script_func));
 				
 				g_script_mgr.add_script(std::make_unique<script>(&backend::loop, "Backend Loop", false));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::anti_cheat, "Anti-Cheat Loop", false));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop, "Self"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop, "Weapon"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::vehicles_loop, "Vehicle"));
@@ -138,6 +143,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				thread_pool_instance.reset();
 				LOG(INFO) << "Thread pool uninitialized.";
 
+				anti_cheat_service_instance.reset();
+				LOG(INFO) << "Anti-Cheat Service reset.";
 				gui_service_instance.reset();
 				LOG(INFO) << "Gui Service reset.";
 				gta_data_service_instance.reset();
@@ -150,6 +157,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				LOG(INFO) << "Mobile Service reset.";
 				player_service_instance.reset();
 				LOG(INFO) << "Player Service reset.";
+				player_database_service_instance.reset();
+				LOG(INFO) << "Player Database Service reset.";
 				pickup_service_instance.reset();
 				LOG(INFO) << "Pickup Service reset.";
 				globals_service_instace.reset();

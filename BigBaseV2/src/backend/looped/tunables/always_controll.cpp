@@ -8,6 +8,7 @@ namespace big
 		if (g->tunables.always_controll)
 		{
 			PAD::ENABLE_ALL_CONTROL_ACTIONS(0);
+			PAD::ENABLE_ALL_CONTROL_ACTIONS(2);
 		}
 	}
 }
