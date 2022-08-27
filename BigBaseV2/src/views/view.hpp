@@ -12,11 +12,12 @@ namespace big
 		inline static ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse;
 
 	public:
-		static void active_view();
+		static void main_view();
 		static void debug();
 		static void esp_settings();
 		static void context_menu_settings();
 		static void gui_settings();
+		static void handling_tabs();
 		static void handling_current_profile();
 		static void handling_my_profiles();
 		static void handling_saved_profiles();
@@ -25,12 +26,14 @@ namespace big
 		static void protection_settings();
 		static void heading();
 		static void mobile();
-		static void navigation();
 		static void notifications();
 		static void root();
+		static void self_tabs();
 		static void self();
 		static void session();
+		static void settings_tabs();
 		static void settings();
+		static void vehicle_tabs();
 		static void vehicle();
 		static void lsc();
 		static void spawn_vehicle();
@@ -38,6 +41,7 @@ namespace big
 		static void persist_car();
 		static void fun_vehicle();
 		static void spawn_ped();
+		static void network_tabs();
 		static void spoofing();
 		static void teleport();
 		static void view_player();

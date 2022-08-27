@@ -1,5 +1,4 @@
 #include "pointers.hpp"
-#include "services/gui/gui_service.hpp"
 #include "services/players/player_service.hpp"
 #include "services/anti_cheat/anti_cheat_service.hpp"
 #include "views/view.hpp"
@@ -63,7 +62,6 @@ namespace big
 		if (ImGui::Button(plyr->get_name(), {300.0f - 15.0f - ImGui::GetStyle().ScrollbarSize, 0.f}))
 		{
 			g_player_service->set_selected(plyr);
-			g_gui_service->set_selected(tabs::PLAYER);
 			g->window.switched_view = true;
 		}
 		ImGui::PopID();

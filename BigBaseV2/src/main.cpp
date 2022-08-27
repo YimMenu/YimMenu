@@ -17,7 +17,6 @@
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/custom_text/custom_text_service.hpp"
 #include "services/globals/globals_service.hpp"
-#include "services/gui/gui_service.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "services/mobile/mobile_service.hpp"
 #include "services/pickups/pickup_service.hpp"
@@ -88,7 +87,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto gta_data_service_instance = std::make_unique<gta_data_service>();
 				auto model_preview_service_instance = std::make_unique<model_preview_service>();
 				auto vehicle_service_instance = std::make_unique<vehicle_service>();
-				auto gui_service_instance = std::make_unique<gui_service>();
 				LOG(INFO) << "Registered service instances...";
 
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
@@ -145,8 +143,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				anti_cheat_service_instance.reset();
 				LOG(INFO) << "Anti-Cheat Service reset.";
-				gui_service_instance.reset();
-				LOG(INFO) << "Gui Service reset.";
 				gta_data_service_instance.reset();
 				LOG(INFO) << "GTA Data Service reset.";
 				vehicle_service_instance.reset();

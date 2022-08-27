@@ -125,24 +125,26 @@ namespace big
                     ImGui::Checkbox("Phone Anim", &g->tunables.phone_anim);
                     ImGui::SameLine();
                     ImGui::Checkbox("Jump Ragdoll", &g->self.allow_ragdoll);
-                    ImGui::SameLine();
-                    ImGui::Checkbox("Fly Thru Windscreen", &g->tunables.fly_thru_windscreen);
-                    ImGui::SameLine();
-                    ImGui::Checkbox("Ambiant Ufos", &g->tunables.ambiant_ufos);
-                    
-                    ImGui::Checkbox("Ambiant Blimps", &g->tunables.ambiant_blimp);
-                    ImGui::SameLine();
-                    ImGui::Checkbox("Cable Cars", &g->tunables.cable_cars);
-                    ImGui::SameLine();
-                    ImGui::Checkbox("Always Controll", &g->tunables.always_controll);
-                    ImGui::SameLine();
-                    ImGui::Checkbox("Utility Wheel", &g->pie_menu.enabled);
+
+                    // ImGui::Checkbox("Fly Thru Windscreen", &g->tunables.fly_thru_windscreen);
+                    // ImGui::SameLine();
+                    // ImGui::Checkbox("Ambiant Ufos", &g->tunables.ambiant_ufos);
+                    // 
+                    // ImGui::Checkbox("Ambiant Blimps", &g->tunables.ambiant_blimp);
+                    // ImGui::SameLine();
+                    // ImGui::Checkbox("Cable Cars", &g->tunables.cable_cars);
+                    // ImGui::SameLine();
 
                     ImGui::Checkbox("Vehicle Flares", &g->vehicle.flares);
                     ImGui::SameLine();
                     ImGui::Checkbox("Vehicle Chaff", &g->vehicle.chaff);
                     ImGui::SameLine();
                     ImGui::Checkbox("Vehicle Bombs", &g->vehicle.bombs);
+
+                    ImGui::Checkbox("Always Controll", &g->tunables.always_controll);
+                    ImGui::SameLine();
+                    ImGui::Checkbox("Utility Wheel", &g->pie_menu.enabled);
+
                     components::input_text_with_hint("###bomb_model", "Bomb Model", g->vehicle.bomb_type, 64); // TODO: Use ImGui Combo instead
 
                     ImGui::Separator();

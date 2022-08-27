@@ -660,6 +660,7 @@ namespace big
 			this->window.log = j["window"]["log"];
 			this->window.main = j["window"]["main"];
 			this->window.users = j["window"]["users"];
+			this->window.player = j["window"]["player"];
 
 			this->context_menu.enabled = j["context_menu"]["enabled"];
 			this->context_menu.allowed_entity_types = j["context_menu"]["allowed_entity_types"];
@@ -970,7 +971,8 @@ namespace big
 						{ "overlay", this->window.overlay },
 						{ "log", this->window.log },
 						{ "main", this->window.main },
-						{ "users", this->window.users }
+						{ "users", this->window.users },
+						{ "player", this->window.player }
 					}
 				},
 				{
