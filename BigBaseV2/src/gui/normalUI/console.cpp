@@ -187,6 +187,37 @@ namespace big
                         ENTITY::SET_ENTITY_MAX_SPEED(self::veh, 2000);
                         VEHICLE::SET_VEHICLE_MAX_SPEED_(self::veh, 2000);
                     });
+
+                    components::button("freeze true", [] {
+                        GRAPHICS::TOGGLE_PAUSED_RENDERPHASES(true);
+                    });
+
+                    ImGui::SameLine();
+
+                    components::button("freeze false", [] {
+                        GRAPHICS::TOGGLE_PAUSED_RENDERPHASES(false);
+                    });
+
+                    components::button("_LOADINGSCREEN true", [] {
+                        LOADINGSCREEN::LOADINGSCREEN_SET_LOAD_FREEMODE_(true);
+                    });
+
+                    ImGui::SameLine();
+
+                    components::button("_LOADINGSCREEN false", [] {
+                        LOADINGSCREEN::LOADINGSCREEN_SET_LOAD_FREEMODE_(false);
+                    });
+
+                    components::button("SET_FRONTEND_ACTIVE false", [] {
+                        HUD::SET_FRONTEND_ACTIVE(false);
+                    });
+
+                    ImGui::SameLine();
+
+                    components::button("HUD::BUSYSPINNER_OFF();", [] {
+                        HUD::BUSYSPINNER_OFF();
+                        });
+
                     /*static char phone_types{"franklin", "Traver", "Broken Michael"};
                     if (ImGui::Combo("Phone type", g->tunables.phone_type, &phone_types)) {
                         QUEUE_JOB_BEGIN_CLAUSE() {

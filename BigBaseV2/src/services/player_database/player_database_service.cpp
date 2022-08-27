@@ -102,10 +102,8 @@ namespace big
 
 	void player_database_service::load_players_from_json(nlohmann::json player_json)
 	{
-		LOG(G3LOG_DEBUG) << player_json;
 		std::vector<nlohmann::json> players = player_json[players_key];
 		
-		LOG(G3LOG_DEBUG) << players;
 		for (const auto& j : players)
 		{
 			const auto name = j.at(name_key);
