@@ -3,7 +3,8 @@
 
 namespace big
 {
-	void looped::system_disable_model_spawn_bypass()
+	// credits: @brunph
+	void looped::system_disable_sigscanner()
 	{
 		if (*(unsigned short*)g_pointers->m_model_spawn_bypass == 0x9090) 
 		{

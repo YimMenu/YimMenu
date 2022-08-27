@@ -3,6 +3,7 @@
 #include "script.hpp"
 #include "pointers.hpp"
 #include "gta/joaat.hpp"
+#include "util/vehicle.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
 
@@ -29,7 +30,7 @@ namespace big::ped
 	inline bool steal_outfit(const Ped target)
 	{
 		Ped ped = self::ped;
-		
+
 		if (ENTITY::GET_ENTITY_MODEL(ped) != ENTITY::GET_ENTITY_MODEL(target)) {
 			return false;
 		}
@@ -90,7 +91,7 @@ namespace big::ped
 		const int current_health = ENTITY::GET_ENTITY_HEALTH(self::ped);
 		const int current_armor = PED::GET_PED_ARMOUR(self::ped);
 
-		PLAYER::SET_PLAYER_MODEL(self::id , ENTITY::GET_ENTITY_MODEL(target));
+		PLAYER::SET_PLAYER_MODEL(self::id, ENTITY::GET_ENTITY_MODEL(target));
 		script::get_current()->yield();
 		PED::CLONE_PED_TO_TARGET(target, self::ped);
 		ENTITY::SET_ENTITY_MAX_HEALTH(self::ped, max_health);
@@ -126,6 +127,127 @@ namespace big::ped
 
 		return ped;
 	}
+
+	/// 
+	/// GPL-3 CODE STARTS HERE
+	/// SKIDDED FROM https://github.com/gta-chaos-mod/ChaosModV
+	/// 
+
+	inline Hash create_bad_ped_relationship_group(std::string group_name)
+	{
+		static const Hash playerGroup = rage::joaat("PLAYER");
+		static const Hash civGroup = rage::joaat("CIVMALE");
+		static const Hash femCivGroup = rage::joaat("CIVFEMALE");
+
+		Hash relationshipGroup;
+		PED::ADD_RELATIONSHIP_GROUP(group_name.c_str(), &relationshipGroup);
+		PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, playerGroup);
+		PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, civGroup);
+		PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, femCivGroup);
+
+		return relationshipGroup;
+	}
+
+	inline Ped spawn_grifer_jesus(Vector3 pos, Ped player_ped)
+	{
+		Hash relationshipGroup = create_bad_ped_relationship_group("_HOSTILE_JESUS");
+
+		Ped ped = ped::spawn(ePedType::PED_TYPE_CRIMINAL, rage::joaat("u_m_m_jesus_01"), 0, pos, 0);
+
+		if (PED::IS_PED_IN_ANY_VEHICLE(player_ped, false))
+		{
+			PED::SET_PED_INTO_VEHICLE(ped, PED::GET_VEHICLE_PED_IS_IN(player_ped, false), -2);
+		}
+
+		PED::SET_PED_RELATIONSHIP_GROUP_HASH(ped, relationshipGroup);
+		PED::SET_PED_HEARING_RANGE(ped, 9999.f);
+		PED::SET_PED_CONFIG_FLAG(ped, 281, true);
+
+		ENTITY::SET_ENTITY_PROOFS(ped, false, true, true, false, false, false, false, false);
+
+		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 5, true);
+		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 46, true);
+
+		PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(ped, false);
+		PED::SET_RAGDOLL_BLOCKING_FLAGS(ped, 5);
+		PED::SET_PED_SUFFERS_CRITICAL_HITS(ped, false);
+
+		WEAPON::GIVE_WEAPON_TO_PED(ped, rage::joaat("WEAPON_RAILGUN"), 9999, true, true);
+		TASK::TASK_COMBAT_PED(ped, player_ped, 0, 16);
+
+		PED::SET_PED_FIRING_PATTERN(ped, 0xC6EE6B4C);
+
+		return ped;
+	}
+
+	inline Ped spawn_extrime_grifer_jesus(Vector3 pos, Ped player_ped)
+	{
+		float heading = ENTITY::GET_ENTITY_HEADING(PED::IS_PED_IN_ANY_VEHICLE(player_ped, false) ? PED::GET_VEHICLE_PED_IS_IN(player_ped, false) : player_ped);
+
+		Vehicle veh = vehicle::spawn(rage::joaat("oppressormk2"), pos, heading, true);
+		VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
+		vehicle::max_vehicle(veh);
+		ENTITY::SET_ENTITY_PROOFS(veh, false, true, true, false, false, false, false, false);
+
+		Hash relationshipGroup = create_bad_ped_relationship_group("_HOSTILE_JESUS");
+
+		Ped ped = ped::spawn_in_vehicle("u_m_m_jesus_01", veh, true);
+
+		PED::SET_PED_RELATIONSHIP_GROUP_HASH(ped, relationshipGroup);
+		PED::SET_PED_HEARING_RANGE(ped, 9999.f);
+		PED::SET_PED_CONFIG_FLAG(ped, 281, true);
+
+		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 3, false);
+		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 5, true);
+		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 46, true);
+
+		ENTITY::SET_ENTITY_PROOFS(ped, false, true, true, false, false, false, false, false);
+
+		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 5, true);
+		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 46, true);
+
+		PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(ped, 1);
+		PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(ped, false);
+		PED::SET_RAGDOLL_BLOCKING_FLAGS(ped, 5);
+		PED::SET_PED_SUFFERS_CRITICAL_HITS(ped, false);
+
+		WEAPON::GIVE_WEAPON_TO_PED(ped, rage::joaat("WEAPON_RAILGUN"), 9999, true, true);
+		TASK::TASK_COMBAT_PED(ped, player_ped, 0, 16);
+
+		PED::SET_PED_FIRING_PATTERN(ped, 0xC6EE6B4C);
+
+		return ped;
+	}
+
+	inline Ped spawn_grifer_jet(Vector3 pos, Ped player_ped, Hash jet)
+	{
+		float heading = ENTITY::GET_ENTITY_HEADING(PED::IS_PED_IN_ANY_VEHICLE(player_ped, false) ? PED::GET_VEHICLE_PED_IS_IN(player_ped, false) : player_ped);
+
+		Vehicle veh = vehicle::spawn(jet, pos, heading, true);
+		VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
+		VEHICLE::CONTROL_LANDING_GEAR(veh, 3);
+
+		Hash relationshipGroup = create_bad_ped_relationship_group("_HOSTILE_JESUS");
+
+		Ped ped = ped::spawn_in_vehicle("u_m_m_jesus_01", veh, true);
+
+		PED::SET_PED_RELATIONSHIP_GROUP_HASH(ped, relationshipGroup);
+		PED::SET_PED_HEARING_RANGE(ped, 9999.f);
+		PED::SET_PED_CONFIG_FLAG(ped, 281, true);
+
+		TASK::TASK_PLANE_MISSION(ped, veh, 0, player_ped, 0, 0, 0, 6, 0.0, 0.0, 0.0, 2500.0, -1500.0, 0);
+
+		WEAPON::GIVE_WEAPON_TO_PED(ped, rage::joaat("WEAPON_RAILGUN"), 9999, true, true);
+		TASK::TASK_COMBAT_PED(ped, player_ped, 0, 16);
+
+		PED::SET_PED_FIRING_PATTERN(ped, 0xC6EE6B4C);
+
+		return ped;
+	}
+
+	/// 
+	/// GPL-3 CODE ENDS HERE
+	/// 
 
 	inline void play_anim(Ped ped, std::string_view name, std::string_view dict, int flag)
 	{

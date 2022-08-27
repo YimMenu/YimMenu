@@ -21,7 +21,7 @@ namespace big
         {
             if (ImGui::Begin("Debug"))
             {
-                if (ImGui::CollapsingHeader("Script Monitor"))
+                if (ImGui::TreeNode("Script Monitor"))
                 {
                     static GtaThread* selected_thread{};
                     if (ImGui::ListBoxHeader("##scripts", ImVec2(250, 500)))
@@ -115,10 +115,10 @@ namespace big
                     }
                     ImGui::InputInt("Buffer Size", &buffer_size);
                     
-                    ImGui::Separator();
+                    ImGui::TreePop();
                 }
 				
-                if (ImGui::CollapsingHeader("Custom Settings"))
+                if (ImGui::TreeNode("Custom Settings"))
                 {
                     ImGui::Checkbox("Fast Join", &g->tunables.fast_join);
                     ImGui::SameLine();
@@ -143,22 +143,16 @@ namespace big
                     ImGui::Checkbox("Vehicle Chaff", &g->vehicle.chaff);
                     ImGui::SameLine();
                     ImGui::Checkbox("Vehicle Bombs", &g->vehicle.bombs);
-                    ImGui::Text("Bomb Type:");
-                    components::input_text_with_hint("###bomb_model", "", g->vehicle.bomb_type, 64);
-                    //ImGui::Combo("###bomb_model", &g->vehicle.bomb_type, *weapon_types);
+                    components::input_text_with_hint("###bomb_model", "Bomb Model", g->vehicle.bomb_type, 64); // TODO: Use ImGui Combo instead
 
                     ImGui::Separator();
 
-                    if (ImGui::Checkbox("No loading", &g->tunables.no_loading)) 
-                    {
-                        QUEUE_JOB_BEGIN_CLAUSE()
-                        {
-                            SCRIPT::SET_NO_LOADING_SCREEN(g->tunables.no_loading);
-                            if (CAM::IS_SCREEN_FADED_OUT()) {
-                                CAM::DO_SCREEN_FADE_IN(100);
-                            }
-                        } QUEUE_JOB_END_CLAUSE
-                    }
+                    components::button("No loading", [] {
+                        SCRIPT::SET_NO_LOADING_SCREEN(true);
+                        if (CAM::IS_SCREEN_FADED_OUT()) {
+                            CAM::DO_SCREEN_FADE_IN(0);
+                        }
+                    });
                     
                     components::button("SP Map", [] {
                         DLC::ON_ENTER_SP();
@@ -188,13 +182,7 @@ namespace big
                         VEHICLE::SET_VEHICLE_MAX_SPEED_(self::veh, 2000);
                     });
 
-                    /*static char phone_types{"franklin", "Traver", "Broken Michael"};
-                    if (ImGui::Combo("Phone type", g->tunables.phone_type, &phone_types)) {
-                        QUEUE_JOB_BEGIN_CLAUSE() {
-
-                        } QUEUE_JOB_END_CLAUSE
-                    }*/
-
+                    ImGui::TreePop();
                 }
 
                 ImGui::End();

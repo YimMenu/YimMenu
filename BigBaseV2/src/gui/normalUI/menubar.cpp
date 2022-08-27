@@ -94,29 +94,6 @@ namespace big
                 ImGui::EndMenu();
             }
 
-            if (ImGui::BeginMenu("Open Hook V"))
-            {
-                if (ImGui::MenuItem("Load ASI plugins"))
-                {
-                    if (!g->debug.asi_plugins_loaded)
-                    {
-                        ASILoader::Initialize();
-                        LOG(INFO) << "ASI Loader initialized.";
-                    }
-                }
-
-                if (ImGui::MenuItem("Unload ASI plugins"))
-                {
-                    if (g->debug.asi_plugins_loaded)
-                    {
-                        shv_runner::shutdown();
-                        LOG(INFO) << "ASI plugins unloaded.";
-                    }
-                }
-
-                ImGui::EndMenu();
-            }
-
             ImGui::EndMainMenuBar();
         }
     }

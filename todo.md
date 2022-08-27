@@ -16,12 +16,9 @@ Why don't just use github projects.
 - [ ] Session browser
 - [ ] Integrate https://github.com/Rimmuru/List
 - [ ] Add lua api
-- [ ] Fix the fucking c7ed01b00a627c4d5ac6a3e742554371c986af22
 - [ ] Chat logging
-- [ ] Max Beer snack
 
 ### In Progress
-
 
 ### Completed
 - [x] Shitty jump ragdol 
@@ -33,4 +30,6 @@ Why don't just use github projects.
 - [x] Anti-Cheat
 - [x] Skidded RID Joiner
 - [x] Open V Hook
-- [x] Skidded scipt monitor
+- [x] Skidded script monitor
+- [x] Max Beer snack
+- [x] Fix the fucking c7ed01b00a627c4d5ac6a3e742554371c986af22

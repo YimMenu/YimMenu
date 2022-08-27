@@ -48,6 +48,8 @@ namespace big
 					}
 				}
 			});*/
+
+			ImGui::TreePop();
 		}
 
 		if (ImGui::TreeNode("Local Time"))
@@ -133,7 +135,11 @@ namespace big
 				components::button("Add", [] {
 					g_player_database_service->add_player_to_db(rid, name, relationship);
 				});
+
+				ImGui::TreePop();
 			}
+
+			ImGui::TreePop();
 		}
 	}
 }

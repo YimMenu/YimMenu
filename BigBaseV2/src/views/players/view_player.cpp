@@ -176,6 +176,14 @@ namespace big
 
 				ImGui::Text("Money Bank: %d", *script_global(1853348).at(g_player_service->get_selected()->id(), 834).at(205).at(56).as<int64_t*>());
 
+				ImGui::Text("K/D Ratio: %f", *script_global(1853348).at(g_player_service->get_selected()->id(), 834).at(205).at(26).as<float*>());
+
+				components::button("Open SC Overlay", [] {
+					int gamerHandle;
+					NETWORK::NETWORK_HANDLE_FROM_PLAYER(g_player_service->get_selected()->id(), &gamerHandle, 13);
+					NETWORK::NETWORK_SHOW_PROFILE_UI(&gamerHandle);
+				});
+
 				ImGui::TreePop();
 			}
 
@@ -197,10 +205,16 @@ namespace big
 					entity::delete_entity_notp(PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false));
 				});
 
+				ImGui::SameLine();
+
 				components::button("Teleport into Vehicle", [] {
 					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
 
 					teleport::into_vehicle(veh);
+				});
+
+				components::button("Send to Cayo Perico", [] {
+					toxic::send_to_cayo_perico(g_player_service->get_selected()->id());
 				});
 
 				ImGui::TreePop();
@@ -208,7 +222,7 @@ namespace big
 
 			if (ImGui::TreeNode("Toxic")) {
 
-				if (ImGui::TreeNode("Shit")) {
+				if (ImGui::TreeNode("Kicks and Crashes (Shit)")) {
 					components::button("Desync", [] { toxic::desync_kick(g_player_service->get_selected()->get_net_game_player()); });
 
 					ImGui::SameLine();
@@ -234,14 +248,10 @@ namespace big
 					ImGui::SameLine();
 
 					components::button("TSE Crash", [] {
-						constexpr size_t arg_count = 2;
-						int64_t args[arg_count] = {
-							static_cast<int64_t>(eRemoteEvent::Crash),
-							self::id,
-						};
-
-						g_pointers->m_trigger_script_event(1, args, arg_count, 1 << g_player_service->get_selected()->id());
+						toxic::tse_crash(g_player_service->get_selected()->id());
 					});
+
+					ImGui::TreePop();
 				}
 				
 
@@ -257,6 +267,8 @@ namespace big
 						auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), true);
 						FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 13, 1, false, true, 0, false);
 					});
+
+					ImGui::TreePop();
 				}
 
 				if (ImGui::TreeNode("Vehicle")) {
@@ -274,139 +286,40 @@ namespace big
 						vehicle::repair(veh);
 					});
 
+					ImGui::TreePop();
 				}
 
 				if (ImGui::TreeNode("Spawns")) {
-					//code from https://github.com/gta-chaos-mod/ChaosModV
 					components::button("Spawn Grifer Gesus", [] {
-						Ped ply = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
-						Vector3 pos = ENTITY::GET_ENTITY_COORDS(ply, true);
+						Ped player_ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+						Vector3 pos = ENTITY::GET_ENTITY_COORDS(player_ped, true) + Vector3(0, 0, 500);
 
-						static const Hash playerGroup = rage::joaat("PLAYER");
-						static const Hash civGroup = rage::joaat("CIVMALE");
-						static const Hash femCivGroup = rage::joaat("CIVFEMALE");
-
-						Hash relationshipGroup;
-						PED::ADD_RELATIONSHIP_GROUP("_HOSTILE_JESUS", &relationshipGroup);
-						PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, playerGroup);
-						PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, civGroup);
-						PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, femCivGroup);
-
-						Ped ped = ped::spawn(ePedType::PED_TYPE_CRIMINAL, rage::joaat("u_m_m_jesus_01"), 0, pos, 0);
-
-						if (PED::IS_PED_IN_ANY_VEHICLE(ply, false))
-						{
-							PED::SET_PED_INTO_VEHICLE(ped, PED::GET_VEHICLE_PED_IS_IN(ply, false), -2);
-						}
-
-						PED::SET_PED_RELATIONSHIP_GROUP_HASH(ped, relationshipGroup);
-						PED::SET_PED_HEARING_RANGE(ped, 9999.f);
-						PED::SET_PED_CONFIG_FLAG(ped, 281, true);
-
-						ENTITY::SET_ENTITY_PROOFS(ped, false, true, true, false, false, false, false, false);
-
-						PED::SET_PED_COMBAT_ATTRIBUTES(ped, 5, true);
-						PED::SET_PED_COMBAT_ATTRIBUTES(ped, 46, true);
-
-						PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(ped, false);
-						PED::SET_RAGDOLL_BLOCKING_FLAGS(ped, 5);
-						PED::SET_PED_SUFFERS_CRITICAL_HITS(ped, false);
-
-						WEAPON::GIVE_WEAPON_TO_PED(ped, rage::joaat("WEAPON_RAILGUN"), 9999, true, true);
-						TASK::TASK_COMBAT_PED(ped, ply, 0, 16);
-
-						PED::SET_PED_FIRING_PATTERN(ped, 0xC6EE6B4C);
+						ped::spawn_grifer_jesus(pos, player_ped);
 					});
+
 					ImGui::SameLine();
+
 					components::button("Spawn Extrime Grifer Gesus", [] {
-						Ped ply = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
-						Vector3 pos = ENTITY::GET_ENTITY_COORDS(ply, true);
-						float heading = ENTITY::GET_ENTITY_HEADING(PED::IS_PED_IN_ANY_VEHICLE(ply, false) ? PED::GET_VEHICLE_PED_IS_IN(ply, false) : ply);
+						Ped player_ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+						Vector3 pos = ENTITY::GET_ENTITY_COORDS(player_ped, true) + Vector3(0, 0, 10);
 
-						Vehicle veh = vehicle::spawn(rage::joaat("oppressormk2"), pos, heading, true);
-						VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
-						vehicle::max_vehicle(veh);
-						ENTITY::SET_ENTITY_PROOFS(veh, false, true, true, false, false, false, false, false);
-
-						static const Hash playerGroup = rage::joaat("PLAYER");
-						static const Hash civGroup = rage::joaat("CIVMALE");
-						static const Hash femCivGroup = rage::joaat("CIVFEMALE");
-
-						Hash relationshipGroup;
-						PED::ADD_RELATIONSHIP_GROUP("_HOSTILE_JESUS", &relationshipGroup);
-						PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, playerGroup);
-						PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, civGroup);
-						PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, femCivGroup);
-
-						Ped ped = ped::spawn_in_vehicle("u_m_m_jesus_01", veh, true);
-
-						PED::SET_PED_RELATIONSHIP_GROUP_HASH(ped, relationshipGroup);
-						PED::SET_PED_HEARING_RANGE(ped, 9999.f);
-						PED::SET_PED_CONFIG_FLAG(ped, 281, true);
-
-						PED::SET_PED_COMBAT_ATTRIBUTES(ped, 3, false);
-						PED::SET_PED_COMBAT_ATTRIBUTES(ped, 5, true);
-						PED::SET_PED_COMBAT_ATTRIBUTES(ped, 46, true);
-
-						ENTITY::SET_ENTITY_PROOFS(ped, false, true, true, false, false, false, false, false);
-
-						PED::SET_PED_COMBAT_ATTRIBUTES(ped, 5, true);
-						PED::SET_PED_COMBAT_ATTRIBUTES(ped, 46, true);
-
-						PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(ped, 1);
-						PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(ped, false);
-						PED::SET_RAGDOLL_BLOCKING_FLAGS(ped, 5);
-						PED::SET_PED_SUFFERS_CRITICAL_HITS(ped, false);
-
-						WEAPON::GIVE_WEAPON_TO_PED(ped, rage::joaat("WEAPON_RAILGUN"), 9999, true, true);
-						TASK::TASK_COMBAT_PED(ped, ply, 0, 16);
-
-						PED::SET_PED_FIRING_PATTERN(ped, 0xC6EE6B4C);
+						ped::spawn_extrime_grifer_jesus(pos, player_ped);
 					});
+
 					ImGui::SameLine();
+
 					components::button("Spawn Grifer Lazer", [] {
-						Ped ply = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
-						Vector3 pos = ENTITY::GET_ENTITY_COORDS(ply, true) + Vector3(0,0, 500);
-						float heading = ENTITY::GET_ENTITY_HEADING(PED::IS_PED_IN_ANY_VEHICLE(ply, false) ? PED::GET_VEHICLE_PED_IS_IN(ply, false) : ply);
-
-						Vehicle veh = vehicle::spawn(rage::joaat("lazer"), pos, heading, true);
-						VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
-						VEHICLE::CONTROL_LANDING_GEAR(veh, 3);
-
-						Blip blip = HUD::ADD_BLIP_FOR_ENTITY(veh);
-						HUD::SET_BLIP_SPRITE(blip, 424);
-
-						static const Hash playerGroup = rage::joaat("PLAYER");
-						static const Hash civGroup = rage::joaat("CIVMALE");
-						static const Hash femCivGroup = rage::joaat("CIVFEMALE");
-
-						Hash relationshipGroup;
-						PED::ADD_RELATIONSHIP_GROUP("_HOSTILE_JESUS", &relationshipGroup);
-						PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, playerGroup);
-						PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, civGroup);
-						PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, femCivGroup);
-
-						Ped ped = ped::spawn_in_vehicle("u_m_m_jesus_01", veh, true);
-
-						PED::SET_PED_RELATIONSHIP_GROUP_HASH(ped, relationshipGroup);
-						PED::SET_PED_HEARING_RANGE(ped, 9999.f);
-						PED::SET_PED_CONFIG_FLAG(ped, 281, true);
+						Ped player_ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+						Vector3 pos = ENTITY::GET_ENTITY_COORDS(player_ped, true) + Vector3(0, 0, 500);
+						Hash jet_hash RAGE_JOAAT("lazer");
 						
-
-						TASK::TASK_PLANE_MISSION(ped, veh, 0, ply, 0, 0, 0, 6, 0.0, 0.0, 0.0, 2500.0, -1500.0, 0);
-
-						WEAPON::GIVE_WEAPON_TO_PED(ped, rage::joaat("WEAPON_RAILGUN"), 9999, true, true);
-						TASK::TASK_COMBAT_PED(ped, ply, 0, 16);
-
-						PED::SET_PED_FIRING_PATTERN(ped, 0xC6EE6B4C);
+						ped::spawn_grifer_jet(pos, player_ped, jet_hash);
 					});
+
+					ImGui::TreePop();
 				}
 
 				ImGui::TreePop();
-
-				components::button("Test AC", [] {
-					g_anti_cheat_service->modder_check(g_player_service->get_selected()->id());
-				});
 			}
 		}
 	}

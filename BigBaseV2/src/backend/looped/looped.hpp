@@ -42,7 +42,7 @@ namespace big
 		static void session_local_time();
 		static void fast_join();
 
-		static void system_disable_sigscanner();
+		static void system_disable_model_spawn_bypass();
 		static void system_self_globals();
 		static void system_update_pointers();
 

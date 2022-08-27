@@ -216,7 +216,6 @@ namespace big
 			bool fly_thru_windscreen = false;
 			bool no_idle_kick = false;
 			bool fast_join = false;
-			bool no_loading = false;
 			bool ambiant_ufos = false;
 			bool ambiant_blimp = false;
 			bool cable_cars = false;
@@ -547,7 +546,6 @@ namespace big
 			this->tunables.fly_thru_windscreen = j["tunables"]["fly_thru_windscreen"];
 			this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
 			this->tunables.fast_join = j["tunables"]["fast_join"];
-			this->tunables.no_loading = j["tunables"]["no_loading"];
 			this->tunables.ambiant_ufos = j["tunables"]["ambiant_ufos"];
 			this->tunables.ambiant_blimp = j["tunables"]["ambiant_blimp"];
 			this->tunables.cable_cars = j["tunables"]["cable_cars"];
@@ -812,7 +810,6 @@ namespace big
 						{ "fly_thru_windscreen", this->tunables.fly_thru_windscreen },
 						{ "no_idle_kick", this->tunables.no_idle_kick },
 						{ "fast_join", this->tunables.fast_join },
-						{ "no_loading", this->tunables.no_loading },
 						{ "ambiant_ufos", this->tunables.ambiant_ufos },
 						{ "ambiant_blimp", this->tunables.ambiant_blimp },
 						{ "cable_cars", this->tunables.cable_cars },
