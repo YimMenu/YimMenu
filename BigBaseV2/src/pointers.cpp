@@ -364,7 +364,7 @@ namespace big
 		});
 
 		// Region Code
-		main_batch.add("RC", "48 8D 15 ? ? ? ? 48 8D 4C 24 ? 89 05 ? ? ? ? E8 ? ? ? ?", [this](memory::handle ptr)
+		main_batch.add("RC", "48 8D 15 ? ? ? ? 48 8D 4C 24 ? 89 05 ? ? ? ? E8", [this](memory::handle ptr)
 		{
 			m_region_code = ptr.add(3).rip().as<std::uint8_t*>();
 		});

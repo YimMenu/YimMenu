@@ -2,8 +2,7 @@
 A mod menu base for Grand Theft Auto V.
 Strictly for educational purposes.
 
-this is my personal fork of YimMenu
-nothing good here
+## For the list of features of this shitty fork go to [TODO.md](TODO.md) file
 
 ## Table of contents
 
@@ -48,28 +47,9 @@ Below is an incomplete list of feature that I believe are notable to this "base"
  - Custom [settings](BigBaseV2/src/core/globals.hpp) with deep compare if changes were made include auto saving
  - Clear and well structured source code
  - Includes a thread pool to queue tasks that shouldn't block the game thread, very similar to fiber pool
- - Updated natives.hpp from https://nativedb.pieceof.art/natives
+ - Updated natives.hpp from https://nativedb.spyral.dev/natives
  - Includes basic code samples to interact with an api
  - ReClass.NET structures implemented, accessible from a global called g_local_player defined in `common.hpp`
-
-## TODO
-
-[x] jump ragdol
-[x] phone animation
-[] phone selection
-[] pie menu
-[] imgui ui
-[] animals
-[] blimps and planes
-[] cable cars
-[] Ambient ufos
-
-[] better esp
-[x] crash
-[] godmode kill
-[] protection
-
-[] port to C++
 
 ## Contributing
 
