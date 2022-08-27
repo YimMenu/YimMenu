@@ -6,7 +6,6 @@
 #include "native_hooks/freemode.hpp"
 #include "native_hooks/shop_controller.hpp"
 #include "native_hooks/maintransition.hpp"
-#include "native_hooks/global.hpp"
 #include "script_hook.hpp"
 
 namespace big

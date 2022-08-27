@@ -34,18 +34,6 @@ namespace big
 			}
 		}
 
-		inline void ON_ENTER_MP(rage::scrNativeCallContext* src)
-		{
-			if (g->tunables.fast_join)
-			{
-				LOG(G3LOG_DEBUG) << "ON_ENTER_MP skipped";
-			}
-			else
-			{
-				DLC::ON_ENTER_MP();
-			}
-		}
-
 		//
 		// PLAYER_SWITCH
 		//
