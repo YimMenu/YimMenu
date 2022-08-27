@@ -29,7 +29,7 @@ namespace big
 			add_native_detour(RAGE_JOAAT("carmod_shop"), 0x34E710FF01247C5A, carmod_shop::SET_VEHICLE_LIGHTS);
 			add_native_detour(RAGE_JOAAT("carmod_shop"), 0x767FBC2AC802EF3D, carmod_shop::STAT_GET_INT);
 			add_native_detour(RAGE_JOAAT("freemode"), 0x95914459A87EBA28, freemode::NETWORK_BAIL);
-			add_native_detour(RAGE_JOAAT("maintransition"), 0x5D10B3795F3FC886, maintransition::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA); // From https://github.com/YimMenu/YimMenu/discussions/143
+			add_native_detour(RAGE_JOAAT("freemode"), 0x5D10B3795F3FC886, freemode::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA); // From https://github.com/YimMenu/YimMenu/discussions/143
 			add_native_detour(RAGE_JOAAT("maintransition"), 0x6F3D4ED9BEE4E61D, maintransition::NETWORK_SESSION_HOST); // RID Joiner from https://github.com/YimMenu/YimMenu/issues/172
 			add_native_detour(RAGE_JOAAT("maintransition"), 0x933BBEEB8C61B5F4, maintransition::N0x933BBEEB8C61B5F4); // This hook lets you stop player-switch in "Pre-HUD Checks"
 			add_native_detour(RAGE_JOAAT("maintransition"), 0x06843DA7060A026B, maintransition::SET_ENTITY_COORDS);  // Prevents the game from teleporting you

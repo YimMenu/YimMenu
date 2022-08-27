@@ -52,7 +52,10 @@ namespace big
 		// Received clone sync
 		m_received_clone_sync_hook("RCS", g_pointers->m_received_clone_sync, &hooks::received_clone_sync),
 		//Get Network Event Data
-		m_get_network_event_data_hook("GNED", g_pointers->m_get_network_event_data, &hooks::get_network_event_data)
+		m_get_network_event_data_hook("GNED", g_pointers->m_get_network_event_data, &hooks::get_network_event_data),
+		// Get Pool Type
+		m_get_pool_type_hook("GPT", g_pointers->m_get_pool_type, &hooks::get_pool_type)
+
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -86,6 +89,7 @@ namespace big
 		m_receive_net_message_hook.enable();
 		m_get_network_event_data_hook.enable();
 		m_received_clone_sync_hook.enable();
+		m_get_pool_type_hook.enable();
 
 		MH_ApplyQueued();
 
@@ -97,6 +101,7 @@ namespace big
 		m_enabled = false;
 
 
+		m_get_pool_type_hook.disable();
 		m_received_clone_sync_hook.disable();
 		m_get_network_event_data_hook.disable();
 		m_receive_net_message_hook.disable();

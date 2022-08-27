@@ -21,19 +21,6 @@ namespace big
 			}
 		};
 
-		inline void NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA(rage::scrNativeCallContext* src)
-		{
-			if (g->tunables.fast_join)
-			{
-				LOG(G3LOG_DEBUG) << "NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA skipped";
-				src->set_return_value<BOOL>(TRUE);
-			}
-			else
-			{
-				src->set_return_value<BOOL>(NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA());
-			}
-		}
-
 		//
 		// PLAYER_SWITCH
 		//

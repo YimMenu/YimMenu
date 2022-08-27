@@ -363,6 +363,18 @@ namespace big
 			m_join_session_by_info = ptr.add(1).rip().as<functions::join_session_by_info>();
 		});
 
+		// Region Code
+		main_batch.add("RC", "48 8D 15 ? ? ? ? 48 8D 4C 24 ? 89 05 ? ? ? ? E8 ? ? ? ?", [this](memory::handle ptr)
+		{
+			m_region_code = ptr.add(3).rip().as<std::uint8_t*>();
+		});
+
+		// Get Pool Type
+		main_batch.add("GPT", "48 89 5C 24 ? 57 48 83 EC 20 48 8B 1D ? ? ? ? BA", [this](memory::handle ptr)
+		{
+			m_get_pool_type = ptr.as<PVOID>();
+		});
+
 		// Receive Net Message
 		main_batch.add("RNM", "48 83 EC 20 4C 8B 71 50 33 ED", [this](memory::handle ptr)
 		{

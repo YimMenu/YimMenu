@@ -120,6 +120,7 @@ namespace big
 						}
 					}
 				}
+				ImGui::ListBoxFooter();
 			}
 			if (ImGui::TreeNode("Manual Add"))
 			{
@@ -131,8 +132,7 @@ namespace big
 				components::input_text_with_hint("###relationship", "Relationship", relationship, 16);
 				components::button("Add", [] {
 					g_player_database_service->add_player_to_db(rid, name, relationship);
-					});
-
+				});
 			}
 		}
 	}

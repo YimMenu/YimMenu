@@ -51,6 +51,8 @@ namespace big
 		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
 		functions::join_session_by_info m_join_session_by_info;
 		Network** m_network{};
+		uint8_t* m_region_code;
+		PVOID m_get_pool_type;
 
 		CGameScriptHandlerMgr **m_script_handler_mgr{};
 

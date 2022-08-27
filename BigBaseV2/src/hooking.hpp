@@ -53,6 +53,8 @@ namespace big
 		static bool receive_net_message(void* netConnectionManager, void* a2, rage::netConnection::InFrame* frame);
 		static void get_network_event_data(int64_t unk, rage::CEventNetwork* net_event);
 
+		static int get_pool_type();
+
 		static void* assign_physical_index(CNetworkPlayerMgr* netPlayerMgr, CNetGamePlayer* player, uint8_t new_index);
 
 		//SYNC
@@ -110,6 +112,8 @@ namespace big
 		detour_hook m_send_net_info_to_lobby;
 		detour_hook m_receive_net_message_hook;
 		detour_hook m_get_network_event_data_hook;
+
+		detour_hook m_get_pool_type_hook;
 
 	};
 

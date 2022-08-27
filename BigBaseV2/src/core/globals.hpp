@@ -203,6 +203,10 @@ namespace big
 
 			bool spoof_rockstar_id = false;
 			uint64_t rockstar_id = 0;
+
+			int region_code = 0;
+
+			int pool_type = 0;
 		};
 
 		struct tunables {
@@ -593,6 +597,8 @@ namespace big
 				this->spoofing.ip_address[i] = j["spoofing"]["ip_address"].at(i);
 			this->spoofing.rockstar_id = j["spoofing"]["rockstar_id"];
 			this->spoofing.username = j["spoofing"]["username"];
+			this->spoofing.region_code = j["spoofing"]["region_code"];
+			this->spoofing.pool_type = j["spoofing"]["pool_type"];
 
 			this->vehicle.speed_unit = (SpeedUnit)j["vehicle"]["speed_unit"];
 			this->vehicle.god_mode = j["vehicle"]["god_mode"];
@@ -879,7 +885,9 @@ namespace big
 							this->spoofing.ip_address[3] })
 						},
 						{ "rockstar_id", this->spoofing.rockstar_id },
-						{ "username", this->spoofing.username }
+						{ "username", this->spoofing.username },
+						{ "region_code", this->spoofing.region_code },
+						{ "pool_type", this->spoofing.pool_type }
 					}
 				},
 				{
