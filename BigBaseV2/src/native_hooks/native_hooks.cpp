@@ -7,6 +7,9 @@
 
 namespace big
 {
+    // I don't think there's a script with -1 as a hash
+    constexpr rage::joaat ALL_SCRIPT_HASH = -1;
+
     native_hooks::native_hooks()
     {
         add_native_detour(0x812595A0644CE1DE, all_scripts::IS_DLC_PRESENT);
@@ -31,14 +34,14 @@ namespace big
 
     void native_hooks::add_native_detour(rage::scrNativeHash hash, rage::scrNativeHandler detour)
 	{
-		if (const auto& it = m_native_registrations.find(nullptr); it != m_native_registrations.end())
+		if (const auto& it = m_native_registrations.find(ALL_SCRIPT_HASH); it != m_native_registrations.end())
 		{
 			it->second.emplace_back(hash, detour);
 
 			return;
 		}
 
-		m_native_registrations.emplace(nullptr, std::vector<native_detour>({ { hash, detour } }));
+		m_native_registrations.emplace(ALL_SCRIPT_HASH, std::vector<native_detour>({ { hash, detour } }));
 	}
 
 	void native_hooks::add_native_detour(rage::joaat_t script_hash, rage::scrNativeHash hash, rage::scrNativeHandler detour)
@@ -59,7 +62,7 @@ namespace big
         const auto script_hash = gta_thread->m_script_hash;
 
         // Functions that need to be detoured for all scripts
-        if (const auto& pair = m_native_registrations.find(nullptr); pair != m_native_registrations.end())
+        if (const auto& pair = m_native_registrations.find(ALL_SCRIPT_HASH); pair != m_native_registrations.end())
             for (const auto& native_hook_reg : pair->second)
                 native_replacements.insert(native_hook_reg);
             
