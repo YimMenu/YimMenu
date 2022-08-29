@@ -29,6 +29,7 @@ namespace big
 		static void notifications();
 		static void root();
 		static void self();
+		static void animation();
 		static void session();
 		static void settings();
 		static void vehicle();

@@ -10,6 +10,7 @@ namespace big
 		WEAPONS,
 		TELEPORT,
 		MOBILE,
+		ANIMATION,
 
 		VEHICLE,
 		HANDLING,
@@ -58,6 +59,7 @@ namespace big
 				{ tabs::WEAPONS, { "Weapons", view::weapons }},
 				{ tabs::MOBILE, {"Mobile", view::mobile}},
 				{ tabs::TELEPORT, {"Teleport", view::teleport}},
+				{ tabs::ANIMATION, {"Animation", view::animation}},
 			}}},
 			{tabs::VEHICLE, { "Vehicle", view::vehicle, {
 				{ tabs::HANDLING, {"Handling", view::handling_current_profile, {

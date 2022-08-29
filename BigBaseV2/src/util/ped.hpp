@@ -2,6 +2,7 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "pointers.hpp"
+#include "entity.hpp"
 
 namespace big::ped
 {
@@ -85,5 +86,26 @@ namespace big::ped
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 
 		return ped;
+	}
+
+	inline void play_animation(Ped target, const char* anim_dictionary, const char* anim_name, int flag = ANIM_FLAG_NORMAL)
+	{
+		if (!entity::take_control_of(target))
+		{
+			g_notification_service->push_warning("Animation", "Failed to take control of target.");
+			return;
+		}
+		size_t count = 0;
+		do {
+			STREAMING::REQUEST_ANIM_DICT(anim_dictionary);
+			if (count++ == 100)
+			{
+				g_notification_service->push_warning("Animation", "Failed to request anim dict.");
+				return;
+			}
+			script::get_current()->yield();
+		} while (!STREAMING::HAS_ANIM_DICT_LOADED(anim_dictionary));
+		TASK::TASK_PLAY_ANIM(target, anim_dictionary, anim_name, 8.0f, 0.0f, -1, flag, 0, false, false, false);
+		g_notification_service->push("Animation", "Play animation success.");
 	}
 }

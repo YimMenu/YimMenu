@@ -3,6 +3,7 @@
 #include "vehicle_item.hpp"
 #include "ped_item.hpp"
 #include "weapon_item.hpp"
+#include "animation_item.hpp"
 #include "gta/joaat.hpp"
 
 namespace big
@@ -24,6 +25,8 @@ namespace big
 		std::vector<weapon_item> m_weapon_item_arr;
 		const weapon_item empty_weapon_item = weapon_item();
 
+		std::vector<animation_item> m_animation_item_arr;
+
 	public:
 		gta_data_service();
 		~gta_data_service();
@@ -40,6 +43,8 @@ namespace big
 		const std::vector<std::string>& get_weapon_type_arr();
 		const std::vector<weapon_item>& get_weapon_arr();
 
+		const std::vector<animation_item>& get_animation_arr();
+
 	private:
 		void load_from_file(
 			std::string file_path, std::string etag_path, std::string url, 
@@ -49,6 +54,7 @@ namespace big
 		bool load_vehicles(std::filesystem::path path);
 		bool load_peds(std::filesystem::path path);
 		bool load_weapons(std::filesystem::path path);
+		bool load_animations(std::filesystem::path path);
 	};
 
 	inline gta_data_service* g_gta_data_service{};
