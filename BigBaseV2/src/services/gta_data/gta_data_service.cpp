@@ -42,16 +42,6 @@ namespace big
 				&gta_data_service::load_weapons,
 				"Weapon"
 			);
-
-			//std::this_thread::sleep_for(1s);
-
-			//this->load_from_file(
-			//	"./lib/animDictsCompact.json",
-			//	"./lib/animDictsCompact_etag.txt",
-			//	url_prefix + "animDictsCompact.json",
-			//	&gta_data_service::load_animations,
-			//	"Animation"
-			//);
 		});
 
 		g_gta_data_service = this;
@@ -145,10 +135,6 @@ namespace big
 		return m_weapon_item_arr;
 	}
 
-	const std::vector<animation_item>& gta_data_service::get_animation_arr()
-	{
-		return m_animation_item_arr;
-	}
 
 	void gta_data_service::load_from_file(
 		std::string file_path, std::string etag_path, std::string url,
@@ -399,42 +385,6 @@ namespace big
 		catch (const std::exception& ex)
 		{
 			LOG(WARNING) << "Failed to load weapons.json:\n" << ex.what();
-			return false;
-		}
-
-		return true;
-	}
-
-	bool gta_data_service::load_animations(std::filesystem::path path)
-	{
-		std::ifstream file(path);
-		nlohmann::json all_animations;
-
-		try
-		{
-			file >> all_animations;
-
-			if (!all_animations.is_array())
-			{
-				throw std::exception("Invalid json format.");
-			}
-
-			m_animation_item_arr.clear();
-
-			for (auto& item_json : all_animations)
-			{
-				if (item_json["DictionaryName"].is_null() ||
-					item_json["Animations"].is_null() ||
-					!item_json["Animations"].is_array())
-					continue;
-				auto item = animation_item(item_json);
-				m_animation_item_arr.push_back(item);
-			}
-
-		}
-		catch (const std::exception& ex)
-		{
-			LOG(WARNING) << "Failed to load animDictsCompact.json:\n" << ex.what();
 			return false;
 		}
 
