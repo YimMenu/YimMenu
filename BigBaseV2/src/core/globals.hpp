@@ -62,6 +62,8 @@ namespace big
 				pair transaction_error{};
 				pair tse_freeze{};
 				pair vehicle_kick{};
+				pair teleport_to_warehouse{};
+				pair start_activity{};
 			} script_event_handler{};
 
 			pair gta_thread_kill{};
@@ -116,6 +118,8 @@ namespace big
 				bool spectate = true;
 				bool transaction_error = true;
 				bool vehicle_kick = true;
+				bool teleport_to_warehouse = true;
+				bool start_activity = true;
 			};
 
 			script_events script_events{};
@@ -464,6 +468,10 @@ namespace big
 				script_handler.tse_freeze.notify = script_handler_j["tse_freeze"]["notify"];
 				script_handler.vehicle_kick.log = script_handler_j["vehicle_kick"]["log"];
 				script_handler.vehicle_kick.notify = script_handler_j["vehicle_kick"]["notify"];
+				script_handler.teleport_to_warehouse.log = script_handler_j["teleport_to_warehouse"]["log"];
+				script_handler.teleport_to_warehouse.notify = script_handler_j["teleport_to_warehouse"]["notify"];
+				script_handler.start_activity.log = script_handler_j["start_activity"]["log"];
+				script_handler.start_activity.notify = script_handler_j["start_activity"]["notify"];
 			}
 
 			g->notifications.send_net_info_to_lobby.log = j["notifications"]["send_net_info_to_lobby"]["log"];
@@ -497,6 +505,8 @@ namespace big
 				script_handler.spectate = script_handler_j["spectate"];
 				script_handler.transaction_error = script_handler_j["transaction_error"];
 				script_handler.vehicle_kick = script_handler_j["vehicle_kick"];
+				script_handler.teleport_to_warehouse = script_handler_j["teleport_to_warehouse"];
+				script_handler.start_activity = script_handler_j["start_activity"];
 			}
 
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
@@ -704,7 +714,9 @@ namespace big
 								{ "spectate", return_notify_pair(script_handler_notifications.spectate) },
 								{ "transaction_error", return_notify_pair(script_handler_notifications.transaction_error) },
 								{ "tse_freeze", return_notify_pair(script_handler_notifications.tse_freeze) },
-								{ "vehicle_kick", return_notify_pair(script_handler_notifications.vehicle_kick) }
+								{ "vehicle_kick", return_notify_pair(script_handler_notifications.vehicle_kick) },
+								{ "teleport_to_warehouse", return_notify_pair(script_handler_notifications.teleport_to_warehouse) },
+								{ "start_activity", return_notify_pair(script_handler_notifications.start_activity) }
 							}
 						},
 						{ "send_net_info_to_lobby", return_notify_pair(g->notifications.send_net_info_to_lobby) },
@@ -739,7 +751,9 @@ namespace big
 								{ "sound_spam", script_handler_protections.sound_spam },
 								{ "spectate", script_handler_protections.spectate },
 								{ "transaction_error", script_handler_protections.transaction_error },
-								{ "vehicle_kick", script_handler_protections.vehicle_kick }
+								{ "vehicle_kick", script_handler_protections.vehicle_kick },
+								{ "teleport_to_warehouse", script_handler_protections.teleport_to_warehouse },
+								{ "start_activity", script_handler_protections.start_activity },
 							}
 						}
 					}

@@ -21,6 +21,7 @@ namespace big
 		else
 			return false;
 	}
+
 	bool hooks::receive_net_message(void* netConnectionManager, void* a2, rage::netConnection::InFrame* frame)
 	{
 		if (frame->get_type() == 4)
@@ -33,18 +34,37 @@ namespace big
 			{
 				switch (msgType)
 				{
-					//Desync Kick
-					case rage::eNetMessage::CMsgNetComplaint:
+				//Desync Kick
+				case rage::eNetMessage::CMsgNetComplaint:
+				{
+					uint64_t hostToken;
+					buffer.ReadQWord(&hostToken, 0x40);
+					buffer.Seek(0);
+					player_ptr sender = g_player_service->get_by_host_token(hostToken);
+					sender->get_net_game_player()->m_complaints = USHRT_MAX; //Sender
+					g_notification_service->push_warning("Blocked Kick", fmt::format("Desync kick from {}", sender->get_name()));
+					buffer.Seek(0);
+					return false;
+				}
+
+				case rage::eNetMessage::CMsgScriptMigrateHost:
+				{
+					if (std::chrono::system_clock::now() - player->m_last_transition_msg_sent < 200ms)
 					{
-						uint64_t hostToken;
-						buffer.ReadQWord(&hostToken, 0x40);
-						buffer.Seek(0);
-						player_ptr sender = g_player_service->get_by_host_token(hostToken);
-						sender->get_net_game_player()->m_complaints = USHRT_MAX; //Sender
-						g_notification_service->push_warning("Blocked Kick", fmt::format("Desync kick from {}", sender->get_name()));
-						buffer.Seek(0);
-						return false;
+						if (player->m_num_failed_transition_attempts++ == 20)
+						{
+							g_notification_service->push_error("Protections", fmt::format("{} tried to OOM kick you!", player->get_name()));
+						}
+						return true;
 					}
+					else
+					{
+						player->m_last_transition_msg_sent = std::chrono::system_clock::now();
+						player->m_num_failed_transition_attempts = 0;
+					}
+					break;
+				}
+
 				}
 			}
 		}
