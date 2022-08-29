@@ -74,12 +74,19 @@ namespace big
 				return true;
 			}
 			break;
-		case eRemoteEvent::FakeDeposit:
-			if (g->protections.script_events.fake_deposit)
+		case eRemoteEvent::Notification:
+			switch (static_cast<eRemoteEvent>(args[2]))
 			{
-				format_string(player_name, "Fake Deposit", notify.fake_deposit.log, notify.fake_deposit.notify);
+			case eRemoteEvent::NotificationMoneyBanked:
+			case eRemoteEvent::NotificationMoneyRemoved:
+			case eRemoteEvent::NotificationMoneyStolen:
+				if (g->protections.script_events.fake_deposit)
+				{
+					format_string(player_name, "Fake Deposit", notify.fake_deposit.log, notify.fake_deposit.notify);
 
-				return true;
+					return true;
+				}
+				break;
 			}
 			break;
 		case eRemoteEvent::ForceMission:
@@ -99,9 +106,15 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::MCTeleport:
-			if (g->protections.script_events.mc_teleport)
+			if (g->protections.script_events.mc_teleport && args[3] <= 32)
 			{
-				format_string(player_name, "MC Teleport", notify.mc_teleport.log, notify.mc_teleport.notify);
+				format_string(player_name, "Remote Teleport", notify.mc_teleport.log, notify.mc_teleport.notify);
+
+				return true;
+			}
+			else if (g->protections.script_events.crash && args[3] > 32)
+			{
+				format_string(player_name, "TSE Crash", notify.crash.log, notify.crash.notify);
 
 				return true;
 			}
@@ -130,17 +143,10 @@ namespace big
 				return true;
 			}
 			break;
-		case eRemoteEvent::RotateCam:
-			if (g->protections.script_events.crash && args[2] == 537560473) {
-				format_string(player_name, "Crash - Rotate Cam", notify.crash.log, notify.crash.notify);
-				return true;
-			}
-
-			if (g->protections.script_events.rotate_cam)
+		case eRemoteEvent::TSECommand:
+			if (g->protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[2]) == eRemoteEvent::TSECommandRotateCam)
 			{
-				if (CNetworkPlayerMgr* player_mgr = gta_util::get_network_player_mgr(); player_mgr != nullptr)
-					if (args[2] == player_mgr->m_local_net_player->m_player_id)
-						format_string(player_name, "Rotate Cam", notify.rotate_cam.log, notify.rotate_cam.notify);
+				format_string(player_name, "Rotate Cam", notify.rotate_cam.log, notify.rotate_cam.notify);
 
 				return true;
 			}
@@ -254,6 +260,58 @@ namespace big
 
 				return true;
 			}
+			break;
+		case eRemoteEvent::TeleportToWarehouse:
+			if (g->protections.script_events.teleport_to_warehouse)
+			{
+				format_string(player_name, "Teleport To Warehouse", notify.teleport_to_warehouse.log, notify.teleport_to_warehouse.notify);
+
+				return true;
+			}
+			break;
+		case eRemoteEvent::StartActivity:
+			eActivityType activity = static_cast<eActivityType>(args[2]);
+			if (g->protections.script_events.start_activity)
+			{
+				if (activity == eActivityType::Survival || activity == eActivityType::Mission || activity == eActivityType::Deathmatch || activity == eActivityType::BaseJump || activity == eActivityType::Race)
+				{
+					format_string(player_name, "Softlock Game", notify.start_activity.log, notify.start_activity.notify);
+
+					return true;
+				}
+				else if (activity == eActivityType::Darts)
+				{
+					format_string(player_name, "Send To Darts", notify.start_activity.log, notify.start_activity.notify);
+
+					return true;
+				}
+				else if (activity == eActivityType::PilotSchool)
+				{
+					format_string(player_name, "Send To Flight School", notify.start_activity.log, notify.start_activity.notify);
+
+					return true;
+				}
+				else if (activity == eActivityType::ImpromptuDeathmatch)
+				{
+					format_string(player_name, "Start Impromptu Deathmatch", notify.start_activity.log, notify.start_activity.notify);
+
+					return true;
+				}
+				else if (activity == eActivityType::DefendSpecialCargo || activity == eActivityType::GunrunningDefend || activity == eActivityType::BikerDefend)
+				{
+					format_string(player_name, "Trigger Business Raid", notify.start_activity.log, notify.start_activity.notify);
+
+					return true;
+				}
+				// there are MANY more
+			}
+			else if (g->protections.script_events.crash && activity == eActivityType::Tennis)
+			{
+				format_string(player_name, "TSE Crash (Start Tennis)", notify.crash.log, notify.crash.notify);
+
+				return true;
+			}
+			break;
 		}
 
 
