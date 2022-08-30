@@ -38,7 +38,7 @@ namespace big
 			}
 			if (ImGui::BeginTabItem("Debug"))
 			{
-				view::debug();
+				view::debug_tabs();
 				ImGui::EndTabItem();
 			}
 

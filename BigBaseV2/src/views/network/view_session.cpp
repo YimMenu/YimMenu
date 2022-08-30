@@ -52,6 +52,11 @@ namespace big
 			ImGui::TreePop();
 		}
 
+		if (ImGui::TreeNode("Settings"))
+		{
+			ImGui::Checkbox("Fast Join", &g->tunables.fast_join);
+		}
+
 		if (ImGui::TreeNode("Local Time"))
 		{
 			ImGui::Checkbox("Override Time", &g->session.override_time);

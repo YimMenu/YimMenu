@@ -13,7 +13,11 @@ namespace big
 
 	public:
 		static void main_view();
-		static void debug();
+		static void debug_scripts();
+		static void debug_script_events();
+		static void debug_globals();
+		static void debug_ped_flags();
+		static void debug_tabs();
 		static void esp_settings();
 		static void context_menu_settings();
 		static void gui_settings();
@@ -48,7 +52,6 @@ namespace big
 		static void players();
 		static void weapons();
 		static void context_menu();
-		static void debug_c();
 		static void menu_bar();
 		static void overlay();
 		static void pie_menu();

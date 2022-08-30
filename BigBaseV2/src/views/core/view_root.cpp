@@ -14,7 +14,6 @@ namespace big
 		if (g->window.users)
 			view::players();
 
-		view::debug_c();
 		view::menu_bar();
 		view::score_controller();
 	}

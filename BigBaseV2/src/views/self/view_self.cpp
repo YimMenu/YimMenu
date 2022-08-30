@@ -78,6 +78,13 @@ namespace big
 		});
 
 		ImGui::EndGroup();
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+
+		ImGui::Checkbox("Phone Anim", &g->tunables.phone_anim);
+		ImGui::Checkbox("Jump Ragdoll", &g->self.allow_ragdoll);
+
+		ImGui::EndGroup();
 
 		ImGui::Separator();
 

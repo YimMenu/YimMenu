@@ -310,7 +310,6 @@ namespace big
 		};
 
 		struct window {
-			bool debug = false;
 			bool handling = false;
 			bool log = false;
 			bool main = true;
@@ -664,7 +663,6 @@ namespace big
 
 			this->window.color = j["window"]["color"];
 			this->window.gui_scale = j["window"]["gui_scale"];
-			this->window.debug = j["window"]["debug"];
 			this->window.handling = j["window"]["handling"];
 			this->window.overlay = j["window"]["overlay"];
 			this->window.log = j["window"]["log"];
@@ -980,7 +978,6 @@ namespace big
 					"window", {
 						{ "color", this->window.color },
 						{ "gui_scale", this->window.gui_scale },
-						{ "debug", this->window.debug },
 						{ "handling", this->window.handling },
 						{ "overlay", this->window.overlay },
 						{ "log", this->window.log },
