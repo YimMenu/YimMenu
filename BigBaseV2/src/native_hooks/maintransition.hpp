@@ -2,6 +2,7 @@
 #include "native_hooks.hpp"
 #include "core/globals.hpp"
 #include "natives.hpp"
+#include "pointers.hpp"
 
 namespace big
 {

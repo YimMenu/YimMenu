@@ -37,6 +37,13 @@ namespace big
 		ImGui::Checkbox("Vehicle Kick", &g->protections.script_events.vehicle_kick);
 		ImGui::Checkbox("Wanted Level", &g->protections.script_events.clear_wanted_level);
 		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
+		ImGui::Checkbox("Teleport To Warehouse", &g->protections.script_events.teleport_to_warehouse);
+		ImGui::Checkbox("Start Activity", &g->protections.script_events.start_activity);
+		ImGui::EndGroup();
 	}
 
 }
