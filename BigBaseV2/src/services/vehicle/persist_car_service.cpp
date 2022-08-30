@@ -174,7 +174,7 @@ namespace big
 		if (VEHICLE::IS_THIS_MODEL_A_CAR(ENTITY::GET_ENTITY_MODEL(vehicle)) || VEHICLE::IS_THIS_MODEL_A_BIKE(ENTITY::GET_ENTITY_MODEL(vehicle)))
 		{
 			VEHICLE::SET_VEHICLE_WHEEL_TYPE(vehicle, vehicle_json[wheel_type_key]);
-			for (int i = MOD_SPOILERS; i <= MOD_LIGHTBAR; i++)
+			for (int i = MOD_SPOILERS; i < MOD_LIGHTBAR; i++)
 			{
 				const bool has_mod = !vehicle_json[mod_names[i]].is_null();
 				if (has_mod)
