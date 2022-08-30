@@ -88,6 +88,8 @@ namespace big
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
+		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
+
 		g_gui.always_draw();
 
 		if (g_gui.m_opened)

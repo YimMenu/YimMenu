@@ -34,6 +34,11 @@ namespace big
 					view::settings_tabs();
 					ImGui::EndTabItem();
 				}
+				if (ImGui::BeginTabItem("Debug"))
+				{
+					view::debug_tabs();
+					ImGui::EndTabItem();
+				}
 
 				ImGui::EndTabBar();
 			}

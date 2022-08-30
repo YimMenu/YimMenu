@@ -20,7 +20,7 @@ namespace big
 
 		auto& style = ImGui::GetStyle();
 		style.WindowPadding = { 10.f, 10.f };
-		style.PopupRounding = 0.f;
+		style.PopupRounding = 3.f;
 		style.FramePadding = { 8.f, 4.f };
 		style.ItemSpacing = { 10.f, 8.f };
 		style.ItemInnerSpacing = { 6.f, 6.f };

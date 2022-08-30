@@ -48,7 +48,11 @@ namespace big
 		static void network_tabs();
 		static void spoofing();
 		static void teleport();
-		static void view_player();
+		static void view_player_tabs();
+		static void view_player_info();
+		static void view_player_ped();
+		static void view_player_teleport();
+		static void view_player_toxic();
 		static void players();
 		static void weapons();
 		static void context_menu();

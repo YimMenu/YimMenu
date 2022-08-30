@@ -36,11 +36,6 @@ namespace big
 				view::protection_settings();
 				ImGui::EndTabItem();
 			}
-			if (ImGui::BeginTabItem("Debug"))
-			{
-				view::debug_tabs();
-				ImGui::EndTabItem();
-			}
 
 			ImGui::EndTabBar();
 		}

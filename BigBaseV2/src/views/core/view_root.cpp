@@ -9,7 +9,7 @@ namespace big
 			view::main_view();
 
 		if (g->window.player)
-			view::view_player();
+			view::view_player_tabs();
 
 		if (g->window.users)
 			view::players();
