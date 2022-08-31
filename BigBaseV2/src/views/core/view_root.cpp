@@ -14,6 +14,9 @@ namespace big
 		if (g->window.users)
 			view::players();
 
+		if (g->window.demo)
+			ImGui::ShowDemoWindow(&g->window.demo);
+
 		view::menu_bar();
 		view::score_controller();
 	}

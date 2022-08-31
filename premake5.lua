@@ -141,6 +141,7 @@ workspace "BigBaseV2"
 		files
 		{
 			"vendor/%{prj.name}/imgui.cpp",
+			"vendor/%{prj.name}/imgui_demo.cpp",
 			"vendor/%{prj.name}/imgui_draw.cpp",
 			"vendor/%{prj.name}/imgui_tables.cpp",
 			"vendor/%{prj.name}/imgui_widgets.cpp",
@@ -154,8 +155,6 @@ workspace "BigBaseV2"
 		}
 		
 		defines {
-			"IMGUI_DISABLE_DEMO_WINDOWS",
-			"IMGUI_DISABLE_METRICS_WINDOW",
 			"IM_ASSERT(_EXPR) ((void)(_EXPR))"
 		}
 

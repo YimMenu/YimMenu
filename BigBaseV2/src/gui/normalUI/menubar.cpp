@@ -91,6 +91,7 @@ namespace big
                 ImGui::MenuItem("Players", nullptr, &g->window.users);
                 ImGui::MenuItem("Score Controller", nullptr, &g->window.score_controller);
                 ImGui::MenuItem("Overlay", nullptr, &g->window.overlay);
+                ImGui::MenuItem("Demo", nullptr, &g->window.demo);
 
                 ImGui::EndMenu();
             }
