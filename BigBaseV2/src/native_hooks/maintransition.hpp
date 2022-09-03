@@ -61,11 +61,7 @@ namespace big
 
 		inline void SET_ENTITY_COLLISION(rage::scrNativeCallContext* src)
 		{
-			if (g->tunables.fast_join)
-			{
-				return;
-			}
-			else
+			if (!g->tunables.fast_join)
 			{
 				ENTITY::SET_ENTITY_COLLISION(src->get_arg<Entity>(0), src->get_arg<BOOL>(1), src->get_arg<BOOL>(2));
 			}
@@ -85,15 +81,37 @@ namespace big
 
 		inline void FREEZE_ENTITY_POSITION(rage::scrNativeCallContext* src)
 		{
-			if (g->tunables.fast_join)
-			{
-				return;
-			}
-			else
+			if (!g->tunables.fast_join)
 			{
 				ENTITY::FREEZE_ENTITY_POSITION(src->get_arg<Entity>(0), src->get_arg<BOOL>(1));
 			}
 		}
+
+		inline void SET_GAME_PAUSES_FOR_STREAMING(rage::scrNativeCallContext* src)
+		{
+			if (g->tunables.fast_join)
+			{
+				LOG(G3LOG_DEBUG) << "SET_GAME_PAUSES_FOR_STREAMING skipped";
+			}
+			else
+			{
+				STREAMING::SET_GAME_PAUSES_FOR_STREAMING(src->get_arg<BOOL>(0));
+			}
+		}
+
+		inline void CHANGE_PLAYER_PED(rage::scrNativeCallContext* src)
+		{
+			if (g->tunables.fast_join)
+			{
+				LOG(G3LOG_DEBUG) << "CHANGE_PLAYER_PED skipped";
+			}
+			else
+			{
+				PLAYER::CHANGE_PLAYER_PED(src->get_arg<Player>(0), src->get_arg<Ped>(1), src->get_arg<BOOL>(2), src->get_arg<BOOL>(3));
+			}
+		}
+
+
 
 		//
 		// PLAYER_SWITCH END

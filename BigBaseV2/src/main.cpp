@@ -23,6 +23,7 @@
 #include "services/players/player_service.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "services/notifications/notification_service.hpp"
+#include "services/spinner/spinner_service.hpp"
 #include "services/model_preview/model_preview_service.hpp"
 #include "services/vehicle/vehicle_service.hpp"
 
@@ -81,6 +82,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto globals_service_instace = std::make_unique<globals_service>();
 				auto mobile_service_instance = std::make_unique<mobile_service>();
 				auto notification_service_instance = std::make_unique<notification_service>();
+				auto spinner_service_instance = std::make_unique<spinner_service>();
 				auto pickup_service_instance = std::make_unique<pickup_service>();
 				auto player_service_instance = std::make_unique<player_service>();
 				auto player_database_service_instance = std::make_unique<player_database_service>();
@@ -151,6 +153,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				LOG(INFO) << "Model Preview Service reset.";
 				mobile_service_instance.reset();
 				LOG(INFO) << "Mobile Service reset.";
+				spinner_service_instance.reset();
+				LOG(INFO) << "Spinner Service reset.";
 				player_service_instance.reset();
 				LOG(INFO) << "Player Service reset.";
 				player_database_service_instance.reset();

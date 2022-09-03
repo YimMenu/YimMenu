@@ -1,6 +1,7 @@
 #include "backend/looped/looped.hpp"
 #include "natives.hpp"
 #include "script_global.hpp"
+#include "services/spinner/spinner_service.hpp"
 
 // Credits: QuickNET
 namespace big
@@ -90,16 +91,21 @@ namespace big
 			SCRIPT::SHUTDOWN_LOADING_SCREEN();
 		}
 
+		if (HUD::BUSYSPINNER_IS_ON())
+		{
+			HUD::BUSYSPINNER_OFF();
+		}
+
 		if (last_state == state
-			|| state == eTransitionState::TRANSITION_STATE_EMPTY
+			||  state == eTransitionState::TRANSITION_STATE_EMPTY
 			|| state > eTransitionState::TRANSITION_STATE_DLC_INTRO_BINK)
 		{
 			return;
 		}
 
-		if (HUD::BUSYSPINNER_IS_ON())
+		if (g_spinner_service->spinner.active)
 		{
-			HUD::BUSYSPINNER_OFF();
+			g_spinner_service->spinner.active = false;
 		}
 
 		// sometimes when going into a single player mission or transition this one remains on screen permanently
@@ -110,11 +116,20 @@ namespace big
 
 		if ((int)state > 0 && (int)std::size(transition_states))
 		{
-			HUD::BEGIN_TEXT_COMMAND_BUSYSPINNER_ON("STRING");
-			auto const spinner_text = fmt::format("{} | {}", transition_states[(int)state], state);
-			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(spinner_text.c_str());
-			HUD::END_TEXT_COMMAND_BUSYSPINNER_ON(5);
+			if (state > eTransitionState::TRANSITION_STATE_SP_SWOOP_UP
+				|| state < eTransitionState::TRANSITION_STATE_IS_FM_AND_TRANSITION_READY)
+			{
+				float load_persent = (float)state / 27.f;
+				auto const spinner_text = fmt::format("{} | {}", transition_states[(int)state], state);
+				g_spinner_service->push_online(true, spinner_text, true, load_persent);
+			}
+			else
+			{
+				auto const spinner_text = fmt::format("{} | {}", transition_states[(int)state], state);
+				g_spinner_service->push_online(true, spinner_text, false);
+			}
 		}
+		return;
 
 		last_state = state;
 	}

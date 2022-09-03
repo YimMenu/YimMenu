@@ -27,6 +27,8 @@ namespace big
         add_native_detour(RAGE_JOAAT("maintransition"), 0xEA1C610A04DB6BBB, maintransition::SET_ENTITY_VISIBLE);  // Makes you visible
         add_native_detour(RAGE_JOAAT("maintransition"), 0x8D32347D6D4C40A2, maintransition::SET_PLAYER_CONTROL); // Allows controll in session switch
         add_native_detour(RAGE_JOAAT("maintransition"), 0x428CA6DBD1094446, maintransition::FREEZE_ENTITY_POSITION); // Allows controll in session switch
+        add_native_detour(RAGE_JOAAT("maintransition"), 0x717CD6E6FAEBBEDC, maintransition::SET_GAME_PAUSES_FOR_STREAMING); // Stops texture unloading (from fivem) // Does this even work? // No it does not.
+        add_native_detour(RAGE_JOAAT("maintransition"), 0x048189FAC643DEEE, maintransition::CHANGE_PLAYER_PED); // Same as above
         add_native_detour(RAGE_JOAAT("shop_controller"), 0xDC38CC1E35B6A5D7, shop_controller::SET_WARNING_MESSAGE_WITH_HEADER);
 
         for (const auto& native_detours_for_script : m_native_registrations)

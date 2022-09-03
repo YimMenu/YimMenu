@@ -77,6 +77,10 @@ namespace big
                 {
                     QUEUE_JOB_BEGIN_CLAUSE()
                     {
+                        if (CAM::IS_SCREEN_FADED_OUT())
+                        {
+                            CAM::DO_SCREEN_FADE_IN(0);
+                        }
                         SCRIPT::SHUTDOWN_LOADING_SCREEN();
                     }
                     QUEUE_JOB_END_CLAUSE

@@ -31,6 +31,7 @@ namespace big
 		static void heading();
 		static void mobile();
 		static void notifications();
+		static void spinner();
 		static void root();
 		static void self_tabs();
 		static void self();
@@ -67,6 +68,7 @@ namespace big
 			esp::draw();
 			context_menu();
 			notifications();
+			spinner();
 			chat();
 			if (g->window.overlay)
 				overlay();
