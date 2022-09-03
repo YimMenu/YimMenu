@@ -118,7 +118,11 @@ namespace big
 			);
 
 			if (g_anti_cheat_service->is_player_in_moddb(net_player_data->m_rockstar_id2)) {
-				ImGui::Text("AC Score: %d", g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(net_player_data->m_rockstar_id2)].score);
+				int moddb_player = g_anti_cheat_service->get_moddb_player_from_rid(net_player_data->m_rockstar_id2);
+				ImGui::Text("AC Score: %d", g_anti_cheat_service->modders()[moddb_player].score);
+				std::string detections = g_anti_cheat_service->modders()[moddb_player].detections.c_str();
+				detections.pop_back(); detections.pop_back();
+				ImGui::Text("Detections: %s", detections.c_str());
 			}
 		}
 

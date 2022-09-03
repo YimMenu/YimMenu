@@ -148,11 +148,11 @@ namespace big
 				if (g_anti_cheat_service->is_player_in_moddb(rid))
 				{
 					if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
-						g_anti_cheat_service->add_score_to_modder(rid, 5);
+						g_anti_cheat_service->add_score_to_modder(rid, 5, "Cash spawn, ");
 				}
 				else
 				{
-					g_anti_cheat_service->mark_as_modder(source_player->m_player_id, 5);
+					g_anti_cheat_service->mark_as_modder(source_player->m_player_id, 5, "Cash spawn, ");
 				}
 			}
 
@@ -172,12 +172,15 @@ namespace big
 			uint64_t rid = source_player->get_net_data()->m_rockstar_id2;
 			if (g_anti_cheat_service->is_player_in_moddb(rid))
 			{
-				if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
-					g_anti_cheat_service->add_score_to_modder(rid, 5);
+				int moddb_player = g_anti_cheat_service->get_moddb_player_from_rid(rid);
+				if (g_anti_cheat_service->modders()[moddb_player].score < 10)
+				{
+					g_anti_cheat_service->add_score_to_modder(rid, 5, "Modder event, ");
+				}
 			}
 			else
 			{
-				g_anti_cheat_service->mark_as_modder(source_player->m_player_id, 5);
+				g_anti_cheat_service->mark_as_modder(source_player->m_player_id, 5, "Modder event, ");
 			}
 
 			break;

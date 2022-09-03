@@ -161,11 +161,11 @@ namespace big
 				if (g_anti_cheat_service->is_player_in_moddb(rid))
 				{
 					if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
-						g_anti_cheat_service->add_score_to_modder(rid, 3);
+						g_anti_cheat_service->add_score_to_modder(rid, 3, "Send to Cayo Perico, ");
 				}
 				else
 				{
-					g_anti_cheat_service->mark_as_modder(player->m_player_id, 3);
+					g_anti_cheat_service->mark_as_modder(player->m_player_id, 3, "Send to Cayo Perico, ");
 				}
 
 				return true;
@@ -208,11 +208,11 @@ namespace big
 						if (g_anti_cheat_service->is_player_in_moddb(rid))
 						{
 							if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
-								g_anti_cheat_service->add_score_to_modder(rid, 3);
+								g_anti_cheat_service->add_score_to_modder(rid, 3, "Send to Cayo Perico, ");
 						}
 						else
 						{
-							g_anti_cheat_service->mark_as_modder(player->m_player_id, 3);
+							g_anti_cheat_service->mark_as_modder(player->m_player_id, 3, "Send to Cayo Perico, ");
 						}
 
 						return true;
@@ -253,11 +253,11 @@ namespace big
 				if (g_anti_cheat_service->is_player_in_moddb(rid))
 				{
 					if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
-						g_anti_cheat_service->add_score_to_modder(rid, 4);
+						g_anti_cheat_service->add_score_to_modder(rid, 4, "Apartment invite, ");
 				}
 				else
 				{
-					g_anti_cheat_service->mark_as_modder(player->m_player_id, 4);
+					g_anti_cheat_service->mark_as_modder(player->m_player_id, 4, "Apartment invite, ");
 				}
 
 				return true;

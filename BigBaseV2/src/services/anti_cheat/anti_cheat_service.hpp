@@ -10,6 +10,7 @@ namespace big
 		std::string player_name;
 		uint64_t rid;
 		int score;
+		std::string detections;
 	};
 	using modders = std::vector<modder_player>;
 
@@ -29,8 +30,8 @@ namespace big
 		anti_cheat_service& operator=(anti_cheat_service&&) noexcept = delete;
 
 		bool is_player_in_moddb(uint64_t rid);
-		bool mark_as_modder(Player player, int score);
-		bool add_score_to_modder(uint64_t rid, int score_to_add);
+		bool mark_as_modder(Player player, int score, std::string detection);
+		bool add_score_to_modder(uint64_t rid, int score_to_add, std::string detection);
 		int get_moddb_player_from_rid(uint64_t rid);
 		int modder_check(Player player);
 
