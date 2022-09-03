@@ -17,6 +17,12 @@ namespace big
 				ImGui::EndTabItem();
 			}
 
+			if (ImGui::BeginTabItem("Player DB"))
+			{
+				view::player_db();
+				ImGui::EndTabItem();
+			}
+
 			ImGui::EndTabBar();
 		}
 	}

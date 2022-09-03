@@ -36,6 +36,7 @@ namespace big
 		static void self_tabs();
 		static void self();
 		static void session();
+		static void player_db();
 		static void settings_tabs();
 		static void settings();
 		static void vehicle_tabs();
