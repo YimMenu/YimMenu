@@ -194,6 +194,8 @@ workspace "BigBaseV2"
 		    "%{prj.name}/src/**.hpp",
 		    "%{prj.name}/src/**.h",
 		    "%{prj.name}/src/**.cpp",
+		    "%{prj.name}/src/**.cc",
+		    "%{prj.name}/src/**.cxx",
 		    "%{prj.name}/src/**.asm"
 		}
 
