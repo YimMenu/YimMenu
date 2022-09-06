@@ -182,6 +182,7 @@ workspace "BigBaseV2"
 
 	project "BigBaseV2"
 		location "BigBaseV2"
+		symbols "Off"
 		kind "SharedLib"
 		language "C++"
 
