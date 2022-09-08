@@ -182,6 +182,7 @@ workspace "BigBaseV2"
 
 	project "BigBaseV2"
 		location "BigBaseV2"
+		symbols "Off"
 		kind "SharedLib"
 		language "C++"
 
@@ -193,6 +194,8 @@ workspace "BigBaseV2"
 		    "%{prj.name}/src/**.hpp",
 		    "%{prj.name}/src/**.h",
 		    "%{prj.name}/src/**.cpp",
+		    "%{prj.name}/src/**.cc",
+		    "%{prj.name}/src/**.cxx",
 		    "%{prj.name}/src/**.asm"
 		}
 

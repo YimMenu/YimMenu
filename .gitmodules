@@ -8,11 +8,11 @@
 	ignore = dirty
 [submodule "vendor/MinHook"]
 	path = vendor/MinHook
-	url = https://github.com/tupoy-ya/minhook.git
+	url = https://github.com/YimMenu/minhook
 	ignore = dirty
 [submodule "vendor/g3log"]
 	path = vendor/g3log
-	url = https://github.com/tupoy-ya/g3log.git
+	url = https://github.com/YimMenu/g3log.git
 	ignore = dirty
 [submodule "vendor/GTAV-Classes"]
 	path = vendor/GTAV-Classes
