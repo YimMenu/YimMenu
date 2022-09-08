@@ -7,8 +7,7 @@
 
 namespace big
 {
-    // I don't think there's a script with -1 as a hash
-    constexpr rage::joaat_t ALL_SCRIPT_HASH = -1;
+    constexpr auto ALL_SCRIPT_HASH = RAGE_JOAAT("ALL_SCRIPTS");
 
     native_hooks::native_hooks()
     {
