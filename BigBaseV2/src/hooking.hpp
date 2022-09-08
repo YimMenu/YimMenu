@@ -33,6 +33,7 @@ namespace big
 
 		static void network_group_override(std::int64_t a1, std::int64_t a2, std::int64_t a3);
 
+		static __int64* chat_receive(__int64 a1, __int64 a2, __int64 a3, const char* a4, char a5);
 
 		static void received_event(
 			rage::netEventMgr* event_manager,
@@ -108,6 +109,7 @@ namespace big
 
 		detour_hook m_received_event_hook;
 		detour_hook m_received_clone_sync_hook;
+		detour_hook m_chat_message_received_hook;
 		
 		detour_hook m_send_net_info_to_lobby;
 		detour_hook m_receive_net_message_hook;

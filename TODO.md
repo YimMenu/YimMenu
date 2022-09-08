@@ -15,9 +15,11 @@ Why don't just use github projects.
 - [ ] Session browser
 - [ ] Integrate https://github.com/Rimmuru/List
 - [ ] Add lua api
-- [ ] Chat logging
+- [ ] Give weapon by name
+- [ ] Animation list
 
 ### In Progress
+- [ ] Chat logging
 
 ### Completed
 - [x] Shitty jump ragdol 

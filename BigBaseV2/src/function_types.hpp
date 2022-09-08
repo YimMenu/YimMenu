@@ -43,7 +43,7 @@ namespace big::functions
 
 	using get_script_handle_t = int64_t(*)(int64_t);
 
-	using chat_player_id = CNetGamePlayer * (__int64 a1, __int64* a2, __int64 a3);
+	using get_net_player_from_unk = CNetGamePlayer*(__int64);
 
 	using send_chat_message = bool(__int64 ptr, __int64 peerId, const char* message, bool isTeam);
 

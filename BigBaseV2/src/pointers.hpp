@@ -44,7 +44,8 @@ namespace big
 		rage::GenericPool* m_pickup_pool{};
 		rage::GenericPool* m_camera_pool{};
 
-		functions::chat_player_id* m_chat_player_id;
+		__int64* m_chat_receive{};
+		functions::get_net_player_from_unk* m_get_net_player_from_unk{};
 		__int64* m_send_chat_ptr{};
 		functions::send_chat_message* m_send_chat_message{};
 

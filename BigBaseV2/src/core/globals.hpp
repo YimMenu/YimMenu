@@ -357,6 +357,13 @@ namespace big
 			bool selected = false;
 		};
 
+		struct chat
+		{
+			std::string message;
+			bool local = false;
+			bool encription = false; // TODO
+		};
+
 		struct esp
 		{
 			bool enabled = true;
@@ -408,6 +415,7 @@ namespace big
 		window window{};
 		context_menu context_menu{};
 		pie_menu pie_menu{};
+		chat chat{};
 		esp esp{};
 
 		menu_settings(file save_file)
