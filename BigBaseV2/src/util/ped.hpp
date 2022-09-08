@@ -148,7 +148,7 @@ namespace big::ped
 		return relationshipGroup;
 	}
 
-	inline Ped spawn_grifer_jesus(Vector3 pos, Ped player_ped)
+	inline Ped spawn_griefer_jesus(Vector3 pos, Ped player_ped)
 	{
 		Hash relationshipGroup = create_bad_ped_relationship_group("_HOSTILE_JESUS");
 
@@ -180,7 +180,7 @@ namespace big::ped
 		return ped;
 	}
 
-	inline Ped spawn_extrime_grifer_jesus(Vector3 pos, Ped player_ped)
+	inline Ped spawn_extrime_griefer_jesus(Vector3 pos, Ped player_ped)
 	{
 		float heading = ENTITY::GET_ENTITY_HEADING(PED::IS_PED_IN_ANY_VEHICLE(player_ped, false) ? PED::GET_VEHICLE_PED_IS_IN(player_ped, false) : player_ped);
 
@@ -219,7 +219,7 @@ namespace big::ped
 		return ped;
 	}
 
-	inline Ped spawn_grifer_jet(Vector3 pos, Ped player_ped, Hash jet)
+	inline Ped spawn_griefer_jet(Vector3 pos, Ped player_ped, Hash jet)
 	{
 		float heading = ENTITY::GET_ENTITY_HEADING(PED::IS_PED_IN_ANY_VEHICLE(player_ped, false) ? PED::GET_VEHICLE_PED_IS_IN(player_ped, false) : player_ped);
 

@@ -6,12 +6,12 @@ namespace big
 	void view::debug_tabs() {
 		if (ImGui::BeginTabBar("debug_tabbar"))
 		{
-			if (ImGui::BeginTabItem("Sripts"))
+			if (ImGui::BeginTabItem("Scripts"))
 			{
 				view::debug_scripts();
 				ImGui::EndTabItem();
 			}
-			if (ImGui::BeginTabItem("Sript Events"))
+			if (ImGui::BeginTabItem("Script Events"))
 			{
 				view::debug_script_events();
 				ImGui::EndTabItem();

@@ -90,30 +90,30 @@ namespace big
 		}
 
 		if (ImGui::TreeNode("Spawns")) {
-			components::button("Spawn Grifer Gesus", [] {
+			components::button("Spawn Griefer Jesus", [] {
 				Ped player_ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
 				Vector3 pos = ENTITY::GET_ENTITY_COORDS(player_ped, true) + Vector3(0, 0, 500);
 
-				ped::spawn_grifer_jesus(pos, player_ped);
+				ped::spawn_griefer_jesus(pos, player_ped);
 			});
 
 			ImGui::SameLine();
 
-			components::button("Spawn Extrime Grifer Gesus", [] {
+			components::button("Spawn Extreme Griefer Jesus", [] {
 				Ped player_ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
 				Vector3 pos = ENTITY::GET_ENTITY_COORDS(player_ped, true) + Vector3(0, 0, 10);
 
-				ped::spawn_extrime_grifer_jesus(pos, player_ped);
+				ped::spawn_extrime_griefer_jesus(pos, player_ped);
 			});
 
 			ImGui::SameLine();
 
-			components::button("Spawn Grifer Lazer", [] {
+			components::button("Spawn Griefer Lazer", [] {
 				Ped player_ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
 				Vector3 pos = ENTITY::GET_ENTITY_COORDS(player_ped, true) + Vector3(0, 0, 500);
 				Hash jet_hash RAGE_JOAAT("lazer");
 
-				ped::spawn_grifer_jet(pos, player_ped, jet_hash);
+				ped::spawn_griefer_jet(pos, player_ped, jet_hash);
 			});
 
 			ImGui::TreePop();
