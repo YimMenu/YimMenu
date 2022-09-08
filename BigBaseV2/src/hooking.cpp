@@ -38,9 +38,6 @@ namespace big
 
 		// Network Group Override
 		m_network_group_override("NGO", g_pointers->m_network_group_override, &hooks::network_group_override),
-		
-		// Is DLC Present
-		m_is_dlc_present_hook("IDP", g_pointers->m_is_dlc_present, &hooks::is_dlc_present),
 
 		// Received Event
 		m_received_event_hook("RE", g_pointers->m_received_event, &hooks::received_event),
@@ -85,7 +82,6 @@ namespace big
 		m_network_player_mgr_shutdown_hook.enable();
 		m_assign_physical_index_hook.enable();
 		m_received_event_hook.enable();
-		m_is_dlc_present_hook.enable();
 		m_send_net_info_to_lobby.enable();
 		m_receive_net_message_hook.enable();
 		m_get_network_event_data_hook.enable();
@@ -105,7 +101,6 @@ namespace big
 		m_receive_net_message_hook.disable();
 		m_send_net_info_to_lobby.disable();
 		m_received_event_hook.disable();
-		m_is_dlc_present_hook.disable();
 		m_assign_physical_index_hook.disable();
 		m_network_player_mgr_init_hook.disable();
 		m_network_player_mgr_shutdown_hook.disable();
