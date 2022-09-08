@@ -168,6 +168,7 @@ namespace big
 				int teleport_waypoint = 0;
 			};
 
+			bool dev_dlc = false;
 			hotkeys hotkeys{};
 		};
 
@@ -530,6 +531,7 @@ namespace big
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
 
+			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
 
 			this->spawn_vehicle.preview_vehicle = j["spawn_vehicle"]["preview_vehicle"];
@@ -787,6 +789,7 @@ namespace big
 				},
 				{
 					"settings", {
+						{ "dev_dlc", this->settings.dev_dlc },
 						{ "hotkeys", {
 								{ "menu_toggle", this->settings.hotkeys.menu_toggle }
 							}

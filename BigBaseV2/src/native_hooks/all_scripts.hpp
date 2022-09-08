@@ -10,22 +10,9 @@ namespace big
         {
             const auto hash = src->get_arg<rage::joaat_t>(0);
             
-            bool return_value = false;
-            switch (hash)
-            {
-            case 0x96F02EE6:
-            {
-                return_value = true;
-
-                break;
-            }
-            default:
-            {
-                return_value = DLC::IS_DLC_PRESENT(hash);
-
-                break;
-            }
-            }
+            bool return_value = DLC::IS_DLC_PRESENT(hash);
+            if (hash == 0x96F02EE6)
+                return_value = return_value || g->settings.dev_dlc;
 
             src->set_return_value(return_value);
         }
