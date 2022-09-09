@@ -364,6 +364,18 @@ namespace big
 			bool encription = false; // TODO
 		};
 
+		struct outfit_editor
+		{
+			int componentId = 0;
+			int drawableId = 0;
+			int textureId = 0;
+			int paletteId = 0;
+
+			int propId = 0;
+			int propDrawableId = 0;
+			int propTextureId = 0;
+		};
+
 		struct esp
 		{
 			bool enabled = true;
@@ -417,6 +429,7 @@ namespace big
 		pie_menu pie_menu{};
 		chat chat{};
 		esp esp{};
+		outfit_editor outfit_editor{};
 
 		menu_settings(file save_file)
 			: m_save_file(std::move(save_file))

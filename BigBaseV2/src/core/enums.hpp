@@ -787,4 +787,16 @@ namespace big
 		_CPED_CONFIG_FLAG_0x4BD5EBAD = 457,
 		_CPED_CONFIG_FLAG_0xFCC5EBC5 = 458
 	};
+
+	// PS4 dump. From maybegreat48
+	enum class KickReason : std::uint8_t
+	{
+		VOTED_OUT,
+		PEER_COMPLAINTS,
+		CONNECTION_ERROR,
+		NAT_TYPE,
+		SCADMIN,
+		SCADMIN_BLACKLIST,
+		NUM_REASONS
+	};
 }

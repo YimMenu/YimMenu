@@ -26,7 +26,13 @@ namespace big
 				view::teleport();
 				ImGui::EndTabItem();
 			}
-
+			
+			if (ImGui::BeginTabItem("Outfit Editor"))
+			{
+				view::outfit_editor(self::ped);
+				ImGui::EndTabItem();
+			}
+			
 			ImGui::EndTabBar();
 		}
 	}

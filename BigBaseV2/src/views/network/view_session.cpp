@@ -55,6 +55,8 @@ namespace big
 		if (ImGui::TreeNode("Settings"))
 		{
 			ImGui::Checkbox("Fast Join", &g->tunables.fast_join);
+			
+			ImGui::TreePop();
 		}
 
 		if (ImGui::TreeNode("Local Time"))

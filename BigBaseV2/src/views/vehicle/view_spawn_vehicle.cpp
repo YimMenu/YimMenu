@@ -9,8 +9,6 @@ namespace big
 {
 	void view::spawn_vehicle()
 	{
-		ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
-
 		if (ImGui::Checkbox("Preview", &g->spawn_vehicle.preview_vehicle))
 		{
 			if (!g->spawn_vehicle.preview_vehicle)

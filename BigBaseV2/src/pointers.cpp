@@ -328,14 +328,14 @@ namespace big
 		//END SHV
 
 		// Chat Receive
-		main_batch.add("CR", "4D 85 C9 0F 84 ? ? ? ? 48 8B C4 48 89 58 08 48 89 70 10 48 89 78 18 4C 89 48 20", [this](memory::handle ptr)
+		main_batch.add("CR", "4D 85 C9 0F 84 ? ? ? ? 48 8B C4 48 89 58 08 48 89 70 10 48 89 78 18 4C 89 48 20", [this](memory::handle ptr) // Skidded from https://www.unknowncheats.me/forum/3486099-post13622.html
 		{
 			m_chat_receive = ptr.as<__int64*>();
 			
 		});
 
 		// Get Chat Player Id
-		main_batch.add("GCPID", "E8 ? ? ? ? 48 8B 0D ? ? ? ? 48 8B F0 E8 ? ? ? ? 33 FF 48 89 44 24 ?", [this](memory::handle ptr)
+		main_batch.add("GCPID", "E8 ? ? ? ? 48 8B 0D ? ? ? ? 48 8B F0 E8 ? ? ? ? 33 FF 48 89 44 24 ?", [this](memory::handle ptr) // Skidded from https://www.unknowncheats.me/forum/3486099-post13622.html
 		{
 			m_get_net_player_from_unk = ptr.add(1).rip().as<decltype(m_get_net_player_from_unk)>();
 			

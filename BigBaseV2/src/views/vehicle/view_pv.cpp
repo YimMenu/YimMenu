@@ -9,7 +9,6 @@
 namespace big
 {
 	void view::pv() {
-		ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
 
 		if (ImGui::Checkbox("Preview", &g->clone_pv.preview_vehicle))
 		{

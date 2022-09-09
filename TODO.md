@@ -17,6 +17,11 @@ Why don't just use github projects.
 - [ ] Add lua api
 - [ ] Give weapon by name
 - [ ] Animation list
+- [ ] Hud color selector
+- [ ] Outfit editor
+- [ ] Remove unused legacy code
+- [ ] Fix gta5 stupid auto language switch
+- [ ] GMOD like ctx menu
 
 ### In Progress
 - [ ] Chat logging
