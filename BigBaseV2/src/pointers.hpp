@@ -55,6 +55,10 @@ namespace big
 		uint8_t* m_region_code;
 		PVOID m_get_pool_type;
 
+		functions::get_connection_peer m_get_connection_peer;
+		functions::send_remove_gamer_cmd m_send_remove_gamer_cmd;
+		functions::handle_remove_gamer_cmd m_handle_remove_gamer_cmd;
+
 		CGameScriptHandlerMgr **m_script_handler_mgr{};
 
 		IDXGISwapChain** m_swapchain{};

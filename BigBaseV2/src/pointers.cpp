@@ -424,6 +424,18 @@ namespace big
 			m_get_label_text = ptr.sub(19).as<PVOID>();
 		});
 
+		main_batch.add("GCP&SRGC", "8D 42 FF 83 F8 FD 77 3D", [this](memory::handle ptr)
+		{
+			m_get_connection_peer = ptr.add(23).rip().as<functions::get_connection_peer>();
+			m_send_remove_gamer_cmd = ptr.add(65).rip().as<functions::send_remove_gamer_cmd>();
+		});
+
+		// Handle Remove Gamer Command
+		main_batch.add("HRGC", "41 FF C6 FF C7", [this](memory::handle ptr)
+		{
+			m_handle_remove_gamer_cmd = ptr.sub(0x6E).as<functions::handle_remove_gamer_cmd>();
+		});
+
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
 

@@ -1,4 +1,6 @@
 #pragma once
+#include "session/session.hpp"
+#include "pointers.hpp"
 #include "player_service.hpp"
 
 namespace big
@@ -29,6 +31,8 @@ namespace big
 		[[nodiscard]] CNetGamePlayer* get_net_game_player() const;
 		[[nodiscard]] CPed* get_ped() const;
 		[[nodiscard]] CPlayerInfo* get_player_info() const;
+		[[nodiscard]] rage::snPlayer* get_session_player() const;
+		[[nodiscard]] rage::snPeer* get_session_peer() const;
 
 		[[nodiscard]] uint8_t id() const;
 

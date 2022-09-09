@@ -5,6 +5,7 @@
 #include "system.hpp"
 #include "entity.hpp"
 #include "gta_util.hpp"
+#include "services/players/player.hpp"
 
 namespace big::toxic
 {
@@ -189,4 +190,28 @@ namespace big::toxic
 	//
 	// SechsMenu Code END
 	//
+
+
+	inline void breakup_kick(Player target) // From maybegreat48
+	{
+		rage::snMsgRemoveGamersFromSessionCmd cmd{};
+		Network* network = system::get_network();
+		//LOG(G3LOG_DEBUG) << "Network Ptr: " << system::get_network();
+		//LOG(G3LOG_DEBUG) << "Network Ptr2: " << network;
+		//LOG(G3LOG_DEBUG) << "Game Session Ptr: " << network->m_game_session_ptr;
+		//LOG(G3LOG_DEBUG) << "Players: " << network->m_game_session_ptr->m_players;
+		//LOG(G3LOG_DEBUG) << "Session id: " << network->m_game_session_ptr->m_rline_session.m_session_id;
+		cmd.m_session_id = network->m_game_session_ptr->m_rline_session.m_session_id;
+		cmd.m_num_peers = 1;
+		cmd.m_peer_ids[0] = g_player_service->get_by_id(target)->get_session_peer()->m_peer_data.m_peer_id;
+
+		g_pointers->m_handle_remove_gamer_cmd(network->m_game_session_ptr, g_player_service->get_by_id(target)->get_session_player(), &cmd);
+		for (auto& [name, plyr] : g_player_service->players())
+		{
+			if (plyr->id() != target)
+				g_pointers->m_send_remove_gamer_cmd(network->m_game_session_ptr->m_net_connection_mgr,
+					g_pointers->m_get_connection_peer(network->m_game_session_ptr->m_net_connection_mgr, plyr->get_session_player()->m_player_data.m_peer_id),
+					network->m_game_session_ptr->m_connection_identifier, &cmd, 0x1000000);
+		}
+	}
 }

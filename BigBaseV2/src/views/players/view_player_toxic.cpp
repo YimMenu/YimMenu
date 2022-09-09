@@ -31,6 +31,12 @@ namespace big
 				NETWORK::NETWORK_SESSION_KICK_PLAYER(g_player_service->get_selected()->id());
 			});
 
+			ImGui::SameLine();
+
+			components::button("Breakup Kick", [] {
+				toxic::breakup_kick(g_player_service->get_selected()->id());
+			});
+
 			components::button("Ped Crash", [] {
 				Ped ped = ped::spawn(ePedType::PED_TYPE_PROSTITUTE, rage::joaat("slod_human"), 0, ENTITY::GET_ENTITY_COORDS(g_player_service->get_selected()->id(), false), 0);
 				script::get_current()->yield(3s);

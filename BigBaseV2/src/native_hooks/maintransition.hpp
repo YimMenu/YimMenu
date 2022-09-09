@@ -1,6 +1,7 @@
 #pragma once
 #include "native_hooks.hpp"
 #include "core/globals.hpp"
+#include "util/system.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
 
@@ -12,7 +13,7 @@ namespace big
 		{
 			if (g->session.session_join_queued)
 			{
-				g_pointers->m_join_session_by_info(*g_pointers->m_network, &g->session.session_info, 0, 0, nullptr, 0);
+				g_pointers->m_join_session_by_info(system::get_network(), &g->session.session_info, 0, 0, nullptr, 0);
 				g->session.session_join_queued = false;
 				src->set_return_value<BOOL>(TRUE);
 			}

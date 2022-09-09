@@ -45,11 +45,11 @@ namespace big
 					buffer.ReadQWord(&peer_id, 64);
 					uint8_t reason; // KickReason
 					buffer.ReadByte(&reason, 3);
-					uint32_t _rid;
-					buffer.ReadDword(&_rid, 32);
+					int64_t _rid;
+					buffer.ReadInt64(&_rid, 64);
 					rage::rlGamerHandle handle(_rid);
 
-					LOG(INFO) << "RID?: " << handle.m_rockstar_id << ", REASON?: " << reason << ", SESSION_ID: " << session_id;
+					LOG(INFO) << "RID?: " << _rid << " " << handle.m_rockstar_id << ", REASON?: " << reason << ", SESSION_ID: " << session_id;
 
 					if ((KickReason)reason == KickReason::VOTED_OUT)
 						g_notification_service->push_error("Protections", "You were kicked by the host"); // mod menus breakup the host here to prevent being kicked. Can't rejoin here

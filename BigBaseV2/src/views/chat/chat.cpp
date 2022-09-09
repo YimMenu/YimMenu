@@ -22,7 +22,7 @@ namespace big
 			clipper.Begin((int)g_chat_service->get_msgs().size());
 			while (clipper.Step())
 				for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
-					ImGui::TextWrapped("%s [%s]  {}", g_chat_service->get_msgs()[i].player->get_name(), g_chat_service->get_msgs()[i].is_team ? "local" : "all", g_chat_service->get_msgs()[i].msg);
+					ImGui::TextWrapped("%s [%s]  %s", g_chat_service->get_msgs()[i].player->get_name(), g_chat_service->get_msgs()[i].is_team ? "local" : "all", g_chat_service->get_msgs()[i].msg);
 
 
 			if (iLastLogCount != g_chat_service->get_msgs().size())

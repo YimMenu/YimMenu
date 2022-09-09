@@ -3,7 +3,7 @@
 #include "fwddec.hpp"
 #include "extensible.hpp"
 #include "vector.hpp"
-#include "gta\natives.hpp"
+#include "gta/natives.hpp"
 
 namespace gta
 {

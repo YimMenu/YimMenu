@@ -1,4 +1,5 @@
 #include "player.hpp"
+#include "util/system.hpp"
 #include "network/CNetGamePlayer.hpp"
 #include "services/friends/friends_service.hpp"
 
@@ -45,6 +46,34 @@ namespace big
 	{
 		if (m_net_game_player != nullptr && m_net_game_player->m_player_info != nullptr)
 			return m_net_game_player->m_player_info;
+		return nullptr;
+	}
+
+	rage::snPlayer* player::get_session_player() const
+	{
+		for (auto i = 0; i < system::get_network()->m_game_session_ptr->m_player_count; i++)
+		{
+			if (system::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_host_token == get_net_data()->m_host_token)
+			{
+				return system::get_network()->m_game_session_ptr->m_players[i];
+			}
+		}
+
+		if (system::get_network()->m_game_session_ptr->m_local_player.m_player_data.m_host_token == get_net_data()->m_host_token)
+			return &system::get_network()->m_game_session_ptr->m_local_player;
+
+		return nullptr;
+	}
+
+	rage::snPeer* player::get_session_peer() const
+	{
+		for (uint32_t i = 0; i < system::get_network()->m_game_session_ptr->m_peer_count; i++)
+		{
+			if (system::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_rockstar_id2 == get_net_data()->m_rockstar_id2)
+			{
+				return system::get_network()->m_game_session_ptr->m_peers[i];
+			}
+		}
 		return nullptr;
 	}
 
