@@ -3,7 +3,7 @@ description: Suggest an idea for this project
 title: "[Request]: "
 labels: enhancement
 assignees:
-  - Yimura
+  - tupoy-ya
 body:
 - type: textarea
   attributes:

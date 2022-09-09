@@ -18,10 +18,10 @@ Why don't just use github projects.
 - [ ] Give weapon by name
 - [ ] Animation list
 - [ ] Hud color selector
-- [ ] Outfit editor
 - [ ] Remove unused legacy code
 - [ ] Fix gta5 stupid auto language switch
 - [ ] GMOD like ctx menu
+- [ ] Fix ballistic armor component
 
 ### In Progress
 - [ ] Chat logging
@@ -40,3 +40,4 @@ Why don't just use github projects.
 - [x] Max Beer snack
 - [x] Fix the fucking c7ed01b00a627c4d5ac6a3e742554371c986af22
 - [x] Imgui ui
+- [x] Outfit editor
