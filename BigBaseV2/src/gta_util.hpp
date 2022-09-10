@@ -35,6 +35,14 @@ namespace big::gta_util
 		return *g_pointers->m_network_player_mgr;
 	}
 
+	inline Network* get_network()
+	{
+		__int64 network = (__int64)(*g_pointers->m_network);
+		if (g_is_steam)
+			network += sizeof(rage::rlSessionInfo);
+		return (Network*)network;
+	}
+
 	template <typename F, typename ...Args>
 	void execute_as_script(rage::joaat_t script_hash, F &&callback, Args &&...args)
 	{

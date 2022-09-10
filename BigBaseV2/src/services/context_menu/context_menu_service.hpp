@@ -30,7 +30,7 @@ namespace big
 	{
 	private:
 		void fill_model_bounding_box_screen_space();
-		static double distance_to_middle_of_screen(const rage::vector2& screen_pos);
+		static double distance_to_middle_of_screen(const rage::fvector2& screen_pos);
 
 	public:
 		context_menu_service();

@@ -23,12 +23,12 @@ namespace big
 	{
 		if (g_local_player == nullptr || g_local_player->m_ped_task_flag & (int)ePedTask::TASK_FOOT || g_local_player->m_vehicle == nullptr)
 			return -1;
-		if (m_handling_backup.find(g_local_player->m_vehicle->m_handling->m_model_hash) != m_handling_backup.end())
+		if (m_handling_backup.find(g_local_player->m_vehicle->m_handling_data->m_model_hash) != m_handling_backup.end())
 			return 0;
 
-		CHandlingData handling = *g_local_player->m_vehicle->m_handling;
+		CHandlingData handling = *g_local_player->m_vehicle->m_handling_data;
 
-		m_handling_backup.emplace(g_local_player->m_vehicle->m_handling->m_model_hash, handling);
+		m_handling_backup.emplace(g_local_player->m_vehicle->m_handling_data->m_model_hash, handling);
 
 		return 1;
 	}
@@ -63,7 +63,7 @@ namespace big
 			{
 				auto& data = json["data"];
 
-				HandlingProfile profile = HandlingProfile(data, g_local_player->m_vehicle->m_handling);
+				HandlingProfile profile = HandlingProfile(data, g_local_player->m_vehicle->m_handling_data);
 
 				if (auto it = m_handling_profiles.find(data["share_code"]); it != m_handling_profiles.end())
 					it->second = profile;
@@ -155,7 +155,7 @@ namespace big
 		if (!safe_to_modify())
 			return false;
 		
-		if (!force_update && up_to_date == g_local_player->m_vehicle->m_handling->m_model_hash)
+		if (!force_update && up_to_date == g_local_player->m_vehicle->m_handling_data->m_model_hash)
 			return true;
 
 		busy = true;
@@ -163,7 +163,7 @@ namespace big
 		g_thread_pool->push([&]()
 		{
 				nlohmann::json json;
-				if (!api::vehicle::handling::get_saved_handling(g_local_player->m_vehicle->m_handling->m_model_hash, json) || json == nullptr)
+				if (!api::vehicle::handling::get_saved_handling(g_local_player->m_vehicle->m_handling_data->m_model_hash, json) || json == nullptr)
 				{
 					busy = false;
 
@@ -175,7 +175,7 @@ namespace big
 				{
 					LOG(INFO) << "Registered profile '" << el["name"].get<std::string>().c_str() << "' with share code " << el["share_code"].get<std::string>().c_str();
 
-					HandlingProfile profile = HandlingProfile(el, g_local_player->m_vehicle->m_handling);
+					HandlingProfile profile = HandlingProfile(el, g_local_player->m_vehicle->m_handling_data);
 
 					if (auto it = this->m_handling_profiles.find(el["share_code"]); it != this->m_handling_profiles.end())
 						it->second = profile;
@@ -184,7 +184,7 @@ namespace big
 				}
 
 				busy = false;
-				up_to_date = g_local_player->m_vehicle->m_handling->m_model_hash;
+				up_to_date = g_local_player->m_vehicle->m_handling_data->m_model_hash;
 		});
 
 		return false;
@@ -201,7 +201,7 @@ namespace big
 
 		this->m_publish_status = PublishStatus::SAVING;
 
-		CHandlingData handling_data = *g_local_player->m_vehicle->m_handling;
+		CHandlingData handling_data = *g_local_player->m_vehicle->m_handling_data;
 		uint32_t hash = handling_data.m_model_hash;
 
 		nlohmann::json data;
@@ -231,11 +231,11 @@ namespace big
 
 	bool vehicle_service::restore_vehicle()
 	{
-		if (auto it = m_handling_backup.find(g_local_player->m_vehicle->m_handling->m_model_hash); it != m_handling_backup.end())
+		if (auto it = m_handling_backup.find(g_local_player->m_vehicle->m_handling_data->m_model_hash); it != m_handling_backup.end())
 		{
 			if (safe_to_modify())
-				*g_local_player->m_vehicle->m_handling = it->second;
-			this->m_active_profiles.erase(g_local_player->m_vehicle->m_handling->m_model_hash);
+				*g_local_player->m_vehicle->m_handling_data = it->second;
+			this->m_active_profiles.erase(g_local_player->m_vehicle->m_handling_data->m_model_hash);
 
 			return true;
 		}
@@ -255,7 +255,7 @@ namespace big
 	{
 		if (!safe_to_modify())
 			return;
-		*g_local_player->m_vehicle->m_handling = profile.data;
+		*g_local_player->m_vehicle->m_handling_data = profile.data;
 
 		this->set_active_profile(profile.handling_hash, profile.share_code);
 	}
@@ -271,14 +271,14 @@ namespace big
 		if (!safe_to_modify())
 			return false;
 
-		if (!force_update && up_to_date == g_local_player->m_vehicle->m_handling->m_model_hash)
+		if (!force_update && up_to_date == g_local_player->m_vehicle->m_handling_data->m_model_hash)
 			return true;
 
 		busy = true;
 
 		g_thread_pool->push([&] {
 			nlohmann::json json;
-			if (!api::vehicle::handling::get_my_handling(g_local_player->m_vehicle->m_handling->m_model_hash, json) || json == nullptr)
+			if (!api::vehicle::handling::get_my_handling(g_local_player->m_vehicle->m_handling_data->m_model_hash, json) || json == nullptr)
 			{
 				busy = false;
 
@@ -290,7 +290,7 @@ namespace big
 			{
 				LOG(INFO) << "Registered profile '" << el["name"].get<std::string>().c_str() << "' with share code " << el["share_code"].get<std::string>().c_str();
 
-				HandlingProfile profile = HandlingProfile(el, g_local_player->m_vehicle->m_handling);
+				HandlingProfile profile = HandlingProfile(el, g_local_player->m_vehicle->m_handling_data);
 
 				if (auto it = this->m_handling_profiles.find(el["share_code"]); it != this->m_handling_profiles.end())
 					it->second = profile;
@@ -299,7 +299,7 @@ namespace big
 			}
 
 			busy = false;
-			up_to_date = g_local_player->m_vehicle->m_handling->m_model_hash;
+			up_to_date = g_local_player->m_vehicle->m_handling_data->m_model_hash;
 		});
 
 		return false;
