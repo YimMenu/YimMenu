@@ -33,8 +33,6 @@ namespace big
 
 		static void network_group_override(std::int64_t a1, std::int64_t a2, std::int64_t a3);
 
-		static bool is_dlc_present(Hash dlc_hash);
-
 		static void received_event(
 			rage::netEventMgr* event_manager,
 			CNetGamePlayer* source_player,
@@ -104,8 +102,6 @@ namespace big
 		detour_hook m_network_group_override;
 
 		detour_hook m_assign_physical_index_hook;
-		
-		detour_hook m_is_dlc_present_hook;
 
 		detour_hook m_received_event_hook;
 		detour_hook m_received_clone_sync_hook;
