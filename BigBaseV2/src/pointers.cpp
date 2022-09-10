@@ -227,12 +227,6 @@ namespace big
 			m_blame_explode = ptr.as<decltype(m_blame_explode)>();
 		});
 
-		// Is DLC Present
-		main_batch.add("IDP", "48 89 5C 24 ? 57 48 83 EC ? 81 F9", [this](memory::handle ptr)
-		{
-			m_is_dlc_present = ptr.as<decltype(m_is_dlc_present)>();
-		});
-
 		// Send NET Info to Lobby
 		main_batch.add("SNITL", "33 DB 48 83 C1 68 45 8B F0 ", [this](memory::handle ptr)
 		{

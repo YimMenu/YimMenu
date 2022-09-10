@@ -235,6 +235,7 @@ namespace big
 				if (
 					item_json["Hash"].is_null() ||
 					item_json["Name"].is_null() ||
+					item_json["MonetaryValue"] == 0 ||
 					!item_json["Bones"].is_array() ||
 					item_json["Bones"][0] == "stub"
 				) {
