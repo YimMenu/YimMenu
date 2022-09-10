@@ -33,7 +33,7 @@ namespace big
 			player_ptr player;
 			for (std::uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_player_count; i++)
 			{
-				if (gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_peer_id == frame->m_peer_id)
+				if (gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_peer_id_2 == frame->m_peer_id)
 				{
 					player = g_player_service->get_by_host_token(gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_host_token);
 					break;
@@ -74,7 +74,7 @@ namespace big
 						buffer.ReadQWord((uint64_t*)&peer_id, 64);
 						for (std::uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_peer_count; i++)
 						{
-							if (gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_peer_id == peer_id)
+							if (gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_peer_id_2 == peer_id)
 							{
 								pl = g_player_service->get_by_host_token(gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_host_token);
 								break;
