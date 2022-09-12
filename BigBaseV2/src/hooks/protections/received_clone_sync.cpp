@@ -49,13 +49,8 @@ namespace big
 				{
 					if (auto model_info = game_obj->m_model_info)
 					{
-						if (!model_info::does_model_exist(model_info->m_model_hash))
-						{
-							return SyncResponse::WrongOwner;
-						}
-						
 						const auto model = model_info::get_model(model_info->m_model_hash);
-						if (model_info->m_model_type != model->m_model_type)
+						if (!model || model_info->m_model_type != model->m_model_type)
 						{
 							return SyncResponse::WrongOwner;
 						}
