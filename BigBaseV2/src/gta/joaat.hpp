@@ -4,11 +4,10 @@
 #include <string_view>
 #include <type_traits>
 
+#include "../../vendor/GTAV-Classes/rage/joaat.hpp"
+
 namespace rage
 {
-	using joaat_t = std::uint32_t;
-	inline constexpr char joaat_to_lower(char c) { return (c >= 'A' && c <= 'Z') ? c + ('a' - 'A') : c; }
-
 	template <std::size_t CharCount>
 	struct constexpr_joaat {
 		char data[CharCount];
@@ -28,20 +27,6 @@ namespace rage
 			return hash;
 		}
 	};
-
-	inline joaat_t joaat(std::string_view str)
-	{
-		joaat_t hash = 0;
-		for (auto c : str) {
-			hash += joaat_to_lower(c);
-			hash += (hash << 10);
-			hash ^= (hash >> 6);
-		}
-		hash += (hash << 3);
-		hash ^= (hash >> 11);
-		hash += (hash << 15);
-		return hash;
-	}
 }
 
 #define RAGE_JOAAT_IMPL(str) (::rage::constexpr_joaat<sizeof(str) - 1>((str), std::make_index_sequence<sizeof(str) - 1>())())

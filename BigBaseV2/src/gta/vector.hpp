@@ -2,12 +2,6 @@
 
 namespace rage
 {
-	struct vector2
-	{
-		float x{};
-		float y{};
-	};
-
 #pragma pack(push, 1)
 	class scrVector
 	{

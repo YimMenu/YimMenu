@@ -1,6 +1,7 @@
 #include "hooking.hpp"
 #include "services/players/player_service.hpp"
 #include <natives.hpp>
+#include "gta_util.hpp"
 
 namespace big
 {
@@ -24,29 +25,24 @@ namespace big
 
 	bool hooks::receive_net_message(void* netConnectionManager, void* a2, rage::netConnection::InFrame* frame)
 	{
-		if (frame->get_type() == 4)
+		if (frame->get_event_type() == rage::netConnection::InFrame::EventType::FrameReceived)
 		{
 			rage::datBitBuffer buffer((uint8_t*)frame->m_data, frame->m_length);
 			buffer.m_flagBits = 1;
 			rage::eNetMessage msgType;
-			const auto player = g_player_service->get_by_msg_id(frame->m_msg_id);
+			player_ptr player;
+			for (std::uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_player_count; i++)
+			{
+				if (gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_peer_id_2 == frame->m_peer_id)
+				{
+					player = g_player_service->get_by_host_token(gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_host_token);
+					break;
+				}
+			}
 			if (player && get_msg_type(msgType, buffer))
 			{
 				switch (msgType)
 				{
-				//Desync Kick
-				case rage::eNetMessage::CMsgNetComplaint:
-				{
-					uint64_t hostToken;
-					buffer.ReadQWord(&hostToken, 0x40);
-					buffer.Seek(0);
-					player_ptr sender = g_player_service->get_by_host_token(hostToken);
-					sender->get_net_game_player()->m_complaints = USHRT_MAX; //Sender
-					g_notification_service->push_warning("Blocked Kick", fmt::format("Desync kick from {}", sender->get_name()));
-					buffer.Seek(0);
-					return false;
-				}
-
 				case rage::eNetMessage::CMsgScriptMigrateHost:
 				{
 					if (std::chrono::system_clock::now() - player->m_last_transition_msg_sent < 200ms)
@@ -64,7 +60,33 @@ namespace big
 					}
 					break;
 				}
-
+				case rage::eNetMessage::CMsgRemoveGamersFromSessionCmd:
+				{
+					player_ptr pl;
+					uint64_t session_id;
+					buffer.ReadQWord(&session_id, 64);
+					uint32_t count;
+					buffer.ReadDword(&count, 6);
+					pl = nullptr;
+					for (std::uint32_t i = 0; i < count; i++)
+					{
+						uint64_t peer_id;
+						buffer.ReadQWord((uint64_t*)&peer_id, 64);
+						for (std::uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_peer_count; i++)
+						{
+							if (gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_peer_id_2 == peer_id)
+							{
+								pl = g_player_service->get_by_host_token(gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_host_token);
+								break;
+							}
+						}
+					}
+					if (player && pl && player->id() != pl->id() && count == 1 && frame->m_msg_id == -1)
+					{
+						g_notification_service->push_error("Warning!", fmt::format("{} breakup kicked {}!", player->get_name(), pl->get_name()));
+					}
+					break;
+				}
 				}
 			}
 		}

@@ -113,7 +113,7 @@ namespace big
 
 				mode_str = "";
 
-				if (CAutomobile* vehicle = g_player_service->get_selected()->get_current_vehicle(); vehicle != nullptr)
+				if (auto vehicle = g_player_service->get_selected()->get_current_vehicle(); vehicle != nullptr)
 				{
 					veh_damage_bits = vehicle->m_damage_bits;
 				}
@@ -150,9 +150,9 @@ namespace big
 
 				ImGui::Separator();
 
-				if (rage::netPlayerData* net_player_data = g_player_service->get_selected()->get_net_data(); net_player_data != nullptr)
+				if (auto net_player_data = g_player_service->get_selected()->get_net_data(); net_player_data != nullptr)
 				{
-					ImGui::Text("Rockstar ID: %d", net_player_data->m_rockstar_id);
+					ImGui::Text("Rockstar ID: %d", net_player_data->m_gamer_handle_2.m_rockstar_id);
 					ImGui::Text(
 						"IP Address: %d.%d.%d.%d:%d",
 						net_player_data->m_external_ip.m_field1,

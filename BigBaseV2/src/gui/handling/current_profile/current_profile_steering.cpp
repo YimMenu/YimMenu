@@ -7,7 +7,7 @@ namespace big
 		if (ImGui::BeginTabItem("Steering"))
 		{
 			ImGui::Text("Steering Lock (degrees)");
-			ImGui::SliderAngle("##steering lock", &g_local_player->m_vehicle->m_handling->m_steering_lock, -90.f, 90.f);
+			ImGui::SliderAngle("##steering lock", &g_local_player->m_vehicle->m_handling_data->m_steering_lock, -90.f, 90.f);
 
 			ImGui::EndTabItem();
 		}

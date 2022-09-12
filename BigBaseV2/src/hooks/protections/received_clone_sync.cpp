@@ -2,7 +2,8 @@
 #include "core/globals.hpp"
 #include "natives.hpp"
 #include "network/netObject.hpp"
-#include "rage/fwEntity.hpp"
+#include "base/CBaseModelInfo.hpp"
+#include "vehicle/CVehicleModelInfo.hpp"
 #include "base/CObject.hpp"
 
 namespace big {

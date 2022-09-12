@@ -324,6 +324,18 @@ namespace big
 			m_get_label_text = ptr.sub(19).as<PVOID>();
 		});
 
+		// Network
+		main_batch.add("N", "48 8B 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 84 C0 75 17 48 8B 0D ? ? ? ? 48 8B D7", [this](memory::handle ptr)
+		{
+			m_network = ptr.add(3).rip().as<Network**>();
+		});
+
+		// Reset Network Complaints
+		main_batch.add("RENC", "E8 ? ? ? ? 8B 8B ? ? ? ? 03 CF", [this](memory::handle ptr)
+		{
+			m_reset_network_complaints = ptr.add(1).rip().as<functions::reset_network_complaints>();
+		});
+
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
 

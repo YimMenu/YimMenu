@@ -6,6 +6,7 @@
 #include "gta/replay.hpp"
 #include "network/CNetworkPlayerMgr.hpp"
 #include "socialclub/FriendRegistry.hpp"
+#include "network/Network.hpp"
 
 namespace big
 {
@@ -97,6 +98,10 @@ namespace big
 		PVOID m_receive_net_message{};
 		PVOID m_get_network_event_data{};
 		PVOID m_assign_physical_index{};
+
+		Network** m_network;
+
+		functions::reset_network_complaints m_reset_network_complaints{};
 	};
 
 	inline pointers* g_pointers{};

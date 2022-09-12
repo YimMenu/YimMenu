@@ -48,7 +48,7 @@ namespace big
 		static bool increment_stat_event(CNetworkIncrementStatEvent* net_event_struct, CNetGamePlayer* sender);
 		static bool scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player);
 
-		static bool send_net_info_to_lobby(rage::netPlayerData* player, int64_t a2, int64_t a3, DWORD* a4);
+		static bool send_net_info_to_lobby(rage::rlGamerInfo *player, int64_t a2, int64_t a3, DWORD* a4);
 		static bool receive_net_message(void* netConnectionManager, void* a2, rage::netConnection::InFrame* frame);
 		static void get_network_event_data(int64_t unk, rage::CEventNetwork* net_event);
 

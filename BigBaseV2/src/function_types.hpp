@@ -4,6 +4,7 @@
 #include "gta/player.hpp"
 #include "gta/natives.hpp"
 #include "gta/replay.hpp"
+#include "network/CNetComplaintMgr.hpp"
 
 namespace big::functions
 {
@@ -49,4 +50,6 @@ namespace big::functions
 
 	using get_net_object = rage::netObject*(*)(CNetworkObjectMgr* mgr, int16_t id, bool unk3);
 	//Sync signatures END
+
+	using reset_network_complaints = void(*)(CNetComplaintMgr* mgr);
 }
