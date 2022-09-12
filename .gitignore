@@ -425,3 +425,9 @@ bin/
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
+
+compile_flags.txt
+*.workspace
+*.project
+.codelite/
+.ctagsd/
