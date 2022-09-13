@@ -8,8 +8,7 @@
 
 namespace big
 {
-    // I don't think there's a script with -1 as a hash
-    constexpr rage::joaat_t ALL_SCRIPT_HASH = -1;
+    constexpr auto ALL_SCRIPT_HASH = RAGE_JOAAT("ALL_SCRIPTS");
 
     native_hooks::native_hooks()
     {
@@ -45,14 +44,7 @@ namespace big
 
     void native_hooks::add_native_detour(rage::scrNativeHash hash, rage::scrNativeHandler detour)
 	{
-		if (const auto& it = m_native_registrations.find(ALL_SCRIPT_HASH); it != m_native_registrations.end())
-		{
-			it->second.emplace_back(hash, detour);
-
-			return;
-		}
-
-		m_native_registrations.emplace(ALL_SCRIPT_HASH, std::vector<native_detour>({ { hash, detour } }));
+        add_native_detour(ALL_SCRIPT_HASH, hash, detour);
 	}
 
 	void native_hooks::add_native_detour(rage::joaat_t script_hash, rage::scrNativeHash hash, rage::scrNativeHandler detour)

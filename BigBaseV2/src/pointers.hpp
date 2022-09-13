@@ -6,6 +6,7 @@
 #include "gta/replay.hpp"
 #include "network/CNetworkPlayerMgr.hpp"
 #include "socialclub/FriendRegistry.hpp"
+#include "network/Network.hpp"
 
 #include "asi_loader/pools.h"
 
@@ -52,6 +53,9 @@ namespace big
 		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
 		functions::join_session_by_info m_join_session_by_info;
 		Network** m_network{};
+
+		functions::reset_network_complaints m_reset_network_complaints{};
+
 		uint8_t* m_region_code;
 		PVOID m_get_pool_type;
 

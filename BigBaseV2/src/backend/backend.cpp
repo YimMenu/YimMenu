@@ -15,6 +15,7 @@ namespace big
 			looped::system_self_globals();
 			looped::system_update_pointers();
 			looped::system_disable_model_spawn_bypass();
+			looped::system_desync_kick_protection();
 
 			if (g_local_player != nullptr && !api::util::signed_in())
 			{

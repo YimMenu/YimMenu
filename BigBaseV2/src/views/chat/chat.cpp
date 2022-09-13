@@ -35,7 +35,7 @@ namespace big
 			{
 				g_pointers->m_send_chat_message(*g_pointers->m_send_chat_ptr + 0x78, (__int64)g_local_player->m_player_info + 0x88, g->chat.message.c_str(), g->chat.local);
 				g_chat_service->add_msg(g_player_service->get_self()->get_net_game_player(), g->chat.message, g->chat.local);
-				LOG(INFO) << "NAME: " << g_player_service->get_self()->get_net_data()->m_name << ", RID: " << g_player_service->get_self()->get_net_data()->m_rockstar_id2 << ", MSG: " << g->chat.message << ", LOCAL: " << g->chat.local;
+				LOG(INFO) << "NAME: " << g_player_service->get_self()->get_net_data()->m_name << ", RID: " << g_player_service->get_self()->get_net_data()->m_gamer_handle_2.m_rockstar_id << ", MSG: " << g->chat.message << ", LOCAL: " << g->chat.local;
 			});
 			ImGui::SameLine();
 			ImGui::Checkbox("Local", &g->chat.local);

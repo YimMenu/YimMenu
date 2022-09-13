@@ -359,6 +359,12 @@ namespace big
 			m_network = ptr.add(3).rip().as<Network**>();
 		});
 
+		// Reset Network Complaints
+		main_batch.add("RENC", "E8 ? ? ? ? 8B 8B ? ? ? ? 03 CF", [this](memory::handle ptr)
+		{
+			m_reset_network_complaints = ptr.add(1).rip().as<functions::reset_network_complaints>();
+		});
+
 		// Get Session By Gamer Handle
 		main_batch.add("SGSBGH", "E8 ? ? ? ? 84 C0 0F 84 ? ? ? ? 8B 05 ? ? ? ? 48 8D 4C 24", [this](memory::handle ptr)
 		{

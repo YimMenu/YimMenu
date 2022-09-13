@@ -11,10 +11,10 @@ namespace big
 			ImGui::Separator();
 
 			ImGui::Text("Roll Centre Height Front");
-			ImGui::SliderFloat("##roll centre height front", &g_local_player->m_vehicle->m_handling->m_roll_centre_height_front, -1.f, 1.f);
+			ImGui::SliderFloat("##roll centre height front", &g_local_player->m_vehicle->m_handling_data->m_roll_centre_height_front, -1.f, 1.f);
 
 			ImGui::Text("Roll Centre Height Back");
-			ImGui::SliderFloat("##roll centre height back", &g_local_player->m_vehicle->m_handling->m_roll_centre_height_rear, -1.f, 1.f);
+			ImGui::SliderFloat("##roll centre height back", &g_local_player->m_vehicle->m_handling_data->m_roll_centre_height_rear, -1.f, 1.f);
 
 			ImGui::EndTabItem();
 		}

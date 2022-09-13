@@ -5,6 +5,8 @@
 #include "natives.hpp"
 #include "gta_util.hpp"
 #include "pointers.hpp"
+#include "rage/rlSessionInfo.hpp"
+#include "rage/rlSessionByGamerTaskResult.hpp"
 
 namespace big::session
 {

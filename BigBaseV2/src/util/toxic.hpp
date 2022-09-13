@@ -195,7 +195,7 @@ namespace big::toxic
 	inline void breakup_kick(Player target) // From maybegreat48
 	{
 		rage::snMsgRemoveGamersFromSessionCmd cmd{};
-		Network* network = system::get_network();
+		Network* network = gta_util::get_network();
 		//LOG(G3LOG_DEBUG) << "Network Ptr: " << system::get_network();
 		//LOG(G3LOG_DEBUG) << "Network Ptr2: " << network;
 		//LOG(G3LOG_DEBUG) << "Game Session Ptr: " << network->m_game_session_ptr;

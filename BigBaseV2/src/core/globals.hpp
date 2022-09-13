@@ -1,7 +1,7 @@
 #pragma once
 #include "weapon/CAmmoInfo.hpp"
 #include "weapon/CWeaponInfo.hpp"
-#include "session/rlGamerHandle.hpp"
+#include "rage/rlSessionInfo.hpp"
 #include "enums.hpp"
 #include "file_manager.hpp"
 #include "imgui.h"
@@ -176,6 +176,7 @@ namespace big
 				int pie_menu = 0;
 			};
 
+			bool dev_dlc = false;
 			hotkeys hotkeys{};
 		};
 
@@ -601,6 +602,7 @@ namespace big
 			this->self.super_run = j["self"]["super_run"];
 			this->self.allow_ragdoll = j["self"]["allow_ragdoll"];
 
+			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
 			this->settings.hotkeys.pie_menu = j["settings"]["hotkeys"]["pie_menu"];
 
@@ -876,6 +878,7 @@ namespace big
 				},
 				{
 					"settings", {
+						{ "dev_dlc", this->settings.dev_dlc },
 						{ "hotkeys", {
 								{ "menu_toggle", this->settings.hotkeys.menu_toggle },
 								{ "pie_menu", this->settings.hotkeys.pie_menu }

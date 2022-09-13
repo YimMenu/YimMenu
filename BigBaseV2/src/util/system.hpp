@@ -41,12 +41,4 @@ namespace big::system
 	{
 		return GetModuleHandle(L"steam_api64.dll") != NULL;
 	}
-
-	inline Network* get_network()
-	{
-		__int64 network = (__int64)(*g_pointers->m_network);
-		if (is_steam())
-			network += sizeof(rage::rlSessionInfo);
-		return (Network*)network;
-	}
 }

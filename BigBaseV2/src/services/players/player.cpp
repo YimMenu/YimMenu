@@ -1,7 +1,7 @@
 #include "player.hpp"
-#include "util/system.hpp"
 #include "network/CNetGamePlayer.hpp"
 #include "services/friends/friends_service.hpp"
+#include "gta_util.hpp"
 
 namespace big
 {
@@ -11,7 +11,7 @@ namespace big
 		m_is_friend = friends_service::is_friend(net_game_player);
 	}
 
-	CAutomobile* player::get_current_vehicle() const
+	CVehicle* player::get_current_vehicle() const
 	{
 		if (const auto ped = this->get_ped(); ped != nullptr)
 			if (const auto vehicle = ped->m_vehicle; vehicle != nullptr)
@@ -24,7 +24,7 @@ namespace big
 		return m_net_game_player == nullptr ? "" : m_net_game_player->get_name();
 	}
 
-	rage::netPlayerData* player::get_net_data() const
+	rage::rlGamerInfo* player::get_net_data() const
 	{
 		return m_net_game_player == nullptr ? nullptr : m_net_game_player->get_net_data();
 	}
@@ -49,31 +49,32 @@ namespace big
 		return nullptr;
 	}
 
-	rage::snPlayer* player::get_session_player() const
+	rage::snPlayer* player::get_session_player()
 	{
-		for (auto i = 0; i < system::get_network()->m_game_session_ptr->m_player_count; i++)
+		for (std::uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_player_count; i++)
 		{
-			if (system::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_host_token == get_net_data()->m_host_token)
+			if (gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_host_token == get_net_data()->m_host_token)
 			{
-				return system::get_network()->m_game_session_ptr->m_players[i];
+				return gta_util::get_network()->m_game_session_ptr->m_players[i];
 			}
 		}
 
-		if (system::get_network()->m_game_session_ptr->m_local_player.m_player_data.m_host_token == get_net_data()->m_host_token)
-			return &system::get_network()->m_game_session_ptr->m_local_player;
+		if (gta_util::get_network()->m_game_session_ptr->m_local_player.m_player_data.m_host_token == get_net_data()->m_host_token)
+			return &gta_util::get_network()->m_game_session_ptr->m_local_player;
 
 		return nullptr;
 	}
 
-	rage::snPeer* player::get_session_peer() const
+	rage::snPeer* player::get_session_peer()
 	{
-		for (uint32_t i = 0; i < system::get_network()->m_game_session_ptr->m_peer_count; i++)
+		for (std::uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_peer_count; i++)
 		{
-			if (system::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_rockstar_id2 == get_net_data()->m_rockstar_id2)
+			if (gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_gamer_handle_2.m_rockstar_id == get_net_data()->m_gamer_handle_2.m_rockstar_id)
 			{
-				return system::get_network()->m_game_session_ptr->m_peers[i];
+				return gta_util::get_network()->m_game_session_ptr->m_peers[i];
 			}
 		}
+
 		return nullptr;
 	}
 

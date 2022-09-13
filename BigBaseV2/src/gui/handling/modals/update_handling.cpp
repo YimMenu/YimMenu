@@ -13,7 +13,7 @@ namespace big
 		ImGui::SetNextWindowSize({ 520, 325 }, ImGuiCond_FirstUseEver);
 		if (ImGui::BeginPopupModal("Update Handling"))
 		{
-			auto share_code = g_vehicle_service->get_active_profile(g_local_player->m_vehicle->m_handling->m_model_hash);
+			auto share_code = g_vehicle_service->get_active_profile(g_local_player->m_vehicle->m_handling_data->m_model_hash);
 			if (share_code.empty())
 			{
 				// should be impossible to trigger but still

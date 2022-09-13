@@ -45,6 +45,7 @@ namespace big
 		static void system_disable_model_spawn_bypass();
 		static void system_self_globals();
 		static void system_update_pointers();
+		static void system_desync_kick_protection();
 
 		static void anti_cheat();
 

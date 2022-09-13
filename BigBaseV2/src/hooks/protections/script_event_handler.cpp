@@ -157,7 +157,7 @@ namespace big
 			{
 				format_string(player_name, "Send to Cayo Perico", notify.send_to_location.log, notify.send_to_location.notify);
 
-				uint64_t rid = player->get_net_data()->m_rockstar_id2;
+				uint64_t rid = player->get_net_data()->m_gamer_handle_2.m_rockstar_id;
 				if (g_anti_cheat_service->is_player_in_moddb(rid))
 				{
 					if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
@@ -204,7 +204,7 @@ namespace big
 					{
 						format_string(player_name, "Send to Cayo Perico", notify.send_to_location.log, notify.send_to_location.notify);
 
-						uint64_t rid = player->get_net_data()->m_rockstar_id2;
+						uint64_t rid = player->get_net_data()->m_gamer_handle_2.m_rockstar_id;
 						if (g_anti_cheat_service->is_player_in_moddb(rid))
 						{
 							if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
@@ -249,7 +249,7 @@ namespace big
 			{
 				format_string(player_name, "Apartment Invite", notify.force_teleport.log, notify.force_teleport.notify);
 
-				uint64_t rid = player->get_net_data()->m_rockstar_id2;
+				uint64_t rid = player->get_net_data()->m_gamer_handle_2.m_rockstar_id;
 				if (g_anti_cheat_service->is_player_in_moddb(rid))
 				{
 					if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)

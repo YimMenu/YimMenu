@@ -22,7 +22,7 @@ namespace big
 		bool isModder = false;
 
 		if (plyr->is_valid()) {
-			isModder = g_anti_cheat_service->is_player_in_moddb(plyr->get_net_data()->m_rockstar_id2);
+			isModder = g_anti_cheat_service->is_player_in_moddb(plyr->get_net_data()->m_gamer_handle_2.m_rockstar_id);
 			isHost = plyr->is_host();
 			isFriend = plyr->is_friend();
 			isInVehicle = (plyr->get_ped() != nullptr) && 

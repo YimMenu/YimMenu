@@ -150,7 +150,7 @@ namespace big
 			auto cplayer = g_player_service->get_by_id(player);
 			CPed* cped = cplayer->get_ped();
 			CPlayerInfo* cplayer_info = cplayer->get_player_info();
-			rage::netPlayerData* net_player_data = cplayer->get_net_data();
+			rage::rlGamerInfo* net_player_data = cplayer->get_net_data();
 
 			player_json[name_key] = cplayer->get_name();
 			player_json[rid_key] = rid;

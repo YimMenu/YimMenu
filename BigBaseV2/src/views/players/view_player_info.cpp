@@ -68,7 +68,7 @@ namespace big
 
 		mode_str = "";
 
-		if (CAutomobile* vehicle = g_player_service->get_selected()->get_current_vehicle(); vehicle != nullptr)
+		if (CVehicle* vehicle = g_player_service->get_selected()->get_current_vehicle(); vehicle != nullptr)
 		{
 			veh_damage_bits = vehicle->m_damage_bits;
 		}
@@ -105,9 +105,9 @@ namespace big
 
 		ImGui::Separator();
 
-		if (rage::netPlayerData* net_player_data = g_player_service->get_selected()->get_net_data(); net_player_data != nullptr)
+		if (rage::rlGamerInfo* net_player_data = g_player_service->get_selected()->get_net_data(); net_player_data != nullptr)
 		{
-			ImGui::Text("Rockstar ID: %d", net_player_data->m_rockstar_id);
+			ImGui::Text("Rockstar ID: %d", net_player_data->m_gamer_handle_2.m_rockstar_id);
 			ImGui::Text(
 				"IP Address: %d.%d.%d.%d:%d",
 				net_player_data->m_external_ip.m_field1,
@@ -117,8 +117,8 @@ namespace big
 				net_player_data->m_external_port
 			);
 
-			if (g_anti_cheat_service->is_player_in_moddb(net_player_data->m_rockstar_id2)) {
-				int moddb_player = g_anti_cheat_service->get_moddb_player_from_rid(net_player_data->m_rockstar_id2);
+			if (g_anti_cheat_service->is_player_in_moddb(net_player_data->m_gamer_handle_2.m_rockstar_id)) {
+				int moddb_player = g_anti_cheat_service->get_moddb_player_from_rid(net_player_data->m_gamer_handle_2.m_rockstar_id);
 				ImGui::Text("AC Score: %d", g_anti_cheat_service->modders()[moddb_player].score);
 				std::string detections = g_anti_cheat_service->modders()[moddb_player].detections.c_str();
 				detections.pop_back(); detections.pop_back();

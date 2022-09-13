@@ -267,23 +267,30 @@ namespace rage
 		CMsg_0x89 = 0x89,
 		CMsg_0x86 = 0x86,
 	};
-	namespace netConnection
-	{
+	namespace netConnection {
 		class InFrame
 		{
 		public:
+			enum class EventType
+			{
+				ConnectionClosed = 3,
+				FrameReceived = 4,
+				BandwidthExceeded = 6,
+				OutOfMemory = 7
+			};
+
 			virtual ~InFrame() = default;
 
 			virtual void destroy() = 0;
-			virtual uint32_t get_type() = 0;
+			virtual EventType get_event_type() = 0;
 			virtual uint32_t _0x18() = 0;
 
 			char pad_0008[56]; //0x0008
 			uint32_t m_msg_id; //0x0040
 			uint32_t m_connection_identifier; //0x0044
 			InFrame* m_this; //0x0048
-			uint64_t m_peer_id; //0x0050
-			char pad_0050[32]; //0x0058
+			uint32_t m_peer_id; //0x0050
+			char pad_0050[36]; //0x0058
 			uint32_t m_length; //0x0078
 			char pad_007C[4]; //0x007C
 			void* m_data; //0x0080
