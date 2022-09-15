@@ -5,16 +5,16 @@
 #include "rage/netSyncDataNodeBase.hpp"
 #include "rage/netSyncTree.hpp"
 #include "gta/net_object_mgr.hpp"
-#include "datanodes/CDoorCreationDataNode.hpp"
-#include "datanodes/CObjectCreationDataNode.hpp"
-#include "datanodes/CPedAttachDataNode.hpp"
-#include "datanodes/CPedCreationDataNode.hpp"
-#include "datanodes/CPickupCreationDataNode.hpp"
-#include "datanodes/CPhysicalAttachDataNode.hpp"
-#include "datanodes/CPlayerAppearanceDataNode.hpp"
-#include "datanodes/CSectorDataNode.hpp"
-#include "datanodes/CTrainGameStateDataNode.hpp"
-#include "datanodes/CVehicleCreationDataNode.hpp"
+#include "datanodes/door/CDoorCreationDataNode.hpp"
+#include "datanodes/object/CObjectCreationDataNode.hpp"
+#include "datanodes/ped/CPedAttachDataNode.hpp"
+#include "datanodes/ped/CPedCreationDataNode.hpp"
+#include "datanodes/pickup/CPickupCreationDataNode.hpp"
+#include "datanodes/physical/CPhysicalAttachDataNode.hpp"
+#include "datanodes/player/CPlayerAppearanceDataNode.hpp"
+#include "datanodes/proximity_migrateable/CSectorDataNode.hpp"
+#include "datanodes/train/CTrainGameStateDataNode.hpp"
+#include "datanodes/vehicle/CVehicleCreationDataNode.hpp"
 #include "network/netObject.hpp"
 #include "natives.hpp"
 
@@ -41,6 +41,20 @@ namespace big {
 		LOG(INFO) << "Succesfull sync";
 		break;
 	*/
+
+	constexpr uint64_t operator ""_fnv1a(char const* str, std::size_t len) {
+		auto const fnv_offset_basis = 14695981039346656037ULL;
+		auto const fnv_prime = 1099511628211ULL;
+
+		auto value = fnv_offset_basis;
+		for (auto i = 0; i < len; i++) {
+			value ^= static_cast<size_t>(str[i]);
+			value *= fnv_prime;
+		}
+		value ^= value >> 32;
+
+		return value;
+	}
 
 	uint32_t crash_models[] = { RAGE_JOAAT("prop_dummy_01"), RAGE_JOAAT("prop_dummy_car"), RAGE_JOAAT("prop_dummy_light"), RAGE_JOAAT("prop_dummy_plane"), RAGE_JOAAT("slod_human"),
 		RAGE_JOAAT("slod_small_quadped"), RAGE_JOAAT("slod_large_quadped"), RAGE_JOAAT("prop_distantcar_night"), RAGE_JOAAT("prop_distantcar_day"), RAGE_JOAAT("hei_bh1_08_details4_em_night"),
@@ -92,6 +106,24 @@ namespace big {
 		return nullptr;
 	}
 
+	CPedAttachDataNode* get_ped_attach_node_from_object(rage::netSyncNodeBase* node)
+	{
+		if (node->IsParentNode())
+		{
+			for (auto child = node->m_first_child; child; child = child->m_next_sibling) {
+				CPedAttachDataNode* attach_node = get_ped_attach_node_from_object(child);
+				if (attach_node != nullptr)
+					return attach_node;
+			}
+		}
+		else if (node->IsDataNode())
+		{
+			if (typeid(*node).hash_code() == 0xD3A0FBD0D1CFD23A) //CPedAttachDataNode
+				return dynamic_cast<CPedAttachDataNode*>(node);
+		}
+		return nullptr;
+	}
+
 	bool is_attachment_infinite(CPhysicalAttachDataNode* node, uint16_t object_id) {
 		if (rage::netObject* attached_object = (*g_pointers->m_network_object_mgr)->find_object_by_id(node->m_attached_to, false); attached_object)
 		{
@@ -117,6 +149,31 @@ namespace big {
 		return false;
 	}
 
+	bool is_ped_attachment_infinite(CPedAttachDataNode* node, uint16_t object_id) {
+		if (rage::netObject* attached_object = (*g_pointers->m_network_object_mgr)->find_object_by_id(node->m_attached_to, false); attached_object)
+		{
+			if (rage::netSyncTree* tree = attached_object->GetSyncTree(); tree)
+			{
+				if (rage::netSyncNodeBase* base_node = tree->m_sync_node; base_node) {
+
+					CPedAttachDataNode* attached_attach_node = get_ped_attach_node_from_object(base_node);
+					if (attached_attach_node && attached_attach_node->m_attached)
+					{
+						if (attached_attach_node->m_attached_to == object_id) {
+							return true;
+						}
+						else {
+							return is_ped_attachment_infinite(attached_attach_node, object_id);
+						}
+					}
+
+				}
+			}
+		}
+
+		return false;
+	}
+
 	bool check_node(rage::netSyncNodeBase* node, CNetGamePlayer* sender, uint16_t object_id)
 	{
 		if (node->IsParentNode())
@@ -132,7 +189,7 @@ namespace big {
 		{
 			//LOG(INFO) << typeid(*node).name() << ": " << HEX_TO_UPPER(typeid(*node).hash_code()); //Use this to get hashes for each node
 			switch (typeid(*node).hash_code()) {
-				case 0x53564E6A8BA84671: //CDoorCreationDataNode
+				case "?AVCDoorCreationDataNode@@"_fnv1a: //CDoorCreationDataNode
 				{
 					CDoorCreationDataNode* creation_node = dynamic_cast<CDoorCreationDataNode*>(node);
 					if (is_model_a_crash_model(creation_node->m_model))
@@ -145,7 +202,7 @@ namespace big {
 					}
 					break;
 				}
-				case 0xF01A0C93246DF2F0: //CPickupCreationDataNode
+				case "?AVCPickupCreationDataNode@@"_fnv1a: //CPickupCreationDataNode
 				{
 					CPickupCreationDataNode* creation_node = dynamic_cast<CPickupCreationDataNode*>(node);
 					if (is_model_a_crash_model(creation_node->m_custom_model))
@@ -158,7 +215,7 @@ namespace big {
 					}
 					break;
 				}
-				case 0xE6B80DD4C167CFF: //CPhysicalAttachDataNode
+				case "?AVCPhysicalAttachDataNode@@"_fnv1a: //CPhysicalAttachDataNode
 				{
 					CPhysicalAttachDataNode* attach_node = dynamic_cast<CPhysicalAttachDataNode*>(node);
 					if (attach_node->m_attached && attach_node->m_attached_to == object_id)
@@ -169,20 +226,17 @@ namespace big {
 							g_notification_service->push_warning(fmt::format("Infinite attachment from {}", sender->get_name()), fmt::format("Node: {}", typeid(*node).name()));
 						return true;
 					}
-					else if (attach_node->m_attached)
+					else if (attach_node->m_attached && is_attachment_infinite(attach_node, object_id))
 					{
-						if (is_attachment_infinite(attach_node, object_id))
-						{
-							if (g->notifications.invalid_sync.log)
-								LOG(WARNING) << "Infinite attachment v2: " << "Node: " << typeid(*node).name() << " From : " << sender->get_name();
-							if (g->notifications.invalid_sync.notify)
-								g_notification_service->push_warning(fmt::format("Infinite attachment v2 from {}", sender->get_name()), fmt::format("Node: {}", typeid(*node).name()));
-							return true;
-						}
+						if (g->notifications.invalid_sync.log)
+							LOG(WARNING) << "Infinite attachment v2: " << "Node: " << typeid(*node).name() << " From : " << sender->get_name();
+						if (g->notifications.invalid_sync.notify)
+							g_notification_service->push_warning(fmt::format("Infinite attachment v2 from {}", sender->get_name()), fmt::format("Node: {}", typeid(*node).name()));
+						return true;
 					}
 					break;
 				}
-				case 0x2AEC964801142EA: //CPedCreationDataNode
+				case "?AVCPedCreationDataNode@@"_fnv1a: //CPedCreationDataNode
 				{
 					CPedCreationDataNode* creation_node = dynamic_cast<CPedCreationDataNode*>(node);
 					if (is_model_a_crash_model(creation_node->m_model))
@@ -202,7 +256,7 @@ namespace big {
 					}
 					break;
 				}
-				case 0xD3A0FBD0D1CFD23A: //CPedAttachDataNode
+				case "?AVCPedAttachDataNode@@"_fnv1a: //CPedAttachDataNode
 				{
 					CPedAttachDataNode* attach_node = dynamic_cast<CPedAttachDataNode*>(node);
 					if (attach_node->m_attached && attach_node->m_attached_to == object_id)
@@ -213,9 +267,17 @@ namespace big {
 							g_notification_service->push_warning(fmt::format("Infinite ped attachment from {}", sender->get_name()), fmt::format("Node: {}", typeid(*node).name()));
 						return true;
 					}
+					else if (attach_node->m_attached && is_ped_attachment_infinite(attach_node, object_id))
+					{
+						if (g->notifications.invalid_sync.log)
+							LOG(WARNING) << "Infinite ped attachment v2: " << "Node: " << typeid(*node).name() << " From : " << sender->get_name();
+						if (g->notifications.invalid_sync.notify)
+							g_notification_service->push_warning(fmt::format("Infinite ped attachment v2 from {}", sender->get_name()), fmt::format("Node: {}", typeid(*node).name()));
+						return true;
+					}
 					break;
 				}
-				case 0xDAAA9ED23C818699: //CVehicleCreationDataNode
+				case "?AVCVehicleCreationDataNode@@"_fnv1a: //CVehicleCreationDataNode
 				{
 					CVehicleCreationDataNode* vehicle_creation_node = dynamic_cast<CVehicleCreationDataNode*>(node);
 					if (is_model_a_crash_model(vehicle_creation_node->m_model)) {
@@ -227,7 +289,7 @@ namespace big {
 					}
 					break;
 				}
-				case 0xC3E47C3C3507E5A4: //CObjectCreationDataNode
+				case "?AVCObjectCreationDataNode@@"_fnv1a: //CObjectCreationDataNode
 				{
 					CObjectCreationDataNode* creation_node = dynamic_cast<CObjectCreationDataNode*>(node);
 					if (is_model_a_crash_model(creation_node->m_model)) {
@@ -235,16 +297,18 @@ namespace big {
 							LOG(WARNING) << "Invalid object model: " << "Model: " << HEX_TO_UPPER(creation_node->m_model) << " From : " << sender->get_name();
 						if (g->notifications.invalid_sync.notify)
 							g_notification_service->push_warning(fmt::format("Invalid object model from {}", sender->get_name()), fmt::format("Model: 0x{:x}", creation_node->m_model));
+						return true;
 					}
 					else if (is_model_a_cage_model(creation_node->m_model)) {
 						if (g->notifications.invalid_sync.log)
 							LOG(WARNING) << "Cage model: " << "Model: " << HEX_TO_UPPER(creation_node->m_model) << " From : " << sender->get_name();
 						if (g->notifications.invalid_sync.notify)
 							g_notification_service->push_warning(fmt::format("Cage model from {}", sender->get_name()), fmt::format("Model: 0x{:x}", creation_node->m_model));
+						return true;
 					}
 					break;
 				}
-				case 0x2AEE7E3A2D2E84FF: //CPlayerAppearanceDataNode
+				case "?AVCPlayerAppearanceDataNode@@"_fnv1a: //CPlayerAppearanceDataNode
 				{
 					CPlayerAppearanceDataNode* player_appearance_node = dynamic_cast<CPlayerAppearanceDataNode*>(node);
 					if (is_model_a_crash_model(player_appearance_node->m_model_hash)) {
@@ -256,7 +320,7 @@ namespace big {
 					}
 					break;
 				}
-				case 0x38335CCD1B62BF09: //CSectorDataNode
+				case "?AVCSectorDataNode@@"_fnv1a: //CSectorDataNode
 				{
 					CSectorDataNode* sector_node = dynamic_cast<CSectorDataNode*>(node);
 					if (sector_node->m_pos_x == 712 || sector_node->m_pos_y == 712 || sector_node->m_pos_z == 712)
@@ -267,6 +331,7 @@ namespace big {
 							g_notification_service->push_warning(fmt::format("Invalid sector position from {}", sender->get_name()), "Invalid sector position.");
 						return true;
 					}
+					break;
 				}
 			}
 		}
