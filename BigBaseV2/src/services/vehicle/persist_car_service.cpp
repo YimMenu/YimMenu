@@ -103,7 +103,7 @@ namespace big
 				0,
 				attachment.position.x, attachment.position.y, attachment.position.z,
 				attachment.rotation.x, attachment.rotation.y, attachment.rotation.z,
-				false, false, false, false, 0, true);
+				false, false, false, false, 0, true, 0);
 			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(attachment.model_hash);
 		}
 
@@ -117,7 +117,7 @@ namespace big
 				0,
 				attachment.position.x, attachment.position.y, attachment.position.z,
 				attachment.rotation.x, attachment.rotation.y, attachment.rotation.z,
-				false, false, false, false, 0, true);
+				false, false, false, false, 0, true, 0);
 
 			VEHICLE::SET_VEHICLE_IS_CONSIDERED_BY_PLAYER(vehicle_to_attach, false);
 		}
@@ -198,9 +198,9 @@ namespace big
 			}
 			std::vector<bool> neon_lights = vehicle_json[neon_lights_key];
 			for (int i = NEON_LEFT; i <= NEON_BACK; i++)
-				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, i, neon_lights[i]);
+				VEHICLE::SET_VEHICLE_NEON_ENABLED(vehicle, i, neon_lights[i]);
 			std::vector<int> neon_color = vehicle_json[neon_color_key];
-			VEHICLE::SET_VEHICLE_NEON_LIGHTS_COLOUR_(vehicle, neon_color[0], neon_color[1], neon_color[2]);
+			VEHICLE::SET_VEHICLE_NEON_COLOUR(vehicle, neon_color[0], neon_color[1], neon_color[2]);
 
 			if (VEHICLE::IS_VEHICLE_A_CONVERTIBLE(vehicle, 0))
 			{
@@ -211,15 +211,15 @@ namespace big
 					VEHICLE::LOWER_CONVERTIBLE_ROOF(vehicle, true);
 			}
 
-			VEHICLE::SET_VEHICLE_INTERIOR_COLOR_(vehicle, vehicle_json[interior_color_key]);
+			VEHICLE::SET_VEHICLE_EXTRA_COLOUR_5(vehicle, vehicle_json[interior_color_key]);
 
-			VEHICLE::SET_VEHICLE_DASHBOARD_COLOR_(vehicle, vehicle_json[dash_color_key]);
+			VEHICLE::SET_VEHICLE_EXTRA_COLOUR_6(vehicle, vehicle_json[dash_color_key]);
 
 			const BOOL have_clan_logo = vehicle_json[clan_logo_key];
 			if (have_clan_logo)
 				vehicle_helper::add_clan_logo_to_vehicle(vehicle, ped);
 
-			VEHICLE::SET_VEHICLE_XENON_LIGHTS_COLOR_(vehicle, vehicle_json[headlight_color_key]);
+			VEHICLE::SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(vehicle, vehicle_json[headlight_color_key]);
 		}
 
 		return vehicle;
@@ -434,10 +434,10 @@ namespace big
 
 			bool neon_lights[4]{};
 			for (int i = NEON_LEFT; i <= NEON_BACK; i++)
-				neon_lights[i] = VEHICLE::IS_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, i);
+				neon_lights[i] = VEHICLE::GET_VEHICLE_NEON_ENABLED(vehicle, i);
 
 			int neon_color[3]{};
-			VEHICLE::GET_VEHICLE_NEON_LIGHTS_COLOUR_(vehicle, &neon_color[0], &neon_color[1], &neon_color[2]);
+			VEHICLE::GET_VEHICLE_NEON_COLOUR(vehicle, &neon_color[0], &neon_color[1], &neon_color[2]);
 			vehicle_json[neon_color_key] = neon_color;
 			vehicle_json[neon_lights_key] = neon_lights;
 
@@ -445,13 +445,13 @@ namespace big
 				vehicle_json[convertable_state_key] = VEHICLE::GET_CONVERTIBLE_ROOF_STATE(vehicle);
 
 			int interior_color, dashboard_color;
-			VEHICLE::GET_VEHICLE_INTERIOR_COLOR_(vehicle, &interior_color);
-			VEHICLE::GET_VEHICLE_DASHBOARD_COLOR_(vehicle, &dashboard_color);
+			VEHICLE::GET_VEHICLE_EXTRA_COLOUR_5(vehicle, &interior_color);
+			VEHICLE::GET_VEHICLE_EXTRA_COLOUR_6(vehicle, &dashboard_color);
 			vehicle_json[interior_color_key] = interior_color;
 			vehicle_json[dash_color_key] = dashboard_color;
 
 			vehicle_json[clan_logo_key] = GRAPHICS::DOES_VEHICLE_HAVE_CREW_EMBLEM(vehicle, 0);
-			vehicle_json[headlight_color_key] = VEHICLE::GET_VEHICLE_XENON_LIGHTS_COLOR_(vehicle);
+			vehicle_json[headlight_color_key] = VEHICLE::GET_VEHICLE_XENON_LIGHT_COLOR_INDEX(vehicle);
 		}
 
 		return vehicle_json;

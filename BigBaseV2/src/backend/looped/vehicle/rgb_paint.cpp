@@ -107,11 +107,11 @@ namespace big
 				VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(vehicle, red, green, blue);
 			}
 			if (g->vehicle.rainbow_paint.neon) {
-				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, 0, 1);
-				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, 1, 1);
-				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, 2, 1);
-				VEHICLE::SET_VEHICLE_NEON_LIGHT_ENABLED_(vehicle, 3, 1);
-				VEHICLE::SET_VEHICLE_NEON_LIGHTS_COLOUR_(vehicle, red, green, blue);
+				VEHICLE::SET_VEHICLE_NEON_ENABLED(vehicle, 0, 1);
+				VEHICLE::SET_VEHICLE_NEON_ENABLED(vehicle, 1, 1);
+				VEHICLE::SET_VEHICLE_NEON_ENABLED(vehicle, 2, 1);
+				VEHICLE::SET_VEHICLE_NEON_ENABLED(vehicle, 3, 1);
+				VEHICLE::SET_VEHICLE_NEON_COLOUR(vehicle, red, green, blue);
 			}
 			if (g->vehicle.rainbow_paint.smoke) {
 				VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(vehicle, red, green, blue);
