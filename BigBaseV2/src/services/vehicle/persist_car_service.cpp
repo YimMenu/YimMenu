@@ -1,5 +1,6 @@
 #include "persist_car_service.hpp"
 #include "util/vehicle.hpp"
+#include "util/world_model.hpp"
 #include "pointers.hpp"
 
 
@@ -96,15 +97,16 @@ namespace big
 		for (const auto& j : model_attachments)
 		{
 			const auto attachment = j.get<model_attachment>();
-			STREAMING::REQUEST_MODEL(attachment.model_hash);
-			const auto object = OBJECT::CREATE_OBJECT(attachment.model_hash, 0, 0, 0, true, false, false);
-			ENTITY::ATTACH_ENTITY_TO_ENTITY(
-				object, vehicle,
-				0,
-				attachment.position.x, attachment.position.y, attachment.position.z,
-				attachment.rotation.x, attachment.rotation.y, attachment.rotation.z,
-				false, false, false, false, 0, true);
-			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(attachment.model_hash);
+			const auto object = big::world_model::spawn(attachment.model_hash);
+			if (object)
+			{
+				ENTITY::ATTACH_ENTITY_TO_ENTITY(
+					object, vehicle,
+					0,
+					attachment.position.x, attachment.position.y, attachment.position.z,
+					attachment.rotation.x, attachment.rotation.y, attachment.rotation.z,
+					false, false, false, false, 0, true);
+			}
 		}
 
 		std::vector<nlohmann::json> vehicle_attachments = vehicle_json[vehicle_attachments_key];
