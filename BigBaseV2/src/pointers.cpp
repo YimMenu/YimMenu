@@ -92,8 +92,14 @@ namespace big
 			m_model_spawn_bypass = ptr.add(8).as<PVOID>();
 		});
 
+		// World Model Spawn Bypass
+		main_batch.add("WMSB", "48 85 C0 0F 84 ? ? ? ? 8B 48 50", [this](memory::handle ptr)
+		{
+			m_world_model_spawn_bypass = ptr.as<PVOID>();
+		});
+
 		// New pointers
-		
+
 		// Native Return Spoofer
 		main_batch.add("NRF", "FF E3", [this](memory::handle ptr)
 		{
@@ -119,7 +125,7 @@ namespace big
 		});
 
 		// Received Event Signatures START
-		
+
 		// Received Event Hook
 		main_batch.add("REH", "66 41 83 F9 ? 0F 83", [this](memory::handle ptr)
 		{
@@ -159,7 +165,7 @@ namespace big
 		});
 
 		// Read Bitbuffer Array
-		main_batch.add("RBA", "48 89 5C 24 ? 57 48 83 EC 30 41 8B F8 4C", [this](memory::handle ptr) 
+		main_batch.add("RBA", "48 89 5C 24 ? 57 48 83 EC 30 41 8B F8 4C", [this](memory::handle ptr)
 		{
 			m_read_bitbuf_array = ptr.as<decltype(m_read_bitbuf_array)>();
 		});
