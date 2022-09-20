@@ -8,7 +8,7 @@ namespace big
 	{
 		auto* const vehicle = g_local_player->m_vehicle;
 
-		if (vehicle && VEHICLE::GET_HAS_ROCKET_BOOST_(self::veh))
+		if (vehicle && VEHICLE::GET_HAS_ROCKET_BOOST(self::veh))
 		{
 			if (g->vehicle.boost_behavior == eBoostBehaviors::INSTANT_REFIL && vehicle->m_boost == 0.f) // No Boost Refil Time
 			{

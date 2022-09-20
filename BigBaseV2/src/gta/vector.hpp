@@ -62,3 +62,29 @@ namespace rage
 	};
 #pragma pack(pop)
 }
+
+class Vector2 final
+{
+public:
+	Vector2() = default;
+
+	Vector2(float x, float y)
+		: x(x), y(y)
+	{}
+
+public:
+	float x, y;
+};
+
+class Vector4 final
+{
+public:
+	Vector4() = default;
+
+	Vector4(float x, float y, float z, float w)
+		: x(x), y(y), z(z), w(w)
+	{}
+
+public:
+	float x, y, z, w;
+};

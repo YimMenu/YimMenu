@@ -15,7 +15,7 @@ namespace big
 
 		m_name = fmt::format(
 			"{} ({})", 
-			HUD::GET_LABEL_TEXT_(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_hash)), 
+			HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_hash)), 
 			m_plate
 		);
 	}
