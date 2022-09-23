@@ -72,6 +72,7 @@ namespace big
 
 		PVOID m_blame_explode;
 		PVOID m_model_spawn_bypass;
+		PVOID m_world_model_spawn_bypass;
 		PVOID m_native_return;
 		PVOID m_network_group_override;
 		PUSHORT m_spectator_check;
@@ -94,7 +95,7 @@ namespace big
 		functions::get_gameplay_cam_coords m_get_gameplay_cam_coords;
 
 		functions::give_pickup_rewards m_give_pickup_rewards{};
-		
+
 		functions::trigger_script_event m_trigger_script_event{};
 
 		// Bitbuffer Read/Write START
@@ -109,7 +110,7 @@ namespace big
 		functions::write_bitbuf_bool m_write_bitbuf_bool{};
 		functions::write_bitbuf_array m_write_bitbuf_array{};
 		// Bitbuffer Read/Write END
-		
+
 		// Received Event Signatures START
 		PVOID m_received_event{};
 		functions::send_event_ack m_send_event_ack{};
