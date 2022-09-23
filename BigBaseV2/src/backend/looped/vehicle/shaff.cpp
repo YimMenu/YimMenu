@@ -20,7 +20,7 @@ namespace big
 				GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD("scr_sm_counter_chaff", self::pos.x, self::pos.y, self::pos.z, 0, 0, 0, 2, false, false, false, false);
 				if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(self::veh))
 				{
-					VEHICLE::SET_VEHICLE_CAN_BE_LOCKED_ON_(self::veh, false, true);
+					VEHICLE::SET_VEHICLE_ALLOW_HOMING_MISSLE_LOCKON_SYNCED(self::veh, false, true);
 				}
 			}
 		}

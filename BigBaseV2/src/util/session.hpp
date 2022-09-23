@@ -37,7 +37,7 @@ namespace big::session
 
 	inline void join_by_rockstar_id(uint64_t rid) // Skidded from maybegreat48
 	{
-		if (SCRIPT::GET_NUMBER_OF_REFERENCES_OF_SCRIPT_WITH_NAME_HASH_(rage::joaat("maintransition")) != 0 ||
+		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(rage::joaat("maintransition")) != 0 ||
 			STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
 		{
 			g_notification_service->push_warning("RID Joiner", "Cannot RID join now");
@@ -59,7 +59,7 @@ namespace big::session
 				g->session.session_info = result.m_session_info;
 				join_type({ eSessionType::NEW_PUBLIC, "" });
 				script::get_current()->yield(500ms);
-				if (SCRIPT::GET_NUMBER_OF_REFERENCES_OF_SCRIPT_WITH_NAME_HASH_(rage::joaat("maintransition")) == 0)
+				if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(rage::joaat("maintransition")) == 0)
 				{
 					g->session.session_join_queued = false;
 					g_notification_service->push_error("RID Joiner", "RID join failed, unable to launch maintransition");
@@ -73,7 +73,7 @@ namespace big::session
 
 	inline void join_by_session_info(rage::rlSessionInfo m_session_info) // Skidded from maybegreat48
 	{
-		if (SCRIPT::GET_NUMBER_OF_REFERENCES_OF_SCRIPT_WITH_NAME_HASH_(rage::joaat("maintransition")) != 0 ||
+		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(rage::joaat("maintransition")) != 0 ||
 			STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
 		{
 			g_notification_service->push_warning("RID Joiner", "Cannot RID join now");
@@ -83,7 +83,7 @@ namespace big::session
 			g->session.session_info = m_session_info;
 			join_type({ eSessionType::NEW_PUBLIC, "" });
 			script::get_current()->yield(500ms);
-			if (SCRIPT::GET_NUMBER_OF_REFERENCES_OF_SCRIPT_WITH_NAME_HASH_(rage::joaat("maintransition")) == 0)
+			if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(rage::joaat("maintransition")) == 0)
 			{
 				g->session.session_join_queued = false;
 				g_notification_service->push_error("RID Joiner", "RID join failed, unable to launch maintransition");

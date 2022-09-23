@@ -76,7 +76,7 @@ namespace big::ped
 			if (*g_pointers->m_is_session_started)
 			{
 				DECORATOR::DECOR_SET_INT(ped, "MPBitset", 0);
-				ENTITY::SET_ENTITY_CLEANUP_BY_ENGINE_(ped, clean_up);
+				ENTITY::SET_ENTITY_SHOULD_FREEZE_WAITING_ON_COLLISION(ped, clean_up);
 			}
 
 			return ped;

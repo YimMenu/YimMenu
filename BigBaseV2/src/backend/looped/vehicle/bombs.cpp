@@ -10,7 +10,7 @@ namespace big
 	{
 		if (!g->vehicle.bombs) return;
 
-		if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_CREATOR_ACCEPT) && VEHICLE::ARE_BOMB_BAY_DOORS_OPEN_(self::veh))
+		if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_CREATOR_ACCEPT) && VEHICLE::GET_ARE_BOMB_BAY_DOORS_OPEN(self::veh))
 		{
 			Hash hash = rage::joaat(g->vehicle.bomb_type);
 			STREAMING::REQUEST_MODEL(hash);

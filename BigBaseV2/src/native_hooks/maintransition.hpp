@@ -27,16 +27,16 @@ namespace big
 		// PLAYER_SWITCH
 		//
 
-		inline void N0x933BBEEB8C61B5F4(rage::scrNativeCallContext* src)
+		inline void IS_SWITCH_TO_MULTI_FIRSTPART_FINISHED(rage::scrNativeCallContext* src)
 		{
 			if (g->tunables.fast_join)
 			{
 				src->set_return_value<BOOL>(true);
-				LOG(G3LOG_DEBUG) << "N0x933BBEEB8C61B5F4 skipped";
+				LOG(G3LOG_DEBUG) << "IS_SWITCH_TO_MULTI_FIRSTPART_FINISHED skipped";
 			}
 			else
 			{
-				src->set_return_value<BOOL>(STREAMING::N0x933BBEEB8C61B5F4());
+				src->set_return_value<BOOL>(STREAMING::IS_SWITCH_TO_MULTI_FIRSTPART_FINISHED());
 			}
 		}
 
