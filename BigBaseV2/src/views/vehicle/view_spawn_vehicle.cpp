@@ -61,7 +61,31 @@ namespace big
 		static char search[64];
 
 		ImGui::SetNextItemWidth(300.f);
-		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None);
+		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_EnterReturnsTrue, [] {
+			Vector3 spawn_location = vehicle::get_spawn_location(g->spawn_vehicle.spawn_inside);
+			float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
+
+			const Vehicle veh = vehicle::spawn(rage::joaat(search), spawn_location, spawn_heading);
+
+			if (veh == 0)
+			{
+				g_notification_service->push_error("Vehicle", "Unable to spawn vehicle");
+			}
+			else
+			{
+				if (g->spawn_vehicle.spawn_maxed)
+				{
+					vehicle::max_vehicle(veh);
+				}
+
+				vehicle::set_plate(veh, plate_buf);
+
+				if (g->spawn_vehicle.spawn_inside)
+				{
+					vehicle::teleport_into_vehicle(veh);
+				}
+			}
+		});
 
 
 		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 188 - 38 * 4) }))

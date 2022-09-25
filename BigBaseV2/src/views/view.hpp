@@ -17,6 +17,7 @@ namespace big
 		static void debug_script_events();
 		static void debug_globals();
 		static void debug_ped_flags();
+		static void debug_misc();
 		static void debug_tabs();
 		static void esp_settings();
 		static void context_menu_settings();

@@ -27,6 +27,12 @@ namespace big
 				ImGui::EndTabItem();
 			}
 
+			if (ImGui::BeginTabItem("Misc"))
+			{
+				view::debug_misc();
+				ImGui::EndTabItem();
+			}
+			
 			ImGui::EndTabBar();
 		}
 	}
