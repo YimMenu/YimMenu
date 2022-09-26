@@ -283,6 +283,7 @@ namespace big
 			bool seatbelt = false;
 			bool turn_signals = false;
 			bool vehicle_jump = false;
+			bool remove_speed_limit = false;
 			bool flares = false;
 			bool chaff = false;
 			bool bombs = false;
@@ -648,6 +649,7 @@ namespace big
 			this->vehicle.drive_on_water = j["vehicle"]["drive_on_water"];
 			this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
 			this->vehicle.vehicle_jump = j["vehicle"]["vehicle_jump"];
+			this->vehicle.remove_speed_limit = j["vehicle"]["remove_speed_limit"];
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
 			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
@@ -945,6 +947,7 @@ namespace big
 						{ "drive_on_water", this->vehicle.drive_on_water },
 						{ "horn_boost", this->vehicle.horn_boost },
 						{ "vehicle_jump", this->vehicle.vehicle_jump },
+						{ "remove_speed_limit", this->vehicle.remove_speed_limit },
 						{ "instant_brake", this->vehicle.instant_brake },
 						{ "is_targetable", this->vehicle.is_targetable },
 						{ "turn_signals", this->vehicle.turn_signals },

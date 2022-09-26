@@ -63,6 +63,7 @@ namespace big
 		static void vehicle_rainbow_paint();
 		static void vehicle_seatbelt();
 		static void vehicle_speedo_meter();
+		static void vehicle_remove_speed_limit();
 		static void vehicle_turn_signals();
 		static void vehicle_flares();
 		static void vehicle_chaff();

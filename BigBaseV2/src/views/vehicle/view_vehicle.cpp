@@ -14,28 +14,28 @@ namespace big
 			g_notification_service->push("Mobile",
 				fmt::format("{} vehicle{} been fixed.", amount_fixed, amount_fixed == 1 ? " has" : "s have")
 			);
-		});
+			});
 		ImGui::SameLine();
 		components::button("Repair", [] {
 			vehicle::repair(self::veh);
-		});
+			});
 
 		ImGui::Separator();
 
 		components::button("Teleport in PV", [] {
 			Vehicle veh = mobile::mechanic::get_personal_vehicle();
 			teleport::into_vehicle(veh);
-		});
+			});
 		ImGui::SameLine();
 		components::button("Bring PV", [] {
 			Vehicle veh = mobile::mechanic::get_personal_vehicle();
 			vehicle::bring(veh, self::pos, true);
-		});
+			});
 		ImGui::SameLine();
 		components::button("Bring Closest Vehicle", [] {
 			Vehicle veh = vehicle::get_closest_to_location(self::pos, 200);
 			vehicle::bring(veh, self::pos, true, -1);
-		});
+			});
 
 		ImGui::Separator();
 
@@ -66,11 +66,16 @@ namespace big
 			}
 
 			ImGui::EndGroup();
-			ImGui::SameLine();
 			ImGui::BeginGroup();
 
 			ImGui::Checkbox("Vehicle Flares", &g->vehicle.flares);
 			ImGui::Checkbox("Vehicle Chaff", &g->vehicle.chaff);
+
+			ImGui::EndGroup();
+			ImGui::SameLine();
+			ImGui::BeginGroup();
+
+			ImGui::Checkbox("Remove Speed Limit", &g->vehicle.remove_speed_limit);
 
 			ImGui::EndGroup();
 		}
