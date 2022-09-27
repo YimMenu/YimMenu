@@ -161,7 +161,6 @@ namespace big
 		return res;
 	}
 
-	// todo: find a way to keep it fast but also
 	void gta_data_service::update_cache_and_load_data()
 	{
 		// wrap around shared ptr because we'll share it with a worker thread below
