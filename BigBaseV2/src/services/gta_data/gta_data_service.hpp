@@ -9,6 +9,11 @@ namespace big
 {
 	class gta_data_service
 	{
+		static constexpr auto cache_version_file_path = "./lib/cache_version.txt";
+		static constexpr auto vehicles_json_file_path = "./lib/vehicles.json";
+		static constexpr auto peds_json_file_path = "./lib/peds.json";
+		static constexpr auto weapons_json_file_path = "./lib/weapons.json";
+
 		std::vector<std::string> m_vehicle_class_arr;
 		std::map<Hash, int> m_vehicle_hash_idx_map;
 		std::vector<vehicle_item> m_vehicle_item_arr;
@@ -41,14 +46,18 @@ namespace big
 		const std::vector<weapon_item>& get_weapon_arr();
 
 	private:
-		void load_from_file(
-			std::string file_path, std::string etag_path, std::string url, 
-			bool(gta_data_service::* load_func)(std::filesystem::path), std::string data_name
-		);
+		bool is_cache_updated();
+		void save_cache_version();
+		void update_cache_and_load_data();
+
+		void load_data();
+
+		void save_data_to_file(const std::string& file_path, const nlohmann::json& j);
 
 		bool load_vehicles(std::filesystem::path path);
 		bool load_peds(std::filesystem::path path);
 		bool load_weapons(std::filesystem::path path);
+
 	};
 
 	inline gta_data_service* g_gta_data_service{};
