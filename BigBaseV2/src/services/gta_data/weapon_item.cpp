@@ -6,6 +6,7 @@ namespace big
 	weapon_item::weapon_item()
 	{
 		this->name = "";
+		this->display_name = "";
 		this->throwable = false;
 		this->weapon_type = "";
 
@@ -13,24 +14,22 @@ namespace big
 		this->reward_hash = 0;
 		this->reward_ammo_hash = 0;
 	}
+
 	weapon_item::weapon_item(nlohmann::json& item_json)
 	{
 		this->name = item_json["Name"];
+
+		if (item_json.contains("DisplayName"))
+			this->display_name = item_json["DisplayName"];
+
 		this->throwable = false;
 		this->weapon_type = "NULL";
-
-		if (
-			item_json.contains("TranslatedLabel") &&
-			item_json["TranslatedLabel"].contains("English") &&
-			!item_json["TranslatedLabel"]["English"].is_null()
-		) {
-			this->name = item_json["TranslatedLabel"]["English"];
-		}
 
 		if (!item_json["Category"].is_null())
 		{
 			this->weapon_type = item_json["Category"];
-			this->weapon_type = this->weapon_type.substr(6);
+			if (this->weapon_type.size() > 6)
+				this->weapon_type = this->weapon_type.substr(6);
 		}
 
 		this->hash = item_json["Hash"];
