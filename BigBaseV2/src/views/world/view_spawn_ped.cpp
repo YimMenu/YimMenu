@@ -17,9 +17,9 @@
 namespace big
 {
 	Ped spawn_ped_at_location(
-		const int selected_ped_type, 
-		const char* ped_model_buf, 
-		const Player selected_ped_player_id, 
+		const int selected_ped_type,
+		const char* ped_model_buf,
+		const Player selected_ped_player_id,
 		const Player selected_ped_for_player_id,
 		const bool is_bodyguard
 	) {
@@ -114,8 +114,8 @@ namespace big
 
 
 	void spawn_ped_give_weapon(
-		const Ped ped, 
-		const int selected_ped_weapon_type, 
+		const Ped ped,
+		const int selected_ped_weapon_type,
 		const Hash selected_ped_weapon_hash
 	) {
 		if (selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS)
@@ -186,9 +186,9 @@ namespace big
 
 				ImGui::SetNextItemWidth(160.f);
 				if (ImGui::BeginCombo(
-					"##ped_type", 
-					selected_ped_type == -1 ? "ALL" : 
-					selected_ped_type == -2 ? "ONLINE PLAYER" : 
+					"##ped_type",
+					selected_ped_type == -1 ? "ALL" :
+					selected_ped_type == -2 ? "ONLINE PLAYER" :
 					ped_type_arr[selected_ped_type].c_str()
 				)) {
 
@@ -312,8 +312,8 @@ namespace big
 
 					ImGui::SetNextItemWidth(240.f);
 					components::input_text_with_hint(
-						"##ped_model_name", "Model Name", 
-						ped_model_buf, sizeof(ped_model_buf), ImGuiInputTextFlags_EnterReturnsTrue, 
+						"##ped_model_name", "Model Name",
+						ped_model_buf, sizeof(ped_model_buf), ImGuiInputTextFlags_EnterReturnsTrue,
 						[] {
 							ped_model_dropdown_open = false;
 						}
@@ -405,9 +405,9 @@ namespace big
 
 				ImGui::SetNextItemWidth(160.f);
 				if (ImGui::BeginCombo(
-					"##ped_weapon_type", 
-					selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ? 
-					"ALL" : 
+					"##ped_weapon_type",
+					selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ?
+					"ALL" :
 					selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS ?
 					"NO WEAPONS" :
 					weapon_type_arr[selected_ped_weapon_type].c_str()
@@ -459,12 +459,12 @@ namespace big
 
 				ImGui::SetNextItemWidth(240.f);
 				if (ImGui::BeginCombo(
-					"##ped_weapon", 
+					"##ped_weapon",
 					selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS ?
 					"NO WEAPONS" :
-					selected_ped_weapon_hash == 0 ? 
-					"ALL" : 
-					g_gta_data_service->find_weapon_by_hash(selected_ped_weapon_hash).name.c_str()
+					selected_ped_weapon_hash == 0 ?
+					"ALL" :
+					g_gta_data_service->find_weapon_by_hash(selected_ped_weapon_hash).display_name.c_str()
 				)) {
 					if (selected_ped_weapon_type != SPAWN_PED_NO_WEAPONS)
 					{
@@ -484,7 +484,7 @@ namespace big
 								selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ||
 								weapon.weapon_type == weapon_type_arr[selected_ped_weapon_type]
 							) {
-								if (ImGui::Selectable(weapon.name.c_str(), weapon.hash == selected_ped_weapon_hash))
+								if (ImGui::Selectable(weapon.display_name.c_str(), weapon.hash == selected_ped_weapon_hash))
 								{
 									selected_ped_weapon_hash = weapon.hash;
 								}
