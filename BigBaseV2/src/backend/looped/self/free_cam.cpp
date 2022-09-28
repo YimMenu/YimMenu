@@ -33,12 +33,12 @@ namespace big
 	{
 		if (g_local_player == nullptr) return;
 
-		if (g->self.free_cam && !bLastFreeCam)
+		if (g->self.free_cam)
 		{
 			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 
 			for (const auto& control : controls)
-				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(control), true);
+				PAD::ENABLE_CONTROL_ACTION(0, static_cast<int>(control), true);
 		}
 	}
 
@@ -46,8 +46,8 @@ namespace big
 	{
 		if (g_local_player == nullptr) return;
 
-		Vehicle vehicle = self::veh;
-		Ped ped = self::ped;
+		const auto vehicle = self::veh;
+		const auto ped = self::ped;
 		if (!g->self.free_cam && !bLastFreeCam) return;
 
 		if (g->self.free_cam && !bLastFreeCam)
@@ -59,6 +59,7 @@ namespace big
 
 			globals::disable_kill_trigger(true);
 			ENTITY::FREEZE_ENTITY_POSITION(vehicle, true);
+
 			CAM::SET_CAM_COORD(cCam, vecPosition.x, vecPosition.y, vecPosition.z);
 			CAM::SET_CAM_ROT(cCam, vecRot.x, vecRot.y, vecRot.z, 2);
 			CAM::SET_CAM_ACTIVE(cCam, true);
@@ -68,12 +69,13 @@ namespace big
 		}
 		else if (!g->self.free_cam && bLastFreeCam)
 		{
-			globals::disable_kill_trigger(false);
-			ENTITY::FREEZE_ENTITY_POSITION(vehicle, false);
 			CAM::SET_CAM_ACTIVE(cCam, false);
 			CAM::RENDER_SCRIPT_CAMS(false, true, 500, true, true, 0);
 			CAM::DESTROY_CAM(cCam, false);
 			STREAMING::SET_FOCUS_ENTITY(ped);
+
+			ENTITY::FREEZE_ENTITY_POSITION(vehicle, false);
+			globals::disable_kill_trigger(false);
 
 			bLastFreeCam = false;
 

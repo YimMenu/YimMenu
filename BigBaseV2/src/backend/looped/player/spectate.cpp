@@ -25,9 +25,10 @@ namespace big
 
 				ENTITY::FREEZE_ENTITY_POSITION(ped, false);
 				ENTITY::FREEZE_ENTITY_POSITION(vehicle, false);
-				globals::disable_kill_trigger(false);
 
 				STREAMING::SET_FOCUS_ENTITY(ped);
+
+				globals::disable_kill_trigger(false);
 			}
 
 			return;
@@ -35,12 +36,13 @@ namespace big
 
 		const auto target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
 
+		globals::disable_kill_trigger(true);
+
 		NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(true, target);
 		HUD::SET_MINIMAP_IN_SPECTATOR_MODE(true, target);
 
 		ENTITY::FREEZE_ENTITY_POSITION(ped, true);
 		ENTITY::FREEZE_ENTITY_POSITION(vehicle, true);
-		globals::disable_kill_trigger(true);
 
 		STREAMING::SET_FOCUS_ENTITY(target);
 
