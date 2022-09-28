@@ -1,6 +1,7 @@
 #include "backend/looped/looped.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
+#include "util/globals.hpp"
 #include "util/math.hpp"
 
 namespace big
@@ -56,6 +57,7 @@ namespace big
 			vecPosition = CAM::GET_GAMEPLAY_CAM_COORD();
 			vecRot = CAM::GET_GAMEPLAY_CAM_ROT(2);
 
+			globals::disable_kill_trigger(true);
 			ENTITY::FREEZE_ENTITY_POSITION(vehicle, true);
 			CAM::SET_CAM_COORD(cCam, vecPosition.x, vecPosition.y, vecPosition.z);
 			CAM::SET_CAM_ROT(cCam, vecRot.x, vecRot.y, vecRot.z, 2);
@@ -66,6 +68,7 @@ namespace big
 		}
 		else if (!g->self.free_cam && bLastFreeCam)
 		{
+			globals::disable_kill_trigger(false);
 			ENTITY::FREEZE_ENTITY_POSITION(vehicle, false);
 			CAM::SET_CAM_ACTIVE(cCam, false);
 			CAM::RENDER_SCRIPT_CAMS(false, true, 500, true, true, 0);

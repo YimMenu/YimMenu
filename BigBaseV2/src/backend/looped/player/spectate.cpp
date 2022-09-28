@@ -1,6 +1,7 @@
 #include "backend/looped/looped.hpp"
 #include "natives.hpp"
 #include "services/players/player_service.hpp"
+#include "util/globals.hpp"
 
 namespace big
 {
@@ -21,19 +22,27 @@ namespace big
 
 				NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(false, -1);
 				HUD::SET_MINIMAP_IN_SPECTATOR_MODE(false, -1);
+
 				ENTITY::FREEZE_ENTITY_POSITION(ped, false);
 				ENTITY::FREEZE_ENTITY_POSITION(vehicle, false);
+				globals::disable_kill_trigger(false);
+
+				STREAMING::SET_FOCUS_ENTITY(ped);
 			}
 
 			return;
 		}
 
-		const Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+		const auto target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
 
 		NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(true, target);
 		HUD::SET_MINIMAP_IN_SPECTATOR_MODE(true, target);
+
 		ENTITY::FREEZE_ENTITY_POSITION(ped, true);
 		ENTITY::FREEZE_ENTITY_POSITION(vehicle, true);
+		globals::disable_kill_trigger(true);
+
+		STREAMING::SET_FOCUS_ENTITY(target);
 
 		bReset = false;
 	}
