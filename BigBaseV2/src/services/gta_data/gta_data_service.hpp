@@ -45,6 +45,9 @@ namespace big
 		const std::vector<std::string>& get_weapon_type_arr();
 		const std::vector<weapon_item>& get_weapon_arr();
 
+		bool cache_need_update = false;
+		bool force_cache_update = false;
+
 	private:
 		bool is_cache_updated();
 		void save_cache_version();

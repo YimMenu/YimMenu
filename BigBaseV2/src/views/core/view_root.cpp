@@ -4,6 +4,8 @@ namespace big
 {
 	void view::root()
 	{
+		view::gta_data();
+
 		view::heading();
 		view::navigation();
 		view::players();

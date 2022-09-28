@@ -44,6 +44,7 @@ namespace big
 		static void players();
 		static void weapons();
 		static void context_menu();
+		static void gta_data();
 
 		static void always()
 		{

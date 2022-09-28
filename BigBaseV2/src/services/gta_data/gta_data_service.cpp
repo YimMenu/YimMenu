@@ -23,22 +23,20 @@ namespace big
 		// this has to happen in a gta thread because of the required tls context when iterating through rpf files
 		g_fiber_pool->queue_job([this]()
 		{
-			while (*g_pointers->m_game_state != eGameState::Playing)
-			{
-				script::get_current()->yield(1s);
-			}
-
-			if (!*g_pointers->m_is_session_started)
-			{
-				/*if (ImGui::BeginPopupModal("Game Cache", nullptr, ImGuiWindowFlags_))
-				{
-					ImGui::Text("Lorem ipsum");
-					ImGui::EndPopup();
-				}*/
-			}
-
 			if (!is_cache_updated())
 			{
+				cache_need_update = true;
+
+				while (!*g_pointers->m_is_session_started && !force_cache_update)
+				{
+					script::get_current()->yield(1s);
+				}
+
+				while (*g_pointers->m_game_state != eGameState::Playing)
+				{
+					script::get_current()->yield(1s);
+				}
+
 				script::get_current()->yield(1s);
 				notify::above_map("Updating vehicles, peds and weapons cache. This may take a bit.");
 				script::get_current()->yield(1s);
