@@ -58,7 +58,7 @@ namespace big
 		const auto non_dlc_mounted_devices_names = get_non_dlc_mounted_devices_names();
 
 		// for not hanging the game too much
-		auto yield_increment = 80;
+		constexpr auto yield_increment = 80;
 
 		auto i = 1;
 		while (g_pointers->m_fipackfile_instances[i])

@@ -11,6 +11,8 @@
 #include "script.hpp"
 #include "thread_pool.hpp"
 #include "util/notify.hpp"
+#include <algorithm>
+#include <execution>
 
 #define EXIST_IN_ARRAY(arr, val) (std::find(std::begin(arr), std::end(arr), val) != std::end(arr))
 
@@ -24,6 +26,15 @@ namespace big
 			while (*g_pointers->m_game_state != eGameState::Playing)
 			{
 				script::get_current()->yield(1s);
+			}
+
+			if (!*g_pointers->m_is_session_started)
+			{
+				/*if (ImGui::BeginPopupModal("Game Cache", nullptr, ImGuiWindowFlags_))
+				{
+					ImGui::Text("Lorem ipsum");
+					ImGui::EndPopup();
+				}*/
 			}
 
 			if (!is_cache_updated())
@@ -493,7 +504,7 @@ namespace big
 
 		g_thread_pool->push([=]() {
 
-			for (const auto& scheduled_veh : *scheduled_vehs)
+			std::for_each(std::execution::par_unseq, scheduled_vehs->begin(), scheduled_vehs->end(), [=](auto&& scheduled_veh)
 			{
 				std::string scheduled_veh_name = scheduled_veh.contains("Name") ? scheduled_veh["Name"] : "";
 				std::string scheduled_veh_handling_id = scheduled_veh.contains("HandlingId") ? scheduled_veh["HandlingId"] : "";
@@ -519,9 +530,9 @@ namespace big
 						}
 					}
 				}
-			}
+			});
 
-			for (const auto& gxt2_entry : *gxt2_entries)
+			std::for_each(std::execution::par_unseq, gxt2_entries->begin(), gxt2_entries->end(), [=](auto&& gxt2_entry)
 			{
 				if (gxt2_entry.hash != -1)
 				{
@@ -545,7 +556,7 @@ namespace big
 						}
 					}
 				}
-			}
+			});
 
 			LOG(INFO) << "Saving gta data to files";
 
