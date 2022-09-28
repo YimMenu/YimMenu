@@ -176,8 +176,6 @@ namespace big
 	{
 		// wrap around shared ptr because we'll share it with a worker thread below
 
-		std::shared_ptr<std::vector<GXT2_entry>> gxt2_entries = std::make_shared<std::vector<GXT2_entry>>();
-
 		// we may encounter the same vehicle xml entry while iterating rpfs.
 		std::unordered_map<rage::joaat_t, const void*> veh_hashes;
 		// we always add a vehicle entry to the veh json through the vehicles.meta parser
@@ -232,12 +230,15 @@ namespace big
 
 							veh["LayoutId"] = item.child("layout").text().as_string();
 
+							std::string game_name = item.child("gameName").text().as_string();
+							veh["DisplayName"] = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(game_name.c_str());
+
 							const std::string manufacturer = item.child("vehicleMakeName").text().as_string();
 							if (manufacturer.size())
 							{
 								veh["Manufacturer"] = manufacturer;
 								veh["ManufacturerHash"] = rage::joaat(manufacturer);
-								veh["ManufacturerDisplayName"] = nullptr;
+								veh["ManufacturerDisplayName"] = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(manufacturer.c_str());
 							}
 							else
 							{
@@ -306,47 +307,6 @@ namespace big
 						}
 					});
 				}
-				else if (file_path.find("global.gxt2") != std::string::npos)
-				{
-					rpf_wrapper.read_file<std::vector<uint8_t>>(file_path, [&](const std::vector<uint8_t>& file_content)
-					{
-						std::string gxt2_header;
-						gxt2_header.resize(4);
-						memcpy(gxt2_header.data(), file_content.data(), 4);
-
-						if (gxt2_header == GXT2_metadata::header)
-						{
-							uint32_t gxt_key_entries_count = 0;
-							memcpy(&gxt_key_entries_count, file_content.data() + 0x04, 4);
-
-							std::vector<GXT2_key> key_entries;
-							key_entries.resize(gxt_key_entries_count * sizeof(GXT2_key));
-							memcpy(key_entries.data(), file_content.data() + 0x08, gxt_key_entries_count * sizeof(GXT2_key));
-
-							uint32_t end_offset = 0;
-							memcpy(&end_offset, file_content.data() + 0x08 + gxt_key_entries_count * sizeof(GXT2_key), 4);
-
-							for (const auto& key_entry : key_entries)
-							{
-								std::string text;
-								uint32_t offset = key_entry.file_offset_to_text;
-								if (offset >= end_offset)
-								{
-									break;
-								}
-								while (file_content[offset] != 0 && offset < end_offset)
-								{
-									text.push_back(file_content[offset++]);
-								}
-
-								GXT2_entry gxt2_entry;
-								gxt2_entry.hash = key_entry.key_hash;
-								gxt2_entry.text = text;
-								gxt2_entries->push_back(gxt2_entry);
-							}
-						}
-					});
-				}
 				else if ((file_path.find("weapon") != std::string::npos && file_path.find(".meta") != std::string::npos))
 				{
 					rpf_wrapper.read_xml_file(file_path, [&](pugi::xml_document& doc)
@@ -366,7 +326,7 @@ namespace big
 								continue;
 							}
 
-							weapon["HumanNameHash"] = rage::joaat(human_name_hash);
+							weapon["DisplayName"] = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(human_name_hash.c_str());
 
 							uint32_t model_hash = rage::joaat(weapon["Name"]);
 
@@ -502,14 +462,14 @@ namespace big
 		if (!vehs->size())
 			return;
 
-		g_thread_pool->push([=]() {
-
-			std::for_each(std::execution::par_unseq, scheduled_vehs->begin(), scheduled_vehs->end(), [=](auto&& scheduled_veh)
+		g_thread_pool->push([=]()
+		{
+			for (const auto& scheduled_veh : *scheduled_vehs)
 			{
 				std::string scheduled_veh_name = scheduled_veh.contains("Name") ? scheduled_veh["Name"] : "";
 				std::string scheduled_veh_handling_id = scheduled_veh.contains("HandlingId") ? scheduled_veh["HandlingId"] : "";
 
-				for (auto& veh : *vehs)
+				std::for_each(std::execution::par_unseq, vehs->begin(), vehs->end(), [=](auto&& veh)
 				{
 					if (veh["Name"] == scheduled_veh_name || veh["HandlingId"] == scheduled_veh_handling_id)
 					{
@@ -529,34 +489,8 @@ namespace big
 							}
 						}
 					}
-				}
-			});
-
-			std::for_each(std::execution::par_unseq, gxt2_entries->begin(), gxt2_entries->end(), [=](auto&& gxt2_entry)
-			{
-				if (gxt2_entry.hash != -1)
-				{
-					for (auto& veh : *vehs)
-					{
-						if (gxt2_entry.hash == veh["Hash"])
-						{
-							veh["DisplayName"] = gxt2_entry.text;
-						}
-						else if (gxt2_entry.hash == veh["ManufacturerHash"])
-						{
-							veh["ManufacturerDisplayName"] = gxt2_entry.text;
-						}
-					}
-
-					for (auto& weapon : *weapons)
-					{
-						if (gxt2_entry.hash == weapon["HumanNameHash"])
-						{
-							weapon["DisplayName"] = gxt2_entry.text;
-						}
-					}
-				}
-			});
+				});
+			}
 
 			LOG(INFO) << "Saving gta data to files";
 

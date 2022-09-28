@@ -76,7 +76,7 @@ namespace big
 			auto already_mounted = false;
 			for (const auto& non_dlc_mounted_device_name : non_dlc_mounted_devices_names)
 			{
-				rage::fiDevice* non_dlc_mounted_device = rage::fiDevice::GetDevice(non_dlc_mounted_device_name.c_str(), true);
+				auto* non_dlc_mounted_device = rage::fiDevice::GetDevice(non_dlc_mounted_device_name.c_str(), true);
 
 				if (rpf == non_dlc_mounted_device)
 				{
@@ -104,17 +104,32 @@ namespace big
 				rpf_wrapper.mount_name = "dlc:/";
 				acc += cb(rpf_wrapper);
 
+				rpf_wrapper.mount_name = "dlcpacks:/";
+				acc += cb(rpf_wrapper);
+
 				rpf_wrapper.mount_name = "common:/";
 				acc += cb(rpf_wrapper);
 
 				rpf_wrapper.mount_name = "commoncrc:/";
 				acc += cb(rpf_wrapper);
 
+				rpf_wrapper.mount_name = "update:/";
+				acc += cb(rpf_wrapper);
+
+				rpf_wrapper.mount_name = "update2:/";
+				acc += cb(rpf_wrapper);
+
+				rpf_wrapper.mount_name = "platform:/";
+				acc += cb(rpf_wrapper);
+
+				rpf_wrapper.mount_name = "platformcrc:/";
+				acc += cb(rpf_wrapper);
+
+				rpf_wrapper.mount_name = "gamecache:/";
+				acc += cb(rpf_wrapper);
+
 				// if we got nothing with those mount points for this rpf, mount it
-				// we mount localization rpfs regardless because they may return file paths but not all of them.
-				// From my testing, the minimal mounting can still cause error or crashes when transitioning from SP to MP
-				// atleast this will happen "only" once per game update
-				if (!acc || (ends_with(rpf->GetName(), "dlc.rpf") && strlen(rpf->GetName()) > 7))
+				if (!acc)
 				{
 					rpf_wrapper.mount_name = default_mount_name;
 					rpf->Mount(default_mount_name);
