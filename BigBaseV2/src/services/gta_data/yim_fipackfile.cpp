@@ -149,43 +149,41 @@ namespace big
 		}
 	}
 
-	std::vector<std::string> yim_fipackfile::get_file_paths()
+	std::vector<std::filesystem::path> yim_fipackfile::get_file_paths(std::string parent)
 	{
-		std::vector<std::string> file_paths;
+		std::vector<std::filesystem::path> file_paths;
+		if (parent.empty())
+			parent = mount_name;
 
-		std::function<void(std::string)> recurse;
-		recurse = [&](std::string parent)
+		std::vector<std::string> directories;
+
+		rage::fiFindData findData = { 0 };
+		auto handlef = rpf->FindFirst(parent.c_str(), &findData);
+		if (handlef != -1)
 		{
-			std::vector<std::string> directories;
-
-			rage::fiFindData findData = { 0 };
-			auto handlef = rpf->FindFirst(parent.c_str(), &findData);
-			if (handlef != -1)
+			do
 			{
-				do
+				std::string fn = std::string(parent.c_str()) + std::string("/") + std::string(findData.fileName);
+
+				if (findData.fileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 				{
-					std::string fn = std::string(parent.c_str()) + std::string("/") + std::string(findData.fileName);
+					directories.push_back(fn);
+				}
+				else
+				{
+					file_paths.push_back(fn);
+				}
+			} while (rpf->FindNext(handlef, &findData));
 
-					if (findData.fileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-					{
-						directories.push_back(fn);
-					}
-					else
-					{
-						file_paths.push_back(fn);
-					}
-				} while (rpf->FindNext(handlef, &findData));
+			rpf->FindClose(handlef);
+		}
 
-				rpf->FindClose(handlef);
-			}
+		for (auto& directory : directories)
+		{
+			auto files = get_file_paths(directory);
 
-			for (auto& directory : directories)
-			{
-				recurse(directory);
-			}
-		};
-
-		recurse(mount_name);
+			file_paths.insert(file_paths.end(), files.begin(), files.end());
+		}
 
 		return file_paths;
 	}

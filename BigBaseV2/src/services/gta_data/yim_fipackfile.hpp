@@ -14,7 +14,7 @@ namespace big
 		explicit yim_fipackfile(rage::fiPackfile* rpf, const std::string& mount_name);
 
 		static void for_each_fipackfile(std::function<size_t(yim_fipackfile& rpf_wrapper)> cb);
-		std::vector<std::string> get_file_paths();
+		std::vector<std::filesystem::path> get_file_paths(std::string parent = {});
 
 		template <typename T>
 		void read_file(const std::string& path, std::function<void(const T& file_content)> cb)

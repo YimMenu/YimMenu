@@ -194,9 +194,9 @@ namespace big
 			const auto file_paths = rpf_wrapper.get_file_paths();
 			for (const auto& file_path : file_paths)
 			{
-				if (file_path.find("/vehicles.meta") != std::string::npos)
+				if (file_path.filename() == "vehicles.meta")
 				{
-					rpf_wrapper.read_xml_file(file_path, [&](pugi::xml_document& doc)
+					rpf_wrapper.read_xml_file(file_path.string(), [&](pugi::xml_document& doc)
 					{
 						pugi::xpath_node_set items = doc.select_nodes("/CVehicleModelInfo__InitDataList/InitDatas/Item");
 						for (pugi::xpath_node item_node : items)
@@ -305,9 +305,9 @@ namespace big
 						}
 					});
 				}
-				else if ((file_path.find("weapon") != std::string::npos && file_path.find(".meta") != std::string::npos))
+				else if (const auto file_str = file_path.string(); file_str.find("weapon") != std::string::npos && file_path.extension() == ".meta")
 				{
-					rpf_wrapper.read_xml_file(file_path, [&](pugi::xml_document& doc)
+					rpf_wrapper.read_xml_file(file_str, [&](pugi::xml_document& doc)
 					{
 						pugi::xpath_node_set items = doc.select_nodes("/CWeaponInfoBlob/Infos/Item/Infos/Item[@type='CWeaponInfo']");
 						for (const auto& item_node : items)
@@ -348,14 +348,13 @@ namespace big
 						}
 					});
 				}
-				else if (file_path.find("weaponcomponents.meta") != std::string::npos)
+				else if (file_path.filename() == "weaponcomponents.meta")
 				{
 
 				}
-				else if (file_path.find("/peds.meta") != std::string::npos ||
-						file_path.find("/peds.ymt") != std::string::npos)
+				else if (file_path.filename() == "peds.meta" || file_path.filename() == "peds.ymt")
 				{
-					rpf_wrapper.read_xml_file(file_path, [&](pugi::xml_document& doc)
+					rpf_wrapper.read_xml_file(file_path.string(), [&](pugi::xml_document& doc)
 					{
 						pugi::xpath_node_set items = doc.select_nodes("/CPedModelInfo__InitDataList/InitDatas/Item");
 						for (const auto& item_node : items)
@@ -400,10 +399,9 @@ namespace big
 						}
 					});
 				}
-				else if (file_path.find("/carvariations.ymt") != std::string::npos ||
-					file_path.find("/carvariations.meta") != std::string::npos)
+				else if (file_path.filename() == "carvariations.ymt" || file_path.filename() == "carvariations.meta")
 				{
-					rpf_wrapper.read_xml_file(file_path, [&](pugi::xml_document& doc)
+					rpf_wrapper.read_xml_file(file_path.string(), [&](pugi::xml_document& doc)
 					{
 						pugi::xpath_node_set items = doc.select_nodes("/CVehicleModelInfoVariation/variationData/Item");
 						for (const auto& item_node : items)
@@ -427,9 +425,9 @@ namespace big
 						}
 					});
 				}
-				else if (file_path.find("/handling.meta") != std::string::npos)
+				else if (file_path.filename() == "handling.meta")
 				{
-					rpf_wrapper.read_xml_file(file_path, [&](pugi::xml_document& doc)
+					rpf_wrapper.read_xml_file(file_path.string(), [&](pugi::xml_document& doc)
 					{
 						pugi::xpath_node_set items = doc.select_nodes("/CHandlingDataMgr/HandlingData/Item");
 						for (const auto& item_node : items)
