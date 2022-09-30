@@ -52,7 +52,8 @@ namespace big
 		// Received clone sync
 		m_received_clone_sync_hook("RCS", g_pointers->m_received_clone_sync, &hooks::received_clone_sync),
 		//Get Network Event Data
-		m_get_network_event_data_hook("GNED", g_pointers->m_get_network_event_data, &hooks::get_network_event_data)
+		m_get_network_event_data_hook("GNED", g_pointers->m_get_network_event_data, &hooks::get_network_event_data),
+		m_write_player_gamer_data_node_hook("WPGDN", g_pointers->m_write_player_gamer_data_node, &hooks::write_player_gamer_data_node)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -86,6 +87,7 @@ namespace big
 		m_receive_net_message_hook.enable();
 		m_get_network_event_data_hook.enable();
 		m_received_clone_sync_hook.enable();
+		m_write_player_gamer_data_node_hook.enable();
 
 		MH_ApplyQueued();
 
@@ -96,6 +98,7 @@ namespace big
 	{
 		m_enabled = false;
 
+		m_write_player_gamer_data_node_hook.disable();
 		m_received_clone_sync_hook.disable();
 		m_get_network_event_data_hook.disable();
 		m_receive_net_message_hook.disable();

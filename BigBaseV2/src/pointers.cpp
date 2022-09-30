@@ -283,6 +283,12 @@ namespace big
 			m_give_pickup_rewards = ptr.sub(0x28).as<decltype(m_give_pickup_rewards)>();
 		});
 
+		// Write Player Gamer Data Node
+		main_batch.add("WPGDN", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 48 81 C1 ? ? ? ? 48 8B DA E8", [this](memory::handle ptr)
+		{
+			m_write_player_gamer_data_node = ptr.as<PVOID>();
+		});
+
 		// Network Group Override
 		main_batch.add("NGO", "44 89 81 ? ? ? ? 89 91 ? ? ? ? C6 05", [this](memory::handle ptr)
 		{
