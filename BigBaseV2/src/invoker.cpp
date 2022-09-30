@@ -16,13 +16,17 @@ namespace big
 
 	void native_invoker::cache_handlers()
 	{
+		if (m_handlers_cached)
+			return;
+
 		for (const rage::scrNativeMapping& mapping : g_crossmap)
 		{
 			rage::scrNativeHandler handler = g_pointers->m_get_native_handler(
 				g_pointers->m_native_registration_table, mapping.second);
-
 			m_handler_cache.emplace(mapping.first, handler);
 		}
+
+		m_handlers_cached = true;
 	}
 
 	void native_invoker::begin_call()
