@@ -20,7 +20,7 @@ namespace big
 		ImGui::Checkbox("Enable Special Ammo", &g->weapons.ammo_special.toggle);
 
 		eAmmoSpecialType selected_ammo = g->weapons.ammo_special.type;
-		eImpactType selected_impact = g->weapons.ammo_special.impactType;
+		eExplosionTag selected_explosion = g->weapons.ammo_special.explosion_tag;
 
 		if (ImGui::BeginCombo("Special Ammo", SPECIAL_AMMOS[(int)selected_ammo].name))
 		{
@@ -40,16 +40,16 @@ namespace big
 			ImGui::EndCombo();
 		}
 
-		if (ImGui::BeginCombo("Bullet Impact", BULLET_IMPACTS[selected_impact]))
+		if (ImGui::BeginCombo("Bullet Impact", BULLET_IMPACTS[selected_explosion]))
 		{
 			for (const auto& [type, name] : BULLET_IMPACTS)
 			{
-				if (ImGui::Selectable(name, type == selected_impact))
+				if (ImGui::Selectable(name, type == selected_explosion))
 				{
-					g->weapons.ammo_special.impactType = type;
+					g->weapons.ammo_special.explosion_tag = type;
 				}
 
-				if (type == selected_impact)
+				if (type == selected_explosion)
 				{
 					ImGui::SetItemDefaultFocus();
 				}
@@ -80,7 +80,7 @@ namespace big
 
 			constexpr auto parachute_hash = RAGE_JOAAT("GADGET_PARACHUTE");
 			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, parachute_hash, 0, true);
-		});
+			});
 		ImGui::SameLine();
 		components::button("Remove Current Weapon", [] {
 			Hash weaponHash;
@@ -89,7 +89,7 @@ namespace big
 			{
 				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, weaponHash);
 			}
-		});
+			});
 
 		ImGui::SliderFloat("Damage Multiplier", &g->weapons.increased_damage, 1.f, 10.f, "%.1f");
 
