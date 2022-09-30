@@ -16,7 +16,8 @@ namespace big
 
 		ImGui::Checkbox("Spoof Username", &g->spoofing.spoof_username);
 
-		static char name[20];
+		constexpr size_t name_size = RTL_FIELD_SIZE(rage::rlGamerInfo, m_name);
+		static char name[name_size];
 		strcpy_s(name, sizeof(name), g->spoofing.username.c_str());
 
 		ImGui::Text("Username:");
@@ -59,7 +60,8 @@ namespace big
 
 		ImGui::Checkbox("Spoof Crew", &g->spoofing.spoof_crew_data);
 
-		static char crew_tag[20];
+		constexpr size_t crew_tag_size = RTL_FIELD_SIZE(ClanData, m_clan_tag);
+		static char crew_tag[crew_tag_size];
 		strcpy_s(crew_tag, sizeof(crew_tag), g->spoofing.crew_tag.c_str());
 
 		ImGui::Text("Crew Tag:");
