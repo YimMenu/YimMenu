@@ -34,7 +34,6 @@ namespace big
 	void script_mgr::tick_internal()
 	{
 		static bool ensure_main_fiber = (ConvertThreadToFiber(nullptr), true);
-		static bool ensure_native_handlers = (g_native_invoker.cache_handlers(), true);
 
 		std::lock_guard lock(m_mutex);
 		for (auto const& script : m_scripts)

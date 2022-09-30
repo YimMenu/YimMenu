@@ -269,7 +269,7 @@ namespace big
 			{
 				bool toggle = false;
 				eAmmoSpecialType type = eAmmoSpecialType::None;
-				eImpactType impactType = eImpactType::DEFAULT_BULLETS;
+				eExplosionTag explosion_tag = eExplosionTag::DONTCARE;
 			} ammo_special;
 
 			CustomWeapon custom_weapon = CustomWeapon::NONE;
