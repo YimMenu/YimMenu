@@ -848,13 +848,13 @@ namespace big
 							this->spoofing.ip_address[3] })
 						},
 						{ "rockstar_id", this->spoofing.rockstar_id },
-						{ "username", this->spoofing.username }
-						{ "spoof_cheater", this->spoofing.spoof_cheater }
-						{ "spoof_rockstar_dev", this->spoofing.spoof_rockstar_dev }
-						{ "spoof_rockstar_qa", this->spoofing.spoof_rockstar_qa }
-						{ "spoof_crew_data", this->spoofing.spoof_crew_data }
-						{ "crew_tag", this->spoofing.crew_tag }
-						{ "rockstar_crew", this->spoofing.rockstar_crew }
+						{ "username", this->spoofing.username },
+						{ "spoof_cheater", this->spoofing.spoof_cheater },
+						{ "spoof_rockstar_dev", this->spoofing.spoof_rockstar_dev },
+						{ "spoof_rockstar_qa", this->spoofing.spoof_rockstar_qa },
+						{ "spoof_crew_data", this->spoofing.spoof_crew_data },
+						{ "crew_tag", this->spoofing.crew_tag },
+						{ "rockstar_crew", this->spoofing.rockstar_crew },
 						{ "square_crew_tag", this->spoofing.square_crew_tag }
 					}
 				},
