@@ -393,7 +393,7 @@ namespace big
 			m_weapons_cache.set_header_version(game_version, online_version);
 			m_weapons_cache.write();
 
-			LOG(INFO) << "Finishe writing cache to disk.";
+			LOG(INFO) << "Finished writing cache to disk.";
 
 			load_data();
 		});
