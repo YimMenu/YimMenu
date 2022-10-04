@@ -1,6 +1,7 @@
 #include "view.hpp"
-#include "services/gta_data/gta_data_service.hpp"
+#include "gui.hpp"
 #include "pointers.hpp"
+#include "services/gta_data/gta_data_service.hpp"
 
 namespace big
 {
@@ -11,6 +12,7 @@ namespace big
 
 		if (g_gta_data_service->cache_needs_update())
 		{
+			g_gui.m_opened = true;
 			ImGui::OpenPopup("Game Cache");
 		}
 
@@ -32,7 +34,7 @@ namespace big
 				}
 				else
 				{
-					ImGui::Text("You are currently in single player, you can force build the cache in single player but risk crashing when going into multiplayer or load online and cache.");
+					ImGui::TextWrapped("You are currently in single player, you can force build the cache in single player but risk crashing when going into multiplayer or load online and cache.");
 
 					if (ImGui::Button("I don't care, update in single player!"))
 					{
