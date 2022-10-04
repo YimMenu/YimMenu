@@ -1,53 +1,35 @@
-#include "api/remote.hpp"
-#include "file_manager.hpp"
 #include "gta_data_service.hpp"
-#include "gta/gxt2.hpp"
-#include "pointers.hpp"
-#include "gta/fidevice.hpp"
-#include "pugixml.hpp"
-#include "yim_fipackfile.hpp"
-#include "natives.hpp"
+#include "file_manager.hpp"
 #include "fiber_pool.hpp"
+#include "natives.hpp"
+#include "pointers.hpp"
+#include "pugixml.hpp"
 #include "script.hpp"
 #include "thread_pool.hpp"
-#include "util/notify.hpp"
-#include <algorithm>
-#include <execution>
-
-#define EXIST_IN_ARRAY(arr, val) (std::find(std::begin(arr), std::end(arr), val) != std::end(arr))
+#include "util/session.hpp"
+#include "yim_fipackfile.hpp"
 
 namespace big
 {
-	gta_data_service::gta_data_service()
+	bool add_if_not_exists(string_vec& vec, std::string str)
 	{
-		// this has to happen in a gta thread because of the required tls context when iterating through rpf files
-		g_fiber_pool->queue_job([this]()
-		{
-			if (!is_cache_updated())
-			{
-				cache_need_update = true;
+		if (std::find(vec.begin(), vec.end(), str) != vec.end())
+			return true;
 
-				while (!*g_pointers->m_is_session_started && !force_cache_update)
-				{
-					script::get_current()->yield(1s);
-				}
+		vec.emplace_back(std::move(str));
+		return false;
+	}
 
-				while (*g_pointers->m_game_state != eGameState::Playing)
-				{
-					script::get_current()->yield(1s);
-				}
-
-				script::get_current()->yield(1s);
-				notify::above_map("Updating vehicles, peds and weapons cache. This may take a bit.");
-				script::get_current()->yield(1s);
-
-				update_cache_and_load_data();
-			}
-			else
-			{
-				load_data();
-			}
-		});
+	gta_data_service::gta_data_service() :
+		m_peds_cache(g_file_manager->get_project_file("./cache/peds.bin"), 1),
+		m_vehicles_cache(g_file_manager->get_project_file("./cache/vehicles.bin"), 1),
+		m_weapons_cache(g_file_manager->get_project_file("./cache/weapons.bin"), 1),
+		m_update_state(eGtaDataUpdateState::IDLE)
+	{
+		if (!is_cache_up_to_date())
+			m_update_state = eGtaDataUpdateState::NEEDS_UPDATE;
+		else
+			load_data();
 
 		g_gta_data_service = this;
 	}
@@ -57,638 +39,363 @@ namespace big
 		g_gta_data_service = nullptr;
 	}
 
-	const vehicle_item& gta_data_service::find_vehicle_by_hash(Hash hash)
+	bool gta_data_service::cache_needs_update() const
 	{
-		int idx = -1;
+		return m_update_state == eGtaDataUpdateState::NEEDS_UPDATE;
+	}
 
-		if (m_vehicle_hash_idx_map.count(hash))
+	eGtaDataUpdateState gta_data_service::state() const
+	{
+		return m_update_state;
+	}
+
+	void gta_data_service::update_in_online()
+	{
+		m_update_state = eGtaDataUpdateState::WAITING_FOR_ONLINE;
+
+		session::join_type(eSessionType::SOLO);
+
+		g_fiber_pool->queue_job([this]
 		{
-			idx = m_vehicle_hash_idx_map[hash];
-		}
-
-		if (idx == -1)
-		{
-			return empty_vehicle_item;
-		}
-
-		return m_vehicle_item_arr[idx];
-	}
-
-	const std::vector<std::string>& gta_data_service::get_vehicle_class_arr()
-	{
-		return m_vehicle_class_arr;
-	}
-
-	const std::vector<vehicle_item>& gta_data_service::get_vehicle_arr()
-	{
-		return m_vehicle_item_arr;
-	}
-
-	const ped_item& gta_data_service::find_ped_by_hash(Hash hash)
-	{
-		int idx = -1;
-
-		if (m_ped_hash_idx_map.count(hash))
-		{
-			idx = m_ped_hash_idx_map[hash];
-		}
-
-		if (idx == -1)
-		{
-			return empty_ped_item;
-		}
-
-		return m_ped_item_arr[idx];
-	}
-
-	const std::vector<std::string>& gta_data_service::get_ped_type_arr()
-	{
-		return m_ped_type_arr;
-	}
-
-	const std::vector<ped_item>& gta_data_service::get_ped_arr()
-	{
-		return m_ped_item_arr;
-	}
-
-	const weapon_item& gta_data_service::find_weapon_by_hash(Hash hash)
-	{
-		int idx = -1;
-
-		if (m_weapon_hash_idx_map.count(hash))
-		{
-			idx = m_weapon_hash_idx_map[hash];
-		}
-
-		if (idx == -1)
-		{
-			return empty_weapon_item;
-		}
-
-		return m_weapon_item_arr[idx];
-	}
-
-	const std::vector<std::string>& gta_data_service::get_weapon_type_arr()
-	{
-		return m_weapon_type_arr;
-	}
-
-	const std::vector<weapon_item>& gta_data_service::get_weapon_arr()
-	{
-		return m_weapon_item_arr;
-	}
-
-	bool gta_data_service::is_cache_updated()
-	{
-		std::ifstream cache_version_file(g_file_manager->get_project_file(cache_version_file_path).get_path());
-		std::stringstream cache_version_file_content;
-		cache_version_file_content << cache_version_file.rdbuf();
-
-		return cache_version_file_content.str() == (std::string(g_pointers->m_game_version) + std::string(g_pointers->m_online_version));
-	}
-
-	void gta_data_service::save_cache_version()
-	{
-		std::ofstream cache_version_file(g_file_manager->get_project_file(cache_version_file_path).get_path());
-		cache_version_file << g_pointers->m_game_version << g_pointers->m_online_version;
-	}
-
-	static nlohmann::json split_str_into_json_array(const std::string& s, const std::string& delimiter)
-	{
-		size_t pos_start = 0, pos_end, delim_len = delimiter.length();
-		std::string token;
-		auto res = nlohmann::json::array();
-
-		while ((pos_end = s.find(delimiter, pos_start)) != std::string::npos)
-		{
-			token = s.substr(pos_start, pos_end - pos_start);
-			pos_start = pos_end + delim_len;
-			res.push_back(token);
-		}
-
-		res.push_back(s.substr(pos_start));
-		return res;
-	}
-
-	void gta_data_service::update_cache_and_load_data()
-	{
-		// wrap around shared ptr because we'll share it with a worker thread below
-
-		// we may encounter the same vehicle xml entry while iterating rpfs.
-		std::unordered_map<rage::joaat_t, const void*> veh_hashes;
-		// we always add a vehicle entry to the veh json through the vehicles.meta parser
-		// then we add info to them later on through that vector
-		std::shared_ptr<std::vector<nlohmann::json>> scheduled_vehs = std::make_shared<std::vector<nlohmann::json>>();
-		std::shared_ptr<nlohmann::json> vehs = std::make_shared<nlohmann::json>(nlohmann::json::array());
-
-		// we may encounter the same ped xml entry while iterating rpfs.
-		std::unordered_map<rage::joaat_t, const void*> peds_hashes;
-		std::shared_ptr<nlohmann::json> peds = std::make_shared<nlohmann::json>(nlohmann::json::array());
-
-		// we may encounter the same weapon xml entry while iterating rpfs.
-		std::unordered_map<rage::joaat_t, const void*> weapons_hashes;
-		std::shared_ptr<nlohmann::json> weapons = std::make_shared<nlohmann::json>(nlohmann::json::array());
-
-		yim_fipackfile::for_each_fipackfile([&](yim_fipackfile& rpf_wrapper)
-		{
-			const auto file_paths = rpf_wrapper.get_file_paths();
-			for (const auto& file_path : file_paths)
+			while (!*g_pointers->m_is_session_started)
 			{
-				if (file_path.filename() == "vehicles.meta")
-				{
-					rpf_wrapper.read_xml_file(file_path.string(), [&](pugi::xml_document& doc)
-					{
-						pugi::xpath_node_set items = doc.select_nodes("/CVehicleModelInfo__InitDataList/InitDatas/Item");
-						for (pugi::xpath_node item_node : items)
-						{
-							pugi::xml_node item = item_node.node();
-
-							nlohmann::json veh;
-
-							veh["Name"] = item.child("modelName").text().as_string();
-							veh["HandlingId"] = item.child("handlingId").text().as_string();
-
-							rage::joaat_t model_hash = rage::joaat(veh["Name"]);
-
-							if (veh_hashes.find(model_hash) != veh_hashes.end())
-							{
-								continue;
-							}
-							veh_hashes[model_hash] = {};
-
-							veh["Hash"] = model_hash;
-							veh["SignedHash"] = (int32_t)model_hash;
-							std::stringstream s;
-							s << HEX_TO_UPPER(model_hash);
-							veh["HexHash"] = s.str();
-
-							veh["DlcName"] = "TODO"; // todo: how DurtyFree generate it?
-
-							veh["HandlingId"] = item.child("handlingId").text().as_string();
-
-							veh["LayoutId"] = item.child("layout").text().as_string();
-
-							std::string game_name = item.child("gameName").text().as_string();
-							veh["DisplayName"] = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(game_name.c_str());
-
-							const std::string manufacturer = item.child("vehicleMakeName").text().as_string();
-							if (manufacturer.size())
-							{
-								veh["Manufacturer"] = manufacturer;
-								veh["ManufacturerHash"] = rage::joaat(manufacturer);
-								veh["ManufacturerDisplayName"] = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(manufacturer.c_str());
-							}
-							else
-							{
-								veh["Manufacturer"] = "";
-								veh["ManufacturerHash"] = -1;
-								veh["ManufacturerDisplayName"] = nullptr;
-							}
-
-							const auto vehicle_class = std::string(item.child("vehicleClass").text().as_string());
-							if (vehicle_class.size() > 3)
-								veh["Class"] = vehicle_class.substr(3);
-							else
-								veh["Class"] = nullptr;
-
-							veh["ClassId"] = 0; // todo: how DurtyFree generate it?
-
-							const auto vehicle_type = std::string(item.child("type").text().as_string());
-							if (vehicle_type.size() > 13)
-								veh["Type"] = vehicle_type.substr(13);
-							else
-								veh["Type"] = nullptr;
-
-							const auto plate_type = std::string(item.child("plateType").text().as_string());
-							if (plate_type.size() > 4)
-								veh["PlateType"] = plate_type.substr(4);
-							else
-								veh["PlateType"] = nullptr;
-
-							const auto dashboard_type = std::string(item.child("dashboardType").text().as_string());
-							if (dashboard_type.size() > 4)
-								veh["DashboardType"] = dashboard_type.substr(4);
-							else
-								veh["DashboardType"] = nullptr;
-
-							const auto wheel_type = std::string(item.child("wheelType").text().as_string());
-							if (wheel_type.size() > 4)
-								veh["WheelType"] = wheel_type.substr(4);
-							else
-								veh["WheelType"] = nullptr;
-
-							const std::string flags_str = item.child("flags").text().as_string();
-							veh["Flags"] = split_str_into_json_array(flags_str, " ");
-
-							veh["Seats"] = VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(model_hash);
-
-							veh["Price"] = -1; // todo: how DurtyFree generate it?
-							veh["MonetaryValue"] = VEHICLE::GET_VEHICLE_MODEL_VALUE(model_hash);
-
-							veh["HasConvertibleRoof"] = flags_str.find("CONVERTIBLE") != std::string::npos;
-
-							const auto rewards = item.child("rewards").select_nodes("Item");
-							if (rewards.size())
-							{
-								veh["Rewards"] = nlohmann::json::array();
-								for (const auto& reward : rewards)
-								{
-									veh["Rewards"].push_back(reward.node().text().as_string());
-								}
-							}
-							else
-							{
-								veh["Rewards"] = nullptr;
-							}
-
-							vehs->push_back(veh);
-						}
-					});
-				}
-				else if (const auto file_str = file_path.string(); file_str.find("weapon") != std::string::npos && file_path.extension() == ".meta")
-				{
-					rpf_wrapper.read_xml_file(file_str, [&](pugi::xml_document& doc)
-					{
-						pugi::xpath_node_set items = doc.select_nodes("/CWeaponInfoBlob/Infos/Item/Infos/Item[@type='CWeaponInfo']");
-						for (const auto& item_node : items)
-						{
-							pugi::xml_node item = item_node.node();
-
-							nlohmann::json weapon;
-
-							weapon["Name"] = item.child("Name").text().as_string();
-
-							std::string human_name_hash = item.child("HumanNameHash").text().as_string();
-							if (human_name_hash == "WT_INVALID")
-							{
-								continue;
-							}
-
-							weapon["DisplayName"] = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(human_name_hash.c_str());
-
-							uint32_t model_hash = rage::joaat(weapon["Name"]);
-
-							if (weapons_hashes.find(model_hash) != weapons_hashes.end())
-							{
-								continue;
-							}
-							weapons_hashes[model_hash] = {};
-
-							weapon["Hash"] = model_hash;
-							weapon["IntHash"] = (int32_t)model_hash;
-
-							const std::string flags_str = item.child("WeaponFlags").text().as_string();
-							weapon["Flags"] = split_str_into_json_array(flags_str, " ");
-
-							weapon["Category"] = item.child("Group").text().as_string();
-
-							weapon["IsVehicleWeapon"] = std::string(item.child("VehicleWeaponHash").text().as_string()).size() > 0 || weapon["Flags"].contains("Vehicle");
-
-							weapons->push_back(weapon);
-						}
-					});
-				}
-				else if (file_path.filename() == "weaponcomponents.meta")
-				{
-
-				}
-				else if (file_path.filename() == "peds.meta" || file_path.filename() == "peds.ymt")
-				{
-					rpf_wrapper.read_xml_file(file_path.string(), [&](pugi::xml_document& doc)
-					{
-						pugi::xpath_node_set items = doc.select_nodes("/CPedModelInfo__InitDataList/InitDatas/Item");
-						for (const auto& item_node : items)
-						{
-							pugi::xml_node item = item_node.node();
-
-							nlohmann::json ped;
-
-							ped["Name"] = item.child("Name").text().as_string();
-
-							uint32_t model_hash = rage::joaat(ped["Name"]);
-
-							if (peds_hashes.find(model_hash) != peds_hashes.end())
-							{
-								continue;
-							}
-							peds_hashes[model_hash] = {};
-
-							ped["Hash"] = model_hash;
-							ped["SignedHash"] = (int32_t)model_hash;
-							std::stringstream s;
-							s << HEX_TO_UPPER(model_hash);
-							ped["HexHash"] = s.str();
-							ped["DlcName"] = "Unk";
-
-							ped["PropsName"] = item.child("PropsName").text().as_string();
-
-							ped["ClipDictionaryName"] = item.child("ClipDictionaryName").text().as_string();
-							ped["BlendShapeFileName"] = item.child("BlendShapeFileName").text().as_string();
-							ped["ExpressionSetName"] = item.child("ExpressionSetName").text().as_string();
-							ped["ExpressionDictionaryName"] = item.child("ExpressionDictionaryName").text().as_string();
-							ped["ExpressionName"] = item.child("ExpressionName").text().as_string();
-
-							ped["Pedtype"] = item.child("Pedtype").text().as_string();
-
-							ped["MovementClipSet"] = item.child("MovementClipSet").text().as_string();
-							ped["MovementClipSets"] = nullptr; // todo
-
-							ped["StrafeClipSet"] = item.child("StrafeClipSet").text().as_string();
-
-							peds->push_back(ped);
-						}
-					});
-				}
-				else if (file_path.filename() == "carvariations.ymt" || file_path.filename() == "carvariations.meta")
-				{
-					rpf_wrapper.read_xml_file(file_path.string(), [&](pugi::xml_document& doc)
-					{
-						pugi::xpath_node_set items = doc.select_nodes("/CVehicleModelInfoVariation/variationData/Item");
-						for (const auto& item_node : items)
-						{
-							pugi::xml_node item = item_node.node();
-
-							nlohmann::json veh;
-
-							veh["Name"] = item.child("modelName").text().as_string();
-
-							auto kits = item.child("kits").select_nodes("Item");
-							veh["ModKits"] = nlohmann::json::array();
-							for (const auto& kit : kits)
-							{
-								veh["ModKits"].push_back(kit.node().text().as_string());
-							}
-
-							veh["HasSirens"] = item.child("sirenSettings").attribute("value") != 0 ? true : false;
-
-							scheduled_vehs->push_back(veh);
-						}
-					});
-				}
-				else if (file_path.filename() == "handling.meta")
-				{
-					rpf_wrapper.read_xml_file(file_path.string(), [&](pugi::xml_document& doc)
-					{
-						pugi::xpath_node_set items = doc.select_nodes("/CHandlingDataMgr/HandlingData/Item");
-						for (const auto& item_node : items)
-						{
-							pugi::xml_node item = item_node.node();
-
-							nlohmann::json veh;
-
-							veh["HandlingId"] = item.child("handlingName").text().as_string();
-
-							auto veh_weapon_hashes = item.select_nodes("SubHandlingData/Item/uWeaponHash/Item");
-							veh["Weapons"] = nlohmann::json::array();
-							for (const auto& veh_weapon_hash : veh_weapon_hashes)
-							{
-								veh["Weapons"].push_back(veh_weapon_hash.node().text().as_string());
-							}
-
-							scheduled_vehs->push_back(veh);
-						}
-					});
-				}
+				script::get_current()->yield(100ms);
 			}
 
-			return file_paths.size();
+			rebuild_cache();
 		});
+	}
 
-		LOG(INFO) << "Vehicle Count: " << vehs->size();
-		if (!vehs->size())
-			return;
-
-		g_thread_pool->push([=]()
+	void gta_data_service::update_now()
+	{
+		g_fiber_pool->queue_job([this]
 		{
-			for (const auto& scheduled_veh : *scheduled_vehs)
-			{
-				std::string scheduled_veh_name = scheduled_veh.contains("Name") ? scheduled_veh["Name"] : "";
-				std::string scheduled_veh_handling_id = scheduled_veh.contains("HandlingId") ? scheduled_veh["HandlingId"] : "";
-
-				std::for_each(std::execution::par_unseq, vehs->begin(), vehs->end(), [=](auto&& veh)
-				{
-					if (veh["Name"] == scheduled_veh_name || veh["HandlingId"] == scheduled_veh_handling_id)
-					{
-						for (const auto& [scheduled_key, scheduled_val] : scheduled_veh.items())
-						{
-							if (veh.contains(scheduled_key))
-							{
-								if ((scheduled_val.is_array() && scheduled_val.size()) ||
-									!scheduled_val.is_null())
-								{
-									veh[scheduled_key] = scheduled_val;
-								}
-							}
-							else
-							{
-								veh[scheduled_key] = scheduled_val;
-							}
-						}
-					}
-				});
-			}
-
-			LOG(INFO) << "Saving gta data to files";
-
-			save_data_to_file(vehicles_json_file_path, *vehs);
-			save_data_to_file(peds_json_file_path, *peds);
-			save_data_to_file(weapons_json_file_path, *weapons);
-
-			save_cache_version();
-
-			load_data();
+			rebuild_cache();
 		});
+	}
+
+	// innefficient getters, don't care to fix right now
+	const ped_item& gta_data_service::ped_by_hash(std::uint32_t hash)
+	{
+		for (const auto& [name, ped] : m_peds)
+			if (rage::joaat(name) == hash)
+				return ped;
+		return gta_data_service::empty_ped;
+	}
+
+	const vehicle_item& gta_data_service::vehicle_by_hash(std::uint32_t hash)
+	{
+		for (const auto& [name, veh] : m_vehicles)
+			if (rage::joaat(name) == hash)
+				return veh;
+		return gta_data_service::empty_vehicle;
+	}
+
+	const weapon_item& gta_data_service::weapon_by_hash(std::uint32_t hash)
+	{
+		for (const auto& [name, weapon] : m_weapons)
+			if (rage::joaat(name) == hash)
+				return weapon;
+		return gta_data_service::empty_weapon;
+	}
+
+	string_vec& gta_data_service::ped_types()
+	{
+		return m_ped_types;
+	}
+
+	string_vec& gta_data_service::vehicle_classes()
+	{
+		return m_vehicle_classes;
+	}
+
+	string_vec& gta_data_service::weapon_types()
+	{
+		return m_weapon_types;
+	}
+
+	bool gta_data_service::is_cache_up_to_date()
+	{
+		m_peds_cache.load();
+		m_vehicles_cache.load();
+		m_weapons_cache.load();
+
+		const auto game_version = std::strtoul(g_pointers->m_game_version, nullptr, 10);
+		const auto online_version = std::strtof(g_pointers->m_online_version, nullptr);
+
+		return
+			m_peds_cache.up_to_date(game_version, online_version) &&
+			m_vehicles_cache.up_to_date(game_version, online_version) &&
+			m_weapons_cache.up_to_date(game_version, online_version);
 	}
 
 	void gta_data_service::load_data()
 	{
-		load_vehicles(g_file_manager->get_project_file(vehicles_json_file_path).get_path());
-		load_peds(g_file_manager->get_project_file(peds_json_file_path).get_path());
-		load_weapons(g_file_manager->get_project_file(weapons_json_file_path).get_path());
+		LOG(G3LOG_DEBUG) << "Loading data from cache.";
 
-		g_fiber_pool->queue_job([]()
+		load_peds();
+		load_vehicles();
+		load_weapons();
+
+		LOG(G3LOG_DEBUG) << "Loaded all data from cache.";
+	}
+
+	void gta_data_service::load_peds()
+	{
+		auto cached_peds = reinterpret_cast<const ped_item*>(m_peds_cache.data());
+		for (size_t i = 0; i < m_peds_cache.data_size() / sizeof(ped_item); i++)
 		{
-			notify::above_map("Vehicles, peds and weapons cache loaded.");
+			const auto ped = cached_peds[i];
+
+			add_if_not_exists(m_ped_types, ped.m_ped_type);
+			m_peds.insert({ ped.m_name, ped });
+		}
+
+		std::sort(m_ped_types.begin(), m_ped_types.end());
+		m_peds_cache.free();
+	}
+
+	void gta_data_service::load_vehicles()
+	{
+		auto cached_vehicles = reinterpret_cast<const vehicle_item*>(m_vehicles_cache.data());
+		for (size_t i = 0; i < m_vehicles_cache.data_size() / sizeof(vehicle_item); i++)
+		{
+			const auto vehicle = cached_vehicles[i];
+
+			add_if_not_exists(m_vehicle_classes, vehicle.m_vehicle_class);
+			m_vehicles.insert({ vehicle.m_name, vehicle });
+		}
+
+		std::sort(m_vehicle_classes.begin(), m_vehicle_classes.end());
+		m_vehicles_cache.free();
+	}
+
+	void gta_data_service::load_weapons()
+	{
+		auto cached_weapons = reinterpret_cast<const weapon_item*>(m_weapons_cache.data());
+		for (size_t i = 0; i < m_weapons_cache.data_size() / sizeof(weapon_item); i++)
+		{
+			const auto weapon = cached_weapons[i];
+
+			add_if_not_exists(m_weapon_types, weapon.m_weapon_type);
+			m_weapons.insert({ weapon.m_name, weapon });
+		}
+
+		std::sort(m_weapon_types.begin(), m_weapon_types.end());
+		m_weapons_cache.free();
+	}
+
+	void gta_data_service::rebuild_cache()
+	{
+		m_update_state = eGtaDataUpdateState::UPDATING;
+
+		using hash_array = std::vector<std::uint32_t>;
+		hash_array mapped_peds;
+		hash_array mapped_vehicles;
+		hash_array mapped_weapons;
+
+		std::vector<ped_item> peds;
+		std::vector<vehicle_item> vehicles;
+		std::vector<weapon_item> weapons;
+
+		constexpr auto exists = [](const hash_array& arr, std::uint32_t val) -> bool
+		{
+			return std::find(arr.begin(), arr.end(), val) != arr.end();
+		};
+
+		LOG(INFO) << "Rebuilding cache started...";
+		yim_fipackfile::for_each_fipackfile([&](yim_fipackfile& rpf_wrapper)
+		{
+			const auto files = rpf_wrapper.get_file_paths();
+			for (const auto& file : files)
+			{
+				if (file.filename() == "vehicles.meta")
+				{
+					rpf_wrapper.read_xml_file(file, [&exists, &vehicles, &mapped_vehicles](pugi::xml_document& doc)
+					{
+						const auto& items = doc.select_nodes("/CVehicleModelInfo__InitDataList/InitDatas/Item");
+						for (const auto& item_node : items)
+						{
+							const auto item = item_node.node();
+
+							const auto name = item.child("modelName").text().as_string();
+							const auto hash = rage::joaat(name);
+
+							if (exists(mapped_vehicles, hash))
+								return;
+							mapped_vehicles.emplace_back(hash);
+
+							auto veh = vehicle_item{};
+							std::strncpy(veh.m_name, name, sizeof(veh.m_name));
+
+							const auto manufacturer_display = item.child("vehicleMakeName").text().as_string();
+							std::strncpy(
+								veh.m_display_manufacturer,
+								HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(manufacturer_display),
+								sizeof(veh.m_display_manufacturer));
+
+							const auto game_name = item.child("gameName").text().as_string();
+							std::strncpy(
+								veh.m_display_name,
+								HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(game_name),
+								sizeof(veh.m_display_name));
+
+							const auto vehicle_class = item.child("vehicleClass").text().as_string();
+							constexpr auto enum_prefix_len = 3;
+							if (std::strlen(vehicle_class) > enum_prefix_len)
+								std::strncpy(veh.m_vehicle_class, vehicle_class + enum_prefix_len, sizeof(veh.m_vehicle_class));
+							
+							veh.m_hash = hash;
+
+							vehicles.emplace_back(std::move(veh));
+						}
+					});
+				}
+				else if (const auto file_str = file.string(); file_str.find("weapon") != std::string::npos && file.extension() == ".meta")
+				{
+					rpf_wrapper.read_xml_file(file, [&exists, &weapons, &mapped_weapons](pugi::xml_document& doc)
+					{
+						const auto& items = doc.select_nodes("/CWeaponInfoBlob/Infos/Item/Infos/Item[@type='CWeaponInfo']");
+						for (const auto& item_node : items)
+						{
+							const auto item = item_node.node();
+							const auto name = item.child("Name").text().as_string();
+							const auto hash = rage::joaat(name);
+
+							if (exists(mapped_weapons, hash))
+								continue;
+							mapped_weapons.emplace_back(hash);
+
+							const auto human_name_hash = item.child("HumanNameHash").text().as_string();
+							if (std::strcmp(human_name_hash, "WT_INVALID") == 0)
+								continue;
+
+							auto weapon = weapon_item{};
+
+							std::strncpy(weapon.m_name, name, sizeof(weapon.m_name));
+
+							const auto display_name = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(human_name_hash);
+							std::strncpy(weapon.m_display_name, display_name, sizeof(weapon.m_name));
+
+							auto weapon_flags = std::string(
+								item.child("WeaponFlags").text().as_string()
+							);
+
+							bool is_gun = false;
+							bool is_rechargable = false;
+
+							std::size_t pos;
+							while ((pos = weapon_flags.find(' ')) != std::string::npos) {
+								const auto flag = weapon_flags.substr(0, pos);
+								if (flag == "Thrown")
+								{
+									weapon.m_throwable = true;
+								}
+								else if (flag == "Gun")
+								{
+									is_gun = true;
+								}
+								else if (flag == "DisplayRechargeTimeHUD")
+								{
+									is_rechargable = true;
+								}
+
+								weapon_flags.erase(0, pos + 1);
+							}
+
+							const auto category = item.child("Group").text().as_string();
+							if (std::strlen(category) > 6)
+							{
+								std::strncpy(weapon.m_weapon_type, category + 6, sizeof(weapon.m_weapon_type));
+							}
+
+							if (is_gun || !std::strcmp(weapon.m_weapon_type, "MELEE") || !std::strcmp(weapon.m_weapon_type, "UNARMED"))
+							{
+								const std::string reward_prefix = "REWARD_";
+								weapon.m_reward_hash = rage::joaat(reward_prefix + name);
+
+								if (is_gun && !is_rechargable)
+								{
+									std::string weapon_id = name + 7;
+									weapon.m_reward_ammo_hash = rage::joaat(reward_prefix + "AMMO_" + weapon_id);
+								}
+							}
+
+							weapon.m_hash = hash;
+
+							weapons.emplace_back(std::move(weapon));
+						}
+					});
+				}
+				else if (file.filename() == "peds.meta" || file.filename() == "peds.ymt")
+				{
+					rpf_wrapper.read_xml_file(file, [&exists, &peds, &mapped_peds](pugi::xml_document& doc)
+					{
+						const auto& items = doc.select_nodes("/CPedModelInfo__InitDataList/InitDatas/Item");
+						for (const auto& item_node : items)
+						{
+							const auto& item = item_node.node();
+							const auto name = item.child("Name").text().as_string();
+							const auto hash = rage::joaat(name);
+
+							if (exists(mapped_peds, hash))
+								continue;
+							mapped_peds.emplace_back(hash);
+
+							auto ped = ped_item{};
+
+							std::strncpy(ped.m_name, name, sizeof(ped.m_name));
+
+							const auto ped_type = item.child("Pedtype").text().as_string();
+							std::strncpy(ped.m_ped_type, ped_type, sizeof(ped.m_ped_type));
+
+							ped.m_hash = hash;
+
+							peds.emplace_back(std::move(ped));
+						}
+					});
+				}
+			}
+
+			return files.size();
 		});
-	}
 
-	void gta_data_service::save_data_to_file(const std::string& file_path, const nlohmann::json& j)
-	{
-		file f(g_file_manager->get_project_file(file_path));
-		std::ofstream ofstream(f.get_path());
-		ofstream << std::setw(4) << j << std::endl;
-	}
+		m_update_state = eGtaDataUpdateState::IDLE;
+		LOG(INFO) << "Cache has been rebuilt.\n\t\tPeds: " << peds.size() << "\n\t\tVehicles: " << vehicles.size() << "\n\t\tWeapons: " << weapons.size();
 
-	bool gta_data_service::load_vehicles(std::filesystem::path path)
-	{
-		std::ifstream file(path);
-		nlohmann::json all_vehicles;
-
-		try
+		LOG(G3LOG_DEBUG) << "Starting cache saving procedure...";
+		g_thread_pool->push([this, &peds, &vehicles, &weapons]
 		{
-			file >> all_vehicles;
+			const auto game_version = std::strtoul(g_pointers->m_game_version, nullptr, 10);
+			const auto online_version = std::strtof(g_pointers->m_online_version, nullptr);
 
-			if (!all_vehicles.is_array())
-			{
-				throw std::exception("Invalid json format.");
-			}
+			auto data_size = sizeof(ped_item) * peds.size();
+			auto buffer = std::make_unique<std::uint8_t[]>(data_size);
+			std::memcpy(buffer.get(), peds.data(), data_size);
 
-			m_vehicle_class_arr.clear();
-			m_vehicle_hash_idx_map.clear();
-			m_vehicle_item_arr.clear();
+			m_peds_cache.set_data(std::move(buffer), data_size);
+			m_peds_cache.set_header_version(game_version, online_version);
+			m_peds_cache.write();
 
-			for (auto& item_json : all_vehicles)
-			{
-				if (
-					item_json["Hash"].is_null() ||
-					item_json["Name"].is_null()
-				) {
-					continue;
-				}
+			data_size = sizeof(vehicle_item) * vehicles.size();
+			buffer = std::make_unique<std::uint8_t[]>(data_size);
+			std::memcpy(buffer.get(), vehicles.data(), data_size);
 
-				auto item = vehicle_item(item_json);
+			m_vehicles_cache.set_data(std::move(buffer), data_size);
+			m_vehicles_cache.set_header_version(game_version, online_version);
+			m_vehicles_cache.write();
 
-				m_vehicle_hash_idx_map[item_json["Hash"]] = (int)m_vehicle_item_arr.size();
+			data_size = sizeof(weapon_item) * weapons.size();
+			buffer = std::make_unique<std::uint8_t[]>(data_size);
+			std::memcpy(buffer.get(), weapons.data(), data_size);
 
-				m_vehicle_item_arr.push_back(item);
+			m_weapons_cache.set_data(std::move(buffer), data_size);
+			m_weapons_cache.set_header_version(game_version, online_version);
+			m_weapons_cache.write();
 
-				if (std::find(m_vehicle_class_arr.begin(), m_vehicle_class_arr.end(), item.clazz) == m_vehicle_class_arr.end())
-				{
-					m_vehicle_class_arr.push_back(item.clazz);
-				}
+			LOG(INFO) << "Finishe writing cache to disk.";
 
-				std::sort(m_vehicle_class_arr.begin(), m_vehicle_class_arr.end());
-			}
-		}
-		catch (const std::exception& ex)
-		{
-			LOG(WARNING) << "Failed to load vehicles.json:\n" << ex.what();
-			return false;
-		}
-
-		return true;
-	}
-
-
-	bool gta_data_service::load_peds(std::filesystem::path path)
-	{
-		std::ifstream file(path);
-		nlohmann::json all_peds;
-
-		try
-		{
-			file >> all_peds;
-
-			if (!all_peds.is_array())
-			{
-				throw std::exception("Invalid json format.");
-			}
-
-			m_ped_type_arr.clear();
-			m_ped_hash_idx_map.clear();
-			m_ped_item_arr.clear();
-
-			for (auto& item_json : all_peds)
-			{
-				if (
-					item_json["Hash"].is_null() ||
-					item_json["Name"].is_null()
-				) {
-					continue;
-				}
-
-				auto item = ped_item(item_json);
-
-				m_ped_hash_idx_map[item_json["Hash"]] = (int)m_ped_item_arr.size();
-
-				m_ped_item_arr.push_back(item);
-
-				if (std::find(m_ped_type_arr.begin(), m_ped_type_arr.end(), item.ped_type) == m_ped_type_arr.end())
-				{
-					m_ped_type_arr.push_back(item.ped_type);
-				}
-
-				std::sort(m_ped_type_arr.begin(), m_ped_type_arr.end());
-			}
-		}
-		catch (const std::exception& ex)
-		{
-			LOG(WARNING) << "Failed to load peds.json:\n" << ex.what();
-			return false;
-		}
-
-		return true;
-	}
-
-
-	bool gta_data_service::load_weapons(std::filesystem::path path)
-	{
-		std::ifstream file(path);
-		nlohmann::json all_weapons;
-
-		try
-		{
-			file >> all_weapons;
-
-			if (!all_weapons.is_array())
-			{
-				throw std::exception("Invalid json format.");
-			}
-
-			m_weapon_type_arr.clear();
-			m_weapon_hash_idx_map.clear();
-			m_weapon_item_arr.clear();
-
-			constexpr Hash hash_blacklist_arr[] = {
-				RAGE_JOAAT("WEAPON_BIRD_CRAP"),
-				RAGE_JOAAT("WEAPON_DIGISCANNER"),
-				RAGE_JOAAT("WEAPON_GARBAGEBAG"),
-				RAGE_JOAAT("WEAPON_GRENADELAUNCHER_SMOKE"),
-				RAGE_JOAAT("WEAPON_HANDCUFFS"),
-				RAGE_JOAAT("WEAPON_METALDETECTOR"),
-				RAGE_JOAAT("GADGET_NIGHTVISION"),
-				RAGE_JOAAT("GADGET_PARACHUTE"),
-				RAGE_JOAAT("WEAPON_TRANQUILIZER"),
-				RAGE_JOAAT("WEAPON_STINGER")
-			};
-
-			for (auto& item_json : all_weapons)
-			{
-				if (
-					item_json["Hash"].is_null() ||
-					item_json["Name"].is_null() ||
-					item_json["DisplayName"].is_null() ||
-					item_json["IsVehicleWeapon"]
-				) {
-					continue;
-				}
-
-				if (EXIST_IN_ARRAY(hash_blacklist_arr, item_json["Hash"]))
-				{
-					continue;
-				}
-
-				auto item = weapon_item(item_json);
-
-				m_weapon_hash_idx_map[item_json["Hash"]] = (int)m_weapon_item_arr.size();
-
-				m_weapon_item_arr.push_back(item);
-
-				if (std::find(m_weapon_type_arr.begin(), m_weapon_type_arr.end(), item.weapon_type) == m_weapon_type_arr.end())
-				{
-					m_weapon_type_arr.push_back(item.weapon_type);
-				}
-
-				std::sort(m_weapon_type_arr.begin(), m_weapon_type_arr.end());
-			}
-
-		}
-		catch (const std::exception& ex)
-		{
-			LOG(WARNING) << "Failed to load weapons.json:\n" << ex.what();
-			return false;
-		}
-
-		return true;
+			load_data();
+		});
 	}
 }

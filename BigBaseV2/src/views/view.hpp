@@ -46,10 +46,14 @@ namespace big
 		static void context_menu();
 		static void gta_data();
 
+		// later calls will be drawn over earlier calls
 		static void always()
 		{
 			esp::draw();
 			context_menu();
+
+			gta_data();
+
 			notifications();
 		}
 	};

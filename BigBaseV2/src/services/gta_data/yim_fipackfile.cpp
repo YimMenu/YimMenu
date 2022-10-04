@@ -188,12 +188,26 @@ namespace big
 		return file_paths;
 	}
 
-	void yim_fipackfile::read_xml_file(const std::string& path, std::function<void(pugi::xml_document& doc)> cb)
+	void yim_fipackfile::read_file(const std::filesystem::path& path, file_contents_callback&& cb)
 	{
-		read_file<std::string>(path, [&](const std::string& file_content)
+		if (const auto handle = rpf->Open(path.string().c_str(), true); handle != -1)
 		{
-			pugi::xml_document doc;
-			if (doc.load_string(file_content.c_str()))
+			const auto data_length = rpf->GetFileLength(handle);
+			const auto file_content = std::make_unique<std::uint8_t[]>(data_length);
+
+			rpf->ReadFull(handle, file_content.get(), data_length);
+
+			cb(file_content, data_length);
+
+			rpf->Close(handle);
+		}
+	}
+
+	void yim_fipackfile::read_xml_file(const std::filesystem::path& path, std::function<void(pugi::xml_document& doc)> cb)
+	{
+		read_file(path, [&cb](const std::unique_ptr<std::uint8_t[]>& file_content, const int data_size)
+		{
+			if (pugi::xml_document doc; doc.load_buffer(file_content.get(), data_size).status == pugi::xml_parse_status::status_ok)
 			{
 				cb(doc);
 			}

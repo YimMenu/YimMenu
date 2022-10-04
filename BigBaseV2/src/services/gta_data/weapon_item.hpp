@@ -1,20 +1,18 @@
 #pragma once
-#include "file_manager/file.hpp"
 
 namespace big
 {
-	class weapon_item {
+#pragma pack(push, 1)
+	class weapon_item final
+	{
 	public:
-		weapon_item();
-		weapon_item(nlohmann::json& item_json);
-
-		std::string name;
-		std::string display_name;
-		bool throwable;
-		std::string weapon_type;
-
-		Hash hash;
-		Hash reward_hash;
-		Hash reward_ammo_hash;
+		char m_name[32];
+		char m_display_name[32];
+		char m_weapon_type[16];
+		std::uint32_t m_hash;
+		std::uint32_t m_reward_hash;
+		std::uint32_t m_reward_ammo_hash;
+		bool m_throwable;
 	};
+#pragma pack(pop)
 }

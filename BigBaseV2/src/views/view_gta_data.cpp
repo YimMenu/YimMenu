@@ -6,36 +6,68 @@ namespace big
 {
 	void view::gta_data()
 	{
-		static bool show_popup = true;
+		if (!g_gta_data_service)
+			return;
 
-		if (g_gta_data_service && g_gta_data_service->cache_need_update && !*g_pointers->m_is_session_started && show_popup)
+		if (g_gta_data_service->cache_needs_update())
 		{
-			if (show_popup)
-			{
-				ImGui::OpenPopup("Game Cache");
-			}
+			ImGui::OpenPopup("Game Cache");
+		}
 
-			ImGui::SetNextWindowSize(ImVec2(800, 0), ImGuiCond_FirstUseEver);
-			if (ImGui::BeginPopupModal("Game Cache"))
+		ImGui::SetNextWindowSize(ImVec2(800, 0), ImGuiCond_FirstUseEver);
+		if (ImGui::BeginPopupModal("Game Cache"))
+		{
+			switch (g_gta_data_service->state())
 			{
-				ImGui::Text("Please go in any GTA Online session so that the vehicle, ped and weapon cache build itself.\nYou can force the cache to be built by clicking the Force Cache Update In SinglePlayer button below,\nbut beware: the game will crash if you go to GTA Online afterward.");
+			case eGtaDataUpdateState::NEEDS_UPDATE:
+			{
+				ImGui::Text("YimMenu requires a rebuild of the game cache. This may take up to one minute to generate.");
 
-				if (ImGui::Button("Force Cache Update In SinglePlayer"))
+				if (*g_pointers->m_is_session_started)
 				{
-					show_popup = false;
-					ImGui::CloseCurrentPopup();
+					if (ImGui::Button("Update Cache"))
+					{
+						g_gta_data_service->update_now();
+					}
+				}
+				else
+				{
+					ImGui::Text("You are currently in single player, you can force build the cache in single player but risk crashing when going into multiplayer or load online and cache.");
 
-					g_gta_data_service->force_cache_update = true;
+					if (ImGui::Button("I don't care, update in single player!"))
+					{
+						g_gta_data_service->update_now();
+					}
+
+					if (ImGui::Button("Update cache in online."))
+					{
+						g_gta_data_service->update_in_online();
+					}
 				}
 
-				if (ImGui::Button("Ok I'll go to GTA Online"))
-				{
-					show_popup = false;
-					ImGui::CloseCurrentPopup();
-				}
-
-				ImGui::EndPopup();
+				break;
 			}
+			case eGtaDataUpdateState::WAITING_FOR_ONLINE:
+			{
+				ImGui::Text("Waiting for online to start cache update...");
+
+				break;
+			}
+			case eGtaDataUpdateState::UPDATING:
+			{
+				ImGui::Text("Updating cache, please wait...");
+
+				break;
+			}
+			case eGtaDataUpdateState::IDLE:
+			{
+				ImGui::CloseCurrentPopup();
+
+				break;
+			}
+			}
+
+			ImGui::EndPopup();
 		}
 	}
 }

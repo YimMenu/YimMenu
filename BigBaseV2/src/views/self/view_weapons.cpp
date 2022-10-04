@@ -72,24 +72,26 @@ namespace big
 
 		ImGui::Checkbox("No Spread", &g->weapons.no_spread);
 
-		components::button("Get All Weapons", [] {
-			for (auto const& weapon : g_gta_data_service->get_weapon_arr())
+		components::button("Get All Weapons", []
+		{
+			for (const auto& [_, weapon] : g_gta_data_service->weapons())
 			{
-				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.hash, 9999, false);
+				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.m_hash, 9999, false);
 			}
 
 			constexpr auto parachute_hash = RAGE_JOAAT("GADGET_PARACHUTE");
 			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, parachute_hash, 0, true);
-			});
+		});
 		ImGui::SameLine();
-		components::button("Remove Current Weapon", [] {
+		components::button("Remove Current Weapon", []
+		{
 			Hash weaponHash;
 			WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weaponHash, 1);
 			if (weaponHash != RAGE_JOAAT("WEAPON_UNARMED"))
 			{
 				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, weaponHash);
 			}
-			});
+		});
 
 		ImGui::SliderFloat("Damage Multiplier", &g->weapons.increased_damage, 1.f, 10.f, "%.1f");
 
