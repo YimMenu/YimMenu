@@ -40,7 +40,7 @@ namespace big
 		/// <returns></returns>
 		bool write() const;
 
-		const std::uint8_t* data() const;
+		std::uint8_t* data() const;
 		std::uint64_t data_size() const;
 
 		/// <summary>

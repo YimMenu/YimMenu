@@ -142,8 +142,11 @@ namespace big
 
 	void gta_data_service::load_peds()
 	{
+		const auto ped_count = m_peds_cache.data_size() / sizeof(ped_item);
+		LOG(INFO) << "Loading " << ped_count << " peds from cache.";
+
 		auto cached_peds = reinterpret_cast<const ped_item*>(m_peds_cache.data());
-		for (size_t i = 0; i < m_peds_cache.data_size() / sizeof(ped_item); i++)
+		for (size_t i = 0; i < ped_count; i++)
 		{
 			const auto ped = cached_peds[i];
 
@@ -157,8 +160,11 @@ namespace big
 
 	void gta_data_service::load_vehicles()
 	{
+		const auto vehicle_count = m_vehicles_cache.data_size() / sizeof(vehicle_item);
+		LOG(INFO) << "Loading " << vehicle_count << " vehicles from cache.";
+
 		auto cached_vehicles = reinterpret_cast<const vehicle_item*>(m_vehicles_cache.data());
-		for (size_t i = 0; i < m_vehicles_cache.data_size() / sizeof(vehicle_item); i++)
+		for (size_t i = 0; i < vehicle_count; i++)
 		{
 			const auto vehicle = cached_vehicles[i];
 
@@ -172,8 +178,11 @@ namespace big
 
 	void gta_data_service::load_weapons()
 	{
+		const auto weapon_count = m_weapons_cache.data_size() / sizeof(weapon_item);
+		LOG(INFO) << "Loading " << weapon_count << " weapons from cache.";
+
 		auto cached_weapons = reinterpret_cast<const weapon_item*>(m_weapons_cache.data());
-		for (size_t i = 0; i < m_weapons_cache.data_size() / sizeof(weapon_item); i++)
+		for (size_t i = 0; i < weapon_count; i++)
 		{
 			const auto weapon = cached_weapons[i];
 
@@ -364,34 +373,37 @@ namespace big
 		LOG(INFO) << "Cache has been rebuilt.\n\t\tPeds: " << peds.size() << "\n\t\tVehicles: " << vehicles.size() << "\n\t\tWeapons: " << weapons.size();
 
 		LOG(G3LOG_DEBUG) << "Starting cache saving procedure...";
-		g_thread_pool->push([this, &peds, &vehicles, &weapons]
+		g_thread_pool->push([this, peds, vehicles, weapons]
 		{
 			const auto game_version = std::strtoul(g_pointers->m_game_version, nullptr, 10);
 			const auto online_version = std::strtof(g_pointers->m_online_version, nullptr);
 
-			auto data_size = sizeof(ped_item) * peds.size();
-			auto buffer = std::make_unique<std::uint8_t[]>(data_size);
-			std::memcpy(buffer.get(), peds.data(), data_size);
+			{
+				const auto data_size = sizeof(ped_item) * peds.size();
+				m_peds_cache.set_data(std::make_unique<std::uint8_t[]>(data_size), data_size);
+				std::memcpy(m_peds_cache.data(), peds.data(), data_size);
 
-			m_peds_cache.set_data(std::move(buffer), data_size);
-			m_peds_cache.set_header_version(game_version, online_version);
-			m_peds_cache.write();
+				m_peds_cache.set_header_version(game_version, online_version);
+				m_peds_cache.write();
+			}
 
-			data_size = sizeof(vehicle_item) * vehicles.size();
-			buffer = std::make_unique<std::uint8_t[]>(data_size);
-			std::memcpy(buffer.get(), vehicles.data(), data_size);
+			{
+				const auto data_size = sizeof(vehicle_item) * vehicles.size();
+				m_vehicles_cache.set_data(std::make_unique<std::uint8_t[]>(data_size), data_size);
+				std::memcpy(m_vehicles_cache.data(), vehicles.data(), data_size);
 
-			m_vehicles_cache.set_data(std::move(buffer), data_size);
-			m_vehicles_cache.set_header_version(game_version, online_version);
-			m_vehicles_cache.write();
+				m_vehicles_cache.set_header_version(game_version, online_version);
+				m_vehicles_cache.write();
+			}
 
-			data_size = sizeof(weapon_item) * weapons.size();
-			buffer = std::make_unique<std::uint8_t[]>(data_size);
-			std::memcpy(buffer.get(), weapons.data(), data_size);
+			{
+				const auto data_size = sizeof(weapon_item) * weapons.size();
+				m_weapons_cache.set_data(std::make_unique<std::uint8_t[]>(data_size), data_size);
+				std::memcpy(m_weapons_cache.data(), weapons.data(), data_size);
 
-			m_weapons_cache.set_data(std::move(buffer), data_size);
-			m_weapons_cache.set_header_version(game_version, online_version);
-			m_weapons_cache.write();
+				m_weapons_cache.set_header_version(game_version, online_version);
+				m_weapons_cache.write();
+			}
 
 			LOG(INFO) << "Finished writing cache to disk.";
 

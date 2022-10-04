@@ -48,7 +48,7 @@ namespace big
 		return true;
 	}
 
-	const std::uint8_t* cache_file::data() const
+	std::uint8_t* cache_file::data() const
 	{
 		return m_data.get();
 	}
