@@ -2,7 +2,7 @@
 
 namespace big
 {
-#pragma pack(push, 1)
+#pragma pack(push, 4)
 	class weapon_item final
 	{
 	public:
