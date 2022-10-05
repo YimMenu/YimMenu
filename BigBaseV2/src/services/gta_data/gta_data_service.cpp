@@ -370,10 +370,10 @@ namespace big
 		});
 
 		m_update_state = eGtaDataUpdateState::IDLE;
-		LOG(INFO) << "Cache has been rebuilt.\n\t\tPeds: " << peds.size() << "\n\t\tVehicles: " << vehicles.size() << "\n\t\tWeapons: " << weapons.size();
+		LOG(INFO) << "Cache has been rebuilt.\n\tPeds: " << peds.size() << "\n\tVehicles: " << vehicles.size() << "\n\tWeapons: " << weapons.size();
 
 		LOG(G3LOG_DEBUG) << "Starting cache saving procedure...";
-		g_thread_pool->push([this, peds, vehicles, weapons]
+		g_thread_pool->push([this, peds = std::move(peds), vehicles = std::move(vehicles), weapons = std::move(weapons)]
 		{
 			const auto game_version = std::strtoul(g_pointers->m_game_version, nullptr, 10);
 			const auto online_version = std::strtof(g_pointers->m_online_version, nullptr);
