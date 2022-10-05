@@ -53,10 +53,10 @@ namespace big
 	{
 		m_update_state = eGtaDataUpdateState::WAITING_FOR_ONLINE;
 
-		session::join_type(eSessionType::SOLO);
-
 		g_fiber_pool->queue_job([this]
 		{
+			session::join_type(eSessionType::SOLO);
+
 			while (!*g_pointers->m_is_session_started)
 			{
 				script::get_current()->yield(100ms);
