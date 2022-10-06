@@ -67,6 +67,8 @@ namespace big
 
 		functions::give_pickup_rewards m_give_pickup_rewards{};
 
+		PVOID m_write_player_gamer_data_node{};
+
 		functions::trigger_script_event m_trigger_script_event{};
 
 		// Bitbuffer Read/Write START
