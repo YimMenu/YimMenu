@@ -200,6 +200,16 @@ namespace big
 
 			bool spoof_rockstar_id = false;
 			uint64_t rockstar_id = 0;
+
+			bool spoof_cheater = false;
+
+			bool spoof_rockstar_dev = false;
+			bool spoof_rockstar_qa = false;
+
+			bool spoof_crew_data = false;
+			std::string crew_tag = "";
+			bool rockstar_crew = false;
+			bool square_crew_tag = false;
 		};
 
 		struct tunables {
@@ -551,6 +561,13 @@ namespace big
 			this->spoofing.spoof_ip = j["spoofing"]["spoof_ip"];
 			this->spoofing.spoof_rockstar_id = j["spoofing"]["spoof_rockstar_id"];
 			this->spoofing.spoof_username = j["spoofing"]["spoof_username"];
+			this->spoofing.spoof_cheater = j["spoofing"]["spoof_cheater"];
+			this->spoofing.spoof_rockstar_dev = j["spoofing"]["spoof_rockstar_dev"];
+			this->spoofing.spoof_rockstar_qa = j["spoofing"]["spoof_rockstar_qa"];
+			this->spoofing.spoof_crew_data = j["spoofing"]["spoof_crew_data"];
+			this->spoofing.crew_tag = j["spoofing"]["crew_tag"];
+			this->spoofing.rockstar_crew = j["spoofing"]["rockstar_crew"];
+			this->spoofing.square_crew_tag = j["spoofing"]["square_crew_tag"];
 
 			for (int i = 0; i < 4; i++)
 				this->spoofing.ip_address[i] = j["spoofing"]["ip_address"].at(i);
@@ -831,7 +848,14 @@ namespace big
 							this->spoofing.ip_address[3] })
 						},
 						{ "rockstar_id", this->spoofing.rockstar_id },
-						{ "username", this->spoofing.username }
+						{ "username", this->spoofing.username },
+						{ "spoof_cheater", this->spoofing.spoof_cheater },
+						{ "spoof_rockstar_dev", this->spoofing.spoof_rockstar_dev },
+						{ "spoof_rockstar_qa", this->spoofing.spoof_rockstar_qa },
+						{ "spoof_crew_data", this->spoofing.spoof_crew_data },
+						{ "crew_tag", this->spoofing.crew_tag },
+						{ "rockstar_crew", this->spoofing.rockstar_crew },
+						{ "square_crew_tag", this->spoofing.square_crew_tag }
 					}
 				},
 				{
