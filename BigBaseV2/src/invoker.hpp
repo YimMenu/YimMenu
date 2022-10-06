@@ -38,6 +38,7 @@ namespace big
 	private:
 		native_call_context m_call_context;
 		std::unordered_map<rage::scrNativeHash, rage::scrNativeHandler> m_handler_cache;
+		bool m_handlers_cached = false;
 	};
 
 	inline native_invoker g_native_invoker;

@@ -87,7 +87,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				LOG(INFO) << "Registered service instances...";
 
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
-				
+
 				g_script_mgr.add_script(std::make_unique<script>(&backend::loop, "Backend Loop", false));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop, "Self"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop, "Weapon"));
@@ -103,11 +103,11 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu, "Context Menu"));
 				LOG(INFO) << "Scripts registered.";
 
-				auto native_hooks_instance = std::make_unique<native_hooks>();
-				LOG(INFO) << "Dynamic native hooker initialized.";
-
 				g_hooking->enable();
 				LOG(INFO) << "Hooking enabled.";
+
+				auto native_hooks_instance = std::make_unique<native_hooks>();
+				LOG(INFO) << "Dynamic native hooker initialized.";
 
 				g_running = true;
 

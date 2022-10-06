@@ -23,6 +23,14 @@ namespace big
 
 		const auto& notify = g->notifications.script_event_handler;
 
+		// detect pasted menus setting args[1] to something other than PLAYER_ID()
+		if (*(int*)&args[1] != player->m_player_id && player->m_player_id != -1)
+		{
+			LOG(INFO) << "Hash = " << (int)args[0];
+			format_string(player_name, "Wrong TSE sender", notify.ceo_kick.log, notify.ceo_kick.notify);
+			return true;
+		}
+
 		switch (hash)
 		{
 		case eRemoteEvent::Bounty:
