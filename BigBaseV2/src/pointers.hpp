@@ -6,6 +6,7 @@
 #include "gta/replay.hpp"
 #include "network/CNetworkPlayerMgr.hpp"
 #include "socialclub/FriendRegistry.hpp"
+#include "network/Network.hpp"
 
 namespace big
 {
@@ -44,8 +45,8 @@ namespace big
 
 		PVOID m_blame_explode;
 		PVOID m_model_spawn_bypass;
+		PVOID m_world_model_spawn_bypass;
 		PVOID m_native_return;
-		PVOID m_is_dlc_present;
 		PVOID m_network_group_override;
 		PUSHORT m_spectator_check;
 		PVOID m_get_label_text;
@@ -65,7 +66,9 @@ namespace big
 		functions::get_gameplay_cam_coords m_get_gameplay_cam_coords;
 
 		functions::give_pickup_rewards m_give_pickup_rewards{};
-		
+
+		PVOID m_write_player_gamer_data_node{};
+
 		functions::trigger_script_event m_trigger_script_event{};
 
 		// Bitbuffer Read/Write START
@@ -80,7 +83,7 @@ namespace big
 		functions::write_bitbuf_bool m_write_bitbuf_bool{};
 		functions::write_bitbuf_array m_write_bitbuf_array{};
 		// Bitbuffer Read/Write END
-		
+
 		// Received Event Signatures START
 		PVOID m_received_event{};
 		functions::send_event_ack m_send_event_ack{};
@@ -100,6 +103,10 @@ namespace big
 		PVOID m_receive_net_message{};
 		PVOID m_get_network_event_data{};
 		PVOID m_assign_physical_index{};
+
+		Network** m_network;
+
+		functions::reset_network_complaints m_reset_network_complaints{};
 	};
 
 	inline pointers* g_pointers{};

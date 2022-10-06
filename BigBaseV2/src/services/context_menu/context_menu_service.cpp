@@ -106,7 +106,7 @@ namespace big
 		}
 	}
 
-	double context_menu_service::distance_to_middle_of_screen(const rage::vector2& screen_pos)
+	double context_menu_service::distance_to_middle_of_screen(const rage::fvector2& screen_pos)
 	{
 		double cumulative_distance{};
 
@@ -214,7 +214,7 @@ namespace big
 
 				double distance = 1;
 				bool got_an_entity = false;
-				rage::vector2 screen_pos{};
+				rage::fvector2 screen_pos{};
 				for (std::uint32_t i = 0; i < offset; i++)
 				{
 					if (!all_entities[i].m_entity_ptr)

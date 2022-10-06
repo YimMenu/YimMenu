@@ -8,7 +8,7 @@
 	ignore = dirty
 [submodule "vendor/MinHook"]
 	path = vendor/MinHook
-	url = https://github.com/TsudaKageyu/minhook
+	url = https://github.com/YimMenu/minhook
 	ignore = dirty
 [submodule "vendor/g3log"]
 	path = vendor/g3log

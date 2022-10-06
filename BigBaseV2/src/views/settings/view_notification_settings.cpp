@@ -92,6 +92,13 @@ namespace big
 		draw_pair_option("Wanted Level", script_event_handler.clear_wanted_level);
 		ImGui::EndGroup();
 
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
+		draw_pair_option("Teleport To Warehouse", script_event_handler.teleport_to_warehouse);
+		draw_pair_option("Start Activity", script_event_handler.start_activity);
+		ImGui::EndGroup();
+
 		components::sub_title("Other");
 		
 		draw_pair_option("Reports", g->notifications.reports);

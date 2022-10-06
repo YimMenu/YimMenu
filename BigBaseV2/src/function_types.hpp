@@ -4,6 +4,7 @@
 #include "gta/player.hpp"
 #include "gta/natives.hpp"
 #include "gta/replay.hpp"
+#include "network/CNetComplaintMgr.hpp"
 
 namespace big::functions
 {
@@ -53,4 +54,6 @@ namespace big::functions
 
 	using read_bitbuffer_into_sync_tree = void(*)(rage::netSyncTree* tree, uint64_t flag, uint32_t flag2, rage::datBitBuffer* buffer, uint64_t netLogStub);
 	//Sync signatures END
+
+	using reset_network_complaints = void(*)(CNetComplaintMgr* mgr);
 }

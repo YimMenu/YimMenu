@@ -13,9 +13,6 @@ namespace big
 		static void context_menu();
 		static void hud_transition_state();
 
-		static void rgb_synced_fade();
-		static void rgb_synced_spasm();
-
 		static void tunables_disable_phone();
 		static void tunables_no_idle_kick();
 
@@ -40,6 +37,7 @@ namespace big
 
 		static void system_self_globals();
 		static void system_update_pointers();
+		static void system_desync_kick_protection();
 
 		static void vehicle_auto_drive();
 		static void vehicle_boost_behavior();

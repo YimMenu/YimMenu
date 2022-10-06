@@ -31,6 +31,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		DisableThreadLibraryCalls(hmod);
 
 		g_hmodule = hmod;
+		g_is_steam = GetModuleHandle(L"steam_api64.dll") != NULL;
 		g_main_thread = CreateThread(nullptr, 0, [](PVOID) -> DWORD
 		{
 			while (!FindWindow(L"grcWindow", L"Grand Theft Auto V"))
@@ -86,7 +87,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				LOG(INFO) << "Registered service instances...";
 
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
-				
+
 				g_script_mgr.add_script(std::make_unique<script>(&backend::loop, "Backend Loop", false));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop, "Self"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop, "Weapon"));
@@ -95,18 +96,18 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_script_mgr.add_script(std::make_unique<script>(&backend::remote_loop, "Remote"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::noclip_loop, "No Clip"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::lscustoms_loop, "LS Customs"));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::rainbowpaint_loop, "Rainbow Paint"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::vehiclefly_loop, "Vehicle Fly"));
-				g_script_mgr.add_script(std::make_unique<script>(&backend::rgbrandomizer_loop, "RGB Randomizer"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::turnsignal_loop, "Turn Signals"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::disable_control_action_loop, "Disable Controls"));
 				g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu, "Context Menu"));
 				LOG(INFO) << "Scripts registered.";
 
-				auto native_hooks_instance = std::make_unique<native_hooks>();
-				LOG(INFO) << "Dynamic native hooker initialized.";
-
 				g_hooking->enable();
 				LOG(INFO) << "Hooking enabled.";
+
+				auto native_hooks_instance = std::make_unique<native_hooks>();
+				LOG(INFO) << "Dynamic native hooker initialized.";
 
 				g_running = true;
 
@@ -121,6 +122,14 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				g_script_mgr.remove_all_scripts();
 				LOG(INFO) << "Scripts unregistered.";
+
+				// Make sure that all threads created don't have any blocking loops
+				// otherwise make sure that they have stopped executing
+				thread_pool_instance->destroy();
+				LOG(INFO) << "Destroyed thread pool.";
+
+				thread_pool_instance.reset();
+				LOG(INFO) << "Thread pool uninitialized.";
 
 				gui_service_instance.reset();
 				LOG(INFO) << "Gui Service reset.";
@@ -143,14 +152,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				context_menu_service_instance.reset();
 				LOG(INFO) << "Context Service reset.";
 				LOG(INFO) << "Services uninitialized.";
-
-				// Make sure that all threads created don't have any blocking loops
-				// otherwise make sure that they have stopped executing
-				thread_pool_instance->destroy();
-				LOG(INFO) << "Destroyed thread pool.";
-
-				thread_pool_instance.reset();
-				LOG(INFO) << "Thread pool uninitialized.";
 
 				hooking_instance.reset();
 				LOG(INFO) << "Hooking uninitialized.";

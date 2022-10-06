@@ -141,26 +141,26 @@ namespace big
 
 		components::sub_title("Rainbow Paint");
 		{
-			ImGui::Checkbox("Primary", &g->vehicle.rainbow_primary);
+			ImGui::Checkbox("Primary", &g->vehicle.rainbow_paint.primary);
 			ImGui::SameLine();
-			ImGui::Checkbox("Secondary", &g->vehicle.rainbow_secondary);
+			ImGui::Checkbox("Secondary", &g->vehicle.rainbow_paint.secondary);
 			ImGui::SameLine();
-			ImGui::Checkbox("Neon", &g->vehicle.rainbow_neon);
+			ImGui::Checkbox("Neon", &g->vehicle.rainbow_paint.neon);
 			ImGui::SameLine();
-			ImGui::Checkbox("Smoke", &g->vehicle.rainbow_smoke);
+			ImGui::Checkbox("Smoke", &g->vehicle.rainbow_paint.smoke);
 
 			static constexpr char const* rgb_types[] = { "Off", "Fade", "Spasm" };
 
 			ImGui::SetNextItemWidth(120);
-			if (ImGui::BeginCombo("RGB Type", rgb_types[g->vehicle.rainbow_paint]))
+			if (ImGui::BeginCombo("RGB Type", rgb_types[(int)g->vehicle.rainbow_paint.type]))
 			{
 				for (int i = 0; i < 3; i++)
 				{
-					bool itemSelected = g->vehicle.rainbow_paint == i;
+					bool itemSelected = (int)g->vehicle.rainbow_paint.type == i;
 
 					if (ImGui::Selectable(rgb_types[i], itemSelected))
 					{
-						g->vehicle.rainbow_paint = i;
+						g->vehicle.rainbow_paint.type = (RainbowPaintType)i;
 					}
 
 					if (itemSelected)
@@ -171,11 +171,11 @@ namespace big
 
 				ImGui::EndCombo();
 			}
-			if (g->vehicle.rainbow_paint != 0)
+			if (g->vehicle.rainbow_paint.type != RainbowPaintType::Off)
 			{
 				ImGui::SameLine();
 				ImGui::SetNextItemWidth(150);
-				ImGui::SliderInt("RGB Speed", &g->rgb.speed, 1, 10);
+				ImGui::SliderInt("RGB Speed", &g->vehicle.rainbow_paint.speed, 1, 10);
 			}
 		}
 		ImGui::Separator();

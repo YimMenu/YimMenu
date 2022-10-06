@@ -62,6 +62,8 @@ namespace big
 				pair transaction_error{};
 				pair tse_freeze{};
 				pair vehicle_kick{};
+				pair teleport_to_warehouse{};
+				pair start_activity{};
 			} script_event_handler{};
 
 			pair gta_thread_kill{};
@@ -116,18 +118,11 @@ namespace big
 				bool spectate = true;
 				bool transaction_error = true;
 				bool vehicle_kick = true;
+				bool teleport_to_warehouse = true;
+				bool start_activity = true;
 			};
 
 			script_events script_events{};
-		};
-
-		struct rgb {
-			bool fade = false;
-			bool spasm = false;
-			int r = 255;
-			int g = 0;
-			int b = 0;
-			int speed = 0;
 		};
 
 		struct self {
@@ -173,6 +168,7 @@ namespace big
 				int teleport_waypoint = 0;
 			};
 
+			bool dev_dlc = false;
 			hotkeys hotkeys{};
 		};
 
@@ -204,6 +200,16 @@ namespace big
 
 			bool spoof_rockstar_id = false;
 			uint64_t rockstar_id = 0;
+
+			bool spoof_cheater = false;
+
+			bool spoof_rockstar_dev = false;
+			bool spoof_rockstar_qa = false;
+
+			bool spoof_crew_data = false;
+			std::string crew_tag = "";
+			bool rockstar_crew = false;
+			bool square_crew_tag = false;
 		};
 
 		struct tunables {
@@ -229,6 +235,15 @@ namespace big
 				float speed = 1;
 			};
 
+			struct rainbow_paint {
+				RainbowPaintType type = RainbowPaintType::Off;
+				bool neon = false;
+				bool primary = false;
+				bool secondary = false;
+				bool smoke = false;
+				int speed = 0;
+			};
+
 			SpeedUnit speed_unit = SpeedUnit::MIPH;
 
 			bool god_mode = false;
@@ -251,15 +266,11 @@ namespace big
 			bool instant_brake = false;
 			bool is_targetable = true;
 			bool ls_customs = false; // don't save this to disk
-			bool rainbow_neon = false;
-			int rainbow_paint = 0;
-			bool rainbow_primary = false;
-			bool rainbow_secondary = false;
-			bool rainbow_smoke = false;
 			bool seatbelt = false;
 			bool turn_signals = false;
 			bool vehicle_jump = false;
 			speedo_meter speedo_meter{};
+			rainbow_paint rainbow_paint{};
 			fly fly{};
 		};
 
@@ -268,7 +279,7 @@ namespace big
 			{
 				bool toggle = false;
 				eAmmoSpecialType type = eAmmoSpecialType::None;
-				eImpactType impactType = eImpactType::DEFAULT_BULLETS;
+				eExplosionTag explosion_tag = eExplosionTag::DONTCARE;
 			} ammo_special;
 
 			CustomWeapon custom_weapon = CustomWeapon::NONE;
@@ -356,7 +367,6 @@ namespace big
 		notifications notifications{};
 		player player{};
 		protections protections{};
-		rgb rgb{};
 		self self{};
 		session session{};
 		settings settings{};
@@ -469,6 +479,10 @@ namespace big
 				script_handler.tse_freeze.notify = script_handler_j["tse_freeze"]["notify"];
 				script_handler.vehicle_kick.log = script_handler_j["vehicle_kick"]["log"];
 				script_handler.vehicle_kick.notify = script_handler_j["vehicle_kick"]["notify"];
+				script_handler.teleport_to_warehouse.log = script_handler_j["teleport_to_warehouse"]["log"];
+				script_handler.teleport_to_warehouse.notify = script_handler_j["teleport_to_warehouse"]["notify"];
+				script_handler.start_activity.log = script_handler_j["start_activity"]["log"];
+				script_handler.start_activity.notify = script_handler_j["start_activity"]["notify"];
 			}
 
 			g->notifications.send_net_info_to_lobby.log = j["notifications"]["send_net_info_to_lobby"]["log"];
@@ -502,14 +516,9 @@ namespace big
 				script_handler.spectate = script_handler_j["spectate"];
 				script_handler.transaction_error = script_handler_j["transaction_error"];
 				script_handler.vehicle_kick = script_handler_j["vehicle_kick"];
+				script_handler.teleport_to_warehouse = script_handler_j["teleport_to_warehouse"];
+				script_handler.start_activity = script_handler_j["start_activity"];
 			}
-
-			this->rgb.fade = j["rgb"]["fade"];
-			this->rgb.spasm = j["rgb"]["spasm"];
-			this->rgb.r = j["rgb"]["r"];
-			this->rgb.g = j["rgb"]["g"];
-			this->rgb.b = j["rgb"]["b"];
-			this->rgb.speed = j["rgb"]["speed"];
 
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
 			this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
@@ -532,6 +541,7 @@ namespace big
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
 
+			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
 
 			this->spawn_vehicle.preview_vehicle = j["spawn_vehicle"]["preview_vehicle"];
@@ -551,6 +561,13 @@ namespace big
 			this->spoofing.spoof_ip = j["spoofing"]["spoof_ip"];
 			this->spoofing.spoof_rockstar_id = j["spoofing"]["spoof_rockstar_id"];
 			this->spoofing.spoof_username = j["spoofing"]["spoof_username"];
+			this->spoofing.spoof_cheater = j["spoofing"]["spoof_cheater"];
+			this->spoofing.spoof_rockstar_dev = j["spoofing"]["spoof_rockstar_dev"];
+			this->spoofing.spoof_rockstar_qa = j["spoofing"]["spoof_rockstar_qa"];
+			this->spoofing.spoof_crew_data = j["spoofing"]["spoof_crew_data"];
+			this->spoofing.crew_tag = j["spoofing"]["crew_tag"];
+			this->spoofing.rockstar_crew = j["spoofing"]["rockstar_crew"];
+			this->spoofing.square_crew_tag = j["spoofing"]["square_crew_tag"];
 
 			for (int i = 0; i < 4; i++)
 				this->spoofing.ip_address[i] = j["spoofing"]["ip_address"].at(i);
@@ -576,11 +593,6 @@ namespace big
 			this->vehicle.vehicle_jump = j["vehicle"]["vehicle_jump"];
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
-			this->vehicle.rainbow_paint = j["vehicle"]["rainbow_paint"];
-			this->vehicle.rainbow_primary = j["vehicle"]["rainbow_primary"];
-			this->vehicle.rainbow_secondary = j["vehicle"]["rainbow_secondary"];
-			this->vehicle.rainbow_neon = j["vehicle"]["rainbow_neon"];
-			this->vehicle.rainbow_smoke = j["vehicle"]["rainbow_smoke"];
 			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
 			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
 
@@ -588,6 +600,13 @@ namespace big
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
 			this->vehicle.speedo_meter.x = j["vehicle"]["speedo_meter"]["position_x"];
 			this->vehicle.speedo_meter.y = j["vehicle"]["speedo_meter"]["position_y"];
+
+			this->vehicle.rainbow_paint.type = j["vehicle"]["rainbow_paint"]["type"];
+			this->vehicle.rainbow_paint.speed = j["vehicle"]["rainbow_paint"]["speed"];
+			this->vehicle.rainbow_paint.neon = j["vehicle"]["rainbow_paint"]["neon"];
+			this->vehicle.rainbow_paint.primary = j["vehicle"]["rainbow_paint"]["primary"];
+			this->vehicle.rainbow_paint.secondary = j["vehicle"]["rainbow_paint"]["secondary"];
+			this->vehicle.rainbow_paint.smoke = j["vehicle"]["rainbow_paint"]["smoke"];
 
 			this->vehicle.fly.dont_stop = j["vehicle"]["fly"]["dont_stop"];
 			this->vehicle.fly.enabled = j["vehicle"]["fly"]["enabled"];
@@ -714,7 +733,9 @@ namespace big
 								{ "spectate", return_notify_pair(script_handler_notifications.spectate) },
 								{ "transaction_error", return_notify_pair(script_handler_notifications.transaction_error) },
 								{ "tse_freeze", return_notify_pair(script_handler_notifications.tse_freeze) },
-								{ "vehicle_kick", return_notify_pair(script_handler_notifications.vehicle_kick) }
+								{ "vehicle_kick", return_notify_pair(script_handler_notifications.vehicle_kick) },
+								{ "teleport_to_warehouse", return_notify_pair(script_handler_notifications.teleport_to_warehouse) },
+								{ "start_activity", return_notify_pair(script_handler_notifications.start_activity) }
 							}
 						},
 						{ "send_net_info_to_lobby", return_notify_pair(g->notifications.send_net_info_to_lobby) },
@@ -749,19 +770,11 @@ namespace big
 								{ "sound_spam", script_handler_protections.sound_spam },
 								{ "spectate", script_handler_protections.spectate },
 								{ "transaction_error", script_handler_protections.transaction_error },
-								{ "vehicle_kick", script_handler_protections.vehicle_kick }
+								{ "vehicle_kick", script_handler_protections.vehicle_kick },
+								{ "teleport_to_warehouse", script_handler_protections.teleport_to_warehouse },
+								{ "start_activity", script_handler_protections.start_activity },
 							}
 						}
-					}
-				},
-				{
-					"rgb", {
-					{ "fade", this->rgb.fade },
-					{ "spasm", this->rgb.spasm },
-					{ "r", this->rgb.r },
-					{ "g", this->rgb.g },
-					{ "b", this->rgb.b },
-					{ "speed", this->rgb.speed }
 					}
 				},
 				{
@@ -793,6 +806,7 @@ namespace big
 				},
 				{
 					"settings", {
+						{ "dev_dlc", this->settings.dev_dlc },
 						{ "hotkeys", {
 								{ "menu_toggle", this->settings.hotkeys.menu_toggle }
 							}
@@ -834,7 +848,14 @@ namespace big
 							this->spoofing.ip_address[3] })
 						},
 						{ "rockstar_id", this->spoofing.rockstar_id },
-						{ "username", this->spoofing.username }
+						{ "username", this->spoofing.username },
+						{ "spoof_cheater", this->spoofing.spoof_cheater },
+						{ "spoof_rockstar_dev", this->spoofing.spoof_rockstar_dev },
+						{ "spoof_rockstar_qa", this->spoofing.spoof_rockstar_qa },
+						{ "spoof_crew_data", this->spoofing.spoof_crew_data },
+						{ "crew_tag", this->spoofing.crew_tag },
+						{ "rockstar_crew", this->spoofing.rockstar_crew },
+						{ "square_crew_tag", this->spoofing.square_crew_tag }
 					}
 				},
 				{
@@ -858,19 +879,26 @@ namespace big
 						{ "vehicle_jump", this->vehicle.vehicle_jump },
 						{ "instant_brake", this->vehicle.instant_brake },
 						{ "is_targetable", this->vehicle.is_targetable },
-						{ "rainbow_paint", this->vehicle.rainbow_paint },
-						{ "rainbow_primary", this->vehicle.rainbow_primary },
-						{ "rainbow_secondary", this->vehicle.rainbow_secondary },
-						{ "rainbow_neon", this->vehicle.rainbow_neon },
-						{ "rainbow_smoke", this->vehicle.rainbow_smoke },
 						{ "turn_signals", this->vehicle.turn_signals },
 						{ "seatbelt", this->vehicle.seatbelt },
 						{
-							"speedo_meter", {
+							"speedo_meter",
+							{
 								{ "enabled", this->vehicle.speedo_meter.enabled },
 								{ "left_side", this->vehicle.speedo_meter.left_side },
 								{ "position_x", this->vehicle.speedo_meter.x },
 								{ "position_y", this->vehicle.speedo_meter.y },
+							}
+						},
+						{
+							"rainbow_paint",
+							{
+								{ "type", this->vehicle.rainbow_paint.type },
+								{ "speed", this->vehicle.rainbow_paint.speed },
+								{ "neon", this->vehicle.rainbow_paint.neon },
+								{ "primary", this->vehicle.rainbow_paint.primary },
+								{ "secondary", this->vehicle.rainbow_paint.secondary },
+								{ "smoke", this->vehicle.rainbow_paint.smoke }
 							}
 						},
 						{

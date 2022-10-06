@@ -2,10 +2,10 @@
 
 namespace big
 {
-	static CWeaponInfo* pModifiedWeapon = nullptr;
-	static eDamageType modifiedWeaponDamageType = eDamageType::None;
-	static eImpactType modifiedWeaponImpactType = eImpactType::DEFAULT_BULLETS;
-	static eAmmoSpecialType modifiedWeaponAmmoType = eAmmoSpecialType::None;
+	static CWeaponInfo* p_modified_weapon = nullptr;
+	static eDamageType modified_weapon_damage_type = eDamageType::None;
+	static CWeaponInfo::sExplosion modified_weapon_explosion{};
+	static eAmmoSpecialType modified_weapon_ammo_type = eAmmoSpecialType::None;
 
 	void looped::weapons_ammo_special_type()
 	{
@@ -14,53 +14,63 @@ namespace big
 			g_local_player->m_weapon_manager == nullptr ||
 			g_local_player->m_weapon_manager->m_weapon_info == nullptr ||
 			g_local_player->m_weapon_manager->m_weapon_info->m_ammo_info == nullptr
-		) {
+			) {
 			return;
 		}
 
 		if (g->weapons.ammo_special.toggle) {
-			CWeaponInfo* pWeapon = g_local_player->m_weapon_manager->m_weapon_info;
+			CWeaponInfo* weapon_info = g_local_player->m_weapon_manager->m_weapon_info;
 
 			// check if the player changed their weapon
-			if (pModifiedWeapon != pWeapon) {
+			if (p_modified_weapon != weapon_info) {
 				// apply the original bullet and impact type to the old weapon
-				if (pModifiedWeapon != nullptr) {
-					pModifiedWeapon->m_damage_type = modifiedWeaponDamageType;
-					pModifiedWeapon->m_impact_type = modifiedWeaponImpactType;
-					pModifiedWeapon->m_ammo_info->m_ammo_special_type = modifiedWeaponAmmoType;
+				if (p_modified_weapon != nullptr) {
+					p_modified_weapon->m_damage_type = modified_weapon_damage_type;
+					p_modified_weapon->m_explosion = modified_weapon_explosion;
+					p_modified_weapon->m_ammo_info->m_ammo_special_type = modified_weapon_ammo_type;
 				}
 
 				// backup the bullet and impact type of the new weapon
-				pModifiedWeapon = pWeapon;
-				modifiedWeaponDamageType = pWeapon->m_damage_type;
-				modifiedWeaponImpactType = pWeapon->m_impact_type;
-				modifiedWeaponAmmoType = pWeapon->m_ammo_info->m_ammo_special_type;
+				p_modified_weapon = weapon_info;
+				modified_weapon_damage_type = weapon_info->m_damage_type;
+				modified_weapon_explosion = weapon_info->m_explosion;
+				modified_weapon_ammo_type = weapon_info->m_ammo_info->m_ammo_special_type;
 			}
 
 			// apply ammo type changes to the current weapon
-			eDamageType damageType = eDamageType::None;
-			eImpactType impactType = g->weapons.ammo_special.impactType;
-			eAmmoSpecialType ammoType = eAmmoSpecialType::None;
+			eDamageType damage_type = eDamageType::None;
+			eExplosionTag explosion_tag = g->weapons.ammo_special.explosion_tag;
+			eAmmoSpecialType ammo_type = eAmmoSpecialType::None;
 
-			if (impactType == eImpactType::DEFAULT_BULLETS) {
-				damageType = modifiedWeaponDamageType;
-				ammoType = g->weapons.ammo_special.type;
+			if (explosion_tag == eExplosionTag::DONTCARE) {
+				damage_type = modified_weapon_damage_type;
+				ammo_type = g->weapons.ammo_special.type;
 			}
 			else {
-				damageType = eDamageType::Explosive;
-				ammoType = modifiedWeaponAmmoType;
+				damage_type = eDamageType::Explosive;
+				ammo_type = modified_weapon_ammo_type;
 			}
 
-			pWeapon->m_damage_type = damageType;
-			pWeapon->m_impact_type = impactType;
-			pWeapon->m_ammo_info->m_ammo_special_type = ammoType;
-		} else if (pModifiedWeapon != nullptr) {
+			weapon_info->m_damage_type = damage_type;
+
+			CWeaponInfo::sExplosion explosion;
+			explosion.m_default = explosion_tag;
+			explosion.m_hit_bike = explosion_tag;
+			explosion.m_hit_boat = explosion_tag;
+			explosion.m_hit_car = explosion_tag;
+			explosion.m_hit_plane = explosion_tag;
+			explosion.m_hit_truck = explosion_tag;
+			weapon_info->m_explosion = explosion;
+
+			weapon_info->m_ammo_info->m_ammo_special_type = ammo_type;
+		}
+		else if (p_modified_weapon != nullptr) {
 			// apply the original bullet and impact type to the weapon
 			// when the ammo type feature is off
-			pModifiedWeapon->m_damage_type = modifiedWeaponDamageType;
-			pModifiedWeapon->m_impact_type = modifiedWeaponImpactType;
-			pModifiedWeapon->m_ammo_info->m_ammo_special_type = modifiedWeaponAmmoType;
-			pModifiedWeapon = nullptr;
+			p_modified_weapon->m_damage_type = modified_weapon_damage_type;
+			p_modified_weapon->m_explosion = modified_weapon_explosion;
+			p_modified_weapon->m_ammo_info->m_ammo_special_type = modified_weapon_ammo_type;
+			p_modified_weapon = nullptr;
 		}
 	}
 }

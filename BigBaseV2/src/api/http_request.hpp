@@ -598,8 +598,16 @@ namespace http
             {
                 const auto size = socket.recv(tempBuffer.data(), tempBuffer.size(),
                     (timeout.count() >= 0) ? getRemainingMilliseconds(stopTime) : -1);
-                if (size == 0) // disconnected
+
+                if (size == 0)
+                {
+                    // download complete
                     return response;
+                }
+                else if (size < 0)
+                {
+                    throw ResponseError("Socket error");
+                }
 
                 responseData.insert(responseData.end(), tempBuffer.begin(), tempBuffer.begin() + size);
 
@@ -683,8 +691,11 @@ namespace http
 
                 if (state == State::body)
                 {
-                    // Content-Length must be ignored if Transfer-Encoding is received
-                    if (chunkedResponse)
+                    if (method == "HEAD") // Body must be ignored for HEAD requests
+                    {
+                        return response;
+                    }
+                    else if (chunkedResponse) // Content-Length must be ignored if Transfer-Encoding is received
                     {
                         for (;;)
                         {

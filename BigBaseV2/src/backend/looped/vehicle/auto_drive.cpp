@@ -85,7 +85,7 @@ namespace big
 				(to_waypoint && !does_waypoint_exist) ||
 				interupted
 			) {
-				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
+				TASK::CLEAR_PRIMARY_VEHICLE_TASK(self::veh);
 				TASK::CLEAR_PED_TASKS(self::ped);
 
 				if (!interupted && started)
@@ -110,7 +110,7 @@ namespace big
 			{
 				changing_driving_styles = false;
 
-				TASK::CLEAR_VEHICLE_TASKS_(self::veh);
+				TASK::CLEAR_PRIMARY_VEHICLE_TASK(self::veh);
 				TASK::CLEAR_PED_TASKS(self::ped);
 
 				if (to_waypoint)

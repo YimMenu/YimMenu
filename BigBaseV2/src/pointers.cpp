@@ -92,8 +92,14 @@ namespace big
 			m_model_spawn_bypass = ptr.add(8).as<PVOID>();
 		});
 
+		// World Model Spawn Bypass
+		main_batch.add("WMSB", "48 85 C0 0F 84 ? ? ? ? 8B 48 50", [this](memory::handle ptr)
+		{
+			m_world_model_spawn_bypass = ptr.as<PVOID>();
+		});
+
 		// New pointers
-		
+
 		// Native Return Spoofer
 		main_batch.add("NRF", "FF E3", [this](memory::handle ptr)
 		{
@@ -119,7 +125,7 @@ namespace big
 		});
 
 		// Received Event Signatures START
-		
+
 		// Received Event Hook
 		main_batch.add("REH", "66 41 83 F9 ? 0F 83", [this](memory::handle ptr)
 		{
@@ -159,7 +165,7 @@ namespace big
 		});
 
 		// Read Bitbuffer Array
-		main_batch.add("RBA", "48 89 5C 24 ? 57 48 83 EC 30 41 8B F8 4C", [this](memory::handle ptr) 
+		main_batch.add("RBA", "48 89 5C 24 ? 57 48 83 EC 30 41 8B F8 4C", [this](memory::handle ptr)
 		{
 			m_read_bitbuf_array = ptr.as<decltype(m_read_bitbuf_array)>();
 		});
@@ -227,12 +233,6 @@ namespace big
 			m_blame_explode = ptr.as<decltype(m_blame_explode)>();
 		});
 
-		// Is DLC Present
-		main_batch.add("IDP", "48 89 5C 24 ? 57 48 83 EC ? 81 F9", [this](memory::handle ptr)
-		{
-			m_is_dlc_present = ptr.as<decltype(m_is_dlc_present)>();
-		});
-
 		// Send NET Info to Lobby
 		main_batch.add("SNITL", "33 DB 48 83 C1 68 45 8B F0 ", [this](memory::handle ptr)
 		{
@@ -283,6 +283,12 @@ namespace big
 			m_give_pickup_rewards = ptr.sub(0x28).as<decltype(m_give_pickup_rewards)>();
 		});
 
+		// Write Player Gamer Data Node
+		main_batch.add("WPGDN", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 48 81 C1 ? ? ? ? 48 8B DA E8", [this](memory::handle ptr)
+		{
+			m_write_player_gamer_data_node = ptr.as<PVOID>();
+		});
+
 		// Network Group Override
 		main_batch.add("NGO", "44 89 81 ? ? ? ? 89 91 ? ? ? ? C6 05", [this](memory::handle ptr)
 		{
@@ -328,42 +334,24 @@ namespace big
 			m_model_table = ptr.add(3).rip().as<HashTable<CBaseModelInfo*>*>();
 
 			LOG(G3LOG_DEBUG) << "HashTable => [" << HEX_TO_UPPER(m_model_table) << "]";
-
-			// sample code to iterator models
-			/*for (int i = 0; i < m_model_table->m_size; ++i)
-			{
-				for (auto node = m_model_table->m_lookup_table[i]; node; node = node->m_next)
-				{
-					if (const auto table_idx = node->m_idx; table_idx < m_model_table->m_size)
-					{
-						if (const auto model = m_model_table->m_data[table_idx]; model && model->m_model_type == eModelType::Vehicle)
-						{
-
-						}
-					}
-				}
-			}*/
-
-			// sample code to get a specific model
-			/*auto adder_hash = RAGE_JOAAT("adder");
-			for (auto i = m_model_table->m_lookup_table[adder_hash % m_model_table->m_lookup_key]; i; i = i->m_next)
-			{
-				if (i->m_hash == adder_hash)
-				{
-					if (const auto model = m_model_table->m_data[i->m_idx]; model)
-					{
-						LOG(G3LOG_DEBUG) << "Found Model: " << HEX_TO_UPPER(model->m_model_hash) << " => type: " << (int)model->m_model_type;
-
-						break;
-					}
-				}
-			}*/
 		});
 
 		// Get Label Text
 		main_batch.add("GLT", "75 ? E8 ? ? ? ? 8B 0D ? ? ? ? 65 48 8B 04 25 ? ? ? ? BA ? ? ? ? 48 8B 04 C8 8B 0C 02 D1 E9", [this](memory::handle ptr)
 		{
 			m_get_label_text = ptr.sub(19).as<PVOID>();
+		});
+
+		// Network
+		main_batch.add("N", "48 8B 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 84 C0 75 17 48 8B 0D ? ? ? ? 48 8B D7", [this](memory::handle ptr)
+		{
+			m_network = ptr.add(3).rip().as<Network**>();
+		});
+
+		// Reset Network Complaints
+		main_batch.add("RENC", "E8 ? ? ? ? 8B 8B ? ? ? ? 03 CF", [this](memory::handle ptr)
+		{
+			m_reset_network_complaints = ptr.add(1).rip().as<functions::reset_network_complaints>();
 		});
 
 		auto mem_region = memory::module(nullptr);
