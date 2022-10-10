@@ -179,6 +179,36 @@ workspace "BigBaseV2"
 
 		DeclareMSVCOptions()
 		DeclareDebugOptions()
+		
+	project "wren"
+		location "vendor/%{prj.name}"
+		kind "StaticLib"
+		language "C++"
+
+		targetdir ("bin/lib/" .. outputdir)
+		objdir ("bin/lib/int/" .. outputdir .. "/%{prj.name}")
+
+		files
+		{
+		    "vendor/%{prj.name}/src/**.h",
+		    "vendor/%{prj.name}/src/**.hpp",
+		    "vendor/%{prj.name}/src/**.c"
+		}
+		
+		includedirs
+		{
+			"vendor/%{prj.name}/src/include",
+			"vendor/%{prj.name}/src/optional",
+			"vendor/%{prj.name}/src/vm"
+		}
+		
+		removefiles
+		{
+		    "vendor/%{prj.name}/src/include/wren.h",
+		}
+
+		DeclareMSVCOptions()
+		DeclareDebugOptions()
 
 	project "BigBaseV2"
 		location "BigBaseV2"
@@ -207,7 +237,10 @@ workspace "BigBaseV2"
 		    "vendor/GTAV-Classes",
 		    "vendor/ImGui",
 		    "vendor/json/single_include",
-		    "vendor/MinHook/include"
+		    "vendor/MinHook/include",
+		    "vendor/wren/src/include",
+		    "vendor/wren/src/optional",
+		    "vendor/wren/src/vm"
 		}
 
 		libdirs
@@ -220,7 +253,8 @@ workspace "BigBaseV2"
 		    "fmtlib",
 		    "g3log",
 		    "ImGui",
-		    "MinHook"
+		    "MinHook",
+		    "wren"
 		}
 
 		pchheader "common.hpp"
