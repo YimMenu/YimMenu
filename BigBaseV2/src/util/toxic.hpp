@@ -1,5 +1,6 @@
 #pragma once
 #include "gta/enums.hpp"
+#include "enums/eExplosionTag.hpp"
 #include "natives.hpp"
 #include "script_global.hpp"
 #include "system.hpp"
@@ -9,7 +10,7 @@
 
 namespace big::toxic
 {
-	inline void blame_explode_coord(Player to_blame, Vector3 pos, eExplosionType explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
+	inline void blame_explode_coord(Player to_blame, Vector3 pos, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
 	{
 		system::patch_blame(true);
 		FIRE::ADD_OWNED_EXPLOSION(
@@ -24,7 +25,7 @@ namespace big::toxic
 		system::patch_blame(false);
 	}
 
-	inline void blame_explode_player(Player to_blame, Player target, eExplosionType explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
+	inline void blame_explode_player(Player to_blame, Player target, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
 	{
 		Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target), true);
 		blame_explode_coord(to_blame, coords, explosion_type, damage, is_audible, is_invisible, camera_shake);

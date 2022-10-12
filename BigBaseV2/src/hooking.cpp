@@ -56,8 +56,9 @@ namespace big
 		//Get Network Event Data
 		m_get_network_event_data_hook("GNED", g_pointers->m_get_network_event_data, &hooks::get_network_event_data),
 		// Get Pool Type
-		m_get_pool_type_hook("GPT", g_pointers->m_get_pool_type, &hooks::get_pool_type)
-
+		m_get_pool_type_hook("GPT", g_pointers->m_get_pool_type, &hooks::get_pool_type),
+		// Write Player Gamer Data Node
+		m_write_player_gamer_data_node_hook("WPGDN", g_pointers->m_write_player_gamer_data_node, &hooks::write_player_gamer_data_node)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -93,6 +94,7 @@ namespace big
 		m_received_clone_sync_hook.enable();
 		m_get_pool_type_hook.enable();
 		m_chat_message_received_hook.enable();
+		m_write_player_gamer_data_node_hook.enable();
 
 		MH_ApplyQueued();
 
@@ -103,6 +105,7 @@ namespace big
 	{
 		m_enabled = false;
 
+		m_write_player_gamer_data_node_hook.disable();
 		m_chat_message_received_hook.disable();
 		m_get_pool_type_hook.disable();
 		m_received_clone_sync_hook.disable();
@@ -127,12 +130,13 @@ namespace big
 
 	bool hooks::run_script_threads(std::uint32_t ops_to_execute)
 	{
-		TRY_CLAUSE
+		g_native_invoker.cache_handlers();
+
+		if (g_running)
 		{
-			if (g_running)
-				g_script_mgr.tick();
-			return g_hooking->m_run_script_threads_hook.get_original<functions::run_script_threads>()(ops_to_execute);
-		} EXCEPT_CLAUSE
-		return false;
+			g_script_mgr.tick();
+		}
+
+		return g_hooking->m_run_script_threads_hook.get_original<functions::run_script_threads>()(ops_to_execute);
 	}
 }

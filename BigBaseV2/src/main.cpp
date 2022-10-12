@@ -126,11 +126,11 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				while (g_running)
 					std::this_thread::sleep_for(500ms);
 
-					shv_runner::shutdown();
-					LOG(INFO) << "ASI plugins unloaded.";
+				shv_runner::shutdown();
+				LOG(INFO) << "ASI plugins unloaded.";
 
-					g_hooking->disable();
-					LOG(INFO) << "Hooking disabled.";
+				g_hooking->disable();
+				LOG(INFO) << "Hooking disabled.";
 
 				native_hooks_instance.reset();
 				LOG(INFO) << "Dynamic native hooker uninitialized.";
