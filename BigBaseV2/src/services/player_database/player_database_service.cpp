@@ -164,8 +164,6 @@ namespace big
 	{
 		const auto folder = g_file_manager->get_project_folder("./saved_players");
 
-		LOG(G3LOG_DEBUG) << folder.get_path();
-
 		return folder;
 	}
 }
