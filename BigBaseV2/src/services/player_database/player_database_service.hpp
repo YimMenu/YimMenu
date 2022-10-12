@@ -30,10 +30,11 @@ namespace big
 		static void save_players();
 		static void load_players();
 
+		static void create_dummy_player();
 		static void add_player_to_db(uint64_t rid, std::string name, std::string relationship);
 		static void add_player_to_db(uint64_t rid, std::string name, std::string relationship, Player player);
 
-		static bool is_player_in_db(uint64_t rid, std::string relationship);
+		static bool is_player_in_db(uint64_t rid);
 		static player_l player_database_service::get_player_from_db(uint64_t rid);
 
 		
@@ -42,10 +43,7 @@ namespace big
 
 		static constexpr auto name_key = "name";
 		static constexpr auto rid_key = "rid";
-		static constexpr auto ipv4_key = "ipv4";
-
 		static constexpr auto relationship_key = "relationship";
-		static constexpr auto frame_flags_key = "frame_flags";
 
 		static constexpr auto players_key = "players";
 
@@ -53,10 +51,10 @@ namespace big
 
 		static std::vector<nlohmann::json> get_players_json();
 
-		static nlohmann::json get_player_json_full(uint64_t rid, Player player, std::string relation);
-		static nlohmann::json get_player_json_small(uint64_t rid, std::string name, std::string relation);
+		static nlohmann::json get_player_json_full(uint64_t rid, Player player, std::string relationship);
+		static nlohmann::json get_player_json_small(uint64_t rid, std::string name, std::string relationship);
 
-		static big::folder check_players_folder();
+		static big::folder get_players_folder();
 	};
 
 	inline player_database_service* g_player_database_service;
