@@ -9,22 +9,20 @@ Why don't just use github projects.
 - [ ] Cable cars
 - [ ] Ambient ufos
 - [ ] Better esp
-- [ ] Protection
 - [ ] Port to C++
 - [ ] Native UI to ImGui translator
 - [ ] Session browser
 - [ ] Integrate https://github.com/Rimmuru/List
 - [ ] Add lua api
-- [ ] Give weapon by name
 - [ ] Animation list
 - [ ] Hud color selector
 - [ ] Remove unused legacy code
 - [ ] Fix gta5 stupid auto language switch
 - [ ] GMOD like ctx menu
 - [ ] Fix ballistic armor component
+- [ ] Custom chat
 
 ### In Progress
-- [ ] Chat logging
 
 ### Completed
 - [x] Shitty jump ragdol 
@@ -41,3 +39,5 @@ Why don't just use github projects.
 - [x] Fix the fucking c7ed01b00a627c4d5ac6a3e742554371c986af22
 - [x] Imgui ui
 - [x] Outfit editor
+- [x] Chat logging
+- [x] Give weapon by name

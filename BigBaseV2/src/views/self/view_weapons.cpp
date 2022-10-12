@@ -80,7 +80,7 @@ namespace big
 
 			constexpr auto parachute_hash = RAGE_JOAAT("GADGET_PARACHUTE");
 			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, parachute_hash, 0, true);
-			});
+		});
 		ImGui::SameLine();
 		components::button("Remove Current Weapon", [] {
 			Hash weaponHash;
@@ -89,7 +89,20 @@ namespace big
 			{
 				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, weaponHash);
 			}
-			});
+		});
+
+		std::string weapon_name;
+		components::input_text_with_hint("###weapon_name", "Weapon Name. EG: weapon_unarmed", &weapon_name);
+
+		components::button("Give Selected Weapon", [weapon_name] {
+			Hash weaponHash = rage::joaat(weapon_name);
+			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weaponHash, 9999, false);
+		});
+		ImGui::SameLine();
+		components::button("Remove Selected Weapon", [weapon_name] {
+			Hash weaponHash = rage::joaat(weapon_name);
+			WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, weaponHash);
+		});
 
 		ImGui::SliderFloat("Damage Multiplier", &g->weapons.increased_damage, 1.f, 10.f, "%.1f");
 

@@ -60,8 +60,23 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::button("Give Weapons", [] {
+		components::button("Give All Weapons", [] {
 			g_pickup_service->give_player_weapons(g_player_service->get_selected()->id());
+		});
+
+		std::string weapon_name;
+		components::input_text_with_hint("###weapon_name", "Weapon Name. EG: weapon_unarmed", &weapon_name);
+
+		components::button("Give Selected Weapon", [weapon_name] {
+			Hash weaponHash = rage::joaat(weapon_name);
+			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(g_player_service->get_selected()->id(), weaponHash, 9999, false);
+		});
+
+		ImGui::SameLine();
+
+		components::button("Remove Selected Weapon", [weapon_name] {
+			Hash weaponHash = rage::joaat(weapon_name);
+			WEAPON::REMOVE_WEAPON_FROM_PED(g_player_service->get_selected()->id(), weaponHash);
 		});
 
 		components::button("Turn Into Animal", [] {
