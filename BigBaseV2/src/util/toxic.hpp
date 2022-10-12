@@ -7,6 +7,7 @@
 #include "entity.hpp"
 #include "gta_util.hpp"
 #include "services/players/player.hpp"
+#include "gta/PickupRewards.h"
 
 namespace big::toxic
 {
@@ -214,5 +215,44 @@ namespace big::toxic
 					g_pointers->m_get_connection_peer(network->m_game_session_ptr->m_net_connection_mgr, plyr->get_session_player()->m_player_data.m_peer_id),
 					network->m_game_session_ptr->m_connection_identifier, &cmd, 0x1000000);
 		}
+	}
+
+	inline void give_collectible(Player target, eCollectibleType col, int index = 0, bool uncomplete = false)
+	{
+		const size_t arg_count = 7;
+		int64_t args[arg_count] = {
+			(int64_t)eRemoteEvent::GiveCollectible,
+			self::id,
+			(int64_t)col, // iParam0
+			index, // iParam1
+			!uncomplete, // bParam2
+			true,
+			0  // bParam3
+		};
+
+		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
+	}
+
+	inline void turn_player_into_animal(Player target)
+	{
+		for (int i = 0; i < 30; i++)
+		{
+			toxic::give_collectible(target, eCollectibleType::Treat, 0, false);
+			toxic::give_collectible(target, eCollectibleType::Treat, 0, true);
+			g_pointers->m_give_pickup_rewards(1 << target, REWARD_HEALTH); // try to keep them alive
+			g_pointers->m_give_pickup_rewards(1 << target, REWARD_ARMOUR);
+			script::get_current()->yield(400ms);
+
+			Ped playerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target);
+			Hash model = ENTITY::GET_ENTITY_MODEL(playerPed);
+
+			if (model != RAGE_JOAAT("mp_m_freemode_01") && model != RAGE_JOAAT("mp_f_freemode_01"))
+				return;
+
+			if (ENTITY::IS_ENTITY_DEAD(playerPed, FALSE))
+				script::get_current()->yield(7s);
+		}
+
+		g_notification_service->push_warning("Turn to Animal", "Failed to turn player into an animal");
 	}
 }

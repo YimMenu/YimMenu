@@ -63,5 +63,9 @@ namespace big
 		components::button("Give Weapons", [] {
 			g_pickup_service->give_player_weapons(g_player_service->get_selected()->id());
 		});
+
+		components::button("Turn Into Animal", [] {
+			toxic::turn_player_into_animal(g_player_service->get_selected()->id());
+		});
 	}
 }

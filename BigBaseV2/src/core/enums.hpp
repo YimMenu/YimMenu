@@ -788,7 +788,7 @@ namespace big
 		_CPED_CONFIG_FLAG_0xFCC5EBC5 = 458
 	};
 
-	// PS4 dump. From maybegreat48
+	// PS4 dump. From maybegreat48.
 	enum class KickReason : std::uint8_t
 	{
 		VOTED_OUT,
@@ -798,5 +798,19 @@ namespace big
 		SCADMIN,
 		SCADMIN_BLACKLIST,
 		NUM_REASONS
+	};
+
+	enum class eCollectibleType // Skidded from maybegreat48.
+	{
+		MovieProp = 0,
+		CacheShard = 1,
+		ChestShard = 2,
+		RadioTowerShard = 3,
+		AudioPlayerShard = 4,
+		ShipwreckShard = 5,
+		BuriedStashShard = 6,
+		Treat = 8,
+		Organics = 9,
+		Skydive = 10
 	};
 }
