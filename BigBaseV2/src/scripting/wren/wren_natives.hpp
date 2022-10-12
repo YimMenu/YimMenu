@@ -18,7 +18,7 @@ namespace big
 
         int res = SYSTEM::START_NEW_SCRIPT(scriptName, stackSize);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -51,7 +51,7 @@ namespace big
 
         int res = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH(scriptHash, stackSize);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -82,7 +82,7 @@ namespace big
 
         int res = SYSTEM::TIMERA();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -92,7 +92,7 @@ namespace big
 
         int res = SYSTEM::TIMERB();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -116,7 +116,7 @@ namespace big
 
         float res = SYSTEM::TIMESTEP();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -127,7 +127,7 @@ namespace big
 
         float res = SYSTEM::SIN(value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -138,7 +138,7 @@ namespace big
 
         float res = SYSTEM::COS(value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -149,7 +149,7 @@ namespace big
 
         float res = SYSTEM::SQRT(value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -161,7 +161,7 @@ namespace big
 
         float res = SYSTEM::POW(base, exponent);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -172,7 +172,7 @@ namespace big
 
         float res = SYSTEM::LOG10(value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -185,7 +185,7 @@ namespace big
 
         float res = SYSTEM::VMAG(x, y, z);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -198,7 +198,7 @@ namespace big
 
         float res = SYSTEM::VMAG2(x, y, z);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -214,7 +214,7 @@ namespace big
 
         float res = SYSTEM::VDIST(x1, y1, z1, x2, y2, z2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -230,7 +230,7 @@ namespace big
 
         float res = SYSTEM::VDIST2(x1, y1, z1, x2, y2, z2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -242,7 +242,7 @@ namespace big
 
         int res = SYSTEM::SHIFT_LEFT(value, bitShift);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -254,7 +254,7 @@ namespace big
 
         int res = SYSTEM::SHIFT_RIGHT(value, bitShift);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -265,7 +265,7 @@ namespace big
 
         int res = SYSTEM::FLOOR(value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -276,7 +276,7 @@ namespace big
 
         int res = SYSTEM::CEIL(value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -287,7 +287,7 @@ namespace big
 
         int res = SYSTEM::ROUND(value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -298,7 +298,7 @@ namespace big
 
         float res = SYSTEM::TO_FLOAT(value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -316,7 +316,7 @@ namespace big
 
         BOOL res = APP::APP_DATA_VALID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -327,7 +327,7 @@ namespace big
 
         int res = APP::APP_GET_INT(property);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -338,7 +338,7 @@ namespace big
 
         float res = APP::APP_GET_FLOAT(property);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -349,7 +349,7 @@ namespace big
 
         const char* res = APP::APP_GET_STRING(property);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -415,7 +415,7 @@ namespace big
 
         BOOL res = APP::APP_HAS_LINKED_SOCIAL_CLUB_ACCOUNT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -426,7 +426,7 @@ namespace big
 
         BOOL res = APP::APP_HAS_SYNCED_DATA(appName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -442,7 +442,7 @@ namespace big
 
         int res = APP::APP_GET_DELETED_FILE_STATUS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -453,7 +453,7 @@ namespace big
 
         BOOL res = APP::APP_DELETE_APP_DATA(appName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -474,7 +474,7 @@ namespace big
 
         BOOL res = AUDIO::IS_PED_RINGTONE_PLAYING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -491,7 +491,7 @@ namespace big
 
         BOOL res = AUDIO::IS_MOBILE_PHONE_CALL_ONGOING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -501,7 +501,7 @@ namespace big
 
         BOOL res = AUDIO::IS_MOBILE_INTERFERENCE_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -635,7 +635,7 @@ namespace big
 
         BOOL res = AUDIO::GET_IS_PRELOADED_CONVERSATION_READY();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -645,7 +645,7 @@ namespace big
 
         BOOL res = AUDIO::IS_SCRIPTED_CONVERSATION_ONGOING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -655,7 +655,7 @@ namespace big
 
         BOOL res = AUDIO::IS_SCRIPTED_CONVERSATION_LOADED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -665,7 +665,7 @@ namespace big
 
         int res = AUDIO::GET_CURRENT_SCRIPTED_CONVERSATION_LINE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -689,7 +689,7 @@ namespace big
 
         int res = AUDIO::STOP_SCRIPTED_CONVERSATION(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -764,7 +764,7 @@ namespace big
 
         BOOL res = AUDIO::REQUEST_MISSION_AUDIO_BANK(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -777,7 +777,7 @@ namespace big
 
         BOOL res = AUDIO::REQUEST_AMBIENT_AUDIO_BANK(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -790,7 +790,7 @@ namespace big
 
         BOOL res = AUDIO::REQUEST_SCRIPT_AUDIO_BANK(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -803,7 +803,7 @@ namespace big
 
         Any res = AUDIO::HINT_MISSION_AUDIO_BANK(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -816,7 +816,7 @@ namespace big
 
         Any res = AUDIO::HINT_AMBIENT_AUDIO_BANK(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -829,7 +829,7 @@ namespace big
 
         Any res = AUDIO::HINT_SCRIPT_AUDIO_BANK(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -883,7 +883,7 @@ namespace big
 
         int res = AUDIO::GET_SOUND_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -987,7 +987,7 @@ namespace big
 
         int res = AUDIO::GET_NETWORK_ID_FROM_SOUND_ID(soundId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -998,7 +998,7 @@ namespace big
 
         int res = AUDIO::GET_SOUND_ID_FROM_NETWORK_ID(netId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -1011,7 +1011,7 @@ namespace big
 
         AUDIO::SET_VARIABLE_ON_SOUND(soundId, &p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -1030,7 +1030,7 @@ namespace big
 
         AUDIO::OVERRIDE_UNDERWATER_STREAM(&p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -1048,7 +1048,7 @@ namespace big
 
         BOOL res = AUDIO::HAS_SOUND_FINISHED(soundId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1169,7 +1169,7 @@ namespace big
 
         Hash res = AUDIO::GET_AMBIENT_VOICE_NAME_HASH(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -1234,7 +1234,7 @@ namespace big
 
         BOOL res = AUDIO::IS_AMBIENT_SPEECH_PLAYING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1245,7 +1245,7 @@ namespace big
 
         BOOL res = AUDIO::IS_SCRIPTED_SPEECH_PLAYING(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1256,7 +1256,7 @@ namespace big
 
         BOOL res = AUDIO::IS_ANY_SPEECH_PLAYING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1266,7 +1266,7 @@ namespace big
 
         Any res = AUDIO::IS_ANY_POSITIONAL_SPEECH_PLAYING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -1279,7 +1279,7 @@ namespace big
 
         BOOL res = AUDIO::DOES_CONTEXT_EXIST_FOR_THIS_PED(ped, speechName, unk);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1290,7 +1290,7 @@ namespace big
 
         BOOL res = AUDIO::IS_PED_IN_CURRENT_CONVERSATION(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1318,7 +1318,7 @@ namespace big
 
         BOOL res = AUDIO::IS_ANIMAL_VOCALIZATION_PLAYING(pedHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1336,7 +1336,7 @@ namespace big
 
         BOOL res = AUDIO::IS_MOBILE_PHONE_RADIO_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1353,7 +1353,7 @@ namespace big
 
         int res = AUDIO::GET_PLAYER_RADIO_STATION_INDEX();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -1363,7 +1363,7 @@ namespace big
 
         const char* res = AUDIO::GET_PLAYER_RADIO_STATION_NAME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -1374,7 +1374,7 @@ namespace big
 
         const char* res = AUDIO::GET_RADIO_STATION_NAME(radioStation);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -1384,7 +1384,7 @@ namespace big
 
         int res = AUDIO::GET_PLAYER_RADIO_STATION_GENRE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -1394,7 +1394,7 @@ namespace big
 
         BOOL res = AUDIO::IS_RADIO_RETUNING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1404,7 +1404,7 @@ namespace big
 
         BOOL res = AUDIO::IS_RADIO_FADED_OUT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1449,7 +1449,7 @@ namespace big
 
         BOOL res = AUDIO::IS_VEHICLE_RADIO_ON(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1512,7 +1512,7 @@ namespace big
 
         BOOL res = AUDIO::IS_MISSION_NEWS_STORY_UNLOCKED(newsStory);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1522,7 +1522,7 @@ namespace big
 
         int res = AUDIO::GET_AUDIBLE_MUSIC_TRACK_TEXT_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -1616,7 +1616,7 @@ namespace big
 
         BOOL res = AUDIO::CAN_VEHICLE_RECEIVE_CB_RADIO(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1633,7 +1633,7 @@ namespace big
 
         BOOL res = AUDIO::DOES_PLAYER_VEH_HAVE_RADIO();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1643,7 +1643,7 @@ namespace big
 
         BOOL res = AUDIO::IS_PLAYER_VEH_RADIO_ENABLE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1684,7 +1684,7 @@ namespace big
 
         int res = AUDIO::GET_NUM_UNLOCKED_RADIO_STATIONS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -1695,7 +1695,7 @@ namespace big
 
         int res = AUDIO::FIND_RADIO_STATION_INDEX(stationNameHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -1760,7 +1760,7 @@ namespace big
 
         BOOL res = AUDIO::IS_RADIO_STATION_FAVOURITED(radioStation);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1806,7 +1806,7 @@ namespace big
 
         int res = AUDIO::GET_CURRENT_TRACK_PLAY_TIME(radioStationName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -1817,7 +1817,7 @@ namespace big
 
         Hash res = AUDIO::GET_CURRENT_TRACK_SOUND_NAME(radioStationName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -1855,7 +1855,7 @@ namespace big
 
         AUDIO::SET_AMBIENT_ZONE_LIST_STATE(&p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -1866,7 +1866,7 @@ namespace big
 
         AUDIO::CLEAR_AMBIENT_ZONE_LIST_STATE(&p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -1894,7 +1894,7 @@ namespace big
 
         BOOL res = AUDIO::IS_AMBIENT_ZONE_ENABLED(ambientZone);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -1927,7 +1927,7 @@ namespace big
 
         int res = AUDIO::PLAY_POLICE_REPORT(name, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -1960,7 +1960,7 @@ namespace big
 
         BOOL res = AUDIO::IS_HORN_ACTIVE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2001,7 +2001,7 @@ namespace big
 
         BOOL res = AUDIO::IS_STREAM_PLAYING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2011,7 +2011,7 @@ namespace big
 
         int res = AUDIO::GET_STREAM_PLAY_TIME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -2023,7 +2023,7 @@ namespace big
 
         BOOL res = AUDIO::LOAD_STREAM(streamName, soundSet);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2036,7 +2036,7 @@ namespace big
 
         BOOL res = AUDIO::LOAD_STREAM_WITH_START_OFFSET(streamName, startOffset, soundSet);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2122,7 +2122,7 @@ namespace big
 
         BOOL res = AUDIO::IS_AMBIENT_SPEECH_DISABLED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2249,7 +2249,7 @@ namespace big
 
         BOOL res = AUDIO::IS_VEHICLE_AUDIBLY_DAMAGED(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2339,7 +2339,7 @@ namespace big
 
         BOOL res = AUDIO::IS_GAME_IN_CONTROL_OF_MUSIC();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2363,7 +2363,7 @@ namespace big
 
         BOOL res = AUDIO::IS_MISSION_COMPLETE_PLAYING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2373,7 +2373,7 @@ namespace big
 
         BOOL res = AUDIO::IS_MISSION_COMPLETE_READY_FOR_UI();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2391,7 +2391,7 @@ namespace big
 
         BOOL res = AUDIO::START_AUDIO_SCENE(scene);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2415,7 +2415,7 @@ namespace big
 
         BOOL res = AUDIO::IS_AUDIO_SCENE_ACTIVE(scene);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2458,7 +2458,7 @@ namespace big
 
         BOOL res = AUDIO::AUDIO_IS_MUSIC_PLAYING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2468,7 +2468,7 @@ namespace big
 
         Any res = AUDIO::AUDIO_IS_SCRIPTED_MUSIC_PLAYING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -2479,7 +2479,7 @@ namespace big
 
         BOOL res = AUDIO::PREPARE_MUSIC_EVENT(eventName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2490,7 +2490,7 @@ namespace big
 
         BOOL res = AUDIO::CANCEL_MUSIC_EVENT(eventName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2501,7 +2501,7 @@ namespace big
 
         BOOL res = AUDIO::TRIGGER_MUSIC_EVENT(eventName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2511,7 +2511,7 @@ namespace big
 
         BOOL res = AUDIO::IS_MUSIC_ONESHOT_PLAYING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2521,7 +2521,7 @@ namespace big
 
         int res = AUDIO::GET_MUSIC_PLAYTIME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -2585,7 +2585,7 @@ namespace big
 
         BOOL res = AUDIO::PREPARE_ALARM(alarmName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2619,7 +2619,7 @@ namespace big
 
         BOOL res = AUDIO::IS_ALARM_PLAYING(alarmName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2630,7 +2630,7 @@ namespace big
 
         Hash res = AUDIO::GET_VEHICLE_DEFAULT_HORN(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -2641,7 +2641,7 @@ namespace big
 
         Hash res = AUDIO::GET_VEHICLE_DEFAULT_HORN_IGNORE_MODS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -2736,7 +2736,7 @@ namespace big
 
         Any res = AUDIO::PREPARE_SYNCHRONIZED_AUDIO_EVENT(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -2766,7 +2766,7 @@ namespace big
 
         BOOL res = AUDIO::PLAY_SYNCHRONIZED_AUDIO_EVENT(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2777,7 +2777,7 @@ namespace big
 
         BOOL res = AUDIO::STOP_SYNCHRONIZED_AUDIO_EVENT(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2791,7 +2791,7 @@ namespace big
 
         AUDIO::INIT_SYNCH_SCENE_AUDIO_WITH_POSITION(&p0, x, y, z);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -2836,7 +2836,7 @@ namespace big
 
         int res = AUDIO::GET_MUSIC_VOL_SLIDER();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -2872,7 +2872,7 @@ namespace big
 
         BOOL res = AUDIO::HAS_LOADED_MP_DATA_SET();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2882,7 +2882,7 @@ namespace big
 
         BOOL res = AUDIO::HAS_LOADED_SP_DATA_SET();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2893,7 +2893,7 @@ namespace big
 
         int res = AUDIO::GET_VEHICLE_HORN_SOUND_INDEX(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -2935,7 +2935,7 @@ namespace big
 
         BOOL res = BRAIN::IS_OBJECT_WITHIN_BRAIN_ACTIVATION_RANGE(object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -2954,7 +2954,7 @@ namespace big
 
         BOOL res = BRAIN::IS_WORLD_POINT_WITHIN_BRAIN_ACTIVATION_RANGE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -3029,7 +3029,7 @@ namespace big
 
         Cam res = CAM::CREATE_CAM(camName, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -3049,7 +3049,7 @@ namespace big
 
         Cam res = CAM::CREATE_CAM_WITH_PARAMS(camName, posX, posY, posZ, rotX, rotY, rotZ, fov, p8, p9);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -3061,7 +3061,7 @@ namespace big
 
         Cam res = CAM::CREATE_CAMERA(camHash, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -3081,7 +3081,7 @@ namespace big
 
         Cam res = CAM::CREATE_CAMERA_WITH_PARAMS(camHash, posX, posY, posZ, rotX, rotY, rotZ, fov, p8, p9);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -3107,7 +3107,7 @@ namespace big
 
         BOOL res = CAM::DOES_CAM_EXIST(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -3126,7 +3126,7 @@ namespace big
 
         BOOL res = CAM::IS_CAM_ACTIVE(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -3137,7 +3137,7 @@ namespace big
 
         BOOL res = CAM::IS_CAM_RENDERING(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -3147,7 +3147,7 @@ namespace big
 
         Cam res = CAM::GET_RENDERING_CAM();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -3158,10 +3158,10 @@ namespace big
 
         Vector3 res = CAM::GET_CAM_COORD(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -3174,10 +3174,10 @@ namespace big
 
         Vector3 res = CAM::GET_CAM_ROT(cam, rotationOrder);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -3189,7 +3189,7 @@ namespace big
 
         float res = CAM::GET_CAM_FOV(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -3200,7 +3200,7 @@ namespace big
 
         float res = CAM::GET_CAM_NEAR_CLIP(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -3211,7 +3211,7 @@ namespace big
 
         float res = CAM::GET_CAM_FAR_CLIP(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -3222,7 +3222,7 @@ namespace big
 
         float res = CAM::GET_CAM_NEAR_DOF(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -3233,7 +3233,7 @@ namespace big
 
         float res = CAM::GET_CAM_FAR_DOF(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -3244,7 +3244,7 @@ namespace big
 
         float res = CAM::GET_CAM_DOF_STRENGTH(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -3614,7 +3614,7 @@ namespace big
 
         Cam res = CAM::GET_DEBUG_CAM();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -3678,7 +3678,7 @@ namespace big
 
         float res = CAM::GET_CAM_SPLINE_PHASE(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -3689,7 +3689,7 @@ namespace big
 
         float res = CAM::GET_CAM_SPLINE_NODE_PHASE(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -3716,7 +3716,7 @@ namespace big
 
         int res = CAM::GET_CAM_SPLINE_NODE_INDEX(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -3775,7 +3775,7 @@ namespace big
 
         BOOL res = CAM::IS_CAM_SPLINE_PAUSED(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -3797,7 +3797,7 @@ namespace big
 
         BOOL res = CAM::IS_CAM_INTERPOLATING(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -3828,7 +3828,7 @@ namespace big
 
         BOOL res = CAM::IS_CAM_SHAKING(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -3872,7 +3872,7 @@ namespace big
 
         BOOL res = CAM::IS_SCRIPT_GLOBAL_SHAKING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -3909,7 +3909,7 @@ namespace big
 
         BOOL res = CAM::PLAY_CAM_ANIM(cam, animName, animDictionary, x, y, z, xRot, yRot, zRot, p9, p10);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -3922,7 +3922,7 @@ namespace big
 
         BOOL res = CAM::IS_CAM_PLAYING_ANIM(cam, animName, animDictionary);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -3941,7 +3941,7 @@ namespace big
 
         float res = CAM::GET_CAM_ANIM_CURRENT_PHASE(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -3955,7 +3955,7 @@ namespace big
 
         BOOL res = CAM::PLAY_SYNCHRONIZED_CAM_ANIM(p0, p1, animName, animDictionary);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4011,7 +4011,7 @@ namespace big
 
         BOOL res = CAM::WAS_FLY_CAM_CONSTRAINED_ON_PREVIOUS_UDPATE(cam);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4021,7 +4021,7 @@ namespace big
 
         BOOL res = CAM::IS_SCREEN_FADED_OUT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4031,7 +4031,7 @@ namespace big
 
         BOOL res = CAM::IS_SCREEN_FADED_IN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4041,7 +4041,7 @@ namespace big
 
         BOOL res = CAM::IS_SCREEN_FADING_OUT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4051,7 +4051,7 @@ namespace big
 
         BOOL res = CAM::IS_SCREEN_FADING_IN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4083,7 +4083,7 @@ namespace big
 
         BOOL res = CAM::ARE_WIDESCREEN_BORDERS_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4093,10 +4093,10 @@ namespace big
 
         Vector3 res = CAM::GET_GAMEPLAY_CAM_COORD();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -4108,10 +4108,10 @@ namespace big
 
         Vector3 res = CAM::GET_GAMEPLAY_CAM_ROT(rotationOrder);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -4122,7 +4122,7 @@ namespace big
 
         float res = CAM::GET_GAMEPLAY_CAM_FOV();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4146,7 +4146,7 @@ namespace big
 
         float res = CAM::GET_GAMEPLAY_CAM_RELATIVE_HEADING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4163,7 +4163,7 @@ namespace big
 
         float res = CAM::GET_GAMEPLAY_CAM_RELATIVE_PITCH();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4233,7 +4233,7 @@ namespace big
 
         BOOL res = CAM::IS_GAMEPLAY_CAM_SHAKING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4264,7 +4264,7 @@ namespace big
 
         BOOL res = CAM::IS_GAMEPLAY_CAM_RENDERING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4274,7 +4274,7 @@ namespace big
 
         BOOL res = CAM::IS_INTERPOLATING_FROM_SCRIPT_CAMS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4284,7 +4284,7 @@ namespace big
 
         BOOL res = CAM::IS_INTERPOLATING_TO_SCRIPT_CAMS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4307,7 +4307,7 @@ namespace big
 
         BOOL res = CAM::IS_GAMEPLAY_CAM_LOOKING_BEHIND();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4332,6 +4332,13 @@ namespace big
         CAM::BYPASS_CAMERA_COLLISION_BUOYANCY_TEST_THIS_UPDATE();
     }
 
+    static void WREN_CAM_SET_GAMEPLAY_CAM_ENTITY_TO_LIMIT_FOCUS_OVER_BOUNDING_SPHERE_THIS_UPDATE(WrenVM* vm)
+    {
+        Entity entity = (Entity)wrenGetSlotDouble(vm, 1);
+
+        CAM::SET_GAMEPLAY_CAM_ENTITY_TO_LIMIT_FOCUS_OVER_BOUNDING_SPHERE_THIS_UPDATE(entity);
+    }
+
     static void WREN_CAM_DISABLE_FIRST_PERSON_CAMERA_WATER_CLIPPING_TEST_THIS_UPDATE(WrenVM* vm)
     {
 
@@ -4353,7 +4360,7 @@ namespace big
 
         BOOL res = CAM::IS_SPHERE_VISIBLE(x, y, z, radius);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4363,7 +4370,7 @@ namespace big
 
         BOOL res = CAM::IS_FOLLOW_PED_CAM_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4375,7 +4382,7 @@ namespace big
 
         BOOL res = CAM::SET_FOLLOW_PED_CAM_THIS_UPDATE(camName, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4449,7 +4456,7 @@ namespace big
 
         int res = CAM::GET_FOLLOW_PED_CAM_ZOOM_LEVEL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4459,7 +4466,7 @@ namespace big
 
         int res = CAM::GET_FOLLOW_PED_CAM_VIEW_MODE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4476,7 +4483,7 @@ namespace big
 
         BOOL res = CAM::IS_FOLLOW_VEHICLE_CAM_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4502,7 +4509,7 @@ namespace big
 
         BOOL res = CAM::SET_TABLE_GAMES_CAMERA_THIS_UPDATE(hash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4512,7 +4519,7 @@ namespace big
 
         int res = CAM::GET_FOLLOW_VEHICLE_CAM_ZOOM_LEVEL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4529,7 +4536,7 @@ namespace big
 
         int res = CAM::GET_FOLLOW_VEHICLE_CAM_VIEW_MODE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4547,7 +4554,7 @@ namespace big
 
         int res = CAM::GET_CAM_VIEW_MODE_FOR_CONTEXT(context);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4565,7 +4572,7 @@ namespace big
 
         int res = CAM::GET_CAM_ACTIVE_VIEW_MODE_CONTEXT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4601,7 +4608,7 @@ namespace big
 
         BOOL res = CAM::IS_AIM_CAM_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4611,7 +4618,7 @@ namespace big
 
         BOOL res = CAM::IS_AIM_CAM_ACTIVE_IN_ACCURATE_MODE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4621,7 +4628,7 @@ namespace big
 
         BOOL res = CAM::IS_FIRST_PERSON_AIM_CAM_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4637,7 +4644,7 @@ namespace big
 
         float res = CAM::GET_FIRST_PERSON_AIM_CAM_ZOOM_FACTOR();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4705,10 +4712,10 @@ namespace big
 
         Vector3 res = CAM::GET_FINAL_RENDERED_CAM_COORD();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -4720,10 +4727,10 @@ namespace big
 
         Vector3 res = CAM::GET_FINAL_RENDERED_CAM_ROT(rotationOrder);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -4736,10 +4743,10 @@ namespace big
 
         Vector3 res = CAM::GET_FINAL_RENDERED_REMOTE_PLAYER_CAM_ROT(player, rotationOrder);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -4750,7 +4757,7 @@ namespace big
 
         float res = CAM::GET_FINAL_RENDERED_CAM_FOV();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4761,7 +4768,7 @@ namespace big
 
         float res = CAM::GET_FINAL_RENDERED_REMOTE_PLAYER_CAM_FOV(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4771,7 +4778,7 @@ namespace big
 
         float res = CAM::GET_FINAL_RENDERED_CAM_NEAR_CLIP();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4781,7 +4788,7 @@ namespace big
 
         float res = CAM::GET_FINAL_RENDERED_CAM_FAR_CLIP();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4791,7 +4798,7 @@ namespace big
 
         float res = CAM::GET_FINAL_RENDERED_CAM_NEAR_DOF();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4801,7 +4808,7 @@ namespace big
 
         float res = CAM::GET_FINAL_RENDERED_CAM_FAR_DOF();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4811,7 +4818,7 @@ namespace big
 
         float res = CAM::GET_FINAL_RENDERED_CAM_MOTION_BLUR_STRENGTH();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4891,7 +4898,7 @@ namespace big
 
         BOOL res = CAM::IS_GAMEPLAY_HINT_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4922,7 +4929,7 @@ namespace big
 
         Any res = CAM::IS_CODE_GAMEPLAY_HINT_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -4981,7 +4988,7 @@ namespace big
 
         BOOL res = CAM::IS_CINEMATIC_CAM_RENDERING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -4999,7 +5006,7 @@ namespace big
 
         BOOL res = CAM::IS_CINEMATIC_CAM_SHAKING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5047,7 +5054,7 @@ namespace big
 
         BOOL res = CAM::IS_CINEMATIC_IDLE_CAM_RENDERING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5057,7 +5064,7 @@ namespace big
 
         BOOL res = CAM::IS_CINEMATIC_FIRST_PERSON_VEHICLE_INTERIOR_CAM_RENDERING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5078,7 +5085,7 @@ namespace big
 
         BOOL res = CAM::IS_CINEMATIC_SHOT_ACTIVE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5115,7 +5122,7 @@ namespace big
 
         Any res = CAM::IS_IN_VEHICLE_MOBILE_PHONE_CAMERA_RENDERING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5125,7 +5132,7 @@ namespace big
 
         Any res = CAM::DISABLE_CINEMATIC_SLOW_MO_THIS_UPDATE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5135,7 +5142,7 @@ namespace big
 
         BOOL res = CAM::IS_BONNET_CINEMATIC_CAM_RENDERING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5145,7 +5152,7 @@ namespace big
 
         BOOL res = CAM::IS_CINEMATIC_CAM_INPUT_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5190,7 +5197,7 @@ namespace big
 
         Ped res = CAM::GET_FOCUS_PED_ON_SCREEN(p0, p1, p2, p3, p4, p5, p6, p7, p8);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5234,9 +5241,15 @@ namespace big
 
         Any res = CAM::IS_ALLOWED_INDEPENDENT_CAMERA_MODES();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
+    }
+
+    static void WREN_CAM_CAMERA_PREVENT_COLLISION_SETTINGS_FOR_TRIPLEHEAD_IN_INTERIORS_THIS_UPDATE(WrenVM* vm)
+    {
+
+        CAM::CAMERA_PREVENT_COLLISION_SETTINGS_FOR_TRIPLEHEAD_IN_INTERIORS_THIS_UPDATE();
     }
 
     static void WREN_CAM_REPLAY_GET_MAX_DISTANCE_ALLOWED_FROM_PLAYER(WrenVM* vm)
@@ -5244,7 +5257,7 @@ namespace big
 
         float res = CAM::REPLAY_GET_MAX_DISTANCE_ALLOWED_FROM_PLAYER();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5289,7 +5302,7 @@ namespace big
 
         int res = CLOCK::GET_CLOCK_HOURS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5299,7 +5312,7 @@ namespace big
 
         int res = CLOCK::GET_CLOCK_MINUTES();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5309,7 +5322,7 @@ namespace big
 
         int res = CLOCK::GET_CLOCK_SECONDS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5328,7 +5341,7 @@ namespace big
 
         int res = CLOCK::GET_CLOCK_DAY_OF_WEEK();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5338,7 +5351,7 @@ namespace big
 
         int res = CLOCK::GET_CLOCK_DAY_OF_MONTH();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5348,7 +5361,7 @@ namespace big
 
         int res = CLOCK::GET_CLOCK_MONTH();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5358,7 +5371,7 @@ namespace big
 
         int res = CLOCK::GET_CLOCK_YEAR();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5368,7 +5381,7 @@ namespace big
 
         int res = CLOCK::GET_MILLISECONDS_PER_GAME_MINUTE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5507,7 +5520,7 @@ namespace big
 
         BOOL res = CUTSCENE::HAS_CUTSCENE_LOADED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5518,7 +5531,7 @@ namespace big
 
         BOOL res = CUTSCENE::HAS_THIS_CUTSCENE_LOADED(cutsceneName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5535,7 +5548,7 @@ namespace big
 
         BOOL res = CUTSCENE::CAN_REQUEST_ASSETS_FOR_CUTSCENE_ENTITY();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5546,7 +5559,7 @@ namespace big
 
         BOOL res = CUTSCENE::IS_CUTSCENE_PLAYBACK_FLAG_SET(flag);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5573,7 +5586,7 @@ namespace big
 
         BOOL res = CUTSCENE::HAS_CUT_FILE_LOADED(cutsceneName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5591,7 +5604,7 @@ namespace big
 
         int res = CUTSCENE::GET_CUT_FILE_CONCAT_COUNT(cutsceneName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5655,7 +5668,7 @@ namespace big
 
         int res = CUTSCENE::GET_CUTSCENE_TIME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5665,7 +5678,7 @@ namespace big
 
         int res = CUTSCENE::GET_CUTSCENE_TOTAL_DURATION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5675,7 +5688,7 @@ namespace big
 
         int res = CUTSCENE::GET_CUTSCENE_END_TIME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5685,7 +5698,7 @@ namespace big
 
         BOOL res = CUTSCENE::WAS_CUTSCENE_SKIPPED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5695,7 +5708,7 @@ namespace big
 
         BOOL res = CUTSCENE::HAS_CUTSCENE_FINISHED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5705,7 +5718,7 @@ namespace big
 
         BOOL res = CUTSCENE::IS_CUTSCENE_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5715,7 +5728,7 @@ namespace big
 
         BOOL res = CUTSCENE::IS_CUTSCENE_PLAYING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5725,7 +5738,7 @@ namespace big
 
         int res = CUTSCENE::GET_CUTSCENE_SECTION_PLAYING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5737,7 +5750,7 @@ namespace big
 
         Entity res = CUTSCENE::GET_ENTITY_INDEX_OF_CUTSCENE_ENTITY(cutsceneEntName, modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5747,7 +5760,7 @@ namespace big
 
         int res = CUTSCENE::GET_CUTSCENE_CONCAT_SECTION_PLAYING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5758,7 +5771,7 @@ namespace big
 
         BOOL res = CUTSCENE::IS_CUTSCENE_AUTHORIZED(cutsceneName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5769,7 +5782,7 @@ namespace big
 
         Any res = CUTSCENE::DOES_CUTSCENE_HANDLE_EXIST(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5792,7 +5805,7 @@ namespace big
 
         Entity res = CUTSCENE::GET_ENTITY_INDEX_OF_REGISTERED_ENTITY(cutsceneEntName, modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5823,7 +5836,7 @@ namespace big
 
         BOOL res = CUTSCENE::CAN_SET_ENTER_STATE_FOR_REGISTERED_ENTITY(cutsceneEntName, modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5835,7 +5848,7 @@ namespace big
 
         BOOL res = CUTSCENE::CAN_SET_EXIT_STATE_FOR_REGISTERED_ENTITY(cutsceneEntName, modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5846,7 +5859,7 @@ namespace big
 
         BOOL res = CUTSCENE::CAN_SET_EXIT_STATE_FOR_CAMERA(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5890,7 +5903,7 @@ namespace big
 
         int res = CUTSCENE::IS_MULTIHEAD_FADE_UP();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5914,7 +5927,7 @@ namespace big
 
         Any res = CUTSCENE::CAN_USE_MOBILE_PHONE_DURING_CUTSCENE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -5959,7 +5972,7 @@ namespace big
 
         BOOL res = CUTSCENE::DOES_CUTSCENE_ENTITY_EXIST(cutsceneEntName, modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -5980,7 +5993,7 @@ namespace big
 
         BOOL res = CUTSCENE::HAS_CUTSCENE_CUT_THIS_FRAME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6005,7 +6018,7 @@ namespace big
 
         BOOL res = DATAFILE::DATAFILE_IS_VALID_REQUEST_ID(index);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6016,7 +6029,7 @@ namespace big
 
         BOOL res = DATAFILE::DATAFILE_HAS_LOADED_FILE_DATA(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6027,7 +6040,7 @@ namespace big
 
         BOOL res = DATAFILE::DATAFILE_HAS_VALID_FILE_DATA(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6039,7 +6052,7 @@ namespace big
 
         BOOL res = DATAFILE::DATAFILE_SELECT_ACTIVE_FILE(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6050,7 +6063,7 @@ namespace big
 
         BOOL res = DATAFILE::DATAFILE_DELETE_REQUESTED_FILE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6091,7 +6104,7 @@ namespace big
 
         BOOL res = DATAFILE::UGC_CREATE_MISSION(contentName, description, tagsCsv, contentTypeName, publish, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6132,7 +6145,7 @@ namespace big
 
         BOOL res = DATAFILE::UGC_UPDATE_MISSION(contentId, contentName, description, tagsCsv, contentTypeName, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6146,7 +6159,7 @@ namespace big
 
         BOOL res = DATAFILE::UGC_SET_PLAYER_DATA(contentId, rating, contentTypeName, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6158,7 +6171,7 @@ namespace big
 
         BOOL res = DATAFILE::DATAFILE_SELECT_UGC_DATA(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6171,7 +6184,7 @@ namespace big
 
         BOOL res = DATAFILE::DATAFILE_SELECT_UGC_STATS(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6183,7 +6196,7 @@ namespace big
 
         BOOL res = DATAFILE::DATAFILE_SELECT_UGC_PLAYER_DATA(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6195,7 +6208,7 @@ namespace big
 
         BOOL res = DATAFILE::DATAFILE_SELECT_CREATOR_STATS(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6207,7 +6220,7 @@ namespace big
 
         BOOL res = DATAFILE::DATAFILE_LOAD_OFFLINE_UGC(filename, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6245,7 +6258,7 @@ namespace big
 
         const char* res = DATAFILE::DATAFILE_GET_FILE_DICT(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -6257,7 +6270,7 @@ namespace big
 
         BOOL res = DATAFILE::DATAFILE_START_SAVE_TO_CLOUD(filename, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6285,7 +6298,7 @@ namespace big
 
         BOOL res = DATAFILE::DATAFILE_IS_SAVE_PENDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6297,7 +6310,7 @@ namespace big
 
         Any res = DATAFILE::DATAFILE_LOAD_OFFLINE_UGC_FOR_ADDITIONAL_DATA_FILE(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -6315,7 +6328,7 @@ namespace big
 
         Any res = DATAFILE::DATAFILE_GET_FILE_DICT_FOR_ADDITIONAL_DATA_FILE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -6328,7 +6341,7 @@ namespace big
 
         DATAFILE::DATADICT_SET_BOOL(&objectData, key, value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -6340,7 +6353,7 @@ namespace big
 
         DATAFILE::DATADICT_SET_INT(&objectData, key, value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -6352,7 +6365,7 @@ namespace big
 
         DATAFILE::DATADICT_SET_FLOAT(&objectData, key, value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -6364,7 +6377,7 @@ namespace big
 
         DATAFILE::DATADICT_SET_STRING(&objectData, key, value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -6378,7 +6391,7 @@ namespace big
 
         DATAFILE::DATADICT_SET_VECTOR(&objectData, key, valueX, valueY, valueZ);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -6510,7 +6523,6 @@ namespace big
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
-        wren_res->z = res.z;
         wrenInsertInList(vm, 0, 0, 2);
 
         wrenSetSlotDouble(vm, 3, objectData);
@@ -6580,7 +6592,7 @@ namespace big
 
         DATAFILE::DATAARRAY_ADD_BOOL(&arrayData, value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -6591,7 +6603,7 @@ namespace big
 
         DATAFILE::DATAARRAY_ADD_INT(&arrayData, value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -6602,7 +6614,7 @@ namespace big
 
         DATAFILE::DATAARRAY_ADD_FLOAT(&arrayData, value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -6613,7 +6625,7 @@ namespace big
 
         DATAFILE::DATAARRAY_ADD_STRING(&arrayData, value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -6626,7 +6638,7 @@ namespace big
 
         DATAFILE::DATAARRAY_ADD_VECTOR(&arrayData, valueX, valueY, valueZ);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -6739,7 +6751,6 @@ namespace big
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
-        wren_res->z = res.z;
         wrenInsertInList(vm, 0, 0, 2);
 
         wrenSetSlotDouble(vm, 3, arrayData);
@@ -6811,7 +6822,7 @@ namespace big
 
         BOOL res = DECORATOR::DECOR_SET_TIME(entity, propertyName, timestamp);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6824,7 +6835,7 @@ namespace big
 
         BOOL res = DECORATOR::DECOR_SET_BOOL(entity, propertyName, value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6837,7 +6848,7 @@ namespace big
 
         BOOL res = DECORATOR::DECOR_SET_FLOAT(entity, propertyName, value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6850,7 +6861,7 @@ namespace big
 
         BOOL res = DECORATOR::DECOR_SET_INT(entity, propertyName, value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6862,7 +6873,7 @@ namespace big
 
         BOOL res = DECORATOR::DECOR_GET_BOOL(entity, propertyName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6874,7 +6885,7 @@ namespace big
 
         float res = DECORATOR::DECOR_GET_FLOAT(entity, propertyName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -6886,7 +6897,7 @@ namespace big
 
         int res = DECORATOR::DECOR_GET_INT(entity, propertyName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -6898,7 +6909,7 @@ namespace big
 
         BOOL res = DECORATOR::DECOR_EXIST_ON(entity, propertyName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6910,7 +6921,7 @@ namespace big
 
         BOOL res = DECORATOR::DECOR_REMOVE(entity, propertyName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6930,7 +6941,7 @@ namespace big
 
         BOOL res = DECORATOR::DECOR_IS_REGISTERED_AS_TYPE(propertyName, type);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6947,7 +6958,7 @@ namespace big
 
         BOOL res = DLC::ARE_ANY_CCS_PENDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6958,7 +6969,7 @@ namespace big
 
         BOOL res = DLC::IS_DLC_PRESENT(dlcHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6968,7 +6979,7 @@ namespace big
 
         BOOL res = DLC::DLC_CHECK_CLOUD_DATA_CORRECT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6978,7 +6989,7 @@ namespace big
 
         BOOL res = DLC::GET_EXTRACONTENT_CLOUD_RESULT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6988,7 +6999,7 @@ namespace big
 
         BOOL res = DLC::DLC_CHECK_COMPAT_PACK_CONFIGURATION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -6998,7 +7009,7 @@ namespace big
 
         BOOL res = DLC::GET_EVER_HAD_BAD_PACK_ORDER();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7008,7 +7019,7 @@ namespace big
 
         BOOL res = DLC::GET_IS_LOADING_SCREEN_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7018,7 +7029,7 @@ namespace big
 
         BOOL res = DLC::GET_IS_INITIAL_LOADING_SCREEN_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7061,7 +7072,7 @@ namespace big
 
         BOOL res = ENTITY::DOES_ENTITY_EXIST(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7073,7 +7084,7 @@ namespace big
 
         BOOL res = ENTITY::DOES_ENTITY_BELONG_TO_THIS_SCRIPT(entity, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7084,7 +7095,7 @@ namespace big
 
         BOOL res = ENTITY::DOES_ENTITY_HAVE_DRAWABLE(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7095,7 +7106,7 @@ namespace big
 
         BOOL res = ENTITY::DOES_ENTITY_HAVE_PHYSICS(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7106,7 +7117,7 @@ namespace big
 
         BOOL res = ENTITY::DOES_ENTITY_HAVE_SKELETON(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7117,7 +7128,7 @@ namespace big
 
         BOOL res = ENTITY::DOES_ENTITY_HAVE_ANIM_DIRECTOR(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7131,7 +7142,7 @@ namespace big
 
         BOOL res = ENTITY::HAS_ENTITY_ANIM_FINISHED(entity, animDict, animName, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7142,7 +7153,7 @@ namespace big
 
         BOOL res = ENTITY::HAS_ENTITY_BEEN_DAMAGED_BY_ANY_OBJECT(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7153,7 +7164,7 @@ namespace big
 
         BOOL res = ENTITY::HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7164,7 +7175,7 @@ namespace big
 
         BOOL res = ENTITY::HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7177,7 +7188,7 @@ namespace big
 
         BOOL res = ENTITY::HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY(entity1, entity2, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7190,7 +7201,7 @@ namespace big
 
         BOOL res = ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(entity1, entity2, traceType);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7203,7 +7214,7 @@ namespace big
 
         Any res = ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY_ADJUST_FOR_COVER(entity1, entity2, traceType);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7215,7 +7226,7 @@ namespace big
 
         BOOL res = ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT(entity1, entity2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7226,7 +7237,7 @@ namespace big
 
         BOOL res = ENTITY::HAS_ENTITY_COLLIDED_WITH_ANYTHING(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7237,7 +7248,7 @@ namespace big
 
         Hash res = ENTITY::GET_LAST_MATERIAL_HIT_BY_ENTITY(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7248,10 +7259,10 @@ namespace big
 
         Vector3 res = ENTITY::GET_COLLISION_NORMAL_OF_LAST_HIT_FOR_ENTITY(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -7272,7 +7283,7 @@ namespace big
 
         float res = ENTITY::GET_ENTITY_ANIM_CURRENT_TIME(entity, animDict, animName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7285,7 +7296,7 @@ namespace big
 
         float res = ENTITY::GET_ENTITY_ANIM_TOTAL_TIME(entity, animDict, animName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7297,7 +7308,7 @@ namespace big
 
         float res = ENTITY::GET_ANIM_DURATION(animDict, animName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7308,7 +7319,7 @@ namespace big
 
         Entity res = ENTITY::GET_ENTITY_ATTACHED_TO(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7320,10 +7331,10 @@ namespace big
 
         Vector3 res = ENTITY::GET_ENTITY_COORDS(entity, alive);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -7335,10 +7346,10 @@ namespace big
 
         Vector3 res = ENTITY::GET_ENTITY_FORWARD_VECTOR(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -7350,7 +7361,7 @@ namespace big
 
         float res = ENTITY::GET_ENTITY_FORWARD_X(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7361,7 +7372,7 @@ namespace big
 
         float res = ENTITY::GET_ENTITY_FORWARD_Y(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7372,7 +7383,7 @@ namespace big
 
         float res = ENTITY::GET_ENTITY_HEADING(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7383,7 +7394,7 @@ namespace big
 
         float res = ENTITY::GET_ENTITY_HEADING_FROM_EULERS(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7394,7 +7405,7 @@ namespace big
 
         int res = ENTITY::GET_ENTITY_HEALTH(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7405,7 +7416,7 @@ namespace big
 
         int res = ENTITY::GET_ENTITY_MAX_HEALTH(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7429,7 +7440,7 @@ namespace big
 
         float res = ENTITY::GET_ENTITY_HEIGHT(entity, X, Y, Z, atTop, inWorldCoords);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7440,7 +7451,7 @@ namespace big
 
         float res = ENTITY::GET_ENTITY_HEIGHT_ABOVE_GROUND(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7492,7 +7503,7 @@ namespace big
 
         Hash res = ENTITY::GET_ENTITY_MODEL(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7506,10 +7517,10 @@ namespace big
 
         Vector3 res = ENTITY::GET_OFFSET_FROM_ENTITY_GIVEN_WORLD_COORDS(entity, posX, posY, posZ);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -7524,10 +7535,10 @@ namespace big
 
         Vector3 res = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(entity, offsetX, offsetY, offsetZ);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -7539,7 +7550,7 @@ namespace big
 
         float res = ENTITY::GET_ENTITY_PITCH(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7578,7 +7589,7 @@ namespace big
 
         float res = ENTITY::GET_ENTITY_ROLL(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7590,10 +7601,10 @@ namespace big
 
         Vector3 res = ENTITY::GET_ENTITY_ROTATION(entity, rotationOrder);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -7605,10 +7616,10 @@ namespace big
 
         Vector3 res = ENTITY::GET_ENTITY_ROTATION_VELOCITY(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -7639,7 +7650,7 @@ namespace big
 
         float res = ENTITY::GET_ENTITY_SPEED(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7651,10 +7662,10 @@ namespace big
 
         Vector3 res = ENTITY::GET_ENTITY_SPEED_VECTOR(entity, relative);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -7666,7 +7677,7 @@ namespace big
 
         float res = ENTITY::GET_ENTITY_UPRIGHT_VALUE(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7677,10 +7688,10 @@ namespace big
 
         Vector3 res = ENTITY::GET_ENTITY_VELOCITY(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -7692,7 +7703,7 @@ namespace big
 
         Object res = ENTITY::GET_OBJECT_INDEX_FROM_ENTITY_INDEX(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7703,7 +7714,7 @@ namespace big
 
         Ped res = ENTITY::GET_PED_INDEX_FROM_ENTITY_INDEX(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7714,7 +7725,7 @@ namespace big
 
         Vehicle res = ENTITY::GET_VEHICLE_INDEX_FROM_ENTITY_INDEX(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7726,10 +7737,10 @@ namespace big
 
         Vector3 res = ENTITY::GET_WORLD_POSITION_OF_ENTITY_BONE(entity, boneIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -7741,7 +7752,7 @@ namespace big
 
         Player res = ENTITY::GET_NEAREST_PLAYER_TO_ENTITY(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7753,7 +7764,7 @@ namespace big
 
         Player res = ENTITY::GET_NEAREST_PLAYER_TO_ENTITY_ON_TEAM(entity, team);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7764,7 +7775,7 @@ namespace big
 
         int res = ENTITY::GET_ENTITY_TYPE(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7775,7 +7786,7 @@ namespace big
 
         int res = ENTITY::GET_ENTITY_POPULATION_TYPE(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -7786,7 +7797,7 @@ namespace big
 
         BOOL res = ENTITY::IS_AN_ENTITY(handle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7797,7 +7808,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_A_PED(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7808,7 +7819,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_A_MISSION_ENTITY(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7819,7 +7830,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_A_VEHICLE(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7830,7 +7841,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_AN_OBJECT(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7850,7 +7861,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_AT_COORD(entity, xPos, yPos, zPos, xSize, ySize, zSize, p7, p8, p9);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7868,7 +7879,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_AT_ENTITY(entity1, entity2, xSize, ySize, zSize, p5, p6, p7);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7879,7 +7890,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_ATTACHED(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7890,7 +7901,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_ATTACHED_TO_ANY_OBJECT(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7901,7 +7912,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_ATTACHED_TO_ANY_PED(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7912,7 +7923,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_ATTACHED_TO_ANY_VEHICLE(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7924,7 +7935,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_ATTACHED_TO_ENTITY(from, to);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7936,7 +7947,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_DEAD(entity, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7947,7 +7958,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_IN_AIR(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7968,7 +7979,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_IN_ANGLED_AREA(entity, x1, y1, z1, x2, y2, z2, width, debug, includeZ, p10);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -7988,7 +7999,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_IN_AREA(entity, x1, y1, z1, x2, y2, z2, p7, p8, p9);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8000,7 +8011,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_IN_ZONE(entity, zone);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8011,7 +8022,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_IN_WATER(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8022,7 +8033,7 @@ namespace big
 
         float res = ENTITY::GET_ENTITY_SUBMERGED_LEVEL(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -8041,7 +8052,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_ON_SCREEN(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8055,7 +8066,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_PLAYING_ANIM(entity, animDict, animName, taskFlag);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8066,7 +8077,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_STATIC(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8078,7 +8089,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_TOUCHING_ENTITY(entity, targetEntity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8090,7 +8101,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_TOUCHING_MODEL(entity, modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8102,7 +8113,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_UPRIGHT(entity, angle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8113,7 +8124,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_UPSIDEDOWN(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8124,7 +8135,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_VISIBLE(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8135,7 +8146,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_VISIBLE_TO_SCRIPT(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8146,7 +8157,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_OCCLUDED(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8161,7 +8172,7 @@ namespace big
 
         BOOL res = ENTITY::WOULD_ENTITY_BE_OCCLUDED(entityModelHash, x, y, z, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8172,7 +8183,7 @@ namespace big
 
         BOOL res = ENTITY::IS_ENTITY_WAITING_FOR_WORLD_COLLISION(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8258,6 +8269,31 @@ namespace big
         ENTITY::ATTACH_ENTITY_BONE_TO_ENTITY_BONE_Y_FORWARD(entity1, entity2, boneIndex1, boneIndex2, p4, p5);
     }
 
+    static void WREN_ENTITY_ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(WrenVM* vm)
+    {
+        Entity entity1 = (Entity)wrenGetSlotDouble(vm, 1);
+        Entity entity2 = (Entity)wrenGetSlotDouble(vm, 2);
+        int boneIndex1 = (int)wrenGetSlotDouble(vm, 3);
+        int boneIndex2 = (int)wrenGetSlotDouble(vm, 4);
+        float xPos1 = (float)wrenGetSlotDouble(vm, 5);
+        float yPos1 = (float)wrenGetSlotDouble(vm, 6);
+        float zPos1 = (float)wrenGetSlotDouble(vm, 7);
+        float xPos2 = (float)wrenGetSlotDouble(vm, 8);
+        float yPos2 = (float)wrenGetSlotDouble(vm, 9);
+        float zPos2 = (float)wrenGetSlotDouble(vm, 10);
+        float xRot = (float)wrenGetSlotDouble(vm, 11);
+        float yRot = (float)wrenGetSlotDouble(vm, 12);
+        float zRot = (float)wrenGetSlotDouble(vm, 13);
+        float breakForce = (float)wrenGetSlotDouble(vm, 14);
+        BOOL fixedRot = (BOOL)wrenGetSlotBool(vm, 15);
+        BOOL p15 = (BOOL)wrenGetSlotBool(vm, 16);
+        BOOL collision = (BOOL)wrenGetSlotBool(vm, 17);
+        BOOL p17 = (BOOL)wrenGetSlotBool(vm, 18);
+        int p18 = (int)wrenGetSlotDouble(vm, 19);
+
+        ENTITY::ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(entity1, entity2, boneIndex1, boneIndex2, xPos1, yPos1, zPos1, xPos2, yPos2, zPos2, xRot, yRot, zRot, breakForce, fixedRot, p15, collision, p17, p18);
+    }
+
     static void WREN_ENTITY_PROCESS_ENTITY_ATTACHMENTS(WrenVM* vm)
     {
         Entity entity = (Entity)wrenGetSlotDouble(vm, 1);
@@ -8272,7 +8308,7 @@ namespace big
 
         int res = ENTITY::GET_ENTITY_BONE_INDEX_BY_NAME(entity, boneName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -8290,7 +8326,7 @@ namespace big
 
         ENTITY::DELETE_ENTITY(&entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -8333,7 +8369,7 @@ namespace big
 
         BOOL res = ENTITY::PLAY_ENTITY_ANIM(entity, animName, animDict, p3, loop, stayInAnim, p6, delta, bitset);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8351,7 +8387,7 @@ namespace big
 
         BOOL res = ENTITY::PLAY_SYNCHRONIZED_ENTITY_ANIM(entity, syncedScene, animation, propName, p4, p5, p6, p7);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8399,7 +8435,7 @@ namespace big
 
         BOOL res = ENTITY::STOP_SYNCHRONIZED_MAP_ENTITY_ANIM(p0, p1, p2, p3, p4, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8413,7 +8449,7 @@ namespace big
 
         Any res = ENTITY::STOP_ENTITY_ANIM(entity, animation, animGroup, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -8426,7 +8462,7 @@ namespace big
 
         BOOL res = ENTITY::STOP_SYNCHRONIZED_ENTITY_ANIM(entity, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8438,7 +8474,7 @@ namespace big
 
         BOOL res = ENTITY::HAS_ANIM_EVENT_FIRED(entity, actionHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8503,7 +8539,7 @@ namespace big
 
         ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -8513,7 +8549,7 @@ namespace big
 
         ENTITY::SET_PED_AS_NO_LONGER_NEEDED(&ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -8523,7 +8559,7 @@ namespace big
 
         ENTITY::SET_VEHICLE_AS_NO_LONGER_NEEDED(&vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -8533,7 +8569,7 @@ namespace big
 
         ENTITY::SET_OBJECT_AS_NO_LONGER_NEEDED(&object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -8551,7 +8587,7 @@ namespace big
 
         BOOL res = ENTITY::GET_ENTITY_CAN_BE_DAMAGED(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8596,7 +8632,7 @@ namespace big
 
         BOOL res = ENTITY::GET_ENTITY_COLLISION_DISABLED(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8716,7 +8752,7 @@ namespace big
 
         BOOL res = ENTITY::HAS_COLLISION_LOADED_AROUND_ENTITY(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -8906,7 +8942,7 @@ namespace big
 
         int res = ENTITY::GET_ENTITY_LOD_DIST(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -8926,7 +8962,7 @@ namespace big
 
         int res = ENTITY::GET_ENTITY_ALPHA(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9141,10 +9177,10 @@ namespace big
 
         Vector3 res = ENTITY::GET_ENTITY_BONE_ROTATION(entity, boneIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -9157,10 +9193,10 @@ namespace big
 
         Vector3 res = ENTITY::GET_ENTITY_BONE_POSTION(entity, boneIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -9173,10 +9209,10 @@ namespace big
 
         Vector3 res = ENTITY::GET_ENTITY_BONE_OBJECT_ROTATION(entity, boneIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -9188,7 +9224,7 @@ namespace big
 
         int res = ENTITY::GET_ENTITY_BONE_COUNT(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9231,7 +9267,7 @@ namespace big
 
         Entity res = ENTITY::GET_ENTITY_OF_TYPE_ATTACHED_TO_ENTITY(entity, modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9287,7 +9323,7 @@ namespace big
 
         ScrHandle res = EVENT::ADD_SHOCKING_EVENT_AT_POSITION(eventType, x, y, z, duration);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9300,7 +9336,7 @@ namespace big
 
         ScrHandle res = EVENT::ADD_SHOCKING_EVENT_FOR_ENTITY(eventType, entity, duration);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9315,7 +9351,7 @@ namespace big
 
         BOOL res = EVENT::IS_SHOCKING_EVENT_IN_SPHERE(eventType, x, y, z, radius);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -9326,7 +9362,7 @@ namespace big
 
         BOOL res = EVENT::REMOVE_SHOCKING_EVENT(event);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -9370,7 +9406,7 @@ namespace big
 
         int res = FILES::GET_NUM_TATTOO_SHOP_DLC_ITEMS(character);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9403,7 +9439,7 @@ namespace big
 
         int res = FILES::GET_TATTOO_SHOP_DLC_ITEM_INDEX(overlayHash, p1, character);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9414,7 +9450,7 @@ namespace big
 
         FILES::INIT_SHOP_PED_COMPONENT(&outComponent);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -9424,7 +9460,7 @@ namespace big
 
         FILES::INIT_SHOP_PED_PROP(&outProp);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -9437,7 +9473,7 @@ namespace big
 
         int res = FILES::SETUP_SHOP_PED_APPAREL_QUERY(p0, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9453,7 +9489,7 @@ namespace big
 
         int res = FILES::SETUP_SHOP_PED_APPAREL_QUERY_TU(character, p1, p2, p3, p4, componentId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9465,7 +9501,7 @@ namespace big
 
         FILES::GET_SHOP_PED_QUERY_COMPONENT(componentId, &outComponent);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -9475,7 +9511,7 @@ namespace big
 
         int res = FILES::GET_SHOP_PED_QUERY_COMPONENT_INDEX(componentHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9487,7 +9523,7 @@ namespace big
 
         FILES::GET_SHOP_PED_COMPONENT(componentHash, &outComponent);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -9498,7 +9534,7 @@ namespace big
 
         FILES::GET_SHOP_PED_QUERY_PROP(componentId, &outProp);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -9508,7 +9544,7 @@ namespace big
 
         int res = FILES::GET_SHOP_PED_QUERY_PROP_INDEX(componentHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9520,7 +9556,7 @@ namespace big
 
         FILES::GET_SHOP_PED_PROP(componentHash, &outProp);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -9533,7 +9569,7 @@ namespace big
 
         Hash res = FILES::GET_HASH_NAME_FOR_COMPONENT(entity, componentId, drawableVariant, textureVariant);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9547,7 +9583,7 @@ namespace big
 
         Hash res = FILES::GET_HASH_NAME_FOR_PROP(entity, componentId, propIndex, propTextureIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9558,7 +9594,7 @@ namespace big
 
         int res = FILES::GET_SHOP_PED_APPAREL_VARIANT_COMPONENT_COUNT(componentHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9569,7 +9605,7 @@ namespace big
 
         int res = FILES::GET_SHOP_PED_APPAREL_VARIANT_PROP_COUNT(propHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9630,7 +9666,7 @@ namespace big
 
         int res = FILES::GET_SHOP_PED_APPAREL_FORCED_COMPONENT_COUNT(componentHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9641,7 +9677,7 @@ namespace big
 
         int res = FILES::GET_SHOP_PED_APPAREL_FORCED_PROP_COUNT(componentHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9704,7 +9740,7 @@ namespace big
 
         BOOL res = FILES::DOES_SHOP_PED_APPAREL_HAVE_RESTRICTION_TAG(componentHash, restrictionTagHash, componentId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -9717,7 +9753,7 @@ namespace big
 
         BOOL res = FILES::DOES_CURRENT_PED_COMPONENT_HAVE_RESTRICTION_TAG(ped, componentId, restrictionTagHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -9730,7 +9766,7 @@ namespace big
 
         BOOL res = FILES::DOES_CURRENT_PED_PROP_HAVE_RESTRICTION_TAG(ped, componentId, restrictionTagHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -9742,7 +9778,7 @@ namespace big
 
         int res = FILES::SETUP_SHOP_PED_OUTFIT_QUERY(character, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9754,7 +9790,7 @@ namespace big
 
         FILES::GET_SHOP_PED_QUERY_OUTFIT(outfitIndex, &outfit);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -9765,7 +9801,7 @@ namespace big
 
         FILES::GET_SHOP_PED_OUTFIT(p0, &p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -9775,7 +9811,7 @@ namespace big
 
         int res = FILES::GET_SHOP_PED_OUTFIT_LOCATE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9825,7 +9861,7 @@ namespace big
 
         int res = FILES::GET_NUM_DLC_VEHICLES();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9836,7 +9872,7 @@ namespace big
 
         Hash res = FILES::GET_DLC_VEHICLE_MODEL(dlcVehicleIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9866,7 +9902,7 @@ namespace big
 
         int res = FILES::GET_DLC_VEHICLE_FLAGS(dlcVehicleIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9876,7 +9912,7 @@ namespace big
 
         int res = FILES::GET_NUM_DLC_WEAPONS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9886,7 +9922,7 @@ namespace big
 
         int res = FILES::GET_NUM_DLC_WEAPONS_SP();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9935,7 +9971,7 @@ namespace big
 
         int res = FILES::GET_NUM_DLC_WEAPON_COMPONENTS(dlcWeaponIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9946,7 +9982,7 @@ namespace big
 
         int res = FILES::GET_NUM_DLC_WEAPON_COMPONENTS_SP(dlcWeaponIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -9997,7 +10033,7 @@ namespace big
 
         BOOL res = FILES::IS_CONTENT_ITEM_LOCKED(itemHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -10008,7 +10044,7 @@ namespace big
 
         BOOL res = FILES::IS_DLC_VEHICLE_MOD(hash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -10019,7 +10055,7 @@ namespace big
 
         Hash res = FILES::GET_DLC_VEHICLE_MOD_LOCK_HASH(hash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10049,7 +10085,7 @@ namespace big
 
         FireId res = FIRE::START_SCRIPT_FIRE(X, Y, Z, maxChildren, isGasFire);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10067,7 +10103,7 @@ namespace big
 
         FireId res = FIRE::START_ENTITY_FIRE(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10085,7 +10121,7 @@ namespace big
 
         BOOL res = FIRE::IS_ENTITY_ON_FIRE(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -10099,7 +10135,7 @@ namespace big
 
         int res = FIRE::GET_NUMBER_OF_FIRES_IN_RANGE(x, y, z, radius);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10203,7 +10239,7 @@ namespace big
 
         BOOL res = FIRE::IS_EXPLOSION_IN_AREA(explosionType, x1, y1, z1, x2, y2, z2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -10220,7 +10256,7 @@ namespace big
 
         BOOL res = FIRE::IS_EXPLOSION_ACTIVE_IN_AREA(explosionType, x1, y1, z1, x2, y2, z2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -10235,7 +10271,7 @@ namespace big
 
         BOOL res = FIRE::IS_EXPLOSION_IN_SPHERE(explosionType, x, y, z, radius);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -10250,7 +10286,7 @@ namespace big
 
         Entity res = FIRE::GET_OWNER_OF_EXPLOSION_IN_SPHERE(explosionType, x, y, z, radius);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10268,7 +10304,7 @@ namespace big
 
         BOOL res = FIRE::IS_EXPLOSION_IN_ANGLED_AREA(explosionType, x1, y1, z1, x2, y2, z2, width);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -10286,7 +10322,7 @@ namespace big
 
         Entity res = FIRE::GET_OWNER_OF_EXPLOSION_IN_ANGLED_AREA(explosionType, x1, y1, z1, x2, y2, z2, radius);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10442,6 +10478,74 @@ namespace big
         GRAPHICS::DRAW_POLY(x1, y1, z1, x2, y2, z2, x3, y3, z3, red, green, blue, alpha);
     }
 
+    static void WREN_GRAPHICS_DRAW_TEXTURED_POLY(WrenVM* vm)
+    {
+        float x1 = (float)wrenGetSlotDouble(vm, 1);
+        float y1 = (float)wrenGetSlotDouble(vm, 2);
+        float z1 = (float)wrenGetSlotDouble(vm, 3);
+        float x2 = (float)wrenGetSlotDouble(vm, 4);
+        float y2 = (float)wrenGetSlotDouble(vm, 5);
+        float z2 = (float)wrenGetSlotDouble(vm, 6);
+        float x3 = (float)wrenGetSlotDouble(vm, 7);
+        float y3 = (float)wrenGetSlotDouble(vm, 8);
+        float z3 = (float)wrenGetSlotDouble(vm, 9);
+        int red = (int)wrenGetSlotDouble(vm, 10);
+        int green = (int)wrenGetSlotDouble(vm, 11);
+        int blue = (int)wrenGetSlotDouble(vm, 12);
+        int alpha = (int)wrenGetSlotDouble(vm, 13);
+        const char* textureDict = wrenGetSlotString(vm, 14);
+        const char* textureName = wrenGetSlotString(vm, 15);
+        float u1 = (float)wrenGetSlotDouble(vm, 16);
+        float v1 = (float)wrenGetSlotDouble(vm, 17);
+        float w1 = (float)wrenGetSlotDouble(vm, 18);
+        float u2 = (float)wrenGetSlotDouble(vm, 19);
+        float v2 = (float)wrenGetSlotDouble(vm, 20);
+        float w2 = (float)wrenGetSlotDouble(vm, 21);
+        float u3 = (float)wrenGetSlotDouble(vm, 22);
+        float v3 = (float)wrenGetSlotDouble(vm, 23);
+        float w3 = (float)wrenGetSlotDouble(vm, 24);
+
+        GRAPHICS::DRAW_TEXTURED_POLY(x1, y1, z1, x2, y2, z2, x3, y3, z3, red, green, blue, alpha, textureDict, textureName, u1, v1, w1, u2, v2, w2, u3, v3, w3);
+    }
+
+    static void WREN_GRAPHICS_DRAW_TEXTURED_POLY_WITH_THREE_COLOURS(WrenVM* vm)
+    {
+        float x1 = (float)wrenGetSlotDouble(vm, 1);
+        float y1 = (float)wrenGetSlotDouble(vm, 2);
+        float z1 = (float)wrenGetSlotDouble(vm, 3);
+        float x2 = (float)wrenGetSlotDouble(vm, 4);
+        float y2 = (float)wrenGetSlotDouble(vm, 5);
+        float z2 = (float)wrenGetSlotDouble(vm, 6);
+        float x3 = (float)wrenGetSlotDouble(vm, 7);
+        float y3 = (float)wrenGetSlotDouble(vm, 8);
+        float z3 = (float)wrenGetSlotDouble(vm, 9);
+        float red1 = (float)wrenGetSlotDouble(vm, 10);
+        float green1 = (float)wrenGetSlotDouble(vm, 11);
+        float blue1 = (float)wrenGetSlotDouble(vm, 12);
+        int alpha1 = (int)wrenGetSlotDouble(vm, 13);
+        float red2 = (float)wrenGetSlotDouble(vm, 14);
+        float green2 = (float)wrenGetSlotDouble(vm, 15);
+        float blue2 = (float)wrenGetSlotDouble(vm, 16);
+        int alpha2 = (int)wrenGetSlotDouble(vm, 17);
+        float red3 = (float)wrenGetSlotDouble(vm, 18);
+        float green3 = (float)wrenGetSlotDouble(vm, 19);
+        float blue3 = (float)wrenGetSlotDouble(vm, 20);
+        int alpha3 = (int)wrenGetSlotDouble(vm, 21);
+        const char* textureDict = wrenGetSlotString(vm, 22);
+        const char* textureName = wrenGetSlotString(vm, 23);
+        float u1 = (float)wrenGetSlotDouble(vm, 24);
+        float v1 = (float)wrenGetSlotDouble(vm, 25);
+        float w1 = (float)wrenGetSlotDouble(vm, 26);
+        float u2 = (float)wrenGetSlotDouble(vm, 27);
+        float v2 = (float)wrenGetSlotDouble(vm, 28);
+        float w2 = (float)wrenGetSlotDouble(vm, 29);
+        float u3 = (float)wrenGetSlotDouble(vm, 30);
+        float v3 = (float)wrenGetSlotDouble(vm, 31);
+        float w3 = (float)wrenGetSlotDouble(vm, 32);
+
+        GRAPHICS::DRAW_TEXTURED_POLY_WITH_THREE_COLOURS(x1, y1, z1, x2, y2, z2, x3, y3, z3, red1, green1, blue1, alpha1, red2, green2, blue2, alpha2, red3, green3, blue3, alpha3, textureDict, textureName, u1, v1, w1, u2, v2, w2, u3, v3, w3);
+    }
+
     static void WREN_GRAPHICS_DRAW_BOX(WrenVM* vm)
     {
         float x1 = (float)wrenGetSlotDouble(vm, 1);
@@ -10477,7 +10581,7 @@ namespace big
 
         Any res = GRAPHICS::BEGIN_TAKE_MISSION_CREATOR_PHOTO();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10487,7 +10591,7 @@ namespace big
 
         Any res = GRAPHICS::GET_STATUS_OF_TAKE_MISSION_CREATOR_PHOTO();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10542,7 +10646,7 @@ namespace big
 
         Any res = GRAPHICS::BEGIN_CREATE_MISSION_CREATOR_PHOTO_PREVIEW();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10552,7 +10656,7 @@ namespace big
 
         Any res = GRAPHICS::GET_STATUS_OF_CREATE_MISSION_CREATOR_PHOTO_PREVIEW();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10568,7 +10672,7 @@ namespace big
 
         BOOL res = GRAPHICS::BEGIN_TAKE_HIGH_QUALITY_PHOTO();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -10578,7 +10682,7 @@ namespace big
 
         int res = GRAPHICS::GET_STATUS_OF_TAKE_HIGH_QUALITY_PHOTO();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10617,7 +10721,7 @@ namespace big
 
         BOOL res = GRAPHICS::SAVE_HIGH_QUALITY_PHOTO(unused);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -10627,7 +10731,7 @@ namespace big
 
         int res = GRAPHICS::GET_STATUS_OF_SAVE_HIGH_QUALITY_PHOTO();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10638,7 +10742,7 @@ namespace big
 
         BOOL res = GRAPHICS::BEGIN_CREATE_LOW_QUALITY_COPY_OF_PHOTO(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -10649,7 +10753,7 @@ namespace big
 
         int res = GRAPHICS::GET_STATUS_OF_CREATE_LOW_QUALITY_COPY_OF_PHOTO(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10673,7 +10777,7 @@ namespace big
 
         int res = GRAPHICS::GET_MAXIMUM_NUMBER_OF_PHOTOS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10683,7 +10787,7 @@ namespace big
 
         int res = GRAPHICS::GET_MAXIMUM_NUMBER_OF_CLOUD_PHOTOS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10693,7 +10797,7 @@ namespace big
 
         int res = GRAPHICS::GET_CURRENT_NUMBER_OF_CLOUD_PHOTOS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10704,7 +10808,7 @@ namespace big
 
         Any res = GRAPHICS::QUEUE_OPERATION_TO_CREATE_SORTED_LIST_OF_PHOTOS(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10715,7 +10819,7 @@ namespace big
 
         Any res = GRAPHICS::GET_STATUS_OF_SORTED_LIST_OPERATION(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10732,7 +10836,7 @@ namespace big
 
         Any res = GRAPHICS::DOES_THIS_PHOTO_SLOT_CONTAIN_A_VALID_PHOTO(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10743,7 +10847,7 @@ namespace big
 
         Any res = GRAPHICS::LOAD_HIGH_QUALITY_PHOTO(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10754,7 +10858,7 @@ namespace big
 
         int res = GRAPHICS::GET_LOAD_HIGH_QUALITY_PHOTO_STATUS(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -10855,9 +10959,71 @@ namespace big
 
         Any res = GRAPHICS::GET_LIGHT_OVERRIDE_MAX_INTENSITY_SCALE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
+    }
+
+    static void WREN_GRAPHICS_DRAW_MARKER(WrenVM* vm)
+    {
+        int type = (int)wrenGetSlotDouble(vm, 1);
+        float posX = (float)wrenGetSlotDouble(vm, 2);
+        float posY = (float)wrenGetSlotDouble(vm, 3);
+        float posZ = (float)wrenGetSlotDouble(vm, 4);
+        float dirX = (float)wrenGetSlotDouble(vm, 5);
+        float dirY = (float)wrenGetSlotDouble(vm, 6);
+        float dirZ = (float)wrenGetSlotDouble(vm, 7);
+        float rotX = (float)wrenGetSlotDouble(vm, 8);
+        float rotY = (float)wrenGetSlotDouble(vm, 9);
+        float rotZ = (float)wrenGetSlotDouble(vm, 10);
+        float scaleX = (float)wrenGetSlotDouble(vm, 11);
+        float scaleY = (float)wrenGetSlotDouble(vm, 12);
+        float scaleZ = (float)wrenGetSlotDouble(vm, 13);
+        int red = (int)wrenGetSlotDouble(vm, 14);
+        int green = (int)wrenGetSlotDouble(vm, 15);
+        int blue = (int)wrenGetSlotDouble(vm, 16);
+        int alpha = (int)wrenGetSlotDouble(vm, 17);
+        BOOL bobUpAndDown = (BOOL)wrenGetSlotBool(vm, 18);
+        BOOL faceCamera = (BOOL)wrenGetSlotBool(vm, 19);
+        int p19 = (int)wrenGetSlotDouble(vm, 20);
+        BOOL rotate = (BOOL)wrenGetSlotBool(vm, 21);
+        const char* textureDict = wrenGetSlotString(vm, 22);
+        const char* textureName = wrenGetSlotString(vm, 23);
+        BOOL drawOnEnts = (BOOL)wrenGetSlotBool(vm, 24);
+
+        GRAPHICS::DRAW_MARKER(type, posX, posY, posZ, dirX, dirY, dirZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, red, green, blue, alpha, bobUpAndDown, faceCamera, p19, rotate, textureDict, textureName, drawOnEnts);
+    }
+
+    static void WREN_GRAPHICS_DRAW_MARKER_EX(WrenVM* vm)
+    {
+        int type = (int)wrenGetSlotDouble(vm, 1);
+        float posX = (float)wrenGetSlotDouble(vm, 2);
+        float posY = (float)wrenGetSlotDouble(vm, 3);
+        float posZ = (float)wrenGetSlotDouble(vm, 4);
+        float dirX = (float)wrenGetSlotDouble(vm, 5);
+        float dirY = (float)wrenGetSlotDouble(vm, 6);
+        float dirZ = (float)wrenGetSlotDouble(vm, 7);
+        float rotX = (float)wrenGetSlotDouble(vm, 8);
+        float rotY = (float)wrenGetSlotDouble(vm, 9);
+        float rotZ = (float)wrenGetSlotDouble(vm, 10);
+        float scaleX = (float)wrenGetSlotDouble(vm, 11);
+        float scaleY = (float)wrenGetSlotDouble(vm, 12);
+        float scaleZ = (float)wrenGetSlotDouble(vm, 13);
+        int red = (int)wrenGetSlotDouble(vm, 14);
+        int green = (int)wrenGetSlotDouble(vm, 15);
+        int blue = (int)wrenGetSlotDouble(vm, 16);
+        int alpha = (int)wrenGetSlotDouble(vm, 17);
+        BOOL bobUpAndDown = (BOOL)wrenGetSlotBool(vm, 18);
+        BOOL faceCamera = (BOOL)wrenGetSlotBool(vm, 19);
+        Any p19 = (Any)wrenGetSlotDouble(vm, 20);
+        BOOL rotate = (BOOL)wrenGetSlotBool(vm, 21);
+        const char* textureDict = wrenGetSlotString(vm, 22);
+        const char* textureName = wrenGetSlotString(vm, 23);
+        BOOL drawOnEnts = (BOOL)wrenGetSlotBool(vm, 24);
+        BOOL p24 = (BOOL)wrenGetSlotBool(vm, 25);
+        BOOL p25 = (BOOL)wrenGetSlotBool(vm, 26);
+
+        GRAPHICS::DRAW_MARKER_EX(type, posX, posY, posZ, dirX, dirY, dirZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, red, green, blue, alpha, bobUpAndDown, faceCamera, p19, rotate, textureDict, textureName, drawOnEnts, p24, p25);
     }
 
     static void WREN_GRAPHICS_DRAW_MARKER_SPHERE(WrenVM* vm)
@@ -10892,7 +11058,7 @@ namespace big
 
         int res = GRAPHICS::CREATE_CHECKPOINT(type, posX1, posY1, posZ1, posX2, posY2, posZ2, diameter, red, green, blue, alpha, reserved);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -11024,7 +11190,7 @@ namespace big
 
         BOOL res = GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED(textureDict);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -11115,7 +11281,7 @@ namespace big
 
         float res = GRAPHICS::GET_SAFE_ZONE_SIZE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -11205,7 +11371,7 @@ namespace big
 
         Any res = GRAPHICS::ADD_ENTITY_ICON(entity, icon);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -11251,7 +11417,7 @@ namespace big
 
         int res = GRAPHICS::SET_BINK_MOVIE(name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -11307,7 +11473,7 @@ namespace big
 
         float res = GRAPHICS::GET_BINK_MOVIE_TIME(binkMovie);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -11356,7 +11522,7 @@ namespace big
 
         int res = GRAPHICS::LOAD_MOVIE_MESH_SET(movieMeshSetName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -11374,7 +11540,7 @@ namespace big
 
         Any res = GRAPHICS::QUERY_MOVIE_MESH_SET_STATE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -11423,7 +11589,7 @@ namespace big
 
         float res = GRAPHICS::GET_ASPECT_RATIO(b);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -11433,7 +11599,7 @@ namespace big
 
         Any res = GRAPHICS::GET_SCREEN_ASPECT_RATIO();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -11443,7 +11609,7 @@ namespace big
 
         BOOL res = GRAPHICS::GET_IS_WIDESCREEN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -11453,7 +11619,7 @@ namespace big
 
         BOOL res = GRAPHICS::GET_IS_HIDEF();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -11476,7 +11642,7 @@ namespace big
 
         BOOL res = GRAPHICS::GET_REQUESTINGNIGHTVISION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -11486,7 +11652,7 @@ namespace big
 
         BOOL res = GRAPHICS::GET_USINGNIGHTVISION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -11558,10 +11724,10 @@ namespace big
 
         Vector3 res = GRAPHICS::GET_TEXTURE_RESOLUTION(textureDict, textureName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -11575,7 +11741,7 @@ namespace big
 
         BOOL res = GRAPHICS::OVERRIDE_PED_CREW_LOGO_TEXTURE(ped, txd, txn);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -11629,7 +11795,7 @@ namespace big
 
         int res = GRAPHICS::CREATE_TRACKED_POINT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -11651,7 +11817,7 @@ namespace big
 
         BOOL res = GRAPHICS::IS_TRACKED_POINT_VISIBLE(point);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -11672,7 +11838,7 @@ namespace big
 
         Any res = GRAPHICS::SET_GRASS_CULL_SPHERE(p0, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -11708,7 +11874,7 @@ namespace big
 
         Any res = GRAPHICS::PROCGRASS_IS_CULLSPHERE_ENABLED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -11982,7 +12148,7 @@ namespace big
 
         float res = GRAPHICS::GOLF_TRAIL_GET_MAX_HEIGHT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -11993,10 +12159,10 @@ namespace big
 
         Vector3 res = GRAPHICS::GOLF_TRAIL_GET_VISUAL_CONTROL_POINT(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -12014,7 +12180,7 @@ namespace big
 
         BOOL res = GRAPHICS::GET_USINGSEETHROUGH();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -12044,7 +12210,7 @@ namespace big
 
         float res = GRAPHICS::SEETHROUGH_GET_MAX_THICKNESS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -12113,7 +12279,7 @@ namespace big
 
         float res = GRAPHICS::GET_MOTIONBLUR_MAX_VEL_SCALER();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -12145,7 +12311,7 @@ namespace big
 
         BOOL res = GRAPHICS::TRIGGER_SCREENBLUR_FADE_IN(transitionTime);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -12156,7 +12322,7 @@ namespace big
 
         BOOL res = GRAPHICS::TRIGGER_SCREENBLUR_FADE_OUT(transitionTime);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -12172,7 +12338,7 @@ namespace big
 
         float res = GRAPHICS::GET_SCREENBLUR_FADE_CURRENT_TIME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -12182,7 +12348,7 @@ namespace big
 
         BOOL res = GRAPHICS::IS_SCREENBLUR_FADE_RUNNING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -12199,7 +12365,7 @@ namespace big
 
         BOOL res = GRAPHICS::GET_TOGGLE_PAUSED_RENDERPHASES_STATUS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -12241,7 +12407,7 @@ namespace big
 
         BOOL res = GRAPHICS::PHONEPHOTOEDITOR_TOGGLE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -12251,7 +12417,7 @@ namespace big
 
         Any res = GRAPHICS::PHONEPHOTOEDITOR_IS_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -12263,7 +12429,7 @@ namespace big
 
         BOOL res = GRAPHICS::PHONEPHOTOEDITOR_SET_FRAME_TXD(textureDict, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -12284,7 +12450,7 @@ namespace big
 
         int res = GRAPHICS::START_PARTICLE_FX_NON_LOOPED_AT_COORD(effectName, xPos, yPos, zPos, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -12306,7 +12472,7 @@ namespace big
 
         BOOL res = GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(effectName, xPos, yPos, zPos, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis, p11);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -12329,7 +12495,7 @@ namespace big
 
         BOOL res = GRAPHICS::START_PARTICLE_FX_NON_LOOPED_ON_PED_BONE(effectName, ped, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, boneIndex, scale, axisX, axisY, axisZ);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -12352,7 +12518,7 @@ namespace big
 
         BOOL res = GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_PED_BONE(effectName, ped, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, boneIndex, scale, axisX, axisY, axisZ);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -12374,7 +12540,7 @@ namespace big
 
         BOOL res = GRAPHICS::START_PARTICLE_FX_NON_LOOPED_ON_ENTITY(effectName, entity, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, scale, axisX, axisY, axisZ);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -12396,7 +12562,7 @@ namespace big
 
         BOOL res = GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_ENTITY(effectName, entity, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, scale, axisX, axisY, axisZ);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -12419,7 +12585,7 @@ namespace big
 
         BOOL res = GRAPHICS::START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE(effectName, entity, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, boneIndex, scale, axisX, axisY, axisZ);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -12473,7 +12639,7 @@ namespace big
 
         int res = GRAPHICS::START_PARTICLE_FX_LOOPED_AT_COORD(effectName, x, y, z, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis, p11);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -12496,7 +12662,7 @@ namespace big
 
         int res = GRAPHICS::START_PARTICLE_FX_LOOPED_ON_PED_BONE(effectName, ped, xOffset, yOffset, zOffset, xRot, yRot, zRot, boneIndex, scale, xAxis, yAxis, zAxis);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -12518,7 +12684,7 @@ namespace big
 
         int res = GRAPHICS::START_PARTICLE_FX_LOOPED_ON_ENTITY(effectName, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -12541,7 +12707,7 @@ namespace big
 
         int res = GRAPHICS::START_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(effectName, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, boneIndex, scale, xAxis, yAxis, zAxis);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -12567,7 +12733,34 @@ namespace big
 
         int res = GRAPHICS::START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY(effectName, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis, p12, p13, p14, p15);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
+
+        wrenSetSlotDouble(vm, 0, res);
+    }
+
+    static void WREN_GRAPHICS_START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(WrenVM* vm)
+    {
+        const char* effectName = wrenGetSlotString(vm, 1);
+        Entity entity = (Entity)wrenGetSlotDouble(vm, 2);
+        float xOffset = (float)wrenGetSlotDouble(vm, 3);
+        float yOffset = (float)wrenGetSlotDouble(vm, 4);
+        float zOffset = (float)wrenGetSlotDouble(vm, 5);
+        float xRot = (float)wrenGetSlotDouble(vm, 6);
+        float yRot = (float)wrenGetSlotDouble(vm, 7);
+        float zRot = (float)wrenGetSlotDouble(vm, 8);
+        int boneIndex = (int)wrenGetSlotDouble(vm, 9);
+        float scale = (float)wrenGetSlotDouble(vm, 10);
+        BOOL xAxis = (BOOL)wrenGetSlotBool(vm, 11);
+        BOOL yAxis = (BOOL)wrenGetSlotBool(vm, 12);
+        BOOL zAxis = (BOOL)wrenGetSlotBool(vm, 13);
+        Any p13 = (Any)wrenGetSlotDouble(vm, 14);
+        Any p14 = (Any)wrenGetSlotDouble(vm, 15);
+        Any p15 = (Any)wrenGetSlotDouble(vm, 16);
+        Any p16 = (Any)wrenGetSlotDouble(vm, 17);
+
+        int res = GRAPHICS::START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(effectName, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, boneIndex, scale, xAxis, yAxis, zAxis, p13, p14, p15, p16);
+
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -12619,7 +12812,7 @@ namespace big
 
         BOOL res = GRAPHICS::DOES_PARTICLE_FX_LOOPED_EXIST(ptfxHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -12915,6 +13108,36 @@ namespace big
         GRAPHICS::REMOVE_DECALS_FROM_VEHICLE(vehicle);
     }
 
+    static void WREN_GRAPHICS_ADD_DECAL(WrenVM* vm)
+    {
+        int decalType = (int)wrenGetSlotDouble(vm, 1);
+        float posX = (float)wrenGetSlotDouble(vm, 2);
+        float posY = (float)wrenGetSlotDouble(vm, 3);
+        float posZ = (float)wrenGetSlotDouble(vm, 4);
+        float p4 = (float)wrenGetSlotDouble(vm, 5);
+        float p5 = (float)wrenGetSlotDouble(vm, 6);
+        float p6 = (float)wrenGetSlotDouble(vm, 7);
+        float p7 = (float)wrenGetSlotDouble(vm, 8);
+        float p8 = (float)wrenGetSlotDouble(vm, 9);
+        float p9 = (float)wrenGetSlotDouble(vm, 10);
+        float width = (float)wrenGetSlotDouble(vm, 11);
+        float height = (float)wrenGetSlotDouble(vm, 12);
+        float rCoef = (float)wrenGetSlotDouble(vm, 13);
+        float gCoef = (float)wrenGetSlotDouble(vm, 14);
+        float bCoef = (float)wrenGetSlotDouble(vm, 15);
+        float opacity = (float)wrenGetSlotDouble(vm, 16);
+        float timeout = (float)wrenGetSlotDouble(vm, 17);
+        BOOL p17 = (BOOL)wrenGetSlotBool(vm, 18);
+        BOOL p18 = (BOOL)wrenGetSlotBool(vm, 19);
+        BOOL p19 = (BOOL)wrenGetSlotBool(vm, 20);
+
+        int res = GRAPHICS::ADD_DECAL(decalType, posX, posY, posZ, p4, p5, p6, p7, p8, p9, width, height, rCoef, gCoef, bCoef, opacity, timeout, p17, p18, p19);
+
+        wrenEnsureSlots(vm, 1);
+
+        wrenSetSlotDouble(vm, 0, res);
+    }
+
     static void WREN_GRAPHICS_ADD_PETROL_DECAL(WrenVM* vm)
     {
         float x = (float)wrenGetSlotDouble(vm, 1);
@@ -12926,7 +13149,7 @@ namespace big
 
         int res = GRAPHICS::ADD_PETROL_DECAL(x, y, z, groundLvl, width, transparency);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -12942,7 +13165,7 @@ namespace big
 
         int res = GRAPHICS::ADD_OIL_DECAL(x, y, z, groundLvl, width, transparency);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -12983,7 +13206,7 @@ namespace big
 
         BOOL res = GRAPHICS::IS_DECAL_ALIVE(decal);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -12994,7 +13217,7 @@ namespace big
 
         float res = GRAPHICS::GET_DECAL_WASH_LEVEL(decal);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -13026,7 +13249,7 @@ namespace big
 
         BOOL res = GRAPHICS::GET_IS_PETROL_DECAL_IN_RANGE(xCoord, yCoord, zCoord, radius);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13075,7 +13298,7 @@ namespace big
 
         BOOL res = GRAPHICS::ADD_VEHICLE_CREW_EMBLEM(vehicle, ped, boneIndex, x1, x2, x3, y1, y2, y3, z1, z2, z3, scale, p13, alpha);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13086,7 +13309,7 @@ namespace big
 
         Any res = GRAPHICS::ABORT_VEHICLE_CREW_EMBLEM_REQUEST(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -13106,7 +13329,7 @@ namespace big
 
         int res = GRAPHICS::GET_VEHICLE_CREW_EMBLEM_REQUEST_STATE(vehicle, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -13118,7 +13341,7 @@ namespace big
 
         BOOL res = GRAPHICS::DOES_VEHICLE_HAVE_CREW_EMBLEM(vehicle, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13258,7 +13481,7 @@ namespace big
 
         int res = GRAPHICS::GET_TIMECYCLE_MODIFIER_INDEX();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -13268,7 +13491,7 @@ namespace big
 
         int res = GRAPHICS::GET_TIMECYCLE_TRANSITION_MODIFIER_INDEX();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -13278,7 +13501,7 @@ namespace big
 
         Any res = GRAPHICS::GET_IS_TIMECYCLE_TRANSITIONING_OUT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -13349,7 +13572,7 @@ namespace big
 
         int res = GRAPHICS::GET_EXTRA_TCMODIFIER();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -13373,7 +13596,7 @@ namespace big
 
         int res = GRAPHICS::REQUEST_SCALEFORM_MOVIE(scaleformName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -13384,7 +13607,7 @@ namespace big
 
         int res = GRAPHICS::REQUEST_SCALEFORM_MOVIE_WITH_IGNORE_SUPER_WIDESCREEN(scaleformName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -13395,7 +13618,7 @@ namespace big
 
         int res = GRAPHICS::REQUEST_SCALEFORM_MOVIE_INSTANCE(scaleformName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -13406,7 +13629,7 @@ namespace big
 
         int res = GRAPHICS::REQUEST_SCALEFORM_MOVIE_SKIP_RENDER_WHILE_PAUSED(scaleformName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -13417,7 +13640,7 @@ namespace big
 
         BOOL res = GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(scaleformHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13428,7 +13651,7 @@ namespace big
 
         BOOL res = GRAPHICS::IS_ACTIVE_SCALEFORM_MOVIE_DELETING(val);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13439,7 +13662,7 @@ namespace big
 
         BOOL res = GRAPHICS::IS_SCALEFORM_MOVIE_DELETING(val);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13450,7 +13673,7 @@ namespace big
 
         BOOL res = GRAPHICS::HAS_SCALEFORM_MOVIE_FILENAME_LOADED(scaleformName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13461,7 +13684,7 @@ namespace big
 
         BOOL res = GRAPHICS::HAS_SCALEFORM_CONTAINER_MOVIE_LOADED_INTO_PARENT(scaleformHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13472,7 +13695,7 @@ namespace big
 
         GRAPHICS::SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(&scaleformHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -13639,7 +13862,7 @@ namespace big
 
         BOOL res = GRAPHICS::BEGIN_SCALEFORM_SCRIPT_HUD_MOVIE_METHOD(hudComponent, methodName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13651,7 +13874,7 @@ namespace big
 
         BOOL res = GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, methodName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13662,7 +13885,7 @@ namespace big
 
         BOOL res = GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD_ON_FRONTEND(methodName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13673,7 +13896,7 @@ namespace big
 
         BOOL res = GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD_ON_FRONTEND_HEADER(methodName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13689,7 +13912,7 @@ namespace big
 
         Any res = GRAPHICS::END_SCALEFORM_MOVIE_METHOD_RETURN_VALUE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -13700,7 +13923,7 @@ namespace big
 
         BOOL res = GRAPHICS::IS_SCALEFORM_MOVIE_METHOD_RETURN_VALUE_READY(methodReturn);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13711,7 +13934,7 @@ namespace big
 
         int res = GRAPHICS::GET_SCALEFORM_MOVIE_METHOD_RETURN_VALUE_INT(methodReturn);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -13722,7 +13945,7 @@ namespace big
 
         BOOL res = GRAPHICS::GET_SCALEFORM_MOVIE_METHOD_RETURN_VALUE_BOOL(methodReturn);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13733,7 +13956,7 @@ namespace big
 
         const char* res = GRAPHICS::GET_SCALEFORM_MOVIE_METHOD_RETURN_VALUE_STRING(methodReturn);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -13805,7 +14028,7 @@ namespace big
 
         BOOL res = GRAPHICS::DOES_LATEST_BRIEF_STRING_EXIST(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13830,7 +14053,7 @@ namespace big
 
         BOOL res = GRAPHICS::HAS_SCALEFORM_SCRIPT_HUD_MOVIE_LOADED(hudComponent);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13848,7 +14071,7 @@ namespace big
 
         BOOL res = GRAPHICS::PASS_KEYBOARD_INPUT_TO_SCALEFORM(scaleformHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13865,7 +14088,7 @@ namespace big
 
         int res = GRAPHICS::GET_TV_CHANNEL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -13882,7 +14105,7 @@ namespace big
 
         float res = GRAPHICS::GET_TV_VOLUME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -13934,7 +14157,7 @@ namespace big
 
         BOOL res = GRAPHICS::IS_PLAYLIST_ON_CHANNEL(tvChannel, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13945,7 +14168,7 @@ namespace big
 
         BOOL res = GRAPHICS::IS_TVSHOW_CURRENTLY_PLAYING(videoCliphash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13969,7 +14192,7 @@ namespace big
 
         Hash res = GRAPHICS::GET_CURRENT_TV_CLIP_NAMEHASH();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -13986,7 +14209,7 @@ namespace big
 
         BOOL res = GRAPHICS::UI3DSCENE_IS_AVAILABLE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -13997,7 +14220,7 @@ namespace big
 
         BOOL res = GRAPHICS::UI3DSCENE_PUSH_PRESET(presetName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -14013,7 +14236,7 @@ namespace big
 
         BOOL res = GRAPHICS::UI3DSCENE_ASSIGN_PED_TO_SLOT(presetName, ped, p2, posX, posY, posZ);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -14097,7 +14320,7 @@ namespace big
 
         float res = GRAPHICS::ANIMPOSTFX_GET_CURRENT_TIME(effectName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14108,7 +14331,7 @@ namespace big
 
         BOOL res = GRAPHICS::ANIMPOSTFX_IS_RUNNING(effectName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -14158,7 +14381,7 @@ namespace big
 
         BOOL res = HUD::BUSYSPINNER_IS_ON();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -14168,7 +14391,7 @@ namespace big
 
         BOOL res = HUD::BUSYSPINNER_IS_DISPLAYING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -14205,7 +14428,7 @@ namespace big
 
         BOOL res = HUD::IS_MOUSE_ROLLED_OVER_INSTRUCTIONAL_BUTTONS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -14311,7 +14534,7 @@ namespace big
 
         BOOL res = HUD::THEFEED_IS_PAUSED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -14333,7 +14556,7 @@ namespace big
 
         int res = HUD::THEFEED_GET_LAST_SHOWN_PHONE_ACTIVATABLE_FEED_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14435,7 +14658,7 @@ namespace big
 
         int res = HUD::END_TEXT_COMMAND_THEFEED_POST_STATS(statTitle, iconEnum, stepVal, barValue, isImportant, pictureTextureDict, pictureTextureName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14451,7 +14674,7 @@ namespace big
 
         int res = HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT(txdName, textureName, flash, iconType, sender, subject);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14467,7 +14690,7 @@ namespace big
 
         int res = HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_SUBTITLE_LABEL(txdName, textureName, flash, iconType, sender, subject);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14484,7 +14707,7 @@ namespace big
 
         int res = HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_TU(txdName, textureName, flash, iconType, sender, subject, duration);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14502,7 +14725,27 @@ namespace big
 
         int res = HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG(txdName, textureName, flash, iconType, sender, subject, duration, clanTag);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
+
+        wrenSetSlotDouble(vm, 0, res);
+    }
+
+    static void WREN_HUD_END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG_AND_ADDITIONAL_ICON(WrenVM* vm)
+    {
+        const char* txdName = wrenGetSlotString(vm, 1);
+        const char* textureName = wrenGetSlotString(vm, 2);
+        BOOL flash = (BOOL)wrenGetSlotBool(vm, 3);
+        int iconType1 = (int)wrenGetSlotDouble(vm, 4);
+        const char* sender = wrenGetSlotString(vm, 5);
+        const char* subject = wrenGetSlotString(vm, 6);
+        float duration = (float)wrenGetSlotDouble(vm, 7);
+        const char* clanTag = wrenGetSlotString(vm, 8);
+        int iconType2 = (int)wrenGetSlotDouble(vm, 9);
+        int p9 = (int)wrenGetSlotDouble(vm, 10);
+
+        int res = HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG_AND_ADDITIONAL_ICON(txdName, textureName, flash, iconType1, sender, subject, duration, clanTag, iconType2, p9);
+
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14514,7 +14757,7 @@ namespace big
 
         int res = HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER(blink, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14526,7 +14769,7 @@ namespace big
 
         int res = HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER_FORCED(blink, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14538,7 +14781,7 @@ namespace big
 
         int res = HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER_WITH_TOKENS(blink, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14553,7 +14796,7 @@ namespace big
 
         int res = HUD::END_TEXT_COMMAND_THEFEED_POST_AWARD(textureDict, textureName, rpBonus, colorOverlay, titleLabel);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14621,7 +14864,7 @@ namespace big
 
         Any res = HUD::END_TEXT_COMMAND_THEFEED_POST_UNLOCK(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14635,7 +14878,7 @@ namespace big
 
         Any res = HUD::END_TEXT_COMMAND_THEFEED_POST_UNLOCK_TU(p0, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14651,7 +14894,7 @@ namespace big
 
         Any res = HUD::END_TEXT_COMMAND_THEFEED_POST_UNLOCK_TU_WITH_COLOR(p0, p1, p2, p3, p4, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14663,7 +14906,7 @@ namespace big
 
         int res = HUD::END_TEXT_COMMAND_THEFEED_POST_MPTICKER(blink, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14678,7 +14921,7 @@ namespace big
 
         int res = HUD::END_TEXT_COMMAND_THEFEED_POST_CREW_RANKUP_WITH_LITERAL_FLAG(p0, p1, p2, p3, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14696,7 +14939,7 @@ namespace big
 
         int res = HUD::END_TEXT_COMMAND_THEFEED_POST_VERSUS_TU(txdName1, textureName1, count1, txdName2, textureName2, count2, hudColor1, hudColor2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14709,7 +14952,7 @@ namespace big
 
         int res = HUD::END_TEXT_COMMAND_THEFEED_POST_REPLAY(type, image, text);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14722,7 +14965,7 @@ namespace big
 
         int res = HUD::END_TEXT_COMMAND_THEFEED_POST_REPLAY_INPUT(type, button, text);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14754,7 +14997,7 @@ namespace big
 
         BOOL res = HUD::END_TEXT_COMMAND_IS_MESSAGE_DISPLAYED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -14788,7 +15031,7 @@ namespace big
 
         float res = HUD::END_TEXT_COMMAND_GET_SCREEN_WIDTH_OF_DISPLAY_TEXT(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14807,7 +15050,7 @@ namespace big
 
         int res = HUD::END_TEXT_COMMAND_GET_NUMBER_OF_LINES_FOR_STRING(x, y);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -14842,7 +15085,7 @@ namespace big
 
         BOOL res = HUD::END_TEXT_COMMAND_IS_THIS_HELP_MESSAGE_BEING_DISPLAYED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -14998,7 +15241,7 @@ namespace big
 
         const char* res = HUD::GET_CHARACTER_FROM_AUDIO_CONVERSATION_FILENAME(text, position, length);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -15012,7 +15255,7 @@ namespace big
 
         const char* res = HUD::GET_CHARACTER_FROM_AUDIO_CONVERSATION_FILENAME_WITH_BYTE_LIMIT(text, position, length, maxLength);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -15025,7 +15268,7 @@ namespace big
 
         const char* res = HUD::GET_CHARACTER_FROM_AUDIO_CONVERSATION_FILENAME_BYTES(text, startPosition, endPosition);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -15036,7 +15279,7 @@ namespace big
 
         const char* res = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(labelName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -15078,7 +15321,7 @@ namespace big
 
         BOOL res = HUD::DOES_TEXT_BLOCK_EXIST(gxt);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15105,7 +15348,7 @@ namespace big
 
         BOOL res = HUD::HAS_ADDITIONAL_TEXT_LOADED(slot);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15124,7 +15367,7 @@ namespace big
 
         BOOL res = HUD::IS_STREAMING_ADDITIONAL_TEXT(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15136,7 +15379,7 @@ namespace big
 
         BOOL res = HUD::HAS_THIS_ADDITIONAL_TEXT_LOADED(gxt, slot);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15146,7 +15389,7 @@ namespace big
 
         BOOL res = HUD::IS_MESSAGE_BEING_DISPLAYED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15157,7 +15400,7 @@ namespace big
 
         BOOL res = HUD::DOES_TEXT_LABEL_EXIST(gxt);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15169,7 +15412,7 @@ namespace big
 
         const char* res = HUD::GET_FIRST_N_CHARACTERS_OF_LITERAL_STRING(string, length);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -15180,7 +15423,7 @@ namespace big
 
         int res = HUD::GET_LENGTH_OF_STRING_WITH_THIS_TEXT_LABEL(gxt);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15191,7 +15434,7 @@ namespace big
 
         int res = HUD::GET_LENGTH_OF_LITERAL_STRING(string);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15202,7 +15445,7 @@ namespace big
 
         int res = HUD::GET_LENGTH_OF_LITERAL_STRING_IN_BYTES(string);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15213,7 +15456,7 @@ namespace big
 
         const char* res = HUD::GET_STREET_NAME_FROM_HASH_KEY(hash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -15223,7 +15466,7 @@ namespace big
 
         BOOL res = HUD::IS_HUD_PREFERENCE_SWITCHED_ON();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15233,7 +15476,7 @@ namespace big
 
         BOOL res = HUD::IS_RADAR_PREFERENCE_SWITCHED_ON();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15243,7 +15486,7 @@ namespace big
 
         BOOL res = HUD::IS_SUBTITLE_PREFERENCE_SWITCHED_ON();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15286,7 +15529,7 @@ namespace big
 
         BOOL res = HUD::GET_FAKE_SPECTATOR_MODE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15296,7 +15539,7 @@ namespace big
 
         BOOL res = HUD::IS_HUD_HIDDEN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15306,7 +15549,7 @@ namespace big
 
         BOOL res = HUD::IS_RADAR_HIDDEN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15316,7 +15559,7 @@ namespace big
 
         BOOL res = HUD::IS_MINIMAP_RENDERING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15557,7 +15800,7 @@ namespace big
 
         float res = HUD::GET_RENDERED_CHARACTER_HEIGHT(size, font);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15676,7 +15919,7 @@ namespace big
 
         int res = HUD::GET_DEFAULT_SCRIPT_RENDERTARGET_RENDER_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15688,7 +15931,7 @@ namespace big
 
         BOOL res = HUD::REGISTER_NAMED_RENDERTARGET(name, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15699,7 +15942,7 @@ namespace big
 
         BOOL res = HUD::IS_NAMED_RENDERTARGET_REGISTERED(name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15710,7 +15953,7 @@ namespace big
 
         BOOL res = HUD::RELEASE_NAMED_RENDERTARGET(name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15728,7 +15971,7 @@ namespace big
 
         int res = HUD::GET_NAMED_RENDERTARGET_RENDER_ID(name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15739,7 +15982,7 @@ namespace big
 
         BOOL res = HUD::IS_NAMED_RENDERTARGET_LINKED(modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15756,7 +15999,7 @@ namespace big
 
         BOOL res = HUD::IS_HELP_MESSAGE_ON_SCREEN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15766,7 +16009,7 @@ namespace big
 
         BOOL res = HUD::HAS_SCRIPT_HIDDEN_HELP_THIS_FRAME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15776,7 +16019,7 @@ namespace big
 
         BOOL res = HUD::IS_HELP_MESSAGE_BEING_DISPLAYED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15786,7 +16029,7 @@ namespace big
 
         BOOL res = HUD::IS_HELP_MESSAGE_FADING_OUT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -15807,7 +16050,7 @@ namespace big
 
         int res = HUD::GET_STANDARD_BLIP_ENUM_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15817,7 +16060,7 @@ namespace big
 
         int res = HUD::GET_WAYPOINT_BLIP_ENUM_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15827,7 +16070,7 @@ namespace big
 
         int res = HUD::GET_NUMBER_OF_ACTIVE_BLIPS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15838,7 +16081,7 @@ namespace big
 
         Blip res = HUD::GET_NEXT_BLIP_INFO_ID(blipSprite);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15849,7 +16092,7 @@ namespace big
 
         Blip res = HUD::GET_FIRST_BLIP_INFO_ID(blipSprite);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15860,7 +16103,7 @@ namespace big
 
         Blip res = HUD::GET_CLOSEST_BLIP_INFO_ID(blipSprite);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15871,10 +16114,10 @@ namespace big
 
         Vector3 res = HUD::GET_BLIP_INFO_ID_COORD(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -15886,7 +16129,7 @@ namespace big
 
         int res = HUD::GET_BLIP_INFO_ID_DISPLAY(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15897,7 +16140,7 @@ namespace big
 
         int res = HUD::GET_BLIP_INFO_ID_TYPE(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15908,7 +16151,7 @@ namespace big
 
         Entity res = HUD::GET_BLIP_INFO_ID_ENTITY_INDEX(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15919,7 +16162,7 @@ namespace big
 
         Pickup res = HUD::GET_BLIP_INFO_ID_PICKUP_INDEX(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15930,7 +16173,7 @@ namespace big
 
         Blip res = HUD::GET_BLIP_FROM_ENTITY(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15944,7 +16187,7 @@ namespace big
 
         Blip res = HUD::ADD_BLIP_FOR_RADIUS(posX, posY, posZ, radius);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15959,7 +16202,7 @@ namespace big
 
         Blip res = HUD::ADD_BLIP_FOR_AREA(x, y, z, width, height);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15970,7 +16213,7 @@ namespace big
 
         Blip res = HUD::ADD_BLIP_FOR_ENTITY(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15981,7 +16224,7 @@ namespace big
 
         Blip res = HUD::ADD_BLIP_FOR_PICKUP(pickup);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -15994,7 +16237,7 @@ namespace big
 
         Blip res = HUD::ADD_BLIP_FOR_COORD(x, y, z);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -16033,10 +16276,10 @@ namespace big
 
         Vector3 res = HUD::GET_BLIP_COORDS(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -16056,7 +16299,7 @@ namespace big
 
         int res = HUD::GET_BLIP_SPRITE(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -16105,7 +16348,7 @@ namespace big
 
         int res = HUD::GET_BLIP_ALPHA(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -16125,7 +16368,7 @@ namespace big
 
         int res = HUD::GET_BLIP_FADE_DIRECTION(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -16152,7 +16395,7 @@ namespace big
 
         int res = HUD::GET_BLIP_ROTATION(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -16197,7 +16440,7 @@ namespace big
 
         int res = HUD::GET_BLIP_COLOUR(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -16208,7 +16451,7 @@ namespace big
 
         int res = HUD::GET_BLIP_HUD_COLOUR(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -16219,7 +16462,7 @@ namespace big
 
         BOOL res = HUD::IS_BLIP_SHORT_RANGE(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -16230,7 +16473,7 @@ namespace big
 
         BOOL res = HUD::IS_BLIP_ON_MINIMAP(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -16241,7 +16484,7 @@ namespace big
 
         BOOL res = HUD::DOES_BLIP_HAVE_GPS_ROUTE(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -16276,7 +16519,7 @@ namespace big
 
         BOOL res = HUD::IS_MISSION_CREATOR_BLIP(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -16286,7 +16529,7 @@ namespace big
 
         Blip res = HUD::GET_NEW_SELECTED_MISSION_CREATOR_BLIP();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -16296,7 +16539,7 @@ namespace big
 
         BOOL res = HUD::IS_HOVERING_OVER_MISSION_CREATOR_BLIP();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -16351,7 +16594,7 @@ namespace big
 
         BOOL res = HUD::IS_BLIP_FLASHING(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -16411,7 +16654,7 @@ namespace big
 
         HUD::REMOVE_BLIP(&blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -16547,7 +16790,7 @@ namespace big
 
         BOOL res = HUD::DOES_BLIP_EXIST(blip);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -16575,7 +16818,7 @@ namespace big
 
         BOOL res = HUD::IS_WAYPOINT_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -16648,7 +16891,7 @@ namespace big
 
         Any res = HUD::SET_MINIMAP_COMPONENT(componentId, toggle, overrideColor);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -16671,7 +16914,7 @@ namespace big
 
         Blip res = HUD::GET_MAIN_PLAYER_BLIP_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -16742,7 +16985,7 @@ namespace big
 
         BOOL res = HUD::IS_PAUSEMAP_IN_INTERIOR_MODE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -16889,7 +17132,7 @@ namespace big
 
         BOOL res = HUD::IS_IME_IN_PROGRESS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -16926,7 +17169,7 @@ namespace big
 
         Hash res = HUD::HUD_GET_WEAPON_WHEEL_CURRENTLY_HIGHLIGHTED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -16944,7 +17187,7 @@ namespace big
 
         Hash res = HUD::HUD_GET_WEAPON_WHEEL_TOP_SLOT(weaponTypeIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -17181,7 +17424,7 @@ namespace big
 
         float res = HUD::GET_MINIMAP_FOW_DISCOVERY_RATIO();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -17194,7 +17437,7 @@ namespace big
 
         BOOL res = HUD::GET_MINIMAP_FOW_COORDINATE_IS_REVEALED(x, y, z);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -17301,7 +17544,7 @@ namespace big
 
         BOOL res = HUD::IS_HUD_COMPONENT_ACTIVE(id);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -17312,7 +17555,7 @@ namespace big
 
         BOOL res = HUD::IS_SCRIPTED_HUD_COMPONENT_ACTIVE(id);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -17337,7 +17580,7 @@ namespace big
 
         BOOL res = HUD::IS_SCRIPTED_HUD_COMPONENT_HIDDEN_THIS_FRAME(id);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -17390,10 +17633,10 @@ namespace big
 
         Vector3 res = HUD::GET_HUD_COMPONENT_POSITION(id);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -17447,7 +17690,7 @@ namespace big
 
         BOOL res = HUD::IS_REPORTUGC_MENU_OPEN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -17458,7 +17701,7 @@ namespace big
 
         BOOL res = HUD::IS_FLOATING_HELP_TEXT_ON_SCREEN(hudIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -17532,7 +17775,7 @@ namespace big
 
         BOOL res = HUD::IS_MP_GAMER_TAG_MOVIE_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -17548,7 +17791,7 @@ namespace big
 
         int res = HUD::CREATE_FAKE_MP_GAMER_TAG(ped, username, pointedClanTag, isRockstarClan, clanTag, clanFlag);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -17566,7 +17809,7 @@ namespace big
 
         BOOL res = HUD::IS_MP_GAMER_TAG_ACTIVE(gamerTagId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -17577,7 +17820,7 @@ namespace big
 
         BOOL res = HUD::IS_MP_GAMER_TAG_FREE(gamerTagId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -17681,7 +17924,7 @@ namespace big
 
         BOOL res = HUD::IS_UPDATING_MP_GAMER_TAG_NAME_AND_CREW_DETAILS(gamerTagId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -17699,7 +17942,7 @@ namespace big
 
         int res = HUD::GET_CURRENT_WEBPAGE_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -17709,7 +17952,7 @@ namespace big
 
         int res = HUD::GET_CURRENT_WEBSITE_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -17720,7 +17963,7 @@ namespace big
 
         int res = HUD::GET_GLOBAL_ACTIONSCRIPT_FLAG(flagIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -17737,7 +17980,7 @@ namespace big
 
         BOOL res = HUD::IS_WARNING_MESSAGE_READY_FOR_CONTROL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -17852,7 +18095,7 @@ namespace big
 
         Hash res = HUD::GET_WARNING_SCREEN_MESSAGE_HASH();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -17868,7 +18111,7 @@ namespace big
 
         BOOL res = HUD::SET_WARNING_MESSAGE_OPTION_ITEMS(index, name, cash, rp, lvl, colour);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -17879,7 +18122,7 @@ namespace big
 
         BOOL res = HUD::SET_WARNING_MESSAGE_OPTION_HIGHLIGHT(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -17895,7 +18138,7 @@ namespace big
 
         BOOL res = HUD::IS_WARNING_MESSAGE_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -17928,7 +18171,7 @@ namespace big
 
         Any res = HUD::CUSTOM_MINIMAP_CREATE_BLIP(x, y, z);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -17944,7 +18187,7 @@ namespace big
 
         Any res = HUD::FORCE_SONAR_BLIPS_THIS_FRAME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -17954,7 +18197,7 @@ namespace big
 
         Blip res = HUD::GET_NORTH_BLID_INDEX();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -18000,7 +18243,7 @@ namespace big
 
         Hash res = HUD::GET_CURRENT_FRONTEND_MENU_VERSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -18042,7 +18285,7 @@ namespace big
 
         BOOL res = HUD::IS_PAUSE_MENU_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18052,7 +18295,7 @@ namespace big
 
         BOOL res = HUD::IS_STORE_PENDING_NETWORK_SHUTDOWN_TO_OPEN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18062,7 +18305,7 @@ namespace big
 
         int res = HUD::GET_PAUSE_MENU_STATE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -18072,10 +18315,10 @@ namespace big
 
         Vector3 res = HUD::GET_PAUSE_MENU_POSITION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -18086,7 +18329,7 @@ namespace big
 
         BOOL res = HUD::IS_PAUSE_MENU_RESTARTING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18138,7 +18381,7 @@ namespace big
 
         BOOL res = HUD::PAUSE_MENU_IS_CONTEXT_ACTIVE(contextHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18148,7 +18391,7 @@ namespace big
 
         BOOL res = HUD::PAUSE_MENU_IS_CONTEXT_MENU_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18158,7 +18401,7 @@ namespace big
 
         int res = HUD::PAUSE_MENU_GET_HAIR_COLOUR_INDEX();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -18168,7 +18411,7 @@ namespace big
 
         int res = HUD::PAUSE_MENU_GET_MOUSE_HOVER_INDEX();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -18178,7 +18421,7 @@ namespace big
 
         int res = HUD::PAUSE_MENU_GET_MOUSE_HOVER_UNIQUE_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -18237,7 +18480,7 @@ namespace big
 
         BOOL res = HUD::IS_FRONTEND_READY_FOR_CONTROL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18259,7 +18502,7 @@ namespace big
 
         BOOL res = HUD::CODE_WANTS_SCRIPT_TO_TAKE_CONTROL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18269,7 +18512,7 @@ namespace big
 
         int res = HUD::GET_SCREEN_CODE_WANTS_SCRIPT_TO_CONTROL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -18279,7 +18522,7 @@ namespace big
 
         BOOL res = HUD::IS_NAVIGATING_MENU_CONTENT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18289,7 +18532,7 @@ namespace big
 
         BOOL res = HUD::HAS_MENU_TRIGGER_EVENT_OCCURRED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18299,7 +18542,7 @@ namespace big
 
         BOOL res = HUD::HAS_MENU_LAYOUT_CHANGED_EVENT_OCCURRED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18558,7 +18801,7 @@ namespace big
 
         BOOL res = HUD::ARE_ONLINE_POLICIES_UP_TO_DATE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18568,7 +18811,7 @@ namespace big
 
         BOOL res = HUD::IS_ONLINE_POLICIES_MENU_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18597,7 +18840,7 @@ namespace big
 
         BOOL res = HUD::IS_SOCIAL_CLUB_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18634,7 +18877,7 @@ namespace big
 
         BOOL res = HUD::IS_MP_TEXT_CHAT_TYPING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18697,7 +18940,7 @@ namespace big
 
         BOOL res = HUD::DOES_PED_HAVE_AI_BLIP(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18748,7 +18991,7 @@ namespace big
 
         Blip res = HUD::GET_AI_PED_PED_BLIP_INDEX(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -18759,7 +19002,7 @@ namespace big
 
         Blip res = HUD::GET_AI_PED_VEHICLE_BLIP_INDEX(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -18769,7 +19012,7 @@ namespace big
 
         BOOL res = HUD::HAS_DIRECTOR_MODE_BEEN_LAUNCHED_BY_CODE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18807,7 +19050,7 @@ namespace big
 
         float res = INTERIOR::GET_INTERIOR_HEADING(interior);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -18842,7 +19085,7 @@ namespace big
 
         int res = INTERIOR::GET_INTERIOR_GROUP_ID(interior);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -18856,10 +19099,10 @@ namespace big
 
         Vector3 res = INTERIOR::GET_OFFSET_FROM_INTERIOR_IN_WORLD_COORDS(interior, x, y, z);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -18870,7 +19113,7 @@ namespace big
 
         BOOL res = INTERIOR::IS_INTERIOR_SCENE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18881,7 +19124,7 @@ namespace big
 
         BOOL res = INTERIOR::IS_VALID_INTERIOR(interior);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -18908,7 +19151,7 @@ namespace big
 
         Hash res = INTERIOR::GET_ROOM_KEY_FROM_ENTITY(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -18919,7 +19162,7 @@ namespace big
 
         Hash res = INTERIOR::GET_KEY_FOR_ENTITY_IN_ROOM(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -18930,7 +19173,7 @@ namespace big
 
         Interior res = INTERIOR::GET_INTERIOR_FROM_ENTITY(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -18985,7 +19228,7 @@ namespace big
 
         Hash res = INTERIOR::GET_ROOM_KEY_FOR_GAME_VIEWPORT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19001,7 +19244,7 @@ namespace big
 
         Interior res = INTERIOR::GET_INTERIOR_FROM_PRIMARY_VIEW();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19014,7 +19257,7 @@ namespace big
 
         Interior res = INTERIOR::GET_INTERIOR_AT_COORDS(x, y, z);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19047,7 +19290,7 @@ namespace big
 
         BOOL res = INTERIOR::IS_INTERIOR_READY(interior);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -19058,7 +19301,7 @@ namespace big
 
         Any res = INTERIOR::SET_INTERIOR_IN_USE(interior);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19072,7 +19315,7 @@ namespace big
 
         Interior res = INTERIOR::GET_INTERIOR_AT_COORDS_WITH_TYPE(x, y, z, interiorType);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19086,7 +19329,7 @@ namespace big
 
         Interior res = INTERIOR::GET_INTERIOR_AT_COORDS_WITH_TYPEHASH(x, y, z, typeHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19105,7 +19348,7 @@ namespace big
 
         BOOL res = INTERIOR::IS_COLLISION_MARKED_OUTSIDE(x, y, z);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -19118,7 +19361,7 @@ namespace big
 
         int res = INTERIOR::GET_INTERIOR_FROM_COLLISION(x, y, z);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19153,7 +19396,7 @@ namespace big
 
         BOOL res = INTERIOR::IS_INTERIOR_ENTITY_SET_ACTIVE(interior, entitySetName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -19202,7 +19445,7 @@ namespace big
 
         BOOL res = INTERIOR::IS_INTERIOR_DISABLED(interior);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -19221,7 +19464,7 @@ namespace big
 
         BOOL res = INTERIOR::IS_INTERIOR_CAPPED(interior);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -19248,7 +19491,7 @@ namespace big
 
         ScrHandle res = ITEMSET::CREATE_ITEMSET(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19266,7 +19509,7 @@ namespace big
 
         BOOL res = ITEMSET::IS_ITEMSET_VALID(itemset);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -19278,7 +19521,7 @@ namespace big
 
         BOOL res = ITEMSET::ADD_TO_ITEMSET(item, itemset);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -19297,7 +19540,7 @@ namespace big
 
         int res = ITEMSET::GET_ITEMSET_SIZE(itemset);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19309,7 +19552,7 @@ namespace big
 
         ScrHandle res = ITEMSET::GET_INDEXED_ITEM_IN_ITEMSET(index, itemset);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19321,7 +19564,7 @@ namespace big
 
         BOOL res = ITEMSET::IS_IN_ITEMSET(item, itemset);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -19339,7 +19582,7 @@ namespace big
 
         int res = LOADINGSCREEN::LOBBY_AUTO_MULTIPLAYER_MENU();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19349,7 +19592,7 @@ namespace big
 
         BOOL res = LOADINGSCREEN::LOBBY_AUTO_MULTIPLAYER_FREEMODE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -19366,7 +19609,7 @@ namespace big
 
         BOOL res = LOADINGSCREEN::LOBBY_AUTO_MULTIPLAYER_EVENT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -19383,7 +19626,7 @@ namespace big
 
         BOOL res = LOADINGSCREEN::LOBBY_AUTO_MULTIPLAYER_RANDOM_JOB();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -19408,7 +19651,7 @@ namespace big
 
         int res = LOCALIZATION::LOCALIZATION_GET_SYSTEM_LANGUAGE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19418,7 +19661,7 @@ namespace big
 
         int res = LOCALIZATION::GET_CURRENT_LANGUAGE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19428,7 +19671,7 @@ namespace big
 
         int res = LOCALIZATION::LOCALIZATION_GET_SYSTEM_DATE_TYPE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19439,7 +19682,7 @@ namespace big
 
         int res = MISC::GET_ALLOCATED_STACK_SIZE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19450,7 +19693,7 @@ namespace big
 
         int res = MISC::GET_NUMBER_OF_FREE_STACKS_OF_THIS_SIZE(stackSize);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19481,7 +19724,7 @@ namespace big
 
         BOOL res = MISC::GET_MISSION_FLAG();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -19498,7 +19741,7 @@ namespace big
 
         BOOL res = MISC::GET_RANDOM_EVENT_FLAG();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -19508,7 +19751,7 @@ namespace big
 
         const char* res = MISC::GET_CONTENT_TO_LOAD();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -19582,7 +19825,7 @@ namespace big
 
         BOOL res = MISC::HAS_RESUMED_FROM_SUSPEND();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -19637,7 +19880,7 @@ namespace big
 
         Hash res = MISC::GET_PREV_WEATHER_TYPE_HASH_NAME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19647,7 +19890,7 @@ namespace big
 
         Hash res = MISC::GET_NEXT_WEATHER_TYPE_HASH_NAME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19658,7 +19901,7 @@ namespace big
 
         BOOL res = MISC::IS_PREV_WEATHER_TYPE(weatherType);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -19669,7 +19912,7 @@ namespace big
 
         BOOL res = MISC::IS_NEXT_WEATHER_TYPE(weatherType);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -19892,7 +20135,7 @@ namespace big
 
         float res = MISC::GET_WIND_SPEED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19909,10 +20152,10 @@ namespace big
 
         Vector3 res = MISC::GET_WIND_DIRECTION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -19930,7 +20173,7 @@ namespace big
 
         float res = MISC::GET_RAIN_LEVEL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -19947,7 +20190,7 @@ namespace big
 
         float res = MISC::GET_SNOW_LEVEL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20006,7 +20249,7 @@ namespace big
 
         float res = MISC::GET_CLOUDS_ALPHA();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20016,7 +20259,7 @@ namespace big
 
         int res = MISC::GET_GAME_TIMER();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20026,7 +20269,7 @@ namespace big
 
         float res = MISC::GET_FRAME_TIME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20036,7 +20279,7 @@ namespace big
 
         float res = MISC::GET_SYSTEM_TIME_STEP();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20046,7 +20289,7 @@ namespace big
 
         int res = MISC::GET_FRAME_COUNT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20058,7 +20301,7 @@ namespace big
 
         float res = MISC::GET_RANDOM_FLOAT_IN_RANGE(startRange, endRange);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20070,7 +20313,7 @@ namespace big
 
         int res = MISC::GET_RANDOM_INT_IN_RANGE(startRange, endRange);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20082,7 +20325,7 @@ namespace big
 
         int res = MISC::GET_RANDOM_MWC_INT_IN_RANGE(startRange, endRange);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20168,7 +20411,7 @@ namespace big
 
         float res = MISC::ASIN(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20179,7 +20422,7 @@ namespace big
 
         float res = MISC::ACOS(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20190,7 +20433,7 @@ namespace big
 
         float res = MISC::TAN(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20201,7 +20444,7 @@ namespace big
 
         float res = MISC::ATAN(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20213,7 +20456,7 @@ namespace big
 
         float res = MISC::ATAN2(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20230,7 +20473,7 @@ namespace big
 
         float res = MISC::GET_DISTANCE_BETWEEN_COORDS(x1, y1, z1, x2, y2, z2, useZ);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20244,7 +20487,7 @@ namespace big
 
         float res = MISC::GET_ANGLE_BETWEEN_2D_VECTORS(x1, y1, x2, y2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20256,7 +20499,7 @@ namespace big
 
         float res = MISC::GET_HEADING_FROM_VECTOR_2D(dx, dy);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20276,7 +20519,7 @@ namespace big
 
         float res = MISC::GET_RATIO_OF_CLOSEST_POINT_ON_LINE(x1, y1, z1, x2, y2, z2, x3, y3, z3, clamp);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20296,10 +20539,10 @@ namespace big
 
         Vector3 res = MISC::GET_CLOSEST_POINT_ON_LINE(x1, y1, z1, x2, y2, z2, x3, y3, z3, clamp);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -20354,7 +20597,7 @@ namespace big
 
         Any res = MISC::GET_POINT_AREA_OVERLAP(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20366,7 +20609,7 @@ namespace big
 
         MISC::SET_BIT(&address, offset);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -20377,7 +20620,7 @@ namespace big
 
         MISC::CLEAR_BIT(&address, offset);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -20387,7 +20630,7 @@ namespace big
 
         Hash res = MISC::GET_HASH_KEY(string);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20446,7 +20689,7 @@ namespace big
 
         BOOL res = MISC::IS_AREA_OCCUPIED(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -20469,7 +20712,7 @@ namespace big
 
         Any res = MISC::IS_AREA_OCCUPIED_SLOW(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20490,7 +20733,7 @@ namespace big
 
         BOOL res = MISC::IS_POSITION_OCCUPIED(x, y, z, range, p4, checkVehicles, checkPeds, p7, p8, ignoreEntity, p10);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -20507,7 +20750,7 @@ namespace big
 
         BOOL res = MISC::IS_POINT_OBSCURED_BY_A_MISSION_ENTITY(p0, p1, p2, p3, p4, p5, p6);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -20639,7 +20882,7 @@ namespace big
 
         int res = MISC::GET_STATUS_OF_MANUAL_SAVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20663,7 +20906,7 @@ namespace big
 
         BOOL res = MISC::HAVE_CREDITS_REACHED_END();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -20691,7 +20934,7 @@ namespace big
 
         int res = MISC::ADD_HOSPITAL_RESTART(x, y, z, p3, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20714,7 +20957,7 @@ namespace big
 
         Any res = MISC::ADD_POLICE_RESTART(p0, p1, p2, p3, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20831,7 +21074,7 @@ namespace big
 
         BOOL res = MISC::OVERRIDE_SAVE_HOUSE(p0, p1, p2, p3, p4, p5, p6, p7);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -20881,7 +21124,7 @@ namespace big
 
         BOOL res = MISC::GET_IS_AUTO_SAVE_OFF();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -20891,7 +21134,7 @@ namespace big
 
         BOOL res = MISC::IS_AUTO_SAVE_IN_PROGRESS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -20901,7 +21144,7 @@ namespace big
 
         BOOL res = MISC::HAS_CODE_REQUESTED_AUTOSAVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -20938,7 +21181,7 @@ namespace big
 
         Any res = MISC::HAVE_REPLAY_STATS_BEEN_STORED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20948,7 +21191,7 @@ namespace big
 
         Any res = MISC::GET_REPLAY_STAT_MISSION_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20958,7 +21201,7 @@ namespace big
 
         int res = MISC::GET_REPLAY_STAT_MISSION_TYPE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20968,7 +21211,7 @@ namespace big
 
         int res = MISC::GET_REPLAY_STAT_COUNT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20979,7 +21222,7 @@ namespace big
 
         int res = MISC::GET_REPLAY_STAT_AT_INDEX(index);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -20995,7 +21238,7 @@ namespace big
 
         BOOL res = MISC::QUEUE_MISSION_REPEAT_LOAD();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21005,7 +21248,7 @@ namespace big
 
         BOOL res = MISC::QUEUE_MISSION_REPEAT_SAVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21015,7 +21258,7 @@ namespace big
 
         Any res = MISC::QUEUE_MISSION_REPEAT_SAVE_FOR_BENCHMARK_TEST();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -21025,7 +21268,7 @@ namespace big
 
         int res = MISC::GET_STATUS_OF_MISSION_REPEAT_SAVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -21035,7 +21278,7 @@ namespace big
 
         BOOL res = MISC::IS_MEMORY_CARD_IN_USE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21080,6 +21323,33 @@ namespace big
         MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS_IGNORE_ENTITY(x1, y1, z1, x2, y2, z2, damage, p7, weaponHash, ownerPed, isAudible, isInvisible, speed, entity, p14);
     }
 
+    static void WREN_MISC_SHOOT_SINGLE_BULLET_BETWEEN_COORDS_IGNORE_ENTITY_NEW(WrenVM* vm)
+    {
+        float x1 = (float)wrenGetSlotDouble(vm, 1);
+        float y1 = (float)wrenGetSlotDouble(vm, 2);
+        float z1 = (float)wrenGetSlotDouble(vm, 3);
+        float x2 = (float)wrenGetSlotDouble(vm, 4);
+        float y2 = (float)wrenGetSlotDouble(vm, 5);
+        float z2 = (float)wrenGetSlotDouble(vm, 6);
+        int damage = (int)wrenGetSlotDouble(vm, 7);
+        BOOL p7 = (BOOL)wrenGetSlotBool(vm, 8);
+        Hash weaponHash = (Hash)wrenGetSlotDouble(vm, 9);
+        Ped ownerPed = (Ped)wrenGetSlotDouble(vm, 10);
+        BOOL isAudible = (BOOL)wrenGetSlotBool(vm, 11);
+        BOOL isInvisible = (BOOL)wrenGetSlotBool(vm, 12);
+        float speed = (float)wrenGetSlotDouble(vm, 13);
+        Entity entity = (Entity)wrenGetSlotDouble(vm, 14);
+        BOOL p14 = (BOOL)wrenGetSlotBool(vm, 15);
+        BOOL p15 = (BOOL)wrenGetSlotBool(vm, 16);
+        Entity targetEntity = (Entity)wrenGetSlotDouble(vm, 17);
+        BOOL p17 = (BOOL)wrenGetSlotBool(vm, 18);
+        Any p18 = (Any)wrenGetSlotDouble(vm, 19);
+        Any p19 = (Any)wrenGetSlotDouble(vm, 20);
+        Any p20 = (Any)wrenGetSlotDouble(vm, 21);
+
+        MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS_IGNORE_ENTITY_NEW(x1, y1, z1, x2, y2, z2, damage, p7, weaponHash, ownerPed, isAudible, isInvisible, speed, entity, p14, p15, targetEntity, p17, p18, p19, p20);
+    }
+
     static void WREN_MISC_GET_MODEL_DIMENSIONS(WrenVM* vm)
     {
         Hash modelHash = (Hash)wrenGetSlotDouble(vm, 1);
@@ -21119,7 +21389,7 @@ namespace big
 
         int res = MISC::GET_FAKE_WANTED_LEVEL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -21150,7 +21420,7 @@ namespace big
 
         BOOL res = MISC::IS_MINIGAME_IN_PROGRESS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21160,7 +21430,7 @@ namespace big
 
         BOOL res = MISC::IS_THIS_A_MINIGAME_SCRIPT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21170,7 +21440,7 @@ namespace big
 
         BOOL res = MISC::IS_SNIPER_INVERTED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21180,7 +21450,7 @@ namespace big
 
         BOOL res = MISC::SHOULD_USE_METRIC_MEASUREMENTS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21191,7 +21461,7 @@ namespace big
 
         int res = MISC::GET_PROFILE_SETTING(profileSetting);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -21203,7 +21473,7 @@ namespace big
 
         BOOL res = MISC::ARE_STRINGS_EQUAL(string1, string2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21217,7 +21487,7 @@ namespace big
 
         int res = MISC::COMPARE_STRINGS(str1, str2, matchCase, maxLength);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -21228,7 +21498,7 @@ namespace big
 
         int res = MISC::ABSI(value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -21239,7 +21509,7 @@ namespace big
 
         float res = MISC::ABSF(value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -21255,7 +21525,7 @@ namespace big
 
         BOOL res = MISC::IS_SNIPER_BULLET_IN_AREA(x1, y1, z1, x2, y2, z2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21272,7 +21542,7 @@ namespace big
 
         BOOL res = MISC::IS_PROJECTILE_IN_AREA(x1, y1, z1, x2, y2, z2, ownedByPlayer);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21290,7 +21560,7 @@ namespace big
 
         BOOL res = MISC::IS_PROJECTILE_TYPE_IN_AREA(x1, y1, z1, x2, y2, z2, type, ownedByPlayer);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21309,7 +21579,7 @@ namespace big
 
         BOOL res = MISC::IS_PROJECTILE_TYPE_IN_ANGLED_AREA(x1, y1, z1, x2, y2, z2, width, p7, ownedByPlayer);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21325,7 +21595,7 @@ namespace big
 
         BOOL res = MISC::IS_PROJECTILE_TYPE_WITHIN_DISTANCE(x, y, z, projectileHash, radius, ownedByPlayer);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21429,7 +21699,7 @@ namespace big
 
         BOOL res = MISC::IS_BULLET_IN_ANGLED_AREA(x1, y1, z1, x2, y2, z2, width, ownedByPlayer);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21444,7 +21714,7 @@ namespace big
 
         BOOL res = MISC::IS_BULLET_IN_AREA(x, y, z, radius, ownedByPlayer);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21461,7 +21731,7 @@ namespace big
 
         BOOL res = MISC::IS_BULLET_IN_BOX(x1, y1, z1, x2, y2, z2, ownedByPlayer);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21477,7 +21747,7 @@ namespace big
 
         BOOL res = MISC::HAS_BULLET_IMPACTED_IN_AREA(x, y, z, p3, p4, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21495,7 +21765,7 @@ namespace big
 
         BOOL res = MISC::HAS_BULLET_IMPACTED_IN_BOX(p0, p1, p2, p3, p4, p5, p6, p7);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21505,7 +21775,7 @@ namespace big
 
         BOOL res = MISC::IS_ORBIS_VERSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21515,7 +21785,7 @@ namespace big
 
         BOOL res = MISC::IS_DURANGO_VERSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21525,7 +21795,7 @@ namespace big
 
         BOOL res = MISC::IS_XBOX360_VERSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21535,7 +21805,7 @@ namespace big
 
         BOOL res = MISC::IS_PS3_VERSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21545,7 +21815,7 @@ namespace big
 
         BOOL res = MISC::IS_PC_VERSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21555,7 +21825,7 @@ namespace big
 
         BOOL res = MISC::IS_STEAM_VERSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21565,7 +21835,7 @@ namespace big
 
         BOOL res = MISC::IS_AUSSIE_VERSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21575,7 +21845,7 @@ namespace big
 
         BOOL res = MISC::IS_JAPANESE_VERSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21585,7 +21855,7 @@ namespace big
 
         BOOL res = MISC::IS_XBOX_PLATFORM();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21595,7 +21865,7 @@ namespace big
 
         BOOL res = MISC::IS_SCARLETT_VERSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21605,7 +21875,7 @@ namespace big
 
         BOOL res = MISC::IS_SCE_PLATFORM();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21615,7 +21885,7 @@ namespace big
 
         BOOL res = MISC::IS_PROSPERO_VERSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21626,7 +21896,7 @@ namespace big
 
         BOOL res = MISC::IS_STRING_NULL(string);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21637,7 +21907,7 @@ namespace big
 
         BOOL res = MISC::IS_STRING_NULL_OR_EMPTY(string);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21670,7 +21940,7 @@ namespace big
 
         MISC::SET_BITS_IN_RANGE(&var_, rangeStart, rangeEnd, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -21682,7 +21952,65 @@ namespace big
 
         int res = MISC::GET_BITS_IN_RANGE(var_, rangeStart, rangeEnd);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
+
+        wrenSetSlotDouble(vm, 0, res);
+    }
+
+    static void WREN_MISC_ADD_STUNT_JUMP(WrenVM* vm)
+    {
+        float x1 = (float)wrenGetSlotDouble(vm, 1);
+        float y1 = (float)wrenGetSlotDouble(vm, 2);
+        float z1 = (float)wrenGetSlotDouble(vm, 3);
+        float x2 = (float)wrenGetSlotDouble(vm, 4);
+        float y2 = (float)wrenGetSlotDouble(vm, 5);
+        float z2 = (float)wrenGetSlotDouble(vm, 6);
+        float x3 = (float)wrenGetSlotDouble(vm, 7);
+        float y3 = (float)wrenGetSlotDouble(vm, 8);
+        float z3 = (float)wrenGetSlotDouble(vm, 9);
+        float x4 = (float)wrenGetSlotDouble(vm, 10);
+        float y4 = (float)wrenGetSlotDouble(vm, 11);
+        float z4 = (float)wrenGetSlotDouble(vm, 12);
+        float camX = (float)wrenGetSlotDouble(vm, 13);
+        float camY = (float)wrenGetSlotDouble(vm, 14);
+        float camZ = (float)wrenGetSlotDouble(vm, 15);
+        int p15 = (int)wrenGetSlotDouble(vm, 16);
+        int p16 = (int)wrenGetSlotDouble(vm, 17);
+        int p17 = (int)wrenGetSlotDouble(vm, 18);
+
+        int res = MISC::ADD_STUNT_JUMP(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4, camX, camY, camZ, p15, p16, p17);
+
+        wrenEnsureSlots(vm, 1);
+
+        wrenSetSlotDouble(vm, 0, res);
+    }
+
+    static void WREN_MISC_ADD_STUNT_JUMP_ANGLED(WrenVM* vm)
+    {
+        float x1 = (float)wrenGetSlotDouble(vm, 1);
+        float y1 = (float)wrenGetSlotDouble(vm, 2);
+        float z1 = (float)wrenGetSlotDouble(vm, 3);
+        float x2 = (float)wrenGetSlotDouble(vm, 4);
+        float y2 = (float)wrenGetSlotDouble(vm, 5);
+        float z2 = (float)wrenGetSlotDouble(vm, 6);
+        float radius1 = (float)wrenGetSlotDouble(vm, 7);
+        float x3 = (float)wrenGetSlotDouble(vm, 8);
+        float y3 = (float)wrenGetSlotDouble(vm, 9);
+        float z3 = (float)wrenGetSlotDouble(vm, 10);
+        float x4 = (float)wrenGetSlotDouble(vm, 11);
+        float y4 = (float)wrenGetSlotDouble(vm, 12);
+        float z4 = (float)wrenGetSlotDouble(vm, 13);
+        float radius2 = (float)wrenGetSlotDouble(vm, 14);
+        float camX = (float)wrenGetSlotDouble(vm, 15);
+        float camY = (float)wrenGetSlotDouble(vm, 16);
+        float camZ = (float)wrenGetSlotDouble(vm, 17);
+        int p17 = (int)wrenGetSlotDouble(vm, 18);
+        int p18 = (int)wrenGetSlotDouble(vm, 19);
+        int p19 = (int)wrenGetSlotDouble(vm, 20);
+
+        int res = MISC::ADD_STUNT_JUMP_ANGLED(x1, y1, z1, x2, y2, z2, radius1, x3, y3, z3, x4, y4, z4, radius2, camX, camY, camZ, p17, p18, p19);
+
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -21727,7 +22055,7 @@ namespace big
 
         BOOL res = MISC::IS_STUNT_JUMP_IN_PROGRESS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21737,7 +22065,7 @@ namespace big
 
         BOOL res = MISC::IS_STUNT_JUMP_MESSAGE_SHOWING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21747,7 +22075,7 @@ namespace big
 
         int res = MISC::GET_NUM_SUCCESSFUL_STUNT_JUMPS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -21757,7 +22085,7 @@ namespace big
 
         int res = MISC::GET_TOTAL_SUCCESSFUL_STUNT_JUMPS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -21796,7 +22124,7 @@ namespace big
 
         BOOL res = MISC::HAS_CHEAT_WITH_HASH_BEEN_ACTIVATED(hash, amount);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21807,7 +22135,7 @@ namespace big
 
         BOOL res = MISC::HAS_PC_CHEAT_WITH_HASH_BEEN_ACTIVATED(hash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21838,7 +22166,7 @@ namespace big
 
         BOOL res = MISC::IS_FRONTEND_FADING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -21854,7 +22182,7 @@ namespace big
 
         int res = MISC::GET_INDEX_OF_CURRENT_LEVEL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -21874,7 +22202,7 @@ namespace big
 
         MISC::START_SAVE_DATA(&p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -21890,7 +22218,7 @@ namespace big
 
         int res = MISC::GET_SIZE_OF_SAVE_DATA(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -21902,7 +22230,7 @@ namespace big
 
         MISC::REGISTER_INT_TO_SAVE(&p0, name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -21913,7 +22241,7 @@ namespace big
 
         MISC::REGISTER_INT64_TO_SAVE(&p0, name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -21924,7 +22252,7 @@ namespace big
 
         MISC::REGISTER_ENUM_TO_SAVE(&p0, name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -21935,7 +22263,7 @@ namespace big
 
         MISC::REGISTER_FLOAT_TO_SAVE(&p0, name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -21946,7 +22274,7 @@ namespace big
 
         MISC::REGISTER_BOOL_TO_SAVE(&p0, name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -21957,7 +22285,7 @@ namespace big
 
         MISC::REGISTER_TEXT_LABEL_TO_SAVE(&p0, name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -21968,7 +22296,7 @@ namespace big
 
         MISC::REGISTER_TEXT_LABEL_15_TO_SAVE(&p0, name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -21979,7 +22307,7 @@ namespace big
 
         MISC::REGISTER_TEXT_LABEL_23_TO_SAVE(&p0, name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -21990,7 +22318,7 @@ namespace big
 
         MISC::REGISTER_TEXT_LABEL_31_TO_SAVE(&p0, name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -22001,7 +22329,7 @@ namespace big
 
         MISC::REGISTER_TEXT_LABEL_63_TO_SAVE(&p0, name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -22013,7 +22341,7 @@ namespace big
 
         MISC::START_SAVE_STRUCT_WITH_SIZE(&p0, size, structName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -22031,7 +22359,7 @@ namespace big
 
         MISC::START_SAVE_ARRAY_WITH_SIZE(&p0, size, arrayName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -22083,7 +22411,7 @@ namespace big
 
         int res = MISC::GET_NUMBER_RESOURCES_ALLOCATED_TO_WANTED_LEVEL(dispatchService);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -22151,7 +22479,7 @@ namespace big
 
         BOOL res = MISC::IS_INCIDENT_VALID(incidentId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -22217,7 +22545,7 @@ namespace big
 
         int res = MISC::ADD_POP_MULTIPLIER_AREA(x1, y1, z1, x2, y2, z2, p6, p7, p8, p9);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -22228,7 +22556,7 @@ namespace big
 
         BOOL res = MISC::DOES_POP_MULTIPLIER_AREA_EXIST(id);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -22247,7 +22575,7 @@ namespace big
 
         BOOL res = MISC::IS_POP_MULTIPLIER_AREA_NETWORKED(id);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -22265,7 +22593,7 @@ namespace big
 
         int res = MISC::ADD_POP_MULTIPLIER_SPHERE(x, y, z, radius, pedMultiplier, vehicleMultiplier, p6, p7);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -22276,7 +22604,7 @@ namespace big
 
         BOOL res = MISC::DOES_POP_MULTIPLIER_SPHERE_EXIST(id);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -22304,7 +22632,7 @@ namespace big
 
         BOOL res = MISC::IS_TENNIS_MODE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -22327,7 +22655,7 @@ namespace big
 
         BOOL res = MISC::GET_TENNIS_SWING_ANIM_COMPLETE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -22338,7 +22666,7 @@ namespace big
 
         BOOL res = MISC::GET_TENNIS_SWING_ANIM_CAN_BE_INTERRUPTED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -22349,7 +22677,7 @@ namespace big
 
         BOOL res = MISC::GET_TENNIS_SWING_ANIM_SWUNG(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -22438,7 +22766,7 @@ namespace big
 
         Any res = MISC::ADD_DISPATCH_SPAWN_ANGLED_BLOCKING_AREA(x1, y1, z1, x2, y2, z2, width);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -22452,7 +22780,7 @@ namespace big
 
         Any res = MISC::ADD_DISPATCH_SPAWN_SPHERE_BLOCKING_AREA(x1, y1, x2, y2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -22523,7 +22851,7 @@ namespace big
 
         MISC::DISPLAY_ONSCREEN_KEYBOARD_WITH_LONGER_INITIAL_STRING(p0, windowTitle, &p2, defaultText, defaultConcat1, defaultConcat2, defaultConcat3, defaultConcat4, defaultConcat5, defaultConcat6, defaultConcat7, maxInputLength);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -22546,7 +22874,7 @@ namespace big
 
         int res = MISC::UPDATE_ONSCREEN_KEYBOARD();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -22556,7 +22884,7 @@ namespace big
 
         const char* res = MISC::GET_ONSCREEN_KEYBOARD_RESULT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -22587,7 +22915,7 @@ namespace big
 
         int res = MISC::GET_REAL_WORLD_TIME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -22647,7 +22975,7 @@ namespace big
 
         BOOL res = MISC::HAS_GAME_INSTALLED_THIS_SESSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -22663,7 +22991,7 @@ namespace big
 
         BOOL res = MISC::ARE_PROFILE_SETTINGS_VALID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -22758,7 +23086,7 @@ namespace big
 
         BOOL res = MISC::UI_STARTED_END_USER_BENCHMARK();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -22768,7 +23096,7 @@ namespace big
 
         BOOL res = MISC::LANDING_SCREEN_STARTED_END_USER_BENCHMARK();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -22778,7 +23106,7 @@ namespace big
 
         BOOL res = MISC::IS_COMMANDLINE_END_USER_BENCHMARK();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -22788,7 +23116,7 @@ namespace big
 
         int res = MISC::GET_BENCHMARK_ITERATIONS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -22798,7 +23126,7 @@ namespace big
 
         int res = MISC::GET_BENCHMARK_PASS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -22820,7 +23148,7 @@ namespace big
 
         BOOL res = MISC::HAS_ASYNC_INSTALL_FINISHED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -22836,7 +23164,7 @@ namespace big
 
         BOOL res = MISC::PLM_IS_IN_CONSTRAINED_MODE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -22846,7 +23174,7 @@ namespace big
 
         int res = MISC::PLM_GET_CONSTRAINED_DURATION_MS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -22863,7 +23191,7 @@ namespace big
 
         BOOL res = MISC::GET_IS_PLAYER_IN_ANIMAL_FORM();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -22886,7 +23214,7 @@ namespace big
 
         Any res = MISC::GET_CITY_DENSITY();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -22911,7 +23239,7 @@ namespace big
 
         int res = MISC::GET_CONTENT_ID_INDEX(contentId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -22954,7 +23282,7 @@ namespace big
 
         MOBILE::GET_MOBILE_PHONE_ROTATION(&rotation, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -22973,7 +23301,7 @@ namespace big
 
         MOBILE::GET_MOBILE_PHONE_POSITION(&position);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -22989,7 +23317,7 @@ namespace big
 
         BOOL res = MOBILE::CAN_PHONE_BE_SEEN_ON_SCREEN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -23099,7 +23427,7 @@ namespace big
 
         BOOL res = MOBILE::CELL_CAM_IS_CHAR_VISIBLE_NO_FACE_CHECK(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -23110,7 +23438,7 @@ namespace big
 
         MOBILE::GET_MOBILE_PHONE_RENDER_ID(&renderId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -23144,7 +23472,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_GET_PLAYER_IS_HIGH_EARNER();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -23163,7 +23491,7 @@ namespace big
 
         MONEY::NETWORK_GIVE_PLAYER_JOBSHARE_CASH(amount, &gamerHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -23174,7 +23502,7 @@ namespace big
 
         MONEY::NETWORK_RECEIVE_PLAYER_JOBSHARE_CASH(value, &gamerHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -23183,7 +23511,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_CAN_SHARE_JOB_CASH();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -23218,7 +23546,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_MONEY_CAN_BET(amount, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -23229,7 +23557,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_CAN_BET(amount);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -23240,7 +23568,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_CASINO_CAN_BET(hash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -23250,7 +23578,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_CASINO_CAN_BET_PVC();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -23261,7 +23589,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_CASINO_CAN_BET_AMOUNT(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -23271,7 +23599,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_CASINO_CAN_BUY_CHIPS_PVC();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -23283,7 +23611,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_CASINO_BUY_CHIPS(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -23295,7 +23623,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_CASINO_SELL_CHIPS(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -23417,7 +23745,7 @@ namespace big
 
         MONEY::NETWORK_EARN_FROM_CHALLENGE_WIN(p0, &p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -23533,7 +23861,7 @@ namespace big
 
         MONEY::NETWORK_EARN_FROM_AMBIENT_JOB(p0, p1, &p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -23754,7 +24082,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_CAN_SPEND_MONEY(p0, p1, p2, p3, p4, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -24016,7 +24344,7 @@ namespace big
 
         MONEY::NETWORK_SPENT_BUY_WANTEDLEVEL(p0, &p1, p2, p3, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -24126,7 +24454,7 @@ namespace big
 
         MONEY::NETWORK_SPENT_PAY_VEHICLE_INSURANCE_PREMIUM(amount, vehicleModel, &gamerHandle, notBankrupt, hasTheMoney);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -24139,7 +24467,7 @@ namespace big
 
         MONEY::NETWORK_SPENT_CALL_PLAYER(p0, &p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -24166,7 +24494,7 @@ namespace big
 
         Any res = MONEY::NETWORK_SPEND_EARNED_FROM_BANK_AND_WALLETS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -24271,7 +24599,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_ECONOMY_HAS_FIXED_CRAZY_NUMBERS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -24294,7 +24622,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_SPENT_BOSS_GOON(amount, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -24454,7 +24782,7 @@ namespace big
 
         MONEY::NETWORK_SPENT_PURCHASE_IMPEXP_WAREHOUSE_PROPERTY(amount, &data, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -25247,7 +25575,7 @@ namespace big
 
         MONEY::NETWORK_SPEND_BUY_CASINO(amount, p1, p2, &data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -25260,7 +25588,7 @@ namespace big
 
         MONEY::NETWORK_SPEND_UPGRADE_CASINO(amount, p1, p2, &data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -25963,7 +26291,7 @@ namespace big
 
         MONEY::NETWORK_SPEND_APARTMENT_UTILITIES(amount, p1, p2, &data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -26017,7 +26345,7 @@ namespace big
 
         int res = MONEY::NETWORK_GET_VC_BANK_BALANCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26028,7 +26356,7 @@ namespace big
 
         int res = MONEY::NETWORK_GET_VC_WALLET_BALANCE(characterSlot);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26038,7 +26366,7 @@ namespace big
 
         int res = MONEY::NETWORK_GET_VC_BALANCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26048,7 +26376,7 @@ namespace big
 
         int res = MONEY::NETWORK_GET_EVC_BALANCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26058,7 +26386,7 @@ namespace big
 
         int res = MONEY::NETWORK_GET_PVC_BALANCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26069,7 +26397,7 @@ namespace big
 
         const char* res = MONEY::NETWORK_GET_STRING_WALLET_BALANCE(characterSlot);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -26079,7 +26407,7 @@ namespace big
 
         const char* res = MONEY::NETWORK_GET_STRING_BANK_BALANCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -26089,7 +26417,7 @@ namespace big
 
         const char* res = MONEY::NETWORK_GET_STRING_BANK_WALLET_BALANCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -26101,7 +26429,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_GET_CAN_SPEND_FROM_WALLET(amount, characterSlot);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26112,7 +26440,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_GET_CAN_SPEND_FROM_BANK(amount);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26124,7 +26452,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_GET_CAN_SPEND_FROM_BANK_AND_WALLET(amount, characterSlot);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26134,7 +26462,7 @@ namespace big
 
         int res = MONEY::NETWORK_GET_PVC_TRANSFER_BALANCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26145,7 +26473,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_GET_CAN_TRANSFER_CASH(amount);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26159,7 +26487,7 @@ namespace big
 
         BOOL res = MONEY::NETWORK_CAN_RECEIVE_PLAYER_CASH(p0, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26169,7 +26497,7 @@ namespace big
 
         int res = MONEY::NETWORK_GET_REMAINING_TRANSFER_BALANCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26180,7 +26508,7 @@ namespace big
 
         int res = MONEY::WITHDRAW_VC(amount);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26191,7 +26519,7 @@ namespace big
 
         BOOL res = MONEY::DEPOSIT_VC(amount);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26202,7 +26530,7 @@ namespace big
 
         BOOL res = MONEY::HAS_VC_WITHDRAWAL_COMPLETED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26213,7 +26541,7 @@ namespace big
 
         BOOL res = MONEY::WAS_VC_WITHDRAWAL_SUCCESSFUL(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26224,7 +26552,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_USE_SERVER_TRANSACTIONS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26235,7 +26563,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_CATALOG_ITEM_IS_VALID(name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26246,7 +26574,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_CATALOG_ITEM_KEY_IS_VALID(hash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26259,7 +26587,7 @@ namespace big
 
         int res = NETSHOPPING::NET_GAMESERVER_GET_PRICE(itemHash, categoryHash, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26269,7 +26597,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_CATALOG_IS_VALID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26279,7 +26607,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_IS_CATALOG_CURRENT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26289,7 +26617,7 @@ namespace big
 
         Hash res = NETSHOPPING::NET_GAMESERVER_GET_CATALOG_CLOUD_CRC();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26299,7 +26627,7 @@ namespace big
 
         Any res = NETSHOPPING::NET_GAMESERVER_REFRESH_SERVER_CATALOG();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26327,7 +26655,7 @@ namespace big
 
         Any res = NETSHOPPING::NET_GAMESERVER_INIT_SESSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26356,7 +26684,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_START_SESSION(charSlot);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26366,7 +26694,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_START_SESSION_PENDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26413,7 +26741,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_IS_SESSION_VALID(charSlot);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26424,7 +26752,7 @@ namespace big
 
         int res = NETSHOPPING::NET_GAMESERVER_CLEAR_SESSION(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26435,7 +26763,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_SESSION_APPLY_RECEIVED_DATA(charSlot);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26445,7 +26773,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_IS_SESSION_REFRESH_PENDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26457,7 +26785,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_START_SESSION_RESTART(inventory, playerbalance);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26467,7 +26795,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_TRANSACTION_IN_PROGRESS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26520,7 +26848,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_BASKET_END();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26530,7 +26858,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_BASKET_IS_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26559,7 +26887,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_BASKET_IS_FULL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26589,7 +26917,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_CHECKOUT_START(transactionId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26623,7 +26951,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_END_SERVICE(transactionId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26636,7 +26964,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_DELETE_CHARACTER(slot, transfer, reason);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26646,7 +26974,7 @@ namespace big
 
         int res = NETSHOPPING::NET_GAMESERVER_DELETE_CHARACTER_GET_STATUS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26656,7 +26984,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_DELETE_SET_TELEMETRY_NONCE_SEED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26668,7 +26996,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_TRANSFER_BANK_TO_WALLET(charSlot, amount);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26680,7 +27008,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_TRANSFER_WALLET_TO_BANK(charSlot, amount);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26690,7 +27018,7 @@ namespace big
 
         int res = NETSHOPPING::NET_GAMESERVER_TRANSFER_BANK_TO_WALLET_GET_STATUS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26700,7 +27028,7 @@ namespace big
 
         int res = NETSHOPPING::NET_GAMESERVER_TRANSFER_WALLET_TO_BANK_GET_STATUS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26710,7 +27038,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_TRANSFER_CASH_SET_TELEMETRY_NONCE_SEED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26721,7 +27049,7 @@ namespace big
 
         BOOL res = NETSHOPPING::NET_GAMESERVER_SET_TELEMETRY_NONCE_SEED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26732,7 +27060,7 @@ namespace big
 
         const char* res = NETWORK::GET_ONLINE_VERSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -26742,7 +27070,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_SIGNED_IN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26752,7 +27080,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_SIGNED_ONLINE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26762,7 +27090,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_NP_AVAILABLE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26772,7 +27100,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_IS_NP_PENDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26782,7 +27110,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_NP_UNAVAILABLE_REASON();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26792,7 +27120,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_IS_CONNETED_TO_NP_PRESENCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26802,7 +27130,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_IS_LOGGED_IN_TO_PSN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26812,7 +27140,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_VALID_ROS_CREDENTIALS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26822,7 +27150,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_REFRESHING_ROS_CREDENTIALS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26832,7 +27160,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_CLOUD_AVAILABLE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26842,7 +27170,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_SOCIAL_CLUB_ACCOUNT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26852,7 +27180,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_ARE_SOCIAL_CLUB_POLICIES_CURRENT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26862,7 +27190,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_HOST();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26872,7 +27200,7 @@ namespace big
 
         Player res = NETWORK::NETWORK_GET_HOST_PLAYER_INDEX();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26882,7 +27210,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_WAS_GAME_SUSPENDED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26892,7 +27220,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAVE_ONLINE_PRIVILEGES();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26902,7 +27230,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_AGE_RESTRICTIONS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26913,7 +27241,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAVE_USER_CONTENT_PRIVILEGES(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26925,7 +27253,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAVE_COMMUNICATION_PRIVILEGES(p0, player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26937,7 +27265,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_CHECK_ONLINE_PRIVILEGES(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26950,7 +27278,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_CHECK_USER_CONTENT_PRIVILEGES(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26963,7 +27291,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_CHECK_COMMUNICATION_PRIVILEGES(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -26976,7 +27304,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_CHECK_TEXT_COMMUNICATION_PRIVILEGES(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26986,7 +27314,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_IS_USING_ONLINE_PROMOTION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -26996,7 +27324,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_SHOULD_SHOW_PROMOTION_ALERT_SCREEN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -27006,7 +27334,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_SOCIAL_NETWORKING_SHARING_PRIV();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27016,7 +27344,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_AGE_GROUP();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -27029,7 +27357,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_CHECK_PRIVILEGES(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -27039,7 +27367,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_PRIVILEGE_CHECK_IN_PROGRESS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27055,7 +27383,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_RESOLVE_PRIVILEGE_USER_CONTENT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27065,7 +27393,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAVE_PLATFORM_SUBSCRIPTION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27075,7 +27403,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_IS_PLATFORM_SUBSCRIPTION_CHECK_PENDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -27091,7 +27419,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_SHOWING_SYSTEM_UI_OR_RECENTLY_REQUESTED_UPSELL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27101,7 +27429,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_NEED_TO_START_NEW_GAME_BUT_BLOCKED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -27111,7 +27439,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_CAN_BAIL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27140,7 +27468,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_TRANSITION_START(p0, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -27164,7 +27492,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_TRANSITION_FINISH(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -27192,7 +27520,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_MULTIPLAYER_DISABLED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27202,7 +27530,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_CAN_ENTER_MULTIPLAYER();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27218,7 +27546,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_SESSION_DO_FREEROAM_QUICKMATCH(p0, p1, p2, maxPlayers, p4, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -27232,7 +27560,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_DO_FRIEND_MATCHMAKING(p0, p1, maxPlayers, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27247,7 +27575,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_DO_CREW_MATCHMAKING(crewId, p1, p2, maxPlayers, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27262,7 +27590,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_DO_ACTIVITY_QUICKMATCH(p0, p1, p2, p3, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27275,7 +27603,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_HOST(p0, maxPlayers, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27287,7 +27615,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_HOST_CLOSED(p0, maxPlayers);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27299,7 +27627,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_HOST_FRIENDS_ONLY(p0, maxPlayers);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27309,7 +27637,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_IS_CLOSED_FRIENDS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27319,7 +27647,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_IS_CLOSED_CREW();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27329,7 +27657,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_IS_SOLO();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27339,7 +27667,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_IS_PRIVATE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27351,7 +27679,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_END(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27362,7 +27690,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_SESSION_LEAVE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -27380,7 +27708,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_GET_KICK_VOTE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27393,7 +27721,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_SESSION_RESERVE_SLOTS_TRANSITION(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -27403,7 +27731,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_JOIN_PREVIOUSLY_FAILED_SESSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27413,7 +27741,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_JOIN_PREVIOUSLY_FAILED_TRANSITION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27439,7 +27767,7 @@ namespace big
 
         int res = NETWORK::NETWORK_SESSION_GET_MATCHMAKING_GROUP_FREE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -27520,7 +27848,7 @@ namespace big
 
         NETWORK::NETWORK_ADD_FOLLOWERS(&p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -27565,7 +27893,7 @@ namespace big
 
         int res = NETWORK::NETWORK_SESSION_GET_HOST_AIM_PREFERENCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -27576,7 +27904,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_FIND_GAMERS_IN_CREW(crewId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27590,7 +27918,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_FIND_MATCHED_GAMERS(attribute, fallbackLimit, lowerLimit, upperLimit);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27600,7 +27928,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_FINDING_GAMERS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27610,7 +27938,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_DID_FIND_GAMERS_SUCCEED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27620,7 +27948,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_NUM_FOUND_GAMERS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -27673,7 +28001,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_GET_GAMER_STATUS_FROM_QUEUE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27683,7 +28011,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_GETTING_GAMER_STATUS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27693,7 +28021,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_DID_GET_GAMER_STATUS_SUCCEED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27746,7 +28074,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_PENDING_INVITE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27756,7 +28084,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_CONFIRMED_INVITE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27766,7 +28094,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_REQUEST_INVITE_CONFIRMED_EVENT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27776,7 +28104,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_WAS_INVITED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27787,7 +28115,7 @@ namespace big
 
         NETWORK::NETWORK_SESSION_GET_INVITER(&gamerHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -27796,7 +28124,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_IS_AWAITING_INVITE_RESPONSE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27806,7 +28134,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_IS_DISPLAYING_INVITE_CONFIRMATION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27864,7 +28192,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_OFFLINE_INVITE_PENDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27893,7 +28221,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_GAME_IN_PROGRESS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27903,7 +28231,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_SESSION_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27913,7 +28241,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_IN_SESSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27923,7 +28251,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_SESSION_STARTED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27933,7 +28261,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_SESSION_BUSY();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27943,7 +28271,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_CAN_SESSION_END();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27953,7 +28281,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_GET_GAME_MODE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -27970,7 +28298,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_IS_VISIBLE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -27995,7 +28323,7 @@ namespace big
 
         int res = NETWORK::NETWORK_SESSION_GET_PRIVATE_SLOTS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -28018,7 +28346,7 @@ namespace big
 
         NETWORK::NETWORK_SESSION_VOICE_CONNECT_TO_PLAYER(&p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -28042,7 +28370,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_IS_IN_VOICE_SESSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28052,7 +28380,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_SESSION_IS_VOICE_SESSION_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -28062,7 +28390,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SESSION_IS_VOICE_SESSION_BUSY();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28098,7 +28426,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_ACTIVITY_SPECTATOR();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28123,7 +28451,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_ACTIVITY_PLAYER_NUM(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -28161,7 +28489,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HOST_TRANSITION(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28177,7 +28505,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_DO_TRANSITION_QUICKMATCH(p0, p1, p2, p3, p4, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28193,7 +28521,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_DO_TRANSITION_QUICKMATCH_ASYNC(p0, p1, p2, p3, p4, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28228,7 +28556,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_JOIN_GROUP_ACTIVITY();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -28250,7 +28578,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_TRANSITION_CLOSED_FRIENDS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28260,7 +28588,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_TRANSITION_CLOSED_CREW();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28270,7 +28598,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_TRANSITION_SOLO();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28280,7 +28608,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_TRANSITION_PRIVATE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28290,7 +28618,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_NUM_TRANSITION_NON_ASYNC_GAMERS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -28322,7 +28650,7 @@ namespace big
 
         NETWORK::NETWORK_SET_TRANSITION_CREATOR_HANDLE(&p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -28357,7 +28685,7 @@ namespace big
 
         NETWORK::NETWORK_SET_GAMER_INVITED_TO_TRANSITION(&gamerHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -28366,7 +28694,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_LEAVE_TRANSITION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28376,7 +28704,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_LAUNCH_TRANSITION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28410,7 +28738,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_DO_TRANSITION_TO_GAME(p0, maxPlayers);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28423,7 +28751,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_DO_TRANSITION_TO_NEW_GAME(p0, maxPlayers, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28478,7 +28806,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_TRANSITION_TO_GAME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28564,7 +28892,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_TRANSITION_HOST();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28610,7 +28938,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_IN_TRANSITION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28620,7 +28948,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_TRANSITION_STARTED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28630,7 +28958,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_TRANSITION_BUSY();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28640,7 +28968,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_TRANSITION_MATCHMAKING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28650,7 +28978,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_TRANSITION_LEAVE_POSTPONED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28693,7 +29021,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_TRANSITION_OPEN_TO_MATCHMAKING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28711,7 +29039,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_TRANSITION_VISIBILITY_LOCKED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28744,7 +29072,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_PLAYER_STARTED_TRANSITION(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28755,7 +29083,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_ARE_TRANSITION_DETAILS_VALID(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28766,7 +29094,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_JOIN_TRANSITION(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28812,7 +29140,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_ACTIVITY_SESSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28899,7 +29227,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_GET_PRESENCE_INVITE_INDEX_BY_ID(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -28909,7 +29237,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_NUM_PRESENCE_INVITES();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -28920,7 +29248,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_ACCEPT_PRESENCE_INVITE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28931,7 +29259,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_REMOVE_PRESENCE_INVITE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -28942,7 +29270,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_GET_PRESENCE_INVITE_ID(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -28953,7 +29281,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_GET_PRESENCE_INVITE_INVITER(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -28983,7 +29311,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_GET_PRESENCE_INVITE_SESSION_ID(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -28994,7 +29322,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_GET_PRESENCE_INVITE_CONTENT_ID(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29005,7 +29333,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_GET_PRESENCE_INVITE_PLAYLIST_LENGTH(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29016,7 +29344,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_GET_PRESENCE_INVITE_PLAYLIST_CURRENT(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29027,7 +29355,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_GET_PRESENCE_INVITE_FROM_ADMIN(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29038,7 +29366,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_GET_PRESENCE_INVITE_IS_TOURNAMENT(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29048,7 +29376,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_FOLLOW_INVITE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29058,7 +29386,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_ACTION_FOLLOW_INVITE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29068,7 +29396,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_CLEAR_FOLLOW_INVITE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29085,7 +29413,7 @@ namespace big
 
         NETWORK::NETWORK_REMOVE_TRANSITION_INVITE(&p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -29170,7 +29498,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_GET_INVITE_REPLY_STATUS(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29217,7 +29545,7 @@ namespace big
 
         NETWORK::NETWORK_SET_INVITE_ON_CALL_FOR_INVITE_MENU(&p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -29247,7 +29575,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_CHECK_DATA_MANAGER_FOR_HANDLE(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29321,7 +29649,7 @@ namespace big
 
         BOOL res = NETWORK::REFRESH_PLAYER_LIST_STATS(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29349,7 +29677,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_IN_PLATFORM_PARTY();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29359,7 +29687,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_PLATFORM_PARTY_MEMBER_COUNT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29388,7 +29716,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_IN_PLATFORM_PARTY_CHAT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29416,7 +29744,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_CAN_QUEUE_FOR_PREVIOUS_SESSION_JOIN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29426,7 +29754,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_QUEUING_FOR_SESSION_JOIN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29461,7 +29789,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_RANDOM_INT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29473,7 +29801,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_RANDOM_INT_RANGED(rangeStart, rangeEnd);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29483,7 +29811,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_PLAYER_IS_CHEATER();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29493,7 +29821,7 @@ namespace big
 
         int res = NETWORK::NETWORK_PLAYER_GET_CHEATER_REASON();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29503,7 +29831,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_PLAYER_IS_BADSPORT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29516,7 +29844,7 @@ namespace big
 
         BOOL res = NETWORK::TRIGGER_PLAYER_CRC_HACKER_CHECK(player, p1, scriptHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29526,7 +29854,7 @@ namespace big
 
         Any res = NETWORK::TRIGGER_TUNING_CRC_HACKER_CHECK();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29536,7 +29864,7 @@ namespace big
 
         Any res = NETWORK::TRIGGER_FILE_CRC_HACKER_CHECK();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29549,7 +29877,7 @@ namespace big
 
         BOOL res = NETWORK::REMOTE_CHEATER_PLAYER_DETECTED(player, a, b);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29619,7 +29947,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_TRY_TO_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29629,7 +29957,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_GET_THIS_SCRIPT_IS_NETWORK_SCRIPT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29639,7 +29967,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_MAX_NUM_PARTICIPANTS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29649,7 +29977,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_NUM_PARTICIPANTS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29659,7 +29987,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_SCRIPT_STATUS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29672,7 +30000,7 @@ namespace big
 
         NETWORK::NETWORK_REGISTER_HOST_BROADCAST_VARIABLES(&vars, numVars, debugName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -29684,7 +30012,7 @@ namespace big
 
         NETWORK::NETWORK_REGISTER_PLAYER_BROADCAST_VARIABLES(&vars, numVars, debugName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -29717,7 +30045,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29728,7 +30056,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_PLAYER_INDEX(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29739,7 +30067,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_PARTICIPANT_INDEX(index);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29750,7 +30078,7 @@ namespace big
 
         Player res = NETWORK::NETWORK_GET_PLAYER_INDEX_FROM_PED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29760,7 +30088,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_NUM_CONNECTED_PLAYERS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29771,7 +30099,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_PLAYER_CONNECTED(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29781,7 +30109,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_TOTAL_NUM_PLAYERS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29792,7 +30120,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_PARTICIPANT_ACTIVE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29803,7 +30131,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_PLAYER_ACTIVE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29814,7 +30142,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_PLAYER_A_PARTICIPANT(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29824,7 +30152,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_HOST_OF_THIS_SCRIPT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29834,7 +30162,7 @@ namespace big
 
         Player res = NETWORK::NETWORK_GET_HOST_OF_THIS_SCRIPT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29847,7 +30175,7 @@ namespace big
 
         Player res = NETWORK::NETWORK_GET_HOST_OF_SCRIPT(scriptName, instance_id, position_hash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29867,7 +30195,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_SCRIPT_ACTIVE(scriptName, instance_id, p2, position_hash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29881,7 +30209,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_SCRIPT_ACTIVE_BY_HASH(scriptHash, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29892,7 +30220,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_THREAD_A_NETWORK_SCRIPT(threadId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29905,7 +30233,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_NUM_SCRIPT_PARTICIPANTS(scriptName, instance_id, position_hash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29915,7 +30243,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_INSTANCE_ID_OF_THIS_SCRIPT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29925,7 +30253,7 @@ namespace big
 
         Hash res = NETWORK::NETWORK_GET_POSITION_HASH_OF_THIS_SCRIPT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29938,7 +30266,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_PLAYER_A_PARTICIPANT_ON_SCRIPT(player, script, instance_id);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -29960,7 +30288,7 @@ namespace big
 
         Player res = NETWORK::PARTICIPANT_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -29970,7 +30298,7 @@ namespace big
 
         int res = NETWORK::PARTICIPANT_ID_TO_INT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30139,7 +30467,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_LOCAL_PLAYER_INVINCIBLE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30172,7 +30500,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_ENTITY_BEEN_REGISTERED_WITH_THIS_THREAD(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30183,7 +30511,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30194,7 +30522,7 @@ namespace big
 
         Entity res = NETWORK::NETWORK_GET_ENTITY_FROM_NETWORK_ID(netId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30205,7 +30533,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_GET_ENTITY_IS_NETWORKED(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30216,7 +30544,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_GET_ENTITY_IS_LOCAL(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30241,7 +30569,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_DOES_NETWORK_ID_EXIST(netId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30252,7 +30580,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_DOES_ENTITY_EXIST_WITH_NETWORK_ID(netId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30263,7 +30591,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_REQUEST_CONTROL_OF_NETWORK_ID(netId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30274,7 +30602,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_CONTROL_OF_NETWORK_ID(netId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30285,7 +30613,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_NETWORK_ID_REMOTELY_CONTROLLED(netId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30296,7 +30624,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30307,7 +30635,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_REQUEST_CONTROL_OF_DOOR(doorID);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30318,7 +30646,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30329,7 +30657,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_CONTROL_OF_PICKUP(pickup);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30340,7 +30668,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_CONTROL_OF_DOOR(doorHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30351,7 +30679,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_DOOR_NETWORKED(doorHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30362,7 +30690,7 @@ namespace big
 
         int res = NETWORK::VEH_TO_NET(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30373,7 +30701,7 @@ namespace big
 
         int res = NETWORK::PED_TO_NET(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30384,7 +30712,7 @@ namespace big
 
         int res = NETWORK::OBJ_TO_NET(object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30395,7 +30723,7 @@ namespace big
 
         Vehicle res = NETWORK::NET_TO_VEH(netHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30406,7 +30734,7 @@ namespace big
 
         Ped res = NETWORK::NET_TO_PED(netHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30417,7 +30745,7 @@ namespace big
 
         Object res = NETWORK::NET_TO_OBJ(netHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30428,7 +30756,7 @@ namespace big
 
         Entity res = NETWORK::NET_TO_ENT(netHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30440,7 +30768,7 @@ namespace big
 
         NETWORK::NETWORK_GET_LOCAL_HANDLE(&gamerHandle, gamerHandleSize);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -30452,7 +30780,7 @@ namespace big
 
         NETWORK::NETWORK_HANDLE_FROM_USER_ID(userId, &gamerHandle, gamerHandleSize);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -30464,7 +30792,7 @@ namespace big
 
         NETWORK::NETWORK_HANDLE_FROM_MEMBER_ID(memberId, &gamerHandle, gamerHandleSize);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -30476,7 +30804,7 @@ namespace big
 
         NETWORK::NETWORK_HANDLE_FROM_PLAYER(player, &gamerHandle, gamerHandleSize);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -30486,7 +30814,7 @@ namespace big
 
         Hash res = NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30517,7 +30845,7 @@ namespace big
 
         NETWORK::NETWORK_HANDLE_FROM_FRIEND(friendIndex, &gamerHandle, gamerHandleSize);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -30544,7 +30872,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_GAMERTAG_FROM_HANDLE_PENDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30554,7 +30882,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_GAMERTAG_FROM_HANDLE_SUCCEEDED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30604,7 +30932,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_DISPLAYNAMES_FROM_HANDLES(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30710,7 +31038,7 @@ namespace big
 
         NETWORK::NETWORK_SHOW_PROFILE_UI(&gamerHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -30720,7 +31048,7 @@ namespace big
 
         const char* res = NETWORK::NETWORK_PLAYER_GET_NAME(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -30750,7 +31078,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_PLAYER_IS_ROCKSTAR_DEV(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30761,7 +31089,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_PLAYER_INDEX_IS_CHEATER(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30772,7 +31100,7 @@ namespace big
 
         int res = NETWORK::NETWORK_ENTITY_GET_OBJECT_ID(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30783,7 +31111,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_ENTITY_FROM_OBJECT_ID(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30811,7 +31139,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_MAX_FRIENDS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30821,7 +31149,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_FRIEND_COUNT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30832,7 +31160,7 @@ namespace big
 
         const char* res = NETWORK::NETWORK_GET_FRIEND_NAME(friendIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -30843,7 +31171,7 @@ namespace big
 
         const char* res = NETWORK::NETWORK_GET_FRIEND_DISPLAY_NAME(friendIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -30854,7 +31182,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_FRIEND_ONLINE(name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30883,7 +31211,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_FRIEND_IN_SAME_TITLE(friendName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30894,7 +31222,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_FRIEND_IN_MULTIPLAYER(friendName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30923,7 +31251,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_IS_PENDING_FRIEND(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30933,7 +31261,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_IS_ADDING_FRIEND();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -30963,7 +31291,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_FRIEND_INDEX_ONLINE(friendIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30981,7 +31309,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_GET_PLAYER_OWNS_WAYPOINT(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -30991,7 +31319,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_CAN_SET_WAYPOINT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -31008,7 +31336,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_SET_SCRIPT_AUTOMUTED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -31018,7 +31346,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_HAS_AUTOMUTE_OVERRIDE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -31028,7 +31356,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_HEADSET();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -31045,7 +31373,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_PUSH_TO_TALK_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -31326,7 +31654,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_PLAYER_TALKING(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -31337,7 +31665,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_PLAYER_HAS_HEADSET(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -31348,7 +31676,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_PLAYER_MUTED_BY_ME(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -31359,7 +31687,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_AM_I_MUTED_BY_PLAYER(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -31370,7 +31698,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_PLAYER_BLOCKED_BY_ME(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -31381,7 +31709,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_AM_I_BLOCKED_BY_PLAYER(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -31392,7 +31720,7 @@ namespace big
 
         float res = NETWORK::NETWORK_GET_PLAYER_LOUDNESS(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -31409,7 +31737,7 @@ namespace big
 
         float res = NETWORK::NETWORK_GET_TALKER_PROXIMITY();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -31456,7 +31784,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_SET_SAME_TEAM_AS_LOCAL_PLAYER(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -31616,7 +31944,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_TEXT_CHAT_IS_TYPING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -31632,7 +31960,7 @@ namespace big
 
         BOOL res = NETWORK::SHUTDOWN_AND_LOAD_MOST_RECENT_SAVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -31667,7 +31995,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_TIMEOUT_TIME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -31720,7 +32048,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_IS_ANY_PLAYER_NEAR(p0, p1, p2, p3, p4, p5, p6);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -31730,7 +32058,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_CLAN_SERVICE_IS_VALID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -31820,7 +32148,7 @@ namespace big
 
         int res = NETWORK::NETWORK_CLAN_GET_LOCAL_MEMBERSHIPS_COUNT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -31885,7 +32213,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_CLAN_ANY_DOWNLOAD_MEMBERSHIP_PENDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -31974,7 +32302,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_CLAN_JOIN(clanDesc);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -31986,7 +32314,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_CLAN_CREWINFO_GET_STRING_VALUE(animDict, animName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -31998,7 +32326,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_CLAN_CREWINFO_GET_CREWRANKTITLE(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32008,7 +32336,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_CLAN_HAS_CREWINFO_METADATA_BEEN_RECEIVED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32041,7 +32369,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_CLAN_REQUEST_EMBLEM(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32077,7 +32405,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_GET_PRIMARY_CLAN_DATA_CLEAR();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32112,7 +32440,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_GET_PRIMARY_CLAN_DATA_PENDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32122,7 +32450,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_GET_PRIMARY_CLAN_DATA_SUCCESS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32244,7 +32572,7 @@ namespace big
 
         BOOL res = NETWORK::ARE_CUTSCENE_ENTITIES_NETWORKED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32263,7 +32591,7 @@ namespace big
 
         BOOL res = NETWORK::IS_NETWORK_ID_OWNED_BY_PARTICIPANT(netId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32337,7 +32665,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_PLAYER_FADING(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32348,7 +32676,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_ENTITY_FADING(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32359,7 +32687,7 @@ namespace big
 
         BOOL res = NETWORK::IS_PLAYER_IN_CUTSCENE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32393,7 +32721,7 @@ namespace big
 
         BOOL res = NETWORK::IS_DAMAGE_TRACKER_ACTIVE_ON_NETWORK_ID(netID);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32412,7 +32740,7 @@ namespace big
 
         BOOL res = NETWORK::IS_DAMAGE_TRACKER_ACTIVE_ON_PLAYER(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32434,7 +32762,7 @@ namespace big
 
         BOOL res = NETWORK::IS_SPHERE_VISIBLE_TO_ANOTHER_MACHINE(p0, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32449,7 +32777,7 @@ namespace big
 
         BOOL res = NETWORK::IS_SPHERE_VISIBLE_TO_PLAYER(p0, p1, p2, p3, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32502,7 +32830,7 @@ namespace big
 
         BOOL res = NETWORK::CAN_REGISTER_MISSION_OBJECTS(amount);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32513,7 +32841,7 @@ namespace big
 
         BOOL res = NETWORK::CAN_REGISTER_MISSION_PEDS(amount);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32524,7 +32852,7 @@ namespace big
 
         BOOL res = NETWORK::CAN_REGISTER_MISSION_VEHICLES(amount);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32535,7 +32863,7 @@ namespace big
 
         BOOL res = NETWORK::CAN_REGISTER_MISSION_PICKUPS(amount);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32546,7 +32874,7 @@ namespace big
 
         Any res = NETWORK::CAN_REGISTER_MISSION_DOORS(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32560,7 +32888,7 @@ namespace big
 
         BOOL res = NETWORK::CAN_REGISTER_MISSION_ENTITIES(ped_amt, vehicle_amt, object_amt, pickup_amt);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32572,7 +32900,7 @@ namespace big
 
         int res = NETWORK::GET_NUM_RESERVED_MISSION_OBJECTS(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32584,7 +32912,7 @@ namespace big
 
         int res = NETWORK::GET_NUM_RESERVED_MISSION_PEDS(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32596,7 +32924,7 @@ namespace big
 
         int res = NETWORK::GET_NUM_RESERVED_MISSION_VEHICLES(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32607,7 +32935,7 @@ namespace big
 
         int res = NETWORK::GET_NUM_CREATED_MISSION_OBJECTS(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32618,7 +32946,7 @@ namespace big
 
         int res = NETWORK::GET_NUM_CREATED_MISSION_PEDS(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32629,7 +32957,7 @@ namespace big
 
         int res = NETWORK::GET_NUM_CREATED_MISSION_VEHICLES(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32652,7 +32980,7 @@ namespace big
 
         int res = NETWORK::GET_MAX_NUM_NETWORK_OBJECTS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32662,7 +32990,7 @@ namespace big
 
         int res = NETWORK::GET_MAX_NUM_NETWORK_PEDS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32672,7 +33000,7 @@ namespace big
 
         int res = NETWORK::GET_MAX_NUM_NETWORK_VEHICLES();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32682,7 +33010,7 @@ namespace big
 
         int res = NETWORK::GET_MAX_NUM_NETWORK_PICKUPS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32715,7 +33043,7 @@ namespace big
 
         int res = NETWORK::GET_NETWORK_TIME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32725,7 +33053,7 @@ namespace big
 
         int res = NETWORK::GET_NETWORK_TIME_ACCURATE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32735,7 +33063,7 @@ namespace big
 
         BOOL res = NETWORK::HAS_NETWORK_TIME_STARTED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32747,7 +33075,7 @@ namespace big
 
         int res = NETWORK::GET_TIME_OFFSET(timeA, timeB);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32759,7 +33087,7 @@ namespace big
 
         BOOL res = NETWORK::IS_TIME_LESS_THAN(timeA, timeB);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32771,7 +33099,7 @@ namespace big
 
         BOOL res = NETWORK::IS_TIME_MORE_THAN(timeA, timeB);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32783,7 +33111,7 @@ namespace big
 
         BOOL res = NETWORK::IS_TIME_EQUAL_TO(timeA, timeB);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32795,7 +33123,7 @@ namespace big
 
         int res = NETWORK::GET_TIME_DIFFERENCE(timeA, timeB);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32806,7 +33134,7 @@ namespace big
 
         const char* res = NETWORK::GET_TIME_AS_STRING(time);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -32816,7 +33144,7 @@ namespace big
 
         const char* res = NETWORK::GET_CLOUD_TIME_AS_STRING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -32826,7 +33154,7 @@ namespace big
 
         int res = NETWORK::GET_CLOUD_TIME_AS_INT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -32838,7 +33166,7 @@ namespace big
 
         NETWORK::CONVERT_POSIX_TIME(posixTime, &timeStructure);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -32879,7 +33207,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_IN_SPECTATOR_MODE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32897,7 +33225,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_IN_MP_CUTSCENE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32908,7 +33236,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_PLAYER_IN_MP_CUTSCENE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -32967,7 +33295,7 @@ namespace big
 
         BOOL res = NETWORK::IS_ENTITY_A_GHOST(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33021,7 +33349,7 @@ namespace big
 
         BOOL res = NETWORK::IS_ENTITY_IN_GHOST_COLLISION(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33050,7 +33378,7 @@ namespace big
 
         int res = NETWORK::NETWORK_CREATE_SYNCHRONISED_SCENE(x, y, z, xRot, yRot, zRot, rotationOrder, useOcclusionPortal, looped, p9, animTime, p11);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -33154,7 +33482,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_LOCAL_SCENE_FROM_NETWORK_ID(netId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -33180,7 +33508,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_FIND_LARGEST_BUNCH_OF_PLAYERS(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -33199,7 +33527,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_START_RESPAWN_SEARCH_FOR_PLAYER(player, x, y, z, radius, p5, p6, p7, flags);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33221,7 +33549,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_START_RESPAWN_SEARCH_IN_ANGLED_AREA_FOR_PLAYER(player, x1, y1, z1, x2, y2, z2, width, p8, p9, p10, flags);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33280,7 +33608,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_RESPAWN_RESULT_FLAGS(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -33310,7 +33638,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_IN_TUTORIAL_SESSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33320,7 +33648,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_WAITING_POP_CLEAR_TUTORIAL_SESSION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33330,7 +33658,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_TUTORIAL_SESSION_CHANGE_PENDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33341,7 +33669,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_PLAYER_TUTORIAL_SESSION_INSTANCE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -33353,7 +33681,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_ARE_PLAYERS_IN_SAME_TUTORIAL_SESSION(player, index);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33380,7 +33708,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_PLAYER_CONCEALED(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33399,7 +33727,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_ENTITY_CONCEALED(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33431,7 +33759,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_CLOCK_TIME_OVERRIDDEN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33447,7 +33775,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_ADD_ENTITY_AREA(p0, p1, p2, p3, p4, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -33464,7 +33792,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_ADD_ENTITY_ANGLED_AREA(x1, y1, z1, x2, y2, z2, width);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -33480,7 +33808,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_ADD_CLIENT_ENTITY_AREA(p0, p1, p2, p3, p4, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -33497,7 +33825,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_ADD_CLIENT_ENTITY_ANGLED_AREA(p0, p1, p2, p3, p4, p5, p6);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -33508,7 +33836,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_REMOVE_ENTITY_AREA(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33519,7 +33847,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_ENTITY_AREA_DOES_EXIST(areaHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33530,7 +33858,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_ENTITY_AREA_HAVE_ALL_REPLIED(areaHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33541,7 +33869,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_ENTITY_AREA_IS_OCCUPIED(areaHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33574,7 +33902,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_REQUEST_CLOUD_BACKGROUND_SCRIPTS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33584,7 +33912,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_CLOUD_BACKGROUND_SCRIPT_REQUEST_PENDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33600,7 +33928,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_TUNABLE_CLOUD_REQUEST_PENDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33610,7 +33938,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_TUNABLE_CLOUD_CRC();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -33622,7 +33950,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_DOES_TUNABLE_EXIST(tunableContext, tunableName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33674,7 +34002,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_ACCESS_TUNABLE_BOOL(tunableContext, tunableName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33686,7 +34014,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_DOES_TUNABLE_EXIST_HASH(tunableContext, tunableName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33696,7 +34024,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_ACCESS_TUNABLE_MODIFICATION_DETECTION_CLEAR();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33708,6 +34036,26 @@ namespace big
         int value;
 
         BOOL res = NETWORK::NETWORK_ACCESS_TUNABLE_INT_HASH(tunableContext, tunableName, &value);
+
+        wrenEnsureSlots(vm, 4);
+
+        wrenSetSlotNewList(vm, 0);
+
+        wrenSetSlotBool(vm, 1, (bool)res);
+        wrenInsertInList(vm, 0, 0, 1);
+
+        wrenSetSlotDouble(vm, 2, value);
+        wrenInsertInList(vm, 0, 1, 2);
+
+    }
+
+    static void WREN_NETWORK_NETWORK_ACCESS_TUNABLE_INT_MODIFICATION_DETECTION_REGISTRATION_HASH(WrenVM* vm)
+    {
+        Hash contextHash = (Hash)wrenGetSlotDouble(vm, 1);
+        Hash nameHash = (Hash)wrenGetSlotDouble(vm, 2);
+        int value;
+
+        BOOL res = NETWORK::NETWORK_ACCESS_TUNABLE_INT_MODIFICATION_DETECTION_REGISTRATION_HASH(contextHash, nameHash, &value);
 
         wrenEnsureSlots(vm, 4);
 
@@ -33741,6 +34089,26 @@ namespace big
 
     }
 
+    static void WREN_NETWORK_NETWORK_ACCESS_TUNABLE_FLOAT_MODIFICATION_DETECTION_REGISTRATION_HASH(WrenVM* vm)
+    {
+        Hash contextHash = (Hash)wrenGetSlotDouble(vm, 1);
+        Hash nameHash = (Hash)wrenGetSlotDouble(vm, 2);
+        float value;
+
+        BOOL res = NETWORK::NETWORK_ACCESS_TUNABLE_FLOAT_MODIFICATION_DETECTION_REGISTRATION_HASH(contextHash, nameHash, &value);
+
+        wrenEnsureSlots(vm, 4);
+
+        wrenSetSlotNewList(vm, 0);
+
+        wrenSetSlotBool(vm, 1, (bool)res);
+        wrenInsertInList(vm, 0, 0, 1);
+
+        wrenSetSlotDouble(vm, 2, value);
+        wrenInsertInList(vm, 0, 1, 2);
+
+    }
+
     static void WREN_NETWORK_NETWORK_ACCESS_TUNABLE_BOOL_HASH(WrenVM* vm)
     {
         Hash tunableContext = (Hash)wrenGetSlotDouble(vm, 1);
@@ -33748,9 +34116,29 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_ACCESS_TUNABLE_BOOL_HASH(tunableContext, tunableName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
+    }
+
+    static void WREN_NETWORK_NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH(WrenVM* vm)
+    {
+        Hash contextHash = (Hash)wrenGetSlotDouble(vm, 1);
+        Hash nameHash = (Hash)wrenGetSlotDouble(vm, 2);
+        BOOL value;
+
+        BOOL res = NETWORK::NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH(contextHash, nameHash, &value);
+
+        wrenEnsureSlots(vm, 4);
+
+        wrenSetSlotNewList(vm, 0);
+
+        wrenSetSlotBool(vm, 1, (bool)res);
+        wrenInsertInList(vm, 0, 0, 1);
+
+        wrenSetSlotBool(vm, 2, (bool)value);
+        wrenInsertInList(vm, 0, 1, 2);
+
     }
 
     static void WREN_NETWORK_NETWORK_TRY_ACCESS_TUNABLE_BOOL_HASH(WrenVM* vm)
@@ -33761,7 +34149,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_TRY_ACCESS_TUNABLE_BOOL_HASH(tunableContext, tunableName, defaultValue);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33772,7 +34160,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_CONTENT_MODIFIER_LIST_ID(contentHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -33782,7 +34170,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_BONE_ID_OF_FATAL_HIT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -33798,7 +34186,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_NUMBER_BODY_TRACKER_HITS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -33809,7 +34197,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_BONE_BEEN_HIT_BY_KILLER(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33821,7 +34209,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SET_ATTRIBUTE_DAMAGE_TO_PLAYER(ped, player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33942,7 +34330,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_CACHED_PLAYER_HEAD_BLEND_DATA(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33954,7 +34342,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_APPLY_CACHED_PLAYER_HEAD_BLEND_DATA(ped, player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33964,7 +34352,7 @@ namespace big
 
         int res = NETWORK::GET_NUM_COMMERCE_ITEMS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -33974,7 +34362,7 @@ namespace big
 
         BOOL res = NETWORK::IS_COMMERCE_DATA_VALID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -33991,7 +34379,7 @@ namespace big
 
         BOOL res = NETWORK::IS_COMMERCE_DATA_FETCH_IN_PROGRESS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34002,7 +34390,7 @@ namespace big
 
         const char* res = NETWORK::GET_COMMERCE_ITEM_ID(index);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -34013,7 +34401,7 @@ namespace big
 
         const char* res = NETWORK::GET_COMMERCE_ITEM_NAME(index);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -34024,7 +34412,7 @@ namespace big
 
         const char* res = NETWORK::GET_COMMERCE_PRODUCT_PRICE(index);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -34035,7 +34423,7 @@ namespace big
 
         int res = NETWORK::GET_COMMERCE_ITEM_NUM_CATS(index);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34047,7 +34435,7 @@ namespace big
 
         const char* res = NETWORK::GET_COMMERCE_ITEM_CAT(index, index2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -34066,7 +34454,7 @@ namespace big
 
         BOOL res = NETWORK::IS_COMMERCE_STORE_OPEN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34084,7 +34472,7 @@ namespace big
 
         BOOL res = NETWORK::REQUEST_COMMERCE_ITEM_IMAGE(index);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34101,7 +34489,7 @@ namespace big
 
         const char* res = NETWORK::GET_COMMERCE_ITEM_TEXTURENAME(index);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -34111,7 +34499,7 @@ namespace big
 
         BOOL res = NETWORK::IS_STORE_AVAILABLE_TO_USER();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34133,7 +34521,7 @@ namespace big
 
         BOOL res = NETWORK::IS_USER_OLD_ENOUGH_TO_ACCESS_STORE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34152,7 +34540,7 @@ namespace big
 
         int res = NETWORK::GET_USER_PREMIUM_ACCESS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34162,7 +34550,7 @@ namespace big
 
         int res = NETWORK::GET_USER_STARTER_ACCESS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34173,7 +34561,7 @@ namespace big
 
         int res = NETWORK::CLOUD_DELETE_MEMBER_FILE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34184,7 +34572,7 @@ namespace big
 
         BOOL res = NETWORK::CLOUD_HAS_REQUEST_COMPLETED(handle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34195,7 +34583,7 @@ namespace big
 
         BOOL res = NETWORK::CLOUD_DID_REQUEST_SUCCEED(handle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34211,7 +34599,7 @@ namespace big
 
         BOOL res = NETWORK::CLOUD_IS_CHECKING_AVAILABILITY();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34221,7 +34609,7 @@ namespace big
 
         BOOL res = NETWORK::CLOUD_GET_AVAILABILITY_CHECK_RESULT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34231,7 +34619,7 @@ namespace big
 
         Any res = NETWORK::GET_CONTENT_TO_LOAD_TYPE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34241,7 +34629,7 @@ namespace big
 
         Any res = NETWORK::GET_IS_LAUNCH_FROM_LIVE_AREA();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34251,7 +34639,7 @@ namespace big
 
         Any res = NETWORK::GET_IS_LIVE_AREA_LAUNCH_WITH_CONTENT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34289,7 +34677,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_IS_CREATING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34299,7 +34687,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_HAS_CREATE_FINISHED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34309,7 +34697,7 @@ namespace big
 
         Any res = NETWORK::UGC_DID_CREATE_SUCCEED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34319,7 +34707,7 @@ namespace big
 
         Any res = NETWORK::UGC_GET_CREATE_RESULT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34329,7 +34717,7 @@ namespace big
 
         Any res = NETWORK::UGC_GET_CREATE_CONTENT_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34374,7 +34762,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_QUERY_BY_CATEGORY(p0, p1, p2, p3, p4, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34387,7 +34775,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_QUERY_BY_CONTENT_ID(contentId, latestVersion, contentTypeName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34422,7 +34810,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_QUERY_MOST_RECENTLY_CREATED_CONTENT(offset, count, contentTypeName, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34541,7 +34929,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_GET_GET_BY_CONTENT_ID(contentId, contentTypeName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34649,7 +35037,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_IS_GETTING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34659,7 +35047,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_HAS_GET_FINISHED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34669,7 +35057,7 @@ namespace big
 
         Any res = NETWORK::UGC_DID_GET_SUCCEED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34679,7 +35067,7 @@ namespace big
 
         Any res = NETWORK::UGC_WAS_QUERY_FORCE_CANCELLED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34689,7 +35077,7 @@ namespace big
 
         Any res = NETWORK::UGC_GET_QUERY_RESULT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34699,7 +35087,7 @@ namespace big
 
         Any res = NETWORK::UGC_GET_CONTENT_NUM();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34709,7 +35097,7 @@ namespace big
 
         Any res = NETWORK::UGC_GET_CONTENT_TOTAL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34719,7 +35107,7 @@ namespace big
 
         Hash res = NETWORK::UGC_GET_CONTENT_HASH();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34736,7 +35124,7 @@ namespace big
 
         const char* res = NETWORK::UGC_GET_CONTENT_USER_ID(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -34766,7 +35154,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_GET_CONTENT_CREATED_BY_LOCAL_PLAYER(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34777,7 +35165,7 @@ namespace big
 
         Any res = NETWORK::UGC_GET_CONTENT_USER_NAME(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34788,7 +35176,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_GET_CONTENT_IS_USING_SC_NICKNAME(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34799,7 +35187,7 @@ namespace big
 
         int res = NETWORK::UGC_GET_CONTENT_CATEGORY(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34810,7 +35198,7 @@ namespace big
 
         const char* res = NETWORK::UGC_GET_CONTENT_ID(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -34821,7 +35209,7 @@ namespace big
 
         const char* res = NETWORK::UGC_GET_ROOT_CONTENT_ID(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -34832,7 +35220,7 @@ namespace big
 
         Any res = NETWORK::UGC_GET_CONTENT_NAME(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34843,7 +35231,7 @@ namespace big
 
         int res = NETWORK::UGC_GET_CONTENT_DESCRIPTION_HASH(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34855,7 +35243,7 @@ namespace big
 
         const char* res = NETWORK::UGC_GET_CONTENT_PATH(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -34867,7 +35255,7 @@ namespace big
 
         NETWORK::UGC_GET_CONTENT_UPDATED_DATE(p0, &p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -34878,7 +35266,7 @@ namespace big
 
         Any res = NETWORK::UGC_GET_CONTENT_FILE_VERSION(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34889,7 +35277,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_GET_CONTENT_HAS_LO_RES_PHOTO(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34900,7 +35288,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_GET_CONTENT_HAS_HI_RES_PHOTO(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34911,7 +35299,7 @@ namespace big
 
         Any res = NETWORK::UGC_GET_CONTENT_LANGUAGE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34922,7 +35310,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_GET_CONTENT_IS_PUBLISHED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34933,7 +35321,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_GET_CONTENT_IS_VERIFIED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -34945,7 +35333,7 @@ namespace big
 
         Any res = NETWORK::UGC_GET_CONTENT_RATING(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34957,7 +35345,7 @@ namespace big
 
         Any res = NETWORK::UGC_GET_CONTENT_RATING_COUNT(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34969,7 +35357,7 @@ namespace big
 
         Any res = NETWORK::UGC_GET_CONTENT_RATING_POSITIVE_COUNT(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34981,7 +35369,7 @@ namespace big
 
         Any res = NETWORK::UGC_GET_CONTENT_RATING_NEGATIVE_COUNT(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -34992,7 +35380,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_GET_CONTENT_HAS_PLAYER_RECORD(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35003,7 +35391,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_GET_CONTENT_HAS_PLAYER_BOOKMARKED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35015,7 +35403,7 @@ namespace big
 
         int res = NETWORK::UGC_REQUEST_CONTENT_DATA_FROM_INDEX(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35030,7 +35418,7 @@ namespace big
 
         int res = NETWORK::UGC_REQUEST_CONTENT_DATA_FROM_PARAMS(contentTypeName, contentId, p2, p3, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35041,7 +35429,7 @@ namespace big
 
         int res = NETWORK::UGC_REQUEST_CACHED_DESCRIPTION(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35052,7 +35440,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_IS_DESCRIPTION_REQUEST_IN_PROGRESS(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35063,7 +35451,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_HAS_DESCRIPTION_REQUEST_FINISHED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35074,7 +35462,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_DID_DESCRIPTION_REQUEST_SUCCEED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35086,7 +35474,7 @@ namespace big
 
         Any res = NETWORK::UGC_GET_CACHED_DESCRIPTION(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35097,7 +35485,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_RELEASE_CACHED_DESCRIPTION(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35116,7 +35504,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_PUBLISH(contentId, baseContentId, contentTypeName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35129,7 +35517,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_SET_BOOKMARKED(contentId, bookmarked, contentTypeName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35159,7 +35547,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_IS_MODIFYING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35169,7 +35557,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_HAS_MODIFY_FINISHED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35179,7 +35567,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_DID_MODIFY_SUCCEED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35189,7 +35577,7 @@ namespace big
 
         Any res = NETWORK::UGC_GET_MODIFY_RESULT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35227,7 +35615,7 @@ namespace big
 
         Any res = NETWORK::UGC_HAS_QUERY_CREATORS_FINISHED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35237,7 +35625,7 @@ namespace big
 
         Any res = NETWORK::UGC_DID_QUERY_CREATORS_SUCCEED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35247,7 +35635,7 @@ namespace big
 
         Any res = NETWORK::UGC_GET_CREATOR_NUM();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35258,7 +35646,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_LOAD_OFFLINE_QUERY(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35289,7 +35677,7 @@ namespace big
 
         BOOL res = NETWORK::UGC_IS_LANGUAGE_SUPPORTED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35302,7 +35690,7 @@ namespace big
 
         BOOL res = NETWORK::FACEBOOK_POST_COMPLETED_HEIST(heistName, cashEarned, xpEarned);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35312,7 +35700,7 @@ namespace big
 
         BOOL res = NETWORK::FACEBOOK_POST_CREATE_CHARACTER();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35323,7 +35711,7 @@ namespace big
 
         BOOL res = NETWORK::FACEBOOK_POST_COMPLETED_MILESTONE(milestoneId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35333,7 +35721,7 @@ namespace big
 
         BOOL res = NETWORK::FACEBOOK_HAS_POST_COMPLETED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35343,7 +35731,7 @@ namespace big
 
         BOOL res = NETWORK::FACEBOOK_DID_POST_SUCCEED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35353,7 +35741,7 @@ namespace big
 
         BOOL res = NETWORK::FACEBOOK_CAN_POST_TO_FACEBOOK();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35387,7 +35775,7 @@ namespace big
 
         int res = NETWORK::TITLE_TEXTURE_DOWNLOAD_REQUEST(filePath, name, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35403,7 +35791,7 @@ namespace big
 
         Any res = NETWORK::UGC_TEXTURE_DOWNLOAD_REQUEST(p0, p1, p2, p3, p4, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35421,7 +35809,7 @@ namespace big
 
         BOOL res = NETWORK::TEXTURE_DOWNLOAD_HAS_FAILED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35432,7 +35820,7 @@ namespace big
 
         const char* res = NETWORK::TEXTURE_DOWNLOAD_GET_NAME(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -35443,7 +35831,7 @@ namespace big
 
         int res = NETWORK::GET_STATUS_OF_TEXTURE_DOWNLOAD(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35453,7 +35841,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_CHECK_ROS_LINK_WENTDOWN_NOT_NET();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35463,7 +35851,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SHOULD_SHOW_STRICT_NAT_WARNING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35473,7 +35861,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_CABLE_CONNECTED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35483,7 +35871,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAVE_SCS_PRIVATE_MSG_PRIV();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35493,7 +35881,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAVE_ROS_SOCIAL_CLUB_PRIV();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35503,7 +35891,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAVE_ROS_BANNED_PRIV();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35513,7 +35901,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAVE_ROS_CREATE_TICKET_PRIV();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35523,7 +35911,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAVE_ROS_MULTIPLAYER_PRIV();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35533,7 +35921,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAVE_ROS_LEADERBOARD_WRITE_PRIV();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35544,7 +35932,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_ROS_PRIVILEGE(index);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35577,7 +35965,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_ROS_PRIVILEGE_PLAYED_LAST_GEN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35587,7 +35975,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_HAS_ROS_PRIVILEGE_SPECIAL_EDITION_CONTENT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35598,7 +35986,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_START_COMMUNICATION_PERMISSIONS_CHECK(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35638,7 +36026,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_SKIP_RADIO_WARNING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35682,7 +36070,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_IS_TITLE_UPDATE_REQUIRED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35699,7 +36087,7 @@ namespace big
 
         BOOL res = NETWORK::NETWORK_IS_CONNECTED_VIA_RELAY(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35710,7 +36098,7 @@ namespace big
 
         float res = NETWORK::NETWORK_GET_AVERAGE_LATENCY(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35721,7 +36109,7 @@ namespace big
 
         float res = NETWORK::NETWORK_GET_AVERAGE_PING(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35732,7 +36120,7 @@ namespace big
 
         float res = NETWORK::NETWORK_GET_AVERAGE_PACKET_LOSS(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35743,7 +36131,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_NUM_UNACKED_RELIABLES(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35754,7 +36142,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_UNRELIABLE_RESEND_COUNT(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35765,7 +36153,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_HIGHEST_RELIABLE_RESEND_COUNT(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35782,10 +36170,10 @@ namespace big
 
         Vector3 res = NETWORK::NETWORK_GET_LAST_ENTITY_POS_RECEIVED_OVER_NETWORK(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -35797,10 +36185,10 @@ namespace big
 
         Vector3 res = NETWORK::NETWORK_GET_LAST_PLAYER_POS_RECEIVED_OVER_NETWORK(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -35812,10 +36200,10 @@ namespace big
 
         Vector3 res = NETWORK::NETWORK_GET_LAST_VEL_RECEIVED_OVER_NETWORK(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -35827,10 +36215,10 @@ namespace big
 
         Vector3 res = NETWORK::NETWORK_GET_PREDICTED_VELOCITY(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -35841,7 +36229,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_DUMP_NET_IF_CONFIG();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35851,7 +36239,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_GET_SIGNALLING_INFO();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35861,7 +36249,7 @@ namespace big
 
         Any res = NETWORK::NETWORK_GET_NET_STATISTICS_INFO();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35872,7 +36260,7 @@ namespace big
 
         int res = NETWORK::NETWORK_GET_PLAYER_ACCOUNT_ID(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35898,7 +36286,7 @@ namespace big
 
         Object res = OBJECT::CREATE_OBJECT(modelHash, x, y, z, isNetwork, bScriptHostObj, dynamic);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35915,7 +36303,7 @@ namespace big
 
         Object res = OBJECT::CREATE_OBJECT_NO_OFFSET(modelHash, x, y, z, isNetwork, bScriptHostObj, dynamic);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -35926,7 +36314,7 @@ namespace big
 
         OBJECT::DELETE_OBJECT(&object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -35936,7 +36324,7 @@ namespace big
 
         BOOL res = OBJECT::PLACE_OBJECT_ON_GROUND_PROPERLY(object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35947,7 +36335,7 @@ namespace big
 
         BOOL res = OBJECT::PLACE_OBJECT_ON_GROUND_OR_OBJECT_PROPERLY(object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35961,7 +36349,7 @@ namespace big
 
         BOOL res = OBJECT::ROTATE_OBJECT(object, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -35979,7 +36367,7 @@ namespace big
 
         BOOL res = OBJECT::SLIDE_OBJECT(object, toX, toY, toZ, speedX, speedY, speedZ, collision);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36013,7 +36401,7 @@ namespace big
 
         Object res = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(x, y, z, radius, modelHash, isMission, p6, p7);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -36025,7 +36413,7 @@ namespace big
 
         BOOL res = OBJECT::HAS_OBJECT_BEEN_BROKEN(object, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36041,7 +36429,7 @@ namespace big
 
         BOOL res = OBJECT::HAS_CLOSEST_OBJECT_OF_TYPE_BEEN_BROKEN(p0, p1, p2, p3, modelHash, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36057,7 +36445,7 @@ namespace big
 
         BOOL res = OBJECT::HAS_CLOSEST_OBJECT_OF_TYPE_BEEN_COMPLETELY_DESTROYED(x, y, z, radius, modelHash, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36068,7 +36456,7 @@ namespace big
 
         Any res = OBJECT::GET_HAS_OBJECT_BEEN_COMPLETELY_DESTROYED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -36085,10 +36473,10 @@ namespace big
 
         Vector3 res = OBJECT::GET_OFFSET_FROM_COORD_AND_HEADING_IN_WORLD_COORDS(xPos, yPos, zPos, heading, xOffset, yOffset, zOffset);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -36224,7 +36612,7 @@ namespace big
 
         int res = OBJECT::DOOR_SYSTEM_GET_DOOR_STATE(doorHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -36235,7 +36623,7 @@ namespace big
 
         int res = OBJECT::DOOR_SYSTEM_GET_DOOR_PENDING_STATE(doorHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -36276,7 +36664,7 @@ namespace big
 
         Any res = OBJECT::DOOR_SYSTEM_GET_AUTOMATIC_DISTANCE(doorHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -36287,7 +36675,7 @@ namespace big
 
         float res = OBJECT::DOOR_SYSTEM_GET_OPEN_RATIO(doorHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -36324,7 +36712,7 @@ namespace big
 
         BOOL res = OBJECT::IS_DOOR_REGISTERED_WITH_SYSTEM(doorHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36335,7 +36723,7 @@ namespace big
 
         BOOL res = OBJECT::IS_DOOR_CLOSED(doorHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36359,7 +36747,7 @@ namespace big
 
         BOOL res = OBJECT::DOOR_SYSTEM_GET_IS_PHYSICS_LOADED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36394,7 +36782,7 @@ namespace big
 
         BOOL res = OBJECT::IS_GARAGE_EMPTY(garageHash, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36408,7 +36796,7 @@ namespace big
 
         BOOL res = OBJECT::IS_PLAYER_ENTIRELY_INSIDE_GARAGE(garageHash, player, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36421,7 +36809,7 @@ namespace big
 
         BOOL res = OBJECT::IS_PLAYER_PARTIALLY_INSIDE_GARAGE(garageHash, player, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36436,7 +36824,7 @@ namespace big
 
         BOOL res = OBJECT::ARE_ENTITIES_ENTIRELY_INSIDE_GARAGE(garageHash, p1, p2, p3, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36451,7 +36839,7 @@ namespace big
 
         BOOL res = OBJECT::IS_ANY_ENTITY_ENTIRELY_INSIDE_GARAGE(garageHash, p1, p2, p3, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36465,7 +36853,7 @@ namespace big
 
         BOOL res = OBJECT::IS_OBJECT_ENTIRELY_INSIDE_GARAGE(garageHash, entity, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36478,7 +36866,7 @@ namespace big
 
         BOOL res = OBJECT::IS_OBJECT_PARTIALLY_INSIDE_GARAGE(garageHash, entity, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36535,7 +36923,7 @@ namespace big
 
         BOOL res = OBJECT::DOES_OBJECT_OF_TYPE_EXIST_AT_COORDS(x, y, z, radius, hash, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36557,7 +36945,7 @@ namespace big
 
         BOOL res = OBJECT::IS_POINT_IN_ANGLED_AREA(xPos, yPos, zPos, x1, y1, z1, x2, y2, z2, width, debug, includeZ);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36595,7 +36983,7 @@ namespace big
 
         float res = OBJECT::GET_OBJECT_FRAGMENT_DAMAGE_HEALTH(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -36618,7 +37006,7 @@ namespace big
 
         BOOL res = OBJECT::IS_ANY_OBJECT_NEAR_POINT(x, y, z, range, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36633,7 +37021,7 @@ namespace big
 
         BOOL res = OBJECT::IS_OBJECT_NEAR_POINT(objectHash, x, y, z, range);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36683,7 +37071,7 @@ namespace big
 
         BOOL res = OBJECT::IS_OBJECT_VISIBLE(object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36729,7 +37117,7 @@ namespace big
 
         Object res = OBJECT::GET_RAYFIRE_MAP_OBJECT(x, y, z, radius, name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -36748,7 +37136,7 @@ namespace big
 
         int res = OBJECT::GET_STATE_OF_RAYFIRE_MAP_OBJECT(object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -36759,7 +37147,7 @@ namespace big
 
         BOOL res = OBJECT::DOES_RAYFIRE_MAP_OBJECT_EXIST(object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -36770,7 +37158,7 @@ namespace big
 
         float res = OBJECT::GET_RAYFIRE_MAP_OBJECT_ANIM_PHASE(object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -36788,7 +37176,7 @@ namespace big
 
         Pickup res = OBJECT::CREATE_PICKUP(pickupHash, posX, posY, posZ, p4, value, p6, modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -36810,7 +37198,7 @@ namespace big
 
         Pickup res = OBJECT::CREATE_PICKUP_ROTATE(pickupHash, posX, posY, posZ, rotX, rotY, rotZ, flag, amount, p9, p10, modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -36843,7 +37231,7 @@ namespace big
 
         Pickup res = OBJECT::CREATE_AMBIENT_PICKUP(pickupHash, posX, posY, posZ, flags, value, modelHash, p7, p8);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -36862,7 +37250,7 @@ namespace big
 
         Pickup res = OBJECT::CREATE_NON_NETWORKED_AMBIENT_PICKUP(pickupHash, posX, posY, posZ, flags, value, modelHash, p7, p8);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -36886,7 +37274,7 @@ namespace big
 
         Object res = OBJECT::CREATE_PORTABLE_PICKUP(pickupHash, x, y, z, placeOnGround, modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -36902,7 +37290,7 @@ namespace big
 
         Object res = OBJECT::CREATE_NON_NETWORKED_PORTABLE_PICKUP(pickupHash, x, y, z, placeOnGround, modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -36962,10 +37350,10 @@ namespace big
 
         Vector3 res = OBJECT::GET_SAFE_PICKUP_COORDS(x, y, z, p3, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -36993,10 +37381,10 @@ namespace big
 
         Vector3 res = OBJECT::GET_PICKUP_COORDS(pickup);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -37023,7 +37411,7 @@ namespace big
 
         BOOL res = OBJECT::HAS_PICKUP_BEEN_COLLECTED(pickup);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37053,7 +37441,7 @@ namespace big
 
         BOOL res = OBJECT::DOES_PICKUP_EXIST(pickup);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37064,7 +37452,7 @@ namespace big
 
         BOOL res = OBJECT::DOES_PICKUP_OBJECT_EXIST(pickupObject);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37075,7 +37463,7 @@ namespace big
 
         Object res = OBJECT::GET_PICKUP_OBJECT(pickup);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -37086,7 +37474,7 @@ namespace big
 
         BOOL res = OBJECT::IS_OBJECT_A_PICKUP(object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37097,7 +37485,7 @@ namespace big
 
         BOOL res = OBJECT::IS_OBJECT_A_PORTABLE_PICKUP(object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37112,7 +37500,7 @@ namespace big
 
         BOOL res = OBJECT::DOES_PICKUP_OF_TYPE_EXIST_IN_AREA(pickupHash, x, y, z, radius);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37228,7 +37616,7 @@ namespace big
 
         int res = OBJECT::GET_DEFAULT_AMMO_FOR_WEAPON_PICKUP(pickupHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -37245,7 +37633,7 @@ namespace big
 
         float res = OBJECT::GET_PICKUP_GENERATION_RANGE_MULTIPLIER();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -37396,7 +37784,7 @@ namespace big
 
         Hash res = OBJECT::GET_WEAPON_TYPE_FROM_PICKUP_TYPE(pickupHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -37407,7 +37795,7 @@ namespace big
 
         Hash res = OBJECT::GET_PICKUP_TYPE_FROM_WEAPON_HASH(weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -37418,7 +37806,7 @@ namespace big
 
         BOOL res = OBJECT::IS_PICKUP_WEAPON_OBJECT_VALID(object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37429,7 +37817,7 @@ namespace big
 
         int res = OBJECT::GET_OBJECT_TINT_INDEX(object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -37453,7 +37841,7 @@ namespace big
 
         BOOL res = OBJECT::SET_TINT_INDEX_CLOSEST_BUILDING_OF_TYPE(x, y, z, radius, modelHash, textureVariation);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37476,7 +37864,7 @@ namespace big
 
         Any res = OBJECT::SET_PROP_LIGHT_COLOR(object, p1, r, g, b);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -37487,7 +37875,7 @@ namespace big
 
         BOOL res = OBJECT::IS_PROP_LIGHT_OVERRIDEN(object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37522,7 +37910,7 @@ namespace big
 
         Hash res = OBJECT::CONVERT_OLD_PICKUP_TYPE_TO_NEW(pickupHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -37601,7 +37989,7 @@ namespace big
 
         BOOL res = OBJECT::GET_IS_ARTICULATED_JOINT_AT_MIN_ANGLE(object, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37613,7 +38001,7 @@ namespace big
 
         Any res = OBJECT::GET_IS_ARTICULATED_JOINT_AT_MAX_ANGLE(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -37642,7 +38030,7 @@ namespace big
 
         BOOL res = PAD::IS_CONTROL_ENABLED(padIndex, control);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37654,7 +38042,7 @@ namespace big
 
         BOOL res = PAD::IS_CONTROL_PRESSED(padIndex, control);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37666,7 +38054,7 @@ namespace big
 
         BOOL res = PAD::IS_CONTROL_RELEASED(padIndex, control);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37678,7 +38066,7 @@ namespace big
 
         BOOL res = PAD::IS_CONTROL_JUST_PRESSED(padIndex, control);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37690,7 +38078,7 @@ namespace big
 
         BOOL res = PAD::IS_CONTROL_JUST_RELEASED(padIndex, control);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37702,7 +38090,7 @@ namespace big
 
         int res = PAD::GET_CONTROL_VALUE(padIndex, control);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -37714,7 +38102,7 @@ namespace big
 
         float res = PAD::GET_CONTROL_NORMAL(padIndex, control);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -37733,7 +38121,7 @@ namespace big
 
         float res = PAD::GET_CONTROL_UNBOUND_NORMAL(padIndex, control);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -37746,7 +38134,7 @@ namespace big
 
         BOOL res = PAD::SET_CONTROL_VALUE_NEXT_FRAME(padIndex, control, amount);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37758,7 +38146,7 @@ namespace big
 
         BOOL res = PAD::IS_DISABLED_CONTROL_PRESSED(padIndex, control);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37770,7 +38158,7 @@ namespace big
 
         BOOL res = PAD::IS_DISABLED_CONTROL_RELEASED(padIndex, control);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37782,7 +38170,7 @@ namespace big
 
         BOOL res = PAD::IS_DISABLED_CONTROL_JUST_PRESSED(padIndex, control);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37794,7 +38182,7 @@ namespace big
 
         BOOL res = PAD::IS_DISABLED_CONTROL_JUST_RELEASED(padIndex, control);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37806,7 +38194,7 @@ namespace big
 
         float res = PAD::GET_DISABLED_CONTROL_NORMAL(padIndex, control);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -37818,7 +38206,7 @@ namespace big
 
         float res = PAD::GET_DISABLED_CONTROL_UNBOUND_NORMAL(padIndex, control);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -37829,7 +38217,7 @@ namespace big
 
         int res = PAD::GET_CONTROL_HOW_LONG_AGO(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -37840,7 +38228,7 @@ namespace big
 
         BOOL res = PAD::IS_USING_KEYBOARD_AND_MOUSE(padIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37851,7 +38239,7 @@ namespace big
 
         BOOL res = PAD::IS_USING_CURSOR(padIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37863,7 +38251,7 @@ namespace big
 
         BOOL res = PAD::SET_CURSOR_POSITION(x, y);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37874,7 +38262,7 @@ namespace big
 
         BOOL res = PAD::IS_USING_REMOTE_PLAY(padIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37885,7 +38273,7 @@ namespace big
 
         BOOL res = PAD::HAVE_CONTROLS_CHANGED(padIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37898,7 +38286,7 @@ namespace big
 
         const char* res = PAD::GET_CONTROL_INSTRUCTIONAL_BUTTONS_STRING(padIndex, control, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -37911,7 +38299,7 @@ namespace big
 
         const char* res = PAD::GET_CONTROL_GROUP_INSTRUCTIONAL_BUTTONS_STRING(padIndex, controlGroup, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -37980,7 +38368,7 @@ namespace big
 
         BOOL res = PAD::IS_LOOK_INVERTED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -37990,7 +38378,7 @@ namespace big
 
         BOOL res = PAD::IS_MOUSE_LOOK_INVERTED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -38000,7 +38388,7 @@ namespace big
 
         int res = PAD::GET_LOCAL_PLAYER_AIM_STATE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -38010,7 +38398,7 @@ namespace big
 
         int res = PAD::GET_LOCAL_PLAYER_GAMEPAD_AIM_STATE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -38020,7 +38408,7 @@ namespace big
 
         BOOL res = PAD::GET_IS_USING_ALTERNATE_HANDBRAKE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -38030,7 +38418,7 @@ namespace big
 
         BOOL res = PAD::GET_IS_USING_ALTERNATE_DRIVEBY();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -38040,7 +38428,7 @@ namespace big
 
         BOOL res = PAD::GET_ALLOW_MOVEMENT_WHILE_ZOOMED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -38098,7 +38486,7 @@ namespace big
 
         BOOL res = PAD::INIT_PC_SCRIPTED_CONTROLS(name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -38109,7 +38497,7 @@ namespace big
 
         BOOL res = PAD::SWITCH_PC_SCRIPTED_CONTROLS(name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -38283,7 +38671,6 @@ namespace big
 
         wrenSetSlotDouble(vm, 4, outHeading);
         wrenInsertInList(vm, 0, 2, 4);
-
     }
 
     static void WREN_PATHFIND_GET_NTH_CLOSEST_VEHICLE_NODE(WrenVM* vm)
@@ -38327,7 +38714,7 @@ namespace big
 
         int res = PATHFIND::GET_NTH_CLOSEST_VEHICLE_NODE_ID(x, y, z, nth, nodetype, p5, p6);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -38469,7 +38856,7 @@ namespace big
 
         BOOL res = PATHFIND::IS_VEHICLE_NODE_ID_VALID(vehicleNodeId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -38481,7 +38868,7 @@ namespace big
 
         PATHFIND::GET_VEHICLE_NODE_POSITION(nodeId, &outPosition);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -38491,7 +38878,7 @@ namespace big
 
         BOOL res = PATHFIND::GET_VEHICLE_NODE_IS_GPS_ALLOWED(nodeID);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -38502,7 +38889,7 @@ namespace big
 
         BOOL res = PATHFIND::GET_VEHICLE_NODE_IS_SWITCHED_OFF(nodeID);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -38577,7 +38964,7 @@ namespace big
 
         BOOL res = PATHFIND::ARE_NODES_LOADED_FOR_AREA(x1, y1, x2, y2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -38591,7 +38978,7 @@ namespace big
 
         BOOL res = PATHFIND::REQUEST_PATH_NODES_IN_AREA_THIS_FRAME(x1, y1, x2, y2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -38772,7 +39159,7 @@ namespace big
 
         int res = PATHFIND::GET_GPS_BLIP_ROUTE_LENGTH();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -38807,7 +39194,7 @@ namespace big
 
         BOOL res = PATHFIND::GET_GPS_BLIP_ROUTE_FOUND();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -38873,7 +39260,7 @@ namespace big
 
         BOOL res = PATHFIND::IS_POINT_ON_ROAD(x, y, z, vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -38883,7 +39270,7 @@ namespace big
 
         int res = PATHFIND::GET_NEXT_GPS_DISABLED_ZONE_INDEX();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -38928,7 +39315,7 @@ namespace big
 
         BOOL res = PATHFIND::IS_NAVMESH_REQUIRED_REGION_IN_USE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -38951,7 +39338,7 @@ namespace big
 
         BOOL res = PATHFIND::ARE_ALL_NAVMESH_REGIONS_LOADED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -38967,7 +39354,7 @@ namespace big
 
         BOOL res = PATHFIND::IS_NAVMESH_LOADED_IN_AREA(x1, y1, z1, x2, y2, z2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -38983,7 +39370,7 @@ namespace big
 
         int res = PATHFIND::GET_NUM_NAVMESHES_EXISTING_IN_AREA(x1, y1, z1, x2, y2, z2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39002,7 +39389,7 @@ namespace big
 
         Any res = PATHFIND::ADD_NAVMESH_BLOCKING_OBJECT(p0, p1, p2, p3, p4, p5, p6, p7, p8);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39035,7 +39422,7 @@ namespace big
 
         BOOL res = PATHFIND::DOES_NAVMESH_BLOCKING_OBJECT_EXIST(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39047,7 +39434,7 @@ namespace big
 
         float res = PATHFIND::GET_APPROX_HEIGHT_FOR_POINT(x, y);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39061,7 +39448,7 @@ namespace big
 
         float res = PATHFIND::GET_APPROX_HEIGHT_FOR_AREA(x1, y1, x2, y2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39073,7 +39460,7 @@ namespace big
 
         float res = PATHFIND::GET_APPROX_FLOOR_FOR_POINT(x, y);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39087,7 +39474,7 @@ namespace big
 
         float res = PATHFIND::GET_APPROX_FLOOR_FOR_AREA(x1, y1, x2, y2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39103,7 +39490,7 @@ namespace big
 
         float res = PATHFIND::CALCULATE_TRAVEL_DISTANCE_BETWEEN_POINTS(x1, y1, z1, x2, y2, z2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39122,7 +39509,7 @@ namespace big
 
         Ped res = PED::CREATE_PED(pedType, modelHash, x, y, z, heading, isNetwork, bScriptHostPed);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39133,7 +39520,7 @@ namespace big
 
         PED::DELETE_PED(&ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -39146,7 +39533,7 @@ namespace big
 
         Ped res = PED::CLONE_PED(ped, isNetwork, bScriptHostPed, copyHeadBlendFlag);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39161,7 +39548,7 @@ namespace big
 
         Ped res = PED::CLONE_PED_ALT(ped, isNetwork, bScriptHostPed, copyHeadBlendFlag, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39191,7 +39578,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_VEHICLE(ped, vehicle, atGetIn);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39203,7 +39590,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_MODEL(ped, modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39215,7 +39602,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_ANY_VEHICLE(ped, atGetIn);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39231,7 +39618,7 @@ namespace big
 
         BOOL res = PED::IS_COP_PED_IN_AREA_3D(x1, y1, z1, x2, y2, z2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39242,7 +39629,7 @@ namespace big
 
         BOOL res = PED::IS_PED_INJURED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39253,7 +39640,7 @@ namespace big
 
         BOOL res = PED::IS_PED_HURT(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39264,7 +39651,7 @@ namespace big
 
         BOOL res = PED::IS_PED_FATALLY_INJURED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39276,7 +39663,7 @@ namespace big
 
         BOOL res = PED::IS_PED_DEAD_OR_DYING(ped, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39287,7 +39674,7 @@ namespace big
 
         BOOL res = PED::IS_CONVERSATION_PED_DEAD(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39298,7 +39685,7 @@ namespace big
 
         BOOL res = PED::IS_PED_AIMING_FROM_COVER(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39309,7 +39696,7 @@ namespace big
 
         BOOL res = PED::IS_PED_RELOADING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39320,7 +39707,7 @@ namespace big
 
         BOOL res = PED::IS_PED_A_PLAYER(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39336,7 +39723,7 @@ namespace big
 
         Ped res = PED::CREATE_PED_INSIDE_VEHICLE(vehicle, pedType, modelHash, seat, isNetwork, bScriptHostPed);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39364,7 +39751,7 @@ namespace big
 
         BOOL res = PED::IS_PED_FACING_PED(ped, otherPed, angle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39375,7 +39762,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_MELEE_COMBAT(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39386,7 +39773,7 @@ namespace big
 
         BOOL res = PED::IS_PED_STOPPED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39405,7 +39792,7 @@ namespace big
 
         BOOL res = PED::IS_PED_SHOOTING_IN_AREA(ped, x1, y1, z1, x2, y2, z2, p7, p8);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39423,7 +39810,7 @@ namespace big
 
         BOOL res = PED::IS_ANY_PED_SHOOTING_IN_AREA(x1, y1, z1, x2, y2, z2, p6, p7);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39434,7 +39821,7 @@ namespace big
 
         BOOL res = PED::IS_PED_SHOOTING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39453,7 +39840,7 @@ namespace big
 
         int res = PED::GET_PED_ACCURACY(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39472,7 +39859,7 @@ namespace big
 
         BOOL res = PED::IS_PED_MODEL(ped, modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39491,7 +39878,7 @@ namespace big
 
         PED::REMOVE_PED_ELEGANTLY(&ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -39534,7 +39921,7 @@ namespace big
 
         BOOL res = PED::CAN_CREATE_RANDOM_PED(unk);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39547,7 +39934,7 @@ namespace big
 
         Ped res = PED::CREATE_RANDOM_PED(posX, posY, posZ);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39559,7 +39946,7 @@ namespace big
 
         Ped res = PED::CREATE_RANDOM_PED_AS_DRIVER(vehicle, returnHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39569,7 +39956,7 @@ namespace big
 
         BOOL res = PED::CAN_CREATE_RANDOM_DRIVER();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39579,7 +39966,7 @@ namespace big
 
         BOOL res = PED::CAN_CREATE_RANDOM_BIKE_RIDER();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39612,7 +39999,7 @@ namespace big
 
         BOOL res = PED::IS_PED_MALE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39623,7 +40010,7 @@ namespace big
 
         BOOL res = PED::IS_PED_HUMAN(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39635,7 +40022,7 @@ namespace big
 
         Vehicle res = PED::GET_VEHICLE_PED_IS_IN(ped, includeLastVehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39707,7 +40094,7 @@ namespace big
 
         BOOL res = PED::IS_PED_ON_MOUNT(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39718,7 +40105,7 @@ namespace big
 
         Ped res = PED::GET_MOUNT(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39729,7 +40116,7 @@ namespace big
 
         BOOL res = PED::IS_PED_ON_VEHICLE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39741,7 +40128,7 @@ namespace big
 
         BOOL res = PED::IS_PED_ON_SPECIFIC_VEHICLE(ped, vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39760,7 +40147,7 @@ namespace big
 
         int res = PED::GET_PED_MONEY(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -39810,7 +40197,7 @@ namespace big
 
         BOOL res = PED::IS_PED_SITTING_IN_VEHICLE(ped, vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39821,7 +40208,7 @@ namespace big
 
         BOOL res = PED::IS_PED_SITTING_IN_ANY_VEHICLE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39832,7 +40219,7 @@ namespace big
 
         BOOL res = PED::IS_PED_ON_FOOT(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39843,7 +40230,7 @@ namespace big
 
         BOOL res = PED::IS_PED_ON_ANY_BIKE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39854,7 +40241,7 @@ namespace big
 
         BOOL res = PED::IS_PED_PLANTING_BOMB(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39867,10 +40254,10 @@ namespace big
 
         Vector3 res = PED::GET_DEAD_PED_PICKUP_COORDS(ped, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -39882,7 +40269,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_ANY_BOAT(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39893,7 +40280,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_ANY_SUB(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39904,7 +40291,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_ANY_HELI(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39915,7 +40302,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_ANY_PLANE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39926,7 +40313,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_FLYING_VEHICLE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39945,7 +40332,7 @@ namespace big
 
         BOOL res = PED::GET_PED_DIES_IN_WATER(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -39964,7 +40351,7 @@ namespace big
 
         int res = PED::GET_PED_ARMOUR(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40093,7 +40480,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_ANY_POLICE_VEHICLE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40111,7 +40498,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_PARACHUTE_FREE_FALL(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40122,7 +40509,7 @@ namespace big
 
         BOOL res = PED::IS_PED_FALLING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40133,7 +40520,7 @@ namespace big
 
         BOOL res = PED::IS_PED_JUMPING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40144,7 +40531,7 @@ namespace big
 
         Any res = PED::IS_PED_LANDING(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40155,7 +40542,7 @@ namespace big
 
         Any res = PED::IS_PED_DOING_A_BEAST_JUMP(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40166,7 +40553,7 @@ namespace big
 
         BOOL res = PED::IS_PED_CLIMBING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40177,7 +40564,7 @@ namespace big
 
         BOOL res = PED::IS_PED_VAULTING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40188,7 +40575,7 @@ namespace big
 
         BOOL res = PED::IS_PED_DIVING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40199,7 +40586,7 @@ namespace big
 
         BOOL res = PED::IS_PED_JUMPING_OUT_OF_VEHICLE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40210,7 +40597,7 @@ namespace big
 
         BOOL res = PED::IS_PED_OPENING_DOOR(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40221,7 +40608,7 @@ namespace big
 
         int res = PED::GET_PED_PARACHUTE_STATE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40232,7 +40619,7 @@ namespace big
 
         int res = PED::GET_PED_PARACHUTE_LANDING_TYPE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40252,7 +40639,7 @@ namespace big
 
         PED::GET_PED_PARACHUTE_TINT_INDEX(ped, &outTintIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -40272,7 +40659,7 @@ namespace big
 
         Object res = PED::CREATE_PARACHUTE_BAG_OBJECT(ped, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40291,7 +40678,7 @@ namespace big
 
         BOOL res = PED::IS_PED_DUCKING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40302,7 +40689,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_ANY_TAXI(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40421,7 +40808,7 @@ namespace big
 
         float res = PED::GET_PED_VISUAL_FIELD_CENTER_ANGLE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40441,7 +40828,7 @@ namespace big
 
         BOOL res = PED::GET_PED_STEALTH_MOVEMENT(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40452,7 +40839,7 @@ namespace big
 
         int res = PED::CREATE_GROUP(unused);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40503,7 +40890,7 @@ namespace big
 
         BOOL res = PED::IS_PED_GROUP_MEMBER(ped, groupId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40514,7 +40901,7 @@ namespace big
 
         BOOL res = PED::IS_PED_HANGING_ON_TO_VEHICLE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40541,7 +40928,7 @@ namespace big
 
         BOOL res = PED::IS_PED_PRONE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40553,7 +40940,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_COMBAT(ped, target);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40565,7 +40952,7 @@ namespace big
 
         Entity res = PED::GET_PED_TARGET_FROM_COMBAT_PED(ped, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40577,7 +40964,7 @@ namespace big
 
         BOOL res = PED::CAN_PED_IN_COMBAT_SEE_TARGET(ped, target);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40588,7 +40975,7 @@ namespace big
 
         BOOL res = PED::IS_PED_DOING_DRIVEBY(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40599,7 +40986,7 @@ namespace big
 
         BOOL res = PED::IS_PED_JACKING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40610,7 +40997,7 @@ namespace big
 
         BOOL res = PED::IS_PED_BEING_JACKED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40622,7 +41009,7 @@ namespace big
 
         BOOL res = PED::IS_PED_BEING_STUNNED(ped, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40633,7 +41020,7 @@ namespace big
 
         Ped res = PED::GET_PEDS_JACKER(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40644,7 +41031,7 @@ namespace big
 
         Ped res = PED::GET_JACK_TARGET(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40655,7 +41042,7 @@ namespace big
 
         BOOL res = PED::IS_PED_FLEEING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40667,7 +41054,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_COVER(ped, exceptUseWeapon);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40678,7 +41065,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_COVER_FACING_LEFT(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40689,7 +41076,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_HIGH_COVER(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40700,7 +41087,7 @@ namespace big
 
         BOOL res = PED::IS_PED_GOING_INTO_COVER(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40713,7 +41100,7 @@ namespace big
 
         Any res = PED::SET_PED_PINNED_DOWN(ped, pinned, i);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40724,7 +41111,7 @@ namespace big
 
         int res = PED::GET_SEAT_PED_IS_TRYING_TO_ENTER(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40735,7 +41122,7 @@ namespace big
 
         Vehicle res = PED::GET_VEHICLE_PED_IS_TRYING_TO_ENTER(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40746,7 +41133,7 @@ namespace big
 
         Entity res = PED::GET_PED_SOURCE_OF_DEATH(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40757,7 +41144,7 @@ namespace big
 
         Hash res = PED::GET_PED_CAUSE_OF_DEATH(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40768,7 +41155,7 @@ namespace big
 
         int res = PED::GET_PED_TIME_OF_DEATH(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40779,7 +41166,7 @@ namespace big
 
         int res = PED::COUNT_PEDS_IN_COMBAT_WITH_TARGET(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40794,7 +41181,7 @@ namespace big
 
         int res = PED::COUNT_PEDS_IN_COMBAT_WITH_TARGET_WITHIN_RADIUS(ped, x, y, z, radius);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40865,7 +41252,7 @@ namespace big
 
         BOOL res = PED::DOES_RELATIONSHIP_GROUP_EXIST(groupHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -40877,7 +41264,7 @@ namespace big
 
         int res = PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped1, ped2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40888,7 +41275,7 @@ namespace big
 
         Hash res = PED::GET_PED_RELATIONSHIP_GROUP_DEFAULT_HASH(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40899,7 +41286,7 @@ namespace big
 
         Hash res = PED::GET_PED_RELATIONSHIP_GROUP_HASH(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40911,7 +41298,7 @@ namespace big
 
         int res = PED::GET_RELATIONSHIP_BETWEEN_GROUPS(group1, group2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -40960,7 +41347,7 @@ namespace big
 
         BOOL res = PED::IS_PED_RESPONDING_TO_EVENT(ped, event);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -41017,7 +41404,7 @@ namespace big
 
         float res = PED::GET_COMBAT_FLOAT(ped, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41048,7 +41435,7 @@ namespace big
 
         BOOL res = PED::DOES_GROUP_EXIST(groupId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -41059,7 +41446,7 @@ namespace big
 
         int res = PED::GET_PED_GROUP_INDEX(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41070,7 +41457,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_GROUP(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -41081,7 +41468,7 @@ namespace big
 
         Player res = PED::GET_PLAYER_PED_IS_FOLLOWING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41117,7 +41504,7 @@ namespace big
 
         Vehicle res = PED::GET_VEHICLE_PED_IS_USING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41128,7 +41515,7 @@ namespace big
 
         Vehicle res = PED::GET_VEHICLE_PED_IS_ENTERING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41158,7 +41545,7 @@ namespace big
 
         int res = PED::GET_TIME_PED_DAMAGED_BY_WEAPON(ped, weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41185,7 +41572,7 @@ namespace big
 
         int res = PED::GET_PED_TYPE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41219,7 +41606,7 @@ namespace big
 
         int res = PED::GET_PED_MAX_HEALTH(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41288,7 +41675,7 @@ namespace big
 
         BOOL res = PED::CAN_KNOCK_PED_OFF_VEHICLE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -41317,7 +41704,7 @@ namespace big
 
         Ped res = PED::GET_PED_AS_GROUP_MEMBER(groupID, memberNumber);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41328,7 +41715,7 @@ namespace big
 
         Ped res = PED::GET_PED_AS_GROUP_LEADER(groupID);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41355,7 +41742,7 @@ namespace big
 
         BOOL res = PED::IS_PED_SWIMMING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -41366,7 +41753,7 @@ namespace big
 
         BOOL res = PED::IS_PED_SWIMMING_UNDER_WATER(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -41415,7 +41802,7 @@ namespace big
 
         BOOL res = PED::CAN_CREATE_RANDOM_COPS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -41443,7 +41830,7 @@ namespace big
 
         BOOL res = PED::IS_PED_IN_ANY_TRAIN(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -41454,7 +41841,7 @@ namespace big
 
         BOOL res = PED::IS_PED_GETTING_INTO_A_VEHICLE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -41465,7 +41852,7 @@ namespace big
 
         BOOL res = PED::IS_PED_TRYING_TO_ENTER_A_LOCKED_VEHICLE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -41509,7 +41896,7 @@ namespace big
 
         int res = PED::GET_PED_ALERTNESS(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41637,7 +42024,7 @@ namespace big
 
         BOOL res = PED::IS_SCRIPTED_SCENARIO_PED_USING_CONDITIONAL_ANIM(ped, animDict, anim);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -41705,10 +42092,10 @@ namespace big
 
         Vector3 res = PED::GET_ANIM_INITIAL_OFFSET_POSITION(animDict, animName, x, y, z, xRot, yRot, zRot, p8, p9);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -41729,10 +42116,10 @@ namespace big
 
         Vector3 res = PED::GET_ANIM_INITIAL_OFFSET_ROTATION(animDict, animName, x, y, z, xRot, yRot, zRot, p8, p9);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -41745,7 +42132,7 @@ namespace big
 
         int res = PED::GET_PED_DRAWABLE_VARIATION(ped, componentId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41757,7 +42144,7 @@ namespace big
 
         int res = PED::GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS(ped, componentId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41769,7 +42156,7 @@ namespace big
 
         int res = PED::GET_PED_TEXTURE_VARIATION(ped, componentId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41782,7 +42169,7 @@ namespace big
 
         int res = PED::GET_NUMBER_OF_PED_TEXTURE_VARIATIONS(ped, componentId, drawableId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41794,7 +42181,7 @@ namespace big
 
         int res = PED::GET_NUMBER_OF_PED_PROP_DRAWABLE_VARIATIONS(ped, propId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41807,7 +42194,7 @@ namespace big
 
         int res = PED::GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS(ped, propId, drawableId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41819,7 +42206,7 @@ namespace big
 
         int res = PED::GET_PED_PALETTE_VARIATION(ped, componentId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41852,7 +42239,7 @@ namespace big
 
         Any res = PED::GET_FM_MALE_SHOP_PED_APPAREL_ITEM_INDEX(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41863,7 +42250,7 @@ namespace big
 
         Any res = PED::GET_FM_FEMALE_SHOP_PED_APPAREL_ITEM_INDEX(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -41877,7 +42264,7 @@ namespace big
 
         BOOL res = PED::IS_PED_COMPONENT_VARIATION_VALID(ped, componentId, drawableId, textureId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -41986,7 +42373,7 @@ namespace big
 
         int res = PED::GET_HEAD_BLEND_EYE_COLOR(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -42008,7 +42395,7 @@ namespace big
 
         int res = PED::GET_PED_HEAD_OVERLAY(ped, overlayID);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -42019,7 +42406,7 @@ namespace big
 
         int res = PED::GET_PED_HEAD_OVERLAY_NUM(overlayID);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -42049,7 +42436,7 @@ namespace big
 
         int res = PED::GET_NUM_PED_HAIR_TINTS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -42059,7 +42446,7 @@ namespace big
 
         int res = PED::GET_NUM_PED_MAKEUP_TINTS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -42118,7 +42505,7 @@ namespace big
 
         BOOL res = PED::IS_PED_HAIR_TINT_FOR_CREATOR(colorId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42129,7 +42516,7 @@ namespace big
 
         int res = PED::GET_DEFAULT_SECONDARY_TINT_FOR_CREATOR(colorId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -42140,7 +42527,7 @@ namespace big
 
         BOOL res = PED::IS_PED_LIPSTICK_TINT_FOR_CREATOR(colorId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42151,7 +42538,7 @@ namespace big
 
         BOOL res = PED::IS_PED_BLUSH_TINT_FOR_CREATOR(colorId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42162,7 +42549,7 @@ namespace big
 
         BOOL res = PED::IS_PED_HAIR_TINT_FOR_BARBER(colorID);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42173,7 +42560,7 @@ namespace big
 
         Any res = PED::GET_DEFAULT_SECONDARY_TINT_FOR_BARBER(colorID);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -42184,7 +42571,7 @@ namespace big
 
         BOOL res = PED::IS_PED_LIPSTICK_TINT_FOR_BARBER(colorID);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42195,7 +42582,7 @@ namespace big
 
         BOOL res = PED::IS_PED_BLUSH_TINT_FOR_BARBER(colorID);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42206,7 +42593,7 @@ namespace big
 
         BOOL res = PED::IS_PED_BLUSH_FACEPAINT_TINT_FOR_BARBER(colorId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42219,7 +42606,7 @@ namespace big
 
         Any res = PED::GET_TINT_INDEX_FOR_LAST_GEN_HAIR_TEXTURE(modelHash, drawableId, textureId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -42239,7 +42626,7 @@ namespace big
 
         BOOL res = PED::HAS_PED_HEAD_BLEND_FINISHED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42275,7 +42662,7 @@ namespace big
 
         int res = PED::GET_PED_HEAD_BLEND_FIRST_INDEX(type);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -42286,7 +42673,7 @@ namespace big
 
         int res = PED::GET_PED_HEAD_BLEND_NUM_HEADS(type);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -42300,7 +42687,7 @@ namespace big
 
         Any res = PED::SET_PED_PRELOAD_VARIATION_DATA(ped, slot, drawableId, textureId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -42311,7 +42698,7 @@ namespace big
 
         BOOL res = PED::HAS_PED_PRELOAD_VARIATION_DATA_FINISHED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42332,7 +42719,7 @@ namespace big
 
         BOOL res = PED::SET_PED_PRELOAD_PROP_DATA(ped, componentId, drawableId, TextureId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42343,7 +42730,7 @@ namespace big
 
         BOOL res = PED::HAS_PED_PRELOAD_PROP_DATA_FINISHED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42362,7 +42749,7 @@ namespace big
 
         int res = PED::GET_PED_PROP_INDEX(ped, componentId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -42418,7 +42805,7 @@ namespace big
 
         int res = PED::GET_PED_PROP_TEXTURE_INDEX(ped, componentId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -42450,7 +42837,7 @@ namespace big
 
         BOOL res = PED::IS_USING_PED_SCUBA_GEAR_VARIATION(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42503,7 +42890,7 @@ namespace big
 
         Ped res = PED::GET_RANDOM_PED_AT_COORD(x, y, z, xRadius, yRadius, zRadius, pedType);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -42556,7 +42943,7 @@ namespace big
 
         BOOL res = PED::GET_CAN_PED_BE_GRABBED_BY_SCRIPT(ped, p1, p2, p3, p4, p5, p6, p7, p8);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42591,7 +42978,7 @@ namespace big
 
         BOOL res = PED::CAN_PED_RAGDOLL(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42608,7 +42995,7 @@ namespace big
 
         BOOL res = PED::SET_PED_TO_RAGDOLL(ped, time1, time2, ragdollType, p4, p5, p6);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42632,7 +43019,7 @@ namespace big
 
         BOOL res = PED::SET_PED_TO_RAGDOLL_WITH_FALL(ped, time, p2, ragdollType, x, y, z, p7, p8, p9, p10, p11, p12, p13);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42651,7 +43038,7 @@ namespace big
 
         BOOL res = PED::IS_PED_RAGDOLL(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42662,7 +43049,7 @@ namespace big
 
         BOOL res = PED::IS_PED_RUNNING_RAGDOLL_TASK(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42695,7 +43082,7 @@ namespace big
 
         BOOL res = PED::IS_PED_RUNNING_MELEE_TASK(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42706,7 +43093,7 @@ namespace big
 
         BOOL res = PED::IS_PED_RUNNING_MOBILE_PHONE_TASK(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42717,7 +43104,7 @@ namespace big
 
         BOOL res = PED::IS_MOBILE_PHONE_TO_PED_EAR(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42836,10 +43223,10 @@ namespace big
 
         Vector3 res = PED::GET_PED_DEFENSIVE_AREA_POSITION(ped, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -42852,7 +43239,7 @@ namespace big
 
         BOOL res = PED::IS_PED_DEFENSIVE_AREA_ACTIVE(ped, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -42901,10 +43288,10 @@ namespace big
 
         Vector3 res = PED::GET_PED_EXTRACTED_DISPLACEMENT(ped, worldSpace);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -43055,7 +43442,7 @@ namespace big
 
         int res = PED::GET_PED_DECORATIONS_STATE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -43130,7 +43517,7 @@ namespace big
 
         int res = PED::GET_PED_DECORATION_ZONE_FROM_HASHES(collection, overlay);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -43155,7 +43542,7 @@ namespace big
 
         BOOL res = PED::WAS_PED_SKELETON_UPDATED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -43170,10 +43557,10 @@ namespace big
 
         Vector3 res = PED::GET_PED_BONE_COORDS(ped, boneId, offsetX, offsetY, offsetZ);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -43209,7 +43596,7 @@ namespace big
 
         int res = PED::ADD_SCENARIO_BLOCKING_AREA(x1, y1, z1, x2, y2, z2, p6, p7, p8, p9);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -43250,7 +43637,7 @@ namespace big
 
         BOOL res = PED::DOES_SCENARIO_BLOCKING_AREA_EXISTS(x1, y1, z1, x2, y2, z2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -43262,7 +43649,7 @@ namespace big
 
         BOOL res = PED::IS_PED_USING_SCENARIO(ped, scenario);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -43273,7 +43660,7 @@ namespace big
 
         BOOL res = PED::IS_PED_USING_ANY_SCENARIO(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -43287,7 +43674,7 @@ namespace big
 
         Any res = PED::SET_PED_PANIC_EXIT_SCENARIO(p0, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -43309,7 +43696,7 @@ namespace big
 
         Any res = PED::TRIGGER_PED_SCENARIO_PANICEXITTOFLEE(p0, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -43323,7 +43710,7 @@ namespace big
 
         Any res = PED::SET_PED_SHOULD_PLAY_DIRECTED_NORMAL_SCENARIO_EXIT(p0, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -43351,7 +43738,7 @@ namespace big
 
         Any res = PED::SET_PED_SHOULD_PLAY_FLEE_SCENARIO_EXIT(ped, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -43386,7 +43773,7 @@ namespace big
 
         Any res = PED::IS_PED_GESTURING(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -43535,7 +43922,7 @@ namespace big
 
         BOOL res = PED::IS_PED_HEADTRACKING_PED(ped1, ped2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -43547,7 +43934,7 @@ namespace big
 
         BOOL res = PED::IS_PED_HEADTRACKING_ENTITY(ped, entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -43610,7 +43997,7 @@ namespace big
 
         BOOL res = PED::GET_PED_CONFIG_FLAG(ped, flagId, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -43622,7 +44009,7 @@ namespace big
 
         BOOL res = PED::GET_PED_RESET_FLAG(ped, flagId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -43751,7 +44138,7 @@ namespace big
 
         BOOL res = PED::IS_PED_TAKING_OFF_HELMET(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -43797,7 +44184,7 @@ namespace big
 
         BOOL res = PED::IS_PED_HELMET_VISOR_UP(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -43816,7 +44203,7 @@ namespace big
 
         BOOL res = PED::IS_PED_WEARING_HELMET(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -43834,7 +44221,7 @@ namespace big
 
         Any res = PED::GET_PED_HELMET_STORED_HAT_PROP_INDEX(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -43845,7 +44232,7 @@ namespace big
 
         Any res = PED::GET_PED_HELMET_STORED_HAT_TEX_INDEX(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -43856,7 +44243,7 @@ namespace big
 
         BOOL res = PED::IS_CURRENT_HEAD_PROP_A_HELMET(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -43962,7 +44349,7 @@ namespace big
 
         int res = PED::GET_PED_COMBAT_MOVEMENT(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -43989,7 +44376,7 @@ namespace big
 
         int res = PED::GET_PED_COMBAT_RANGE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -44017,7 +44404,7 @@ namespace big
 
         BOOL res = PED::IS_PED_PERFORMING_MELEE_ACTION(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44028,7 +44415,7 @@ namespace big
 
         BOOL res = PED::IS_PED_PERFORMING_STEALTH_KILL(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44039,7 +44426,7 @@ namespace big
 
         BOOL res = PED::IS_PED_PERFORMING_A_COUNTER_ATTACK(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44050,7 +44437,7 @@ namespace big
 
         BOOL res = PED::IS_PED_BEING_STEALTH_KILLED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44061,7 +44448,7 @@ namespace big
 
         Ped res = PED::GET_MELEE_TARGET_FOR_PED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -44072,7 +44459,7 @@ namespace big
 
         BOOL res = PED::WAS_PED_KILLED_BY_STEALTH(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44083,7 +44470,7 @@ namespace big
 
         BOOL res = PED::WAS_PED_KILLED_BY_TAKEDOWN(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44094,7 +44481,7 @@ namespace big
 
         BOOL res = PED::WAS_PED_KNOCKED_OUT(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44187,7 +44574,7 @@ namespace big
 
         BOOL res = PED::IS_ANY_PED_NEAR_POINT(x, y, z, radius);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44211,7 +44598,7 @@ namespace big
 
         BOOL res = PED::IS_PED_HEADING_TOWARDS_POSITION(ped, x, y, z, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44253,7 +44640,7 @@ namespace big
 
         BOOL res = PED::IS_TRACKED_PED_VISIBLE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44264,7 +44651,7 @@ namespace big
 
         int res = PED::GET_TRACKED_PED_PIXELCOUNT(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -44275,7 +44662,7 @@ namespace big
 
         BOOL res = PED::IS_PED_TRACKED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44287,7 +44674,7 @@ namespace big
 
         BOOL res = PED::HAS_PED_RECEIVED_EVENT(ped, eventId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44299,7 +44686,7 @@ namespace big
 
         BOOL res = PED::CAN_PED_SEE_HATED_PED(ped1, ped2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44349,7 +44736,7 @@ namespace big
 
         int res = PED::GET_PED_BONE_INDEX(ped, boneId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -44361,7 +44748,7 @@ namespace big
 
         int res = PED::GET_PED_RAGDOLL_BONE_INDEX(ped, bone);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -44380,7 +44767,7 @@ namespace big
 
         float res = PED::GET_PED_ENVEFF_SCALE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -44425,7 +44812,7 @@ namespace big
 
         float res = PED::GET_PED_EMISSIVE_SCALE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -44436,7 +44823,7 @@ namespace big
 
         BOOL res = PED::IS_PED_SHADER_READY(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44471,7 +44858,7 @@ namespace big
 
         BOOL res = PED::IS_PED_SHELTERED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44488,7 +44875,7 @@ namespace big
 
         int res = PED::CREATE_SYNCHRONIZED_SCENE(x, y, z, roll, pitch, yaw, p6);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -44503,7 +44890,7 @@ namespace big
 
         int res = PED::CREATE_SYNCHRONIZED_SCENE_AT_MAP_OBJECT(x, y, z, radius, object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -44514,7 +44901,7 @@ namespace big
 
         BOOL res = PED::IS_SYNCHRONIZED_SCENE_RUNNING(sceneId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44547,7 +44934,7 @@ namespace big
 
         float res = PED::GET_SYNCHRONIZED_SCENE_PHASE(sceneID);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -44566,7 +44953,7 @@ namespace big
 
         float res = PED::GET_SYNCHRONIZED_SCENE_RATE(sceneID);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -44585,7 +44972,7 @@ namespace big
 
         BOOL res = PED::IS_SYNCHRONIZED_SCENE_LOOPED(sceneID);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44604,7 +44991,7 @@ namespace big
 
         BOOL res = PED::IS_SYNCHRONIZED_SCENE_HOLD_LAST_FRAME(sceneID);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44642,7 +45029,7 @@ namespace big
 
         BOOL res = PED::FORCE_PED_MOTION_STATE(ped, motionStateHash, p2, p3, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44709,7 +45096,7 @@ namespace big
 
         BOOL res = PED::PED_HAS_SEXINESS_FLAG_SET(ped, flag);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44759,7 +45146,7 @@ namespace big
 
         BOOL res = PED::HAVE_ALL_STREAMING_REQUESTS_COMPLETED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44770,7 +45157,7 @@ namespace big
 
         BOOL res = PED::IS_PED_USING_ACTION_MODE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44807,7 +45194,7 @@ namespace big
 
         int res = PED::REGISTER_PEDHEADSHOT(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -44818,7 +45205,7 @@ namespace big
 
         int res = PED::REGISTER_PEDHEADSHOT_HIRES(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -44829,7 +45216,7 @@ namespace big
 
         int res = PED::REGISTER_PEDHEADSHOT_TRANSPARENT(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -44847,7 +45234,7 @@ namespace big
 
         BOOL res = PED::IS_PEDHEADSHOT_VALID(id);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44858,7 +45245,7 @@ namespace big
 
         BOOL res = PED::IS_PEDHEADSHOT_READY(id);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44869,7 +45256,7 @@ namespace big
 
         const char* res = PED::GET_PEDHEADSHOT_TXD_STRING(id);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -44880,7 +45267,7 @@ namespace big
 
         BOOL res = PED::REQUEST_PEDHEADSHOT_IMG_UPLOAD(id);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44897,7 +45284,7 @@ namespace big
 
         BOOL res = PED::IS_PEDHEADSHOT_IMG_UPLOAD_AVAILABLE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44907,7 +45294,7 @@ namespace big
 
         BOOL res = PED::HAS_PEDHEADSHOT_IMG_UPLOAD_FAILED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44917,7 +45304,7 @@ namespace big
 
         BOOL res = PED::HAS_PEDHEADSHOT_IMG_UPLOAD_SUCCEEDED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44978,7 +45365,7 @@ namespace big
 
         BOOL res = PED::SPAWNPOINTS_IS_SEARCH_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44988,7 +45375,7 @@ namespace big
 
         BOOL res = PED::SPAWNPOINTS_IS_SEARCH_COMPLETE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -44998,7 +45385,7 @@ namespace big
 
         BOOL res = PED::SPAWNPOINTS_IS_SEARCH_FAILED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -45008,7 +45395,7 @@ namespace big
 
         int res = PED::SPAWNPOINTS_GET_NUM_SEARCH_RESULTS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -45044,7 +45431,7 @@ namespace big
 
         PED::SPAWNPOINTS_GET_SEARCH_RESULT_FLAGS(p0, &p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -45084,7 +45471,7 @@ namespace big
 
         BOOL res = PED::HAS_ACTION_MODE_ASSET_LOADED(asset);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -45109,7 +45496,7 @@ namespace big
 
         BOOL res = PED::HAS_STEALTH_MODE_ASSET_LOADED(asset);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -45166,7 +45553,7 @@ namespace big
 
         BOOL res = PED::IS_ANY_HOSTILE_PED_NEAR_POINT(ped, x, y, z, radius);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -45190,7 +45577,7 @@ namespace big
 
         BOOL res = PED::IS_TARGET_PED_IN_PERCEPTION_AREA(ped, targetPed, p2, p3, p4, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -45243,7 +45630,7 @@ namespace big
 
         BOOL res = PED::IS_PED_SWITCHING_WEAPON(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -45278,7 +45665,7 @@ namespace big
 
         BOOL res = PED::GET_MP_LIGHT_ENABLED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -45299,13 +45686,47 @@ namespace big
     }
 
 
+    static void WREN_PHYSICS_ADD_ROPE(WrenVM* vm)
+    {
+        float x = (float)wrenGetSlotDouble(vm, 1);
+        float y = (float)wrenGetSlotDouble(vm, 2);
+        float z = (float)wrenGetSlotDouble(vm, 3);
+        float rotX = (float)wrenGetSlotDouble(vm, 4);
+        float rotY = (float)wrenGetSlotDouble(vm, 5);
+        float rotZ = (float)wrenGetSlotDouble(vm, 6);
+        float length = (float)wrenGetSlotDouble(vm, 7);
+        int ropeType = (int)wrenGetSlotDouble(vm, 8);
+        float maxLength = (float)wrenGetSlotDouble(vm, 9);
+        float minLength = (float)wrenGetSlotDouble(vm, 10);
+        float windingSpeed = (float)wrenGetSlotDouble(vm, 11);
+        BOOL p11 = (BOOL)wrenGetSlotBool(vm, 12);
+        BOOL p12 = (BOOL)wrenGetSlotBool(vm, 13);
+        BOOL rigid = (BOOL)wrenGetSlotBool(vm, 14);
+        float p14 = (float)wrenGetSlotDouble(vm, 15);
+        BOOL breakWhenShot = (BOOL)wrenGetSlotBool(vm, 16);
+        Any unkPtr;
+
+        int res = PHYSICS::ADD_ROPE(x, y, z, rotX, rotY, rotZ, length, ropeType, maxLength, minLength, windingSpeed, p11, p12, rigid, p14, breakWhenShot, &unkPtr);
+
+        wrenEnsureSlots(vm, 4);
+
+        wrenSetSlotNewList(vm, 0);
+
+        wrenSetSlotDouble(vm, 1, res);
+        wrenInsertInList(vm, 0, 0, 1);
+
+        wrenSetSlotDouble(vm, 2, unkPtr);
+        wrenInsertInList(vm, 0, 1, 2);
+
+    }
+
     static void WREN_PHYSICS_DELETE_ROPE(WrenVM* vm)
     {
         int ropeId;
 
         PHYSICS::DELETE_ROPE(&ropeId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -45341,7 +45762,7 @@ namespace big
 
         PHYSICS::ROPE_DRAW_ENABLED(&ropeId, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -45352,7 +45773,7 @@ namespace big
 
         PHYSICS::ROPE_DRAW_SHADOW_ENABLED(&ropeId, toggle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -45389,7 +45810,7 @@ namespace big
 
         int res = PHYSICS::GET_ROPE_VERTEX_COUNT(ropeId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -45492,10 +45913,10 @@ namespace big
 
         Vector3 res = PHYSICS::GET_ROPE_LAST_VERTEX_COORD(ropeId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -45508,10 +45929,10 @@ namespace big
 
         Vector3 res = PHYSICS::GET_ROPE_VERTEX_COORD(ropeId, vertex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -45563,7 +45984,7 @@ namespace big
 
         BOOL res = PHYSICS::ROPE_ARE_TEXTURES_LOADED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -45580,7 +46001,7 @@ namespace big
 
         BOOL res = PHYSICS::DOES_SCRIPT_OWN_ROPE(ropeId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -45628,7 +46049,7 @@ namespace big
 
         float res = PHYSICS::ROPE_GET_DISTANCE_BETWEEN_ENDS(ropeId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -45694,10 +46115,10 @@ namespace big
 
         Vector3 res = PHYSICS::GET_CGOFFSET(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -45733,7 +46154,7 @@ namespace big
 
         BOOL res = PHYSICS::GET_IS_ENTITY_A_FRAG(object);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -45790,7 +46211,7 @@ namespace big
 
         Ped res = PLAYER::GET_PLAYER_PED(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -45801,7 +46222,7 @@ namespace big
 
         Ped res = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -45853,7 +46274,7 @@ namespace big
 
         int res = PLAYER::GET_NUMBER_OF_PLAYERS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -45864,7 +46285,7 @@ namespace big
 
         int res = PLAYER::GET_PLAYER_TEAM(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -45883,7 +46304,7 @@ namespace big
 
         int res = PLAYER::GET_NUMBER_OF_PLAYERS_IN_TEAM(team);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -45894,7 +46315,7 @@ namespace big
 
         const char* res = PLAYER::GET_PLAYER_NAME(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -45905,7 +46326,7 @@ namespace big
 
         float res = PLAYER::GET_WANTED_LEVEL_RADIUS(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -45916,10 +46337,10 @@ namespace big
 
         Vector3 res = PLAYER::GET_PLAYER_WANTED_CENTRE_POSITION(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -45934,7 +46355,7 @@ namespace big
 
         PLAYER::SET_PLAYER_WANTED_CENTRE_POSITION(player, &position, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -45944,7 +46365,7 @@ namespace big
 
         int res = PLAYER::GET_WANTED_LEVEL_THRESHOLD(wantedLevel);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -45981,7 +46402,7 @@ namespace big
 
         BOOL res = PLAYER::ARE_PLAYER_FLASHING_STARS_ABOUT_TO_DROP(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -45992,7 +46413,7 @@ namespace big
 
         BOOL res = PLAYER::ARE_PLAYER_STARS_GREYED_OUT(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46003,7 +46424,7 @@ namespace big
 
         BOOL res = PLAYER::IS_WANTED_AND_HAS_BEEN_SEEN_BY_COPS(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46023,7 +46444,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_WANTED_LEVEL_GREATER(player, wantedLevel);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46041,7 +46462,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_DEAD(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46052,7 +46473,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_PRESSING_HORN(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46072,7 +46493,7 @@ namespace big
 
         int res = PLAYER::GET_PLAYER_WANTED_LEVEL(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46105,7 +46526,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_PLAYING(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46190,7 +46611,7 @@ namespace big
 
         int res = PLAYER::GET_WANTED_LEVEL_TIME_TO_ESCAPE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46297,7 +46718,7 @@ namespace big
 
         BOOL res = PLAYER::CAN_PLAYER_START_MISSION(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46308,7 +46729,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_READY_FOR_CUTSCENE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46320,7 +46741,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_TARGETTING_ENTITY(player, entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46350,7 +46771,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_FREE_AIMING(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46362,7 +46783,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_FREE_AIMING_AT_ENTITY(player, entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46423,7 +46844,7 @@ namespace big
 
         int res = PLAYER::GET_MAX_WANTED_LEVEL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46434,7 +46855,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_TARGETTING_ANYTHING(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46468,7 +46889,7 @@ namespace big
 
         float res = PLAYER::GET_PLAYER_SPRINT_STAMINA_REMAINING(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46479,7 +46900,7 @@ namespace big
 
         float res = PLAYER::GET_PLAYER_SPRINT_TIME_REMAINING(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46490,7 +46911,7 @@ namespace big
 
         float res = PLAYER::GET_PLAYER_UNDERWATER_TIME_REMAINING(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46502,7 +46923,7 @@ namespace big
 
         Any res = PLAYER::SET_PLAYER_UNDERWATER_BREATH_PERCENT_REMAINING(player, time);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46513,7 +46934,7 @@ namespace big
 
         int res = PLAYER::GET_PLAYER_GROUP(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46524,7 +46945,7 @@ namespace big
 
         int res = PLAYER::GET_PLAYER_MAX_ARMOUR(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46535,7 +46956,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_CONTROL_ON(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46545,7 +46966,7 @@ namespace big
 
         BOOL res = PLAYER::GET_ARE_CAMERA_CONTROLS_DISABLED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46556,7 +46977,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_SCRIPT_CONTROL_ON(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46567,7 +46988,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_CLIMBING(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46579,7 +47000,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_BEING_ARRESTED(player, atArresting);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46596,7 +47017,7 @@ namespace big
 
         Vehicle res = PLAYER::GET_PLAYERS_LAST_VEHICLE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46606,7 +47027,7 @@ namespace big
 
         Player res = PLAYER::GET_PLAYER_INDEX();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46617,7 +47038,7 @@ namespace big
 
         Player res = PLAYER::INT_TO_PLAYERINDEX(value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46628,7 +47049,7 @@ namespace big
 
         int res = PLAYER::INT_TO_PARTICIPANTINDEX(value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46639,7 +47060,7 @@ namespace big
 
         int res = PLAYER::GET_TIME_SINCE_PLAYER_HIT_VEHICLE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46650,7 +47071,7 @@ namespace big
 
         int res = PLAYER::GET_TIME_SINCE_PLAYER_HIT_PED(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46661,7 +47082,7 @@ namespace big
 
         int res = PLAYER::GET_TIME_SINCE_PLAYER_DROVE_ON_PAVEMENT(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46672,7 +47093,7 @@ namespace big
 
         int res = PLAYER::GET_TIME_SINCE_PLAYER_DROVE_AGAINST_TRAFFIC(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46683,7 +47104,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_FREE_FOR_AMBIENT_TASK(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46693,7 +47114,7 @@ namespace big
 
         Player res = PLAYER::PLAYER_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46703,7 +47124,7 @@ namespace big
 
         Ped res = PLAYER::PLAYER_PED_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46713,7 +47134,7 @@ namespace big
 
         int res = PLAYER::NETWORK_PLAYER_ID_TO_INT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46724,7 +47145,7 @@ namespace big
 
         BOOL res = PLAYER::HAS_FORCE_CLEANUP_OCCURRED(cleanupFlags);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46757,7 +47178,7 @@ namespace big
 
         int res = PLAYER::GET_CAUSE_OF_MOST_RECENT_FORCE_CLEANUP();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46783,7 +47204,7 @@ namespace big
 
         BOOL res = PLAYER::GIVE_ACHIEVEMENT_TO_PLAYER(achievementId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46795,7 +47216,7 @@ namespace big
 
         BOOL res = PLAYER::SET_ACHIEVEMENT_PROGRESS(achievementId, progress);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46806,7 +47227,7 @@ namespace big
 
         int res = PLAYER::GET_ACHIEVEMENT_PROGRESS(achievementId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -46817,7 +47238,7 @@ namespace big
 
         BOOL res = PLAYER::HAS_ACHIEVEMENT_BEEN_PASSED(achievementId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46827,7 +47248,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_ONLINE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46837,7 +47258,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_LOGGING_IN_NP();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46854,7 +47275,7 @@ namespace big
 
         BOOL res = PLAYER::IS_SYSTEM_UI_BEING_DISPLAYED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46873,7 +47294,7 @@ namespace big
 
         BOOL res = PLAYER::GET_PLAYER_INVINCIBLE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46884,7 +47305,7 @@ namespace big
 
         BOOL res = PLAYER::GET_PLAYER_DEBUG_INVINCIBLE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46948,7 +47369,7 @@ namespace big
 
         BOOL res = PLAYER::GET_IS_USING_FPS_THIRD_PERSON_COVER();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46958,7 +47379,7 @@ namespace big
 
         BOOL res = PLAYER::GET_IS_USING_HOOD_CAMERA();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46976,7 +47397,7 @@ namespace big
 
         BOOL res = PLAYER::HAS_PLAYER_DAMAGED_AT_LEAST_ONE_PED(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -46994,7 +47415,7 @@ namespace big
 
         BOOL res = PLAYER::HAS_PLAYER_DAMAGED_AT_LEAST_ONE_NON_ANIMAL_PED(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47028,7 +47449,7 @@ namespace big
 
         int res = PLAYER::GET_TIME_SINCE_LAST_ARREST();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -47038,7 +47459,7 @@ namespace big
 
         int res = PLAYER::GET_TIME_SINCE_LAST_DEATH();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -47265,7 +47686,7 @@ namespace big
 
         BOOL res = PLAYER::IS_SPECIAL_ABILITY_UNLOCKED(playerModel);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47277,7 +47698,7 @@ namespace big
 
         BOOL res = PLAYER::IS_SPECIAL_ABILITY_ACTIVE(player, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47289,7 +47710,7 @@ namespace big
 
         BOOL res = PLAYER::IS_SPECIAL_ABILITY_METER_FULL(player, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47310,7 +47731,7 @@ namespace big
 
         BOOL res = PLAYER::IS_SPECIAL_ABILITY_ENABLED(player, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47336,7 +47757,7 @@ namespace big
 
         BOOL res = PLAYER::GET_IS_PLAYER_DRIVING_ON_HIGHWAY(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47348,7 +47769,7 @@ namespace big
 
         BOOL res = PLAYER::GET_IS_PLAYER_DRIVING_WRECKLESS(player, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47360,7 +47781,7 @@ namespace big
 
         BOOL res = PLAYER::GET_IS_MOPPING_AREA_FREE_IN_FRONT_OF_PLAYER(player, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47385,7 +47806,7 @@ namespace big
 
         BOOL res = PLAYER::UPDATE_PLAYER_TELEPORT(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47401,7 +47822,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_TELEPORT_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47412,7 +47833,7 @@ namespace big
 
         float res = PLAYER::GET_PLAYER_CURRENT_STEALTH_NOISE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -47431,7 +47852,7 @@ namespace big
 
         float res = PLAYER::GET_PLAYER_HEALTH_RECHARGE_MAX_PERCENT(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -47548,7 +47969,7 @@ namespace big
 
         PLAYER::GET_PLAYER_PARACHUTE_TINT_INDEX(player, &tintIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -47567,7 +47988,7 @@ namespace big
 
         PLAYER::GET_PLAYER_RESERVE_PARACHUTE_TINT_INDEX(player, &index);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -47586,7 +48007,7 @@ namespace big
 
         PLAYER::GET_PLAYER_PARACHUTE_PACK_TINT_INDEX(player, &tintIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -47603,7 +48024,7 @@ namespace big
 
         BOOL res = PLAYER::GET_PLAYER_HAS_RESERVE_PARACHUTE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47681,7 +48102,7 @@ namespace big
 
         BOOL res = PLAYER::CAN_PED_HEAR_PLAYER(player, ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47735,7 +48156,7 @@ namespace big
 
         BOOL res = PLAYER::IS_REMOTE_PLAYER_IN_NON_CLONED_VEHICLE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47803,7 +48224,7 @@ namespace big
 
         BOOL res = PLAYER::HAS_PLAYER_BEEN_SPOTTED_IN_STOLEN_VEHICLE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47814,7 +48235,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_BATTLE_AWARE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47827,7 +48248,7 @@ namespace big
 
         BOOL res = PLAYER::GET_PLAYER_RECEIVED_BATTLE_EVENT_RECENTLY(player, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47853,7 +48274,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_RIDING_TRAIN(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47864,7 +48285,7 @@ namespace big
 
         BOOL res = PLAYER::HAS_PLAYER_LEFT_THE_WORLD(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -47917,7 +48338,7 @@ namespace big
 
         Hash res = PLAYER::GET_PLAYER_PARACHUTE_MODEL_OVERRIDE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -47928,7 +48349,7 @@ namespace big
 
         Hash res = PLAYER::GET_PLAYER_RESERVE_PARACHUTE_MODEL_OVERRIDE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -47990,7 +48411,7 @@ namespace big
 
         BOOL res = PLAYER::IS_PLAYER_BLUETOOTH_ENABLE(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48008,7 +48429,7 @@ namespace big
 
         int res = PLAYER::GET_PLAYER_FAKE_WANTED_LEVEL(player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48036,7 +48457,7 @@ namespace big
 
         Any res = PLAYER::IS_PLAYER_VEHICLE_WEAPON_TOGGLED_TO_NON_HOMING(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48187,7 +48608,7 @@ namespace big
 
         BOOL res = RECORDING::SAVE_REPLAY_RECORDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48197,7 +48618,7 @@ namespace big
 
         BOOL res = RECORDING::IS_REPLAY_RECORDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48207,7 +48628,7 @@ namespace big
 
         Any res = RECORDING::IS_REPLAY_INITIALIZED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48217,7 +48638,7 @@ namespace big
 
         Any res = RECORDING::IS_REPLAY_AVAILABLE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48228,7 +48649,7 @@ namespace big
 
         BOOL res = RECORDING::IS_REPLAY_RECORD_SPACE_AVAILABLE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48247,7 +48668,7 @@ namespace big
 
         BOOL res = REPLAY::REPLAY_SYSTEM_HAS_REQUESTED_A_SCRIPT_CLEANUP();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48284,7 +48705,7 @@ namespace big
 
         BOOL res = SAVEMIGRATION::SAVEMIGRATION_IS_MP_ENABLED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48294,7 +48715,7 @@ namespace big
 
         BOOL res = SAVEMIGRATION::SAVEMIGRATION_MP_REQUEST_ACCOUNTS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48304,7 +48725,7 @@ namespace big
 
         int res = SAVEMIGRATION::SAVEMIGRATION_MP_GET_ACCOUNTS_STATUS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48314,7 +48735,7 @@ namespace big
 
         int res = SAVEMIGRATION::SAVEMIGRATION_MP_NUM_ACCOUNTS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48343,7 +48764,7 @@ namespace big
 
         BOOL res = SAVEMIGRATION::SAVEMIGRATION_MP_REQUEST_STATUS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48353,7 +48774,7 @@ namespace big
 
         int res = SAVEMIGRATION::SAVEMIGRATION_MP_GET_STATUS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48379,7 +48800,7 @@ namespace big
 
         BOOL res = SCRIPT::HAS_SCRIPT_LOADED(scriptName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48390,7 +48811,7 @@ namespace big
 
         BOOL res = SCRIPT::DOES_SCRIPT_EXIST(scriptName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48415,7 +48836,7 @@ namespace big
 
         BOOL res = SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED(scriptHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48426,7 +48847,7 @@ namespace big
 
         BOOL res = SCRIPT::DOES_SCRIPT_WITH_NAME_HASH_EXIST(scriptHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48444,7 +48865,7 @@ namespace big
 
         BOOL res = SCRIPT::IS_THREAD_ACTIVE(threadId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48455,7 +48876,7 @@ namespace big
 
         const char* res = SCRIPT::GET_NAME_OF_SCRIPT_WITH_THIS_ID(threadId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -48471,7 +48892,7 @@ namespace big
 
         int res = SCRIPT::SCRIPT_THREAD_ITERATOR_GET_NEXT_THREAD_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48481,7 +48902,7 @@ namespace big
 
         int res = SCRIPT::GET_ID_OF_THIS_THREAD();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48498,7 +48919,7 @@ namespace big
 
         int res = SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(scriptHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48508,7 +48929,7 @@ namespace big
 
         const char* res = SCRIPT::GET_THIS_SCRIPT_NAME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -48518,7 +48939,7 @@ namespace big
 
         Hash res = SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48529,7 +48950,7 @@ namespace big
 
         int res = SCRIPT::GET_NUMBER_OF_EVENTS(eventGroup);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48541,7 +48962,7 @@ namespace big
 
         BOOL res = SCRIPT::GET_EVENT_EXISTS(eventGroup, eventIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48553,7 +48974,7 @@ namespace big
 
         int res = SCRIPT::GET_EVENT_AT_INDEX(eventGroup, eventIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48588,7 +49009,7 @@ namespace big
 
         SCRIPT::TRIGGER_SCRIPT_EVENT(eventGroup, &eventData, eventDataSize, playerBits);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -48610,7 +49031,7 @@ namespace big
 
         BOOL res = SCRIPT::GET_NO_LOADING_SCREEN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48626,7 +49047,7 @@ namespace big
 
         BOOL res = SCRIPT::BG_IS_EXITFLAG_SET();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48672,7 +49093,7 @@ namespace big
 
         BOOL res = SCRIPT::BG_DOES_LAUNCH_PARAM_EXIST(scriptIndex, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -48684,7 +49105,7 @@ namespace big
 
         int res = SCRIPT::BG_GET_LAUNCH_PARAM_VALUE(scriptIndex, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48695,7 +49116,7 @@ namespace big
 
         int res = SCRIPT::BG_GET_SCRIPT_ID_FROM_NAME_HASH(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48709,7 +49130,7 @@ namespace big
 
         SCRIPT::SEND_TU_SCRIPT_EVENT(eventGroup, &eventData, eventDataSize, playerBits);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -48720,7 +49141,7 @@ namespace big
 
         SECURITY::REGISTER_SCRIPT_VARIABLE(&variable);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -48730,7 +49151,7 @@ namespace big
 
         SECURITY::UNREGISTER_SCRIPT_VARIABLE(&variable);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -48755,7 +49176,7 @@ namespace big
 
         int res = SHAPETEST::START_SHAPE_TEST_LOS_PROBE(x1, y1, z1, x2, y2, z2, flags, entity, p8);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48774,7 +49195,7 @@ namespace big
 
         int res = SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(x1, y1, z1, x2, y2, z2, flags, entity, p8);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48787,7 +49208,7 @@ namespace big
 
         int res = SHAPETEST::START_SHAPE_TEST_BOUNDING_BOX(entity, flags1, flags2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48810,7 +49231,7 @@ namespace big
 
         int res = SHAPETEST::START_SHAPE_TEST_BOX(x, y, z, x1, y2, z2, rotX, rotY, rotZ, p9, flags, entity, p12);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48823,7 +49244,7 @@ namespace big
 
         int res = SHAPETEST::START_SHAPE_TEST_BOUND(entity, flags1, flags2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48843,7 +49264,7 @@ namespace big
 
         int res = SHAPETEST::START_SHAPE_TEST_CAPSULE(x1, y1, z1, x2, y2, z2, radius, flags, entity, p9);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48863,7 +49284,7 @@ namespace big
 
         int res = SHAPETEST::START_SHAPE_TEST_SWEPT_SPHERE(x1, y1, z1, x2, y2, z2, radius, flags, entity, p9);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -48993,7 +49414,7 @@ namespace big
 
         int res = SOCIALCLUB::SC_INBOX_GET_TOTAL_NUM_MESSAGES();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49004,7 +49425,7 @@ namespace big
 
         Hash res = SOCIALCLUB::SC_INBOX_GET_MESSAGE_TYPE_AT_INDEX(msgIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49015,7 +49436,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_INBOX_GET_MESSAGE_IS_READ_AT_INDEX(msgIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49026,7 +49447,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_INBOX_SET_MESSAGE_AS_READ_AT_INDEX(msgIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49058,7 +49479,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_INBOX_MESSAGE_GET_DATA_BOOL(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49089,7 +49510,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_INBOX_MESSAGE_DO_APPLY(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49100,7 +49521,7 @@ namespace big
 
         const char* res = SOCIALCLUB::SC_INBOX_MESSAGE_GET_RAW_TYPE_AT_INDEX(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -49111,7 +49532,7 @@ namespace big
 
         SOCIALCLUB::SC_INBOX_MESSAGE_PUSH_GAMER_T0_RECIP_LIST(&gamerHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -49121,7 +49542,7 @@ namespace big
 
         SOCIALCLUB::SC_INBOX_SEND_UGCSTATUPDATE_TO_RECIP_LIST(&data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -49194,7 +49615,7 @@ namespace big
 
         Any res = SOCIALCLUB::SC_EMAIL_GET_RETRIEVAL_STATUS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49204,7 +49625,7 @@ namespace big
 
         Any res = SOCIALCLUB::SC_EMAIL_GET_NUM_RETRIEVED_EMAILS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49235,7 +49656,7 @@ namespace big
 
         SOCIALCLUB::SC_EMAIL_DELETE_EMAILS(&p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -49245,7 +49666,7 @@ namespace big
 
         SOCIALCLUB::SC_EMAIL_MESSAGE_PUSH_GAMER_TO_RECIP_LIST(&gamerHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -49268,7 +49689,7 @@ namespace big
 
         Any res = SOCIALCLUB::SC_EMAIL_SET_CURRENT_EMAIL_TAG(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49285,7 +49706,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_HAS_NEW_ROCKSTAR_MSG();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49295,7 +49716,7 @@ namespace big
 
         const char* res = SOCIALCLUB::SC_GET_NEW_ROCKSTAR_MSG();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -49307,7 +49728,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_PRESENCE_ATTR_SET_INT(attrHash, value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49319,7 +49740,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_PRESENCE_ATTR_SET_FLOAT(attrHash, value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49331,7 +49752,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_PRESENCE_ATTR_SET_STRING(attrHash, value);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49343,7 +49764,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_PRESENCE_SET_ACTIVITY_RATING(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49353,7 +49774,7 @@ namespace big
 
         Any res = SOCIALCLUB::SC_GAMERDATA_GET_INT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49363,7 +49784,7 @@ namespace big
 
         Any res = SOCIALCLUB::SC_GAMERDATA_GET_FLOAT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49374,7 +49795,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_GAMERDATA_GET_BOOL(name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49384,7 +49805,7 @@ namespace big
 
         Any res = SOCIALCLUB::SC_GAMERDATA_GET_STRING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49394,7 +49815,7 @@ namespace big
 
         Any res = SOCIALCLUB::SC_GAMERDATA_GET_ACTIVE_XP_BONUS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49443,7 +49864,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_PROFANITY_GET_CHECK_IS_VALID(token);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49454,7 +49875,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_PROFANITY_GET_CHECK_IS_PENDING(token);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49465,7 +49886,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_PROFANITY_GET_STRING_PASSED(token);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49476,7 +49897,7 @@ namespace big
 
         int res = SOCIALCLUB::SC_PROFANITY_GET_STRING_STATUS(token);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49506,7 +49927,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_LICENSEPLATE_GET_CHECK_IS_VALID(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49517,7 +49938,7 @@ namespace big
 
         Any res = SOCIALCLUB::SC_LICENSEPLATE_GET_CHECK_IS_PENDING(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49528,7 +49949,7 @@ namespace big
 
         int res = SOCIALCLUB::SC_LICENSEPLATE_GET_COUNT(token);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49540,7 +49961,7 @@ namespace big
 
         const char* res = SOCIALCLUB::SC_LICENSEPLATE_GET_PLATE(token, plateIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -49552,7 +49973,7 @@ namespace big
 
         const char* res = SOCIALCLUB::SC_LICENSEPLATE_GET_PLATE_DATA(token, plateIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -49606,7 +50027,7 @@ namespace big
 
         Any res = SOCIALCLUB::SC_LICENSEPLATE_GET_ADD_IS_PENDING(token);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49617,7 +50038,7 @@ namespace big
 
         Any res = SOCIALCLUB::SC_LICENSEPLATE_GET_ADD_STATUS(token);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49647,7 +50068,7 @@ namespace big
 
         int res = SOCIALCLUB::SC_LICENSEPLATE_GET_ISVALID_IS_PENDING(token);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49658,7 +50079,7 @@ namespace big
 
         int res = SOCIALCLUB::SC_LICENSEPLATE_GET_ISVALID_STATUS(token);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49668,7 +50089,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_COMMUNITY_EVENT_IS_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49678,7 +50099,7 @@ namespace big
 
         int res = SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EVENT_ID();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49764,7 +50185,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_COMMUNITY_EVENT_IS_ACTIVE_FOR_TYPE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49775,7 +50196,7 @@ namespace big
 
         int res = SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EVENT_ID_FOR_TYPE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49865,7 +50286,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_COMMUNITY_EVENT_IS_ACTIVE_BY_ID(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49955,7 +50376,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_TRANSITION_NEWS_SHOW(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49967,7 +50388,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_TRANSITION_NEWS_SHOW_TIMED(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -49977,7 +50398,7 @@ namespace big
 
         Any res = SOCIALCLUB::SC_TRANSITION_NEWS_SHOW_NEXT_ITEM();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -49987,7 +50408,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_TRANSITION_NEWS_HAS_EXTRA_DATA_TU();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50023,7 +50444,7 @@ namespace big
 
         Any res = SOCIALCLUB::SC_PAUSE_NEWS_INIT_STARTER_PACK(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -50034,7 +50455,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_PAUSE_NEWS_GET_PENDING_STORY(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50050,7 +50471,7 @@ namespace big
 
         const char* res = SOCIALCLUB::SC_ACCOUNT_INFO_GET_NICKNAME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -50079,7 +50500,7 @@ namespace big
 
         BOOL res = SOCIALCLUB::SC_HAS_ACHIEVEMENT_BEEN_PASSED(achievementId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50091,7 +50512,7 @@ namespace big
 
         Any res = STATS::STAT_CLEAR_SLOT_FOR_RELOAD(statSlot);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -50102,7 +50523,7 @@ namespace big
 
         BOOL res = STATS::STAT_LOAD(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50116,7 +50537,7 @@ namespace big
 
         BOOL res = STATS::STAT_SAVE(p0, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50134,7 +50555,7 @@ namespace big
 
         BOOL res = STATS::STAT_LOAD_PENDING(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50144,7 +50565,7 @@ namespace big
 
         BOOL res = STATS::STAT_SAVE_PENDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50154,7 +50575,7 @@ namespace big
 
         BOOL res = STATS::STAT_SAVE_PENDING_OR_REQUESTED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50165,7 +50586,7 @@ namespace big
 
         Any res = STATS::STAT_DELETE_SLOT(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -50176,7 +50597,7 @@ namespace big
 
         BOOL res = STATS::STAT_SLOT_IS_LOADED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50187,7 +50608,7 @@ namespace big
 
         BOOL res = STATS::STAT_CLOUD_SLOT_LOAD_FAILED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50198,7 +50619,7 @@ namespace big
 
         Any res = STATS::STAT_CLOUD_SLOT_LOAD_FAILED_CODE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -50215,7 +50636,7 @@ namespace big
 
         BOOL res = STATS::STAT_GET_BLOCK_SAVES();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50226,7 +50647,7 @@ namespace big
 
         BOOL res = STATS::STAT_CLOUD_SLOT_SAVE_FAILED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50243,7 +50664,7 @@ namespace big
 
         BOOL res = STATS::STAT_LOAD_DIRTY_READ_DETECTED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50259,7 +50680,7 @@ namespace big
 
         Any res = STATS::STAT_GET_LOAD_SAFE_TO_PROGRESS_TO_MP_FROM_SP();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -50272,7 +50693,7 @@ namespace big
 
         BOOL res = STATS::STAT_SET_INT(statName, value, save);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50285,7 +50706,7 @@ namespace big
 
         BOOL res = STATS::STAT_SET_FLOAT(statName, value, save);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50298,7 +50719,7 @@ namespace big
 
         BOOL res = STATS::STAT_SET_BOOL(statName, value, save);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50311,7 +50732,7 @@ namespace big
 
         BOOL res = STATS::STAT_SET_GXT_LABEL(statName, value, save);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50345,7 +50766,7 @@ namespace big
 
         BOOL res = STATS::STAT_SET_STRING(statName, value, save);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50360,7 +50781,7 @@ namespace big
 
         BOOL res = STATS::STAT_SET_POS(statName, x, y, z, save);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50375,7 +50796,7 @@ namespace big
 
         BOOL res = STATS::STAT_SET_MASKED_INT(statName, p1, p2, p3, save);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50388,7 +50809,7 @@ namespace big
 
         BOOL res = STATS::STAT_SET_USER_ID(statName, value, save);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50400,7 +50821,7 @@ namespace big
 
         BOOL res = STATS::STAT_SET_CURRENT_POSIX_TIME(statName, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50493,7 +50914,7 @@ namespace big
 
         const char* res = STATS::STAT_GET_STRING(statHash, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -50554,7 +50975,7 @@ namespace big
 
         const char* res = STATS::STAT_GET_USER_ID(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -50565,7 +50986,7 @@ namespace big
 
         const char* res = STATS::STAT_GET_LICENSE_PLATE(statName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -50577,7 +50998,7 @@ namespace big
 
         BOOL res = STATS::STAT_SET_LICENSE_PLATE(statName, str);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50595,7 +51016,7 @@ namespace big
 
         BOOL res = STATS::STAT_COMMUNITY_START_SYNCH();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50605,7 +51026,7 @@ namespace big
 
         BOOL res = STATS::STAT_COMMUNITY_SYNCH_IS_PENDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50650,7 +51071,7 @@ namespace big
 
         int res = STATS::STAT_GET_NUMBER_OF_DAYS(statName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -50661,7 +51082,7 @@ namespace big
 
         int res = STATS::STAT_GET_NUMBER_OF_HOURS(statName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -50672,7 +51093,7 @@ namespace big
 
         int res = STATS::STAT_GET_NUMBER_OF_MINUTES(statName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -50683,7 +51104,7 @@ namespace big
 
         int res = STATS::STAT_GET_NUMBER_OF_SECONDS(statName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -50709,7 +51130,7 @@ namespace big
 
         int res = STATS::PACKED_STAT_GET_INT_STAT_INDEX(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -50723,7 +51144,7 @@ namespace big
 
         Hash res = STATS::GET_PACKED_INT_STAT_KEY(index, spStat, charStat, character);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -50737,7 +51158,7 @@ namespace big
 
         Hash res = STATS::GET_PACKED_TU_INT_STAT_KEY(index, spStat, charStat, character);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -50752,7 +51173,7 @@ namespace big
 
         Hash res = STATS::GET_PACKED_NG_INT_STAT_KEY(index, spStat, charStat, character, section);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -50764,7 +51185,7 @@ namespace big
 
         BOOL res = STATS::GET_PACKED_STAT_BOOL_CODE(index, characterSlot);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -50776,7 +51197,7 @@ namespace big
 
         int res = STATS::GET_PACKED_STAT_INT_CODE(index, characterSlot);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -50813,7 +51234,7 @@ namespace big
 
         STATS::PLAYSTATS_NPC_INVITE(&p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -50867,7 +51288,7 @@ namespace big
 
         STATS::PLAYSTATS_MISSION_STARTED(&p0, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -50882,7 +51303,7 @@ namespace big
 
         STATS::PLAYSTATS_MISSION_OVER(&p0, p1, p2, p3, p4, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -50895,7 +51316,7 @@ namespace big
 
         STATS::PLAYSTATS_MISSION_CHECKPOINT(&p0, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -51238,7 +51659,7 @@ namespace big
 
         STATS::PLAYSTATS_APPEND_DIRECTOR_METRIC(&p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -51353,7 +51774,7 @@ namespace big
 
         STATS::PLAYSTATS_PIMENU_HIDE_OPTIONS(&data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -51364,7 +51785,7 @@ namespace big
 
         Any res = STATS::LEADERBOARDS_GET_NUMBER_OF_COLUMNS(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -51377,7 +51798,7 @@ namespace big
 
         Any res = STATS::LEADERBOARDS_GET_COLUMN_ID(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -51390,7 +51811,7 @@ namespace big
 
         Any res = STATS::LEADERBOARDS_GET_COLUMN_TYPE(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -51400,7 +51821,7 @@ namespace big
 
         Any res = STATS::LEADERBOARDS_READ_CLEAR_ALL();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -51413,7 +51834,7 @@ namespace big
 
         Any res = STATS::LEADERBOARDS_READ_CLEAR(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -51426,7 +51847,7 @@ namespace big
 
         BOOL res = STATS::LEADERBOARDS_READ_PENDING(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -51436,7 +51857,7 @@ namespace big
 
         BOOL res = STATS::LEADERBOARDS_READ_ANY_PENDING();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -51449,7 +51870,7 @@ namespace big
 
         BOOL res = STATS::LEADERBOARDS_READ_SUCCESSFUL(p0, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -51714,7 +52135,7 @@ namespace big
 
         Any res = STATS::LEADERBOARDS2_READ_GET_ROW_DATA_INT(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -51726,7 +52147,7 @@ namespace big
 
         float res = STATS::LEADERBOARDS2_READ_GET_ROW_DATA_FLOAT(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -51804,7 +52225,7 @@ namespace big
 
         BOOL res = STATS::LEADERBOARDS_GET_CACHE_EXISTS(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -51815,7 +52236,7 @@ namespace big
 
         Any res = STATS::LEADERBOARDS_GET_CACHE_TIME(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -51826,7 +52247,7 @@ namespace big
 
         int res = STATS::LEADERBOARDS_GET_CACHE_NUMBER_OF_ROWS(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -51884,7 +52305,7 @@ namespace big
 
         BOOL res = STATS::GET_PLAYER_HAS_DRIVEN_ALL_VEHICLES();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -52006,7 +52427,7 @@ namespace big
 
         BOOL res = STATS::STAT_MIGRATE_SAVEGAME_START(platformName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -52016,7 +52437,7 @@ namespace big
 
         int res = STATS::STAT_MIGRATE_SAVEGAME_GET_STATUS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -52026,7 +52447,7 @@ namespace big
 
         Any res = STATS::STAT_MIGRATE_CHECK_ALREADY_DONE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -52036,7 +52457,7 @@ namespace big
 
         Any res = STATS::STAT_MIGRATE_CHECK_START();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -52047,7 +52468,7 @@ namespace big
 
         Any res = STATS::STAT_MIGRATE_CHECK_GET_IS_PLATFORM_AVAILABLE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -52094,7 +52515,7 @@ namespace big
 
         BOOL res = STATS::STAT_SAVE_MIGRATION_CANCEL_PENDING_OPERATION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -52104,7 +52525,7 @@ namespace big
 
         int res = STATS::STAT_GET_CANCEL_SAVE_MIGRATION_STATUS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -52117,7 +52538,7 @@ namespace big
 
         BOOL res = STATS::STAT_SAVE_MIGRATION_CONSUME_CONTENT(contentId, srcPlatform, srcGamerHandle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -52157,7 +52578,7 @@ namespace big
 
         BOOL res = STATS::STAT_IS_STATS_TRACKING_ENABLED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -52169,7 +52590,7 @@ namespace big
 
         Any res = STATS::STAT_START_RECORD_STAT(statType, valueType);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -52179,7 +52600,7 @@ namespace big
 
         BOOL res = STATS::STAT_STOP_RECORD_STAT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -52207,7 +52628,7 @@ namespace big
 
         BOOL res = STATS::STAT_IS_RECORDING_STAT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -52217,7 +52638,7 @@ namespace big
 
         int res = STATS::STAT_GET_CURRENT_NEAR_MISS_NOCRASH_PRECISE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -52227,7 +52648,7 @@ namespace big
 
         float res = STATS::STAT_GET_CURRENT_REAR_WHEEL_DISTANCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -52237,7 +52658,7 @@ namespace big
 
         float res = STATS::STAT_GET_CURRENT_FRONT_WHEEL_DISTANCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -52247,7 +52668,7 @@ namespace big
 
         float res = STATS::STAT_GET_CURRENT_JUMP_DISTANCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -52257,7 +52678,7 @@ namespace big
 
         float res = STATS::STAT_GET_CURRENT_DRIVE_NOCRASH_DISTANCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -52267,7 +52688,7 @@ namespace big
 
         float res = STATS::STAT_GET_CURRENT_SPEED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -52277,7 +52698,7 @@ namespace big
 
         float res = STATS::STAT_GET_CURRENT_DRIVING_REVERSE_DISTANCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -52287,7 +52708,7 @@ namespace big
 
         float res = STATS::STAT_GET_CURRENT_SKYDIVING_DISTANCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -52297,7 +52718,7 @@ namespace big
 
         float res = STATS::STAT_GET_CHALLENGE_FLYING_DIST();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -52325,7 +52746,7 @@ namespace big
 
         BOOL res = STATS::STAT_IS_PLAYER_VEHICLE_ABOVE_OCEAN();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -52335,7 +52756,7 @@ namespace big
 
         float res = STATS::STAT_GET_VEHICLE_BAIL_DISTANCE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -52345,7 +52766,7 @@ namespace big
 
         BOOL res = STATS::STAT_ROLLBACK_SAVE_MIGRATION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -52505,7 +52926,7 @@ namespace big
 
         STATS::PLAYSTATS_BUY_CONTRABAND_MISSION(&data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -52515,7 +52936,7 @@ namespace big
 
         STATS::PLAYSTATS_SELL_CONTRABAND_MISSION(&data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -52525,7 +52946,7 @@ namespace big
 
         STATS::PLAYSTATS_DEFEND_CONTRABAND_MISSION(&data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -52535,7 +52956,7 @@ namespace big
 
         STATS::PLAYSTATS_RECOVER_CONTRABAND_MISSION(&data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -52804,7 +53225,7 @@ namespace big
 
         STATS::PLAYSTATS_DUPE_DETECTED(&data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -52821,7 +53242,7 @@ namespace big
 
         STATS::PLAYSTATS_GUNRUNNING_MISSION_ENDED(&data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -52876,7 +53297,7 @@ namespace big
 
         STATS::PLAYSTATS_STONE_HATCHET_ENDED(&data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -52886,7 +53307,7 @@ namespace big
 
         STATS::PLAYSTATS_SMUGGLER_MISSION_ENDED(&data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -52896,7 +53317,7 @@ namespace big
 
         STATS::PLAYSTATS_FM_HEIST_PREP_ENDED(&data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -52909,7 +53330,7 @@ namespace big
 
         STATS::PLAYSTATS_INSTANCED_HEIST_ENDED(&data, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -52919,7 +53340,7 @@ namespace big
 
         STATS::PLAYSTATS_DAR_CHECKPOINT(&data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -52929,7 +53350,7 @@ namespace big
 
         STATS::PLAYSTATS_ENTER_SESSION_PACK(&data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -52969,7 +53390,7 @@ namespace big
 
         STATS::PLAYSTATS_ARENA_WARS_ENDED(&data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -53119,7 +53540,7 @@ namespace big
 
         STATS::PLAYSTATS_FREEMODE_CASINO_MISSION_ENDED(&data);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -53385,7 +53806,7 @@ namespace big
 
         BOOL res = STREAMING::NETWORK_UPDATE_LOAD_SCENE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53395,7 +53816,7 @@ namespace big
 
         BOOL res = STREAMING::IS_NETWORK_LOADING_SCENE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53428,7 +53849,7 @@ namespace big
 
         BOOL res = STREAMING::HAS_MODEL_LOADED(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53454,7 +53875,7 @@ namespace big
 
         BOOL res = STREAMING::IS_MODEL_IN_CDIMAGE(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53465,7 +53886,7 @@ namespace big
 
         BOOL res = STREAMING::IS_MODEL_VALID(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53476,7 +53897,7 @@ namespace big
 
         BOOL res = STREAMING::IS_MODEL_A_PED(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53487,7 +53908,7 @@ namespace big
 
         BOOL res = STREAMING::IS_MODEL_A_VEHICLE(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53514,7 +53935,7 @@ namespace big
 
         BOOL res = STREAMING::HAS_COLLISION_FOR_MODEL_LOADED(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53534,7 +53955,7 @@ namespace big
 
         BOOL res = STREAMING::DOES_ANIM_DICT_EXIST(animDict);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53552,7 +53973,7 @@ namespace big
 
         BOOL res = STREAMING::HAS_ANIM_DICT_LOADED(animDict);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53577,7 +53998,7 @@ namespace big
 
         BOOL res = STREAMING::HAS_ANIM_SET_LOADED(animSet);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53602,7 +54023,7 @@ namespace big
 
         BOOL res = STREAMING::HAS_CLIP_SET_LOADED(clipSet);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53634,7 +54055,7 @@ namespace big
 
         BOOL res = STREAMING::IS_IPL_ACTIVE(iplName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53658,7 +54079,7 @@ namespace big
 
         int res = STREAMING::GET_GLOBAL_WATER_FILE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -53696,7 +54117,7 @@ namespace big
 
         int res = STREAMING::GET_NUMBER_OF_STREAMING_REQUESTS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -53712,7 +54133,7 @@ namespace big
 
         BOOL res = STREAMING::HAS_PTFX_ASSET_LOADED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53736,7 +54157,7 @@ namespace big
 
         BOOL res = STREAMING::HAS_NAMED_PTFX_ASSET_LOADED(fxName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53793,7 +54214,7 @@ namespace big
 
         BOOL res = STREAMING::IS_ENTITY_FOCUS(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53831,7 +54252,7 @@ namespace big
 
         Any res = STREAMING::STREAMVOL_CREATE_SPHERE(x, y, z, rad, p4, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -53850,7 +54271,7 @@ namespace big
 
         Any res = STREAMING::STREAMVOL_CREATE_FRUSTUM(p0, p1, p2, p3, p4, p5, p6, p7, p8);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -53867,7 +54288,7 @@ namespace big
 
         Any res = STREAMING::STREAMVOL_CREATE_LINE(p0, p1, p2, p3, p4, p5, p6);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -53885,7 +54306,7 @@ namespace big
 
         BOOL res = STREAMING::STREAMVOL_HAS_LOADED(unused);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53896,7 +54317,7 @@ namespace big
 
         BOOL res = STREAMING::STREAMVOL_IS_VALID(unused);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53906,7 +54327,7 @@ namespace big
 
         BOOL res = STREAMING::IS_STREAMVOL_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53924,7 +54345,7 @@ namespace big
 
         BOOL res = STREAMING::NEW_LOAD_SCENE_START(posX, posY, posZ, offsetX, offsetY, offsetZ, radius, p7);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53939,7 +54360,7 @@ namespace big
 
         BOOL res = STREAMING::NEW_LOAD_SCENE_START_SPHERE(x, y, z, radius, p4);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53955,7 +54376,7 @@ namespace big
 
         BOOL res = STREAMING::IS_NEW_LOAD_SCENE_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53965,7 +54386,7 @@ namespace big
 
         BOOL res = STREAMING::IS_NEW_LOAD_SCENE_LOADED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -53975,7 +54396,7 @@ namespace big
 
         Any res = STREAMING::IS_SAFE_TO_START_PLAYER_SWITCH();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -54001,7 +54422,7 @@ namespace big
 
         BOOL res = STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -54011,7 +54432,7 @@ namespace big
 
         int res = STREAMING::GET_PLAYER_SWITCH_TYPE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -54027,7 +54448,7 @@ namespace big
 
         int res = STREAMING::GET_IDEAL_PLAYER_SWITCH_TYPE(x1, y1, z1, x2, y2, z2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -54037,7 +54458,7 @@ namespace big
 
         int res = STREAMING::GET_PLAYER_SWITCH_STATE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -54047,7 +54468,7 @@ namespace big
 
         int res = STREAMING::GET_PLAYER_SHORT_SWITCH_STATE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -54064,7 +54485,7 @@ namespace big
 
         int res = STREAMING::GET_PLAYER_SWITCH_JUMP_CUT_INDEX();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -54120,7 +54541,7 @@ namespace big
 
         BOOL res = STREAMING::IS_SWITCH_READY_FOR_DESCENT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -54158,7 +54579,7 @@ namespace big
 
         BOOL res = STREAMING::IS_SWITCH_TO_MULTI_FIRSTPART_FINISHED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -54168,7 +54589,7 @@ namespace big
 
         int res = STREAMING::GET_PLAYER_SWITCH_INTERP_OUT_DURATION();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -54178,7 +54599,7 @@ namespace big
 
         int res = STREAMING::GET_PLAYER_SWITCH_INTERP_OUT_CURRENT_TIME();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -54188,7 +54609,7 @@ namespace big
 
         BOOL res = STREAMING::IS_SWITCH_SKIPPING_DESCENT();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -54204,7 +54625,7 @@ namespace big
 
         float res = STREAMING::GET_LODSCALE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -54264,7 +54685,7 @@ namespace big
 
         BOOL res = STREAMING::IPL_GROUP_SWAP_IS_READY();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -54280,7 +54701,7 @@ namespace big
 
         Any res = STREAMING::IPL_GROUP_SWAP_IS_ACTIVE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -54297,7 +54718,7 @@ namespace big
 
         BOOL res = STREAMING::IS_SRL_LOADED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -54391,7 +54812,7 @@ namespace big
 
         BOOL res = STREAMING::ADD_MODEL_TO_CREATOR_BUDGET(modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -54408,7 +54829,7 @@ namespace big
 
         float res = STREAMING::GET_USED_CREATOR_BUDGET();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -54934,7 +55355,7 @@ namespace big
 
         int res = TASK::GET_NAVMESH_ROUTE_RESULT(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -54945,7 +55366,7 @@ namespace big
 
         BOOL res = TASK::IS_CONTROLLED_VEHICLE_UNABLE_TO_GET_TO_ROAD(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -55183,7 +55604,7 @@ namespace big
 
         BOOL res = TASK::IS_PLAYING_PHONE_GESTURE_ANIM(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -55194,7 +55615,7 @@ namespace big
 
         float res = TASK::GET_PHONE_GESTURE_ANIM_CURRENT_TIME(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -55205,7 +55626,7 @@ namespace big
 
         float res = TASK::GET_PHONE_GESTURE_ANIM_TOTAL_TIME(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -55256,7 +55677,7 @@ namespace big
 
         TASK::OPEN_SEQUENCE_TASK(&taskSequenceId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -55289,7 +55710,7 @@ namespace big
 
         TASK::CLEAR_SEQUENCE_TASK(&taskSequenceId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -55307,7 +55728,7 @@ namespace big
 
         int res = TASK::GET_SEQUENCE_PROGRESS(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -55319,7 +55740,7 @@ namespace big
 
         BOOL res = TASK::GET_IS_TASK_ACTIVE(ped, taskIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -55331,7 +55752,7 @@ namespace big
 
         int res = TASK::GET_SCRIPT_TASK_STATUS(ped, taskHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -55342,7 +55763,7 @@ namespace big
 
         int res = TASK::GET_ACTIVE_VEHICLE_MISSION_TYPE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -55398,7 +55819,7 @@ namespace big
 
         const char* res = TASK::GET_CLIP_SET_FOR_SCRIPTED_GUN_TASK(gunTaskType);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -55848,7 +56269,7 @@ namespace big
 
         BOOL res = TASK::IS_DRIVEBY_TASK_UNDERNEATH_DRIVING_TASK(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -55859,7 +56280,7 @@ namespace big
 
         BOOL res = TASK::CONTROL_MOUNTED_WEAPON(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -55884,7 +56305,7 @@ namespace big
 
         BOOL res = TASK::IS_MOUNTED_WEAPON_TASK_UNDERNEATH_DRIVING_TASK(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -55978,7 +56399,7 @@ namespace big
 
         int res = TASK::GET_TASK_RAPPEL_DOWN_WALL_STATE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -56021,7 +56442,7 @@ namespace big
 
         float res = TASK::GET_PED_DESIRED_MOVE_BLEND_RATIO(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -56100,7 +56521,7 @@ namespace big
 
         ScrHandle res = TASK::ADD_COVER_POINT(x, y, z, direction, usage, height, arc, isPriority);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -56120,7 +56541,7 @@ namespace big
 
         BOOL res = TASK::DOES_SCRIPTED_COVER_POINT_EXIST_AT_COORDS(x, y, z);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -56131,10 +56552,10 @@ namespace big
 
         Vector3 res = TASK::GET_SCRIPTED_COVER_POINT_COORDS(coverpoint);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -56486,7 +56907,7 @@ namespace big
 
         BOOL res = TASK::DOES_SCENARIO_EXIST_IN_AREA(x, y, z, radius, mustBeFree);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -56502,7 +56923,7 @@ namespace big
 
         BOOL res = TASK::DOES_SCENARIO_OF_TYPE_EXIST_IN_AREA(x, y, z, scenarioName, radius, mustBeFree);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -56517,7 +56938,7 @@ namespace big
 
         BOOL res = TASK::IS_SCENARIO_OCCUPIED(x, y, z, maxRange, onlyUsersActuallyAtScenario);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -56528,7 +56949,7 @@ namespace big
 
         BOOL res = TASK::PED_HAS_USE_SCENARIO_TASK(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -56548,7 +56969,7 @@ namespace big
 
         BOOL res = TASK::DOES_SCENARIO_GROUP_EXIST(scenarioGroup);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -56559,7 +56980,7 @@ namespace big
 
         BOOL res = TASK::IS_SCENARIO_GROUP_ENABLED(scenarioGroup);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -56597,7 +57018,7 @@ namespace big
 
         BOOL res = TASK::IS_SCENARIO_TYPE_ENABLED(scenarioType);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -56622,7 +57043,7 @@ namespace big
 
         BOOL res = TASK::IS_PED_ACTIVE_IN_SCENARIO(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -56633,7 +57054,7 @@ namespace big
 
         BOOL res = TASK::IS_PED_PLAYING_BASE_CLIP_IN_SCENARIO(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -56712,7 +57133,7 @@ namespace big
 
         BOOL res = TASK::IS_PED_GETTING_UP(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -56735,7 +57156,7 @@ namespace big
 
         BOOL res = TASK::IS_PED_IN_WRITHE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57019,7 +57440,7 @@ namespace big
 
         BOOL res = TASK::GET_IS_WAYPOINT_RECORDING_LOADED(name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57081,7 +57502,7 @@ namespace big
 
         float res = TASK::WAYPOINT_RECORDING_GET_SPEED_AT_POINT(name, point);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -57125,7 +57546,7 @@ namespace big
 
         BOOL res = TASK::IS_WAYPOINT_PLAYBACK_GOING_ON_FOR_PED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57136,7 +57557,7 @@ namespace big
 
         int res = TASK::GET_PED_WAYPOINT_PROGRESS(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -57147,7 +57568,7 @@ namespace big
 
         float res = TASK::GET_PED_WAYPOINT_DISTANCE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -57161,7 +57582,7 @@ namespace big
 
         Any res = TASK::SET_PED_WAYPOINT_ROUTE_OFFSET(p0, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -57173,7 +57594,7 @@ namespace big
 
         float res = TASK::GET_WAYPOINT_DISTANCE_ALONG_ROUTE(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -57184,7 +57605,7 @@ namespace big
 
         BOOL res = TASK::WAYPOINT_PLAYBACK_GET_IS_PAUSED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57303,7 +57724,7 @@ namespace big
 
         BOOL res = TASK::ASSISTED_MOVEMENT_IS_ROUTE_LOADED(route);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57345,7 +57766,7 @@ namespace big
 
         BOOL res = TASK::IS_WAYPOINT_PLAYBACK_GOING_ON_FOR_VEHICLE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57356,7 +57777,7 @@ namespace big
 
         int res = TASK::GET_VEHICLE_WAYPOINT_PROGRESS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -57367,7 +57788,7 @@ namespace big
 
         int res = TASK::GET_VEHICLE_WAYPOINT_TARGET_POINT(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -57461,7 +57882,7 @@ namespace big
 
         TASK::TASK_MOVE_NETWORK_BY_NAME_WITH_INIT_PARAMS(ped, network, &initialParameters, blendDuration, allowOverrideCloneUpdate, animDict, flags);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -57484,7 +57905,7 @@ namespace big
 
         TASK::TASK_MOVE_NETWORK_ADVANCED_BY_NAME_WITH_INIT_PARAMS(ped, network, &initialParameters, x, y, z, rotX, rotY, rotZ, rotOrder, blendDuration, allowOverrideCloneUpdate, dictionary, flags);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -57494,7 +57915,7 @@ namespace big
 
         BOOL res = TASK::IS_TASK_MOVE_NETWORK_ACTIVE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57505,7 +57926,7 @@ namespace big
 
         BOOL res = TASK::IS_TASK_MOVE_NETWORK_READY_FOR_TRANSITION(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57517,7 +57938,7 @@ namespace big
 
         BOOL res = TASK::REQUEST_TASK_MOVE_NETWORK_STATE_TRANSITION(ped, name);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57529,7 +57950,7 @@ namespace big
 
         Any res = TASK::SET_EXPECTED_CLONE_NEXT_TASK_MOVE_NETWORK_STATE(ped, state);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -57540,7 +57961,7 @@ namespace big
 
         const char* res = TASK::GET_TASK_MOVE_NETWORK_STATE(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -57597,7 +58018,7 @@ namespace big
 
         float res = TASK::GET_TASK_MOVE_NETWORK_SIGNAL_FLOAT(ped, signalName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -57609,7 +58030,7 @@ namespace big
 
         BOOL res = TASK::GET_TASK_MOVE_NETWORK_SIGNAL_BOOL(ped, signalName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57621,9 +58042,21 @@ namespace big
 
         BOOL res = TASK::GET_TASK_MOVE_NETWORK_EVENT(ped, eventName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
+    }
+
+    static void WREN_TASK_SET_TASK_MOVE_NETWORK_ENABLE_COLLISION_ON_NETWORK_CLONE_WHEN_FIXED(WrenVM* vm)
+    {
+        Ped ped = (Ped)wrenGetSlotDouble(vm, 1);
+        BOOL enable = (BOOL)wrenGetSlotBool(vm, 2);
+
+        Any res = TASK::SET_TASK_MOVE_NETWORK_ENABLE_COLLISION_ON_NETWORK_CLONE_WHEN_FIXED(ped, enable);
+
+        wrenEnsureSlots(vm, 1);
+
+        wrenSetSlotDouble(vm, 0, res);
     }
 
     static void WREN_TASK_IS_MOVE_BLEND_RATIO_STILL(WrenVM* vm)
@@ -57632,7 +58065,7 @@ namespace big
 
         BOOL res = TASK::IS_MOVE_BLEND_RATIO_STILL(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57643,7 +58076,7 @@ namespace big
 
         BOOL res = TASK::IS_MOVE_BLEND_RATIO_WALKING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57654,7 +58087,7 @@ namespace big
 
         BOOL res = TASK::IS_MOVE_BLEND_RATIO_RUNNING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57665,7 +58098,7 @@ namespace big
 
         BOOL res = TASK::IS_MOVE_BLEND_RATIO_SPRINTING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57676,7 +58109,7 @@ namespace big
 
         BOOL res = TASK::IS_PED_STILL(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57687,7 +58120,7 @@ namespace big
 
         BOOL res = TASK::IS_PED_WALKING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57698,7 +58131,7 @@ namespace big
 
         BOOL res = TASK::IS_PED_RUNNING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57709,7 +58142,7 @@ namespace big
 
         BOOL res = TASK::IS_PED_SPRINTING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57720,7 +58153,7 @@ namespace big
 
         BOOL res = TASK::IS_PED_STRAFING(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57813,7 +58246,7 @@ namespace big
 
         BOOL res = TASK::IS_PED_RUNNING_ARREST_TASK(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57824,7 +58257,7 @@ namespace big
 
         BOOL res = TASK::IS_PED_BEING_ARRESTED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57842,7 +58275,7 @@ namespace big
 
         BOOL res = TASK::IS_PED_CUFFED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57861,7 +58294,7 @@ namespace big
 
         Vehicle res = VEHICLE::CREATE_VEHICLE(modelHash, x, y, z, heading, isNetwork, bScriptHostVeh, p7);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -57872,7 +58305,7 @@ namespace big
 
         VEHICLE::DELETE_VEHICLE(&vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -57908,7 +58341,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_HOMING_LOCKON_STATE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -57919,7 +58352,7 @@ namespace big
 
         Any res = VEHICLE::GET_VEHICLE_HOMING_LOCKEDONTO_STATE(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -57939,7 +58372,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_MODEL(vehicle, model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -57950,9 +58383,36 @@ namespace big
 
         BOOL res = VEHICLE::DOES_SCRIPT_VEHICLE_GENERATOR_EXIST(vehicleGenerator);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
+    }
+
+    static void WREN_VEHICLE_CREATE_SCRIPT_VEHICLE_GENERATOR(WrenVM* vm)
+    {
+        float x = (float)wrenGetSlotDouble(vm, 1);
+        float y = (float)wrenGetSlotDouble(vm, 2);
+        float z = (float)wrenGetSlotDouble(vm, 3);
+        float heading = (float)wrenGetSlotDouble(vm, 4);
+        float p4 = (float)wrenGetSlotDouble(vm, 5);
+        float p5 = (float)wrenGetSlotDouble(vm, 6);
+        Hash modelHash = (Hash)wrenGetSlotDouble(vm, 7);
+        int p7 = (int)wrenGetSlotDouble(vm, 8);
+        int p8 = (int)wrenGetSlotDouble(vm, 9);
+        int p9 = (int)wrenGetSlotDouble(vm, 10);
+        int p10 = (int)wrenGetSlotDouble(vm, 11);
+        BOOL p11 = (BOOL)wrenGetSlotBool(vm, 12);
+        BOOL p12 = (BOOL)wrenGetSlotBool(vm, 13);
+        BOOL p13 = (BOOL)wrenGetSlotBool(vm, 14);
+        BOOL p14 = (BOOL)wrenGetSlotBool(vm, 15);
+        BOOL p15 = (BOOL)wrenGetSlotBool(vm, 16);
+        int p16 = (int)wrenGetSlotDouble(vm, 17);
+
+        int res = VEHICLE::CREATE_SCRIPT_VEHICLE_GENERATOR(x, y, z, heading, p4, p5, modelHash, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16);
+
+        wrenEnsureSlots(vm, 1);
+
+        wrenSetSlotDouble(vm, 0, res);
     }
 
     static void WREN_VEHICLE_DELETE_SCRIPT_VEHICLE_GENERATOR(WrenVM* vm)
@@ -58020,7 +58480,7 @@ namespace big
 
         BOOL res = VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(vehicle, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58034,7 +58494,7 @@ namespace big
 
         Any res = VEHICLE::SET_VEHICLE_USE_CUTSCENE_WHEEL_COMPRESSION(p0, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -58045,7 +58505,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_STUCK_ON_ROOF(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58070,7 +58530,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_STOPPED(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58083,7 +58543,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_NUMBER_OF_PASSENGERS(vehicle, includeDriver, includeDeadOccupants);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -58094,7 +58554,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -58105,7 +58565,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -58117,7 +58577,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_SEAT_WARP_ONLY(vehicle, seatIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58129,7 +58589,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_TURRET_SEAT(vehicle, seatIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58140,7 +58600,7 @@ namespace big
 
         BOOL res = VEHICLE::DOES_VEHICLE_ALLOW_RAPPEL(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58235,7 +58695,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_VEHICLE_DOORS_LOCKED_FOR_PLAYER(vehicle, player);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58325,7 +58785,7 @@ namespace big
 
         BOOL res = VEHICLE::HAS_VEHICLE_PHONE_EXPLOSIVE_DEVICE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58350,7 +58810,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_TAXI_LIGHT_ON(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58362,7 +58822,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_IN_GARAGE_AREA(garageName, vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58439,7 +58899,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_IS_VEHICLE_PRIMARY_COLOUR_CUSTOM(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58491,7 +58951,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_IS_VEHICLE_SECONDARY_COLOUR_CUSTOM(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58510,7 +58970,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_ENVEFF_SCALE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -58572,7 +59032,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_SUBMARINE_IS_UNDER_DESIGN_DEPTH(submarine);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58583,7 +59043,7 @@ namespace big
 
         int res = VEHICLE::GET_SUBMARINE_NUMBER_OF_AIR_LEAKS(submarine);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -58610,7 +59070,7 @@ namespace big
 
         BOOL res = VEHICLE::CAN_ANCHOR_BOAT_HERE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58621,7 +59081,7 @@ namespace big
 
         BOOL res = VEHICLE::CAN_ANCHOR_BOAT_HERE_IGNORE_PLAYERS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58656,7 +59116,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_BOAT_ANCHORED(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58690,7 +59150,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_SIREN_ON(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58701,7 +59161,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_SIREN_AUDIO_ON(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58749,7 +59209,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_SEAT_FREE(vehicle, seatIndex, isTaskRunning);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58762,7 +59222,7 @@ namespace big
 
         Ped res = VEHICLE::GET_PED_IN_VEHICLE_SEAT(vehicle, seatIndex, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -58774,7 +59234,7 @@ namespace big
 
         Ped res = VEHICLE::GET_LAST_PED_IN_VEHICLE_SEAT(vehicle, seatIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -58810,7 +59270,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_TYRE_BURST(vehicle, wheelID, completely);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58878,7 +59338,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_BEING_BROUGHT_TO_HALT(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58898,7 +59358,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_ENTITY_ATTACHED_TO_HANDLER_FRAME(vehicle, entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58909,7 +59369,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_ANY_ENTITY_ATTACHED_TO_HANDLER_FRAME(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58920,7 +59380,7 @@ namespace big
 
         Vehicle res = VEHICLE::FIND_HANDLER_VEHICLE_CONTAINER_IS_ATTACHED_TO(entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -58932,7 +59392,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_HANDLER_FRAME_LINED_UP_WITH_CONTAINER(vehicle, entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -58974,7 +59434,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_HELI_LANDING_AREA_BLOCKED(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -59033,7 +59493,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_VEHICLE_TYRES_CAN_BURST(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -59181,7 +59641,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_ALARM_ACTIVATED(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -59259,7 +59719,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_ATTACHED_TO_TRAILER(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -59308,7 +59768,7 @@ namespace big
 
         const char* res = VEHICLE::GET_VEHICLE_NUMBER_PLATE_TEXT(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -59318,7 +59778,7 @@ namespace big
 
         int res = VEHICLE::GET_NUMBER_OF_VEHICLE_NUMBER_PLATES();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -59337,7 +59797,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -59361,7 +59821,7 @@ namespace big
 
         Vehicle res = VEHICLE::CREATE_MISSION_TRAIN(variation, x, y, z, direction, p5, p6);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -59438,7 +59898,7 @@ namespace big
 
         BOOL res = VEHICLE::DOES_VEHICLE_HAVE_STUCK_VEHICLE_CHECK(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -59450,7 +59910,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_RECORDING_ID(recording, script);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -59470,7 +59930,7 @@ namespace big
 
         BOOL res = VEHICLE::HAS_VEHICLE_RECORDING_BEEN_LOADED(recording, script);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -59490,10 +59950,10 @@ namespace big
 
         Vector3 res = VEHICLE::GET_POSITION_OF_VEHICLE_RECORDING_ID_AT_TIME(id, time);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -59507,10 +59967,10 @@ namespace big
 
         Vector3 res = VEHICLE::GET_POSITION_OF_VEHICLE_RECORDING_AT_TIME(recording, time, script);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -59523,10 +59983,10 @@ namespace big
 
         Vector3 res = VEHICLE::GET_ROTATION_OF_VEHICLE_RECORDING_ID_AT_TIME(id, time);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -59540,10 +60000,10 @@ namespace big
 
         Vector3 res = VEHICLE::GET_ROTATION_OF_VEHICLE_RECORDING_AT_TIME(recording, time, script);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -59555,7 +60015,7 @@ namespace big
 
         float res = VEHICLE::GET_TOTAL_DURATION_OF_VEHICLE_RECORDING_ID(id);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -59567,7 +60027,7 @@ namespace big
 
         float res = VEHICLE::GET_TOTAL_DURATION_OF_VEHICLE_RECORDING(recording, script);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -59578,7 +60038,7 @@ namespace big
 
         float res = VEHICLE::GET_POSITION_IN_RECORDING(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -59589,7 +60049,7 @@ namespace big
 
         float res = VEHICLE::GET_TIME_POSITION_IN_RECORDING(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -59651,7 +60111,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_PLAYBACK_GOING_ON_FOR_VEHICLE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -59662,7 +60122,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_PLAYBACK_USING_AI_GOING_ON_FOR_VEHICLE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -59673,7 +60133,7 @@ namespace big
 
         int res = VEHICLE::GET_CURRENT_PLAYBACK_FOR_VEHICLE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -59809,7 +60269,7 @@ namespace big
 
         Vehicle res = VEHICLE::GET_RANDOM_VEHICLE_IN_SPHERE(x, y, z, radius, modelHash, flags);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -59826,7 +60286,7 @@ namespace big
 
         Vehicle res = VEHICLE::GET_RANDOM_VEHICLE_FRONT_BUMPER_IN_SPHERE(p0, p1, p2, p3, p4, p5, p6);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -59843,7 +60303,7 @@ namespace big
 
         Vehicle res = VEHICLE::GET_RANDOM_VEHICLE_BACK_BUMPER_IN_SPHERE(p0, p1, p2, p3, p4, p5, p6);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -59859,7 +60319,7 @@ namespace big
 
         Vehicle res = VEHICLE::GET_CLOSEST_VEHICLE(x, y, z, radius, modelHash, flags);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -59871,7 +60331,7 @@ namespace big
 
         Entity res = VEHICLE::GET_TRAIN_CARRIAGE(train, trailerNumber);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -59882,7 +60342,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_MISSION_TRAIN(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -59893,7 +60353,7 @@ namespace big
 
         VEHICLE::DELETE_MISSION_TRAIN(&train);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -59904,7 +60364,7 @@ namespace big
 
         VEHICLE::SET_MISSION_TRAIN_AS_NO_LONGER_NEEDED(&train, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -59924,7 +60384,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_THIS_MODEL_A_BOAT(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -59935,7 +60395,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_THIS_MODEL_A_JETSKI(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -59946,7 +60406,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_THIS_MODEL_A_PLANE(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -59957,7 +60417,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_THIS_MODEL_A_HELI(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -59968,7 +60428,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_THIS_MODEL_A_CAR(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -59979,7 +60439,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_THIS_MODEL_A_TRAIN(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -59990,7 +60450,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_THIS_MODEL_A_BIKE(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60001,7 +60461,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_THIS_MODEL_A_BICYCLE(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60012,7 +60472,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_THIS_MODEL_A_QUADBIKE(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60023,7 +60483,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_THIS_MODEL_AN_AMPHIBIOUS_CAR(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60034,7 +60494,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_THIS_MODEL_AN_AMPHIBIOUS_QUADBIKE(model);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60117,7 +60577,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_DIRT_LEVEL(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -60136,7 +60596,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_DOES_VEHICLE_HAVE_DAMAGE_DECALS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60148,7 +60608,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_DOOR_FULLY_OPEN(vehicle, doorId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60207,7 +60667,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_DOOR_ANGLE_RATIO(vehicle, doorId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -60219,7 +60679,7 @@ namespace big
 
         Ped res = VEHICLE::GET_PED_USING_VEHICLE_DOOR(vehicle, doord);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -60256,7 +60716,7 @@ namespace big
 
         BOOL res = VEHICLE::DOES_VEHICLE_HAVE_ROOF(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60289,7 +60749,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_BIG_VEHICLE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60300,7 +60760,7 @@ namespace big
 
         int res = VEHICLE::GET_NUMBER_OF_VEHICLE_COLOURS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -60319,7 +60779,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_COLOUR_COMBINATION(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -60338,7 +60798,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_XENON_LIGHT_COLOR_INDEX(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -60409,7 +60869,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -60421,7 +60881,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_INDIVIDUAL_DOOR_LOCK_STATUS(vehicle, doorId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -60433,7 +60893,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_DOOR_DAMAGED(veh, doorID);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60454,7 +60914,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_BUMPER_BOUNCING(vehicle, frontBumper);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60466,7 +60926,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_BUMPER_BROKEN_OFF(vehicle, front);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60482,7 +60942,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_COP_VEHICLE_IN_AREA_3D(x1, x2, y1, y2, z1, z2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60493,7 +60953,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_ON_ALL_WHEELS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60504,7 +60964,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_MODEL_VALUE(vehicleModel);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -60515,7 +60975,7 @@ namespace big
 
         Hash res = VEHICLE::GET_VEHICLE_LAYOUT_HASH(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -60527,7 +60987,7 @@ namespace big
 
         Any res = VEHICLE::GET_IN_VEHICLE_CLIPSET_HASH_FOR_SEAT(vehicle, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -60584,7 +61044,7 @@ namespace big
 
         VEHICLE::GET_VEHICLE_EXTRA_COLOUR_5(vehicle, &color);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -60603,7 +61063,7 @@ namespace big
 
         VEHICLE::GET_VEHICLE_EXTRA_COLOUR_6(vehicle, &color);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
     }
 
@@ -60727,7 +61187,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(vehicle, extraId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60748,7 +61208,7 @@ namespace big
 
         BOOL res = VEHICLE::DOES_EXTRA_EXIST(vehicle, extraId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60760,7 +61220,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_EXTRA_BROKEN_OFF(vehicle, tyreIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60795,7 +61255,7 @@ namespace big
 
         int res = VEHICLE::GET_CONVERTIBLE_ROOF_STATE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -60807,7 +61267,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_A_CONVERTIBLE(vehicle, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60834,7 +61294,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_IN_SUBMARINE_MODE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60845,7 +61305,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60877,7 +61337,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_ENGINE_HEALTH(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -60904,7 +61364,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_PETROL_TANK_HEALTH(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -60925,7 +61385,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_STUCK_TIMER_UP(vehicle, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -60945,7 +61405,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_DRIVEABLE(vehicle, isOnFireCheck);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61014,7 +61474,7 @@ namespace big
 
         const char* res = VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -61025,7 +61485,7 @@ namespace big
 
         const char* res = VEHICLE::GET_MAKE_NAME_FROM_VEHICLE_MODEL(modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -61039,10 +61499,10 @@ namespace big
 
         Vector3 res = VEHICLE::GET_VEHICLE_DEFORMATION_AT_POS(vehicle, offsetX, offsetY, offsetZ);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -61062,7 +61522,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_LIVERY(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61073,7 +61533,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_LIVERY_COUNT(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61092,7 +61552,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_LIVERY2(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61103,7 +61563,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_LIVERY2_COUNT(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61115,7 +61575,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_WINDOW_INTACT(vehicle, windowIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61126,7 +61586,7 @@ namespace big
 
         BOOL res = VEHICLE::ARE_ALL_VEHICLE_WINDOWS_INTACT(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61137,7 +61597,7 @@ namespace big
 
         BOOL res = VEHICLE::ARE_ANY_VEHICLE_SEATS_FREE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61159,7 +61619,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_HELI_PART_BROKEN(vehicle, p1, p2, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61170,7 +61630,7 @@ namespace big
 
         float res = VEHICLE::GET_HELI_MAIN_ROTOR_HEALTH(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61181,7 +61641,7 @@ namespace big
 
         float res = VEHICLE::GET_HELI_TAIL_ROTOR_HEALTH(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61192,7 +61652,7 @@ namespace big
 
         float res = VEHICLE::GET_HELI_TAIL_BOOM_HEALTH(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61267,7 +61727,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_VEHICLE_HAS_LANDING_GEAR(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61286,7 +61746,7 @@ namespace big
 
         int res = VEHICLE::GET_LANDING_GEAR_STATE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61300,7 +61760,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_ANY_VEHICLE_NEAR_POINT(x, y, z, radius);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61325,7 +61785,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_HIGH_DETAIL(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61344,7 +61804,7 @@ namespace big
 
         BOOL res = VEHICLE::HAS_VEHICLE_ASSET_LOADED(vehicleAsset);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61390,7 +61850,7 @@ namespace big
 
         BOOL res = VEHICLE::DETACH_VEHICLE_FROM_ANY_TOW_TRUCK(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61402,7 +61862,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_ATTACHED_TO_TOW_TRUCK(towTruck, vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61413,7 +61873,7 @@ namespace big
 
         Entity res = VEHICLE::GET_ENTITY_ATTACHED_TO_TOW_TRUCK(towTruck);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61426,7 +61886,7 @@ namespace big
 
         Any res = VEHICLE::SET_VEHICLE_AUTOMATICALLY_ATTACHES(vehicle, p1, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61506,7 +61966,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_FLIGHT_NOZZLE_POSITION(plane);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61569,7 +62029,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_IN_BURNOUT(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61634,7 +62094,7 @@ namespace big
 
         BOOL res = VEHICLE::HAS_INSTANT_FILL_VEHICLE_POPULATION_FINISHED();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61702,7 +62162,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_ESTIMATED_MAX_SPEED(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61713,7 +62173,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_MAX_BRAKING(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61724,7 +62184,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_MAX_TRACTION(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61735,7 +62195,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_ACCELERATION(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61746,7 +62206,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61757,7 +62217,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_MODEL_MAX_BRAKING(modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61768,7 +62228,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_MODEL_MAX_BRAKING_MAX_MODS(modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61779,7 +62239,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_MODEL_MAX_TRACTION(modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61790,7 +62250,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_MODEL_ACCELERATION(modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61801,7 +62261,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_MODEL_ACCELERATION_MAX_MODS(modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61812,7 +62272,7 @@ namespace big
 
         float res = VEHICLE::GET_FLYING_VEHICLE_MODEL_AGILITY(modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61823,7 +62283,7 @@ namespace big
 
         float res = VEHICLE::GET_BOAT_VEHICLE_MODEL_AGILITY(modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61834,7 +62294,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_CLASS_ESTIMATED_MAX_SPEED(vehicleClass);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61845,7 +62305,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_CLASS_MAX_TRACTION(vehicleClass);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61856,7 +62316,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_CLASS_MAX_AGILITY(vehicleClass);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61867,7 +62327,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_CLASS_MAX_ACCELERATION(vehicleClass);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61878,7 +62338,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_CLASS_MAX_BRAKING(vehicleClass);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61894,7 +62354,7 @@ namespace big
 
         int res = VEHICLE::ADD_ROAD_NODE_SPEED_ZONE(x, y, z, radius, speed, p5);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -61905,7 +62365,7 @@ namespace big
 
         BOOL res = VEHICLE::REMOVE_ROAD_NODE_SPEED_ZONE(speedzone);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61930,7 +62390,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_ARE_BOMB_BAY_DOORS_OPEN(aircraft);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61941,7 +62401,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_SEARCHLIGHT_ON(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61961,7 +62421,7 @@ namespace big
 
         BOOL res = VEHICLE::DOES_VEHICLE_HAVE_SEARCHLIGHT(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61976,7 +62436,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_ENTRY_POINT_FOR_SEAT_CLEAR(ped, vehicle, seatIndex, side, onEnter);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -61988,10 +62448,10 @@ namespace big
 
         Vector3 res = VEHICLE::GET_ENTRY_POINT_POSITION(vehicle, doorId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -62004,7 +62464,7 @@ namespace big
 
         BOOL res = VEHICLE::CAN_SHUFFLE_SEAT(vehicle, seatIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -62015,7 +62475,7 @@ namespace big
 
         int res = VEHICLE::GET_NUM_MOD_KITS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62034,7 +62494,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_MOD_KIT(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62045,7 +62505,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_MOD_KIT_TYPE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62056,7 +62516,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_WHEEL_TYPE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62076,7 +62536,7 @@ namespace big
 
         int res = VEHICLE::GET_NUM_MOD_COLORS(paintType, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62151,7 +62611,7 @@ namespace big
 
         const char* res = VEHICLE::GET_VEHICLE_MOD_COLOR_1_NAME(vehicle, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -62162,7 +62622,7 @@ namespace big
 
         const char* res = VEHICLE::GET_VEHICLE_MOD_COLOR_2_NAME(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -62173,7 +62633,7 @@ namespace big
 
         BOOL res = VEHICLE::HAVE_VEHICLE_MODS_STREAMED_IN(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -62186,7 +62646,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_MOD_GEN9_EXCLUSIVE(vehicle, modType, modIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -62208,7 +62668,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_MOD(vehicle, modType);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62220,7 +62680,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_VEHICLE_MOD_VARIATION(vehicle, modType);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -62232,7 +62692,7 @@ namespace big
 
         int res = VEHICLE::GET_NUM_VEHICLE_MODS(vehicle, modType);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62261,7 +62721,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_TOGGLE_MOD_ON(vehicle, modType);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -62274,7 +62734,7 @@ namespace big
 
         const char* res = VEHICLE::GET_MOD_TEXT_LABEL(vehicle, modType, modValue);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -62286,7 +62746,7 @@ namespace big
 
         const char* res = VEHICLE::GET_MOD_SLOT_NAME(vehicle, modType);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -62298,7 +62758,7 @@ namespace big
 
         const char* res = VEHICLE::GET_LIVERY_NAME(vehicle, liveryIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -62311,7 +62771,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_MOD_MODIFIER_VALUE(vehicle, modType, modIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62324,7 +62784,7 @@ namespace big
 
         Hash res = VEHICLE::GET_VEHICLE_MOD_IDENTIFIER_HASH(vehicle, modType, modIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62344,7 +62804,7 @@ namespace big
 
         BOOL res = VEHICLE::HAS_PRELOAD_MODS_FINISHED(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -62404,7 +62864,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_WINDOW_TINT(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62414,7 +62874,7 @@ namespace big
 
         int res = VEHICLE::GET_NUM_VEHICLE_WINDOW_TINTS();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62449,7 +62909,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_COLOURS_WHICH_CAN_BE_SET(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62460,7 +62920,7 @@ namespace big
 
         Hash res = VEHICLE::GET_VEHICLE_CAUSE_OF_DESTRUCTION(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62479,7 +62939,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -62490,7 +62950,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -62501,7 +62961,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_BOTH_VEHICLE_HEADLIGHTS_DAMAGED(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -62559,7 +63019,7 @@ namespace big
 
         Any res = VEHICLE::ADD_VEHICLE_COMBAT_ANGLED_AVOIDANCE_AREA(p0, p1, p2, p3, p4, p5, p6);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62577,7 +63037,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_ANY_PED_RAPPELLING_FROM_HELI(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -62636,7 +63096,7 @@ namespace big
 
         float res = VEHICLE::GET_BOAT_BOOM_POSITION_RATIO(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62656,7 +63116,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_IS_VEHICLE_ENGINE_RUNNING(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -62705,7 +63165,7 @@ namespace big
 
         Vehicle res = VEHICLE::GET_LAST_DRIVEN_VEHICLE();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62754,7 +63214,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_NUM_OF_BROKEN_OFF_PARTS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62765,7 +63225,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_NUM_OF_BROKEN_LOOSEN_PARTS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62859,7 +63319,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_PLATE_TYPE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62877,7 +63337,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_VISIBLE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -62910,7 +63370,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_CURRENT_TIME_IN_SLIP_STREAM(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -62921,7 +63381,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_PRODUCING_SLIP_STREAM(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -62948,7 +63408,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_SPRAYABLE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -62983,7 +63443,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_PLANE_LANDING_GEAR_INTACT(plane);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -62994,7 +63454,7 @@ namespace big
 
         BOOL res = VEHICLE::ARE_PLANE_PROPELLERS_INTACT(plane);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -63021,7 +63481,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_STOLEN(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -63048,7 +63508,7 @@ namespace big
 
         BOOL res = VEHICLE::ARE_WINGS_OF_PLANE_INTACT(plane);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -63074,7 +63534,7 @@ namespace big
 
         BOOL res = VEHICLE::DETACH_VEHICLE_FROM_ANY_CARGOBOB(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -63086,7 +63546,7 @@ namespace big
 
         Any res = VEHICLE::DETACH_ENTITY_FROM_CARGOBOB(cargobob, entity);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -63098,7 +63558,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_ATTACHED_TO_CARGOBOB(cargobob, vehicleAttached);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -63109,7 +63569,7 @@ namespace big
 
         Vehicle res = VEHICLE::GET_VEHICLE_ATTACHED_TO_CARGOBOB(cargobob);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -63120,7 +63580,7 @@ namespace big
 
         Any res = VEHICLE::GET_ENTITY_ATTACHED_TO_CARGOBOB(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -63172,7 +63632,7 @@ namespace big
 
         Any res = VEHICLE::CAN_CARGOBOB_PICK_UP_ENTITY(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -63183,10 +63643,10 @@ namespace big
 
         Vector3 res = VEHICLE::GET_ATTACHED_PICK_UP_HOOK_POSITION(cargobob);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -63198,7 +63658,7 @@ namespace big
 
         BOOL res = VEHICLE::DOES_CARGOBOB_HAVE_PICK_UP_ROPE(cargobob);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -63259,7 +63719,7 @@ namespace big
 
         BOOL res = VEHICLE::DOES_CARGOBOB_HAVE_PICKUP_MAGNET(cargobob);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -63351,7 +63811,7 @@ namespace big
 
         BOOL res = VEHICLE::DOES_VEHICLE_HAVE_WEAPONS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -63382,7 +63842,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_WEAPON_DISABLED(weaponHash, vehicle, owner);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -63409,7 +63869,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_CLASS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -63420,7 +63880,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_CLASS_FROM_NAME(modelHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -63527,7 +63987,7 @@ namespace big
 
         BOOL res = VEHICLE::ARE_PLANE_CONTROL_PANELS_INTACT(vehicle, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -63561,7 +64021,7 @@ namespace big
 
         BOOL res = VEHICLE::DOES_VEHICLE_EXIST_WITH_DECORATOR(decorator);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -63723,7 +64183,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_VEHICLE_NEON_ENABLED(vehicle, index);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -63764,7 +64224,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_BODY_HEALTH(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -63810,7 +64270,7 @@ namespace big
 
         float res = VEHICLE::GET_FAKE_SUSPENSION_LOWERING_AMOUNT(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -63828,7 +64288,7 @@ namespace big
 
         int res = VEHICLE::GET_NUMBER_OF_VEHICLE_DOORS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -63861,7 +64321,7 @@ namespace big
 
         float res = VEHICLE::GET_VEHICLE_HEALTH_PERCENTAGE(vehicle, maxEngineHealth, maxPetrolTankHealth, maxBodyHealth, maxMainRotorHealth, maxTailRotorHealth, maxUnkHealth);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -63872,7 +64332,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_VEHICLE_IS_MERCENARY(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -63899,7 +64359,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_VEHICLE_HAS_KERS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -63943,7 +64403,7 @@ namespace big
 
         float res = VEHICLE::GET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(vehicle, wheelId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -63982,7 +64442,7 @@ namespace big
 
         Any res = VEHICLE::HAS_VEHICLE_PETROLTANK_SET_ON_FIRE_BY_ENTITY(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -64009,7 +64469,7 @@ namespace big
 
         Any res = VEHICLE::GET_VEHICLE_IS_DUMMY(p0);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -64021,7 +64481,7 @@ namespace big
 
         Any res = VEHICLE::SET_VEHICLE_DAMAGE_SCALE(vehicle, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -64041,7 +64501,7 @@ namespace big
 
         Any res = VEHICLE::SET_DISABLE_DAMAGE_WITH_PICKED_UP_ENTITY(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -64107,7 +64567,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_IS_BOAT_CAPSIZED(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64135,7 +64595,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_IS_DOOR_VALID(vehicle, doorId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64154,7 +64614,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_HAS_ROCKET_BOOST(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64165,7 +64625,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_ROCKET_BOOST_ACTIVE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64184,7 +64644,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_HAS_RETRACTABLE_WHEELS(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64195,7 +64655,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_IS_WHEELS_RETRACTED(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64220,7 +64680,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_CAR_HAS_JUMP(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64257,7 +64717,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_WEAPON_RESTRICTED_AMMO(vehicle, weaponIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -64268,7 +64728,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_VEHICLE_HAS_PARACHUTE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64279,7 +64739,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_VEHICLE_CAN_DEPLOY_PARACHUTE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64298,7 +64758,7 @@ namespace big
 
         BOOL res = VEHICLE::IS_VEHICLE_PARACHUTE_DEPLOYED(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64372,7 +64832,7 @@ namespace big
 
         Any res = VEHICLE::VEHICLE_SET_OVERRIDE_EXTENABLE_SIDE_RATIO(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -64384,7 +64844,7 @@ namespace big
 
         Any res = VEHICLE::VEHICLE_SET_EXTENABLE_SIDE_TARGET_RATIO(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -64396,7 +64856,7 @@ namespace big
 
         Any res = VEHICLE::VEHICLE_SET_OVERRIDE_SIDE_RATIO(p0, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -64564,7 +65024,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_BOMB_AMMO(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -64583,7 +65043,7 @@ namespace big
 
         int res = VEHICLE::GET_VEHICLE_COUNTERMEASURE_AMMO(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -64612,7 +65072,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_CAN_VEHICLE_BE_PLACED_HERE(vehicle, x, y, z, rotX, rotY, rotZ, p7, p8);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64663,7 +65123,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_OUTRIGGERS_DEPLOYED(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64674,10 +65134,10 @@ namespace big
 
         Vector3 res = VEHICLE::FIND_SPAWN_COORDINATES_FOR_HELI(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
-        wrenGetVariable(vm, "natives", "Vector3", 1);
-        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 1, sizeof(Vector3));
+        wrenGetVariable(vm, "natives", "Vector3", 0);
+        Vector3* wren_res = (Vector3*)wrenSetSlotNewForeign(vm, 0, 0, sizeof(Vector3));
         wren_res->x = res.x;
         wren_res->y = res.y;
         wren_res->z = res.z;
@@ -64698,7 +65158,7 @@ namespace big
 
         BOOL res = VEHICLE::ARE_FOLDING_WINGS_DEPLOYED(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64786,7 +65246,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_IS_VEHICLE_SHUNTING(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64797,7 +65257,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_HAS_VEHICLE_BEEN_HIT_BY_SHUNT(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64808,7 +65268,7 @@ namespace big
 
         Vehicle res = VEHICLE::GET_LAST_SHUNT_VEHICLE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -64860,7 +65320,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_DOES_VEHICLE_HAVE_TOMBSTONE(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64879,7 +65339,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_IS_VEHICLE_DISABLED_BY_EMP(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -64898,7 +65358,7 @@ namespace big
 
         float res = VEHICLE::GET_TYRE_HEALTH(vehicle, wheelIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -64919,7 +65379,7 @@ namespace big
 
         float res = VEHICLE::GET_TYRE_WEAR_RATE(vehicle, wheelIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -64981,7 +65441,7 @@ namespace big
 
         BOOL res = VEHICLE::GET_DRIFT_TYRES_SET(vehicle);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -65140,7 +65600,7 @@ namespace big
 
         int res = WATER::ADD_EXTRA_CALMING_QUAD(xLow, yLow, xHigh, yHigh, height);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65164,7 +65624,7 @@ namespace big
 
         float res = WATER::GET_DEEP_OCEAN_SCALER();
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65196,7 +65656,7 @@ namespace big
 
         Hash res = WEAPON::GET_WEAPON_COMPONENT_TYPE_MODEL(componentHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65207,7 +65667,7 @@ namespace big
 
         Hash res = WEAPON::GET_WEAPONTYPE_MODEL(weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65218,7 +65678,7 @@ namespace big
 
         Hash res = WEAPON::GET_WEAPONTYPE_SLOT(weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65229,7 +65689,7 @@ namespace big
 
         Hash res = WEAPON::GET_WEAPONTYPE_GROUP(weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65240,7 +65700,7 @@ namespace big
 
         int res = WEAPON::GET_WEAPON_COMPONENT_VARIANT_EXTRA_COUNT(componentHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65252,7 +65712,7 @@ namespace big
 
         Hash res = WEAPON::GET_WEAPON_COMPONENT_VARIANT_EXTRA_MODEL(componentHash, extraComponentIndex);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65293,7 +65753,7 @@ namespace big
 
         Entity res = WEAPON::GET_CURRENT_PED_WEAPON_ENTITY_INDEX(ped, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65305,7 +65765,7 @@ namespace big
 
         Hash res = WEAPON::GET_BEST_PED_WEAPON(ped, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65317,7 +65777,7 @@ namespace big
 
         BOOL res = WEAPON::SET_CURRENT_PED_VEHICLE_WEAPON(ped, weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -65355,7 +65815,7 @@ namespace big
 
         BOOL res = WEAPON::IS_PED_ARMED(ped, typeFlags);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -65366,7 +65826,7 @@ namespace big
 
         BOOL res = WEAPON::IS_WEAPON_VALID(weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -65379,7 +65839,7 @@ namespace big
 
         BOOL res = WEAPON::HAS_PED_GOT_WEAPON(ped, weaponHash, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -65390,7 +65850,7 @@ namespace big
 
         BOOL res = WEAPON::IS_PED_WEAPON_READY_TO_SHOOT(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -65402,7 +65862,7 @@ namespace big
 
         Hash res = WEAPON::GET_PED_WEAPONTYPE_IN_SLOT(ped, weaponSlot);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65414,7 +65874,7 @@ namespace big
 
         int res = WEAPON::GET_AMMO_IN_PED_WEAPON(ped, weaponhash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65535,7 +65995,7 @@ namespace big
 
         BOOL res = WEAPON::HAS_PED_BEEN_DAMAGED_BY_WEAPON(ped, weaponHash, weaponType);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -65555,7 +66015,7 @@ namespace big
 
         BOOL res = WEAPON::HAS_ENTITY_BEEN_DAMAGED_BY_WEAPON(entity, weaponHash, weaponType);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -65594,7 +66054,7 @@ namespace big
 
         int res = WEAPON::GET_MAX_AMMO_IN_CLIP(ped, weaponHash, p2);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65627,7 +66087,7 @@ namespace big
 
         BOOL res = WEAPON::SET_AMMO_IN_CLIP(ped, weaponHash, ammo);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -65697,7 +66157,7 @@ namespace big
 
         int res = WEAPON::GET_PED_AMMO_BY_TYPE(ped, ammoTypeHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65724,7 +66184,7 @@ namespace big
 
         Hash res = WEAPON::GET_PED_AMMO_TYPE_FROM_WEAPON(ped, weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65736,7 +66196,7 @@ namespace big
 
         Hash res = WEAPON::GET_PED_ORIGINAL_AMMO_TYPE_FROM_WEAPON(ped, weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65780,7 +66240,7 @@ namespace big
 
         BOOL res = WEAPON::GET_IS_PED_GADGET_EQUIPPED(ped, gadgetHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -65791,7 +66251,7 @@ namespace big
 
         Hash res = WEAPON::GET_SELECTED_PED_WEAPON(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65819,7 +66279,7 @@ namespace big
 
         float res = WEAPON::GET_LOCKON_DISTANCE_OF_CURRENT_PED_WEAPON(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65830,7 +66290,7 @@ namespace big
 
         float res = WEAPON::GET_MAX_RANGE_OF_CURRENT_PED_WEAPON(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65844,7 +66304,7 @@ namespace big
 
         BOOL res = WEAPON::HAS_VEHICLE_GOT_PROJECTILE_ATTACHED(driver, vehicle, weaponHash, p3);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -65875,7 +66335,7 @@ namespace big
 
         BOOL res = WEAPON::HAS_PED_GOT_WEAPON_COMPONENT(ped, weaponHash, componentHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -65888,7 +66348,7 @@ namespace big
 
         BOOL res = WEAPON::IS_PED_WEAPON_COMPONENT_ACTIVE(ped, weaponHash, componentHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -65899,7 +66359,7 @@ namespace big
 
         BOOL res = WEAPON::REFILL_AMMO_INSTANTLY(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -65910,7 +66370,7 @@ namespace big
 
         BOOL res = WEAPON::MAKE_PED_RELOAD(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -65930,7 +66390,7 @@ namespace big
 
         BOOL res = WEAPON::HAS_WEAPON_ASSET_LOADED(weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -65957,7 +66417,7 @@ namespace big
 
         Object res = WEAPON::CREATE_WEAPON_OBJECT(weaponHash, ammoCount, x, y, z, showWorldModel, scale, p7, p8, p9);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -65985,7 +66445,7 @@ namespace big
 
         BOOL res = WEAPON::HAS_WEAPON_GOT_WEAPON_COMPONENT(weapon, addonHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -66005,7 +66465,7 @@ namespace big
 
         BOOL res = WEAPON::DOES_WEAPON_TAKE_WEAPON_COMPONENT(weaponHash, componentHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -66017,7 +66477,7 @@ namespace big
 
         Object res = WEAPON::GET_WEAPON_OBJECT_FROM_PED(ped, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66046,7 +66506,7 @@ namespace big
 
         int res = WEAPON::GET_PED_WEAPON_TINT_INDEX(ped, weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66065,7 +66525,7 @@ namespace big
 
         int res = WEAPON::GET_WEAPON_OBJECT_TINT_INDEX(weapon);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66076,7 +66536,7 @@ namespace big
 
         int res = WEAPON::GET_WEAPON_TINT_COUNT(weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66099,7 +66559,7 @@ namespace big
 
         int res = WEAPON::GET_PED_WEAPON_COMPONENT_TINT_INDEX(ped, weaponHash, camoComponentHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66120,7 +66580,7 @@ namespace big
 
         int res = WEAPON::GET_WEAPON_OBJECT_COMPONENT_TINT_INDEX(weaponObject, camoComponentHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66132,7 +66592,7 @@ namespace big
 
         int res = WEAPON::GET_PED_WEAPON_CAMO_INDEX(ped, weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66190,7 +66650,7 @@ namespace big
 
         float res = WEAPON::GET_WEAPON_DAMAGE(weaponHash, componentHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66201,7 +66661,7 @@ namespace big
 
         int res = WEAPON::GET_WEAPON_CLIP_SIZE(weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66212,7 +66672,7 @@ namespace big
 
         float res = WEAPON::GET_WEAPON_TIME_BETWEEN_SHOTS(weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66233,7 +66693,7 @@ namespace big
 
         Object res = WEAPON::SET_PED_SHOOT_ORDNANCE_WEAPON(ped, p1);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66275,7 +66735,7 @@ namespace big
 
         BOOL res = WEAPON::IS_PED_CURRENT_WEAPON_SILENCED(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -66286,7 +66746,7 @@ namespace big
 
         BOOL res = WEAPON::IS_FLASH_LIGHT_ON(ped);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -66297,7 +66757,7 @@ namespace big
 
         Any res = WEAPON::SET_FLASH_LIGHT_FADE_DISTANCE(distance);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66324,7 +66784,7 @@ namespace big
 
         int res = WEAPON::GET_WEAPON_DAMAGE_TYPE(weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66342,7 +66802,7 @@ namespace big
 
         BOOL res = WEAPON::CAN_USE_WEAPON_ON_PARACHUTE(weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -66360,7 +66820,7 @@ namespace big
 
         int res = WEAPON::CREATE_AIR_DEFENCE_SPHERE(x, y, z, radius, p4, p5, p6, weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66381,7 +66841,7 @@ namespace big
 
         int res = WEAPON::CREATE_AIR_DEFENCE_ANGLED_AREA(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, weaponHash);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66392,7 +66852,7 @@ namespace big
 
         BOOL res = WEAPON::REMOVE_AIR_DEFENCE_SPHERE(zoneId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -66450,7 +66910,7 @@ namespace big
 
         BOOL res = WEAPON::DOES_AIR_DEFENCE_SPHERE_EXIST(zoneId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotBool(vm, 0, (bool)res);
     }
@@ -66481,7 +66941,7 @@ namespace big
 
         int res = ZONE::GET_ZONE_AT_COORDS(x, y, z);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66492,7 +66952,7 @@ namespace big
 
         int res = ZONE::GET_ZONE_FROM_NAME_ID(zoneName);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66503,7 +66963,7 @@ namespace big
 
         int res = ZONE::GET_ZONE_POPSCHEDULE(zoneId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66516,7 +66976,7 @@ namespace big
 
         const char* res = ZONE::GET_NAME_OF_ZONE(x, y, z);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotString(vm, 0, res);
     }
@@ -66535,7 +66995,7 @@ namespace big
 
         int res = ZONE::GET_ZONE_SCUMMINESS(zoneId);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -66563,7 +67023,7 @@ namespace big
 
         Hash res = ZONE::GET_HASH_OF_MAP_AREA_AT_COORDS(x, y, z);
 
-        wrenEnsureSlots(vm, 2);
+        wrenEnsureSlots(vm, 1);
 
         wrenSetSlotDouble(vm, 0, res);
     }
@@ -67036,6 +67496,7 @@ namespace big
         { "SET_GAMEPLAY_CAM_IGNORE_ENTITY_COLLISION_THIS_UPDATE(_)", WREN_CAM_SET_GAMEPLAY_CAM_IGNORE_ENTITY_COLLISION_THIS_UPDATE },
         { "DISABLE_CAM_COLLISION_FOR_OBJECT(_)", WREN_CAM_DISABLE_CAM_COLLISION_FOR_OBJECT },
         { "BYPASS_CAMERA_COLLISION_BUOYANCY_TEST_THIS_UPDATE()", WREN_CAM_BYPASS_CAMERA_COLLISION_BUOYANCY_TEST_THIS_UPDATE },
+        { "SET_GAMEPLAY_CAM_ENTITY_TO_LIMIT_FOCUS_OVER_BOUNDING_SPHERE_THIS_UPDATE(_)", WREN_CAM_SET_GAMEPLAY_CAM_ENTITY_TO_LIMIT_FOCUS_OVER_BOUNDING_SPHERE_THIS_UPDATE },
         { "DISABLE_FIRST_PERSON_CAMERA_WATER_CLIPPING_TEST_THIS_UPDATE()", WREN_CAM_DISABLE_FIRST_PERSON_CAMERA_WATER_CLIPPING_TEST_THIS_UPDATE },
         { "SET_FOLLOW_CAM_IGNORE_ATTACH_PARENT_MOVEMENT_THIS_UPDATE()", WREN_CAM_SET_FOLLOW_CAM_IGNORE_ATTACH_PARENT_MOVEMENT_THIS_UPDATE },
         { "IS_SPHERE_VISIBLE(_,_,_,_)", WREN_CAM_IS_SPHERE_VISIBLE },
@@ -67140,6 +67601,7 @@ namespace big
         { "SET_FIRST_PERSON_FLASH_EFFECT_VEHICLE_MODEL_NAME(_)", WREN_CAM_SET_FIRST_PERSON_FLASH_EFFECT_VEHICLE_MODEL_NAME },
         { "SET_FIRST_PERSON_FLASH_EFFECT_VEHICLE_MODEL_HASH(_)", WREN_CAM_SET_FIRST_PERSON_FLASH_EFFECT_VEHICLE_MODEL_HASH },
         { "IS_ALLOWED_INDEPENDENT_CAMERA_MODES()", WREN_CAM_IS_ALLOWED_INDEPENDENT_CAMERA_MODES },
+        { "CAMERA_PREVENT_COLLISION_SETTINGS_FOR_TRIPLEHEAD_IN_INTERIORS_THIS_UPDATE()", WREN_CAM_CAMERA_PREVENT_COLLISION_SETTINGS_FOR_TRIPLEHEAD_IN_INTERIORS_THIS_UPDATE },
         { "REPLAY_GET_MAX_DISTANCE_ALLOWED_FROM_PLAYER()", WREN_CAM_REPLAY_GET_MAX_DISTANCE_ALLOWED_FROM_PLAYER },
         { "SET_CLOCK_TIME(_,_,_)", WREN_CLOCK_SET_CLOCK_TIME },
         { "PAUSE_CLOCK(_)", WREN_CLOCK_PAUSE_CLOCK },
@@ -67382,6 +67844,7 @@ namespace big
         { "ATTACH_ENTITY_TO_ENTITY(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_ENTITY_ATTACH_ENTITY_TO_ENTITY },
         { "ATTACH_ENTITY_BONE_TO_ENTITY_BONE(_,_,_,_,_,_)", WREN_ENTITY_ATTACH_ENTITY_BONE_TO_ENTITY_BONE },
         { "ATTACH_ENTITY_BONE_TO_ENTITY_BONE_Y_FORWARD(_,_,_,_,_,_)", WREN_ENTITY_ATTACH_ENTITY_BONE_TO_ENTITY_BONE_Y_FORWARD },
+        { "ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_ENTITY_ATTACH_ENTITY_TO_ENTITY_PHYSICALLY },
         { "PROCESS_ENTITY_ATTACHMENTS(_)", WREN_ENTITY_PROCESS_ENTITY_ATTACHMENTS },
         { "GET_ENTITY_BONE_INDEX_BY_NAME(_,_)", WREN_ENTITY_GET_ENTITY_BONE_INDEX_BY_NAME },
         { "CLEAR_ENTITY_LAST_DAMAGE_ENTITY(_)", WREN_ENTITY_CLEAR_ENTITY_LAST_DAMAGE_ENTITY },
@@ -67563,6 +68026,8 @@ namespace big
         { "DRAW_DEBUG_TEXT_2D(_,_,_,_,_,_,_,_)", WREN_GRAPHICS_DRAW_DEBUG_TEXT_2D },
         { "DRAW_LINE(_,_,_,_,_,_,_,_,_,_)", WREN_GRAPHICS_DRAW_LINE },
         { "DRAW_POLY(_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_GRAPHICS_DRAW_POLY },
+        { "DRAW_TEXTURED_POLY(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_GRAPHICS_DRAW_TEXTURED_POLY },
+        { "DRAW_TEXTURED_POLY_WITH_THREE_COLOURS(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_GRAPHICS_DRAW_TEXTURED_POLY_WITH_THREE_COLOURS },
         { "DRAW_BOX(_,_,_,_,_,_,_,_,_,_)", WREN_GRAPHICS_DRAW_BOX },
         { "SET_BACKFACECULLING(_)", WREN_GRAPHICS_SET_BACKFACECULLING },
         { "SET_DEPTHWRITING(_)", WREN_GRAPHICS_SET_DEPTHWRITING },
@@ -67603,6 +68068,8 @@ namespace big
         { "UPDATE_LIGHTS_ON_ENTITY(_)", WREN_GRAPHICS_UPDATE_LIGHTS_ON_ENTITY },
         { "SET_LIGHT_OVERRIDE_MAX_INTENSITY_SCALE(_)", WREN_GRAPHICS_SET_LIGHT_OVERRIDE_MAX_INTENSITY_SCALE },
         { "GET_LIGHT_OVERRIDE_MAX_INTENSITY_SCALE()", WREN_GRAPHICS_GET_LIGHT_OVERRIDE_MAX_INTENSITY_SCALE },
+        { "DRAW_MARKER(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_GRAPHICS_DRAW_MARKER },
+        { "DRAW_MARKER_EX(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_GRAPHICS_DRAW_MARKER_EX },
         { "DRAW_MARKER_SPHERE(_,_,_,_,_,_,_,_)", WREN_GRAPHICS_DRAW_MARKER_SPHERE },
         { "CREATE_CHECKPOINT(_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_GRAPHICS_CREATE_CHECKPOINT },
         { "SET_CHECKPOINT_INSIDE_CYLINDER_HEIGHT_SCALE(_,_)", WREN_GRAPHICS_SET_CHECKPOINT_INSIDE_CYLINDER_HEIGHT_SCALE },
@@ -67767,6 +68234,7 @@ namespace big
         { "START_PARTICLE_FX_LOOPED_ON_ENTITY(_,_,_,_,_,_,_,_,_,_,_,_)", WREN_GRAPHICS_START_PARTICLE_FX_LOOPED_ON_ENTITY },
         { "START_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_GRAPHICS_START_PARTICLE_FX_LOOPED_ON_ENTITY_BONE },
         { "START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_GRAPHICS_START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY },
+        { "START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_GRAPHICS_START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE },
         { "STOP_PARTICLE_FX_LOOPED(_,_)", WREN_GRAPHICS_STOP_PARTICLE_FX_LOOPED },
         { "REMOVE_PARTICLE_FX(_,_)", WREN_GRAPHICS_REMOVE_PARTICLE_FX },
         { "REMOVE_PARTICLE_FX_FROM_ENTITY(_)", WREN_GRAPHICS_REMOVE_PARTICLE_FX_FROM_ENTITY },
@@ -67810,6 +68278,7 @@ namespace big
         { "REMOVE_DECALS_FROM_OBJECT(_)", WREN_GRAPHICS_REMOVE_DECALS_FROM_OBJECT },
         { "REMOVE_DECALS_FROM_OBJECT_FACING(_,_,_,_)", WREN_GRAPHICS_REMOVE_DECALS_FROM_OBJECT_FACING },
         { "REMOVE_DECALS_FROM_VEHICLE(_)", WREN_GRAPHICS_REMOVE_DECALS_FROM_VEHICLE },
+        { "ADD_DECAL(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_GRAPHICS_ADD_DECAL },
         { "ADD_PETROL_DECAL(_,_,_,_,_,_)", WREN_GRAPHICS_ADD_PETROL_DECAL },
         { "ADD_OIL_DECAL(_,_,_,_,_,_)", WREN_GRAPHICS_ADD_OIL_DECAL },
         { "START_PETROL_TRAIL_DECALS(_)", WREN_GRAPHICS_START_PETROL_TRAIL_DECALS },
@@ -67983,6 +68452,7 @@ namespace big
         { "END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_SUBTITLE_LABEL(_,_,_,_,_,_)", WREN_HUD_END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_SUBTITLE_LABEL },
         { "END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_TU(_,_,_,_,_,_,_)", WREN_HUD_END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_TU },
         { "END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG(_,_,_,_,_,_,_,_)", WREN_HUD_END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG },
+        { "END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG_AND_ADDITIONAL_ICON(_,_,_,_,_,_,_,_,_,_)", WREN_HUD_END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG_AND_ADDITIONAL_ICON },
         { "END_TEXT_COMMAND_THEFEED_POST_TICKER(_,_)", WREN_HUD_END_TEXT_COMMAND_THEFEED_POST_TICKER },
         { "END_TEXT_COMMAND_THEFEED_POST_TICKER_FORCED(_,_)", WREN_HUD_END_TEXT_COMMAND_THEFEED_POST_TICKER_FORCED },
         { "END_TEXT_COMMAND_THEFEED_POST_TICKER_WITH_TOKENS(_,_)", WREN_HUD_END_TEXT_COMMAND_THEFEED_POST_TICKER_WITH_TOKENS },
@@ -68664,6 +69134,7 @@ namespace big
         { "IS_MEMORY_CARD_IN_USE()", WREN_MISC_IS_MEMORY_CARD_IN_USE },
         { "SHOOT_SINGLE_BULLET_BETWEEN_COORDS(_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_MISC_SHOOT_SINGLE_BULLET_BETWEEN_COORDS },
         { "SHOOT_SINGLE_BULLET_BETWEEN_COORDS_IGNORE_ENTITY(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_MISC_SHOOT_SINGLE_BULLET_BETWEEN_COORDS_IGNORE_ENTITY },
+        { "SHOOT_SINGLE_BULLET_BETWEEN_COORDS_IGNORE_ENTITY_NEW(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_MISC_SHOOT_SINGLE_BULLET_BETWEEN_COORDS_IGNORE_ENTITY_NEW },
         { "GET_MODEL_DIMENSIONS(_)", WREN_MISC_GET_MODEL_DIMENSIONS },
         { "SET_FAKE_WANTED_LEVEL(_)", WREN_MISC_SET_FAKE_WANTED_LEVEL },
         { "GET_FAKE_WANTED_LEVEL()", WREN_MISC_GET_FAKE_WANTED_LEVEL },
@@ -68709,6 +69180,8 @@ namespace big
         { "STRING_TO_INT(_)", WREN_MISC_STRING_TO_INT },
         { "SET_BITS_IN_RANGE(_,_,_)", WREN_MISC_SET_BITS_IN_RANGE },
         { "GET_BITS_IN_RANGE(_,_,_)", WREN_MISC_GET_BITS_IN_RANGE },
+        { "ADD_STUNT_JUMP(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_MISC_ADD_STUNT_JUMP },
+        { "ADD_STUNT_JUMP_ANGLED(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_MISC_ADD_STUNT_JUMP_ANGLED },
         { "TOGGLE_SHOW_OPTIONAL_STUNT_JUMP_CAMERA(_)", WREN_MISC_TOGGLE_SHOW_OPTIONAL_STUNT_JUMP_CAMERA },
         { "DELETE_STUNT_JUMP(_)", WREN_MISC_DELETE_STUNT_JUMP },
         { "ENABLE_STUNT_JUMP_SET(_)", WREN_MISC_ENABLE_STUNT_JUMP_SET },
@@ -69853,8 +70326,11 @@ namespace big
         { "NETWORK_DOES_TUNABLE_EXIST_HASH(_,_)", WREN_NETWORK_NETWORK_DOES_TUNABLE_EXIST_HASH },
         { "NETWORK_ACCESS_TUNABLE_MODIFICATION_DETECTION_CLEAR()", WREN_NETWORK_NETWORK_ACCESS_TUNABLE_MODIFICATION_DETECTION_CLEAR },
         { "NETWORK_ACCESS_TUNABLE_INT_HASH(_,_)", WREN_NETWORK_NETWORK_ACCESS_TUNABLE_INT_HASH },
+        { "NETWORK_ACCESS_TUNABLE_INT_MODIFICATION_DETECTION_REGISTRATION_HASH(_,_)", WREN_NETWORK_NETWORK_ACCESS_TUNABLE_INT_MODIFICATION_DETECTION_REGISTRATION_HASH },
         { "NETWORK_ACCESS_TUNABLE_FLOAT_HASH(_,_)", WREN_NETWORK_NETWORK_ACCESS_TUNABLE_FLOAT_HASH },
+        { "NETWORK_ACCESS_TUNABLE_FLOAT_MODIFICATION_DETECTION_REGISTRATION_HASH(_,_)", WREN_NETWORK_NETWORK_ACCESS_TUNABLE_FLOAT_MODIFICATION_DETECTION_REGISTRATION_HASH },
         { "NETWORK_ACCESS_TUNABLE_BOOL_HASH(_,_)", WREN_NETWORK_NETWORK_ACCESS_TUNABLE_BOOL_HASH },
+        { "NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH(_,_)", WREN_NETWORK_NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH },
         { "NETWORK_TRY_ACCESS_TUNABLE_BOOL_HASH(_,_,_)", WREN_NETWORK_NETWORK_TRY_ACCESS_TUNABLE_BOOL_HASH },
         { "NETWORK_GET_CONTENT_MODIFIER_LIST_ID(_)", WREN_NETWORK_NETWORK_GET_CONTENT_MODIFIER_LIST_ID },
         { "NETWORK_GET_BONE_ID_OF_FATAL_HIT()", WREN_NETWORK_NETWORK_GET_BONE_ID_OF_FATAL_HIT },
@@ -70925,6 +71401,7 @@ namespace big
         { "GET_MP_LIGHT_ENABLED(_)", WREN_PED_GET_MP_LIGHT_ENABLED },
         { "CLEAR_COVER_POINT_FOR_PED(_)", WREN_PED_CLEAR_COVER_POINT_FOR_PED },
         { "SET_ALLOW_STUNT_JUMP_CAMERA(_,_)", WREN_PED_SET_ALLOW_STUNT_JUMP_CAMERA },
+        { "ADD_ROPE(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_PHYSICS_ADD_ROPE },
         { "DELETE_ROPE()", WREN_PHYSICS_DELETE_ROPE },
         { "DELETE_CHILD_ROPE(_)", WREN_PHYSICS_DELETE_CHILD_ROPE },
         { "DOES_ROPE_EXIST()", WREN_PHYSICS_DOES_ROPE_EXIST },
@@ -72100,6 +72577,7 @@ namespace big
         { "GET_TASK_MOVE_NETWORK_SIGNAL_FLOAT(_,_)", WREN_TASK_GET_TASK_MOVE_NETWORK_SIGNAL_FLOAT },
         { "GET_TASK_MOVE_NETWORK_SIGNAL_BOOL(_,_)", WREN_TASK_GET_TASK_MOVE_NETWORK_SIGNAL_BOOL },
         { "GET_TASK_MOVE_NETWORK_EVENT(_,_)", WREN_TASK_GET_TASK_MOVE_NETWORK_EVENT },
+        { "SET_TASK_MOVE_NETWORK_ENABLE_COLLISION_ON_NETWORK_CLONE_WHEN_FIXED(_,_)", WREN_TASK_SET_TASK_MOVE_NETWORK_ENABLE_COLLISION_ON_NETWORK_CLONE_WHEN_FIXED },
         { "IS_MOVE_BLEND_RATIO_STILL(_)", WREN_TASK_IS_MOVE_BLEND_RATIO_STILL },
         { "IS_MOVE_BLEND_RATIO_WALKING(_)", WREN_TASK_IS_MOVE_BLEND_RATIO_WALKING },
         { "IS_MOVE_BLEND_RATIO_RUNNING(_)", WREN_TASK_IS_MOVE_BLEND_RATIO_RUNNING },
@@ -72130,6 +72608,7 @@ namespace big
         { "SET_VEHICLE_HOMING_LOCKEDONTO_STATE(_,_)", WREN_VEHICLE_SET_VEHICLE_HOMING_LOCKEDONTO_STATE },
         { "IS_VEHICLE_MODEL(_,_)", WREN_VEHICLE_IS_VEHICLE_MODEL },
         { "DOES_SCRIPT_VEHICLE_GENERATOR_EXIST(_)", WREN_VEHICLE_DOES_SCRIPT_VEHICLE_GENERATOR_EXIST },
+        { "CREATE_SCRIPT_VEHICLE_GENERATOR(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_)", WREN_VEHICLE_CREATE_SCRIPT_VEHICLE_GENERATOR },
         { "DELETE_SCRIPT_VEHICLE_GENERATOR(_)", WREN_VEHICLE_DELETE_SCRIPT_VEHICLE_GENERATOR },
         { "SET_SCRIPT_VEHICLE_GENERATOR(_,_)", WREN_VEHICLE_SET_SCRIPT_VEHICLE_GENERATOR },
         { "SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(_,_,_,_,_,_,_,_)", WREN_VEHICLE_SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA },
