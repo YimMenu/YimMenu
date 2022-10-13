@@ -39,8 +39,15 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		g_is_steam = GetModuleHandle(L"steam_api64.dll") != NULL;
 		g_main_thread = CreateThread(nullptr, 0, [](PVOID) -> DWORD
 		{
+			bool cant_find_window;
 			while (!FindWindow(L"grcWindow", L"Grand Theft Auto V"))
+			{
+				cant_find_window = true;
 				std::this_thread::sleep_for(1s);
+			}
+
+			if(cant_find_window)
+				std::this_thread::sleep_for(8s);
 
 			std::filesystem::path base_dir = std::getenv("appdata");
 			base_dir /= "BigBaseV2";
