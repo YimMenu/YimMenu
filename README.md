@@ -2,7 +2,12 @@
 A mod menu base for Grand Theft Auto V.
 Strictly for educational purposes.
 
-## For the list of features of this shitty fork go to [TODO.md](TODO.md) file
+## Fork info
+
+For the list of features of this shitty fork go to [TODO.md](TODO.md) file
+This fork is made by a stupid person so most features are untested.
+Why? Because i don't know what to do in GTA Online, i don't even play this game anymore.
+It's also hard to find people to test toxic shit on.
 
 ## Table of contents
 
