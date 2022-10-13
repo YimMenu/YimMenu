@@ -94,7 +94,7 @@ namespace big
         constexpr int args_slot = 2;
         const int arg_count = wrenGetListCount(vm, args_slot);
         std::vector<int64_t> args(arg_count);
-        for (size_t i = 0; i < arg_count; i++)
+        for (int i = 0; i < arg_count; i++)
         {
             constexpr int get_el_slot = 0;
             wrenGetListElement(vm, args_slot, i, get_el_slot);
