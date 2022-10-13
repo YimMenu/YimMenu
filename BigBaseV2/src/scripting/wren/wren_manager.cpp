@@ -7,328 +7,337 @@
 
 namespace big
 {
-	static void wren_write(WrenVM* vm, const char* text)
-	{
-		if (text && *text)
-		{
-			size_t i = 0;
-			while (text[i])
-			{
-				if (!isspace(text[i]))
-				{
-					LOG(INFO) << "[wren] " << text;
-					return;
-				}
+    static void wren_write(WrenVM* vm, const char* text)
+    {
+        if (text && *text)
+        {
+            size_t i = 0;
+            while (text[i])
+            {
+                if (!isspace(text[i]))
+                {
+                    LOG(INFO) << "[wren] " << text;
+                    return;
+                }
 
-				i++;
-			}
-		}
-	}
+                i++;
+            }
+        }
+    }
 
-	static void wren_error(WrenVM* vm, WrenErrorType errorType,
-		const char* module, const int line,
-		const char* msg)
-	{
-		switch (errorType)
-		{
-		case WREN_ERROR_COMPILE:
-		{
-			LOG(INFO) << "[wren] [" << module << " line " << line << "] [Error] " << msg;
-		} break;
-		case WREN_ERROR_STACK_TRACE:
-		{
-			LOG(INFO) << "[wren] [" << module << " line " << line << "] in " << msg;
-		} break;
-		case WREN_ERROR_RUNTIME:
-		{
-			LOG(INFO) << "[wren] [Runtime Error] " << msg;
-		} break;
-		}
-	}
+    static void wren_error(WrenVM* vm, WrenErrorType errorType,
+        const char* module, const int line,
+        const char* msg)
+    {
+        switch (errorType)
+        {
+        case WREN_ERROR_COMPILE:
+        {
+            LOG(INFO) << "[wren] [" << module << " line " << line << "] [Error] " << msg;
+        } break;
+        case WREN_ERROR_STACK_TRACE:
+        {
+            LOG(INFO) << "[wren] [" << module << " line " << line << "] in " << msg;
+        } break;
+        case WREN_ERROR_RUNTIME:
+        {
+            LOG(INFO) << "[wren] [Runtime Error] " << msg;
+        } break;
+        }
+    }
 
-	static WrenForeignClassMethods wren_bind_foreign_class(
-		WrenVM* vm, const char* module, const char* class_name)
-	{
-		WrenForeignClassMethods methods;
+    static WrenForeignClassMethods wren_bind_foreign_class(
+        WrenVM* vm, const char* module, const char* class_name)
+    {
+        WrenForeignClassMethods methods;
 
-		if (strcmp(class_name, "Vector3") == 0)
-		{
-			methods.allocate = wren_Vector3::allocate;
-			methods.finalize = NULL;
-		}
-		else
-		{
-			// Unknown class.
-			methods.allocate = NULL;
-			methods.finalize = NULL;
-		}
+        if (strcmp(class_name, "Vector3") == 0)
+        {
+            methods.allocate = wren_Vector3::allocate;
+            methods.finalize = NULL;
+        }
+        else
+        {
+            // Unknown class.
+            methods.allocate = NULL;
+            methods.finalize = NULL;
+        }
 
-		return methods;
-	}
+        return methods;
+    }
 
-	static void wren_ScriptUtil_yield(WrenVM* vm)
-	{
-		script::get_current()->yield();
-	}
+    static void wren_Script_yield(WrenVM* vm)
+    {
+        script::get_current()->yield();
+    }
 
-	WrenForeignMethodFn wren_manager::wren_bind_foreign_method(
-		WrenVM* vm,
-		const char* module,
-		const char* class_name,
-		bool is_static,
-		const char* signature)
-	{
-		if (const auto it = wren_natives_handlers.find(signature); it != wren_natives_handlers.end())
-		{
-			return it->second;
-		}
+    static void wren_Script_yield_ms_arg(WrenVM* vm)
+    {
+        const auto duration_in_ms = std::chrono::milliseconds((int)wrenGetSlotDouble(vm, 1));
 
-		if (strcmp(class_name, wren_manager::Script_class_name) == 0 &&
-			strcmp(signature, wren_manager::Script_yield_method_name) == 0)
-		{
-			return wren_ScriptUtil_yield;
-		}
+        script::get_current()->yield(duration_in_ms);
+    }
 
-		if (strcmp(class_name, "Vector3") == 0)
-		{
-			if (strcmp(signature, "x") == 0)
-			{
-				return wren_Vector3::get_x;
-			}
+    WrenForeignMethodFn wren_manager::wren_bind_foreign_method(
+        WrenVM* vm,
+        const char* module,
+        const char* class_name,
+        bool is_static,
+        const char* signature)
+    {
+        if (const auto it = wren_natives_handlers.find(signature); it != wren_natives_handlers.end())
+        {
+            return it->second;
+        }
+        else if (strcmp(module, wren_manager::natives_module_name) == 0)
+        {
+            if (strcmp(class_name, wren_manager::Script_class_name) == 0)
+            {
+                if (strcmp(signature, wren_manager::Script_yield_method_name) == 0)
+                {
+                    return wren_Script_yield;
+                }
+                else if (strcmp(signature, wren_manager::Script_yield_ms_arg_method_name) == 0)
+                {
+                    return wren_Script_yield_ms_arg;
+                }
+            }
+            else if (strcmp(class_name, "Vector3") == 0)
+            {
+                if (strcmp(signature, "x") == 0)
+                {
+                    return wren_Vector3::get_x;
+                }
+                else if (strcmp(signature, "y") == 0)
+                {
+                    return wren_Vector3::get_y;
+                }
+                else if (strcmp(signature, "z") == 0)
+                {
+                    return wren_Vector3::get_z;
+                }
+                else if (strcmp(signature, "x=(_)") == 0)
+                {
+                    return wren_Vector3::set_x;
+                }
+                else if (strcmp(signature, "y=(_)") == 0)
+                {
+                    return wren_Vector3::set_y;
+                }
+                else if (strcmp(signature, "z=(_)") == 0)
+                {
+                    return wren_Vector3::set_z;
+                }
+            }
+        }
 
-			if (strcmp(signature, "y") == 0)
-			{
-				return wren_Vector3::get_y;
-			}
+        return nullptr;
+    }
 
-			if (strcmp(signature, "z") == 0)
-			{
-				return wren_Vector3::get_z;
-			}
+    static void wren_load_module_complete(WrenVM* vm, const char* module, WrenLoadModuleResult result)
+    {
+        if (result.source)
+        {
+            delete[] result.source;
+        }
+    }
 
-			if (strcmp(signature, "x=(_)") == 0)
-			{
-				return wren_Vector3::set_x;
-			}
+    static WrenLoadModuleResult wren_load_module(WrenVM* vm, const char* name)
+    {
+        WrenLoadModuleResult result = { 0 };
 
-			if (strcmp(signature, "y=(_)") == 0)
-			{
-				return wren_Vector3::set_y;
-			}
+        g_wren_manager->for_each_wren_script_file([&](const auto& module_name, const auto& file_path, const auto& dir_entry)
+            {
+                if (strcmp(module_name.c_str(), name) == 0)
+                {
+                    std::ifstream file_path_ifstream(file_path);
+                    std::stringstream buffer;
+                    buffer << file_path_ifstream.rdbuf();
+                    const auto script = buffer.str();
 
-			if (strcmp(signature, "z=(_)") == 0)
-			{
-				return wren_Vector3::set_z;
-			}
-		}
+                    char* heap_source_text = new char[script.size()];
+                    memcpy(heap_source_text, script.data(), script.size());
 
-		return nullptr;
-	}
+                    result.source = heap_source_text;
+                    result.onComplete = wren_load_module_complete;
 
-	static void wren_load_module_complete(WrenVM* vm, const char* module, WrenLoadModuleResult result)
-	{
-		if (result.source)
-		{
-			delete[] result.source;
-		}
-	}
+                    return;
+                }
+            });
 
-	static WrenLoadModuleResult wren_load_module(WrenVM* vm, const char* name)
-	{
-		WrenLoadModuleResult result = { 0 };
+        return result;
+    }
 
-		g_wren_manager->for_each_wren_script_file([&](const auto& module_name, const auto& file_path, const auto& dir_entry)
-		{
-			if (strcmp(module_name.c_str(), name) == 0)
-			{
-				std::ifstream file_path_ifstream(file_path);
-				std::stringstream buffer;
-				buffer << file_path_ifstream.rdbuf();
-				const auto script = buffer.str();
+    void wren_manager::for_each_wren_script_file(std::function<void(const std::string& module_name, const std::filesystem::path& file_path, const std::filesystem::directory_entry& dir_entry)> cb)
+    {
+        for (const auto& dir_entry : std::filesystem::recursive_directory_iterator(m_scripts_wren_folder))
+        {
+            if (dir_entry.is_regular_file())
+            {
+                const auto& file_path = dir_entry.path();
+                if (file_path.extension() == ".wren" && file_path.has_stem())
+                {
+                    const auto module = file_path.stem().u8string();
 
-				char* heap_source_text = new char[script.size()];
-				memcpy(heap_source_text, script.data(), script.size());
+                    cb(module, file_path, dir_entry);
+                }
+            }
+        }
+    }
 
-				result.source = heap_source_text;
-				result.onComplete = wren_load_module_complete;
+    wren_manager::wren_manager() :
+        m_scripts_folder(g_file_manager->get_project_folder("./scripts")),
+        m_scripts_wren_folder(g_file_manager->get_project_folder("./scripts/wren").get_path())
+    {
+        wrenInitConfiguration(&m_config);
+        m_config.writeFn = &wren_write;
+        m_config.errorFn = &wren_error;
+        m_config.bindForeignClassFn = &wren_bind_foreign_class;
+        m_config.bindForeignMethodFn = &wren_bind_foreign_method;
+        m_config.loadModuleFn = wren_load_module;
 
-				return;
-			}
-		});
+        m_vm = wrenNewVM(&m_config);
 
-		return result;
-	}
+        g_fiber_pool->queue_job([this]
+            {
+                reload_scripts();
+            });
 
-	void wren_manager::for_each_wren_script_file(std::function<void(const std::string& module_name, const std::filesystem::path& file_path, const std::filesystem::directory_entry& dir_entry)> cb)
-	{
-		for (const auto& dir_entry : std::filesystem::recursive_directory_iterator(m_scripts_wren_folder))
-		{
-			if (dir_entry.is_regular_file())
-			{
-				const auto& file_path = dir_entry.path();
-				if (file_path.extension() == ".wren" && file_path.has_stem())
-				{
-					const auto module = file_path.stem().u8string();
+        g_wren_manager = this;
+    }
 
-					cb(module, file_path, dir_entry);
-				}
-			}
-		}
-	}
+    void wren_manager::cleanup_memory()
+    {
+        if (m_has_tick_function)
+        {
+            wrenReleaseHandle(m_vm, m_script_internal_tick_fn_handle);
+            wrenReleaseHandle(m_vm, m_script_internal_class_handle);
+        }
 
-	wren_manager::wren_manager() :
-		m_scripts_folder(g_file_manager->get_project_folder("./scripts")),
-		m_scripts_wren_folder(g_file_manager->get_project_folder("./scripts/wren").get_path())
-	{
-		wrenInitConfiguration(&m_config);
-		m_config.writeFn = &wren_write;
-		m_config.errorFn = &wren_error;
-		m_config.bindForeignClassFn = &wren_bind_foreign_class;
-		m_config.bindForeignMethodFn = &wren_bind_foreign_method;
-		m_config.loadModuleFn = wren_load_module;
+        // we call this there manually instead of letting the unique ptrs dctor trigger automatically
+        // freeing the VM should be the last thing we do. (see https://wren.io/embedding/ for the why)
+        remove_all_scripts();
 
-		m_vm = wrenNewVM(&m_config);
+        wrenFreeVM(m_vm);
+    }
 
-		g_fiber_pool->queue_job([this]
-		{
-			reload_scripts();
-		});
+    wren_manager::~wren_manager()
+    {
+        cleanup_memory();
 
-		g_wren_manager = this;
-	}
+        g_wren_manager = nullptr;
+    }
 
-	void wren_manager::cleanup_memory()
-	{
-		if (m_has_tick_function)
-		{
-			wrenReleaseHandle(m_vm, m_script_internal_tick_fn_handle);
-			wrenReleaseHandle(m_vm, m_script_internal_class_handle);
-		}
+    void wren_manager::remove_all_scripts()
+    {
+        m_wren_scripts.clear();
+    }
 
-		// we call this there manually instead of letting the unique ptrs dctor trigger automatically
-		// freeing the VM should be the last thing we do. (see https://wren.io/embedding/ for the why)
-		remove_all_scripts();
+    void wren_manager::reload_scripts()
+    {
+        struct script_to_load
+        {
+            std::string module_name;
+            std::filesystem::path file_path;
+            std::filesystem::file_time_type disk_last_write_time;
+        };
 
-		wrenFreeVM(m_vm);
-	}
+        std::vector<script_to_load> scripts_to_load;
 
-	wren_manager::~wren_manager()
-	{
-		cleanup_memory();
+        for_each_wren_script_file([this, &scripts_to_load](const auto& module_name, const auto& file_path, const auto& dir_entry)
+            {
+                const std::filesystem::file_time_type& disk_last_write_time = dir_entry.last_write_time();
 
-		g_wren_manager = nullptr;
-	}
+                if (const auto& it = m_wren_scripts.find(module_name); it != m_wren_scripts.end())
+                {
+                    const auto& existing_script = it->second;
+                    const std::filesystem::file_time_type& existing_last_write_time = existing_script->last_write_time();
+                    bool script_changed = disk_last_write_time > existing_last_write_time;
+                    if (script_changed)
+                    {
+                        scripts_to_load.push_back({ module_name, file_path, disk_last_write_time });
+                    }
+                }
+                else
+                {
+                    scripts_to_load.push_back({ module_name, file_path, disk_last_write_time });
+                }
+            });
 
-	void wren_manager::remove_all_scripts()
-	{
-		m_wren_scripts.clear();
-	}
+        // no script got changed and no new scripts
+        // aka nothing to reload / load
+        if (!scripts_to_load.size())
+        {
+            return;
+        }
 
-	void wren_manager::reload_scripts()
-	{
-		struct script_to_load
-		{
-			std::string module_name;
-			std::filesystem::path file_path;
-			std::filesystem::file_time_type disk_last_write_time;
-		};
+        // if we already have some loaded scripts, we need to restart the VM
+        if (m_wren_scripts.size())
+        {
+            cleanup_memory();
 
-		std::vector<script_to_load> scripts_to_load;
+            m_vm = wrenNewVM(&m_config);
+        }
 
-		for_each_wren_script_file([this, &scripts_to_load](const auto& module_name, const auto& file_path, const auto& dir_entry)
-		{
-			const std::filesystem::file_time_type& disk_last_write_time = dir_entry.last_write_time();
+        for (const auto& script_to_load : scripts_to_load)
+        {
+            compile_script(script_to_load.module_name, script_to_load.file_path, script_to_load.disk_last_write_time);
+        }
 
-			if (const auto& it = m_wren_scripts.find(module_name); it != m_wren_scripts.end())
-			{
-				const auto& existing_script = it->second;
-				const std::filesystem::file_time_type& existing_last_write_time = existing_script->last_write_time();
-				bool script_changed = disk_last_write_time > existing_last_write_time;
-				if (script_changed)
-				{
-					scripts_to_load.push_back({ module_name, file_path, disk_last_write_time });
-				}
-			}
-			else
-			{
-				scripts_to_load.push_back({ module_name, file_path, disk_last_write_time });
-			}
-		});
+        m_has_tick_function = wrenHasModule(m_vm, wren_manager::natives_module_name) &&
+            wrenHasVariable(m_vm, wren_manager::natives_module_name, wren_manager::SCRIPT_INTERNAL_class_name);
+        if (m_has_tick_function)
+        {
+            wrenEnsureSlots(m_vm, 1);
+            wrenGetVariable(m_vm, wren_manager::natives_module_name, wren_manager::SCRIPT_INTERNAL_class_name, 0);
+            m_script_internal_class_handle = wrenGetSlotHandle(m_vm, 0);
+            m_script_internal_tick_fn_handle = wrenMakeCallHandle(m_vm, wren_manager::SCRIPT_INTERNAL_TICK_method_name);
+        }
+    }
 
-		// no script got changed and no new scripts
-		// aka nothing to reload / load
-		if (!scripts_to_load.size())
-		{
-			return;
-		}
+    void wren_manager::compile_script(const std::string& module_name, const std::filesystem::path& file_path, const std::filesystem::file_time_type& disk_last_write_time)
+    {
+        std::ifstream file_path_ifstream(file_path);
+        std::stringstream buffer;
+        buffer << file_path_ifstream.rdbuf();
+        const auto script = buffer.str();
 
-		// if we already have some loaded scripts, we need to restart the VM
-		if (m_wren_scripts.size())
-		{
-			cleanup_memory();
+        WrenInterpretResult result = wrenInterpret(m_vm, module_name.c_str(), script.c_str());
 
-			m_vm = wrenNewVM(&m_config);
-		}
+        switch (result)
+        {
+        case WREN_RESULT_COMPILE_ERROR:
+            LOG(INFO) << "Compile error for " << file_path;
 
-		for (const auto& script_to_load : scripts_to_load)
-		{
-			compile_script(script_to_load.module_name, script_to_load.file_path, script_to_load.disk_last_write_time);
-		}
+            break;
+        case WREN_RESULT_RUNTIME_ERROR:
+            LOG(INFO) << "Runtime error for " << file_path;
 
-		m_has_tick_function = wrenHasModule(m_vm, wren_manager::natives_module_name) &&
-			wrenHasVariable(m_vm, wren_manager::natives_module_name, wren_manager::SCRIPT_INTERNAL_class_name);
-		if (m_has_tick_function)
-		{
-			wrenEnsureSlots(m_vm, 1);
-			wrenGetVariable(m_vm, wren_manager::natives_module_name, wren_manager::SCRIPT_INTERNAL_class_name, 0);
-			m_script_internal_class_handle = wrenGetSlotHandle(m_vm, 0);
-			m_script_internal_tick_fn_handle = wrenMakeCallHandle(m_vm, wren_manager::SCRIPT_INTERNAL_TICK_method_name);
-		}
-	}
+            break;
+        case WREN_RESULT_SUCCESS:
+        {
+            LOG(INFO) << "Successfully executed " << file_path;
 
-	void wren_manager::compile_script(const std::string& module_name, const std::filesystem::path& file_path, const std::filesystem::file_time_type& disk_last_write_time)
-	{
-		std::ifstream file_path_ifstream(file_path);
-		std::stringstream buffer;
-		buffer << file_path_ifstream.rdbuf();
-		const auto script = buffer.str();
+            m_wren_scripts[module_name] = std::make_unique<wren_script>(m_vm, module_name, disk_last_write_time);
 
-		WrenInterpretResult result = wrenInterpret(m_vm, module_name.c_str(), script.c_str());
+            break;
+        }
+        default:
+            break;
+        }
+    }
 
-		switch (result)
-		{
-		case WREN_RESULT_COMPILE_ERROR:
-			LOG(INFO) << "Compile error for " << file_path;
+    void wren_manager::tick_all_scripts()
+    {
+        while (g_running)
+        {
+            if (g_wren_manager->m_has_tick_function)
+            {
+                wrenSetSlotHandle(g_wren_manager->m_vm, 0, g_wren_manager->m_script_internal_class_handle);
+                wrenCall(g_wren_manager->m_vm, g_wren_manager->m_script_internal_tick_fn_handle);
+            }
 
-			break;
-		case WREN_RESULT_RUNTIME_ERROR:
-			LOG(INFO) << "Runtime error for " << file_path;
-
-			break;
-		case WREN_RESULT_SUCCESS:
-		{
-			LOG(INFO) << "Successfully executed " << file_path;
-
-			m_wren_scripts[module_name] = std::make_unique<wren_script>(m_vm, module_name, disk_last_write_time);
-
-			break;
-		}
-		default:
-			break;
-		}
-	}
-
-	void wren_manager::tick_all_scripts()
-	{
-		while (g_running)
-		{
-			if (g_wren_manager->m_has_tick_function)
-			{
-				wrenSetSlotHandle(g_wren_manager->m_vm, 0, g_wren_manager->m_script_internal_class_handle);
-				wrenCall(g_wren_manager->m_vm, g_wren_manager->m_script_internal_tick_fn_handle);
-			}
-
-			script::get_current()->yield();
-		}
-	}
+            script::get_current()->yield();
+        }
+    }
 }
