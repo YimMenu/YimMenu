@@ -9,6 +9,7 @@ namespace big
 		static constexpr auto Script_class_name = "Script";
 		static constexpr auto Script_yield_method_name = "yield()";
 		static constexpr auto Script_yield_ms_arg_method_name = "yield(_)";
+		static constexpr auto Script_trigger_script_event_method_name = "tse(_,_)";
 
 		static constexpr auto natives_module_name = "natives";
 		static constexpr auto SCRIPT_INTERNAL_class_name = "SCRIPT_INTERNAL";
