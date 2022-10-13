@@ -68,28 +68,22 @@ namespace big
         return methods;
     }
 
-    static void wren_Script_yield(WrenVM* vm)
+    static void wren_Script_get_time_in_ms(WrenVM* vm)
     {
-        script::get_current()->yield();
-    }
-
-    static void wren_Script_yield_ms_arg(WrenVM* vm)
-    {
-        const auto duration_in_ms = std::chrono::milliseconds((int)wrenGetSlotDouble(vm, 1));
-
-        script::get_current()->yield(duration_in_ms);
+        const double time_in_ms = (double)std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+        wrenSetSlotDouble(vm, 0, time_in_ms);
     }
 
     static void wren_Script_get_global_int(WrenVM* vm)
     {
-        const auto index = wrenGetSlotDouble(vm, 1);
+        const auto index = (size_t)wrenGetSlotDouble(vm, 1);
         const auto value = *script_global(index).as<int*>();
         wrenSetSlotDouble(vm, 0, (double)value);
     }
 
     static void wren_Script_set_global_int(WrenVM* vm)
     {
-        const auto index = wrenGetSlotDouble(vm, 1);
+        const auto index = (size_t)wrenGetSlotDouble(vm, 1);
         const auto value = (int)wrenGetSlotDouble(vm, 2);
         *script_global(index).as<int*>() = value;
     }
@@ -122,6 +116,14 @@ namespace big
         g_pointers->m_trigger_script_event(event_group, args.data(), arg_count, player_bits);
     }
 
+    static void wren_ImGui_button(WrenVM* vm)
+    {
+        wren_imgui_button btn;
+        btn.label = wrenGetSlotString(vm, 1);
+        btn.fn_instance = wrenGetSlotHandle(vm, 2);
+        g_wren_manager->m_imgui_buttons.push_back(btn);
+    }
+
     WrenForeignMethodFn wren_manager::wren_bind_foreign_method(
         WrenVM* vm,
         const char* module,
@@ -137,13 +139,9 @@ namespace big
         {
             if (strcmp(class_name, wren_manager::Script_class_name) == 0)
             {
-                if (strcmp(signature, wren_manager::Script_yield_method_name) == 0)
+                if (strcmp(signature, wren_manager::Script_get_time_in_ms_method_name) == 0)
                 {
-                    return wren_Script_yield;
-                }
-                else if (strcmp(signature, wren_manager::Script_yield_ms_arg_method_name) == 0)
-                {
-                    return wren_Script_yield_ms_arg;
+                    return wren_Script_get_time_in_ms;
                 }
                 else if (strcmp(signature, wren_manager::Script_get_global_int_method_name) == 0)
                 {
@@ -156,6 +154,13 @@ namespace big
                 else if (strcmp(signature, wren_manager::Script_trigger_script_event_method_name) == 0)
                 {
                     return wren_Script_trigger_script_event;
+                }
+            }
+            else if (strcmp(class_name, wren_manager::ImGui_class_name) == 0)
+            {
+                if (strcmp(signature, wren_manager::ImGui_button_method_name) == 0)
+                {
+                    return wren_ImGui_button;
                 }
             }
             else if (strcmp(class_name, "Vector3") == 0)
@@ -267,7 +272,19 @@ namespace big
         if (m_has_tick_function)
         {
             wrenReleaseHandle(m_vm, m_script_internal_tick_fn_handle);
-            wrenReleaseHandle(m_vm, m_script_internal_class_handle);
+            wrenReleaseHandle(m_vm, m_script_internal_metaclass_handle);
+        }
+
+        for (auto& btn : m_imgui_buttons)
+        {
+            wrenReleaseHandle(m_vm, btn.fn_instance);
+        }
+        m_imgui_buttons.clear();
+
+        if (m_has_func_internal_function)
+        {
+            wrenReleaseHandle(m_vm, m_func_internal_call_fn_handle);
+            wrenReleaseHandle(m_vm, m_func_internal_metaclass_handle);
         }
 
         // we call this there manually instead of letting the unique ptrs dctor trigger automatically
@@ -340,13 +357,23 @@ namespace big
             compile_script(script_to_load.module_name, script_to_load.file_path, script_to_load.disk_last_write_time);
         }
 
+        wrenEnsureSlots(m_vm, 1);
+
+        m_has_func_internal_function = wrenHasModule(m_vm, wren_manager::natives_module_name) &&
+            wrenHasVariable(m_vm, wren_manager::natives_module_name, wren_manager::FUNC_INTERNAL_class_name);
+        if (m_has_func_internal_function)
+        {
+            wrenGetVariable(m_vm, wren_manager::natives_module_name, wren_manager::FUNC_INTERNAL_class_name, 0);
+            m_func_internal_metaclass_handle = wrenGetSlotHandle(m_vm, 0);
+            m_func_internal_call_fn_handle = wrenMakeCallHandle(m_vm, wren_manager::FUNC_INTERNAL_call_method_name);
+        }
+
         m_has_tick_function = wrenHasModule(m_vm, wren_manager::natives_module_name) &&
             wrenHasVariable(m_vm, wren_manager::natives_module_name, wren_manager::SCRIPT_INTERNAL_class_name);
         if (m_has_tick_function)
         {
-            wrenEnsureSlots(m_vm, 1);
             wrenGetVariable(m_vm, wren_manager::natives_module_name, wren_manager::SCRIPT_INTERNAL_class_name, 0);
-            m_script_internal_class_handle = wrenGetSlotHandle(m_vm, 0);
+            m_script_internal_metaclass_handle = wrenGetSlotHandle(m_vm, 0);
             m_script_internal_tick_fn_handle = wrenMakeCallHandle(m_vm, wren_manager::SCRIPT_INTERNAL_TICK_method_name);
         }
     }
@@ -389,11 +416,20 @@ namespace big
         {
             if (g_wren_manager->m_has_tick_function)
             {
-                wrenSetSlotHandle(g_wren_manager->m_vm, 0, g_wren_manager->m_script_internal_class_handle);
+                wrenEnsureSlots(g_wren_manager->m_vm, 1);
+                wrenSetSlotHandle(g_wren_manager->m_vm, 0, g_wren_manager->m_script_internal_metaclass_handle);
                 wrenCall(g_wren_manager->m_vm, g_wren_manager->m_script_internal_tick_fn_handle);
             }
 
             script::get_current()->yield();
         }
+    }
+
+    void wren_manager::call_btn(const wren_imgui_button& btn)
+    {
+        wrenEnsureSlots(m_vm, 2);
+        wrenSetSlotHandle(m_vm, 0, m_func_internal_metaclass_handle);
+        wrenSetSlotHandle(m_vm, 1, btn.fn_instance);
+        wrenCall(m_vm, m_func_internal_call_fn_handle);
     }
 }
