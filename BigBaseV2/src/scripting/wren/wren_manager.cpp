@@ -5,6 +5,7 @@
 #include "script.hpp"
 #include "fiber_pool.hpp"
 #include "pointers.hpp"
+#include "script_global.hpp"
 
 namespace big
 {
@@ -79,6 +80,20 @@ namespace big
         script::get_current()->yield(duration_in_ms);
     }
 
+    static void wren_Script_get_global_int(WrenVM* vm)
+    {
+        const auto index = wrenGetSlotDouble(vm, 1);
+        const auto value = *script_global(index).as<int*>();
+        wrenSetSlotDouble(vm, 0, (double)value);
+    }
+
+    static void wren_Script_set_global_int(WrenVM* vm)
+    {
+        const auto index = wrenGetSlotDouble(vm, 1);
+        const auto value = (int)wrenGetSlotDouble(vm, 2);
+        *script_global(index).as<int*>() = value;
+    }
+
     static void wren_Script_trigger_script_event(WrenVM* vm)
     {
         constexpr int event_group = 1;
@@ -129,6 +144,14 @@ namespace big
                 else if (strcmp(signature, wren_manager::Script_yield_ms_arg_method_name) == 0)
                 {
                     return wren_Script_yield_ms_arg;
+                }
+                else if (strcmp(signature, wren_manager::Script_get_global_int_method_name) == 0)
+                {
+                    return wren_Script_get_global_int;
+                }
+                else if (strcmp(signature, wren_manager::Script_set_global_int_method_name) == 0)
+                {
+                    return wren_Script_set_global_int;
                 }
                 else if (strcmp(signature, wren_manager::Script_trigger_script_event_method_name) == 0)
                 {
