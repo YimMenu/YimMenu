@@ -6,6 +6,13 @@ namespace big
 {
 	class wren_manager
 	{
+		static constexpr auto Script_class_name = "Script";
+		static constexpr auto Script_yield_method_name = "yield()";
+
+		static constexpr auto natives_module_name = "natives";
+		static constexpr auto SCRIPT_INTERNAL_class_name = "SCRIPT_INTERNAL";
+		static constexpr auto SCRIPT_INTERNAL_TICK_method_name = "TICK()";
+
 		WrenConfiguration m_config;
 
 		WrenVM* m_vm;
@@ -14,6 +21,18 @@ namespace big
 		std::filesystem::path m_scripts_wren_folder;
 
 		std::unordered_map<std::string, std::unique_ptr<wren_script>> m_wren_scripts;
+
+		bool m_has_tick_function = false;
+		WrenHandle* m_script_internal_class_handle = nullptr;
+		WrenHandle* m_script_internal_tick_fn_handle = nullptr;
+
+		static WrenForeignMethodFn wren_bind_foreign_method(
+			WrenVM* vm,
+			const char* module, const char* class_name,
+			bool is_static,
+			const char* signature);
+
+		void cleanup_memory();
 
 	public:
 		wren_manager();

@@ -71,7 +71,7 @@ namespace big
 		script::get_current()->yield();
 	}
 
-	static WrenForeignMethodFn wren_bind_foreign_method(
+	WrenForeignMethodFn wren_manager::wren_bind_foreign_method(
 		WrenVM* vm,
 		const char* module,
 		const char* class_name,
@@ -83,7 +83,8 @@ namespace big
 			return it->second;
 		}
 
-		if (strcmp(class_name, "ScriptUtil") == 0 && strcmp(signature, "yield()") == 0)
+		if (strcmp(class_name, wren_manager::Script_class_name) == 0 &&
+			strcmp(signature, wren_manager::Script_yield_method_name) == 0)
 		{
 			return wren_ScriptUtil_yield;
 		}
@@ -196,13 +197,24 @@ namespace big
 		g_wren_manager = this;
 	}
 
-	wren_manager::~wren_manager()
+	void wren_manager::cleanup_memory()
 	{
+		if (m_has_tick_function)
+		{
+			wrenReleaseHandle(m_vm, m_script_internal_tick_fn_handle);
+			wrenReleaseHandle(m_vm, m_script_internal_class_handle);
+		}
+
 		// we call this there manually instead of letting the unique ptrs dctor trigger automatically
 		// freeing the VM should be the last thing we do. (see https://wren.io/embedding/ for the why)
 		remove_all_scripts();
 
 		wrenFreeVM(m_vm);
+	}
+
+	wren_manager::~wren_manager()
+	{
+		cleanup_memory();
 
 		g_wren_manager = nullptr;
 	}
@@ -253,9 +265,7 @@ namespace big
 		// if we already have some loaded scripts, we need to restart the VM
 		if (m_wren_scripts.size())
 		{
-			remove_all_scripts();
-
-			wrenFreeVM(m_vm);
+			cleanup_memory();
 
 			m_vm = wrenNewVM(&m_config);
 		}
@@ -263,6 +273,16 @@ namespace big
 		for (const auto& script_to_load : scripts_to_load)
 		{
 			compile_script(script_to_load.module_name, script_to_load.file_path, script_to_load.disk_last_write_time);
+		}
+
+		m_has_tick_function = wrenHasModule(m_vm, wren_manager::natives_module_name) &&
+			wrenHasVariable(m_vm, wren_manager::natives_module_name, wren_manager::SCRIPT_INTERNAL_class_name);
+		if (m_has_tick_function)
+		{
+			wrenEnsureSlots(m_vm, 1);
+			wrenGetVariable(m_vm, wren_manager::natives_module_name, wren_manager::SCRIPT_INTERNAL_class_name, 0);
+			m_script_internal_class_handle = wrenGetSlotHandle(m_vm, 0);
+			m_script_internal_tick_fn_handle = wrenMakeCallHandle(m_vm, wren_manager::SCRIPT_INTERNAL_TICK_method_name);
 		}
 	}
 
@@ -289,31 +309,7 @@ namespace big
 		{
 			LOG(INFO) << "Successfully executed " << file_path;
 
-			bool has_script_class_declaration = false;
-			bool has_tick_function = false;
-			std::istringstream ss(script);
-			std::string line;
-			while (std::getline(ss, line))
-			{
-				if (line.find("class") != std::string::npos &&
-					line.find("Script") != std::string::npos &&
-					line.find("{") != std::string::npos)
-				{
-					has_script_class_declaration = true;
-				}
-				else if (has_script_class_declaration &&
-					line.find("static") != std::string::npos &&
-					line.find("tick") != std::string::npos &&
-					line.find("{") != std::string::npos)
-				{
-					// make sure if there is any comment, its after the actual method declaration
-					has_tick_function = line.find("//") > line.find("{") && line.find("/*") > line.find("{");
-
-					break;
-				}
-			}
-
-			m_wren_scripts[module_name] = std::make_unique<wren_script>(m_vm, module_name, disk_last_write_time, has_tick_function);
+			m_wren_scripts[module_name] = std::make_unique<wren_script>(m_vm, module_name, disk_last_write_time);
 
 			break;
 		}
@@ -326,9 +322,10 @@ namespace big
 	{
 		while (g_running)
 		{
-			for (auto& [wren_script_module_name, wren_script] : g_wren_manager->m_wren_scripts)
+			if (g_wren_manager->m_has_tick_function)
 			{
-				wren_script->tick();
+				wrenSetSlotHandle(g_wren_manager->m_vm, 0, g_wren_manager->m_script_internal_class_handle);
+				wrenCall(g_wren_manager->m_vm, g_wren_manager->m_script_internal_tick_fn_handle);
 			}
 
 			script::get_current()->yield();
