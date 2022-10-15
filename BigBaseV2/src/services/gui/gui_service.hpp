@@ -38,6 +38,9 @@ namespace big
 		PROTECTION_SETTINGS,
 		DEBUG,
 
+		SCRIPTING,
+		SCRIPTING_WREN,
+
 		PLAYER
 	};
 
@@ -86,6 +89,9 @@ namespace big
 				{ tabs::NOTIFICATION_SETTINGS, { "Notifications", view::notification_settings}},
 				{ tabs::PROTECTION_SETTINGS, { "Protection", view::protection_settings}},
 				{ tabs::DEBUG, { "Debug", view::debug }},
+			}}},
+			{tabs::SCRIPTING, { "Scripting", nullptr, {
+				{ tabs::SCRIPTING_WREN, { "Wren", view::wren}}
 			}}},
 			{tabs::PLAYER, {"", view::view_player}}
 		};
