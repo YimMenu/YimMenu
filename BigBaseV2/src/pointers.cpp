@@ -30,8 +30,6 @@ namespace big
 		main_batch.add("PF", "48 8B 05 ? ? ? ? 48 8B 48 08 48 85 C9 74 52 8B 81", [this](memory::handle ptr)
 		{
 			m_ped_factory = ptr.add(3).rip().as<CPedFactory**>();
-
-			LOG(G3LOG_DEBUG) << "CPedFactory => [" << HEX_TO_UPPER(m_ped_factory) << "]";
 		});
 
 		// Network Player Manager
@@ -70,8 +68,6 @@ namespace big
 		main_batch.add("SG", "48 8D 15 ? ? ? ? 4C 8B C0 E8 ? ? ? ? 48 85 FF 48 89 1D", [this](memory::handle ptr)
 		{
 			m_script_globals = ptr.add(3).rip().as<std::int64_t**>();
-
-			LOG(G3LOG_DEBUG) << "ScriptGlobals => [" << HEX_TO_UPPER(m_script_globals) << "]";
 		});
 
 		// Game Script Handle Manager
@@ -217,8 +213,6 @@ namespace big
 		main_batch.add("RI", "0F B7 44 24 ? 66 89 44 4E", [this](memory::handle ptr)
 		{
 			m_replay_interface = ptr.add(0x1F).rip().as<rage::CReplayInterface**>();
-
-			LOG(G3LOG_DEBUG) << "rage::CReplayInterface => [" << HEX_TO_UPPER(m_replay_interface) << "]";
 		});
 
 		// Pointer to Handle
@@ -261,8 +255,6 @@ namespace big
 		main_batch.add("FR", "3B 0D ? ? ? ? 73 17", [this](memory::handle ptr)
 		{
 			m_friend_registry = ptr.add(2).rip().as<FriendRegistry*>();
-
-			LOG(G3LOG_DEBUG) << "FriendRegistry => [" << HEX_TO_UPPER(m_friend_registry) << "]";
 		});
 
 		// GET_SCREEN_COORDS_FROM_WORLD_COORDS
@@ -326,8 +318,6 @@ namespace big
 		main_batch.add("MHT", "4C 03 05 ? ? ? ? EB 03", [this](memory::handle ptr)
 		{
 			m_model_table = ptr.add(3).rip().as<HashTable<CBaseModelInfo*>*>();
-
-			LOG(G3LOG_DEBUG) << "HashTable => [" << HEX_TO_UPPER(m_model_table) << "]";
 		});
 
 		// Get Label Text

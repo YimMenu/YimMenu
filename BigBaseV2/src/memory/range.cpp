@@ -29,39 +29,90 @@ namespace memory
 		return h.as<std::uintptr_t>() >= begin().as<std::uintptr_t>() && h.as<std::uintptr_t>() <= end().as<std::uintptr_t>();
 	}
 
-	static bool pattern_matches(std::uint8_t* target, const std::optional<std::uint8_t>* sig, std::size_t length)
+	// https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm
+	// https://www.youtube.com/watch?v=AuZUeshhy-s
+	handle scan_pattern(const std::optional<std::uint8_t>* sig, std::size_t length, handle begin, std::size_t module_size)
 	{
-		for (std::size_t i = 0; i < length; ++i)
+		std::size_t maxShift = length;
+		std::size_t max_idx = length - 1;
+
+		//Get wildcard index, and store max shiftable byte count
+		std::size_t wild_card_idx{ static_cast<size_t>(-1) };
+		for (int i{ static_cast<int>(max_idx - 1) }; i >= 0; --i)
 		{
-			if (sig[i] && *sig[i] != target[i])
-				return false;
+			if (!sig[i])
+			{
+				maxShift = max_idx - i;
+				wild_card_idx = i;
+				break;
+			}
 		}
 
-		return true;
-	};
+		//Store max shiftable bytes for non wildcards.
+		std::size_t shift_table[UINT8_MAX + 1]{};
+		for (std::size_t i{}; i <= UINT8_MAX; ++i)
+		{
+			shift_table[i] = maxShift;
+		}
+
+		//Fill shift table with sig bytes
+		for (std::size_t i{ wild_card_idx + 1 }; i != max_idx; ++i)
+		{
+			shift_table[*sig[i]] = max_idx - i;
+		}
+
+		//Loop data
+		for (std::size_t current_idx{}; current_idx != module_size - length;)
+		{
+			for (std::size_t sig_idx{ max_idx }; sig_idx >= 0; --sig_idx)
+			{
+				if (sig[sig_idx] && *begin.add(current_idx + sig_idx).as<uint8_t*>() != *sig[sig_idx])
+				{
+					current_idx += shift_table[*begin.add(current_idx + max_idx).as<uint8_t*>()];
+					break;
+				}
+				else if (sig_idx == NULL)
+				{
+					return begin.add(sig_idx);
+				}
+			}
+		}
+		return nullptr;
+	}
 
 	handle range::scan(pattern const &sig)
 	{
 		auto data = sig.m_bytes.data();
 		auto length = sig.m_bytes.size();
-		for (std::uintptr_t i = 0; i < m_size - length; ++i)
+
+		if (auto result = scan_pattern(data, length, m_base, m_size); result)
 		{
-			if (pattern_matches(m_base.add(i).as<std::uint8_t*>(), data, length))
-			{
-				return m_base.add(i);
-			}
+			return result;
 		}
 
 		return nullptr;
 	}
 
+	bool pattern_matches(std::uint8_t* target, const std::optional<std::uint8_t>* sig, std::size_t length)
+	{
+		for (std::size_t i{}; i != length; ++i)
+		{
+			if (sig[i] && *sig[i] != target[i])
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
 	std::vector<handle> range::scan_all(pattern const &sig)
 	{
-		std::vector<handle> result;
-
+		std::vector<handle> result{};
 		auto data = sig.m_bytes.data();
 		auto length = sig.m_bytes.size();
-		for (std::uintptr_t i = 0; i < m_size - length; ++i)
+
+		const auto search_end = m_size - length;
+		for (std::uintptr_t i{}; i != search_end; ++i)
 		{
 			if (pattern_matches(m_base.add(i).as<std::uint8_t*>(), data, length))
 			{
