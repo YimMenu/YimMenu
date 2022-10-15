@@ -36,7 +36,7 @@ namespace memory
 		std::size_t maxShift = length;
 		std::size_t max_idx = length - 1;
 
-		//Get wildcard index, and store max shifable byte count
+		//Get wildcard index, and store max shiftable byte count
 		std::size_t wild_card_idx{ static_cast<size_t>(-1) };
 		for (int i{ static_cast<int>(max_idx - 1) }; i >= 0; --i)
 		{
@@ -55,7 +55,7 @@ namespace memory
 			shift_table[i] = maxShift;
 		}
 
-		//Fill shift table
+		//Fill shift table with sig bytes
 		for (std::size_t i{ wild_card_idx + 1 }; i != max_idx; ++i)
 		{
 			shift_table[*sig[i]] = max_idx - i;
