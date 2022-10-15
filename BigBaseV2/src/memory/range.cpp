@@ -29,7 +29,6 @@ namespace memory
 		return h.as<std::uintptr_t>() >= begin().as<std::uintptr_t>() && h.as<std::uintptr_t>() <= end().as<std::uintptr_t>();
 	}
 
-
 	//https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm
 	//https://www.youtube.com/watch?v=AuZUeshhy-s
 	static handle scan_pattern(const std::optional<std::uint8_t>* sig, std::size_t length, handle begin, std::size_t moduleSize)
@@ -88,7 +87,8 @@ namespace memory
 		return nullptr;
 	}
 
-	bool pattern_matches(std::uint8_t* target, const std::optional<std::uint8_t>* sig, std::size_t length) {
+	bool pattern_matches(std::uint8_t* target, const std::optional<std::uint8_t>* sig, std::size_t length)
+	{
 		for (std::size_t i{}; i != length; ++i)
 		{
 			if (sig[i] && *sig[i] != target[i])
