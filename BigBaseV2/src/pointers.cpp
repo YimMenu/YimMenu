@@ -6,6 +6,7 @@ namespace big
 {
 	pointers::pointers()
 	{
+		auto start = std::chrono::steady_clock::now();
 		memory::batch main_batch;
 
 		main_batch.add("SCREEN_RESOLUTION", "66 0F 6E 0D ? ? ? ? 0F B7 3D", [this](memory::handle ptr)
@@ -340,6 +341,9 @@ namespace big
 
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
+		auto end = std::chrono::steady_clock::now();
+		std::chrono::duration<double> diff = end - start;
+		LOG(G3LOG_DEBUG) << "Scan time took " << diff.count() << " with a per sig average of " << diff.count() / 53;
 
 		/**
 		 * Freemode thread restorer through VM patch
