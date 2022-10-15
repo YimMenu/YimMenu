@@ -94,6 +94,7 @@ namespace big
 			if (!m_did_console_exist && m_attach_console)
 				FreeConsole();
 		}
+
 		void file_out(std::stringstream& str)
 		{
 			m_file_out << str.str() << '\n';

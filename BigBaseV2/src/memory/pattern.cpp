@@ -55,6 +55,7 @@ namespace memory
 			return std::nullopt;
 		}
 	}
+
 	pattern::pattern(std::string_view ida_sig)
 	{
 		for (std::size_t i{}; i != ida_sig.size(); ++i)
