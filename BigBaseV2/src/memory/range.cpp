@@ -106,6 +106,24 @@ namespace memory
 
 		return true;
 	}
+
+	handle range::bruteforce_scan(pattern const& sig)
+	{
+		auto data = sig.m_bytes.data();
+		auto length = sig.m_bytes.size();
+
+		const auto scan_end = m_size - length;
+		for (std::uintptr_t i{}; i != scan_end; ++i)
+		{
+			if (pattern_matches(m_base.add(i).as<std::uint8_t*>(), data, length))
+			{
+				return m_base.add(i);
+			}
+		}
+
+		return nullptr;
+	}
+
 	std::vector<handle> range::scan_all(pattern const &sig)
 	{
 		std::vector<handle> result{};
