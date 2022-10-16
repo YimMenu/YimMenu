@@ -30,6 +30,9 @@ namespace big
 		SESSION,
 		SPOOFING,
 
+		SCRIPTING,
+		SCRIPTING_WREN,
+
 		SETTINGS,
 		CONTEXT_MENU_SETTINGS,
 		ESP_SETTINGS,
@@ -37,9 +40,6 @@ namespace big
 		NOTIFICATION_SETTINGS,
 		PROTECTION_SETTINGS,
 		DEBUG,
-
-		SCRIPTING,
-		SCRIPTING_WREN,
 
 		PLAYER
 	};
@@ -82,6 +82,9 @@ namespace big
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},
 				{ tabs::SESSION, { "Session", view::session }},
 			}}},
+			{tabs::SCRIPTING, { "Scripting", nullptr, {
+				{ tabs::SCRIPTING_WREN, { "Wren", view::wren}}
+			}}},
 			{tabs::SETTINGS, { "Settings", view::settings, {
 				{ tabs::CONTEXT_MENU_SETTINGS, { "Context Menu", view::context_menu_settings}},
 				{ tabs::ESP_SETTINGS, { "ESP", view::esp_settings}},
@@ -89,9 +92,6 @@ namespace big
 				{ tabs::NOTIFICATION_SETTINGS, { "Notifications", view::notification_settings}},
 				{ tabs::PROTECTION_SETTINGS, { "Protection", view::protection_settings}},
 				{ tabs::DEBUG, { "Debug", view::debug }},
-			}}},
-			{tabs::SCRIPTING, { "Scripting", nullptr, {
-				{ tabs::SCRIPTING_WREN, { "Wren", view::wren}}
 			}}},
 			{tabs::PLAYER, {"", view::view_player}}
 		};
