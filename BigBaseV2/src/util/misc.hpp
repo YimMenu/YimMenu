@@ -37,4 +37,11 @@ namespace big::misc
 	{
 		*address |= bits;
 	}
+
+	inline Vector3 fvector3_to_Vector3(rage::fvector3 vector_in)
+	{
+		Vector3 vector_out = { vector_in.x, vector_in.y, vector_in.z };
+
+		return vector_out;
+	}
 }

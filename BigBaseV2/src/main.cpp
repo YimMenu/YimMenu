@@ -47,7 +47,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			}
 
 			if(cant_find_window)
-				std::this_thread::sleep_for(8s);
+				std::this_thread::sleep_for(20s);
 
 			std::filesystem::path base_dir = std::getenv("appdata");
 			base_dir /= "BigBaseV2";

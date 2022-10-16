@@ -69,6 +69,7 @@ namespace big
 					uint32_t count;
 					buffer.ReadDword(&count, 6);
 					pl = nullptr;
+					std::string notify;
 					for (std::uint32_t i = 0; i < count; i++)
 					{
 						uint64_t peer_id;
@@ -84,7 +85,9 @@ namespace big
 					}
 					if (player && pl && player->id() != pl->id() && count == 1 && frame->m_msg_id == -1)
 					{
-						g_notification_service->push_error("Warning!", fmt::format("{} breakup kicked {}!", player->get_name(), pl->get_name()));
+						notify = fmt::format("{} breakup kicked {}!", player->get_name(), pl->get_name());
+						LOG(INFO) << notify;
+						g_notification_service->push_error("Warning!", notify);
 					}
 					break;
 				}

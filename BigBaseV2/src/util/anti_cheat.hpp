@@ -14,7 +14,8 @@ namespace big::anti_cheat
 	inline bool is_in_godmode(Ped player_ped, CPed* player_cped)
 	{
 		if (player_cped->m_damage_bits & (uint32_t)eEntityProofs::GOD
-			&& !INTERIOR::GET_INTERIOR_FROM_ENTITY(player_ped))
+			&& !INTERIOR::GET_INTERIOR_FROM_ENTITY(player_ped)
+			&& player_cped->m_player_info->m_game_state == eGameState::Playing)
 		{
 			return true;
 		}
@@ -23,10 +24,12 @@ namespace big::anti_cheat
 	}
 
 	// Vehicle Godmode Check
-	inline bool is_in_godmode_vehicle(CPed* player_cped)
+	inline bool is_in_godmode_vehicle(Ped player_ped, CPed* player_cped)
 	{
 		if (player_cped->m_vehicle != nullptr
-			&& player_cped->m_vehicle->m_damage_bits & (uint32_t)eEntityProofs::GOD)
+			&& player_cped->m_vehicle->m_damage_bits & (uint32_t)eEntityProofs::GOD
+			&& !INTERIOR::GET_INTERIOR_FROM_ENTITY(player_ped)
+			&& player_cped->m_player_info->m_game_state == eGameState::Playing)
 		{
 			return true;
 		}

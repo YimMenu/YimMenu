@@ -813,4 +813,18 @@ namespace big
 		Organics = 9,
 		Skydive = 10
 	};
+	
+	enum ePlayerStatType // Skidded from gir489
+	{
+		RP = 1,
+		MoneyCash = 3,
+		GlobalRP = 5,
+		Rank = 6,
+		KDRatio = 26,
+		Kills = 28,
+		Deaths = 29,
+		CanSpectate = 52,
+		FavoriteRadio = 53,
+		MoneyAll = 56,
+	};
 }

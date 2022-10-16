@@ -82,7 +82,7 @@ namespace big
 				detections += "Godmode, ";
 			}
 
-			if (anti_cheat::is_in_godmode_vehicle(cped))
+			if (anti_cheat::is_in_godmode_vehicle(ped, cped))
 			{
 				score++;
 				detections += "Vehicle godmode, ";
