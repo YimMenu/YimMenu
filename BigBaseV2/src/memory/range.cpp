@@ -62,7 +62,8 @@ namespace memory
 		}
 
 		//Loop data
-		for (std::size_t current_idx{}; current_idx != module_size - length;)
+		const auto scan_end = module_size - length;
+		for (std::size_t current_idx{}; current_idx != scan_end;)
 		{
 			for (std::size_t sig_idx{ max_idx }; sig_idx >= 0; --sig_idx)
 			{
@@ -73,7 +74,7 @@ namespace memory
 				}
 				else if (sig_idx == NULL)
 				{
-					return begin.add(sig_idx);
+					return begin.add(current_idx);
 				}
 			}
 		}
@@ -111,8 +112,8 @@ namespace memory
 		auto data = sig.m_bytes.data();
 		auto length = sig.m_bytes.size();
 
-		const auto search_end = m_size - length;
-		for (std::uintptr_t i{}; i != search_end; ++i)
+		const auto scan_end = m_size - length;
+		for (std::uintptr_t i{}; i != scan_end; ++i)
 		{
 			if (pattern_matches(m_base.add(i).as<std::uint8_t*>(), data, length))
 			{
