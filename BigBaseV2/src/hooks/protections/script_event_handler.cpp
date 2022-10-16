@@ -80,6 +80,8 @@ namespace big
 			{
 				format_string(player_name, "TSE Crash", notify.crash.log, notify.crash.notify);
 
+				g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 10, "TSE Crash");
+
 				return true;
 			}
 			break;
@@ -125,6 +127,8 @@ namespace big
 			{
 				format_string(player_name, "TSE Crash", notify.crash.log, notify.crash.notify);
 
+				g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 10, "TSE Crash");
+
 				return true;
 			}
 			break;
@@ -165,16 +169,7 @@ namespace big
 			{
 				format_string(player_name, "Send to Cayo Perico", notify.send_to_location.log, notify.send_to_location.notify);
 
-				uint64_t rid = player->get_net_data()->m_gamer_handle_2.m_rockstar_id;
-				if (g_anti_cheat_service->is_player_in_moddb(rid))
-				{
-					if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
-						g_anti_cheat_service->add_score_to_modder(rid, 3, "Send to Cayo Perico, ");
-				}
-				else
-				{
-					g_anti_cheat_service->mark_as_modder(player->m_player_id, 3, "Send to Cayo Perico, ");
-				}
+				g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 5, "Send to Cayo Perico");
 
 				return true;
 			}
@@ -212,16 +207,7 @@ namespace big
 					{
 						format_string(player_name, "Send to Cayo Perico", notify.send_to_location.log, notify.send_to_location.notify);
 
-						uint64_t rid = player->get_net_data()->m_gamer_handle_2.m_rockstar_id;
-						if (g_anti_cheat_service->is_player_in_moddb(rid))
-						{
-							if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
-								g_anti_cheat_service->add_score_to_modder(rid, 3, "Send to Cayo Perico, ");
-						}
-						else
-						{
-							g_anti_cheat_service->mark_as_modder(player->m_player_id, 3, "Send to Cayo Perico, ");
-						}
+						g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 5, "Send to Cayo Perico");
 
 						return true;
 					}
@@ -257,16 +243,7 @@ namespace big
 			{
 				format_string(player_name, "Apartment Invite", notify.force_teleport.log, notify.force_teleport.notify);
 
-				uint64_t rid = player->get_net_data()->m_gamer_handle_2.m_rockstar_id;
-				if (g_anti_cheat_service->is_player_in_moddb(rid))
-				{
-					if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
-						g_anti_cheat_service->add_score_to_modder(rid, 4, "Apartment invite, ");
-				}
-				else
-				{
-					g_anti_cheat_service->mark_as_modder(player->m_player_id, 4, "Apartment invite, ");
-				}
+				g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 5, "Apartment Invite");
 
 				return true;
 			}
@@ -350,6 +327,8 @@ namespace big
 			else if (g->protections.script_events.crash && activity == eActivityType::Tennis)
 			{
 				format_string(player_name, "TSE Crash (Start Tennis)", notify.crash.log, notify.crash.notify);
+
+				g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 10, "TSE Crash (Start Tennis)");
 
 				return true;
 			}

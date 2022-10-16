@@ -1,4 +1,3 @@
-#pragma 
 #include "anti_cheat_service.hpp"
 #include "services/player_database/player_database_service.hpp"
 
@@ -22,20 +21,65 @@ namespace big
 		return false;
 	}
 
+	void anti_cheat_service::add_score_or_mark_as_modder(Player player, int score, std::string detections)
+	{
+		uint64_t rid = g_player_service->get_by_id(player)->get_net_data()->m_gamer_handle_2.m_rockstar_id;
+		if (is_player_in_moddb(rid))
+		{
+			if (modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score)
+				add_score_to_modder(rid, score, detections + ", ");
+		}
+		else
+		{
+			mark_as_modder(rid, score, detections + ", ");
+		}
+	}
+
+	void anti_cheat_service::add_score_or_mark_as_modder(uint64_t rid, int score, std::string detections)
+	{
+		if (is_player_in_moddb(rid))
+		{
+			if (modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score)
+				add_score_to_modder(rid, score, detections + ", ");
+		}
+		else
+		{
+			mark_as_modder(rid, score, detections + ", ");
+		}
+	}
+
 	bool anti_cheat_service::mark_as_modder(Player player, int score, std::string detections)
 	{
-		auto cplayer = g_player_service->get_by_id(player);
+		rage::rlGamerInfo* net_player_data = g_player_service->get_by_id(player)->get_net_data();
+		uint64_t rid = net_player_data->m_gamer_handle_2.m_rockstar_id;
 
 		for (const auto& [_, rid_s, __, _detection] : m_modders)
-			if (rid_s == cplayer->get_net_data()->m_gamer_handle_2.m_rockstar_id)
+			if (rid_s == rid)
 				return false;
 
-		m_modders.push_back({ cplayer->get_name(), cplayer->get_net_data()->m_gamer_handle_2.m_rockstar_id, score, detections });
-		g_player_database_service->add_player_to_db(cplayer->get_net_data()->m_gamer_handle_2.m_rockstar_id, cplayer->get_name(), "Modder", player);
+		m_modders.push_back({ net_player_data->m_name, rid, score, detections });
+		// g_player_database_service->add_player_to_db(rid, net_player_data->m_name, "Modder", player); // TODO: Replace existing entry.
 
-		LOG(INFO) << cplayer->get_name() << ", " << cplayer->get_net_data()->m_gamer_handle_2.m_rockstar_id << ", " << score;
+		LOG(INFO) << "Modder Detected: " << net_player_data->m_name << ", " << rid << ", " << score;
 
-		g_notification_service->push("Modder Detected", cplayer->get_name() + detections);
+		g_notification_service->push("Modder Detected", net_player_data->m_name + detections);
+		return true;
+	}
+
+	bool anti_cheat_service::mark_as_modder(uint64_t rid, int score, std::string detections)
+	{
+		rage::rlGamerInfo* net_player_data = g_player_service->get_by_rid(rid)->get_net_data();
+
+		for (const auto& [_, rid_s, __, _detection] : m_modders)
+			if (rid_s == rid)
+				return false;
+
+		m_modders.push_back({ net_player_data->m_name, rid, score, detections });
+		// g_player_database_service->add_player_to_db(rid, net_player_data->m_name, "Modder", player); // TODO: Replace existing entry.
+
+		LOG(INFO) << net_player_data->m_name << ", " << rid << ", " << score;
+
+		g_notification_service->push("Modder Detected", net_player_data->m_name + detections);
 		return true;
 	}
 

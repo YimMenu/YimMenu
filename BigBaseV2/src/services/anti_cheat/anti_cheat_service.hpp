@@ -31,7 +31,11 @@ namespace big
 
 		bool is_player_in_moddb(uint64_t rid);
 		bool mark_as_modder(Player player, int score, std::string detection);
+		bool mark_as_modder(uint64_t rid, int score, std::string detections);
 		bool add_score_to_modder(uint64_t rid, int score_to_add, std::string detection);
+		void add_score_or_mark_as_modder(Player player, int score, std::string detections);
+		void add_score_or_mark_as_modder(uint64_t rid, int score, std::string detections);
+
 		int get_moddb_player_from_rid(uint64_t rid);
 		int modder_check(Player player);
 

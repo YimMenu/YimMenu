@@ -144,16 +144,7 @@ namespace big
 						fmt::format("{} is spawning cash.", source_player->get_name())
 					);
 
-				uint64_t rid = source_player->get_net_data()->m_gamer_handle_2.m_rockstar_id;
-				if (g_anti_cheat_service->is_player_in_moddb(rid))
-				{
-					if (g_anti_cheat_service->modders()[g_anti_cheat_service->get_moddb_player_from_rid(rid)].score < 10)
-						g_anti_cheat_service->add_score_to_modder(rid, 5, "Cash spawn, ");
-				}
-				else
-				{
-					g_anti_cheat_service->mark_as_modder(source_player->m_player_id, 5, "Cash spawn, ");
-				}
+				g_anti_cheat_service->add_score_or_mark_as_modder(source_player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 5, "Cash spawn");
 			}
 
 			break;
@@ -169,19 +160,7 @@ namespace big
 				g_notification_service->push_warning("Protection",
 					fmt::format("{} sent out a modder event.", source_player->get_name())
 				);
-			uint64_t rid = source_player->get_net_data()->m_gamer_handle_2.m_rockstar_id;
-			if (g_anti_cheat_service->is_player_in_moddb(rid))
-			{
-				int moddb_player = g_anti_cheat_service->get_moddb_player_from_rid(rid);
-				if (g_anti_cheat_service->modders()[moddb_player].score < 10)
-				{
-					g_anti_cheat_service->add_score_to_modder(rid, 5, "Modder event, ");
-				}
-			}
-			else
-			{
-				g_anti_cheat_service->mark_as_modder(source_player->m_player_id, 5, "Modder event, ");
-			}
+			g_anti_cheat_service->add_score_or_mark_as_modder(source_player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 2, "Modder Event");
 
 			break;
 		}
