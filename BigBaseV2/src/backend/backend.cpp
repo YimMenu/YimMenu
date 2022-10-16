@@ -136,7 +136,8 @@ namespace big
 			looped::pie_menu();
 			looped::hud_chat();
 			looped::phone_anim();
-
+			looped::disable_help_text();
+			
 			script::get_current()->yield();
 		}
 	}

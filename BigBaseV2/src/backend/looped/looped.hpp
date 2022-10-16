@@ -19,6 +19,7 @@ namespace big
 		static void phone_anim();
 		static void tunables_no_idle_kick();
 		static void always_controll();
+		static void disable_help_text();
 
 		static void player_never_wanted(const player_ptr &player);
 		static void player_spectate();

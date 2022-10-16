@@ -83,6 +83,7 @@ namespace big
 
 		ImGui::Checkbox("Phone Anim", &g->tunables.phone_anim);
 		ImGui::Checkbox("Jump Ragdoll", &g->self.allow_ragdoll);
+		ImGui::Checkbox("Disable Help Text", &g->tunables.disable_help_text);
 
 		ImGui::EndGroup();
 
