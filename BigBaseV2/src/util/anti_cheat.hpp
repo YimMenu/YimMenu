@@ -7,6 +7,7 @@
 #include "script_global.hpp"
 #include "services/players/player_service.hpp"
 #include "services/notifications/notification_service.hpp"
+#include "util/player.hpp"
 
 namespace big::anti_cheat
 {
@@ -100,9 +101,9 @@ namespace big::anti_cheat
 	// Total Cash Check (skidded)
 	inline bool is_using_money_mods(Player player)
 	{
-		int max_legit_cash = 150000000;
-		int64_t total_cash = *script_global(1853348).at(player, 834).at(205).at(56).as<int64_t*>();
-		if (total_cash >= max_legit_cash) 
+		int max_legit_cash = 100'000'000;
+		uint64_t money_bank = util::player::get_player_stat<uint64_t>(player, ePlayerStatType::MoneyAll);
+		if (money_bank >= max_legit_cash)
 		{
 			return true;
 		}
