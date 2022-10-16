@@ -68,27 +68,27 @@ namespace big
         return methods;
     }
 
-    static void wren_Script_get_time_in_ms(WrenVM* vm)
+    static void wren_script_get_time_in_ms(WrenVM* vm)
     {
         const double time_in_ms = (double)std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
         wrenSetSlotDouble(vm, 0, time_in_ms);
     }
 
-    static void wren_Script_get_global_int(WrenVM* vm)
+    static void wren_script_get_global_int(WrenVM* vm)
     {
         const auto index = (size_t)wrenGetSlotDouble(vm, 1);
         const auto value = *script_global(index).as<int*>();
         wrenSetSlotDouble(vm, 0, (double)value);
     }
 
-    static void wren_Script_set_global_int(WrenVM* vm)
+    static void wren_script_set_global_int(WrenVM* vm)
     {
         const auto index = (size_t)wrenGetSlotDouble(vm, 1);
         const auto value = (int)wrenGetSlotDouble(vm, 2);
         *script_global(index).as<int*>() = value;
     }
 
-    static void wren_Script_trigger_script_event(WrenVM* vm)
+    static void wren_script_trigger_script_event(WrenVM* vm)
     {
         constexpr int event_group = 1;
 
@@ -116,9 +116,9 @@ namespace big
         g_pointers->m_trigger_script_event(event_group, args.data(), arg_count, player_bits);
     }
 
-    static void wren_ImGui_button(WrenVM* vm)
+    static void wren_imgui_button(WrenVM* vm)
     {
-        wren_imgui_button btn;
+        wren_imgui_button_data btn;
         btn.label = wrenGetSlotString(vm, 1);
         btn.fn_instance = wrenGetSlotHandle(vm, 2);
         g_wren_manager->m_imgui_buttons.push_back(btn);
@@ -137,30 +137,30 @@ namespace big
         }
         else if (strcmp(module, wren_manager::natives_module_name) == 0)
         {
-            if (strcmp(class_name, wren_manager::Script_class_name) == 0)
+            if (strcmp(class_name, wren_manager::script_class_name) == 0)
             {
-                if (strcmp(signature, wren_manager::Script_get_time_in_ms_method_name) == 0)
+                if (strcmp(signature, wren_manager::script_get_time_in_ms_method_name) == 0)
                 {
-                    return wren_Script_get_time_in_ms;
+                    return wren_script_get_time_in_ms;
                 }
-                else if (strcmp(signature, wren_manager::Script_get_global_int_method_name) == 0)
+                else if (strcmp(signature, wren_manager::script_get_global_int_method_name) == 0)
                 {
-                    return wren_Script_get_global_int;
+                    return wren_script_get_global_int;
                 }
-                else if (strcmp(signature, wren_manager::Script_set_global_int_method_name) == 0)
+                else if (strcmp(signature, wren_manager::script_set_global_int_method_name) == 0)
                 {
-                    return wren_Script_set_global_int;
+                    return wren_script_set_global_int;
                 }
-                else if (strcmp(signature, wren_manager::Script_trigger_script_event_method_name) == 0)
+                else if (strcmp(signature, wren_manager::script_trigger_script_event_method_name) == 0)
                 {
-                    return wren_Script_trigger_script_event;
+                    return wren_script_trigger_script_event;
                 }
             }
-            else if (strcmp(class_name, wren_manager::ImGui_class_name) == 0)
+            else if (strcmp(class_name, wren_manager::imgui_class_name) == 0)
             {
-                if (strcmp(signature, wren_manager::ImGui_button_method_name) == 0)
+                if (strcmp(signature, wren_manager::imgui_button_method_name) == 0)
                 {
-                    return wren_ImGui_button;
+                    return wren_imgui_button;
                 }
             }
             else if (strcmp(class_name, "Vector3") == 0)
@@ -275,7 +275,7 @@ namespace big
             wrenReleaseHandle(m_vm, m_script_internal_metaclass_handle);
         }
 
-        for (auto& btn : m_imgui_buttons)
+        for (const auto& btn : m_imgui_buttons)
         {
             wrenReleaseHandle(m_vm, btn.fn_instance);
         }
@@ -360,21 +360,21 @@ namespace big
         wrenEnsureSlots(m_vm, 1);
 
         m_has_func_internal_function = wrenHasModule(m_vm, wren_manager::natives_module_name) &&
-            wrenHasVariable(m_vm, wren_manager::natives_module_name, wren_manager::FUNC_INTERNAL_class_name);
+            wrenHasVariable(m_vm, wren_manager::natives_module_name, wren_manager::func_internal_class_name);
         if (m_has_func_internal_function)
         {
-            wrenGetVariable(m_vm, wren_manager::natives_module_name, wren_manager::FUNC_INTERNAL_class_name, 0);
+            wrenGetVariable(m_vm, wren_manager::natives_module_name, wren_manager::func_internal_class_name, 0);
             m_func_internal_metaclass_handle = wrenGetSlotHandle(m_vm, 0);
-            m_func_internal_call_fn_handle = wrenMakeCallHandle(m_vm, wren_manager::FUNC_INTERNAL_call_method_name);
+            m_func_internal_call_fn_handle = wrenMakeCallHandle(m_vm, wren_manager::func_internal_call_method_name);
         }
 
         m_has_tick_function = wrenHasModule(m_vm, wren_manager::natives_module_name) &&
-            wrenHasVariable(m_vm, wren_manager::natives_module_name, wren_manager::SCRIPT_INTERNAL_class_name);
+            wrenHasVariable(m_vm, wren_manager::natives_module_name, wren_manager::script_internal_class_name);
         if (m_has_tick_function)
         {
-            wrenGetVariable(m_vm, wren_manager::natives_module_name, wren_manager::SCRIPT_INTERNAL_class_name, 0);
+            wrenGetVariable(m_vm, wren_manager::natives_module_name, wren_manager::script_internal_class_name, 0);
             m_script_internal_metaclass_handle = wrenGetSlotHandle(m_vm, 0);
-            m_script_internal_tick_fn_handle = wrenMakeCallHandle(m_vm, wren_manager::SCRIPT_INTERNAL_TICK_method_name);
+            m_script_internal_tick_fn_handle = wrenMakeCallHandle(m_vm, wren_manager::script_internal_tick_method_name);
         }
     }
 
@@ -425,7 +425,7 @@ namespace big
         }
     }
 
-    void wren_manager::call_btn(const wren_imgui_button& btn)
+    void wren_manager::call_btn(const wren_imgui_button_data& btn)
     {
         wrenEnsureSlots(m_vm, 2);
         wrenSetSlotHandle(m_vm, 0, m_func_internal_metaclass_handle);
