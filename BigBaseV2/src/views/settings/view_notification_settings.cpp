@@ -100,6 +100,7 @@ namespace big
 
 		components::sub_title("Other");
 		
+		draw_pair_option("Chat Spam", g->notifications.chat_receive);
 		draw_pair_option("Reports", g->notifications.reports);
 		draw_pair_option("Transaction Error / Rate Limit", g->notifications.transaction_rate_limit);
 		draw_pair_option("Mismatch sync type", g->notifications.mismatch_sync_type);

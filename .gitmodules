@@ -20,5 +20,5 @@
 	ignore = dirty
 [submodule "vendor/ImGui"]
 	path = vendor/ImGui
-	url = https://github.com/Yimura/gtav-imgui.git
+	url = https://github.com/ocornut/imgui.git
 	ignore = dirty

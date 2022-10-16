@@ -76,6 +76,8 @@ namespace big
 			pair network_player_mgr_init{};
 			pair network_player_mgr_shutdown{};
 
+			pair chat_receive{};
+
 			struct
 			{
 				bool above_map = true;
@@ -465,6 +467,9 @@ namespace big
 			g->notifications.gta_thread_start.log = j["notifications"]["gta_thread_start"]["log"];
 			g->notifications.gta_thread_start.notify = j["notifications"]["gta_thread_start"]["notify"];
 
+			g->notifications.chat_receive.log = j["notifications"]["chat_receive"]["log"];
+			g->notifications.chat_receive.notify = j["notifications"]["chat_receive"]["notify"];
+
 			g->notifications.network_player_mgr_init.log = j["notifications"]["network_player_mgr_init"]["log"];
 			g->notifications.network_player_mgr_init.notify = j["notifications"]["network_player_mgr_init"]["notify"];
 			g->notifications.network_player_mgr_shutdown.log = j["notifications"]["network_player_mgr_shutdown"]["log"];
@@ -778,6 +783,7 @@ namespace big
 						{ "gta_thread_start", return_notify_pair(g->notifications.gta_thread_start) },
 						{ "network_player_mgr_init", return_notify_pair(g->notifications.network_player_mgr_init) },
 						{ "network_player_mgr_shutdown", return_notify_pair(g->notifications.network_player_mgr_shutdown) },
+						{ "chat_receive", return_notify_pair(g->notifications.chat_receive) },
 						{ "player_join", {
 								{ "above_map", g->notifications.player_join.above_map },
 								{ "log", g->notifications.player_join.log },
