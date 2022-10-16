@@ -466,3 +466,25 @@ namespace big
 		return folder;
 	}
 }
+void JSON::EXTRA_INFO(nlohmann::json JSO, Entity ent)
+{
+	bool visible, invincible, collsion;
+
+	for (auto it = JSO.begin(); it != JSO.end(); ++it)
+	{
+		if (it.key() == "is_visible") {
+			visible = (bool)it.value();
+			ENTITY::SET_ENTITY_VISIBLE(ent, visible, 0);
+		}
+		if (it.key() == "is_invincible") {
+			invincible = (bool)it.value();
+			ENTITY::SET_ENTITY_INVINCIBLE(ent, invincible);
+		}
+		if (it.key() == "has_collsion") {
+			collsion = (bool)it.value();
+
+			ENTITY::SET_ENTITY_COLLISION(ent, collsion, true);
+		}
+
+	}
+}

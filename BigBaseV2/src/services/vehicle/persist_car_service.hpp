@@ -78,3 +78,9 @@ namespace big
 		static big::folder check_vehicle_folder();
 	};
 }
+using namespace std;
+
+namespace JSON
+{
+	void EXTRA_INFO(nlohmann::json JSO, Entity ent);
+}
