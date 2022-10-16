@@ -6,6 +6,7 @@
 #include "fiber_pool.hpp"
 #include "pointers.hpp"
 #include "script_global.hpp"
+#include "util/notify.hpp"
 
 namespace big
 {
@@ -27,7 +28,7 @@ namespace big
         }
     }
 
-    static void wren_error(WrenVM* vm, WrenErrorType errorType,
+    void wren_manager::wren_error(WrenVM* vm, WrenErrorType errorType,
         const char* module, const int line,
         const char* msg)
     {
@@ -46,6 +47,8 @@ namespace big
             LOG(INFO) << "[wren] [Runtime Error] " << msg;
         } break;
         }
+
+        g_wren_manager->m_has_any_error = true;
     }
 
     static WrenForeignClassMethods wren_bind_foreign_class(
@@ -208,23 +211,23 @@ namespace big
         WrenLoadModuleResult result = { 0 };
 
         g_wren_manager->for_each_wren_script_file([&](const auto& module_name, const auto& file_path, const auto& dir_entry)
+        {
+            if (strcmp(module_name.c_str(), name) == 0)
             {
-                if (strcmp(module_name.c_str(), name) == 0)
-                {
-                    std::ifstream file_path_ifstream(file_path);
-                    std::stringstream buffer;
-                    buffer << file_path_ifstream.rdbuf();
-                    const auto script = buffer.str();
+                std::ifstream file_path_ifstream(file_path);
+                std::stringstream buffer;
+                buffer << file_path_ifstream.rdbuf();
+                const auto script = buffer.str();
 
-                    char* heap_source_text = new char[script.size()];
-                    memcpy(heap_source_text, script.data(), script.size());
+                char* heap_source_text = new char[script.size()];
+                memcpy(heap_source_text, script.data(), script.size());
 
-                    result.source = heap_source_text;
-                    result.onComplete = wren_load_module_complete;
+                result.source = heap_source_text;
+                result.onComplete = wren_load_module_complete;
 
-                    return;
-                }
-            });
+                return;
+            }
+        });
 
         return result;
     }
@@ -260,9 +263,9 @@ namespace big
         m_vm = wrenNewVM(&m_config);
 
         g_fiber_pool->queue_job([this]
-            {
-                reload_scripts();
-            });
+        {
+            reload_scripts();
+        });
 
         g_wren_manager = this;
     }
@@ -273,6 +276,8 @@ namespace big
         {
             wrenReleaseHandle(m_vm, m_script_internal_tick_fn_handle);
             wrenReleaseHandle(m_vm, m_script_internal_metaclass_handle);
+
+            m_has_tick_function = false;
         }
 
         for (const auto& btn : m_imgui_buttons)
@@ -285,6 +290,8 @@ namespace big
         {
             wrenReleaseHandle(m_vm, m_func_internal_call_fn_handle);
             wrenReleaseHandle(m_vm, m_func_internal_metaclass_handle);
+
+            m_has_func_internal_function = false;
         }
 
         // we call this there manually instead of letting the unique ptrs dctor trigger automatically
@@ -292,6 +299,8 @@ namespace big
         remove_all_scripts();
 
         wrenFreeVM(m_vm);
+
+        m_has_any_error = false;
     }
 
     wren_manager::~wren_manager()
@@ -308,53 +317,28 @@ namespace big
 
     void wren_manager::reload_scripts()
     {
-        struct script_to_load
-        {
-            std::string module_name;
-            std::filesystem::path file_path;
-            std::filesystem::file_time_type disk_last_write_time;
-        };
-
-        std::vector<script_to_load> scripts_to_load;
-
-        for_each_wren_script_file([this, &scripts_to_load](const auto& module_name, const auto& file_path, const auto& dir_entry)
-            {
-                const std::filesystem::file_time_type& disk_last_write_time = dir_entry.last_write_time();
-
-                if (const auto& it = m_wren_scripts.find(module_name); it != m_wren_scripts.end())
-                {
-                    const auto& existing_script = it->second;
-                    const std::filesystem::file_time_type& existing_last_write_time = existing_script->last_write_time();
-                    bool script_changed = disk_last_write_time > existing_last_write_time;
-                    if (script_changed)
-                    {
-                        scripts_to_load.push_back({ module_name, file_path, disk_last_write_time });
-                    }
-                }
-                else
-                {
-                    scripts_to_load.push_back({ module_name, file_path, disk_last_write_time });
-                }
-            });
-
-        // no script got changed and no new scripts
-        // aka nothing to reload / load
-        if (!scripts_to_load.size())
-        {
-            return;
-        }
-
-        // if we already have some loaded scripts, we need to restart the VM
         if (m_wren_scripts.size())
         {
             cleanup_memory();
-
             m_vm = wrenNewVM(&m_config);
         }
 
-        for (const auto& script_to_load : scripts_to_load)
+        for_each_wren_script_file([this](const auto& module_name, const auto& file_path, const auto& dir_entry)
         {
-            compile_script(script_to_load.module_name, script_to_load.file_path, script_to_load.disk_last_write_time);
+            compile_script(module_name, file_path);
+        });
+
+        if (m_has_any_error)
+        {
+            cleanup_memory();
+            m_vm = wrenNewVM(&m_config);
+
+            g_fiber_pool->queue_job([]
+            {
+                notify::above_map("[Wren Scripting] Failed to compile. Fix the scripts errors and press the Reload Scripts button.");
+            });
+
+            return;
         }
 
         wrenEnsureSlots(m_vm, 1);
@@ -378,7 +362,7 @@ namespace big
         }
     }
 
-    void wren_manager::compile_script(const std::string& module_name, const std::filesystem::path& file_path, const std::filesystem::file_time_type& disk_last_write_time)
+    void wren_manager::compile_script(const std::string& module_name, const std::filesystem::path& file_path)
     {
         std::ifstream file_path_ifstream(file_path);
         std::stringstream buffer;
@@ -392,16 +376,20 @@ namespace big
         case WREN_RESULT_COMPILE_ERROR:
             LOG(INFO) << "Compile error for " << file_path;
 
+            m_has_any_error = true;
+
             break;
         case WREN_RESULT_RUNTIME_ERROR:
             LOG(INFO) << "Runtime error for " << file_path;
+
+            m_has_any_error = true;
 
             break;
         case WREN_RESULT_SUCCESS:
         {
             LOG(INFO) << "Successfully executed " << file_path;
 
-            m_wren_scripts[module_name] = std::make_unique<wren_script>(m_vm, module_name, disk_last_write_time);
+            m_wren_scripts[module_name] = std::make_unique<wren_script>(m_vm, module_name);
 
             break;
         }

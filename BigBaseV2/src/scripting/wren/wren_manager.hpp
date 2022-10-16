@@ -38,6 +38,8 @@ namespace big
 
         std::unordered_map<std::string, std::unique_ptr<wren_script>> m_wren_scripts;
 
+        bool m_has_any_error = false;
+
         bool m_has_tick_function = false;
         WrenHandle* m_script_internal_metaclass_handle = nullptr;
         WrenHandle* m_script_internal_tick_fn_handle = nullptr;
@@ -45,6 +47,10 @@ namespace big
         bool m_has_func_internal_function = false;
         WrenHandle* m_func_internal_metaclass_handle = nullptr;
         WrenHandle* m_func_internal_call_fn_handle = nullptr;
+
+        static void wren_error(WrenVM* vm, WrenErrorType errorType,
+            const char* module, const int line,
+            const char* msg);
 
         static WrenForeignMethodFn wren_bind_foreign_method(
             WrenVM* vm,
@@ -66,7 +72,7 @@ namespace big
 
         void reload_scripts();
 
-        void compile_script(const std::string& module_name, const std::filesystem::path& file_path, const std::filesystem::file_time_type& disk_last_write_time);
+        void compile_script(const std::string& module_name, const std::filesystem::path& file_path);
 
         static void tick_all_scripts();
 
