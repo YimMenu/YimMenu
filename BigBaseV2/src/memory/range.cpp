@@ -120,6 +120,8 @@ namespace memory
 				return m_base.add(i);
 			}
 		}
+
+		return nullptr;
 	}
 
 	std::vector<handle> range::scan_all(pattern const &sig)
