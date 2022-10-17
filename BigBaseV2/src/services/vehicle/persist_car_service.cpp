@@ -110,7 +110,7 @@ namespace big
 					false, false, false, false, 0, true, 0);
 
 				ENTITY::SET_ENTITY_VISIBLE(object, attachment.is_visible, 0);
-				ENTITY::SET_ENTITY_COLLISION(object, attachment.has_collision, false);
+				ENTITY::SET_ENTITY_COLLISION(object, attachment.has_collision, true);
 				ENTITY::SET_ENTITY_INVINCIBLE(object, attachment.is_invincible);
 			}
 		}
@@ -162,7 +162,7 @@ namespace big
 		if (!vehicle_json[has_collision_key].is_null())
 		{
 			bool has_collision = vehicle_json[has_collision_key];
-			ENTITY::SET_ENTITY_COLLISION(vehicle, has_collision, false);
+			ENTITY::SET_ENTITY_COLLISION(vehicle, has_collision, true);
 		}
 
 		if (!vehicle_json[is_invincible_key].is_null())
