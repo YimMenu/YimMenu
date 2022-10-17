@@ -148,14 +148,14 @@ namespace big
 		}
 		if (!vehicle_json[is_visible_key].is_null())
 		{
-			int visible = vehicle_json[is_visible_key];
+			bool visible = vehicle_json[is_visible_key];
 			ENTITY::SET_ENTITY_VISIBLE(vehicle, visible, 0);
 		}
 
 		if (!vehicle_json[is_collision_key].is_null())
 		{
-			int collision = vehicle_json[is_collision_key];
-			ENTITY::SET_ENTITY_COLLISION(vehicle, collision, 0);
+			bool collision = vehicle_json[is_collision_key];
+			ENTITY::SET_ENTITY_COLLISION(vehicle, collision, false);
 		}
 
 		if (!vehicle_json[custom_secondary_color_key].is_null())
@@ -278,13 +278,15 @@ namespace big
 
 		const auto object_rotation = ENTITY::GET_ENTITY_ROTATION(object, 0);
 		const auto vehicle_rotation = ENTITY::GET_ENTITY_ROTATION(vehicle, 0);
+		bool visible = ENTITY::IS_ENTITY_VISIBLE(object);
+		bool collision = !ENTITY::GET_ENTITY_COLLISION_DISABLED(object);
 
 		Vector3 rotation;
 		rotation.x = (object_rotation.x - vehicle_rotation.x);
 		rotation.y = (object_rotation.y - vehicle_rotation.y);
 		rotation.z = (object_rotation.z - vehicle_rotation.z);
 
-		model_attachment attachment = { ENTITY::GET_ENTITY_MODEL(object), location, rotation };
+		model_attachment attachment = { ENTITY::GET_ENTITY_MODEL(object), location, rotation, collision, visible };
 
 		return attachment;
 	}
@@ -401,8 +403,8 @@ namespace big
 		VEHICLE::GET_VEHICLE_EXTRA_COLOURS(vehicle, &pearlescent_color, &wheel_color);
 
 		vehicle_json[pearlescent_color_key] = pearlescent_color;
-		int visible = ENTITY::IS_ENTITY_VISIBLE(vehicle);
-		int collision = ENTITY::GET_ENTITY_COLLISION_DISABLED(vehicle);
+		bool visible = ENTITY::IS_ENTITY_VISIBLE(vehicle);
+		bool collision = !ENTITY::GET_ENTITY_COLLISION_DISABLED(vehicle);
 		vehicle_json[is_visible_key] = visible;
 		vehicle_json[is_collision_key] = !collision;
 		vehicle_json[wheel_color_key] = wheel_color;

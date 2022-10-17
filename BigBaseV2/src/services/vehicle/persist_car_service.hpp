@@ -11,7 +11,6 @@ namespace big
 		static std::vector<std::string> list_files();
 
 		static Vehicle clone_ped_car(Ped ped, Vehicle vehicle);
-		void EXTRA_INFO(nlohmann::json JSO, Entity ent);
 		static void save_vehicle(Vehicle vehicle, std::string_view file_name);
 		static Vehicle load_vehicle(std::string_view file_name);
 
@@ -79,10 +78,4 @@ namespace big
 
 		static big::folder check_vehicle_folder();
 	};
-}
-using namespace std;
-
-namespace JSON
-{
-	void EXTRA_INFO(nlohmann::json JSO, Entity ent);
 }
