@@ -157,7 +157,7 @@ namespace big
 			bool collision = vehicle_json[is_collision_key];
 			ENTITY::SET_ENTITY_COLLISION(vehicle, collision, false);
 		}
-
+		
 		if (!vehicle_json[custom_secondary_color_key].is_null())
 		{
 			std::vector<int> secondary_custom_color = vehicle_json[custom_secondary_color_key];
@@ -279,7 +279,7 @@ namespace big
 		const auto object_rotation = ENTITY::GET_ENTITY_ROTATION(object, 0);
 		const auto vehicle_rotation = ENTITY::GET_ENTITY_ROTATION(vehicle, 0);
 		bool visible = ENTITY::IS_ENTITY_VISIBLE(object);
-		bool collision = !ENTITY::GET_ENTITY_COLLISION_DISABLED(object);
+		bool collision = ENTITY::GET_ENTITY_COLLISION_DISABLED(object);
 
 		Vector3 rotation;
 		rotation.x = (object_rotation.x - vehicle_rotation.x);
