@@ -119,6 +119,7 @@ namespace big
 				0,
 				attachment.position.x, attachment.position.y, attachment.position.z,
 				attachment.rotation.x, attachment.rotation.y, attachment.rotation.z,
+
 				false, false, false, false, 0, true, 0);
 
 			VEHICLE::SET_VEHICLE_IS_CONSIDERED_BY_PLAYER(vehicle_to_attach, false);
@@ -144,6 +145,17 @@ namespace big
 		{
 			std::vector<int> primary_custom_color = vehicle_json[custom_primary_color_key];
 			VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(vehicle, primary_custom_color[0], primary_custom_color[1], primary_custom_color[2]);
+		}
+		if (!vehicle_json[is_visible_key].is_null())
+		{
+			int visible = vehicle_json[is_visible_key];
+			ENTITY::SET_ENTITY_VISIBLE(vehicle, visible, 0);
+		}
+
+		if (!vehicle_json[is_collision_key].is_null())
+		{
+			int collision = vehicle_json[is_collision_key];
+			ENTITY::SET_ENTITY_COLLISION(vehicle, collision, 0);
 		}
 
 		if (!vehicle_json[custom_secondary_color_key].is_null())
@@ -348,27 +360,7 @@ namespace big
 
 		return attached_vehicles;
 	}
-	nlohmann::json EXTRA_INFO(nlohmann::json JSO, Entity ent)
-	{
-		bool visible, invincible, collsion;
 
-		for (auto it = JSO.begin(); it != JSO.end(); ++it)
-		{
-			if (it.key() == "is_visible") {
-				visible = (bool)it.value();
-				ENTITY::SET_ENTITY_VISIBLE(ent, visible, 0);
-			}
-			if (it.key() == "is_invincible") {
-				invincible = (bool)it.value();
-				ENTITY::SET_ENTITY_INVINCIBLE(ent, invincible);
-			}
-			if (it.key() == "has_collsion") {
-				collsion = (bool)it.value();
-				ENTITY::SET_ENTITY_COLLISION(ent, collsion, true);
-			}
-
-		}
-	}
 	nlohmann::json persist_car_service::get_vehicle_json(Vehicle vehicle)
 	{
 		nlohmann::json vehicle_json;
@@ -409,6 +401,10 @@ namespace big
 		VEHICLE::GET_VEHICLE_EXTRA_COLOURS(vehicle, &pearlescent_color, &wheel_color);
 
 		vehicle_json[pearlescent_color_key] = pearlescent_color;
+		int visible = ENTITY::IS_ENTITY_VISIBLE(vehicle);
+		int collision = ENTITY::GET_ENTITY_COLLISION_DISABLED(vehicle);
+		vehicle_json[is_visible_key] = visible;
+		vehicle_json[is_collision_key] = !collision;
 		vehicle_json[wheel_color_key] = wheel_color;
 
 		std::map<int, bool> vehicle_extras;

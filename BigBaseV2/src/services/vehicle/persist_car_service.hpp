@@ -20,6 +20,8 @@ namespace big
 		static constexpr auto model_attachments_key = "model_attachments";
 
 		static constexpr auto vehicle_attachments_key = "vehicle_attachments";
+		static constexpr auto is_visible_key = "is_visible";
+		static constexpr auto is_collision_key = "is_collision";
 
 		static constexpr auto vehicle_model_hash_key = "vehicle_model_hash";
 
