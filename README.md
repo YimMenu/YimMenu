@@ -38,12 +38,12 @@ Premake5 is used to generate our project files, if you haven't used it before we
 
 Clone the repository including submodules:
 ```bash
-git clone https://github.com/TheGreenBandit/YimMenuAdditions.git --recursive || echo "You don't have git installed, install it from https://git-scm.com/download/win"
+git clone https://github.com/YimMenu/YimMenu.git --recursive || echo "You don't have git installed, install it from https://git-scm.com/download/win"
 ```
 
 Go into the directory you just cloned:
 ```bash
-cd YimMenuAdditons
+cd YimMenu
 ```
 
 Generate project files:
