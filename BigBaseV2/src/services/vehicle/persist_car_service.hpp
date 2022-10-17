@@ -11,7 +11,6 @@ namespace big
 		static std::vector<std::string> list_files();
 
 		static Vehicle clone_ped_car(Ped ped, Vehicle vehicle);
-		void EXTRA_INFO(nlohmann::json JSO, Entity ent);
 		static void save_vehicle(Vehicle vehicle, std::string_view file_name);
 		static Vehicle load_vehicle(std::string_view file_name);
 
@@ -20,8 +19,9 @@ namespace big
 		static constexpr auto model_attachments_key = "model_attachments";
 
 		static constexpr auto vehicle_attachments_key = "vehicle_attachments";
+		static constexpr auto is_invincible_key = "is_invincible";
 		static constexpr auto is_visible_key = "is_visible";
-		static constexpr auto is_collision_key = "is_collision";
+		static constexpr auto has_collision_key = "has_collision";
 
 		static constexpr auto vehicle_model_hash_key = "vehicle_model_hash";
 
@@ -79,10 +79,4 @@ namespace big
 
 		static big::folder check_vehicle_folder();
 	};
-}
-using namespace std;
-
-namespace JSON
-{
-	void EXTRA_INFO(nlohmann::json JSO, Entity ent);
 }
