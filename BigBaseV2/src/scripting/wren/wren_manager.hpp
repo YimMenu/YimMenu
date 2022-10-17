@@ -52,13 +52,19 @@ namespace big
             const char* module, const int line,
             const char* msg);
 
+
         static WrenForeignMethodFn wren_bind_foreign_method(
             WrenVM* vm,
             const char* module, const char* class_name,
             bool is_static,
             const char* signature);
 
+        static void wren_load_module_complete(WrenVM* vm, const char* module, WrenLoadModuleResult result);
+        static WrenLoadModuleResult wren_load_module(WrenVM* vm, const char* name);
+
         void cleanup_memory();
+
+        void restart_vm();
 
     public:
         std::vector<wren_imgui_button_data> m_imgui_buttons;

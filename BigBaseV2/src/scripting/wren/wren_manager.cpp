@@ -198,15 +198,17 @@ namespace big
         return nullptr;
     }
 
-    static void wren_load_module_complete(WrenVM* vm, const char* module, WrenLoadModuleResult result)
+    void wren_manager::wren_load_module_complete(WrenVM* vm, const char* module, WrenLoadModuleResult result)
     {
         if (result.source)
         {
             delete[] result.source;
+
+            g_wren_manager->m_wren_scripts[module] = std::make_unique<wren_script>(g_wren_manager->m_vm, module);
         }
     }
 
-    static WrenLoadModuleResult wren_load_module(WrenVM* vm, const char* name)
+    WrenLoadModuleResult wren_manager::wren_load_module(WrenVM* vm, const char* name)
     {
         WrenLoadModuleResult result = { 0 };
 
@@ -223,7 +225,7 @@ namespace big
                 memcpy(heap_source_text, script.data(), script.size());
 
                 result.source = heap_source_text;
-                result.onComplete = wren_load_module_complete;
+                result.onComplete = wren_manager::wren_load_module_complete;
 
                 return;
             }
@@ -295,7 +297,7 @@ namespace big
         }
 
         // we call this there manually instead of letting the unique ptrs dctor trigger automatically
-        // freeing the VM should be the last thing we do. (see https://wren.io/embedding/ for the why)
+        // because freeing the VM should be the last thing we do. (see https://wren.io/embedding/ for the why)
         remove_all_scripts();
 
         wrenFreeVM(m_vm);
@@ -315,12 +317,17 @@ namespace big
         m_wren_scripts.clear();
     }
 
+    void wren_manager::restart_vm()
+    {
+        cleanup_memory();
+        m_vm = wrenNewVM(&m_config);
+    }
+
     void wren_manager::reload_scripts()
     {
         if (m_wren_scripts.size())
         {
-            cleanup_memory();
-            m_vm = wrenNewVM(&m_config);
+            restart_vm();
         }
 
         for_each_wren_script_file([this](const auto& module_name, const auto& file_path, const auto& dir_entry)
@@ -328,10 +335,11 @@ namespace big
             compile_script(module_name, file_path);
         });
 
+        LOG(INFO) << "Number of wren scripts loaded: " << m_wren_scripts.size();
+
         if (m_has_any_error)
         {
-            cleanup_memory();
-            m_vm = wrenNewVM(&m_config);
+            restart_vm();
 
             g_fiber_pool->queue_job([]
             {
