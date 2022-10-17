@@ -1,8 +1,10 @@
 #include "persist_car_service.hpp"
 #include "util/vehicle.hpp"
 #include "util/world_model.hpp"
+#include "util/misc.hpp"
+#include "vehicle/CVehicle.hpp"
+#include "base/CObject.hpp"
 #include "pointers.hpp"
-
 
 namespace big
 {
@@ -158,6 +160,12 @@ namespace big
 			ENTITY::SET_ENTITY_COLLISION(vehicle, collision, false);
 		}
 		
+		if (!vehicle_json[is_invincible_key].is_null())
+		{
+			bool invincible = vehicle_json[is_invincible_key];
+			ENTITY::SET_ENTITY_INVINCIBLE(vehicle, invincible);
+		}
+
 		if (!vehicle_json[custom_secondary_color_key].is_null())
 		{
 			std::vector<int> secondary_custom_color = vehicle_json[custom_secondary_color_key];
@@ -280,13 +288,15 @@ namespace big
 		const auto vehicle_rotation = ENTITY::GET_ENTITY_ROTATION(vehicle, 0);
 		bool visible = ENTITY::IS_ENTITY_VISIBLE(object);
 		bool collision = ENTITY::GET_ENTITY_COLLISION_DISABLED(object);
+		CObject* cobject = (CObject*)g_pointers->m_get_script_handle(vehicle);
+		bool invincible = misc::has_bit_set(&(int&)cobject->m_damage_bits, 8);
 
 		Vector3 rotation;
 		rotation.x = (object_rotation.x - vehicle_rotation.x);
 		rotation.y = (object_rotation.y - vehicle_rotation.y);
 		rotation.z = (object_rotation.z - vehicle_rotation.z);
 
-		model_attachment attachment = { ENTITY::GET_ENTITY_MODEL(object), location, rotation, collision, visible };
+		model_attachment attachment = { ENTITY::GET_ENTITY_MODEL(object), location, rotation, collision, visible, invincible };
 
 		return attachment;
 	}
@@ -404,7 +414,10 @@ namespace big
 
 		vehicle_json[pearlescent_color_key] = pearlescent_color;
 		bool visible = ENTITY::IS_ENTITY_VISIBLE(vehicle);
-		bool collision = !ENTITY::GET_ENTITY_COLLISION_DISABLED(vehicle);
+		bool collision = ENTITY::GET_ENTITY_COLLISION_DISABLED(vehicle);
+		CVehicle* cvehicle = (CVehicle*)g_pointers->m_get_script_handle(vehicle);
+		bool invincible = misc::has_bit_set(&(int&)cvehicle->m_damage_bits, 8);
+		vehicle_json[is_invincible_key] = invincible;
 		vehicle_json[is_visible_key] = visible;
 		vehicle_json[is_collision_key] = !collision;
 		vehicle_json[wheel_color_key] = wheel_color;
