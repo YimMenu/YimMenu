@@ -24,8 +24,7 @@ namespace big
 			{"is_invincible", attachment.is_invincible}
 
 		};
-	}
-//thank you Lord Griffin of Nenyoo for sharing how
+	};
 	static void from_json(const nlohmann::json& j, model_attachment& attachment) {
 		j.at("model_hash").get_to(attachment.model_hash);
 		j.at("position_x").get_to(attachment.position.x); j.at("position_y").get_to(attachment.position.y); j.at("position_z").get_to(attachment.position.z);
