@@ -221,6 +221,12 @@ namespace big
 			m_ptr_to_handle = ptr.sub(0x15).as<decltype(m_ptr_to_handle)>();
 		});
 
+		// Get Script Handle
+		main_batch.add("GSH", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr)
+		{
+			m_get_script_handle = ptr.as<functions::get_script_handle_t>();
+		});
+
 		// Blame Explode
 		main_batch.add("BE", "0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8", [this](memory::handle ptr)
 		{

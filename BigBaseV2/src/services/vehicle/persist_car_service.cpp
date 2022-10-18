@@ -1,8 +1,10 @@
 #include "persist_car_service.hpp"
 #include "util/vehicle.hpp"
 #include "util/world_model.hpp"
+#include "util/misc.hpp"
+#include "vehicle/CVehicle.hpp"
+#include "base/CObject.hpp"
 #include "pointers.hpp"
-
 
 namespace big
 {
@@ -106,6 +108,10 @@ namespace big
 					attachment.position.x, attachment.position.y, attachment.position.z,
 					attachment.rotation.x, attachment.rotation.y, attachment.rotation.z,
 					false, false, false, false, 0, true, 0);
+
+				ENTITY::SET_ENTITY_VISIBLE(object, attachment.is_visible, 0);
+				ENTITY::SET_ENTITY_COLLISION(object, attachment.has_collision, true);
+				ENTITY::SET_ENTITY_INVINCIBLE(object, attachment.is_invincible);
 			}
 		}
 
@@ -119,6 +125,7 @@ namespace big
 				0,
 				attachment.position.x, attachment.position.y, attachment.position.z,
 				attachment.rotation.x, attachment.rotation.y, attachment.rotation.z,
+
 				false, false, false, false, 0, true, 0);
 
 			VEHICLE::SET_VEHICLE_IS_CONSIDERED_BY_PLAYER(vehicle_to_attach, false);
@@ -144,6 +151,24 @@ namespace big
 		{
 			std::vector<int> primary_custom_color = vehicle_json[custom_primary_color_key];
 			VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(vehicle, primary_custom_color[0], primary_custom_color[1], primary_custom_color[2]);
+		}
+
+		if (!vehicle_json[is_visible_key].is_null())
+		{
+			bool is_visible = vehicle_json[is_visible_key];
+			ENTITY::SET_ENTITY_VISIBLE(vehicle, is_visible, 0);
+		}
+
+		if (!vehicle_json[has_collision_key].is_null())
+		{
+			bool has_collision = vehicle_json[has_collision_key];
+			ENTITY::SET_ENTITY_COLLISION(vehicle, has_collision, true);
+		}
+
+		if (!vehicle_json[is_invincible_key].is_null())
+		{
+			bool is_invincible = vehicle_json[is_invincible_key];
+			ENTITY::SET_ENTITY_INVINCIBLE(vehicle, is_invincible);
 		}
 
 		if (!vehicle_json[custom_secondary_color_key].is_null())
@@ -266,13 +291,17 @@ namespace big
 
 		const auto object_rotation = ENTITY::GET_ENTITY_ROTATION(object, 0);
 		const auto vehicle_rotation = ENTITY::GET_ENTITY_ROTATION(vehicle, 0);
+		bool has_collision = ENTITY::GET_ENTITY_COLLISION_DISABLED(object);
+		bool is_visible = ENTITY::IS_ENTITY_VISIBLE(object);
+		CObject* cobject = (CObject*)g_pointers->m_get_script_handle(vehicle);
+		bool is_invincible = misc::has_bit_set(&(int&)cobject->m_damage_bits, 8);
 
 		Vector3 rotation;
 		rotation.x = (object_rotation.x - vehicle_rotation.x);
 		rotation.y = (object_rotation.y - vehicle_rotation.y);
 		rotation.z = (object_rotation.z - vehicle_rotation.z);
 
-		model_attachment attachment = { ENTITY::GET_ENTITY_MODEL(object), location, rotation };
+		model_attachment attachment = { ENTITY::GET_ENTITY_MODEL(object), location, rotation, !has_collision, is_visible, is_invincible };
 
 		return attachment;
 	}
@@ -389,6 +418,13 @@ namespace big
 		VEHICLE::GET_VEHICLE_EXTRA_COLOURS(vehicle, &pearlescent_color, &wheel_color);
 
 		vehicle_json[pearlescent_color_key] = pearlescent_color;
+		bool has_collision = ENTITY::GET_ENTITY_COLLISION_DISABLED(vehicle);
+		bool is_visible = ENTITY::IS_ENTITY_VISIBLE(vehicle);
+		CVehicle* cvehicle = (CVehicle*)g_pointers->m_get_script_handle(vehicle);
+		bool is_invincible = misc::has_bit_set(&(int&)cvehicle->m_damage_bits, 8);
+		vehicle_json[has_collision_key] = !has_collision;
+		vehicle_json[is_visible_key] = is_visible;
+		vehicle_json[is_invincible_key] = is_invincible;
 		vehicle_json[wheel_color_key] = wheel_color;
 
 		std::map<int, bool> vehicle_extras;
