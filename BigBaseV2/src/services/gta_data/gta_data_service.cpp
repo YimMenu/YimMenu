@@ -234,8 +234,7 @@ namespace big
 						return std::size_t(0);
 					}
 				}
-
-				if (file.filename() == "vehicles.meta")
+				else if (file.filename() == "vehicles.meta")
 				{
 					rpf_wrapper.read_xml_file(file, [&exists, &vehicles, &mapped_vehicles](pugi::xml_document& doc)
 					{
@@ -248,7 +247,7 @@ namespace big
 							const auto hash = rage::joaat(name);
 
 							if (exists(mapped_vehicles, hash))
-								return;
+								continue;
 							mapped_vehicles.emplace_back(hash);
 
 							auto veh = vehicle_item{};
