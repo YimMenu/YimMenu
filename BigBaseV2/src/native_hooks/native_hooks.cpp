@@ -5,6 +5,7 @@
 #include "maintransition.hpp"
 #include "gta_util.hpp"
 #include "shop_controller.hpp"
+#include "ingamehud.hpp"
 
 namespace big
 {
@@ -14,11 +15,11 @@ namespace big
     {
         add_native_detour(0x812595A0644CE1DE, all_scripts::IS_DLC_PRESENT);
         add_native_detour(0x5D10B3795F3FC886, all_scripts::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA); // From https://github.com/YimMenu/YimMenu/discussions/143
+        add_native_detour(0x95914459A87EBA28, all_scripts::NETWORK_BAIL);
         add_native_detour(RAGE_JOAAT("carmod_shop"), 0x06843DA7060A026B, carmod_shop::SET_ENTITY_COORDS);
         add_native_detour(RAGE_JOAAT("carmod_shop"), 0x8E2530AA8ADA980E, carmod_shop::SET_ENTITY_HEADING);
         add_native_detour(RAGE_JOAAT("carmod_shop"), 0x34E710FF01247C5A, carmod_shop::SET_VEHICLE_LIGHTS);
         add_native_detour(RAGE_JOAAT("carmod_shop"), 0x767FBC2AC802EF3D, carmod_shop::STAT_GET_INT);
-        add_native_detour(RAGE_JOAAT("freemode"), 0x95914459A87EBA28, freemode::NETWORK_BAIL);
         add_native_detour(RAGE_JOAAT("maintransition"), 0x6F3D4ED9BEE4E61D, maintransition::NETWORK_SESSION_HOST); // RID Joiner from https://github.com/YimMenu/YimMenu/issues/172
         add_native_detour(RAGE_JOAAT("maintransition"), 0x933BBEEB8C61B5F4, maintransition::IS_SWITCH_TO_MULTI_FIRSTPART_FINISHED); // This hook lets you stop player-switch in "Pre-HUD Checks"
         add_native_detour(RAGE_JOAAT("maintransition"), 0x06843DA7060A026B, maintransition::SET_ENTITY_COORDS);  // Prevents the game from teleporting you
@@ -26,8 +27,8 @@ namespace big
         add_native_detour(RAGE_JOAAT("maintransition"), 0xEA1C610A04DB6BBB, maintransition::SET_ENTITY_VISIBLE);  // Makes you visible
         add_native_detour(RAGE_JOAAT("maintransition"), 0x8D32347D6D4C40A2, maintransition::SET_PLAYER_CONTROL); // Allows controll in session switch
         add_native_detour(RAGE_JOAAT("maintransition"), 0x428CA6DBD1094446, maintransition::FREEZE_ENTITY_POSITION); // Allows controll in session switch
-        add_native_detour(RAGE_JOAAT("maintransition"), 0x717CD6E6FAEBBEDC, maintransition::SET_GAME_PAUSES_FOR_STREAMING); // Stops texture unloading (from fivem) // Does this even work? // No it does not.
-        add_native_detour(RAGE_JOAAT("maintransition"), 0x048189FAC643DEEE, maintransition::CHANGE_PLAYER_PED); // Same as above
+        add_native_detour(RAGE_JOAAT("ingamegud"), 0x6BFB12CE158E3DD4, ingamehud::SC_TRANSITION_NEWS_SHOW); // Stops news. Does this actualy work?
+        add_native_detour(RAGE_JOAAT("ingamegud"), 0xFE4C1D0D3B9CC17E, ingamehud::SC_TRANSITION_NEWS_SHOW_TIMED); // Stops news. Does this actualy work?
         add_native_detour(RAGE_JOAAT("shop_controller"), 0xDC38CC1E35B6A5D7, shop_controller::SET_WARNING_MESSAGE_WITH_HEADER);
 
         for (const auto& native_detours_for_script : m_native_registrations)

@@ -236,7 +236,7 @@ namespace big
 			bool ambiant_ufos = false;
 			bool ambiant_blimp = false;
 			bool cable_cars = false;
-			bool always_controll = false;
+			bool always_control = false;
 			bool disable_help_text = false;
 
 			char supportingevent[30] = "BTL_IDLE";
@@ -598,7 +598,7 @@ namespace big
 			this->tunables.ambiant_ufos = j["tunables"]["ambiant_ufos"];
 			this->tunables.ambiant_blimp = j["tunables"]["ambiant_blimp"];
 			this->tunables.cable_cars = j["tunables"]["cable_cars"];
-			this->tunables.always_controll = j["tunables"]["always_controll"];
+			this->tunables.always_control = j["tunables"]["always_control"];
 			this->tunables.disable_help_text = j["tunables"]["disable_help_text"];
 
 			this->self.god_mode = j["self"]["god_mode"];
@@ -878,7 +878,7 @@ namespace big
 						{ "ambiant_ufos", this->tunables.ambiant_ufos },
 						{ "ambiant_blimp", this->tunables.ambiant_blimp },
 						{ "cable_cars", this->tunables.cable_cars },
-						{ "always_controll", this->tunables.always_controll },
+						{ "always_control", this->tunables.always_control },
 						{ "disable_help_text", this->tunables.disable_help_text }
 					}
 				},

@@ -15,6 +15,7 @@ namespace big
 
 			if (state >= eTransitionState::TRANSITION_STATE_LOOK_FOR_FRESH_JOIN_FM && state <= eTransitionState::TRANSITION_STATE_FM_FINAL_SETUP_PLAYER)
 			{
+				PLAYER::SET_PLAYER_CONTROL(self::id, true, 0);
 				if (STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
 				{
 					STREAMING::STOP_PLAYER_SWITCH();
