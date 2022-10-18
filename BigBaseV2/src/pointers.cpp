@@ -30,8 +30,6 @@ namespace big
 		main_batch.add("PF", "48 8B 05 ? ? ? ? 48 8B 48 08 48 85 C9 74 52 8B 81", [this](memory::handle ptr)
 		{
 			m_ped_factory = ptr.add(3).rip().as<CPedFactory**>();
-
-			LOG(G3LOG_DEBUG) << "CPedFactory => [" << HEX_TO_UPPER(m_ped_factory) << "]";
 		});
 
 		// Network Player Manager
@@ -70,8 +68,6 @@ namespace big
 		main_batch.add("SG", "48 8D 15 ? ? ? ? 4C 8B C0 E8 ? ? ? ? 48 85 FF 48 89 1D", [this](memory::handle ptr)
 		{
 			m_script_globals = ptr.add(3).rip().as<std::int64_t**>();
-
-			LOG(G3LOG_DEBUG) << "ScriptGlobals => [" << HEX_TO_UPPER(m_script_globals) << "]";
 		});
 
 		// Game Script Handle Manager
@@ -217,14 +213,18 @@ namespace big
 		main_batch.add("RI", "0F B7 44 24 ? 66 89 44 4E", [this](memory::handle ptr)
 		{
 			m_replay_interface = ptr.add(0x1F).rip().as<rage::CReplayInterface**>();
-
-			LOG(G3LOG_DEBUG) << "rage::CReplayInterface => [" << HEX_TO_UPPER(m_replay_interface) << "]";
 		});
 
 		// Pointer to Handle
 		main_batch.add("PTH", "48 8B F9 48 83 C1 10 33 DB", [this](memory::handle ptr)
 		{
 			m_ptr_to_handle = ptr.sub(0x15).as<decltype(m_ptr_to_handle)>();
+		});
+
+		// Get Script Handle
+		main_batch.add("GSH", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr)
+		{
+			m_get_script_handle = ptr.as<functions::get_script_handle_t>();
 		});
 
 		// Blame Explode
@@ -261,8 +261,6 @@ namespace big
 		main_batch.add("FR", "3B 0D ? ? ? ? 73 17", [this](memory::handle ptr)
 		{
 			m_friend_registry = ptr.add(2).rip().as<FriendRegistry*>();
-
-			LOG(G3LOG_DEBUG) << "FriendRegistry => [" << HEX_TO_UPPER(m_friend_registry) << "]";
 		});
 
 		// GET_SCREEN_COORDS_FROM_WORLD_COORDS
@@ -281,6 +279,12 @@ namespace big
 		main_batch.add("GPR", "48 8B C8 33 C0 48 85 C9 74 0A 44 8B C3 8B D7 E8", [this](memory::handle ptr)
 		{
 			m_give_pickup_rewards = ptr.sub(0x28).as<decltype(m_give_pickup_rewards)>();
+		});
+
+		// Write Player Gamer Data Node
+		main_batch.add("WPGDN", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 48 81 C1 ? ? ? ? 48 8B DA E8", [this](memory::handle ptr)
+		{
+			m_write_player_gamer_data_node = ptr.as<PVOID>();
 		});
 
 		// Network Group Override
@@ -320,8 +324,6 @@ namespace big
 		main_batch.add("MHT", "4C 03 05 ? ? ? ? EB 03", [this](memory::handle ptr)
 		{
 			m_model_table = ptr.add(3).rip().as<HashTable<CBaseModelInfo*>*>();
-
-			LOG(G3LOG_DEBUG) << "HashTable => [" << HEX_TO_UPPER(m_model_table) << "]";
 		});
 
 		// Get Label Text
@@ -400,13 +402,13 @@ namespace big
 		 * Freemode thread restorer through VM patch
 		*/
 
-		if (auto pat1 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
+		if (auto pat1 = mem_region.bruteforce_scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
 		{
 			*pat1.add(2).as<uint32_t*>() = 0xc9310272;
 			*pat1.add(6).as<uint16_t*>() = 0x9090;
 		}
 
-		if (auto pat2 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 49 03 fa"))
+		if (auto pat2 = mem_region.bruteforce_scan("3b 0a 0f 83 ? ? ? ? 49 03 fa"))
 		{
 			*pat2.add(2).as<uint32_t*>() = 0xc9310272;
 			*pat2.add(6).as<uint16_t*>() = 0x9090;

@@ -27,6 +27,7 @@ namespace big
 		rage::CReplayInterface** m_replay_interface{};
 
 		functions::ptr_to_handle m_ptr_to_handle{};
+		functions::get_script_handle_t m_get_script_handle{};
 		rage::scrNativeRegistrationTable* m_native_registration_table{};
 		functions::get_native_handler m_get_native_handler{};
 		functions::fix_vectors m_fix_vectors{};
@@ -66,6 +67,8 @@ namespace big
 		functions::get_gameplay_cam_coords m_get_gameplay_cam_coords;
 
 		functions::give_pickup_rewards m_give_pickup_rewards{};
+
+		PVOID m_write_player_gamer_data_node{};
 
 		functions::trigger_script_event m_trigger_script_event{};
 

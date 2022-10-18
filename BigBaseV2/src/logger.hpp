@@ -95,6 +95,10 @@ namespace big
 				FreeConsole();
 		}
 
+		void file_out(std::stringstream& str)
+		{
+			m_file_out << str.str() << '\n';
+		}
 	private:
 		void create_backup()
 		{
