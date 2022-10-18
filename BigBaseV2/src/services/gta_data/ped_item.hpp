@@ -1,15 +1,14 @@
 #pragma once
-#include "file_manager/file.hpp"
 
 namespace big
 {
-	class ped_item {
+#pragma pack(push, 4)
+	class ped_item final
+	{
 	public:
-		ped_item();
-		ped_item(nlohmann::json& item_json);
-
-		std::string name;
-		std::string ped_type;
-		Hash hash;
+		char m_name[32];
+		char m_ped_type[16];
+		std::uint32_t m_hash;
 	};
+#pragma pack(pop)
 }

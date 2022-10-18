@@ -11,8 +11,9 @@ namespace big
 		{
 			for (const auto& session_type : sessions)
 			{
-				components::selectable(session_type.name, false, [session_type] {
-					session::join_type(session_type);
+				components::selectable(session_type.name, false, [&session_type] 
+				{
+					session::join_type(session_type.id);
 				});
 			}
 			ImGui::EndListBox();
@@ -32,7 +33,8 @@ namespace big
 		}
 		if (ImGui::TreeNode("Local Weather"))
 		{
-			components::button("Clear Override", [] {
+			components::button("Clear Override", []
+			{
 				MISC::CLEAR_OVERRIDE_WEATHER();
 			});
 

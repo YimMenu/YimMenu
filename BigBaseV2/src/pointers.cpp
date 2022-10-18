@@ -344,6 +344,57 @@ namespace big
 			m_reset_network_complaints = ptr.add(1).rip().as<functions::reset_network_complaints>();
 		});
 
+		// fiDevice Get Device
+		main_batch.add("FDGD", "41 B8 07 00 00 00 48 8B F1 E8", [this](memory::handle ptr)
+		{
+			m_fidevice_get_device = ptr.sub(0x1F).as<functions::fidevice_get_device>();
+		});
+
+		// fiDevices
+		main_batch.add("FDS", "74 1B 48 8D 0D ? ? ? ? 41 8B D6", [this](memory::handle ptr)
+		{
+			m_fidevices = ptr.add(5).rip().as<uintptr_t>();
+			m_fidevices_len = ptr.add(5).rip().add(8).as<uint16_t*>();
+		});
+
+		// fiPackfile ctor
+		main_batch.add("FPFC", "44 89 41 28 4C 89 41 38 4C 89 41 50 48 8D", [this](memory::handle ptr)
+		{
+			m_fipackfile_ctor = ptr.sub(0x1E).as<functions::fipackfile_ctor>();
+			m_fipackfile_instances = ptr.add(26).rip().as<rage::fiPackfile**>();
+		});
+
+		// fiPackfile open archive
+		main_batch.add("FPFOA", "48 8D 68 98 48 81 EC 40 01 00 00 41 8B F9", [this](memory::handle ptr)
+		{
+			m_fipackfile_open_archive = ptr.sub(0x18).as<functions::fipackfile_open_archive>();
+		});
+
+		// fiPackfile mount
+		main_batch.add("FPFM", "84 C0 74 1D 48 85 DB 74 0F 48", [this](memory::handle ptr)
+		{
+			m_fipackfile_mount = ptr.sub(0x1E).as<functions::fipackfile_mount>();
+		});
+
+		// fiPackfile unmount
+		main_batch.add("FPFUM", "E8 ? ? ? ? 84 C0 74 37 80 3D", [this](memory::handle ptr)
+		{
+			m_fipackfile_unmount = ptr.add(1).rip().as<functions::fipackfile_unmount>();
+		});
+
+		// fidevice unmount
+		main_batch.add("FPFUM", "E8 ? ? ? ? 84 C0 74 37 80 3D", [this](memory::handle ptr)
+		{
+			m_fipackfile_unmount = ptr.add(1).rip().as<functions::fipackfile_unmount>();
+		});
+
+		// game version + online version
+		main_batch.add("GVOV", "8B C3 33 D2 C6 44 24 20", [this](memory::handle ptr)
+		{
+			m_game_version = ptr.add(0x24).rip().as<const char*>();
+			m_online_version = ptr.add(0x24).rip().add(0x20).as<const char*>();
+		});
+
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
 

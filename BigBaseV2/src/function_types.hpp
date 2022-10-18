@@ -53,4 +53,10 @@ namespace big::functions
 	//Sync signatures END
 
 	using reset_network_complaints = void(*)(CNetComplaintMgr* mgr);
+
+	using fidevice_get_device = rage::fiDevice*(*)(const char* path, bool allow_root);
+	using fipackfile_ctor = rage::fiPackfile*(*)(rage::fiPackfile* this_);
+	using fipackfile_open_archive = bool(*)(rage::fiPackfile* this_, const char* archive, bool b_true, int type, intptr_t very_false);
+	using fipackfile_mount = bool(*)(rage::fiPackfile* this_, const char* mount_point);
+	using fipackfile_unmount = bool(*)(const char* mount_point);
 }
