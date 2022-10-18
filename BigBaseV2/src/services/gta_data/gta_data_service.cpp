@@ -218,6 +218,23 @@ namespace big
 			const auto files = rpf_wrapper.get_file_paths();
 			for (const auto& file : files)
 			{
+				if (file.filename() == "setup2.xml")
+				{
+					std::string dlc_name;
+					rpf_wrapper.read_xml_file(file, [&dlc_name](pugi::xml_document& doc)
+					{
+						const auto item = doc.select_node("/SSetupData/nameHash");
+						dlc_name = item.node().text().as_string();
+					});
+
+					if (dlc_name == "mpG9EC")
+					{
+						LOG(G3LOG_DEBUG) << "Bad DLC, skipping...";
+
+						return std::size_t(0);
+					}
+				}
+
 				if (file.filename() == "vehicles.meta")
 				{
 					rpf_wrapper.read_xml_file(file, [&exists, &vehicles, &mapped_vehicles](pugi::xml_document& doc)
