@@ -18,8 +18,7 @@ namespace big
 
 		draw_pair_option("Terminate", g->notifications.gta_thread_kill);
 		draw_pair_option("Start", g->notifications.gta_thread_start);
-			
-
+		
 		components::sub_title("Network Player Manager");
 
 		ImGui::Text("Player Join");
@@ -27,8 +26,6 @@ namespace big
 		ImGui::Checkbox("Above Map", &g->notifications.player_join.above_map);
 		ImGui::Checkbox("Log", &g->notifications.player_join.log);
 		ImGui::Checkbox("Notify", &g->notifications.player_join.notify);
-
-		ImGui::SameLine();
 
 		draw_pair_option("Player Leave", g->notifications.player_leave);
 
