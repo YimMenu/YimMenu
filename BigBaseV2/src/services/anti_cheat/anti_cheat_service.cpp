@@ -79,7 +79,7 @@ namespace big
 
 		LOG(INFO) << net_player_data->m_name << ", " << rid << ", " << score;
 
-		g_notification_service->push("Modder Detected", net_player_data->m_name + detections);
+		g_notification_service->push("Modder Detected", fmt::format("{} {}", net_player_data->m_name, detections));
 		return true;
 	}
 
@@ -159,7 +159,7 @@ namespace big
 				detections += "Frame flags, ";
 			}
 
-			if (!anti_cheat::is_name_normal(player))
+			if (!anti_cheat::is_name_normal(cplayer_info))
 			{
 				score++;
 				detections += "Weird name, ";
@@ -169,6 +169,12 @@ namespace big
 			{
 				score++;
 				detections += "Too much money, ";
+			}
+
+			if (!anti_cheat::is_model_normal(cped))
+			{
+				score++;
+				detections += "Non freemode model, ";
 			}
 		}
 

@@ -48,12 +48,11 @@ namespace big::anti_cheat
 	}
 
 	// Name Check (skidded)
-	inline bool is_name_normal(Player player)
+	inline bool is_name_normal(CPlayerInfo* cplayer_info)
 	{
-		auto cplayer = g_player_service->get_by_id(player);
-		const char* name = cplayer->get_name();
+		const char* name = cplayer_info->m_net_player_data.m_name;
 
-		if (sizeof(name) < 6 || sizeof(name) > 16 && !(std::regex_match(name, std::regex("^([a-zA-Z0-9_-]+)$"))))
+		if (sizeof(name) < 6 || sizeof(name) > 16 || !(std::regex_match(name, std::regex("^([a-zA-Z0-9_-]+)$"))))
 			return false;
 
 		return true;
@@ -107,6 +106,15 @@ namespace big::anti_cheat
 		{
 			return true;
 		}
+
+		return false;
+	}
+
+	// Model Check
+	inline bool is_model_normal(CPed* player_cped)
+	{
+		if (player_cped->m_model_info->m_model_hash == RAGE_JOAAT("mp_f_freemode_01") || player_cped->m_model_info->m_model_hash == RAGE_JOAAT("mp_m_freemode_01"))
+			return true;
 
 		return false;
 	}

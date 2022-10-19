@@ -95,6 +95,22 @@ namespace big
 					}
 					break;
 				}
+				case rage::eNetMessage::CMsgNetComplaint: // Skidded from maybegreat48
+				{
+					uint64_t host_token{};
+					buffer.ReadQWord(&host_token, 64);
+
+					std::vector<CNetGamePlayer*> players;
+
+					uint32_t num_of_tokens{};
+					buffer.ReadDword(&num_of_tokens, 32);
+
+					if (player && host_token != player->get_net_data()->m_host_token)
+						g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 1, "Desync protection");
+
+					buffer.Seek(0);
+					break;
+				}
 				}
 			}
 		}
