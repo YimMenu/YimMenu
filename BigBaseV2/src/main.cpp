@@ -50,7 +50,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				file_manager_instance->get_project_file("./cout.log")
 			);
 
-			EnableMenuItem(GetSystemMenu(FindWindowA(NULL, "YimMenu"), 0), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+			EnableMenuItem(GetSystemMenu(GetConsoleWindow(), 0), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 
 			try
 			{
