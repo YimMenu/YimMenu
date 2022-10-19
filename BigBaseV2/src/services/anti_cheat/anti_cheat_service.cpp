@@ -137,6 +137,12 @@ namespace big
 				score++;
 				detections += "Weird health, ";
 			}
+
+			if (!anti_cheat::is_model_normal(cped))
+			{
+				score++;
+				detections += "Non freemode model, ";
+			}
 		}
 
 		if (player != 0 && cplayer != nullptr && cplayer_info != nullptr)
@@ -169,12 +175,6 @@ namespace big
 			{
 				score++;
 				detections += "Too much money, ";
-			}
-
-			if (!anti_cheat::is_model_normal(cped))
-			{
-				score++;
-				detections += "Non freemode model, ";
 			}
 		}
 
