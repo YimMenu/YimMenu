@@ -60,16 +60,21 @@ namespace big
 		static void players();
 		static void weapons();
 		static void context_menu();
+		static void gta_data();
 		static void menu_bar();
 		static void overlay();
 		static void pie_menu();
 		static void score_controller();
 		static void chat();
 
+		// later calls will be drawn over earlier calls
 		static void always()
 		{
 			esp::draw();
 			context_menu();
+
+			gta_data();
+
 			notifications();
 			spinner();
 			chat();

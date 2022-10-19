@@ -8,18 +8,17 @@ namespace big
 {
 	void view::session()
 	{
-		if (ImGui::TreeNode("Session Switcher"))
+		components::sub_title("Session Switcher");
+		if (ImGui::ListBoxHeader("###session_switch"))
 		{
-			if (ImGui::ListBoxHeader("###session_switch"))
+			for (const auto& session_type : sessions)
 			{
-				for (const auto& session_type : sessions)
+				components::selectable(session_type.name, false, [&session_type] 
 				{
-					components::selectable(session_type.name, false, [session_type] {
-						session::join_type(session_type);
-					});
-				}
-				ImGui::EndListBox();
+					session::join_type(session_type.id);
+				});
 			}
+			ImGui::EndListBox();
 		}
 
 		if (ImGui::TreeNode("RID Joiner"))
@@ -29,25 +28,6 @@ namespace big
 			components::button("Join", [] {
 				session::join_by_rockstar_id(rid);
 			});
-
-			/*components::button("INFO_D", [] {
-				rage::rlGamerHandle player_handle(rid);
-				rage::rlSessionByGamerTaskResult result;
-				bool success = false;
-				int state = 0;
-				if (g_pointers->m_start_get_session_by_gamer_handle(0, &player_handle, 1, &result, 1, &success, &state))
-				{
-					while (state == 1)
-						script::get_current()->yield();
-
-					if (state == 3 && success)
-					{
-						g->session.session_info = result.m_session_info;
-						LOG(G3LOG_DEBUG) << "Session host RID: " << g->session.session_info.m_rockstar_id;
-						return;
-					}
-				}
-			});*/
 
 			ImGui::TreePop();
 		}
@@ -74,7 +54,8 @@ namespace big
 		}
 		if (ImGui::TreeNode("Local Weather"))
 		{
-			components::button("Clear Override", [] {
+			components::button("Clear Override", []
+			{
 				MISC::CLEAR_OVERRIDE_WEATHER();
 			});
 

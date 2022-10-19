@@ -36,7 +36,7 @@ namespace big
                     {
                         QUEUE_JOB_BEGIN_CLAUSE(&)
                         {
-                            session::join_type(session_type);
+                            session::join_type(session_type.id);
                         }QUEUE_JOB_END_CLAUSE
                     }
                 }

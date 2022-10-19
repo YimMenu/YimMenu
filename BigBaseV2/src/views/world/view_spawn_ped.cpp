@@ -17,9 +17,9 @@
 namespace big
 {
 	Ped spawn_ped_at_location(
-		const int selected_ped_type, 
-		const char* ped_model_buf, 
-		const Player selected_ped_player_id, 
+		const int selected_ped_type,
+		const char* ped_model_buf,
+		const Player selected_ped_player_id,
 		const Player selected_ped_for_player_id,
 		const bool is_bodyguard
 	) {
@@ -114,8 +114,8 @@ namespace big
 
 
 	void spawn_ped_give_weapon(
-		const Ped ped, 
-		const int selected_ped_weapon_type, 
+		const Ped ped,
+		const int selected_ped_weapon_type,
 		const Hash selected_ped_weapon_hash
 	) {
 		if (selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS)
@@ -123,18 +123,18 @@ namespace big
 			return;
 		}
 
-		auto weapon_type_arr = g_gta_data_service->get_weapon_type_arr();
-		for (auto& weapon : g_gta_data_service->get_weapon_arr())
+		const auto& weapon_type_arr = g_gta_data_service->weapon_types();
+		for (auto& [_, weapon] : g_gta_data_service->weapons())
 		{
 			if (
 				selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ||
-				weapon.weapon_type == weapon_type_arr[selected_ped_weapon_type]
+				weapon.m_weapon_type == weapon_type_arr[selected_ped_weapon_type]
 			) {
 				if (
 					selected_ped_weapon_hash == 0 ||
-					weapon.hash == selected_ped_weapon_hash
+					weapon.m_hash == selected_ped_weapon_hash
 				) {
-					WEAPON::GIVE_WEAPON_TO_PED(ped, weapon.hash, 9999, false, selected_ped_weapon_hash != 0);
+					WEAPON::GIVE_WEAPON_TO_PED(ped, weapon.m_hash, 9999, false, selected_ped_weapon_hash != 0);
 				}
 			}
 		}
@@ -147,14 +147,14 @@ namespace big
 		static char ped_model_buf[64];
 		static Player selected_ped_player_id = -1;
 
-		auto ped_type_arr = g_gta_data_service->get_ped_type_arr();
-		auto ped_arr = g_gta_data_service->get_ped_arr();
+		auto ped_type_arr = g_gta_data_service->ped_types();
+		auto ped_arr = g_gta_data_service->peds();
 
 
 		static int selected_ped_weapon_type = SPAWN_PED_ALL_WEAPONS;
 		static Hash selected_ped_weapon_hash = 0;
-		auto weapon_type_arr = g_gta_data_service->get_weapon_type_arr();
-		auto weapon_arr = g_gta_data_service->get_weapon_arr();
+		auto weapon_type_arr = g_gta_data_service->weapon_types();
+		auto weapon_arr = g_gta_data_service->weapons();
 
 		static Player selected_ped_for_player_id = -1;
 		auto player_arr = g_player_service->players();
@@ -186,9 +186,9 @@ namespace big
 
 				ImGui::SetNextItemWidth(160.f);
 				if (ImGui::BeginCombo(
-					"##ped_type", 
-					selected_ped_type == -1 ? "ALL" : 
-					selected_ped_type == -2 ? "ONLINE PLAYER" : 
+					"##ped_type",
+					selected_ped_type == -1 ? "ALL" :
+					selected_ped_type == -2 ? "ONLINE PLAYER" :
 					ped_type_arr[selected_ped_type].c_str()
 				)) {
 
@@ -312,8 +312,8 @@ namespace big
 
 					ImGui::SetNextItemWidth(240.f);
 					components::input_text_with_hint(
-						"##ped_model_name", "Model Name", 
-						ped_model_buf, sizeof(ped_model_buf), ImGuiInputTextFlags_EnterReturnsTrue, 
+						"##ped_model_name", "Model Name",
+						ped_model_buf, sizeof(ped_model_buf), ImGuiInputTextFlags_EnterReturnsTrue,
 						[] {
 							ped_model_dropdown_open = false;
 						}
@@ -345,10 +345,10 @@ namespace big
 							ImGui::BringWindowToDisplayFront(ImGui::GetCurrentWindow());
 							ped_model_dropdown_focused |= ImGui::IsWindowFocused();
 
-							for (auto& item : ped_arr)
+							for (const auto& [_, item] : ped_arr)
 							{
-								std::string ped_type = item.ped_type;
-								std::string name = item.name;
+								std::string ped_type = item.m_ped_type;
+								std::string name = item.m_name;
 
 								std::transform(name.begin(), name.end(), name.begin(), tolower);
 
@@ -359,12 +359,12 @@ namespace big
 								)) {
 
 									bool selectable_highlighted = lower_search == name;
-									bool selectable_clicked = ImGui::Selectable(item.name.c_str(), selectable_highlighted);
+									bool selectable_clicked = ImGui::Selectable(item.m_name, selectable_highlighted);
 									ped_model_dropdown_focused |= ImGui::IsItemFocused();
 
 									if (selectable_clicked)
 									{
-										strncpy(ped_model_buf, item.name.c_str(), 64);
+										strncpy(ped_model_buf, item.m_name, 64);
 										ped_model_dropdown_open = false;
 										ped_model_dropdown_focused = false;
 									}
@@ -377,7 +377,7 @@ namespace big
 									if (ImGui::IsItemHovered())
 									{
 										item_hovered = true;
-										g_model_preview_service->show_ped(item.hash);
+										g_model_preview_service->show_ped(item.m_hash);
 									}
 								}
 							}
@@ -405,9 +405,9 @@ namespace big
 
 				ImGui::SetNextItemWidth(160.f);
 				if (ImGui::BeginCombo(
-					"##ped_weapon_type", 
-					selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ? 
-					"ALL" : 
+					"##ped_weapon_type",
+					selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ?
+					"ALL" :
 					selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS ?
 					"NO WEAPONS" :
 					weapon_type_arr[selected_ped_weapon_type].c_str()
@@ -459,12 +459,12 @@ namespace big
 
 				ImGui::SetNextItemWidth(240.f);
 				if (ImGui::BeginCombo(
-					"##ped_weapon", 
+					"##ped_weapon",
 					selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS ?
 					"NO WEAPONS" :
-					selected_ped_weapon_hash == 0 ? 
-					"ALL" : 
-					g_gta_data_service->find_weapon_by_hash(selected_ped_weapon_hash).name.c_str()
+					selected_ped_weapon_hash == 0 ?
+					"ALL" :
+					g_gta_data_service->weapon_by_hash(selected_ped_weapon_hash).m_display_name
 				)) {
 					if (selected_ped_weapon_type != SPAWN_PED_NO_WEAPONS)
 					{
@@ -478,19 +478,19 @@ namespace big
 							ImGui::SetItemDefaultFocus();
 						}
 
-						for (auto& weapon : weapon_arr)
+						for (const auto& [_, weapon] : weapon_arr)
 						{
 							if (
 								selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ||
-								weapon.weapon_type == weapon_type_arr[selected_ped_weapon_type]
+								weapon.m_weapon_type == weapon_type_arr[selected_ped_weapon_type]
 							) {
-								if (ImGui::Selectable(weapon.name.c_str(), weapon.hash == selected_ped_weapon_hash))
+								if (ImGui::Selectable(weapon.m_display_name, weapon.m_hash == selected_ped_weapon_hash))
 								{
-									selected_ped_weapon_hash = weapon.hash;
+									selected_ped_weapon_hash = weapon.m_hash;
 								}
 							}
 
-							if (selected_ped_weapon_hash == weapon.hash)
+							if (selected_ped_weapon_hash == weapon.m_hash)
 							{
 								ImGui::SetItemDefaultFocus();
 							}
