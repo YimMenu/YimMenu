@@ -260,10 +260,10 @@ workspace "BigBaseV2"
 		    "vendor/ImGui",
 		    "vendor/json/single_include",
 		    "vendor/MinHook/include",
-		    "vendor/pugixml/src",
-        "vendor/wren/src/include",
-		    "vendor/wren/src/optional",
-		    "vendor/wren/src/vm"
+            "vendor/pugixml/src",
+            "vendor/wren/src/include",
+            "vendor/wren/src/optional",
+            "vendor/wren/src/vm"
 		}
 
 		libdirs
@@ -274,11 +274,11 @@ workspace "BigBaseV2"
 		links
 		{
 		    "fmtlib",
-		    "g3log",
+            "g3log",
 		    "ImGui",
 		    "MinHook",
-			  "pugixml",
-        "wren"
+            "pugixml",
+            "wren"
 		}
 
 		pchheader "common.hpp"
