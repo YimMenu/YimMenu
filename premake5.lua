@@ -46,10 +46,10 @@ workspace "BigBaseV2"
    
 	function DeclareDebugOptions()
 		filter "configurations:Debug"
-		    defines { "_DEBUG" }
-		    symbols "On"
+			defines { "_DEBUG" }
+			symbols "On"
 		filter "not configurations:Debug"
-		    defines { "NDEBUG" }
+			defines { "NDEBUG" }
 	end
 
 	project "fmtlib"
@@ -84,7 +84,7 @@ workspace "BigBaseV2"
 		
 		includedirs
 		{
-		    "vendor/%{prj.name}/src"
+			"vendor/%{prj.name}/src"
 		}
 
 		if(file_exists("vendor\\g3log\\src\\g3log\\generated_definitions.hpp") == false) then
@@ -97,13 +97,13 @@ workspace "BigBaseV2"
 		
 		files
 		{
-		    "vendor/%{prj.name}/src/**.hpp",
-		    "vendor/%{prj.name}/src/**.cpp"
+			"vendor/%{prj.name}/src/**.hpp",
+			"vendor/%{prj.name}/src/**.cpp"
 		}
 		
 		removefiles
 		{
-		    "vendor/%{prj.name}/src/crashhandler_unix.cpp"
+			"vendor/%{prj.name}/src/crashhandler_unix.cpp"
 		}
 
 		DeclareMSVCOptions()
@@ -172,9 +172,9 @@ workspace "BigBaseV2"
 
 		files
 		{
-		    "vendor/%{prj.name}/include/**.h",
-		    "vendor/%{prj.name}/src/**.h",
-		    "vendor/%{prj.name}/src/**.c"
+			"vendor/%{prj.name}/include/**.h",
+			"vendor/%{prj.name}/src/**.h",
+			"vendor/%{prj.name}/src/**.c"
 		}
 
 		DeclareMSVCOptions()
@@ -201,7 +201,7 @@ workspace "BigBaseV2"
 
 		DeclareMSVCOptions()
 		DeclareDebugOptions()
-    
+	
 	project "wren"
 		location "vendor/%{prj.name}"
 		kind "StaticLib"
@@ -212,9 +212,9 @@ workspace "BigBaseV2"
 
 		files
 		{
-		    "vendor/%{prj.name}/src/**.h",
-		    "vendor/%{prj.name}/src/**.hpp",
-		    "vendor/%{prj.name}/src/**.c"
+			"vendor/%{prj.name}/src/**.h",
+			"vendor/%{prj.name}/src/**.hpp",
+			"vendor/%{prj.name}/src/**.c"
 		}
 		
 		includedirs
@@ -226,7 +226,7 @@ workspace "BigBaseV2"
 		
 		removefiles
 		{
-		    "vendor/%{prj.name}/src/include/wren.h",
+			"vendor/%{prj.name}/src/include/wren.h",
 		}
 
 		DeclareMSVCOptions()
@@ -243,49 +243,49 @@ workspace "BigBaseV2"
 	 
 		files
 		{
-		    "%{prj.name}/src/**.hpp",
-		    "%{prj.name}/src/**.h",
-		    "%{prj.name}/src/**.cpp",
-		    "%{prj.name}/src/**.cc",
-		    "%{prj.name}/src/**.cxx",
-		    "%{prj.name}/src/**.asm"
+			"%{prj.name}/src/**.hpp",
+			"%{prj.name}/src/**.h",
+			"%{prj.name}/src/**.cpp",
+			"%{prj.name}/src/**.cc",
+			"%{prj.name}/src/**.cxx",
+			"%{prj.name}/src/**.asm"
 		}
 
 		includedirs
 		{
 			"%{prj.name}/src/",
-		    "vendor/fmtlib/include",
-		    "vendor/g3log/src",
-		    "vendor/GTAV-Classes",
-		    "vendor/ImGui",
-		    "vendor/json/single_include",
-		    "vendor/MinHook/include",
-            "vendor/pugixml/src",
-            "vendor/wren/src/include",
-            "vendor/wren/src/optional",
-            "vendor/wren/src/vm"
+			"vendor/fmtlib/include",
+			"vendor/g3log/src",
+			"vendor/GTAV-Classes",
+			"vendor/ImGui",
+			"vendor/json/single_include",
+			"vendor/MinHook/include",
+			"vendor/pugixml/src",
+			"vendor/wren/src/include",
+			"vendor/wren/src/optional",
+			"vendor/wren/src/vm"
 		}
 
 		libdirs
 		{
-		    "bin/lib"
+			"bin/lib"
 		}
 
 		links
 		{
-		    "fmtlib",
-            "g3log",
-		    "ImGui",
-		    "MinHook",
-            "pugixml",
-            "wren"
+			"fmtlib",
+			"g3log",
+			"ImGui",
+			"MinHook",
+			"pugixml",
+			"wren"
 		}
 
 		pchheader "common.hpp"
 		pchsource "%{prj.name}/src/common.cpp"
 
 		forceincludes { -- microsoft bad
-		    "common.hpp"
+			"common.hpp"
 		}
 
 		DeclareMSVCOptions()
@@ -294,11 +294,11 @@ workspace "BigBaseV2"
 		flags { "NoImportLib", "Maps", "LinkTimeOptimization", "MultiProcessorCompile" }
 
 		filter "configurations:Debug"
-		    flags {  }
-		    editandcontinue "Off"
-		    defines { "DEBUG" }
+			flags {  }
+			editandcontinue "Off"
+			defines { "DEBUG" }
 
 		filter "configurations:Release"
-		    flags { "FatalWarnings", "NoManifest" }
-		    defines { "RELEASE" }
-		    optimize "speed"
+			flags { "FatalWarnings", "NoManifest" }
+			defines { "RELEASE" }
+			optimize "speed"

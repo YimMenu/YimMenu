@@ -25,8 +25,8 @@
 [submodule "vendor/pugixml"]
 	path = vendor/pugixml
 	url = https://github.com/zeux/pugixml.git
-  ignore = dirty
+	ignore = dirty
 [submodule "vendor/wren"]
 	path = vendor/wren
 	url = https://github.com/YimMenu/wren.git
-  ignore = dirty
+	ignore = dirty
