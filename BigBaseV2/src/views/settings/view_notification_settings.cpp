@@ -18,8 +18,7 @@ namespace big
 
 		draw_pair_option("Terminate", g->notifications.gta_thread_kill);
 		draw_pair_option("Start", g->notifications.gta_thread_start);
-			
-
+		
 		components::sub_title("Network Player Manager");
 
 		ImGui::Text("Player Join");
@@ -27,8 +26,6 @@ namespace big
 		ImGui::Checkbox("Above Map", &g->notifications.player_join.above_map);
 		ImGui::Checkbox("Log", &g->notifications.player_join.log);
 		ImGui::Checkbox("Notify", &g->notifications.player_join.notify);
-
-		ImGui::SameLine();
 
 		draw_pair_option("Player Leave", g->notifications.player_leave);
 
@@ -78,15 +75,17 @@ namespace big
 		draw_pair_option("Rotate Cam", script_event_handler.rotate_cam);
 		draw_pair_option("Send to Cutscene", script_event_handler.send_to_cutscene);
 		draw_pair_option("Send to Location", script_event_handler.send_to_location);
+		draw_pair_option("Sound Spam", script_event_handler.sound_spam);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
-		draw_pair_option("Sound Spam", script_event_handler.sound_spam);
 		draw_pair_option("Spectate", script_event_handler.spectate);
 		draw_pair_option("Transaction Error", script_event_handler.transaction_error);
 		draw_pair_option("TSE Crash", script_event_handler.crash);
+		draw_pair_option("TSE Freeze", script_event_handler.tse_freeze);
+		draw_pair_option("TSE Sender Mismatch", script_event_handler.tse_sender_mismatch);
 		draw_pair_option("Vehicle Kick", script_event_handler.vehicle_kick);
 		draw_pair_option("Wanted Level", script_event_handler.clear_wanted_level);
 		ImGui::EndGroup();
