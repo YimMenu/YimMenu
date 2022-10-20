@@ -38,20 +38,38 @@ namespace big
 		ImGui_ImplDX11_Init(m_d3d_device.Get(), m_d3d_device_context.Get());
 		ImGui_ImplWin32_Init(g_pointers->m_hwnd);
 
-		ImFontConfig font_storopia_cfg{};
-		font_storopia_cfg.FontDataOwnedByAtlas = false;
-		std::strcpy(font_storopia_cfg.Name, "Storopia");
-		m_font = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 20.f, &font_storopia_cfg);
 
-		g->window.font_title = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 28.f, &font_storopia_cfg);
-		g->window.font_sub_title = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 24.f, &font_storopia_cfg);
-		g->window.font_normal = m_font;
-		g->window.font_small = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 18.f, &font_storopia_cfg);
+		auto& io = ImGui::GetIO();
 
-		ImFontConfig font_icons_cfg{};
-		font_icons_cfg.FontDataOwnedByAtlas = false;
-		std::strcpy(font_icons_cfg.Name, "Icons");
-		g->window.font_icon = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_icons), sizeof(font_icons), 24.f, &font_icons_cfg);
+		{
+			ImFontConfig fnt_cfg{};
+			fnt_cfg.MergeMode = true;
+			strcpy(fnt_cfg.Name, "MergedFont");
+			// move font to heap so ImGui can take full control
+			auto font_data = new std::uint8_t[sizeof(font_storopia)];
+			memcpy(font_data, font_storopia, sizeof(font_storopia));
+			// load default fonts last
+			io.Fonts->AddFontFromMemoryTTF(font_data, sizeof(font_storopia), 16.f, &fnt_cfg, io.Fonts->GetGlyphRangesDefault());
+			io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyh.ttc", 16.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesChineseSimplifiedCommon());
+			io.Fonts->Build();
+		}
+
+		{
+			ImFontConfig font_storopia_cfg{};
+			font_storopia_cfg.FontDataOwnedByAtlas = false;
+			strcpy(font_storopia_cfg.Name, "Storopia");
+
+			g->window.font_title = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 28.f, &font_storopia_cfg);
+			g->window.font_sub_title = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 24.f, &font_storopia_cfg);
+			g->window.font_small = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 18.f, &font_storopia_cfg);
+		}
+		
+		{
+			ImFontConfig font_icons_cfg{};
+			font_icons_cfg.FontDataOwnedByAtlas = false;
+			std::strcpy(font_icons_cfg.Name, "Icons");
+			g->window.font_icon = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_icons), sizeof(font_icons), 24.f, &font_icons_cfg);
+		}
 
 		g_gui.dx_init();
 		g_renderer = this;
