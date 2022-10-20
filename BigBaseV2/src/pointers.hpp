@@ -7,6 +7,7 @@
 #include "network/CNetworkPlayerMgr.hpp"
 #include "socialclub/FriendRegistry.hpp"
 #include "network/Network.hpp"
+#include "memory/byte_patch.hpp"
 
 namespace big
 {
@@ -16,6 +17,8 @@ namespace big
 		explicit pointers();
 		~pointers();
 	public:
+		std::vector<memory::byte_patch> m_byte_patches;
+
 		HWND m_hwnd{};
 
 		eGameState* m_game_state{};
@@ -49,7 +52,6 @@ namespace big
 		PVOID m_world_model_spawn_bypass;
 		PVOID m_native_return;
 		PVOID m_network_group_override;
-		PUSHORT m_spectator_check;
 		PVOID m_get_label_text;
 
 		FriendRegistry* m_friend_registry{};

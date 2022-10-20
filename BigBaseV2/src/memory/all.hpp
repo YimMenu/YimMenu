@@ -5,3 +5,4 @@
 #include "pattern.hpp"
 #include "batch.hpp"
 #include "range.hpp"
+#include "byte_patch.hpp"
