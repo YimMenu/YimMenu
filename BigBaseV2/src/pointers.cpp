@@ -30,8 +30,6 @@ namespace big
 		main_batch.add("PF", "48 8B 05 ? ? ? ? 48 8B 48 08 48 85 C9 74 52 8B 81", [this](memory::handle ptr)
 		{
 			m_ped_factory = ptr.add(3).rip().as<CPedFactory**>();
-
-			LOG(G3LOG_DEBUG) << "CPedFactory => [" << HEX_TO_UPPER(m_ped_factory) << "]";
 		});
 
 		// Network Player Manager
@@ -70,8 +68,6 @@ namespace big
 		main_batch.add("SG", "48 8D 15 ? ? ? ? 4C 8B C0 E8 ? ? ? ? 48 85 FF 48 89 1D", [this](memory::handle ptr)
 		{
 			m_script_globals = ptr.add(3).rip().as<std::int64_t**>();
-
-			LOG(G3LOG_DEBUG) << "ScriptGlobals => [" << HEX_TO_UPPER(m_script_globals) << "]";
 		});
 
 		// Game Script Handle Manager
@@ -217,14 +213,18 @@ namespace big
 		main_batch.add("RI", "0F B7 44 24 ? 66 89 44 4E", [this](memory::handle ptr)
 		{
 			m_replay_interface = ptr.add(0x1F).rip().as<rage::CReplayInterface**>();
-
-			LOG(G3LOG_DEBUG) << "rage::CReplayInterface => [" << HEX_TO_UPPER(m_replay_interface) << "]";
 		});
 
 		// Pointer to Handle
 		main_batch.add("PTH", "48 8B F9 48 83 C1 10 33 DB", [this](memory::handle ptr)
 		{
 			m_ptr_to_handle = ptr.sub(0x15).as<decltype(m_ptr_to_handle)>();
+		});
+
+		// Get Script Handle
+		main_batch.add("GSH", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr)
+		{
+			m_get_script_handle = ptr.as<functions::get_script_handle_t>();
 		});
 
 		// Blame Explode
@@ -261,8 +261,6 @@ namespace big
 		main_batch.add("FR", "3B 0D ? ? ? ? 73 17", [this](memory::handle ptr)
 		{
 			m_friend_registry = ptr.add(2).rip().as<FriendRegistry*>();
-
-			LOG(G3LOG_DEBUG) << "FriendRegistry => [" << HEX_TO_UPPER(m_friend_registry) << "]";
 		});
 
 		// GET_SCREEN_COORDS_FROM_WORLD_COORDS
@@ -326,8 +324,6 @@ namespace big
 		main_batch.add("MHT", "4C 03 05 ? ? ? ? EB 03", [this](memory::handle ptr)
 		{
 			m_model_table = ptr.add(3).rip().as<HashTable<CBaseModelInfo*>*>();
-
-			LOG(G3LOG_DEBUG) << "HashTable => [" << HEX_TO_UPPER(m_model_table) << "]";
 		});
 
 		// Get Label Text
@@ -348,6 +344,57 @@ namespace big
 			m_reset_network_complaints = ptr.add(1).rip().as<functions::reset_network_complaints>();
 		});
 
+		// fiDevice Get Device
+		main_batch.add("FDGD", "41 B8 07 00 00 00 48 8B F1 E8", [this](memory::handle ptr)
+		{
+			m_fidevice_get_device = ptr.sub(0x1F).as<functions::fidevice_get_device>();
+		});
+
+		// fiDevices
+		main_batch.add("FDS", "74 1B 48 8D 0D ? ? ? ? 41 8B D6", [this](memory::handle ptr)
+		{
+			m_fidevices = ptr.add(5).rip().as<uintptr_t>();
+			m_fidevices_len = ptr.add(5).rip().add(8).as<uint16_t*>();
+		});
+
+		// fiPackfile ctor
+		main_batch.add("FPFC", "44 89 41 28 4C 89 41 38 4C 89 41 50 48 8D", [this](memory::handle ptr)
+		{
+			m_fipackfile_ctor = ptr.sub(0x1E).as<functions::fipackfile_ctor>();
+			m_fipackfile_instances = ptr.add(26).rip().as<rage::fiPackfile**>();
+		});
+
+		// fiPackfile open archive
+		main_batch.add("FPFOA", "48 8D 68 98 48 81 EC 40 01 00 00 41 8B F9", [this](memory::handle ptr)
+		{
+			m_fipackfile_open_archive = ptr.sub(0x18).as<functions::fipackfile_open_archive>();
+		});
+
+		// fiPackfile mount
+		main_batch.add("FPFM", "84 C0 74 1D 48 85 DB 74 0F 48", [this](memory::handle ptr)
+		{
+			m_fipackfile_mount = ptr.sub(0x1E).as<functions::fipackfile_mount>();
+		});
+
+		// fiPackfile unmount
+		main_batch.add("FPFUM", "E8 ? ? ? ? 84 C0 74 37 80 3D", [this](memory::handle ptr)
+		{
+			m_fipackfile_unmount = ptr.add(1).rip().as<functions::fipackfile_unmount>();
+		});
+
+		// fidevice unmount
+		main_batch.add("FPFUM", "E8 ? ? ? ? 84 C0 74 37 80 3D", [this](memory::handle ptr)
+		{
+			m_fipackfile_unmount = ptr.add(1).rip().as<functions::fipackfile_unmount>();
+		});
+
+		// game version + online version
+		main_batch.add("GVOV", "8B C3 33 D2 C6 44 24 20", [this](memory::handle ptr)
+		{
+			m_game_version = ptr.add(0x24).rip().as<const char*>();
+			m_online_version = ptr.add(0x24).rip().add(0x20).as<const char*>();
+		});
+
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
 
@@ -355,13 +402,13 @@ namespace big
 		 * Freemode thread restorer through VM patch
 		*/
 
-		if (auto pat1 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
+		if (auto pat1 = mem_region.bruteforce_scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
 		{
 			*pat1.add(2).as<uint32_t*>() = 0xc9310272;
 			*pat1.add(6).as<uint16_t*>() = 0x9090;
 		}
 
-		if (auto pat2 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 49 03 fa"))
+		if (auto pat2 = mem_region.bruteforce_scan("3b 0a 0f 83 ? ? ? ? 49 03 fa"))
 		{
 			*pat2.add(2).as<uint32_t*>() = 0xc9310272;
 			*pat2.add(6).as<uint16_t*>() = 0x9090;

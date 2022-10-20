@@ -27,6 +27,7 @@ namespace big
 		rage::CReplayInterface** m_replay_interface{};
 
 		functions::ptr_to_handle m_ptr_to_handle{};
+		functions::get_script_handle_t m_get_script_handle{};
 		rage::scrNativeRegistrationTable* m_native_registration_table{};
 		functions::get_native_handler m_get_native_handler{};
 		functions::fix_vectors m_fix_vectors{};
@@ -105,6 +106,18 @@ namespace big
 		Network** m_network;
 
 		functions::reset_network_complaints m_reset_network_complaints{};
+
+		functions::fidevice_get_device m_fidevice_get_device{};
+		uintptr_t m_fidevices{};
+		uint16_t* m_fidevices_len{};
+		functions::fipackfile_ctor m_fipackfile_ctor{};
+		rage::fiPackfile** m_fipackfile_instances{};
+		functions::fipackfile_open_archive m_fipackfile_open_archive{};
+		functions::fipackfile_mount m_fipackfile_mount{};
+		functions::fipackfile_unmount m_fipackfile_unmount{};
+
+		const char* m_game_version;
+		const char* m_online_version;
 	};
 
 	inline pointers* g_pointers{};

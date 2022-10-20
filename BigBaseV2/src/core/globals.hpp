@@ -61,6 +61,7 @@ namespace big
 				pair spectate{};
 				pair transaction_error{};
 				pair tse_freeze{};
+				pair tse_sender_mismatch{};
 				pair vehicle_kick{};
 				pair teleport_to_warehouse{};
 				pair start_activity{};
@@ -477,6 +478,8 @@ namespace big
 				script_handler.transaction_error.notify = script_handler_j["transaction_error"]["notify"];
 				script_handler.tse_freeze.log = script_handler_j["tse_freeze"]["log"];
 				script_handler.tse_freeze.notify = script_handler_j["tse_freeze"]["notify"];
+				script_handler.tse_sender_mismatch.log = script_handler_j["tse_sender_mismatch"]["log"];
+				script_handler.tse_sender_mismatch.notify = script_handler_j["tse_sender_mismatch"]["notify"];
 				script_handler.vehicle_kick.log = script_handler_j["vehicle_kick"]["log"];
 				script_handler.vehicle_kick.notify = script_handler_j["vehicle_kick"]["notify"];
 				script_handler.teleport_to_warehouse.log = script_handler_j["teleport_to_warehouse"]["log"];
@@ -733,6 +736,7 @@ namespace big
 								{ "spectate", return_notify_pair(script_handler_notifications.spectate) },
 								{ "transaction_error", return_notify_pair(script_handler_notifications.transaction_error) },
 								{ "tse_freeze", return_notify_pair(script_handler_notifications.tse_freeze) },
+								{ "tse_sender_mismatch", return_notify_pair(script_handler_notifications.tse_sender_mismatch) },
 								{ "vehicle_kick", return_notify_pair(script_handler_notifications.vehicle_kick) },
 								{ "teleport_to_warehouse", return_notify_pair(script_handler_notifications.teleport_to_warehouse) },
 								{ "start_activity", return_notify_pair(script_handler_notifications.start_activity) }
