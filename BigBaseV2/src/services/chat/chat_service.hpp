@@ -29,6 +29,8 @@ namespace big
 		bool did_player_use_chat(Player player_id);
 		void add_msg(CNetGamePlayer* player, std::string msg, bool is_team);
 
+		static void chat_menu();
+
 		msgs& get_msgs()
 		{
 			return m_msgs;

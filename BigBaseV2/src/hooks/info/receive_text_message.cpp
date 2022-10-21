@@ -4,12 +4,12 @@
 
 namespace big
 {
-    __int64* hooks::chat_receive(__int64 a1, __int64 a2, __int64 sender, const char* msg, char is_team)
+    __int64* hooks::chat_receive(__int64 a1, __int64 a2, __int64 sender, const char* msg, bool is_team)
     {
-        CNetGamePlayer* Player = g_pointers->m_get_net_player_from_unk(sender);
+        CNetGamePlayer* net_player = g_pointers->m_get_net_player_from_unk(sender);
         std::string previous_message = "";
 
-        if (Player != nullptr)
+        if (net_player != nullptr)
         {
             if (msg == previous_message)
             {
@@ -25,8 +25,8 @@ namespace big
             }
             previous_message = msg;
 
-            g_chat_service->add_msg(Player, msg, (bool)is_team);
-            LOG(INFO) << Player->get_name() << ((bool)is_team ? " [LOCAL] " : " [ALL] ") << msg;
+            g_chat_service->add_msg(net_player, msg, is_team);
+            LOG(INFO) << net_player->get_name() << (is_team ? " [LOCAL] " : " [ALL] ") << msg;
         }
 
         return g_hooking->m_chat_message_received_hook.get_original<decltype(&chat_receive)>()(a1, a2, sender, msg, is_team);

@@ -360,6 +360,7 @@ namespace big
 		{
 			std::string message;
 			bool local = false;
+			bool auto_scroll = true;
 		};
 
 		struct outfit_editor
@@ -708,6 +709,8 @@ namespace big
 			this->context_menu.bounding_box_enabled = j["context_menu"]["bounding_box_enabled"];
 			this->context_menu.bounding_box_color = j["context_menu"]["bounding_box_color"];
 
+			this->chat.auto_scroll = j["chat"]["auto_scroll"];
+
 			this->esp.enabled = j["esp"]["enabled"];
 			this->esp.hide_self = j["esp"]["hide_self"];
 			this->esp.enemy_color = j["esp"]["enemy_color"];
@@ -1031,11 +1034,16 @@ namespace big
 				},
 				{
 					"context_menu", {
-						{"enabled", this->context_menu.enabled},
+						{ "enabled", this->context_menu.enabled },
 						{ "allowed_entity_types", this->context_menu.allowed_entity_types },
 						{ "selected_option_color", this->context_menu.selected_option_color },
 						{ "bounding_box_enabled", this->context_menu.bounding_box_enabled },
 						{ "bounding_box_color", this->context_menu.bounding_box_color },
+					}
+				},
+				{
+					"chat", {
+						{ "auto_scroll", this->chat.auto_scroll }
 					}
 				},
 				{

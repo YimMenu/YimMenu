@@ -132,7 +132,6 @@ namespace big
 			looped::session_local_time();
 
 			looped::fast_join();
-			looped::hud_chat();
 			looped::phone_anim();
 			looped::disable_help_text();
 			

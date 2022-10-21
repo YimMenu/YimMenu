@@ -132,7 +132,7 @@ namespace big
 		{
 			//Persist and restore the cursor position between menu instances.
 			static POINT cursor_coords{};
-			if (g_gui.m_opened)
+			if (g_gui.m_opened || g->window.chat)
 			{
 				GetCursorPos(&cursor_coords);
 			}

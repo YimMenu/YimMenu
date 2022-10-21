@@ -35,7 +35,7 @@ namespace big
 
 		static void network_group_override(std::int64_t a1, std::int64_t a2, std::int64_t a3);
 
-		static __int64* chat_receive(__int64 a1, __int64 a2, __int64 a3, const char* a4, char a5);
+		static __int64* chat_receive(__int64 a1, __int64 a2, __int64 a3, const char* a4, bool a5);
 
 		static void received_event(
 			rage::netEventMgr* event_manager,

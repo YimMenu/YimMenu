@@ -63,7 +63,9 @@ namespace big
 		static void gta_data();
 		static void menu_bar();
 		static void overlay();
+		static void chat_tabs();
 		static void chat();
+		// static void chat_dm();
 
 		// later calls will be drawn over earlier calls
 		static void always()
@@ -76,7 +78,7 @@ namespace big
 			notifications();
 			spinner();
 
-			chat();
+			chat_tabs();
 			overlay();
 		}
 	};
