@@ -94,8 +94,6 @@ namespace big
 			m_world_model_spawn_bypass = ptr.as<PVOID>();
 		});
 
-		// New pointers
-
 		// Native Return Spoofer
 		main_batch.add("NRF", "FF E3", [this](memory::handle ptr)
 		{
@@ -394,13 +392,38 @@ namespace big
 			m_online_version = ptr.add(0x24).rip().add(0x20).as<const char*>();
 		});
 
+		// Send Metric a
+		main_batch.add("SMA", "48 89 5C 24 08 57 48 83 EC 20 48 8B D9 33 C9 48 8B FA E8 ? ? ? ? 48", [this](memory::handle ptr)
+		{
+			m_send_metric_a = ptr.as<PVOID>();
+		});
+
+		// Send Metric b1
+		main_batch.add("SMB1", "4C 8B DC 49 89 5B 08 49 89 6B 10 49 89 73 18 49 89 7B 20 41 56 48 83 EC 30 33 C0 4C 8B F2 48 63 D9 49 89 43 E8 49 89 43 F0 66 89 44 24 ? 85 C9 0F 85", [this](memory::handle ptr)
+		{
+			m_send_metric_b_1 = ptr.as<PVOID>();
+			*reinterpret_cast<uint8_t*>(m_send_metric_b_1) = 0x90; // mangle
+		});
+
+		// Send Metric b2
+		main_batch.add("SMB2", "4C 8B DC 49 89 5B 08 49 89 6B 10 49 89 73 18 49 89 7B 20 41 56 48 83 EC 30 33 C0 4C 8B F2 48 63 D9 49 89 43 E8 49 89 43 F0 66 89 44 24 ? 85 C9 0F 85", [this](memory::handle ptr)
+		{
+			m_send_metric_b_2 = ptr.as<PVOID>();
+			*reinterpret_cast<uint8_t*>(m_send_metric_b_1) = 0x4C; // restore
+		});
+
+		// Send Metric c
+		main_batch.add("SMC", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 83 EC 30 83 3D", [this](memory::handle ptr)
+		{
+			m_send_metric_c = ptr.as<PVOID>();
+		});
+
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
 
 		/**
 		 * Freemode thread restorer through VM patch
-		*/
-
+		 */
 		if (auto pat1 = mem_region.bruteforce_scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
 		{
 			memory::byte_patch::make(pat1.add(2).as<uint32_t*>(), 0xc9310272);

@@ -102,6 +102,11 @@ namespace big
 		PVOID m_get_network_event_data{};
 		PVOID m_assign_physical_index{};
 
+		PVOID m_send_metric_a;
+		PVOID m_send_metric_b_1;
+		PVOID m_send_metric_b_2;
+		PVOID m_send_metric_c;
+
 		Network** m_network;
 
 		functions::reset_network_complaints m_reset_network_complaints{};
