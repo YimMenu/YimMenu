@@ -323,7 +323,7 @@ namespace big
 		}
 
 
-		if (g->debug.script_event_logging)
+		if (g->debug.logs.script_event_logs)
 		{
 			LOG(INFO) << "== Begin of Script Event ==";
 			LOG(INFO) << "Player: " << player->get_name();
