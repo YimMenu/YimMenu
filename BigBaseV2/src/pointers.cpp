@@ -424,13 +424,13 @@ namespace big
 		/**
 		 * Freemode thread restorer through VM patch
 		 */
-		if (auto pat1 = mem_region.bruteforce_scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
+		if (auto pat1 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
 		{
 			memory::byte_patch::make(pat1.add(2).as<uint32_t*>(), 0xc9310272);
 			memory::byte_patch::make(pat1.add(6).as<uint16_t*>(), 0x9090);
 		}
 
-		if (auto pat2 = mem_region.bruteforce_scan("3b 0a 0f 83 ? ? ? ? 49 03 fa"))
+		if (auto pat2 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 49 03 fa"))
 		{
 			memory::byte_patch::make(pat2.add(2).as<uint32_t*>(), 0xc9310272);
 			memory::byte_patch::make(pat2.add(6).as<uint16_t*>(), 0x9090);
