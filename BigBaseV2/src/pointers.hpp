@@ -102,10 +102,7 @@ namespace big
 		PVOID m_get_network_event_data{};
 		PVOID m_assign_physical_index{};
 
-		PVOID m_send_metric_a;
-		PVOID m_send_metric_b_1;
-		PVOID m_send_metric_b_2;
-		PVOID m_send_metric_c;
+		PVOID m_format_metric_for_sending;
 
 		Network** m_network;
 

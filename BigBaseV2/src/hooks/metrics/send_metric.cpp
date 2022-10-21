@@ -43,32 +43,12 @@ namespace big
 
 		metric->serialize(&serializer);
 
-		LOG(WARNING) << "METRIC: " << metric->get_name() << "; DATA: " << serializer.get_string();
+		LOG_IF(G3LOG_DEBUG, g->debug.logs.metric_logs) << "METRIC: " << metric->get_name() << "; DATA: " << serializer.get_string();
 	}
 
 	using send_metric_f = bool(*)(void* metric_mgr, rage::rlMetric*);
-	bool hooks::send_metric_a(void* metric_mgr, rage::rlMetric* metric)
+	void hooks::format_metric_for_sending(int a1, int64_t a2, int64_t a3, rage::rlMetric* metric)
 	{
 		log_metric(metric);
-
-		return g_hooking->m_send_metric_a.get_original<send_metric_f>()(metric_mgr, metric);
-	}
-	bool hooks::send_metric_b1(void* metric_mgr, rage::rlMetric* metric)
-	{
-		log_metric(metric);
-
-		return g_hooking->m_send_metric_b1.get_original<send_metric_f>()(metric_mgr, metric);
-	}
-	bool hooks::send_metric_b2(void* metric_mgr, rage::rlMetric* metric)
-	{
-		log_metric(metric);
-
-		return g_hooking->m_send_metric_b2.get_original<send_metric_f>()(metric_mgr, metric);
-	}
-	bool hooks::send_metric_c(void* metric_mgr, rage::rlMetric* metric)
-	{
-		log_metric(metric);
-
-		return g_hooking->m_send_metric_c.get_original<send_metric_f>()(metric_mgr, metric);
 	}
 }

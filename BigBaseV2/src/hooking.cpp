@@ -55,11 +55,8 @@ namespace big
 		m_get_network_event_data_hook("GNED", g_pointers->m_get_network_event_data, &hooks::get_network_event_data),
 		m_write_player_gamer_data_node_hook("WPGDN", g_pointers->m_write_player_gamer_data_node, &hooks::write_player_gamer_data_node),
 
-		// Send Metrics
-		m_send_metric_a("SMA", g_pointers->m_send_metric_a, &hooks::send_metric_a),
-		m_send_metric_b1("SMB1", g_pointers->m_send_metric_b_1, &hooks::send_metric_b1),
-		m_send_metric_b2("SMB2", g_pointers->m_send_metric_b_2, &hooks::send_metric_b2),
-		m_send_metric_c("SMC", g_pointers->m_send_metric_c, &hooks::send_metric_c)
+		// Format Metric For Sending
+		m_format_metric_for_sending("FMFS", g_pointers->m_format_metric_for_sending, &hooks::format_metric_for_sending)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -94,6 +91,7 @@ namespace big
 		m_get_network_event_data_hook.enable();
 		m_received_clone_sync_hook.enable();
 		m_write_player_gamer_data_node_hook.enable();
+		m_format_metric_for_sending.enable();
 
 		MH_ApplyQueued();
 
@@ -104,6 +102,7 @@ namespace big
 	{
 		m_enabled = false;
 
+		m_format_metric_for_sending.disable();
 		m_write_player_gamer_data_node_hook.disable();
 		m_received_clone_sync_hook.disable();
 		m_get_network_event_data_hook.disable();

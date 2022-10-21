@@ -12,6 +12,7 @@ namespace big
 		{
 			ImGui::BeginTabBar("debug_tabbar");
 			misc();
+			logs();
 			globals();
 			locals();
 			script_events();

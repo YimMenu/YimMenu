@@ -17,7 +17,12 @@ namespace big
 
 		struct debug
 		{
-			bool script_event_logging = false;
+			struct
+			{
+				bool metric_logs{};
+
+				bool script_event_logs = false;
+			} logs{};
 		};
 
 		struct notifications
@@ -294,14 +299,8 @@ namespace big
 			char vehicle_gun_model[12] = "bus";
 		};
 
-		struct window {
-			bool debug = false;
-			bool handling = false;
-			bool log = false;
-			bool main = true;
-			bool users = true;
-			bool player = false;
-
+		struct window
+		{
 			ImU32 color = 3357612055;
 			float gui_scale = 1.f;
 
@@ -395,7 +394,8 @@ namespace big
 
 		void from_json(const nlohmann::json& j)
 		{
-			this->debug.script_event_logging = j["debug"]["script_event_logging"];
+			this->debug.logs.metric_logs = j["debug"]["logs"]["metric_logs"];
+			this->debug.logs.script_event_logs = j["debug"]["logs"]["script_event_logs"];
 
 			g->notifications.gta_thread_kill.log = j["notifications"]["gta_thread_kill"]["log"];
 			g->notifications.gta_thread_kill.notify = j["notifications"]["gta_thread_kill"]["notify"];
@@ -631,11 +631,6 @@ namespace big
 
 			this->window.color = j["window"]["color"];
 			this->window.gui_scale = j["window"]["gui_scale"];
-			this->window.debug = j["window"]["debug"];
-			this->window.handling = j["window"]["handling"];
-			this->window.log = j["window"]["log"];
-			this->window.main = j["window"]["main"];
-			this->window.users = j["window"]["users"];
 
 			this->context_menu.enabled = j["context_menu"]["enabled"];
 			this->context_menu.allowed_entity_types = j["context_menu"]["allowed_entity_types"];
@@ -688,7 +683,13 @@ namespace big
 				{
 					"debug",
 					{
-						{ "script_event_logging", this->debug.script_event_logging }
+						{
+							"logs",
+							{
+								{ "metric_logs", this->debug.logs.metric_logs },
+								{ "script_event_logs", this->debug.logs.script_event_logs }
+							}
+						}
 					}
 				},
 				{
@@ -937,12 +938,7 @@ namespace big
 				{
 					"window", {
 						{ "color", this->window.color },
-						{ "gui_scale", this->window.gui_scale },
-						{ "debug", this->window.debug },
-						{ "handling", this->window.handling },
-						{ "log", this->window.log },
-						{ "main", this->window.main },
-						{ "users", this->window.users }
+						{ "gui_scale", this->window.gui_scale }
 					}
 				},
 				{

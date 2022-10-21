@@ -56,10 +56,7 @@ namespace big
 
 		static void* assign_physical_index(CNetworkPlayerMgr* netPlayerMgr, CNetGamePlayer* player, uint8_t new_index);
 
-		static bool send_metric_a(void* metric_mgr, rage::rlMetric* metric);
-		static bool send_metric_b1(void* metric_mgr, rage::rlMetric* metric);
-		static bool send_metric_b2(void* metric_mgr, rage::rlMetric* metric);
-		static bool send_metric_c(void* metric_mgr, rage::rlMetric* metric);
+		static void format_metric_for_sending(int a1, int64_t a2, int64_t a3, rage::rlMetric* metric);
 
 		//SYNC
 		static int64_t received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eObjType sync_type, uint16_t obj_id, rage::datBitBuffer* bufer, uint16_t unk, uint32_t timestamp);
@@ -119,10 +116,7 @@ namespace big
 		detour_hook m_receive_net_message_hook;
 		detour_hook m_get_network_event_data_hook;
 
-		detour_hook m_send_metric_a;
-		detour_hook m_send_metric_b1;
-		detour_hook m_send_metric_b2;
-		detour_hook m_send_metric_c;
+		detour_hook m_format_metric_for_sending;
 
 		detour_hook m_write_player_gamer_data_node_hook;
 
