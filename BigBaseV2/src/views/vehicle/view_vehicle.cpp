@@ -137,15 +137,6 @@ namespace big
 		}
 		ImGui::Separator();
 
-		components::sub_title("Vehicle Bombs");
-		{
-			ImGui::Text("This feature is old and incomplete, so it will break");
-			ImGui::Checkbox("Vehicle Bombs", &g->vehicle.bombs);
-
-			components::input_text_with_hint("###bomb_model", "Bomb Model", g->vehicle.bomb_type, 64); // TODO: Use ImGui Combo instead
-		}
-		ImGui::Separator();
-
 		components::sub_title("Speed Unit");
 		{
 			ImGui::RadioButton(

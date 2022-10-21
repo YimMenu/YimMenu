@@ -18,6 +18,5 @@ namespace big
 			ImGui::ShowDemoWindow(&g->window.demo);
 
 		view::menu_bar();
-		view::score_controller();
 	}
 }

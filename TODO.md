@@ -1,30 +1,31 @@
 ## tupoy_ya's skidded menu TODO list
 Why don't just use github projects.
+This TODO file will be soon replaced with issues.
+
+Max Chance is 3
 
 ### Todo
-- [ ] Phone selection
-- [ ] Pie menu
-- [ ] Animals
-- [ ] Blimps and planes
-- [ ] Cable cars
-- [ ] Ambient ufos
-- [ ] Better esp
-- [ ] Port to C++
-- [ ] Native UI to ImGui translator
-- [ ] Session browser
-- [ ] Integrate https://github.com/Rimmuru/List
-- [ ] Add lua api
-- [ ] Animation list
-- [ ] Hud color selector
-- [ ] Remove unused legacy code
-- [ ] Fix gta5 stupid auto language switch
-- [ ] GMOD like ctx menu
-- [ ] Fix ballistic armor component
-- [ ] Custom chat
+- [ ] Phone selection. Chance 2
+- [ ] Animals. Chance 1
+- [ ] Blimps and planes. Chance 2
+- [ ] Cable cars. Chance 2
+- [ ] Ambient ufos Chance 1
+- [ ] Better esp. Chance 1
+- [ ] Port to C++. Chance 0.5
+- [ ] Native UI to ImGui translator. Chance 1
+- [ ] Session browser. Chance 0.5
+- [ ] Integrate https://github.com/Rimmuru/List. Chance 2
+- [ ] Animation list. Chance 0.5
+- [ ] Hud color selector. Chance 2
+- [ ] Fix gta5 stupid auto language switch. Chance 2
+- [ ] GMOD like ctx menu. Chance 1
+- [ ] Fix ballistic armor component. Chance 2
+- [ ] Custom chat. Chance 3
 
 ### In Progress
 
 ### Completed
+- [x] Remove unused legacy code
 - [x] Shitty jump ragdol 
 - [x] Phone animation
 - [x] Shitty crash

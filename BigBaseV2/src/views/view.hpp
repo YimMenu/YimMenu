@@ -63,8 +63,6 @@ namespace big
 		static void gta_data();
 		static void menu_bar();
 		static void overlay();
-		static void pie_menu();
-		static void score_controller();
 		static void chat();
 
 		// later calls will be drawn over earlier calls
@@ -77,12 +75,9 @@ namespace big
 
 			notifications();
 			spinner();
-			chat();
-			if (g->window.overlay)
-				overlay();
-			if (g->pie_menu.active)
-				pie_menu();
 
+			chat();
+			overlay();
 		}
 	};
 }

@@ -13,11 +13,13 @@ namespace big
 	public:
 		static bool nav_button(const std::string_view);
 		static bool button(const std::string_view);
+		static bool menu_item(const std::string_view);
 		static void icon(const std::string_view);
 		static void small_text(const std::string_view);
 		static void sub_title(const std::string_view);
 		static void title(const std::string_view);
 		static void button(const std::string_view, std::function<void()>);
+		static void menu_item(const std::string_view, std::function<void()>);
 		static void nav_item(std::pair<tabs, navigation_struct>&, int);
 
 		static void input_text_with_hint(const std::string_view label, const std::string_view hint, char* buf, size_t buf_size, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);

@@ -79,7 +79,7 @@ namespace big
 
 	void renderer::on_present()
 	{
-		if (g_gui.m_opened || g->pie_menu.active || g->window.chat)
+		if (g_gui.m_opened || g->window.chat)
 		{
 			ImGui::GetIO().MouseDrawCursor = true;
 			ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
@@ -146,7 +146,7 @@ namespace big
 				g->settings.hotkeys.editing_menu_toggle = false;
 		}
 		
-		if (g_gui.m_opened || g->pie_menu.active || g->window.chat)
+		if (g_gui.m_opened ||  g->window.chat)
 		{
 			ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);
 		}
