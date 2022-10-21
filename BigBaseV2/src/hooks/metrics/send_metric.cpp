@@ -43,7 +43,7 @@ namespace big
 
 		metric->serialize(&serializer);
 
-		LOG(INFO) << "METRIC: " << metric->get_name() << " ; DATA: " << serializer.get_string();
+		LOG(WARNING) << "METRIC: " << metric->get_name() << "; DATA: " << serializer.get_string();
 	}
 
 	using send_metric_f = bool(*)(void* metric_mgr, rage::rlMetric*);
