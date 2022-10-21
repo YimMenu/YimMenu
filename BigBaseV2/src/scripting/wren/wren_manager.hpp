@@ -22,6 +22,7 @@ namespace big
         static constexpr auto script_get_global_int_method_name = "get_global_int(_)";
         static constexpr auto script_set_global_int_method_name = "set_global_int(_,_)";
         static constexpr auto script_trigger_script_event_method_name = "tse(_,_)";
+        static constexpr auto script_joaat_method_name = "joaat(_)";
 
         static constexpr auto func_internal_class_name = "FUNC_INTERNAL";
         static constexpr auto func_internal_call_method_name = "call(_)";

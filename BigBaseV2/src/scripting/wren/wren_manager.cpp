@@ -119,6 +119,11 @@ namespace big
         g_pointers->m_trigger_script_event(event_group, args.data(), arg_count, player_bits);
     }
 
+    static void wren_joaat(WrenVM* vm)
+    {
+        wrenSetSlotDouble(vm, 0, (double)rage::joaat(wrenGetSlotString(vm, 1)));
+    }
+
     static void wren_imgui_button(WrenVM* vm)
     {
         wren_imgui_button_data btn;
@@ -157,6 +162,10 @@ namespace big
                 else if (strcmp(signature, wren_manager::script_trigger_script_event_method_name) == 0)
                 {
                     return wren_script_trigger_script_event;
+                }
+                else if (strcmp(signature, wren_manager::script_joaat_method_name) == 0)
+                {
+                    return wren_joaat;
                 }
             }
             else if (strcmp(class_name, wren_manager::imgui_class_name) == 0)
