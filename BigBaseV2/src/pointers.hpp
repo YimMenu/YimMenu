@@ -7,7 +7,6 @@
 #include "network/CNetworkPlayerMgr.hpp"
 #include "socialclub/FriendRegistry.hpp"
 #include "network/Network.hpp"
-#include "memory/byte_patch.hpp"
 
 namespace big
 {
@@ -17,8 +16,6 @@ namespace big
 		explicit pointers();
 		~pointers();
 	public:
-		std::vector<memory::byte_patch> m_byte_patches;
-
 		HWND m_hwnd{};
 
 		eGameState* m_game_state{};

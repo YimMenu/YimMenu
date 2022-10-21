@@ -205,7 +205,7 @@ namespace big
 		// Request Control of Entity PATCH
 		main_batch.add("RCOE-Patch", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", [this](memory::handle ptr)
 		{
-			m_byte_patches.push_back(memory::byte_patch::make(ptr.add(0x13).as<PUSHORT>(), 0x9090));
+			memory::byte_patch::make(ptr.add(0x13).as<std::uint16_t*>(), 0x9090);
 		});
 
 		// Replay Interface
@@ -403,28 +403,28 @@ namespace big
 
 		if (auto pat1 = mem_region.bruteforce_scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
 		{
-			m_byte_patches.push_back(memory::byte_patch::make(pat1.add(2).as<uint32_t*>(), 0xc9310272));
-			m_byte_patches.push_back(memory::byte_patch::make(pat1.add(6).as<uint16_t*>(), 0x9090));
+			memory::byte_patch::make(pat1.add(2).as<uint32_t*>(), 0xc9310272);
+			memory::byte_patch::make(pat1.add(6).as<uint16_t*>(), 0x9090);
 		}
 
 		if (auto pat2 = mem_region.bruteforce_scan("3b 0a 0f 83 ? ? ? ? 49 03 fa"))
 		{
-			m_byte_patches.push_back(memory::byte_patch::make(pat2.add(2).as<uint32_t*>(), 0xc9310272));
-			m_byte_patches.push_back(memory::byte_patch::make(pat2.add(6).as<uint16_t*>(), 0x9090));
+			memory::byte_patch::make(pat2.add(2).as<uint32_t*>(), 0xc9310272);
+			memory::byte_patch::make(pat2.add(6).as<uint16_t*>(), 0x9090);
 		}
 
 		auto pat3 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 48 ff c7");
 		for (auto& handle : pat3)
 		{
-			m_byte_patches.push_back(memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272));
-			m_byte_patches.push_back(memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090));
+			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272);
+			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090);
 		}
 
 		auto pat4 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 49 03 fa");
 		for (auto& handle : pat4)
 		{
-			m_byte_patches.push_back(memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272));
-			m_byte_patches.push_back(memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090));
+			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272);
+			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090);
 		}
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);
@@ -437,10 +437,7 @@ namespace big
 
 	pointers::~pointers()
 	{
-		for (const auto& patch : m_byte_patches)
-		{
-			patch.restore();
-		}
+		memory::byte_patch::restore_all();
 
 		g_pointers = nullptr;
 	}

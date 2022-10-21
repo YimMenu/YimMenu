@@ -2,31 +2,64 @@
 
 namespace memory
 {
-	struct byte_patch
+	class byte_patch
 	{
-		void* address;
-		std::vector<uint8_t> original_bytes;
-
+	public:
 		template <typename TAddr>
-		static byte_patch make(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
+		byte_patch(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
+			: m_address(address)
 		{
-			byte_patch p;
-
-			p.address = address;
-
-			constexpr size_t size = sizeof(std::remove_pointer_t<std::remove_reference_t<TAddr>>);
-
-			p.original_bytes.resize(size);
-			memcpy(p.original_bytes.data(), p.address, size);
+			constexpr auto size = sizeof(std::remove_pointer_t<std::remove_reference_t<TAddr>>);
+			m_original_bytes.resize(size);
+			memcpy(m_original_bytes.data(), m_address, size);
 
 			*address = value;
-
-			return p;
 		}
 
-		inline void restore() const
+		virtual ~byte_patch()
 		{
-			memcpy(address, original_bytes.data(), original_bytes.size());
+			memcpy(m_address, m_original_bytes.data(), m_original_bytes.size());
 		}
+
+		/// <summary>
+		/// Does not guarantee restoration of bytes, only after the object is deconstructed will the bytes be restored.
+		/// </summary>
+		void restore() const
+		{
+			if (const auto it = std::find(m_patches.begin(), m_patches.end(), this); it != m_patches.end())
+			{
+				m_patches.erase(it);
+			}
+		}
+
+		template <typename TAddr>
+		static std::shared_ptr<byte_patch> make(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
+		{
+			auto patch = std::make_shared<byte_patch>(address, value);
+			m_patches.emplace_back(patch);
+			return patch;
+		}
+
+		static void restore_all()
+		{
+			for (const auto& patch : m_patches)
+			{
+				patch->restore();
+			}
+		}
+
+	protected:
+		static inline std::vector<std::shared_ptr<byte_patch>> m_patches;
+
+	private:
+		void* m_address;
+		std::vector<uint8_t> m_original_bytes;
+
+		friend bool operator== (const std::shared_ptr<byte_patch> a, const byte_patch* b);
 	};
+
+	bool operator== (const std::shared_ptr<byte_patch> a, const byte_patch* b)
+	{
+		return a->m_address == b->m_address;
+	}
 }
