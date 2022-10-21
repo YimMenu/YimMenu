@@ -18,7 +18,8 @@ namespace big
 		
 		if (g_player_service->get_selected()->is_valid())
 		{
-			if (ImGui::TreeNode("Misc")) {
+			if (ImGui::TreeNode("Misc"))
+			{
 				components::button("Steal Outfit", [] {
 					ped::steal_outfit(
 						PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
@@ -166,8 +167,8 @@ namespace big
 				ImGui::TreePop();
 			}
 
-			if (ImGui::TreeNode("Teleport")) {
-
+			if (ImGui::TreeNode("Teleport"))
+			{
 				components::button("Teleport", [] {
 					teleport::to_player(g_player_service->get_selected()->id());
 				});
