@@ -1,8 +1,16 @@
+# IDE
 .vs/
 
+# output directory
 bin/
+# premake in project dir people
 *.exe
 
-*.sln
+# precompiled headers
 *.ipch
+*.gch
+*.pch
+
+# project files
+*.sln
 *.vcxproj*
