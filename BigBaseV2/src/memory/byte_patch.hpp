@@ -11,12 +11,13 @@ namespace memory
 		}
 
 		/// <summary>
-		/// Does not guarantee restoration of bytes, only after the object is deconstructed will the bytes be restored.
+		/// To guarantee proper restoration of bytes all shared_ptr instances will be invalidated that point to this object.
 		/// </summary>
 		void restore() const
 		{
 			if (const auto it = std::find(m_patches.begin(), m_patches.end(), this); it != m_patches.end())
 			{
+				it->reset();
 				m_patches.erase(it);
 			}
 		}
