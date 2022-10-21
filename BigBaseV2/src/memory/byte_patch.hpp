@@ -5,17 +5,6 @@ namespace memory
 	class byte_patch
 	{
 	public:
-		template <typename TAddr>
-		byte_patch(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
-			: m_address(address)
-		{
-			constexpr auto size = sizeof(std::remove_pointer_t<std::remove_reference_t<TAddr>>);
-			m_original_bytes.resize(size);
-			memcpy(m_original_bytes.data(), m_address, size);
-
-			*address = value;
-		}
-
 		virtual ~byte_patch()
 		{
 			memcpy(m_address, m_original_bytes.data(), m_original_bytes.size());
@@ -35,7 +24,7 @@ namespace memory
 		template <typename TAddr>
 		static std::shared_ptr<byte_patch> make(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
 		{
-			auto patch = std::make_shared<byte_patch>(address, value);
+			auto patch = std::shared_ptr<byte_patch>(new byte_patch(address, value));
 			m_patches.emplace_back(patch);
 			return patch;
 		}
@@ -46,6 +35,18 @@ namespace memory
 			{
 				patch->restore();
 			}
+		}
+
+	private:
+		template <typename TAddr>
+		byte_patch(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
+			: m_address(address)
+		{
+			constexpr auto size = sizeof(std::remove_pointer_t<std::remove_reference_t<TAddr>>);
+			m_original_bytes.resize(size);
+			memcpy(m_original_bytes.data(), m_address, size);
+
+			*address = value;
 		}
 
 	protected:
