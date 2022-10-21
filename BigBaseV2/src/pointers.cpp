@@ -394,7 +394,7 @@ namespace big
 		});
 
 		// Send Metric a
-		main_batch.add("SMA", "48 89 5C 24 08 57 48 83 EC 20 48 8B D9 33 C9 48 8B FA E8 ?? ?? ?? ?? 48", [this](memory::handle ptr)
+		main_batch.add("SMA", "48 89 5C 24 08 57 48 83 EC 20 48 8B D9 33 C9 48 8B FA E8 ? ? ? ? 48", [this](memory::handle ptr)
 		{
 			m_send_metric_a = ptr.as<PVOID>();
 		});
