@@ -5,7 +5,6 @@
 #include "util/vehicle.hpp"
 #include "util/mobile.hpp"
 #include "core/data/speed_units.hpp"
-#include "gui/handling/handling_tabs.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "services/model_preview/model_preview_service.hpp"
 
