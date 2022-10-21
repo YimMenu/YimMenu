@@ -19,7 +19,7 @@ namespace memory
 		}
 
 		template <typename TAddr>
-		static std::unique_ptr<byte_patch>& make(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
+		static const std::unique_ptr<byte_patch>& make(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
 		{
 			return m_patches.emplace_back(
 				std::unique_ptr<byte_patch>(new byte_patch(address, value)));
