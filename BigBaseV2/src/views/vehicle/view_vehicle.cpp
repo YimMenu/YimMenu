@@ -20,6 +20,9 @@ namespace big
 			vehicle::repair(self::veh);
 		});
 
+		ImGui::SameLine();
+		ImGui::Checkbox("Keep Vehicle Repaired", &g->vehicle.keep_vehicle_repaired);
+
 		ImGui::Separator();
 
 		components::button("Teleport in PV", [] {
