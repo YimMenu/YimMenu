@@ -12,6 +12,7 @@ namespace big
     native_hooks::native_hooks()
     {
         add_native_detour(0x812595A0644CE1DE, all_scripts::IS_DLC_PRESENT);
+        add_native_detour(0x6D0DE6A7B5DA71F8, all_scripts::GET_PLAYER_NAME);
         add_native_detour(RAGE_JOAAT("carmod_shop"), 0x06843DA7060A026B, carmod_shop::SET_ENTITY_COORDS);
         add_native_detour(RAGE_JOAAT("carmod_shop"), 0x8E2530AA8ADA980E, carmod_shop::SET_ENTITY_HEADING);
         add_native_detour(RAGE_JOAAT("carmod_shop"), 0x34E710FF01247C5A, carmod_shop::SET_VEHICLE_LIGHTS);
