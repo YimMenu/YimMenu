@@ -7,14 +7,14 @@ namespace big
     {
         components::button("Reload Scripts", [&]
         {
-            g_wren_manager->reload_scripts();
+            g_wren_manager->reload_modules();
         });
 
-        for (const auto& btn : g_wren_manager->m_imgui_buttons)
+        for (const auto& btn : g_wren_manager->m_imgui.buttons())
         {
-            components::button(btn.label.c_str(), [&]
+            components::button(btn.label().c_str(), [&]
             {
-                g_wren_manager->call_btn(btn);
+                btn.call();
             });
         }
     }

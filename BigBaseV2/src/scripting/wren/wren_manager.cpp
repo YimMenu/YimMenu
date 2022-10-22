@@ -56,9 +56,9 @@ namespace big
     {
         WrenForeignClassMethods methods;
 
-        if (strcmp(class_name, "Vector3") == 0)
+        if (strcmp(class_name, wren_vector3::class_name) == 0)
         {
-            methods.allocate = wren_Vector3::allocate;
+            methods.allocate = wren_vector3::allocate;
             methods.finalize = NULL;
         }
         else
@@ -69,67 +69,6 @@ namespace big
         }
 
         return methods;
-    }
-
-    static void wren_script_get_time_in_ms(WrenVM* vm)
-    {
-        const double time_in_ms = (double)std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
-        wrenSetSlotDouble(vm, 0, time_in_ms);
-    }
-
-    static void wren_script_get_global_int(WrenVM* vm)
-    {
-        const auto index = (size_t)wrenGetSlotDouble(vm, 1);
-        const auto value = *script_global(index).as<int*>();
-        wrenSetSlotDouble(vm, 0, (double)value);
-    }
-
-    static void wren_script_set_global_int(WrenVM* vm)
-    {
-        const auto index = (size_t)wrenGetSlotDouble(vm, 1);
-        const auto value = (int)wrenGetSlotDouble(vm, 2);
-        *script_global(index).as<int*>() = value;
-    }
-
-    static void wren_script_trigger_script_event(WrenVM* vm)
-    {
-        constexpr int event_group = 1;
-
-        constexpr int player_bits_slot = 1;
-        int player_bits = (int)wrenGetSlotDouble(vm, player_bits_slot);
-        constexpr int send_to_everyone = -1;
-        if (player_bits != send_to_everyone)
-        {
-            player_bits = 1 << player_bits;
-        }
-
-        constexpr int args_slot = 2;
-        const int arg_count = wrenGetListCount(vm, args_slot);
-        std::vector<int64_t> args(arg_count);
-        for (int i = 0; i < arg_count; i++)
-        {
-            constexpr int get_el_slot = 0;
-            wrenGetListElement(vm, args_slot, i, get_el_slot);
-            args.push_back((int64_t)wrenGetSlotDouble(vm, get_el_slot));
-        }
-
-        constexpr size_t args_sender_index = 1;
-        if (args.size() > args_sender_index)
-            args[args_sender_index] = self::id; // prevent detection from AC
-        g_pointers->m_trigger_script_event(event_group, args.data(), arg_count, player_bits);
-    }
-
-    static void wren_joaat(WrenVM* vm)
-    {
-        wrenSetSlotDouble(vm, 0, (double)rage::joaat(wrenGetSlotString(vm, 1)));
-    }
-
-    static void wren_imgui_button(WrenVM* vm)
-    {
-        wren_imgui_button_data btn;
-        btn.label = wrenGetSlotString(vm, 1);
-        btn.fn_instance = wrenGetSlotHandle(vm, 2);
-        g_wren_manager->m_imgui_buttons.push_back(btn);
     }
 
     WrenForeignMethodFn wren_manager::wren_bind_foreign_method(
@@ -145,62 +84,17 @@ namespace big
         }
         else if (strcmp(module, wren_manager::natives_module_name) == 0)
         {
-            if (strcmp(class_name, wren_manager::script_class_name) == 0)
+            if (const auto res = wren_script::bind_foreign_method(class_name, signature); res)
             {
-                if (strcmp(signature, wren_manager::script_get_time_in_ms_method_name) == 0)
-                {
-                    return wren_script_get_time_in_ms;
-                }
-                else if (strcmp(signature, wren_manager::script_get_global_int_method_name) == 0)
-                {
-                    return wren_script_get_global_int;
-                }
-                else if (strcmp(signature, wren_manager::script_set_global_int_method_name) == 0)
-                {
-                    return wren_script_set_global_int;
-                }
-                else if (strcmp(signature, wren_manager::script_trigger_script_event_method_name) == 0)
-                {
-                    return wren_script_trigger_script_event;
-                }
-                else if (strcmp(signature, wren_manager::script_joaat_method_name) == 0)
-                {
-                    return wren_joaat;
-                }
+                return res;
             }
-            else if (strcmp(class_name, wren_manager::imgui_class_name) == 0)
+            else if (const auto res = wren_imgui::bind_foreign_method(class_name, signature); res)
             {
-                if (strcmp(signature, wren_manager::imgui_button_method_name) == 0)
-                {
-                    return wren_imgui_button;
-                }
+                return res;
             }
-            else if (strcmp(class_name, "Vector3") == 0)
+            else if (const auto res = wren_vector3::bind_foreign_method(class_name, signature); res)
             {
-                if (strcmp(signature, "x") == 0)
-                {
-                    return wren_Vector3::get_x;
-                }
-                else if (strcmp(signature, "y") == 0)
-                {
-                    return wren_Vector3::get_y;
-                }
-                else if (strcmp(signature, "z") == 0)
-                {
-                    return wren_Vector3::get_z;
-                }
-                else if (strcmp(signature, "x=(_)") == 0)
-                {
-                    return wren_Vector3::set_x;
-                }
-                else if (strcmp(signature, "y=(_)") == 0)
-                {
-                    return wren_Vector3::set_y;
-                }
-                else if (strcmp(signature, "z=(_)") == 0)
-                {
-                    return wren_Vector3::set_z;
-                }
+                return res;
             }
         }
 
@@ -213,7 +107,12 @@ namespace big
         {
             delete[] result.source;
 
-            g_wren_manager->m_wren_scripts[module] = std::make_unique<wren_script>(g_wren_manager->m_vm, module);
+            g_wren_manager->m_wren_modules[module] = std::make_unique<wren_module>(g_wren_manager->m_vm, module);
+
+            if (strcmp(module, natives_module_name) == 0)
+            {
+                g_wren_manager->on_native_module_loaded();
+            }
         }
     }
 
@@ -221,7 +120,7 @@ namespace big
     {
         WrenLoadModuleResult result = { 0 };
 
-        g_wren_manager->for_each_wren_script_file([&](const auto& module_name, const auto& file_path, const auto& dir_entry)
+        g_wren_manager->for_each_wren_module_file([&](const auto& module_name, const auto& file_path, const auto& dir_entry)
         {
             if (strcmp(module_name.c_str(), name) == 0)
             {
@@ -243,7 +142,27 @@ namespace big
         return result;
     }
 
-    void wren_manager::for_each_wren_script_file(std::function<void(const std::string& module_name, const std::filesystem::path& file_path, const std::filesystem::directory_entry& dir_entry)> cb)
+    void wren_manager::on_native_module_loaded()
+    {
+        // native module is loaded, we can get the WrenHandles
+
+        wrenEnsureSlots(m_vm, 1);
+
+        m_script = wren_script(m_vm);
+
+        m_has_func_internal_function = wrenHasModule(m_vm, wren_manager::natives_module_name) &&
+            wrenHasVariable(m_vm, wren_manager::natives_module_name, wren_manager::func_internal_class_name);
+        if (m_has_func_internal_function)
+        {
+            wrenGetVariable(m_vm, wren_manager::natives_module_name, wren_manager::func_internal_class_name, 0);
+            m_func_internal_metaclass_handle = wrenGetSlotHandle(m_vm, 0);
+            m_func_internal_call_fn_handle = wrenMakeCallHandle(m_vm, wren_manager::func_internal_call_method_name);
+        }
+
+        m_imgui = wren_imgui(m_vm);
+    }
+
+    void wren_manager::for_each_wren_module_file(std::function<void(const std::string& module_name, const std::filesystem::path& file_path, const std::filesystem::directory_entry& dir_entry)> cb)
     {
         for (const auto& dir_entry : std::filesystem::recursive_directory_iterator(m_scripts_wren_folder))
         {
@@ -275,7 +194,7 @@ namespace big
 
         g_fiber_pool->queue_job([this]
         {
-            reload_scripts();
+            reload_modules();
         });
 
         g_wren_manager = this;
@@ -283,19 +202,7 @@ namespace big
 
     void wren_manager::cleanup_memory()
     {
-        if (m_has_tick_function)
-        {
-            wrenReleaseHandle(m_vm, m_script_internal_tick_fn_handle);
-            wrenReleaseHandle(m_vm, m_script_internal_metaclass_handle);
-
-            m_has_tick_function = false;
-        }
-
-        for (const auto& btn : m_imgui_buttons)
-        {
-            wrenReleaseHandle(m_vm, btn.fn_instance);
-        }
-        m_imgui_buttons.clear();
+        m_imgui.cleanup_memory();
 
         if (m_has_func_internal_function)
         {
@@ -305,9 +212,11 @@ namespace big
             m_has_func_internal_function = false;
         }
 
+        m_script.cleanup_memory();
+
         // we call this there manually instead of letting the unique ptrs dctor trigger automatically
         // because freeing the VM should be the last thing we do. (see https://wren.io/embedding/ for the why)
-        remove_all_scripts();
+        remove_all_modules();
 
         wrenFreeVM(m_vm);
 
@@ -321,9 +230,9 @@ namespace big
         g_wren_manager = nullptr;
     }
 
-    void wren_manager::remove_all_scripts()
+    void wren_manager::remove_all_modules()
     {
-        m_wren_scripts.clear();
+        m_wren_modules.clear();
     }
 
     void wren_manager::restart_vm()
@@ -332,19 +241,17 @@ namespace big
         m_vm = wrenNewVM(&m_config);
     }
 
-    void wren_manager::reload_scripts()
+    void wren_manager::reload_modules()
     {
-        if (m_wren_scripts.size())
+        if (m_wren_modules.size())
         {
             restart_vm();
         }
 
-        for_each_wren_script_file([this](const auto& module_name, const auto& file_path, const auto& dir_entry)
+        for_each_wren_module_file([this](const auto& module_name, const auto& file_path, const auto& dir_entry)
         {
-            compile_script(module_name, file_path);
+            compile_module(module_name, file_path);
         });
-
-        LOG(INFO) << "Number of wren scripts loaded: " << m_wren_scripts.size();
 
         if (m_has_any_error)
         {
@@ -358,28 +265,10 @@ namespace big
             return;
         }
 
-        wrenEnsureSlots(m_vm, 1);
-
-        m_has_func_internal_function = wrenHasModule(m_vm, wren_manager::natives_module_name) &&
-            wrenHasVariable(m_vm, wren_manager::natives_module_name, wren_manager::func_internal_class_name);
-        if (m_has_func_internal_function)
-        {
-            wrenGetVariable(m_vm, wren_manager::natives_module_name, wren_manager::func_internal_class_name, 0);
-            m_func_internal_metaclass_handle = wrenGetSlotHandle(m_vm, 0);
-            m_func_internal_call_fn_handle = wrenMakeCallHandle(m_vm, wren_manager::func_internal_call_method_name);
-        }
-
-        m_has_tick_function = wrenHasModule(m_vm, wren_manager::natives_module_name) &&
-            wrenHasVariable(m_vm, wren_manager::natives_module_name, wren_manager::script_internal_class_name);
-        if (m_has_tick_function)
-        {
-            wrenGetVariable(m_vm, wren_manager::natives_module_name, wren_manager::script_internal_class_name, 0);
-            m_script_internal_metaclass_handle = wrenGetSlotHandle(m_vm, 0);
-            m_script_internal_tick_fn_handle = wrenMakeCallHandle(m_vm, wren_manager::script_internal_tick_method_name);
-        }
+        LOG(INFO) << "Number of wren modules loaded: " << m_wren_modules.size();
     }
 
-    void wren_manager::compile_script(const std::string& module_name, const std::filesystem::path& file_path)
+    void wren_manager::compile_module(const std::string& module_name, const std::filesystem::path& file_path)
     {
         std::ifstream file_path_ifstream(file_path);
         std::stringstream buffer;
@@ -406,7 +295,12 @@ namespace big
         {
             LOG(INFO) << "Successfully executed " << file_path;
 
-            m_wren_scripts[module_name] = std::make_unique<wren_script>(m_vm, module_name);
+            m_wren_modules[module_name] = std::make_unique<wren_module>(m_vm, module_name);
+
+            if (strcmp(module_name.c_str(), natives_module_name) == 0)
+            {
+                g_wren_manager->on_native_module_loaded();
+            }
 
             break;
         }
@@ -415,26 +309,21 @@ namespace big
         }
     }
 
-    void wren_manager::tick_all_scripts()
+    void wren_manager::tick_all_modules()
     {
         while (g_running)
         {
-            if (g_wren_manager->m_has_tick_function)
-            {
-                wrenEnsureSlots(g_wren_manager->m_vm, 1);
-                wrenSetSlotHandle(g_wren_manager->m_vm, 0, g_wren_manager->m_script_internal_metaclass_handle);
-                wrenCall(g_wren_manager->m_vm, g_wren_manager->m_script_internal_tick_fn_handle);
-            }
+            g_wren_manager->m_script.tick_all_modules();
 
             script::get_current()->yield();
         }
     }
 
-    void wren_manager::call_btn(const wren_imgui_button_data& btn)
+    void wren_manager::call_fn_callback(WrenHandle* fn_instance)
     {
         wrenEnsureSlots(m_vm, 2);
         wrenSetSlotHandle(m_vm, 0, m_func_internal_metaclass_handle);
-        wrenSetSlotHandle(m_vm, 1, btn.fn_instance);
+        wrenSetSlotHandle(m_vm, 1, fn_instance);
         wrenCall(m_vm, m_func_internal_call_fn_handle);
     }
 }
