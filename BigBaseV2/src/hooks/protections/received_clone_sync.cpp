@@ -1,7 +1,7 @@
 #include "hooking.hpp"
 #include "core/globals.hpp"
 #include "base/CObject.hpp"
-#include "rage/fwEntity.hpp"
+#include "entities/fwEntity.hpp"
 #include "rage/netSyncDataNodeBase.hpp"
 #include "rage/netSyncTree.hpp"
 #include "gta/net_object_mgr.hpp"
@@ -373,7 +373,7 @@ namespace big
 						}
 						else if ((sync_type >= eObjType::bikeObjType && sync_type <= eObjType::heliObjType) || (sync_type >= eObjType::planeObjType && sync_type <= eObjType::submarineObjType) || (sync_type >= eObjType::trailerObjType && sync_type <= eObjType::trainObjType))
 						{
-							if(reinterpret_cast<CVehicleModelInfo*>(model_info)->m_vehicle_type != get_model_data(model_info->m_model_hash)->m_vehicle_type)
+							if(reinterpret_cast<CVehicleModelInfo*>(model_info)->m_vehicle_type != model_info::get_vehicle_model(model_info->m_model_hash)->m_vehicle_type)
 								return SyncResponse::WrongOwner;
 						}
 					}
