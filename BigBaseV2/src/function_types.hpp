@@ -19,6 +19,7 @@ namespace big::functions
 	using increment_stat_event = bool(*)(uint64_t net_event_struct, int64_t sender, int64_t a3);
 
 	using ptr_to_handle = Entity(*)(void* entity);
+	using get_script_handle_t = uint64_t(*)(int64_t);
 
 	using get_gameplay_cam_coords = Vector3(*)();
 
@@ -56,4 +57,10 @@ namespace big::functions
 	//Sync signatures END
 
 	using reset_network_complaints = void(*)(CNetComplaintMgr* mgr);
+
+	using fidevice_get_device = rage::fiDevice*(*)(const char* path, bool allow_root);
+	using fipackfile_ctor = rage::fiPackfile*(*)(rage::fiPackfile* this_);
+	using fipackfile_open_archive = bool(*)(rage::fiPackfile* this_, const char* archive, bool b_true, int type, intptr_t very_false);
+	using fipackfile_mount = bool(*)(rage::fiPackfile* this_, const char* mount_point);
+	using fipackfile_unmount = bool(*)(const char* mount_point);
 }

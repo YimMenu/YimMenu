@@ -1,7 +1,8 @@
 #pragma once
 #include "gui/components/components.hpp"
 #include "util/animator.hpp"
-#include "views/esp/view_esp.hpp"
+#include "esp/view_esp.hpp"
+#include "debug/view_debug.hpp"
 
 
 namespace big
@@ -13,7 +14,6 @@ namespace big
 
 	public:
 		static void active_view();
-		static void debug();
 		static void esp_settings();
 		static void context_menu_settings();
 		static void gui_settings();
@@ -44,11 +44,16 @@ namespace big
 		static void players();
 		static void weapons();
 		static void context_menu();
+		static void gta_data();
 
+		// later calls will be drawn over earlier calls
 		static void always()
 		{
 			esp::draw();
 			context_menu();
+
+			gta_data();
+
 			notifications();
 		}
 	};

@@ -32,7 +32,7 @@ namespace rage
 	class netEventMgr;
 
 	class netSyncTree;
-	
+
 	class netObject;
 	class netObjectMgrBase;
 
@@ -43,6 +43,9 @@ namespace rage
 	class fwRefAwareBase;
 	class fwExtensibleBase;
 	class fwArchetype;
+
+	class fiDevice;
+	class fiPackfile;
 }
 
 class GtaThread;

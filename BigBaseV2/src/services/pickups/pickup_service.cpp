@@ -1,4 +1,5 @@
 #include "pickup_service.hpp"
+#include "gta/joaat.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
 #include "services/gta_data/gta_data_service.hpp"
@@ -37,11 +38,11 @@ namespace big
 
 	void pickup_service::give_ammo(const int targets) const
 	{
-		for (const auto& weapon : g_gta_data_service->get_weapon_arr())
+		for (const auto& [_, weapon] : g_gta_data_service->weapons())
 		{
-			if (weapon.reward_ammo_hash != 0 || weapon.throwable)
+			if (weapon.m_reward_ammo_hash != 0 || weapon.m_throwable)
 			{
-				g_pointers->m_give_pickup_rewards(targets, weapon.reward_ammo_hash);
+				g_pointers->m_give_pickup_rewards(targets, weapon.m_reward_ammo_hash);
 				script::get_current()->yield(20ms);
 			}
 		}
@@ -63,11 +64,11 @@ namespace big
 
 	void pickup_service::give_weapons(const int targets) const
 	{
-		for (const auto& weapon : g_gta_data_service->get_weapon_arr())
+		for (const auto& [_, weapon] : g_gta_data_service->weapons())
 		{
-			if (weapon.reward_hash != 0)
+			if (weapon.m_reward_hash != 0)
 			{
-				g_pointers->m_give_pickup_rewards(targets, weapon.reward_hash);
+				g_pointers->m_give_pickup_rewards(targets, weapon.m_reward_hash);
 				script::get_current()->yield(20ms);
 			}
 		}

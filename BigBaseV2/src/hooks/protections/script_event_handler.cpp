@@ -27,7 +27,7 @@ namespace big
 		if (*(int*)&args[1] != player->m_player_id && player->m_player_id != -1)
 		{
 			LOG(INFO) << "Hash = " << (int)args[0];
-			format_string(player_name, "Wrong TSE sender", notify.ceo_kick.log, notify.ceo_kick.notify);
+			format_string(player_name, "TSE sender mismatch", notify.tse_sender_mismatch.log, notify.tse_sender_mismatch.notify);
 			return true;
 		}
 
@@ -323,7 +323,7 @@ namespace big
 		}
 
 
-		if (g->debug.script_event_logging)
+		if (g->debug.logs.script_event_logs)
 		{
 			LOG(INFO) << "== Begin of Script Event ==";
 			LOG(INFO) << "Player: " << player->get_name();

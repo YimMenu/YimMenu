@@ -22,3 +22,7 @@
 	path = vendor/ImGui
 	url = https://github.com/Yimura/gtav-imgui.git
 	ignore = dirty
+[submodule "vendor/pugixml"]
+	path = vendor/pugixml
+	url = https://github.com/zeux/pugixml.git
+	ignore = dirty
