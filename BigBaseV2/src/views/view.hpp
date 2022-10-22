@@ -1,7 +1,7 @@
 #pragma once
 #include "gui/components/components.hpp"
 #include "util/animator.hpp"
-#include "views/esp/view_esp.hpp"
+#include "esp/view_esp.hpp"
 
 
 namespace big

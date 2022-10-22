@@ -1,14 +1,15 @@
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
+#include "gui/components/components.hpp"
 #include "services/globals/globals_service.hpp"
 #include "thread_pool.hpp"
-#include "util/system.hpp"
 #include "views/view.hpp"
 
 namespace big
 {
-	void view::debug_globals() {
+	void view::debug_globals()
+	{
 		if (ImGui::Checkbox("Enable Freezing", &g_globals_service->m_running) && g_globals_service->m_running)
 			g_thread_pool->push([&]() { g_globals_service->loop(); });
 
@@ -19,9 +20,9 @@ namespace big
 			g_globals_service->save();
 
 		components::button("Network Bail", []
-			{
-				NETWORK::NETWORK_BAIL(16, 0, 0);
-			});
+		{
+			NETWORK::NETWORK_BAIL(16, 0, 0);
+		});
 
 		ImGui::SameLine();
 		if (components::button("Add Global"))
@@ -38,12 +39,12 @@ namespace big
 			static int offset_count = 0;
 			static int previous_offset_count = 0;
 
-			g_fiber_pool->queue_job([] {
-				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-				});
+		g_fiber_pool->queue_job([] {
+			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+			});
 
 			ImGui::Text("Name:");
-			ImGui::InputText("##modal_global_name", name, sizeof(name));
+			components::input_text_with_hint("##global_name", "Name", name, sizeof(name));
 			ImGui::Text("Base Address:");
 			ImGui::InputInt("##modal_global_base_addr", &base_address);
 			ImGui::Text("Freeze:");
@@ -51,7 +52,7 @@ namespace big
 			ImGui::Text("Number of Offsets:");
 			ImGui::InputInt("##modal_offset_count", &offset_count);
 
-			if (offset_count < 0) offset_count;
+			if (offset_count < 0) offset_count = 0;
 			else if (offset_count > 10) offset_count = 10;
 
 			if (offset_count != previous_offset_count)
@@ -68,19 +69,18 @@ namespace big
 			ImGui::PushItemWidth(320.f);
 			for (int i = 0; i < offset_count; i++)
 			{
-				char id[32];
+				ImGui::PushID(i);
 
 				ImGui::Separator();
 
 				ImGui::Text("Offset: %d", i + 1);
-
-				sprintf(id, "##offset_%d", i);
-				ImGui::InputInt(id, &offsets[i][0]);
+				ImGui::InputInt("##offset", &offsets[i][0]);
 
 				ImGui::Text("Size:");
 				ImGui::SameLine();
-				sprintf(id, "##size_%d", i);
-				ImGui::InputInt(id, &offsets[i][1]);
+				ImGui::InputInt("##size", &offsets[i][1]);
+
+				ImGui::PopID();
 			}
 			ImGui::PopItemWidth();
 
@@ -122,8 +122,8 @@ namespace big
 
 			ImGui::Separator();
 
-			sprintf(label, "Freeze##%d", global.get_id());
-			ImGui::Checkbox(label, &global.m_freeze);
+			ImGui::PushID(global.get_id());
+			ImGui::Checkbox("Freeze", &global.m_freeze);
 
 			ImGui::BeginGroup();
 
@@ -148,8 +148,7 @@ namespace big
 
 			ImGui::BeginGroup();
 
-			sprintf(label, "Delete##%d", global.get_id());
-			if (components::button(label))
+			if (components::button("Delete"))
 			{
 				for (int i = 0; i < g_globals_service->m_globals.size(); i++)
 					if (auto& it = g_globals_service->m_globals.at(i); it.get_id() == global.get_id())
@@ -158,10 +157,10 @@ namespace big
 				break;
 			}
 
-			sprintf(label, "Write###%d", global.get_id());
-			if (components::button(label))
+			if (components::button("Write"))
 				global.write();
 
+			ImGui::PopID();
 			ImGui::EndGroup();
 		}
 	}

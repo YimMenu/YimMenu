@@ -99,6 +99,7 @@ namespace big
 			looped::vehicle_is_targetable();
 			looped::vehicle_seatbelt();
 			looped::vehicle_speedo_meter();
+			looped::vehicle_keep_vehicle_repaired();
 			looped::vehicle_remove_speed_limit();
 
 			looped::vehicle_chaff();

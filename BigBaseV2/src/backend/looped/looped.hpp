@@ -66,6 +66,7 @@ namespace big
 		static void vehicle_turn_signals();
 		static void vehicle_flares();
 		static void vehicle_chaff();
+		static void vehicle_keep_vehicle_repaired();
 
 		static void weapons_ammo_special_type();
 		static void weapons_cage_gun();

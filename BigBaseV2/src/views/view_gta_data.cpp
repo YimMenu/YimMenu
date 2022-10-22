@@ -16,7 +16,8 @@ namespace big
 			ImGui::OpenPopup("Game Cache");
 		}
 
-		ImGui::SetNextWindowSize(ImVec2(800, 0), ImGuiCond_FirstUseEver);
+		ImGui::SetNextWindowSize({ 800, 210 }, ImGuiCond_FirstUseEver);
+		ImGui::SetNextWindowPos({ 200, 200 }, ImGuiCond_FirstUseEver);
 		if (ImGui::BeginPopupModal("Game Cache"))
 		{
 			switch (g_gta_data_service->state())

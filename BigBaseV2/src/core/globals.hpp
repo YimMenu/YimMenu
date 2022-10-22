@@ -18,7 +18,12 @@ namespace big
 
 		struct debug
 		{
-			bool script_event_logging = false;
+			struct
+			{
+				bool metric_logs{};
+
+				bool script_event_logs = false;
+			} logs{};
 			bool sort_scripts = false;
 			bool with_args = false;
 			bool asi_plugins_loaded = false;
@@ -290,11 +295,10 @@ namespace big
 			bool seatbelt = false;
 			bool turn_signals = false;
 			bool vehicle_jump = false;
+			bool keep_vehicle_repaired = false;
 			bool remove_speed_limit = false;
 			bool flares = false;
 			bool chaff = false;
-			bool bombs = false;
-			std::string bomb_type = "";
 			speedo_meter speedo_meter{};
 			rainbow_paint rainbow_paint{};
 			fly fly{};
@@ -442,8 +446,9 @@ namespace big
 
 		void from_json(const nlohmann::json& j)
 		{
-			this->debug.script_event_logging = j["debug"]["script_event_logging"];
 			this->debug.sort_scripts = j["debug"]["sort_scripts"];
+			this->debug.logs.metric_logs = j["debug"]["logs"]["metric_logs"];
+			this->debug.logs.script_event_logs = j["debug"]["logs"]["script_event_logs"];
 
 			g->notifications.gta_thread_kill.log = j["notifications"]["gta_thread_kill"]["log"];
 			g->notifications.gta_thread_kill.notify = j["notifications"]["gta_thread_kill"]["notify"];
@@ -657,13 +662,13 @@ namespace big
 			this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
 			this->vehicle.vehicle_jump = j["vehicle"]["vehicle_jump"];
 			this->vehicle.remove_speed_limit = j["vehicle"]["remove_speed_limit"];
+			this->vehicle.keep_vehicle_repaired = j["vehicle"]["keep_vehicle_repaired"];
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
 			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
 			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
 			this->vehicle.flares = j["vehicle"]["flares"];
 			this->vehicle.chaff = j["vehicle"]["chaff"];
-			this->vehicle.bombs = j["vehicle"]["bombs"];
 
 			this->vehicle.speedo_meter.enabled = j["vehicle"]["speedo_meter"]["enabled"];
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
@@ -756,9 +761,15 @@ namespace big
 				{
 					"debug",
 					{
-						{ "script_event_logging", this->debug.script_event_logging },
-						{ "sort_scripts", this->debug.sort_scripts }
+						{ "sort_scripts", this->debug.sort_scripts },
 
+						{
+							"logs",
+							{
+								{ "metric_logs", this->debug.logs.metric_logs },
+								{ "script_event_logs", this->debug.logs.script_event_logs }
+							}
+						}
 					}
 				},
 				{
@@ -965,12 +976,12 @@ namespace big
 						{ "horn_boost", this->vehicle.horn_boost },
 						{ "vehicle_jump", this->vehicle.vehicle_jump },
 						{ "remove_speed_limit", this->vehicle.remove_speed_limit },
+						{ "keep_vehicle_repaired", this->vehicle.keep_vehicle_repaired },
 						{ "instant_brake", this->vehicle.instant_brake },
 						{ "is_targetable", this->vehicle.is_targetable },
 						{ "turn_signals", this->vehicle.turn_signals },
 						{ "flares", this->vehicle.flares },
 						{ "chaff", this->vehicle.chaff },
-						{ "bombs", this->vehicle.bombs },
 						{ "seatbelt", this->vehicle.seatbelt },
 						{
 							"speedo_meter",

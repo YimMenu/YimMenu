@@ -336,7 +336,7 @@ namespace big
 		}
 
 
-		if (g->debug.script_event_logging)
+		if (g->debug.logs.script_event_logs)
 		{
 			LOG(INFO) << "SE, " << player->get_name() << ", Hash " << (int)hash << ", ";
 
