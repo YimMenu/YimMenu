@@ -22,6 +22,7 @@ namespace big
 				bool metric_logs{};
 
 				bool script_event_logs = false;
+				bool script_hook_logs{};
 			} logs{};
 		};
 
@@ -396,6 +397,7 @@ namespace big
 		{
 			this->debug.logs.metric_logs = j["debug"]["logs"]["metric_logs"];
 			this->debug.logs.script_event_logs = j["debug"]["logs"]["script_event_logs"];
+			this->debug.logs.script_hook_logs = j["debug"]["logs"]["script_hook_logs"];
 
 			g->notifications.gta_thread_kill.log = j["notifications"]["gta_thread_kill"]["log"];
 			g->notifications.gta_thread_kill.notify = j["notifications"]["gta_thread_kill"]["notify"];
@@ -688,7 +690,8 @@ namespace big
 							"logs",
 							{
 								{ "metric_logs", this->debug.logs.metric_logs },
-								{ "script_event_logs", this->debug.logs.script_event_logs }
+								{ "script_event_logs", this->debug.logs.script_event_logs },
+								{ "script_hook_logs", this->debug.logs.script_hook_logs }
 							}
 						}
 					}

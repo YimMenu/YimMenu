@@ -58,7 +58,7 @@ namespace big
 			if (program->is_valid())
 			{
 				hook_instance(program);
-				LOG(INFO) << "Hooked " << program->m_name << " script (" << HEX_TO_UPPER(static_cast<void*>(program)) << ")";
+				LOG_IF(G3LOG_DEBUG, g->debug.logs.script_hook_logs) << "Hooked " << program->m_name << " script (" << HEX_TO_UPPER(static_cast<void*>(program)) << ")";
 			}
 		}
 	}
