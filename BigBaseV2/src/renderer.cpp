@@ -40,7 +40,7 @@ namespace big
 
 		auto font_file = std::ifstream(file("C:/Windows/Fonts/msyh.ttc").get_path(), std::ios::binary | std::ios::ate);
 		const auto font_data_size = static_cast<int>(font_file.tellg());
-		const auto font_data = std::make_unique<std::uint8_t>(font_data_size);
+		const auto font_data = std::make_unique<std::uint8_t[]>(font_data_size);
 		
 		font_file.seekg(0);
 		font_file.read(reinterpret_cast<char*>(font_data.get()), font_data_size);
