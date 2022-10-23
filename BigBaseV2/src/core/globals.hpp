@@ -314,7 +314,6 @@ namespace big
 
 			ImFont* font_title = nullptr;
 			ImFont* font_sub_title = nullptr;
-			ImFont* font_normal = nullptr;
 			ImFont* font_small = nullptr;
 			ImFont* font_icon = nullptr;
 
