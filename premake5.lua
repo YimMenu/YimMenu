@@ -156,7 +156,7 @@ workspace "BigBaseV2"
 		defines {
 			"IMGUI_DISABLE_DEMO_WINDOWS",
 			"IMGUI_DISABLE_METRICS_WINDOW",
-			--"IM_ASSERT(_EXPR) ((void)(_EXPR))"
+			"IM_ASSERT(_EXPR) ((void)(_EXPR))"
 		}
 
 		DeclareMSVCOptions()
