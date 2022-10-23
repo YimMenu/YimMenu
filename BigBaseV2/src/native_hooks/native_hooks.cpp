@@ -68,7 +68,7 @@ namespace big
             if (m_script_hooks.find(gta_thread->m_script_hash) != m_script_hooks.end())
             {
                 // this should never happen but if it does we catch it
-                LOG(INFO) << "Dynamic native script hook still active for script, cleaning up...";
+                LOG_IF(G3LOG_DEBUG, g->debug.logs.script_hook_logs) << "Dynamic native script hook still active for script, cleaning up...";
 
                 m_script_hooks.erase(gta_thread->m_script_hash);
             }
@@ -87,7 +87,7 @@ namespace big
     {
         if (m_script_hooks.erase(gta_thread->m_script_hash))
         {
-            LOG(INFO) << gta_thread->m_name << " script terminated, cleaning up native hooks";
+            LOG_IF(G3LOG_DEBUG, g->debug.logs.script_hook_logs) << gta_thread->m_name << " script terminated, cleaning up native hooks";
         }
     }
 }
