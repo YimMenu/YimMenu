@@ -1,5 +1,4 @@
 #include "fiber_pool.hpp"
-#include "gui/handling/handling_tabs.hpp"
 #include "script.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"

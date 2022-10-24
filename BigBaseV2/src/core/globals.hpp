@@ -17,7 +17,20 @@ namespace big
 
 		struct debug
 		{
-			bool script_event_logging = false;
+			struct
+			{
+				bool metric_logs{};
+
+				bool script_hook_logs{};
+
+				struct
+				{
+					bool logs = false;
+
+					bool filter_player = true;
+					std::int8_t player_id = -1;
+				} script_event{};
+			} logs{};
 		};
 
 		struct notifications
@@ -270,6 +283,7 @@ namespace big
 			bool seatbelt = false;
 			bool turn_signals = false;
 			bool vehicle_jump = false;
+			bool keep_vehicle_repaired = false;
 			speedo_meter speedo_meter{};
 			rainbow_paint rainbow_paint{};
 			fly fly{};
@@ -293,20 +307,13 @@ namespace big
 			char vehicle_gun_model[12] = "bus";
 		};
 
-		struct window {
-			bool debug = false;
-			bool handling = false;
-			bool log = false;
-			bool main = true;
-			bool users = true;
-			bool player = false;
-
+		struct window
+		{
 			ImU32 color = 3357612055;
 			float gui_scale = 1.f;
 
 			ImFont* font_title = nullptr;
 			ImFont* font_sub_title = nullptr;
-			ImFont* font_normal = nullptr;
 			ImFont* font_small = nullptr;
 			ImFont* font_icon = nullptr;
 
@@ -394,7 +401,8 @@ namespace big
 
 		void from_json(const nlohmann::json& j)
 		{
-			this->debug.script_event_logging = j["debug"]["script_event_logging"];
+			this->debug.logs.metric_logs = j["debug"]["logs"]["metric_logs"];
+			this->debug.logs.script_hook_logs = j["debug"]["logs"]["script_hook_logs"];
 
 			g->notifications.gta_thread_kill.log = j["notifications"]["gta_thread_kill"]["log"];
 			g->notifications.gta_thread_kill.notify = j["notifications"]["gta_thread_kill"]["notify"];
@@ -594,6 +602,7 @@ namespace big
 			this->vehicle.drive_on_water = j["vehicle"]["drive_on_water"];
 			this->vehicle.horn_boost = j["vehicle"]["horn_boost"];
 			this->vehicle.vehicle_jump = j["vehicle"]["vehicle_jump"];
+			this->vehicle.keep_vehicle_repaired = j["vehicle"]["keep_vehicle_repaired"];
 			this->vehicle.instant_brake = j["vehicle"]["instant_brake"];
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
 			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
@@ -630,11 +639,6 @@ namespace big
 
 			this->window.color = j["window"]["color"];
 			this->window.gui_scale = j["window"]["gui_scale"];
-			this->window.debug = j["window"]["debug"];
-			this->window.handling = j["window"]["handling"];
-			this->window.log = j["window"]["log"];
-			this->window.main = j["window"]["main"];
-			this->window.users = j["window"]["users"];
 
 			this->context_menu.enabled = j["context_menu"]["enabled"];
 			this->context_menu.allowed_entity_types = j["context_menu"]["allowed_entity_types"];
@@ -687,7 +691,13 @@ namespace big
 				{
 					"debug",
 					{
-						{ "script_event_logging", this->debug.script_event_logging }
+						{
+							"logs",
+							{
+								{ "metric_logs", this->debug.logs.metric_logs },
+								{ "script_hook_logs", this->debug.logs.script_hook_logs }
+							}
+						}
 					}
 				},
 				{
@@ -881,6 +891,7 @@ namespace big
 						{ "drive_on_water", this->vehicle.drive_on_water },
 						{ "horn_boost", this->vehicle.horn_boost },
 						{ "vehicle_jump", this->vehicle.vehicle_jump },
+						{ "keep_vehicle_repaired", this->vehicle.keep_vehicle_repaired },
 						{ "instant_brake", this->vehicle.instant_brake },
 						{ "is_targetable", this->vehicle.is_targetable },
 						{ "turn_signals", this->vehicle.turn_signals },
@@ -936,12 +947,7 @@ namespace big
 				{
 					"window", {
 						{ "color", this->window.color },
-						{ "gui_scale", this->window.gui_scale },
-						{ "debug", this->window.debug },
-						{ "handling", this->window.handling },
-						{ "log", this->window.log },
-						{ "main", this->window.main },
-						{ "users", this->window.users }
+						{ "gui_scale", this->window.gui_scale }
 					}
 				},
 				{

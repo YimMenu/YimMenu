@@ -9,6 +9,7 @@
 #include "MinHook.h"
 #include "gta/enums.hpp"
 #include "datanodes/player/CPlayerGamerDataNode.hpp"
+#include "rage/rlMetric.hpp"
 
 namespace big
 {
@@ -54,6 +55,8 @@ namespace big
 		static void get_network_event_data(int64_t unk, rage::CEventNetwork* net_event);
 
 		static void* assign_physical_index(CNetworkPlayerMgr* netPlayerMgr, CNetGamePlayer* player, uint8_t new_index);
+
+		static void format_metric_for_sending(int a1, int64_t a2, int64_t a3, rage::rlMetric* metric);
 
 		//SYNC
 		static int64_t received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eObjType sync_type, uint16_t obj_id, rage::datBitBuffer* bufer, uint16_t unk, uint32_t timestamp);
@@ -112,6 +115,8 @@ namespace big
 		detour_hook m_send_net_info_to_lobby;
 		detour_hook m_receive_net_message_hook;
 		detour_hook m_get_network_event_data_hook;
+
+		detour_hook m_format_metric_for_sending;
 
 		detour_hook m_write_player_gamer_data_node_hook;
 

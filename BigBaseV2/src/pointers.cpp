@@ -94,8 +94,6 @@ namespace big
 			m_world_model_spawn_bypass = ptr.as<PVOID>();
 		});
 
-		// New pointers
-
 		// Native Return Spoofer
 		main_batch.add("NRF", "FF E3", [this](memory::handle ptr)
 		{
@@ -131,7 +129,7 @@ namespace big
 		// Send Event Acknowledge
 		main_batch.add("SEA", "48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 7A", [this](memory::handle ptr)
 		{
-				m_send_event_ack = ptr.sub(5).as<decltype(m_send_event_ack)>();
+			m_send_event_ack = ptr.sub(5).as<decltype(m_send_event_ack)>();
 		});
 
 		// Received Event Signatures END
@@ -205,8 +203,7 @@ namespace big
 		// Request Control of Entity PATCH
 		main_batch.add("RCOE-Patch", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", [this](memory::handle ptr)
 		{
-			m_spectator_check = ptr.add(0x13).as<PUSHORT>();
-			*m_spectator_check = 0x9090;
+			memory::byte_patch::make(ptr.add(0x13).as<std::uint16_t*>(), 0x9090);
 		});
 
 		// Replay Interface
@@ -395,37 +392,42 @@ namespace big
 			m_online_version = ptr.add(0x24).rip().add(0x20).as<const char*>();
 		});
 
+		// Format Metric For Sending
+		main_batch.add("FMFS", "48 8B C4 48 89 58 ? 48 89 70 ? 48 89 78 ? 4C 89 70 ? 55 48 8D A8 ? ? ? ? 48 81 EC ? ? ? ? 48 83 3D", [this](memory::handle ptr)
+		{
+			m_format_metric_for_sending = ptr.as<PVOID>();
+		});
+
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
 
 		/**
 		 * Freemode thread restorer through VM patch
-		*/
-
-		if (auto pat1 = mem_region.bruteforce_scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
+		 */
+		if (auto pat1 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
 		{
-			*pat1.add(2).as<uint32_t*>() = 0xc9310272;
-			*pat1.add(6).as<uint16_t*>() = 0x9090;
+			memory::byte_patch::make(pat1.add(2).as<uint32_t*>(), 0xc9310272);
+			memory::byte_patch::make(pat1.add(6).as<uint16_t*>(), 0x9090);
 		}
 
-		if (auto pat2 = mem_region.bruteforce_scan("3b 0a 0f 83 ? ? ? ? 49 03 fa"))
+		if (auto pat2 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 49 03 fa"))
 		{
-			*pat2.add(2).as<uint32_t*>() = 0xc9310272;
-			*pat2.add(6).as<uint16_t*>() = 0x9090;
+			memory::byte_patch::make(pat2.add(2).as<uint32_t*>(), 0xc9310272);
+			memory::byte_patch::make(pat2.add(6).as<uint16_t*>(), 0x9090);
 		}
 
 		auto pat3 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 48 ff c7");
 		for (auto& handle : pat3)
 		{
-			*handle.add(2).as<uint32_t*>() = 0xd2310272;
-			*handle.add(6).as<uint16_t*>() = 0x9090;
+			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272);
+			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090);
 		}
 
 		auto pat4 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 49 03 fa");
 		for (auto& handle : pat4)
 		{
-			*handle.add(2).as<uint32_t*>() = 0xd2310272;
-			*handle.add(6).as<uint16_t*>() = 0x9090;
+			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272);
+			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090);
 		}
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);
@@ -438,7 +440,7 @@ namespace big
 
 	pointers::~pointers()
 	{
-		*m_spectator_check = 0x6A75;
+		memory::byte_patch::restore_all();
 
 		g_pointers = nullptr;
 	}
