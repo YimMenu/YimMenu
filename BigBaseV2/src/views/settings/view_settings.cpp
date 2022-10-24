@@ -27,6 +27,7 @@ namespace big
 	{
 		components::sub_title("Misc");
 		ImGui::Checkbox("Enable Dev DLC", &g->settings.dev_dlc);
+		ImGui::Checkbox("Enable Cable Cars", &g->tunables.cable_cars);
 
 		ImGui::Separator();
 		components::sub_title("Hotkeys");
