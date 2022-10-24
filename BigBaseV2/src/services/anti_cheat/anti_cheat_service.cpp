@@ -79,7 +79,7 @@ namespace big
 
 		LOG(INFO) << net_player_data->m_name << ", " << rid << ", " << score;
 
-		g_notification_service->push("Modder Detected", fmt::format("{} {}", net_player_data->m_name, detections));
+		g_notification_service->push("Modder Detected", std::format("{} - {}", net_player_data->m_name, detections));
 		return true;
 	}
 

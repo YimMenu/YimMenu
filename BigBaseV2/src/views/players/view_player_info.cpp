@@ -19,7 +19,7 @@ namespace big
 {
 	void view::view_player_info()
 	{
-		std::string title = fmt::format("Player Info: {}", g_player_service->get_selected()->get_name());
+		std::string title = std::format("Player Info: {}", g_player_service->get_selected()->get_name());
 		CPlayerInfo* player_info = g_player_service->get_selected()->get_player_info();
 		CPed* cped = g_player_service->get_selected()->get_ped();
 

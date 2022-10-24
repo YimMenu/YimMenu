@@ -35,7 +35,7 @@ namespace big
 		static void add_player_to_db(uint64_t rid, std::string name, std::string relationship, Player player);
 
 		static bool is_player_in_db(uint64_t rid);
-		static player_l player_database_service::get_player_from_db(uint64_t rid);
+		static player_l get_player_from_db(uint64_t rid);
 
 		
 	private:

@@ -18,7 +18,7 @@ namespace big
 	{
 		if (!*g_pointers->m_is_session_started && g_player_service->get_selected()->is_valid()) return;
 
-		std::string title = fmt::format("Player Ped Options: {}", g_player_service->get_selected()->get_name());
+		std::string title = std::format("Player Ped Options: {}", g_player_service->get_selected()->get_name());
 
 		ImGui::Text(title.c_str());
 

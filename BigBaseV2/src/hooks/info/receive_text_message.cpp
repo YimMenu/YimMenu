@@ -13,7 +13,7 @@ namespace big
         {
             if (msg == previous_message)
             {
-                std::string message = fmt::format("Duplicate message purged: {}", msg);
+                std::string message = std::format("Duplicate message purged: {}", msg);
 
                 if (g->notifications.chat_receive.log)
                     LOG(WARNING) << message;

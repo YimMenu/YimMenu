@@ -46,23 +46,23 @@ namespace big
             if (auto net_component = selected_thread->m_net_component)
                 if (auto owner_list = net_component->m_owner_list)
                     if (auto owner = owner_list->m_owner)
-                        ImGui::Text(fmt::format("Host: {}", owner->get_name()).c_str());
-            if (ImGui::Button(fmt::format("Script Pointer: 0x{:X}", (DWORD64)selected_thread).c_str()))
-                ImGui::SetClipboardText(fmt::format("0x{:X}", (DWORD64)selected_thread).c_str());
-            if (ImGui::Button(fmt::format("m_stack: 0x{:X}", (DWORD64)selected_thread->m_stack).c_str()))
-                ImGui::SetClipboardText(fmt::format("0x{:X}", (DWORD64)selected_thread->m_stack).c_str());
-            ImGui::Text(fmt::format("m_exit_message: {}", (selected_thread->m_exit_message) ? selected_thread->m_exit_message : "").c_str());
-            if (ImGui::Button(fmt::format("m_handler: 0x{:X}", (DWORD64)selected_thread->m_handler).c_str()))
-                ImGui::SetClipboardText(fmt::format("0x{:X}", (DWORD64)selected_thread->m_handler).c_str());
-            if (selected_thread->m_net_component != nullptr && ImGui::Button(fmt::format("m_net_component: 0x{:X}", (DWORD64)selected_thread->m_net_component).c_str()))
-                ImGui::SetClipboardText(fmt::format("0x{:X}", (DWORD64)selected_thread->m_net_component).c_str());
-            ImGui::Text(fmt::format("m_thread_id: {}", selected_thread->m_context.m_thread_id).c_str());
-            ImGui::Text(fmt::format("m_instance_id: {}", selected_thread->m_instance_id).c_str());
-            ImGui::Text(fmt::format("m_flag1: {:X}", selected_thread->m_flag1).c_str());
-            ImGui::Text(fmt::format("m_safe_for_network_game: {}", selected_thread->m_safe_for_network_game).c_str());
-            ImGui::Text(fmt::format("m_is_minigame_script: {}", selected_thread->m_is_minigame_script).c_str());
-            ImGui::Text(fmt::format("m_can_be_paused: {}", selected_thread->m_can_be_paused).c_str());
-            ImGui::Text(fmt::format("m_can_remove_blips_from_other_scripts: {}", selected_thread->m_can_remove_blips_from_other_scripts).c_str());
+                        ImGui::Text(std::format("Host: {}", owner->get_name()).c_str());
+            if (ImGui::Button(std::format("Script Pointer: 0x{:X}", (DWORD64)selected_thread).c_str()))
+                ImGui::SetClipboardText(std::format("0x{:X}", (DWORD64)selected_thread).c_str());
+            if (ImGui::Button(std::format("m_stack: 0x{:X}", (DWORD64)selected_thread->m_stack).c_str()))
+                ImGui::SetClipboardText(std::format("0x{:X}", (DWORD64)selected_thread->m_stack).c_str());
+            ImGui::Text(std::format("m_exit_message: {}", (selected_thread->m_exit_message) ? selected_thread->m_exit_message : "").c_str());
+            if (ImGui::Button(std::format("m_handler: 0x{:X}", (DWORD64)selected_thread->m_handler).c_str()))
+                ImGui::SetClipboardText(std::format("0x{:X}", (DWORD64)selected_thread->m_handler).c_str());
+            if (selected_thread->m_net_component != nullptr && ImGui::Button(std::format("m_net_component: 0x{:X}", (DWORD64)selected_thread->m_net_component).c_str()))
+                ImGui::SetClipboardText(std::format("0x{:X}", (DWORD64)selected_thread->m_net_component).c_str());
+            ImGui::Text(std::format("m_thread_id: {}", selected_thread->m_context.m_thread_id).c_str());
+            ImGui::Text(std::format("m_instance_id: {}", selected_thread->m_instance_id).c_str());
+            ImGui::Text(std::format("m_flag1: {:X}", selected_thread->m_flag1).c_str());
+            ImGui::Text(std::format("m_safe_for_network_game: {}", selected_thread->m_safe_for_network_game).c_str());
+            ImGui::Text(std::format("m_is_minigame_script: {}", selected_thread->m_is_minigame_script).c_str());
+            ImGui::Text(std::format("m_can_be_paused: {}", selected_thread->m_can_be_paused).c_str());
+            ImGui::Text(std::format("m_can_remove_blips_from_other_scripts: {}", selected_thread->m_can_remove_blips_from_other_scripts).c_str());
             components::button("Kill Script", []
             {
                 SCRIPT::TERMINATE_THREAD(selected_thread->m_context.m_thread_id);

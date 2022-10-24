@@ -39,19 +39,21 @@ namespace big
                 }
             }
         }*/
-        if (((self::pos.x >= -800.f && self::pos.y >= 5300.f) && self::pos.x <= 640.f) && self::pos.y <= 5800.f)
+        if (g->tunables.cable_cars && NETWORK::NETWORK_IS_SESSION_STARTED() && !MISC::GET_MISSION_FLAG() && !ENTITY::IS_ENTITY_DEAD(self::ped, false))
         {
-            LOG(G3LOG_DEBUG) << "trying to start cablecar1";
-            Hash hash = rage::joaat("cablecar");
-            if (!scripts::is_running(hash))
+            if (((self::pos.x >= -800.f && self::pos.y >= 5300.f) && self::pos.x <= 640.f) && self::pos.y <= 5800.f)
             {
-                LOG(G3LOG_DEBUG) << "trying to start cablecar2";
-                scripts::request_script(hash);
-                if (scripts::wait_till_loaded(hash))
+                Hash hash = RAGE_JOAAT("cablecar");
+                if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(hash) == 0)
                 {
-                    scripts::start_script(hash, 1424);
+                    LOG(G3LOG_DEBUG) << "trying to start cablecar2";
+                    scripts::request_script(hash);
+                    if (scripts::wait_till_loaded(hash))
+                    {
+                        scripts::start_script(hash, 1424);
 
-                    scripts::wait_till_running(hash);
+                        scripts::wait_till_running(hash);
+                    }
                 }
             }
         }

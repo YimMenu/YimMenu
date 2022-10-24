@@ -132,6 +132,7 @@ namespace big
 			looped::tunables_no_idle_kick();
 			looped::session_local_time();
 
+			looped::script_starter();
 			looped::fast_join();
 			looped::phone_anim();
 			looped::disable_help_text();

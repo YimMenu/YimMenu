@@ -34,13 +34,13 @@ namespace big
         {
             if (RAGE_JOAAT("freemode") == SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME())
             {
-                std::string text = fmt::format("NETWORK_BAIL({}, {}, {})", src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<int>(2));
+                std::string text = std::format("NETWORK_BAIL({}, {}, {})", src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<int>(2));
                 LOG(WARNING) << "Prevented freemode " << text;
                 g_notification_service->push_warning("freemode", text);
             }
             else
             {
-                std::string text = fmt::format("NETWORK_BAIL({}, {}, {})", src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<int>(2));
+                std::string text = std::format("NETWORK_BAIL({}, {}, {})", src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<int>(2));
                 LOG(G3LOG_DEBUG) << text;
                 g_notification_service->push("NETWORK_BAIL", text);
                 NETWORK::NETWORK_BAIL(src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<int>(2));

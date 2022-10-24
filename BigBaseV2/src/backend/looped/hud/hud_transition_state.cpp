@@ -120,12 +120,12 @@ namespace big
 				|| state < eTransitionState::TRANSITION_STATE_IS_FM_AND_TRANSITION_READY)
 			{
 				float load_persent = (float)state / 27.f;
-				auto const spinner_text = fmt::format("{} | {}", transition_states[(int)state], state);
+				auto const spinner_text = std::format("{} | {}", transition_states[(int)state], static_cast<int>(state));
 				g_spinner_service->push_online(true, spinner_text, true, load_persent);
 			}
 			else
 			{
-				auto const spinner_text = fmt::format("{} | {}", transition_states[(int)state], state);
+				auto const spinner_text = std::format("{} | {}", transition_states[(int)state], static_cast<int>(state));
 				g_spinner_service->push_online(true, spinner_text, false);
 			}
 		}
