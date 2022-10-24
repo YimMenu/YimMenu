@@ -171,9 +171,9 @@ namespace big
                 const auto& file_path = dir_entry.path();
                 if (file_path.extension() == ".wren" && file_path.has_stem())
                 {
-                    const auto module = file_path.stem().u8string();
+                    const auto module_name = file_path.stem().string();
 
-                    cb(module, file_path, dir_entry);
+                    cb(module_name, file_path, dir_entry);
                 }
             }
         }

@@ -233,7 +233,6 @@ workspace "BigBaseV2"
 		includedirs
 		{
 			"%{prj.name}/src/",
-			"vendor/fmtlib/include",
 			"vendor/g3log/src",
 			"vendor/GTAV-Classes",
 			"vendor/ImGui",
@@ -252,7 +251,6 @@ workspace "BigBaseV2"
 
 		links
 		{
-			"fmtlib",
 			"g3log",
 			"ImGui",
 			"MinHook",
