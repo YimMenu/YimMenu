@@ -111,7 +111,7 @@ namespace big
 		if ((int)state > 0 && (int)std::size(transition_states))
 		{
 			HUD::BEGIN_TEXT_COMMAND_BUSYSPINNER_ON("STRING");
-			auto const spinner_text = fmt::format("{} | {}", transition_states[(int)state], state);
+			auto const spinner_text = std::format("{} | {}", transition_states[(int)state], static_cast<int>(state));
 			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(spinner_text.c_str());
 			HUD::END_TEXT_COMMAND_BUSYSPINNER_ON(5);
 		}

@@ -21,7 +21,7 @@ namespace big
 						<< " with Rockstar ID: " << net_player_data->m_gamer_handle_2.m_rockstar_id;
 
 				if (g->notifications.player_leave.notify)
-					g_notification_service->push("Player Left", fmt::format("{} freeing slot #{} with Rockstar ID: {}", net_player_data->m_name, player->m_player_id, net_player_data->m_gamer_handle_2.m_rockstar_id));
+					g_notification_service->push("Player Left", std::format("{} freeing slot #{} with Rockstar ID: {}", net_player_data->m_name, player->m_player_id, net_player_data->m_gamer_handle_2.m_rockstar_id));
 			}
 
 			return result;
@@ -39,7 +39,7 @@ namespace big
 					<< " with Rockstar ID: " << net_player_data->m_gamer_handle_2.m_rockstar_id;
 
 			if (g->notifications.player_join.notify)
-				g_notification_service->push("Player Joined", fmt::format("{} taking slot #{} with Rockstar ID: {}", net_player_data->m_name, player->m_player_id, net_player_data->m_gamer_handle_2.m_rockstar_id));
+				g_notification_service->push("Player Joined", std::format("{} taking slot #{} with Rockstar ID: {}", net_player_data->m_name, player->m_player_id, net_player_data->m_gamer_handle_2.m_rockstar_id));
 		}
 		return result;
 	}

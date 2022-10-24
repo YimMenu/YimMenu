@@ -87,7 +87,7 @@ namespace big
 		{
 			float auto_drive_speed_user_unit = vehicle::mps_to_speed(g->vehicle.auto_drive_speed, g->vehicle.speed_unit);
 			if (ImGui::SliderFloat(
-				fmt::format("Top Speed({})", speed_unit_strings[(int)g->vehicle.speed_unit]).c_str(),
+				std::format("Top Speed({})", speed_unit_strings[(int)g->vehicle.speed_unit]).c_str(),
 				&auto_drive_speed_user_unit,
 				vehicle::mps_to_speed(0.f, g->vehicle.speed_unit),
 				vehicle::mps_to_speed(150.f, g->vehicle.speed_unit),
@@ -106,7 +106,7 @@ namespace big
 						g->vehicle.auto_drive_style = (AutoDriveStyle)i;
 						g_notification_service->push_warning(
 							"Auto Drive",
-							fmt::format("Driving style set to {}.", driving_style_names[i])
+							std::format("Driving style set to {}.", driving_style_names[i])
 						);
 					}
 
@@ -221,7 +221,7 @@ namespace big
 
 			float fly_speed_user_unit = vehicle::mps_to_speed(g->vehicle.fly.speed, g->vehicle.speed_unit);
 			if (ImGui::SliderFloat(
-				fmt::format("Speed({})", speed_unit_strings[(int)g->vehicle.speed_unit]).c_str(),
+				std::format("Speed({})", speed_unit_strings[(int)g->vehicle.speed_unit]).c_str(),
 				&fly_speed_user_unit,
 				vehicle::mps_to_speed(0.f, g->vehicle.speed_unit),
 				vehicle::mps_to_speed(150.f, g->vehicle.speed_unit),

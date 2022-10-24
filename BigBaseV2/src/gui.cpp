@@ -123,7 +123,7 @@ namespace big
 
 	void gui::script_func()
 	{
-		g_notification_service->push("Welcome", fmt::format("Loaded YimMenu. Press {} to open", ImGui::key_names[g->settings.hotkeys.menu_toggle]));
+		g_notification_service->push("Welcome", std::format("Loaded YimMenu. Press {} to open", ImGui::key_names[g->settings.hotkeys.menu_toggle]));
 		while (true)
 		{
 			g_gui.script_on_tick();
