@@ -38,7 +38,10 @@ namespace big
 		ImGui_ImplDX11_Init(m_d3d_device.Get(), m_d3d_device_context.Get());
 		ImGui_ImplWin32_Init(g_pointers->m_hwnd);
 
-		auto font_file = std::ifstream(file("C:/Windows/Fonts/msyh.ttc").get_path(), std::ios::binary | std::ios::ate);
+		file font_file_path("C:/Windows/Fonts/msyh.ttc");
+		if (!font_file_path.exists())
+			font_file_path = { "C:/Windows/Fonts/msyh.ttf" };
+		auto font_file = std::ifstream(font_file_path.get_path(), std::ios::binary | std::ios::ate);
 		const auto font_data_size = static_cast<int>(font_file.tellg());
 		const auto font_data = std::make_unique<std::uint8_t[]>(font_data_size);
 		
