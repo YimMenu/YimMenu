@@ -1,7 +1,6 @@
 #include "backend.hpp"
 #include "script.hpp"
 #include "thread_pool.hpp"
-#include "api/api.hpp"
 #include "looped/looped.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 
@@ -15,13 +14,6 @@ namespace big
 			looped::system_update_pointers();
 			looped::system_desync_kick_protection();
 
-			if (g_local_player != nullptr && !api::util::signed_in())
-			{
-				g_thread_pool->push([]
-				{
-					looped::api_login_session();
-				});
-			}
 			script::get_current()->yield();
 		}
 	}

@@ -118,26 +118,17 @@ namespace big
 
 		int attempt_save();
 		std::string get_active_profile(std::uint32_t hash);
-		bool get_by_share_code(const char* share_code);
 		bool handling_data_to_json(CHandlingData& handling_data, nlohmann::json& out);
-		bool load_saved_profiles(bool force_update = false);
-		bool publish_profile(const char* name, const char* description, std::string share_code = "");
-		PublishStatus publish_status(PublishStatus new_status = PublishStatus::NONE);
 		bool restore_vehicle();
-		void set_active_profile(std::uint32_t hash, std::string share_code);
-		void set_handling_profile(HandlingProfile& profile);
-		bool update_mine(bool force_update = false);
 
 		inline static std::unordered_map<std::uint32_t, std::string> m_active_profiles;
 		inline static std::vector<std::string> m_my_profiles;
 		inline static std::vector<std::string> m_saved_profiles;
 		inline static std::unordered_map<std::string, HandlingProfile> m_handling_profiles;
 
-		SearchStatus m_search_status = SearchStatus::IDLE;
 	private:
-		PublishStatus m_publish_status = PublishStatus::IDLE;
-
 		inline static std::unordered_map<Hash, CHandlingData> m_handling_backup;
+
 	};
 
 	inline vehicle_service* g_vehicle_service;
