@@ -168,7 +168,7 @@ namespace big
 			{
 				ImGui::Text("Weapon Hash: %u", cped->m_weapon_manager->m_selected_weapon_hash);
 				ImGui::Text("Weapon Damage: %f", cped->m_weapon_manager->m_weapon_info->m_damage);
-				ImGui::Text("Weapon Damage Mult: %f", player_info->m_weapon_damage_mult);
+				ImGui::Text("Weapon Damage Mult: %f", cped->m_weapon_manager->m_weapon_info->m_network_player_damage_modifier);
 				ImGui::Text("Mele Damage Mult: %f", player_info->m_melee_weapon_damage_mult);
 				ImGui::TreePop();
 			}

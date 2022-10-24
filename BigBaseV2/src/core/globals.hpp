@@ -22,7 +22,15 @@ namespace big
 			{
 				bool metric_logs{};
 
-				bool script_event_logs = false;
+				bool script_hook_logs{};
+
+				struct
+				{
+					bool logs = false;
+
+					bool filter_player = true;
+					std::int8_t player_id = -1;
+				} script_event{};
 			} logs{};
 			bool sort_scripts = false;
 			bool with_args = false;
@@ -336,10 +344,8 @@ namespace big
 
 			ImFont* font_title = nullptr;
 			ImFont* font_sub_title = nullptr;
-			ImFont* font_normal = nullptr;
 			ImFont* font_small = nullptr;
 			ImFont* font_icon = nullptr;
-			ImFont* font_chat = nullptr;
 
 			bool switched_view = true;
 		};
@@ -448,7 +454,7 @@ namespace big
 		{
 			this->debug.sort_scripts = j["debug"]["sort_scripts"];
 			this->debug.logs.metric_logs = j["debug"]["logs"]["metric_logs"];
-			this->debug.logs.script_event_logs = j["debug"]["logs"]["script_event_logs"];
+			this->debug.logs.script_hook_logs = j["debug"]["logs"]["script_hook_logs"];
 
 			g->notifications.gta_thread_kill.log = j["notifications"]["gta_thread_kill"]["log"];
 			g->notifications.gta_thread_kill.notify = j["notifications"]["gta_thread_kill"]["notify"];
@@ -767,7 +773,7 @@ namespace big
 							"logs",
 							{
 								{ "metric_logs", this->debug.logs.metric_logs },
-								{ "script_event_logs", this->debug.logs.script_event_logs }
+								{ "script_hook_logs", this->debug.logs.script_hook_logs }
 							}
 						}
 					}

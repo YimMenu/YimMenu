@@ -336,12 +336,21 @@ namespace big
 		}
 
 
-		if (g->debug.logs.script_event_logs)
+		if (g->debug.logs.script_event.logs && (!g->debug.logs.script_event.filter_player || g->debug.logs.script_event.player_id == player->m_player_id))
 		{
-			LOG(INFO) << "SE, " << player->get_name() << ", Hash " << (int)hash << ", ";
+			std::string script_args = "{ ";
+			for (std::size_t i = 0; i < scripted_game_event->m_args_size; i++)
+			{
+				if (i)
+					script_args += ", ";
 
-			for (std::size_t i = 1; i < sizeof(args); i++)
-				LOG(INFO) << "Arg " << i << ": " << args[i] << ", ";
+				script_args += std::to_string(args[i]);
+			}
+			script_args += " };";
+
+			LOG(G3LOG_DEBUG) << "Script Event:\n"
+				<< "\tPlayer: " << player->get_name() << "\n"
+				<< "\tArgs: " << script_args;
 		}
 
 		return false;

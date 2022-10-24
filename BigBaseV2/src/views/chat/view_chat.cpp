@@ -10,8 +10,6 @@ namespace big
 	static size_t iLastLogCount = 0;
     void view::chat()
     {
-		ImGui::PushFont(g->window.font_chat);
-
 		const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
 		ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
 
@@ -56,7 +54,5 @@ namespace big
 
 		ImGui::SameLine();
 		ImGui::Checkbox("Local", &g->chat.local);
-
-		ImGui::PopFont();
     }
 }
