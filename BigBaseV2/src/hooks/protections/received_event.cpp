@@ -41,7 +41,7 @@ namespace big
 					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " is voting to kick us.";
 				if (g->notifications.received_event.kick_vote.notify)
 					g_notification_service->push_warning("Kick Vote",
-						fmt::format("{} is voting to kick us.", source_player->get_name()));
+						std::format("{} is voting to kick us.", source_player->get_name()));
 			}
 			buffer->Seek(0);
 			break;
@@ -79,7 +79,7 @@ namespace big
 						LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent TASK_VEHICLE_TEMP_ACTION crash.";
 					if (g->notifications.received_event.vehicle_temp_action.notify)
 						g_notification_service->push_warning("Protection",
-							fmt::format("{} sent TASK_VEHICLE_TEMP_ACTION crash.", source_player->get_name()));
+							std::format("{} sent TASK_VEHICLE_TEMP_ACTION crash.", source_player->get_name()));
 
 					return;
 				}
@@ -115,7 +115,7 @@ namespace big
 
 				if (g->notifications.received_event.clear_ped_task.notify)
 					g_notification_service->push_warning("Protection",
-						fmt::format("{} possible attempt at freezing entity.", source_player->get_name())
+						std::format("{} possible attempt at freezing entity.", source_player->get_name())
 					);
 
 				return;
@@ -140,7 +140,7 @@ namespace big
 
 				if (g->notifications.received_event.report_cash_spawn.notify)
 					g_notification_service->push_warning("Protection",
-						fmt::format("{} is spawning cash.", source_player->get_name())
+						std::format("{} is spawning cash.", source_player->get_name())
 					);
 			}
 
@@ -155,7 +155,7 @@ namespace big
 
 			if (g->notifications.received_event.modder_detect.notify)
 				g_notification_service->push_warning("Protection",
-					fmt::format("{} sent out a modder event.", source_player->get_name())
+					std::format("{} sent out a modder event.", source_player->get_name())
 				);
 
 			break;
@@ -169,7 +169,7 @@ namespace big
 
 			if (g->notifications.received_event.request_control_event.notify)
 				g_notification_service->push_warning("Protection",
-					fmt::format("Denied player control request from {}", source_player->get_name())
+					std::format("Denied player control request from {}", source_player->get_name())
 				);
 
 			return;

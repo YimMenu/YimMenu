@@ -11,7 +11,7 @@ namespace big
 {
 	void view::view_player() {
 
-		std::string title = fmt::format("Player Options: {}", g_player_service->get_selected()->get_name());
+		std::string title = std::format("Player Options: {}", g_player_service->get_selected()->get_name());
 		
 		ImGui::Text(title.c_str());
 		ImGui::Checkbox("Spectate", &g->player.spectating);
