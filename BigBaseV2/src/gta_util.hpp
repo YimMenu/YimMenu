@@ -37,10 +37,7 @@ namespace big::gta_util
 
 	inline Network* get_network()
 	{
-		__int64 network = (__int64)(*g_pointers->m_network);
-		if (g_is_steam)
-			network += sizeof(rage::rlSessionInfo);
-		return (Network*)network;
+		return *g_pointers->m_network;
 	}
 
 	template <typename F, typename ...Args>
