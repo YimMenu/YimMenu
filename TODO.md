@@ -8,7 +8,6 @@ Max Chance is 3
 - [ ] Phone selection. Chance 2
 - [ ] Animals. Chance 1
 - [ ] Blimps and planes. Chance 2
-- [ ] Cable cars. Chance 2
 - [ ] Ambient ufos Chance 1
 - [ ] Better esp. Chance 1
 - [ ] Port to C++. Chance 0.5
@@ -20,11 +19,12 @@ Max Chance is 3
 - [ ] Fix gta5 stupid auto language switch. Chance 2
 - [ ] GMOD like ctx menu. Chance 1
 - [ ] Fix ballistic armor component. Chance 2
-- [ ] Custom chat. Chance 3
 
 ### In Progress
+- [x] Custom chat
 
 ### Completed
+- [x] Cable cars
 - [x] Remove unused legacy code
 - [x] Shitty jump ragdol 
 - [x] Phone animation

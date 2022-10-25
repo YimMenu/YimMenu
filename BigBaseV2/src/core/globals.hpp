@@ -369,8 +369,10 @@ namespace big
 		struct chat
 		{
 			std::string message;
+			std::string dm_message;
 			bool local = false;
 			bool auto_scroll = true;
+			std::int8_t dm_player_id = -0;
 		};
 
 		struct outfit_editor

@@ -21,7 +21,7 @@ namespace big
 				}
 				if (ImGui::BeginTabItem("DM"))
 				{
-					// view::chat_dm();
+					view::chat_dm();
 					ImGui::EndTabItem();
 				}
 				ImGui::EndTabBar();
