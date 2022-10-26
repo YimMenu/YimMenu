@@ -121,7 +121,7 @@ namespace big
 		// Received Event Signatures START
 
 		// Read Msg Packed Events
-		main_batch.add("REH", "E8 ? ? ? ? 84 C0 74 3C 48 83 7B 10", [this](memory::handle ptr)
+		main_batch.add("RMPE", "E8 ? ? ? ? 84 C0 74 3C 48 83 7B 10", [this](memory::handle ptr)
 		{
 			m_read_msg_packed_events = ptr.add(1).rip().as<decltype(m_read_msg_packed_events)>();
 		});
@@ -130,6 +130,12 @@ namespace big
 		main_batch.add("SEA", "48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 7A", [this](memory::handle ptr)
 		{
 			m_send_event_ack = ptr.sub(5).as<decltype(m_send_event_ack)>();
+		});
+
+		// Msg Packed Events
+		main_batch.add("MPE", "48 89 0D ? ? ? ? C3 45 84 C0", [this](memory::handle ptr)
+		{
+			m_msg_packed_events = ptr.add(3).rip().as<decltype(m_msg_packed_events)>();
 		});
 
 		// Received Event Signatures END

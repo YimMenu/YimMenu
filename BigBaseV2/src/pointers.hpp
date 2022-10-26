@@ -87,7 +87,7 @@ namespace big
 		// Received Event Signatures START
 		functions::read_msg_packed_events m_read_msg_packed_events{};
 		functions::send_event_ack m_send_event_ack{};
-		functions::send_event_ack m_send_event_ack{};
+		CMsgPackedEvents** m_msg_packed_events{};
 		// Received Event Signatures END
 
 		//Sync Signatures START
