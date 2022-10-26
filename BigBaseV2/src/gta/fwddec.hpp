@@ -46,6 +46,9 @@ namespace rage
 
 	class fiDevice;
 	class fiPackfile;
+
+	class rlSessionInfo;
+	class rlSessionByGamerTaskResult;
 }
 
 class GtaThread;
@@ -65,7 +68,9 @@ class CPickup;
 class CPedFactory;
 class CVehicleFactory;
 
+class Network;
 class CNetGamePlayer;
 class CNetworkPlayerMgr;
 class CPlayerInfo;
 class CNetworkObjectMgr;
+class CNetComplaintMgr;
