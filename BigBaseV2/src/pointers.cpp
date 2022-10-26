@@ -419,6 +419,20 @@ namespace big
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
 
+		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 F5 01 00 00"))
+		{
+			m_bypass_max_count_of_active_sticky_bombs = pat.add(4).as<uint8_t*>();
+
+			// declare it right now even though we write the same value
+			// so that it get cleaned up in the dctor
+			memory::byte_patch::make(m_bypass_max_count_of_active_sticky_bombs, *m_bypass_max_count_of_active_sticky_bombs);
+
+			if (g->weapons.bypass_c4_limit)
+			{
+				*m_bypass_max_count_of_active_sticky_bombs = 99;
+			}
+		}
+
 		/**
 		 * Freemode thread restorer through VM patch
 		 */

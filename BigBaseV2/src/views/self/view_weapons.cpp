@@ -6,6 +6,7 @@
 #include "services/gta_data/gta_data_service.hpp"
 #include "gta/joaat.hpp"
 #include "views/view.hpp"
+#include "pointers.hpp"
 
 namespace big
 {
@@ -18,6 +19,11 @@ namespace big
 		ImGui::Checkbox("Infinite Clip", &g->weapons.infinite_mag);
 
 		ImGui::Checkbox("Enable Special Ammo", &g->weapons.ammo_special.toggle);
+
+		if (ImGui::Checkbox("Bypass C4 Limit", &g->weapons.bypass_c4_limit))
+		{
+			*g_pointers->m_bypass_max_count_of_active_sticky_bombs = g->weapons.bypass_c4_limit ? 99 : 4;
+		}
 
 		eAmmoSpecialType selected_ammo = g->weapons.ammo_special.type;
 		eExplosionTag selected_explosion = g->weapons.ammo_special.explosion_tag;

@@ -309,6 +309,7 @@ namespace big
 			bool no_recoil = false;
 			bool no_spread = false;
 			char vehicle_gun_model[12] = "bus";
+			bool bypass_c4_limit = false;
 		};
 
 		struct window
@@ -637,6 +638,7 @@ namespace big
 			this->weapons.infinite_mag = j["weapons"]["infinite_mag"];
 			this->weapons.no_recoil = j["weapons"]["no_recoil"];
 			this->weapons.no_spread = j["weapons"]["no_spread"];
+			this->weapons.bypass_c4_limit = j["weapons"]["bypass_c4_limit"];
 
 			this->weapons.ammo_special.type = (eAmmoSpecialType)j["weapons"]["ammo_special"]["type"];
 			this->weapons.ammo_special.toggle = j["weapons"]["ammo_special"]["toggle"];
@@ -945,7 +947,8 @@ namespace big
 						{ "infinite_ammo", this->weapons.infinite_ammo },
 						{ "infinite_mag", this->weapons.infinite_mag },
 						{ "no_recoil", this->weapons.no_recoil },
-						{ "no_spread", this->weapons.no_spread }
+						{ "no_spread", this->weapons.no_spread },
+						{ "bypass_c4_limit", this->weapons.bypass_c4_limit }
 					}
 				},
 				{

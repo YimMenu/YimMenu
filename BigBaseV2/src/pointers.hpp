@@ -110,6 +110,8 @@ namespace big
 		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
 		functions::join_session_by_info m_join_session_by_info;
 
+		uint8_t* m_bypass_max_count_of_active_sticky_bombs;
+
 		functions::reset_network_complaints m_reset_network_complaints{};
 
 		functions::fidevice_get_device m_fidevice_get_device{};
