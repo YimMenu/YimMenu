@@ -43,6 +43,33 @@ namespace big
 			{
 				switch (msg_type)
 				{
+				case rage::eNetMessage::CMsgPackedEvents:
+				{
+					CMsgPackedEvents data = CMsgPackedEvents(buffer.m_data, buffer.m_maxBit / 8);
+					if (g_pointers->m_read_msg_packed_events(&data, frame->m_data, frame->m_length, nullptr))
+					{
+						rage::datBitBuffer* packed_events_buffer = &data.m_buffer;
+						CNetGamePlayer* receiver = (*g_pointers->m_network_player_mgr)->m_local_net_player;
+						while (packed_events_buffer->GetMaxDataLength() - packed_events_buffer->m_bitsRead >= 39)
+						{
+							uint32_t event_id{}, event_index{}, handled_bitset{}, buffer_size_in_bits{}, unk1{}, buffer_size{};
+							packed_events_buffer->ReadDword(&event_id, 0x7);
+							packed_events_buffer->ReadDword(&event_index, 0x9);
+							packed_events_buffer->ReadDword(&handled_bitset, 0x8);
+							packed_events_buffer->ReadDword(&buffer_size_in_bits, 0xF);
+							packed_events_buffer->ReadDword(&unk1, 0x1);
+							if (unk1)
+								packed_events_buffer->ReadDword(&buffer_size, 0x10);
+							uint8_t buffer[4096]{};
+							if (buffer_size_in_bits)
+								packed_events_buffer->ReadArray(buffer, buffer_size_in_bits);
+							rage::datBitBuffer received_event_buffer(buffer, buffer_size_in_bits);
+							received_event_buffer.m_maxBit = buffer_size_in_bits + 1;
+							hooks::received_event(*g_pointers->m_msg_packed_events, player->get_net_game_player(), receiver, event_id, event_index, handled_bitset, buffer_size, &received_event_buffer);
+						}
+						return false;
+					}
+				} break;
 				case rage::eNetMessage::CMsgScriptMigrateHost:
 				{
 					if (std::chrono::system_clock::now() - player->m_last_transition_msg_sent < 200ms)

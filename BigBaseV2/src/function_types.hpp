@@ -42,7 +42,7 @@ namespace big::functions
 	// Bitbuffer read/write END
 	// Received Event Signatures START
 	using send_event_ack = void(*)(CMsgPackedEvents* packed_events, CNetGamePlayer* source_player, CNetGamePlayer* target_player, int event_index, int event_handled_bitset);
-	using read_msg_packed_events = bool(*)(CMsgPackedEvents* data, void* bitbufferData, uint32_t bitbufferSize, uint32_t* finalSize);
+	using read_msg_packed_events = bool(*)(CMsgPackedEvents* packed_events, void* bitbuffer_data, uint32_t bitbuffer_size, uint32_t* final_size);
 	// Received Event Signatures END
 
 	//Sync signatures START
