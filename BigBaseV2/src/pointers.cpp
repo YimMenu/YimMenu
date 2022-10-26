@@ -221,7 +221,7 @@ namespace big
 		// Get Script Handle
 		main_batch.add("GSH", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr)
 		{
-			m_get_script_handle = ptr.as<functions::get_script_handle_t>();
+			m_get_script_handle = ptr.as<functions::get_script_handle>();
 		});
 
 		// Blame Explode
