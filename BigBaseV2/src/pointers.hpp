@@ -50,6 +50,7 @@ namespace big
 		PVOID m_native_return;
 		PVOID m_network_group_override;
 		PVOID m_get_label_text;
+		functions::multiplayer_chat_filter* m_multiplayer_chat_filter{};
 
 		FriendRegistry* m_friend_registry{};
 

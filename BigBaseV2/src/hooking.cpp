@@ -25,6 +25,9 @@ namespace big
 
 		// Get Label Text
 		m_get_label_text("GLT", g_pointers->m_get_label_text, &hooks::get_label_text),
+	
+		// Multiplayer chat filter
+		m_multiplayer_chat_filter("MCF", g_pointers->m_multiplayer_chat_filter, &hooks::multiplayer_chat_filter),
 
 		// GTA Thead Start
 		m_gta_thread_start_hook("GTS", g_pointers->m_gta_thread_start, &hooks::gta_thread_start),
@@ -79,6 +82,7 @@ namespace big
 
 		m_run_script_threads_hook.enable();
 		m_get_label_text.enable();
+		m_multiplayer_chat_filter.enable();
 		m_gta_thread_start_hook.enable();
 		m_gta_thread_kill_hook.enable();
 		m_network_group_override.enable();
@@ -115,6 +119,7 @@ namespace big
 		m_network_group_override.disable();
 		m_gta_thread_kill_hook.disable();
 		m_gta_thread_start_hook.disable();
+		m_multiplayer_chat_filter.disable();
 		m_get_label_text.disable();
 		m_run_script_threads_hook.disable();
 

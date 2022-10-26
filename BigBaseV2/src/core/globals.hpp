@@ -175,6 +175,7 @@ namespace big
 			} custom_time;
 			bool join_queued = false;
 			rage::rlSessionInfo info;
+			bool disable_chat_filter = false;
 		};
 
 		struct settings {

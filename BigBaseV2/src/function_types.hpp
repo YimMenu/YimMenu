@@ -14,6 +14,8 @@ namespace big::functions
 
 	using ptr_to_handle = Entity(*)(void* entity);
 	using get_script_handle_t = uint64_t(*)(int64_t);
+	
+	using multiplayer_chat_filter = int(__int64 chat_type, const char* input, const char** output);
 
 	using get_gameplay_cam_coords = Vector3(*)();
 
