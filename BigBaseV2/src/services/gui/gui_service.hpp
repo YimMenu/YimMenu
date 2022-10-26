@@ -25,6 +25,7 @@ namespace big
 
 		WORLD,
 		SPAWN_PED,
+		CHANGE_TIME_AND_WEATHER,
 
 		NETWORK,
 		SESSION,
@@ -74,6 +75,7 @@ namespace big
 			}}},
 			{ tabs::WORLD, { "World", nullptr, {
 				{ tabs::SPAWN_PED, { "Spawn Ped", view::spawn_ped }},
+				{ tabs::CHANGE_TIME_AND_WEATHER, { "Change Time And Weather", view::change_time_and_weather }},
 			}}},
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},
