@@ -17,7 +17,6 @@ namespace memory
 		bool contains(handle h);
 
 		handle scan(pattern const& sig);
-		handle bruteforce_scan(pattern const& sig);
 		std::vector<handle> scan_all(pattern const& sig);
 	protected:
 		handle m_base;
