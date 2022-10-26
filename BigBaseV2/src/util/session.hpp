@@ -3,6 +3,8 @@
 #include "script_global.hpp"
 #include "script.hpp"
 #include "natives.hpp"
+#include "util/misc.hpp"
+#include "util/globals.hpp"
 #include "gta/joaat.hpp"
 #include "rage/rlSessionByGamerTaskResult.hpp"
 #include "pointers.hpp"
@@ -37,6 +39,22 @@ namespace big::session
 		*script_global(262145).at(4723).as<bool*>() = g->session.local_weather == 13;
 	}
 
+	inline void set_fm_event_index(int index)
+	{
+		int idx = index / 32;
+		int bit = index % 32;
+		misc::set_bit(globals::gsbd_fm_events.at(11).at(341).at(idx, 1).as<int*>(), bit);
+		misc::set_bit(globals::gsbd_fm_events.at(11).at(348).at(idx, 1).as<int*>(), bit);
+		misc::set_bit(globals::gpbd_fm_3.at(self::id, globals::size::gpbd_fm_3).at(10).at(205).at(idx, 1).as<int*>(), bit);
+	}
+
+	inline void force_thunder()
+	{
+		session::set_fm_event_index(9);
+		session::set_fm_event_index(10);
+		session::set_fm_event_index(11);
+  }
+  
 	inline void join_by_rockstar_id(uint64_t rid)
 	{
 		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 ||

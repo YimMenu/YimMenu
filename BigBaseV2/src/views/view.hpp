@@ -38,6 +38,7 @@ namespace big
 		static void persist_car();
 		static void fun_vehicle();
 		static void spawn_ped();
+		static void time_and_weather();
 		static void spoofing();
 		static void teleport();
 		static void view_player();
