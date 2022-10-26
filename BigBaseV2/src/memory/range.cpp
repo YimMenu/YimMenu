@@ -106,8 +106,8 @@ namespace memory
 
 		return true;
 	}
-
-	handle range::bruteforce_scan(pattern const& sig)
+	
+	handle range::bruteforce_scan(pattern const& sig)	
 	{
 		auto data = sig.m_bytes.data();
 		auto length = sig.m_bytes.size();
@@ -123,7 +123,7 @@ namespace memory
 
 		return nullptr;
 	}
-
+	
 	std::vector<handle> range::scan_all(pattern const &sig)
 	{
 		std::vector<handle> result{};

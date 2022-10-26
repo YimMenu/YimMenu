@@ -177,8 +177,8 @@ namespace big
 					return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_WHE_B_0");
 			}
 			if (mod >= mod_count / 2)
-				//return fmt::format("{} {}", HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CHROME"), HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod))).c_str(); //Bug with FMT library? Returns Chrome Chrome...
-				return fmt::format("Chrome {}", HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod))).c_str();
+				//return std::format("{} {}", HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CHROME"), HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod))).c_str(); //Bug with FMT library? Returns Chrome Chrome...
+				return std::format("Chrome {}", HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod))).c_str();
 			else
 				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod));
 		}
@@ -186,17 +186,17 @@ namespace big
 		switch (mod_slot)
 		{
 		case MOD_ARMOR:
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(fmt::format("CMOD_ARM_{}", (mod + 1)).c_str());
+			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(std::format("CMOD_ARM_{}", (mod + 1)).c_str());
 		case MOD_BRAKES:
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(fmt::format("CMOD_BRA_{}", (mod + 1)).c_str());
+			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(std::format("CMOD_BRA_{}", (mod + 1)).c_str());
 		case MOD_ENGINE:
 			if (mod == -1)
 				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_ARM_0");
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(fmt::format("CMOD_ENG_{}", (mod + 1)).c_str());
+			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(std::format("CMOD_ENG_{}", (mod + 1)).c_str());
 		case MOD_SUSPENSION:
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(fmt::format("CMOD_SUS_{}", (mod + 1)).c_str());
+			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(std::format("CMOD_SUS_{}", (mod + 1)).c_str());
 		case MOD_TRANSMISSION:
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(fmt::format("CMOD_GBX_{}", (mod + 1)).c_str());
+			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(std::format("CMOD_GBX_{}", (mod + 1)).c_str());
 		}
 
 

@@ -36,16 +36,15 @@ namespace big
 
 		if (g_pointers->m_get_screen_coords_for_world_coords(player_pos.data, &screen_x, &screen_y))
 		{
-			const float esp_x = (float)*g_pointers->m_resolution_x * screen_x;
-			const float esp_y = (float)*g_pointers->m_resolution_y * screen_y;
-
-			// const float esp_side_x = esp_x + (67.5f * multplr); // unused?
+			const auto esp_x = (float)*g_pointers->m_resolution_x * screen_x;
+			const auto esp_y = (float)*g_pointers->m_resolution_y * screen_y;
 
 			std::string name_str;
 			ImVec2 name_pos = { esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 20.f };
 			ImU32 esp_color = g->esp.default_color;
 
-			if (plyr->is_friend()) {
+			if (plyr->is_friend())
+			{
 				esp_color = g->esp.friend_color;
 			}
 			else if (g->esp.change_esp_color_from_dist) {
@@ -55,8 +54,8 @@ namespace big
 					esp_color = g->esp.enemy_near_color;
 			}
 
-			float armor_perc = plyr->get_ped()->m_armor / 100.f;
-			float health_perc = plyr->get_ped()->m_health / (plyr->get_ped()->m_maxhealth + 0.001f);
+			const auto armor_perc = plyr->get_ped()->m_armor / 50.f;
+			const auto health_perc = plyr->get_ped()->m_health / (plyr->get_ped()->m_maxhealth + 0.001f);
 
 			if (distance < g->esp.tracer_render_distance[1] && distance > g->esp.tracer_render_distance[0] && g->esp.tracer)
 				draw_list->AddLine({ (float)*g_pointers->m_resolution_x * g->esp.tracer_draw_position[0], (float)*g_pointers->m_resolution_y * g->esp.tracer_draw_position[1] }, { esp_x, esp_y }, esp_color);
@@ -67,7 +66,8 @@ namespace big
 			if (g->esp.name)
 				name_str = plyr->get_name();
 
-			if (g->esp.distance) {
+			if (g->esp.distance)
+			{
 				if (g->esp.name)
 					name_str += " | ";
 				name_str += std::to_string((int)distance);

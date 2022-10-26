@@ -10,7 +10,7 @@ namespace big
 		if (g->notifications.gta_thread_kill.log)
 			LOG(INFO) << "Script Thread '" << thread->m_name << "' terminated.";
 		if (g->notifications.gta_thread_kill.notify)
-			g_notification_service->push("Script Thread Termination", fmt::format("Script Thread '{}' terminated.", thread->m_name));
+			g_notification_service->push("Script Thread Termination", std::format("Script Thread '{}' terminated.", thread->m_name));
  
 		g_native_hooks->do_cleanup_for_thread(thread);
 

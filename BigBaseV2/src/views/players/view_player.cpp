@@ -11,14 +11,15 @@ namespace big
 {
 	void view::view_player() {
 
-		std::string title = fmt::format("Player Options: {}", g_player_service->get_selected()->get_name());
+		std::string title = std::format("Player Options: {}", g_player_service->get_selected()->get_name());
 		
 		ImGui::Text(title.c_str());
 		ImGui::Checkbox("Spectate", &g->player.spectating);
 		
 		if (g_player_service->get_selected()->is_valid())
 		{
-			if (ImGui::TreeNode("Misc")) {
+			if (ImGui::TreeNode("Misc"))
+			{
 				components::button("Steal Outfit", [] {
 					ped::steal_outfit(
 						PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
@@ -166,8 +167,8 @@ namespace big
 				ImGui::TreePop();
 			}
 
-			if (ImGui::TreeNode("Teleport")) {
-
+			if (ImGui::TreeNode("Teleport"))
+			{
 				components::button("Teleport", [] {
 					teleport::to_player(g_player_service->get_selected()->id());
 				});

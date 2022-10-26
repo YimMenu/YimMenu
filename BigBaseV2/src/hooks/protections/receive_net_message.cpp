@@ -49,7 +49,7 @@ namespace big
 					{
 						if (player->m_num_failed_transition_attempts++ == 20)
 						{
-							g_notification_service->push_error("Protections", fmt::format("{} tried to OOM kick you!", player->get_name()));
+							g_notification_service->push_error("Protections", std::format("{} tried to OOM kick you!", player->get_name()));
 						}
 						return true;
 					}
@@ -83,7 +83,7 @@ namespace big
 					}
 					if (player && pl && player->id() != pl->id() && count == 1 && frame->m_msg_id == -1)
 					{
-						g_notification_service->push_error("Warning!", fmt::format("{} breakup kicked {}!", player->get_name(), pl->get_name()));
+						g_notification_service->push_error("Warning!", std::format("{} breakup kicked {}!", player->get_name(), pl->get_name()));
 					}
 					break;
 				}

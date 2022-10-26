@@ -1,5 +1,4 @@
 #include "fiber_pool.hpp"
-#include "gui/handling/handling_tabs.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
 #include "util/mobile.hpp"
@@ -12,13 +11,16 @@ namespace big
 		components::button("MMI Fix All PV", [] {
 			int amount_fixed = mobile::mors_mutual::fix_all();
 			g_notification_service->push("Mobile",
-				fmt::format("{} vehicle{} been fixed.", amount_fixed, amount_fixed == 1 ? " has" : "s have")
+				std::format("{} vehicle{} been fixed.", amount_fixed, amount_fixed == 1 ? " has" : "s have")
 			);
 		});
 		ImGui::SameLine();
 		components::button("Repair", [] {
 			vehicle::repair(self::veh);
 		});
+
+		ImGui::SameLine();
+		ImGui::Checkbox("Keep Vehicle Repaired", &g->vehicle.keep_vehicle_repaired);
 
 		ImGui::Separator();
 

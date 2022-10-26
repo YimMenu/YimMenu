@@ -14,44 +14,34 @@ namespace big
 {
 	static void player_button(const player_ptr& plyr)
 	{
-		bool playerSelected = plyr == g_player_service->get_selected();
-
-		bool isHost = false;
-		bool isFriend = false;
-		bool isInVehicle = false;
-
-		if (plyr->is_valid()) {
-			isHost = plyr->is_host();
-			isFriend = plyr->is_friend();
-			isInVehicle = (plyr->get_ped() != nullptr) && 
-				(plyr->get_ped()->m_ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING);
-		}
+		bool selected_player = plyr == g_player_service->get_selected();
 
 		// generate icons string
-		std::string playerIcons = std::string(isHost ? FONT_ICON_HOST : FONT_ICON_CLIENT) +
-			std::string(isFriend ? FONT_ICON_FRIEND : FONT_ICON_NOTFRIEND) +
-			std::string(isInVehicle ? FONT_ICON_VEHICLE : FONT_ICON_WALK);
+		std::string player_icons;
+		if (plyr->is_host())
+			player_icons += FONT_ICON_HOST;
+		if (plyr->is_friend())
+			player_icons += FONT_ICON_FRIEND;
+		if (const auto ped = plyr->get_ped(); ped != nullptr && ped->m_ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING)
+			player_icons += FONT_ICON_VEHICLE;
 
-		const char* playerIconsCStr = playerIcons.c_str();
-
+		const auto player_iconsc = player_icons.c_str();
+		const auto player_icons_end = player_iconsc + player_icons.size();
 
 		// calculate icons width
-		ImGuiWindow* window = ImGui::GetCurrentWindow();
+		const auto window = ImGui::GetCurrentWindow();
 		ImGui::PushFont(g->window.font_icon);
-		ImVec2 iconsSize = ImGui::CalcTextSize(playerIconsCStr, playerIconsCStr + playerIcons.size());
-		ImVec2 iconsPos(window->DC.CursorPos.x + 300.0f - 32.0f - iconsSize.x, window->DC.CursorPos.y + 2.0f);
-		ImRect iconsBox(iconsPos, iconsPos + iconsSize);
+		const auto icons_size = ImGui::CalcTextSize(player_iconsc, player_icons_end);
+		const ImVec2 icons_pos(window->DC.CursorPos.x + 300.0f - 32.0f - icons_size.x, window->DC.CursorPos.y + 2.0f);
+		const ImRect icons_box(icons_pos, icons_pos + icons_size);
 		ImGui::PopFont();
 
-
-		if (playerSelected)
-		{
+		if (selected_player)
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
-		}
 
 		ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, { 0.0, 0.5 });
 		ImGui::PushID(plyr->id());
-		if (ImGui::Button(plyr->get_name(), {300.0f - 15.0f - ImGui::GetStyle().ScrollbarSize, 0.f}))
+		if (ImGui::Button(plyr->get_name(), { 300.0f - ImGui::GetStyle().ScrollbarSize, 0.f }))
 		{
 			g_player_service->set_selected(plyr);
 			g_gui_service->set_selected(tabs::PLAYER);
@@ -60,18 +50,20 @@ namespace big
 		ImGui::PopID();
 		ImGui::PopStyleVar();
 
-		if (playerSelected)
+		if (selected_player)
 			ImGui::PopStyleColor();
 
 		// render icons on top of the player button
 		ImGui::PushFont(g->window.font_icon);
-		ImGui::RenderTextWrapped(iconsBox.Min, playerIconsCStr, playerIconsCStr + playerIcons.size(), iconsSize.x);
+		ImGui::RenderTextWrapped(icons_box.Min, player_iconsc, player_icons_end, icons_size.x);
 		ImGui::PopFont();
 	}
 
 	void view::players()
 	{
-		if (!*g_pointers->m_is_session_started) return;
+		const auto player_count = g_player_service->players().size() + 1;
+
+		if (!*g_pointers->m_is_session_started && player_count < 2) return;
 		float window_pos = 110.f + g_gui_service->nav_ctr * ImGui::CalcTextSize("W").y + g_gui_service->nav_ctr * ImGui::GetStyle().ItemSpacing.y + g_gui_service->nav_ctr * ImGui::GetStyle().ItemInnerSpacing.y + ImGui::GetStyle().WindowPadding.y;
 
 		ImGui::SetNextWindowSize({ 300.f, 0.f });
@@ -80,8 +72,6 @@ namespace big
 
 		if (ImGui::Begin("playerlist", nullptr, window_flags))
 		{
-			const auto player_count = g_player_service->players().size() + 1;
-
 			float window_height = (ImGui::CalcTextSize("A").y + ImGui::GetStyle().ItemInnerSpacing.y * 2 + 6.0f) * player_count + 10.0f;
 			window_height = window_height + window_pos > (float)*g_pointers->m_resolution_y - 10.f ? (float)*g_pointers->m_resolution_y - (window_pos + 40.f) : window_height;
 
@@ -92,7 +82,8 @@ namespace big
 			{
 				player_button(g_player_service->get_self());
 
-				ImGui::Separator();
+				if (player_count > 1)
+					ImGui::Separator();
 
 				for (const auto& [_, player] : g_player_service->players())
 					player_button(player);

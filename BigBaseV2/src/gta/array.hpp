@@ -59,7 +59,7 @@ namespace rage
             m_size += size;
 
             auto i = old_capacity;
-            for (auto weapon_hash : value_array)
+            for (auto weapon_hash : array_value)
             {
                 m_data[i] = weapon_hash;
                 i++;

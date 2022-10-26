@@ -85,7 +85,7 @@ namespace big
 				{ tabs::GUI_SETTINGS, { "GUI", view::gui_settings}},
 				{ tabs::NOTIFICATION_SETTINGS, { "Notifications", view::notification_settings}},
 				{ tabs::PROTECTION_SETTINGS, { "Protection", view::protection_settings}},
-				{ tabs::DEBUG, { "Debug", view::debug }},
+				{ tabs::DEBUG, { "Debug", nullptr }},
 			}}},
 			{tabs::PLAYER, {"", view::view_player}}
 		};
