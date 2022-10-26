@@ -106,6 +106,9 @@ namespace big
 
 		Network** m_network;
 
+		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
+		functions::join_session_by_info m_join_session_by_info;
+
 		functions::reset_network_complaints m_reset_network_complaints{};
 
 		functions::fidevice_get_device m_fidevice_get_device{};

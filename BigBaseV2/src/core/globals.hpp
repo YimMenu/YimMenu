@@ -1,4 +1,5 @@
 #pragma once
+#include "rage/rlSessionInfo.hpp"
 #include "weapon/CAmmoInfo.hpp"
 #include "weapon/CWeaponInfo.hpp"
 #include "enums.hpp"
@@ -172,6 +173,8 @@ namespace big
 			{
 				int hour{}, minute{}, second{};
 			} custom_time;
+			bool join_queued = false;
+			rage::rlSessionInfo info;
 		};
 
 		struct settings {

@@ -4,6 +4,7 @@
 #include "freemode.hpp"
 #include "gta_util.hpp"
 #include "shop_controller.hpp"
+#include "network_session_host.hpp"
 
 namespace big
 {
@@ -18,6 +19,7 @@ namespace big
         add_native_detour(RAGE_JOAAT("carmod_shop"), 0x767FBC2AC802EF3D, carmod_shop::STAT_GET_INT);
         add_native_detour(RAGE_JOAAT("freemode"), 0x95914459A87EBA28, freemode::NETWORK_BAIL);
         add_native_detour(RAGE_JOAAT("shop_controller"), 0xDC38CC1E35B6A5D7, shop_controller::SET_WARNING_MESSAGE_WITH_HEADER);
+        add_native_detour(RAGE_JOAAT("maintransition"), 0x6F3D4ED9BEE4E61D, network::NETWORK_SESSION_HOST);
 
         for (const auto& native_detours_for_script : m_native_registrations)
             if (const auto thread = gta_util::find_script_thread(native_detours_for_script.first); thread != nullptr && thread->m_context.m_state == rage::eThreadState::running)
@@ -57,7 +59,7 @@ namespace big
         if (const auto& pair = m_native_registrations.find(ALL_SCRIPT_HASH); pair != m_native_registrations.end())
             for (const auto& native_hook_reg : pair->second)
                 native_replacements.insert(native_hook_reg);
-            
+
         // Functions that only need to be detoured for a specific script
         if (const auto& pair = m_native_registrations.find(script_hash); pair != m_native_registrations.end())
             for (const auto& native_hook_reg : pair->second)
