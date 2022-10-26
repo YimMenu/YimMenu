@@ -32,6 +32,13 @@ namespace big
 		BLACK = 30
 	};
 
+	struct log_entry
+	{
+		LogColor color;
+		LEVELS level;
+		std::string m_message;
+	};
+
 #define AddColorToStream(color) "\x1b[" << int(color) << "m"
 #define ResetStreamColor "\x1b[" << int(LogColor::RESET) << "m"
 #define HEX_TO_UPPER(value) "0x" << std::hex << std::uppercase << (DWORD64)value << std::dec << std::nouppercase
@@ -99,6 +106,11 @@ namespace big
 		{
 			m_file_out << str.str() << '\n';
 		}
+
+		std::vector<log_entry> get_messages()
+		{
+			return m_messages;
+		}
 	private:
 		void create_backup()
 		{
@@ -158,6 +170,13 @@ namespace big
 					g_log->m_console_out << log.get().toString(log_sink::format_console) << std::flush;
 
 				g_log->m_file_out << log.get().toString(log_sink::format_file) << std::flush;
+
+				g_log->m_messages.push_back
+				({
+					log_sink::get_color(log.get()._level),
+					log.get()._level,
+					log.get().toString(log_sink::format_file)
+				});
 			}
 
 			static LogColor get_color(const LEVELS level)
@@ -214,6 +233,7 @@ namespace big
 		DWORD m_original_console_mode;
 		HANDLE m_console_handle;
 
+		std::vector<log_entry> m_messages;
 		std::ofstream m_console_out;
 		std::ofstream m_file_out;
 

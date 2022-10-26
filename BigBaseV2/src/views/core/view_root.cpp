@@ -14,6 +14,9 @@ namespace big
 		if (g->window.users)
 			view::players();
 
+		if (g->window.log)
+			view::log();
+
 		if (g->window.demo)
 			ImGui::ShowDemoWindow(&g->window.demo);
 

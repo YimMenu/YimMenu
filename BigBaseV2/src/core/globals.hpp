@@ -338,6 +338,7 @@ namespace big
 			bool overlay = false;
 			bool chat = false;
 			bool demo = false;
+			bool log = false;
 
 			ImU32 color = 3357612055;
 			float gui_scale = 1.f;
@@ -715,6 +716,7 @@ namespace big
 			this->window.users = j["window"]["users"];
 			this->window.player = j["window"]["player"];
 			this->window.demo = j["window"]["demo"];
+			this->window.log = j["window"]["log"];
 
 			this->context_menu.enabled = j["context_menu"]["enabled"];
 			this->context_menu.allowed_entity_types = j["context_menu"]["allowed_entity_types"];
@@ -1048,7 +1050,8 @@ namespace big
 						{ "main", this->window.main },
 						{ "users", this->window.users },
 						{ "player", this->window.player },
-						{ "demo", this->window.demo }
+						{ "demo", this->window.demo },
+						{ "log", this->window.log }
 					}
 				},
 				{

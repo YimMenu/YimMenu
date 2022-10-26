@@ -66,6 +66,7 @@ namespace big
 		static void chat_tabs();
 		static void chat();
 		static void chat_dm();
+		static void log();
 
 		// later calls will be drawn over earlier calls
 		static void always()
