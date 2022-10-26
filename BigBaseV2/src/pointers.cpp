@@ -328,6 +328,12 @@ namespace big
 		{
 			m_get_label_text = ptr.sub(19).as<PVOID>();
 		});
+		
+		// Multiplayer chat filter
+		main_batch.add("MCF", "E8 ? ? ? ? 83 F8 FF 75 B9", [this](memory::handle ptr)
+		{
+			m_multiplayer_chat_filter = ptr.add(1).rip().as<decltype(m_multiplayer_chat_filter)>();
+		});
 
 		// Network
 		main_batch.add("N", "48 8B 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 84 C0 75 17 48 8B 0D ? ? ? ? 48 8B D7", [this](memory::handle ptr)
