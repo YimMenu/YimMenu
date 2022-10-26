@@ -4,7 +4,7 @@
 
 namespace big
 {
-	void view::change_time_and_weather()
+	void view::time_and_weather()
 	{
 		if (ImGui::TreeNode("Local Time"))
 		{
