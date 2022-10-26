@@ -27,11 +27,11 @@ namespace big
 	{
 		if (frame->get_event_type() == rage::netConnection::InFrame::EventType::FrameReceived)
 		{
-			rage::datBitBuffer buffer((uint8_t*)frame->m_data, frame->m_length);
+			rage::datBitBuffer buffer(frame->m_data, frame->m_length);
 			buffer.m_flagBits = 1;
-			rage::eNetMessage msgType;
-			player_ptr player;
-			for (std::uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_player_count; i++)
+			rage::eNetMessage msg_type{};
+			player_ptr player{};
+			for (uint32_t i{}; i != gta_util::get_network()->m_game_session_ptr->m_player_count; ++i)
 			{
 				if (gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_peer_id_2 == frame->m_peer_id)
 				{
@@ -39,9 +39,9 @@ namespace big
 					break;
 				}
 			}
-			if (player && get_msg_type(msgType, buffer))
+			if (player && get_msg_type(msg_type, buffer))
 			{
-				switch (msgType)
+				switch (msg_type)
 				{
 				case rage::eNetMessage::CMsgScriptMigrateHost:
 				{
@@ -62,10 +62,10 @@ namespace big
 				}
 				case rage::eNetMessage::CMsgRemoveGamersFromSessionCmd:
 				{
-					player_ptr pl;
-					uint64_t session_id;
+					player_ptr pl{};
+					uint64_t session_id{};
 					buffer.ReadQWord(&session_id, 64);
-					uint32_t count;
+					uint32_t count{};
 					buffer.ReadDword(&count, 6);
 					pl = nullptr;
 					for (std::uint32_t i = 0; i < count; i++)
