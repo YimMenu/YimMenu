@@ -36,7 +36,7 @@ namespace big
 				std::transform(lower_display_name.begin(), lower_display_name.end(), lower_display_name.begin(), ::tolower);
 				if (lower_display_name.find(lower_search) != std::string::npos)
 				{
-					components::selectable(fmt::format("{}##{}: {}", display_name, item.first, item.second), false, [&item] {
+					components::selectable(std::format("{}##{}: {}", display_name, item.first, item.second), false, [&item] {
 						int flag = ANIM_FLAG_NORMAL;
 						if (flag_repeat) flag |= ANIM_FLAG_REPEAT;
 						if (flag_stop_last_frame) flag |= ANIM_FLAG_STOP_LAST_FRAME;
