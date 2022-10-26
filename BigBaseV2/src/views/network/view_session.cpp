@@ -25,5 +25,11 @@ namespace big
 			}
 			ImGui::EndListBox();
 		}
+		if (ImGui::TreeNode("Chat"))
+		{
+			ImGui::Checkbox("Disable Filter", &g->session.disable_chat_filter);
+
+			ImGui::TreePop();
+		}
 	}
 }
