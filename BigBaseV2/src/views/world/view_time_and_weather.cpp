@@ -19,12 +19,13 @@ namespace big
 
 			ImGui::TreePop();
 		}
+
 		if (ImGui::TreeNode("Local Weather"))
 		{
 			components::button("Clear Override", []
-				{
-					MISC::CLEAR_OVERRIDE_WEATHER();
-				});
+			{
+				MISC::CLEAR_OVERRIDE_WEATHER();
+			});
 
 			if (ImGui::ListBox("", &g->session.local_weather, session::weathers, 15))
 			{
@@ -38,5 +39,10 @@ namespace big
 
 			ImGui::TreePop();
 		}
+
+		components::button("Force Thunder", []
+		{
+			session::force_thunder();
+		});
 	}
 }

@@ -4,6 +4,16 @@
 
 namespace big::globals
 {
+	namespace size
+	{
+		constexpr int globalplayer_bd = 453;
+		constexpr int gpbd_fm_3 = 599;
+		constexpr int gpbd_fm_1 = 888;
+	}
+
+	static inline script_global gpbd_fm_3(1892703);
+	static inline script_global gsbd_fm_events(1920255);
+
 	inline void clear_wanted_player(Player target)
 	{
 		constexpr size_t arg_count = 3;
