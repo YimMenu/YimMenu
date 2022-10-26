@@ -41,7 +41,7 @@ namespace big::functions
 
 	// Bitbuffer read/write END
 	// Received Event Signatures START
-	using send_event_ack = void(*)(rage::netEventMgr* event_manager, CNetGamePlayer* source_player, CNetGamePlayer* target_player, int event_index, int event_handled_bitset);
+	using send_event_ack = void(*)(CMsgPackedEvents* packed_events, CNetGamePlayer* source_player, CNetGamePlayer* target_player, int event_index, int event_handled_bitset);
 	// Received Event Signatures END
 
 	//Sync signatures START

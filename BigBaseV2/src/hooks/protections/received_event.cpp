@@ -4,8 +4,8 @@
 
 namespace big
 {
-	void hooks::received_event(
-		rage::netEventMgr* event_manager,
+	bool hooks::received_event(
+		CMsgPackedEvents* packed_events,
 		CNetGamePlayer* source_player,
 		CNetGamePlayer* target_player,
 		uint16_t event_id,
@@ -17,16 +17,16 @@ namespace big
 	{
 		if (event_id > 91u)
 		{
-			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+			g_pointers->m_send_event_ack(packed_events, source_player, target_player, event_index, event_handled_bitset);
 
-			return;
+			return false;
 		}
 
-		const auto event_name = *(char**)((DWORD64)event_manager + 8i64 * event_id + 243376);
+		const auto event_name = *(char**)((DWORD64)packed_events + 8i64 * event_id + 243376);
 		if (event_name == nullptr || source_player == nullptr || source_player->m_player_id < 0 || source_player->m_player_id >= 32)
 		{
-			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-			return;
+			g_pointers->m_send_event_ack(packed_events, source_player, target_player, event_index, event_handled_bitset);
+			return false;
 		}
 
 		switch (static_cast<eNetworkEvents>(event_id))
@@ -53,9 +53,9 @@ namespace big
 			buffer->ReadDword(&increment_stat_event->m_amount, 0x20);
 			if (hooks::increment_stat_event(increment_stat_event.get(), source_player))
 			{
-				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				g_pointers->m_send_event_ack(packed_events, source_player, target_player, event_index, event_handled_bitset);
 
-				return;
+				return false;
 			}
 			buffer->Seek(0);
 			break;
@@ -74,14 +74,14 @@ namespace big
 				uint32_t action;
 				buffer->ReadDword(&action, 8);
 				if (action >= 15 && action <= 18) {
-					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+					g_pointers->m_send_event_ack(packed_events, source_player, target_player, event_index, event_handled_bitset);
 					if (g->notifications.received_event.vehicle_temp_action.log)
 						LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent TASK_VEHICLE_TEMP_ACTION crash.";
 					if (g->notifications.received_event.vehicle_temp_action.notify)
 						g_notification_service->push_warning("Protection",
 							std::format("{} sent TASK_VEHICLE_TEMP_ACTION crash.", source_player->get_name()));
 
-					return;
+					return false;
 				}
 			}
 			buffer->Seek(0);
@@ -96,9 +96,9 @@ namespace big
 
 			if (hooks::scripted_game_event(scripted_game_event.get(), source_player))
 			{
-				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				g_pointers->m_send_event_ack(packed_events, source_player, target_player, event_index, event_handled_bitset);
 
-				return;
+				return false;
 			}
 			buffer->Seek(0);
 
@@ -108,7 +108,7 @@ namespace big
 		{
 			if (source_player->m_player_id < 32)
 			{
-				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				g_pointers->m_send_event_ack(packed_events, source_player, target_player, event_index, event_handled_bitset);
 
 				if (g->notifications.received_event.clear_ped_task.log)
 					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent CLEAR_PED_TASKS event.";
@@ -118,7 +118,7 @@ namespace big
 						std::format("{} possible attempt at freezing entity.", source_player->get_name())
 					);
 
-				return;
+				return false;
 			}
 
 			break;
@@ -162,7 +162,7 @@ namespace big
 		}
 		case eNetworkEvents::CRequestControlEvent:
 		{
-			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+			g_pointers->m_send_event_ack(packed_events, source_player, target_player, event_index, event_handled_bitset);
 
 			if (g->notifications.received_event.request_control_event.log)
 				LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent modder event.";
@@ -172,12 +172,12 @@ namespace big
 					std::format("Denied player control request from {}", source_player->get_name())
 				);
 
-			return;
+			return false;
 		}
 		default:
 			break;
 		}
 
-		return g_hooking->m_received_event_hook.get_original<decltype(&received_event)>()(event_manager, source_player, target_player, event_id, event_index, event_handled_bitset, unk, buffer);
+		return true;
 	}
 }

@@ -39,9 +39,6 @@ namespace big
 		// Network Group Override
 		m_network_group_override("NGO", g_pointers->m_network_group_override, &hooks::network_group_override),
 
-		// Received Event
-		m_received_event_hook("RE", g_pointers->m_received_event, &hooks::received_event),
-
 		// Send NET Info to Lobby
 		m_send_net_info_to_lobby("SNITL", g_pointers->m_send_net_info_to_lobby, &hooks::send_net_info_to_lobby),
 
@@ -85,7 +82,6 @@ namespace big
 		m_network_player_mgr_init_hook.enable();
 		m_network_player_mgr_shutdown_hook.enable();
 		m_assign_physical_index_hook.enable();
-		m_received_event_hook.enable();
 		m_send_net_info_to_lobby.enable();
 		m_receive_net_message_hook.enable();
 		m_get_network_event_data_hook.enable();
@@ -108,7 +104,6 @@ namespace big
 		m_get_network_event_data_hook.disable();
 		m_receive_net_message_hook.disable();
 		m_send_net_info_to_lobby.disable();
-		m_received_event_hook.disable();
 		m_assign_physical_index_hook.disable();
 		m_network_player_mgr_init_hook.disable();
 		m_network_player_mgr_shutdown_hook.disable();

@@ -35,8 +35,8 @@ namespace big
 
 		static void network_group_override(std::int64_t a1, std::int64_t a2, std::int64_t a3);
 
-		static void received_event(
-			rage::netEventMgr* event_manager,
+		static bool received_event(
+			CMsgPackedEvents* packed_events,
 			CNetGamePlayer* source_player,
 			CNetGamePlayer* target_player,
 			uint16_t event_id,
@@ -109,7 +109,6 @@ namespace big
 
 		detour_hook m_assign_physical_index_hook;
 
-		detour_hook m_received_event_hook;
 		detour_hook m_received_clone_sync_hook;
 
 		detour_hook m_send_net_info_to_lobby;

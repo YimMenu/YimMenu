@@ -29,7 +29,6 @@ namespace rage
 	class netPlayerMgr;
 
 	class netGameEvent;
-	class netEventMgr;
 
 	class netSyncTree;
 
@@ -69,3 +68,4 @@ class CNetGamePlayer;
 class CNetworkPlayerMgr;
 class CPlayerInfo;
 class CNetworkObjectMgr;
+class CMsgPackedEvents;
