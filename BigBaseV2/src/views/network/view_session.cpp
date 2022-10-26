@@ -13,7 +13,7 @@ namespace big
 		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 ||
 			STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
 		{
-			notify::above_map("Cannot RID join now");
+			g_notification_service->push_error("RID Joiner", "Player switch in progress, wait a bit.");
 			return;
 		}
 
@@ -30,26 +30,25 @@ namespace big
 			{
 				g->session.join_queued = true;
 				g->session.info = result.m_session_info;
-				big::session::join_type({ eSessionType::NEW_PUBLIC });
+				session::join_type({ eSessionType::NEW_PUBLIC });
 				if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
 				{
 					g->session.join_queued = false;
-					notify::above_map("RID join failed, unable to launch maintransition");
+					g_notification_service->push_error("RID Joiner", "Unable to launch maintransition");
 				}
 				return;
 			}
 		}
 
-		notify::above_map("RID join failed");
+		g_notification_service->push_error("RID Joiner", "Target Player is offline?");
 	}
 
 	void view::session()
 	{
-		static char rid_text[13] = "";
-		ImGui::InputText("Input RID", rid_text, sizeof(rid_text));
+		static uint64_t rid = 0;
+		ImGui::InputScalar("Input RID", ImGuiDataType_U64, &rid);
 		components::button("Join RID", []
 		{
-			const auto rid = strtoull(rid_text, NULL, 0);
 			join_by_rockstar_id(rid);
 		});
 
