@@ -8,5 +8,7 @@ namespace big
 		view::navigation();
 		view::players();
 		view::active_view();
+
+		debug::main();
 	}
 }

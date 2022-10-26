@@ -35,6 +35,11 @@ namespace big::gta_util
 		return *g_pointers->m_network_player_mgr;
 	}
 
+	inline Network* get_network()
+	{
+		return *g_pointers->m_network;
+	}
+
 	template <typename F, typename ...Args>
 	void execute_as_script(rage::joaat_t script_hash, F &&callback, Args &&...args)
 	{

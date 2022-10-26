@@ -10,7 +10,7 @@ workspace "BigBaseV2"
 
 	outputdir = "%{cfg.buildcfg}"
 
-	CppVersion = "C++17"
+	CppVersion = "C++20"
 	MsvcToolset = "v143"
 	WindowsSdkVersion = "10.0"
   
@@ -26,8 +26,8 @@ workspace "BigBaseV2"
 		{
 			"_CRT_SECURE_NO_WARNINGS",
 			"NOMINMAX",
-			"WIN32_LEAN_AND_MEAN",
-			"_WIN32_WINNT=0x601" -- Support Windows 7
+			"WIN32_LEAN_AND_MEAN"
+--			"_WIN32_WINNT=0x601" -- Support Windows 7
 		}
 
 		disablewarnings
@@ -51,28 +51,6 @@ workspace "BigBaseV2"
 		filter "not configurations:Debug"
 		    defines { "NDEBUG" }
 	end
-
-	project "fmtlib"
-		location "vendor/%{prj.name}"
-		kind "StaticLib"
-		language "C++"
-
-		targetdir ("bin/lib/" .. outputdir)
-		objdir ("bin/lib/int/" .. outputdir .. "/%{prj.name}")
-
-		files
-		{
-			"vendor/%{prj.name}/include/**.h",
-			"vendor/%{prj.name}/src/**.cc"
-		}
-
-		includedirs
-		{
-			"vendor/%{prj.name}/include"
-		}
-
-		DeclareMSVCOptions()
-		DeclareDebugOptions()
 	
 	project "g3log"
 		location "vendor/%{prj.name}"
@@ -87,8 +65,9 @@ workspace "BigBaseV2"
 		    "vendor/%{prj.name}/src"
 		}
 
-		if(file_exists("vendor\\g3log\\src\\g3log\\generated_definitions.hpp") == false) then
-			file = io.open("vendor\\g3log\\src\\g3log\\generated_definitions.hpp", "w")
+		g3log_file = "vendor/g3log/src/g3log/generated_definitions.hpp"
+		if(file_exists(g3log_file) == false) then
+			file = io.open(g3log_file, "w")
 			if(file == nil) then
 				premake.error("Failed to locate vendor directories. Try doing git pull --recurse-submodules.")
 			end
@@ -179,9 +158,32 @@ workspace "BigBaseV2"
 
 		DeclareMSVCOptions()
 		DeclareDebugOptions()
+		
+	project "pugixml"
+		location "vendor/%{prj.name}"
+		kind "StaticLib"
+		language "C++"
+
+		targetdir ("bin/lib/" .. outputdir)
+		objdir ("bin/lib/int/" .. outputdir .. "/%{prj.name}")
+		
+		files
+		{
+			"vendor/%{prj.name}/src/**.cpp",
+			"vendor/%{prj.name}/src/**.hpp"
+		}
+
+		includedirs
+		{
+			"vendor/%{prj.name}/src/"
+		}
+
+		DeclareMSVCOptions()
+		DeclareDebugOptions()
 
 	project "BigBaseV2"
 		location "BigBaseV2"
+		symbols "Off"
 		kind "SharedLib"
 		language "C++"
 
@@ -193,18 +195,20 @@ workspace "BigBaseV2"
 		    "%{prj.name}/src/**.hpp",
 		    "%{prj.name}/src/**.h",
 		    "%{prj.name}/src/**.cpp",
+		    "%{prj.name}/src/**.cc",
+		    "%{prj.name}/src/**.cxx",
 		    "%{prj.name}/src/**.asm"
 		}
 
 		includedirs
 		{
 			"%{prj.name}/src/",
-		    "vendor/fmtlib/include",
 		    "vendor/g3log/src",
 		    "vendor/GTAV-Classes",
 		    "vendor/ImGui",
 		    "vendor/json/single_include",
-		    "vendor/MinHook/include"
+		    "vendor/MinHook/include",
+		    "vendor/pugixml/src"
 		}
 
 		libdirs
@@ -214,10 +218,10 @@ workspace "BigBaseV2"
 
 		links
 		{
-		    "fmtlib",
 		    "g3log",
 		    "ImGui",
-		    "MinHook"
+		    "MinHook",
+			"pugixml"
 		}
 
 		pchheader "common.hpp"

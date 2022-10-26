@@ -30,8 +30,6 @@ namespace big
 		main_batch.add("PF", "48 8B 05 ? ? ? ? 48 8B 48 08 48 85 C9 74 52 8B 81", [this](memory::handle ptr)
 		{
 			m_ped_factory = ptr.add(3).rip().as<CPedFactory**>();
-
-			LOG(G3LOG_DEBUG) << "CPedFactory => [" << HEX_TO_UPPER(m_ped_factory) << "]";
 		});
 
 		// Network Player Manager
@@ -70,8 +68,6 @@ namespace big
 		main_batch.add("SG", "48 8D 15 ? ? ? ? 4C 8B C0 E8 ? ? ? ? 48 85 FF 48 89 1D", [this](memory::handle ptr)
 		{
 			m_script_globals = ptr.add(3).rip().as<std::int64_t**>();
-
-			LOG(G3LOG_DEBUG) << "ScriptGlobals => [" << HEX_TO_UPPER(m_script_globals) << "]";
 		});
 
 		// Game Script Handle Manager
@@ -92,8 +88,12 @@ namespace big
 			m_model_spawn_bypass = ptr.add(8).as<PVOID>();
 		});
 
-		// New pointers
-		
+		// World Model Spawn Bypass
+		main_batch.add("WMSB", "48 85 C0 0F 84 ? ? ? ? 8B 48 50", [this](memory::handle ptr)
+		{
+			m_world_model_spawn_bypass = ptr.as<PVOID>();
+		});
+
 		// Native Return Spoofer
 		main_batch.add("NRF", "FF E3", [this](memory::handle ptr)
 		{
@@ -119,7 +119,7 @@ namespace big
 		});
 
 		// Received Event Signatures START
-		
+
 		// Received Event Hook
 		main_batch.add("REH", "66 41 83 F9 ? 0F 83", [this](memory::handle ptr)
 		{
@@ -129,7 +129,7 @@ namespace big
 		// Send Event Acknowledge
 		main_batch.add("SEA", "48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 7A", [this](memory::handle ptr)
 		{
-				m_send_event_ack = ptr.sub(5).as<decltype(m_send_event_ack)>();
+			m_send_event_ack = ptr.sub(5).as<decltype(m_send_event_ack)>();
 		});
 
 		// Received Event Signatures END
@@ -159,7 +159,7 @@ namespace big
 		});
 
 		// Read Bitbuffer Array
-		main_batch.add("RBA", "48 89 5C 24 ? 57 48 83 EC 30 41 8B F8 4C", [this](memory::handle ptr) 
+		main_batch.add("RBA", "48 89 5C 24 ? 57 48 83 EC 30 41 8B F8 4C", [this](memory::handle ptr)
 		{
 			m_read_bitbuf_array = ptr.as<decltype(m_read_bitbuf_array)>();
 		});
@@ -203,16 +203,13 @@ namespace big
 		// Request Control of Entity PATCH
 		main_batch.add("RCOE-Patch", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", [this](memory::handle ptr)
 		{
-			m_spectator_check = ptr.add(0x13).as<PUSHORT>();
-			*m_spectator_check = 0x9090;
+			memory::byte_patch::make(ptr.add(0x13).as<std::uint16_t*>(), 0x9090)->apply();
 		});
 
 		// Replay Interface
 		main_batch.add("RI", "0F B7 44 24 ? 66 89 44 4E", [this](memory::handle ptr)
 		{
 			m_replay_interface = ptr.add(0x1F).rip().as<rage::CReplayInterface**>();
-
-			LOG(G3LOG_DEBUG) << "rage::CReplayInterface => [" << HEX_TO_UPPER(m_replay_interface) << "]";
 		});
 
 		// Pointer to Handle
@@ -221,16 +218,16 @@ namespace big
 			m_ptr_to_handle = ptr.sub(0x15).as<decltype(m_ptr_to_handle)>();
 		});
 
+		// Get Script Handle
+		main_batch.add("GSH", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr)
+		{
+			m_get_script_handle = ptr.as<functions::get_script_handle_t>();
+		});
+
 		// Blame Explode
 		main_batch.add("BE", "0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8", [this](memory::handle ptr)
 		{
 			m_blame_explode = ptr.as<decltype(m_blame_explode)>();
-		});
-
-		// Is DLC Present
-		main_batch.add("IDP", "48 89 5C 24 ? 57 48 83 EC ? 81 F9", [this](memory::handle ptr)
-		{
-			m_is_dlc_present = ptr.as<decltype(m_is_dlc_present)>();
 		});
 
 		// Send NET Info to Lobby
@@ -261,8 +258,6 @@ namespace big
 		main_batch.add("FR", "3B 0D ? ? ? ? 73 17", [this](memory::handle ptr)
 		{
 			m_friend_registry = ptr.add(2).rip().as<FriendRegistry*>();
-
-			LOG(G3LOG_DEBUG) << "FriendRegistry => [" << HEX_TO_UPPER(m_friend_registry) << "]";
 		});
 
 		// GET_SCREEN_COORDS_FROM_WORLD_COORDS
@@ -281,6 +276,12 @@ namespace big
 		main_batch.add("GPR", "48 8B C8 33 C0 48 85 C9 74 0A 44 8B C3 8B D7 E8", [this](memory::handle ptr)
 		{
 			m_give_pickup_rewards = ptr.sub(0x28).as<decltype(m_give_pickup_rewards)>();
+		});
+
+		// Write Player Gamer Data Node
+		main_batch.add("WPGDN", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 48 81 C1 ? ? ? ? 48 8B DA E8", [this](memory::handle ptr)
+		{
+			m_write_player_gamer_data_node = ptr.as<PVOID>();
 		});
 
 		// Network Group Override
@@ -320,8 +321,6 @@ namespace big
 		main_batch.add("MHT", "4C 03 05 ? ? ? ? EB 03", [this](memory::handle ptr)
 		{
 			m_model_table = ptr.add(3).rip().as<HashTable<CBaseModelInfo*>*>();
-
-			LOG(G3LOG_DEBUG) << "HashTable => [" << HEX_TO_UPPER(m_model_table) << "]";
 		});
 
 		// Get Label Text
@@ -329,38 +328,124 @@ namespace big
 		{
 			m_get_label_text = ptr.sub(19).as<PVOID>();
 		});
+		
+		// Multiplayer chat filter
+		main_batch.add("MCF", "E8 ? ? ? ? 83 F8 FF 75 B9", [this](memory::handle ptr)
+		{
+			m_multiplayer_chat_filter = ptr.add(1).rip().as<decltype(m_multiplayer_chat_filter)>();
+		});
+
+		// Network
+		main_batch.add("N", "48 8B 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 84 C0 75 17 48 8B 0D ? ? ? ? 48 8B D7", [this](memory::handle ptr)
+		{
+			m_network = ptr.add(3).rip().as<Network**>();
+		});
+
+		// Reset Network Complaints
+		main_batch.add("RENC", "E8 ? ? ? ? 8B 8B ? ? ? ? 03 CF", [this](memory::handle ptr)
+		{
+			m_reset_network_complaints = ptr.add(1).rip().as<functions::reset_network_complaints>();
+		});
+
+		// fiDevice Get Device
+		main_batch.add("FDGD", "41 B8 07 00 00 00 48 8B F1 E8", [this](memory::handle ptr)
+		{
+			m_fidevice_get_device = ptr.sub(0x1F).as<functions::fidevice_get_device>();
+		});
+
+		// fiDevices
+		main_batch.add("FDS", "74 1B 48 8D 0D ? ? ? ? 41 8B D6", [this](memory::handle ptr)
+		{
+			m_fidevices = ptr.add(5).rip().as<uintptr_t>();
+			m_fidevices_len = ptr.add(5).rip().add(8).as<uint16_t*>();
+		});
+
+		// fiPackfile ctor
+		main_batch.add("FPFC", "44 89 41 28 4C 89 41 38 4C 89 41 50 48 8D", [this](memory::handle ptr)
+		{
+			m_fipackfile_ctor = ptr.sub(0x1E).as<functions::fipackfile_ctor>();
+			m_fipackfile_instances = ptr.add(26).rip().as<rage::fiPackfile**>();
+		});
+
+		// fiPackfile open archive
+		main_batch.add("FPFOA", "48 8D 68 98 48 81 EC 40 01 00 00 41 8B F9", [this](memory::handle ptr)
+		{
+			m_fipackfile_open_archive = ptr.sub(0x18).as<functions::fipackfile_open_archive>();
+		});
+
+		// fiPackfile mount
+		main_batch.add("FPFM", "84 C0 74 1D 48 85 DB 74 0F 48", [this](memory::handle ptr)
+		{
+			m_fipackfile_mount = ptr.sub(0x1E).as<functions::fipackfile_mount>();
+		});
+
+		// fiPackfile unmount
+		main_batch.add("FPFUM", "E8 ? ? ? ? 84 C0 74 37 80 3D", [this](memory::handle ptr)
+		{
+			m_fipackfile_unmount = ptr.add(1).rip().as<functions::fipackfile_unmount>();
+		});
+
+		// fidevice unmount
+		main_batch.add("FPFUM", "E8 ? ? ? ? 84 C0 74 37 80 3D", [this](memory::handle ptr)
+		{
+			m_fipackfile_unmount = ptr.add(1).rip().as<functions::fipackfile_unmount>();
+		});
+
+		// game version + online version
+		main_batch.add("GVOV", "8B C3 33 D2 C6 44 24 20", [this](memory::handle ptr)
+		{
+			m_game_version = ptr.add(0x24).rip().as<const char*>();
+			m_online_version = ptr.add(0x24).rip().add(0x20).as<const char*>();
+		});
+
+		// Format Metric For Sending
+		main_batch.add("FMFS", "48 8B C4 48 89 58 ? 48 89 70 ? 48 89 78 ? 4C 89 70 ? 55 48 8D A8 ? ? ? ? 48 81 EC ? ? ? ? 48 83 3D", [this](memory::handle ptr)
+		{
+			m_format_metric_for_sending = ptr.as<PVOID>();
+		});
+
+		// Get Session By Gamer Handle
+		main_batch.add("SGSBGH", "E8 ? ? ? ? 84 C0 0F 84 ? ? ? ? 8B 05 ? ? ? ? 48 8D 4C 24", [this](memory::handle ptr)
+		{
+			m_start_get_session_by_gamer_handle = ptr.add(1).rip().as<functions::start_get_session_by_gamer_handle>();
+		});
+
+		// Join Session By Info
+		main_batch.add("JSBI", "E8 ? ? ? ? 0F B6 CB 84 C0 41 0F 44 CD", [this](memory::handle ptr)
+		{
+			m_join_session_by_info = ptr.add(1).rip().as<functions::join_session_by_info>();
+		});
 
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
 
 		/**
 		 * Freemode thread restorer through VM patch
-		*/
-
+		 */
 		if (auto pat1 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
 		{
-			*pat1.add(2).as<uint32_t*>() = 0xc9310272;
-			*pat1.add(6).as<uint16_t*>() = 0x9090;
+			memory::byte_patch::make(pat1.add(2).as<uint32_t*>(), 0xc9310272)->apply();
+			memory::byte_patch::make(pat1.add(6).as<uint16_t*>(), 0x9090)->apply();
 		}
 
 		if (auto pat2 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 49 03 fa"))
 		{
-			*pat2.add(2).as<uint32_t*>() = 0xc9310272;
-			*pat2.add(6).as<uint16_t*>() = 0x9090;
+			memory::byte_patch::make(pat2.add(2).as<uint32_t*>(), 0xc9310272)->apply();
+			memory::byte_patch::make(pat2.add(6).as<uint16_t*>(), 0x9090)->apply();
 		}
 
 		auto pat3 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 48 ff c7");
 		for (auto& handle : pat3)
 		{
-			*handle.add(2).as<uint32_t*>() = 0xd2310272;
-			*handle.add(6).as<uint16_t*>() = 0x9090;
+			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272)->apply();
+			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090)->apply();
 		}
 
 		auto pat4 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 49 03 fa");
 		for (auto& handle : pat4)
 		{
-			*handle.add(2).as<uint32_t*>() = 0xd2310272;
-			*handle.add(6).as<uint16_t*>() = 0x9090;
+			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272)->apply();
+			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090)->apply();
 		}
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);
@@ -373,7 +458,7 @@ namespace big
 
 	pointers::~pointers()
 	{
-		*m_spectator_check = 0x6A75;
+		memory::byte_patch::restore_all();
 
 		g_pointers = nullptr;
 	}

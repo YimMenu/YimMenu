@@ -50,12 +50,12 @@ namespace big::api
 
 			http::Request request(domain + path);
 
-			CPlayerInfo* player_info = g_local_player->m_player_info;
-			rage::netPlayerData& netData = player_info->m_net_player_data;
+			auto player_info = g_local_player->m_player_info;
+			auto& netData = player_info->m_net_player_data;
 
 			nlohmann::json body = {
 				{ "username", std::string(netData.m_name) },
-				{ "rockstar_id", netData.m_rockstar_id }
+				{ "rockstar_id", netData.m_gamer_handle_2.m_rockstar_id }
 			};
 
 			try

@@ -12,7 +12,7 @@ namespace big
 			return;
 		}
 
-		if (g_vehicle_service->get_active_profile(g_local_player->m_vehicle->m_handling->m_model_hash).empty())
+		if (g_vehicle_service->get_active_profile(g_local_player->m_vehicle->m_handling_data->m_model_hash).empty())
 		{
 			if (components::button("Save Profile"))
 			{

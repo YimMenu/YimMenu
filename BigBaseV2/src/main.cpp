@@ -31,6 +31,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		DisableThreadLibraryCalls(hmod);
 
 		g_hmodule = hmod;
+		g_is_steam = GetModuleHandle(L"steam_api64.dll") != NULL;
 		g_main_thread = CreateThread(nullptr, 0, [](PVOID) -> DWORD
 		{
 			while (!FindWindow(L"grcWindow", L"Grand Theft Auto V"))
@@ -49,7 +50,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				file_manager_instance->get_project_file("./cout.log")
 			);
 
-			EnableMenuItem(GetSystemMenu(FindWindowA(NULL, "YimMenu"), 0), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+			EnableMenuItem(GetSystemMenu(GetConsoleWindow(), 0), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 
 			try
 			{
@@ -86,7 +87,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				LOG(INFO) << "Registered service instances...";
 
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
-				
+
 				g_script_mgr.add_script(std::make_unique<script>(&backend::loop, "Backend Loop", false));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop, "Self"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop, "Weapon"));
@@ -102,11 +103,11 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu, "Context Menu"));
 				LOG(INFO) << "Scripts registered.";
 
-				auto native_hooks_instance = std::make_unique<native_hooks>();
-				LOG(INFO) << "Dynamic native hooker initialized.";
-
 				g_hooking->enable();
 				LOG(INFO) << "Hooking enabled.";
+
+				auto native_hooks_instance = std::make_unique<native_hooks>();
+				LOG(INFO) << "Dynamic native hooker initialized.";
 
 				g_running = true;
 

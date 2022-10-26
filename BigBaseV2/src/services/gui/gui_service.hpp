@@ -26,6 +26,7 @@ namespace big
 
 		WORLD,
 		SPAWN_PED,
+		TIME_AND_WEATHER,
 
 		NETWORK,
 		SESSION,
@@ -76,6 +77,7 @@ namespace big
 			}}},
 			{ tabs::WORLD, { "World", nullptr, {
 				{ tabs::SPAWN_PED, { "Spawn Ped", view::spawn_ped }},
+				{ tabs::TIME_AND_WEATHER, { "Time And Weather", view::time_and_weather }},
 			}}},
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},
@@ -87,7 +89,7 @@ namespace big
 				{ tabs::GUI_SETTINGS, { "GUI", view::gui_settings}},
 				{ tabs::NOTIFICATION_SETTINGS, { "Notifications", view::notification_settings}},
 				{ tabs::PROTECTION_SETTINGS, { "Protection", view::protection_settings}},
-				{ tabs::DEBUG, { "Debug", view::debug }},
+				{ tabs::DEBUG, { "Debug", nullptr }},
 			}}},
 			{tabs::PLAYER, {"", view::view_player}}
 		};

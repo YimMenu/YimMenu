@@ -32,7 +32,7 @@ namespace rage
 	class netEventMgr;
 
 	class netSyncTree;
-	
+
 	class netObject;
 	class netObjectMgrBase;
 
@@ -43,6 +43,12 @@ namespace rage
 	class fwRefAwareBase;
 	class fwExtensibleBase;
 	class fwArchetype;
+
+	class fiDevice;
+	class fiPackfile;
+
+	class rlSessionInfo;
+	class rlSessionByGamerTaskResult;
 }
 
 class GtaThread;
@@ -62,7 +68,9 @@ class CPickup;
 class CPedFactory;
 class CVehicleFactory;
 
+class Network;
 class CNetGamePlayer;
 class CNetworkPlayerMgr;
 class CPlayerInfo;
 class CNetworkObjectMgr;
+class CNetComplaintMgr;

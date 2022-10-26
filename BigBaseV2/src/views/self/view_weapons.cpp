@@ -20,7 +20,7 @@ namespace big
 		ImGui::Checkbox("Enable Special Ammo", &g->weapons.ammo_special.toggle);
 
 		eAmmoSpecialType selected_ammo = g->weapons.ammo_special.type;
-		eImpactType selected_impact = g->weapons.ammo_special.impactType;
+		eExplosionTag selected_explosion = g->weapons.ammo_special.explosion_tag;
 
 		if (ImGui::BeginCombo("Special Ammo", SPECIAL_AMMOS[(int)selected_ammo].name))
 		{
@@ -40,16 +40,16 @@ namespace big
 			ImGui::EndCombo();
 		}
 
-		if (ImGui::BeginCombo("Bullet Impact", BULLET_IMPACTS[selected_impact]))
+		if (ImGui::BeginCombo("Bullet Impact", BULLET_IMPACTS[selected_explosion]))
 		{
 			for (const auto& [type, name] : BULLET_IMPACTS)
 			{
-				if (ImGui::Selectable(name, type == selected_impact))
+				if (ImGui::Selectable(name, type == selected_explosion))
 				{
-					g->weapons.ammo_special.impactType = type;
+					g->weapons.ammo_special.explosion_tag = type;
 				}
 
-				if (type == selected_impact)
+				if (type == selected_explosion)
 				{
 					ImGui::SetItemDefaultFocus();
 				}
@@ -72,17 +72,19 @@ namespace big
 
 		ImGui::Checkbox("No Spread", &g->weapons.no_spread);
 
-		components::button("Get All Weapons", [] {
-			for (auto const& weapon : g_gta_data_service->get_weapon_arr())
+		components::button("Get All Weapons", []
+		{
+			for (const auto& [_, weapon] : g_gta_data_service->weapons())
 			{
-				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.hash, 9999, false);
+				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.m_hash, 9999, false);
 			}
 
 			constexpr auto parachute_hash = RAGE_JOAAT("GADGET_PARACHUTE");
 			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, parachute_hash, 0, true);
 		});
 		ImGui::SameLine();
-		components::button("Remove Current Weapon", [] {
+		components::button("Remove Current Weapon", []
+		{
 			Hash weaponHash;
 			WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weaponHash, 1);
 			if (weaponHash != RAGE_JOAAT("WEAPON_UNARMED"))

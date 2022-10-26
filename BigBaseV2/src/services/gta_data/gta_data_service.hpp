@@ -1,54 +1,81 @@
 #pragma once
-#include "file_manager/file.hpp"
-#include "vehicle_item.hpp"
+#include "cache_file.hpp"
 #include "ped_item.hpp"
+#include "vehicle_item.hpp"
 #include "weapon_item.hpp"
-#include "gta/joaat.hpp"
 
 namespace big
 {
-	class gta_data_service
+	enum class eGtaDataUpdateState
 	{
-		std::vector<std::string> m_vehicle_class_arr;
-		std::map<Hash, int> m_vehicle_hash_idx_map;
-		std::vector<vehicle_item> m_vehicle_item_arr;
-		const vehicle_item empty_vehicle_item = vehicle_item();
+		IDLE,
+		NEEDS_UPDATE,
+		WAITING_FOR_ONLINE,
+		UPDATING
+	};
 
-		std::vector<std::string> m_ped_type_arr;
-		std::map<Hash, int> m_ped_hash_idx_map;
-		std::vector<ped_item> m_ped_item_arr;
-		const ped_item empty_ped_item = ped_item();
+	using ped_map = std::map<std::string, ped_item>;
+	using vehicle_map = std::map<std::string, vehicle_item>;
+	using weapon_map = std::map<std::string, weapon_item>;
+	using string_vec = std::vector<std::string>;
 
-		std::vector<std::string> m_weapon_type_arr;
-		std::map<Hash, int> m_weapon_hash_idx_map;
-		std::vector<weapon_item> m_weapon_item_arr;
-		const weapon_item empty_weapon_item = weapon_item();
-
+	class gta_data_service final
+	{
 	public:
 		gta_data_service();
 		~gta_data_service();
 
-		const vehicle_item& find_vehicle_by_hash(Hash hash);
-		const std::vector<std::string>& get_vehicle_class_arr();
-		const std::vector<vehicle_item>& get_vehicle_arr();
+		bool cache_needs_update() const;
+		eGtaDataUpdateState state() const;
+		void update_in_online();
+		void update_now();
 
-		const ped_item& find_ped_by_hash(Hash hash);
-		const std::vector<std::string>& get_ped_type_arr();
-		const std::vector<ped_item>& get_ped_arr();
+		const ped_item& ped_by_hash(std::uint32_t hash);
+		const vehicle_item& vehicle_by_hash(std::uint32_t hash);
+		const weapon_item& weapon_by_hash(std::uint32_t hash);
 
-		const weapon_item& find_weapon_by_hash(Hash hash);
-		const std::vector<std::string>& get_weapon_type_arr();
-		const std::vector<weapon_item>& get_weapon_arr();
+		string_vec& ped_types();
+		string_vec& vehicle_classes();
+		string_vec& weapon_types();
+
+		ped_map& peds()
+		{ return m_peds; }
+		vehicle_map& vehicles()
+		{ return m_vehicles; }
+		weapon_map& weapons()
+		{ return m_weapons; }
 
 	private:
-		void load_from_file(
-			std::string file_path, std::string etag_path, std::string url, 
-			bool(gta_data_service::* load_func)(std::filesystem::path), std::string data_name
-		);
+		bool is_cache_up_to_date();
+		
+		void load_data();
+		void load_peds();
+		void load_vehicles();
+		void load_weapons();
 
-		bool load_vehicles(std::filesystem::path path);
-		bool load_peds(std::filesystem::path path);
-		bool load_weapons(std::filesystem::path path);
+		void rebuild_cache();
+
+	private:
+		cache_file m_peds_cache;
+		cache_file m_vehicles_cache;
+		cache_file m_weapons_cache;
+
+		// std::map is free sorting algo
+		ped_map m_peds;
+		vehicle_map m_vehicles;
+		weapon_map m_weapons;
+
+		string_vec m_ped_types;
+		string_vec m_vehicle_classes;
+		string_vec m_weapon_types;
+
+		eGtaDataUpdateState m_update_state;
+
+	private:
+		static constexpr ped_item empty_ped {};
+		static constexpr vehicle_item empty_vehicle {};
+		static constexpr weapon_item empty_weapon {};
+
 	};
 
 	inline gta_data_service* g_gta_data_service{};

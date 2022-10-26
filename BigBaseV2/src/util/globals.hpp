@@ -1,9 +1,19 @@
 #pragma once
+#include "pointers.hpp"
 #include "script_global.hpp"
-#include "util/system.hpp"
 
 namespace big::globals
 {
+	namespace size
+	{
+		constexpr int globalplayer_bd = 453;
+		constexpr int gpbd_fm_3 = 599;
+		constexpr int gpbd_fm_1 = 888;
+	}
+
+	static inline script_global gpbd_fm_3(1892703);
+	static inline script_global gsbd_fm_events(1920255);
+
 	inline void clear_wanted_player(Player target)
 	{
 		constexpr size_t arg_count = 3;
@@ -14,5 +24,10 @@ namespace big::globals
 		};
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
+	}
+
+	inline void disable_kill_trigger(bool toggle)
+	{
+		*script_global(2815059).at(6753).as<int*>() = toggle; // "TRI_WARP" 2nd nested if statement below this text in freemode.c
 	}
 }

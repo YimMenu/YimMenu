@@ -13,6 +13,7 @@ namespace big
 			g->attempt_save();
 			looped::system_self_globals();
 			looped::system_update_pointers();
+			looped::system_desync_kick_protection();
 
 			if (g_local_player != nullptr && !api::util::signed_in())
 			{
@@ -85,6 +86,7 @@ namespace big
 			looped::vehicle_is_targetable();
 			looped::vehicle_seatbelt();
 			looped::vehicle_speedo_meter();
+			looped::vehicle_keep_vehicle_repaired();
 
 			script::get_current()->yield();
 		}

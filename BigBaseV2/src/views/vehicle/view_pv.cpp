@@ -51,7 +51,7 @@ namespace big
 
 
 		static int selected_class = -1;
-		auto class_arr = g_gta_data_service->get_vehicle_class_arr();
+		const auto& class_arr = g_gta_data_service->vehicle_classes();
 
 		ImGui::SetNextItemWidth(300.f);
 		if (ImGui::BeginCombo("Vehicle Class", selected_class == -1 ? "ALL" : class_arr[selected_class].c_str()))
@@ -99,16 +99,16 @@ namespace big
 				{
 					const auto& label = it.first;
 					const auto& personal_veh = it.second;
-					auto item = g_gta_data_service->find_vehicle_by_hash(personal_veh->get_hash());
+					const auto& item = g_gta_data_service->vehicle_by_hash(personal_veh->get_hash());
 
-					std::string clazz = item.clazz;
+					std::string vehicle_class = item.m_vehicle_class;
 					std::string display_name = label;
-					std::string display_manufacturer = item.display_manufacturer;
+					std::string display_manufacturer = item.m_display_manufacturer;
 					std::transform(display_name.begin(), display_name.end(), display_name.begin(), ::tolower);
 					std::transform(display_manufacturer.begin(), display_manufacturer.end(), display_manufacturer.begin(), ::tolower);
 
 					if ((
-						selected_class == -1 || class_arr[selected_class] == clazz
+						selected_class == -1 || class_arr[selected_class] == vehicle_class
 					) && (
 						display_name.find(lower_search) != std::string::npos ||
 						display_manufacturer.find(lower_search) != std::string::npos

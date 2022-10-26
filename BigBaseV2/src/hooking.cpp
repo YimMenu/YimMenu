@@ -25,6 +25,9 @@ namespace big
 
 		// Get Label Text
 		m_get_label_text("GLT", g_pointers->m_get_label_text, &hooks::get_label_text),
+	
+		// Multiplayer chat filter
+		m_multiplayer_chat_filter("MCF", g_pointers->m_multiplayer_chat_filter, &hooks::multiplayer_chat_filter),
 
 		// GTA Thead Start
 		m_gta_thread_start_hook("GTS", g_pointers->m_gta_thread_start, &hooks::gta_thread_start),
@@ -38,9 +41,6 @@ namespace big
 
 		// Network Group Override
 		m_network_group_override("NGO", g_pointers->m_network_group_override, &hooks::network_group_override),
-		
-		// Is DLC Present
-		m_is_dlc_present_hook("IDP", g_pointers->m_is_dlc_present, &hooks::is_dlc_present),
 
 		// Received Event
 		m_received_event_hook("RE", g_pointers->m_received_event, &hooks::received_event),
@@ -55,7 +55,11 @@ namespace big
 		// Received clone sync
 		m_received_clone_sync_hook("RCS", g_pointers->m_received_clone_sync, &hooks::received_clone_sync),
 		//Get Network Event Data
-		m_get_network_event_data_hook("GNED", g_pointers->m_get_network_event_data, &hooks::get_network_event_data)
+		m_get_network_event_data_hook("GNED", g_pointers->m_get_network_event_data, &hooks::get_network_event_data),
+		m_write_player_gamer_data_node_hook("WPGDN", g_pointers->m_write_player_gamer_data_node, &hooks::write_player_gamer_data_node),
+
+		// Format Metric For Sending
+		m_format_metric_for_sending("FMFS", g_pointers->m_format_metric_for_sending, &hooks::format_metric_for_sending)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -78,6 +82,7 @@ namespace big
 
 		m_run_script_threads_hook.enable();
 		m_get_label_text.enable();
+		m_multiplayer_chat_filter.enable();
 		m_gta_thread_start_hook.enable();
 		m_gta_thread_kill_hook.enable();
 		m_network_group_override.enable();
@@ -85,11 +90,12 @@ namespace big
 		m_network_player_mgr_shutdown_hook.enable();
 		m_assign_physical_index_hook.enable();
 		m_received_event_hook.enable();
-		m_is_dlc_present_hook.enable();
 		m_send_net_info_to_lobby.enable();
 		m_receive_net_message_hook.enable();
 		m_get_network_event_data_hook.enable();
 		m_received_clone_sync_hook.enable();
+		m_write_player_gamer_data_node_hook.enable();
+		m_format_metric_for_sending.enable();
 
 		MH_ApplyQueued();
 
@@ -100,18 +106,20 @@ namespace big
 	{
 		m_enabled = false;
 
+		m_format_metric_for_sending.disable();
+		m_write_player_gamer_data_node_hook.disable();
 		m_received_clone_sync_hook.disable();
 		m_get_network_event_data_hook.disable();
 		m_receive_net_message_hook.disable();
 		m_send_net_info_to_lobby.disable();
 		m_received_event_hook.disable();
-		m_is_dlc_present_hook.disable();
 		m_assign_physical_index_hook.disable();
 		m_network_player_mgr_init_hook.disable();
 		m_network_player_mgr_shutdown_hook.disable();
 		m_network_group_override.disable();
 		m_gta_thread_kill_hook.disable();
 		m_gta_thread_start_hook.disable();
+		m_multiplayer_chat_filter.disable();
 		m_get_label_text.disable();
 		m_run_script_threads_hook.disable();
 
@@ -123,12 +131,13 @@ namespace big
 
 	bool hooks::run_script_threads(std::uint32_t ops_to_execute)
 	{
-		TRY_CLAUSE
+		g_native_invoker.cache_handlers();
+
+		if (g_running)
 		{
-			if (g_running)
-				g_script_mgr.tick();
-			return g_hooking->m_run_script_threads_hook.get_original<functions::run_script_threads>()(ops_to_execute);
-		} EXCEPT_CLAUSE
-		return false;
+			g_script_mgr.tick();
+		}
+
+		return g_hooking->m_run_script_threads_hook.get_original<functions::run_script_threads>()(ops_to_execute);
 	}
 }

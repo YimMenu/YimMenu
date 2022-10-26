@@ -37,6 +37,7 @@ namespace big
 
 		static void system_self_globals();
 		static void system_update_pointers();
+		static void system_desync_kick_protection();
 
 		static void vehicle_auto_drive();
 		static void vehicle_boost_behavior();
@@ -53,6 +54,7 @@ namespace big
 		static void vehicle_seatbelt();
 		static void vehicle_speedo_meter();
 		static void vehicle_turn_signals();
+		static void vehicle_keep_vehicle_repaired();
 
 		static void weapons_ammo_special_type();
 		static void weapons_cage_gun();
