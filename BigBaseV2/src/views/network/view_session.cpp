@@ -1,9 +1,6 @@
+#include "views/view.hpp"
 #include "fiber_pool.hpp"
 #include "util/session.hpp"
-#include "views/view.hpp"
-#include "pointers.hpp"
-#include "gta/joaat.hpp"
-#include "util/notify.hpp"
 
 namespace big
 {
