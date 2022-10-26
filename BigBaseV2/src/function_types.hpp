@@ -19,7 +19,7 @@ namespace big::functions
 	using increment_stat_event = bool(*)(uint64_t net_event_struct, int64_t sender, int64_t a3);
 
 	using ptr_to_handle = Entity(*)(void* entity);
-	using get_script_handle_t = uint64_t(*)(int64_t);
+	using get_script_handle = uint64_t(*)(int64_t);
 
 	using get_gameplay_cam_coords = Vector3(*)();
 
@@ -42,6 +42,7 @@ namespace big::functions
 	// Bitbuffer read/write END
 	// Received Event Signatures START
 	using send_event_ack = void(*)(CMsgPackedEvents* packed_events, CNetGamePlayer* source_player, CNetGamePlayer* target_player, int event_index, int event_handled_bitset);
+	using read_msg_packed_events = bool(*)(CMsgPackedEvents* data, void* bitbufferData, uint32_t bitbufferSize, uint32_t* finalSize);
 	// Received Event Signatures END
 
 	//Sync signatures START

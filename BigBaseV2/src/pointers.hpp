@@ -85,7 +85,8 @@ namespace big
 		// Bitbuffer Read/Write END
 
 		// Received Event Signatures START
-		PVOID m_received_event{};
+		functions::read_msg_packed_events m_read_msg_packed_events{};
+		functions::send_event_ack m_send_event_ack{};
 		functions::send_event_ack m_send_event_ack{};
 		// Received Event Signatures END
 
