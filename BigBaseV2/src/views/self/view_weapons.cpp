@@ -22,14 +22,7 @@ namespace big
 
 		if (ImGui::Checkbox("Bypass C4 Limit", &g->weapons.bypass_c4_limit))
 		{
-			if (g->weapons.bypass_c4_limit)
-			{
-				*g_pointers->m_bypass_max_count_of_active_sticky_bombs = 99;
-			}
-			else
-			{
-				*g_pointers->m_bypass_max_count_of_active_sticky_bombs = 4;
-			}
+			*g_pointers->m_bypass_max_count_of_active_sticky_bombs = g->weapons.bypass_c4_limit ? 99 : 4;
 		}
 
 		eAmmoSpecialType selected_ammo = g->weapons.ammo_special.type;
