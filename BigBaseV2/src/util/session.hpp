@@ -3,10 +3,11 @@
 #include "script_global.hpp"
 #include "script.hpp"
 #include "natives.hpp"
-#include "gta_util.hpp"
-#include "pointers.hpp"
-#include "rage/rlSessionInfo.hpp"
+#include "util/misc.hpp"
+#include "util/globals.hpp"
+#include "gta/joaat.hpp"
 #include "rage/rlSessionByGamerTaskResult.hpp"
+#include "pointers.hpp"
 
 namespace big::session
 {
@@ -38,12 +39,28 @@ namespace big::session
 		*script_global(262145).at(4723).as<bool*>() = g->session.local_weather == 13;
 	}
 
-	inline void join_by_rockstar_id(uint64_t rid) // Skidded from maybegreat48
+	inline void set_fm_event_index(int index)
+	{
+		int idx = index / 32;
+		int bit = index % 32;
+		misc::set_bit(globals::gsbd_fm_events.at(11).at(341).at(idx, 1).as<int*>(), bit);
+		misc::set_bit(globals::gsbd_fm_events.at(11).at(348).at(idx, 1).as<int*>(), bit);
+		misc::set_bit(globals::gpbd_fm_3.at(self::id, globals::size::gpbd_fm_3).at(10).at(205).at(idx, 1).as<int*>(), bit);
+	}
+
+	inline void force_thunder()
+	{
+		session::set_fm_event_index(9);
+		session::set_fm_event_index(10);
+		session::set_fm_event_index(11);
+  }
+  
+	inline void join_by_rockstar_id(uint64_t rid)
 	{
 		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 ||
 			STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
 		{
-			g_notification_service->push_warning("RID Joiner", "Cannot RID join now");
+			g_notification_service->push_error("RID Joiner", "Player switch in progress, wait a bit.");
 			return;
 		}
 
@@ -58,20 +75,19 @@ namespace big::session
 
 			if (state == 3 && success)
 			{
-				g->session.session_join_queued = true;
-				g->session.session_info = result.m_session_info;
-				join_type(eSessionType::NEW_PUBLIC);
-				script::get_current()->yield(500ms);
+				g->session.join_queued = true;
+				g->session.info = result.m_session_info;
+				session::join_type({ eSessionType::NEW_PUBLIC });
 				if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
 				{
-					g->session.session_join_queued = false;
-					g_notification_service->push_error("RID Joiner", "RID join failed, unable to launch maintransition");
+					g->session.join_queued = false;
+					g_notification_service->push_error("RID Joiner", "Unable to launch maintransition");
 				}
 				return;
 			}
 		}
 
-		g_notification_service->push_warning("RID Joiner", "RID join failed");
+		g_notification_service->push_error("RID Joiner", "Target Player is offline?");
 	}
 
 	inline void join_by_session_info(rage::rlSessionInfo m_session_info) // Skidded from maybegreat48
@@ -82,16 +98,16 @@ namespace big::session
 			g_notification_service->push_warning("RID Joiner", "Cannot RID join now");
 			return;
 		}
-			g->session.session_join_queued = true;
-			g->session.session_info = m_session_info;
-			join_type(eSessionType::NEW_PUBLIC);
-			script::get_current()->yield(500ms);
-			if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
-			{
-				g->session.session_join_queued = false;
-				g_notification_service->push_error("RID Joiner", "RID join failed, unable to launch maintransition");
-			}
-			return;
+		g->session.session_join_queued = true;
+		g->session.session_info = m_session_info;
+		join_type(eSessionType::NEW_PUBLIC);
+		script::get_current()->yield(500ms);
+		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
+		{
+			g->session.session_join_queued = false;
+			g_notification_service->push_error("RID Joiner", "RID join failed, unable to launch maintransition");
+		}
+		return;
 
 		g_notification_service->push_warning("RID Joiner", "RID join failed");
 	}

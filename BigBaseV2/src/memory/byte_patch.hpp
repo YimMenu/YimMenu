@@ -7,10 +7,20 @@ namespace memory
 	public:
 		virtual ~byte_patch()
 		{
-			memcpy(m_address, m_original_bytes.data(), m_original_bytes.size());
+			restore();
+		}
+
+		void apply() const
+		{
+			memcpy(m_address, m_value.get(), m_size);
 		}
 
 		void restore() const
+		{
+			memcpy(m_address, m_original_bytes.get(), m_size);
+		}
+
+		void remove() const
 		{
 			if (const auto it = std::find(m_patches.begin(), m_patches.end(), this); it != m_patches.end())
 			{
@@ -35,11 +45,12 @@ namespace memory
 		byte_patch(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
 			: m_address(address)
 		{
-			constexpr auto size = sizeof(std::remove_pointer_t<std::remove_reference_t<TAddr>>);
-			m_original_bytes.resize(size);
-			memcpy(m_original_bytes.data(), m_address, size);
+			m_size = sizeof(std::remove_pointer_t<std::remove_reference_t<TAddr>>);
+			m_original_bytes = std::make_unique<uint8_t[]>(m_size);
+			m_value = std::make_unique<uint8_t[]>(m_size);
 
-			*address = value;
+			memcpy(m_original_bytes.get(), m_address, m_size);
+			memcpy(m_value.get(), &value, m_size);
 		}
 
 	protected:
@@ -47,7 +58,9 @@ namespace memory
 
 	private:
 		void* m_address;
-		std::vector<uint8_t> m_original_bytes;
+		std::unique_ptr<uint8_t[]> m_value;
+		std::unique_ptr<uint8_t[]> m_original_bytes;
+		std::size_t m_size;
 
 		friend bool operator== (const std::unique_ptr<byte_patch>& a, const byte_patch* b);
 	};

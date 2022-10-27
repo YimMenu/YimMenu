@@ -73,6 +73,7 @@ namespace big
 		PVOID m_native_return;
 		PVOID m_network_group_override;
 		PVOID m_get_label_text;
+		functions::multiplayer_chat_filter* m_multiplayer_chat_filter{};
 
 		FriendRegistry* m_friend_registry{};
 
@@ -130,6 +131,11 @@ namespace big
 		PVOID m_format_metric_for_sending;
 
 		Network** m_network;
+
+		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
+		functions::join_session_by_info m_join_session_by_info;
+
+		uint8_t* m_bypass_max_count_of_active_sticky_bombs;
 
 		functions::reset_network_complaints m_reset_network_complaints{};
 

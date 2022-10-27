@@ -69,7 +69,7 @@ namespace big
         if (const auto& pair = m_native_registrations.find(ALL_SCRIPT_HASH); pair != m_native_registrations.end())
             for (const auto& native_hook_reg : pair->second)
                 native_replacements.insert(native_hook_reg);
-            
+
         // Functions that only need to be detoured for a specific script
         if (const auto& pair = m_native_registrations.find(script_hash); pair != m_native_registrations.end())
             for (const auto& native_hook_reg : pair->second)
