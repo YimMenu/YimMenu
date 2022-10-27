@@ -372,18 +372,6 @@ namespace big
 			m_reset_network_complaints = ptr.add(1).rip().as<functions::reset_network_complaints>();
 		});
 
-		// Get Session By Gamer Handle
-		main_batch.add("SGSBGH", "E8 ? ? ? ? 84 C0 0F 84 ? ? ? ? 8B 05 ? ? ? ? 48 8D 4C 24", [this](memory::handle ptr)
-		{
-			m_start_get_session_by_gamer_handle = ptr.add(1).rip().as<functions::start_get_session_by_gamer_handle>();
-		});
-
-		// Join Session By Info
-		main_batch.add("JSBI", "E8 ? ? ? ? 0F B6 CB 84 C0 41 0F 44 CD", [this](memory::handle ptr)
-		{
-			m_join_session_by_info = ptr.add(1).rip().as<functions::join_session_by_info>();
-		});
-
 		// Region Code
 		main_batch.add("RC", "48 8D 15 ? ? ? ? 48 8D 4C 24 ? 89 05 ? ? ? ? E8", [this](memory::handle ptr)
 		{

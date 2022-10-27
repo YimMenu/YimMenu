@@ -4,6 +4,7 @@
 #include "function_types.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/replay.hpp"
+#include "gta/array.hpp"
 #include "network/CNetworkPlayerMgr.hpp"
 #include "socialclub/FriendRegistry.hpp"
 #include "network/Network.hpp"
@@ -49,9 +50,6 @@ namespace big
 		functions::get_net_player_from_unk* m_get_net_player_from_unk{};
 		__int64* m_send_chat_ptr{};
 		functions::send_chat_message* m_send_chat_message{};
-
-		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
-		functions::join_session_by_info m_join_session_by_info;
 
 		uint8_t* m_region_code;
 		PVOID m_get_pool_type;

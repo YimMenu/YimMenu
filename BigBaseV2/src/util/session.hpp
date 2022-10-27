@@ -98,13 +98,13 @@ namespace big::session
 			g_notification_service->push_warning("RID Joiner", "Cannot RID join now");
 			return;
 		}
-		g->session.session_join_queued = true;
-		g->session.session_info = m_session_info;
+		g->session.join_queued = true;
+		g->session.info = m_session_info;
 		join_type(eSessionType::NEW_PUBLIC);
 		script::get_current()->yield(500ms);
 		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
 		{
-			g->session.session_join_queued = false;
+			g->session.join_queued = false;
 			g_notification_service->push_error("RID Joiner", "RID join failed, unable to launch maintransition");
 		}
 		return;

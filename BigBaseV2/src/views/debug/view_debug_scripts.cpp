@@ -16,12 +16,12 @@ namespace big
 	void view::debug_scripts()
     {
         static GtaThread* selected_thread{};
-        if (ImGui::ListBoxHeader("##scripts", ImVec2(250, 500)))
+        if (ImGui::ListBoxHeader("##scripts", ImVec2(250, 0)))
         {
             if (g->debug.sort_scripts)
             {
                 std::map<std::string, GtaThread*> sorted_threads;
-                for (auto thread : *g_pointers->m_script_threads)
+                for (GtaThread* thread : *g_pointers->m_script_threads)
                     if (thread && thread->m_context.m_thread_id && thread->m_handler)
                         sorted_threads[thread->m_name] = thread;
                 for (auto thread : sorted_threads)
@@ -30,7 +30,7 @@ namespace big
             }
             else
             {
-                for (auto thread : *g_pointers->m_script_threads)
+                for (GtaThread* thread : *g_pointers->m_script_threads)
                     if (thread && thread->m_context.m_thread_id && thread->m_handler)
                         if (ImGui::Selectable(thread->m_name, thread == selected_thread))
                             selected_thread = thread;

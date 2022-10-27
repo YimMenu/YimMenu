@@ -11,10 +11,10 @@ namespace big
 	{
 		inline void NETWORK_SESSION_HOST(rage::scrNativeCallContext* src)
 		{
-			if (g->session.session_join_queued)
+			if (g->session.join_queued)
 			{
-				g_pointers->m_join_session_by_info(gta_util::get_network(), &g->session.session_info, 0, 0, nullptr, 0);
-				g->session.session_join_queued = false;
+				g_pointers->m_join_session_by_info(gta_util::get_network(), &g->session.info, 0, 0, nullptr, 0);
+				g->session.join_queued = false;
 				src->set_return_value<BOOL>(TRUE);
 			}
 			else

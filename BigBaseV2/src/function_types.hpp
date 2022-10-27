@@ -1,4 +1,7 @@
 #pragma once
+#include "network/CNetComplaintMgr.hpp"
+#include "network/snSession.hpp"
+#include "rage/rlSessionByGamerTaskResult.hpp"
 
 namespace big::functions
 {
@@ -42,9 +45,9 @@ namespace big::functions
 
 	using send_chat_message = bool(__int64 ptr, __int64 peerId, const char* message, bool isTeam);
 
-	using get_connection_peer = rage::netConnectionPeer* (*)(rage::netConnectionManager* manager, uint64_t peer_id);
+	using get_connection_peer = __int64 (*)(rage::netConnectionManager* manager, uint64_t peer_id);
 
-	using send_remove_gamer_cmd = void(*)(rage::netConnectionManager* net_connection_mgr, rage::netConnectionPeer* player, int connection_id, rage::snMsgRemoveGamersFromSessionCmd* cmd, int flags);
+	using send_remove_gamer_cmd = void(*)(rage::netConnectionManager* net_connection_mgr, __int64 player, int connection_id, rage::snMsgRemoveGamersFromSessionCmd* cmd, int flags);
 
 	using handle_remove_gamer_cmd = void* (*)(rage::snSession* session, rage::snPlayer* origin, rage::snMsgRemoveGamersFromSessionCmd* cmd);
 

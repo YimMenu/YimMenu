@@ -21,7 +21,7 @@ namespace big
 				}
 				if (ImGui::BeginTabItem("World"))
 				{
-					view::spawn_ped();
+					view::world_tabs();
 					ImGui::EndTabItem();
 				}
 				if (ImGui::BeginTabItem("Network"))
