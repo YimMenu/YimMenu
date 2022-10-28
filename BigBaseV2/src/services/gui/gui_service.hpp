@@ -63,9 +63,7 @@ namespace big
 			{tabs::VEHICLE, { "Vehicle", view::vehicle, {
 				{ tabs::HANDLING, {"Handling", view::handling_current_profile, {
 					{ tabs::HANDLING_CURRENT_PROFILE, {"Current Profile", view::handling_current_profile } },
-					{ tabs::HANDLING_MY_PROFILES, {"My Profiles", view::handling_my_profiles } },
 					{ tabs::HANDLING_SAVED_PROFILE, {"Saved Profiles", view::handling_saved_profiles } },
-					{ tabs::HANDLING_SEARCH, {"Search Handling", view::handling_search } },
 				}}},
 				{ tabs::LSC, { "LS Customs", view::lsc }},
 				{ tabs::SPAWN_VEHICLE, { "Spawn Vehicle", view::spawn_vehicle }},
