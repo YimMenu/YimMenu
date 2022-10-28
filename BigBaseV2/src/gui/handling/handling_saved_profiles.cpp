@@ -10,6 +10,7 @@ namespace big
 			ImGui::Text("Please enter a vehicle.");
 			return;
 		}
+		g_handling_service->backup_vehicle();
 
 		if (components::button("Reload Profiles"))
 		{
