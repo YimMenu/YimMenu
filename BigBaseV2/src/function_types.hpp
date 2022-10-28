@@ -1,10 +1,4 @@
 #pragma once
-#include "common.hpp"
-#include "gta/fwddec.hpp"
-#include "gta/player.hpp"
-#include "gta/natives.hpp"
-#include "gta/replay.hpp"
-#include "network/CNetComplaintMgr.hpp"
 
 namespace big::functions
 {
@@ -20,6 +14,8 @@ namespace big::functions
 
 	using ptr_to_handle = Entity(*)(void* entity);
 	using get_script_handle_t = uint64_t(*)(int64_t);
+	
+	using multiplayer_chat_filter = int(__int64 chat_type, const char* input, const char** output);
 
 	using get_gameplay_cam_coords = Vector3(*)();
 
@@ -59,4 +55,7 @@ namespace big::functions
 	using fipackfile_open_archive = bool(*)(rage::fiPackfile* this_, const char* archive, bool b_true, int type, intptr_t very_false);
 	using fipackfile_mount = bool(*)(rage::fiPackfile* this_, const char* mount_point);
 	using fipackfile_unmount = bool(*)(const char* mount_point);
+
+	using start_get_session_by_gamer_handle = bool(*)(int metric_manager, rage::rlGamerHandle* handles, int count, rage::rlSessionByGamerTaskResult* result, int unk, bool* success, int* state);
+	using join_session_by_info = bool(*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
 }
