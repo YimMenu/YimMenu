@@ -7,6 +7,7 @@ namespace big
 	{
 	public:
 		handling_profile(CVehicle* vehicle);
+		handling_profile() = default;
 
 		void apply_to(CVehicle* vehicle, bool restore_hash = true) const;
 

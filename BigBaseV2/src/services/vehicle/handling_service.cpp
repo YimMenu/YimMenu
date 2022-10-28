@@ -26,12 +26,12 @@ namespace big
 				continue;
 			if (auto file_path = item.path(); file_path.extension() == ".bin")
 			{
-				auto profile = std::unique_ptr<handling_profile>(new handling_profile{ 0 });
+				auto profile = std::make_unique<handling_profile>();
 				auto profile_file = std::ifstream(file_path, std::ios::binary);
 				profile_file.read(reinterpret_cast<char*>(profile.get()), sizeof(handling_profile));
 				profile_file.close();
 
-				m_handling_profiles.emplace(file_path.string(), std::move(profile));
+				m_handling_profiles.emplace(file_path.stem().string(), std::move(profile));
 
 				++files_loaded;
 			}
