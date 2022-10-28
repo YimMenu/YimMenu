@@ -29,6 +29,7 @@ namespace big
 				{
 					g_handling_service->save_profile(name);
 				});
+				ImGui::CloseCurrentPopup();
 			}
 
 			ImGui::EndPopup();
