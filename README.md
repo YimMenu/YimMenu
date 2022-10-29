@@ -65,12 +65,11 @@ git pull && git submodule update
 
 Make sure your Visual Studio is closed and regenerate project files:
 ```bash
-GenerateProjects.bat
+script.bat
 ```
 
 ## Project Structure
 
-- `api/` contains some basic example of how I'd make REST api calls
 - `backend/` all features that should be ran in a loop are in here sorted by category
 - `gui/` includes everything related to UI elements
 - `hooks/` function hooks
