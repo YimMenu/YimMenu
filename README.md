@@ -56,7 +56,7 @@ script.bat
 
 ## Staying Up To Date
 
-Pull the latest changes from Github:
+Pull the latest changes from Github and regenerate project files:
 
 Make sure your Visual Studio is closed and regenerate project files:
 ```bash
