@@ -52,8 +52,7 @@ namespace big
 					PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 					if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_FRONTEND_PAUSE_ALTERNATE))
 					{
-						script::get_current()->yield(150ms); // Stop pause menu // Steel opens
-						LOG(G3LOG_DEBUG) << "Pause menu closed";
+						PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 						g->window.chat = false;
 						continue;
 					}

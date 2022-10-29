@@ -27,7 +27,7 @@ namespace big
 			const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
 			ImGui::BeginChild("##scrolling_region_dm", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
 
-			ImGui::Text("Sends a phone message, requires voice chat to be on. \nTODO: DM History.\nUntested.");
+			ImGui::Text("Sends a phone message, requires voice chat to be on. \nTODO: DM History.");
 
 			ImGui::EndChild();
 
