@@ -36,10 +36,11 @@ namespace big
 			ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
 			components::input_text_with_hint("###Message", "Message", &g->chat.dm_message, input_text_flags, [&]
 			{
-				g->chat.dm_message = "";
 				int handle;
 				NETWORK::NETWORK_HANDLE_FROM_PLAYER(g->chat.dm_player_id, &handle, 13);
-				NETWORK::NETWORK_SEND_TEXT_MESSAGE(g->chat.dm_message.c_str(), &handle);
+				if (NETWORK::NETWORK_IS_HANDLE_VALID(&handle, 13))
+					NETWORK::NETWORK_SEND_TEXT_MESSAGE(g->chat.dm_message.c_str(), &handle);
+				g->chat.dm_message = "";
 			});
 
 			ImGui::EndGroup();
