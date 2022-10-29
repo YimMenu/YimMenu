@@ -51,7 +51,7 @@ cd YimMenu
 
 Generate project files:
 ```bash
-GenerateProjects.bat
+script.bat
 ```
 
 Now, you will be able to open the solution, and simply build it in Visual Studio.
