@@ -67,7 +67,7 @@ script.bat
 - `backend/` all features that should be ran in a loop are in here sorted by category
 - `gui/` includes everything related to UI elements
 - `hooks/` function hooks
-- `native_hooks/` hooks to natives, currently not implemented
+- `native_hooks/` hooks to natives
 - `services/` service files to interact and maintain stuff
 - `util/` general utility functions to keep code as compact and as much in one place as possible
 
@@ -79,8 +79,7 @@ Below is an incomplete list of feature that I believe are notable to this "base"
  - Custom [settings](BigBaseV2/src/core/globals.hpp) with deep compare if changes were made include auto saving
  - Clear and well structured source code
  - Includes a thread pool to queue tasks that shouldn't block the game thread, very similar to fiber pool
- - Updated natives.hpp from https://nativedb.pieceof.art/natives
- - Includes basic code samples to interact with an api
+ - Updated natives.hpp from https://nativedb.spyral.dev
  - ReClass.NET structures implemented, accessible from a global called g_local_player defined in `common.hpp`
 
 ## Contributing
