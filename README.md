@@ -54,8 +54,6 @@ Generate project files:
 script.bat
 ```
 
-Now, you will be able to open the solution, and simply build it in Visual Studio.
-
 ## Staying Up To Date
 
 Pull the latest changes from Github:
