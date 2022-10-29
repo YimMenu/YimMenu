@@ -1,7 +1,3 @@
-[submodule "vendor/fmtlib"]
-	path = vendor/fmtlib
-	url = https://github.com/fmtlib/fmt
-	ignore = dirty
 [submodule "vendor/json"]
 	path = vendor/json
 	url = https://github.com/nlohmann/json
@@ -20,7 +16,7 @@
 	ignore = dirty
 [submodule "vendor/ImGui"]
 	path = vendor/ImGui
-	url = https://github.com/Yimura/gtav-imgui.git
+	url = https://github.com/YimMenu/imgui.git
 	ignore = dirty
 [submodule "vendor/pugixml"]
 	path = vendor/pugixml

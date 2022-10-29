@@ -34,14 +34,14 @@ namespace big
 					if (g->notifications.out_of_allowed_range_sync_type.log)
 						LOG(WARNING) << "Out of range sync: " << "Type: " << sync_type << " Tree name: " << tree_name << " From: " << src->get_name();
 					if (g->notifications.out_of_allowed_range_sync_type.notify)
-						g_notification_service->push_warning(fmt::format("Out Of Allowed Sync Range from {}", src->get_name()), fmt::format("Type {} in sync tree {}", sync_type, tree_name));
+						g_notification_service->push_warning(std::format("Out Of Allowed Sync Range from {}", src->get_name()), std::format("Type {} in sync tree {}", std::uint16_t(sync_type), tree_name));
 				}
 				else if (net_obj->m_object_type != sync_type)
 				{
 					if (g->notifications.mismatch_sync_type.log)
 						LOG(WARNING) << "Mismatch sync: " << "Type: " << sync_type << " Tree name: " << tree_name << " From: " << src->get_name();
 					if (g->notifications.mismatch_sync_type.notify)
-						g_notification_service->push_warning(fmt::format("Mismatch Sync from {}", src->get_name()), fmt::format("Type {} in sync tree {}", sync_type, tree_name));
+						g_notification_service->push_warning(std::format("Mismatch Sync from {}", src->get_name()), std::format("Type {} in sync tree {}", std::uint16_t(sync_type), tree_name));
 
 					return SyncResponse::WrongOwner;
 				}

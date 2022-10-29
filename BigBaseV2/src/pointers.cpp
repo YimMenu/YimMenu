@@ -200,10 +200,16 @@ namespace big
 			m_write_bitbuf_array = ptr.add(1).rip().as<decltype(m_write_bitbuf_array)>();
 		});
 
+		// Write Player Game State Data Node
+		main_batch.add("WPGSDN", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 54 41 55 41 56 41 57 48 83 EC 30 0F B7 81 ? ? ? ?", [this](memory::handle ptr)
+		{
+			m_write_player_game_state_data_node = ptr.as<functions::write_player_game_state_data_node>();
+		});
+
 		// Request Control of Entity PATCH
 		main_batch.add("RCOE-Patch", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", [this](memory::handle ptr)
 		{
-			memory::byte_patch::make(ptr.add(0x13).as<std::uint16_t*>(), 0x9090);
+			memory::byte_patch::make(ptr.add(0x13).as<std::uint16_t*>(), 0x9090)->apply();
 		});
 
 		// Replay Interface
@@ -328,6 +334,12 @@ namespace big
 		{
 			m_get_label_text = ptr.sub(19).as<PVOID>();
 		});
+		
+		// Multiplayer chat filter
+		main_batch.add("MCF", "E8 ? ? ? ? 83 F8 FF 75 B9", [this](memory::handle ptr)
+		{
+			m_multiplayer_chat_filter = ptr.add(1).rip().as<decltype(m_multiplayer_chat_filter)>();
+		});
 
 		// Network
 		main_batch.add("N", "48 8B 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 84 C0 75 17 48 8B 0D ? ? ? ? 48 8B D7", [this](memory::handle ptr)
@@ -398,36 +410,62 @@ namespace big
 			m_format_metric_for_sending = ptr.as<PVOID>();
 		});
 
+		// Get Session By Gamer Handle
+		main_batch.add("SGSBGH", "E8 ? ? ? ? 84 C0 0F 84 ? ? ? ? 8B 05 ? ? ? ? 48 8D 4C 24", [this](memory::handle ptr)
+		{
+			m_start_get_session_by_gamer_handle = ptr.add(1).rip().as<functions::start_get_session_by_gamer_handle>();
+		});
+
+		// Join Session By Info
+		main_batch.add("JSBI", "E8 ? ? ? ? 0F B6 CB 84 C0 41 0F 44 CD", [this](memory::handle ptr)
+		{
+			m_join_session_by_info = ptr.add(1).rip().as<functions::join_session_by_info>();
+		});
+
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
+
+		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 F5 01 00 00"))
+		{
+			m_bypass_max_count_of_active_sticky_bombs = pat.add(4).as<uint8_t*>();
+
+			// declare it right now even though we write the same value
+			// so that it get cleaned up in the dctor
+			memory::byte_patch::make(m_bypass_max_count_of_active_sticky_bombs, *m_bypass_max_count_of_active_sticky_bombs);
+
+			if (g->weapons.bypass_c4_limit)
+			{
+				*m_bypass_max_count_of_active_sticky_bombs = 99;
+			}
+		}
 
 		/**
 		 * Freemode thread restorer through VM patch
 		 */
 		if (auto pat1 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
 		{
-			memory::byte_patch::make(pat1.add(2).as<uint32_t*>(), 0xc9310272);
-			memory::byte_patch::make(pat1.add(6).as<uint16_t*>(), 0x9090);
+			memory::byte_patch::make(pat1.add(2).as<uint32_t*>(), 0xc9310272)->apply();
+			memory::byte_patch::make(pat1.add(6).as<uint16_t*>(), 0x9090)->apply();
 		}
 
 		if (auto pat2 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 49 03 fa"))
 		{
-			memory::byte_patch::make(pat2.add(2).as<uint32_t*>(), 0xc9310272);
-			memory::byte_patch::make(pat2.add(6).as<uint16_t*>(), 0x9090);
+			memory::byte_patch::make(pat2.add(2).as<uint32_t*>(), 0xc9310272)->apply();
+			memory::byte_patch::make(pat2.add(6).as<uint16_t*>(), 0x9090)->apply();
 		}
 
 		auto pat3 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 48 ff c7");
 		for (auto& handle : pat3)
 		{
-			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272);
-			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090);
+			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272)->apply();
+			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090)->apply();
 		}
 
 		auto pat4 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 49 03 fa");
 		for (auto& handle : pat4)
 		{
-			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272);
-			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090);
+			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272)->apply();
+			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090)->apply();
 		}
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);

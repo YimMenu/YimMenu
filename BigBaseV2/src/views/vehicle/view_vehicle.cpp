@@ -11,7 +11,7 @@ namespace big
 		components::button("MMI Fix All PV", [] {
 			int amount_fixed = mobile::mors_mutual::fix_all();
 			g_notification_service->push("Mobile",
-				fmt::format("{} vehicle{} been fixed.", amount_fixed, amount_fixed == 1 ? " has" : "s have")
+				std::format("{} vehicle{} been fixed.", amount_fixed, amount_fixed == 1 ? " has" : "s have")
 			);
 		});
 		ImGui::SameLine();

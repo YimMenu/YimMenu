@@ -12,7 +12,7 @@ namespace big
 			if (g->notifications.gta_thread_kill.log)
 				LOG(INFO) << "Script Thread '" << name << "' started.";
 			if (g->notifications.gta_thread_kill.notify)
-				g_notification_service->push("Script Thread Startup", fmt::format("Script Thread '{}' started.", name));
+				g_notification_service->push("Script Thread Startup", std::format("Script Thread '{}' started.", name));
 		}
 
 		if (new_thread != nullptr)

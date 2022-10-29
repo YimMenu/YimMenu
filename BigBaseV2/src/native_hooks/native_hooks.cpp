@@ -4,6 +4,7 @@
 #include "freemode.hpp"
 #include "gta_util.hpp"
 #include "shop_controller.hpp"
+#include "network_session_host.hpp"
 
 namespace big
 {
@@ -19,6 +20,7 @@ namespace big
         add_native_detour(RAGE_JOAAT("carmod_shop"), 0x767FBC2AC802EF3D, carmod_shop::STAT_GET_INT);
         add_native_detour(RAGE_JOAAT("freemode"), 0x95914459A87EBA28, freemode::NETWORK_BAIL);
         add_native_detour(RAGE_JOAAT("shop_controller"), 0xDC38CC1E35B6A5D7, shop_controller::SET_WARNING_MESSAGE_WITH_HEADER);
+        add_native_detour(RAGE_JOAAT("maintransition"), 0x6F3D4ED9BEE4E61D, network::NETWORK_SESSION_HOST);
 
         for (const auto& native_detours_for_script : m_native_registrations)
             if (const auto thread = gta_util::find_script_thread(native_detours_for_script.first); thread != nullptr && thread->m_context.m_state == rage::eThreadState::running)
@@ -58,7 +60,7 @@ namespace big
         if (const auto& pair = m_native_registrations.find(ALL_SCRIPT_HASH); pair != m_native_registrations.end())
             for (const auto& native_hook_reg : pair->second)
                 native_replacements.insert(native_hook_reg);
-            
+
         // Functions that only need to be detoured for a specific script
         if (const auto& pair = m_native_registrations.find(script_hash); pair != m_native_registrations.end())
             for (const auto& native_hook_reg : pair->second)
@@ -69,7 +71,7 @@ namespace big
             if (m_script_hooks.find(gta_thread->m_script_hash) != m_script_hooks.end())
             {
                 // this should never happen but if it does we catch it
-                LOG(INFO) << "Dynamic native script hook still active for script, cleaning up...";
+                LOG_IF(G3LOG_DEBUG, g->debug.logs.script_hook_logs) << "Dynamic native script hook still active for script, cleaning up...";
 
                 m_script_hooks.erase(gta_thread->m_script_hash);
             }
@@ -88,7 +90,7 @@ namespace big
     {
         if (m_script_hooks.erase(gta_thread->m_script_hash))
         {
-            LOG(INFO) << gta_thread->m_name << " script terminated, cleaning up native hooks";
+            LOG_IF(G3LOG_DEBUG, g->debug.logs.script_hook_logs) << gta_thread->m_name << " script terminated, cleaning up native hooks";
         }
     }
 }

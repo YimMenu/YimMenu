@@ -43,7 +43,7 @@ namespace rage
 
 	public:
 
-		static sysMemAllocator* sysMemAllocator::UpdateAllocatorValue()
+		static sysMemAllocator* UpdateAllocatorValue()
 		{
 			//B9 ? ? ? ? 48 8B 0C 01 45 33 C9 49 8B D2 48
 			auto g_gtaTlsEntry = *(sysMemAllocator**)(*(uintptr_t*)(__readgsqword(88)) + 0xC8); //This has been 0xC8 since 323, I'm not adding this signature to pointers...

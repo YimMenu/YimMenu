@@ -17,6 +17,18 @@ namespace big::gta_util
 		return nullptr;
 	}
 
+	inline CVehicle* get_local_vehicle()
+	{
+		if (const auto ped = get_local_ped(); ped)
+		{
+			if (const auto veh = ped->m_vehicle; veh)
+			{
+				return veh;
+			}
+		}
+		return nullptr;
+	}
+
 	inline CPlayerInfo *get_local_playerinfo()
 	{
 		if (auto ped_factory = *g_pointers->m_ped_factory)
@@ -37,10 +49,7 @@ namespace big::gta_util
 
 	inline Network* get_network()
 	{
-		__int64 network = (__int64)(*g_pointers->m_network);
-		if (g_is_steam)
-			network += sizeof(rage::rlSessionInfo);
-		return (Network*)network;
+		return *g_pointers->m_network;
 	}
 
 	template <typename F, typename ...Args>

@@ -1,4 +1,5 @@
 #pragma once
+#include "rage/rlSessionInfo.hpp"
 #include "weapon/CAmmoInfo.hpp"
 #include "weapon/CWeaponInfo.hpp"
 #include "enums.hpp"
@@ -21,7 +22,15 @@ namespace big
 			{
 				bool metric_logs{};
 
-				bool script_event_logs = false;
+				bool script_hook_logs{};
+
+				struct
+				{
+					bool logs = false;
+
+					bool filter_player = true;
+					std::int8_t player_id = -1;
+				} script_event{};
 			} logs{};
 		};
 
@@ -164,6 +173,9 @@ namespace big
 			{
 				int hour{}, minute{}, second{};
 			} custom_time;
+			bool join_queued = false;
+			rage::rlSessionInfo info;
+			bool disable_chat_filter = false;
 		};
 
 		struct settings {
@@ -208,6 +220,8 @@ namespace big
 			uint64_t rockstar_id = 0;
 
 			bool spoof_cheater = false;
+
+			bool spoof_hide_god = false;
 
 			bool spoof_rockstar_dev = false;
 			bool spoof_rockstar_qa = false;
@@ -297,6 +311,7 @@ namespace big
 			bool no_recoil = false;
 			bool no_spread = false;
 			char vehicle_gun_model[12] = "bus";
+			bool bypass_c4_limit = false;
 		};
 
 		struct window
@@ -306,7 +321,6 @@ namespace big
 
 			ImFont* font_title = nullptr;
 			ImFont* font_sub_title = nullptr;
-			ImFont* font_normal = nullptr;
 			ImFont* font_small = nullptr;
 			ImFont* font_icon = nullptr;
 
@@ -395,7 +409,7 @@ namespace big
 		void from_json(const nlohmann::json& j)
 		{
 			this->debug.logs.metric_logs = j["debug"]["logs"]["metric_logs"];
-			this->debug.logs.script_event_logs = j["debug"]["logs"]["script_event_logs"];
+			this->debug.logs.script_hook_logs = j["debug"]["logs"]["script_hook_logs"];
 
 			g->notifications.gta_thread_kill.log = j["notifications"]["gta_thread_kill"]["log"];
 			g->notifications.gta_thread_kill.notify = j["notifications"]["gta_thread_kill"]["notify"];
@@ -626,6 +640,7 @@ namespace big
 			this->weapons.infinite_mag = j["weapons"]["infinite_mag"];
 			this->weapons.no_recoil = j["weapons"]["no_recoil"];
 			this->weapons.no_spread = j["weapons"]["no_spread"];
+			this->weapons.bypass_c4_limit = j["weapons"]["bypass_c4_limit"];
 
 			this->weapons.ammo_special.type = (eAmmoSpecialType)j["weapons"]["ammo_special"]["type"];
 			this->weapons.ammo_special.toggle = j["weapons"]["ammo_special"]["toggle"];
@@ -688,7 +703,7 @@ namespace big
 							"logs",
 							{
 								{ "metric_logs", this->debug.logs.metric_logs },
-								{ "script_event_logs", this->debug.logs.script_event_logs }
+								{ "script_hook_logs", this->debug.logs.script_hook_logs }
 							}
 						}
 					}
@@ -934,7 +949,8 @@ namespace big
 						{ "infinite_ammo", this->weapons.infinite_ammo },
 						{ "infinite_mag", this->weapons.infinite_mag },
 						{ "no_recoil", this->weapons.no_recoil },
-						{ "no_spread", this->weapons.no_spread }
+						{ "no_spread", this->weapons.no_spread },
+						{ "bypass_c4_limit", this->weapons.bypass_c4_limit }
 					}
 				},
 				{

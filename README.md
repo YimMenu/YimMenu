@@ -1,4 +1,7 @@
 # YimMenu made possible by [BigBaseV2](https://github.com/Pocakking/BigBaseV2)
+
+![](https://img.shields.io/badge/dynamic/json?color=ffab00&label=Online%20Version&query=%24.game.online&url=https%3A%2F%2Fraw.githubusercontent.com%2FYimMenu%2FYimMenu%2Fmaster%2Fmetadata.json&style=flat-square&labelColor=000000) ![](https://img.shields.io/badge/dynamic/json?color=ffab00&label=Game%20Build&query=%24.game.build&url=https%3A%2F%2Fraw.githubusercontent.com%2FYimMenu%2FYimMenu%2Fmaster%2Fmetadata.json&style=flat-square&labelColor=000000)
+
 A mod menu base for Grand Theft Auto V.
 Strictly for educational purposes.
 
@@ -48,7 +51,7 @@ cd YimMenu
 
 Generate project files:
 ```bash
-GenerateProjects.bat
+script.bat
 ```
 
 Now, you will be able to open the solution, and simply build it in Visual Studio.
