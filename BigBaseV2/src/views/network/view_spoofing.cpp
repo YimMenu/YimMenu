@@ -52,11 +52,14 @@ namespace big
 		ImGui::Text("Rockstar ID:");
 		ImGui::InputScalar("##rockstar_id_input", ImGuiDataType_U64, &g->spoofing.rockstar_id);
 
+		components::sub_title("Proofs");
+		ImGui::Checkbox("Hide God Mode", &g->spoofing.spoof_hide_god);
+
 		components::sub_title("Crew");
 
 		g_fiber_pool->queue_job([] {
 			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-			});
+		});
 
 		ImGui::Checkbox("Spoof Crew", &g->spoofing.spoof_crew_data);
 

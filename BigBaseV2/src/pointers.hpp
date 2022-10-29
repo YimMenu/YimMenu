@@ -51,6 +51,7 @@ namespace big
 		PVOID m_network_group_override;
 		PVOID m_get_label_text;
 		functions::multiplayer_chat_filter* m_multiplayer_chat_filter{};
+		functions::write_player_game_state_data_node m_write_player_game_state_data_node{};
 
 		FriendRegistry* m_friend_registry{};
 
