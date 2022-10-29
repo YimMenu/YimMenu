@@ -1,4 +1,4 @@
-#include "services/vehicle/vehicle_service.hpp"
+#include "services/vehicle/handling_service.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -10,48 +10,24 @@ namespace big
 			ImGui::Text("Please enter a vehicle.");
 			return;
 		}
+		g_handling_service->backup_vehicle();
 
-		if (!g_vehicle_service->load_saved_profiles())
-			ImGui::Text("Loading profiles...");
-		else
+		if (components::button("Reload Profiles"))
 		{
-			if (g_vehicle_service->m_saved_profiles.size() == 0)
-				ImGui::Text("You have no saved profiles available for this vehicle.");
-			for (auto& key : g_vehicle_service->m_saved_profiles)
+			g_handling_service->load_files();
+		}
+
+
+		if (ImGui::ListBoxHeader("##handling_profiles"))
+		{
+			for (const auto& [name, profile] : g_handling_service->profiles())
 			{
-				if (auto it = g_vehicle_service->m_handling_profiles.find(key); it != g_vehicle_service->m_handling_profiles.end())
+				if (components::selectable(name, profile.get() == g_handling_service->active_profile()))
 				{
-					auto& profile = it->second;
-
-					if (profile.share_code == g_vehicle_service->get_active_profile(profile.handling_hash))
-						ImGui::TextColored({ 0.1254f,0.8039f,0.3137f,1.f }, "Active");
-
-					ImGui::BeginTable("table", 3, ImGuiTableFlags_SizingStretchProp);
-
-					ImGui::TableNextRow();
-
-					ImGui::TableNextColumn();
-					ImGui::Text("Name:");
-					ImGui::TableNextColumn();
-					ImGui::Text(profile.name.c_str());
-					ImGui::TableNextColumn();
-					ImGui::Text("Share Code: %s", profile.share_code.c_str());
-
-					ImGui::TableNextRow();
-
-					ImGui::TableNextColumn();
-					ImGui::Text("Description:");
-					ImGui::TableNextColumn();
-					ImGui::TextWrapped(profile.description.c_str());
-					ImGui::TableNextColumn();
-					if (components::button("Load Profile"))
-						g_vehicle_service->set_handling_profile(profile);
-
-					ImGui::EndTable();
-
-					ImGui::Separator();
+					g_handling_service->apply_profile(profile.get());
 				}
 			}
+			ImGui::EndListBox();
 		}
 	}
 }

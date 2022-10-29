@@ -87,6 +87,9 @@ namespace big
 			ImGui::EndCombo();
 		}
 
+		components::sub_title("Proofs");
+		ImGui::Checkbox("Hide God Mode", &g->spoofing.spoof_hide_god);
+
 		components::sub_title("Crew");
 
 		g_fiber_pool->queue_job([] {

@@ -26,18 +26,8 @@ namespace big
 			ImGui::EndListBox();
 		}
 
-		if (ImGui::TreeNode("Settings"))
-		{
-			ImGui::Checkbox("Fast Join", &g->tunables.fast_join);
-			
-			ImGui::TreePop();
-		}
-
-		if (ImGui::TreeNode("Chat"))
-		{
-			ImGui::Checkbox("Disable Filter", &g->session.disable_chat_filter);
-
-			ImGui::TreePop();
-		}
+		components::sub_title("Settings");
+		ImGui::Checkbox("Disable Stock Chat Filter", &g->session.disable_chat_filter);
+		ImGui::Checkbox("Fast Join", &g->tunables.fast_join);
 	}
 }
