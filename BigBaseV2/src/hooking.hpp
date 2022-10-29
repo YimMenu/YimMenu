@@ -9,6 +9,7 @@
 #include "MinHook.h"
 #include "gta/enums.hpp"
 #include "datanodes/player/CPlayerGamerDataNode.hpp"
+#include "datanodes/player/CPlayerGameStateDataNode.hpp"
 #include "rage/rlMetric.hpp"
 
 namespace big
@@ -63,6 +64,7 @@ namespace big
 		static int64_t received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eObjType sync_type, uint16_t obj_id, rage::datBitBuffer* bufer, uint16_t unk, uint32_t timestamp);
 
 		static void write_player_gamer_data_node(rage::netObject* player, CPlayerGamerDataNode* node);
+		static bool write_player_game_state_data_node(rage::netObject* player, CPlayerGameStateDataNode* node);
 	};
 
 	class minhook_keepalive
@@ -121,7 +123,7 @@ namespace big
 		detour_hook m_format_metric_for_sending;
 
 		detour_hook m_write_player_gamer_data_node_hook;
-
+		detour_hook m_write_player_game_state_data_node_hook;
 	};
 
 	inline hooking *g_hooking{};

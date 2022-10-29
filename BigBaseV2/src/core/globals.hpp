@@ -221,6 +221,8 @@ namespace big
 
 			bool spoof_cheater = false;
 
+			bool spoof_hide_god = false;
+
 			bool spoof_rockstar_dev = false;
 			bool spoof_rockstar_qa = false;
 

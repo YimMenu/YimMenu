@@ -200,6 +200,12 @@ namespace big
 			m_write_bitbuf_array = ptr.add(1).rip().as<decltype(m_write_bitbuf_array)>();
 		});
 
+		// Write Player Game State Data Node
+		main_batch.add("WPGSDN", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 54 41 55 41 56 41 57 48 83 EC 30 0F B7 81 ? ? ? ?", [this](memory::handle ptr)
+		{
+			m_write_player_game_state_data_node = ptr.as<functions::write_player_game_state_data_node>();
+		});
+
 		// Request Control of Entity PATCH
 		main_batch.add("RCOE-Patch", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", [this](memory::handle ptr)
 		{
