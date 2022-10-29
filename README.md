@@ -53,6 +53,7 @@ Generate project files:
 ```bash
 script.bat
 ```
+Now, you will be able to open the solution, and simply build it in Visual Studio.
 
 ## Staying Up To Date
 
