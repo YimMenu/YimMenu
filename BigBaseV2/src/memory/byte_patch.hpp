@@ -5,22 +5,22 @@ namespace memory
 	class byte_patch
 	{
 	public:
-		virtual ~byte_patch()
+		inline virtual ~byte_patch()
 		{
 			restore();
 		}
 
-		void apply() const
+		inline void apply() const
 		{
 			memcpy(m_address, m_value.get(), m_size);
 		}
 
-		void restore() const
+		inline void restore() const
 		{
 			memcpy(m_address, m_original_bytes.get(), m_size);
 		}
 
-		void remove() const
+		inline void remove() const
 		{
 			if (const auto it = std::find(m_patches.begin(), m_patches.end(), this); it != m_patches.end())
 			{
@@ -35,7 +35,7 @@ namespace memory
 				std::unique_ptr<byte_patch>(new byte_patch(address, value)));
 		}
 
-		static void restore_all()
+		static inline void restore_all()
 		{
 			m_patches.clear();
 		}
@@ -62,10 +62,10 @@ namespace memory
 		std::unique_ptr<uint8_t[]> m_original_bytes;
 		std::size_t m_size;
 
-		friend bool operator== (const std::unique_ptr<byte_patch>& a, const byte_patch* b);
+		friend inline bool operator== (const std::unique_ptr<byte_patch>& a, const byte_patch* b);
 	};
 
-	bool operator== (const std::unique_ptr<byte_patch>& a, const byte_patch* b)
+	inline bool operator== (const std::unique_ptr<byte_patch>& a, const byte_patch* b)
 	{
 		return a->m_address == b->m_address;
 	}
