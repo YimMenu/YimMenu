@@ -151,6 +151,7 @@ namespace big
 			bool noclip = false;
 			bool off_radar = false;
 			bool super_run = false;
+			bool no_collision = false;
 			int wanted_level = 0;
 			bool god_mode = false;
 			bool proof_bullet = false;
@@ -220,6 +221,8 @@ namespace big
 			uint64_t rockstar_id = 0;
 
 			bool spoof_cheater = false;
+
+			bool spoof_hide_god = false;
 
 			bool spoof_rockstar_dev = false;
 			bool spoof_rockstar_qa = false;
@@ -556,6 +559,7 @@ namespace big
 			this->self.no_ragdoll = j["self"]["no_ragdoll"];
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
+			this->self.no_collision = j["self"]["no_collision"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -822,6 +826,7 @@ namespace big
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
 						{ "super_run", this->self.super_run },
+						{ "no_collision", this->self.no_collision },
 					}
 				},
 				{
