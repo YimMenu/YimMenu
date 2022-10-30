@@ -38,6 +38,12 @@ namespace big
 			CUTSCENE::STOP_CUTSCENE_IMMEDIATELY();
 		});
 
+		ImGui::SameLine();
+
+		components::button("Clean Player", [] {
+			entity::clean_ped(self::ped);
+		});
+
 		ImGui::Separator();
 
 		components::sub_title("General");
@@ -69,9 +75,7 @@ namespace big
 
 		ImGui::Checkbox("Keep Player Clean", &g->self.clean_player);
 
-		components::button("Clean Player", [] {
-			entity::clean_ped(self::ped);
-		});
+		ImGui::Checkbox("No Collision", &g->self.no_collision);
 
 		ImGui::EndGroup();
 
