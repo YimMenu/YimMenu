@@ -1,1 +1,4 @@
-git checkout master && call update_repo.bat
+@echo off
+git checkout master
+
+git pull && git submodule update
