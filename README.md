@@ -5,7 +5,6 @@ A garbage fork of YimMenu made by an idiot
 
 This fork aims to make the game more enjoyable by adding untested broken features that crash your game.
 
-
 # YimMenu readme:
 
 ## YimMenu made possible by [BigBaseV2](https://github.com/Pocakking/BigBaseV2)
@@ -24,43 +23,37 @@ Strictly for educational purposes.
 
 ```bash
 git clone https://github.com/tupoy-ya/YimMenu.git --recursive
-premake5 vs2019
-
 ```
 
-<<<<<<< HEAD
-## Staying Up To Date
-
-Pull the latest changes from Github:
+Go into the directory you just cloned:
 ```bash
-git pull && git submodule update
-premake5 vs2019
-=======
-Generate project files:
+cd YimMenu
+```
+
+Run the magical script:
 ```bash
 script.bat
 ```
-Now, you will be able to open the solution, and simply build it in Visual Studio.
+
+Now you have `BigBaseV2.sln` you can open it in "Gay Studio" or run "BSbuild.exe" in your GS Dev Cmd.
 
 ## Staying Up To Date
-
-Pull the latest changes from Github and regenerate project files:
-
-Make sure your Visual Studio is closed and regenerate project files:
+Run the magical update script:
 ```bash
 script.bat
->>>>>>> 1e09842766b67bfd6d5dc788332395d3d43cd065
 ```
+Or just run commands manualy.
+
 
 ## Project Structure
-
+- `native_hooks/` hooks to natives
 - `backend/` all features that should be ran in a loop are in here sorted by category
 - `gui/` includes everything related to UI elements
 - `hooks/` function hooks
 - `native_hooks/` hooks to natives
 - `services/` service files to interact and maintain stuff
 - `util/` general utility functions to keep code as compact and as much in one place as possible
-- `views/` shitty ui that i'm to lazy to get rid of
+- `views/` all gui windows are, except handling windows for some reason
 
 ## Features
 
@@ -76,6 +69,6 @@ Below is an incomplete list of feature that I believe are notable to this "base"
 
 ## Contributing
 
-You're free to contribute to YimMenu as long as the features are useful, non-toxic and do not contain anything money related that might get the menu targetted by Take2.
+You're free to contribute to TupoyeMenu as long as the features are useful, "non-toxic" and do not contain anything money related that might get the menu targetted by Take2.
 
 Make sure to read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
