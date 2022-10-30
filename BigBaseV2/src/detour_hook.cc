@@ -6,10 +6,28 @@
 
 namespace big
 {
+	detour_hook::detour_hook(std::string name, void* detour) :
+		m_name(std::move(name)),
+		m_detour(detour)
+	{
+
+	}
+
 	detour_hook::detour_hook(std::string name, void* target, void* detour) :
 		m_name(std::move(name)),
 		m_target(target),
 		m_detour(detour)
+	{
+		create_hook();
+	}
+
+	void detour_hook::set_target_and_create_hook(void* target)
+	{
+		m_target = target;
+		create_hook();
+	}
+
+	void detour_hook::create_hook()
 	{
 		fix_hook_address();
 		if (auto status = MH_CreateHook(m_target, m_detour, &m_original); status != MH_OK)

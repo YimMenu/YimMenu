@@ -90,6 +90,65 @@ namespace big
 		void enable();
 		void disable();
 
+		class detour_hook_helper
+		{
+			friend hooking;
+
+			using ret_ptr_fn = std::function<void* ()>;
+
+			ret_ptr_fn m_on_hooking_available = nullptr;
+
+			detour_hook* m_detour_hook = nullptr;
+
+			~detour_hook_helper();
+
+			void enable_hook_if_hooking_is_already_running();
+
+			template <auto detour_function>
+			struct hook_to_detour_hook_helper
+			{
+				static inline detour_hook* m_detour_hook;
+			};
+
+			template <auto detour_function>
+			static detour_hook_helper* add_internal(detour_hook* dh)
+			{
+				auto d = new detour_hook_helper();
+				d->m_detour_hook = dh;
+
+				m_detour_hook_helpers.push_back(d);
+				hook_to_detour_hook_helper<detour_function>::m_detour_hook = dh;
+
+				return d;
+			}
+
+		public:
+			template <auto detour_function>
+			static void add(const std::string& name, void* target)
+			{
+				auto d = add_internal<detour_function>(new detour_hook(name, target, detour_function));
+
+				d->enable_hook_if_hooking_is_already_running();
+			}
+
+			template <auto detour_function>
+			static void* add_lazy(const std::string& name, detour_hook_helper::ret_ptr_fn on_hooking_available)
+			{
+				auto d = add_internal<detour_function>(new detour_hook(name, detour_function));
+				d->m_on_hooking_available = on_hooking_available;
+
+				d->enable_hook_if_hooking_is_already_running();
+
+				return nullptr;
+			}
+		};
+
+		template <auto detour_function>
+		static auto get_original()
+		{
+			return detour_hook_helper::hook_to_detour_hook_helper<detour_function>::m_detour_hook->get_original<decltype(detour_function)>();
+		}
+
 	private:
 		bool m_enabled{};
 		minhook_keepalive m_minhook_keepalive;
@@ -98,33 +157,8 @@ namespace big
 
 		WNDPROC m_og_wndproc = nullptr;
 
-		detour_hook m_run_script_threads_hook;
-
-		detour_hook m_get_label_text;
-		detour_hook m_multiplayer_chat_filter;
-
-		detour_hook m_gta_thread_start_hook;
-		detour_hook m_gta_thread_kill_hook;
-
-		detour_hook m_network_player_mgr_init_hook;
-		detour_hook m_network_player_mgr_shutdown_hook;
-
-		detour_hook m_network_group_override;
-
-		detour_hook m_assign_physical_index_hook;
-
-		detour_hook m_received_event_hook;
-		detour_hook m_received_clone_sync_hook;
-
-		detour_hook m_send_net_info_to_lobby;
-		detour_hook m_receive_net_message_hook;
-		detour_hook m_get_network_event_data_hook;
-
-		detour_hook m_format_metric_for_sending;
-
-		detour_hook m_write_player_gamer_data_node_hook;
-		detour_hook m_write_player_game_state_data_node_hook;
+		static inline std::vector<detour_hook_helper*> m_detour_hook_helpers;
 	};
 
-	inline hooking *g_hooking{};
+	inline hooking* g_hooking{};
 }

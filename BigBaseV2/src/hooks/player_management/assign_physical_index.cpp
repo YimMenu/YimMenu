@@ -6,9 +6,9 @@ namespace big
 {
 	void* hooks::assign_physical_index(CNetworkPlayerMgr* netPlayerMgr, CNetGamePlayer* player, uint8_t new_index)
 	{
-		const auto result = g_hooking->m_assign_physical_index_hook.get_original<decltype(&hooks::assign_physical_index)>()(netPlayerMgr, player, new_index);
+		const auto result = g_hooking->get_original<hooks::assign_physical_index>()(netPlayerMgr, player, new_index);
 		const auto* net_player_data = player->get_net_data();
-		
+
 		if (new_index == static_cast<uint8_t>(-1))
 		{
 			g_player_service->player_leave(player);

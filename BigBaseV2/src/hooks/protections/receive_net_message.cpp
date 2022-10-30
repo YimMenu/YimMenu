@@ -91,6 +91,6 @@ namespace big
 			}
 		}
 
-		return g_hooking->m_receive_net_message_hook.get_original<decltype(&hooks::receive_net_message)>()(netConnectionManager, a2, frame);
+		return g_hooking->get_original<hooks::receive_net_message>()(netConnectionManager, a2, frame);
 	}
 }

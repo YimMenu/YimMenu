@@ -10,7 +10,7 @@ namespace big
 		if (g->notifications.network_player_mgr_init.notify)
 			g_notification_service->push("Network Player Manager", "Entering session and initializing player data.");
 
-		g_hooking->m_network_player_mgr_init_hook.get_original<decltype(&hooks::network_player_mgr_init)>()(_this, a2, a3, a4);
+		g_hooking->get_original<hooks::network_player_mgr_init>()(_this, a2, a3, a4);
 
 		g_player_service->player_join(_this->m_local_net_player);
 	}
@@ -24,6 +24,6 @@ namespace big
 		if (g->notifications.network_player_mgr_shutdown.notify)
 			g_notification_service->push("Network Player Manager", "Leaving session and cleaning up player data.");
 
-		g_hooking->m_network_player_mgr_shutdown_hook.get_original<decltype(&hooks::network_player_mgr_shutdown)>()(_this);
+		g_hooking->get_original<hooks::network_player_mgr_shutdown>()(_this);
 	}
 }

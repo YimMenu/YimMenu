@@ -32,7 +32,7 @@ namespace big
 				g_notification_service->push("Player Info Spoofing", "Sent spoofed values to lobby host.");
 		}
 
-		const auto result = g_hooking->m_send_net_info_to_lobby.get_original<decltype(&hooks::send_net_info_to_lobby)>()(player, a2, a3, a4);
+		const auto result = g_hooking->get_original<hooks::send_net_info_to_lobby>()(player, a2, a3, a4);
 
 		// restore player name to prevent detection of spoofed name
 		if (is_local_player && g->spoofing.spoof_username)

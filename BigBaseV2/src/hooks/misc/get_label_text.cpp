@@ -8,6 +8,6 @@ namespace big
 		if (const auto text = g_custom_text_service->get_text(label); text)
 			return text;
 
-		return g_hooking->m_get_label_text.get_original<decltype(&get_label_text)>()(unk, label);
+		return g_hooking->get_original<get_label_text>()(unk, label);
 	}
 }

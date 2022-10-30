@@ -13,6 +13,6 @@ namespace big
 		}
 		// original
 
-		return g_hooking->m_network_group_override.get_original<decltype(&network_group_override)>()(a1, a2, a3);
+		return g_hooking->get_original<network_group_override>()(a1, a2, a3);
 	}
 }
