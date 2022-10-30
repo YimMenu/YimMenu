@@ -15,6 +15,7 @@ namespace big
 		static bool button(const std::string_view);
 		static bool menu_item(const std::string_view);
 		static void icon(const std::string_view);
+		static void help_marker(const std::string_view);
 		static void small_text(const std::string_view);
 		static void sub_title(const std::string_view);
 		static void title(const std::string_view);

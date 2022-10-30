@@ -25,18 +25,21 @@ namespace big
 		components::button("Teleport", [] {
 			teleport::to_player(g_player_service->get_selected()->id());
 		});
-
+		ImGui::SameLine(); components::help_marker("Teleports you to player.");
 		ImGui::SameLine();
 
 		components::button("Bring", [] {
 			teleport::bring_player(g_player_service->get_selected()->id());
 		});
+		ImGui::SameLine(); components::help_marker("Teleports players vehicle to you. \nBlocked by most internal menus.");
 
 		components::button("Godmode kill", [] {
 			teleport::teleport_player(g_player_service->get_selected()->id(), Vector3(8110, 20, 0));
 			script::get_current()->yield(1s);
+			TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()));
 			entity::delete_entity_notp(PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false));
 		});
+		ImGui::SameLine(); components::help_marker("Teleports players vehicle into the ocean. \nBlocked by most internal menus.");
 
 		ImGui::SameLine();
 
@@ -46,8 +49,6 @@ namespace big
 			teleport::into_vehicle(veh);
 		});
 
-		components::button("Send to Cayo Perico", [] {
-			toxic::send_to_cayo_perico(g_player_service->get_selected()->id());
-		});
+		
 	}
 }

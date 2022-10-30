@@ -156,13 +156,13 @@ namespace big
 					cped->m_position.y,
 					cped->m_position.z);
 
-				ImGui::Text("Distance: %f", math::distance_between_vectors(misc::fvector3_to_Vector3(cped->m_position), misc::fvector3_to_Vector3(cped->m_position)));
+				ImGui::Text("Distance: %f", math::distance_between_vectors(misc::fvector3_to_Vector3(g_local_player->m_position), misc::fvector3_to_Vector3(cped->m_position)));
 				ImGui::Text("Run Speed: %f", player_info->m_run_speed);
 				ImGui::TreePop();
 			}
 		}
 
-		if (player_info != nullptr && cped != nullptr)
+		if (player_info != nullptr && cped->m_weapon_manager != nullptr)
 		{
 			if (ImGui::TreeNode("Weapon Info"))
 			{
@@ -185,12 +185,14 @@ namespace big
 			ImGui::SameLine();
 			ImGui::Text("Money Bank: %u", util::player::get_player_stat<uint64_t*>(g_player_service->get_selected()->id(), ePlayerStatType::MoneyAll));
 
-			ImGui::Text("Kills: %d", util::player::get_player_stat<int64_t*>(g_player_service->get_selected()->id(), ePlayerStatType::Kills));
+			int64_t *kills = util::player::get_player_stat<int64_t*>(g_player_service->get_selected()->id(), ePlayerStatType::Kills);
+			int64_t *deaths = util::player::get_player_stat<int64_t*>(g_player_service->get_selected()->id(), ePlayerStatType::Deaths);
+			ImGui::Text("Kills: %d", kills);
 			ImGui::SameLine();
-			ImGui::Text("Deaths: %d", util::player::get_player_stat<int64_t*>(g_player_service->get_selected()->id(), ePlayerStatType::Deaths));
-			ImGui::Text("K/D Ratio: %f", util::player::get_player_stat<float*>(g_player_service->get_selected()->id(), ePlayerStatType::KDRatio));
+			ImGui::Text("Deaths: %d", deaths);
+			ImGui::Text("Stat K/D Ratio (Broken): %f", util::player::get_player_stat<float*>(g_player_service->get_selected()->id(), ePlayerStatType::KDRatio));
 
-			ImGui::Text("Allows Spectating: %s", util::player::get_player_stat<int*>(g_player_service->get_selected()->id(), ePlayerStatType::CanSpectate) ? "Yes" : "No");
+			ImGui::Text("Allows Spectating: %s", util::player::get_player_stat<BOOL*>(g_player_service->get_selected()->id(), ePlayerStatType::CanSpectate) ? "Yes" : "No");
 
 			ImGui::TreePop();
 		}

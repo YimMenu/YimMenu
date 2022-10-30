@@ -27,7 +27,7 @@ namespace big
 				PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
 			);
 		});
-
+		ImGui::SameLine(); components::help_marker("Will crash you after death.");
 		ImGui::SameLine();
 
 		components::button("Steal Identity", [] {
@@ -35,6 +35,7 @@ namespace big
 				PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
 			);
 		});
+		ImGui::SameLine(); components::help_marker("Will crash you after death.");
 
 		components::button("Clear Wanted Level", [] {
 			globals::clear_wanted_player(g_player_service->get_selected()->id());
@@ -77,10 +78,6 @@ namespace big
 		components::button("Remove Selected Weapon", [weapon_name] {
 			Hash weaponHash = rage::joaat(weapon_name);
 			WEAPON::REMOVE_WEAPON_FROM_PED(g_player_service->get_selected()->id(), weaponHash);
-		});
-
-		components::button("Turn Into Animal", [] {
-			toxic::turn_player_into_animal(g_player_service->get_selected()->id());
 		});
 	}
 }
