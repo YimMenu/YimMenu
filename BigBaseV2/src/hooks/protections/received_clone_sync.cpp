@@ -20,7 +20,7 @@ namespace big
 		CantApplyData_NetworkClosed = 7, // Can't apply data - network closed
 		SuccessfullSync = 8
 	};
-	
+
 	int64_t hooks::received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eObjType sync_type, uint16_t obj_id, rage::datBitBuffer* buffer, uint16_t unk, uint32_t timestamp) {
 		if (auto sync_tree = g_pointers->m_get_sync_tree_for_type(mgr, sync_type); sync_tree && *g_pointers->m_is_session_started)
 		{
@@ -68,7 +68,7 @@ namespace big
 				return SyncResponse::WrongOwner;
 			}
 		}
-		return g_hooking->m_received_clone_sync_hook.get_original<decltype(&received_clone_sync)>()(mgr, src, dst, sync_type, obj_id, buffer, unk, timestamp);
+		return g_hooking->get_original<received_clone_sync>()(mgr, src, dst, sync_type, obj_id, buffer, unk, timestamp);
 
 	}
 

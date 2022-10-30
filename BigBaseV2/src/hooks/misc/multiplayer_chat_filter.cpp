@@ -8,6 +8,6 @@ namespace big
 		{
 			return -1;
 		}
-		return g_hooking->m_multiplayer_chat_filter.get_original<decltype(&hooks::multiplayer_chat_filter)>()(chat_type, input, output);
+		return g_hooking->get_original<hooks::multiplayer_chat_filter>()(chat_type, input, output);
 	}
 }
