@@ -194,30 +194,24 @@ namespace big::toxic
 	//
 
 
-	inline void breakup_kick(Player target) // From maybegreat48
+	inline void breakup_kick(player_ptr target) // From maybegreat48
 	{
 		rage::snMsgRemoveGamersFromSessionCmd cmd{};
-		Network* network = gta_util::get_network();
-		//LOG(G3LOG_DEBUG) << "Network Ptr: " << system::get_network();
-		//LOG(G3LOG_DEBUG) << "Network Ptr2: " << network;
-		//LOG(G3LOG_DEBUG) << "Game Session Ptr: " << network->m_game_session_ptr;
-		//LOG(G3LOG_DEBUG) << "Players: " << network->m_game_session_ptr->m_players;
-		//LOG(G3LOG_DEBUG) << "Session id: " << network->m_game_session_ptr->m_rline_session.m_session_id;
-		cmd.m_session_id = network->m_game_session_ptr->m_rline_session.m_session_id;
+		cmd.m_session_id = gta_util::get_network()->m_game_session_ptr->m_rline_session.m_session_id;
 		cmd.m_num_peers = 1;
-		cmd.m_peer_ids[0] = g_player_service->get_by_id(target)->get_session_peer()->m_peer_data.m_peer_id;
+		cmd.m_peer_ids[0] = target->get_session_peer()->m_peer_data.m_peer_id_2;
 
-		g_pointers->m_handle_remove_gamer_cmd(network->m_game_session_ptr, g_player_service->get_by_id(target)->get_session_player(), &cmd);
+		g_pointers->m_handle_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr, target->get_session_player(), &cmd);
 		for (auto& [name, plyr] : g_player_service->players())
 		{
-			if (plyr->id() != target)
-				g_pointers->m_send_remove_gamer_cmd(network->m_game_session_ptr->m_net_connection_mgr,
-					g_pointers->m_get_connection_peer(network->m_game_session_ptr->m_net_connection_mgr, plyr->get_session_player()->m_player_data.m_peer_id),
-					network->m_game_session_ptr->m_connection_identifier, &cmd, 0x1000000);
+			if (plyr->id() != target->id())
+				g_pointers->m_send_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+					g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr, plyr->get_session_player()->m_player_data.m_peer_id_2),
+					gta_util::get_network()->m_game_session_ptr->m_connection_identifier, &cmd, 0x1000000);
 		}
 	}
 
-	inline void give_collectible(Player target, eCollectibleType col, int index = 0, bool uncomplete = false)
+	inline void give_collectible(Player target, eCollectibleType col, int index = 0, bool uncomplete = false) // From maybegreat48
 	{
 		const size_t arg_count = 7;
 		int64_t args[arg_count] = {
@@ -233,7 +227,7 @@ namespace big::toxic
 		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
 	}
 
-	inline void turn_player_into_animal(Player target)
+	inline void turn_player_into_animal(Player target) // From maybegreat48
 	{
 		for (int i = 0; i < 30; i++)
 		{

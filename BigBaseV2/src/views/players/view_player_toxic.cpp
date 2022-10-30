@@ -34,7 +34,7 @@ namespace big
 			ImGui::SameLine();
 
 			components::button("Breakup Kick", [] {
-				toxic::breakup_kick(g_player_service->get_selected()->id());
+				toxic::breakup_kick(g_player_service->get_selected());
 			});
 
 			components::button("Ped Crash", [] {

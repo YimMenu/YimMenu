@@ -435,6 +435,7 @@ namespace big
 			m_multiplayer_chat_filter = ptr.add(1).rip().as<decltype(m_multiplayer_chat_filter)>();
 		});
 
+		// Get Connection Peer & Send Remove Gamer Command
 		main_batch.add("GCP&SRGC", "8D 42 FF 83 F8 FD 77 3D", [this](memory::handle ptr)
 		{
 			m_get_connection_peer = ptr.add(23).rip().as<functions::get_connection_peer>();

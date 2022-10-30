@@ -105,7 +105,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_script_mgr.add_script(std::make_unique<script>(&shv_runner::script_func));
 				
 				g_script_mgr.add_script(std::make_unique<script>(&backend::loop, "Backend Loop", false));
-				g_script_mgr.add_script(std::make_unique<script>(&backend::anti_cheat, "Anti-Cheat Loop", false));
+				g_script_mgr.add_script(std::make_unique<script>(&backend::anti_cheat, "Anti-Cheat Loop"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::self_loop, "Self"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::weapons_loop, "Weapon"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::vehicles_loop, "Vehicle"));
