@@ -21,7 +21,7 @@
 #include "services/players/player_service.hpp"
 #include "services/notifications/notification_service.hpp"
 #include "services/model_preview/model_preview_service.hpp"
-#include "services/vehicle/vehicle_service.hpp"
+#include "services/vehicle/handling_service.hpp"
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -82,7 +82,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto player_service_instance = std::make_unique<player_service>();
 				auto gta_data_service_instance = std::make_unique<gta_data_service>();
 				auto model_preview_service_instance = std::make_unique<model_preview_service>();
-				auto vehicle_service_instance = std::make_unique<vehicle_service>();
+				auto handling_service_instance = std::make_unique<handling_service>();
 				auto gui_service_instance = std::make_unique<gui_service>();
 				LOG(INFO) << "Registered service instances...";
 
@@ -135,7 +135,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				LOG(INFO) << "Gui Service reset.";
 				gta_data_service_instance.reset();
 				LOG(INFO) << "GTA Data Service reset.";
-				vehicle_service_instance.reset();
+				handling_service_instance.reset();
 				LOG(INFO) << "Vehicle Service reset.";
 				model_preview_service_instance.reset();
 				LOG(INFO) << "Model Preview Service reset.";

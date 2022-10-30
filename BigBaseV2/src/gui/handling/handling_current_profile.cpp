@@ -1,5 +1,5 @@
 #include "current_profile/current_profile_tabs.hpp"
-#include "services/vehicle/vehicle_service.hpp"
+#include "services/vehicle/handling_service.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -11,27 +11,17 @@ namespace big
 			ImGui::Text("Please enter a vehicle.");
 			return;
 		}
+		g_handling_service->backup_vehicle();
 
-		if (g_vehicle_service->get_active_profile(g_local_player->m_vehicle->m_handling_data->m_model_hash).empty())
+		if (components::button("Save Profile"))
 		{
-			if (components::button("Save Profile"))
-			{
-				ImGui::OpenPopup("Save Handling");
-			}
-		}
-		else
-		{
-			if (components::button("Update Profile"))
-			{
-				ImGui::OpenPopup("Update Handling");
-			}
+			ImGui::OpenPopup("Save Handling");
 		}
 
 		modal_handling::modal_save_handling();
-		modal_handling::modal_update_handling();
 		ImGui::SameLine();
 		if (components::button("Restore Handling"))
-			g_vehicle_service->restore_vehicle();
+			g_handling_service->restore_vehicle();
 
 		ImGui::Separator();
 

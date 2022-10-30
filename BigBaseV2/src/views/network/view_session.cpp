@@ -25,11 +25,8 @@ namespace big
 			}
 			ImGui::EndListBox();
 		}
-		if (ImGui::TreeNode("Chat"))
-		{
-			ImGui::Checkbox("Disable Filter", &g->session.disable_chat_filter);
 
-			ImGui::TreePop();
-		}
+		components::sub_title("Chat");
+		ImGui::Checkbox("Disable Filter", &g->session.disable_chat_filter);
 	}
 }

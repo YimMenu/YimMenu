@@ -21,6 +21,5 @@ namespace big
 	namespace modal_handling
 	{
 		void modal_save_handling();
-		void modal_update_handling();
 	}
 }

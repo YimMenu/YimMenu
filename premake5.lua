@@ -124,7 +124,8 @@ workspace "BigBaseV2"
 			"vendor/%{prj.name}/imgui_tables.cpp",
 			"vendor/%{prj.name}/imgui_widgets.cpp",
 			"vendor/%{prj.name}/backends/imgui_impl_dx11.cpp",
-			"vendor/%{prj.name}/backends/imgui_impl_win32.cpp"
+			"vendor/%{prj.name}/backends/imgui_impl_win32.cpp",
+			"vendor/%{prj.name}/misc/cpp/imgui_stdlib.cpp",
 		}
 
 		includedirs
