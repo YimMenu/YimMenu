@@ -5,28 +5,13 @@ namespace memory
 	class byte_patch
 	{
 	public:
-		inline virtual ~byte_patch()
-		{
-			restore();
-		}
+		virtual ~byte_patch();
 
-		inline void apply() const
-		{
-			memcpy(m_address, m_value.get(), m_size);
-		}
+		void apply() const;
 
-		inline void restore() const
-		{
-			memcpy(m_address, m_original_bytes.get(), m_size);
-		}
+		void restore() const;
 
-		inline void remove() const
-		{
-			if (const auto it = std::find(m_patches.begin(), m_patches.end(), this); it != m_patches.end())
-			{
-				m_patches.erase(it);
-			}
-		}
+		void remove() const;
 
 		template <typename TAddr>
 		static const std::unique_ptr<byte_patch>& make(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
@@ -35,10 +20,7 @@ namespace memory
 				std::unique_ptr<byte_patch>(new byte_patch(address, value)));
 		}
 
-		static inline void restore_all()
-		{
-			m_patches.clear();
-		}
+		static void restore_all();
 
 	private:
 		template <typename TAddr>
@@ -62,11 +44,6 @@ namespace memory
 		std::unique_ptr<uint8_t[]> m_original_bytes;
 		std::size_t m_size;
 
-		friend inline bool operator== (const std::unique_ptr<byte_patch>& a, const byte_patch* b);
+		friend bool operator== (const std::unique_ptr<byte_patch>& a, const byte_patch* b);
 	};
-
-	inline bool operator== (const std::unique_ptr<byte_patch>& a, const byte_patch* b)
-	{
-		return a->m_address == b->m_address;
-	}
 }
