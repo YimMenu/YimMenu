@@ -75,8 +75,6 @@ namespace big
 
 		ImGui::Checkbox("Keep Player Clean", &g->self.clean_player);
 
-		ImGui::Checkbox("Seat Belt", &g->self.seat_belt);
-
 		ImGui::Checkbox("No Collision", &g->self.no_collision);
 
 		ImGui::EndGroup();

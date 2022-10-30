@@ -10,26 +10,14 @@ namespace big
 
 		bool bNoCollsion = g->self.no_collision;
 
-		auto set_collison = [](float value) 
-		{
-			static int offsets[] = { 0x30, 0x10, 0x20, 0x70, 0x00, 0x2C };
-			uintptr_t address = (uintptr_t)&g_local_player;
-			for (auto item : offsets)
-			{
-				address = *(uintptr_t*)(address);
-				address += item;
-			}
-			*(float*)address = value;
-		};
-
 		if (bNoCollsion)
 		{
-			set_collison(-1);
+			g_local_player->m_navigation->m_damp->m_bound_composite->m_bound_capsule_list->m_bound_capsule->m_collision = -1;
 			bLastNoCollsion = bNoCollsion;
 		}
 		else if (bNoCollsion != bLastNoCollsion)
 		{
-			set_collison(0.25);
+			g_local_player->m_navigation->m_damp->m_bound_composite->m_bound_capsule_list->m_bound_capsule->m_collision = 0.25;
 			bLastNoCollsion = bNoCollsion;
 		}
 	}

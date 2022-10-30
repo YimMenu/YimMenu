@@ -32,7 +32,6 @@ namespace big
 			looped::self_off_radar();
 			looped::self_police();
 			looped::self_super_run();
-			looped::self_seat_belt();
 			looped::self_no_collision();
 
 			script::get_current()->yield();
