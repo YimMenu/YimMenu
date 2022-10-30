@@ -54,10 +54,11 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			try
 			{
+				LOG(INFO) << "Yim's Menu Initializing";
+
 				g->load();
 				LOG(INFO) << "Settings Loaded.";
 
-				LOG(INFO) << "Yim's Menu Initializing";
 				auto pointers_instance = std::make_unique<pointers>();
 				LOG(INFO) << "Pointers initialized.";
 
