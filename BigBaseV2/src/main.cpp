@@ -67,6 +67,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			try
 			{
 				LOG(INFO) << "Yim's Menu Initializing";
+
+				g->load();
+				LOG(INFO) << "Settings Loaded.";
+
 				auto pointers_instance = std::make_unique<pointers>();
 				LOG(INFO) << "Pointers initialized.";
 
@@ -78,9 +82,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				auto hooking_instance = std::make_unique<hooking>();
 				LOG(INFO) << "Hooking initialized.";
-
-				g->load();
-				LOG(INFO) << "Settings Loaded.";
 
 				auto thread_pool_instance = std::make_unique<thread_pool>();
 				LOG(INFO) << "Thread pool initialized.";

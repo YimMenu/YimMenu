@@ -12,6 +12,6 @@ namespace big
 			}
 		}
 
-		return g_hooking->m_get_network_event_data_hook.get_original<decltype(&get_network_event_data)>()(unk, net_event);
+		return g_hooking->get_original<get_network_event_data>()(unk, net_event);
 	}
 }

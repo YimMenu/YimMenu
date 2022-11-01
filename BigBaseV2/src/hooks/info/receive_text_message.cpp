@@ -29,6 +29,6 @@ namespace big
             LOG(INFO) << net_player->get_name() << (is_team ? " [LOCAL] " : " [ALL] ") << msg;
         }
 
-        return g_hooking->m_chat_message_received_hook.get_original<decltype(&chat_receive)>()(a1, a2, sender, msg, is_team);
+        return g_hooking->get_original<chat_receive>()(a1, a2, sender, msg, is_team);
     }
 }

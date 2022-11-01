@@ -45,6 +45,7 @@ namespace big
 			looped::self_police();
 			looped::self_super_run();
 			looped::ragdoll_mp();
+			looped::self_no_collision();
 
 			script::get_current()->yield();
 		}

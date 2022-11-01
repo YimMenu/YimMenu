@@ -4,11 +4,6 @@
 A garbage fork of YimMenu made by an idiot
 
 This fork aims to make the game more enjoyable by adding untested broken features that crash your game.
-
-# YimMenu readme:
-
-## YimMenu made possible by [BigBaseV2](https://github.com/Pocakking/BigBaseV2)
-A mod menu base for Grand Theft Auto V.
 Strictly for educational purposes.
 
 ## Table of contents

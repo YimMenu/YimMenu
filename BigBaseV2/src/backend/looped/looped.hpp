@@ -36,6 +36,7 @@ namespace big
 		static void self_police();
 		static void self_super_run();
 		static void ragdoll_mp();
+		static void self_no_collision();
 
 		static void script_starter();
 		static void session_local_time();

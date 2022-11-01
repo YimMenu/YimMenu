@@ -158,6 +158,7 @@ namespace big
 			bool off_radar = false;
 			bool super_run = false;
 			bool allow_ragdoll = false;
+			bool no_collision = false;
 			int wanted_level = 0;
 			bool god_mode = false;
 			bool proof_bullet = false;
@@ -621,6 +622,7 @@ namespace big
 			this->self.no_ragdoll = j["self"]["no_ragdoll"];
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
+			this->self.no_collision = j["self"]["no_collision"];
 			this->self.allow_ragdoll = j["self"]["allow_ragdoll"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
@@ -912,6 +914,7 @@ namespace big
 						{ "no_ragdoll", this->self.no_ragdoll },
 						{ "off_radar", this->self.off_radar },
 						{ "super_run", this->self.super_run },
+						{ "no_collision", this->self.no_collision },
 						{ "allow_ragdoll", this->self.allow_ragdoll }
 					}
 				},
