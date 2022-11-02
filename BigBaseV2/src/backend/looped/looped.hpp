@@ -41,6 +41,8 @@ namespace big
 		static void script_starter();
 		static void session_local_time();
 		static void fast_join();
+		
+		static void world_population_control();
 
 		static void system_disable_model_spawn_bypass();
 		static void system_self_globals();

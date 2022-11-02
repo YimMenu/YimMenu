@@ -177,6 +177,15 @@ namespace big
 			int local_weather = 0;
 			bool override_time = {};
 			bool override_weather = false;
+
+			struct population_control
+			{
+				bool ped_enable = false;
+				int ped = 3;
+				bool vehicle_enable = false;
+				int vehicle = 3;
+			};
+
 			struct
 			{
 				int hour{}, minute{}, second{};
@@ -184,6 +193,8 @@ namespace big
 			bool join_queued = false;
 			rage::rlSessionInfo info;
 			bool disable_chat_filter = false;
+
+			population_control population_control{};
 		};
 
 		struct settings {
