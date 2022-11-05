@@ -20,8 +20,8 @@ Strictly for educational purposes.
 
 Requirements:
 
- * [git](#git)
- * [premake5](#premake5)
+ * [Git](#Git)
+ * [CMake](#CMake)
 
 If you have both of the above requirements you can skip to [cloning the git repo and generating the project files](#cloning-and-generating-project-files).
 
@@ -31,17 +31,17 @@ If you haven't installed git on your system go and do so it is **REQUIRED** for 
 
 [Download Link](https://git-scm.com/download/win)
 
-### Premake5
+### CMake
 
-Premake5 is used to generate our project files, if you haven't used it before we will need to download and add it to our [System Path](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/).
+CMake is used to generate our project files, if you haven't used it before we will need to download and install it.
 
-[Download Link](https://premake.github.io/download/)
+[Download Link](https://cmake.org/download/)
 
 ### Cloning and generating project files
 
 Clone the repository including submodules:
 ```bash
-git clone https://github.com/YimMenu/YimMenu.git --recursive || echo "You don't have git installed, install it from https://git-scm.com/download/win"
+git clone https://github.com/YimMenu/YimMenu.git || echo "You don't have git installed, install it from https://git-scm.com/download/win"
 ```
 
 Go into the directory you just cloned:
@@ -49,15 +49,31 @@ Go into the directory you just cloned:
 cd YimMenu
 ```
 
-Generate project files:
+#### Generate project files:
+
+Manualy:
 ```bash
-script.bat
+mkdir build && cd build
+cmake ..
 ```
 Now, you will be able to open the solution, and simply build it in Visual Studio.
 
+Using a script:
+```bash
+script.bat
+```
+This script will generate your project and open the solution.
+
 ## Staying Up To Date
 
-Make sure your Visual Studio is closed and regenerate project files:
+Manualy:
+```bash
+git pull https://github.com/YimMenu/YimMenu.git
+cd build
+cmake ..
+```
+
+Using a script:
 ```bash
 script.bat
 ```
