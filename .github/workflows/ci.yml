@@ -11,15 +11,14 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Check cmake version
+      - name: Check CMake version
         run: cmake --version
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
 
-      - name: Generate cmake project
+      - name: Generate CMake project
         run: cmake -S. -Bbuild -G "Visual Studio 17 2022" -DCMAKE_CONFIGURATION_TYPES=Release 
-        shell: bash
 
       - name: Build 64bit release DLL
         run: cmake --build build --config Release --target ALL_BUILD
