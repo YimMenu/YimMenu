@@ -29,16 +29,16 @@ set_property(TARGET g3log PROPERTY CXX_STANDARD 23)
 # ImGui
 file(GLOB SRC_IMGUI
     "${IMGUI_DIR}/*.cpp"
-	${IMGUI_DIR}/backends/imgui_impl_win32.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_win32.cpp
     ${IMGUI_DIR}/backends/imgui_impl_dx11.cpp
-	${IMGUI_DIR}/misc/cpp/imgui_stdlib.cpp
+    ${IMGUI_DIR}/misc/cpp/imgui_stdlib.cpp
 )
 add_library(ImGui ${SRC_IMGUI})
 
 target_include_directories(ImGui PRIVATE
-	${IMGUI_DIR}
-	${IMGUI_DIR}/backends
-	${IMGUI_DIR}/misc
+    ${IMGUI_DIR}
+    ${IMGUI_DIR}/backends
+    ${IMGUI_DIR}/misc
 )
 set_property(TARGET ImGui PROPERTY CXX_STANDARD 23)
 
@@ -74,7 +74,7 @@ target_precompile_headers(BigBaseV2 PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${SRC_DIR
 target_link_libraries(BigBaseV2 PRIVATE pugixml minhook g3log ImGui d3dcompiler)
 
 add_compile_definitions(BigBaseV2 
-	"_CRT_SECURE_NO_WARNINGS"
-	"NOMINMAX"
-	"WIN32_LEAN_AND_MEAN"
+    "_CRT_SECURE_NO_WARNINGS"
+    "NOMINMAX"
+    "WIN32_LEAN_AND_MEAN"
 )
