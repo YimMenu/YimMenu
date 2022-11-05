@@ -10,6 +10,7 @@ set(CMAKE_CONFIGURATION_TYPES
     MinSizeRel
 )
 
+
 # g3log config
 set(ADD_FATAL_EXAMPLE OFF CACHE INTERNAL "")
 set(INSTALL_G3LOG OFF CACHE INTERNAL "")
@@ -135,6 +136,11 @@ target_include_directories(BigBaseV2 PRIVATE
 
 target_precompile_headers(BigBaseV2 PRIVATE "${SRC_DIR}/common.hpp")
 target_link_libraries(BigBaseV2 PRIVATE pugixml minhook g3log ImGui d3dcompiler)
+
+# Disable warnings
+set_target_properties(BigBaseV2 PROPERTIES COMPILE_FLAGS "/wd4996") # C4996: deprecated in C++17
+
+set_property(TARGET BigBaseV2 PROPERTY COMPILE_WARNING_AS_ERROR ON)
 
 add_compile_definitions(BigBaseV2 
     "_CRT_SECURE_NO_WARNINGS"
