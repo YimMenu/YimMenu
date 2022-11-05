@@ -2,15 +2,9 @@
 .vs/
 
 # output directory
-bin/
-# premake in project dir people
-*.exe
+build/
 
 # precompiled headers
 *.ipch
 *.gch
 *.pch
-
-# project files
-*.sln
-*.vcxproj*
