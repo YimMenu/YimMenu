@@ -28,7 +28,7 @@ jobs:
 
       - name: Rename DLL to YimMenu-dev-{GITHUB_SHA}.dll
         run: ren BigBaseV2.dll YimMenu-dev-${{github.sha}}.dll
-        working-directory: bin/Release/
+        working-directory: build/Release/
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
