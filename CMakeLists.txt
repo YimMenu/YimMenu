@@ -9,14 +9,14 @@ set(CMAKE_CONFIGURATION_TYPES Release)
 
 # Fetch content
 message("\nFetching modules")
-include(scripts/MinHook.cmake)
+include(scripts/minhook.cmake)
 include(scripts/g3log.cmake)
 include(scripts/pugixml.cmake)
 include(scripts/json.cmake)
 
 message("\nFetching custom modules")
-include(scripts/ImGui.cmake)
-include(scripts/GTAV-Classes.cmake)
+include(scripts/imgui.cmake)
+include(scripts/gtav-classes.cmake)
 
 
 # BigBaseV2
