@@ -4,7 +4,7 @@ project(BigBaseV2 CXX ASM_MASM)
 
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/BigBaseV2/src")
 
-set(CMAKE_CONFIGURATION_TYPES Release MinSizeRel)
+set(CMAKE_CONFIGURATION_TYPES Release)
 
 
 # Fetch content
