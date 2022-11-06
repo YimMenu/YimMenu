@@ -1,0 +1,22 @@
+include(FetchContent)
+
+FetchContent_Declare(
+    gtav_classes
+    GIT_REPOSITORY https://github.com/Yimura/GTAV-Classes.git
+    GIT_TAG        37361b421f70cf2a0cce33f2c7d277116474b7cd
+    GIT_PROGRESS TRUE
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+)
+message("GTAV-Classes")
+if(NOT gtav_classes_POPULATED)
+    FetchContent_Populate(gtav_classes)
+
+    file(GLOB_RECURSE SRC_GTAV_CLASSES "${gtav_classes_SOURCE_DIR}/*.hpp")
+
+    # Show GTAV-Classes project
+    add_library(gtav_classes INTERFACE "${SRC_GTAV_CLASSES}")
+
+    source_group(TREE "${gtav_classes_SOURCE_DIR}" PREFIX "GTAV-Classes" FILES "${SRC_GTAV_CLASSES}")
+endif()
+

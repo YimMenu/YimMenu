@@ -51,7 +51,7 @@ cd YimMenu
 
 #### Generate project files:
 
-Manualy:
+Manually:
 ```bash
 mkdir build && cd build
 cmake ..
@@ -66,7 +66,7 @@ This script will generate your project and open the solution.
 
 ## Staying Up To Date
 
-Manualy:
+Manually:
 ```bash
 git pull https://github.com/YimMenu/YimMenu.git
 cd build
