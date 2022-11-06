@@ -224,6 +224,12 @@ namespace big
 			m_ptr_to_handle = ptr.sub(0x15).as<decltype(m_ptr_to_handle)>();
 		});
 
+		// Handle to Pointer
+		main_batch.add("HTP", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr)
+		{
+			m_handle_to_ptr = ptr.as<decltype(m_handle_to_ptr)>();
+		});
+
 		// Get Script Handle
 		main_batch.add("GSH", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr)
 		{

@@ -15,6 +15,7 @@ namespace big::functions
 	using increment_stat_event = bool(*)(uint64_t net_event_struct, int64_t sender, int64_t a3);
 
 	using ptr_to_handle = Entity(*)(void* entity);
+	using handle_to_ptr = uint64_t(*)(Entity entity);
 	using get_script_handle_t = uint64_t(*)(int64_t);
 	
 	using multiplayer_chat_filter = int(__int64 chat_type, const char* input, const char** output);

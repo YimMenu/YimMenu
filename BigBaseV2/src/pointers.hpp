@@ -27,6 +27,7 @@ namespace big
 		rage::CReplayInterface** m_replay_interface{};
 
 		functions::ptr_to_handle m_ptr_to_handle{};
+		functions::handle_to_ptr m_handle_to_ptr{};
 		functions::get_script_handle_t m_get_script_handle{};
 		rage::scrNativeRegistrationTable* m_native_registration_table{};
 		functions::get_native_handler m_get_native_handler{};
