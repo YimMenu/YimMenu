@@ -1,6 +1,6 @@
 include(FetchContent)
 
-set(JSON_MultipleHeaders OFF CACHE INTERNAL "")
+set(JSON_MultipleHeaders OFF)
 
 FetchContent_Declare(
     json
@@ -8,8 +8,10 @@ FetchContent_Declare(
     GIT_TAG        67e6070f9d9a44b4dec79ebe6b591f39d2285593
     GIT_PROGRESS TRUE
 )
-
+message("json")
 FetchContent_MakeAvailable(json)
 
 # Show json project
-add_library(json INTERFACE ${json_SOURCE_DIR}/single_include/nlohmann/json.hpp)
+add_library(json ${json_SOURCE_DIR}/single_include/nlohmann/json.hpp)
+set_property(TARGET json PROPERTY CXX_STANDARD 23)
+set_target_properties(json PROPERTIES LINKER_LANGUAGE CXX)

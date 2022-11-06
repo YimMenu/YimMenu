@@ -18,8 +18,6 @@ message("\nFetching custom modules")
 include(scripts/ImGui.cmake)
 include(scripts/GTAV-Classes.cmake)
 
-# Set CXX STABDRD
-set_property(GLOBAL PROPERTY CXX_STANDARD 23)  # 23 Because std::format is not avalible in std:c++20 for some reason. Maybe it's because i use v142 toolset.
 
 # BigBaseV2
 message(STATUS "BigBaseV2")
@@ -34,6 +32,7 @@ file(GLOB_RECURSE SRC_MAIN
 add_library(BigBaseV2 MODULE "${SRC_MAIN}")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set_property(TARGET BigBaseV2 PROPERTY CXX_STANDARD 23) # 23 Because std::format is not avalible in std:c++20 for some reason. Maybe it's because i use v142 toolset.
 
 source_group(TREE "${SRC_DIR}" PREFIX "YimMenu" FILES "${SRC_MAIN}" )
 
@@ -41,11 +40,12 @@ target_include_directories(BigBaseV2 PRIVATE
     "${SRC_DIR}"
     "${json_SOURCE_DIR}/single_include"
     "${gtav_classes_SOURCE_DIR}"
+    "${minhook_SOURCE_DIR}/include"
     "${imgui_SOURCE_DIR}"
 )
 
 target_precompile_headers(BigBaseV2 PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(BigBaseV2 PRIVATE pugixml minhook g3log ImGui d3dcompiler)
+target_link_libraries(BigBaseV2 PRIVATE pugixml minhook g3log imgui d3dcompiler)
 
 # Disable warnings
 set_target_properties(BigBaseV2 PROPERTIES COMPILE_FLAGS "/wd4996") # C4996: deprecated in C++17
