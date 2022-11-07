@@ -169,24 +169,14 @@ namespace big
 
 		ImGui::Checkbox("Hide Ammo", &g->self.hide_ammo);
 
-		ImGui::SetNextItemWidth(500.f);
-		ImGui::SliderInt(
-			"##hud_comp_slider",
-			&g->self.selected_hud_component,
-			1,
-			(int)HudComponents::HUD_WEAPONS,
-			(
-				g->self.selected_hud_component >= 1 &&
-				g->self.selected_hud_component <= (int)HudComponents::HUD_WEAPONS
-			) ? hud_component_names[g->self.selected_hud_component] : hud_component_names[0]
-		);
-
-		components::button(std::format("Hide {}", hud_component_names[g->self.selected_hud_component]).c_str(), [] {
-			g->self.hud_components_states[g->self.selected_hud_component - 1] = true;
+		ImGui::Combo("##hud_comp_combo", &g->self.selected_hud_component, hud_component_names, (int)HudComponents::HUD_WEAPONS);
+		ImGui::SameLine();
+		components::button("Hide", [] {
+			g->self.hud_components_states[g->self.selected_hud_component] = true;
 		});
 		ImGui::SameLine();
-		components::button(std::format("Show {}", hud_component_names[g->self.selected_hud_component]).c_str(), [] {
-			g->self.hud_components_states[g->self.selected_hud_component - 1] = false;
+		components::button("Show", [] {
+			g->self.hud_components_states[g->self.selected_hud_component] = false;
 		});
 
 		components::button("Hide all", [] {

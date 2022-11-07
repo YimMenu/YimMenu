@@ -1,8 +1,7 @@
 #pragma once
 #include "core/enums.hpp"
 
-inline const char* hud_component_names[(int)big::HudComponents::HUD_WEAPONS + 1] = {
-	"Uknown",
+inline const char* hud_component_names[(int)big::HudComponents::HUD_WEAPONS] = {
 	"WANTED_STARS",
 	"WEAPON_ICON",
 	"CASH",
