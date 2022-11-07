@@ -34,6 +34,8 @@ namespace big
 		static void self_super_run();
 		static void self_no_collision();
 		static void self_hud();
+		static void self_unlimited_oxygen();
+		static void self_no_water_collision();
 
 		static void session_local_time();
 
@@ -57,6 +59,7 @@ namespace big
 		static void vehicle_speedo_meter();
 		static void vehicle_turn_signals();
 		static void vehicle_keep_vehicle_repaired();
+		static void vehicle_no_water_collision();
 
 		static void weapons_ammo_special_type();
 		static void weapons_cage_gun();

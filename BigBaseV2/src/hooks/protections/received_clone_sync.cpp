@@ -49,7 +49,7 @@ namespace big
 				{
 					if (auto model_info = game_obj->m_model_info)
 					{
-						const auto model = model_info::get_model(model_info->m_model_hash);
+						const auto model = model_info::get_model(model_info->m_hash);
 						if (!model || model_info->m_model_type != model->m_model_type)
 						{
 							return SyncResponse::WrongOwner;

@@ -66,6 +66,7 @@ namespace big
 			{
 				ImGui::Checkbox("Fully Automatic Signal", &g->vehicle.auto_turn_signals);
 			}
+			ImGui::Checkbox("No Water Collision", &g->vehicle.no_water_collision);
 
 			ImGui::EndGroup();
 		}
