@@ -31,7 +31,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		DisableThreadLibraryCalls(hmod);
 
 		g_hmodule = hmod;
-		g_is_steam = GetModuleHandle("steam_api64.dll") != NULL;
 		g_main_thread = CreateThread(nullptr, 0, [](PVOID) -> DWORD
 		{
 			while (!FindWindow("grcWindow", "Grand Theft Auto V"))
