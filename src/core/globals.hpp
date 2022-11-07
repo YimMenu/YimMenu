@@ -152,6 +152,8 @@ namespace big
 			bool off_radar = false;
 			bool super_run = false;
 			bool no_collision = false;
+			bool unlimited_oxygen = false;
+			bool no_water_collision = false;
 			int wanted_level = 0;
 			bool god_mode = false;
 			bool proof_bullet = false;
@@ -291,6 +293,7 @@ namespace big
 			bool turn_signals = false;
 			bool vehicle_jump = false;
 			bool keep_vehicle_repaired = false;
+			bool no_water_collision = false;
 			speedo_meter speedo_meter{};
 			rainbow_paint rainbow_paint{};
 			fly fly{};
@@ -560,6 +563,8 @@ namespace big
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
 			this->self.no_collision = j["self"]["no_collision"];
+			this->self.unlimited_oxygen = j["self"]["unlimited_oxygen"];
+			this->self.no_water_collision = j["self"]["no_water_collision"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -616,6 +621,7 @@ namespace big
 			this->vehicle.is_targetable = j["vehicle"]["is_targetable"];
 			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
 			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
+			this->vehicle.no_water_collision = j["vehicle"]["no_water_collision"];
 
 			this->vehicle.speedo_meter.enabled = j["vehicle"]["speedo_meter"]["enabled"];
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
@@ -827,6 +833,8 @@ namespace big
 						{ "off_radar", this->self.off_radar },
 						{ "super_run", this->self.super_run },
 						{ "no_collision", this->self.no_collision },
+						{ "unlimited_oxygen", this->self.unlimited_oxygen },
+						{ "no_water_collision", this->self.no_water_collision },
 					}
 				},
 				{
@@ -907,6 +915,7 @@ namespace big
 						{ "is_targetable", this->vehicle.is_targetable },
 						{ "turn_signals", this->vehicle.turn_signals },
 						{ "seatbelt", this->vehicle.seatbelt },
+						{ "no_water_collision", this->vehicle.no_water_collision },
 						{
 							"speedo_meter",
 							{

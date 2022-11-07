@@ -54,6 +54,7 @@ namespace big
 		ImGui::Checkbox("Off Radar", &g->self.off_radar);
 		ImGui::Checkbox("Free Cam", &g->self.free_cam);
 		ImGui::Checkbox("Disable Phone", &g->tunables.disable_phone);
+		ImGui::Checkbox("Unlimited Oxygen", &g->self.unlimited_oxygen);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
@@ -63,6 +64,7 @@ namespace big
 		ImGui::Checkbox("No Ragdoll", &g->self.no_ragdoll);
 		ImGui::Checkbox("Super Run", &g->self.super_run);
 		ImGui::Checkbox("No Idle Kick", &g->tunables.no_idle_kick);
+		ImGui::Checkbox("No Water Collision", &g->self.no_water_collision);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
