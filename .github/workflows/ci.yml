@@ -24,10 +24,10 @@ jobs:
         run: cmake --build build --config Release --target ALL_BUILD
 
       - name: Check if DLL got built
-        run: if (-Not (Test-Path -path "build/Release/BigBaseV2.dll")) {throw 1}
+        run: if (-Not (Test-Path -path "build/Release/YimMenu.dll")) {throw 1}
 
       - name: Rename DLL to YimMenu-dev-{GITHUB_SHA}.dll
-        run: ren BigBaseV2.dll YimMenu-dev-${{github.sha}}.dll
+        run: ren YimMenu.dll YimMenu-dev-${{github.sha}}.dll
         working-directory: build/Release/
 
       - name: Upload Artifact

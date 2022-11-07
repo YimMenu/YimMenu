@@ -30,10 +30,6 @@ jobs:
       - name: Build 64bit release DLL
         run: cmake --build build --config Release --target ALL_BUILD
 
-      - name: Rename DLL to YimMenu.dll
-        run: ren BigBaseV2.dll YimMenu.dll
-        working-directory: build/Release/
-
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
