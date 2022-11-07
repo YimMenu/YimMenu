@@ -1,4 +1,5 @@
 #include "backend/looped/looped.hpp"
+#include "pointers.hpp"
 
 namespace big
 {
@@ -6,11 +7,25 @@ namespace big
 	{
 		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr) return;
 
-		auto playerInfo = g_local_player->m_player_info;
+		static bool bLast = false;
 
-		if (g->self.never_wanted)
-			playerInfo->m_wanted_level = 0;
-		else if (g->self.force_wanted_level)
-			playerInfo->m_wanted_level = g->self.wanted_level;
+		bool b = g->self.never_wanted;
+
+		if (b)
+		{
+			g_local_player->m_player_info->m_wanted_level = 0;
+			g_pointers->m_max_wanted_level->apply();
+			g_pointers->m_max_wanted_level_2->apply();
+			bLast = b;
+		}
+		else if (b != bLast)
+		{
+			g_pointers->m_max_wanted_level->restore();
+			g_pointers->m_max_wanted_level_2->restore();
+			bLast = b;
+		}
+
+		if(g->self.force_wanted_level && !b)
+			g_local_player->m_player_info->m_wanted_level = g->self.wanted_level;
 	}
 }

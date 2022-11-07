@@ -7,6 +7,7 @@
 #include "network/CNetworkPlayerMgr.hpp"
 #include "socialclub/FriendRegistry.hpp"
 #include "network/Network.hpp"
+#include "memory/byte_patch.hpp"
 
 namespace big
 {
@@ -43,6 +44,9 @@ namespace big
 
 		int* m_resolution_x;
 		int* m_resolution_y;
+
+		memory::byte_patch* m_max_wanted_level;
+		memory::byte_patch* m_max_wanted_level_2;
 
 		PVOID m_blame_explode;
 		PVOID m_model_spawn_bypass;
