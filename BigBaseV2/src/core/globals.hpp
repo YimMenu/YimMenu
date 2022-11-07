@@ -165,6 +165,10 @@ namespace big
 			bool proof_drown = false;
 			bool proof_water = false;
 			uint32_t proof_mask = 0;
+			bool hide_radar = false;
+			bool hide_ammo = false;
+			int selected_hud_component = 1;
+			bool hud_components_states[(int)HudComponents::HUD_WEAPONS] = { false };
 		};
 
 		struct session
@@ -563,6 +567,11 @@ namespace big
 			this->self.off_radar = j["self"]["off_radar"];
 			this->self.super_run = j["self"]["super_run"];
 			this->self.no_collision = j["self"]["no_collision"];
+			this->self.hide_radar = j["self"]["hide_radar"];
+			this->self.hide_ammo = j["self"]["hide_ammo"];
+			this->self.selected_hud_component = j["self"]["selected_hud_component"];
+			for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
+				this->self.hud_components_states[i] = j["self"]["hud_components_states"].at(i);
 			this->self.unlimited_oxygen = j["self"]["unlimited_oxygen"];
 			this->self.no_water_collision = j["self"]["no_water_collision"];
 
@@ -833,6 +842,33 @@ namespace big
 						{ "off_radar", this->self.off_radar },
 						{ "super_run", this->self.super_run },
 						{ "no_collision", this->self.no_collision },
+						{ "hide_radar", this->self.hide_radar },
+						{ "hide_ammo", this->self.hide_ammo },
+						{ "selected_hud_component", this->self.selected_hud_component },
+						{ "hud_components_states", nlohmann::json::array({
+							this->self.hud_components_states[0],
+							this->self.hud_components_states[1],
+							this->self.hud_components_states[2],
+							this->self.hud_components_states[3],
+							this->self.hud_components_states[4],
+							this->self.hud_components_states[5],
+							this->self.hud_components_states[6],
+							this->self.hud_components_states[7],
+							this->self.hud_components_states[8],
+							this->self.hud_components_states[9],
+							this->self.hud_components_states[10],
+							this->self.hud_components_states[11],
+							this->self.hud_components_states[12],
+							this->self.hud_components_states[13],
+							this->self.hud_components_states[14],
+							this->self.hud_components_states[15],
+							this->self.hud_components_states[16],
+							this->self.hud_components_states[17],
+							this->self.hud_components_states[18],
+							this->self.hud_components_states[19],
+							this->self.hud_components_states[20],
+							this->self.hud_components_states[21] })
+						},
 						{ "unlimited_oxygen", this->self.unlimited_oxygen },
 						{ "no_water_collision", this->self.no_water_collision },
 					}
@@ -962,7 +998,7 @@ namespace big
 						{ "infinite_mag", this->weapons.infinite_mag },
 						{ "no_recoil", this->weapons.no_recoil },
 						{ "no_spread", this->weapons.no_spread },
-						{ "bypass_c4_limit", this->weapons.bypass_c4_limit }
+						{ "bypass_c4_limit", this->weapons.bypass_c4_limit },
 					}
 				},
 				{
