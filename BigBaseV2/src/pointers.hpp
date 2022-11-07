@@ -44,6 +44,9 @@ namespace big
 		int* m_resolution_x;
 		int* m_resolution_y;
 
+		uint32_t* m_max_wanted_level;
+		uint32_t* m_max_wanted_level_2;
+
 		PVOID m_blame_explode;
 		PVOID m_model_spawn_bypass;
 		PVOID m_world_model_spawn_bypass;
