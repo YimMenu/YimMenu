@@ -1,4 +1,6 @@
 #include "backend/looped/looped.hpp"
+#include "base/phArchetype.hpp"
+#include "base/phBoundComposite.hpp"
 
 namespace big
 {
@@ -12,12 +14,12 @@ namespace big
 
 		if (bNoCollsion)
 		{
-			g_local_player->m_navigation->m_damp->m_bound_composite->m_bound_capsule_list->m_bound_capsule->m_collision = -1;
+			((rage::phBoundComposite*)g_local_player->m_navigation->m_damp->m_bound)->m_bounds[0]->m_bounding_box_max_xyz_margin_w.w = -1;
 			bLastNoCollsion = bNoCollsion;
 		}
 		else if (bNoCollsion != bLastNoCollsion)
 		{
-			g_local_player->m_navigation->m_damp->m_bound_composite->m_bound_capsule_list->m_bound_capsule->m_collision = 0.25;
+			((rage::phBoundComposite*)g_local_player->m_navigation->m_damp->m_bound)->m_bounds[0]->m_bounding_box_max_xyz_margin_w.w = 0.25;
 			bLastNoCollsion = bNoCollsion;
 		}
 	}

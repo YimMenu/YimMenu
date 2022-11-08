@@ -70,7 +70,7 @@ namespace big
 				return 0;
 			}
 
-			auto player_pos = plyr->get_ped()->m_navigation->m_position;
+			auto player_pos = *plyr->get_ped()->m_navigation->get_position();
 
 			location.x = player_pos.x;
 			location.y = player_pos.y;

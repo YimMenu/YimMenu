@@ -36,7 +36,7 @@ namespace big
 
 		detour_hook_helper::add<hooks::multiplayer_chat_filter>("MCF", g_pointers->m_multiplayer_chat_filter);
     
-    detour_hook_helper::add<hooks::write_player_game_state_data_node>("WPGSDN", g_pointers->m_write_player_game_state_data_node);
+        detour_hook_helper::add<hooks::write_player_game_state_data_node>("WPGSDN", g_pointers->m_write_player_game_state_data_node);
 
 		detour_hook_helper::add<hooks::gta_thread_start>("GTS", g_pointers->m_gta_thread_start);
 		detour_hook_helper::add<hooks::gta_thread_kill>("GTK", g_pointers->m_gta_thread_kill);

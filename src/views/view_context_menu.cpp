@@ -35,7 +35,7 @@ namespace big
 				float context_screen_x;
 				float context_screen_y;
 
-				auto& context_target_pos = g_context_menu_service->m_pointer->m_navigation->m_position;
+				auto& context_target_pos = *g_context_menu_service->m_pointer->m_navigation->get_position();
 
 				const auto context_target_distance = math::calculate_distance_from_game_cam(context_target_pos);
 				const auto context_target_multplr = context_target_distance > g->esp.global_render_distance[1] ? -1.f : 6.17757f / context_target_distance;
