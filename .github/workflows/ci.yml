@@ -18,10 +18,7 @@ jobs:
               pacman -S --needed --noconfirm cmake uasm
               cmake -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_ASM_MASM_COMPILER=uasm -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ -S. -Bbuild -G Ninja
               cmake --build build --config Release
-
-        - name: Rename DLL to YimMenu-dev-{GITHUB_SHA}.dll
-          run: mv libYimMenu.dll YimMenu-dev-${{github.sha}}.dll
-          working-directory: build/
+              mv build/libYimMenu.dll build/YimMenu-dev-${{github.sha}}.dll
 
         - name: Upload Artifact
           uses: actions/upload-artifact@v3
