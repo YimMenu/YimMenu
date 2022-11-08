@@ -3,9 +3,44 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  ci:
+  ci_mingw:
+      runs-on: ubuntu-latest
+      name: CI MinGW
+      steps:
+        - uses: actions/checkout@v2.4.0
+          with:
+            submodules: recursive
+
+        - name: Check CMake version
+          run: cmake --version
+
+        - name: Install MinGW
+          uses: egor-tensin/setup-mingw@v2
+          with:
+            platform: x64
+
+        - name: Generate CMake project
+          run: cmake -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_ASM_MASM_COMPILER=uasm -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ -S. -Bbuild -G Ninja
+
+        - name: Build 64bit release DLL
+          run: cmake --build build --config Release
+
+        - name: Check if DLL got built
+          run: if (-Not (Test-Path -path "build/libYimMenu.dll")) {throw 1}
+
+        - name: Rename DLL to YimMenu-dev-{GITHUB_SHA}.dll
+          run: ren libYimMenu.dll YimMenu-dev-${{github.sha}}.dll
+          working-directory: build/
+
+        - name: Upload Artifact
+          uses: actions/upload-artifact@v3
+          with:
+            name: binary
+            path: build/YimMenu-dev-*.dll
+
+  ci_msvc:
     runs-on: windows-latest
-    name: CI
+    name: CI MSVC
     steps:
       - uses: actions/checkout@v2.4.0
         with:
