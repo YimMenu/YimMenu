@@ -23,7 +23,7 @@ namespace big
 			!plyr->get_ped() ||
 			!plyr->get_ped()->m_navigation) return;
 
-		auto& player_pos = plyr->get_ped()->m_navigation->m_position;
+		auto& player_pos = *plyr->get_ped()->m_navigation->get_position();
 
 		float screen_x, screen_y;
 

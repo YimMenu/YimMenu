@@ -172,7 +172,7 @@ namespace big
 		});
 
 		// Write Bitbuffer WORD/DWORD
-		main_batch.add("WBD", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 83 EC 20 8B EA BF 01 ? ? ?", [this](memory::handle ptr)
+		main_batch.add("WBD", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 83 EC 20 8B EA BF 01", [this](memory::handle ptr)
 		{
 			m_write_bitbuf_dword = ptr.as<decltype(m_write_bitbuf_dword)>();
 		});
@@ -208,7 +208,7 @@ namespace big
 		});
 
 		// Write Player Game State Data Node
-		main_batch.add("WPGSDN", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 54 41 55 41 56 41 57 48 83 EC 30 0F B7 81 ? ? ? ?", [this](memory::handle ptr)
+		main_batch.add("WPGSDN", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 54 41 55 41 56 41 57 48 83 EC 30 0F B7 81", [this](memory::handle ptr)
 		{
 			m_write_player_game_state_data_node = ptr.as<functions::write_player_game_state_data_node>();
 		});

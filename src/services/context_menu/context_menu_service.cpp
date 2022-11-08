@@ -28,7 +28,7 @@ namespace big
 		MISC::GET_MODEL_DIMENSIONS(hash, &min, &max);
 		const auto dimensions = (max - min) * 0.5f;
 
-		const auto& position = m_pointer->m_position;
+		const auto& position = *m_pointer->m_navigation->get_position();
 
 		rage::fvector3 front_upper_right, back_lower_left;
 		front_upper_right.x = position.x + dimensions.y * forward.x + dimensions.x * right.x + dimensions.z * up.x;
@@ -225,7 +225,7 @@ namespace big
 					if (!temp_pointer->m_navigation)
 						continue;
 
-					const auto pos = temp_pointer->m_navigation->m_position;
+					const auto pos = *temp_pointer->m_navigation->get_position();
 					HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos.x, pos.y, pos.z, &screen_pos.x, &screen_pos.y);
 					if (distance_to_middle_of_screen(screen_pos) < distance &&
 						ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(PLAYER::PLAYER_PED_ID(), temp_handle, 17) &&
