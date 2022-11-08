@@ -33,6 +33,7 @@ namespace big
 		static void self_police();
 		static void self_super_run();
 		static void self_no_collision();
+		static void self_hud();
 		static void self_unlimited_oxygen();
 		static void self_no_water_collision();
 

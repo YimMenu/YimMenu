@@ -2,6 +2,7 @@
 #include "util/entity.hpp"
 #include "util/local_player.hpp"
 #include "views/view.hpp"
+#include "core/data/hud_component_names.hpp"
 
 namespace big
 {
@@ -157,6 +158,48 @@ namespace big
 				g_local_player->m_player_info->m_wanted_level = g->self.wanted_level;
 			}
 		}
+
+		ImGui::Separator();
+
+		components::sub_title("HUD");
+
+		ImGui::BeginGroup();
+
+		ImGui::Checkbox("Hide Radar", &g->self.hide_radar);
+
+		ImGui::SameLine();
+
+		ImGui::Checkbox("Hide Ammo", &g->self.hide_ammo);
+
+		ImGui::Combo("##hud_comp_combo", &g->self.selected_hud_component, hud_component_names, (int)HudComponents::HUD_WEAPONS);
+		ImGui::SameLine();
+		components::button("Hide", [] {
+			g->self.hud_components_states[g->self.selected_hud_component] = true;
+		});
+		ImGui::SameLine();
+		components::button("Show", [] {
+			g->self.hud_components_states[g->self.selected_hud_component] = false;
+		});
+
+		components::button("Hide all", [] {
+			g->self.hide_radar = true;
+			g->self.hide_ammo = true;
+			for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
+			{
+				g->self.hud_components_states[i] = true;
+			}
+		});
+		ImGui::SameLine();
+		components::button("Show all", [] {
+			g->self.hide_radar = false;
+			g->self.hide_ammo = false;
+			for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
+			{
+				g->self.hud_components_states[i] = false;
+			}
+		});
+
+		ImGui::EndGroup();
 
 		g->self.proof_mask = 0;
 		if (g->self.god_mode)
