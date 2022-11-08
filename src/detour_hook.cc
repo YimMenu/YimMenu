@@ -31,7 +31,7 @@ namespace big
 	{
 		fix_hook_address();
 		if (auto status = MH_CreateHook(m_target, m_detour, &m_original); status != MH_OK)
-			throw std::runtime_error(std::format("Failed to create hook '{}' at 0x{:X} (error: {})", m_name, uintptr_t(m_target), MH_StatusToString(status)));
+			throw std::runtime_error(fmt::format("Failed to create hook '{}' at 0x{:X} (error: {})", m_name, uintptr_t(m_target), MH_StatusToString(status)));
 	}
 
 	detour_hook::~detour_hook() noexcept
@@ -43,7 +43,7 @@ namespace big
 	void detour_hook::enable()
 	{
 		if (auto status = MH_QueueEnableHook(m_target); status != MH_OK)
-			throw std::runtime_error(std::format("Failed to enable hook 0x{:X} ({})", uintptr_t(m_target), MH_StatusToString(status)));
+			throw std::runtime_error(fmt::format("Failed to enable hook 0x{:X} ({})", uintptr_t(m_target), MH_StatusToString(status)));
 	}
 
 	void detour_hook::disable()

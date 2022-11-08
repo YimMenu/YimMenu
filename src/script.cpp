@@ -1,10 +1,10 @@
-#pragma once
 #include "common.hpp"
 #include "logger.hpp"
 #include "script.hpp"
 
 namespace big
 {
+#if _MSC_VER // Unused with MinGW
 	void script::script_exception_handler(PEXCEPTION_POINTERS exp)
 	{
 		HMODULE mod{};
@@ -17,6 +17,7 @@ namespace big
 		}
 		LOG(FATAL) << "Exception Code: " << HEX_TO_UPPER(exp->ExceptionRecord->ExceptionCode) << " Exception Offset: " << HEX_TO_UPPER(offset) << " Fault Module Name: " << buffer;
 	}
+#endif
 
 	script::script(const func_t func, const std::string_view name, const bool toggleable, const std::optional<std::size_t> stack_size) :
 		script(func, stack_size)
@@ -101,15 +102,8 @@ namespace big
 
 	void script::fiber_func()
 	{
-		TRY_CLAUSE
-		{
-			m_func();
-		}
-		EXCEPT_CLAUSE
-		[]() {
-			LOG(INFO) << "Script finished!";
-		}();
-
+		m_func();
+		
 		while (true)
 		{
 			yield();

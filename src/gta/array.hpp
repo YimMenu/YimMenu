@@ -46,6 +46,7 @@ namespace rage
             }
         }
 
+        // unused functions
         void append(atArray<T> array_value)
         {
             auto value_array_size = array_value.size();

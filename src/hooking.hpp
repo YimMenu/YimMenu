@@ -146,7 +146,7 @@ namespace big
 		template <auto detour_function>
 		static auto get_original()
 		{
-			return detour_hook_helper::hook_to_detour_hook_helper<detour_function>::m_detour_hook->get_original<decltype(detour_function)>();
+			return detour_hook_helper::hook_to_detour_hook_helper<detour_function>::m_detour_hook->template get_original<decltype(detour_function)>();
 		}
 
 	private:

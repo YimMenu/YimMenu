@@ -32,6 +32,6 @@ namespace big
 	template<typename T>
 	inline T vmt_hook::get_original(std::size_t index)
 	{
-		return static_cast<T>(m_original_table[index]);
+		return reinterpret_cast<T>(m_original_table[index]);
 	}
 }

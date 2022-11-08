@@ -11,6 +11,7 @@ include(scripts/minhook.cmake)
 include(scripts/g3log.cmake)
 include(scripts/pugixml.cmake)
 include(scripts/json.cmake)
+include(scripts/fmt.cmake)
 
 message("\nFetching custom modules")
 include(scripts/imgui.cmake)
@@ -30,7 +31,7 @@ file(GLOB_RECURSE SRC_MAIN
 add_library(YimMenu MODULE "${SRC_MAIN}")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set_property(TARGET YimMenu PROPERTY CXX_STANDARD 23) # 23 Because std::format is not avalible in std:c++20 for some reason. Maybe it's because i use v142 toolset.
+set_property(TARGET YimMenu PROPERTY CXX_STANDARD 20) # 23 Because std::format is not avalible in std:c++20 for some reason. Maybe it's because i use v142 toolset.
 
 source_group(TREE "${SRC_DIR}" PREFIX "YimMenu" FILES "${SRC_MAIN}" )
 
@@ -42,12 +43,23 @@ target_include_directories(YimMenu PRIVATE
     "${imgui_SOURCE_DIR}"
 )
 
+
+target_link_libraries(YimMenu PRIVATE fmt)
+
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(YimMenu PRIVATE pugixml minhook g3log imgui d3dcompiler)
+target_link_libraries(YimMenu PRIVATE pugixml minhook g3log imgui d3dcompiler dwmapi )
 
-# Warnings as errors
-set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
-
+if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    # Warnings as errors
+    set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
+else()
+    set(CMAKE_ASM_MASM_COMPILER "uasm" CACHE INTERNAL "")
+    target_compile_options(YimMenu PRIVATE 
+        $<$<COMPILE_LANGUAGE:CXX>:-municode -fpermissive ${CXX_FLAGS}>
+        $<$<COMPILE_LANGUAGE:ASM_MASM>:-win64 ${ASM_MASM_FLAGS}>
+    )
+    target_link_options(YimMenu PRIVATE -static -s)
+endif()
 add_compile_definitions(YimMenu 
     "_CRT_SECURE_NO_WARNINGS"
     "NOMINMAX"

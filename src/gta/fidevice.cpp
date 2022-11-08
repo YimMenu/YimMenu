@@ -3,7 +3,7 @@
 
 namespace rage
 {
-	#define PURECALL() LOG(FATAL) << "pure fiDevice call (" __FUNCTION__ ")"; return 0
+	#define PURECALL() LOG(FATAL) << "pure fiDevice call (" << __FUNCTION__ << ")"; return 0
 
 	fiDeviceImplemented::fiDeviceImplemented()
 	{

@@ -72,7 +72,7 @@ namespace memory
 					current_idx += shift_table[*begin.add(current_idx + max_idx).as<uint8_t*>()];
 					break;
 				}
-				else if (sig_idx == NULL)
+				else if (sig_idx == 0)
 				{
 					return begin.add(current_idx);
 				}

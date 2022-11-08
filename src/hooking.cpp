@@ -20,8 +20,8 @@ namespace big
 		// Swapchain
 		m_swapchain_hook(*g_pointers->m_swapchain, hooks::swapchain_num_funcs)
 	{
-		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
-		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
+		m_swapchain_hook.hook(hooks::swapchain_present_index, (void*)&hooks::swapchain_present);
+		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, (void*)&hooks::swapchain_resizebuffers);
 
 		// The only instances in that vector at this point should only be the "lazy" hooks
 		// aka the ones that still don't have their m_target assigned
@@ -30,35 +30,35 @@ namespace big
 			detour_hook_helper->m_detour_hook->set_target_and_create_hook(detour_hook_helper->m_on_hooking_available());
 		}
 
-		detour_hook_helper::add<hooks::run_script_threads>("SH", g_pointers->m_run_script_threads);
+		detour_hook_helper::add<hooks::run_script_threads>("SH", (void *)g_pointers->m_run_script_threads);
 
-		detour_hook_helper::add<hooks::get_label_text>("GLT", g_pointers->m_get_label_text);
+		detour_hook_helper::add<hooks::get_label_text>("GLT", (void*)g_pointers->m_get_label_text);
 
-		detour_hook_helper::add<hooks::multiplayer_chat_filter>("MCF", g_pointers->m_multiplayer_chat_filter);
+		detour_hook_helper::add<hooks::multiplayer_chat_filter>("MCF", (void*)g_pointers->m_multiplayer_chat_filter);
     
-    detour_hook_helper::add<hooks::write_player_game_state_data_node>("WPGSDN", g_pointers->m_write_player_game_state_data_node);
+    detour_hook_helper::add<hooks::write_player_game_state_data_node>("WPGSDN", (void*)g_pointers->m_write_player_game_state_data_node);
 
-		detour_hook_helper::add<hooks::gta_thread_start>("GTS", g_pointers->m_gta_thread_start);
-		detour_hook_helper::add<hooks::gta_thread_kill>("GTK", g_pointers->m_gta_thread_kill);
+		detour_hook_helper::add<hooks::gta_thread_start>("GTS", (void*)g_pointers->m_gta_thread_start);
+		detour_hook_helper::add<hooks::gta_thread_kill>("GTK", (void*)g_pointers->m_gta_thread_kill);
 
-		detour_hook_helper::add<hooks::network_player_mgr_init>("NPMI", g_pointers->m_network_player_mgr_init);
-		detour_hook_helper::add<hooks::network_player_mgr_shutdown>("NPMS", g_pointers->m_network_player_mgr_shutdown);
+		detour_hook_helper::add<hooks::network_player_mgr_init>("NPMI", (void*)g_pointers->m_network_player_mgr_init);
+		detour_hook_helper::add<hooks::network_player_mgr_shutdown>("NPMS", (void*)g_pointers->m_network_player_mgr_shutdown);
 
-		detour_hook_helper::add<hooks::network_group_override>("NGO", g_pointers->m_network_group_override);
+		detour_hook_helper::add<hooks::network_group_override>("NGO", (void*)g_pointers->m_network_group_override);
 
-		detour_hook_helper::add<hooks::received_event>("RE", g_pointers->m_received_event);
+		detour_hook_helper::add<hooks::received_event>("RE", (void*)g_pointers->m_received_event);
 
-		detour_hook_helper::add<hooks::send_net_info_to_lobby>("SNITL", g_pointers->m_send_net_info_to_lobby);
+		detour_hook_helper::add<hooks::send_net_info_to_lobby>("SNITL", (void*)g_pointers->m_send_net_info_to_lobby);
 
-		detour_hook_helper::add<hooks::assign_physical_index>("API", g_pointers->m_assign_physical_index);
+		detour_hook_helper::add<hooks::assign_physical_index>("API", (void*)g_pointers->m_assign_physical_index);
 
-		detour_hook_helper::add<hooks::receive_net_message>("RNM", g_pointers->m_receive_net_message);
-		detour_hook_helper::add<hooks::received_clone_sync>("RCS", g_pointers->m_received_clone_sync);
+		detour_hook_helper::add<hooks::receive_net_message>("RNM", (void*)g_pointers->m_receive_net_message);
+		detour_hook_helper::add<hooks::received_clone_sync>("RCS", (void*)g_pointers->m_received_clone_sync);
 
-		detour_hook_helper::add<hooks::get_network_event_data>("GNED", g_pointers->m_get_network_event_data);
-		detour_hook_helper::add<hooks::write_player_gamer_data_node>("WPGDN", g_pointers->m_write_player_gamer_data_node);
+		detour_hook_helper::add<hooks::get_network_event_data>("GNED", (void*)g_pointers->m_get_network_event_data);
+		detour_hook_helper::add<hooks::write_player_gamer_data_node>("WPGDN", (void*)g_pointers->m_write_player_gamer_data_node);
 
-		detour_hook_helper::add<hooks::format_metric_for_sending>("FMFS", g_pointers->m_format_metric_for_sending);
+		detour_hook_helper::add<hooks::format_metric_for_sending>("FMFS", (void*)g_pointers->m_format_metric_for_sending);
 
 		g_hooking = this;
 	}

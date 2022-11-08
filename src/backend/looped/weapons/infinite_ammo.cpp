@@ -11,7 +11,7 @@ namespace big
 
 		if (bInfiniteAmmo || (!bInfiniteAmmo && bInfiniteAmmo != bLastInfiniteAmmo))
 		{
-			WEAPON::SET_PED_INFINITE_AMMO(self::ped, g->weapons.infinite_ammo, NULL);
+			WEAPON::SET_PED_INFINITE_AMMO(self::ped, g->weapons.infinite_ammo, 0);
 
 			bLastInfiniteAmmo = g->weapons.infinite_ammo;
 		}
