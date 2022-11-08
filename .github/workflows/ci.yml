@@ -20,7 +20,7 @@ jobs:
               cmake --build build --config Release
 
         - name: Rename DLL to YimMenu-dev-{GITHUB_SHA}.dll
-          run: ren libYimMenu.dll YimMenu-dev-${{github.sha}}.dll
+          run: mv libYimMenu.dll YimMenu-dev-${{github.sha}}.dll
           working-directory: build/
 
         - name: Upload Artifact
