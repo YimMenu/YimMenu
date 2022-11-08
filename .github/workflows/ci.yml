@@ -23,7 +23,7 @@ jobs:
         - name: Upload Artifact
           uses: actions/upload-artifact@v3
           with:
-            name: binary
+            name: binary-MinGW
             path: build/YimMenu-dev-*.dll
 
   ci_msvc:
@@ -56,5 +56,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: binary
+          name: binary-MSVC
           path: build/Release/YimMenu-dev-*.dll
