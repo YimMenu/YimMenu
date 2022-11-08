@@ -11,19 +11,12 @@ jobs:
           with:
             submodules: recursive
 
-        - name: Check CMake version
-          run: cmake --version
-
-        - name: Install MinGW
-          uses: egor-tensin/setup-mingw@v2
+        - name: Build
+          uses: Joshua-Ashton/arch-mingw-github-action@v8
           with:
-            platform: x64
-
-        - name: Generate CMake project
-          run: cmake -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_ASM_MASM_COMPILER=uasm -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ -S. -Bbuild
-
-        - name: Build 64bit release DLL
-          run: cmake --build build --config Release
+            command: |
+              cmake -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_ASM_MASM_COMPILER=uasm -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ -S. -Bbuild
+              cmake --build build --config Release
 
         - name: Check if DLL got built
           run: if (-Not (Test-Path -path "build/libYimMenu.dll")) {throw 1}
