@@ -33,6 +33,7 @@ namespace big
 			looped::self_police();
 			looped::self_super_run();
 			looped::self_no_collision();
+			looped::self_hud();
 			looped::self_unlimited_oxygen();
 			looped::self_no_water_collision();
 

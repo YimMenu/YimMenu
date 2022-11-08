@@ -14,6 +14,13 @@ namespace big
 			m_resolution_y = ptr.add(4).rip().as<int*>();
 		});
 
+		// Max Wanted Level
+		main_batch.add("MWL", "8B 43 6C 89 05", [this](memory::handle ptr)
+		{
+			m_max_wanted_level = memory::byte_patch::make(ptr.add(5).rip().as<uint32_t*>(), 0).get();
+			m_max_wanted_level_2 = memory::byte_patch::make(ptr.add(14).rip().as<uint32_t*>(), 0).get();
+		});
+
 		// Game State
 		main_batch.add("GS", "83 3D ? ? ? ? ? 75 17 8B 43 20 25", [this](memory::handle ptr)
 		{
