@@ -16,11 +16,8 @@ jobs:
           with:
             command: |
               pacman -S --needed --noconfirm cmake uasm
-              cmake -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_ASM_MASM_COMPILER=uasm -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ -S. -Bbuild
+              cmake -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_ASM_MASM_COMPILER=uasm -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ -S. -Bbuild -G ninja
               cmake --build build --config Release
-
-        - name: Check if DLL got built
-          run: if (-Not (Test-Path -path "build/libYimMenu.dll")) {throw 1}
 
         - name: Rename DLL to YimMenu-dev-{GITHUB_SHA}.dll
           run: ren libYimMenu.dll YimMenu-dev-${{github.sha}}.dll
