@@ -7,8 +7,8 @@ set(G3_SHARED_RUNTIME OFF CACHE INTERNAL "")
 
 FetchContent_Declare(
     g3log
-    GIT_REPOSITORY https://github.com/YimMenu/g3log.git
-    GIT_TAG        6ccf93c2e966e9ae13df75496a88e7b45214f7f8
+    GIT_REPOSITORY https://github.com/tupoy-ya/g3log.git
+    GIT_TAG        fdbdf0a75c5e3e0bac2f125a5bd902bb16eaa80b
     GIT_PROGRESS TRUE
 )
 message("g3log")
