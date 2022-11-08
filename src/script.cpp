@@ -10,7 +10,7 @@ namespace big
 		HMODULE mod{};
 		DWORD64 offset{};
 		char buffer[MAX_PATH]{};
-		if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, (LPCWSTR)exp->ExceptionRecord->ExceptionAddress, &mod) == TRUE && mod != nullptr)
+		if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, (LPCSTR)exp->ExceptionRecord->ExceptionAddress, &mod) == TRUE && mod != nullptr)
 		{
 			offset = ((DWORD64)exp->ExceptionRecord->ExceptionAddress - (DWORD64)mod);
 			GetModuleFileNameA(mod, buffer, MAX_PATH - 1);

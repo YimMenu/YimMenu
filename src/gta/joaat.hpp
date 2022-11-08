@@ -4,7 +4,7 @@
 #include <string_view>
 #include <type_traits>
 
-#include "../../vendor/GTAV-Classes/rage/joaat.hpp"
+#include "rage/joaat.hpp"
 
 namespace rage
 {

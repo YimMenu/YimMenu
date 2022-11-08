@@ -1,8 +1,10 @@
-#pragma once
+#ifndef COMMON_INC
+#define COMMON_INC
 
-#include <SDKDDKVer.h>
-#include <Windows.h>
-#include <D3D11.h>
+#include <sdkddkver.h>
+#include <winsock2.h>
+#include <windows.h>
+#include <d3d11.h>
 #include <wrl/client.h>
 
 #include <cinttypes>
@@ -67,7 +69,6 @@ namespace big
 	inline HANDLE g_main_thread{};
 	inline DWORD g_main_thread_id{};
 	inline std::atomic_bool g_running{ false };
-	inline bool g_is_steam{ false };
 
 	inline CPed* g_local_player;
 }
@@ -79,3 +80,5 @@ namespace self
 	inline Vector3 pos;
 	inline Vehicle veh;
 }
+
+#endif

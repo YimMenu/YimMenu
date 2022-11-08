@@ -2,7 +2,7 @@
 #include "detour_hook.hpp"
 #include "logger.hpp"
 #include "memory/handle.hpp"
-#include <..\MinHook\include\MinHook.h>
+#include <MinHook.h>
 
 namespace big
 {
@@ -61,16 +61,9 @@ namespace big
 
 	void detour_hook::fix_hook_address()
 	{
-		__try {
-			auto ptr = memory::handle(m_target);
-			while (ptr.as<std::uint8_t&>() == 0xE9)
-				ptr = ptr.add(1).rip();
-			m_target = ptr.as<void*>();
-		}
-		__except (exp_handler(GetExceptionInformation(), m_name)) {
-			[this]() {
-				throw std::runtime_error(std::format("Failed to fix hook address for '{}'", m_name));
-			}();
-		}
+		auto ptr = memory::handle(m_target);
+		while (ptr.as<std::uint8_t&>() == 0xE9)
+			ptr = ptr.add(1).rip();
+		m_target = ptr.as<void*>();
 	}
 }

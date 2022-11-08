@@ -31,10 +31,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		DisableThreadLibraryCalls(hmod);
 
 		g_hmodule = hmod;
-		g_is_steam = GetModuleHandle(L"steam_api64.dll") != NULL;
 		g_main_thread = CreateThread(nullptr, 0, [](PVOID) -> DWORD
 		{
-			while (!FindWindow(L"grcWindow", L"Grand Theft Auto V"))
+			while (!FindWindow("grcWindow", "Grand Theft Auto V"))
 				std::this_thread::sleep_for(1s);
 
 			std::filesystem::path base_dir = std::getenv("appdata");
