@@ -19,5 +19,5 @@ if(NOT gtav_classes_POPULATED)
 
     source_group(TREE "${gtav_classes_SOURCE_DIR}" PREFIX "GTAV-Classes" FILES "${SRC_GTAV_CLASSES}")
 endif()
-set_property(TARGET gtav_classes PROPERTY CXX_STANDARD 23)
+set_property(TARGET gtav_classes PROPERTY CXX_STANDARD 20)
 set_target_properties(gtav_classes PROPERTIES LINKER_LANGUAGE CXX)

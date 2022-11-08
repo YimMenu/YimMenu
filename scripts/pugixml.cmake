@@ -8,4 +8,4 @@ FetchContent_Declare(
 ) 
 message("pugixml")
 FetchContent_MakeAvailable(pugixml)
-set_property(TARGET pugixml PROPERTY CXX_STANDARD 23)
+set_property(TARGET pugixml PROPERTY CXX_STANDARD 20)

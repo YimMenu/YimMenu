@@ -8,4 +8,4 @@ FetchContent_Declare(
 )
 message("MinHook")
 FetchContent_MakeAvailable(minhook)
-set_property(TARGET minhook PROPERTY CXX_STANDARD 23)
+set_property(TARGET minhook PROPERTY CXX_STANDARD 20)

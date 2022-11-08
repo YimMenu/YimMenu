@@ -13,4 +13,4 @@ FetchContent_Declare(
 )
 message("g3log")
 FetchContent_MakeAvailable(g3log)
-set_property(TARGET g3log PROPERTY CXX_STANDARD 23)
+set_property(TARGET g3log PROPERTY CXX_STANDARD 20)
