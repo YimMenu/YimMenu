@@ -152,11 +152,13 @@ namespace big
 				ImGui::Text("Health: %f / %f", cped->m_health, cped->m_maxhealth);
 				ImGui::SameLine();
 				ImGui::Text("Armor: %f", cped->m_armor);
-				ImGui::Text("Pos X: %f, Y: %f, Z: %f", cped->m_position.x,
-					cped->m_position.y,
-					cped->m_position.z);
+				ImGui::Text("Pos X: %f, Y: %f, Z: %f",
+					cped->m_navigation->get_position()->x,
+					cped->m_navigation->get_position()->y,
+					cped->m_navigation->get_position()->z
+					);
 
-				ImGui::Text("Distance: %f", math::distance_between_vectors(misc::fvector3_to_Vector3(g_local_player->m_position), misc::fvector3_to_Vector3(cped->m_position)));
+				ImGui::Text("Distance: %f", math::distance_between_vectors(misc::fvector3_to_Vector3(*g_local_player->m_navigation->get_position()), misc::fvector3_to_Vector3(*cped->m_navigation->get_position())));
 				ImGui::Text("Run Speed: %f", player_info->m_run_speed);
 				ImGui::TreePop();
 			}

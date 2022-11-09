@@ -34,7 +34,7 @@ void DLL_EXPORT scriptUnregister(HMODULE module)
 
 eGameVersion DLL_EXPORT getGameVersion()
 {
-	return (GetModuleHandle(L"steam_api64.dll") == NULL) ? VER_1_0_2189_0_NOSTEAM : VER_1_0_2189_0_STEAM;
+	return VER_1_0_2699_16;
 }
 
 void DLL_EXPORT scriptRegisterAdditionalThread(HMODULE module, void(*function)())

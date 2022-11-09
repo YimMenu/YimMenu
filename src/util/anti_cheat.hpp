@@ -113,7 +113,7 @@ namespace big::anti_cheat
 	// Model Check
 	inline bool is_model_normal(CPed* player_cped)
 	{
-		if (player_cped->m_model_info->m_model_hash == RAGE_JOAAT("mp_f_freemode_01") || player_cped->m_model_info->m_model_hash == RAGE_JOAAT("mp_m_freemode_01"))
+		if (player_cped->m_model_info->m_hash == RAGE_JOAAT("mp_f_freemode_01") || player_cped->m_model_info->m_hash == RAGE_JOAAT("mp_m_freemode_01"))
 			return true;
 
 		return false;

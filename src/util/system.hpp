@@ -36,9 +36,4 @@ namespace big::system
 	{
 		*(unsigned short*)g_pointers->m_blame_explode = toggle ? 0xE990 : 0x850F;
 	}
-
-	inline bool is_steam()
-	{
-		return GetModuleHandle(L"steam_api64.dll") != NULL;
-	}
 }

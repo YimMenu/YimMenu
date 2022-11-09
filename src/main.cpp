@@ -39,7 +39,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		g_main_thread = CreateThread(nullptr, 0, [](PVOID) -> DWORD
 		{
 			bool cant_find_window;
-			while (!FindWindow(L"grcWindow", L"Grand Theft Auto V"))
+			while (!FindWindow("grcWindow", "Grand Theft Auto V"))
 			{
 				cant_find_window = true;
 				std::this_thread::sleep_for(1s);
