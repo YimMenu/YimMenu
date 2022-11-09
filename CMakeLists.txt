@@ -5,7 +5,7 @@ if(UNIX)
 
     set(TOOLCHAIN_PREFIX "x86_64-w64-mingw32" CACHE STRING "Set toolchain. Default: x86_64-w64-mingw32")
 
-    message("Using ${TOOLCHAIN_PREFIX} toolchain")
+    message(STATUS "Using ${TOOLCHAIN_PREFIX} toolchain")
 
     set(CMAKE_SYSTEM_NAME "Windows")
 
