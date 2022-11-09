@@ -1,5 +1,7 @@
 # IDE
 .vs/
+.vscode/
+.cache/
 
 # output directory
 build/

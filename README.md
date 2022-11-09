@@ -54,31 +54,19 @@ cd YimMenu
 
 #### Generate project files:
 
-Manually:
 ```bash
 mkdir build && cd build
 cmake ..
 ```
 Now, you will be able to open the solution, and simply build it in Visual Studio.
 
-Using a script:
-```bash
-script.bat
-```
-This script will generate your project and open the solution.
 
 ## Staying Up To Date
 
-Manually:
 ```bash
 git pull https://github.com/YimMenu/YimMenu.git
 cd build
 cmake ..
-```
-
-Using a script:
-```bash
-script.bat
 ```
 
 ## Project Structure

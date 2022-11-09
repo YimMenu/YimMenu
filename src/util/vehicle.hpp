@@ -132,7 +132,7 @@ namespace big::vehicle
 						continue;
 					}
 
-					auto veh_pos_arr = veh_ptr->m_navigation->m_position;
+					auto veh_pos_arr = *veh_ptr->m_navigation->get_position();
 					Vector3 veh_pos(veh_pos_arr.x, veh_pos_arr.y, veh_pos_arr.z);
 
 					float dist = math::distance_between_vectors(veh_pos, location);
