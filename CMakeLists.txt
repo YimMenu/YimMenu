@@ -4,6 +4,19 @@ project(YimMenu CXX ASM_MASM)
 
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 
+if(UNIX)
+    message(STATUS "Unix-like system detected. Using MinGW and uasm.")
+
+    option(TOOLCHAIN_PREFIX "Set toolchain. Default: x86_64-w64-mingw32" "x86_64-w64-mingw32")
+
+    message("Using ${TOOLCHAIN_PREFIX} toolchain")
+
+    set(CMAKE_SYSTEM_NAME "Windows")
+
+    set(CMAKE_ASM_MASM_COMPILER "uasm")
+    set(CMAKE_C_COMPILER "${TOOLCHAIN_PREFIX}-gcc")
+    set(CMAKE_CXX_COMPILER "${TOOLCHAIN_PREFIX}-g++")
+endif()
 
 # Fetch modules
 message("\nFetching modules")

@@ -16,7 +16,7 @@ jobs:
           with:
             command: |
               pacman -S --needed --noconfirm cmake uasm
-              cmake -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_ASM_MASM_COMPILER=uasm -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ -S. -Bbuild -G Ninja
+              cmake -DCMAKE_BUILD_TYPE:STRING=Release -S. -Bbuild -G Ninja
               cmake --build build --config Release
               mv build/libYimMenu.dll build/YimMenu-dev-${{github.sha}}.dll
 
