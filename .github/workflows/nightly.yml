@@ -18,32 +18,23 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Setup premake
-        uses: abel0b/setup-premake@v2
-        with:
-          version: "5.0.0-beta1"
+      - name: Check CMake version
+        run: cmake --version
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
 
-      - name: Generate premake5 project
-        run: premake5 vs2019
-        shell: bash
+      - name: Generate CMake project
+        run: cmake -S. -Bbuild -G "Visual Studio 17 2022" -DCMAKE_CONFIGURATION_TYPES=Release 
 
       - name: Build 64bit release DLL
-        run: |
-          msbuild /p:Configuration=Release /p:Platform=x64 BigBaseV2.sln /warnaserror
-
-      - name: Rename DLL to YimMenu.dll
-        run: ren BigBaseV2.dll YimMenu.dll
-        working-directory: bin/Release/
+        run: cmake --build build --config Release --target ALL_BUILD
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: binary
-          path: |
-            bin/Release/YimMenu.dll
+          path: build/Release/YimMenu.dll
 
       - name: Generate Build Info
         id: var

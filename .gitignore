@@ -1,10 +1,10 @@
 # IDE
 .vs/
+.vscode/
+.cache/
 
 # output directory
-bin/
-# premake in project dir people
-*.exe
+build/
 
 # precompiled headers
 *.ipch
@@ -19,3 +19,4 @@ compile_flags.txt
 *.project
 .codelite/
 .ctagsd/
+.stignore
