@@ -1,13 +1,9 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(YimMenu CXX ASM_MASM)
-
-set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
-
 if(UNIX)
     message(STATUS "Unix-like system detected. Using MinGW and uasm.")
 
-    option(TOOLCHAIN_PREFIX "Set toolchain. Default: x86_64-w64-mingw32" "x86_64-w64-mingw32")
+    set(TOOLCHAIN_PREFIX "x86_64-w64-mingw32" CACHE STRING "Set toolchain. Default: x86_64-w64-mingw32")
 
     message("Using ${TOOLCHAIN_PREFIX} toolchain")
 
@@ -17,6 +13,11 @@ if(UNIX)
     set(CMAKE_C_COMPILER "${TOOLCHAIN_PREFIX}-gcc")
     set(CMAKE_CXX_COMPILER "${TOOLCHAIN_PREFIX}-g++")
 endif()
+
+project(YimMenu CXX ASM_MASM)
+
+set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
+
 
 # Fetch modules
 message("\nFetching modules")
