@@ -7,8 +7,6 @@ namespace big::functions
 	using get_native_handler = rage::scrNativeHandler(*)(rage::scrNativeRegistrationTable* registration_table, rage::scrNativeHash hash);
 	using fix_vectors = void(*)(rage::scrNativeCallContext* call_ctx);
 
-	using get_net_game_player = CNetGamePlayer*(*)(Player player);
-
 	using trigger_script_event = void(*)(int event_group, int64_t* args, int arg_count, int player_bits);
 
 
@@ -61,4 +59,6 @@ namespace big::functions
 
 	using start_get_session_by_gamer_handle = bool(*)(int metric_manager, rage::rlGamerHandle* handles, int count, rage::rlSessionByGamerTaskResult* result, int unk, bool* success, int* state);
 	using join_session_by_info = bool(*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
+
+	using get_net_game_player = CNetGamePlayer*(*)(int64_t a1);
 }

@@ -128,6 +128,9 @@ namespace big
 		functions::fipackfile_mount m_fipackfile_mount{};
 		functions::fipackfile_unmount m_fipackfile_unmount{};
 
+		PVOID m_add_message{};
+		functions::get_net_game_player m_get_net_game_player{};
+
 		const char* m_game_version;
 		const char* m_online_version;
 	};

@@ -60,6 +60,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::format_metric_for_sending>("FMFS", g_pointers->m_format_metric_for_sending);
 
+		detour_hook_helper::add<hooks::add_message>("AM", g_pointers->m_add_message);
+
 		g_hooking = this;
 	}
 

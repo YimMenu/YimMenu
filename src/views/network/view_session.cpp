@@ -28,5 +28,6 @@ namespace big
 
 		components::sub_title("Chat");
 		ImGui::Checkbox("Disable Filter", &g->session.disable_chat_filter);
+		ImGui::Checkbox("Log Chat Message", &g->session.log_chat_message);
 	}
 }
