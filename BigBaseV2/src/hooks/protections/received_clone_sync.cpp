@@ -83,38 +83,24 @@ namespace big
 		return false;
 	}
 	
-	CPhysicalAttachDataNode* get_attach_node_from_object(rage::netSyncNodeBase* node)
+#define CLASS_TO_MANGLED_NAME(c) "?AV"#c"@@"
+
+	template<typename T>
+	T* get_node_from_object(rage::netSyncNodeBase* node)
 	{
+		constexpr uint64_t hash = CLASS_TO_MANGLED_NAME(T)""_fnv1a;
 		if (node->IsParentNode())
 		{
 			for (auto child = node->m_first_child; child; child = child->m_next_sibling) {
-				CPhysicalAttachDataNode* attach_node = get_attach_node_from_object(child);
+				T* attach_node = get_node_from_object<T>(child);
 				if(attach_node != nullptr)
 					return attach_node;
 			}
 		}
 		else if (node->IsDataNode())
 		{
-			if (typeid(*node).hash_code() == 0xE6B80DD4C167CFF) //CPhysicalAttachDataNode
-				return dynamic_cast<CPhysicalAttachDataNode*>(node);
-		}
-		return nullptr;
-	}
-
-	CPedAttachDataNode* get_ped_attach_node_from_object(rage::netSyncNodeBase* node)
-	{
-		if (node->IsParentNode())
-		{
-			for (auto child = node->m_first_child; child; child = child->m_next_sibling) {
-				CPedAttachDataNode* attach_node = get_ped_attach_node_from_object(child);
-				if (attach_node != nullptr)
-					return attach_node;
-			}
-		}
-		else if (node->IsDataNode())
-		{
-			if (typeid(*node).hash_code() == 0xD3A0FBD0D1CFD23A) //CPedAttachDataNode
-				return dynamic_cast<CPedAttachDataNode*>(node);
+			if (typeid(*node).hash_code() == hash)
+				return dynamic_cast<T*>(node);
 		}
 		return nullptr;
 	}
@@ -126,7 +112,7 @@ namespace big
 			{
 				if (rage::netSyncNodeBase* base_node = tree->m_sync_node; base_node) {
 
-					CPhysicalAttachDataNode* attached_attach_node = get_attach_node_from_object(base_node);
+					const auto attached_attach_node = get_node_from_object<CPhysicalAttachDataNode>(base_node);
 					if (attached_attach_node && attached_attach_node->m_attached)
 					{
 						if (attached_attach_node->m_attached_to == object_id) {
@@ -151,7 +137,7 @@ namespace big
 			{
 				if (rage::netSyncNodeBase* base_node = tree->m_sync_node; base_node) {
 
-					CPedAttachDataNode* attached_attach_node = get_ped_attach_node_from_object(base_node);
+					const auto attached_attach_node = get_node_from_object<CPedAttachDataNode>(base_node);
 					if (attached_attach_node && attached_attach_node->m_attached)
 					{
 						if (attached_attach_node->m_attached_to == object_id) {
@@ -173,12 +159,10 @@ namespace big
 	{
 		if (node->IsParentNode())
 		{
-			bool block = false;
 			for (auto child = node->m_first_child; child; child = child->m_next_sibling) {
 				if (check_node(child, sender, object_id))
-					block = true;
+					return true;
 			}
-			return block;
 		}
 		else if (node->IsDataNode())
 		{
@@ -186,7 +170,7 @@ namespace big
 			switch (typeid(*node).hash_code()) {
 				case "?AVCDoorCreationDataNode@@"_fnv1a: //CDoorCreationDataNode
 				{
-					CDoorCreationDataNode* creation_node = dynamic_cast<CDoorCreationDataNode*>(node);
+					const auto creation_node = dynamic_cast<CDoorCreationDataNode*>(node);
 					if (is_model_a_crash_model(creation_node->m_model))
 					{
 						if (g->notifications.invalid_sync.log)
@@ -199,7 +183,7 @@ namespace big
 				}
 				case "?AVCPickupCreationDataNode@@"_fnv1a: //CPickupCreationDataNode
 				{
-					CPickupCreationDataNode* creation_node = dynamic_cast<CPickupCreationDataNode*>(node);
+					const auto creation_node = dynamic_cast<CPickupCreationDataNode*>(node);
 					if (is_model_a_crash_model(creation_node->m_custom_model))
 					{
 						if (g->notifications.invalid_sync.log)
@@ -212,7 +196,7 @@ namespace big
 				}
 				case "?AVCPhysicalAttachDataNode@@"_fnv1a: //CPhysicalAttachDataNode
 				{
-					CPhysicalAttachDataNode* attach_node = dynamic_cast<CPhysicalAttachDataNode*>(node);
+					const auto attach_node = dynamic_cast<CPhysicalAttachDataNode*>(node);
 					if (attach_node->m_attached && attach_node->m_attached_to == object_id)
 					{
 						if (g->notifications.invalid_sync.log)
@@ -233,7 +217,7 @@ namespace big
 				}
 				case "?AVCPedCreationDataNode@@"_fnv1a: //CPedCreationDataNode
 				{
-					CPedCreationDataNode* creation_node = dynamic_cast<CPedCreationDataNode*>(node);
+					const auto creation_node = dynamic_cast<CPedCreationDataNode*>(node);
 					if (is_model_a_crash_model(creation_node->m_model))
 					{
 						if (g->notifications.invalid_sync.log)
@@ -253,7 +237,7 @@ namespace big
 				}
 				case "?AVCPedAttachDataNode@@"_fnv1a: //CPedAttachDataNode
 				{
-					CPedAttachDataNode* attach_node = dynamic_cast<CPedAttachDataNode*>(node);
+					const auto attach_node = dynamic_cast<CPedAttachDataNode*>(node);
 					if (attach_node->m_attached && attach_node->m_attached_to == object_id)
 					{
 						if (g->notifications.invalid_sync.log)
@@ -274,7 +258,7 @@ namespace big
 				}
 				case "?AVCVehicleCreationDataNode@@"_fnv1a: //CVehicleCreationDataNode
 				{
-					CVehicleCreationDataNode* vehicle_creation_node = dynamic_cast<CVehicleCreationDataNode*>(node);
+					const auto vehicle_creation_node = dynamic_cast<CVehicleCreationDataNode*>(node);
 					if (is_model_a_crash_model(vehicle_creation_node->m_model)) {
 						if (g->notifications.invalid_sync.log)
 							LOG(WARNING) << "Invalid vehicle model: " << "Model: " << HEX_TO_UPPER(vehicle_creation_node->m_model) << " From : " << sender->get_name();
@@ -286,7 +270,7 @@ namespace big
 				}
 				case "?AVCObjectCreationDataNode@@"_fnv1a: //CObjectCreationDataNode
 				{
-					CObjectCreationDataNode* creation_node = dynamic_cast<CObjectCreationDataNode*>(node);
+					const auto creation_node = dynamic_cast<CObjectCreationDataNode*>(node);
 					if (is_model_a_crash_model(creation_node->m_model)) {
 						if (g->notifications.invalid_sync.log)
 							LOG(WARNING) << "Invalid object model: " << "Model: " << HEX_TO_UPPER(creation_node->m_model) << " From : " << sender->get_name();
@@ -305,7 +289,7 @@ namespace big
 				}
 				case "?AVCPlayerAppearanceDataNode@@"_fnv1a: //CPlayerAppearanceDataNode
 				{
-					CPlayerAppearanceDataNode* player_appearance_node = dynamic_cast<CPlayerAppearanceDataNode*>(node);
+					const auto player_appearance_node = dynamic_cast<CPlayerAppearanceDataNode*>(node);
 					if (is_model_a_crash_model(player_appearance_node->m_model_hash)) {
 						if (g->notifications.invalid_sync.log)
 							LOG(WARNING) << "Invalid player model: " << "Model: " << HEX_TO_UPPER(player_appearance_node->m_model_hash) << " From : " << sender->get_name();
@@ -317,7 +301,7 @@ namespace big
 				}
 				case "?AVCSectorDataNode@@"_fnv1a: //CSectorDataNode
 				{
-					CSectorDataNode* sector_node = dynamic_cast<CSectorDataNode*>(node);
+					const auto sector_node = dynamic_cast<CSectorDataNode*>(node);
 					if (sector_node->m_pos_x == 712 || sector_node->m_pos_y == 712 || sector_node->m_pos_z == 712)
 					{
 						if (g->notifications.invalid_sync.log)
