@@ -8,8 +8,6 @@ jobs:
       name: CI MinGW
       steps:
         - uses: actions/checkout@v2.4.0
-          with:
-            submodules: recursive
 
         - name: Build
           uses: Joshua-Ashton/arch-mingw-github-action@v8
@@ -31,8 +29,6 @@ jobs:
     name: CI MSVC
     steps:
       - uses: actions/checkout@v2.4.0
-        with:
-          submodules: recursive
 
       - name: Check CMake version
         run: cmake --version
