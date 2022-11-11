@@ -330,6 +330,12 @@ namespace big
 			m_get_sync_type_info = ptr.add(0x8C).rip().as<decltype(m_get_sync_type_info)>(); // 44 0F B7 C1 4C 8D 0D .as()
 		});
 
+		// Read Bitbuffer Into Sync Tree
+		main_batch.add("RBIST", "E8 ? ? ? ? 48 8B BC 24 B0 00 00 00", [this](memory::handle ptr)
+		{
+			m_read_bitbuffer_into_sync_tree = ptr.add(1).rip().as<functions::read_bitbuffer_into_sync_tree>();
+		});
+
 		// Model Hash Table
 		main_batch.add("MHT", "4C 03 05 ? ? ? ? EB 03", [this](memory::handle ptr)
 		{
