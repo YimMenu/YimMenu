@@ -43,6 +43,17 @@ namespace big
 			{
 				switch (msgType)
 				{
+				case eNetMessage::CMsgTextMessage:
+				{
+					char message[256];
+					uint64_t unk;
+					bool is_team;
+					buffer.ReadString(message, 256);
+					buffer.ReadQWord(&unk, 64);
+					buffer.ReadBool(&is_team);
+					LOG(INFO) << "[CHAT] from " << player->get_name() << ": " << message;
+					break;
+				}
 				case rage::eNetMessage::CMsgScriptMigrateHost:
 				{
 					if (std::chrono::system_clock::now() - player->m_last_transition_msg_sent < 200ms)
