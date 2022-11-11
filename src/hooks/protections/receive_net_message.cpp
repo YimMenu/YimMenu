@@ -92,8 +92,13 @@ namespace big
 					if(g->session.log_chat_message)
 					{
 						char msg[256];
+						uint64_t peer_id;
+    					bool is_team;
+
 						buffer.ReadString(msg, 256);
-						LOG(INFO) << "[MSG] " << player->get_player_info()->m_net_player_data.m_name << ": " << msg;
+				    	buffer.ReadPeerId(&peer_id);
+   						buffer.ReadBool(&is_team);
+						LOG(INFO) << player->get_player_info()->m_net_player_data.m_name << (is_team ? " [LOCAL] " : " [ALL] ") << msg;
 					}
 					break;
 				}
