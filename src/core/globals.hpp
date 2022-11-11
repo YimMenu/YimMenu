@@ -184,6 +184,7 @@ namespace big
 			rage::rlSessionInfo info;
 			bool disable_chat_filter = false;
 			bool log_chat_messages = false;
+			bool log_text_messages = false;
 		};
 
 		struct settings {
@@ -577,6 +578,7 @@ namespace big
 			this->self.no_water_collision = j["self"]["no_water_collision"];
 
 			this->session.log_chat_messages = j["session"]["log_chat_messages"];
+			this->session.log_text_messages = j["session"]["log_text_messages"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -878,7 +880,8 @@ namespace big
 				},
 				{
 					"session", {
-						{ "log_chat_messages", this->session.log_chat_messages }
+						{ "log_chat_messages", this->session.log_chat_messages },
+						{ "log_text_messages", this->session.log_text_messages },
 					}
 				},
 				{

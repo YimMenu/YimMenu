@@ -45,22 +45,28 @@ namespace big
 				{
 				case rage::eNetMessage::CMsgTextMessage:
 				{
-					char message[256];
-					uint64_t unk;
-					bool is_team;
-					buffer.ReadString(message, 256);
-					buffer.ReadQWord(&unk, 64);
-					buffer.ReadBool(&is_team);
-					LOG(INFO) << "[CHAT] from " << player->get_name() << ": " << message << (is_team) ? " [TEAM]" : " [ALL]";
+					if (g->session.log_chat_messages)
+					{
+						char message[256];
+						uint64_t unk;
+						bool is_team;
+						buffer.ReadString(message, 256);
+						buffer.ReadQWord(&unk, 64);
+						buffer.ReadBool(&is_team);
+						LOG(INFO) << "[CHAT] from " << player->get_name() << ": " << message << (is_team) ? " [TEAM]" : " [ALL]";
+					}
 					break;
 				}
 				case rage::eNetMessage::CMsgTextMessage2:
 				{
-					char message[256];
-					uint64_t unk;
-					buffer.ReadString(message, 256);
-					buffer.ReadQWord(&unk, 64);
-					LOG(INFO) << "[TEXT] from " << player->get_name() << ": " << message;
+					if (g->session.log_text_messages)
+					{
+						char message[256];
+						uint64_t unk;
+						buffer.ReadString(message, 256);
+						buffer.ReadQWord(&unk, 64);
+						LOG(INFO) << "[TEXT] from " << player->get_name() << ": " << message;
+					}
 					break;
 				}
 				case rage::eNetMessage::CMsgScriptMigrateHost:
