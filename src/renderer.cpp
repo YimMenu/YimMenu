@@ -38,10 +38,13 @@ namespace big
 		ImGui_ImplDX11_Init(m_d3d_device.Get(), m_d3d_device_context.Get());
 		ImGui_ImplWin32_Init(g_pointers->m_hwnd);
 
-		file chinese_font_file("C:/Windows/Fonts/msyh.ttc");
+		folder windows_fonts(
+			std::filesystem::path(std::getenv("SYSTEMROOT")) / "Fonts"
+		);
+
+		file chinese_font_file = windows_fonts.get_file("./msyh.ttc");
 		if (!chinese_font_file.exists())
-			chinese_font_file = { "C:/Windows/Fonts/msyh.ttf" };
-		
+			chinese_font_file = windows_fonts.get_file("./msyh.ttf");
 		auto font_file = std::ifstream(chinese_font_file.get_path(), std::ios::binary | std::ios::ate);
 		const auto chinese_font_data_size = static_cast<int>(font_file.tellg());
 		const auto chinese_font_data = std::make_unique<std::uint8_t[]>(chinese_font_data_size);
@@ -50,7 +53,7 @@ namespace big
 		font_file.read(reinterpret_cast<char*>(chinese_font_data.get()), chinese_font_data_size);
 		font_file.close();
 
-		file cyrillic_font_file("C:/Windows/Fonts/Segoeui.ttf");
+		file cyrillic_font_file = windows_fonts.get_file("./Segoeui.ttf");
 		font_file.open(cyrillic_font_file.get_path(), std::ios::binary | std::ios::ate);
 		const auto cyrillic_font_data_size = static_cast<int>(font_file.tellg());
 		const auto cyrillic_font_data = std::make_unique<std::uint8_t[]>(cyrillic_font_data_size);
