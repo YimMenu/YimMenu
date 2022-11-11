@@ -20,22 +20,10 @@
 #include "base/CBaseModelInfo.hpp"
 #include "vehicle/CVehicleModelInfo.hpp"
 #include "util/model_info.hpp"
+#define CLASS_TO_MANGLED_NAME(c) "?AV"#c"@@"
 
 namespace big
 {
-	enum SyncResponse : int64_t
-	{
-		NoSyncTreeFound = 1, // No sync tree found
-		PlayerIsNotInOurRoamingBubble = 1, // Player is not in our roaming bubble
-		WrongOwner = 2, // Wrong owner
-		ObjectIsBeingReassinged = 2, // Object is being reassigned
-		CantApplyData_NoNetworkObject = 4, // Can't apply data - no network object
-		CantApplyData = 6, // Can't apply data
-		CantApplyData_NoGameObject = 6, // Can't apply data - no game object
-		CantApplyData_NetworkClosed = 7, // Can't apply data - network closed
-		SuccessfullSync = 8
-	};
-
 	constexpr uint64_t operator ""_fnv1a(char const* str, std::size_t len)
 	{
 		auto const fnv_offset_basis = 14695981039346656037ULL;
@@ -51,7 +39,7 @@ namespace big
 		return value;
 	}
 
-	uint32_t crash_models[] = { RAGE_JOAAT("prop_dummy_01"), RAGE_JOAAT("prop_dummy_car"), RAGE_JOAAT("prop_dummy_light"), RAGE_JOAAT("prop_dummy_plane"), RAGE_JOAAT("slod_human"),
+	constexpr uint32_t crash_models[] = { RAGE_JOAAT("prop_dummy_01"), RAGE_JOAAT("prop_dummy_car"), RAGE_JOAAT("prop_dummy_light"), RAGE_JOAAT("prop_dummy_plane"), RAGE_JOAAT("slod_human"),
 		RAGE_JOAAT("slod_small_quadped"), RAGE_JOAAT("slod_large_quadped"), RAGE_JOAAT("prop_distantcar_night"), RAGE_JOAAT("prop_distantcar_day"), RAGE_JOAAT("hei_bh1_08_details4_em_night"),
 		RAGE_JOAAT("dt1_18_sq_night_slod"), RAGE_JOAAT("ss1_12_night_slod"), -1288391198, RAGE_JOAAT("h4_prop_bush_bgnvla_med_01"), RAGE_JOAAT("h4_prop_bush_bgnvla_lrg_01"),
 		RAGE_JOAAT("h4_prop_bush_buddleia_low_01"), RAGE_JOAAT("h4_prop_bush_ear_aa"), RAGE_JOAAT("h4_prop_bush_ear_ab"), RAGE_JOAAT("h4_prop_bush_fern_low_01"),
@@ -64,26 +52,24 @@ namespace big
 		RAGE_JOAAT("prop_barbell_02"), RAGE_JOAAT("prop_bandsaw_01"), RAGE_JOAAT("prop_bbq_3"), RAGE_JOAAT("v_med_curtainsnewcloth2"), RAGE_JOAAT("bh1_07_flagpoles"),
 		92962485, RAGE_JOAAT("ig_wade") };
 
-	uint32_t cage_models[] = { RAGE_JOAAT("prop_rub_cage01a"), RAGE_JOAAT("prop_fnclink_05crnr1"), RAGE_JOAAT("prop_gold_cont_01"), RAGE_JOAAT("prop_feeder1"), RAGE_JOAAT("stt_prop_stunt_tube_s"),
-		RAGE_JOAAT("prop_feeder1_cr"), RAGE_JOAAT("p_cablecar_s") };
+	constexpr uint32_t cage_models[] = { RAGE_JOAAT("prop_rub_cage01a"), RAGE_JOAAT("prop_fnclink_05crnr1"), RAGE_JOAAT("prop_gold_cont_01"), RAGE_JOAAT("prop_gold_cont_01b"),
+		RAGE_JOAAT("prop_feeder1"), RAGE_JOAAT("stt_prop_stunt_tube_s"), RAGE_JOAAT("prop_feeder1_cr"), RAGE_JOAAT("p_cablecar_s") };
 
 	inline bool is_model_a_crash_model(uint32_t model) {
-		for (int i = 0; i < sizeof(crash_models) / sizeof(uint32_t); i++)
+		for (auto iterator : crash_models)
 		{
-			if (crash_models[i] == model) return true;
+			if (iterator == model) return true;
 		}
 		return false;
 	}
 
 	inline bool is_model_a_cage_model(uint32_t model) {
-		for (int i = 0; i < sizeof(cage_models) / sizeof(uint32_t); i++)
+		for (auto iterator : cage_models)
 		{
-			if (cage_models[i] == model) return true;
+			if (iterator == model) return true;
 		}
 		return false;
 	}
-	
-#define CLASS_TO_MANGLED_NAME(c) "?AV"#c"@@"
 
 	template<typename T>
 	T* get_node_from_object(rage::netSyncNodeBase* node)
@@ -93,7 +79,7 @@ namespace big
 		{
 			for (auto child = node->m_first_child; child; child = child->m_next_sibling) {
 				T* attach_node = get_node_from_object<T>(child);
-				if(attach_node != nullptr)
+				if (attach_node != nullptr)
 					return attach_node;
 			}
 		}
@@ -111,7 +97,6 @@ namespace big
 			if (rage::netSyncTree* tree = attached_object->GetSyncTree(); tree)
 			{
 				if (rage::netSyncNodeBase* base_node = tree->m_sync_node; base_node) {
-
 					const auto attached_attach_node = get_node_from_object<CPhysicalAttachDataNode>(base_node);
 					if (attached_attach_node && attached_attach_node->m_attached)
 					{
@@ -122,7 +107,6 @@ namespace big
 							return is_attachment_infinite(attached_attach_node, object_id);
 						}
 					}
-
 				}
 			}
 		}
@@ -136,7 +120,6 @@ namespace big
 			if (rage::netSyncTree* tree = attached_object->GetSyncTree(); tree)
 			{
 				if (rage::netSyncNodeBase* base_node = tree->m_sync_node; base_node) {
-
 					const auto attached_attach_node = get_node_from_object<CPedAttachDataNode>(base_node);
 					if (attached_attach_node && attached_attach_node->m_attached)
 					{
@@ -147,7 +130,6 @@ namespace big
 							return is_ped_attachment_infinite(attached_attach_node, object_id);
 						}
 					}
-
 				}
 			}
 		}
@@ -174,7 +156,7 @@ namespace big
 					if (is_model_a_crash_model(creation_node->m_model))
 					{
 						if (g->notifications.invalid_sync.log)
-							LOG(WARNING) << "Invalid door model: " << "Model: " << HEX_TO_UPPER(creation_node->m_model) << " From : " << sender->get_name();
+							LOG(WARNING) << "Invalid door model: " << "Model: " << HEX_TO_UPPER(creation_node->m_model) << " From: " << sender->get_name();
 						if (g->notifications.invalid_sync.notify)
 							g_notification_service->push_warning(std::format("Invalid door model from {}", sender->get_name()), std::format("Model: 0x{:x}", creation_node->m_model));
 						return true;
@@ -338,7 +320,7 @@ namespace big
 					if (g->notifications.mismatch_sync_type.notify)
 						g_notification_service->push_warning(std::format("Mismatch Sync from {}", src->get_name()), std::format("Type {} in sync tree {}", std::uint16_t(sync_type), tree_name));
 
-					return SyncResponse::WrongOwner;
+					return eSyncReply::WrongOwner;
 				}
 				else if (auto game_obj = net_obj->GetGameObject(); game_obj)
 				{
@@ -347,18 +329,18 @@ namespace big
 						const auto model = model_info::get_model(model_info->m_hash);
 						if (!model || model_info->m_model_type != model->m_model_type)
 						{
-							return SyncResponse::WrongOwner;
+							return eSyncReply::WrongOwner;
 						}
 
 						if (model->m_model_type == eModelType::Vehicle &&
 							reinterpret_cast<CVehicleModelInfo*>(model_info)->m_vehicle_type != reinterpret_cast<CVehicleModelInfo*>(model)->m_vehicle_type)
 						{
-							return SyncResponse::WrongOwner;
+							return eSyncReply::WrongOwner;
 						}
 						else if ((sync_type >= eObjType::bikeObjType && sync_type <= eObjType::heliObjType) || (sync_type >= eObjType::planeObjType && sync_type <= eObjType::submarineObjType) || (sync_type >= eObjType::trailerObjType && sync_type <= eObjType::trainObjType))
 						{
 							if(reinterpret_cast<CVehicleModelInfo*>(model_info)->m_vehicle_type != model_info::get_vehicle_model(model_info->m_hash)->m_vehicle_type)
-								return SyncResponse::WrongOwner;
+								return eSyncReply::WrongOwner;
 						}
 					}
 				}
@@ -372,16 +354,14 @@ namespace big
 				if (sync_tree->m_child_node_count)
 				{
 					if (check_node(sync_tree->m_sync_node, src, obj_id))
-						return SyncResponse::CantApplyData;
+						return eSyncReply::CantApplyData;
 				}
 			}
 			else if (sync_type != eObjType::pedObjType) //We don't want to not sync a player, so we ensure it's not a ped
 			{
-				return SyncResponse::WrongOwner;
+				return eSyncReply::WrongOwner;
 			}
 		}
 		return g_hooking->get_original<received_clone_sync>()(mgr, src, dst, sync_type, obj_id, buffer, unk, timestamp);
-
 	}
-
 }
