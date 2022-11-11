@@ -43,6 +43,32 @@ namespace big
 			{
 				switch (msgType)
 				{
+				case rage::eNetMessage::CMsgTextMessage:
+				{
+					if (g->session.log_chat_messages)
+					{
+						char message[256];
+						uint64_t unk;
+						bool is_team;
+						buffer.ReadString(message, 256);
+						buffer.ReadQWord(&unk, 64);
+						buffer.ReadBool(&is_team);
+						LOG(INFO) << "[CHAT] from " << player->get_name() << ": " << message << (is_team) ? " [TEAM]" : " [ALL]";
+					}
+					break;
+				}
+				case rage::eNetMessage::CMsgTextMessage2:
+				{
+					if (g->session.log_text_messages)
+					{
+						char message[256];
+						uint64_t unk;
+						buffer.ReadString(message, 256);
+						buffer.ReadQWord(&unk, 64);
+						LOG(INFO) << "[TEXT] from " << player->get_name() << ": " << message;
+					}
+					break;
+				}
 				case rage::eNetMessage::CMsgScriptMigrateHost:
 				{
 					if (std::chrono::system_clock::now() - player->m_last_transition_msg_sent < 200ms)
@@ -67,11 +93,10 @@ namespace big
 					buffer.ReadQWord(&session_id, 64);
 					uint32_t count;
 					buffer.ReadDword(&count, 6);
-					pl = nullptr;
 					for (std::uint32_t i = 0; i < count; i++)
 					{
 						uint64_t peer_id;
-						buffer.ReadQWord((uint64_t*)&peer_id, 64);
+						buffer.ReadQWord(&peer_id, 64);
 						for (std::uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_peer_count; i++)
 						{
 							if (gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_peer_id_2 == peer_id)

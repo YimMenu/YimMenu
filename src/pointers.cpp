@@ -165,12 +165,6 @@ namespace big
 			m_read_bitbuf_bool = ptr.add(1).rip().as<decltype(m_read_bitbuf_bool)>();
 		});
 
-		// Read Bitbuffer Array
-		main_batch.add("RBA", "48 89 5C 24 ? 57 48 83 EC 30 41 8B F8 4C", [this](memory::handle ptr)
-		{
-			m_read_bitbuf_array = ptr.as<decltype(m_read_bitbuf_array)>();
-		});
-
 		// Write Bitbuffer WORD/DWORD
 		main_batch.add("WBD", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 83 EC 20 8B EA BF 01", [this](memory::handle ptr)
 		{
