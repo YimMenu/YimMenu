@@ -96,7 +96,7 @@ namespace big
 					for (std::uint32_t i = 0; i < count; i++)
 					{
 						uint64_t peer_id;
-						buffer.ReadQWord((uint64_t*)&peer_id, 64);
+						buffer.ReadQWord(&peer_id, 64);
 						for (std::uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_peer_count; i++)
 						{
 							if (gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_peer_id_2 == peer_id)
