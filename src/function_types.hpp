@@ -46,9 +46,13 @@ namespace big::functions
 	//Sync signatures START
 	using get_sync_type_info = const char*(*)(uint16_t sync_type, char a2);
 
-	using get_sync_tree_for_type = int64_t(*)(CNetworkObjectMgr* mgr, uint16_t sync_type);
+	using get_sync_tree_for_type = rage::netSyncTree*(*)(CNetworkObjectMgr* mgr, uint16_t sync_type);
 
-	using get_net_object = rage::netObject*(*)(CNetworkObjectMgr* mgr, int16_t id, bool unk3);
+	using get_net_object = rage::netObject*(*)(CNetworkObjectMgr* mgr, int16_t id, bool can_delete_be_pending);
+
+	using get_net_object_for_player = rage::netObject*(*)(CNetworkObjectMgr*, int16_t, CNetGamePlayer*, bool);
+
+	using read_bitbuffer_into_sync_tree = void(*)(rage::netSyncTree* tree, uint64_t flag, uint32_t flag2, rage::datBitBuffer* buffer, uint64_t netLogStub);
 	//Sync signatures END
 
 	using reset_network_complaints = void(*)(CNetComplaintMgr* mgr);
