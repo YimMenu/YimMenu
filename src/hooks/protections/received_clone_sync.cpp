@@ -364,7 +364,7 @@ namespace big
 				}
 				else if (auto game_obj = net_obj->GetGameObject(); game_obj)
 				{
-					if (auto model_info = game_obj->m_model_info)
+					if (const auto model_info = game_obj->m_model_info; model_info)
 					{
 						const auto model = model_info::get_model(model_info->m_hash);
 						if (!model || model_info->m_model_type != model->m_model_type)
@@ -377,10 +377,19 @@ namespace big
 						{
 							return eSyncReply::WrongOwner;
 						}
-						else if ((sync_type >= eObjType::bikeObjType && sync_type <= eObjType::heliObjType) || (sync_type >= eObjType::planeObjType && sync_type <= eObjType::submarineObjType) || (sync_type >= eObjType::trailerObjType && sync_type <= eObjType::trainObjType))
+						
+						// sync_type is telling us it's a vehicle
+						// let's check if it's actually a vehicle according to our game...
+						if ((sync_type >= eObjType::bikeObjType && sync_type <= eObjType::heliObjType)
+							|| (sync_type >= eObjType::planeObjType && sync_type <= eObjType::submarineObjType)
+							|| (sync_type >= eObjType::trailerObjType && sync_type <= eObjType::trainObjType))
 						{
-							if(reinterpret_cast<CVehicleModelInfo*>(model_info)->m_vehicle_type != model_info::get_vehicle_model(model_info->m_hash)->m_vehicle_type)
+							if (const auto model = model_info::get_vehicle_model(model_info->m_hash); !model // model valid
+								&& model_info->m_model_type != eModelType::Vehicle // is our model returned by the game a vehicle?
+								&& reinterpret_cast<CVehicleModelInfo*>(model_info)->m_vehicle_type != model->m_vehicle_type) // final check
+							{
 								return eSyncReply::WrongOwner;
+							}
 						}
 					}
 				}
