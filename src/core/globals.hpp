@@ -73,6 +73,7 @@ namespace big
 				pair send_to_location{};
 				pair sound_spam{};
 				pair spectate{};
+				pair switch_player_model{};
 				pair transaction_error{};
 				pair tse_freeze{};
 				pair tse_sender_mismatch{};
@@ -131,6 +132,7 @@ namespace big
 				bool send_to_location = true;
 				bool sound_spam = true;
 				bool spectate = true;
+				bool switch_player_model = true;
 				bool transaction_error = true;
 				bool vehicle_kick = true;
 				bool teleport_to_warehouse = true;
@@ -502,6 +504,8 @@ namespace big
 				script_handler.sound_spam.notify = script_handler_j["sound_spam"]["notify"];
 				script_handler.spectate.log = script_handler_j["spectate"]["log"];
 				script_handler.spectate.notify = script_handler_j["spectate"]["notify"];
+				script_handler.switch_player_model.log = script_handler_j["switch_player_model"]["log"];
+				script_handler.switch_player_model.notify = script_handler_j["switch_player_model"]["notify"];
 				script_handler.transaction_error.log = script_handler_j["transaction_error"]["log"];
 				script_handler.transaction_error.notify = script_handler_j["transaction_error"]["notify"];
 				script_handler.tse_freeze.log = script_handler_j["tse_freeze"]["log"];
@@ -545,6 +549,7 @@ namespace big
 				script_handler.send_to_location = script_handler_j["send_to_location"];
 				script_handler.sound_spam = script_handler_j["sound_spam"];
 				script_handler.spectate = script_handler_j["spectate"];
+				script_handler.switch_player_model = script_handler_j["switch_player_model"];
 				script_handler.transaction_error = script_handler_j["transaction_error"];
 				script_handler.vehicle_kick = script_handler_j["vehicle_kick"];
 				script_handler.teleport_to_warehouse = script_handler_j["teleport_to_warehouse"];
@@ -781,6 +786,7 @@ namespace big
 								{ "send_to_location", return_notify_pair(script_handler_notifications.send_to_location) },
 								{ "sound_spam", return_notify_pair(script_handler_notifications.sound_spam) },
 								{ "spectate", return_notify_pair(script_handler_notifications.spectate) },
+								{ "switch_player_model", return_notify_pair(script_handler_notifications.switch_player_model) },
 								{ "transaction_error", return_notify_pair(script_handler_notifications.transaction_error) },
 								{ "tse_freeze", return_notify_pair(script_handler_notifications.tse_freeze) },
 								{ "tse_sender_mismatch", return_notify_pair(script_handler_notifications.tse_sender_mismatch) },
@@ -820,6 +826,7 @@ namespace big
 								{ "send_to_location", script_handler_protections.send_to_location },
 								{ "sound_spam", script_handler_protections.sound_spam },
 								{ "spectate", script_handler_protections.spectate },
+								{ "switch_player_model", script_handler_protections.switch_player_model },
 								{ "transaction_error", script_handler_protections.transaction_error },
 								{ "vehicle_kick", script_handler_protections.vehicle_kick },
 								{ "teleport_to_warehouse", script_handler_protections.teleport_to_warehouse },
