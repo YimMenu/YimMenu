@@ -6,17 +6,18 @@
 #include "rage/netSyncTree.hpp"
 #include "gta/net_object_mgr.hpp"
 #include "datanodes/door/CDoorCreationDataNode.hpp"
+#include "datanodes/dynamic_entity/CDynamicEntityGameStateDataNode.hpp"
 #include "datanodes/object/CObjectCreationDataNode.hpp"
 #include "datanodes/ped/CPedAttachDataNode.hpp"
 #include "datanodes/ped/CPedCreationDataNode.hpp"
+#include "datanodes/ped/CPedInventoryDataNode.hpp"
 #include "datanodes/pickup/CPickupCreationDataNode.hpp"
 #include "datanodes/physical/CPhysicalAttachDataNode.hpp"
 #include "datanodes/player/CPlayerAppearanceDataNode.hpp"
 #include "datanodes/proximity_migrateable/CSectorDataNode.hpp"
-#include "datanodes/train/CTrainGameStateDataNode.hpp"
 #include "datanodes/vehicle/CVehicleCreationDataNode.hpp"
+#include "datanodes/vehicle/CVehicleGadgetDataNode.hpp"
 #include "network/netObject.hpp"
-#include "natives.hpp"
 #include "base/CBaseModelInfo.hpp"
 #include "vehicle/CVehicleModelInfo.hpp"
 #include "util/model_info.hpp"
@@ -156,7 +157,7 @@ namespace big
 					if (is_model_a_crash_model(creation_node->m_model))
 					{
 						if (g->notifications.invalid_sync.log)
-							LOG(WARNING) << "Invalid door model: " << "Model: " << HEX_TO_UPPER(creation_node->m_model) << " From: " << sender->get_name();
+							LOG(WARNING) << "Invalid door model: Model: " << HEX_TO_UPPER(creation_node->m_model) << " From: " << sender->get_name();
 						if (g->notifications.invalid_sync.notify)
 							g_notification_service->push_warning(std::format("Invalid door model from {}", sender->get_name()), std::format("Model: 0x{:x}", creation_node->m_model));
 						return true;
@@ -169,7 +170,7 @@ namespace big
 					if (is_model_a_crash_model(creation_node->m_custom_model))
 					{
 						if (g->notifications.invalid_sync.log)
-							LOG(WARNING) << "Invalid pickup model: " << "Model: " << HEX_TO_UPPER(creation_node->m_custom_model) << " From : " << sender->get_name();
+							LOG(WARNING) << "Invalid pickup model: Model: " << HEX_TO_UPPER(creation_node->m_custom_model) << " From : " << sender->get_name();
 						if (g->notifications.invalid_sync.notify)
 							g_notification_service->push_warning(std::format("Invalid pickup model from {}", sender->get_name()), std::format("Model: 0x{:x}", creation_node->m_custom_model));
 						return true;
@@ -182,7 +183,7 @@ namespace big
 					if (attach_node->m_attached && attach_node->m_attached_to == object_id)
 					{
 						if (g->notifications.invalid_sync.log)
-							LOG(WARNING) << "Infinite attachment: " << "Node: " << typeid(*node).name() << " From : " << sender->get_name();
+							LOG(WARNING) << "Infinite attachment: Node: " << typeid(*node).name() << " From : " << sender->get_name();
 						if (g->notifications.invalid_sync.notify)
 							g_notification_service->push_warning(std::format("Infinite attachment from {}", sender->get_name()), std::format("Node: {}", typeid(*node).name()));
 						return true;
@@ -190,7 +191,7 @@ namespace big
 					else if (attach_node->m_attached && is_attachment_infinite(attach_node, object_id))
 					{
 						if (g->notifications.invalid_sync.log)
-							LOG(WARNING) << "Infinite attachment v2: " << "Node: " << typeid(*node).name() << " From : " << sender->get_name();
+							LOG(WARNING) << "Infinite attachment v2: Node: " << typeid(*node).name() << " From : " << sender->get_name();
 						if (g->notifications.invalid_sync.notify)
 							g_notification_service->push_warning(std::format("Infinite attachment v2 from {}", sender->get_name()), std::format("Node: {}", typeid(*node).name()));
 						return true;
@@ -203,14 +204,14 @@ namespace big
 					if (is_model_a_crash_model(creation_node->m_model))
 					{
 						if (g->notifications.invalid_sync.log)
-							LOG(WARNING) << "Invalid ped model: " << "Model: " << HEX_TO_UPPER(creation_node->m_model) << " From : " << sender->get_name();
+							LOG(WARNING) << "Invalid ped model: Model: " << HEX_TO_UPPER(creation_node->m_model) << " From : " << sender->get_name();
 						if (g->notifications.invalid_sync.notify)
 							g_notification_service->push_warning(std::format("Invalid ped model from {}", sender->get_name()), std::format("Model: 0x{:x}", creation_node->m_model));
 						return true;
 					}
 					else if (creation_node->m_has_prop && is_model_a_crash_model(creation_node->m_prop_model)) {
 						if (g->notifications.invalid_sync.log)
-							LOG(WARNING) << "Invalid ped prop model: " << "Model: " << HEX_TO_UPPER(creation_node->m_prop_model) << " From : " << sender->get_name();
+							LOG(WARNING) << "Invalid ped prop model: Model: " << HEX_TO_UPPER(creation_node->m_prop_model) << " From : " << sender->get_name();
 						if (g->notifications.invalid_sync.notify)
 							g_notification_service->push_warning(std::format("Invalid ped prop model from {}", sender->get_name()), std::format("Model: 0x{:x}", creation_node->m_prop_model));
 						return true;
@@ -223,7 +224,7 @@ namespace big
 					if (attach_node->m_attached && attach_node->m_attached_to == object_id)
 					{
 						if (g->notifications.invalid_sync.log)
-							LOG(WARNING) << "Infinite ped attachment: " << "Node: " << typeid(*node).name() << " From : " << sender->get_name();
+							LOG(WARNING) << "Infinite ped attachment: Node: " << typeid(*node).name() << " From : " << sender->get_name();
 						if (g->notifications.invalid_sync.notify)
 							g_notification_service->push_warning(std::format("Infinite ped attachment from {}", sender->get_name()), std::format("Node: {}", typeid(*node).name()));
 						return true;
@@ -231,9 +232,22 @@ namespace big
 					else if (attach_node->m_attached && is_ped_attachment_infinite(attach_node, object_id))
 					{
 						if (g->notifications.invalid_sync.log)
-							LOG(WARNING) << "Infinite ped attachment v2: " << "Node: " << typeid(*node).name() << " From : " << sender->get_name();
+							LOG(WARNING) << "Infinite ped attachment v2: Node: " << typeid(*node).name() << " From : " << sender->get_name();
 						if (g->notifications.invalid_sync.notify)
 							g_notification_service->push_warning(std::format("Infinite ped attachment v2 from {}", sender->get_name()), std::format("Node: {}", typeid(*node).name()));
+						return true;
+					}
+					break;
+				}
+				case "?AVCPedInventoryDataNode@@"_fnv1a://CPedInventoryDataNode
+				{
+					const auto inventory_node = dynamic_cast<CPedInventoryDataNode*>(node);
+					if (inventory_node->m_num_items > 105 || inventory_node->m_num_ammos > 65)
+					{
+						if (g->notifications.invalid_sync.log)
+							LOG(WARNING) << "Invalid inventory data from: " << sender->get_name();
+						if (g->notifications.invalid_sync.notify)
+							g_notification_service->push_warning(std::format("Invalid inventory data from {}", sender->get_name()), "Invalid inventory data.");
 						return true;
 					}
 					break;
@@ -243,9 +257,22 @@ namespace big
 					const auto vehicle_creation_node = dynamic_cast<CVehicleCreationDataNode*>(node);
 					if (is_model_a_crash_model(vehicle_creation_node->m_model)) {
 						if (g->notifications.invalid_sync.log)
-							LOG(WARNING) << "Invalid vehicle model: " << "Model: " << HEX_TO_UPPER(vehicle_creation_node->m_model) << " From : " << sender->get_name();
+							LOG(WARNING) << "Invalid vehicle model: Model: " << HEX_TO_UPPER(vehicle_creation_node->m_model) << " From : " << sender->get_name();
 						if (g->notifications.invalid_sync.notify)
 							g_notification_service->push_warning(std::format("Invalid vehicle model from {}", sender->get_name()), std::format("Model: 0x{:x}", vehicle_creation_node->m_model));
+						return true;
+					}
+					break;
+				}
+				case "?AVCVehicleGadgetDataNode@@"_fnv1a: //CVehicleGadgetDataNode
+				{
+					const auto vehicle_gadget_node = dynamic_cast<CVehicleGadgetDataNode*>(node);
+					if (vehicle_gadget_node->m_gadget_count > 2)
+					{
+						if (g->notifications.invalid_sync.log)
+							LOG(WARNING) << "Invalid vehicle gadget count from: " << sender->get_name();
+						if (g->notifications.invalid_sync.notify)
+							g_notification_service->push_warning(std::format("Invalid vehicle gadget count from {}", sender->get_name()), "Invalid vehicle gadget count.");
 						return true;
 					}
 					break;
@@ -255,14 +282,14 @@ namespace big
 					const auto creation_node = dynamic_cast<CObjectCreationDataNode*>(node);
 					if (is_model_a_crash_model(creation_node->m_model)) {
 						if (g->notifications.invalid_sync.log)
-							LOG(WARNING) << "Invalid object model: " << "Model: " << HEX_TO_UPPER(creation_node->m_model) << " From : " << sender->get_name();
+							LOG(WARNING) << "Invalid object model: Model: " << HEX_TO_UPPER(creation_node->m_model) << " From : " << sender->get_name();
 						if (g->notifications.invalid_sync.notify)
 							g_notification_service->push_warning(std::format("Invalid object model from {}", sender->get_name()), std::format("Model: 0x{:x}", creation_node->m_model));
 						return true;
 					}
 					else if (is_model_a_cage_model(creation_node->m_model)) {
 						if (g->notifications.invalid_sync.log)
-							LOG(WARNING) << "Cage model: " << "Model: " << HEX_TO_UPPER(creation_node->m_model) << " From : " << sender->get_name();
+							LOG(WARNING) << "Cage model: Model: " << HEX_TO_UPPER(creation_node->m_model) << " From : " << sender->get_name();
 						if (g->notifications.invalid_sync.notify)
 							g_notification_service->push_warning(std::format("Cage model from {}", sender->get_name()), std::format("Model: 0x{:x}", creation_node->m_model));
 						return true;
@@ -274,7 +301,7 @@ namespace big
 					const auto player_appearance_node = dynamic_cast<CPlayerAppearanceDataNode*>(node);
 					if (is_model_a_crash_model(player_appearance_node->m_model_hash)) {
 						if (g->notifications.invalid_sync.log)
-							LOG(WARNING) << "Invalid player model: " << "Model: " << HEX_TO_UPPER(player_appearance_node->m_model_hash) << " From : " << sender->get_name();
+							LOG(WARNING) << "Invalid player model: Model:" << HEX_TO_UPPER(player_appearance_node->m_model_hash) << " From : " << sender->get_name();
 						if (g->notifications.invalid_sync.notify)
 							g_notification_service->push_warning(std::format("Invalid player model from {}", sender->get_name()), std::format("Model: 0x{:x}", player_appearance_node->m_model_hash));
 						return true;
@@ -287,9 +314,22 @@ namespace big
 					if (sector_node->m_pos_x == 712 || sector_node->m_pos_y == 712 || sector_node->m_pos_z == 712)
 					{
 						if (g->notifications.invalid_sync.log)
-							LOG(WARNING) << "Invalid sector position." << " From : " << sender->get_name();
+							LOG(WARNING) << "Invalid sector position from: " << sender->get_name();
 						if (g->notifications.invalid_sync.notify)
 							g_notification_service->push_warning(std::format("Invalid sector position from {}", sender->get_name()), "Invalid sector position.");
+						return true;
+					}
+					break;
+				}
+				case "?AVCDynamicEntityGameStateDataNode@@"_fnv1a: //CDynamicEntityGameStateDataNode
+				{
+					const auto game_state_node = dynamic_cast<CDynamicEntityGameStateDataNode*>(node);
+					if (game_state_node->m_decor_count > 11)
+					{
+						if (g->notifications.invalid_sync.log)
+							LOG(WARNING) << "Invalid decorator count from: " << sender->get_name();
+						if (g->notifications.invalid_sync.notify)
+							g_notification_service->push_warning(std::format("Invalid decorator count from {}", sender->get_name()), "Invalid decorator count.");
 						return true;
 					}
 					break;
@@ -309,14 +349,14 @@ namespace big
 				if (sync_type < eObjType::carObjType || sync_type > eObjType::unkObjType14)
 				{
 					if (g->notifications.out_of_allowed_range_sync_type.log)
-						LOG(WARNING) << "Out of Bounds sync: " << "Type: " << sync_type << " Tree name: " << tree_name << " From: " << src->get_name();
+						LOG(WARNING) << "Out of Bounds sync: Type: " << sync_type << " Tree name: " << tree_name << " From: " << src->get_name();
 					if (g->notifications.out_of_allowed_range_sync_type.notify)
 						g_notification_service->push_warning(std::format("Out Of Allowed Sync Range from {}", src->get_name()), std::format("Type {} in sync tree {}", std::uint16_t(sync_type), tree_name));
 				}
 				else if (net_obj->m_object_type != sync_type)
 				{
 					if (g->notifications.mismatch_sync_type.log)
-						LOG(WARNING) << "Mismatch sync: " << "Type: " << sync_type << " Tree name: " << tree_name << " From: " << src->get_name();
+						LOG(WARNING) << "Mismatch sync: Type: " << sync_type << " Tree name: " << tree_name << " From: " << src->get_name();
 					if (g->notifications.mismatch_sync_type.notify)
 						g_notification_service->push_warning(std::format("Mismatch Sync from {}", src->get_name()), std::format("Type {} in sync tree {}", std::uint16_t(sync_type), tree_name));
 
