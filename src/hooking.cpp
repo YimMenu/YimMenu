@@ -60,6 +60,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::format_metric_for_sending>("FMFS", g_pointers->m_format_metric_for_sending);
 
+		detour_hook_helper::add<hooks::invalid_mods_crash_detour>("IMCD", g_pointers->m_invalid_mods_crash_detour);
+
 		g_hooking = this;
 	}
 
