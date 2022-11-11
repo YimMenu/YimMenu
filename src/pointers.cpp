@@ -398,17 +398,17 @@ namespace big
 			m_fipackfile_unmount = ptr.add(1).rip().as<functions::fipackfile_unmount>();
 		});
 
-		// fidevice unmount
-		main_batch.add("FPFUM", "E8 ? ? ? ? 84 C0 74 37 80 3D", [this](memory::handle ptr)
-		{
-			m_fipackfile_unmount = ptr.add(1).rip().as<functions::fipackfile_unmount>();
-		});
-
 		// game version + online version
 		main_batch.add("GVOV", "8B C3 33 D2 C6 44 24 20", [this](memory::handle ptr)
 		{
 			m_game_version = ptr.add(0x24).rip().as<const char*>();
 			m_online_version = ptr.add(0x24).rip().add(0x20).as<const char*>();
+		});
+
+		// Invalid Mods Crash Detour
+		main_batch.add("IMCD", "E8 ? ? ? ? 40 88 7C 24 ? 49 89 9C 24", [this](memory::handle ptr)
+		{
+			m_invalid_mods_crash_detour = ptr.add(1).rip().as<PVOID>();
 		});
 
 		// Format Metric For Sending

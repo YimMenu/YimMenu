@@ -132,6 +132,8 @@ namespace big
 
 		const char* m_game_version;
 		const char* m_online_version;
+
+		PVOID m_invalid_mods_crash_detour{};
 	};
 
 	inline pointers* g_pointers{};
