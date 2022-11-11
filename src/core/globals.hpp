@@ -169,6 +169,7 @@ namespace big
 			bool hide_ammo = false;
 			int selected_hud_component = 1;
 			bool hud_components_states[(int)HudComponents::HUD_WEAPONS] = { false };
+			bool mobile_radio = false;
 		};
 
 		struct session
@@ -300,6 +301,8 @@ namespace big
 			bool vehicle_jump = false;
 			bool keep_vehicle_repaired = false;
 			bool no_water_collision = false;
+			bool disable_engine_auto_start = false;
+			bool change_engine_state_immediately = false;
 			speedo_meter speedo_meter{};
 			rainbow_paint rainbow_paint{};
 			fly fly{};
@@ -576,6 +579,7 @@ namespace big
 				this->self.hud_components_states[i] = j["self"]["hud_components_states"].at(i);
 			this->self.unlimited_oxygen = j["self"]["unlimited_oxygen"];
 			this->self.no_water_collision = j["self"]["no_water_collision"];
+			this->self.mobile_radio = j["self"]["mobile_radio"];
 
 			this->session.log_chat_messages = j["session"]["log_chat_messages"];
 			this->session.log_text_messages = j["session"]["log_text_messages"];
@@ -636,6 +640,8 @@ namespace big
 			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
 			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
 			this->vehicle.no_water_collision = j["vehicle"]["no_water_collision"];
+			this->vehicle.disable_engine_auto_start = j["vehicle"]["disable_engine_auto_start"];
+			this->vehicle.change_engine_state_immediately = j["vehicle"]["change_engine_state_immediately"];
 
 			this->vehicle.speedo_meter.enabled = j["vehicle"]["speedo_meter"]["enabled"];
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
@@ -876,6 +882,7 @@ namespace big
 						},
 						{ "unlimited_oxygen", this->self.unlimited_oxygen },
 						{ "no_water_collision", this->self.no_water_collision },
+						{ "mobile_radio", this->self.mobile_radio },
 					}
 				},
 				{
@@ -963,6 +970,8 @@ namespace big
 						{ "turn_signals", this->vehicle.turn_signals },
 						{ "seatbelt", this->vehicle.seatbelt },
 						{ "no_water_collision", this->vehicle.no_water_collision },
+						{ "disable_engine_auto_start", this->vehicle.disable_engine_auto_start },
+						{ "change_engine_state_immediately", this->vehicle.change_engine_state_immediately },
 						{
 							"speedo_meter",
 							{

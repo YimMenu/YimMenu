@@ -36,6 +36,7 @@ namespace big
 		static void self_hud();
 		static void self_unlimited_oxygen();
 		static void self_no_water_collision();
+		static void self_mobile_radio();
 
 		static void session_local_time();
 
