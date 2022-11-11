@@ -380,12 +380,13 @@ namespace big
 						
 						// sync_type is telling us it's a vehicle
 						// let's check if it's actually a vehicle according to our game...
-						if (sync_type >= eObjType::bikeObjType && sync_type <= eObjType::heliObjType ||
-							sync_type >= eObjType::planeObjType && sync_type <= eObjType::submarineObjType ||
-							sync_type >= eObjType::trailerObjType && sync_type <= eObjType::trainObjType)
+						if ((sync_type >= eObjType::bikeObjType && sync_type <= eObjType::heliObjType)
+							|| (sync_type >= eObjType::planeObjType && sync_type <= eObjType::submarineObjType)
+							|| (sync_type >= eObjType::trailerObjType && sync_type <= eObjType::trainObjType))
 						{
-							if (const auto model = model_info::get_vehicle_model(model_info->m_hash);
-								!model && reinterpret_cast<CVehicleModelInfo*>(model_info)->m_vehicle_type != model->m_vehicle_type)
+							if (const auto model = model_info::get_vehicle_model(model_info->m_hash); !model // model valid
+								&& model_info->m_model_type != eModelType::Vehicle // is our model returned by the game a vehicle?
+								&& reinterpret_cast<CVehicleModelInfo*>(model_info)->m_vehicle_type != model->m_vehicle_type) // final check
 							{
 								return eSyncReply::WrongOwner;
 							}
