@@ -339,7 +339,8 @@ namespace big
 		return false;
 	}
 
-	int64_t hooks::received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eObjType sync_type, uint16_t obj_id, rage::datBitBuffer* buffer, uint16_t unk, uint32_t timestamp) {
+	int64_t hooks::received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eObjType sync_type, uint16_t obj_id, rage::datBitBuffer* buffer, uint16_t unk, uint32_t timestamp)
+	{
 		if (auto sync_tree = g_pointers->m_get_sync_tree_for_type(mgr, sync_type); sync_tree && *g_pointers->m_is_session_started)
 		{
 			if (auto net_obj = g_pointers->m_get_net_object(mgr, obj_id, true); net_obj)
@@ -352,8 +353,11 @@ namespace big
 						LOG(WARNING) << "Out of Bounds sync: Type: " << sync_type << " Tree name: " << tree_name << " From: " << src->get_name();
 					if (g->notifications.out_of_allowed_range_sync_type.notify)
 						g_notification_service->push_warning(std::format("Out Of Allowed Sync Range from {}", src->get_name()), std::format("Type {} in sync tree {}", std::uint16_t(sync_type), tree_name));
+				
+					return g_hooking->get_original<received_clone_sync>()(mgr, src, dst, sync_type, obj_id, buffer, unk, timestamp);
 				}
-				else if (net_obj->m_object_type != sync_type)
+				
+				if (net_obj->m_object_type != sync_type)
 				{
 					if (g->notifications.mismatch_sync_type.log)
 						LOG(WARNING) << "Mismatch sync: Type: " << sync_type << " Tree name: " << tree_name << " From: " << src->get_name();
@@ -362,35 +366,25 @@ namespace big
 
 					return eSyncReply::WrongOwner;
 				}
-				else if (auto game_obj = net_obj->GetGameObject(); game_obj)
+				
+				if (auto game_obj = net_obj->GetGameObject(); game_obj)
 				{
 					if (const auto model_info = game_obj->m_model_info; model_info)
-					{
-						const auto model = model_info::get_model(model_info->m_hash);
-						if (!model || model_info->m_model_type != model->m_model_type)
-						{
-							return eSyncReply::WrongOwner;
-						}
-
-						if (model->m_model_type == eModelType::Vehicle &&
-							reinterpret_cast<CVehicleModelInfo*>(model_info)->m_vehicle_type != reinterpret_cast<CVehicleModelInfo*>(model)->m_vehicle_type)
-						{
-							return eSyncReply::WrongOwner;
-						}
-						
+					{						
 						// sync_type is telling us it's a vehicle
 						// let's check if it's actually a vehicle according to our game...
-						if ((sync_type >= eObjType::bikeObjType && sync_type <= eObjType::heliObjType)
+						if (((sync_type >= eObjType::bikeObjType && sync_type <= eObjType::heliObjType)
 							|| (sync_type >= eObjType::planeObjType && sync_type <= eObjType::submarineObjType)
 							|| (sync_type >= eObjType::trailerObjType && sync_type <= eObjType::trainObjType))
+							&& model_info->m_model_type != eModelType::Vehicle)
 						{
-							if (const auto model = model_info::get_vehicle_model(model_info->m_hash); !model // model valid
-								&& model_info->m_model_type != eModelType::Vehicle // is our model returned by the game a vehicle?
-								&& reinterpret_cast<CVehicleModelInfo*>(model_info)->m_vehicle_type != model->m_vehicle_type) // final check
-							{
-								return eSyncReply::WrongOwner;
-							}
+							return eSyncReply::CantApplyData;
 						}
+					}
+					else
+					{
+						// Fall through? Should not happen but let's try to be safe
+						return eSyncReply::CantApplyData;
 					}
 				}
 
@@ -400,15 +394,10 @@ namespace big
 
 				//LOG(INFO) << typeid(*tree).name() << ": " << HEX_TO_UPPER(typeid(*tree).hash_code()); //Use this to get hashes for each tree
 
-				if (sync_tree->m_child_node_count)
+				if (sync_tree->m_child_node_count && check_node(sync_tree->m_sync_node, src, obj_id))
 				{
-					if (check_node(sync_tree->m_sync_node, src, obj_id))
-						return eSyncReply::CantApplyData;
+					return eSyncReply::CantApplyData;
 				}
-			}
-			else if (sync_type != eObjType::pedObjType) //We don't want to not sync a player, so we ensure it's not a ped
-			{
-				return eSyncReply::WrongOwner;
 			}
 		}
 		return g_hooking->get_original<received_clone_sync>()(mgr, src, dst, sync_type, obj_id, buffer, unk, timestamp);
