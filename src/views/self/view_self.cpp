@@ -80,6 +80,8 @@ namespace big
 
 		ImGui::Checkbox("No Collision", &g->self.no_collision);
 
+		ImGui::Checkbox("Mobile Radio", &g->self.mobile_radio);
+
 		ImGui::EndGroup();
 
 		ImGui::Separator();
