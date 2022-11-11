@@ -14,7 +14,7 @@ jobs:
       full_sha: ${{ steps.var.outputs.full_sha }}
       short_sha: ${{ steps.var.outputs.short_sha }}
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -22,7 +22,7 @@ jobs:
         run: cmake --version
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v1
 
       - name: Generate CMake project
         run: cmake -S. -Bbuild -G "Visual Studio 17 2022" -DCMAKE_CONFIGURATION_TYPES=Release 
@@ -31,7 +31,7 @@ jobs:
         run: cmake --build build --config Release --target ALL_BUILD
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: binary
           path: build/Release/YimMenu.dll
@@ -39,8 +39,8 @@ jobs:
       - name: Generate Build Info
         id: var
         run: |
-          echo "::set-output name=full_sha::$(git rev-parse HEAD)"
-          echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
+          echo "full_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
   check_detections:
     runs-on: ubuntu-latest
@@ -48,7 +48,7 @@ jobs:
     needs: build_nightly
     steps:
       - name: Download Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: binary
 
@@ -60,7 +60,7 @@ jobs:
 
       - name: Notify on Discord
         if: ${{ steps.detections.outputs.is_detected == 'true' }}
-        uses: tsickert/discord-webhook@v4.0.0
+        uses: tsickert/discord-webhook@v5.3.0
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           embed-title: YimMenu has been detected by the sigscanner!
@@ -76,13 +76,13 @@ jobs:
     outputs:
       should_run: ${{ steps.should_run.outputs.should_run }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - id: should_run
         continue-on-error: true
         name: Check if latest commit date is within the previous 24 hours
         if: ${{ github.event_name == 'schedule' }}
-        run: test -z $(git rev-list  --after="24 hours"  ${{ github.sha }}) && echo "::set-output name=should_run::false"
+        run: test -z $(git rev-list  --after="24 hours"  ${{ github.sha }}) && echo "should_run=false" >> $GITHUB_OUTPUT
 
   create_release:
     runs-on: ubuntu-latest
@@ -91,7 +91,7 @@ jobs:
     if: ${{ needs.check_date.outputs.should_run != 'false' }}
     steps:
       - name: Download Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: binary
 
@@ -99,7 +99,7 @@ jobs:
         id: build_sha
         run: |
           sha256sum YimMenu.dll > sha256.checksum
-          echo "::set-output name=build_sha::$(cat sha256.checksum)"
+          echo "build_sha=$(cat sha256.checksum)" >> $GITHUB_OUTPUT
           cat sha256.checksum
 
       - name: Remove previous Nightly

@@ -7,15 +7,20 @@ jobs:
     runs-on: windows-latest
     name: CI
     steps:
-      - uses: actions/checkout@v2.4.0
-        with:
-          submodules: recursive
+      - uses: actions/checkout@v3
 
       - name: Check CMake version
         run: cmake --version
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Cache build/
+        id: cache-build
+        uses: actions/cache@v3
+        with:
+          path: build
+          key: ${{ runner.os }}-build
 
       - name: Generate CMake project
         run: cmake -S. -Bbuild -G "Visual Studio 17 2022" -DCMAKE_CONFIGURATION_TYPES=Release 
@@ -27,7 +32,11 @@ jobs:
         run: if (-Not (Test-Path -path "build/Release/YimMenu.dll")) {throw 1}
 
       - name: Rename DLL to YimMenu-dev-{GITHUB_SHA}.dll
-        run: ren YimMenu.dll YimMenu-dev-${{github.sha}}.dll
+        run: |
+          if (Test-Path -path "YimMenu-dev-${{github.sha}}.dll") {
+            DEL YimMenu-dev-${{github.sha}}.dll
+          }
+          ren YimMenu.dll YimMenu-dev-${{github.sha}}.dll
         working-directory: build/Release/
 
       - name: Upload Artifact

@@ -21,6 +21,20 @@ enum eObjType : uint16_t {
 	unkObjType14 = 14,
 	unkObjType = 69
 };
+
+enum eSyncReply : int64_t
+{
+	NoSyncTreeFound = 1, // No sync tree found
+	PlayerIsNotInOurRoamingBubble = 1, // Player is not in our roaming bubble
+	WrongOwner = 2, // Wrong owner
+	ObjectIsBeingReassinged = 2, // Object is being reassigned
+	CantApplyData_NoNetworkObject = 4, // Can't apply data - no network object
+	CantApplyData = 6, // Can't apply data
+	CantApplyData_NoGameObject = 6, // Can't apply data - no game object
+	CantApplyData_NetworkClosed = 7, // Can't apply data - network closed
+	SuccessfullSync = 8
+};
+
 enum class ControllerInputs : std::uint32_t
 {
 	INPUT_NEXT_CAMERA,

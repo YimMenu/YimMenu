@@ -100,6 +100,8 @@ namespace big
 		functions::get_sync_tree_for_type m_get_sync_tree_for_type{};
 		functions::get_sync_type_info m_get_sync_type_info{};
 		functions::get_net_object m_get_net_object{};
+		functions::get_net_object_for_player m_get_net_object_for_player{};
+		functions::read_bitbuffer_into_sync_tree m_read_bitbuffer_into_sync_tree{};
 		//Sync Signatures END
 
 		PVOID m_send_net_info_to_lobby{};
