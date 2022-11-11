@@ -583,6 +583,7 @@ namespace big
 
 			this->session.log_chat_messages = j["session"]["log_chat_messages"];
 			this->session.log_text_messages = j["session"]["log_text_messages"];
+			this->session.disable_chat_filter = j["session"]["disable_chat_filter"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -889,6 +890,7 @@ namespace big
 					"session", {
 						{ "log_chat_messages", this->session.log_chat_messages },
 						{ "log_text_messages", this->session.log_text_messages },
+						{ "disable_chat_filter", this->session.disable_chat_filter }
 					}
 				},
 				{
