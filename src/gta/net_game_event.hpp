@@ -38,7 +38,7 @@ namespace rage
 			return big::g_pointers->m_read_bitbuf_bool(this, integer, 1);
 		}
 		bool ReadPeerId(uint64_t* integer) {
-			return this->ReadQWord(integer, 0x32);
+			return this->ReadQWord(integer, 0x40);
 		}
 		uint64_t ReadBits(size_t numBits) {
 			auto const totalBits = (m_flagBits & 1) ? m_maxBit : m_curBit;
