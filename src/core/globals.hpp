@@ -890,7 +890,7 @@ namespace big
 					"session", {
 						{ "log_chat_messages", this->session.log_chat_messages },
 						{ "log_text_messages", this->session.log_text_messages },
-						{ "disable_chat_filter", this->sesson.disable_chat_filter }
+						{ "disable_chat_filter", this->session.disable_chat_filter }
 					}
 				},
 				{
