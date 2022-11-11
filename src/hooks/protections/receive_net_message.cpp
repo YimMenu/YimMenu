@@ -51,7 +51,7 @@ namespace big
 					buffer.ReadString(message, 256);
 					buffer.ReadQWord(&unk, 64);
 					buffer.ReadBool(&is_team);
-					LOG(INFO) << "[CHAT] from " << player->get_name() << ": " << message;
+					LOG(INFO) << "[CHAT] from " << player->get_name() << ": " << message << " " << ((is_team) ? "[TEAM]" : "[ALL]");
 					break;
 				}
 				case rage::eNetMessage::CMsgScriptMigrateHost:
