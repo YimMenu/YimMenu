@@ -65,8 +65,6 @@ namespace big
 
 		static void write_player_gamer_data_node(rage::netObject* player, CPlayerGamerDataNode* node);
 		static bool write_player_game_state_data_node(rage::netObject* player, CPlayerGameStateDataNode* node);
-
-		static void add_message(int64_t a1, int64_t a2, int64_t a3, const char* message, bool is_team_chat);
 	};
 
 	class minhook_keepalive

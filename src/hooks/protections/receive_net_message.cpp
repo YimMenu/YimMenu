@@ -87,6 +87,16 @@ namespace big
 					}
 					break;
 				}
+				case rage::eNetMessage::CMsgTextMessage:
+				{
+					if(g->session.log_chat_message)
+					{
+						char msg[256];
+						buffer.ReadString(msg, 256);
+						LOG(INFO) << "[MSG] " << player->get_player_info()->m_net_player_data.m_name << ": " << msg;
+					}
+					break;
+				}
 				}
 			}
 		}

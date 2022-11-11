@@ -404,18 +404,6 @@ namespace big
 			m_fipackfile_unmount = ptr.add(1).rip().as<functions::fipackfile_unmount>();
 		});
 
-		// add message
-		main_batch.add("AM", "4D 85 C9 0F 84 ? ? ? ? 48 8B C4 48 89 58 08 48 89 70 10 48 89 78 18 4C 89 48 20", [this](memory::handle ptr)
-		{
-			m_add_message = ptr.as<decltype(m_add_message)>();
-		});
-
-		// get net game player
-		main_batch.add("GNGP", "E8 ? ? ? ? 48 85 C0 75 9C", [this](memory::handle ptr)
-		{
-			m_get_net_game_player = ptr.add(1).rip().as<functions::get_net_game_player>();
-		});
-
 		// game version + online version
 		main_batch.add("GVOV", "8B C3 33 D2 C6 44 24 20", [this](memory::handle ptr)
 		{
