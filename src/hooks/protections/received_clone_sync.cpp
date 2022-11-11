@@ -64,7 +64,7 @@ namespace big
 	}
 
 	inline bool is_model_a_cage_model(uint32_t model) {
-		for (auto iterator : cage_model)
+		for (auto iterator : cage_models)
 		{
 			if (iterator == model) return true;
 		}
