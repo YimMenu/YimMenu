@@ -43,7 +43,7 @@ namespace big
 			{
 				switch (msgType)
 				{
-				case eNetMessage::CMsgTextMessage:
+				case rage::eNetMessage::CMsgTextMessage:
 				{
 					char message[256];
 					uint64_t unk;
@@ -54,7 +54,7 @@ namespace big
 					LOG(INFO) << "[CHAT] from " << player->get_name() << ": " << message << (is_team) ? " [TEAM]" : " [ALL]";
 					break;
 				}
-				case eNetMessage::CMsgTextMessage2:
+				case rage::eNetMessage::CMsgTextMessage2:
 				{
 					char message[256];
 					uint64_t unk;
