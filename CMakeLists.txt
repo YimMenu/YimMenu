@@ -1,11 +1,13 @@
 cmake_minimum_required(VERSION 3.20)
 
 if(UNIX)
-    message(STATUS "Unix-like system detected. Using MinGW and uasm.")
+    message(STATUS "Unix-like system detected. Using MinGW-gcc and uasm.")
 
     set(TOOLCHAIN_PREFIX "x86_64-w64-mingw32" CACHE STRING "Set toolchain. Default: x86_64-w64-mingw32")
 
     message(STATUS "Using ${TOOLCHAIN_PREFIX} toolchain")
+
+    set(CMAKE_FIND_ROOT_PATH /usr/x86_64-w64-mingw32)
 
     set(CMAKE_SYSTEM_NAME "Windows")
 
@@ -63,10 +65,10 @@ target_link_libraries(YimMenu PRIVATE fmt)
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
 target_link_libraries(YimMenu PRIVATE pugixml minhook g3log imgui d3dcompiler dwmapi )
 
-if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    # Warnings as errors
-    set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
-else()
+# Warnings as errors
+set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
+
+if (NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     set(CMAKE_ASM_MASM_COMPILER "uasm" CACHE INTERNAL "")
     target_compile_options(YimMenu PRIVATE 
         $<$<COMPILE_LANGUAGE:CXX>:-municode -fpermissive ${CXX_FLAGS}>
@@ -74,6 +76,7 @@ else()
     )
     target_link_options(YimMenu PRIVATE -static -s)
 endif()
+
 add_compile_definitions(YimMenu 
     "_CRT_SECURE_NO_WARNINGS"
     "NOMINMAX"

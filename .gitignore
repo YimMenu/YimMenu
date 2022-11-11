@@ -10,3 +10,7 @@ build/
 *.ipch
 *.gch
 *.pch
+
+# Syncthing
+.ctagsd/
+.stignore

@@ -126,7 +126,7 @@ namespace big
 			template <auto detour_function>
 			static void add(const std::string& name, void* target)
 			{
-				auto d = add_internal<detour_function>(new detour_hook(name, target, detour_function));
+				auto d = add_internal<detour_function>(new detour_hook(name, target, (void*)detour_function));
 
 				d->enable_hook_if_hooking_is_already_running();
 			}

@@ -6,7 +6,7 @@ namespace big
 	{
 	public:
 		explicit detour_hook(std::string name, void* detour);
-		explicit detour_hook(std::string name, void *target, void* detour);
+		explicit detour_hook(std::string name, void* target, void* detour);
 		~detour_hook() noexcept;
 
 		detour_hook(detour_hook&& that) = delete;

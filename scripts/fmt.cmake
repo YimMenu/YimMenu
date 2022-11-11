@@ -9,4 +9,3 @@ FetchContent_Declare(
 )
 message("fmt")
 FetchContent_MakeAvailable(FMT)
-
