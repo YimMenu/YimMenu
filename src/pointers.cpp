@@ -14,6 +14,11 @@ namespace big
 			m_resolution_y = ptr.add(4).rip().as<int*>();
 		});
 
+		main_batch.add("RC", "40 32 ED 83 25", [this](memory::handle ptr)
+		{
+			m_region_code = ptr.add(5).rip().add(1).as<uint32_t*>();
+		});
+
 		// Max Wanted Level
 		main_batch.add("MWL", "8B 43 6C 89 05", [this](memory::handle ptr)
 		{

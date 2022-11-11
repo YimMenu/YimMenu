@@ -1,6 +1,7 @@
 #include "views/view.hpp"
 #include "fiber_pool.hpp"
 #include "util/session.hpp"
+#include "core/data/region_codes.hpp"
 
 namespace big
 {
@@ -21,6 +22,19 @@ namespace big
 				components::selectable(session_type.name, false, [&session_type]
 				{
 					session::join_type(session_type.id);
+				});
+			}
+			ImGui::EndListBox();
+		}
+		
+		components::sub_title("Region Switcher");
+		if (ImGui::ListBoxHeader("###region_switch"))
+		{
+			for (const auto& region_type : regions)
+			{
+				components::selectable(region_type.name, *g_pointers->m_region_code == region_type.id, [&region_type]
+				{
+					*g_pointers->m_region_code = region_type.id;
 				});
 			}
 			ImGui::EndListBox();
