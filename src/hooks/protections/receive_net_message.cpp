@@ -54,6 +54,15 @@ namespace big
 					LOG(INFO) << "[CHAT] from " << player->get_name() << ": " << message << " " << ((is_team) ? "[TEAM]" : "[ALL]");
 					break;
 				}
+				case eNetMessage::CMsgTextMessage2:
+				{
+					char message[256];
+					uint64_t unk;
+					buffer.ReadString(message, 256);
+					buffer.ReadQWord(&unk, 64);
+					LOG(INFO) << "[TEXT] from " << player->get_name() << ": " << message;
+					break;
+				}
 				case rage::eNetMessage::CMsgScriptMigrateHost:
 				{
 					if (std::chrono::system_clock::now() - player->m_last_transition_msg_sent < 200ms)
@@ -78,7 +87,6 @@ namespace big
 					buffer.ReadQWord(&session_id, 64);
 					uint32_t count;
 					buffer.ReadDword(&count, 6);
-					pl = nullptr;
 					for (std::uint32_t i = 0; i < count; i++)
 					{
 						uint64_t peer_id;
