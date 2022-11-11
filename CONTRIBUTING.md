@@ -1,6 +1,9 @@
 # Contrib
 
 ### Commit convention
+
+**Don't overthink it, we can edit the final commit message if it doesn't describe the changes correctly!**
+
 Types:
 - feat: The new feature you're adding to a particular application
 - fix: To fix a bug
