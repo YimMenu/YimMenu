@@ -2,7 +2,7 @@
 
 namespace big
 {
-	struct script_data
+	class script_data
 	{
 		std::uint32_t m_num_pages;
 

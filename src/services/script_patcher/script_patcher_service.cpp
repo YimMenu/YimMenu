@@ -23,7 +23,7 @@ namespace big
 	{
 		for (auto& p : m_script_patches)
 		{
-			if (p.m_script == script)
+			if (p.get_script() == script)
 				return true;
 		}
 
@@ -48,7 +48,7 @@ namespace big
 		auto data = get_data_for_script(script);
 
 		for (auto& p : m_script_patches)
-			if (p.m_script == script)
+			if (p.get_script() == script)
 				p.update(data);
 	}
 
@@ -78,7 +78,7 @@ namespace big
 	{
 		for (auto& p : m_script_patches)
 		{
-			auto data = get_data_for_script(p.m_script);
+			auto data = get_data_for_script(p.get_script());
 			if (data)
 			{
 				p.update(data);

@@ -7,8 +7,6 @@ namespace big
 
 	class script_patch
 	{
-		friend class script_patcher_service;
-
 		rage::joaat_t m_script;
 		const memory::pattern m_pattern;
 		int32_t m_offset;
@@ -23,6 +21,8 @@ namespace big
 		void disable(script_data* data);
 
 	public:
+		inline rage::joaat_t get_script() { return m_script; }
+
 		script_patch(rage::joaat_t script, const memory::pattern pattern, int32_t offset, std::vector<std::uint8_t> patch, bool* enable_bool);
 		void update(script_data* data);
 	};
