@@ -16,10 +16,9 @@ namespace big
 		void update_all_patches_for_script(rage::joaat_t script);
 
 	public:
-
 		script_patcher_service();
 		~script_patcher_service();
-
+    
 		void add_patch(script_patch&& patch);
 		void on_script_load(rage::scrProgram* program);
 		std::uint8_t** get_script_bytecode(rage::joaat_t script);

@@ -1,8 +1,7 @@
-#include "common.hpp"
+#include <script/scrProgram.hpp>
 #include "script_patcher_service.hpp"
 #include "script_patch.hpp"
 #include "script_data.hpp"
-#include <script/scrProgram.hpp>
 
 namespace big
 {
