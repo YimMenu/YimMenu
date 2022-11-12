@@ -39,8 +39,8 @@ jobs:
       - name: Generate Build Info
         id: var
         run: |
-          echo "full_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-          echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "full_sha=$(git rev-parse HEAD)" >> $env:GITHUB_OUTPUT
+          echo "short_sha=$(git rev-parse --short HEAD)" >> $env:GITHUB_OUTPUT
 
   check_detections:
     runs-on: ubuntu-latest
