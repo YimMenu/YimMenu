@@ -33,9 +33,7 @@ jobs:
 
       - name: Rename DLL to YimMenu-dev-{GITHUB_SHA}.dll
         run: |
-          if (Test-Path -path "YimMenu-dev-${{github.sha}}.dll") {
-            DEL YimMenu-dev-${{github.sha}}.dll
-          }
+          del YimMenu-dev-*.dll
           ren YimMenu.dll YimMenu-dev-${{github.sha}}.dll
         working-directory: build/Release/
 
