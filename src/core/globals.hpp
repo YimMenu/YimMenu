@@ -143,6 +143,7 @@ namespace big
 
 			script_events script_events{};
 			bool script_host_kick = true;
+			bool rid_join = false;
 		};
 
 		struct self 
@@ -193,6 +194,7 @@ namespace big
 			bool log_chat_messages = false;
 			bool log_text_messages = false;
 			bool decloak_players = false;
+			bool force_session_host = false;
 		};
 
 		struct settings {
@@ -563,6 +565,7 @@ namespace big
 			}
 
 			this->protections.script_host_kick = j["protections"]["script_host_kick"];
+			this->protections.rid_join = j["protections"]["rid_join"];
 
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
 			this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
@@ -598,6 +601,7 @@ namespace big
 			this->session.log_text_messages = j["session"]["log_text_messages"];
 			this->session.disable_chat_filter = j["session"]["disable_chat_filter"];
 			this->session.decloak_players = j["session"]["decloak_players"];
+			this->session.force_session_host = j["session"]["force_session_host"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -846,7 +850,8 @@ namespace big
 							}
 						},
 
-						{ "script_host_kick", g->protections.script_host_kick }
+						{ "script_host_kick", g->protections.script_host_kick },
+						{ "rid_join", g->protections.rid_join }
 					}
 				},
 				{
@@ -913,6 +918,7 @@ namespace big
 						{ "log_text_messages", this->session.log_text_messages },
 						{ "disable_chat_filter", this->session.disable_chat_filter },
 						{ "decloak_players", this->session.decloak_players },
+						{ "force_session_host", this->session.force_session_host }
 					}
 				},
 				{

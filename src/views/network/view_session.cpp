@@ -47,5 +47,8 @@ namespace big
 
 		components::sub_title("Decloak");
 		components::script_patch_checkbox("Reveal OTR Players", &g->session.decloak_players);
+
+		components::sub_title("Force Host");
+		ImGui::Checkbox("Force Session Host", &g->session.force_session_host);
 	}
 }

@@ -69,6 +69,9 @@ namespace big
 		static bool write_player_game_state_data_node(rage::netObject* player, CPlayerGameStateDataNode* node);
 
 		static void invalid_mods_crash_detour(int64_t a1, int64_t a2, int a3, char a4);
+
+		static bool update_presence_attribute_int(void* presence_data, int profile_index, char* attr, std::uint64_t value);
+		static bool update_presence_attribute_string(void* presence_data, int profile_index, char* attr, char* value);
 	};
 
 	class minhook_keepalive

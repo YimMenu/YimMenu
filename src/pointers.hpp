@@ -4,10 +4,12 @@
 #include "function_types.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/replay.hpp"
-#include "network/CNetworkPlayerMgr.hpp"
-#include "socialclub/FriendRegistry.hpp"
-#include "network/Network.hpp"
 #include "memory/byte_patch.hpp"
+
+class CCommunications;
+class FriendRegistry;
+class CNetworkPlayerMgr;
+class Network;
 
 namespace big
 {
@@ -139,6 +141,15 @@ namespace big
 
 		PVOID m_init_native_tables{};
 		PVOID m_script_vm{};
+
+		functions::generate_uuid m_generate_uuid{};
+		std::uint64_t* m_host_token{};
+		rage::rlGamerInfo* m_profile_gamer_info{}; // per profile gamer info
+		rage::rlGamerInfo* m_player_info_gamer_info{}; // the gamer info that is applied to CPlayerInfo
+		CCommunications** m_communications{};
+
+		PVOID m_update_presence_attribute_int;
+		PVOID m_update_presence_attribute_string;
 	};
 
 	inline pointers* g_pointers{};

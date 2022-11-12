@@ -1,7 +1,8 @@
 #include "hooking.hpp"
 #include "services/players/player_service.hpp"
-#include <natives.hpp>
+#include "natives.hpp"
 #include "gta_util.hpp"
+#include <network/Network.hpp>
 
 namespace big
 {
