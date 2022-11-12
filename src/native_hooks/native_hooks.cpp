@@ -34,6 +34,7 @@ namespace big
 
     native_hooks::~native_hooks()
     {
+        m_script_hooks.clear();
         g_native_hooks = nullptr;
     }
 

@@ -11,7 +11,7 @@ namespace big
 		{
 			g_fiber_pool->queue_job([]
 			{
-				g_script_patcher_service.update();
+				g_script_patcher_service->update();
 			});
 		}
 

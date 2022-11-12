@@ -9,7 +9,7 @@ namespace big
 	{
 		uint8_t** orig_bytecode = program->m_code_blocks;
 
-		if (auto bytecode = g_script_patcher_service.get_script_bytecode(program->m_name_hash))
+		if (auto bytecode = g_script_patcher_service->get_script_bytecode(program->m_name_hash); bytecode && g_running)
 			program->m_code_blocks = bytecode;
 
 		auto ret = g_hooking->get_original<hooks::script_vm>()(start_stack, scr_globals, program, ctx);

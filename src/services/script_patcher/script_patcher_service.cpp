@@ -1,7 +1,8 @@
-#include <script/scrProgram.hpp>
+#include "common.hpp"
 #include "script_patcher_service.hpp"
 #include "script_patch.hpp"
 #include "script_data.hpp"
+#include <script/scrProgram.hpp>
 
 namespace big
 {
@@ -49,6 +50,16 @@ namespace big
 		for (auto& p : m_script_patches)
 			if (p.get_script() == script)
 				p.update(data);
+	}
+
+	script_patcher_service::script_patcher_service()
+	{
+		g_script_patcher_service = this;
+	}
+
+	script_patcher_service::~script_patcher_service()
+	{
+		g_script_patcher_service = nullptr;
 	}
 
 	void script_patcher_service::add_patch(script_patch&& patch)
