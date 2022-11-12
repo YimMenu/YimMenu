@@ -45,6 +45,8 @@ namespace big
 		int* m_resolution_x;
 		int* m_resolution_y;
 
+		uint32_t* m_region_code;
+
 		memory::byte_patch* m_max_wanted_level;
 		memory::byte_patch* m_max_wanted_level_2;
 
@@ -132,6 +134,8 @@ namespace big
 
 		const char* m_game_version;
 		const char* m_online_version;
+
+		PVOID m_invalid_mods_crash_detour{};
 	};
 
 	inline pointers* g_pointers{};

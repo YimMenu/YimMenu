@@ -65,6 +65,8 @@ namespace big
 
 		static void write_player_gamer_data_node(rage::netObject* player, CPlayerGamerDataNode* node);
 		static bool write_player_game_state_data_node(rage::netObject* player, CPlayerGameStateDataNode* node);
+
+		static void invalid_mods_crash_detour(int64_t a1, int64_t a2, int a3, char a4);
 	};
 
 	class minhook_keepalive

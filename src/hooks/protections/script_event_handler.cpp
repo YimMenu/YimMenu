@@ -105,6 +105,17 @@ namespace big
 				return true;
 			}
 			break;
+		case eRemoteEvent::GiveCollectible:
+			if (g->protections.script_events.switch_player_model)
+			{
+				if (args[2] == 8)
+				{
+					format_string(player_name, "Switch Player Model", notify.switch_player_model.log, notify.switch_player_model.notify);
+
+					return true;
+				}
+			}
+			break;
 		case eRemoteEvent::GtaBanner:
 			if (g->protections.script_events.gta_banner)
 			{

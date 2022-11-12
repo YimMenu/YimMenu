@@ -73,6 +73,7 @@ namespace big
 				pair send_to_location{};
 				pair sound_spam{};
 				pair spectate{};
+				pair switch_player_model{};
 				pair transaction_error{};
 				pair tse_freeze{};
 				pair tse_sender_mismatch{};
@@ -131,6 +132,7 @@ namespace big
 				bool send_to_location = true;
 				bool sound_spam = true;
 				bool spectate = true;
+				bool switch_player_model = true;
 				bool transaction_error = true;
 				bool vehicle_kick = true;
 				bool teleport_to_warehouse = true;
@@ -169,6 +171,7 @@ namespace big
 			bool hide_ammo = false;
 			int selected_hud_component = 1;
 			bool hud_components_states[(int)HudComponents::HUD_WEAPONS] = { false };
+			bool mobile_radio = false;
 		};
 
 		struct session
@@ -183,6 +186,8 @@ namespace big
 			bool join_queued = false;
 			rage::rlSessionInfo info;
 			bool disable_chat_filter = false;
+			bool log_chat_messages = false;
+			bool log_text_messages = false;
 		};
 
 		struct settings {
@@ -298,6 +303,8 @@ namespace big
 			bool vehicle_jump = false;
 			bool keep_vehicle_repaired = false;
 			bool no_water_collision = false;
+			bool disable_engine_auto_start = false;
+			bool change_engine_state_immediately = false;
 			speedo_meter speedo_meter{};
 			rainbow_paint rainbow_paint{};
 			fly fly{};
@@ -497,6 +504,8 @@ namespace big
 				script_handler.sound_spam.notify = script_handler_j["sound_spam"]["notify"];
 				script_handler.spectate.log = script_handler_j["spectate"]["log"];
 				script_handler.spectate.notify = script_handler_j["spectate"]["notify"];
+				script_handler.switch_player_model.log = script_handler_j["switch_player_model"]["log"];
+				script_handler.switch_player_model.notify = script_handler_j["switch_player_model"]["notify"];
 				script_handler.transaction_error.log = script_handler_j["transaction_error"]["log"];
 				script_handler.transaction_error.notify = script_handler_j["transaction_error"]["notify"];
 				script_handler.tse_freeze.log = script_handler_j["tse_freeze"]["log"];
@@ -540,6 +549,7 @@ namespace big
 				script_handler.send_to_location = script_handler_j["send_to_location"];
 				script_handler.sound_spam = script_handler_j["sound_spam"];
 				script_handler.spectate = script_handler_j["spectate"];
+				script_handler.switch_player_model = script_handler_j["switch_player_model"];
 				script_handler.transaction_error = script_handler_j["transaction_error"];
 				script_handler.vehicle_kick = script_handler_j["vehicle_kick"];
 				script_handler.teleport_to_warehouse = script_handler_j["teleport_to_warehouse"];
@@ -574,6 +584,11 @@ namespace big
 				this->self.hud_components_states[i] = j["self"]["hud_components_states"].at(i);
 			this->self.unlimited_oxygen = j["self"]["unlimited_oxygen"];
 			this->self.no_water_collision = j["self"]["no_water_collision"];
+			this->self.mobile_radio = j["self"]["mobile_radio"];
+
+			this->session.log_chat_messages = j["session"]["log_chat_messages"];
+			this->session.log_text_messages = j["session"]["log_text_messages"];
+			this->session.disable_chat_filter = j["session"]["disable_chat_filter"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -631,6 +646,8 @@ namespace big
 			this->vehicle.seatbelt = j["vehicle"]["seatbelt"];
 			this->vehicle.turn_signals = j["vehicle"]["turn_signals"];
 			this->vehicle.no_water_collision = j["vehicle"]["no_water_collision"];
+			this->vehicle.disable_engine_auto_start = j["vehicle"]["disable_engine_auto_start"];
+			this->vehicle.change_engine_state_immediately = j["vehicle"]["change_engine_state_immediately"];
 
 			this->vehicle.speedo_meter.enabled = j["vehicle"]["speedo_meter"]["enabled"];
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
@@ -769,6 +786,7 @@ namespace big
 								{ "send_to_location", return_notify_pair(script_handler_notifications.send_to_location) },
 								{ "sound_spam", return_notify_pair(script_handler_notifications.sound_spam) },
 								{ "spectate", return_notify_pair(script_handler_notifications.spectate) },
+								{ "switch_player_model", return_notify_pair(script_handler_notifications.switch_player_model) },
 								{ "transaction_error", return_notify_pair(script_handler_notifications.transaction_error) },
 								{ "tse_freeze", return_notify_pair(script_handler_notifications.tse_freeze) },
 								{ "tse_sender_mismatch", return_notify_pair(script_handler_notifications.tse_sender_mismatch) },
@@ -808,6 +826,7 @@ namespace big
 								{ "send_to_location", script_handler_protections.send_to_location },
 								{ "sound_spam", script_handler_protections.sound_spam },
 								{ "spectate", script_handler_protections.spectate },
+								{ "switch_player_model", script_handler_protections.switch_player_model },
 								{ "transaction_error", script_handler_protections.transaction_error },
 								{ "vehicle_kick", script_handler_protections.vehicle_kick },
 								{ "teleport_to_warehouse", script_handler_protections.teleport_to_warehouse },
@@ -871,6 +890,14 @@ namespace big
 						},
 						{ "unlimited_oxygen", this->self.unlimited_oxygen },
 						{ "no_water_collision", this->self.no_water_collision },
+						{ "mobile_radio", this->self.mobile_radio },
+					}
+				},
+				{
+					"session", {
+						{ "log_chat_messages", this->session.log_chat_messages },
+						{ "log_text_messages", this->session.log_text_messages },
+						{ "disable_chat_filter", this->session.disable_chat_filter }
 					}
 				},
 				{
@@ -952,6 +979,8 @@ namespace big
 						{ "turn_signals", this->vehicle.turn_signals },
 						{ "seatbelt", this->vehicle.seatbelt },
 						{ "no_water_collision", this->vehicle.no_water_collision },
+						{ "disable_engine_auto_start", this->vehicle.disable_engine_auto_start },
+						{ "change_engine_state_immediately", this->vehicle.change_engine_state_immediately },
 						{
 							"speedo_meter",
 							{

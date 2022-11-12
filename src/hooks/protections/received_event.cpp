@@ -54,7 +54,6 @@ namespace big
 			if (hooks::increment_stat_event(increment_stat_event.get(), source_player))
 			{
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
 				return;
 			}
 			buffer->Seek(0);

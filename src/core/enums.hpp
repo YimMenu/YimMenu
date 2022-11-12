@@ -143,6 +143,7 @@ namespace big
 		ClearWantedLevel = 1449852136,
 		ForceMission = -283041276, // ), Var0.f_2, 1))
 		ForceMission2 = -1908874529,
+		GiveCollectible = -1178972880, // DLC_SUM20_HIDDEN_COLLECTIBLES xref
 		GtaBanner = 145637109, // NETWORK::NETWORK_IS_SCRIPT_ACTIVE("BUSINESS_BATTLES", -1, true, 0) second one
 		NetworkBail = 1674887089, // NETWORK::NETWORK_BAIL(16, 0, 0); xref func
 		PersonalVehicleDestroyed = -1838276770, // PLYVEH_INS_DES1
@@ -158,7 +159,6 @@ namespace big
 		TransactionError = -768108950, // NETWORK_RECEIVE_PLAYER_JOBSHARE_CASH
 		VehicleKick = -714268990, // PIM_RFMOC
 		Kick = 1674887089,
-		GiveCollectible = -1178972880, // DLC_SUM20_HIDDEN_COLLECTIBLES xref
 		ChangeMCRole = 656530441, // _PLAYSTATS_CHANGE_MC_ROLE
 		DisableRecording = 867047895, // GET_FINAL_RENDERED_CAM_COORD
 		MCTeleport = -555356783, // NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(PLAYER::PLAYER_ID()) == (first one)

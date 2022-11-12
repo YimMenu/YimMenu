@@ -14,6 +14,11 @@ namespace big
 			m_resolution_y = ptr.add(4).rip().as<int*>();
 		});
 
+		main_batch.add("RC", "40 32 ED 83 25", [this](memory::handle ptr)
+		{
+			m_region_code = ptr.add(5).rip().add(1).as<uint32_t*>();
+		});
+
 		// Max Wanted Level
 		main_batch.add("MWL", "8B 43 6C 89 05", [this](memory::handle ptr)
 		{
@@ -163,12 +168,6 @@ namespace big
 		main_batch.add("RBB", "E8 ? ? ? ? 84 C0 74 2D 48 8D 57 20", [this](memory::handle ptr)
 		{
 			m_read_bitbuf_bool = ptr.add(1).rip().as<decltype(m_read_bitbuf_bool)>();
-		});
-
-		// Read Bitbuffer Array
-		main_batch.add("RBA", "48 89 5C 24 ? 57 48 83 EC 30 41 8B F8 4C", [this](memory::handle ptr)
-		{
-			m_read_bitbuf_array = ptr.as<decltype(m_read_bitbuf_array)>();
 		});
 
 		// Write Bitbuffer WORD/DWORD
@@ -404,17 +403,17 @@ namespace big
 			m_fipackfile_unmount = ptr.add(1).rip().as<functions::fipackfile_unmount>();
 		});
 
-		// fidevice unmount
-		main_batch.add("FPFUM", "E8 ? ? ? ? 84 C0 74 37 80 3D", [this](memory::handle ptr)
-		{
-			m_fipackfile_unmount = ptr.add(1).rip().as<functions::fipackfile_unmount>();
-		});
-
 		// game version + online version
 		main_batch.add("GVOV", "8B C3 33 D2 C6 44 24 20", [this](memory::handle ptr)
 		{
 			m_game_version = ptr.add(0x24).rip().as<const char*>();
 			m_online_version = ptr.add(0x24).rip().add(0x20).as<const char*>();
+		});
+
+		// Invalid Mods Crash Detour
+		main_batch.add("IMCD", "E8 ? ? ? ? 40 88 7C 24 ? 49 89 9C 24", [this](memory::handle ptr)
+		{
+			m_invalid_mods_crash_detour = ptr.add(1).rip().as<PVOID>();
 		});
 
 		// Format Metric For Sending
