@@ -25,11 +25,12 @@ namespace big
 
 	void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
 	{
-		if ((hnd.m_platform = buf.Read<uint32_t>(8)) != 3)
+		constexpr int PC_PLATFORM = 3;
+		if ((hnd.m_platform = buf.Read<uint8_t>(8)) != PC_PLATFORM)
 			return;
 
 		buf.ReadInt64((int64_t*)&hnd.m_rockstar_id, 64);
-		*reinterpret_cast<uint32_t*>(reinterpret_cast<__int64>(&hnd) + 9) = buf.Read<uint32_t>(8);
+		hnd.unk_0009 = buf.Read<uint8_t>(8);
 	}
 
 	bool hooks::receive_net_message(void* netConnectionManager, void* a2, rage::netConnection::InFrame* frame)

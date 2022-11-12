@@ -1,50 +1,11 @@
 #include "common.hpp"
 #include "script_patcher_service.hpp"
+#include "script_patch.hpp"
+#include "script_data.hpp"
 #include <script/scrProgram.hpp>
-#include <memory/pattern.hpp>
 
 namespace big
 {
-	void script_patch::enable(script_data* data)
-	{
-		std::memcpy(get_code_address(data, m_ip), m_patch.data(), m_patch.size());
-	}
-
-	void script_patch::disable(script_data* data)
-	{
-		std::memcpy(get_code_address(data, m_ip), m_original.data(), m_original.size());
-	}
-
-	script_patch::script_patch(rage::joaat_t script, const memory::pattern pattern, int32_t offset, std::vector<std::uint8_t> patch, bool* enable_bool) :
-		m_script(script),
-		m_pattern(pattern),
-		m_offset(offset),
-		m_patch(std::move(patch)),
-		m_bool(enable_bool),
-		m_ip(0)
-	{
-	}
-
-	void script_patch::update(script_data* data)
-	{
-		if (m_ip == 0)
-		{
-			auto result = get_code_location_by_pattern(data, m_pattern);
-			if (!result.has_value())
-				LOG(FATAL) << "Failed to find pattern";
-
-			m_ip = result.value() + m_offset;
-
-			for (int i = 0; i < m_patch.size(); i++)
-				m_original.push_back(*get_code_address(data, m_ip + i));
-		}
-
-		if (!m_bool || *m_bool)
-			enable(data);
-		else
-			disable(data);
-	}
-
 	script_data* script_patcher_service::get_data_for_script(rage::joaat_t script)
 	{
 		for (auto& p : m_script_data)
