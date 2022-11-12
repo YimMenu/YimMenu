@@ -44,6 +44,7 @@ namespace big
 		metric->serialize(&serializer);
 
 		LOG_IF(G3LOG_DEBUG, g->debug.logs.metric_logs) << "METRIC: " << metric->get_name() << "; DATA: " << serializer.get_string();
+		LOG(INFO) << typeid(metric).name() << ": " << HEX_TO_UPPER(typeid(metric).hash_code()); //Use this to get hashes for each node
 	}
 
 	using send_metric_f = bool(*)(void* metric_mgr, rage::rlMetric*);
