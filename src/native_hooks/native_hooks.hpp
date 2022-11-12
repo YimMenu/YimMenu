@@ -9,8 +9,8 @@ namespace big
 	{
 		using native_detour = std::pair<rage::scrNativeHash, rage::scrNativeHandler>;
 
-		std::map<rage::joaat_t, std::vector<native_detour>> m_native_registrations;
-		std::map<rage::joaat_t, std::unique_ptr<script_hook>> m_script_hooks;
+		std::unordered_map<rage::joaat_t, std::vector<native_detour>> m_native_registrations;
+		std::unordered_map<rage::scrProgram*, std::unique_ptr<script_hook>> m_script_hooks;
 
 	public:
 		native_hooks();
@@ -37,20 +37,9 @@ namespace big
 		 */
 		void add_native_detour(rage::joaat_t script_hash, rage::scrNativeHash hash, rage::scrNativeHandler detour);
 
-		/**
-		 * @brief Check if this thread requires us to hook anything
-		 * 
-		 * @param gta_thread A GtaThread pointer to hook natives from
-		 * @return true If we detoured a function
-		 * @return false If no functions have been detoured
-		 */
-		bool check_for_thread(const GtaThread* gta_thread);
-		/**
-		 * @brief If a GtaThread terminates call this function to remove the unused script_hook
-		 * 
-		 * @param gta_thread 
-		 */
-		void do_cleanup_for_thread(const GtaThread* gta_thread);
+		void hook_program(rage::scrProgram* program);
+
+		void unhook_program(rage::scrProgram* program);
 	};
 
 	inline native_hooks* g_native_hooks{};

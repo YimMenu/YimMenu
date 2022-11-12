@@ -40,6 +40,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::gta_thread_start>("GTS", g_pointers->m_gta_thread_start);
 		detour_hook_helper::add<hooks::gta_thread_kill>("GTK", g_pointers->m_gta_thread_kill);
+		detour_hook_helper::add<hooks::init_native_tables>("INT", g_pointers->m_init_native_tables);
+		detour_hook_helper::add<hooks::script_vm>("SVM", g_pointers->m_script_vm);
 
 		detour_hook_helper::add<hooks::network_player_mgr_init>("NPMI", g_pointers->m_network_player_mgr_init);
 		detour_hook_helper::add<hooks::network_player_mgr_shutdown>("NPMS", g_pointers->m_network_player_mgr_shutdown);

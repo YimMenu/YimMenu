@@ -44,5 +44,8 @@ namespace big
 		ImGui::Checkbox("Disable Filter", &g->session.disable_chat_filter);
 		ImGui::Checkbox("Log Chat Messages", &g->session.log_chat_messages);
 		ImGui::Checkbox("Log Text Messages", &g->session.log_text_messages);
+
+		components::sub_title("Decloak");
+		components::script_patch_checkbox("Reveal OTR Players", &g->session.decloak_players);
 	}
 }

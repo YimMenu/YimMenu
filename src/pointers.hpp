@@ -136,6 +136,9 @@ namespace big
 		const char* m_online_version;
 
 		PVOID m_invalid_mods_crash_detour{};
+
+		PVOID m_init_native_tables{};
+		PVOID m_script_vm{};
 	};
 
 	inline pointers* g_pointers{};

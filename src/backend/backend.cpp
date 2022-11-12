@@ -3,12 +3,16 @@
 #include "thread_pool.hpp"
 #include "looped/looped.hpp"
 #include "services/context_menu/context_menu_service.hpp"
+#include "script_patches.hpp"
 
 namespace big
 {
 	void backend::loop()
 	{
-		while (true) {
+		register_script_patches();
+
+		while (true) 
+		{
 			g->attempt_save();
 			looped::system_self_globals();
 			looped::system_update_pointers();

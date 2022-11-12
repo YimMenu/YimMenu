@@ -145,6 +145,17 @@ namespace rage
 		bool ReadArray(PVOID array, int size) {
 			return big::g_pointers->m_read_bitbuf_array(this, array, size, 0);
 		}
+
+		template<typename T>
+		inline T Read(int length)
+		{
+			static_assert(sizeof(T) <= 4, "maximum of 32 bit read");
+
+			uint32_t val = 0;
+			ReadDword(&val, length);
+
+			return T(val);
+		}
 	public:
 		uint8_t* m_data; //0x0000
 		uint32_t m_bitOffset; //0x0008
@@ -155,119 +166,122 @@ namespace rage
 		uint8_t m_flagBits; //0x001C
 	};
 
-	enum class eNetMessage : uint32_t {
-		CMsgInvalid = 0xFFFFF,
-		CMsgSessionAcceptChat = 0x62,
-		CMsgStartMatchCmd = 0x2D,
-		CMsgSetInvitableCmd = 0x1F,
-		CMsgSessionMemberIds = 0x23,
-		CMsgRequestGamerInfo = 0x54,
-		CMsgRemoveGamersFromSessionCmd = 0x53,
-		CMsgNotMigrating = 0x35,
-		CMsgMigrateHostResponse = 0x12,
-		CMsgMigrateHostRequest = 0x66,
-		CMsgJoinResponse = 0x2A,
-		CMsgJoinRequest = 0x41,
-		CMsgHostLeftWhilstJoiningCmd = 0x58,
-		CMsgConfigResponse = 0x5F,
-		CMsgConfigRequest = 0x48,
-		CMsgChangeSessionAttributesCmd = 0x5A,
-		CMsgAddGamerToSessionCmd = 0x64, // this is where send net info to lobby is called, among other things
-		CMsgReassignResponse = 0x10,
-		CMsgReassignNegotiate = 0x01,
-		CMsgReassignConfirm = 0x26,
-		CMsgPlayerData = 0x18,
-		CMsgPackedReliables = 0x30,
-		CMsgPackedCloneSyncACKs = 0x3B,
-		CMsgNonPhysicalData = 0x16,
-		CMsgNetArrayMgrUpdateAck = 0x5D,
-		CMsgNetArrayMgrUpdate = 0x60,
-		CMsgNetArrayMgrSplitUpdateAck = 0x25,
-		CMsgScriptVerifyHostAck = 0x0B,
-		CMsgScriptVerifyHost = 0x3E,
-		CMsgScriptNewHost = 0x0E,
-		CMsgScriptMigrateHostFailAck = 0x1A,
-		CMsgScriptMigrateHost = 0x33,
-		CMsgScriptLeaveAck = 0x40,
-		CMsgScriptLeave = 0x17,
-		CMsgScriptJoinHostAck = 0x4D,
-		CMsgScriptJoinAck = 0x43,
-		CMsgScriptJoin = 0x5C,
-		CMsgScriptHostRequest = 0x67,
-		CMsgScriptHandshakeAck = 0x5B,
-		CMsgScriptHandshake = 0x57,
-		CMsgScriptBotLeave = 0x2B, // unused?
-		CMsgScriptBotJoinAck = 0x63, // unused?
-		CMsgScriptBotJoin = 0x1C, // unused?
-		CMsgScriptBotHandshakeAck = 0x31, // unused?
-		CMsgScriptBotHandshake = 0x4B, // unused?
-		CMsgPartyLeaveGame = 0x3D,
-		CMsgPartyEnterGame = 0x1E,
-		CMsgCloneSync = 0x4E, // aka clone_create, clone_sync etc.
-		CMsgActivateNetworkBot = 0x65, // unused?
-		CMsgRequestObjectIds = 0x29,
-		CMsgInformObjectIds = 0x09,
-		CMsgTextMessage = 0x24, // this one is for chat
-		CMsgPlayerIsTyping = 0x61,
-		CMsgPackedEvents = 0x4F, // aka received_event
-		CMsgPackedEventReliablesCMsgs = 0x20,
-		CMsgRequestKickFromHost = 0x0D,
-		CMsgTransitionToGameStart = 0x50,
-		CMsgTransitionToGameNotify = 0x02,
-		CMsgTransitionToActivityStart = 0x06,
-		CMsgTransitionToActivityFinish = 0x36,
-		CMsgTransitionParameters = 0x3C,
-		CMsgTransitionParameterString = 0x37,
-		CMsgTransitionLaunchNotify = 0x1B,
-		CMsgTransitionLaunch = 0x19,
-		CMsgTransitionGamerInstruction = 0x14,
-		CMsgTextMessage2 = 0x0A, // this one is for phone message
-		CMsgSessionEstablishedRequest = 0x52,
-		CMsgSessionEstablished = 0x07,
-		CMsgRequestTransitionParameters = 0x42,
-		CMsgRadioStationSyncRequest = 0x47,
-		CMsgRadioStationSync = 0x46,
-		CMsgPlayerCardSync = 0x3A,
-		CMsgPlayerCardRequest = 0x6A,
-		CMsgLostConnectionToHost = 0x81,
-		CMsgKickPlayer = 0x34, // host kick
-		CMsgDebugStall = 0x7E, // unused?
-		CMsgCheckQueuedJoinRequestReply = 0x59,
-		CMsgCheckQueuedJoinRequest = 0x51,
-		CMsgBlacklist = 0x0C,
-		CMsgRoamingRequestBubbleRequiredResponse = 0x83,
-		CMsgRoamingRequestBubbleRequiredCheck = 0x82,
-		CMsgRoamingRequestBubble = 0x2E,
-		CMsgRoamingJoinBubble = 0x4C,
-		CMsgRoamingJoinBubbleAck = 0x3F,
-		CMsgRoamingInitialBubble = 0x32,
-		CMsgVoiceStatus = 0x03,
-		CMsgTextChatStatus = 0x00,
-		CMsgJoinResponse2 = 0x08,
-		CMsgJoinRequest2 = 0x68,
-		CMsgNetTimeSync = 0x38, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 37
-		CMsgNetComplaint = 0x55, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 54
-		CMsgNetLagPing = 0x27, // unused? ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 26
-		CMsgSearchResponse = 0x6B, // unused? ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 6A
-		CMsgSearchRequest = 0x05, // unused?
-		CMsgQosProbeResponse = 0x2C, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 2B
-		CMsgQosProbeRequest = 0x1D, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 1C
-		CMsgCxnRelayAddressChanged = 0x49, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 48
-		CMsgCxnRequestRemoteTimeout = 0x2F, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 2E
-		CMsgSessionDetailRequest = 0x22, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 21
-		CMsgSessionDetailResponse = 0x13, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 12
-		CMsgKeyExchangeOffer = 0x0F, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 0E (last result)
-		CMsgKeyExchangeAnswer = 0x44, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 43
-		CMsg_0x87 = 0x87,
-		CMsg_0x88 = 0x88,
-		CMsg_0x80 = 0x80,
-		CMsg_0x28 = 0x28,
-		CMsg_0x11 = 0x11,
-		CMsg_0x45 = 0x45,
-		CMsg_0x89 = 0x89,
-		CMsg_0x86 = 0x86,
+	enum class eNetMessage : uint32_t 
+	{
+		MsgInvalid = 0xFFFFF,
+		MsgSessionAcceptChat = 0x62,
+		MsgStartMatchCmd = 0x2D,
+		MsgSetInvitableCmd = 0x1F,
+		MsgSessionMemberIds = 0x23,
+		MsgRequestGamerInfo = 0x54,
+		MsgRemoveGamersFromSessionCmd = 0x53,
+		MsgNotMigrating = 0x35,
+		MsgMigrateHostResponse = 0x12,
+		MsgMigrateHostRequest = 0x66,
+		MsgJoinResponse = 0x2A,
+		MsgJoinRequest = 0x41,
+		MsgHostLeftWhilstJoiningCmd = 0x58,
+		MsgConfigResponse = 0x5F,
+		MsgConfigRequest = 0x48,
+		MsgChangeSessionAttributesCmd = 0x5A,
+		MsgAddGamerToSessionCmd = 0x64, // this is where send net info to lobby is called, among other things
+		MsgReassignResponse = 0x10,
+		MsgReassignNegotiate = 0x01,
+		MsgReassignConfirm = 0x26,
+		MsgPlayerData = 0x18,
+		MsgPackedReliables = 0x30,
+		MsgPackedCloneSyncACKs = 0x3B,
+		MsgNonPhysicalData = 0x16,
+		MsgNetArrayMgrUpdateAck = 0x5D,
+		MsgNetArrayMgrUpdate = 0x60,
+		MsgNetArrayMgrSplitUpdateAck = 0x25,
+		MsgScriptVerifyHostAck = 0x0B,
+		MsgScriptVerifyHost = 0x3E,
+		MsgScriptNewHost = 0x0E,
+		MsgScriptMigrateHostFailAck = 0x1A,
+		MsgScriptMigrateHost = 0x33,
+		MsgScriptLeaveAck = 0x40,
+		MsgScriptLeave = 0x17,
+		MsgScriptJoinHostAck = 0x4D,
+		MsgScriptJoinAck = 0x43,
+		MsgScriptJoin = 0x5C,
+		MsgScriptHostRequest = 0x67,
+		MsgScriptHandshakeAck = 0x5B,
+		MsgScriptHandshake = 0x57,
+		MsgScriptBotLeave = 0x2B, // unused?
+		MsgScriptBotJoinAck = 0x63, // unused?
+		MsgScriptBotJoin = 0x1C, // unused?
+		MsgScriptBotHandshakeAck = 0x31, // unused?
+		MsgScriptBotHandshake = 0x4B, // unused?
+		MsgPartyLeaveGame = 0x3D,
+		MsgPartyEnterGame = 0x1E,
+		MsgCloneSync = 0x4E, // aka clone_create, clone_sync etc.
+		MsgActivateNetworkBot = 0x65, // unused?
+		MsgRequestObjectIds = 0x29,
+		MsgInformObjectIds = 0x09,
+		MsgTextMessage = 0x24, // this one is for chat
+		MsgPlayerIsTyping = 0x61,
+		MsgPackedEvents = 0x4F, // aka received_event
+		MsgPackedEventReliablesMsgs = 0x20,
+		MsgRequestKickFromHost = 0x0D,
+		MsgTransitionToGameStart = 0x50,
+		MsgTransitionToGameNotify = 0x02,
+		MsgTransitionToActivityStart = 0x06,
+		MsgTransitionToActivityFinish = 0x36,
+		MsgTransitionParameters = 0x3C,
+		MsgTransitionParameterString = 0x37,
+		MsgTransitionLaunchNotify = 0x1B,
+		MsgTransitionLaunch = 0x19,
+		MsgTransitionGamerInstruction = 0x14,
+		MsgTextMessage2 = 0x0A, // this one is for phone message
+		MsgSessionEstablishedRequest = 0x52,
+		MsgSessionEstablished = 0x07,
+		MsgRequestTransitionParameters = 0x42,
+		MsgRadioStationSyncRequest = 0x47,
+		MsgRadioStationSync = 0x46,
+		MsgPlayerCardSync = 0x3A,
+		MsgPlayerCardRequest = 0x6A,
+		MsgLostConnectionToHost = 0x81,
+		MsgKickPlayer = 0x34, // host kick
+		MsgDebugStall = 0x7E, // unused?
+		MsgCheckQueuedJoinRequestReply = 0x59,
+		MsgCheckQueuedJoinRequest = 0x51,
+		MsgBlacklist = 0x0C,
+		MsgRoamingRequestBubbleRequiredResponse = 0x83,
+		MsgRoamingRequestBubbleRequiredCheck = 0x82,
+		MsgRoamingRequestBubble = 0x2E,
+		MsgRoamingJoinBubble = 0x4C,
+		MsgRoamingJoinBubbleAck = 0x3F,
+		MsgRoamingInitialBubble = 0x32,
+		MsgVoiceStatus = 0x03,
+		MsgTextChatStatus = 0x00,
+		MsgJoinResponse2 = 0x08,
+		MsgJoinRequest2 = 0x68,
+		MsgNetTimeSync = 0x38, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 37
+		MsgNetComplaint = 0x55, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 54
+		MsgNetLagPing = 0x27, // unused? ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 26
+		MsgSearchResponse = 0x6B, // unused? ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 6A
+		MsgSearchRequest = 0x05, // unused?
+		MsgQosProbeResponse = 0x2C, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 2B
+		MsgQosProbeRequest = 0x1D, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 1C
+		MsgCxnRelayAddressChanged = 0x49, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 48
+		MsgCxnRequestRemoteTimeout = 0x2F, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 2E
+		MsgSessionDetailRequest = 0x22, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 21
+		MsgSessionDetailResponse = 0x13, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 12
+		MsgKeyExchangeOffer = 0x0F, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 0E (last result)
+		MsgKeyExchangeAnswer = 0x44, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 43
+		Msg_0x87 = 0x87,
+		Msg_0x88 = 0x88,
+		Msg_0x80 = 0x80,
+		Msg_0x28 = 0x28,
+		Msg_0x11 = 0x11,
+		Msg_0x45 = 0x45,
+		Msg_0x89 = 0x89,
+		Msg_0x86 = 0x86,
 	};
-	namespace netConnection {
+
+	namespace netConnection 
+	{
 		class InFrame
 		{
 		public:
