@@ -51,6 +51,16 @@ namespace big
 				p.update(data);
 	}
 
+	script_patcher_service::script_patcher_service()
+	{
+		g_script_patcher_service = this;
+	}
+
+	script_patcher_service::~script_patcher_service()
+	{
+		g_script_patcher_service = nullptr;
+	}
+
 	void script_patcher_service::add_patch(script_patch&& patch)
 	{
 		m_script_patches.push_back(std::move(patch));
