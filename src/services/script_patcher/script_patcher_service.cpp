@@ -23,7 +23,6 @@ namespace big
 		m_bool(enable_bool),
 		m_ip(0)
 	{
-		g_script_patcher_service.add_patch(script, this);
 	}
 
 	void script_patch::update(script_data* data)
@@ -52,7 +51,7 @@ namespace big
 		{
 			if (p.first == script)
 			{
-				return &p.second;
+				return p.second.get();
 			}
 		}
 
@@ -63,7 +62,7 @@ namespace big
 	{
 		for (auto& p : m_script_patches)
 		{
-			if (p->m_script == script)
+			if (p.m_script == script)
 				return true;
 		}
 
@@ -80,7 +79,7 @@ namespace big
 			std::memcpy(pages[i], program->get_code_page(i), program->get_code_page_size(i));
 		}
 
-		m_script_data.emplace(program->m_name_hash, script_data(program->m_code_size, pages, program->get_num_code_pages()));
+		m_script_data.emplace(program->m_name_hash, std::make_unique<script_data>(program->m_code_size, pages, program->get_num_code_pages()));
 	}
 
 	void script_patcher_service::update_all_patches_for_script(rage::joaat_t script)
@@ -88,13 +87,13 @@ namespace big
 		auto data = get_data_for_script(script);
 
 		for (auto& p : m_script_patches)
-			if (p->m_script == script)
-				p->update(data);
+			if (p.m_script == script)
+				p.update(data);
 	}
 
-	void script_patcher_service::add_patch(rage::joaat_t script, script_patch* patch)
+	void script_patcher_service::add_patch(script_patch&& patch)
 	{
-		m_script_patches.push_back(patch);
+		m_script_patches.push_back(std::move(patch));
 	}
 
 	void script_patcher_service::on_script_load(rage::scrProgram* program)
@@ -118,10 +117,10 @@ namespace big
 	{
 		for (auto& p : m_script_patches)
 		{
-			auto data = get_data_for_script(p->m_script);
+			auto data = get_data_for_script(p.m_script);
 			if (data)
 			{
-				p->update(data);
+				p.update(data);
 			}
 		}
 	}
