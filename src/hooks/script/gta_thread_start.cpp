@@ -15,9 +15,6 @@ namespace big
 				g_notification_service->push("Script Thread Startup", std::format("Script Thread '{}' started.", name));
 		}
 
-		if (new_thread != nullptr)
-			g_native_hooks->check_for_thread(new_thread);
-
 		return new_thread;
 	}
 }

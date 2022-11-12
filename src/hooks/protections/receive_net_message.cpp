@@ -13,7 +13,7 @@ namespace big
 		uint32_t extended{};
 		if ((buffer.m_flagBits & 2) != 0 || (buffer.m_flagBits & 1) == 0 ? (pos = buffer.m_curBit) : (pos = buffer.m_maxBit),
 			buffer.m_bitsRead + 15 > pos || !buffer.ReadDword(&magic, 14) || magic != 0x3246 || !buffer.ReadDword(&extended, 1)) {
-			msgType = rage::eNetMessage::CMsgInvalid;
+			msgType = rage::eNetMessage::MsgInvalid;
 			return false;
 		}
 		length = extended ? 16 : 8;
@@ -21,6 +21,16 @@ namespace big
 			return true;
 		else
 			return false;
+	}
+
+	void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
+	{
+		constexpr int PC_PLATFORM = 3;
+		if ((hnd.m_platform = buf.Read<uint8_t>(8)) != PC_PLATFORM)
+			return;
+
+		buf.ReadInt64((int64_t*)&hnd.m_rockstar_id, 64);
+		hnd.unk_0009 = buf.Read<uint8_t>(8);
 	}
 
 	bool hooks::receive_net_message(void* netConnectionManager, void* a2, rage::netConnection::InFrame* frame)
@@ -43,7 +53,7 @@ namespace big
 			{
 				switch (msgType)
 				{
-				case rage::eNetMessage::CMsgTextMessage:
+				case rage::eNetMessage::MsgTextMessage:
 				{
 					if (g->session.log_chat_messages)
 					{
@@ -57,7 +67,7 @@ namespace big
 					}
 					break;
 				}
-				case rage::eNetMessage::CMsgTextMessage2:
+				case rage::eNetMessage::MsgTextMessage2:
 				{
 					if (g->session.log_text_messages)
 					{
@@ -69,7 +79,7 @@ namespace big
 					}
 					break;
 				}
-				case rage::eNetMessage::CMsgScriptMigrateHost:
+				case rage::eNetMessage::MsgScriptMigrateHost:
 				{
 					if (std::chrono::system_clock::now() - player->m_last_transition_msg_sent < 200ms)
 					{
@@ -86,7 +96,7 @@ namespace big
 					}
 					break;
 				}
-				case rage::eNetMessage::CMsgRemoveGamersFromSessionCmd:
+				case rage::eNetMessage::MsgRemoveGamersFromSessionCmd:
 				{
 					player_ptr pl;
 					uint64_t session_id;
@@ -110,6 +120,31 @@ namespace big
 					{
 						g_notification_service->push_error("Warning!", std::format("{} breakup kicked {}!", player->get_name(), pl->get_name()));
 					}
+					break;
+				}
+				case rage::eNetMessage::MsgLostConnectionToHost:
+				{
+					uint64_t session_id;
+					buffer.ReadQWord(&session_id, 64);
+					rage::rlGamerHandle handle;
+					gamer_handle_deserialize(handle, buffer);
+
+					auto self = g_player_service->get_self();
+					if (self->get_net_data() && self->get_net_data()->m_gamer_handle_2.m_rockstar_id == handle.m_rockstar_id)
+					{
+						g_notification_service->push_error("Protections", std::format("{} tried to lost connection kick you!", player->get_name()));
+						return true;
+					}
+
+					for (auto& [_, plyr] : g_player_service->players())
+					{
+						if (plyr->get_net_data() && plyr != player && player->get_net_data()->m_gamer_handle_2.m_rockstar_id == handle.m_rockstar_id)
+						{
+							g_notification_service->push_error("Protections", std::format("{} tried to lost connection kick {}!", player->get_name(), plyr->get_name()));
+							return true;
+						}
+					}
+
 					break;
 				}
 				}

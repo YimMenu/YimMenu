@@ -43,6 +43,7 @@ namespace big
 		ImGui::BeginGroup();
 		ImGui::Checkbox("Teleport To Warehouse", &g->protections.script_events.teleport_to_warehouse);
 		ImGui::Checkbox("Start Activity", &g->protections.script_events.start_activity);
+		components::script_patch_checkbox("Script Host Kick", &g->protections.script_host_kick);
 		ImGui::EndGroup();
 	}
 

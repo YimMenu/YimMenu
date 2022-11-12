@@ -434,6 +434,18 @@ namespace big
 			m_join_session_by_info = ptr.add(1).rip().as<functions::join_session_by_info>();
 		});
 
+		// Init Native Tables
+		main_batch.add("INT", "8B CB E8 ? ? ? ? 8B 43 70 ? 03 C4 A9 00 C0 FF FF", [this](memory::handle ptr)
+		{
+			m_init_native_tables = ptr.add(3).rip().as<PVOID>();
+		});
+
+		// Script VM
+		main_batch.add("VM", "E8 ? ? ? ? 48 85 FF 48 89 1D", [this](memory::handle ptr)
+		{
+			m_script_vm = ptr.add(1).rip().as<PVOID>();
+		});
+
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
 

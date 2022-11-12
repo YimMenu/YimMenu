@@ -6,6 +6,9 @@
 #include "shop_controller.hpp"
 #include "network_session_host.hpp"
 
+#include <script/scrProgram.hpp>
+#include <script/scrProgramTable.hpp>
+
 namespace big
 {
     constexpr auto ALL_SCRIPT_HASH = RAGE_JOAAT("ALL_SCRIPTS");
@@ -18,12 +21,13 @@ namespace big
         add_native_detour(RAGE_JOAAT("carmod_shop"), 0x34E710FF01247C5A, carmod_shop::SET_VEHICLE_LIGHTS);
         add_native_detour(RAGE_JOAAT("carmod_shop"), 0x767FBC2AC802EF3D, carmod_shop::STAT_GET_INT);
         add_native_detour(RAGE_JOAAT("freemode"), 0x95914459A87EBA28, freemode::NETWORK_BAIL);
+        add_native_detour(RAGE_JOAAT("freemode"), 0x5E9564D8246B909A, freemode::IS_PLAYER_PLAYING);
         add_native_detour(RAGE_JOAAT("shop_controller"), 0xDC38CC1E35B6A5D7, shop_controller::SET_WARNING_MESSAGE_WITH_HEADER);
         add_native_detour(RAGE_JOAAT("maintransition"), 0x6F3D4ED9BEE4E61D, network::NETWORK_SESSION_HOST);
 
-        for (const auto& native_detours_for_script : m_native_registrations)
-            if (const auto thread = gta_util::find_script_thread(native_detours_for_script.first); thread != nullptr && thread->m_context.m_state == rage::eThreadState::running)
-                this->check_for_thread(thread);
+        for (auto& entry : *g_pointers->m_script_program_table)
+            if (entry.m_program)
+                hook_program(entry.m_program);
 
         g_native_hooks = this;
     }
@@ -43,17 +47,16 @@ namespace big
 		if (const auto& it = m_native_registrations.find(script_hash); it != m_native_registrations.end())
 		{
 			it->second.emplace_back(hash, detour);
-
 			return;
 		}
 
 		m_native_registrations.emplace(script_hash, std::vector<native_detour>({ { hash, detour } }));
 	}
 
-    bool native_hooks::check_for_thread(const GtaThread* gta_thread)
+    void native_hooks::hook_program(rage::scrProgram* program)
     {
         std::unordered_map<rage::scrNativeHash, rage::scrNativeHandler> native_replacements;
-        const auto script_hash = gta_thread->m_script_hash;
+        const auto script_hash = program->m_name_hash;
 
         // Functions that need to be detoured for all scripts
         if (const auto& pair = m_native_registrations.find(ALL_SCRIPT_HASH); pair != m_native_registrations.end())
@@ -67,29 +70,15 @@ namespace big
 
         if (!native_replacements.empty())
         {
-            if (m_script_hooks.find(gta_thread->m_script_hash) != m_script_hooks.end())
-            {
-                // this should never happen but if it does we catch it
-                LOG_IF(G3LOG_DEBUG, g->debug.logs.script_hook_logs) << "Dynamic native script hook still active for script, cleaning up...";
-
-                m_script_hooks.erase(gta_thread->m_script_hash);
-            }
-
             m_script_hooks.emplace(
-                gta_thread->m_script_hash,
-                std::make_unique<script_hook>(gta_thread->m_script_hash, native_replacements)
+                program,
+                std::make_unique<script_hook>(program, native_replacements)
             );
-
-            return true;
         }
-        return false;
     }
 
-    void native_hooks::do_cleanup_for_thread(const GtaThread* gta_thread)
+    void native_hooks::unhook_program(rage::scrProgram* program)
     {
-        if (m_script_hooks.erase(gta_thread->m_script_hash))
-        {
-            LOG_IF(G3LOG_DEBUG, g->debug.logs.script_hook_logs) << gta_thread->m_name << " script terminated, cleaning up native hooks";
-        }
+        m_script_hooks.erase(program);
     }
 }

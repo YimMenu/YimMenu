@@ -52,8 +52,9 @@ namespace big
 		ImGui::Text("Rockstar ID:");
 		ImGui::InputScalar("##rockstar_id_input", ImGuiDataType_U64, &g->spoofing.rockstar_id);
 
-		components::sub_title("Proofs");
+		components::sub_title("Hide Features");
 		ImGui::Checkbox("Hide God Mode", &g->spoofing.spoof_hide_god);
+		ImGui::Checkbox("Hide Spectate", &g->spoofing.spoof_hide_spectate);
 
 		components::sub_title("Crew");
 
