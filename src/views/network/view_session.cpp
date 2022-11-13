@@ -50,5 +50,7 @@ namespace big
 
 		components::sub_title("Force Host");
 		ImGui::Checkbox("Force Session Host", &g->session.force_session_host);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Join another session to apply changes. The original host of the session must leave or be kicked. This feature is easily detectable by other mod menus, use with caution");
 	}
 }
