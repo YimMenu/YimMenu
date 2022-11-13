@@ -69,5 +69,5 @@ namespace big::functions
 
 	using generate_uuid = bool(*)(std::uint64_t* uuid);
 
-	using send_chat_message = char(*)(int64_t* send_chat_ptr, rage::rlGamerInfo* game_info, char* message, bool is_team);
+	using send_chat_message = bool(*)(int64_t* send_chat_ptr, rage::rlGamerInfo* game_info, char* message, bool is_team);
 }
