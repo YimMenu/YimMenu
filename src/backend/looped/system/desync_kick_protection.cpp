@@ -4,6 +4,7 @@
 #include "script.hpp"
 #include "services/players/player_service.hpp"
 #include "gta_util.hpp"
+#include <network/Network.hpp>
 
 namespace big
 {

@@ -156,6 +156,17 @@ namespace rage
 
 			return T(val);
 		}
+
+		template<typename T>
+		inline T ReadSigned(int length)
+		{
+			static_assert(sizeof(T) <= 4, "maximum of 32 bit read");
+
+			int val = 0;
+			ReadInt32(&val, length);
+
+			return T(val);
+		}
 	public:
 		uint8_t* m_data; //0x0000
 		uint32_t m_bitOffset; //0x0008

@@ -4,10 +4,12 @@
 #include "function_types.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/replay.hpp"
-#include "network/CNetworkPlayerMgr.hpp"
-#include "socialclub/FriendRegistry.hpp"
-#include "network/Network.hpp"
 #include "memory/byte_patch.hpp"
+
+class CCommunications;
+class FriendRegistry;
+class CNetworkPlayerMgr;
+class Network;
 
 namespace big
 {
@@ -54,7 +56,6 @@ namespace big
 		PVOID m_model_spawn_bypass;
 		PVOID m_world_model_spawn_bypass;
 		PVOID m_native_return;
-		PVOID m_network_group_override;
 		PVOID m_get_label_text;
 		functions::multiplayer_chat_filter* m_multiplayer_chat_filter{};
 		functions::write_player_game_state_data_node m_write_player_game_state_data_node{};
@@ -139,6 +140,15 @@ namespace big
 
 		PVOID m_init_native_tables{};
 		PVOID m_script_vm{};
+
+		functions::generate_uuid m_generate_uuid{};
+		std::uint64_t* m_host_token{};
+		rage::rlGamerInfo* m_profile_gamer_info{}; // per profile gamer info
+		rage::rlGamerInfo* m_player_info_gamer_info{}; // the gamer info that is applied to CPlayerInfo
+		CCommunications** m_communications{};
+
+		PVOID m_update_presence_attribute_int;
+		PVOID m_update_presence_attribute_string;
 	};
 
 	inline pointers* g_pointers{};

@@ -296,12 +296,6 @@ namespace big
 			m_write_player_gamer_data_node = ptr.as<PVOID>();
 		});
 
-		// Network Group Override
-		main_batch.add("NGO", "44 89 81 ? ? ? ? 89 91 ? ? ? ? C6 05", [this](memory::handle ptr)
-		{
-			m_network_group_override = ptr.as<PVOID>();
-		});
-
 		// Receive Net Message
 		main_batch.add("RNM", "48 83 EC 20 4C 8B 71 50 33 ED", [this](memory::handle ptr)
 		{
@@ -446,8 +440,50 @@ namespace big
 			m_script_vm = ptr.add(1).rip().as<PVOID>();
 		});
 
+		// Generate UUID
+		main_batch.add("GU", "E8 ? ? ? ? 84 C0 74 0C 48 8B 44 24 ? 48 89 03", [this](memory::handle ptr)
+		{
+			m_generate_uuid = ptr.add(1).rip().as<functions::generate_uuid>();
+		});
+
+		// Host Token
+		main_batch.add("HT", "48 8B 05 ? ? ? ? 48 83 F8 FF", [this](memory::handle ptr)
+		{
+			m_host_token = ptr.add(3).rip().as<std::uint64_t*>();
+		});
+
+		// Profile Gamer Info
+		main_batch.add("PGI", "48 8D 05 ? ? ? ? 48 8B FE", [this](memory::handle ptr)
+		{
+			m_profile_gamer_info = ptr.add(3).rip().as<rage::rlGamerInfo*>();
+		});
+
+		// Player Info Gamer Info
+		main_batch.add("PIGI", "E8 ? ? ? ? 48 8D 4D 20 48 8B D0 E8 ? ? ? ? 41 8A CF", [this](memory::handle ptr)
+		{
+			m_player_info_gamer_info = ptr.add(1).rip().add(3).rip().as<rage::rlGamerInfo*>();
+		});
+
+		// Communications
+		main_batch.add("C", "48 8B 1D ? ? ? ? 48 8D 4C 24 30", [this](memory::handle ptr)
+		{
+			m_communications = ptr.add(3).rip().as<CCommunications**>();
+		});
+
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
+
+		memory::batch socialclub_batch;
+
+		// Presence Data
+		socialclub_batch.add("PD", "48 8D 05 ? ? ? ? 48 8B F1 48 89 01 48 8D 99 88 02", [this](memory::handle ptr)
+		{
+			auto presence_data_vft = ptr.add(3).rip().as<PVOID*>();
+			m_update_presence_attribute_int = presence_data_vft[1];
+			m_update_presence_attribute_string = presence_data_vft[3];
+		});
+
+		socialclub_batch.run(memory::module("socialclub.dll"));
 
 		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 F5 01 00 00"))
 		{

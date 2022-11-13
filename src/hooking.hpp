@@ -37,8 +37,6 @@ namespace big
 		static void network_player_mgr_init(CNetworkPlayerMgr* _this, std::uint64_t a2, std::uint32_t a3, std::uint32_t a4[4]);
 		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
 
-		static void network_group_override(std::int64_t a1, std::int64_t a2, std::int64_t a3);
-
 		static void received_event(
 			rage::netEventMgr* event_manager,
 			CNetGamePlayer* source_player,
@@ -69,6 +67,9 @@ namespace big
 		static bool write_player_game_state_data_node(rage::netObject* player, CPlayerGameStateDataNode* node);
 
 		static void invalid_mods_crash_detour(int64_t a1, int64_t a2, int a3, char a4);
+
+		static bool update_presence_attribute_int(void* presence_data, int profile_index, char* attr, std::uint64_t value);
+		static bool update_presence_attribute_string(void* presence_data, int profile_index, char* attr, char* value);
 	};
 
 	class minhook_keepalive

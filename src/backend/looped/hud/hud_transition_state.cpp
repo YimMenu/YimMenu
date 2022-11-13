@@ -75,6 +75,7 @@ namespace big
 		"Terminate Maintransition",
 		"Wait For Dirty Load Confirm",
 		"DLC Intro Bink",
+		"Spawn Into Personal Vehicle"
 	};
 
 	auto transition_state = script_global(1574991);
@@ -108,7 +109,7 @@ namespace big
 			return;
 		}
 
-		if ((int)state > 0 && (int)std::size(transition_states))
+		if ((int)state > 0 && (int)state < std::size(transition_states))
 		{
 			HUD::BEGIN_TEXT_COMMAND_BUSYSPINNER_ON("STRING");
 			auto const spinner_text = std::format("{} | {}", transition_states[(int)state], static_cast<int>(state));
