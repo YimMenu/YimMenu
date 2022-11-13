@@ -296,12 +296,6 @@ namespace big
 			m_write_player_gamer_data_node = ptr.as<PVOID>();
 		});
 
-		// Network Group Override
-		main_batch.add("NGO", "44 89 81 ? ? ? ? 89 91 ? ? ? ? C6 05", [this](memory::handle ptr)
-		{
-			m_network_group_override = ptr.as<PVOID>();
-		});
-
 		// Receive Net Message
 		main_batch.add("RNM", "48 83 EC 20 4C 8B 71 50 33 ED", [this](memory::handle ptr)
 		{

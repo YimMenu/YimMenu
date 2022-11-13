@@ -46,8 +46,6 @@ namespace big
 		detour_hook_helper::add<hooks::network_player_mgr_init>("NPMI", g_pointers->m_network_player_mgr_init);
 		detour_hook_helper::add<hooks::network_player_mgr_shutdown>("NPMS", g_pointers->m_network_player_mgr_shutdown);
 
-		detour_hook_helper::add<hooks::network_group_override>("NGO", g_pointers->m_network_group_override);
-
 		detour_hook_helper::add<hooks::received_event>("RE", g_pointers->m_received_event);
 
 		detour_hook_helper::add<hooks::send_net_info_to_lobby>("SNITL", g_pointers->m_send_net_info_to_lobby);

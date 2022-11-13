@@ -37,8 +37,6 @@ namespace big
 		static void network_player_mgr_init(CNetworkPlayerMgr* _this, std::uint64_t a2, std::uint32_t a3, std::uint32_t a4[4]);
 		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
 
-		static void network_group_override(std::int64_t a1, std::int64_t a2, std::int64_t a3);
-
 		static void received_event(
 			rage::netEventMgr* event_manager,
 			CNetGamePlayer* source_player,
