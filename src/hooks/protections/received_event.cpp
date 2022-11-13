@@ -275,6 +275,7 @@ namespace big
 			}
 
 			buffer->Seek(0);
+			break;
 		}
 		default:
 			break;
