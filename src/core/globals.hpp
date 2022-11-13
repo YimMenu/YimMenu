@@ -398,6 +398,8 @@ namespace big
 		int friend_count = 0;
 		int player_count = 0;
 
+		CNetGamePlayer* m_syncing_player;
+
 		debug debug{};
 		tunables tunables{};
 		notifications notifications{};

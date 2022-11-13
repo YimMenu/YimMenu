@@ -320,6 +320,18 @@ namespace big
 			m_assign_physical_index = ptr.as<PVOID>();
 		});
 
+		// Received Clone Create
+		main_batch.add("RCC", "48 8B C4 66 44 89 48", [this](memory::handle ptr)
+		{
+			m_received_clone_create = ptr.as<PVOID>();
+		});
+
+		// Can Apply Data
+		main_batch.add("CAD", "49 8B CE FF 50 70 84 C0 74 31 33 FF", [this](memory::handle ptr)
+		{
+			m_can_apply_data = ptr.sub(0x2C).as<PVOID>();
+		});
+
 		// Received clone sync & Get sync tree for type & Get net object for player & Get sync type info & Get net object
 		main_batch.add("RCS/GSTFT/GNOFP/GNO/GSTI", "4C 8B FA 41 0F B7 D1", [this](memory::handle ptr)
 		{

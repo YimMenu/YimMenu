@@ -98,7 +98,9 @@ namespace big
 		// Received Event Signatures END
 
 		//Sync Signatures START
+		PVOID m_received_clone_create;
 		PVOID m_received_clone_sync;
+		PVOID m_can_apply_data;
 		functions::get_sync_tree_for_type m_get_sync_tree_for_type{};
 		functions::get_sync_type_info m_get_sync_type_info{};
 		functions::get_net_object m_get_net_object{};

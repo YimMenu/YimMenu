@@ -13,18 +13,14 @@ namespace big::notify
 		HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER(false, false);
 	}
 
-	// deprecated/unused
-	inline void blocked_event(const char* name, Player player)
+	inline void crash_blocked(CNetGamePlayer* player, const char* crash)
 	{
-		char msg[128];
-
-		strcpy(msg, "~g~BLOCKED RECEIVED EVENT~s~\n~b~");
-		strcat(msg, name);
-		strcat(msg, "~s~\nFrom: <C>");
-		strcat(msg, PLAYER::GET_PLAYER_NAME(player));
-		strcat(msg, "</C>");
-
-		above_map(msg);
+		auto player = g_player_service->get_by_id(player->m_player_id);
+		if (player)
+		{
+			g_notification_service->push_error("Protections", std::format("Blocked {} crash from {}", crash, player->get_name()));
+			LOG(WARNING) << "Blocked " << crash << " crash from " << player->get_name() << " (" << (player->get_net_data() ? player->get_net_data()->m_gamer_handle_2.m_rockstar_id : 0) << ")";
+		}
 	}
 
 	// Shows a busy spinner till the value at the address equals the value passed or if timeout is hit
