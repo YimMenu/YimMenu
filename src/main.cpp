@@ -134,7 +134,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				LOG(INFO) << "Thread pool uninitialized.";
 
 				script_patcher_service_instance.reset();
-				LOG(INFO) << "Script patcher service reset.";
+				LOG(INFO) << "Script Patcher Service reset.";
 				gui_service_instance.reset();
 				LOG(INFO) << "Gui Service reset.";
 				gta_data_service_instance.reset();

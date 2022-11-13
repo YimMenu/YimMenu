@@ -1,6 +1,7 @@
 #include "views/view.hpp"
 #include "fiber_pool.hpp"
 #include "util/teleport.hpp"
+#include <network/ClanData.hpp>
 
 namespace big
 {

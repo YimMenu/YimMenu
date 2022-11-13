@@ -5,6 +5,18 @@
 
 namespace big
 {
+	script_patcher_service::script_patcher_service()
+	{
+		g_script_patcher_service = this;
+	}
+
+	script_patcher_service::~script_patcher_service()
+	{
+		m_script_data.clear();
+		m_script_patches.clear();
+		g_script_patcher_service = nullptr;
+	}
+
 	script_data* script_patcher_service::get_data_for_script(rage::joaat_t script)
 	{
 		for (auto& p : m_script_data)
@@ -31,7 +43,7 @@ namespace big
 
 	void script_patcher_service::create_data_for_script(rage::scrProgram* program)
 	{
-		auto pages = new std::uint8_t * [program->get_num_code_pages()];
+		auto pages = new std::uint8_t *[program->get_num_code_pages()];
 
 		for (auto i = 0u; i < program->get_num_code_pages(); i++)
 		{
@@ -49,16 +61,6 @@ namespace big
 		for (auto& p : m_script_patches)
 			if (p.get_script() == script)
 				p.update(data);
-	}
-
-	script_patcher_service::script_patcher_service()
-	{
-		g_script_patcher_service = this;
-	}
-
-	script_patcher_service::~script_patcher_service()
-	{
-		g_script_patcher_service = nullptr;
 	}
 
 	void script_patcher_service::add_patch(script_patch&& patch)

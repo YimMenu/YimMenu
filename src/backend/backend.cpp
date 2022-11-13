@@ -17,6 +17,7 @@ namespace big
 			looped::system_self_globals();
 			looped::system_update_pointers();
 			looped::system_desync_kick_protection();
+			looped::system_force_session_host();
 
 			script::get_current()->yield();
 		}
@@ -78,7 +79,6 @@ namespace big
 		{
 			looped::vehicle_auto_drive();
 			looped::vehicle_boost_behavior();
-			looped::vehicle_despawn_bypass();
 			looped::vehicle_drive_on_water();
 			looped::vehicle_god_mode();
 			looped::vehicle_horn_boost();
@@ -114,7 +114,6 @@ namespace big
 		{
 			looped::hud_transition_state();
 			looped::tunables_disable_phone();
-			looped::tunables_no_idle_kick();
 			looped::session_local_time();
 
 			script::get_current()->yield();

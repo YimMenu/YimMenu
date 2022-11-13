@@ -17,6 +17,9 @@ namespace big
 		{
 		}
 
+		script_data(const script_data& that) = delete;
+		script_data& operator=(const script_data& that) = delete;
+
 		~script_data()
 		{
 			for (auto i = 0u; i < m_num_pages; i++)
@@ -25,6 +28,7 @@ namespace big
 			}
 
 			delete[] m_bytecode;
+			m_bytecode = nullptr;
 		}
 	};
 }
