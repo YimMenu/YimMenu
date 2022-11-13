@@ -262,6 +262,7 @@ namespace big
 			}
 
 			buffer->Seek(0);
+			break;
 		}
 		case eNetworkEvents::REMOVE_ALL_WEAPONS_EVENT:
 		{
