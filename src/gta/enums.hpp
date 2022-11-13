@@ -761,6 +761,33 @@ enum class eNetworkEvents : uint16_t
 	NETWORK_CHECK_CATALOG_CRC
 };
 
+enum class ScriptEntityChangeType
+{
+	BlockingOfNonTemporaryEvents,
+	SettingOfPedRelationshipGroupHash,
+	SettingOfDriveTaskCruiseSpeed,
+	SettingOfLookAtEntity,
+	SettingOfPlaneMinHeightAboveTerrain,
+	SetPedRagdollBlockFlag,
+	SettingOfTaskVehicleTempAction,
+	SetPedFacialIdleAnimOverride,
+	SetVehicleLockState,
+	SetVehicleExclusiveDriver
+};
+
+enum class WorldStateDataType
+{
+	CarGen,
+	EntityArea,
+	PopGroupOverride,
+	PopMultiplierArea,
+	PTFX,
+	RoadNode,
+	Rope,
+	ScenarioBlockingArea,
+	VehiclePlayerLocking
+};
+
 enum class BlipIcons
 {
 	Null,

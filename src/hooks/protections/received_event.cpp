@@ -74,9 +74,9 @@ namespace big
 		case eNetworkEvents::SCRIPT_ENTITY_STATE_CHANGE_EVENT:
 		{
 			uint16_t entity = buffer->Read<uint16_t>(13);
-			uint32_t type = buffer->Read<uint32_t>(4);
+			auto type = buffer->Read<ScriptEntityChangeType>(4);
 			uint32_t unk = buffer->Read<uint32_t>(32);
-			if (type == 6) 
+			if (type == ScriptEntityChangeType::SettingOfTaskVehicleTempAction) 
 			{
 				uint16_t unk2 = buffer->Read<uint16_t>(13);
 				uint32_t action = buffer->Read<uint32_t>(8);
@@ -201,12 +201,12 @@ namespace big
 		}
 		case eNetworkEvents::SCRIPT_WORLD_STATE_EVENT:
 		{
-			int type = buffer->Read<int>(4);
+			auto type = buffer->Read<WorldStateDataType>(4);
 			(void)buffer->Read<bool>(1);
 			CGameScriptId id;
 			script_id_deserialize(id, *buffer);
 
-			if (type == 6) // rope
+			if (type == WorldStateDataType::Rope)
 			{
 				buffer->Read<int>(9); // unk
 				buffer->Read<float>(19); // pos x
@@ -226,7 +226,7 @@ namespace big
 					return;
 				}
 			}
-			else if (type == 2) // pop group override
+			else if (type == WorldStateDataType::PopGroupOverride)
 			{
 				int unk = buffer->ReadSigned<int>(8);
 				int unk2 = buffer->Read<int>(32);
