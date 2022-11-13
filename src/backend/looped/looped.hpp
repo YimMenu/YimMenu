@@ -14,7 +14,6 @@ namespace big
 		static void hud_transition_state();
 
 		static void tunables_disable_phone();
-		static void tunables_no_idle_kick();
 
 		static void player_never_wanted(const player_ptr &player);
 		static void player_spectate();
@@ -47,7 +46,6 @@ namespace big
 
 		static void vehicle_auto_drive();
 		static void vehicle_boost_behavior();
-		static void vehicle_despawn_bypass();
 		static void vehicle_drive_on_water();
 		static void vehicle_fly();
 		static void vehicle_god_mode();
