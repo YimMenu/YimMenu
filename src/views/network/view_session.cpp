@@ -2,6 +2,7 @@
 #include "fiber_pool.hpp"
 #include "util/session.hpp"
 #include "core/data/region_codes.hpp"
+#include "gta_util.hpp"
 
 namespace big
 {
@@ -44,6 +45,18 @@ namespace big
 		ImGui::Checkbox("Disable Filter", &g->session.disable_chat_filter);
 		ImGui::Checkbox("Log Chat Messages", &g->session.log_chat_messages);
 		ImGui::Checkbox("Log Text Messages", &g->session.log_text_messages);
+		static char msg[256];
+		ImGui::InputText("##message", msg, 256);
+		ImGui::SameLine();
+		ImGui::Checkbox("Is Team", &g->session.is_team);
+		ImGui::SameLine();
+		if(ImGui::Button("Send"))
+		{
+			if(CNetGamePlayer* net_game_player = gta_util::get_network_player_mgr()->m_local_net_player; net_game_player)
+			{
+                g_pointers->m_send_chat_message(*g_pointers->m_send_chat_ptr, net_game_player->get_net_data(), msg, g->session.is_team);
+			}
+		}
 
 		components::sub_title("Decloak");
 		components::script_patch_checkbox("Reveal OTR Players", &g->session.decloak_players);
