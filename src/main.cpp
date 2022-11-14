@@ -34,6 +34,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		g_hmodule = hmod;
 		g_main_thread = CreateThread(nullptr, 0, [](PVOID) -> DWORD
 		{
+			while (!FindWindow("grcWindow", "Grand Theft Auto V"))
+				std::this_thread::sleep_for(100ms);
+
 			std::filesystem::path base_dir = std::getenv("appdata");
 			base_dir /= "BigBaseV2";
 			auto file_manager_instance = std::make_unique<file_manager>(base_dir);
