@@ -195,6 +195,7 @@ namespace big
 			bool log_text_messages = false;
 			bool decloak_players = false;
 			bool force_session_host = false;
+			bool is_team = false;
 		};
 
 		struct settings {
@@ -602,6 +603,7 @@ namespace big
 			this->session.disable_chat_filter = j["session"]["disable_chat_filter"];
 			this->session.decloak_players = j["session"]["decloak_players"];
 			this->session.force_session_host = j["session"]["force_session_host"];
+			this->session.is_team = j["session"]["is_team"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -918,7 +920,8 @@ namespace big
 						{ "log_text_messages", this->session.log_text_messages },
 						{ "disable_chat_filter", this->session.disable_chat_filter },
 						{ "decloak_players", this->session.decloak_players },
-						{ "force_session_host", this->session.force_session_host }
+						{ "force_session_host", this->session.force_session_host },
+						{ "is_team", this->session.is_team }
 					}
 				},
 				{

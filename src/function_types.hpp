@@ -1,5 +1,6 @@
 #pragma once
 #include "datanodes/player/CPlayerGameStateDataNode.hpp"
+#include "rage/rlGamerInfo.hpp"
 
 namespace big::functions
 {
@@ -67,4 +68,6 @@ namespace big::functions
 	using join_session_by_info = bool(*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
 
 	using generate_uuid = bool(*)(std::uint64_t* uuid);
+
+	using send_chat_message = bool(*)(int64_t* send_chat_ptr, rage::rlGamerInfo* game_info, char* message, bool is_team);
 }
