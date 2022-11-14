@@ -9,6 +9,9 @@ namespace big
 	static bool state = false;
 	static bool busy = false;
 
+	constexpr auto carmod_shop_struct = 728; // struct<688> Local_
+	constexpr auto carmod_shop_cutscene = 2149; // "carmod_fam1" -- first boolean local below it
+
 	void looped::vehicle_ls_customs()
 	{
 		if (busy) return;
@@ -55,7 +58,7 @@ namespace big
 			{
 				if (auto carmod_shop_thread = gta_util::find_script_thread(hash); carmod_shop_thread)
 				{
-					*script_local(carmod_shop_thread, 728).at(406).as<int*>() = veh;
+					*script_local(carmod_shop_thread, 728).at(406).as<int*>() = veh; // "HIDDEN_RADIO_09_HIPHOP_OLD"
 					*script_local(carmod_shop_thread, 2149).as<bool*>() = false; // skips cutscene that's invisible
 
 					*script_local(carmod_shop_thread, 728).at(11).as<int*>() = 4;
