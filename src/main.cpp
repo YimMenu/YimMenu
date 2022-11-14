@@ -22,6 +22,7 @@
 #include "services/notifications/notification_service.hpp"
 #include "services/model_preview/model_preview_service.hpp"
 #include "services/vehicle/handling_service.hpp"
+#include "services/script_patcher/script_patcher_service.hpp"
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -90,6 +91,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto model_preview_service_instance = std::make_unique<model_preview_service>();
 				auto handling_service_instance = std::make_unique<handling_service>();
 				auto gui_service_instance = std::make_unique<gui_service>();
+				auto script_patcher_service_instance = std::make_unique<script_patcher_service>();
 				LOG(INFO) << "Registered service instances...";
 
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
@@ -137,6 +139,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				thread_pool_instance.reset();
 				LOG(INFO) << "Thread pool uninitialized.";
 
+				script_patcher_service_instance.reset();
+				LOG(INFO) << "Script Patcher Service reset.";
 				gui_service_instance.reset();
 				LOG(INFO) << "Gui Service reset.";
 				gta_data_service_instance.reset();

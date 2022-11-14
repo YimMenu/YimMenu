@@ -40,11 +40,11 @@ namespace big
 
 		detour_hook_helper::add<hooks::gta_thread_start>("GTS", (void*)g_pointers->m_gta_thread_start);
 		detour_hook_helper::add<hooks::gta_thread_kill>("GTK", (void*)g_pointers->m_gta_thread_kill);
+		detour_hook_helper::add<hooks::init_native_tables>("INT", (void*)g_pointers->m_init_native_tables);
+		detour_hook_helper::add<hooks::script_vm>("SVM", (void*)g_pointers->m_script_vm);
 
 		detour_hook_helper::add<hooks::network_player_mgr_init>("NPMI", (void*)g_pointers->m_network_player_mgr_init);
 		detour_hook_helper::add<hooks::network_player_mgr_shutdown>("NPMS", (void*)g_pointers->m_network_player_mgr_shutdown);
-
-		detour_hook_helper::add<hooks::network_group_override>("NGO", (void*)g_pointers->m_network_group_override);
 
 		detour_hook_helper::add<hooks::received_event>("RE", (void*)g_pointers->m_received_event);
 
@@ -60,7 +60,10 @@ namespace big
 
 		detour_hook_helper::add<hooks::format_metric_for_sending>("FMFS", (void*)g_pointers->m_format_metric_for_sending);
 
-		detour_hook_helper::add<hooks::invalid_mods_crash_detour>("IMCD", g_pointers->m_invalid_mods_crash_detour);
+		detour_hook_helper::add<hooks::invalid_mods_crash_detour>("IMCD", (void*)g_pointers->m_invalid_mods_crash_detour);
+
+		detour_hook_helper::add<hooks::update_presence_attribute_int>("UPAI", (void*)g_pointers->m_update_presence_attribute_int);
+		detour_hook_helper::add<hooks::update_presence_attribute_string>("UPAS", (void*)g_pointers->m_update_presence_attribute_string);
 
 		g_hooking = this;
 	}

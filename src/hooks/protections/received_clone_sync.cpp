@@ -21,6 +21,7 @@
 #include "base/CBaseModelInfo.hpp"
 #include "vehicle/CVehicleModelInfo.hpp"
 #include "util/model_info.hpp"
+#include "network/CNetGamePlayer.hpp"
 #define CLASS_TO_MANGLED_NAME(c) "?AV"#c"@@"
 
 namespace big

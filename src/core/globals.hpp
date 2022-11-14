@@ -111,8 +111,10 @@ namespace big
 			bool spectating = false;
 		};
 
-		struct protections {
-			struct script_events {
+		struct protections 
+		{
+			struct script_events 
+			{
 				bool bounty = true;
 				bool ceo_ban = true;
 				bool ceo_kick = true;
@@ -140,9 +142,12 @@ namespace big
 			};
 
 			script_events script_events{};
+			bool script_host_kick = true;
+			bool rid_join = false;
 		};
 
-		struct self {
+		struct self 
+		{
 			bool clean_player = false;
 			bool force_wanted_level = false;
 			bool free_cam = false;
@@ -188,6 +193,8 @@ namespace big
 			bool disable_chat_filter = false;
 			bool log_chat_messages = false;
 			bool log_text_messages = false;
+			bool decloak_players = false;
+			bool force_session_host = false;
 		};
 
 		struct settings {
@@ -233,7 +240,8 @@ namespace big
 
 			bool spoof_cheater = false;
 
-			bool spoof_hide_god = false;
+			bool spoof_hide_god = true;
+			bool spoof_hide_spectate = true;
 
 			bool spoof_rockstar_dev = false;
 			bool spoof_rockstar_qa = false;
@@ -556,6 +564,9 @@ namespace big
 				script_handler.start_activity = script_handler_j["start_activity"];
 			}
 
+			this->protections.script_host_kick = j["protections"]["script_host_kick"];
+			this->protections.rid_join = j["protections"]["rid_join"];
+
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
 			this->tunables.no_idle_kick = j["tunables"]["no_idle_kick"];
 
@@ -589,6 +600,8 @@ namespace big
 			this->session.log_chat_messages = j["session"]["log_chat_messages"];
 			this->session.log_text_messages = j["session"]["log_text_messages"];
 			this->session.disable_chat_filter = j["session"]["disable_chat_filter"];
+			this->session.decloak_players = j["session"]["decloak_players"];
+			this->session.force_session_host = j["session"]["force_session_host"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -622,6 +635,9 @@ namespace big
 				this->spoofing.ip_address[i] = j["spoofing"]["ip_address"].at(i);
 			this->spoofing.rockstar_id = j["spoofing"]["rockstar_id"];
 			this->spoofing.username = j["spoofing"]["username"];
+
+			this->spoofing.spoof_hide_god = j["spoofing"]["spoof_hide_god"];
+			this->spoofing.spoof_hide_spectate = j["spoofing"]["spoof_hide_spectate"];
 
 			this->vehicle.speed_unit = (SpeedUnit)j["vehicle"]["speed_unit"];
 			this->vehicle.god_mode = j["vehicle"]["god_mode"];
@@ -832,7 +848,10 @@ namespace big
 								{ "teleport_to_warehouse", script_handler_protections.teleport_to_warehouse },
 								{ "start_activity", script_handler_protections.start_activity },
 							}
-						}
+						},
+
+						{ "script_host_kick", g->protections.script_host_kick },
+						{ "rid_join", g->protections.rid_join }
 					}
 				},
 				{
@@ -897,7 +916,9 @@ namespace big
 					"session", {
 						{ "log_chat_messages", this->session.log_chat_messages },
 						{ "log_text_messages", this->session.log_text_messages },
-						{ "disable_chat_filter", this->session.disable_chat_filter }
+						{ "disable_chat_filter", this->session.disable_chat_filter },
+						{ "decloak_players", this->session.decloak_players },
+						{ "force_session_host", this->session.force_session_host }
 					}
 				},
 				{
@@ -951,7 +972,9 @@ namespace big
 						{ "spoof_crew_data", this->spoofing.spoof_crew_data },
 						{ "crew_tag", this->spoofing.crew_tag },
 						{ "rockstar_crew", this->spoofing.rockstar_crew },
-						{ "square_crew_tag", this->spoofing.square_crew_tag }
+						{ "square_crew_tag", this->spoofing.square_crew_tag },
+						{ "spoof_hide_god", this->spoofing.spoof_hide_god },
+						{ "spoof_hide_spectate", this->spoofing.spoof_hide_spectate },
 					}
 				},
 				{

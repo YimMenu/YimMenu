@@ -1,4 +1,5 @@
 #include "hooking.hpp"
+#include <network/CNetGamePlayer.hpp>
 
 namespace big
 {

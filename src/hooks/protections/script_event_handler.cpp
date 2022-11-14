@@ -1,5 +1,6 @@
 #include "hooking.hpp"
 #include "gta_util.hpp"
+#include <network/CNetGamePlayer.hpp>
 
 namespace big
 {
@@ -332,7 +333,6 @@ namespace big
 			}
 			break;
 		}
-
 
 		if (g->debug.logs.script_event.logs && (!g->debug.logs.script_event.filter_player || g->debug.logs.script_event.player_id == player->m_player_id))
 		{

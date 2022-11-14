@@ -1,5 +1,6 @@
 #include "gta_util.hpp"
 #include "player_service.hpp"
+#include <network/CNetworkPlayerMgr.hpp>
 
 namespace big
 {

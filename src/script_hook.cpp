@@ -5,6 +5,8 @@
 #include "pointers.hpp"
 #include "script_hook.hpp"
 
+#include "native_hooks/native_hooks.hpp"
+
 namespace big
 {
 	inline std::unordered_map<rage::scrProgram*, script_hook*> script_hook::s_map;
@@ -28,6 +30,12 @@ namespace big
 		m_native_replacements(std::move(native_replacements))
 	{
 		ensure();
+	}
+
+	script_hook::script_hook(rage::scrProgram* program, std::unordered_map<rage::scrNativeHash, rage::scrNativeHandler> native_replacements) :
+		m_native_replacements(std::move(native_replacements))
+	{
+		hook_instance(program);
 	}
 
 	script_hook::~script_hook()
@@ -100,6 +108,8 @@ namespace big
 			auto og_func = hook->m_vmt_hook->get_original<decltype(&scrprogram_dtor)>(0);
 			hook->m_vmt_hook->disable();
 			hook->m_vmt_hook.reset();
+
+			g_native_hooks->unhook_program(this_);
 
 			og_func(this_, free_memory);
 		}
