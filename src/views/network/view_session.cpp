@@ -50,13 +50,22 @@ namespace big
 		ImGui::SameLine();
 		ImGui::Checkbox("Is Team", &g->session.is_team);
 		ImGui::SameLine();
-		if(ImGui::Button("Send"))
+		components::button("Send", []
 		{
-			if(const auto net_game_player = gta_util::get_network_player_mgr()->m_local_net_player; net_game_player)
+            if(const auto net_game_player = gta_util::get_network_player_mgr()->m_local_net_player; net_game_player)
 			{
-                g_pointers->m_send_chat_message(*g_pointers->m_send_chat_ptr, net_game_player->get_net_data(), msg, g->session.is_team);
+                if(g_pointers->m_send_chat_message(*g_pointers->m_send_chat_ptr, net_game_player->get_net_data(), msg, g->session.is_team))
+				{
+					int scaleform = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MULTIPLAYER_CHAT");
+					GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, "ADD_MESSAGE");
+					GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(net_game_player->get_name()); // player name
+					GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(msg); // content
+					GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_TEXTURE_NAME_STRING(HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(g->session.is_team ? "MP_CHAT_TEAM" : "MP_CHAT_ALL")); // scope
+					GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(scaleform, 255, 255, 255, 255, 0);
+					GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+				}
 			}
-		}
+		});
 
 		components::sub_title("Decloak");
 		components::script_patch_checkbox("Reveal OTR Players", &g->session.decloak_players);
