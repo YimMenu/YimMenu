@@ -482,7 +482,7 @@ namespace big
 			m_communications = ptr.add(3).rip().as<CCommunications**>();
 		});
 
-		auto mem_region = memory::module(nullptr);
+		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 
 		memory::batch socialclub_batch;
@@ -495,7 +495,12 @@ namespace big
 			m_update_presence_attribute_string = presence_data_vft[3];
 		});
 
-		socialclub_batch.run(memory::module("socialclub.dll"));
+		auto sc_module = memory::module("socialclub.dll");
+		if (sc_module.wait_for_module())
+		{
+			socialclub_batch.run(sc_module);
+		}
+		else LOG(WARNING) << "socialclub.dll module was not loaded within the time limit.";
 
 		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 F5 01 00 00"))
 		{
