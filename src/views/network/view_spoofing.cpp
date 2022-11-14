@@ -1,8 +1,8 @@
 #include "views/view.hpp"
 #include "fiber_pool.hpp"
 #include "util/teleport.hpp"
-#include "core/data/region_codes.hpp"
 #include "core/data/pool_types.hpp"
+#include <network/ClanData.hpp>
 
 namespace big
 {
@@ -56,23 +56,6 @@ namespace big
 
 		ImGui::Separator();
 
-		components::sub_title("Region Spoof");
-
-		if (ImGui::BeginCombo("Region", region_codes[g->spoofing.region_code]))
-		{
-			for (int i = 0; i < region_codes.size(); i++)
-			{
-				if (ImGui::Selectable(region_codes[i], g->spoofing.region_code == i))
-				{
-					g->spoofing.region_code = i;
-					*g_pointers->m_region_code = i;
-				};
-			}
-			ImGui::EndCombo();
-		}
-
-		ImGui::Separator();
-
 		components::sub_title("Session Pool Spoof");
 
 		if (ImGui::BeginCombo("Pools", pool_types[g->spoofing.pool_type]))
@@ -87,8 +70,9 @@ namespace big
 			ImGui::EndCombo();
 		}
 
-		components::sub_title("Proofs");
+		components::sub_title("Hide Features");
 		ImGui::Checkbox("Hide God Mode", &g->spoofing.spoof_hide_god);
+		ImGui::Checkbox("Hide Spectate", &g->spoofing.spoof_hide_spectate);
 
 		components::sub_title("Crew");
 

@@ -57,7 +57,6 @@ namespace big
 			vecPosition = CAM::GET_GAMEPLAY_CAM_COORD();
 			vecRot = CAM::GET_GAMEPLAY_CAM_ROT(2);
 
-			globals::disable_kill_trigger(true);
 			ENTITY::FREEZE_ENTITY_POSITION(vehicle, true);
 
 			CAM::SET_CAM_COORD(cCam, vecPosition.x, vecPosition.y, vecPosition.z);
@@ -75,7 +74,6 @@ namespace big
 			STREAMING::SET_FOCUS_ENTITY(ped);
 
 			ENTITY::FREEZE_ENTITY_POSITION(vehicle, false);
-			globals::disable_kill_trigger(false);
 
 			bLastFreeCam = false;
 

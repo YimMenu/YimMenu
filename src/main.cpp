@@ -27,6 +27,7 @@
 #include "services/spinner/spinner_service.hpp"
 #include "services/model_preview/model_preview_service.hpp"
 #include "services/vehicle/handling_service.hpp"
+#include "services/script_patcher/script_patcher_service.hpp"
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -154,10 +155,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				thread_pool_instance.reset();
 				LOG(INFO) << "Thread pool uninitialized.";
 
-				anti_cheat_service_instance.reset();
-				LOG(INFO) << "Anti-Cheat Service reset.";
-				chat_service_instance.reset();
-				LOG(INFO) << "Chat Service reset.";
 				gta_data_service_instance.reset();
 				LOG(INFO) << "GTA Data Service reset.";
 				handling_service_instance.reset();

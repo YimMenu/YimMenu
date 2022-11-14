@@ -76,6 +76,7 @@ namespace big
 		"Terminate Maintransition",
 		"Wait For Dirty Load Confirm",
 		"DLC Intro Bink",
+		"Spawn Into Personal Vehicle"
 	};
 
 	auto transition_state = script_global(1574991);
@@ -114,7 +115,7 @@ namespace big
 			return;
 		}
 
-		if ((int)state > 0 && (int)std::size(transition_states))
+		if ((int)state > 0 && (int)state < std::size(transition_states))
 		{
 			if (state > eTransitionState::TRANSITION_STATE_SP_SWOOP_UP
 				|| state < eTransitionState::TRANSITION_STATE_IS_FM_AND_TRANSITION_READY)

@@ -11,6 +11,7 @@ namespace big
 	{
 	public:
 		explicit script_hook(rage::joaat_t script_hash, std::unordered_map<rage::scrNativeHash, rage::scrNativeHandler> native_replacements);
+		explicit script_hook(rage::scrProgram* program, std::unordered_map<rage::scrNativeHash, rage::scrNativeHandler> native_replacements);
 		~script_hook();
 
 		void ensure();

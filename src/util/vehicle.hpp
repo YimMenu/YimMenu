@@ -658,4 +658,12 @@ namespace big::vehicle
 			}
 		}
 	}
+
+	inline void set_engine_state(Vehicle current_vehicle, bool state, bool immediately, bool disable_auto_start)
+	{
+		if (current_vehicle)
+			VEHICLE::SET_VEHICLE_ENGINE_ON(current_vehicle, state, immediately, disable_auto_start);
+		else
+			return g_notification_service->push_warning("Vehicle", "Please be in a car first then try again.");
+	}
 }

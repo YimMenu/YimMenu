@@ -31,13 +31,11 @@ namespace big
 
 		static GtaThread* gta_thread_start(unsigned int** a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
+		static bool init_native_tables(rage::scrProgram* program);
+		static rage::eThreadState script_vm(uint64_t* start_stack, uint64_t** scr_globals, rage::scrProgram* program, rage::scrThreadContext* ctx);
 
 		static void network_player_mgr_init(CNetworkPlayerMgr* _this, std::uint64_t a2, std::uint32_t a3, std::uint32_t a4[4]);
 		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
-
-		static void network_group_override(std::int64_t a1, std::int64_t a2, std::int64_t a3);
-
-		static __int64* chat_receive(__int64 a1, __int64 a2, __int64 a3, const char* a4, bool a5);
 
 		static void received_event(
 			rage::netEventMgr* event_manager,
@@ -69,6 +67,11 @@ namespace big
 
 		static void write_player_gamer_data_node(rage::netObject* player, CPlayerGamerDataNode* node);
 		static bool write_player_game_state_data_node(rage::netObject* player, CPlayerGameStateDataNode* node);
+
+		static void invalid_mods_crash_detour(int64_t a1, int64_t a2, int a3, char a4);
+
+		static bool update_presence_attribute_int(void* presence_data, int profile_index, char* attr, std::uint64_t value);
+		static bool update_presence_attribute_string(void* presence_data, int profile_index, char* attr, char* value);
 	};
 
 	class minhook_keepalive

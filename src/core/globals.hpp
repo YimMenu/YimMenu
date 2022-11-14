@@ -77,6 +77,7 @@ namespace big
 				pair send_to_location{};
 				pair sound_spam{};
 				pair spectate{};
+				pair switch_player_model{};
 				pair transaction_error{};
 				pair tse_freeze{};
 				pair tse_sender_mismatch{};
@@ -90,8 +91,6 @@ namespace big
 
 			pair network_player_mgr_init{};
 			pair network_player_mgr_shutdown{};
-
-			pair chat_receive{};
 
 			struct
 			{
@@ -116,8 +115,10 @@ namespace big
 			bool spectating = false;
 		};
 
-		struct protections {
-			struct script_events {
+		struct protections 
+		{
+			struct script_events 
+			{
 				bool bounty = true;
 				bool ceo_ban = true;
 				bool ceo_kick = true;
@@ -137,6 +138,7 @@ namespace big
 				bool send_to_location = true;
 				bool sound_spam = true;
 				bool spectate = true;
+				bool switch_player_model = true;
 				bool transaction_error = true;
 				bool vehicle_kick = true;
 				bool teleport_to_warehouse = true;
@@ -144,9 +146,12 @@ namespace big
 			};
 
 			script_events script_events{};
+			bool script_host_kick = true;
+			bool rid_join = false;
 		};
 
-		struct self {
+		struct self 
+		{
 			bool clean_player = false;
 			bool force_wanted_level = false;
 			bool free_cam = false;
@@ -176,6 +181,7 @@ namespace big
 			bool hide_ammo = false;
 			int selected_hud_component = 1;
 			bool hud_components_states[(int)HudComponents::HUD_WEAPONS] = { false };
+			bool mobile_radio = false;
 		};
 
 		struct session
@@ -199,8 +205,12 @@ namespace big
 			bool join_queued = false;
 			rage::rlSessionInfo info;
 			bool disable_chat_filter = false;
-
+			
 			population_control population_control{};
+			bool log_chat_messages = false;
+			bool log_text_messages = false;
+			bool decloak_players = false;
+			bool force_session_host = false;
 		};
 
 		struct settings {
@@ -250,7 +260,8 @@ namespace big
 
 			bool spoof_cheater = false;
 
-			bool spoof_hide_god = false;
+			bool spoof_hide_god = true;
+			bool spoof_hide_spectate = true;
 
 			bool spoof_rockstar_dev = false;
 			bool spoof_rockstar_qa = false;
@@ -330,6 +341,8 @@ namespace big
 			bool flares = false;
 			bool chaff = false;
 			bool no_water_collision = false;
+			bool disable_engine_auto_start = false;
+			bool change_engine_state_immediately = false;
 			speedo_meter speedo_meter{};
 			rainbow_paint rainbow_paint{};
 			fly fly{};
@@ -488,9 +501,6 @@ namespace big
 			g->notifications.gta_thread_start.log = j["notifications"]["gta_thread_start"]["log"];
 			g->notifications.gta_thread_start.notify = j["notifications"]["gta_thread_start"]["notify"];
 
-			g->notifications.chat_receive.log = j["notifications"]["chat_receive"]["log"];
-			g->notifications.chat_receive.notify = j["notifications"]["chat_receive"]["notify"];
-
 			g->notifications.network_player_mgr_init.log = j["notifications"]["network_player_mgr_init"]["log"];
 			g->notifications.network_player_mgr_init.notify = j["notifications"]["network_player_mgr_init"]["notify"];
 			g->notifications.network_player_mgr_shutdown.log = j["notifications"]["network_player_mgr_shutdown"]["log"];
@@ -564,6 +574,8 @@ namespace big
 				script_handler.sound_spam.notify = script_handler_j["sound_spam"]["notify"];
 				script_handler.spectate.log = script_handler_j["spectate"]["log"];
 				script_handler.spectate.notify = script_handler_j["spectate"]["notify"];
+				script_handler.switch_player_model.log = script_handler_j["switch_player_model"]["log"];
+				script_handler.switch_player_model.notify = script_handler_j["switch_player_model"]["notify"];
 				script_handler.transaction_error.log = script_handler_j["transaction_error"]["log"];
 				script_handler.transaction_error.notify = script_handler_j["transaction_error"]["notify"];
 				script_handler.tse_freeze.log = script_handler_j["tse_freeze"]["log"];
@@ -607,11 +619,15 @@ namespace big
 				script_handler.send_to_location = script_handler_j["send_to_location"];
 				script_handler.sound_spam = script_handler_j["sound_spam"];
 				script_handler.spectate = script_handler_j["spectate"];
+				script_handler.switch_player_model = script_handler_j["switch_player_model"];
 				script_handler.transaction_error = script_handler_j["transaction_error"];
 				script_handler.vehicle_kick = script_handler_j["vehicle_kick"];
 				script_handler.teleport_to_warehouse = script_handler_j["teleport_to_warehouse"];
 				script_handler.start_activity = script_handler_j["start_activity"];
 			}
+
+			this->protections.script_host_kick = j["protections"]["script_host_kick"];
+			this->protections.rid_join = j["protections"]["rid_join"];
 
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
 			this->tunables.phone_anim = j["tunables"]["phone_anim"];
@@ -650,6 +666,13 @@ namespace big
 				this->self.hud_components_states[i] = j["self"]["hud_components_states"].at(i);
 			this->self.unlimited_oxygen = j["self"]["unlimited_oxygen"];
 			this->self.no_water_collision = j["self"]["no_water_collision"];
+			this->self.mobile_radio = j["self"]["mobile_radio"];
+
+			this->session.log_chat_messages = j["session"]["log_chat_messages"];
+			this->session.log_text_messages = j["session"]["log_text_messages"];
+			this->session.disable_chat_filter = j["session"]["disable_chat_filter"];
+			this->session.decloak_players = j["session"]["decloak_players"];
+			this->session.force_session_host = j["session"]["force_session_host"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -686,6 +709,9 @@ namespace big
 			this->spoofing.region_code = j["spoofing"]["region_code"];
 			this->spoofing.pool_type = j["spoofing"]["pool_type"];
 
+			this->spoofing.spoof_hide_god = j["spoofing"]["spoof_hide_god"];
+			this->spoofing.spoof_hide_spectate = j["spoofing"]["spoof_hide_spectate"];
+
 			this->vehicle.speed_unit = (SpeedUnit)j["vehicle"]["speed_unit"];
 			this->vehicle.god_mode = j["vehicle"]["god_mode"];
 			this->vehicle.proof_bullet = j["vehicle"]["proof_bullet"];
@@ -713,6 +739,8 @@ namespace big
 			this->vehicle.chaff = j["vehicle"]["chaff"];
 			
 			this->vehicle.no_water_collision = j["vehicle"]["no_water_collision"];
+			this->vehicle.disable_engine_auto_start = j["vehicle"]["disable_engine_auto_start"];
+			this->vehicle.change_engine_state_immediately = j["vehicle"]["change_engine_state_immediately"];
 
 			this->vehicle.speedo_meter.enabled = j["vehicle"]["speedo_meter"]["enabled"];
 			this->vehicle.speedo_meter.left_side = j["vehicle"]["speedo_meter"]["left_side"];
@@ -824,7 +852,6 @@ namespace big
 						{ "gta_thread_start", return_notify_pair(g->notifications.gta_thread_start) },
 						{ "network_player_mgr_init", return_notify_pair(g->notifications.network_player_mgr_init) },
 						{ "network_player_mgr_shutdown", return_notify_pair(g->notifications.network_player_mgr_shutdown) },
-						{ "chat_receive", return_notify_pair(g->notifications.chat_receive) },
 						{ "player_join", {
 								{ "above_map", g->notifications.player_join.above_map },
 								{ "log", g->notifications.player_join.log },
@@ -863,6 +890,7 @@ namespace big
 								{ "send_to_location", return_notify_pair(script_handler_notifications.send_to_location) },
 								{ "sound_spam", return_notify_pair(script_handler_notifications.sound_spam) },
 								{ "spectate", return_notify_pair(script_handler_notifications.spectate) },
+								{ "switch_player_model", return_notify_pair(script_handler_notifications.switch_player_model) },
 								{ "transaction_error", return_notify_pair(script_handler_notifications.transaction_error) },
 								{ "tse_freeze", return_notify_pair(script_handler_notifications.tse_freeze) },
 								{ "tse_sender_mismatch", return_notify_pair(script_handler_notifications.tse_sender_mismatch) },
@@ -902,12 +930,16 @@ namespace big
 								{ "send_to_location", script_handler_protections.send_to_location },
 								{ "sound_spam", script_handler_protections.sound_spam },
 								{ "spectate", script_handler_protections.spectate },
+								{ "switch_player_model", script_handler_protections.switch_player_model },
 								{ "transaction_error", script_handler_protections.transaction_error },
 								{ "vehicle_kick", script_handler_protections.vehicle_kick },
 								{ "teleport_to_warehouse", script_handler_protections.teleport_to_warehouse },
 								{ "start_activity", script_handler_protections.start_activity },
 							}
-						}
+						},
+
+						{ "script_host_kick", g->protections.script_host_kick },
+						{ "rid_join", g->protections.rid_join }
 					}
 				},
 				{
@@ -974,6 +1006,16 @@ namespace big
 						},
 						{ "unlimited_oxygen", this->self.unlimited_oxygen },
 						{ "no_water_collision", this->self.no_water_collision },
+						{ "mobile_radio", this->self.mobile_radio },
+					}
+				},
+				{
+					"session", {
+						{ "log_chat_messages", this->session.log_chat_messages },
+						{ "log_text_messages", this->session.log_text_messages },
+						{ "disable_chat_filter", this->session.disable_chat_filter },
+						{ "decloak_players", this->session.decloak_players },
+						{ "force_session_host", this->session.force_session_host }
 					}
 				},
 				{
@@ -1030,7 +1072,9 @@ namespace big
 						{ "spoof_crew_data", this->spoofing.spoof_crew_data },
 						{ "crew_tag", this->spoofing.crew_tag },
 						{ "rockstar_crew", this->spoofing.rockstar_crew },
-						{ "square_crew_tag", this->spoofing.square_crew_tag }
+						{ "square_crew_tag", this->spoofing.square_crew_tag },
+						{ "spoof_hide_god", this->spoofing.spoof_hide_god },
+						{ "spoof_hide_spectate", this->spoofing.spoof_hide_spectate },
 					}
 				},
 				{
@@ -1061,6 +1105,8 @@ namespace big
 						{ "chaff", this->vehicle.chaff },
 						{ "seatbelt", this->vehicle.seatbelt },
 						{ "no_water_collision", this->vehicle.no_water_collision },
+						{ "disable_engine_auto_start", this->vehicle.disable_engine_auto_start },
+						{ "change_engine_state_immediately", this->vehicle.change_engine_state_immediately },
 						{
 							"speedo_meter",
 							{

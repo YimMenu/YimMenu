@@ -1,6 +1,7 @@
 #include "hooking.hpp"
 #include "gta_util.hpp"
 #include "services/anti_cheat/anti_cheat_service.hpp"
+#include <network/CNetGamePlayer.hpp>
 
 namespace big
 {
@@ -106,6 +107,17 @@ namespace big
 				format_string(player_name, "Force Mission", notify.force_mission.log, notify.force_mission.notify);
 
 				return true;
+			}
+			break;
+		case eRemoteEvent::GiveCollectible:
+			if (g->protections.script_events.switch_player_model)
+			{
+				if (args[2] == 8)
+				{
+					format_string(player_name, "Switch Player Model", notify.switch_player_model.log, notify.switch_player_model.notify);
+
+					return true;
+				}
 			}
 			break;
 		case eRemoteEvent::GtaBanner:
@@ -334,7 +346,6 @@ namespace big
 			}
 			break;
 		}
-
 
 		if (g->debug.logs.script_event.logs && (!g->debug.logs.script_event.filter_player || g->debug.logs.script_event.player_id == player->m_player_id))
 		{

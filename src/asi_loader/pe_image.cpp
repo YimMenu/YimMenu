@@ -93,7 +93,7 @@ namespace Utility {
 
 				// Found it, patch that shit
 				ZeroMemory(dllName, strlen(dllName));
-				strcpy(dllName, "BigBaseV2.dll");
+				strcpy(dllName, "YimMenu.dll");
 
 				// Overwrite original file with changes
 				std::ofstream file(filePath, std::ios::binary | std::ios::out);

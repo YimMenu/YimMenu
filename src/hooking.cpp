@@ -39,11 +39,11 @@ namespace big
 
 		detour_hook_helper::add<hooks::gta_thread_start>("GTS", g_pointers->m_gta_thread_start);
 		detour_hook_helper::add<hooks::gta_thread_kill>("GTK", g_pointers->m_gta_thread_kill);
+		detour_hook_helper::add<hooks::init_native_tables>("INT", g_pointers->m_init_native_tables);
+		detour_hook_helper::add<hooks::script_vm>("SVM", g_pointers->m_script_vm);
 
 		detour_hook_helper::add<hooks::network_player_mgr_init>("NPMI", g_pointers->m_network_player_mgr_init);
 		detour_hook_helper::add<hooks::network_player_mgr_shutdown>("NPMS", g_pointers->m_network_player_mgr_shutdown);
-
-		detour_hook_helper::add<hooks::network_group_override>("NGO", g_pointers->m_network_group_override);
 
 		detour_hook_helper::add<hooks::received_event>("RE", g_pointers->m_received_event);
 
@@ -59,8 +59,11 @@ namespace big
 
 		detour_hook_helper::add<hooks::format_metric_for_sending>("FMFS", g_pointers->m_format_metric_for_sending);
 
-		detour_hook_helper::add<hooks::get_pool_type>("GPT", g_pointers->m_get_pool_type);
-		detour_hook_helper::add<hooks::chat_receive>("CP", g_pointers->m_chat_receive);
+		detour_hook_helper::add<hooks::get_pool_type>("GPT", (void*)g_pointers->m_get_pool_type);
+		detour_hook_helper::add<hooks::invalid_mods_crash_detour>("IMCD", g_pointers->m_invalid_mods_crash_detour);
+
+		detour_hook_helper::add<hooks::update_presence_attribute_int>("UPAI", g_pointers->m_update_presence_attribute_int);
+		detour_hook_helper::add<hooks::update_presence_attribute_string>("UPAS", g_pointers->m_update_presence_attribute_string);
 
 		g_hooking = this;
 	}

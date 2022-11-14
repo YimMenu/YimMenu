@@ -25,9 +25,4 @@ namespace big::globals
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
 	}
-
-	inline void disable_kill_trigger(bool toggle)
-	{
-		*script_global(2815059).at(6753).as<int*>() = toggle; // "TRI_WARP" 2nd nested if statement below this text in freemode.c
-	}
 }

@@ -15,6 +15,11 @@ namespace big
 			m_resolution_y = ptr.add(4).rip().as<int*>();
 		});
 
+		main_batch.add("RC", "40 32 ED 83 25", [this](memory::handle ptr)
+		{
+			m_region_code = ptr.add(5).rip().add(1).as<uint32_t*>();
+		});
+
 		// Max Wanted Level
 		main_batch.add("MWL", "8B 43 6C 89 05", [this](memory::handle ptr)
 		{
@@ -166,12 +171,6 @@ namespace big
 			m_read_bitbuf_bool = ptr.add(1).rip().as<decltype(m_read_bitbuf_bool)>();
 		});
 
-		// Read Bitbuffer Array
-		main_batch.add("RBA", "48 89 5C 24 ? 57 48 83 EC 30 41 8B F8 4C", [this](memory::handle ptr)
-		{
-			m_read_bitbuf_array = ptr.as<decltype(m_read_bitbuf_array)>();
-		});
-
 		// Write Bitbuffer WORD/DWORD
 		main_batch.add("WBD", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 83 EC 20 8B EA BF 01", [this](memory::handle ptr)
 		{
@@ -303,12 +302,6 @@ namespace big
 		{
 			m_write_player_gamer_data_node = ptr.as<PVOID>();
 		});
-
-		// Network Group Override
-		main_batch.add("NGO", "44 89 81 ? ? ? ? 89 91 ? ? ? ? C6 05", [this](memory::handle ptr)
-		{
-			m_network_group_override = ptr.as<PVOID>();
-		});
 		
 		//Begin SHV
 		main_batch.add("Register File", "40 88 7C 24 ? E8 ? ? ? ? 0F B7 44 24", [this](memory::handle ptr)
@@ -347,20 +340,6 @@ namespace big
 		});
 		//END SHV
 
-		// Chat Receive
-		main_batch.add("CR", "4D 85 C9 0F 84 ? ? ? ? 48 8B C4 48 89 58 08 48 89 70 10 48 89 78 18 4C 89 48 20", [this](memory::handle ptr) // Skidded from https://www.unknowncheats.me/forum/3486099-post13622.html
-		{
-			m_chat_receive = ptr.as<__int64*>();
-			
-		});
-
-		// Get Chat Player Id
-		main_batch.add("GCPID", "E8 ? ? ? ? 48 8B 0D ? ? ? ? 48 8B F0 E8 ? ? ? ? 33 FF 48 89 44 24 ?", [this](memory::handle ptr) // Skidded from https://www.unknowncheats.me/forum/3486099-post13622.html
-		{
-			m_get_net_player_from_unk = ptr.add(1).rip().as<decltype(m_get_net_player_from_unk)>();
-			
-		});
-
 		// Send Chat Ptr
 		main_batch.add("SCP", "48 8B 0D ? ? ? ? 48 8D 97 ? ? ? ? E8 ? ? ? ? 48 8B CF", [this](memory::handle ptr)
 		{
@@ -383,12 +362,6 @@ namespace big
 		main_batch.add("RENC", "E8 ? ? ? ? 8B 8B ? ? ? ? 03 CF", [this](memory::handle ptr)
 		{
 			m_reset_network_complaints = ptr.add(1).rip().as<functions::reset_network_complaints>();
-		});
-
-		// Region Code
-		main_batch.add("RC", "48 8D 15 ? ? ? ? 48 8D 4C 24 ? 89 05 ? ? ? ? E8", [this](memory::handle ptr)
-		{
-			m_region_code = ptr.add(3).rip().as<std::uint8_t*>();
 		});
 
 		// Get Pool Type
@@ -422,6 +395,12 @@ namespace big
 			m_get_sync_tree_for_type = ptr.add(0x14).rip().as<decltype(m_get_sync_tree_for_type)>(); // 0F B7 CA 83 F9 07 .as()
 			m_get_net_object = ptr.add(0x76).rip().as<decltype(m_get_net_object)>(); // E8 ? ? ? ? 0F B7 53 7C .add(1).rip().as()
 			m_get_sync_type_info = ptr.add(0x8C).rip().as<decltype(m_get_sync_type_info)>(); // 44 0F B7 C1 4C 8D 0D .as()
+		});
+
+		// Read Bitbuffer Into Sync Tree
+		main_batch.add("RBIST", "E8 ? ? ? ? 48 8B BC 24 B0 00 00 00", [this](memory::handle ptr)
+		{
+			m_read_bitbuffer_into_sync_tree = ptr.add(1).rip().as<functions::read_bitbuffer_into_sync_tree>();
 		});
 
 		// Model Hash Table
@@ -493,17 +472,17 @@ namespace big
 			m_fipackfile_unmount = ptr.add(1).rip().as<functions::fipackfile_unmount>();
 		});
 
-		// fidevice unmount
-		main_batch.add("FPFUM", "E8 ? ? ? ? 84 C0 74 37 80 3D", [this](memory::handle ptr)
-		{
-			m_fipackfile_unmount = ptr.add(1).rip().as<functions::fipackfile_unmount>();
-		});
-
 		// game version + online version
 		main_batch.add("GVOV", "8B C3 33 D2 C6 44 24 20", [this](memory::handle ptr)
 		{
 			m_game_version = ptr.add(0x24).rip().as<const char*>();
 			m_online_version = ptr.add(0x24).rip().add(0x20).as<const char*>();
+		});
+
+		// Invalid Mods Crash Detour
+		main_batch.add("IMCD", "E8 ? ? ? ? 40 88 7C 24 ? 49 89 9C 24", [this](memory::handle ptr)
+		{
+			m_invalid_mods_crash_detour = ptr.add(1).rip().as<PVOID>();
 		});
 
 		// Format Metric For Sending
@@ -524,8 +503,62 @@ namespace big
 			m_join_session_by_info = ptr.add(1).rip().as<functions::join_session_by_info>();
 		});
 
+		// Init Native Tables
+		main_batch.add("INT", "8B CB E8 ? ? ? ? 8B 43 70 ? 03 C4 A9 00 C0 FF FF", [this](memory::handle ptr)
+		{
+			m_init_native_tables = ptr.add(3).rip().as<PVOID>();
+		});
+
+		// Script VM
+		main_batch.add("VM", "E8 ? ? ? ? 48 85 FF 48 89 1D", [this](memory::handle ptr)
+		{
+			m_script_vm = ptr.add(1).rip().as<PVOID>();
+		});
+
+		// Generate UUID
+		main_batch.add("GU", "E8 ? ? ? ? 84 C0 74 0C 48 8B 44 24 ? 48 89 03", [this](memory::handle ptr)
+		{
+			m_generate_uuid = ptr.add(1).rip().as<functions::generate_uuid>();
+		});
+
+		// Host Token
+		main_batch.add("HT", "48 8B 05 ? ? ? ? 48 83 F8 FF", [this](memory::handle ptr)
+		{
+			m_host_token = ptr.add(3).rip().as<std::uint64_t*>();
+		});
+
+		// Profile Gamer Info
+		main_batch.add("PGI", "48 8D 05 ? ? ? ? 48 8B FE", [this](memory::handle ptr)
+		{
+			m_profile_gamer_info = ptr.add(3).rip().as<rage::rlGamerInfo*>();
+		});
+
+		// Player Info Gamer Info
+		main_batch.add("PIGI", "E8 ? ? ? ? 48 8D 4D 20 48 8B D0 E8 ? ? ? ? 41 8A CF", [this](memory::handle ptr)
+		{
+			m_player_info_gamer_info = ptr.add(1).rip().add(3).rip().as<rage::rlGamerInfo*>();
+		});
+
+		// Communications
+		main_batch.add("C", "48 8B 1D ? ? ? ? 48 8D 4C 24 30", [this](memory::handle ptr)
+		{
+			m_communications = ptr.add(3).rip().as<CCommunications**>();
+		});
+
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
+
+		memory::batch socialclub_batch;
+
+		// Presence Data
+		socialclub_batch.add("PD", "48 8D 05 ? ? ? ? 48 8B F1 48 89 01 48 8D 99 88 02", [this](memory::handle ptr)
+		{
+			auto presence_data_vft = ptr.add(3).rip().as<PVOID*>();
+			m_update_presence_attribute_int = presence_data_vft[1];
+			m_update_presence_attribute_string = presence_data_vft[3];
+		});
+
+		socialclub_batch.run(memory::module("socialclub.dll"));
 
 		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 F5 01 00 00"))
 		{

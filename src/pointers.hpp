@@ -7,10 +7,15 @@
 #include "gta/array.hpp"
 #include "network/CNetworkPlayerMgr.hpp"
 #include "socialclub/FriendRegistry.hpp"
-#include "network/Network.hpp"
-#include "memory/byte_patch.hpp"
+#include <network/Network.hpp>
 
 #include "asi_loader/pools.h"
+#include "memory/byte_patch.hpp"
+
+class CCommunications;
+class FriendRegistry;
+class CNetworkPlayerMgr;
+class Network;
 
 namespace big
 {
@@ -47,12 +52,9 @@ namespace big
 		rage::GenericPool* m_pickup_pool{};
 		rage::GenericPool* m_camera_pool{};
 
-		__int64* m_chat_receive{};
-		functions::get_net_player_from_unk* m_get_net_player_from_unk{};
 		__int64* m_send_chat_ptr{};
 		functions::send_chat_message* m_send_chat_message{};
 
-		uint8_t* m_region_code;
 		PVOID m_get_pool_type;
 
 		functions::get_connection_peer m_get_connection_peer;
@@ -66,6 +68,8 @@ namespace big
 		int* m_resolution_x;
 		int* m_resolution_y;
 
+		uint32_t* m_region_code;
+
 		memory::byte_patch* m_max_wanted_level;
 		memory::byte_patch* m_max_wanted_level_2;
 
@@ -73,7 +77,6 @@ namespace big
 		PVOID m_model_spawn_bypass;
 		PVOID m_world_model_spawn_bypass;
 		PVOID m_native_return;
-		PVOID m_network_group_override;
 		PVOID m_get_label_text;
 		functions::multiplayer_chat_filter* m_multiplayer_chat_filter{};
 		functions::write_player_game_state_data_node m_write_player_game_state_data_node{};
@@ -123,6 +126,8 @@ namespace big
 		functions::get_sync_tree_for_type m_get_sync_tree_for_type{};
 		functions::get_sync_type_info m_get_sync_type_info{};
 		functions::get_net_object m_get_net_object{};
+		functions::get_net_object_for_player m_get_net_object_for_player{};
+		functions::read_bitbuffer_into_sync_tree m_read_bitbuffer_into_sync_tree{};
 		//Sync Signatures END
 
 		PVOID m_send_net_info_to_lobby{};
@@ -153,6 +158,20 @@ namespace big
 
 		const char* m_game_version;
 		const char* m_online_version;
+
+		PVOID m_invalid_mods_crash_detour{};
+
+		PVOID m_init_native_tables{};
+		PVOID m_script_vm{};
+
+		functions::generate_uuid m_generate_uuid{};
+		std::uint64_t* m_host_token{};
+		rage::rlGamerInfo* m_profile_gamer_info{}; // per profile gamer info
+		rage::rlGamerInfo* m_player_info_gamer_info{}; // the gamer info that is applied to CPlayerInfo
+		CCommunications** m_communications{};
+
+		PVOID m_update_presence_attribute_int;
+		PVOID m_update_presence_attribute_string;
 	};
 
 	inline pointers* g_pointers{};

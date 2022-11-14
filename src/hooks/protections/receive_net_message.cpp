@@ -1,9 +1,10 @@
 #include "hooking.hpp"
 #include "services/players/player_service.hpp"
 #include "services/anti_cheat/anti_cheat_service.hpp"
+#include "services/chat/chat_service.hpp"
 #include "natives.hpp"
 #include "gta_util.hpp"
-#include "gta/net_game_event.hpp"
+#include <network/Network.hpp>
 
 namespace big
 {
@@ -15,7 +16,7 @@ namespace big
 		uint32_t extended{};
 		if ((buffer.m_flagBits & 2) != 0 || (buffer.m_flagBits & 1) == 0 ? (pos = buffer.m_curBit) : (pos = buffer.m_maxBit),
 			buffer.m_bitsRead + 15 > pos || !buffer.ReadDword(&magic, 14) || magic != 0x3246 || !buffer.ReadDword(&extended, 1)) {
-			msgType = rage::eNetMessage::CMsgInvalid;
+			msgType = rage::eNetMessage::MsgInvalid;
 			return false;
 		}
 		length = extended ? 16 : 8;
@@ -23,6 +24,16 @@ namespace big
 			return true;
 		else
 			return false;
+	}
+
+	void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
+	{
+		constexpr int PC_PLATFORM = 3;
+		if ((hnd.m_platform = buf.Read<uint8_t>(8)) != PC_PLATFORM)
+			return;
+
+		buf.ReadInt64((int64_t*)&hnd.m_rockstar_id, 64);
+		hnd.unk_0009 = buf.Read<uint8_t>(8);
 	}
 
 	bool hooks::receive_net_message(void* netConnectionManager, void* a2, rage::netConnection::InFrame* frame)
@@ -45,7 +56,37 @@ namespace big
 			{
 				switch (msgType)
 				{
-				case rage::eNetMessage::CMsgScriptMigrateHost:
+				case rage::eNetMessage::MsgTextMessage:
+				{
+					char message[256];
+					uint64_t unk;
+					bool is_team;
+					buffer.ReadString(message, 256);
+					buffer.ReadQWord(&unk, 64);
+					buffer.ReadBool(&is_team);
+
+					g_chat_service->add_msg(player->get_net_game_player(), message, is_team);
+
+					if (g->session.log_chat_messages)
+						LOG(INFO) << "[CHAT] from " << player->get_name() << ": " << message << (is_team) ? " [TEAM]" : " [ALL]";
+
+					break;
+				}
+				case rage::eNetMessage::MsgTextMessage2:
+				{
+					char message[256];
+					uint64_t unk;
+					buffer.ReadString(message, 256);
+					buffer.ReadQWord(&unk, 64);
+
+					//TODO: Add this to DMs
+
+					if (g->session.log_text_messages)
+						LOG(INFO) << "[TEXT] from " << player->get_name() << ": " << message;
+
+					break;
+				}
+				case rage::eNetMessage::MsgScriptMigrateHost:
 				{
 					if (std::chrono::system_clock::now() - player->m_last_transition_msg_sent < 200ms)
 					{
@@ -64,19 +105,18 @@ namespace big
 					}
 					break;
 				}
-				case rage::eNetMessage::CMsgRemoveGamersFromSessionCmd:
+				case rage::eNetMessage::MsgRemoveGamersFromSessionCmd:
 				{
 					player_ptr pl;
 					uint64_t session_id;
 					buffer.ReadQWord(&session_id, 64);
 					uint32_t count;
 					buffer.ReadDword(&count, 6);
-					pl = nullptr;
 					std::string notify;
 					for (std::uint32_t i = 0; i < count; i++)
 					{
 						uint64_t peer_id;
-						buffer.ReadQWord((uint64_t*)&peer_id, 64);
+						buffer.ReadQWord(&peer_id, 64);
 						for (std::uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_peer_count; i++)
 						{
 							if (gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_peer_id_2 == peer_id)
@@ -95,7 +135,7 @@ namespace big
 					}
 					break;
 				}
-				case rage::eNetMessage::CMsgNetComplaint: // Skidded from maybegreat48
+				case rage::eNetMessage::MsgNetComplaint: // Skidded from maybegreat48
 				{
 					uint64_t host_token{};
 					buffer.ReadQWord(&host_token, 64);
@@ -109,6 +149,31 @@ namespace big
 						g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 1, "Desync protection");
 
 					buffer.Seek(0);
+					break;
+				}
+				case rage::eNetMessage::MsgLostConnectionToHost:
+				{
+					uint64_t session_id;
+					buffer.ReadQWord(&session_id, 64);
+					rage::rlGamerHandle handle;
+					gamer_handle_deserialize(handle, buffer);
+
+					auto self = g_player_service->get_self();
+					if (self->get_net_data() && self->get_net_data()->m_gamer_handle_2.m_rockstar_id == handle.m_rockstar_id)
+					{
+						g_notification_service->push_error("Protections", std::format("{} tried to lost connection kick you!", player->get_name()));
+						return true;
+					}
+
+					for (auto& [_, plyr] : g_player_service->players())
+					{
+						if (plyr->get_net_data() && plyr != player && player->get_net_data()->m_gamer_handle_2.m_rockstar_id == handle.m_rockstar_id)
+						{
+							g_notification_service->push_error("Protections", std::format("{} tried to lost connection kick {}!", player->get_name(), plyr->get_name()));
+							return true;
+						}
+					}
+
 					break;
 				}
 				}

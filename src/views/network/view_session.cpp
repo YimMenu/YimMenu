@@ -1,6 +1,7 @@
 #include "views/view.hpp"
 #include "fiber_pool.hpp"
 #include "util/session.hpp"
+#include "core/data/region_codes.hpp"
 
 namespace big
 {
@@ -25,9 +26,33 @@ namespace big
 			}
 			ImGui::EndListBox();
 		}
+		
+		components::sub_title("Region Switcher");
+		if (ImGui::ListBoxHeader("###region_switch"))
+		{
+			for (const auto& region_type : regions)
+			{
+				components::selectable(region_type.name, *g_pointers->m_region_code == region_type.id, [&region_type]
+				{
+					*g_pointers->m_region_code = region_type.id;
+				});
+			}
+			ImGui::EndListBox();
+		}
 
-		components::sub_title("Settings");
-		ImGui::Checkbox("Disable Stock Chat Filter", &g->session.disable_chat_filter);
+		components::sub_title("Fast join");
 		ImGui::Checkbox("Fast Join", &g->tunables.fast_join);
+
+		components::sub_title("Chat");
+		ImGui::Checkbox("Disable Filter", &g->session.disable_chat_filter);
+		ImGui::Checkbox("Log Chat Messages", &g->session.log_chat_messages);
+		ImGui::Checkbox("Log Text Messages", &g->session.log_text_messages);
+
+		components::sub_title("Decloak");
+		components::script_patch_checkbox("Reveal OTR Players", &g->session.decloak_players);
+
+		components::sub_title("Force Host");
+		ImGui::Checkbox("Force Session Host", &g->session.force_session_host);
+		ImGui::SameLine(); components::help_marker("Join another session to apply changes. \nThe original host of the session must leave or be kicked. \nThis feature is easily detectable by other mod menus, use with caution");
 	}
 }

@@ -2,8 +2,6 @@
 
 extern const unsigned char font_storopia[89888];
 extern const unsigned char font_icons[7880];
-extern const char font_agave[193690 + 1];
-
 
 constexpr auto FONT_ICON_FRIEND		= "A";
 constexpr auto FONT_ICON_NOTFRIEND	= "B";

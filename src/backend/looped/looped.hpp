@@ -14,7 +14,7 @@ namespace big
 		static void hud_transition_state();
 
 		static void tunables_disable_phone();
-		static void phone_anim();
+		static void phone_anim(); 
 		static void tunables_no_idle_kick();
 		static void always_controll();
 		static void disable_help_text();
@@ -40,6 +40,7 @@ namespace big
 		static void self_hud();
 		static void self_unlimited_oxygen();
 		static void self_no_water_collision();
+		static void self_mobile_radio();
 
 		static void script_starter();
 		static void session_local_time();
@@ -51,12 +52,12 @@ namespace big
 		static void system_self_globals();
 		static void system_update_pointers();
 		static void system_desync_kick_protection();
-
+		static void system_force_session_host();
+		
 		static void anti_cheat();
 
 		static void vehicle_auto_drive();
 		static void vehicle_boost_behavior();
-		static void vehicle_despawn_bypass();
 		static void vehicle_drive_on_water();
 		static void vehicle_fly();
 		static void vehicle_god_mode();

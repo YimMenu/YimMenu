@@ -1,92 +1,291 @@
-# Contributing
+# Contrib
 
-## Table of contents
+### Commit convention
 
- * [Committing](#committing)
-    * [When to commit?](#when-to-commit)
-    * [What sort of message should I use?](#what-sort-of-commit-message-should-i-use)
-    * [Other Types](#other-types)
- * [Code Style](#code-style)
-    * [Brackets](#brackets)
-    * [Distinction between related code](#distinction-between-related-code)
+**Don't overthink it, we can edit the final commit message if it doesn't describe the changes correctly!**
 
-## Committing
+Types:
+- feat: The new feature you're adding to a particular application
+- fix: To fix a bug
+- style: Feature and updates related to styling
+- refactor: Refactoring a specific section of the codebase
+- test: Everything related to testing
+- docs: Everything related to documentation
+- chore: Regular code maintanance
 
-### When to commit?
+A scope is a phrase descibing parts of the code affected by the changes. For example "(userservice)"
 
-Whenever you commit make sure your commit is related to one feature or change, don't commit multiple unrelated things at once.
-You don't **have** to commit every 5 minutes, only commit whenever you've got a working code base with a finished feature.
+Body (optional) can provide additional contextual information. For breaking changes the body MUST start with "BREAKING CHANGE".
 
-### What sort of commit message should I use?
+Footer (optional) is used to reference issues effected bt the code changes. For example "Fixes #13". Can also be used to indicate breaking changes by starting with "BREAKING CHANGE".
+#### Structure
 
-If you're committing a new feature or change something existing to act differently use the following syntax:
+
 ```
-feat(subject): Added new method of destroying children
-```
+<type>(scope): <description>
 
-If your commit is related to fixing an issue:
-```
-fix(subject): Fixed issue related to children multiplying endlessly
+[optional body]
 
-Closes #1337 <-- mention a related issue to automatically close it when making this commit
+[optional footer]
 ```
 
-#### Other Types
+#### Examples
+- `feat(order): add purchase order button`
+- `docs(readme): document coding conventions`
 
-Aside from `feat` and `fix`, you can also use the following types `build`, `docs`, `style`, `refactor` and `test` whenever you deem these more useful in the context.
 
-## Code Style
+# C++ Coding Standards
+## Naming Style
 
-1. Be consistent
-2. Use 4 spaces for tab indentation, don't ever use HARD tabs
+Avoid Hun-garian notation. 
+This means, we never want to use variable names that contain the type.
 
-### Brackets
+| Entities | Naming | Preview |
+| ----------- | ----------- | ---------- |
+| NameSpaces | snake_case | namespace `ex_namespace` |
+| Classes and Structs | snake_case | Class `ex_class` |
+| Enums | UpperCamelCase | Enum `ExEnum` |
+| Enum Members | ALL_UPPER | ExNum::`NONE`; ExNum::`FIRST_HALF`; ...
+| Global Variables| g_snake_case | bool `g_running` |
+| Macros | ALL_UPPER | #define `USE_OPENGL` |
+| Template Parameter | UpperCamelCase | template<`typename T`> |
+| Parameters | snake_case | ex_method(int `number`) |
+| Local Variables | snake_case | int `number{}` |
+| Member Variables | m_snake_case | int `m_number` |
+| Member Methods | snake_case | void `ex_method`(int param1, int param2); |
 
-```cpp
-for (int i = 1; i < 5; i++)
+<br><br><br>
+
+## Formatting Style
+### **Indents**
+prefer Tabs for indents
+
+### **Braces**  
+
+With `if` statements and `for` loops we drop the brackets if it only has to execute 1 line of code or if it calls a method
+```c++
+if (true)
+    execute_method();
+
+int num;
+if (true)
+    num += 5;
+
+for (;;)
+    execute_method();
+
+for (;;)
+    num += 5;
+```
+
+
+Example for namespaces, classes, etc...
+```c++
+namespace ex_namesspace
 {
-  //code here;
+    class ex_class
+    {
+    public:
+        ex_class()
+        {
+        }
+
+        void ex_method();
+
+        int GetNum() const 
+        {
+            return m_num;
+        }
+    private:
+        int m_num;
+    }
+}
+
+ex_namesspace::ex_class::ex_method()
+{
+    auto lambda = []()
+    {
+        int x = 0;
+        return x;
+    };
+
+    switch (expression)
+    {
+    case 0:
+    {
+        // do stuff
+        break;
+    }
+    case 1:
+    {
+        // do stuff
+        break;
+    }
+    }
+    
+    do
+    {
+        // do stuff
+    } while (true);
+}
+```
+### **Regarding if statements**  
+
+Prefer default initialized variables that will be set in an if
+	
+Bad example:
+```c++
+int value;
+if(true)
+{
+    value = 1;
+}
+else
+{
+    value = 2
+}
+```
+Instead we prefer this:
+```c++
+int value{2};
+if(true)
+{
+    value = 1;
 }
 ```
 
-### Distinction between related code
 
-Create a clear line of separation between lines, don't just put everything right next each other.
+Prefer using guarding `if` statements for readability
 
-How not to do it:
-```cpp
-void foo() {
-  int x = fribbery;
-  y.attack(frabbet(x));
-  z.attack(frobbet(x));
-  bejooger[0].scramboozle(y);
-  bejooger[1].scramboozle(y);
-  bejooger[2].scramboozle(z);
-  bejooger[3].scramboozle(z);
-  if (curdleblogpod.getAlive() <= 5) {
-    //Yikes! 
-  }
+Bad Example:
+```c++ 
+void method()
+{
+    bool val1 = true;
+    bool val2 = false;
+    bool val3 = true;
+
+    if(val1)
+    {
+        if(val2)
+        {
+        }
+        else 
+        {
+            if(val3)
+            {
+                // code part
+                // where tf are we at
+            }
+        }
+    }
 }
 ```
 
-How you should do it:
-```cpp
-void foo() {
+Guarded if Example:
+```c++
+void method()
+{
+    bool val1 = true;
+    bool val2 = false;
+    bool val3 = true;
 
-  //Start the attack on the fribs.
-  int x = fribbery;
-  y.attack(frabbet(x));
-  z.attack(frobbet(x));
-  
-  //Now send the bejoogers out...
-  bejooger[0].scramboozle(y);
-  bejooger[1].scramboozle(y);
-  bejooger[2].scramboozle(z);
-  bejooger[3].scramboozle(z);
+    if(!val1)
+        return;
 
-  //Make sure the curdleblogs are still alive.
-  if (curdleblogpod.getAlive() <= 5) {
-    //Yikes! 
-  }
+    if (val2)
+        return;
+
+    if (!val3)
+        return;
+
+    // here comes the code part
 }
 ```
+
+### **Member variables in classes**
+
+1. Seperate every variable to a single line
+2. Initialize all member variables
+3. Use the same order of initialization as in the header file
+4. Order data types from big to low 
+
+```c++
+// Header File
+class ex_class
+{
+public:
+    ex_class();
+
+private:
+    float m_Length;
+    int m_Number;
+    bool m_Enabled;
+}
+
+// Cpp File
+ex_class::ex_class() :
+  m_Length{ 1.f },
+  m_Number{ 5 },
+  m_Enabled { true }
+{
+
+}
+```
+
+### use of auto
+1. Not for numeric types: `int, bool, char, float, ...`
+2. When methods return a value
+3. Only when r-value type is evident
+4. Prefer using `auto&` to avoid copies
+```c++
+// 1.
+int a{ 0 };        
+float b{ 0.5f };
+// 2.
+const auto& data = exClass->GetData();
+// 3.
+auto timer = new TimerClass();
+```
+    
+### using keyword
+
+ - **Never use `using namespace std`!** 
+ - Never use `using namespace` in a header file. This can mess with code that includes the header file wich contains `using namespace`.
+ - Never use `using namespace` before any `#include`s. This can mess with the meaning of code in someone else's header.
+ - Use `using` instead of typedef! Modernized c++
+```c++
+// bad example
+typedef int my_int;
+
+// good example
+using my_float = float;
+```
+ - Prefer specified using over namespace using.
+```c++
+// bad example
+using namepace std::chrono;
+	
+// good examples
+using std::chrono::high_resolution_clock;
+using std::chrono::duration;
+```
+
+Nested Namespaces  
+Example:
+```c++
+// bad example
+namespace a
+{
+	namespace b {}
+}
+
+// good example
+namespace a::b {}
+```
+
+### overriding methods
+1. Use `virtual` in Base classes
+2. Use `virtual` and `override` in Derived classes
+3. Use `virtual` and `= 0` for an abstract(instantiable) class
+4. Always make destructors `virtual`

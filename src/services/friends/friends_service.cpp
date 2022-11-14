@@ -1,5 +1,7 @@
 #include "friends_service.hpp"
 #include "pointers.hpp"
+#include <network/CNetGamePlayer.hpp>
+#include <socialclub/FriendRegistry.hpp>
 
 namespace big
 {
