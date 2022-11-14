@@ -151,6 +151,11 @@ namespace big
 
 		PVOID m_update_presence_attribute_int;
 		PVOID m_update_presence_attribute_string;
+
+		PVOID m_serialize_dynamic_entity_game_state_data_node;
+		PVOID m_serialize_ped_inventory_data_node;
+		PVOID m_serialize_vehicle_gadget_data_node;
+		functions::get_vehicle_gadget_array_size m_get_vehicle_gadget_array_size;
 	};
 
 	inline pointers* g_pointers{};

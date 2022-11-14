@@ -12,6 +12,10 @@
 #include "datanodes/player/CPlayerGameStateDataNode.hpp"
 #include "rage/rlMetric.hpp"
 
+class CPedInventoryDataNode;
+class CDynamicEntityGameStateDataNode;
+class CVehicleGadgetDataNode;
+
 namespace big
 {
 	struct hooks
@@ -62,7 +66,8 @@ namespace big
 
 		//SYNC
 		static bool received_clone_create(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eNetObjType object_type, int32_t object_id, int32_t object_flag, rage::datBitBuffer* buffer, int32_t timestamp);
-		static int64_t received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eNetObjType object_type, uint16_t object_id, rage::datBitBuffer* bufer, uint16_t unk, uint32_t timestamp);
+		static eAckCode received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eNetObjType object_type, uint16_t object_id, rage::datBitBuffer* bufer, uint16_t unk, uint32_t timestamp);
+		static bool can_apply_data(rage::netSyncTree* tree, rage::netObject* object);
 
 		static void write_player_gamer_data_node(rage::netObject* player, CPlayerGamerDataNode* node);
 		static bool write_player_game_state_data_node(rage::netObject* player, CPlayerGameStateDataNode* node);
@@ -71,6 +76,10 @@ namespace big
 
 		static bool update_presence_attribute_int(void* presence_data, int profile_index, char* attr, std::uint64_t value);
 		static bool update_presence_attribute_string(void* presence_data, int profile_index, char* attr, char* value);
+
+		static void serialize_ped_inventory_data_node(CPedInventoryDataNode* node, rage::CSyncDataBase* data);
+		static void serialize_dynamic_entity_game_state_data_node(CDynamicEntityGameStateDataNode* node, rage::CSyncDataBase* data);
+		static void serialize_vehicle_gadget_data_node(CVehicleGadgetDataNode* node, rage::CSyncDataBase* data);
 	};
 
 	class minhook_keepalive

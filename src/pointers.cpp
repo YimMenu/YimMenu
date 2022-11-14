@@ -482,6 +482,30 @@ namespace big
 			m_communications = ptr.add(3).rip().as<CCommunications**>();
 		});
 
+		// Serialize Dynamic Entity Game State Data Node (that's a mouthful!)
+		main_batch.add("SDEGSDN", "48 89 5C 24 18 55 56 57 41 56 41 57 48 83 EC 20 48 8B 02 48 8D 99", [this](memory::handle ptr)
+		{
+			m_serialize_dynamic_entity_game_state_data_node = ptr.as<PVOID>();
+		});
+
+		// Serialize Ped Inventory Data Node
+		main_batch.add("SPIDN", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 20 48 8B 02 48 8B F1 48 8B CA 48 8B FA FF 90", [this](memory::handle ptr)
+		{
+			m_serialize_ped_inventory_data_node = ptr.as<PVOID>();
+		});
+
+		// Serialize Vehicle Gadget Data Node
+		main_batch.add("SVGDN", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 30 48 8B 02 48 8D", [this](memory::handle ptr)
+		{
+			m_serialize_vehicle_gadget_data_node = ptr.as<PVOID>();
+		});
+
+		// Get Vehicle Gadget Array Size
+		main_batch.add("GVGAS", "40 53 48 83 EC 40 33 DB E8", [this](memory::handle ptr)
+		{
+			m_get_vehicle_gadget_array_size = ptr.as<functions::get_vehicle_gadget_array_size>();
+		});
+
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
 

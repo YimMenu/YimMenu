@@ -1,5 +1,6 @@
 #pragma once
-#include "datanodes/player/CPlayerGameStateDataNode.hpp"
+#include <datanodes/player/CPlayerGameStateDataNode.hpp>
+#include <datanodes/vehicle/CVehicleGadgetDataNode.hpp>
 
 namespace big::functions
 {
@@ -67,4 +68,6 @@ namespace big::functions
 	using join_session_by_info = bool(*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
 
 	using generate_uuid = bool(*)(std::uint64_t* uuid);
+
+	using get_vehicle_gadget_array_size = int(*)(eVehicleGadgetType type);
 }

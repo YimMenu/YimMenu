@@ -3,6 +3,7 @@
 #include "hooking.hpp"
 #include <network/CNetGamePlayer.hpp>
 #include "gta/script_id.hpp"
+#include "util/notify.hpp"
 
 namespace big
 {
@@ -84,12 +85,7 @@ namespace big
 				if (action >= 15 && action <= 18) 
 				{
 					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
-					if (g->notifications.received_event.vehicle_temp_action.log)
-						LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent TASK_VEHICLE_TEMP_ACTION crash.";
-					if (g->notifications.received_event.vehicle_temp_action.notify)
-						g_notification_service->push_error("Protections", std::format("{} sent TASK_VEHICLE_TEMP_ACTION crash.", source_player->get_name()));
-
+					notify::crash_blocked(source_player, "vehicle temp action");
 					return;
 				}
 			}
@@ -221,7 +217,7 @@ namespace big
 				if (type != 7)
 				{
 					// most definitely a crash
-					g_notification_service->push_error("Protections", std::format("{} sent rope crash.", source_player->get_name()));
+					notify::crash_blocked(source_player, "rope");
 					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					return;
 				}
@@ -234,7 +230,7 @@ namespace big
 
 				if (unk2 == 0 && (unk3 == 0 || unk3 == 103))
 				{
-					g_notification_service->push_error("Protections", std::format("{} sent SCRIPT_WORLD_STATE_EVENT crash.", source_player->get_name()));
+					notify::crash_blocked(source_player, "pop group override");
 					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					return;
 				}
@@ -250,6 +246,7 @@ namespace big
 
 			if (hash == RAGE_JOAAT("WEAPON_UNARMED"))
 			{
+				notify::crash_blocked(source_player, "remove unarmed");
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
@@ -276,6 +273,11 @@ namespace big
 			}
 
 			buffer->Seek(0);
+			break;
+		}
+		case eNetworkEvents::GIVE_CONTROL_EVENT:
+		{
+			g->m_syncing_player = source_player;
 			break;
 		}
 		default:

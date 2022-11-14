@@ -12,6 +12,6 @@ namespace big
 		}
 
 		g->m_syncing_player = src;
-		g_hooking->get_original<hooks::received_clone_create>()(mgr, src, dst, object_type, object_id, object_flag, buffer, timestamp);
+		return g_hooking->get_original<hooks::received_clone_create>()(mgr, src, dst, object_type, object_id, object_flag, buffer, timestamp);
 	}
 }

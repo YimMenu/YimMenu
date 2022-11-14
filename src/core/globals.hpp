@@ -7,6 +7,8 @@
 #include "imgui.h"
 #include <bitset>
 
+class CNetGamePlayer;
+
 namespace big
 {
 	class menu_settings;
@@ -400,7 +402,7 @@ namespace big
 		int friend_count = 0;
 		int player_count = 0;
 
-		CNetGamePlayer* m_syncing_player;
+		CNetGamePlayer* m_syncing_player = nullptr;
 
 		debug debug{};
 		tunables tunables{};
