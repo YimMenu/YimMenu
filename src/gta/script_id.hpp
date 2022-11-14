@@ -12,7 +12,7 @@ namespace rage
 		virtual ~scriptIdBase() = default;                            // 0 (0x00)
 
 		// Assumes the script thread's identity.
-		virtual void assume_thread_identity(scrThread*);           // 1 (0x08)
+		virtual void assume_thread_identity(scrThread*) { return; };           // 1 (0x08)
 
 		// Returns whether the hash of the script id is valid.
 		virtual bool is_valid() { return false; };                                   // 2 (0x10)
@@ -27,10 +27,10 @@ namespace rage
 		virtual const char* get_name() { return nullptr; };                            // 5 (0x28)
 
 		// Serializes the script id from the buffer.
-		virtual void deserialize(datBitBuffer* buffer);            // 6 (0x30)
+		virtual void deserialize(datBitBuffer* buffer) { return; };            // 6 (0x30)
 
 		// Serializes the script id to the buffer.
-		virtual void serialize(datBitBuffer* buffer);              // 7 (0x38)
+		virtual void serialize(datBitBuffer* buffer) { return; };              // 7 (0x38)
 		
 		// Calculates some information with the position hash & instance id.
 		virtual std::uint32_t _0x40() { return 0; };                             // 8 (0x40)
@@ -39,10 +39,10 @@ namespace rage
 		virtual std::uint32_t _0x48() { return 0; };                             // 9 (0x48)
 
 		// Logs some information about the script id.
-		virtual void log_information(netLoggingInterface* logger); // 10 (0x50)
+		virtual void log_information(netLoggingInterface* logger) { return; }; // 10 (0x50)
 		
 		// Copies the information of other to this object.
-		virtual void copy_data(scriptIdBase *other);                // 11 (0x58)
+		virtual void copy_data(scriptIdBase *other) { return; };                // 11 (0x58)
 		
 		// Returns whether the other script id is equal.
 		virtual bool operator==(scriptIdBase*) { return false; };                    // 12 (0x60)
