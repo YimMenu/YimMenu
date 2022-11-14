@@ -277,6 +277,30 @@ namespace big
 		}
 		case eNetworkEvents::GIVE_CONTROL_EVENT:
 		{
+			uint32_t timestamp = buffer->Read<uint32_t>(32);
+			int count = buffer->Read<int>(2);
+			bool unk = buffer->Read<bool>(1);
+
+			if (count > 3)
+			{
+				count = 3;
+			}
+
+			for (int i = 0; i < count; i++)
+			{
+				int net_id = buffer->Read<int>(13);
+				eNetObjType object_type = buffer->Read<eNetObjType>(4);
+				int unk = buffer->Read<int>(3);
+
+				if (object_type < eNetObjType::NET_OBJ_TYPE_AUTOMOBILE || object_type > eNetObjType::NET_OBJ_TYPE_TRAIN)
+				{
+					notify::crash_blocked(source_player, "out of bounds give control type");
+					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+					return;
+				}
+			}
+
+			buffer->Seek(0);
 			g->m_syncing_player = source_player;
 			break;
 		}
