@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
-if(UNIX)
+option(USE_MINGW "Use MinGW toolchain and uasm compiler.")
+if(USE_MINGW)
     message(STATUS "Unix-like system detected. Using MinGW-gcc and uasm.")
 
     set(TOOLCHAIN_PREFIX "x86_64-w64-mingw32" CACHE STRING "Set toolchain. Default: x86_64-w64-mingw32")
