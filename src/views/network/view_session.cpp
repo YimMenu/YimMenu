@@ -56,7 +56,7 @@ namespace big
             if(const auto net_game_player = gta_util::get_network_player_mgr()->m_local_net_player; net_game_player)
 			{
                 if(g_pointers->m_send_chat_message(*g_pointers->m_send_chat_ptr, net_game_player->get_net_data(), msg, g->session.is_team))
-					notify::draw_chat(msg, net_game_player, g->session.is_team);
+					notify::draw_chat(msg, net_game_player->get_name(), g->session.is_team);
 			}
 		});
 
