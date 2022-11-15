@@ -33,7 +33,6 @@ namespace big
 		if (event_id > 91u)
 		{
 			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
 			return;
 		}
 
@@ -168,13 +167,15 @@ namespace big
 			break;
 		}
 		// player sending this event is a modder
-		case eNetworkEvents::NETWORK_CHECK_CODE_CRCS_EVENT:
 		case eNetworkEvents::REPORT_MYSELF_EVENT:
 		{
 			if (g->notifications.received_event.modder_detect.log)
 				LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent modder event.";
 			if (g->notifications.received_event.modder_detect.notify)
 				g_notification_service->push_warning("Protections", std::format("{} sent out a modder event.", source_player->get_name()));
+
+			if (auto plyr = g_player_service->get_by_id(source_player->m_player_id))
+				session::add_infraction(plyr, RAGE_JOAAT("trigger_ac"));
 
 			break;
 		}

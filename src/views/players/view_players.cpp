@@ -36,6 +36,9 @@ namespace big
 		const ImRect icons_box(icons_pos, icons_pos + icons_size);
 		ImGui::PopFont();
 
+		if (plyr->is_modder)
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.f, 0.1f, 0.1f, 1.f));
+
 		if (selected_player)
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
 
@@ -51,6 +54,9 @@ namespace big
 		ImGui::PopStyleVar();
 
 		if (selected_player)
+			ImGui::PopStyleColor();
+
+		if (plyr->is_modder)
 			ImGui::PopStyleColor();
 
 		// render icons on top of the player button

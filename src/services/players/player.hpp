@@ -45,6 +45,10 @@ namespace big
 		std::chrono::system_clock::time_point m_last_transition_msg_sent{};
 		int m_num_failed_transition_attempts = 0;
 
+		bool is_modder = false;
+		bool block_join = false;
+		int block_join_reason = 0;
+
 	protected:
 		bool equals(const CNetGamePlayer* net_game_player) const;
 

@@ -2,6 +2,7 @@
 #include "network/CNetGamePlayer.hpp"
 #include "natives.hpp"
 #include "script.hpp"
+#include "session.hpp"
 
 namespace big::notify
 {
@@ -23,6 +24,11 @@ namespace big::notify
 		else
 		{
 			g_notification_service->push_error("Protections", std::format("Blocked {} crash from unknown player", crash));
+		}
+
+		if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+		{
+			session::add_infraction(plyr, RAGE_JOAAT("crashed_player"));
 		}
 	}
 

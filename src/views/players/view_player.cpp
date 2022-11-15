@@ -1,6 +1,7 @@
 #include "gta_util.hpp"
 #include "services/pickups/pickup_service.hpp"
 #include "services/players/player_service.hpp"
+#include "services/player_database/player_database_service.hpp"
 #include "util/globals.hpp"
 #include "util/misc.hpp"
 #include "util/ped.hpp"
@@ -18,53 +19,6 @@ namespace big
 		
 		if (g_player_service->get_selected()->is_valid())
 		{
-			if (ImGui::TreeNode("Misc"))
-			{
-				components::button("Steal Outfit", [] {
-					ped::steal_outfit(
-						PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
-					);
-				});
-
-				ImGui::SameLine();
-
-				components::button("Steal Identity", [] {
-					ped::steal_identity(
-						PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
-					);
-				});
-
-				components::button("Clear Wanted Level", [] {
-					globals::clear_wanted_player(g_player_service->get_selected()->id());
-				});
-
-				ImGui::SameLine();
-
-				ImGui::Checkbox("Never Wanted", &g_player_service->get_selected()->never_wanted);
-
-				components::button("Give Health", [] {
-					g_pickup_service->give_player_health(g_player_service->get_selected()->id());
-				});
-
-				ImGui::SameLine();
-
-				components::button("Give Armour", [] {
-					g_pickup_service->give_player_armour(g_player_service->get_selected()->id());
-				});
-
-				components::button("Give Ammo", [] {
-					g_pickup_service->give_player_ammo(g_player_service->get_selected()->id());
-				});
-
-				ImGui::SameLine();
-
-				components::button("Give Weapons", [] {
-					g_pickup_service->give_player_weapons(g_player_service->get_selected()->id());
-				});
-
-				ImGui::TreePop();
-			}
-
 			if (ImGui::TreeNode("Info")) {
 
 				ImGui::Text("Player ID: %d", g_player_service->get_selected()->id());
@@ -164,6 +118,11 @@ namespace big
 					);
 				}
 
+				if (ImGui::Button("Add To Database"))
+				{
+					g_player_database_service->get_or_create_player(g_player_service->get_selected());
+				}
+
 				ImGui::TreePop();
 			}
 
@@ -183,6 +142,60 @@ namespace big
 					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), false);
 
 					teleport::into_vehicle(veh);
+				});
+
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Misc"))
+			{
+				components::button("Steal Outfit", []
+				{
+					ped::steal_outfit(
+						PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
+					);
+				});
+
+				ImGui::SameLine();
+
+				components::button("Steal Identity", []
+				{
+					ped::steal_identity(
+						PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
+					);
+				});
+
+				components::button("Clear Wanted Level", []
+				{
+					globals::clear_wanted_player(g_player_service->get_selected()->id());
+				});
+
+				ImGui::SameLine();
+
+				ImGui::Checkbox("Never Wanted", &g_player_service->get_selected()->never_wanted);
+
+				components::button("Give Health", []
+				{
+					g_pickup_service->give_player_health(g_player_service->get_selected()->id());
+				});
+
+				ImGui::SameLine();
+
+				components::button("Give Armour", []
+				{
+					g_pickup_service->give_player_armour(g_player_service->get_selected()->id());
+				});
+
+				components::button("Give Ammo", []
+				{
+					g_pickup_service->give_player_ammo(g_player_service->get_selected()->id());
+				});
+
+				ImGui::SameLine();
+
+				components::button("Give Weapons", []
+				{
+					g_pickup_service->give_player_weapons(g_player_service->get_selected()->id());
 				});
 
 				ImGui::TreePop();

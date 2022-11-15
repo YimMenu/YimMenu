@@ -28,6 +28,7 @@ namespace big
 		static void root();
 		static void self();
 		static void session();
+		static void player_database();
 		static void settings();
 		static void vehicle();
 		static void lsc();
