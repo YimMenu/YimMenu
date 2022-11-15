@@ -81,7 +81,7 @@ namespace big
 				uint16_t unk2 = buffer->Read<uint16_t>(13);
 				uint32_t action = buffer->Read<uint32_t>(8);
 
-				if (action >= 15 && action <= 18) 
+				if (action >= 15 && action <= 18 || action == 33) 
 				{
 					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 
