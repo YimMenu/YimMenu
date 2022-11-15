@@ -4,6 +4,7 @@
 #include "pointers.hpp"
 #include "services/players/player_service.hpp"
 #include "services/chat/chat_service.hpp"
+#include "util/notify.hpp"
 
 namespace big
 {
@@ -41,9 +42,13 @@ namespace big
 		ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
 		components::input_text_with_hint("###Message", "Message", &g->chat.message, input_text_flags, [&reclaim_focus]
 		{
-			g_pointers->m_send_chat_message(*g_pointers->m_send_chat_ptr + 0x78, (__int64)g_local_player->m_player_info + 0x88, g->chat.message.c_str(), g->chat.local);
-			g_chat_service->add_msg(g_player_service->get_self()->get_net_game_player(), g->chat.message, g->chat.local);
-			LOG(INFO) << g_player_service->get_self()->get_net_game_player()->get_name() << (g->chat.local ? " [LOCAL] " : " [ALL] ") << g->chat.message;
+			const auto net_game_player = g_player_service->get_self()->get_net_game_player();
+			if(g_pointers->m_send_chat_message(*g_pointers->m_send_chat_ptr, net_game_player->get_net_data(), (char*)g->chat.message.c_str(), g->chat.local))
+					notify::draw_chat((char*)g->chat.message.c_str(), net_game_player->get_name(), g->chat.local);
+
+			g_chat_service->add_msg(net_game_player, g->chat.message, g->chat.local);
+			LOG(INFO) << net_game_player->get_name() << (g->chat.local ? " [LOCAL] " : " [ALL] ") << g->chat.message;
+			
 			g->chat.message = "";
 			reclaim_focus = true;
 		});

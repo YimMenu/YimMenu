@@ -52,9 +52,6 @@ namespace big
 		rage::GenericPool* m_pickup_pool{};
 		rage::GenericPool* m_camera_pool{};
 
-		__int64* m_send_chat_ptr{};
-		functions::send_chat_message* m_send_chat_message{};
-
 		PVOID m_get_pool_type;
 
 		functions::get_connection_peer m_get_connection_peer;
@@ -161,6 +158,9 @@ namespace big
 
 		PVOID m_invalid_mods_crash_detour{};
 
+		int64_t** m_send_chat_ptr{};
+		functions::send_chat_message m_send_chat_message{};
+
 		PVOID m_init_native_tables{};
 		PVOID m_script_vm{};
 
@@ -170,8 +170,8 @@ namespace big
 		rage::rlGamerInfo* m_player_info_gamer_info{}; // the gamer info that is applied to CPlayerInfo
 		CCommunications** m_communications{};
 
-		PVOID m_update_presence_attribute_int;
-		PVOID m_update_presence_attribute_string;
+		PVOID m_update_presence_attribute_int{};
+		PVOID m_update_presence_attribute_string{};
 	};
 
 	inline pointers* g_pointers{};

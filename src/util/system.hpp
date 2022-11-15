@@ -1,5 +1,6 @@
 #pragma once
 #include "crossmap.hpp"
+#include "file_manager.hpp"
 #include "pointers.hpp"
 #include "memory/module.hpp"
 
@@ -7,13 +8,10 @@ namespace big::system
 {
 	inline void dump_entry_points()
 	{
-		DWORD64 base_address = memory::module(nullptr).begin().as<DWORD64>();
+		DWORD64 base_address = memory::module("GTA5.exe").begin().as<DWORD64>();
 
-		std::string path = std::getenv("appdata");
-		path += "\\BigBaseV2\\entrypoints.txt";
-
-		std::ofstream file;
-		file.open(path, std::ios::out |std::ios::trunc);
+		const auto file_path = g_file_manager->get_project_file("./entrypoints.txt");
+		auto file = std::ofstream(file_path.get_path(), std::ios::out | std::ios::trunc);
 
 		for (auto &map : g_crossmap)
 		{
@@ -27,7 +25,7 @@ namespace big::system
 
 	inline uintptr_t get_relative_address(void* ptr)
 	{
-		uintptr_t base_address = memory::module(nullptr).begin().as<uintptr_t>();
+		uintptr_t base_address = memory::module("GTA5.exe").begin().as<uintptr_t>();
 
 		return (uintptr_t)ptr - base_address;
 	}

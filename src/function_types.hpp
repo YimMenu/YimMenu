@@ -3,6 +3,7 @@
 #include "network/snSession.hpp"
 #include "rage/rlSessionByGamerTaskResult.hpp"
 #include "datanodes/player/CPlayerGameStateDataNode.hpp"
+#include "rage/rlGamerInfo.hpp"
 
 namespace big::functions
 {
@@ -13,7 +14,6 @@ namespace big::functions
 	using get_net_game_player = CNetGamePlayer*(*)(Player player);
 
 	using trigger_script_event = void(*)(int event_group, int64_t* args, int arg_count, int player_bits);
-
 
 	using increment_stat_event = bool(*)(uint64_t net_event_struct, int64_t sender, int64_t a3);
 
@@ -45,8 +45,6 @@ namespace big::functions
 	using register_file_t = uint32_t * (*)(int*, const char*, bool, const char*, bool);
 
 	using get_net_player_from_unk = CNetGamePlayer*(__int64);
-
-	using send_chat_message = bool(__int64 ptr, __int64 peerId, const char* message, bool isTeam);
 
 	using get_connection_peer = __int64 (*)(rage::netConnectionManager* manager, uint64_t peer_id);
 
@@ -82,4 +80,6 @@ namespace big::functions
 	using join_session_by_info = bool(*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
 
 	using generate_uuid = bool(*)(std::uint64_t* uuid);
+
+	using send_chat_message = bool(*)(int64_t* send_chat_ptr, rage::rlGamerInfo* game_info, char* message, bool is_team);
 }

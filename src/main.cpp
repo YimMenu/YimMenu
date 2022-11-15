@@ -43,7 +43,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			while (!FindWindow("grcWindow", "Grand Theft Auto V"))
 			{
 				cant_find_window = true;
-				std::this_thread::sleep_for(1s);
+				std::this_thread::sleep_for(100ms);
 			}
 
 			if(cant_find_window)

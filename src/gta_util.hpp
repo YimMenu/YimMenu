@@ -4,6 +4,7 @@
 #include "gta/tls_context.hpp"
 #include "ped/CPedFactory.hpp"
 #include "pointers.hpp"
+#include "network/CNetworkPlayerMgr.hpp"
 
 namespace big::gta_util
 {

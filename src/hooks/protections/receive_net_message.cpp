@@ -68,7 +68,7 @@ namespace big
 					g_chat_service->add_msg(player->get_net_game_player(), message, is_team);
 
 					if (g->session.log_chat_messages)
-						LOG(INFO) << "[CHAT] from " << player->get_name() << ": " << message << (is_team) ? " [TEAM]" : " [ALL]";
+						LOG(INFO) << "[CHAT] from " << player->get_name() << ": " << message << (is_team ? " [TEAM]" : " [ALL]");
 
 					break;
 				}
