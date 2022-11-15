@@ -7,6 +7,7 @@
 #include "util/ped.hpp"
 #include "util/teleport.hpp"
 #include "views/view.hpp"
+#include <network/CNetworkPlayerMgr.hpp>
 
 namespace big
 {
@@ -149,6 +150,12 @@ namespace big
 
 			if (ImGui::TreeNode("Misc"))
 			{
+				// TODO: DON'T FORGET TO REMOVE AFTER TESTING
+				components::button("Desync", []
+				{
+					(*g_pointers->m_network_player_mgr)->RemovePlayer(g_player_service->get_selected()->get_net_game_player());
+				});
+
 				components::button("Steal Outfit", []
 				{
 					ped::steal_outfit(

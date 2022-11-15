@@ -175,7 +175,7 @@ namespace big
 				g_notification_service->push_warning("Protections", std::format("{} sent out a modder event.", source_player->get_name()));
 
 			if (auto plyr = g_player_service->get_by_id(source_player->m_player_id))
-				session::add_infraction(plyr, RAGE_JOAAT("trigger_ac"));
+				session::add_infraction(plyr, Infraction::TRIGGERED_ANTICHEAT);
 
 			break;
 		}

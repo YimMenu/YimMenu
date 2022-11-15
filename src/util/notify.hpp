@@ -28,7 +28,7 @@ namespace big::notify
 
 		if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 		{
-			session::add_infraction(plyr, RAGE_JOAAT("crashed_player"));
+			session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
 		}
 	}
 

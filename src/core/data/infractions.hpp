@@ -3,14 +3,26 @@
 
 namespace big
 {
-    inline std::unordered_map<rage::joaat_t, const char*> infractions =
+	// Add new values to the bottom
+	enum class Infraction
 	{
-		{RAGE_JOAAT("desync_protection"), "Used desync protections"},
-		{RAGE_JOAAT("breakup_detected"), "Kicked someone using breakup kick"},
-		{RAGE_JOAAT("lost_connection_kick"), "Tried to kick someone using lost connection kick"},
-		{RAGE_JOAAT("spoofing_rid"), "Had spoofed RID"},
-		{RAGE_JOAAT("trigger_ac"), "Triggered Rockstar's anticheat"},
-		{RAGE_JOAAT("crashed_player"), "Tried to crash you"},
-		{RAGE_JOAAT("kicked_player"), "Tried to kick you"}
+		DESYNC_PROTECTION,
+		BREAKUP_KICK_DETECTED,
+		LOST_CONNECTION_KICK_DETECTED,
+		SPOOFED_ROCKSTAR_ID,
+		TRIGGERED_ANTICHEAT,
+		TRIED_CRASH_PLAYER,
+		TRIED_KICK_PLAYER
+	};
+
+    inline std::unordered_map<Infraction, const char*> infraction_desc =
+	{
+		{Infraction::DESYNC_PROTECTION, "Used desync protections"},
+		{Infraction::BREAKUP_KICK_DETECTED, "Kicked someone using breakup kick"},
+		{Infraction::LOST_CONNECTION_KICK_DETECTED, "Tried to kick someone using lost connection kick"},
+		{Infraction::SPOOFED_ROCKSTAR_ID, "Had spoofed RID"},
+		{Infraction::TRIGGERED_ANTICHEAT, "Triggered Rockstar's anticheat"},
+		{Infraction::TRIED_CRASH_PLAYER, "Tried to crash you"},
+		{Infraction::TRIED_KICK_PLAYER, "Tried to kick you"}
 	};
 }

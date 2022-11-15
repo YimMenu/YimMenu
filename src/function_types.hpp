@@ -2,6 +2,8 @@
 #include <datanodes/player/CPlayerGameStateDataNode.hpp>
 #include <datanodes/vehicle/CVehicleGadgetDataNode.hpp>
 
+class CMsgJoinResponse;
+
 namespace big::functions
 {
 	using run_script_threads = bool(*)(std::uint32_t ops_to_execute);
@@ -70,4 +72,6 @@ namespace big::functions
 	using generate_uuid = bool(*)(std::uint64_t* uuid);
 
 	using get_vehicle_gadget_array_size = int(*)(eVehicleGadgetType type);
+
+	using write_join_response_data = bool(*)(CMsgJoinResponse* response, void* data, int size, uint32_t* size_used);
 }

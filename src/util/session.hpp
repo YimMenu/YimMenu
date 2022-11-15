@@ -92,12 +92,12 @@ namespace big::session
 		g_notification_service->push_error("RID Joiner", "Target Player is offline?");
 	}
 
-	inline void add_infraction(player_ptr player, rage::joaat_t infraction)
+	inline void add_infraction(player_ptr player, Infraction infraction)
 	{
 		auto plyr = g_player_database_service->get_or_create_player(player);
 		plyr->is_modder = true;
 		player->is_modder = true;
-		plyr->infractions.insert(infraction);
+		plyr->infractions.insert((int)infraction);
 		g_player_database_service->save();
 	}
 }

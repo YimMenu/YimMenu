@@ -156,6 +156,9 @@ namespace big
 		PVOID m_serialize_ped_inventory_data_node;
 		PVOID m_serialize_vehicle_gadget_data_node;
 		functions::get_vehicle_gadget_array_size m_get_vehicle_gadget_array_size;
+
+		PVOID m_handle_join_request;
+		functions::write_join_response_data m_write_join_response_data;
 	};
 
 	inline pointers* g_pointers{};

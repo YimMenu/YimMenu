@@ -72,6 +72,8 @@ namespace big
 		detour_hook_helper::add<hooks::serialize_ped_inventory_data_node>("SPIDN", g_pointers->m_serialize_ped_inventory_data_node);
 		detour_hook_helper::add<hooks::serialize_vehicle_gadget_data_node>("SVGDN", g_pointers->m_serialize_vehicle_gadget_data_node);
 
+		detour_hook_helper::add<hooks::handle_join_request>("HJR", g_pointers->m_handle_join_request);
+
 		g_hooking = this;
 	}
 

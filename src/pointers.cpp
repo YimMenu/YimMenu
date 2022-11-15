@@ -506,6 +506,18 @@ namespace big
 			m_get_vehicle_gadget_array_size = ptr.as<functions::get_vehicle_gadget_array_size>();
 		});
 
+		// Handle Join Request
+		main_batch.add("HJR", "48 8B C4 4C 89 48 20 4C 89 40 18 48 89 50 10 55 53 56 57 41 54 41 55 41 56 41 57 48 8D A8 E8 FE", [this](memory::handle ptr)
+		{
+			m_handle_join_request = ptr.as<PVOID>();
+		});
+
+		// Handle Join Request
+		main_batch.add("WJRD", "E8 ? ? ? ? 48 8D 8D 90 00 00 00 F6 D8", [this](memory::handle ptr)
+		{
+			m_write_join_response_data = ptr.add(1).rip().as<functions::write_join_response_data>();
+		});
+
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
 

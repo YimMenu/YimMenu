@@ -8,13 +8,19 @@
 #include "vmt_hook.hpp"
 #include "MinHook.h"
 #include "gta/enums.hpp"
-#include "datanodes/player/CPlayerGamerDataNode.hpp"
-#include "datanodes/player/CPlayerGameStateDataNode.hpp"
-#include "rage/rlMetric.hpp"
 
+class CPlayerGamerDataNode;
+class CPlayerGameStateDataNode;
 class CPedInventoryDataNode;
 class CDynamicEntityGameStateDataNode;
 class CVehicleGadgetDataNode;
+class CJoinRequestContext;
+
+namespace rage
+{
+	class rlMetric;
+	class snSession;
+}
 
 namespace big
 {
@@ -80,6 +86,7 @@ namespace big
 		static void serialize_ped_inventory_data_node(CPedInventoryDataNode* node, rage::CSyncDataBase* data);
 		static void serialize_dynamic_entity_game_state_data_node(CDynamicEntityGameStateDataNode* node, rage::CSyncDataBase* data);
 		static void serialize_vehicle_gadget_data_node(CVehicleGadgetDataNode* node, rage::CSyncDataBase* data);
+		static bool handle_join_request(Network* network, rage::snSession* session, rage::rlGamerInfo* player_info, CJoinRequestContext* ctx, bool is_transition_session);
 	};
 
 	class minhook_keepalive

@@ -64,7 +64,7 @@ namespace big
 			return &m_players[player->get_net_data()->m_gamer_handle_2.m_rockstar_id];
 		else
 		{
-			m_players[player->get_net_data()->m_gamer_handle_2.m_rockstar_id] = { player->get_name(), player->get_net_data()->m_gamer_handle_2.m_rockstar_id, false, 0, false };
+			m_players[player->get_net_data()->m_gamer_handle_2.m_rockstar_id] = { player->get_name(), player->get_net_data()->m_gamer_handle_2.m_rockstar_id };
 			save();
 			return &m_players[player->get_net_data()->m_gamer_handle_2.m_rockstar_id];
 		}

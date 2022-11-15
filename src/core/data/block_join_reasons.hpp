@@ -4,7 +4,7 @@ namespace big
 {
     inline std::unordered_map<int, const char*> block_join_reasons =
 	{
-		{ 0, "None" },
+		{ 1, "None" },
 		{ 5, "Been Voted Out" }, // You have already been voted out of this game session.
 		{ 7, "Incompatible Assets" }, // Failed to join session due to incompatible assets.
 		{ 8, "Session Full" }, // The session you're trying to join is currently full.

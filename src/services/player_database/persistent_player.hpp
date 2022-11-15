@@ -8,11 +8,11 @@ namespace big
 	struct persistent_player
 	{
 		std::string name;
-		std::uint64_t rockstar_id;
-		bool block_join;
-		int block_join_reason;
-		bool is_modder;
-		std::unordered_set<rage::joaat_t> infractions;
+		std::uint64_t rockstar_id = 0;
+		bool block_join = false;
+		int block_join_reason = 1;
+		bool is_modder = false;
+		std::unordered_set<int> infractions;
 	};
 
 	static void to_json(nlohmann::json& j, const persistent_player& player)

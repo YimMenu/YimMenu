@@ -19,7 +19,7 @@ namespace big
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("Player", "Search", search, sizeof(search), ImGuiInputTextFlags_None);
 
-		if (ImGui::ListBoxHeader("###players", { 200, static_cast<float>(*g_pointers->m_resolution_y - 388 - 38 * 4) }))
+		if (ImGui::ListBoxHeader("###players", { 180, static_cast<float>(*g_pointers->m_resolution_y - 388 - 38 * 4) }))
 		{
 		    auto& item_arr = g_player_database_service->get_players();
 			if (item_arr.size() > 0)
@@ -60,15 +60,15 @@ namespace big
 		if (auto selected = g_player_database_service->get_selected())
 		{
 			ImGui::SameLine();
-			if (ImGui::BeginChild("###selected_player", { 500, static_cast<float>(*g_pointers->m_resolution_y - 388 - 38 * 4) }))
+			if (ImGui::BeginChild("###selected_player", { 520, static_cast<float>(*g_pointers->m_resolution_y - 388 - 38 * 4) }, false, ImGuiWindowFlags_NoBackground))
 			{
-				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 1.0f);
 				if (ImGui::InputText("Name", name_buf, sizeof(name_buf)))
 				{
 					current_player.name = name_buf;
 				}
 
 				ImGui::InputScalar("Rockstar ID", ImGuiDataType_S64, &current_player.rockstar_id);
+				ImGui::Checkbox("Is Modder", &current_player.is_modder);
 				ImGui::Checkbox("Block Join", &current_player.block_join);
 
 				if (ImGui::BeginCombo("Block Join Alert Message", block_join_reasons[current_player.block_join_reason]))
@@ -92,7 +92,6 @@ namespace big
 				if (ImGui::IsItemHovered())
 					ImGui::SetTooltip("Only works as host");
 
-				ImGui::Checkbox("Is Modder", &current_player.is_modder);
 
 				if (!current_player.infractions.empty())
 				{
@@ -100,7 +99,7 @@ namespace big
 
 					for (auto& infraction : current_player.infractions)
 					{
-						ImGui::BulletText(infractions[infraction]);
+						ImGui::BulletText(infraction_desc[(Infraction)infraction]);
 					}
 				}
 
@@ -124,7 +123,6 @@ namespace big
 				{
 					g_player_database_service->remove_rockstar_id(selected->rockstar_id);
 				}
-				ImGui::PopStyleVar();
 			}
 			ImGui::EndChild();
 		}
