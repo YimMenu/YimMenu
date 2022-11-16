@@ -32,7 +32,7 @@ add_library(YimMenu MODULE "${SRC_MAIN}")
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_property(TARGET YimMenu PROPERTY CXX_STANDARD 23) # 23 Because std::format is not avalible in std:c++20 for some reason. Maybe it's because i use v142 toolset.
 
-source_group(TREE "${SRC_DIR}" PREFIX "YimMenu" FILES "${SRC_MAIN}" )
+source_group(TREE ${SRC_DIR} PREFIX "src" FILES ${SRC_MAIN} )
 
 target_include_directories(YimMenu PRIVATE 
     "${SRC_DIR}"
