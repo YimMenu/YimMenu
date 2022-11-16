@@ -542,7 +542,7 @@ namespace big
 			m_sort_session_details = ptr.sub(0x10).as<PVOID>();
 		});
 
-		auto mem_region = memory::module(nullptr);
+		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 
 		memory::batch socialclub_batch;

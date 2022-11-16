@@ -199,7 +199,6 @@ namespace big
 			bool force_session_host = false;
 			bool player_magnet_enabled = false;
 			int player_magnet_count = 32;
-			bool force_session_host = false;
 			bool is_team = false;
 		};
 
@@ -612,7 +611,6 @@ namespace big
 			this->session.force_session_host = j["session"]["force_session_host"];
 			this->session.player_magnet_enabled = j["session"]["player_magnet_enabled"];
 			this->session.player_magnet_count = j["session"]["player_magnet_count"];
-			this->session.force_session_host = j["session"]["force_session_host"];
 			this->session.is_team = j["session"]["is_team"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
@@ -932,8 +930,7 @@ namespace big
 						{ "decloak_players", this->session.decloak_players },
 						{ "force_session_host", this->session.force_session_host },
 						{ "player_magnet_enabled", this->session.player_magnet_enabled },
-						{ "player_magnet_count", this->session.player_magnet_count }
-						{ "force_session_host", this->session.force_session_host },
+						{ "player_magnet_count", this->session.player_magnet_count },
 						{ "is_team", this->session.is_team }
 					}
 				},
