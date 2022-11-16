@@ -64,9 +64,9 @@ cd YimMenu
 
     Then, just open Visual Studio, Open a local folder, and select the `YimMenu` folder that the `git clone` command just created.
 
-  Let the CMake extension generate the needed files for building, you can follow the progress in the Output tab of Visual Studio.
+    Let the CMake extension generate the needed files for building, you can follow the progress in the Output tab of Visual Studio.
 
-  Then, you can just build by using the Build menu at the top and clicking Build All.
+    Then, you can just build by using the Build menu at the top and clicking Build All.
 
 - Other OSs / IDEs
 
