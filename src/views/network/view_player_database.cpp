@@ -19,7 +19,7 @@ namespace big
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("Player", "Search", search, sizeof(search), ImGuiInputTextFlags_None);
 
-		if (ImGui::ListBoxHeader("###players", { 180, static_cast<float>(*g_pointers->m_resolution_y - 388 - 38 * 4) }))
+		if (ImGui::ListBoxHeader("###players", { 180, static_cast<float>(*g_pointers->m_resolution_y - 400 - 38 * 4) }))
 		{
 		    auto& item_arr = g_player_database_service->get_players();
 			if (item_arr.size() > 0)
@@ -125,6 +125,13 @@ namespace big
 				}
 			}
 			ImGui::EndChild();
+		}
+
+		if (ImGui::Button("Remove All"))
+		{
+			g_player_database_service->set_selected(nullptr);
+			g_player_database_service->get_players().clear();
+			g_player_database_service->save();
 		}
 	}
 }

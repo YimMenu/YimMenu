@@ -243,7 +243,7 @@ namespace big
 		});
 
 		// Send NET Info to Lobby
-		main_batch.add("SNITL", "33 DB 48 83 C1 68 45 8B F0 ", [this](memory::handle ptr)
+		main_batch.add("SNITL", "33 DB 48 83 C1 68 45 8B F0", [this](memory::handle ptr)
 		{
 			m_send_net_info_to_lobby = ptr.sub(0x26).as<decltype(m_send_net_info_to_lobby)>();
 		});
