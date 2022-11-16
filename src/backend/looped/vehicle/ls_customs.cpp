@@ -9,6 +9,9 @@ namespace big
 	static bool state = false;
 	static bool busy = false;
 
+	constexpr auto CARMOD_SHOP_STRUCT = 728; // struct<688> Local_
+	constexpr auto CARMOD_SHOP_CUTSCENE = 2149; // "carmod_fam1" -- first boolean local below it
+
 	void looped::vehicle_ls_customs()
 	{
 		if (busy) return;
@@ -20,12 +23,12 @@ namespace big
 			if (
 				auto carmod_shop_thread = gta_util::find_script_thread(hash);
 				carmod_shop_thread &&
-				*script_local(carmod_shop_thread, 728).at(11).as<int*>() != 4
+				*script_local(carmod_shop_thread, CARMOD_SHOP_STRUCT).at(11).as<int*>() != 4
 				)
 			{
 				g->vehicle.ls_customs = false;
 
-				*script_local(carmod_shop_thread, 728).as<int*>() = 1; // cleanup
+				*script_local(carmod_shop_thread, CARMOD_SHOP_STRUCT).as<int*>() = 1; // cleanup
 			}
 		}
 
@@ -55,10 +58,10 @@ namespace big
 			{
 				if (auto carmod_shop_thread = gta_util::find_script_thread(hash); carmod_shop_thread)
 				{
-					*script_local(carmod_shop_thread, 728).at(406).as<int*>() = veh;
-					*script_local(carmod_shop_thread, 2149).as<bool*>() = false; // skips cutscene that's invisible
+					*script_local(carmod_shop_thread, CARMOD_SHOP_STRUCT).at(406).as<int*>() = veh; // "HIDDEN_RADIO_09_HIPHOP_OLD"
+					*script_local(carmod_shop_thread, CARMOD_SHOP_CUTSCENE).as<bool*>() = false; // skips cutscene that's invisible
 
-					*script_local(carmod_shop_thread, 728).at(11).as<int*>() = 4;
+					*script_local(carmod_shop_thread, CARMOD_SHOP_STRUCT).at(11).as<int*>() = 4;
 				}
 			}
 		}

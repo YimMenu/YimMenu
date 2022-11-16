@@ -422,6 +422,18 @@ namespace big
 			m_invalid_mods_crash_detour = ptr.add(1).rip().as<PVOID>();
 		});
 
+		// Send Chat Ptr
+		main_batch.add("SCP", "41 83 7F ? ? 4C 8B 35", [this](memory::handle ptr)
+		{
+			m_send_chat_ptr = ptr.add(8).rip().as<int64_t**>();
+		});
+
+		// Send Chat Message
+		main_batch.add("SCM", "48 83 EC 20 48 8B F9 48 8B CA 45 8A F1", [this](memory::handle ptr)
+		{
+			m_send_chat_message = ptr.sub(21).as<functions::send_chat_message>();
+		});
+
 		// Format Metric For Sending
 		main_batch.add("FMFS", "48 8B C4 48 89 58 ? 48 89 70 ? 48 89 78 ? 4C 89 70 ? 55 48 8D A8 ? ? ? ? 48 81 EC ? ? ? ? 48 83 3D", [this](memory::handle ptr)
 		{
@@ -543,7 +555,12 @@ namespace big
 			m_update_presence_attribute_string = presence_data_vft[3];
 		});
 
-		socialclub_batch.run(memory::module("socialclub.dll"));
+		auto sc_module = memory::module("socialclub.dll");
+		if (sc_module.wait_for_module())
+		{
+			socialclub_batch.run(sc_module);
+		}
+		else LOG(WARNING) << "socialclub.dll module was not loaded within the time limit.";
 
 		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 F5 01 00 00"))
 		{

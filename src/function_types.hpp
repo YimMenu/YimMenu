@@ -81,4 +81,8 @@ namespace big::functions
 	using write_join_response_data = bool(*)(CMsgJoinResponse* response, void* data, int size, uint32_t* size_used);
 
 	using queue_packet = bool(*)(rage::netConnectionManager* mgr, int msg_id, void* data, int size, int flags, void* unk);
+
+	using generate_uuid = bool(*)(std::uint64_t* uuid);
+
+	using send_chat_message = bool(*)(int64_t* send_chat_ptr, rage::rlGamerInfo* game_info, char* message, bool is_team);
 }
