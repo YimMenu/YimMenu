@@ -197,6 +197,8 @@ namespace big
 			bool log_text_messages = false;
 			bool decloak_players = false;
 			bool force_session_host = false;
+			bool player_magnet_enabled = false;
+			int player_magnet_count = 32;
 		};
 
 		struct settings {
@@ -606,6 +608,8 @@ namespace big
 			this->session.disable_chat_filter = j["session"]["disable_chat_filter"];
 			this->session.decloak_players = j["session"]["decloak_players"];
 			this->session.force_session_host = j["session"]["force_session_host"];
+			this->session.player_magnet_enabled = j["session"]["player_magnet_enabled"];
+			this->session.player_magnet_count = j["session"]["player_magnet_count"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -922,7 +926,9 @@ namespace big
 						{ "log_text_messages", this->session.log_text_messages },
 						{ "disable_chat_filter", this->session.disable_chat_filter },
 						{ "decloak_players", this->session.decloak_players },
-						{ "force_session_host", this->session.force_session_host }
+						{ "force_session_host", this->session.force_session_host },
+						{ "player_magnet_enabled", this->session.player_magnet_enabled },
+						{ "player_magnet_count", this->session.player_magnet_count }
 					}
 				},
 				{

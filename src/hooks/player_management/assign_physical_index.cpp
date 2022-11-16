@@ -3,6 +3,9 @@
 #include "services/players/player_service.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "util/notify.hpp"
+#include "packet.hpp"
+#include "gta_util.hpp"
+#include <network/Network.hpp>
 
 namespace big
 {
@@ -60,6 +63,14 @@ namespace big
 							entry->name = plyr->get_name();
 							g_player_database_service->save();
 						}
+					}
+
+					if (auto snplyr = plyr->get_session_player())
+					{
+						packet msg{};
+						msg.write_message(rage::eNetMessage::MsgSessionEstablishedRequest);
+						msg.write<uint64_t>(gta_util::get_network()->m_game_session_ptr->m_rline_session.m_session_id, 64);
+						msg.send(snplyr->m_msg_id);
 					}
 				}
 			});

@@ -74,6 +74,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::handle_join_request>("HJR", g_pointers->m_handle_join_request);
 
+		detour_hook_helper::add<hooks::sort_session_details>("SSD", g_pointers->m_sort_session_details);
+
 		g_hooking = this;
 	}
 

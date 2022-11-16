@@ -159,6 +159,10 @@ namespace big
 
 		PVOID m_handle_join_request;
 		functions::write_join_response_data m_write_join_response_data;
+
+		functions::queue_packet m_queue_packet;
+
+		PVOID m_sort_session_details;
 	};
 
 	inline pointers* g_pointers{};

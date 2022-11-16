@@ -7,7 +7,18 @@
 #include "util/ped.hpp"
 #include "util/teleport.hpp"
 #include "views/view.hpp"
-#include <network/CNetworkPlayerMgr.hpp>
+#include <network/Network.hpp>
+#include "packet.hpp"
+
+void gamer_handle_serialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
+{
+	buf.Write<uint8_t>(*reinterpret_cast<uint8_t*>(&hnd.m_platform), 8);
+	if (*reinterpret_cast<uint8_t*>(&hnd.m_platform) == 3)
+	{
+		buf.WriteInt64(*(int64_t*)&hnd.m_rockstar_id, 64);
+		buf.Write<uint8_t>(*reinterpret_cast<uint8_t*>(reinterpret_cast<__int64>(&hnd) + 9), 8);
+	}
+}
 
 namespace big
 {
@@ -151,9 +162,20 @@ namespace big
 			if (ImGui::TreeNode("Misc"))
 			{
 				// TODO: DON'T FORGET TO REMOVE AFTER TESTING
-				components::button("Desync", []
+				components::button("Kick", []
 				{
-					(*g_pointers->m_network_player_mgr)->RemovePlayer(g_player_service->get_selected()->get_net_game_player());
+					packet msg{};
+					msg.write_message(rage::eNetMessage::MsgLostConnectionToHost);
+					msg.write<uint64_t>(gta_util::get_network()->m_game_session_ptr->m_rline_session.m_session_id, 64);
+					gamer_handle_serialize((*(rage::rlGamerHandle*)(&g_player_service->get_selected()->get_net_data()->m_gamer_handle_2.m_rockstar_id)), msg);
+					for (auto& [_, plyr] : g_player_service->players())
+					{
+						if (plyr->is_host())
+						{
+							msg.send(plyr->get_session_player()->m_msg_id);
+							break;
+						}
+					}
 				});
 
 				components::button("Steal Outfit", []

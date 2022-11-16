@@ -518,6 +518,18 @@ namespace big
 			m_write_join_response_data = ptr.add(1).rip().as<functions::write_join_response_data>();
 		});
 
+		// Queue Packet
+		main_batch.add("QP", "E8 ? ? ? ? 84 C0 74 4D B3 01", [this](memory::handle ptr)
+		{
+			m_queue_packet = ptr.add(1).rip().as<functions::queue_packet>();
+		});
+
+		// Sort Session Details
+		main_batch.add("SGS", "C3 0F 2E 42 0C", [this](memory::handle ptr)
+		{
+			m_sort_session_details = ptr.sub(0x10).as<PVOID>();
+		});
+
 		auto mem_region = memory::module(nullptr);
 		main_batch.run(mem_region);
 

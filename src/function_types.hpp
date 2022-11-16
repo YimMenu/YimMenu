@@ -4,6 +4,11 @@
 
 class CMsgJoinResponse;
 
+namespace rage
+{
+	class netConnectionManager;
+}
+
 namespace big::functions
 {
 	using run_script_threads = bool(*)(std::uint32_t ops_to_execute);
@@ -39,7 +44,7 @@ namespace big::functions
 	using write_bitbuf_int64 = bool(*)(rage::datBitBuffer* buffer, int64_t val, int bits);
 	using write_bitbuf_int32 = bool(*)(rage::datBitBuffer* buffer, int32_t val, int bits);
 	using write_bitbuf_bool = bool(*)(rage::datBitBuffer* buffer, bool val, int bits);
-	using write_bitbuf_array = bool(*)(rage::datBitBuffer* buffer, uint8_t* val, int bits, int unk);
+	using write_bitbuf_array = bool(*)(rage::datBitBuffer* buffer, void* val, int bits, int unk);
 
 	// Bitbuffer read/write END
 	// Received Event Signatures START
@@ -74,4 +79,6 @@ namespace big::functions
 	using get_vehicle_gadget_array_size = int(*)(eVehicleGadgetType type);
 
 	using write_join_response_data = bool(*)(CMsgJoinResponse* response, void* data, int size, uint32_t* size_used);
+
+	using queue_packet = bool(*)(rage::netConnectionManager* mgr, int msg_id, void* data, int size, int flags, void* unk);
 }

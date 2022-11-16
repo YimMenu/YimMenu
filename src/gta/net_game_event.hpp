@@ -47,7 +47,7 @@ namespace rage
 	class datBitBuffer
 	{
 	public:
-		datBitBuffer(uint8_t* data, uint32_t size) {
+		datBitBuffer(void* data, uint32_t size) {
 			m_data = data;
 			m_bitOffset = 0;
 			m_maxBit = size * 8;
@@ -82,7 +82,7 @@ namespace rage
 				return 0;
 			auto const bufPos = m_bitsRead + m_bitOffset;
 			auto const initialBitOffset = bufPos & 0b111;
-			auto const start = &m_data[bufPos / 8];
+			auto const start = &((uint8_t*)m_data)[bufPos / 8];
 			auto const next = &start[1];
 			auto result = (start[0] << initialBitOffset) & 0xff;
 			for (auto i = 0; i < ((numBits - 1) / 8); i++) {
@@ -175,7 +175,7 @@ namespace rage
 			}
 			return false;
 		}
-		bool WriteArray(uint8_t* array, int size) {
+		bool WriteArray(void* array, int size) {
 			return big::g_pointers->m_write_bitbuf_array(this, array, size, 0);
 		}
 		bool ReadArray(PVOID array, int size) {
@@ -203,8 +203,16 @@ namespace rage
 
 			return T(val);
 		}
+
+		template<typename T>
+		inline void Write(T data, int length)
+		{
+			static_assert(sizeof(T) <= 8, "maximum of 64 bit write");
+
+			WriteQWord((uint64_t)data, length);
+		}
 	public:
-		uint8_t* m_data; //0x0000
+		void* m_data; //0x0000
 		uint32_t m_bitOffset; //0x0008
 		uint32_t m_maxBit; //0x000C
 		uint32_t m_bitsRead; //0x0010
