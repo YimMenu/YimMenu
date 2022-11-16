@@ -54,20 +54,37 @@ cd YimMenu
 
 #### Generate project files:
 
-```bash
-mkdir build && cd build
-cmake ..
-```
-Now, you will be able to open the solution, and simply build it in Visual Studio.
+- On Windows
+
+  - Visual Studio
+
+    If you only use Visual Studio and don't want to mess with command lines, Visual Studio have a CMake extension that does all the work.
+
+    Make sure it is [installed](https://learn.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=msvc-170#installation).
+
+    Then, just open Visual Studio, Open a local folder, and select the `YimMenu` folder that the `git clone` command just created.
+
+  Let the CMake extension generate the needed files for building, you can follow the progress in the Output tab of Visual Studio.
+
+  Then, you can just build by using the Build menu at the top and clicking Build All.
+
+- Other OSs / IDEs
+
+  If you use something else, just follow this:
+
+  ```bash
+  mkdir build && cd build
+  cmake ..
+  ```
+
+  Now, you will be able to open the solution, and build it.
 
 
 ## Staying Up To Date
 
-```bash
-git pull https://github.com/YimMenu/YimMenu.git
-cd build
-cmake ..
-```
+CMake should be handling removed / added files automatically without any user input.
+
+If this is not the case for some reason you'll have to just redo the steps above.
 
 ## Project Structure
 
