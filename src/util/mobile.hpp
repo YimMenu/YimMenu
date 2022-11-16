@@ -41,6 +41,19 @@ namespace big::mobile
 			*script_global(2703735).at(56).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
 		}
 	}
+	
+	namespace merry_weather
+	{
+		inline void request_ammo_drop()
+		{
+			*script_global(mechanic_global).at(874).as<int*>() = 1;
+		}
+		
+		inline void request_helicopter_pickup()
+		{
+			*script_global(mechanic_global).at(876).as<int*>() = 1;
+		}
+	}
 
 	namespace mors_mutual
 	{
