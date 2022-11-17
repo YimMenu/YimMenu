@@ -60,7 +60,7 @@ namespace big
 		if (auto selected = g_player_database_service->get_selected())
 		{
 			ImGui::SameLine();
-			if (ImGui::BeginChild("###selected_player", { 520, static_cast<float>(*g_pointers->m_resolution_y - 388 - 38 * 4) }, false, ImGuiWindowFlags_NoBackground))
+			if (ImGui::BeginChild("###selected_player", { 500, static_cast<float>(*g_pointers->m_resolution_y - 388 - 38 * 4) }, false, ImGuiWindowFlags_NoBackground))
 			{
 				if (ImGui::InputText("Name", name_buf, sizeof(name_buf)))
 				{
@@ -71,7 +71,7 @@ namespace big
 				ImGui::Checkbox("Is Modder", &current_player.is_modder);
 				ImGui::Checkbox("Block Join", &current_player.block_join);
 
-				if (ImGui::BeginCombo("Block Join Alert Message", block_join_reasons[current_player.block_join_reason]))
+				if (ImGui::BeginCombo("Block Join Alert", block_join_reasons[current_player.block_join_reason]))
 				{
 					for (const auto& reason : block_join_reasons)
 					{
@@ -131,6 +131,21 @@ namespace big
 		{
 			g_player_database_service->set_selected(nullptr);
 			g_player_database_service->get_players().clear();
+			g_player_database_service->save();
+		}
+
+		ImGui::Separator();
+		components::sub_title("New Entry");
+
+		static char new_name[64];
+		static int64_t new_rockstar_id;
+
+		ImGui::InputText("Name", new_name, sizeof(new_name));
+		ImGui::InputScalar("Rockstar ID", ImGuiDataType_S64, &new_rockstar_id);
+
+		if (ImGui::Button("Add"))
+		{
+			g_player_database_service->get_players()[new_rockstar_id] = persistent_player(new_name, new_rockstar_id);
 			g_player_database_service->save();
 		}
 	}
