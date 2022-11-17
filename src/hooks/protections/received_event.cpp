@@ -199,7 +199,7 @@ namespace big
 		case eNetworkEvents::SCRIPT_WORLD_STATE_EVENT:
 		{
 			auto type = buffer->Read<WorldStateDataType>(4);
-			(void)buffer->Read<bool>(1);
+			buffer->Read<bool>(1);
 			CGameScriptId id;
 			script_id_deserialize(id, *buffer);
 
@@ -218,6 +218,7 @@ namespace big
 				if (type != 7)
 				{
 					// most definitely a crash
+					LOG(INFO) << std::hex << std::uppercase << "0x" << id.m_hash;
 					notify::crash_blocked(source_player, "rope");
 					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					return;
