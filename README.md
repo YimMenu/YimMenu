@@ -12,7 +12,7 @@ So here I am with an up-to-date menu focusing on protecting the user from toxic 
 
  * [How to build](#how-to-build)
     * [Git](#git)
-    * [Premake5](#premake5)
+    * [CMake](#CMake)
     * [Cloning and generating project files](#cloning-and-generating-project-files)
  * [Staying Up To Date](#staying-up-to-date)
  * [Project Structure](#project-structure)
