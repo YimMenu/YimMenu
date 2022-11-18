@@ -42,32 +42,62 @@ CMake is used to generate our project files, if you haven't used it before we wi
 
 ### Cloning and generating project files
 
-Clone the repository including submodules:
-```bash
-git clone https://github.com/YimMenu/YimMenu.git || echo "You don't have git installed, install it from https://git-scm.com/download/win"
-```
+- Make sure that you have installed Git and CMake.
 
-Go into the directory you just cloned:
-```bash
-cd YimMenu
-```
+- Clone the repository:
+  ```bash
+  git clone https://github.com/YimMenu/YimMenu.git
+  ```
 
-#### Generate project files:
+-  Go into the directory you just cloned:
+  ```bash
+  cd YimMenu
+  ```
 
-```bash
-mkdir build && cd build
-cmake ..
-```
-Now, you will be able to open the solution, and simply build it in Visual Studio.
+#### Generate project files
+
+- On Windows
+
+  - Visual Studio
+
+    If you only use Visual Studio and don't want to mess with command lines, Visual Studio has a CMake extension that does all the work.
+
+    Make sure it is [installed](https://learn.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=msvc-170#installation).
+
+    Then, just open Visual Studio, open a local folder, and select the `YimMenu` folder that the `git clone` command just created.
+
+    Let the CMake extension generate the needed files for building, you can follow the progress in the Output tab of Visual Studio.
+
+    Then, you can just build by using the Build menu at the top and clicking Build All.
+
+- Other OSs / IDEs
+
+  If you use something else, just follow this:
+
+  ```bash
+  mkdir build
+  cd build
+  cmake ..
+  ```
+
+  Now, you will be able to open the solution, and build it.
 
 
 ## Staying Up To Date
 
+Pull the latest changes from this repository.
+
+With a command line it is as easy as:
+
 ```bash
-git pull https://github.com/YimMenu/YimMenu.git
-cd build
-cmake ..
+git pull
 ```
+
+CMake should be handling removed / added files automatically without any user input.
+
+If this is not the case for some reason you'll have to redo the steps in the [Generate project files](#Generate-project-files) section above.
+
+If you are doing custom modifications to the codebase and have a fork you are on your own for staying up to date with upstream (this repository), google stuff like "merge from upstream" and learn how to use Git.
 
 ## Project Structure
 
