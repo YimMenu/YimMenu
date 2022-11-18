@@ -113,7 +113,7 @@ If you are doing custom modifications to the codebase and have a fork you are on
 Below is an incomplete list of feature that I believe are notable to this "base" or menu.
 
  - Return Native spoofing
- - Custom [settings](BigBaseV2/src/core/globals.hpp) with deep compare if changes were made include auto saving
+ - Custom [settings](src/core/globals.hpp) with deep compare if changes were made include auto saving
  - Clear and well structured source code
  - Includes a thread pool to queue tasks that shouldn't block the game thread, very similar to fiber pool
  - Updated natives.hpp from https://nativedb.spyral.dev
