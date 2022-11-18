@@ -70,6 +70,8 @@ namespace big
 
 		static bool update_presence_attribute_int(void* presence_data, int profile_index, char* attr, std::uint64_t value);
 		static bool update_presence_attribute_string(void* presence_data, int profile_index, char* attr, char* value);
+
+		static char indecent_exposure_crash_patch(int64_t a1, int64_t a2);
 	};
 
 	class minhook_keepalive

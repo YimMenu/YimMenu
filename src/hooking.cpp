@@ -35,7 +35,7 @@ namespace big
 		detour_hook_helper::add<hooks::get_label_text>("GLT", g_pointers->m_get_label_text);
 
 		detour_hook_helper::add<hooks::multiplayer_chat_filter>("MCF", g_pointers->m_multiplayer_chat_filter);
-    
+
         detour_hook_helper::add<hooks::write_player_game_state_data_node>("WPGSDN", g_pointers->m_write_player_game_state_data_node);
 
 		detour_hook_helper::add<hooks::gta_thread_start>("GTS", g_pointers->m_gta_thread_start);
@@ -64,6 +64,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::update_presence_attribute_int>("UPAI", g_pointers->m_update_presence_attribute_int);
 		detour_hook_helper::add<hooks::update_presence_attribute_string>("UPAS", g_pointers->m_update_presence_attribute_string);
+
+		detour_hook_helper::add<hooks::indecent_exposure_crash_patch>("IECP", g_pointers->m_indecent_exposure_add);
 
 		g_hooking = this;
 	}

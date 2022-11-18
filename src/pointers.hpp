@@ -152,6 +152,8 @@ namespace big
 
 		PVOID m_update_presence_attribute_int{};
 		PVOID m_update_presence_attribute_string{};
+
+		PVOID m_indecent_exposure_add{};
 	};
 
 	inline pointers* g_pointers{};

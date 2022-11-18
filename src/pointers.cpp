@@ -340,7 +340,7 @@ namespace big
 		{
 			m_get_label_text = ptr.sub(19).as<PVOID>();
 		});
-		
+
 		// Multiplayer chat filter
 		main_batch.add("MCF", "E8 ? ? ? ? 83 F8 FF 75 B9", [this](memory::handle ptr)
 		{
@@ -480,6 +480,12 @@ namespace big
 		main_batch.add("C", "48 8B 1D ? ? ? ? 48 8D 4C 24 30", [this](memory::handle ptr)
 		{
 			m_communications = ptr.add(3).rip().as<CCommunications**>();
+		});
+
+		// Indecent Exposure Crash Patch
+		main_batch.add("IECP", "E8 ? ? ? ? 8B 9C 24 ? ? ? ? 4C 8B AC 24", [this](memory::handle ptr)
+		{
+			m_indecent_exposure_add = ptr.add(1).rip().as<PVOID>();
 		});
 
 		auto mem_region = memory::module("GTA5.exe");
