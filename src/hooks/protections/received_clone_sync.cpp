@@ -139,8 +139,31 @@ namespace big
 		return false;
 	}
 
+	bool is_sync_fuzzer_crash(rage::netSyncNodeBase* node)
+	{
+		__try
+		{
+			// the ptr is neither null nor a node.
+			if (node)
+			{
+				node->IsParentNode();
+			}
+		}
+		__except (EXCEPTION_EXECUTE_HANDLER)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 	bool check_node(rage::netSyncNodeBase* node, CNetGamePlayer* sender, uint16_t object_id)
 	{
+		if (is_sync_fuzzer_crash(node))
+		{
+			return true;
+		}
+
 		if (node->IsParentNode())
 		{
 			for (auto child = node->m_first_child; child; child = child->m_next_sibling) {
@@ -354,10 +377,10 @@ namespace big
 						LOG(WARNING) << "Out of Bounds sync: Type: " << sync_type << " Tree name: " << tree_name << " From: " << src->get_name();
 					if (g->notifications.out_of_allowed_range_sync_type.notify)
 						g_notification_service->push_warning(std::format("Out Of Allowed Sync Range from {}", src->get_name()), std::format("Type {} in sync tree {}", std::uint16_t(sync_type), tree_name));
-				
+
 					return g_hooking->get_original<received_clone_sync>()(mgr, src, dst, sync_type, obj_id, buffer, unk, timestamp);
 				}
-				
+
 				if (net_obj->m_object_type != sync_type)
 				{
 					if (g->notifications.mismatch_sync_type.log)
@@ -367,11 +390,11 @@ namespace big
 
 					return eSyncReply::WrongOwner;
 				}
-				
+
 				if (auto game_obj = net_obj->GetGameObject(); game_obj)
 				{
 					if (const auto model_info = game_obj->m_model_info; model_info)
-					{						
+					{
 						// sync_type is telling us it's a vehicle
 						// let's check if it's actually a vehicle according to our game...
 						if (((sync_type >= eObjType::bikeObjType && sync_type <= eObjType::heliObjType)
