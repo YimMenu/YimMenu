@@ -6,7 +6,7 @@ A mod menu base for Grand Theft Auto V.
 Strictly for educational purposes.
 
 YimMenu is originally based of off [BigBaseV2](https://github.com/Pocakking/BigBaseV2) which was an amazing base at the time but nowadays is a bit dated.
-So here I am with an up-to-date menu focusses on protecting the user from toxic modders.
+So here I am with an up-to-date menu focusing on protecting the user from toxic modders.
 
 ## Table of contents
 
