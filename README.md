@@ -44,7 +44,7 @@ CMake is used to generate our project files, if you haven't used it before we wi
 
 - Make sure that you have installed Git and CMake.
 
-- Clone the repository including submodules:
+- Clone the repository:
   ```bash
   git clone https://github.com/YimMenu/YimMenu.git
   ```
@@ -96,6 +96,8 @@ git pull
 CMake should be handling removed / added files automatically without any user input.
 
 If this is not the case for some reason you'll have to redo the steps in the [Generate project files](#Generate-project-files) section above.
+
+If you are doing custom modifications to the codebase and have a fork you are on your own for staying up to date with upstream (this repository), google stuff like "merge from upstream" and learn how to use Git.
 
 ## Project Structure
 
