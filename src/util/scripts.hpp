@@ -20,9 +20,9 @@ namespace big::scripts
 		SCRIPT::REQUEST_SCRIPT_WITH_NAME_HASH(hash);
 	}
 
-	inline int start_script_with_args(int hash, int* args, int arg_size, int stack_size)
+	inline int start_script_with_args(int hash, int* args, int arg_count, int stack_size)
 	{
-		int thread_id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS(hash, args, arg_size, stack_size);
+		int thread_id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS(hash, args, arg_count, stack_size);
 		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(hash);
 		return thread_id;
 	}

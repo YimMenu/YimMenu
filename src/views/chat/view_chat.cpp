@@ -44,19 +44,13 @@ namespace big
 		{
 			const auto net_game_player = g_player_service->get_self()->get_net_game_player();
 			if(g_pointers->m_send_chat_message(*g_pointers->m_send_chat_ptr, net_game_player->get_net_data(), (char*)g->chat.message.c_str(), g->chat.local))
-					notify::draw_chat((char*)g->chat.message.c_str(), net_game_player->get_name(), g->chat.local);
+				notify::draw_chat((char*)g->chat.message.c_str(), net_game_player->get_name(), g->chat.local);
 
 			g_chat_service->add_msg(net_game_player, g->chat.message, g->chat.local);
 			LOG(INFO) << net_game_player->get_name() << (g->chat.local ? " [LOCAL] " : " [ALL] ") << g->chat.message;
 			
 			g->chat.message = "";
-			reclaim_focus = true;
 		});
-
-		// Auto-focus on window apparition
-		ImGui::SetItemDefaultFocus();
-		if (reclaim_focus)
-			ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
 
 		ImGui::SameLine();
 		ImGui::Checkbox("Local", &g->chat.local);

@@ -16,7 +16,7 @@ namespace big
 	void view::debug_scripts()
     {
         static GtaThread* selected_thread{};
-        if (ImGui::ListBoxHeader("##scripts", ImVec2(250, 0)))
+        if (ImGui::ListBoxHeader("##scripts", ImVec2(250, -ImGui::GetFrameHeight())))
         {
             if (g->debug.sort_scripts)
             {
@@ -74,12 +74,13 @@ namespace big
         ImGui::Text("Start Script");
 
         static char script_name[64];
-        static int args[] = { 45, 0, 9 };
         static int buffer_size = 3600;
-        static int args_how = 3;
+        static int* args;
+		static int arg_count = 3;
+		static int previous_arg_count;
 
-        ImGui::Checkbox("Args?", &g->debug.with_args);
-        components::input_text_with_hint("###scipt_name", "Script Name", script_name, 64, ImGuiInputTextFlags_EnterReturnsTrue, []
+        ImGui::Checkbox("With args", &g->debug.with_args);
+        components::input_text_with_hint("###scipt_name", "Script Name", script_name, sizeof(script_name), ImGuiInputTextFlags_EnterReturnsTrue, []
             {
                 if (const Hash hash = rage::joaat(script_name); hash)
                 {
@@ -88,7 +89,7 @@ namespace big
                     {
                         if (g->debug.with_args)
                         {
-                            scripts::start_script_with_args(hash, args, args_how, buffer_size);
+                            scripts::start_script_with_args(hash, args, arg_count, buffer_size);
                         }
                         else
                         {
@@ -98,12 +99,40 @@ namespace big
                     }
                 }
             });
-        if (g->debug.with_args)
-        {
-            ImGui::InputInt4("Args", args);
-            ImGui::InputInt("Ammount of args", &args_how);
-        }
         ImGui::InputInt("Buffer Size", &buffer_size);
+
+        if(g->debug.with_args)
+        {
+		    ImGui::Text("Script Argument Count:");
+		    ImGui::InputInt("###script_arg_count", &arg_count);
+		    if (arg_count > 32)
+		    	arg_count = 32;
+		    else if (arg_count < 1)
+		    	arg_count = 1;
+
+		    if (arg_count != previous_arg_count)
+		    {
+		    	int* temp_args = new int[arg_count]{ 0 };
+		    	memcpy(temp_args, args, sizeof(int) * std::min(arg_count, previous_arg_count));
+
+		    	delete[] args;
+		    	args = temp_args;
+
+		    	previous_arg_count = arg_count;
+		    }
+
+		    ImGui::Separator();
+
+		    for (int i = 0; i < arg_count; i++)
+		    {
+		    	ImGui::PushID(i);
+		    	ImGui::Text("Arg[%d]", i);
+		    	ImGui::SameLine();
+		    	ImGui::InputScalar("###input_dynamic_arg", ImGuiDataType_S32, &args[i]);
+
+		    	ImGui::PopID();
+		    }
+        }
 
     }
 }

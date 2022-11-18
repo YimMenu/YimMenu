@@ -21,7 +21,7 @@ namespace big
         {
             if (g->tunables.fast_join)
             {
-                LOG(G3LOG_DEBUG) << "NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA skipped";
+                // LOG(G3LOG_DEBUG) << "NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA skipped";
                 src->set_return_value<BOOL>(TRUE);
             }
             else
@@ -32,7 +32,7 @@ namespace big
 
         inline void NETWORK_BAIL(rage::scrNativeCallContext* src)
         {
-            if (RAGE_JOAAT("freemode") == SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME())
+            if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("freemode"))
             {
                 std::string text = std::format("NETWORK_BAIL({}, {}, {})", src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<int>(2));
                 LOG(WARNING) << "Prevented freemode " << text;
@@ -46,5 +46,29 @@ namespace big
                 NETWORK::NETWORK_BAIL(src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<int>(2));
             }
         }
+
+        inline void SC_TRANSITION_NEWS_SHOW(rage::scrNativeCallContext* src)
+		{
+			if (g->tunables.fast_join)
+			{
+				src->set_return_value<BOOL>(false);
+			}
+			else
+			{
+				src->set_return_value<BOOL>(SOCIALCLUB::SC_TRANSITION_NEWS_SHOW(src->get_arg<Any>(0)));
+			}
+		}
+
+		inline void SC_TRANSITION_NEWS_SHOW_TIMED(rage::scrNativeCallContext* src)
+		{
+			if (g->tunables.fast_join)
+			{
+				src->set_return_value<BOOL>(false);
+			}
+			else
+			{
+				src->set_return_value<BOOL>(SOCIALCLUB::SC_TRANSITION_NEWS_SHOW_TIMED(src->get_arg<Any>(0), src->get_arg<Any>(0)));
+			}
+		}
     }
 }

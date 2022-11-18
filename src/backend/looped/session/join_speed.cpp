@@ -13,7 +13,7 @@ namespace big
 		{
 			eTransitionState state = *script_global::script_global(1574991).as<eTransitionState*>();
 
-			if (state >= eTransitionState::TRANSITION_STATE_LOOK_FOR_FRESH_JOIN_FM && state <= eTransitionState::TRANSITION_STATE_FM_FINAL_SETUP_PLAYER)
+			if (state <= eTransitionState::TRANSITION_STATE_FM_FINAL_SETUP_PLAYER)
 			{
 				PLAYER::SET_PLAYER_CONTROL(self::id, true, 0);
 				if (STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())

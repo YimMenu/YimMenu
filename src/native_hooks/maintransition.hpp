@@ -19,6 +19,7 @@ namespace big
 			}
 			else
 			{
+				LOG(G3LOG_DEBUG) << std::format("NETWORK::NETWORK_SESSION_HOST({}, {}, {});", src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<BOOL>(2));
 				src->set_return_value<BOOL>(NETWORK::NETWORK_SESSION_HOST(src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<BOOL>(2)));
 			}
 		};
@@ -32,7 +33,7 @@ namespace big
 			if (g->tunables.fast_join)
 			{
 				src->set_return_value<BOOL>(true);
-				LOG(G3LOG_DEBUG) << "IS_SWITCH_TO_MULTI_FIRSTPART_FINISHED skipped";
+				// LOG(G3LOG_DEBUG) << "IS_SWITCH_TO_MULTI_FIRSTPART_FINISHED skipped";
 			}
 			else
 			{
@@ -40,6 +41,54 @@ namespace big
 			}
 		}
 
+		inline void SET_FOCUS_ENTITY(rage::scrNativeCallContext* src)
+		{
+			if (g->tunables.fast_join)
+			{
+				STREAMING::SET_FOCUS_ENTITY(self::ped);
+			}
+			else
+			{
+				STREAMING::SET_FOCUS_ENTITY(src->get_arg<Entity>(0));
+			}
+		}
+
+		inline void HIDE_HUD_AND_RADAR_THIS_FRAME(rage::scrNativeCallContext* src)
+		{
+			if (!g->tunables.fast_join)
+			{
+				HUD::HIDE_HUD_AND_RADAR_THIS_FRAME();
+			}
+		}
+
+		inline void ACTIVATE_FRONTEND_MENU(rage::scrNativeCallContext* src)
+		{
+			if (!g->tunables.fast_join)
+			{
+				HUD::ACTIVATE_FRONTEND_MENU(src->get_arg<int>(0), src->get_arg<BOOL>(1), src->get_arg<int>(2));
+			}
+		}
+
+		inline void RESTART_FRONTEND_MENU(rage::scrNativeCallContext* src)
+		{
+			if (!g->tunables.fast_join)
+			{
+				HUD::RESTART_FRONTEND_MENU(src->get_arg<int>(0), src->get_arg<int>(1));
+			}
+		}
+
+		inline void TOGGLE_PAUSED_RENDERPHASES(rage::scrNativeCallContext* src)
+		{
+			if (g->tunables.fast_join)
+			{
+				GRAPHICS::RESET_PAUSED_RENDERPHASES();
+			}
+			else
+			{
+				GRAPHICS::TOGGLE_PAUSED_RENDERPHASES(src->get_arg<int>(0));
+			}
+		}
+		
 		inline void SET_ENTITY_VISIBLE(rage::scrNativeCallContext* src)
 		{
 			if (g->tunables.fast_join)
@@ -72,7 +121,7 @@ namespace big
 		{
 			if (g->tunables.fast_join)
 			{
-				LOG(G3LOG_DEBUG) << "SET_PLAYER_CONTROL skipped";
+				LOG(G3LOG_DEBUG) << std::format("PLAYER::SET_PLAYER_CONTROL({}, {}, {});", src->get_arg<Player>(0), src->get_arg<BOOL>(1), src->get_arg<int>(2));
 			}
 			else
 			{
@@ -88,6 +137,54 @@ namespace big
 			}
 		}
 
+		inline void NETWORK_RESURRECT_LOCAL_PLAYER(rage::scrNativeCallContext* src)
+		{
+			// LOG(G3LOG_DEBUG) << std::format("NETWORK::NETWORK_RESURRECT_LOCAL_PLAYER({}, {}, {}, {}, {}, {}, {}, {}, {});", src->get_arg<float>(0), src->get_arg<float>(1), src->get_arg<float>(2), src->get_arg<float>(3), src->get_arg<BOOL>(4), src->get_arg<BOOL>(5), src->get_arg<BOOL>(6), src->get_arg<int>(7), src->get_arg<int>(8));
+			if (!g->tunables.fast_join)
+			{
+				NETWORK::NETWORK_RESURRECT_LOCAL_PLAYER(src->get_arg<float>(0), src->get_arg<float>(1), src->get_arg<float>(2), src->get_arg<float>(3), src->get_arg<BOOL>(4), src->get_arg<BOOL>(5), src->get_arg<BOOL>(6), src->get_arg<int>(7), src->get_arg<int>(8));
+			}
+		}
+
+		inline void SET_WARNING_MESSAGE_WITH_HEADER(rage::scrNativeCallContext* src)
+		{
+			g_notification_service->push_warning(HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(src->get_arg<char*>(0)), HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(src->get_arg<char*>(1)));
+			
+			if(src->get_arg<int>(2) = 134217728)
+			{
+				HUD::SET_WARNING_MESSAGE_WITH_HEADER(
+					src->get_arg<char*>(0),
+					src->get_arg<char*>(1),
+					16384, // Continue = 16384, -- (RETURN)
+					src->get_arg<char*>(3),
+					src->get_arg<BOOL>(4),
+					src->get_arg<Any>(5),
+					src->get_arg<Any*>(6),
+					src->get_arg<Any*>(7),
+					src->get_arg<BOOL>(8),
+					src->get_arg<Any>(9)
+				);
+			}
+			else
+			{
+				HUD::SET_WARNING_MESSAGE_WITH_HEADER(
+					src->get_arg<char*>(0),
+					src->get_arg<char*>(1),
+					src->get_arg<int>(2),
+					src->get_arg<char*>(3),
+					src->get_arg<BOOL>(4),
+					src->get_arg<Any>(5),
+					src->get_arg<Any*>(6),
+					src->get_arg<Any*>(7),
+					src->get_arg<BOOL>(8),
+					src->get_arg<Any>(9)
+				);
+
+			}
+
+
+		}
+		
 		//
 		// PLAYER_SWITCH END
 		//

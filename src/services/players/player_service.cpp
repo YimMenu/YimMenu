@@ -49,6 +49,9 @@ namespace big
 
 	player_ptr player_service::get_by_id(Player id) const
 	{
+		if(id == g_player_service->get_self()->id())
+			return g_player_service->get_self();
+		
 		for (const auto& [name, player] : m_players)
 			if (player->id() == id)
 				return player;

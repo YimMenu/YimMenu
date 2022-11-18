@@ -23,10 +23,20 @@ namespace big
 		{
 			system::dump_entry_points();
 		}
-
+		ImGui::SameLine();
 		components::button("Network Bail", []
 		{
 			NETWORK::NETWORK_BAIL(16, 0, 0);
+		});
+
+		components::button("Hide news", []
+		{
+			SOCIALCLUB::SC_TRANSITION_NEWS_END();
+		});
+		ImGui::SameLine();
+		components::button("Network Session Host", []
+		{
+			NETWORK::NETWORK_SESSION_HOST(1, 40, false);
 		});
 
 		ImGui::Checkbox("Log Metrics", &g->debug.logs.metric_logs);

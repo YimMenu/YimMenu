@@ -88,7 +88,7 @@ namespace big
 		});
 
 
-		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 188 - 38 * 4) }))
+		if (ImGui::ListBoxHeader("###vehicles", ImVec2(300, -ImGui::GetFrameHeight())))
 		{
 			if (self::veh)
 			{

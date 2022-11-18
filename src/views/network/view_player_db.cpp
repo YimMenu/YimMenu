@@ -75,7 +75,5 @@ namespace big
 
 			ImGui::TreePop();
 		}
-
-		ImGui::TreePop();
 	}
 }

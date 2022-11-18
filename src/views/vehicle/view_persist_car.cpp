@@ -47,7 +47,7 @@ namespace big
 		ImGui::PushItemWidth(250);
 		ImGui::Text("Saved Vehicles");
 
-		if (ImGui::ListBoxHeader("##empty", ImVec2(200, 200)))
+		if (ImGui::ListBoxHeader("##empty", ImVec2(200, -ImGui::GetFrameHeight())))
 		{
 			for (const auto& pair : vehicle_files)
 			{
