@@ -30,6 +30,7 @@ namespace big
 		NETWORK,
 		SESSION,
 		SPOOFING,
+		PLAYER_DATABASE,
 
 		SETTINGS,
 		CONTEXT_MENU_SETTINGS,
@@ -78,6 +79,7 @@ namespace big
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},
 				{ tabs::SESSION, { "Session", view::session }},
+				{ tabs::PLAYER_DATABASE, { "Player Database", view::player_database }},
 			}}},
 			{tabs::SETTINGS, { "Settings", view::settings, {
 				{ tabs::CONTEXT_MENU_SETTINGS, { "Context Menu", view::context_menu_settings}},

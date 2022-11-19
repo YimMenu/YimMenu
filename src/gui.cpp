@@ -37,7 +37,7 @@ namespace big
 		colors[ImGuiCol_Text] = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
 		colors[ImGuiCol_TextDisabled] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
 		colors[ImGuiCol_WindowBg] = ImGui::ColorConvertU32ToFloat4(g->window.color);
-		colors[ImGuiCol_ChildBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
+		colors[ImGuiCol_ChildBg] = ImGui::ColorConvertU32ToFloat4(g->window.color);
 		colors[ImGuiCol_PopupBg] = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
 		colors[ImGuiCol_Border] = ImVec4(0.80f, 0.80f, 0.83f, 0.88f);
 		colors[ImGuiCol_BorderShadow] = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);

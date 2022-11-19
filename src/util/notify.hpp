@@ -2,6 +2,7 @@
 #include "network/CNetGamePlayer.hpp"
 #include "natives.hpp"
 #include "script.hpp"
+#include "session.hpp"
 
 namespace big::notify
 {
@@ -13,18 +14,22 @@ namespace big::notify
 		HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER(false, false);
 	}
 
-	// deprecated/unused
-	inline void blocked_event(const char* name, Player player)
+	inline void crash_blocked(CNetGamePlayer* player, const char* crash)
 	{
-		char msg[128];
+		if (player)
+		{
+			g_notification_service->push_error("Protections", std::format("Blocked {} crash from {}", crash, player->get_name()));
+			LOG(WARNING) << "Blocked " << crash << " crash from " << player->get_name() << " (" << (player->get_net_data() ? player->get_net_data()->m_gamer_handle_2.m_rockstar_id : 0) << ")";
+		}
+		else
+		{
+			g_notification_service->push_error("Protections", std::format("Blocked {} crash from unknown player", crash));
+		}
 
-		strcpy(msg, "~g~BLOCKED RECEIVED EVENT~s~\n~b~");
-		strcat(msg, name);
-		strcat(msg, "~s~\nFrom: <C>");
-		strcat(msg, PLAYER::GET_PLAYER_NAME(player));
-		strcat(msg, "</C>");
-
-		above_map(msg);
+		if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+		{
+			session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
+		}
 	}
 
 	// Shows a busy spinner till the value at the address equals the value passed or if timeout is hit

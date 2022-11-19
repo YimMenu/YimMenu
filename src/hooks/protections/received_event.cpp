@@ -3,6 +3,7 @@
 #include "hooking.hpp"
 #include <network/CNetGamePlayer.hpp>
 #include "gta/script_id.hpp"
+#include "util/notify.hpp"
 
 namespace big
 {
@@ -32,7 +33,6 @@ namespace big
 		if (event_id > 91u)
 		{
 			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
 			return;
 		}
 
@@ -81,15 +81,10 @@ namespace big
 				uint16_t unk2 = buffer->Read<uint16_t>(13);
 				uint32_t action = buffer->Read<uint32_t>(8);
 
-				if (action >= 15 && action <= 18 || action == 33) 
+				if ((action >= 15 && action <= 18) || action == 33)
 				{
 					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
-					if (g->notifications.received_event.vehicle_temp_action.log)
-						LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent TASK_VEHICLE_TEMP_ACTION crash.";
-					if (g->notifications.received_event.vehicle_temp_action.notify)
-						g_notification_service->push_error("Protections", std::format("{} sent TASK_VEHICLE_TEMP_ACTION crash.", source_player->get_name()));
-
+					notify::crash_blocked(source_player, "vehicle temp action");
 					return;
 				}
 			}
@@ -172,13 +167,15 @@ namespace big
 			break;
 		}
 		// player sending this event is a modder
-		case eNetworkEvents::NETWORK_CHECK_CODE_CRCS_EVENT:
 		case eNetworkEvents::REPORT_MYSELF_EVENT:
 		{
 			if (g->notifications.received_event.modder_detect.log)
 				LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent modder event.";
 			if (g->notifications.received_event.modder_detect.notify)
 				g_notification_service->push_warning("Protections", std::format("{} sent out a modder event.", source_player->get_name()));
+
+			if (auto plyr = g_player_service->get_by_id(source_player->m_player_id))
+				session::add_infraction(plyr, Infraction::TRIGGERED_ANTICHEAT);
 
 			break;
 		}
@@ -202,7 +199,7 @@ namespace big
 		case eNetworkEvents::SCRIPT_WORLD_STATE_EVENT:
 		{
 			auto type = buffer->Read<WorldStateDataType>(4);
-			(void)buffer->Read<bool>(1);
+			buffer->Read<bool>(1);
 			CGameScriptId id;
 			script_id_deserialize(id, *buffer);
 
@@ -221,7 +218,8 @@ namespace big
 				if (type != 7)
 				{
 					// most definitely a crash
-					g_notification_service->push_error("Protections", std::format("{} sent rope crash.", source_player->get_name()));
+					LOG(INFO) << std::hex << std::uppercase << "0x" << id.m_hash;
+					notify::crash_blocked(source_player, "rope");
 					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					return;
 				}
@@ -234,7 +232,7 @@ namespace big
 
 				if (unk2 == 0 && (unk3 == 0 || unk3 == 103))
 				{
-					g_notification_service->push_error("Protections", std::format("{} sent SCRIPT_WORLD_STATE_EVENT crash.", source_player->get_name()));
+					notify::crash_blocked(source_player, "pop group override");
 					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					return;
 				}
@@ -250,6 +248,7 @@ namespace big
 
 			if (hash == RAGE_JOAAT("WEAPON_UNARMED"))
 			{
+				notify::crash_blocked(source_player, "remove unarmed");
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
@@ -276,6 +275,35 @@ namespace big
 			}
 
 			buffer->Seek(0);
+			break;
+		}
+		case eNetworkEvents::GIVE_CONTROL_EVENT:
+		{
+			uint32_t timestamp = buffer->Read<uint32_t>(32);
+			int count = buffer->Read<int>(2);
+			bool unk = buffer->Read<bool>(1);
+
+			if (count > 3)
+			{
+				count = 3;
+			}
+
+			for (int i = 0; i < count; i++)
+			{
+				int net_id = buffer->Read<int>(13);
+				eNetObjType object_type = buffer->Read<eNetObjType>(4);
+				int unk = buffer->Read<int>(3);
+
+				if (object_type < eNetObjType::NET_OBJ_TYPE_AUTOMOBILE || object_type > eNetObjType::NET_OBJ_TYPE_TRAIN)
+				{
+					notify::crash_blocked(source_player, "out of bounds give control type");
+					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+					return;
+				}
+			}
+
+			buffer->Seek(0);
+			g->m_syncing_player = source_player;
 			break;
 		}
 		default:

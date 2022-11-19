@@ -99,7 +99,9 @@ namespace big
 		// Received Event Signatures END
 
 		//Sync Signatures START
+		PVOID m_received_clone_create;
 		PVOID m_received_clone_sync;
+		PVOID m_can_apply_data;
 		functions::get_sync_tree_for_type m_get_sync_tree_for_type{};
 		functions::get_sync_type_info m_get_sync_type_info{};
 		functions::get_net_object m_get_net_object{};
@@ -150,8 +152,20 @@ namespace big
 		rage::rlGamerInfo* m_player_info_gamer_info{}; // the gamer info that is applied to CPlayerInfo
 		CCommunications** m_communications{};
 
-		PVOID m_update_presence_attribute_int{};
-		PVOID m_update_presence_attribute_string{};
+		PVOID m_update_presence_attribute_int;
+		PVOID m_update_presence_attribute_string;
+
+		PVOID m_serialize_dynamic_entity_game_state_data_node;
+		PVOID m_serialize_ped_inventory_data_node;
+		PVOID m_serialize_vehicle_gadget_data_node;
+		functions::get_vehicle_gadget_array_size m_get_vehicle_gadget_array_size;
+
+		PVOID m_handle_join_request;
+		functions::write_join_response_data m_write_join_response_data;
+
+		functions::queue_packet m_queue_packet;
+
+		PVOID m_sort_session_details;
 	};
 
 	inline pointers* g_pointers{};

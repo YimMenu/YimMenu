@@ -1,5 +1,6 @@
 #include "hooking.hpp"
 #include "gta_util.hpp"
+#include "util/session.hpp"
 #include <network/CNetGamePlayer.hpp>
 
 namespace big
@@ -276,8 +277,9 @@ namespace big
 		case eRemoteEvent::SHKick:
 			if (g->protections.script_events.network_bail)
 			{
+				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
 				format_string(player_name, "Network Bail", notify.network_bail.log, notify.network_bail.notify);
-
 				return true;
 			}
 			break;

@@ -42,6 +42,13 @@ namespace big
 			ImGui::EndListBox();
 		}
 
+		components::sub_title("Player Magnet");
+		ImGui::Checkbox("Enabled", &g->session.player_magnet_enabled);
+		if (g->session.player_magnet_enabled)
+		{
+			ImGui::InputInt("Player Count", &g->session.player_magnet_count);
+		}
+
 		components::sub_title("Chat");
 		ImGui::Checkbox("Disable Filter", &g->session.disable_chat_filter);
 		ImGui::Checkbox("Log Chat Messages", &g->session.log_chat_messages);

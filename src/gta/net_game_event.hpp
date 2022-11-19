@@ -6,12 +6,48 @@
 #pragma pack(push, 1)
 namespace rage
 {
+	class CSyncDataBase
+	{
+	public:
+		virtual ~CSyncDataBase() = default;
+		virtual bool SerializeDword(uint32_t* dword, int size) = 0;
+		virtual bool SerializeWord(uint16_t* word, int size) = 0;
+		virtual bool SerializeByte(uint8_t* byte, int size) = 0;
+		virtual bool SerializeInt32(int32_t* i, int size) = 0;
+		virtual bool SerializeInt16(int16_t* i, int size) = 0;
+		virtual bool SerializeSignedByte(int8_t* byte, int size) = 0;
+		virtual bool SerializeBool(bool* flag) = 0;
+		virtual bool SerializeInt64(int64_t* i, int size) = 0;
+		virtual bool SerializeInt32Alt(int32_t* i, int size) = 0;
+		virtual bool SerializeInt16Alt(int16_t* i, int size) = 0;
+		virtual bool SerializeSignedByteAlt(int8_t* byte, int size) = 0;
+		virtual bool SerializeQword(uint64_t* qword, int size) = 0;
+		virtual bool SerializeDwordAlt(uint32_t* dword, int size) = 0;
+		virtual bool SerializeWordAlt(uint16_t* word, int size) = 0;
+		virtual bool SerializeByteAlt(uint8_t* byte, int size) = 0;
+		virtual bool SerializeSignedFloat(float* flt, float divisor, int size) = 0;
+		virtual bool SerializeFloat(float* flt, float divisor, int size) = 0;
+		virtual bool SerializeNetworkId(uint16_t* net_id) = 0;
+		virtual bool SerializeVector3(rage::fvector3* vec3, float divisor, int size) = 0;
+		virtual bool SerializeQuaternion(void* unk) = 0; // i have no clue what that is
+		virtual bool SerializeVector3SignedZComponent(rage::fvector3* vec3, float divisor, int size) = 0;
+		virtual bool SerializeOrientation(rage::fvector4* vec4, float size) = 0; // yes, the size is a float
+		virtual bool SerializeArray(void* array, int size) = 0;
+		virtual bool SerializeString(char* str, int max_length) = 0;
+		virtual bool IsSizeCalculator() = 0;
+		virtual bool IsSizeCalculator2() = 0;
+
+		void* unk_0x8;
+		void* syncLog;
+		datBitBuffer* buffer;
+	};
+
 	class netPlayer;
 
 	class datBitBuffer
 	{
 	public:
-		datBitBuffer(uint8_t* data, uint32_t size) {
+		datBitBuffer(void* data, uint32_t size) {
 			m_data = data;
 			m_bitOffset = 0;
 			m_maxBit = size * 8;
@@ -46,7 +82,7 @@ namespace rage
 				return 0;
 			auto const bufPos = m_bitsRead + m_bitOffset;
 			auto const initialBitOffset = bufPos & 0b111;
-			auto const start = &m_data[bufPos / 8];
+			auto const start = &((uint8_t*)m_data)[bufPos / 8];
 			auto const next = &start[1];
 			auto result = (start[0] << initialBitOffset) & 0xff;
 			for (auto i = 0; i < ((numBits - 1) / 8); i++) {
@@ -139,7 +175,7 @@ namespace rage
 			}
 			return false;
 		}
-		bool WriteArray(uint8_t* array, int size) {
+		bool WriteArray(void* array, int size) {
 			return big::g_pointers->m_write_bitbuf_array(this, array, size, 0);
 		}
 		bool ReadArray(PVOID array, int size) {
@@ -167,8 +203,16 @@ namespace rage
 
 			return T(val);
 		}
+
+		template<typename T>
+		inline void Write(T data, int length)
+		{
+			static_assert(sizeof(T) <= 8, "maximum of 64 bit write");
+
+			WriteQWord((uint64_t)data, length);
+		}
 	public:
-		uint8_t* m_data; //0x0000
+		void* m_data; //0x0000
 		uint32_t m_bitOffset; //0x0008
 		uint32_t m_maxBit; //0x000C
 		uint32_t m_bitsRead; //0x0010

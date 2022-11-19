@@ -53,7 +53,10 @@ namespace big
 		detour_hook_helper::add<hooks::assign_physical_index>("API", g_pointers->m_assign_physical_index);
 
 		detour_hook_helper::add<hooks::receive_net_message>("RNM", g_pointers->m_receive_net_message);
+
+		detour_hook_helper::add<hooks::received_clone_create>("RCC", g_pointers->m_received_clone_create);
 		detour_hook_helper::add<hooks::received_clone_sync>("RCS", g_pointers->m_received_clone_sync);
+		detour_hook_helper::add<hooks::can_apply_data>("CAD", g_pointers->m_can_apply_data);
 
 		detour_hook_helper::add<hooks::get_network_event_data>("GNED", g_pointers->m_get_network_event_data);
 		detour_hook_helper::add<hooks::write_player_gamer_data_node>("WPGDN", g_pointers->m_write_player_gamer_data_node);
@@ -64,6 +67,14 @@ namespace big
 
 		detour_hook_helper::add<hooks::update_presence_attribute_int>("UPAI", g_pointers->m_update_presence_attribute_int);
 		detour_hook_helper::add<hooks::update_presence_attribute_string>("UPAS", g_pointers->m_update_presence_attribute_string);
+
+		detour_hook_helper::add<hooks::serialize_dynamic_entity_game_state_data_node>("SDEGSDN", g_pointers->m_serialize_dynamic_entity_game_state_data_node);
+		detour_hook_helper::add<hooks::serialize_ped_inventory_data_node>("SPIDN", g_pointers->m_serialize_ped_inventory_data_node);
+		detour_hook_helper::add<hooks::serialize_vehicle_gadget_data_node>("SVGDN", g_pointers->m_serialize_vehicle_gadget_data_node);
+
+		detour_hook_helper::add<hooks::handle_join_request>("HJR", g_pointers->m_handle_join_request);
+
+		detour_hook_helper::add<hooks::sort_session_details>("SSD", g_pointers->m_sort_session_details);
 
 		g_hooking = this;
 	}

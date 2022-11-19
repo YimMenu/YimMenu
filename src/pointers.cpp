@@ -243,7 +243,7 @@ namespace big
 		});
 
 		// Send NET Info to Lobby
-		main_batch.add("SNITL", "33 DB 48 83 C1 68 45 8B F0 ", [this](memory::handle ptr)
+		main_batch.add("SNITL", "33 DB 48 83 C1 68 45 8B F0", [this](memory::handle ptr)
 		{
 			m_send_net_info_to_lobby = ptr.sub(0x26).as<decltype(m_send_net_info_to_lobby)>();
 		});
@@ -312,6 +312,18 @@ namespace big
 		main_batch.add("API", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 54 41 55 41 56 41 57 48 83 EC 20 41 8A E8", [this](memory::handle ptr)
 		{
 			m_assign_physical_index = ptr.as<PVOID>();
+		});
+
+		// Received Clone Create
+		main_batch.add("RCC", "48 8B C4 66 44 89 48", [this](memory::handle ptr)
+		{
+			m_received_clone_create = ptr.as<PVOID>();
+		});
+
+		// Can Apply Data
+		main_batch.add("CAD", "49 8B CE FF 50 70 84 C0 74 31 33 FF", [this](memory::handle ptr)
+		{
+			m_can_apply_data = ptr.sub(0x2C).as<PVOID>();
 		});
 
 		// Received clone sync & Get sync tree for type & Get net object for player & Get sync type info & Get net object
@@ -480,6 +492,54 @@ namespace big
 		main_batch.add("C", "48 8B 1D ? ? ? ? 48 8D 4C 24 30", [this](memory::handle ptr)
 		{
 			m_communications = ptr.add(3).rip().as<CCommunications**>();
+		});
+
+		// Serialize Dynamic Entity Game State Data Node (that's a mouthful!)
+		main_batch.add("SDEGSDN", "48 89 5C 24 18 55 56 57 41 56 41 57 48 83 EC 20 48 8B 02 48 8D 99", [this](memory::handle ptr)
+		{
+			m_serialize_dynamic_entity_game_state_data_node = ptr.as<PVOID>();
+		});
+
+		// Serialize Ped Inventory Data Node
+		main_batch.add("SPIDN", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 20 48 8B 02 48 8B F1 48 8B CA 48 8B FA FF 90", [this](memory::handle ptr)
+		{
+			m_serialize_ped_inventory_data_node = ptr.as<PVOID>();
+		});
+
+		// Serialize Vehicle Gadget Data Node
+		main_batch.add("SVGDN", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 30 48 8B 02 48 8D", [this](memory::handle ptr)
+		{
+			m_serialize_vehicle_gadget_data_node = ptr.as<PVOID>();
+		});
+
+		// Get Vehicle Gadget Array Size
+		main_batch.add("GVGAS", "40 53 48 83 EC 40 33 DB E8", [this](memory::handle ptr)
+		{
+			m_get_vehicle_gadget_array_size = ptr.as<functions::get_vehicle_gadget_array_size>();
+		});
+
+		// Handle Join Request
+		main_batch.add("HJR", "48 8B C4 4C 89 48 20 4C 89 40 18 48 89 50 10 55 53 56 57 41 54 41 55 41 56 41 57 48 8D A8 E8 FE", [this](memory::handle ptr)
+		{
+			m_handle_join_request = ptr.as<PVOID>();
+		});
+
+		// Handle Join Request
+		main_batch.add("WJRD", "E8 ? ? ? ? 48 8D 8D 90 00 00 00 F6 D8", [this](memory::handle ptr)
+		{
+			m_write_join_response_data = ptr.add(1).rip().as<functions::write_join_response_data>();
+		});
+
+		// Queue Packet
+		main_batch.add("QP", "E8 ? ? ? ? 84 C0 74 4D B3 01", [this](memory::handle ptr)
+		{
+			m_queue_packet = ptr.add(1).rip().as<functions::queue_packet>();
+		});
+
+		// Sort Session Details
+		main_batch.add("SGS", "C3 0F 2E 42 0C", [this](memory::handle ptr)
+		{
+			m_sort_session_details = ptr.sub(0x10).as<PVOID>();
 		});
 
 		auto mem_region = memory::module("GTA5.exe");

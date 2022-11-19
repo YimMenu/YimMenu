@@ -8,9 +8,20 @@
 #include "vmt_hook.hpp"
 #include "MinHook.h"
 #include "gta/enums.hpp"
-#include "datanodes/player/CPlayerGamerDataNode.hpp"
-#include "datanodes/player/CPlayerGameStateDataNode.hpp"
-#include "rage/rlMetric.hpp"
+
+class CPlayerGamerDataNode;
+class CPlayerGameStateDataNode;
+class CPedInventoryDataNode;
+class CDynamicEntityGameStateDataNode;
+class CVehicleGadgetDataNode;
+class CJoinRequestContext;
+class SessionSortEntry;
+
+namespace rage
+{
+	class rlMetric;
+	class snSession;
+}
 
 namespace big
 {
@@ -61,7 +72,9 @@ namespace big
 		static void format_metric_for_sending(int a1, int64_t a2, int64_t a3, rage::rlMetric* metric);
 
 		//SYNC
-		static int64_t received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eObjType sync_type, uint16_t obj_id, rage::datBitBuffer* bufer, uint16_t unk, uint32_t timestamp);
+		static bool received_clone_create(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eNetObjType object_type, int32_t object_id, int32_t object_flag, rage::datBitBuffer* buffer, int32_t timestamp);
+		static eAckCode received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eNetObjType object_type, uint16_t object_id, rage::datBitBuffer* bufer, uint16_t unk, uint32_t timestamp);
+		static bool can_apply_data(rage::netSyncTree* tree, rage::netObject* object);
 
 		static void write_player_gamer_data_node(rage::netObject* player, CPlayerGamerDataNode* node);
 		static bool write_player_game_state_data_node(rage::netObject* player, CPlayerGameStateDataNode* node);
@@ -70,6 +83,14 @@ namespace big
 
 		static bool update_presence_attribute_int(void* presence_data, int profile_index, char* attr, std::uint64_t value);
 		static bool update_presence_attribute_string(void* presence_data, int profile_index, char* attr, char* value);
+
+		static void serialize_ped_inventory_data_node(CPedInventoryDataNode* node, rage::CSyncDataBase* data);
+		static void serialize_dynamic_entity_game_state_data_node(CDynamicEntityGameStateDataNode* node, rage::CSyncDataBase* data);
+		static void serialize_vehicle_gadget_data_node(CVehicleGadgetDataNode* node, rage::CSyncDataBase* data);
+
+		static bool handle_join_request(Network* network, rage::snSession* session, rage::rlGamerInfo* player_info, CJoinRequestContext* ctx, BOOL is_transition_session);
+
+		static bool sort_session_details(SessionSortEntry* e1, SessionSortEntry* e2);
 	};
 
 	class minhook_keepalive
