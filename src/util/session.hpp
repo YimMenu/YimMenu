@@ -8,6 +8,8 @@
 #include "gta/joaat.hpp"
 #include "rage/rlSessionByGamerTaskResult.hpp"
 #include "pointers.hpp"
+#include "services/players/player_service.hpp"
+#include "services/player_database/player_database_service.hpp"
 
 namespace big::session
 {
@@ -110,5 +112,14 @@ namespace big::session
 		return;
 
 		g_notification_service->push_warning("RID Joiner", "RID join failed");
+	}
+	
+	inline void add_infraction(player_ptr player, Infraction infraction)
+	{
+		auto plyr = g_player_database_service->get_or_create_player(player);
+		plyr->is_modder = true;
+		player->is_modder = true;
+		plyr->infractions.insert((int)infraction);
+		g_player_database_service->save();
 	}
 }

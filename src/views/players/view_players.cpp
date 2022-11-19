@@ -1,6 +1,5 @@
 #include "pointers.hpp"
 #include "services/players/player_service.hpp"
-#include "services/anti_cheat/anti_cheat_service.hpp"
 #include "views/view.hpp"
 #include "fonts/fonts.hpp"
 #include "natives.hpp"
@@ -25,7 +24,7 @@ namespace big
 		if (const auto ped = plyr->get_ped(); ped != nullptr)
 			if (ped->m_ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING)
 				player_icons += FONT_ICON_VEHICLE;
-		if(g_anti_cheat_service->is_player_in_moddb(plyr->get_net_data()->m_gamer_handle_2.m_rockstar_id))
+		if(plyr->is_modder)
 			player_icons += FONT_ICON_NOTFRIEND;
 
 		const auto player_iconsc = player_icons.c_str();
@@ -38,6 +37,9 @@ namespace big
 		const ImVec2 icons_pos(window->DC.CursorPos.x + 300.0f - 32.0f - icons_size.x, window->DC.CursorPos.y + 2.0f);
 		const ImRect icons_box(icons_pos, icons_pos + icons_size);
 		ImGui::PopFont();
+
+		if (plyr->is_modder)
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.f, 0.1f, 0.1f, 1.f));
 
 		if (selected_player)
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
@@ -53,6 +55,9 @@ namespace big
 		ImGui::PopStyleVar();
 
 		if (selected_player)
+			ImGui::PopStyleColor();
+
+		if (plyr->is_modder)
 			ImGui::PopStyleColor();
 
 		// render icons on top of the player button

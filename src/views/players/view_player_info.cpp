@@ -2,7 +2,7 @@
 #include "fiber_pool.hpp"
 #include "services/pickups/pickup_service.hpp"
 #include "services/players/player_service.hpp"
-#include "services/anti_cheat/anti_cheat_service.hpp"
+#include "services/player_database/player_database_service.hpp"
 #include "util/globals.hpp"
 #include "util/misc.hpp"
 #include "util/ped.hpp"
@@ -29,6 +29,11 @@ namespace big
 		ImGui::Text("Player ID: %d", g_player_service->get_selected()->id());
 
 		ImGui::Text("Session Host: %s", g_player_service->get_selected()->is_host() ? "Yes" : "No");
+
+		if (ImGui::Button("Add To Database"))
+		{
+			g_player_database_service->get_or_create_player(g_player_service->get_selected());
+		}
 
 		ImGui::Separator();
 
@@ -132,19 +137,8 @@ namespace big
 				});
 				ImGui::TreePop();
 			}
-
-			if (g_anti_cheat_service->is_player_in_moddb(net_player_data->m_gamer_handle_2.m_rockstar_id)) {
-				if (ImGui::TreeNode("AC Info"))
-				{
-					int moddb_player = g_anti_cheat_service->get_moddb_player_from_rid(net_player_data->m_gamer_handle_2.m_rockstar_id);
-					ImGui::Text("AC Score: %d", g_anti_cheat_service->modders()[moddb_player].score);
-					std::string detections = g_anti_cheat_service->modders()[moddb_player].detections;
-					detections.pop_back(); detections.pop_back();
-					ImGui::Text("Detections: %s", detections.c_str());
-					ImGui::TreePop();
-				}
-			}
 		}
+		
 		if (cped != nullptr)
 		{
 			if (ImGui::TreeNode("Ped Info"))

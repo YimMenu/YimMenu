@@ -53,8 +53,6 @@ namespace big
 		static void system_update_pointers();
 		static void system_desync_kick_protection();
 		static void system_force_session_host();
-		
-		static void anti_cheat();
 
 		static void vehicle_auto_drive();
 		static void vehicle_boost_behavior();

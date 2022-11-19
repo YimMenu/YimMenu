@@ -1,6 +1,6 @@
 #include "hooking.hpp"
 #include "gta_util.hpp"
-#include "services/anti_cheat/anti_cheat_service.hpp"
+#include "util/session.hpp"
 #include <network/CNetGamePlayer.hpp>
 
 namespace big
@@ -81,8 +81,6 @@ namespace big
 			{
 				format_string(player_name, "TSE Crash", notify.crash.log, notify.crash.notify);
 
-				g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 10, "TSE Crash");
-
 				return true;
 			}
 			break;
@@ -139,8 +137,6 @@ namespace big
 			{
 				format_string(player_name, "TSE Crash", notify.crash.log, notify.crash.notify);
 
-				g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 10, "TSE Crash");
-
 				return true;
 			}
 			break;
@@ -181,8 +177,6 @@ namespace big
 			{
 				format_string(player_name, "Send to Cayo Perico", notify.send_to_location.log, notify.send_to_location.notify);
 
-				g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 5, "Send to Cayo Perico");
-
 				return true;
 			}
 			break;
@@ -219,8 +213,6 @@ namespace big
 					{
 						format_string(player_name, "Send to Cayo Perico", notify.send_to_location.log, notify.send_to_location.notify);
 
-						g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 5, "Send to Cayo Perico");
-
 						return true;
 					}
 				}
@@ -255,8 +247,6 @@ namespace big
 			{
 				format_string(player_name, "Apartment Invite", notify.force_teleport.log, notify.force_teleport.notify);
 
-				g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 5, "Apartment Invite");
-
 				return true;
 			}
 			break;
@@ -287,8 +277,9 @@ namespace big
 		case eRemoteEvent::SHKick:
 			if (g->protections.script_events.network_bail)
 			{
+				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
 				format_string(player_name, "Network Bail", notify.network_bail.log, notify.network_bail.notify);
-
 				return true;
 			}
 			break;
@@ -339,8 +330,6 @@ namespace big
 			else if (g->protections.script_events.crash && activity == eActivityType::Tennis)
 			{
 				format_string(player_name, "TSE Crash (Start Tennis)", notify.crash.log, notify.crash.notify);
-
-				g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 10, "TSE Crash (Start Tennis)");
 
 				return true;
 			}

@@ -3,7 +3,6 @@
 #include "thread_pool.hpp"
 #include "looped/looped.hpp"
 #include "services/context_menu/context_menu_service.hpp"
-#include "services/anti_cheat/anti_cheat_service.hpp"
 #include "script_patches.hpp"
 
 namespace big
@@ -22,16 +21,6 @@ namespace big
 			looped::system_force_session_host();
 
 			script::get_current()->yield();
-		}
-	}
-
-	void backend::anti_cheat()
-	{
-		LOG(INFO) << "Starting Anti-Cheat";
-		while (g_running) {
-			looped::anti_cheat();
-
-			script::get_current()->yield(20s);
 		}
 	}
 

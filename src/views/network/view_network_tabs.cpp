@@ -19,7 +19,7 @@ namespace big
 
 			if (ImGui::BeginTabItem("Player DB"))
 			{
-				view::player_db();
+				view::player_database();
 				ImGui::EndTabItem();
 			}
 

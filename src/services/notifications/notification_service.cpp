@@ -19,17 +19,17 @@ namespace big
 
 	void notification_service::push(std::string title, std::string message)
 	{
-		this->push({ NotificationType::INFO, title, message, std::chrono::system_clock::now(), 3000.f , 1.f});
+		this->push({ NotificationType::INFO, title, message, std::chrono::system_clock::now(), 5000.f , 1.f});
 	}
 
 	void notification_service::push_warning(std::string title, std::string message)
 	{
-		this->push({ NotificationType::WARNING, title, message, std::chrono::system_clock::now(), 3000.f , 1.f });
+		this->push({ NotificationType::WARNING, title, message, std::chrono::system_clock::now(), 7000.f , 1.f });
 	}
 
 	void notification_service::push_error(std::string title, std::string message)
 	{
-		this->push({ NotificationType::DANGER, title, message, std::chrono::system_clock::now(), 3000.f , 1.f });
+		this->push({ NotificationType::DANGER, title, message, std::chrono::system_clock::now(), 7000.f , 1.f });
 	}
 
 	std::vector<notification> notification_service::get()

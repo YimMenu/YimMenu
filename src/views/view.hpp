@@ -36,8 +36,8 @@ namespace big
 		static void self();
 		static void outfit_editor(Ped ped_to_edit);
 		static void session();
-		static void player_db();
 		static void settings_tabs();
+		static void player_database();
 		static void settings();
 		static void vehicle_tabs();
 		static void vehicle();

@@ -2,7 +2,6 @@
 #include "gta_util.hpp"
 #include "services/pickups/pickup_service.hpp"
 #include "services/players/player_service.hpp"
-#include "services/anti_cheat/anti_cheat_service.hpp"
 #include "util/globals.hpp"
 #include "util/misc.hpp"
 #include "util/ped.hpp"

@@ -1,9 +1,9 @@
 #include "hooking.hpp"
 #include "services/players/player_service.hpp"
-#include "services/anti_cheat/anti_cheat_service.hpp"
 #include "services/chat/chat_service.hpp"
 #include "natives.hpp"
 #include "gta_util.hpp"
+#include "util/session.hpp"
 #include <network/Network.hpp>
 
 namespace big
@@ -92,9 +92,8 @@ namespace big
 					{
 						if (player->m_num_failed_transition_attempts++ == 20)
 						{
+							session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
 							g_notification_service->push_error("Protections", std::format("{} tried to OOM kick you!", player->get_name()));
-
-							g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 8, "OOM kick");
 						}
 						return true;
 					}
@@ -128,27 +127,9 @@ namespace big
 					}
 					if (player && pl && player->id() != pl->id() && count == 1 && frame->m_msg_id == -1)
 					{
-						notify = std::format("{} breakup kicked {}!", player->get_name(), pl->get_name());
-						g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 8, "Breakup kick");
-						LOG(INFO) << notify;
-						g_notification_service->push_error("Warning!", notify);
+						g_notification_service->push_error("Warning!", std::format("{} breakup kicked {}!", player->get_name(), pl->get_name()));
+						session::add_infraction(player, Infraction::BREAKUP_KICK_DETECTED);
 					}
-					break;
-				}
-				case rage::eNetMessage::MsgNetComplaint: // Skidded from maybegreat48
-				{
-					uint64_t host_token{};
-					buffer.ReadQWord(&host_token, 64);
-
-					std::vector<CNetGamePlayer*> players;
-
-					uint32_t num_of_tokens{};
-					buffer.ReadDword(&num_of_tokens, 32);
-
-					if (player && host_token != player->get_net_data()->m_host_token)
-						g_anti_cheat_service->add_score_or_mark_as_modder(player->get_net_data()->m_gamer_handle_2.m_rockstar_id, 1, "Desync protection");
-
-					buffer.Seek(0);
 					break;
 				}
 				case rage::eNetMessage::MsgLostConnectionToHost:
@@ -161,6 +142,7 @@ namespace big
 					auto self = g_player_service->get_self();
 					if (self->get_net_data() && self->get_net_data()->m_gamer_handle_2.m_rockstar_id == handle.m_rockstar_id)
 					{
+						session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
 						g_notification_service->push_error("Protections", std::format("{} tried to lost connection kick you!", player->get_name()));
 						return true;
 					}
@@ -169,12 +151,54 @@ namespace big
 					{
 						if (plyr->get_net_data() && plyr != player && player->get_net_data()->m_gamer_handle_2.m_rockstar_id == handle.m_rockstar_id)
 						{
+							session::add_infraction(player, Infraction::LOST_CONNECTION_KICK_DETECTED);
 							g_notification_service->push_error("Protections", std::format("{} tried to lost connection kick {}!", player->get_name(), plyr->get_name()));
 							return true;
 						}
 					}
 
 					break;
+				}
+				case rage::eNetMessage::MsgSessionEstablished:
+				{
+					rage::rlGamerHandle handle{ 0 };
+					if (player && player->get_net_data())
+					{
+						uint64_t session_id;
+						buffer.ReadQWord(&session_id, 64);
+						gamer_handle_deserialize(handle, buffer);
+						if (session_id == gta_util::get_network()->m_game_session_ptr->m_rline_session.m_session_id)
+						{
+							if (handle.m_rockstar_id != player->get_net_data()->m_gamer_handle_2.m_rockstar_id)
+							{
+								session::add_infraction(player, Infraction::SPOOFED_ROCKSTAR_ID); // TODO: store this RID
+							}
+						}
+					}
+					break;
+				}
+				case rage::eNetMessage::MsgNetComplaint:
+				{
+					uint64_t host_token{};
+					buffer.ReadQWord(&host_token, 64);
+
+					std::vector<CNetGamePlayer*> players;
+
+					uint32_t num_of_tokens{};
+					buffer.ReadDword(&num_of_tokens, 32);
+
+					if (player && host_token != player->get_net_data()->m_host_token)
+						session::add_infraction(player, Infraction::DESYNC_PROTECTION);
+
+					return true; // block desync kicks as host
+				}
+				case rage::eNetMessage::MsgRequestObjectIds:
+				{
+					if (player && player->block_join)
+					{
+						g_notification_service->push("Join Blocker", std::format("Trying to prevent {} from joining...", player->get_name()));
+						return true;
+					}
 				}
 				}
 			}

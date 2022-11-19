@@ -1,4 +1,5 @@
 #include "hooking.hpp"
+#include <rage/rlMetric.hpp>
 
 namespace rage
 {

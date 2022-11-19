@@ -1,60 +1,30 @@
 #pragma once
-
-#include "natives.hpp"
-#include "core/data/model_attachment.hpp"
-
+#include "persistent_player.hpp"
+#include "services/players/player.hpp"
 
 namespace big
 {
-	struct player_l {
-		std::string player_name;
-		uint64_t rid;
-		std::string relationship;
-		int tmp_player_id;
-	};
-	using player_list = std::vector<player_l>;
-
-	using player_database_callback = std::function<const char* (const char*)>;
 	class player_database_service
 	{
-	public:
+		std::unordered_map<std::uint64_t, persistent_player> m_players;
+		persistent_player* m_selected = nullptr;
 
+	public:
+		std::filesystem::path m_file_path;
 		player_database_service();
 		~player_database_service();
 
-		player_list& player_list_()
-		{
-			return m_player_list;
-		}
+		void save();
+		void load();
 
-		static void save_players();
-		static void load_players();
+		std::unordered_map<std::uint64_t, persistent_player>& get_players();
+		persistent_player* get_player_by_rockstar_id(std::uint64_t rockstar_id);
+		persistent_player* get_or_create_player(player_ptr player);
+		void update_rockstar_id(std::uint64_t old, std::uint64_t _new);
+		void remove_rockstar_id(std::uint64_t rockstar_id);
 
-		static void create_dummy_player();
-		static void add_player_to_db(uint64_t rid, std::string name, std::string relationship);
-		static void add_player_to_db(uint64_t rid, std::string name, std::string relationship, Player player);
-
-		static bool is_player_in_db(uint64_t rid);
-		static player_l get_player_from_db(uint64_t rid);
-
-		
-	private:
-		player_list m_player_list;
-
-		static constexpr auto name_key = "name";
-		static constexpr auto rid_key = "rid";
-		static constexpr auto relationship_key = "relationship";
-
-		static constexpr auto players_key = "players";
-
-		static void load_players_from_json(nlohmann::json player_json);
-
-		static std::vector<nlohmann::json> get_players_json();
-
-		static nlohmann::json get_player_json_full(uint64_t rid, Player player, std::string relationship);
-		static nlohmann::json get_player_json_small(uint64_t rid, std::string name, std::string relationship);
-
-		static big::folder get_players_folder();
+		void set_selected(persistent_player* selected);
+		persistent_player* get_selected();
 	};
 
 	inline player_database_service* g_player_database_service;
