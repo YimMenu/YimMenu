@@ -65,7 +65,6 @@ namespace big
 		ImGui::Checkbox("RID Join", &g->protections.rid_join);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("This will block anyone trying to join you through Rockstar ID, including your friends");
-		ImGui::EndGroup();
 	}
 
 }
