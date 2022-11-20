@@ -126,7 +126,7 @@ namespace big::scripts
 			// 5) Get everyone out of state 7
 			if (check_players_in_state(launcher, 7))
 			{
-				for (int i = 0; check_players_in_state(launcher, 6); i++)
+				for (int i = 0; check_players_in_state(launcher, 7); i++)
 				{
 					if (i > 200)
 						break; // 5F) Timeout
