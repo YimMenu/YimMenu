@@ -16,6 +16,8 @@ class CDynamicEntityGameStateDataNode;
 class CVehicleGadgetDataNode;
 class CJoinRequestContext;
 class SessionSortEntry;
+class RemoteGamerInfoMsg;
+class CMsgTextMessage;
 
 namespace rage
 {
@@ -91,6 +93,9 @@ namespace big
 		static bool handle_join_request(Network* network, rage::snSession* session, rage::rlGamerInfo* player_info, CJoinRequestContext* ctx, BOOL is_transition_session);
 
 		static bool sort_session_details(SessionSortEntry* e1, SessionSortEntry* e2);
+
+		static bool add_player_to_session(rage::netConnectionManager* mgr, int receiver_msg_id, int* out_command_hndl, RemoteGamerInfoMsg* msg, int flags, void* unk);
+		static bool send_chat_net_message(rage::netConnectionManager* mgr, int receiver_msg_id, CMsgTextMessage* msg, int flags, void* unk);
 	};
 
 	class minhook_keepalive

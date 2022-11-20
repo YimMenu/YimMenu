@@ -1,5 +1,15 @@
 #include "hooking.hpp"
 
+constexpr static auto advertisments = std::to_array(
+{
+	"~h~~r~YimMenu",
+	"~h~~g~YimMenu",
+	"~h~~b~YimMenu",
+	"~h~~y~YimMenu",
+	"~h~~o~YimMenu",
+	"~h~~p~YimMenu"
+});
+
 namespace big
 {
 	bool hooks::send_net_info_to_lobby(rage::rlGamerInfo* player, int64_t a2, int64_t a3, DWORD* a4)
@@ -30,6 +40,20 @@ namespace big
 				LOG(INFO) << "Sending spoofed values to session host";
 			if (g->notifications.send_net_info_to_lobby.notify)
 				g_notification_service->push("Player Info Spoofing", "Sent spoofed values to lobby host.");
+		}
+		else
+		{
+			if (g->session.name_spoof_enabled)
+			{
+				if (g->session.advertise_menu)
+				{
+					memcpy(player->m_name, advertisments[rand() % advertisments.size()], sizeof(player->m_name));
+				}
+				else
+				{
+					memcpy(player->m_name, g->session.spoofed_name.c_str(), sizeof(player->m_name));
+				}
+			}
 		}
 
 		const auto result = g_hooking->get_original<hooks::send_net_info_to_lobby>()(player, a2, a3, a4);
