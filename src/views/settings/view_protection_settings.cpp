@@ -1,9 +1,12 @@
 #include "views/view.hpp"
+#include "pointers.hpp"
 
 namespace big
 {
 	void view::protection_settings()
 	{
+		components::sub_title("Script Event");
+
 		ImGui::BeginGroup();
 		ImGui::Checkbox("Bounty", &g->protections.script_events.bounty);
 		ImGui::Checkbox("CEO Ban", &g->protections.script_events.ceo_ban);
@@ -43,6 +46,21 @@ namespace big
 		ImGui::BeginGroup();
 		ImGui::Checkbox("Teleport To Warehouse", &g->protections.script_events.teleport_to_warehouse);
 		ImGui::Checkbox("Start Activity", &g->protections.script_events.start_activity);
+		ImGui::EndGroup();
+
+		components::sub_title("Crash");
+
+		if (ImGui::Checkbox("Sound Overload", &g->protections.crashes.sound_overload))
+		{
+			if (g->protections.crashes.sound_overload)
+				g_pointers->m_sound_overload_crash_protection->apply();
+			else
+				g_pointers->m_sound_overload_crash_protection->restore();
+		}
+
+		components::sub_title("Misc");
+
+		ImGui::BeginGroup();
 		components::script_patch_checkbox("Script Host Kick", &g->protections.script_host_kick);
 		ImGui::Checkbox("RID Join", &g->protections.rid_join);
 		if (ImGui::IsItemHovered())

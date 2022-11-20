@@ -8,6 +8,16 @@ namespace big
 {
 	void view::self()
 	{
+		if (ImGui::Button("test"))
+		{
+			g_pointers->m_sound_overload_crash_protection->apply();
+		}
+
+		if (ImGui::Button("test2"))
+		{
+			g_pointers->m_sound_overload_crash_protection->restore();
+		}
+
 		components::button("Suicide", [] {
 			ENTITY::SET_ENTITY_HEALTH(self::ped, 0, 0);
 		});

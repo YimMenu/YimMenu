@@ -2,6 +2,8 @@
 #include "pointers.hpp"
 #include "memory/all.hpp"
 
+extern "C" void	sound_overload_crash_protection();
+
 namespace big
 {
 	pointers::pointers()
@@ -542,6 +544,16 @@ namespace big
 			m_sort_session_details = ptr.sub(0x10).as<PVOID>();
 		});
 
+		// Sound Overload Crash Protection
+		main_batch.add("SOCP", "E8 ? ? ? ? 48 8D 4D 98 49 8B D4", [this](memory::handle ptr)
+		{
+			g_sound_overload_ret_addr = ptr.add(1).rip().add(264 + 15).as<uintptr_t>();
+
+			std::vector<byte> bytes = { 0xFF,0x25,0x00,0x00,0x00,0x00,0x00,0x00,0x5C,0x54,0x3E,0x02,0x00,0x00,0x90 };
+			*(uintptr_t*)(bytes.data() + 6) = (uintptr_t)sound_overload_crash_protection;
+			m_sound_overload_crash_protection = memory::byte_patch::make(ptr.add(1).rip().add(264).as<PVOID>(), bytes).get();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 
@@ -564,15 +576,11 @@ namespace big
 
 		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 F5 01 00 00"))
 		{
-			m_bypass_max_count_of_active_sticky_bombs = pat.add(4).as<uint8_t*>();
-
-			// declare it right now even though we write the same value
-			// so that it get cleaned up in the dctor
-			memory::byte_patch::make(m_bypass_max_count_of_active_sticky_bombs, *m_bypass_max_count_of_active_sticky_bombs);
+			m_bypass_max_count_of_active_sticky_bombs = memory::byte_patch::make(pat.add(4).as<uint8_t*>(), 99).get();
 
 			if (g->weapons.bypass_c4_limit)
 			{
-				*m_bypass_max_count_of_active_sticky_bombs = 99;
+				m_bypass_max_count_of_active_sticky_bombs->apply();
 			}
 		}
 

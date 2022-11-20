@@ -143,7 +143,13 @@ namespace big
 				bool start_activity = true;
 			};
 
+			struct crashes
+			{
+				bool sound_overload = true;
+			};
+
 			script_events script_events{};
+			crashes crashes{};
 			bool script_host_kick = true;
 			bool rid_join = false;
 		};
@@ -571,6 +577,10 @@ namespace big
 				script_handler.start_activity = script_handler_j["start_activity"];
 			}
 
+			{
+				this->protections.crashes.sound_overload = j["protections"]["crashes"]["sound_overload"];
+			}
+
 			this->protections.script_host_kick = j["protections"]["script_host_kick"];
 			this->protections.rid_join = j["protections"]["rid_join"];
 
@@ -857,6 +867,11 @@ namespace big
 								{ "vehicle_kick", script_handler_protections.vehicle_kick },
 								{ "teleport_to_warehouse", script_handler_protections.teleport_to_warehouse },
 								{ "start_activity", script_handler_protections.start_activity },
+							}
+						},
+						{
+							"crashes", {
+								{ "sound_overload", this->protections.crashes.sound_overload },
 							}
 						},
 

@@ -20,6 +20,12 @@ namespace memory
 				std::unique_ptr<byte_patch>(new byte_patch(address, value)));
 		}
 
+		static const std::unique_ptr<byte_patch>& make(void* address, std::vector<byte> bytes)
+		{
+			return m_patches.emplace_back(
+				std::unique_ptr<byte_patch>(new byte_patch(address, bytes)));
+		}
+
 		static void restore_all();
 
 	private:
@@ -33,6 +39,16 @@ namespace memory
 
 			memcpy(m_original_bytes.get(), m_address, m_size);
 			memcpy(m_value.get(), &value, m_size);
+		}
+
+		inline byte_patch(void* address, std::vector<byte> bytes)
+			: m_address(address), m_size(bytes.size())
+		{
+			m_original_bytes = std::make_unique<uint8_t[]>(m_size);
+			m_value = std::make_unique<uint8_t[]>(m_size);
+
+			memcpy(m_original_bytes.get(), m_address, m_size);
+			memcpy(m_value.get(), bytes.data(), m_size);
 		}
 
 	protected:
