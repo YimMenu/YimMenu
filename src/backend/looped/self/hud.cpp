@@ -6,6 +6,7 @@
 namespace big
 {
 	static bool bLastHideRadar = false;
+	static bool bHasHUDBeenHidden = false;
 
 	void looped::self_hud()
 	{
@@ -33,22 +34,30 @@ namespace big
 			std::all_of(
 				std::begin(bHudComponents),
 				std::end(bHudComponents),
-				[](bool i) { return i; })
+				[](bool i) { return i; }
+			)
 		) {
 			HUD::DISPLAY_HUD(false);
+			bHasHUDBeenHidden = true;
 		}
 		else if (
 			std::all_of(
 				std::begin(bHudComponents),
 				std::end(bHudComponents),
-				[](bool i) { return !i; }) && bForceShowElements
+				[](bool i) { return !i; }
+			) && bForceShowElements
 		) {
 			HUD::DISPLAY_HUD_WHEN_NOT_IN_STATE_OF_PLAY_THIS_FRAME();
 			HUD::DISPLAY_HUD_WHEN_PAUSED_THIS_FRAME();
 		}
 		else
 		{
-			HUD::DISPLAY_HUD(true);
+			if (bHasHUDBeenHidden)
+			{
+				HUD::DISPLAY_HUD(true);
+				bHasHUDBeenHidden = false;
+			}
+
 			for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
 			{
 				if (bHudComponents[i])
@@ -56,6 +65,6 @@ namespace big
 				else if (!bHudComponents[i] && bForceShowElements)
 					HUD::SHOW_HUD_COMPONENT_THIS_FRAME(i + 1);
 			}
-		}
+		}	
 	}
 }
