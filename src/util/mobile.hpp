@@ -45,12 +45,12 @@ namespace big::mobile
 	{
 		inline void request_ammo_drop()
 		{
-			*script_global(mechanic_global).at(874).as<int*>() = 1;
+			*script_global(scr_globals::mechanic_global).at(874).as<int*>() = 1;
 		}
 		
 		inline void request_helicopter_pickup()
 		{
-			*script_global(mechanic_global).at(876).as<int*>() = 1;
+			*script_global(scr_globals::mechanic_global).at(876).as<int*>() = 1;
 		}
 	}
 
