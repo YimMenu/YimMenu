@@ -122,7 +122,7 @@ namespace big
 		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
 		functions::join_session_by_info m_join_session_by_info;
 
-		uint8_t* m_bypass_max_count_of_active_sticky_bombs;
+		memory::byte_patch* m_bypass_max_count_of_active_sticky_bombs;
 
 		functions::reset_network_complaints m_reset_network_complaints{};
 
@@ -166,6 +166,9 @@ namespace big
 		functions::queue_packet m_queue_packet;
 
 		PVOID m_sort_session_details;
+
+		memory::byte_patch* m_sound_overload_patch;
+		LPVOID m_sound_overload_alloc;
 	};
 
 	inline pointers* g_pointers{};

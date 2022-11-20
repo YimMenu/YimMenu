@@ -22,8 +22,8 @@ namespace big
 		// Max Wanted Level
 		main_batch.add("MWL", "8B 43 6C 89 05", [this](memory::handle ptr)
 		{
-			m_max_wanted_level = memory::byte_patch::make(ptr.add(5).rip().as<uint32_t*>(), 0).get();
-			m_max_wanted_level_2 = memory::byte_patch::make(ptr.add(14).rip().as<uint32_t*>(), 0).get();
+			m_max_wanted_level = memory::byte_patch::make(ptr.add(5).rip().as<PVOID>(), "\x00", 1).get();
+			m_max_wanted_level_2 = memory::byte_patch::make(ptr.add(14).rip().as<PVOID>(), "\x00", 1).get();
 		});
 
 		// Game State
@@ -215,7 +215,7 @@ namespace big
 		// Request Control of Entity PATCH
 		main_batch.add("RCOE-Patch", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", [this](memory::handle ptr)
 		{
-			memory::byte_patch::make(ptr.add(0x13).as<std::uint16_t*>(), 0x9090)->apply();
+			memory::byte_patch::make(ptr.add(0x13).as<PVOID>(), "\x90\x90", 2)->apply();
 		});
 
 		// Replay Interface
@@ -542,6 +542,24 @@ namespace big
 			m_sort_session_details = ptr.sub(0x10).as<PVOID>();
 		});
 
+		// Sound Crash Patch
+		main_batch.add("SCP", "E8 ? ? ? ? 48 8D 4D 98 49 8B D4", [this](memory::handle ptr)
+		{
+			byte alloc_addr_bytes[65] = { 0x41,0x0F,0xB7,0xC0,0x48,0x8D,0x14,0x49,0x48,0x81,0xFA,0xBE,0x00,0x00,0x00,0x7F,0x18,0xFF,0xC1,0x66,0x44,0x3B,0x43,0x1C,0x6A,0x00,0x49,0xBB,0x57,0x6F,0xA2,0xE8,0xF6,0x7F,0x00,0x00,0x4C,0x89,0x1C,0x24,0xC3,0x48,0xC7,0xC2,0x00,0x00,0x00,0x00,0x6A,0x00,0x49,0xBB,0x57,0x6F,0xA2,0xE8,0xF6,0x7F,0x00,0x00,0x4C,0x89,0x1C,0x24,0xC3 };
+			byte hook_addr_bytes[15] = { 0xFF,0x25,0x00,0x00,0x00,0x00,0x00,0x00,0x5C,0x54,0x3E,0x02,0x00,0x00,0x90 };
+			
+			m_sound_overload_alloc = VirtualAlloc(NULL, sizeof(alloc_addr_bytes), MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+			*(uintptr_t*)(alloc_addr_bytes + 28) = ptr.add(1).rip().add(264 + 15).as<uintptr_t>();
+			*(uintptr_t*)(alloc_addr_bytes + 52) = ptr.add(1).rip().add(264 + 15).as<uintptr_t>();
+			memcpy((void*)m_sound_overload_alloc, alloc_addr_bytes, 65);
+
+			*(uintptr_t*)(hook_addr_bytes + 6) = (uintptr_t)m_sound_overload_alloc;
+			m_sound_overload_patch = memory::byte_patch::make(ptr.add(1).rip().add(264).as<PVOID>(), (const char*)hook_addr_bytes, sizeof(hook_addr_bytes)).get();
+
+			if (g->protections.crashes.sound_overload)
+				m_sound_overload_patch->apply();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 
@@ -564,16 +582,10 @@ namespace big
 
 		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 F5 01 00 00"))
 		{
-			m_bypass_max_count_of_active_sticky_bombs = pat.add(4).as<uint8_t*>();
-
-			// declare it right now even though we write the same value
-			// so that it get cleaned up in the dctor
-			memory::byte_patch::make(m_bypass_max_count_of_active_sticky_bombs, *m_bypass_max_count_of_active_sticky_bombs);
+			m_bypass_max_count_of_active_sticky_bombs = memory::byte_patch::make(pat.add(4).as<PVOID>(), "\x63", 1).get();
 
 			if (g->weapons.bypass_c4_limit)
-			{
-				*m_bypass_max_count_of_active_sticky_bombs = 99;
-			}
+				m_bypass_max_count_of_active_sticky_bombs->apply();
 		}
 
 		/**
@@ -581,28 +593,28 @@ namespace big
 		 */
 		if (auto pat1 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
 		{
-			memory::byte_patch::make(pat1.add(2).as<uint32_t*>(), 0xc9310272)->apply();
-			memory::byte_patch::make(pat1.add(6).as<uint16_t*>(), 0x9090)->apply();
+			memory::byte_patch::make(pat1.add(2).as<PVOID>(), "\x72\x02\x31\xC9", 4)->apply();
+			memory::byte_patch::make(pat1.add(6).as<PVOID>(), "\x90\x90", 2)->apply();
 		}
 
 		if (auto pat2 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 49 03 fa"))
 		{
-			memory::byte_patch::make(pat2.add(2).as<uint32_t*>(), 0xc9310272)->apply();
-			memory::byte_patch::make(pat2.add(6).as<uint16_t*>(), 0x9090)->apply();
+			memory::byte_patch::make(pat2.add(2).as<PVOID>(), "\x72\x02\x31\xC9", 4)->apply();
+			memory::byte_patch::make(pat2.add(6).as<PVOID>(), "\x90\x90", 2)->apply();
 		}
 
 		auto pat3 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 48 ff c7");
 		for (auto& handle : pat3)
 		{
-			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272)->apply();
-			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090)->apply();
+			memory::byte_patch::make(handle.add(2).as<PVOID>(), "\x72\x02\x31\xD2", 4)->apply();
+			memory::byte_patch::make(handle.add(6).as<PVOID>(), "\x90\x90", 2)->apply();
 		}
 
 		auto pat4 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 49 03 fa");
 		for (auto& handle : pat4)
 		{
-			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272)->apply();
-			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090)->apply();
+			memory::byte_patch::make(handle.add(2).as<PVOID>(), "\x72\x02\x31\xD2", 4)->apply();
+			memory::byte_patch::make(handle.add(6).as<PVOID>(), "\x90\x90", 2)->apply();
 		}
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);
@@ -616,6 +628,8 @@ namespace big
 	pointers::~pointers()
 	{
 		memory::byte_patch::restore_all();
+
+		VirtualFree(m_sound_overload_alloc, 0, MEM_RELEASE);
 
 		g_pointers = nullptr;
 	}
