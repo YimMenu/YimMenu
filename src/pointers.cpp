@@ -552,6 +552,9 @@ namespace big
 			std::vector<byte> bytes = { 0xFF,0x25,0x00,0x00,0x00,0x00,0x00,0x00,0x5C,0x54,0x3E,0x02,0x00,0x00,0x90 };
 			*(uintptr_t*)(bytes.data() + 6) = (uintptr_t)sound_overload_crash_protection;
 			m_sound_overload_crash_protection = memory::byte_patch::make(ptr.add(1).rip().add(264).as<PVOID>(), bytes).get();
+
+			if (g->protections.crashes.sound_overload)
+				m_sound_overload_crash_protection->apply();
 		});
 
 		auto mem_region = memory::module("GTA5.exe");
