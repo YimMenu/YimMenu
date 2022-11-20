@@ -551,7 +551,7 @@ namespace big
 			m_sound_overload_alloc = VirtualAlloc(NULL, sizeof(alloc_addr_bytes), MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 			*(uintptr_t*)(alloc_addr_bytes + 28) = ptr.add(1).rip().add(264 + 15).as<uintptr_t>();
 			*(uintptr_t*)(alloc_addr_bytes + 52) = ptr.add(1).rip().add(264 + 15).as<uintptr_t>();
-			memcpy((void*)m_sound_overload_alloc, alloc_addr_bytes, 65);
+			memcpy((void*)m_sound_overload_alloc, alloc_addr_bytes, sizeof(alloc_addr_bytes));
 
 			*(uintptr_t*)(hook_addr_bytes + 6) = (uintptr_t)m_sound_overload_alloc;
 			m_sound_overload_patch = memory::byte_patch::make(ptr.add(1).rip().add(264).as<PVOID>(), (const char*)hook_addr_bytes, sizeof(hook_addr_bytes)).get();
