@@ -40,8 +40,8 @@ namespace big
 
 	player_ptr player_service::get_by_id(uint32_t id) const
 	{
-		for (const auto& [pid, player] : m_players)
-			if (pid == id)
+		for (const auto& [_, player] : m_players)
+			if (player->id() == id)
 				return player;
 		return nullptr;
 	}
@@ -74,10 +74,10 @@ namespace big
 		if (net_game_player == nullptr || net_game_player == *m_self) return;
 
 		auto plyr = std::make_shared<player>(net_game_player);
-		m_players.emplace(
-			plyr->id(),
+		m_players.insert({
+			plyr->get_name(),
 			std::move(plyr)
-		);
+		});
 	}
 
 	void player_service::player_leave(CNetGamePlayer* net_game_player)
@@ -86,8 +86,10 @@ namespace big
 		if (m_selected_player && m_selected_player->equals(net_game_player))
 			m_selected_player = m_dummy;
 
-		auto plyr = std::make_unique<player>(net_game_player);
-		m_players.erase(plyr->id());
+		if (auto it = std::find_if(m_players.begin(), m_players.end(), [net_game_player](const auto& p) { return p.second->id() == net_game_player->m_player_id; }); it != m_players.end())
+		{
+			m_players.erase(it);
+		}
 	}
 
 	void player_service::set_selected(player_ptr plyr)
