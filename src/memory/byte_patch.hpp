@@ -13,10 +13,11 @@ namespace memory
 
 		void remove() const;
 
-		static const std::unique_ptr<byte_patch>& make(void* address, const char* bytes, size_t len)
+		template <typename TAddr>
+		static const std::unique_ptr<byte_patch>& make(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
 		{
 			return m_patches.emplace_back(
-				std::unique_ptr<byte_patch>(new byte_patch(address, bytes, len)));
+				std::unique_ptr<byte_patch>(new byte_patch(address, value)));
 		}
 
 		static const std::unique_ptr<byte_patch>& make(void* address, std::vector<byte> bytes)
@@ -28,14 +29,16 @@ namespace memory
 		static void restore_all();
 
 	private:
-		byte_patch(void* address, const char* bytes, size_t len)
-			: m_address(address), m_size(len)
+		template <typename TAddr>
+		byte_patch(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
+			: m_address(address)
 		{
+			m_size = sizeof(std::remove_pointer_t<std::remove_reference_t<TAddr>>);
 			m_original_bytes = std::make_unique<uint8_t[]>(m_size);
 			m_value = std::make_unique<uint8_t[]>(m_size);
 
 			memcpy(m_original_bytes.get(), m_address, m_size);
-			memcpy(m_value.get(), bytes, m_size);
+			memcpy(m_value.get(), &value, m_size);
 		}
 
 		inline byte_patch(void* address, std::vector<byte> bytes)
