@@ -200,6 +200,8 @@ namespace big
 				g->self.hud_components_states[i] = false;
 			}
 		});
+		ImGui::SameLine();
+		ImGui::Checkbox("Force show HUD elements", &g->self.force_show_hud_elements);
 
 		ImGui::EndGroup();
 

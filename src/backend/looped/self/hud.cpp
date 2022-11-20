@@ -11,6 +11,7 @@ namespace big
 	{
 		const bool bHideRadar = g->self.hide_radar;
 		const bool bHideAmmo = g->self.hide_ammo;
+		const bool bForceShowElements = g->self.force_show_hud_elements;
 		auto& bHudComponents = g->self.hud_components_states;
 
 		if (bHideRadar)
@@ -32,10 +33,18 @@ namespace big
 			std::all_of(
 				std::begin(bHudComponents),
 				std::end(bHudComponents),
-				[](bool i) { return i; }
-			)
+				[](bool i) { return i; })
 		) {
 			HUD::DISPLAY_HUD(false);
+		}
+		else if (
+			std::all_of(
+				std::begin(bHudComponents),
+				std::end(bHudComponents),
+				[](bool i) { return !i; }) && bForceShowElements
+		) {
+			HUD::DISPLAY_HUD_WHEN_NOT_IN_STATE_OF_PLAY_THIS_FRAME();
+			HUD::DISPLAY_HUD_WHEN_PAUSED_THIS_FRAME();
 		}
 		else
 		{
@@ -44,6 +53,8 @@ namespace big
 			{
 				if (bHudComponents[i])
 					HUD::HIDE_HUD_COMPONENT_THIS_FRAME(i + 1);
+				else if (!bHudComponents[i] && bForceShowElements)
+					HUD::SHOW_HUD_COMPONENT_THIS_FRAME(i + 1);
 			}
 		}
 	}

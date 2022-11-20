@@ -178,6 +178,7 @@ namespace big
 			bool hide_ammo = false;
 			int selected_hud_component = 1;
 			bool hud_components_states[(int)HudComponents::HUD_WEAPONS] = { false };
+			bool force_show_hud_elements = false;
 			bool mobile_radio = false;
 		};
 
@@ -1086,16 +1087,16 @@ namespace big
 						{ "enabled", this->esp.enabled },
 						{ "hide_self", this->esp.hide_self },
 						{ "global_render_distance", nlohmann::json::array({
-						this->esp.global_render_distance[0],
-						this->esp.global_render_distance[1] })
+							this->esp.global_render_distance[0],
+							this->esp.global_render_distance[1] })
 						},
 						{ "tracer_render_distance", nlohmann::json::array({
-						this->esp.tracer_render_distance[0],
-						this->esp.tracer_render_distance[1] })
+							this->esp.tracer_render_distance[0],
+							this->esp.tracer_render_distance[1] })
 						},
 						{ "box_render_distance", nlohmann::json::array({
-						this->esp.box_render_distance[0],
-						this->esp.box_render_distance[1] })
+							this->esp.box_render_distance[0],
+							this->esp.box_render_distance[1] })
 						},
 						{ "enemy_color", this->esp.enemy_color },
 						{ "enemy_near_color", this->esp.enemy_near_color },
@@ -1112,12 +1113,12 @@ namespace big
 						{ "scale_health_from_dist", this->esp.scale_health_from_dist },
 						{ "scale_armor_from_dist", this->esp.scale_armor_from_dist },
 						{ "tracer_draw_position", nlohmann::json::array({
-						this->esp.tracer_draw_position[0],
-						this->esp.tracer_draw_position[1] })
+							this->esp.tracer_draw_position[0],
+							this->esp.tracer_draw_position[1] })
 						},
 						{ "distance_threshold", nlohmann::json::array({
-						this->esp.distance_threshold[0],
-						this->esp.distance_threshold[1] })
+							this->esp.distance_threshold[0],
+							this->esp.distance_threshold[1] })
 						}
 					}
 				}

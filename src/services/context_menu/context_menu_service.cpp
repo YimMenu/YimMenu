@@ -313,7 +313,7 @@ namespace big
 
 			if (g_context_menu_service->enabled)
 			{
-				HUD::SHOW_HUD_COMPONENT_THIS_FRAME(14 /*RETICLE*/);
+				HUD::SHOW_HUD_COMPONENT_THIS_FRAME(static_cast<int>(HudComponents::RETICLE));
 
 				g_context_menu_service->get_entity_closest_to_screen_center();
 
