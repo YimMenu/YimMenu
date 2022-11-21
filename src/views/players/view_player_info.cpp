@@ -119,6 +119,8 @@ namespace big
 			if (ImGui::TreeNode("Net Info"))
 			{
 				ImGui::Text("Rockstar ID: %d", net_player_data->m_gamer_handle_2.m_rockstar_id);
+				if(g_player_service->get_selected()->real_rid != net_player_data->m_gamer_handle_2.m_rockstar_id)
+					ImGui::Text("Real Rockstar ID: %d", g_player_service->get_selected()->real_rid);
 				ImGui::Text(
 					"IP Address: %d.%d.%d.%d:%d",
 					net_player_data->m_external_ip.m_field1,

@@ -14,6 +14,7 @@
 #include "datanodes/pickup/CPickupCreationDataNode.hpp"
 #include "datanodes/physical/CPhysicalAttachDataNode.hpp"
 #include "datanodes/player/CPlayerAppearanceDataNode.hpp"
+#include "datanodes/player/CPlayerGameStateDataNode.hpp"
 #include "datanodes/proximity_migrateable/CSectorDataNode.hpp"
 #include "datanodes/vehicle/CVehicleCreationDataNode.hpp"
 #include "datanodes/vehicle/CVehicleGadgetDataNode.hpp"
@@ -257,6 +258,18 @@ namespace big
 					{
 						notify::crash_blocked(sender, "invalid player model");
 						return true;
+					}
+					break;
+				}
+				case "?AVCPlayerGameStateDataNode@@"_fnv1a:
+				{
+					const auto player_game_state_node = dynamic_cast<CPlayerGameStateDataNode*>(node);
+					if (player_game_state_node->m_is_spectating)
+					{
+						if(g_player_service->get_by_id(player_game_state_node->m_spectating_net_id) != nullptr)
+							g_notification_service->push("Spectating", std::format("{} is spectating: #{} ({})", sender->get_name(), player_game_state_node->m_spectating_net_id, g_player_service->get_by_id(player_game_state_node->m_spectating_net_id)->get_name()));
+						else
+							g_notification_service->push("Spectating", std::format("{} is spectating: #{}", sender->get_name(), player_game_state_node->m_spectating_net_id));
 					}
 					break;
 				}

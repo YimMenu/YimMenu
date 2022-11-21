@@ -38,9 +38,7 @@ namespace big
 		ImGui::EndChild();
 		ImGui::Separator();
 
-		bool reclaim_focus = false;
-		ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
-		components::input_text_with_hint("###Message", "Message", &g->chat.message, input_text_flags, [&reclaim_focus]
+		components::input_text_with_hint("###Message", "Message", &g->chat.message, ImGuiInputTextFlags_EnterReturnsTrue, []
 		{
 			const auto net_game_player = g_player_service->get_self()->get_net_game_player();
 			if(g_pointers->m_send_chat_message(*g_pointers->m_send_chat_ptr, net_game_player->get_net_data(), (char*)g->chat.message.c_str(), g->chat.local))

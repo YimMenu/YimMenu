@@ -12,7 +12,8 @@ namespace big
 		SPOOFED_ROCKSTAR_ID,
 		TRIGGERED_ANTICHEAT,
 		TRIED_CRASH_PLAYER,
-		TRIED_KICK_PLAYER
+		TRIED_KICK_PLAYER,
+		TRIED_TELEPORT_PLAYER
 	};
 
     inline std::unordered_map<Infraction, const char*> infraction_desc =
@@ -23,6 +24,7 @@ namespace big
 		{Infraction::SPOOFED_ROCKSTAR_ID, "Had spoofed RID"},
 		{Infraction::TRIGGERED_ANTICHEAT, "Triggered Rockstar's anticheat"},
 		{Infraction::TRIED_CRASH_PLAYER, "Tried to crash you"},
-		{Infraction::TRIED_KICK_PLAYER, "Tried to kick you"}
+		{Infraction::TRIED_KICK_PLAYER, "Tried to kick you"},
+		{Infraction::TRIED_TELEPORT_PLAYER, "Tried to teleport you"}
 	};
 }

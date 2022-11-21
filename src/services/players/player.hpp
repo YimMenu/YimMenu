@@ -47,6 +47,7 @@ namespace big
 
 		bool is_modder = false;
 		bool block_join = false;
+		uint64_t real_rid = 0;
 		int block_join_reason = 0;
 
 	protected:

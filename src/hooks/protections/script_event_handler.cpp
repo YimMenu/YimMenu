@@ -81,6 +81,9 @@ namespace big
 			{
 				format_string(player_name, "TSE Crash", notify.crash.log, notify.crash.notify);
 
+				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+					session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
+
 				return true;
 			}
 			break;
@@ -131,11 +134,17 @@ namespace big
 			{
 				format_string(player_name, "Remote Teleport", notify.mc_teleport.log, notify.mc_teleport.notify);
 
+				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+					session::add_infraction(plyr, Infraction::TRIED_TELEPORT_PLAYER);
+
 				return true;
 			}
 			else if (g->protections.script_events.crash && args[3] > 32)
 			{
 				format_string(player_name, "TSE Crash", notify.crash.log, notify.crash.notify);
+
+				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+					session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
 
 				return true;
 			}
@@ -144,6 +153,9 @@ namespace big
 			if (g->protections.script_events.network_bail)
 			{
 				format_string(player_name, "Network Bail", notify.network_bail.log, notify.network_bail.notify);
+
+				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
 
 				return true;
 			}
@@ -177,6 +189,9 @@ namespace big
 			{
 				format_string(player_name, "Send to Cayo Perico", notify.send_to_location.log, notify.send_to_location.notify);
 
+				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+					session::add_infraction(plyr, Infraction::TRIED_TELEPORT_PLAYER);
+
 				return true;
 			}
 			break;
@@ -184,6 +199,9 @@ namespace big
 			if (g->protections.script_events.send_to_cutscene)
 			{
 				format_string(player_name, "Send to Cutscene", notify.send_to_cutscene.log, notify.send_to_cutscene.notify);
+
+				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+					session::add_infraction(plyr, Infraction::TRIED_TELEPORT_PLAYER);
 
 				return true;
 			}
@@ -202,6 +220,9 @@ namespace big
 					{
 						format_string(player_name, "Send to Beach", notify.send_to_location.log, notify.send_to_location.notify);
 
+						if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+							session::add_infraction(plyr, Infraction::TRIED_TELEPORT_PLAYER);
+
 						return true;
 					}
 				}
@@ -212,6 +233,9 @@ namespace big
 					if (g->protections.script_events.send_to_location)
 					{
 						format_string(player_name, "Send to Cayo Perico", notify.send_to_location.log, notify.send_to_location.notify);
+
+						if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+							session::add_infraction(plyr, Infraction::TRIED_TELEPORT_PLAYER);
 
 						return true;
 					}
@@ -247,6 +271,9 @@ namespace big
 			{
 				format_string(player_name, "Apartment Invite", notify.force_teleport.log, notify.force_teleport.notify);
 
+				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+					session::add_infraction(plyr, Infraction::TRIED_TELEPORT_PLAYER);
+
 				return true;
 			}
 			break;
@@ -279,6 +306,7 @@ namespace big
 			{
 				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
+
 				format_string(player_name, "Network Bail", notify.network_bail.log, notify.network_bail.notify);
 				return true;
 			}
@@ -287,6 +315,9 @@ namespace big
 			if (g->protections.script_events.teleport_to_warehouse)
 			{
 				format_string(player_name, "Teleport To Warehouse", notify.teleport_to_warehouse.log, notify.teleport_to_warehouse.notify);
+
+				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+					session::add_infraction(plyr, Infraction::TRIED_TELEPORT_PLAYER);
 
 				return true;
 			}
@@ -330,6 +361,9 @@ namespace big
 			else if (g->protections.script_events.crash && activity == eActivityType::Tennis)
 			{
 				format_string(player_name, "TSE Crash (Start Tennis)", notify.crash.log, notify.crash.notify);
+
+				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+					session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
 
 				return true;
 			}

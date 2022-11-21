@@ -169,9 +169,10 @@ namespace big
 						gamer_handle_deserialize(handle, buffer);
 						if (session_id == gta_util::get_network()->m_game_session_ptr->m_rline_session.m_session_id)
 						{
+							player->real_rid = handle.m_rockstar_id;
 							if (handle.m_rockstar_id != player->get_net_data()->m_gamer_handle_2.m_rockstar_id)
 							{
-								session::add_infraction(player, Infraction::SPOOFED_ROCKSTAR_ID); // TODO: store this RID
+								session::add_infraction(player, Infraction::SPOOFED_ROCKSTAR_ID);
 							}
 						}
 					}

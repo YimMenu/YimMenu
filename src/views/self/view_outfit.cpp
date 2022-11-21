@@ -6,6 +6,20 @@
 
 namespace big
 {
+	struct PedComponent
+	{
+		int64_t m_lockHash;
+    	int64_t m_nameHash;
+    	int64_t m_locate; // <locate value="..." /> in clothing data
+    	int64_t m_drawableIndex;
+    	int64_t m_textureIndex;
+    	int64_t m_cost;
+    	int64_t m_eComponentType;
+    	int64_t m_eShopEnum;
+    	int64_t m_eCharacter;
+    	char m_textLabel[64];
+	};
+
 	void view::outfit_editor(Ped ped_to_edit) 
 	{
 		components::sub_title("Clothes");
@@ -41,6 +55,14 @@ namespace big
 				PED::SET_PED_COMPONENT_VARIATION(ped_to_edit, g->outfit_editor.componentId, g->outfit_editor.drawableId, g->outfit_editor.textureId, g->outfit_editor.paletteId);
 			});
 		}
+		
+		components::button("Test component", [ped_to_edit]
+		{
+			PedComponent component;
+			Hash hash = FILES::GET_HASH_NAME_FOR_COMPONENT(ped_to_edit, g->outfit_editor.componentId, g->outfit_editor.drawableId, g->outfit_editor.textureId);
+			FILES::GET_SHOP_PED_COMPONENT(hash, (Any*)&component);
+			LOG(G3LOG_DEBUG) << HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(component.m_textLabel);
+		});
 
 		components::sub_title("Props");
 		
@@ -52,7 +74,7 @@ namespace big
 					g->outfit_editor.propId = i;
 					g->outfit_editor.propDrawableId = PED::GET_PED_PROP_INDEX(ped_to_edit, i);
 					g->outfit_editor.propTextureId = PED::GET_PED_PROP_TEXTURE_INDEX(ped_to_edit, i);
-					});
+				});
 			}
 			ImGui::EndCombo();
 		}
