@@ -173,6 +173,10 @@ namespace big
 
 		ImGui::Checkbox("Hide Ammo", &g->self.hide_ammo);
 
+		ImGui::SameLine();
+
+		ImGui::Checkbox("Force show HUD elements", &g->self.force_show_hud_elements);
+
 		ImGui::Combo("##hud_comp_combo", &g->self.selected_hud_component, hud_component_names, (int)HudComponents::HUD_WEAPONS);
 		ImGui::SameLine();
 		components::button("Hide", [] {
@@ -200,8 +204,6 @@ namespace big
 				g->self.hud_components_states[i] = false;
 			}
 		});
-		ImGui::SameLine();
-		ImGui::Checkbox("Force show HUD elements", &g->self.force_show_hud_elements);
 
 		ImGui::EndGroup();
 

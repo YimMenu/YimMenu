@@ -65,6 +65,6 @@ namespace big
 				else if (!bHudComponents[i] && bForceShowElements)
 					HUD::SHOW_HUD_COMPONENT_THIS_FRAME(i + 1);
 			}
-		}	
+		}
 	}
 }
