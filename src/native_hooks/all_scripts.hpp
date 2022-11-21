@@ -1,6 +1,7 @@
 #pragma once
 #include "native_hooks.hpp"
 #include "natives.hpp"
+#include "core/scr_globals.hpp"
 
 namespace big
 {
@@ -15,6 +16,12 @@ namespace big
                 return_value = return_value || g->settings.dev_dlc;
 
             src->set_return_value(return_value);
+        }
+
+        void NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA(rage::scrNativeCallContext* src)
+        {
+            *scr_globals::gsbd.as<int*>() = 4;
+            src->set_return_value<BOOL>(TRUE);
         }
     }
 }

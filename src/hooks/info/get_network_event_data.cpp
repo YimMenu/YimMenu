@@ -1,4 +1,6 @@
 #include "hooking.hpp"
+#include "gta/net_game_event.hpp"
+#include <entities/CDynamicEntity.hpp>
 
 namespace big
 {

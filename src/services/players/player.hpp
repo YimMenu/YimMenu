@@ -2,6 +2,7 @@
 #include "player_service.hpp"
 #include "vehicle/CVehicle.hpp"
 #include "network/snSession.hpp"
+#include "rate_limiter.hpp"
 
 namespace big
 {
@@ -33,21 +34,25 @@ namespace big
 		[[nodiscard]] CPlayerInfo* get_player_info() const;
 		[[nodiscard]] class rage::snPlayer* get_session_player();
 		[[nodiscard]] class rage::snPeer* get_session_peer();
-
+ 
 		[[nodiscard]] uint8_t id() const;
 
 		[[nodiscard]] bool is_friend() const;
 		[[nodiscard]] bool is_host() const;
 		[[nodiscard]] bool is_valid() const;
 
+		bool off_radar = false;
 		bool never_wanted = false;
+		bool semi_godmode = false;
 
-		std::chrono::system_clock::time_point m_last_transition_msg_sent{};
-		int m_num_failed_transition_attempts = 0;
+		rate_limiter m_host_migration_rate_limit{ 1s, 20 };
+		rate_limiter m_play_sound_rate_limit{ 1s, 10 };
 
+		bool exposed_desync_protection = false;
 		bool is_modder = false;
 		bool block_join = false;
 		int block_join_reason = 0;
+		bool is_spammer = false;
 
 	protected:
 		bool equals(const CNetGamePlayer* net_game_player) const;

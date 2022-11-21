@@ -30,15 +30,6 @@ namespace big
 		m_players.clear();
 	}
 
-	player_ptr player_service::get_by_name(std::string name)
-	{
-		std::transform(name.begin(), name.end(), name.begin(), ::tolower);
-
-		if (const auto it = m_players.find(name); it != m_players.end())
-			return it->second;
-		return nullptr;
-	}
-
 	player_ptr player_service::get_by_msg_id(uint32_t msg_id) const
 	{
 		for (const auto& [_, player] : m_players)
@@ -49,7 +40,7 @@ namespace big
 
 	player_ptr player_service::get_by_id(uint32_t id) const
 	{
-		for (const auto& [name, player] : m_players)
+		for (const auto& [_, player] : m_players)
 			if (player->id() == id)
 				return player;
 		return nullptr;
@@ -57,7 +48,7 @@ namespace big
 
 	player_ptr player_service::get_by_host_token(uint64_t token) const
 	{
-		for (const auto& [name, player] : m_players)
+		for (const auto& [_, player] : m_players)
 			if (player->get_net_data()->m_host_token == token)
 				return player;
 		return nullptr;
@@ -83,10 +74,10 @@ namespace big
 		if (net_game_player == nullptr || net_game_player == *m_self) return;
 
 		auto plyr = std::make_shared<player>(net_game_player);
-		m_players.emplace(
-			plyr->to_lowercase_identifier(),
+		m_players.insert({
+			plyr->get_name(),
 			std::move(plyr)
-		);
+		});
 	}
 
 	void player_service::player_leave(CNetGamePlayer* net_game_player)
@@ -95,8 +86,10 @@ namespace big
 		if (m_selected_player && m_selected_player->equals(net_game_player))
 			m_selected_player = m_dummy;
 
-		auto plyr = std::make_unique<player>(net_game_player);
-		m_players.erase(plyr->to_lowercase_identifier());
+		if (auto it = std::find_if(m_players.begin(), m_players.end(), [net_game_player](const auto& p) { return p.second->id() == net_game_player->m_player_id; }); it != m_players.end())
+		{
+			m_players.erase(it);
+		}
 	}
 
 	void player_service::set_selected(player_ptr plyr)
