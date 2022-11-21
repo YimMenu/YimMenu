@@ -7,7 +7,7 @@ namespace big
 
 	using player_ptr = std::shared_ptr<player>;
 	using player_entry = std::pair<std::string, player_ptr>;
-	using players = std::map<std::string, player_ptr>;
+	using players = std::multimap<std::string, player_ptr>;
 
 	class player_service final
 	{
@@ -33,7 +33,6 @@ namespace big
 
 		[[nodiscard]] player_ptr get_self();
 
-		[[nodiscard]] player_ptr get_by_name(std::string name);
 		[[nodiscard]] player_ptr get_by_msg_id(uint32_t msg_id) const;
 		[[nodiscard]] player_ptr get_by_id(uint32_t id) const;
 		[[nodiscard]] player_ptr get_by_host_token(uint64_t token) const;
@@ -45,7 +44,7 @@ namespace big
 		players& players()
 		{ return m_players; }
 
-		void iterate(const std::function< void(const player_entry &entry) > func)
+		void iterate(const std::function< void(const player_entry &entry)> func)
 		{ for (const auto &iter : m_players) func(iter); }
 
 		void set_selected(player_ptr plyr);
