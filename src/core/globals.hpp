@@ -178,7 +178,7 @@ namespace big
 			bool hide_ammo = false;
 			int selected_hud_component = 1;
 			bool hud_components_states[(int)HudComponents::HUD_WEAPONS] = { false };
-			bool force_show_hud_elements = false;
+			bool force_show_hud_element = false;
 			bool mobile_radio = false;
 		};
 

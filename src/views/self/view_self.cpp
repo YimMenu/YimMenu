@@ -175,7 +175,7 @@ namespace big
 
 		ImGui::SameLine();
 
-		ImGui::Checkbox("Force show HUD elements", &g->self.force_show_hud_elements);
+		ImGui::Checkbox("Force show HUD element", &g->self.force_show_hud_element);
 
 		ImGui::Combo("##hud_comp_combo", &g->self.selected_hud_component, hud_component_names, (int)HudComponents::HUD_WEAPONS);
 		ImGui::SameLine();

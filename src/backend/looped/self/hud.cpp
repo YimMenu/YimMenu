@@ -12,7 +12,7 @@ namespace big
 	{
 		const bool bHideRadar = g->self.hide_radar;
 		const bool bHideAmmo = g->self.hide_ammo;
-		const bool bForceShowElements = g->self.force_show_hud_elements;
+		const bool bForceShowElements = g->self.force_show_hud_element;
 		auto& bHudComponents = g->self.hud_components_states;
 
 		if (bHideRadar)
@@ -58,12 +58,12 @@ namespace big
 				bHasHUDBeenHidden = false;
 			}
 
-			for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
+			for (int i = 0; i < static_cast<int>(HudComponents::HUD_WEAPONS); i++)
 			{
 				if (bHudComponents[i])
 					HUD::HIDE_HUD_COMPONENT_THIS_FRAME(i + 1);
 				else if (!bHudComponents[i] && bForceShowElements)
-					HUD::SHOW_HUD_COMPONENT_THIS_FRAME(i + 1);
+					HUD::SHOW_HUD_COMPONENT_THIS_FRAME(i);
 			}
 		}
 	}
