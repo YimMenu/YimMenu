@@ -5,6 +5,7 @@
 #include "gta_util.hpp"
 #include "shop_controller.hpp"
 #include "network_session_host.hpp"
+#include "am_launcher.hpp"
 
 #include <script/scrProgram.hpp>
 #include <script/scrProgramTable.hpp>
@@ -16,14 +17,17 @@ namespace big
     native_hooks::native_hooks()
     {
         add_native_detour(0x812595A0644CE1DE, all_scripts::IS_DLC_PRESENT);
+        add_native_detour(0x5D10B3795F3FC886, all_scripts::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA);
         add_native_detour(RAGE_JOAAT("carmod_shop"), 0x06843DA7060A026B, carmod_shop::SET_ENTITY_COORDS);
         add_native_detour(RAGE_JOAAT("carmod_shop"), 0x8E2530AA8ADA980E, carmod_shop::SET_ENTITY_HEADING);
         add_native_detour(RAGE_JOAAT("carmod_shop"), 0x34E710FF01247C5A, carmod_shop::SET_VEHICLE_LIGHTS);
         add_native_detour(RAGE_JOAAT("carmod_shop"), 0x767FBC2AC802EF3D, carmod_shop::STAT_GET_INT);
         add_native_detour(RAGE_JOAAT("freemode"), 0x95914459A87EBA28, freemode::NETWORK_BAIL);
         add_native_detour(RAGE_JOAAT("freemode"), 0x5E9564D8246B909A, freemode::IS_PLAYER_PLAYING);
+        add_native_detour(RAGE_JOAAT("freemode"), 0xEA1C610A04DB6BBB, freemode::SET_ENTITY_VISIBLE);
         add_native_detour(RAGE_JOAAT("shop_controller"), 0xDC38CC1E35B6A5D7, shop_controller::SET_WARNING_MESSAGE_WITH_HEADER);
         add_native_detour(RAGE_JOAAT("maintransition"), 0x6F3D4ED9BEE4E61D, network::NETWORK_SESSION_HOST);
+        add_native_detour(RAGE_JOAAT("am_launcher"), 0xB8BA7F44DF1575E1, am_launcher::START_NEW_SCRIPT_WITH_ARGS);
 
         for (auto& entry : *g_pointers->m_script_program_table)
             if (entry.m_program)

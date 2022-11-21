@@ -126,12 +126,9 @@ namespace big
 
 		while (g_running)
 		{
-			g_player_service->iterate([](const player_entry &entry)
-			{
-				looped::player_never_wanted(entry.second);
-			});
-
+			looped::player_good_options();
 			looped::player_spectate();
+			looped::player_remote_control_vehicle();
 
 			script::get_current()->yield();
 		}

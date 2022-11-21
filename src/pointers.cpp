@@ -542,6 +542,18 @@ namespace big
 			m_sort_session_details = ptr.sub(0x10).as<PVOID>();
 		});
 
+		// Add Player To Session
+		main_batch.add("APTS", "E8 ? ? ? ? 48 8D 8D A0 01 00 00 8A D8", [this](memory::handle ptr)
+		{
+			m_add_player_to_session = ptr.add(1).rip().as<PVOID>();
+		});
+
+		// Send Chat Net Message
+		main_batch.add("SCNM", "E8 ? ? ? ? 41 FF C4 48 83 C5 08", [this](memory::handle ptr)
+		{
+			m_send_chat_net_message = ptr.add(1).rip().as<PVOID>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 

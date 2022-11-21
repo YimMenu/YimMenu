@@ -4,6 +4,7 @@
 #include <network/CNetGamePlayer.hpp>
 #include "gta/script_id.hpp"
 #include "util/notify.hpp"
+#include <base/CObject.hpp>
 
 namespace big
 {
@@ -17,6 +18,121 @@ namespace big
 
 		if (buffer.Read<bool>(1))
 			id.m_instance_id = buffer.Read<int32_t>(8);
+	}
+
+	void scan_explosion_event(CNetGamePlayer* player, rage::datBitBuffer* buffer)
+	{
+		uint16_t f186;
+		uint16_t f208;
+		int ownerNetId;
+		uint16_t f214;
+		eExplosionTag explosionType;
+		float damageScale;
+
+		float posX;
+		float posY;
+		float posZ;
+
+		bool f242;
+		uint16_t f104;
+		float cameraShake;
+
+		bool isAudible;
+		bool f189;
+		bool isInvisible;
+		bool f126;
+		bool f241;
+		bool f243;
+
+		uint16_t f210;
+
+		float unkX;
+		float unkY;
+		float unkZ;
+
+		bool f190;
+		bool f191;
+
+		uint32_t f164;
+
+		float posX224;
+		float posY224;
+		float posZ224;
+
+		bool f240;
+		uint16_t f218;
+		bool f216;
+
+		f186 = buffer->Read<uint16_t>(16);
+		f208 = buffer->Read<uint16_t>(13);
+		ownerNetId = buffer->Read<uint16_t>(13);
+		f214 = buffer->Read<uint16_t>(13); // 1604+
+		explosionType = (eExplosionTag)buffer->ReadSigned<int>(8); // 1604+ bit size
+		damageScale = buffer->Read<int>(8) / 255.0f;
+
+		posX = buffer->ReadSignedFloat(22, 27648.0f);
+		posY = buffer->ReadSignedFloat(22, 27648.0f);
+		posZ = buffer->ReadFloat(22, 4416.0f) - 1700.0f;
+
+		f242 = buffer->Read<uint8_t>(1);
+		f104 = buffer->Read<uint16_t>(16);
+		cameraShake = buffer->Read<int>(8) / 127.0f;
+
+		isAudible = buffer->Read<uint8_t>(1);
+		f189 = buffer->Read<uint8_t>(1);
+		isInvisible = buffer->Read<uint8_t>(1);
+		f126 = buffer->Read<uint8_t>(1);
+		f241 = buffer->Read<uint8_t>(1);
+		f243 = buffer->Read<uint8_t>(1); // 1604+
+
+		f210 = buffer->Read<uint16_t>(13);
+
+		unkX = buffer->ReadSignedFloat(16, 1.1f);
+		unkY = buffer->ReadSignedFloat(16, 1.1f);
+		unkZ = buffer->ReadSignedFloat(16, 1.1f);
+
+		f190 = buffer->Read<uint8_t>(1);
+		f191 = buffer->Read<uint8_t>(1);
+
+		f164 = buffer->Read<uint32_t>(32);
+
+		if (f242)
+		{
+			posX224 = buffer->ReadSignedFloat(31, 27648.0f);
+			posY224 = buffer->ReadSignedFloat(31, 27648.0f);
+			posZ224 = buffer->ReadFloat(31, 4416.0f) - 1700.0f;
+		}
+		else
+		{
+			posX224 = 0;
+			posY224 = 0;
+			posZ224 = 0;
+		}
+
+		auto f168 = buffer->Read<uint32_t>(32);		 // >= 1868: f_168
+
+
+		f240 = buffer->Read<uint8_t>(1);
+		if (f240)
+		{
+			f218 = buffer->Read<uint16_t>(16);
+
+			if (f191)
+			{
+				f216 = buffer->Read<uint8_t>(8);
+			}
+		}
+
+		buffer->Seek(0);
+
+		auto object = g_pointers->m_get_net_object(*g_pointers->m_network_object_mgr, ownerNetId, true);
+		auto entity = object ? object->GetGameObject() : nullptr;
+
+		if (f208 == 0 && entity && entity->gap28 == 4 && reinterpret_cast<CPed*>(entity)->m_player_info && player->m_player_info->m_ped && player->m_player_info->m_ped->m_net_object && ownerNetId != player->m_player_info->m_ped->m_net_object->m_object_id)
+		{
+			g_notification_service->push_error("Warning!", std::format("{} blamed {} for explosion", player->get_name(), reinterpret_cast<CPed*>(entity)->m_player_info->m_net_player_data.m_name));
+			session::add_infraction(g_player_service->get_by_id(player->m_player_id), Infraction::BLAME_EXPLOSION_DETECTED);
+		}
 	}
 
 	void hooks::received_event(
@@ -304,6 +420,25 @@ namespace big
 
 			buffer->Seek(0);
 			g->m_syncing_player = source_player;
+			break;
+		}
+		case eNetworkEvents::NETWORK_PLAY_SOUND_EVENT:
+		{
+			auto plyr = g_player_service->get_by_id(source_player->m_player_id);
+			if (plyr->m_play_sound_rate_limit.process())
+			{
+				if (plyr->m_play_sound_rate_limit.exceeded_last_process())
+				{
+					notify::crash_blocked(source_player, "sound spam");
+				}
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				return;
+			}
+			break;
+		}
+		case eNetworkEvents::EXPLOSION_EVENT:
+		{
+			scan_explosion_event(source_player, buffer);
 			break;
 		}
 		default:

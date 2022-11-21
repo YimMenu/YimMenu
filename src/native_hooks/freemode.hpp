@@ -17,5 +17,17 @@ namespace big
 			else
 				src->set_return_value<BOOL>(PLAYER::IS_PLAYER_PLAYING(src->get_arg<Player>(0)));
 		};
+
+		inline void SET_ENTITY_VISIBLE(rage::scrNativeCallContext* src)
+		{
+			auto entity = src->get_arg<Entity>(0);
+			auto toggle = src->get_arg<bool>(1);
+			auto outfit = src->get_arg<bool>(2);
+
+			if (g->self.invisibility && entity == self::ped && toggle)
+				return;
+			else
+				ENTITY::SET_ENTITY_VISIBLE(entity, toggle, outfit);
+		}
 	}
 }

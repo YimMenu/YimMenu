@@ -52,7 +52,9 @@ namespace big
 		if (m_vmt_hook)
 		{
 			m_vmt_hook->disable();
-			s_map.erase(m_program);
+
+			if (m_program)
+				s_map.erase(m_program);
 		}
 	}
 

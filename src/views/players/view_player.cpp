@@ -7,6 +7,7 @@
 #include "util/ped.hpp"
 #include "util/teleport.hpp"
 #include "views/view.hpp"
+#include "util/vehicle.hpp"
 
 namespace big
 {
@@ -108,6 +109,11 @@ namespace big
 				if (auto net_player_data = g_player_service->get_selected()->get_net_data(); net_player_data != nullptr)
 				{
 					ImGui::Text("Rockstar ID: %d", net_player_data->m_gamer_handle_2.m_rockstar_id);
+
+					ImGui::SameLine();
+
+					if (ImGui::Button("Copy")) ImGui::SetClipboardText(std::to_string(net_player_data->m_gamer_handle_2.m_rockstar_id).data());
+
 					ImGui::Text(
 						"IP Address: %d.%d.%d.%d:%d",
 						net_player_data->m_external_ip.m_field1,
@@ -116,6 +122,14 @@ namespace big
 						net_player_data->m_external_ip.m_field4,
 						net_player_data->m_external_port
 					);
+
+					ImGui::SameLine();
+
+					if (ImGui::Button("Copy")) ImGui::SetClipboardText(std::format("{}.{}.{}.{}:{}", net_player_data->m_external_ip.m_field1,
+						net_player_data->m_external_ip.m_field2,
+						net_player_data->m_external_ip.m_field3,
+						net_player_data->m_external_ip.m_field4,
+						net_player_data->m_external_port).data());
 				}
 
 				if (ImGui::Button("Add To Database"))
@@ -149,6 +163,12 @@ namespace big
 
 			if (ImGui::TreeNode("Misc"))
 			{
+				components::button("Join CEO/MC", []
+				{
+					*scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).as<int*>() = g_player_service->get_selected()->id();
+					*scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).at(26).as<int*>() = g_player_service->get_selected()->id();
+				});
+
 				components::button("Steal Outfit", []
 				{
 					ped::steal_outfit(
@@ -172,8 +192,6 @@ namespace big
 
 				ImGui::SameLine();
 
-				ImGui::Checkbox("Never Wanted", &g_player_service->get_selected()->never_wanted);
-
 				components::button("Give Health", []
 				{
 					g_pickup_service->give_player_health(g_player_service->get_selected()->id());
@@ -196,6 +214,26 @@ namespace big
 				components::button("Give Weapons", []
 				{
 					g_pickup_service->give_player_weapons(g_player_service->get_selected()->id());
+				});
+
+				ImGui::Checkbox("Off The Radar", &g_player_service->get_selected()->off_radar);
+				ImGui::Checkbox("Never Wanted", &g_player_service->get_selected()->never_wanted);
+				ImGui::Checkbox("Semi Godmode", &g_player_service->get_selected()->semi_godmode);
+
+				components::button("Remote Control Vehicle", []
+				{
+					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), FALSE);
+					if (veh == 0)
+					{
+						if (g->player.spectating)
+							g_notification_service->push_warning("Remote Control", "Player not in a vehicle");
+						else
+							g_notification_service->push_warning("Remote Control", "Player not in a vehicle, try spectating the player");
+						return;
+					}
+
+					vehicle::remote_control_vehicle(veh);
+					g->player.spectating = false;
 				});
 
 				ImGui::TreePop();

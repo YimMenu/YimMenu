@@ -3,6 +3,7 @@
 #include "natives.hpp"
 #include "gta_util.hpp"
 #include "util/session.hpp"
+#include "util/spam.hpp"
 #include <network/Network.hpp>
 
 namespace big
@@ -56,46 +57,38 @@ namespace big
 				switch (msgType)
 				{
 				case rage::eNetMessage::MsgTextMessage:
-				{
-					if (g->session.log_chat_messages)
-					{
-						char message[256];
-						uint64_t unk;
-						bool is_team;
-						buffer.ReadString(message, 256);
-						buffer.ReadQWord(&unk, 64);
-						buffer.ReadBool(&is_team);
-						LOG(INFO) << "[CHAT] from " << player->get_name() << ": " << message << (is_team ? " [TEAM]" : " [ALL]");
-					}
-					break;
-				}
 				case rage::eNetMessage::MsgTextMessage2:
 				{
-					if (g->session.log_text_messages)
+					char message[256];
+					buffer.ReadString(message, 256);
+
+					if (player->is_spammer)
+						return true;
+
+					if (spam::is_text_spam(message))
 					{
-						char message[256];
-						uint64_t unk;
-						buffer.ReadString(message, 256);
-						buffer.ReadQWord(&unk, 64);
-						LOG(INFO) << "[TEXT] from " << player->get_name() << ": " << message;
+						if (g->session.log_chat_messages)
+							spam::log_chat(message, player, true);
+						player->is_spammer = true;
+						return true;
+					}
+					else
+					{
+						if (g->session.log_chat_messages)
+							spam::log_chat(message, player, false);
 					}
 					break;
 				}
 				case rage::eNetMessage::MsgScriptMigrateHost:
 				{
-					if (std::chrono::system_clock::now() - player->m_last_transition_msg_sent < 200ms)
+					if (player->m_host_migration_rate_limit.process())
 					{
-						if (player->m_num_failed_transition_attempts++ == 20)
+						if (player->m_host_migration_rate_limit.exceeded_last_process())
 						{
 							session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
 							g_notification_service->push_error("Protections", std::format("{} tried to OOM kick you!", player->get_name()));
 						}
 						return true;
-					}
-					else
-					{
-						player->m_last_transition_msg_sent = std::chrono::system_clock::now();
-						player->m_num_failed_transition_attempts = 0;
 					}
 					break;
 				}
@@ -181,8 +174,11 @@ namespace big
 					uint32_t num_of_tokens{};
 					buffer.ReadDword(&num_of_tokens, 32);
 
-					if (player && host_token != player->get_net_data()->m_host_token)
+					if (player && host_token != player->get_net_data()->m_host_token && !player->exposed_desync_protection)
+					{
 						session::add_infraction(player, Infraction::DESYNC_PROTECTION);
+						player->exposed_desync_protection = true;
+					}
 
 					return true; // block desync kicks as host
 				}

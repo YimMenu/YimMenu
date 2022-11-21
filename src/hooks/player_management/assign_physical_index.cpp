@@ -11,11 +11,11 @@ namespace big
 {
 	void* hooks::assign_physical_index(CNetworkPlayerMgr* netPlayerMgr, CNetGamePlayer* player, uint8_t new_index)
 	{
-		const auto result = g_hooking->get_original<hooks::assign_physical_index>()(netPlayerMgr, player, new_index);
 		const auto* net_player_data = player->get_net_data();
 
 		if (new_index == static_cast<uint8_t>(-1))
 		{
+			g->m_spoofed_peer_ids.erase(player->get_net_data()->m_host_token);
 			g_player_service->player_leave(player);
 
 			if (net_player_data)
@@ -29,9 +29,10 @@ namespace big
 					g_notification_service->push("Player Left", std::format("{} freeing slot #{} with Rockstar ID: {}", net_player_data->m_name, player->m_player_id, net_player_data->m_gamer_handle_2.m_rockstar_id));
 			}
 
-			return result;
+			return g_hooking->get_original<hooks::assign_physical_index>()(netPlayerMgr, player, new_index);
 		}
 
+		const auto result = g_hooking->get_original<hooks::assign_physical_index>()(netPlayerMgr, player, new_index);
 		g_player_service->player_join(player);
 		if (net_player_data)
 		{

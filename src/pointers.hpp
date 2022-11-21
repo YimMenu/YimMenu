@@ -166,6 +166,9 @@ namespace big
 		functions::queue_packet m_queue_packet;
 
 		PVOID m_sort_session_details;
+
+		PVOID m_add_player_to_session;
+		PVOID m_send_chat_net_message;
 	};
 
 	inline pointers* g_pointers{};

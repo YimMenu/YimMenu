@@ -59,7 +59,6 @@ class CGameScriptHandlerNetwork;
 class CGameScriptHandlerMgr;
 
 class CEntity;
-class CDynamicEntity;
 class CPhysical;
 
 class CObject;
