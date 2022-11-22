@@ -1,26 +1,34 @@
 #pragma once
 #include "pointers.hpp"
 #include "script_global.hpp"
+#include "natives.hpp"
+#include "core/scr_globals.hpp"
 
 namespace big::globals
 {
-	namespace size
-	{
-		constexpr int globalplayer_bd = 453;
-		constexpr int gpbd_fm_3 = 599;
-		constexpr int gpbd_fm_1 = 888;
-	}
-
-	static inline script_global gpbd_fm_3(1892703);
-	static inline script_global gsbd_fm_events(1920255);
-
 	inline void clear_wanted_player(Player target)
 	{
 		constexpr size_t arg_count = 3;
 		int64_t args[arg_count] = {
 			static_cast<int64_t>(eRemoteEvent::ClearWantedLevel),
 			self::id,
-			*script_global(1892703).at(target, 599).at(510).as<int*>()
+			*scr_globals::gpbd_fm_3.at(target, scr_globals::size::gpbd_fm_3).at(510).as<int*>()
+		};
+
+		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
+	}
+
+	inline void give_remote_otr(Player target)
+	{
+		constexpr size_t arg_count = 7;
+		int64_t args[arg_count] = {
+			static_cast<int64_t>(eRemoteEvent::RemoteOffradar),
+			(int64_t)self::id,
+			(int64_t)(NETWORK::GET_NETWORK_TIME() + 1),
+			0,
+			true,
+			false,
+			*scr_globals::gpbd_fm_3.at(target, scr_globals::size::gpbd_fm_3).at(510).as<int64_t*>()
 		};
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);

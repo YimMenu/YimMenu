@@ -150,6 +150,7 @@ namespace big
 			script_events script_events{};
 			bool script_host_kick = true;
 			bool rid_join = false;
+			bool lessen_breakups = false; // disabled by default due to anticheat concerns
 		};
 
 		struct self 
@@ -215,6 +216,14 @@ namespace big
 			bool force_session_host = false;
 			bool player_magnet_enabled = false;
 			int player_magnet_count = 32;
+			bool name_spoof_enabled = false;
+			bool advertise_menu = false;
+			std::string spoofed_name = "";
+
+			// not to be saved
+			bool never_wanted_all = false;
+			bool off_radar_all = false;
+			bool semi_godmode_all = false;
 		};
 
 		struct settings {
@@ -464,6 +473,10 @@ namespace big
 		int player_count = 0;
 
 		CNetGamePlayer* m_syncing_player = nullptr;
+		std::unordered_map<std::uint64_t, std::uint64_t> m_spoofed_peer_ids;
+
+		int m_remote_controller_vehicle = -1;
+		int m_remote_controlled_vehicle = -1;
 
 		debug debug{};
 		tunables tunables{};
@@ -634,6 +647,7 @@ namespace big
 
 			this->protections.script_host_kick = j["protections"]["script_host_kick"];
 			this->protections.rid_join = j["protections"]["rid_join"];
+			this->protections.lessen_breakups = j["protections"]["lessen_breakups"];
 
 			this->tunables.disable_phone = j["tunables"]["disable_phone"];
 			this->tunables.phone_anim = j["tunables"]["phone_anim"];
@@ -681,6 +695,9 @@ namespace big
 			this->session.force_session_host = j["session"]["force_session_host"];
 			this->session.player_magnet_enabled = j["session"]["player_magnet_enabled"];
 			this->session.player_magnet_count = j["session"]["player_magnet_count"];
+			this->session.name_spoof_enabled = j["session"]["name_spoof_enabled"];
+			this->session.advertise_menu = j["session"]["advertise_menu"];
+			this->session.spoofed_name = j["session"]["spoofed_name"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -947,7 +964,8 @@ namespace big
 						},
 
 						{ "script_host_kick", g->protections.script_host_kick },
-						{ "rid_join", g->protections.rid_join }
+						{ "rid_join", g->protections.rid_join },
+						{ "lessen_breakups", g->protections.lessen_breakups }
 					}
 				},
 				{
@@ -1025,7 +1043,10 @@ namespace big
 						{ "decloak_players", this->session.decloak_players },
 						{ "force_session_host", this->session.force_session_host },
 						{ "player_magnet_enabled", this->session.player_magnet_enabled },
-						{ "player_magnet_count", this->session.player_magnet_count }
+						{ "player_magnet_count", this->session.player_magnet_count },
+						{ "name_spoof_enabled", this->session.name_spoof_enabled },
+						{ "advertise_menu", this->session.advertise_menu },
+						{ "spoofed_name", this->session.spoofed_name }
 					}
 				},
 				{

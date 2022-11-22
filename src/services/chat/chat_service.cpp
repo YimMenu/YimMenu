@@ -49,12 +49,12 @@ namespace big
 
 				if (g->window.chat)
 				{
-					PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 					if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_FRONTEND_PAUSE_ALTERNATE))
 					{
-						PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 						g->window.chat = false;
-						continue;
+						PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+						PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+						PAD::DISABLE_ALL_CONTROL_ACTIONS(0); // !!! FIXME !!!
 					}
 				}
 			}

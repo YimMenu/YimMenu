@@ -211,6 +211,49 @@ namespace rage
 
 			WriteQWord((uint64_t)data, length);
 		}
+
+		template<typename T>
+		inline void WriteSigned(int length, T data)
+		{
+			int sign = data < 0;
+			int signEx = (data < 0) ? 0xFFFFFFFF : 0;
+			int d = (data ^ signEx);
+
+			Write<int>(1, sign);
+			Write<int>(length - 1, d);
+		}
+
+		inline float ReadFloat(int length, float divisor)
+		{
+			auto integer = Read<int>(length);
+
+			float max = (1 << length) - 1;
+			return ((float)integer / max) * divisor;
+		}
+
+		inline void WriteFloat(int length, float divisor, float value)
+		{
+			float max = (1 << length) - 1;
+			int integer = (int)((value / divisor) * max);
+
+			Write<int>(length, integer);
+		}
+
+		inline float ReadSignedFloat(int length, float divisor)
+		{
+			auto integer = ReadSigned<int>(length);
+
+			float max = (1 << (length - 1)) - 1;
+			return ((float)integer / max) * divisor;
+		}
+
+		inline void WriteSignedFloat(int length, float divisor, float value)
+		{
+			float max = (1 << (length - 1)) - 1;
+			int integer = (int)((value / divisor) * max);
+
+			WriteSigned<int>(length, integer);
+		}
 	public:
 		void* m_data; //0x0000
 		uint32_t m_bitOffset; //0x0008
@@ -376,7 +419,7 @@ namespace rage
 		virtual __int64 get_type() = 0;
 		virtual void unk_0x20() = 0;
 		virtual void unk_0x28() = 0;
-		virtual bool get_extra_information(__int64* info_array, int check) = 0;
+		virtual bool get_extra_information(void* info_array, int check) = 0;
 		virtual void unk_0x38() = 0;
 	};
 

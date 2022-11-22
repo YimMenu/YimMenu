@@ -7,13 +7,12 @@
 #include "script.hpp"
 #include "teleport.hpp"
 #include "script_global.hpp"
-#include "gta\VehicleValues.h"
+#include "gta/VehicleValues.h"
 #include "services/vehicle_helper/vehicle_helper.hpp"
+#include "core/scr_globals.hpp"
 
 namespace big::vehicle
 {
-	inline auto spawn_global = script_global(2725439);
-
 	inline void go_into_personal_vehicle()
 	{
 		*script_global(2671449).at(8).as<int*>() = 1;
@@ -202,8 +201,6 @@ namespace big::vehicle
 		auto veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, false, false);
 		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
 
-		script::get_current()->yield();
-
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 
 		if (*g_pointers->m_is_session_started)
@@ -227,31 +224,31 @@ namespace big::vehicle
 		{
 			if (idx >= 0 && idx < 142)
 			{
-				*spawn_global.at(27).at(idx).as<int32_t*>() = val;
+				*scr_globals::spawn_global.at(27).at(idx).as<int32_t*>() = val;
 			}
 		}
 
 		// permission fix
-		*spawn_global.at(27).at(1).as<int32_t*>() = 0;
+		*scr_globals::spawn_global.at(27).at(1).as<int32_t*>() = 0;
 
 		// personal car flag
-		*spawn_global.at(27).at(94).as<int32_t*>() = 14;
-		*spawn_global.at(27).at(95).as<int32_t*>() = 2;
+		*scr_globals::spawn_global.at(27).at(94).as<int32_t*>() = 14;
+		*scr_globals::spawn_global.at(27).at(95).as<int32_t*>() = 2;
 
 		// mmi
-		*spawn_global.at(27).at(103).as<int32_t*>() = 0;
+		*scr_globals::spawn_global.at(27).at(103).as<int32_t*>() = 0;
 
 		// spawn location
-		*spawn_global.at(7).at(0).as<float*>() = tmpLocation.x;
-		*spawn_global.at(7).at(1).as<float*>() = tmpLocation.y;
-		*spawn_global.at(7).at(2).as<float*>() = tmpLocation.z;
+		*scr_globals::spawn_global.at(7).at(0).as<float*>() = tmpLocation.x;
+		*scr_globals::spawn_global.at(7).at(1).as<float*>() = tmpLocation.y;
+		*scr_globals::spawn_global.at(7).at(2).as<float*>() = tmpLocation.z;
 
 		// spawn non pegasus
-		*spawn_global.at(3).as<int*>() = 0;
+		*scr_globals::spawn_global.at(3).as<int*>() = 0;
 
 		// spawn signal
-		int* spawn_signal = spawn_global.at(2).as<int32_t*>();
-		*spawn_global.at(5).as<int32_t*>() = 1;
+		int* spawn_signal = scr_globals::spawn_global.at(2).as<int32_t*>();
+		*scr_globals::spawn_global.at(5).as<int32_t*>() = 1;
 		*spawn_signal = 1;
 
 		// wait until the vehicle is spawned
@@ -665,5 +662,53 @@ namespace big::vehicle
 			VEHICLE::SET_VEHICLE_ENGINE_ON(current_vehicle, state, immediately, disable_auto_start);
 		else
 			return g_notification_service->push_warning("Vehicle", "Please be in a car first then try again.");
+	}
+
+	inline bool remote_control_vehicle(Vehicle veh)
+	{
+		if (!entity::take_control_of(veh, 4000))
+		{
+			g_notification_service->push_warning("Remote Control", "Failed to take control of remote vehicle");
+			return false;
+		}
+
+		if (g->m_remote_controlled_vehicle == veh)
+		{
+			return false;
+		}
+
+		Hash model = ENTITY::GET_ENTITY_MODEL(veh);
+		Vehicle spawned = vehicle::spawn(model, self::pos, 0.0f);
+
+		ENTITY::SET_ENTITY_ALPHA(spawned, 0, FALSE);
+		if (!VEHICLE::IS_THIS_MODEL_A_BIKE(model))
+			ENTITY::SET_ENTITY_VISIBLE(spawned, FALSE, FALSE);
+		ENTITY::SET_ENTITY_INVINCIBLE(spawned, TRUE);
+
+		float heading = ENTITY::GET_ENTITY_HEADING(veh);
+		Vector3 rotation = ENTITY::GET_ENTITY_ROTATION(veh, 2);
+		Vector3 coords = ENTITY::GET_ENTITY_COORDS(veh, FALSE);
+		Vector3 velocity = ENTITY::GET_ENTITY_VELOCITY(veh);
+
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(spawned, coords.x, coords.y, coords.z, FALSE, FALSE, FALSE);
+		ENTITY::SET_ENTITY_HEADING(spawned, heading);
+		ENTITY::SET_ENTITY_ROTATION(spawned, rotation.x, rotation.y, rotation.z, 2, TRUE);
+
+		ENTITY::SET_ENTITY_VISIBLE(veh, TRUE, FALSE);
+
+		ENTITY::SET_ENTITY_COLLISION(veh, FALSE, FALSE);
+		ENTITY::SET_ENTITY_INVINCIBLE(veh, TRUE);
+		VEHICLE::SET_VEHICLE_DOORS_LOCKED(veh, 4);
+		VEHICLE::SET_VEHICLE_MAX_SPEED(veh, 0.0001f);
+		ENTITY::ATTACH_ENTITY_TO_ENTITY(veh, spawned, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, FALSE, FALSE, FALSE, FALSE, 0, TRUE, FALSE);
+		PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), spawned, -1);
+
+		VEHICLE::SET_VEHICLE_ENGINE_ON(spawned, TRUE, TRUE, FALSE);
+		ENTITY::SET_ENTITY_VELOCITY(spawned, velocity.x, velocity.y, velocity.z);
+		VEHICLE::COPY_VEHICLE_DAMAGES(veh, spawned);
+
+		g->m_remote_controller_vehicle = spawned;
+		g->m_remote_controlled_vehicle = veh;
+		return true;
 	}
 }

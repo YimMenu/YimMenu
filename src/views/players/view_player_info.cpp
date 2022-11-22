@@ -119,8 +119,18 @@ namespace big
 			if (ImGui::TreeNode("Net Info"))
 			{
 				ImGui::Text("Rockstar ID: %d", net_player_data->m_gamer_handle_2.m_rockstar_id);
+
+				ImGui::SameLine();
+
+				if (ImGui::Button("Copy")) ImGui::SetClipboardText(std::to_string(net_player_data->m_gamer_handle_2.m_rockstar_id).data());
+
 				if(g_player_service->get_selected()->real_rid != net_player_data->m_gamer_handle_2.m_rockstar_id)
+				{
 					ImGui::Text("Real Rockstar ID: %d", g_player_service->get_selected()->real_rid);
+					ImGui::SameLine();
+					if (ImGui::Button("Copy")) ImGui::SetClipboardText(std::to_string(g_player_service->get_selected()->real_rid).data());
+				}
+				
 				ImGui::Text(
 					"IP Address: %d.%d.%d.%d:%d",
 					net_player_data->m_external_ip.m_field1,
@@ -129,6 +139,18 @@ namespace big
 					net_player_data->m_external_ip.m_field4,
 					net_player_data->m_external_port
 				);
+
+				ImGui::SameLine();
+
+				if (ImGui::Button("Copy"))
+				{
+					ImGui::SetClipboardText(std::format("{}.{}.{}.{}:{}", net_player_data->m_external_ip.m_field1,
+						net_player_data->m_external_ip.m_field2,
+						net_player_data->m_external_ip.m_field3,
+						net_player_data->m_external_ip.m_field4,
+						net_player_data->m_external_port).data()
+					);
+				}
 
 				ImGui::Text("Game State: %s", game_states[(int32_t)player_info->m_game_state]);
 
@@ -188,7 +210,6 @@ namespace big
 			ImGui::Text("Kills: %d", kills);
 			ImGui::SameLine();
 			ImGui::Text("Deaths: %d", deaths);
-			ImGui::Text("Stat K/D Ratio (Broken): %f", util::player::get_player_stat<float*>(g_player_service->get_selected()->id(), ePlayerStatType::KDRatio));
 
 			ImGui::Text("Allows Spectating: %s", util::player::get_player_stat<BOOL*>(g_player_service->get_selected()->id(), ePlayerStatType::CanSpectate) ? "Yes" : "No");
 

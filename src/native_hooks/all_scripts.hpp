@@ -1,6 +1,7 @@
 #pragma once
 #include "native_hooks.hpp"
 #include "natives.hpp"
+#include "core/scr_globals.hpp"
 
 namespace big
 {
@@ -15,19 +16,6 @@ namespace big
                 return_value = return_value || g->settings.dev_dlc;
 
             src->set_return_value(return_value);
-        }
-
-        inline void NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA(rage::scrNativeCallContext* src)
-        {
-            if (g->tunables.fast_join)
-            {
-                // LOG(G3LOG_DEBUG) << "NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA skipped";
-                src->set_return_value<BOOL>(TRUE);
-            }
-            else
-            {
-                src->set_return_value<BOOL>(NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA());
-            }
         }
 
         inline void NETWORK_BAIL(rage::scrNativeCallContext* src)
@@ -70,5 +58,11 @@ namespace big
 				src->set_return_value<BOOL>(SOCIALCLUB::SC_TRANSITION_NEWS_SHOW_TIMED(src->get_arg<Any>(0), src->get_arg<Any>(0)));
 			}
 		}
+
+        void NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA(rage::scrNativeCallContext* src)
+        {
+            *scr_globals::gsbd.as<int*>() = 4;
+            src->set_return_value<BOOL>(TRUE);
+        }
     }
 }

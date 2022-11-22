@@ -41,7 +41,7 @@ namespace big
 
 			for (auto& p : json.items())
 			{
-				m_players[std::stoi(p.key())] = p.value().get<persistent_player>();
+				m_players[std::stoll(p.key())] = p.value().get<persistent_player>();
 			}
 		}
 	}

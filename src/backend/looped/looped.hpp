@@ -19,8 +19,9 @@ namespace big
 		static void always_controll();
 		static void disable_help_text();
 
-		static void player_never_wanted(const player_ptr &player);
+		static void player_good_options();
 		static void player_spectate();
+		static void player_remote_control_vehicle();
 
 		static void protections_replay_interface();
 

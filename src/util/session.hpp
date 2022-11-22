@@ -45,9 +45,9 @@ namespace big::session
 	{
 		int idx = index / 32;
 		int bit = index % 32;
-		misc::set_bit(globals::gsbd_fm_events.at(11).at(341).at(idx, 1).as<int*>(), bit);
-		misc::set_bit(globals::gsbd_fm_events.at(11).at(348).at(idx, 1).as<int*>(), bit);
-		misc::set_bit(globals::gpbd_fm_3.at(self::id, globals::size::gpbd_fm_3).at(10).at(205).at(idx, 1).as<int*>(), bit);
+		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(341).at(idx, 1).as<int*>(), bit);
+		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(348).at(idx, 1).as<int*>(), bit);
+		misc::set_bit(scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).at(205).at(idx, 1).as<int*>(), bit);
 	}
 
 	inline void force_thunder()
@@ -89,7 +89,7 @@ namespace big::session
 			}
 		}
 
-		g_notification_service->push_error("RID Joiner", "Target Player is offline?");
+		g_notification_service->push_error("RID Joiner", "Target player is offline?");
 	}
 
 	inline void join_by_session_info(rage::rlSessionInfo m_session_info) // Skidded from maybegreat48
@@ -118,9 +118,12 @@ namespace big::session
 	{
 		g_notification_service->push_warning("Anti-Cheat", std::format("{}: {}", player->get_name(), infraction_desc[infraction]));
 		auto plyr = g_player_database_service->get_or_create_player(player);
-		plyr->is_modder = true;
-		player->is_modder = true;
-		plyr->infractions.insert((int)infraction);
-		g_player_database_service->save();
+		if (!plyr->infractions.contains((int)infraction))
+		{
+			plyr->is_modder = true;
+			player->is_modder = true;
+			plyr->infractions.insert((int)infraction);
+			g_player_database_service->save();
+		}
 	}
 }

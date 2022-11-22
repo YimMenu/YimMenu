@@ -18,6 +18,7 @@ namespace big
 
 	void hooks::network_player_mgr_shutdown(CNetworkPlayerMgr* _this)
 	{
+		g->m_spoofed_peer_ids.clear();
 		g_player_service->do_cleanup();
 
 		if (g->notifications.network_player_mgr_shutdown.log)

@@ -11,6 +11,7 @@ namespace big
 	static size_t iLastLogCount = 0;
     void view::chat()
     {
+		ImGui::Checkbox("Auto Scroll", &g->chat.auto_scroll);
 		const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
 		ImGui::BeginChild("##scrolling_region_chat", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
 
@@ -26,16 +27,16 @@ namespace big
 				std::string name = net_player->get_name();
 				std::string msg = g_chat_service->get_msgs()[i].msg;
 				bool is_team = g_chat_service->get_msgs()[i].is_team;
-				ImGui::TextWrapped("%s [%s]  %s", name.c_str(), is_team ? "local" : "all", msg.c_str());
+				ImGui::Text("%s [%s]  %s", name.c_str(), is_team ? "local" : "all", msg.c_str());
 			}
 		}
-
-		ImGui::PopStyleVar();
 
 		if (g->chat.auto_scroll && ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
 			ImGui::SetScrollHereY(1.0f);
 
+		ImGui::PopStyleVar();
 		ImGui::EndChild();
+
 		ImGui::Separator();
 
 		components::input_text_with_hint("###Message", "Message", &g->chat.message, ImGuiInputTextFlags_EnterReturnsTrue, []

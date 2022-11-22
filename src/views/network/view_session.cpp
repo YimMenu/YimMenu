@@ -4,6 +4,7 @@
 #include "core/data/region_codes.hpp"
 #include "gta_util.hpp"
 #include "util/notify.hpp"
+#include "util/scripts.hpp"
 
 namespace big
 {
@@ -72,9 +73,58 @@ namespace big
 
 		components::sub_title("Decloak");
 		components::script_patch_checkbox("Reveal OTR Players", &g->session.decloak_players);
+		ImGui::SameLine(); components::help_marker("Shows Off radar players on the map.");
 
 		components::sub_title("Force Host");
 		ImGui::Checkbox("Force Session Host", &g->session.force_session_host);
 		ImGui::SameLine(); components::help_marker("Join another session to apply changes. \nThe original host of the session must leave or be kicked. \nThis feature is easily detectable by other mod menus, use with caution");
+
+		components::sub_title("Remote Name Spoofing");
+		ImGui::Checkbox("Spoof Other Players' Names", &g->session.name_spoof_enabled);
+		ImGui::SameLine(); components::help_marker("Requires session host. Spoofed names will not visible locally nor to the player that had their name spoofed. Requires players to join after becoming host");
+
+		if (g->session.name_spoof_enabled)
+		{
+			ImGui::Checkbox("Advertise YimMenu", &g->session.advertise_menu);
+			ImGui::SameLine(); components::help_marker("Advertise YimMenu by spoofing player names to differently colored variants of 'YimMenu'. You will not be able to customize the name with this option enabled");
+
+			if (!g->session.advertise_menu)
+			{
+				constexpr size_t name_size = RTL_FIELD_SIZE(rage::rlGamerInfo, m_name);
+				static char name[name_size];
+				strcpy_s(name, sizeof(name), g->session.spoofed_name.c_str());
+
+				ImGui::Text("Name: ");
+				ImGui::InputText("##username_input", name, sizeof(name));
+
+				if (name != g->session.spoofed_name)
+					g->session.spoofed_name = std::string(name);
+			}
+		}
+
+		components::sub_title("All Players");
+		ImGui::Checkbox("Off The Radar", &g->session.off_radar_all);
+		ImGui::Checkbox("Never Wanted", &g->session.never_wanted_all);
+		ImGui::Checkbox("Semi Godmode", &g->session.semi_godmode_all);
+
+		components::sub_title("Event Starter");
+		
+		ImGui::BeginGroup();
+		components::button("Hot Target", [] { scripts::start_launcher_script(36); });
+		components::button("Kill List", [] { scripts::start_launcher_script(37); });
+		components::button("Checkpoints", [] { scripts::start_launcher_script(39); });
+		components::button("Challenges", [] { scripts::start_launcher_script(40); });
+		components::button("Penned In", [] { scripts::start_launcher_script(41); });
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
+		components::button("Hot Property", [] { scripts::start_launcher_script(43); });
+		components::button("King Of The Castle", [] { scripts::start_launcher_script(45); });
+		components::button("Criminal Damage", [] { scripts::start_launcher_script(46); });
+		components::button("Hunt The Beast", [] { scripts::start_launcher_script(47); });
+		components::button("Business Battles", [] { scripts::start_launcher_script(114); });
+		ImGui::EndGroup();
 	}
 }

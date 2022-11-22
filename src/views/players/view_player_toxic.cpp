@@ -42,15 +42,14 @@ namespace big
 			ImGui::SameLine();
 
 			components::button("Ped Crash", [] {
-				Ped ped = ped::spawn(ePedType::PED_TYPE_PROSTITUTE, rage::joaat("slod_human"), 0, ENTITY::GET_ENTITY_COORDS(g_player_service->get_selected()->id(), false), 0);
+				Ped ped = ped::spawn(ePedType::PED_TYPE_PROSTITUTE, rage::joaat("slod_human"), 0, misc::fvector3_to_Vector3(g_player_service->get_selected()->get_ped()->m_bone_info.m_bone_head_model_coords), 0); // FIXME: This get coords method is so fucking stupid.
 				script::get_current()->yield(3s);
 				entity::delete_entity_notp(ped);
 			});
 			ImGui::SameLine(); components::help_marker("Spawns 'slod_human' ped near player wich crashes them. \nBlocked by most internal menus.");
-			ImGui::SameLine();
 
 			components::button("Vehicle Crash", [] {
-				Vehicle veh = vehicle::spawn(rage::joaat("arbitergt"), ENTITY::GET_ENTITY_COORDS(g_player_service->get_selected()->id(), false), 0);
+				Vehicle veh = vehicle::spawn(rage::joaat("arbitergt"), misc::fvector3_to_Vector3(g_player_service->get_selected()->get_ped()->m_bone_info.m_bone_head_model_coords), 0.f); // FIXME: This get coords method is so fucking stupid.
 				script::get_current()->yield(3s);
 				entity::delete_entity_notp(veh);
 			});
@@ -87,6 +86,22 @@ namespace big
 			components::button("Send to Cayo Perico", [] {
 				toxic::send_to_cayo_perico(g_player_service->get_selected()->id());
 			});
+
+			components::button("Remote Control Vehicle", []
+			{
+				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), FALSE);
+				if (veh == 0)
+				{
+					if (g->player.spectating)
+						g_notification_service->push_warning("Remote Control", "Player not in a vehicle");
+					else
+						g_notification_service->push_warning("Remote Control", "Player not in a vehicle, try spectating the player");
+					return;
+				}
+				vehicle::remote_control_vehicle(veh);
+				g->player.spectating = false;
+			});
+			ImGui::SameLine(); components::help_marker("Teleports you to the driver seat. \nBlocked by most internal menus.");
 
 			ImGui::TreePop();
 		}

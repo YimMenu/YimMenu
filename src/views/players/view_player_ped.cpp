@@ -40,10 +40,6 @@ namespace big
 			globals::clear_wanted_player(g_player_service->get_selected()->id());
 		});
 
-		ImGui::SameLine();
-
-		ImGui::Checkbox("Never Wanted", &g_player_service->get_selected()->never_wanted);
-
 		components::button("Give Health", [] {
 			g_pickup_service->give_player_health(g_player_service->get_selected()->id());
 		});
@@ -77,6 +73,16 @@ namespace big
 		components::button("Remove Selected Weapon", [weapon_name] {
 			Hash weaponHash = rage::joaat(weapon_name);
 			WEAPON::REMOVE_WEAPON_FROM_PED(g_player_service->get_selected()->id(), weaponHash);
+		});
+
+		ImGui::Checkbox("Off The Radar", &g_player_service->get_selected()->off_radar);
+		ImGui::Checkbox("Never Wanted", &g_player_service->get_selected()->never_wanted);
+		ImGui::Checkbox("Semi Godmode", &g_player_service->get_selected()->semi_godmode);
+
+		components::button("Join CEO/MC", []
+		{
+			*scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).as<int*>() = g_player_service->get_selected()->id();
+			*scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).at(26).as<int*>() = g_player_service->get_selected()->id();
 		});
 	}
 }
