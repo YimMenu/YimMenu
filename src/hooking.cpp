@@ -82,6 +82,8 @@ namespace big
 		detour_hook_helper::add<hooks::process_matchmaking_find_response>("PMFR", g_pointers->m_process_matchmaking_find_response);
 		detour_hook_helper::add<hooks::serialize_player_data_msg>("SJPD", g_pointers->m_serialize_player_data_msg);
 
+		detour_hook_helper::add<hooks::serialize_join_request_message>("SJRM", g_pointers->m_serialize_join_request_message);
+
 		g_hooking = this;
 	}
 

@@ -572,6 +572,12 @@ namespace big
 			m_serialize_player_data_msg = ptr.as<PVOID>();
 		});
 
+		// Serialize Join Request Message
+		main_batch.add("SPDM", "E8 ? ? ? ? 84 C0 0F 84 99 00 00 00 49 8D 8F 78 0D 00 00", [this](memory::handle ptr)
+		{
+			m_serialize_join_request_message = ptr.add(1).rip().as<PVOID>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 

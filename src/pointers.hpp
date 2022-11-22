@@ -173,6 +173,9 @@ namespace big
 
 		PVOID m_process_matchmaking_find_response;
 		PVOID m_serialize_player_data_msg;
+		// PVOID m_apply_join_request_data;
+
+		PVOID m_serialize_join_request_message;
 	};
 
 	inline pointers* g_pointers{};

@@ -101,6 +101,7 @@ namespace big
 		static bool process_matchmaking_find_response(void* _this, void* unused, rage::JSONNode* node, int* unk);
 
 		static bool serialize_player_data_msg(CNetGamePlayerDataMsg* msg, rage::datBitBuffer* buffer);
+		static bool serialize_join_request_message(RemoteGamerInfoMsg* info, void* data, int size, int* bits_serialized);
 	};
 
 	class minhook_keepalive

@@ -91,6 +91,7 @@ namespace big::session
 			if (state == 3 && success)
 			{
 				join_session(result.m_session_info);
+				return;
 			}
 		}
 
