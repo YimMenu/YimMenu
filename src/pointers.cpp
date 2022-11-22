@@ -227,13 +227,13 @@ namespace big
 		// Ptr To Handle
 		main_batch.add("PTH", "48 8B F9 48 83 C1 10 33 DB", [this](memory::handle ptr)
 		{
-			m_ptr_to_handle = ptr.sub(0x15).as<functions::ptr_to_handle>();
+			m_ptr_to_handle = ptr.sub(0x15).as<decltype(m_ptr_to_handle)>();
 		});
 
 		// Handle To Ptr
 		main_batch.add("GSH", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr)
 		{
-			m_handle_to_ptr = ptr.as<functions::handle_to_ptr>();
+			m_handle_to_ptr = ptr.as<decltype(m_handle_to_ptr)>();
 		});
 
 		// Blame Explode
