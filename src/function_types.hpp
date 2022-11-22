@@ -22,8 +22,8 @@ namespace big::functions
 
 	using increment_stat_event = bool(*)(uint64_t net_event_struct, int64_t sender, int64_t a3);
 
-	using ptr_to_handle = Entity(*)(void* entity);
-	using get_script_handle_t = uint64_t(*)(int64_t);
+	using ptr_to_handle = Entity(*)(void*);
+	using handle_to_ptr = void*(*)(Entity);
 	
 	using multiplayer_chat_filter = int(__int64 chat_type, const char* input, const char** output);
 	using write_player_game_state_data_node = bool(*)(rage::netObject* plr, CPlayerGameStateDataNode* node);
