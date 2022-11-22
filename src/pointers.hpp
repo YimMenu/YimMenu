@@ -120,6 +120,7 @@ namespace big
 		Network** m_network;
 
 		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
+		functions::start_matchmaking_find_sessions m_start_matchmaking_find_sessions;
 		functions::join_session_by_info m_join_session_by_info;
 
 		uint8_t* m_bypass_max_count_of_active_sticky_bombs;
@@ -169,6 +170,9 @@ namespace big
 
 		PVOID m_add_player_to_session;
 		PVOID m_send_chat_net_message;
+
+		PVOID m_process_matchmaking_find_response;
+		PVOID m_serialize_player_data_msg;
 	};
 
 	inline pointers* g_pointers{};

@@ -440,10 +440,16 @@ namespace big
 			m_format_metric_for_sending = ptr.as<PVOID>();
 		});
 
-		// Get Session By Gamer Handle
+		// Start Get Session By Gamer Handle
 		main_batch.add("SGSBGH", "E8 ? ? ? ? 84 C0 0F 84 ? ? ? ? 8B 05 ? ? ? ? 48 8D 4C 24", [this](memory::handle ptr)
 		{
 			m_start_get_session_by_gamer_handle = ptr.add(1).rip().as<functions::start_get_session_by_gamer_handle>();
+		});
+
+		// Start Matchmaking Find Sessions
+		main_batch.add("SGSBGH", "E8 ? ? ? ? 84 C0 0F 84 F6 FE FF FF", [this](memory::handle ptr)
+		{
+			m_start_matchmaking_find_sessions = ptr.add(1).rip().as<functions::start_matchmaking_find_sessions>();
 		});
 
 		// Join Session By Info
@@ -552,6 +558,18 @@ namespace big
 		main_batch.add("SCNM", "E8 ? ? ? ? 41 FF C4 48 83 C5 08", [this](memory::handle ptr)
 		{
 			m_send_chat_net_message = ptr.add(1).rip().as<PVOID>();
+		});
+
+		// Process Matchmaking Find Response
+		main_batch.add("PMFR", "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC 90 00 00 00 41", [this](memory::handle ptr)
+		{
+			m_process_matchmaking_find_response = ptr.as<PVOID>();
+		});
+
+		// Serialize Player Data Message
+		main_batch.add("SPDM", "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 41 56 48 83 EC 20 BF 01 00 00 00", [this](memory::handle ptr)
+		{
+			m_serialize_player_data_msg = ptr.as<PVOID>();
 		});
 
 		auto mem_region = memory::module("GTA5.exe");

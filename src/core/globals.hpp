@@ -7,7 +7,13 @@
 #include "imgui.h"
 #include <bitset>
 
+constexpr int MAX_SESSIONS_TO_FIND = 1400;
 class CNetGamePlayer;
+
+namespace rage
+{
+	class scrProgram;
+}
 
 namespace big
 {
@@ -410,6 +416,42 @@ namespace big
 			bool preview_ped = false;
 		};
 
+		struct session_browser
+		{
+			struct session_attributes
+			{
+				int discriminator;
+				int player_count;
+				int region;
+				int language;
+			};
+
+			struct session
+			{
+				rage::rlSessionInfo info;
+				session_attributes attributes;
+				bool is_valid;
+			};
+
+			bool region_filter_enabled = true;
+			int region_filter = 0;
+
+			bool language_filter_enabled = false;
+			int language_filter = 0;
+
+			bool player_count_filter_enabled = false;
+			int player_count_filter_minimum = 0;
+			int player_count_filter_maximum = 32;
+
+			int sort_method = 0;
+			int sort_direction = 0;
+
+			// not to be saved
+			session found_sessions[MAX_SESSIONS_TO_FIND];
+			int num_sessions_found;
+			bool active = false;
+		};
+
 	public:
 		int friend_count = 0;
 		int player_count = 0;
@@ -437,6 +479,7 @@ namespace big
 		window window{};
 		context_menu context_menu{};
 		esp esp{};
+		session_browser session_browser{};
 
 		menu_settings(file save_file)
 			: m_save_file(std::move(save_file))
@@ -757,6 +800,19 @@ namespace big
 				this->esp.tracer_draw_position[i] = j["esp"]["tracer_draw_position"].at(i);
 			for (int i = 0; i < 2; i++)
 				this->esp.distance_threshold[i] = j["esp"]["distance_threshold"].at(i);
+
+			this->session_browser.region_filter_enabled = j["session_browser"]["region_filter_enabled"];
+			this->session_browser.region_filter = j["session_browser"]["region_filter"];
+
+			this->session_browser.language_filter_enabled = j["session_browser"]["language_filter_enabled"];
+			this->session_browser.language_filter = j["session_browser"]["language_filter"];
+
+			this->session_browser.player_count_filter_enabled = j["session_browser"]["player_count_filter_enabled"];
+			this->session_browser.player_count_filter_minimum = j["session_browser"]["player_count_filter_minimum"];
+			this->session_browser.player_count_filter_maximum = j["session_browser"]["player_count_filter_maximum"];
+
+			this->session_browser.sort_method = j["session_browser"]["sort_method"];
+			this->session_browser.sort_direction = j["session_browser"]["sort_direction"];
 		}
 
 		nlohmann::json to_json()
@@ -1141,7 +1197,20 @@ namespace big
 						this->esp.distance_threshold[1] })
 						}
 					}
-				}
+				},
+				{
+					"session_browser", {
+						{ "region_filter_enabled", this->session_browser.region_filter_enabled },
+						{ "region_filter", this->session_browser.region_filter },
+						{ "language_filter_enabled", this->session_browser.language_filter_enabled },
+						{ "language_filter", this->session_browser.language_filter },
+						{ "player_count_filter_enabled", this->session_browser.player_count_filter_enabled },
+						{ "player_count_filter_minimum", this->session_browser.player_count_filter_minimum },
+						{ "player_count_filter_maximum", this->session_browser.player_count_filter_maximum },
+						{ "sort_method", this->session_browser.sort_method },
+						{ "sort_direction", this->session_browser.sort_direction },
+					}
+				},
 			};
 		}
 

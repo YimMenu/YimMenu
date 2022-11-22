@@ -27,7 +27,7 @@ file(GLOB_RECURSE SRC_MAIN
     "${SRC_DIR}/**.cxx"
     "${SRC_DIR}/**.asm"
 )
-add_library(YimMenu MODULE "${SRC_MAIN}")
+add_library(YimMenu MODULE "${SRC_MAIN}" "src/hooks/misc/process_matchmaking_find_response.cpp")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_property(TARGET YimMenu PROPERTY CXX_STANDARD 23) # 23 Because std::format is not avalible in std:c++20 for some reason. Maybe it's because i use v142 toolset.

@@ -4,7 +4,6 @@
 #include "gta/fwddec.hpp"
 #include "gta/net_game_event.hpp"
 #include "gta/script_thread.hpp"
-#include "script_hook.hpp"
 #include "vmt_hook.hpp"
 #include "MinHook.h"
 #include "gta/enums.hpp"
@@ -18,11 +17,13 @@ class CJoinRequestContext;
 class SessionSortEntry;
 class RemoteGamerInfoMsg;
 class CMsgTextMessage;
+class CNetGamePlayerDataMsg;
 
 namespace rage
 {
 	class rlMetric;
 	class snSession;
+	class JSONNode;
 }
 
 namespace big
@@ -96,6 +97,10 @@ namespace big
 
 		static bool add_player_to_session(rage::netConnectionManager* mgr, int receiver_msg_id, int* out_command_hndl, RemoteGamerInfoMsg* msg, int flags, void* unk);
 		static bool send_chat_net_message(rage::netConnectionManager* mgr, int receiver_msg_id, CMsgTextMessage* msg, int flags, void* unk);
+
+		static bool process_matchmaking_find_response(void* _this, void* unused, rage::JSONNode* node, int* unk);
+
+		static bool serialize_player_data_msg(CNetGamePlayerDataMsg* msg, rage::datBitBuffer* buffer);
 	};
 
 	class minhook_keepalive
