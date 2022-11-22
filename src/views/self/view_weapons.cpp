@@ -21,9 +21,8 @@ namespace big
 		ImGui::Checkbox("Enable Special Ammo", &g->weapons.ammo_special.toggle);
 
 		if (ImGui::Checkbox("Bypass C4 Limit", &g->weapons.bypass_c4_limit))
-		{
-			*g_pointers->m_bypass_max_count_of_active_sticky_bombs = g->weapons.bypass_c4_limit ? 99 : 4;
-		}
+			g->weapons.bypass_c4_limit ? g_pointers->m_bypass_max_count_of_active_sticky_bombs->apply() : g_pointers->m_bypass_max_count_of_active_sticky_bombs->restore();
+		
 
 		eAmmoSpecialType selected_ammo = g->weapons.ammo_special.type;
 		eExplosionTag selected_explosion = g->weapons.ammo_special.explosion_tag;
