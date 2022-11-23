@@ -75,11 +75,8 @@ namespace big
 		if (g->self.invisibility) {
 			ImGui::Checkbox("Locally Visible", &g->self.local_visibility);
 		}
-
 		ImGui::Checkbox("Keep Player Clean", &g->self.clean_player);
-
 		ImGui::Checkbox("No Collision", &g->self.no_collision);
-
 		ImGui::Checkbox("Mobile Radio", &g->self.mobile_radio);
 
 		ImGui::EndGroup();
