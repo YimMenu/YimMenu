@@ -57,7 +57,7 @@ namespace big::session
 		session::set_fm_event_index(11);
 	}
 
-	inline void join_session(rage::rlSessionInfo& info)
+	inline void join_session(const rage::rlSessionInfo& info)
 	{
 		g->session.join_queued = true;
 		g->session.info = info;

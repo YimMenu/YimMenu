@@ -578,6 +578,12 @@ namespace big
 			m_serialize_join_request_message = ptr.add(1).rip().as<PVOID>();
 		});
 
+		// Is Matchmaking Session Valid
+		main_batch.add("IMSV", "E8 ? ? ? ? 48 81 C7 B8 03 00 00 88 03", [this](memory::handle ptr)
+		{
+			memory::byte_patch::make(ptr.add(1).rip().as<void*>(), std::to_array({ 0xB0, 0x01, 0xC3 }))->apply(); // has no observable side effects
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 

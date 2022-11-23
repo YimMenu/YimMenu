@@ -7,7 +7,6 @@
 #include "imgui.h"
 #include <bitset>
 
-constexpr int MAX_SESSIONS_TO_FIND = 1400;
 class CNetGamePlayer;
 
 namespace rage
@@ -418,21 +417,6 @@ namespace big
 
 		struct session_browser
 		{
-			struct session_attributes
-			{
-				int discriminator;
-				int player_count;
-				int region;
-				int language;
-			};
-
-			struct session
-			{
-				rage::rlSessionInfo info;
-				session_attributes attributes;
-				bool is_valid;
-			};
-
 			bool region_filter_enabled = true;
 			int region_filter = 0;
 
@@ -446,10 +430,7 @@ namespace big
 			int sort_method = 0;
 			int sort_direction = 0;
 
-			// not to be saved
-			session found_sessions[MAX_SESSIONS_TO_FIND];
-			int num_sessions_found;
-			bool active = false;
+			bool replace_game_matchmaking = false;
 		};
 
 	public:
@@ -813,6 +794,8 @@ namespace big
 
 			this->session_browser.sort_method = j["session_browser"]["sort_method"];
 			this->session_browser.sort_direction = j["session_browser"]["sort_direction"];
+
+			this->session_browser.replace_game_matchmaking = j["session_browser"]["replace_game_matchmaking"];
 		}
 
 		nlohmann::json to_json()
@@ -1209,6 +1192,7 @@ namespace big
 						{ "player_count_filter_maximum", this->session_browser.player_count_filter_maximum },
 						{ "sort_method", this->session_browser.sort_method },
 						{ "sort_direction", this->session_browser.sort_direction },
+						{ "replace_game_matchmaking", this->session_browser.replace_game_matchmaking }
 					}
 				},
 			};

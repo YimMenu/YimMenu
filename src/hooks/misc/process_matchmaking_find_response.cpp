@@ -1,4 +1,5 @@
 #include "hooking.hpp"
+#include "services/matchmaking/matchmaking_service.hpp"
 
 namespace rage
 {
@@ -56,16 +57,16 @@ namespace big
 	{
 		bool ret = g_hooking->get_original<hooks::process_matchmaking_find_response>()(_this, unused, node, unk);
 		
-		if (g->session_browser.active)
+		if (g_matchmaking_service->is_active())
 		{
 			int i = 0;
 			for (auto result = node->get_child_node("Results")->m_child; result; result = result->m_sibling)
 			{
 				const auto& values = split(result->get_child_node("Attributes")->m_value, ',');
-				g->session_browser.found_sessions[i].attributes.discriminator = std::stoi(values[2]);
-				g->session_browser.found_sessions[i].attributes.player_count = std::stoi(values[4]);
-				g->session_browser.found_sessions[i].attributes.language = std::stoi(values[5]);
-				g->session_browser.found_sessions[i].attributes.region = std::stoi(values[6]);
+				g_matchmaking_service->get_found_sessions()[i].attributes.discriminator = std::stoi(values[2]);
+				g_matchmaking_service->get_found_sessions()[i].attributes.player_count = std::stoi(values[4]);
+				g_matchmaking_service->get_found_sessions()[i].attributes.language = std::stoi(values[5]);
+				g_matchmaking_service->get_found_sessions()[i].attributes.region = std::stoi(values[6]);
 				i++;
 			}
 		}

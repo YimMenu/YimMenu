@@ -84,6 +84,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::serialize_join_request_message>("SJRM", g_pointers->m_serialize_join_request_message);
 
+		detour_hook_helper::add<hooks::start_matchmaking_find_sessions>("SMFS", g_pointers->m_start_matchmaking_find_sessions);
+
 		g_hooking = this;
 	}
 
