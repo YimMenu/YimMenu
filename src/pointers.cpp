@@ -224,16 +224,16 @@ namespace big
 			m_replay_interface = ptr.add(0x1F).rip().as<rage::CReplayInterface**>();
 		});
 
-		// Pointer to Handle
+		// Ptr To Handle
 		main_batch.add("PTH", "48 8B F9 48 83 C1 10 33 DB", [this](memory::handle ptr)
 		{
 			m_ptr_to_handle = ptr.sub(0x15).as<decltype(m_ptr_to_handle)>();
 		});
 
-		// Get Script Handle
+		// Handle To Ptr
 		main_batch.add("GSH", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr)
 		{
-			m_get_script_handle = ptr.as<functions::get_script_handle_t>();
+			m_handle_to_ptr = ptr.as<decltype(m_handle_to_ptr)>();
 		});
 
 		// Blame Explode
@@ -576,16 +576,10 @@ namespace big
 
 		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 F5 01 00 00"))
 		{
-			m_bypass_max_count_of_active_sticky_bombs = pat.add(4).as<uint8_t*>();
-
-			// declare it right now even though we write the same value
-			// so that it get cleaned up in the dctor
-			memory::byte_patch::make(m_bypass_max_count_of_active_sticky_bombs, *m_bypass_max_count_of_active_sticky_bombs);
+			m_bypass_max_count_of_active_sticky_bombs = memory::byte_patch::make(pat.add(4).as<uint8_t*>(), { 99 }).get();
 
 			if (g->weapons.bypass_c4_limit)
-			{
-				*m_bypass_max_count_of_active_sticky_bombs = 99;
-			}
+				m_bypass_max_count_of_active_sticky_bombs->apply();
 		}
 
 		/**

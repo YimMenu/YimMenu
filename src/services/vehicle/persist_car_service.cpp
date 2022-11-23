@@ -296,7 +296,7 @@ namespace big
 		const auto vehicle_rotation = ENTITY::GET_ENTITY_ROTATION(vehicle, 0);
 		bool has_collision = ENTITY::GET_ENTITY_COLLISION_DISABLED(object);
 		bool is_visible = ENTITY::IS_ENTITY_VISIBLE(object);
-		CObject* cobject = (CObject*)g_pointers->m_get_script_handle(vehicle);
+		CObject* cobject = (CObject*)g_pointers->m_handle_to_ptr(vehicle);
 		bool is_invincible = misc::has_bit_set(&(int&)cobject->m_damage_bits, 8);
 
 		Vector3 rotation;
@@ -423,7 +423,7 @@ namespace big
 		vehicle_json[pearlescent_color_key] = pearlescent_color;
 		bool has_collision = ENTITY::GET_ENTITY_COLLISION_DISABLED(vehicle);
 		bool is_visible = ENTITY::IS_ENTITY_VISIBLE(vehicle);
-		CVehicle* cvehicle = (CVehicle*)g_pointers->m_get_script_handle(vehicle);
+		CVehicle* cvehicle = (CVehicle*)g_pointers->m_handle_to_ptr(vehicle);
 		bool is_invincible = misc::has_bit_set(&(int&)cvehicle->m_damage_bits, 8);
 		vehicle_json[has_collision_key] = !has_collision;
 		vehicle_json[is_visible_key] = is_visible;
