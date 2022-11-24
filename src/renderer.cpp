@@ -8,6 +8,7 @@
 #include <backends/imgui_impl_dx11.h>
 #include <backends/imgui_impl_win32.h>
 #include <imgui_internal.h>
+#include "services/hotkey/hotkey_service.hpp"
 
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -125,6 +126,8 @@ namespace big
 
 	void renderer::on_present()
 	{
+		g_hotkey_service->check_keys();
+
 		if (g_gui.m_opened)
 		{
 			ImGui::GetIO().MouseDrawCursor = true;

@@ -217,6 +217,7 @@ namespace big
 				bool editing_menu_toggle = false;
 				int menu_toggle = VK_INSERT;
 				int teleport_waypoint = 0;
+				int teleport_objective = 0;
 			};
 
 			bool dev_dlc = false;
@@ -632,6 +633,8 @@ namespace big
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
+			this->settings.hotkeys.teleport_waypoint = j["settings"]["hotkeys"]["teleport_waypoint"];
+			this->settings.hotkeys.teleport_objective = j["settings"]["hotkeys"]["teleport_objective"];
 
 			this->spawn_vehicle.preview_vehicle = j["spawn_vehicle"]["preview_vehicle"];
 			this->spawn_vehicle.spawn_inside = j["spawn_vehicle"]["spawn_inside"];
@@ -959,7 +962,9 @@ namespace big
 					"settings", {
 						{ "dev_dlc", this->settings.dev_dlc },
 						{ "hotkeys", {
-								{ "menu_toggle", this->settings.hotkeys.menu_toggle }
+								{ "menu_toggle", this->settings.hotkeys.menu_toggle },
+								{ "teleport_waypoint", this->settings.hotkeys.teleport_waypoint },
+								{ "teleport_objective", this->settings.hotkeys.teleport_objective }
 							}
 						}
 					}
