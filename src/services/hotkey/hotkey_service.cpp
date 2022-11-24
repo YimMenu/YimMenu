@@ -23,20 +23,24 @@ void hotkey_service::add(Hotkey key)
 
 void hotkey_service::check_keys()
 {
-    for(auto& key : m_keys)
-        if(is_key_released(*key.m_key))
-            g_fiber_pool->queue_job(key.m_cb);
-}
-
-bool hotkey_service::is_key_released(int key)
-{
-    static bool keys[260] = {};
-    if(GetAsyncKeyState(key) & 0x8000)
-        keys[key] = true;
-    if(keys[key] && !(GetAsyncKeyState(key) & 0x8000))
+    static const ImGuiKey key_first = (ImGuiKey)0;
+    static bool keys_pressed[ImGuiKey_COUNT];
+    static bool keys_released[ImGuiKey_COUNT];
+    for (ImGuiKey key = key_first; key < ImGuiKey_COUNT; key = (ImGuiKey)(key + 1))
     {
-        keys[key] = false;
-        return true;
+        if (GetAsyncKeyState(key) & 0x8000)
+            keys_pressed[key] = true;
+        if (keys_pressed[key] && !(GetAsyncKeyState(key) & 0x8000))
+        {
+            keys_pressed[key] = false;
+            keys_released[key] = true;
+        }
     }
-    return false;
+
+    for(auto& key : m_keys)
+        if (keys_released[*key.m_key])
+            g_fiber_pool->queue_job(key.m_cb);
+
+    for (ImGuiKey key = key_first; key < ImGuiKey_COUNT; key = (ImGuiKey)(key + 1))
+        keys_released[key] = false;
 }

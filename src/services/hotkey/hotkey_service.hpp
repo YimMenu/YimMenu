@@ -16,7 +16,6 @@ namespace big
 
         void add(Hotkey);
         void check_keys();
-        bool is_key_released(int);
 
     private:
         std::vector<Hotkey> m_keys;
