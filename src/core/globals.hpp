@@ -209,6 +209,7 @@ namespace big
 			bool name_spoof_enabled = false;
 			bool advertise_menu = false;
 			std::string spoofed_name = "";
+			bool join_in_sctv_slots = false;
 
 			// not to be saved
 			bool never_wanted_all = false;
@@ -653,6 +654,7 @@ namespace big
 			this->session.name_spoof_enabled = j["session"]["name_spoof_enabled"];
 			this->session.advertise_menu = j["session"]["advertise_menu"];
 			this->session.spoofed_name = j["session"]["spoofed_name"];
+			this->session.join_in_sctv_slots = j["session"]["join_in_sctv_slots"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -991,7 +993,8 @@ namespace big
 						{ "is_team", this->session.is_team },
 						{ "name_spoof_enabled", this->session.name_spoof_enabled },
 						{ "advertise_menu", this->session.advertise_menu },
-						{ "spoofed_name", this->session.spoofed_name }
+						{ "spoofed_name", this->session.spoofed_name },
+						{ "join_in_sctv_slots", this->session.join_in_sctv_slots }
 					}
 				},
 				{
