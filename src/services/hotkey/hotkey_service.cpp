@@ -23,9 +23,11 @@ void hotkey_service::add(Hotkey key)
 
 void hotkey_service::check_keys()
 {
+    if(GetForegroundWindow() != g_pointers->m_hwnd)
+        return;
     static const ImGuiKey key_first = (ImGuiKey)0;
-    static bool keys_pressed[ImGuiKey_COUNT];
-    static bool keys_released[ImGuiKey_COUNT];
+    static bool keys_pressed[ImGuiKey_COUNT] = {};
+    static bool keys_released[ImGuiKey_COUNT] = {};
     for (ImGuiKey key = key_first; key < ImGuiKey_COUNT; key = (ImGuiKey)(key + 1))
     {
         if (GetAsyncKeyState(key) & 0x8000)
