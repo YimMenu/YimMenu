@@ -21,7 +21,7 @@ namespace big
 							results[*num_sessions_found] = g_matchmaking_service->get_found_sessions()[i].info;
 							(*num_sessions_found)++;
 
-							if (max_sessions > *num_sessions_found)
+							if (max_sessions <= *num_sessions_found)
 								break;
 						}
 					}
