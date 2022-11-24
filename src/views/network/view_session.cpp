@@ -43,6 +43,10 @@ namespace big
 			ImGui::EndListBox();
 		}
 
+		ImGui::Checkbox("Join in SCTV slots", &g->session.join_in_sctv_slots);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Allows you to join full and solo sessions but can be detected by other modders");
+
 		components::sub_title("Player Magnet");
 		ImGui::Checkbox("Enabled", &g->session.player_magnet_enabled);
 		if (g->session.player_magnet_enabled)
