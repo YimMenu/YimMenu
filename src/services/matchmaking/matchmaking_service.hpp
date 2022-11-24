@@ -28,7 +28,7 @@ namespace big
 	public:
 		matchmaking_service();
 		~matchmaking_service();
-		bool matchmake();
+		bool matchmake(std::optional<int> constraint = std::nullopt);
 		
 		inline int get_num_found_sessions()
 		{

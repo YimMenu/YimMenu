@@ -7,12 +7,21 @@ namespace big
 {
 	bool hooks::start_matchmaking_find_sessions(int profile_index, int available_slots, NetworkGameFilterMatchmakingComponent* filter, unsigned int max_sessions, rage::rlSessionInfo* results, int* num_sessions_found, int* status)
 	{
+		int discriminator = filter->m_param_values[0]; // this is guaranteed to work
+
 		if (g->session_browser.replace_game_matchmaking && filter->m_filter_type == 1)
 		{
 			*status = 1;
-			g_fiber_pool->queue_job([max_sessions, results, num_sessions_found, status]
+			g_fiber_pool->queue_job([max_sessions, results, num_sessions_found, status, discriminator]
 			{
-				if (g_matchmaking_service->matchmake())
+				bool result = false;
+
+				if (g->session.join_in_sctv_slots)
+					result = g_matchmaking_service->matchmake();
+				else
+					result = g_matchmaking_service->matchmake(discriminator);
+
+				if (result)
 				{
 					for (int i = 0; i < g_matchmaking_service->get_num_found_sessions(); i++)
 					{

@@ -16,7 +16,7 @@ namespace big
 		g_matchmaking_service = nullptr;
 	}
 
-	bool matchmaking_service::matchmake()
+	bool matchmaking_service::matchmake(std::optional<int> constraint)
 	{
 		for (auto& session : m_found_sessions)
 		{
@@ -31,6 +31,11 @@ namespace big
 		if (g->session_browser.region_filter_enabled)
 		{
 			component.SetParameter("MMATTR_REGION", 0, g->session_browser.region_filter);
+		}
+
+		if (constraint)
+		{
+			component.SetParameter("MMATTR_DISCRIMINATOR", 1, constraint.value());
 		}
 
 		int state = 0;
@@ -48,6 +53,9 @@ namespace big
 				for (int i = 0; i < m_num_sessions_found; i++)
 				{
 					m_found_sessions[i].info = result_sessions[i];
+
+					if (constraint && m_found_sessions[i].attributes.player_count >= 30)
+						m_found_sessions[i].is_valid = false;
 
 					if (g->session_browser.language_filter_enabled && m_found_sessions[i].attributes.language != g->session_browser.language_filter)
 						m_found_sessions[i].is_valid = false;
