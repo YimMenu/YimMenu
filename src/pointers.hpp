@@ -11,6 +11,13 @@ class FriendRegistry;
 class CNetworkPlayerMgr;
 class Network;
 
+namespace rage
+{
+	template<typename T>
+	class atSingleton;
+	class RageSecurity;
+}
+
 namespace big
 {
 	class pointers
@@ -176,6 +183,8 @@ namespace big
 		// PVOID m_apply_join_request_data;
 
 		PVOID m_serialize_join_request_message;
+
+		rage::atSingleton<rage::RageSecurity>* m_security;
 	};
 
 	inline pointers* g_pointers{};

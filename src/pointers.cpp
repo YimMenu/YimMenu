@@ -1,6 +1,8 @@
 #include "common.hpp"
 #include "pointers.hpp"
 #include "memory/all.hpp"
+#include "rage/atSingleton.hpp"
+#include "security/RageSecurity.hpp"
 
 namespace big
 {
@@ -582,6 +584,12 @@ namespace big
 		main_batch.add("IMSV", "E8 ? ? ? ? 48 81 C7 B8 03 00 00 88 03", [this](memory::handle ptr)
 		{
 			memory::byte_patch::make(ptr.add(1).rip().as<void*>(), std::to_array({ 0xB0, 0x01, 0xC3 }))->apply(); // has no observable side effects
+		});
+
+		// Rage Security
+		main_batch.add("RS", "48 8B ? ? ? ? ? 33 F6 E9 ? ? ? ? 55 48 8D ? ? ? ? ? 48 87 2C 24 C3 48 8B 45 50 0F B6 00", [this](memory::handle ptr)
+		{
+			m_security = ptr.add(3).rip().as<rage::atSingleton<rage::RageSecurity>*>();
 		});
 
 		auto mem_region = memory::module("GTA5.exe");
