@@ -54,13 +54,14 @@ namespace memory
 		byte_patch(TAddr address, std::span<T, N> span)
 			: m_address((void*)address)
 		{
-			m_size = span.size_bytes();
+			m_size = span.size();
 
 			m_original_bytes = std::make_unique<byte[]>(m_size);
 			memcpy(m_original_bytes.get(), m_address, m_size);
 
 			m_value = std::make_unique<byte[]>(m_size);
-			memcpy(m_value.get(), span.data(), m_size);
+			for (int i = 0; i < m_size; i++)
+				m_value[i] = span[i];
 		}
 
 	protected:

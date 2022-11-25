@@ -11,6 +11,6 @@ namespace big::water
 	inline void reset_ped_oxygen_time(CPed* ped)
 	{
 		auto ped_addr = (uint64_t)ped;
-		*(float*)(*(uint64_t*)(ped_addr + 0x10C0) + 0x278) = 0;
+		*(float*)(*(uint64_t*)(ped_addr + 0x10A0) + 0x278) = 0;
 	}
 }

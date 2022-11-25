@@ -3,6 +3,7 @@
 #include <datanodes/vehicle/CVehicleGadgetDataNode.hpp>
 
 class CMsgJoinResponse;
+class NetworkGameFilterMatchmakingComponent;
 
 namespace rage
 {
@@ -71,13 +72,14 @@ namespace big::functions
 	using fipackfile_mount = bool(*)(rage::fiPackfile* this_, const char* mount_point);
 	using fipackfile_unmount = bool(*)(const char* mount_point);
 
-	using start_get_session_by_gamer_handle = bool(*)(int metric_manager, rage::rlGamerHandle* handles, int count, rage::rlSessionByGamerTaskResult* result, int unk, bool* success, int* state);
+	using start_get_session_by_gamer_handle = bool(*)(int profile_index, rage::rlGamerHandle* handles, int count, rage::rlSessionByGamerTaskResult* result, int unk, bool* success, int* state);
+	using start_matchmaking_find_sessions = bool(*)(int profile_index, int available_slots, NetworkGameFilterMatchmakingComponent* m_filter, unsigned int max_sessions, rage::rlSessionInfo* result_sessions, int* result_session_count, int* state);
 	using join_session_by_info = bool(*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
 
 	using generate_uuid = bool(*)(std::uint64_t* uuid);
 
 	using get_vehicle_gadget_array_size = int(*)(eVehicleGadgetType type);
-
+	
 	using write_join_response_data = bool(*)(CMsgJoinResponse* response, void* data, int size, uint32_t* size_used);
 
 	using queue_packet = bool(*)(rage::netConnectionManager* mgr, int msg_id, void* data, int size, int flags, void* unk);

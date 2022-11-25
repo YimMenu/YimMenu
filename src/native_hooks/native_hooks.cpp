@@ -6,12 +6,98 @@
 #include "shop_controller.hpp"
 #include "network_session_host.hpp"
 #include "am_launcher.hpp"
+#include "crossmap.hpp"
 
 #include <script/scrProgram.hpp>
 #include <script/scrProgramTable.hpp>
 
 namespace big
 {
+	static bool map_native(rage::scrNativeHash* hash)
+	{
+		for (auto const& mapping : g_crossmap)
+		{
+			if (mapping.first == *hash)
+			{
+				*hash = mapping.second;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	native_hook::native_hook(rage::scrProgram* program, const std::unordered_map<rage::scrNativeHash, rage::scrNativeHandler>& native_replacements)
+	{
+		hook_instance(program, native_replacements);
+	}
+
+	native_hook::~native_hook()
+	{
+		if (m_handler_hook)
+		{
+			m_handler_hook->disable();
+			m_handler_hook.reset();
+		}
+
+		if (m_vmt_hook)
+		{
+			m_vmt_hook->disable();
+			m_vmt_hook.reset();
+		}
+	}
+
+	void native_hook::hook_instance(rage::scrProgram* program, const std::unordered_map<rage::scrNativeHash, rage::scrNativeHandler>& native_replacements)
+	{
+		m_program = program;
+		m_vmt_hook = std::make_unique<vmt_hook>(m_program, 3);
+		m_vmt_hook->hook(0, &scrprogram_dtor);
+		m_vmt_hook->enable();
+
+		m_handler_hook = std::make_unique<vmt_hook>(&m_program->m_native_entrypoints, m_program->m_native_count);
+		m_handler_hook->enable();
+
+		std::unordered_map<rage::scrNativeHandler, rage::scrNativeHandler> handler_replacements;
+
+		for (auto& [replacement_hash, replacement_handler] : native_replacements)
+		{
+			auto native = replacement_hash;
+			map_native(&native);
+
+			auto og_handler = g_pointers->m_get_native_handler(g_pointers->m_native_registration_table, native);
+			if (!og_handler)
+				continue;
+
+			handler_replacements[og_handler] = replacement_handler;
+		}
+
+		for (int i = 0; i < m_program->m_native_count; i++)
+		{
+			if (auto it = handler_replacements.find((rage::scrNativeHandler)program->m_native_entrypoints[i]); it != handler_replacements.end())
+			{
+				m_handler_hook->hook(i, it->second);
+			}
+		}
+	}
+
+	void native_hook::scrprogram_dtor(rage::scrProgram* this_, char free_memory)
+	{
+		if (auto it = g_native_hooks->m_native_hooks.find(this_); it != g_native_hooks->m_native_hooks.end())
+		{
+			auto og_func = it->second->m_vmt_hook->get_original<decltype(&native_hook::scrprogram_dtor)>(0);
+			it->second->m_vmt_hook->disable();
+			it->second->m_vmt_hook.reset();
+			it->second->m_handler_hook->disable();
+			it->second->m_handler_hook.reset();
+			g_native_hooks->m_native_hooks.erase(it);
+			og_func(this_, free_memory);
+		}
+		else
+		{
+			LOG(FATAL) << "Cannot find hook for program";
+		}
+	}
+
     constexpr auto ALL_SCRIPT_HASH = RAGE_JOAAT("ALL_SCRIPTS");
 
     native_hooks::native_hooks()
@@ -38,7 +124,7 @@ namespace big
 
     native_hooks::~native_hooks()
     {
-        m_script_hooks.clear();
+        m_native_hooks.clear();
         g_native_hooks = nullptr;
     }
 
@@ -75,15 +161,10 @@ namespace big
 
         if (!native_replacements.empty())
         {
-            m_script_hooks.emplace(
-                program,
-                std::make_unique<script_hook>(program, native_replacements)
+            m_native_hooks.emplace(
+				program,
+                std::make_unique<native_hook>(program, native_replacements)
             );
         }
-    }
-
-    void native_hooks::unhook_program(rage::scrProgram* program)
-    {
-        m_script_hooks.erase(program);
     }
 }
