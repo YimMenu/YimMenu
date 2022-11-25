@@ -15,7 +15,7 @@ namespace big
         };
 
         void add(Hotkey);
-        void check_keys();
+        void refresh(int key_released);
 
     private:
         std::vector<Hotkey> m_keys;

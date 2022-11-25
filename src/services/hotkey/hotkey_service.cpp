@@ -21,28 +21,9 @@ void hotkey_service::add(Hotkey key)
     m_keys.push_back(key);
 }
 
-void hotkey_service::check_keys()
+void hotkey_service::refresh(int key_released)
 {
-    if(GetForegroundWindow() != g_pointers->m_hwnd)
-        return;
-    static const ImGuiKey key_first = (ImGuiKey)0;
-    static bool keys_pressed[ImGuiKey_COUNT] = {};
-    static bool keys_released[ImGuiKey_COUNT] = {};
-    for (ImGuiKey key = key_first; key < ImGuiKey_COUNT; key = (ImGuiKey)(key + 1))
-    {
-        if (GetAsyncKeyState(key) & 0x8000)
-            keys_pressed[key] = true;
-        if (keys_pressed[key] && !(GetAsyncKeyState(key) & 0x8000))
-        {
-            keys_pressed[key] = false;
-            keys_released[key] = true;
-        }
-    }
-
-    for(auto& key : m_keys)
-        if (keys_released[*key.m_key])
+    for (auto& key : m_keys)
+        if (*key.m_key == key_released)
             g_fiber_pool->queue_job(key.m_cb);
-
-    for (ImGuiKey key = key_first; key < ImGuiKey_COUNT; key = (ImGuiKey)(key + 1))
-        keys_released[key] = false;
 }
