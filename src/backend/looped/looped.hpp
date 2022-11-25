@@ -35,6 +35,7 @@ namespace big
 
 		static void session_local_time();
 
+		static void system_disable_sigscanner();
 		static void system_self_globals();
 		static void system_update_pointers();
 		static void system_desync_kick_protection();
