@@ -118,7 +118,7 @@ int DLL_EXPORT worldGetAllPickups(int* arr, int arrSize)
 
 DLL_EXPORT BYTE* getScriptHandleBaseAddress(int handle)
 {
-	return (BYTE*)big::g_pointers->m_get_script_handle(handle);
+	return (BYTE*)big::g_pointers->m_handle_to_ptr(handle);
 }
 
 int DLL_EXPORT registerRawStreamingFile(const std::string& fileName, const std::string& registerAs)

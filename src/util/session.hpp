@@ -55,7 +55,20 @@ namespace big::session
 		session::set_fm_event_index(9);
 		session::set_fm_event_index(10);
 		session::set_fm_event_index(11);
-  }
+	}
+
+	inline void join_session(const rage::rlSessionInfo& info)
+	{
+		g->session.join_queued = true;
+		g->session.info = info;
+		session::join_type({ eSessionType::NEW_PUBLIC });
+		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
+		{
+			g->session.join_queued = false;
+			g_notification_service->push_error("RID Joiner", "Unable to launch maintransition");
+		}
+		return;
+	}
   
 	inline void join_by_rockstar_id(uint64_t rid)
 	{
@@ -77,14 +90,7 @@ namespace big::session
 
 			if (state == 3 && success)
 			{
-				g->session.join_queued = true;
-				g->session.info = result.m_session_info;
-				session::join_type({ eSessionType::NEW_PUBLIC });
-				if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
-				{
-					g->session.join_queued = false;
-					g_notification_service->push_error("RID Joiner", "Unable to launch maintransition");
-				}
+				join_session(result.m_session_info);
 				return;
 			}
 		}

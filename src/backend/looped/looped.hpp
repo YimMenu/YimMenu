@@ -8,9 +8,6 @@ namespace big
 {
 	class looped {
 	public:
-		static void api_login_session();
-
-		static void context_menu();
 		static void hud_transition_state();
 
 		static void tunables_disable_phone();
@@ -22,8 +19,6 @@ namespace big
 		static void player_good_options();
 		static void player_spectate();
 		static void player_remote_control_vehicle();
-
-		static void protections_replay_interface();
 
 		static void self_clean_player();
 		static void self_free_cam_disable_control_action();
@@ -50,6 +45,7 @@ namespace big
 		static void world_population_control();
 
 		static void system_disable_model_spawn_bypass();
+		static void system_disable_sigscanner();
 		static void system_self_globals();
 		static void system_update_pointers();
 		static void system_desync_kick_protection();

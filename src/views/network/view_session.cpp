@@ -43,8 +43,10 @@ namespace big
 			ImGui::EndListBox();
 		}
 
-		components::sub_title("Fast join");
 		ImGui::Checkbox("Fast Join", &g->tunables.fast_join);
+
+		ImGui::Checkbox("Join in SCTV slots", &g->session.join_in_sctv_slots);
+		ImGui::SameLine(); components::help_marker("Allows you to join full and solo sessions but can be detected by other modders");
 
 		components::sub_title("Player Magnet");
 		ImGui::Checkbox("Enabled", &g->session.player_magnet_enabled);

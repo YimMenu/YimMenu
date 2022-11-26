@@ -23,6 +23,12 @@ namespace big
 				ImGui::EndTabItem();
 			}
 
+			if(ImGui::BeginTabItem("Session Browser"))
+			{
+				view::session_browser();
+				ImGui::EndTabItem();
+			}
+
 			ImGui::EndTabBar();
 		}
 	}

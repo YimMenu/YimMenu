@@ -2,12 +2,14 @@
 
 namespace big
 {
-	struct RegionType {
+	struct RegionType 
+	{
 		uint32_t id;
 		const char name[22];
 	};
 
-	const RegionType regions[] = {
+	const RegionType regions[] = 
+	{
 		{ 0,	"CIS" },
 		{ 1,	"Africa" },
 		{ 2,	"East" },

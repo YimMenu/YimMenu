@@ -10,6 +10,11 @@
 
 class CNetGamePlayer;
 
+namespace rage
+{
+	class scrProgram;
+}
+
 namespace big
 {
 	class menu_settings;
@@ -219,6 +224,7 @@ namespace big
 			bool name_spoof_enabled = false;
 			bool advertise_menu = false;
 			std::string spoofed_name = "";
+			bool join_in_sctv_slots = false;
 
 			// not to be saved
 			bool never_wanted_all = false;
@@ -468,6 +474,24 @@ namespace big
 			bool preview_ped = false;
 		};
 
+		struct session_browser
+		{
+			bool region_filter_enabled = true;
+			int region_filter = 0;
+
+			bool language_filter_enabled = false;
+			int language_filter = 0;
+
+			bool player_count_filter_enabled = false;
+			int player_count_filter_minimum = 0;
+			int player_count_filter_maximum = 32;
+
+			int sort_method = 0;
+			int sort_direction = 0;
+
+			bool replace_game_matchmaking = false;
+		};
+
 	public:
 		int friend_count = 0;
 		int player_count = 0;
@@ -497,6 +521,7 @@ namespace big
 		chat chat{};
 		esp esp{};
 		outfit_editor outfit_editor{};
+		session_browser session_browser{};
 
 		menu_settings(file save_file)
 			: m_save_file(std::move(save_file))
@@ -698,6 +723,7 @@ namespace big
 			this->session.name_spoof_enabled = j["session"]["name_spoof_enabled"];
 			this->session.advertise_menu = j["session"]["advertise_menu"];
 			this->session.spoofed_name = j["session"]["spoofed_name"];
+			this->session.join_in_sctv_slots = j["session"]["join_in_sctv_slots"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -841,6 +867,21 @@ namespace big
 				this->esp.tracer_draw_position[i] = j["esp"]["tracer_draw_position"].at(i);
 			for (int i = 0; i < 2; i++)
 				this->esp.distance_threshold[i] = j["esp"]["distance_threshold"].at(i);
+
+			this->session_browser.region_filter_enabled = j["session_browser"]["region_filter_enabled"];
+			this->session_browser.region_filter = j["session_browser"]["region_filter"];
+
+			this->session_browser.language_filter_enabled = j["session_browser"]["language_filter_enabled"];
+			this->session_browser.language_filter = j["session_browser"]["language_filter"];
+
+			this->session_browser.player_count_filter_enabled = j["session_browser"]["player_count_filter_enabled"];
+			this->session_browser.player_count_filter_minimum = j["session_browser"]["player_count_filter_minimum"];
+			this->session_browser.player_count_filter_maximum = j["session_browser"]["player_count_filter_maximum"];
+
+			this->session_browser.sort_method = j["session_browser"]["sort_method"];
+			this->session_browser.sort_direction = j["session_browser"]["sort_direction"];
+
+			this->session_browser.replace_game_matchmaking = j["session_browser"]["replace_game_matchmaking"];
 		}
 
 		nlohmann::json to_json()
@@ -1046,7 +1087,8 @@ namespace big
 						{ "player_magnet_count", this->session.player_magnet_count },
 						{ "name_spoof_enabled", this->session.name_spoof_enabled },
 						{ "advertise_menu", this->session.advertise_menu },
-						{ "spoofed_name", this->session.spoofed_name }
+						{ "spoofed_name", this->session.spoofed_name },
+						{ "join_in_sctv_slots", this->session.join_in_sctv_slots }
 					}
 				},
 				{
@@ -1253,7 +1295,21 @@ namespace big
 						this->esp.distance_threshold[1] })
 						}
 					}
-				}
+				},
+				{
+					"session_browser", {
+						{ "region_filter_enabled", this->session_browser.region_filter_enabled },
+						{ "region_filter", this->session_browser.region_filter },
+						{ "language_filter_enabled", this->session_browser.language_filter_enabled },
+						{ "language_filter", this->session_browser.language_filter },
+						{ "player_count_filter_enabled", this->session_browser.player_count_filter_enabled },
+						{ "player_count_filter_minimum", this->session_browser.player_count_filter_minimum },
+						{ "player_count_filter_maximum", this->session_browser.player_count_filter_maximum },
+						{ "sort_method", this->session_browser.sort_method },
+						{ "sort_direction", this->session_browser.sort_direction },
+						{ "replace_game_matchmaking", this->session_browser.replace_game_matchmaking }
+					}
+				},
 			};
 		}
 

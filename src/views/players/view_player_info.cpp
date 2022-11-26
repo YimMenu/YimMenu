@@ -122,13 +122,13 @@ namespace big
 
 				ImGui::SameLine();
 
-				if (ImGui::Button("Copy")) ImGui::SetClipboardText(std::to_string(net_player_data->m_gamer_handle_2.m_rockstar_id).data());
+				if (ImGui::Button("Copy##RID")) ImGui::SetClipboardText(std::to_string(net_player_data->m_gamer_handle_2.m_rockstar_id).data());
 
 				if(g_player_service->get_selected()->real_rid != net_player_data->m_gamer_handle_2.m_rockstar_id)
 				{
 					ImGui::Text("Real Rockstar ID: %d", g_player_service->get_selected()->real_rid);
 					ImGui::SameLine();
-					if (ImGui::Button("Copy")) ImGui::SetClipboardText(std::to_string(g_player_service->get_selected()->real_rid).data());
+					if (ImGui::Button("Copy##IP")) ImGui::SetClipboardText(std::to_string(g_player_service->get_selected()->real_rid).data());
 				}
 				
 				ImGui::Text(

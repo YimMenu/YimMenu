@@ -2,6 +2,8 @@
 #include "common.hpp"
 #include "pointers.hpp"
 #include "memory/all.hpp"
+#include "rage/atSingleton.hpp"
+#include "security/RageSecurity.hpp"
 
 namespace big
 {
@@ -231,16 +233,16 @@ namespace big
 			m_replay_interface = ptr.add(0x1F).rip().as<rage::CReplayInterface**>();
 		});
 
-		// Pointer to Handle
+		// Ptr To Handle
 		main_batch.add("PTH", "48 8B F9 48 83 C1 10 33 DB", [this](memory::handle ptr)
 		{
 			m_ptr_to_handle = ptr.sub(0x15).as<decltype(m_ptr_to_handle)>();
 		});
 
-		// Get Script Handle
+		// Handle To Ptr
 		main_batch.add("GSH", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr)
 		{
-			m_get_script_handle = ptr.as<functions::get_script_handle_t>();
+			m_handle_to_ptr = ptr.as<decltype(m_handle_to_ptr)>();
 		});
 
 		// Blame Explode
@@ -304,40 +306,43 @@ namespace big
 		});
 		
 		//Begin SHV
-		main_batch.add("Register File", "40 88 7C 24 ? E8 ? ? ? ? 0F B7 44 24", [this](memory::handle ptr)
+
+		//Register File
+		main_batch.add("RF", "40 88 7C 24 ? E8 ? ? ? ? 0F B7 44 24", [this](memory::handle ptr)
 		{
 			m_register_file = ptr.add(5).as<functions::register_file_t>();
 		});
 
-		main_batch.add("Get Script Handle", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr)
-		{
-			m_get_script_handle = ptr.as<functions::get_script_handle_t>();
-		});
-
-		main_batch.add("Ped Pool", "48 8B 05 ? ? ? ? 41 0F BF C8", [this](memory::handle ptr)
+		// Ped Pool
+		main_batch.add("PP", "48 8B 05 ? ? ? ? 41 0F BF C8", [this](memory::handle ptr)
 		{
 			m_ped_pool = ptr.add(3).as<rage::GenericPool*>();
 		});
 
-		main_batch.add("Vehicle Pool", "48 8B 05 ? ? ? ? F3 0F 59 F6 48 8B 08", [this](memory::handle ptr)
+		// Vehicle Pool
+		main_batch.add("VP", "48 8B 05 ? ? ? ? F3 0F 59 F6 48 8B 08", [this](memory::handle ptr)
 		{
 			m_vehicle_pool = *(rage::VehiclePool**)(*(uintptr_t*)ptr.add(3).rip().as<uintptr_t>());
 		});
 
-		main_batch.add("Prop Pool", "48 8B 05 ? ? ? ? 8B 78 10 85 FF", [this](memory::handle ptr)
+		// Prop Pool
+		main_batch.add("PrP", "48 8B 05 ? ? ? ? 8B 78 10 85 FF", [this](memory::handle ptr)
 		{
 			m_prop_pool = ptr.add(3).rip().as<rage::GenericPool*>();
 		});
 
-		main_batch.add("Pickup Pool", "4C 8B 05 ? ? ? ? 40 8A F2 8B E9", [this](memory::handle ptr)
+		// Pickup Pool
+		main_batch.add("PiP", "4C 8B 05 ? ? ? ? 40 8A F2 8B E9", [this](memory::handle ptr)
 		{
 			m_pickup_pool = ptr.add(3).rip().as<rage::GenericPool*>();
 		});
 
-		main_batch.add("Camera Pool", "48 8B C8 EB 02 33 C9 48 85 C9 74 26", [this](memory::handle ptr)
+		// Camera Pool
+		main_batch.add("CP", "48 8B C8 EB 02 33 C9 48 85 C9 74 26", [this](memory::handle ptr)
 		{
 			m_camera_pool = ptr.sub(9).rip().as<rage::GenericPool*>();
 		});
+
 		//END SHV
 
 		// Network
@@ -503,10 +508,16 @@ namespace big
 			m_format_metric_for_sending = ptr.as<PVOID>();
 		});
 
-		// Get Session By Gamer Handle
+		// Start Get Session By Gamer Handle
 		main_batch.add("SGSBGH", "E8 ? ? ? ? 84 C0 0F 84 ? ? ? ? 8B 05 ? ? ? ? 48 8D 4C 24", [this](memory::handle ptr)
 		{
 			m_start_get_session_by_gamer_handle = ptr.add(1).rip().as<functions::start_get_session_by_gamer_handle>();
+		});
+
+		// Start Matchmaking Find Sessions
+		main_batch.add("SGSBGH", "E8 ? ? ? ? 84 C0 0F 84 F6 FE FF FF", [this](memory::handle ptr)
+		{
+			m_start_matchmaking_find_sessions = ptr.add(1).rip().as<functions::start_matchmaking_find_sessions>();
 		});
 
 		// Join Session By Info
@@ -617,6 +628,36 @@ namespace big
 			m_send_chat_net_message = ptr.add(1).rip().as<PVOID>();
 		});
 
+		// Process Matchmaking Find Response
+		main_batch.add("PMFR", "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC 90 00 00 00 41", [this](memory::handle ptr)
+		{
+			m_process_matchmaking_find_response = ptr.as<PVOID>();
+		});
+
+		// Serialize Player Data Message
+		main_batch.add("SPDM", "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 41 56 48 83 EC 20 BF 01 00 00 00", [this](memory::handle ptr)
+		{
+			m_serialize_player_data_msg = ptr.as<PVOID>();
+		});
+
+		// Serialize Join Request Message
+		main_batch.add("SPDM", "E8 ? ? ? ? 84 C0 0F 84 99 00 00 00 49 8D 8F 78 0D 00 00", [this](memory::handle ptr)
+		{
+			m_serialize_join_request_message = ptr.add(1).rip().as<PVOID>();
+		});
+
+		// Is Matchmaking Session Valid
+		main_batch.add("IMSV", "E8 ? ? ? ? 48 81 C7 B8 03 00 00 88 03", [this](memory::handle ptr)
+		{
+			memory::byte_patch::make(ptr.add(1).rip().as<void*>(), std::to_array({ 0xB0, 0x01, 0xC3 }))->apply(); // has no observable side effects
+		});
+
+		// Rage Security
+		main_batch.add("RS", "48 8B ? ? ? ? ? 33 F6 E9 ? ? ? ? 55 48 8D ? ? ? ? ? 48 87 2C 24 C3 48 8B 45 50 0F B6 00", [this](memory::handle ptr)
+		{
+			m_security = ptr.add(3).rip().as<rage::atSingleton<rage::RageSecurity>*>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 
@@ -639,16 +680,10 @@ namespace big
 
 		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 F5 01 00 00"))
 		{
-			m_bypass_max_count_of_active_sticky_bombs = pat.add(4).as<uint8_t*>();
-
-			// declare it right now even though we write the same value
-			// so that it get cleaned up in the dctor
-			memory::byte_patch::make(m_bypass_max_count_of_active_sticky_bombs, *m_bypass_max_count_of_active_sticky_bombs);
+			m_bypass_max_count_of_active_sticky_bombs = memory::byte_patch::make(pat.add(4).as<uint8_t*>(), { 99 }).get();
 
 			if (g->weapons.bypass_c4_limit)
-			{
-				*m_bypass_max_count_of_active_sticky_bombs = 99;
-			}
+				m_bypass_max_count_of_active_sticky_bombs->apply();
 		}
 
 		/**
