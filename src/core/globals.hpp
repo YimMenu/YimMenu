@@ -211,6 +211,9 @@ namespace big
 			std::string spoofed_name = "";
 			bool join_in_sctv_slots = false;
 
+			bool explosion_karma = false;
+			bool damage_karma = false;
+
 			bool disable_traffic = false;
 			bool disable_peds = false;
 			bool force_thunder = false;
@@ -666,6 +669,9 @@ namespace big
 			this->session.spoofed_name = j["session"]["spoofed_name"];
 			this->session.join_in_sctv_slots = j["session"]["join_in_sctv_slots"];
 
+			this->session.explosion_karma = j["session"]["explosion_karma"];
+			this->session.damage_karma = j["session"]["damage_karma"];
+
 			this->session.disable_peds = j["session"]["disable_peds"];
 			this->session.disable_traffic = j["session"]["disable_traffic"];
 			this->session.force_thunder = j["session"]["force_thunder"];
@@ -1009,6 +1015,8 @@ namespace big
 						{ "advertise_menu", this->session.advertise_menu },
 						{ "spoofed_name", this->session.spoofed_name },
 						{ "join_in_sctv_slots", this->session.join_in_sctv_slots },
+						{ "explosion_karma", this->session.explosion_karma },
+						{ "damage_karma", this->session.damage_karma },
 						{ "disable_peds", this->session.disable_peds },
 						{ "disable_traffic", this->session.disable_traffic },
 						{ "force_thunder", this->session.force_thunder }

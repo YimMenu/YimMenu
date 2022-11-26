@@ -7,9 +7,31 @@
 #include "util/session.hpp"
 #include "util/scripts.hpp"
 #include "services/gta_data/gta_data_service.hpp"
+#include "util/system.hpp"
 
 namespace big::toxic
 {
+	inline void blame_explode_coord(player_ptr to_blame, Vector3 pos, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
+	{
+		system::patch_blame(true);
+		FIRE::ADD_OWNED_EXPLOSION(
+			PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(to_blame->id()),
+			pos.x, pos.y, pos.z,
+			(int)explosion_type,
+			damage,
+			is_audible,
+			is_invisible,
+			camera_shake
+		);
+		system::patch_blame(false);
+	}
+
+	inline void blame_explode_player(player_ptr to_blame, player_ptr target, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
+	{
+		Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target->id()), true);
+		blame_explode_coord(to_blame, coords, explosion_type, damage, is_audible, is_invisible, camera_shake);
+	}
+
 	inline void ceo_kick(player_ptr target)
 	{
 		auto leader = *scr_globals::gpbd_fm_3.at(target->id(), scr_globals::size::gpbd_fm_3).at(10).as<int*>();
@@ -323,10 +345,11 @@ namespace big::toxic
 		thread->m_context.m_state = rage::eThreadState::running;
 	}
 
-	inline void kill_player(player_ptr player)
+	// the blamed player cannot be the target itself
+	inline void kill_player(player_ptr player, player_ptr to_blame)
 	{
-		g_pointers->m_send_network_damage((CEntity*)g_player_service->get_self()->get_ped(), (CEntity*)player->get_ped(), player->get_ped()->m_navigation->get_position(),
-			0, true, RAGE_JOAAT("weapon_unarmed"), 10000.0f, 2, 0, 1 << 4, 0, 0, 0, false, false, true, true, nullptr);
+		g_pointers->m_send_network_damage((CEntity*)to_blame->get_ped(), (CEntity*)player->get_ped(), player->get_ped()->m_navigation->get_position(),
+			0, true, RAGE_JOAAT("weapon_unarmed"), 10000.0f, 2, 0, (1 << 4) | (1 << 1), 0, 0, 0, false, false, true, true, nullptr);
 	}
 
 	inline void give_all_weapons(player_ptr target)

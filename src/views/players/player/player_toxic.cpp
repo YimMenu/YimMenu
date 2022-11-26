@@ -12,7 +12,7 @@ namespace big
 		{
 			components::button("Kill Player", []
 			{
-				toxic::kill_player(g_player_service->get_selected());
+				toxic::kill_player(g_player_service->get_selected(), g_player_service->get_self());
 			});
 
 			components::button("CEO Kick", [] { toxic::ceo_kick(g_player_service->get_selected()); });

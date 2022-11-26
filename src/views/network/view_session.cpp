@@ -108,8 +108,14 @@ namespace big
 
 		components::sub_title("All Players");
 		ImGui::Checkbox("Off The Radar", &g->session.off_radar_all);
+		ImGui::SameLine();
 		ImGui::Checkbox("Never Wanted", &g->session.never_wanted_all);
+		ImGui::SameLine();
 		ImGui::Checkbox("Semi Godmode", &g->session.semi_godmode_all);
+
+		ImGui::Checkbox("Explosion Karma", &g->session.explosion_karma);
+		ImGui::SameLine();
+		ImGui::Checkbox("Damage Karma", &g->session.damage_karma);
 
 		static int global_wanted_level = 0;
 
@@ -125,7 +131,9 @@ namespace big
 			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = global_wanted_level;
 		}
 
-		components::button("Kill Everyone", [] { g_player_service->iterate([](auto& plyr) { toxic::kill_player(plyr.second); }); });
+		components::button("Kill Everyone", [] { g_player_service->iterate([](auto& plyr) { toxic::kill_player(plyr.second, g_player_service->get_self()); }); });
+
+		ImGui::SameLine();
 
 		components::button("Turn Everyone Into Beast", [] { toxic::turn_everyone_into_beast(); });
 		if (ImGui::IsItemHovered())
