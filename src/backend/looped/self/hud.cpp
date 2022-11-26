@@ -1,7 +1,6 @@
 #include "backend/looped/looped.hpp"
 #include "natives.hpp"
 #include "core/data/hud_component_names.hpp"
-#include <algorithm>
 
 namespace big
 {
