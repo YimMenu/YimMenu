@@ -8,7 +8,6 @@
 #include <backends/imgui_impl_dx11.h>
 #include <backends/imgui_impl_win32.h>
 #include <imgui_internal.h>
-#include "services/hotkey/hotkey_service.hpp"
 
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -165,9 +164,6 @@ namespace big
 
 	void renderer::wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	{
-		if (msg == WM_KEYUP)
-			g_hotkey_service->refresh(wparam);
-
 		if (msg == WM_KEYUP && wparam == g->settings.hotkeys.menu_toggle)
 		{
 			//Persist and restore the cursor position between menu instances.

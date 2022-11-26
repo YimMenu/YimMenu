@@ -2,28 +2,57 @@
 #include "fiber_pool.hpp"
 #include "util/teleport.hpp"
 
-using namespace big;
-
-hotkey_service::hotkey_service()
+namespace big
 {
-    g_hotkey_service = this;
-    add({&g->settings.hotkeys.teleport_waypoint, []{ teleport::to_waypoint(); }});
-    add({&g->settings.hotkeys.teleport_objective, []{ teleport::to_objective(); }});
-}
+    hotkey_service::hotkey_service()
+    {
+        register_hotkey("waypoint", g->settings.hotkeys.teleport_waypoint, teleport::to_waypoint);
+        register_hotkey("objective", g->settings.hotkeys.teleport_objective, teleport::to_objective);
 
-hotkey_service::~hotkey_service()
-{
-    g_hotkey_service = nullptr;
-}
+        g_hotkey_service = this;
+    }
 
-void hotkey_service::add(Hotkey key)
-{
-    m_keys.push_back(key);
-}
+    hotkey_service::~hotkey_service()
+    {
+        g_hotkey_service = nullptr;
+    }
 
-void hotkey_service::refresh(int key_released)
-{
-    for (auto& key : m_keys)
-        if (*key.m_key == key_released)
-            g_fiber_pool->queue_job(key.m_cb);
+    void hotkey_service::register_hotkey(const std::string_view name, key_t key, const hotkey_func func, eKeyState state)
+    {
+        m_hotkeys[state == eKeyState::RELEASE].emplace(key, hotkey{ rage::joaat(name), key, func });
+    }
+
+    bool hotkey_service::update_hotkey(const std::string_view name, const key_t key)
+    {
+        static auto update_hotkey_map = [key](hotkey_map& hotkey_map, rage::joaat_t name_hash) -> bool
+        {
+            if (const auto &it = std::find_if(hotkey_map.begin(), hotkey_map.end(), [name_hash](std::pair<key_t, hotkey> pair) -> bool
+                {
+                    return pair.second.m_name_hash == name_hash;
+                }); it != hotkey_map.end())
+            {
+                auto hotkey = it->second;
+                hotkey.m_key = key;
+
+                hotkey_map.emplace(key, hotkey);
+                hotkey_map.erase(it);
+
+                return true;
+            }
+            return false;
+        };
+
+        const auto name_hash = rage::joaat(name);
+        return update_hotkey_map(m_hotkeys[1], name_hash) // released
+            && update_hotkey_map(m_hotkeys[0], name_hash); // down
+    }
+
+    void hotkey_service::wndproc(eKeyState state, key_t key)
+    {
+        const auto &hotkey_map = m_hotkeys[state == eKeyState::RELEASE];
+        if (const auto &it = hotkey_map.find(key); it != hotkey_map.end())
+        {
+            g_fiber_pool->queue_job(it->second.m_func);
+        }
+    }
 }
