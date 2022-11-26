@@ -112,7 +112,7 @@ namespace big
 
 					ImGui::SameLine();
 
-					if (ImGui::Button("Copy")) ImGui::SetClipboardText(std::to_string(net_player_data->m_gamer_handle_2.m_rockstar_id).data());
+					if (ImGui::Button("Copy##rid")) ImGui::SetClipboardText(std::to_string(net_player_data->m_gamer_handle_2.m_rockstar_id).data());
 
 					ImGui::Text(
 						"IP Address: %d.%d.%d.%d:%d",
@@ -125,7 +125,7 @@ namespace big
 
 					ImGui::SameLine();
 
-					if (ImGui::Button("Copy")) ImGui::SetClipboardText(std::format("{}.{}.{}.{}:{}", net_player_data->m_external_ip.m_field1,
+					if (ImGui::Button("Copy##ip")) ImGui::SetClipboardText(std::format("{}.{}.{}.{}:{}", net_player_data->m_external_ip.m_field1,
 						net_player_data->m_external_ip.m_field2,
 						net_player_data->m_external_ip.m_field3,
 						net_player_data->m_external_ip.m_field4,
