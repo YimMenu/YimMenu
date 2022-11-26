@@ -24,6 +24,7 @@ namespace rage
 	class rlMetric;
 	class snSession;
 	class JSONNode;
+	class netArrayHandlerBase;
 }
 
 namespace big
@@ -104,6 +105,8 @@ namespace big
 		static bool serialize_join_request_message(RemoteGamerInfoMsg* info, void* data, int size, int* bits_serialized);
 
 		static bool start_matchmaking_find_sessions(int profile_index, int available_slots, NetworkGameFilterMatchmakingComponent* filter, unsigned int max_sessions, rage::rlSessionInfo* results, int* num_sessions_found, int* status);
+
+		static unsigned int broadcast_net_array(rage::netArrayHandlerBase* _this, CNetGamePlayer* target, rage::datBitBuffer* bit_buffer, uint16_t counter, uint32_t* elem_start, bool silent);
 	};
 
 	class minhook_keepalive

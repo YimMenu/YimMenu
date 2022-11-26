@@ -200,7 +200,7 @@ namespace big
 					auto model_hash = object->GetGameObject() ? object->GetGameObject()->m_model_info->m_hash : 0;
 					if (attach_node->m_attached && attach_node->m_attached_to == object->m_object_id && (model_hash != RAGE_JOAAT("hauler2") && model_hash != RAGE_JOAAT("phantom3")))
 					{
-						notify::crash_blocked(sender, "infinite physical attachment");
+						// notify::crash_blocked(sender, "infinite physical attachment");
 						return true;
 					}
 					break;

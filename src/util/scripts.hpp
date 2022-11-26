@@ -7,6 +7,7 @@
 #include "gta/script_handler.hpp"
 #include "script_local.hpp"
 #include "core/scr_globals.hpp"
+#include "services/players/player_service.hpp"
 
 namespace big::scripts
 {
@@ -50,28 +51,48 @@ namespace big::scripts
 		return false;
 	}
 
+	inline bool force_host(rage::joaat_t hash)
+	{
+		if (auto launcher = gta_util::find_script_thread(hash); launcher && launcher->m_net_component)
+		{
+			for (int i = 0; !launcher->m_net_component->is_local_player_host(); i++)
+			{
+				if (i > 200)
+					return false;
+
+				((CGameScriptHandlerNetComponent*)launcher->m_net_component)->send_host_migration_event(g_player_service->get_self()->get_net_game_player());
+				script::get_current()->yield(10ms);
+
+				if (!launcher->m_stack || !launcher->m_net_component)
+					return false;
+			}
+		}
+
+		return true;
+	}
+
 	// force launcher script over the lobby, take two
 	// try to get am_launcher in a consistent state before trying to start the script taking account of all participants
 	inline void start_launcher_script(int script_id)
 	{
 		static auto check_players_in_state = [](GtaThread* launcher, int state) -> bool
-		{
+		{ 
 			bool set = false;
 
-			gta_util::execute_as_script(RAGE_JOAAT("am_launcher"), [launcher, state, &set]
+			if (!launcher->m_net_component)
+				return false;
+
+			for (auto& [_, plyr] : g_player_service->players())
 			{
-				for (auto& [_, plyr] : g_player_service->players())
+				if (launcher->m_net_component->is_player_a_participant(plyr->get_net_game_player()))
 				{
-					if (NETWORK::NETWORK_IS_PLAYER_A_PARTICIPANT(plyr->id()))
+					if (*script_local(launcher->m_stack, 230).at(plyr->id(), 3).at(2).as<int*>() == state)
 					{
-						if (*script_local(launcher->m_stack, 230).at(plyr->id(), 3).at(2).as<int*>() == state)
-						{
-							set = true;
-							break;
-						}
+						set = true;
+						break;
 					}
 				}
-			});
+			}
 
 			return set;
 		};
@@ -80,17 +101,11 @@ namespace big::scripts
 		if (auto launcher = gta_util::find_script_thread(RAGE_JOAAT("am_launcher")))
 		{
 			// 2) Force host of launcher
-			for (int i = 0; NETWORK::NETWORK_GET_HOST_OF_SCRIPT("am_launcher", -1, 0) != self::id; i++)
+			if (!force_host(RAGE_JOAAT("am_launcher")))
 			{
-				if (i > 3600)
-				{
-					// 2F) Failed to force host of launcher
-					g_notification_service->push_error("Script", "Cannot force script host of am_launcher");
-					return;
-				}
-
-				((CGameScriptHandlerNetComponent*)launcher->m_net_component)->send_host_migration_event(g_player_service->get_self()->get_net_game_player());
-				script::get_current()->yield();
+				// 2F) Failed to force host of launcher
+				g_notification_service->push_error("Script", "Cannot force script host of am_launcher");
+				return;
 			}
 
 			launcher->m_context.m_state = rage::eThreadState::unk_3; // prevent bad things from happening to the thread in the meantime

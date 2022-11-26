@@ -128,7 +128,9 @@ namespace big
 		auto object = g_pointers->m_get_net_object(*g_pointers->m_network_object_mgr, ownerNetId, true);
 		auto entity = object ? object->GetGameObject() : nullptr;
 
-		if (f208 == 0 && entity && entity->gap28 == 4 && reinterpret_cast<CPed*>(entity)->m_player_info && player->m_player_info->m_ped && player->m_player_info->m_ped->m_net_object && ownerNetId != player->m_player_info->m_ped->m_net_object->m_object_id)
+		auto offset_object = g_pointers->m_get_net_object(*g_pointers->m_network_object_mgr, f210, true);
+
+		if (f208 == 0 && entity && entity->gap28 == 4 && reinterpret_cast<CPed*>(entity)->m_player_info && player->m_player_info->m_ped && player->m_player_info->m_ped->m_net_object && ownerNetId != player->m_player_info->m_ped->m_net_object->m_object_id && !offset_object)
 		{
 			g_notification_service->push_error("Warning!", std::format("{} blamed {} for explosion", player->get_name(), reinterpret_cast<CPed*>(entity)->m_player_info->m_net_player_data.m_name));
 			session::add_infraction(g_player_service->get_by_id(player->m_player_id), Infraction::BLAME_EXPLOSION_DETECTED);
@@ -425,7 +427,7 @@ namespace big
 		case eNetworkEvents::NETWORK_PLAY_SOUND_EVENT:
 		{
 			auto plyr = g_player_service->get_by_id(source_player->m_player_id);
-			if (plyr->m_play_sound_rate_limit.process())
+			if (plyr && plyr->m_play_sound_rate_limit.process())
 			{
 				if (plyr->m_play_sound_rate_limit.exceeded_last_process())
 				{

@@ -179,6 +179,17 @@ class CGameScriptHandlerMgr : public rage::scriptHandlerMgr
 {
 };
 
+class CScriptParticipant
+{
+public:
+	char pad_0000[16]; //0x0000
+	class CNetGamePlayer* m_net_game_player; //0x0010
+	char pad_0018[2]; //0x0018
+	int16_t m_participant_index; //0x001A
+	char pad_001C[12]; //0x001C
+}; //Size: 0x0028
+static_assert(sizeof(CScriptParticipant) == 0x28);
+
 class CGameScriptHandlerNetComponent
 {
 public:
@@ -255,9 +266,51 @@ public:
 	virtual bool _0x118() = 0; // related to above function
 
 	CGameScriptHandler* m_script_handler; //0x0008
-	char pad_0010[48]; //0x0010
-	std::uint32_t m_participants; //0x0040
-};
+	char pad_0010[32]; //0x0010
+	class CScriptParticipant* m_host; //0x0030
+	int16_t m_local_participant_index; //0x0038
+	char pad_003A[6]; //0x003A
+	uint32_t m_participant_bitset; //0x0040
+	char pad_0044[36]; //0x0044
+	class CScriptParticipant* m_participants[32]; //0x0068
+	char pad_0168[12]; //0x0168
+	int16_t m_num_participants; //0x0174
+	char pad_0176[28]; //0x0176
+	uint8_t m_host_migration_flags; //0x0192
+	char pad_0193[29]; //0x0193
+
+	// does not work on local player
+	int get_participant_index(CNetGamePlayer* player);
+    bool is_player_a_participant(CNetGamePlayer* player);
+
+	inline bool is_local_player_host()
+	{
+		if (!m_host)
+			return true; // or return false?
+
+		return m_host->m_participant_index == m_local_participant_index;
+	}
+
+	inline CNetGamePlayer* get_host()
+	{
+		if (!m_host)
+			return nullptr;
+
+		return m_host->m_net_game_player;
+	}
+
+	// not 100% foolproof
+	inline void block_host_migration(bool toggle)
+	{
+		if (toggle)
+			m_host_migration_flags |= (1 << 7);
+		else
+			m_host_migration_flags &= ~(1 << 7);
+	}
+
+}; //Size: 0x01B0
+static_assert(sizeof(CGameScriptHandlerNetComponent) == 0x1B0);
+
 
 static_assert(sizeof(rage::scriptHandler) == 0x60);
 static_assert(sizeof(CGameScriptHandler) == 0xA0);

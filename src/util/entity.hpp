@@ -71,8 +71,7 @@ namespace big::entity
 			return false;
 
 		int netHandle = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent);
-		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, false);
-		NETWORK::NETWORK_DISABLE_PROXIMITY_MIGRATION(netHandle);
+		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, true);
 
 		return true;
 	}

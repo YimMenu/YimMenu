@@ -584,6 +584,43 @@ namespace big
 			memory::byte_patch::make(ptr.add(1).rip().as<void*>(), std::to_array({ 0xB0, 0x01, 0xC3 }))->apply(); // has no observable side effects
 		});
 
+		// Send Network Damage
+		main_batch.add("SND", "E8 ? ? ? ? E9 E9 01 00 00 48 8B CB", [this](memory::handle ptr)
+		{
+			m_send_network_damage = ptr.add(1).rip().as<functions::send_network_damage>();
+		});
+
+		// Request Ragdoll
+		main_batch.add("RR", "E8 ? ? ? ? 09 B3 ? ? ? ? 48 8B 5C 24 ?", [this](memory::handle ptr)
+		{
+			m_request_ragdoll = ptr.add(1).rip().as<functions::request_ragdoll>();
+		});
+
+		// Get Connection Peer & Send Remove Gamer Command
+		main_batch.add("GCP&SRGC", "8D 42 FF 83 F8 FD 77 3D", [this](memory::handle ptr)
+		{
+			m_get_connection_peer = ptr.add(23).rip().as<functions::get_connection_peer>();
+			m_send_remove_gamer_cmd = ptr.add(65).rip().as<functions::send_remove_gamer_cmd>();
+		});
+
+		// Handle Remove Gamer Command
+		main_batch.add("HRGC", "41 FF C6 FF C7", [this](memory::handle ptr)
+		{
+			m_handle_remove_gamer_cmd = ptr.sub(0x6E).as<functions::handle_remove_gamer_cmd>();
+		});
+
+		// Broadcast Net Array
+		main_batch.add("BNA", "48 89 5C 24 ? 48 89 54 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 40 48 8B 05 ? ? ? ? 66 44 89 4C 24 ?", [this](memory::handle ptr)
+		{
+			m_broadcast_net_array = ptr.as<PVOID>();
+		});
+
+		// Broadcast Net Array Patch
+		main_batch.add("BP", "74 73 FF 90 ? ? ? ? 8B D5 4C 8B 00 48 8B C8 41 FF 50 30", [this](memory::handle ptr)
+		{
+			m_broadcast_patch = memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB).get();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 

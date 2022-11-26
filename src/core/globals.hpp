@@ -11,7 +11,7 @@ class CNetGamePlayer;
 
 namespace rage
 {
-	class scrProgram;
+	class scrThread;
 }
 
 namespace big
@@ -211,10 +211,15 @@ namespace big
 			std::string spoofed_name = "";
 			bool join_in_sctv_slots = false;
 
+			bool disable_traffic = false;
+			bool disable_peds = false;
+			bool force_thunder = false;
+
 			// not to be saved
 			bool never_wanted_all = false;
 			bool off_radar_all = false;
 			bool semi_godmode_all = false;
+			bool wanted_level_all = false;
 		};
 
 		struct settings {
@@ -444,6 +449,11 @@ namespace big
 		int m_remote_controller_vehicle = -1;
 		int m_remote_controlled_vehicle = -1;
 
+		int m_mod_net_id = -1;
+		int m_test_net_id = -1;
+
+		rage::scrThread* m_hunt_the_beast_thread = nullptr;
+
 		debug debug{};
 		tunables tunables{};
 		notifications notifications{};
@@ -655,6 +665,10 @@ namespace big
 			this->session.advertise_menu = j["session"]["advertise_menu"];
 			this->session.spoofed_name = j["session"]["spoofed_name"];
 			this->session.join_in_sctv_slots = j["session"]["join_in_sctv_slots"];
+
+			this->session.disable_peds = j["session"]["disable_peds"];
+			this->session.disable_traffic = j["session"]["disable_traffic"];
+			this->session.force_thunder = j["session"]["force_thunder"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -994,7 +1008,10 @@ namespace big
 						{ "name_spoof_enabled", this->session.name_spoof_enabled },
 						{ "advertise_menu", this->session.advertise_menu },
 						{ "spoofed_name", this->session.spoofed_name },
-						{ "join_in_sctv_slots", this->session.join_in_sctv_slots }
+						{ "join_in_sctv_slots", this->session.join_in_sctv_slots },
+						{ "disable_peds", this->session.disable_peds },
+						{ "disable_traffic", this->session.disable_traffic },
+						{ "force_thunder", this->session.force_thunder }
 					}
 				},
 				{

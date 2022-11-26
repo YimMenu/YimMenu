@@ -39,6 +39,8 @@ namespace big
 		static void self_mobile_radio();
 
 		static void session_local_time();
+		static void session_pop_multiplier_areas();
+		static void session_force_thunder();
 
 		static void system_self_globals();
 		static void system_update_pointers();

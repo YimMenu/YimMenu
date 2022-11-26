@@ -50,11 +50,13 @@ namespace big::session
 		misc::set_bit(scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).at(205).at(idx, 1).as<int*>(), bit);
 	}
 
-	inline void force_thunder()
+	inline void clear_fm_event_index(int index)
 	{
-		session::set_fm_event_index(9);
-		session::set_fm_event_index(10);
-		session::set_fm_event_index(11);
+		int idx = index / 32;
+		int bit = index % 32;
+		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(341).at(idx, 1).as<int*>(), bit);
+		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(348).at(idx, 1).as<int*>(), bit);
+		misc::clear_bit(scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).at(205).at(idx, 1).as<int*>(), bit);
 	}
 
 	inline void join_session(const rage::rlSessionInfo& info)
@@ -108,5 +110,21 @@ namespace big::session
 			plyr->infractions.insert((int)infraction);
 			g_player_database_service->save();
 		}
+	}
+
+	inline void give_collectible(Player target, eCollectibleType col, int index = 0, bool uncomplete = false)
+	{
+		const size_t arg_count = 7;
+		int64_t args[arg_count] = {
+			(int64_t)eRemoteEvent::GiveCollectible,
+			(int64_t)self::id,
+			(int64_t)col, // iParam0
+			(int64_t)index, // iParam1
+			!uncomplete, // bParam2
+			true,
+			0  // bParam3
+		};
+
+		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
 	}
 }

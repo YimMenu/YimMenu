@@ -173,9 +173,18 @@ namespace big
 
 		PVOID m_process_matchmaking_find_response;
 		PVOID m_serialize_player_data_msg;
-		// PVOID m_apply_join_request_data;
 
 		PVOID m_serialize_join_request_message;
+
+		functions::send_network_damage m_send_network_damage;
+		functions::request_ragdoll m_request_ragdoll;
+
+		functions::get_connection_peer m_get_connection_peer{};
+		functions::send_remove_gamer_cmd m_send_remove_gamer_cmd{};
+		functions::handle_remove_gamer_cmd m_handle_remove_gamer_cmd{};
+
+		PVOID m_broadcast_net_array{};
+		memory::byte_patch* m_broadcast_patch;
 	};
 
 	inline pointers* g_pointers{};

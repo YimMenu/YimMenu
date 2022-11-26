@@ -47,6 +47,12 @@ namespace big
 		static void context_menu();
 		static void gta_data();
 
+		static void player_info();
+		static void player_troll();
+		static void player_kick();
+		static void player_toxic();
+		static void player_misc();
+
 		// later calls will be drawn over earlier calls
 		static void always()
 		{

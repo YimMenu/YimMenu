@@ -21,6 +21,12 @@ namespace big
 			{
 				NETWORK::NETWORK_BAIL(16, 0, 0);
 			});
+
+			components::button("Remove from Bad Sport", []
+			{
+				STATS::STAT_SET_FLOAT(RAGE_JOAAT("mpply_overall_badsport"), 0.0f, TRUE);
+				STATS::STAT_SET_BOOL(RAGE_JOAAT("mpply_was_i_bad_sport"), FALSE, TRUE);
+			});
 		}
 	}
 }

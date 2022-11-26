@@ -10,6 +10,14 @@ namespace big::scr_globals
 		constexpr int gpbd_fm_1 = 888;
 	}
 
+	namespace offset
+	{
+		namespace globalplayer_bd
+		{
+			constexpr int orbital_cannon_bitset = 416;
+		}
+	}
+
 	static inline script_global gsbd(2680265);
 	static inline script_global gsbd_fm(1835502);
 	static inline script_global gsbd_kicking(1883751);
@@ -37,4 +45,12 @@ namespace big::scr_globals
 	static inline script_global mechanic_global = script_global(2815059);
 
 	static inline script_global spawn_global = script_global(2725439);
+}
+
+namespace big::scr_locals
+{
+	namespace am_hunt_the_beast
+	{
+		constexpr static auto broadcast_idx = 597;
+	}
 }

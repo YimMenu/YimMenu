@@ -86,6 +86,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::start_matchmaking_find_sessions>("SMFS", g_pointers->m_start_matchmaking_find_sessions);
 
+		detour_hook_helper::add<hooks::broadcast_net_array>("BNA", g_pointers->m_broadcast_net_array);
+
 		g_hooking = this;
 	}
 

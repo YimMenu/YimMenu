@@ -5,6 +5,7 @@
 #include "gta_util.hpp"
 #include "util/notify.hpp"
 #include "util/scripts.hpp"
+#include "util/toxic.hpp"
 
 namespace big
 {
@@ -110,6 +111,26 @@ namespace big
 		ImGui::Checkbox("Never Wanted", &g->session.never_wanted_all);
 		ImGui::Checkbox("Semi Godmode", &g->session.semi_godmode_all);
 
+		static int global_wanted_level = 0;
+
+		if (ImGui::SliderInt("Wanted Level", &global_wanted_level, 0, 5))
+		{
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = global_wanted_level;
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Force", &g->session.wanted_level_all))
+		{
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(212).as<Player*>() = __rdtsc() + 32;
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = global_wanted_level;
+		}
+
+		components::button("Kill Everyone", [] { g_player_service->iterate([](auto& plyr) { toxic::kill_player(plyr.second); }); });
+
+		components::button("Turn Everyone Into Beast", [] { toxic::turn_everyone_into_beast(); });
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Including you");
+
 		components::sub_title("Event Starter");
 		
 		ImGui::BeginGroup();
@@ -129,5 +150,33 @@ namespace big
 		components::button("Hunt The Beast", [] { scripts::start_launcher_script(47); });
 		components::button("Business Battles", [] { scripts::start_launcher_script(114); });
 		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
+		components::button("One-On-One Deathmatch", [] { scripts::start_launcher_script(187); });
+		components::button("Impromptu Race", [] { scripts::start_launcher_script(16); });
+		components::button("Flight School", [] { scripts::start_launcher_script(186); });
+		components::button("Golf", [] { scripts::start_launcher_script(183); });
+		components::button("Tutorial", [] { scripts::start_launcher_script(20); });
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Only works on joining players");
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
+		components::button("Gunslinger", [] { scripts::start_launcher_script(201); });
+		components::button("Space Monkey", [] { scripts::start_launcher_script(206); });
+		components::button("Wizard", [] { scripts::start_launcher_script(202); });
+		components::button("QUB3D", [] { scripts::start_launcher_script(207); });
+		components::button("Camhedz", [] { scripts::start_launcher_script(208); });
+		ImGui::EndGroup();
+
+		ImGui::Checkbox("Disable Pedestrians", &g->session.disable_peds);
+		ImGui::SameLine();
+		ImGui::Checkbox("Disable Traffic", &g->session.disable_traffic);
+		ImGui::SameLine();
+		ImGui::Checkbox("Force Thunder", &g->session.force_thunder);
 	}
 }
