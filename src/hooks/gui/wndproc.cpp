@@ -2,6 +2,7 @@
 #include "renderer.hpp"
 #include "script.hpp"
 #include "asi_loader/script_manager.h"
+#include "services/hotkey/hotkey_service.hpp"
 
 namespace big
 {
@@ -13,6 +14,7 @@ namespace big
 			{
 				g_renderer->wndproc(hwnd, msg, wparam, lparam);
 				ScriptManager::WndProc(hwnd, msg, wparam, lparam);
+				g_hotkey_service->wndproc(static_cast<eKeyState>(msg), wparam);
 			}
 
 			return CallWindowProcW(g_hooking->m_og_wndproc, hwnd, msg, wparam, lparam);
