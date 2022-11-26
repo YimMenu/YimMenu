@@ -24,7 +24,7 @@ namespace big
 			{
 			case eGtaDataUpdateState::NEEDS_UPDATE:
 			{
-				ImGui::Text("YimMenu requires a rebuild of the game cache. This may take up to one minute to generate.");
+				ImGui::Text("TupoyeMenu requires a rebuild of the game cache. This may take up to one minute to generate.");
 
 				if (*g_pointers->m_is_session_started)
 				{

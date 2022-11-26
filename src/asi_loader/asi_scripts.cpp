@@ -10,7 +10,7 @@ void ASILoader::Initialize() {
 	LOG(INFO) << "Loading *.asi plugins.";
 
 	std::string currentFolder = std::getenv("appdata");
-	currentFolder += "\\BigBaseV2";
+	currentFolder += "\\TupoyeMenu";
 	const std::string asiFolder = currentFolder + "\\OpenHookV";
 
 	const std::string asiSearchQuery = asiFolder + "\\*.asi";

@@ -29,16 +29,16 @@ jobs:
         run: cmake --build build --config Release --target ALL_BUILD
 
       - name: Check if DLL got built
-        run: if (-Not (Test-Path -path "build/Release/YimMenu.dll")) {throw 1}
+        run: if (-Not (Test-Path -path "build/Release/TupoyeMenu.dll")) {throw 1}
 
-      - name: Rename DLL to YimMenu-dev-{GITHUB_SHA}.dll
+      - name: Rename DLL to TupoyeMenu-dev-{GITHUB_SHA}.dll
         run: |
-          del YimMenu-dev-*.dll
-          ren YimMenu.dll YimMenu-dev-${{github.sha}}.dll
+          del TupoyeMenu-dev-*.dll
+          ren TupoyeMenu.dll TupoyeMenu-dev-${{github.sha}}.dll
         working-directory: build/Release/
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: binary
-          path: build/Release/YimMenu-dev-*.dll
+          path: build/Release/TupoyeMenu-dev-*.dll

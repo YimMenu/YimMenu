@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: binary
-          path: build/Release/YimMenu.dll
+          path: build/Release/TupoyeMenu.dll
 
       - name: Generate Build Info
         id: var
@@ -56,14 +56,14 @@ jobs:
         id: detections
         uses: yimura/gtav-sigscan-action@v0.0.3
         with:
-          file: ./YimMenu.dll
+          file: ./TupoyeMenu.dll
 
       - name: Notify on Discord
         if: ${{ steps.detections.outputs.is_detected == 'true' }}
         uses: tsickert/discord-webhook@v5.3.0
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          embed-title: YimMenu has been detected by the sigscanner!
+          embed-title: TupoyeMenu has been detected by the sigscanner!
           embed-description: |
             The following bits have been detected:
             ```yml
@@ -98,7 +98,7 @@ jobs:
       - name: Echo build sha256
         id: build_sha
         run: |
-          sha256sum YimMenu.dll > sha256.checksum
+          sha256sum TupoyeMenu.dll > sha256.checksum
           echo "build_sha=$(cat sha256.checksum)" >> $GITHUB_OUTPUT
           cat sha256.checksum
 
@@ -129,8 +129,8 @@ jobs:
             Alternatively you can download the build artifacts, generate a SHA256 checksum and compare it with the below binary.
             Build artifacts ARE NOT automatically the same as release assets since release assets can be modified afterwards.
 
-            These are nightly builds of YimMenu, they are provided for testing purposes only:
-            - Test if your build environment produces a broken BigBaseV2.dll
+            These are nightly builds of TupoyeMenu, they are provided for testing purposes only:
+            - Test if your build environment produces a broken TupoyeMenu.dll
             - Test if source code is out of date and no longer compatible with the current version of GTA V
 
             If you wish to use this menu as-is you are on your own, no warranty is provided.
@@ -140,4 +140,4 @@ jobs:
             ${{ needs.build_nightly.outputs.full_sha }}
             ```
           files: |
-            YimMenu.dll
+            TupoyeMenu.dll
