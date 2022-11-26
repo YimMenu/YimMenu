@@ -23,7 +23,12 @@ namespace big
         hotkey_service& operator=(hotkey_service&&) noexcept  = delete;
 
 
-        void register_hotkey(const std::string_view name, const key_t initial_key, const hotkey_func func, const eKeyState state = eKeyState::RELEASE);
+        void register_hotkey(
+            const std::string_view name,
+            const key_t initial_key,
+            const hotkey_func func,
+            const eKeyState state = eKeyState::RELEASE,
+            std::optional<std::chrono::high_resolution_clock::duration> cooldown = std::nullopt);
         bool update_hotkey(const std::string_view name, const key_t new_key);
         void wndproc(eKeyState state, key_t key);
 

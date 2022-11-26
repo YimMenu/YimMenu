@@ -17,9 +17,9 @@ namespace big
         g_hotkey_service = nullptr;
     }
 
-    void hotkey_service::register_hotkey(const std::string_view name, key_t key, const hotkey_func func, eKeyState state)
+    void hotkey_service::register_hotkey(const std::string_view name, key_t key, hotkey_func func, eKeyState state, std::optional<std::chrono::high_resolution_clock::duration> cooldown)
     {
-        m_hotkeys[state == eKeyState::RELEASE].emplace(key, hotkey{ rage::joaat(name), key, func });
+        m_hotkeys[state == eKeyState::RELEASE].emplace(key, hotkey(rage::joaat(name), key, func, cooldown));
     }
 
     bool hotkey_service::update_hotkey(const std::string_view name, const key_t key)
@@ -28,11 +28,11 @@ namespace big
         {
             if (const auto &it = std::find_if(hotkey_map.begin(), hotkey_map.end(), [name_hash](std::pair<key_t, hotkey> pair) -> bool
                 {
-                    return pair.second.m_name_hash == name_hash;
+                    return pair.second.name_hash() == name_hash;
                 }); it != hotkey_map.end())
             {
                 auto hotkey = it->second;
-                hotkey.m_key = key;
+                hotkey.set_key(key);
 
                 hotkey_map.emplace(key, hotkey);
                 hotkey_map.erase(it);
@@ -49,10 +49,19 @@ namespace big
 
     void hotkey_service::wndproc(eKeyState state, key_t key)
     {
-        const auto &hotkey_map = m_hotkeys[state == eKeyState::RELEASE];
-        if (const auto &it = hotkey_map.find(key); it != hotkey_map.end())
+        if (state == eKeyState::RELEASE || state == eKeyState::DOWN)
         {
-            g_fiber_pool->queue_job(it->second.m_func);
+            auto &hotkey_map = m_hotkeys[state == eKeyState::RELEASE];
+            if (const auto &it = hotkey_map.find(key); it != hotkey_map.end())
+            {
+                if (auto &hotkey = it->second; hotkey.can_exec())
+                {
+                    g_fiber_pool->queue_job([&hotkey]
+                    {
+                        hotkey.exec();
+                    });
+                }
+            }
         }
     }
 }
