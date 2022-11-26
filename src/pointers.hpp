@@ -192,6 +192,8 @@ namespace big
 
 		PVOID m_broadcast_net_array{};
 		memory::byte_patch* m_broadcast_patch;
+
+		rage::atSingleton<rage::RageSecurity>* m_security;
 	};
 
 	inline pointers* g_pointers{};
