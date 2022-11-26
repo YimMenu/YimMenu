@@ -11,6 +11,13 @@ class FriendRegistry;
 class CNetworkPlayerMgr;
 class Network;
 
+namespace rage
+{
+	template<typename T>
+	class atSingleton;
+	class RageSecurity;
+}
+
 namespace big
 {
 	class pointers
@@ -30,7 +37,7 @@ namespace big
 		rage::CReplayInterface** m_replay_interface{};
 
 		functions::ptr_to_handle m_ptr_to_handle{};
-		functions::get_script_handle_t m_get_script_handle{};
+		functions::handle_to_ptr m_handle_to_ptr{};
 		rage::scrNativeRegistrationTable* m_native_registration_table{};
 		functions::get_native_handler m_get_native_handler{};
 		functions::fix_vectors m_fix_vectors{};
@@ -123,7 +130,7 @@ namespace big
 		functions::start_matchmaking_find_sessions m_start_matchmaking_find_sessions;
 		functions::join_session_by_info m_join_session_by_info;
 
-		uint8_t* m_bypass_max_count_of_active_sticky_bombs;
+		memory::byte_patch* m_bypass_max_count_of_active_sticky_bombs;
 
 		functions::reset_network_complaints m_reset_network_complaints{};
 

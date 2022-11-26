@@ -10,14 +10,7 @@ namespace big
 		int old_group = msg->m_matchmaking_group;
 
 		if (g->session.join_in_sctv_slots)
-		{
 			msg->m_matchmaking_group = 4;
-			gta_util::get_network()->m_current_matchmaking_group = 4;
-		}
-		else
-		{
-			gta_util::get_network()->m_current_matchmaking_group = 0;
-		}
 
 	    bool ret = g_hooking->get_original<hooks::serialize_player_data_msg>()(msg, buffer);
 		msg->m_matchmaking_group = old_group;
