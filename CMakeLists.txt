@@ -4,6 +4,8 @@ project(YimMenu CXX ASM_MASM)
 
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 
+# Git commit embed
+include(scripts/git.cmake)
 
 # Fetch modules
 message("\nFetching modules")
