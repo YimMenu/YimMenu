@@ -1,6 +1,7 @@
 #include "hotkey_service.hpp"
 #include "fiber_pool.hpp"
 #include "util/teleport.hpp"
+#include "hotkey_functions.hpp"
 
 namespace big
 {
@@ -8,6 +9,7 @@ namespace big
     {
         register_hotkey("waypoint", g->settings.hotkeys.teleport_waypoint, teleport::to_waypoint);
         register_hotkey("objective", g->settings.hotkeys.teleport_objective, teleport::to_objective);
+        register_hotkey("noclip", g->settings.hotkeys.noclip, hotkey_funcs::toggle_noclip);
 
         g_hotkey_service = this;
     }
@@ -24,18 +26,17 @@ namespace big
 
     bool hotkey_service::update_hotkey(const std::string_view name, const key_t key)
     {
-        static auto update_hotkey_map = [key](hotkey_map& hotkey_map, rage::joaat_t name_hash) -> bool
+        static auto update_hotkey_map = [](hotkey_map& hotkey_map, rage::joaat_t name_hash, key_t new_key) -> bool
         {
-            if (const auto &it = std::find_if(hotkey_map.begin(), hotkey_map.end(), [name_hash](std::pair<key_t, hotkey> pair) -> bool
-                {
-                    return pair.second.name_hash() == name_hash;
-                }); it != hotkey_map.end())
+            for (auto it = hotkey_map.begin(); it != hotkey_map.end(); ++it)
             {
                 auto hotkey = it->second;
-                hotkey.set_key(key);
+                if (hotkey.name_hash() != name_hash)
+                    continue;
 
-                hotkey_map.emplace(key, hotkey);
                 hotkey_map.erase(it);
+                hotkey.set_key(new_key);
+                hotkey_map.emplace(new_key, hotkey);
 
                 return true;
             }
@@ -43,8 +44,8 @@ namespace big
         };
 
         const auto name_hash = rage::joaat(name);
-        return update_hotkey_map(m_hotkeys[1], name_hash) // released
-            && update_hotkey_map(m_hotkeys[0], name_hash); // down
+        return update_hotkey_map(m_hotkeys[1], name_hash, key) // released
+            && update_hotkey_map(m_hotkeys[0], name_hash, key); // down
     }
 
     void hotkey_service::wndproc(eKeyState state, key_t key)

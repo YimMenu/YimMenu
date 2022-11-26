@@ -42,6 +42,9 @@ namespace big
 		if (ImGui::Hotkey("Teleport to objective", &g->settings.hotkeys.teleport_objective))
 			g_hotkey_service->update_hotkey("objective", g->settings.hotkeys.teleport_objective);
 
+		if (ImGui::Hotkey("Toggle Noclip", &g->settings.hotkeys.noclip))
+			g_hotkey_service->update_hotkey("noclip", g->settings.hotkeys.noclip);
+
 
 		ImGui::PopItemWidth();
 
