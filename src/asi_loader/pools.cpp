@@ -93,7 +93,7 @@ namespace rage
 		for (const auto& cEntity : pointers)
 		{
 			if (count == max) break;
-			auto entity = big::g_pointers->m_handle_to_ptr((int64_t)cEntity);
+			auto entity = big::g_pointers->m_handle_to_ptr(cEntity);
 			if (entity)
 			{
 				entities.push_back((const Entity&)entity);

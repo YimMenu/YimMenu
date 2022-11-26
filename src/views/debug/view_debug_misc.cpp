@@ -4,8 +4,6 @@
 #include "thread_pool.hpp"
 #include "util/system.hpp"
 #include "views/view.hpp"
-#include "script.hpp"
-#include "gta/joaat.hpp"
 
 namespace big
 {

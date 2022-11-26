@@ -81,9 +81,7 @@ namespace big
 		if (ImGui::TreeNode("Filters"))
 		{
 			ImGui::Checkbox("Region", &g->session_browser.region_filter_enabled);
-
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("It is highly recommended to keep this filter enabled");
+			ImGui::SameLine(); components::help_marker("It is highly recommended to keep this filter enabled");
 
 			if (g->session_browser.region_filter_enabled)
 			{
@@ -104,9 +102,7 @@ namespace big
 			}
 
 			ImGui::Checkbox("Language", &g->session_browser.language_filter_enabled);
-
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Setting a correct region filter for the language will help tremendously");
+			ImGui::SameLine(); components::help_marker("Setting a correct region filter for the language will help tremendously");
 
 			if (g->session_browser.language_filter_enabled)
 			{
@@ -145,9 +141,7 @@ namespace big
 		}
 
 		if (ImGui::Checkbox("Replace Game Matchmaking", &g->session_browser.replace_game_matchmaking));
-
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("This will replace the default game matchmaking with a custom one that will use the filters and sorting set here");
+		ImGui::SameLine(); components::help_marker("This will replace the default game matchmaking with a custom one that will use the filters and sorting set here");
 
 		components::button("Refresh", []
 		{
