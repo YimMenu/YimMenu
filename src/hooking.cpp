@@ -90,6 +90,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::send_session_matchmaking_attributes>("SSMA", g_pointers->m_send_session_matchmaking_attributes);
 
+		detour_hook_helper::add<hooks::serialize_take_off_ped_variation_task>("STOPVT", g_pointers->m_serialize_take_off_ped_variation_task);
+
 		g_hooking = this;
 	}
 

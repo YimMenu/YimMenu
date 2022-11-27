@@ -21,6 +21,7 @@ class MatchmakingAttributes;
 class CNetworkIncrementStatEvent;
 class CScriptedGameEvent;
 class NetworkGameFilterMatchmakingComponent;
+class ClonedTakeOffPedVariationInfo;
 
 namespace rage
 {
@@ -120,6 +121,8 @@ namespace big
 		static unsigned int broadcast_net_array(rage::netArrayHandlerBase* _this, CNetGamePlayer* target, rage::datBitBuffer* bit_buffer, uint16_t counter, uint32_t* elem_start, bool silent);
 
 		static bool send_session_matchmaking_attributes(void* a1, rage::rlSessionInfo* info, std::uint64_t session_id, bool use_session_id, MatchmakingAttributes* attributes);
+
+		static void serialize_take_off_ped_variation_task(ClonedTakeOffPedVariationInfo* info, rage::CSyncDataBase* serializer);
 	};
 
 	class minhook_keepalive

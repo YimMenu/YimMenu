@@ -6,6 +6,8 @@
 #include "util/notify.hpp"
 #include "util/scripts.hpp"
 #include "util/toxic.hpp"
+#include "core/data/apartment_names.hpp"
+#include "core/data/warehouse_names.hpp"
 
 namespace big
 {
@@ -145,6 +147,69 @@ namespace big
 		components::button("Turn Everyone Into Beast", [] { toxic::turn_everyone_into_beast(); });
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Including you");
+
+		components::button("Give All Weapons", [] { g_player_service->iterate([](auto& plyr) { toxic::give_all_weapons(plyr.second); script::get_current()->yield(450ms); }); });
+		ImGui::SameLine();
+		components::button("Remove All Weapons", [] { g_player_service->iterate([](auto& plyr) { toxic::remove_all_weapons(plyr.second); }); });
+
+		components::small_text("Teleports");
+
+		static int selected_apartment_idx = 1;
+		static int selected_warehouse_idx = 1;
+
+		if (ImGui::BeginCombo("##apartment", apartment_names[selected_apartment_idx]))
+		{
+			for (int i = 1; i < apartment_names.size(); i++)
+			{
+				if (ImGui::Selectable(apartment_names[i], i == selected_apartment_idx))
+				{
+					selected_apartment_idx = i;
+				}
+
+				if (i == selected_apartment_idx)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+
+		ImGui::SameLine();
+
+		components::button("TP All To Apartment", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_apartment(plyr.second, selected_apartment_idx); }); });
+
+		if (ImGui::BeginCombo("##warehouse", warehouse_names[selected_warehouse_idx]))
+		{
+			for (int i = 1; i < warehouse_names.size(); i++)
+			{
+				if (ImGui::Selectable(warehouse_names[i], i == selected_warehouse_idx))
+				{
+					selected_warehouse_idx = i;
+				}
+
+				if (i == selected_warehouse_idx)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+
+		ImGui::SameLine();
+
+		components::button("TP All To Warehouse", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_warehouse(plyr.second, selected_warehouse_idx); }); });
+
+		components::button("TP All To Darts", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::Darts); }); });
+		ImGui::SameLine();
+		components::button("TP All To Flight School", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::PilotSchool); }); });
+		ImGui::SameLine();
+		components::button("TP All To Map Center", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::ArmWresling); }); });
+
+		components::button("TP All To Skydive", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::Skydive); }); });
+		ImGui::SameLine();
+		components::button("TP All To Cayo Perico", [] { toxic::send_player_to_island(g_player_service->get_selected()); });
 
 		components::sub_title("Event Starter");
 		

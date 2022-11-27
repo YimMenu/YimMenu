@@ -351,7 +351,7 @@ namespace big::toxic
 	inline void kill_player(player_ptr player, player_ptr to_blame)
 	{
 		g_pointers->m_send_network_damage((CEntity*)to_blame->get_ped(), (CEntity*)player->get_ped(), player->get_ped()->m_navigation->get_position(),
-			0, true, RAGE_JOAAT("weapon_unarmed"), 10000.0f, 2, 0, (1 << 4) | (1 << 1), 0, 0, 0, false, false, true, true, nullptr);
+			0, true, RAGE_JOAAT("weapon_explosion"), 10000.0f, 2, 0, (1 << 4), 0, 0, 0, false, false, true, true, nullptr);
 	}
 
 	inline void give_all_weapons(player_ptr target)

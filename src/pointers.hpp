@@ -196,6 +196,8 @@ namespace big
 		rage::atSingleton<rage::RageSecurity>* m_security;
 
 		PVOID m_send_session_matchmaking_attributes;
+
+		PVOID m_serialize_take_off_ped_variation_task;
 	};
 
 	inline pointers* g_pointers{};

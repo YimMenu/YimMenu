@@ -635,6 +635,12 @@ namespace big
 			m_send_session_matchmaking_attributes = ptr.add(1).rip().as<PVOID>();
 		});
 
+		// Serialize Take Off Ped Variation Task
+		main_batch.add("STOPVT", "40 55 53 57 41 56 48 8B EC 48 83 EC 68", [this](memory::handle ptr)
+		{
+			m_serialize_take_off_ped_variation_task = ptr.as<PVOID>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 

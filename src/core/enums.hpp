@@ -250,7 +250,7 @@ namespace big
 		DueDiligence = 160,
 		MarketManipulation = 154,
 		CourierService = 155,
-		Skydive = 262
+		Skydive = 267
 	};
 
 	enum class eSessionType
