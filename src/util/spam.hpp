@@ -13,6 +13,7 @@ namespace
 		".CN",
 		".TOP",
 		".COM",
+		".top",
 		"\xE3\x80\x90",
 		"/Menu",
 		"Money/",

@@ -17,7 +17,7 @@ namespace big
 
 			components::button("Bring", []
 			{
-				teleport::bring_player(g_player_service->get_selected()->id());
+				teleport::bring_player(g_player_service->get_selected());
 			});
 
 			components::button("Teleport into Vehicle", []

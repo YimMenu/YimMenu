@@ -297,13 +297,15 @@ namespace big::toxic
 			script::get_current()->yield(1ms);
 		}
 
+		script::get_current()->yield(500ms);
+
 		if (!scripts::force_host(RAGE_JOAAT("am_hunt_the_beast")))
 		{
 			g_notification_service->push_error("Turn to Beast", "Failed to take control of am_hunt_the_beast");
 			return;
 		}
 
-		script::get_current()->yield(1s);
+		script::get_current()->yield(3s);
 		
 		auto thread = gta_util::find_script_thread(RAGE_JOAAT("am_hunt_the_beast"));
 

@@ -56,6 +56,7 @@ namespace big
 		}
 
 		components::sub_title("Chat");
+		ImGui::Checkbox("Auto-kick Chat Spammers", &g->session.kick_chat_spammers);
 		ImGui::Checkbox("Disable Filter", &g->session.disable_chat_filter);
 		ImGui::Checkbox("Log Chat Messages", &g->session.log_chat_messages);
 		ImGui::Checkbox("Log Text Messages", &g->session.log_text_messages);
@@ -80,6 +81,12 @@ namespace big
 		ImGui::Checkbox("Force Session Host", &g->session.force_session_host);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Join another session to apply changes. The original host of the session must leave or be kicked. This feature is easily detectable by other mod menus, use with caution");
+		ImGui::SameLine();
+		if (g->session.force_session_host)
+		{
+			ImGui::SameLine();
+			ImGui::Checkbox("Kick Host During Join", &g->session.kick_host_when_forcing_host);
+		}
 
 		components::sub_title("Remote Name Spoofing");
 		ImGui::Checkbox("Spoof Other Players' Names", &g->session.name_spoof_enabled);

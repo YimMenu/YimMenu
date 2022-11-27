@@ -211,6 +211,9 @@ namespace big
 			std::string spoofed_name = "";
 			bool join_in_sctv_slots = false;
 
+			bool kick_chat_spammers = false;
+			bool kick_host_when_forcing_host = false;
+
 			bool explosion_karma = false;
 			bool damage_karma = false;
 
@@ -669,6 +672,9 @@ namespace big
 			this->session.spoofed_name = j["session"]["spoofed_name"];
 			this->session.join_in_sctv_slots = j["session"]["join_in_sctv_slots"];
 
+			this->session.kick_chat_spammers = j["session"]["kick_chat_spammers"];
+			this->session.kick_host_when_forcing_host = j["session"]["kick_host_when_forcing_host"];
+
 			this->session.explosion_karma = j["session"]["explosion_karma"];
 			this->session.damage_karma = j["session"]["damage_karma"];
 
@@ -1015,6 +1021,8 @@ namespace big
 						{ "advertise_menu", this->session.advertise_menu },
 						{ "spoofed_name", this->session.spoofed_name },
 						{ "join_in_sctv_slots", this->session.join_in_sctv_slots },
+						{ "kick_chat_spammers", this->session.kick_chat_spammers },
+						{ "kick_host_when_forcing_host", this->session.kick_host_when_forcing_host },
 						{ "explosion_karma", this->session.explosion_karma },
 						{ "damage_karma", this->session.damage_karma },
 						{ "disable_peds", this->session.disable_peds },
