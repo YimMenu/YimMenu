@@ -1,8 +1,9 @@
 #include "hooking.hpp"
+#include "services/player_database/player_database_service.hpp"
+#include "pointers.hpp"
 #include <network/snSession.hpp>
 #include <network/CMsgJoinResponse.hpp>
 #include <network/CJoinRequestContext.hpp>
-#include "services/player_database/player_database_service.hpp"
 
 namespace big
 {

@@ -2,7 +2,6 @@
 #include "common.hpp"
 #include "detour_hook.hpp"
 #include "gta/fwddec.hpp"
-#include "gta/net_game_event.hpp"
 #include "gta/script_thread.hpp"
 #include "vmt_hook.hpp"
 #include "MinHook.h"
@@ -18,6 +17,10 @@ class SessionSortEntry;
 class RemoteGamerInfoMsg;
 class CMsgTextMessage;
 class CNetGamePlayerDataMsg;
+class MatchmakingAttributes;
+class CNetworkIncrementStatEvent;
+class CScriptedGameEvent;
+class NetworkGameFilterMatchmakingComponent;
 
 namespace rage
 {
@@ -25,6 +28,14 @@ namespace rage
 	class snSession;
 	class JSONNode;
 	class netArrayHandlerBase;
+	class CEventNetwork;
+	class CSyncDataBase;
+	class netConnectionManager;
+
+	namespace netConnection
+	{
+		class InFrame;
+	}
 }
 
 namespace big
@@ -107,6 +118,8 @@ namespace big
 		static bool start_matchmaking_find_sessions(int profile_index, int available_slots, NetworkGameFilterMatchmakingComponent* filter, unsigned int max_sessions, rage::rlSessionInfo* results, int* num_sessions_found, int* status);
 
 		static unsigned int broadcast_net_array(rage::netArrayHandlerBase* _this, CNetGamePlayer* target, rage::datBitBuffer* bit_buffer, uint16_t counter, uint32_t* elem_start, bool silent);
+
+		static bool send_session_matchmaking_attributes(void* a1, rage::rlSessionInfo* info, std::uint64_t session_id, bool use_session_id, MatchmakingAttributes* attributes);
 	};
 
 	class minhook_keepalive

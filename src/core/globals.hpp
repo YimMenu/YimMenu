@@ -281,6 +281,13 @@ namespace big
 			std::string crew_tag = "";
 			bool rockstar_crew = false;
 			bool square_crew_tag = false;
+
+			bool spoof_session_region_type = false;
+			int session_region_type = 0;
+			bool spoof_session_language = false;
+			int session_language = 0;
+			bool spoof_session_player_count = false;
+			int session_player_count = 25;
 		};
 
 		struct tunables {
@@ -718,6 +725,13 @@ namespace big
 			this->spoofing.spoof_hide_god = j["spoofing"]["spoof_hide_god"];
 			this->spoofing.spoof_hide_spectate = j["spoofing"]["spoof_hide_spectate"];
 
+			this->spoofing.spoof_session_region_type = j["spoofing"]["spoof_session_region_type"];
+			this->spoofing.spoof_session_language = j["spoofing"]["spoof_session_language"];
+			this->spoofing.spoof_session_player_count = j["spoofing"]["spoof_session_player_count"];
+			this->spoofing.session_region_type = j["spoofing"]["session_region_type"];
+			this->spoofing.session_language = j["spoofing"]["session_language"];
+			this->spoofing.session_player_count = j["spoofing"]["session_player_count"];
+
 			this->vehicle.speed_unit = (SpeedUnit)j["vehicle"]["speed_unit"];
 			this->vehicle.god_mode = j["vehicle"]["god_mode"];
 			this->vehicle.proof_bullet = j["vehicle"]["proof_bullet"];
@@ -1084,6 +1098,12 @@ namespace big
 						{ "square_crew_tag", this->spoofing.square_crew_tag },
 						{ "spoof_hide_god", this->spoofing.spoof_hide_god },
 						{ "spoof_hide_spectate", this->spoofing.spoof_hide_spectate },
+						{ "spoof_session_region_type", this->spoofing.spoof_session_region_type},
+						{ "spoof_session_language", this->spoofing.spoof_session_language },
+						{ "spoof_session_player_count", this->spoofing.spoof_session_player_count },
+						{ "session_region_type", this->spoofing.session_region_type },
+						{ "session_language", this->spoofing.session_language },
+						{ "session_player_count", this->spoofing.session_player_count }
 					}
 				},
 				{

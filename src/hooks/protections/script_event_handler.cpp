@@ -1,6 +1,7 @@
 #include "hooking.hpp"
 #include "gta_util.hpp"
 #include "util/session.hpp"
+#include "gta/net_game_event.hpp"
 #include <network/CNetGamePlayer.hpp>
 
 namespace big

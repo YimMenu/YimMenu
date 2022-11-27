@@ -194,6 +194,8 @@ namespace big
 		memory::byte_patch* m_broadcast_patch;
 
 		rage::atSingleton<rage::RageSecurity>* m_security;
+
+		PVOID m_send_session_matchmaking_attributes;
 	};
 
 	inline pointers* g_pointers{};

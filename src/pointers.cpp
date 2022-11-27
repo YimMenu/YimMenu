@@ -629,6 +629,12 @@ namespace big
 			m_security = ptr.add(3).rip().as<rage::atSingleton<rage::RageSecurity>*>();
 		});
 
+		// Send Session Matchmaking Attributes
+		main_batch.add("SPDM", "E8 ? ? ? ? 84 C0 0F 84 19 01 00 00 48 8D 4D A0", [this](memory::handle ptr)
+		{
+			m_send_session_matchmaking_attributes = ptr.add(1).rip().as<PVOID>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 

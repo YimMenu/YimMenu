@@ -88,6 +88,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::broadcast_net_array>("BNA", g_pointers->m_broadcast_net_array);
 
+		detour_hook_helper::add<hooks::send_session_matchmaking_attributes>("SSMA", g_pointers->m_send_session_matchmaking_attributes);
+
 		g_hooking = this;
 	}
 
