@@ -5,8 +5,8 @@
 
 namespace big
 {
-	void looped::weapons_rapid_fire()
-	{
+    void looped::weapons_rapid_fire()
+    {
         if (g->weapons.rapid_fire)
         {
             if(!PED::IS_PED_IN_ANY_VEHICLE(self::ped, 0) && !HUD::IS_PAUSE_MENU_ACTIVE())
@@ -22,5 +22,5 @@ namespace big
                 }
             }
         }
-	}
+    }
 }
