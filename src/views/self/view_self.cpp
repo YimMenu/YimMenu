@@ -56,6 +56,7 @@ namespace big
 		ImGui::Checkbox("Free Cam", &g->self.free_cam);
 		ImGui::Checkbox("Disable Phone", &g->tunables.disable_phone);
 		ImGui::Checkbox("Unlimited Oxygen", &g->self.unlimited_oxygen);
+		ImGui::Checkbox("Fast Respawn", &g->self.fast_respawn);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
