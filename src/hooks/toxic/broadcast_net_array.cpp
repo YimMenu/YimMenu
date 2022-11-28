@@ -24,6 +24,8 @@ namespace big
 		bool need_to_turn_player_into_beast = g->m_hunt_the_beast_thread && g->m_hunt_the_beast_thread->m_stack && g->m_hunt_the_beast_thread->m_net_component &&
 			_this->m_array == script_local(g->m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).as<void*>();
 
+		bool need_to_randomize_replay_protection = g->session.block_ceo_money && _this->m_array == scr_globals::gsbd_fm_events.as<void*>();
+
 		if (need_to_use_end_session_kick)
 		{
 			orig_gsbd = *scr_globals::gsbd.as<int*>();
@@ -50,6 +52,13 @@ namespace big
 			g_pointers->m_broadcast_patch->apply();
 		}
 
+		if (need_to_randomize_replay_protection)
+		{
+			*scr_globals::gsbd_fm_events.at(9).as<uint32_t*>() = __rdtsc();
+			*scr_globals::gsbd_fm_events.at(10).as<uint32_t*>() = __rdtsc();
+			g_pointers->m_broadcast_patch->apply();
+		}
+
 		int ret = g_hooking->get_original<hooks::broadcast_net_array>()(_this, target, bit_buffer, counter, elem_start, silent);
 
 		if (need_to_use_end_session_kick)
@@ -67,6 +76,11 @@ namespace big
 		{
 			*script_local(g->m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(7).as<Player*>() = orig_player;
 			*script_local(g->m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(6).as<int*>() = orig_participant;
+			g_pointers->m_broadcast_patch->restore();
+		}
+
+		if (need_to_randomize_replay_protection)
+		{
 			g_pointers->m_broadcast_patch->restore();
 		}
 

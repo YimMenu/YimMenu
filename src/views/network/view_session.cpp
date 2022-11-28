@@ -90,6 +90,17 @@ namespace big
 			ImGui::Checkbox("Kick Host During Join", &g->session.kick_host_when_forcing_host);
 		}
 
+		if (ImGui::Checkbox("Force Script Host", &g->session.force_script_host))
+		{
+			if (g->session.force_script_host)
+				g_fiber_pool->queue_job([]
+			{
+				scripts::force_host(RAGE_JOAAT("freemode"));
+				if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")); script && script->m_net_component)
+					script->m_net_component->block_host_migration(true);
+			});
+		}
+
 		components::sub_title("Remote Name Spoofing");
 		ImGui::Checkbox("Spoof Other Players' Names", &g->session.name_spoof_enabled);
 		if (ImGui::IsItemHovered())
@@ -258,5 +269,14 @@ namespace big
 		ImGui::Checkbox("Disable Traffic", &g->session.disable_traffic);
 		ImGui::SameLine();
 		ImGui::Checkbox("Force Thunder", &g->session.force_thunder);
+
+		components::sub_title("Script Host Features");
+		ImGui::Checkbox("Disable CEO Money", &g->session.block_ceo_money);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Blocks CEO money drops across the entire session. This can also break other stuff, use with caution");
+		ImGui::SameLine();
+		ImGui::Checkbox("Disable CEO Creation", &g->session.block_ceo_creation);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Blocks creation of new CEO/MCs. Existing CEO/MCs will not be affected");
 	}
 }

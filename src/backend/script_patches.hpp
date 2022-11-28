@@ -11,6 +11,7 @@ namespace big
 		g_script_patcher_service->add_patch({ RAGE_JOAAT("freemode"), "2D 01 09 00 00 5D ? ? ? 56 ? ? 2E", 5, { 0x2E, 0x01, 0x00 }, nullptr }); // disable death when undermap/spectating
 		g_script_patcher_service->add_patch({ RAGE_JOAAT("shop_controller"), "2D 01 04 00 00 2C ? ? ? 56 ? ? 6E", 5, { 0x6E, 0x2E, 0x01, 0x01 }, nullptr }); // despawn bypass
 		g_script_patcher_service->add_patch({ RAGE_JOAAT("freemode"), "5D ? ? ? 73 57 ? ? 5D ? ? ? 73", 0, { 0x2E, 0x00, 0x00 }, nullptr }); // end session kick protection
+		g_script_patcher_service->add_patch({ RAGE_JOAAT("freemode"), "2D 01 05 00 00 38 00 2C ? ? ? 39 03 38 03 2C ? ? ? 56 ? ?", 5, { 0x2E, 0x01, 0x00 }, &g->session.block_ceo_creation });
 
 		for (auto& entry : *g_pointers->m_script_program_table)
 		{

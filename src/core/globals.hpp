@@ -203,6 +203,7 @@ namespace big
 			bool log_text_messages = false;
 			bool decloak_players = false;
 			bool force_session_host = false;
+			bool force_script_host = false;
 			bool player_magnet_enabled = false;
 			int player_magnet_count = 32;
 			bool is_team = false;
@@ -220,6 +221,9 @@ namespace big
 			bool disable_traffic = false;
 			bool disable_peds = false;
 			bool force_thunder = false;
+
+			bool block_ceo_money = false;
+			bool block_ceo_creation = false;
 
 			// not to be saved
 			bool never_wanted_all = false;
@@ -671,6 +675,7 @@ namespace big
 			this->session.disable_chat_filter = j["session"]["disable_chat_filter"];
 			this->session.decloak_players = j["session"]["decloak_players"];
 			this->session.force_session_host = j["session"]["force_session_host"];
+			this->session.force_script_host = j["session"]["force_script_host"];
 			this->session.player_magnet_enabled = j["session"]["player_magnet_enabled"];
 			this->session.player_magnet_count = j["session"]["player_magnet_count"];
 			this->session.is_team = j["session"]["is_team"];
@@ -688,6 +693,9 @@ namespace big
 			this->session.disable_peds = j["session"]["disable_peds"];
 			this->session.disable_traffic = j["session"]["disable_traffic"];
 			this->session.force_thunder = j["session"]["force_thunder"];
+
+			this->session.block_ceo_money = j["session"]["block_ceo_money"];
+			this->session.block_ceo_creation = j["session"]["block_ceo_creation"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -1028,6 +1036,7 @@ namespace big
 						{ "disable_chat_filter", this->session.disable_chat_filter },
 						{ "decloak_players", this->session.decloak_players },
 						{ "force_session_host", this->session.force_session_host },
+						{ "force_script_host", this->session.force_script_host },
 						{ "player_magnet_enabled", this->session.player_magnet_enabled },
 						{ "player_magnet_count", this->session.player_magnet_count },
 						{ "is_team", this->session.is_team },
@@ -1041,7 +1050,9 @@ namespace big
 						{ "damage_karma", this->session.damage_karma },
 						{ "disable_peds", this->session.disable_peds },
 						{ "disable_traffic", this->session.disable_traffic },
-						{ "force_thunder", this->session.force_thunder }
+						{ "force_thunder", this->session.force_thunder },
+						{ "block_ceo_money", this->session.block_ceo_money },
+						{ "block_ceo_creation", this->session.block_ceo_creation }
 					}
 				},
 				{
