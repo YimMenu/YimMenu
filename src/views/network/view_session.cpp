@@ -274,9 +274,5 @@ namespace big
 		ImGui::Checkbox("Disable CEO Money", &g->session.block_ceo_money);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Blocks CEO money drops across the entire session. This can also break other stuff, use with caution");
-		ImGui::SameLine();
-		ImGui::Checkbox("Disable CEO Creation", &g->session.block_ceo_creation);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Blocks creation of new CEO/MCs. Existing CEO/MCs will not be affected");
 	}
 }

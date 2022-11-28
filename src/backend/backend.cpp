@@ -118,7 +118,6 @@ namespace big
 			looped::session_local_time();
 			looped::session_pop_multiplier_areas();
 			looped::session_force_thunder();
-			looped::session_block_ceo();
 
 			script::get_current()->yield();
 		}

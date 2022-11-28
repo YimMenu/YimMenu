@@ -31,6 +31,16 @@ namespace big
 				STATS::STAT_SET_BOOL(RAGE_JOAAT("mpply_was_i_bad_sport"), FALSE, TRUE);
 			});
 
+			components::button("globaltest", []
+			{
+				char array[13][32];
+				NETWORK::NETWORK_HOST_TRANSITION(0, 32, 0, 0, false, true, false, 0, 0, 0);
+				script::get_current()->yield(5000ms);
+				NETWORK::NETWORK_LAUNCH_TRANSITION();
+				script::get_current()->yield(5000ms);
+				NETWORK::NETWORK_DO_TRANSITION_TO_FREEMODE((Any*)(array), 0, TRUE, 32, 0);
+			});
+
 			ImGui::EndTabItem();
 		}
 	}
