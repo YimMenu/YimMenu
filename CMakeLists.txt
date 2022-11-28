@@ -38,12 +38,11 @@ target_include_directories(YimMenu PRIVATE
     "${SRC_DIR}"
     "${json_SOURCE_DIR}/single_include"
     "${gtav_classes_SOURCE_DIR}"
-    "${minhook_SOURCE_DIR}/include"
     "${imgui_SOURCE_DIR}"
 )
 
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(YimMenu PRIVATE pugixml minhook g3log imgui d3dcompiler)
+target_link_libraries(YimMenu PRIVATE pugixml minhook g3log imgui)
 
 # Warnings as errors
 set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
