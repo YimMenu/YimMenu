@@ -36,6 +36,7 @@ namespace big
 		static void session_local_time();
 		static void session_pop_multiplier_areas();
 		static void session_force_thunder();
+		static void session_randomize_ceo_colors();
 
 		static void system_disable_sigscanner();
 		static void system_self_globals();

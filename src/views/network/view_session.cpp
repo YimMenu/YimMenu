@@ -274,5 +274,7 @@ namespace big
 		ImGui::Checkbox("Disable CEO Money", &g->session.block_ceo_money);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Blocks CEO money drops across the entire session. This can also break other stuff, use with caution");
+		ImGui::SameLine();
+		ImGui::Checkbox("Randomize CEO Colors", &g->session.randomize_ceo_colors);
 	}
 }

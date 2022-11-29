@@ -1,3 +1,4 @@
+#pragma once
 #include "services/script_patcher/script_patcher_service.hpp"
 #include <script/scrProgramTable.hpp>
 

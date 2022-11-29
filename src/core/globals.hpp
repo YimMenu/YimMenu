@@ -223,6 +223,7 @@ namespace big
 			bool force_thunder = false;
 
 			bool block_ceo_money = false;
+			bool randomize_ceo_colors = false;
 
 			// not to be saved
 			bool never_wanted_all = false;
@@ -694,6 +695,7 @@ namespace big
 			this->session.force_thunder = j["session"]["force_thunder"];
 
 			this->session.block_ceo_money = j["session"]["block_ceo_money"];
+			this->session.randomize_ceo_colors = j["session"]["randomize_ceo_colors"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -1049,7 +1051,8 @@ namespace big
 						{ "disable_peds", this->session.disable_peds },
 						{ "disable_traffic", this->session.disable_traffic },
 						{ "force_thunder", this->session.force_thunder },
-						{ "block_ceo_money", this->session.block_ceo_money }
+						{ "block_ceo_money", this->session.block_ceo_money },
+						{ "randomize_ceo_colors", this->session.randomize_ceo_colors }
 					}
 				},
 				{
