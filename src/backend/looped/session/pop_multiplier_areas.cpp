@@ -15,7 +15,7 @@ namespace big
 		bool used = (g->session.disable_traffic || g->session.disable_peds) && *g_pointers->m_is_session_started;
 		if (!bLastPopMultiplierAreasEnabled && used)
 		{
-			if (!STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() && gta_util::find_script_thread(RAGE_JOAAT("freemode")))
+			if (!STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() && gta_util::find_script_thread(RAGE_JOAAT("freemode")) && SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
 			{
 				gta_util::execute_as_script(RAGE_JOAAT("freemode"), []
 				{
