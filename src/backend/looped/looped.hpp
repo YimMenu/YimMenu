@@ -37,6 +37,7 @@ namespace big
 		static void self_unlimited_oxygen();
 		static void self_no_water_collision();
 		static void self_mobile_radio();
+		static void self_fast_respawn();
 
 		static void script_starter();
 		static void session_local_time();
@@ -85,5 +86,6 @@ namespace big
 		static void weapons_repair_gun();
 		static void weapons_steal_vehicle_gun();
 		static void weapons_vehicle_gun();
+		static void weapons_rapid_fire();
 	};
 }

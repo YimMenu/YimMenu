@@ -192,6 +192,7 @@ namespace big
 			bool force_show_hud_element = false;
 			bool force_show_hud = false;
 			bool mobile_radio = false;
+			bool fast_respawn = false;
 		};
 
 		struct session
@@ -388,6 +389,7 @@ namespace big
 			bool no_spread = false;
 			char vehicle_gun_model[12] = "bus";
 			bool bypass_c4_limit = false;
+			bool rapid_fire = false;
 		};
 
 		struct window {
@@ -718,6 +720,7 @@ namespace big
 			this->self.unlimited_oxygen = j["self"]["unlimited_oxygen"];
 			this->self.no_water_collision = j["self"]["no_water_collision"];
 			this->self.mobile_radio = j["self"]["mobile_radio"];
+			this->self.fast_respawn = j["self"]["fast_respawn"];
 
 			this->session.log_chat_messages = j["session"]["log_chat_messages"];
 			this->session.log_text_messages = j["session"]["log_text_messages"];
@@ -828,6 +831,7 @@ namespace big
 			this->weapons.no_recoil = j["weapons"]["no_recoil"];
 			this->weapons.no_spread = j["weapons"]["no_spread"];
 			this->weapons.bypass_c4_limit = j["weapons"]["bypass_c4_limit"];
+			this->weapons.rapid_fire = j["weapons"]["rapid_fire"];
 
 			this->weapons.ammo_special.type = (eAmmoSpecialType)j["weapons"]["ammo_special"]["type"];
 			this->weapons.ammo_special.toggle = j["weapons"]["ammo_special"]["toggle"];
@@ -1085,6 +1089,7 @@ namespace big
 						{ "unlimited_oxygen", this->self.unlimited_oxygen },
 						{ "no_water_collision", this->self.no_water_collision },
 						{ "mobile_radio", this->self.mobile_radio },
+						{ "fast_respawn", this->self.fast_respawn },
 					}
 				},
 				{
@@ -1241,6 +1246,7 @@ namespace big
 						{ "no_recoil", this->weapons.no_recoil },
 						{ "no_spread", this->weapons.no_spread },
 						{ "bypass_c4_limit", this->weapons.bypass_c4_limit },
+						{ "rapid_fire", this->weapons.rapid_fire },
 					}
 				},
 				{

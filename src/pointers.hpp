@@ -16,6 +16,7 @@ class CCommunications;
 class FriendRegistry;
 class CNetworkPlayerMgr;
 class Network;
+class ChatData;
 
 namespace rage
 {
@@ -85,6 +86,7 @@ namespace big
 		functions::multiplayer_chat_filter* m_multiplayer_chat_filter{};
 		functions::write_player_game_state_data_node m_write_player_game_state_data_node{};
 
+		ChatData** m_chat_data;
 		FriendRegistry* m_friend_registry{};
 
 		functions::get_screen_coords_for_world_coords m_get_screen_coords_for_world_coords{};

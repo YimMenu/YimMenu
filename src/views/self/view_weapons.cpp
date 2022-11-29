@@ -12,13 +12,15 @@ namespace big
 {
 	void view::weapons() {
 		components::sub_title("Ammo");
+
+		ImGui::BeginGroup();
+
 		ImGui::Checkbox("Infinite Ammo", &g->weapons.infinite_ammo);
-
-		ImGui::SameLine();
-
 		ImGui::Checkbox("Infinite Clip", &g->weapons.infinite_mag);
 
-		ImGui::Checkbox("Enable Special Ammo", &g->weapons.ammo_special.toggle);
+		ImGui::EndGroup();
+		ImGui::SameLine();
+		ImGui::BeginGroup();
 
 		if (ImGui::Checkbox("Bypass C4 Limit", &g->weapons.bypass_c4_limit))
 		{
@@ -27,6 +29,13 @@ namespace big
 			else
 				g_pointers->m_bypass_max_count_of_active_sticky_bombs->restore();
 		}
+		ImGui::Checkbox("Rapid Fire", &g->weapons.rapid_fire);
+
+		ImGui::EndGroup();
+
+		ImGui::Separator();
+
+		ImGui::Checkbox("Enable Special Ammo", &g->weapons.ammo_special.toggle);
 
 		eAmmoSpecialType selected_ammo = g->weapons.ammo_special.type;
 		eExplosionTag selected_explosion = g->weapons.ammo_special.explosion_tag;
