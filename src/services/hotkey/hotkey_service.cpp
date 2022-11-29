@@ -3,6 +3,9 @@
 #include "util/teleport.hpp"
 #include "hotkey_functions.hpp"
 
+#include "network/ChatData.hpp"
+#include "pointers.hpp"
+
 namespace big
 {
     hotkey_service::hotkey_service()
@@ -50,6 +53,9 @@ namespace big
 
     void hotkey_service::wndproc(eKeyState state, key_t key)
     {
+        if (const auto chat_data = *g_pointers->m_chat_data; chat_data && (chat_data->m_chat_open || chat_data->m_timer_two))
+            return;
+
         if (state == eKeyState::RELEASE || state == eKeyState::DOWN)
         {
             auto &hotkey_map = m_hotkeys[state == eKeyState::RELEASE];
