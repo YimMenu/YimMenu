@@ -10,7 +10,7 @@ namespace big
         DOWN = WM_KEYDOWN
     };
 
-    using hotkey_map = std::map<key_t, hotkey>;
+    using hotkey_map = std::multimap<key_t, hotkey>;
 
     class hotkey_service final
     {

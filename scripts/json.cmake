@@ -10,8 +10,3 @@ FetchContent_Declare(
 )
 message("json")
 FetchContent_MakeAvailable(json)
-
-# Show json project
-add_library(json ${json_SOURCE_DIR}/single_include/nlohmann/json.hpp)
-set_property(TARGET json PROPERTY CXX_STANDARD 23)
-set_target_properties(json PROPERTIES LINKER_LANGUAGE CXX)
