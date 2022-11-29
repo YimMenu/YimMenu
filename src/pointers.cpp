@@ -592,6 +592,11 @@ namespace big
 			m_security = ptr.add(3).rip().as<rage::atSingleton<rage::RageSecurity>*>();
 		});
 
+		main_batch.add("CD", "48 8B 05 ? ? ? ? 0F 45 DF", [this](memory::handle ptr)
+		{
+			m_chat_data = ptr.add(3).rip().as<ChatData**>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 
