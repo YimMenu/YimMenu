@@ -63,7 +63,6 @@ namespace big::toxic
 
 			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
 		}
-		// TODO: Add force ceo removal
 	}
 
 	inline void ceo_ban(player_ptr target)
@@ -110,7 +109,7 @@ namespace big::toxic
 			self::id,
 			(int64_t)target->id(),
 			1,
-			10
+			index
 		};
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());

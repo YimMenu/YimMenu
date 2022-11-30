@@ -163,6 +163,20 @@ namespace big
 		ImGui::SameLine();
 		components::button("Remove All Weapons", [] { g_player_service->iterate([](auto& plyr) { toxic::remove_all_weapons(plyr.second); }); });
 
+		components::button("CEO Kick", [] { 
+			g_player_service->iterate([](auto& plyr) { 
+				if (*scr_globals::gpbd_fm_3.at(plyr.second->id(), scr_globals::size::gpbd_fm_3).at(10).as<int*>() != -1)
+					toxic::ceo_kick(plyr.second); 
+			}); 
+		});
+
+		components::button("CEO Ban", [] { 
+			g_player_service->iterate([](auto& plyr) { 
+				if (*scr_globals::gpbd_fm_3.at(plyr.second->id(), scr_globals::size::gpbd_fm_3).at(10).as<int*>() != -1)
+					toxic::ceo_ban(plyr.second); 
+			}); 
+		});
+
 		components::small_text("Teleports");
 
 		static int selected_apartment_idx = 1;
