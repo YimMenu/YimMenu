@@ -10,6 +10,7 @@
 #include "thread_pool.hpp"
 #include "shv_runner.h"
 #include "asi_loader/asi_scripts.h"
+#include "version.hpp"
 
 #include "backend/backend.hpp"
 #include "native_hooks/native_hooks.hpp"
