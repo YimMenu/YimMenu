@@ -241,7 +241,7 @@ namespace big
 		// Blame Explode
 		main_batch.add("BE", "0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8", [this](memory::handle ptr)
 		{
-			m_blame_explode = ptr.as<decltype(m_blame_explode)>();
+			m_blame_explode = memory::byte_patch::make(ptr.as<std::uint16_t*>(), 0xE990).get();
 		});
 
 		// Send NET Info to Lobby

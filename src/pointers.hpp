@@ -59,7 +59,7 @@ namespace big
 		memory::byte_patch* m_max_wanted_level;
 		memory::byte_patch* m_max_wanted_level_2;
 
-		PVOID m_blame_explode;
+		memory::byte_patch* m_blame_explode;
 		PVOID m_model_spawn_bypass;
 		PVOID m_world_model_spawn_bypass;
 		PVOID m_native_return;
