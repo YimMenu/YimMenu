@@ -30,8 +30,6 @@ if(Git_FOUND)
         OUTPUT_VARIABLE GIT_BRANCH
         ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-    add_compile_definitions(GIT_SHA1=\"${GIT_SHA1}\")
-    add_compile_definitions(GIT_DATE=\"${GIT_DATE}\")
-    add_compile_definitions(GIT_COMMIT_SUBJECT=\"${GIT_COMMIT_SUBJECT}\")
-    add_compile_definitions(GIT_BRANCH=\"${GIT_BRANCH}\")
+    # generate version.cpp
+    configure_file("${SRC_DIR}/version.cpp.in" "${SRC_DIR}/version.cpp" @ONLY)
 endif()
