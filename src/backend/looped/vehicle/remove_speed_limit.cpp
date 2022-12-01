@@ -7,7 +7,7 @@ namespace big
 	{
 		if (g->vehicle.remove_speed_limit)
 		{
-			ENTITY::SET_ENTITY_MAX_SPEED(self::veh, 2147483647);
+			ENTITY::SET_ENTITY_MAX_SPEED(self::veh, INT32_MAX);
 		}
 	}
 }

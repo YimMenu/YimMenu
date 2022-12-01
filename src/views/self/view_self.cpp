@@ -15,26 +15,20 @@ namespace big
 		ImGui::SameLine();
 
 		components::button("Heal", [] {
-			ENTITY::SET_ENTITY_HEALTH(self::ped, PED::GET_PED_MAX_HEALTH(self::ped), 0);
-			PED::SET_PED_ARMOUR(self::ped, PLAYER::GET_PLAYER_MAX_ARMOUR(self::id));
+			local_player::heal_player();
 		});
 
 		ImGui::SameLine();
 
 		components::button("Fill Inventory", [] {
+			local_player::fill_inventory();
+		});
+
+		ImGui::SameLine();
+
+		components::button("MAX BEER", [] {
 			std::string mpPrefix = local_player::get_mp_prefix();
-			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "NO_BOUGHT_YUM_SNACKS"), 30, true);
-			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "NO_BOUGHT_HEALTH_SNACKS"), 15, true);
-			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "NO_BOUGHT_EPIC_SNACKS"), 5, true);
-			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "NUMBER_OF_ORANGE_BOUGHT"), 10, true);
-			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "NUMBER_OF_BOURGE_BOUGHT"), 10, true);
-			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "CIGARETTES_BOUGHT"), 20, true);
-			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "MP_CHAR_ARMOUR_1_COUNT"), 10, true);
-			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "MP_CHAR_ARMOUR_2_COUNT"), 10, true);
-			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "MP_CHAR_ARMOUR_3_COUNT"), 10, true);
-			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "MP_CHAR_ARMOUR_4_COUNT"), 10, true);
-			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "MP_CHAR_ARMOUR_5_COUNT"), 10, true);
-			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "MP_CHAR_ARMOUR_5_COUNT"), 10, true);
+			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "NUMBER_OF_BOURGE_BOUGHT"), INT32_MAX, true);
 		});
 
 		ImGui::SameLine();

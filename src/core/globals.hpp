@@ -243,6 +243,11 @@ namespace big
 				int teleport_waypoint = 0;
 				int teleport_objective = 0;
 				int noclip = 0;
+				int heal = 0;
+				int fill_inventory = 0;
+				int skip_cutscene = 0;
+				int off_radar = 0;
+				int mmi_fix_all = 0;
 			};
 
 			bool dev_dlc = false;
@@ -743,6 +748,11 @@ namespace big
 			this->settings.hotkeys.teleport_waypoint = j["settings"]["hotkeys"]["teleport_waypoint"];
 			this->settings.hotkeys.teleport_objective = j["settings"]["hotkeys"]["teleport_objective"];
 			this->settings.hotkeys.noclip = j["settings"]["hotkeys"]["noclip"];
+			this->settings.hotkeys.heal = j["settings"]["hotkeys"]["heal"];
+			this->settings.hotkeys.fill_inventory = j["settings"]["hotkeys"]["fill_inventory"];
+			this->settings.hotkeys.skip_cutscene = j["settings"]["hotkeys"]["skip_cutscene"];
+			this->settings.hotkeys.off_radar = j["settings"]["hotkeys"]["off_radar"];
+			this->settings.hotkeys.mmi_fix_all = j["settings"]["hotkeys"]["mmi_fix_all"];
 
 			this->spawn_vehicle.preview_vehicle = j["spawn_vehicle"]["preview_vehicle"];
 			this->spawn_vehicle.spawn_inside = j["spawn_vehicle"]["spawn_inside"];
@@ -1121,7 +1131,12 @@ namespace big
 								{ "menu_toggle", this->settings.hotkeys.menu_toggle },
 								{ "teleport_waypoint", this->settings.hotkeys.teleport_waypoint },
 								{ "teleport_objective", this->settings.hotkeys.teleport_objective },
-								{ "noclip", this->settings.hotkeys.noclip }
+								{ "noclip", this->settings.hotkeys.noclip },
+								{ "heal", this->settings.hotkeys.heal },
+								{ "fill_inventory", this->settings.hotkeys.fill_inventory },
+								{ "skip_cutscene", this->settings.hotkeys.skip_cutscene },
+								{ "off_radar", this->settings.hotkeys.off_radar },
+								{ "mmi_fix_all", this->settings.hotkeys.mmi_fix_all }
 							}
 						}
 					}

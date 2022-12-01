@@ -11,4 +11,12 @@ namespace big::hotkey_funcs
 
         g->self.noclip = state;
     }
+
+    void toggle_off_radar()
+    {
+        const auto state = !g->self.off_radar;
+        g_notification_service->push("Off Radar", std::format("Off Radar has been {}.", state ? "enabled" : "disabled"));
+
+        g->self.off_radar = state;
+    }
 }
