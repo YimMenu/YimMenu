@@ -95,6 +95,7 @@ namespace big
 		ImGui::BeginGroup();
 		draw_pair_option("Teleport To Warehouse", script_event_handler.teleport_to_warehouse);
 		draw_pair_option("Start Activity", script_event_handler.start_activity);
+		draw_pair_option("Null Function Kick", script_event_handler.null_function_kick);
 		ImGui::EndGroup();
 
 		components::sub_title("Other");

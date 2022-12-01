@@ -148,4 +148,17 @@ namespace big::kick
 
 		g_player_service->m_player_to_use_complaint_kick = target;
 	}
+
+	inline void null_function_kick(player_ptr target)
+	{
+		const size_t arg_count = 15;
+		int64_t args[arg_count] =
+		{
+			(int64_t)eRemoteEvent::InteriorControl,
+			(int64_t)self::id,
+			(int64_t)(int)-1
+		};
+
+		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
+	}
 }
