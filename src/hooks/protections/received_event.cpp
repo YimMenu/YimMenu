@@ -194,7 +194,7 @@ namespace big
 			uint32_t unk = buffer->Read<uint32_t>(32);
 			if (type == ScriptEntityChangeType::SettingOfTaskVehicleTempAction) 
 			{
-				uint16_t unk2 = buffer->Read<uint16_t>(13);
+				uint16_t ped_id = buffer->Read<uint16_t>(13);
 				uint32_t action = buffer->Read<uint32_t>(8);
 
 				if ((action >= 15 && action <= 18) || action == 33)
@@ -321,7 +321,7 @@ namespace big
 
 			if (type == WorldStateDataType::Rope)
 			{
-				buffer->Read<int>(9); // unk
+				buffer->Read<int>(9); // network rope id 
 				buffer->Read<float>(19); // pos x
 				buffer->Read<float>(19); // pos y
 				buffer->Read<float>(19); // pos z
@@ -342,11 +342,11 @@ namespace big
 			}
 			else if (type == WorldStateDataType::PopGroupOverride)
 			{
-				int unk = buffer->ReadSigned<int>(8);
-				int unk2 = buffer->Read<int>(32);
-				int unk3 = buffer->Read<int>(7);
+				int pop_schedule = buffer->ReadSigned<int>(8); // Pop Schedule
+				int pop_group = buffer->Read<int>(32); // Pop Group
+				int percentage = buffer->Read<int>(7); // Percentage
 
-				if (unk2 == 0 && (unk3 == 0 || unk3 == 103))
+				if (pop_group == 0 && (percentage == 0 || percentage == 103))
 				{
 					notify::crash_blocked(source_player, "pop group override");
 					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
@@ -397,7 +397,7 @@ namespace big
 		{
 			uint32_t timestamp = buffer->Read<uint32_t>(32);
 			int count = buffer->Read<int>(2);
-			bool unk = buffer->Read<bool>(1);
+			bool all_objects_migrate_together = buffer->Read<bool>(1);
 
 			if (count > 3)
 			{
@@ -408,7 +408,7 @@ namespace big
 			{
 				int net_id = buffer->Read<int>(13);
 				eNetObjType object_type = buffer->Read<eNetObjType>(4);
-				int unk = buffer->Read<int>(3);
+				int migration_type = buffer->Read<int>(3);
 
 				if (object_type < eNetObjType::NET_OBJ_TYPE_AUTOMOBILE || object_type > eNetObjType::NET_OBJ_TYPE_TRAIN)
 				{
