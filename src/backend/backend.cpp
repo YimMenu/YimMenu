@@ -63,6 +63,7 @@ namespace big
 			looped::weapons_force_crosshairs();
 			looped::weapons_gravity_gun();
 			looped::weapons_increased_damage();
+			looped::weapons_infinite_ammo_loop();
 			looped::weapons_infinite_ammo();
 			looped::weapons_infinite_mag();
 			looped::weapons_no_recoil();

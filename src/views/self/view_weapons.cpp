@@ -16,7 +16,9 @@ namespace big
 		ImGui::BeginGroup();
 
 		ImGui::Checkbox("Infinite Ammo", &g->weapons.infinite_ammo);
+		ImGui::Checkbox("Infinite Ammo Looped", &g->weapons.infinite_ammo_loop);
 		ImGui::Checkbox("Infinite Clip", &g->weapons.infinite_mag);
+		
 
 		ImGui::EndGroup();
 		ImGui::SameLine();

@@ -79,6 +79,7 @@ namespace big
 		static void weapons_force_crosshairs();
 		static void weapons_gravity_gun();
 		static void weapons_increased_damage();
+		static void weapons_infinite_ammo_loop();
 		static void weapons_infinite_ammo();
 		static void weapons_infinite_mag();
 		static void weapons_no_recoil();

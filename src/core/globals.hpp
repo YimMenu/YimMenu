@@ -382,6 +382,7 @@ namespace big
 
 			CustomWeapon custom_weapon = CustomWeapon::NONE;
 			bool force_crosshairs = false;
+			bool infinite_ammo_loop = false;
 			bool infinite_ammo = false;
 			bool infinite_mag = false;
 			float increased_damage = 1;
@@ -828,6 +829,7 @@ namespace big
 
 			this->weapons.custom_weapon = (CustomWeapon)j["weapons"]["custom_weapon"];
 			this->weapons.force_crosshairs = j["weapons"]["force_crosshairs"];
+			this->weapons.infinite_ammo_loop = j["weapons"]["infinite_ammo_loop"];
 			this->weapons.infinite_ammo = j["weapons"]["infinite_ammo"];
 			this->weapons.increased_damage = j["weapons"]["increased_damage"];
 			this->weapons.infinite_mag = j["weapons"]["infinite_mag"];
@@ -1246,6 +1248,7 @@ namespace big
 						{ "custom_weapon", (int)this->weapons.custom_weapon },
 						{ "force_crosshairs", this->weapons.force_crosshairs },
 						{ "increased_damage", this->weapons.increased_damage },
+						{ "infinite_ammo_loop", this->weapons.infinite_ammo_loop },
 						{ "infinite_ammo", this->weapons.infinite_ammo },
 						{ "infinite_mag", this->weapons.infinite_mag },
 						{ "no_recoil", this->weapons.no_recoil },

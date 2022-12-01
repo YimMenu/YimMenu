@@ -270,7 +270,7 @@ namespace big
 						 sender->m_player_info &&
 						 sender->m_player_info->m_ped &&
 						 sender->m_player_info->m_ped->m_net_object &&
-						 sender->m_player_info->m_ped->m_net_object->m_object_id == object->m_object_id) //// FIXME: Find a way to get who is spectating `sender->m_is_spectating` isn't updated yet.
+						 sender->m_player_info->m_ped->m_net_object->m_object_id == object->m_object_id)
 						{
 							if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == player_game_state_node->m_spectating_net_id)
 							{
