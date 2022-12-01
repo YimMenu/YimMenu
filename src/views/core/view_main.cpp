@@ -5,7 +5,7 @@ namespace big
 {
 	void view::main_view() 
 	{
-		if (ImGui::Begin("Main"))
+		if (ImGui::Begin("Main", &g->window.main))
 		{
 			if (ImGui::BeginTabBar("tabbar"))
 			{

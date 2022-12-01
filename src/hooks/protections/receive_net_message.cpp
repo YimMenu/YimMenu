@@ -70,6 +70,8 @@ namespace big
 					{
 						if (g->session.log_chat_messages)
 							spam::log_chat(message, player, true);
+						
+						g_chat_service->add_msg(player->get_net_game_player(), message, false, true);
 						player->is_spammer = true;
 						return true;
 					}
@@ -78,7 +80,7 @@ namespace big
 						if (g->session.log_chat_messages)
 							spam::log_chat(message, player, false);
 
-						g_chat_service->add_msg(player->get_net_game_player(), message, false);
+						g_chat_service->add_msg(player->get_net_game_player(), message, false, false);
 					}
 					break;
 				}

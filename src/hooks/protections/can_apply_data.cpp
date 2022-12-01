@@ -201,7 +201,7 @@ namespace big
 					auto model_hash = object->GetGameObject() ? object->GetGameObject()->m_model_info->m_hash : 0;
 					if (attach_node->m_attached && attach_node->m_attached_to == object->m_object_id && (model_hash != RAGE_JOAAT("hauler2") && model_hash != RAGE_JOAAT("phantom3")))
 					{
-						notify::crash_blocked(sender, "infinite physical attachment");
+						// notify::crash_blocked(sender, "infinite physical attachment");
 						return true;
 					}
 					break;
@@ -263,15 +263,33 @@ namespace big
 				}
 				case "?AVCPlayerGameStateDataNode@@"_fnv1a:
 				{
-					const auto player_game_state_node = dynamic_cast<CPlayerGameStateDataNode*>(node);
-					if (player_game_state_node->m_is_spectating)
+					if(g->notifications.script_event_handler.spectate.notify)
 					{
-						if(g_player_service->get_by_id(player_game_state_node->m_spectating_net_id) != nullptr)
-							g_notification_service->push("Spectating", std::format("{} is spectating: #{} ({})", sender->get_name(), player_game_state_node->m_spectating_net_id, g_player_service->get_by_id(player_game_state_node->m_spectating_net_id)->get_name()));
-						else
-							g_notification_service->push("Spectating", std::format("{} is spectating: #{}", sender->get_name(), player_game_state_node->m_spectating_net_id));
+						const auto player_game_state_node = dynamic_cast<CPlayerGameStateDataNode*>(node);
+						if (player_game_state_node->m_is_spectating &&
+						 sender->m_player_info &&
+						 sender->m_player_info->m_ped &&
+						 sender->m_player_info->m_ped->m_net_object &&
+						 sender->m_player_info->m_ped->m_net_object->m_object_id == object->m_object_id) //// FIXME: Find a way to get who is spectating `sender->m_is_spectating` isn't updated yet.
+						{
+							if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == player_game_state_node->m_spectating_net_id)
+							{
+								g_notification_service->push("Spectating", std::format("{} is spectating you", sender->get_name()));
+								break;
+							}
+							else
+							{
+								g_player_service->iterate([&](auto& player) 
+								{ 
+									if (player.second->get_ped() && player.second->get_ped()->m_net_object && player.second->get_ped()->m_net_object->m_object_id == player_game_state_node->m_spectating_net_id)
+									{
+										g_notification_service->push("Spectating", std::format("{} is spectating: {}", sender->get_name(), player.first));
+									}
+								});
+							}
+						}
+						break;
 					}
-					break;
 				}
 				case "?AVCSectorDataNode@@"_fnv1a:
 				{

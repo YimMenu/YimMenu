@@ -402,6 +402,8 @@ namespace big
 			bool demo = false;
 			bool log = false;
 
+			int overlay_corner = 0;
+
 			ImU32 color = 3357612055;
 			float gui_scale = 1.f;
 
@@ -435,6 +437,7 @@ namespace big
 			std::string dm_message;
 			bool local = false;
 			bool auto_scroll = true;
+			bool show_spam = false;
 			std::int8_t dm_player_id = -0;
 		};
 
@@ -840,6 +843,7 @@ namespace big
 			this->window.gui_scale = j["window"]["gui_scale"];
 			this->window.handling = j["window"]["handling"];
 			this->window.overlay = j["window"]["overlay"];
+			this->window.overlay_corner = j["window"]["overlay_corner"];
 			this->window.main = j["window"]["main"];
 			this->window.users = j["window"]["users"];
 			this->window.player = j["window"]["player"];
@@ -853,6 +857,7 @@ namespace big
 			this->context_menu.bounding_box_color = j["context_menu"]["bounding_box_color"];
 
 			this->chat.auto_scroll = j["chat"]["auto_scroll"];
+			this->chat.show_spam = j["chat"]["show_spam"];
 
 			this->esp.enabled = j["esp"]["enabled"];
 			this->esp.hide_self = j["esp"]["hide_self"];
@@ -1255,6 +1260,7 @@ namespace big
 						{ "gui_scale", this->window.gui_scale },
 						{ "handling", this->window.handling },
 						{ "overlay", this->window.overlay },
+						{ "overlay_corner", this->window.overlay_corner },
 						{ "main", this->window.main },
 						{ "users", this->window.users },
 						{ "player", this->window.player },
@@ -1273,7 +1279,8 @@ namespace big
 				},
 				{
 					"chat", {
-						{ "auto_scroll", this->chat.auto_scroll }
+						{ "auto_scroll", this->chat.auto_scroll },
+						{ "show_spam", this->chat.show_spam }
 					}
 				},
 				{

@@ -6,8 +6,10 @@
 namespace big
 {
 	struct chat_msg {
-		CNetGamePlayer* player;
+		uint64_t rid;
 		bool is_team;
+		bool is_spam;
+		std::string name;
 		std::string msg;
 	};
 	using msgs = std::vector<chat_msg>;
@@ -26,15 +28,11 @@ namespace big
 		chat_service& operator=(const chat_service&) = delete;
 		chat_service& operator=(chat_service&&) noexcept = delete;
 
-		bool did_player_use_chat(Player player_id);
-		void add_msg(CNetGamePlayer* player, std::string msg, bool is_team);
-
-		static void chat_menu();
+		void add_msg(CNetGamePlayer* player, std::string msg, bool is_team = false, bool is_spam = false);
+		void add_msg(uint64_t rid, std::string name, std::string msg, bool is_team = false, bool is_spam = false);
 
 		msgs& get_msgs()
-		{
-			return m_msgs;
-		}
+		{ return m_msgs; }
 	};
 
 	inline chat_service* g_chat_service;

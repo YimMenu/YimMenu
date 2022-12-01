@@ -18,48 +18,12 @@ namespace big
 		g_chat_service = nullptr;
 	}
 
-	bool chat_service::did_player_use_chat(Player player_id)
+	void chat_service::add_msg(CNetGamePlayer* player, std::string msg, bool is_team, bool is_spam)
 	{
-		for (const auto& [player, msg, is_team] : m_msgs)
-		{
-			if (player->m_player_id == player_id)
-			{
-				return true;
-			}
-		}
-		return false;
+		m_msgs.push_back({ player->get_net_data()->m_gamer_handle_2.m_rockstar_id, is_team, is_spam, player->get_name(), msg });
 	}
-
-	void chat_service::add_msg(CNetGamePlayer* player, std::string msg, bool is_team)
+	void chat_service::add_msg(uint64_t rid, std::string name, std::string msg, bool is_team, bool is_spam)
 	{
-		m_msgs.push_back({ player, is_team, msg });
-	}
-
-	void chat_service::chat_menu()
-	{
-		while (g_running)
-		{
-			if (*g_pointers->m_is_session_started)
-			{
-				if (!g->window.chat && PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_MP_TEXT_CHAT_ALL))
-				{
-					HUD::MP_TEXT_CHAT_DISABLE(true);
-					g->window.chat = true;
-				}
-
-				if (g->window.chat)
-				{
-					if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_FRONTEND_PAUSE_ALTERNATE))
-					{
-						g->window.chat = false;
-						PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-						PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-						PAD::DISABLE_ALL_CONTROL_ACTIONS(0); // !!! FIXME !!!
-					}
-				}
-			}
-
-			script::get_current()->yield();
-		}
+		m_msgs.push_back({ rid, is_team, is_spam, name, msg });
 	}
 }

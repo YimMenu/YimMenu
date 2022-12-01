@@ -5,6 +5,7 @@
 #include "services/players/player_service.hpp"
 #include "services/chat/chat_service.hpp"
 #include "util/notify.hpp"
+#include "util/spam.hpp"
 
 namespace big
 {
@@ -12,6 +13,9 @@ namespace big
     void view::chat()
     {
 		ImGui::Checkbox("Auto Scroll", &g->chat.auto_scroll);
+		ImGui::SameLine();
+		ImGui::Checkbox("Show spam", &g->chat.show_spam);
+
 		const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
 		ImGui::BeginChild("##scrolling_region_chat", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
 
@@ -23,8 +27,7 @@ namespace big
 		{
 			for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
 			{
-				CNetGamePlayer* net_player = g_chat_service->get_msgs()[i].player;
-				std::string name = net_player->get_name();
+				std::string name = g_chat_service->get_msgs()[i].name;
 				std::string msg = g_chat_service->get_msgs()[i].msg;
 				bool is_team = g_chat_service->get_msgs()[i].is_team;
 				ImGui::Text("%s [%s]  %s", name.c_str(), is_team ? "local" : "all", msg.c_str());
@@ -46,7 +49,7 @@ namespace big
 				notify::draw_chat((char*)g->chat.message.c_str(), net_game_player->get_name(), g->chat.local);
 
 			g_chat_service->add_msg(net_game_player, g->chat.message, g->chat.local);
-			LOG(INFO) << net_game_player->get_name() << (g->chat.local ? " [LOCAL] " : " [ALL] ") << g->chat.message;
+			spam::log_chat((char*)g->chat.message.c_str(), g_player_service->get_self(), false);
 			
 			g->chat.message = "";
 		});

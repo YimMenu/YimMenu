@@ -10,7 +10,7 @@ namespace big
 		ImGui::SetNextWindowSize({ 450, 525 }, ImGuiCond_FirstUseEver);
 		ImGui::SetNextWindowPos({ 1470, 250 }, ImGuiCond_FirstUseEver);
 
-		if (ImGui::Begin("Chat", (bool*)true, ImGuiWindowFlags_NoTitleBar))
+		if (ImGui::Begin("Chat", &g->window.chat, ImGuiWindowFlags_NoTitleBar))
 		{
 			if (ImGui::BeginTabBar("chat_tabbar"))
 			{
