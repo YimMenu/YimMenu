@@ -164,14 +164,16 @@ namespace big
 		components::button("Remove All Weapons", [] { g_player_service->iterate([](auto& plyr) { toxic::remove_all_weapons(plyr.second); }); });
 
 		components::button("CEO Kick", [] { 
-			g_player_service->iterate([](auto& plyr) { 
+			g_player_service->iterate([](auto& plyr) 
+			{
 				if (*scr_globals::gpbd_fm_3.at(plyr.second->id(), scr_globals::size::gpbd_fm_3).at(10).as<int*>() != -1)
 					toxic::ceo_kick(plyr.second); 
 			}); 
 		});
 
 		components::button("CEO Ban", [] { 
-			g_player_service->iterate([](auto& plyr) { 
+			g_player_service->iterate([](auto& plyr) 
+			{ 
 				if (*scr_globals::gpbd_fm_3.at(plyr.second->id(), scr_globals::size::gpbd_fm_3).at(10).as<int*>() != -1)
 					toxic::ceo_ban(plyr.second); 
 			}); 
@@ -234,7 +236,23 @@ namespace big
 
 		components::button("TP All To Skydive", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::Skydive); }); });
 		ImGui::SameLine();
-		components::button("TP All To Cayo Perico", [] { toxic::send_player_to_island(g_player_service->get_selected()); });
+		components::button("TP All To Cayo Perico", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_island(plyr.second); }); });
+		ImGui::SameLine();
+		components::button("TP All To MOC", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 81); }); });
+
+		components::button("TP All To Casino", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 123); }); });
+		ImGui::SameLine();
+		components::button("TP All To Penthouse", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 124); }); });
+		ImGui::SameLine();
+		components::button("TP All To Arcade", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 128); }); });
+
+		components::button("TP All To Music Locker", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 146); }); });
+		ImGui::SameLine();
+		components::button("TP All To Record A Studios", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 148); }); });
+		ImGui::SameLine();
+		components::button("TP All To Custom Auto Shop", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 149); }); });
+
+		components::button("TP All To Agency", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 155); }); });
 
 		components::sub_title("Event Starter");
 		

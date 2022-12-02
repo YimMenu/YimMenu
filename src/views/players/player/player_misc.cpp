@@ -7,6 +7,7 @@
 #include "services/pickups/pickup_service.hpp"
 #include "gta/net_object_mgr.hpp"
 #include "util/scripts.hpp"
+#include "util/session.hpp"
 
 namespace big
 {
@@ -18,6 +19,11 @@ namespace big
 			{
 				*scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).as<int*>() = g_player_service->get_selected()->id();
 				*scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).at(26).as<int*>() = g_player_service->get_selected()->id();
+			});
+
+			components::button("Enter Interior", []
+			{
+				session::enter_player_interior(g_player_service->get_selected());
 			});
 
 			components::button("Steal Outfit", []

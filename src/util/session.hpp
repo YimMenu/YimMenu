@@ -127,4 +127,27 @@ namespace big::session
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
 	}
+
+	// TODO this is really broken
+	inline void enter_player_interior(player_ptr player)
+	{
+		if (*scr_globals::globalplayer_bd.at(player->id(), scr_globals::size::globalplayer_bd).at(318).at(6).as<int*>() == -1)
+		{
+			g_notification_service->push_error("Enter Interior", "Player does not seem to be in an interior");
+			return;
+		}
+
+		int owner = *scr_globals::globalplayer_bd.at(player->id(), scr_globals::size::globalplayer_bd).at(318).at(9).as<int*>();
+		if (owner == -1)
+			owner = player->id();
+
+		*script_global(1946250).at(3607).as<int*>() = 0;
+		*script_global(1946250).at(3605).as<int*>() = 1;
+		*script_global(1946250).at(4703).as<int*>() = 1;
+		misc::set_bit(script_global(1946250).at(1).as<int*>(), 22);
+
+		*script_global(1946250).at(3280).as<int*>() = owner;
+		*script_global(1946250).at(3630).as<int*>() = owner;
+		*script_global(1946250).at(3606).as<int*>() = *scr_globals::globalplayer_bd.at(player->id(), scr_globals::size::globalplayer_bd).at(318).at(6).as<int*>();
+	}
 }
