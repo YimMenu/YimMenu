@@ -82,6 +82,10 @@ namespace big
 
 		ImGui::Checkbox("Mobile Radio", &g->self.mobile_radio);
 
+		ImGui::Checkbox("Dance Mode", &g->self.dance_mode);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Hold Right DPAD or E to enter dance mode");
+
 		ImGui::EndGroup();
 
 		ImGui::Separator();

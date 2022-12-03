@@ -2,9 +2,10 @@
 #include "gta/array.hpp"
 #include "gta/script_thread.hpp"
 #include "gta/tls_context.hpp"
-#include "ped/CPedFactory.hpp"
 #include "pointers.hpp"
-#include "network/CNetworkPlayerMgr.hpp"
+#include <ped/CPedFactory.hpp>
+#include <network/CNetworkPlayerMgr.hpp>
+#include <script/scrProgramTable.hpp>
 
 namespace big::gta_util
 {
@@ -87,6 +88,17 @@ namespace big::gta_util
 			{
 				return thread;
 			}
+		}
+
+		return nullptr;
+	}
+
+	inline rage::scrProgram* find_script_program(rage::joaat_t hash)
+	{
+		for (auto& script : *g_pointers->m_script_program_table)
+		{
+			if (script.m_program && script.m_program->m_name_hash == hash)
+				return script.m_program;
 		}
 
 		return nullptr;

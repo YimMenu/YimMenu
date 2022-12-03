@@ -152,7 +152,7 @@ namespace big
 		functions::send_chat_message m_send_chat_message{};
 
 		PVOID m_init_native_tables{};
-		PVOID m_script_vm{};
+		functions::script_vm m_script_vm{};
 
 		functions::generate_uuid m_generate_uuid{};
 		std::uint64_t* m_host_token{};

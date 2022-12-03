@@ -469,7 +469,7 @@ namespace big
 		// Script VM
 		main_batch.add("VM", "E8 ? ? ? ? 48 85 FF 48 89 1D", [this](memory::handle ptr)
 		{
-			m_script_vm = ptr.add(1).rip().as<PVOID>();
+			m_script_vm = ptr.add(1).rip().as<functions::script_vm>();
 		});
 
 		// Generate UUID

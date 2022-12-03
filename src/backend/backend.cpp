@@ -43,6 +43,7 @@ namespace big
 			looped::self_unlimited_oxygen();
 			looped::self_no_water_collision();
 			looped::self_mobile_radio();
+			looped::self_dance_mode();
 
 			script::get_current()->yield();
 		}

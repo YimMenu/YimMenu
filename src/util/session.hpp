@@ -144,10 +144,15 @@ namespace big::session
 		*script_global(1946250).at(3607).as<int*>() = 0;
 		*script_global(1946250).at(3605).as<int*>() = 1;
 		*script_global(1946250).at(4703).as<int*>() = 1;
-		misc::set_bit(script_global(1946250).at(1).as<int*>(), 22);
+		*script_global(1946250).at(3218).as<int*>() = 1;
+		*script_global(1946250).at(3214).as<int*>() = 1;
+		*script_global(1946250).at(3612).as<int*>() = 1;
+
+		// misc::set_bit(script_global(1946250).at(1).as<int*>(), 22);
+		misc::set_bit(script_global(1946250).as<int*>(), 6);
+		misc::clear_bit(script_global(1946250).at(1).as<int*>(), 9);
 
 		*script_global(1946250).at(3280).as<int*>() = owner;
-		*script_global(1946250).at(3630).as<int*>() = owner;
 		*script_global(1946250).at(3606).as<int*>() = *scr_globals::globalplayer_bd.at(player->id(), scr_globals::size::globalplayer_bd).at(318).at(6).as<int*>();
 	}
 }

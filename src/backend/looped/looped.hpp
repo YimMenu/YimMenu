@@ -32,6 +32,7 @@ namespace big
 		static void self_unlimited_oxygen();
 		static void self_no_water_collision();
 		static void self_mobile_radio();
+		static void self_dance_mode();
 
 		static void session_local_time();
 		static void session_pop_multiplier_areas();

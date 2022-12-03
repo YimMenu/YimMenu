@@ -1,7 +1,7 @@
 #pragma once
-#include "rage/rlSessionInfo.hpp"
-#include "weapon/CAmmoInfo.hpp"
-#include "weapon/CWeaponInfo.hpp"
+#include <rage/rlSessionInfo.hpp>
+#include <weapon/CAmmoInfo.hpp>
+#include <weapon/CWeaponInfo.hpp>
 #include "enums.hpp"
 #include "file_manager.hpp"
 #include "imgui.h"
@@ -12,6 +12,7 @@ class CNetGamePlayer;
 namespace rage
 {
 	class scrThread;
+	class scrProgram;
 }
 
 namespace big
@@ -186,6 +187,10 @@ namespace big
 			int selected_hud_component = 1;
 			bool hud_components_states[(int)HudComponents::HUD_WEAPONS] = { false };
 			bool mobile_radio = false;
+
+			// do not save below entries
+
+			bool dance_mode = false;
 		};
 
 		struct session
@@ -471,6 +476,9 @@ namespace big
 		int m_test_net_id = -1;
 
 		rage::scrThread* m_hunt_the_beast_thread = nullptr;
+
+		rage::scrThread* m_dance_thread = nullptr;
+		rage::scrProgram* m_dance_program = nullptr;
 
 		debug debug{};
 		tunables tunables{};

@@ -15,6 +15,9 @@ namespace big
 		if (thread == g->m_hunt_the_beast_thread)
 			g->m_hunt_the_beast_thread = nullptr;
 
+		if (thread == g->m_dance_thread)
+			g->m_dance_thread = nullptr;
+
 		return result;
 	}
 }

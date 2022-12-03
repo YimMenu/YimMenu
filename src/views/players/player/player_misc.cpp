@@ -8,6 +8,7 @@
 #include "gta/net_object_mgr.hpp"
 #include "util/scripts.hpp"
 #include "util/session.hpp"
+#include "script_function.hpp"
 
 namespace big
 {
@@ -17,8 +18,7 @@ namespace big
 		{
 			components::button("Join CEO/MC", []
 			{
-				*scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).as<int*>() = g_player_service->get_selected()->id();
-				*scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).at(26).as<int*>() = g_player_service->get_selected()->id();
+				scr_functions::join_ceo({ g_player_service->get_selected()->id(), 0, false, false });
 			});
 
 			components::button("Enter Interior", []
