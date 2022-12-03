@@ -4,7 +4,7 @@
 
 namespace big
 {
-	// a lightweight script function wrapper insipred by https://github.com/Parik27/V.Rainbomizer/blob/master/src/mission/missions_YscUtils.hh
+	// a lightweight script function wrapper inspired by https://github.com/Parik27/V.Rainbomizer/blob/master/src/mission/missions_YscUtils.hh
 	class script_function
 	{
 		rage::joaat_t m_script;
