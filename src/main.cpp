@@ -8,6 +8,7 @@
 #include "renderer.hpp"
 #include "script_mgr.hpp"
 #include "thread_pool.hpp"
+#include "version.hpp"
 
 #include "backend/backend.hpp"
 #include "native_hooks/native_hooks.hpp"
@@ -24,6 +25,7 @@
 #include "services/vehicle/handling_service.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
 #include "services/player_database/player_database_service.hpp"
+#include "services/hotkey/hotkey_service.hpp"
 #include "services/matchmaking/matchmaking_service.hpp"
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
@@ -57,6 +59,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			try
 			{
 				LOG(INFO) << "Yim's Menu Initializing";
+				LOGF(INFO, "Git Info\n\tBranch:\t%s\n\tHash:\t%s\n\tDate:\t%s", version::GIT_BRANCH, version::GIT_SHA1, version::GIT_DATE);
 
 				g->load();
 				LOG(INFO) << "Settings Loaded.";
@@ -89,6 +92,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto gui_service_instance = std::make_unique<gui_service>();
 				auto script_patcher_service_instance = std::make_unique<script_patcher_service>();
 				auto player_database_service_instance = std::make_unique<player_database_service>();
+				auto hotkey_service_instance = std::make_unique<hotkey_service>();
 				auto matchmaking_service_instance = std::make_unique<matchmaking_service>();
 				LOG(INFO) << "Registered service instances...";
 
@@ -137,6 +141,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				thread_pool_instance.reset();
 				LOG(INFO) << "Thread pool uninitialized.";
 
+				hotkey_service_instance.reset();
+				LOG(INFO) << "Hotkey Service reset.";
 				matchmaking_service_instance.reset();
 				LOG(INFO) << "Matchmaking Service reset.";
 				player_database_service_instance.reset();

@@ -43,6 +43,7 @@ namespace big
 			looped::self_unlimited_oxygen();
 			looped::self_no_water_collision();
 			looped::self_mobile_radio();
+			looped::self_fast_respawn();
 			looped::self_dance_mode();
 
 			script::get_current()->yield();
@@ -68,6 +69,7 @@ namespace big
 			looped::weapons_repair_gun();
 			looped::weapons_steal_vehicle_gun();
 			looped::weapons_vehicle_gun();
+			looped::weapons_rapid_fire();
 
 			script::get_current()->yield();
 		}

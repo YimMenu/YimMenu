@@ -186,7 +186,10 @@ namespace big
 			bool hide_ammo = false;
 			int selected_hud_component = 1;
 			bool hud_components_states[(int)HudComponents::HUD_WEAPONS] = { false };
+			bool force_show_hud_element = false;
+			bool force_show_hud = false;
 			bool mobile_radio = false;
+			bool fast_respawn = false;
 
 			// do not save below entries
 
@@ -244,6 +247,8 @@ namespace big
 				bool editing_menu_toggle = false;
 				int menu_toggle = VK_INSERT;
 				int teleport_waypoint = 0;
+				int teleport_objective = 0;
+				int noclip = 0;
 			};
 
 			bool dev_dlc = false;
@@ -383,6 +388,7 @@ namespace big
 			bool no_spread = false;
 			char vehicle_gun_model[12] = "bus";
 			bool bypass_c4_limit = false;
+			bool rapid_fire = false;
 		};
 
 		struct window
@@ -677,9 +683,12 @@ namespace big
 			this->self.selected_hud_component = j["self"]["selected_hud_component"];
 			for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
 				this->self.hud_components_states[i] = j["self"]["hud_components_states"].at(i);
+			this->self.force_show_hud_element = j["self"]["force_show_hud_element"];
+			this->self.force_show_hud = j["self"]["force_show_hud"];
 			this->self.unlimited_oxygen = j["self"]["unlimited_oxygen"];
 			this->self.no_water_collision = j["self"]["no_water_collision"];
 			this->self.mobile_radio = j["self"]["mobile_radio"];
+			this->self.fast_respawn = j["self"]["fast_respawn"];
 
 			this->session.log_chat_messages = j["session"]["log_chat_messages"];
 			this->session.log_text_messages = j["session"]["log_text_messages"];
@@ -710,6 +719,9 @@ namespace big
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
+			this->settings.hotkeys.teleport_waypoint = j["settings"]["hotkeys"]["teleport_waypoint"];
+			this->settings.hotkeys.teleport_objective = j["settings"]["hotkeys"]["teleport_objective"];
+			this->settings.hotkeys.noclip = j["settings"]["hotkeys"]["noclip"];
 
 			this->spawn_vehicle.preview_vehicle = j["spawn_vehicle"]["preview_vehicle"];
 			this->spawn_vehicle.spawn_inside = j["spawn_vehicle"]["spawn_inside"];
@@ -803,6 +815,7 @@ namespace big
 			this->weapons.no_recoil = j["weapons"]["no_recoil"];
 			this->weapons.no_spread = j["weapons"]["no_spread"];
 			this->weapons.bypass_c4_limit = j["weapons"]["bypass_c4_limit"];
+			this->weapons.rapid_fire = j["weapons"]["rapid_fire"];
 
 			this->weapons.ammo_special.type = (eAmmoSpecialType)j["weapons"]["ammo_special"]["type"];
 			this->weapons.ammo_special.toggle = j["weapons"]["ammo_special"]["toggle"];
@@ -1036,9 +1049,12 @@ namespace big
 							this->self.hud_components_states[20],
 							this->self.hud_components_states[21] })
 						},
+						{ "force_show_hud_element", this->self.force_show_hud_element },
+						{ "force_show_hud", this->self.force_show_hud },
 						{ "unlimited_oxygen", this->self.unlimited_oxygen },
 						{ "no_water_collision", this->self.no_water_collision },
 						{ "mobile_radio", this->self.mobile_radio },
+						{ "fast_respawn", this->self.fast_respawn },
 					}
 				},
 				{
@@ -1071,7 +1087,10 @@ namespace big
 					"settings", {
 						{ "dev_dlc", this->settings.dev_dlc },
 						{ "hotkeys", {
-								{ "menu_toggle", this->settings.hotkeys.menu_toggle }
+								{ "menu_toggle", this->settings.hotkeys.menu_toggle },
+								{ "teleport_waypoint", this->settings.hotkeys.teleport_waypoint },
+								{ "teleport_objective", this->settings.hotkeys.teleport_objective },
+								{ "noclip", this->settings.hotkeys.noclip }
 							}
 						}
 					}
@@ -1203,6 +1222,7 @@ namespace big
 						{ "no_recoil", this->weapons.no_recoil },
 						{ "no_spread", this->weapons.no_spread },
 						{ "bypass_c4_limit", this->weapons.bypass_c4_limit },
+						{ "rapid_fire", this->weapons.rapid_fire },
 					}
 				},
 				{
@@ -1225,16 +1245,16 @@ namespace big
 						{ "enabled", this->esp.enabled },
 						{ "hide_self", this->esp.hide_self },
 						{ "global_render_distance", nlohmann::json::array({
-						this->esp.global_render_distance[0],
-						this->esp.global_render_distance[1] })
+							this->esp.global_render_distance[0],
+							this->esp.global_render_distance[1] })
 						},
 						{ "tracer_render_distance", nlohmann::json::array({
-						this->esp.tracer_render_distance[0],
-						this->esp.tracer_render_distance[1] })
+							this->esp.tracer_render_distance[0],
+							this->esp.tracer_render_distance[1] })
 						},
 						{ "box_render_distance", nlohmann::json::array({
-						this->esp.box_render_distance[0],
-						this->esp.box_render_distance[1] })
+							this->esp.box_render_distance[0],
+							this->esp.box_render_distance[1] })
 						},
 						{ "enemy_color", this->esp.enemy_color },
 						{ "enemy_near_color", this->esp.enemy_near_color },
@@ -1251,12 +1271,12 @@ namespace big
 						{ "scale_health_from_dist", this->esp.scale_health_from_dist },
 						{ "scale_armor_from_dist", this->esp.scale_armor_from_dist },
 						{ "tracer_draw_position", nlohmann::json::array({
-						this->esp.tracer_draw_position[0],
-						this->esp.tracer_draw_position[1] })
+							this->esp.tracer_draw_position[0],
+							this->esp.tracer_draw_position[1] })
 						},
 						{ "distance_threshold", nlohmann::json::array({
-						this->esp.distance_threshold[0],
-						this->esp.distance_threshold[1] })
+							this->esp.distance_threshold[0],
+							this->esp.distance_threshold[1] })
 						}
 					}
 				},

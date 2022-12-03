@@ -56,6 +56,7 @@ namespace big
 		ImGui::Checkbox("Free Cam", &g->self.free_cam);
 		ImGui::Checkbox("Disable Phone", &g->tunables.disable_phone);
 		ImGui::Checkbox("Unlimited Oxygen", &g->self.unlimited_oxygen);
+		ImGui::Checkbox("Fast Respawn", &g->self.fast_respawn);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
@@ -75,11 +76,8 @@ namespace big
 		if (g->self.invisibility) {
 			ImGui::Checkbox("Locally Visible", &g->self.local_visibility);
 		}
-
 		ImGui::Checkbox("Keep Player Clean", &g->self.clean_player);
-
 		ImGui::Checkbox("No Collision", &g->self.no_collision);
-
 		ImGui::Checkbox("Mobile Radio", &g->self.mobile_radio);
 
 		ImGui::Checkbox("Dance Mode", &g->self.dance_mode);
@@ -177,6 +175,10 @@ namespace big
 
 		ImGui::Checkbox("Hide Ammo", &g->self.hide_ammo);
 
+		ImGui::SameLine();
+
+		ImGui::Checkbox("Force show HUD", &g->self.force_show_hud);
+
 		ImGui::Combo("##hud_comp_combo", &g->self.selected_hud_component, hud_component_names, (int)HudComponents::HUD_WEAPONS);
 		ImGui::SameLine();
 		components::button("Hide", [] {
@@ -204,6 +206,10 @@ namespace big
 				g->self.hud_components_states[i] = false;
 			}
 		});
+		ImGui::SameLine();
+		ImGui::Checkbox("Force show HUD element", &g->self.force_show_hud_element);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("To force show a HUD specific element, click Hide all then click Show on the desired element.");
 
 		ImGui::EndGroup();
 

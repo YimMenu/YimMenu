@@ -33,6 +33,7 @@ namespace big
 		static void self_no_water_collision();
 		static void self_mobile_radio();
 		static void self_dance_mode();
+		static void self_fast_respawn();
 
 		static void session_local_time();
 		static void session_pop_multiplier_areas();
@@ -76,5 +77,6 @@ namespace big
 		static void weapons_repair_gun();
 		static void weapons_steal_vehicle_gun();
 		static void weapons_vehicle_gun();
+		static void weapons_rapid_fire();
 	};
 }
