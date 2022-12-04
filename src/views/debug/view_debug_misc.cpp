@@ -31,11 +31,6 @@ namespace big
 				STATS::STAT_SET_BOOL(RAGE_JOAAT("mpply_was_i_bad_sport"), FALSE, TRUE);
 			});
 
-			components::button("globaltest", []
-			{
-				*script_global(2686568).at(0, 41).as<int*>() = 1;
-			});
-
 			ImGui::EndTabItem();
 		}
 	}

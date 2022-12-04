@@ -26,14 +26,13 @@ namespace big
 		}
 		else if (bLastMissionCreator)
 		{
-			float z;
 			*scr_globals::switch_struct.at(18).as<int*>() = 0;
 			STREAMING::SWITCH_TO_MULTI_SECONDPART(self::ped);
-			HUD::DISPLAY_HUD(TRUE);
-			HUD::DISPLAY_RADAR(TRUE);
-			PLAYER::SET_PLAYER_CONTROL(self::id, TRUE, 0);
-			ENTITY::FREEZE_ENTITY_POSITION(self::ped, FALSE);
-			ENTITY::SET_ENTITY_COLLISION(self::ped, TRUE, TRUE);
+			HUD::DISPLAY_HUD(true);
+			HUD::DISPLAY_RADAR(true);
+			PLAYER::SET_PLAYER_CONTROL(self::id, true, 0);
+			ENTITY::FREEZE_ENTITY_POSITION(self::ped, false);
+			ENTITY::SET_ENTITY_COLLISION(self::ped, true, true);
 			bLastMissionCreator = false;
 		}
 	}
