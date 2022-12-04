@@ -92,6 +92,9 @@ namespace big
 
 		detour_hook_helper::add<hooks::serialize_take_off_ped_variation_task>("STOPVT", g_pointers->m_serialize_take_off_ped_variation_task);
 
+		detour_hook_helper::add<hooks::create_script_handler>("CSH", g_pointers->m_create_script_handler);
+		detour_hook_helper::add<hooks::set_script_as_networked>("SSAN", g_pointers->m_set_script_as_networked);
+
 		g_hooking = this;
 	}
 
@@ -113,6 +116,12 @@ namespace big
 		for (const auto& detour_hook_helper : m_detour_hook_helpers)
 		{
 			detour_hook_helper->m_detour_hook->enable();
+		}
+
+		for (auto& thread : *g_pointers->m_script_threads)
+		{
+			if (thread->m_handler)
+				hook_script_handler((CGameScriptHandler*)thread->m_handler);
 		}
 
 		MH_ApplyQueued();
@@ -139,6 +148,7 @@ namespace big
 			delete detour_hook_helper;
 		}
 		m_detour_hook_helpers.clear();
+		m_handler_hooks.clear();
 	}
 
 	hooking::detour_hook_helper::~detour_hook_helper()

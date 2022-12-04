@@ -61,7 +61,6 @@ namespace big
 		memory::byte_patch* m_max_wanted_level_2;
 
 		memory::byte_patch* m_blame_explode;
-		PVOID m_model_spawn_bypass;
 		PVOID m_world_model_spawn_bypass;
 		PVOID m_native_return;
 		PVOID m_get_label_text;
@@ -200,6 +199,9 @@ namespace big
 		PVOID m_send_session_matchmaking_attributes;
 
 		PVOID m_serialize_take_off_ped_variation_task;
+
+		PVOID m_create_script_handler{};
+		PVOID m_set_script_as_networked{};
 	};
 
 	inline pointers* g_pointers{};

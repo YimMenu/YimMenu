@@ -190,6 +190,7 @@ namespace big
 			bool force_show_hud = false;
 			bool mobile_radio = false;
 			bool fast_respawn = false;
+			bool auto_tp = false;
 
 			// do not save below entries
 
@@ -486,6 +487,8 @@ namespace big
 		rage::scrThread* m_dance_thread = nullptr;
 		rage::scrProgram* m_dance_program = nullptr;
 
+		rage::scrThread* m_mission_creator_thread = nullptr;
+
 		debug debug{};
 		tunables tunables{};
 		notifications notifications{};
@@ -689,6 +692,7 @@ namespace big
 			this->self.no_water_collision = j["self"]["no_water_collision"];
 			this->self.mobile_radio = j["self"]["mobile_radio"];
 			this->self.fast_respawn = j["self"]["fast_respawn"];
+			this->self.auto_tp = j["self"]["auto_tp"];
 
 			this->session.log_chat_messages = j["session"]["log_chat_messages"];
 			this->session.log_text_messages = j["session"]["log_text_messages"];
@@ -1055,6 +1059,7 @@ namespace big
 						{ "no_water_collision", this->self.no_water_collision },
 						{ "mobile_radio", this->self.mobile_radio },
 						{ "fast_respawn", this->self.fast_respawn },
+						{ "auto_tp", this->self.auto_tp }
 					}
 				},
 				{

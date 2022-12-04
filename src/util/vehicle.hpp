@@ -197,9 +197,7 @@ namespace big::vehicle
 			return 0;
 		}
 
-		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
 		auto veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, script_veh, false);
-		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
 
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 

@@ -19,6 +19,7 @@ namespace big
 				return;
 
 			auto thread = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH(RAGE_JOAAT("am_mp_nightclub"), 19400 /*PROPERTY_INT*/);
+			SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(RAGE_JOAAT("am_mp_nightclub"));
 
 			if (!thread)
 				return;
@@ -37,11 +38,6 @@ namespace big
 				scr_functions::init_nightclub_script({});
 			});
 
-
-			*script_global(1946244).as<bool*>() = true;
-			misc::set_bit(scr_globals::gpbd_fm_1.at(self::id, scr_globals::size::gpbd_fm_1).at(267).at(295).at(7).as<int*>(), 0);
-			misc::set_bit(scr_globals::gpbd_fm_1.at(self::id, scr_globals::size::gpbd_fm_1).at(267).at(295).at(7).as<int*>(), 1);
-			misc::set_bit(scr_globals::gpbd_fm_1.at(self::id, scr_globals::size::gpbd_fm_1).at(267).at(295).at(7).as<int*>(), 2);
 			scr_functions::dance_loop.populate_ip();
 			bLastDanceMode = true;
 			return;
@@ -60,6 +56,12 @@ namespace big
 		}
 
 		if (g->self.dance_mode && g->m_dance_thread->m_handler)
+		{
+			*script_global(1946244).as<bool*>() = true;
+			misc::set_bit(scr_globals::gpbd_fm_1.at(self::id, scr_globals::size::gpbd_fm_1).at(267).at(295).at(7).as<int*>(), 0);
+			misc::set_bit(scr_globals::gpbd_fm_1.at(self::id, scr_globals::size::gpbd_fm_1).at(267).at(295).at(7).as<int*>(), 1);
+			misc::set_bit(scr_globals::gpbd_fm_1.at(self::id, scr_globals::size::gpbd_fm_1).at(267).at(295).at(7).as<int*>(), 2);
 			scr_functions::dance_loop.call(g->m_dance_thread, g->m_dance_program, {});
+		}
 	}
 }

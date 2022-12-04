@@ -29,5 +29,17 @@ namespace big
 			else
 				ENTITY::SET_ENTITY_VISIBLE(entity, toggle, outfit);
 		}
+
+		void SET_BIGMAP_ACTIVE(rage::scrNativeCallContext* src)
+		{
+			if (!g->m_mission_creator_thread)
+				HUD::SET_BIGMAP_ACTIVE(src->get_arg<BOOL>(0), src->get_arg<BOOL>(1));
+		};
+
+		void SET_BLIP_DISPLAY(rage::scrNativeCallContext* src)
+		{
+			if ((!g->m_mission_creator_thread) || src->get_arg<Blip>(0) != HUD::GET_MAIN_PLAYER_BLIP_ID())
+				HUD::SET_BLIP_DISPLAY(src->get_arg<Blip>(0), src->get_arg<BOOL>(1));
+		};
 	}
 }

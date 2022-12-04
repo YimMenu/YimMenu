@@ -1,29 +1,12 @@
 #include "script_function.hpp"
 #include "pointers.hpp"
 #include "gta_util.hpp"
+#include "util/scripts.hpp"
 #include <script/scrProgram.hpp>
 #include <script/scrProgramTable.hpp>
 
 namespace big
 {
-	const std::optional<uint32_t> script_function::get_code_location_by_pattern(rage::scrProgram* program, const memory::pattern& pattern)
-	{
-		std::uint32_t code_size = program->m_code_size;
-		for (std::uint32_t i = 0; i < (code_size - pattern.m_bytes.size()); i++)
-		{
-			for (std::uint32_t j = 0; j < pattern.m_bytes.size(); j++)
-				if (pattern.m_bytes[j].has_value())
-					if (pattern.m_bytes[j].value() != *program->get_code_address(i + j))
-						goto incorrect;
-
-			return i;
-incorrect:
-			continue;
-		}
-
-		return std::nullopt;
-	}
-
 	script_function::script_function(const std::string& name, const rage::joaat_t script, const std::string& pattern, int32_t offset) :
 		m_name(name),
 		m_script(script),
@@ -42,7 +25,7 @@ incorrect:
 			if (!program)
 				return;
 
-			auto location = get_code_location_by_pattern(program, m_pattern);
+			auto location = scripts::get_code_location_by_pattern(program, m_pattern);
 			
 			if (!location)
 				LOG(FATAL) << "Failed to find pattern " << m_name << " in script " << program->m_name;

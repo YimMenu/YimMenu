@@ -13,7 +13,6 @@ namespace big
 		int32_t m_ip;
 		std::string m_name;
 
-		static const std::optional<uint32_t> get_code_location_by_pattern(rage::scrProgram* program, const memory::pattern& pattern);
 	public:
 		script_function(const std::string& name, const rage::joaat_t script, const std::string& pattern, int32_t offset);
 		void populate_ip();

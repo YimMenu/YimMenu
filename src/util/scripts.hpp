@@ -8,6 +8,7 @@
 #include "script_local.hpp"
 #include "core/scr_globals.hpp"
 #include "services/players/player_service.hpp"
+#include <memory/pattern.hpp>
 
 namespace big::scripts
 {
@@ -164,5 +165,92 @@ namespace big::scripts
 			// 1F) Cannot find launcher
 			g_notification_service->push_error("Script", "Cannot start script, am_launcher not running locally");
 		}
+	}
+
+	inline const std::optional<uint32_t> get_code_location_by_pattern(rage::scrProgram* program, const memory::pattern& pattern)
+	{
+		std::uint32_t code_size = program->m_code_size;
+		for (std::uint32_t i = 0; i < (code_size - pattern.m_bytes.size()); i++)
+		{
+			for (std::uint32_t j = 0; j < pattern.m_bytes.size(); j++)
+				if (pattern.m_bytes[j].has_value())
+					if (pattern.m_bytes[j].value() != *program->get_code_address(i + j))
+						goto incorrect;
+
+			return i;
+incorrect:
+			continue;
+		}
+
+		return std::nullopt;
+	}
+
+	// we can't use the script patch service for this
+	inline void patch_script(rage::scrProgram* program, std::optional<std::uint32_t> location, std::vector<std::uint8_t> patch, int offset)
+	{
+		std::uint8_t* bytearray = patch.data();
+		if (location)
+			memcpy(program->get_code_address(location.value() + offset), bytearray, patch.size());
+	}
+
+	inline void start_creator_script(rage::joaat_t hash)
+	{
+		static auto read_uint24_t = [](uint8_t* arr)
+		{
+			return arr[0] + (arr[1] << 8) + (arr[2] << 16);
+		};
+
+		if (g->m_mission_creator_thread ||
+			SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("creator")) != 0 ||
+			SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 ||
+			STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() ||
+			CUTSCENE::IS_CUTSCENE_ACTIVE())
+		{
+			g_notification_service->push_warning("Creator", "Cannot start creator now");
+			return;
+		}
+
+		if (MISC::GET_NUMBER_OF_FREE_STACKS_OF_THIS_SIZE(51000) == 0)
+		{
+			g_notification_service->push_warning("Creator", "No free stacks for MISSION stack size");
+		}
+
+
+		while (!SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED(hash))
+		{
+			SCRIPT::REQUEST_SCRIPT_WITH_NAME_HASH(hash);
+			script::get_current()->yield();
+		}
+
+		*scr_globals::terminate_creator.as<bool*>() = false;
+		*scr_globals::mission_creator_exited.as<bool*>() = false;
+		*scr_globals::mission_creator_radar_follows_camera.as<bool*>() = true;
+
+		if (SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH(hash, 51000))
+		{
+			g->m_mission_creator_thread = gta_util::find_script_thread(hash);
+		}
+
+		if (auto program = gta_util::find_script_program(hash))
+		{
+			patch_script(program, get_code_location_by_pattern(program, "2D 02 04 00 ? 38 01 38 00 42 13"), {
+				0x6F, // PUSH_CONST_1
+				0x00  // NOP
+			}, 5); // place anywhere
+
+			patch_script(program, get_code_location_by_pattern(program, "6E 08 2A 56 ? ? 2C ? ? ? 1F 56 ? ? 6F"), {
+				0x00, 0x00, 0x00, 0x00, 0x00
+			}, 0xE); // don't bail on network mode
+
+			if (auto loc = get_code_location_by_pattern(program, "39 04 5D ? ? ? 6E"))
+			{
+				patch_script(program, read_uint24_t(program->get_code_address(loc.value() + 3)), {
+					0x70, // PUSH_CONST_2 0 = mp, 2 = creator, 999 = singleplayer
+					0x2E, 0x00, 0x01  // LEAVE 0 1
+				}, 5); // allow fast zoom in mp
+			}
+		}
+ 
+		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(hash);
 	}
 }
