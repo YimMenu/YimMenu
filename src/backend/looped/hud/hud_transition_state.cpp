@@ -110,18 +110,6 @@ namespace big
 			HUD::BUSYSPINNER_OFF();
 		}
 
-		if (state == eTransitionState::TRANSITION_STATE_FM_TRANSITION_CREATE_PLAYER)
-		{
-			if (g->session.force_session_host && g->session.kick_host_when_forcing_host)
-			{
-				for (auto& [_, plyr] : g_player_service->players())
-				{
-					if (plyr->is_host())
-						kick::lost_connection_kick(plyr);
-				}
-			}
-		}
-
 		if ((int)state > 0 && (int)state < std::size(transition_states))
 		{
 			HUD::BEGIN_TEXT_COMMAND_BUSYSPINNER_ON("STRING");

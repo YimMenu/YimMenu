@@ -16,10 +16,10 @@ namespace rage
 	class scriptResourceEntry
 	{
 	public:
-		scriptResource *m_data;      // 0x00
+		scriptResource* m_data;      // 0x00
 		std::uint32_t m_unk;         // 0x04
 		char m_padding[0x0C];        // 0x0C
-		scriptResourceEntry *m_next; // 0x18
+		scriptResourceEntry* m_next; // 0x18
 	};
 
 	class scriptHandlerNetComponent
@@ -28,7 +28,7 @@ namespace rage
 		virtual ~scriptHandlerNetComponent() = default;
 
 	public:
-		scriptHandler *m_script_handler; // 0x08
+		scriptHandler* m_script_handler; // 0x08
 	};
 
 	class scriptHandler
@@ -46,9 +46,9 @@ namespace rage
 
 		virtual void cleanup_objects() = 0;                                                                   //  3 (0x18)
 
-		virtual scriptId *_0x20() = 0;                                                                        //  4 (0x20)
+		virtual scriptId* _0x20() = 0;                                                                        //  4 (0x20)
 
-		virtual scriptId *get_id() = 0;                                                                       //  5 (0x28)
+		virtual scriptId* get_id() = 0;                                                                       //  5 (0x28)
 
 		// Returns whether the script handler belongs to a networked script.
 		virtual bool is_networked() = 0;                                                                      //  6 (0x30)
@@ -84,14 +84,14 @@ namespace rage
 
 		virtual void _0x98() = 0;                                                                             // 19 (0x98)
 	public:
-		void *m_0x08;                                // 0x08
-		void *m_0x10;                                // 0x10
-		scrThread *m_script_thread;                  // 0x18
+		void* m_0x08;                                // 0x08
+		void* m_0x10;                                // 0x10
+		scrThread* m_script_thread;                  // 0x18
 		atDList<atDScriptObjectNode> m_objects;      // 0x20
-		scriptResource *m_resource_list_head;        // 0x30
-		scriptResource *m_resource_list_tail;        // 0x38
-		void *m_0x40;                                // 0x40
-		scriptHandlerNetComponent *m_net_component;  // 0x48
+		scriptResource* m_resource_list_head;        // 0x30
+		scriptResource* m_resource_list_tail;        // 0x38
+		void* m_0x40;                                // 0x40
+		scriptHandlerNetComponent* m_net_component;  // 0x48
 		std::uint32_t m_0x50;                        // 0x50
 		std::uint32_t m_0x54;                        // 0x54
 		std::uint32_t m_0x58;                        // 0x58
@@ -120,10 +120,10 @@ namespace rage
 		virtual void _0x38(scrThread*) = 0;                                                     // 7 (0x38)
 
 		// Allocates and constructs a script handler.
-		virtual scriptHandler *create_script_handler() = 0;                                     // 8 (0x40)
+		virtual scriptHandler* create_script_handler() = 0;                                     // 8 (0x40)
 
 		// Finds the script handler for a given script id.
-		virtual scriptHandler *get_script_handler(scriptId*) = 0;                               // 9 (0x48)
+		virtual scriptHandler* get_script_handler(scriptId*) = 0;                               // 9 (0x48)
 
 		// Attaches a script thread.
 		virtual void attach_thread(scrThread*) = 0;                                             // 10 (0x50)
@@ -138,13 +138,13 @@ namespace rage
 		virtual void on_player_left(netPlayer*) = 0;                                            // 13 (0x68)
 
 		virtual std::int32_t _0x70() = 0;                                                       // 14 (0x70)
-		virtual void *_0x78() = 0;                                                              // 15 (0x78)
+		virtual void* _0x78() = 0;                                                              // 15 (0x78)
 	public:
 		char m_padding1[0x28];                         // 0x08
 		bool m_initialized;                            // 0x30
 		bool m_initialized2;                           // 0x31
 		char m_padding2[0x0E];                         // 0x32
-		rage::netLoggingInterface *m_logger;           // 0x40
+		rage::netLoggingInterface* m_logger;           // 0x40
 	};
 }
 
@@ -279,9 +279,8 @@ public:
 	uint8_t m_host_migration_flags; //0x0192
 	char pad_0193[29]; //0x0193
 
-	// does not work on local player
 	int get_participant_index(CNetGamePlayer* player);
-    bool is_player_a_participant(CNetGamePlayer* player);
+	bool is_player_a_participant(CNetGamePlayer* player);
 
 	inline bool is_local_player_host()
 	{
