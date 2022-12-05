@@ -407,7 +407,7 @@ namespace big
 
 		struct context_menu
 		{
-			bool enabled = true;
+			bool enabled = false;
 
 			uint8_t allowed_entity_types =
 				static_cast<uint8_t>(ContextEntityType::PED) |
