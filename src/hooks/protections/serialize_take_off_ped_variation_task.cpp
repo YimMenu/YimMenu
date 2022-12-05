@@ -11,7 +11,8 @@ namespace big
 			info->m_parachute_override_model_hash != RAGE_JOAAT("p_parachute_s") ||
 			info->m_parachute_override_model_hash != 0xB0A40E1 ||
 			info->m_parachute_override_model_hash != 0x9464EAE ||
-			info->m_parachute_override_model_hash != 0xC002B75
+			info->m_parachute_override_model_hash != 0xC002B75 ||
+			info->m_parachute_override_model_hash != 0x857E060
 			)
 		{
 			notify::crash_blocked(g->m_syncing_player, "invalid parachute");
