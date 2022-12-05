@@ -3,6 +3,7 @@
 #include "services/pickups/pickup_service.hpp"
 #include "services/players/player_service.hpp"
 #include "services/player_database/player_database_service.hpp"
+#include "services/gta_data/gta_data_service.hpp"
 #include "util/globals.hpp"
 #include "util/misc.hpp"
 #include "util/ped.hpp"
@@ -162,6 +163,21 @@ namespace big
 				ImGui::TreePop();
 			}
 		}
+
+		if (persistent_player* current_player = g_player_database_service->get_player_by_rockstar_id(g_player_service->get_selected()->real_rid); current_player != nullptr)
+		{
+			if (ImGui::TreeNode("Infractions"))
+			{
+				if (!current_player->infractions.empty())
+				{
+					for (auto& infraction : current_player->infractions)
+					{
+						ImGui::BulletText(infraction_desc[(Infraction)infraction]);
+					}
+				}
+				ImGui::TreePop();
+			}
+		}
 		
 		if (cped != nullptr)
 		{
@@ -186,7 +202,7 @@ namespace big
 		{
 			if (ImGui::TreeNode("Weapon Info"))
 			{
-				ImGui::Text("Weapon Hash: %u", cped->m_weapon_manager->m_selected_weapon_hash);
+				ImGui::Text("Weapon Name: %s", g_gta_data_service->weapon_by_hash(cped->m_weapon_manager->m_selected_weapon_hash).m_display_name);
 				ImGui::Text("Weapon Damage: %f", cped->m_weapon_manager->m_weapon_info->m_damage);
 				ImGui::Text("Weapon Damage Mult: %f", cped->m_weapon_manager->m_weapon_info->m_network_player_damage_modifier);
 				ImGui::Text("Mele Damage Mult: %f", player_info->m_melee_weapon_damage_mult);

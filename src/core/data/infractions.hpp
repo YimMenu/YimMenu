@@ -14,7 +14,8 @@ namespace big
 		TRIED_CRASH_PLAYER,
 		TRIED_KICK_PLAYER,
 		TRIED_TELEPORT_PLAYER,
-		BLAME_EXPLOSION_DETECTED
+		BLAME_EXPLOSION_DETECTED,
+		ROCKSTAR_ADMIN_FLAG
 	};
 
     inline std::unordered_map<Infraction, const char*> infraction_desc =
@@ -27,6 +28,7 @@ namespace big
 		{Infraction::TRIED_CRASH_PLAYER, "Tried to crash you"},
 		{Infraction::TRIED_KICK_PLAYER, "Tried to kick you"},
 		{Infraction::TRIED_TELEPORT_PLAYER, "Tried to teleport you"},
-		{Infraction::BLAME_EXPLOSION_DETECTED, "Tried to blame someone for their explosion"}
+		{Infraction::BLAME_EXPLOSION_DETECTED, "Tried to blame someone for their explosion"},
+		{Infraction::ROCKSTAR_ADMIN_FLAG, "Has m_is_rockstar_dev set to true"}
 	};
 }

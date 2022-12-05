@@ -3,6 +3,7 @@
 #include "services/players/player_service.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "util/notify.hpp"
+#include "util/session.hpp"
 #include "packet.hpp"
 #include "gta_util.hpp"
 #include <network/Network.hpp>
@@ -52,11 +53,18 @@ namespace big
 			{
 				if (auto plyr = g_player_service->get_by_id(id))
 				{
+					if(plyr->get_net_game_player()->m_is_rockstar_dev || plyr->get_net_game_player()->m_is_rockstar_qa)
+						session::add_infraction(plyr, Infraction::ROCKSTAR_ADMIN_FLAG);
+
 					if (auto entry = g_player_database_service->get_player_by_rockstar_id(plyr->get_net_data()->m_gamer_handle_2.m_rockstar_id))
 					{
 						plyr->is_modder = entry->is_modder;
+						plyr->is_rockstar_admin = entry->is_rockstar_admin;
 						plyr->block_join = entry->block_join;
 						plyr->block_join_reason = plyr->block_join_reason;
+
+						if(entry->is_rockstar_admin)
+							g_notification_service->push_error("R* Admin Joined", std::format("R* Admin: {} #{} joined", entry->name, entry->rockstar_id));
 
 						if (strcmp(plyr->get_name(), entry->name.data()))
 						{

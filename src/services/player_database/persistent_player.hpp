@@ -12,6 +12,7 @@ namespace big
 		bool block_join = false;
 		int block_join_reason = 1;
 		bool is_modder = false;
+		bool is_rockstar_admin = false;
 		std::unordered_set<int> infractions;
 	};
 
@@ -23,6 +24,7 @@ namespace big
 			{ "block_join", player.block_join },
 			{ "block_join_reason", player.block_join_reason },
 			{ "is_modder", player.is_modder },
+			{ "is_rockstar_admin", player.is_rockstar_admin },
 			{ "infractions", player.infractions },
 		};
 	};
@@ -34,6 +36,7 @@ namespace big
 		set_from_key_or_default(j, "block_join", player.block_join);
 		set_from_key_or_default(j, "block_join_reason", player.block_join_reason);
 		set_from_key_or_default(j, "is_modder", player.is_modder);
+		set_from_key_or_default(j, "is_rockstar_admin", player.is_rockstar_admin);
 		set_from_key_or_default(j, "infractions", player.infractions);
 	}
 };

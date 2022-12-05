@@ -20,6 +20,9 @@ namespace big
 		if (g->window.demo)
 			ImGui::ShowDemoWindow(&g->window.demo);
 
+		if(g->window.chat)
+			view::chat_tabs();
+
 		view::menu_bar();
 	}
 }

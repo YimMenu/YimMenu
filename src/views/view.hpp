@@ -81,7 +81,6 @@ namespace big
 			notifications();
 			spinner();
 
-			chat_tabs();
 			overlay();
 		}
 	};

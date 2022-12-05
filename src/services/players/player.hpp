@@ -50,6 +50,7 @@ namespace big
 
 		bool exposed_desync_protection = false;
 		bool is_modder = false;
+		bool is_rockstar_admin = false;
 		bool block_join = false;
 		uint64_t real_rid = 0;
 		int block_join_reason = 0;
