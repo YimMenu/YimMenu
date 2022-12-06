@@ -376,6 +376,9 @@ namespace big::toxic
 	// the blamed player cannot be the target itself
 	inline void kill_player(player_ptr player, player_ptr to_blame)
 	{
+		if (!player->get_ped() || !to_blame->get_ped())
+			return;
+
 		g_pointers->m_send_network_damage((CEntity*)to_blame->get_ped(), (CEntity*)player->get_ped(), player->get_ped()->m_navigation->get_position(),
 			0, true, RAGE_JOAAT("weapon_explosion"), 10000.0f, 2, 0, (1 << 4), 0, 0, 0, false, false, true, true, nullptr);
 	}
