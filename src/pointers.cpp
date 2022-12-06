@@ -665,7 +665,7 @@ namespace big
 		memory::batch socialclub_batch;
 
 		// Presence Data
-		socialclub_batch.add("PD", "48 8D 05 ? ? ? ? 48 8B F1 48 89 01 48 8D 99 88 02", [this](memory::handle ptr)
+		socialclub_batch.add("PD", "48 8D 05 ? ? ? ? 48 8B F1 48 89 01 48 8D 99 90 00 00 00", [this](memory::handle ptr)
 		{
 			auto presence_data_vft = ptr.add(3).rip().as<PVOID*>();
 			m_update_presence_attribute_int = presence_data_vft[1];

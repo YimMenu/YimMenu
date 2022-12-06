@@ -65,7 +65,7 @@ namespace memory
 		const auto scan_end = module_size - length;
 		for (std::size_t current_idx{}; current_idx != scan_end;)
 		{
-			for (std::size_t sig_idx{ max_idx }; sig_idx >= 0; --sig_idx)
+			for (std::ptrdiff_t sig_idx{ (std::ptrdiff_t)max_idx }; sig_idx >= 0; --sig_idx)
 			{
 				if (sig[sig_idx] && *begin.add(current_idx + sig_idx).as<uint8_t*>() != *sig[sig_idx])
 				{
