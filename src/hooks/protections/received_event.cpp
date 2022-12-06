@@ -623,6 +623,35 @@ namespace big
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
+
+			bool is_entity = buffer->Read<bool>(1);
+			std::int16_t entity_net_id;
+			rage::fvector3 position;
+			std::uint32_t ref_hash;
+
+			if (is_entity)
+				entity_net_id = buffer->Read<std::int16_t>(13);
+			else
+			{
+				position.x = buffer->ReadSignedFloat(19, 1337.0f);
+				position.y = buffer->ReadSignedFloat(19, 1337.0f);
+				position.z = buffer->ReadFloat(19, 1337.0f);
+			}
+
+			bool has_ref = buffer->Read<bool>(1);
+			if (has_ref)
+				ref_hash = buffer->Read<std::uint32_t>(32);
+
+			std::uint32_t sound_hash = buffer->Read<std::uint32_t>(32);
+
+			if (sound_hash == RAGE_JOAAT("Remote_Ring") && plyr)
+			{
+				g_notification_service->push_warning("Protections", std::format("Blocked sound annoyance from {}", plyr->get_name()));
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				return;
+			}
+
+			buffer->Seek(0);
 			break;
 		}
 		case eNetworkEvents::EXPLOSION_EVENT:
