@@ -192,21 +192,48 @@ namespace big
 					cped->m_navigation->get_position()->z
 					);
 
-				ImGui::Text("Distance: %f", math::distance_between_vectors(misc::fvector3_to_Vector3(*g_local_player->m_navigation->get_position()), misc::fvector3_to_Vector3(*cped->m_navigation->get_position())));
-				ImGui::Text("Run Speed: %f", player_info->m_run_speed);
+				ImGui::Text("Distance: %f", math::distance_between_vectors(misc::fvector3_to_Vector3(*g_local_player->get_position()), misc::fvector3_to_Vector3(*cped->get_position())));
+				ImGui::Text("Speed: %f", cped->get_speed());
+				ImGui::Text("Can Be Ragdolled: %s", cped->can_be_ragdolled() ? "Yes" : "No");
 				ImGui::TreePop();
 			}
-		}
 
-		if (player_info != nullptr && cped->m_weapon_manager != nullptr)
-		{
-			if (ImGui::TreeNode("Weapon Info"))
+			if (player_info != nullptr && cped->m_weapon_manager != nullptr)
 			{
-				ImGui::Text("Weapon Name: %s", g_gta_data_service->weapon_by_hash(cped->m_weapon_manager->m_selected_weapon_hash).m_display_name);
-				ImGui::Text("Weapon Damage: %f", cped->m_weapon_manager->m_weapon_info->m_damage);
-				ImGui::Text("Weapon Damage Mult: %f", cped->m_weapon_manager->m_weapon_info->m_network_player_damage_modifier);
-				ImGui::Text("Mele Damage Mult: %f", player_info->m_melee_weapon_damage_mult);
-				ImGui::TreePop();
+				if (ImGui::TreeNode("Weapon Info"))
+				{
+					ImGui::Text("Weapon Name: %s", g_gta_data_service->weapon_by_hash(cped->m_weapon_manager->m_selected_weapon_hash).m_name);
+					ImGui::Text("Weapon Display Name: %s", g_gta_data_service->weapon_by_hash(cped->m_weapon_manager->m_selected_weapon_hash).m_display_name);
+					if(cped->m_weapon_manager->m_weapon_info != nullptr)
+					{
+						ImGui::Text("Weapon Damage: %f", cped->m_weapon_manager->m_weapon_info->m_damage);
+						ImGui::Text("Weapon Damage Mult: %f", cped->m_weapon_manager->m_weapon_info->m_network_player_damage_modifier);
+					}
+					else if (cped->m_weapon_manager->m_vehicle_weapon_info != nullptr)
+					{
+						ImGui::Text("Weapon Damage: %f", cped->m_weapon_manager->m_vehicle_weapon_info->m_damage);
+						ImGui::Text("Weapon Damage Mult: %f", cped->m_weapon_manager->m_vehicle_weapon_info->m_network_player_damage_modifier);
+					}
+					ImGui::Text("Mele Damage Mult: %f", player_info->m_melee_weapon_damage_mult);
+					ImGui::TreePop();
+				}
+			}
+
+			if (cped->m_vehicle != nullptr)
+			{
+				if (ImGui::TreeNode("Vehicle Info"))
+				{
+					const auto vehicle = cped->m_vehicle;
+					ImGui::Text("Health: %f / %f", vehicle->m_health, vehicle->m_maxhealth);
+					ImGui::Text("Engine Health: %f", vehicle->m_engine_health);
+					ImGui::Text("Body Health: %f", vehicle->m_body_health);
+					ImGui::Text("Petrol Tank Health: %f", vehicle->m_petrol_tank_health);
+					ImGui::SameLine();
+					ImGui::Text("Deform God: %s", vehicle->m_deform_god ? "Yes" : "No");
+					ImGui::Text("Num Passengers %i", vehicle->m_num_of_passengers);
+					ImGui::Text("Boost: %f", vehicle->m_boost);
+					ImGui::TreePop();
+				}
 			}
 		}
 

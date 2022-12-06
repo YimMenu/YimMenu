@@ -22,15 +22,18 @@ namespace big
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
 
 		ImGuiListClipper clipper;
-		clipper.Begin((int)g_chat_service->get_msgs().size());
+		clipper.Begin((int)g_chat_service->get_chat_msgs().size());
 		while (clipper.Step())
 		{
 			for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
 			{
-				std::string name = g_chat_service->get_msgs()[i].name;
-				std::string msg = g_chat_service->get_msgs()[i].msg;
-				bool is_team = g_chat_service->get_msgs()[i].is_team;
-				ImGui::Text("%s [%s]  %s", name.c_str(), is_team ? "local" : "all", msg.c_str());
+				chat_msg current_msg = g_chat_service->get_chat_msgs()[i];
+				ImGui::Text(
+					"%s [%s]  %s",
+					current_msg.name.c_str(),
+					current_msg.is_team ? "local" : "all",
+					current_msg.msg.c_str()
+				);
 			}
 		}
 

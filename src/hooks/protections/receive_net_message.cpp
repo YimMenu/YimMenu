@@ -58,7 +58,6 @@ namespace big
 				switch (msgType)
 				{
 				case rage::eNetMessage::MsgTextMessage:
-				case rage::eNetMessage::MsgTextMessage2:
 				{
 					char message[256];
 					buffer.ReadString(message, 256);
@@ -81,6 +80,32 @@ namespace big
 							spam::log_chat(message, player, false);
 
 						g_chat_service->add_msg(player->get_net_game_player(), message, false, false);
+					}
+					break;
+				}
+				case rage::eNetMessage::MsgTextMessage2:
+				{
+					char message[256];
+					buffer.ReadString(message, 256);
+
+					if (player->is_spammer)
+						return true;
+
+					if (spam::is_text_spam(message))
+					{
+						if (g->session.log_chat_messages)
+							spam::log_chat(message, player, true);
+						
+						g_chat_service->add_direct_msg(player->get_net_game_player(), g_player_service->get_self()->get_net_game_player(), message, true);
+						player->is_spammer = true;
+						return true;
+					}
+					else
+					{
+						if (g->session.log_chat_messages)
+							spam::log_chat(message, player, false);
+
+						g_chat_service->add_direct_msg(player->get_net_game_player(), g_player_service->get_self()->get_net_game_player(), message, false);
 					}
 					break;
 				}

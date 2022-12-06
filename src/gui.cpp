@@ -13,7 +13,6 @@ namespace big
 {
 	void gui::dx_init()
 	{
-		static ImVec4 bgColor = ImVec4(0.09f, 0.094f, 0.129f, .9f);
 		static ImVec4 primary = ImVec4(0.172f, 0.380f, 0.909f, 1.f);
 		static ImVec4 secondary = ImVec4(0.443f, 0.654f, 0.819f, 1.f);
 		static ImVec4 whiteBroken = ImVec4(0.792f, 0.784f, 0.827f, 1.f);
@@ -46,7 +45,7 @@ namespace big
 		auto& colors = style.Colors;
 		colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
 		colors[ImGuiCol_TextDisabled] = ImVec4(1.00f, 0.90f, 0.19f, 1.00f);
-		colors[ImGuiCol_WindowBg] = bgColor;
+		colors[ImGuiCol_WindowBg] = ImGui::ColorConvertU32ToFloat4(g->window.color);
 		colors[ImGuiCol_ChildBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
 		colors[ImGuiCol_PopupBg] = ImVec4(0.08f, 0.08f, 0.08f, 0.94f);
 		colors[ImGuiCol_Border] = ImVec4(0.30f, 0.30f, 0.30f, 0.50f);

@@ -444,7 +444,8 @@ namespace big
 			bool local = false;
 			bool auto_scroll = true;
 			bool show_spam = false;
-			std::int8_t dm_player_id = -0;
+			std::int8_t dm_player_id = 0;
+			std::uint64_t dm_player_rid = 0;
 		};
 
 		struct outfit_editor
