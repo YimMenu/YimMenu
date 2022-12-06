@@ -181,19 +181,16 @@ namespace big
 
 		components::small_text("Teleports");
 
-		static int selected_apartment_idx = 1;
-		static int selected_warehouse_idx = 1;
-
-		if (ImGui::BeginCombo("##apartment", apartment_names[selected_apartment_idx]))
+		if (ImGui::BeginCombo("##apartment", apartment_names[g->session.send_to_apartment_idx]))
 		{
 			for (int i = 1; i < apartment_names.size(); i++)
 			{
-				if (ImGui::Selectable(apartment_names[i], i == selected_apartment_idx))
+				if (ImGui::Selectable(apartment_names[i], i == g->session.send_to_apartment_idx))
 				{
-					selected_apartment_idx = i;
+					g->session.send_to_apartment_idx = i;
 				}
 
-				if (i == selected_apartment_idx)
+				if (i == g->session.send_to_apartment_idx)
 				{
 					ImGui::SetItemDefaultFocus();
 				}
@@ -204,18 +201,18 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::button("TP All To Apartment", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_apartment(plyr.second, selected_apartment_idx); }); });
+		components::button("TP All To Apartment", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_apartment(plyr.second, g->session.send_to_apartment_idx); }); });
 
-		if (ImGui::BeginCombo("##warehouse", warehouse_names[selected_warehouse_idx]))
+		if (ImGui::BeginCombo("##warehouse", warehouse_names[g->session.send_to_warehouse_idx]))
 		{
 			for (int i = 1; i < warehouse_names.size(); i++)
 			{
-				if (ImGui::Selectable(warehouse_names[i], i == selected_warehouse_idx))
+				if (ImGui::Selectable(warehouse_names[i], i == g->session.send_to_warehouse_idx))
 				{
-					selected_warehouse_idx = i;
+					g->session.send_to_warehouse_idx = i;
 				}
 
-				if (i == selected_warehouse_idx)
+				if (i == g->session.send_to_warehouse_idx)
 				{
 					ImGui::SetItemDefaultFocus();
 				}
@@ -226,7 +223,7 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::button("TP All To Warehouse", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_warehouse(plyr.second, selected_warehouse_idx); }); });
+		components::button("TP All To Warehouse", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_warehouse(plyr.second, g->session.send_to_warehouse_idx); }); });
 
 		components::button("TP All To Darts", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::Darts); }); });
 		ImGui::SameLine();
