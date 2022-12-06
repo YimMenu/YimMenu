@@ -1,6 +1,8 @@
 #include "views/view.hpp"
 #include "fiber_pool.hpp"
 #include "util/teleport.hpp"
+#include "core/data/region_codes.hpp"
+#include "core/data/language_codes.hpp"
 #include <network/ClanData.hpp>
 
 namespace big
@@ -84,5 +86,49 @@ namespace big
 		ImGui::Checkbox("Is Cheater", &g->spoofing.spoof_cheater);
 		ImGui::Checkbox("Is Rockstar Dev", &g->spoofing.spoof_rockstar_dev);
 		ImGui::Checkbox("Is Rockstar QA", &g->spoofing.spoof_rockstar_qa);
+
+		components::sub_title("Session Attributes");
+		components::small_text("Only works when session host");
+
+		ImGui::Checkbox("Region", &g->spoofing.spoof_session_region_type);
+		if (g->spoofing.spoof_session_region_type)
+		{
+			ImGui::SameLine();
+			if (ImGui::BeginCombo("###region_select", regions[g->spoofing.session_region_type].name))
+			{
+				for (const auto& region : regions)
+				{
+					if (ImGui::Selectable(region.name, g->spoofing.session_region_type == region.id))
+					{
+						g->spoofing.session_region_type = region.id;
+					}
+				}
+				ImGui::EndCombo();
+			}
+		}
+		ImGui::Checkbox("Language", &g->spoofing.spoof_session_language);
+		if (g->spoofing.spoof_session_language)
+		{
+			ImGui::SameLine();
+
+			if (ImGui::BeginCombo("###language_select", languages[g->spoofing.session_language].name))
+			{
+				for (const auto& language : languages)
+				{
+					if (ImGui::Selectable(language.name, g->spoofing.session_language == language.id))
+					{
+						g->spoofing.session_language = language.id;
+					};
+				}
+				ImGui::EndCombo();
+			}
+		}
+
+		ImGui::Checkbox("Player Count", &g->spoofing.spoof_session_player_count);
+		if (g->spoofing.spoof_session_player_count)
+		{
+			ImGui::SameLine();
+			ImGui::InputInt("###player_count", &g->spoofing.session_player_count);
+		}
 	}
 }

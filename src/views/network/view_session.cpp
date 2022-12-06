@@ -5,6 +5,9 @@
 #include "gta_util.hpp"
 #include "util/notify.hpp"
 #include "util/scripts.hpp"
+#include "util/toxic.hpp"
+#include "core/data/apartment_names.hpp"
+#include "core/data/warehouse_names.hpp"
 
 namespace big
 {
@@ -55,6 +58,7 @@ namespace big
 		}
 
 		components::sub_title("Chat");
+		ImGui::Checkbox("Auto-kick Chat Spammers", &g->session.kick_chat_spammers);
 		ImGui::Checkbox("Disable Filter", &g->session.disable_chat_filter);
 		ImGui::Checkbox("Log Chat Messages", &g->session.log_chat_messages);
 		ImGui::Checkbox("Log Text Messages", &g->session.log_text_messages);
@@ -79,6 +83,23 @@ namespace big
 		ImGui::Checkbox("Force Session Host", &g->session.force_session_host);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Join another session to apply changes. The original host of the session must leave or be kicked. This feature is easily detectable by other mod menus, use with caution");
+		ImGui::SameLine();
+		if (g->session.force_session_host)
+		{
+			ImGui::SameLine();
+			ImGui::Checkbox("Kick Host During Join", &g->session.kick_host_when_forcing_host);
+		}
+
+		if (ImGui::Checkbox("Force Script Host", &g->session.force_script_host))
+		{
+			if (g->session.force_script_host)
+				g_fiber_pool->queue_job([]
+			{
+				scripts::force_host(RAGE_JOAAT("freemode"));
+				if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")); script && script->m_net_component)
+					script->m_net_component->block_host_migration(true);
+			});
+		}
 
 		components::sub_title("Remote Name Spoofing");
 		ImGui::Checkbox("Spoof Other Players' Names", &g->session.name_spoof_enabled);
@@ -107,8 +128,128 @@ namespace big
 
 		components::sub_title("All Players");
 		ImGui::Checkbox("Off The Radar", &g->session.off_radar_all);
+		ImGui::SameLine();
 		ImGui::Checkbox("Never Wanted", &g->session.never_wanted_all);
+		ImGui::SameLine();
 		ImGui::Checkbox("Semi Godmode", &g->session.semi_godmode_all);
+
+		ImGui::Checkbox("Explosion Karma", &g->session.explosion_karma);
+		ImGui::SameLine();
+		ImGui::Checkbox("Damage Karma", &g->session.damage_karma);
+
+		static int global_wanted_level = 0;
+
+		if (ImGui::SliderInt("Wanted Level", &global_wanted_level, 0, 5))
+		{
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = global_wanted_level;
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Force", &g->session.wanted_level_all))
+		{
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(212).as<Player*>() = __rdtsc() + 32;
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = global_wanted_level;
+		}
+
+		components::button("Kill Everyone", [] { g_player_service->iterate([](auto& plyr) { toxic::kill_player(plyr.second, g_player_service->get_self()); }); });
+
+		ImGui::SameLine();
+
+		components::button("Turn Everyone Into Beast", [] { toxic::turn_everyone_into_beast(); });
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Including you");
+
+		components::button("Give All Weapons", [] { g_player_service->iterate([](auto& plyr) { toxic::give_all_weapons(plyr.second); script::get_current()->yield(450ms); }); });
+		ImGui::SameLine();
+		components::button("Remove All Weapons", [] { g_player_service->iterate([](auto& plyr) { toxic::remove_all_weapons(plyr.second); }); });
+
+		components::button("CEO Kick", [] { 
+			g_player_service->iterate([](auto& plyr) 
+			{
+				if (*scr_globals::gpbd_fm_3.at(plyr.second->id(), scr_globals::size::gpbd_fm_3).at(10).as<int*>() != -1)
+					toxic::ceo_kick(plyr.second); 
+			}); 
+		});
+
+		components::button("CEO Ban", [] { 
+			g_player_service->iterate([](auto& plyr) 
+			{ 
+				if (*scr_globals::gpbd_fm_3.at(plyr.second->id(), scr_globals::size::gpbd_fm_3).at(10).as<int*>() != -1)
+					toxic::ceo_ban(plyr.second); 
+			}); 
+		});
+
+		components::small_text("Teleports");
+
+		if (ImGui::BeginCombo("##apartment", apartment_names[g->session.send_to_apartment_idx]))
+		{
+			for (int i = 1; i < apartment_names.size(); i++)
+			{
+				if (ImGui::Selectable(apartment_names[i], i == g->session.send_to_apartment_idx))
+				{
+					g->session.send_to_apartment_idx = i;
+				}
+
+				if (i == g->session.send_to_apartment_idx)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+
+		ImGui::SameLine();
+
+		components::button("TP All To Apartment", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_apartment(plyr.second, g->session.send_to_apartment_idx); }); });
+
+		if (ImGui::BeginCombo("##warehouse", warehouse_names[g->session.send_to_warehouse_idx]))
+		{
+			for (int i = 1; i < warehouse_names.size(); i++)
+			{
+				if (ImGui::Selectable(warehouse_names[i], i == g->session.send_to_warehouse_idx))
+				{
+					g->session.send_to_warehouse_idx = i;
+				}
+
+				if (i == g->session.send_to_warehouse_idx)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+
+		ImGui::SameLine();
+
+		components::button("TP All To Warehouse", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_warehouse(plyr.second, g->session.send_to_warehouse_idx); }); });
+
+		components::button("TP All To Darts", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::Darts); }); });
+		ImGui::SameLine();
+		components::button("TP All To Flight School", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::PilotSchool); }); });
+		ImGui::SameLine();
+		components::button("TP All To Map Center", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::ArmWresling); }); });
+
+		components::button("TP All To Skydive", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::Skydive); }); });
+		ImGui::SameLine();
+		components::button("TP All To Cayo Perico", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_island(plyr.second); }); });
+		ImGui::SameLine();
+		components::button("TP All To MOC", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 81); }); });
+
+		components::button("TP All To Casino", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 123); }); });
+		ImGui::SameLine();
+		components::button("TP All To Penthouse", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 124); }); });
+		ImGui::SameLine();
+		components::button("TP All To Arcade", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 128); }); });
+
+		components::button("TP All To Music Locker", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 146); }); });
+		ImGui::SameLine();
+		components::button("TP All To Record A Studios", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 148); }); });
+		ImGui::SameLine();
+		components::button("TP All To Custom Auto Shop", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 149); }); });
+
+		components::button("TP All To Agency", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 155); }); });
 
 		components::sub_title("Event Starter");
 		
@@ -129,5 +270,40 @@ namespace big
 		components::button("Hunt The Beast", [] { scripts::start_launcher_script(47); });
 		components::button("Business Battles", [] { scripts::start_launcher_script(114); });
 		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
+		components::button("One-On-One Deathmatch", [] { scripts::start_launcher_script(187); });
+		components::button("Impromptu Race", [] { scripts::start_launcher_script(16); });
+		components::button("Flight School", [] { scripts::start_launcher_script(186); });
+		components::button("Golf", [] { scripts::start_launcher_script(183); });
+		components::button("Tutorial", [] { scripts::start_launcher_script(20); });
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Only works on joining players");
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
+		components::button("Gunslinger", [] { scripts::start_launcher_script(201); });
+		components::button("Space Monkey", [] { scripts::start_launcher_script(206); });
+		components::button("Wizard", [] { scripts::start_launcher_script(202); });
+		components::button("QUB3D", [] { scripts::start_launcher_script(207); });
+		components::button("Camhedz", [] { scripts::start_launcher_script(208); });
+		ImGui::EndGroup();
+
+		ImGui::Checkbox("Disable Pedestrians", &g->session.disable_peds);
+		ImGui::SameLine();
+		ImGui::Checkbox("Disable Traffic", &g->session.disable_traffic);
+		ImGui::SameLine();
+		ImGui::Checkbox("Force Thunder", &g->session.force_thunder);
+
+		components::sub_title("Script Host Features");
+		ImGui::Checkbox("Disable CEO Money", &g->session.block_ceo_money);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Blocks CEO money drops across the entire session. This can also break other stuff, use with caution");
+		ImGui::SameLine();
+		ImGui::Checkbox("Randomize CEO Colors", &g->session.randomize_ceo_colors);
 	}
 }

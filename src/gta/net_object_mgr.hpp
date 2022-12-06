@@ -4,6 +4,7 @@
 #include "../pointers.hpp"
 #include "replay.hpp"
 
+class CNetGamePlayer;
 
 namespace rage
 {
@@ -55,7 +56,6 @@ namespace rage
 	};
 
 	class netObject;
-	class CNetGamePlayer;
 
 	class netObjectMgrBase
 	{

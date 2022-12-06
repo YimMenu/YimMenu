@@ -96,12 +96,6 @@ namespace big
 			m_swapchain = ptr.add(3).rip().as<IDXGISwapChain**>();
 		});
 
-		// Model Spawn Bypass
-		main_batch.add("MSB", "48 8B C8 FF 52 30 84 C0 74 05 48", [this](memory::handle ptr)
-		{
-			m_model_spawn_bypass = ptr.add(8).as<PVOID>();
-		});
-
 		// World Model Spawn Bypass
 		main_batch.add("WMSB", "48 85 C0 0F 84 ? ? ? ? 8B 48 50", [this](memory::handle ptr)
 		{
@@ -241,7 +235,7 @@ namespace big
 		// Blame Explode
 		main_batch.add("BE", "0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8", [this](memory::handle ptr)
 		{
-			m_blame_explode = ptr.as<decltype(m_blame_explode)>();
+			m_blame_explode = memory::byte_patch::make(ptr.as<std::uint16_t*>(), 0xE990).get();
 		});
 
 		// Send NET Info to Lobby
@@ -469,7 +463,7 @@ namespace big
 		// Script VM
 		main_batch.add("VM", "E8 ? ? ? ? 48 85 FF 48 89 1D", [this](memory::handle ptr)
 		{
-			m_script_vm = ptr.add(1).rip().as<PVOID>();
+			m_script_vm = ptr.add(1).rip().as<functions::script_vm>();
 		});
 
 		// Generate UUID
@@ -586,15 +580,83 @@ namespace big
 			memory::byte_patch::make(ptr.add(1).rip().as<void*>(), std::to_array({ 0xB0, 0x01, 0xC3 }))->apply(); // has no observable side effects
 		});
 
+		// Send Network Damage
+		main_batch.add("SND", "E8 ? ? ? ? E9 E9 01 00 00 48 8B CB", [this](memory::handle ptr)
+		{
+			m_send_network_damage = ptr.add(1).rip().as<functions::send_network_damage>();
+		});
+
+		// Request Ragdoll
+		main_batch.add("RR", "E8 ? ? ? ? 09 B3 ? ? ? ? 48 8B 5C 24 ?", [this](memory::handle ptr)
+		{
+			m_request_ragdoll = ptr.add(1).rip().as<functions::request_ragdoll>();
+		});
+
+		// Get Connection Peer & Send Remove Gamer Command
+		main_batch.add("GCP&SRGC", "8D 42 FF 83 F8 FD 77 3D", [this](memory::handle ptr)
+		{
+			m_get_connection_peer = ptr.add(23).rip().as<functions::get_connection_peer>();
+			m_send_remove_gamer_cmd = ptr.add(65).rip().as<functions::send_remove_gamer_cmd>();
+		});
+
+		// Handle Remove Gamer Command
+		main_batch.add("HRGC", "41 FF C6 FF C7", [this](memory::handle ptr)
+		{
+			m_handle_remove_gamer_cmd = ptr.sub(0x6E).as<functions::handle_remove_gamer_cmd>();
+		});
+
+		// Broadcast Net Array
+		main_batch.add("BNA", "48 89 5C 24 ? 48 89 54 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 40 48 8B 05 ? ? ? ? 66 44 89 4C 24 ?", [this](memory::handle ptr)
+		{
+			m_broadcast_net_array = ptr.as<PVOID>();
+		});
+
+		// Broadcast Net Array Patch
+		main_batch.add("BP", "74 73 FF 90 ? ? ? ? 8B D5 4C 8B 00 48 8B C8 41 FF 50 30", [this](memory::handle ptr)
+		{
+			m_broadcast_patch = memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB).get();
+		});
+
 		// Rage Security
 		main_batch.add("RS", "48 8B ? ? ? ? ? 33 F6 E9 ? ? ? ? 55 48 8D ? ? ? ? ? 48 87 2C 24 C3 48 8B 45 50 0F B6 00", [this](memory::handle ptr)
 		{
 			m_security = ptr.add(3).rip().as<rage::atSingleton<rage::RageSecurity>*>();
 		});
 
+		// Send Session Matchmaking Attributes
+		main_batch.add("SPDM", "E8 ? ? ? ? 84 C0 0F 84 19 01 00 00 48 8D 4D A0", [this](memory::handle ptr)
+		{
+			m_send_session_matchmaking_attributes = ptr.add(1).rip().as<PVOID>();
+		});
+
+		// Serialize Take Off Ped Variation Task
+		main_batch.add("STOPVT", "40 55 53 57 41 56 48 8B EC 48 83 EC 68", [this](memory::handle ptr)
+		{
+			m_serialize_take_off_ped_variation_task = ptr.as<PVOID>();
+		});
+
+		// Chat Data
 		main_batch.add("CD", "48 8B 05 ? ? ? ? 0F 45 DF", [this](memory::handle ptr)
 		{
 			m_chat_data = ptr.add(3).rip().as<ChatData**>();
+		});
+
+		// Create Script Handler
+		main_batch.add("CSH", "48 8D 05 ? ? ? ? 4C 8D 0D ? ? ? ? 41 83 C8 FF 48 89 03 89 53 70 88 53 74 4C 89 4B 68 48 89 93", [this](memory::handle ptr)
+		{
+			m_create_script_handler = *(ptr.add(3).rip().as<std::uint64_t**>() + 8);
+		});
+
+		// Set Script As Networked
+		main_batch.add("SSAN", "48 89 5C 24 10 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 70 FD", [this](memory::handle ptr)
+		{
+			m_set_script_as_networked = ptr.as<PVOID>();
+		});
+
+		// Creator Warp Cheat Triggered Patch
+		main_batch.add("CW", "74 44 E8 ? ? ? ? 80 65 2B F8 48 8D 0D ? ? ? ? 48 89 4D 17 48 89 7D 1F 89 7D 27 C7 45", [](memory::handle ptr)
+		{
+			memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB)->apply();
 		});
 
 		auto mem_region = memory::module("GTA5.exe");
@@ -603,7 +665,7 @@ namespace big
 		memory::batch socialclub_batch;
 
 		// Presence Data
-		socialclub_batch.add("PD", "48 8D 05 ? ? ? ? 48 8B F1 48 89 01 48 8D 99 88 02", [this](memory::handle ptr)
+		socialclub_batch.add("PD", "48 8D 05 ? ? ? ? 48 8B F1 48 89 01 48 8D 99 90 00 00 00", [this](memory::handle ptr)
 		{
 			auto presence_data_vft = ptr.add(3).rip().as<PVOID*>();
 			m_update_presence_attribute_int = presence_data_vft[1];

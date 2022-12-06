@@ -2,7 +2,6 @@
 #include "common.hpp"
 #include "detour_hook.hpp"
 #include "gta/fwddec.hpp"
-#include "gta/net_game_event.hpp"
 #include "gta/script_thread.hpp"
 #include "vmt_hook.hpp"
 #include "MinHook.h"
@@ -18,12 +17,26 @@ class SessionSortEntry;
 class RemoteGamerInfoMsg;
 class CMsgTextMessage;
 class CNetGamePlayerDataMsg;
+class MatchmakingAttributes;
+class CNetworkIncrementStatEvent;
+class CScriptedGameEvent;
+class NetworkGameFilterMatchmakingComponent;
+class ClonedTakeOffPedVariationInfo;
 
 namespace rage
 {
 	class rlMetric;
 	class snSession;
 	class JSONNode;
+	class netArrayHandlerBase;
+	class CEventNetwork;
+	class CSyncDataBase;
+	class netConnectionManager;
+
+	namespace netConnection
+	{
+		class InFrame;
+	}
 }
 
 namespace big
@@ -104,6 +117,17 @@ namespace big
 		static bool serialize_join_request_message(RemoteGamerInfoMsg* info, void* data, int size, int* bits_serialized);
 
 		static bool start_matchmaking_find_sessions(int profile_index, int available_slots, NetworkGameFilterMatchmakingComponent* filter, unsigned int max_sessions, rage::rlSessionInfo* results, int* num_sessions_found, int* status);
+
+		static unsigned int broadcast_net_array(rage::netArrayHandlerBase* _this, CNetGamePlayer* target, rage::datBitBuffer* bit_buffer, uint16_t counter, uint32_t* elem_start, bool silent);
+
+		static bool send_session_matchmaking_attributes(void* a1, rage::rlSessionInfo* info, std::uint64_t session_id, bool use_session_id, MatchmakingAttributes* attributes);
+
+		static void serialize_take_off_ped_variation_task(ClonedTakeOffPedVariationInfo* info, rage::CSyncDataBase* serializer);
+
+		static CGameScriptHandler* create_script_handler(CGameScriptHandlerMgr* this_, void* unk);
+		static bool script_handler_is_networked(CGameScriptHandler* this_);
+		static bool script_handler_dtor(CGameScriptHandler* this_, bool free_memory);
+		static void set_script_as_networked(void*, rage::scrThread* thread, int instance_id);
 	};
 
 	class minhook_keepalive
@@ -187,6 +211,9 @@ namespace big
 		{
 			return detour_hook_helper::hook_to_detour_hook_helper<detour_function>::m_detour_hook->get_original<decltype(detour_function)>();
 		}
+
+		void hook_script_handler(CGameScriptHandler* handler);
+		std::unordered_map<CGameScriptHandler*, std::unique_ptr<vmt_hook>> m_handler_hooks;
 
 	private:
 		bool m_enabled{};

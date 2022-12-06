@@ -26,6 +26,8 @@ namespace big
 
 	void player_service::do_cleanup()
 	{
+		m_player_to_use_end_session_kick.reset();
+		m_player_to_use_complaint_kick.reset();
 		m_selected_player = m_dummy;
 		m_players.clear();
 	}
@@ -82,12 +84,20 @@ namespace big
 
 	void player_service::player_leave(CNetGamePlayer* net_game_player)
 	{
-		if (net_game_player == nullptr) return;
+		if (net_game_player == nullptr) 
+			return;
+
 		if (m_selected_player && m_selected_player->equals(net_game_player))
 			m_selected_player = m_dummy;
 
 		if (auto it = std::find_if(m_players.begin(), m_players.end(), [net_game_player](const auto& p) { return p.second->id() == net_game_player->m_player_id; }); it != m_players.end())
 		{
+			if (m_player_to_use_end_session_kick == it->second)
+				m_player_to_use_end_session_kick = std::nullopt;
+
+			if (m_player_to_use_complaint_kick == it->second)
+				m_player_to_use_complaint_kick = std::nullopt;
+
 			m_players.erase(it);
 		}
 	}

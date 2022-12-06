@@ -60,8 +60,7 @@ namespace big
 		memory::byte_patch* m_max_wanted_level;
 		memory::byte_patch* m_max_wanted_level_2;
 
-		PVOID m_blame_explode;
-		PVOID m_model_spawn_bypass;
+		memory::byte_patch* m_blame_explode;
 		PVOID m_world_model_spawn_bypass;
 		PVOID m_native_return;
 		PVOID m_get_label_text;
@@ -154,7 +153,7 @@ namespace big
 		functions::send_chat_message m_send_chat_message{};
 
 		PVOID m_init_native_tables{};
-		PVOID m_script_vm{};
+		functions::script_vm m_script_vm{};
 
 		functions::generate_uuid m_generate_uuid{};
 		std::uint64_t* m_host_token{};
@@ -182,11 +181,27 @@ namespace big
 
 		PVOID m_process_matchmaking_find_response;
 		PVOID m_serialize_player_data_msg;
-		// PVOID m_apply_join_request_data;
 
 		PVOID m_serialize_join_request_message;
 
+		functions::send_network_damage m_send_network_damage;
+		functions::request_ragdoll m_request_ragdoll;
+
+		functions::get_connection_peer m_get_connection_peer{};
+		functions::send_remove_gamer_cmd m_send_remove_gamer_cmd{};
+		functions::handle_remove_gamer_cmd m_handle_remove_gamer_cmd{};
+
+		PVOID m_broadcast_net_array{};
+		memory::byte_patch* m_broadcast_patch;
+
 		rage::atSingleton<rage::RageSecurity>* m_security;
+
+		PVOID m_send_session_matchmaking_attributes;
+
+		PVOID m_serialize_take_off_ped_variation_task;
+
+		PVOID m_create_script_handler{};
+		PVOID m_set_script_as_networked{};
 	};
 
 	inline pointers* g_pointers{};

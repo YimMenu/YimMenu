@@ -1,4 +1,5 @@
 #include "hooking.hpp"
+#include "gta/net_game_event.hpp"
 #include <network/CNetGamePlayer.hpp>
 
 namespace big

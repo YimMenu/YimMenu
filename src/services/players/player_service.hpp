@@ -20,7 +20,6 @@ namespace big
 		player_ptr m_dummy = std::make_shared<player>(nullptr);
 		player_ptr m_selected_player;
 	public:
-
 		player_service();
 		~player_service();
 
@@ -49,6 +48,8 @@ namespace big
 
 		void set_selected(player_ptr plyr);
 
+		std::optional<player_ptr> m_player_to_use_end_session_kick = std::nullopt;
+		std::optional<player_ptr> m_player_to_use_complaint_kick = std::nullopt;
 	};
 
 	inline player_service* g_player_service{};

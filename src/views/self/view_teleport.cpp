@@ -21,6 +21,8 @@ namespace big
 			teleport::to_objective();
 		});
 
+		ImGui::Checkbox("Auto-Teleport To Waypoint", &g->self.auto_tp);
+
 		ImGui::Text("Vehicles:");
 
 		components::button("Teleport to Last Vehicle", []

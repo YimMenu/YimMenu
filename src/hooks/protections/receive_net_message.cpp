@@ -4,6 +4,7 @@
 #include "gta_util.hpp"
 #include "util/session.hpp"
 #include "util/spam.hpp"
+#include "util/kick.hpp"
 #include <network/Network.hpp>
 
 namespace big
@@ -70,6 +71,8 @@ namespace big
 						if (g->session.log_chat_messages)
 							spam::log_chat(message, player, true);
 						player->is_spammer = true;
+						if (g->session.kick_chat_spammers)
+							kick::breakup_kick(player);
 						return true;
 					}
 					else

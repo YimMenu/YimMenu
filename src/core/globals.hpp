@@ -1,7 +1,7 @@
 #pragma once
-#include "rage/rlSessionInfo.hpp"
-#include "weapon/CAmmoInfo.hpp"
-#include "weapon/CWeaponInfo.hpp"
+#include <rage/rlSessionInfo.hpp>
+#include <weapon/CAmmoInfo.hpp>
+#include <weapon/CWeaponInfo.hpp>
 #include "enums.hpp"
 #include "file_manager.hpp"
 #include "imgui.h"
@@ -11,6 +11,7 @@ class CNetGamePlayer;
 
 namespace rage
 {
+	class scrThread;
 	class scrProgram;
 }
 
@@ -87,6 +88,7 @@ namespace big
 				pair vehicle_kick{};
 				pair teleport_to_warehouse{};
 				pair start_activity{};
+				pair null_function_kick{};
 			} script_event_handler{};
 
 			pair gta_thread_kill{};
@@ -188,6 +190,11 @@ namespace big
 			bool force_show_hud = false;
 			bool mobile_radio = false;
 			bool fast_respawn = false;
+			bool auto_tp = false;
+
+			// do not save below entries
+
+			bool dance_mode = false;
 		};
 
 		struct session
@@ -206,6 +213,7 @@ namespace big
 			bool log_text_messages = false;
 			bool decloak_players = false;
 			bool force_session_host = false;
+			bool force_script_host = false;
 			bool player_magnet_enabled = false;
 			int player_magnet_count = 32;
 			bool is_team = false;
@@ -214,10 +222,27 @@ namespace big
 			std::string spoofed_name = "";
 			bool join_in_sctv_slots = false;
 
+			bool kick_chat_spammers = false;
+			bool kick_host_when_forcing_host = false;
+
+			bool explosion_karma = false;
+			bool damage_karma = false;
+
+			bool disable_traffic = false;
+			bool disable_peds = false;
+			bool force_thunder = false;
+
+			bool block_ceo_money = false;
+			bool randomize_ceo_colors = false;
+
+			int send_to_apartment_idx = 1;
+			int send_to_warehouse_idx = 1;
+
 			// not to be saved
 			bool never_wanted_all = false;
 			bool off_radar_all = false;
 			bool semi_godmode_all = false;
+			bool wanted_level_all = false;
 		};
 
 		struct settings {
@@ -275,6 +300,13 @@ namespace big
 			std::string crew_tag = "";
 			bool rockstar_crew = false;
 			bool square_crew_tag = false;
+
+			bool spoof_session_region_type = false;
+			int session_region_type = 0;
+			bool spoof_session_language = false;
+			int session_language = 0;
+			bool spoof_session_player_count = false;
+			int session_player_count = 25;
 		};
 
 		struct tunables {
@@ -378,7 +410,7 @@ namespace big
 
 		struct context_menu
 		{
-			bool enabled = true;
+			bool enabled = false;
 
 			uint8_t allowed_entity_types =
 				static_cast<uint8_t>(ContextEntityType::PED) |
@@ -449,6 +481,16 @@ namespace big
 
 		int m_remote_controller_vehicle = -1;
 		int m_remote_controlled_vehicle = -1;
+
+		int m_mod_net_id = -1;
+		int m_test_net_id = -1;
+
+		rage::scrThread* m_hunt_the_beast_thread = nullptr;
+
+		rage::scrThread* m_dance_thread = nullptr;
+		rage::scrProgram* m_dance_program = nullptr;
+
+		rage::scrThread* m_mission_creator_thread = nullptr;
 
 		debug debug{};
 		tunables tunables{};
@@ -577,6 +619,8 @@ namespace big
 				script_handler.teleport_to_warehouse.notify = script_handler_j["teleport_to_warehouse"]["notify"];
 				script_handler.start_activity.log = script_handler_j["start_activity"]["log"];
 				script_handler.start_activity.notify = script_handler_j["start_activity"]["notify"];
+				script_handler.null_function_kick.log = script_handler_j["null_function_kick"]["log"];
+				script_handler.null_function_kick.notify = script_handler_j["null_function_kick"]["notify"];
 			}
 
 			g->notifications.send_net_info_to_lobby.log = j["notifications"]["send_net_info_to_lobby"]["log"];
@@ -651,12 +695,14 @@ namespace big
 			this->self.no_water_collision = j["self"]["no_water_collision"];
 			this->self.mobile_radio = j["self"]["mobile_radio"];
 			this->self.fast_respawn = j["self"]["fast_respawn"];
+			this->self.auto_tp = j["self"]["auto_tp"];
 
 			this->session.log_chat_messages = j["session"]["log_chat_messages"];
 			this->session.log_text_messages = j["session"]["log_text_messages"];
 			this->session.disable_chat_filter = j["session"]["disable_chat_filter"];
 			this->session.decloak_players = j["session"]["decloak_players"];
 			this->session.force_session_host = j["session"]["force_session_host"];
+			this->session.force_script_host = j["session"]["force_script_host"];
 			this->session.player_magnet_enabled = j["session"]["player_magnet_enabled"];
 			this->session.player_magnet_count = j["session"]["player_magnet_count"];
 			this->session.is_team = j["session"]["is_team"];
@@ -664,6 +710,22 @@ namespace big
 			this->session.advertise_menu = j["session"]["advertise_menu"];
 			this->session.spoofed_name = j["session"]["spoofed_name"];
 			this->session.join_in_sctv_slots = j["session"]["join_in_sctv_slots"];
+
+			this->session.kick_chat_spammers = j["session"]["kick_chat_spammers"];
+			this->session.kick_host_when_forcing_host = j["session"]["kick_host_when_forcing_host"];
+
+			this->session.explosion_karma = j["session"]["explosion_karma"];
+			this->session.damage_karma = j["session"]["damage_karma"];
+
+			this->session.disable_peds = j["session"]["disable_peds"];
+			this->session.disable_traffic = j["session"]["disable_traffic"];
+			this->session.force_thunder = j["session"]["force_thunder"];
+
+			this->session.block_ceo_money = j["session"]["block_ceo_money"];
+			this->session.randomize_ceo_colors = j["session"]["randomize_ceo_colors"];
+
+			this->session.send_to_apartment_idx = j["session"]["send_to_apartment_idx"];
+			this->session.send_to_warehouse_idx = j["session"]["send_to_warehouse_idx"];
 
 			this->settings.dev_dlc = j["settings"]["dev_dlc"];
 			this->settings.hotkeys.menu_toggle = j["settings"]["hotkeys"]["menu_toggle"];
@@ -703,6 +765,13 @@ namespace big
 
 			this->spoofing.spoof_hide_god = j["spoofing"]["spoof_hide_god"];
 			this->spoofing.spoof_hide_spectate = j["spoofing"]["spoof_hide_spectate"];
+
+			this->spoofing.spoof_session_region_type = j["spoofing"]["spoof_session_region_type"];
+			this->spoofing.spoof_session_language = j["spoofing"]["spoof_session_language"];
+			this->spoofing.spoof_session_player_count = j["spoofing"]["spoof_session_player_count"];
+			this->spoofing.session_region_type = j["spoofing"]["session_region_type"];
+			this->spoofing.session_language = j["spoofing"]["session_language"];
+			this->spoofing.session_player_count = j["spoofing"]["session_player_count"];
 
 			this->vehicle.speed_unit = (SpeedUnit)j["vehicle"]["speed_unit"];
 			this->vehicle.god_mode = j["vehicle"]["god_mode"];
@@ -889,7 +958,8 @@ namespace big
 								{ "tse_sender_mismatch", return_notify_pair(script_handler_notifications.tse_sender_mismatch) },
 								{ "vehicle_kick", return_notify_pair(script_handler_notifications.vehicle_kick) },
 								{ "teleport_to_warehouse", return_notify_pair(script_handler_notifications.teleport_to_warehouse) },
-								{ "start_activity", return_notify_pair(script_handler_notifications.start_activity) }
+								{ "start_activity", return_notify_pair(script_handler_notifications.start_activity) },
+								{ "null_function_kick", return_notify_pair(script_handler_notifications.null_function_kick) }
 							}
 						},
 						{ "send_net_info_to_lobby", return_notify_pair(g->notifications.send_net_info_to_lobby) },
@@ -927,7 +997,7 @@ namespace big
 								{ "transaction_error", script_handler_protections.transaction_error },
 								{ "vehicle_kick", script_handler_protections.vehicle_kick },
 								{ "teleport_to_warehouse", script_handler_protections.teleport_to_warehouse },
-								{ "start_activity", script_handler_protections.start_activity },
+								{ "start_activity", script_handler_protections.start_activity }
 							}
 						},
 
@@ -995,6 +1065,7 @@ namespace big
 						{ "no_water_collision", this->self.no_water_collision },
 						{ "mobile_radio", this->self.mobile_radio },
 						{ "fast_respawn", this->self.fast_respawn },
+						{ "auto_tp", this->self.auto_tp }
 					}
 				},
 				{
@@ -1004,13 +1075,25 @@ namespace big
 						{ "disable_chat_filter", this->session.disable_chat_filter },
 						{ "decloak_players", this->session.decloak_players },
 						{ "force_session_host", this->session.force_session_host },
+						{ "force_script_host", this->session.force_script_host },
 						{ "player_magnet_enabled", this->session.player_magnet_enabled },
 						{ "player_magnet_count", this->session.player_magnet_count },
 						{ "is_team", this->session.is_team },
 						{ "name_spoof_enabled", this->session.name_spoof_enabled },
 						{ "advertise_menu", this->session.advertise_menu },
 						{ "spoofed_name", this->session.spoofed_name },
-						{ "join_in_sctv_slots", this->session.join_in_sctv_slots }
+						{ "join_in_sctv_slots", this->session.join_in_sctv_slots },
+						{ "kick_chat_spammers", this->session.kick_chat_spammers },
+						{ "kick_host_when_forcing_host", this->session.kick_host_when_forcing_host },
+						{ "explosion_karma", this->session.explosion_karma },
+						{ "damage_karma", this->session.damage_karma },
+						{ "disable_peds", this->session.disable_peds },
+						{ "disable_traffic", this->session.disable_traffic },
+						{ "force_thunder", this->session.force_thunder },
+						{ "block_ceo_money", this->session.block_ceo_money },
+						{ "randomize_ceo_colors", this->session.randomize_ceo_colors },
+						{ "send_to_apartment_idx", this->session.send_to_apartment_idx },
+						{ "send_to_warehouse_idx", this->session.send_to_warehouse_idx }
 					}
 				},
 				{
@@ -1070,6 +1153,12 @@ namespace big
 						{ "square_crew_tag", this->spoofing.square_crew_tag },
 						{ "spoof_hide_god", this->spoofing.spoof_hide_god },
 						{ "spoof_hide_spectate", this->spoofing.spoof_hide_spectate },
+						{ "spoof_session_region_type", this->spoofing.spoof_session_region_type},
+						{ "spoof_session_language", this->spoofing.spoof_session_language },
+						{ "spoof_session_player_count", this->spoofing.spoof_session_player_count },
+						{ "session_region_type", this->spoofing.session_region_type },
+						{ "session_language", this->spoofing.session_language },
+						{ "session_player_count", this->spoofing.session_player_count }
 					}
 				},
 				{

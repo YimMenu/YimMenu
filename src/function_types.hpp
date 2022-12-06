@@ -8,6 +8,11 @@ class NetworkGameFilterMatchmakingComponent;
 namespace rage
 {
 	class netConnectionManager;
+	class netConnectionPeer;
+	class snMsgRemoveGamersFromSessionCmd;
+	class snSession;
+	class snPlayer;
+	class CDynamicEntity;
 }
 
 namespace big::functions
@@ -24,7 +29,7 @@ namespace big::functions
 	using increment_stat_event = bool(*)(uint64_t net_event_struct, int64_t sender, int64_t a3);
 
 	using ptr_to_handle = Entity(*)(void*);
-	using handle_to_ptr = void*(*)(Entity);
+	using handle_to_ptr = rage::CDynamicEntity*(*)(Entity);
 	
 	using multiplayer_chat_filter = int(__int64 chat_type, const char* input, const char** output);
 	using write_player_game_state_data_node = bool(*)(rage::netObject* plr, CPlayerGameStateDataNode* node);
@@ -87,4 +92,14 @@ namespace big::functions
 	using generate_uuid = bool(*)(std::uint64_t* uuid);
 
 	using send_chat_message = bool(*)(int64_t* send_chat_ptr, rage::rlGamerInfo* game_info, char* message, bool is_team);
+
+	using send_network_damage = void(*)(CEntity* source, CEntity* target, rage::fvector3* position, int hit_component, bool override_default_damage, int weapon_type, float override_damage, int tire_index, int suspension_index, int flags,
+		std::uint32_t action_result_hash, std::int16_t action_result_id, int action_unk, bool hit_weapon, bool hit_weapon_ammo_attachment, bool silenced, bool unk, rage::fvector3* impact_direction);
+	using request_ragdoll = void(*)(uint16_t object_id);
+
+	using get_connection_peer = rage::netConnectionPeer* (*)(rage::netConnectionManager* manager, int peer_id);
+	using send_remove_gamer_cmd = void(*)(rage::netConnectionManager* net_connection_mgr, rage::netConnectionPeer* player, int connection_id, rage::snMsgRemoveGamersFromSessionCmd* cmd, int flags);
+	using handle_remove_gamer_cmd = void* (*)(rage::snSession* session, rage::snPlayer* origin, rage::snMsgRemoveGamersFromSessionCmd* cmd);
+
+	using script_vm = int (*) (uint64_t* stack, int64_t** scr_globals, rage::scrProgram* program, rage::scrThreadContext* ctx);
 }

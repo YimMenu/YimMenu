@@ -1,11 +1,15 @@
 #include "backend/looped/looped.hpp"
 #include "natives.hpp"
 #include "script_global.hpp"
+#include "gta/joaat.hpp"
+#include "util/kick.hpp"
+#include "services/players/player_service.hpp"
 
 // Credits: QuickNET
 namespace big
 {
-	constexpr char transition_states[][48] = {
+	constexpr char transition_states[][48] = 
+	{
 		"TRANSITION_STATE_EMPTY",
 		"Singleplayer Swoop Up",
 		"Multiplayer Swoop Up",
@@ -84,6 +88,9 @@ namespace big
 	{
 		const auto state = *transition_state.as<eTransitionState*>();
 
+		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
+			return;
+
 		// When freemode script loaded remove loading screen.
 		if (state == eTransitionState::TRANSITION_STATE_WAIT_JOIN_FM_SESSION
 			&& DLC::GET_IS_LOADING_SCREEN_ACTIVE())
@@ -93,7 +100,7 @@ namespace big
 
 		if (last_state == state
 			|| state == eTransitionState::TRANSITION_STATE_EMPTY
-			|| state > eTransitionState::TRANSITION_STATE_DLC_INTRO_BINK)
+			|| state > eTransitionState::TRANSITION_STATE_SPAWN_INTO_PERSONAL_VEHICLE)
 		{
 			return;
 		}
@@ -101,12 +108,6 @@ namespace big
 		if (HUD::BUSYSPINNER_IS_ON())
 		{
 			HUD::BUSYSPINNER_OFF();
-		}
-
-		// sometimes when going into a single player mission or transition this one remains on screen permanently
-		if (state == eTransitionState::TRANSITION_STATE_TERMINATE_MAINTRANSITION)
-		{
-			return;
 		}
 
 		if ((int)state > 0 && (int)state < std::size(transition_states))

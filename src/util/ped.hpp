@@ -71,9 +71,7 @@ namespace big::ped
 			return 0;
 		}
 
-		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
 		auto ped = PED::CREATE_PED(pedType, hash, location.x, location.y, location.z, heading, is_networked, false);
-		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
 
 		script::get_current()->yield();
 

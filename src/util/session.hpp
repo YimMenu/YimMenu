@@ -50,11 +50,13 @@ namespace big::session
 		misc::set_bit(scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).at(205).at(idx, 1).as<int*>(), bit);
 	}
 
-	inline void force_thunder()
+	inline void clear_fm_event_index(int index)
 	{
-		session::set_fm_event_index(9);
-		session::set_fm_event_index(10);
-		session::set_fm_event_index(11);
+		int idx = index / 32;
+		int bit = index % 32;
+		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(341).at(idx, 1).as<int*>(), bit);
+		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(348).at(idx, 1).as<int*>(), bit);
+		misc::clear_bit(scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).at(205).at(idx, 1).as<int*>(), bit);
 	}
 
 	inline void join_session(const rage::rlSessionInfo& info)
@@ -108,5 +110,49 @@ namespace big::session
 			plyr->infractions.insert((int)infraction);
 			g_player_database_service->save();
 		}
+	}
+
+	inline void give_collectible(Player target, eCollectibleType col, int index = 0, bool uncomplete = false)
+	{
+		const size_t arg_count = 7;
+		int64_t args[arg_count] = {
+			(int64_t)eRemoteEvent::GiveCollectible,
+			(int64_t)self::id,
+			(int64_t)col, // iParam0
+			(int64_t)index, // iParam1
+			!uncomplete, // bParam2
+			true,
+			0  // bParam3
+		};
+
+		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
+	}
+
+	// TODO this is really broken
+	inline void enter_player_interior(player_ptr player)
+	{
+		if (*scr_globals::globalplayer_bd.at(player->id(), scr_globals::size::globalplayer_bd).at(318).at(6).as<int*>() == -1)
+		{
+			g_notification_service->push_error("Enter Interior", "Player does not seem to be in an interior");
+			return;
+		}
+
+		int owner = *scr_globals::globalplayer_bd.at(player->id(), scr_globals::size::globalplayer_bd).at(318).at(9).as<int*>();
+		if (owner == -1)
+			owner = player->id();
+
+		*script_global(1946250).at(3607).as<int*>() = 0;
+		*script_global(1946250).at(3605).as<int*>() = 1;
+		*script_global(1946250).at(4703).as<int*>() = 1;
+		*script_global(1946250).at(3218).as<int*>() = 1;
+		*script_global(1946250).at(3214).as<int*>() = 1;
+		*script_global(1946250).at(3612).as<int*>() = 1;
+
+		// misc::set_bit(script_global(1946250).at(1).as<int*>(), 22);
+		misc::set_bit(script_global(1946250).as<int*>(), 6);
+		misc::clear_bit(script_global(1946250).at(1).as<int*>(), 9);
+
+		*script_global(1946250).at(3280).as<int*>() = owner;
+		*script_global(1946250).at(3606).as<int*>() = *scr_globals::globalplayer_bd.at(player->id(), scr_globals::size::globalplayer_bd).at(318).at(6).as<int*>();
 	}
 }

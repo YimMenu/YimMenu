@@ -1,6 +1,7 @@
 #include "hooking.hpp"
 #include "gta_util.hpp"
 #include "util/session.hpp"
+#include "gta/net_game_event.hpp"
 #include <network/CNetGamePlayer.hpp>
 
 namespace big
@@ -292,6 +293,7 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::StartActivity:
+		{
 			eActivityType activity = static_cast<eActivityType>(args[2]);
 			if (g->protections.script_events.start_activity)
 			{
@@ -330,6 +332,19 @@ namespace big
 			else if (g->protections.script_events.crash && activity == eActivityType::Tennis)
 			{
 				format_string(player_name, "TSE Crash (Start Tennis)", notify.crash.log, notify.crash.notify);
+
+				return true;
+			}
+			break;
+		}
+		case eRemoteEvent::InteriorControl:
+			int interior = (int)args[2];
+			if (interior < 0 || interior > 158) // the upper bound will change after an update
+			{
+				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
+
+				format_string(player_name, "Null Function Kick", notify.null_function_kick.log, notify.null_function_kick.notify);
 
 				return true;
 			}
