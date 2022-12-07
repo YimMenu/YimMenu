@@ -14,64 +14,62 @@ namespace big
 {
 	void view::view_player_misc()
 	{
-		if (ImGui::TreeNode("Misc"))
+		std::string title = std::format("Player Misc Options: {}", g_player_service->get_selected()->get_name());
+		ImGui::Text(title.c_str());
+		components::button("Join CEO/MC", []
 		{
-			components::button("Join CEO/MC", []
-			{
-				scr_functions::join_ceo({ g_player_service->get_selected()->id(), 0, false, false });
-			});
+			scr_functions::join_ceo({ g_player_service->get_selected()->id(), 0, false, false });
+		});
 
-			components::button("Enter Interior", []
-			{
-				session::enter_player_interior(g_player_service->get_selected());
-			});
+		components::button("Enter Interior", []
+		{
+			session::enter_player_interior(g_player_service->get_selected());
+		});
 
-			components::button("Steal Outfit", []
-			{
-				ped::steal_outfit(
-					PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
-				);
-			});
-			ImGui::SameLine(); components::help_marker("Will crash you after death.");
+		components::button("Steal Outfit", []
+		{
+			ped::steal_outfit(
+				PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
+			);
+		});
+		ImGui::SameLine(); components::help_marker("Will crash you after death.");
 			
-			ImGui::SameLine();
+		ImGui::SameLine();
 
-			components::button("Steal Identity", []
-			{
-				ped::steal_identity(
-					PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
-				);
-			});
-			ImGui::SameLine(); components::help_marker("Will crash you after death.");
+		components::button("Steal Identity", []
+		{
+			ped::steal_identity(
+				PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id())
+			);
+		});
+		ImGui::SameLine(); components::help_marker("Will crash you after death.");
 
-			components::button("Clear Wanted Level", []
-			{
-				globals::clear_wanted_player(g_player_service->get_selected()->id());
-			});
+		components::button("Clear Wanted Level", []
+		{
+			globals::clear_wanted_player(g_player_service->get_selected()->id());
+		});
 
-			ImGui::SameLine();
+		ImGui::SameLine();
 
-			components::button("Give Health", []
-			{
-				g_pickup_service->give_player_health(g_player_service->get_selected()->id());
-			});
+		components::button("Give Health", []
+		{
+			g_pickup_service->give_player_health(g_player_service->get_selected()->id());
+		});
 
-			ImGui::SameLine();
+		ImGui::SameLine();
 
-			components::button("Give Armour", []
-			{
-				g_pickup_service->give_player_armour(g_player_service->get_selected()->id());
-			});
+		components::button("Give Armour", []
+		{
+			g_pickup_service->give_player_armour(g_player_service->get_selected()->id());
+		});
 
-			components::button("Give Ammo", []
-			{
-				g_pickup_service->give_player_ammo(g_player_service->get_selected()->id());
-			});
+		components::button("Give Ammo", []
+		{
+			g_pickup_service->give_player_ammo(g_player_service->get_selected()->id());
+		});
 
-			ImGui::Checkbox("Off The Radar", &g_player_service->get_selected()->off_radar);
-			ImGui::Checkbox("Never Wanted", &g_player_service->get_selected()->never_wanted);
-			ImGui::Checkbox("Semi Godmode", &g_player_service->get_selected()->semi_godmode);
-			ImGui::TreePop();
-		}
+		ImGui::Checkbox("Off The Radar", &g_player_service->get_selected()->off_radar);
+		ImGui::Checkbox("Never Wanted", &g_player_service->get_selected()->never_wanted);
+		ImGui::Checkbox("Semi Godmode", &g_player_service->get_selected()->semi_godmode);
 	}
 }

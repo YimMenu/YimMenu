@@ -152,6 +152,5 @@ namespace big
 		components::button("Give All Weapons", [] { toxic::give_all_weapons(g_player_service->get_selected()); });
 		ImGui::SameLine();
 		components::button("Remove All Weapons", [] { toxic::remove_all_weapons(g_player_service->get_selected()); });
-		ImGui::TreePop();
 	}
 }

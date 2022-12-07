@@ -97,7 +97,7 @@ namespace big
 
 	bool player::is_valid() const
 	{
-		return m_net_game_player == nullptr ? false : m_net_game_player->is_valid();
+		return (m_net_game_player == nullptr ? false : m_net_game_player->is_valid()) && id() != 255;
 	}
 
 	bool player::equals(const CNetGamePlayer* net_game_player) const
