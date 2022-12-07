@@ -191,7 +191,6 @@ namespace big
 			}
 			static std::string format_file(const g3::LogMessage& msg)
 			{
-				LogColor color = log_sink::get_color(msg._level);
 				std::stringstream out;
 
 				out
