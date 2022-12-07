@@ -23,7 +23,7 @@ jobs:
           key: ${{ runner.os }}-build
 
       - name: Generate CMake project
-        run: cmake -S. -Bbuild -G "Visual Studio 17 2022" -DCMAKE_CONFIGURATION_TYPES=Release 
+        run: cmake -S. -Bbuild -G "Visual Studio 17 2022" -DCMAKE_CONFIGURATION_TYPES=Release -DGEN_PDB=ON
 
       - name: Build 64bit release DLL
         run: cmake --build build --config Release --target ALL_BUILD
@@ -35,10 +35,18 @@ jobs:
         run: |
           del TupoyeMenu-dev-*.dll
           ren TupoyeMenu.dll TupoyeMenu-dev-${{github.sha}}.dll
+          del TupoyeMenu-dev-*.pdb
+          ren TupoyeMenu.pdb TupoyeMenu-dev-${{github.sha}}.pdb
         working-directory: build/Release/
 
-      - name: Upload Artifact
+      - name: Upload DLL
         uses: actions/upload-artifact@v3
         with:
           name: binary
           path: build/Release/TupoyeMenu-dev-*.dll
+      
+      - name: Upload PDB
+        uses: actions/upload-artifact@v3
+        with:
+          name: binary
+          path: build/Release/TupoyeMenu-dev-*.pdb
