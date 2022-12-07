@@ -1,7 +1,7 @@
 #include "common.hpp"
 #include "pointers.hpp"
 #include "script_local.hpp"
-#include "gta\script_thread.hpp"
+#include "gta/script_thread.hpp"
 
 namespace big
 {
