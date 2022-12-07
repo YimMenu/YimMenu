@@ -1,4 +1,4 @@
-#include "gta/PickupRewards.h"
+#include "gta/pickup_rewards.hpp"
 #include "backend/looped/looped.hpp"
 #include "services/players/player_service.hpp"
 #include "util/globals.hpp"
