@@ -159,8 +159,31 @@ namespace big
 		return false;
 	}
 
+	bool is_sync_fuzzer_crash(rage::netSyncNodeBase* node)
+	{
+		__try
+		{
+			// the ptr is neither null nor a node.
+			if (node)
+			{
+				node->IsParentNode();
+			}
+		}
+		__except (EXCEPTION_EXECUTE_HANDLER)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 	bool check_node(rage::netSyncNodeBase* node, CNetGamePlayer* sender, rage::netObject* object)
 	{
+		if (is_sync_fuzzer_crash(node))
+		{
+			return true;
+		}
+
 		if (node->IsParentNode())
 		{
 			for (auto child = node->m_first_child; child; child = child->m_next_sibling)
@@ -275,7 +298,6 @@ namespace big
 							if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == player_game_state_node->m_spectating_net_id)
 							{
 								g_notification_service->push("Spectating", std::format("{} is spectating you", sender->get_name()));
-								break;
 							}
 							else
 							{
@@ -288,8 +310,8 @@ namespace big
 								});
 							}
 						}
-						break;
 					}
+					break;
 				}
 				case "?AVCSectorDataNode@@"_fnv1a:
 				{

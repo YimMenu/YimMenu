@@ -33,6 +33,12 @@ namespace big
 					ImGui::EndTabItem();
 				}
 
+				if (ImGui::BeginTabItem("Kicks and Crashes"))
+				{
+					view::view_player_kicks_and_crashes();
+					ImGui::EndTabItem();
+				}
+
 				ImGui::EndTabBar();
 			}
 			ImGui::End();
