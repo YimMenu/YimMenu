@@ -8,6 +8,10 @@ namespace rage
 	public:
 		scrVector() = default;
 
+		scrVector(rage::fvector3 vec) :
+			x(vec.x), y(vec.y), z(vec.z)
+		{}
+
 		scrVector(float x, float y, float z) :
 			x(x), y(y), z(z)
 		{}

@@ -1,8 +1,14 @@
 #pragma once
 #include "player_service.hpp"
-#include "vehicle/CVehicle.hpp"
-#include "network/snSession.hpp"
 #include "rate_limiter.hpp"
+
+class CVehicle;
+
+namespace rage
+{
+	class snPlayer;
+	class snPeer;
+}
 
 namespace big
 {

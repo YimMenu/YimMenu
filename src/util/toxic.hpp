@@ -1,84 +1,194 @@
 #pragma once
-#include "gta/enums.hpp"
-#include "enums/eExplosionTag.hpp"
-#include "natives.hpp"
-#include "script_global.hpp"
-#include "system.hpp"
-#include "entity.hpp"
-#include "gta_util.hpp"
-#include "services/players/player.hpp"
+#include "pointers.hpp"
+#include "core/scr_globals.hpp"
+#include "core/enums.hpp"
+#include "gta/net_object_mgr.hpp"
 #include "gta/PickupRewards.h"
+#include "util/session.hpp"
+#include "util/scripts.hpp"
+#include "services/gta_data/gta_data_service.hpp"
+#include "util/system.hpp"
+#include "util/entity.hpp"
 
 namespace big::toxic
 {
-	inline void blame_explode_coord(Player to_blame, Vector3 pos, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
+	inline void blame_explode_coord(player_ptr to_blame, Vector3 pos, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
 	{
-		system::patch_blame(true);
+		g_pointers->m_blame_explode->apply();
 		FIRE::ADD_OWNED_EXPLOSION(
-			PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(to_blame),
+			PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(to_blame->id()),
 			pos.x, pos.y, pos.z,
-			explosion_type,
+			(int)explosion_type,
 			damage,
 			is_audible,
 			is_invisible,
 			camera_shake
 		);
-		system::patch_blame(false);
+
+		g_pointers->m_blame_explode->restore();
 	}
 
-	inline void blame_explode_player(Player to_blame, Player target, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
+	inline void blame_explode_player(player_ptr to_blame, player_ptr target, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
 	{
-		Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target), true);
+		Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target->id()), true);
 		blame_explode_coord(to_blame, coords, explosion_type, damage, is_audible, is_invisible, camera_shake);
 	}
 
-	inline void bounty_player(Player target, int amount)
+	inline void ceo_kick(player_ptr target)
 	{
-		const size_t arg_count = 22;
-		int64_t args[arg_count] = {
-			static_cast<int64_t>(eRemoteEvent::Bounty),
-			self::id,
-			target,
-			0, // set by player or NPC?
-			amount,
-			0, 1, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0,
-			*script_global(1921039).at(9).as<int*>(),
-			*script_global(1921039).at(10).as<int*>()
-		};
+		auto leader = *scr_globals::gpbd_fm_3.at(target->id(), scr_globals::size::gpbd_fm_3).at(10).as<int*>();
 
-		g_pointers->m_trigger_script_event(1, args, arg_count, -1);
-	}
-
-	inline void desync_kick(CNetGamePlayer *player)
-	{
-		gta_util::get_network_player_mgr()->RemovePlayer(player);
-	}
-
-	inline void taze_player(const Player player)
-	{
-		const Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
-
-		constexpr auto max_attempts = 20;
-		for (size_t attempts = 0; attempts < max_attempts && !ENTITY::IS_ENTITY_DEAD(target, false); attempts++)
+		if (leader == -1)
+			g_notification_service->push_warning("CEO Kick", "Player is not in a CEO/MC");
+		else if (leader == target->id())
 		{
-			const Vector3 destination = PED::GET_PED_BONE_COORDS(target, (int)PedBones::SKEL_ROOT, 0.0f, 0.0f, 0.0f);
-			const Vector3 origin = PED::GET_PED_BONE_COORDS(target, (int)PedBones::SKEL_R_Hand, 0.0f, 0.0f, 0.2f);
+			// use "normal" method to remove from CEO
+			const size_t arg_count = 4;
+			int64_t args[arg_count] = {
+				(int64_t)eRemoteEvent::CeoKick,
+				(int64_t)self::id,
+				FALSE,
+				5
+			};
 
-			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(origin.x, origin.y, origin.z, destination.x, destination.y, destination.z, 1, 0, RAGE_JOAAT("WEAPON_STUNGUN"), self::ped, false, true, 1);
+			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
+		}
+		else
+		{
+			// use a more private method to remove associate
+			const size_t arg_count = 3;
+			int64_t args[arg_count] = {
+				(int64_t)eRemoteEvent::MarkPlayerAsBeast,
+				(int64_t)self::id,
+				leader
+			};
+
+			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
 		}
 	}
 
-	inline void kick_from_vehicle(const Player player)
+	inline void ceo_ban(player_ptr target)
 	{
-		const Ped target = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+		const size_t arg_count = 3;
+		int64_t args[arg_count] = {
+			(int64_t)eRemoteEvent::CeoBan,
+			(int64_t)self::id,
+			TRUE
+		};
 
-		TASK::CLEAR_PED_TASKS_IMMEDIATELY(target);
+		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
 	}
 
-	inline void flying_vehicle(const Player player)
+	inline void send_player_to_island(player_ptr target)
 	{
-		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+		const size_t arg_count = 2;
+		int64_t args[arg_count] = {
+			(int64_t)eRemoteEvent::SendToCayoPerico,
+			(int64_t)self::id,
+		};
+
+		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
+	}
+
+	inline void send_player_to_apartment(player_ptr target, int index)
+	{
+		const size_t arg_count = 9;
+		int64_t args[arg_count] = {
+			(int64_t)eRemoteEvent::Teleport,
+			self::id,
+			(int64_t)target->id(),
+			(int64_t)(int)-1, 1, (int64_t)index, 1, 1, 1
+		};
+
+		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
+	}
+
+	inline void send_player_to_warehouse(player_ptr target, int index)
+	{
+		const size_t arg_count = 6;
+		int64_t args[arg_count] = {
+			(int64_t)eRemoteEvent::TeleportToWarehouse,
+			self::id,
+			(int64_t)target->id(),
+			1,
+			index
+		};
+
+		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
+	}
+
+	inline void send_player_to_interior(player_ptr player, int interior)
+	{
+		float max = 1e+38f;
+		auto coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), FALSE);
+		const size_t arg_count = 15;
+		int64_t args[arg_count] =
+		{
+			(int64_t)eRemoteEvent::InteriorControl,
+			(int64_t)self::id,
+			(int64_t)(int)interior,
+			(int64_t)self::id,
+			(int64_t)false,
+			(int64_t)true, // true means enter sender interior
+			(int64_t)*(uint32_t*)&coords.x,
+			(int64_t)*(uint32_t*)&coords.y,
+			(int64_t)*(uint32_t*)&coords.z,
+			0,
+			0,
+			1,
+			(int64_t)*(uint32_t*)&max,
+			(int64_t)true,
+			-1
+		};
+
+		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << player->id());
+	}
+
+	inline void kick_player_from_vehicle(player_ptr target)
+	{
+		auto vehicle = target->get_current_vehicle();
+
+		if (!vehicle || !vehicle->m_net_object)
+		{
+			// vehicle hasn't synced yet, use TSE
+			const size_t arg_count = 9;
+			int64_t args[arg_count] = {
+				(int64_t)eRemoteEvent::VehicleKick,
+				self::id, 0, 0, 0, 0, 0, 0, 0
+			};
+
+			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
+		}
+		else
+		{
+			// use a private method to kick player from vehicle
+			(*g_pointers->m_network_object_mgr)->ChangeOwner(vehicle->m_net_object, g_player_service->get_self()->get_net_game_player(), 0);
+		}
+	}
+
+	inline void ragdoll_player(player_ptr target)
+	{
+		if (auto ped = target->get_ped())
+			if (auto net_object = ped->m_net_object)
+				g_pointers->m_request_ragdoll(net_object->m_object_id);
+	}
+
+	inline void ragdoll_player_old(player_ptr target)
+	{
+		auto pos = target->get_ped()->get_position();
+		FIRE::ADD_EXPLOSION(pos->x, pos->y, pos->z, (int)eExplosionTag::DIR_WATER_HYDRANT, 1, false, true, 0, false);
+	}
+
+	inline void full_acceleration(player_ptr target)
+	{
+		Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target->id()), false);
+		if (entity::take_control_of(veh))
+			VEHICLE::SET_VEHICLE_FORWARD_SPEED(veh, VEHICLE::GET_VEHICLE_MODEL_ESTIMATED_MAX_SPEED(ENTITY::GET_ENTITY_MODEL(veh)) * 3);
+	}
+
+	inline void flying_vehicle(player_ptr target)
+	{
+		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target->id());
 
 		if (!PED::IS_PED_IN_ANY_VEHICLE(ent, true))
 			g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
@@ -86,27 +196,238 @@ namespace big::toxic
 			ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
 
 			if (entity::take_control_of(ent))
-				ENTITY::APPLY_FORCE_TO_ENTITY(ent, 1, 0.f, 0.f, 50000.f, 0.f, 0.f, 0.f, 0, 0, 1, 1, 0, 1);
+				ENTITY::APPLY_FORCE_TO_ENTITY(ent, 1, 0.f, 0.f, INT32_MAX, 0.f, 0.f, 0.f, 0, 0, 1, 1, 0, 1);
 			else
 				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
 		}
 	}
 
+	inline void start_activity(player_ptr target, eActivityType type)
+	{
+		const size_t arg_count = 4;
+		int64_t args[arg_count] =
+		{
+			(int64_t)eRemoteEvent::StartActivity,
+			(int64_t)self::id,
+			(int64_t)type,
+			(int64_t)true
+		};
+
+		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
+	}
+
+	inline void kick_player_from_interior(player_ptr target)
+	{
+		const size_t arg_count = 8;
+		int64_t args[arg_count]{
+			(int64_t)eRemoteEvent::KickFromInterior,
+			(int64_t)self::id,
+			*scr_globals::globalplayer_bd.at(target->id(), scr_globals::size::globalplayer_bd).at(318).at(6).as<int64_t*>(),
+			*scr_globals::globalplayer_bd.at(target->id(), scr_globals::size::globalplayer_bd).at(318).at(7).as<int64_t*>(),
+		};
+
+		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
+	}
+
+	inline void turn_player_into_animal(player_ptr target)
+	{
+		bool bOldPlayerControl = PLAYER::IS_PLAYER_CONTROL_ON(target->id());
+
+		for (int i = 0; i < 30; i++)
+		{
+			session::give_collectible(target->id(), eCollectibleType::Treat, 0, false);
+			session::give_collectible(target->id(), eCollectibleType::Treat, 0, true);
+			g_pointers->m_give_pickup_rewards(1 << target->id(), REWARD_HEALTH); // try to keep them alive
+			g_pointers->m_give_pickup_rewards(1 << target->id(), REWARD_ARMOUR);
+			script::get_current()->yield(400ms);
+
+			Ped playerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target->id());
+			Hash model = ENTITY::GET_ENTITY_MODEL(playerPed);
+
+			if (bOldPlayerControl && !PLAYER::IS_PLAYER_CONTROL_ON(target->id()))
+				return;
+
+			if (model != RAGE_JOAAT("mp_m_freemode_01") && model != RAGE_JOAAT("mp_f_freemode_01"))
+				return;
+
+			if (ENTITY::IS_ENTITY_DEAD(playerPed, FALSE))
+				script::get_current()->yield(7s);
+		}
+
+		g_notification_service->push_warning("Turn to Animal", "Failed to turn player into an animal");
+	}
+
+	inline void set_wanted_level(player_ptr target, int wanted_level)
+	{
+		int id = target->id();
+
+		if (PLAYER::GET_PLAYER_WANTED_LEVEL(id) > wanted_level)
+		{
+			// clear existing wanted
+			globals::clear_wanted_player(id);
+
+			for (int i = 0; PLAYER::GET_PLAYER_WANTED_LEVEL(id) > wanted_level && i < 3600; i++)
+				script::get_current()->yield(1ms);
+		}
+
+		if (wanted_level > 0)
+		{
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(212).as<Player*>() = id;
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = wanted_level;
+
+			for (int i = 0; PLAYER::GET_PLAYER_WANTED_LEVEL(id) < wanted_level && i < 3600; i++)
+				script::get_current()->yield(1ms);
+
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(212).as<Player*>() = -1; // reset to prevent wanted from being constantly set
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = -1;
+		}
+	}
+
+	inline void turn_player_into_beast(player_ptr target)
+	{
+		auto id = target->id();
+
+		if (!NETWORK::NETWORK_IS_PLAYER_A_PARTICIPANT_ON_SCRIPT(id, "am_hunt_the_beast", -1))
+		{
+			if (!NETWORK::NETWORK_IS_PLAYER_A_PARTICIPANT_ON_SCRIPT(id, "am_launcher", -1))
+			{
+				g_notification_service->push_error("Turn to Beast", "Cannot start the Hunt the Beast event, player not a participant of am_launcher");
+				return;
+			}
+
+			g_notification_service->push("Turn to Beast", "Starting Hunt The Beast event. Please wait...");
+
+			scripts::start_launcher_script(47);
+
+			for (int i = 0; !NETWORK::NETWORK_IS_PLAYER_A_PARTICIPANT_ON_SCRIPT(id, "am_hunt_the_beast", -1); i++)
+			{
+				if (i >= 1000)
+				{
+					g_notification_service->push_error("Turn to Beast", "Failed to start the Hunt The Beast event");
+					return;
+				}
+
+				script::get_current()->yield(1ms);
+			}
+		}
+
+		if (!NETWORK::NETWORK_IS_PLAYER_CONNECTED(id))
+			return;
+
+		if (!scripts::force_host(RAGE_JOAAT("am_hunt_the_beast")))
+		{
+			g_notification_service->push_error("Turn to Beast", "Failed to take control of am_hunt_the_beast");
+			return;
+		}
+
+		auto thread = gta_util::find_script_thread(RAGE_JOAAT("am_hunt_the_beast"));
+		auto stack = thread->m_stack;
+		auto net_component = thread->m_net_component;
+		auto idx = scr_locals::am_hunt_the_beast::broadcast_idx;
+
+		if (!stack || !net_component || !target->is_valid())
+			return;
+
+		*script_local(stack, idx).as<int*>() = 1;
+		*script_local(stack, idx).at(1).as<int*>() = 2; // stage
+		*script_local(stack, idx).at(1).at(6).as<int*>() = net_component->get_participant_index(target->get_net_game_player()); // beast participant idx
+		*script_local(stack, idx).at(1).at(7).as<Player*>() = id; // beast player idx
+		*script_local(stack, idx).at(1).at(2).as<int*>() = INT_MAX; // stopwatch time
+		*script_local(stack, idx).at(1).at(2).at(1).as<bool*>() = true; // stopwatch initialized
+		*script_local(stack, idx).at(1).at(4).at(1).as<bool*>() = false; // destroy old stage 1 stopwatch
+		*script_local(stack, idx).at(1).at(9).as<int*>() = 2; // some distance check
+		*script_local(stack, idx).at(83).as<int*>() = 0; // transformed bitset
+	}
+
+	inline void turn_everyone_into_beast()
+	{
+		scripts::start_launcher_script(47);
+		
+		for (int i = 0; !scripts::is_running(RAGE_JOAAT("am_launcher")); i++)
+		{
+			if (i >= 7000)
+			{
+				g_notification_service->push_error("Turn to Beast", "Failed to start the Hunt The Beast event");
+				return;
+			}
+
+			script::get_current()->yield(1ms);
+		}
+
+		script::get_current()->yield(500ms);
+
+		if (!scripts::force_host(RAGE_JOAAT("am_hunt_the_beast")))
+		{
+			g_notification_service->push_error("Turn to Beast", "Failed to take control of am_hunt_the_beast");
+			return;
+		}
+
+		script::get_current()->yield(3s);
+		
+		auto thread = gta_util::find_script_thread(RAGE_JOAAT("am_hunt_the_beast"));
+
+		if (!thread)
+			return;
+
+		auto stack = thread->m_stack;
+		auto net_component = thread->m_net_component;
+		auto idx = scr_locals::am_hunt_the_beast::broadcast_idx;
+
+		if (!stack || !net_component)
+			return;
+
+		thread->m_net_component->block_host_migration(true);
+		thread->m_context.m_state = rage::eThreadState::unk_3;
+		g->m_hunt_the_beast_thread = thread;
+
+		for (int i = 0; i < 15; i++)
+		{
+			*script_local(stack, idx).as<int*>() = 1;
+			*script_local(stack, idx).at(1).as<int*>() = 2; // stage
+			*script_local(stack, idx).at(1).at(6).as<int*>() = __rdtsc(); // participant idx
+			*script_local(stack, idx).at(1).at(7).as<Player*>() = __rdtsc(); // beast player idx
+			*script_local(stack, idx).at(1).at(2).as<int*>() = INT_MAX; // stopwatch time
+			*script_local(stack, idx).at(1).at(2).at(1).as<bool*>() = true; // stopwatch initialized
+			*script_local(stack, idx).at(1).at(4).at(1).as<bool*>() = false; // destroy old stage 1 stopwatch
+			*script_local(stack, idx).at(1).at(9).as<int*>() = 2; // some distance check
+			*script_local(stack, idx).at(83).as<int*>() = 0; // transformed bitset
+			script::get_current()->yield(350ms);
+		}
+
+		// unfortunately we must also turn ourselves into the beast to prevent the script from exiting due to a "missing player"
+
+		*script_local(stack, idx).at(1).at(6).as<int*>() = net_component->m_local_participant_index; // participant idx
+		*script_local(stack, idx).at(1).at(7).as<Player*>() = self::id; // beast player idx
+		*script_local(stack, idx).at(1).at(2).as<int*>() = INT_MAX; // stopwatch time
+		*script_local(stack, idx).at(83).as<int*>() = 0; // transformed bitset
+
+		thread->m_context.m_state = rage::eThreadState::running;
+	}
+
+	// the blamed player cannot be the target itself
+	inline void kill_player(player_ptr player, player_ptr to_blame)
+	{
+		if (!player->get_ped() || !to_blame->get_ped())
+			return;
+
+		g_pointers->m_send_network_damage((CEntity*)to_blame->get_ped(), (CEntity*)player->get_ped(), player->get_ped()->m_navigation->get_position(),
+			0, true, RAGE_JOAAT("weapon_explosion"), 10000.0f, 2, 0, (1 << 4), 0, 0, 0, false, false, true, true, nullptr);
+	}
+
+	inline void give_all_weapons(player_ptr target)
+	{
+		for (auto& weapon : g_gta_data_service->weapons())
+			WEAPON::GIVE_WEAPON_TO_PED(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target->id()), weapon.second.m_hash, 9999, FALSE, FALSE);
+	}
+
+	inline void remove_all_weapons(player_ptr target)
+	{
+		WEAPON::REMOVE_ALL_PED_WEAPONS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target->id()), FALSE);
+	}
+
 	//
 	// SechsMenu Code START
 	//
-
-	inline void send_to_cayo_perico(const Player target)
-	{
-		constexpr size_t arg_count = 3;
-		int64_t args[arg_count] = {
-			static_cast<int64_t>(eRemoteEvent::SendToCayoPerico),//SendToLocation
-			self::id,
-			target
-		};
-
-		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
-	}
 
 	inline static std::vector<int64_t> crash_hashes =
 	{
@@ -114,74 +435,73 @@ namespace big::toxic
 		893081016, 886128956, 526822748, -637352381, -1991423686, -1013989798, -803535423, 1037001637, -397256754, 1111927333, -1388926377, -1908874529, -283041276, -768108950, -547323955
 	};
 
-	inline void tse_crash(int target) //thanks to cl1xa
+	inline void tse_crash(player_ptr target) //thanks to cl1xa
 	{
 		//Wave I
 		int64_t args1[] = { 526822748, -1, 500000, 849451549, -1, -1 };
-		g_pointers->m_trigger_script_event(1, args1, sizeof(args1) / sizeof(args1[0]), 1 << target);
+		g_pointers->m_trigger_script_event(1, args1, sizeof(args1) / sizeof(args1[0]), 1 << target->id());
 
 		int64_t args2[] = { -555356783, -1, 500000, 849451549, -1, -1 };
-		g_pointers->m_trigger_script_event(1, args2, sizeof(args2) / sizeof(args2[0]), 1 << target);
+		g_pointers->m_trigger_script_event(1, args2, sizeof(args2) / sizeof(args2[0]), 1 << target->id());
 
 		int64_t args3[] = { -637352381, -1, 500000, 849451549, -1, -1 };
-		g_pointers->m_trigger_script_event(1, args3, sizeof(args3) / sizeof(args3[0]), 1 << target);
+		g_pointers->m_trigger_script_event(1, args3, sizeof(args3) / sizeof(args3[0]), 1 << target->id());
 
 		int64_t args4[] = { -51486976, -1, 500000, 849451549, -1, -1 };
-		g_pointers->m_trigger_script_event(1, args4, sizeof(args4) / sizeof(args4[0]), 1 << target);
+		g_pointers->m_trigger_script_event(1, args4, sizeof(args4) / sizeof(args4[0]), 1 << target->id());
 
 		int64_t args5[] = { -1386010354, -1, 500000, 849451549, -1, -1 };
-		g_pointers->m_trigger_script_event(1, args5, sizeof(args5) / sizeof(args5[0]), 1 << target);
+		g_pointers->m_trigger_script_event(1, args5, sizeof(args5) / sizeof(args5[0]), 1 << target->id());
 
 		script::get_current()->yield();
 
 		//Wave II
 		int64_t args6[] = { 526822748, 23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423 };
-		g_pointers->m_trigger_script_event(1, args6, sizeof(args6) / sizeof(args6[0]), 1 << target);
+		g_pointers->m_trigger_script_event(1, args6, sizeof(args6) / sizeof(args6[0]), 1 << target->id());
 
 		int64_t args7[] = { -555356783, 23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423 };
-		g_pointers->m_trigger_script_event(1, args7, sizeof(args7) / sizeof(args7[0]), 1 << target);
+		g_pointers->m_trigger_script_event(1, args7, sizeof(args7) / sizeof(args7[0]), 1 << target->id());
 
 		int64_t args8[] = { -637352381, 23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423 };
-		g_pointers->m_trigger_script_event(1, args8, sizeof(args8) / sizeof(args8[0]), 1 << target);
+		g_pointers->m_trigger_script_event(1, args8, sizeof(args8) / sizeof(args8[0]), 1 << target->id());
 
 		int64_t args9[] = { -51486976, 23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423 };
-		g_pointers->m_trigger_script_event(1, args9, sizeof(args9) / sizeof(args9[0]), 1 << target);
+		g_pointers->m_trigger_script_event(1, args9, sizeof(args9) / sizeof(args9[0]), 1 << target->id());
 
 		int64_t args10[] = { -1386010354, 23135423, 3, 827870001, 2022580431, -918761645, 1754244778, 827870001, 1754244778, 23135423, 827870001, 23135423 };
-		g_pointers->m_trigger_script_event(1, args10, sizeof(args10) / sizeof(args10[0]), 1 << target);
+		g_pointers->m_trigger_script_event(1, args10, sizeof(args10) / sizeof(args10[0]), 1 << target->id());
 
 		script::get_current()->yield();
 
 		//Wave III
-		int64_t args11[] = { 526822748, target, 0, 30583, 0, 0, 0, -328966, 1132039228, 0 };
-		g_pointers->m_trigger_script_event(1, args11, sizeof(args11) / sizeof(args11[0]), 1 << target);
+		int64_t args11[] = { 526822748, target->id(), 0, 30583, 0, 0, 0, -328966, 1132039228, 0 };
+		g_pointers->m_trigger_script_event(1, args11, sizeof(args11) / sizeof(args11[0]), 1 << target->id());
 
-		int64_t args12[] = { -555356783, target, 0, 30583, 0, 0, 0, -328966, 1132039228, 0 };
-		g_pointers->m_trigger_script_event(1, args12, sizeof(args12) / sizeof(args12[0]), 1 << target);
+		int64_t args12[] = { -555356783, target->id(), 0, 30583, 0, 0, 0, -328966, 1132039228, 0 };
+		g_pointers->m_trigger_script_event(1, args12, sizeof(args12) / sizeof(args12[0]), 1 << target->id());
 
-		int64_t args13[] = { -637352381, target, 0, 30583, 0, 0, 0, -328966, 1132039228, 0 };
-		g_pointers->m_trigger_script_event(1, args13, sizeof(args13) / sizeof(args13[0]), 1 << target);
+		int64_t args13[] = { -637352381, target->id(), 0, 30583, 0, 0, 0, -328966, 1132039228, 0 };
+		g_pointers->m_trigger_script_event(1, args13, sizeof(args13) / sizeof(args13[0]), 1 << target->id());
 
-		int64_t args14[] = { -51486976, target, 0, 30583, 0, 0, 0, -328966, 1132039228, 0 };
-		g_pointers->m_trigger_script_event(1, args14, sizeof(args14) / sizeof(args14[0]), 1 << target);
+		int64_t args14[] = { -51486976, target->id(), 0, 30583, 0, 0, 0, -328966, 1132039228, 0 };
+		g_pointers->m_trigger_script_event(1, args14, sizeof(args14) / sizeof(args14[0]), 1 << target->id());
 
-		int64_t args15[] = { -1386010354, target, 0, 30583, 0, 0, 0, -328966, 1132039228, 0 };
-		g_pointers->m_trigger_script_event(1, args15, sizeof(args15) / sizeof(args15[0]), 1 << target);
+		int64_t args15[] = { -1386010354, target->id(), 0, 30583, 0, 0, 0, -328966, 1132039228, 0 };
+		g_pointers->m_trigger_script_event(1, args15, sizeof(args15) / sizeof(args15[0]), 1 << target->id());
 
 		script::get_current()->yield();
 
 		//Elona Gay
-		const int plyr = target;
-
+		
 		for (size_t i = 0; i < crash_hashes.size(); i++)
 		{
 			int64_t args1[] = { crash_hashes[i], -1, 500000, 849451549, -1, -1 };
-			g_pointers->m_trigger_script_event(1, args1, sizeof(args1) / sizeof(args1[0]), 1 << plyr);
+			g_pointers->m_trigger_script_event(1, args1, sizeof(args1) / sizeof(args1[0]), 1 << target->id());
 
 			script::get_current()->yield();
 
 			int64_t args2[] = { crash_hashes[i], rand() % INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, INT64_MAX, rand() % INT64_MAX, rand() % INT64_MAX, };
-			g_pointers->m_trigger_script_event(1, args2, sizeof(args2) / sizeof(args2[0]), 1 << plyr);
+			g_pointers->m_trigger_script_event(1, args2, sizeof(args2) / sizeof(args2[0]), 1 << target->id());
 
 			script::get_current()->yield();
 		}
@@ -193,60 +513,4 @@ namespace big::toxic
 	// SechsMenu Code END
 	//
 
-
-	inline void breakup_kick(player_ptr target) // From maybegreat48
-	{
-		rage::snMsgRemoveGamersFromSessionCmd cmd{};
-		cmd.m_session_id = gta_util::get_network()->m_game_session_ptr->m_rline_session.m_session_id;
-		cmd.m_num_peers = 1;
-		cmd.m_peer_ids[0] = target->get_session_peer()->m_peer_data.m_peer_id_2;
-
-		g_pointers->m_handle_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr, target->get_session_player(), &cmd);
-		for (auto& [name, plyr] : g_player_service->players())
-		{
-			if (plyr->id() != target->id())
-				g_pointers->m_send_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
-					g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr, plyr->get_session_player()->m_player_data.m_peer_id_2),
-					gta_util::get_network()->m_game_session_ptr->m_connection_identifier, &cmd, 0x1000000);
-		}
-	}
-
-	inline void give_collectible(Player target, eCollectibleType col, int index = 0, bool uncomplete = false) // From maybegreat48
-	{
-		const size_t arg_count = 7;
-		int64_t args[arg_count] = {
-			(int64_t)eRemoteEvent::GiveCollectible,
-			self::id,
-			(int64_t)col, // iParam0
-			index, // iParam1
-			!uncomplete, // bParam2
-			true,
-			0  // bParam3
-		};
-
-		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
-	}
-
-	inline void turn_player_into_animal(Player target) // From maybegreat48
-	{
-		for (int i = 0; i < 30; i++)
-		{
-			toxic::give_collectible(target, eCollectibleType::Treat, 0, false);
-			toxic::give_collectible(target, eCollectibleType::Treat, 0, true);
-			g_pointers->m_give_pickup_rewards(1 << target, REWARD_HEALTH); // try to keep them alive
-			g_pointers->m_give_pickup_rewards(1 << target, REWARD_ARMOUR);
-			script::get_current()->yield(400ms);
-
-			Ped playerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target);
-			Hash model = ENTITY::GET_ENTITY_MODEL(playerPed);
-
-			if (model != RAGE_JOAAT("mp_m_freemode_01") && model != RAGE_JOAAT("mp_f_freemode_01"))
-				return;
-
-			if (ENTITY::IS_ENTITY_DEAD(playerPed, FALSE))
-				script::get_current()->yield(7s);
-		}
-
-		g_notification_service->push_warning("Turn to Animal", "Failed to turn player into an animal");
-	}
 }

@@ -14,6 +14,9 @@ namespace big
 		rgb_controller_blue_down,
 	};
 
+	std::chrono::system_clock::time_point last_rgb_run_time;
+	std::chrono::milliseconds delay = 0s;
+
 	void looped::vehicle_rainbow_paint()
 	{
 		static int rgb_controller_v = rgb_controller_green_up;
@@ -22,7 +25,7 @@ namespace big
 		static int green = 0;
 		static int blue = 0;
 
-		if (self::veh && g->vehicle.rainbow_paint.type != RainbowPaintType::Off)
+		if (self::veh && g->vehicle.rainbow_paint.type != RainbowPaintType::Off && last_rgb_run_time + delay < std::chrono::system_clock::now())
 		{
 			int delay_step = 100;
 
@@ -117,8 +120,8 @@ namespace big
 				VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(vehicle, red, green, blue);
 			}
 
-			auto delay = std::chrono::milliseconds(((delay_step * 10) + 10) - (g->vehicle.rainbow_paint.speed * delay_step));
-			script::get_current()->yield(delay);
+			delay = std::chrono::milliseconds(((delay_step * 10) + 10) - (g->vehicle.rainbow_paint.speed * delay_step));
+			last_rgb_run_time = std::chrono::system_clock::now();
 		}
 	}
 }

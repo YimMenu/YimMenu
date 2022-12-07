@@ -5,6 +5,7 @@
 #include "gta_util.hpp"
 #include "util/session.hpp"
 #include "util/spam.hpp"
+#include "util/kick.hpp"
 #include <network/Network.hpp>
 
 namespace big
@@ -98,6 +99,8 @@ namespace big
 						
 						g_chat_service->add_direct_msg(player->get_net_game_player(), g_player_service->get_self()->get_net_game_player(), message, true);
 						player->is_spammer = true;
+						if (g->session.kick_chat_spammers)
+							kick::breakup_kick(player);
 						return true;
 					}
 					else

@@ -39,10 +39,5 @@ namespace big
 
 			ImGui::TreePop();
 		}
-
-		components::button("Force Thunder", []
-		{
-			session::force_thunder();
-		});
 	}
 }

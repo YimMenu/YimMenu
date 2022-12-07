@@ -2,11 +2,13 @@
 #include "natives.hpp"
 #include "script_global.hpp"
 #include "services/spinner/spinner_service.hpp"
+#include "gta/joaat.hpp"
 
 // Credits: QuickNET
 namespace big
 {
-	constexpr char transition_states[][48] = {
+	constexpr char transition_states[][48] = 
+	{
 		"TRANSITION_STATE_EMPTY",
 		"Singleplayer Swoop Up",
 		"Multiplayer Swoop Up",
@@ -98,8 +100,8 @@ namespace big
 		}
 
 		if (last_state == state
-			||  state == eTransitionState::TRANSITION_STATE_EMPTY
-			|| state > eTransitionState::TRANSITION_STATE_DLC_INTRO_BINK)
+			|| state == eTransitionState::TRANSITION_STATE_EMPTY
+			|| state > eTransitionState::TRANSITION_STATE_SPAWN_INTO_PERSONAL_VEHICLE)
 		{
 			return;
 		}

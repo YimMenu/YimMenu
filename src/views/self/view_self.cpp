@@ -3,6 +3,7 @@
 #include "util/local_player.hpp"
 #include "views/view.hpp"
 #include "core/data/hud_component_names.hpp"
+#include "util/scripts.hpp"
 
 namespace big
 {
@@ -77,6 +78,9 @@ namespace big
 		ImGui::Checkbox("Keep Player Clean", &g->self.clean_player);
 		ImGui::Checkbox("No Collision", &g->self.no_collision);
 		ImGui::Checkbox("Mobile Radio", &g->self.mobile_radio);
+
+		ImGui::Checkbox("Dance Mode", &g->self.dance_mode);
+		ImGui::SameLine(); components::help_marker("Hold Right DPAD or E to enter dance mode");
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
@@ -211,9 +215,16 @@ namespace big
 		});
 		ImGui::SameLine();
 		ImGui::Checkbox("Force show HUD element", &g->self.force_show_hud_element);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("To force show a HUD specific element, click Hide all then click Show on the desired element.");
+		ImGui::SameLine(); components::help_marker("To force show a HUD specific element, click Hide all then click Show on the desired element.");
 
+		ImGui::EndGroup();
+
+		components::sub_title("Launch Creator");
+		ImGui::BeginGroup();
+		components::button("Race", [] { scripts::start_creator_script(RAGE_JOAAT("fm_race_creator")); }); ImGui::SameLine();
+		components::button("Capture", [] { scripts::start_creator_script(RAGE_JOAAT("fm_capture_creator")); }); ImGui::SameLine();
+		components::button("Deathmatch", [] { scripts::start_creator_script(RAGE_JOAAT("fm_deathmatch_creator")); }); ImGui::SameLine();
+		components::button("LTS", [] { scripts::start_creator_script(RAGE_JOAAT("fm_lts_creator")); });
 		ImGui::EndGroup();
 
 		g->self.proof_mask = 0;

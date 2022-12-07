@@ -65,9 +65,7 @@ namespace big::ped
 				return -1;
 			}
 
-			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
 			Ped ped = PED::CREATE_PED_INSIDE_VEHICLE(veh, 0, hash, -1, is_networked, false);
-			*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
 
 			script::get_current()->yield();
 
@@ -112,9 +110,7 @@ namespace big::ped
 			return 0;
 		}
 
-		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x9090;
 		auto ped = PED::CREATE_PED(pedType, hash, location.x, location.y, location.z, heading, is_networked, false);
-		*(unsigned short*)g_pointers->m_model_spawn_bypass = 0x0574;
 
 		script::get_current()->yield();
 
@@ -184,7 +180,7 @@ namespace big::ped
 	{
 		float heading = ENTITY::GET_ENTITY_HEADING(PED::IS_PED_IN_ANY_VEHICLE(player_ped, false) ? PED::GET_VEHICLE_PED_IS_IN(player_ped, false) : player_ped);
 
-		Vehicle veh = vehicle::spawn(rage::joaat("oppressormk2"), pos, heading, true);
+		Vehicle veh = vehicle::spawn(rage::joaat("oppressor2"), pos, heading, true);
 		VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
 		vehicle::max_vehicle(veh);
 		ENTITY::SET_ENTITY_PROOFS(veh, false, true, true, false, false, false, false, false);

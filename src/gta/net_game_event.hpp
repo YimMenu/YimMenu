@@ -423,6 +423,24 @@ namespace rage
 		virtual void unk_0x38() = 0;
 	};
 
+	struct sEntityDamagedData
+	{
+		alignas(8) Entity m_victim_index;
+		alignas(8) Entity m_damager_index;
+		alignas(8) float m_damage;
+		alignas(8) float m_endurance_damage;
+		alignas(8) bool m_victim_incapacitated;
+		alignas(8) bool m_victim_destroyed;
+		alignas(8) int m_weapon_used;
+		alignas(8) float m_victim_speed;
+		alignas(8) float m_damager_speed;
+		alignas(8) bool m_is_responsible_for_collision;
+		alignas(8) bool m_is_headshot;
+		alignas(8) bool m_is_with_melee_weapon;
+		alignas(8) int m_hit_material;
+	};
+	static_assert(sizeof(sEntityDamagedData) == 0x68);
+
 	class netGameEvent
 	{
 	public:

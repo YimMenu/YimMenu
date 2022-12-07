@@ -29,9 +29,4 @@ namespace big::system
 
 		return (uintptr_t)ptr - base_address;
 	}
-
-	inline void patch_blame(bool toggle)
-	{
-		*(unsigned short*)g_pointers->m_blame_explode = toggle ? 0xE990 : 0x850F;
-	}
 }

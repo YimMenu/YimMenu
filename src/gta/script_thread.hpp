@@ -4,6 +4,8 @@
 #include "joaat.hpp"
 #include "tls_context.hpp"
 
+class CGameScriptHandlerNetComponent;
+
 namespace rage
 {
 	enum class eThreadState : std::uint32_t
@@ -47,17 +49,17 @@ namespace rage
 			return rage::tlsContext::get()->m_script_thread;
 		}
 	public:
-		scrThreadContext m_context;                 // 0x08
-		void* m_stack;                              // 0xB0
-		char m_padding[0x4];                        // 0xB8
-		uint32_t m_arg_size;                        // 0xBC
-		uint32_t m_arg_loc;                         // 0xC0
-		char m_padding2[0x4];                       // 0xC4
-		const char* m_exit_message;                 // 0xC8
-		std::uint32_t m_name_hash;                  // 0xCC
-		char m_name[0x40];                          // 0xD4
-		scriptHandler* m_handler;                   // 0x114
-		scriptHandlerNetComponent* m_net_component; // 0x11C
+		scrThreadContext m_context;                      // 0x08
+		void* m_stack;                                   // 0xB0
+		char m_padding[0x4];                             // 0xB8
+		uint32_t m_arg_size;                             // 0xBC
+		uint32_t m_arg_loc;                              // 0xC0
+		char m_padding2[0x4];                            // 0xC4
+		const char* m_exit_message;                      // 0xC8
+		std::uint32_t m_name_hash;                       // 0xCC
+		char m_name[0x40];                               // 0xD4
+		scriptHandler* m_handler;                        // 0x114
+		CGameScriptHandlerNetComponent* m_net_component; // 0x11C
 	};
 }
 

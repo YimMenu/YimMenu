@@ -17,14 +17,14 @@ namespace big
 					view::view_player_info();
 					ImGui::EndTabItem();
 				}
-				if (ImGui::BeginTabItem("Ped"))
+				if (ImGui::BeginTabItem("Troll"))
 				{
-					view::view_player_ped();
+					view::view_player_troll();
 					ImGui::EndTabItem();
 				}
-				if (ImGui::BeginTabItem("Teleport"))
+				if (ImGui::BeginTabItem("Misc"))
 				{
-					view::view_player_teleport();
+					view::view_player_misc();
 					ImGui::EndTabItem();
 				}
 				if (ImGui::BeginTabItem("Toxic"))
