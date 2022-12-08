@@ -416,29 +416,30 @@ namespace rage
 		virtual ~CEventNetwork() = default;
 		virtual void unk_0x8() = 0;
 		virtual void unk_0x10() = 0;
-		virtual __int64 get_type() = 0;
+		virtual eEventNetworkType get_type() = 0;
 		virtual void unk_0x20() = 0;
 		virtual void unk_0x28() = 0;
 		virtual bool get_extra_information(void* info_array, int check) = 0;
 		virtual void unk_0x38() = 0;
 	};
 
-	struct sEntityDamagedData
+	class sEntityDamagedData
 	{
-		alignas(8) Entity m_victim_index;
-		alignas(8) Entity m_damager_index;
-		alignas(8) float m_damage;
-		alignas(8) float m_endurance_damage;
-		alignas(8) bool m_victim_incapacitated;
-		alignas(8) bool m_victim_destroyed;
-		alignas(8) int m_weapon_used;
-		alignas(8) float m_victim_speed;
-		alignas(8) float m_damager_speed;
-		alignas(8) bool m_is_responsible_for_collision;
-		alignas(8) bool m_is_headshot;
-		alignas(8) bool m_is_with_melee_weapon;
-		alignas(8) int m_hit_material;
-	};
+	public:
+		alignas(8) Entity m_victim_index; //0x0000
+		alignas(8) Entity m_damager_index; //0x0008
+		alignas(8) float m_damage; //0x0010
+		alignas(8) float m_endurance_damage; //0x0018
+		alignas(8) bool m_victim_incapacitated; //0x0020
+		alignas(8) bool m_victim_destroyed; //0x0028
+		alignas(8) int m_weapon_used; //0x0030
+		alignas(8) float m_victim_speed; //0x0038
+		alignas(8) float m_damager_speed; //0x0040
+		alignas(8) bool m_is_responsible_for_collision; //0x0048
+		alignas(8) bool m_is_headshot; //0x0050
+		alignas(8) bool m_is_with_melee_weapon; //0x0058
+		alignas(8) int m_hit_material; //0x0060
+	}; //Size: 0x0068
 	static_assert(sizeof(sEntityDamagedData) == 0x68);
 
 	class netGameEvent
