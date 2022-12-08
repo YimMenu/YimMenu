@@ -647,16 +647,22 @@ namespace big
 			m_create_script_handler = *(ptr.add(3).rip().as<std::uint64_t**>() + 8);
 		});
 
-		// Set Script As Networked
-		main_batch.add("SSAN", "48 89 5C 24 10 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 70 FD", [this](memory::handle ptr)
-		{
-			m_set_script_as_networked = ptr.as<PVOID>();
-		});
-
 		// Creator Warp Cheat Triggered Patch
 		main_batch.add("CW", "74 44 E8 ? ? ? ? 80 65 2B F8 48 8D 0D ? ? ? ? 48 89 4D 17 48 89 7D 1F 89 7D 27 C7 45", [](memory::handle ptr)
 		{
 			memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB)->apply();
+		});
+
+		// Write Bitbuffer Gamer Handle
+		main_batch.add("WBGH", "4C 8B DC 49 89 5B 08 57 48 83 EC 30 48 8B F9", [this](memory::handle ptr)
+		{
+			m_write_bitbuffer_gamer_handle = ptr.as<PVOID>();
+		});
+
+		// Read Bitbuffer Gamer Handle
+		main_batch.add("RBGH", "48 8B C4 48 89 58 10 48 89 68 18 48 89 70 20 57 48 83 EC 30 C6", [this](memory::handle ptr)
+		{
+			m_read_bitbuffer_gamer_handle = ptr.as<PVOID>();
 		});
 
 		auto mem_region = memory::module("GTA5.exe");

@@ -31,7 +31,9 @@ namespace rage
 	class netArrayHandlerBase;
 	class CEventNetwork;
 	class CSyncDataBase;
+	class rlGamerHandle;
 	class netConnectionManager;
+	class datBitBuffer;
 
 	namespace netConnection
 	{
@@ -128,6 +130,9 @@ namespace big
 		static bool script_handler_is_networked(CGameScriptHandler* this_);
 		static bool script_handler_dtor(CGameScriptHandler* this_, bool free_memory);
 		static void set_script_as_networked(void*, rage::scrThread* thread, int instance_id);
+
+		static bool write_bitbuffer_gamer_handle(rage::datBitBuffer* buffer, rage::rlGamerHandle* handle);
+		static bool read_bitbuffer_gamer_handle(rage::datBitBuffer* buffer, rage::rlGamerHandle* handle);
 	};
 
 	class minhook_keepalive
