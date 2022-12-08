@@ -32,8 +32,8 @@ namespace big
 		BLACK = 30
 	};
 
-#define AddColorToStream(color) "\x1b[" << int(color) << "m"
-#define ResetStreamColor "\x1b[" << int(LogColor::RESET) << "m"
+#define ADD_COLOR_TO_STREAM(color) "\x1b[" << int(color) << "m"
+#define RESET_STREAM_COLOR "\x1b[" << int(LogColor::RESET) << "m"
 #define HEX_TO_UPPER(value) "0x" << std::hex << std::uppercase << (DWORD64)value << std::dec << std::nouppercase
 
 	class logger final
@@ -181,17 +181,16 @@ namespace big
 
 				out
 					<< "[" << msg.timestamp("%H:%M:%S") << "]"
-					<< AddColorToStream(color)
+					<< ADD_COLOR_TO_STREAM(color)
 					<< "[" << msg.level() << "/"
 					<< msg.file() << ":" << msg.line() << "]"
-					<< ResetStreamColor
+					<< RESET_STREAM_COLOR
 					<< ": ";
 
 				return out.str();
 			}
 			static std::string format_file(const g3::LogMessage& msg)
 			{
-				LogColor color = log_sink::get_color(msg._level);
 				std::stringstream out;
 
 				out

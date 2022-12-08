@@ -7,7 +7,7 @@
 #include "script.hpp"
 #include "teleport.hpp"
 #include "script_global.hpp"
-#include "gta/VehicleValues.h"
+#include "gta/vehicle_values.hpp"
 #include "services/vehicle_helper/vehicle_helper.hpp"
 #include "core/scr_globals.hpp"
 
