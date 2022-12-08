@@ -15,7 +15,7 @@ namespace big
 				g_notification_service->push_warning("Kicked", "You have been desync kicked.");
 				break;
 			}
-			case rage::eEventNetworkType::CEventNetworkEntityDamage;
+			case rage::eEventNetworkType::CEventNetworkEntityDamage:
 			{
 				rage::sEntityDamagedData damage_data;
 				net_event->get_extra_information(&damage_data, sizeof(damage_data));
