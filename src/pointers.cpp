@@ -653,6 +653,18 @@ namespace big
 			memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB)->apply();
 		});
 
+		// Write Bitbuffer Gamer Handle
+		main_batch.add("WBGH", "4C 8B DC 49 89 5B 08 57 48 83 EC 30 48 8B F9", [this](memory::handle ptr)
+		{
+			m_write_bitbuffer_gamer_handle = ptr.as<PVOID>();
+		});
+
+		// Read Bitbuffer Gamer Handle
+		main_batch.add("RBGH", "48 8B C4 48 89 58 10 48 89 68 18 48 89 70 20 57 48 83 EC 30 C6", [this](memory::handle ptr)
+		{
+			m_read_bitbuffer_gamer_handle = ptr.as<PVOID>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 

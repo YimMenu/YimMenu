@@ -200,7 +200,10 @@ namespace big
 
 		PVOID m_serialize_take_off_ped_variation_task;
 
-		PVOID m_create_script_handler{};
+		PVOID m_create_script_handler;
+
+		PVOID m_write_bitbuffer_gamer_handle;
+		PVOID m_read_bitbuffer_gamer_handle;
 	};
 
 	inline pointers* g_pointers{};

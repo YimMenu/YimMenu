@@ -307,6 +307,10 @@ namespace big
 			int session_language = 0;
 			bool spoof_session_player_count = false;
 			int session_player_count = 25;
+
+			// don't save
+			bool should_spoof_rockstar_id = false;
+			uint64_t applied_spoof_rockstar_id = 0;
 		};
 
 		struct tunables {
