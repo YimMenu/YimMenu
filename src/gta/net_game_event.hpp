@@ -409,19 +409,19 @@ namespace rage
 		};
 		static_assert(sizeof(rage::netConnection::InFrame) == 0x88);
 	}
-
+	
 	class CEventNetwork
 	{
 	public:
-		virtual ~CEventNetwork() = default;
-		virtual void unk_0x8() = 0;
-		virtual void unk_0x10() = 0;
-		virtual eEventNetworkType get_type() = 0;
-		virtual void unk_0x20() = 0;
-		virtual void unk_0x28() = 0;
-		virtual bool get_extra_information(void* info_array, int check) = 0;
-		virtual void unk_0x38() = 0;
-	};
+		virtual ~CEventNetwork() = default; //0x0000 (0)
+		virtual void unk_0008() = 0; //0x0008 (1)
+		virtual void unk_0010() = 0; //0x0010 (2)
+		virtual int64_t get_type() = 0; //0x0018 (3)
+		virtual void unk_0020() = 0; //0x0020 (4)
+		virtual void unk_0028() = 0; //0x0028 (5)
+		virtual bool get_extra_information(void* info_array, int check) = 0; //0x0030 (6)
+		virtual void unk_0038() = 0; //0x0038 (7)
+	}; //Size: 0x0008
 
 	class sEntityDamagedData
 	{
