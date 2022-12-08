@@ -1,7 +1,6 @@
 #include "hooking.hpp"
 #include "gta/script_handler.hpp"
 
-bool spoof_networked_status = true;
 namespace big
 {
 	void hooking::hook_script_handler(CGameScriptHandler* handler)
@@ -29,10 +28,7 @@ namespace big
 
 	bool hooks::script_handler_is_networked(CGameScriptHandler* _this)
 	{
-		if (spoof_networked_status)
-			return true;
-
-		return false;
+		return true;
 	}
 
 	bool hooks::script_handler_dtor(CGameScriptHandler* _this, bool free_memory)
@@ -55,18 +51,5 @@ namespace big
 		{
 			return false;
 		}
-	}
-
-	void hooks::set_script_as_networked(void* mgr, rage::scrThread* thread, int instance_id)
-	{
-		if (instance_id >= 0x100)
-		{
-			LOG(INFO) << "Blocked a crash";
-			return;
-		}
-
-		spoof_networked_status = false;
-		g_hooking->get_original<hooks::set_script_as_networked>()(mgr, thread, instance_id);
-		spoof_networked_status = true;
 	}
 };

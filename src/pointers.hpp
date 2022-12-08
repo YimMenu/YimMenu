@@ -201,7 +201,6 @@ namespace big
 		PVOID m_serialize_take_off_ped_variation_task;
 
 		PVOID m_create_script_handler{};
-		PVOID m_set_script_as_networked{};
 	};
 
 	inline pointers* g_pointers{};

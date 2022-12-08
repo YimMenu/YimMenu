@@ -647,12 +647,6 @@ namespace big
 			m_create_script_handler = *(ptr.add(3).rip().as<std::uint64_t**>() + 8);
 		});
 
-		// Set Script As Networked
-		main_batch.add("SSAN", "48 89 5C 24 10 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 70 FD", [this](memory::handle ptr)
-		{
-			m_set_script_as_networked = ptr.as<PVOID>();
-		});
-
 		// Creator Warp Cheat Triggered Patch
 		main_batch.add("CW", "74 44 E8 ? ? ? ? 80 65 2B F8 48 8D 0D ? ? ? ? 48 89 4D 17 48 89 7D 1F 89 7D 27 C7 45", [](memory::handle ptr)
 		{
