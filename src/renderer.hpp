@@ -12,6 +12,8 @@ namespace big
 
 		void on_present();
 
+		void rescale(float rel_size);
+
 		void pre_reset();
 		void post_reset();
 
