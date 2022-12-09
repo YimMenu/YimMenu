@@ -665,6 +665,11 @@ namespace big
 			m_read_bitbuffer_gamer_handle = ptr.as<PVOID>();
 		});
 
+		main_batch.add("CAC", "40 53 48 83 EC 20 48 8B D9 48 8B 49 38 48 8B 01", [this](memory::handle ptr)
+		{
+			m_constraint_attachment_crash = ptr.as<PVOID>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 
