@@ -65,7 +65,6 @@ namespace big
 
 		detour_hook_helper::add<hooks::invalid_mods_crash_detour>("IMCD", g_pointers->m_invalid_mods_crash_detour);
 		detour_hook_helper::add<hooks::constraint_attachment_crash>("CAC", g_pointers->m_constraint_attachment_crash);
-		detour_hook_helper::add<hooks::crash_bdsm>("CBDSM", g_pointers->m_crash_bdsm);
 
 		detour_hook_helper::add<hooks::update_presence_attribute_int>("UPAI", g_pointers->m_update_presence_attribute_int);
 		detour_hook_helper::add<hooks::update_presence_attribute_string>("UPAS", g_pointers->m_update_presence_attribute_string);
