@@ -107,7 +107,12 @@ namespace big
 		add_native_detour(0x95914459A87EBA28, all_scripts::NETWORK_BAIL);
 		add_native_detour(0x6BFB12CE158E3DD4, all_scripts::SC_TRANSITION_NEWS_SHOW); // Stops news.
 		add_native_detour(0xFE4C1D0D3B9CC17E, all_scripts::SC_TRANSITION_NEWS_SHOW_TIMED); // Stops news.
-		add_native_detour(0x5D10B3795F3FC886, all_scripts::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA);
+		add_native_detour(0x5D10B3795F3FC886, all_scripts::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA); // Fast join
+		add_native_detour(0xAAA34F8A7CB32098, all_scripts::CLEAR_PED_TASKS_IMMEDIATELY); // Clear tasks log.
+		add_native_detour(0x142A02425FF02BD9, all_scripts::TASK_START_SCENARIO_IN_PLACE); // Animation log.
+		add_native_detour(0x3910051CCECDB00C, all_scripts::SET_ENTITY_SHOULD_FREEZE_WAITING_ON_COLLISION); // Clear tasks log.
+		
+
 		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x06843DA7060A026B, carmod_shop::SET_ENTITY_COORDS);
 		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x8E2530AA8ADA980E, carmod_shop::SET_ENTITY_HEADING);
 		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x34E710FF01247C5A, carmod_shop::SET_VEHICLE_LIGHTS);
