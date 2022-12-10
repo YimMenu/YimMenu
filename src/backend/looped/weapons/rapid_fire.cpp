@@ -2,6 +2,7 @@
 #include "natives.hpp"
 #include "gta/enums.hpp"
 #include "util/math.hpp"
+#include "gui.hpp"
 
 namespace big
 {
@@ -9,7 +10,7 @@ namespace big
     {
         if (g->weapons.rapid_fire)
         {
-            if(!HUD::IS_PAUSE_MENU_ACTIVE())
+            if(!HUD::IS_PAUSE_MENU_ACTIVE() && !g_gui.m_opened && !PED::IS_PED_DEAD_OR_DYING(self::ped, true))
             {
                 if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK))
                 {

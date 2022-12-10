@@ -149,6 +149,7 @@ namespace big
 
 		PVOID m_invalid_mods_crash_detour{};
 		PVOID m_constraint_attachment_crash{};
+		PVOID m_crash_bdsm{};
 
 		int64_t** m_send_chat_ptr{};
 		functions::send_chat_message m_send_chat_message{};

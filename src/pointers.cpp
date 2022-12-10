@@ -670,6 +670,11 @@ namespace big
 			m_constraint_attachment_crash = ptr.as<PVOID>();
 		});
 
+		main_batch.add("CBDSM", "E8 ? ? ? ? 48 8B 47 10 4C 8B 8C 24", [this](memory::handle ptr)
+		{
+			m_crash_bdsm = ptr.add(1).rip().as<PVOID>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 
