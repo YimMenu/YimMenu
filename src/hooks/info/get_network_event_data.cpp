@@ -10,12 +10,12 @@ namespace big
 	{
 		switch (net_event->get_type()) 
 		{
-			case 161: // CEventNetworkRemovedFromSessionDueToComplaints
+			case rage::eEventNetworkType::CEventNetworkRemovedFromSessionDueToComplaints:
 			{
 				g_notification_service->push_warning("Kicked", "You have been desync kicked.");
 				break;
 			}
-			case 186: // CEventNetworkEntityDamage
+			case rage::eEventNetworkType::CEventNetworkEntityDamage:
 			{
 				rage::sEntityDamagedData damage_data;
 				net_event->get_extra_information(&damage_data, sizeof(damage_data));

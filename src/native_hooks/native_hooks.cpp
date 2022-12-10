@@ -111,7 +111,9 @@ namespace big
 		add_native_detour(0xAAA34F8A7CB32098, all_scripts::CLEAR_PED_TASKS_IMMEDIATELY); // Clear tasks log.
 		add_native_detour(0x142A02425FF02BD9, all_scripts::TASK_START_SCENARIO_IN_PLACE); // Animation log.
 		add_native_detour(0x3910051CCECDB00C, all_scripts::SET_ENTITY_SHOULD_FREEZE_WAITING_ON_COLLISION); // Clear tasks log.
-		
+
+		add_native_detour(0x1CA59E306ECB80A5, all_scripts::NETWORK_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT);
+		add_native_detour(0xD1110739EEADB592, all_scripts::NETWORK_TRY_TO_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT);
 
 		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x06843DA7060A026B, carmod_shop::SET_ENTITY_COORDS);
 		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x8E2530AA8ADA980E, carmod_shop::SET_ENTITY_HEADING);

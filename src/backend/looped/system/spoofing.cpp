@@ -6,7 +6,7 @@
 namespace big
 {
 	static bool bLastForceHost = false;
-	void looped::system_force_session_host()
+	void looped::system_spoofing()
 	{
 		if (bLastForceHost != g->session.force_session_host && gta_util::get_network()->m_game_session_state == 0)
 		{
@@ -28,6 +28,16 @@ namespace big
 				g_local_player->m_player_info->m_net_player_data.m_host_token = host_token;
 
 			bLastForceHost = g->session.force_session_host;
+		}
+
+		if (g->spoofing.rockstar_id != g->spoofing.applied_spoof_rockstar_id && gta_util::get_network()->m_game_session_state == 0)
+		{
+			g->spoofing.applied_spoof_rockstar_id = g->spoofing.spoof_rockstar_id;
+		}
+
+		if (g->spoofing.spoof_rockstar_id != g->spoofing.should_spoof_rockstar_id && gta_util::get_network()->m_game_session_state == 0)
+		{
+			g->spoofing.should_spoof_rockstar_id = g->spoofing.spoof_rockstar_id;
 		}
 	}
 }

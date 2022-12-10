@@ -18,7 +18,7 @@ namespace big
 			looped::system_self_globals();
 			looped::system_update_pointers();
 			looped::system_desync_kick_protection();
-			looped::system_force_session_host();
+			looped::system_spoofing();
 			looped::system_mission_creator();
 			looped::system_auto_tp();
 

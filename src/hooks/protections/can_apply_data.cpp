@@ -105,60 +105,6 @@ namespace big
 		return nullptr;
 	}
 
-	bool is_attachment_infinite(CPhysicalAttachDataNode* node, uint16_t object_id)
-	{
-		if (rage::netObject* attached_object = (*g_pointers->m_network_object_mgr)->find_object_by_id(node->m_attached_to, false); attached_object)
-		{
-			if (rage::netSyncTree* tree = attached_object->GetSyncTree(); tree)
-			{
-				if (rage::netSyncNodeBase* base_node = tree->m_sync_node; base_node)
-				{
-					const auto attached_attach_node = get_node_from_object<CPhysicalAttachDataNode>(base_node);
-					if (attached_attach_node && attached_attach_node->m_attached)
-					{
-						if (attached_attach_node->m_attached_to == object_id)
-						{
-							return true;
-						}
-						else
-						{
-							return is_attachment_infinite(attached_attach_node, object_id);
-						}
-					}
-				}
-			}
-		}
-
-		return false;
-	}
-
-	bool is_ped_attachment_infinite(CPedAttachDataNode* node, uint16_t object_id)
-	{
-		if (rage::netObject* attached_object = (*g_pointers->m_network_object_mgr)->find_object_by_id(node->m_attached_to, false); attached_object)
-		{
-			if (rage::netSyncTree* tree = attached_object->GetSyncTree(); tree)
-			{
-				if (rage::netSyncNodeBase* base_node = tree->m_sync_node; base_node)
-				{
-					const auto attached_attach_node = get_node_from_object<CPedAttachDataNode>(base_node);
-					if (attached_attach_node && attached_attach_node->m_attached)
-					{
-						if (attached_attach_node->m_attached_to == object_id)
-						{
-							return true;
-						}
-						else
-						{
-							return is_ped_attachment_infinite(attached_attach_node, object_id);
-						}
-					}
-				}
-			}
-		}
-
-		return false;
-	}
-
 	bool is_sync_fuzzer_crash(rage::netSyncNodeBase* node)
 	{
 		__try

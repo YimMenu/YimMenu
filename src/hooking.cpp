@@ -64,6 +64,7 @@ namespace big
 
 		detour_hook_helper::add<hooks::get_pool_type>("GPT", (void*)g_pointers->m_get_pool_type);
 		detour_hook_helper::add<hooks::invalid_mods_crash_detour>("IMCD", g_pointers->m_invalid_mods_crash_detour);
+		detour_hook_helper::add<hooks::constraint_attachment_crash>("CAC", g_pointers->m_constraint_attachment_crash);
 
 		detour_hook_helper::add<hooks::update_presence_attribute_int>("UPAI", g_pointers->m_update_presence_attribute_int);
 		detour_hook_helper::add<hooks::update_presence_attribute_string>("UPAS", g_pointers->m_update_presence_attribute_string);
@@ -93,7 +94,9 @@ namespace big
 		detour_hook_helper::add<hooks::serialize_take_off_ped_variation_task>("STOPVT", g_pointers->m_serialize_take_off_ped_variation_task);
 
 		detour_hook_helper::add<hooks::create_script_handler>("CSH", g_pointers->m_create_script_handler);
-		detour_hook_helper::add<hooks::set_script_as_networked>("SSAN", g_pointers->m_set_script_as_networked);
+
+		detour_hook_helper::add<hooks::write_bitbuffer_gamer_handle>("WBGH", g_pointers->m_write_bitbuffer_gamer_handle);
+		detour_hook_helper::add<hooks::read_bitbuffer_gamer_handle>("RBGH", g_pointers->m_read_bitbuffer_gamer_handle);
 
 		g_hooking = this;
 	}

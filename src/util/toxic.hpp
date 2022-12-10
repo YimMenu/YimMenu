@@ -3,7 +3,7 @@
 #include "core/scr_globals.hpp"
 #include "core/enums.hpp"
 #include "gta/net_object_mgr.hpp"
-#include "gta/PickupRewards.h"
+#include "gta/pickup_rewards.hpp"
 #include "util/session.hpp"
 #include "util/scripts.hpp"
 #include "services/gta_data/gta_data_service.hpp"

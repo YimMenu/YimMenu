@@ -114,6 +114,8 @@ namespace big
 			g->window.font_icon = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_icons), sizeof(font_icons), 24.f, &font_icons_cfg);
 		}
 
+		rescale(g->window.gui_scale);
+
 		g_gui.dx_init();
 		g_renderer = this;
 	}
@@ -153,7 +155,6 @@ namespace big
 			g_gui.dx_on_tick();
 		}
 
-
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
@@ -164,6 +165,14 @@ namespace big
 			if (m_restoreState)
 				m_state_saver->restore_saved_state();
 		}
+	}
+
+	void renderer::rescale(float rel_size)
+	{
+		pre_reset();
+		ImGui::GetStyle().ScaleAllSizes(rel_size);
+		ImGui::GetIO().FontGlobalScale = rel_size;
+		post_reset();
 	}
 
 	void renderer::pre_reset()
