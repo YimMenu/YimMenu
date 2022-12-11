@@ -665,9 +665,16 @@ namespace big
 			m_read_bitbuffer_gamer_handle = ptr.as<PVOID>();
 		});
 
+		// Constraint Attachment Crash
 		main_batch.add("CAC", "40 53 48 83 EC 20 48 8B D9 48 8B 49 38 48 8B 01", [this](memory::handle ptr)
 		{
 			m_constraint_attachment_crash = ptr.as<PVOID>();
+		});
+
+		// Invalid Decal Crash
+		main_batch.add("IDC", "E8 ? ? ? ? 8B 9C 24 B8 00 00 00 4C 8B AC 24 A8 00 00 00", [this](memory::handle ptr)
+		{
+			m_invalid_decal_crash = ptr.add(1).rip().as<PVOID>();
 		});
 
 		auto mem_region = memory::module("GTA5.exe");
