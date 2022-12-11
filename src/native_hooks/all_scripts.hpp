@@ -23,17 +23,11 @@ namespace big
 
 		inline void NETWORK_BAIL(rage::scrNativeCallContext* src)
 		{
-			if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("freemode"))
+			if (!(SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("freemode")))
 			{
-				std::string text = std::format("NETWORK_BAIL({}, {}, {})", src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<int>(2));
-				LOG(WARNING) << "Prevented freemode " << text;
-				g_notification_service->push_warning("freemode", text);
-			}
-			else
-			{
-				LOG(G3LOG_DEBUG) << std::format("NETWORK::NETWORK_BAIL({}, {}, {}); // In: {}", src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<int>(2), SCRIPT::GET_THIS_SCRIPT_NAME());;
 				NETWORK::NETWORK_BAIL(src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<int>(2));
 			}
+			LOG(G3LOG_DEBUG) << std::format("NETWORK::NETWORK_BAIL({}, {}, {}); // In: {}", src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<int>(2), SCRIPT::GET_THIS_SCRIPT_NAME());;
 		}
 
 		inline void SC_TRANSITION_NEWS_SHOW(rage::scrNativeCallContext* src)
@@ -83,23 +77,6 @@ namespace big
 
 			if(src->get_arg<Ped>(0) == self::ped)
 				LOG(G3LOG_DEBUG) << std::format("TASK::CLEAR_PED_TASKS_IMMEDIATELY({}); // In: {}",  src->get_arg<Ped>(0), SCRIPT::GET_THIS_SCRIPT_NAME());
-		}
-
-		inline void TASK_START_SCENARIO_IN_PLACE(rage::scrNativeCallContext* src)
-		{
-			if(src->get_arg<Ped>(0) == self::ped)
-				LOG(G3LOG_DEBUG) << std::format("TASK::TASK_START_SCENARIO_IN_PLACE({}, {}, {}, {}); // In: {}", src->get_arg<Ped>(0), src->get_arg<char*>(1), src->get_arg<int>(2), src->get_arg<BOOL>(3), SCRIPT::GET_THIS_SCRIPT_NAME());
-			else
-				TASK::TASK_START_SCENARIO_IN_PLACE(src->get_arg<Ped>(0), src->get_arg<char*>(1), src->get_arg<int>(2), src->get_arg<BOOL>(3));
-		}
-
-		inline void SET_ENTITY_SHOULD_FREEZE_WAITING_ON_COLLISION(rage::scrNativeCallContext* src)
-		{
-			if(src->get_arg<Ped>(0) == self::ped)
-				LOG(G3LOG_DEBUG) << std::format("ENTITY::SET_ENTITY_SHOULD_FREEZE_WAITING_ON_COLLISION({}, {}); // In: {}", src->get_arg<Ped>(0), src->get_arg<BOOL>(1), SCRIPT::GET_THIS_SCRIPT_NAME());
-
-			if(!(SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("maintransition")))
-				ENTITY::SET_ENTITY_SHOULD_FREEZE_WAITING_ON_COLLISION(src->get_arg<Ped>(0), src->get_arg<BOOL>(1));
 		}
 
         void NETWORK_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT(rage::scrNativeCallContext* src)
