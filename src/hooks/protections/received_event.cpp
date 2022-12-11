@@ -519,8 +519,10 @@ namespace big
 				buffer->Read<float>(19); // rot z
 				buffer->Read<float>(16); // length
 				int type = buffer->Read<int>(4);
+				float initial_length = buffer->Read<float>(16);
+				float min_length = buffer->Read<float>(16);
 
-				if (type != 7)
+				if (type == 0 || initial_length < min_length) // https://docs.fivem.net/natives/?_0xE832D760399EB220
 				{
 					// most definitely a crash
 					LOG(INFO) << std::hex << std::uppercase << "0x" << id.m_hash;
