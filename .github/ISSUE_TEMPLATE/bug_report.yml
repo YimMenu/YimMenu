@@ -59,7 +59,7 @@ body:
 - type: checkboxes
   attributes:
     label: Build
-    description: Make sure that this bug occurs on unmodified YimMenu
+    description: This last section is to make sure the bug exists on this version of YimMenu. If you have your own version of YimMenu and haven't confirmed the bug exists on the current version of YimMenu this makes the bug report invalid.
     options:
-      - label: I used YimMenu unmodified
+      - label: I've confirmed the issue exists on the latest version of YimMenu
         required: true
