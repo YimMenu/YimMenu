@@ -11,6 +11,7 @@ namespace big
 		std::uint64_t rockstar_id = 0;
 		bool block_join = false;
 		int block_join_reason = 1;
+		bool force_allow_join = 0;
 		bool is_modder = false;
 		bool is_rockstar_admin = false;
 		std::unordered_set<int> infractions;
@@ -23,6 +24,7 @@ namespace big
 			{ "rockstar_id", player.rockstar_id },
 			{ "block_join", player.block_join },
 			{ "block_join_reason", player.block_join_reason },
+			{ "force_allow_join", player.force_allow_join },
 			{ "is_modder", player.is_modder },
 			{ "is_rockstar_admin", player.is_rockstar_admin },
 			{ "infractions", player.infractions },
@@ -35,6 +37,7 @@ namespace big
 		set_from_key_or_default(j, "rockstar_id", player.rockstar_id);
 		set_from_key_or_default(j, "block_join", player.block_join);
 		set_from_key_or_default(j, "block_join_reason", player.block_join_reason);
+		set_from_key_or_default(j, "force_allow_join", player.force_allow_join);
 		set_from_key_or_default(j, "is_modder", player.is_modder);
 		set_from_key_or_default(j, "is_rockstar_admin", player.is_rockstar_admin);
 		set_from_key_or_default(j, "infractions", player.infractions);

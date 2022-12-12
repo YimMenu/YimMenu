@@ -130,6 +130,7 @@ namespace big
 		add_native_detour(RAGE_JOAAT("maintransition"), 0x10706DC6AD2D49C0, maintransition::RESTART_FRONTEND_MENU); // Let's you controll your ped when going sp to mp.
 		add_native_detour(RAGE_JOAAT("maintransition"), 0xDFC252D8A3E15AB7, maintransition::TOGGLE_PAUSED_RENDERPHASES); // Prevents the game from freezing your screen.
 		add_native_detour(RAGE_JOAAT("maintransition"), 0xEA23C49EAA83ACFB, maintransition::NETWORK_RESURRECT_LOCAL_PLAYER); // Prevents player from teleporting after switch.
+		add_native_detour(RAGE_JOAAT("maintransition"), 0x8D30F648014A92B5, maintransition::GET_EVER_HAD_BAD_PACK_ORDER); // Prevent weird reloading when using custom dlcs.
 		add_native_detour(RAGE_JOAAT("freemode"), 0x5E9564D8246B909A, freemode::IS_PLAYER_PLAYING);
 		add_native_detour(RAGE_JOAAT("freemode"), 0xEA1C610A04DB6BBB, freemode::SET_ENTITY_VISIBLE);
 		add_native_detour(RAGE_JOAAT("freemode"), 0x231C8F89D0539D8F, freemode::SET_BIGMAP_ACTIVE);

@@ -150,5 +150,10 @@ namespace big
 		// PLAYER_SWITCH END
 		//
 
+		inline void GET_EVER_HAD_BAD_PACK_ORDER(rage::scrNativeCallContext* src)
+		{
+			// LOG(G3LOG_DEBUG) << "DLC::GET_EVER_HAD_BAD_PACK_ORDER(); // Returns: " << DLC::GET_EVER_HAD_BAD_PACK_ORDER();
+			src->set_return_value<BOOL>(false);
+		}
 	}
 }
