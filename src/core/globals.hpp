@@ -387,6 +387,11 @@ namespace big
 				eExplosionTag explosion_tag = eExplosionTag::DONTCARE;
 			} ammo_special;
 
+			struct gravity_gun
+			{
+				bool collision = false;
+			} gravity_gun;
+
 			CustomWeapon custom_weapon = CustomWeapon::NONE;
 			bool force_crosshairs = false;
 			bool infinite_ammo = false;

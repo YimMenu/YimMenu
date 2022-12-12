@@ -139,14 +139,17 @@ namespace big
 
 		switch (selected)
 		{
-		case CustomWeapon::VEHICLE_GUN:
-			components::input_text_with_hint(
-				"Shooting Model",
-				"Name of the vehicle model",
-				g->weapons.vehicle_gun_model, sizeof(g->weapons.vehicle_gun_model)
-			);
+			case CustomWeapon::GRAVITY_GUN:
+				ImGui::Checkbox("Collision", &g->weapons.gravity_gun.collision);
+				break;
+			case CustomWeapon::VEHICLE_GUN:
+				components::input_text_with_hint(
+					"Shooting Model",
+					"Name of the vehicle model",
+					g->weapons.vehicle_gun_model, sizeof(g->weapons.vehicle_gun_model)
+				);
 
-			break;
+				break;
 		}
 	}
 }
