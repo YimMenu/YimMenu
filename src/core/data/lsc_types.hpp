@@ -1,5 +1,5 @@
 #pragma once
-#include "gta\VehicleValues.h"
+#include "gta/vehicle_values.hpp"
 
 
 static const std::map<int, std::string> lsc_plate_styles = {

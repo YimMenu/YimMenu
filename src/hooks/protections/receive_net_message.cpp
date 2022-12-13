@@ -37,6 +37,18 @@ namespace big
 		hnd.unk_0009 = buf.Read<uint8_t>(8);
 	}
 
+	static void script_id_deserialize(CGameScriptId& id, rage::datBitBuffer& buffer)
+	{
+		id.m_hash = buffer.Read<uint32_t>(32);
+		id.m_timestamp = buffer.Read<uint32_t>(32);
+
+		if (buffer.Read<bool>(1))
+			id.m_position_hash = buffer.Read<uint32_t>(32);
+
+		if (buffer.Read<bool>(1))
+			id.m_instance_id = buffer.Read<int32_t>(8);
+	}
+
 	bool hooks::receive_net_message(void* netConnectionManager, void* a2, rage::netConnection::InFrame* frame)
 	{
 		if (frame->get_event_type() == rage::netConnection::InFrame::EventType::FrameReceived)
@@ -115,11 +127,13 @@ namespace big
 							}
 						}
 					}
+
 					if (player && pl && player->id() != pl->id() && count == 1 && frame->m_msg_id == -1)
 					{
 						g_notification_service->push_error("Warning!", std::format("{} breakup kicked {}!", player->get_name(), pl->get_name()));
 						session::add_infraction(player, Infraction::BREAKUP_KICK_DETECTED);
 					}
+
 					break;
 				}
 				case rage::eNetMessage::MsgLostConnectionToHost:
@@ -192,6 +206,17 @@ namespace big
 						g_notification_service->push("Join Blocker", std::format("Trying to prevent {} from joining...", player->get_name()));
 						return true;
 					}
+					break;
+				}
+				case rage::eNetMessage::MsgScriptHostRequest:
+				{
+					CGameScriptId script;
+					script_id_deserialize(script, buffer);
+
+					if (script.m_hash == RAGE_JOAAT("freemode") && g->session.force_script_host)
+						return true;
+					
+					break;
 				}
 				}
 			}

@@ -31,7 +31,9 @@ namespace rage
 	class netArrayHandlerBase;
 	class CEventNetwork;
 	class CSyncDataBase;
+	class rlGamerHandle;
 	class netConnectionManager;
+	class datBitBuffer;
 
 	namespace netConnection
 	{
@@ -96,6 +98,8 @@ namespace big
 		static bool write_player_game_state_data_node(rage::netObject* player, CPlayerGameStateDataNode* node);
 
 		static void invalid_mods_crash_detour(int64_t a1, int64_t a2, int a3, char a4);
+		static std::int64_t constraint_attachment_crash(std::uintptr_t a1);
+		static uint64_t invalid_decal(uintptr_t a1, int a2);
 
 		static bool update_presence_attribute_int(void* presence_data, int profile_index, char* attr, std::uint64_t value);
 		static bool update_presence_attribute_string(void* presence_data, int profile_index, char* attr, char* value);
@@ -128,6 +132,9 @@ namespace big
 		static bool script_handler_is_networked(CGameScriptHandler* this_);
 		static bool script_handler_dtor(CGameScriptHandler* this_, bool free_memory);
 		static void set_script_as_networked(void*, rage::scrThread* thread, int instance_id);
+
+		static bool write_bitbuffer_gamer_handle(rage::datBitBuffer* buffer, rage::rlGamerHandle* handle);
+		static bool read_bitbuffer_gamer_handle(rage::datBitBuffer* buffer, rage::rlGamerHandle* handle);
 	};
 
 	class minhook_keepalive

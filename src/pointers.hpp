@@ -148,6 +148,8 @@ namespace big
 		const char* m_online_version;
 
 		PVOID m_invalid_mods_crash_detour{};
+		PVOID m_constraint_attachment_crash{};
+		PVOID m_invalid_decal_crash{};
 
 		int64_t** m_send_chat_ptr{};
 		functions::send_chat_message m_send_chat_message{};
@@ -200,8 +202,10 @@ namespace big
 
 		PVOID m_serialize_take_off_ped_variation_task;
 
-		PVOID m_create_script_handler{};
-		PVOID m_set_script_as_networked{};
+		PVOID m_create_script_handler;
+
+		PVOID m_write_bitbuffer_gamer_handle;
+		PVOID m_read_bitbuffer_gamer_handle;
 	};
 
 	inline pointers* g_pointers{};

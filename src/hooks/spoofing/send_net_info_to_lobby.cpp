@@ -30,10 +30,10 @@ namespace big
 				player->m_external_ip.m_field4 = g->spoofing.ip_address[3];
 			}
 
-			if (g->spoofing.spoof_rockstar_id)
+			if (g->spoofing.should_spoof_rockstar_id)
 			{
-				player->m_gamer_handle.m_rockstar_id = g->spoofing.rockstar_id;
-				player->m_gamer_handle_2.m_rockstar_id = g->spoofing.rockstar_id;
+				player->m_gamer_handle.m_rockstar_id = g->spoofing.applied_spoof_rockstar_id;
+				player->m_gamer_handle_2.m_rockstar_id = g->spoofing.applied_spoof_rockstar_id;
 			}
 
 			if (g->notifications.send_net_info_to_lobby.log)
@@ -56,12 +56,6 @@ namespace big
 			}
 		}
 
-		const auto result = g_hooking->get_original<hooks::send_net_info_to_lobby>()(player, a2, a3, a4);
-
-		// restore player name to prevent detection of spoofed name
-		if (is_local_player && g->spoofing.spoof_username)
-			memcpy(player->m_name, g_local_player->m_player_info->m_net_player_data.m_name, sizeof(player->m_name));
-
-		return result;
+		return g_hooking->get_original<hooks::send_net_info_to_lobby>()(player, a2, a3, a4);
 	}
 }
