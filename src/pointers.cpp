@@ -612,7 +612,7 @@ namespace big
 		});
 
 		// Rage Security
-		main_batch.add("RS", "48 8B ? ? ? ? ? 33 F6 E9 ? ? ? ? 55 48 8D ? ? ? ? ? 48 87 2C 24 C3 48 8B 45 50 0F B6 00", [this](memory::handle ptr)
+		main_batch.add("RS", "48 8B 1D ? ? ? ? 33 F6 BD C3 9E 26 00", [this](memory::handle ptr)
 		{
 			m_security = ptr.add(3).rip().as<rage::atSingleton<rage::RageSecurity>*>();
 		});
