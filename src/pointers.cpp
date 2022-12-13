@@ -430,12 +430,6 @@ namespace big
 			m_send_chat_message = ptr.sub(21).as<functions::send_chat_message>();
 		});
 
-		// Format Metric For Sending
-		main_batch.add("FMFS", "48 8B C4 48 89 58 ? 48 89 70 ? 48 89 78 ? 4C 89 70 ? 55 48 8D A8 ? ? ? ? 48 81 EC ? ? ? ? 48 83 3D", [this](memory::handle ptr)
-		{
-			m_format_metric_for_sending = ptr.as<PVOID>();
-		});
-
 		// Start Get Session By Gamer Handle
 		main_batch.add("SGSBGH", "E8 ? ? ? ? 84 C0 0F 84 ? ? ? ? 8B 05 ? ? ? ? 48 8D 4C 24", [this](memory::handle ptr)
 		{

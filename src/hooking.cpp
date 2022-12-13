@@ -61,8 +61,6 @@ namespace big
 		detour_hook_helper::add<hooks::get_network_event_data>("GNED", g_pointers->m_get_network_event_data);
 		detour_hook_helper::add<hooks::write_player_gamer_data_node>("WPGDN", g_pointers->m_write_player_gamer_data_node);
 
-		detour_hook_helper::add<hooks::format_metric_for_sending>("FMFS", g_pointers->m_format_metric_for_sending);
-
 		detour_hook_helper::add<hooks::invalid_mods_crash_detour>("IMCD", g_pointers->m_invalid_mods_crash_detour);
 		detour_hook_helper::add<hooks::constraint_attachment_crash>("CAC", g_pointers->m_constraint_attachment_crash);
 		detour_hook_helper::add<hooks::invalid_decal>("IDC", g_pointers->m_invalid_decal_crash);
