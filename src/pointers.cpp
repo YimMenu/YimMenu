@@ -317,9 +317,9 @@ namespace big
 		});
 
 		// Can Apply Data
-		main_batch.add("CAD", "49 8B CE FF 50 70 84 C0 74 31 33 FF", [this](memory::handle ptr)
+		main_batch.add("CAD", "E8 ? ? ? ? 84 C0 0F 84 AF 01 00 00 48 8B 03", [this](memory::handle ptr)
 		{
-			m_can_apply_data = ptr.sub(0x2C).as<PVOID>();
+			m_can_apply_data = ptr.add(1).rip().as<PVOID>();
 		});
 
 		// Received clone sync & Get sync tree for type & Get net object for player & Get sync type info & Get net object
@@ -428,12 +428,6 @@ namespace big
 		main_batch.add("SCM", "48 83 EC 20 48 8B F9 48 8B CA 45 8A F1", [this](memory::handle ptr)
 		{
 			m_send_chat_message = ptr.sub(21).as<functions::send_chat_message>();
-		});
-
-		// Format Metric For Sending
-		main_batch.add("FMFS", "48 8B C4 48 89 58 ? 48 89 70 ? 48 89 78 ? 4C 89 70 ? 55 48 8D A8 ? ? ? ? 48 81 EC ? ? ? ? 48 83 3D", [this](memory::handle ptr)
-		{
-			m_format_metric_for_sending = ptr.as<PVOID>();
 		});
 
 		// Start Get Session By Gamer Handle
@@ -606,7 +600,7 @@ namespace big
 		});
 
 		// Broadcast Net Array
-		main_batch.add("BNA", "48 89 5C 24 ? 48 89 54 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 40 48 8B 05 ? ? ? ? 66 44 89 4C 24 ?", [this](memory::handle ptr)
+		main_batch.add("BNA", "48 89 5C 24 ? 48 89 54 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 40 48 8B 05 ? ? ? ? 66 44 89 4C 24", [this](memory::handle ptr)
 		{
 			m_broadcast_net_array = ptr.as<PVOID>();
 		});
@@ -618,7 +612,7 @@ namespace big
 		});
 
 		// Rage Security
-		main_batch.add("RS", "48 8B ? ? ? ? ? 33 F6 E9 ? ? ? ? 55 48 8D ? ? ? ? ? 48 87 2C 24 C3 48 8B 45 50 0F B6 00", [this](memory::handle ptr)
+		main_batch.add("RS", "48 8B 1D ? ? ? ? 33 F6 BD C3 9E 26 00", [this](memory::handle ptr)
 		{
 			m_security = ptr.add(3).rip().as<rage::atSingleton<rage::RageSecurity>*>();
 		});
@@ -697,7 +691,7 @@ namespace big
 		}
 		else LOG(WARNING) << "socialclub.dll module was not loaded within the time limit.";
 
-		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 F5 01 00 00"))
+		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 ? ? ? ? 49 8B 80"))
 		{
 			m_bypass_max_count_of_active_sticky_bombs = memory::byte_patch::make(pat.add(4).as<uint8_t*>(), { 99 }).get();
 
