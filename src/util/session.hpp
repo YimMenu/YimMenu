@@ -32,6 +32,7 @@ namespace big::session
 		"FOGGY", "OVERCAST", "RAIN", "THUNDER",
 		"CLEARING", "NEUTRAL", "SNOW", "BLIZZARD",
 		"SNOWLIGHT", "XMAS", "HALLOWEEN" };
+
 	inline void local_weather()
 	{
 		MISC::CLEAR_OVERRIDE_WEATHER();

@@ -152,16 +152,12 @@ namespace big
 		SendToCutscene = 392606458, // (bVar3, bVar4, 125f, 1)
 		SendToCayoPerico = -910497748, // CELL_HI_INV
 		SendToLocation = 1214823473, // &Var222, 11);
-		// SHKick = 1037001637,
 		SoundSpam = -1891171016, // CELL_APTINVYACHT
 		Spectate = -1903870031, // SPEC_TCK1
 		Teleport = -168599209, // Mission_Pass_Notify
 		TeleportToWarehouse = 434937615, // .f_4 == 50
 		TransactionError = -768108950, // NETWORK_RECEIVE_PLAYER_JOBSHARE_CASH
 		VehicleKick = -852914485, // PIM_RFMOC
-		// Kick = 1674887089,
-		// ChangeMCRole = 656530441, // _PLAYSTATS_CHANGE_MC_ROLE
-		// DisableRecording = 867047895, // GET_FINAL_RENDERED_CAM_COORD
 		MCTeleport = 879177392, // NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(PLAYER::PLAYER_ID()) == (first one)
 		StartActivity = 243072129, // (Var0.f_2, -1); first match
 		MarkPlayerAsBeast = -2001677186, // GB_BOSSBST xref == PLAYER... global (sadly doesn't actually turn people into the beast)
