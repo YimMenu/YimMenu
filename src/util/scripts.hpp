@@ -234,7 +234,7 @@ incorrect:
 		if (auto program = gta_util::find_script_program(hash))
 		{
 			patch_script(program, get_code_location_by_pattern(program, "2D 02 04 00 ? 38 01 38 00 42 13"), {
-				0x6F, // PUSH_CONST_1
+				0x72, // PUSH_CONST_1
 				0x00  // NOP
 			}, 5); // place anywhere
 
@@ -245,7 +245,7 @@ incorrect:
 			if (auto loc = get_code_location_by_pattern(program, "39 04 5D ? ? ? 71"))
 			{
 				patch_script(program, read_uint24_t(program->get_code_address(loc.value() + 3)), {
-					0x70, // PUSH_CONST_2 0 = mp, 2 = creator, 999 = singleplayer
+					0x73, // PUSH_CONST_2 0 = mp, 2 = creator, 999 = singleplayer
 					0x2E, 0x00, 0x01  // LEAVE 0 1
 				}, 5); // allow fast zoom in mp
 			}
