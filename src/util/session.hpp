@@ -32,13 +32,14 @@ namespace big::session
 		"FOGGY", "OVERCAST", "RAIN", "THUNDER",
 		"CLEARING", "NEUTRAL", "SNOW", "BLIZZARD",
 		"SNOWLIGHT", "XMAS", "HALLOWEEN" };
+
 	inline void local_weather()
 	{
 		MISC::CLEAR_OVERRIDE_WEATHER();
 
 		MISC::SET_OVERRIDE_WEATHER(weathers[g->session.local_weather]);
 
-		*script_global(262145).at(4723).as<bool*>() = g->session.local_weather == 13;
+		*script_global(262145).at(4752).as<bool*>() = g->session.local_weather == 13;
 	}
 
 	inline void set_fm_event_index(int index)
