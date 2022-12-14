@@ -51,7 +51,7 @@ namespace big
 	void native_hook::hook_instance(rage::scrProgram* program, const std::unordered_map<rage::scrNativeHash, rage::scrNativeHandler>& native_replacements)
 	{
 		m_program = program;
-		m_vmt_hook = std::make_unique<vmt_hook>(m_program, 3);
+		m_vmt_hook = std::make_unique<vmt_hook>(m_program, 9);
 		m_vmt_hook->hook(0, &scrprogram_dtor);
 		m_vmt_hook->enable();
 
