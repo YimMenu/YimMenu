@@ -85,7 +85,7 @@ namespace big
 	{
 		if (auto it = g_native_hooks->m_native_hooks.find(this_); it != g_native_hooks->m_native_hooks.end())
 		{
-			auto og_func = it->second->m_vmt_hook->get_original<decltype(&native_hook::scrprogram_dtor)>(0);
+			auto og_func = it->second->m_vmt_hook->get_original<decltype(&native_hook::scrprogram_dtor)>(6);
 			it->second->m_vmt_hook->disable();
 			it->second->m_vmt_hook.reset();
 			it->second->m_handler_hook->disable();
