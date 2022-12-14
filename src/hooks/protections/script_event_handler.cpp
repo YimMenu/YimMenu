@@ -141,14 +141,6 @@ namespace big
 				return true;
 			}
 			break;
-		case eRemoteEvent::NetworkBail:
-			if (g->protections.script_events.network_bail)
-			{
-				format_string(player_name, "Network Bail", notify.network_bail.log, notify.network_bail.notify);
-
-				return true;
-			}
-			break;
 		case eRemoteEvent::PersonalVehicleDestroyed:
 			if (g->protections.script_events.personal_vehicle_destroyed)
 			{
@@ -275,7 +267,7 @@ namespace big
 				return true;
 			}
 			break;
-		case eRemoteEvent::SHKick:
+		case eRemoteEvent::NetworkBail:
 			if (g->protections.script_events.network_bail)
 			{
 				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
@@ -339,7 +331,7 @@ namespace big
 		}
 		case eRemoteEvent::InteriorControl:
 			int interior = (int)args[2];
-			if (interior < 0 || interior > 158) // the upper bound will change after an update
+			if (interior < 0 || interior > 161) // the upper bound will change after an update
 			{
 				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);

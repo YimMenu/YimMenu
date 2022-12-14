@@ -26,7 +26,7 @@ namespace big::kick
 		const size_t arg_count = 3;
 		int64_t args[arg_count] =
 		{
-			(int64_t)eRemoteEvent::Kick,
+			(int64_t)eRemoteEvent::NetworkBail,
 			(int64_t)self::id,
 			*scr_globals::gpbd_fm_3.at(target->id(), scr_globals::size::gpbd_fm_3).at(510).as<int64_t*>()
 		};

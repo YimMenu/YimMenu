@@ -31,7 +31,7 @@ namespace big
 		}
 
 		detour_hook_helper::add<hooks::run_script_threads>("SH", g_pointers->m_run_script_threads);
-
+		
 		detour_hook_helper::add<hooks::get_label_text>("GLT", g_pointers->m_get_label_text);
 
 		detour_hook_helper::add<hooks::multiplayer_chat_filter>("MCF", g_pointers->m_multiplayer_chat_filter);
@@ -56,12 +56,10 @@ namespace big
 
 		detour_hook_helper::add<hooks::received_clone_create>("RCC", g_pointers->m_received_clone_create);
 		detour_hook_helper::add<hooks::received_clone_sync>("RCS", g_pointers->m_received_clone_sync);
-		detour_hook_helper::add<hooks::can_apply_data>("CAD", g_pointers->m_can_apply_data);
+		// detour_hook_helper::add<hooks::can_apply_data>("CAD", g_pointers->m_can_apply_data);
 
 		detour_hook_helper::add<hooks::get_network_event_data>("GNED", g_pointers->m_get_network_event_data);
 		detour_hook_helper::add<hooks::write_player_gamer_data_node>("WPGDN", g_pointers->m_write_player_gamer_data_node);
-
-		detour_hook_helper::add<hooks::format_metric_for_sending>("FMFS", g_pointers->m_format_metric_for_sending);
 
 		detour_hook_helper::add<hooks::invalid_mods_crash_detour>("IMCD", g_pointers->m_invalid_mods_crash_detour);
 		detour_hook_helper::add<hooks::constraint_attachment_crash>("CAC", g_pointers->m_constraint_attachment_crash);
