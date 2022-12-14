@@ -15,7 +15,7 @@ namespace big
 				if (g->notifications.transaction_rate_limit.notify)
 					g_notification_service->push_warning("Transaction Rate Limit", "You're receiving transaction rate limits, whatever you're doing do it less.");
 
-				*script_global(4535606).as<int*>() = 0;
+				*script_global(4536673).as<int*>() = 0;
 
 				return;
 			}
