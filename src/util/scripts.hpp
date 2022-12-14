@@ -238,11 +238,11 @@ incorrect:
 				0x00  // NOP
 			}, 5); // place anywhere
 
-			patch_script(program, get_code_location_by_pattern(program, "6E 08 2A 56 ? ? 2C ? ? ? 1F 56 ? ? 6F"), {
+			patch_script(program, get_code_location_by_pattern(program, "71 08 2A 56 ? ? 2C ? ? ? 1F 56 ? ? 72"), {
 				0x00, 0x00, 0x00, 0x00, 0x00
 			}, 0xE); // don't bail on network mode
 
-			if (auto loc = get_code_location_by_pattern(program, "39 04 5D ? ? ? 6E"))
+			if (auto loc = get_code_location_by_pattern(program, "39 04 5D ? ? ? 71"))
 			{
 				patch_script(program, read_uint24_t(program->get_code_address(loc.value() + 3)), {
 					0x70, // PUSH_CONST_2 0 = mp, 2 = creator, 999 = singleplayer

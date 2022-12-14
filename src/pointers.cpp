@@ -600,7 +600,7 @@ namespace big
 		});
 
 		// Broadcast Net Array
-		main_batch.add("BNA", "48 89 5C 24 ? 48 89 54 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 40 48 8B 05 ? ? ? ? 66 44 89 4C 24 ?", [this](memory::handle ptr)
+		main_batch.add("BNA", "48 89 5C 24 ? 48 89 54 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 40 48 8B 05 ? ? ? ? 66 44 89 4C 24", [this](memory::handle ptr)
 		{
 			m_broadcast_net_array = ptr.as<PVOID>();
 		});
