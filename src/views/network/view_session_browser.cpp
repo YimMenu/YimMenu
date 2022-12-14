@@ -16,6 +16,7 @@ namespace big
 	{
 		static char name_buf[32];
 		static char search[64];
+		static char session_info[255];
 
 		ImGui::SetNextItemWidth(300.f);
 
@@ -31,6 +32,7 @@ namespace big
 					if (components::selectable(std::to_string(g_matchmaking_service->get_found_sessions()[i].info.m_session_token), i == selected_session_idx))
 					{
 						selected_session_idx = i;
+						g_pointers->m_encode_session_info(&g_matchmaking_service->get_found_sessions()[i].info, session_info, 0x7D, nullptr);
 					}
 				}
 			}
@@ -57,12 +59,17 @@ namespace big
 				auto& data = session.info.m_net_player_data;
 				ImGui::Text("Host Rockstar ID: %d", data.m_gamer_handle.m_rockstar_id);
 
+				components::button("Copy Session Info", []
+				{
+					ImGui::SetClipboardText(session_info);
+				});
+				ImGui::SameLine();
 				components::button("Join", [session]
 				{
 					if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 ||
 						STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
 					{
-						g_notification_service->push_error("RID Joiner", "Player switch in progress, wait a bit.");
+						g_notification_service->push_error("Join Session", "Player switch in progress, wait a bit.");
 						return;
 					}
 

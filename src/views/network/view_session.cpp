@@ -20,6 +20,22 @@ namespace big
 			session::join_by_rockstar_id(rid);
 		});
 
+		static char base64[500]{};
+		ImGui::InputText("Session Info", base64, sizeof(base64));
+		components::button("Join Session Info", []
+		{
+			rage::rlSessionInfo info;
+			g_pointers->m_decode_session_info(&info, base64, nullptr);
+			session::join_session(info);
+		});
+		ImGui::SameLine();
+		components::button("Copy Current Session Info", []
+		{
+			char buf[0x100];
+			g_pointers->m_encode_session_info(&gta_util::get_network()->m_game_session.m_rline_session.m_session_info, buf, 0x7D, nullptr);
+			ImGui::SetClipboardText(buf);
+		});
+
 		components::sub_title("Session Switcher");
 		if (ImGui::ListBoxHeader("###session_switch"))
 		{

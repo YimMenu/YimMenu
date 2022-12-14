@@ -671,6 +671,24 @@ namespace big
 			m_invalid_decal_crash = ptr.add(1).rip().as<PVOID>();
 		});
 
+		// Encode Session Info
+		main_batch.add("ESI", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 20 57 48 81", [this](memory::handle ptr)
+		{
+			m_encode_session_info = ptr.as<functions::encode_session_info>();
+		});
+
+		// Decode Session Info
+		main_batch.add("DSI", "48 89 5C 24 08 48 89 6C 24 10 56 57 41 56 48 81 EC C0", [this](memory::handle ptr)
+		{
+			m_decode_session_info = ptr.as<functions::decode_session_info>();
+		});
+
+		// Can Start Session Joining Check
+		main_batch.add("CSSJC", "77 DB ? ? ? ? ? ? ? 74 09", [this](memory::handle ptr)
+		{
+			memory::byte_patch::make(ptr.as<void*>(), std::to_array({ 0x90, 0x90 }))->apply(); // join faster
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 

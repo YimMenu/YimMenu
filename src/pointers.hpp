@@ -204,6 +204,9 @@ namespace big
 
 		PVOID m_write_bitbuffer_gamer_handle;
 		PVOID m_read_bitbuffer_gamer_handle;
+
+		functions::encode_session_info m_encode_session_info;
+		functions::decode_session_info m_decode_session_info;
 	};
 
 	inline pointers* g_pointers{};

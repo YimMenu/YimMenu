@@ -102,4 +102,7 @@ namespace big::functions
 	using handle_remove_gamer_cmd = void* (*)(rage::snSession* session, rage::snPlayer* origin, rage::snMsgRemoveGamersFromSessionCmd* cmd);
 
 	using script_vm = int (*) (uint64_t* stack, int64_t** scr_globals, rage::scrProgram* program, rage::scrThreadContext* ctx);
+
+	using encode_session_info = bool(*)(rage::rlSessionInfo* info, char* buffer, int buffer_size, int* bytes_written);
+	using decode_session_info = bool(*)(rage::rlSessionInfo* out_info, char* buffer, int* bytes_read);
 }

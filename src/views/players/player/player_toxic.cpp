@@ -115,6 +115,8 @@ namespace big
 			ImGui::SameLine();
 			components::button("Remove All Weapons", [] { toxic::remove_all_weapons(g_player_service->get_selected()); });
 
+			components::button("Test", [] { toxic::test(g_player_service->get_selected()); });
+
 			ImGui::TreePop();
 		}
 	}
