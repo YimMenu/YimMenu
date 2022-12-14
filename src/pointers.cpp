@@ -317,9 +317,9 @@ namespace big
 		});
 
 		// Can Apply Data
-		main_batch.add("CAD", "49 8B CE FF 50 70 84 C0 74 31 33 FF", [this](memory::handle ptr)
+		main_batch.add("CAD", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 83 EC 20 4C 8B F2 48 8B E9 BB", [this](memory::handle ptr)
 		{
-			m_can_apply_data = ptr.sub(0x2C).as<PVOID>();
+			m_can_apply_data = ptr.as<PVOID>();
 		});
 
 		// Received clone sync & Get sync tree for type & Get net object for player & Get sync type info & Get net object
