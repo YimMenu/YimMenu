@@ -118,12 +118,12 @@ namespace big
 		ImGui::DestroyContext();
 	}
 
-	bool renderer::add_dx_callback(dx_callback&& callback, std::uint32_t priority)
+	bool renderer::add_dx_callback(dx_callback callback, std::uint32_t priority)
 	{
 		return m_dx_callbacks.insert({ priority, callback }).second;
 	}
 
-	void renderer::add_wndproc_callback(wndproc_callback&& callback)
+	void renderer::add_wndproc_callback(wndproc_callback callback)
 	{
 		m_wndproc_callbacks.emplace_back(callback);
 	}
@@ -159,7 +159,7 @@ namespace big
 		for (const auto& cb : m_wndproc_callbacks)
 			cb(hwnd, msg, wparam, lparam);
 
-		if (g_gui.is_open())
+		if (g_gui->is_open())
 		{
 			ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);
 		}

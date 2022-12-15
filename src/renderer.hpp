@@ -20,13 +20,13 @@ namespace big
 		 * @return true 
 		 * @return false 
 		 */
-		bool add_dx_callback(dx_callback&& callback, std::uint32_t priority);
+		bool add_dx_callback(dx_callback callback, std::uint32_t priority);
 		/**
 		 * @brief Add a callback function on wndproc
 		 * 
 		 * @param callback Function
 		 */
-		void add_wndproc_callback(wndproc_callback&& callback);
+		void add_wndproc_callback(wndproc_callback callback);
 
 		void on_present();
 

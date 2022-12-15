@@ -300,7 +300,7 @@ namespace big
 				continue;
 			}
 
-			if (g_gui.m_opened)
+			if (g_gui->is_open())
 			{
 				script::get_current()->yield();
 				continue;
