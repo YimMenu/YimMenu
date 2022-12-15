@@ -25,7 +25,6 @@ class ClonedTakeOffPedVariationInfo;
 
 namespace rage
 {
-	class rlMetric;
 	class snSession;
 	class JSONNode;
 	class netArrayHandlerBase;
@@ -86,8 +85,6 @@ namespace big
 		static void get_network_event_data(int64_t unk, rage::CEventNetwork* net_event);
 
 		static void* assign_physical_index(CNetworkPlayerMgr* netPlayerMgr, CNetGamePlayer* player, uint8_t new_index);
-
-		static void format_metric_for_sending(int a1, int64_t a2, int64_t a3, rage::rlMetric* metric);
 
 		//SYNC
 		static bool received_clone_create(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eNetObjType object_type, int32_t object_id, int32_t object_flag, rage::datBitBuffer* buffer, int32_t timestamp);

@@ -82,7 +82,7 @@ namespace big
 		"Spawn Into Personal Vehicle"
 	};
 
-	auto transition_state = script_global(1574991);
+	auto transition_state = script_global(1574993);
 	eTransitionState last_state = eTransitionState::TRANSITION_STATE_EMPTY;
 	void looped::hud_transition_state()
 	{

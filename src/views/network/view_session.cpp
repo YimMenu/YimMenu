@@ -250,6 +250,10 @@ namespace big
 		components::button("TP All To Custom Auto Shop", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 149); }); });
 
 		components::button("TP All To Agency", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 155); }); });
+		ImGui::SameLine();
+		components::button("TP All To Freakshop", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 160); }); });
+		ImGui::SameLine();
+		components::button("TP All To Multi-Floor Garage", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 161); }); });
 
 		components::sub_title("Event Starter");
 		

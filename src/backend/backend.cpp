@@ -14,7 +14,7 @@ namespace big
 		while (g_running) 
 		{
 			g->attempt_save();
-			looped::system_disable_sigscanner();
+			// looped::system_disable_sigscanner();
 			looped::system_self_globals();
 			looped::system_update_pointers();
 			looped::system_desync_kick_protection();
