@@ -120,7 +120,13 @@ namespace big
 
 	bool renderer::add_dx_callback(dx_callback callback, std::uint32_t priority)
 	{
-		return m_dx_callbacks.insert({ priority, callback }).second;
+		if (!m_dx_callbacks.insert({ priority, callback }).second)
+		{
+			LOG(WARNING) << "Duplicate priority given on DX Callback!";
+
+			return false;
+		}
+		return true;
 	}
 
 	void renderer::add_wndproc_callback(wndproc_callback callback)
