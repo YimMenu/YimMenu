@@ -2,6 +2,7 @@
 #include "fiber_pool.hpp"
 #include "util/teleport.hpp"
 #include "hotkey_functions.hpp"
+#include "renderer.hpp"
 
 #include "network/ChatData.hpp"
 #include "pointers.hpp"
@@ -13,6 +14,11 @@ namespace big
         register_hotkey("waypoint", g->settings.hotkeys.teleport_waypoint, teleport::to_waypoint);
         register_hotkey("objective", g->settings.hotkeys.teleport_objective, teleport::to_objective);
         register_hotkey("noclip", g->settings.hotkeys.noclip, hotkey_funcs::toggle_noclip);
+
+        g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
+        {
+            wndproc(static_cast<eKeyState>(msg), wparam);
+        });
 
         g_hotkey_service = this;
     }
