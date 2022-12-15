@@ -214,14 +214,6 @@ namespace big
 
 		ImGui::EndGroup();
 
-		components::sub_title("Launch Creator");
-		ImGui::BeginGroup();
-		components::button("Race", [] { scripts::start_creator_script(RAGE_JOAAT("fm_race_creator")); }); ImGui::SameLine();
-		components::button("Capture", [] { scripts::start_creator_script(RAGE_JOAAT("fm_capture_creator")); }); ImGui::SameLine();
-		components::button("Deathmatch", [] { scripts::start_creator_script(RAGE_JOAAT("fm_deathmatch_creator")); }); ImGui::SameLine();
-		components::button("LTS", [] { scripts::start_creator_script(RAGE_JOAAT("fm_lts_creator")); });
-		ImGui::EndGroup();
-
 		g->self.proof_mask = 0;
 		if (g->self.god_mode)
 		{

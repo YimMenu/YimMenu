@@ -207,6 +207,11 @@ namespace big
 
 		functions::encode_session_info m_encode_session_info;
 		functions::decode_session_info m_decode_session_info;
+
+		datafile_commands::SveFileObject* m_main_file_object;
+		functions::load_cloud_file m_load_cloud_file;
+		functions::set_as_active_cloud_file m_set_as_active_cloud_file;
+		functions::save_json_data m_save_json_data;
 	};
 
 	inline pointers* g_pointers{};
