@@ -3,6 +3,7 @@
 #include "memory/all.hpp"
 #include "rage/atSingleton.hpp"
 #include "security/RageSecurity.hpp"
+#include "hooking.hpp"
 
 namespace big
 {
@@ -687,6 +688,12 @@ namespace big
 		main_batch.add("CSSJC", "77 DB ? ? ? ? ? ? ? 74 09", [this](memory::handle ptr)
 		{
 			memory::byte_patch::make(ptr.as<void*>(), std::to_array({ 0x90, 0x90 }))->apply(); // join faster
+		});
+
+		// NTQVM Caller
+		main_batch.add("NTQVMC", "66 0F 6F 0D ? ? ? ? 66 0F 6F 05 ? ? ? ? 66 0F 66 C4", [this](memory::handle ptr)
+		{
+			memory::byte_patch::make(ptr.add(4).rip().sub(32).as<uint64_t*>(), (uint64_t)&hooks::nt_query_virtual_memory)->apply();
 		});
 
 		auto mem_region = memory::module("GTA5.exe");
