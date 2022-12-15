@@ -123,8 +123,6 @@ namespace big
 		PVOID m_get_network_event_data{};
 		PVOID m_assign_physical_index{};
 
-		PVOID m_format_metric_for_sending;
-
 		Network** m_network;
 
 		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;

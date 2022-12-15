@@ -15,12 +15,12 @@ namespace big::session
 {
 	inline void join_type(eSessionType session)
 	{
-		*script_global(2726795).as<int*>() = (session == eSessionType::SC_TV ? 1 : 0); // If SC TV Then Enable Spectator Mode
+		*script_global(2695915).as<int*>() = (session == eSessionType::SC_TV ? 1 : 0); // If SC TV Then Enable Spectator Mode
 
 		if (session == eSessionType::LEAVE_ONLINE)
 			*script_global(1574589).at(2).as<int*>() = -1;
 		else
-			*script_global(1575015).as<int*>() = (int)session;
+			*script_global(1575017).as<int*>() = (int)session;
 
 		*script_global(1574589).as<int*>() = 1;
 		script::get_current()->yield(200ms);
@@ -32,21 +32,22 @@ namespace big::session
 		"FOGGY", "OVERCAST", "RAIN", "THUNDER",
 		"CLEARING", "NEUTRAL", "SNOW", "BLIZZARD",
 		"SNOWLIGHT", "XMAS", "HALLOWEEN" };
+
 	inline void local_weather()
 	{
 		MISC::CLEAR_OVERRIDE_WEATHER();
 
 		MISC::SET_OVERRIDE_WEATHER(weathers[g->session.local_weather]);
 
-		*script_global(262145).at(4723).as<bool*>() = g->session.local_weather == 13;
+		*script_global(262145).at(4752).as<bool*>() = g->session.local_weather == 13;
 	}
 
 	inline void set_fm_event_index(int index)
 	{
 		int idx = index / 32;
 		int bit = index % 32;
-		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(341).at(idx, 1).as<int*>(), bit);
-		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(348).at(idx, 1).as<int*>(), bit);
+		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(354).at(idx, 1).as<int*>(), bit);
+		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(347).at(idx, 1).as<int*>(), bit);
 		misc::set_bit(scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).at(205).at(idx, 1).as<int*>(), bit);
 	}
 
@@ -54,8 +55,8 @@ namespace big::session
 	{
 		int idx = index / 32;
 		int bit = index % 32;
-		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(341).at(idx, 1).as<int*>(), bit);
-		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(348).at(idx, 1).as<int*>(), bit);
+		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(354).at(idx, 1).as<int*>(), bit);
+		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(347).at(idx, 1).as<int*>(), bit);
 		misc::clear_bit(scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).at(205).at(idx, 1).as<int*>(), bit);
 	}
 
@@ -141,18 +142,18 @@ namespace big::session
 		if (owner == -1)
 			owner = player->id();
 
-		*script_global(1946250).at(3607).as<int*>() = 0;
-		*script_global(1946250).at(3605).as<int*>() = 1;
-		*script_global(1946250).at(4703).as<int*>() = 1;
-		*script_global(1946250).at(3218).as<int*>() = 1;
-		*script_global(1946250).at(3214).as<int*>() = 1;
-		*script_global(1946250).at(3612).as<int*>() = 1;
+		*script_global(1950108).at(3684).as<int*>() = 0;
+		*script_global(1950108).at(3682).as<int*>() = 1;
+		*script_global(1950108).at(4780).as<int*>() = 1;
+		*script_global(1950108).at(3218).as<int*>() = 1; // this doesnt exists at all?
+		*script_global(1950108).at(3214).as<int*>() = 1; // ^
+		*script_global(1950108).at(3689).as<int*>() = 1;
 
-		// misc::set_bit(script_global(1946250).at(1).as<int*>(), 22);
-		misc::set_bit(script_global(1946250).as<int*>(), 6);
-		misc::clear_bit(script_global(1946250).at(1).as<int*>(), 9);
+		// misc::set_bit(script_global(1950108).at(1).as<int*>(), 22);
+		misc::set_bit(script_global(1950108).as<int*>(), 6);
+		misc::clear_bit(script_global(1950108).at(1).as<int*>(), 9);
 
-		*script_global(1946250).at(3280).as<int*>() = owner;
-		*script_global(1946250).at(3606).as<int*>() = *scr_globals::globalplayer_bd.at(player->id(), scr_globals::size::globalplayer_bd).at(318).at(6).as<int*>();
+		*script_global(1950108).at(3346).as<int*>() = owner;
+		*script_global(1950108).at(3683).as<int*>() = *scr_globals::globalplayer_bd.at(player->id(), scr_globals::size::globalplayer_bd).at(318).at(6).as<int*>();
 	}
 }
