@@ -19,7 +19,7 @@ namespace big
 		}
 
 		ImGui::PushItemWidth(250);
-		ImGui::Text("Saved Jobs");
+		components::sub_title("Saved Jobs");
 
 		if (ImGui::ListBoxHeader("##empty", ImVec2(200, 200)))
 		{
@@ -62,7 +62,7 @@ namespace big
 		components::button("Create Job File", []
 		{
 			cached_creator_files = false;
-			creator_storage_service::create_file(job_file_name_input);
+			creator_storage_service::create_file(std::string(job_file_name_input) + ".json");
 		});
 
 		ImGui::SameLine();

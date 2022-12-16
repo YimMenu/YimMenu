@@ -76,7 +76,7 @@ namespace big
 			script::get_current()->yield();
 		}
 
-		scr_functions::load_from_datafile.static_call({ (uint64_t)LOCALIZATION::GET_CURRENT_LANGUAGE(), true, false, 0});
+		scr_functions::load_from_datafile.static_call({ 1, true, false, 0 });
 
 		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(RAGE_JOAAT("fm_race_creator"));
 		file_stream.close();
