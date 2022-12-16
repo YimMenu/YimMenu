@@ -16,17 +16,11 @@ namespace big
 	renderer::renderer() :
 		m_dxgi_swapchain(*g_pointers->m_swapchain)
 	{
-		void* d3d_device{};
-		if (SUCCEEDED(m_dxgi_swapchain->GetDevice(__uuidof(ID3D11Device), &d3d_device)))
-		{
-			m_d3d_device.Attach(static_cast<ID3D11Device*>(d3d_device));
-		}
-		else
+		if (m_dxgi_swapchain->GetDevice(__uuidof(ID3D11Device), reinterpret_cast<void**>(&m_d3d_device)) < 0)
 		{
 			throw std::runtime_error("Failed to get D3D device.");
 		}
-
-		m_d3d_device->GetImmediateContext(m_d3d_device_context.GetAddressOf());
+		m_d3d_device->GetImmediateContext(&m_d3d_device_context);
 
 		auto file_path = g_file_manager->get_project_file("./imgui.ini").get_path();
 
@@ -35,7 +29,7 @@ namespace big
 		static std::string path = file_path.make_preferred().string();
 		ctx->IO.IniFilename = path.c_str();
 
-		ImGui_ImplDX11_Init(m_d3d_device.Get(), m_d3d_device_context.Get());
+		ImGui_ImplDX11_Init(m_d3d_device, m_d3d_device_context);
 		ImGui_ImplWin32_Init(g_pointers->m_hwnd);
 
 		folder windows_fonts(
@@ -112,46 +106,40 @@ namespace big
 
 		rescale(g->window.gui_scale);
 
-		g_gui.dx_init();
 		g_renderer = this;
 	}
 
 	renderer::~renderer()
 	{
+		g_renderer = nullptr;
+
 		ImGui_ImplWin32_Shutdown();
 		ImGui_ImplDX11_Shutdown();
 		ImGui::DestroyContext();
+	}
 
-		g_renderer = nullptr;
+	bool renderer::add_dx_callback(dx_callback callback, std::uint32_t priority)
+	{
+		if (!m_dx_callbacks.insert({ priority, callback }).second)
+		{
+			LOG(WARNING) << "Duplicate priority given on DX Callback!";
+
+			return false;
+		}
+		return true;
+	}
+
+	void renderer::add_wndproc_callback(wndproc_callback callback)
+	{
+		m_wndproc_callbacks.emplace_back(callback);
 	}
 
 	void renderer::on_present()
 	{
-		if (g_gui.m_opened)
-		{
-			ImGui::GetIO().MouseDrawCursor = true;
-			ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
-		}
-		else
-		{
-			ImGui::GetIO().MouseDrawCursor = false;
-			ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouse;
-		}
-
-		ImGui_ImplDX11_NewFrame();
-		ImGui_ImplWin32_NewFrame();
-		ImGui::NewFrame();
-
-		g_gui.always_draw();
-
-		if (g_gui.m_opened)
-		{
-			g_gui.dx_on_tick();
-		}
-
-
-		ImGui::Render();
-		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+		new_frame();
+		for (const auto& cb : m_dx_callbacks | std::views::values)
+			cb();
+		end_frame();
 	}
 
 	void renderer::rescale(float rel_size)
@@ -174,27 +162,25 @@ namespace big
 
 	void renderer::wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	{
-		if (msg == WM_KEYUP && wparam == g->settings.hotkeys.menu_toggle)
-		{
-			//Persist and restore the cursor position between menu instances.
-			static POINT cursor_coords{};
-			if (g_gui.m_opened)
-			{
-				GetCursorPos(&cursor_coords);
-			}
-			else if (cursor_coords.x + cursor_coords.y != 0)
-			{
-				SetCursorPos(cursor_coords.x, cursor_coords.y);
-			}
+		for (const auto& cb : m_wndproc_callbacks)
+			cb(hwnd, msg, wparam, lparam);
 
-			g_gui.m_opened = g->settings.hotkeys.editing_menu_toggle || !g_gui.m_opened;
-			if (g->settings.hotkeys.editing_menu_toggle)
-				g->settings.hotkeys.editing_menu_toggle = false;
-		}
-
-		if (g_gui.m_opened)
+		if (g_gui->is_open())
 		{
 			ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);
 		}
+	}
+
+	void renderer::new_frame()
+	{
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+	}
+
+	void renderer::end_frame()
+	{
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	}
 }
