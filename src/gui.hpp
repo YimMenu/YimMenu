@@ -6,15 +6,31 @@ namespace big
 	class gui
 	{
 	public:
+		gui();
+		virtual ~gui();
+		gui(const gui&) = delete;
+		gui(gui&&) noexcept  = delete;
+		gui& operator=(const gui&) = delete;
+		gui& operator=(gui&&) noexcept  = delete;
+
+		bool is_open();
+		void toggle(bool toggle);
+
 		void dx_init();
 		void dx_on_tick();
-		void always_draw();
 
 		void script_on_tick();
 		static void script_func();
-	public:
-		bool m_opened{};
+
+		void wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+
+	private:
+		void toggle_mouse();
+
+	private:
+		bool m_is_open;
+
 	};
 
-	inline gui g_gui;
+	inline gui* g_gui;
 }

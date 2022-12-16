@@ -52,16 +52,5 @@ namespace big
 		static void player_kick();
 		static void player_toxic();
 		static void player_misc();
-
-		// later calls will be drawn over earlier calls
-		static void always()
-		{
-			esp::draw();
-			context_menu();
-
-			gta_data();
-
-			notifications();
-		}
 	};
 }
