@@ -13,7 +13,7 @@
 
 namespace big::mobile
 {
-	inline auto player_global = script_global(2689235);
+	inline auto player_global = script_global(2657589);
 
 	namespace util
 	{
@@ -28,7 +28,7 @@ namespace big::mobile
 
 		inline int get_current_personal_vehicle()
 		{
-			return *script_global(2359296).at(0, 5559).at(675).at(2).as<int*>();
+			return *script_global(2359296).at(0, 5568).at(681).at(2).as<int*>();
 		}
 	}
 
@@ -36,8 +36,8 @@ namespace big::mobile
 	{
 		inline void off_radar(bool toggle)
 		{
-			*scr_globals::globalplayer_bd.at(PLAYER::GET_PLAYER_INDEX(), scr_globals::size::globalplayer_bd).at(208).as<int*>() = toggle;
-			*script_global(2703735).at(56).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
+			*scr_globals::globalplayer_bd.at(PLAYER::GET_PLAYER_INDEX(), scr_globals::size::globalplayer_bd).at(210).as<int*>() = toggle;
+			*script_global(2672505).at(56).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
 		}
 	}
 	
@@ -45,12 +45,12 @@ namespace big::mobile
 	{
 		inline void request_ammo_drop()
 		{
-			*script_global(scr_globals::mechanic_global).at(874).as<int*>() = 1;
+			*script_global(scr_globals::mechanic_global).at(886).as<int*>() = 1;
 		}
 		
 		inline void request_helicopter_pickup()
 		{
-			*script_global(scr_globals::mechanic_global).at(876).as<int*>() = 1;
+			*script_global(scr_globals::mechanic_global).at(888).as<int*>() = 1;
 		}
 	}
 
@@ -98,12 +98,12 @@ namespace big::mobile
 	{
 		inline Vehicle get_personal_vehicle()
 		{
-			return *scr_globals::mechanic_global.at(298).as<Vehicle*>();
+			return *scr_globals::mechanic_global.at(299).as<Vehicle*>();
 		}
 
 		inline void summon_vehicle_by_index(int veh_idx)
 		{
-			if (*scr_globals::mechanic_global.at(958).as<int*>() != -1)
+			if (*scr_globals::mechanic_global.at(979).as<int*>() != -1)
 				return g_notification_service->push_warning("Vehicle", "Mechanic is not ready to deliver a vehicle right now.");
 
 			if (g->clone_pv.spawn_inside && self::veh)
@@ -115,19 +115,19 @@ namespace big::mobile
 
 			script::get_current()->yield(100ms);
 
-			*scr_globals::mechanic_global.at(924).as<int*>() = 1; // disable vehicle node distance check
-			*scr_globals::mechanic_global.at(911).as<int*>() = 1; // tell freemode to spawn our vehicle
-			*scr_globals::mechanic_global.at(961).as<int*>() = 0; // required
-			*scr_globals::mechanic_global.at(958).as<int*>() = veh_idx;
+			*scr_globals::mechanic_global.at(936).as<int*>() = 1; // disable vehicle node distance check
+			*scr_globals::mechanic_global.at(923).as<int*>() = 1; // tell freemode to spawn our vehicle
+			*scr_globals::mechanic_global.at(982).as<int*>() = 0; // required
+			*scr_globals::mechanic_global.at(979).as<int*>() = veh_idx;
 
 			script::get_current()->yield(100ms);
 
 			GtaThread* freemode_thread = gta_util::find_script_thread(RAGE_JOAAT("freemode"));
 			if (freemode_thread)
-				*script_local(freemode_thread, 18399).at(176).as<int*>() = 0; // spawn vehicle instantly
+				*script_local(freemode_thread, 18630).at(176).as<int*>() = 0; // spawn vehicle instantly
 
 			// blocking call till vehicle is delivered
-			notify::busy_spinner("Delivering vehicle...", scr_globals::mechanic_global.at(958).as<int*>(), -1);
+			notify::busy_spinner("Delivering vehicle...", scr_globals::mechanic_global.at(979).as<int*>(), -1);
 
 			if (g->clone_pv.spawn_inside)
 			{

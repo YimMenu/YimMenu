@@ -41,7 +41,6 @@ namespace big
 		static void session_randomize_ceo_colors();
 		static void session_auto_kick_host();
 
-		static void system_disable_sigscanner();
 		static void system_self_globals();
 		static void system_update_pointers();
 		static void system_desync_kick_protection();

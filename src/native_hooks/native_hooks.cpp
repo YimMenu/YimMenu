@@ -51,8 +51,8 @@ namespace big
 	void native_hook::hook_instance(rage::scrProgram* program, const std::unordered_map<rage::scrNativeHash, rage::scrNativeHandler>& native_replacements)
 	{
 		m_program = program;
-		m_vmt_hook = std::make_unique<vmt_hook>(m_program, 3);
-		m_vmt_hook->hook(0, &scrprogram_dtor);
+		m_vmt_hook = std::make_unique<vmt_hook>(m_program, 9);
+		m_vmt_hook->hook(6, &scrprogram_dtor);
 		m_vmt_hook->enable();
 
 		m_handler_hook = std::make_unique<vmt_hook>(&m_program->m_native_entrypoints, m_program->m_native_count);
@@ -85,7 +85,7 @@ namespace big
 	{
 		if (auto it = g_native_hooks->m_native_hooks.find(this_); it != g_native_hooks->m_native_hooks.end())
 		{
-			auto og_func = it->second->m_vmt_hook->get_original<decltype(&native_hook::scrprogram_dtor)>(0);
+			auto og_func = it->second->m_vmt_hook->get_original<decltype(&native_hook::scrprogram_dtor)>(6);
 			it->second->m_vmt_hook->disable();
 			it->second->m_vmt_hook.reset();
 			it->second->m_handler_hook->disable();
