@@ -32,51 +32,6 @@ namespace big::toxic
 		blame_explode_coord(to_blame, coords, explosion_type, damage, is_audible, is_invisible, camera_shake);
 	}
 
-	inline void ceo_kick(player_ptr target)
-	{
-		auto leader = *scr_globals::gpbd_fm_3.at(target->id(), scr_globals::size::gpbd_fm_3).at(10).as<int*>();
-
-		if (leader == -1)
-			g_notification_service->push_warning("CEO Kick", "Player is not in a CEO/MC");
-		else if (leader == target->id())
-		{
-			// use "normal" method to remove from CEO
-			const size_t arg_count = 4;
-			int64_t args[arg_count] = {
-				(int64_t)eRemoteEvent::CeoKick,
-				(int64_t)self::id,
-				FALSE,
-				5
-			};
-
-			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
-		}
-		else
-		{
-			// use a more private method to remove associate
-			const size_t arg_count = 3;
-			int64_t args[arg_count] = {
-				(int64_t)eRemoteEvent::MarkPlayerAsBeast,
-				(int64_t)self::id,
-				leader
-			};
-
-			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
-		}
-	}
-
-	inline void ceo_ban(player_ptr target)
-	{
-		const size_t arg_count = 3;
-		int64_t args[arg_count] = {
-			(int64_t)eRemoteEvent::CeoBan,
-			(int64_t)self::id,
-			TRUE
-		};
-
-		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
-	}
-
 	inline void send_player_to_island(player_ptr target)
 	{
 		const size_t arg_count = 2;
@@ -196,34 +151,6 @@ namespace big::toxic
 		};
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
-	}
-
-	inline void turn_player_into_animal(player_ptr target)
-	{
-		bool bOldPlayerControl = PLAYER::IS_PLAYER_CONTROL_ON(target->id());
-
-		for (int i = 0; i < 30; i++)
-		{
-			session::give_collectible(target->id(), eCollectibleType::Treat, 0, false);
-			session::give_collectible(target->id(), eCollectibleType::Treat, 0, true);
-			g_pointers->m_give_pickup_rewards(1 << target->id(), REWARD_HEALTH); // try to keep them alive
-			g_pointers->m_give_pickup_rewards(1 << target->id(), REWARD_ARMOUR);
-			script::get_current()->yield(400ms);
-
-			Ped playerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target->id());
-			Hash model = ENTITY::GET_ENTITY_MODEL(playerPed);
-
-			if (bOldPlayerControl && !PLAYER::IS_PLAYER_CONTROL_ON(target->id()))
-				return;
-
-			if (model != RAGE_JOAAT("mp_m_freemode_01") && model != RAGE_JOAAT("mp_f_freemode_01"))
-				return;
-
-			if (ENTITY::IS_ENTITY_DEAD(playerPed, FALSE))
-				script::get_current()->yield(7s);
-		}
-
-		g_notification_service->push_warning("Turn to Animal", "Failed to turn player into an animal");
 	}
 
 	inline void set_wanted_level(player_ptr target, int wanted_level)
