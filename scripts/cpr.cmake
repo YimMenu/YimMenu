@@ -1,5 +1,6 @@
 include(FetchContent)
 
+set(BUILD_CPR_TESTS OFF CACHE INTERNAL "")
 FetchContent_Declare(
     cpr
     GIT_REPOSITORY https://github.com/libcpr/cpr.git
