@@ -187,14 +187,6 @@ namespace big
 			}); 
 		});
 
-		components::button("CEO Ban", [] { 
-			g_player_service->iterate([](auto& plyr) 
-			{ 
-				if (*scr_globals::gpbd_fm_3.at(plyr.second->id(), scr_globals::size::gpbd_fm_3).at(10).as<int*>() != -1)
-					toxic::ceo_ban(plyr.second); 
-			}); 
-		});
-
 		components::small_text("Teleports");
 
 		if (ImGui::BeginCombo("##apartment", apartment_names[g->session.send_to_apartment_idx]))
@@ -294,10 +286,10 @@ namespace big
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
-		components::button("One-On-One Deathmatch", [] { scripts::start_launcher_script(187); });
+		components::button("One-On-One Deathmatch", [] { scripts::start_launcher_script(197); });
 		components::button("Impromptu Race", [] { scripts::start_launcher_script(16); });
-		components::button("Flight School", [] { scripts::start_launcher_script(186); });
-		components::button("Golf", [] { scripts::start_launcher_script(183); });
+		components::button("Flight School", [] { scripts::start_launcher_script(196); });
+		components::button("Golf", [] { scripts::start_launcher_script(193); });
 		components::button("Tutorial", [] { scripts::start_launcher_script(20); });
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Only works on joining players");
@@ -306,11 +298,11 @@ namespace big
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
-		components::button("Gunslinger", [] { scripts::start_launcher_script(201); });
-		components::button("Space Monkey", [] { scripts::start_launcher_script(206); });
-		components::button("Wizard", [] { scripts::start_launcher_script(202); });
-		components::button("QUB3D", [] { scripts::start_launcher_script(207); });
-		components::button("Camhedz", [] { scripts::start_launcher_script(208); });
+		components::button("Gunslinger", [] { scripts::start_launcher_script(211); });
+		components::button("Space Monkey", [] { scripts::start_launcher_script(216); });
+		components::button("Wizard", [] { scripts::start_launcher_script(212); });
+		components::button("QUB3D", [] { scripts::start_launcher_script(217); });
+		components::button("Camhedz", [] { scripts::start_launcher_script(218); });
 		ImGui::EndGroup();
 
 		ImGui::Checkbox("Disable Pedestrians", &g->session.disable_peds);

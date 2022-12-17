@@ -9,10 +9,6 @@
 #include "services/gta_data/gta_data_service.hpp"
 #include "util/system.hpp"
 
-#include <network/Network.hpp>
-#include <timeapi.h>
-#pragma comment(lib, "winmm.lib")
-
 namespace big::toxic
 {
 	inline void blame_explode_coord(player_ptr to_blame, Vector3 pos, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
@@ -196,14 +192,14 @@ namespace big::toxic
 
 		if (wanted_level > 0)
 		{
-			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(212).as<Player*>() = id;
-			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = wanted_level;
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(214).as<Player*>() = id;
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(215).as<int*>() = wanted_level;
 
 			for (int i = 0; PLAYER::GET_PLAYER_WANTED_LEVEL(id) < wanted_level && i < 3600; i++)
 				script::get_current()->yield(1ms);
 
-			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(212).as<Player*>() = -1; // reset to prevent wanted from being constantly set
-			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = -1;
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(214).as<Player*>() = -1; // reset to prevent wanted from being constantly set
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(215).as<int*>() = -1;
 		}
 	}
 
@@ -347,36 +343,5 @@ namespace big::toxic
 	inline void remove_all_weapons(player_ptr target)
 	{
 		WEAPON::REMOVE_ALL_PED_WEAPONS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target->id()), FALSE);
-	}
-
-	inline void test(player_ptr target)
-	{
-		struct netTimeSyncMsg
-		{
-			BOOL process;
-			int progression;
-			int unk;
-			int timestamp;
-			int increment;
-		};
-
-		using broadcast_time_t = bool(*)(rage::netConnectionManager* mgr, rage::netConnectionPeer* peer, int connectionId, netTimeSyncMsg* msg, int flags);
-		uint8_t* networkTime = (uint8_t*)((__int64)GetModuleHandleA(0) + 0x29f2f20);
-		broadcast_time_t broadcastTime = (broadcast_time_t)((__int64)GetModuleHandleA(0) + 0x1410fd4);
-
-		netTimeSyncMsg msg;
-		msg.process = TRUE;
-		msg.progression = *(uint32_t*)(networkTime + 0x6C) + 1;
-		msg.unk = *(uint32_t*)(networkTime + 0x14);
-		msg.timestamp = timeGetTime();
-		msg.increment = timeGetTime() + 9999999;
-
-		for (int i = 0; i < 100; i++)
-		{
-			broadcastTime(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
-				g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr, (int)target->get_session_player()->m_player_data.m_peer_id_2),
-				*(uint32_t*)(networkTime + 0x74), &msg, 0x1000000); // repeatedly spamming the event will eventually cause certain bounds checks to disable for some reason
-			script::get_current()->yield();
-		}
 	}
 }
