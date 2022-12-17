@@ -197,6 +197,9 @@ namespace big
 		memory::byte_patch* m_broadcast_patch;
 
 		rage::atSingleton<rage::RageSecurity>* m_security;
+		
+		PVOID m_queue_dependency;
+		PVOID m_interval_check_func;
 
 		PVOID m_send_session_matchmaking_attributes;
 
