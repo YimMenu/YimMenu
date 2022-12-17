@@ -19,12 +19,15 @@ namespace big
 	std::size_t handling_service::load_files()
 	{
 		std::size_t files_loaded{};
+		m_handling_profiles.clear();
 
 		for (const auto& item : std::filesystem::directory_iterator(m_profiles_folder.get_path()))
 		{
 			if (!item.is_regular_file())
 				continue;
-			if (auto file_path = item.path(); file_path.extension() == ".json")
+
+			auto file_path = item.path(); 
+			if (file_path.extension() == ".json")
 			{
 				auto profile_file = std::ifstream(file_path, std::ios::binary);
 				nlohmann::json j;
@@ -32,6 +35,31 @@ namespace big
 				profile_file.close();
 
 				m_handling_profiles.emplace(file_path.stem().string(), j.get<handling_profile>());
+
+				++files_loaded;
+			}
+			// deprecate this
+			else if (file_path.extension() == ".bin")
+			{
+				LOG(WARNING) << "Attempting to convert old handling files, this feature will be removed in the future.";
+
+				auto profile_file = std::ifstream(file_path, std::ios::binary);
+				auto profile = handling_profile();
+				profile_file.read(reinterpret_cast<char*>(&profile), 328); // hardcoded old size to prevent overreading
+				profile_file.close();
+
+				const auto new_save = file_path.stem().string();
+
+				// this will make sure we only copy the fields we want to copy
+				nlohmann::json j = profile;
+				const auto save_file_path = m_profiles_folder.get_file("./" + new_save + ".json");
+				auto save_file = std::ofstream(save_file_path.get_path(), std::ios::binary);
+				save_file << j.dump(4);
+
+				// remove old file
+				std::filesystem::remove(file_path);
+
+				m_handling_profiles.emplace(new_save, j.get<handling_profile>());
 
 				++files_loaded;
 			}
@@ -72,14 +100,14 @@ namespace big
 
 		auto save_file = std::ofstream(save.get_path(), std::ios::binary);
 		nlohmann::json j = profile;
-		save_file << j;
+		save_file << j.dump(4);
 		save_file.close();
 
 		// reset our profile to prevent copying members we don't want to exist
 		profile = handling_profile();
 		profile = j.get<handling_profile>();
 
-		m_handling_profiles.emplace(save.stem().string(), std::move(profile));
+		m_handling_profiles.emplace(save.get_path().stem().string(), std::move(profile));
 
 		return true;
 	}
