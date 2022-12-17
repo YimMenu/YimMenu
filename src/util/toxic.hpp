@@ -32,6 +32,30 @@ namespace big::toxic
 		blame_explode_coord(to_blame, coords, explosion_type, damage, is_audible, is_invisible, camera_shake);
 	}
 
+	inline void ceo_kick(player_ptr target)
+	{
+		auto leader = *scr_globals::gpbd_fm_3.at(target->id(), scr_globals::size::gpbd_fm_3).at(10).as<int*>();
+
+		if (leader == -1)
+			g_notification_service->push_warning("CEO Kick", "Player is not in a CEO/MC");
+		else if (leader == target->id())
+		{
+			g_notification_service->push_error("CEO Kick", "Cannot kick leader of CEO/MC anymore");
+		}
+		else
+		{
+			// use a more private method to remove associate
+			const size_t arg_count = 3;
+			int64_t args[arg_count] = {
+				(int64_t)eRemoteEvent::MarkPlayerAsBeast,
+				(int64_t)self::id,
+				leader
+			};
+
+			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
+		}
+	}
+
 	inline void send_player_to_island(player_ptr target)
 	{
 		const size_t arg_count = 2;
@@ -168,14 +192,14 @@ namespace big::toxic
 
 		if (wanted_level > 0)
 		{
-			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(212).as<Player*>() = id;
-			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = wanted_level;
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(214).as<Player*>() = id;
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(215).as<int*>() = wanted_level;
 
 			for (int i = 0; PLAYER::GET_PLAYER_WANTED_LEVEL(id) < wanted_level && i < 3600; i++)
 				script::get_current()->yield(1ms);
 
-			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(212).as<Player*>() = -1; // reset to prevent wanted from being constantly set
-			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = -1;
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(214).as<Player*>() = -1; // reset to prevent wanted from being constantly set
+			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(215).as<int*>() = -1;
 		}
 	}
 
