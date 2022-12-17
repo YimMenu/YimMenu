@@ -39,7 +39,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		g_hmodule = hmod;
 		g_main_thread = CreateThread(nullptr, 0, [](PVOID) -> DWORD
 		{
-			while (!FindWindow("grcWindow", NULL))
+			while (!FindWindow("grcWindow", nullptr))
 				std::this_thread::sleep_for(100ms);
 
 			std::filesystem::path base_dir = std::getenv("appdata");

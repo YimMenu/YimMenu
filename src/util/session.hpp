@@ -11,6 +11,8 @@
 #include "services/players/player_service.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "services/api/api_service.hpp"
+#include "thread_pool.hpp"
+#include "fiber_pool.hpp"
 
 namespace big::session
 {
@@ -73,7 +75,7 @@ namespace big::session
 		}
 		return;
 	}
-  
+
 	inline void join_by_rockstar_id(uint64_t rid)
 	{
 		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 ||
@@ -104,13 +106,19 @@ namespace big::session
 
 	inline void join_by_username(std::string username)
 	{
-		uint64_t rid;
-		if (g_api_service->get_rid_from_username(username, rid))
+		g_thread_pool->push([username]
 		{
-			join_by_rockstar_id(rid);
-		}
-
-		g_notification_service->push_error("RID Joiner", "Target player is offline?");
+			uint64_t rid;
+			if (g_api_service->get_rid_from_username(username, rid))
+			{
+				g_fiber_pool->queue_job([rid]
+				{
+					join_by_rockstar_id(rid);
+				});
+				return;
+			}
+			g_notification_service->push_error("RID Joiner", "Target player is offline?");
+		});
 	}
 
 	inline void add_infraction(player_ptr player, Infraction infraction)
