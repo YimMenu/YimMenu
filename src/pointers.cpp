@@ -636,6 +636,12 @@ namespace big
 			m_chat_data = ptr.add(3).rip().as<ChatData**>();
 		});
 
+		// Social Club Info
+		main_batch.add("SCI", "48 8B D3 48 8D 4C 24 ? 48 69 D2", [this](memory::handle ptr)
+		{
+			m_sc_info = ptr.sub(4).rip().as<ScInfo*>();
+		});
+
 		// Create Script Handler
 		main_batch.add("CSH", "48 8D 05 ? ? ? ? 4C 8D 0D ? ? ? ? 41 83 C8 FF 48 89 03 89 53 70 88 53 74 4C 89 4B 68 48 89 93", [this](memory::handle ptr)
 		{

@@ -1,6 +1,7 @@
 #pragma once
 #include "common.hpp"
 #include "base/HashTable.hpp"
+#include "socialclub/ScInfo.hpp"
 #include "function_types.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/replay.hpp"
@@ -68,6 +69,7 @@ namespace big
 		functions::write_player_game_state_data_node m_write_player_game_state_data_node{};
 
 		ChatData** m_chat_data;
+		ScInfo* m_sc_info;
 		FriendRegistry* m_friend_registry{};
 
 		functions::get_screen_coords_for_world_coords m_get_screen_coords_for_world_coords{};

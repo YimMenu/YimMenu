@@ -10,6 +10,7 @@
 #include "pointers.hpp"
 #include "services/players/player_service.hpp"
 #include "services/player_database/player_database_service.hpp"
+#include "services/api/api_service.hpp"
 
 namespace big::session
 {
@@ -96,6 +97,17 @@ namespace big::session
 				join_session(result.m_session_info);
 				return;
 			}
+		}
+
+		g_notification_service->push_error("RID Joiner", "Target player is offline?");
+	}
+
+	inline void join_by_username(std::string username)
+	{
+		uint64_t rid;
+		if (g_api_service->get_rid_from_username(username, rid))
+		{
+			join_by_rockstar_id(rid);
 		}
 
 		g_notification_service->push_error("RID Joiner", "Target player is offline?");
