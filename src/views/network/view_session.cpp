@@ -8,6 +8,7 @@
 #include "util/toxic.hpp"
 #include "core/data/apartment_names.hpp"
 #include "core/data/warehouse_names.hpp"
+#include <network/Network.hpp>
 
 namespace big
 {
