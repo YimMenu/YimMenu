@@ -3,7 +3,7 @@
 
 namespace big
 {
-	using handling_profiles = std::map<std::string, std::unique_ptr<handling_profile>>;
+	using handling_profiles = std::map<std::string, handling_profile>;
 	class handling_service final
 	{
 	public:
@@ -32,7 +32,7 @@ namespace big
 		handling_profiles m_handling_profiles;
 
 		// contains the handling profiles of a vehicles before they're been modified
-		std::unordered_map<std::uint32_t, std::unique_ptr<handling_profile>> m_vehicle_backups;
+		std::unordered_map<std::uint32_t, handling_profile> m_vehicle_backups;
 
 	};
 
