@@ -75,6 +75,10 @@ namespace big
 		save_file << j;
 		save_file.close();
 
+		// reset our profile to prevent copying members we don't want to exist
+		profile = handling_profile();
+		profile = j.get<handling_profile>();
+
 		m_handling_profiles.emplace(name, std::move(profile));
 
 		return true;
