@@ -16,11 +16,18 @@ namespace big
 	{
 		static uint64_t rid = 0;
 		ImGui::InputScalar("Input RID", ImGuiDataType_U64, &rid);
-		components::button("Join RID", []
+		components::button("Join by RID", []
 		{
 			session::join_by_rockstar_id(rid);
 		});
 
+		static char username[20];
+		ImGui::InputText("Input Username", username, sizeof(username));
+		if (components::button("Join by Username"))
+		{
+			session::join_by_username(username);
+		};
+    
 		static char base64[500]{};
 		ImGui::InputText("Session Info", base64, sizeof(base64));
 		components::button("Join Session Info", []
