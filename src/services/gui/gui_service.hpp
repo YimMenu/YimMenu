@@ -33,6 +33,9 @@ namespace big
 		PLAYER_DATABASE,
 		SESSION_BROWSER,
 
+		SCRIPTING,
+		SCRIPTING_WREN,
+
 		SETTINGS,
 		CONTEXT_MENU_SETTINGS,
 		ESP_SETTINGS,
@@ -82,6 +85,9 @@ namespace big
 				{ tabs::SESSION, { "Session", view::session }},
 				{ tabs::PLAYER_DATABASE, { "Player Database", view::player_database }},
 				{ tabs::SESSION_BROWSER, { "Session Browser", view::session_browser }},
+			}}},
+			{tabs::SCRIPTING, { "Scripting", nullptr, {
+				{ tabs::SCRIPTING_WREN, { "Wren", view::wren}}
 			}}},
 			{tabs::SETTINGS, { "Settings", view::settings, {
 				{ tabs::CONTEXT_MENU_SETTINGS, { "Context Menu", view::context_menu_settings}},

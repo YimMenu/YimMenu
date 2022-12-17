@@ -27,6 +27,7 @@
 #include "services/player_database/player_database_service.hpp"
 #include "services/hotkey/hotkey_service.hpp"
 #include "services/matchmaking/matchmaking_service.hpp"
+#include "scripting/wren/wren_manager.hpp"
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -112,6 +113,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_script_mgr.add_script(std::make_unique<script>(&backend::turnsignal_loop, "Turn Signals"));
 				g_script_mgr.add_script(std::make_unique<script>(&backend::disable_control_action_loop, "Disable Controls"));
 				g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu, "Context Menu"));
+				g_script_mgr.add_script(std::make_unique<script>(&wren_manager::tick_all_modules, "Wren Manager Tick All Scripts"));
 				LOG(INFO) << "Scripts registered.";
 
 				g_hooking->enable();
@@ -120,10 +122,16 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto native_hooks_instance = std::make_unique<native_hooks>();
 				LOG(INFO) << "Dynamic native hooker initialized.";
 
+				auto wren_manager_instance = std::make_unique<wren_manager>();
+				LOG(INFO) << "Wren Manager initialized.";
+
 				g_running = true;
 
 				while (g_running)
 					std::this_thread::sleep_for(500ms);
+
+				wren_manager_instance.reset();
+				LOG(INFO) << "Wren Manager uninitialized.";
 
 				g_hooking->disable();
 				LOG(INFO) << "Hooking disabled.";

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(YimMenu CXX ASM_MASM)
+project(YimMenu C CXX ASM_MASM)
 
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 
@@ -17,6 +17,7 @@ include(scripts/json.cmake)
 message("\nFetching custom modules")
 include(scripts/imgui.cmake)
 include(scripts/gtav-classes.cmake)
+include(scripts/wren.cmake)
 
 
 # YimMenu
@@ -41,10 +42,13 @@ target_include_directories(YimMenu PRIVATE
     "${json_SOURCE_DIR}/single_include"
     "${gtav_classes_SOURCE_DIR}"
     "${imgui_SOURCE_DIR}"
+    "${wren_SOURCE_DIR}/src/include"
+    "${wren_SOURCE_DIR}/src/optional"
+    "${wren_SOURCE_DIR}/src/vm"
 )
 
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(YimMenu PRIVATE pugixml minhook g3log imgui)
+target_link_libraries(YimMenu PRIVATE pugixml minhook g3log imgui wren)
 
 # Warnings as errors
 set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
