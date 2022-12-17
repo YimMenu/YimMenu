@@ -79,7 +79,7 @@ namespace big
 		profile = handling_profile();
 		profile = j.get<handling_profile>();
 
-		m_handling_profiles.emplace(name, std::move(profile));
+		m_handling_profiles.emplace(save.stem().string(), std::move(profile));
 
 		return true;
 	}
