@@ -24,14 +24,14 @@ namespace big
 		{
 			if (!item.is_regular_file())
 				continue;
-			if (auto file_path = item.path(); file_path.extension() == ".bin")
+			if (auto file_path = item.path(); file_path.extension() == ".json")
 			{
-				auto profile = std::make_unique<handling_profile>();
 				auto profile_file = std::ifstream(file_path, std::ios::binary);
-				profile_file.read(reinterpret_cast<char*>(profile.get()), sizeof(handling_profile));
+				nlohmann::json j;
+				profile_file >> j;
 				profile_file.close();
 
-				m_handling_profiles.emplace(file_path.stem().string(), std::move(profile));
+				m_handling_profiles.emplace(file_path.stem().string(), j.get<handling_profile>());
 
 				++files_loaded;
 			}
@@ -65,13 +65,14 @@ namespace big
 		if (!vehicle)
 			return false;
 
-		name += ".bin";
+		name += ".json";
 		const auto save = m_profiles_folder.get_file(name);
 
-		auto profile = std::make_unique<handling_profile>(vehicle);
+		auto profile = handling_profile(vehicle);
 
 		auto save_file = std::ofstream(save.get_path(), std::ios::binary);
-		save_file.write(reinterpret_cast<const char*>(profile.get()), sizeof(handling_profile));
+		nlohmann::json j = profile;
+		save_file << j;
 		save_file.close();
 
 		m_handling_profiles.emplace(name, std::move(profile));
@@ -89,7 +90,7 @@ namespace big
 		if (const auto& it = m_vehicle_backups.find(hash); it != m_vehicle_backups.end())
 			return false;
 
-		m_vehicle_backups.emplace(hash, std::make_unique<handling_profile>(vehicle));
+		m_vehicle_backups.emplace(hash, handling_profile(vehicle));
 
 		return true;
 	}
@@ -102,7 +103,7 @@ namespace big
 
 		if (const auto& it = m_vehicle_backups.find(vehicle->m_handling_data->m_model_hash); it != m_vehicle_backups.end())
 		{
-			it->second->apply_to(vehicle);
+			it->second.apply_to(vehicle);
 		}
 	}
 }
