@@ -18,7 +18,7 @@ namespace big
 	{
 		cpr::Response response = cpr::Post(
 			cpr::Url{ "https://scui.rockstargames.com/api/friend/accountsearch" },
-			cpr::Header{ {"Authorization", AUTHORIZATION_TICKET) }, { "X-Requested-With", "XMLHttpRequest"}},
+			cpr::Header{ {"Authorization", AUTHORIZATION_TICKET }, { "X-Requested-With", "XMLHttpRequest"}},
 			cpr::Body{ { std::format("searchNickname={}", username) } });
 
 		if (response.status_code == 200)
@@ -38,7 +38,7 @@ namespace big
 	{
 		cpr::Response response = cpr::Post(
 			cpr::Url{ "https://scui.rockstargames.com/api/friend/getprofile" },
-			cpr::Header{ {"Authorization", AUTHORIZATION_TICKET) }, { "X-Requested-With", "XMLHttpRequest"}, {"Content-Type", "application/json"} },
+			cpr::Header{ {"Authorization", AUTHORIZATION_TICKET }, { "X-Requested-With", "XMLHttpRequest"}, {"Content-Type", "application/json"} },
 			cpr::Body{ { std::format(R"({{"RockstarId":"{}"}})", rid) } });
 
 		if (response.status_code == 200) 
@@ -51,11 +51,12 @@ namespace big
 		return false;
 	}
 
+	// Ratelimit: 10 per Minute, if exceeded than 5 min cooldown
 	bool api_service::send_socialclub_message(uint64_t rid, std::string_view message)
 	{
 		cpr::Response response = cpr::Post(
 			cpr::Url{ "https://scui.rockstargames.com/api/messaging/sendmessage" },
-			cpr::Header{ {"Authorization", AUTHORIZATION_TICKET) }, { "X-Requested-With", "XMLHttpRequest"}, {"Content-Type", "application/json"} },
+			cpr::Header{ {"Authorization", AUTHORIZATION_TICKET }, { "X-Requested-With", "XMLHttpRequest"}, {"Content-Type", "application/json"} },
 			cpr::Body{ { std::format(R"({{"env":"prod","title":"gta5","version":11,"recipientRockstarId":"{}","messageText":"{}"}})", rid, message) } });
 
 		return response.status_code == 200;

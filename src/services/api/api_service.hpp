@@ -1,7 +1,7 @@
 #pragma once
 #include "pointers.hpp"
 #include <cpr/cpr.h>
-#define AUTHORIZATION_TICKET std::format("SCAUTH val=\"{}\"", get_ticket()
+#define AUTHORIZATION_TICKET std::format("SCAUTH val=\"{}\"", get_ticket())
 
 namespace big
 {
