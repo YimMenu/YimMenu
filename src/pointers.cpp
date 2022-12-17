@@ -741,7 +741,7 @@ namespace big
 		// Interval Check Function
 		main_batch.add("ICF", "48 8D 0D ? ? ? ? 88 05 ? ? ? ? 48 8D 05", [this](memory::handle ptr)
 		{
-			m_interval_check_func = ptr.as<PVOID>();
+			m_interval_check_func = ptr.add(3).rip().as<PVOID>();
 		});
 
 		auto mem_region = memory::module("GTA5.exe");
