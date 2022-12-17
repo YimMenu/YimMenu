@@ -26,7 +26,7 @@ namespace big
 		if (components::button("Join by Username"))
 		{
 			session::join_by_username(username);
-    };
+		};
     
 		static char base64[500]{};
 		ImGui::InputText("Session Info", base64, sizeof(base64));
