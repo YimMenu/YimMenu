@@ -15,12 +15,13 @@ namespace big
 				toxic::kill_player(g_player_service->get_selected(), g_player_service->get_self());
 			});
 
+			components::button("CEO Kick", [] { toxic::ceo_kick(g_player_service->get_selected()); });
+
 			components::button("Kick From Vehicle", [] { toxic::kick_player_from_vehicle(g_player_service->get_selected()); });
 			ImGui::SameLine();
 			components::button("Ragdoll Player", [] { toxic::ragdoll_player(g_player_service->get_selected()); });
 
 			components::button("Kick From Interior", [] { toxic::kick_player_from_interior(g_player_service->get_selected()); });
-			ImGui::SameLine();
 			components::button("Turn Into Beast", [] { toxic::turn_player_into_beast(g_player_service->get_selected()); });
 
 			static int wanted_level;

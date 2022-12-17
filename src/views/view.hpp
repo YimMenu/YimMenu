@@ -46,6 +46,7 @@ namespace big
 		static void weapons();
 		static void context_menu();
 		static void gta_data();
+		static void creator();
 
 		static void player_info();
 		static void player_troll();

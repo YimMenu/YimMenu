@@ -672,10 +672,58 @@ namespace big
 			m_invalid_decal_crash = ptr.add(1).rip().as<PVOID>();
 		});
 
+		// Encode Session Info
+		main_batch.add("ESI", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 20 57 48 81", [this](memory::handle ptr)
+		{
+			m_encode_session_info = ptr.as<functions::encode_session_info>();
+		});
+
+		// Decode Session Info
+		main_batch.add("DSI", "48 89 5C 24 08 48 89 6C 24 10 56 57 41 56 48 81 EC C0", [this](memory::handle ptr)
+		{
+			m_decode_session_info = ptr.as<functions::decode_session_info>();
+		});
+
+		// Can Start Session Joining Check
+		main_batch.add("CSSJC", "77 DB ? ? ? ? ? ? ? 74 09", [this](memory::handle ptr)
+		{
+			memory::byte_patch::make(ptr.as<void*>(), std::to_array({ 0x90, 0x90 }))->apply(); // join faster
+		});
+
+		// Can Start Joining Joining Check
+		main_batch.add("CSJJC", "74 16 48 8B 0B E8 ? ? ? ? 84 C0", [this](memory::handle ptr)
+		{
+			memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB)->apply(); // join faster
+		});
+
 		// NTQVM Caller
 		main_batch.add("NTQVMC", "66 0F 6F 0D ? ? ? ? 66 0F 6F 05 ? ? ? ? 66 0F 66 C4", [this](memory::handle ptr)
 		{
 			memory::byte_patch::make(ptr.add(4).rip().sub(32).as<uint64_t*>(), (uint64_t)&hooks::nt_query_virtual_memory)->apply();
+		});
+
+		// Main File Object
+		main_batch.add("MFO", "48 8D 05 ? ? ? ? 48 8D 1C D0 EB 03", [this](memory::handle ptr)
+		{
+			m_main_file_object = ptr.add(3).rip().as<datafile_commands::SveFileObject*>();
+		});
+
+		// Load Cloud File
+		main_batch.add("LCF", "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 40 48 8B F2 48 8B D9 41 8B D0", [this](memory::handle ptr)
+		{
+			m_load_cloud_file = ptr.as<functions::load_cloud_file>();
+		});
+
+		// Set As Active Cloud File
+		main_batch.add("SAACF", "48 83 EC 28 45 33 C0 4C 39", [this](memory::handle ptr)
+		{
+			m_set_as_active_cloud_file = ptr.as<functions::set_as_active_cloud_file>();
+		});
+
+		// Save JSON Data
+		main_batch.add("SJD", "48 89 5C 24 08 57 48 83 EC 30 33 DB 48 8B FA 48", [this](memory::handle ptr)
+		{
+			m_save_json_data = ptr.as<functions::save_json_data>();
 		});
 
 		auto mem_region = memory::module("GTA5.exe");
