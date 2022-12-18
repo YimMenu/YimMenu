@@ -3,14 +3,20 @@
 
 namespace big
 {
+    void menu_settings::destroy()
+    {
+        m_running = false;
+    }
+
     void menu_settings::init(const file& save_file)
     {
+        m_running = true;
         m_save_file = std::make_unique<file>(save_file.get_path());
         load();
 
         g_thread_pool->push([this]
         {
-            while (g_running)
+            while (m_running)
             {
                 std::this_thread::sleep_for(100ms);
                 attempt_save();
