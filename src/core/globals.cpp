@@ -27,7 +27,7 @@ namespace big
 
         std::ifstream file(m_save_file.get_path());
 
-        if (!file.is_open())
+        if (!m_save_file.exists())
         {
             write_default_config();
 
