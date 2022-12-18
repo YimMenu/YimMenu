@@ -8,6 +8,8 @@
 #include "util/scripts.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "util/system.hpp"
+#include <network/Network.hpp>
+#include <network/netTime.hpp>
 
 namespace big::toxic
 {
@@ -343,5 +345,39 @@ namespace big::toxic
 	inline void remove_all_weapons(player_ptr target)
 	{
 		WEAPON::REMOVE_ALL_PED_WEAPONS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target->id()), FALSE);
+	}
+
+	inline void warp_time_forward(player_ptr target, uint32_t millis)
+	{
+		if (!g_player_service->get_self()->is_host())
+		{
+			g_notification_service->push_error("Warp Time", "Warping time requires session host");
+			return;
+		}
+
+		if (!target->player_time_value.has_value())
+		{
+			g_notification_service->push_error("Warp Time", "We do not have the player's timestamp yet");
+			return;
+		}
+
+		(*g_pointers->m_network_time)->m_last_sync_id_sent++;
+
+		rage::netTimeSyncMsg msg{};
+		msg.action = 1;
+		msg.counter = (*g_pointers->m_network_time)->m_last_sync_id_sent;
+		msg.token = (*g_pointers->m_network_time)->m_time_token;
+		msg.timestamp = target->player_time_value.value() + (std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()) - target->player_time_value_received_time.value()).count();
+		msg.increment = target->time_difference.value() + millis;
+
+		auto peer = g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr, (int)target->get_session_player()->m_player_data.m_peer_id_2);
+
+		for (int j = 0; j < 100; j++)
+		{
+			g_pointers->m_sync_network_time(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+				peer, (*g_pointers->m_network_time)->m_connection_identifier, &msg, 0x1000000); // repeatedly spamming the event will eventually cause certain bounds checks to disable for some reason
+		}
+
+		target->time_difference.value() += millis;
 	}
 }

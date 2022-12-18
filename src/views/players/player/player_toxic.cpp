@@ -109,6 +109,18 @@ namespace big
 			ImGui::SameLine();
 			components::button("Remove All Weapons", [] { toxic::remove_all_weapons(g_player_service->get_selected()); });
 
+			components::small_text("Warp Time (requires session host)");
+
+			components::button("+1 Minute", [] { toxic::warp_time_forward(g_player_service->get_selected(), 60 * 1000); });
+			ImGui::SameLine();
+			components::button("+5 Minutes", [] { toxic::warp_time_forward(g_player_service->get_selected(), 5 * 60 * 1000); });
+			ImGui::SameLine();
+			components::button("+48 Minutes", [] { toxic::warp_time_forward(g_player_service->get_selected(), 48 * 60 * 1000); });
+			ImGui::SameLine();
+			components::button("+96 Minutes", [] { toxic::warp_time_forward(g_player_service->get_selected(), 96 * 60 * 1000); });
+			ImGui::SameLine();
+			components::button("+200 Minutes", [] { toxic::warp_time_forward(g_player_service->get_selected(), 200 * 60 * 1000); });
+
 			ImGui::TreePop();
 		}
 	}
