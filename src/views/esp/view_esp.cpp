@@ -18,10 +18,12 @@ namespace big
 	static ImColor health_red = ImColor(0.69f, 0.29f, 0.29f, 1.f);
 
 	void esp::draw_player(const player_ptr& plyr, ImDrawList* const draw_list) {
-		if (g->esp.hide_self && plyr->is_valid() && plyr->id() == g_player_service->get_self()->id() ||
-			!plyr->is_valid() ||
+		if (!plyr->is_valid() ||
 			!plyr->get_ped() ||
-			!plyr->get_ped()->m_navigation) return;
+			!plyr->get_ped()->m_navigation)
+			return;
+		if (g->esp.hide_self && plyr->is_valid() && plyr->id() == g_player_service->get_self()->id())
+			return;
 
 		auto& player_pos = *plyr->get_ped()->m_navigation->get_position();
 
