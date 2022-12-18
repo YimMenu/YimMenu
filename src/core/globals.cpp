@@ -1,16 +1,19 @@
 #include "globals.hpp"
+#include "thread_pool.hpp"
 
 namespace big
 {
     menu_settings::menu_settings(file save_file)
 			: m_save_file(std::move(save_file))
     {
-        g = this;
-    }
-
-    menu_settings::~menu_settings()
-    {
-        g = nullptr;
+        g_thread_pool->push([this]
+        {
+            while (g_running)
+            {
+                std::this_thread::sleep_for(100ms);
+                attempt_save();
+            }
+        });
     }
 
     void menu_settings::attempt_save()
