@@ -5,7 +5,7 @@ namespace big
 {
     void looped::self_fast_respawn()
     {
-        if (g->self.fast_respawn)
+        if (g.self.fast_respawn)
         {
             if(PED::IS_PED_DEAD_OR_DYING(self::ped, true))
             {

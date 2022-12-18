@@ -10,7 +10,7 @@ namespace big
 
 	void looped::vehicle_horn_boost()
 	{
-		if (!g->vehicle.horn_boost) return;
+		if (!g.vehicle.horn_boost) return;
 		
 		Vehicle vehicle = self::veh;
 

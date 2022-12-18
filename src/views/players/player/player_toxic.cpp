@@ -31,16 +31,16 @@ namespace big
 
 			components::small_text("Teleports");
 
-			if (ImGui::BeginCombo("##apartment", apartment_names[g->session.send_to_apartment_idx]))
+			if (ImGui::BeginCombo("##apartment", apartment_names[g.session.send_to_apartment_idx]))
 			{
 				for (int i = 1; i < apartment_names.size(); i++)
 				{
-					if (ImGui::Selectable(apartment_names[i], i == g->session.send_to_apartment_idx))
+					if (ImGui::Selectable(apartment_names[i], i == g.session.send_to_apartment_idx))
 					{
-						g->session.send_to_apartment_idx = i;
+						g.session.send_to_apartment_idx = i;
 					}
 
-					if (i == g->session.send_to_apartment_idx)
+					if (i == g.session.send_to_apartment_idx)
 					{
 						ImGui::SetItemDefaultFocus();
 					}
@@ -51,18 +51,18 @@ namespace big
 
 			ImGui::SameLine();
 
-			components::button("TP To Apartment", [] { toxic::send_player_to_apartment(g_player_service->get_selected(), g->session.send_to_apartment_idx); });
+			components::button("TP To Apartment", [] { toxic::send_player_to_apartment(g_player_service->get_selected(), g.session.send_to_apartment_idx); });
 
-			if (ImGui::BeginCombo("##warehouse", warehouse_names[g->session.send_to_warehouse_idx]))
+			if (ImGui::BeginCombo("##warehouse", warehouse_names[g.session.send_to_warehouse_idx]))
 			{
 				for (int i = 1; i < warehouse_names.size(); i++)
 				{
-					if (ImGui::Selectable(warehouse_names[i], i == g->session.send_to_warehouse_idx))
+					if (ImGui::Selectable(warehouse_names[i], i == g.session.send_to_warehouse_idx))
 					{
-						g->session.send_to_warehouse_idx = i;
+						g.session.send_to_warehouse_idx = i;
 					}
 
-					if (i == g->session.send_to_warehouse_idx)
+					if (i == g.session.send_to_warehouse_idx)
 					{
 						ImGui::SetItemDefaultFocus();
 					}
@@ -73,7 +73,7 @@ namespace big
 
 			ImGui::SameLine();
 
-			components::button("TP To Warehouse", [] { toxic::send_player_to_warehouse(g_player_service->get_selected(), g->session.send_to_warehouse_idx); });
+			components::button("TP To Warehouse", [] { toxic::send_player_to_warehouse(g_player_service->get_selected(), g.session.send_to_warehouse_idx); });
 
 			components::button("TP To Darts", [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::Darts); });
 			ImGui::SameLine();

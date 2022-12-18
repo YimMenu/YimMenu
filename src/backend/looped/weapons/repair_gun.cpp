@@ -7,7 +7,7 @@ namespace big
 {
 	void looped::weapons_repair_gun()
 	{
-		bool bRepairGun = g->weapons.custom_weapon == CustomWeapon::REPAIR_GUN;
+		bool bRepairGun = g.weapons.custom_weapon == CustomWeapon::REPAIR_GUN;
 
 		if (bRepairGun)
 		{

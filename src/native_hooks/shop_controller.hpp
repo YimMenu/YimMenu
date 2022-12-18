@@ -10,9 +10,9 @@ namespace big
 		{
 			if (auto entry_line = src->get_arg<const char*>(1); !strcmp(entry_line, "CTALERT_F_2"))
 			{
-				if (g->notifications.transaction_rate_limit.log)
+				if (g.notifications.transaction_rate_limit.log)
 					LOG(WARNING) << "Received transaction rate limit";
-				if (g->notifications.transaction_rate_limit.notify)
+				if (g.notifications.transaction_rate_limit.notify)
 					g_notification_service->push_warning("Transaction Rate Limit", "You're receiving transaction rate limits, whatever you're doing do it less.");
 
 				*script_global(4536673).as<int*>() = 0;

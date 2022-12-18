@@ -26,7 +26,7 @@ namespace big
 
 	void looped::self_noclip_disable_control_action()
 	{
-		if (g->self.noclip)
+		if (g.self.noclip)
 		{
 			for (const auto& control : controls)
 				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(control), true);
@@ -35,7 +35,7 @@ namespace big
 
 	void looped::self_noclip()
 	{
-		const auto bNoclip = g->self.noclip;
+		const auto bNoclip = g.self.noclip;
 
 		const auto location = self::pos;
 		const Entity ent = (self::veh != 0 && g_local_player->m_ped_task_flag & (int)ePedTask::TASK_DRIVING) ? self::veh : self::ped;

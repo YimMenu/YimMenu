@@ -24,7 +24,7 @@ namespace big
 
 	float get_recoil_value(uint32_t hash)
 	{
-		return g->weapons.no_recoil
+		return g.weapons.no_recoil
 			? 0.f
 			: get_og_recoil_value(hash);
 	}

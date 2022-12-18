@@ -202,7 +202,7 @@ namespace big
 
 	bool hooks::can_apply_data(rage::netSyncTree* tree, rage::netObject* object)
 	{
-		if (tree->m_child_node_count && check_node(tree->m_sync_node, g->m_syncing_player, object))
+		if (tree->m_child_node_count && check_node(tree->m_sync_node, g.m_syncing_player, object))
 		{
 			return false;
 		}

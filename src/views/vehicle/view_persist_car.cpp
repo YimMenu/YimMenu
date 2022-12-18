@@ -27,7 +27,7 @@ namespace big
 			{
 				g_notification_service->push_warning("Persist Car", "Vehicle failed to spawn, there is most likely too many spawned vehicles in the area");
 			}
-			else if (g->spawn_vehicle.spawn_inside)
+			else if (g.spawn_vehicle.spawn_inside)
 				teleport::into_vehicle(vehicle);
 
 			selected_vehicle_file.clear();

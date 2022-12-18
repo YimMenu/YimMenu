@@ -9,7 +9,7 @@ namespace big
 
 		static bool bLast = false;
 
-		bool b = g->self.never_wanted;
+		bool b = g.self.never_wanted;
 
 		if (b)
 		{
@@ -25,7 +25,7 @@ namespace big
 			bLast = b;
 		}
 
-		if(g->self.force_wanted_level && !b)
-			g_local_player->m_player_info->m_wanted_level = g->self.wanted_level;
+		if(g.self.force_wanted_level && !b)
+			g_local_player->m_player_info->m_wanted_level = g.self.wanted_level;
 	}
 }

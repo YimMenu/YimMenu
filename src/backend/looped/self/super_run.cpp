@@ -11,7 +11,7 @@ namespace big
 
 	void looped::self_super_run()
 	{
-		if (g->self.super_run && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
+		if (g.self.super_run && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
 		{
 			if (run_speed < run_cap) run_speed += .5f;
 
@@ -38,7 +38,7 @@ namespace big
 
 			g_local_player->m_player_info->m_run_speed = .7f;
 		}
-		else if (!g->self.super_run && g->self.super_run != super_run_state)
+		else if (!g.self.super_run && g.self.super_run != super_run_state)
 		{
 			g_local_player->m_player_info->m_run_speed = 1.f;
 		}
@@ -48,6 +48,6 @@ namespace big
 			g_local_player->m_player_info->m_run_speed = 1.f;
 		}
 
-		super_run_state = g->self.super_run;
+		super_run_state = g.self.super_run;
 	}
 }

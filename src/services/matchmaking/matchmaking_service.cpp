@@ -28,9 +28,9 @@ namespace big
 		component.m_game_mode = 0;
 		component.m_num_parameters = 0;
 
-		if (g->session_browser.region_filter_enabled)
+		if (g.session_browser.region_filter_enabled)
 		{
-			component.SetParameter("MMATTR_REGION", 0, g->session_browser.region_filter);
+			component.SetParameter("MMATTR_REGION", 0, g.session_browser.region_filter);
 		}
 
 		if (constraint)
@@ -57,23 +57,23 @@ namespace big
 					if (constraint && m_found_sessions[i].attributes.player_count >= 30)
 						m_found_sessions[i].is_valid = false;
 
-					if (g->session_browser.language_filter_enabled && m_found_sessions[i].attributes.language != g->session_browser.language_filter)
+					if (g.session_browser.language_filter_enabled && m_found_sessions[i].attributes.language != g.session_browser.language_filter)
 						m_found_sessions[i].is_valid = false;
 
-					if (g->session_browser.player_count_filter_enabled && (m_found_sessions[i].attributes.player_count < g->session_browser.player_count_filter_minimum ||
-						m_found_sessions[i].attributes.player_count > g->session_browser.player_count_filter_maximum))
+					if (g.session_browser.player_count_filter_enabled && (m_found_sessions[i].attributes.player_count < g.session_browser.player_count_filter_minimum ||
+						m_found_sessions[i].attributes.player_count > g.session_browser.player_count_filter_maximum))
 					{
 						m_found_sessions[i].is_valid = false;
 					}
 				}
 
-				if (g->session_browser.sort_method != 0)
+				if (g.session_browser.sort_method != 0)
 				{
 					std::qsort(m_found_sessions, m_num_sessions_found, sizeof(session), [](const void* a1, const void* a2) -> int
 					{
 						std::strong_ordering result;
 
-						if (g->session_browser.sort_method == 1)
+						if (g.session_browser.sort_method == 1)
 						{
 							result = (((session*)(a1))->attributes.player_count <=> ((session*)(a2))->attributes.player_count);
 						}
@@ -82,10 +82,10 @@ namespace big
 							return 0;
 
 						if (result > 0)
-							return g->session_browser.sort_direction ? -1 : 1;
+							return g.session_browser.sort_direction ? -1 : 1;
 
 						if (result < 0)
-							return g->session_browser.sort_direction ? 1 : -1;
+							return g.session_browser.sort_direction ? 1 : -1;
 
 
 						std::unreachable();

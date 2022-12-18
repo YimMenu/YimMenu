@@ -298,7 +298,7 @@ namespace big::toxic
 
 		thread->m_net_component->block_host_migration(true);
 		thread->m_context.m_state = rage::eThreadState::unk_3;
-		g->m_hunt_the_beast_thread = thread;
+		g.m_hunt_the_beast_thread = thread;
 
 		for (int i = 0; i < 15; i++)
 		{

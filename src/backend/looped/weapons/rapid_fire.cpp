@@ -8,7 +8,7 @@ namespace big
 {
     void looped::weapons_rapid_fire()
     {
-        if (g->weapons.rapid_fire)
+        if (g.weapons.rapid_fire)
         {
             if(!HUD::IS_PAUSE_MENU_ACTIVE() && !g_gui->is_open() && !PED::IS_PED_DEAD_OR_DYING(self::ped, true))
             {

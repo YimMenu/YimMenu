@@ -665,7 +665,7 @@ namespace big::vehicle
 			return false;
 		}
 
-		if (g->m_remote_controlled_vehicle == veh)
+		if (g.m_remote_controlled_vehicle == veh)
 		{
 			return false;
 		}
@@ -700,8 +700,8 @@ namespace big::vehicle
 		ENTITY::SET_ENTITY_VELOCITY(spawned, velocity.x, velocity.y, velocity.z);
 		VEHICLE::COPY_VEHICLE_DAMAGES(veh, spawned);
 
-		g->m_remote_controller_vehicle = spawned;
-		g->m_remote_controlled_vehicle = veh;
+		g.m_remote_controller_vehicle = spawned;
+		g.m_remote_controlled_vehicle = veh;
 		return true;
 	}
 }

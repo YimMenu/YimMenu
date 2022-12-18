@@ -768,7 +768,7 @@ namespace big
 		{
 			m_bypass_max_count_of_active_sticky_bombs = memory::byte_patch::make(pat.add(4).as<uint8_t*>(), { 99 }).get();
 
-			if (g->weapons.bypass_c4_limit)
+			if (g.weapons.bypass_c4_limit)
 				m_bypass_max_count_of_active_sticky_bombs->apply();
 		}
 
