@@ -9,14 +9,14 @@ namespace big
 	{
 		int discriminator = filter->m_param_values[0]; // this is guaranteed to work
 
-		if (g->session_browser.replace_game_matchmaking && filter->m_filter_type == 1)
+		if (g.session_browser.replace_game_matchmaking && filter->m_filter_type == 1)
 		{
 			*status = 1;
 			g_fiber_pool->queue_job([max_sessions, results, num_sessions_found, status, discriminator]
 			{
 				bool result = false;
 
-				if (g->session.join_in_sctv_slots)
+				if (g.session.join_in_sctv_slots)
 					result = g_matchmaking_service->matchmake();
 				else
 					result = g_matchmaking_service->matchmake(discriminator);

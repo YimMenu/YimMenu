@@ -1,6 +1,7 @@
 #pragma once
 #include "common.hpp"
 #include "base/HashTable.hpp"
+#include "socialclub/ScInfo.hpp"
 #include "function_types.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/replay.hpp"
@@ -69,6 +70,7 @@ namespace big
 		functions::write_player_game_state_data_node m_write_player_game_state_data_node{};
 
 		ChatData** m_chat_data;
+		ScInfo* m_sc_info;
 		FriendRegistry* m_friend_registry{};
 
 		functions::get_screen_coords_for_world_coords m_get_screen_coords_for_world_coords{};
@@ -196,6 +198,9 @@ namespace big
 		memory::byte_patch* m_broadcast_patch;
 
 		rage::atSingleton<rage::RageSecurity>* m_security;
+		
+		PVOID m_queue_dependency;
+		PVOID m_interval_check_func;
 
 		PVOID m_send_session_matchmaking_attributes;
 

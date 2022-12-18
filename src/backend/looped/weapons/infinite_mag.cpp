@@ -7,13 +7,13 @@ namespace big
 
 	void looped::weapons_infinite_mag()
 	{
-		bool bInfiniteMag = g->weapons.infinite_mag;
+		bool bInfiniteMag = g.weapons.infinite_mag;
 
 		if (bInfiniteMag || (!bInfiniteMag && bInfiniteMag != bLastInfiniteMag))
 		{
-			WEAPON::SET_PED_INFINITE_AMMO_CLIP(self::ped, g->weapons.infinite_mag);
+			WEAPON::SET_PED_INFINITE_AMMO_CLIP(self::ped, g.weapons.infinite_mag);
 
-			bLastInfiniteMag = g->weapons.infinite_mag;
+			bLastInfiniteMag = g.weapons.infinite_mag;
 		}
 	}
 }

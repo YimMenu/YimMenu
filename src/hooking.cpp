@@ -97,6 +97,8 @@ namespace big
 		detour_hook_helper::add<hooks::write_bitbuffer_gamer_handle>("WBGH", g_pointers->m_write_bitbuffer_gamer_handle);
 		detour_hook_helper::add<hooks::read_bitbuffer_gamer_handle>("RBGH", g_pointers->m_read_bitbuffer_gamer_handle);
 
+		detour_hook_helper::add<hooks::queue_dependency>("QD", g_pointers->m_queue_dependency);
+
 		g_hooking = this;
 	}
 

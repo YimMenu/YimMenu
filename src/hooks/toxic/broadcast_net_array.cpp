@@ -18,13 +18,13 @@ namespace big
 		bool need_to_use_end_session_kick = g_player_service->m_player_to_use_end_session_kick &&
 			target->m_player_id == g_player_service->m_player_to_use_end_session_kick->get()->id() && _this->m_array == scr_globals::gsbd.as<void*>();
 
-		bool need_to_modify_wanted_level = g->session.wanted_level_all && (_this->m_array >= scr_globals::globalplayer_bd.as<uint8_t*>() && 
+		bool need_to_modify_wanted_level = g.session.wanted_level_all && (_this->m_array >= scr_globals::globalplayer_bd.as<uint8_t*>() && 
 			_this->m_array <= scr_globals::globalplayer_bd.at(31, scr_globals::size::globalplayer_bd).as<uint8_t*>());
 
-		bool need_to_turn_player_into_beast = g->m_hunt_the_beast_thread && g->m_hunt_the_beast_thread->m_stack && g->m_hunt_the_beast_thread->m_net_component &&
-			_this->m_array == script_local(g->m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).as<void*>();
+		bool need_to_turn_player_into_beast = g.m_hunt_the_beast_thread && g.m_hunt_the_beast_thread->m_stack && g.m_hunt_the_beast_thread->m_net_component &&
+			_this->m_array == script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).as<void*>();
 
-		bool need_to_randomize_replay_protection = g->session.block_ceo_money && _this->m_array == scr_globals::gsbd_fm_events.as<void*>();
+		bool need_to_randomize_replay_protection = g.session.block_ceo_money && _this->m_array == scr_globals::gsbd_fm_events.as<void*>();
 
 		if (need_to_use_end_session_kick)
 		{
@@ -41,13 +41,13 @@ namespace big
 
 		if (need_to_turn_player_into_beast)
 		{
-			orig_player = *script_local(g->m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(7).as<Player*>();
-			orig_participant = *script_local(g->m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(6).as<int*>();
+			orig_player = *script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(7).as<Player*>();
+			orig_participant = *script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(6).as<int*>();
 
-			*script_local(g->m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(6).as<int*>() = g->m_hunt_the_beast_thread->m_net_component->get_participant_index(target); // participant idx
-			*script_local(g->m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(7).as<Player*>() = target->m_player_id; // beast player idx
-			*script_local(g->m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(2).as<int*>() = INT_MAX; // stopwatch time
-			*script_local(g->m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(83).as<int*>() = 0; // transformed bitset
+			*script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(6).as<int*>() = g.m_hunt_the_beast_thread->m_net_component->get_participant_index(target); // participant idx
+			*script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(7).as<Player*>() = target->m_player_id; // beast player idx
+			*script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(2).as<int*>() = INT_MAX; // stopwatch time
+			*script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(83).as<int*>() = 0; // transformed bitset
 
 			g_pointers->m_broadcast_patch->apply();
 		}
@@ -74,8 +74,8 @@ namespace big
 
 		if (need_to_turn_player_into_beast)
 		{
-			*script_local(g->m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(7).as<Player*>() = orig_player;
-			*script_local(g->m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(6).as<int*>() = orig_participant;
+			*script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(7).as<Player*>() = orig_player;
+			*script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(6).as<int*>() = orig_participant;
 			g_pointers->m_broadcast_patch->restore();
 		}
 

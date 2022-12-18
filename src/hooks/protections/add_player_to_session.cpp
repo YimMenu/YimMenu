@@ -31,7 +31,7 @@ namespace big
 {
 	bool hooks::add_player_to_session(rage::netConnectionManager* mgr, int receiver_msg_id, int* out_command_hndl, RemoteGamerInfoMsg* msg, int flags, void* unk)
 	{
-		if (msg->m_gamer_info.m_gamer_handle_2.m_rockstar_id == g_local_player->m_player_info->m_net_player_data.m_gamer_handle_2.m_rockstar_id && gta_util::get_network()->m_game_session_ptr->is_host() && g->protections.lessen_breakups)
+		if (msg->m_gamer_info.m_gamer_handle_2.m_rockstar_id == g_local_player->m_player_info->m_net_player_data.m_gamer_handle_2.m_rockstar_id && gta_util::get_network()->m_game_session_ptr->is_host() && g.protections.lessen_breakups)
 		{
 			std::uint64_t host_token = -1;
 
@@ -46,7 +46,7 @@ namespace big
 			}
 
 			std::uint64_t peer_id = rand64bits();
-			g->m_spoofed_peer_ids.emplace(host_token, peer_id);
+			g.m_spoofed_peer_ids.emplace(host_token, peer_id);
 			msg->m_gamer_info.m_peer_id_2 = peer_id;
 		}
 

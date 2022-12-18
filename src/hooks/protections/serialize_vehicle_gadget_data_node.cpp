@@ -29,7 +29,7 @@ namespace big
 
 		if (node->m_gadget_count > 2)
 		{
-			notify::crash_blocked(g->m_syncing_player, "out of bounds vehicle gadget count");
+			notify::crash_blocked(g.m_syncing_player, "out of bounds vehicle gadget count");
 			return;
 		}
 

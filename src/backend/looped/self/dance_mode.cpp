@@ -9,10 +9,10 @@ namespace big
 	bool bLastDanceMode = false;
 	void looped::self_dance_mode()
 	{
-		if (g->self.dance_mode && SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) > 0)
-			g->self.dance_mode = false;
+		if (g.self.dance_mode && SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) > 0)
+			g.self.dance_mode = false;
 
-		if (g->self.dance_mode && g->self.dance_mode != bLastDanceMode)
+		if (g.self.dance_mode && g.self.dance_mode != bLastDanceMode)
 		{
 			scripts::request_script(RAGE_JOAAT("am_mp_nightclub"));
 			if (!scripts::wait_till_loaded(RAGE_JOAAT("am_mp_nightclub")))
@@ -24,12 +24,12 @@ namespace big
 			if (!thread)
 				return;
 
-			g->m_dance_thread = gta_util::find_script_thread(RAGE_JOAAT("am_mp_nightclub"));
-			g->m_dance_program = gta_util::find_script_program(RAGE_JOAAT("am_mp_nightclub"));
+			g.m_dance_thread = gta_util::find_script_thread(RAGE_JOAAT("am_mp_nightclub"));
+			g.m_dance_program = gta_util::find_script_program(RAGE_JOAAT("am_mp_nightclub"));
 
-			(*g_pointers->m_script_handler_mgr)->attach_thread(g->m_dance_thread);
+			(*g_pointers->m_script_handler_mgr)->attach_thread(g.m_dance_thread);
 
-			g->m_dance_thread->m_context.m_state = rage::eThreadState::unk_3;
+			g.m_dance_thread->m_context.m_state = rage::eThreadState::unk_3;
 
 			// perform initial setup
 			gta_util::execute_as_script(RAGE_JOAAT("am_mp_nightclub"), []
@@ -43,25 +43,25 @@ namespace big
 			return;
 		}
 
-		if (!g->self.dance_mode && g->self.dance_mode != bLastDanceMode)
+		if (!g.self.dance_mode && g.self.dance_mode != bLastDanceMode)
 		{
-			if (g->m_dance_thread)
-				g->m_dance_thread->kill();
+			if (g.m_dance_thread)
+				g.m_dance_thread->kill();
 
-			g->m_dance_thread = nullptr;
-			g->m_dance_program = nullptr;
+			g.m_dance_thread = nullptr;
+			g.m_dance_program = nullptr;
 
 			bLastDanceMode = false;
 			return;
 		}
 
-		if (g->self.dance_mode && g->m_dance_thread->m_handler)
+		if (g.self.dance_mode && g.m_dance_thread->m_handler)
 		{
 			*script_global(1950102).as<bool*>() = true;
 			misc::set_bit(scr_globals::gpbd_fm_1.at(self::id, scr_globals::size::gpbd_fm_1).at(267).at(310).at(7).as<int*>(), 0);
 			misc::set_bit(scr_globals::gpbd_fm_1.at(self::id, scr_globals::size::gpbd_fm_1).at(267).at(310).at(7).as<int*>(), 1);
 			misc::set_bit(scr_globals::gpbd_fm_1.at(self::id, scr_globals::size::gpbd_fm_1).at(267).at(310).at(7).as<int*>(), 2);
-			scr_functions::dance_loop.call(g->m_dance_thread, g->m_dance_program, {});
+			scr_functions::dance_loop.call(g.m_dance_thread, g.m_dance_program, {});
 		}
 	}
 }
