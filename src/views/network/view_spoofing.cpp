@@ -40,7 +40,7 @@ namespace big
 		ImGui::Checkbox("Spoof IP", &g->spoofing.spoof_ip);
 
 		ImGui::Text("IP Address:");
-		ImGui::DragInt4("##ip_fields", g->spoofing.ip_address, 0, 255);
+		ImGui::DragInt4("##ip_fields", g->spoofing.ip_address.data(), 0, 255);
 
 		ImGui::Separator();
 
