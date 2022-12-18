@@ -625,5 +625,5 @@ namespace big
 			spawn_ped, spoofing, vehicle, weapons, window, context_menu, esp, session_browser)
 	};
 
-	inline static auto g = menu_settings();
+	inline auto g = menu_settings();
 }
