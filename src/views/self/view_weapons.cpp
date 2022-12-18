@@ -140,10 +140,11 @@ namespace big
 		switch (selected)
 		{
 		case CustomWeapon::VEHICLE_GUN:
+			g->weapons.vehicle_gun_model.reserve(12);
 			components::input_text_with_hint(
 				"Shooting Model",
 				"Name of the vehicle model",
-				g->weapons.vehicle_gun_model, sizeof(g->weapons.vehicle_gun_model)
+				g->weapons.vehicle_gun_model.data(), 12
 			);
 
 			break;

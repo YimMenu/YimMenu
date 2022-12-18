@@ -52,7 +52,16 @@ namespace big
         }
 
         const bool should_save = deep_compare(m_options, m_default_options);
-        from_json(m_options, *this);
+        try
+        {
+            from_json(m_options, *this);
+        }
+        catch(const nlohmann::detail::type_error& e)
+        {
+            LOG(WARNING) << e.what();
+
+            return false;
+        }
 
         if (should_save)
         {

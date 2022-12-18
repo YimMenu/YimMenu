@@ -75,7 +75,7 @@ namespace big
 					NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_event, logs, filter_player, player_id)
 				} script_event{};
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(logs, metric_logs, script_hook_logs)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(logs, metric_logs, script_hook_logs, script_event)
 			} logs{};
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(debug, logs)
@@ -507,7 +507,7 @@ namespace big
 				eExplosionTag explosion_tag = eExplosionTag::DONTCARE;
 
 				NLOHMANN_JSON_SERIALIZE_ENUM(eAmmoSpecialType, {
-					{ eAmmoSpecialType::None, nullptr },
+					{ eAmmoSpecialType::None, "none" },
 					{ eAmmoSpecialType::ArmorPiercing, "armor_piercing" },
 					{ eAmmoSpecialType::Explosive, "explosive" },
 					{ eAmmoSpecialType::FMJ, "fmj" },
@@ -525,7 +525,7 @@ namespace big
 			float increased_damage = 1;
 			bool no_recoil = false;
 			bool no_spread = false;
-			char vehicle_gun_model[12] = "bus";
+			std::string vehicle_gun_model = "bus";
 			bool bypass_c4_limit = false;
 			bool rapid_fire = false;
 
