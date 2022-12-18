@@ -4,8 +4,20 @@
 namespace big
 {
     menu_settings::menu_settings(file save_file)
-			: m_save_file(std::move(save_file))
+        : m_save_file(save_file)
     {
+        g = this;
+    }
+
+    menu_settings::~menu_settings()
+    {
+        g = nullptr;
+    }
+
+    void menu_settings::init()
+    {
+        load();
+
         g_thread_pool->push([this]
         {
             while (g_running)
@@ -14,13 +26,6 @@ namespace big
                 attempt_save();
             }
         });
-
-        g = this;
-    }
-
-    menu_settings::~menu_settings()
-    {
-        g = nullptr;
     }
 
     void menu_settings::attempt_save()

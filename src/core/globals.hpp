@@ -23,6 +23,8 @@ namespace big
 		menu_settings(file save_file);
 		~menu_settings();
 
+		void init();
+
 		void attempt_save();
 		bool load();
 
