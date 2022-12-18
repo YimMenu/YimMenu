@@ -3,9 +3,9 @@
 
 namespace big
 {
-    void menu_settings::init(file save_file)
+    void menu_settings::init(const file& save_file)
     {
-        m_save_file = save_file;
+        m_save_file = std::make_unique<file>(save_file.get_path());
         load();
 
         g_thread_pool->push([this]
@@ -30,13 +30,13 @@ namespace big
     {
         m_default_options = *this;
 
-        std::ifstream file(m_save_file.get_path());
+        std::ifstream file(m_save_file->get_path());
 
-        if (!m_save_file.exists())
+        if (!m_save_file->exists())
         {
             write_default_config();
 
-            file.open(m_save_file.get_path());
+            file.open(m_save_file->get_path());
         }
 
         try
@@ -108,7 +108,7 @@ namespace big
 
     bool menu_settings::save()
     {
-        std::ofstream file(m_save_file.get_path(), std::ios::out | std::ios::trunc);
+        std::ofstream file(m_save_file->get_path(), std::ios::out | std::ios::trunc);
         nlohmann::json j = *this;
         file << j.dump(4);
         file.close();
@@ -118,7 +118,7 @@ namespace big
 
     bool menu_settings::write_default_config()
     {
-        std::ofstream file(m_save_file.get_path(), std::ios::out | std::ios::trunc);
+        std::ofstream file(m_save_file->get_path(), std::ios::out | std::ios::trunc);
         nlohmann::json j = *this;
         file << j.dump(4);
         file.close();

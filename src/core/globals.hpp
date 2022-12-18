@@ -20,7 +20,7 @@ namespace big
 	class menu_settings
 	{
 	public:
-		void init(file save_file);
+		void init(const file& save_file);
 
 		void attempt_save();
 		bool load();
@@ -31,7 +31,7 @@ namespace big
 		bool write_default_config();
 
 	private:
-		file m_save_file = "";
+		std::unique_ptr<file> m_save_file;
 
 		nlohmann::json m_default_options;
 		nlohmann::json m_options;
