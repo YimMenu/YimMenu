@@ -140,12 +140,20 @@ namespace big
 		switch (selected)
 		{
 		case CustomWeapon::VEHICLE_GUN:
-			g->weapons.vehicle_gun_model.reserve(12);
-			components::input_text_with_hint(
-				"Shooting Model",
-				"Name of the vehicle model",
-				g->weapons.vehicle_gun_model.data(), 12
-			);
+			// this some ugly ass looking code
+			static char vehicle_gun[12];
+			std::memcpy(vehicle_gun, g->weapons.vehicle_gun_model.c_str(), 12);
+			if (ImGui::InputTextWithHint("Shooting Model", "Name of the vehicle model", vehicle_gun, sizeof(vehicle_gun)))
+			{
+				g->weapons.vehicle_gun_model = vehicle_gun;
+			}
+			if (ImGui::IsItemActive())
+			{
+				g_fiber_pool->queue_job([]
+				{
+					PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+				});
+			}
 
 			break;
 		}
