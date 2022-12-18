@@ -14,6 +14,13 @@ namespace big
                 attempt_save();
             }
         });
+
+        g = this;
+    }
+
+    menu_settings::~menu_settings()
+    {
+        g = nullptr;
     }
 
     void menu_settings::attempt_save()
