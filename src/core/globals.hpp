@@ -20,10 +20,7 @@ namespace big
 	class menu_settings
 	{
 	public:
-		menu_settings(file save_file);
-		~menu_settings();
-
-		void init();
+		void init(file save_file);
 
 		void attempt_save();
 		bool load();
@@ -34,7 +31,7 @@ namespace big
 		bool write_default_config();
 
 	private:
-		file m_save_file;
+		file m_save_file = "";
 
 		nlohmann::json m_default_options;
 		nlohmann::json m_options;
@@ -628,5 +625,5 @@ namespace big
 			spawn_ped, spoofing, vehicle, weapons, window, context_menu, esp, session_browser)
 	};
 
-	inline menu_settings* g{};
+	inline static auto g = menu_settings();
 }

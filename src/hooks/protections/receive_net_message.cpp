@@ -80,16 +80,16 @@ namespace big
 
 					if (spam::is_text_spam(message))
 					{
-						if (g->session.log_chat_messages)
+						if (g.session.log_chat_messages)
 							spam::log_chat(message, player, true);
 						player->is_spammer = true;
-						if (g->session.kick_chat_spammers)
+						if (g.session.kick_chat_spammers)
 							kick::breakup_kick(player);
 						return true;
 					}
 					else
 					{
-						if (g->session.log_chat_messages)
+						if (g.session.log_chat_messages)
 							spam::log_chat(message, player, false);
 					}
 					break;
@@ -213,7 +213,7 @@ namespace big
 					CGameScriptId script;
 					script_id_deserialize(script, buffer);
 
-					if (script.m_hash == RAGE_JOAAT("freemode") && g->session.force_script_host)
+					if (script.m_hash == RAGE_JOAAT("freemode") && g.session.force_script_host)
 						return true;
 					
 					break;

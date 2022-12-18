@@ -8,7 +8,7 @@ namespace big
 	{
 		if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr) return;
 
-		bool bNoWaterCollsion = g->vehicle.no_water_collision;
+		bool bNoWaterCollsion = g.vehicle.no_water_collision;
 
 		if (bNoWaterCollsion)
 		{

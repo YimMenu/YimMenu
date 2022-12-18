@@ -106,7 +106,7 @@ namespace big::mobile
 			if (*scr_globals::mechanic_global.at(979).as<int*>() != -1)
 				return g_notification_service->push_warning("Vehicle", "Mechanic is not ready to deliver a vehicle right now.");
 
-			if (g->clone_pv.spawn_inside && self::veh)
+			if (g.clone_pv.spawn_inside && self::veh)
 				TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::PLAYER_PED_ID());
 
 			// despawn current veh
@@ -129,7 +129,7 @@ namespace big::mobile
 			// blocking call till vehicle is delivered
 			notify::busy_spinner("Delivering vehicle...", scr_globals::mechanic_global.at(979).as<int*>(), -1);
 
-			if (g->clone_pv.spawn_inside)
+			if (g.clone_pv.spawn_inside)
 			{
 				big::vehicle::bring(get_personal_vehicle(), self::pos, true);
 			}

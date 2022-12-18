@@ -7,7 +7,7 @@ namespace big
 
 	void looped::self_mobile_radio()
 	{
-		const bool bMobileRadio = g->self.mobile_radio;
+		const bool bMobileRadio = g.self.mobile_radio;
 
 		if (bMobileRadio)
 		{

@@ -40,9 +40,9 @@ namespace big::session
 	{
 		MISC::CLEAR_OVERRIDE_WEATHER();
 
-		MISC::SET_OVERRIDE_WEATHER(weathers[g->session.local_weather]);
+		MISC::SET_OVERRIDE_WEATHER(weathers[g.session.local_weather]);
 
-		*script_global(262145).at(4752).as<bool*>() = g->session.local_weather == 13;
+		*script_global(262145).at(4752).as<bool*>() = g.session.local_weather == 13;
 	}
 
 	inline void set_fm_event_index(int index)
@@ -65,12 +65,12 @@ namespace big::session
 
 	inline void join_session(const rage::rlSessionInfo& info)
 	{
-		g->session.join_queued = true;
-		g->session.info = info;
+		g.session.join_queued = true;
+		g.session.info = info;
 		session::join_type({ eSessionType::NEW_PUBLIC });
 		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
 		{
-			g->session.join_queued = false;
+			g.session.join_queued = false;
 			g_notification_service->push_error("RID Joiner", "Unable to launch maintransition");
 		}
 		return;

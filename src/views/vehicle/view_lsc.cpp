@@ -195,7 +195,7 @@ namespace big
 		}
 
 		components::button("Start LS Customs", [] {
-			g->vehicle.ls_customs = true;
+			g.vehicle.ls_customs = true;
 		});
 		ImGui::SameLine();
 		if (components::button("Max Vehicle"))

@@ -7,7 +7,7 @@ namespace big
 
 	void looped::vehicle_instant_brake()
 	{
-		if (!g->vehicle.instant_brake) return;
+		if (!g.vehicle.instant_brake) return;
 
 		Vehicle vehicle = self::veh;
 

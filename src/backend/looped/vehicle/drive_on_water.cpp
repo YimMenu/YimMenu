@@ -29,7 +29,7 @@ namespace big
 
 	void looped::vehicle_drive_on_water()
 	{
-		if (!g->vehicle.drive_on_water || self::veh == 0) {
+		if (!g.vehicle.drive_on_water || self::veh == 0) {
 			drive_on_water_hide_surface();
 			return;
 		}

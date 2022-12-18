@@ -70,53 +70,53 @@ namespace big
 			ImGui::EndListBox();
 		}
 
-		ImGui::Checkbox("Join in SCTV slots", &g->session.join_in_sctv_slots);
+		ImGui::Checkbox("Join in SCTV slots", &g.session.join_in_sctv_slots);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Allows you to join full and solo sessions but can be detected by other modders");
 
 		components::sub_title("Player Magnet");
-		ImGui::Checkbox("Enabled", &g->session.player_magnet_enabled);
-		if (g->session.player_magnet_enabled)
+		ImGui::Checkbox("Enabled", &g.session.player_magnet_enabled);
+		if (g.session.player_magnet_enabled)
 		{
-			ImGui::InputInt("Player Count", &g->session.player_magnet_count);
+			ImGui::InputInt("Player Count", &g.session.player_magnet_count);
 		}
 
 		components::sub_title("Chat");
-		ImGui::Checkbox("Auto-kick Chat Spammers", &g->session.kick_chat_spammers);
-		ImGui::Checkbox("Disable Filter", &g->session.disable_chat_filter);
-		ImGui::Checkbox("Log Chat Messages", &g->session.log_chat_messages);
-		ImGui::Checkbox("Log Text Messages", &g->session.log_text_messages);
+		ImGui::Checkbox("Auto-kick Chat Spammers", &g.session.kick_chat_spammers);
+		ImGui::Checkbox("Disable Filter", &g.session.disable_chat_filter);
+		ImGui::Checkbox("Log Chat Messages", &g.session.log_chat_messages);
+		ImGui::Checkbox("Log Text Messages", &g.session.log_text_messages);
 		static char msg[256];
 		ImGui::InputText("##message", msg, sizeof(msg));
 		ImGui::SameLine();
-		ImGui::Checkbox("Is Team", &g->session.is_team);
+		ImGui::Checkbox("Is Team", &g.session.is_team);
 		ImGui::SameLine();
 		components::button("Send", []
 		{
             if(const auto net_game_player = gta_util::get_network_player_mgr()->m_local_net_player; net_game_player)
 			{
-                if(g_pointers->m_send_chat_message(*g_pointers->m_send_chat_ptr, net_game_player->get_net_data(), msg, g->session.is_team))
-					notify::draw_chat(msg, net_game_player->get_name(), g->session.is_team);
+                if(g_pointers->m_send_chat_message(*g_pointers->m_send_chat_ptr, net_game_player->get_net_data(), msg, g.session.is_team))
+					notify::draw_chat(msg, net_game_player->get_name(), g.session.is_team);
 			}
 		});
 
 		components::sub_title("Decloak");
-		components::script_patch_checkbox("Reveal OTR Players", &g->session.decloak_players);
+		components::script_patch_checkbox("Reveal OTR Players", &g.session.decloak_players);
 
 		components::sub_title("Force Host");
-		ImGui::Checkbox("Force Session Host", &g->session.force_session_host);
+		ImGui::Checkbox("Force Session Host", &g.session.force_session_host);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Join another session to apply changes. The original host of the session must leave or be kicked. This feature is easily detectable by other mod menus, use with caution");
 		ImGui::SameLine();
-		if (g->session.force_session_host)
+		if (g.session.force_session_host)
 		{
 			ImGui::SameLine();
-			ImGui::Checkbox("Kick Host During Join", &g->session.kick_host_when_forcing_host);
+			ImGui::Checkbox("Kick Host During Join", &g.session.kick_host_when_forcing_host);
 		}
 
-		if (ImGui::Checkbox("Force Script Host", &g->session.force_script_host))
+		if (ImGui::Checkbox("Force Script Host", &g.session.force_script_host))
 		{
-			if (g->session.force_script_host)
+			if (g.session.force_script_host)
 				g_fiber_pool->queue_job([]
 			{
 				scripts::force_host(RAGE_JOAAT("freemode"));
@@ -126,40 +126,40 @@ namespace big
 		}
 
 		components::sub_title("Remote Name Spoofing");
-		ImGui::Checkbox("Spoof Other Players' Names", &g->session.name_spoof_enabled);
+		ImGui::Checkbox("Spoof Other Players' Names", &g.session.name_spoof_enabled);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Requires session host. Spoofed names will not visible locally nor to the player that had their name spoofed. Requires players to join after becoming host");
 
-		if (g->session.name_spoof_enabled)
+		if (g.session.name_spoof_enabled)
 		{
-			ImGui::Checkbox("Advertise YimMenu", &g->session.advertise_menu);
+			ImGui::Checkbox("Advertise YimMenu", &g.session.advertise_menu);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("Advertise YimMenu by spoofing player names to differently colored variants of 'YimMenu'. You will not be able to customize the name with this option enabled");
 
-			if (!g->session.advertise_menu)
+			if (!g.session.advertise_menu)
 			{
 				constexpr size_t name_size = RTL_FIELD_SIZE(rage::rlGamerInfo, m_name);
 				static char name[name_size];
-				strcpy_s(name, sizeof(name), g->session.spoofed_name.c_str());
+				strcpy_s(name, sizeof(name), g.session.spoofed_name.c_str());
 
 				ImGui::Text("Name: ");
 				ImGui::InputText("##username_input", name, sizeof(name));
 
-				if (name != g->session.spoofed_name)
-					g->session.spoofed_name = std::string(name);
+				if (name != g.session.spoofed_name)
+					g.session.spoofed_name = std::string(name);
 			}
 		}
 
 		components::sub_title("All Players");
-		ImGui::Checkbox("Off The Radar", &g->session.off_radar_all);
+		ImGui::Checkbox("Off The Radar", &g.session.off_radar_all);
 		ImGui::SameLine();
-		ImGui::Checkbox("Never Wanted", &g->session.never_wanted_all);
+		ImGui::Checkbox("Never Wanted", &g.session.never_wanted_all);
 		ImGui::SameLine();
-		ImGui::Checkbox("Semi Godmode", &g->session.semi_godmode_all);
+		ImGui::Checkbox("Semi Godmode", &g.session.semi_godmode_all);
 
-		ImGui::Checkbox("Explosion Karma", &g->session.explosion_karma);
+		ImGui::Checkbox("Explosion Karma", &g.session.explosion_karma);
 		ImGui::SameLine();
-		ImGui::Checkbox("Damage Karma", &g->session.damage_karma);
+		ImGui::Checkbox("Damage Karma", &g.session.damage_karma);
 
 		static int global_wanted_level = 0;
 
@@ -169,7 +169,7 @@ namespace big
 		}
 
 		ImGui::SameLine();
-		if (ImGui::Checkbox("Force", &g->session.wanted_level_all))
+		if (ImGui::Checkbox("Force", &g.session.wanted_level_all))
 		{
 			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(212).as<Player*>() = __rdtsc() + 32;
 			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = global_wanted_level;
@@ -197,16 +197,16 @@ namespace big
 
 		components::small_text("Teleports");
 
-		if (ImGui::BeginCombo("##apartment", apartment_names[g->session.send_to_apartment_idx]))
+		if (ImGui::BeginCombo("##apartment", apartment_names[g.session.send_to_apartment_idx]))
 		{
 			for (int i = 1; i < apartment_names.size(); i++)
 			{
-				if (ImGui::Selectable(apartment_names[i], i == g->session.send_to_apartment_idx))
+				if (ImGui::Selectable(apartment_names[i], i == g.session.send_to_apartment_idx))
 				{
-					g->session.send_to_apartment_idx = i;
+					g.session.send_to_apartment_idx = i;
 				}
 
-				if (i == g->session.send_to_apartment_idx)
+				if (i == g.session.send_to_apartment_idx)
 				{
 					ImGui::SetItemDefaultFocus();
 				}
@@ -217,18 +217,18 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::button("TP All To Apartment", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_apartment(plyr.second, g->session.send_to_apartment_idx); }); });
+		components::button("TP All To Apartment", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_apartment(plyr.second, g.session.send_to_apartment_idx); }); });
 
-		if (ImGui::BeginCombo("##warehouse", warehouse_names[g->session.send_to_warehouse_idx]))
+		if (ImGui::BeginCombo("##warehouse", warehouse_names[g.session.send_to_warehouse_idx]))
 		{
 			for (int i = 1; i < warehouse_names.size(); i++)
 			{
-				if (ImGui::Selectable(warehouse_names[i], i == g->session.send_to_warehouse_idx))
+				if (ImGui::Selectable(warehouse_names[i], i == g.session.send_to_warehouse_idx))
 				{
-					g->session.send_to_warehouse_idx = i;
+					g.session.send_to_warehouse_idx = i;
 				}
 
-				if (i == g->session.send_to_warehouse_idx)
+				if (i == g.session.send_to_warehouse_idx)
 				{
 					ImGui::SetItemDefaultFocus();
 				}
@@ -239,7 +239,7 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::button("TP All To Warehouse", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_warehouse(plyr.second, g->session.send_to_warehouse_idx); }); });
+		components::button("TP All To Warehouse", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_warehouse(plyr.second, g.session.send_to_warehouse_idx); }); });
 
 		components::button("TP All To Darts", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::Darts); }); });
 		ImGui::SameLine();
@@ -313,17 +313,17 @@ namespace big
 		components::button("Camhedz", [] { scripts::start_launcher_script(218); });
 		ImGui::EndGroup();
 
-		ImGui::Checkbox("Disable Pedestrians", &g->session.disable_peds);
+		ImGui::Checkbox("Disable Pedestrians", &g.session.disable_peds);
 		ImGui::SameLine();
-		ImGui::Checkbox("Disable Traffic", &g->session.disable_traffic);
+		ImGui::Checkbox("Disable Traffic", &g.session.disable_traffic);
 		ImGui::SameLine();
-		ImGui::Checkbox("Force Thunder", &g->session.force_thunder);
+		ImGui::Checkbox("Force Thunder", &g.session.force_thunder);
 
 		components::sub_title("Script Host Features");
-		ImGui::Checkbox("Disable CEO Money", &g->session.block_ceo_money);
+		ImGui::Checkbox("Disable CEO Money", &g.session.block_ceo_money);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Blocks CEO money drops across the entire session. This can also break other stuff, use with caution");
 		ImGui::SameLine();
-		ImGui::Checkbox("Randomize CEO Colors", &g->session.randomize_ceo_colors);
+		ImGui::Checkbox("Randomize CEO Colors", &g.session.randomize_ceo_colors);
 	}
 }

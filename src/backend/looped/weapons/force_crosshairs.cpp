@@ -6,7 +6,7 @@ namespace big
 {
 	void looped::weapons_force_crosshairs()
 	{
-		if (g->weapons.force_crosshairs) {
+		if (g.weapons.force_crosshairs) {
 			HUD::SHOW_HUD_COMPONENT_THIS_FRAME(static_cast<int>(HudComponents::RETICLE));
 		}
 	}

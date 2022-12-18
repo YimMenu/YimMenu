@@ -12,7 +12,7 @@ namespace big
 			return;
 		}
 
-		uint32_t bits = g->self.proof_mask;
+		uint32_t bits = g.self.proof_mask;
 		uint32_t changed_bits = bits ^ last_bits;
 		uint32_t changed_or_enabled_bits = bits | changed_bits;
 

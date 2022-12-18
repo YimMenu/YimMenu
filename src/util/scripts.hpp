@@ -200,7 +200,7 @@ incorrect:
 			return arr[0] + (arr[1] << 8) + (arr[2] << 16);
 		};
 
-		if (g->m_mission_creator_thread ||
+		if (g.m_mission_creator_thread ||
 			SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("creator")) != 0 ||
 			SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 ||
 			STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() ||
@@ -228,7 +228,7 @@ incorrect:
 
 		if (SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH(hash, 54000))
 		{
-			g->m_mission_creator_thread = gta_util::find_script_thread(hash);
+			g.m_mission_creator_thread = gta_util::find_script_thread(hash);
 		}
 
 		if (auto program = gta_util::find_script_program(hash))

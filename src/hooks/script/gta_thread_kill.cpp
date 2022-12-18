@@ -7,19 +7,19 @@ namespace big
 	{
 		const auto result = g_hooking->get_original<gta_thread_kill>()(thread);
 
-		if (g->notifications.gta_thread_kill.log)
+		if (g.notifications.gta_thread_kill.log)
 			LOG(INFO) << "Script Thread '" << thread->m_name << "' terminated.";
-		if (g->notifications.gta_thread_kill.notify)
+		if (g.notifications.gta_thread_kill.notify)
 			g_notification_service->push("Script Thread Termination", std::format("Script Thread '{}' terminated.", thread->m_name));
 
-		if (thread == g->m_hunt_the_beast_thread)
-			g->m_hunt_the_beast_thread = nullptr;
+		if (thread == g.m_hunt_the_beast_thread)
+			g.m_hunt_the_beast_thread = nullptr;
 
-		if (thread == g->m_dance_thread)
-			g->m_dance_thread = nullptr;
+		if (thread == g.m_dance_thread)
+			g.m_dance_thread = nullptr;
 
-		if (thread == g->m_mission_creator_thread)
-			g->m_mission_creator_thread = nullptr;
+		if (thread == g.m_mission_creator_thread)
+			g.m_mission_creator_thread = nullptr;
 
 		return result;
 	}

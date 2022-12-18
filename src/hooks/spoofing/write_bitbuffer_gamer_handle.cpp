@@ -8,9 +8,9 @@ namespace big
 	{
 		bool restore = false;
 
-		if (g->spoofing.should_spoof_rockstar_id && handle->m_rockstar_id == g_pointers->m_profile_gamer_info->m_gamer_handle_2.m_rockstar_id)
+		if (g.spoofing.should_spoof_rockstar_id && handle->m_rockstar_id == g_pointers->m_profile_gamer_info->m_gamer_handle_2.m_rockstar_id)
 		{
-			handle->m_rockstar_id = g->spoofing.applied_spoof_rockstar_id;
+			handle->m_rockstar_id = g.spoofing.applied_spoof_rockstar_id;
 			restore = true;
 		}
 

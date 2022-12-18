@@ -5,7 +5,7 @@ namespace big
 {
 	notification_service::notification_service()
 	{
-		push("Welcome", std::format("Loaded YimMenu. Press {} to open", ImGui::key_names[g->settings.hotkeys.menu_toggle]));
+		push("Welcome", std::format("Loaded YimMenu. Press {} to open", ImGui::key_names[g.settings.hotkeys.menu_toggle]));
 
 		g_notification_service = this;
 	}

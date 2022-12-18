@@ -10,7 +10,7 @@ namespace big
 
 		components::sub_title("Lester");
 
-		ImGui::Checkbox("Off Radar", &g->self.off_radar);
+		ImGui::Checkbox("Off Radar", &g.self.off_radar);
 
 		ImGui::Separator();	
 		

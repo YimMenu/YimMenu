@@ -8,7 +8,7 @@ namespace big
 	{
 		if (g_local_player == nullptr) return;
 
-		bool bNoWaterCollsion = g->self.no_water_collision;
+		bool bNoWaterCollsion = g.self.no_water_collision;
 
 		if (bNoWaterCollsion)
 		{

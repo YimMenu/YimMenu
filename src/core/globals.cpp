@@ -3,19 +3,9 @@
 
 namespace big
 {
-    menu_settings::menu_settings(file save_file)
-        : m_save_file(save_file)
+    void menu_settings::init(file save_file)
     {
-        g = this;
-    }
-
-    menu_settings::~menu_settings()
-    {
-        g = nullptr;
-    }
-
-    void menu_settings::init()
-    {
+        m_save_file = save_file;
         load();
 
         g_thread_pool->push([this]

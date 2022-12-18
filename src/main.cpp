@@ -46,8 +46,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			base_dir /= "BigBaseV2";
 			auto file_manager_instance = std::make_unique<file_manager>(base_dir);
 
-			auto globals_instance = std::make_unique<menu_settings>(file_manager_instance->get_project_file("./settings.json"));
-
 			auto logger_instance = std::make_unique<logger>(
 				"YimMenu",
 				file_manager_instance->get_project_file("./cout.log")
@@ -63,7 +61,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto thread_pool_instance = std::make_unique<thread_pool>();
 				LOG(INFO) << "Thread pool initialized.";
 
-				globals_instance->init();
+				g.init(
+					file_manager_instance->get_project_file("./settings.json"));
 				LOG(INFO) << "Settings Loaded.";
 
 				auto pointers_instance = std::make_unique<pointers>();
@@ -195,8 +194,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			LOG(INFO) << "Farewell!";
 			logger_instance->destroy();
 			logger_instance.reset();
-
-			globals_instance.reset();
 
 			file_manager_instance.reset();
 
