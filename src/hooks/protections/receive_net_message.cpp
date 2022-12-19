@@ -6,6 +6,7 @@
 #include "util/spam.hpp"
 #include "util/kick.hpp"
 #include <network/Network.hpp>
+#include <network/netTime.hpp>
 
 namespace big
 {
@@ -216,6 +217,26 @@ namespace big
 					if (script.m_hash == RAGE_JOAAT("freemode") && g.session.force_script_host)
 						return true;
 					
+					break;
+				}
+				case rage::eNetMessage::MsgNetTimeSync:
+				{
+					if (player)
+					{
+						int action = buffer.Read<int>(2);
+						uint32_t counter = buffer.Read<uint32_t>(32);
+						uint32_t token = buffer.Read<uint32_t>(32);
+						uint32_t timestamp = buffer.Read<uint32_t>(32);
+						uint32_t time_diff = (*g_pointers->m_network_time)->m_time_offset + frame->m_timestamp;
+
+						if (action == 0)
+						{
+							player->player_time_value = timestamp;
+							player->player_time_value_received_time = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now());
+							if (!player->time_difference || time_diff > player->time_difference.value())
+								player->time_difference = time_diff;
+						}
+					}
 					break;
 				}
 				}

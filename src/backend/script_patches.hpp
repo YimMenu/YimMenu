@@ -11,6 +11,7 @@ namespace big
 		g_script_patcher_service->add_patch({ RAGE_JOAAT("freemode"), "2D 00 07 00 00 5D ? ? ? 56 ? ? 71", 5, { 0x2E, 0x00, 0x00 }, &g.tunables.no_idle_kick });
 		g_script_patcher_service->add_patch({ RAGE_JOAAT("freemode"), "5D ? ? ? 76 57 ? ? 5D ? ? ? 76", 0, { 0x2E, 0x00, 0x00 }, nullptr }); // end session kick protection
 		g_script_patcher_service->add_patch({ RAGE_JOAAT("freemode"), "2D 01 09 00 00 5D ? ? ? 56 ? ? 2E", 5, { 0x2E, 0x01, 0x00 }, nullptr }); // disable death when undermap/spectating
+		g_script_patcher_service->add_patch({ RAGE_JOAAT("freemode"), "71 2E ? ? 55 ? ? 61 ? ? ? 47 ? ? 63", 0, { 0x72 }, nullptr });  // load island even if stranded animal IPL choice is not set
 		g_script_patcher_service->add_patch({ RAGE_JOAAT("shop_controller"), "2D 01 04 00 00 2C ? ? ? 56 ? ? 71", 5, { 0x71, 0x2E, 0x01, 0x01 }, nullptr }); // despawn bypass
 		g_script_patcher_service->add_patch({ RAGE_JOAAT("shop_controller"), "38 00 5D ? ? ? 38 00 5D ? ? ? 38 00 41", 0, std::vector<uint8_t>(12, 0x0), nullptr}); // godmode/invisibility detection bypass
 
