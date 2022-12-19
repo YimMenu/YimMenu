@@ -744,30 +744,6 @@ namespace big
 			m_sync_network_time = ptr.add(1).rip().as<functions::sync_network_time>();
 		});
 
-		// Main File Object
-		main_batch.add("MFO", "48 8D 05 ? ? ? ? 48 8D 1C D0 EB 03", [this](memory::handle ptr)
-		{
-			m_main_file_object = ptr.add(3).rip().as<datafile_commands::SveFileObject*>();
-		});
-
-		// Load Cloud File
-		main_batch.add("LCF", "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 40 48 8B F2 48 8B D9 41 8B D0", [this](memory::handle ptr)
-		{
-			m_load_cloud_file = ptr.as<functions::load_cloud_file>();
-		});
-
-		// Set As Active Cloud File
-		main_batch.add("SAACF", "48 83 EC 28 45 33 C0 4C 39", [this](memory::handle ptr)
-		{
-			m_set_as_active_cloud_file = ptr.as<functions::set_as_active_cloud_file>();
-		});
-
-		// Save JSON Data
-		main_batch.add("SJD", "48 89 5C 24 08 57 48 83 EC 30 33 DB 48 8B FA 48", [this](memory::handle ptr)
-		{
-			m_save_json_data = ptr.as<functions::save_json_data>();
-		});
-
 		// Queue Dependency
 		main_batch.add("QD", "48 89 5C 24 ? 57 48 83 EC ? 0F B6 99", [this](memory::handle ptr)
 		{

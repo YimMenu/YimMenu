@@ -347,28 +347,30 @@ namespace big::toxic
 		WEAPON::REMOVE_ALL_PED_WEAPONS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target->id()), FALSE);
 	}
 
-	inline void warp_time_forward(player_ptr target, uint32_t millis)
+	inline bool set_time(player_ptr target, uint32_t millis)
 	{
 		if (!g_player_service->get_self()->is_host())
 		{
-			g_notification_service->push_error("Warp Time", "Warping time requires session host");
-			return;
+			g_notification_service->push_error("Modify Time", "Modifying time requires session host");
+			return false;
 		}
 
 		if (!target->player_time_value.has_value())
 		{
-			g_notification_service->push_error("Warp Time", "We do not have the player's timestamp yet");
-			return;
+			g_notification_service->push_error("Modify Time", "We do not have the player's timestamp yet");
+			return false;
 		}
 
-		(*g_pointers->m_network_time)->m_last_sync_id_sent++;
+		target->num_time_syncs_sent++;
+
+		LOG(INFO) << "Millis passed: " << (uint32_t)(std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()) - target->player_time_value_received_time.value()).count();
 
 		rage::netTimeSyncMsg msg{};
 		msg.action = 1;
-		msg.counter = (*g_pointers->m_network_time)->m_last_sync_id_sent;
+		msg.counter = target->num_time_syncs_sent;
 		msg.token = (*g_pointers->m_network_time)->m_time_token;
-		msg.timestamp = target->player_time_value.value() + (std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()) - target->player_time_value_received_time.value()).count();
-		msg.increment = target->time_difference.value() + millis;
+		msg.timestamp = target->player_time_value.value() + (uint32_t)(std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()) - target->player_time_value_received_time.value()).count();
+		msg.increment = millis;
 
 		auto peer = g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr, (int)target->get_session_player()->m_player_data.m_peer_id_2);
 
@@ -378,6 +380,18 @@ namespace big::toxic
 				peer, (*g_pointers->m_network_time)->m_connection_identifier, &msg, 0x1000000); // repeatedly spamming the event will eventually cause certain bounds checks to disable for some reason
 		}
 
-		target->time_difference.value() += millis;
+		return true;
+	}
+
+	inline void warp_time_forward(player_ptr target, uint32_t millis)
+	{
+		if (!target->player_time_value.has_value())
+		{
+			g_notification_service->push_error("Warp Time", "We do not have the player's timestamp yet");
+			return;
+		}
+
+		if (set_time(target, target->time_difference.value() + millis + (uint32_t)(std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now()) - target->player_time_value_received_time.value()).count()))
+			target->time_difference.value() += millis;
 	}
 }

@@ -45,7 +45,7 @@ namespace big
 
 		void NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA(rage::scrNativeCallContext* src)
 		{
-			if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("freemode") && g->session.force_script_host)
+			if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("freemode") && g.session.force_script_host)
 			{
 				g_fiber_pool->queue_job([]
 				{
