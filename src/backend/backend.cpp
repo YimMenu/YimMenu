@@ -4,6 +4,7 @@
 #include "looped/looped.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "script_patches.hpp"
+#include "looped_command.hpp"
 
 namespace big
 {
@@ -19,6 +20,10 @@ namespace big
 			looped::system_spoofing();
 			looped::system_mission_creator();
 			looped::system_auto_tp();
+
+			for (auto command : g_looped_commands)
+				if (command->is_enabled())
+					command->on_tick();
 
 			script::get_current()->yield();
 		}
@@ -148,8 +153,6 @@ namespace big
 
 		while (g_running)
 		{
-			looped::self_noclip();
-
 			script::get_current()->yield();
 		}
 	}
@@ -197,7 +200,6 @@ namespace big
 		while (g_running)
 		{
 			looped::self_free_cam_disable_control_action();
-			looped::self_noclip_disable_control_action();
 
 			looped::custom_gun_disable_control_action();
 

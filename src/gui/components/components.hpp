@@ -1,5 +1,8 @@
 #pragma once
 #include "imgui.h"
+#include "backend/command.hpp"
+#include "backend/looped_command.hpp"
+#include "backend/player_command.hpp"
 
 namespace big
 {
@@ -27,5 +30,30 @@ namespace big
 		static void selectable(const std::string_view, bool, ImGuiSelectableFlags, std::function<void()>);
 
 		static bool script_patch_checkbox(const std::string_view text, bool* option, const std::string_view tooltip = "");
+
+		// TODO: Pass string instead of joaat
+		template<rage::joaat_t cmd_hash>
+		static void command_button(const std::string_view name, const std::vector<std::uint64_t> args = {})
+		{
+			static command* command = command::get(cmd_hash);
+			if (ImGui::Button(name.data()))
+				command->call(args);
+		}
+
+		template<rage::joaat_t cmd_hash>
+		static void player_command_button(const std::string_view name, player_ptr player = g_player_service->get_selected(), const std::vector<std::uint64_t> args = {})
+		{
+			static player_command* command = (player_command*)command::get(cmd_hash);
+			if (ImGui::Button(name.data()))
+				command->call(player, args);
+		}
+
+		template<rage::joaat_t cmd_hash>
+		static void command_checkbox(const std::string_view label)
+		{
+			static looped_command* command = (looped_command*)command::get(cmd_hash);
+			if (ImGui::Checkbox(label.data(), &command->is_enabled()))
+				command->refresh();
+		}
 	};
 }

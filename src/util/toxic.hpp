@@ -94,33 +94,6 @@ namespace big::toxic
 		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
 	}
 
-	inline void send_player_to_interior(player_ptr player, int interior)
-	{
-		float max = 1e+38f;
-		auto coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), FALSE);
-		const size_t arg_count = 15;
-		int64_t args[arg_count] =
-		{
-			(int64_t)eRemoteEvent::InteriorControl,
-			(int64_t)self::id,
-			(int64_t)(int)interior,
-			(int64_t)self::id,
-			(int64_t)false,
-			(int64_t)true, // true means enter sender interior
-			(int64_t)*(uint32_t*)&coords.x,
-			(int64_t)*(uint32_t*)&coords.y,
-			(int64_t)*(uint32_t*)&coords.z,
-			0,
-			0,
-			1,
-			(int64_t)*(uint32_t*)&max,
-			(int64_t)true,
-			-1
-		};
-
-		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << player->id());
-	}
-
 	inline void kick_player_from_vehicle(player_ptr target)
 	{
 		auto vehicle = target->get_current_vehicle();

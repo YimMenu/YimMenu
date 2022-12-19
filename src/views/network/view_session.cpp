@@ -251,25 +251,25 @@ namespace big
 		ImGui::SameLine();
 		components::button("TP All To Cayo Perico", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_island(plyr.second); }); });
 		ImGui::SameLine();
-		components::button("TP All To MOC", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 81); }); });
+		components::command_button<RAGE_JOAAT("interiortpall")>("TP All To MOC", { 81 });
 
-		components::button("TP All To Casino", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 123); }); });
+		components::command_button<RAGE_JOAAT("interiortpall")>("TP All To Casino", { 123 });
 		ImGui::SameLine();
-		components::button("TP All To Penthouse", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 124); }); });
+		components::command_button<RAGE_JOAAT("interiortpall")>("TP All To Penthouse", { 124 });
 		ImGui::SameLine();
-		components::button("TP All To Arcade", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 128); }); });
+		components::command_button<RAGE_JOAAT("interiortpall")>("TP All To Arcade", { 128 });
 
-		components::button("TP All To Music Locker", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 146); }); });
+		components::command_button<RAGE_JOAAT("interiortpall")>("TP All To Music Locker", { 146 });
 		ImGui::SameLine();
-		components::button("TP All To Record A Studios", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 148); }); });
+		components::command_button<RAGE_JOAAT("interiortpall")>("TP All To Record A Studios", { 148 });
 		ImGui::SameLine();
-		components::button("TP All To Custom Auto Shop", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 149); }); });
+		components::command_button<RAGE_JOAAT("interiortpall")>("TP All To Custom Auto Shop", { 149 });
 
-		components::button("TP All To Agency", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 155); }); });
+		components::command_button<RAGE_JOAAT("interiortpall")>("TP All To Agency", { 155 });
 		ImGui::SameLine();
-		components::button("TP All To Freakshop", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 160); }); });
+		components::command_button<RAGE_JOAAT("interiortpall")>("TP All To Freakshop", { 160 });
 		ImGui::SameLine();
-		components::button("TP All To Multi-Floor Garage", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 161); }); });
+		components::command_button<RAGE_JOAAT("interiortpall")>("TP All To Multi Floor Garage", { 161 });
 
 		components::sub_title("Event Starter");
 		

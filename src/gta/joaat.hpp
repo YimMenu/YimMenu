@@ -9,7 +9,8 @@
 namespace rage
 {
 	template <std::size_t CharCount>
-	struct constexpr_joaat {
+	struct constexpr_joaat 
+	{
 		char data[CharCount];
 		template <std::size_t... Indices>
 		constexpr constexpr_joaat(const char *str, std::index_sequence<Indices...>) : data{ (str[Indices])... } {}

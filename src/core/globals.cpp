@@ -1,5 +1,6 @@
 #include "globals.hpp"
 #include "thread_pool.hpp"
+#include "backend/looped_command.hpp"
 
 namespace big
 {
@@ -73,6 +74,9 @@ namespace big
             LOG(INFO) << "Updating settings.";
             save();
         }
+
+        for (auto& command : g_looped_commands)
+            command->refresh();
 
         return true;
     }
