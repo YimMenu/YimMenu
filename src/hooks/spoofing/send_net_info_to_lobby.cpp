@@ -1,4 +1,5 @@
 #include "hooking.hpp"
+#include "pointers.hpp"
 
 constexpr static auto advertisments = std::to_array(
 {
@@ -20,7 +21,10 @@ namespace big
 		if (is_local_player)
 		{
 			if (g.spoofing.spoof_username)
+			{
 				memcpy(player->m_name, g.spoofing.username.c_str(), sizeof(player->m_name));
+				memcpy(g_pointers->m_chat_gamer_info->m_name, g.spoofing.username.c_str(), 18);
+			}
 
 			if (g.spoofing.spoof_ip)
 			{

@@ -756,6 +756,12 @@ namespace big
 			m_interval_check_func = ptr.add(3).rip().as<PVOID>();
 		});
 
+		// Chat Gamer Info
+		main_batch.add("CGI", "E8 ? ? ? ? 48 8B CF E8 ? ? ? ? 8B E8", [this](memory::handle ptr)
+		{
+			m_chat_gamer_info = ptr.add(1).rip().add(6).rip().as<rage::rlGamerInfo*>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 
