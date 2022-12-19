@@ -1,0 +1,952 @@
+#include "fiber_pool.hpp"
+#include "natives.hpp"
+#include "script.hpp"
+#include "services/vehicle_helper/vehicle_helper.hpp"
+#include "core/data/lsc_types.hpp"
+#include "views/view.hpp"
+#include "util/vehicle.hpp"
+#include <imgui_internal.h>
+
+namespace big
+{
+	void view::lsc()
+	{
+		static Vehicle player_vehicle = 0;
+		static bool ready = true;
+
+		static std::map<int, int32_t> owned_mods;
+		static std::map<int, std::string> slot_display_names;
+		static std::map<int, std::map<int, std::string>> mod_display_names;
+		static std::map<std::string, std::vector<int>> front_wheel_map;
+		static std::map<std::string, std::vector<int>> rear_wheel_map;
+
+		static int selected_slot = -1;
+		static bool is_bennys = false;
+		static int front_wheel_stock_mod = -1;
+		static int rear_wheel_stock_mod = -1;
+
+		if (self::veh == 0 || player_vehicle != self::veh)
+		{
+			if (self::veh == 0 )
+			{
+				owned_mods.clear();
+				slot_display_names.clear();
+				mod_display_names.clear();
+				front_wheel_map.clear();
+				rear_wheel_map.clear();
+				player_vehicle = 0;
+
+				selected_slot = -1;
+				ImGui::Text("Please enter a vehicle.");
+				return;
+			}
+		}
+
+		if (player_vehicle != self::veh && ready == true)
+		{
+			ready = false;
+			player_vehicle = self::veh;
+
+			g_fiber_pool->queue_job([] {
+				if (!HUD::HAS_THIS_ADDITIONAL_TEXT_LOADED("MOD_MNU", 10))
+				{
+					HUD::CLEAR_ADDITIONAL_TEXT(10, TRUE);
+					HUD::REQUEST_ADDITIONAL_TEXT("MOD_MNU", 10);
+					script::get_current()->yield();
+				}
+				
+				VEHICLE::SET_VEHICLE_MOD_KIT(player_vehicle, 0);
+
+				Hash model = ENTITY::GET_ENTITY_MODEL(player_vehicle);
+
+				owned_mods = vehicle::get_owned_mods_from_vehicle(player_vehicle);
+				VEHICLE::SET_VEHICLE_MOD_KIT(player_vehicle, 0);
+
+				std::map<int, std::string> tmp_slot_display_names;
+				std::map<int, std::map<int, std::string>> tmp_mod_display_names;
+				std::map<std::string, std::vector<int>> tmp_front_wheel_map;
+				std::map<std::string, std::vector<int>> tmp_rear_wheel_map;
+
+				tmp_slot_display_names[MOD_PLATE_STYLE] = "Plate Style";
+				tmp_slot_display_names[MOD_WINDOW_TINT] = "Window Tint";
+				tmp_slot_display_names[MOD_WHEEL_TYPE] = "Wheel Type";
+
+				tmp_mod_display_names[MOD_PLATE_STYLE].insert(lsc_plate_styles.begin(), lsc_plate_styles.end());
+				tmp_mod_display_names[MOD_WINDOW_TINT].insert(lsc_window_tint_types.begin(), lsc_window_tint_types.end());
+				tmp_mod_display_names[MOD_WHEEL_TYPE].insert(lsc_wheel_styles.begin(), lsc_wheel_styles.end());
+
+				is_bennys = owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_ORIGINAL ||
+					owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_BESPOKE ||
+					owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_OPEN_WHEEL ||
+					owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_STREET ||
+					owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_TRACK;
+
+				for (int slot = MOD_SPOILERS; slot <= MOD_LIGHTBAR; slot++)
+				{
+					int count = VEHICLE::GET_NUM_VEHICLE_MODS(player_vehicle, slot);
+					if (count > 0)
+					{
+						int owner_mod = owned_mods[slot];
+
+						std::string slot_name = vehicle_helper::get_mod_slot_name(model, player_vehicle, slot);
+						if (slot_name.empty())
+						{
+							continue;
+						}
+						tmp_slot_display_names[slot] = slot_name;
+
+						std::map<int, std::string> mod_names;
+
+						for (int mod = -1; mod < count; mod++)
+						{
+							if (vehicle_helper::check_mod_blacklist(model, slot, mod))
+							{
+								continue;
+							}
+
+							bool is_repeated = false;
+
+							std::string mod_name = vehicle_helper::get_mod_name(model, player_vehicle, slot, mod, count);
+
+							if (mod_name.empty() || mod_name == "NULL")
+							{
+								continue;
+							}
+
+							if (slot == MOD_FRONTWHEEL)
+							{
+								if (is_bennys)
+								{
+									if (mod_name.rfind("Chrome ", 0) == 0)
+									{
+										std::string new_mod_name = mod_name.substr(7);
+
+										if (tmp_front_wheel_map[new_mod_name].size() > 0)
+										{
+											mod_name = new_mod_name;
+										}
+
+									}
+								}
+
+								tmp_front_wheel_map[mod_name].push_back(mod);
+
+								if (mod == owner_mod)
+								{
+									front_wheel_stock_mod = tmp_front_wheel_map[mod_name][0];
+								}
+
+								if (tmp_front_wheel_map[mod_name].size() > 1)
+								{
+									is_repeated = true;
+								}
+							}
+							else if(slot == MOD_REARWHEEL)
+							{
+								if (is_bennys)
+								{
+									if (mod_name.rfind("Chrome ", 0) == 0)
+									{
+										std::string new_mod_name = mod_name.substr(7);
+
+										if (tmp_rear_wheel_map[new_mod_name].size() > 0)
+										{
+											mod_name = new_mod_name;
+										}
+
+									}
+								}
+
+								tmp_rear_wheel_map[mod_name].push_back(mod);
+
+								if (mod == owner_mod)
+								{
+									rear_wheel_stock_mod = tmp_rear_wheel_map[mod_name][0];
+								}
+
+								if (tmp_rear_wheel_map[mod_name].size() > 1)
+								{
+									is_repeated = true;
+								}
+							}
+
+							if (!is_repeated)
+							{
+								mod_names[mod] = mod_name;
+							}
+						}
+
+						tmp_mod_display_names[slot] = mod_names;
+					}
+				}
+
+				if (tmp_mod_display_names.count(MOD_HORNS) > 0)
+				{
+					tmp_mod_display_names[MOD_HORNS].insert(lsc_missing_horns.begin(), lsc_missing_horns.end());
+				}
+
+				slot_display_names = tmp_slot_display_names;
+				mod_display_names = tmp_mod_display_names;
+				front_wheel_map = tmp_front_wheel_map;
+				rear_wheel_map = tmp_rear_wheel_map;
+
+				ready = true;
+			});
+		}
+
+		components::button("Start LS Customs", [] {
+			g.vehicle.ls_customs = true;
+		});
+		ImGui::SameLine();
+		if (components::button("Max Vehicle"))
+		{
+			g_fiber_pool->queue_job([] {
+				vehicle::max_vehicle(self::veh);
+
+				// refresh mod names
+				player_vehicle = 0;
+			});
+		}
+
+		ImGui::Separator();
+
+		static char plate[9];
+
+		ImGui::SetNextItemWidth(200.f);
+		components::input_text_with_hint("##plate", "Plate Number", plate, sizeof(plate), ImGuiInputTextFlags_None);
+		ImGui::SameLine();
+		if (components::button("Change Plate Number"))
+		{
+			g_fiber_pool->queue_job([] {
+				vehicle::set_plate(self::veh, plate);
+			});
+		}
+
+		ImGui::Separator();
+		components::sub_title("Mod Options");
+
+		bool is_bulletproof_tires = !owned_mods[MOD_TIRE_CAN_BURST];
+		if (ImGui::Checkbox("Bulletproof Tires", (bool*)&is_bulletproof_tires))
+		{
+			g_fiber_pool->queue_job([is_bulletproof_tires] {
+				owned_mods[MOD_TIRE_CAN_BURST] = (int32_t)!is_bulletproof_tires;
+				VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(player_vehicle, owned_mods[MOD_TIRE_CAN_BURST]);
+			});
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Low Grip Tires", (bool*)&owned_mods[MOD_DRIFT_TIRE]))
+		{
+			g_fiber_pool->queue_job([] {
+				VEHICLE::SET_DRIFT_TYRES(player_vehicle, owned_mods[MOD_DRIFT_TIRE]);
+			});
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Turbo", (bool*)&owned_mods[MOD_TURBO]))
+		{
+			g_fiber_pool->queue_job([] {
+				VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TURBO, owned_mods[MOD_TURBO]);
+			});
+		}
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Tiresmoke", (bool*)&owned_mods[MOD_TYRE_SMOKE]))
+		{
+			g_fiber_pool->queue_job([] {
+				VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TYRE_SMOKE, owned_mods[MOD_TYRE_SMOKE]);
+			});
+		}
+
+		ImGui::Separator();
+
+		ImGui::BeginGroup();
+
+		components::sub_title("Slot");
+		if (ImGui::ListBoxHeader("##slot", ImVec2(200, 200)))
+		{
+			for (const auto& [slot, name] : slot_display_names)
+			{
+				if (ImGui::Selectable(name.c_str(), slot == selected_slot))
+				{
+					selected_slot = slot;
+				}
+			}
+			ImGui::ListBoxFooter();
+		}
+
+		ImGui::EndGroup();
+
+		if (selected_slot != -1)
+		{
+			auto wheel_stock_mod = &front_wheel_stock_mod;
+			auto wheel_custom = &owned_mods[MOD_FRONTWHEEL_VAR];
+			bool is_wheel_mod = false;
+
+			if (selected_slot == MOD_FRONTWHEEL)
+			{
+				is_wheel_mod = true;
+			}
+			else if (selected_slot == MOD_REARWHEEL)
+			{
+				wheel_stock_mod = &rear_wheel_stock_mod;
+				wheel_custom = &owned_mods[MOD_REARWHEEL_VAR];
+				is_wheel_mod = true;
+			}
+			else
+			{
+				is_wheel_mod = false;
+			}
+
+			ImGui::SameLine();
+			ImGui::BeginGroup();
+
+			components::sub_title("Mod");
+			if (ImGui::ListBoxHeader("##mod", ImVec2(240, 200)))
+			{
+				for (const auto& it : mod_display_names[selected_slot])
+				{
+					const auto& mod = it.first;
+					const auto& name = it.second;
+
+					bool item_selected = mod == owned_mods[selected_slot];
+
+					if (is_wheel_mod)
+					{
+						item_selected = mod == *wheel_stock_mod;
+					}
+
+					if (ImGui::Selectable(name.c_str(), item_selected))
+					{
+						g_fiber_pool->queue_job([&mod, is_wheel_mod, wheel_stock_mod, wheel_custom] {
+							NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(self::veh);
+
+							if (selected_slot >= 0)
+							{
+								VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
+								owned_mods[selected_slot] = mod;
+
+								if (is_wheel_mod)
+								{
+									*wheel_stock_mod = mod;
+									*wheel_custom = false;
+								}
+							}
+							else if (selected_slot == MOD_WINDOW_TINT)
+							{
+								VEHICLE::SET_VEHICLE_WINDOW_TINT(player_vehicle, mod);
+								owned_mods[selected_slot] = mod;
+							}
+							else if (selected_slot == MOD_WHEEL_TYPE)
+							{
+								VEHICLE::SET_VEHICLE_WHEEL_TYPE(player_vehicle, mod);
+								VEHICLE::SET_VEHICLE_MOD(player_vehicle, MOD_FRONTWHEEL, 0, false);
+								VEHICLE::SET_VEHICLE_MOD(player_vehicle, MOD_REARWHEEL, 0, false);
+								player_vehicle = 0;
+							}
+							else if (selected_slot == MOD_PLATE_STYLE)
+							{
+								VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(player_vehicle, mod);
+								owned_mods[selected_slot] = mod;
+							}
+						});
+					}
+				}
+				ImGui::ListBoxFooter();
+			}
+
+			ImGui::EndGroup();
+
+			if (
+				is_wheel_mod && *wheel_stock_mod != -1
+			) {
+				auto wheel_map = front_wheel_map;
+
+				if (selected_slot == MOD_REARWHEEL)
+				{
+					wheel_map = rear_wheel_map;
+				}
+
+				ImGui::SameLine();
+				ImGui::BeginGroup();
+
+				components::sub_title("Style");
+				if (ImGui::ListBoxHeader("##style", ImVec2(200, 200)))
+				{
+					std::string mod_name = mod_display_names[selected_slot][*wheel_stock_mod];
+					auto wheel_mods = wheel_map[mod_name];
+
+					for (int i = 0; i < wheel_mods.size(); i++)
+					{
+						int& mod = wheel_mods[i];
+
+						int should_custom = false;
+
+						// bennys fix
+						if (!is_bennys)
+						{
+							if (i == 0)
+							{
+								if (ImGui::Selectable("Stock", mod == owned_mods[selected_slot] && *wheel_custom == false))
+								{
+									g_fiber_pool->queue_job([&mod] {
+										VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
+										player_vehicle = 0;
+									});
+								}
+							}
+
+							should_custom = true;
+						}
+
+						std::string label = "Style " + std::to_string(mod);
+						if (ImGui::Selectable(label.c_str(), mod == owned_mods[selected_slot] && *wheel_custom == should_custom))
+						{
+							g_fiber_pool->queue_job([&mod, should_custom] {
+								VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, should_custom);
+								player_vehicle = 0;
+							});
+						}
+					}
+					ImGui::ListBoxFooter();
+				}
+
+				ImGui::EndGroup();
+			}
+		}
+
+
+
+		ImGui::Separator();
+		components::sub_title("Neon Light Options");
+
+		if (ImGui::Checkbox("Headlight##headlight_en", (bool*)&owned_mods[MOD_XENON_LIGHTS]))
+		{
+			g_fiber_pool->queue_job([] {
+				VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_XENON_LIGHTS, owned_mods[MOD_XENON_LIGHTS]);
+			});
+		}
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Left", (bool*)&owned_mods[MOD_NEON_LEFT_ON]))
+		{
+			g_fiber_pool->queue_job([] {
+				VEHICLE::SET_VEHICLE_NEON_ENABLED(player_vehicle, NEON_LEFT, owned_mods[MOD_NEON_LEFT_ON]);
+			});
+		}
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Right", (bool*)&owned_mods[MOD_NEON_RIGHT_ON]))
+		{
+			g_fiber_pool->queue_job([] {
+				VEHICLE::SET_VEHICLE_NEON_ENABLED(player_vehicle, NEON_RIGHT, owned_mods[MOD_NEON_RIGHT_ON]);
+			});
+		}
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Front", (bool*)&owned_mods[MOD_NEON_FRONT_ON]))
+		{
+			g_fiber_pool->queue_job([] {
+				VEHICLE::SET_VEHICLE_NEON_ENABLED(player_vehicle, NEON_FRONT, owned_mods[MOD_NEON_FRONT_ON]);
+			});
+		}
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Back", (bool*)&owned_mods[MOD_NEON_BACK_ON]))
+		{
+			g_fiber_pool->queue_job([] {
+				VEHICLE::SET_VEHICLE_NEON_ENABLED(player_vehicle, NEON_BACK, owned_mods[MOD_NEON_BACK_ON]);
+			});
+		}
+		ImGui::SameLine();
+		components::button("Check All##neon_check_all", [] {
+			owned_mods[MOD_XENON_LIGHTS] = true;
+			owned_mods[MOD_NEON_LEFT_ON] = true;
+			owned_mods[MOD_NEON_RIGHT_ON] = true;
+			owned_mods[MOD_NEON_FRONT_ON] = true;
+			owned_mods[MOD_NEON_BACK_ON] = true;
+
+			VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_XENON_LIGHTS, owned_mods[MOD_XENON_LIGHTS]);
+			VEHICLE::SET_VEHICLE_NEON_ENABLED(player_vehicle, NEON_LEFT, owned_mods[MOD_NEON_LEFT_ON]);
+			VEHICLE::SET_VEHICLE_NEON_ENABLED(player_vehicle, NEON_RIGHT, owned_mods[MOD_NEON_RIGHT_ON]);
+			VEHICLE::SET_VEHICLE_NEON_ENABLED(player_vehicle, NEON_FRONT, owned_mods[MOD_NEON_FRONT_ON]);
+			VEHICLE::SET_VEHICLE_NEON_ENABLED(player_vehicle, NEON_BACK, owned_mods[MOD_NEON_BACK_ON]);
+		});
+		ImGui::SameLine();
+		components::button("Uncheck All##neon_uncheck_all", [] {
+			owned_mods[MOD_XENON_LIGHTS] = false;
+			owned_mods[MOD_NEON_LEFT_ON] = false;
+			owned_mods[MOD_NEON_RIGHT_ON] = false;
+			owned_mods[MOD_NEON_FRONT_ON] = false;
+			owned_mods[MOD_NEON_BACK_ON] = false;
+
+			VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_XENON_LIGHTS, owned_mods[MOD_XENON_LIGHTS]);
+			VEHICLE::SET_VEHICLE_NEON_ENABLED(player_vehicle, NEON_LEFT, owned_mods[MOD_NEON_LEFT_ON]);
+			VEHICLE::SET_VEHICLE_NEON_ENABLED(player_vehicle, NEON_RIGHT, owned_mods[MOD_NEON_RIGHT_ON]);
+			VEHICLE::SET_VEHICLE_NEON_ENABLED(player_vehicle, NEON_FRONT, owned_mods[MOD_NEON_FRONT_ON]);
+			VEHICLE::SET_VEHICLE_NEON_ENABLED(player_vehicle, NEON_BACK, owned_mods[MOD_NEON_BACK_ON]);
+		});
+
+		ImGui::Separator();
+		components::sub_title("Color Options");
+
+		static int color_to_change = 0;
+		static int color_type = 8;
+
+		if (
+			(color_to_change == 7 && !owned_mods[MOD_XENON_LIGHTS]) ||
+			(color_to_change == 5 && !owned_mods[MOD_TYRE_SMOKE])
+		) {
+			color_to_change = 0;
+			color_type = 8;
+		}
+
+		if (ImGui::ListBoxHeader("##color_options", ImVec2(120, 254)))
+		{
+			if (ImGui::Selectable("Primary", color_to_change == 0, ImGuiSelectableFlags_SelectOnClick))
+			{
+				color_to_change = 0;
+			}
+
+			if (ImGui::Selectable("Secondary", color_to_change == 1))
+			{
+				color_to_change = 1;
+			}
+
+			if (ImGui::Selectable("Pearlescent", color_to_change == 2))
+			{
+				color_to_change = 2;
+				color_type = 4;
+			}
+
+			if (ImGui::Selectable("Interior", color_to_change == 3))
+			{
+				color_to_change = 3;
+				color_type = 6;
+			}
+
+			if (ImGui::Selectable("Dashboard", color_to_change == 4))
+			{
+				color_to_change = 4;
+				color_type = 7;
+			}
+
+			if (!owned_mods[MOD_TYRE_SMOKE])
+			{
+				ImGui::BeginDisabled();
+			}
+			if (ImGui::Selectable("Tire Smoke", color_to_change == 5))
+			{
+				color_to_change = 5;
+				color_type = 8;
+			}
+			if (!owned_mods[MOD_TYRE_SMOKE])
+			{
+				ImGui::EndDisabled();
+			}
+
+			if (ImGui::Selectable("Wheel Color", color_to_change == 6))
+			{
+				color_to_change = 6;
+				color_type = 5;
+			}
+
+			if (!owned_mods[MOD_XENON_LIGHTS])
+			{
+				ImGui::BeginDisabled();
+			}
+			if (ImGui::Selectable("Headlight##headlight_col", color_to_change == 7))
+			{
+				color_to_change = 7;
+				color_type = 9;
+			}
+			if (!owned_mods[MOD_XENON_LIGHTS])
+			{
+				ImGui::EndDisabled();
+			}
+
+			if (ImGui::Selectable("Neon", color_to_change == 8))
+			{
+				color_to_change = 8;
+				color_type = 8;
+			}
+
+			ImGui::ListBoxFooter();
+		}
+
+
+		if (color_to_change == 0 || color_to_change == 1)
+		{
+			if (color_type > 3)
+			{
+				color_type = 8;
+			}
+
+			// primary and secondary color
+
+			ImGui::SameLine();
+			if (ImGui::ListBoxHeader("##colors", ImVec2(140, 254)))
+			{
+				if (ImGui::Selectable("Custom", color_type == 8, ImGuiSelectableFlags_SelectOnClick))
+				{
+					color_type = 8;
+				}
+				if (ImGui::Selectable("Remove Custom", false))
+				{
+					g_fiber_pool->queue_job([] {
+						if (color_to_change == 0)
+						{
+							VEHICLE::CLEAR_VEHICLE_CUSTOM_PRIMARY_COLOUR(player_vehicle);
+						}
+						else
+						{
+							VEHICLE::CLEAR_VEHICLE_CUSTOM_SECONDARY_COLOUR(player_vehicle);
+						}
+						VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, owned_mods[MOD_PRIMARY_COL], owned_mods[MOD_SECONDARY_COL]);
+					});
+				}
+
+				if (ImGui::Selectable("Chrome", color_type == 0))
+				{
+					color_type = 0;
+				}
+				if (ImGui::Selectable("Classic", color_type == 1))
+				{
+					color_type = 1;
+				}
+				if (ImGui::Selectable("Matte", color_type == 2))
+				{
+					color_type = 2;
+				}
+				if (ImGui::Selectable("Metals", color_type == 3))
+				{
+					color_type = 3;
+				}
+				ImGui::ListBoxFooter();
+			}
+		}
+		else if (color_to_change == 7)
+		{
+			ImGui::SameLine();
+		}
+
+
+		if (color_type == 8)
+		{
+			// custom color
+
+			static float color[3] = { 1, 1, 1 };
+			auto color_r = &owned_mods[MOD_PRIMARY_COL_R];
+			auto color_g = &owned_mods[MOD_PRIMARY_COL_G];
+			auto color_b = &owned_mods[MOD_PRIMARY_COL_B];
+
+			if (color_to_change == 1)
+			{
+				color_r = &owned_mods[MOD_SECONDARY_COL_R];
+				color_g = &owned_mods[MOD_SECONDARY_COL_G];
+				color_b = &owned_mods[MOD_SECONDARY_COL_B];
+			}
+			else if (color_to_change == 2)
+			{
+				color_r = &owned_mods[MOD_TIRESMOKE_COL_R];
+				color_g = &owned_mods[MOD_TIRESMOKE_COL_G];
+				color_b = &owned_mods[MOD_TIRESMOKE_COL_B];
+			}
+			else if (color_to_change == 3)
+			{
+				color_r = &owned_mods[MOD_NEON_COL_R];
+				color_g = &owned_mods[MOD_NEON_COL_G];
+				color_b = &owned_mods[MOD_NEON_COL_B];
+			}
+
+			color[0] = (float)*color_r / 255;
+			color[1] = (float)*color_g / 255;
+			color[2] = (float)*color_b / 255;
+
+			if (color_to_change == 5)
+			{
+				ImGui::SameLine();
+				if (ImGui::ListBoxHeader("##tire_smoke_rgb", ImVec2(140, 254)))
+				{
+					for (const auto& it : lsc_tire_smoke_rgb)
+					{
+						auto& name = it.first;
+						auto& rgb = it.second;
+
+						if (ImGui::Selectable(name.c_str(), false))
+						{
+							g_fiber_pool->queue_job([&rgb] {
+								VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, rgb[0], rgb[1], rgb[2]);
+							});
+							*color_r = rgb[0];
+							*color_g = rgb[1];
+							*color_b = rgb[2];
+						}
+
+					}
+
+					ImGui::ListBoxFooter();
+				}
+			}
+			else if (color_to_change == 8)
+			{
+				ImGui::SameLine();
+				if (ImGui::ListBoxHeader("##neon_rgb", ImVec2(140, 254)))
+				{
+					for (const auto& it : lsc_neon_rgb)
+					{
+						auto& name = it.first;
+						auto& rgb = it.second;
+
+						if (ImGui::Selectable(name.c_str(), false))
+						{
+							g_fiber_pool->queue_job([&rgb] {
+								VEHICLE::SET_VEHICLE_NEON_COLOUR(player_vehicle, rgb[0], rgb[1], rgb[2]);
+							});
+							*color_r = rgb[0];
+							*color_g = rgb[1];
+							*color_b = rgb[2];
+						}
+					}
+
+					ImGui::ListBoxFooter();
+				}
+			}
+
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(214);
+			if (ImGui::ColorPicker3("Custom VehColor", color, ImGuiColorEditFlags_NoAlpha | ImGuiColorEditFlags_NoDragDrop | ImGuiColorEditFlags_NoOptions | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_DisplayHex))
+			{
+				*color_r = (int)(color[0] * 255);
+				*color_g = (int)(color[1] * 255);
+				*color_b = (int)(color[2] * 255);
+
+				g_fiber_pool->queue_job([color_r, color_g, color_b] {
+					switch (color_to_change)
+					{
+					case 0:
+						VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(player_vehicle, *color_r, *color_g, *color_b);
+						break;
+					case 1:
+						VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(player_vehicle, *color_r, *color_g, *color_b);
+						break;
+					case 5:
+						VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, *color_r, *color_g, *color_b);
+						break;
+					case 8:
+						VEHICLE::SET_VEHICLE_NEON_COLOUR(player_vehicle, *color_r, *color_g, *color_b);
+						break;
+					}
+				});
+			}
+		}
+		else
+		{
+			// standard color
+
+			int selected_color = 0;
+			switch (color_type)
+			{
+			case 4:
+				selected_color = owned_mods[MOD_PEARLESCENT_COL];
+				break;
+			case 5:
+				selected_color = owned_mods[MOD_WHEEL_COL];
+				break;
+			case 6:
+				selected_color = owned_mods[MOD_INTERIOR_COL];
+				break;
+			case 7:
+				selected_color = owned_mods[MOD_DASHBOARD_COL];
+				break;
+			case 9:
+				selected_color = owned_mods[MOD_XENON_COL];
+				break;
+			default:
+				selected_color = (color_to_change == 0) ? owned_mods[MOD_PRIMARY_COL] : owned_mods[MOD_SECONDARY_COL];
+			}
+
+			if (color_type != 9)
+			{
+				ImGui::SameLine();
+			}
+
+			if (ImGui::ListBoxHeader("##color", ImVec2(180, 254)))
+			{
+				switch (color_type)
+				{
+				case 0: //Chrome
+				{
+					if (ImGui::Selectable("Chrome", selected_color == COLOR_CHROME))
+					{
+						if (color_to_change == 0)
+						{
+							owned_mods[MOD_PRIMARY_COL] = COLOR_CHROME;
+						}
+						else
+						{
+							owned_mods[MOD_SECONDARY_COL] = COLOR_CHROME;
+						}
+
+						g_fiber_pool->queue_job([] {
+							VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, owned_mods[MOD_PRIMARY_COL], owned_mods[MOD_SECONDARY_COL]);
+						});
+					}
+					break;
+				}
+				case 1: //Classic
+				{
+					for (const auto& [color, name] : lsc_classic_colors)
+					{
+						if (ImGui::Selectable(name.c_str(), selected_color == color))
+						{
+							selected_color = color;
+
+							if (color_to_change == 0)
+							{
+								owned_mods[MOD_PRIMARY_COL] = color;
+							}
+							else
+							{
+								owned_mods[MOD_SECONDARY_COL] = color;
+							}
+
+							g_fiber_pool->queue_job([] {
+								VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, owned_mods[MOD_PRIMARY_COL], owned_mods[MOD_SECONDARY_COL]);
+							});
+						}
+
+					}
+					break;
+				}
+				case 2: //Matte
+				{
+					for (const auto& [color, name] : lsc_matte_colors)
+					{
+						if (ImGui::Selectable(name.c_str(), selected_color == color))
+						{
+							selected_color = color;
+
+							if (color_to_change == 0)
+							{
+								owned_mods[MOD_PRIMARY_COL] = color;
+							}
+							else
+							{
+								owned_mods[MOD_SECONDARY_COL] = color;
+							}
+
+							g_fiber_pool->queue_job([] {
+								VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, owned_mods[MOD_PRIMARY_COL], owned_mods[MOD_SECONDARY_COL]);
+							});
+						}
+
+					}
+					break;
+				}
+				case 3: //Metals
+				{
+					for (const auto& [color, name] : lsc_metal_colors)
+					{
+						if (ImGui::Selectable(name.c_str(), selected_color == color))
+						{
+							selected_color = color;
+
+							if (color_to_change == 0)
+							{
+								owned_mods[MOD_PRIMARY_COL] = color;
+							}
+							else
+							{
+								owned_mods[MOD_SECONDARY_COL] = color;
+							}
+
+							g_fiber_pool->queue_job([] {
+								VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, owned_mods[MOD_PRIMARY_COL], owned_mods[MOD_SECONDARY_COL]);
+							});
+						}
+					}
+					break;
+				}
+				case 4: //Pearlescent
+				{
+					for (const auto& [color, name] : lsc_classic_colors)
+					{
+						if (ImGui::Selectable(name.c_str(), selected_color == color))
+						{
+							selected_color = color;
+							owned_mods[MOD_PEARLESCENT_COL] = color;
+
+							g_fiber_pool->queue_job([] {
+								VEHICLE::SET_VEHICLE_EXTRA_COLOURS(player_vehicle, owned_mods[MOD_PEARLESCENT_COL], owned_mods[MOD_WHEEL_COL]);
+							});
+						}
+					}
+					break;
+				}
+				case 5: //Wheel Color
+				{
+					for (const auto& [color, name] : lsc_classic_colors)
+					{
+						if (ImGui::Selectable(name.c_str(), selected_color == color))
+						{
+							selected_color = color;
+							owned_mods[MOD_WHEEL_COL] = color;
+
+							g_fiber_pool->queue_job([] {
+								VEHICLE::SET_VEHICLE_EXTRA_COLOURS(player_vehicle, owned_mods[MOD_PEARLESCENT_COL], owned_mods[MOD_WHEEL_COL]);
+							});
+						}
+					}
+					break;
+				}
+				case 6: //Interior Color
+				{
+					for (const auto& [color, name] : lsc_classic_colors)
+					{
+						if (ImGui::Selectable(name.c_str(), selected_color == color))
+						{
+							selected_color = color;
+							owned_mods[MOD_INTERIOR_COL] = color;
+
+							g_fiber_pool->queue_job([] {
+								VEHICLE::SET_VEHICLE_EXTRA_COLOUR_5(player_vehicle, owned_mods[MOD_INTERIOR_COL]);
+							});
+						}
+					}
+					break;
+				}
+				case 7: //Dashboard Color
+				{
+					for (const auto& [color, name] : lsc_classic_colors)
+					{
+						if (ImGui::Selectable(name.c_str(), selected_color == color))
+						{
+							selected_color = color;
+							owned_mods[MOD_DASHBOARD_COL] = color;
+
+							g_fiber_pool->queue_job([] {
+								VEHICLE::SET_VEHICLE_EXTRA_COLOUR_6(player_vehicle, owned_mods[MOD_DASHBOARD_COL]);
+							});
+						}
+					}
+					break;
+				}
+				case 9: //Headlight Color
+				{
+					for (const auto& [color, name] : lsc_headlight_colors)
+					{
+						if (ImGui::Selectable(name.c_str(), selected_color == color))
+						{
+							selected_color = color;
+							owned_mods[MOD_XENON_COL] = color;
+
+							g_fiber_pool->queue_job([] {
+								VEHICLE::SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(player_vehicle, owned_mods[MOD_XENON_COL]);
+							});
+						}
+					}
+					break;
+				}
+				}
+
+				ImGui::ListBoxFooter();
+			}
+		}
+	}
+}
