@@ -121,7 +121,7 @@ namespace big
 			ImGui::SameLine();
 			components::button("+200 Minutes", [] { toxic::warp_time_forward(g_player_service->get_selected(), 200 * 60 * 1000); });
 			ImGui::SameLine();
-			components::button("Break Time", [] { toxic::set_time(g_player_service->get_selected(), INT_MAX - 3000); });
+			components::button("Stop Time", [] { toxic::set_time(g_player_service->get_selected(), INT_MAX - 3000); });
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("This cannot be reversed. Use with caution");
 

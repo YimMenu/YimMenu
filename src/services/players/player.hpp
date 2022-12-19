@@ -63,7 +63,7 @@ namespace big
 		std::optional<std::uint32_t> player_time_value;
 		std::optional<std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds>> player_time_value_received_time;
 		std::optional<std::uint32_t> time_difference;
-		std::uint32_t num_time_syncs_sent = 999999;
+		std::uint32_t num_time_syncs_sent = 9999;
 
 	protected:
 		bool equals(const CNetGamePlayer* net_game_player) const;
