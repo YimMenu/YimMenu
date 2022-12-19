@@ -12,7 +12,7 @@ namespace big
 			info->m_prop_hash != RAGE_JOAAT("p_parachute_s")
 			)
 		{
-			notify::crash_blocked(g->m_syncing_player, "invalid parachute");
+			notify::crash_blocked(g.m_syncing_player, "invalid parachute");
 			info->m_prop_hash = 0;
 		}
 	}

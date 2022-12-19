@@ -8,7 +8,7 @@ namespace big
 {
 	void looped::weapons_delete_gun()
 	{
-		bool bCageGun = g->weapons.custom_weapon == CustomWeapon::DELETE_GUN;
+		bool bCageGun = g.weapons.custom_weapon == CustomWeapon::DELETE_GUN;
 
 		if (bCageGun)
 		{

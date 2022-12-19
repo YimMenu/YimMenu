@@ -14,7 +14,7 @@ namespace big
 		}
 
 		if (
-			(g->vehicle.god_mode || g->vehicle.proof_collision) &&
+			(g.vehicle.god_mode || g.vehicle.proof_collision) &&
 			g_local_player->m_ped_task_flag & (int)ePedTask::TASK_DRIVING
 		) {
 			g_local_player->m_vehicle->m_deform_god = 0x8C;
@@ -24,7 +24,7 @@ namespace big
 			g_local_player->m_vehicle->m_deform_god = 0x9C;
 		}
 
-		uint32_t bits = g->vehicle.proof_mask;
+		uint32_t bits = g.vehicle.proof_mask;
 		uint32_t changed_bits = bits ^ last_bits;
 		uint32_t changed_or_enabled_bits = bits | changed_bits;
 

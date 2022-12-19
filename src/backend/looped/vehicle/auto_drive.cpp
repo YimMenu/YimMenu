@@ -21,10 +21,10 @@ namespace big
 		static bool started = false;
 		static Vector3 waypoint;
 
-		if (g->vehicle.auto_drive_destination != AutoDriveDestination::STOPPED)
+		if (g.vehicle.auto_drive_destination != AutoDriveDestination::STOPPED)
 		{
-			current_destination = g->vehicle.auto_drive_destination;
-			g->vehicle.auto_drive_destination = AutoDriveDestination::STOPPED;
+			current_destination = g.vehicle.auto_drive_destination;
+			g.vehicle.auto_drive_destination = AutoDriveDestination::STOPPED;
 			changing_driving_styles = true;
 		}
 
@@ -35,11 +35,11 @@ namespace big
 			g_notification_service->push_warning("Warning", "Please be in a car first then try again.");
 		}
 		else if (
-			current_driving_flag != driving_style_flags[g->vehicle.auto_drive_style] ||
-			current_speed != g->vehicle.auto_drive_speed
+			current_driving_flag != driving_style_flags[g.vehicle.auto_drive_style] ||
+			current_speed != g.vehicle.auto_drive_speed
 		) {
-			current_driving_flag = driving_style_flags[g->vehicle.auto_drive_style];
-			current_speed = g->vehicle.auto_drive_speed;
+			current_driving_flag = driving_style_flags[g.vehicle.auto_drive_style];
+			current_speed = g.vehicle.auto_drive_speed;
 			changing_driving_styles = true;
 		}
 

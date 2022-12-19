@@ -732,6 +732,30 @@ namespace big
 			m_save_json_data = ptr.as<functions::save_json_data>();
 		});
 
+		// Network Time
+		main_batch.add("NT", "48 8B 0D ? ? ? ? E8 ? ? ? ? 33 DB 84 C0 74 41", [this](memory::handle ptr)
+		{
+			m_network_time = ptr.add(3).rip().as<rage::netTime**>();
+		});
+
+		// Sync Network Time
+		main_batch.add("SNT", "E8 ? ? ? ? 8B 43 5C", [this](memory::handle ptr)
+		{
+			m_sync_network_time = ptr.add(1).rip().as<functions::sync_network_time>();
+		});
+
+		// Queue Dependency
+		main_batch.add("QD", "48 89 5C 24 ? 57 48 83 EC ? 0F B6 99", [this](memory::handle ptr)
+		{
+			m_queue_dependency = ptr.as<PVOID>();
+		});
+
+		// Interval Check Function
+		main_batch.add("ICF", "48 8D 0D ? ? ? ? 88 05 ? ? ? ? 48 8D 05", [this](memory::handle ptr)
+		{
+			m_interval_check_func = ptr.add(3).rip().as<PVOID>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 
@@ -756,7 +780,7 @@ namespace big
 		{
 			m_bypass_max_count_of_active_sticky_bombs = memory::byte_patch::make(pat.add(4).as<uint8_t*>(), { 99 }).get();
 
-			if (g->weapons.bypass_c4_limit)
+			if (g.weapons.bypass_c4_limit)
 				m_bypass_max_count_of_active_sticky_bombs->apply();
 		}
 

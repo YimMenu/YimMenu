@@ -8,6 +8,11 @@ namespace big
 		INSTANT_REFIL,
 		INFINITE_BOOST
 	};
+	NLOHMANN_JSON_SERIALIZE_ENUM(eBoostBehaviors, {
+		{ eBoostBehaviors::DEFAULT, "default" },
+		{ eBoostBehaviors::INSTANT_REFIL, "instant" },
+		{ eBoostBehaviors::INFINITE_BOOST, "infinite" }
+	})
 
 	enum class CustomWeapon
 	{
@@ -19,6 +24,15 @@ namespace big
 		REPAIR_GUN,
 		VEHICLE_GUN
 	};
+	NLOHMANN_JSON_SERIALIZE_ENUM(CustomWeapon, {
+		{ CustomWeapon::NONE, "none" },
+		{ CustomWeapon::CAGE_GUN, "cage" },
+		{ CustomWeapon::DELETE_GUN, "delete" },
+		{ CustomWeapon::GRAVITY_GUN, "gravity" },
+		{ CustomWeapon::STEAL_VEHICLE_GUN, "steal" },
+		{ CustomWeapon::REPAIR_GUN, "repair" },
+		{ CustomWeapon::VEHICLE_GUN, "vehicle" },
+	})
 
 	enum class ContextEntityType : uint8_t
 	{
@@ -271,6 +285,11 @@ namespace big
 		MIPH,
 		MPS
 	};
+	NLOHMANN_JSON_SERIALIZE_ENUM(SpeedUnit, {
+		{ SpeedUnit::KMPH, "kmph" },
+		{ SpeedUnit::MIPH, "miph" },
+		{ SpeedUnit::MPS, "mps" },
+	})
 
 	enum class RainbowPaintType
 	{
@@ -278,6 +297,11 @@ namespace big
 		Fade,
 		Spasm
 	};
+	NLOHMANN_JSON_SERIALIZE_ENUM(RainbowPaintType, {
+		{ RainbowPaintType::Off, "off" },
+		{ RainbowPaintType::Fade, "fade" },
+		{ RainbowPaintType::Spasm, "spasm" },
+	})
 
 	enum class AutoDriveDestination
 	{
@@ -287,12 +311,23 @@ namespace big
 		WANDER,
 		EMERGENCY_STOP
 	};
+	NLOHMANN_JSON_SERIALIZE_ENUM(AutoDriveDestination, {
+		{ AutoDriveDestination::STOPPED, "stopped" },
+		{ AutoDriveDestination::OBJECTITVE, "objective" },
+		{ AutoDriveDestination::WAYPOINT, "waypoint" },
+		{ AutoDriveDestination::WANDER, "wander" },
+		{ AutoDriveDestination::EMERGENCY_STOP, "emergency_stop" },
+	})
 
 	enum class AutoDriveStyle
 	{
 		LAW_ABIDING,
 		THE_ROAD_IS_YOURS
 	};
+	NLOHMANN_JSON_SERIALIZE_ENUM(AutoDriveStyle, {
+		{ AutoDriveStyle::LAW_ABIDING, "law_abiding" },
+		{ AutoDriveStyle::THE_ROAD_IS_YOURS, "the_road_is_yours" },
+	})
 
 	enum class eEntityProofs : uint32_t
 	{

@@ -18,6 +18,7 @@ namespace rage
 	template<typename T>
 	class atSingleton;
 	class RageSecurity;
+	class netTime;
 }
 
 namespace big
@@ -197,6 +198,9 @@ namespace big
 		memory::byte_patch* m_broadcast_patch;
 
 		rage::atSingleton<rage::RageSecurity>* m_security;
+		
+		PVOID m_queue_dependency;
+		PVOID m_interval_check_func;
 
 		PVOID m_send_session_matchmaking_attributes;
 
@@ -214,6 +218,9 @@ namespace big
 		functions::load_cloud_file m_load_cloud_file;
 		functions::set_as_active_cloud_file m_set_as_active_cloud_file;
 		functions::save_json_data m_save_json_data;
+
+		rage::netTime** m_network_time;
+		functions::sync_network_time m_sync_network_time;
 	};
 
 	inline pointers* g_pointers{};

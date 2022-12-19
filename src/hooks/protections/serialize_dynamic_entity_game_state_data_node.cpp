@@ -43,7 +43,7 @@ namespace big
 
 			if (node->m_decor_count > 11)
 			{
-				notify::crash_blocked(g->m_syncing_player, "out of bounds decorator count");
+				notify::crash_blocked(g.m_syncing_player, "out of bounds decorator count");
 				return;
 			}
 

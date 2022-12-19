@@ -33,7 +33,7 @@ namespace big
 	{
 		if (g_local_player == nullptr) return;
 
-		if (g->self.free_cam)
+		if (g.self.free_cam)
 		{
 			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 
@@ -48,9 +48,9 @@ namespace big
 
 		const auto vehicle = self::veh;
 		const auto ped = self::ped;
-		if (!g->self.free_cam && !bLastFreeCam) return;
+		if (!g.self.free_cam && !bLastFreeCam) return;
 
-		if (g->self.free_cam && !bLastFreeCam)
+		if (g.self.free_cam && !bLastFreeCam)
 		{
 			cCam = CAM::CREATE_CAM("DEFAULT_SCRIPTED_CAMERA", 0);
 
@@ -66,7 +66,7 @@ namespace big
 
 			bLastFreeCam = true;
 		}
-		else if (!g->self.free_cam && bLastFreeCam)
+		else if (!g.self.free_cam && bLastFreeCam)
 		{
 			CAM::SET_CAM_ACTIVE(cCam, false);
 			CAM::RENDER_SCRIPT_CAMS(false, true, 500, true, true, 0);

@@ -87,22 +87,22 @@ namespace big
 
 		if (ImGui::TreeNode("Filters"))
 		{
-			ImGui::Checkbox("Region", &g->session_browser.region_filter_enabled);
+			ImGui::Checkbox("Region", &g.session_browser.region_filter_enabled);
 
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("It is highly recommended to keep this filter enabled");
 
-			if (g->session_browser.region_filter_enabled)
+			if (g.session_browser.region_filter_enabled)
 			{
 				ImGui::SameLine();
 
-				if (ImGui::BeginCombo("###region_select", regions[g->session_browser.region_filter].name))
+				if (ImGui::BeginCombo("###region_select", regions[g.session_browser.region_filter].name))
 				{
 					for (const auto& region : regions)
 					{
-						if (ImGui::Selectable(region.name, g->session_browser.region_filter == region.id))
+						if (ImGui::Selectable(region.name, g.session_browser.region_filter == region.id))
 						{
-							g->session_browser.region_filter = region.id;
+							g.session_browser.region_filter = region.id;
 						}
 					}
 					ImGui::EndCombo();
@@ -110,34 +110,34 @@ namespace big
 
 			}
 
-			ImGui::Checkbox("Language", &g->session_browser.language_filter_enabled);
+			ImGui::Checkbox("Language", &g.session_browser.language_filter_enabled);
 
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("Setting a correct region filter for the language will help tremendously");
 
-			if (g->session_browser.language_filter_enabled)
+			if (g.session_browser.language_filter_enabled)
 			{
 				ImGui::SameLine();
 
-				if (ImGui::BeginCombo("###language_select", languages[g->session_browser.language_filter].name))
+				if (ImGui::BeginCombo("###language_select", languages[g.session_browser.language_filter].name))
 				{
 					for (const auto& language : languages)
 					{
-						if (ImGui::Selectable(language.name, g->session_browser.language_filter == language.id))
+						if (ImGui::Selectable(language.name, g.session_browser.language_filter == language.id))
 						{
-							g->session_browser.language_filter = language.id;
+							g.session_browser.language_filter = language.id;
 						};
 					}
 					ImGui::EndCombo();
 				}
 			}
 
-			ImGui::Checkbox("Players", &g->session_browser.player_count_filter_enabled);
+			ImGui::Checkbox("Players", &g.session_browser.player_count_filter_enabled);
 
-			if (g->session_browser.player_count_filter_enabled)
+			if (g.session_browser.player_count_filter_enabled)
 			{
-				ImGui::InputInt("Minimum", &g->session_browser.player_count_filter_minimum);
-				ImGui::InputInt("Maximum", &g->session_browser.player_count_filter_maximum);
+				ImGui::InputInt("Minimum", &g.session_browser.player_count_filter_minimum);
+				ImGui::InputInt("Maximum", &g.session_browser.player_count_filter_maximum);
 			}
 
 			ImGui::TreePop();
@@ -145,13 +145,13 @@ namespace big
 
 		if (ImGui::TreeNode("Sorting"))
 		{
-			ImGui::Combo("Sort By", &g->session_browser.sort_method, "Off\0Player Count");
-			if (g->session_browser.sort_method != 0)
-				ImGui::Combo("Direction", &g->session_browser.sort_direction, "Ascending\0Descending");
+			ImGui::Combo("Sort By", &g.session_browser.sort_method, "Off\0Player Count");
+			if (g.session_browser.sort_method != 0)
+				ImGui::Combo("Direction", &g.session_browser.sort_direction, "Ascending\0Descending");
 			ImGui::TreePop();
 		}
 
-		if (ImGui::Checkbox("Replace Game Matchmaking", &g->session_browser.replace_game_matchmaking));
+		if (ImGui::Checkbox("Replace Game Matchmaking", &g.session_browser.replace_game_matchmaking));
 
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("This will replace the default game matchmaking with a custom one that will use the filters and sorting set here");

@@ -16,7 +16,7 @@ namespace big
             
             bool return_value = DLC::IS_DLC_PRESENT(hash);
             if (hash == 0x96F02EE6)
-                return_value = return_value || g->settings.dev_dlc;
+                return_value = return_value || g.settings.dev_dlc;
 
             src->set_return_value(return_value);
         }

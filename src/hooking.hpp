@@ -134,6 +134,7 @@ namespace big
 		static bool read_bitbuffer_gamer_handle(rage::datBitBuffer* buffer, rage::rlGamerHandle* handle);
 
 		static int nt_query_virtual_memory(void* _this, HANDLE handle, PVOID base_addr, int info_class, MEMORY_BASIC_INFORMATION* info, int size, size_t* return_len);
+		static void queue_dependency(void* dependency);
 	};
 
 	class minhook_keepalive

@@ -10,7 +10,7 @@ namespace big
 	{
 		if (g_local_player == nullptr) return;
 
-		bool bNoCollsion = g->self.no_collision;
+		bool bNoCollsion = g.self.no_collision;
 
 		if (bNoCollsion)
 		{

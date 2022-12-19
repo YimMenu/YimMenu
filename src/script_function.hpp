@@ -27,6 +27,7 @@ namespace big
 	namespace scr_functions
 	{
 		static inline script_function join_ceo("JC", RAGE_JOAAT("freemode"), "2D 04 1D 00 00 5D", 0);
+		static inline script_function set_freemode_session_active("SFSA", RAGE_JOAAT("freemode"), "2D 00 02 00 00 75 5D ? ? ? 50", 0);
 		static inline script_function dance_loop("DL", RAGE_JOAAT("am_mp_nightclub"), "2D 00 14 00 00 4F ? ? 47 ? ? 5D ? ? ? 56", 0);
 		static inline script_function init_nightclub_script("INS", RAGE_JOAAT("am_mp_nightclub"), "2D 00 11 00 00 4F", 0);
 

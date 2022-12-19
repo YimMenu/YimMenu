@@ -7,7 +7,7 @@ namespace big
 {
 	void looped::weapons_cage_gun()
 	{
-		bool bCageGun = g->weapons.custom_weapon == CustomWeapon::CAGE_GUN;
+		bool bCageGun = g.weapons.custom_weapon == CustomWeapon::CAGE_GUN;
 
 		if (bCageGun)
 		{

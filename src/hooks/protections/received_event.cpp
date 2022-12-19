@@ -181,7 +181,7 @@ namespace big
 		if (damageType == 3 && (damageFlags & (1 << 1)) == 0)
 			hitGlobalId = g_local_player ? g_local_player->m_net_object->m_object_id : 0;
 
-		if (g->session.damage_karma && g_local_player && g_local_player->m_net_object && (g_local_player->m_net_object->m_object_id == hitGlobalId || math::distance_between_vectors(localPos, *g_local_player->m_navigation->get_position()) < 1.5f))
+		if (g.session.damage_karma && g_local_player && g_local_player->m_net_object && (g_local_player->m_net_object->m_object_id == hitGlobalId || math::distance_between_vectors(localPos, *g_local_player->m_navigation->get_position()) < 1.5f))
 		{
 			int id = player->m_player_id;
 			g_fiber_pool->queue_job([id, hitComponent, overrideDefaultDamage, weaponType, weaponDamage, tyreIndex, suspensionIndex, damageFlags, actionResultName, actionResultId, f104, hitEntityWeapon, hitWeaponAmmoAttachment, silenced, hasImpactDir, impactDir, localPos]
@@ -314,7 +314,7 @@ namespace big
 			return;
 		}
 
-		if (g->session.explosion_karma && g_local_player && math::distance_between_vectors({ posX, posY, posZ }, *g_local_player->m_navigation->get_position()) < 3.0f)
+		if (g.session.explosion_karma && g_local_player && math::distance_between_vectors({ posX, posY, posZ }, *g_local_player->m_navigation->get_position()) < 3.0f)
 		{
 			int id = player->m_player_id;
 			g_fiber_pool->queue_job([id, explosionType, damageScale, cameraShake, isAudible, isInvisible]
@@ -355,9 +355,9 @@ namespace big
 			std::uint32_t player_bitfield = buffer->Read<uint32_t>(32);
 			if (player_bitfield & (1 << target_player->m_player_id))
 			{
-				if (g->notifications.received_event.kick_vote.log)
+				if (g.notifications.received_event.kick_vote.log)
 					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " is voting to kick us.";
-				if (g->notifications.received_event.kick_vote.notify)
+				if (g.notifications.received_event.kick_vote.notify)
 					g_notification_service->push_warning("Kick Vote", std::format("{} is voting to kick us.", source_player->get_name()));
 			}
 			buffer->Seek(0);
@@ -421,9 +421,9 @@ namespace big
 			{
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 
-				if (g->notifications.received_event.clear_ped_task.log)
+				if (g.notifications.received_event.clear_ped_task.log)
 					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent CLEAR_PED_TASKS event.";
-				if (g->notifications.received_event.clear_ped_task.notify)
+				if (g.notifications.received_event.clear_ped_task.notify)
 					g_notification_service->push_warning("Protections", std::format("{} tried to freeze player.", source_player->get_name()));
 
 				return;
@@ -440,9 +440,9 @@ namespace big
 			{
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 
-				if (g->notifications.received_event.clear_ped_task.log)
+				if (g.notifications.received_event.clear_ped_task.log)
 					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent RAGDOLL_REQUEST event.";
-				if (g->notifications.received_event.clear_ped_task.notify)
+				if (g.notifications.received_event.clear_ped_task.notify)
 					g_notification_service->push_warning("Protections", std::format("{} tried to ragdoll player.", source_player->get_name()));
 
 				return;
@@ -463,9 +463,9 @@ namespace big
 
 			if (money >= 2000)
 			{
-				if (g->notifications.received_event.report_cash_spawn.log)
+				if (g.notifications.received_event.report_cash_spawn.log)
 					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent REPORT_CASH_SPAWN event.";
-				if (g->notifications.received_event.report_cash_spawn.notify)
+				if (g.notifications.received_event.report_cash_spawn.notify)
 					g_notification_service->push_warning("Protections", std::format("{} is spawning cash.", source_player->get_name()));
 			}
 
@@ -474,9 +474,9 @@ namespace big
 		// player sending this event is a modder
 		case eNetworkEvents::REPORT_MYSELF_EVENT:
 		{
-			if (g->notifications.received_event.modder_detect.log)
+			if (g.notifications.received_event.modder_detect.log)
 				LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent modder event.";
-			if (g->notifications.received_event.modder_detect.notify)
+			if (g.notifications.received_event.modder_detect.notify)
 				g_notification_service->push_warning("Protections", std::format("{} sent out a modder event.", source_player->get_name()));
 
 			if (auto plyr = g_player_service->get_by_id(source_player->m_player_id))
@@ -491,9 +491,9 @@ namespace big
 			{
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 
-				if (g->notifications.received_event.request_control_event.log)
+				if (g.notifications.received_event.request_control_event.log)
 					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " requested control of player vehicle.";
-				if (g->notifications.received_event.request_control_event.notify)
+				if (g.notifications.received_event.request_control_event.notify)
 					g_notification_service->push_warning("Protections", std::format("Denied player control request from {}", source_player->get_name()));
 
 				return;
@@ -610,7 +610,7 @@ namespace big
 			}
 
 			buffer->Seek(0);
-			g->m_syncing_player = source_player;
+			g.m_syncing_player = source_player;
 			break;
 		}
 		case eNetworkEvents::NETWORK_PLAY_SOUND_EVENT:

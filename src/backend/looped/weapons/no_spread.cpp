@@ -24,7 +24,7 @@ namespace big
 
 	float get_spread_value(uint32_t hash)
 	{
-		return g->weapons.no_spread
+		return g.weapons.no_spread
 			? 0.f
 			: get_og_spread_value(hash);
 	}

@@ -6,7 +6,7 @@ namespace big
 {
 	void looped::vehicle_jump()
 	{
-		if (!g->vehicle.vehicle_jump) return;
+		if (!g.vehicle.vehicle_jump) return;
 
 		const auto vehicle = self::veh;
 

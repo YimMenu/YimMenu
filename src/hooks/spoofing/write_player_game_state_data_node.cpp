@@ -7,7 +7,7 @@ namespace big
 	{
 		auto ret = g_hooking->get_original<write_player_game_state_data_node>()(player, node);
 
-		if (g->spoofing.spoof_hide_god)
+		if (g.spoofing.spoof_hide_god)
 		{
 			node->m_is_invincible = false;
 			node->m_bullet_proof = false;
@@ -19,7 +19,7 @@ namespace big
 			node->m_water_proof = false;
 		}
 
-		if (g->spoofing.spoof_hide_spectate)
+		if (g.spoofing.spoof_hide_spectate)
 		{
 			node->m_is_spectating = false;
 			node->m_spectating_net_id = 0;

@@ -14,6 +14,7 @@ namespace rage
 	class snSession;
 	class snPlayer;
 	class CDynamicEntity;
+	class netTimeSyncMsg;
 }
 
 namespace datafile_commands
@@ -115,4 +116,6 @@ namespace big::functions
 	using load_cloud_file = void(*)(sCloudFile** out_cloud_file, char* buffer, int size, const char* reason);
 	using set_as_active_cloud_file = void(*)(datafile_commands::SveFileObject* object, sCloudFile** file);
 	using save_json_data = char*(*)(datafile_commands::SveFileObject* object, int* out_length, const char* reason);
+
+	using sync_network_time = bool(*)(rage::netConnectionManager* mgr, rage::netConnectionPeer* peer, int connection_id, rage::netTimeSyncMsg* msg, int flags);
 }

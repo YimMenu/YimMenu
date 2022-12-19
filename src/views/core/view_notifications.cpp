@@ -40,10 +40,10 @@ namespace big
 			}
 		}
 
-		dl->AddRectFilled({ (float)*g_pointers->m_resolution_x - 360.f, 10.f + start_pos }, { (float)*g_pointers->m_resolution_x - 10.f, start_pos + 45.f + total_size }, g->window.color);
+		dl->AddRectFilled({ (float)*g_pointers->m_resolution_x - 360.f, 10.f + start_pos }, { (float)*g_pointers->m_resolution_x - 10.f, start_pos + 45.f + total_size }, g.window.color);
 		dl->AddRectFilledMultiColor({ (float)*g_pointers->m_resolution_x - 360.f, 10.f + start_pos }, { (float)*g_pointers->m_resolution_x - 255.f, start_pos + 45.f + total_size }, fadeBegin, fadeEnd, fadeEnd, fadeBegin);
 
-		dl->AddText(g->window.font_sub_title, 22.f, { (float)*g_pointers->m_resolution_x - 350.f, 15.f + start_pos }, textCol, title.c_str());
+		dl->AddText(g.window.font_sub_title, 22.f, { (float)*g_pointers->m_resolution_x - 350.f, 15.f + start_pos }, textCol, title.c_str());
 		int i = 0;
 		for (std::string txt : split_points)
 		{
@@ -68,8 +68,8 @@ namespace big
 			prev_pos = draw_notification(prev_pos, draw_list, n.title, n.message, g_notification_service->notification_colors.at(n.type));
 		}
 
-		/*ImGui::SetNextWindowSize({ (float)g->window.x * 0.2f, (float)g->window.y });
-		ImGui::SetNextWindowPos({ (float)g->window.x - (float)g->window.x * 0.2f, 0 });
+		/*ImGui::SetNextWindowSize({ (float)g.window.x * 0.2f, (float)g.window.y });
+		ImGui::SetNextWindowPos({ (float)g.window.x - (float)g.window.x * 0.2f, 0 });
 		if (ImGui::Begin("notifications", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMouseInputs | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBringToFrontOnFocus))
 		{
 			std::vector<notification> notifications = g_notification_service->get();
