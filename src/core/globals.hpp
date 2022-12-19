@@ -20,6 +20,7 @@ namespace big
 	class menu_settings
 	{
 	public:
+		void destroy();
 		void init(const file& save_file);
 
 		void attempt_save();
@@ -31,6 +32,8 @@ namespace big
 		bool write_default_config();
 
 	private:
+		bool m_running;
+
 		std::unique_ptr<file> m_save_file;
 
 		nlohmann::json m_default_options;

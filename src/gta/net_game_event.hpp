@@ -397,7 +397,8 @@ namespace rage
 			virtual EventType get_event_type() = 0;
 			virtual uint32_t _0x18() = 0;
 
-			char pad_0008[56]; //0x0008
+			uint32_t m_timestamp; //0x0008
+			char pad_0008[52]; //0x000C
 			uint32_t m_msg_id; //0x0040
 			uint32_t m_connection_identifier; //0x0044
 			InFrame* m_this; //0x0048

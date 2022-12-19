@@ -22,7 +22,9 @@ namespace
 		".gg",
 		"--->",
 		"shopgta5",
-		"doit#"
+		"doit#",
+		"krutka#",
+		"<b>"
 	};
 }
 

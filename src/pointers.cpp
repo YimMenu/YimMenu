@@ -732,6 +732,18 @@ namespace big
 			m_save_json_data = ptr.as<functions::save_json_data>();
 		});
 
+		// Network Time
+		main_batch.add("NT", "48 8B 0D ? ? ? ? E8 ? ? ? ? 33 DB 84 C0 74 41", [this](memory::handle ptr)
+		{
+			m_network_time = ptr.add(3).rip().as<rage::netTime**>();
+		});
+
+		// Sync Network Time
+		main_batch.add("SNT", "E8 ? ? ? ? 8B 43 5C", [this](memory::handle ptr)
+		{
+			m_sync_network_time = ptr.add(1).rip().as<functions::sync_network_time>();
+		});
+
 		// Queue Dependency
 		main_batch.add("QD", "48 89 5C 24 ? 57 48 83 EC ? 0F B6 99", [this](memory::handle ptr)
 		{

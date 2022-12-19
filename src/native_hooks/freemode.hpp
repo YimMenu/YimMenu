@@ -1,4 +1,5 @@
 #pragma once
+#include "script_function.hpp"
 
 namespace big
 {
@@ -54,7 +55,7 @@ namespace big
 				});
 			}
 
-			*scr_globals::gsbd.as<int*>() = 4;
+			scr_functions::set_freemode_session_active({});
 			src->set_return_value<BOOL>(TRUE);
 		}
 	}

@@ -319,6 +319,22 @@ namespace big
 		ImGui::SameLine();
 		ImGui::Checkbox("Force Thunder", &g.session.force_thunder);
 
+		components::small_text("Warp Time (requires session host)");
+
+		components::button("+1 Minute", [] { toxic::warp_time_forward_all(60 * 1000); });
+		ImGui::SameLine();
+		components::button("+5 Minutes", [] { toxic::warp_time_forward_all(5 * 60 * 1000); });
+		ImGui::SameLine();
+		components::button("+48 Minutes", [] { toxic::warp_time_forward_all(48 * 60 * 1000); });
+		ImGui::SameLine();
+		components::button("+96 Minutes", [] { toxic::warp_time_forward_all(96 * 60 * 1000); });
+		ImGui::SameLine();
+		components::button("+200 Minutes", [] { toxic::warp_time_forward_all(200 * 60 * 1000); });
+		ImGui::SameLine();
+		components::button("Stop Time", [] { toxic::set_time_all(INT_MAX - 3000); });
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("This cannot be reversed. Use with caution");
+
 		components::sub_title("Script Host Features");
 		ImGui::Checkbox("Disable CEO Money", &g.session.block_ceo_money);
 		if (ImGui::IsItemHovered())
