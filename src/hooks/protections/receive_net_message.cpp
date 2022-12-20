@@ -137,8 +137,17 @@ namespace big
 
 					if (player && pl && player->id() != pl->id() && count == 1 && frame->m_msg_id == -1)
 					{
-						g_notification_service->push_error("Warning!", std::format("{} breakup kicked {}!", player->get_name(), pl->get_name()));
-						session::add_infraction(player, Infraction::BREAKUP_KICK_DETECTED);
+						if (g_player_service->get_self()->is_host())
+						{
+							g_notification_service->push_error("Warning!", std::format("{} tried to breakup kick {}!", player->get_name(), pl->get_name()));
+							session::add_infraction(player, Infraction::BREAKUP_KICK_DETECTED);
+							return true;
+						}
+						else
+						{
+							g_notification_service->push_error("Warning!", std::format("{} breakup kicked {}!", player->get_name(), pl->get_name()));
+							session::add_infraction(player, Infraction::BREAKUP_KICK_DETECTED);
+						}
 					}
 
 					break;
