@@ -5,6 +5,9 @@
 #include "util/session.hpp"
 #include "util/spam.hpp"
 #include "util/kick.hpp"
+#include "backend/command.hpp"
+#include "backend/context/chat_command_context.hpp"
+
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
 
@@ -92,6 +95,9 @@ namespace big
 					{
 						if (g.session.log_chat_messages)
 							spam::log_chat(message, player, false);
+
+						if (g.session.chat_commands && message[0] == g.session.chat_command_prefix)
+							command::process(std::string(message + 1), std::make_shared<chat_command_context>(player));
 					}
 					break;
 				}

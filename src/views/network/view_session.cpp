@@ -8,7 +8,9 @@
 #include "util/toxic.hpp"
 #include "core/data/apartment_names.hpp"
 #include "core/data/warehouse_names.hpp"
+#include "core/data/command_access_levels.hpp"
 #include <network/Network.hpp>
+#include "hooking.hpp"
 
 namespace big
 {
@@ -93,12 +95,34 @@ namespace big
 		ImGui::SameLine();
 		components::button("Send", []
 		{
-            if(const auto net_game_player = gta_util::get_network_player_mgr()->m_local_net_player; net_game_player)
+            if (const auto net_game_player = gta_util::get_network_player_mgr()->m_local_net_player; net_game_player)
 			{
-                if(g_pointers->m_send_chat_message(*g_pointers->m_send_chat_ptr, net_game_player->get_net_data(), msg, g.session.is_team))
+                if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_send_chat_ptr, net_game_player->get_net_data(), msg, g.session.is_team))
 					notify::draw_chat(msg, net_game_player->get_name(), g.session.is_team);
 			}
 		});
+
+		ImGui::Checkbox("Chat Commands", &g.session.chat_commands);
+		if (g.session.chat_commands)
+		{
+			if (ImGui::BeginCombo("Default Command Permissions", COMMAND_ACCESS_LEVELS[g.session.chat_command_default_access_level]))
+			{
+				for (const auto& [type, name] : COMMAND_ACCESS_LEVELS)
+				{
+					if (ImGui::Selectable(name, type == g.session.chat_command_default_access_level))
+					{
+						g.session.chat_command_default_access_level = type;
+					}
+
+					if (type == g.session.chat_command_default_access_level)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+
+				ImGui::EndCombo();
+			}
+		}
 
 		components::sub_title("Decloak");
 		components::script_patch_checkbox("Reveal OTR Players", &g.session.decloak_players);

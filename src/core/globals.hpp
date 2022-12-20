@@ -305,6 +305,12 @@ namespace big
 			std::string spoofed_name = "";
 			bool join_in_sctv_slots = false;
 
+			const char chat_command_prefix = '/';
+			const char chat_output_prefix = '>';
+
+			bool chat_commands = false;
+			CommandAccessLevel chat_command_default_access_level = CommandAccessLevel::FRIENDLY;
+
 			bool kick_chat_spammers = false;
 			bool kick_host_when_forcing_host = false;
 
@@ -334,7 +340,8 @@ namespace big
 				log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled,
 				player_magnet_count, is_team, name_spoof_enabled, advertise_menu, spoofed_name, join_in_sctv_slots,
 				kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic,
-				disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, send_to_apartment_idx, send_to_warehouse_idx)
+				disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, send_to_apartment_idx, send_to_warehouse_idx,
+				chat_commands, chat_command_default_access_level)
 		} session{};
 
 		struct settings

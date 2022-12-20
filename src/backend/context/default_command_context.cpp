@@ -2,7 +2,7 @@
 
 namespace big
 {
-	player_ptr default_command_context::get_sender () const
+	player_ptr default_command_context::get_sender() const
 	{
 		return g_player_service->get_self();
 	}

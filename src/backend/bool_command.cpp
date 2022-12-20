@@ -8,12 +8,12 @@ namespace big
 	{
 	}
 
-	void bool_command::execute(const std::vector<std::uint64_t>& args, const command_context&)
+	void bool_command::execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context>)
 	{
 		m_toggle = args[0];
 	}
 
-	std::optional<std::vector<std::uint64_t>> bool_command::parse_args(const std::vector<std::string>& args, const command_context& ctx)
+	std::optional<std::vector<std::uint64_t>> bool_command::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
 	{
 		std::vector<std::uint64_t> result;
 
@@ -29,7 +29,7 @@ namespace big
 			return result;
 		}
 
-		ctx.report_error(std::format("Cannot convert\"{}\" into a boolean in command {}", args[0], m_name));
+		ctx->report_error(std::format("Cannot convert\"{}\" into a boolean in command {}", args[0], m_name));
 		return std::nullopt;
 	}
 }

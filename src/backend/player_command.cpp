@@ -9,7 +9,7 @@ namespace big
 	{
 	}
 
-	void player_all_component::execute(const std::vector<std::uint64_t>& args, const command_context& ctx)
+	void player_all_component::execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)
 	{
 		g_fiber_pool->queue_job([this, args, &ctx]
 		{
@@ -19,7 +19,7 @@ namespace big
 		});
 	}
 
-	std::optional<std::vector<std::uint64_t>> player_all_component::parse_args(const std::vector<std::string>& args, const command_context& ctx)
+	std::optional<std::vector<std::uint64_t>> player_all_component::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
 	{
 		return m_parent->parse_args_p(args, ctx);
 	}
@@ -31,7 +31,7 @@ namespace big
 			m_all_component = std::make_unique<player_all_component>(this, name, num_args);
 	}
 
-	void player_command::execute(const std::vector<std::uint64_t>& args, const command_context& ctx)
+	void player_command::execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)
 	{
 		g_fiber_pool->queue_job([this, args, &ctx]
 		{
@@ -40,6 +40,12 @@ namespace big
 			// TODO: This looks ugly and inefficient
 			for (int i = 1; i < m_num_args; i++)
 				new_args.push_back(args[i]);
+
+			if (g_player_service->get_self()->id() == args[0])
+			{
+				execute(g_player_service->get_self(), new_args, ctx);
+				return;
+			}
 
 			for (auto& plyr : g_player_service->players())
 			{
@@ -50,18 +56,18 @@ namespace big
 				}
 			}
 
-			ctx.report_error(std::format("Tried to execute command {}, but a player with index {} was not found", m_name, args[0]));
+			ctx->report_error(std::format("Tried to execute command {}, but a player with index {} was not found", m_name, args[0]));
 		});
 	}
 
-	std::optional<std::vector<std::uint64_t>> player_command::parse_args(const std::vector<std::string>& args, const command_context& ctx)
+	std::optional<std::vector<std::uint64_t>> player_command::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
 	{
 		std::vector<std::string> new_args;
 		std::vector<std::uint64_t> result;
 
 		if (args[0] == "me" || args[0] == "self")
 		{
-			result.push_back(ctx.get_sender()->id());
+			result.push_back(ctx->get_sender()->id());
 		}
 		else
 		{
@@ -78,9 +84,11 @@ namespace big
 
 			if (plyr_id == -1)
 			{
-				ctx.report_error(std::format("Cannot find player with name {} in command {}", args[0], m_name));
+				ctx->report_error(std::format("Cannot find player with name {} in command {}", args[0], m_name));
 				return std::nullopt;
 			}
+
+			result.push_back(plyr_id);
 		}
 
 		for (int i = 1; i < m_num_args; i++)
@@ -96,12 +104,12 @@ namespace big
 		return result;
 	}
 
-	void player_command::call(player_ptr player, const std::vector<std::uint64_t>& args, const command_context& ctx)
+	void player_command::call(player_ptr player, const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)
 	{
 		// TODO: Code duplication
 		if (args.size() != (m_num_args - 1))
 		{
-			ctx.report_error(std::format("Command {} called with the wrong number of arguments. Expected {}, got {}", m_name, m_num_args, args.size()));
+			ctx->report_error(std::format("Command {} called with the wrong number of arguments. Expected {}, got {}", m_name, m_num_args, args.size()));
 			return;
 		}
 

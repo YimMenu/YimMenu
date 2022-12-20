@@ -7,7 +7,7 @@ namespace big
 	{
 		using command::command;
 
-		virtual void execute(const std::vector<std::uint64_t>&, const command_context&)
+		virtual void execute(const std::vector<std::uint64_t>&, const std::shared_ptr<command_context> ctx)
 		{
 			ENTITY::SET_ENTITY_HEALTH(self::ped, 0, 0);
 		}

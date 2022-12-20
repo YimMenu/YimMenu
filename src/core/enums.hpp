@@ -408,4 +408,11 @@ namespace big
 		TOXIC, // kicks
 		ADMIN // full access
 	};
+	NLOHMANN_JSON_SERIALIZE_ENUM(CommandAccessLevel, {
+		{ CommandAccessLevel::NONE, "none" },
+		{ CommandAccessLevel::FRIENDLY, "friendly" },
+		{ CommandAccessLevel::AGGRESSIVE, "aggressive" },
+		{ CommandAccessLevel::TOXIC, "toxic" },
+		{ CommandAccessLevel::ADMIN, "admin" }
+	})
 }

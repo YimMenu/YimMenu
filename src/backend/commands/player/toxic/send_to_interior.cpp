@@ -8,7 +8,7 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual std::optional<std::vector<std::uint64_t>> parse_args_p(const std::vector<std::string>& args, const command_context&)
+		virtual std::optional<std::vector<std::uint64_t>> parse_args_p(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
 		{
 			return std::vector<std::uint64_t>{ (uint64_t)std::atoi(args[0].c_str()) };
 		}
@@ -18,7 +18,7 @@ namespace big
 			return CommandAccessLevel::AGGRESSIVE;
 		}
 
-		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const command_context&)
+		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
 			float max = 1e+38f;
 			auto coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), FALSE);
