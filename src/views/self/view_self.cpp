@@ -9,7 +9,7 @@ namespace big
 {
 	void view::self()
 	{
-		components::command_button<RAGE_JOAAT("suicide")>("Suicide");
+		components::command_button<"suicide">("Suicide");
 
 		ImGui::SameLine();
 
@@ -62,7 +62,7 @@ namespace big
 		ImGui::BeginGroup();
 
 		//ImGui::Checkbox("No Clip", &g.self.noclip);
-		components::command_checkbox<RAGE_JOAAT("noclip")>("No Clip");
+		components::command_checkbox<"noclip">("No Clip");
 		ImGui::Checkbox("No Ragdoll", &g.self.no_ragdoll);
 		ImGui::Checkbox("Super Run", &g.self.super_run);
 		ImGui::Checkbox("No Idle Kick", &g.tunables.no_idle_kick);

@@ -31,27 +31,38 @@ namespace big
 
 		static bool script_patch_checkbox(const std::string_view text, bool* option, const std::string_view tooltip = "");
 
+		template<size_t N>
+		struct template_str
+		{
+			constexpr template_str(const char(&str)[N])
+			{
+				std::copy_n(str, N, value);
+			}
+
+			char value[N];
+		};
+
 		// TODO: Pass string instead of joaat
-		template<rage::joaat_t cmd_hash>
+		template<template_str cmd_str>
 		static void command_button(const std::string_view name, const std::vector<std::uint64_t> args = {})
 		{
-			static command* command = command::get(cmd_hash);
+			static command* command = command::get(rage::consteval_joaat(cmd_str.value));
 			if (ImGui::Button(name.data()))
 				command->call(args);
 		}
 
-		template<rage::joaat_t cmd_hash>
+		template<template_str cmd_str>
 		static void player_command_button(const std::string_view name, player_ptr player = g_player_service->get_selected(), const std::vector<std::uint64_t> args = {})
 		{
-			static player_command* command = (player_command*)command::get(cmd_hash);
+			static player_command* command = (player_command*)command::get(rage::consteval_joaat(cmd_str.value));
 			if (ImGui::Button(name.data()))
 				command->call(player, args);
 		}
 
-		template<rage::joaat_t cmd_hash>
+		template<template_str cmd_str>
 		static void command_checkbox(const std::string_view label)
 		{
-			static looped_command* command = (looped_command*)command::get(cmd_hash);
+			static looped_command* command = (looped_command*)command::get(rage::consteval_joaat(cmd_str.value));
 			if (ImGui::Checkbox(label.data(), &command->is_enabled()))
 				command->refresh();
 		}

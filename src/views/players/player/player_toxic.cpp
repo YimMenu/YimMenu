@@ -85,25 +85,25 @@ namespace big
 			ImGui::SameLine();
 			components::button("TP To Cayo Perico", [] { toxic::send_player_to_island(g_player_service->get_selected()); });
 			ImGui::SameLine();
-			components::player_command_button<RAGE_JOAAT("interiortp")>("TP To MOC", g_player_service->get_selected(), { 81 });
+			components::player_command_button<"interiortp">("TP To MOC", g_player_service->get_selected(), { 81 });
 
-			components::player_command_button<RAGE_JOAAT("interiortp")>("TP To Casino", g_player_service->get_selected(), { 123 });
+			components::player_command_button<"interiortp">("TP To Casino", g_player_service->get_selected(), { 123 });
 			ImGui::SameLine();
-			components::player_command_button<RAGE_JOAAT("interiortp")>("TP To Penthouse", g_player_service->get_selected(), { 124 });
+			components::player_command_button<"interiortp">("TP To Penthouse", g_player_service->get_selected(), { 124 });
 			ImGui::SameLine();
-			components::player_command_button<RAGE_JOAAT("interiortp")>("TP To Arcade", g_player_service->get_selected(), { 128 });
+			components::player_command_button<"interiortp">("TP To Arcade", g_player_service->get_selected(), { 128 });
 
-			components::player_command_button<RAGE_JOAAT("interiortp")>("TP To Music Locker", g_player_service->get_selected(), { 146 });
+			components::player_command_button<"interiortp">("TP To Music Locker", g_player_service->get_selected(), { 146 });
 			ImGui::SameLine();
-			components::player_command_button<RAGE_JOAAT("interiortp")>("TP To Record A Studios", g_player_service->get_selected(), { 148 });
+			components::player_command_button<"interiortp">("TP To Record A Studios", g_player_service->get_selected(), { 148 });
 			ImGui::SameLine();
-			components::player_command_button<RAGE_JOAAT("interiortp")>("TP To Custom Auto Shop", g_player_service->get_selected(), { 149 });
+			components::player_command_button<"interiortp">("TP To Custom Auto Shop", g_player_service->get_selected(), { 149 });
 
-			components::player_command_button<RAGE_JOAAT("interiortp")>("TP To Agency", g_player_service->get_selected(), { 155 });
+			components::player_command_button<"interiortp">("TP To Agency", g_player_service->get_selected(), { 155 });
 			ImGui::SameLine();
-			components::player_command_button<RAGE_JOAAT("interiortp")>("TP To Freakshop", g_player_service->get_selected(), { 160 });
+			components::player_command_button<"interiortp">("TP To Freakshop", g_player_service->get_selected(), { 160 });
 			ImGui::SameLine();
-			components::player_command_button<RAGE_JOAAT("interiortp")>("TP To Multi Floor Garage", g_player_service->get_selected(), { 161 });
+			components::player_command_button<"interiortp">("TP To Multi Floor Garage", g_player_service->get_selected(), { 161 });
 
 			components::button("Give All Weapons", [] { toxic::give_all_weapons(g_player_service->get_selected()); });
 			ImGui::SameLine();
