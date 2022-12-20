@@ -10,6 +10,9 @@ namespace big
 {
 	void backend::loop()
 	{
+		for (auto& command : g_looped_commands)
+			command->refresh();
+
 		register_script_patches();
 
 		while (g_running) 

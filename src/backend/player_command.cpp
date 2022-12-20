@@ -9,14 +9,19 @@ namespace big
 	{
 	}
 
-	void player_all_component::execute(const std::vector<std::uint64_t>& args)
+	void player_all_component::execute(const std::vector<std::uint64_t>& args, const command_context& ctx)
 	{
-		g_fiber_pool->queue_job([this, args]
+		g_fiber_pool->queue_job([this, args, &ctx]
 		{
-			g_player_service->iterate([this, args](const player_entry& player) {
-				m_parent->execute(player.second, args);
+			g_player_service->iterate([this, args, &ctx](const player_entry& player) {
+				m_parent->execute(player.second, args, ctx);
 			});
 		});
+	}
+
+	std::optional<std::vector<std::uint64_t>> player_all_component::parse_args(const std::vector<std::string>& args, const command_context& ctx)
+	{
+		return m_parent->parse_args_p(args, ctx);
 	}
 
 	player_command::player_command(const std::string& name, std::uint8_t num_args, bool make_all_version) : 
@@ -26,9 +31,9 @@ namespace big
 			m_all_component = std::make_unique<player_all_component>(this, name, num_args);
 	}
 
-	void player_command::execute(const std::vector<std::uint64_t>& args)
+	void player_command::execute(const std::vector<std::uint64_t>& args, const command_context& ctx)
 	{
-		g_fiber_pool->queue_job([this, args]
+		g_fiber_pool->queue_job([this, args, &ctx]
 		{
 			std::vector<std::uint64_t> new_args;
 
@@ -40,27 +45,69 @@ namespace big
 			{
 				if (plyr.second->id() == args[0])
 				{
-					execute(plyr.second, new_args);
+					execute(plyr.second, new_args, ctx);
 					return;
 				}
 			}
 
-			LOG(WARNING) << "Tried to execute command " << m_name << ", but a player with index " << args[0] << " was not found";
+			ctx.report_error(std::format("Tried to execute command {}, but a player with index {} was not found", m_name, args[0]));
 		});
 	}
 
-	void player_command::call(player_ptr player, const std::vector<std::uint64_t>& args)
+	std::optional<std::vector<std::uint64_t>> player_command::parse_args(const std::vector<std::string>& args, const command_context& ctx)
+	{
+		std::vector<std::string> new_args;
+		std::vector<std::uint64_t> result;
+
+		if (args[0] == "me" || args[0] == "self")
+		{
+			result.push_back(ctx.get_sender()->id());
+		}
+		else
+		{
+			int plyr_id = -1;
+
+			for (auto& plyr : g_player_service->players())
+			{
+				if (stricmp(plyr.second->get_name(), args[0].c_str()) == 0)
+				{
+					plyr_id = plyr.second->id();
+					break;
+				}
+			}
+
+			if (plyr_id == -1)
+			{
+				ctx.report_error(std::format("Cannot find player with name {} in command {}", args[0], m_name));
+				return std::nullopt;
+			}
+		}
+
+		for (int i = 1; i < m_num_args; i++)
+			new_args.push_back(args[i]);
+
+		auto res = parse_args_p(new_args, ctx);
+		if (!res.has_value())
+			return std::nullopt;
+
+		for (auto& p : res.value())
+			result.push_back(p);
+
+		return result;
+	}
+
+	void player_command::call(player_ptr player, const std::vector<std::uint64_t>& args, const command_context& ctx)
 	{
 		// TODO: Code duplication
 		if (args.size() != (m_num_args - 1))
 		{
-			LOG(WARNING) << "Command " << m_name << " called with the wrong number of arguments. Expected " << (m_num_args - 1) << ", got " << args.size();
+			ctx.report_error(std::format("Command {} called with the wrong number of arguments. Expected {}, got {}", m_name, m_num_args, args.size()));
 			return;
 		}
 
-		g_fiber_pool->queue_job([this, player, args] {
+		g_fiber_pool->queue_job([this, player, args, &ctx] {
 			if (player->is_valid())
-				execute(player, args);
+				execute(player, args, ctx);
 		});
 	}
 }

@@ -42,7 +42,6 @@ namespace big
 			char value[N];
 		};
 
-		// TODO: Pass string instead of joaat
 		template<template_str cmd_str>
 		static void command_button(const std::string_view name, const std::vector<std::uint64_t> args = {})
 		{

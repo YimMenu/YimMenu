@@ -4,13 +4,12 @@
 namespace big
 {
 	looped_command::looped_command(const std::string& name, bool& toggle) :
-		command(name, 1),
-		m_toggle(toggle)
+		bool_command(name, toggle)
 	{
 		g_looped_commands.push_back(this);
 	}
 
-	void looped_command::execute(const std::vector<std::uint64_t>& args)
+	void looped_command::execute(const std::vector<std::uint64_t>& args, const command_context&)
 	{
 		m_toggle = args[0];
 		refresh();

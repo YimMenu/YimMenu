@@ -1,15 +1,14 @@
 #pragma once
-#include "command.hpp"
+#include "bool_command.hpp"
 
 namespace big
 {
-	class looped_command : public command
+	class looped_command : public bool_command
 	{
 		bool m_last_enabled = false;
-		bool& m_toggle;
 
 	protected:
-		virtual void execute(const std::vector<std::uint64_t>& args) override;
+		virtual void execute(const std::vector<std::uint64_t>& args, const command_context&) override;
 
 	public:
 		looped_command(const std::string& name, bool& toggle);
