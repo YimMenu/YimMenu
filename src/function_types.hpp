@@ -1,5 +1,26 @@
 #pragma once
-#include "datanodes/player/CPlayerGameStateDataNode.hpp"
+#include <datanodes/player/CPlayerGameStateDataNode.hpp>
+#include <datanodes/vehicle/CVehicleGadgetDataNode.hpp>
+
+class CMsgJoinResponse;
+class NetworkGameFilterMatchmakingComponent;
+class sCloudFile;
+
+namespace rage
+{
+	class netConnectionManager;
+	class netConnectionPeer;
+	class snMsgRemoveGamersFromSessionCmd;
+	class snSession;
+	class snPlayer;
+	class CDynamicEntity;
+	class netTimeSyncMsg;
+}
+
+namespace datafile_commands
+{
+	class SveFileObject;
+}
 
 namespace big::functions
 {
@@ -14,8 +35,8 @@ namespace big::functions
 
 	using increment_stat_event = bool(*)(uint64_t net_event_struct, int64_t sender, int64_t a3);
 
-	using ptr_to_handle = Entity(*)(void* entity);
-	using get_script_handle_t = uint64_t(*)(int64_t);
+	using ptr_to_handle = Entity(*)(void*);
+	using handle_to_ptr = rage::CDynamicEntity*(*)(Entity);
 	
 	using multiplayer_chat_filter = int(__int64 chat_type, const char* input, const char** output);
 	using write_player_game_state_data_node = bool(*)(rage::netObject* plr, CPlayerGameStateDataNode* node);
@@ -36,7 +57,7 @@ namespace big::functions
 	using write_bitbuf_int64 = bool(*)(rage::datBitBuffer* buffer, int64_t val, int bits);
 	using write_bitbuf_int32 = bool(*)(rage::datBitBuffer* buffer, int32_t val, int bits);
 	using write_bitbuf_bool = bool(*)(rage::datBitBuffer* buffer, bool val, int bits);
-	using write_bitbuf_array = bool(*)(rage::datBitBuffer* buffer, uint8_t* val, int bits, int unk);
+	using write_bitbuf_array = bool(*)(rage::datBitBuffer* buffer, void* val, int bits, int unk);
 
 	// Bitbuffer read/write END
 	// Received Event Signatures START
@@ -63,8 +84,38 @@ namespace big::functions
 	using fipackfile_mount = bool(*)(rage::fiPackfile* this_, const char* mount_point);
 	using fipackfile_unmount = bool(*)(const char* mount_point);
 
-	using start_get_session_by_gamer_handle = bool(*)(int metric_manager, rage::rlGamerHandle* handles, int count, rage::rlSessionByGamerTaskResult* result, int unk, bool* success, int* state);
+	using start_get_session_by_gamer_handle = bool(*)(int profile_index, rage::rlGamerHandle* handles, int count, rage::rlSessionByGamerTaskResult* result, int unk, bool* success, int* state);
+	using start_matchmaking_find_sessions = bool(*)(int profile_index, int available_slots, NetworkGameFilterMatchmakingComponent* m_filter, unsigned int max_sessions, rage::rlSessionInfo* result_sessions, int* result_session_count, int* state);
 	using join_session_by_info = bool(*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
 
 	using generate_uuid = bool(*)(std::uint64_t* uuid);
+
+	using get_vehicle_gadget_array_size = int(*)(eVehicleGadgetType type);
+	
+	using write_join_response_data = bool(*)(CMsgJoinResponse* response, void* data, int size, uint32_t* size_used);
+
+	using queue_packet = bool(*)(rage::netConnectionManager* mgr, int msg_id, void* data, int size, int flags, void* unk);
+
+	using generate_uuid = bool(*)(std::uint64_t* uuid);
+
+	using send_chat_message = bool(*)(int64_t* send_chat_ptr, rage::rlGamerInfo* game_info, char* message, bool is_team);
+
+	using send_network_damage = void(*)(CEntity* source, CEntity* target, rage::fvector3* position, int hit_component, bool override_default_damage, int weapon_type, float override_damage, int tire_index, int suspension_index, int flags,
+		std::uint32_t action_result_hash, std::int16_t action_result_id, int action_unk, bool hit_weapon, bool hit_weapon_ammo_attachment, bool silenced, bool unk, rage::fvector3* impact_direction);
+	using request_ragdoll = void(*)(uint16_t object_id);
+
+	using get_connection_peer = rage::netConnectionPeer* (*)(rage::netConnectionManager* manager, int peer_id);
+	using send_remove_gamer_cmd = void(*)(rage::netConnectionManager* net_connection_mgr, rage::netConnectionPeer* player, int connection_id, rage::snMsgRemoveGamersFromSessionCmd* cmd, int flags);
+	using handle_remove_gamer_cmd = void* (*)(rage::snSession* session, rage::snPlayer* origin, rage::snMsgRemoveGamersFromSessionCmd* cmd);
+
+	using script_vm = int (*) (uint64_t* stack, int64_t** scr_globals, rage::scrProgram* program, rage::scrThreadContext* ctx);
+
+	using encode_session_info = bool(*)(rage::rlSessionInfo* info, char* buffer, int buffer_size, int* bytes_written);
+	using decode_session_info = bool(*)(rage::rlSessionInfo* out_info, char* buffer, int* bytes_read);
+
+	using load_cloud_file = void(*)(sCloudFile** out_cloud_file, char* buffer, int size, const char* reason);
+	using set_as_active_cloud_file = void(*)(datafile_commands::SveFileObject* object, sCloudFile** file);
+	using save_json_data = char*(*)(datafile_commands::SveFileObject* object, int* out_length, const char* reason);
+
+	using sync_network_time = bool(*)(rage::netConnectionManager* mgr, rage::netConnectionPeer* peer, int connection_id, rage::netTimeSyncMsg* msg, int flags);
 }

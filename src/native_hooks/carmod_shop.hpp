@@ -68,7 +68,7 @@ namespace big
 
 		inline void SET_ENTITY_COORDS(rage::scrNativeCallContext* src)
 		{
-			if (!g->vehicle.ls_customs)
+			if (!g.vehicle.ls_customs)
 			{
 				ENTITY::SET_ENTITY_COORDS(
 					src->get_arg<Entity>(0),
@@ -85,7 +85,7 @@ namespace big
 
 		inline void SET_ENTITY_HEADING(rage::scrNativeCallContext* src)
 		{
-			if (!g->vehicle.ls_customs)
+			if (!g.vehicle.ls_customs)
 			{
 				ENTITY::SET_ENTITY_HEADING(
 					src->get_arg<Entity>(0),
@@ -96,7 +96,7 @@ namespace big
 
 		inline void SET_VEHICLE_LIGHTS(rage::scrNativeCallContext* src)
 		{
-			if (!g->vehicle.ls_customs)
+			if (!g.vehicle.ls_customs)
 			{
 				VEHICLE::SET_VEHICLE_LIGHTS(
 					src->get_arg<Vehicle>(0),

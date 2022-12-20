@@ -28,6 +28,8 @@ namespace big
 		static void root();
 		static void self();
 		static void session();
+		static void player_database();
+		static void session_browser();
 		static void settings();
 		static void vehicle();
 		static void lsc();
@@ -44,16 +46,12 @@ namespace big
 		static void weapons();
 		static void context_menu();
 		static void gta_data();
+		static void creator();
 
-		// later calls will be drawn over earlier calls
-		static void always()
-		{
-			esp::draw();
-			context_menu();
-
-			gta_data();
-
-			notifications();
-		}
+		static void player_info();
+		static void player_troll();
+		static void player_kick();
+		static void player_toxic();
+		static void player_misc();
 	};
 }

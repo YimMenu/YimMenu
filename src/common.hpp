@@ -5,7 +5,6 @@
 #include <winsock2.h>
 #include <windows.h>
 #include <d3d11.h>
-#include <wrl/client.h>
 
 #include <cinttypes>
 #include <cstddef>
@@ -61,9 +60,6 @@
 namespace big
 {
 	using namespace std::chrono_literals;
-	
-	template <typename T>
-	using comptr = Microsoft::WRL::ComPtr<T>;
 
 	inline HMODULE g_hmodule{};
 	inline HANDLE g_main_thread{};

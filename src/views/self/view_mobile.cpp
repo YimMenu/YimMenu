@@ -10,7 +10,21 @@ namespace big
 
 		components::sub_title("Lester");
 
-		ImGui::Checkbox("Off Radar", &g->self.off_radar);
+		ImGui::Checkbox("Off Radar", &g.self.off_radar);
+
+		ImGui::Separator();	
+		
+		components::sub_title("Merryweather");
+
+		ImGui::Separator();
+
+		components::button("Request Ammo Drop", [] {
+			mobile::merry_weather::request_ammo_drop();
+		});
+
+		components::button("Helicopter Pickup", [] {
+			mobile::merry_weather::request_helicopter_pickup();
+		});
 
 		ImGui::Separator();
 

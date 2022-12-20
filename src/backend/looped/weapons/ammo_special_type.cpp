@@ -18,7 +18,7 @@ namespace big
 			return;
 		}
 
-		if (g->weapons.ammo_special.toggle) {
+		if (g.weapons.ammo_special.toggle) {
 			CWeaponInfo* weapon_info = g_local_player->m_weapon_manager->m_weapon_info;
 
 			// check if the player changed their weapon
@@ -39,12 +39,12 @@ namespace big
 
 			// apply ammo type changes to the current weapon
 			eDamageType damage_type = eDamageType::None;
-			eExplosionTag explosion_tag = g->weapons.ammo_special.explosion_tag;
+			eExplosionTag explosion_tag = g.weapons.ammo_special.explosion_tag;
 			eAmmoSpecialType ammo_type = eAmmoSpecialType::None;
 
 			if (explosion_tag == eExplosionTag::DONTCARE) {
 				damage_type = modified_weapon_damage_type;
-				ammo_type = g->weapons.ammo_special.type;
+				ammo_type = g.weapons.ammo_special.type;
 			}
 			else {
 				damage_type = eDamageType::Explosive;

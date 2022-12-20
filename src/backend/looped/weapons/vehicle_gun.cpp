@@ -10,14 +10,14 @@ namespace big
 
 	void looped::weapons_vehicle_gun()
 	{
-		const bool is_vehicle_gun_selected = g->weapons.custom_weapon == CustomWeapon::VEHICLE_GUN;
+		const bool is_vehicle_gun_selected = g.weapons.custom_weapon == CustomWeapon::VEHICLE_GUN;
 
 		const auto time_now = std::chrono::steady_clock::now();
 
 		const auto elapsed_time_in_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_now - last_time).count();
 
 		if (is_vehicle_gun_selected &&
-			!g_gui.m_opened &&
+			!g_gui->is_open() &&
 			elapsed_time_in_ms >= 100 &&
 			PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK))
 		{
@@ -35,7 +35,7 @@ namespace big
 			location.y += static_cast<float>(dist * sin(yaw) * cos(pitch));
 			location.z += static_cast<float>(dist * sin(pitch));
 			Vehicle veh = vehicle::spawn(
-				rage::joaat((const char*)g->weapons.vehicle_gun_model),
+				rage::joaat(g.weapons.vehicle_gun_model.data()),
 				location,
 				ENTITY::GET_ENTITY_HEADING(self::ped)
 			);

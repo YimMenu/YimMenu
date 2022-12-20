@@ -11,13 +11,14 @@ namespace big
 	{
 		register_script_patches();
 
-		while (true) 
+		while (g_running) 
 		{
-			g->attempt_save();
 			looped::system_self_globals();
 			looped::system_update_pointers();
 			looped::system_desync_kick_protection();
-			looped::system_force_session_host();
+			looped::system_spoofing();
+			looped::system_mission_creator();
+			looped::system_auto_tp();
 
 			script::get_current()->yield();
 		}
@@ -42,6 +43,8 @@ namespace big
 			looped::self_unlimited_oxygen();
 			looped::self_no_water_collision();
 			looped::self_mobile_radio();
+			looped::self_fast_respawn();
+			looped::self_dance_mode();
 
 			script::get_current()->yield();
 		}
@@ -66,6 +69,7 @@ namespace big
 			looped::weapons_repair_gun();
 			looped::weapons_steal_vehicle_gun();
 			looped::weapons_vehicle_gun();
+			looped::weapons_rapid_fire();
 
 			script::get_current()->yield();
 		}
@@ -115,6 +119,10 @@ namespace big
 			looped::hud_transition_state();
 			looped::tunables_disable_phone();
 			looped::session_local_time();
+			looped::session_pop_multiplier_areas();
+			looped::session_force_thunder();
+			looped::session_randomize_ceo_colors();
+			looped::session_auto_kick_host();
 
 			script::get_current()->yield();
 		}
@@ -126,12 +134,9 @@ namespace big
 
 		while (g_running)
 		{
-			g_player_service->iterate([](const player_entry &entry)
-			{
-				looped::player_never_wanted(entry.second);
-			});
-
+			looped::player_good_options();
 			looped::player_spectate();
+			looped::player_remote_control_vehicle();
 
 			script::get_current()->yield();
 		}

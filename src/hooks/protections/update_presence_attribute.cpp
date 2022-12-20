@@ -5,7 +5,7 @@ namespace big
 	bool hooks::update_presence_attribute_int(void* presence_data, int profile_index, char* attr, std::uint64_t value)
 	{
 		auto hash = rage::joaat(attr);
-		if (g->protections.rid_join &&
+		if (g.protections.rid_join &&
 			(hash == RAGE_JOAAT("gstok") || hash == RAGE_JOAAT("gsid") || hash == RAGE_JOAAT("gstype") || hash == RAGE_JOAAT("gshost") || hash == RAGE_JOAAT("gsjoin")))
 		{
 			return true;
@@ -17,7 +17,7 @@ namespace big
 	bool hooks::update_presence_attribute_string(void* presence_data, int profile_index, char* attr, char* value)
 	{
 		auto hash = rage::joaat(attr);
-		if (g->protections.rid_join && hash == RAGE_JOAAT("gsinfo"))
+		if (g.protections.rid_join && hash == RAGE_JOAAT("gsinfo"))
 		{
 			return true;
 		}

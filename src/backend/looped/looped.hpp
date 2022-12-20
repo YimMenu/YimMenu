@@ -8,17 +8,13 @@ namespace big
 {
 	class looped {
 	public:
-		static void api_login_session();
-
-		static void context_menu();
 		static void hud_transition_state();
 
 		static void tunables_disable_phone();
 
-		static void player_never_wanted(const player_ptr &player);
+		static void player_good_options();
 		static void player_spectate();
-
-		static void protections_replay_interface();
+		static void player_remote_control_vehicle();
 
 		static void self_clean_player();
 		static void self_free_cam_disable_control_action();
@@ -36,13 +32,21 @@ namespace big
 		static void self_unlimited_oxygen();
 		static void self_no_water_collision();
 		static void self_mobile_radio();
+		static void self_dance_mode();
+		static void self_fast_respawn();
 
 		static void session_local_time();
+		static void session_pop_multiplier_areas();
+		static void session_force_thunder();
+		static void session_randomize_ceo_colors();
+		static void session_auto_kick_host();
 
 		static void system_self_globals();
 		static void system_update_pointers();
 		static void system_desync_kick_protection();
-		static void system_force_session_host();
+		static void system_spoofing();
+		static void system_mission_creator();
+		static void system_auto_tp();
 
 		static void vehicle_auto_drive();
 		static void vehicle_boost_behavior();
@@ -75,5 +79,6 @@ namespace big
 		static void weapons_repair_gun();
 		static void weapons_steal_vehicle_gun();
 		static void weapons_vehicle_gun();
+		static void weapons_rapid_fire();
 	};
 }

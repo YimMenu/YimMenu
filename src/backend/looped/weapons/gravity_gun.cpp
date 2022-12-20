@@ -15,7 +15,7 @@ namespace big
 
 	void looped::weapons_gravity_gun()
 	{
-		bool is_gravity_gun_selected = g->weapons.custom_weapon == CustomWeapon::GRAVITY_GUN;
+		bool is_gravity_gun_selected = g.weapons.custom_weapon == CustomWeapon::GRAVITY_GUN;
 		constexpr double multiplier = 3.0;
 
 		auto is_zoomed_in = is_gravity_gun_selected && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM);

@@ -1,6 +1,9 @@
 #include "common.hpp"
 #include "pointers.hpp"
 #include "memory/all.hpp"
+#include "rage/atSingleton.hpp"
+#include "security/RageSecurity.hpp"
+#include "hooking.hpp"
 
 namespace big
 {
@@ -92,12 +95,6 @@ namespace big
 		main_batch.add("S", "48 8B 0D ? ? ? ? 48 8B 01 44 8D 43 01 33 D2 FF 50 40 8B C8", [this](memory::handle ptr)
 		{
 			m_swapchain = ptr.add(3).rip().as<IDXGISwapChain**>();
-		});
-
-		// Model Spawn Bypass
-		main_batch.add("MSB", "48 8B C8 FF 52 30 84 C0 74 05 48", [this](memory::handle ptr)
-		{
-			m_model_spawn_bypass = ptr.add(8).as<PVOID>();
 		});
 
 		// World Model Spawn Bypass
@@ -224,26 +221,26 @@ namespace big
 			m_replay_interface = ptr.add(0x1F).rip().as<rage::CReplayInterface**>();
 		});
 
-		// Pointer to Handle
+		// Ptr To Handle
 		main_batch.add("PTH", "48 8B F9 48 83 C1 10 33 DB", [this](memory::handle ptr)
 		{
 			m_ptr_to_handle = ptr.sub(0x15).as<decltype(m_ptr_to_handle)>();
 		});
 
-		// Get Script Handle
+		// Handle To Ptr
 		main_batch.add("GSH", "83 F9 FF 74 31 4C 8B 0D", [this](memory::handle ptr)
 		{
-			m_get_script_handle = ptr.as<functions::get_script_handle_t>();
+			m_handle_to_ptr = ptr.as<decltype(m_handle_to_ptr)>();
 		});
 
 		// Blame Explode
 		main_batch.add("BE", "0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8", [this](memory::handle ptr)
 		{
-			m_blame_explode = ptr.as<decltype(m_blame_explode)>();
+			m_blame_explode = memory::byte_patch::make(ptr.as<std::uint16_t*>(), 0xE990).get();
 		});
 
 		// Send NET Info to Lobby
-		main_batch.add("SNITL", "33 DB 48 83 C1 68 45 8B F0 ", [this](memory::handle ptr)
+		main_batch.add("SNITL", "33 DB 48 83 C1 68 45 8B F0", [this](memory::handle ptr)
 		{
 			m_send_net_info_to_lobby = ptr.sub(0x26).as<decltype(m_send_net_info_to_lobby)>();
 		});
@@ -312,6 +309,18 @@ namespace big
 		main_batch.add("API", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 54 41 55 41 56 41 57 48 83 EC 20 41 8A E8", [this](memory::handle ptr)
 		{
 			m_assign_physical_index = ptr.as<PVOID>();
+		});
+
+		// Received Clone Create
+		main_batch.add("RCC", "48 8B C4 66 44 89 48", [this](memory::handle ptr)
+		{
+			m_received_clone_create = ptr.as<PVOID>();
+		});
+
+		// Can Apply Data
+		main_batch.add("CAD", "E8 ? ? ? ? 84 C0 0F 84 AF 01 00 00 48 8B 03", [this](memory::handle ptr)
+		{
+			m_can_apply_data = ptr.add(1).rip().as<PVOID>();
 		});
 
 		// Received clone sync & Get sync tree for type & Get net object for player & Get sync type info & Get net object
@@ -410,16 +419,28 @@ namespace big
 			m_invalid_mods_crash_detour = ptr.add(1).rip().as<PVOID>();
 		});
 
-		// Format Metric For Sending
-		main_batch.add("FMFS", "48 8B C4 48 89 58 ? 48 89 70 ? 48 89 78 ? 4C 89 70 ? 55 48 8D A8 ? ? ? ? 48 81 EC ? ? ? ? 48 83 3D", [this](memory::handle ptr)
+		// Send Chat Ptr
+		main_batch.add("SCP", "41 83 7F ? ? 4C 8B 35", [this](memory::handle ptr)
 		{
-			m_format_metric_for_sending = ptr.as<PVOID>();
+			m_send_chat_ptr = ptr.add(8).rip().as<int64_t**>();
 		});
 
-		// Get Session By Gamer Handle
+		// Send Chat Message
+		main_batch.add("SCM", "48 83 EC 20 48 8B F9 48 8B CA 45 8A F1", [this](memory::handle ptr)
+		{
+			m_send_chat_message = ptr.sub(21).as<functions::send_chat_message>();
+		});
+
+		// Start Get Session By Gamer Handle
 		main_batch.add("SGSBGH", "E8 ? ? ? ? 84 C0 0F 84 ? ? ? ? 8B 05 ? ? ? ? 48 8D 4C 24", [this](memory::handle ptr)
 		{
 			m_start_get_session_by_gamer_handle = ptr.add(1).rip().as<functions::start_get_session_by_gamer_handle>();
+		});
+
+		// Start Matchmaking Find Sessions
+		main_batch.add("SGSBGH", "E8 ? ? ? ? 84 C0 0F 84 F6 FE FF FF", [this](memory::handle ptr)
+		{
+			m_start_matchmaking_find_sessions = ptr.add(1).rip().as<functions::start_matchmaking_find_sessions>();
 		});
 
 		// Join Session By Info
@@ -437,7 +458,7 @@ namespace big
 		// Script VM
 		main_batch.add("VM", "E8 ? ? ? ? 48 85 FF 48 89 1D", [this](memory::handle ptr)
 		{
-			m_script_vm = ptr.add(1).rip().as<PVOID>();
+			m_script_vm = ptr.add(1).rip().as<functions::script_vm>();
 		});
 
 		// Generate UUID
@@ -470,33 +491,297 @@ namespace big
 			m_communications = ptr.add(3).rip().as<CCommunications**>();
 		});
 
-		auto mem_region = memory::module(nullptr);
+		// Serialize Dynamic Entity Game State Data Node (that's a mouthful!)
+		main_batch.add("SDEGSDN", "48 89 5C 24 18 55 56 57 41 56 41 57 48 83 EC 20 48 8B 02 48 8D 99", [this](memory::handle ptr)
+		{
+			m_serialize_dynamic_entity_game_state_data_node = ptr.as<PVOID>();
+		});
+
+		// Serialize Ped Inventory Data Node
+		main_batch.add("SPIDN", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 20 48 8B 02 48 8B F1 48 8B CA 48 8B FA FF 90", [this](memory::handle ptr)
+		{
+			m_serialize_ped_inventory_data_node = ptr.as<PVOID>();
+		});
+
+		// Serialize Vehicle Gadget Data Node
+		main_batch.add("SVGDN", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 30 48 8B 02 48 8D", [this](memory::handle ptr)
+		{
+			m_serialize_vehicle_gadget_data_node = ptr.as<PVOID>();
+		});
+
+		// Get Vehicle Gadget Array Size
+		main_batch.add("GVGAS", "40 53 48 83 EC 40 33 DB E8", [this](memory::handle ptr)
+		{
+			m_get_vehicle_gadget_array_size = ptr.as<functions::get_vehicle_gadget_array_size>();
+		});
+
+		// Handle Join Request
+		main_batch.add("HJR", "48 8B C4 4C 89 48 20 4C 89 40 18 48 89 50 10 55 53 56 57 41 54 41 55 41 56 41 57 48 8D A8 E8 FE", [this](memory::handle ptr)
+		{
+			m_handle_join_request = ptr.as<PVOID>();
+		});
+
+		// Handle Join Request
+		main_batch.add("WJRD", "E8 ? ? ? ? 48 8D 8D 90 00 00 00 F6 D8", [this](memory::handle ptr)
+		{
+			m_write_join_response_data = ptr.add(1).rip().as<functions::write_join_response_data>();
+		});
+
+		// Queue Packet
+		main_batch.add("QP", "E8 ? ? ? ? 84 C0 74 4D B3 01", [this](memory::handle ptr)
+		{
+			m_queue_packet = ptr.add(1).rip().as<functions::queue_packet>();
+		});
+
+		// Sort Session Details
+		main_batch.add("SGS", "C3 0F 2E 42 0C", [this](memory::handle ptr)
+		{
+			m_sort_session_details = ptr.sub(0x10).as<PVOID>();
+		});
+
+		// Add Player To Session
+		main_batch.add("APTS", "E8 ? ? ? ? 48 8D 8D A0 01 00 00 8A D8", [this](memory::handle ptr)
+		{
+			m_add_player_to_session = ptr.add(1).rip().as<PVOID>();
+		});
+
+		// Send Chat Net Message
+		main_batch.add("SCNM", "E8 ? ? ? ? 41 FF C4 48 83 C5 08", [this](memory::handle ptr)
+		{
+			m_send_chat_net_message = ptr.add(1).rip().as<PVOID>();
+		});
+
+		// Process Matchmaking Find Response
+		main_batch.add("PMFR", "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC 90 00 00 00 41", [this](memory::handle ptr)
+		{
+			m_process_matchmaking_find_response = ptr.as<PVOID>();
+		});
+
+		// Serialize Player Data Message
+		main_batch.add("SPDM", "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 41 56 48 83 EC 20 BF 01 00 00 00", [this](memory::handle ptr)
+		{
+			m_serialize_player_data_msg = ptr.as<PVOID>();
+		});
+
+		// Serialize Join Request Message
+		main_batch.add("SPDM", "E8 ? ? ? ? 84 C0 0F 84 99 00 00 00 49 8D 8F 78 0D 00 00", [this](memory::handle ptr)
+		{
+			m_serialize_join_request_message = ptr.add(1).rip().as<PVOID>();
+		});
+
+		// Is Matchmaking Session Valid
+		main_batch.add("IMSV", "E8 ? ? ? ? 48 81 C7 B8 03 00 00 88 03", [this](memory::handle ptr)
+		{
+			memory::byte_patch::make(ptr.add(1).rip().as<void*>(), std::to_array({ 0xB0, 0x01, 0xC3 }))->apply(); // has no observable side effects
+		});
+
+		// Send Network Damage
+		main_batch.add("SND", "E8 ? ? ? ? E9 E9 01 00 00 48 8B CB", [this](memory::handle ptr)
+		{
+			m_send_network_damage = ptr.add(1).rip().as<functions::send_network_damage>();
+		});
+
+		// Request Ragdoll
+		main_batch.add("RR", "E8 ? ? ? ? 09 B3 ? ? ? ? 48 8B 5C 24 ?", [this](memory::handle ptr)
+		{
+			m_request_ragdoll = ptr.add(1).rip().as<functions::request_ragdoll>();
+		});
+
+		// Get Connection Peer & Send Remove Gamer Command
+		main_batch.add("GCP&SRGC", "8D 42 FF 83 F8 FD 77 3D", [this](memory::handle ptr)
+		{
+			m_get_connection_peer = ptr.add(23).rip().as<functions::get_connection_peer>();
+			m_send_remove_gamer_cmd = ptr.add(65).rip().as<functions::send_remove_gamer_cmd>();
+		});
+
+		// Handle Remove Gamer Command
+		main_batch.add("HRGC", "41 FF C6 FF C7", [this](memory::handle ptr)
+		{
+			m_handle_remove_gamer_cmd = ptr.sub(0x6E).as<functions::handle_remove_gamer_cmd>();
+		});
+
+		// Broadcast Net Array
+		main_batch.add("BNA", "48 89 5C 24 ? 48 89 54 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 40 48 8B 05 ? ? ? ? 66 44 89 4C 24", [this](memory::handle ptr)
+		{
+			m_broadcast_net_array = ptr.as<PVOID>();
+		});
+
+		// Broadcast Net Array Patch
+		main_batch.add("BP", "74 73 FF 90 ? ? ? ? 8B D5 4C 8B 00 48 8B C8 41 FF 50 30", [this](memory::handle ptr)
+		{
+			m_broadcast_patch = memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB).get();
+		});
+
+		// Rage Security
+		main_batch.add("RS", "48 8B 1D ? ? ? ? 33 F6 BD C3 9E 26 00", [this](memory::handle ptr)
+		{
+			m_security = ptr.add(3).rip().as<rage::atSingleton<rage::RageSecurity>*>();
+		});
+
+		// Send Session Matchmaking Attributes
+		main_batch.add("SPDM", "E8 ? ? ? ? 84 C0 0F 84 19 01 00 00 48 8D 4D A0", [this](memory::handle ptr)
+		{
+			m_send_session_matchmaking_attributes = ptr.add(1).rip().as<PVOID>();
+		});
+
+		// Serialize Take Off Ped Variation Task
+		main_batch.add("STOPVT", "40 55 53 57 41 56 48 8B EC 48 83 EC 68", [this](memory::handle ptr)
+		{
+			m_serialize_take_off_ped_variation_task = ptr.as<PVOID>();
+		});
+
+		// Chat Data
+		main_batch.add("CD", "48 8B 05 ? ? ? ? 0F 45 DF", [this](memory::handle ptr)
+		{
+			m_chat_data = ptr.add(3).rip().as<ChatData**>();
+		});
+
+		// Social Club Info
+		main_batch.add("SCI", "48 8B D3 48 8D 4C 24 ? 48 69 D2", [this](memory::handle ptr)
+		{
+			m_sc_info = ptr.sub(4).rip().as<ScInfo*>();
+		});
+
+		// Create Script Handler
+		main_batch.add("CSH", "48 8D 05 ? ? ? ? 4C 8D 0D ? ? ? ? 41 83 C8 FF 48 89 03 89 53 70 88 53 74 4C 89 4B 68 48 89 93", [this](memory::handle ptr)
+		{
+			m_create_script_handler = *(ptr.add(3).rip().as<std::uint64_t**>() + 8);
+		});
+
+		// Creator Warp Cheat Triggered Patch
+		main_batch.add("CW", "74 44 E8 ? ? ? ? 80 65 2B F8 48 8D 0D ? ? ? ? 48 89 4D 17 48 89 7D 1F 89 7D 27 C7 45", [](memory::handle ptr)
+		{
+			memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB)->apply();
+		});
+
+		// Write Bitbuffer Gamer Handle
+		main_batch.add("WBGH", "4C 8B DC 49 89 5B 08 57 48 83 EC 30 48 8B F9", [this](memory::handle ptr)
+		{
+			m_write_bitbuffer_gamer_handle = ptr.as<PVOID>();
+		});
+
+		// Read Bitbuffer Gamer Handle
+		main_batch.add("RBGH", "48 8B C4 48 89 58 10 48 89 68 18 48 89 70 20 57 48 83 EC 30 C6", [this](memory::handle ptr)
+		{
+			m_read_bitbuffer_gamer_handle = ptr.as<PVOID>();
+		});
+
+		// Constraint Attachment Crash
+		main_batch.add("CAC", "40 53 48 83 EC 20 48 8B D9 48 8B 49 38 48 8B 01", [this](memory::handle ptr)
+		{
+			m_constraint_attachment_crash = ptr.as<PVOID>();
+		});
+
+		// Invalid Decal Crash
+		main_batch.add("IDC", "E8 ? ? ? ? 8B 9C 24 B8 00 00 00 4C 8B AC 24 A8 00 00 00", [this](memory::handle ptr)
+		{
+			m_invalid_decal_crash = ptr.add(1).rip().as<PVOID>();
+		});
+
+		// Encode Session Info
+		main_batch.add("ESI", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 20 57 48 81", [this](memory::handle ptr)
+		{
+			m_encode_session_info = ptr.as<functions::encode_session_info>();
+		});
+
+		// Decode Session Info
+		main_batch.add("DSI", "48 89 5C 24 08 48 89 6C 24 10 56 57 41 56 48 81 EC C0", [this](memory::handle ptr)
+		{
+			m_decode_session_info = ptr.as<functions::decode_session_info>();
+		});
+
+		// Can Start Session Joining Check
+		main_batch.add("CSSJC", "77 DB ? ? ? ? ? ? ? 74 09", [this](memory::handle ptr)
+		{
+			memory::byte_patch::make(ptr.as<void*>(), std::to_array({ 0x90, 0x90 }))->apply(); // join faster
+		});
+
+		// Can Start Joining Joining Check
+		main_batch.add("CSJJC", "74 16 48 8B 0B E8 ? ? ? ? 84 C0", [this](memory::handle ptr)
+		{
+			memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB)->apply(); // join faster
+		});
+
+		// NTQVM Caller
+		main_batch.add("NTQVMC", "66 0F 6F 0D ? ? ? ? 66 0F 6F 05 ? ? ? ? 66 0F 66 C4", [this](memory::handle ptr)
+		{
+			memory::byte_patch::make(ptr.add(4).rip().sub(32).as<uint64_t*>(), (uint64_t)&hooks::nt_query_virtual_memory)->apply();
+		});
+
+		// Main File Object
+		main_batch.add("MFO", "48 8D 05 ? ? ? ? 48 8D 1C D0 EB 03", [this](memory::handle ptr)
+		{
+			m_main_file_object = ptr.add(3).rip().as<datafile_commands::SveFileObject*>();
+		});
+
+		// Load Cloud File
+		main_batch.add("LCF", "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 40 48 8B F2 48 8B D9 41 8B D0", [this](memory::handle ptr)
+		{
+			m_load_cloud_file = ptr.as<functions::load_cloud_file>();
+		});
+
+		// Set As Active Cloud File
+		main_batch.add("SAACF", "48 83 EC 28 45 33 C0 4C 39", [this](memory::handle ptr)
+		{
+			m_set_as_active_cloud_file = ptr.as<functions::set_as_active_cloud_file>();
+		});
+
+		// Save JSON Data
+		main_batch.add("SJD", "48 89 5C 24 08 57 48 83 EC 30 33 DB 48 8B FA 48", [this](memory::handle ptr)
+		{
+			m_save_json_data = ptr.as<functions::save_json_data>();
+		});
+
+		// Network Time
+		main_batch.add("NT", "48 8B 0D ? ? ? ? E8 ? ? ? ? 33 DB 84 C0 74 41", [this](memory::handle ptr)
+		{
+			m_network_time = ptr.add(3).rip().as<rage::netTime**>();
+		});
+
+		// Sync Network Time
+		main_batch.add("SNT", "E8 ? ? ? ? 8B 43 5C", [this](memory::handle ptr)
+		{
+			m_sync_network_time = ptr.add(1).rip().as<functions::sync_network_time>();
+		});
+
+		// Queue Dependency
+		main_batch.add("QD", "48 89 5C 24 ? 57 48 83 EC ? 0F B6 99", [this](memory::handle ptr)
+		{
+			m_queue_dependency = ptr.as<PVOID>();
+		});
+
+		// Interval Check Function
+		main_batch.add("ICF", "48 8D 0D ? ? ? ? 88 05 ? ? ? ? 48 8D 05", [this](memory::handle ptr)
+		{
+			m_interval_check_func = ptr.add(3).rip().as<PVOID>();
+		});
+
+		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 
 		memory::batch socialclub_batch;
 
 		// Presence Data
-		socialclub_batch.add("PD", "48 8D 05 ? ? ? ? 48 8B F1 48 89 01 48 8D 99 88 02", [this](memory::handle ptr)
+		socialclub_batch.add("PD", "48 8D 05 ? ? ? ? 48 8B F1 48 89 01 48 8D 99 90 00 00 00", [this](memory::handle ptr)
 		{
 			auto presence_data_vft = ptr.add(3).rip().as<PVOID*>();
 			m_update_presence_attribute_int = presence_data_vft[1];
 			m_update_presence_attribute_string = presence_data_vft[3];
 		});
 
-		socialclub_batch.run(memory::module("socialclub.dll"));
-
-		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 F5 01 00 00"))
+		auto sc_module = memory::module("socialclub.dll");
+		if (sc_module.wait_for_module())
 		{
-			m_bypass_max_count_of_active_sticky_bombs = pat.add(4).as<uint8_t*>();
+			socialclub_batch.run(sc_module);
+		}
+		else LOG(WARNING) << "socialclub.dll module was not loaded within the time limit.";
 
-			// declare it right now even though we write the same value
-			// so that it get cleaned up in the dctor
-			memory::byte_patch::make(m_bypass_max_count_of_active_sticky_bombs, *m_bypass_max_count_of_active_sticky_bombs);
+		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 ? ? ? ? 49 8B 80"))
+		{
+			m_bypass_max_count_of_active_sticky_bombs = memory::byte_patch::make(pat.add(4).as<uint8_t*>(), { 99 }).get();
 
-			if (g->weapons.bypass_c4_limit)
-			{
-				*m_bypass_max_count_of_active_sticky_bombs = 99;
-			}
+			if (g.weapons.bypass_c4_limit)
+				m_bypass_max_count_of_active_sticky_bombs->apply();
 		}
 
 		/**

@@ -1,4 +1,5 @@
 #include "hooking.hpp"
+#include "gta/net_game_event.hpp"
 #include <network/CNetGamePlayer.hpp>
 
 namespace big
@@ -19,10 +20,10 @@ namespace big
 		case RAGE_JOAAT("MPPLY_VC_HATE"):
 			const auto report = fmt::format("From: {}", sender->get_name());
 
-			if (g->notifications.reports.log)
+			if (g.notifications.reports.log)
 				LOG(INFO) << "Blocked report; " << report;
 
-			if (g->notifications.reports.notify)
+			if (g.notifications.reports.notify)
 				g_notification_service->push_warning("BLOCKED REPORT", report);
 
 			return true;

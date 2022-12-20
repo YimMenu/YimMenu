@@ -12,7 +12,7 @@ namespace big
 
 		if (g_gta_data_service->cache_needs_update())
 		{
-			g_gui.m_opened = true;
+			g_gui->toggle(true);
 			ImGui::OpenPopup("Game Cache");
 		}
 

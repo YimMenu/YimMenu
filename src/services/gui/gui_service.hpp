@@ -26,10 +26,13 @@ namespace big
 		WORLD,
 		SPAWN_PED,
 		TIME_AND_WEATHER,
+		CREATOR,
 
 		NETWORK,
 		SESSION,
 		SPOOFING,
+		PLAYER_DATABASE,
+		SESSION_BROWSER,
 
 		SETTINGS,
 		CONTEXT_MENU_SETTINGS,
@@ -74,10 +77,13 @@ namespace big
 			{ tabs::WORLD, { "World", nullptr, {
 				{ tabs::SPAWN_PED, { "Spawn Ped", view::spawn_ped }},
 				{ tabs::TIME_AND_WEATHER, { "Time And Weather", view::time_and_weather }},
+				{ tabs::CREATOR, { "Creator", view::creator }}
 			}}},
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},
 				{ tabs::SESSION, { "Session", view::session }},
+				{ tabs::PLAYER_DATABASE, { "Player Database", view::player_database }},
+				{ tabs::SESSION_BROWSER, { "Session Browser", view::session_browser }},
 			}}},
 			{tabs::SETTINGS, { "Settings", view::settings, {
 				{ tabs::CONTEXT_MENU_SETTINGS, { "Context Menu", view::context_menu_settings}},

@@ -6,12 +6,48 @@
 #pragma pack(push, 1)
 namespace rage
 {
+	class CSyncDataBase
+	{
+	public:
+		virtual ~CSyncDataBase() = default;
+		virtual bool SerializeDword(uint32_t* dword, int size) = 0;
+		virtual bool SerializeWord(uint16_t* word, int size) = 0;
+		virtual bool SerializeByte(uint8_t* byte, int size) = 0;
+		virtual bool SerializeInt32(int32_t* i, int size) = 0;
+		virtual bool SerializeInt16(int16_t* i, int size) = 0;
+		virtual bool SerializeSignedByte(int8_t* byte, int size) = 0;
+		virtual bool SerializeBool(bool* flag) = 0;
+		virtual bool SerializeInt64(int64_t* i, int size) = 0;
+		virtual bool SerializeInt32Alt(int32_t* i, int size) = 0;
+		virtual bool SerializeInt16Alt(int16_t* i, int size) = 0;
+		virtual bool SerializeSignedByteAlt(int8_t* byte, int size) = 0;
+		virtual bool SerializeQword(uint64_t* qword, int size) = 0;
+		virtual bool SerializeDwordAlt(uint32_t* dword, int size) = 0;
+		virtual bool SerializeWordAlt(uint16_t* word, int size) = 0;
+		virtual bool SerializeByteAlt(uint8_t* byte, int size) = 0;
+		virtual bool SerializeSignedFloat(float* flt, float divisor, int size) = 0;
+		virtual bool SerializeFloat(float* flt, float divisor, int size) = 0;
+		virtual bool SerializeNetworkId(uint16_t* net_id) = 0;
+		virtual bool SerializeVector3(rage::fvector3* vec3, float divisor, int size) = 0;
+		virtual bool SerializeQuaternion(void* unk) = 0; // i have no clue what that is
+		virtual bool SerializeVector3SignedZComponent(rage::fvector3* vec3, float divisor, int size) = 0;
+		virtual bool SerializeOrientation(rage::fvector4* vec4, float size) = 0; // yes, the size is a float
+		virtual bool SerializeArray(void* array, int size) = 0;
+		virtual bool SerializeString(char* str, int max_length) = 0;
+		virtual bool IsSizeCalculator() = 0;
+		virtual bool IsSizeCalculator2() = 0;
+
+		void* unk_0x8;
+		void* syncLog;
+		datBitBuffer* buffer;
+	};
+
 	class netPlayer;
 
 	class datBitBuffer
 	{
 	public:
-		datBitBuffer(uint8_t* data, uint32_t size) {
+		datBitBuffer(void* data, uint32_t size) {
 			m_data = data;
 			m_bitOffset = 0;
 			m_maxBit = size * 8;
@@ -46,7 +82,7 @@ namespace rage
 				return 0;
 			auto const bufPos = m_bitsRead + m_bitOffset;
 			auto const initialBitOffset = bufPos & 0b111;
-			auto const start = &m_data[bufPos / 8];
+			auto const start = &((uint8_t*)m_data)[bufPos / 8];
 			auto const next = &start[1];
 			auto result = (start[0] << initialBitOffset) & 0xff;
 			for (auto i = 0; i < ((numBits - 1) / 8); i++) {
@@ -139,7 +175,7 @@ namespace rage
 			}
 			return false;
 		}
-		bool WriteArray(uint8_t* array, int size) {
+		bool WriteArray(void* array, int size) {
 			return big::g_pointers->m_write_bitbuf_array(this, array, size, 0);
 		}
 		bool ReadArray(PVOID array, int size) {
@@ -167,8 +203,59 @@ namespace rage
 
 			return T(val);
 		}
+
+		template<typename T>
+		inline void Write(T data, int length)
+		{
+			static_assert(sizeof(T) <= 8, "maximum of 64 bit write");
+
+			WriteQWord((uint64_t)data, length);
+		}
+
+		template<typename T>
+		inline void WriteSigned(int length, T data)
+		{
+			int sign = data < 0;
+			int signEx = (data < 0) ? 0xFFFFFFFF : 0;
+			int d = (data ^ signEx);
+
+			Write<int>(1, sign);
+			Write<int>(length - 1, d);
+		}
+
+		inline float ReadFloat(int length, float divisor)
+		{
+			auto integer = Read<int>(length);
+
+			float max = (1 << length) - 1;
+			return ((float)integer / max) * divisor;
+		}
+
+		inline void WriteFloat(int length, float divisor, float value)
+		{
+			float max = (1 << length) - 1;
+			int integer = (int)((value / divisor) * max);
+
+			Write<int>(length, integer);
+		}
+
+		inline float ReadSignedFloat(int length, float divisor)
+		{
+			auto integer = ReadSigned<int>(length);
+
+			float max = (1 << (length - 1)) - 1;
+			return ((float)integer / max) * divisor;
+		}
+
+		inline void WriteSignedFloat(int length, float divisor, float value)
+		{
+			float max = (1 << (length - 1)) - 1;
+			int integer = (int)((value / divisor) * max);
+
+			WriteSigned<int>(length, integer);
+		}
 	public:
-		uint8_t* m_data; //0x0000
+		void* m_data; //0x0000
 		uint32_t m_bitOffset; //0x0008
 		uint32_t m_maxBit; //0x000C
 		uint32_t m_bitsRead; //0x0010
@@ -310,7 +397,8 @@ namespace rage
 			virtual EventType get_event_type() = 0;
 			virtual uint32_t _0x18() = 0;
 
-			char pad_0008[56]; //0x0008
+			uint32_t m_timestamp; //0x0008
+			char pad_0008[52]; //0x000C
 			uint32_t m_msg_id; //0x0040
 			uint32_t m_connection_identifier; //0x0044
 			InFrame* m_this; //0x0048
@@ -322,19 +410,129 @@ namespace rage
 		};
 		static_assert(sizeof(rage::netConnection::InFrame) == 0x88);
 	}
-
+	
+	enum class eEventNetworkType : int64_t
+	{
+		CEventNetworkPlayerJoinScript = 153,
+		CEventNetworkPlayerLeftScript = 154,
+		CEventNetworkStorePlayerLeft = 155,
+		CEventNetworkStartSession = 156,
+		CEventNetworkEndSession = 157,
+		CEventNetworkStartMatch = 158,
+		CEventNetworkRemovedFromSessionDueToStall = 160,
+		CEventNetworkRemovedFromSessionDueToComplaints = 161,
+		CEventNetworkConnectionTimeout = 162,
+		CEventNetworkPedDroppedWeapon = 163,
+		CEventNetworkPlayerSpawn = 164,
+		CEventNetworkPlayerCollectedPickup = 165,
+		CEventNetworkPlayerCollectedAmbientPickup = 166,
+		CEventNetworkPlayerCollectedPortablePickup = 167,
+		CEventNetworkPlayerDroppedPortablePickup = 168,
+		CEventNetworkInviteAccepted = 170,
+		CEventNetworkInviteConfirmed = 171,
+		CEventNetworkInviteRejected = 172,
+		CEventNetworkSummo = 173,
+		CEventNetworkScriptEvent = 174,
+		CEventNetworkSignInStateChanged = 176,
+		CEventNetworkSignInChangeActioned = 177,
+		CEventNetworkRosChanged = 178,
+		CEventNetworkBail = 179,
+		CEventNetworkHostMigration = 180,
+		CEventNetworkFindSession = 181,
+		EventNetworkHostSession = 182,
+		CEventNetworkJoinSession = 183,
+		CEventNetworkJoinSessionResponse = 184,
+		CEventNetworkCheatTriggered = 185,
+		CEventNetworkEntityDamage = 186,
+		CEventNetworkPlayerArrest = 187,
+		CEventNetworkTimedExplosion = 188,
+		CEventNetworkPrimaryClanChanged = 189,
+		CEventNetworkClanJoined = 190,
+		CEventNetworkClanLeft = 191,
+		CEventNetworkClanInviteReceived = 192,
+		CEventNetworkVoiceSessionStarted = 193,
+		CEventNetworkVoiceSessionEnded = 194,
+		CEventNetworkVoiceConnectionRequested = 195,
+		CEventNetworkVoiceConnectionResponse = 196,
+		CEventNetworkVoiceConnectionTerminated = 197,
+		CEventNetworkTextMessageReceived = 198,
+		CEventNetworkCloudFileResponse = 199,
+		CEventNetworkPickupRespawned = 200,
+		CEventNetworkPresence_StatUpdate = 201,
+		CEventNetworkPedLeftBehind = 202,
+		CEventNetwork_InboxMsgReceived = 203,
+		CEventNetworkAttemptHostMigration = 204,
+		CEventNetworkIncrementStat = 205,
+		CEventNetworkSessionEvent = 206,
+		CEventNetworkTransitionStarted = 207,
+		CEventNetworkTransitionEvent = 208,
+		CEventNetworkTransitionMemberJoined = 209,
+		CEventNetworkTransitionMemberLeft = 210,
+		CEventNetworkTransitionParameterChanged = 211,
+		CEventNetworkClanKicked = 212,
+		CEventNetworkTransitionStringChanged = 213,
+		EventNetworkTransitionGamerInstruction = 214,
+		CEventNetworkPresenceInvite = 215,
+		EventNetworkPresenceInviteRemoved = 216,
+		EventNetworkPresenceInviteReply = 217,
+		CEventNetworkCashTransactionLog = 218,
+		CEventNetworkClanRankChanged = 219,
+		CEventNetworkVehicleUndrivable = 220,
+		CEventNetworkPresenceTriggerEvent = 221,
+		CEventNetworkEmailReceivedEvent = 222,
+		CEventNetworkFollowInviteReceived = 223,
+		CEventNetworkSpectateLocal = 225,
+		CEventNetworkCloudEvent = 226,
+		CEventNetworkShopTransaction = 227,
+		CEventNetworkOnlinePermissionsUpdated = 230,
+		CEventNetworkSystemServiceEvent = 231,
+		CEventNetworkRequestDelay = 232,
+		CEventNetworkSocialClubAccountLinked = 233,
+		CEventNetworkScAdminPlayerUpdated = 234,
+		CEventNetworkScAdminReceivedCash = 235,
+		CEventNetworkClanInviteRequestReceived = 236,
+		CEventNetworkMarketingEmailReceivedEvent = 237,
+		CEventNetworkStuntPerformed = 238,
+		CEventNetworkFiredDummyProjectile = 239,
+		CEventNetworkPlayerEnteredVehicle = 240,
+		CEventNetworkPlayerActivatedSpecialAbility = 241,
+		CEventNetworkPlayerDeactivatedSpecialAbility = 242,
+		CEventNetworkPlayerSpecialAbilityFailedActivation = 243,
+		CEventNetworkFiredVehicleProjectile = 244,
+	};
+	
 	class CEventNetwork
 	{
 	public:
-		virtual ~CEventNetwork() = default;
-		virtual void unk_0x8() = 0;
-		virtual void unk_0x10() = 0;
-		virtual __int64 get_type() = 0;
-		virtual void unk_0x20() = 0;
-		virtual void unk_0x28() = 0;
-		virtual bool get_extra_information(__int64* info_array, int check) = 0;
-		virtual void unk_0x38() = 0;
-	};
+		virtual ~CEventNetwork() = default; //0x0000 (0)
+		virtual void unk_0008() = 0; //0x0008 (1)
+		virtual void unk_0010() = 0; //0x0010 (2)
+		virtual eEventNetworkType get_type() = 0; //0x0018 (3)
+		virtual void unk_0020() = 0; //0x0020 (4)
+		virtual void unk_0028() = 0; //0x0028 (5)
+		virtual bool get_extra_information(void* info_array, int check) = 0; //0x0030 (6)
+		virtual void unk_0038() = 0; //0x0038 (7)
+	}; //Size: 0x0008
+
+	class sEntityDamagedData
+	{
+	public:
+		alignas(8) Entity m_victim_index; //0x0000
+		alignas(8) Entity m_damager_index; //0x0008
+		alignas(8) float m_damage; //0x0010
+		alignas(8) float m_endurance_damage; //0x0018
+		alignas(8) bool m_victim_incapacitated; //0x0020
+		alignas(8) bool m_victim_destroyed; //0x0028
+		alignas(8) int m_weapon_used; //0x0030
+		alignas(8) float m_victim_speed; //0x0038
+		alignas(8) float m_damager_speed; //0x0040
+		alignas(8) bool m_is_responsible_for_collision; //0x0048
+		alignas(8) bool m_is_headshot; //0x0050
+		alignas(8) bool m_is_with_melee_weapon; //0x0058
+		alignas(8) int m_hit_material; //0x0060
+		char pad_[0x43]; // !FIXME: THIS IS AWFUL BUT I'M TOO STUPID TO FIX IT. tupoy.
+	}; //Size: 0x0068
+	static_assert(sizeof(sEntityDamagedData) == 0x68);
 
 	class netGameEvent
 	{

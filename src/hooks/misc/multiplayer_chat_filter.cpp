@@ -4,7 +4,7 @@ namespace big
 {
 	int hooks::multiplayer_chat_filter(__int64 chat_type, const char* input, const char** output)
 	{
-		if (g->session.disable_chat_filter)
+		if (g.session.disable_chat_filter)
 		{
 			return -1;
 		}

@@ -12,10 +12,9 @@ if(NOT imgui_POPULATED)
 
     file(GLOB SRC_IMGUI
         "${imgui_SOURCE_DIR}/*.cpp"
-        "${imgui_SOURCE_DIR}/*.h"
-        "${imgui_SOURCE_DIR}/backends/imgui_impl_win32.*"
-        "${imgui_SOURCE_DIR}/backends/imgui_impl_dx11.*"
-        "${imgui_SOURCE_DIR}/misc/cpp/imgui_stdlib.*"
+        "${imgui_SOURCE_DIR}/backends/imgui_impl_win32.cpp"
+        "${imgui_SOURCE_DIR}/backends/imgui_impl_dx11.cpp"
+        "${imgui_SOURCE_DIR}/misc/cpp/imgui_stdlib.cpp"
     )
 
     add_library(imgui STATIC ${SRC_IMGUI})

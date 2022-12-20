@@ -1,6 +1,7 @@
 #pragma once
 #include "common.hpp"
 #include "base/HashTable.hpp"
+#include "socialclub/ScInfo.hpp"
 #include "function_types.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/replay.hpp"
@@ -10,6 +11,15 @@ class CCommunications;
 class FriendRegistry;
 class CNetworkPlayerMgr;
 class Network;
+class ChatData;
+
+namespace rage
+{
+	template<typename T>
+	class atSingleton;
+	class RageSecurity;
+	class netTime;
+}
 
 namespace big
 {
@@ -30,7 +40,7 @@ namespace big
 		rage::CReplayInterface** m_replay_interface{};
 
 		functions::ptr_to_handle m_ptr_to_handle{};
-		functions::get_script_handle_t m_get_script_handle{};
+		functions::handle_to_ptr m_handle_to_ptr{};
 		rage::scrNativeRegistrationTable* m_native_registration_table{};
 		functions::get_native_handler m_get_native_handler{};
 		functions::fix_vectors m_fix_vectors{};
@@ -52,14 +62,15 @@ namespace big
 		memory::byte_patch* m_max_wanted_level;
 		memory::byte_patch* m_max_wanted_level_2;
 
-		PVOID m_blame_explode;
-		PVOID m_model_spawn_bypass;
+		memory::byte_patch* m_blame_explode;
 		PVOID m_world_model_spawn_bypass;
 		PVOID m_native_return;
 		PVOID m_get_label_text;
 		functions::multiplayer_chat_filter* m_multiplayer_chat_filter{};
 		functions::write_player_game_state_data_node m_write_player_game_state_data_node{};
 
+		ChatData** m_chat_data;
+		ScInfo* m_sc_info;
 		FriendRegistry* m_friend_registry{};
 
 		functions::get_screen_coords_for_world_coords m_get_screen_coords_for_world_coords{};
@@ -99,7 +110,9 @@ namespace big
 		// Received Event Signatures END
 
 		//Sync Signatures START
+		PVOID m_received_clone_create;
 		PVOID m_received_clone_sync;
+		PVOID m_can_apply_data;
 		functions::get_sync_tree_for_type m_get_sync_tree_for_type{};
 		functions::get_sync_type_info m_get_sync_type_info{};
 		functions::get_net_object m_get_net_object{};
@@ -113,14 +126,13 @@ namespace big
 		PVOID m_get_network_event_data{};
 		PVOID m_assign_physical_index{};
 
-		PVOID m_format_metric_for_sending;
-
 		Network** m_network;
 
 		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
+		functions::start_matchmaking_find_sessions m_start_matchmaking_find_sessions;
 		functions::join_session_by_info m_join_session_by_info;
 
-		uint8_t* m_bypass_max_count_of_active_sticky_bombs;
+		memory::byte_patch* m_bypass_max_count_of_active_sticky_bombs;
 
 		functions::reset_network_complaints m_reset_network_complaints{};
 
@@ -137,9 +149,14 @@ namespace big
 		const char* m_online_version;
 
 		PVOID m_invalid_mods_crash_detour{};
+		PVOID m_constraint_attachment_crash{};
+		PVOID m_invalid_decal_crash{};
+
+		int64_t** m_send_chat_ptr{};
+		functions::send_chat_message m_send_chat_message{};
 
 		PVOID m_init_native_tables{};
-		PVOID m_script_vm{};
+		functions::script_vm m_script_vm{};
 
 		functions::generate_uuid m_generate_uuid{};
 		std::uint64_t* m_host_token{};
@@ -149,6 +166,61 @@ namespace big
 
 		PVOID m_update_presence_attribute_int;
 		PVOID m_update_presence_attribute_string;
+
+		PVOID m_serialize_dynamic_entity_game_state_data_node;
+		PVOID m_serialize_ped_inventory_data_node;
+		PVOID m_serialize_vehicle_gadget_data_node;
+		functions::get_vehicle_gadget_array_size m_get_vehicle_gadget_array_size;
+
+		PVOID m_handle_join_request;
+		functions::write_join_response_data m_write_join_response_data;
+
+		functions::queue_packet m_queue_packet;
+
+		PVOID m_sort_session_details;
+
+		PVOID m_add_player_to_session;
+		PVOID m_send_chat_net_message;
+
+		PVOID m_process_matchmaking_find_response;
+		PVOID m_serialize_player_data_msg;
+
+		PVOID m_serialize_join_request_message;
+
+		functions::send_network_damage m_send_network_damage;
+		functions::request_ragdoll m_request_ragdoll;
+
+		functions::get_connection_peer m_get_connection_peer{};
+		functions::send_remove_gamer_cmd m_send_remove_gamer_cmd{};
+		functions::handle_remove_gamer_cmd m_handle_remove_gamer_cmd{};
+
+		PVOID m_broadcast_net_array{};
+		memory::byte_patch* m_broadcast_patch;
+
+		rage::atSingleton<rage::RageSecurity>* m_security;
+		
+		PVOID m_queue_dependency;
+		PVOID m_interval_check_func;
+
+		PVOID m_send_session_matchmaking_attributes;
+
+		PVOID m_serialize_take_off_ped_variation_task;
+
+		PVOID m_create_script_handler;
+
+		PVOID m_write_bitbuffer_gamer_handle;
+		PVOID m_read_bitbuffer_gamer_handle;
+
+		functions::encode_session_info m_encode_session_info;
+		functions::decode_session_info m_decode_session_info;
+
+		datafile_commands::SveFileObject* m_main_file_object;
+		functions::load_cloud_file m_load_cloud_file;
+		functions::set_as_active_cloud_file m_set_as_active_cloud_file;
+		functions::save_json_data m_save_json_data;
+
+		rage::netTime** m_network_time;
+		functions::sync_network_time m_sync_network_time;
 	};
 
 	inline pointers* g_pointers{};

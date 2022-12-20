@@ -14,6 +14,9 @@ namespace big
 		rgb_controller_blue_down,
 	};
 
+	std::chrono::system_clock::time_point last_rgb_run_time;
+	std::chrono::milliseconds delay = 0s;
+
 	void looped::vehicle_rainbow_paint()
 	{
 		static int rgb_controller_v = rgb_controller_green_up;
@@ -22,17 +25,17 @@ namespace big
 		static int green = 0;
 		static int blue = 0;
 
-		if (self::veh && g->vehicle.rainbow_paint.type != RainbowPaintType::Off)
+		if (self::veh && g.vehicle.rainbow_paint.type != RainbowPaintType::Off && last_rgb_run_time + delay < std::chrono::system_clock::now())
 		{
 			int delay_step = 100;
 
-			if (g->vehicle.rainbow_paint.type == RainbowPaintType::Spasm)
+			if (g.vehicle.rainbow_paint.type == RainbowPaintType::Spasm)
 			{
 				red = rand() % 256;
 				green = rand() % 256;
 				blue = rand() % 256;
 			}
-			else if (g->vehicle.rainbow_paint.type == RainbowPaintType::Fade)
+			else if (g.vehicle.rainbow_paint.type == RainbowPaintType::Fade)
 			{
 				delay_step = 10;
 
@@ -100,25 +103,25 @@ namespace big
 
 			Vehicle vehicle = self::veh;
 
-			if (g->vehicle.rainbow_paint.primary) {
+			if (g.vehicle.rainbow_paint.primary) {
 				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(vehicle, red, green, blue);
 			}
-			if (g->vehicle.rainbow_paint.secondary) {
+			if (g.vehicle.rainbow_paint.secondary) {
 				VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(vehicle, red, green, blue);
 			}
-			if (g->vehicle.rainbow_paint.neon) {
+			if (g.vehicle.rainbow_paint.neon) {
 				VEHICLE::SET_VEHICLE_NEON_ENABLED(vehicle, 0, 1);
 				VEHICLE::SET_VEHICLE_NEON_ENABLED(vehicle, 1, 1);
 				VEHICLE::SET_VEHICLE_NEON_ENABLED(vehicle, 2, 1);
 				VEHICLE::SET_VEHICLE_NEON_ENABLED(vehicle, 3, 1);
 				VEHICLE::SET_VEHICLE_NEON_COLOUR(vehicle, red, green, blue);
 			}
-			if (g->vehicle.rainbow_paint.smoke) {
+			if (g.vehicle.rainbow_paint.smoke) {
 				VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(vehicle, red, green, blue);
 			}
 
-			auto delay = std::chrono::milliseconds(((delay_step * 10) + 10) - (g->vehicle.rainbow_paint.speed * delay_step));
-			script::get_current()->yield(delay);
+			delay = std::chrono::milliseconds(((delay_step * 10) + 10) - (g.vehicle.rainbow_paint.speed * delay_step));
+			last_rgb_run_time = std::chrono::system_clock::now();
 		}
 	}
 }

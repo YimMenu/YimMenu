@@ -2,6 +2,7 @@
 #include "network/CNetGamePlayer.hpp"
 #include "natives.hpp"
 #include "script.hpp"
+#include "session.hpp"
 
 namespace big::notify
 {
@@ -13,18 +14,22 @@ namespace big::notify
 		HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER(false, false);
 	}
 
-	// deprecated/unused
-	inline void blocked_event(const char* name, Player player)
+	inline void crash_blocked(CNetGamePlayer* player, const char* crash)
 	{
-		char msg[128];
+		if (player)
+		{
+			g_notification_service->push_error("Protections", fmt::format("Blocked {} crash from {}", crash, player->get_name()));
+			LOG(WARNING) << "Blocked " << crash << " crash from " << player->get_name() << " (" << (player->get_net_data() ? player->get_net_data()->m_gamer_handle_2.m_rockstar_id : 0) << ")";
+		}
+		else
+		{
+			g_notification_service->push_error("Protections", fmt::format("Blocked {} crash from unknown player", crash));
+		}
 
-		strcpy(msg, "~g~BLOCKED RECEIVED EVENT~s~\n~b~");
-		strcat(msg, name);
-		strcat(msg, "~s~\nFrom: <C>");
-		strcat(msg, PLAYER::GET_PLAYER_NAME(player));
-		strcat(msg, "</C>");
-
-		above_map(msg);
+		if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+		{
+			session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
+		}
 	}
 
 	// Shows a busy spinner till the value at the address equals the value passed or if timeout is hit
@@ -52,5 +57,16 @@ namespace big::notify
 		above_map(
 			fmt::format("<C>{}</C> joined.", net_game_player->get_name())
 		);
+	}
+
+	inline void draw_chat(char* msg, const char* player_name, bool is_team)
+	{
+		int scaleform = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MULTIPLAYER_CHAT");
+		GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, "ADD_MESSAGE");
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(player_name); // player name
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(msg); // content
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_TEXTURE_NAME_STRING(HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(is_team ? "MP_CHAT_TEAM" : "MP_CHAT_ALL")); // scope
+		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(scaleform, 255, 255, 255, 255, 0);
+		GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 	}
 }

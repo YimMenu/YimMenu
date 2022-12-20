@@ -115,7 +115,7 @@ namespace big
 			m_loop_running = true;
 
 			while (
-				g_running && m_running && g_gui.m_opened &&
+				g_running && m_running && g_gui->is_open() &&
 				(m_ped_model_hash|| m_veh_model_hash)
 			) {
 				Vector3 location;

@@ -32,7 +32,6 @@ namespace big::entity
 		NETWORK::NETWORK_SET_ENTITY_ONLY_EXISTS_FOR_PARTICIPANTS(ent, true);
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, 0, 0, 0, 0, 0, 0);
 		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(ent, 1, 1);
-		ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&ent);
 		ENTITY::DELETE_ENTITY(&ent);
 	}
 
@@ -57,16 +56,19 @@ namespace big::entity
 		return (bool)hit;
 	}
 
-	inline bool take_control_of(Entity ent)
+	inline bool take_control_of(Entity ent, int timeout = 1000)
 	{
-		if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return true;
-		for (uint8_t i = 0; !NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) && i < 10; i++)
+		if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) 
+			return true;
+
+		for (uint8_t i = 0; !NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) && i < timeout; i++)
 		{
 			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(ent);
-
-			script::get_current()->yield(5ms);
+			script::get_current()->yield();
 		}
-		if (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) return false;
+
+		if (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) 
+			return false;
 
 		int netHandle = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent);
 		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, true);

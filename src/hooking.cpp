@@ -30,8 +30,8 @@ namespace big
 			detour_hook_helper->m_detour_hook->set_target_and_create_hook(detour_hook_helper->m_on_hooking_available());
 		}
 
-		detour_hook_helper::add<hooks::run_script_threads>("SH", (void *)g_pointers->m_run_script_threads);
-
+		detour_hook_helper::add<hooks::run_script_threads>("SH", (void*)g_pointers->m_run_script_threads);
+		
 		detour_hook_helper::add<hooks::get_label_text>("GLT", (void*)g_pointers->m_get_label_text);
 
 		detour_hook_helper::add<hooks::multiplayer_chat_filter>("MCF", (void*)g_pointers->m_multiplayer_chat_filter);
@@ -53,17 +53,51 @@ namespace big
 		detour_hook_helper::add<hooks::assign_physical_index>("API", (void*)g_pointers->m_assign_physical_index);
 
 		detour_hook_helper::add<hooks::receive_net_message>("RNM", (void*)g_pointers->m_receive_net_message);
+
+		detour_hook_helper::add<hooks::received_clone_create>("RCC", (void*)g_pointers->m_received_clone_create);
 		detour_hook_helper::add<hooks::received_clone_sync>("RCS", (void*)g_pointers->m_received_clone_sync);
+		// detour_hook_helper::add<hooks::can_apply_data>("CAD", (void*)g_pointers->m_can_apply_data);
 
 		detour_hook_helper::add<hooks::get_network_event_data>("GNED", (void*)g_pointers->m_get_network_event_data);
 		detour_hook_helper::add<hooks::write_player_gamer_data_node>("WPGDN", (void*)g_pointers->m_write_player_gamer_data_node);
 
-		detour_hook_helper::add<hooks::format_metric_for_sending>("FMFS", (void*)g_pointers->m_format_metric_for_sending);
-
 		detour_hook_helper::add<hooks::invalid_mods_crash_detour>("IMCD", (void*)g_pointers->m_invalid_mods_crash_detour);
+		detour_hook_helper::add<hooks::constraint_attachment_crash>("CAC", (void*)g_pointers->m_constraint_attachment_crash);
+		detour_hook_helper::add<hooks::invalid_decal>("IDC", (void*)g_pointers->m_invalid_decal_crash);
 
 		detour_hook_helper::add<hooks::update_presence_attribute_int>("UPAI", (void*)g_pointers->m_update_presence_attribute_int);
 		detour_hook_helper::add<hooks::update_presence_attribute_string>("UPAS", (void*)g_pointers->m_update_presence_attribute_string);
+
+		detour_hook_helper::add<hooks::serialize_dynamic_entity_game_state_data_node>("SDEGSDN", (void*)g_pointers->m_serialize_dynamic_entity_game_state_data_node);
+		detour_hook_helper::add<hooks::serialize_ped_inventory_data_node>("SPIDN", (void*)g_pointers->m_serialize_ped_inventory_data_node);
+		detour_hook_helper::add<hooks::serialize_vehicle_gadget_data_node>("SVGDN", (void*)g_pointers->m_serialize_vehicle_gadget_data_node);
+
+		detour_hook_helper::add<hooks::handle_join_request>("HJR", (void*)g_pointers->m_handle_join_request);
+
+		detour_hook_helper::add<hooks::sort_session_details>("SSD", (void*)g_pointers->m_sort_session_details);
+
+		detour_hook_helper::add<hooks::add_player_to_session>("APTS", (void*)g_pointers->m_add_player_to_session);
+		detour_hook_helper::add<hooks::send_chat_net_message>("SCNM", (void*)g_pointers->m_send_chat_net_message);
+
+		detour_hook_helper::add<hooks::process_matchmaking_find_response>("PMFR", (void*)g_pointers->m_process_matchmaking_find_response);
+		detour_hook_helper::add<hooks::serialize_player_data_msg>("SJPD", (void*)g_pointers->m_serialize_player_data_msg);
+
+		detour_hook_helper::add<hooks::serialize_join_request_message>("SJRM", (void*)g_pointers->m_serialize_join_request_message);
+
+		detour_hook_helper::add<hooks::start_matchmaking_find_sessions>("SMFS", (void*)g_pointers->m_start_matchmaking_find_sessions);
+
+		detour_hook_helper::add<hooks::broadcast_net_array>("BNA", (void*)g_pointers->m_broadcast_net_array);
+
+		detour_hook_helper::add<hooks::send_session_matchmaking_attributes>("SSMA", (void*)g_pointers->m_send_session_matchmaking_attributes);
+
+		detour_hook_helper::add<hooks::serialize_take_off_ped_variation_task>("STOPVT", (void*)g_pointers->m_serialize_take_off_ped_variation_task);
+
+		detour_hook_helper::add<hooks::create_script_handler>("CSH", (void*)g_pointers->m_create_script_handler);
+
+		detour_hook_helper::add<hooks::write_bitbuffer_gamer_handle>("WBGH", (void*)g_pointers->m_write_bitbuffer_gamer_handle);
+		detour_hook_helper::add<hooks::read_bitbuffer_gamer_handle>("RBGH", (void*)g_pointers->m_read_bitbuffer_gamer_handle);
+
+		detour_hook_helper::add<hooks::queue_dependency>("QD", (void*)g_pointers->m_queue_dependency);
 
 		g_hooking = this;
 	}
@@ -86,6 +120,12 @@ namespace big
 		for (const auto& detour_hook_helper : m_detour_hook_helpers)
 		{
 			detour_hook_helper->m_detour_hook->enable();
+		}
+
+		for (auto& thread : *g_pointers->m_script_threads)
+		{
+			if (thread->m_handler)
+				hook_script_handler((CGameScriptHandler*)thread->m_handler);
 		}
 
 		MH_ApplyQueued();
@@ -112,6 +152,7 @@ namespace big
 			delete detour_hook_helper;
 		}
 		m_detour_hook_helpers.clear();
+		m_handler_hooks.clear();
 	}
 
 	hooking::detour_hook_helper::~detour_hook_helper()

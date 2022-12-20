@@ -1,7 +1,6 @@
 #pragma once
-
 #include "natives.hpp"
-#include "core/data/model_attachment.hpp"
+#include "model_attachment.hpp"
 
 namespace big
 {

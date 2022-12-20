@@ -12,21 +12,33 @@ namespace big
 {
 	void view::weapons() {
 		components::sub_title("Ammo");
-		ImGui::Checkbox("Infinite Ammo", &g->weapons.infinite_ammo);
 
+		ImGui::BeginGroup();
+
+		ImGui::Checkbox("Infinite Ammo", &g.weapons.infinite_ammo);
+		ImGui::Checkbox("Infinite Clip", &g.weapons.infinite_mag);
+
+		ImGui::EndGroup();
 		ImGui::SameLine();
+		ImGui::BeginGroup();
 
-		ImGui::Checkbox("Infinite Clip", &g->weapons.infinite_mag);
-
-		ImGui::Checkbox("Enable Special Ammo", &g->weapons.ammo_special.toggle);
-
-		if (ImGui::Checkbox("Bypass C4 Limit", &g->weapons.bypass_c4_limit))
+		if (ImGui::Checkbox("Bypass C4 Limit", &g.weapons.bypass_c4_limit))
 		{
-			*g_pointers->m_bypass_max_count_of_active_sticky_bombs = g->weapons.bypass_c4_limit ? 99 : 4;
+			if (g.weapons.bypass_c4_limit)
+				g_pointers->m_bypass_max_count_of_active_sticky_bombs->apply();
+			else
+				g_pointers->m_bypass_max_count_of_active_sticky_bombs->restore();
 		}
+		ImGui::Checkbox("Rapid Fire", &g.weapons.rapid_fire);
 
-		eAmmoSpecialType selected_ammo = g->weapons.ammo_special.type;
-		eExplosionTag selected_explosion = g->weapons.ammo_special.explosion_tag;
+		ImGui::EndGroup();
+
+		ImGui::Separator();
+
+		ImGui::Checkbox("Enable Special Ammo", &g.weapons.ammo_special.toggle);
+
+		eAmmoSpecialType selected_ammo = g.weapons.ammo_special.type;
+		eExplosionTag selected_explosion = g.weapons.ammo_special.explosion_tag;
 
 		if (ImGui::BeginCombo("Special Ammo", SPECIAL_AMMOS[(int)selected_ammo].name))
 		{
@@ -34,7 +46,7 @@ namespace big
 			{
 				if (ImGui::Selectable(special_ammo.name, special_ammo.type == selected_ammo))
 				{
-					g->weapons.ammo_special.type = special_ammo.type;
+					g.weapons.ammo_special.type = special_ammo.type;
 				}
 
 				if (special_ammo.type == selected_ammo)
@@ -52,7 +64,7 @@ namespace big
 			{
 				if (ImGui::Selectable(name, type == selected_explosion))
 				{
-					g->weapons.ammo_special.explosion_tag = type;
+					g.weapons.ammo_special.explosion_tag = type;
 				}
 
 				if (type == selected_explosion)
@@ -68,15 +80,15 @@ namespace big
 
 		components::sub_title("Misc");
 
-		ImGui::Checkbox("Force Crosshairs", &g->weapons.force_crosshairs);
+		ImGui::Checkbox("Force Crosshairs", &g.weapons.force_crosshairs);
 
 		ImGui::SameLine();
 
-		ImGui::Checkbox("No Recoil", &g->weapons.no_recoil);
+		ImGui::Checkbox("No Recoil", &g.weapons.no_recoil);
 
 		ImGui::SameLine();
 
-		ImGui::Checkbox("No Spread", &g->weapons.no_spread);
+		ImGui::Checkbox("No Spread", &g.weapons.no_spread);
 
 		components::button("Get All Weapons", []
 		{
@@ -99,13 +111,13 @@ namespace big
 			}
 		});
 
-		ImGui::SliderFloat("Damage Multiplier", &g->weapons.increased_damage, 1.f, 10.f, "%.1f");
+		ImGui::SliderFloat("Damage Multiplier", &g.weapons.increased_damage, 1.f, 10.f, "%.1f");
 
 		ImGui::Separator();
 
 		components::sub_title("Custom Weapons");
 
-		CustomWeapon selected = g->weapons.custom_weapon;
+		CustomWeapon selected = g.weapons.custom_weapon;
 
 		if (ImGui::BeginCombo("Weapon", custom_weapons[(int)selected].name))
 		{
@@ -113,7 +125,7 @@ namespace big
 			{
 				if (ImGui::Selectable(weapon.name, weapon.id == selected))
 				{
-					g->weapons.custom_weapon = weapon.id;
+					g.weapons.custom_weapon = weapon.id;
 				}
 
 				if (weapon.id == selected)
@@ -128,11 +140,20 @@ namespace big
 		switch (selected)
 		{
 		case CustomWeapon::VEHICLE_GUN:
-			components::input_text_with_hint(
-				"Shooting Model",
-				"Name of the vehicle model",
-				g->weapons.vehicle_gun_model, sizeof(g->weapons.vehicle_gun_model)
-			);
+			// this some ugly ass looking code
+			static char vehicle_gun[12];
+			std::memcpy(vehicle_gun, g.weapons.vehicle_gun_model.c_str(), 12);
+			if (ImGui::InputTextWithHint("Shooting Model", "Name of the vehicle model", vehicle_gun, sizeof(vehicle_gun)))
+			{
+				g.weapons.vehicle_gun_model = vehicle_gun;
+			}
+			if (ImGui::IsItemActive())
+			{
+				g_fiber_pool->queue_job([]
+				{
+					PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+				});
+			}
 
 			break;
 		}

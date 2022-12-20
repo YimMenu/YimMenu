@@ -2,36 +2,39 @@
 #include "blip.hpp"
 #include "entity.hpp"
 #include "gta/enums.hpp"
+#include "services/players/player_service.hpp"
 
 namespace big::teleport
 {
-	inline bool bring_player(Player player)
+	inline bool teleport_player_to_coords(player_ptr player, Vector3 coords)
 	{
-		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
 
 		if (ENTITY::IS_ENTITY_DEAD(ent, true))
 		{
 			g_notification_service->push_warning("Teleport", "Target player is dead.");
-
 			return false;
 		}
 
 		if (!PED::IS_PED_IN_ANY_VEHICLE(ent, true))
 		{
 			g_notification_service->push_warning("Teleport", "Target player is not in a vehicle.");
-
 			return false;
 		}
 
 		ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
-		Vector3 location = self::pos;
 
 		if (entity::take_control_of(ent))
-			ENTITY::SET_ENTITY_COORDS(ent, location.x, location.y, location.z, 0, 0, 0, 0);
+			ENTITY::SET_ENTITY_COORDS(ent, coords.x, coords.y, coords.z, 0, 0, 0, 0);
 		else
 			g_notification_service->push_warning("Teleport", "Failed to take control of player vehicle.");
 
 		return true;
+	}
+
+	inline bool bring_player(player_ptr player)
+	{
+		return teleport_player_to_coords(player, self::pos);
 	}
 
 	inline bool load_ground_at_3dcoord(Vector3& location)

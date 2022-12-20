@@ -7,6 +7,7 @@ namespace big
 	{
 	public:
 		explicit vmt_hook(void* obj, std::size_t num_funcs);
+		~vmt_hook();
 
 		vmt_hook(vmt_hook&& that) = delete;
 		vmt_hook& operator=(vmt_hook&& that) = delete;

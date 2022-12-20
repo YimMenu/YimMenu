@@ -8,6 +8,7 @@
 #include "renderer.hpp"
 #include "script_mgr.hpp"
 #include "thread_pool.hpp"
+#include "version.hpp"
 
 #include "backend/backend.hpp"
 #include "native_hooks/native_hooks.hpp"
@@ -23,6 +24,12 @@
 #include "services/model_preview/model_preview_service.hpp"
 #include "services/vehicle/handling_service.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
+#include "services/player_database/player_database_service.hpp"
+#include "services/hotkey/hotkey_service.hpp"
+#include "services/matchmaking/matchmaking_service.hpp"
+#if _MSC_VER
+#include "services/api/api_service.hpp"
+#endif
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -34,22 +41,16 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		g_hmodule = hmod;
 		g_main_thread = CreateThread(nullptr, 0, [](PVOID) -> DWORD
 		{
-
 #if _MSC_VER // L
-			while (!FindWindow("grcWindow", "Grand Theft Auto V"))
+			while (!FindWindow("grcWindow", nullptr))
 				std::this_thread::sleep_for(1s);
 #else
-			while (!FindWindow(L"grcWindow", L"Grand Theft Auto V"))
+			while (!FindWindow(L"grcWindow", nullptr))
 				std::this_thread::sleep_for(1s);
 #endif
-
 			std::filesystem::path base_dir = std::getenv("appdata");
 			base_dir /= "BigBaseV2";
 			auto file_manager_instance = std::make_unique<file_manager>(base_dir);
-
-			auto globals_instance = std::make_unique<menu_settings>(
-				file_manager_instance->get_project_file("./settings.json")
-			);
 
 			auto logger_instance = std::make_unique<logger>(
 				"YimMenu",
@@ -61,8 +62,13 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			try
 			{
 				LOG(INFO) << "Yim's Menu Initializing";
+				LOGF(INFO, "Git Info\n\tBranch:\t%s\n\tHash:\t%s\n\tDate:\t%s", version::GIT_BRANCH, version::GIT_SHA1, version::GIT_DATE);
 
-				g->load();
+				auto thread_pool_instance = std::make_unique<thread_pool>();
+				LOG(INFO) << "Thread pool initialized.";
+
+				g.init(
+					file_manager_instance->get_project_file("./settings.json"));
 				LOG(INFO) << "Settings Loaded.";
 
 				auto pointers_instance = std::make_unique<pointers>();
@@ -70,15 +76,13 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				auto renderer_instance = std::make_unique<renderer>();
 				LOG(INFO) << "Renderer initialized.";
+				auto gui_instance = std::make_unique<gui>();
 
 				auto fiber_pool_instance = std::make_unique<fiber_pool>(11);
 				LOG(INFO) << "Fiber pool initialized.";
 
 				auto hooking_instance = std::make_unique<hooking>();
 				LOG(INFO) << "Hooking initialized.";
-
-				auto thread_pool_instance = std::make_unique<thread_pool>();
-				LOG(INFO) << "Thread pool initialized.";
 
 				auto context_menu_service_instance = std::make_unique<context_menu_service>();
 				auto custom_text_service_instance = std::make_unique<custom_text_service>();
@@ -92,6 +96,12 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto handling_service_instance = std::make_unique<handling_service>();
 				auto gui_service_instance = std::make_unique<gui_service>();
 				auto script_patcher_service_instance = std::make_unique<script_patcher_service>();
+				auto player_database_service_instance = std::make_unique<player_database_service>();
+				auto hotkey_service_instance = std::make_unique<hotkey_service>();
+				auto matchmaking_service_instance = std::make_unique<matchmaking_service>();
+#if _MSC_VER
+				auto api_service_instance = std::make_unique<api_service>();
+#endif
 				LOG(INFO) << "Registered service instances...";
 
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
@@ -131,14 +141,25 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				g_script_mgr.remove_all_scripts();
 				LOG(INFO) << "Scripts unregistered.";
 
+				// cleans up the thread responsible for saving settings
+				g.destroy();
+
 				// Make sure that all threads created don't have any blocking loops
 				// otherwise make sure that they have stopped executing
 				thread_pool_instance->destroy();
 				LOG(INFO) << "Destroyed thread pool.";
 
-				thread_pool_instance.reset();
-				LOG(INFO) << "Thread pool uninitialized.";
 
+				hotkey_service_instance.reset();
+				LOG(INFO) << "Hotkey Service reset.";
+				matchmaking_service_instance.reset();
+				LOG(INFO) << "Matchmaking Service reset.";
+				player_database_service_instance.reset();
+#if _MSC_VER
+				LOG(INFO) << "API Service reset.";
+				api_service_instance.reset();
+#endif
+				LOG(INFO) << "Player Database Service reset.";
 				script_patcher_service_instance.reset();
 				LOG(INFO) << "Script Patcher Service reset.";
 				gui_service_instance.reset();
@@ -174,6 +195,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				pointers_instance.reset();
 				LOG(INFO) << "Pointers uninitialized.";
+				
+				thread_pool_instance.reset();
+				LOG(INFO) << "Thread pool uninitialized.";
 			}
 			catch (std::exception const& ex)
 			{
@@ -183,8 +207,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			LOG(INFO) << "Farewell!";
 			logger_instance->destroy();
 			logger_instance.reset();
-
-			globals_instance.reset();
 
 			file_manager_instance.reset();
 

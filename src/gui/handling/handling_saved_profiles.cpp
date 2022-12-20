@@ -20,11 +20,11 @@ namespace big
 
 		if (ImGui::ListBoxHeader("##handling_profiles"))
 		{
-			for (const auto& [name, profile] : g_handling_service->profiles())
+			for (auto& [name, profile] : g_handling_service->profiles())
 			{
-				if (components::selectable(name, profile.get() == g_handling_service->active_profile()))
+				if (components::selectable(name, &profile == g_handling_service->active_profile()))
 				{
-					g_handling_service->apply_profile(profile.get());
+					g_handling_service->apply_profile(&profile);
 				}
 			}
 			ImGui::EndListBox();

@@ -73,13 +73,13 @@ namespace big
 
 	void mobile_service::register_vehicles()
 	{
-		const auto array_size = *mobile::vehicle_global.as<int*>();
+		const auto array_size = *scr_globals::vehicle_global.as<int*>();
 		for (int i = 0; i < array_size; i++)
 		{
 			if (i % 100 == 0)
 				script::get_current()->yield();
 
-			auto veh_idx_global = mobile::vehicle_global.at(i, 142);
+			auto veh_idx_global = scr_globals::vehicle_global.at(i, 142);
 
 			const auto hash = *veh_idx_global.at(66).as<Hash*>();
 			const auto& it = m_pv_lookup.find(i);

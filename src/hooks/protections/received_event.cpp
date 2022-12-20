@@ -1,8 +1,13 @@
 #include "gta/enums.hpp"
 #include "gta/net_game_event.hpp"
 #include "hooking.hpp"
-#include <network/CNetGamePlayer.hpp>
 #include "gta/script_id.hpp"
+#include "util/notify.hpp"
+#include "util/math.hpp"
+#include "util/toxic.hpp"
+#include "fiber_pool.hpp"
+#include <base/CObject.hpp>
+#include <network/CNetGamePlayer.hpp>
 
 namespace big
 {
@@ -16,6 +21,307 @@ namespace big
 
 		if (buffer.Read<bool>(1))
 			id.m_instance_id = buffer.Read<int32_t>(8);
+	}
+
+	void scan_weapon_damage_event(CNetGamePlayer* player, rage::datBitBuffer* buffer)
+	{
+
+		uint8_t damageType;
+		uint32_t weaponType; // weaponHash
+
+		bool overrideDefaultDamage;
+		bool hitEntityWeapon;
+		bool hitWeaponAmmoAttachment;
+		bool silenced;
+
+		uint32_t damageFlags;
+		bool hasActionResult;
+
+		uint32_t actionResultName;
+		uint16_t actionResultId;
+		uint32_t f104;
+
+		uint32_t weaponDamage;
+		bool isNetTargetPos;
+
+		rage::fvector3 localPos;
+
+		bool f112;
+
+		uint32_t damageTime;
+		bool willKill;
+		uint32_t f120;
+		bool hasVehicleData;
+
+		uint16_t f112_1;
+
+		uint16_t parentGlobalId; // Source entity?
+		uint16_t hitGlobalId; // Target entity?
+
+		uint8_t tyreIndex;
+		uint8_t suspensionIndex;
+		uint8_t hitComponent;
+
+		bool f133;
+		bool hasImpactDir;
+
+		rage::fvector3 impactDir;
+
+		damageType = buffer->Read<uint8_t>(2);
+		weaponType = buffer->Read<uint32_t>(32);
+
+		overrideDefaultDamage = buffer->Read<uint8_t>(1);
+		hitEntityWeapon = buffer->Read<uint8_t>(1);
+		hitWeaponAmmoAttachment = buffer->Read<uint8_t>(1);
+		silenced = buffer->Read<uint8_t>(1);
+
+		damageFlags = buffer->Read<uint32_t>(24);
+		// (damageFlags >> 1) & 1
+		hasActionResult = buffer->Read<uint8_t>(1);
+
+		if (hasActionResult)
+		{
+			actionResultName = buffer->Read<uint32_t>(32);
+			actionResultId = buffer->Read<uint16_t>(16);
+			f104 = buffer->Read<uint32_t>(32);
+		}
+
+		if (overrideDefaultDamage)
+		{
+			weaponDamage = buffer->Read<uint32_t>(17);
+		}
+		else
+		{
+			weaponDamage = 0;
+		}
+
+		bool _f92 = buffer->Read<uint8_t>(1);
+
+		if (_f92)
+		{
+			buffer->Read<uint8_t>(4);
+		}
+
+		isNetTargetPos = buffer->Read<uint8_t>(1);
+
+		if (isNetTargetPos)
+		{
+			localPos.x = buffer->ReadSignedFloat(16, 55.f);  // divisor: 0x425C0000
+			localPos.y = buffer->ReadSignedFloat(16, 55.f);
+			localPos.z = buffer->ReadSignedFloat(16, 55.f);
+		}
+
+		if (damageType == 3)
+		{
+			damageTime = buffer->Read<uint32_t>(32);
+			willKill = buffer->Read<uint8_t>(1);
+
+			if (hasActionResult)
+			{
+				hitGlobalId = buffer->Read<uint16_t>(13);
+			}
+			else
+			{
+				hitGlobalId = 0;
+			}
+
+			f112 = buffer->Read<uint8_t>(1);
+
+			if (!f112)
+			{
+				f112_1 = buffer->Read<uint16_t>(11);
+			}
+			else
+			{
+				f112_1 = buffer->Read<uint16_t>(16);
+			}
+		}
+		else
+		{
+			parentGlobalId = buffer->Read<uint16_t>(13);  // +118
+			hitGlobalId = buffer->Read<uint16_t>(13);  // +120
+		}
+
+		if (damageType < 2)
+		{
+			localPos.x = buffer->ReadSignedFloat(16, 55.f);  // divisor: 0x425C0000
+			localPos.y = buffer->ReadSignedFloat(16, 55.f);
+			localPos.z = buffer->ReadSignedFloat(16, 55.f);
+
+			if (damageType == 1)
+			{
+				hasVehicleData = buffer->Read<uint8_t>(1);
+
+				if (hasVehicleData)
+				{
+					tyreIndex = buffer->Read<uint8_t>(4); // +122
+					suspensionIndex = buffer->Read<uint8_t>(4); // +123
+				}
+			}
+		}
+		else
+		{
+			hitComponent = buffer->Read<uint8_t>(5); // +108
+		}
+
+		f133 = buffer->Read<uint8_t>(1);
+		hasImpactDir = buffer->Read<uint8_t>(1);
+
+		if (hasImpactDir)
+		{
+			impactDir.x = buffer->ReadSignedFloat(16, 6.2831854820251f);  // divisor: 0x40C90FDB
+			impactDir.y = buffer->ReadSignedFloat(16, 6.2831854820251f);
+			impactDir.z = buffer->ReadSignedFloat(16, 6.2831854820251f);
+		}
+
+		buffer->Seek(0);
+
+		// LOG(INFO) << localPos.x << " " << localPos.y << " " << localPos.z << ". " << math::distance_between_vectors(localPos, *g_local_player->m_navigation->get_position()) << " " << (g_local_player->m_net_object->m_object_id == hitGlobalId ? "TRUE" : "FALSE") << " " << damageType << " " << damageFlags;
+		
+		if (damageType == 3 && (damageFlags & (1 << 1)) == 0)
+			hitGlobalId = g_local_player ? g_local_player->m_net_object->m_object_id : 0;
+
+		if (g.session.damage_karma && g_local_player && g_local_player->m_net_object && (g_local_player->m_net_object->m_object_id == hitGlobalId || math::distance_between_vectors(localPos, *g_local_player->m_navigation->get_position()) < 1.5f))
+		{
+			int id = player->m_player_id;
+			g_fiber_pool->queue_job([id, hitComponent, overrideDefaultDamage, weaponType, weaponDamage, tyreIndex, suspensionIndex, damageFlags, actionResultName, actionResultId, f104, hitEntityWeapon, hitWeaponAmmoAttachment, silenced, hasImpactDir, impactDir, localPos]
+			{
+				auto player = g_player_service->get_by_id(id);
+
+				if (!player->is_valid() || !player->get_ped())
+					return;
+
+				g_pointers->m_send_network_damage((CEntity*)g_player_service->get_self()->get_ped(), (CEntity*)player->get_ped(), (rage::fvector3*)&localPos, hitComponent, overrideDefaultDamage, weaponType, weaponDamage,
+					tyreIndex, suspensionIndex, damageFlags, actionResultName, actionResultId, f104, hitEntityWeapon, hitWeaponAmmoAttachment, silenced, false, player->get_ped()->m_navigation->get_position());
+			});
+		}
+	}
+
+	void scan_explosion_event(CNetGamePlayer* player, rage::datBitBuffer* buffer)
+	{
+		uint16_t f186;
+		uint16_t f208;
+		int ownerNetId;
+		uint16_t f214;
+		eExplosionTag explosionType;
+		float damageScale;
+
+		float posX;
+		float posY;
+		float posZ;
+
+		bool f242;
+		uint16_t f104;
+		float cameraShake;
+
+		bool isAudible;
+		bool f189;
+		bool isInvisible;
+		bool f126;
+		bool f241;
+		bool f243;
+
+		uint16_t f210;
+
+		float unkX;
+		float unkY;
+		float unkZ;
+
+		bool f190;
+		bool f191;
+
+		uint32_t f164;
+
+		float posX224;
+		float posY224;
+		float posZ224;
+
+		bool f240;
+		uint16_t f218;
+		bool f216;
+
+		f186 = buffer->Read<uint16_t>(16);
+		f208 = buffer->Read<uint16_t>(13);
+		ownerNetId = buffer->Read<uint16_t>(13);
+		f214 = buffer->Read<uint16_t>(13); // 1604+
+		explosionType = (eExplosionTag)buffer->ReadSigned<int>(8); // 1604+ bit size
+		damageScale = buffer->Read<int>(8) / 255.0f;
+
+		posX = buffer->ReadSignedFloat(22, 27648.0f);
+		posY = buffer->ReadSignedFloat(22, 27648.0f);
+		posZ = buffer->ReadFloat(22, 4416.0f) - 1700.0f;
+
+		f242 = buffer->Read<uint8_t>(1);
+		f104 = buffer->Read<uint16_t>(16);
+		cameraShake = buffer->Read<int>(8) / 127.0f;
+
+		isAudible = buffer->Read<uint8_t>(1);
+		f189 = buffer->Read<uint8_t>(1);
+		isInvisible = buffer->Read<uint8_t>(1);
+		f126 = buffer->Read<uint8_t>(1);
+		f241 = buffer->Read<uint8_t>(1);
+		f243 = buffer->Read<uint8_t>(1); // 1604+
+
+		f210 = buffer->Read<uint16_t>(13);
+
+		unkX = buffer->ReadSignedFloat(16, 1.1f);
+		unkY = buffer->ReadSignedFloat(16, 1.1f);
+		unkZ = buffer->ReadSignedFloat(16, 1.1f);
+
+		f190 = buffer->Read<uint8_t>(1);
+		f191 = buffer->Read<uint8_t>(1);
+
+		f164 = buffer->Read<uint32_t>(32);
+
+		if (f242)
+		{
+			posX224 = buffer->ReadSignedFloat(31, 27648.0f);
+			posY224 = buffer->ReadSignedFloat(31, 27648.0f);
+			posZ224 = buffer->ReadFloat(31, 4416.0f) - 1700.0f;
+		}
+		else
+		{
+			posX224 = 0;
+			posY224 = 0;
+			posZ224 = 0;
+		}
+
+		auto f168 = buffer->Read<uint32_t>(32);		 // >= 1868: f_168
+
+
+		f240 = buffer->Read<uint8_t>(1);
+		if (f240)
+		{
+			f218 = buffer->Read<uint16_t>(16);
+
+			if (f191)
+			{
+				f216 = buffer->Read<uint8_t>(8);
+			}
+		}
+
+		buffer->Seek(0);
+
+		auto object = g_pointers->m_get_net_object(*g_pointers->m_network_object_mgr, ownerNetId, true);
+		auto entity = object ? object->GetGameObject() : nullptr;
+
+		auto offset_object = g_pointers->m_get_net_object(*g_pointers->m_network_object_mgr, f210, true);
+
+		if (f208 == 0 && entity && entity->gap28 == 4 && reinterpret_cast<CPed*>(entity)->m_player_info && player->m_player_info->m_ped && player->m_player_info->m_ped->m_net_object && ownerNetId != player->m_player_info->m_ped->m_net_object->m_object_id && !offset_object)
+		{
+			g_notification_service->push_error("Warning!", fmt::format("{} blamed {} for explosion", player->get_name(), reinterpret_cast<CPed*>(entity)->m_player_info->m_net_player_data.m_name));
+			session::add_infraction(g_player_service->get_by_id(player->m_player_id), Infraction::BLAME_EXPLOSION_DETECTED);
+			return;
+		}
+
+		if (g.session.explosion_karma && g_local_player && math::distance_between_vectors({ posX, posY, posZ }, *g_local_player->m_navigation->get_position()) < 3.0f)
+		{
+			int id = player->m_player_id;
+			g_fiber_pool->queue_job([id, explosionType, damageScale, cameraShake, isAudible, isInvisible]
+			{
+				toxic::blame_explode_player(g_player_service->get_self(), g_player_service->get_by_id(id), explosionType, damageScale, isAudible, isInvisible, cameraShake);
+			});
+		}
 	}
 
 	void hooks::received_event(
@@ -32,7 +338,6 @@ namespace big
 		if (event_id > 91u)
 		{
 			g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
 			return;
 		}
 
@@ -50,9 +355,9 @@ namespace big
 			std::uint32_t player_bitfield = buffer->Read<uint32_t>(32);
 			if (player_bitfield & (1 << target_player->m_player_id))
 			{
-				if (g->notifications.received_event.kick_vote.log)
+				if (g.notifications.received_event.kick_vote.log)
 					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " is voting to kick us.";
-				if (g->notifications.received_event.kick_vote.notify)
+				if (g.notifications.received_event.kick_vote.notify)
 					g_notification_service->push_warning("Kick Vote", fmt::format("{} is voting to kick us.", source_player->get_name()));
 			}
 			buffer->Seek(0);
@@ -78,18 +383,13 @@ namespace big
 			uint32_t unk = buffer->Read<uint32_t>(32);
 			if (type == ScriptEntityChangeType::SettingOfTaskVehicleTempAction) 
 			{
-				uint16_t unk2 = buffer->Read<uint16_t>(13);
+				uint16_t ped_id = buffer->Read<uint16_t>(13);
 				uint32_t action = buffer->Read<uint32_t>(8);
 
-				if (action >= 15 && action <= 18) 
+				if ((action >= 15 && action <= 18) || action == 33)
 				{
 					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
-					if (g->notifications.received_event.vehicle_temp_action.log)
-						LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent TASK_VEHICLE_TEMP_ACTION crash.";
-					if (g->notifications.received_event.vehicle_temp_action.notify)
-						g_notification_service->push_error("Protections", fmt::format("{} sent TASK_VEHICLE_TEMP_ACTION crash.", source_player->get_name()));
-
+					notify::crash_blocked(source_player, "vehicle temp action");
 					return;
 				}
 			}
@@ -121,9 +421,9 @@ namespace big
 			{
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 
-				if (g->notifications.received_event.clear_ped_task.log)
+				if (g.notifications.received_event.clear_ped_task.log)
 					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent CLEAR_PED_TASKS event.";
-				if (g->notifications.received_event.clear_ped_task.notify)
+				if (g.notifications.received_event.clear_ped_task.notify)
 					g_notification_service->push_warning("Protections", fmt::format("{} tried to freeze player.", source_player->get_name()));
 
 				return;
@@ -140,9 +440,9 @@ namespace big
 			{
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 
-				if (g->notifications.received_event.clear_ped_task.log)
+				if (g.notifications.received_event.clear_ped_task.log)
 					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent RAGDOLL_REQUEST event.";
-				if (g->notifications.received_event.clear_ped_task.notify)
+				if (g.notifications.received_event.clear_ped_task.notify)
 					g_notification_service->push_warning("Protections", fmt::format("{} tried to ragdoll player.", source_player->get_name()));
 
 				return;
@@ -163,22 +463,24 @@ namespace big
 
 			if (money >= 2000)
 			{
-				if (g->notifications.received_event.report_cash_spawn.log)
+				if (g.notifications.received_event.report_cash_spawn.log)
 					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent REPORT_CASH_SPAWN event.";
-				if (g->notifications.received_event.report_cash_spawn.notify)
+				if (g.notifications.received_event.report_cash_spawn.notify)
 					g_notification_service->push_warning("Protections", fmt::format("{} is spawning cash.", source_player->get_name()));
 			}
 
 			break;
 		}
 		// player sending this event is a modder
-		case eNetworkEvents::NETWORK_CHECK_CODE_CRCS_EVENT:
 		case eNetworkEvents::REPORT_MYSELF_EVENT:
 		{
-			if (g->notifications.received_event.modder_detect.log)
+			if (g.notifications.received_event.modder_detect.log)
 				LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent modder event.";
-			if (g->notifications.received_event.modder_detect.notify)
+			if (g.notifications.received_event.modder_detect.notify)
 				g_notification_service->push_warning("Protections", fmt::format("{} sent out a modder event.", source_player->get_name()));
+
+			if (auto plyr = g_player_service->get_by_id(source_player->m_player_id))
+				session::add_infraction(plyr, Infraction::TRIGGERED_ANTICHEAT);
 
 			break;
 		}
@@ -189,9 +491,9 @@ namespace big
 			{
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 
-				if (g->notifications.received_event.request_control_event.log)
+				if (g.notifications.received_event.request_control_event.log)
 					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " requested control of player vehicle.";
-				if (g->notifications.received_event.request_control_event.notify)
+				if (g.notifications.received_event.request_control_event.notify)
 					g_notification_service->push_warning("Protections", fmt::format("Denied player control request from {}", source_player->get_name()));
 
 				return;
@@ -202,13 +504,13 @@ namespace big
 		case eNetworkEvents::SCRIPT_WORLD_STATE_EVENT:
 		{
 			auto type = buffer->Read<WorldStateDataType>(4);
-			(void)buffer->Read<bool>(1);
+			buffer->Read<bool>(1);
 			CGameScriptId id;
 			script_id_deserialize(id, *buffer);
 
 			if (type == WorldStateDataType::Rope)
 			{
-				buffer->Read<int>(9); // unk
+				buffer->Read<int>(9); // network rope id 
 				buffer->Read<float>(19); // pos x
 				buffer->Read<float>(19); // pos y
 				buffer->Read<float>(19); // pos z
@@ -217,24 +519,27 @@ namespace big
 				buffer->Read<float>(19); // rot z
 				buffer->Read<float>(16); // length
 				int type = buffer->Read<int>(4);
+				float initial_length = buffer->Read<float>(16);
+				float min_length = buffer->Read<float>(16);
 
-				if (type != 7)
+				if (type == 0 || initial_length < min_length) // https://docs.fivem.net/natives/?_0xE832D760399EB220
 				{
 					// most definitely a crash
-					g_notification_service->push_error("Protections", fmt::format("{} sent rope crash.", source_player->get_name()));
+					LOG(INFO) << std::hex << std::uppercase << "0x" << id.m_hash;
+					notify::crash_blocked(source_player, "rope");
 					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					return;
 				}
 			}
 			else if (type == WorldStateDataType::PopGroupOverride)
 			{
-				int unk = buffer->ReadSigned<int>(8);
-				int unk2 = buffer->Read<int>(32);
-				int unk3 = buffer->Read<int>(7);
+				int pop_schedule = buffer->ReadSigned<int>(8); // Pop Schedule
+				int pop_group = buffer->Read<int>(32); // Pop Group
+				int percentage = buffer->Read<int>(7); // Percentage
 
-				if (unk2 == 0 && (unk3 == 0 || unk3 == 103))
+				if (pop_group == 0 && (percentage == 0 || percentage == 103))
 				{
-					g_notification_service->push_error("Protections", fmt::format("{} sent SCRIPT_WORLD_STATE_EVENT crash.", source_player->get_name()));
+					notify::crash_blocked(source_player, "pop group override");
 					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					return;
 				}
@@ -250,6 +555,7 @@ namespace big
 
 			if (hash == RAGE_JOAAT("WEAPON_UNARMED"))
 			{
+				notify::crash_blocked(source_player, "remove unarmed");
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
@@ -276,6 +582,88 @@ namespace big
 			}
 
 			buffer->Seek(0);
+			break;
+		}
+		case eNetworkEvents::GIVE_CONTROL_EVENT:
+		{
+			uint32_t timestamp = buffer->Read<uint32_t>(32);
+			int count = buffer->Read<int>(2);
+			bool all_objects_migrate_together = buffer->Read<bool>(1);
+
+			if (count > 3)
+			{
+				count = 3;
+			}
+
+			for (int i = 0; i < count; i++)
+			{
+				int net_id = buffer->Read<int>(13);
+				eNetObjType object_type = buffer->Read<eNetObjType>(4);
+				int migration_type = buffer->Read<int>(3);
+
+				if (object_type < eNetObjType::NET_OBJ_TYPE_AUTOMOBILE || object_type > eNetObjType::NET_OBJ_TYPE_TRAIN)
+				{
+					notify::crash_blocked(source_player, "out of bounds give control type");
+					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+					return;
+				}
+			}
+
+			buffer->Seek(0);
+			g.m_syncing_player = source_player;
+			break;
+		}
+		case eNetworkEvents::NETWORK_PLAY_SOUND_EVENT:
+		{
+			auto plyr = g_player_service->get_by_id(source_player->m_player_id);
+			if (plyr && plyr->m_play_sound_rate_limit.process())
+			{
+				if (plyr->m_play_sound_rate_limit.exceeded_last_process())
+				{
+					notify::crash_blocked(source_player, "sound spam");
+				}
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				return;
+			}
+
+			bool is_entity = buffer->Read<bool>(1);
+			std::int16_t entity_net_id;
+			rage::fvector3 position;
+			std::uint32_t ref_hash;
+
+			if (is_entity)
+				entity_net_id = buffer->Read<std::int16_t>(13);
+			else
+			{
+				position.x = buffer->ReadSignedFloat(19, 1337.0f);
+				position.y = buffer->ReadSignedFloat(19, 1337.0f);
+				position.z = buffer->ReadFloat(19, 1337.0f);
+			}
+
+			bool has_ref = buffer->Read<bool>(1);
+			if (has_ref)
+				ref_hash = buffer->Read<std::uint32_t>(32);
+
+			std::uint32_t sound_hash = buffer->Read<std::uint32_t>(32);
+
+			if (sound_hash == RAGE_JOAAT("Remote_Ring") && plyr)
+			{
+				g_notification_service->push_warning("Protections", fmt::format("Blocked sound annoyance from {}", plyr->get_name()));
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				return;
+			}
+
+			buffer->Seek(0);
+			break;
+		}
+		case eNetworkEvents::EXPLOSION_EVENT:
+		{
+			scan_explosion_event(source_player, buffer);
+			break;
+		}
+		case eNetworkEvents::WEAPON_DAMAGE_EVENT:
+		{
+			scan_weapon_damage_event(source_player, buffer);
 			break;
 		}
 		default:
