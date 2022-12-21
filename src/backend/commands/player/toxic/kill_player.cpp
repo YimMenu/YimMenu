@@ -23,5 +23,5 @@ namespace big
 		}
 	};
 
-	kill_player g_kill_player("kill", 0);
+	kill_player g_kill_player("kill", "Kill Player", "Kills the player, bypassing most forms of interior godmode", 0);
 }

@@ -9,7 +9,7 @@ namespace big
 {
 	void view::self()
 	{
-		components::command_button<"suicide">("Suicide");
+		components::command_button<"suicide">();
 
 		ImGui::SameLine();
 

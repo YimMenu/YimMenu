@@ -43,26 +43,26 @@ namespace big
 		};
 
 		template<template_str cmd_str>
-		static void command_button(const std::string_view name, const std::vector<std::uint64_t> args = {})
+		static void command_button(const std::vector<std::uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
 		{
 			static command* command = command::get(rage::consteval_joaat(cmd_str.value));
-			if (ImGui::Button(name.data()))
+			if (ImGui::Button(label_override.value_or(command->get_label()).data()))
 				command->call(args);
 		}
 
 		template<template_str cmd_str>
-		static void player_command_button(const std::string_view name, player_ptr player = g_player_service->get_selected(), const std::vector<std::uint64_t> args = {})
+		static void player_command_button(player_ptr player = g_player_service->get_selected(), const std::vector<std::uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
 		{
 			static player_command* command = (player_command*)command::get(rage::consteval_joaat(cmd_str.value));
-			if (ImGui::Button(name.data()))
+			if (ImGui::Button(label_override.value_or(command->get_label()).data()))
 				command->call(player, args);
 		}
 
 		template<template_str cmd_str>
-		static void command_checkbox(const std::string_view label)
+		static void command_checkbox(std::optional<const std::string_view> label_override = std::nullopt)
 		{
-			static looped_command* command = (looped_command*)command::get(rage::consteval_joaat(cmd_str.value));
-			if (ImGui::Checkbox(label.data(), &command->is_enabled()))
+			static bool_command* command = (bool_command*)command::get(rage::consteval_joaat(cmd_str.value));
+			if (ImGui::Checkbox(label_override.value_or(command->get_label()).data(), &command->is_enabled()))
 				command->refresh();
 		}
 	};

@@ -46,5 +46,5 @@ namespace big
 		}
 	};
 
-	send_to_interior g_send_to_interior("interiortp", 1);
+	send_to_interior g_send_to_interior("interiortp", "TP To Interior", "Teleports the player to the specified interior index", 1);
 }

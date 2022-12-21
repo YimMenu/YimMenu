@@ -35,5 +35,5 @@ namespace big
 		}
 	};
 
-	breakup_kick g_breakup_kick("breakup", 0, false);
+	breakup_kick g_breakup_kick("breakup", "Breakup Kick", "Nearly unblockable but could be detected by others", 0, false);
 }

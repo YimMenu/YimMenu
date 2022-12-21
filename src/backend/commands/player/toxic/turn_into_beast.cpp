@@ -147,6 +147,6 @@ namespace big
 		}
 	};
 
-	turn_into_beast g_turn_into_beast("beast", 0, false);
-	turn_into_beast_all g_turn_into_beast_all("beastall", 0);
+	turn_into_beast g_turn_into_beast("beast", "Turn Into Beast", "Turns the player into the beast", 0, false);
+	turn_into_beast_all g_turn_into_beast_all("beastall", "Turn Everyone Into Beast", "Turns everyone into the beast, including you", 0);
 }

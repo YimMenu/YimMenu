@@ -2,8 +2,8 @@
 
 namespace big
 {
-	bool_command::bool_command(const std::string& name, bool& toggle) :
-		command(name, 1),
+	bool_command::bool_command(const std::string& name, const std::string& label, const std::string& description, bool& toggle) :
+		command(name, label, description, 1),
 		m_toggle(toggle)
 	{
 	}

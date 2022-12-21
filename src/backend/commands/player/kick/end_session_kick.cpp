@@ -28,5 +28,5 @@ namespace big
 		}
 	};
 
-	end_session_kick g_end_session_kick("endkick", 0, false);
+	end_session_kick g_end_session_kick("endkick", "End Session Kick", "This may take around 10 seconds to kick the player", 0, false);
 }

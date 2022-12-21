@@ -3,8 +3,8 @@
 
 namespace big
 {
-	player_all_component::player_all_component(player_command* parent, const std::string& name, std::uint8_t num_args) :
-		command(name + "all", num_args),
+	player_all_component::player_all_component(player_command* parent, const std::string& name, const std::string& label, const std::string& description, std::uint8_t num_args) :
+		command(name + "all", label, description, num_args),
 		m_parent(parent)
 	{
 	}
@@ -24,11 +24,11 @@ namespace big
 		return m_parent->parse_args_p(args, ctx);
 	}
 
-	player_command::player_command(const std::string& name, std::uint8_t num_args, bool make_all_version) : 
-		command(name, num_args + 1)
+	player_command::player_command(const std::string& name, const std::string& label, const std::string& description, std::uint8_t num_args, bool make_all_version) :
+		command(name, label, description, num_args + 1)
 	{
 		if (make_all_version)
-			m_all_component = std::make_unique<player_all_component>(this, name, num_args);
+			m_all_component = std::make_unique<player_all_component>(this, name, label, description, num_args);
 	}
 
 	void player_command::execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)

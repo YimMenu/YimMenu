@@ -199,25 +199,25 @@ namespace big
 			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = global_wanted_level;
 		}
 
-		components::command_button<"killall">("Kill Everyone", { });
+		components::command_button<"killall">({ }, "Kill Everyone");
 
 		ImGui::SameLine();
 
 
-		components::command_button<"beastall">("Turn Everyone Into Beast", { });
+		components::command_button<"beastall">({ });
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Including you");
 
-		components::command_button<"giveweapsall">("Give All Weapons", { });
+		components::command_button<"giveweapsall">({ });
 		ImGui::SameLine();
-		components::command_button<"remweapsall">("Remove All Weapons", { });
+		components::command_button<"remweapsall">({ });
 
-		components::command_button<"ceokickall">("CEO Kick", { });
+		components::command_button<"ceokickall">( { });
 		ImGui::SameLine();
-		components::command_button<"vehkickall">("Kick From Vehicle", { });
+		components::command_button<"vehkickall">({ });
 
-		components::command_button<"ragdollall">("Ragdoll Players", { });
-		components::command_button<"intkickall">("Kick Everyone From Interiors", { });
+		components::command_button<"ragdollall">({ }, "Ragdoll Players");
+		components::command_button<"intkickall">({ }, "Kick Everyone From Interiors");
 
 		components::small_text("Teleports");
 
@@ -241,7 +241,7 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::command_button<"apartmenttpall">("TP All To Apartment", { (uint64_t)g.session.send_to_apartment_idx });
+		components::command_button<"apartmenttpall">({ (uint64_t)g.session.send_to_apartment_idx }, "TP All To Apartment");
 
 		if (ImGui::BeginCombo("##warehouse", warehouse_names[g.session.send_to_warehouse_idx]))
 		{
@@ -263,7 +263,7 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::command_button<"warehousetpall">("TP All To Warehouse", { (uint64_t)g.session.send_to_warehouse_idx });
+		components::command_button<"warehousetpall">({ (uint64_t)g.session.send_to_warehouse_idx }, "TP All To Warehouse");
 
 		components::button("TP All To Darts", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::Darts); }); });
 		ImGui::SameLine();
@@ -273,27 +273,25 @@ namespace big
 
 		components::button("TP All To Skydive", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::Skydive); }); });
 		ImGui::SameLine();
-		components::command_button<"cayotpall">("TP All To Cayo Perico", { });
-		ImGui::SameLine();
-		components::command_button<"interiortpall">("TP All To MOC", { 81 });
+		components::command_button<"interiortpall">({ 81 }, "TP All To MOC");
 
-		components::command_button<"interiortpall">("TP All To Casino", { 123 });
+		components::command_button<"interiortpall">({ 123 }, "TP All To Casino");
 		ImGui::SameLine();
-		components::command_button<"interiortpall">("TP All To Penthouse", { 124 });
+		components::command_button<"interiortpall">({ 124 }, "TP All To Penthouse");
 		ImGui::SameLine();
-		components::command_button<"interiortpall">("TP All To Arcade", { 128 });
+		components::command_button<"interiortpall">({ 128 }, "TP All To Arcade");
 
-		components::command_button<"interiortpall">("TP All To Music Locker", { 146 });
+		components::command_button<"interiortpall">({ 146 }, "TP All To Music Locker");
 		ImGui::SameLine();
-		components::command_button<"interiortpall">("TP All To Record A Studios", { 148 });
+		components::command_button<"interiortpall">({ 148 }, "TP All To Record A Studios");
 		ImGui::SameLine();
-		components::command_button<"interiortpall">("TP All To Custom Auto Shop", { 149 });
+		components::command_button<"interiortpall">({ 149 }, "TP All To Custom Auto Shop");
 
-		components::command_button<"interiortpall">("TP All To Agency", { 155 });
+		components::command_button<"interiortpall">({ 155 }, "TP All To Agency");
 		ImGui::SameLine();
-		components::command_button<"interiortpall">("TP All To Freakshop", { 160 });
+		components::command_button<"interiortpall">({ 160 }, "TP All To Freakshop");
 		ImGui::SameLine();
-		components::command_button<"interiortpall">("TP All To Multi Floor Garage", { 161 });
+		components::command_button<"interiortpall">({ 161 }, "TP All To Multi Floor Garage");
 
 		components::sub_title("Event Starter");
 		

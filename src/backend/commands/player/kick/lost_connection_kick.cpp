@@ -51,5 +51,5 @@ namespace big
 		}
 	};
 
-	lost_connection_kick g_lost_connection_kick("lckick", 0);
+	lost_connection_kick g_lost_connection_kick("lckick", "Lost Connection Kick", "Can only be detected or blocked by the host. Does not work when you are the host, use Host Kick instead", 0);
 }

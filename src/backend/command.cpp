@@ -26,8 +26,10 @@ namespace
 
 namespace big
 {
-	command::command(const std::string& name, std::uint8_t num_args, bool fiber_pool) :
+	command::command(const std::string& name, const std::string& label, const std::string& description, std::uint8_t num_args, bool fiber_pool) :
 		m_name(name),
+		m_label(label),
+		m_description(description),
 		m_num_args(num_args),
 		m_fiber_pool(fiber_pool)
 	{

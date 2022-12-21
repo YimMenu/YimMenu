@@ -34,5 +34,5 @@ namespace big
 		}
 	};
 
-	host_kick g_host_kick("hostkick", 0, false);
+	host_kick g_host_kick("hostkick", "Host Kick", "Unblockable and undetectable, but requires session host", 0, false);
 }

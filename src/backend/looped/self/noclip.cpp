@@ -98,5 +98,5 @@ namespace big
 		}
 	};
 
-	noclip g_noclip("noclip", g.self.noclip);
+	noclip g_noclip("noclip", "No Clip", "Allows you to fly through the map", g.self.noclip);
 }

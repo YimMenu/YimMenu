@@ -39,5 +39,5 @@ namespace big
 		}
 	};
 
-	ceo_kick g_ceo_kick("ceokick", 0);
+	ceo_kick g_ceo_kick("ceokick", "CEO Kick", "Kicks an associate from the CEO/MC. You cannot kick leaders of CEOs/MCs anymore", 0);
 }

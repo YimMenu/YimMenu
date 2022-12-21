@@ -20,5 +20,5 @@ namespace big
 		}
 	};
 
-	remove_all_weapons g_remove_all_weapons("remweaps", 0);
+	remove_all_weapons g_remove_all_weapons("remweaps", "Remove All Weapons", "Remove all weapons from the player", 0);
 }

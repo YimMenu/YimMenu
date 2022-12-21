@@ -27,12 +27,12 @@ namespace big
 				self::id,
 				(int64_t)player->id(),
 				1,
-				_args[0]
+				(int64_t)_args[0]
 			};
 
 			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << player->id());
 		}
 	};
 
-	send_to_warehouse g_send_to_warehouse("warehousetp", 1);
+	send_to_warehouse g_send_to_warehouse("warehousetp", "TP To Warehouse", "Teleports the player to the specified warehouse index", 1);
 }
