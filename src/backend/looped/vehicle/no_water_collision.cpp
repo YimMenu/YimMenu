@@ -1,24 +1,24 @@
-#include "backend/looped/looped.hpp"
+#include "natives.hpp"
+#include "backend/looped_command.hpp"
 
 namespace big
 {
-	static bool bLastVehicleNoWaterCollsion = false;
-
-	void looped::vehicle_no_water_collision()
+	class no_vehicle_water_collision : looped_command
 	{
-		if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr) return;
+		using looped_command::looped_command;
 
-		bool bNoWaterCollsion = g.vehicle.no_water_collision;
+		virtual void on_tick() override
+		{
+			if (g_local_player && g_local_player->m_vehicle)
+				g_local_player->m_vehicle->m_navigation->m_damp->m_water_collision = 0;
+		}
 
-		if (bNoWaterCollsion)
+		virtual void on_disable() override
 		{
-			g_local_player->m_vehicle->m_navigation->m_damp->m_water_collision = 0;
-			bLastVehicleNoWaterCollsion = bNoWaterCollsion;
+			if (g_local_player && g_local_player->m_vehicle)
+				g_local_player->m_vehicle->m_navigation->m_damp->m_water_collision = 1;
 		}
-		else if (bNoWaterCollsion != bLastVehicleNoWaterCollsion)
-		{
-			g_local_player->m_vehicle->m_navigation->m_damp->m_water_collision = 1;
-			bLastVehicleNoWaterCollsion = bNoWaterCollsion;
-		}
-	}
+	};
+
+	no_vehicle_water_collision g_no_vehicle_water_collision("driveunder", "Drive Underwater", "Allows you to drive underwater", g.vehicle.no_water_collision);
 }

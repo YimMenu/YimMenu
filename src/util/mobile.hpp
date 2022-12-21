@@ -31,15 +31,6 @@ namespace big::mobile
 			return *script_global(2359296).at(0, 5568).at(681).at(2).as<int*>();
 		}
 	}
-
-	namespace lester
-	{
-		inline void off_radar(bool toggle)
-		{
-			*scr_globals::globalplayer_bd.at(PLAYER::GET_PLAYER_INDEX(), scr_globals::size::globalplayer_bd).at(210).as<int*>() = toggle;
-			*script_global(2672505).at(56).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
-		}
-	}
 	
 	namespace merry_weather
 	{

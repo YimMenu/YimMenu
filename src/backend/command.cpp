@@ -70,7 +70,7 @@ namespace big
 			return;
 		}
 
-		auto parsed = parse_args(args);
+		auto parsed = parse_args(args, ctx);
 		if (parsed.has_value())
 			call(parsed.value(), ctx);
 	}
@@ -93,7 +93,7 @@ namespace big
 	void command::process(const std::string& text, const std::shared_ptr<command_context> ctx)
 	{
 		auto args = split(text, ' ');
-		if (args.size() == 0)
+		if (args.size() == 0 || args[0].empty())
 		{
 			ctx->report_error("No command to call");
 			return;

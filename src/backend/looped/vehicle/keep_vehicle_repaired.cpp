@@ -1,12 +1,19 @@
-#include "backend/looped/looped.hpp"
+#include "natives.hpp"
+#include "backend/looped_command.hpp"
 #include "util/vehicle.hpp"
 
 namespace big
 {
-	void looped::vehicle_keep_vehicle_repaired()
+	class keep_vehicle_repaired : looped_command
 	{
-		if (g.vehicle.keep_vehicle_repaired && VEHICLE::GET_DOES_VEHICLE_HAVE_DAMAGE_DECALS(self::veh)) {
-			vehicle::repair(self::veh);
+		using looped_command::looped_command;
+
+		virtual void on_tick() override
+		{
+			if (VEHICLE::GET_DOES_VEHICLE_HAVE_DAMAGE_DECALS(self::veh))
+				vehicle::repair(self::veh);
 		}
-	}
+	};
+
+	keep_vehicle_repaired g_keep_vehicle_repaired("keepfixed", "Keep Vehicle Repaired", "Keeps your vehicle free of wear and tear", g.vehicle.keep_vehicle_repaired);
 }

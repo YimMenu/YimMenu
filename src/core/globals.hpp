@@ -489,7 +489,7 @@ namespace big
 			bool drive_on_water = false;
 			bool horn_boost = false;
 			bool instant_brake = false;
-			bool is_targetable = true;
+			bool block_homing = true;
 			bool ls_customs = false; // don't save this to disk
 			bool seatbelt = false;
 			bool turn_signals = false;
@@ -503,7 +503,7 @@ namespace big
 				speedo_meter, fly, rainbow_paint, speed_unit, god_mode,
 				proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask,
 				auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior,
-				drive_on_water, horn_boost, instant_brake, is_targetable, seatbelt, turn_signals, vehicle_jump,
+				drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump,
 				keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately)
 		} vehicle{};
 

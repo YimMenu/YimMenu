@@ -38,20 +38,9 @@ namespace big
 
 		while (g_running)
 		{
-			looped::self_clean_player();
-			looped::self_free_cam();
 			looped::self_godmode();
-			looped::self_invisibility();
-			looped::self_no_ragdoll();
-			looped::self_off_radar();
 			looped::self_police();
-			looped::self_super_run();
-			looped::self_no_collision();
 			looped::self_hud();
-			looped::self_unlimited_oxygen();
-			looped::self_no_water_collision();
-			looped::self_mobile_radio();
-			looped::self_fast_respawn();
 			looped::self_dance_mode();
 
 			script::get_current()->yield();
@@ -91,16 +80,8 @@ namespace big
 		{
 			looped::vehicle_auto_drive();
 			looped::vehicle_boost_behavior();
-			looped::vehicle_drive_on_water();
 			looped::vehicle_god_mode();
-			looped::vehicle_horn_boost();
-			looped::vehicle_jump();
-			looped::vehicle_instant_brake();
-			looped::vehicle_is_targetable();
-			looped::vehicle_seatbelt();
 			looped::vehicle_speedo_meter();
-			looped::vehicle_keep_vehicle_repaired();
-			looped::vehicle_no_water_collision();
 
 			script::get_current()->yield();
 		}
@@ -125,7 +106,6 @@ namespace big
 		while (g_running)
 		{
 			looped::hud_transition_state();
-			looped::tunables_disable_phone();
 			looped::session_local_time();
 			looped::session_pop_multiplier_areas();
 			looped::session_force_thunder();
@@ -202,10 +182,8 @@ namespace big
 
 		while (g_running)
 		{
-			looped::self_free_cam_disable_control_action();
 
 			looped::custom_gun_disable_control_action();
-
 			context_menu_service::disable_control_action_loop();
 
 			script::get_current()->yield();

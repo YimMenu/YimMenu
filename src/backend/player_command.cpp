@@ -33,7 +33,7 @@ namespace big
 
 	void player_command::execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)
 	{
-		g_fiber_pool->queue_job([this, args, &ctx]
+		g_fiber_pool->queue_job([this, args, ctx]
 		{
 			std::vector<std::uint64_t> new_args;
 
@@ -82,13 +82,18 @@ namespace big
 				}
 			}
 
+			if (stricmp(g_player_service->get_self()->get_name(), args[0].c_str()) == 0 || (g.spoofing.spoof_username && stricmp(g_player_service->get_self()->get_name(), args[0].c_str()) == 0))
+			{
+				plyr_id = g_player_service->get_self()->id();
+			}
+
 			if (plyr_id == -1)
 			{
 				ctx->report_error(std::format("Cannot find player with name {} in command {}", args[0], m_name));
 				return std::nullopt;
 			}
 
-			if (ctx->get_access_level() != CommandAccessLevel::ADMIN && get_access_level() == CommandAccessLevel::TOXIC && plyr_id == self::id)
+			if (ctx->get_access_level() != CommandAccessLevel::ADMIN && (get_access_level() == CommandAccessLevel::TOXIC || get_access_level() == CommandAccessLevel::AGGRESSIVE) && plyr_id == self::id)
 			{
 				ctx->report_error("Permission denied, cannot call toxic commands on self");
 				return std::nullopt;
