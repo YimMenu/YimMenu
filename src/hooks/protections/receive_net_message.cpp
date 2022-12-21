@@ -4,9 +4,11 @@
 #include "gta_util.hpp"
 #include "util/session.hpp"
 #include "util/spam.hpp"
-#include "util/kick.hpp"
 #include "backend/command.hpp"
 #include "backend/context/chat_command_context.hpp"
+#include "gta/net_game_event.hpp"
+#include "gta/script_id.hpp"
+#include "backend/player_command.hpp"
 
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
@@ -88,7 +90,9 @@ namespace big
 							spam::log_chat(message, player, true);
 						player->is_spammer = true;
 						if (g.session.kick_chat_spammers)
-							kick::breakup_kick(player);
+						{
+							((player_command*)command::get(RAGE_JOAAT("breakup")))->call(player, {});
+						}
 						return true;
 					}
 					else

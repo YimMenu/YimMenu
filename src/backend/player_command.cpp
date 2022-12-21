@@ -88,6 +88,12 @@ namespace big
 				return std::nullopt;
 			}
 
+			if (ctx->get_access_level() != CommandAccessLevel::ADMIN && get_access_level() == CommandAccessLevel::TOXIC && plyr_id == self::id)
+			{
+				ctx->report_error("Permission denied, cannot call toxic commands on self");
+				return std::nullopt;
+			}
+
 			result.push_back(plyr_id);
 		}
 
@@ -113,7 +119,7 @@ namespace big
 			return;
 		}
 
-		g_fiber_pool->queue_job([this, player, args, &ctx] {
+		g_fiber_pool->queue_job([this, player, args, ctx] {
 			if (player->is_valid())
 				execute(player, args, ctx);
 		});
