@@ -2,6 +2,7 @@
 #include "script.hpp"
 #include "views/view.hpp"
 #include "services/creator_storage/creator_storage_service.hpp"
+#include "services/api/api_service.hpp"
 #include "util/scripts.hpp"
 
 static bool cached_creator_files = false;
@@ -70,6 +71,27 @@ namespace big
 		components::button("Refresh", []
 		{
 			cached_creator_files = false;
+		});
+
+		ImGui::Separator();
+
+		static char job_link[69]{};
+		ImGui::InputText("SocialClub Job Link", job_link, sizeof(job_link));
+
+		components::button("Import", []
+		{
+			nlohmann::json job_details;
+			if (g_api_service->get_job_details(job_link, job_details))
+			{
+				std::string img_src = job_details["content"]["imgSrc"];
+				std::string content_part = img_src.substr(53, 27);
+
+				nlohmann::json job_metadata;
+				if (g_api_service->download_job_metadata(content_part))
+				{
+					cached_creator_files = false;
+				}
+			}
 		});
 
 		ImGui::EndGroup();

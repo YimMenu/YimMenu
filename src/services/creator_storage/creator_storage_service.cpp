@@ -21,9 +21,9 @@ namespace big
 		return file_paths;
 	}
 
-	void creator_storage_service::create_file(std::string file)
+	std::ofstream creator_storage_service::create_file(std::string file)
 	{
-		std::ofstream(check_jobs_folder().get_file(file).get_path());
+		return std::ofstream(check_jobs_folder().get_file(file).get_path());
 	}
 
 	void creator_storage_service::save_file(std::string_view filename)

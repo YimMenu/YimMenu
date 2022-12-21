@@ -19,7 +19,15 @@ namespace big
 
 		// Returns true if the message has been successfully sended to the target 
 		bool send_socialclub_message(uint64_t rid, std::string_view message);
+
+		// Returns true if the job data query was successfully
+		bool get_job_details(std::string_view job_link, nlohmann::json& result);
+
+		// Returns true if the job metadata was successfully downloaded
+		bool download_job_metadata(std::string_view content_part);
 	private:
+		const std::list<std::string> languages = { "en", "fr", "de", "it", "es", "pt", "pl", "ru", "es-mx" };
+
 		inline std::string get_ticket() 
 		{
 			return g_pointers->m_sc_info->m_ticket;

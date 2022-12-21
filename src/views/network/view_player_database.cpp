@@ -109,7 +109,7 @@ namespace big
 					session::join_by_rockstar_id(current_player.rockstar_id);
 				});
 
-				static char message[255];
+				static char message[256];
 				ImGui::InputText("Input Message", message, sizeof(message));
 				if (components::button("Send Message"))
 				{
