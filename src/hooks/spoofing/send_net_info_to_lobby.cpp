@@ -23,7 +23,6 @@ namespace big
 			if (g.spoofing.spoof_username)
 			{
 				memcpy(player->m_name, g.spoofing.username.c_str(), sizeof(player->m_name));
-				memcpy(g_pointers->m_chat_gamer_info->m_name, g.spoofing.username.c_str(), 18);
 			}
 
 			if (g.spoofing.spoof_ip)

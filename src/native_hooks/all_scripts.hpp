@@ -14,7 +14,7 @@ namespace big
         {
             const auto playerId = src->get_arg<Player>(0);
             src->set_return_value(PLAYER::GET_PLAYER_NAME(playerId));
-            if (g.spoofing.spoof_username)
+            if (g.spoofing.spoof_username && g.spoofing.spoof_local_username)
             {
                 const auto network_player_mgr = gta_util::get_network_player_mgr();
                 if (network_player_mgr && network_player_mgr->m_local_net_player && playerId == network_player_mgr->m_local_net_player->m_player_id)

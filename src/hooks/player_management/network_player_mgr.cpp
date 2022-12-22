@@ -1,4 +1,5 @@
 #include "hooking.hpp"
+#include "pointers.hpp"
 #include "services/players/player_service.hpp"
 #include <network/CNetworkPlayerMgr.hpp>
 
@@ -11,6 +12,12 @@ namespace big
 		if (g.notifications.network_player_mgr_init.notify)
 			g_notification_service->push("Network Player Manager", "Entering session and initializing player data.");
 
+		// set our local spoofed name
+		if (g.spoofing.spoof_username && g.spoofing.spoof_local_username)
+		{
+			memcpy(g_pointers->m_chat_gamer_info->m_name, g.spoofing.username.c_str(), sizeof(g_pointers->m_chat_gamer_info->m_name));
+		}
+
 		g_hooking->get_original<hooks::network_player_mgr_init>()(_this, a2, a3, a4);
 
 		g_player_service->player_join(_this->m_local_net_player);
@@ -20,6 +27,12 @@ namespace big
 	{
 		g.m_spoofed_peer_ids.clear();
 		g_player_service->do_cleanup();
+
+		// restore our original name
+		if (strcmp(g_pointers->m_chat_gamer_info->m_name, _this->m_local_net_player->get_name()))
+		{
+			memcpy(g_pointers->m_chat_gamer_info->m_name, _this->m_local_net_player->get_name(), sizeof(g_pointers->m_chat_gamer_info->m_name));
+		}
 
 		if (g.notifications.network_player_mgr_shutdown.log)
 			LOG(INFO) << "CNetworkPlayerMgr#shutdown got called, we're probably leaving our session.";
