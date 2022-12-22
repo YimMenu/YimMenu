@@ -19,6 +19,7 @@ namespace big
 		if (g.spoofing.spoof_username && g.spoofing.spoof_local_username)
 		{
 			local_name_patch = memory::byte_patch::make(g_pointers->m_chat_gamer_info->m_name, g.spoofing.username).get();
+			local_name_patch->apply();
 		}
 
 		g_hooking->get_original<hooks::network_player_mgr_init>()(_this, a2, a3, a4);
@@ -34,7 +35,7 @@ namespace big
 		// restore our original name
 		if (strcmp(g_pointers->m_chat_gamer_info->m_name, _this->m_local_net_player->get_name()) && local_name_patch)
 		{
-			local_name_patch->restore();
+			local_name_patch->remove();
 		}
 
 		if (g.notifications.network_player_mgr_shutdown.log)
