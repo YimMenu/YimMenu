@@ -9,12 +9,6 @@ namespace big
 		g_looped_commands.push_back(this);
 	}
 
-	void looped_command::execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context>)
-	{
-		m_toggle = args[0];
-		refresh();
-	}
-
 	void looped_command::enable()
 	{
 		if (!m_toggle)

@@ -12,6 +12,9 @@ namespace big
 	public:
 		bool_command(const std::string& name, const std::string& label, const std::string& description, bool& toggle);
 		inline bool& is_enabled() { return m_toggle; }
+
 		virtual void refresh() {};
+		virtual void enable() { m_toggle = true; };
+		virtual void disable() { m_toggle = false; };
 	};
 }

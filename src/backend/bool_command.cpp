@@ -3,19 +3,46 @@
 namespace big
 {
 	bool_command::bool_command(const std::string& name, const std::string& label, const std::string& description, bool& toggle) :
-		command(name, label, description, 1),
+		command(name, label, description, std::nullopt),
 		m_toggle(toggle)
 	{
 	}
 
-	void bool_command::execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context>)
+	void bool_command::execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)
 	{
-		m_toggle = args[0];
+		if (args.size() == 0)
+		{
+			if (is_enabled())
+			{
+				m_toggle = false;
+				ctx->report_output(std::format("{} has been disabled", m_label));
+			}
+			else
+			{
+				m_toggle = true;
+				ctx->report_output(std::format("{} has been enabled", m_label));
+			}
+		}
+		else
+		{
+			m_toggle = args[0];
+		}
+
+		this->refresh();
 	}
 
 	std::optional<std::vector<std::uint64_t>> bool_command::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
 	{
 		std::vector<std::uint64_t> result;
+
+		if (args.size() == 0)
+			return result;
+
+		if (args.size() > 1)
+		{
+			ctx->report_error(std::format("Too many arguments passed to command {}, Expected 1 or less, got {}", m_name, args.size()));
+			return std::nullopt;
+		}
 
 		if (args[0] == "yes" || args[0] == "on" || args[0] == "enable" || args[0] == "true")
 		{

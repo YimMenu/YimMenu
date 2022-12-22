@@ -12,7 +12,7 @@ namespace big
 		std::string m_name;
 		std::string m_label;
 		std::string m_description;
-		std::uint8_t m_num_args;
+		std::optional<std::uint8_t> m_num_args;
 		bool m_fiber_pool;
 
 		virtual void execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) = 0;
@@ -20,7 +20,7 @@ namespace big
 		virtual CommandAccessLevel get_access_level() { return CommandAccessLevel::ADMIN; }
 
 	public:
-		command(const std::string& name, const std::string& label, const std::string& description, std::uint8_t num_args, bool fiber_pool = true);
+		command(const std::string& name, const std::string& label, const std::string& description, std::optional<std::uint8_t> num_args, bool fiber_pool = true);
 		inline const std::string& get_label() { return m_label; }
 		inline const std::string& get_description() { return m_description; }
 

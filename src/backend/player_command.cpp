@@ -3,7 +3,7 @@
 
 namespace big
 {
-	player_all_component::player_all_component(player_command* parent, const std::string& name, const std::string& label, const std::string& description, std::uint8_t num_args) :
+	player_all_component::player_all_component(player_command* parent, const std::string& name, const std::string& label, const std::string& description, std::optional<std::uint8_t> num_args) :
 		command(name + "all", label, description, num_args),
 		m_parent(parent)
 	{
@@ -13,7 +13,8 @@ namespace big
 	{
 		g_fiber_pool->queue_job([this, args, &ctx]
 		{
-			g_player_service->iterate([this, args, &ctx](const player_entry& player) {
+			g_player_service->iterate([this, args, &ctx](const player_entry& player)
+			{
 				m_parent->execute(player.second, args, ctx);
 			});
 		});
@@ -24,8 +25,8 @@ namespace big
 		return m_parent->parse_args_p(args, ctx);
 	}
 
-	player_command::player_command(const std::string& name, const std::string& label, const std::string& description, std::uint8_t num_args, bool make_all_version) :
-		command(name, label, description, num_args + 1)
+	player_command::player_command(const std::string& name, const std::string& label, const std::string& description, std::optional<std::uint8_t> num_args, bool make_all_version) :
+		command(name, label, description, num_args.has_value() ? std::optional{num_args.value() + 1} : std::nullopt)
 	{
 		if (make_all_version)
 			m_all_component = std::make_unique<player_all_component>(this, name, label, description, num_args);
@@ -102,7 +103,7 @@ namespace big
 			result.push_back(plyr_id);
 		}
 
-		for (int i = 1; i < m_num_args; i++)
+		for (int i = 1; i < args.size(); i++)
 			new_args.push_back(args[i]);
 
 		auto res = parse_args_p(new_args, ctx);
@@ -118,9 +119,9 @@ namespace big
 	void player_command::call(player_ptr player, const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)
 	{
 		// TODO: Code duplication
-		if (args.size() != (m_num_args - 1))
+		if (m_num_args.has_value() && args.size() != (m_num_args.value() - 1))
 		{
-			ctx->report_error(std::format("Command {} called with the wrong number of arguments. Expected {}, got {}", m_name, m_num_args, args.size()));
+			ctx->report_error(std::format("Command {} called with the wrong number of arguments. Expected {}, got {}", m_name, m_num_args.value(), args.size()));
 			return;
 		}
 
