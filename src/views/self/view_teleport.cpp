@@ -11,42 +11,17 @@ namespace big
 	{
 		ImGui::Text("Blips:");
 
-		components::button("Waypoint", []
-		{
-			teleport::to_waypoint();
-		});
-
-		components::button("Objective", []
-		{
-			teleport::to_objective();
-		});
+		components::command_button<"waypointtp">({}, "Waypoint");
+		ImGui::SameLine();
+		components::command_button<"objectivetp">({}, "Objective");
 
 		ImGui::Checkbox("Auto-Teleport To Waypoint", &g.self.auto_tp);
 
 		ImGui::Text("Vehicles:");
-
-		components::button("Teleport to Last Vehicle", []
-		{
-			if (g_local_player && g_local_player->m_vehicle)
-			{
-				const Vehicle veh = g_pointers->m_ptr_to_handle(g_local_player->m_vehicle);
-
-				teleport::into_vehicle(veh);
-			}
-		});
-
-		components::button("Bring Personal Vehicle", []
-		{
-			Vehicle veh = mobile::mechanic::get_personal_vehicle();
-
-			vehicle::bring(veh, self::pos);
-		});
-
-		components::button("Teleport to Personal Vehicle", []
-		{
-			Vehicle veh = mobile::mechanic::get_personal_vehicle();
-
-			teleport::into_vehicle(veh);
-		});
+		components::command_button<"lastvehtp">();
+		ImGui::SameLine();
+		components::command_button<"bringpv">();
+		ImGui::SameLine();
+		components::command_button<"pvtp">();
 	}
 }

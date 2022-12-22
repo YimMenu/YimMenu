@@ -1,54 +1,47 @@
-#include "backend/looped/looped.hpp"
-#include "pointers.hpp"
+#include "gta/enums.hpp"
+#include "natives.hpp"
+#include "backend/looped_command.hpp"
 
 namespace big
 {
-	static std::vector<std::pair<uint32_t, float>> og_spread_values{};
-	static uint32_t prev_weapon_hash{};
+    class no_spread : looped_command
+    {
+        using looped_command::looped_command;
 
-	bool is_spread_value_cached(uint32_t hash)
-	{
-		return std::find_if(og_spread_values.begin(), og_spread_values.end(), [hash](auto const entry)
+		CWeaponInfo* p_modified_weapon = nullptr;
+		float og_spread_value = 0.0f;
+
+        virtual void on_tick() override
+        {
+			if (!g_local_player)
 			{
-				return hash == entry.first;
-			}) != og_spread_values.end();
-	}
+				return;
+			}
 
-	float get_og_spread_value(uint32_t hash)
-	{
-		return std::find_if(og_spread_values.begin(), og_spread_values.end(), [hash](auto const entry)
+			auto* const weapon_mgr = g_local_player->m_weapon_manager;
+			if (weapon_mgr)
 			{
-				return hash == entry.first;
-			})->second;
-	}
-
-	float get_spread_value(uint32_t hash)
-	{
-		return g.weapons.no_spread
-			? 0.f
-			: get_og_spread_value(hash);
-	}
-
-	void looped::weapons_no_spread()
-	{
-		if (!g_local_player)
-		{
-			return;
-		}
-
-		auto* const weapon_mgr = g_local_player->m_weapon_manager;
-		if (weapon_mgr)
-		{
-			auto const cur_weapon_hash = weapon_mgr->m_selected_weapon_hash;
-			if (prev_weapon_hash != cur_weapon_hash)
-			{
-				if (!is_spread_value_cached(cur_weapon_hash))
+				if (p_modified_weapon != weapon_mgr->m_weapon_info && weapon_mgr->m_weapon_info)
 				{
-					og_spread_values.push_back({ cur_weapon_hash, weapon_mgr->m_weapon_info->m_accuracy_spread });
-				}
+					if (p_modified_weapon)
+						p_modified_weapon->m_accuracy_spread = og_spread_value;
 
-				weapon_mgr->m_weapon_info->m_accuracy_spread = get_spread_value(cur_weapon_hash);
+					og_spread_value = weapon_mgr->m_weapon_info->m_accuracy_spread;
+					p_modified_weapon = weapon_mgr->m_weapon_info;
+					weapon_mgr->m_weapon_info->m_accuracy_spread = 0.0f;
+				}
+			}
+        }
+
+		virtual void on_disable() override
+		{
+			if (g_local_player && p_modified_weapon)
+			{
+				p_modified_weapon->m_accuracy_spread = og_spread_value;
+				p_modified_weapon = nullptr;
 			}
 		}
-	}
+    };
+
+    no_spread g_no_spread("nospread", "No Spread", "Removes weapon spread when shooting", g.weapons.no_spread);
 }

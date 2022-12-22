@@ -15,8 +15,8 @@ namespace big
 
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("Infinite Ammo", &g.weapons.infinite_ammo);
-		ImGui::Checkbox("Infinite Clip", &g.weapons.infinite_mag);
+		components::command_checkbox<"infammo">();
+		components::command_checkbox<"infclip">();
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
@@ -29,7 +29,7 @@ namespace big
 			else
 				g_pointers->m_bypass_max_count_of_active_sticky_bombs->restore();
 		}
-		ImGui::Checkbox("Rapid Fire", &g.weapons.rapid_fire);
+		components::command_checkbox<"rapidfire">();
 
 		ImGui::EndGroup();
 
@@ -80,15 +80,11 @@ namespace big
 
 		components::sub_title("Misc");
 
-		ImGui::Checkbox("Force Crosshairs", &g.weapons.force_crosshairs);
-
+		components::command_checkbox<"crosshairs">();
 		ImGui::SameLine();
-
-		ImGui::Checkbox("No Recoil", &g.weapons.no_recoil);
-
+		components::command_checkbox<"norecoil">();
 		ImGui::SameLine();
-
-		ImGui::Checkbox("No Spread", &g.weapons.no_spread);
+		components::command_checkbox<"nospread">();
 
 		components::button("Get All Weapons", []
 		{

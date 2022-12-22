@@ -1,7 +1,6 @@
 #include "hotkey_service.hpp"
 #include "fiber_pool.hpp"
 #include "util/teleport.hpp"
-#include "hotkey_functions.hpp"
 #include "renderer.hpp"
 
 #include "network/ChatData.hpp"
@@ -11,9 +10,9 @@ namespace big
 {
     hotkey_service::hotkey_service()
     {
-        register_hotkey("waypoint", g.settings.hotkeys.teleport_waypoint, teleport::to_waypoint);
-        register_hotkey("objective", g.settings.hotkeys.teleport_objective, teleport::to_objective);
-        register_hotkey("noclip", g.settings.hotkeys.noclip, hotkey_funcs::toggle_noclip);
+        register_hotkey("waypoint", g.settings.hotkeys.teleport_waypoint, RAGE_JOAAT("waypointtp"));
+        register_hotkey("objective", g.settings.hotkeys.teleport_objective, RAGE_JOAAT("objectivetp"));
+        register_hotkey("noclip", g.settings.hotkeys.noclip, RAGE_JOAAT("noclip"));
 
         g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
         {
@@ -28,9 +27,9 @@ namespace big
         g_hotkey_service = nullptr;
     }
 
-    void hotkey_service::register_hotkey(const std::string_view name, key_t key, hotkey_func func, eKeyState state, std::optional<std::chrono::high_resolution_clock::duration> cooldown)
+    void hotkey_service::register_hotkey(const std::string_view name, key_t key, rage::joaat_t command_hash, eKeyState state, std::optional<std::chrono::high_resolution_clock::duration> cooldown)
     {
-        m_hotkeys[state == eKeyState::RELEASE].emplace(key, hotkey(rage::joaat(name), key, func, cooldown));
+        m_hotkeys[state == eKeyState::RELEASE].emplace(key, hotkey(rage::joaat(name), key, command_hash, cooldown));
     }
 
     bool hotkey_service::update_hotkey(const std::string_view name, const key_t key)

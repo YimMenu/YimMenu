@@ -1,21 +1,24 @@
-#include "backend/looped/looped.hpp"
 #include "natives.hpp"
+#include "backend/looped_command.hpp"
 
 namespace big
 {
-	static bool b_last_seatbelt = false;
-
-	void looped::vehicle_seatbelt()
+	class seatbelt : looped_command
 	{
-		bool b_seatbelt = g.vehicle.seatbelt;
+		using looped_command::looped_command;
 
-		if (b_seatbelt || (!b_seatbelt && b_seatbelt != b_last_seatbelt))
+		virtual void on_tick() override
 		{
-			PED::SET_PED_CONFIG_FLAG(self::ped, 32, g.vehicle.seatbelt);
-
-			PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(self::ped, g.vehicle.seatbelt);
-
-			b_last_seatbelt = g.vehicle.seatbelt;
+			PED::SET_PED_CONFIG_FLAG(self::ped, 32, true);
+			PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(self::ped, true);
 		}
-	}
+
+		virtual void on_disable() override
+		{
+			PED::SET_PED_CONFIG_FLAG(self::ped, 32, false);
+			PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(self::ped, false);
+		}
+	};
+
+	seatbelt g_seatbelt("seatbelt", "Seatbelt", "Prevent you from falling off bikes or flying through the windshield", g.vehicle.no_water_collision);
 }
