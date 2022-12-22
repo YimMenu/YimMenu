@@ -3,6 +3,7 @@
 #include "pointers.hpp"
 #include "services/players/player_service.hpp"
 #include "services/player_database/player_database_service.hpp"
+#include "services/api/api_service.hpp"
 #include "core/data/block_join_reasons.hpp"
 #include "core/data/infractions.hpp"
 #include "util/session.hpp"
@@ -107,6 +108,21 @@ namespace big
 				{
 					session::join_by_rockstar_id(current_player.rockstar_id);
 				});
+
+				static char message[256];
+				ImGui::InputText("Input Message", message, sizeof(message));
+				if (components::button("Send Message"))
+				{
+					g_thread_pool->push([selected]
+					{
+						if (g_api_service->send_socialclub_message(selected->rockstar_id, message))
+						{
+							g_notification_service->push("SCAPI", "Message successfully sent");
+							return;
+						}
+						g_notification_service->push_error("SCAPI", "Message not sent. Are you connected to the internet?");
+					});
+				};
 
 				if (ImGui::Button("Save"))
 				{
