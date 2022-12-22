@@ -83,20 +83,20 @@ namespace big
 				}
 			}
 
-			if (stricmp(g_player_service->get_self()->get_name(), args[0].c_str()) == 0 || (g.spoofing.spoof_username && stricmp(g_player_service->get_self()->get_name(), args[0].c_str()) == 0))
+			if (stricmp(g_player_service->get_self()->get_name(), args[0].c_str()) == 0 || (g.spoofing.spoof_username && stricmp(g.spoofing.username, args[0].c_str()) == 0))
 			{
 				plyr_id = g_player_service->get_self()->id();
+			}
+
+			if (ctx->get_access_level() != CommandAccessLevel::ADMIN && (get_access_level() == CommandAccessLevel::TOXIC || get_access_level() == CommandAccessLevel::AGGRESSIVE) && plyr_id == self::id)
+			{
+				ctx->report_error("Permission denied, cannot call toxic commands on me");
+				return std::nullopt;
 			}
 
 			if (plyr_id == -1)
 			{
 				ctx->report_error(std::format("Cannot find player with name {} in command {}", args[0], m_name));
-				return std::nullopt;
-			}
-
-			if (ctx->get_access_level() != CommandAccessLevel::ADMIN && (get_access_level() == CommandAccessLevel::TOXIC || get_access_level() == CommandAccessLevel::AGGRESSIVE) && plyr_id == self::id)
-			{
-				ctx->report_error("Permission denied, cannot call toxic commands on self");
 				return std::nullopt;
 			}
 
