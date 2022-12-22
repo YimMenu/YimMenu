@@ -103,6 +103,7 @@ namespace big
 
 	native_hooks::native_hooks()
 	{
+		add_native_detour(0x6D0DE6A7B5DA71F8, all_scripts::GET_PLAYER_NAME);
 		add_native_detour(0x812595A0644CE1DE, all_scripts::IS_DLC_PRESENT);
 		add_native_detour(0x1CA59E306ECB80A5, all_scripts::NETWORK_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT);
 		add_native_detour(0xD1110739EEADB592, all_scripts::NETWORK_TRY_TO_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT);
