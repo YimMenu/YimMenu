@@ -177,6 +177,7 @@ namespace big
 		MarkPlayerAsBeast = -2001677186, // GB_BOSSBST xref == PLAYER... global (sadly doesn't actually turn people into the beast)
 		KickFromInterior = 1454834612, // ENTITY::SET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID(), PED::GET_PED_MAX_HEALTH(PLAYER::PLAYER_PED_ID()), false)
 		InteriorControl = 1268038438, // eventData.f_3 != _INVALID_PLAYER_INDEX_0()
+		SMS = 1519903406,
 
 		Crash = -904555865, // SET_NO_LOADING_SCREEN, xref it
 		Crash2 = 1775863255,

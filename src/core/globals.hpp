@@ -113,42 +113,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(received_event, clear_ped_task, kick_vote, report_cash_spawn, modder_detect, request_control_event, vehicle_temp_action)
 			} received_event{};
 
-			struct script_event_handler
-			{
-				pair bounty{};
-				pair ceo_ban{};
-				pair ceo_kick{};
-				pair ceo_money{};
-				pair clear_wanted_level{};
-				pair crash{};
-				pair fake_deposit{};
-				pair force_mission{};
-				pair force_teleport{};
-				pair gta_banner{};
-				pair mc_teleport{};
-				pair network_bail{};
-				pair personal_vehicle_destroyed{};
-				pair remote_off_radar{};
-				pair rotate_cam{};
-				pair send_to_cutscene{};
-				pair send_to_location{};
-				pair sound_spam{};
-				pair spectate{};
-				pair switch_player_model{};
-				pair transaction_error{};
-				pair tse_freeze{};
-				pair tse_sender_mismatch{};
-				pair vehicle_kick{};
-				pair teleport_to_warehouse{};
-				pair start_activity{};
-				pair null_function_kick{};
-
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_event_handler,
-					bounty, ceo_ban, ceo_kick, clear_wanted_level, crash, fake_deposit, force_mission, force_teleport,
-					gta_banner, mc_teleport, network_bail, personal_vehicle_destroyed, remote_off_radar, rotate_cam,
-					send_to_cutscene, send_to_location, sound_spam, spectate, switch_player_model, transaction_error,
-					tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, start_activity, null_function_kick)
-			} script_event_handler{};
+			pair script_event_handler{};
 
 			pair gta_thread_kill{};
 			pair gta_thread_start{};
@@ -217,13 +182,14 @@ namespace big
 				bool vehicle_kick = true;
 				bool teleport_to_warehouse = true;
 				bool start_activity = true;
+				bool send_sms = true;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_events,
 					bounty, ceo_ban, ceo_kick, ceo_money, clear_wanted_level, crash, fake_deposit,
 					force_mission, force_teleport, gta_banner, mc_teleport, network_bail,
 					personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene,
 					send_to_location, sound_spam, spectate, switch_player_model, transaction_error,
-					vehicle_kick, teleport_to_warehouse, start_activity)
+					vehicle_kick, teleport_to_warehouse, start_activity, send_sms)
 			} script_events{};
 
 			bool script_host_kick = true;
