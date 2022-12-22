@@ -83,7 +83,7 @@ namespace big
 				}
 			}
 
-			if (stricmp(g_player_service->get_self()->get_name(), args[0].c_str()) == 0 || (g.spoofing.spoof_username && stricmp(g.spoofing.username, args[0].c_str()) == 0))
+			if (stricmp(g_player_service->get_self()->get_name(), args[0].c_str()) == 0 || (g.spoofing.spoof_username && stricmp(g.spoofing.username.c_str(), args[0].c_str()) == 0))
 			{
 				plyr_id = g_player_service->get_self()->id();
 			}
