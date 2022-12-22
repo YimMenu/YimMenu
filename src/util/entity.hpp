@@ -58,10 +58,10 @@ namespace big::entity
 
 	inline bool take_control_of(Entity ent, int timeout = 1000)
 	{
-		if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) 
+		if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) || !*g_pointers->m_is_session_started) 
 			return true;
 
-		for (uint8_t i = 0; !NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) && i < timeout; i++)
+		for (int i = 0; !NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) && i < timeout; i++)
 		{
 			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(ent);
 			script::get_current()->yield();

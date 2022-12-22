@@ -50,7 +50,7 @@ namespace big::ped
 		const int current_health = ENTITY::GET_ENTITY_HEALTH(self::ped);
 		const int current_armor = PED::GET_PED_ARMOUR(self::ped);
 
-		PLAYER::SET_PLAYER_MODEL(self::id , ENTITY::GET_ENTITY_MODEL(target));
+		PLAYER::SET_PLAYER_MODEL(self::id, ENTITY::GET_ENTITY_MODEL(target));
 		script::get_current()->yield();
 		PED::CLONE_PED_TO_TARGET(target, self::ped);
 		ENTITY::SET_ENTITY_MAX_HEALTH(self::ped, max_health);
