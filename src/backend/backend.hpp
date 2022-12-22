@@ -13,7 +13,6 @@ namespace big
 		static void turnsignal_loop();
 		static void misc_loop();
 		static void remote_loop();
-		static void noclip_loop();
 		static void lscustoms_loop();
 		static void rainbowpaint_loop();
 		static void vehiclefly_loop();

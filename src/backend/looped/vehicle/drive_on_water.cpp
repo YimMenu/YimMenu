@@ -24,7 +24,6 @@ namespace big
 			{
 				entity::take_control_of(surface);
 				ENTITY::SET_ENTITY_COORDS(surface, 0, 0, -1000.0f, 0, 0, 0, 1);
-				script::get_current()->yield(10ms);
 				ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&surface);
 				ENTITY::DELETE_ENTITY(&surface);
 				WATER::RESET_DEEP_OCEAN_SCALER();

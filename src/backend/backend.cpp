@@ -56,17 +56,11 @@ namespace big
 			looped::weapons_ammo_special_type();
 			looped::weapons_cage_gun();
 			looped::weapons_delete_gun();
-			looped::weapons_force_crosshairs();
 			looped::weapons_gravity_gun();
 			looped::weapons_increased_damage();
-			looped::weapons_infinite_ammo();
-			looped::weapons_infinite_mag();
-			looped::weapons_no_recoil();
-			looped::weapons_no_spread();
 			looped::weapons_repair_gun();
 			looped::weapons_steal_vehicle_gun();
 			looped::weapons_vehicle_gun();
-			looped::weapons_rapid_fire();
 
 			script::get_current()->yield();
 		}
@@ -126,16 +120,6 @@ namespace big
 			looped::player_spectate();
 			looped::player_remote_control_vehicle();
 
-			script::get_current()->yield();
-		}
-	}
-
-	void backend::noclip_loop()
-	{
-		LOG(INFO) << "Starting script: No clip";
-
-		while (g_running)
-		{
 			script::get_current()->yield();
 		}
 	}

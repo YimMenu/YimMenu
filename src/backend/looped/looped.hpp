@@ -45,16 +45,10 @@ namespace big
 		static void weapons_cage_gun();
 		static void custom_gun_disable_control_action();
 		static void weapons_delete_gun();
-		static void weapons_force_crosshairs();
 		static void weapons_gravity_gun();
 		static void weapons_increased_damage();
-		static void weapons_infinite_ammo();
-		static void weapons_infinite_mag();
-		static void weapons_no_recoil();
-		static void weapons_no_spread();
 		static void weapons_repair_gun();
 		static void weapons_steal_vehicle_gun();
 		static void weapons_vehicle_gun();
-		static void weapons_rapid_fire();
 	};
 }
