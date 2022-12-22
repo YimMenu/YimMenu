@@ -1,4 +1,5 @@
 #include "views/view.hpp"
+#include "fiber_pool.hpp"
 
 namespace big
 {
@@ -19,7 +20,13 @@ namespace big
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.69f, 0.29f, 0.29f, 1.00f));
 			if (components::nav_button("Unload"))
 			{
-				g_running = false;
+				g_fiber_pool->queue_job([]
+				{
+					for (auto& command : g_looped_commands)
+						command->on_disable();
+
+					g_running = false;
+				});
 			}
 			ImGui::PopStyleColor();
 		}

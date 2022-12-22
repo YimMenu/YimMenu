@@ -66,6 +66,7 @@ namespace big
 		if (!m_self_ptr || !m_self_ptr->equals(*m_self))
 		{
 			m_self_ptr = std::make_shared<player>(*m_self);
+			m_self_ptr->command_access_level = CommandAccessLevel::ADMIN;
 		}
 
 		return m_self_ptr;
