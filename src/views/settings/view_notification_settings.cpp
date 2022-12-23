@@ -18,7 +18,7 @@ namespace big
 
 		draw_pair_option("Terminate", g.notifications.gta_thread_kill);
 		draw_pair_option("Start", g.notifications.gta_thread_start);
-		
+
 		components::sub_title("Network Player Manager");
 
 		ImGui::Text("Player Join");
@@ -54,10 +54,53 @@ namespace big
 
 		auto& script_event_handler = g.notifications.script_event_handler;
 
-		draw_pair_option("All", script_event_handler);
+		ImGui::BeginGroup();
+		draw_pair_option("Bounty", script_event_handler.bounty);
+		draw_pair_option("CEO Ban", script_event_handler.ceo_ban);
+		draw_pair_option("CEO Kick", script_event_handler.ceo_kick);
+		draw_pair_option("CEO Money", script_event_handler.ceo_money);
+		draw_pair_option("Destroy Personal Vehicle", script_event_handler.personal_vehicle_destroyed);
+		draw_pair_option("Fake Deposit", script_event_handler.fake_deposit);
+		draw_pair_option("Force Mission", script_event_handler.force_mission);
+		draw_pair_option("Force Teleport", script_event_handler.force_teleport);
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
+		draw_pair_option("GTA Banner", script_event_handler.gta_banner);
+		draw_pair_option("MC Teleport", script_event_handler.mc_teleport);
+		draw_pair_option("Network Bail", script_event_handler.network_bail);
+		draw_pair_option("Remote Off Radar", script_event_handler.remote_off_radar);
+		draw_pair_option("Rotate Cam", script_event_handler.rotate_cam);
+		draw_pair_option("Send to Cutscene", script_event_handler.send_to_cutscene);
+		draw_pair_option("Send to Location", script_event_handler.send_to_location);
+		draw_pair_option("Sound Spam", script_event_handler.sound_spam);
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
+		draw_pair_option("Spectate", script_event_handler.spectate);
+		draw_pair_option("Transaction Error", script_event_handler.transaction_error);
+		draw_pair_option("TSE Crash", script_event_handler.crash);
+		draw_pair_option("TSE Freeze", script_event_handler.tse_freeze);
+		draw_pair_option("TSE Sender Mismatch", script_event_handler.tse_sender_mismatch);
+		draw_pair_option("Vehicle Kick", script_event_handler.vehicle_kick);
+		draw_pair_option("Wanted Level", script_event_handler.clear_wanted_level);
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
+		draw_pair_option("Teleport To Warehouse", script_event_handler.teleport_to_warehouse);
+		draw_pair_option("Start Activity", script_event_handler.start_activity);
+		draw_pair_option("Null Function Kick", script_event_handler.null_function_kick);
+		draw_pair_option("Send SMS", script_event_handler.send_sms);
+		ImGui::EndGroup();
 
 		components::sub_title("Other");
-		
+
 		draw_pair_option("Reports", g.notifications.reports);
 		draw_pair_option("Transaction Error / Rate Limit", g.notifications.transaction_rate_limit);
 		draw_pair_option("Mismatch sync type", g.notifications.mismatch_sync_type);
