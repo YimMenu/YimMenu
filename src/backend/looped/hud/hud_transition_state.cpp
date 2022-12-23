@@ -2,8 +2,8 @@
 #include "natives.hpp"
 #include "script_global.hpp"
 #include "gta/joaat.hpp"
-#include "util/kick.hpp"
 #include "services/players/player_service.hpp"
+#include "core/scr_globals.hpp"
 
 // Credits: QuickNET
 namespace big

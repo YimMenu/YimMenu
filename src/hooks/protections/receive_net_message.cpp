@@ -4,7 +4,12 @@
 #include "gta_util.hpp"
 #include "util/session.hpp"
 #include "util/spam.hpp"
-#include "util/kick.hpp"
+#include "backend/command.hpp"
+#include "backend/context/chat_command_context.hpp"
+#include "gta/net_game_event.hpp"
+#include "gta/script_id.hpp"
+#include "backend/player_command.hpp"
+
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
 
@@ -85,13 +90,18 @@ namespace big
 							spam::log_chat(message, player, true);
 						player->is_spammer = true;
 						if (g.session.kick_chat_spammers)
-							kick::breakup_kick(player);
+						{
+							((player_command*)command::get(RAGE_JOAAT("breakup")))->call(player, {});
+						}
 						return true;
 					}
 					else
 					{
 						if (g.session.log_chat_messages)
 							spam::log_chat(message, player, false);
+
+						if (g.session.chat_commands && message[0] == g.session.chat_command_prefix)
+							command::process(std::string(message + 1), std::make_shared<chat_command_context>(player));
 					}
 					break;
 				}
@@ -131,8 +141,17 @@ namespace big
 
 					if (player && pl && player->id() != pl->id() && count == 1 && frame->m_msg_id == -1)
 					{
-						g_notification_service->push_error("Warning!", std::format("{} breakup kicked {}!", player->get_name(), pl->get_name()));
-						session::add_infraction(player, Infraction::BREAKUP_KICK_DETECTED);
+						if (g_player_service->get_self()->is_host())
+						{
+							g_notification_service->push_error("Warning!", std::format("{} tried to breakup kick {}!", player->get_name(), pl->get_name()));
+							session::add_infraction(player, Infraction::BREAKUP_KICK_DETECTED);
+							return true;
+						}
+						else
+						{
+							g_notification_service->push_error("Warning!", std::format("{} breakup kicked {}!", player->get_name(), pl->get_name()));
+							session::add_infraction(player, Infraction::BREAKUP_KICK_DETECTED);
+						}
 					}
 
 					break;

@@ -1,24 +1,26 @@
 #include "backend/looped/looped.hpp"
+#include "fiber_pool.hpp"
+#include "natives.hpp"
+#include "backend/looped_command.hpp"
 
 namespace big
 {
-	static bool bLastSelfNoWaterCollsion = false;
-
-	void looped::self_no_water_collision()
+	class no_water_collision : looped_command
 	{
-		if (g_local_player == nullptr) return;
+		using looped_command::looped_command;
 
-		bool bNoWaterCollsion = g.self.no_water_collision;
+		virtual void on_tick() override
+		{
+			if (g_local_player)
+				g_local_player->m_navigation->m_damp->m_water_collision = 0;
+		}
 
-		if (bNoWaterCollsion)
+		virtual void on_disable() override
 		{
-			g_local_player->m_navigation->m_damp->m_water_collision = 0;
-			bLastSelfNoWaterCollsion = bNoWaterCollsion;
+			if (g_local_player)
+				g_local_player->m_navigation->m_damp->m_water_collision = 1;
 		}
-		else if (bNoWaterCollsion != bLastSelfNoWaterCollsion)
-		{
-			g_local_player->m_navigation->m_damp->m_water_collision = 1;
-			bLastSelfNoWaterCollsion = bNoWaterCollsion;
-		}
-	}
+	};
+
+	no_water_collision g_no_water_collision("walkunder", "Walk Underwater", "Allows you to walk and shoot underwater", g.self.no_water_collision);
 }

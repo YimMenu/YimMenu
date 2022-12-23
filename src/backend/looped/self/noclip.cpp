@@ -3,10 +3,11 @@
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/entity.hpp"
+#include "backend/looped_command.hpp"
 
 namespace big
 {
-	static const ControllerInputs controls[] =
+	static constexpr ControllerInputs controls[] =
 	{
 		ControllerInputs::INPUT_SPRINT,
 		ControllerInputs::INPUT_MOVE_UP_ONLY,
@@ -16,41 +17,32 @@ namespace big
 		ControllerInputs::INPUT_DUCK
 	};
 
-	static float speed = 20.f;
-	static float mult = 0.f;
+	static constexpr float speed = 20.f;
 
-	static bool bLastNoclip = false;
-
-	static Entity prev = -1;
-	static Vector3 rot{};
-
-	void looped::self_noclip_disable_control_action()
+	class noclip : looped_command
 	{
-		if (g.self.noclip)
+		using looped_command::looped_command;
+
+		Entity m_entity;
+		float m_speed_multiplier;
+
+		virtual void on_tick() override
 		{
 			for (const auto& control : controls)
 				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(control), true);
-		}
-	}
 
-	void looped::self_noclip()
-	{
-		const auto bNoclip = g.self.noclip;
+			const auto location = self::pos;
+			const Entity ent = (self::veh != 0 && g_local_player->m_ped_task_flag & (int)ePedTask::TASK_DRIVING) ? self::veh : self::ped;
 
-		const auto location = self::pos;
-		const Entity ent = (self::veh != 0 && g_local_player->m_ped_task_flag & (int)ePedTask::TASK_DRIVING) ? self::veh : self::ped;
+			// cleanup when changing entities
+			if (m_entity != ent)
+			{
+				ENTITY::FREEZE_ENTITY_POSITION(m_entity, false);
+				ENTITY::SET_ENTITY_COLLISION(m_entity, true, true);
 
-		// cleanup when changing entities
-		if (prev != ent)
-		{
-			ENTITY::FREEZE_ENTITY_POSITION(prev, false);
-			ENTITY::SET_ENTITY_COLLISION(prev, true, true);
+				m_entity = ent;
+			}
 
-			prev = ent;
-		}
-
-		if (bNoclip)
-		{
 			Vector3 vel = { 0.f, 0.f, 0.f };
 
 			// Left Shift
@@ -72,20 +64,19 @@ namespace big
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_RIGHT_ONLY))
 				vel.x += speed;
 
-			rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
+			auto rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
 			ENTITY::SET_ENTITY_ROTATION(ent, 0.f, rot.y, rot.z, 2, 0);
 			ENTITY::SET_ENTITY_COLLISION(ent, false, false);
 			if (vel.x == 0.f && vel.y == 0.f && vel.z == 0.f)
 			{
 				// freeze entity to prevent drifting when standing still
 				ENTITY::FREEZE_ENTITY_POSITION(ent, true);
-
-				mult = 0.f;
+				m_speed_multiplier = 0.f;
 			}
 			else
 			{
-				if (mult < 20.f)
-					mult += 0.15f;
+				if (m_speed_multiplier < 20.f)
+					m_speed_multiplier += 0.15f;
 
 				ENTITY::FREEZE_ENTITY_POSITION(ent, false);
 
@@ -93,18 +84,19 @@ namespace big
 				vel.x = offset.x - location.x;
 				vel.y = offset.y - location.y;
 
-				ENTITY::SET_ENTITY_VELOCITY(ent, vel.x * mult, vel.y * mult, vel.z * mult);
-			}
-		}
-		else if (bNoclip != bLastNoclip)
-		{
-			if (entity::take_control_of(ent))
-			{
-				ENTITY::FREEZE_ENTITY_POSITION(ent, false);
-				ENTITY::SET_ENTITY_COLLISION(ent, true, false);
+				ENTITY::SET_ENTITY_VELOCITY(ent, vel.x * m_speed_multiplier, vel.y * m_speed_multiplier, vel.z * m_speed_multiplier);
 			}
 		}
 
-		bLastNoclip = bNoclip;
-	}
+		virtual void on_disable() override
+		{
+			if (entity::take_control_of(m_entity))
+			{
+				ENTITY::FREEZE_ENTITY_POSITION(m_entity, false);
+				ENTITY::SET_ENTITY_COLLISION(m_entity, true, false);
+			}
+		}
+	};
+
+	noclip g_noclip("noclip", "No Clip", "Allows you to fly through the map", g.self.noclip);
 }

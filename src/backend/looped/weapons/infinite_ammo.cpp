@@ -1,19 +1,25 @@
-#include "backend/looped/looped.hpp"
 #include "natives.hpp"
+#include "backend/looped_command.hpp"
 
 namespace big
 {
-	static bool bLastInfiniteAmmo = false;
-
-	void looped::weapons_infinite_ammo()
+	class infinite_ammo : looped_command
 	{
-		bool bInfiniteAmmo = g.weapons.infinite_ammo;
+		using looped_command::looped_command;
 
-		if (bInfiniteAmmo || (!bInfiniteAmmo && bInfiniteAmmo != bLastInfiniteAmmo))
+		CWeaponInfo* p_modified_weapon = nullptr;
+		float og_recoil_value = 0.0f;
+
+		virtual void on_tick() override
 		{
-			WEAPON::SET_PED_INFINITE_AMMO(self::ped, g.weapons.infinite_ammo, NULL);
-
-			bLastInfiniteAmmo = g.weapons.infinite_ammo;
+			WEAPON::SET_PED_INFINITE_AMMO(self::ped, TRUE, NULL);
 		}
-	}
+
+		virtual void on_disable() override
+		{
+			WEAPON::SET_PED_INFINITE_AMMO(self::ped, FALSE, NULL);
+		}
+	};
+
+	infinite_ammo g_infinite_ammo("infammo", "Infinite Ammo", "Never run out of ammo again", g.weapons.no_recoil);
 }

@@ -8,7 +8,9 @@
 #include "util/toxic.hpp"
 #include "core/data/apartment_names.hpp"
 #include "core/data/warehouse_names.hpp"
+#include "core/data/command_access_levels.hpp"
 #include <network/Network.hpp>
+#include "hooking.hpp"
 
 namespace big
 {
@@ -93,12 +95,34 @@ namespace big
 		ImGui::SameLine();
 		components::button("Send", []
 		{
-            if(const auto net_game_player = gta_util::get_network_player_mgr()->m_local_net_player; net_game_player)
+            if (const auto net_game_player = gta_util::get_network_player_mgr()->m_local_net_player; net_game_player)
 			{
-                if(g_pointers->m_send_chat_message(*g_pointers->m_send_chat_ptr, net_game_player->get_net_data(), msg, g.session.is_team))
+                if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_send_chat_ptr, net_game_player->get_net_data(), msg, g.session.is_team))
 					notify::draw_chat(msg, net_game_player->get_name(), g.session.is_team);
 			}
 		});
+
+		ImGui::Checkbox("Chat Commands", &g.session.chat_commands);
+		if (g.session.chat_commands)
+		{
+			if (ImGui::BeginCombo("Default Command Permissions", COMMAND_ACCESS_LEVELS[g.session.chat_command_default_access_level]))
+			{
+				for (const auto& [type, name] : COMMAND_ACCESS_LEVELS)
+				{
+					if (ImGui::Selectable(name, type == g.session.chat_command_default_access_level))
+					{
+						g.session.chat_command_default_access_level = type;
+					}
+
+					if (type == g.session.chat_command_default_access_level)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+
+				ImGui::EndCombo();
+			}
+		}
 
 		components::sub_title("Decloak");
 		components::script_patch_checkbox("Reveal OTR Players", &g.session.decloak_players);
@@ -175,25 +199,25 @@ namespace big
 			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = global_wanted_level;
 		}
 
-		components::button("Kill Everyone", [] { g_player_service->iterate([](auto& plyr) { toxic::kill_player(plyr.second, g_player_service->get_self()); }); });
+		components::command_button<"killall">({ }, "Kill Everyone");
 
 		ImGui::SameLine();
 
-		components::button("Turn Everyone Into Beast", [] { toxic::turn_everyone_into_beast(); });
+
+		components::command_button<"beastall">({ });
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Including you");
 
-		components::button("Give All Weapons", [] { g_player_service->iterate([](auto& plyr) { toxic::give_all_weapons(plyr.second); script::get_current()->yield(450ms); }); });
+		components::command_button<"giveweapsall">({ });
 		ImGui::SameLine();
-		components::button("Remove All Weapons", [] { g_player_service->iterate([](auto& plyr) { toxic::remove_all_weapons(plyr.second); }); });
+		components::command_button<"remweapsall">({ });
 
-		components::button("CEO Kick", [] { 
-			g_player_service->iterate([](auto& plyr) 
-			{
-				if (*scr_globals::gpbd_fm_3.at(plyr.second->id(), scr_globals::size::gpbd_fm_3).at(10).as<int*>() != -1)
-					toxic::ceo_kick(plyr.second); 
-			}); 
-		});
+		components::command_button<"ceokickall">( { });
+		ImGui::SameLine();
+		components::command_button<"vehkickall">({ });
+
+		components::command_button<"ragdollall">({ }, "Ragdoll Players");
+		components::command_button<"intkickall">({ }, "Kick Everyone From Interiors");
 
 		components::small_text("Teleports");
 
@@ -217,7 +241,7 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::button("TP All To Apartment", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_apartment(plyr.second, g.session.send_to_apartment_idx); }); });
+		components::command_button<"apartmenttpall">({ (uint64_t)g.session.send_to_apartment_idx }, "TP All To Apartment");
 
 		if (ImGui::BeginCombo("##warehouse", warehouse_names[g.session.send_to_warehouse_idx]))
 		{
@@ -239,7 +263,7 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::button("TP All To Warehouse", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_warehouse(plyr.second, g.session.send_to_warehouse_idx); }); });
+		components::command_button<"warehousetpall">({ (uint64_t)g.session.send_to_warehouse_idx }, "TP All To Warehouse");
 
 		components::button("TP All To Darts", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::Darts); }); });
 		ImGui::SameLine();
@@ -249,27 +273,25 @@ namespace big
 
 		components::button("TP All To Skydive", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::Skydive); }); });
 		ImGui::SameLine();
-		components::button("TP All To Cayo Perico", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_island(plyr.second); }); });
-		ImGui::SameLine();
-		components::button("TP All To MOC", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 81); }); });
+		components::command_button<"interiortpall">({ 81 }, "TP All To MOC");
 
-		components::button("TP All To Casino", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 123); }); });
+		components::command_button<"interiortpall">({ 123 }, "TP All To Casino");
 		ImGui::SameLine();
-		components::button("TP All To Penthouse", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 124); }); });
+		components::command_button<"interiortpall">({ 124 }, "TP All To Penthouse");
 		ImGui::SameLine();
-		components::button("TP All To Arcade", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 128); }); });
+		components::command_button<"interiortpall">({ 128 }, "TP All To Arcade");
 
-		components::button("TP All To Music Locker", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 146); }); });
+		components::command_button<"interiortpall">({ 146 }, "TP All To Music Locker");
 		ImGui::SameLine();
-		components::button("TP All To Record A Studios", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 148); }); });
+		components::command_button<"interiortpall">({ 148 }, "TP All To Record A Studios");
 		ImGui::SameLine();
-		components::button("TP All To Custom Auto Shop", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 149); }); });
+		components::command_button<"interiortpall">({ 149 }, "TP All To Custom Auto Shop");
 
-		components::button("TP All To Agency", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 155); }); });
+		components::command_button<"interiortpall">({ 155 }, "TP All To Agency");
 		ImGui::SameLine();
-		components::button("TP All To Freakshop", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 160); }); });
+		components::command_button<"interiortpall">({ 160 }, "TP All To Freakshop");
 		ImGui::SameLine();
-		components::button("TP All To Multi-Floor Garage", [] { g_player_service->iterate([](auto& plyr) { toxic::send_player_to_interior(plyr.second, 161); }); });
+		components::command_button<"interiortpall">({ 161 }, "TP All To Multi Floor Garage");
 
 		components::sub_title("Event Starter");
 		

@@ -6,6 +6,7 @@
 #include "services/api/api_service.hpp"
 #include "core/data/block_join_reasons.hpp"
 #include "core/data/infractions.hpp"
+#include "core/data/command_access_levels.hpp"
 #include "util/session.hpp"
 
 namespace big
@@ -93,6 +94,24 @@ namespace big
 				if (ImGui::IsItemHovered())
 					ImGui::SetTooltip("Only works as host");
 
+
+				if (ImGui::BeginCombo("Chat Command Permissions", COMMAND_ACCESS_LEVELS[current_player.command_access_level.value_or(g.session.chat_command_default_access_level)]))
+				{
+					for (const auto& [type, name] : COMMAND_ACCESS_LEVELS)
+					{
+						if (ImGui::Selectable(name, type == current_player.command_access_level.value_or(g.session.chat_command_default_access_level)))
+						{
+							current_player.command_access_level = type;
+						}
+
+						if (type == current_player.command_access_level.value_or(g.session.chat_command_default_access_level))
+						{
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+
+					ImGui::EndCombo();
+				}
 
 				if (!current_player.infractions.empty())
 				{

@@ -19,9 +19,9 @@ namespace big
 			}
 		}
 		ImGui::SameLine();
-		ImGui::Checkbox("Spawn In", &g.spawn_vehicle.spawn_inside);
+		components::command_checkbox<"spawnin">();
 		ImGui::SameLine();
-		ImGui::Checkbox("Spawn Maxed", &g.spawn_vehicle.spawn_maxed);
+		components::command_checkbox<"spawnmaxed">();
 
 		static char plate_buf[9] = { 0 };
 		strncpy(plate_buf, g.spawn_vehicle.plate.c_str(), 9);

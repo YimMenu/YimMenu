@@ -305,6 +305,12 @@ namespace big
 			std::string spoofed_name = "";
 			bool join_in_sctv_slots = false;
 
+			const char chat_command_prefix = '/';
+			const char chat_output_prefix = '>';
+
+			bool chat_commands = false;
+			CommandAccessLevel chat_command_default_access_level = CommandAccessLevel::FRIENDLY;
+
 			bool kick_chat_spammers = false;
 			bool kick_host_when_forcing_host = false;
 
@@ -334,7 +340,8 @@ namespace big
 				log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled,
 				player_magnet_count, is_team, name_spoof_enabled, advertise_menu, spoofed_name, join_in_sctv_slots,
 				kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic,
-				disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, send_to_apartment_idx, send_to_warehouse_idx)
+				disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, send_to_apartment_idx, send_to_warehouse_idx,
+				chat_commands, chat_command_default_access_level)
 		} session{};
 
 		struct settings
@@ -387,9 +394,11 @@ namespace big
 		struct spoofing
 		{
 			bool spoof_username = false;
+			bool spoof_local_username = false;
 			std::string username = "";
 
-			bool spoof_ip = true;
+			// enabling this by default causes confusion and many get dropped out of their sessions
+			bool spoof_ip = false;
 			std::array<int, 4> ip_address = { 42, 42, 42, 42 };
 
 			bool spoof_rockstar_id = false;
@@ -420,10 +429,10 @@ namespace big
 			uint64_t applied_spoof_rockstar_id = 0;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing,
-				spoof_username, username, spoof_ip, ip_address, spoof_rockstar_id, rockstar_id, spoof_cheater,
-				spoof_hide_god, spoof_hide_spectate, spoof_rockstar_dev, spoof_rockstar_qa, spoof_crew_data,
-				crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type,
-				spoof_session_language, session_language, spoof_session_player_count, session_player_count)
+				spoof_username, spoof_local_username, username, spoof_ip, ip_address, spoof_rockstar_id, rockstar_id,
+				spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_rockstar_dev, spoof_rockstar_qa, spoof_crew_data,
+				crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language,
+				session_language, spoof_session_player_count, session_player_count)
 		} spoofing{};
 
 		struct vehicle
@@ -482,7 +491,7 @@ namespace big
 			bool drive_on_water = false;
 			bool horn_boost = false;
 			bool instant_brake = false;
-			bool is_targetable = true;
+			bool block_homing = true;
 			bool ls_customs = false; // don't save this to disk
 			bool seatbelt = false;
 			bool turn_signals = false;
@@ -496,7 +505,7 @@ namespace big
 				speedo_meter, fly, rainbow_paint, speed_unit, god_mode,
 				proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask,
 				auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior,
-				drive_on_water, horn_boost, instant_brake, is_targetable, seatbelt, turn_signals, vehicle_jump,
+				drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump,
 				keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately)
 		} vehicle{};
 
