@@ -56,7 +56,7 @@ namespace big
 
 		detour_hook_helper::add<hooks::received_clone_create>("RCC", g_pointers->m_received_clone_create);
 		detour_hook_helper::add<hooks::received_clone_sync>("RCS", g_pointers->m_received_clone_sync);
-		// detour_hook_helper::add<hooks::can_apply_data>("CAD", g_pointers->m_can_apply_data);
+		detour_hook_helper::add<hooks::can_apply_data>("CAD", g_pointers->m_can_apply_data);
 
 		detour_hook_helper::add<hooks::get_network_event_data>("GNED", g_pointers->m_get_network_event_data);
 		detour_hook_helper::add<hooks::write_player_gamer_data_node>("WPGDN", g_pointers->m_write_player_gamer_data_node);
