@@ -43,6 +43,11 @@ namespace big::mobile
 		{
 			*script_global(scr_globals::mechanic_global).at(888).as<int*>() = 1;
 		}
+
+		inline void request_helicopter_backup()
+		{
+			*script_global(scr_globals::mechanic_global).at(4484).as<int*>() = 1;
+		}
 	}
 
 	namespace mors_mutual
