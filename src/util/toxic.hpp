@@ -153,7 +153,7 @@ namespace big::toxic
 		const size_t arg_count = 3;
 		int64_t args[arg_count] =
 		{
-			(int64_t)-910497748,
+			(int64_t)eRemoteEvent::SendToCayoPerico,
 			(int64_t)self::id,
 			(int64_t)1
 		};
