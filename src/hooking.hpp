@@ -111,6 +111,7 @@ namespace big
 
 		static bool add_player_to_session(rage::netConnectionManager* mgr, int receiver_msg_id, int* out_command_hndl, RemoteGamerInfoMsg* msg, int flags, void* unk);
 		static bool send_chat_net_message(rage::netConnectionManager* mgr, int receiver_msg_id, CMsgTextMessage* msg, int flags, void* unk);
+		static bool send_chat_message(void* team_mgr, rage::rlGamerInfo* local_gamer_info, char* message, bool is_team);
 
 		static bool process_matchmaking_find_response(void* _this, void* unused, rage::JSONNode* node, int* unk);
 

@@ -26,14 +26,6 @@ namespace big
 
 		const auto& notify = g.notifications.script_event_handler;
 
-		// detect pasted menus setting args[1] to something other than PLAYER_ID()
-		if (*(int*)&args[1] != player->m_player_id && player->m_player_id != -1)
-		{
-			LOG(INFO) << "Hash = " << (int)args[0];
-			format_string(player_name, "TSE sender mismatch", notify.tse_sender_mismatch.log, notify.tse_sender_mismatch.notify);
-			return true;
-		}
-
 		switch (hash)
 		{
 		case eRemoteEvent::Bounty:
@@ -341,6 +333,14 @@ namespace big
 				return true;
 			}
 			break;
+		}
+
+		// detect pasted menus setting args[1] to something other than PLAYER_ID()
+		if (*(int*)&args[1] != player->m_player_id && player->m_player_id != -1)
+		{
+			LOG(INFO) << "Hash = " << (int)args[0];
+			format_string(player_name, "TSE sender mismatch", notify.tse_sender_mismatch.log, notify.tse_sender_mismatch.notify);
+			return true;
 		}
 
 		if (g.debug.logs.script_event.logs && (!g.debug.logs.script_event.filter_player || g.debug.logs.script_event.player_id == player->m_player_id))

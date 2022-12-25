@@ -77,6 +77,7 @@ namespace big
 		detour_hook_helper::add<hooks::sort_session_details>("SSD", (void*)g_pointers->m_sort_session_details);
 
 		detour_hook_helper::add<hooks::add_player_to_session>("APTS", (void*)g_pointers->m_add_player_to_session);
+		detour_hook_helper::add<hooks::send_chat_message>("SCM", (void*)g_pointers->m_send_chat_message);
 		detour_hook_helper::add<hooks::send_chat_net_message>("SCNM", (void*)g_pointers->m_send_chat_net_message);
 
 		detour_hook_helper::add<hooks::process_matchmaking_find_response>("PMFR", (void*)g_pointers->m_process_matchmaking_find_response);

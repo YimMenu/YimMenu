@@ -1,7 +1,7 @@
 #include "backend/looped/looped.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "util/kick.hpp"
+#include "backend/player_command.hpp"
 
 namespace big
 {
@@ -14,7 +14,9 @@ namespace big
 			g_player_service->iterate([](auto& plyr)
 			{
 				if (plyr.second->is_host())
-					kick::lost_connection_kick(plyr.second);
+				{
+					((player_command*)(command::get(RAGE_JOAAT("lckick"))))->call(plyr.second, {});
+				}
 			});
 		}
 		bLastKickHost = kick_host;

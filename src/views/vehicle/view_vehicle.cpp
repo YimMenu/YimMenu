@@ -20,7 +20,7 @@ namespace big
 		});
 
 		ImGui::SameLine();
-		ImGui::Checkbox("Keep Vehicle Repaired", &g.vehicle.keep_vehicle_repaired);
+		components::command_checkbox<"keepfixed">();
 
 		ImGui::Separator();
 
@@ -67,29 +67,30 @@ namespace big
 		components::sub_title("General");
 		{
 			ImGui::BeginGroup();
+
 			ImGui::Checkbox("God Mode", &g.vehicle.god_mode);
-			ImGui::Checkbox("Horn Boost", &g.vehicle.horn_boost);
-			ImGui::Checkbox("Vehicle Jump", &g.vehicle.vehicle_jump);
+			components::command_checkbox<"hornboost">();
+			components::command_checkbox<"vehjump">();
 
 			ImGui::EndGroup();
 			ImGui::SameLine();
 			ImGui::BeginGroup();
 
-			ImGui::Checkbox("Instant Brake", &g.vehicle.instant_brake);
-			ImGui::Checkbox("Can Be Targeted", &g.vehicle.is_targetable);
-			ImGui::Checkbox("Drive On Water", &g.vehicle.drive_on_water);
+			components::command_checkbox<"instantbrake">();
+			components::command_checkbox<"blockhoming">();
+			components::command_checkbox<"driveonwater">();
 
 			ImGui::EndGroup();
 			ImGui::SameLine();
 			ImGui::BeginGroup();
 
-			ImGui::Checkbox("Seatbelt", &g.vehicle.seatbelt);
+			components::command_checkbox<"seatbelt">();
 			ImGui::Checkbox("Turn Signals", &g.vehicle.turn_signals);
 			if (g.vehicle.turn_signals)
 			{
 				ImGui::Checkbox("Fully Automatic Signal", &g.vehicle.auto_turn_signals);
 			}
-			ImGui::Checkbox("No Water Collision", &g.vehicle.no_water_collision);
+			components::command_checkbox<"driveunder">();
 
 			ImGui::EndGroup();
 		}

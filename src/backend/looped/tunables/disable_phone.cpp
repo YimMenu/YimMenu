@@ -1,10 +1,23 @@
-#include "backend/looped/looped.hpp"
-#include "script_global.hpp"
+#include "natives.hpp"
+#include "backend/looped_command.hpp"
+#include "core/scr_globals.hpp"
 
 namespace big
 {
-	void looped::tunables_disable_phone()
+	class disable_phone : looped_command
 	{
-		*script_global(20366).as<bool*>() = g.tunables.disable_phone; // Who even uses that...
-	}
+		using looped_command::looped_command;
+
+		virtual void on_tick() override
+		{
+			*script_global(20366).as<bool*>() = true;
+		}
+
+		virtual void on_disable() override
+		{
+			*script_global(20366).as<bool*>() = false;
+		}
+	};
+
+	disable_phone g_disable_phone("nophone", "Disable Phone", "Blocks phone and stops all phone calls", g.tunables.disable_phone);
 }

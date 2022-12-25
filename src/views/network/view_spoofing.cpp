@@ -9,15 +9,20 @@ namespace big
 {
 	void view::spoofing()
 	{
-		components::small_text("To spoof any of the below credentials you need to reconnect with the lobby.");
-
-		components::sub_title("Username");
-
 		g_fiber_pool->queue_job([] {
 			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 		});
 
+		components::small_text("To spoof any of the below credentials you need to reconnect with the lobby.\nAll spoofed details will be only visible by other players, your game will still show your actual name, ip, rid...");
+
+		components::sub_title("Username");
+
 		ImGui::Checkbox("Spoof Username", &g.spoofing.spoof_username);
+		if (g.spoofing.spoof_username)
+		{
+			ImGui::SameLine();
+			ImGui::Checkbox("Spoof Username Locally", &g.spoofing.spoof_local_username);
+		}
 
 		constexpr size_t name_size = RTL_FIELD_SIZE(rage::rlGamerInfo, m_name);
 		static char name[name_size];
@@ -33,11 +38,9 @@ namespace big
 
 		components::sub_title("IP Address");
 
-		g_fiber_pool->queue_job([] {
-			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-		});
-
 		ImGui::Checkbox("Spoof IP", &g.spoofing.spoof_ip);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Disable this feature if you're having trouble joining sessions.");
 
 		ImGui::Text("IP Address:");
 		ImGui::DragInt4("##ip_fields", g.spoofing.ip_address.data(), 0, 255);
@@ -45,10 +48,6 @@ namespace big
 		ImGui::Separator();
 
 		components::sub_title("Rockstar ID");
-
-		g_fiber_pool->queue_job([] {
-			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-		});
 
 		ImGui::Checkbox("Spoof Rockstar ID", &g.spoofing.spoof_rockstar_id);
 
@@ -60,10 +59,6 @@ namespace big
 		ImGui::Checkbox("Hide Spectate", &g.spoofing.spoof_hide_spectate);
 
 		components::sub_title("Crew");
-
-		g_fiber_pool->queue_job([] {
-			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-		});
 
 		ImGui::Checkbox("Spoof Crew", &g.spoofing.spoof_crew_data);
 

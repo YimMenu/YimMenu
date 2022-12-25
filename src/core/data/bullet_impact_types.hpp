@@ -1,6 +1,7 @@
 #pragma once
 
-std::map<eExplosionTag, const char*> BULLET_IMPACTS = {
+inline std::unordered_map<eExplosionTag, const char*> BULLET_IMPACTS = 
+{
 	{ eExplosionTag::DONTCARE, "DEFAULT_BULLETS" },
 	{ eExplosionTag::GRENADE, "GRENADE" },
 	{ eExplosionTag::GRENADELAUNCHER, "GRENADELAUNCHER" },

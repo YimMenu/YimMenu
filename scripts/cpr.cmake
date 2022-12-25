@@ -1,6 +1,6 @@
 include(FetchContent)
 
-set(BUILD_CPR_TESTS OFF CACHE INTERNAL "")
+set(BUILD_TESTING_BEFORE ${BUILD_TESTING})
 FetchContent_Declare(
     cpr
     GIT_REPOSITORY https://github.com/libcpr/cpr.git
@@ -9,3 +9,5 @@ FetchContent_Declare(
 ) 
 message("cpr")
 FetchContent_MakeAvailable(cpr)
+
+set(BUILD_TESTING ${BUILD_TESTING_BEFORE} CACHE INTERNAL "" FORCE)

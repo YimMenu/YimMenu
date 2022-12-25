@@ -1,25 +1,24 @@
-#include "backend/looped/looped.hpp"
 #include "natives.hpp"
+#include "backend/looped_command.hpp"
 
 namespace big
 {
-	static bool bLastMobileRadio = false;
-
-	void looped::self_mobile_radio()
+	class mobile_radio : looped_command
 	{
-		const bool bMobileRadio = g.self.mobile_radio;
+		using looped_command::looped_command;
 
-		if (bMobileRadio)
+		virtual void on_tick() override
 		{
 			AUDIO::SET_MOBILE_PHONE_RADIO_STATE(true);
 			AUDIO::SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(true);
 		}
-		else if (bMobileRadio != bLastMobileRadio)
+
+		virtual void on_disable() override
 		{
 			AUDIO::SET_MOBILE_PHONE_RADIO_STATE(false);
 			AUDIO::SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(false);
 		}
+	};
 
-		bLastMobileRadio = bMobileRadio;
-	}
+	mobile_radio g_mobile_radio("mobileradio", "Mobile Radio", "Allows you to listen to the radio on foot", g.self.mobile_radio);
 }

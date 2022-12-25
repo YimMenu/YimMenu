@@ -26,7 +26,7 @@ namespace big
         void register_hotkey(
             const std::string_view name,
             const key_t initial_key,
-            const hotkey_func func,
+            const rage::joaat_t command_hash,
             const eKeyState state = eKeyState::RELEASE,
             std::optional<std::chrono::high_resolution_clock::duration> cooldown = std::nullopt);
         bool update_hotkey(const std::string_view name, const key_t new_key);
