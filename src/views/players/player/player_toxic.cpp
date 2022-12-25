@@ -105,6 +105,8 @@ namespace big
 			
 			components::button("TP To Island", [] { toxic::tp_to_cayo(g_player_service->get_selected()); });
 
+			components::button("TP To Eclipse", [] { toxic::tp_to_apartment(g_player_service->get_selected()); });
+
 			components::player_command_button<"giveweaps">(g_player_service->get_selected(), { });
 			ImGui::SameLine();
 			components::player_command_button<"remweaps">(g_player_service->get_selected(), { });
