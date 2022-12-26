@@ -130,12 +130,12 @@ enum class eActivityFlags
     kJoyrider = 9, // uh what is this?
     kCarModTutorial = 10,
     kMissionLauncher = 11, // ???
-    KLesterCutsceneActive = 12,
+    kLesterCutsceneActive = 12,
     kTrevorCutsceneActive = 13,
     kHeistIntro = 14,
-    KPlaneTakedown = 15, // not sure what this is
+    kPlaneTakedown = 15, // not sure what this is
     kDistractCops = 16, // "Great. Thank you for your help. Now some horrible criminals are in jail for a crime they did commit and it's all your fault!!" ???
-    KDestroyVehicle = 17, // ???
+    kDestroyVehicle = 17, // ???
     kPartakingInHotTarget = 18,
     kPartakingInKillList = 19,
     kTimeTrialStarted = 21,
@@ -455,3 +455,18 @@ struct GlobalPlayerBD
     SCR_ARRAY<GlobalPlayerBDEntry, 32> Entries;
 };
 static_assert(sizeof(GlobalPlayerBD) == 14913 * 8);
+
+struct GPBD_KickingEntry
+{
+    SCR_ARRAY<uint64_t, 32> KickVotes; // players you are voting to kick (array of bool)
+    SCR_ARRAY<uint64_t, 32> KickWarningsShown;
+    SCR_BOOL                WillBeKickedSoon;
+    SCR_ARRAY<uint64_t, 32> UnkPlayerList;
+};
+static_assert(sizeof(GPBD_KickingEntry) == 100 * 8);
+
+struct GPBD_Kicking
+{
+    SCR_ARRAY<GPBD_KickingEntry, 32> Entries;
+};
+static_assert(sizeof(GPBD_Kicking) == 3201 * 8);
