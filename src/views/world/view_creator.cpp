@@ -114,5 +114,13 @@ namespace big
 		components::button("Deathmatch", [] { scripts::start_creator_script(RAGE_JOAAT("fm_deathmatch_creator")); }); ImGui::SameLine();
 		components::button("LTS", [] { scripts::start_creator_script(RAGE_JOAAT("fm_lts_creator")); });
 		ImGui::EndGroup();
+
+		components::sub_title("Creator Options");
+		ImGui::BeginGroup();
+		ImGui::Checkbox("Infinity Model Memory", &g.ugc.infinity_model_memory);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Infinity Model Memory is only useful if dev mode is not activated");
+
+		ImGui::EndGroup();
 	}
 }
