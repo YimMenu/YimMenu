@@ -322,6 +322,7 @@ namespace big
 			break;
 		}
 		case eRemoteEvent::InteriorControl:
+		{
 			int interior = (int)args[2];
 			if (interior < 0 || interior > 161) // the upper bound will change after an update
 			{
@@ -329,6 +330,15 @@ namespace big
 					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
 
 				format_string(player_name, "Null Function Kick", notify.null_function_kick.log, notify.null_function_kick.notify);
+
+				return true;
+			}
+			break;
+		}
+		case eRemoteEvent::SMS:
+			if (g.protections.script_events.send_sms)
+			{
+				format_string(player_name, "Send SMS", notify.send_sms.log, notify.send_sms.notify);
 
 				return true;
 			}
