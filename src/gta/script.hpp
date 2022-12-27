@@ -1,5 +1,6 @@
 #pragma once
 #include "natives.hpp"
+#include "core/enums.hpp"
 
 #define PLAYER_INDEX alignas(8) Player
 #define ENTITY_INDEX alignas(8) Entity
@@ -26,6 +27,7 @@ public:
 // this is not a typo
 #define TEXT_LABEL_23 SCR_TEXT_LABEL<24>
 #define TEXT_LABEL_63 SCR_TEXT_LABEL<64>
+#define TEXT_LABEL_15 SCR_TEXT_LABEL<16>
 
 template <typename T, int SIZE>
 struct SCR_ARRAY
@@ -470,3 +472,140 @@ struct GPBD_Kicking
     SCR_ARRAY<GPBD_KickingEntry, 32> Entries;
 };
 static_assert(sizeof(GPBD_Kicking) == 3201 * 8);
+
+enum class eBossGoonFlags
+{
+    kOneOnOneDM = 4,
+    kJoinSuccess = 7,
+    kJoinFail = 8,
+    kSpectating = 24
+};
+
+enum class eGoonInviteType
+{
+    DEBUG,
+    NEARBY,
+    FRIENDS,
+    CREW,
+    INDIVIDUAL,
+    LOOKING_FOR_WORK
+};
+
+enum class eBossVehicleState
+{
+    NONE,
+    SPAWNED,
+    DESTROYED = 3
+};
+
+struct MPScriptData
+{
+    SCR_INT  Index; // this is an enum
+    uint64_t Args[15];
+    SCR_INT  InstanceId;
+    uint64_t MoreArgs[4];
+};
+static_assert(sizeof(MPScriptData) == 21 * 8);
+
+// this is named stopwatch in the decompiler but "timer" is probably a better name for it
+struct Timer
+{
+    SCR_INT  Time;
+    SCR_BOOL IsInitialized;
+};
+static_assert(sizeof(Timer) == 2 * 8);
+
+struct MCStyle
+{
+    SCR_BOOL                      Enabled;
+    SCR_INT                       BossOutfitType;
+    SCR_INT                       GoonOutfitType;
+    SCR_ARRAY<uint64_t, 7>        GoonOutfitIndices; // one outfit for each goon, size is 7 instead of 8 for some reason
+    SCR_ARRAY<uint64_t, 7>        GoonOutfitIndicesOverride;
+    SCR_INT                       PAD_0019;
+    SCR_BOOL                      HeadgearEnabled;
+    SCR_BOOL                      EmblemEnabled;
+};
+static_assert(sizeof(MCStyle) == 22 * 8);
+
+struct BossGoon
+{
+    PLAYER_INDEX                  Boss; // leader of CEO/MC
+    SCR_INT                       TimeBecameBoss;
+    SCR_INT                       TimeBecameGoon;
+    SCR_INT                       LastPayTime;
+    SCR_BITSET<eBossGoonFlags>    Flags;
+    SCR_INT                       Flags2; // TODO
+    SCR_INT                       Flags3; // TODO
+    SCR_INT                       TotalBossGoonTime;
+    SCR_ARRAY<uint64_t, 2>        BossGoonUUID;
+    SCR_ARRAY<uint64_t, 8>        Goons;
+    SCR_INT                       GoonsRequestingJoin; // bitset
+    SCR_INT                       PayGrade;
+    SCR_INT                       InvitesByBosses; // bitset
+    SCR_INT                       TransitionBossPersistanceStage;
+    SCR_INT                       EndBeingGoonReason;
+    SCR_INT                       PAD_0025; // TODO
+    PLAYER_INDEX                  JoiningBoss;
+    alignas(8) eGoonInviteType    JoinedInviteType;
+    SCR_INT                       NumBossDeathsSinceLastPay;
+    SCR_VEC3                      PAD_0029; // TODO
+    alignas(8) big::eActivityType UnkActivity;
+    alignas(8) big::eActivityType CurrentActivity;
+    PLAYER_INDEX                  JoustTarget;
+    PLAYER_INDEX                  ExecutiveDeathmatchTarget;
+    MPScriptData                  ActiveScript;
+    PLAYER_INDEX                  PAD_0057;
+    PLAYER_INDEX                  PAD_0058;
+    alignas(8) eBossVehicleState  BossVehicleState;
+    SCR_INT                       BossVehicleSpawnState;
+    PLAYER_INDEX                  PlayerInsideBossVehicle;
+    SCR_HASH                      BossVehicleModel;
+    Timer                         LastBossVehicleSpawnTimer;
+    Timer                         BossVehicleInvincibleTimer;
+    SCR_VEC3                      BossVehicleSpawnedPosition;
+    alignas(8) HudColor           BossVehicleHudColor;
+    TEXT_LABEL_15                 BossVehicleTextLabel;
+    SCR_INT                       BossVehicleNetId;
+    MCStyle                       MCStyle;
+    uint64_t                      PAD_0098[3]; // unused
+    SCR_INT                       FriendlyFireDisabledPlayers;
+    SCR_INT                       PiracyPreventionYachtIndex; // not used by the scripts
+    SCR_INT                       BossGoonMissionLaunchState;
+    SCR_INT                       ColorSlot;
+    TEXT_LABEL_63                 Name; // CEO name
+    SCR_INT                       Language; // can be used to get the system language of player
+    SCR_INT                       SpawnableBossVehicles;
+    SCR_INT                       AutoBuyoutDeliveryLocationIndex;
+    SCR_INT                       AutoBuyoutDeliveryLocationSubIndex;
+    SCR_INT                       PAD_0125; // unused
+    SCR_ARRAY<SCR_VEC3, 8>        PAD_0126; // TODO
+    SCR_ARRAY<SCR_VEC3, 8>        ContrabandPositions; // positions of cargo used to notify players to destroy them when they get near
+    SCR_HASH                      ContrabandPickupModel;
+    PLAYER_INDEX                  StealingContrabandVehiclePlayerIndex;
+    SCR_INT                       PAD_0178; // TODO
+    SCR_HASH                      ContrabandPickupModel2;
+    SCR_BOOL                      DestroyedCargo;
+    SCR_INT                       VIPGameplayDisabledTimer;
+    SCR_INT                       SettingUpBusiness;
+};
+static_assert(sizeof(BossGoon) == 183 * 8);
+
+struct GBPD_FM_3_Entry
+{
+    alignas(8) big::eActivityType CurrentActivity; // enum is outdated
+    SCR_INT                       Flags; // TODO
+    alignas(8) big::eActivityType CurrentFreemodeActivity; // subset of CurrentActivity
+    SCR_INT                       SeatingFlags;
+    SCR_VEC3                      CurrentFreemodeActivityObjectivePosition;
+    SCR_INT                       VehiclesNearbyActivityObjective; // only used by challenges and checkpoints
+    SCR_BOOL                      PassiveMode;
+    SCR_BOOL                      TimeTrialActive; // verify
+};
+static_assert(sizeof(GBPD_FM_3_Entry) == 10 * 8);
+
+struct GPBD_FM_3
+{
+    SCR_ARRAY<GBPD_FM_3_Entry, 32> Entries;
+};
+//static_assert(sizeof(GPBD_FM_3) == 0 * 8);
