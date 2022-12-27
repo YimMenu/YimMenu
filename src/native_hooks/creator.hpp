@@ -38,7 +38,7 @@ namespace big
 
         void GET_USED_CREATOR_BUDGET(rage::scrNativeCallContext* src)
         {
-            if (g.ugc.infinity_model_memory)
+            if (g.ugc.infinite_model_memory)
                 src->set_return_value<float>(0);
             else
                 src->set_return_value<float>(STREAMING::GET_USED_CREATOR_BUDGET());
