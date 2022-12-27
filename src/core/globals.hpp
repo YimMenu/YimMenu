@@ -142,12 +142,13 @@ namespace big
 				pair teleport_to_warehouse{};
 				pair start_activity{};
 				pair null_function_kick{};
+				pair send_sms{};
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_event_handler,
 					bounty, ceo_ban, ceo_kick, clear_wanted_level, crash, fake_deposit, force_mission, force_teleport,
 					gta_banner, mc_teleport, network_bail, personal_vehicle_destroyed, remote_off_radar, rotate_cam,
 					send_to_cutscene, send_to_location, sound_spam, spectate, switch_player_model, transaction_error,
-					tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, start_activity, null_function_kick)
+					tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, start_activity, null_function_kick, send_sms)
 			} script_event_handler{};
 
 			pair gta_thread_kill{};
@@ -217,13 +218,14 @@ namespace big
 				bool vehicle_kick = true;
 				bool teleport_to_warehouse = true;
 				bool start_activity = true;
+				bool send_sms = true;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_events,
 					bounty, ceo_ban, ceo_kick, ceo_money, clear_wanted_level, crash, fake_deposit,
 					force_mission, force_teleport, gta_banner, mc_teleport, network_bail,
 					personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene,
 					send_to_location, sound_spam, spectate, switch_player_model, transaction_error,
-					vehicle_kick, teleport_to_warehouse, start_activity)
+					vehicle_kick, teleport_to_warehouse, start_activity, send_sms)
 			} script_events{};
 
 			bool script_host_kick = true;
