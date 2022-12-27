@@ -61,7 +61,7 @@ CMake is used to generate our project files, if you haven't used it before you w
   cd YimMenu
   ```
 
-#### Generate project files
+#### Generate project files 
 
 - Windows Only
 
@@ -77,6 +77,7 @@ CMake is used to generate our project files, if you haven't used it before you w
 
     Then, you can just build by using the Build menu at the top and clicking Build All.
 
+
 - Other OSs / IDEs
 
   If you use something else or prefer using the console on Windows, just follow this:
@@ -88,8 +89,8 @@ CMake is used to generate our project files, if you haven't used it before you w
   ```
 
   Now, you will be able to open the solution, and build it.
-
-
+  ##NOTE## You will have cd build and cmake again if you add any files or you will get an error when building. //is this also required on the visual studio extension?
+  
 ## Staying Up To Date
 
 Pull the latest changes from this repository.
