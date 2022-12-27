@@ -507,6 +507,13 @@ enum class eMCRole
     ENFORCER
 };
 
+enum class eClubhouseActivity
+{
+    NONE = -1,
+    DARTS,
+    ARM_WRESTLING
+};
+
 struct MPScriptData
 {
     SCR_INT  Index; // this is an enum
@@ -559,6 +566,14 @@ struct CasinoHeistPrep
     SCR_INT                       LoadoutIndex; // only set on prep 1 and 2
 };
 static_assert(sizeof(CasinoHeistPrep) == 3 * 8);
+
+struct LeaveInHeli
+{
+    SCR_INT                       Flags;
+    PLAYER_INDEX                  Owner;
+    SCR_INT                       SeatIndex;
+};
+static_assert(sizeof(LeaveInHeli) == 3 * 8);
 
 struct BossGoon
 {
@@ -673,9 +688,46 @@ struct BossGoon
     uint64_t                      PAD_0445[16]; // somewhat unused, a few fields are accessed in the business battle script
     SCR_INT                       ClothingValue; // total value of equipped clothing used by criminal damage
     PLAYER_INDEX                  Adversary; // for common adversary calculations?
+    SCR_HASH                      ContrabandType; // unknown HASH_ENUM
+    SCR_INT                       HitAndRideGangType;
+    SCR_BOOL                      IsMC2;
     SCR_INT                       BossGoonVersion;
+    SCR_INT                       MCTotalContributionPoints;
+    SCR_INT                       MCContributionPoints;
+    SCR_INT                       FavoriteBikeStyle; // not read by the scripts
+    SCR_INT                       GreatestFormationTimeIndex;
+    SCR_INT                       FormationTime;
+    SCR_BOOL                      RidingFavoriteMotorcycle;
+    SCR_INT                       ContrabandSellLocation;
+    SCR_INT                       BusinessBattleType;
+    SCR_INT                       PAD_0475;
+    SCR_INT                       NightclubMissionIndex;
+    SCR_INT                       NightclubDefendMissionIndex;
+    uint64_t                      PAD_0478[18]; // TODO
+    SCR_BOOL                      DoubleActionCacheLocationRevealed;
 };
-static_assert(sizeof(BossGoon) == 464 * 8);
+static_assert(sizeof(BossGoon) == 497 * 8);
+
+struct MCStats
+{
+    SCR_INT                       FormationTime0;
+    SCR_INT                       FormationTime1;
+    SCR_INT                       FormationTime2;
+    SCR_INT                       FormationTime3;
+    SCR_INT                       MembersMarkedForDeath;
+    SCR_INT                       MCKills;
+    SCR_INT                       MCDeaths;
+    SCR_INT                       RivalPresidentKills;
+    SCR_INT                       RivalCEOAndVIPKills;
+    SCR_INT                       MeleeKills;
+    SCR_INT                       ClubhouseContractsComplete;
+    SCR_INT                       ClubhouseContractEarnings;
+    SCR_INT                       ClubworkCompleted;
+    SCR_INT                       ClubChallengesCompleted;
+    SCR_INT                       MemberChallengesCompleted;
+};
+static_assert(sizeof(MCStats) == 15 * 8);
+
 
 struct GBPD_FM_3_Entry
 {
@@ -687,11 +739,45 @@ struct GBPD_FM_3_Entry
     SCR_INT                       VehiclesNearbyActivityObjective; // only used by challenges and checkpoints
     SCR_BOOL                      PassiveMode;
     SCR_BOOL                      TimeTrialActive; // verify
+    BossGoon                      BossGoon;
+    uint64_t                      PAD_507[3]; // unused
+    SCR_INT                       ScriptEventReplayProtectionCounter;
+    Timer                         CoronaForcedLaunchTimer;
+    LeaveInHeli                   LeaveInHeli;
+    SCR_INT                       OfficeDesktopFlags; // bit 0 -> login, bit 1 -> map
+    uint64_t                      PAD_507[8]; // some IE stuff, most of it is unused
+    SCR_INT                       IlluminatedClothingState;
+    SCR_INT                       MatchHistoryId1; // used for telemetry
+    SCR_INT                       MatchHistoryId2;
+    alignas(8) eClubhouseActivity ClubhouseActivity;
+    SCR_INT                       ClubhouseFont;
+    SCR_INT                       ClubhouseColor;
+    SCR_INT                       ClubhouseEmblem;
+    SCR_BOOL                      ClubhouseHideSignage;
+    uint64_t                      PAD_0533[2]; // facility exit
+    uint64_t                      PAD_0535[6]; // no clue what this is
+    MCStats                       MCStats;
+    uint64_t                      PAD_0556[29];
+    SCR_HASH                      ForcedWeapon;
+    SCR_INT                       HangarCargoMissionLocationIndex;
+    SCR_VEC3                      AvengerPosition;
+    SCR_VEC3                      TerrorbytePosition;
+    SCR_VEC3                      AcidLabPosition;
+    PLAYER_INDEX                  DeliveringExportVehicleOwner;
+    uint64_t                      PAD_0597[2]; // TODO
+    SCR_INT                       BountyAmount; // values above 10000 will prevent payout
+    PLAYER_INDEX                  BountyPlacedBy;
+    SCR_INT                       PAD_0601; // unused, set to -1 by business_battles_sell and never read
+    SCR_INT                       CurrentlyUsingArenaTurretIndex; // works similar to the vars found in GlobalPlayerBD
+    SCR_INT                       CurrentlyUsingArenaTurretActivatedTime;
+    SCR_INT                       CasinoStoryProgress;
+    SCR_INT                       CasinoFlowProgress;
+    SCR_ARRAY<uint64_t, 1>        DailyObjectiveFlags;
 };
-static_assert(sizeof(GBPD_FM_3_Entry) == 10 * 8);
+static_assert(sizeof(GBPD_FM_3_Entry) == 608 * 8);
 
 struct GPBD_FM_3
 {
     SCR_ARRAY<GBPD_FM_3_Entry, 32> Entries;
 };
-//static_assert(sizeof(GPBD_FM_3) == 0 * 8);
+static_assert(sizeof(GPBD_FM_3) == 19457 * 8);
