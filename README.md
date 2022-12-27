@@ -23,7 +23,6 @@ So here I am with an up-to-date menu focusing on protecting the user from toxic 
 
 Requirements:
 
- * [Curl](#Curl)
  * [Git](#Git)
  * [CMake](#CMake)
 
@@ -31,7 +30,7 @@ If you have both of the above requirements you can skip to [cloning the git repo
 
 ### Curl
 
-Curl is used to grab things like authorization tickets making pulling rockstar ids and much more possible. It is required to download as cpr, a library we use needs it, if you haven't used it before you will need to download and install it.
+Curl should be already installed on your computer, but if you are having issues with building the project, you will need to download and install it.
 
 [Download Link](https://curl.se/download.html)
 
@@ -124,7 +123,7 @@ Below is an incomplete list of feature that I believe are notable to this "base"
  - Custom [settings](src/core/globals.hpp) with deep compare if changes were made include auto saving
  - Clear and well structured source code
  - Includes a thread pool to queue tasks that shouldn't block the game thread, very similar to fiber pool
- - Updated natives.hpp from https://nativedb.spyral.dev (We do not use fivem natives currently)
+ - Updated natives.hpp from https://nativedb.spyral.dev
  - ReClass.NET structures implemented, accessible from a global called g_local_player defined in `common.hpp`
 
 ## Contributing
