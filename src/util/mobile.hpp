@@ -49,7 +49,7 @@ namespace big::mobile
 			*script_global(scr_globals::mechanic_global).at(4484).as<int*>() = 1;
 		}
 
-		inline void request_bin_laden()
+		inline void request_airstrike()
 		{
 			*script_global(scr_globals::mechanic_global).at(4485).as<int*>() = 1;
 		}

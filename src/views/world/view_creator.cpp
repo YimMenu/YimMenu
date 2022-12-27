@@ -117,7 +117,7 @@ namespace big
 
 		components::sub_title("Creator Options");
 		ImGui::BeginGroup();
-		ImGui::Checkbox("Infinity Model Memory", &g.ugc.infinity_model_memory);
+		ImGui::Checkbox("Infinite Model Memory", &g.ugc.infinite_model_memory);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Infinity Model Memory is only useful if dev mode is not activated");
 

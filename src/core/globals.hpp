@@ -633,9 +633,9 @@ namespace big
 
 		struct ugc
 		{
-			bool infinity_model_memory;
+			bool infinite_model_memory;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(ugc, infinity_model_memory)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(ugc, infinite_model_memory)
 		} ugc{};
 
 

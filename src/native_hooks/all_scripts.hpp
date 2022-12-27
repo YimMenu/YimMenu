@@ -31,9 +31,7 @@ namespace big
             BOOL return_value = DLC::IS_DLC_PRESENT(hash);
 
             if (hash == 0x96F02EE6)
-            {
                 return_value = return_value || g.settings.dev_dlc;
-            }
 
             src->set_return_value<BOOL>(return_value);
         }

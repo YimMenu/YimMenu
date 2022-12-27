@@ -24,7 +24,7 @@ namespace big
 		});
 
 		components::button("Request Airstrike", [] {
-			mobile::merry_weather::request_bin_laden();
+			mobile::merry_weather::request_airstrike();
 		});
 
 		components::sub_title("Mors Mutual");
