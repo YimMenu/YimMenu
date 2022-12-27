@@ -1,10 +1,10 @@
 name: CI
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   ci:
-    runs-on: [self-hosted, Windows, X64]
+    runs-on: self-hosted
     name: CI
     steps:
       - uses: actions/checkout@v3
