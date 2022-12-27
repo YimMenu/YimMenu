@@ -18,7 +18,8 @@ So here I am with an up-to-date menu focusing on protecting the user from toxic 
  * [Project Structure](#project-structure)
  * [Features](#features)
  * [Contributing](#contributing)
-
+ * [Frequently Asked Questions](https://github.com/YimMenu/YimMenu/discussions/757)
+ 
 ## How to build
 
 Requirements:
@@ -30,7 +31,8 @@ If you have both of the above requirements you can skip to [cloning the git repo
 
 ### Curl
 
-Curl should be already installed on your computer, but if you are having issues with building the project, you will need to download and install it.
+Curl should be already installed on your computer, but if you are having issues with building the project, you will need to download and install
+it. Once Installed run the exe located in bin and it should work
 
 [Download Link](https://curl.se/download.html)
 
@@ -62,7 +64,7 @@ CMake is used to generate our project files, if you haven't used it before you w
 
 #### Generate project files 
 
-##NOTE## You will have cd build and cmake again if you add any files or you will get an error when building.
+#### `NOTE` You will have cd build and cmake again if you add any files or you will get an error when building.
 
 - Windows Only
 
