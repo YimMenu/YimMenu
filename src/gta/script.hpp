@@ -37,7 +37,7 @@ struct SCR_ARRAY
 
     T& operator [](int index)
     {
-        return Data[index]
+        return Data[index];
     }
 };
 
@@ -463,7 +463,7 @@ struct GPBD_KickingEntry
     SCR_ARRAY<uint64_t, 32> KickVotes; // players you are voting to kick (array of bool)
     SCR_ARRAY<uint64_t, 32> KickWarningsShown;
     SCR_BOOL                WillBeKickedSoon;
-    SCR_ARRAY<uint64_t, 32> UnkPlayerList;
+    SCR_ARRAY<uint64_t, 32> VoteKickBlockDetected;
 };
 static_assert(sizeof(GPBD_KickingEntry) == 100 * 8);
 
@@ -498,6 +498,15 @@ enum class eBossVehicleState
     DESTROYED = 3
 };
 
+enum class eMCRole
+{
+    PROSPECT = -1,
+    VICE_PRESIDENT,
+    ROAD_CAPTAIN,
+    SERGEANT_IN_ARMS,
+    ENFORCER
+};
+
 struct MPScriptData
 {
     SCR_INT  Index; // this is an enum
@@ -527,6 +536,29 @@ struct MCStyle
     SCR_BOOL                      EmblemEnabled;
 };
 static_assert(sizeof(MCStyle) == 22 * 8);
+
+struct VehicleExport
+{
+    SCR_ARRAY<uint64_t, 4>        SellingVehicleIndices;
+    SCR_INT                       PAD_0005; // this is set to zero in all export scripts and never read
+};
+static_assert(sizeof(VehicleExport) == 6 * 8);
+
+struct HangarCargo
+{
+    SCR_INT                       PAD_0000; // unused?
+    SCR_ARRAY<uint64_t, 20>       DeliverableTypes;
+    SCR_INT                       CargoType;
+};
+static_assert(sizeof(HangarCargo) == 23 * 8);
+
+struct CasinoHeistPrep
+{
+    SCR_INT                       PrepIndex;
+    SCR_INT                       SupportCrewMemberIndex; // only set on preps 1 through 3
+    SCR_INT                       LoadoutIndex; // only set on prep 1 and 2
+};
+static_assert(sizeof(CasinoHeistPrep) == 3 * 8);
 
 struct BossGoon
 {
@@ -573,7 +605,7 @@ struct BossGoon
     SCR_INT                       PiracyPreventionYachtIndex; // not used by the scripts
     SCR_INT                       BossGoonMissionLaunchState;
     SCR_INT                       ColorSlot;
-    TEXT_LABEL_63                 Name; // CEO name
+    TEXT_LABEL_63                 MCName;
     SCR_INT                       Language; // can be used to get the system language of player
     SCR_INT                       SpawnableBossVehicles;
     SCR_INT                       AutoBuyoutDeliveryLocationIndex;
@@ -588,8 +620,62 @@ struct BossGoon
     SCR_BOOL                      DestroyedCargo;
     SCR_INT                       VIPGameplayDisabledTimer;
     SCR_INT                       SettingUpBusiness;
+    uint64_t                      PAD_0183[4]; // TODO some unknown contraband struct
+    VehicleExport                 VehicleExport;
+    uint64_t                      PAD_0193[12]; // TODO
+    SCR_ARRAY<uint64_t, 6>        ActiveFreemodeEvents; // force thunder
+    uint64_t                      PAD_0212[22]; // I'm not even going to bother with this one
+    HangarCargo                   HangarCargo;
+    uint64_t                      PAD_0236[23]; // not going to bother with this one either
+    SCR_ARRAY<uint64_t, 20>       CasinoDeliverables;
+    SCR_INT                       CasinoLimoDestination;
+    SCR_BOOL                      CasinoLimoActive;
+    SCR_BOOL                      CasinoLuxuryCarActive;
+    SCR_HASH                      CasinoLuxuryCarModel;
+    CasinoHeistPrep               CasinoHeistPrep;
+    SCR_INT                       CayoPrepIndex;
+    SCR_INT                       CompanySUVDestination;
+    SCR_BOOL                      CompanySUVActive;
+    SCR_ARRAY<uint64_t, 8>        ContrabandIndices; // type of selling cargo
+    SCR_ARRAY<uint64_t, 10>       VehicleExportIndices; // not sure what this is
+    SCR_INT                       VehicleExportMissionType; // valid range is 2000 to 2010, 2000 = 0, 2001 = 1 etc
+    SCR_ARRAY<uint64_t, 4>        VehicleExportSellingIndices;
+    SCR_BOOL                      PAD_0337; // TODO
+    TEXT_LABEL_63                 GangName; // CEO Name
+    TEXT_LABEL_63                 ClubhouseName; // cut content?
+    SCR_INT                       SourcingContrabandType;
+    SCR_INT                       FragileGoodsMissionType;
+    SCR_INT                       SalvageMissionType;
+    SCR_INT                       DoomsdayPrepIndex;
+    SCR_INT                       VehicleExportIndex; // another one...
+    SCR_INT                       PAD_0375; // unused
+    SCR_INT                       BunkerSourceIndex; // check gb_gunrunning func_1540
+    SCR_ARRAY<uint64_t, 8>        BunkerCargoIndices;
+    uint64_t                      PAD_0386[5];
+    uint64_t                      PAD_0391[2]; // unused
+    uint64_t                      PAD_0391[15]; // smuggler data
+    SCR_INT                       LastBossWorkTime; // seconds since epoch
+    uint64_t                      PAD_0409[19];
+    SCR_BOOL                      IsMC;
+    alignas(8) eMCRole            MCRole; // applies to goons only, boss is always the MC president
+    SCR_BOOL                      FormationFlyingAssist;
+    SCR_INT                       PAD_0431; // always set to zero and not read
+    SCR_BOOL                      MCFormationActive;
+    SCR_BOOL                      MCFormationHelpShown;
+    Timer                         MCFormationHealthBonusTimer;
+    Timer                         MCFormationLastHealthBonusTimer;
+    Timer                         MCFormationBreakTimer;
+    SCR_INT                       PAD_0440; // unused
+    SCR_BOOL                      MCFormationAssist;
+    SCR_BOOL                      MCRidingStyleRelaxed;        
+    SCR_FLOAT                     PAD_0443; // set from a tunable
+    SCR_FLOAT                     PAD_0444; // set from a tunable
+    uint64_t                      PAD_0445[16]; // somewhat unused, a few fields are accessed in the business battle script
+    SCR_INT                       ClothingValue; // total value of equipped clothing used by criminal damage
+    PLAYER_INDEX                  Adversary; // for common adversary calculations?
+    SCR_INT                       BossGoonVersion;
 };
-static_assert(sizeof(BossGoon) == 183 * 8);
+static_assert(sizeof(BossGoon) == 464 * 8);
 
 struct GBPD_FM_3_Entry
 {
