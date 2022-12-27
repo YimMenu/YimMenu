@@ -23,10 +23,17 @@ So here I am with an up-to-date menu focusing on protecting the user from toxic 
 
 Requirements:
 
+ * [Curl](#Curl)
  * [Git](#Git)
  * [CMake](#CMake)
 
 If you have both of the above requirements you can skip to [cloning the git repo and generating the project files](#cloning-and-generating-project-files).
+
+### Curl
+
+Curl is used to grab things like authorization tickets making pulling rockstar ids and much more possible. It is required to download as cpr, a library we use needs it, if you haven't used it before you will need to download and install it.
+
+[Download Link](https://curl.se/download.html)
 
 ### Git
 
@@ -36,7 +43,7 @@ If you haven't installed git on your system go and do so it is **REQUIRED** for 
 
 ### CMake
 
-CMake is used to generate our project files, if you haven't used it before we will need to download and install it.
+CMake is used to generate our project files, if you haven't used it before you will need to download and install it.
 
 [Download Link](https://cmake.org/download/)
 
@@ -56,7 +63,7 @@ CMake is used to generate our project files, if you haven't used it before we wi
 
 #### Generate project files
 
-- On Windows
+- Windows Only
 
   - Visual Studio
 
@@ -72,7 +79,7 @@ CMake is used to generate our project files, if you haven't used it before we wi
 
 - Other OSs / IDEs
 
-  If you use something else, just follow this:
+  If you use something else or prefer using the console on Windows, just follow this:
 
   ```bash
   mkdir build
@@ -116,11 +123,11 @@ Below is an incomplete list of feature that I believe are notable to this "base"
  - Custom [settings](src/core/globals.hpp) with deep compare if changes were made include auto saving
  - Clear and well structured source code
  - Includes a thread pool to queue tasks that shouldn't block the game thread, very similar to fiber pool
- - Updated natives.hpp from https://nativedb.spyral.dev
+ - Updated natives.hpp from https://nativedb.spyral.dev (We do not use fivem natives currently)
  - ReClass.NET structures implemented, accessible from a global called g_local_player defined in `common.hpp`
 
 ## Contributing
 
-You're free to contribute to YimMenu as long as the feature are useful, non-toxic and do not contain anything money related that might get the menu targetted by Take2.
+You're free to contribute to YimMenu as long as the feature are useful, not overly toxic, and do not contain anything money related that might get the menu targetted by Take2.
 
 Make sure to read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
