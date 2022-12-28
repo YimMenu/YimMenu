@@ -18,7 +18,6 @@ So here I am with an up-to-date menu focusing on protecting the user from toxic 
  * [Project Structure](#project-structure)
  * [Features](#features)
  * [Contributing](#contributing)
- * [Frequently Asked Questions](https://github.com/YimMenu/YimMenu/discussions/757)
  
 ## How to build
 
