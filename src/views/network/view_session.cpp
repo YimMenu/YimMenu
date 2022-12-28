@@ -274,10 +274,6 @@ namespace big
 		components::button("TP All To Skydive", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::Skydive); }); });
 		ImGui::SameLine();
 
-		components::button("TP All To Island", [] { g_player_service->iterate([](auto& plyr) { toxic::tp_to_cayo(plyr.second); }); });
-		ImGui::SameLine();
-		components::button("TP All To Eclipse", [] { g_player_service->iterate([](auto& plyr) { toxic::tp_to_apartment(plyr.second); }); });
-
 		components::command_button<"interiortpall">({ 81 }, "TP All To MOC");
 
 		ImGui::SameLine();

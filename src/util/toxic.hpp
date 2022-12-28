@@ -148,33 +148,4 @@ namespace big::toxic
 		set_time_all((*g_pointers->m_network_time)->m_time + millis);
 	}
 
-	inline void tp_to_cayo(player_ptr target)
-	{
-		const size_t arg_count = 2;
-		int64_t args[arg_count] =
-		{
-			(int64_t)eRemoteEvent::SendToCayoPerico,
-			(int64_t)self::id,
-		};
-
-		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
-	}
-
-	inline void tp_to_apartment(player_ptr target)
-	{
-		const size_t arg_count = 9;
-		int64_t args[arg_count] =
-		{
-			(int64_t)eRemoteEvent::Teleport,
-			(int64_t)target->id(),
-			(int64_t)target->id(),
-			(int64_t)target->id(),
-			4,
-			2,
-			0,
-			0,
-			0
-		};
-		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
-	}
 }

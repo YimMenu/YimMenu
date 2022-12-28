@@ -47,6 +47,7 @@ namespace big
 		static void context_menu();
 		static void gta_data();
 		static void creator();
+		static void train();
 
 		static void player_info();
 		static void player_troll();
