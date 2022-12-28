@@ -19,5 +19,25 @@ namespace big
 			{
 				train::hijack_train();
 			});
+
+		ImGui::SameLine();
+		
+		components::button("Delete Train", []
+			{
+				train::delete_train();
+			});
+	
+		static int train_speed = 0;
+
+		ImGui::SliderInt("Train Speed", &train_speed, 0, 10000);
+		ImGui::SameLine();
+		components::button("Set", [] {});
+
+		ImGui::Checkbox("Drive Train", &g.session.semi_godmode_all);
+		
+		ImGui::SameLine();
+		
+		ImGui::Checkbox("Derail Train", &g.session.semi_godmode_all);
+		
 	}
 }
