@@ -18,7 +18,7 @@ namespace big
 
 		draw_pair_option("Terminate", g.notifications.gta_thread_kill);
 		draw_pair_option("Start", g.notifications.gta_thread_start);
-		
+
 		components::sub_title("Network Player Manager");
 
 		ImGui::Text("Player Join");
@@ -96,10 +96,11 @@ namespace big
 		draw_pair_option("Teleport To Warehouse", script_event_handler.teleport_to_warehouse);
 		draw_pair_option("Start Activity", script_event_handler.start_activity);
 		draw_pair_option("Null Function Kick", script_event_handler.null_function_kick);
+		draw_pair_option("Send SMS", script_event_handler.send_sms);
 		ImGui::EndGroup();
 
 		components::sub_title("Other");
-		
+
 		draw_pair_option("Reports", g.notifications.reports);
 		draw_pair_option("Transaction Error / Rate Limit", g.notifications.transaction_rate_limit);
 		draw_pair_option("Mismatch sync type", g.notifications.mismatch_sync_type);
