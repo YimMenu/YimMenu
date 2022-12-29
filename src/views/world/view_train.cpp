@@ -27,17 +27,17 @@ namespace big
 				train::delete_train();
 			});
 	
-		static int train_speed = 0;
+		static float train_speed = 0;
 
-		ImGui::SliderInt("Train Speed", &train_speed, 0, 10000);
+		ImGui::SliderFloat("Train Speed", &train_speed, 0, 1000.f);
 		ImGui::SameLine();
-		components::button("Set", [] {});
+		components::button("Set", [] { train::set_train_speed(train_speed); });
 
-		ImGui::Checkbox("Drive Train", &g.session.semi_godmode_all);
+		ImGui::Checkbox("Drive Train", &g.train.drive_train);
 		
 		ImGui::SameLine();
 		
-		ImGui::Checkbox("Derail Train", &g.session.semi_godmode_all);
+		ImGui::Checkbox("Derail Train", &g.train.derail_train);
 		
 	}
 }

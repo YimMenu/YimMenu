@@ -7,7 +7,7 @@
 
 namespace big::train
 {
-	auto get_all_vehicles = []() -> std::vector<Vehicle>
+	inline auto get_all_vehicles = []() -> std::vector<Vehicle>
 	{
 		std::vector<Vehicle> result;
 		Vehicle vehs[300 * 2 + 2];
@@ -41,14 +41,8 @@ namespace big::train
 
 		if (train != 0)
 		{
-			auto driverPed = VEHICLE::GET_PED_IN_VEHICLE_SEAT(train, -1, false);
-			PED::DELETE_PED(&driverPed);
 			PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), train, -1);
-			g_notification_service->push_error("Hijack Train", "Found a train nearby");
-		}
-		else
-		{
-			g_notification_service->push_error("Hijack Train", "No trains nearby");
+			g_notification_service->push_error("Hijack Train", train != 0 ? "Found a train nearby" : "No trains nearby");
 		}
 	}
 
@@ -59,12 +53,13 @@ namespace big::train
 		if (train != 0)
 		{
 			VEHICLE::DELETE_ALL_TRAINS();
-			g_notification_service->push_error("Hijack Train", "Deleted the nearby train");
+			g_notification_service->push_error("Hijack Train", train !=0 ? "Deleted the nearby train" : "There are no trains nearby to delete");
+		}
+	}
 
-		}
-		else
-		{
-			g_notification_service->push_error("Hijack Train", "There are no trains nearby to delete");
-		}
+	inline void set_train_speed(float value)
+	{
+		if (PED::IS_PED_IN_ANY_VEHICLE(PLAYER::PLAYER_PED_ID(), false))
+			VEHICLE::SET_TRAIN_SPEED(get_closest_train(), value);
 	}
 }
