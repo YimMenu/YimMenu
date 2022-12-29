@@ -25,9 +25,10 @@ public:
 };
 
 // this is not a typo
-#define TEXT_LABEL_23 SCR_TEXT_LABEL<24>
-#define TEXT_LABEL_63 SCR_TEXT_LABEL<64>
 #define TEXT_LABEL_15 SCR_TEXT_LABEL<16>
+#define TEXT_LABEL_23 SCR_TEXT_LABEL<24>
+#define TEXT_LABEL_31 SCR_TEXT_LABEL<32>
+#define TEXT_LABEL_63 SCR_TEXT_LABEL<64>
 
 template <typename T, int SIZE>
 struct SCR_ARRAY
@@ -62,6 +63,21 @@ struct SCR_BITSET
     }
 };
 
+struct Color3
+{
+    SCR_INT R;
+    SCR_INT G;
+    SCR_INT B;
+};
+static_assert(sizeof(Color3) == 3 * 8);
+
+// serialized bitbuffer data of rage::rlGamerHandle + some padding for last gen compatibility
+struct GAMER_HANDLE
+{
+private:
+    uint64_t Data[13];
+};
+static_assert(sizeof(GAMER_HANDLE) == 13 * 8);
 
 enum class eFreemodeState
 {
@@ -256,7 +272,7 @@ struct YachtData
 };
 static_assert(sizeof(YachtData) == 49 * 8);
 
-struct InteriorData
+struct SimpleInteriorData
 {
     SCR_INT                       Flags; // TODO!!!
     SCR_INT                       Flags2;
@@ -282,7 +298,7 @@ struct InteriorData
     SCR_INT                       MissionSpawnSimpleInteriorIndex;
     SCR_INT                       InteriorSubtype; // nightclub vs nightclub garage etc
 };
-static_assert(sizeof(InteriorData) == 29 * 8);
+static_assert(sizeof(SimpleInteriorData) == 29 * 8);
 
 // yes there's a struct for leaving your clubhouse
 struct LeaveClubhouse
@@ -404,7 +420,7 @@ struct GlobalPlayerBDEntry
     SCR_BOOL                      ScreenFadedOut;
     SCR_BOOL                      TimeTrialActive;
     YachtData                     YachtData;
-    InteriorData                  InteriorData;
+    SimpleInteriorData            SimpleInteriorData;
     SCR_BOOL                      PAD_0350; // TODO
     SCR_INT                       PAD_0351; // unused vehicle/interior stuff
     SCR_BOOL                      ShowMOCBlip;
@@ -668,7 +684,7 @@ struct BossGoon
     SCR_ARRAY<uint64_t, 8>        BunkerCargoIndices;
     uint64_t                      PAD_0386[5];
     uint64_t                      PAD_0391[2]; // unused
-    uint64_t                      PAD_0391[15]; // smuggler data
+    uint64_t                      PAD_0393[15]; // smuggler data
     SCR_INT                       LastBossWorkTime; // seconds since epoch
     uint64_t                      PAD_0409[19];
     SCR_BOOL                      IsMC;
@@ -745,8 +761,8 @@ struct GBPD_FM_3_Entry
     Timer                         CoronaForcedLaunchTimer;
     LeaveInHeli                   LeaveInHeli;
     SCR_INT                       OfficeDesktopFlags; // bit 0 -> login, bit 1 -> map
-    uint64_t                      PAD_507[8]; // some IE stuff, most of it is unused
-    SCR_INT                       IlluminatedClothingState;
+    uint64_t                      PAD_514[8]; // some IE stuff, most of it is unused
+    SCR_INT                       IlluminatedClothingState; 
     SCR_INT                       MatchHistoryId1; // used for telemetry
     SCR_INT                       MatchHistoryId2;
     alignas(8) eClubhouseActivity ClubhouseActivity;
@@ -781,3 +797,354 @@ struct GPBD_FM_3
     SCR_ARRAY<GBPD_FM_3_Entry, 32> Entries;
 };
 static_assert(sizeof(GPBD_FM_3) == 19457 * 8);
+
+enum class eMissionDataFlags
+{
+    kMissionLaunched = 0,
+    kJobDownloaded = 2,
+    kStartingJob = 3,
+    kRequestingScript = 4,
+    kLaunchedScript = 6, // should be set if kMissionLaunched is set
+    kAutoStartOnProximity = 7, // used by gang attack
+    kNJVSQuickMatch = 8,
+    kVoteLiked = 10,
+    kVoteDisliked = 11,
+    kNoVote = 25
+}; // TODO
+
+enum class eTutorialBitset
+{
+    kInTutorialRace = 0,
+    kTutorialRaceActive = 2,
+    kShowCredits = 4,
+    kNeedFreeVehicle = 6
+};
+
+enum class eGangCallServices
+{
+    kMugger = 0,
+    kMercenary = 1
+};
+
+enum class eVehicleSelectionState
+{
+    NONE,
+    SELECTING,
+    SELECTED
+};
+
+enum class eStatState
+{
+    NONE,
+    LETHARGIC,
+    OUT_OF_SHAPE,
+    HEALTHY,
+    ATHLETE,
+    TRI_ATHLETE,
+    UNTRAINED,
+    SPRAY_AND_PRAY,
+    POLICE_TRAINING,
+    MILITARY_TRAINING,
+    DEAD_EYE,
+    FRAGILE,
+    WEAK,
+    AVERAGE,
+    TOUGH,
+    BODYBUILDER,
+    CLUMSY,
+    LOUD,
+    SNEAKY,
+    HUNTER,
+    NINJA,
+    DANGEROUS,
+    RC_PILOT,
+    COMMERCIAL_PILOT,
+    FIGHTER_PILOT,
+    ACE,
+    UNLICENSED,
+    SUNDAY_DRIVER,
+    COMMUTER,
+    STREET_RACER,
+    PRO_RACER,
+    NORMAL,
+    UNSTABLE,
+    DERANGED,
+    MANIAC, 
+    PSYCHOPATH,
+    DRUNK
+};
+
+enum class ePropertyInteriorFlags
+{
+    kOwnerOfInterior = 0,
+    kVisitorOfInterior = 1, // mutually exclusive with above flag
+    kConcealWhenDead = 12,
+    kRenovatingProperty = 19,
+    kPreviewingDecor = 20,
+    kRenovatingClubhouse = 21,
+    kUsingYachtRmBath1 = 22,
+    kUsingYachtRmBath3 = 23,
+    kUsingYachtRmWeeBathroom = 25,
+    kGunLockerOpen = 27,
+    kOfficeSafeOpen = 28,
+    kOfficeAssistantMale = 29
+};
+
+enum class eInteriorStyleFlags
+{
+    kGunLockerShowPumpShotgun = 0,
+    kGunLockerShowMicroSMG = 1,
+    kGunLockerShowC4 = 2, // proximity or sticky
+    kGunLockerShowGrenade = 3,
+    kGunLockerShowCombatMG = 4,
+    kGunLockerShowMarksmanRifle = 5,
+    kPurchasedSnacks = 6,
+    kPurchasedInteriorRenovations = 7,
+    kForceOfficeAssistantSpawn = 8,
+    kAssistantAnimationOver = 9,
+    kChangeInteriorDecorOfficeHelpShown = 11,
+    kChangeInteriorDecorApartmentHelpShown = 12,
+    kOwnsOfficeBedroom = 13,
+    kOwnsClubhouseBikeShop = 16,
+    kOwnsOfficeGunLocker = 17,
+    KOwnsClubhouseWalls = 18, // ???
+    kOwnsClubhouseFurnishings = 19,
+    kOwnsClubhouseDecors = 20
+};
+
+struct PlaylistData
+{
+    PLAYER_INDEX           Host;
+    SCR_INT                Flags;
+    SCR_BOOL               PAD_0002;
+    SCR_INT                CurrentMission;
+    SCR_INT                TotalMissions;
+    PLAYER_INDEX           PAD_0006;
+};
+static_assert(sizeof(PlaylistData) == 6 * 8);
+
+struct MissionData
+{
+    SCR_INT                           PAD_0000; // unused
+    SCR_INT                           ScriptId; // TODO: add enum
+    SCR_INT                           InstanceId;
+    uint64_t                          PAD_0003[7]; // unused
+    SCR_VEC3                          TriggerPosition;
+    uint64_t                          PAD_0013[3]; // unused
+    SCR_INT                           InstanceIdForPresence;
+    SCR_INT                           PAD_0017; // unused
+    SCR_BITSET<eMissionDataFlags>     Flags;
+};
+static_assert(sizeof(MissionData) == 19 * 8);
+
+// local copy can be found at Global_2680247
+struct JobSettings
+{
+    SCR_ARRAY<uint64_t, 31>           Settings; // indices vary based on job type. take a look at func_8988 in fmmc_launcher if you wish to change them
+    SCR_INT                           NumPlayers; // verify
+    SCR_INT                           PAD_0033;
+    SCR_INT                           SpawnSimpleInteriorIndex;
+    SCR_INT                           PAD_0035; // unused
+    SCR_BOOL                          MatchmakingOpen;
+    SCR_INT                           ContentHash;
+};
+static_assert(sizeof(JobSettings) == 38 * 8);
+
+struct VehicleSelection
+{
+    SCR_BOOL                          Active;
+    SCR_BOOL                          Active2;
+    PLAYER_INDEX                      PAD_0002; // set to host by fmmc but not read at all
+    SCR_HASH                          VehicleModel;
+    SCR_INT                           CreatorIndex; 
+    alignas(8) eVehicleSelectionState State;
+    SCR_INT                           PrimaryColor;
+    Color3                            CustomPrimaryColor;
+    Color3                            CustomSecondaryColor;
+    PLAYER_INDEX                      Partner; // for rally races?
+    GAMER_HANDLE                      PartnerHandle;
+    SCR_INT                           PreferredRole; // target assault races
+    SCR_INT                           PAD_0028; // TODO
+    SCR_INT                           ControlType; // 1 = kb&m 2 = controller
+    SCR_INT                           BettingFlags;
+    SCR_INT                           Team;
+    SCR_INT                           Flags;
+    SCR_INT                           JoinedMembers; // bitset of joined transition members set by the host
+    SCR_INT                           AdversaryOutfitIndex;
+    alignas(8) eStatState             StatState; // see func_9142 in fmmc_launcher, shown to other players
+    SCR_INT                           CashWager; // shown to other players...
+    uint64_t                          PAD_0037[2]; // TODO
+    SCR_INT                           PAD_0039; // TODO random integer between 1 and 11
+};
+static_assert(sizeof(VehicleSelection) == 40 * 8);
+
+struct StrikeTeam
+{
+    PLAYER_INDEX                      Target;
+    Timer                             Cooldown;
+    SCR_BOOL                          CancelStrikeTeam; // read but not written to
+    SCR_INT                           Level;
+};
+static_assert(sizeof(StrikeTeam) == 5 * 8);
+
+struct PlayerStats
+{
+    SCR_INT                           Team;
+    SCR_INT                           RP;
+    SCR_INT                           CrewRP;
+    SCR_INT                           WalletBalance;
+    SCR_INT                           HeistBonus;
+    SCR_INT                           GlobalRP;
+    SCR_INT                           Rank;
+    TEXT_LABEL_31                     CrewTitle;
+    SCR_INT                           TotalRacesWon;
+    SCR_INT                           TotalRacesLost;
+    SCR_INT                           TimesFinishRaceAsTop3;
+    SCR_INT                           TimesFinishRaceLast;
+    SCR_INT                           TimesRaceBestLap;
+    SCR_INT                           TotalDeathmatchesWon;
+    SCR_INT                           TotalDeathmatchesLost;
+    SCR_INT                           TotalTeamDeathmatchesWon;
+    SCR_INT                           TotalTeamDeathmatchesLost;
+    SCR_INT                           Shots;
+    SCR_INT                           Hits;
+    SCR_FLOAT                         KdRatio;
+    SCR_FLOAT                         DropoutRate;
+    SCR_INT                           KillsOnPlayers;
+    SCR_INT                           DeathsByPlayers;
+    SCR_INT                           TotalFinishDeathmatchAsTop3;
+    SCR_INT                           TotalFinishDeathmatchLast;
+    SCR_INT                           DartsTotalWins;
+    SCR_INT                           DartsTotalMatches;
+    SCR_INT                           ArmwrestlingTotalWins;
+    SCR_INT                           ArmwrestlingTotalMatches;
+    SCR_INT                           TennisMatchesWon;
+    SCR_INT                           TennisMatchesLost;
+    SCR_INT                           BaseJumpWins;
+    SCR_INT                           BaseJumpLosses;
+    SCR_INT                           GolfWins;
+    SCR_INT                           GolfLosses;
+    SCR_INT                           ShootingRangeWins;
+    SCR_INT                           ShootingRangeLosses;
+    SCR_INT                           ShootingAbility;
+    SCR_INT                           MissionWins;
+    SCR_INT                           TotalMissionsPlayed;
+    SCR_INT                           SurvivalWins;
+    SCR_INT                           TotalSurvivalsPlayed;
+    SCR_INT                           PAD_0049; // TODO
+    SCR_INT                           MissionsCreated;
+    SCR_INT                           CommunicationRestrictions;
+    SCR_BOOL                          CanSpectate;
+    SCR_INT                           MostFavoriteStation;
+    SCR_INT                           ProstitutesFrequented;
+    SCR_INT                           LapDancesBought;
+    SCR_INT                           Money;
+    SCR_FLOAT                         WeaponAccuracy;
+    SCR_HASH                          FavoriteVehicle;
+    SCR_HASH                          FavoriteWeapon;
+};
+static_assert(sizeof(PlayerStats) == 60 * 8);
+
+struct IEWarehouseData
+{
+    SCR_INT                           OwnedWarehouse;
+    SCR_INT                           NumVehicles;
+    SCR_ARRAY<uint64_t, 40>           Vehicles;
+    SCR_INT                           PAD_0043; // set to zero and not read
+    SCR_INT                           OwnedWarehouseVariation;
+};
+static_assert(sizeof(IEWarehouseData) == 45 * 8);
+
+struct PropertyInteriorData
+{
+    SCR_ARRAY<uint64_t, 30>           PropertyIds;
+    SCR_BITSET<ePropertyInteriorFlags>Flags; // I really don't want to indent everything again
+    SCR_INT                           RingingPlayers; // bitset of players requesting entry into property
+    SCR_INT                           Index; // the value you pass to the send to apartment TSE
+    SCR_INT                           Instance;
+    SCR_INT                           ExteriorIndex;
+    PLAYER_INDEX                      ExteriorOwner;
+    SCR_ARRAY<uint64_t, 32>           RingingPlayersState; // 0 = ringing, 1 = accepted, 2 = denied
+    GAMER_HANDLE                      OwnerHandle; // can be used to bypass RID spoofing when player is inside interior
+    SCR_ARRAY<uint64_t, 30>           EclipseTheme; // not sure why this is an array of 30 yet
+    SCR_INT                           ApartmentType; // normal vs stilt vs eclipse
+    SCR_INT                           OwnerInstance; // same as Instance in most cases
+    uint64_t                          PAD_0116[16]; // TODO
+    SCR_INT                           OfficeSafeMoneyMultiplier;
+    SCR_BITSET<eInteriorStyleFlags>   StyleFlags;
+    SCR_INT                           PAD_0134; // unused
+    SCR_INT                           AssistantGreetingChoice;
+    SCR_INT                           AssistantDialogBitset;
+    SCR_INT                           AssistantDialogBitset2;
+    SCR_INT                           LifetimeCargoMissionsComplete; // used for trophy type
+    SCR_INT                           CasinoChipsMultiplier;
+    SCR_INT                           AssistantDialogBitset3;
+    SCR_INT                           AssistantDialogBitset4;
+    SCR_INT                           AssistantDialogBitset5;
+    SCR_INT                           AssistantDialogBitset6; // do we REALLY need 6 bitsets for assistant dialog?
+    IEWarehouseData                   IEWarehouseData;
+    SCR_INT                           Garage1DataBitset;
+    SCR_INT                           Garage2DataBitset;
+    SCR_INT                           Garage3DataBitset;
+    SCR_INT                           ModshopDataBitset;
+};
+static_assert(sizeof(PropertyInteriorData) == 193 * 8);
+
+struct GPBD_FM_Entry
+{    
+    SCR_INT                           CurrentActivity;
+    SCR_INT                           MissionScriptInstance;
+    SCR_INT                           PAD_0002; // TODO
+    SCR_INT                           NumFreeSpectatorSlots;
+    SCR_INT                           NumPlayersInTransition; // not really
+    SCR_INT                           NJVSVoteState; // voting screen shown after a mission ends
+    SCR_INT                           NJVSVoteContentBitset;
+    SCR_BOOL                          NJVSChoiceMade;
+    SCR_INT                           NJVSLeaveState; // network error or quit
+    SCR_INT                           JobPoints; // can be spoofed to change the "JP" value in the player list
+    PLAYER_INDEX                      NextHost; // transfer transition host when joining next job
+    PlaylistData                      PlaylistData;
+    TEXT_LABEL_63                     JobName;
+    SCR_ARRAY<uint64_t, 2>            ActiveGunRange; // this should have really been an enum lol
+    MissionData                       MissionData;
+    uint64_t                          PAD_0055[2]; // unused
+    JobSettings                       JobSettings;
+    SCR_INT                           FMMCLauncherState;
+    VehicleSelection                  VehicleSelection;
+    SCR_INT                           JobStartCloudTime; // this is a struct but too lazy to create one
+    SCR_INT                           ContentHash; 
+    SCR_BOOL                          PAD_0138; // unused
+    SCR_BITSET<eTutorialBitset>       TutorialBitset;
+    SCR_BITSET<eGangCallServices>     GangCallRequestedServices;
+    PLAYER_INDEX                      GangCallTarget; // can be used to send muggers/hit squad
+    SCR_BITSET<eGangCallServices>     GangCallSentServices;
+    SCR_INT                           TutorialBitset2;
+    TEXT_LABEL_23                     PlayingContentUsedId;
+    TEXT_LABEL_23                     MatchId;
+    uint64_t                          PAD_0156[8]; // unused
+    TEXT_LABEL_63                     DisplayJobName; // as shown in the playerlist?
+    StrikeTeam                        StrikeTeam;
+    uint64_t                          PAD_0185[7]; // pad
+    SCR_INT                           FMMCState;
+    SCR_INT                           PAD_0193; // TODO
+    SCR_INT                           KillStreak;
+    SCR_INT                           NumSuicides; // deducts RP reward in missions
+    SCR_INT                           DeathmatchBounty; // "You have been deducted $~1~ for being idle for too long, and you now have a bounty placed on you."
+    SCR_BOOL                          CollectedBounty;
+    SCR_INT                           AliveDeathmatchPlayers;
+    SCR_INT                           WantedLevelFlags;
+    SCR_ARRAY<uint64_t, 2>            PAD_0201;
+    SCR_INT                           HairdoShopIndex;
+    SCR_INT                           PAD_0204;
+    PlayerStats                       PlayerStats;
+    SCR_INT                           PAD_265;
+    SCR_INT                           Mood;
+
+};
+static_assert(sizeof(GPBD_FM_Entry) == 267 * 8);
+
+struct GPBD_FM
+{
+    SCR_ARRAY<GPBD_FM_Entry, 32> Entries;
+};
+//static_assert(sizeof(GPBD_FM) == 0 * 8);
