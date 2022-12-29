@@ -1055,6 +1055,35 @@ struct IEWarehouseData
 };
 static_assert(sizeof(IEWarehouseData) == 45 * 8);
 
+struct FactoryInfo
+{
+    SCR_INT                           Index;
+    SCR_INT                           TotalProduct;
+    SCR_INT                           TotalSupplies;
+    SCR_INT                           TotalSupplies2; // TODO: what's the difference?
+    uint64_t                          PAD_0004;
+    SCR_INT                           EquipmentUpgrades;
+    SCR_BOOL                          Running;
+    SCR_BOOL                          SetupDone;
+    SCR_BOOL                          PAD_0008;
+    SCR_INT                           Research; // valid only for factory index 5 (bunker)
+    SCR_INT                           StaffState;
+    SCR_INT                           ProductValue; // untested
+    SCR_INT                           StaffAssignmentType; // valid only for factory index 5 (bunker) 0 = manufacturing, 1 = research, 2 = both
+};
+static_assert(sizeof(FactoryInfo) == 13 * 8);
+
+struct HangarData
+{
+    SCR_INT                           Index;
+    SCR_INT                           AppearanceBitset;
+    SCR_INT                           PAD_0002; // unused
+    SCR_INT                           TotalContraband;
+    SCR_INT                           PAD_0004; // unused, a function tries to set it to something but is never called with the right parameters. it isn't read either
+    SCR_BOOL                          SetupDone;
+};
+static_assert(sizeof(HangarData) == 6 * 8);
+
 struct PropertyInteriorData
 {
     SCR_ARRAY<uint64_t, 30>           PropertyIds;
@@ -1087,8 +1116,19 @@ struct PropertyInteriorData
     SCR_INT                           Garage2DataBitset;
     SCR_INT                           Garage3DataBitset;
     SCR_INT                           ModshopDataBitset;
+    SCR_ARRAY<FactoryInfo, 7>         FactoryInfos;
+    SCR_INT                           TotalBunkerResearch;
+    SCR_INT                           CurrentBunkerResearchProgress;
+    SCR_INT                           BunkerDecorVariation;
+    SCR_INT                           PAD_0288;
+    SCR_INT                           MOCColor; // bitset for some reason
+    uint64_t                          PAD_0290[2]; // unused
+    SCR_INT                           GunShopFlags;
+    HangarData                        HangarData;
+    SCR_INT                           PAD_0299;
+
 };
-static_assert(sizeof(PropertyInteriorData) == 193 * 8);
+static_assert(sizeof(PropertyInteriorData) == 300 * 8);
 
 struct GPBD_FM_Entry
 {    
