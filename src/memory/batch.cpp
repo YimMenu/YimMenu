@@ -53,7 +53,7 @@ namespace memory
 	{
 		for (auto& entry : m_entries)
 		{
-			m_futures.push_back(std::async(std::launch::async, scan_pattern_and_execute_callback, region, entry)); //Save the return.
+			m_futures.emplace_back(std::async(std::launch::async, scan_pattern_and_execute_callback, region, entry)); //Save the return.
 		}
 		m_entries.clear();
 		m_futures.clear();	
