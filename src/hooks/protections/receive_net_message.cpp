@@ -271,7 +271,7 @@ namespace big
 							g_notification_service->push_error("Protections", "Blocked invalid transition launch notify remote crash");
 						}
 
-						return false;
+						return true;
 					}
 				}
 				}
