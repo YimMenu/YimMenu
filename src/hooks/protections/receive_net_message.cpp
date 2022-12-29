@@ -258,6 +258,22 @@ namespace big
 					}
 					break;
 				}
+				case rage::eNetMessage::MsgTransitionLaunchNotify:
+				{
+					if (frame->m_connection_identifier != gta_util::get_network()->m_transition_session.m_connection_identifier)
+					{
+						if (player)
+						{
+							g_notification_service->push_error("Protections", std::format("Blocked invalid transition launch notify crash from {}", player->get_name()));
+						}
+						else
+						{
+							g_notification_service->push_error("Protections", "Blocked invalid transition launch notify remote crash");
+						}
+
+						return false;
+					}
+				}
 				}
 			}
 		}
