@@ -71,5 +71,15 @@ namespace big
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip(command->get_description().c_str());
 		}
+
+		template<typename PredicateFn, typename ComponentsFn>
+		static void disable_unless(PredicateFn predicate_fn, ComponentsFn components_fn) {
+			auto const result = predicate_fn();
+			if (!result)
+				ImGui::BeginDisabled(true);
+			components_fn();
+			if (!result)
+				ImGui::EndDisabled();
+		}
 	};
 }
