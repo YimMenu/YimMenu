@@ -119,7 +119,7 @@ namespace big
 		ImGui::BeginGroup();
 		ImGui::Checkbox("Infinite Model Memory", &g.ugc.infinite_model_memory);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Infinity Model Memory is only useful if dev mode is not activated");
+			ImGui::SetTooltip("Infinite Model Memory is only useful if dev mode is not activated");
 
 		ImGui::EndGroup();
 	}
