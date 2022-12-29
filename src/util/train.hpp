@@ -48,13 +48,18 @@ namespace big::train
 
 	inline void delete_train()
 	{
-		int train = get_closest_train();
-
-		if (train != 0)
+		bool isInVeh = PED::IS_PED_IN_ANY_VEHICLE(PLAYER::PLAYER_PED_ID(), false);
+		if (!isInVeh)
 		{
 			VEHICLE::DELETE_ALL_TRAINS();
-			g_notification_service->push_error("Hijack Train", train !=0 ? "Deleted the nearby train" : "There are no trains nearby to delete");
+			g_notification_service->push_error("Hijack Train", isInVeh ? "Exit the train before deleting" : "Deleted the nearby train" );
 		}
+	}
+	
+	inline void exit_train()
+	{
+		if (PED::IS_PED_IN_ANY_VEHICLE(PLAYER::PLAYER_PED_ID(), false))
+			TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::PLAYER_PED_ID());
 	}
 
 	inline void set_train_speed(float value)

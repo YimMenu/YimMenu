@@ -25,6 +25,13 @@ namespace big
 		components::button("Delete Train", []
 			{
 				train::delete_train();
+			});	
+		
+		ImGui::SameLine();
+		
+		components::button("Exit Train", []
+			{
+				train::exit_train();
 			});
 	
 		static float train_speed = 0;
