@@ -23,14 +23,14 @@ namespace memory
 		{
 			if (entry.m_callback)
 			{
-				std::lock_guard<std::mutex> lock(s_entry_mutex); 
+				std::lock_guard<std::mutex> lock(s_entry_mutex); // Acquire a lock on the mutex to synchronize access.
 
 				std::invoke(std::move(entry.m_callback), result);
 				std::stringstream file_out{}; //I hate this, but not logging it except on fail really helps on speed.
 				file_out << "Found '" << entry.m_name << "' GTA5.exe+" << HEX_TO_UPPER(result.as<DWORD64>() - region.begin().as<DWORD64>());
 				big::g_log->file_out(file_out);
 				file_out.clear();
-			}
+			}		
 			else
 			{
 				all_found = false;
