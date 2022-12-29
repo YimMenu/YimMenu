@@ -60,6 +60,6 @@ namespace big::train
 	inline void set_train_speed(float value)
 	{
 		if (PED::IS_PED_IN_ANY_VEHICLE(PLAYER::PLAYER_PED_ID(), false))
-			VEHICLE::SET_TRAIN_SPEED(get_closest_train(), value);
+			VEHICLE::SET_TRAIN_CRUISE_SPEED(get_closest_train(), value);
 	}
 }

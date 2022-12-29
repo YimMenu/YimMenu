@@ -9,20 +9,24 @@ namespace big
 {
 	void looped::drive_train()
 	{
+		int trainSpeed = 0;
+
 		if (g.train.drive_train)
 		{
+			if (PAD::IS_CONTROL_PRESSED(0, 71))
+				trainSpeed++;	
+			if (PAD::IS_CONTROL_PRESSED(0, 72))
+				trainSpeed--;
 
+			train::set_train_speed(trainSpeed);
 		}
 	}
 
 	void looped::derail_train()
 	{
-		if (g.train.derail_train)
-		{
-			int train = train::get_closest_train();
-			if (train != 0 && g.train.derail_train)
-				VEHICLE::SET_RENDER_TRAIN_AS_DERAILED(train, true);
-		}
+		int train = train::get_closest_train();
+		
+		if (train != 0)
+			VEHICLE::SET_RENDER_TRAIN_AS_DERAILED(train, g.train.derail_train);
 	}
-
 }

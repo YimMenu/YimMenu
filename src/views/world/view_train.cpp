@@ -29,7 +29,7 @@ namespace big
 	
 		static float train_speed = 0;
 
-		ImGui::SliderFloat("Train Speed", &train_speed, 0, 1000.f);
+		ImGui::SliderFloat("Train Speed", &train_speed, -500.f, 500.f);
 		ImGui::SameLine();
 		components::button("Set", [] { train::set_train_speed(train_speed); });
 
