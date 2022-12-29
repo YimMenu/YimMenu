@@ -25,7 +25,10 @@ namespace big
 		components::button("Delete Train", []
 			{
 				train::delete_train();
-			});	
+			});
+
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("You cant delete the train while in it.");
 		
 		ImGui::SameLine();
 		
