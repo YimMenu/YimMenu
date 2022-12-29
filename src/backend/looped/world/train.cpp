@@ -9,7 +9,7 @@ namespace big
 {
 	void looped::drive_train()
 	{
-		int trainSpeed = 0;
+		int trainSpeed = ENTITY::GET_ENTITY_SPEED(train::get_closest_train());
 
 		if (g.train.drive_train)
 		{
