@@ -5,10 +5,6 @@
 
 #include <future> //std::async
 
-#define ASYNC_PATTERN_SCANNER 1
-#define LOG_SCAN_TIME 1
-
-
 static std::mutex s_entry_mutex;
 static std::vector<std::future<void>> m_futures;
 
@@ -19,7 +15,7 @@ namespace memory
 		m_entries.emplace_back(std::move(name), std::move(pattern), std::move(callback));
 	}
 
-	void run_function_detour_route(range region, memory::batch::entry entry)
+	void scan_pattern_and_execute_callback(range region, memory::batch::entry entry)
 	{
 		bool all_found = true;
 
@@ -55,27 +51,11 @@ namespace memory
 
 	void batch::run(range region)
 	{
-
-#if LOG_SCAN_TIME
-		auto start = std::chrono::high_resolution_clock::now();
-#endif
-
 		for (auto& entry : m_entries)
 		{
-#if ASYNC_PATTERN_SCANNER
-			m_futures.push_back(std::async(std::launch::async, run_function_detour_route, region, entry)); //Save the return(because some guy said so)
-#else
-			run_function_detour_route(region, entry);
-#endif
+			m_futures.push_back(std::async(std::launch::async, scan_pattern_and_execute_callback, region, entry)); //Save the return.
 		}
-#if LOG_SCAN_TIME
-		auto stop = std::chrono::high_resolution_clock::now();
-		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-		LOG(INFO) << "Finished pattern scanning in " << duration.count() << " microseconds.";
-#endif
-		
 		m_entries.clear();
-		m_futures.clear();
-		
+		m_futures.clear();	
 	}
 }
