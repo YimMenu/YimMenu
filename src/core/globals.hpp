@@ -228,11 +228,12 @@ namespace big
 					vehicle_kick, teleport_to_warehouse, start_activity, send_sms)
 			} script_events{};
 
+			bool desync_kick = false;
 			bool script_host_kick = true;
 			bool rid_join = false;
 			bool lessen_breakups = false; // disabled by default due to anticheat concerns
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, script_host_kick, rid_join, lessen_breakups)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, script_host_kick, rid_join, lessen_breakups, desync_kick)
 		} protections{};
 
 		struct self 
