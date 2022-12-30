@@ -774,6 +774,12 @@ namespace big
 			memory::byte_patch::make(ptr.add(13).as<void*>(), bytes)->apply();
 		});
 
+		// Metric
+		main_batch.add("PMFS", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 83 EC 30 49 8B E8 4C 8D 40 EC 49 8B F1 48 8B D9 40 32 FF E8", [this](memory::handle ptr)
+		{
+			m_prepare_metric_for_sending = ptr.as<PVOID>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 
