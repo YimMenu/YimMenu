@@ -633,10 +633,17 @@ namespace big
 				player_count_filter_minimum, player_count_filter_maximum, sort_method, sort_direction, replace_game_matchmaking)
 		} session_browser{};
 
+		struct ugc
+		{
+			bool infinite_model_memory;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(ugc, infinite_model_memory)
+		} ugc{};
+
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings,
 			debug, tunables, notifications, player, protections, self, session, settings, spawn_vehicle, clone_pv,
-			spawn_ped, spoofing, vehicle, weapons, window, context_menu, esp, session_browser)
+			spawn_ped, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc)
 	};
 
 	inline auto g = menu_settings();
