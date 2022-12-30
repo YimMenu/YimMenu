@@ -23,7 +23,8 @@ namespace big
 				g_fiber_pool->queue_job([]
 				{
 					for (auto& command : g_looped_commands)
-						command->on_disable();
+						if (command->is_enabled())
+							command->on_disable();
 
 					g_running = false;
 				});
