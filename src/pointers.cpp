@@ -5,6 +5,9 @@
 #include "security/RageSecurity.hpp"
 #include "hooking.hpp"
 
+extern "C" void	sound_overload_detour();
+std::uint64_t g_sound_overload_ret_addr;
+
 namespace big
 {
 	pointers::pointers()
@@ -760,6 +763,15 @@ namespace big
 		main_batch.add("CGI", "E8 ? ? ? ? 48 8B CF E8 ? ? ? ? 8B E8", [this](memory::handle ptr)
 		{
 			m_chat_gamer_info = ptr.add(1).rip().add(6).rip().as<rage::rlGamerInfo*>();
+		});
+
+		// Sound Overload Detour
+		main_batch.add("SOD", "66 45 3B C1 74 38", [this](memory::handle ptr)
+		{
+			g_sound_overload_ret_addr = ptr.add(13 + 15).as<decltype(g_sound_overload_ret_addr)>();
+			std::vector<byte> bytes = { 0xFF,0x25,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x90 }; // far jump opcode + a nop opcode
+			*(void**)(bytes.data() + 6) = sound_overload_detour;
+			memory::byte_patch::make(ptr.add(13).as<void*>(), bytes)->apply();
 		});
 
 		auto mem_region = memory::module("GTA5.exe");
