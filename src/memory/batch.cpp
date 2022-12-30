@@ -55,7 +55,12 @@ namespace memory
 		{
 			m_futures.emplace_back(std::async(std::launch::async, scan_pattern_and_execute_callback, region, entry)); //Save the return.
 		}
-		m_entries.clear();
-		m_futures.clear();	
+
+		if (m_entries.size() == m_futures.size()) //Check if all futures are created before clearing.
+		{
+			m_entries.clear();
+			m_futures.clear();
+		}
+
 	}
 }
