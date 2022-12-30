@@ -22,6 +22,8 @@ namespace rage
 	class rlGamerInfo;
 }
 
+extern "C" std::uint64_t g_sound_overload_ret_addr;
+
 namespace big
 {
 	class pointers
@@ -199,6 +201,7 @@ namespace big
 		memory::byte_patch* m_broadcast_patch;
 
 		rage::atSingleton<rage::RageSecurity>* m_security;
+		PVOID m_prepare_metric_for_sending;
 		
 		PVOID m_queue_dependency;
 		PVOID m_interval_check_func;
