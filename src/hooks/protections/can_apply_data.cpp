@@ -212,7 +212,7 @@ namespace big
 					const auto creation_node = dynamic_cast<CPickupCreationDataNode*>(node);
 					if (is_crash_object(creation_node->m_custom_model))
 					{
-						notify::crash_blocked(sender, "invalid door model");
+						notify::crash_blocked(sender, "invalid pickup model");
 						return true;
 					}
 					break;
