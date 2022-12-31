@@ -36,11 +36,14 @@ namespace big
 
 	void hooks::prepare_metric_for_sending(rage::datBitBuffer* bit_buffer, int unk, int time, rage::rlMetric* metric)
 	{
-		char buffer[256]{};
-		json_serializer serializer(buffer, sizeof(buffer));
+		if (g.debug.logs.metric_logs)
+		{
+			char buffer[256]{};
+			json_serializer serializer(buffer, sizeof(buffer));
 
-		metric->serialize(&serializer);
+			metric->serialize(&serializer);
 
-		LOG(INFO) << "METRIC: " << metric->get_name() << "; DATA: " << serializer.get_string();
+			LOG(INFO) << "METRIC: " << metric->get_name() << "; DATA: " << serializer.get_string();
+		}
 	}
 }
