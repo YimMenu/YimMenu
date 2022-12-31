@@ -12,19 +12,19 @@ namespace big
 		ImGui::Separator();
 
 		components::button("Request Ammo Drop", [] {
-			mobile::merry_weather::request_ammo_drop();
+				mobile::merry_weather::request_ammo_drop();
 			});
 
 		components::button("Helicopter Pickup", [] {
-			mobile::merry_weather::request_helicopter_pickup();
+				mobile::merry_weather::request_helicopter_pickup();
 			});
 
 		components::button("Request Backup Helicopter", [] {
-			mobile::merry_weather::request_backup_helicopter();
+				mobile::merry_weather::request_backup_helicopter();
 			});
 
 		components::button("Request Airstrike", [] {
-			mobile::merry_weather::request_airstrike();
+				mobile::merry_weather::request_airstrike();
 			});
 
 		components::sub_title("Mors Mutual");
@@ -41,7 +41,7 @@ namespace big
 		ImGui::Separator();
 
 		components::button("Bullshark Testosterone", [] {
-			mobile::ceo_abilities::request_bullshark_testosterone();
+				mobile::ceo_abilities::request_bullshark_testosterone();
 			});
 
 	}
