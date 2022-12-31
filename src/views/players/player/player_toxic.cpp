@@ -20,6 +20,10 @@ namespace big
 
 			components::player_command_button<"intkick">(g_player_service->get_selected(), {});
 			components::player_command_button<"beast">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
+			components::button("Moan Stripper", [] {
+				toxic::moan(g_player_service->get_selected()->id());
+				});
 
 			static int wanted_level;
 			ImGui::SliderInt("Wanted Level", &wanted_level, 0, 5);
