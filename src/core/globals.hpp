@@ -228,11 +228,12 @@ namespace big
 					vehicle_kick, teleport_to_warehouse, start_activity, send_sms)
 			} script_events{};
 
+			bool desync_kick = false;
 			bool script_host_kick = true;
 			bool rid_join = false;
 			bool lessen_breakups = false; // disabled by default due to anticheat concerns
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, script_host_kick, rid_join, lessen_breakups)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, script_host_kick, rid_join, lessen_breakups, desync_kick)
 		} protections{};
 
 		struct self 
@@ -337,13 +338,15 @@ namespace big
 			bool semi_godmode_all = false;
 			bool wanted_level_all = false;
 
+			bool show_cheating_message = false;
+
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session,
 				local_weather, override_time, override_weather, custom_time, disable_chat_filter, log_chat_messages,
 				log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled,
 				player_magnet_count, is_team, name_spoof_enabled, advertise_menu, spoofed_name, join_in_sctv_slots,
 				kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic,
 				disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, send_to_apartment_idx, send_to_warehouse_idx,
-				chat_commands, chat_command_default_access_level)
+				chat_commands, chat_command_default_access_level, show_cheating_message)
 		} session{};
 
 		struct settings
@@ -619,6 +622,9 @@ namespace big
 			bool language_filter_enabled = false;
 			int language_filter = 0;
 
+			bool pool_filter_enabled = false;
+			int pool_filter = 0;
+
 			bool player_count_filter_enabled = false;
 			int player_count_filter_minimum = 0;
 			int player_count_filter_maximum = 32;
@@ -630,7 +636,7 @@ namespace big
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session_browser,
 				region_filter_enabled, region_filter, language_filter_enabled, language_filter, player_count_filter_enabled,
-				player_count_filter_minimum, player_count_filter_maximum, sort_method, sort_direction, replace_game_matchmaking)
+				player_count_filter_minimum, player_count_filter_maximum, sort_method, sort_direction, replace_game_matchmaking, pool_filter_enabled, pool_filter)
 		} session_browser{};
 
 		struct ugc
