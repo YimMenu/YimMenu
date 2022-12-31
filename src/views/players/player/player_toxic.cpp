@@ -21,7 +21,7 @@ namespace big
 			components::player_command_button<"intkick">(g_player_service->get_selected(), {});
 			components::player_command_button<"beast">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
-			components::button("Moan Stripper", [] {
+			components::button("Pedestrian Strippers", [] { // dont know a good name for this button
 				toxic::moan(g_player_service->get_selected()->id());
 				});
 

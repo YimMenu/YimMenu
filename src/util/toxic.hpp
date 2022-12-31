@@ -43,12 +43,7 @@ namespace big::toxic
 		static const char* voice_name[] = { "S_F_Y_HOOKER_01_WHITE_FULL_01", "S_F_Y_HOOKER_01_WHITE_FULL_02", "S_F_Y_HOOKER_01_WHITE_FULL_03", "S_F_Y_HOOKER_02_WHITE_FULL_01", "S_F_Y_HOOKER_02_WHITE_FULL_02", "S_F_Y_HOOKER_02_WHITE_FULL_03", "S_F_Y_HOOKER_03_BLACK_FULL_01", "S_F_Y_HOOKER_03_BLACK_FULL_03" };
 		Ped target_ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 		Vector3 pos = ENTITY::GET_ENTITY_COORDS(player, true);
-		//ENTITY::SET_ENTITY_VISIBLE(ped, false, false);
-		//AUDIO::PLAY_PED_AMBIENT_SPEECH_WITH_VOICE_NATIVE(ped, "SEX_CLIMAX", "S_F_Y_HOOKER_01_WHITE_FULL_01", "SPEECH_PARAMS_FORCE_SHOUTED", 0);
-		//AUDIO::PLAY_AMBIENT_SPEECH_FROM_POSITION_NATIVE("SEX_CLIMAX", "S_F_Y_HOOKER_01_WHITE_FULL_01", pos.x, pos.y, pos.z, "SPEECH_PARAMS_FORCE_SHOUTED");
-		//AUDIO::PLAY_PED_AMBIENT_SPEECH_AND_CLONE_NATIVE(ped, "SEX_CLIMAX", "SPEECH_PARAMS_FORCE_SHOUTED", false);
 		Vector3 coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(target_ped, 0.0, -1.0, 0.0 + 0.1); // or 0.3 0.2 or 0.1
-		AUDIO::PLAY_AMBIENT_SPEECH_FROM_POSITION_NATIVE(speeches[rand() % 6], voice_name[rand() % 6], coords.x, coords.y, coords.z, "SPEECH_PARAMS_FORCE_SHOUTED");
 		STREAMING::REQUEST_MODEL(rage::joaat("s_f_m_shop_high"));
 		Ped voice_ped = PED::CREATE_PED(28, rage::joaat("s_f_m_shop_high"), coords.x, coords.y, coords.z, 0, true, true);
 		entity::take_control_of(voice_ped);
@@ -56,7 +51,7 @@ namespace big::toxic
 		ENTITY::SET_ENTITY_VISIBLE(voice_ped, false, 0);
 		ENTITY::FREEZE_ENTITY_POSITION(voice_ped, true);
 		ENTITY::SET_ENTITY_INVINCIBLE(voice_ped, true);
-		AUDIO::PLAY_PED_AMBIENT_SPEECH_WITH_VOICE_NATIVE(voice_ped, speeches[rand() % 6], voice_name[rand() % 6], "SPEECH_PARAMS_FORCE", 0);
+		AUDIO::PLAY_PED_AMBIENT_SPEECH_WITH_VOICE_NATIVE(voice_ped, speeches[rand() % 5], voice_name[rand() % 8], "SPEECH_PARAMS_FORCE", true);
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(voice_ped);
 		script::get_current()->yield(5s);
 		PED::DELETE_PED(&voice_ped);
