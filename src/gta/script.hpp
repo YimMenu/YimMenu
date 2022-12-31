@@ -7,6 +7,7 @@
 #define PED_INDEX alignas(8) Ped
 #define VEHICLE_INDEX alignas(8) Vehicle
 #define INTERIOR_INDEX alignas(8) Interior
+#define NETWORK_INDEX alignas(8) int
 
 #define SCR_HASH alignas(8) Hash
 #define SCR_INT alignas(8) int
@@ -198,6 +199,173 @@ enum class eOutOfSightFlags
     kDamagedPlayerOutsideOrganization = 3
 };
 
+enum class eSimpleInteriorIndex
+{
+    SIMPLE_INTERIOR_INVALID = -1,
+    SIMPLE_INTERIOR_WAREHOUSE_1,
+    SIMPLE_INTERIOR_WAREHOUSE_2,
+    SIMPLE_INTERIOR_WAREHOUSE_3,
+    SIMPLE_INTERIOR_WAREHOUSE_4,
+    SIMPLE_INTERIOR_WAREHOUSE_5,
+    SIMPLE_INTERIOR_WAREHOUSE_6,
+    SIMPLE_INTERIOR_WAREHOUSE_7,
+    SIMPLE_INTERIOR_WAREHOUSE_8,
+    SIMPLE_INTERIOR_WAREHOUSE_9,
+    SIMPLE_INTERIOR_WAREHOUSE_10,
+    SIMPLE_INTERIOR_WAREHOUSE_11,
+    SIMPLE_INTERIOR_WAREHOUSE_12,
+    SIMPLE_INTERIOR_WAREHOUSE_13,
+    SIMPLE_INTERIOR_WAREHOUSE_14,
+    SIMPLE_INTERIOR_WAREHOUSE_15,
+    SIMPLE_INTERIOR_WAREHOUSE_16,
+    SIMPLE_INTERIOR_WAREHOUSE_17,
+    SIMPLE_INTERIOR_WAREHOUSE_18,
+    SIMPLE_INTERIOR_WAREHOUSE_19,
+    SIMPLE_INTERIOR_WAREHOUSE_20,
+    SIMPLE_INTERIOR_WAREHOUSE_21,
+    SIMPLE_INTERIOR_WAREHOUSE_22,
+    SIMPLE_INTERIOR_FACTORY_METH_1,
+    SIMPLE_INTERIOR_FACTORY_WEED_1,
+    SIMPLE_INTERIOR_FACTORY_CRACK_1,
+    SIMPLE_INTERIOR_FACTORY_MONEY_1,
+    SIMPLE_INTERIOR_FACTORY_DOCUMENTS_1,
+    SIMPLE_INTERIOR_FACTORY_METH_2,
+    SIMPLE_INTERIOR_FACTORY_WEED_2,
+    SIMPLE_INTERIOR_FACTORY_CRACK_2,
+    SIMPLE_INTERIOR_FACTORY_MONEY_2,
+    SIMPLE_INTERIOR_FACTORY_DOCUMENTS_2,
+    SIMPLE_INTERIOR_FACTORY_METH_3,
+    SIMPLE_INTERIOR_FACTORY_WEED_3,
+    SIMPLE_INTERIOR_FACTORY_CRACK_3,
+    SIMPLE_INTERIOR_FACTORY_MONEY_3,
+    SIMPLE_INTERIOR_FACTORY_DOCUMENTS_3,
+    SIMPLE_INTERIOR_FACTORY_METH_4,
+    SIMPLE_INTERIOR_FACTORY_WEED_4,
+    SIMPLE_INTERIOR_FACTORY_CRACK_4,
+    SIMPLE_INTERIOR_FACTORY_MONEY_4,
+    SIMPLE_INTERIOR_FACTORY_DOCUMENTS_4,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_POLICE_STATION,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_MC_CLUBHOUSE,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_BANK_ROCKFORD,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_BANK_PILLBOX,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_BANK_ALTA,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_BANK_BURTON,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_BANK_PALETO,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_BANK_GRAND_SENORA,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_BANK_CHUMASH,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_ROCKCLUB,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_CHICKEN_FACTORY,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_CHICKEN_FACTORY_PART_2,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_CHICKEN_FACTORY_PART_3,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_CHICKEN_FACTORY_PART_4,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_FARMHOUSE,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_HEIST_YACHT,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_RECYCLING_PLANT,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_BIOLAB,
+    SIMPLE_INTERIOR_IE_WAREHOUSE_1,
+    SIMPLE_INTERIOR_IE_WAREHOUSE_2,
+    SIMPLE_INTERIOR_IE_WAREHOUSE_3,
+    SIMPLE_INTERIOR_IE_WAREHOUSE_4,
+    SIMPLE_INTERIOR_IE_WAREHOUSE_5,
+    SIMPLE_INTERIOR_IE_WAREHOUSE_6,
+    SIMPLE_INTERIOR_IE_WAREHOUSE_7,
+    SIMPLE_INTERIOR_IE_WAREHOUSE_8,
+    SIMPLE_INTERIOR_IE_WAREHOUSE_9,
+    SIMPLE_INTERIOR_IE_WAREHOUSE_10,
+    SIMPLE_INTERIOR_BUNKER_1,
+    SIMPLE_INTERIOR_BUNKER_2,
+    SIMPLE_INTERIOR_BUNKER_3,
+    SIMPLE_INTERIOR_BUNKER_4,
+    SIMPLE_INTERIOR_BUNKER_5,
+    SIMPLE_INTERIOR_BUNKER_6,
+    SIMPLE_INTERIOR_BUNKER_7,
+    SIMPLE_INTERIOR_BUNKER_9,
+    SIMPLE_INTERIOR_BUNKER_10,
+    SIMPLE_INTERIOR_BUNKER_11,
+    SIMPLE_INTERIOR_BUNKER_12,
+    SIMPLE_INTERIOR_ARMORY_TRUCK_1,
+    SIMPLE_INTERIOR_CREATOR_TRAILER_1,
+    SIMPLE_INTERIOR_HANGAR_1,
+    SIMPLE_INTERIOR_HANGAR_2,
+    SIMPLE_INTERIOR_HANGAR_3,
+    SIMPLE_INTERIOR_HANGAR_4,
+    SIMPLE_INTERIOR_HANGAR_5,
+    SIMPLE_INTERIOR_ARMORY_AIRCRAFT_1,
+    SIMPLE_INTERIOR_DEFUNCT_BASE_1,
+    SIMPLE_INTERIOR_DEFUNCT_BASE_2,
+    SIMPLE_INTERIOR_DEFUNCT_BASE_3,
+    SIMPLE_INTERIOR_DEFUNCT_BASE_4,
+    SIMPLE_INTERIOR_DEFUNCT_BASE_6,
+    SIMPLE_INTERIOR_DEFUNCT_BASE_7,
+    SIMPLE_INTERIOR_DEFUNCT_BASE_8,
+    SIMPLE_INTERIOR_DEFUNCT_BASE_9,
+    SIMPLE_INTERIOR_DEFUNCT_BASE_10,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_MEDIUM_GARAGE,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_LOWEND_STUDIO,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_MIDEND_APARTMENT,
+    SIMPLE_INTERIOR_CREATOR_AIRCRAFT_1,
+    SIMPLE_INTERIOR_HUB_LA_MESA,
+    SIMPLE_INTERIOR_HUB_MISSION_ROW,
+    SIMPLE_INTERIOR_HUB_STRAWBERRY_WAREHOUSE,
+    SIMPLE_INTERIOR_HUB_WEST_VINEWOOD,
+    SIMPLE_INTERIOR_HUB_CYPRESS_FLATS,
+    SIMPLE_INTERIOR_HUB_LSIA_WAREHOUSE,
+    SIMPLE_INTERIOR_HUB_ELYSIAN_ISLAND,
+    SIMPLE_INTERIOR_HUB_DOWNTOWN_VINEWOOD,
+    SIMPLE_INTERIOR_HUB_DEL_PERRO_BUILDING,
+    SIMPLE_INTERIOR_HUB_VESPUCCI_CANALS,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_SHERIFF,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_SHERIFF2,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_UNION_DEPOSITORY_CARPARK,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_SIMEON_SHOWROOM,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_ABATTOIR,
+    SIMPLE_INTERIOR_HACKER_TRUCK,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_JEWEL_STORE,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_LIFE_INVADER,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_DJ_YACHT,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_MELANOMA_GARAGE,
+    SIMPLE_INTERIOR_ARENA_GARAGE_1,
+    SIMPLE_INTERIOR_CASINO,
+    SIMPLE_INTERIOR_CASINO_APT,
+    SIMPLE_INTERIOR_CASINO_VAL_GARAGE,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_HAYES_AUTOS,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_METH_LAB,
+    SIMPLE_INTERIOR_ARCADE_PALETO_BAY,
+    SIMPLE_INTERIOR_ARCADE_GRAPESEED,
+    SIMPLE_INTERIOR_ARCADE_DAVIS,
+    SIMPLE_INTERIOR_ARCADE_WEST_VINEWOOD,
+    SIMPLE_INTERIOR_ARCADE_ROCKFORD_HILLS,
+    SIMPLE_INTERIOR_ARCADE_LA_MESA,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_FIB_BUILDING,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_BIOLAB_AND_TUNNEL,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_FOUNDRY,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_MAX_RENDA,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_AIRCRAFT_CARRIER,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_AIRCRAFT_CARRIER_PART_2,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_AIRCRAFT_CARRIER_PART_3,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_AIRCRAFT_CARRIER_PART_4,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_AIRCRAFT_CARRIER_PART_5,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_AIRCRAFT_CARRIER_PART_6,
+    SIMPLE_INTERIOR_RESTRICTED_INTERIOR_OMEGA,
+    SIMPLE_INTERIOR_SOLOMONS_OFFICE,
+    SIMPLE_INTERIOR_CASINO_NIGHTCLUB,
+    SIMPLE_INTERIOR_SUBMARINE,
+    SIMPLE_INTERIOR_MUSIC_STUDIO,
+    SIMPLE_INTERIOR_AUTO_SHOP_LA_MESA,
+    SIMPLE_INTERIOR_AUTO_SHOP_STRAWBERRY,
+    SIMPLE_INTERIOR_AUTO_SHOP_BURTON,
+    SIMPLE_INTERIOR_AUTO_SHOP_RANCHO,
+    SIMPLE_INTERIOR_AUTO_SHOP_MISSION_ROW,
+    SIMPLE_INTERIOR_CAR_MEET,
+    SIMPLE_INTERIOR_FIXER_HQ_HAWICK,
+    SIMPLE_INTERIOR_FIXER_HQ_ROCKFORD,
+    SIMPLE_INTERIOR_FIXER_HQ_SEOUL,
+    SIMPLE_INTERIOR_FIXER_HQ_VESPUCCI,
+    SIMPLE_INTERIOR_ACID_LAB,
+    SIMPLE_INTERIOR_JUGGALO_HIDEOUT,
+    SIMPLE_INTERIOR_MULTISTOREY_GARAGE
+};
+
 struct JobStats
 {
     SCR_INT Wins;
@@ -281,7 +449,7 @@ struct SimpleInteriorData
     SCR_INT                       Flags5;
     SCR_INT                       Flags6;
     SCR_INT                       Flags7;
-    SCR_INT                       SimpleInteriorIndex;
+    alignas(8) eSimpleInteriorIndex Index;
     SCR_INT                       InstanceId;
     SCR_INT                       AllowedGoons;
     PLAYER_INDEX                  Owner;
@@ -290,8 +458,8 @@ struct SimpleInteriorData
     SCR_FLOAT                     SpecialVehicleSpawnHeading;
     SCR_INT                       EnteringSimpleInteriorIndex;
     SCR_INT                       SpecialVehicleSimpleInteriorIndex; // MOC, Terrorbyte etc
-    SCR_INT                       UnkSimpleInteriorIndex;
-    SCR_INT                       UnkSimpleInteriorIndex2;
+    alignas(8) eSimpleInteriorIndex UnkSimpleInteriorIndex;
+    alignas(8) eSimpleInteriorIndex UnkSimpleInteriorIndex2;
     SCR_VEC3                      AvengerPosition;
     SCR_VEC3                      AvengerPosition2; // not sure how this is different from the field above
     SCR_FLOAT                     AvengerHeading;
@@ -912,6 +1080,17 @@ enum class eInteriorStyleFlags
     kOwnsClubhouseDecors = 20
 };
 
+enum class eBusinessHubProductIndex
+{
+    CARGO,
+    WEAPONS,
+    COCAINE,
+    METH,
+    WEED,
+    FORGED_DOCUMENTS,
+    COUNTERFEIT_CASH
+};
+
 struct PlaylistData
 {
     PLAYER_INDEX           Host;
@@ -1045,9 +1224,17 @@ struct PlayerStats
 };
 static_assert(sizeof(PlayerStats) == 60 * 8);
 
+struct ExecutiveWarehouseInfo
+{
+    SCR_INT                           Index;
+    SCR_INT                           Stock;
+    SCR_INT                           PAD_0002; // unused
+};
+static_assert(sizeof(ExecutiveWarehouseInfo) == 3 * 8);
+
 struct IEWarehouseData
 {
-    SCR_INT                           OwnedWarehouse;
+    SCR_INT                           Index;
     SCR_INT                           NumVehicles;
     SCR_ARRAY<uint64_t, 40>           Vehicles;
     SCR_INT                           PAD_0043; // set to zero and not read
@@ -1084,7 +1271,157 @@ struct HangarData
 };
 static_assert(sizeof(HangarData) == 6 * 8);
 
-struct PropertyInteriorData
+// facility
+struct DefunctBaseData
+{
+    SCR_INT                           Index;
+    SCR_INT                           AppearanceBitset;
+    SCR_INT                           AppearanceBitset2;
+    SCR_INT                           ObtainedAwards;
+    SCR_INT                           PAD_0004; // unused, a function tries to set it to something but is never called with the right parameters. it isn't read either
+    SCR_INT                           PAD_0005;
+    SCR_INT                           TotalContraband; // wat
+};
+static_assert(sizeof(DefunctBaseData) == 7 * 8);
+
+// nightclub
+struct BusinessHubData
+{
+    SCR_INT                           Index;
+    SCR_INT                           ContTotal; // not read by the scripts
+    SCR_INT                           ProducingBusinesses; // bitset
+    SCR_INT                           ProducingFactories; // bitset
+    SCR_INT                           Upgrades;
+    SCR_INT                           PAD_0005;
+    SCR_INT                           PAD_0006; // not read by the scripts
+    SCR_INT                           SetupBitset; // includes owned DJs
+    SCR_ARRAY<uint64_t, 8>            ProductStocks; // see eBusinessHubProductIndex
+    SCR_ARRAY<uint64_t, 16>           PAD_0017; // have no clue what this is
+    SCR_ARRAY<uint64_t, 8>            TotalSoldProduct;
+};
+static_assert(sizeof(BusinessHubData) == 43 * 8);
+
+// also the nightclub? strange
+struct NightclubData
+{
+    SCR_INT                           Index; // same as BusinessHubData::Index
+    SCR_INT                           AppearanceBitset;
+    SCR_INT                           AppearanceBitset2;
+    SCR_INT                           AccessSettings; // TODO: figure out how this works
+    SCR_FLOAT                         Popularity; // 0.0 to 1.0
+    SCR_INT                           SafeCashValue;
+    SCR_INT                           EntryCost; // can be set to any arbitrary value
+    SCR_INT                           CroudVariation;
+    SCR_INT                           DanceAwardProgress; // "Gold Dancer trophy unlocked."
+    SCR_INT                           DanceAward2Progress; // "Gold Battler trophy unlocked."
+    Timer                             DJMusicChangeTimer;
+};
+static_assert(sizeof(NightclubData) == 12 * 8);
+
+struct ArenaGarageData
+{
+    SCR_INT                           Index; // always one for obvious reasons
+    SCR_INT                           OwnedGarageFloorLevel;
+    SCR_INT                           AppearanceBitset;
+    SCR_INT                           AppearanceBitset2;
+    SCR_INT                           InteriorTypeA;
+    SCR_INT                           InteriorTypeB;
+    SCR_INT                           SpectatingIndex;
+    SCR_INT                           SpectatingType;
+    SCR_INT                           PAD_0008; // unused
+};
+static_assert(sizeof(ArenaGarageData) == 9 * 8);
+
+struct InsideTrack
+{
+    TEXT_LABEL_63                     PlayerName; // real name leak when playing inside track
+    SCR_INT                           BetHorseID;
+    SCR_INT                           BetChips;
+};
+static_assert(sizeof(InsideTrack) == 18 * 8);
+
+// casino penthouse
+struct CasinoApartmentData
+{
+    SCR_INT                           Index; // always one for obvious reasons
+    SCR_INT                           PAD_0001; // unused
+    SCR_INT                           AppearanceBitset;
+    SCR_INT                           AppearanceBitset2;
+    uint64_t                          PAD_0005[2];
+    InsideTrack                       InsideTrack;
+};
+static_assert(sizeof(CasinoApartmentData) == 24 * 8);
+
+struct ArcadeData
+{
+    SCR_INT                           Index;
+    SCR_INT                           AppearanceBitset;
+    SCR_INT                           AppearanceBitset2;
+    SCR_INT                           AppearanceBitset3;
+    SCR_INT                           SafeCashValue;
+    SCR_INT                           PAD_0005; // unused
+};
+static_assert(sizeof(ArcadeData) == 6 * 8);
+
+struct ArcadeMachines
+{
+    SCR_INT                           OrderedMachinesBitset;
+    SCR_INT                           ArrivedMachinesBitset;
+};
+static_assert(sizeof(ArcadeMachines) == 2 * 8);
+
+struct SubmarineData
+{
+    SCR_INT                           AppearanceBitset;
+    SCR_HASH                          Model; // not read by the scripts, always set to HASH("kosatka")
+    SCR_INT                           Color; // "PACKED_MP_INT_KOSATKA_COLOUR"
+    SCR_INT                           Flag; // "PACKED_MP_INT_KOSATKA_FLAG"
+    SCR_INT                           LastGuidedMissileUseTime;
+    SCR_INT                           PAD_0005; // unused
+};
+static_assert(sizeof(SubmarineData) == 6 * 8);
+
+struct AutoShopData
+{
+    SCR_INT                           Index;
+    SCR_INT                           AccessSetting;
+    SCR_INT                           AppearanceBitset;
+    SCR_INT                           AppearanceBitset2;
+    SCR_INT                           PAD_0004;
+    SCR_ARRAY<uint64_t, 2>            ModdingVehicles; // VEHICLE_INDEX, not NETWORK_INDEX
+};
+static_assert(sizeof(AutoShopData) == 8 * 8);
+
+// LS car meet
+struct CarClubData
+{
+    SCR_INT                           Flags;
+    SCR_INT                           Reputation;
+    SCR_INT                           ReputationLevel;
+    SCR_INT                           TestTrackAccess; // unused?
+};
+static_assert(sizeof(CarClubData) == 4 * 8);
+
+// agency
+struct FixerHQData
+{
+    SCR_INT                           Index;
+    SCR_INT                           AppearanceBitset;
+    SCR_INT                           SafeCashValue;
+};
+static_assert(sizeof(FixerHQData) == 3 * 8);
+
+// eclipse blvd garage (currently unreleased)
+struct MultiStoreyGarageData
+{
+    SCR_INT                           Index; // always one for obvious reasons
+    SCR_INT                           AppearanceBitset;
+    SCR_INT                           AppearanceBitset2;
+    SCR_ARRAY<uint64_t, 2>            GarageTints;
+};
+static_assert(sizeof(MultiStoreyGarageData) == 6 * 8);
+
+struct PropertyData
 {
     SCR_ARRAY<uint64_t, 30>           PropertyIds;
     SCR_BITSET<ePropertyInteriorFlags>Flags; // I really don't want to indent everything again
@@ -1098,7 +1435,7 @@ struct PropertyInteriorData
     SCR_ARRAY<uint64_t, 30>           EclipseTheme; // not sure why this is an array of 30 yet
     SCR_INT                           ApartmentType; // normal vs stilt vs eclipse
     SCR_INT                           OwnerInstance; // same as Instance in most cases
-    uint64_t                          PAD_0116[16]; // TODO
+    SCR_ARRAY<ExecutiveWarehouseInfo, 5> ExecutiveWarehouseInfos;
     SCR_INT                           OfficeSafeMoneyMultiplier;
     SCR_BITSET<eInteriorStyleFlags>   StyleFlags;
     SCR_INT                           PAD_0134; // unused
@@ -1126,9 +1463,73 @@ struct PropertyInteriorData
     SCR_INT                           GunShopFlags;
     HangarData                        HangarData;
     SCR_INT                           PAD_0299;
-
+    DefunctBaseData                   DefunctBaseData;
+    SCR_INT                           AvengerInteriorDecorFlags; // "PACKED_MP_INT_ARMORY_AIRCRAFT_INTERIOR_v0"
+    uint64_t                          PAD_0308[2];
+    BusinessHubData                   BusinessHubData;
+    NightclubData                     NightclubData;
+    SCR_INT                           PAD_0365;
+    SCR_INT                           TerrorbyteDesign;
+    SCR_INT                           PAD_0367;
+    SCR_INT                           AcidLabRadio;
+    SCR_INT                           TerrorbyteRadio;
+    SCR_INT                           NanoDroneCooldown;
+    PLAYER_INDEX                      HostOfInteriorScript;
+    ArenaGarageData                   ArenaGarageData;
+    SCR_INT                           ArcadeJukeboxStation; // for simple interior type 17
+    SCR_INT                           JukeboxFavoritePlaylist;
+    SCR_INT                           ClubhouseBarCashAmount;
+    SCR_INT                           DefaultJukeboxStation;
+    SCR_INT                           FreakshopJukeboxStation;
+    SCR_INT                           PAD_0386; // TODO
+    SCR_HASH                          MOCModel; // used by the bunker script to detect exits with MOC
+    SCR_INT                           PAD_0388; // unused
+    SCR_HASH                          TerrorbyteModel;
+    SCR_ARRAY<uint64_t, 7>            PAD_0390; // some property interior stuff
+    uint64_t                          PAD_0398[4];
+    SCR_INT                           OfficeGarageModdingVehicleSlot;
+    SCR_INT                           CurrentOfficeGarageFloor;
+    CasinoApartmentData               CasinoApartmentData;
+    ArcadeData                        ArcadeData;
+    ArcadeMachines                    ArcadeMachines;
+    SCR_ARRAY<uint64_t, 41>           ArcadeMachineSlots;
+    SCR_INT                           PAD_0478; // TODO
+    SubmarineData                     SubmarineData;
+    AutoShopData                      AutoShopData;
+    SCR_ARRAY<uint64_t, 2>            AutoShopArcadeMachineSlots;
+    CarClubData                       CarClubData;
+    FixerHQData                       FixerHQData;
+    SCR_INT                           PAD_0503; // not read by the scripts
+    VEHICLE_INDEX                     CurrentlyModdingVehicleFixerHQ;
+    MultiStoreyGarageData             MultiStoreyGarageData;
+    SCR_INT                           FreakshopBits; // 0: has weapon workshop, 1: radio enabled
 };
-static_assert(sizeof(PropertyInteriorData) == 300 * 8);
+static_assert(sizeof(PropertyData) == 512 * 8);
+
+struct BikerContracts
+{
+    SCR_ARRAY<uint64_t, 4>            ActiveContractMissions;
+    SCR_INT                           SelectedContractMission;
+    SCR_BOOL                          Enabled;
+};
+static_assert(sizeof(BikerContracts) == 7 * 8);
+
+struct NightclubSale
+{
+    SCR_INT                           BuyerIndex;
+    SCR_INT                           NumSoldItems;
+    SCR_INT                           SaleAmount;
+    uint64_t                          PAD_0003[2];
+};
+static_assert(sizeof(NightclubSale) == 5 * 8);
+
+struct ArenaWarData
+{
+    SCR_INT                           PointsTier;
+    SCR_INT                           SkillLevel;
+    SCR_INT                           TrinketBitset; // MP_STAT_ARN_BS_TRINKET_SAVED
+};
+static_assert(sizeof(ArenaWarData) == 3 * 8);
 
 struct GPBD_FM_Entry
 {    
@@ -1179,12 +1580,43 @@ struct GPBD_FM_Entry
     PlayerStats                       PlayerStats;
     SCR_INT                           PAD_265;
     SCR_INT                           Mood;
-
+    PropertyData                      PropertyData;
+    uint64_t                          PAD_0779[4]; // TODO
+    uint64_t                          PAD_0783[12]; // no clue what it does but it looks rather interesting
+    SCR_INT                           AssistedKillFlags;
+    NETWORK_INDEX                     UnkNetworkId;
+    SCR_BOOL                          SpawningUnkVehicle;
+    SCR_BOOL                          MeltdownComplete; // yes, the singleplayer mission "Meltdown" (michael4)
+    SCR_INT                           UNK_0799;
+    SCR_INT                           GangAttackTarget; // triggers unique dialog from some phone NPCs
+    SCR_INT                           ActivePVSlot;
+    PLAYER_INDEX                      PAD_0802;
+    SCR_INT                           PAD_0803;
+    SCR_ARRAY<uint64_t, 2>            ActiveAmbientWeaponPickups;
+    SCR_ARRAY<uint64_t, 6>            OfficeMapMarkers;
+    SCR_INT                           OfficeLargestMoneyThresholdIndex;
+    SCR_ARRAY<uint64_t, 2>            EnabledOfficeCashPiles;
+    SCR_ARRAY<uint64_t, 2>            EnabledClubhouseCashPiles;
+    BikerContracts                    BikerContracts;
+    SCR_INT                           CasinoWonBitset; // can be used to tamper with the casino PA system
+    uint64_t                          PAD_0829[2];
+    SCR_BOOL                          CameraPositionOverriden;
+    SCR_VEC3                          OverrideCameraPosition;
+    SCR_INT                           PAD_0835;
+    SCR_INT                           HeliRappelFlags;
+    SCR_INT                           PAD_0837; // some more aircraft flags
+    SCR_BOOL                          RespawningToPreviousCheckpoint;
+    NightclubSale                     NightclubSale;
+    uint64_t                          PAD_844[11]; // unused, all of them
+    SCR_INT                           SeatingIndex;
+    ArenaWarData                      ArenaWarData;
+    uint64_t                          PAD_0859[2];
+    SCR_INT                           ApartmentEnterFlags;
 };
-static_assert(sizeof(GPBD_FM_Entry) == 267 * 8);
+static_assert(sizeof(GPBD_FM_Entry) == 862 * 8);
 
 struct GPBD_FM
 {
     SCR_ARRAY<GPBD_FM_Entry, 32> Entries;
 };
-//static_assert(sizeof(GPBD_FM) == 0 * 8);
+static_assert(sizeof(GPBD_FM) == 27585 * 8);
