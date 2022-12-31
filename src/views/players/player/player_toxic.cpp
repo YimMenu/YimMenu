@@ -21,8 +21,8 @@ namespace big
 			components::player_command_button<"intkick">(g_player_service->get_selected(), {});
 			components::player_command_button<"beast">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
-			components::button("Pedestrian Strippers", [] { // dont know a good name for this button
-				toxic::moan(g_player_service->get_selected()->id());
+			components::button("Send Moaning Ped", [] {
+				toxic::send_moaning_ped(g_player_service->get_selected()->id());
 				});
 
 			static int wanted_level;

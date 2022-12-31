@@ -37,7 +37,7 @@ namespace big::toxic
 		blame_explode_coord(to_blame, coords, explosion_type, damage, is_audible, is_invisible, camera_shake);
 	}
 
-	inline void moan(Player player)
+	inline void send_moaning_ped(Player player)
 	{
 		static const char* speeches[] = { "SEX_GENERIC_FEM", "SEX_HJ", "SEX_ORAL_FEM", "SEX_CLIMAX", "SEX_GENERIC" };
 		static const char* voice_name[] = { "S_F_Y_HOOKER_01_WHITE_FULL_01", "S_F_Y_HOOKER_01_WHITE_FULL_02", "S_F_Y_HOOKER_01_WHITE_FULL_03", "S_F_Y_HOOKER_02_WHITE_FULL_01", "S_F_Y_HOOKER_02_WHITE_FULL_02", "S_F_Y_HOOKER_02_WHITE_FULL_03", "S_F_Y_HOOKER_03_BLACK_FULL_01", "S_F_Y_HOOKER_03_BLACK_FULL_03" };
