@@ -10,6 +10,8 @@
 #include "util/system.hpp"
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
+#include "entity.hpp"
+#include "ped.hpp"
 
 #include <timeapi.h>
 #pragma comment(lib, "winmm.lib")
@@ -50,7 +52,6 @@ namespace big::toxic
 		ENTITY::FREEZE_ENTITY_POSITION(voice_ped, true);
 		ENTITY::SET_ENTITY_INVINCIBLE(voice_ped, true);
 		AUDIO::PLAY_PED_AMBIENT_SPEECH_WITH_VOICE_NATIVE(voice_ped, speeches[rand() % 5], voice_name[rand() % 8], "SPEECH_PARAMS_FORCE", true);
-		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(voice_ped);
 		script::get_current()->yield(5s);
 		PED::DELETE_PED(&voice_ped);
 	}
