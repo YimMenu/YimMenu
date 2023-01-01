@@ -157,7 +157,6 @@ namespace big
 		CeoMoney = 245065909, // Goon_Paid_Large
 		ClearWantedLevel = 2080651008,
 		ForceMission = 1858712297, // ), Var0.f_2, 1))
-		ForceMission2 = -1578682814, // TICK_PH_INVA
 		GiveCollectible = 697566862, // DLC_SUM20_HIDDEN_COLLECTIBLES xref
 		GtaBanner = -795380017, // NETWORK::NETWORK_IS_SCRIPT_ACTIVE("BUSINESS_BATTLES", -1, true, 0) second one
 		NetworkBail = 915462795, // NETWORK::NETWORK_BAIL(16, 0, 0); xref func
@@ -165,12 +164,12 @@ namespace big
 		RemoteOffradar = -162943635, // NETWORK::GET_TIME_DIFFERENCE(NETWORK::GET_NETWORK_TIME(), Var0.f_2)
 		SendToCutscene = 392606458, // (bVar3, bVar4, 125f, 1)
 		SendToCayoPerico = -910497748, // CELL_HI_INV
-		SendToLocation = 1214823473, // &Var222, 11);
+		SendToLocation = 1214823473, // &Var222, 11); TODO this isn't updated!
 		SoundSpam = -1891171016, // CELL_APTINVYACHT
 		Spectate = -1903870031, // SPEC_TCK1
 		Teleport = -168599209, // Mission_Pass_Notify
 		TeleportToWarehouse = 434937615, // .f_4 == 50
-		TransactionError = -768108950, // NETWORK_RECEIVE_PLAYER_JOBSHARE_CASH
+		TransactionError = -492741651, // NETWORK_RECEIVE_PLAYER_JOBSHARE_CASH
 		VehicleKick = -852914485, // PIM_RFMOC
 		MCTeleport = 879177392, // NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(PLAYER::PLAYER_ID()) == (first one)
 		StartActivity = 243072129, // (Var0.f_2, -1); first match
@@ -189,6 +188,8 @@ namespace big
 		NotificationMoneyBanked = -1032040118, // TICK_TC_BANK
 		NotificationMoneyRemoved = -1197151915, // TICK_TC_REMO
 		NotificationMoneyStolen = -28878294, // TICK_TC_STOL
+
+		DestroyPersonalVehicle = -513394492 // CnC_PV_THEFT
 	};
 
 	enum class eCollectibleType

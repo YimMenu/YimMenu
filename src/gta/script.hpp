@@ -1,6 +1,7 @@
 #pragma once
 #include "natives.hpp"
 #include "core/enums.hpp"
+#include "enums.hpp"
 
 #define PLAYER_INDEX alignas(8) Player
 #define ENTITY_INDEX alignas(8) Entity
@@ -1288,7 +1289,7 @@ static_assert(sizeof(DefunctBaseData) == 7 * 8);
 struct BusinessHubData
 {
     SCR_INT                           Index;
-    SCR_INT                           ContTotal; // not read by the scripts
+    SCR_INT                           TotalContraband; // not read by the scripts
     SCR_INT                           ProducingBusinesses; // bitset
     SCR_INT                           ProducingFactories; // bitset
     SCR_INT                           Upgrades;
@@ -1620,3 +1621,37 @@ struct GPBD_FM
     SCR_ARRAY<GPBD_FM_Entry, 32> Entries;
 };
 static_assert(sizeof(GPBD_FM) == 27585 * 8);
+
+struct GPBD_MissionName
+{
+    SCR_ARRAY<TEXT_LABEL_63, 32> MissionNames;
+};
+static_assert(sizeof(GPBD_MissionName) == 513 * 8);
+
+struct g_AMC_playerBD_Entry
+{
+    SCR_ARRAY<Timer, 79>    UsedContactServicesTimer; // only index 2 (mugger) is actually used by the scripts. the rest is just a waste of bandwidth
+    SCR_ARRAY<uint64_t, 79> ContactServiceCooldowns; // same as above
+};
+static_assert(sizeof(g_AMC_playerBD_Entry) == 239 * 8);
+
+struct g_AMC_playerBD
+{
+    SCR_ARRAY<g_AMC_playerBD_Entry, 32> Entries;
+};
+static_assert(sizeof(g_AMC_playerBD) == 7649 * 8);
+
+struct GSBD_Kicking
+{
+    SCR_ARRAY<uint64_t, 32> KickedPlayers;
+};
+static_assert(sizeof(GSBD_Kicking) == 33 * 8);
+
+// this is why your apartment generally takes years to load
+struct GSBD_PropertyInstances
+{
+    SCR_ARRAY<GAMER_HANDLE, 32> PropertyOwners;
+    uint64_t                    PAD_0417[14]; // unused
+    SCR_ARRAY<uint64_t, 32>     PropertyOwnerInstances;
+};
+static_assert(sizeof(GSBD_PropertyInstances) == 464 * 8);

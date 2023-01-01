@@ -165,14 +165,22 @@ namespace big
 					{
 						if (g_player_service->get_self()->is_host())
 						{
-							g_notification_service->push_error("Warning!", std::format("{} tried to breakup kick {}!", player->get_name(), pl->get_name()));
+							g.reactions.breakup_others.process(player, pl);
 							session::add_infraction(player, Infraction::BREAKUP_KICK_DETECTED);
-							return true;
+
+							if (g.reactions.breakup_others.block)
+								return true;
+
+							if (g.reactions.breakup_others.karma)
+								((player_command*)command::get(RAGE_JOAAT("breakup")))->call(player, {});
 						}
 						else
 						{
-							g_notification_service->push_error("Warning!", std::format("{} breakup kicked {}!", player->get_name(), pl->get_name()));
+							g.reactions.breakup_others.process(player, pl);
 							session::add_infraction(player, Infraction::BREAKUP_KICK_DETECTED);
+
+							if (g.reactions.breakup_others.karma)
+								((player_command*)command::get(RAGE_JOAAT("breakup")))->call(player, {});
 						}
 					}
 
@@ -189,7 +197,7 @@ namespace big
 					if (self->get_net_data() && self->get_net_data()->m_gamer_handle_2.m_rockstar_id == handle.m_rockstar_id)
 					{
 						session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
-						g_notification_service->push_error("Protections", std::format("{} tried to lost connection kick you!", player->get_name()));
+						g.reactions.lost_connection_kick.process(player);
 						return true;
 					}
 
@@ -198,8 +206,12 @@ namespace big
 						if (plyr->get_net_data() && plyr != player && plyr->get_net_data()->m_gamer_handle_2.m_rockstar_id == handle.m_rockstar_id)
 						{
 							session::add_infraction(player, Infraction::LOST_CONNECTION_KICK_DETECTED);
-							g_notification_service->push_error("Protections", std::format("{} tried to lost connection kick {}!", player->get_name(), plyr->get_name()));
-							return true;
+							g.reactions.lost_connection_kick_others.process(player, plyr);
+
+							if (g.reactions.lost_connection_kick_others.block)
+								return true;
+							else
+								break;
 						}
 					}
 

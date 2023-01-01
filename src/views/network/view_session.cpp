@@ -200,6 +200,8 @@ namespace big
 		}
 
 		components::command_button<"killall">({ }, "Kill Everyone");
+		ImGui::SameLine();
+		components::command_button<"explodeall">({ }, "Explode Everyone");
 
 		ImGui::SameLine();
 

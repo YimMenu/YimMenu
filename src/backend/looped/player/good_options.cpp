@@ -11,7 +11,7 @@ namespace big
 	static int neverWantedPlayer = 0;
 	void looped::player_good_options()
 	{
-		if (!NETWORK::NETWORK_IS_SESSION_STARTED())
+		if (!*g_pointers->m_is_session_started)
 			return;
 
 		offRadarPlayer++;
