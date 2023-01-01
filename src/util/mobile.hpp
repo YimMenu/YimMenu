@@ -43,6 +43,16 @@ namespace big::mobile
 		{
 			*script_global(scr_globals::mechanic_global).at(888).as<int*>() = 1;
 		}
+
+		inline void request_backup_helicopter()
+		{
+			*script_global(scr_globals::mechanic_global).at(4484).as<int*>() = 1;
+		}
+
+		inline void request_airstrike()
+		{
+			*script_global(scr_globals::mechanic_global).at(4485).as<int*>() = 1;
+		}
 	}
 
 	namespace mors_mutual
@@ -82,6 +92,14 @@ namespace big::mobile
 					fixed_count++;
 
 			return fixed_count;
+		}
+	}
+
+	namespace ceo_abilities
+	{
+		inline void request_bullshark_testosterone()
+		{
+			*script_global(2672505).at(3689).as<int*>() = 1;
 		}
 	}
 
