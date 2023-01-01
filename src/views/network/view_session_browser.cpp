@@ -140,6 +140,13 @@ namespace big
 				ImGui::InputInt("Maximum", &g.session_browser.player_count_filter_maximum);
 			}
 
+			ImGui::Checkbox("Pool Type", &g.session_browser.pool_filter_enabled);
+			if (g.session_browser.pool_filter_enabled)
+			{
+				ImGui::SameLine();
+				ImGui::Combo("###pooltype", &g.session_browser.pool_filter, "Normal\0Bad Sport");
+			}
+
 			ImGui::TreePop();
 		}
 

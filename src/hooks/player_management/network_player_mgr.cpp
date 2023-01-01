@@ -18,7 +18,9 @@ namespace big
 		// set our local spoofed name
 		if (g.spoofing.spoof_username && g.spoofing.spoof_local_username)
 		{
-			local_name_patch = memory::byte_patch::make(g_pointers->m_chat_gamer_info->m_name, g.spoofing.username).get();
+			std::array<char, 17> local_name;
+			std::copy(g.spoofing.username.begin(), g.spoofing.username.end(), local_name.data());
+			local_name_patch = memory::byte_patch::make(g_pointers->m_chat_gamer_info->m_name, local_name).get();
 			local_name_patch->apply();
 		}
 

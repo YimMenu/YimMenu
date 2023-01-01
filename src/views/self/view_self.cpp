@@ -54,8 +54,6 @@ namespace big
 		components::command_checkbox<"mobileradio">();
 
 		ImGui::Checkbox("Dance Mode", &g.self.dance_mode);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Hold Right DPAD or E to enter dance mode");
 
 		ImGui::EndGroup();
 
