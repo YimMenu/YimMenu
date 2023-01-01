@@ -65,6 +65,9 @@ namespace big
 					{
 						m_found_sessions[i].is_valid = false;
 					}
+
+					if (g.session_browser.pool_filter_enabled && ((m_found_sessions[i].attributes.discriminator & (1 << 14)) == (1 << 14)) != (bool)g.session_browser.pool_filter)
+						m_found_sessions[i].is_valid = false;
 				}
 
 				if (g.session_browser.sort_method != 0)
