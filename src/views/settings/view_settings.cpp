@@ -44,7 +44,10 @@ namespace big
 
 		if (ImGui::Hotkey("Toggle Noclip", &g.settings.hotkeys.noclip))
 			g_hotkey_service->update_hotkey("noclip", g.settings.hotkeys.noclip);
-
+		if (ImGui::Hotkey("Bring PV", &g.settings.hotkeys.bringvehicle))
+			g_hotkey_service->update_hotkey("bringpv", g.settings.hotkeys.bringvehicle);
+		if (ImGui::Hotkey("Toggle invisibility", &g.settings.hotkeys.invis))
+			g_hotkey_service->update_hotkey("invis", g.settings.hotkeys.invis);
 
 		ImGui::PopItemWidth();
 

@@ -358,8 +358,11 @@ namespace big
 				int teleport_waypoint = 0;
 				int teleport_objective = 0;
 				int noclip = 0;
+				int bringvehicle = 0;
+				int invis = 0;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, 
+					noclip, bringvehicle, invis)
 			} hotkeys{};
 
 			bool dev_dlc = false;
