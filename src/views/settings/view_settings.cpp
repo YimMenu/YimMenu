@@ -54,6 +54,11 @@ namespace big
 			g_hotkey_service->update_hotkey("fillsnacks", g.settings.hotkeys.fill_inventory);
 		if (ImGui::Hotkey("Skip Cutscene", &g.settings.hotkeys.skip_cutscene))
 			g_hotkey_service->update_hotkey("skipcutscene", g.settings.hotkeys.skip_cutscene);
+		if (ImGui::Hotkey("Toggle Freecam", &g.settings.hotkeys.freecam))
+			g_hotkey_service->update_hotkey("freecam", g.settings.hotkeys.freecam);
+		if (ImGui::Hotkey("Toggle fastrun", &g.settings.hotkeys.superrun))
+			g_hotkey_service->update_hotkey("fastrun", g.settings.hotkeys.superrun);
+
 		ImGui::PopItemWidth();
 
 		ImGui::Separator();

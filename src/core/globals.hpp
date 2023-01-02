@@ -363,9 +363,11 @@ namespace big
 				int heal = 0;
 				int fill_inventory = 0;
 				int skip_cutscene = 0;
+				int freecam = 0;
+				int superrun = 0;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, 
-					noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene)
+					noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam)
 			} hotkeys{};
 
 			bool dev_dlc = false;
