@@ -8,7 +8,7 @@ namespace big
 	{
 		auto ret = g_hooking->get_original<write_player_game_state_data_node>()(player, node);
 
-		if (g.spoofing.spoof_hide_god && !is_player_in_cutscene && !is_player_in_interior(self::ped))
+		if (g.spoofing.spoof_hide_god && !is_player_in_cutscene(self::ped) && !is_player_in_interior(self::ped))
 		{
 			node->m_is_invincible = false;
 			node->m_bullet_proof = false;
