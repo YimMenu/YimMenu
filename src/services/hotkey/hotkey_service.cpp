@@ -15,6 +15,9 @@ namespace big
         register_hotkey("noclip", g.settings.hotkeys.noclip, RAGE_JOAAT("noclip"));
         register_hotkey("bringpv", g.settings.hotkeys.bringvehicle, RAGE_JOAAT("bringpv"));
         register_hotkey("invis", g.settings.hotkeys.invis, RAGE_JOAAT("invis"));
+        register_hotkey("heal", g.settings.hotkeys.heal, RAGE_JOAAT("heal"));
+        register_hotkey("fillsnacks", g.settings.hotkeys.fill_inventory, RAGE_JOAAT("fillsnacks"));
+        register_hotkey("skipcutscene", g.settings.hotkeys.skip_cutscene, RAGE_JOAAT("skipcutscene"));
 
         g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
         {

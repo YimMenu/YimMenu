@@ -48,7 +48,12 @@ namespace big
 			g_hotkey_service->update_hotkey("bringpv", g.settings.hotkeys.bringvehicle);
 		if (ImGui::Hotkey("Toggle invisibility", &g.settings.hotkeys.invis))
 			g_hotkey_service->update_hotkey("invis", g.settings.hotkeys.invis);
-
+		if (ImGui::Hotkey("Heal", &g.settings.hotkeys.heal))
+			g_hotkey_service->update_hotkey("heal", g.settings.hotkeys.heal);
+		if (ImGui::Hotkey("Fill Snacks", &g.settings.hotkeys.fill_inventory))
+			g_hotkey_service->update_hotkey("fillsnacks", g.settings.hotkeys.fill_inventory);
+		if (ImGui::Hotkey("Skip Cutscene", &g.settings.hotkeys.skip_cutscene))
+			g_hotkey_service->update_hotkey("skipcutscene", g.settings.hotkeys.skip_cutscene);
 		ImGui::PopItemWidth();
 
 		ImGui::Separator();
