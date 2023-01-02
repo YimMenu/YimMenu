@@ -18,7 +18,7 @@ So here I am with an up-to-date menu focusing on protecting the user from toxic 
  * [Project Structure](#project-structure)
  * [Features](#features)
  * [Contributing](#contributing)
-
+ 
 ## How to build
 
 Requirements:
@@ -28,6 +28,13 @@ Requirements:
 
 If you have both of the above requirements you can skip to [cloning the git repo and generating the project files](#cloning-and-generating-project-files).
 
+### Curl
+
+Curl should be already installed on your computer, but if you are having issues with building the project, you will need to download and install
+it. Once Installed run the exe located in bin and it should work
+
+[Download Link](https://curl.se/download.html)
+
 ### Git
 
 If you haven't installed git on your system go and do so it is **REQUIRED** for setting up a working build environment.
@@ -36,7 +43,7 @@ If you haven't installed git on your system go and do so it is **REQUIRED** for 
 
 ### CMake
 
-CMake is used to generate our project files, if you haven't used it before we will need to download and install it.
+CMake is used to generate our project files, if you haven't used it before you will need to download and install it.
 
 [Download Link](https://cmake.org/download/)
 
@@ -54,9 +61,11 @@ CMake is used to generate our project files, if you haven't used it before we wi
   cd YimMenu
   ```
 
-#### Generate project files
+#### Generate project files 
 
-- On Windows
+#### `NOTE` You will have cd build and cmake again if you add any files or you will get an error when building.
+
+- Windows Only
 
   - Visual Studio
 
@@ -70,9 +79,10 @@ CMake is used to generate our project files, if you haven't used it before we wi
 
     Then, you can just build by using the Build menu at the top and clicking Build All.
 
+
 - Other OSs / IDEs
 
-  If you use something else, just follow this:
+  If you use something else or prefer using the console on Windows, just follow this:
 
   ```bash
   mkdir build
@@ -81,8 +91,7 @@ CMake is used to generate our project files, if you haven't used it before we wi
   ```
 
   Now, you will be able to open the solution, and build it.
-
-
+  
 ## Staying Up To Date
 
 Pull the latest changes from this repository.
@@ -121,6 +130,6 @@ Below is an incomplete list of feature that I believe are notable to this "base"
 
 ## Contributing
 
-You're free to contribute to YimMenu as long as the feature are useful, non-toxic and do not contain anything money related that might get the menu targetted by Take2.
+You're free to contribute to YimMenu as long as the feature are useful, not overly toxic, and do not contain anything money related that might get the menu targetted by Take2.
 
 Make sure to read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
