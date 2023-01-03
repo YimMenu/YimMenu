@@ -1,6 +1,7 @@
 #include "natives.hpp"
 #include "backend/looped_command.hpp"
 #include "util/entity.hpp"
+#include "gta/enums.hpp"
 
 namespace big
 {
@@ -10,9 +11,12 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			TASK::TASK_JUMP(self::ped, true, true, true);
+			if (PAD::IS_CONTROL_JUST_PRESSED(0, INPUT_JUMP) && !PED::IS_PED_IN_ANY_VEHICLE(self::ped, NULL) && !ENTITY::IS_ENTITY_IN_AIR(self::ped))
+			{
+				TASK::TASK_JUMP(self::ped, true, true, true);
+			}
 		}
 	};
-
+	
 	super_jump_looped g_super_jump_looped("superjump", "Super Jump", "Allows You To Jump Really High", g.self.super_jump);
 }
