@@ -156,9 +156,7 @@ namespace big::session
 			return;
 		}
 
-		LOG(DEBUG) << query_presence_attributes_context.m_presence_attribute_value;
 		g_pointers->m_decode_peer_info(&peer_address, query_presence_attributes_context.m_presence_attribute_value, nullptr);
-		LOG(INFO) << peer_address.m_gamer_handle.m_rockstar_id;
 
 		if (!g_pointers->m_start_get_session_by_gamer_handle(0, &player_handle, 1, &get_session_result, 1, &get_session_success, &get_session_state))
 		{

@@ -134,7 +134,7 @@ namespace big
 				auto& boss_goon = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[id].BossGoon;
 
 				if (boss_goon.Language >= 0 && boss_goon.Language < 13)
-					ImGui::Text("Language: %s", languages[scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[id].BossGoon.Language].name);
+					ImGui::Text("Language: %s", languages[boss_goon.Language].name);
 
 				ImGui::Text("CEO Name: %s", boss_goon.GangName);
 				ImGui::Text("MC Name: %s", boss_goon.MCName);
@@ -143,6 +143,8 @@ namespace big
 				ImGui::Text("Total Money: %d", stats.Money);
 				ImGui::Text("Rank: %d (RP %d)", stats.Rank, stats.RP);
 				ImGui::Text("K/D Ratio: %f", stats.KdRatio);
+				ImGui::Text("Kills On Players: %d", stats.KillsOnPlayers);
+				ImGui::Text("Deaths By Players: %d", stats.DeathsByPlayers);
 				ImGui::Text("Prostitutes Frequented: %d", stats.ProstitutesFrequented);
 				ImGui::Text("Lap Dances Bought: %d", stats.LapDancesBought);
 				ImGui::Text("Missions Created: %d", stats.MissionsCreated);
