@@ -66,6 +66,9 @@ namespace big
 		static void network_player_mgr_init(CNetworkPlayerMgr* _this, std::uint64_t a2, std::uint32_t a3, std::uint32_t a4[4]);
 		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
 
+		static bool fragment_physics_crash(uintptr_t a1, uint32_t a2, uintptr_t a3, uintptr_t a4, uintptr_t a5);
+		static bool fragment_physics_crash_2(float* a1, float* a2);
+
 		static void received_event(
 			rage::netEventMgr* event_manager,
 			CNetGamePlayer* source_player,
