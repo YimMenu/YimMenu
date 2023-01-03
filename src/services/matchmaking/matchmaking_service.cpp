@@ -38,17 +38,17 @@ namespace big
 			component.SetParameter("MMATTR_DISCRIMINATOR", 1, constraint.value());
 		}
 
-		int state = 0;
+		rage::rlTaskStatus state{};
 		static rage::rlSessionInfo result_sessions[MAX_SESSIONS_TO_FIND];
 
 		m_active = true;
 		
 		if (g_hooking->get_original<hooks::start_matchmaking_find_sessions>()(0, 1, &component, MAX_SESSIONS_TO_FIND, result_sessions, &m_num_sessions_found, &state))
 		{
-			while (state == 1)
+			while (state.status == 1)
 				script::get_current()->yield();
 
-			if (state == 3)
+			if (state.status == 3)
 			{
 				for (int i = 0; i < m_num_sessions_found; i++)
 				{

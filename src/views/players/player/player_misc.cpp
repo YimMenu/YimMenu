@@ -1,14 +1,4 @@
 #include "views/view.hpp"
-#include "util/teleport.hpp"
-#include "core/scr_globals.hpp"
-#include "util/ped.hpp"
-#include "util/vehicle.hpp"
-#include "util/globals.hpp"
-#include "services/pickups/pickup_service.hpp"
-#include "gta/net_object_mgr.hpp"
-#include "util/scripts.hpp"
-#include "util/session.hpp"
-#include "script_function.hpp"
 
 namespace big
 {

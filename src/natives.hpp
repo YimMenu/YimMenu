@@ -1,7 +1,6 @@
 #pragma once
 #include "common.hpp"
 #include "gta/natives.hpp"
-#include "gta/vector.hpp"
 #include "invoker.hpp"
 
 template <typename Ret, typename ...Args>

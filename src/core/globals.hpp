@@ -4,6 +4,8 @@
 #include <weapon/CWeaponInfo.hpp>
 #include "enums.hpp"
 #include "file_manager.hpp"
+#include "backend/reactions/reaction.hpp"
+#include "backend/reactions/interloper_reaction.hpp"
 #include <imgui.h>
 #include <bitset>
 
@@ -101,56 +103,6 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(pair, log, notify)
 			};
 
-			struct received_event
-			{
-				pair clear_ped_task{};
-				pair kick_vote{};
-				pair report_cash_spawn{};
-				pair modder_detect{};
-				pair request_control_event{};
-				pair vehicle_temp_action{};
-
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(received_event, clear_ped_task, kick_vote, report_cash_spawn, modder_detect, request_control_event, vehicle_temp_action)
-			} received_event{};
-
-			struct script_event_handler
-			{
-				pair bounty{};
-				pair ceo_ban{};
-				pair ceo_kick{};
-				pair ceo_money{};
-				pair clear_wanted_level{};
-				pair crash{};
-				pair fake_deposit{};
-				pair force_mission{};
-				pair force_teleport{};
-				pair gta_banner{};
-				pair mc_teleport{};
-				pair network_bail{};
-				pair personal_vehicle_destroyed{};
-				pair remote_off_radar{};
-				pair rotate_cam{};
-				pair send_to_cutscene{};
-				pair send_to_location{};
-				pair sound_spam{};
-				pair spectate{};
-				pair switch_player_model{};
-				pair transaction_error{};
-				pair tse_freeze{};
-				pair tse_sender_mismatch{};
-				pair vehicle_kick{};
-				pair teleport_to_warehouse{};
-				pair start_activity{};
-				pair null_function_kick{};
-				pair send_sms{};
-
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_event_handler,
-					bounty, ceo_ban, ceo_kick, clear_wanted_level, crash, fake_deposit, force_mission, force_teleport,
-					gta_banner, mc_teleport, network_bail, personal_vehicle_destroyed, remote_off_radar, rotate_cam,
-					send_to_cutscene, send_to_location, sound_spam, spectate, switch_player_model, transaction_error,
-					tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, start_activity, null_function_kick, send_sms)
-			} script_event_handler{};
-
 			pair gta_thread_kill{};
 			pair gta_thread_start{};
 
@@ -165,9 +117,8 @@ namespace big
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(player_join, above_map, log, notify)
 			} player_join{};
-			pair player_leave{};
 
-			pair reports{};
+			pair player_leave{};
 
 			pair send_net_info_to_lobby{};
 			pair transaction_rate_limit{};
@@ -175,11 +126,57 @@ namespace big
 			pair out_of_allowed_range_sync_type{};
 			pair invalid_sync{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(notifications,
-				received_event, script_event_handler, gta_thread_kill, gta_thread_start, network_player_mgr_init,
-				network_player_mgr_shutdown, player_join, player_leave, reports, send_net_info_to_lobby,
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(notifications, gta_thread_kill, gta_thread_start, network_player_mgr_init,
+				network_player_mgr_shutdown, player_join, player_leave, send_net_info_to_lobby,
 				transaction_rate_limit, mismatch_sync_type, out_of_allowed_range_sync_type, invalid_sync)
 		} notifications{};
+
+		struct reactions
+		{
+			reaction bounty{ "Bounty", "Blocked Bounty from %s", "%s tried to set a bounty on me!" };
+			reaction ceo_money{ "CEO Money", "Blocked CEO Money from %s", "%s tried to drop money on me!" };
+			reaction clear_wanted_level{ "Clear Wanted Level", "Blocked Clear Wanted Level from %s", "%s tried to clear my wanted level!" };
+			reaction crash{ "Crash", "Blocked Crash from %s", "%s tried to crash me!" };
+			reaction fake_deposit{ "Fake Deposit", "Blocked Fake Deposit from %s", "%s tried to show me a fake money notification!" };
+			reaction force_mission{ "Force Mission", "Blocked Force Mission from %s", "%s tried to force me into a mission!" };
+			reaction force_teleport{ "Force Teleport", "Blocked Force Teleport from %s", "%s tried to teleport me!" };
+			reaction gta_banner{ "GTA Banner", "Blocked GTA Banner from %s", "Blocked GTA Banner from %s" }; // please don't enable this
+			reaction mc_teleport{ "MC Teleport", "Blocked MC Teleport from %s", "%s tried to teleport me!" };
+			reaction network_bail{ "Network Bail", "Blocked Network Bail from %s", "%s tried to kick me out!" };
+			reaction personal_vehicle_destroyed{ "Personal Vehicle Destroyed", "Blocked Personal Vehicle Destroyed from %s", "%s tried to show me a fake insurance notification!" };
+			reaction remote_off_radar{ "Remote Off Radar", "Blocked Remote Off Radar from %s", "%s tried to give me off radar!" };
+			reaction rotate_cam{ "Rotate Cam", "Blocked Rotate Cam from %s", "%s tried to mess with my camera!" };
+			reaction send_to_cutscene{ "Send To Cutscene", "Blocked Send To Cutscene from %s", "%s tried to force me into a cutscene!" };
+			reaction send_to_location{ "Send To Location", "Blocked Send To Location from %s", "%s tried to send me to Cayo Perico!" };
+			reaction sound_spam{ "Sound Spam", "Blocked Sound Spam from %s", "%s tried to spam annoying sounds at me!" };
+			reaction spectate_notification{ "Spectate", "Blocked Spectate from %s", "Blocked Spectate from %s" };
+			reaction give_collectible{ "Give Collectible", "Blocked Give Collectible from %s", "%s tried to give me a collectible!" };
+			reaction transaction_error{ "Transaction Error", "Blocked Transaction Error from %s", "%s tried to show me a transaction error!" };
+			reaction tse_freeze{ "TSE Freeze", "Blocked TSE Freeze from %s", "%s tried to softlock my game!" };
+			reaction tse_sender_mismatch{ "TSE Sender Mismatch", "Blocked TSE Sender Mismatch from %s", "Blocked TSE Sender Mismatch from %s" };
+			reaction vehicle_kick{ "Vehicle Kick", "Blocked Vehicle Kick from %s", "%s tried to kick me from my vehicle!" };
+			reaction teleport_to_warehouse{ "Teleport To Warehouse", "Blocked Teleport To Warehouse from %s", "%s tried to teleport me to a warehouse!" };
+			reaction start_activity{ "Start Activity", "Blocked Start Activity from %s", "Blocked Start Activity from %s" };
+			reaction null_function_kick{ "Null Function Kick", "Blocked Null Function Kick from %s", "%s tried to kick me out!" };
+			reaction destroy_personal_vehicle{ "Destroy Personal Vehicle", "Blocked Destroy Personal Vehicle from %s", "%s tried to destroy my personal vehicle!" };
+
+			reaction clear_ped_tasks{ "Clear Ped Tasks", "Blocked Clear Ped Tasks from %s", "%s tried to freeze me!" };
+			reaction remote_ragdoll{ "Remote Ragdoll", "Blocked Remote Ragdoll from %s", "%s tried to ragdoll me!" };
+			reaction kick_vote{ "Kick Vote", "%s is voting to kick you!", "%s is voting to kick me!" };
+			reaction report_cash_spawn{ "Cash Spawn", "%s is spawning cash", "%s is spawning cash" };
+			reaction modder_detection{ "Modder Detection", "%s is detected as a modder by the anticheat", "%s is detected as a modder by the anticheat" };
+			reaction request_control_event{ "Request Control Event", "Blocked Request Control Event from %s", "%s tried to mess with my vehicle!" };
+			reaction report{ "Report", "Blocked Report from %s", "%s tried to report me!" };
+
+			interloper_reaction breakup_others{ "Breakup Kicks On Other Players", "%s is trying to breakup kick %s!", "%s is trying to breakup kick %s!", true, true }; // blockable only when host but we have no way to specify that atm
+			reaction lost_connection_kick{ "Lost Connection Kick", "Blocked Lost Connection Kick from %s", "%s tried to kick me out!" };
+			reaction gamer_instruction_kick{ "Gamer Instruction Kick", "Blocked Gamer Instruction Kick from %s", "%s tried to kick me out!" };
+			interloper_reaction lost_connection_kick_others{ "Lost Connection Kick On Other Players", "%s is trying to lost connection kick %s!", "%s is trying to lost connection kick %s!", true, false };
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, clear_wanted_level, crash, fake_deposit, force_mission, force_teleport, gta_banner, mc_teleport, network_bail, personal_vehicle_destroyed, remote_off_radar,
+				rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, start_activity,
+				null_function_kick, destroy_personal_vehicle, clear_ped_tasks, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, request_control_event, report, breakup_others, gamer_instruction_kick, lost_connection_kick, lost_connection_kick_others)
+		} reactions{};
 		
 		struct player
 		{
@@ -195,17 +192,13 @@ namespace big
 			struct script_events 
 			{
 				bool bounty = true;
-				bool ceo_ban = true;
-				bool ceo_kick = true;
 				bool ceo_money = true;
 				bool clear_wanted_level = true;
-				bool crash = true;
 				bool fake_deposit = true;
 				bool force_mission = true;
 				bool force_teleport = true;
-				bool gta_banner = true;
+				bool gta_banner = false;
 				bool mc_teleport = true;
-				bool network_bail = true;
 				bool personal_vehicle_destroyed = true;
 				bool remote_off_radar = true;
 				bool rotate_cam = true;
@@ -213,27 +206,25 @@ namespace big
 				bool send_to_location = true;
 				bool sound_spam = true;
 				bool spectate = true;
-				bool switch_player_model = true;
-				bool transaction_error = true;
+				bool give_collectible = true;
 				bool vehicle_kick = true;
 				bool teleport_to_warehouse = true;
 				bool start_activity = true;
 				bool send_sms = true;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_events,
-					bounty, ceo_ban, ceo_kick, ceo_money, clear_wanted_level, crash, fake_deposit,
-					force_mission, force_teleport, gta_banner, mc_teleport, network_bail,
+					bounty, ceo_money, clear_wanted_level, fake_deposit,
+					force_mission, force_teleport, gta_banner, mc_teleport,
 					personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene,
-					send_to_location, sound_spam, spectate, switch_player_model, transaction_error,
+					send_to_location, sound_spam, spectate, give_collectible,
 					vehicle_kick, teleport_to_warehouse, start_activity, send_sms)
 			} script_events{};
 
 			bool desync_kick = false;
-			bool script_host_kick = true;
 			bool rid_join = false;
 			bool lessen_breakups = false; // disabled by default due to anticheat concerns
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, script_host_kick, rid_join, lessen_breakups, desync_kick)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, lessen_breakups, desync_kick)
 		} protections{};
 
 		struct self 
@@ -649,7 +640,7 @@ namespace big
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings,
 			debug, tunables, notifications, player, protections, self, session, settings, spawn_vehicle, clone_pv,
-			spawn_ped, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc)
+			spawn_ped, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions)
 	};
 
 	inline auto g = menu_settings();
