@@ -41,7 +41,7 @@ namespace big
 		components::command_checkbox<"fastrun">();
 		ImGui::Checkbox("No Idle Kick", &g.tunables.no_idle_kick);
 		components::command_checkbox<"walkunder">();
-
+		components::command_checkbox<"superjump">();
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
