@@ -63,40 +63,28 @@ namespace big
 		return response.status_code == 200;
 	}
 
-	bool api_service::get_job_details(std::string_view job_link, nlohmann::json& result)
+	bool api_service::get_job_details(std::string_view content_id, nlohmann::json& result)
 	{
-		if (job_link.starts_with("https://"))
-			job_link = job_link.substr(46); // https://socialclub.rockstargames.com/job/gtav/
-
 		cpr::Response response = cpr::Get(
 			cpr::Url{ "https://scapi.rockstargames.com/ugc/mission/details" },
 			cpr::Header{ {"X-AMC", "true" }, { "X-Requested-With", "XMLHttpRequest"} },
-			cpr::Parameters{ {"title", "gtav"}, {"contentId", job_link.data()} });
+			cpr::Parameters{ {"title", "gtav"}, {"contentId", content_id.data()} });
 
 		result = nlohmann::json::parse(response.text);
 
 		return response.status_code == 200;
 	}
 
-	bool api_service::download_job_metadata(std::string_view content_part)
+	bool api_service::download_job_metadata(std::string_view content_id, int f1, int f0, int lang)
 	{
-		for (int major = 0; major < 3; major++)
+		cpr::Response response = cpr::Get(cpr::Url{ std::format("https://prod.cloud.rockstargames.com/ugc/gta5mission/{}/{}_{}_{}.json", content_id, f1, f0, languages.at(lang))});
+
+		if (response.status_code == 200)
 		{
-			for (int minor = 0; minor < 3; minor++)
-			{
-				for (const auto& lang : languages)
-				{
-					cpr::Response response = cpr::Get(cpr::Url{ std::format("https://prod.cloud.rockstargames.com/ugc/gta5mission/{}/{}_{}_{}.json", content_part, major, minor, lang) });
+			std::ofstream of = creator_storage_service::create_file(std::string(content_id) + ".json");
+			cpr::Response r = cpr::Download(of, response.url);
 
-					if (response.status_code == 200)
-					{
-						std::ofstream of = creator_storage_service::create_file(std::string(content_part).substr(5) + ".json");
-						cpr::Response r = cpr::Download(of, response.url);
-
-						return true;
-					}
-				}
-			}
+			return true;
 		}
 
 		return false;
