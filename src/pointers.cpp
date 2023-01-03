@@ -780,6 +780,18 @@ namespace big
 			m_prepare_metric_for_sending = ptr.as<PVOID>();
 		});
 
+		// Fragment Physics Crash
+		main_batch.add("FPC", "E8 ? ? ? ? 44 8B 4D 1C", [this](memory::handle ptr)
+		{
+			m_fragment_physics_crash = ptr.add(1).rip().as<PVOID>();
+		});
+
+		// Fragment Physics Crash 2
+		main_batch.add("FPC2", "E8 ? ? ? ? 84 C0 75 0B 41 FF CF", [this](memory::handle ptr)
+		{
+			m_fragment_physics_crash_2 = ptr.add(1).rip().as<PVOID>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		main_batch.run(mem_region);
 
