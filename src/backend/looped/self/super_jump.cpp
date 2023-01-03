@@ -10,7 +10,7 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			MISC::SET_SUPER_JUMP_THIS_FRAME(self::ped);
+			TASK::TASK_JUMP(self::ped, true, true, true);
 		}
 	};
 
