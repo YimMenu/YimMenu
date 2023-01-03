@@ -13,6 +13,27 @@
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
 
+inline void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
+{
+	constexpr int PC_PLATFORM = 3;
+	if ((hnd.m_platform = buf.Read<uint8_t>(8)) != PC_PLATFORM)
+		return;
+
+	buf.ReadInt64((int64_t*)&hnd.m_rockstar_id, 64);
+	hnd.unk_0009 = buf.Read<uint8_t>(8);
+}
+
+inline bool is_kick_instruction(rage::datBitBuffer& buffer)
+{
+	rage::rlGamerHandle sender, receiver;
+	char name[18];
+	gamer_handle_deserialize(sender, buffer);
+	gamer_handle_deserialize(receiver, buffer);
+	buffer.ReadString(name, 17);
+	int instruction = buffer.Read<int>(32);
+	return instruction == 8;
+}
+
 namespace big
 {
 	bool get_msg_type(rage::eNetMessage& msgType, rage::datBitBuffer& buffer)
@@ -31,16 +52,6 @@ namespace big
 			return true;
 		else
 			return false;
-	}
-
-	void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
-	{
-		constexpr int PC_PLATFORM = 3;
-		if ((hnd.m_platform = buf.Read<uint8_t>(8)) != PC_PLATFORM)
-			return;
-
-		buf.ReadInt64((int64_t*)&hnd.m_rockstar_id, 64);
-		hnd.unk_0009 = buf.Read<uint8_t>(8);
 	}
 
 	static void script_id_deserialize(CGameScriptId& id, rage::datBitBuffer& buffer)
@@ -220,7 +231,7 @@ namespace big
 				case rage::eNetMessage::MsgSessionEstablished:
 				{
 					rage::rlGamerHandle handle{ 0 };
-					if (player && player->get_net_data())
+					if (player->get_net_data())
 					{
 						uint64_t session_id;
 						buffer.ReadQWord(&session_id, 64);
@@ -255,7 +266,7 @@ namespace big
 				}
 				case rage::eNetMessage::MsgRequestObjectIds:
 				{
-					if (player && player->block_join)
+					if (player->block_join)
 					{
 						g_notification_service->push("Join Blocker", std::format("Trying to prevent {} from joining...", player->get_name()));
 						return true;
@@ -274,21 +285,27 @@ namespace big
 				}
 				case rage::eNetMessage::MsgNetTimeSync:
 				{
-					if (player)
-					{
-						int action = buffer.Read<int>(2);
-						uint32_t counter = buffer.Read<uint32_t>(32);
-						uint32_t token = buffer.Read<uint32_t>(32);
-						uint32_t timestamp = buffer.Read<uint32_t>(32);
-						uint32_t time_diff = (*g_pointers->m_network_time)->m_time_offset + frame->m_timestamp;
+					int action = buffer.Read<int>(2);
+					uint32_t counter = buffer.Read<uint32_t>(32);
+					uint32_t token = buffer.Read<uint32_t>(32);
+					uint32_t timestamp = buffer.Read<uint32_t>(32);
+					uint32_t time_diff = (*g_pointers->m_network_time)->m_time_offset + frame->m_timestamp;
 
-						if (action == 0)
-						{
-							player->player_time_value = timestamp;
-							player->player_time_value_received_time = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now());
-							if (!player->time_difference || time_diff > player->time_difference.value())
-								player->time_difference = time_diff;
-						}
+					if (action == 0)
+					{
+						player->player_time_value = timestamp;
+						player->player_time_value_received_time = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now());
+						if (!player->time_difference || time_diff > player->time_difference.value())
+							player->time_difference = time_diff;
+					}
+					break;
+				}
+				case rage::eNetMessage::MsgTransitionGamerInstruction:
+				{
+					if (is_kick_instruction(buffer))
+					{
+						g.reactions.gamer_instruction_kick.process(player);
+						return true;
 					}
 					break;
 				}
@@ -364,6 +381,15 @@ namespace big
 					}
 
 					return true;
+				}
+				case rage::eNetMessage::MsgTransitionGamerInstruction:
+				{
+					if (is_kick_instruction(buffer))
+					{
+						g_notification_service->push_error("Warning!", "Someone tried to gamer instruction kick you remotely!");
+						return true;
+					}
+					break;
 				}
 			}
 		}

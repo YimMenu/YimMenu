@@ -4,6 +4,7 @@
 #include "script.hpp"
 #include "session.hpp"
 #include "gta/enums.hpp"
+#include <script/HudColor.hpp>
 
 namespace big::notify
 {

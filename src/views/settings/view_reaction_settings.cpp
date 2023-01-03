@@ -66,7 +66,6 @@ namespace big
 		draw_reaction(g.reactions.force_teleport);
 		draw_reaction(g.reactions.give_collectible);
 		draw_reaction(g.reactions.gta_banner);
-		draw_reaction(g.reactions.kick_vote);
 		draw_reaction(g.reactions.mc_teleport);
 		draw_reaction(g.reactions.network_bail);
 		draw_reaction(g.reactions.null_function_kick);
@@ -93,6 +92,7 @@ namespace big
 		draw_reaction(g.reactions.request_control_event);
 		ImGui::Separator();
 		draw_reaction(g.reactions.lost_connection_kick);
+		draw_reaction(g.reactions.gamer_instruction_kick);
 		draw_interloper_reaction(g.reactions.lost_connection_kick_others);
 		draw_interloper_reaction(g.reactions.breakup_others);
 

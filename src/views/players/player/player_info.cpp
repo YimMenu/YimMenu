@@ -3,7 +3,9 @@
 #include "core/data/command_access_levels.hpp"
 #include "core/scr_globals.hpp"
 #include "core/data/language_codes.hpp"
-#include "gta/script.hpp"
+#include <script/globals/GlobalPlayerBD.hpp>
+#include <script/globals/GPBD_FM_3.hpp>
+#include <script/globals/GPBD_FM.hpp>
 
 namespace big
 {
