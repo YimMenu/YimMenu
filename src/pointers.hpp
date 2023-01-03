@@ -227,6 +227,10 @@ namespace big
 		functions::sync_network_time m_sync_network_time;
 
 		rage::rlGamerInfo* m_chat_gamer_info;
+
+		PVOID m_fragment_physics_crash;
+		PVOID m_fragment_physics_crash_2;
+
 	};
 
 	inline pointers* g_pointers{};
