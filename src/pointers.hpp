@@ -232,6 +232,9 @@ namespace big
 
 		functions::send_packet m_send_packet;
 		functions::connect_to_peer m_connect_to_peer;
+    
+		PVOID m_fragment_physics_crash;
+		PVOID m_fragment_physics_crash_2;
 	};
 
 	inline pointers* g_pointers{};
