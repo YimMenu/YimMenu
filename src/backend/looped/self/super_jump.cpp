@@ -5,13 +5,14 @@
 
 namespace big
 {
+
 	class super_jump_looped : looped_command
 	{
 		using looped_command::looped_command;
 
 		virtual void on_tick() override
 		{
-			if (PAD::IS_CONTROL_JUST_PRESSED(0, INPUT_JUMP) && !PED::IS_PED_IN_ANY_VEHICLE(self::ped, NULL) && !ENTITY::IS_ENTITY_IN_AIR(self::ped))
+			if (PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_JUMP) && !PED::IS_PED_IN_ANY_VEHICLE(self::ped, NULL) && !ENTITY::IS_ENTITY_IN_AIR(self::ped))
 			{
 				TASK::TASK_JUMP(self::ped, true, true, true);
 			}
