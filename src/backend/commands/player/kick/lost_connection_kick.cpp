@@ -44,7 +44,7 @@ namespace big
 			{
 				if (plyr->is_host())
 				{
-					msg.send(plyr->get_session_player()->m_msg_id);
+					msg.send(plyr, gta_util::get_network()->m_game_session_ptr->m_connection_identifier);
 					break;
 				}
 			}

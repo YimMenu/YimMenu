@@ -1,7 +1,6 @@
 #pragma once
 #include "common.hpp"
 #include "gta/natives.hpp"
-#include "gta/vector.hpp"
 #include "invoker.hpp"
 
 template <typename Ret, typename ...Args>
@@ -3519,10 +3518,10 @@ namespace NETWORK
 	static int UGC_GET_CONTENT_DESCRIPTION_HASH(Any p0) { return invoke<int>(0x7CF0448787B23758, p0); } // 0x7CF0448787B23758 0x91534C6E b323
 	static const char* UGC_GET_CONTENT_PATH(int p0, int p1) { return invoke<const char*>(0xBAF6BABF9E7CCC13, p0, p1); } // 0xBAF6BABF9E7CCC13 0x744A9EA5 b323
 	static void UGC_GET_CONTENT_UPDATED_DATE(Any p0, Any* p1) { invoke<void>(0xCFD115B373C0DF63, p0, p1); } // 0xCFD115B373C0DF63 0xA19A238D b323
-	static Any UGC_GET_CONTENT_FILE_VERSION(Any p0, Any p1) { return invoke<Any>(0x37025B27D9B658B1, p0, p1); } // 0x37025B27D9B658B1 0xFF7D44E6 b323
+	static int UGC_GET_CONTENT_FILE_VERSION(int contentId, int fileIndex) { return invoke<Any>(0x37025B27D9B658B1, contentId, fileIndex); } // 0x37025B27D9B658B1 0xFF7D44E6 b323
 	static BOOL UGC_GET_CONTENT_HAS_LO_RES_PHOTO(int p0) { return invoke<BOOL>(0x1D610EB0FEA716D9, p0); } // 0x1D610EB0FEA716D9  b323
 	static BOOL UGC_GET_CONTENT_HAS_HI_RES_PHOTO(int p0) { return invoke<BOOL>(0x7FCC39C46C3C03BD, p0); } // 0x7FCC39C46C3C03BD  b323
-	static Any UGC_GET_CONTENT_LANGUAGE(Any p0) { return invoke<Any>(0x32DD916F3F7C9672, p0); } // 0x32DD916F3F7C9672 0xA2C5BD9D b323
+	static int UGC_GET_CONTENT_LANGUAGE(int contentIndex) { return invoke<Any>(0x32DD916F3F7C9672, contentIndex); } // 0x32DD916F3F7C9672 0xA2C5BD9D b323
 	static BOOL UGC_GET_CONTENT_IS_PUBLISHED(Any p0) { return invoke<BOOL>(0x3054F114121C21EA, p0); } // 0x3054F114121C21EA 0xA850DDE1 b323
 	static BOOL UGC_GET_CONTENT_IS_VERIFIED(Any p0) { return invoke<BOOL>(0xA9240A96C74CCA13, p0); } // 0xA9240A96C74CCA13 0x8F6754AE b323
 	static Any UGC_GET_CONTENT_RATING(Any p0, Any p1) { return invoke<Any>(0x1ACCFBA3D8DAB2EE, p0, p1); } // 0x1ACCFBA3D8DAB2EE 0x1E34953F b323

@@ -348,6 +348,8 @@ namespace big
 			return;
 		}
 
+		auto plyr = g_player_service->get_by_id(source_player->m_player_id);
+
 		switch (static_cast<eNetworkEvents>(event_id))
 		{
 		case eNetworkEvents::KICK_VOTES_EVENT:
@@ -355,10 +357,7 @@ namespace big
 			std::uint32_t player_bitfield = buffer->Read<uint32_t>(32);
 			if (player_bitfield & (1 << target_player->m_player_id))
 			{
-				if (g.notifications.received_event.kick_vote.log)
-					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " is voting to kick us.";
-				if (g.notifications.received_event.kick_vote.notify)
-					g_notification_service->push_warning("Kick Vote", std::format("{} is voting to kick us.", source_player->get_name()));
+				g.reactions.kick_vote.process(plyr);
 			}
 			buffer->Seek(0);
 			break;
@@ -420,12 +419,7 @@ namespace big
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
-				if (g.notifications.received_event.clear_ped_task.log)
-					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent CLEAR_PED_TASKS event.";
-				if (g.notifications.received_event.clear_ped_task.notify)
-					g_notification_service->push_warning("Protections", std::format("{} tried to freeze player.", source_player->get_name()));
-
+				g.reactions.clear_ped_tasks.process(plyr);
 				return;
 			}
 
@@ -439,12 +433,7 @@ namespace big
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
-				if (g.notifications.received_event.clear_ped_task.log)
-					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent RAGDOLL_REQUEST event.";
-				if (g.notifications.received_event.clear_ped_task.notify)
-					g_notification_service->push_warning("Protections", std::format("{} tried to ragdoll player.", source_player->get_name()));
-
+				g.reactions.remote_ragdoll.process(plyr);
 				return;
 			}
 
@@ -463,10 +452,7 @@ namespace big
 
 			if (money >= 2000)
 			{
-				if (g.notifications.received_event.report_cash_spawn.log)
-					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent REPORT_CASH_SPAWN event.";
-				if (g.notifications.received_event.report_cash_spawn.notify)
-					g_notification_service->push_warning("Protections", std::format("{} is spawning cash.", source_player->get_name()));
+				g.reactions.report_cash_spawn.process(plyr);
 			}
 
 			break;
@@ -474,14 +460,10 @@ namespace big
 		// player sending this event is a modder
 		case eNetworkEvents::REPORT_MYSELF_EVENT:
 		{
-			if (g.notifications.received_event.modder_detect.log)
-				LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " sent modder event.";
-			if (g.notifications.received_event.modder_detect.notify)
-				g_notification_service->push_warning("Protections", std::format("{} sent out a modder event.", source_player->get_name()));
-
 			if (auto plyr = g_player_service->get_by_id(source_player->m_player_id))
 				session::add_infraction(plyr, Infraction::TRIGGERED_ANTICHEAT);
 
+			g.reactions.modder_detection.process(plyr);
 			break;
 		}
 		case eNetworkEvents::REQUEST_CONTROL_EVENT:
@@ -490,12 +472,7 @@ namespace big
 			if (g_local_player && g_local_player->m_vehicle && g_local_player->m_vehicle->m_net_object && g_local_player->m_vehicle->m_net_object->m_object_id == net_id)
 			{
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
-				if (g.notifications.received_event.request_control_event.log)
-					LOG(INFO) << "RECEIVED_EVENT_HANDLER : " << source_player->get_name() << " requested control of player vehicle.";
-				if (g.notifications.received_event.request_control_event.notify)
-					g_notification_service->push_warning("Protections", std::format("Denied player control request from {}", source_player->get_name()));
-
+				g.reactions.request_control_event.process(plyr);
 				return;
 			}
 			buffer->Seek(0);
@@ -615,7 +592,6 @@ namespace big
 		}
 		case eNetworkEvents::NETWORK_PLAY_SOUND_EVENT:
 		{
-			auto plyr = g_player_service->get_by_id(source_player->m_player_id);
 			if (plyr && plyr->m_play_sound_rate_limit.process())
 			{
 				if (plyr->m_play_sound_rate_limit.exceeded_last_process())
@@ -648,8 +624,7 @@ namespace big
 
 			if (sound_hash == RAGE_JOAAT("Remote_Ring") && plyr)
 			{
-				g_notification_service->push_warning("Protections", std::format("Blocked sound annoyance from {}", plyr->get_name()));
-				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				g.reactions.sound_spam.process(plyr);
 				return;
 			}
 
