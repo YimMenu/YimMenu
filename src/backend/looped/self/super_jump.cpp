@@ -19,6 +19,11 @@ namespace big
 			{
 				TASK::CLEAR_PED_TASKS(self::ped);
 			}
+			if (WEAPON::HAS_PED_GOT_WEAPON(self::ped, RAGE_JOAAT("p_parachute_s"), false))
+			{
+				WEAPON::SET_CURRENT_PED_WEAPON(self::ped, RAGE_JOAAT("WEAPON_UNARMED"), true);
+			}
+
 		}
 	};
 
