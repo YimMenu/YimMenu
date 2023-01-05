@@ -5,7 +5,7 @@
 namespace big
 {
 
-	class super_jump_looped : looped_command
+	class beast_jump_looped : looped_command
 	{
 		using looped_command::looped_command;
 
@@ -13,14 +13,10 @@ namespace big
 		{
 			if (PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_JUMP) && !PED::IS_PED_IN_ANY_VEHICLE(self::ped, NULL) && !ENTITY::IS_ENTITY_IN_AIR(self::ped))
 			{
-				ENTITY::APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(self::ped, 0, 0, 10000, 5000, true, true, true, false);
-			}
-			if (PED::IS_PED_FALLING(self::ped))
-			{
-				TASK::CLEAR_PED_TASKS(self::ped);
+				TASK::TASK_JUMP(self::ped, true, true, true);
 			}
 		}
 	};
-
-	super_jump_looped g_super_jump_looped("superjump", "super Jump", "Allows You To Jump Really High", g.self.super_jump);
+	
+	beast_jump_looped g_beast_jump_looped("beastjump", "Beast Jump", "Allows You To Jump As If You Were The Beast Like In The Beast Event", g.self.beast_jump);
 }
