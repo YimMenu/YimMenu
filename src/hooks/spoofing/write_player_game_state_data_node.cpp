@@ -25,11 +25,6 @@ namespace big
 			node->m_spectating_net_id = 0;
 		}
 
-		if (g.self.super_jump)
-		{
-			node->m_super_jump = false;
-		}
-
 		return ret;
 	}
 }
