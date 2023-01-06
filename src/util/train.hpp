@@ -4,16 +4,17 @@
 #include "script_global.hpp"
 #include "pointers.hpp"
 #include "natives.hpp"
+#include "script.hpp"
 
 namespace big::train
 {
 	inline auto get_all_vehicles()
 	{
 		std::vector<Vehicle> result;
-		rage::CReplayInterface* CReplayInterface_var = *g_pointers->m_replay_interface; //(YimMenu should already have this pointer)
-		for (int j = 0; j <= 300; j++) //max vehicle count is 300.
+		rage::CReplayInterface* CReplayInterface_var = *g_pointers->m_replay_interface; 
+		for (int i = 0; i <= 300; i++)
 		{
-			auto vehicle_ptr = CReplayInterface_var->m_vehicle_interface->get_vehicle(j);
+			auto vehicle_ptr = CReplayInterface_var->m_vehicle_interface->get_vehicle(i);
 			if (vehicle_ptr)
 			{
 				Vehicle vehicle_handle = g_pointers->m_ptr_to_handle(vehicle_ptr);
@@ -43,6 +44,12 @@ namespace big::train
 		if (train != 0)
 		{
 			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(train);
+
+			while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(train))
+			{
+				script::get_current()->yield();
+			}
+
 			PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), train, -1);
 
 			g_notification_service->push_error("Hijack Train", "Found a train nearby");
