@@ -27,5 +27,5 @@ namespace big
 		}
 	};
 
-	super_jump_looped g_super_jump_looped("superjump", "super Jump", "Allows You To Jump Really High", g.self.super_jump);
+	super_jump_looped g_super_jump_looped("superjump", "Super Jump", "Allows You To Jump Really High", g.self.super_jump);
 }
