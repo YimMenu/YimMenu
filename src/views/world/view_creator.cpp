@@ -83,25 +83,33 @@ namespace big
 		{
 			g_thread_pool->push([]
 			{
+				std::string content_id = job_link;
 				nlohmann::json job_details;
-				if (g_api_service->get_job_details(job_link, job_details))
-				{
-					std::string img_src = job_details["content"]["imgSrc"];
-					std::string content_part = img_src.substr(53, 27);
+				if (content_id.starts_with("https://"))
+					content_id = content_id.substr(46);
 
-					nlohmann::json job_metadata;
-
-					if (g_api_service->download_job_metadata(content_part))
+				g_fiber_pool->queue_job([content_id] {
+					if (NETWORK::UGC_QUERY_BY_CONTENT_ID(content_id.c_str(), false, "gta5mission"))
 					{
-						cached_creator_files = false;
-						g_notification_service->push("Job Import", "Job Import successfully done");
+						while (NETWORK::UGC_IS_GETTING())
+							script::get_current()->yield();
+
+						int f1 = NETWORK::UGC_GET_CONTENT_FILE_VERSION(0, 1);
+						int f0 = NETWORK::UGC_GET_CONTENT_FILE_VERSION(0, 0);
+
+						if (g_api_service->download_job_metadata(content_id, f1 < 0 ? 0 : f1, f0 < 0 ? 0 : f0, NETWORK::UGC_GET_CONTENT_LANGUAGE(0)))
+						{
+							cached_creator_files = false;
+							g_notification_service->push("Job Import", "Job Import successfully done");
+						}
+						else {
+							g_notification_service->push_error("Job Import", "Could download job metadata");
+						}
 					}
 					else {
-						g_notification_service->push_error("Job Import", "Couldn't download the job metadata");
+						g_notification_service->push_error("Job Import", "UGC QueryContent failed");
 					}
-				} else {
-					g_notification_service->push_error("Job Import", "Couldn't get the job details");
-				}
+				});
 			});
 		});
 

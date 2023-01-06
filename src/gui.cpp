@@ -1,5 +1,4 @@
 #include "common.hpp"
-#include "gta/player.hpp"
 #include "gui.hpp"
 #include "natives.hpp"
 #include "script.hpp"

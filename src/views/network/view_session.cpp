@@ -9,8 +9,10 @@
 #include "core/data/apartment_names.hpp"
 #include "core/data/warehouse_names.hpp"
 #include "core/data/command_access_levels.hpp"
-#include <network/Network.hpp>
 #include "hooking.hpp"
+
+#include <network/Network.hpp>
+#include <script/globals/GPBD_FM_3.hpp>
 
 namespace big
 {
@@ -22,6 +24,11 @@ namespace big
 		{
 			session::join_by_rockstar_id(rid);
 		});
+		ImGui::SameLine();
+		components::button("Kick by RID", []
+		{
+			session::kick_by_rockstar_id(rid);
+		});
 
 		static char username[20];
 		ImGui::InputText("Input Username", username, sizeof(username));
@@ -29,7 +36,12 @@ namespace big
 		{
 			session::join_by_username(username);
 		};
-    
+		ImGui::SameLine();
+		if (components::button("Kick by Username"))
+		{
+			session::kick_by_username(username);
+		};
+
 		static char base64[500]{};
 		ImGui::InputText("Session Info", base64, sizeof(base64));
 		components::button("Join Session Info", []
@@ -200,6 +212,8 @@ namespace big
 		}
 
 		components::command_button<"killall">({ }, "Kill Everyone");
+		ImGui::SameLine();
+		components::command_button<"explodeall">({ }, "Explode Everyone");
 
 		ImGui::SameLine();
 

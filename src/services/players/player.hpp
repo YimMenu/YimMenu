@@ -3,11 +3,15 @@
 #include "rate_limiter.hpp"
 
 class CVehicle;
+class CPed;
+class CNetGamePlayer;
+class CPlayerInfo;
 
 namespace rage
 {
 	class snPlayer;
 	class snPeer;
+	class rlGamerInfo;
 }
 
 namespace big
@@ -53,8 +57,15 @@ namespace big
 		bool never_wanted = false;
 		bool semi_godmode = false;
 
+		bool kill_loop = false;
+		bool explosion_loop = false;
+		bool freeze_loop = false;
+		bool ragdoll_loop = false;
+		bool rotate_cam_loop = false;
+
 		rate_limiter m_host_migration_rate_limit{ 1s, 20 };
 		rate_limiter m_play_sound_rate_limit{ 1s, 10 };
+		rate_limiter m_invites_rate_limit{ 10s, 2 };
 
 		bool exposed_desync_protection = false;
 		bool is_modder = false;

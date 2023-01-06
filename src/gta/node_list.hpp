@@ -1,6 +1,6 @@
 #pragma once
 #include "fwddec.hpp"
-#include "base.hpp"
+#include <base/datBase.hpp>
 
 namespace rage
 {

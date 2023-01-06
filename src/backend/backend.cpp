@@ -119,6 +119,7 @@ namespace big
 		while (g_running)
 		{
 			looped::player_good_options();
+			looped::player_toxic_options();
 			looped::player_spectate();
 			looped::player_remote_control_vehicle();
 

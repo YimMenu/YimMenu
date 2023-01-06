@@ -22,6 +22,12 @@ namespace big
 			return true;
 		}
 
+		// shouldn't have any side effects
+		if (hash == RAGE_JOAAT("peeraddr"))
+		{
+			value = (char*)"";
+		}
+
 		return g_hooking->get_original<hooks::update_presence_attribute_string>()(presence_data, profile_index, attr, value);
 	}
 }
