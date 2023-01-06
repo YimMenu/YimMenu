@@ -21,8 +21,8 @@ namespace big
 			int64_t args[arg_count]{
 				(int64_t)eRemoteEvent::KickFromInterior,
 				(int64_t)self::id,
-				*scr_globals::globalplayer_bd.at(player->id(), scr_globals::size::globalplayer_bd).at(321).at(6).as<int64_t*>(),
 				*scr_globals::globalplayer_bd.at(player->id(), scr_globals::size::globalplayer_bd).at(321).at(7).as<int64_t*>(),
+				*scr_globals::globalplayer_bd.at(player->id(), scr_globals::size::globalplayer_bd).at(321).at(8).as<int64_t*>(),
 			};
 
 			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << player->id());

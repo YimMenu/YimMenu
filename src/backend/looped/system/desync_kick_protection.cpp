@@ -10,6 +10,9 @@ namespace big
 {
 	void looped::system_desync_kick_protection()
 	{
+		if (!g.protections.desync_kick)
+			return;
+
 		if (g_player_service->get_self()->is_valid() && g_player_service->get_self()->is_host())
 			return;
 
