@@ -23,10 +23,6 @@ namespace big::ped
 		return true;
 	}
 
-	inline bool is_player_in_cutscene(Ped player) { return NETWORK::NETWORK_IS_PLAYER_IN_MP_CUTSCENE(player); }
-
-	inline bool is_player_in_interior(Ped player) { return (INTERIOR::GET_INTERIOR_FROM_ENTITY(player) != 0); }
-
 	inline bool steal_outfit(const Ped target)
 	{
 		Ped ped = self::ped;
