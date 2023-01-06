@@ -387,6 +387,12 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spawn_ped, preview_ped)
 		} spawn_ped{};
 
+		struct train
+		{
+			bool derail_train = false;
+			bool drive_train = false;
+		} train{};
+
 		struct spoofing
 		{
 			bool spoof_username = false;
