@@ -11,6 +11,7 @@ namespace big
 		static void hud_transition_state();
 
 		static void player_good_options();
+		static void player_toxic_options();
 		static void player_spectate();
 		static void player_remote_control_vehicle();
 

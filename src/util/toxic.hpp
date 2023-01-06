@@ -8,8 +8,10 @@
 #include "util/scripts.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "util/system.hpp"
+
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
+#include <script/globals/GPBD_FM_3.hpp>
 
 #include <timeapi.h>
 #pragma comment(lib, "winmm.lib")

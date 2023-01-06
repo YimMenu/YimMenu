@@ -13,6 +13,8 @@ namespace big
 
 		packet();
 		void send(uint32_t msg_id);
+		void send(player_ptr player, int connection_id);
+		void send(int peer_id, int connection_id);
 
 		inline operator rage::datBitBuffer& ()
 		{

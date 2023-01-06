@@ -31,17 +31,6 @@ namespace big
 
 		static bool script_patch_checkbox(const std::string_view text, bool* option, const std::string_view tooltip = "");
 
-		template<size_t N>
-		struct template_str
-		{
-			constexpr template_str(const char(&str)[N])
-			{
-				std::copy_n(str, N, value);
-			}
-
-			char value[N];
-		};
-
 		template<template_str cmd_str>
 		static void command_button(const std::vector<std::uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
 		{

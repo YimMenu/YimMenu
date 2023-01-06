@@ -20,5 +20,5 @@ namespace big
 		}
 	};
 
-	seatbelt g_seatbelt("seatbelt", "Seatbelt", "Prevent you from falling off bikes or flying through the windshield", g.vehicle.no_water_collision);
+	seatbelt g_seatbelt("seatbelt", "Seatbelt", "Prevent you from falling off bikes or flying through the windshield", g.vehicle.seatbelt);
 }
