@@ -77,4 +77,15 @@ namespace self
 	inline Vehicle veh;
 }
 
+template<size_t N>
+struct template_str
+{
+	constexpr template_str(const char(&str)[N])
+	{
+		std::copy_n(str, N, value);
+	}
+
+	char value[N];
+};
+
 #endif

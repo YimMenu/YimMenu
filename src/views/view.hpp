@@ -19,7 +19,7 @@ namespace big
 		static void gui_settings();
 		static void handling_current_profile();
 		static void handling_saved_profiles();
-		static void notification_settings();
+		static void reaction_settings();
 		static void protection_settings();
 		static void heading();
 		static void mobile();

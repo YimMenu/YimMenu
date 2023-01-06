@@ -11,6 +11,7 @@ So here I am with an up-to-date menu focusing on protecting the user from toxic 
 ## Table of contents
 
  * [How to build](#how-to-build)
+    * [Curl](#curl)
     * [Git](#git)
     * [CMake](#CMake)
     * [Cloning and generating project files](#cloning-and-generating-project-files)
@@ -23,21 +24,21 @@ So here I am with an up-to-date menu focusing on protecting the user from toxic 
 
 Requirements:
 
- * [Git](#Git)
- * [CMake](#CMake)
+ * [Git](#git)
+ * [CMake](#cmake)
 
 If you have both of the above requirements you can skip to [cloning the git repo and generating the project files](#cloning-and-generating-project-files).
 
 ### Curl
 
 Curl should be already installed on your computer, but if you are having issues with building the project, you will need to download and install
-it. Once Installed run the exe located in bin and it should work
+it.
 
 [Download Link](https://curl.se/download.html)
 
 ### Git
 
-If you haven't installed git on your system go and do so it is **REQUIRED** for setting up a working build environment.
+If you haven't installed git on your system go and do so as it is **REQUIRED** for setting up a working build environment.
 
 [Download Link](https://git-scm.com/download/win)
 
@@ -63,7 +64,8 @@ CMake is used to generate our project files, if you haven't used it before you w
 
 #### Generate project files 
 
-#### `NOTE` You will have cd build and cmake again if you add any files or you will get an error when building.
+> **Note**
+> You will have cd build and cmake again if you add any files or you will get an error when building.
 
 - Windows Only
 
@@ -104,7 +106,7 @@ git pull
 
 CMake should be handling removed / added files automatically without any user input.
 
-If this is not the case for some reason you'll have to redo the steps in the [Generate project files](#Generate-project-files) section above.
+If this is not the case for some reason you'll have to redo the steps in the [Generate project files](#generate-project-files) section above.
 
 If you are doing custom modifications to the codebase and have a fork you are on your own for staying up to date with upstream (this repository), google stuff like "merge from upstream" and learn how to use Git.
 
@@ -122,7 +124,7 @@ If you are doing custom modifications to the codebase and have a fork you are on
 Below is an incomplete list of feature that I believe are notable to this "base" or menu.
 
  - Return Native spoofing
- - Custom [settings](src/core/globals.hpp) with deep compare if changes were made include auto saving
+ - Custom [settings](src/core/globals.hpp) with deep compare if changes were made, including auto saving
  - Clear and well structured source code
  - Includes a thread pool to queue tasks that shouldn't block the game thread, very similar to fiber pool
  - Updated natives.hpp from https://nativedb.spyral.dev
@@ -130,6 +132,6 @@ Below is an incomplete list of feature that I believe are notable to this "base"
 
 ## Contributing
 
-You're free to contribute to YimMenu as long as the feature are useful, not overly toxic, and do not contain anything money related that might get the menu targetted by Take2.
+You're free to contribute to YimMenu as long as the features are useful, not overly toxic and do not contain anything money related that might get the menu targeted by Take2.
 
 Make sure to read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
