@@ -1,2 +1,2 @@
-- name: Rebase Upstream
-  uses: imba-tjd/rebase-upstream-action@0.5
+ name: Rebase Upstream
+ uses: imba-tjd/rebase-upstream-action@0.5
