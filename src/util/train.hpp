@@ -7,20 +7,21 @@
 
 namespace big::train
 {
-	inline auto get_all_vehicles = []() -> std::vector<Vehicle>
+	inline auto get_all_vehicles()
 	{
 		std::vector<Vehicle> result;
-		Vehicle vehs[300 * 2 + 2];
-		vehs[0] = 300;
-		int nums = VEHICLE::GET_ALL_VEHICLES(vehs);
-		for (int i = 1; result.size() < nums && i < sizeof(vehs) / sizeof(vehs[0]); i++)
+		rage::CReplayInterface* CReplayInterface_var = *g_pointers->m_replay_interface; //(YimMenu should already have this pointer)
+		for (int j = 0; j <= 300; j++) //max vehicle count is 300.
 		{
-			if (ENTITY::DOES_ENTITY_EXIST(vehs[i]) && !ENTITY::IS_ENTITY_DEAD(vehs[i], false))
+			auto vehicle_ptr = CReplayInterface_var->m_vehicle_interface->get_vehicle(j);
+			if (vehicle_ptr)
 			{
-				result.push_back(vehs[i]);
+				Vehicle vehicle_handle = g_pointers->m_ptr_to_handle(vehicle_ptr);
+
+				result.push_back(vehicle_handle);
 			}
 		}
-		return result;
+			return result;
 	};
 
 	inline int get_closest_train()
@@ -41,7 +42,9 @@ namespace big::train
 
 		if (train != 0)
 		{
+			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(train);
 			PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), train, -1);
+
 			g_notification_service->push_error("Hijack Train", "Found a train nearby");
 		}
 	}
