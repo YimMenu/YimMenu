@@ -43,7 +43,7 @@ namespace big::train
 
 		if (train != 0)
 		{
-			entity::take_control_of(get_closest_train());
+			entity::take_control_of(train);
 			PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), train, -1);
 
 			g_notification_service->push_error("Hijack Train", "Found a train nearby");
