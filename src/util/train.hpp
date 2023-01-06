@@ -4,7 +4,7 @@
 #include "script_global.hpp"
 #include "pointers.hpp"
 #include "natives.hpp"
-#include "script.hpp"
+#include "entity.hpp"
 
 namespace big::train
 {
@@ -12,7 +12,7 @@ namespace big::train
 	{
 		std::vector<Vehicle> result;
 		rage::CReplayInterface* CReplayInterface_var = *g_pointers->m_replay_interface; 
-		for (int i = 0; i <= 300; i++)
+		for (int i = 0; i < 300; i++)
 		{
 			auto vehicle_ptr = CReplayInterface_var->m_vehicle_interface->get_vehicle(i);
 			if (vehicle_ptr)
@@ -43,13 +43,7 @@ namespace big::train
 
 		if (train != 0)
 		{
-			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(train);
-
-			while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(train))
-			{
-				script::get_current()->yield();
-			}
-
+			entity::take_control_of(get_closest_train());
 			PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), train, -1);
 
 			g_notification_service->push_error("Hijack Train", "Found a train nearby");
