@@ -24,9 +24,9 @@ namespace big
 		bool get_job_details(std::string_view job_link, nlohmann::json& result);
 
 		// Returns true if the job metadata was successfully downloaded
-		bool download_job_metadata(std::string_view content_part);
+		bool download_job_metadata(std::string_view content_id, int f1, int f0, int lang);
 	private:
-		const std::list<std::string> languages = { "en", "fr", "de", "it", "es", "pt", "pl", "ru", "es-mx" };
+		const std::vector<std::string> languages = { "unset", "en", "fr", "de", "it", "es", "pt", "pl", "ru", "es-mx" };
 
 		inline std::string get_ticket() 
 		{

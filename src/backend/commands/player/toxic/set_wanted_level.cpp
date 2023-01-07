@@ -5,6 +5,8 @@
 #include "util/globals.hpp"
 #include "script.hpp"
 
+#include <script/globals/GlobalPlayerBD.hpp>
+
 namespace big
 {
 	class set_wanted_level : player_command
@@ -50,14 +52,16 @@ namespace big
 
 				if (_args[0] > 0)
 				{
-					*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(214).as<Player*>() = id;
-					*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(215).as<int*>() = _args[0];
+					auto& gpbd = scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id];
+
+					gpbd.RemoteWantedLevelPlayer = id;
+					gpbd.RemoteWantedLevelAmount = _args[0];
 
 					for (int i = 0; PLAYER::GET_PLAYER_WANTED_LEVEL(id) < _args[0] && i < 3600; i++)
 						script::get_current()->yield(1ms);
 
-					*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(214).as<Player*>() = -1; // reset to prevent wanted from being constantly set
-					*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(215).as<int*>() = -1;
+					gpbd.RemoteWantedLevelPlayer = -1;
+					gpbd.RemoteWantedLevelAmount = -1;
 				}
 			}
 		}
