@@ -23,7 +23,7 @@ namespace big
 			ImGui::SameLine();
 			ImGui::Checkbox("Anonymous Bounty", &anonymous);
 			ImGui::SameLine();
-			components::button("Set", [] { troll::set_bounty_on_player(g_player_service->get_selected(), bounty_value);});
+			components::button("Set", [] { troll::set_bounty_on_player(g_player_service->get_selected(), bounty_value, anonymous);});
 
 			ImGui::TreePop();
 		}
