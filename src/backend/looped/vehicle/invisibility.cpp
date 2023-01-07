@@ -8,17 +8,16 @@ namespace big
 	class carinvisibility : looped_command
 	{
 		using looped_command::looped_command;
-		Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(self::ped, false);
 		virtual void on_tick() override
 		{
-			ENTITY::SET_ENTITY_VISIBLE(veh, false, 0);
+			ENTITY::SET_ENTITY_VISIBLE(self::veh, false, 0);
 			if (g.self.local_visibility)
 				NETWORK::SET_ENTITY_LOCALLY_VISIBLE(self::veh);
 		}
 
 		virtual void on_disable() override
 		{
-			ENTITY::SET_ENTITY_VISIBLE(veh, true, 0);
+			ENTITY::SET_ENTITY_VISIBLE(self::veh, true, 0);
 		}
 	};
 
