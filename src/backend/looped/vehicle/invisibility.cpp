@@ -14,6 +14,8 @@ namespace big
 			ENTITY::SET_ENTITY_VISIBLE(self::veh, false, 0);
 			if (g.vehicle.localcar_visibility)
 				NETWORK::SET_ENTITY_LOCALLY_VISIBLE(self::veh);
+			if (g.vehicle.localped_visibility && g.vehicle.carinvisibility) // if left false the ped w
+				ENTITY::SET_ENTITY_VISIBLE(self::ped, true, 0);
 		}
 
 		virtual void on_disable() override
