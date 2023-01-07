@@ -11,7 +11,7 @@ namespace big
 
 		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
-			troll::set_bounty_on_player(player, 10000);
+			troll::set_bounty_on_player(player, 10000, true);
 		}
 	};
 

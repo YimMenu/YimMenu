@@ -17,8 +17,11 @@ namespace big
 			components::player_command_button<"rcplayer">(g_player_service->get_selected());
 
 			static int bounty_value = 0;
-
+			static bool anonymous = true;
+			
 			ImGui::SliderInt("Bounty", &bounty_value, 0, 10000);
+			ImGui::SameLine();
+			ImGui::Checkbox("Anonymous Bounty", &anonymous);
 			ImGui::SameLine();
 			components::button("Set", [] { troll::set_bounty_on_player(g_player_service->get_selected(), bounty_value);});
 
