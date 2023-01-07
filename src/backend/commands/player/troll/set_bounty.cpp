@@ -16,4 +16,5 @@ namespace big
 	};
 
 	set_bounty g_bounty("bounty", "Bounty", "Sets a 10k bounty on the player", 0);
+	bool_command g_anonymous_bounty("anonbounty", "Anonymous Bounty", "Don't show your name when setting a bounty on someone", g.session.anonymous_bounty);
 }
