@@ -12,7 +12,7 @@ namespace big
 		virtual void on_tick() override
 		{
 			ENTITY::SET_ENTITY_VISIBLE(self::veh, false, 0);
-			if (g.self.local_visibility)
+			if (g.vehicle.localcar_visibility)
 				NETWORK::SET_ENTITY_LOCALLY_VISIBLE(self::veh);
 		}
 
