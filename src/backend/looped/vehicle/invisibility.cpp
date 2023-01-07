@@ -8,6 +8,7 @@ namespace big
 	class carinvisibility : looped_command
 	{
 		using looped_command::looped_command;
+
 		virtual void on_tick() override
 		{
 			ENTITY::SET_ENTITY_VISIBLE(self::veh, false, 0);
