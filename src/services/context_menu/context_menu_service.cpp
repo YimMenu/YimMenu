@@ -188,6 +188,7 @@ namespace big
 
 	void context_menu_service::get_entity_closest_to_screen_center()
 	{
+		m_pointer = nullptr;
 		if (const auto replay = *g_pointers->m_replay_interface; replay)
 		{
 			const auto veh_interface = replay->m_vehicle_interface;
