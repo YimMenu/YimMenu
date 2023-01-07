@@ -502,6 +502,8 @@ namespace big
 			bool no_water_collision = false;
 			bool disable_engine_auto_start = false;
 			bool change_engine_state_immediately = false;
+			bool carinvisibility = false;
+			bool localcar_visibility = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle,
 				speedo_meter, fly, rainbow_paint, speed_unit, god_mode,
