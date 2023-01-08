@@ -131,8 +131,9 @@ namespace big
 				weapon.m_weapon_type == weapon_type_arr[selected_ped_weapon_type]
 			) {
 				if (
-					selected_ped_weapon_hash == 0 ||
-					weapon.m_hash == selected_ped_weapon_hash
+					(selected_ped_weapon_hash == 0 ||
+					weapon.m_hash == selected_ped_weapon_hash)
+					&& weapon.m_hash != RAGE_JOAAT("WEAPON_UNARMED")
 				) {
 					WEAPON::GIVE_WEAPON_TO_PED(ped, weapon.m_hash, 9999, false, selected_ped_weapon_hash != 0);
 				}

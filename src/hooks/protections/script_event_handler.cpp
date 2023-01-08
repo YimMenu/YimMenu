@@ -2,7 +2,11 @@
 #include "gta_util.hpp"
 #include "util/session.hpp"
 #include "gta/net_game_event.hpp"
+#include "backend/player_command.hpp"
+
 #include <network/CNetGamePlayer.hpp>
+#include <network/Network.hpp>
+#include <script/globals/GPBD_FM_3.hpp>
 
 namespace big
 {
@@ -17,6 +21,34 @@ namespace big
 			);
 	}
 
+	inline bool is_player_driver_of_local_vehicle(Player sender)
+	{
+		auto plyr = g_player_service->get_by_id(sender);
+
+		if (!plyr || !plyr->get_current_vehicle() || !g_player_service->get_self()->get_current_vehicle())
+			return false;
+
+		return g_player_service->get_self()->get_current_vehicle()->m_driver == plyr->get_ped();
+	}
+
+	inline bool is_player_our_goon(Player sender)
+	{
+		auto& boss_goon = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon;
+
+		if (boss_goon.Boss != self::id)
+			return false;
+
+		for (int i = 0; i < boss_goon.Goons.Size; i++)
+		{
+			if (boss_goon.Goons[i] == sender)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	bool hooks::scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player)
 	{
 		const auto args = scripted_game_event->m_args;
@@ -24,56 +56,38 @@ namespace big
 		const auto hash = static_cast<eRemoteEvent>(args[0]);
 		const auto player_name = player->get_name();
 
-		const auto& notify = g.notifications.script_event_handler;
+		auto plyr = g_player_service->get_by_id(player->m_player_id);
 
 		switch (hash)
 		{
 		case eRemoteEvent::Bounty:
-			if (g.protections.script_events.bounty)
+			if (g.protections.script_events.bounty && args[2] == self::id)
 			{
-				format_string(player_name, "Bounty", notify.bounty.log, notify.bounty.notify);
-
-				return true;
-			}
-			break;
-		case eRemoteEvent::CeoBan:
-			if (g.protections.script_events.ceo_ban)
-			{
-				format_string(player_name, "Ceo Ban", notify.ceo_ban.log, notify.ceo_ban.notify);
-
-				return true;
-			}
-			break;
-		case eRemoteEvent::CeoKick:
-			if (g.protections.script_events.ceo_kick)
-			{
-				format_string(player_name, "Ceo Kick", notify.ceo_kick.log, notify.ceo_kick.notify);
-
+				g.reactions.bounty.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::CeoMoney:
-			if (g.protections.script_events.ceo_money)
+			if (g.protections.script_events.ceo_money && player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
 			{
-				format_string(player_name, "Ceo Money", notify.ceo_money.log, notify.ceo_money.notify);
-
+				g.reactions.ceo_money.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::ClearWantedLevel:
-			if (g.protections.script_events.clear_wanted_level)
+			if (g.protections.script_events.clear_wanted_level && !is_player_driver_of_local_vehicle(player->m_player_id))
 			{
-				format_string(player_name, "Clear Wanted Level", notify.clear_wanted_level.log, notify.clear_wanted_level.notify);
-
+				g.reactions.clear_wanted_level.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::Crash:
+			g.reactions.crash.process(plyr);
+			return true;
 		case eRemoteEvent::Crash2:
-			if (g.protections.script_events.crash)
+			if (args[2] > 32) // actual crash condition is if args[2] is above 255
 			{
-				format_string(player_name, "TSE Crash", notify.crash.log, notify.crash.notify);
-
+				g.reactions.crash.process(plyr);
 				return true;
 			}
 			break;
@@ -85,8 +99,7 @@ namespace big
 			case eRemoteEvent::NotificationMoneyStolen:
 				if (g.protections.script_events.fake_deposit)
 				{
-					format_string(player_name, "Fake Deposit", notify.fake_deposit.log, notify.fake_deposit.notify);
-
+					g.reactions.fake_deposit.process(plyr);
 					return true;
 				}
 				break;
@@ -95,81 +108,68 @@ namespace big
 		case eRemoteEvent::ForceMission:
 			if (g.protections.script_events.force_mission)
 			{
-				format_string(player_name, "Force Mission", notify.force_mission.log, notify.force_mission.notify);
-
+				g.reactions.force_mission.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::GiveCollectible:
-			if (g.protections.script_events.switch_player_model)
+			if (g.protections.script_events.give_collectible)
 			{
-				if (args[2] == 8)
-				{
-					format_string(player_name, "Switch Player Model", notify.switch_player_model.log, notify.switch_player_model.notify);
-
-					return true;
-				}
+				g.reactions.give_collectible.process(plyr);
+				return true;
 			}
 			break;
 		case eRemoteEvent::GtaBanner:
 			if (g.protections.script_events.gta_banner)
 			{
-				format_string(player_name, "GTA Banner", notify.gta_banner.log, notify.gta_banner.notify);
-
+				g.reactions.gta_banner.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::MCTeleport:
 			if (g.protections.script_events.mc_teleport && args[3] <= 32)
 			{
-				format_string(player_name, "Remote Teleport", notify.mc_teleport.log, notify.mc_teleport.notify);
-
+				g.reactions.mc_teleport.process(plyr);
 				return true;
 			}
-			else if (g.protections.script_events.crash && args[3] > 32)
+			else if (args[3] > 32)
 			{
-				format_string(player_name, "TSE Crash", notify.crash.log, notify.crash.notify);
-
+				g.reactions.crash.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::PersonalVehicleDestroyed:
 			if (g.protections.script_events.personal_vehicle_destroyed)
 			{
-				format_string(player_name, "Personal Vehicle Destroyed", notify.personal_vehicle_destroyed.log, notify.personal_vehicle_destroyed.notify);
-
+				g.reactions.personal_vehicle_destroyed.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::RemoteOffradar:
-			if (g.protections.script_events.remote_off_radar)
+			if (g.protections.script_events.remote_off_radar && player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
 			{
-				format_string(player_name, "Off Radar", notify.remote_off_radar.log, notify.remote_off_radar.notify);
-
+				g.reactions.remote_off_radar.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::TSECommand:
-			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[2]) == eRemoteEvent::TSECommandRotateCam)
+			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[2]) == eRemoteEvent::TSECommandRotateCam && !gta_util::get_network()->m_is_activity_session)
 			{
-				format_string(player_name, "Rotate Cam", notify.rotate_cam.log, notify.rotate_cam.notify);
-
+				g.reactions.rotate_cam.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::SendToCayoPerico:
-			if (g.protections.script_events.send_to_location)
+			if (g.protections.script_events.send_to_location && args[3] == 0)
 			{
-				format_string(player_name, "Send to Cayo Perico", notify.send_to_location.log, notify.send_to_location.notify);
-
+				g.reactions.send_to_location.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::SendToCutscene:
-			if (g.protections.script_events.send_to_cutscene)
+			if (g.protections.script_events.send_to_cutscene && player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
 			{
-				format_string(player_name, "Send to Cutscene", notify.send_to_cutscene.log, notify.send_to_cutscene.notify);
-
+				g.reactions.send_to_cutscene.process(plyr);
 				return true;
 			}
 			break;
@@ -185,8 +185,7 @@ namespace big
 
 					if (g.protections.script_events.send_to_location)
 					{
-						format_string(player_name, "Send to Beach", notify.send_to_location.log, notify.send_to_location.notify);
-
+						g.reactions.send_to_location.process(plyr);
 						return true;
 					}
 				}
@@ -196,8 +195,7 @@ namespace big
 
 					if (g.protections.script_events.send_to_location)
 					{
-						format_string(player_name, "Send to Cayo Perico", notify.send_to_location.log, notify.send_to_location.notify);
-
+						g.reactions.send_to_location.process(plyr);
 						return true;
 					}
 				}
@@ -205,74 +203,56 @@ namespace big
 
 			if (!known_location)
 			{
-				format_string(player_name, "TSE Freeze", notify.tse_freeze.log, notify.tse_freeze.notify);
-
+				g.reactions.tse_freeze.process(plyr);
 				return true;
 			}
 			break;
 		}
 		case eRemoteEvent::SoundSpam:
-			if (g.protections.script_events.sound_spam)
-			{
-				format_string(player_name, "Sound Spamn", notify.sound_spam.log, notify.sound_spam.notify);
+		{
+			auto plyr = g_player_service->get_by_id(player->m_player_id);
 
+			if (g.protections.script_events.sound_spam && (!plyr || plyr->m_invites_rate_limit.process()))
+			{
+				if (plyr && plyr->m_invites_rate_limit.exceeded_last_process())
+					g.reactions.sound_spam.process(plyr);
 				return true;
 			}
 			break;
+		}
 		case eRemoteEvent::Spectate:
 			if (g.protections.script_events.spectate)
 			{
-				format_string(player_name, "Spectate", notify.spectate.log, notify.spectate.notify);
-
+				g.reactions.spectate_notification.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::Teleport:
-			if (g.protections.script_events.force_teleport)
+			if (g.protections.script_events.force_teleport && !is_player_driver_of_local_vehicle(player->m_player_id))
 			{
-				format_string(player_name, "Apartment Invite", notify.force_teleport.log, notify.force_teleport.notify);
-
+				g.reactions.force_teleport.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::TransactionError:
-			if (g.protections.script_events.transaction_error)
-			{
-				format_string(player_name, "Transaction Error", notify.transaction_error.log, notify.transaction_error.notify);
-
-				return true;
-			}
-			break;
+			g.reactions.transaction_error.process(plyr);
+			return true;
 		case eRemoteEvent::VehicleKick:
 			if (g.protections.script_events.vehicle_kick)
 			{
-				format_string(player_name, "Vehicle Kick", notify.vehicle_kick.log, notify.vehicle_kick.notify);
-
-				return true;
-			}
-			break;
-		case eRemoteEvent::ForceMission2:
-			if (g.protections.script_events.force_mission)
-			{
-				format_string(player_name, "Force Mission", notify.force_mission.log, notify.force_mission.notify);
-
+				g.reactions.vehicle_kick.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::NetworkBail:
-			if (g.protections.script_events.network_bail)
-			{
-				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
-					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
-				format_string(player_name, "Network Bail", notify.network_bail.log, notify.network_bail.notify);
-				return true;
-			}
-			break;
+			if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+				session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
+			g.reactions.network_bail.process(plyr);
+			return true;
 		case eRemoteEvent::TeleportToWarehouse:
-			if (g.protections.script_events.teleport_to_warehouse)
+			if (g.protections.script_events.teleport_to_warehouse && !is_player_driver_of_local_vehicle(player->m_player_id))
 			{
-				format_string(player_name, "Teleport To Warehouse", notify.teleport_to_warehouse.log, notify.teleport_to_warehouse.notify);
-
+				g.reactions.teleport_to_warehouse.process(plyr);
 				return true;
 			}
 			break;
@@ -283,42 +263,42 @@ namespace big
 			{
 				if (activity == eActivityType::Survival || activity == eActivityType::Mission || activity == eActivityType::Deathmatch || activity == eActivityType::BaseJump || activity == eActivityType::Race)
 				{
-					format_string(player_name, "Softlock Game", notify.start_activity.log, notify.start_activity.notify);
-
+					g.reactions.tse_freeze.process(plyr);
 					return true;
 				}
 				else if (activity == eActivityType::Darts)
 				{
-					format_string(player_name, "Send To Darts", notify.start_activity.log, notify.start_activity.notify);
-
+					g.reactions.start_activity.process(plyr);
 					return true;
 				}
 				else if (activity == eActivityType::PilotSchool)
 				{
-					format_string(player_name, "Send To Flight School", notify.start_activity.log, notify.start_activity.notify);
-
+					g.reactions.start_activity.process(plyr);
 					return true;
 				}
 				else if (activity == eActivityType::ImpromptuDeathmatch)
 				{
-					format_string(player_name, "Start Impromptu Deathmatch", notify.start_activity.log, notify.start_activity.notify);
-
+					g.reactions.start_activity.process(plyr);
 					return true;
 				}
 				else if (activity == eActivityType::DefendSpecialCargo || activity == eActivityType::GunrunningDefend || activity == eActivityType::BikerDefend)
 				{
-					format_string(player_name, "Trigger Business Raid", notify.start_activity.log, notify.start_activity.notify);
-
+					g.reactions.start_activity.process(plyr);
 					return true;
 				}
-				// there are MANY more
 			}
-			else if (g.protections.script_events.crash && activity == eActivityType::Tennis)
+			else if (activity == eActivityType::Tennis)
 			{
-				format_string(player_name, "TSE Crash (Start Tennis)", notify.crash.log, notify.crash.notify);
-
+				g.reactions.crash.process(plyr);
 				return true;
 			}
+
+			if (g.protections.script_events.start_activity && !is_player_our_goon(player->m_player_id))
+			{
+				g.reactions.start_activity.process(plyr);
+				return true;
+			}
+
 			break;
 		}
 		case eRemoteEvent::InteriorControl:
@@ -328,9 +308,7 @@ namespace big
 			{
 				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
-
-				format_string(player_name, "Null Function Kick", notify.null_function_kick.log, notify.null_function_kick.notify);
-
+				g.reactions.null_function_kick.process(plyr);
 				return true;
 			}
 			break;
@@ -338,18 +316,27 @@ namespace big
 		case eRemoteEvent::SMS:
 			if (g.protections.script_events.send_sms)
 			{
-				format_string(player_name, "Send SMS", notify.send_sms.log, notify.send_sms.notify);
+				if (g.session.kick_chat_spammers)
+				{
+					if (auto plyr = g_player_service->get_by_id(player->m_player_id))
+					{
+						((player_command*)command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+					}
+				}
 
 				return true;
 			}
 			break;
+		case eRemoteEvent::DestroyPersonalVehicle:
+			g.reactions.destroy_personal_vehicle.process(plyr);
+			return true;
 		}
 
 		// detect pasted menus setting args[1] to something other than PLAYER_ID()
 		if (*(int*)&args[1] != player->m_player_id && player->m_player_id != -1)
 		{
 			LOG(INFO) << "Hash = " << (int)args[0];
-			format_string(player_name, "TSE sender mismatch", notify.tse_sender_mismatch.log, notify.tse_sender_mismatch.notify);
+			g.reactions.tse_sender_mismatch.process(plyr);
 			return true;
 		}
 
@@ -361,7 +348,7 @@ namespace big
 				if (i)
 					script_args += ", ";
 
-				script_args += std::to_string(args[i]);
+				script_args += std::to_string((int)args[i]);
 			}
 			script_args += " };";
 

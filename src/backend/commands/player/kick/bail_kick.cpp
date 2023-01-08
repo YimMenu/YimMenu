@@ -3,6 +3,8 @@
 #include "pointers.hpp"
 #include "core/scr_globals.hpp"
 
+#include <script/globals/GPBD_FM_3.hpp>
+
 namespace big
 {
 	class bail_kick : player_command
@@ -21,7 +23,7 @@ namespace big
 			{
 				(int64_t)eRemoteEvent::NetworkBail,
 				(int64_t)self::id,
-				*scr_globals::gpbd_fm_3.at(player->id(), scr_globals::size::gpbd_fm_3).at(510).as<int64_t*>()
+				scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[player->id()].ScriptEventReplayProtectionCounter
 			};
 
 			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << player->id());

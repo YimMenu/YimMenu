@@ -76,6 +76,8 @@ namespace big
 			looped::vehicle_boost_behavior();
 			looped::vehicle_god_mode();
 			looped::vehicle_speedo_meter();
+			looped::derail_train();
+			looped::drive_train();
 
 			script::get_current()->yield();
 		}
@@ -117,6 +119,7 @@ namespace big
 		while (g_running)
 		{
 			looped::player_good_options();
+			looped::player_toxic_options();
 			looped::player_spectate();
 			looped::player_remote_control_vehicle();
 

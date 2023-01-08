@@ -157,7 +157,6 @@ namespace big
 		CeoMoney = 245065909, // Goon_Paid_Large
 		ClearWantedLevel = 2080651008,
 		ForceMission = 1858712297, // ), Var0.f_2, 1))
-		ForceMission2 = -1578682814, // TICK_PH_INVA
 		GiveCollectible = 697566862, // DLC_SUM20_HIDDEN_COLLECTIBLES xref
 		GtaBanner = -795380017, // NETWORK::NETWORK_IS_SCRIPT_ACTIVE("BUSINESS_BATTLES", -1, true, 0) second one
 		NetworkBail = 915462795, // NETWORK::NETWORK_BAIL(16, 0, 0); xref func
@@ -165,12 +164,12 @@ namespace big
 		RemoteOffradar = -162943635, // NETWORK::GET_TIME_DIFFERENCE(NETWORK::GET_NETWORK_TIME(), Var0.f_2)
 		SendToCutscene = 392606458, // (bVar3, bVar4, 125f, 1)
 		SendToCayoPerico = -910497748, // CELL_HI_INV
-		SendToLocation = 1214823473, // &Var222, 11);
+		SendToLocation = 1214823473, // &Var222, 11); TODO this isn't updated!
 		SoundSpam = -1891171016, // CELL_APTINVYACHT
 		Spectate = -1903870031, // SPEC_TCK1
 		Teleport = -168599209, // Mission_Pass_Notify
 		TeleportToWarehouse = 434937615, // .f_4 == 50
-		TransactionError = -768108950, // NETWORK_RECEIVE_PLAYER_JOBSHARE_CASH
+		TransactionError = -492741651, // NETWORK_RECEIVE_PLAYER_JOBSHARE_CASH
 		VehicleKick = -852914485, // PIM_RFMOC
 		MCTeleport = 879177392, // NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(PLAYER::PLAYER_ID()) == (first one)
 		StartActivity = 243072129, // (Var0.f_2, -1); first match
@@ -189,6 +188,8 @@ namespace big
 		NotificationMoneyBanked = -1032040118, // TICK_TC_BANK
 		NotificationMoneyRemoved = -1197151915, // TICK_TC_REMO
 		NotificationMoneyStolen = -28878294, // TICK_TC_STOL
+
+		DestroyPersonalVehicle = -513394492 // CnC_PV_THEFT
 	};
 
 	enum class eCollectibleType
@@ -203,66 +204,6 @@ namespace big
 		Treat = 8,
 		Organics = 9,
 		Skydive = 10
-	};
-
-	enum class eActivityType
-	{
-		HeistPrep = 233,
-		Gunrunning = 180,
-		Sightseer = 142,
-		HeadHunter = 166,
-		BuySpecialCargo = 167,
-		SellSpecialCargo = 168,
-		DefendSpecialCargo = 169,
-		StealVehicle = 178,
-		ExportVehicle = 188,
-		Gunrunning2 = 225,
-		GunrunningSell = 226,
-		GunrunningDefend = 227,
-		BikerSell = 190,
-		BikerDefend = 191,
-		BusinessResupply = 192,
-		Survival = 3,
-		Darts = 14,
-		ArmWresling = 15,
-		GangAttack = 6,
-		PilotSchool = 122,
-		Golf = 11,
-		ShootingRange = 13,
-		Tennis = 12,
-		BaseJump = 8,
-		Deathmatch = 1,
-		ImpromptuDeathmatch = 5,
-		Mission = 0,
-		Race = 2,
-		ExecutiveDeathmatch = 148,
-		MarkedForDeath = 151,
-		PiracyPrevention = 152,
-		MostWanted = 153,
-		AssetRecovery = 157,
-		HostileTakeover = 159,
-		Point2Point = 162,
-		AmphibiousAssault = 216,
-		Velocity = 219,
-		GunsForHire = 185,
-		ByThePound = 182,
-		RippingItUp = 194,
-		RaceToPoint = 189,
-		HitAndRide = 193,
-		CriminalMischief = 205,
-		WeaponOfChoice = 186,
-		FragileGoods = 207,
-		Torched = 208,
-		Outrider = 209,
-		WheelieRider = 210,
-		POW = 183,
-		ExecutiveSearch = 199,
-		StandYourGround = 201,
-		AutoBuyout = 163,
-		DueDiligence = 160,
-		MarketManipulation = 154,
-		CourierService = 155,
-		Skydive = 267
 	};
 
 	enum class eSessionType
