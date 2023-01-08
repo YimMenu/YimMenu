@@ -5,16 +5,16 @@
 
 namespace big
 {
-	class carinvisibility : looped_command
+	class vehinvisibility : looped_command
 	{
 		using looped_command::looped_command;
 
 		virtual void on_tick() override
 		{
 			ENTITY::SET_ENTITY_VISIBLE(self::veh, false, 0);
-			if (g.vehicle.localcar_visibility)
+			if (g.vehicle.localveh_visibility)
 				NETWORK::SET_ENTITY_LOCALLY_VISIBLE(self::veh);
-			if (g.vehicle.localped_visibility && g.vehicle.carinvisibility) // if left false the ped w
+			if (g.vehicle.localped_visibility && g.vehicle.vehinvisibility)
 				ENTITY::SET_ENTITY_VISIBLE(self::ped, true, 0);
 		}
 
@@ -24,6 +24,7 @@ namespace big
 		}
 	};
 
-	carinvisibility g_carinvisibility("inviscar", "Car Invisiblity", "Makes your car invisible", g.vehicle.carinvisibility);
-	bool_command g_localcar_visibility("localinviscar", "Visible Locally", "Makes your car visible to yourself, other players will still not be able to see it", g.vehicle.localcar_visibility);
+	vehinvisibility g_vehinvisibility("invisveh", "Vehicle Invisiblity", "Makes your car invisible", g.vehicle.vehinvisibility);
+	bool_command g_localveh_visibility("localinvisveh", "Visible Locally", "Makes your car visible to yourself, other players will still not be able to see it", g.vehicle.localveh_visibility);
+	bool_command g_localped_visibility("localinvisped", "Self Visible", "Makes yourself visible driving the vehicle to others and yourself,\n car will still be invisible but you can be", g.vehicle.localped_visibility);
 }

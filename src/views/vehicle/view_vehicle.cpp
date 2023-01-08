@@ -71,9 +71,13 @@ namespace big
 			ImGui::Checkbox("God Mode", &g.vehicle.god_mode);
 			components::command_checkbox<"hornboost">();
 			components::command_checkbox<"vehjump">();
-			components::command_checkbox<"inviscar">();
-			if (g.vehicle.carinvisibility)
-				components::command_checkbox<"localinviscar">();
+			components::command_checkbox<"invisveh">();
+			if (g.vehicle.vehinvisibility)
+			{
+				components::command_checkbox<"localinvisveh">();
+				components::command_checkbox<"localinvisped">();
+			}
+
 			ImGui::EndGroup();
 			ImGui::SameLine();
 			ImGui::BeginGroup();
@@ -176,7 +180,6 @@ namespace big
 			);
 		}
 		ImGui::Separator();
-
 
 		components::sub_title("Speedo Meter");
 		{
