@@ -201,10 +201,9 @@ namespace big
 		components::sub_title("Vehicle Weapon");
 		{
 			components::command_checkbox<"vehweapon">();
-			//if(g.vehicle.vehicle_weapon)
-			components::command_checkbox<"vehweaponline">();
+			if(g.vehicle.vehicle_weapon){ components::command_checkbox<"vehweaponline">(); }
 			eExplosionTag selected_explosion = g.vehicle.vehexplosion_tag;
-			g.vehicle.selectedweapon = (const char*)selected_explosion;
+			g.vehicle.selectedweapon = selected_explosion;
 			if (ImGui::BeginCombo("Bullet Type", BULLET_IMPACTS[selected_explosion]))
 			{
 				for (const auto& [type, name] : BULLET_IMPACTS)
@@ -223,6 +222,7 @@ namespace big
 				ImGui::EndCombo();
 			}
 		}
+
 		g.vehicle.proof_mask = 0;
 		if (g.vehicle.god_mode)
 		{
