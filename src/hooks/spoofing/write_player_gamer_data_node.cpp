@@ -32,8 +32,11 @@ namespace big
         }
 
         node->m_is_cheater = g.spoofing.spoof_cheater;
-
-        node->m_is_rockstar_dev = spoof_rockstar_dev;
-        node->m_is_rockstar_qa = spoof_rockstar_qa;
+        
+        if (g.spoofing.spoof_rockstar_id)
+	    {
+		    node->m_is_rockstar_dev = g.spoofing.spoof_rockstar_dev;
+		    node->m_is_rockstar_qa = g.spoofing.spoof_rockstar_qa;
+	    }
     }
 }
