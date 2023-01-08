@@ -357,9 +357,4 @@ namespace big
 		{ CommandAccessLevel::TOXIC, "toxic" },
 		{ CommandAccessLevel::ADMIN, "admin" }
 	});
-	enum class vehicle_weapons
-	{
-		VEHICLE_WEAPON_SPACE_ROCKET, //hash 3313697558
-		VEHICLE_WEAPON_PLANE_ROCKET, //hash 3313697558
-	};
 }
