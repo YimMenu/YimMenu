@@ -201,8 +201,8 @@ namespace big
 		components::sub_title("Vehicle Weapon");
 		{
 			components::command_checkbox<"vehweapon">();
-			if(g.vehicle.vehicle_weapon)
-				components::command_checkbox<"vehweaponline">();
+			//if(g.vehicle.vehicle_weapon)
+			components::command_checkbox<"vehweaponline">();
 			eExplosionTag selected_explosion = g.vehicle.vehexplosion_tag;
 			g.vehicle.selectedweapon = (const char*)selected_explosion;
 			if (ImGui::BeginCombo("Bullet Type", BULLET_IMPACTS[selected_explosion]))
