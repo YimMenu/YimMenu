@@ -3,6 +3,7 @@
 #include "views/view.hpp"
 #include "util/mobile.hpp"
 #include "core/data/speed_units.hpp"
+#include "core/data/bullet_impact_types.hpp"
 
 namespace big
 {
@@ -197,7 +198,31 @@ namespace big
 				ImGui::Checkbox("Left Sided", &g.vehicle.speedo_meter.left_side);
 			}
 		}
+		components::sub_title("Vehicle Weapon");
+		{
+			components::command_checkbox<"vehweapon">();
+			if(g.vehicle.vehicle_weapon)
+				components::command_checkbox<"vehweaponline">();
+			eExplosionTag selected_explosion = g.vehicle.vehexplosion_tag;
+			g.vehicle.selectedweapon = (const char*)selected_explosion;
+			if (ImGui::BeginCombo("Bullet Type", BULLET_IMPACTS[selected_explosion]))
+			{
+				for (const auto& [type, name] : BULLET_IMPACTS)
+				{
+					if (ImGui::Selectable(name, type == selected_explosion))
+					{
+						g.vehicle.vehicle_weapon = type;
+					}
 
+					if (type == selected_explosion)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+
+				ImGui::EndCombo();
+			}
+		}
 		g.vehicle.proof_mask = 0;
 		if (g.vehicle.god_mode)
 		{
