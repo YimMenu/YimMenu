@@ -1,11 +1,14 @@
 #include "backend/looped/looped.hpp"
 #include "natives.hpp"
+#include "backend/looped_command.hpp"
 
 namespace big
 {
-	void looped::self_part_water()
+	class partwater : looped_command
 	{
-		if (g.self.part_water)
+		using looped_command::looped_command;
+
+		virtual void on_tick() override
 		{
 			float offset[] = { -4, 4 };
 			for (int i = 0; i < 5; i++)
@@ -21,5 +24,7 @@ namespace big
 				}
 			}
 		}
-	}
+	};
+
+	partwater g_invisibility("partwater", "Part Water", "Makes you like Moses", g.world.water.part_water);
 }

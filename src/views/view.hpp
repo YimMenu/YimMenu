@@ -48,6 +48,7 @@ namespace big
 		static void gta_data();
 		static void creator();
 		static void train();
+		static void water();
 
 		static void player_info();
 		static void player_troll();
