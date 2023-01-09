@@ -42,7 +42,6 @@ namespace big
 			looped::self_police();
 			looped::self_hud();
 			looped::self_dance_mode();
-			looped::self_part_water();
 
 			script::get_current()->yield();
 		}

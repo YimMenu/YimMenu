@@ -11,7 +11,7 @@ namespace big
 	{
 		int trainSpeed = ENTITY::GET_ENTITY_SPEED(train::get_closest_train());
 
-		if (g.train.drive_train)
+		if (g.world.train.drive_train)
 		{
 			if (PAD::IS_CONTROL_PRESSED(0, 71))
 				trainSpeed++;	
@@ -27,6 +27,6 @@ namespace big
 		int train = train::get_closest_train();
 		
 		if (train != 0)
-			VEHICLE::SET_RENDER_TRAIN_AS_DERAILED(train, g.train.derail_train);
+			VEHICLE::SET_RENDER_TRAIN_AS_DERAILED(train, g.world.train.derail_train);
 	}
 }

@@ -181,10 +181,9 @@ namespace big
 		struct player
 		{
 			int character_slot = 1;
-			int set_level = 130;
 			bool spectating = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player, character_slot, set_level, spectating)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player, character_slot, spectating)
 		} player{};
 
 		struct protections 
@@ -383,18 +382,38 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(clone_pv, preview_vehicle, spawn_inside, spawn_clone, spawn_maxed, clone_plate, plate)
 		} clone_pv{};
 
-		struct spawn_ped
+		struct world
 		{
-			bool preview_ped = false;
+			struct train
+			{
+				bool derail_train = false;
+				bool drive_train = false;
+			} train{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spawn_ped, preview_ped)
-		} spawn_ped{};
+			struct water
+			{
+				bool part_water = false;
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(water, part_water)
+			} water{};
 
-		struct train
-		{
-			bool derail_train = false;
-			bool drive_train = false;
-		} train{};
+			struct spawn_ped
+			{
+				bool preview_ped = false;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(spawn_ped, preview_ped)
+			} spawn_ped{};
+
+			struct custom_time
+			{
+				int local_weather = 0;
+				bool override_time = {};
+				bool override_weather = false;
+				int hour{}, minute{}, second{};
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(custom_time, local_weather, hour, minute, second)
+			} custom_time;
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time)
+		} world{};
 
 		struct spoofing
 		{
@@ -650,10 +669,9 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(ugc, infinite_model_memory)
 		} ugc{};
 
-
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings,
 			debug, tunables, notifications, player, protections, self, session, settings, spawn_vehicle, clone_pv,
-			spawn_ped, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions)
+			spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world)
 	};
 
 	inline auto g = menu_settings();
