@@ -36,7 +36,8 @@ namespace
 		"ezcars",
 		"PLANO INICIAL", // "initial plan"
 		"REP +",
-		"20R$" // Brazil currency?
+		"20R$", // Brazil currency?
+		"l55.me"
 	};
 }
 

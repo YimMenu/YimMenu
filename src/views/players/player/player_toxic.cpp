@@ -103,7 +103,8 @@ namespace big
 			components::player_command_button<"interiortp">(g_player_service->get_selected(), { 160 }, "TP To Freakshop");
 			ImGui::SameLine();
 			components::player_command_button<"interiortp">(g_player_service->get_selected(), { 161 }, "TP To Multi Floor Garage");
-
+			ImGui::SameLine();
+			
 			components::player_command_button<"giveweaps">(g_player_service->get_selected(), { });
 			ImGui::SameLine();
 			components::player_command_button<"remweaps">(g_player_service->get_selected(), { });

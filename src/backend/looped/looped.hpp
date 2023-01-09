@@ -51,5 +51,8 @@ namespace big
 		static void weapons_repair_gun();
 		static void weapons_steal_vehicle_gun();
 		static void weapons_vehicle_gun();
+
+		static void drive_train();
+		static void derail_train();
 	};
 }
