@@ -45,5 +45,6 @@ namespace big::scr_locals
 	namespace am_hunt_the_beast
 	{
 		constexpr static auto broadcast_idx = 599;
+		constexpr static auto player_broadcast_idx = 2583;
 	}
 }

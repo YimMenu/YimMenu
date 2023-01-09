@@ -235,6 +235,15 @@ namespace big
     
 		PVOID m_fragment_physics_crash;
 		PVOID m_fragment_physics_crash_2;
+
+		functions::clear_ped_tasks_network m_clear_ped_tasks_network;
+
+		PVOID m_infinite_train_crash;
+		functions::get_next_carriage m_get_next_carriage;
+
+		functions::get_entity_attached_to m_get_entity_attached_to;
+
+		PVOID m_received_array_update;
 	};
 
 	inline pointers* g_pointers{};

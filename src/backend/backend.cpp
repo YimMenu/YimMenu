@@ -174,4 +174,16 @@ namespace big
 			script::get_current()->yield();
 		}
 	}
+
+	void backend::world_loop()
+	{
+		LOG(INFO) << "Starting script: World";
+
+		while (g_running)
+		{
+
+			looped::world_spawn_ped();
+			script::get_current()->yield();
+		}
+	}
 }

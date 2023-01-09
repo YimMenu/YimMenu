@@ -1,12 +1,21 @@
 #pragma once
-
 #include "common.hpp"
-
 #include "services/players/player_service.hpp"
 
 namespace big
 {
-	class looped {
+	struct spawned_ped
+	{
+		Ped ped_handle;
+		Player spawned_for_player;
+		bool is_bodyguard;
+		bool is_attacker;
+	};
+
+	inline std::vector<spawned_ped> spawned_peds;
+
+	class looped 
+	{
 	public:
 		static void hud_transition_state();
 
@@ -51,5 +60,7 @@ namespace big
 		static void weapons_repair_gun();
 		static void weapons_steal_vehicle_gun();
 		static void weapons_vehicle_gun();
+
+		static void world_spawn_ped();
 	};
 }

@@ -164,7 +164,7 @@ namespace big
 		RemoteOffradar = -162943635, // NETWORK::GET_TIME_DIFFERENCE(NETWORK::GET_NETWORK_TIME(), Var0.f_2)
 		SendToCutscene = 392606458, // (bVar3, bVar4, 125f, 1)
 		SendToCayoPerico = -910497748, // CELL_HI_INV
-		SendToLocation = 1214823473, // &Var222, 11); TODO this isn't updated!
+		SendToLocation = -93722397, // &Var222, 11);
 		SoundSpam = -1891171016, // CELL_APTINVYACHT
 		Spectate = -1903870031, // SPEC_TCK1
 		Teleport = -168599209, // Mission_Pass_Notify
@@ -180,6 +180,7 @@ namespace big
 
 		Crash = -904555865, // SET_NO_LOADING_SCREEN, xref it
 		Crash2 = 1775863255,
+		Crash3 = 2067191610,
 
 		TSECommand = 113023613, // CnCTG_IN_BF
 		TSECommandRotateCam = 0x69979fea /*joaat("pats_horse_right") in script*/, // != 29) && f

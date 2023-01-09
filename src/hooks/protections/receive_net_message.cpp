@@ -9,6 +9,7 @@
 #include "gta/net_game_event.hpp"
 #include "gta/script_id.hpp"
 #include "backend/player_command.hpp"
+#include "core/data/packet_types.hpp"
 
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
@@ -226,7 +227,10 @@ namespace big
 						}
 					}
 
-					break;
+					if (player->get_net_data() && player->get_net_data()->m_gamer_handle_2.m_rockstar_id == handle.m_rockstar_id)
+						break;
+					else
+						return true;
 				}
 				case rage::eNetMessage::MsgSessionEstablished:
 				{
@@ -338,7 +342,7 @@ namespace big
 						}
 					}
 
-					break;
+					return true;
 				}
 				case rage::eNetMessage::MsgRemoveGamersFromSessionCmd:
 				{
@@ -394,6 +398,25 @@ namespace big
 			}
 		}
 		
+		if (g.debug.logs.packet_logs && msgType != rage::eNetMessage::MsgCloneSync && msgType != rage::eNetMessage::MsgPackedCloneSyncACKs && msgType != rage::eNetMessage::MsgPackedEvents
+			&& msgType != rage::eNetMessage::MsgPackedReliables && msgType != rage::eNetMessage::MsgPackedEventReliablesMsgs && msgType != rage::eNetMessage::MsgNetArrayMgrUpdate
+			&& msgType != rage::eNetMessage::MsgNetArrayMgrSplitUpdateAck && msgType != rage::eNetMessage::MsgNetArrayMgrUpdateAck && msgType != rage::eNetMessage::MsgScriptHandshakeAck
+			&& msgType != rage::eNetMessage::MsgScriptHandshake && msgType != rage::eNetMessage::MsgScriptJoin && msgType != rage::eNetMessage::MsgScriptJoinAck
+			&& msgType != rage::eNetMessage::MsgScriptJoinHostAck && msgType != rage::eNetMessage::MsgRequestObjectIds && msgType != rage::eNetMessage::MsgInformObjectIds && msgType != rage::eNetMessage::MsgNetTimeSync)
+		{
+			const char* packet_type = "<UNKNOWN>";
+			for (const auto& p : packet_types)
+			{
+				if (p.second == (int)msgType)
+				{
+					packet_type = p.first;
+					break;
+				}
+			}
+
+			LOG(G3LOG_DEBUG) << "RECEIVED PACKET | Type: " << packet_type << " | Length: " << frame->m_length << " | Sender: " <<
+				(player ? player->get_name() : std::format("<M:{}>, <C:{:X}>, <P:{}>", (int)frame->m_msg_id, frame->m_connection_identifier, frame->m_peer_id).c_str()) << " | " << HEX_TO_UPPER((int)msgType);
+		}
 
 		return g_hooking->get_original<hooks::receive_net_message>()(netConnectionManager, a2, frame);
 	}

@@ -137,7 +137,7 @@ namespace big
 					ImGui::Text("Language: %s", languages[boss_goon.Language].name);
 
 				ImGui::Text("CEO Name: %s", boss_goon.GangName);
-				ImGui::Text("MC Name: %s", boss_goon.MCName);
+				ImGui::Text("MC Name: %s", boss_goon.ClubhouseName);
 				ImGui::Text("Money In Wallet: %d", stats.WalletBalance);
 				ImGui::Text("Money In Bank: %d", stats.Money - stats.WalletBalance);
 				ImGui::Text("Total Money: %d", stats.Money);

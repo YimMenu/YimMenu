@@ -66,6 +66,9 @@ namespace big
 		rate_limiter m_host_migration_rate_limit{ 1s, 20 };
 		rate_limiter m_play_sound_rate_limit{ 1s, 10 };
 		rate_limiter m_invites_rate_limit{ 10s, 2 };
+		int m_num_spawned_permanent_vehicles = 0;
+
+		bool m_block_permanent_vehicles = false;
 
 		bool exposed_desync_protection = false;
 		bool is_modder = false;

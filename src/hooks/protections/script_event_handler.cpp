@@ -7,6 +7,7 @@
 #include <network/CNetGamePlayer.hpp>
 #include <network/Network.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
+#include <script/globals/GlobalPlayerBD.hpp>
 
 namespace big
 {
@@ -91,6 +92,15 @@ namespace big
 				return true;
 			}
 			break;
+		case eRemoteEvent::Crash3:
+		{
+			if (isnan(*(float*)&args[3]) || isnan(*(float*)&args[4]))
+			{
+				g.reactions.crash.process(plyr);
+				return true;
+			}
+			break;
+		}
 		case eRemoteEvent::Notification:
 			switch (static_cast<eRemoteEvent>(args[2]))
 			{
@@ -330,12 +340,20 @@ namespace big
 		case eRemoteEvent::DestroyPersonalVehicle:
 			g.reactions.destroy_personal_vehicle.process(plyr);
 			return true;
+		case eRemoteEvent::KickFromInterior:
+			if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].SimpleInteriorData.Owner != plyr->id())
+			{
+				g.reactions.kick_from_interior.process(plyr);
+				return true;
+			}
+			break;
 		}
 
 		// detect pasted menus setting args[1] to something other than PLAYER_ID()
 		if (*(int*)&args[1] != player->m_player_id && player->m_player_id != -1)
 		{
 			LOG(INFO) << "Hash = " << (int)args[0];
+			LOG(INFO) << "Sender = " << args[1];
 			g.reactions.tse_sender_mismatch.process(plyr);
 			return true;
 		}

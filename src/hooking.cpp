@@ -102,6 +102,10 @@ namespace big
 		detour_hook_helper::add<hooks::fragment_physics_crash>("FPC", g_pointers->m_fragment_physics_crash);
 		detour_hook_helper::add<hooks::fragment_physics_crash_2>("FPC2", g_pointers->m_fragment_physics_crash_2);
 
+		detour_hook_helper::add<hooks::infinite_train_crash>("ITC", g_pointers->m_infinite_train_crash);
+
+		detour_hook_helper::add<hooks::received_array_update>("RAU", g_pointers->m_received_array_update);
+
 		g_hooking = this;
 	}
 
