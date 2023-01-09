@@ -32,6 +32,7 @@ namespace big::scr_globals
 	static inline script_global mission_creator_exited(1574530);
 
 	static inline script_global in_multiplayer(78558); // g_bInMultiplayer
+	static inline script_global transition_state(1574993);
 
 	static inline script_global vehicle_global = script_global(1586468);
 	static inline script_global mechanic_global = script_global(2793044);

@@ -11,7 +11,7 @@ namespace big
 	static int neverWantedPlayer = 0;
 	void looped::player_good_options()
 	{
-		if (!NETWORK::NETWORK_IS_SESSION_STARTED())
+		if (!*g_pointers->m_is_session_started)
 			return;
 
 		offRadarPlayer++;
@@ -24,17 +24,17 @@ namespace big
 
 		g_player_service->iterate([](const player_entry& entry)
 		{
-			if ((g->session.off_radar_all || entry.second->off_radar) && offRadarPlayer == entry.second->id())
+			if ((g.session.off_radar_all || entry.second->off_radar) && offRadarPlayer == entry.second->id())
 				globals::give_remote_otr(entry.second->id());
 		});
 
 		g_player_service->iterate([](const player_entry& entry)
 		{
-			if ((g->session.never_wanted_all || entry.second->never_wanted) && PLAYER::GET_PLAYER_WANTED_LEVEL(entry.second->id()) > 0 && neverWantedPlayer == entry.second->id())
+			if ((g.session.never_wanted_all || entry.second->never_wanted) && PLAYER::GET_PLAYER_WANTED_LEVEL(entry.second->id()) > 0 && neverWantedPlayer == entry.second->id())
 				globals::clear_wanted_player(entry.second->id());
 		});
 
-		if (g->session.semi_godmode_all)
+		if (g.session.semi_godmode_all)
 		{
 			g_pointers->m_give_pickup_rewards(-1, REWARD_HEALTH);
 			g_pointers->m_give_pickup_rewards(-1, REWARD_ARMOUR);

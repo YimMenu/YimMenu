@@ -9,7 +9,7 @@ namespace big
 
 	void looped::weapons_steal_vehicle_gun()
 	{
-		if (const bool bStealVehicleGun = g->weapons.custom_weapon == CustomWeapon::STEAL_VEHICLE_GUN; bStealVehicleGun)
+		if (const bool bStealVehicleGun = g.weapons.custom_weapon == CustomWeapon::STEAL_VEHICLE_GUN; bStealVehicleGun)
 		{
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{

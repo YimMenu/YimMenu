@@ -50,7 +50,7 @@ namespace big
 		static void context_menu();
 
 		Entity m_handle;
-		rage::fwEntity* m_pointer;
+		rage::fwEntity* m_pointer{};
 		model_bounding_box_screen_space m_model_bounding_box_screen_space;
 
 		s_context_menu vehicle_menu{

@@ -33,6 +33,8 @@ namespace rage
 	class rlGamerHandle;
 	class netConnectionManager;
 	class datBitBuffer;
+	class rlMetric;
+	class rlTaskStatus;
 
 	namespace netConnection
 	{
@@ -64,6 +66,9 @@ namespace big
 
 		static void network_player_mgr_init(CNetworkPlayerMgr* _this, std::uint64_t a2, std::uint32_t a3, std::uint32_t a4[4]);
 		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
+
+		static bool fragment_physics_crash(uintptr_t a1, uint32_t a2, uintptr_t a3, uintptr_t a4, uintptr_t a5);
+		static bool fragment_physics_crash_2(float* a1, float* a2);
 
 		static void received_event(
 			rage::netEventMgr* event_manager,
@@ -111,13 +116,14 @@ namespace big
 
 		static bool add_player_to_session(rage::netConnectionManager* mgr, int receiver_msg_id, int* out_command_hndl, RemoteGamerInfoMsg* msg, int flags, void* unk);
 		static bool send_chat_net_message(rage::netConnectionManager* mgr, int receiver_msg_id, CMsgTextMessage* msg, int flags, void* unk);
+		static bool send_chat_message(void* team_mgr, rage::rlGamerInfo* local_gamer_info, char* message, bool is_team);
 
 		static bool process_matchmaking_find_response(void* _this, void* unused, rage::JSONNode* node, int* unk);
 
 		static bool serialize_player_data_msg(CNetGamePlayerDataMsg* msg, rage::datBitBuffer* buffer);
 		static bool serialize_join_request_message(RemoteGamerInfoMsg* info, void* data, int size, int* bits_serialized);
 
-		static bool start_matchmaking_find_sessions(int profile_index, int available_slots, NetworkGameFilterMatchmakingComponent* filter, unsigned int max_sessions, rage::rlSessionInfo* results, int* num_sessions_found, int* status);
+		static bool start_matchmaking_find_sessions(int profile_index, int available_slots, NetworkGameFilterMatchmakingComponent* filter, unsigned int max_sessions, rage::rlSessionInfo* results, int* num_sessions_found, rage::rlTaskStatus* status);
 
 		static unsigned int broadcast_net_array(rage::netArrayHandlerBase* _this, CNetGamePlayer* target, rage::datBitBuffer* bit_buffer, uint16_t counter, uint32_t* elem_start, bool silent);
 
@@ -134,6 +140,8 @@ namespace big
 		static bool read_bitbuffer_gamer_handle(rage::datBitBuffer* buffer, rage::rlGamerHandle* handle);
 
 		static int nt_query_virtual_memory(void* _this, HANDLE handle, PVOID base_addr, int info_class, MEMORY_BASIC_INFORMATION* info, int size, size_t* return_len);
+		static void queue_dependency(void* dependency);
+		static void prepare_metric_for_sending(rage::datBitBuffer* bit_buffer, int unk, int time, rage::rlMetric* metric);
 	};
 
 	class minhook_keepalive

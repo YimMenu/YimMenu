@@ -131,8 +131,9 @@ namespace big
 				weapon.m_weapon_type == weapon_type_arr[selected_ped_weapon_type]
 			) {
 				if (
-					selected_ped_weapon_hash == 0 ||
-					weapon.m_hash == selected_ped_weapon_hash
+					(selected_ped_weapon_hash == 0 ||
+					weapon.m_hash == selected_ped_weapon_hash)
+					&& weapon.m_hash != RAGE_JOAAT("WEAPON_UNARMED")
 				) {
 					WEAPON::GIVE_WEAPON_TO_PED(ped, weapon.m_hash, 9999, false, selected_ped_weapon_hash != 0);
 				}
@@ -241,7 +242,7 @@ namespace big
 							selected_ped_player_id = -1;
 							g_model_preview_service->stop_preview();
 						}
-						else if (!g->spawn_ped.preview_ped || (g->spawn_ped.preview_ped && !ImGui::IsAnyItemHovered()))
+						else if (!g.spawn_ped.preview_ped || (g.spawn_ped.preview_ped && !ImGui::IsAnyItemHovered()))
 						{
 							g_model_preview_service->stop_preview();
 						}
@@ -272,7 +273,7 @@ namespace big
 									selected_ped_player_id = plyr_id;
 									g_model_preview_service->stop_preview();
 								}
-								else if (!g->spawn_ped.preview_ped || (g->spawn_ped.preview_ped && !ImGui::IsAnyItemHovered()))
+								else if (!g.spawn_ped.preview_ped || (g.spawn_ped.preview_ped && !ImGui::IsAnyItemHovered()))
 								{
 									g_model_preview_service->stop_preview();
 								}
@@ -386,7 +387,7 @@ namespace big
 
 						ped_model_dropdown_open = ped_model_dropdown_focused;
 
-						if (!g->spawn_ped.preview_ped || (g->spawn_ped.preview_ped && (!item_hovered || !ped_model_dropdown_open)))
+						if (!g.spawn_ped.preview_ped || (g.spawn_ped.preview_ped && (!item_hovered || !ped_model_dropdown_open)))
 						{
 							g_model_preview_service->stop_preview();
 						}
@@ -550,9 +551,9 @@ namespace big
 		ImGui::Separator();
 
 
-		if (ImGui::Checkbox("Preview", &g->spawn_ped.preview_ped))
+		if (ImGui::Checkbox("Preview", &g.spawn_ped.preview_ped))
 		{
-			if (!g->spawn_ped.preview_ped)
+			if (!g.spawn_ped.preview_ped)
 			{
 				g_model_preview_service->stop_preview();
 			}

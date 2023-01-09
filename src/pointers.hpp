@@ -1,6 +1,7 @@
 #pragma once
 #include "common.hpp"
 #include "base/HashTable.hpp"
+#include "socialclub/ScInfo.hpp"
 #include "function_types.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/replay.hpp"
@@ -17,7 +18,11 @@ namespace rage
 	template<typename T>
 	class atSingleton;
 	class RageSecurity;
+	class netTime;
+	class rlGamerInfo;
 }
+
+extern "C" std::uint64_t g_sound_overload_ret_addr;
 
 namespace big
 {
@@ -68,6 +73,7 @@ namespace big
 		functions::write_player_game_state_data_node m_write_player_game_state_data_node{};
 
 		ChatData** m_chat_data;
+		ScInfo* m_sc_info;
 		FriendRegistry* m_friend_registry{};
 
 		functions::get_screen_coords_for_world_coords m_get_screen_coords_for_world_coords{};
@@ -127,6 +133,7 @@ namespace big
 
 		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
 		functions::start_matchmaking_find_sessions m_start_matchmaking_find_sessions;
+		functions::start_get_presence_attributes m_start_get_presence_attributes;
 		functions::join_session_by_info m_join_session_by_info;
 
 		memory::byte_patch* m_bypass_max_count_of_active_sticky_bombs;
@@ -195,6 +202,10 @@ namespace big
 		memory::byte_patch* m_broadcast_patch;
 
 		rage::atSingleton<rage::RageSecurity>* m_security;
+		PVOID m_prepare_metric_for_sending;
+		
+		PVOID m_queue_dependency;
+		PVOID m_interval_check_func;
 
 		PVOID m_send_session_matchmaking_attributes;
 
@@ -204,6 +215,26 @@ namespace big
 
 		PVOID m_write_bitbuffer_gamer_handle;
 		PVOID m_read_bitbuffer_gamer_handle;
+
+		functions::encode_session_info m_encode_session_info;
+		functions::decode_session_info m_decode_session_info;
+		functions::decode_peer_info m_decode_peer_info;
+
+		datafile_commands::SveFileObject* m_main_file_object;
+		functions::load_cloud_file m_load_cloud_file;
+		functions::set_as_active_cloud_file m_set_as_active_cloud_file;
+		functions::save_json_data m_save_json_data;
+
+		rage::netTime** m_network_time;
+		functions::sync_network_time m_sync_network_time;
+
+		rage::rlGamerInfo* m_chat_gamer_info;
+
+		functions::send_packet m_send_packet;
+		functions::connect_to_peer m_connect_to_peer;
+    
+		PVOID m_fragment_physics_crash;
+		PVOID m_fragment_physics_crash_2;
 	};
 
 	inline pointers* g_pointers{};

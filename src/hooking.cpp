@@ -1,8 +1,6 @@
 #include "common.hpp"
 #include "function_types.hpp"
 #include "logger.hpp"
-#include "gta/array.hpp"
-#include "gta/player.hpp"
 #include "gta/script_thread.hpp"
 #include "gui.hpp"
 #include "hooking.hpp"
@@ -56,7 +54,7 @@ namespace big
 
 		detour_hook_helper::add<hooks::received_clone_create>("RCC", g_pointers->m_received_clone_create);
 		detour_hook_helper::add<hooks::received_clone_sync>("RCS", g_pointers->m_received_clone_sync);
-		// detour_hook_helper::add<hooks::can_apply_data>("CAD", g_pointers->m_can_apply_data);
+		detour_hook_helper::add<hooks::can_apply_data>("CAD", g_pointers->m_can_apply_data);
 
 		detour_hook_helper::add<hooks::get_network_event_data>("GNED", g_pointers->m_get_network_event_data);
 		detour_hook_helper::add<hooks::write_player_gamer_data_node>("WPGDN", g_pointers->m_write_player_gamer_data_node);
@@ -77,6 +75,7 @@ namespace big
 		detour_hook_helper::add<hooks::sort_session_details>("SSD", g_pointers->m_sort_session_details);
 
 		detour_hook_helper::add<hooks::add_player_to_session>("APTS", g_pointers->m_add_player_to_session);
+		detour_hook_helper::add<hooks::send_chat_message>("SCM", g_pointers->m_send_chat_message);
 		detour_hook_helper::add<hooks::send_chat_net_message>("SCNM", g_pointers->m_send_chat_net_message);
 
 		detour_hook_helper::add<hooks::process_matchmaking_find_response>("PMFR", g_pointers->m_process_matchmaking_find_response);
@@ -96,6 +95,12 @@ namespace big
 
 		detour_hook_helper::add<hooks::write_bitbuffer_gamer_handle>("WBGH", g_pointers->m_write_bitbuffer_gamer_handle);
 		detour_hook_helper::add<hooks::read_bitbuffer_gamer_handle>("RBGH", g_pointers->m_read_bitbuffer_gamer_handle);
+
+		detour_hook_helper::add<hooks::queue_dependency>("QD", g_pointers->m_queue_dependency);
+		detour_hook_helper::add<hooks::prepare_metric_for_sending>("PMFS", g_pointers->m_prepare_metric_for_sending);
+
+		detour_hook_helper::add<hooks::fragment_physics_crash>("FPC", g_pointers->m_fragment_physics_crash);
+		detour_hook_helper::add<hooks::fragment_physics_crash_2>("FPC2", g_pointers->m_fragment_physics_crash_2);
 
 		g_hooking = this;
 	}

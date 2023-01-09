@@ -43,7 +43,7 @@ namespace big::vehicle
 		return speed;
 	}
 
-	inline Vector3 get_spawn_location(bool spawn_inside)
+	inline Vector3 get_spawn_location(bool spawn_inside, Ped ped = self::ped)
 	{
 		float y_offset = 0;
 
@@ -56,7 +56,7 @@ namespace big::vehicle
 			y_offset = 5.f;
 		}
 
-		return ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, y_offset, 0.f);
+		return ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ped, 0.f, y_offset, 0.f);
 	}
 
 	inline void set_mp_bitset(Vehicle veh)
@@ -665,7 +665,7 @@ namespace big::vehicle
 			return false;
 		}
 
-		if (g->m_remote_controlled_vehicle == veh)
+		if (g.m_remote_controlled_vehicle == veh)
 		{
 			return false;
 		}
@@ -700,8 +700,8 @@ namespace big::vehicle
 		ENTITY::SET_ENTITY_VELOCITY(spawned, velocity.x, velocity.y, velocity.z);
 		VEHICLE::COPY_VEHICLE_DAMAGES(veh, spawned);
 
-		g->m_remote_controller_vehicle = spawned;
-		g->m_remote_controlled_vehicle = veh;
+		g.m_remote_controller_vehicle = spawned;
+		g.m_remote_controlled_vehicle = veh;
 		return true;
 	}
 }

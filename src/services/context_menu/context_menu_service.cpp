@@ -131,7 +131,7 @@ namespace big
 			{
 			case eModelType::Object:
 			{
-				if (!misc::has_bits_set(&g->context_menu.allowed_entity_types, static_cast<uint8_t>(ContextEntityType::OBJECT)))
+				if (!misc::has_bits_set(&g.context_menu.allowed_entity_types, static_cast<uint8_t>(ContextEntityType::OBJECT)))
 				{
 					break;
 				}
@@ -144,7 +144,7 @@ namespace big
 					if (ped->m_ped_task_flag & static_cast<uint8_t>(ePedTask::TASK_DRIVING) &&
 						ped->m_vehicle)
 					{
-						if (!misc::has_bits_set(&g->context_menu.allowed_entity_types, static_cast<uint8_t>(ContextEntityType::VEHICLE)))
+						if (!misc::has_bits_set(&g.context_menu.allowed_entity_types, static_cast<uint8_t>(ContextEntityType::VEHICLE)))
 						{
 							break;
 						}
@@ -154,7 +154,7 @@ namespace big
 					}
 					if (ped->m_player_info)
 					{
-						if (!misc::has_bits_set(&g->context_menu.allowed_entity_types, static_cast<uint8_t>(ContextEntityType::PLAYER)))
+						if (!misc::has_bits_set(&g.context_menu.allowed_entity_types, static_cast<uint8_t>(ContextEntityType::PLAYER)))
 						{
 							break;
 						}
@@ -163,7 +163,7 @@ namespace big
 					}
 				}
 
-				if (!misc::has_bits_set(&g->context_menu.allowed_entity_types, static_cast<uint8_t>(ContextEntityType::PED)))
+				if (!misc::has_bits_set(&g.context_menu.allowed_entity_types, static_cast<uint8_t>(ContextEntityType::PED)))
 				{
 					break;
 				}
@@ -172,7 +172,7 @@ namespace big
 			}
 			case eModelType::Vehicle:
 			{
-				if (!misc::has_bits_set(&g->context_menu.allowed_entity_types, static_cast<uint8_t>(ContextEntityType::VEHICLE)))
+				if (!misc::has_bits_set(&g.context_menu.allowed_entity_types, static_cast<uint8_t>(ContextEntityType::VEHICLE)))
 				{
 					break;
 				}
@@ -188,6 +188,7 @@ namespace big
 
 	void context_menu_service::get_entity_closest_to_screen_center()
 	{
+		m_pointer = nullptr;
 		if (const auto replay = *g_pointers->m_replay_interface; replay)
 		{
 			const auto veh_interface = replay->m_vehicle_interface;
@@ -292,7 +293,7 @@ namespace big
 	{
 		while (g_running)
 		{
-			if (!g->context_menu.enabled)
+			if (!g.context_menu.enabled)
 			{
 				g_context_menu_service->enabled = false;
 
@@ -300,7 +301,7 @@ namespace big
 				continue;
 			}
 
-			if (g_gui.m_opened)
+			if (g_gui->is_open())
 			{
 				script::get_current()->yield();
 				continue;

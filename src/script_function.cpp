@@ -60,6 +60,24 @@ namespace big
 		tls_ctx->m_is_script_thread_active = og_thread != nullptr;
 	}
 
+	void script_function::static_call(std::initializer_list<std::uint64_t> args)
+	{
+		populate_ip();
+
+		rage::scrThread* thread = (rage::scrThread*)new uint8_t[sizeof(rage::scrThread)];
+		memcpy(thread, rage::scrThread::get(), sizeof(rage::scrThread));
+
+		void* stack = new uint64_t[25000];
+		thread->m_stack = stack;
+		thread->m_context.m_stack_size = 25000;
+		thread->m_context.m_stack_pointer = 1;
+
+		call(thread, gta_util::find_script_program(m_script), args);
+
+		delete[] stack;
+		delete[] (uint8_t*)thread; // without the cast it ends up calling the destructor which leads to some pretty funny crashes
+	}
+
 	void script_function::operator()(std::initializer_list<std::uint64_t> args)
 	{
 		populate_ip();

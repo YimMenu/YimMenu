@@ -22,7 +22,22 @@ namespace
 		".gg",
 		"--->",
 		"shopgta5",
-		"doit#"
+		"doit#",
+		"krutka#",
+		"<b>",
+		"\xD0\xBC\xD0\xB5", // Cyrillic "me"
+		"P888",
+		"gtacash",
+		"\xE6\x89\xA3\xE6\x89\xA3", // no clue what this is
+		"\xE5\xBE\xAE\xE4\xBF\xA1", // "wechat" in Chinese
+		".cc",
+		"<font s",
+		"sellix.io",
+		"ezcars",
+		"PLANO INICIAL", // "initial plan"
+		"REP +",
+		"20R$", // Brazil currency?
+		"l55.me"
 	};
 }
 

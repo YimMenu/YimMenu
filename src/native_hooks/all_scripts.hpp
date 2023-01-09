@@ -10,31 +10,30 @@ namespace big
 {
     namespace all_scripts
     {
+        void GET_PLAYER_NAME(rage::scrNativeCallContext* src)
+        {
+            const auto playerId = src->get_arg<Player>(0);
+            src->set_return_value(PLAYER::GET_PLAYER_NAME(playerId));
+            if (g.spoofing.spoof_username && g.spoofing.spoof_local_username)
+            {
+                const auto network_player_mgr = gta_util::get_network_player_mgr();
+                if (network_player_mgr && network_player_mgr->m_local_net_player && playerId == network_player_mgr->m_local_net_player->m_player_id)
+                {
+                    src->set_return_value(g.spoofing.username.c_str());
+                }
+            }
+        }
+
         void IS_DLC_PRESENT(rage::scrNativeCallContext* src)
         {
             const auto hash = src->get_arg<rage::joaat_t>(0);
-            
-            bool return_value = DLC::IS_DLC_PRESENT(hash);
+
+            BOOL return_value = DLC::IS_DLC_PRESENT(hash);
+
             if (hash == 0x96F02EE6)
-                return_value = return_value || g->settings.dev_dlc;
+                return_value = return_value || g.settings.dev_dlc;
 
-            src->set_return_value(return_value);
-        }
-
-        void NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA(rage::scrNativeCallContext* src)
-        {
-            if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("freemode") && g->session.force_script_host)
-            {
-                g_fiber_pool->queue_job([]
-                {
-                    scripts::force_host(RAGE_JOAAT("freemode"));
-                    if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")); script && script->m_net_component)
-                        script->m_net_component->block_host_migration(true);
-                });
-            }
-
-            *scr_globals::gsbd.as<int*>() = 4;
-            src->set_return_value<BOOL>(TRUE);
+            src->set_return_value<BOOL>(return_value);
         }
 
         void NETWORK_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT(rage::scrNativeCallContext* src)

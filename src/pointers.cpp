@@ -5,6 +5,9 @@
 #include "security/RageSecurity.hpp"
 #include "hooking.hpp"
 
+extern "C" void	sound_overload_detour();
+std::uint64_t g_sound_overload_ret_addr;
+
 namespace big
 {
 	pointers::pointers()
@@ -636,6 +639,12 @@ namespace big
 			m_chat_data = ptr.add(3).rip().as<ChatData**>();
 		});
 
+		// Social Club Info
+		main_batch.add("SCI", "48 8B D3 48 8D 4C 24 ? 48 69 D2", [this](memory::handle ptr)
+		{
+			m_sc_info = ptr.sub(4).rip().as<ScInfo*>();
+		});
+
 		// Create Script Handler
 		main_batch.add("CSH", "48 8D 05 ? ? ? ? 4C 8D 0D ? ? ? ? 41 83 C8 FF 48 89 03 89 53 70 88 53 74 4C 89 4B 68 48 89 93", [this](memory::handle ptr)
 		{
@@ -672,10 +681,133 @@ namespace big
 			m_invalid_decal_crash = ptr.add(1).rip().as<PVOID>();
 		});
 
+		// Encode Session Info
+		main_batch.add("ESI", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 20 57 48 81", [this](memory::handle ptr)
+		{
+			m_encode_session_info = ptr.as<functions::encode_session_info>();
+		});
+
+		// Decode Session Info
+		main_batch.add("DSI", "48 89 5C 24 08 48 89 6C 24 10 56 57 41 56 48 81 EC C0", [this](memory::handle ptr)
+		{
+			m_decode_session_info = ptr.as<functions::decode_session_info>();
+		});
+
+		// Decode Peer Info
+		main_batch.add("DPI", "48 8B C4 48 89 58 08 48 89 70 10 57 48 81 EC A0 00 00 00 48 8B DA", [this](memory::handle ptr)
+		{
+			m_decode_peer_info = ptr.as<functions::decode_peer_info>();
+		});
+
+		// Can Start Session Joining Check
+		main_batch.add("CSSJC", "77 DB ? ? ? ? ? ? ? 74 09", [this](memory::handle ptr)
+		{
+			memory::byte_patch::make(ptr.as<void*>(), std::to_array({ 0x90, 0x90 }))->apply(); // join faster
+		});
+
+		// Can Start Joining Joining Check
+		main_batch.add("CSJJC", "74 16 48 8B 0B E8 ? ? ? ? 84 C0", [this](memory::handle ptr)
+		{
+			memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB)->apply(); // join faster
+		});
+
 		// NTQVM Caller
 		main_batch.add("NTQVMC", "66 0F 6F 0D ? ? ? ? 66 0F 6F 05 ? ? ? ? 66 0F 66 C4", [this](memory::handle ptr)
 		{
 			memory::byte_patch::make(ptr.add(4).rip().sub(32).as<uint64_t*>(), (uint64_t)&hooks::nt_query_virtual_memory)->apply();
+		});
+
+		// Main File Object
+		main_batch.add("MFO", "48 8D 05 ? ? ? ? 48 8D 1C D0 EB 03", [this](memory::handle ptr)
+		{
+			m_main_file_object = ptr.add(3).rip().as<datafile_commands::SveFileObject*>();
+		});
+
+		// Load Cloud File
+		main_batch.add("LCF", "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 40 48 8B F2 48 8B D9 41 8B D0", [this](memory::handle ptr)
+		{
+			m_load_cloud_file = ptr.as<functions::load_cloud_file>();
+		});
+
+		// Set As Active Cloud File
+		main_batch.add("SAACF", "48 83 EC 28 45 33 C0 4C 39", [this](memory::handle ptr)
+		{
+			m_set_as_active_cloud_file = ptr.as<functions::set_as_active_cloud_file>();
+		});
+
+		// Save JSON Data
+		main_batch.add("SJD", "48 89 5C 24 08 57 48 83 EC 30 33 DB 48 8B FA 48", [this](memory::handle ptr)
+		{
+			m_save_json_data = ptr.as<functions::save_json_data>();
+		});
+
+		// Network Time
+		main_batch.add("NT", "48 8B 0D ? ? ? ? E8 ? ? ? ? 33 DB 84 C0 74 41", [this](memory::handle ptr)
+		{
+			m_network_time = ptr.add(3).rip().as<rage::netTime**>();
+		});
+
+		// Sync Network Time
+		main_batch.add("SNT", "E8 ? ? ? ? 8B 43 5C", [this](memory::handle ptr)
+		{
+			m_sync_network_time = ptr.add(1).rip().as<functions::sync_network_time>();
+		});
+
+		// Queue Dependency
+		main_batch.add("QD", "48 89 5C 24 ? 57 48 83 EC ? 0F B6 99", [this](memory::handle ptr)
+		{
+			m_queue_dependency = ptr.as<PVOID>();
+		});
+
+		// Interval Check Function
+		main_batch.add("ICF", "48 8D 0D ? ? ? ? 88 05 ? ? ? ? 48 8D 05", [this](memory::handle ptr)
+		{
+			m_interval_check_func = ptr.add(3).rip().as<PVOID>();
+		});
+
+		// Chat Gamer Info
+		main_batch.add("CGI", "E8 ? ? ? ? 48 8B CF E8 ? ? ? ? 8B E8", [this](memory::handle ptr)
+		{
+			m_chat_gamer_info = ptr.add(1).rip().add(6).rip().as<rage::rlGamerInfo*>();
+		});
+
+		// Sound Overload Detour
+		main_batch.add("SOD", "66 45 3B C1 74 38", [this](memory::handle ptr)
+		{
+			g_sound_overload_ret_addr = ptr.add(13 + 15).as<decltype(g_sound_overload_ret_addr)>();
+			std::vector<byte> bytes = { 0xFF,0x25,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x90 }; // far jump opcode + a nop opcode
+			*(void**)(bytes.data() + 6) = sound_overload_detour;
+			memory::byte_patch::make(ptr.add(13).as<void*>(), bytes)->apply();
+		});
+
+		// Prepare Metric For Sending
+		main_batch.add("PMFS", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 83 EC 30 49 8B E8 4C 8D 40 EC 49 8B F1 48 8B D9 40 32 FF E8", [this](memory::handle ptr)
+		{
+			m_prepare_metric_for_sending = ptr.as<PVOID>();
+		});
+
+		// Send Packet
+		main_batch.add("SP", "48 8B C4 48 89 58 08 48 89 70 10 48 89 78 18 4C 89 48 20 55 41 54 41 55 41 56 41 57 48 8D A8 98", [this](memory::handle ptr)
+		{
+			m_send_packet = ptr.as<functions::send_packet>();
+		});
+
+		// Connect To Peer
+		main_batch.add("CTP", "48 89 5C 24 08 4C 89 44 24 18 55 56 57 41 54 41 55 41 56 41 57 48 81 EC 80", [this](memory::handle ptr)
+		{
+			m_connect_to_peer = ptr.as<functions::connect_to_peer>();
+		});
+    
+		// Fragment Physics Crash
+		main_batch.add("FPC", "E8 ? ? ? ? 44 8B 4D 1C", [this](memory::handle ptr)
+		{
+			m_fragment_physics_crash = ptr.add(1).rip().as<PVOID>();
+		});
+
+		// Fragment Physics Crash 2
+		main_batch.add("FPC2", "E8 ? ? ? ? 84 C0 75 0B 41 FF CF", [this](memory::handle ptr)
+		{
+			m_fragment_physics_crash_2 = ptr.add(1).rip().as<PVOID>();
 		});
 
 		auto mem_region = memory::module("GTA5.exe");
@@ -691,6 +823,12 @@ namespace big
 			m_update_presence_attribute_string = presence_data_vft[3];
 		});
 
+		// Start Get Presence Attributes
+		socialclub_batch.add("SGPA", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 40 33 DB 41", [this](memory::handle ptr)
+		{
+			m_start_get_presence_attributes = ptr.as<functions::start_get_presence_attributes>();
+		});
+
 		auto sc_module = memory::module("socialclub.dll");
 		if (sc_module.wait_for_module())
 		{
@@ -702,7 +840,7 @@ namespace big
 		{
 			m_bypass_max_count_of_active_sticky_bombs = memory::byte_patch::make(pat.add(4).as<uint8_t*>(), { 99 }).get();
 
-			if (g->weapons.bypass_c4_limit)
+			if (g.weapons.bypass_c4_limit)
 				m_bypass_max_count_of_active_sticky_bombs->apply();
 		}
 

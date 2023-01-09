@@ -3,8 +3,10 @@
 #include "pointers.hpp"
 #include "services/players/player_service.hpp"
 #include "services/player_database/player_database_service.hpp"
+#include "services/api/api_service.hpp"
 #include "core/data/block_join_reasons.hpp"
 #include "core/data/infractions.hpp"
+#include "core/data/command_access_levels.hpp"
 #include "util/session.hpp"
 
 namespace big
@@ -93,6 +95,24 @@ namespace big
 					ImGui::SetTooltip("Only works as host");
 
 
+				if (ImGui::BeginCombo("Chat Command Permissions", COMMAND_ACCESS_LEVELS[current_player.command_access_level.value_or(g.session.chat_command_default_access_level)]))
+				{
+					for (const auto& [type, name] : COMMAND_ACCESS_LEVELS)
+					{
+						if (ImGui::Selectable(name, type == current_player.command_access_level.value_or(g.session.chat_command_default_access_level)))
+						{
+							current_player.command_access_level = type;
+						}
+
+						if (type == current_player.command_access_level.value_or(g.session.chat_command_default_access_level))
+						{
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+
+					ImGui::EndCombo();
+				}
+
 				if (!current_player.infractions.empty())
 				{
 					ImGui::Text("Infractions:");
@@ -103,10 +123,30 @@ namespace big
 					}
 				}
 
+				components::button("Kick", []
+				{
+					session::kick_by_rockstar_id(current_player.rockstar_id);
+				});
+
 				components::button("Join Session", []
 				{
 					session::join_by_rockstar_id(current_player.rockstar_id);
 				});
+
+				static char message[256];
+				ImGui::InputText("Input Message", message, sizeof(message));
+				if (components::button("Send Message"))
+				{
+					g_thread_pool->push([selected]
+					{
+						if (g_api_service->send_socialclub_message(selected->rockstar_id, message))
+						{
+							g_notification_service->push("SCAPI", "Message successfully sent");
+							return;
+						}
+						g_notification_service->push_error("SCAPI", "Message not sent. Are you connected to the internet?");
+					});
+				};
 
 				if (ImGui::Button("Save"))
 				{

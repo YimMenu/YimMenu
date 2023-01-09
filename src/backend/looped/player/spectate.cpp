@@ -12,9 +12,9 @@ namespace big
 		const auto vehicle = self::veh;
 		const auto ped = self::ped;
 
-		if (!g_player_service->get_selected()->is_valid() || !g->player.spectating)
+		if (!g_player_service->get_selected()->is_valid() || !g.player.spectating)
 		{
-			if (g->player.spectating) g->player.spectating = false;
+			if (g.player.spectating) g.player.spectating = false;
 
 			if (!bReset)
 			{

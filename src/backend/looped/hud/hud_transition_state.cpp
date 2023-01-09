@@ -2,8 +2,8 @@
 #include "natives.hpp"
 #include "script_global.hpp"
 #include "gta/joaat.hpp"
-#include "util/kick.hpp"
 #include "services/players/player_service.hpp"
+#include "core/scr_globals.hpp"
 
 // Credits: QuickNET
 namespace big
@@ -82,11 +82,10 @@ namespace big
 		"Spawn Into Personal Vehicle"
 	};
 
-	auto transition_state = script_global(1574993);
 	eTransitionState last_state = eTransitionState::TRANSITION_STATE_EMPTY;
 	void looped::hud_transition_state()
 	{
-		const auto state = *transition_state.as<eTransitionState*>();
+		const auto state = *scr_globals::transition_state.as<eTransitionState*>();
 
 		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
 			return;
