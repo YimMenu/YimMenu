@@ -332,6 +332,7 @@ namespace big
 			bool wanted_level_all = false;
 
 			bool show_cheating_message = false;
+			bool anonymous_bounty = true;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session,
 				local_weather, override_time, override_weather, custom_time, disable_chat_filter, log_chat_messages,
@@ -339,7 +340,7 @@ namespace big
 				player_magnet_count, is_team, name_spoof_enabled, advertise_menu, spoofed_name, join_in_sctv_slots,
 				kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic,
 				disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, send_to_apartment_idx, send_to_warehouse_idx,
-				chat_commands, chat_command_default_access_level, show_cheating_message)
+				chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty)
 		} session{};
 
 		struct settings
