@@ -56,7 +56,7 @@ namespace big
 				}
 				if (ped_health > 328 || ped_maxhealth > 328 && !(uint32_t)eEntityProofs::EXPLOSION && !(uint32_t)eEntityProofs::BULLET)
 				{
-					mode_str += "Custom";
+					mode_str += "Unnatural Health";
 				}
 			}
 
