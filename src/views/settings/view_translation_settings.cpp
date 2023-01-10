@@ -4,8 +4,8 @@ namespace big
 {
 	void view::translation_settings()
 	{
-		const auto& language_entries = g_translation_service->available_translations();
-		const auto current_pack = g_translation_service->current_language_pack();
+		const auto& language_entries = g_translation_service.available_translations();
+		const auto current_pack = g_translation_service.current_language_pack();
 
 		ImGui::Text("Languages:");
 		if (ImGui::BeginCombo("##combo-languages", language_entries.at(current_pack).name.c_str()))
@@ -13,7 +13,7 @@ namespace big
 			for (auto& i : language_entries)
 			{
 				if (ImGui::Selectable(i.second.name.c_str(), i.first == current_pack))
-					g_translation_service->select_language_pack(i.first);
+					g_translation_service.select_language_pack(i.first);
 
 				if (i.first == current_pack)
 				{

@@ -58,7 +58,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				LOG(INFO) << "Yim's Menu Initializing";
 				LOGF(INFO, "Git Info\n\tBranch:\t%s\n\tHash:\t%s\n\tDate:\t%s", version::GIT_BRANCH, version::GIT_SHA1, version::GIT_DATE);
 
-				auto translations_instance = std::make_unique<translation_service>();
+				g_translation_service.init();
+				LOG(INFO) << "Translation Service initialized.";
 
 				auto thread_pool_instance = std::make_unique<thread_pool>();
 				LOG(INFO) << "Thread pool initialized.";
@@ -189,8 +190,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				
 				thread_pool_instance.reset();
 				LOG(INFO) << "Thread pool uninitialized.";
-
-				translations_instance.reset();
 			}
 			catch (std::exception const& ex)
 			{
