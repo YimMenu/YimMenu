@@ -31,7 +31,6 @@ namespace big
 		components::command_checkbox<"nophone">();
 		components::command_checkbox<"infoxy">();
 		components::command_checkbox<"fastrespawn">();
-		components::command_checkbox<"partwater">();
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
