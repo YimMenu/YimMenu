@@ -6,7 +6,7 @@
 
 namespace big
 {
-    using translation_map = std::map<rage::joaat_t, std::string>;
+    using translation_map = std::unordered_map<rage::joaat_t, std::string>;
 
     class translation_service
     {
@@ -16,6 +16,10 @@ namespace big
 
         std::string_view get_translation(const std::string_view translation_key) const;
         std::string_view get_translation(const rage::joaat_t translation_key) const;
+
+        std::map<std::string, translation_entry>& available_translations();
+        const std::string& current_language_pack();
+        void select_language_pack(const std::string& pack_id);
 
     private:
         void init();

@@ -1,5 +1,6 @@
 #include "translation_service.hpp"
 #include "file_manager.hpp"
+#include "thread_pool.hpp"
 #include <cpr/cpr.h>
 
 namespace big
@@ -29,7 +30,26 @@ namespace big
         if (auto it = m_translations.find(translation_key); it != m_translations.end())
             return it->second.c_str();
 
-        return "UNKNOWN_TRANSLATION";
+        return { 0, 0 };
+    }
+
+    std::map<std::string, translation_entry>& translation_service::available_translations()
+    {
+        return m_remote_index.translations;
+    }
+
+    const std::string& translation_service::current_language_pack()
+    {
+        return m_local_index.selected_language;
+    }
+
+    void translation_service::select_language_pack(const std::string& pack_id)
+    {
+        g_thread_pool->push([this, &pack_id]
+        {
+            update_local_index(m_remote_index.version, pack_id);
+            load_translations();
+        });
     }
 
     void translation_service::init()
@@ -84,10 +104,10 @@ namespace big
         if (m_local_index.selected_language == m_remote_index.default_lang)
             return;
         
-        j = load_translation(m_remote_index.default_lang);
-        for (auto &[key, value] : load_translation(m_local_index.selected_language).items())
+        j = load_translation(m_local_index.selected_language);
+        for (auto &[key, value] : j.items())
         {
-            m_translations.insert({ rage::joaat(key), value });
+            m_translations[rage::joaat(key)] = value;
         }
     }
 
@@ -96,7 +116,7 @@ namespace big
         auto file = m_translation_directory.get_file(std::format("./{}.json", pack_id));
         if (!file.exists())
         {
-            LOG(WARNING) << "Translations for '" << pack_id << "' no longer exist, downloading...";
+            LOG(INFO) << "Translations for '" << pack_id << "' do not exist, downloading...";
             download_language_pack(pack_id);
         }
         return nlohmann::json::parse(std::ifstream(file.get_path(), std::ios::binary));
@@ -180,6 +200,8 @@ namespace big
 
     std::string_view operator ""_T(const char* str, std::size_t len)
     {
-        return g_translation_service->get_translation(rage::joaat({ str, len }));
+        if (const auto translation = g_translation_service->get_translation(rage::joaat({ str, len })); translation.length())
+            return translation;
+        return { str, len };
     }
 }
