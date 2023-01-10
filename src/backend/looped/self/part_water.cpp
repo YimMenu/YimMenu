@@ -10,18 +10,20 @@ namespace big
 
 		virtual void on_tick() override
 		{
+			Vector3 coords = self::pos;
 			float offset[] = { -4, 4 };
+
 			for (int i = 0; i < 5; i++)
 			{
 				if (i < 2)
 				{
-					self::pos.x += offset[(i % 2 == 0)];
+					coords.x += offset[(i % 2 == 0)];
 				}
 				else if (i < 4)
 				{
-					self::pos.y += offset[(i % 2 == 0)];
-					WATER::MODIFY_WATER(self::pos.x, self::pos.y, -500000.0f, 0.2f);
+					coords.y += offset[(i % 2 == 0)];
 				}
+				WATER::MODIFY_WATER(coords.x, coords.y, -500000.0f, 0.2f);
 			}
 		}
 	};
