@@ -20,5 +20,5 @@ namespace big
 		}
 	};
 
-	off_radar g_off_radar("otr", "Off Radar", "Hides your blip from other players", g.self.off_radar);
+	off_radar g_off_radar("otr", "Off the Radar", "Hides your blip from other players", g.self.off_radar);
 }

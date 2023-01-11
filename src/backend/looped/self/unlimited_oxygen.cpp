@@ -14,5 +14,5 @@ namespace big
 		}
 	};
 
-	unlimited_oxygen g_unlimited_oxygen("infoxy", "Unlimited Oxygen", "Allows you to stay underwater without losing oxygen", g.self.unlimited_oxygen);
+	unlimited_oxygen g_unlimited_oxygen("inf_oxygen", "Unlimited Oxygen", "Allows you to stay underwater without losing oxygen", g.self.unlimited_oxygen);
 }

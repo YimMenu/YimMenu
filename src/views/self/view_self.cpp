@@ -25,11 +25,11 @@ namespace big
 
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("God Mode", &g.self.god_mode);
+		components::command_checkbox<"god">();
 		components::command_checkbox<"otr">();
 		components::command_checkbox<"freecam">();
 		components::command_checkbox<"nophone">();
-		components::command_checkbox<"infoxy">();
+		components::command_checkbox<"inf_oxygen">();
 		components::command_checkbox<"fastrespawn">();
 
 		ImGui::EndGroup();
@@ -92,29 +92,29 @@ namespace big
 
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("Bullet", &g.self.proof_bullet);
-		ImGui::Checkbox("Fire", &g.self.proof_fire);
+		components::command_checkbox<"bullet_proof">();
+		components::command_checkbox<"fire_proof">();
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("Collision", &g.self.proof_collision);
-		ImGui::Checkbox("Melee", &g.self.proof_melee);
+		components::command_checkbox<"collision_proof">();
+		components::command_checkbox<"melee_proof">();
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("Explosion", &g.self.proof_explosion);
-		ImGui::Checkbox("Steam", &g.self.proof_steam);
+		components::command_checkbox<"explosion_proof">();
+		components::command_checkbox<"steam_proof">();
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("Drown", &g.self.proof_drown);
-		ImGui::Checkbox("Water", &g.self.proof_water);
+		components::command_checkbox<"drown_proof">();
+		components::command_checkbox<"water_proof">();
 
 		ImGui::EndGroup();
 
@@ -186,43 +186,5 @@ namespace big
 			ImGui::SetTooltip("To force show a HUD specific element, click Hide all then click Show on the desired element.");
 
 		ImGui::EndGroup();
-
-		g.self.proof_mask = 0;
-		if (g.self.god_mode)
-		{
-			g.self.proof_mask |= static_cast<int>(eEntityProofs::GOD);
-		}
-		if (g.self.proof_bullet)
-		{
-			g.self.proof_mask |= static_cast<int>(eEntityProofs::BULLET);
-		}
-		if (g.self.proof_fire)
-		{
-			g.self.proof_mask |= static_cast<int>(eEntityProofs::FIRE);
-		}
-		if (g.self.proof_collision)
-		{
-			g.self.proof_mask |= static_cast<int>(eEntityProofs::COLLISION);
-		}
-		if (g.self.proof_melee)
-		{
-			g.self.proof_mask |= static_cast<int>(eEntityProofs::MELEE);
-		}
-		if (g.self.proof_explosion)
-		{
-			g.self.proof_mask |= static_cast<int>(eEntityProofs::EXPLOSION);
-		}
-		if (g.self.proof_steam)
-		{
-			g.self.proof_mask |= static_cast<int>(eEntityProofs::STEAM);
-		}
-		if (g.self.proof_drown)
-		{
-			g.self.proof_mask |= static_cast<int>(eEntityProofs::DROWN);
-		}
-		if (g.self.proof_water)
-		{
-			g.self.proof_mask |= static_cast<int>(eEntityProofs::WATER);
-		}
 	}
 }

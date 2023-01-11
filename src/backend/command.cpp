@@ -90,23 +90,24 @@ namespace big
 		g_commands[command]->call(args, ctx);
 	}
 
-	void command::process(const std::string& text, const std::shared_ptr<command_context> ctx)
+	bool command::process(const std::string& text, const std::shared_ptr<command_context> ctx)
 	{
 		auto args = split(text, ' ');
 		if (args.size() == 0 || args[0].empty())
 		{
 			ctx->report_error("No command to call");
-			return;
+			return false;
 		}
 		
 		std::uint32_t hash = rage::joaat(args[0]);
 		if (!g_commands.contains(hash))
 		{
 			ctx->report_error(std::format("Command {} does not exist", args[0]));
-			return;
+			return false;
 		}
 
 		args.erase(args.begin());
 		call(hash, args, ctx);
+		return true;
 	}
 }

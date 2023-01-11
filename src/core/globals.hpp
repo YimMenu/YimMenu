@@ -61,6 +61,11 @@ namespace big
 
 		rage::scrThread* m_mission_creator_thread = nullptr;
 
+		struct quicksearch
+		{
+			bool enabled = false;
+		} quicksearch{};
+
 		struct debug
 		{
 			struct logs
@@ -244,6 +249,7 @@ namespace big
 			bool no_water_collision = false;
 			int wanted_level = 0;
 			bool god_mode = false;
+			bool proofs_enable = false;
 			bool proof_bullet = false;
 			bool proof_fire = false;
 			bool proof_collision = false;
@@ -252,7 +258,6 @@ namespace big
 			bool proof_steam = false;
 			bool proof_drown = false;
 			bool proof_water = false;
-			uint32_t proof_mask = 0;
 			bool hide_radar = false;
 			bool hide_ammo = false;
 			int selected_hud_component = 1;
@@ -272,8 +277,8 @@ namespace big
 				clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll,
 				noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode,
 				proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water,
-				proof_mask, hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element,
-				force_show_hud, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump)
+				hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element,
+				force_show_hud, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, proofs_enable)
 		} self{};
 
 		struct session
@@ -363,10 +368,11 @@ namespace big
 				int beastjump = 0;
 				int invisveh = 0;
 				int localinvisveh = 0;
+				int quicksearch = 0;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, 
 					noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump,
-					invisveh, localinvisveh)
+					invisveh, localinvisveh, quicksearch)
 			} hotkeys{};
 
 			bool dev_dlc = false;

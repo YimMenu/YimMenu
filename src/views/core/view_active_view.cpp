@@ -20,5 +20,6 @@ namespace big
 			g_gui_service->get_selected()->func();
 			ImGui::PopStyleVar();
 		}
+		ImGui::End();
 	}
 }

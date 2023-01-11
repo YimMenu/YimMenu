@@ -21,6 +21,7 @@ namespace big
 
 	public:
 		command(const std::string& name, const std::string& label, const std::string& description, std::optional<std::uint8_t> num_args, bool fiber_pool = true);
+		inline const std::string& get_name() { return m_name; }
 		inline const std::string& get_label() { return m_label; }
 		inline const std::string& get_description() { return m_description; }
 
@@ -32,7 +33,7 @@ namespace big
 		static void call(rage::joaat_t command, const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 		static void call(rage::joaat_t command, const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 
-		static void process(const std::string& text, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
+		static bool process(const std::string& text, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 	};
 
     inline std::unordered_map<rage::joaat_t, command*> g_commands;
