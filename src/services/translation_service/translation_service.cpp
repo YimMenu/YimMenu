@@ -22,30 +22,37 @@ namespace big
                 LOG(WARNING) << "Failed to download remote index, trying again... (" << i << ")";
             loaded_remote_index = download_index();
         }
-        if (!loaded_remote_index)
-        {
-            LOG(WARNING) << "Failed to load remote index, unable to load translations.";
-            return;
-        }
 
         if (load_local_index())
         {
-            if (m_local_index.version < m_remote_index.version)
+            if (!loaded_remote_index)
+            {
+                LOG(WARNING) << "Failed to load remote index, attempting to use fallback.";
+                use_fallback_remote();
+            }
+            else if (m_local_index.version < m_remote_index.version)
             {
                 LOG(INFO) << "Languages outdated, downloading new translations.";
 
                 update_language_packs();
-                update_local_index(m_remote_index.version);
+                m_local_index.version = m_remote_index.version;
             }
             load_translations();
 
             return;
         }
 
+        if (!loaded_remote_index)
+        {
+            LOG(WARNING) << "Failed to load remote index, unable to load translations.";
+            return;
+        }
+
         LOG(INFO) << "Downloading translations...";
 
-        download_language_pack(m_remote_index.default_lang);
-        update_local_index(m_remote_index.version, m_remote_index.default_lang);
+        m_local_index.fallback_default_language = m_remote_index.default_lang;
+        m_local_index.selected_language = m_remote_index.default_lang;
+        m_local_index.version = m_remote_index.version;
 
         load_translations();
     }
@@ -78,7 +85,7 @@ namespace big
     {
         g_thread_pool->push([this, &pack_id]
         {
-            update_local_index(m_remote_index.version, pack_id);
+            m_local_index.selected_language = pack_id;
             load_translations();
         });
     }
@@ -95,14 +102,16 @@ namespace big
         }
         
         // Don't load selected language if it's the same as default
-        if (m_local_index.selected_language == m_remote_index.default_lang)
-            return;
-        
-        j = load_translation(m_local_index.selected_language);
-        for (auto &[key, value] : j.items())
+        if (m_local_index.selected_language != m_remote_index.default_lang)
         {
-            m_translations[rage::joaat(key)] = value;
+            auto j = load_translation(m_local_index.selected_language);
+            for (auto &[key, value] : j.items())
+            {
+                m_translations[rage::joaat(key)] = value;
+            }
         }
+        
+        save_local_index();
     }
 
     nlohmann::json translation_service::load_translation(const std::string_view pack_id)
@@ -110,8 +119,14 @@ namespace big
         auto file = m_translation_directory->get_file(std::format("./{}.json", pack_id));
         if (!file.exists())
         {
-            LOG(INFO) << "Translations for '" << pack_id << "' do not exist, downloading...";
-            download_language_pack(pack_id);
+            LOG(INFO) << "Translations for '" << pack_id << "' does not exist, downloading...";
+            if (!download_language_pack(pack_id))
+            {
+                LOG(WARNING) << "Failed to download language pack, can't recover...";
+                return {};
+            }
+            // make a copy available
+            m_local_index.fallback_languages[pack_id.data()] = m_remote_index.translations[pack_id.data()];
         }
         return nlohmann::json::parse(std::ifstream(file.get_path(), std::ios::binary));
     }
@@ -179,17 +194,21 @@ namespace big
         return false;
     }
 
-    void translation_service::update_local_index(int version, std::string pack_id)
+    void translation_service::save_local_index()
     {
-        m_local_index.version = version;
-        if (!pack_id.empty())
-            m_local_index.selected_language = pack_id;
         nlohmann::json j = m_local_index;
 
         const auto local_index = m_translation_directory->get_file("./index.json");
 
         auto os = std::ofstream(local_index.get_path(), std::ios::binary | std::ios::trunc);
         os << j.dump(4);
+        os.close();
+    }
+
+    void translation_service::use_fallback_remote()
+    {
+        m_remote_index.default_lang = m_local_index.fallback_default_language;
+        m_remote_index.translations = m_local_index.fallback_languages;
     }
 
     std::string_view operator ""_T(const char* str, std::size_t len)

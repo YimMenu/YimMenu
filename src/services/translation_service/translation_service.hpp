@@ -42,7 +42,11 @@ namespace big
          */
         bool download_index();
         bool load_local_index();
-        void update_local_index(int version, std::string pack_id = "");
+        void save_local_index();
+        /**
+         * @brief Attempts to load the remote from the local index fallback
+         */
+        void use_fallback_remote();
     
     private:
         const std::string m_url;
