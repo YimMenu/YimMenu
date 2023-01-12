@@ -28,7 +28,7 @@ namespace big
 
 				if (*g_pointers->m_is_session_started)
 				{
-					if (ImGui::Button("UPDATE_CACHE"_T.data()))
+					if (ImGui::Button("GAME_CACHE_UPDATE_CACHE"_T.data()))
 					{
 						g_gta_data_service->update_now();
 					}
