@@ -60,5 +60,29 @@ namespace big
 
     inline auto g_translation_service = translation_service();
     
-    extern std::string_view operator ""_T(const char* str, std::size_t len);
+    template<std::size_t N>
+    struct TranslationLiteral
+    {
+        char m_key[N]{};
+        rage::joaat_t m_hash;
+    
+        consteval TranslationLiteral(char const(&pp)[N])
+        {
+            std::ranges::copy(pp, m_key);
+            m_hash = rage::joaat(pp);
+        };
+
+        const std::string_view translation() const
+        {
+            if (const auto translation = g_translation_service.get_translation(m_hash); translation.length())
+                return translation;
+            return m_key;
+        }
+    };
+    
+    template<TranslationLiteral T>
+    constexpr auto operator"" _T()
+    {
+        return T.translation();
+    }
 }

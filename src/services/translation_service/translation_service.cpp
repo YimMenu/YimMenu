@@ -210,11 +210,4 @@ namespace big
         m_remote_index.default_lang = m_local_index.fallback_default_language;
         m_remote_index.translations = m_local_index.fallback_languages;
     }
-
-    std::string_view operator ""_T(const char* str, std::size_t len)
-    {
-        if (const auto translation = g_translation_service.get_translation(rage::joaat({ str, len })); translation.length())
-            return translation;
-        return { str, len };
-    }
 }
