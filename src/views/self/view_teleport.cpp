@@ -9,15 +9,15 @@ namespace big
 {
 	void view::teleport()
 	{
-		ImGui::Text("Blips:");
+		ImGui::Text("BLIPS"_T.data());
 
 		components::command_button<"waypointtp">({}, "Waypoint");
 		ImGui::SameLine();
 		components::command_button<"objectivetp">({}, "Objective");
 
-		ImGui::Checkbox("Auto-Teleport To Waypoint", &g.self.auto_tp);
+		ImGui::Checkbox("AUTO_TP_TO_WP"_T.data(), &g.self.auto_tp);
 
-		ImGui::Text("Vehicles:");
+		ImGui::Text("VEHICLES"_T.data());
 		components::command_button<"lastvehtp">();
 		ImGui::SameLine();
 		components::command_button<"bringpv">();

@@ -11,7 +11,7 @@ namespace big
 	void view::pv() {
 		ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
 
-		if (ImGui::Checkbox("Preview", &g.clone_pv.preview_vehicle))
+		if (ImGui::Checkbox("PREVIEW", &g.clone_pv.preview_vehicle))
 		{
 			if (!g.clone_pv.preview_vehicle)
 			{
@@ -19,21 +19,21 @@ namespace big
 			}
 		}
 		ImGui::SameLine();
-		ImGui::Checkbox("Spawn In", &g.clone_pv.spawn_inside);
+		ImGui::Checkbox("SPAWN_IN", &g.clone_pv.spawn_inside);
 		ImGui::SameLine();
 
 		static char plate_buf[9] = { 0 };
 		int num_of_rows = 3;
 
-		ImGui::Checkbox("Spawn Clone", &g.clone_pv.spawn_clone);
+		ImGui::Checkbox("SPAWN_CLONE", &g.clone_pv.spawn_clone);
 		if (g.clone_pv.spawn_clone)
 		{
 			num_of_rows = 5;
 
-			ImGui::Checkbox("Spawn Maxed", &g.clone_pv.spawn_maxed);
+			ImGui::Checkbox("SPAWN_MAXED", &g.clone_pv.spawn_maxed);
 
 			ImGui::SameLine();
-			ImGui::Checkbox("Clone PV Plate", &g.clone_pv.clone_plate);
+			ImGui::Checkbox("CLONE_PV_PLATE", &g.clone_pv.clone_plate);
 			if (g.clone_pv.clone_plate)
 			{
 				num_of_rows = 4;
@@ -43,7 +43,7 @@ namespace big
 				ImGui::SetNextItemWidth(300.f);
 
 				strncpy(plate_buf, g.clone_pv.plate.c_str(), 9);
-				components::input_text_with_hint("Plate", "Plate Number", plate_buf, sizeof(plate_buf), ImGuiInputTextFlags_None, [] {
+				components::input_text_with_hint("PLATE", "PLATE_NUMBER", plate_buf, sizeof(plate_buf), ImGuiInputTextFlags_None, [] {
 					g.clone_pv.plate = plate_buf;
 				});
 			}
@@ -54,7 +54,7 @@ namespace big
 		const auto& class_arr = g_gta_data_service->vehicle_classes();
 
 		ImGui::SetNextItemWidth(300.f);
-		if (ImGui::BeginCombo("Vehicle Class", selected_class == -1 ? "ALL" : class_arr[selected_class].c_str()))
+		if (ImGui::BeginCombo("VEHICLE_CLASS", selected_class == -1 ? "ALL" : class_arr[selected_class].c_str()))
 		{
 			if (ImGui::Selectable("ALL", selected_class == -1))
 			{
@@ -81,14 +81,14 @@ namespace big
 		static char search[64];
 
 		ImGui::SetNextItemWidth(300.f);
-		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None);
+		components::input_text_with_hint("MODEL_NAME", "SEARCH", search, sizeof(search), ImGuiInputTextFlags_None);
 
 		g_mobile_service->refresh_personal_vehicles();
 		if (ImGui::ListBoxHeader("###personal_veh_list", { 300, static_cast<float>(*g_pointers->m_resolution_y - 188 - 38 * num_of_rows) }))
 		{
 			if (g_mobile_service->personal_vehicles().empty())
 			{
-				ImGui::Text("No personal vehicles found, \nare you online?");
+				ImGui::Text("NO_PERSONAL_VEHICLES");
 			}
 			else
 			{
@@ -134,7 +134,7 @@ namespace big
 
 								if (veh == 0)
 								{
-									g_notification_service->push_error("Vehicle", "Unable to spawn vehicle");
+									g_notification_service->push_error("VEHICLE", "UNABLE_TO_SPAWN_VEHICLE");
 								}
 								else
 								{
