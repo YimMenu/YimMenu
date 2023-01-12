@@ -15,11 +15,11 @@ namespace big
 	{
 		g_renderer->add_dx_callback(view::gta_data, -1); // -1 highest priority of drawing
 		g_renderer->add_dx_callback(view::notifications, -2); // second highest priority
-		g_renderer->add_dx_callback(view::console, -3); // third highest priority
+		g_renderer->add_dx_callback(view::quicksearch, -3); // 3rd highest priority
 		g_renderer->add_dx_callback([this]
 		{
 			dx_on_tick();
-		}, -4); // 4rd highest priority
+		}, -4); // 4th highest priority
 
 		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 		{
@@ -166,8 +166,6 @@ namespace big
 
 	void gui::wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	{
-		if (VK_OEM_3 == wparam)
-			std::cout << "Yeet";
 		if (msg == WM_KEYUP && wparam == g.settings.hotkeys.menu_toggle)
 		{
 			//Persist and restore the cursor position between menu instances.

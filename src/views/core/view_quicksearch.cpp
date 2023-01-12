@@ -1,7 +1,6 @@
 #include "views/view.hpp"
 #include "pointers.hpp"
 #include "services/console/console_service.hpp"
-#include "backend/command.hpp"
 #include "backend/context/default_command_context.hpp"
 
 namespace big
