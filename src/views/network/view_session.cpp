@@ -20,45 +20,45 @@ namespace big
 	{
 		static uint64_t rid = 0;
 		ImGui::InputScalar("INPUT_RID"_T.data(), ImGuiDataType_U64, &rid);
-		components::button("JOIN_BY_RID"_T.data(), []
+		components::button("JOIN_BY_RID"_T, []
 		{
 			session::join_by_rockstar_id(rid);
 		});
 		ImGui::SameLine();
-		components::button("KICK_BY_RID"_T.data(), []
+		components::button("KICK_BY_RID"_T, []
 		{
 			session::kick_by_rockstar_id(rid);
 		});
 
 		static char username[20];
 		ImGui::InputText("INPUT_USERNAME"_T.data(), username, sizeof(username));
-		if (components::button("JOIN_BY_USERNAME"_T.data()))
+		if (components::button("JOIN_BY_USERNAME"_T))
 		{
 			session::join_by_username(username);
 		};
 		ImGui::SameLine();
-		if (components::button("KICK_BY_USERNAME"_T.data()))
+		if (components::button("KICK_BY_USERNAME"_T))
 		{
 			session::kick_by_username(username);
 		};
 
 		static char base64[500]{};
 		ImGui::InputText("SESSION_INFO"_T.data(), base64, sizeof(base64));
-		components::button("JOIN_SESSION_INFO"_T.data(), []
+		components::button("JOIN_SESSION_INFO"_T, []
 		{
 			rage::rlSessionInfo info;
 			g_pointers->m_decode_session_info(&info, base64, nullptr);
 			session::join_session(info);
 		});
 		ImGui::SameLine();
-		components::button("COPY_SESSION_INFO"_T.data(), []
+		components::button("COPY_SESSION_INFO"_T, []
 		{
 			char buf[0x100];
 			g_pointers->m_encode_session_info(&gta_util::get_network()->m_game_session.m_rline_session.m_session_info, buf, 0x7D, nullptr);
 			ImGui::SetClipboardText(buf);
 		});
 
-		components::sub_title("SESSION_SWITCHER"_T.data());
+		components::sub_title("SESSION_SWITCHER"_T);
 		if (ImGui::ListBoxHeader("###session_switch"))
 		{
 			for (const auto& session_type : sessions)
@@ -71,7 +71,7 @@ namespace big
 			ImGui::EndListBox();
 		}
 		
-		components::sub_title("REGION_SWITCHER"_T.data());
+		components::sub_title("REGION_SWITCHER"_T);
 		if (ImGui::ListBoxHeader("###region_switch"))
 		{
 			for (const auto& region_type : regions)
@@ -88,14 +88,14 @@ namespace big
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("JOIN_IN_SCTV_DESC"_T.data());
 
-		components::sub_title("PLAYER_MAGNET"_T.data());
+		components::sub_title("PLAYER_MAGNET"_T);
 		ImGui::Checkbox("ENABLED"_T.data(), &g.session.player_magnet_enabled);
 		if (g.session.player_magnet_enabled)
 		{
 			ImGui::InputInt("PLAYER_COUNT"_T.data(), &g.session.player_magnet_count);
 		}
 
-		components::sub_title("CHAT"_T.data());
+		components::sub_title("CHAT"_T);
 		ImGui::Checkbox("AUTO_KICK_CHAT_SPAMMERS"_T.data(), &g.session.kick_chat_spammers);
 		ImGui::Checkbox("DISABLE_FILTER"_T.data(), &g.session.disable_chat_filter);
 		ImGui::Checkbox("LOG_CHAT_MSG"_T.data(), &g.session.log_chat_messages);
@@ -105,7 +105,7 @@ namespace big
 		ImGui::SameLine();
 		ImGui::Checkbox("IS_TEAM"_T.data(), &g.session.is_team);
 		ImGui::SameLine();
-		components::button("SEND"_T.data(), []
+		components::button("SEND"_T, []
 		{
             if (const auto net_game_player = gta_util::get_network_player_mgr()->m_local_net_player; net_game_player)
 			{
@@ -136,10 +136,10 @@ namespace big
 			}
 		}
 
-		components::sub_title("DECLOAK"_T.data());
-		components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T.data(), &g.session.decloak_players);
+		components::sub_title("DECLOAK"_T);
+		components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T, &g.session.decloak_players);
 
-		components::sub_title("FORCE_HOST"_T.data());
+		components::sub_title("FORCE_HOST"_T);
 		ImGui::Checkbox("FORCE_SESSION_HOST"_T.data(), &g.session.force_session_host);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("FORCE_SESSION_HOST_DESC"_T.data());
@@ -161,7 +161,7 @@ namespace big
 			});
 		}
 
-		components::sub_title("REMOTE_NAME_SPOOFING"_T.data());
+		components::sub_title("REMOTE_NAME_SPOOFING"_T);
 		ImGui::Checkbox("SPOOF_PLAYER_NAMES"_T.data(), &g.session.name_spoof_enabled);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("SPOOF_PLAYER_NAMES_DESC"_T.data());
@@ -186,7 +186,7 @@ namespace big
 			}
 		}
 
-		components::sub_title("ALL_PLAYERS"_T.data());
+		components::sub_title("ALL_PLAYERS"_T);
 		ImGui::Checkbox("OFF_THE_RADAR"_T.data(), &g.session.off_radar_all);
 		ImGui::SameLine();
 		ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.session.never_wanted_all);
@@ -211,9 +211,9 @@ namespace big
 			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = global_wanted_level;
 		}
 
-		components::command_button<"killall">({ }, "KILL_ALL"_T.data());
+		components::command_button<"killall">({ }, "KILL_ALL"_T);
 		ImGui::SameLine();
-		components::command_button<"explodeall">({ }, "EXPLODE_ALL"_T.data());
+		components::command_button<"explodeall">({ }, "EXPLODE_ALL"_T);
 
 		ImGui::SameLine();
 
@@ -230,10 +230,10 @@ namespace big
 		ImGui::SameLine();
 		components::command_button<"vehkickall">({ });
 
-		components::command_button<"ragdollall">({ }, "RAGDOLL_PLAYERS"_T.data());
-		components::command_button<"intkickall">({ }, "KICK_ALL_FROM_INTERIORS"_T.data());
+		components::command_button<"ragdollall">({ }, "RAGDOLL_PLAYERS"_T);
+		components::command_button<"intkickall">({ }, "KICK_ALL_FROM_INTERIORS"_T);
 
-		components::small_text("TELEPORTS"_T.data());
+		components::small_text("TELEPORTS"_T);
 
 		if (ImGui::BeginCombo("##apartment", apartment_names[g.session.send_to_apartment_idx]))
 		{
@@ -255,7 +255,7 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::command_button<"apartmenttpall">({ (uint64_t)g.session.send_to_apartment_idx }, "TP_ALL_TO_APARTMENT"_T.data());
+		components::command_button<"apartmenttpall">({ (uint64_t)g.session.send_to_apartment_idx }, "TP_ALL_TO_APARTMENT"_T);
 
 		if (ImGui::BeginCombo("##warehouse", warehouse_names[g.session.send_to_warehouse_idx]))
 		{
@@ -277,66 +277,66 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::command_button<"warehousetpall">({ (uint64_t)g.session.send_to_warehouse_idx }, "TP_ALL_TO_WAREHOUSE"_T.data());
+		components::command_button<"warehousetpall">({ (uint64_t)g.session.send_to_warehouse_idx }, "TP_ALL_TO_WAREHOUSE"_T);
 
-		components::button("TP_ALL_TO_DARTS"_T.data(), [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::Darts); }); });
+		components::button("TP_ALL_TO_DARTS"_T, [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::Darts); }); });
 		ImGui::SameLine();
-		components::button("TP_ALL_TO_FLIGHT_SCHOOL"_T.data(), [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::PilotSchool); }); });
+		components::button("TP_ALL_TO_FLIGHT_SCHOOL"_T, [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::PilotSchool); }); });
 		ImGui::SameLine();
-		components::button("TP_ALL_TO_MAP_CENTER"_T.data(), [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::ArmWresling); }); });
+		components::button("TP_ALL_TO_MAP_CENTER"_T, [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::ArmWresling); }); });
 
-		components::button("TP_ALL_TO_SKYDIVE"_T.data(), [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::Skydive); }); });
+		components::button("TP_ALL_TO_SKYDIVE"_T, [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::Skydive); }); });
 		ImGui::SameLine();
 
-		components::command_button<"interiortpall">({ 81 }, "TP_ALL_TO_MOC"_T.data());
+		components::command_button<"interiortpall">({ 81 }, "TP_ALL_TO_MOC"_T);
 
 		ImGui::SameLine();
-		components::command_button<"interiortpall">({ 123 }, "TP_ALL_TO_CASINO"_T.data());
+		components::command_button<"interiortpall">({ 123 }, "TP_ALL_TO_CASINO"_T);
 		ImGui::SameLine();
-		components::command_button<"interiortpall">({ 124 }, "TP_ALL_TO_PENTHOUSE"_T.data());
+		components::command_button<"interiortpall">({ 124 }, "TP_ALL_TO_PENTHOUSE"_T);
 		ImGui::SameLine();
-		components::command_button<"interiortpall">({ 128 }, "TP_ALL_TO_ARCADE"_T.data());
+		components::command_button<"interiortpall">({ 128 }, "TP_ALL_TO_ARCADE"_T);
 
-		components::command_button<"interiortpall">({ 146 }, "TP_ALL_TO_MUSIC_LOCKER"_T.data());
+		components::command_button<"interiortpall">({ 146 }, "TP_ALL_TO_MUSIC_LOCKER"_T);
 		ImGui::SameLine();
-		components::command_button<"interiortpall">({ 148 }, "TP_ALL_TO_RECORD_A_STUDIOS"_T.data());
+		components::command_button<"interiortpall">({ 148 }, "TP_ALL_TO_RECORD_A_STUDIOS"_T);
 		ImGui::SameLine();
-		components::command_button<"interiortpall">({ 149 }, "TP_ALL_TO_CUSTOM_AUTO_SHOP"_T.data());
+		components::command_button<"interiortpall">({ 149 }, "TP_ALL_TO_CUSTOM_AUTO_SHOP"_T);
 
-		components::command_button<"interiortpall">({ 155 }, "TP_ALL_TO_AGENCY"_T.data());
+		components::command_button<"interiortpall">({ 155 }, "TP_ALL_TO_AGENCY"_T);
 		ImGui::SameLine();
-		components::command_button<"interiortpall">({ 160 }, "TP_ALL_TO_FREAKSHOP"_T.data());
+		components::command_button<"interiortpall">({ 160 }, "TP_ALL_TO_FREAKSHOP"_T);
 		ImGui::SameLine();
-		components::command_button<"interiortpall">({ 161 }, "TP_ALL_TO_MULTI_FLOOR_GARAGE"_T.data());
+		components::command_button<"interiortpall">({ 161 }, "TP_ALL_TO_MULTI_FLOOR_GARAGE"_T);
 
-		components::sub_title("EVENT_STARTER"_T.data());
+		components::sub_title("EVENT_STARTER"_T);
 		
 		ImGui::BeginGroup();
-		components::button("HOST_TARGET"_T.data(), [] { scripts::start_launcher_script(36); });
-		components::button("KILL_LIST"_T.data(), [] { scripts::start_launcher_script(37); });
-		components::button("CHECKPOINTS"_T.data(), [] { scripts::start_launcher_script(39); });
-		components::button("CHALLENGES"_T.data(), [] { scripts::start_launcher_script(40); });
-		components::button("Penned In"_T.data(), [] { scripts::start_launcher_script(41); });
+		components::button("HOST_TARGET"_T, [] { scripts::start_launcher_script(36); });
+		components::button("KILL_LIST"_T, [] { scripts::start_launcher_script(37); });
+		components::button("CHECKPOINTS"_T, [] { scripts::start_launcher_script(39); });
+		components::button("CHALLENGES"_T, [] { scripts::start_launcher_script(40); });
+		components::button("Penned In"_T, [] { scripts::start_launcher_script(41); });
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
-		components::button("HOT_PROPERTY"_T.data(), [] { scripts::start_launcher_script(43); });
-		components::button("KING_OF_THE_CASTLE"_T.data(), [] { scripts::start_launcher_script(45); });
-		components::button("CRIMINAL_DAMAGE"_T.data(), [] { scripts::start_launcher_script(46); });
-		components::button("HUNT_THE_BEAST"_T.data(), [] { scripts::start_launcher_script(47); });
-		components::button("BUSINESS_BATTLES"_T.data(), [] { scripts::start_launcher_script(114); });
+		components::button("HOT_PROPERTY"_T, [] { scripts::start_launcher_script(43); });
+		components::button("KING_OF_THE_CASTLE"_T, [] { scripts::start_launcher_script(45); });
+		components::button("CRIMINAL_DAMAGE"_T, [] { scripts::start_launcher_script(46); });
+		components::button("HUNT_THE_BEAST"_T, [] { scripts::start_launcher_script(47); });
+		components::button("BUSINESS_BATTLES"_T, [] { scripts::start_launcher_script(114); });
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
-		components::button("ONE_ON_ON_DM"_T.data(), [] { scripts::start_launcher_script(197); });
-		components::button("IMPROMPTU_RACE"_T.data(), [] { scripts::start_launcher_script(16); });
-		components::button("FLIGHT_SCHOOL"_T.data(), [] { scripts::start_launcher_script(196); });
-		components::button("GOLF"_T.data(), [] { scripts::start_launcher_script(193); });
-		components::button("TUTORIAL"_T.data(), [] { scripts::start_launcher_script(20); });
+		components::button("ONE_ON_ON_DM"_T, [] { scripts::start_launcher_script(197); });
+		components::button("IMPROMPTU_RACE"_T, [] { scripts::start_launcher_script(16); });
+		components::button("FLIGHT_SCHOOL"_T, [] { scripts::start_launcher_script(196); });
+		components::button("GOLF"_T, [] { scripts::start_launcher_script(193); });
+		components::button("TUTORIAL"_T, [] { scripts::start_launcher_script(20); });
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("TUTORIAL_DESC"_T.data());
 		ImGui::EndGroup();
@@ -344,11 +344,11 @@ namespace big
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
-		components::button("GUNSLINGER"_T.data(), [] { scripts::start_launcher_script(211); });
-		components::button("SPACE_MONKEY"_T.data(), [] { scripts::start_launcher_script(216); });
-		components::button("WIZARD"_T.data(), [] { scripts::start_launcher_script(212); });
-		components::button("QUB3D"_T.data(), [] { scripts::start_launcher_script(217); });
-		components::button("CAMHEDZ"_T.data(), [] { scripts::start_launcher_script(218); });
+		components::button("GUNSLINGER"_T, [] { scripts::start_launcher_script(211); });
+		components::button("SPACE_MONKEY"_T, [] { scripts::start_launcher_script(216); });
+		components::button("WIZARD"_T, [] { scripts::start_launcher_script(212); });
+		components::button("QUB3D"_T, [] { scripts::start_launcher_script(217); });
+		components::button("CAMHEDZ"_T, [] { scripts::start_launcher_script(218); });
 		ImGui::EndGroup();
 
 		ImGui::Checkbox("DISABLE_PEDS"_T.data(), &g.session.disable_peds);
@@ -359,21 +359,21 @@ namespace big
 
 		components::small_text("WARP_TIME"_T.data());
 
-		components::button("PLUS_1_MINUTE"_T.data(), [] { toxic::warp_time_forward_all(60 * 1000); });
+		components::button("PLUS_1_MINUTE"_T, [] { toxic::warp_time_forward_all(60 * 1000); });
 		ImGui::SameLine();
-		components::button("PLUS_5_MINUTES"_T.data(), [] { toxic::warp_time_forward_all(5 * 60 * 1000); });
+		components::button("PLUS_5_MINUTES"_T, [] { toxic::warp_time_forward_all(5 * 60 * 1000); });
 		ImGui::SameLine();
-		components::button("PLUS_48_MINUTES"_T.data(), [] { toxic::warp_time_forward_all(48 * 60 * 1000); });
+		components::button("PLUS_48_MINUTES"_T, [] { toxic::warp_time_forward_all(48 * 60 * 1000); });
 		ImGui::SameLine();
-		components::button("PLUS_96_MINUTES"_T.data(), [] { toxic::warp_time_forward_all(96 * 60 * 1000); });
+		components::button("PLUS_96_MINUTES"_T, [] { toxic::warp_time_forward_all(96 * 60 * 1000); });
 		ImGui::SameLine();
-		components::button("PLUS_200_MINUTES"_T.data(), [] { toxic::warp_time_forward_all(200 * 60 * 1000); });
+		components::button("PLUS_200_MINUTES"_T, [] { toxic::warp_time_forward_all(200 * 60 * 1000); });
 		ImGui::SameLine();
-		components::button("STOP_TIME"_T.data(), [] { toxic::set_time_all(INT_MAX - 3000); });
+		components::button("STOP_TIME"_T, [] { toxic::set_time_all(INT_MAX - 3000); });
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("STOP_TIME_DESC"_T.data());
 
-		components::sub_title("SCRIPT_HOST_FEATURES"_T.data());
+		components::sub_title("SCRIPT_HOST_FEATURES"_T);
 		ImGui::Checkbox("DISABLE_CEO_MONEY"_T.data(), &g.session.block_ceo_money);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("DISABLE_CEO_MONEY_DESC"_T.data());

@@ -11,7 +11,7 @@
 namespace big
 {
 	void view::weapons() {
-		components::sub_title("AMMO"_T.data());
+		components::sub_title("AMMO"_T);
 
 		ImGui::BeginGroup();
 
@@ -78,7 +78,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::sub_title("MISC"_T.data());
+		components::sub_title("MISC"_T);
 
 		components::command_checkbox<"crosshairs">();
 		ImGui::SameLine();
@@ -86,7 +86,7 @@ namespace big
 		ImGui::SameLine();
 		components::command_checkbox<"nospread">();
 
-		components::button("GET_ALL_WEAPONS"_T.data(), []
+		components::button("GET_ALL_WEAPONS"_T, []
 		{
 			for (const auto& [_, weapon] : g_gta_data_service->weapons())
 			{
@@ -97,7 +97,7 @@ namespace big
 			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, parachute_hash, 0, true);
 		});
 		ImGui::SameLine();
-		components::button("REMOVE_CUR_WEAPON"_T.data(), []
+		components::button("REMOVE_CUR_WEAPON"_T, []
 		{
 			Hash weaponHash;
 			WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weaponHash, 1);
@@ -111,7 +111,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::sub_title("CUSTOM_WEAPONS"_T.data());
+		components::sub_title("CUSTOM_WEAPONS"_T);
 
 		CustomWeapon selected = g.weapons.custom_weapon;
 

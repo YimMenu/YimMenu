@@ -14,7 +14,7 @@ namespace big
 {
 	void view::fun_vehicle()
 	{
-		components::sub_title("SEAT_CHANGER"_T.data());
+		components::sub_title("SEAT_CHANGER"_T);
 		{
 			static std::map<int, bool> seats;
 			static bool ready = true;
@@ -83,7 +83,7 @@ namespace big
 		ImGui::Separator();
 
 
-		components::sub_title("AUTO_DRIVE"_T.data());
+		components::sub_title("AUTO_DRIVE"_T);
 		{
 			float auto_drive_speed_user_unit = vehicle::mps_to_speed(g.vehicle.auto_drive_speed, g.vehicle.speed_unit);
 			if (ImGui::SliderFloat(
@@ -119,26 +119,26 @@ namespace big
 				ImGui::EndCombo();
 			}
 
-			if (components::button("TO_OBJECTIVE"_T.data())) {
+			if (components::button("TO_OBJECTIVE"_T)) {
 				g.vehicle.auto_drive_destination = AutoDriveDestination::OBJECTITVE;
 			}
 			ImGui::SameLine();
-			if (components::button("TO_WAYPOINT"_T.data())) {
+			if (components::button("TO_WAYPOINT"_T)) {
 				g.vehicle.auto_drive_destination = AutoDriveDestination::WAYPOINT;
 			}
 			ImGui::SameLine();
-			if (components::button("WANDER"_T.data())) {
+			if (components::button("WANDER"_T)) {
 				g.vehicle.auto_drive_destination = AutoDriveDestination::WANDER;
 			}
 			ImGui::SameLine();
-			if (components::button("EMERGENCY_STOP"_T.data())) {
+			if (components::button("EMERGENCY_STOP"_T)) {
 				g.vehicle.auto_drive_destination = AutoDriveDestination::EMERGENCY_STOP;
 			}
 		}
 		ImGui::Separator();
 
 
-		components::sub_title("RAINBOW_PAINT"_T.data());
+		components::sub_title("RAINBOW_PAINT"_T);
 		{
 			ImGui::Checkbox("PRIMARY"_T.data(), &g.vehicle.rainbow_paint.primary);
 			ImGui::SameLine();
@@ -203,7 +203,7 @@ namespace big
 		ImGui::Separator();
 
 
-		components::sub_title("VEHICLE_FLY"_T.data());
+		components::sub_title("VEHICLE_FLY"_T);
 		{
 			ImGui::BeginGroup();
 

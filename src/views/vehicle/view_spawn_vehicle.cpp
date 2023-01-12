@@ -27,7 +27,7 @@ namespace big
 		strncpy(plate_buf, g.spawn_vehicle.plate.c_str(), 9);
 
 		ImGui::SetNextItemWidth(300.f);
-		components::input_text_with_hint("PLATE"_T.data(), "PLATE_NUMBER"_T.data(), plate_buf, sizeof(plate_buf), ImGuiInputTextFlags_None, [] {
+		components::input_text_with_hint("PLATE"_T, "PLATE_NUMBER"_T, plate_buf, sizeof(plate_buf), ImGuiInputTextFlags_None, [] {
 			g.spawn_vehicle.plate = plate_buf;
 		});
 
@@ -63,7 +63,7 @@ namespace big
 		static char search[64];
 
 		ImGui::SetNextItemWidth(300.f);
-		components::input_text_with_hint("MODEL_NAME"_T.data(), "SEARCH"_T.data(), search, sizeof(search), ImGuiInputTextFlags_None);
+		components::input_text_with_hint("MODEL_NAME"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
 
 
 		if (ImGui::ListBoxHeader("###vehicles", { 300, static_cast<float>(*g_pointers->m_resolution_y - 188 - 38 * 4) }))
@@ -80,7 +80,7 @@ namespace big
 				{
 					const auto& item = g_gta_data_service->vehicle_by_hash(veh_hash);
 
-					components::selectable(std::vformat("SPAWN_VEHICLE_CURRENT_VEHICLE"_T.data(), std::make_format_args(item.m_display_name)), false, [] {
+					components::selectable(std::vformat("SPAWN_VEHICLE_CURRENT_VEHICLE"_T, std::make_format_args(item.m_display_name)), false, [] {
 						if (self::veh)
 						{
 							Vector3 spawn_location = vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside);

@@ -148,7 +148,7 @@ namespace big
 					break;
 				}
 
-				if (components::button("WRITE"_T.data()))
+				if (components::button("WRITE"_T))
 					global.write();
 
 				ImGui::PopID();

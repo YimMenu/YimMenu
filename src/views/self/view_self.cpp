@@ -62,7 +62,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::sub_title("PROOFS"_T.data());
+		components::sub_title("PROOFS"_T);
 
 		if (ImGui::Button("CHECK_ALL"_T.data()))
 		{
@@ -120,7 +120,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::sub_title("POLICE"_T.data());
+		components::sub_title("POLICE"_T);
 
 		ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.self.never_wanted);
 
@@ -139,7 +139,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::sub_title("HUD"_T.data());
+		components::sub_title("HUD"_T);
 
 		ImGui::BeginGroup();
 
@@ -155,15 +155,15 @@ namespace big
 
 		ImGui::Combo("##hud_comp_combo", &g.self.selected_hud_component, hud_component_names, (int)HudComponents::HUD_WEAPONS);
 		ImGui::SameLine();
-		components::button("HIDE"_T.data(), [] {
+		components::button("HIDE"_T, [] {
 			g.self.hud_components_states[g.self.selected_hud_component] = true;
 		});
 		ImGui::SameLine();
-		components::button("SHOW"_T.data(), [] {
+		components::button("SHOW"_T, [] {
 			g.self.hud_components_states[g.self.selected_hud_component] = false;
 		});
 
-		components::button("HIDE_ALL"_T.data(), [] {
+		components::button("HIDE_ALL"_T, [] {
 			g.self.hide_radar = true;
 			g.self.hide_ammo = true;
 			for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
@@ -172,7 +172,7 @@ namespace big
 			}
 		});
 		ImGui::SameLine();
-		components::button("SHOW_ALL"_T.data(), [] {
+		components::button("SHOW_ALL"_T, [] {
 			g.self.hide_radar = false;
 			g.self.hide_ammo = false;
 			for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)

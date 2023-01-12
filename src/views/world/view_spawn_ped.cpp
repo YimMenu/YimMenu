@@ -179,7 +179,7 @@ namespace big
 		}
 
 
-		components::sub_title("PED_MODEL"_T.data());
+		components::sub_title("PED_MODEL"_T);
 		{
 			ImGui::BeginGroup();
 			{
@@ -313,7 +313,7 @@ namespace big
 
 					ImGui::SetNextItemWidth(240.f);
 					components::input_text_with_hint(
-						"##ped_model_name", "MODEL_NAME"_T.data(),
+						"##ped_model_name", "MODEL_NAME"_T,
 						ped_model_buf, sizeof(ped_model_buf), ImGuiInputTextFlags_EnterReturnsTrue,
 						[] {
 							ped_model_dropdown_open = false;
@@ -398,7 +398,7 @@ namespace big
 		ImGui::Separator();
 
 
-		components::sub_title("WEAPON"_T.data());
+		components::sub_title("WEAPON"_T);
 		{
 			ImGui::BeginGroup();
 			{
@@ -507,7 +507,7 @@ namespace big
 		ImGui::Separator();
 
 
-		components::sub_title("SPAWN_FOR"_T.data());
+		components::sub_title("SPAWN_FOR"_T);
 		{
 			if (ImGui::BeginCombo(
 				"##ped_for",
@@ -559,7 +559,7 @@ namespace big
 			}
 		}
 
-		components::button("CHANGE_PLAYER_MODEL"_T.data(), [] {
+		components::button("CHANGE_PLAYER_MODEL"_T, [] {
 			if (selected_ped_type == -2)
 			{
 				if (selected_ped_player_id != -1)
@@ -586,7 +586,7 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::button("SPAWN_PED"_T.data(), [] {
+		components::button("SPAWN_PED"_T, [] {
 			Ped ped = spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, selected_ped_for_player_id, false);
 
 			if (ped)
@@ -597,7 +597,7 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::button("SPAWN_BODYGUARD"_T.data(), [] {
+		components::button("SPAWN_BODYGUARD"_T, [] {
 			Ped ped = spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, selected_ped_for_player_id, true);
 
 			if (ped)

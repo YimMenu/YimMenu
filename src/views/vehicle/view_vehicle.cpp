@@ -8,14 +8,14 @@ namespace big
 {
 	void view::vehicle()
 	{
-		components::button("MORS_FIX_ALL"_T.data(), [] {
+		components::button("MORS_FIX_ALL"_T, [] {
 			int amount_fixed = mobile::mors_mutual::fix_all();
 			g_notification_service->push("MOBILE"_T.data(),
 				std::vformat("VEHICLE_FIX_AMOUNT"_T.data(), std::make_format_args(amount_fixed, amount_fixed == 1 ? "VEHICLE_FIX_HAS"_T.data() : "VEHICLE_FIX_HAVE"_T.data()))
 			);
 		});
 		ImGui::SameLine();
-		components::button("REPAIR"_T.data(), [] {
+		components::button("REPAIR"_T, [] {
 			vehicle::repair(self::veh);
 		});
 
@@ -24,24 +24,24 @@ namespace big
 
 		ImGui::Separator();
 
-		components::button("TP_IN_PV"_T.data(), [] {
+		components::button("TP_IN_PV"_T, [] {
 			Vehicle veh = mobile::mechanic::get_personal_vehicle();
 			teleport::into_vehicle(veh);
 		});
 		ImGui::SameLine();
-		components::button("BRING_PV"_T.data(), [] {
+		components::button("BRING_PV"_T, [] {
 			Vehicle veh = mobile::mechanic::get_personal_vehicle();
 			vehicle::bring(veh, self::pos, true);
 		});
 		ImGui::SameLine();
-		components::button("BRING_CLOSEST_VEHICLE"_T.data(), [] {
+		components::button("BRING_CLOSEST_VEHICLE"_T, [] {
 			Vehicle veh = vehicle::get_closest_to_location(self::pos, 200);
 			vehicle::bring(veh, self::pos, true, -1);
 		});
 
 		ImGui::Separator();
 
-		components::button("TURN_ENGINE_ON"_T.data(), [] {
+		components::button("TURN_ENGINE_ON"_T, [] {
 			vehicle::set_engine_state(
 				self::veh,
 				true,
@@ -50,7 +50,7 @@ namespace big
 			);
 		});
 		ImGui::SameLine();
-		components::button("TURN_ENGINE_OFF"_T.data(), [] {
+		components::button("TURN_ENGINE_OFF"_T, [] {
 			vehicle::set_engine_state(
 				self::veh,
 				false,
@@ -64,7 +64,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::sub_title("GENERAL"_T.data());
+		components::sub_title("GENERAL"_T);
 		{
 			ImGui::BeginGroup();
 
@@ -103,7 +103,7 @@ namespace big
 		ImGui::Separator();
 
 
-		components::sub_title("PROOFS"_T.data());
+		components::sub_title("PROOFS"_T);
 		{
 			if (ImGui::Button("CHECK_ALL"_T.data()))
 			{
@@ -159,7 +159,7 @@ namespace big
 		ImGui::Separator();
 
 
-		components::sub_title("SPEED_UNIT"_T.data());
+		components::sub_title("SPEED_UNIT"_T);
 		{
 			ImGui::RadioButton(
 				speed_unit_strings[(int)SpeedUnit::KMPH].c_str(),
@@ -181,7 +181,7 @@ namespace big
 		}
 		ImGui::Separator();
 
-		components::sub_title("SPEEDO_METER"_T.data());
+		components::sub_title("SPEEDO_METER"_T);
 		{
 			ImGui::Checkbox("ENABLED"_T.data(), &g.vehicle.speedo_meter.enabled);
 

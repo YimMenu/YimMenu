@@ -43,7 +43,7 @@ namespace big
 				ImGui::SetNextItemWidth(300.f);
 
 				strncpy(plate_buf, g.clone_pv.plate.c_str(), 9);
-				components::input_text_with_hint("PLATE"_T.data(), "PLATE_NUMBER"_T.data(), plate_buf, sizeof(plate_buf), ImGuiInputTextFlags_None, [] {
+				components::input_text_with_hint("PLATE"_T, "PLATE_NUMBER"_T, plate_buf, sizeof(plate_buf), ImGuiInputTextFlags_None, [] {
 					g.clone_pv.plate = plate_buf;
 				});
 			}
@@ -81,7 +81,7 @@ namespace big
 		static char search[64];
 
 		ImGui::SetNextItemWidth(300.f);
-		components::input_text_with_hint("MODEL_NAME"_T.data(), "SEARCH"_T.data(), search, sizeof(search), ImGuiInputTextFlags_None);
+		components::input_text_with_hint("MODEL_NAME"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
 
 		g_mobile_service->refresh_personal_vehicles();
 		if (ImGui::ListBoxHeader("###personal_veh_list", { 300, static_cast<float>(*g_pointers->m_resolution_y - 188 - 38 * num_of_rows) }))

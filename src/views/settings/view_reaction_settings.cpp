@@ -55,7 +55,7 @@ namespace big
 
 	void view::reaction_settings()
 	{
-		components::title("SETTINGS_REACTIONS"_T.data());
+		components::title("SETTINGS_REACTIONS"_T);
 		draw_reaction(g.reactions.bounty);
 		draw_reaction(g.reactions.ceo_money);
 		draw_reaction(g.reactions.clear_wanted_level);

@@ -19,7 +19,7 @@ namespace big
 		static char search[64];
 
 		ImGui::SetNextItemWidth(300.f);
-		components::input_text_with_hint("PLAYER"_T.data(), "SEARCH"_T.data(), search, sizeof(search), ImGuiInputTextFlags_None);
+		components::input_text_with_hint("PLAYER"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
 
 		if (ImGui::ListBoxHeader("###players", { 180, static_cast<float>(*g_pointers->m_resolution_y - 400 - 38 * 4) }))
 		{
@@ -123,19 +123,19 @@ namespace big
 					}
 				}
 
-				components::button("KICK"_T.data(), []
+				components::button("KICK"_T, []
 				{
 					session::kick_by_rockstar_id(current_player.rockstar_id);
 				});
 
-				components::button("JOIN_SESSION"_T.data(), []
+				components::button("JOIN_SESSION"_T, []
 				{
 					session::join_by_rockstar_id(current_player.rockstar_id);
 				});
 
 				static char message[256];
 				ImGui::InputText("INPUT_MSG"_T.data(), message, sizeof(message));
-				if (components::button("SEND_MSG"_T.data()))
+				if (components::button("SEND_MSG"_T))
 				{
 					g_thread_pool->push([selected]
 					{
@@ -175,7 +175,7 @@ namespace big
 		}
 
 		ImGui::Separator();
-		components::sub_title("NEW_ENTRY"_T.data());
+		components::sub_title("NEW_ENTRY"_T);
 
 		static char new_name[64];
 		static int64_t new_rockstar_id;

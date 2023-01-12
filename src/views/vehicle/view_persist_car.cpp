@@ -65,18 +65,18 @@ namespace big
 
 		ImGui::PushItemWidth(250);
 		components::input_text_with_hint(
-			"VEHICLE_FILE_NAME"_T.data(),
-			"VEHICLE_FILE_NAME_EXAMPLE"_T.data(),
+			"VEHICLE_FILE_NAME"_T,
+			"VEHICLE_FILE_NAME_EXAMPLE"_T,
 			vehicle_file_name_input, IM_ARRAYSIZE(vehicle_file_name_input));
 
 		ImGui::SameLine();
 
-		components::button("SAVE_VEHICLE"_T.data(), []
+		components::button("SAVE_VEHICLE"_T, []
 		{
 			save_vehicle(vehicle_file_name_input);
 		});
 
-		components::button("LOAD_VEHICLE"_T.data(), []
+		components::button("LOAD_VEHICLE"_T, []
 		{
 			load_vehicle(selected_vehicle_file);
 		});

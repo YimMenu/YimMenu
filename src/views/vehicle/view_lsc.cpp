@@ -194,11 +194,11 @@ namespace big
 			});
 		}
 
-		components::button("START_LS_CUSTOMS"_T.data(), [] {
+		components::button("START_LS_CUSTOMS"_T, [] {
 			g.vehicle.ls_customs = true;
 		});
 		ImGui::SameLine();
-		if (components::button("MAX_VEHICLE"_T.data()))
+		if (components::button("MAX_VEHICLE"_T))
 		{
 			g_fiber_pool->queue_job([] {
 				vehicle::max_vehicle(self::veh);
@@ -213,9 +213,9 @@ namespace big
 		static char plate[9];
 
 		ImGui::SetNextItemWidth(200.f);
-		components::input_text_with_hint("##plate", "PLATE_NUMBER"_T.data(), plate, sizeof(plate), ImGuiInputTextFlags_None);
+		components::input_text_with_hint("##plate", "PLATE_NUMBER"_T, plate, sizeof(plate), ImGuiInputTextFlags_None);
 		ImGui::SameLine();
-		if (components::button("CHANGE_PLATE_NUMBER"_T.data()))
+		if (components::button("CHANGE_PLATE_NUMBER"_T))
 		{
 			g_fiber_pool->queue_job([] {
 				vehicle::set_plate(self::veh, plate);
@@ -223,7 +223,7 @@ namespace big
 		}
 
 		ImGui::Separator();
-		components::sub_title("MOD_OPTIONS"_T.data());
+		components::sub_title("MOD_OPTIONS"_T);
 
 		bool is_bulletproof_tires = !owned_mods[MOD_TIRE_CAN_BURST];
 		if (ImGui::Checkbox("BULLETPROOF_TIRES"_T.data(), (bool*)&is_bulletproof_tires))
@@ -261,7 +261,7 @@ namespace big
 
 		ImGui::BeginGroup();
 
-		components::sub_title("SLOT"_T.data());
+		components::sub_title("SLOT"_T);
 		if (ImGui::ListBoxHeader("##slot", ImVec2(200, 200)))
 		{
 			for (const auto& [slot, name] : slot_display_names)
@@ -300,7 +300,7 @@ namespace big
 			ImGui::SameLine();
 			ImGui::BeginGroup();
 
-			components::sub_title("MOD"_T.data());
+			components::sub_title("MOD"_T);
 			if (ImGui::ListBoxHeader("##mod", ImVec2(240, 200)))
 			{
 				for (const auto& it : mod_display_names[selected_slot])
@@ -369,7 +369,7 @@ namespace big
 				ImGui::SameLine();
 				ImGui::BeginGroup();
 
-				components::sub_title("STYLE"_T.data());
+				components::sub_title("STYLE"_T);
 				if (ImGui::ListBoxHeader("##style", ImVec2(200, 200)))
 				{
 					std::string mod_name = mod_display_names[selected_slot][*wheel_stock_mod];
@@ -417,7 +417,7 @@ namespace big
 
 
 		ImGui::Separator();
-		components::sub_title("NEON_LIGHT_OPTIONS"_T.data());
+		components::sub_title("NEON_LIGHT_OPTIONS"_T);
 
 		ImGui::PushID("##headlight_en");
 		if (ImGui::Checkbox("HEADLIGHT"_T.data(), (bool*)&owned_mods[MOD_XENON_LIGHTS]))
@@ -457,7 +457,7 @@ namespace big
 		}
 		ImGui::SameLine();
 		ImGui::PushID("##neon_check_all");
-		components::button("CHECK_ALL"_T.data(), [] {
+		components::button("CHECK_ALL"_T, [] {
 			owned_mods[MOD_XENON_LIGHTS] = true;
 			owned_mods[MOD_NEON_LEFT_ON] = true;
 			owned_mods[MOD_NEON_RIGHT_ON] = true;
@@ -473,7 +473,7 @@ namespace big
 		ImGui::PopID();
 		ImGui::SameLine();
 		ImGui::PushID("##neon_uncheck_all");
-		components::button("UNCHECK_ALL"_T.data(), [] {
+		components::button("UNCHECK_ALL"_T, [] {
 			owned_mods[MOD_XENON_LIGHTS] = false;
 			owned_mods[MOD_NEON_LEFT_ON] = false;
 			owned_mods[MOD_NEON_RIGHT_ON] = false;
@@ -489,7 +489,7 @@ namespace big
 		ImGui::PopID();
 
 		ImGui::Separator();
-		components::sub_title("COLOR_OPTIONS"_T.data());
+		components::sub_title("COLOR_OPTIONS"_T);
 
 		static int color_to_change = 0;
 		static int color_type = 8;

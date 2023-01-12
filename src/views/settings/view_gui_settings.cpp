@@ -5,7 +5,7 @@ namespace big
 {
 	void view::gui_settings()
 	{
-		components::sub_title("SETTINGS_UI_SCALE");
+		components::sub_title("SETTINGS_UI_SCALE"_T);
 		ImGui::SliderFloat("##gui-scale", &g.window.gui_scale, 1.f, 1.5f, "%.2f");
 		ImGui::SameLine();
 		if (ImGui::Button("APPLY"_T.data()))

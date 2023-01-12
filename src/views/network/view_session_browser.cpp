@@ -59,12 +59,12 @@ namespace big
 				auto& data = session.info.m_net_player_data;
 				ImGui::Text("SESSION_BROWSER_HOST_RID"_T.data(), data.m_gamer_handle.m_rockstar_id);
 
-				components::button("COPY_SESSION_INFO"_T.data(), []
+				components::button("COPY_SESSION_INFO"_T, []
 				{
 					ImGui::SetClipboardText(session_info);
 				});
 				ImGui::SameLine();
-				components::button("JOIN"_T.data(), [session]
+				components::button("JOIN"_T, [session]
 				{
 					if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 ||
 						STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
@@ -163,7 +163,7 @@ namespace big
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("REPLACE_GAME_MATCHMAKING_DESC"_T.data());
 
-		components::button("REFRESH"_T.data(), []
+		components::button("REFRESH"_T, []
 		{
 			selected_session_idx = -1;
 
