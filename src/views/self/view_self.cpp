@@ -21,7 +21,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::sub_title("GENERAL");
+		components::sub_title("GENERAL"_T);
 
 		ImGui::BeginGroup();
 

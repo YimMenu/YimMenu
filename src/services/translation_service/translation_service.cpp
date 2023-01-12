@@ -6,7 +6,7 @@
 namespace big
 {
     translation_service::translation_service() :
-        m_url("https://cdn.jsdelivr.net/gh/YimMenu/Translations")
+        m_url("https://cdn.jsdelivr.net/gh/YimMenu/Translations@master")
     {
         
     }
