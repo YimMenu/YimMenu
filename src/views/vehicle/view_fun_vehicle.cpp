@@ -96,7 +96,7 @@ namespace big
 				g.vehicle.auto_drive_speed = vehicle::speed_to_mps(auto_drive_speed_user_unit, g.vehicle.speed_unit);
 			}
 
-			const char const* driving_style_names[] = { "LAW_ABIDING"_T.data(), "ROAD_IS_YOURS"_T.data() };
+			const char* driving_style_names[] = { "LAW_ABIDING"_T.data(), "ROAD_IS_YOURS"_T.data() };
 			if (ImGui::BeginCombo("DRIVING_STYLE"_T.data(), driving_style_names[(int)g.vehicle.auto_drive_style]))
 			{
 				for (int i = 0; i < 2; i++)
@@ -148,7 +148,7 @@ namespace big
 			ImGui::SameLine();
 			ImGui::Checkbox("SMOKE"_T.data(), &g.vehicle.rainbow_paint.smoke);
 
-			const char const* rgb_types[] = { "OFF"_T.data(), "FADE"_T.data(), "SPASM"_T.data() };
+			const char* rgb_types[] = { "OFF"_T.data(), "FADE"_T.data(), "SPASM"_T.data() };
 
 			ImGui::SetNextItemWidth(120);
 			if (ImGui::BeginCombo("RGB_TYPE"_T.data(), rgb_types[(int)g.vehicle.rainbow_paint.type]))
@@ -179,7 +179,7 @@ namespace big
 		}
 		ImGui::Separator();
 
-		const char const* boost_behaviors[] = { "DEFAULT"_T.data(), "INSTANT_REFILL"_T.data(), "INFINITE"_T.data() };
+		const char* boost_behaviors[] = { "DEFAULT"_T.data(), "INSTANT_REFILL"_T.data(), "INFINITE"_T.data() };
 		if (ImGui::BeginCombo("BOOST_BEHAVIOR"_T.data(), boost_behaviors[static_cast<int>(g.vehicle.boost_behavior)]))
 		{
 			for (int i = 0; i < 3; i++)
