@@ -63,8 +63,8 @@ namespace big
     template<std::size_t N>
     struct TranslationLiteral
     {
-        char m_key[N]{};
         rage::joaat_t m_hash;
+        char m_key[N]{};
     
         consteval TranslationLiteral(char const(&pp)[N])
         {
