@@ -51,7 +51,7 @@ namespace big
 			{
 				auto& session = g_matchmaking_service->get_found_sessions()[selected_session_idx];
 
-				ImGui::Text("NUM_PLAYERS"_T.data(), session.attributes.player_count);
+				ImGui::Text("SESSION_BROWSER_NUM_PLAYERS"_T.data(), session.attributes.player_count);
 				ImGui::Text("SESSION_BROWSER_DISCRIMINATOR"_T.data(), session.attributes.discriminator);
 				ImGui::Text("SESSION_BROWSER_REGION"_T.data(), regions[session.attributes.region].name);
 				ImGui::Text("SESSION_BROWSER_LANGUAGE"_T.data(), languages[session.attributes.language].name);

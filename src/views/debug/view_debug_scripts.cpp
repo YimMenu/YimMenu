@@ -8,12 +8,7 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("DEBUG_TAB_SCRIPTS"_T.data()))
 		{
-            ImGui::BeginGroup();
-            components::sub_title("SETTINGS_SCRIPTS"_T);
-            ImGui::SameLine(ImGui::GetWindowWidth() - 100);
-            if (ImGui::Button("CLOSE"_T.data())) ImGui::CloseCurrentPopup();
-            ImGui::Spacing();
-            components::sub_title("SETTINGS_SCRIPTS_SUB_TITLE"_T);
+            components::sub_title("DEBUG_SCRIPTS_SUB_TITLE"_T);
 
             for (const auto& script : g_script_mgr.scripts())
             {

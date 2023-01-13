@@ -21,7 +21,7 @@ namespace big
 				ImGui::SliderFloat2("###Tracer Render Distance", g.esp.tracer_render_distance, g.esp.global_render_distance[0], g.esp.global_render_distance[1]);
 			}
 
-			ImGui::Checkbox("SETTINGS_ESP_BOX_ESP", &g.esp.box);
+			ImGui::Checkbox("SETTINGS_ESP_BOX"_T.data(), &g.esp.box);
 			if (g.esp.box) {
 				ImGui::Text("SETTINGS_ESP_BOX_RENDER_DISTANCE"_T.data());
 				ImGui::SliderFloat2("###Box Render Distance", g.esp.box_render_distance, g.esp.global_render_distance[0], g.esp.global_render_distance[1]);

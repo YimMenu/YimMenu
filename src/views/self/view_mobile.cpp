@@ -27,7 +27,7 @@ namespace big
 			mobile::merry_weather::request_airstrike();
 		});
 
-		components::sub_title("MORS_MUTUAL");
+		components::sub_title("MORS_MUTUAL"_T);
 		ImGui::Separator();
 
 		components::button("MORS_FIX_ALL"_T, [] {
