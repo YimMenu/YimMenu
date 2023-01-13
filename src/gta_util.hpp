@@ -1,8 +1,8 @@
 #pragma once
-#include "gta/array.hpp"
 #include "gta/script_thread.hpp"
 #include "gta/tls_context.hpp"
 #include "pointers.hpp"
+
 #include <ped/CPedFactory.hpp>
 #include <network/CNetworkPlayerMgr.hpp>
 #include <script/scrProgramTable.hpp>

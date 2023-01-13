@@ -31,17 +31,27 @@ namespace big::mobile
 			return *script_global(2359296).at(0, 5568).at(681).at(2).as<int*>();
 		}
 	}
-	
+
 	namespace merry_weather
 	{
 		inline void request_ammo_drop()
 		{
 			*script_global(scr_globals::mechanic_global).at(886).as<int*>() = 1;
 		}
-		
+
 		inline void request_helicopter_pickup()
 		{
 			*script_global(scr_globals::mechanic_global).at(888).as<int*>() = 1;
+		}
+
+		inline void request_backup_helicopter()
+		{
+			*script_global(scr_globals::mechanic_global).at(4484).as<int*>() = 1;
+		}
+
+		inline void request_airstrike()
+		{
+			*script_global(scr_globals::mechanic_global).at(4485).as<int*>() = 1;
 		}
 	}
 
@@ -82,6 +92,14 @@ namespace big::mobile
 					fixed_count++;
 
 			return fixed_count;
+		}
+	}
+
+	namespace ceo_abilities
+	{
+		inline void request_bullshark_testosterone()
+		{
+			*script_global(2672505).at(3689).as<int*>() = 1;
 		}
 	}
 

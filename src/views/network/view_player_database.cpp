@@ -123,6 +123,11 @@ namespace big
 					}
 				}
 
+				components::button("Kick", []
+				{
+					session::kick_by_rockstar_id(current_player.rockstar_id);
+				});
+
 				components::button("Join Session", []
 				{
 					session::join_by_rockstar_id(current_player.rockstar_id);

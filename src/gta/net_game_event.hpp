@@ -514,6 +514,7 @@ namespace rage
 		virtual void unk_0038() = 0; //0x0038 (7)
 	}; //Size: 0x0008
 
+#pragma pack(push, 8)
 	class sEntityDamagedData
 	{
 	public:
@@ -530,11 +531,9 @@ namespace rage
 		alignas(8) bool m_is_headshot; //0x0050
 		alignas(8) bool m_is_with_melee_weapon; //0x0058
 		alignas(8) int m_hit_material; //0x0060
-#ifdef __MINGW32__
-		char pad_[0x43]; // !FIXME: THIS IS AWFUL BUT I'M TOO STUPID TO FIX IT. tupoy.
-#endif
 	}; //Size: 0x0068
 	static_assert(sizeof(sEntityDamagedData) == 0x68);
+#pragma pack(pop)
 
 	class netGameEvent
 	{

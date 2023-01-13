@@ -1,8 +1,6 @@
 #include "common.hpp"
 #include "function_types.hpp"
 #include "logger.hpp"
-#include "gta/array.hpp"
-#include "gta/player.hpp"
 #include "gta/script_thread.hpp"
 #include "gui.hpp"
 #include "hooking.hpp"
@@ -56,7 +54,7 @@ namespace big
 
 		detour_hook_helper::add<hooks::received_clone_create>("RCC", (void*)g_pointers->m_received_clone_create);
 		detour_hook_helper::add<hooks::received_clone_sync>("RCS", (void*)g_pointers->m_received_clone_sync);
-		// detour_hook_helper::add<hooks::can_apply_data>("CAD", (void*)g_pointers->m_can_apply_data);
+		detour_hook_helper::add<hooks::can_apply_data>("CAD", (void*)g_pointers->m_can_apply_data);
 
 		detour_hook_helper::add<hooks::get_network_event_data>("GNED", (void*)g_pointers->m_get_network_event_data);
 		detour_hook_helper::add<hooks::write_player_gamer_data_node>("WPGDN", (void*)g_pointers->m_write_player_gamer_data_node);
@@ -99,6 +97,10 @@ namespace big
 		detour_hook_helper::add<hooks::read_bitbuffer_gamer_handle>("RBGH", (void*)g_pointers->m_read_bitbuffer_gamer_handle);
 
 		detour_hook_helper::add<hooks::queue_dependency>("QD", (void*)g_pointers->m_queue_dependency);
+		detour_hook_helper::add<hooks::prepare_metric_for_sending>("PMFS", (void*)g_pointers->m_prepare_metric_for_sending);
+
+		detour_hook_helper::add<hooks::fragment_physics_crash>("FPC", (void*)g_pointers->m_fragment_physics_crash);
+		detour_hook_helper::add<hooks::fragment_physics_crash_2>("FPC2", (void*)g_pointers->m_fragment_physics_crash_2);
 
 		g_hooking = this;
 	}

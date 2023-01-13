@@ -41,7 +41,10 @@ namespace big
 		components::command_checkbox<"fastrun">();
 		ImGui::Checkbox("No Idle Kick", &g.tunables.no_idle_kick);
 		components::command_checkbox<"walkunder">();
-
+		if(!g.self.super_jump)
+			components::command_checkbox<"beastjump">();
+		if(!g.self.beast_jump)
+			components::command_checkbox<"superjump">();
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
@@ -54,8 +57,6 @@ namespace big
 		components::command_checkbox<"mobileradio">();
 
 		ImGui::Checkbox("Dance Mode", &g.self.dance_mode);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Hold Right DPAD or E to enter dance mode");
 
 		ImGui::EndGroup();
 

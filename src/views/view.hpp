@@ -17,9 +17,10 @@ namespace big
 		static void esp_settings();
 		static void context_menu_settings();
 		static void gui_settings();
+		static void hotkey_settings();
 		static void handling_current_profile();
 		static void handling_saved_profiles();
-		static void notification_settings();
+		static void reaction_settings();
 		static void protection_settings();
 		static void heading();
 		static void mobile();
@@ -47,6 +48,7 @@ namespace big
 		static void context_menu();
 		static void gta_data();
 		static void creator();
+		static void train();
 
 		static void player_info();
 		static void player_troll();

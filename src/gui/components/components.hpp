@@ -31,23 +31,14 @@ namespace big
 
 		static bool script_patch_checkbox(const std::string_view text, bool* option, const std::string_view tooltip = "");
 
-		template<size_t N>
-		struct template_str
-		{
-			constexpr template_str(const char(&str)[N])
-			{
-				std::copy_n(str, N, value);
-			}
-
-			char value[N];
-		};
-
 		template<template_str cmd_str>
 		static void command_button(const std::vector<std::uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
 		{
 			static command* command = command::get(rage::consteval_joaat(cmd_str.value));
 			if (ImGui::Button(label_override.value_or(command->get_label()).data()))
 				command->call(args);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip(command->get_description().c_str());
 		}
 
 		template<template_str cmd_str>
@@ -56,6 +47,8 @@ namespace big
 			static player_command* command = (player_command*)command::get(rage::consteval_joaat(cmd_str.value));
 			if (ImGui::Button(label_override.value_or(command->get_label()).data()))
 				command->call(player, args);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip(command->get_description().c_str());
 		}
 
 		template<template_str cmd_str>
@@ -64,6 +57,18 @@ namespace big
 			static bool_command* command = (bool_command*)command::get(rage::consteval_joaat(cmd_str.value));
 			if (ImGui::Checkbox(label_override.value_or(command->get_label()).data(), &command->is_enabled()))
 				command->refresh();
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip(command->get_description().c_str());
+		}
+
+		template<typename PredicateFn, typename ComponentsFn>
+		static void disable_unless(PredicateFn predicate_fn, ComponentsFn components_fn) {
+			auto const result = predicate_fn();
+			if (!result)
+				ImGui::BeginDisabled(true);
+			components_fn();
+			if (!result)
+				ImGui::EndDisabled();
 		}
 	};
 }
