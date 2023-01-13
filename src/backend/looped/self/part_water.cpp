@@ -28,5 +28,5 @@ namespace big
 		}
 	};
 
-	partwater g_invisibility("partwater", "Part Water", "Makes you like Moses", g.world.water.part_water);
+	partwater g_partwater("partwater", "Part Water", "Makes you like Moses", g.world.water.part_water);
 }
