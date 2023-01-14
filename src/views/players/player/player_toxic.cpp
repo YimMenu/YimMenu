@@ -19,9 +19,20 @@ namespace big
 			components::player_command_button<"vehkick">(g_player_service->get_selected(), {});
 
 			components::player_command_button<"ragdoll">(g_player_service->get_selected(), {});
-
+			ImGui::SameLine();
 			components::player_command_button<"intkick">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
 			components::player_command_button<"beast">(g_player_service->get_selected(), {});
+
+			components::player_command_button<"mission">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
+			components::player_command_button<"error">(g_player_service->get_selected(), {});
+
+			components::player_command_button<"ceoraid">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
+			components::button("Trigger MC Raid", [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::BikerDefend); });
+			ImGui::SameLine();
+			components::button("Trigger Bunker Raid", [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::GunrunningDefend); });
 
 			static int wanted_level;
 			ImGui::SliderInt("Wanted Level", &wanted_level, 0, 5);

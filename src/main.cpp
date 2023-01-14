@@ -29,6 +29,8 @@
 #include "services/matchmaking/matchmaking_service.hpp"
 #include "services/api/api_service.hpp"
 
+#include "gta/script.hpp"
+
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
 	using namespace big;

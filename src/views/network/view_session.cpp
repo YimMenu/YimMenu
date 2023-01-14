@@ -158,6 +158,10 @@ namespace big
 				scripts::force_host(RAGE_JOAAT("freemode"));
 				if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")); script && script->m_net_component)
 					script->m_net_component->block_host_migration(true);
+
+				scripts::force_host(RAGE_JOAAT("fmmc_launcher"));
+				if (auto script = gta_util::find_script_thread(RAGE_JOAAT("fmmc_launcher")); script && script->m_net_component)
+					script->m_net_component->block_host_migration(true);
 			});
 		}
 
@@ -217,7 +221,6 @@ namespace big
 
 		ImGui::SameLine();
 
-
 		components::command_button<"beastall">({ });
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Including you");
@@ -231,7 +234,18 @@ namespace big
 		components::command_button<"vehkickall">({ });
 
 		components::command_button<"ragdollall">({ }, "Ragdoll Players");
+		ImGui::SameLine();
 		components::command_button<"intkickall">({ }, "Kick Everyone From Interiors");
+
+		components::command_button<"missionall">({ });
+		ImGui::SameLine();
+		components::command_button<"errorall">({ });
+
+		components::command_button<"ceoraidall">({ });
+		ImGui::SameLine();
+		components::button("Trigger MC Raid", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::BikerDefend); }); });
+		ImGui::SameLine();
+		components::button("Trigger Bunker Raid", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::GunrunningDefend); }); });
 
 		components::small_text("Teleports");
 
@@ -377,5 +391,12 @@ namespace big
 			ImGui::SetTooltip("Blocks CEO money drops across the entire session. This can also break other stuff, use with caution");
 		ImGui::SameLine();
 		ImGui::Checkbox("Randomize CEO Colors", &g.session.randomize_ceo_colors);
+		ImGui::Checkbox("Block Jobs", &g.session.block_jobs);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Prevents remote players from starting jobs while in your session");
+		ImGui::SameLine();
+		components::script_patch_checkbox("Block Muggers", &g.session.block_muggers, "For the entire session");
+		ImGui::SameLine();
+		components::script_patch_checkbox("Block CEO Raids", &g.session.block_ceo_raids, "For the entire session");
 	}
 }

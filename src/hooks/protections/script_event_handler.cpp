@@ -3,6 +3,7 @@
 #include "util/session.hpp"
 #include "gta/net_game_event.hpp"
 #include "backend/player_command.hpp"
+#include "gta/script_handler.hpp"
 
 #include <network/CNetGamePlayer.hpp>
 #include <network/Network.hpp>
@@ -291,9 +292,9 @@ namespace big
 					g.reactions.start_activity.process(plyr);
 					return true;
 				}
-				else if (activity == eActivityType::DefendSpecialCargo || activity == eActivityType::GunrunningDefend || activity == eActivityType::BikerDefend)
+				else if (activity == eActivityType::DefendSpecialCargo || activity == eActivityType::GunrunningDefend || activity == eActivityType::BikerDefend || args[2] == 238)
 				{
-					g.reactions.start_activity.process(plyr);
+					g.reactions.trigger_business_raid.process(plyr);
 					return true;
 				}
 			}
@@ -347,6 +348,18 @@ namespace big
 				return true;
 			}
 			break;
+		case eRemoteEvent::TriggerCEORaid:
+		{
+			if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")))
+			{
+				if (script->m_net_component && script->m_net_component->m_host && script->m_net_component->m_host->m_net_game_player != player)
+				{
+					g.reactions.trigger_business_raid.process(plyr);
+				}
+			}
+
+			return true;
+		}
 		}
 
 		// detect pasted menus setting args[1] to something other than PLAYER_ID()

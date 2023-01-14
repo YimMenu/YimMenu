@@ -162,6 +162,7 @@ namespace big
 			reaction start_activity{ "Start Activity", "Blocked Start Activity from %s", "Blocked Start Activity from %s" };
 			reaction null_function_kick{ "Null Function Kick", "Blocked Null Function Kick from %s", "%s tried to kick me out!" };
 			reaction destroy_personal_vehicle{ "Destroy Personal Vehicle", "Blocked Destroy Personal Vehicle from %s", "%s tried to destroy my personal vehicle!" };
+			reaction trigger_business_raid{ "Trigger Business Raid", "Blocked Trigger Business Raid from %s", "%s tried to trigger a business raid!" };
 			reaction turn_into_beast{ "Turn Into Beast", "Blocked Turn Into Beast from %s", "%s tried to turn me into the beast!" };
 			reaction remote_wanted_level{ "Remote Wanted Level", "Blocked Remote Wanted Level from %s", "%s tried to give me a wanted level!" };
 			interloper_reaction remote_wanted_level_others{ "Remote Wanted Level On Other Players", "%s is attempting to give a wanted level to %s!", "%s is attempting to give a wanted level to %s!", false, false };
@@ -180,7 +181,7 @@ namespace big
 			interloper_reaction lost_connection_kick_others{ "Lost Connection Kick On Other Players", "%s is trying to lost connection kick %s!", "%s is trying to lost connection kick %s!", true, false };
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, clear_wanted_level, crash, end_session_kick, fake_deposit, force_mission, force_teleport, gta_banner, kick_from_interior, mc_teleport, network_bail, personal_vehicle_destroyed, 
-				remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, start_activity,
+				remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, trigger_business_raid, start_activity,
 				null_function_kick, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, request_control_event, report, 
 				breakup_others, gamer_instruction_kick, lost_connection_kick, lost_connection_kick_others)
 		} reactions{};
@@ -324,6 +325,9 @@ namespace big
 
 			bool block_ceo_money = false;
 			bool randomize_ceo_colors = false;
+			bool block_jobs = false;
+			bool block_muggers = false;
+			bool block_ceo_raids = false;
 
 			int send_to_apartment_idx = 1;
 			int send_to_warehouse_idx = 1;
@@ -343,8 +347,8 @@ namespace big
 				log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled,
 				player_magnet_count, is_team, name_spoof_enabled, advertise_menu, spoofed_name, join_in_sctv_slots,
 				kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic,
-				disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, send_to_apartment_idx, send_to_warehouse_idx,
-				chat_commands, chat_command_default_access_level, show_cheating_message)
+				disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids,
+				send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message)
 		} session{};
 
 		struct settings

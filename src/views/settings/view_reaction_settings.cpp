@@ -81,6 +81,7 @@ namespace big
 		draw_reaction(g.reactions.start_activity);
 		draw_reaction(g.reactions.teleport_to_warehouse);
 		draw_reaction(g.reactions.transaction_error);
+		draw_reaction(g.reactions.trigger_business_raid);
 		draw_reaction(g.reactions.tse_freeze);
 		draw_reaction(g.reactions.tse_sender_mismatch);
 		draw_reaction(g.reactions.vehicle_kick);

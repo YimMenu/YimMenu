@@ -47,4 +47,9 @@ namespace big::scr_locals
 		constexpr static auto broadcast_idx = 599;
 		constexpr static auto player_broadcast_idx = 2583;
 	}
+
+	namespace fmmc_launcher
+	{
+		constexpr static auto broadcast_idx = 11153;
+	}
 }
