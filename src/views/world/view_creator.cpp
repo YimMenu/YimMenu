@@ -110,9 +110,7 @@ namespace big
 					else {
 						g_notification_service->push_error("Job Import", "UGC QueryContent failed");
 					}
-				} else {
-					g_notification_service->push_error("Job Import", "Couldn't get the job details");
-				}
+				});			
 #else
 					g_notification_service->push_error("Job Import", "cpr is broken in MinGW!");
 #endif
