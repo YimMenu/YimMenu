@@ -2,89 +2,94 @@
 
 ![](https://img.shields.io/badge/dynamic/json?color=ffab00&label=Online%20Version&query=%24.game.online&url=https%3A%2F%2Fraw.githubusercontent.com%2FYimMenu%2FYimMenu%2Fmaster%2Fmetadata.json&style=flat-square&labelColor=000000) ![](https://img.shields.io/badge/dynamic/json?color=ffab00&label=Game%20Build&query=%24.game.build&url=https%3A%2F%2Fraw.githubusercontent.com%2FYimMenu%2FYimMenu%2Fmaster%2Fmetadata.json&style=flat-square&labelColor=000000)
 
-A mod menu base for Grand Theft Auto V.
-Strictly for educational purposes.
+这是YimMenu的中文版构建教程
+
+这是一款适用于Grand Theft Auto V的作弊菜单。
+
+仅用于学习交流，禁止做出破坏游戏平衡的事情
 
 YimMenu is originally based of off [BigBaseV2](https://github.com/Pocakking/BigBaseV2) which was an amazing base at the time but nowadays is a bit dated.
-So here I am with an up-to-date menu focusing on protecting the user from toxic modders.
+
+YimMenu 最初基于 [BigBaseV2](https://github.com/Pocakking/BigBaseV2)，这在当时是一个了不起的菜单，但现在有点过时了。 
+
+所以在这里有一个新开发的菜单，重点是保护用户免受其他有攻击性的菜单的侵害。
 
 ## Table of contents
 
- * [How to build](#how-to-build)
+ * [构建方法](#how-to-build)
     * [Curl](#curl)
     * [Git](#git)
     * [CMake](#CMake)
-    * [Cloning and generating project files](#cloning-and-generating-project-files)
- * [Staying Up To Date](#staying-up-to-date)
- * [Project Structure](#project-structure)
- * [Features](#features)
- * [Contributing](#contributing)
+    * [克隆并生成项目文件](#cloning-and-generating-project-files)
+ * [保持代码最新](#staying-up-to-date)
+ * [项目结构](#project-structure)
+ * [特点](#features)
+ * [贡献](#contributing)
  
-## How to build
+## 构建方法
 
-Requirements:
+环境要求:
 
  * [Git](#git)
  * [CMake](#cmake)
 
-If you have both of the above requirements you can skip to [cloning the git repo and generating the project files](#cloning-and-generating-project-files).
+如果您同时满足上述两个要求，则可以跳至 [克隆存储库并生成项目文件](#cloning-and-generating-project-files).
 
 ### Curl
 
-Curl should be already installed on your computer, but if you are having issues with building the project, you will need to download and install
-it.
+Curl 应该已经安装在您的计算机上，但是如果您在构建项目时遇到问题，则需要下载并安装它。
 
-[Download Link](https://curl.se/download.html)
+[下载链接](https://curl.se/download.html)
 
 ### Git
 
-If you haven't installed git on your system go and do so as it is **REQUIRED** for setting up a working build environment.
+如果你还没有在你的电脑上安装git，那就先安装它，它是设置项目构建环境的**必需品**
 
-[Download Link](https://git-scm.com/download/win)
+[下载链接](https://git-scm.com/download/win)
 
 ### CMake
 
-CMake is used to generate our project files, if you haven't used it before you will need to download and install it.
+CMake 用于生成我们的项目文件，如果您之前没有使用过它，则需要下载并安装它。
 
-[Download Link](https://cmake.org/download/)
+[下载链接](https://cmake.org/download/)
 
-### Cloning and generating project files
+### 克隆和生成项目文件
 
-- Make sure that you have installed Git and CMake.
+- 确保您已经安装了 Git 和 CMake。
 
-- Clone the repository:
+- 克隆存储库:
   ```bash
   git clone https://github.com/YimMenu/YimMenu.git
   ```
 
--  Go into the directory you just cloned:
+-  进入刚刚克隆的目录：
   ```bash
   cd YimMenu
   ```
 
-#### Generate project files 
+#### 生成项目文件
 
-> **Note**
-> You will have cd build and cmake again if you add any files or you will get an error when building.
+> **注意**
+> 如果你添加了新文件或修改了代码，您需要再次进行 cd build 和 cmake，否则在构建时会出错。
 
-- Windows Only
+- 仅windows
 
   - Visual Studio
 
-    If you only use Visual Studio and don't want to mess with command lines, Visual Studio has a CMake extension that does all the work.
+   如果您只使用 Visual Studio 并且不想弄乱命令行，Visual Studio 有一个 CMake 扩展可以完成所有工作。
 
-    Make sure it is [installed](https://learn.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=msvc-170#installation).
+    确保它已[安装](https://learn.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=msvc-170#installation).
 
-    Then, just open Visual Studio, open a local folder, and select the `YimMenu` folder that the `git clone` command just created.
+    然后，打开 Visual Studio，选择打开本地文件夹选项，然后打开刚刚通过 `git clone` 命令创建的 `YimMenu` 文件夹。
 
-    Let the CMake extension generate the needed files for building, you can follow the progress in the Output tab of Visual Studio.
+    让 CMake 扩展生成构建所需的文件，您可以在 Visual Studio 的“输出”选项卡中跟踪进度。
 
-    Then, you can just build by using the Build menu at the top and clicking Build All.
+    然后，您可以使用顶部的“生成”菜单并单击“全部生成”来build。
 
 
-- Other OSs / IDEs
+- 其他操作系统/集成开发环境
 
-  If you use something else or prefer using the console on Windows, just follow this:
+  如果您使用其他工具或更喜欢在 Windows 上使用控制台，请按照以下步骤操作：
 
   ```bash
   mkdir build
@@ -92,46 +97,46 @@ CMake is used to generate our project files, if you haven't used it before you w
   cmake ..
   ```
 
-  Now, you will be able to open the solution, and build it.
+ 现在，您将能够打开解决方案并生成它。
   
-## Staying Up To Date
+## 保持最新状态
 
-Pull the latest changes from this repository.
+从此存储库中提取最新更改。
 
-With a command line it is as easy as:
+使用一个很简单的命令:
 
 ```bash
 git pull
 ```
 
-CMake should be handling removed / added files automatically without any user input.
+CMake 会在没有任何用户输入的情况下自动处理删除/添加的文件。
 
-If this is not the case for some reason you'll have to redo the steps in the [Generate project files](#generate-project-files) section above.
+如果由于某种原因不是这种情况，您将需要重做上面[生成项目文件](#generate-project-files) 部分中的步骤.
 
-If you are doing custom modifications to the codebase and have a fork you are on your own for staying up to date with upstream (this repository), google stuff like "merge from upstream" and learn how to use Git.
+如果您正在对代码库进行自定义修改并拥有一个分支，那么您可以自己与upstream（此存储库）保持同步，谷歌搜索诸如“从upstream合并”之类的东西并学习如何使用 Git。
 
-## Project Structure
+## 项目结构
 
-- `backend/` all features that should be ran in a loop are in here sorted by category
-- `gui/` includes everything related to UI elements
-- `hooks/` function hooks
-- `native_hooks/` hooks to natives
-- `services/` service files to interact and maintain stuff
-- `util/` general utility functions to keep code as compact and as much in one place as possible
+- `backend/` 在循环中运行的所有功能都在这里按类别排序
+- `gui/` 包括与 UI 元素相关的所有内容
+- `hooks/` 函数挂钩
+- `native_hooks/` 本机挂钩
+- `services/` 用于交互和维护内容的服务文件
+- `util/` 通用实用函数，使代码尽可能紧凑并尽可能多地放在一个地方
 
-## Features
+## 特点
 
-Below is an incomplete list of feature that I believe are notable to this "base" or menu.
+以下是我认为此“基础”或菜单值得注意的不完成的功能列表
 
- - Return Native spoofing
- - Custom [settings](src/core/globals.hpp) with deep compare if changes were made, including auto saving
- - Clear and well structured source code
- - Includes a thread pool to queue tasks that shouldn't block the game thread, very similar to fiber pool
- - Updated natives.hpp from https://nativedb.spyral.dev
- - ReClass.NET structures implemented, accessible from a global called g_local_player defined in `common.hpp`
+- 返回本机欺骗
+- 自定义 [设置](src/core/globals.hpp) 与深度比较是否进行了更改，包括自动保存
+- 清晰且结构良好的源代码
+- 包括一个线程池，用于排队不应阻塞游戏线程的任务，与纤维池非常相似
+- 从 https://nativedb.spyral.dev 更新了 natives.hpp
+- 实现了 ReClass.NET 结构，可从 `common.hpp` 中定义的名为 g_local_player 的全局访问
 
-## Contributing
+## 贡献
 
-You're free to contribute to YimMenu as long as the features are useful, not overly toxic and do not contain anything money related that might get the menu targeted by Take2.
+你可以自由地为 YimMenu 做贡献，只要这些功能有用，不过分有害，并且不包含任何可能成为 Take2 目标菜单的与金钱相关的内容。
 
-Make sure to read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+请务必阅读 [CONTRIBUTING.md](CONTRIBUTING.md) 文件。
