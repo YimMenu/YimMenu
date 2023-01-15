@@ -332,6 +332,7 @@ namespace big
 			bool wanted_level_all = false;
 
 			bool show_cheating_message = false;
+			bool anonymous_bounty = true;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session,
 				local_weather, override_time, override_weather, custom_time, disable_chat_filter, log_chat_messages,
@@ -339,7 +340,7 @@ namespace big
 				player_magnet_count, is_team, name_spoof_enabled, advertise_menu, spoofed_name, join_in_sctv_slots,
 				kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic,
 				disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, send_to_apartment_idx, send_to_warehouse_idx,
-				chat_commands, chat_command_default_access_level, show_cheating_message)
+				chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty)
 		} session{};
 
 		struct settings
@@ -351,8 +352,21 @@ namespace big
 				int teleport_waypoint = 0;
 				int teleport_objective = 0;
 				int noclip = 0;
+				int bringvehicle = 0;
+				int invis = 0;
+				int heal = 0;
+				int fill_inventory = 0;
+				int skip_cutscene = 0;
+				int freecam = 0;
+				int superrun = 0;
+				int superjump = 0;
+				int beastjump = 0;
+				int invisveh = 0;
+				int localinvisveh = 0;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, 
+					noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump,
+					invisveh, localinvisveh)
 			} hotkeys{};
 
 			bool dev_dlc = false;
