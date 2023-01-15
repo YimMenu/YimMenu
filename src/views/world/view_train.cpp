@@ -36,11 +36,10 @@ namespace big
 		ImGui::SameLine();
 		components::button("SET"_T, [] { train::set_train_speed(train_speed); });
 
-		ImGui::Checkbox("DRIVE_TRAIN"_T.data(), &g.train.drive_train);
+		ImGui::Checkbox("DRIVE_TRAIN"_T.data(), &g.world.train.drive_train);
 		
 		ImGui::SameLine();
 		
-		ImGui::Checkbox("DERAIL_TRAIN"_T.data(), &g.train.derail_train);
-		
+		ImGui::Checkbox("DERAIL_TRAIN"_T.data(), &g.world.train.derail_train);
 	}
 }
