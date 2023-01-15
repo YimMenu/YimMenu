@@ -2,7 +2,7 @@
 
 ![](https://img.shields.io/badge/dynamic/json?color=ffab00&label=Online%20Version&query=%24.game.online&url=https%3A%2F%2Fraw.githubusercontent.com%2FYimMenu%2FYimMenu%2Fmaster%2Fmetadata.json&style=flat-square&labelColor=000000) ![](https://img.shields.io/badge/dynamic/json?color=ffab00&label=Game%20Build&query=%24.game.build&url=https%3A%2F%2Fraw.githubusercontent.com%2FYimMenu%2FYimMenu%2Fmaster%2Fmetadata.json&style=flat-square&labelColor=000000)
 
-这是YimMenu的中文版构建教程
+这是YimMenu的中文版构建教程，This is the Chinese version of YimMenu build tutorial
 
 这是一款适用于Grand Theft Auto V的作弊菜单。
 
@@ -12,7 +12,7 @@ YimMenu 最初基于 [BigBaseV2](https://github.com/Pocakking/BigBaseV2)，这�
 
 所以在这里有一个新开发的菜单，重点是保护用户免受其他有攻击性的菜单的侵害。
 
-## Table of contents
+## 目录
 
  * [构建方法](#how-to-build)
     * [Curl](#curl)
