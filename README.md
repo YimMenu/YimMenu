@@ -8,8 +8,6 @@
 
 仅用于学习交流，禁止做出破坏游戏平衡的事情
 
-YimMenu is originally based of off [BigBaseV2](https://github.com/Pocakking/BigBaseV2) which was an amazing base at the time but nowadays is a bit dated.
-
 YimMenu 最初基于 [BigBaseV2](https://github.com/Pocakking/BigBaseV2)，这在当时是一个了不起的菜单，但现在有点过时了。 
 
 所以在这里有一个新开发的菜单，重点是保护用户免受其他有攻击性的菜单的侵害。
@@ -85,6 +83,8 @@ CMake 用于生成我们的项目文件，如果您之前没有使用过它，�
     让 CMake 扩展生成构建所需的文件，您可以在 Visual Studio 的“输出”选项卡中跟踪进度。
 
     然后，您可以使用顶部的“生成”菜单并单击“全部生成”来build。
+    
+    生成完成后你可以在YimMenu\out\build\x64-Release目录下找到Yimmenu.dll
 
 
 - 其他操作系统/集成开发环境
