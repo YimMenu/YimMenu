@@ -94,6 +94,12 @@ CMake is used to generate our project files, if you haven't used it before you w
 
   Now, you will be able to open the solution, and build it.
   
+## Enabling to toxic features
+
+Since we are trying our best to improve the experience in GTA Online we have stripped some features from pre-compiled versions of YimMenu.
+
+In order to activating them go to the [CMakeLists.txt] and add `CUSTOM_BUILD` to the `add_compile_definitions` section.
+  
 ## Staying Up To Date
 
 Pull the latest changes from this repository.
