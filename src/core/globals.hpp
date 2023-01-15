@@ -168,10 +168,10 @@ namespace big
 			reaction request_control_event{ "Request Control Event", "Blocked Request Control Event from %s", "%s tried to mess with my vehicle!" };
 			reaction report{ "Report", "Blocked Report from %s", "%s tried to report me!" };
 
-			interloper_reaction breakup_others{ "Breakup Kicks On Other Players", "%s is trying to breakup kick %s!", "%s is trying to breakup kick %s!", true, true }; // blockable only when host but we have no way to specify that atm
+			interloper_reaction breakup_others{ "Breakup Kicks On Other Players", "%s is trying to breakup kick %s!", "%s is trying to breakup kick %s!", false, false }; // blockable only when host but we have no way to specify that atm
 			reaction lost_connection_kick{ "Lost Connection Kick", "Blocked Lost Connection Kick from %s", "%s tried to kick me out!" };
 			reaction gamer_instruction_kick{ "Gamer Instruction Kick", "Blocked Gamer Instruction Kick from %s", "%s tried to kick me out!" };
-			interloper_reaction lost_connection_kick_others{ "Lost Connection Kick On Other Players", "%s is trying to lost connection kick %s!", "%s is trying to lost connection kick %s!", true, false };
+			interloper_reaction lost_connection_kick_others{ "Lost Connection Kick On Other Players", "%s is trying to lost connection kick %s!", "%s is trying to lost connection kick %s!", false, false };
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, clear_wanted_level, crash, fake_deposit, force_mission, force_teleport, gta_banner, mc_teleport, network_bail, personal_vehicle_destroyed, remote_off_radar,
 				rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, start_activity,
@@ -323,6 +323,9 @@ namespace big
 			int send_to_apartment_idx = 1;
 			int send_to_warehouse_idx = 1;
 
+			bool show_cheating_message = false;
+			bool anonymous_bounty = true;
+
 			// not to be saved
 			bool join_queued = false;
 			rage::rlSessionInfo info;
@@ -330,9 +333,6 @@ namespace big
 			bool off_radar_all = false;
 			bool semi_godmode_all = false;
 			bool wanted_level_all = false;
-
-			bool show_cheating_message = false;
-			bool anonymous_bounty = true;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session,
 				local_weather, override_time, override_weather, custom_time, disable_chat_filter, log_chat_messages,
