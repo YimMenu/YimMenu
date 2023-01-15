@@ -29,7 +29,7 @@ namespace big
 		strcpy_s(name, sizeof(name), g.spoofing.username.c_str());
 
 		ImGui::Text("Username:");
-		ImGui::InputText("##username_input", name, sizeof(name));
+		components::input_text("##username_input", name, sizeof(name));
 
 		if (name != g.spoofing.username)
 			g.spoofing.username = std::string(name);
@@ -67,7 +67,7 @@ namespace big
 		strcpy_s(crew_tag, sizeof(crew_tag), g.spoofing.crew_tag.c_str());
 
 		ImGui::Text("Crew Tag:");
-		ImGui::InputText("##crew_tag_input", crew_tag, sizeof(crew_tag));
+		components::input_text("##crew_tag_input", crew_tag, sizeof(crew_tag));
 
 		if (crew_tag != g.spoofing.crew_tag)
 			g.spoofing.crew_tag = std::string(crew_tag);
