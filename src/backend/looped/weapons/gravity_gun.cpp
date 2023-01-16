@@ -56,7 +56,6 @@ namespace big
 			location = self::pos;
 
 			auto is_attack_just_pressed = PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK);
-			auto is_attack_pressed = PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK);
 
 			if (is_attack_just_pressed)
 			{
