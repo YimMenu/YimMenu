@@ -287,7 +287,7 @@ namespace big
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(custom_time, hour, minute, second)
 			} custom_time;
-			bool disable_chat_filter = false;
+			bool chat_force_clean = false;
 			bool log_chat_messages = false;
 			bool log_text_messages = false;
 			bool decloak_players = false;
