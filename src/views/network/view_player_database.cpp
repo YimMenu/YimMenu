@@ -181,7 +181,7 @@ namespace big
 		static int64_t new_rockstar_id;
 
 		components::input_text("NAME"_T, new_name, sizeof(new_name));
-		ImGui::InputScalar("RID"_T, ImGuiDataType_S64, &new_rockstar_id);
+		ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &new_rockstar_id);
 
 		if (ImGui::Button("ADD"_T.data()))
 		{
