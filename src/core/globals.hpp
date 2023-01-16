@@ -553,7 +553,7 @@ namespace big
 
 			struct gravity_gun
 			{
-				bool collision = false;
+				bool launch_on_release = false;
 			} gravity_gun;
 
 			CustomWeapon custom_weapon = CustomWeapon::NONE;
