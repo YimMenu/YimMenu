@@ -11,7 +11,7 @@ namespace big
 
 		if (ImGui::IsItemActive())
 			g_fiber_pool->queue_job([] {
-			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-				});
+				PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+			});
 	}
 }

@@ -9,10 +9,6 @@ namespace big
 {
 	void view::spoofing()
 	{
-		g_fiber_pool->queue_job([] {
-			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-		});
-
 		components::small_text("To spoof any of the below credentials you need to reconnect with the lobby.\nAll spoofed details will be only visible by other players, your game will still show your actual name, ip, rid...");
 
 		components::sub_title("Username");
