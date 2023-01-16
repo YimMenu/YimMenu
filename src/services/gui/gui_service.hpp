@@ -28,6 +28,7 @@ namespace big
 		TIME_AND_WEATHER,
 		CREATOR,
 		TRAIN,
+		WATER,
 
 		NETWORK,
 		SESSION,
@@ -80,8 +81,9 @@ namespace big
 				{ tabs::SPAWN_PED, { "Spawn Ped", view::spawn_ped }},
 				{ tabs::TIME_AND_WEATHER, { "Time And Weather", view::time_and_weather }},
 				{ tabs::CREATOR, { "Creator", view::creator }},
-				{ tabs::TRAIN, { "Train", view::train }}
-			}}},
+				{ tabs::TRAIN, { "Train", view::train }},
+				{ tabs::WATER, { "Water", view::water }},
+		}}},
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},
 				{ tabs::SESSION, { "Session", view::session }},
