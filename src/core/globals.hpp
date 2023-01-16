@@ -571,6 +571,12 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ammo_special, toggle, type, explosion_tag)
 			} ammo_special{};
 
+			struct gravity_gun
+			{
+				bool launch_on_release = false;
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(gravity_gun, launch_on_release)
+			} gravity_gun;
+
 			CustomWeapon custom_weapon = CustomWeapon::NONE;
 			bool force_crosshairs = false;
 			bool infinite_ammo = false;
@@ -584,7 +590,7 @@ namespace big
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons,
 				ammo_special, custom_weapon, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, no_recoil,
-				no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire)
+				no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire, gravity_gun)
 		} weapons{};
 
 		struct window
