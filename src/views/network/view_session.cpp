@@ -247,6 +247,10 @@ namespace big
 		ImGui::SameLine();
 		components::button("Trigger Bunker Raid", [] { g_player_service->iterate([](auto& plyr) { toxic::start_activity(plyr.second, eActivityType::GunrunningDefend); }); });
 
+		components::command_button<"sextall">({ }, "Send Sexts");
+		ImGui::SameLine();
+		components::command_button<"fakebanall">({ }, "Send Fake Ban Messages");
+
 		components::small_text("Teleports");
 
 		if (ImGui::BeginCombo("##apartment", apartment_names[g.session.send_to_apartment_idx]))
@@ -320,48 +324,6 @@ namespace big
 		components::command_button<"interiortpall">({ 160 }, "TP All To Freakshop");
 		ImGui::SameLine();
 		components::command_button<"interiortpall">({ 161 }, "TP All To Multi Floor Garage");
-
-		components::sub_title("Event Starter");
-		
-		ImGui::BeginGroup();
-		components::button("Hot Target", [] { scripts::start_launcher_script(36); });
-		components::button("Kill List", [] { scripts::start_launcher_script(37); });
-		components::button("Checkpoints", [] { scripts::start_launcher_script(39); });
-		components::button("Challenges", [] { scripts::start_launcher_script(40); });
-		components::button("Penned In", [] { scripts::start_launcher_script(41); });
-		ImGui::EndGroup();
-
-		ImGui::SameLine();
-
-		ImGui::BeginGroup();
-		components::button("Hot Property", [] { scripts::start_launcher_script(43); });
-		components::button("King Of The Castle", [] { scripts::start_launcher_script(45); });
-		components::button("Criminal Damage", [] { scripts::start_launcher_script(46); });
-		components::button("Hunt The Beast", [] { scripts::start_launcher_script(47); });
-		components::button("Business Battles", [] { scripts::start_launcher_script(114); });
-		ImGui::EndGroup();
-
-		ImGui::SameLine();
-
-		ImGui::BeginGroup();
-		components::button("One-On-One Deathmatch", [] { scripts::start_launcher_script(197); });
-		components::button("Impromptu Race", [] { scripts::start_launcher_script(16); });
-		components::button("Flight School", [] { scripts::start_launcher_script(196); });
-		components::button("Golf", [] { scripts::start_launcher_script(193); });
-		components::button("Tutorial", [] { scripts::start_launcher_script(20); });
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Only works on joining players");
-		ImGui::EndGroup();
-
-		ImGui::SameLine();
-
-		ImGui::BeginGroup();
-		components::button("Gunslinger", [] { scripts::start_launcher_script(211); });
-		components::button("Space Monkey", [] { scripts::start_launcher_script(216); });
-		components::button("Wizard", [] { scripts::start_launcher_script(212); });
-		components::button("QUB3D", [] { scripts::start_launcher_script(217); });
-		components::button("Camhedz", [] { scripts::start_launcher_script(218); });
-		ImGui::EndGroup();
 
 		ImGui::Checkbox("Disable Pedestrians", &g.session.disable_peds);
 		ImGui::SameLine();

@@ -105,6 +105,19 @@ namespace big
 			return true;
 		}
 
+		if (msgType == rage::eNetMessage::MsgBlacklist && frame->m_connection_identifier != gta_util::get_network()->m_game_session.m_connection_identifier)
+		{
+			if (player)
+			{
+				g_notification_service->push_error("Protections", std::format("Blocked invalid blacklist crash from {}", player->get_name()));
+			}
+			else
+			{
+				g_notification_service->push_error("Protections", "Blocked invalid blacklist remote crash");
+			}
+			return true;
+		}
+
 		if (player)
 		{
 			switch (msgType)

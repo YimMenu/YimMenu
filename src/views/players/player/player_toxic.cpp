@@ -34,6 +34,10 @@ namespace big
 			ImGui::SameLine();
 			components::button("Trigger Bunker Raid", [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::GunrunningDefend); });
 
+			components::player_command_button<"sext">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
+			components::player_command_button<"fakeban">(g_player_service->get_selected(), {});
+
 			static int wanted_level;
 			ImGui::SliderInt("Wanted Level", &wanted_level, 0, 5);
 			ImGui::SameLine();
