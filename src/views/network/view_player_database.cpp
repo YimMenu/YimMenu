@@ -134,7 +134,7 @@ namespace big
 				});
 
 				static char message[256];
-				ImGui::InputText("INPUT_MSG"_T.data(), message, sizeof(message));
+				components::input_text("INPUT_MSG"_T, message, sizeof(message));
 				if (components::button("SEND_MSG"_T))
 				{
 					g_thread_pool->push([selected]
@@ -180,8 +180,8 @@ namespace big
 		static char new_name[64];
 		static int64_t new_rockstar_id;
 
-		ImGui::InputText("NAME"_T.data(), new_name, sizeof(new_name));
-		ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &new_rockstar_id);
+		components::input_text("NAME"_T, new_name, sizeof(new_name));
+		ImGui::InputScalar("RID"_T, ImGuiDataType_S64, &new_rockstar_id);
 
 		if (ImGui::Button("ADD"_T.data()))
 		{

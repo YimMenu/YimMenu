@@ -31,7 +31,7 @@ namespace big
 		});
 
 		static char username[20];
-		ImGui::InputText("INPUT_USERNAME"_T.data(), username, sizeof(username));
+		components::input_text("INPUT_USERNAME"_T, username, sizeof(username));
 		if (components::button("JOIN_BY_USERNAME"_T))
 		{
 			session::join_by_username(username);
@@ -43,7 +43,7 @@ namespace big
 		};
 
 		static char base64[500]{};
-		ImGui::InputText("SESSION_INFO"_T.data(), base64, sizeof(base64));
+		components::input_text("SESSION_INFO"_T, base64, sizeof(base64));
 		components::button("JOIN_SESSION_INFO"_T, []
 		{
 			rage::rlSessionInfo info;
@@ -101,7 +101,7 @@ namespace big
 		ImGui::Checkbox("LOG_CHAT_MSG"_T.data(), &g.session.log_chat_messages);
 		ImGui::Checkbox("LOG_TXT_MSG"_T.data(), &g.session.log_text_messages);
 		static char msg[256];
-		ImGui::InputText("##message", msg, sizeof(msg));
+		components::input_text("##message", msg, sizeof(msg));
 		ImGui::SameLine();
 		ImGui::Checkbox("IS_TEAM"_T.data(), &g.session.is_team);
 		ImGui::SameLine();
@@ -179,7 +179,7 @@ namespace big
 				strcpy_s(name, sizeof(name), g.session.spoofed_name.c_str());
 
 				ImGui::Text("PLAYER_SPOOFED_NAME"_T.data());
-				ImGui::InputText("##username_input", name, sizeof(name));
+				components::input_text("##username_input", name, sizeof(name));
 
 				if (name != g.session.spoofed_name)
 					g.session.spoofed_name = std::string(name);

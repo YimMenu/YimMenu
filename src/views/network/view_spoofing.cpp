@@ -9,10 +9,6 @@ namespace big
 {
 	void view::spoofing()
 	{
-		g_fiber_pool->queue_job([] {
-			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-		});
-
 		components::small_text("SPOOFING_DESCRIPTION"_T);
 
 		components::sub_title("USERNAME"_T);
@@ -29,7 +25,7 @@ namespace big
 		strcpy_s(name, sizeof(name), g.spoofing.username.c_str());
 
 		ImGui::Text("USERNAME_COLON"_T.data());
-		ImGui::InputText("##username_input", name, sizeof(name));
+		components::input_text("##username_input", name, sizeof(name));
 
 		if (name != g.spoofing.username)
 			g.spoofing.username = std::string(name);
@@ -67,7 +63,7 @@ namespace big
 		strcpy_s(crew_tag, sizeof(crew_tag), g.spoofing.crew_tag.c_str());
 
 		ImGui::Text("SPOOFING_CREW_TAG"_T.data());
-		ImGui::InputText("##crew_tag_input", crew_tag, sizeof(crew_tag));
+		components::input_text("##crew_tag_input", crew_tag, sizeof(crew_tag));
 
 		if (crew_tag != g.spoofing.crew_tag)
 			g.spoofing.crew_tag = std::string(crew_tag);

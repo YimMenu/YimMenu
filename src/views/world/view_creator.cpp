@@ -77,7 +77,7 @@ namespace big
 		ImGui::Separator();
 
 		static char job_link[69]{};
-		ImGui::InputText("CREATOR_JOB_LINK"_T.data(), job_link, sizeof(job_link));
+		components::input_text("CREATOR_JOB_LINK"_T, job_link, sizeof(job_link));
 
 		components::button("CREATOR_JOB_IMPORT"_T, []
 		{

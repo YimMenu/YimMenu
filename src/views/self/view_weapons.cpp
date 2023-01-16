@@ -135,6 +135,9 @@ namespace big
 
 		switch (selected)
 		{
+		case CustomWeapon::GRAVITY_GUN:
+				ImGui::Checkbox("Launch on release", &g.weapons.gravity_gun.launch_on_release);
+				break;
 		case CustomWeapon::VEHICLE_GUN:
 			// this some ugly ass looking code
 			static char vehicle_gun[12];
