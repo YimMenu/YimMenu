@@ -4,7 +4,7 @@
 
 namespace big
 {
-#if _MSC_VER // Unused with MinGW
+#if 0 // Unused with MinGW
 	void script::script_exception_handler(PEXCEPTION_POINTERS exp)
 	{
 		HMODULE mod{};

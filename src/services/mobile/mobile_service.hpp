@@ -28,11 +28,11 @@ namespace big
 	{
 		std::map<std::string, std::unique_ptr<personal_vehicle>> m_personal_vehicles;
 		std::map<int, std::string> m_pv_lookup;
-#if _MSC_VER
+#ifdef _MSC_VER
 		std::chrono::time_point<std::chrono::steady_clock> m_last_update;
 #else
 		std::chrono::time_point<std::chrono::system_clock> m_last_update;
-#endif
+#endif // _MSC_VER
 
 	public:
 		mobile_service();

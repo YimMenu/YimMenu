@@ -1,4 +1,4 @@
-#if _MSC_VER
+#ifndef CROSSCOMPILING
 #include "api_service.hpp"
 #include "pointers.hpp"
 #include "services/creator_storage/creator_storage_service.hpp"
@@ -92,4 +92,4 @@ namespace big
 	}
 }
 
-#endif
+#endif // CROSSCOMPILING

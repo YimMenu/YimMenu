@@ -52,7 +52,7 @@ namespace big
 	{
 		m_program = program;
 		m_vmt_hook = std::make_unique<vmt_hook>(m_program, 9);
-		m_vmt_hook->hook(6, &scrprogram_dtor);
+		m_vmt_hook->hook(6, (void*)&scrprogram_dtor);
 		m_vmt_hook->enable();
 
 		m_handler_hook = std::make_unique<vmt_hook>(&m_program->m_native_entrypoints, m_program->m_native_count);
@@ -76,7 +76,7 @@ namespace big
 		{
 			if (auto it = handler_replacements.find((rage::scrNativeHandler)program->m_native_entrypoints[i]); it != handler_replacements.end())
 			{
-				m_handler_hook->hook(i, it->second);
+				m_handler_hook->hook(i, (void*)it->second);
 			}
 		}
 	}

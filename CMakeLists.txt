@@ -1,21 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
-option(USE_MINGW "Use MinGW toolchain and uasm compiler.")
-if(USE_MINGW)
-    message(STATUS "Unix-like system detected. Using MinGW-gcc and uasm.")
-
-    set(TOOLCHAIN_PREFIX "x86_64-w64-mingw32" CACHE STRING "Set toolchain. Default: x86_64-w64-mingw32")
-
-    message(STATUS "Using ${TOOLCHAIN_PREFIX} toolchain")
-
-    set(CMAKE_FIND_ROOT_PATH /usr/x86_64-w64-mingw32)
-
-    set(CMAKE_SYSTEM_NAME "Windows")
-
-    set(CMAKE_ASM_MASM_COMPILER "uasm")
-    set(CMAKE_C_COMPILER "${TOOLCHAIN_PREFIX}-gcc")
-    set(CMAKE_CXX_COMPILER "${TOOLCHAIN_PREFIX}-g++")
-endif()
+# Crosscompiling
+include(scripts/crosscompile.cmake)
 
 project(YimMenu CXX ASM_MASM)
 
@@ -31,7 +17,7 @@ include(scripts/g3log.cmake)
 include(scripts/pugixml.cmake)
 include(scripts/json.cmake)
 include(scripts/fmt.cmake)
-if(NOT USE_MINGW) # https://github.com/libcpr/cpr/issues/860
+if(NOT CROSSCOMPILE) # https://github.com/libcpr/cpr/issues/860
     include(scripts/cpr.cmake) 
 endif()
 
@@ -68,25 +54,17 @@ target_include_directories(YimMenu PRIVATE
 target_link_libraries(YimMenu PRIVATE )
 
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
-if(USE_MINGW)
+if(CROSSCOMPILE)
     target_link_libraries(YimMenu PRIVATE pugixml minhook g3log imgui fmt d3dcompiler dwmapi winmm)
 else()
     target_link_libraries(YimMenu PRIVATE pugixml minhook g3log imgui fmt cpr d3dcompiler dwmapi winmm)
 endif()
 
 # Warnings as errors
-if(NOT USE_MINGW)
+if(NOT CROSSCOMPILE)
     set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
 endif()
 
-if (NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    set(CMAKE_ASM_MASM_COMPILER "uasm" CACHE INTERNAL "")
-    target_compile_options(YimMenu PRIVATE 
-        $<$<COMPILE_LANGUAGE:CXX>:-municode -fpermissive ${CXX_FLAGS}>
-        $<$<COMPILE_LANGUAGE:ASM_MASM>:-win64 ${ASM_MASM_FLAGS}>
-    )
-    target_link_options(YimMenu PRIVATE -static -s)
-endif()
 
 add_compile_definitions(YimMenu 
     "_CRT_SECURE_NO_WARNINGS"

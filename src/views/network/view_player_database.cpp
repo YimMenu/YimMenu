@@ -139,7 +139,7 @@ namespace big
 				{
 					g_thread_pool->push([selected]
 					{
-#if _MSC_VER
+#ifndef CROSSCOMPILING
 						if (g_api_service->send_socialclub_message(selected->rockstar_id, message))
 						{
 							g_notification_service->push("SCAPI", "Message successfully sent");
@@ -148,7 +148,7 @@ namespace big
 						g_notification_service->push_error("SCAPI", "Message not sent. Are you connected to the internet?");
 #else
 					g_notification_service->push_error("SCAPI", "cpr is broken in MinGW!");
-#endif
+#endif // CROSSCOMPILING
 					});
 				};
 
@@ -187,10 +187,12 @@ namespace big
 		ImGui::InputText("Name", new_name, sizeof(new_name));
 		ImGui::InputScalar("Rockstar ID", ImGuiDataType_S64, &new_rockstar_id);
 
+#ifndef __clang__ // ! FIXME What?
 		if (ImGui::Button("Add"))
 		{
 			g_player_database_service->get_players()[new_rockstar_id] = persistent_player(new_name, new_rockstar_id);
 			g_player_database_service->save();
 		}
+#endif
 	}
 }

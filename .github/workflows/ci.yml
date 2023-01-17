@@ -21,7 +21,7 @@ jobs:
         
         - name: Build
           run: |
-            cmake -DVERSION=1.3.4 -DCMAKE_BUILD_TYPE:STRING=Release -S. -Bbuild -DUSE_MINGW:BOOL=ON -G Ninja
+            cmake -DVERSION=1.3.4 -DCMAKE_BUILD_TYPE:STRING=Release -S. -Bbuild -DCROSSCOMPILE:BOOL=TRUE -DUSE_GCC:BOOL=TRUE -G Ninja
             cmake --build build --config Release
             mv build/libYimMenu.dll build/YimMenu-dev-${{github.sha}}.dll
 

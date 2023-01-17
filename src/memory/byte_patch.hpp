@@ -63,9 +63,11 @@ namespace memory
 			for (int i = 0; i < m_size; i++)
 				m_value[i] = span[i];
 		}
-
-	protected:
+#ifdef __clang__ // ! FIXME This is not a fix it just lets the compilation to contitue, link will fail after that.
+		static std::vector<std::unique_ptr<byte_patch>> m_patches;
+#else
 		static inline std::vector<std::unique_ptr<byte_patch>> m_patches;
+#endif // __clang__
 
 	private:
 		void* m_address;

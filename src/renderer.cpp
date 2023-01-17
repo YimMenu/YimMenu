@@ -137,8 +137,10 @@ namespace big
 	void renderer::on_present()
 	{
 		new_frame();
+#ifndef __clang__ // FIXME Clang breaks here.
 		for (const auto& cb : m_dx_callbacks | std::views::values)
 			cb();
+#endif // __clang__
 		end_frame();
 	}
 

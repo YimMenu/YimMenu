@@ -238,7 +238,7 @@ namespace big::session
 
 	inline void join_by_username(std::string username)
 	{
-#if _MSC_VER
+#ifndef CROSSCOMPILING
 		g_thread_pool->push([username]
 		{
 			uint64_t rid;
@@ -254,14 +254,14 @@ namespace big::session
 		});
 #else
 		g_notification_service->push_error("RID Joiner", "cpr is broken in MinGW!");
-#endif
+#endif // CROSSCOMPILING
 	}
 
 	inline void kick_by_username(std::string username)
 	{
 		g_thread_pool->push([username]
 		{
-#if _MSC_VER
+#ifndef CROSSCOMPILING
 			uint64_t rid;
 			if (g_api_service->get_rid_from_username(username, rid))
 			{
@@ -274,7 +274,7 @@ namespace big::session
 			g_notification_service->push_error("RID Kick", "Target player is offline?");
 #else
 		g_notification_service->push_error("RID Kick", "cpr is broken in MinGW!");
-#endif
+#endif // CROSSCOMPILING
 		});
 	}
 

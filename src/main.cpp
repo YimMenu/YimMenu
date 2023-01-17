@@ -27,9 +27,9 @@
 #include "services/player_database/player_database_service.hpp"
 #include "services/hotkey/hotkey_service.hpp"
 #include "services/matchmaking/matchmaking_service.hpp"
-#if _MSC_VER
+#ifndef CROSSCOMPILING
 #include "services/api/api_service.hpp"
-#endif
+#endif // CROSSCOMPILING
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -41,13 +41,13 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		g_hmodule = hmod;
 		g_main_thread = CreateThread(nullptr, 0, [](PVOID) -> DWORD
 		{
-#if _MSC_VER // L
+#ifdef _MSC_VER // L
 			while (!FindWindow("grcWindow", nullptr))
 				std::this_thread::sleep_for(1s);
 #else
 			while (!FindWindow(L"grcWindow", nullptr))
 				std::this_thread::sleep_for(1s);
-#endif
+#endif // _MSC_VER
 			std::filesystem::path base_dir = std::getenv("appdata");
 			base_dir /= "BigBaseV2";
 			auto file_manager_instance = std::make_unique<file_manager>(base_dir);
@@ -99,9 +99,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto player_database_service_instance = std::make_unique<player_database_service>();
 				auto hotkey_service_instance = std::make_unique<hotkey_service>();
 				auto matchmaking_service_instance = std::make_unique<matchmaking_service>();
-#if _MSC_VER
+#ifndef CROSSCOMPILING
 				auto api_service_instance = std::make_unique<api_service>();
-#endif
+#endif // CROSSCOMPILING
 				LOG(INFO) << "Registered service instances...";
 
 				g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
@@ -154,10 +154,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				matchmaking_service_instance.reset();
 				LOG(INFO) << "Matchmaking Service reset.";
 				player_database_service_instance.reset();
-#if _MSC_VER
+#ifndef CROSSCOMPILING
 				LOG(INFO) << "API Service reset.";
 				api_service_instance.reset();
-#endif
+#endif // CROSSCOMPILING
 				LOG(INFO) << "Player Database Service reset.";
 				script_patcher_service_instance.reset();
 				LOG(INFO) << "Script Patcher Service reset.";

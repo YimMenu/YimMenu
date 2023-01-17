@@ -83,7 +83,7 @@ namespace big
 		{
 			g_thread_pool->push([]
 			{
-#if _MSC_VER
+#ifndef CROSSCOMPILING
 				std::string content_id = job_link;
 				nlohmann::json job_details;
 				if (content_id.starts_with("https://"))
@@ -113,7 +113,7 @@ namespace big
 				});			
 #else
 					g_notification_service->push_error("Job Import", "cpr is broken in MinGW!");
-#endif
+#endif // CROSSCOMPILING
 			});
 		});
 
