@@ -2,8 +2,6 @@
 #include "../logger.hpp"
 #include "batch.hpp"
 #include "range.hpp"
-#include "fiber_pool.hpp"
-#include "backend/looped_command.hpp"
 
 #include <future> //std::async
 
