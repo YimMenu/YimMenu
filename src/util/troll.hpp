@@ -6,7 +6,7 @@
 
 namespace big::troll
 {
-	inline void set_bounty_on_player(player_ptr target, int value)
+	inline void set_bounty_on_player(player_ptr target, int value, bool anonymous)
 	{
 		const size_t arg_count = 22;
 		int64_t args[arg_count] =
@@ -17,7 +17,7 @@ namespace big::troll
 			1,
 			value,
 			0,
-			1,
+			anonymous ? 1 : 0,
 			0,
 			0,
 			0,

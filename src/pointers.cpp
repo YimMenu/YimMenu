@@ -356,7 +356,7 @@ namespace big
 		// Multiplayer chat filter
 		main_batch.add("MCF", "E8 ? ? ? ? 83 F8 FF 75 B9", [this](memory::handle ptr)
 		{
-			m_multiplayer_chat_filter = ptr.add(1).rip().as<decltype(m_multiplayer_chat_filter)>();
+			m_check_chat_profanity = ptr.add(1).rip().as<decltype(m_check_chat_profanity)>();
 		});
 
 		// Network

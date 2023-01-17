@@ -33,4 +33,9 @@ namespace big::globals
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
 	}
+
+	inline Interior get_interior_from_player(Player player)
+	{
+		return *scr_globals::globalplayer_bd.at(player, scr_globals::size::globalplayer_bd).at(245).as<Interior*>();
+	}
 }
