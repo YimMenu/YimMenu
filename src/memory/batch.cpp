@@ -2,6 +2,8 @@
 #include "../logger.hpp"
 #include "batch.hpp"
 #include "range.hpp"
+#include "fiber_pool.hpp"
+#include "backend/looped_command.hpp"
 
 #include <future> //std::async
 
@@ -45,7 +47,8 @@ namespace memory
 
 		if (!all_found)
 		{
-			throw std::runtime_error("Failed to find some patterns.");
+			LOG(WARNING) << "Failed to find some patterns.";
+			//Unload here.
 		}
 	}
 
@@ -56,11 +59,10 @@ namespace memory
 			m_futures.emplace_back(std::async(std::launch::async, scan_pattern_and_execute_callback, region, entry)); //Save the return.
 		}
 
-		if (m_entries.size() == m_futures.size()) //Check if all futures are created before clearing.
-		{
-			m_entries.clear();
-			m_futures.clear();
-		}
+		std::for_each(m_futures.begin(), m_futures.end(),
+		std::mem_fn(&std::future<void>::wait));
 
+		m_entries.clear();
+		m_futures.clear();
 	}
 }
