@@ -97,7 +97,9 @@ namespace big
 
 		components::sub_title("Chat");
 		ImGui::Checkbox("Auto-kick Chat Spammers", &g.session.kick_chat_spammers);
-		ImGui::Checkbox("Disable Filter", &g.session.disable_chat_filter);
+		ImGui::Checkbox("Force Clean", &g.session.chat_force_clean);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Your sent chat messages will not be censored to the receivers");
 		ImGui::Checkbox("Log Chat Messages", &g.session.log_chat_messages);
 		ImGui::Checkbox("Log Text Messages", &g.session.log_text_messages);
 		static char msg[256];
