@@ -94,10 +94,11 @@ namespace big
 		{
 			ImGui::InputInt("PLAYER_COUNT"_T.data(), &g.session.player_magnet_count);
 		}
-
-		components::sub_title("CHAT"_T);
+		components::sub_title("Chat");
 		ImGui::Checkbox("AUTO_KICK_CHAT_SPAMMERS"_T.data(), &g.session.kick_chat_spammers);
-		ImGui::Checkbox("DISABLE_FILTER"_T.data(), &g.session.disable_chat_filter);
+		ImGui::Checkbox("DISABLE_FILTER"_T.data(), &g.session.chat_force_clean);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Your sent chat messages will not be censored to the receivers"); // TODO: add translation
 		ImGui::Checkbox("LOG_CHAT_MSG"_T.data(), &g.session.log_chat_messages);
 		ImGui::Checkbox("LOG_TXT_MSG"_T.data(), &g.session.log_text_messages);
 		static char msg[256];
