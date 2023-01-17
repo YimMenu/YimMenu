@@ -43,7 +43,7 @@ namespace big::functions
 	using ptr_to_handle = Entity(*)(void*);
 	using handle_to_ptr = rage::CDynamicEntity*(*)(Entity);
 	
-	using multiplayer_chat_filter = int(__int64 chat_type, const char* input, const char** output);
+	using check_chat_profanity = int(__int64 chat_type, const char* input, const char** output);
 	using write_player_game_state_data_node = bool(*)(rage::netObject* plr, CPlayerGameStateDataNode* node);
 
 	using get_gameplay_cam_coords = Vector3(*)();
