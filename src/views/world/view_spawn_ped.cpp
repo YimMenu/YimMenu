@@ -242,7 +242,7 @@ namespace big
 							selected_ped_player_id = -1;
 							g_model_preview_service->stop_preview();
 						}
-						else if (!g.spawn_ped.preview_ped || (g.spawn_ped.preview_ped && !ImGui::IsAnyItemHovered()))
+						else if (!g.world.spawn_ped.preview_ped || (g.world.spawn_ped.preview_ped && !ImGui::IsAnyItemHovered()))
 						{
 							g_model_preview_service->stop_preview();
 						}
@@ -273,7 +273,7 @@ namespace big
 									selected_ped_player_id = plyr_id;
 									g_model_preview_service->stop_preview();
 								}
-								else if (!g.spawn_ped.preview_ped || (g.spawn_ped.preview_ped && !ImGui::IsAnyItemHovered()))
+								else if (!g.world.spawn_ped.preview_ped || (g.world.spawn_ped.preview_ped && !ImGui::IsAnyItemHovered()))
 								{
 									g_model_preview_service->stop_preview();
 								}
@@ -387,7 +387,7 @@ namespace big
 
 						ped_model_dropdown_open = ped_model_dropdown_focused;
 
-						if (!g.spawn_ped.preview_ped || (g.spawn_ped.preview_ped && (!item_hovered || !ped_model_dropdown_open)))
+						if (!g.world.spawn_ped.preview_ped || (g.world.spawn_ped.preview_ped && (!item_hovered || !ped_model_dropdown_open)))
 						{
 							g_model_preview_service->stop_preview();
 						}
@@ -551,9 +551,9 @@ namespace big
 		ImGui::Separator();
 
 
-		if (ImGui::Checkbox("Preview", &g.spawn_ped.preview_ped))
+		if (ImGui::Checkbox("Preview", &g.world.spawn_ped.preview_ped))
 		{
-			if (!g.spawn_ped.preview_ped)
+			if (!g.world.spawn_ped.preview_ped)
 			{
 				g_model_preview_service->stop_preview();
 			}

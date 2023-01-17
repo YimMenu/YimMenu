@@ -77,7 +77,7 @@ namespace big
 		ImGui::Separator();
 
 		static char job_link[69]{};
-		ImGui::InputText("SocialClub Job Link", job_link, sizeof(job_link));
+		components::input_text("SocialClub Job Link", job_link, sizeof(job_link));
 
 		components::button("Import", []
 		{
