@@ -172,17 +172,17 @@ namespace big
 			}
 		}
 
-		if (g.spawn_ped.spawn_invincible)
+		if (g.world.spawn_ped.spawn_invincible)
 		{
 			ENTITY::SET_ENTITY_INVINCIBLE(ped, true);
 		}
 
-		if (g.spawn_ped.spawn_invisible)
+		if (g.world.spawn_ped.spawn_invisible)
 		{
 			ENTITY::SET_ENTITY_VISIBLE(ped, false, false);
 		}
 
-		if (g.spawn_ped.spawn_as_attacker)
+		if (g.world.spawn_ped.spawn_as_attacker)
 		{
 			PED::SET_PED_AS_ENEMY(ped, true);
 			PED::SET_PED_KEEP_TASK(ped, true);
@@ -193,7 +193,7 @@ namespace big
 		}
 
 		spawn_ped_give_weapon(ped);
-		spawned_peds.push_back({ ped, selected_ped_for_player_id == SPAWN_PED_FOR_SELF ? self::id : selected_ped_for_player_id, is_bodyguard, g.spawn_ped.spawn_as_attacker });
+		spawned_peds.push_back({ ped, selected_ped_for_player_id == SPAWN_PED_FOR_SELF ? self::id : selected_ped_for_player_id, is_bodyguard, g.world.spawn_ped.spawn_as_attacker });
 		return ped;
 	}
 
@@ -626,9 +626,9 @@ namespace big
 			}
 		}
 
-		ImGui::Checkbox("Invincible", &g.spawn_ped.spawn_invincible);
-		ImGui::Checkbox("Invisible", &g.spawn_ped.spawn_invisible);
-		ImGui::Checkbox("Attacker", &g.spawn_ped.spawn_as_attacker);
+		ImGui::Checkbox("Invincible", &g.world.spawn_ped.spawn_invincible);
+		ImGui::Checkbox("Invisible", &g.world.spawn_ped.spawn_invisible);
+		ImGui::Checkbox("Attacker", &g.world.spawn_ped.spawn_as_attacker);
 
 		components::button("Change Player Model", [] 
 		{

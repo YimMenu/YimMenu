@@ -351,7 +351,7 @@ namespace big
 				player_magnet_count, is_team, name_spoof_enabled, advertise_menu, spoofed_name, join_in_sctv_slots,
 				kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic,
 				disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids,
-				send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message)
+				send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty)
 		} session{};
 
 		struct settings
@@ -406,13 +406,30 @@ namespace big
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(clone_pv, preview_vehicle, spawn_inside, spawn_clone, spawn_maxed, clone_plate, plate)
 		} clone_pv{};
-
-		struct spawn_ped
+		
+		struct world
 		{
-			bool preview_ped = false;
+			struct train
+			{
+				bool derail_train = false;
+				bool drive_train = false;
+			} train{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spawn_ped, preview_ped)
-		} spawn_ped{};
+			struct water
+			{
+				bool part_water = false;
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(water, part_water)
+			} water{};
+
+			struct spawn_ped
+			{
+				bool preview_ped = false;
+				bool spawn_invincible = false;
+				bool spawn_invisible = false;
+				bool spawn_as_attacker = false;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(spawn_ped, preview_ped, spawn_invincible, spawn_invisible, spawn_as_attacker)
+			} spawn_ped{};
 
 			struct custom_time
 			{

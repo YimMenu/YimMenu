@@ -60,6 +60,11 @@ namespace big::scr_locals
 		constexpr static auto player_broadcast_idx = 3456;
 	}
 
+	namespace am_king_of_the_castle
+	{
+		constexpr static auto broadcast_idx = 93;
+	}
+
 	namespace fmmc_launcher
 	{
 		constexpr static auto broadcast_idx = 11153;

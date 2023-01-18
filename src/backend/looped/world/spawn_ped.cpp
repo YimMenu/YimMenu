@@ -12,6 +12,7 @@ namespace big
 		PED::DELETE_PED(&ped.ped_handle);
 	}
 
+	static bool bLastLoadPathNodes = false;
 	void looped::world_spawn_ped()
 	{
 		if (*g_pointers->m_is_session_started != last_online)
@@ -22,6 +23,17 @@ namespace big
 				cleanup_spawned_ped(ped);
 
 			spawned_peds.clear();
+		}
+
+		if (bLastLoadPathNodes && (spawned_peds.size() == 0))
+		{
+			PATHFIND::LOAD_ALL_PATH_NODES(false);
+			bLastLoadPathNodes = false;
+		}
+		else if (spawned_peds.size() != 0)
+		{
+			PATHFIND::LOAD_ALL_PATH_NODES(true);
+			bLastLoadPathNodes = true;
 		}
 
 		for (auto it = spawned_peds.begin(); it != spawned_peds.end();)
