@@ -62,6 +62,9 @@ namespace big
 		static void weapons_steal_vehicle_gun();
 		static void weapons_vehicle_gun();
 
+		static void drive_train();
+		static void derail_train();
+
 		static void world_spawn_ped();
 	};
 }

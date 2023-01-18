@@ -76,6 +76,8 @@ namespace big
 			looped::vehicle_boost_behavior();
 			looped::vehicle_god_mode();
 			looped::vehicle_speedo_meter();
+			looped::derail_train();
+			looped::drive_train();
 
 			script::get_current()->yield();
 		}

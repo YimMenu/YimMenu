@@ -189,10 +189,9 @@ namespace big
 		struct player
 		{
 			int character_slot = 1;
-			int set_level = 130;
 			bool spectating = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player, character_slot, set_level, spectating)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player, character_slot, spectating)
 		} player{};
 
 		struct protections 
@@ -252,6 +251,7 @@ namespace big
 			bool no_water_collision = false;
 			int wanted_level = 0;
 			bool god_mode = false;
+			bool part_water = false;
 			bool proof_bullet = false;
 			bool proof_fire = false;
 			bool proof_collision = false;
@@ -270,16 +270,18 @@ namespace big
 			bool mobile_radio = false;
 			bool fast_respawn = false;
 			bool auto_tp = false;
+			bool super_jump = false;
+			bool beast_jump = false;
 
 			// do not save below entries
 			bool dance_mode = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self,
 				clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll,
-				noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode,
+				noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water,
 				proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water,
 				proof_mask, hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element,
-				force_show_hud, mobile_radio, fast_respawn, auto_tp)
+				force_show_hud, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump)
 		} self{};
 
 		struct session
@@ -341,6 +343,7 @@ namespace big
 			bool wanted_level_all = false;
 
 			bool show_cheating_message = false;
+			bool anonymous_bounty = true;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session,
 				local_weather, override_time, override_weather, custom_time, disable_chat_filter, log_chat_messages,
@@ -360,8 +363,21 @@ namespace big
 				int teleport_waypoint = 0;
 				int teleport_objective = 0;
 				int noclip = 0;
+				int bringvehicle = 0;
+				int invis = 0;
+				int heal = 0;
+				int fill_inventory = 0;
+				int skip_cutscene = 0;
+				int freecam = 0;
+				int superrun = 0;
+				int superjump = 0;
+				int beastjump = 0;
+				int invisveh = 0;
+				int localinvisveh = 0;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, 
+					noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump,
+					invisveh, localinvisveh)
 			} hotkeys{};
 
 			bool dev_dlc = false;
@@ -394,12 +410,21 @@ namespace big
 		struct spawn_ped
 		{
 			bool preview_ped = false;
-			bool spawn_invincible = false;
-			bool spawn_invisible = false;
-			bool spawn_as_attacker = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spawn_ped, preview_ped, spawn_invincible, spawn_invisible, spawn_as_attacker)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spawn_ped, preview_ped)
 		} spawn_ped{};
+
+			struct custom_time
+			{
+				int local_weather = 0;
+				bool override_time = {};
+				bool override_weather = false;
+				int hour{}, minute{}, second{};
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(custom_time, local_weather, hour, minute, second)
+			} custom_time;
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time)
+		} world{};
 
 		struct spoofing
 		{
@@ -510,13 +535,17 @@ namespace big
 			bool no_water_collision = false;
 			bool disable_engine_auto_start = false;
 			bool change_engine_state_immediately = false;
+			bool vehinvisibility = false;
+			bool localveh_visibility = false;
+			bool localped_visibility = true;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle,
 				speedo_meter, fly, rainbow_paint, speed_unit, god_mode,
 				proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask,
 				auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior,
 				drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump,
-				keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately)
+				keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately,
+				vehinvisibility, localveh_visibility, localped_visibility)
 		} vehicle{};
 
 		struct weapons
@@ -651,10 +680,9 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(ugc, infinite_model_memory)
 		} ugc{};
 
-
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings,
 			debug, tunables, notifications, player, protections, self, session, settings, spawn_vehicle, clone_pv,
-			spawn_ped, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions)
+			spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world)
 	};
 
 	inline auto g = menu_settings();

@@ -2,8 +2,6 @@ name: Feature request
 description: Suggest an idea for this project
 title: "[Request]: "
 labels: enhancement
-assignees:
-  - Yimura
 body:
 - type: textarea
   attributes:

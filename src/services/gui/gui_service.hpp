@@ -27,6 +27,8 @@ namespace big
 		SPAWN_PED,
 		TIME_AND_WEATHER,
 		CREATOR,
+		TRAIN,
+		WATER,
 
 		NETWORK,
 		SESSION,
@@ -39,6 +41,7 @@ namespace big
 		CONTEXT_MENU_SETTINGS,
 		ESP_SETTINGS,
 		GUI_SETTINGS,
+		HOTKEY_SETTINGS,
 		REACTION_SETTINGS,
 		PROTECTION_SETTINGS,
 		DEBUG,
@@ -78,8 +81,10 @@ namespace big
 			{ tabs::WORLD, { "World", nullptr, {
 				{ tabs::SPAWN_PED, { "Spawn Ped", view::spawn_ped }},
 				{ tabs::TIME_AND_WEATHER, { "Time And Weather", view::time_and_weather }},
-				{ tabs::CREATOR, { "Creator", view::creator }}
-			}}},
+				{ tabs::CREATOR, { "Creator", view::creator }},
+				{ tabs::TRAIN, { "Train", view::train }},
+				{ tabs::WATER, { "Water", view::water }},
+		}}},
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},
 				{ tabs::SESSION, { "Session", view::session }},
@@ -91,6 +96,7 @@ namespace big
 				{ tabs::CONTEXT_MENU_SETTINGS, { "Context Menu", view::context_menu_settings}},
 				{ tabs::ESP_SETTINGS, { "ESP", view::esp_settings}},
 				{ tabs::GUI_SETTINGS, { "GUI", view::gui_settings}},
+				{ tabs::HOTKEY_SETTINGS, { "Hotkeys", view::hotkey_settings }},
 				{ tabs::REACTION_SETTINGS, { "Reactions", view::reaction_settings}},
 				{ tabs::PROTECTION_SETTINGS, { "Protection", view::protection_settings}},
 				{ tabs::DEBUG, { "Debug", nullptr }},
