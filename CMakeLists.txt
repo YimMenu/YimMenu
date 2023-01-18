@@ -10,7 +10,7 @@ include(scripts/git.cmake)
 # Fetch modules
 message("\nFetching modules")
 include(scripts/minhook.cmake)
-include(scripts/g3log.cmake)
+include(scripts/async-logger.cmake)
 include(scripts/pugixml.cmake)
 include(scripts/json.cmake)
 include(scripts/cpr.cmake)
@@ -45,7 +45,7 @@ target_include_directories(YimMenu PRIVATE
 )
 
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(YimMenu PRIVATE pugixml minhook g3log imgui cpr)
+target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger imgui cpr)
 
 # Warnings as errors
 set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
