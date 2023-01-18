@@ -811,7 +811,10 @@ namespace big
 		});
 
 		auto mem_region = memory::module("GTA5.exe");
-		main_batch.run(mem_region);
+		if (!main_batch.run(mem_region))
+		{
+			throw std::runtime_error("Failed to find some patterns.");
+		}
 
 		memory::batch socialclub_batch;
 
