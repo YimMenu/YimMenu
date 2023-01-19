@@ -2,7 +2,6 @@
 #include "core/globals.hpp"
 #include "fiber_pool.hpp"
 #include "gui.hpp"
-#include "logger.hpp"
 #include "hooking.hpp"
 #include "pointers.hpp"
 #include "renderer.hpp"
@@ -29,6 +28,8 @@
 #include "services/matchmaking/matchmaking_service.hpp"
 #include "services/api/api_service.hpp"
 
+#include "logger/exception_handler.hpp"
+
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
 	using namespace big;
@@ -39,6 +40,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		g_hmodule = hmod;
 		g_main_thread = CreateThread(nullptr, 0, [](PVOID) -> DWORD
 		{
+			auto handler = exception_handler();
+
 			while (!FindWindow("grcWindow", nullptr))
 				std::this_thread::sleep_for(100ms);
 

@@ -1,6 +1,5 @@
 #include "common.hpp"
 #include "detour_hook.hpp"
-#include "logger.hpp"
 #include "memory/handle.hpp"
 #include <MinHook.h>
 

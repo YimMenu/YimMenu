@@ -1,7 +1,6 @@
 #include "common.hpp"
 #include "crossmap.hpp"
 #include "invoker.hpp"
-#include "logger.hpp"
 #include "pointers.hpp"
 
 extern "C" void	_call_asm(void* context, void* function, void* ret);
