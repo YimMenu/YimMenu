@@ -21,7 +21,7 @@ namespace big
 				INTERIOR::REFRESH_INTERIOR(interior);
 			}
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("You Will Have To Refresh Again When Exiting Interior.");
+				ImGui::SetTooltip("You Will Have To Refresh Again When Exiting Interior.\n SPAMMING WILL CRASH GAME");
 			ImGui::EndTabItem();
 		}
 	}
