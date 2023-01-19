@@ -28,13 +28,7 @@ namespace big::helper
 namespace big
 {
 	static int character_index = 0;
-	static int year;
-	static int month;
-	static int day;
-	static int hour;
-	static int minute;
-	static int second;
-	static int millisecond;
+	static int year, month, day, hour, minute, second, millisecond;
 
 	static char stat_int_read_result[256] = {};
 	static char stat_int_text[256] = {};
@@ -405,6 +399,7 @@ namespace big
 
 		components::sub_title(std::format("Posix Time: {}-{}-{} {}:{}:{}", year, month, day, hour, minute, second));
 		components::sub_title(std::format("Character Index: {}", character_index));
+		components::sub_title("Be aware of stat limits, use with caution, some setting stats are risky");
 
 		if (ImGui::BeginTabBar("##stat_editor_tab_bar"))
 		{
