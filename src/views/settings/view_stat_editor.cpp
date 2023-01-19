@@ -399,7 +399,7 @@ namespace big
 
 		components::sub_title(std::format("Posix Time: {}-{}-{} {}:{}:{}", year, month, day, hour, minute, second));
 		components::sub_title(std::format("Character Index: {}", character_index));
-		components::sub_title("Be aware of stat limits, use with caution, some setting stats are risky");
+		components::sub_title("Be aware of stat limits, use with caution, modifying some stats are risky.");
 
 		if (ImGui::BeginTabBar("##stat_editor_tab_bar"))
 		{
