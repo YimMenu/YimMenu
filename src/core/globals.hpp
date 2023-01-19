@@ -287,7 +287,7 @@ namespace big
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(custom_time, hour, minute, second)
 			} custom_time;
-			bool disable_chat_filter = false;
+			bool chat_force_clean = false;
 			bool log_chat_messages = false;
 			bool log_text_messages = false;
 			bool decloak_players = false;
@@ -335,7 +335,7 @@ namespace big
 			bool anonymous_bounty = true;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session,
-				local_weather, override_time, override_weather, custom_time, disable_chat_filter, log_chat_messages,
+				local_weather, override_time, override_weather, custom_time, chat_force_clean, log_chat_messages,
 				log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled,
 				player_magnet_count, is_team, name_spoof_enabled, advertise_menu, spoofed_name, join_in_sctv_slots,
 				kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic,
