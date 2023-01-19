@@ -19,9 +19,6 @@ namespace big::ped
 		PLAYER::SET_PLAYER_MODEL(self::id, hash);
 		script::get_current()->yield();
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-		if (ENTITY::GET_ENTITY_MODEL(self::ped) != ENTITY::GET_ENTITY_MODEL(self::ped)) {
-			return false;
-		}
 		for (int i = 0; i < 12; i++) {
 			PED::SET_PED_COMPONENT_VARIATION
 			(
