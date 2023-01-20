@@ -363,6 +363,7 @@ namespace big
 				int beastjump = 0;
 				int invisveh = 0;
 				int localinvisveh = 0;
+				int fill_ammo = 0;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, 
 					noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump,

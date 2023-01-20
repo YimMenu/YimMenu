@@ -18,6 +18,8 @@ namespace big
 		components::command_button<"skipcutscene">();
 		ImGui::SameLine();
 		components::command_button<"clean">();
+		ImGui::SameLine();
+		components::command_button<"fillammo">();
 
 		ImGui::Separator();
 
