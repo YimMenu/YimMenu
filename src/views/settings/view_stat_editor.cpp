@@ -108,31 +108,6 @@ namespace big
 
 	static void tab_item_stat()
 	{
-		static bool init = ([]()
-		{
-			strcpy_s(stat_int_text, sizeof(stat_int_text), g.stat_editor.stat.int_text.c_str());
-			strcpy_s(stat_int_value, sizeof(stat_int_value), g.stat_editor.stat.int_value.c_str());
-			strcpy_s(stat_bool_text, sizeof(stat_bool_text), g.stat_editor.stat.bool_text.c_str());
-			strcpy_s(stat_bool_value, sizeof(stat_bool_value), g.stat_editor.stat.bool_value.c_str());
-			strcpy_s(stat_float_text, sizeof(stat_float_text), g.stat_editor.stat.float_text.c_str());
-			strcpy_s(stat_float_value, sizeof(stat_float_value), g.stat_editor.stat.float_value.c_str());
-			strcpy_s(stat_increment_text, sizeof(stat_increment_text), g.stat_editor.stat.increment_text.c_str());
-			strcpy_s(stat_increment_value, sizeof(stat_increment_value), g.stat_editor.stat.increment_value.c_str());
-			strcpy_s(stat_date_text, sizeof(stat_date_text), g.stat_editor.stat.date_text.c_str());
-			strcpy_s(stat_date_value, sizeof(stat_date_value), g.stat_editor.stat.date_value.c_str());
-			strcpy_s(stat_string_text, sizeof(stat_string_text), g.stat_editor.stat.string_text.c_str());
-			strcpy_s(stat_string_value, sizeof(stat_string_value), g.stat_editor.stat.string_value.c_str());
-			strcpy_s(stat_label_text, sizeof(stat_label_text), g.stat_editor.stat.label_text.c_str());
-			strcpy_s(stat_label_value, sizeof(stat_label_value), g.stat_editor.stat.label_value.c_str());
-			strcpy_s(stat_user_id_text, sizeof(stat_user_id_text), g.stat_editor.stat.user_id_text.c_str());
-			strcpy_s(stat_user_id_value, sizeof(stat_user_id_value), g.stat_editor.stat.user_id_value.c_str());
-
-			strcpy_s(packed_stat_int_text, sizeof(packed_stat_int_text), g.stat_editor.packed_stat.int_text.c_str());
-			strcpy_s(packed_stat_int_value, sizeof(packed_stat_int_value), g.stat_editor.packed_stat.int_value.c_str());
-			strcpy_s(packed_stat_bool_text, sizeof(packed_stat_bool_text), g.stat_editor.packed_stat.bool_text.c_str());
-			strcpy_s(packed_stat_bool_value, sizeof(packed_stat_bool_value), g.stat_editor.packed_stat.bool_value.c_str());
-		}(), true);
-
 		if (ImGui::BeginTabItem("Stat"))
 		{
 			ImGui::Text("Stat: prefix with $ for string ($MPX_CHAR_SET_RP_GIFT_ADMIN)");
@@ -373,6 +348,31 @@ namespace big
 
 	void view::stat_editor()
 	{
+		static bool init = ([]()
+		{
+			strcpy_s(stat_int_text, sizeof(stat_int_text), g.stat_editor.stat.int_text.c_str());
+			strcpy_s(stat_int_value, sizeof(stat_int_value), g.stat_editor.stat.int_value.c_str());
+			strcpy_s(stat_bool_text, sizeof(stat_bool_text), g.stat_editor.stat.bool_text.c_str());
+			strcpy_s(stat_bool_value, sizeof(stat_bool_value), g.stat_editor.stat.bool_value.c_str());
+			strcpy_s(stat_float_text, sizeof(stat_float_text), g.stat_editor.stat.float_text.c_str());
+			strcpy_s(stat_float_value, sizeof(stat_float_value), g.stat_editor.stat.float_value.c_str());
+			strcpy_s(stat_increment_text, sizeof(stat_increment_text), g.stat_editor.stat.increment_text.c_str());
+			strcpy_s(stat_increment_value, sizeof(stat_increment_value), g.stat_editor.stat.increment_value.c_str());
+			strcpy_s(stat_date_text, sizeof(stat_date_text), g.stat_editor.stat.date_text.c_str());
+			strcpy_s(stat_date_value, sizeof(stat_date_value), g.stat_editor.stat.date_value.c_str());
+			strcpy_s(stat_string_text, sizeof(stat_string_text), g.stat_editor.stat.string_text.c_str());
+			strcpy_s(stat_string_value, sizeof(stat_string_value), g.stat_editor.stat.string_value.c_str());
+			strcpy_s(stat_label_text, sizeof(stat_label_text), g.stat_editor.stat.label_text.c_str());
+			strcpy_s(stat_label_value, sizeof(stat_label_value), g.stat_editor.stat.label_value.c_str());
+			strcpy_s(stat_user_id_text, sizeof(stat_user_id_text), g.stat_editor.stat.user_id_text.c_str());
+			strcpy_s(stat_user_id_value, sizeof(stat_user_id_value), g.stat_editor.stat.user_id_value.c_str());
+
+			strcpy_s(packed_stat_int_text, sizeof(packed_stat_int_text), g.stat_editor.packed_stat.int_text.c_str());
+			strcpy_s(packed_stat_int_value, sizeof(packed_stat_int_value), g.stat_editor.packed_stat.int_value.c_str());
+			strcpy_s(packed_stat_bool_text, sizeof(packed_stat_bool_text), g.stat_editor.packed_stat.bool_text.c_str());
+			strcpy_s(packed_stat_bool_value, sizeof(packed_stat_bool_value), g.stat_editor.packed_stat.bool_value.c_str());
+		}(), true);
+
 		g_fiber_pool->queue_job([] 
 		{
 			STATS::STAT_GET_INT(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"), &character_index, -1);
