@@ -30,6 +30,7 @@ namespace big
 				g_pointers->m_bypass_max_count_of_active_sticky_bombs->restore();
 		}
 		components::command_checkbox<"rapidfire">();
+		components::command_checkbox<"aimassist">();
 
 		ImGui::EndGroup();
 
