@@ -16,7 +16,7 @@ namespace big
 			Vector3 pedcoords = ENTITY::GET_ENTITY_COORDS(targetped, true);
 			Vector3 target = PED::GET_PED_BONE_COORDS(targetped, (int)PedBones::SKEL_Head, target.x, target.y, target.z);
 			PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(self::ped, &targetped);
-			if (!PED::IS_PED_A_PLAYER && PAD::IS_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK) && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+			if (!PED::IS_PED_A_PLAYER(targetped) && PAD::IS_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK) && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
 				MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(self::pos.x, self::pos.y, self::pos.z, target.x, target.y, target.z, 10, 1, hash, self::ped, true, false, 100.0f);
 			}
