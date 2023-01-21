@@ -361,6 +361,11 @@ namespace big
 			return true;
 		}
 		}
+		case eRemoteEvent::BadThing1:
+		case eRemoteEvent::BadThing2:
+			return true;
+			break;
+		}
 
 		// detect pasted menus setting args[1] to something other than PLAYER_ID()
 		if (*(int*)&args[1] != player->m_player_id && player->m_player_id != -1)

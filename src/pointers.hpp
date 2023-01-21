@@ -69,7 +69,7 @@ namespace big
 		PVOID m_world_model_spawn_bypass;
 		PVOID m_native_return;
 		PVOID m_get_label_text;
-		functions::multiplayer_chat_filter* m_multiplayer_chat_filter{};
+		functions::check_chat_profanity* m_check_chat_profanity{};
 		functions::write_player_game_state_data_node m_write_player_game_state_data_node{};
 
 		ChatData** m_chat_data;
