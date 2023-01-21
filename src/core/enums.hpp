@@ -192,7 +192,10 @@ namespace big
 		NotificationMoneyStolen = -28878294, // TICK_TC_STOL
 
 		DestroyPersonalVehicle = -513394492, // CnC_PV_THEFT
-		TriggerCEORaid = -1322731185
+		TriggerCEORaid = -1322731185,
+
+		StartScriptBegin = -1127353498,
+		StartScriptProceed = -16793987
 	};
 
 	enum class eCollectibleType

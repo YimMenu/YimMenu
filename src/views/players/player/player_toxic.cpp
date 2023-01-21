@@ -124,6 +124,24 @@ namespace big
 			ImGui::SameLine();
 			components::player_command_button<"remweaps">(g_player_service->get_selected(), { });
 
+			components::player_command_button<"tutorial">(g_player_service->get_selected(), { });
+			ImGui::SameLine();
+			components::player_command_button<"golf">(g_player_service->get_selected(), { });
+			ImGui::SameLine();
+			components::player_command_button<"flightschool">(g_player_service->get_selected(), { });
+			ImGui::SameLine();
+			components::player_command_button<"darts">(g_player_service->get_selected(), { });
+
+			components::player_command_button<"badlands">(g_player_service->get_selected(), { });
+			ImGui::SameLine();
+			components::player_command_button<"spacemonkey">(g_player_service->get_selected(), { });
+			ImGui::SameLine();
+			components::player_command_button<"wizard">(g_player_service->get_selected(), { });
+
+			components::player_command_button<"qub3d">(g_player_service->get_selected(), { });
+			ImGui::SameLine();
+			components::player_command_button<"camhedz">(g_player_service->get_selected(), { });
+
 			components::small_text("Warp Time (requires session host)");
 
 			components::button("+1 Minute", [] { toxic::warp_time_forward(g_player_service->get_selected(), 60 * 1000); });

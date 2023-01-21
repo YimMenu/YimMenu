@@ -327,6 +327,24 @@ namespace big
 		ImGui::SameLine();
 		components::command_button<"interiortpall">({ 161 }, "TP All To Multi Floor Garage");
 
+		components::command_button<"tutorialall">();
+		ImGui::SameLine();
+		components::command_button<"golfall">();
+		ImGui::SameLine();
+		components::command_button<"flightschoolall">();
+		ImGui::SameLine();
+		components::command_button<"dartsall">();
+
+		components::command_button<"badlandsall">();
+		ImGui::SameLine();
+		components::command_button<"spacemonkeyall">();
+		ImGui::SameLine();
+		components::command_button<"wizardall">();
+
+		components::command_button<"qub3dall">();
+		ImGui::SameLine();
+		components::command_button<"camhedzall">();
+
 		ImGui::Checkbox("Disable Pedestrians", &g.session.disable_peds);
 		ImGui::SameLine();
 		ImGui::Checkbox("Disable Traffic", &g.session.disable_traffic);
