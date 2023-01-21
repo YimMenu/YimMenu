@@ -12,8 +12,9 @@ namespace big
 		virtual void on_tick() override
 		{
 			Ped targetped;
-			Hash hash = MISC::GET_HASH_KEY("weapon_assaultrifle_mk2");
 			Vector3 target;
+			Hash hash = MISC::GET_HASH_KEY("weapon_assaultrifle_mk2");
+
 			PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(self::ped, &targetped);
 			if (PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
