@@ -13,15 +13,15 @@ namespace big
 		{
 			Ped targetped;
 			Hash hash = MISC::GET_HASH_KEY("weapon_assaultrifle_mk2");
-			Vector3 pedcoords = ENTITY::GET_ENTITY_COORDS(targetped, true);
-			Vector3 target = PED::GET_PED_BONE_COORDS(targetped, (int)PedBones::SKEL_Head, target.x, target.y, target.z);
+			Vector3 target;
 			PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(self::ped, &targetped);
-			if (!PED::IS_PED_A_PLAYER(targetped) && PAD::IS_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK) && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+			if (PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
-				MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(self::pos.x, self::pos.y, self::pos.z, target.x, target.y, target.z, 10, 1, hash, self::ped, true, false, 100.0f);
+				target = PED::GET_PED_BONE_COORDS(targetped, (int)PedBones::SKEL_Head, 0, 0, 0);
+				MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(self::pos.x, self::pos.y, self::pos.z, target.x, target.y, target.z, 10, 1, hash, self::ped, true, false, 10.0f);
 			}
 		}
 	};
 
-	aim_assist_looped g_aim_assist_looped("aimassist", "Aim Assist", "Allows You To Jump As If You Were The Beast Like In The Beast Event", g.weapons.aim_assist);
+	aim_assist_looped g_aim_assist_looped("aimassist", "Aim Assist", "Kill any npc with perfect accuracy.", g.weapons.aim_assist);
 }
