@@ -360,7 +360,6 @@ namespace big
 
 			return true;
 		}
-		}
 		case eRemoteEvent::BadThing1:
 		case eRemoteEvent::BadThing2:
 			return true;

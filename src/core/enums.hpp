@@ -195,8 +195,7 @@ namespace big
 		TriggerCEORaid = -1322731185,
 
 		StartScriptBegin = -1127353498,
-		StartScriptProceed = -16793987
-		DestroyPersonalVehicle = -513394492, // CnC_PV_THEFT
+		StartScriptProceed = -16793987,
 
 		BadThing1 = 1279059857,
 		BadThing2 = -343495611
