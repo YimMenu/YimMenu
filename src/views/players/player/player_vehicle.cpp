@@ -1,6 +1,6 @@
 #include "views/view.hpp"
 #include "util/teleport.hpp"
-#include "util/toxic.hpp"
+#include "util/vehicle.hpp"
 #include "util/kick.hpp"
 
 namespace big
@@ -10,23 +10,23 @@ namespace big
 		if (ImGui::TreeNode("Vehicle"))
 		{
 			components::button("Kick From Vehicle", [] {
-				toxic::kick_player_from_vehicle(g_player_service->get_selected());
+				vehicle::kick_player_from_vehicle(g_player_service->get_selected());
 				});
 			ImGui::SameLine();
 			components::button("Flying Vehicle", [] {
-				toxic::flying_vehicle(g_player_service->get_selected()->id());
+				vehicle::flying_vehicle(g_player_service->get_selected()->id());
 				});
 
 			components::button("Boost player vehicle", [] {
-				toxic::boost_player_vehicle(g_player_service->get_selected()->id());
+				vehicle::boost_player_vehicle(g_player_service->get_selected()->id());
 				});
 			ImGui::SameLine();
 			components::button("Stop player vehicle", [] {
-				toxic::stop_player_vehicle(g_player_service->get_selected()->id());
+				vehicle::stop_player_vehicle(g_player_service->get_selected()->id());
 				});
 
 			components::button("Rotate 180", [] {
-				toxic::flip_180(g_player_service->get_selected()->id());
+				vehicle::flip_180(g_player_service->get_selected()->id());
 				});
 			ImGui::SameLine();
 			components::button("Remote Control Vehicle", []
@@ -46,51 +46,51 @@ namespace big
 				});
 
 			components::button("Kill vehicle engine", [] {
-				toxic::kill_vehicle_engine(g_player_service->get_selected()->id());
+				vehicle::kill_vehicle_engine(g_player_service->get_selected()->id());
 				});
 			ImGui::SameLine();
 			components::button("Burst tires", [] {
-				toxic::BurstTires(g_player_service->get_selected()->id());
+				vehicle::BurstTires(g_player_service->get_selected()->id());
 				});
 
 			components::button("Smash windows", [] {
-				toxic::smash_windows(g_player_service->get_selected()->id());
+				vehicle::smash_windows(g_player_service->get_selected()->id());
 				});
 			ImGui::SameLine();
 			components::button("Black window tint", [] {
-				toxic::set_tint(g_player_service->get_selected()->id());
+				vehicle::set_tint(g_player_service->get_selected()->id());
 				});
 
 			components::button("Lock doors", [] {
-				toxic::LockDoors(g_player_service->get_selected()->id());
+				vehicle::LockDoors(g_player_service->get_selected()->id());
 				});
 			ImGui::SameLine();
 			components::button("Unlock doors", [] {
-				toxic::UnlockDoors(g_player_service->get_selected()->id());
+				vehicle::UnlockDoors(g_player_service->get_selected()->id());
 				});
 
 			components::button("Open doors", [] {
-				toxic::open_doors(g_player_service->get_selected()->id());
+				vehicle::open_doors(g_player_service->get_selected()->id());
 				});
 			ImGui::SameLine();
 			components::button("Close doors", [] {
-				toxic::close_doors(g_player_service->get_selected()->id());
+				vehicle::close_doors(g_player_service->get_selected()->id());
 				});
 
 			components::button("Upgrade Vehicle", [] {
-				toxic::upgrade_vehicle(g_player_service->get_selected()->id());
+				vehicle::upgrade_vehicle(g_player_service->get_selected()->id());
 				});
 			ImGui::SameLine();
 			components::button("Downgrade Vehicle", [] {
-				toxic::downgrade_vehicle(g_player_service->get_selected()->id());
+				vehicle::downgrade_vehicle(g_player_service->get_selected()->id());
 				});
 
 			components::button("Gift vehicle", [] {
-				toxic::gift_vehicle(g_player_service->get_selected()->id());
+				vehicle::gift_vehicle(g_player_service->get_selected()->id());
 				});
 			ImGui::SameLine();
 			components::button("Clone Vehicle", [] {
-				toxic::clone_vehicle(g_player_service->get_selected()->id());
+				vehicle::clone_vehicle(g_player_service->get_selected()->id());
 				});
 
 			ImGui::TreePop();
