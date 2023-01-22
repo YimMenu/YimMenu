@@ -680,8 +680,7 @@ namespace big::vehicle
 
 			if (entity::take_control_of(ent))
 				ENTITY::APPLY_FORCE_TO_ENTITY(ent, true, 0, 0, -40.0f, 0, 0, 0, true, true, true, true, false, true);
-			else
-				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+			else (g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle."));
 		}
 	}
 
@@ -695,8 +694,7 @@ namespace big::vehicle
 
 			if (entity::take_control_of(vehicle))
 				VEHICLE::SET_VEHICLE_FORWARD_SPEED(vehicle, 79);
-			else
-				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+			else (g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle."));
 		}
 	}
 
@@ -711,8 +709,7 @@ namespace big::vehicle
 
 			if (entity::take_control_of(ent))
 				ENTITY::APPLY_FORCE_TO_ENTITY(ent, 1, 0.f, 0.f, 50000.f, 0.f, 0.f, 0.f, 0, 0, 1, 1, 0, 1);
-			else
-				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+			else (g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle."));
 		}
 	}
 
@@ -726,8 +723,7 @@ namespace big::vehicle
 
 			if (entity::take_control_of(vehicle))
 				VEHICLE::SET_VEHICLE_ENGINE_HEALTH(vehicle, -4000);
-			else
-				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+			else (g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
 		}
 	}
 
@@ -812,8 +808,7 @@ namespace big::vehicle
 				VEHICLE::SET_VEHICLE_DOOR_OPEN(vehicle, 6, true, false);
 				VEHICLE::SET_VEHICLE_DOOR_OPEN(vehicle, 7, true, false);
 			}
-			else
-				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+			else (g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
 		}
 	}
 
@@ -827,8 +822,7 @@ namespace big::vehicle
 
 			if (entity::take_control_of(vehicle))
 				VEHICLE::SET_VEHICLE_DOORS_SHUT(vehicle, false);
-			else
-				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+			else (g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle."));
 		}
 	}
 
@@ -860,8 +854,7 @@ namespace big::vehicle
 
 			if (entity::take_control_of(vehicle))
 				VEHICLE::SET_VEHICLE_FORWARD_SPEED(vehicle, 0);
-			else
-				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+			else (g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle."));
 		}
 	}
 
