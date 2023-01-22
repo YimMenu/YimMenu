@@ -7,9 +7,7 @@ namespace big
 	{
 		if (ImGui::TreeNode("Vehicle"))
 		{
-			components::button("Kick From Vehicle", [] {
-				vehicle::kick_player_from_vehicle(g_player_service->get_selected());
-				});
+			components::player_command_button<"vehkick">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
 			components::button("Flying Vehicle", [] {
 				vehicle::flying_vehicle(g_player_service->get_selected()->id());

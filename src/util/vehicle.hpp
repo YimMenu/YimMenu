@@ -865,23 +865,6 @@ namespace big::vehicle
 		}
 	}
 
-	inline void kick_player_from_vehicle(player_ptr target)
-	{
-		auto vehicle = target->get_current_vehicle();
-
-		if (!vehicle || !vehicle->m_net_object)
-		{
-			// vehicle hasn't synced yet, use TSE
-			const size_t arg_count = 9;
-			int64_t args[arg_count] = {
-				(int64_t)eRemoteEvent::VehicleKick,
-				self::id, 0, 0, 0, 0, 0, 0, 0
-			};
-
-			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
-		}
-	}
-
 	inline void flip_180(const Player player)
 	{
 		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
