@@ -330,6 +330,10 @@ namespace big
 		case eRemoteEvent::DestroyPersonalVehicle:
 			g.reactions.destroy_personal_vehicle.process(plyr);
 			return true;
+		case eRemoteEvent::BadThing1:
+		case eRemoteEvent::BadThing2:
+			return true;
+			break;
 		}
 
 		// detect pasted menus setting args[1] to something other than PLAYER_ID()
