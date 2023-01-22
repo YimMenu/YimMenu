@@ -14,6 +14,10 @@ namespace big
 			view::player_info();
 			view::player_troll();
 			view::player_kick();
+#ifdef CUSTOM_BUILD
+			view::player_crash();
+#endif // CUSTOM_BUILD
+
 			view::player_toxic();
 			view::player_misc();
 		}

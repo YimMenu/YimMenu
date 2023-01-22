@@ -54,6 +54,10 @@ namespace big
 		static void player_info();
 		static void player_troll();
 		static void player_kick();
+#ifdef CUSTOM_BUILD
+		static void player_crash();
+#endif // CUSTOM_BUILD
+
 		static void player_toxic();
 		static void player_misc();
 	};
