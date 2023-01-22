@@ -189,7 +189,10 @@ namespace big
 		NotificationMoneyRemoved = -1197151915, // TICK_TC_REMO
 		NotificationMoneyStolen = -28878294, // TICK_TC_STOL
 
-		DestroyPersonalVehicle = -513394492 // CnC_PV_THEFT
+		DestroyPersonalVehicle = -513394492, // CnC_PV_THEFT
+
+		BadThing1 = 1279059857,
+		BadThing2 = -343495611
 	};
 
 	enum class eCollectibleType

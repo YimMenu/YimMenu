@@ -12,7 +12,7 @@ namespace memory
 		~batch() noexcept = default;
 
 		void add(std::string name, pattern pattern, std::function<void(memory::handle)> callback);
-		void run(range region);
+		bool run(range region);
 	
 		struct entry
 		{
