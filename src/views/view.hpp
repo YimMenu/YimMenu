@@ -29,6 +29,7 @@ namespace big
 		static void root();
 		static void self();
 		static void session();
+		static void missions();
 		static void player_database();
 		static void session_browser();
 		static void settings();

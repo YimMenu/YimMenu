@@ -18,13 +18,6 @@ namespace big
 
 	void reaction::process_common(player_ptr player)
 	{
-		if (notify)
-		{
-			char notification[500]{}; // I don't like using sprintf but there isn't an alternative afaik
-			snprintf(notification, sizeof(notification), m_notify_message, player->get_name());
-			g_notification_service->push_warning("Protections", notification);
-		}
-
 		if (log)
 		{
 			uint64_t rockstar_id = player->get_net_data() == nullptr ? 0 : player->get_net_data()->m_gamer_handle_2.m_rockstar_id;
@@ -69,6 +62,13 @@ namespace big
 				if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_send_chat_ptr, g_player_service->get_self()->get_net_data(), chat, false))
 					notify::draw_chat(chat, g_player_service->get_self()->get_name(), false);
 			});
+		}
+
+		if (notify)
+		{
+			char notification[500]{}; // I don't like using sprintf but there isn't an alternative afaik
+			snprintf(notification, sizeof(notification), m_notify_message, player->get_name());
+			g_notification_service->push_warning("Protections", notification);
 		}
 
 		process_common(player);

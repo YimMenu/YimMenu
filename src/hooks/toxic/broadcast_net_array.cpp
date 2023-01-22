@@ -6,6 +6,8 @@
 #include "util/scripts.hpp"
 #include "services/players/player_service.hpp"
 
+#include <script/globals/GlobalPlayerBD.hpp>
+
 namespace big
 {
 	unsigned int hooks::broadcast_net_array(rage::netArrayHandlerBase* _this, CNetGamePlayer* target, rage::datBitBuffer* bit_buffer, uint16_t counter, uint32_t* elem_start, bool silent)
@@ -19,7 +21,7 @@ namespace big
 			target->m_player_id == g_player_service->m_player_to_use_end_session_kick->get()->id() && _this->m_array == scr_globals::gsbd.as<void*>();
 
 		bool need_to_modify_wanted_level = g.session.wanted_level_all && (_this->m_array >= scr_globals::globalplayer_bd.as<uint8_t*>() && 
-			_this->m_array <= scr_globals::globalplayer_bd.at(31, scr_globals::size::globalplayer_bd).as<uint8_t*>());
+			_this->m_array <= scr_globals::globalplayer_bd.at(31, sizeof(GlobalPlayerBDEntry) / 8).as<uint8_t*>());
 
 		bool need_to_turn_player_into_beast = g.m_hunt_the_beast_thread && g.m_hunt_the_beast_thread->m_stack && g.m_hunt_the_beast_thread->m_net_component &&
 			_this->m_array == script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).as<void*>();
@@ -35,7 +37,7 @@ namespace big
 
 		if (need_to_modify_wanted_level)
 		{
-			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(212).as<Player*>() = target->m_player_id;
+			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].RemoteWantedLevelPlayer = target->m_player_id;
 			g_pointers->m_broadcast_patch->apply();
 		}
 

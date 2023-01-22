@@ -32,6 +32,7 @@ namespace big
 
 		NETWORK,
 		SESSION,
+		MISSIONS,
 		SPOOFING,
 		PLAYER_DATABASE,
 		SESSION_BROWSER,
@@ -87,6 +88,7 @@ namespace big
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},
 				{ tabs::SESSION, { "Session", view::session }},
+				{ tabs::MISSIONS, { "Missions", view::missions }},
 				{ tabs::PLAYER_DATABASE, { "Player Database", view::player_database }},
 				{ tabs::SESSION_BROWSER, { "Session Browser", view::session_browser }},
 			}}},
