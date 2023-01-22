@@ -48,7 +48,7 @@ namespace big
 				});
 			ImGui::SameLine();
 			components::button("Burst tires", [] {
-				vehicle::BurstTires(g_player_service->get_selected()->id());
+				vehicle::burst_tires(g_player_service->get_selected()->id());
 				});
 
 			components::button("Smash windows", [] {
@@ -60,11 +60,11 @@ namespace big
 				});
 
 			components::button("Lock doors", [] {
-				vehicle::LockDoors(g_player_service->get_selected()->id());
+				vehicle::lock_doors(g_player_service->get_selected()->id());
 				});
 			ImGui::SameLine();
 			components::button("Unlock doors", [] {
-				vehicle::UnlockDoors(g_player_service->get_selected()->id());
+				vehicle::unlock_doors(g_player_service->get_selected()->id());
 				});
 
 			components::button("Open doors", [] {
