@@ -657,6 +657,296 @@ namespace big::vehicle
 			return g_notification_service->push_warning("Vehicle", "Please be in a car first then try again.");
 	}
 
+	inline void downgrade_vehicle(Player player)
+	{
+		Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player), false);
+		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
+		for (int i = 0; i < 50; i++)
+		{
+			VEHICLE::REMOVE_VEHICLE_MOD(vehicle, i);
+		}
+		VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 18); //Remove turbo on vehicle
+		VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 22); //Remove xeon headlights
+	}	
+
+inline void crush_vehicle(const Player player)
+	{
+		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+
+		if (!PED::IS_PED_IN_ANY_VEHICLE(ent, true))
+			g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
+		else {
+			ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
+
+			if (entity::take_control_of(ent))
+				ENTITY::APPLY_FORCE_TO_ENTITY(ent, true, 0, 0, -40.0f, 0, 0, 0, true, true, true, true, false, true);
+			else
+				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+		}
+	}
+
+inline void boost_player_vehicle(Player player)
+	{
+		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+		if (!PED::IS_PED_IN_ANY_VEHICLE(ped, true))
+			g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
+		else {
+			Vehicle vehicle = PED::GET_VEHICLE_PED_IS_USING(ped);
+
+			if (entity::take_control_of(vehicle))
+				VEHICLE::SET_VEHICLE_FORWARD_SPEED(vehicle, 79);
+			else
+				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+		}
+	}
+
+inline void flying_vehicle(const Player player)
+	{
+		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+
+		if (!PED::IS_PED_IN_ANY_VEHICLE(ent, true))
+			g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
+		else {
+			ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
+
+			if (entity::take_control_of(ent))
+				ENTITY::APPLY_FORCE_TO_ENTITY(ent, 1, 0.f, 0.f, 50000.f, 0.f, 0.f, 0.f, 0, 0, 1, 1, 0, 1);
+			else
+				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+		}
+	}
+
+inline void kill_vehicle_engine(Player player)
+	{
+		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+		if (!PED::IS_PED_IN_ANY_VEHICLE(ped, true))
+			g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
+		else {
+			Vehicle vehicle = PED::GET_VEHICLE_PED_IS_USING(ped);
+
+			if (entity::take_control_of(vehicle))
+				VEHICLE::SET_VEHICLE_ENGINE_HEALTH(vehicle, -4000);
+			else
+				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+		}
+	}
+
+inline void burst_tires(Player player)
+	{
+		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+		if (PED::IS_PED_IN_ANY_VEHICLE(ped, false))
+		{
+			Vehicle vehicle = PED::GET_VEHICLE_PED_IS_USING(ped);
+			entity::take_control_of(vehicle);
+			VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(vehicle, true);
+			static int tireID = 0;
+			for (tireID = 0; tireID < 8; tireID++)
+			{
+				VEHICLE::SET_VEHICLE_TYRE_BURST(vehicle, tireID, true, 1000.0);
+			}
+		}
+	}	
+
+inline void smash_windows(Player player)
+	{
+		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+		if (PED::IS_PED_IN_ANY_VEHICLE(ped, false))
+		{
+			entity::take_control_of(PED::GET_VEHICLE_PED_IS_USING(ped));
+			Vehicle UserVeh = PED::GET_VEHICLE_PED_IS_IN(ped, false);
+			static int windowID = 0;
+			for (windowID = 0; windowID < 10; windowID++)
+			{
+				VEHICLE::SMASH_VEHICLE_WINDOW(UserVeh, windowID);
+			}
+		}
+	}	
+
+inline void set_tint(Player player)
+	{
+		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+		if (PED::IS_PED_IN_ANY_VEHICLE(ped, false))
+		{
+			entity::take_control_of(PED::GET_VEHICLE_PED_IS_USING(ped));
+			Vehicle UserVeh = PED::GET_VEHICLE_PED_IS_IN(ped, false);
+
+			VEHICLE::SET_VEHICLE_WINDOW_TINT(UserVeh, WINDOWTINT_BLACK);
+		}
+	}	
+
+inline void lock_doors(Player player)
+	{
+		int lockStatus = VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(player);
+		if (PED::IS_PED_IN_ANY_VEHICLE(player, false))
+		{
+			entity::take_control_of(PED::GET_VEHICLE_PED_IS_USING(player));
+			VEHICLE::SET_VEHICLE_DOORS_LOCKED(PED::GET_VEHICLE_PED_IS_USING(player), 4);
+		}
+	}	
+
+inline void unlock_doors(Player player)
+	{
+		if (PED::IS_PED_IN_ANY_VEHICLE(player, false))
+		{
+			entity::take_control_of(PED::GET_VEHICLE_PED_IS_USING(player));
+			VEHICLE::SET_VEHICLE_DOORS_LOCKED(PED::GET_VEHICLE_PED_IS_USING(player), 0);
+		}
+	}
+
+inline void open_doors(Player player)
+	{
+		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+		if (!PED::IS_PED_IN_ANY_VEHICLE(ped, true))
+			g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
+		else {
+			Vehicle vehicle = PED::GET_VEHICLE_PED_IS_USING(ped);
+
+			if (entity::take_control_of(vehicle))
+			{
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(vehicle, 0, true, false);
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(vehicle, 1, true, false);
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(vehicle, 2, true, false);
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(vehicle, 3, true, false);
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(vehicle, 4, true, false);
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(vehicle, 5, true, false);
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(vehicle, 6, true, false);
+				VEHICLE::SET_VEHICLE_DOOR_OPEN(vehicle, 7, true, false);
+			}
+			else
+				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+		}
+	}
+
+inline void close_doors(Player player)
+	{
+		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+		if (!PED::IS_PED_IN_ANY_VEHICLE(ped, true))
+			g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
+		else {
+			Vehicle vehicle = PED::GET_VEHICLE_PED_IS_USING(ped);
+
+			if (entity::take_control_of(vehicle))
+				VEHICLE::SET_VEHICLE_DOORS_SHUT(vehicle, false);
+			else
+				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+		}
+	}	
+
+inline void upgrade_vehicle(Player player)
+	{
+		Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player), false);
+		vehicle::max_vehicle(vehicle);
+	}	
+
+inline void downgrade_vehicle(Player player)
+	{
+		Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player), false);
+		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
+		for (int i = 0; i < 50; i++)
+		{
+			VEHICLE::REMOVE_VEHICLE_MOD(vehicle, i);
+		}
+		VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 18); //Remove turbo on vehicle
+		VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 22); //Remove xeon headlights
+	}	
+
+inline void gift_vehicle(Player player)
+	{
+		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+		Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(ped, false);
+		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(vehicle, TRUE, TRUE);
+		DECORATOR::DECOR_REGISTER("PV_Slot", 3);
+		DECORATOR::DECOR_REGISTER("Player_Vehicle", 3);
+		DECORATOR::DECOR_SET_BOOL(vehicle, "IgnoredByQuickSave", FALSE);
+		DECORATOR::DECOR_SET_INT(vehicle, "Player_Vehicle", NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(player));
+		VEHICLE::SET_VEHICLE_IS_STOLEN(vehicle, FALSE);
+	}	
+
+inline void clone_vehicle(Player player)
+	{
+		Vehicle pedVeh = NULL;
+		Ped playerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+		if (PED::IS_PED_IN_ANY_VEHICLE(playerPed, FALSE))
+		{
+			pedVeh = PED::GET_VEHICLE_PED_IS_IN(playerPed, FALSE);
+			if (ENTITY::DOES_ENTITY_EXIST(pedVeh))
+			{
+				Hash vehicleModelHash = ENTITY::GET_ENTITY_MODEL(pedVeh);
+
+
+				Vector3 playerPosition = ENTITY::GET_ENTITY_COORDS(self::ped, FALSE); //playerPed
+				Vehicle playerVeh = VEHICLE::CREATE_VEHICLE(vehicleModelHash, playerPosition.x, playerPosition.y, playerPosition.z, 0.f, true, false, false);
+				PED::SET_PED_INTO_VEHICLE(playerPed, playerVeh, -1);
+				int primaryColor, secondaryColor;
+				VEHICLE::GET_VEHICLE_COLOURS(pedVeh, &primaryColor, &secondaryColor);
+				VEHICLE::SET_VEHICLE_COLOURS(playerVeh, primaryColor, secondaryColor);
+				if (VEHICLE::GET_IS_VEHICLE_PRIMARY_COLOUR_CUSTOM(pedVeh))
+				{
+					int r, g, b;
+					VEHICLE::GET_VEHICLE_CUSTOM_PRIMARY_COLOUR(pedVeh, &r, &g, &b);
+					VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(playerVeh, r, g, b);
+				}
+				if (VEHICLE::GET_IS_VEHICLE_SECONDARY_COLOUR_CUSTOM(pedVeh))
+				{
+					int r, g, b;
+					VEHICLE::GET_VEHICLE_CUSTOM_SECONDARY_COLOUR(pedVeh, &r, &g, &b);
+					VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(playerVeh, r, g, b);
+				}
+				if (VEHICLE::IS_THIS_MODEL_A_CAR(vehicleModelHash) || VEHICLE::IS_THIS_MODEL_A_BIKE(vehicleModelHash))
+				{
+					VEHICLE::SET_VEHICLE_MOD_KIT(playerVeh, 0);
+					VEHICLE::SET_VEHICLE_WHEEL_TYPE(playerVeh, VEHICLE::GET_VEHICLE_WHEEL_TYPE(pedVeh));
+					for (int i = 0; i <= 24; i++)
+					{
+						if (i > 16 && i < 23)
+							VEHICLE::TOGGLE_VEHICLE_MOD(playerVeh, i, VEHICLE::IS_TOGGLE_MOD_ON(pedVeh, i));
+						else
+							VEHICLE::SET_VEHICLE_MOD(playerVeh, i, VEHICLE::GET_VEHICLE_MOD(pedVeh, i), VEHICLE::GET_VEHICLE_MOD_VARIATION(pedVeh, i));
+					}
+					int tireSmokeColor[3], pearlescentColor, wheelColor;
+					VEHICLE::GET_VEHICLE_TYRE_SMOKE_COLOR(pedVeh, &tireSmokeColor[0], &tireSmokeColor[1], &tireSmokeColor[2]);
+					VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(playerVeh, tireSmokeColor[0], tireSmokeColor[1], tireSmokeColor[2]);
+					VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(playerVeh, VEHICLE::GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(pedVeh));
+					VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(playerVeh, VEHICLE::GET_VEHICLE_NUMBER_PLATE_TEXT(pedVeh));
+					VEHICLE::GET_VEHICLE_EXTRA_COLOURS(pedVeh, &pearlescentColor, &wheelColor);
+					VEHICLE::SET_VEHICLE_EXTRA_COLOURS(playerVeh, pearlescentColor, wheelColor);
+					if (VEHICLE::IS_VEHICLE_A_CONVERTIBLE(pedVeh, 0))
+					{
+						int convertableState = VEHICLE::GET_CONVERTIBLE_ROOF_STATE(pedVeh);
+						if (convertableState == 0 || convertableState == 3 || convertableState == 5)
+							VEHICLE::RAISE_CONVERTIBLE_ROOF(playerVeh, 1);
+						else
+							VEHICLE::LOWER_CONVERTIBLE_ROOF(playerVeh, 1);
+					}
+					for (int i = 0; i <= 3; i++)
+					{
+						VEHICLE::SET_VEHICLE_NEON_ENABLED(playerVeh, i, VEHICLE::GET_VEHICLE_NEON_ENABLED(pedVeh, i));
+					}
+					for (int i = 0; i <= 11; i++)
+					{
+						if (VEHICLE::DOES_EXTRA_EXIST(pedVeh, i))
+							VEHICLE::SET_VEHICLE_EXTRA(playerVeh, i, ~VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(pedVeh, i));
+					}
+					if ((VEHICLE::GET_VEHICLE_LIVERY_COUNT(pedVeh) > 1) && VEHICLE::GET_VEHICLE_LIVERY(pedVeh) >= 0)
+					{
+						VEHICLE::SET_VEHICLE_LIVERY(playerVeh, VEHICLE::GET_VEHICLE_LIVERY(pedVeh));
+					}
+					int neonColor[3];
+					VEHICLE::GET_VEHICLE_NEON_COLOUR(pedVeh, &neonColor[0], &neonColor[1], &neonColor[2]);
+					VEHICLE::SET_VEHICLE_NEON_COLOUR(playerVeh, neonColor[0], neonColor[1], neonColor[2]);
+					VEHICLE::SET_VEHICLE_WINDOW_TINT(playerVeh, VEHICLE::GET_VEHICLE_WINDOW_TINT(pedVeh));
+					VEHICLE::SET_VEHICLE_DIRT_LEVEL(playerVeh, VEHICLE::GET_VEHICLE_DIRT_LEVEL(pedVeh));
+				}
+				STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(vehicleModelHash);
+
+				if (*g_pointers->m_is_session_started)
+				{
+					vehicle::set_mp_bitset(vehicleModelHash);
+				}
+			}
+		}
+	}
+	
 	inline bool remote_control_vehicle(Vehicle veh)
 	{
 		if (!entity::take_control_of(veh, 4000))
