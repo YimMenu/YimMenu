@@ -705,9 +705,69 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(ugc, infinite_model_memory)
 		} ugc{};
 
+		struct stat_editor
+		{
+			struct stat
+			{
+				int radio_button_index = 0;
+				std::string int_text = "";
+				std::string int_value = "";
+				bool int_read = false;
+				std::string bool_text = "";
+				std::string bool_value = "";
+				bool bool_read = false;
+				std::string float_text = "";
+				std::string float_value = "";
+				bool float_read = false;
+				std::string increment_text = "";
+				std::string increment_value = "";
+				bool increment_loop_write = false;
+				std::string date_text = "";
+				std::string date_value = "";
+				bool date_read = false;
+				std::string string_text = "";
+				std::string string_value = "";
+				bool string_read = false;
+				std::string label_text = "";
+				std::string label_value = "";
+				std::string user_id_text = "";
+				std::string user_id_value = "";
+				bool user_id_read = false;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(stat, radio_button_index,
+					int_text, int_value, int_read,
+					bool_text, bool_value, bool_read,
+					float_text, float_value, float_read,
+					increment_text, increment_value, increment_loop_write,
+					date_text, date_value, date_read,
+					string_text, string_value, string_read,
+					label_text, label_value,
+					user_id_text, user_id_value, user_id_read)
+			} stat{};
+
+			struct packed_stat
+			{
+				int radio_button_index = 0;
+
+				std::string int_text = "";
+				std::string int_value = "";
+				bool int_read = false;
+
+				std::string bool_text = "";
+				std::string bool_value = "";
+				bool bool_read = false;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(packed_stat, radio_button_index,
+					int_text, int_value, int_read,
+					bool_text, bool_value, bool_read)
+			} packed_stat{};
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(stat_editor, stat, packed_stat)
+		} stat_editor{};
+
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings,
 			debug, tunables, notifications, player, protections, self, session, settings, spawn_vehicle, clone_pv,
-			spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world)
+			spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor)
 	};
 
 	inline auto g = menu_settings();
