@@ -148,6 +148,7 @@ namespace big
 		PED::SET_PED_ID_RANGE(ped, 200.0f);
 		PED::SET_PED_FIRING_PATTERN(ped, RAGE_JOAAT("FIRING_PATTERN_FULL_AUTO"));
 		PED::SET_PED_SHOOT_RATE(ped, 150);
+		PED::SET_PED_RANDOM_COMPONENT_VARIATION(ped, 0);
 
 		if (is_bodyguard)
 		{
@@ -651,6 +652,8 @@ namespace big
 					g_notification_service->push_error("Ped", "Failed to spawn model, did you give an incorrect model?");
 					return;
 				}
+
+				PED::SET_PED_RANDOM_COMPONENT_VARIATION(self::ped, 0);
 			}
 		});
 

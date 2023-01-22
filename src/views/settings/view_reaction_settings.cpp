@@ -79,6 +79,7 @@ namespace big
 		draw_reaction(g.reactions.sound_spam);
 		draw_reaction(g.reactions.spectate_notification);
 		draw_reaction(g.reactions.start_activity);
+		draw_reaction(g.reactions.start_script);
 		draw_reaction(g.reactions.teleport_to_warehouse);
 		draw_reaction(g.reactions.transaction_error);
 		draw_reaction(g.reactions.trigger_business_raid);

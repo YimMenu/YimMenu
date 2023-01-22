@@ -160,6 +160,7 @@ namespace big
 			reaction vehicle_kick{ "Vehicle Kick", "Blocked Vehicle Kick from %s", "%s tried to kick me from my vehicle!" };
 			reaction teleport_to_warehouse{ "Teleport To Warehouse", "Blocked Teleport To Warehouse from %s", "%s tried to teleport me to a warehouse!" };
 			reaction start_activity{ "Start Activity", "Blocked Start Activity from %s", "Blocked Start Activity from %s" };
+			reaction start_script{ "Start Script", "Blocked Start Script from %s", "Blocked Start Script from %s" };
 			reaction null_function_kick{ "Null Function Kick", "Blocked Null Function Kick from %s", "%s tried to kick me out!" };
 			reaction destroy_personal_vehicle{ "Destroy Personal Vehicle", "Blocked Destroy Personal Vehicle from %s", "%s tried to destroy my personal vehicle!" };
 			reaction trigger_business_raid{ "Trigger Business Raid", "Blocked Trigger Business Raid from %s", "%s tried to trigger a business raid!" };
@@ -182,7 +183,7 @@ namespace big
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, clear_wanted_level, crash, end_session_kick, fake_deposit, force_mission, force_teleport, gta_banner, kick_from_interior, mc_teleport, network_bail, personal_vehicle_destroyed, 
 				remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, trigger_business_raid, start_activity,
-				null_function_kick, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, request_control_event, report, 
+				start_script, null_function_kick, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, request_control_event, report, 
 				breakup_others, gamer_instruction_kick, lost_connection_kick, lost_connection_kick_others)
 		} reactions{};
 		

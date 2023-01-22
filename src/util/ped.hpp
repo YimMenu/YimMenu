@@ -17,6 +17,7 @@ namespace big::ped
 			return false;
 		}
 		PLAYER::SET_PLAYER_MODEL(self::id, hash);
+		self::ped = PLAYER::PLAYER_PED_ID();
 		script::get_current()->yield();
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 

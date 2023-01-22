@@ -1,6 +1,7 @@
 #include "backend/player_command.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
+#include "script.hpp"
 
 #include <script/globals/GPBD_FM_3.hpp>
 #include "core/scr_globals.hpp"
@@ -35,14 +36,19 @@ namespace big
 
 			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << player->id());
 
-			const size_t arg_count_2 = 25;
-			int64_t args_2[arg_count_2] =
+			for (int i = 0; i < 2; i++)
 			{
-				(int64_t)eRemoteEvent::StartScriptProceed,
-				(int64_t)self::id
-			};
-			args_2[2 + 17] = 1337;
-			g_pointers->m_trigger_script_event(1, args_2, arg_count_2, 1 << player->id());
+				const size_t arg_count_2 = 25;
+				int64_t args_2[arg_count_2] =
+				{
+					(int64_t)eRemoteEvent::StartScriptProceed,
+					(int64_t)self::id
+				};
+				args_2[2 + 17] = 1337;
+				g_pointers->m_trigger_script_event(1, args_2, arg_count_2, 1 << player->id());
+
+				script::get_current()->yield(20ms);
+			}
 		}
 	};
 
@@ -54,5 +60,5 @@ namespace big
 	start_script<216> g_start_space_monkey("spacemonkey", "Start Space Monkey 3", "Starts the arcade game Space Monkey 3 in fullscreen", 0);
 	start_script<216> g_start_wizards_ruin("wizard", "Start The Wizard's Ruin", "Starts the arcade game The Wizard's Ruin in fullscreen", 0);
 	start_script<217> g_start_qub3d("qub3d", "Start Qub3D", "Starts the arcade game Qub3D in fullscreen", 0);
-	start_script<218> g_start_camhedz("camhedz", "Start Camheadz", "Starts the arcade game Camheadz in fullscreen", 0);
+	start_script<218> g_start_camhedz("camhedz", "Start Camhedz", "Starts the arcade game Camhedz in fullscreen", 0);
 }

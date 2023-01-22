@@ -363,7 +363,11 @@ namespace big
 		case eRemoteEvent::BadThing1:
 		case eRemoteEvent::BadThing2:
 			return true;
-			break;
+		case eRemoteEvent::StartScriptBegin:
+		{
+			g.reactions.start_script.process(plyr);
+			return true;
+		}
 		}
 
 		// detect pasted menus setting args[1] to something other than PLAYER_ID()
