@@ -838,18 +838,6 @@ inline void upgrade_vehicle(Player player)
 		vehicle::max_vehicle(vehicle);
 	}	
 
-inline void downgrade_vehicle(Player player)
-	{
-		Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player), false);
-		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
-		for (int i = 0; i < 50; i++)
-		{
-			VEHICLE::REMOVE_VEHICLE_MOD(vehicle, i);
-		}
-		VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 18); //Remove turbo on vehicle
-		VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 22); //Remove xeon headlights
-	}	
-
 inline void gift_vehicle(Player player)
 	{
 		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
