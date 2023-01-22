@@ -14,7 +14,7 @@ namespace big
 		bool used = g.session.block_jobs && *g_pointers->m_is_session_started;
 		if (!bLastBlockJobsEnabled && used)
 		{
-			if (!STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() && gta_util::find_script_thread(RAGE_JOAAT("fmmc_launcher")) && SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0
+			if (!STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() && SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0
 				&& NETWORK::NETWORK_GET_HOST_OF_SCRIPT("fmmc_launcher", -1, 0) == self::id)
 			{
 				auto fmmc = gta_util::find_script_thread(RAGE_JOAAT("fmmc_launcher"));

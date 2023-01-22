@@ -135,6 +135,7 @@ namespace big
 		struct reactions
 		{
 			reaction bounty{ "Bounty", "Blocked Bounty from %s", "%s tried to set a bounty on me!" };
+			reaction ceo_kick{ "CEO Kick", "Blocked CEO Kick from %s", "%s tried to kick me from my CEO!" };
 			reaction ceo_money{ "CEO Money", "Blocked CEO Money from %s", "%s tried to drop money on me!" };
 			reaction clear_wanted_level{ "Clear Wanted Level", "Blocked Clear Wanted Level from %s", "%s tried to clear my wanted level!" };
 			reaction crash{ "Crash", "Blocked Crash from %s", "%s tried to crash me!" };
@@ -181,7 +182,7 @@ namespace big
 			reaction gamer_instruction_kick{ "Gamer Instruction Kick", "Blocked Gamer Instruction Kick from %s", "%s tried to kick me out!" };
 			interloper_reaction lost_connection_kick_others{ "Lost Connection Kick On Other Players", "%s is trying to lost connection kick %s!", "%s is trying to lost connection kick %s!", true, false };
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, clear_wanted_level, crash, end_session_kick, fake_deposit, force_mission, force_teleport, gta_banner, kick_from_interior, mc_teleport, network_bail, personal_vehicle_destroyed, 
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, ceo_kick, clear_wanted_level, crash, end_session_kick, fake_deposit, force_mission, force_teleport, gta_banner, kick_from_interior, mc_teleport, network_bail, personal_vehicle_destroyed, 
 				remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, trigger_business_raid, start_activity,
 				start_script, null_function_kick, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, request_control_event, report, 
 				breakup_others, gamer_instruction_kick, lost_connection_kick, lost_connection_kick_others)

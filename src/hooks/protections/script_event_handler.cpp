@@ -69,6 +69,13 @@ namespace big
 				return true;
 			}
 			break;
+		case eRemoteEvent::CeoKick:
+			if (player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
+			{
+				g.reactions.ceo_kick.process(plyr);
+				return true;
+			}
+			break;
 		case eRemoteEvent::CeoMoney:
 			if (g.protections.script_events.ceo_money && player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
 			{

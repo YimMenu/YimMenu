@@ -153,7 +153,7 @@ namespace big
 	{
 		Bounty = 1370461707, // (137, "FM_TXT_BNTY0", iVar1, PLAYER::GET_PLAYER_NAME(Var2.f_1), "", 5000, Var2.f_6);
 		CeoBan = 316066012, // mpply_vipgameplaydisabledtimer
-		CeoKick = -1831959078, // BGDISMISSED
+		CeoKick = 265836764,
 		CeoMoney = 245065909, // Goon_Paid_Large
 		ClearWantedLevel = 2080651008,
 		ForceMission = 1858712297, // ), Var0.f_2, 1))
