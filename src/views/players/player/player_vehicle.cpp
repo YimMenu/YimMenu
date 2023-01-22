@@ -1,7 +1,5 @@
 #include "views/view.hpp"
-#include "util/teleport.hpp"
 #include "util/vehicle.hpp"
-#include "util/kick.hpp"
 
 namespace big
 {
