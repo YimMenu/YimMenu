@@ -338,7 +338,7 @@ namespace big::vehicle
 			owned_mods[MOD_TIRESMOKE_COL_R] == 255 &&
 			owned_mods[MOD_TIRESMOKE_COL_G] == 255 &&
 			owned_mods[MOD_TIRESMOKE_COL_B] == 255
-		);
+			);
 
 
 		// XENON
@@ -667,9 +667,9 @@ namespace big::vehicle
 		}
 		VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 18); //Remove turbo on vehicle
 		VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 22); //Remove xeon headlights
-	}	
+	}
 
-inline void crush_vehicle(const Player player)
+	inline void crush_vehicle(const Player player)
 	{
 		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 
@@ -685,7 +685,7 @@ inline void crush_vehicle(const Player player)
 		}
 	}
 
-inline void boost_player_vehicle(Player player)
+	inline void boost_player_vehicle(Player player)
 	{
 		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 		if (!PED::IS_PED_IN_ANY_VEHICLE(ped, true))
@@ -700,7 +700,7 @@ inline void boost_player_vehicle(Player player)
 		}
 	}
 
-inline void flying_vehicle(const Player player)
+	inline void flying_vehicle(const Player player)
 	{
 		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 
@@ -716,7 +716,7 @@ inline void flying_vehicle(const Player player)
 		}
 	}
 
-inline void kill_vehicle_engine(Player player)
+	inline void kill_vehicle_engine(Player player)
 	{
 		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 		if (!PED::IS_PED_IN_ANY_VEHICLE(ped, true))
@@ -731,7 +731,7 @@ inline void kill_vehicle_engine(Player player)
 		}
 	}
 
-inline void burst_tires(Player player)
+	inline void burst_tires(Player player)
 	{
 		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 		if (PED::IS_PED_IN_ANY_VEHICLE(ped, false))
@@ -745,9 +745,9 @@ inline void burst_tires(Player player)
 				VEHICLE::SET_VEHICLE_TYRE_BURST(vehicle, tireID, true, 1000.0);
 			}
 		}
-	}	
+	}
 
-inline void smash_windows(Player player)
+	inline void smash_windows(Player player)
 	{
 		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 		if (PED::IS_PED_IN_ANY_VEHICLE(ped, false))
@@ -760,9 +760,9 @@ inline void smash_windows(Player player)
 				VEHICLE::SMASH_VEHICLE_WINDOW(UserVeh, windowID);
 			}
 		}
-	}	
+	}
 
-inline void set_tint(Player player)
+	inline void set_tint(Player player)
 	{
 		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 		if (PED::IS_PED_IN_ANY_VEHICLE(ped, false))
@@ -772,9 +772,9 @@ inline void set_tint(Player player)
 
 			VEHICLE::SET_VEHICLE_WINDOW_TINT(UserVeh, WINDOWTINT_BLACK);
 		}
-	}	
+	}
 
-inline void lock_doors(Player player)
+	inline void lock_doors(Player player)
 	{
 		int lockStatus = VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(player);
 		if (PED::IS_PED_IN_ANY_VEHICLE(player, false))
@@ -782,9 +782,9 @@ inline void lock_doors(Player player)
 			entity::take_control_of(PED::GET_VEHICLE_PED_IS_USING(player));
 			VEHICLE::SET_VEHICLE_DOORS_LOCKED(PED::GET_VEHICLE_PED_IS_USING(player), 4);
 		}
-	}	
+	}
 
-inline void unlock_doors(Player player)
+	inline void unlock_doors(Player player)
 	{
 		if (PED::IS_PED_IN_ANY_VEHICLE(player, false))
 		{
@@ -793,7 +793,7 @@ inline void unlock_doors(Player player)
 		}
 	}
 
-inline void open_doors(Player player)
+	inline void open_doors(Player player)
 	{
 		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 		if (!PED::IS_PED_IN_ANY_VEHICLE(ped, true))
@@ -817,7 +817,7 @@ inline void open_doors(Player player)
 		}
 	}
 
-inline void close_doors(Player player)
+	inline void close_doors(Player player)
 	{
 		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 		if (!PED::IS_PED_IN_ANY_VEHICLE(ped, true))
@@ -830,15 +830,15 @@ inline void close_doors(Player player)
 			else
 				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
 		}
-	}	
+	}
 
-inline void upgrade_vehicle(Player player)
+	inline void upgrade_vehicle(Player player)
 	{
 		Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player), false);
 		vehicle::max_vehicle(vehicle);
-	}	
+	}
 
-inline void gift_vehicle(Player player)
+	inline void gift_vehicle(Player player)
 	{
 		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 		Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(ped, false);
@@ -848,9 +848,106 @@ inline void gift_vehicle(Player player)
 		DECORATOR::DECOR_SET_BOOL(vehicle, "IgnoredByQuickSave", FALSE);
 		DECORATOR::DECOR_SET_INT(vehicle, "Player_Vehicle", NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(player));
 		VEHICLE::SET_VEHICLE_IS_STOLEN(vehicle, FALSE);
-	}	
+	}
 
-inline void clone_vehicle(Player player)
+	inline void stop_player_vehicle(Player player)
+	{
+		Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+		if (!PED::IS_PED_IN_ANY_VEHICLE(ped, true))
+			g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
+		else {
+			Vehicle vehicle = PED::GET_VEHICLE_PED_IS_USING(ped);
+
+			if (entity::take_control_of(vehicle))
+				VEHICLE::SET_VEHICLE_FORWARD_SPEED(vehicle, 0);
+			else
+				g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+		}
+	}
+
+	inline void kick_player_from_vehicle(player_ptr target)
+	{
+		auto vehicle = target->get_current_vehicle();
+
+		if (!vehicle || !vehicle->m_net_object)
+		{
+			// vehicle hasn't synced yet, use TSE
+			const size_t arg_count = 9;
+			int64_t args[arg_count] = {
+				(int64_t)eRemoteEvent::VehicleKick,
+				self::id, 0, 0, 0, 0, 0, 0, 0
+			};
+
+			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
+		}
+	}
+
+	inline void flip_180(const Player player)
+	{
+		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+		float Heading = ENTITY::GET_ENTITY_HEADING(ent);
+		Vector3 flipCar180Coords = ENTITY::GET_ENTITY_COORDS(ent, 1);
+		if (!PED::IS_PED_IN_ANY_VEHICLE(ent, true))
+			g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
+		else {
+			ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
+
+			if (entity::take_control_of(ent))
+				if (Heading > 180.0) Heading -= 180.0; else Heading += 180.0; ENTITY::SET_ENTITY_COORDS(ent, flipCar180Coords.x, flipCar180Coords.y, flipCar180Coords.z, 0, 0, 0, 1);
+			ENTITY::SET_ENTITY_HEADING(ent, Heading); VEHICLE::SET_VEHICLE_FORWARD_SPEED(ent, ENTITY::GET_ENTITY_SPEED(ent));
+		}
+	}
+
+	inline bool remote_control_vehicle(Vehicle veh)
+	{
+		if (!entity::take_control_of(veh, 4000))
+		{
+			g_notification_service->push_warning("Remote Control", "Failed to take control of remote vehicle");
+			return false;
+		}
+
+		if (g.m_remote_controlled_vehicle == veh)
+		{
+			return false;
+		}
+
+		Hash model = ENTITY::GET_ENTITY_MODEL(veh);
+		Vehicle spawned = vehicle::spawn(model, self::pos, 0.0f);
+
+		ENTITY::SET_ENTITY_ALPHA(spawned, 0, FALSE);
+		if (!VEHICLE::IS_THIS_MODEL_A_BIKE(model))
+			ENTITY::SET_ENTITY_VISIBLE(spawned, FALSE, FALSE);
+		ENTITY::SET_ENTITY_INVINCIBLE(spawned, TRUE);
+
+		float heading = ENTITY::GET_ENTITY_HEADING(veh);
+		Vector3 rotation = ENTITY::GET_ENTITY_ROTATION(veh, 2);
+		Vector3 coords = ENTITY::GET_ENTITY_COORDS(veh, FALSE);
+		Vector3 velocity = ENTITY::GET_ENTITY_VELOCITY(veh);
+
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(spawned, coords.x, coords.y, coords.z, FALSE, FALSE, FALSE);
+		ENTITY::SET_ENTITY_HEADING(spawned, heading);
+		ENTITY::SET_ENTITY_ROTATION(spawned, rotation.x, rotation.y, rotation.z, 2, TRUE);
+
+		ENTITY::SET_ENTITY_VISIBLE(veh, TRUE, FALSE);
+
+		ENTITY::SET_ENTITY_COLLISION(veh, FALSE, FALSE);
+		ENTITY::SET_ENTITY_INVINCIBLE(veh, TRUE);
+		VEHICLE::SET_VEHICLE_DOORS_LOCKED(veh, 4);
+		VEHICLE::SET_VEHICLE_MAX_SPEED(veh, 0.0001f);
+		ENTITY::ATTACH_ENTITY_TO_ENTITY(veh, spawned, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, FALSE, FALSE, FALSE, FALSE, 0, TRUE, FALSE);
+		PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), spawned, -1);
+
+		VEHICLE::SET_VEHICLE_ENGINE_ON(spawned, TRUE, TRUE, FALSE);
+		ENTITY::SET_ENTITY_VELOCITY(spawned, velocity.x, velocity.y, velocity.z);
+		VEHICLE::COPY_VEHICLE_DAMAGES(veh, spawned);
+
+		g.m_remote_controller_vehicle = spawned;
+		g.m_remote_controlled_vehicle = veh;
+		return true;
+	}
+
+
+	inline void clone_vehicle(Player player)
 	{
 		Vehicle pedVeh = NULL;
 		Ped playerPed = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
@@ -933,53 +1030,5 @@ inline void clone_vehicle(Player player)
 				}
 			}
 		}
-	}
-	
-	inline bool remote_control_vehicle(Vehicle veh)
-	{
-		if (!entity::take_control_of(veh, 4000))
-		{
-			g_notification_service->push_warning("Remote Control", "Failed to take control of remote vehicle");
-			return false;
-		}
-
-		if (g.m_remote_controlled_vehicle == veh)
-		{
-			return false;
-		}
-
-		Hash model = ENTITY::GET_ENTITY_MODEL(veh);
-		Vehicle spawned = vehicle::spawn(model, self::pos, 0.0f);
-
-		ENTITY::SET_ENTITY_ALPHA(spawned, 0, FALSE);
-		if (!VEHICLE::IS_THIS_MODEL_A_BIKE(model))
-			ENTITY::SET_ENTITY_VISIBLE(spawned, FALSE, FALSE);
-		ENTITY::SET_ENTITY_INVINCIBLE(spawned, TRUE);
-
-		float heading = ENTITY::GET_ENTITY_HEADING(veh);
-		Vector3 rotation = ENTITY::GET_ENTITY_ROTATION(veh, 2);
-		Vector3 coords = ENTITY::GET_ENTITY_COORDS(veh, FALSE);
-		Vector3 velocity = ENTITY::GET_ENTITY_VELOCITY(veh);
-
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(spawned, coords.x, coords.y, coords.z, FALSE, FALSE, FALSE);
-		ENTITY::SET_ENTITY_HEADING(spawned, heading);
-		ENTITY::SET_ENTITY_ROTATION(spawned, rotation.x, rotation.y, rotation.z, 2, TRUE);
-
-		ENTITY::SET_ENTITY_VISIBLE(veh, TRUE, FALSE);
-
-		ENTITY::SET_ENTITY_COLLISION(veh, FALSE, FALSE);
-		ENTITY::SET_ENTITY_INVINCIBLE(veh, TRUE);
-		VEHICLE::SET_VEHICLE_DOORS_LOCKED(veh, 4);
-		VEHICLE::SET_VEHICLE_MAX_SPEED(veh, 0.0001f);
-		ENTITY::ATTACH_ENTITY_TO_ENTITY(veh, spawned, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, FALSE, FALSE, FALSE, FALSE, 0, TRUE, FALSE);
-		PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), spawned, -1);
-
-		VEHICLE::SET_VEHICLE_ENGINE_ON(spawned, TRUE, TRUE, FALSE);
-		ENTITY::SET_ENTITY_VELOCITY(spawned, velocity.x, velocity.y, velocity.z);
-		VEHICLE::COPY_VEHICLE_DAMAGES(veh, spawned);
-
-		g.m_remote_controller_vehicle = spawned;
-		g.m_remote_controlled_vehicle = veh;
-		return true;
 	}
 }

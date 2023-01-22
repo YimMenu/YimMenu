@@ -27,22 +27,6 @@ namespace big
 				vehicle::flip_180(g_player_service->get_selected()->id());
 				});
 			ImGui::SameLine();
-			components::button("Remote Control Vehicle", []
-				{
-					Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id()), FALSE);
-			if (veh == 0)
-			{
-				if (g.player.spectating)
-					g_notification_service->push_warning("Remote Control", "Player not in a vehicle");
-				else
-					g_notification_service->push_warning("Remote Control", "Player not in a vehicle, try spectating the player");
-				return;
-			}
-
-			vehicle::remote_control_vehicle(veh);
-			g.player.spectating = false;
-				});
-
 			components::button("Kill vehicle engine", [] {
 				vehicle::kill_vehicle_engine(g_player_service->get_selected()->id());
 				});
