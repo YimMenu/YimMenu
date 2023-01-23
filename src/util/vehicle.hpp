@@ -446,7 +446,8 @@ namespace big::vehicle
 		owned_mods[MOD_TYRE_SMOKE] = !(
 			owned_mods[MOD_TIRESMOKE_COL_R] == 255 &&
 			owned_mods[MOD_TIRESMOKE_COL_G] == 255 &&
-			owned_mods[MOD_TIRESMOKE_COL_B] == 255);
+			owned_mods[MOD_TIRESMOKE_COL_B] == 255
+		);
 
 		// XENON
 		if (val_32 > 0)
