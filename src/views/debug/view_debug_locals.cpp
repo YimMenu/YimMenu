@@ -1,6 +1,4 @@
 #include "view_debug.hpp"
-#include "gui/components/components.hpp"
-#include "natives.hpp"
 
 namespace big
 {
