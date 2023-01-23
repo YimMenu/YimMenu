@@ -55,6 +55,16 @@ namespace big
 				});
 			}
 
+			if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("fmmc_launcher") && g.session.force_script_host)
+			{
+				g_fiber_pool->queue_job([]
+				{
+					scripts::force_host(RAGE_JOAAT("fmmc_launcher"));
+					if (auto script = gta_util::find_script_thread(RAGE_JOAAT("fmmc_launcher")); script && script->m_net_component)
+						script->m_net_component->block_host_migration(true);
+				});
+			}
+
 			scr_functions::set_freemode_session_active({});
 			src->set_return_value<BOOL>(TRUE);
 		}

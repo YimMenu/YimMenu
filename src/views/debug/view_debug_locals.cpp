@@ -6,7 +6,7 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("DEBUG_TAB_LOCALS"_T.data()))
 		{
-
+			
 			ImGui::EndTabItem();
 		}
 	}

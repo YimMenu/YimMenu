@@ -141,7 +141,7 @@ namespace big
 					ImGui::Text("PLAYER_INFO_LANGUAGE"_T.data(), languages[boss_goon.Language].name);
 
 				ImGui::Text("PLAYER_INFO_CEO_NAME"_T.data(), boss_goon.GangName);
-				ImGui::Text("PLAYER_INFO_MC_NAME"_T.data(), boss_goon.MCName);
+				ImGui::Text("PLAYER_INFO_MC_NAME"_T.data(), boss_goon.ClubhouseName);
 				ImGui::Text("PLAYER_INFO_WALLET"_T.data(), stats.WalletBalance);
 				ImGui::Text("PLAYER_INFO_BANK"_T.data(), stats.Money - stats.WalletBalance);
 				ImGui::Text("PLAYER_INFO_TOTAL_MONEY"_T.data(), stats.Money);

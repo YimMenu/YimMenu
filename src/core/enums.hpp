@@ -153,7 +153,7 @@ namespace big
 	{
 		Bounty = 1370461707, // (137, "FM_TXT_BNTY0", iVar1, PLAYER::GET_PLAYER_NAME(Var2.f_1), "", 5000, Var2.f_6);
 		CeoBan = 316066012, // mpply_vipgameplaydisabledtimer
-		CeoKick = -1831959078, // BGDISMISSED
+		CeoKick = 265836764,
 		CeoMoney = 245065909, // Goon_Paid_Large
 		ClearWantedLevel = 2080651008,
 		ForceMission = 1858712297, // ), Var0.f_2, 1))
@@ -164,7 +164,7 @@ namespace big
 		RemoteOffradar = -162943635, // NETWORK::GET_TIME_DIFFERENCE(NETWORK::GET_NETWORK_TIME(), Var0.f_2)
 		SendToCutscene = 392606458, // (bVar3, bVar4, 125f, 1)
 		SendToCayoPerico = -910497748, // CELL_HI_INV
-		SendToLocation = 1214823473, // &Var222, 11); TODO this isn't updated!
+		SendToLocation = -93722397, // &Var222, 11);
 		SoundSpam = -1891171016, // CELL_APTINVYACHT
 		Spectate = -1903870031, // SPEC_TCK1
 		Teleport = -168599209, // Mission_Pass_Notify
@@ -177,9 +177,11 @@ namespace big
 		KickFromInterior = 1454834612, // ENTITY::SET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID(), PED::GET_PED_MAX_HEALTH(PLAYER::PLAYER_PED_ID()), false)
 		InteriorControl = 1268038438, // eventData.f_3 != _INVALID_PLAYER_INDEX_0()
 		SMS = 1519903406,
+		SendTextLabelSMS = -1387723751,
 
 		Crash = -904555865, // SET_NO_LOADING_SCREEN, xref it
 		Crash2 = 1775863255,
+		Crash3 = 2067191610,
 
 		TSECommand = 113023613, // CnCTG_IN_BF
 		TSECommandRotateCam = 0x69979fea /*joaat("pats_horse_right") in script*/, // != 29) && f
@@ -190,6 +192,10 @@ namespace big
 		NotificationMoneyStolen = -28878294, // TICK_TC_STOL
 
 		DestroyPersonalVehicle = -513394492, // CnC_PV_THEFT
+		TriggerCEORaid = -1322731185,
+
+		StartScriptBegin = -1127353498,
+		StartScriptProceed = -16793987,
 
 		BadThing1 = 1279059857,
 		BadThing2 = -343495611

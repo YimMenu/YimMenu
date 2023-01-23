@@ -32,7 +32,7 @@ namespace big
 
 		if (g.spoofing.rockstar_id != g.spoofing.applied_spoof_rockstar_id && gta_util::get_network()->m_game_session_state == 0)
 		{
-			g.spoofing.applied_spoof_rockstar_id = g.spoofing.spoof_rockstar_id;
+			g.spoofing.applied_spoof_rockstar_id = g.spoofing.rockstar_id;
 		}
 
 		if (g.spoofing.spoof_rockstar_id != g.spoofing.should_spoof_rockstar_id && gta_util::get_network()->m_game_session_state == 0)
