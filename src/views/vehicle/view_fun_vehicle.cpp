@@ -59,11 +59,11 @@ namespace big
 						ImGui::BeginDisabled();
 					}
 
-					std::string name = "DRIVER";
+					std::string name = "DRIVER"_T.data();
 
 					if (idx >= 0)
 					{
-						name = "FUN_VEHICLE_SEAT" + std::to_string(idx + 1);
+						name = "FUN_VEHICLE_SEAT"_T.data() + std::to_string(idx + 1);
 					}
 
 					if ((idx + 1) % 4 != 0) {
