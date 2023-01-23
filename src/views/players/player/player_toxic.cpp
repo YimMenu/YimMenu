@@ -19,9 +19,24 @@ namespace big
 			components::player_command_button<"vehkick">(g_player_service->get_selected(), {});
 
 			components::player_command_button<"ragdoll">(g_player_service->get_selected(), {});
-
+			ImGui::SameLine();
 			components::player_command_button<"intkick">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
 			components::player_command_button<"beast">(g_player_service->get_selected(), {});
+
+			components::player_command_button<"mission">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
+			components::player_command_button<"error">(g_player_service->get_selected(), {});
+
+			components::player_command_button<"ceoraid">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
+			components::button("Trigger MC Raid", [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::BikerDefend); });
+			ImGui::SameLine();
+			components::button("Trigger Bunker Raid", [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::GunrunningDefend); });
+
+			components::player_command_button<"sext">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
+			components::player_command_button<"fakeban">(g_player_service->get_selected(), {});
 
 			static int wanted_level;
 			ImGui::SliderInt("Wanted Level", &wanted_level, 0, 5);
@@ -108,6 +123,24 @@ namespace big
 			components::player_command_button<"giveweaps">(g_player_service->get_selected(), { });
 			ImGui::SameLine();
 			components::player_command_button<"remweaps">(g_player_service->get_selected(), { });
+
+			components::player_command_button<"tutorial">(g_player_service->get_selected(), { });
+			ImGui::SameLine();
+			components::player_command_button<"golf">(g_player_service->get_selected(), { });
+			ImGui::SameLine();
+			components::player_command_button<"flightschool">(g_player_service->get_selected(), { });
+			ImGui::SameLine();
+			components::player_command_button<"darts">(g_player_service->get_selected(), { });
+
+			components::player_command_button<"badlands">(g_player_service->get_selected(), { });
+			ImGui::SameLine();
+			components::player_command_button<"spacemonkey">(g_player_service->get_selected(), { });
+			ImGui::SameLine();
+			components::player_command_button<"wizard">(g_player_service->get_selected(), { });
+
+			components::player_command_button<"qub3d">(g_player_service->get_selected(), { });
+			ImGui::SameLine();
+			components::player_command_button<"camhedz">(g_player_service->get_selected(), { });
 
 			components::small_text("Warp Time (requires session host)");
 

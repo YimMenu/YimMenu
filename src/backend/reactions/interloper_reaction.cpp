@@ -32,6 +32,13 @@ namespace big
 			});
 		}
 
+		if (notify)
+		{
+			char notification[500]{}; // I don't like using sprintf but there isn't an alternative afaik
+			snprintf(notification, sizeof(notification), m_notify_message, attacker->get_name(), victim->get_name());
+			g_notification_service->push_warning("Protections", notification);
+		}
+
 		process_common(attacker);
 	}
 }
