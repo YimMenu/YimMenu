@@ -6,7 +6,7 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("HANDLING_TAB_TRANSMISSION"_T.data()))
 		{
-			ImGui::Text("HANDLING_DRIVE_BIAS"_T.data());
+			ImGui::Text("HANDLING_DRIVE_BIAS_FRONT"_T.data());
 			float fDriveBiasFront = g_local_player->m_vehicle->m_handling_data->m_drive_bias_front / 2;
 			if (ImGui::SliderFloat("##drive_bias_front", &fDriveBiasFront, 0.f, 1.0f))
 				g_local_player->m_vehicle->m_handling_data->m_drive_bias_front = fDriveBiasFront * 2;
