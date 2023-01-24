@@ -13,18 +13,19 @@ namespace big
 		{
             Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
             if (!PED::IS_PED_IN_ANY_VEHICLE(ped, true))
-			g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
+            g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
             else {
                 Vehicle vehicle = PED::GET_VEHICLE_PED_IS_USING(ped);
-                
-                if (entity::take_control_of(vehicle))
-                VEHICLE::SET_VEHICLE_FORWARD_SPEED(vehicle, 79);
-                else {
-                    g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+
+                if (entity::take_control_of(vehicle)) {
+                    VEHICLE::SET_VEHICLE_FORWARD_SPEED(vehicle, 79);
+                    else {
+                        g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+                    }
                 }
             }
         }
     };
 
-	boost_vehicle g_boost_vehicle("boostveh", "Boost Vehicle", "Boosts there car very fast.", 0);
+	boost_vehicle g_boost_vehicle("boostveh", "Boost Vehicle", "Boosts their car very fast.", 0);
 }
