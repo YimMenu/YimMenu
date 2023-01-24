@@ -309,7 +309,8 @@ namespace big
 
 		if (f208 == 0 && entity && entity->gap28 == 4 && reinterpret_cast<CPed*>(entity)->m_player_info && player->m_player_info->m_ped && player->m_player_info->m_ped->m_net_object && ownerNetId != player->m_player_info->m_ped->m_net_object->m_object_id && !offset_object)
 		{
-			g_notification_service->push_error("Warning!", std::format("{} blamed {} for explosion", player->get_name(), reinterpret_cast<CPed*>(entity)->m_player_info->m_net_player_data.m_name));
+			g_notification_service->push_error("WARNING"_T.data(),
+				std::vformat("BLAMED_FOR_EXPLOSION"_T, std::make_format_args(player->get_name(), reinterpret_cast<CPed*>(entity)->m_player_info->m_net_player_data.m_name)));
 			session::add_infraction(g_player_service->get_by_id(player->m_player_id), Infraction::BLAME_EXPLOSION_DETECTED);
 			return;
 		}
@@ -539,7 +540,8 @@ namespace big
 
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
-				g_notification_service->push_warning("Protections", std::format("{} tried to remove a weapon.", source_player->get_name()));
+				g_notification_service->push_warning("PROTECTIONS"_T.data(),
+					std::vformat("REMOVE_WEAPON_ATTEMPT"_T, std::make_format_args(source_player->get_name())));
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
@@ -553,7 +555,8 @@ namespace big
 
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
-				g_notification_service->push_warning("Protections", std::format("{} tried to remove all weapons.", source_player->get_name()));
+				g_notification_service->push_warning("PROTECTIONS"_T.data(),
+					std::vformat("REMOVE_ALL_WEAPONS_ATTEMPT"_T, std::make_format_args(source_player->get_name())));
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
