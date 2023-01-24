@@ -19,7 +19,8 @@ namespace big
 
                 if (entity::take_control_of(vehicle)) {
                     VEHICLE::SET_VEHICLE_FORWARD_SPEED(vehicle, 79);
-                    else {
+                    else 
+                    {
                         g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
                     }
                 }
