@@ -23,5 +23,5 @@ namespace big
 		}
 	};
 
-	black_tint g_black_tint("blacktint", "Black Window Tint", "Makes there windows black.", 0);
+	black_tint g_black_tint("blacktint", "Black Window Tint", "Makes their windows black.", 0);
 }

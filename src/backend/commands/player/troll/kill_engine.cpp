@@ -45,5 +45,5 @@ namespace big
 		}
 	};
 
-	kill_engine g_kill_engine("killengine", "Kill Vehicle Engine", "Breaks there engine", 0);
+	kill_engine g_kill_engine("killengine", "Kill Vehicle Engine", "Breaks their engine", 0);
 }

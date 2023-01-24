@@ -43,5 +43,5 @@ namespace big
         }
     };
 
-	stop_vehicle g_stop_vehicle("stopveh", "Stop Vehicle", "Stops there vehicle", 0);
+	stop_vehicle g_stop_vehicle("stopveh", "Stop Vehicle", "Stops players vehicle", 0);
 }

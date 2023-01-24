@@ -25,5 +25,5 @@ namespace big
 		}
 	};
 
-	smash_windows g_smash_windows("smashwindows", "Smash Vehicle Windows", "Smashes all there windows", 0);
+	smash_windows g_smash_windows("smashwindows", "Smash Vehicle Windows", "Smashes all their windows", 0);
 }
