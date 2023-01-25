@@ -150,7 +150,7 @@ namespace big
 				ImGui::Text("Money In Bank: %d", stats.Money - stats.WalletBalance);
 				ImGui::Text("Total Money: %d", stats.Money);
 				ImGui::Text("Rank: %d (RP %d)", stats.Rank, stats.RP);
-				ImGui::Text("Health: %d (MaxHealth: % d)", ped_health, ped_maxhealth);
+				ImGui::Text("Health: %d (MaxHealth: %d)", ped_health, ped_maxhealth);
 				ImGui::Text("K/D Ratio: %f", stats.KdRatio);
 				ImGui::Text("Kills On Players: %d", stats.KillsOnPlayers);
 				ImGui::Text("Deaths By Players: %d", stats.DeathsByPlayers);
