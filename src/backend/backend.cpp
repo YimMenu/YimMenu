@@ -107,6 +107,7 @@ namespace big
 			looped::session_force_thunder();
 			looped::session_randomize_ceo_colors();
 			looped::session_auto_kick_host();
+			looped::session_block_jobs();
 
 			script::get_current()->yield();
 		}
@@ -173,6 +174,18 @@ namespace big
 			looped::custom_gun_disable_control_action();
 			context_menu_service::disable_control_action_loop();
 
+			script::get_current()->yield();
+		}
+	}
+
+	void backend::world_loop()
+	{
+		LOG(INFO) << "Starting script: World";
+
+		while (g_running)
+		{
+
+			looped::world_spawn_ped();
 			script::get_current()->yield();
 		}
 	}
