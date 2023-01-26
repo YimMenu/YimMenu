@@ -611,17 +611,22 @@ namespace big
 			bool bypass_c4_limit = false;
 			bool rapid_fire = false;
 			bool aim_assist = false;
-			bool aimbot = false;
-			bool aimnpconly = false;
-			bool aimall = false;
-			bool aimplayers = false;
-			bool triggerbot = false;
-			float aimradius = 0.0f;
-			int aimbone;
+			struct aimbot
+			{
+				bool aimbottog = false;
+				bool aimnpconly = false;
+				bool aimall = false;
+				bool aimplayers = false;
+				bool triggerbot = false;
+				float aimradius = 0.0f;
+				int aimbone;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, aimbottog, aimnpconly, aimall, aimplayers, triggerbot, aimradius, aimbone)
+			} aimbot;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons,
 				ammo_special, custom_weapon, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, no_recoil,
-				no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire, gravity_gun)
+				no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire, gravity_gun, aimbot)
 		} weapons{};
 
 		struct window
