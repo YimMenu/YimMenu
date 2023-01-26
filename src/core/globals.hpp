@@ -624,6 +624,7 @@ namespace big
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, aimbottog, aimnpconly, aimall, aimplayers, triggerbot, aimradius, aimbone)
 			} aimbot;
+			bool infinite_range = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons,
 				ammo_special, custom_weapon, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, no_recoil,

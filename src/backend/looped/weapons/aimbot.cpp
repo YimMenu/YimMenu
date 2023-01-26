@@ -21,12 +21,37 @@ namespace big
 
 			if (g.weapons.aimbot.aimall)
 			{
-				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, -1);
+				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, -1); //do is cop check when aiming/shooting
 			}
 
-			if (g.weapons.aimbot.aimnpconly || g.weapons.aimbot.aimplayers)
+			if (g.weapons.aimbot.aimanimals)
+			{
+				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, 28);
+			}
+
+			if (g.weapons.aimbot.aimswat)
+			{
+				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, 27);
+			}
+
+			if (g.weapons.aimbot.aimcop)
+			{
+				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, 6);
+			}
+
+			if (g.weapons.aimbot.aimarmy)
+			{
+				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, 29);
+			}
+
+			if (g.weapons.aimbot.aimnpconly)
 			{
 				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, 26);
+			}
+
+			if (g.weapons.aimbot.aimplayers)
+			{
+				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, 1);
 			}
 
 			if (g.weapons.aimbot.aimplayers && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, target, 17) && targetdist <= weaponrange)
@@ -41,7 +66,7 @@ namespace big
 				}
 			}
 
-			if (g.weapons.aimbot.aimall || g.weapons.aimbot.aimnpconly && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, target, 17) && targetdist <= weaponrange)
+			if (g.weapons.aimbot.aimall || g.weapons.aimbot.aimnpconly ||  g.weapons.aimbot.aimanimals || g.weapons.aimbot.aimarmy || g.weapons.aimbot.aimswat || g.weapons.aimbot.aimcop && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, target, 17) && targetdist <= weaponrange)
 			{
 				TASK::TASK_AIM_GUN_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, 500, true, false);
 				if (g.weapons.aimbot.triggerbot && PED::IS_PED_DEAD_OR_DYING(target, 1) = false)
@@ -52,6 +77,9 @@ namespace big
 		}
 
 	};
+
+	//This function only work if the ped is walking normally or wanting to cross a road, need to implement better way of getting them
+
 
 	aimassist g_aimassist("aimbot", "Aimbot", "Aim At Any Target With Perfect Accuracy", g.weapons.aimbot.aimbottog);
 	bool_command g_aimnpcs("aimnpcs", "Aim Npc", "Sets the aimbot to aim at npcs only.", g.weapons.aimbot.aimnpconly);
