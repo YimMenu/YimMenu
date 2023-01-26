@@ -289,7 +289,8 @@ namespace big
 				noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water,
 				proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water,
 				proof_mask, hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element,
-				force_show_hud, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate)
+				force_show_hud, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate,
+				hudcolor, shcolor, mtcolor, mhcolor, index, r, g, b, a, hcolor, tcolor)
 		} self{};
 
 		struct session
@@ -386,7 +387,7 @@ namespace big
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, 
 					noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump,
-					invisveh, localinvisveh)
+					invisveh, localinvisveh, fill_ammo)
 			} hotkeys{};
 
 			bool dev_dlc = false;
@@ -626,7 +627,7 @@ namespace big
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons,
 				ammo_special, custom_weapon, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, no_recoil,
-				no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire, gravity_gun, aimbot)
+				no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire, gravity_gun, aim_assist, aimbot)
 		} weapons{};
 
 		struct window
