@@ -189,6 +189,23 @@ namespace big
 
 		ImGui::EndGroup();
 
+		components::command_checkbox<"hudcolor">();
+
+		components::command_checkbox<"hudcolors">();
+
+		ImGui::Checkbox("REPLACE_HUD_COLOUR_WITH_RGBA", &g.self.shcolor);
+		ImGui::InputInt("Hud Index", &g.self.index);//need to display current val if not displayed
+		ImGui::InputInt("Hud Red", &g.self.r);
+		ImGui::InputInt("Hud Green", &g.self.g);
+		ImGui::InputInt("Hud Blue", &g.self.b);
+		ImGui::InputInt("Hud Alpha", &g.self.a);
+
+		ImGui::Checkbox("SET_CUSTOM_MP_HUD_COLOR", &g.self.mhcolor);
+		ImGui::InputInt("Hud Color", &g.self.hcolor);
+
+		ImGui::Checkbox("OVERRIDE_MP_TEXT_CHAT_COLOR", &g.self.mtcolor);
+		ImGui::InputInt("Hud Text Color", &g.self.tcolor);
+
 		g.self.proof_mask = 0;
 		if (g.self.god_mode)
 		{

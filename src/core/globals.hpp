@@ -276,7 +276,11 @@ namespace big
 			bool beast_jump = false;
 			bool healthregen = false;
 			float healthregenrate = 1.0f;
-
+			bool hudcolor = false;
+			bool shcolor = false;
+			bool mtcolor = false;
+			bool mhcolor = false;
+			int index, r, g, b, a, hcolor, tcolor;
 			// do not save below entries
 			bool dance_mode = false;
 
@@ -610,7 +614,7 @@ namespace big
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons,
 				ammo_special, custom_weapon, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, no_recoil,
-				no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire, gravity_gun, aim_assist)
+				no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire, gravity_gun)
 		} weapons{};
 
 		struct window
