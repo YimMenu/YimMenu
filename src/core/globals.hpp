@@ -611,6 +611,13 @@ namespace big
 			bool bypass_c4_limit = false;
 			bool rapid_fire = false;
 			bool aim_assist = false;
+			bool aimbot = false;
+			bool aimnpconly = false;
+			bool aimall = false;
+			bool aimplayers = false;
+			bool triggerbot = false;
+			float aimradius = 0.0f;
+			int aimbone;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons,
 				ammo_special, custom_weapon, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, no_recoil,
