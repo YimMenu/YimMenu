@@ -27,6 +27,8 @@ namespace big
 
 			uint32_t ped_damage_bits = 0;
 			uint32_t ped_task_flag = 0;
+			uint32_t ped_health = 0;
+			uint32_t ped_maxhealth = 0;
 			uint32_t veh_damage_bits = 0;
 			std::string mode_str = "";
 
@@ -34,6 +36,8 @@ namespace big
 			{
 				ped_damage_bits = ped->m_damage_bits;
 				ped_task_flag = ped->m_ped_task_flag;
+				ped_health = ped->m_health;
+				ped_maxhealth = ped->m_maxhealth;
 			}
 
 			if (ped_damage_bits & (uint32_t)eEntityProofs::GOD)
@@ -49,6 +53,10 @@ namespace big
 				if (ped_damage_bits & (uint32_t)eEntityProofs::EXPLOSION)
 				{
 					mode_str += "PLAYER_INFO_EXPLOSION"_T;
+				}
+				if (ped_health > 328 || ped_maxhealth > 328 && !(uint32_t)eEntityProofs::EXPLOSION && !(uint32_t)eEntityProofs::BULLET)
+				{
+					mode_str += "Unnatural Health";
 				}
 			}
 
@@ -146,6 +154,7 @@ namespace big
 				ImGui::Text("PLAYER_INFO_BANK"_T.data(), stats.Money - stats.WalletBalance);
 				ImGui::Text("PLAYER_INFO_TOTAL_MONEY"_T.data(), stats.Money);
 				ImGui::Text("PLAYER_INFO_RANK"_T.data(), stats.Rank, stats.RP);
+				ImGui::Text("Health: %d (MaxHealth: %d)", ped_health, ped_maxhealth); // TODO: translate
 				ImGui::Text("PLAYER_INFO_KD"_T.data(), stats.KdRatio);
 				ImGui::Text("PLAYER_INFO_PLAYER_KILLS"_T.data(), stats.KillsOnPlayers);
 				ImGui::Text("PLAYER_INFO_DEATHS"_T.data(), stats.DeathsByPlayers);
@@ -153,6 +162,7 @@ namespace big
 				ImGui::Text("PLAYER_INFO_LAP_DANCES"_T.data(), stats.LapDancesBought);
 				ImGui::Text("PLAYER_INFO_MISSIONS_CREATED"_T.data(), stats.MissionsCreated);
 				ImGui::Text("PLAYER_INFO_METLDOWN_COMPLETE"_T.data(), scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].MeltdownComplete ? "YES"_T.data() : "NO"_T.data()); // curious to see if anyone has actually played singleplayer
+
 
 				ImGui::Separator();
 			}
