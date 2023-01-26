@@ -5,6 +5,7 @@
 
 #include "network/ChatData.hpp"
 #include "pointers.hpp"
+#include "gui.hpp"
 
 namespace big
 {
@@ -68,6 +69,9 @@ namespace big
     void hotkey_service::wndproc(eKeyState state, key_t key)
     {
         if (const auto chat_data = *g_pointers->m_chat_data; chat_data && (chat_data->m_chat_open || chat_data->m_timer_two))
+            return;
+
+        if (g_gui->is_open())
             return;
 
         if (state == eKeyState::RELEASE || state == eKeyState::DOWN)

@@ -127,4 +127,9 @@ namespace big::functions
 	using sync_network_time = bool(*)(rage::netConnectionManager* mgr, rage::netConnectionPeer* peer, int connection_id, rage::netTimeSyncMsg* msg, int flags);
 	using send_packet = bool(*)(rage::netConnectionManager* mgr, rage::netConnectionPeer* peer, int connection_id, void* data, int size, int flags);
 	using connect_to_peer = bool(*)(rage::netConnectionManager* mgr, rage::rlGamerInfoBase* gamer_info, rage::snConnectToPeerTaskData* data, rage::snConnectToPeerTaskResult* result, rage::rlTaskStatus* status);
+
+	using clear_ped_tasks_network = void(*)(CPed* ped, bool immediately);
+
+	using get_next_carriage = void*(*)(void* carriage);
+	using get_entity_attached_to = rage::CDynamicEntity*(*)(rage::CDynamicEntity* entity);
 }

@@ -7,8 +7,7 @@ namespace big
     {
         if (dependency == g_pointers->m_interval_check_func)
         {
-            LOG(INFO) << "Prevent attempt to queue a report to R*.";
-
+            //LOG(INFO) << "Prevent attempt to queue a report to R*.";
             return;
         }
 

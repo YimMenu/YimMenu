@@ -297,10 +297,4 @@ namespace big::session
 
 		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
 	}
-
-	// TODO this is really broken
-	inline void enter_player_interior(player_ptr player)
-	{
-
-	}
 }
