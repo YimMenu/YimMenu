@@ -16,6 +16,8 @@ namespace big
 			int bone = g.weapons.aimbot.aimbone;
 			Hash weapon; WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weapon, 0);
 			Vector3 bonec = PED::GET_PED_BONE_COORDS(target, bone, 0, 0, 0);
+			float weaponrange = WEAPON::GET_MAX_RANGE_OF_CURRENT_PED_WEAPON(self::ped);
+			float targetdist = SYSTEM::VDIST(bonec.x, bonec.y, bonec.z, self::pos.x, self::pos.y, self::pos.z);
 
 			if (g.weapons.aimbot.aimall)
 			{
@@ -27,7 +29,7 @@ namespace big
 				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, 26);
 			}
 
-			if (g.weapons.aimbot.aimplayers)
+			if (g.weapons.aimbot.aimplayers && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, target, 17) && targetdist <= weaponrange)
 			{
 				if (PED::IS_PED_A_PLAYER(target))
 				{
@@ -39,10 +41,10 @@ namespace big
 				}
 			}
 
-			if (g.weapons.aimbot.aimall || g.weapons.aimbot.aimnpconly)
+			if (g.weapons.aimbot.aimall || g.weapons.aimbot.aimnpconly && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, target, 17) && targetdist <= weaponrange)
 			{
 				TASK::TASK_AIM_GUN_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, 500, true, false);
-				if (g.weapons.aimbot.triggerbot)
+				if (g.weapons.aimbot.triggerbot && PED::IS_PED_DEAD_OR_DYING(target, 1) = false)
 				{
 					MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(self::pos.x, self::pos.y, self::pos.z, bonec.x, bonec.y, bonec.z, 1, 0, weapon, self::ped, true, false, 10.0f);
 				}

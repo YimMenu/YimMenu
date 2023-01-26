@@ -18,7 +18,7 @@ namespace big
 				Hash hash = MISC::GET_HASH_KEY("weapon_assaultrifle_mk2");
 				PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(self::ped, &targetped);
 				target = PED::GET_PED_BONE_COORDS(targetped, (int)PedBones::SKEL_Head, 0, 0, 0);
-				MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(self::pos.x, self::pos.y, self::pos.z, target.x, target.y, target.z, 10, 1, hash, self::ped, true, false, 10.0f);
+				MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(self::pos.x, self::pos.y, self::pos.z, target.x, target.y, target.z, 10, 0, hash, self::ped, true, false, 10.0f);
 			}
 		}
 	};
