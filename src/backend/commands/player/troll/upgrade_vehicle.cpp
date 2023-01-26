@@ -3,10 +3,7 @@
 #include "pointers.hpp"
 #include "util/teleport.hpp"
 #include "util/vehicle.hpp"
-	    Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), false);
-		    vehicle::max_vehicle(vehicle);
-        }
-	};
+
 namespace big
 {
 	class upgrade_vehicle : player_command

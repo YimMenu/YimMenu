@@ -2,7 +2,6 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "util/teleport.hpp"
-
 namespace big
 {
 	class unlock_vehicle : player_command
