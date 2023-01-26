@@ -8,7 +8,7 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		bool blast = g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range && !bchanged;
+		float blast = g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range && !bchanged;
 		bool bchanged;
 
 		virtual void on_tick() override
