@@ -19,6 +19,10 @@ namespace big
 		{
 			g.window.color = ImGui::ColorConvertFloat4ToU32(col_gui);
 		}
+
+		components::sub_title("Ingame Overlay");
+		ImGui::Checkbox("Show Overlay", &g.window.ingame_overlay.opened);
+
 	}
 
 }

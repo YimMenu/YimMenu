@@ -621,7 +621,13 @@ namespace big
 
 			bool switched_view = true;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, color, gui_scale, switched_view)
+			struct ingame_overlay
+			{
+				bool opened = false;
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ingame_overlay, opened)
+			} ingame_overlay{};
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, color, gui_scale, switched_view, ingame_overlay)
 		} window{};
 
 		struct context_menu
