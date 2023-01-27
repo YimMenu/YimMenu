@@ -124,7 +124,7 @@ namespace big
 
 		components::sub_title("Police");
 
-		ImGui::RadioButton("Clear Wanted", g_local_player->m_player_info->m_wanted_level = 0);
+		components::command_button<"clearwantedlvl">();
 
 		ImGui::Checkbox("Never Wanted", &g.self.never_wanted);
 
@@ -189,8 +189,6 @@ namespace big
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("To force show a HUD specific element, click Hide all then click Show on the desired element.");
 
-		ImGui::EndGroup();
-
 		components::command_checkbox<"hudcolor">();
 
 		components::command_checkbox<"hudcolors">();
@@ -207,6 +205,8 @@ namespace big
 
 		ImGui::Checkbox("OVERRIDE_MP_TEXT_CHAT_COLOR", &g.self.mtcolor);
 		ImGui::InputInt("Hud Text Color", &g.self.tcolor);
+
+		ImGui::EndGroup();
 
 		g.self.proof_mask = 0;
 		if (g.self.god_mode)

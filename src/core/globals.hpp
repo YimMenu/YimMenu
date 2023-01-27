@@ -616,6 +616,10 @@ namespace big
 			{
 				bool aimbottog = false;
 				bool aimnpconly = false;
+				bool aimanimals = false;
+				bool aimarmy = false;
+				bool aimswat = false;
+				bool aimcop = false;
 				bool aimall = false;
 				bool aimplayers = false;
 				bool triggerbot = false;
@@ -628,7 +632,7 @@ namespace big
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons,
 				ammo_special, custom_weapon, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, no_recoil,
-				no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire, gravity_gun, aim_assist, aimbot)
+				no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire, gravity_gun, aim_assist, aimbot, infinite_range)
 		} weapons{};
 
 		struct window
