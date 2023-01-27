@@ -86,6 +86,8 @@ namespace big
 		components::command_checkbox<"norecoil">();
 		ImGui::SameLine();
 		components::command_checkbox<"nospread">();
+		ImGui::SameLine();
+		components::command_checkbox<"infrange">();
 
 		components::button("Get All Weapons", []
 		{
@@ -108,8 +110,8 @@ namespace big
 			}
 		});
 
-		ImGui::SliderFloat("Damage Multiplier", &g.weapons.increased_damage, 1.f, 10.f, "%.1f");
-
+		components::command_checkbox<"incrdamage">();
+		ImGui::InputFloat2("Damage", &g.weapons.increased_damage, "%.1f");
 		ImGui::Separator();
 
 		components::sub_title("Custom Weapons");
@@ -157,16 +159,30 @@ namespace big
 
 			break;
 		}
-		
-		components::command_checkbox<"infrange">();
 
 		components::sub_title("Aimbot");
 
+		ImGui::BeginGroup();
+
 		components::command_checkbox<"aimbot">();
 
+		ImGui::SliderFloat("Aimbot Radius", &g.weapons.aimbot.aimradius, 0.1f, 100.f, "%.1f");
+		ImGui::InputInt("Bone To Shoot", &g.weapons.aimbot.aimbone);
+
 		components::command_checkbox<"aimnpcs">();
+		ImGui::SameLine();
 		components::command_checkbox<"aimall">();
+		ImGui::SameLine();
+		components::command_checkbox<"aimanimal">();
+		components::command_checkbox<"aimarmy">();
+		ImGui::SameLine();
+		components::command_checkbox<"aimswat">();
+		ImGui::SameLine();
+		components::command_checkbox<"aimcop">();
+		ImGui::SameLine();
 		components::command_checkbox<"aimplayers">();
 		components::command_checkbox<"triggerbot">();
+
+		ImGui::EndGroup();
 	}
 }

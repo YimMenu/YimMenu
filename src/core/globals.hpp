@@ -606,6 +606,7 @@ namespace big
 			bool infinite_ammo = false;
 			bool infinite_mag = false;
 			float increased_damage = 1;
+			bool increase_damage = false;
 			bool no_recoil = false;
 			bool no_spread = false;
 			std::string vehicle_gun_model = "bus";
@@ -631,8 +632,8 @@ namespace big
 			bool infinite_range = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons,
-				ammo_special, custom_weapon, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, no_recoil,
-				no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire, gravity_gun, aim_assist, aimbot, infinite_range)
+				ammo_special, custom_weapon, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, increase_damage
+				no_recoil, no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire, gravity_gun, aim_assist, aimbot, infinite_range)
 		} weapons{};
 
 		struct window
