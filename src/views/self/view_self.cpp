@@ -200,10 +200,10 @@ namespace big
 		ImGui::InputInt("Hud Blue", &g.self.b);
 		ImGui::InputInt("Hud Alpha", &g.self.a);
 
-		ImGui::Checkbox("SET_CUSTOM_MP_HUD_COLOR", &g.self.mhcolor);
+		ImGui::Checkbox("Override Multiplayer Hud Color", &g.self.mhcolor);
 		ImGui::InputInt("Hud Color", &g.self.hcolor);
 
-		ImGui::Checkbox("OVERRIDE_MP_TEXT_CHAT_COLOR", &g.self.mtcolor);
+		ImGui::Checkbox("Override Multiplayer Text Color", &g.self.mtcolor);
 		ImGui::InputInt("Hud Text Color", &g.self.tcolor);
 
 		ImGui::EndGroup();

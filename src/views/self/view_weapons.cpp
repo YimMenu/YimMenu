@@ -157,11 +157,9 @@ namespace big
 
 			break;
 		}
-		if (ImGui::Checkbox("inf range", g.weapons.infinite_range))
-		{
-			g_pointers->m_weapon_range;
-			g_pointers->m_camera_fov;
-		}
+		
+		components::command_checkbox<"infrange">();
+
 		components::sub_title("Aimbot");
 
 		components::command_checkbox<"aimbot">();
