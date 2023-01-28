@@ -1,10 +1,9 @@
 #include "backend/looped/looped.hpp"
-#include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "backend/looped_command.hpp"
 
 namespace big
-{
+{	
 	class aimassist : looped_command
 	{
 		using looped_command::looped_command;
@@ -28,7 +27,7 @@ namespace big
 			{
 				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, 28);
 			}
-
+			
 			if (g.weapons.aimbot.aimswat)
 			{
 				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, 27);

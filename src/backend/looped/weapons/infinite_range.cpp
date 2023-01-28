@@ -8,18 +8,13 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		float blast = g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range && !bchanged;
-		bool bchanged;
-
 		virtual void on_tick() override
 		{
-			bchanged = true;
 			g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = SIZE_MAX;
 		}
 		virtual void on_disable() override
 		{
-			g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = blast;
-			bchanged = false;
+			g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = 1.0f;
 		}
 	};
 

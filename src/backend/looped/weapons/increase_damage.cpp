@@ -8,18 +8,13 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		bool edited;
-		float unedited = g_local_player->m_weapon_manager->m_weapon_info->m_damage && !edited;
-
 		virtual void on_tick() override
 		{
 			g_local_player->m_weapon_manager->m_weapon_info->m_damage = g.weapons.increased_damage;
-			edited = true;
 		}
 		virtual void on_disable() override
 		{
-			g_local_player->m_weapon_manager->m_weapon_info->m_damage = unedited;
-			edited = false;
+			g_local_player->m_weapon_manager->m_weapon_info->m_damage = 1.0f;
 		}
 	};
 
