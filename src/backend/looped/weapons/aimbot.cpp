@@ -10,8 +10,8 @@ namespace big
 		using looped_command::looped_command;
 
 		virtual void on_tick() override
-		{
-			Ped target;
+		{ 
+			Ped target = NULL; //defualt to fix mem error
 			float rad = g.weapons.aimbot.aimradius;
 			int bone = g.weapons.aimbot.aimbone;
 			Hash weapon; WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weapon, 0);

@@ -13,19 +13,13 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if (g_local_player)
-			{
-				bchanged = true;
-				g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = 99999999.0f;
-			}
+			bchanged = true;
+			g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = SIZE_MAX;
 		}
 		virtual void on_disable() override
 		{
-			if (g_local_player)
-			{
-				g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = blast;
-				bchanged = false;
-			}
+			g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = blast;
+			bchanged = false;
 		}
 	};
 

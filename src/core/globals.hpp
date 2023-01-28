@@ -632,7 +632,7 @@ namespace big
 			bool infinite_range = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons,
-				ammo_special, custom_weapon, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, increase_damage
+				ammo_special, custom_weapon, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, increase_damage,
 				no_recoil, no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire, gravity_gun, aim_assist, aimbot, infinite_range)
 		} weapons{};
 
