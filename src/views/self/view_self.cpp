@@ -189,9 +189,9 @@ namespace big
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("To force show a HUD specific element, click Hide all then click Show on the desired element.");
 
-		components::command_checkbox<"hudcolor">();
+		ImGui::EndGroup();
 
-		components::command_checkbox<"hudcolors">();
+		components::command_checkbox<"hudcolor">();
 
 		ImGui::Checkbox("REPLACE_HUD_COLOUR_WITH_RGBA", &g.self.shcolor);
 		ImGui::InputInt("Hud Index", &g.self.index);//need to display current val if not displayed
@@ -205,8 +205,6 @@ namespace big
 
 		ImGui::Checkbox("Override Multiplayer Text Color", &g.self.mtcolor);
 		ImGui::InputInt("Hud Text Color", &g.self.tcolor);
-
-		ImGui::EndGroup();
 
 		g.self.proof_mask = 0;
 		if (g.self.god_mode)

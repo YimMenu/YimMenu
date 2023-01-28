@@ -162,14 +162,12 @@ namespace big
 
 		components::sub_title("Aimbot");
 
-		ImGui::BeginGroup();
-
 		components::command_checkbox<"aimbot">();
 
 		ImGui::SliderFloat("Aimbot Radius", &g.weapons.aimbot.aimradius, 0.1f, 100.f, "%.1f");
 		ImGui::InputInt("Bone To Shoot", &g.weapons.aimbot.aimbone);
 
-		components::command_checkbox<"aimnpcs">();
+		components::command_checkbox<"aimnpc">();
 		ImGui::SameLine();
 		components::command_checkbox<"aimall">();
 		ImGui::SameLine();
@@ -183,6 +181,5 @@ namespace big
 		components::command_checkbox<"aimplayers">();
 		components::command_checkbox<"triggerbot">();
 
-		ImGui::EndGroup();
 	}
 }
