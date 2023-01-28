@@ -19,17 +19,19 @@ namespace big
 
 			ImGui::Separator();
 
-			ImGui::Text("%.0f FPS", ImGui::GetIO().Framerate / 2);
+			if (g.window.ingame_overlay.show_fps)
+				ImGui::Text("%.0f FPS", ImGui::GetIO().Framerate / 2);
 
-			if (CNetworkPlayerMgr *network_player_mgr = gta_util::get_network_player_mgr())
+			if (CNetworkPlayerMgr *network_player_mgr = gta_util::get_network_player_mgr(); g.window.ingame_overlay.show_players)
 				ImGui::Text(std::format("Players: {}/{}", network_player_mgr->m_player_count, network_player_mgr->m_player_limit).c_str());
 
-			ImGui::Text(std::format("Time: {:%d-%m-%Y %H:%M:%OS}", std::chrono::system_clock::now()).c_str());
+			if (g.window.ingame_overlay.show_time)
+				ImGui::Text(std::format("Time: {:%d-%m-%Y %H:%M:%OS}", std::chrono::system_clock::now()).c_str());
 
-            ImGui::Separator();	
-
-			if (auto replay_interface = *g_pointers->m_replay_interface)
+			if (auto replay_interface = *g_pointers->m_replay_interface; g.window.ingame_overlay.show_replay_interface)
 			{
+				ImGui::Separator();
+
 				if(replay_interface->m_ped_interface)
 					ImGui::Text(std::format("Ped Pool: {}/{}", replay_interface->m_ped_interface->m_cur_peds, replay_interface->m_ped_interface->m_max_peds).c_str());
 
@@ -40,9 +42,12 @@ namespace big
 					ImGui::Text(std::format("Object Pool: {}/{}", replay_interface->m_object_interface->m_cur_objects, replay_interface->m_object_interface->m_max_objects).c_str());
 			}
 	
-			ImGui::Separator();
-			ImGui::Text(std::format("Game Version: {}", g_pointers->m_game_version).c_str());
-			ImGui::Text(std::format("Online Version: {}", g_pointers->m_online_version).c_str());
+			if (g.window.ingame_overlay.show_game_versions)
+			{
+				ImGui::Separator();
+				ImGui::Text(std::format("Game Version: {}", g_pointers->m_game_version).c_str());
+				ImGui::Text(std::format("Online Version: {}", g_pointers->m_online_version).c_str());
+			}
 		}
 		ImGui::End();
 	}
