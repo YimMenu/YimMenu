@@ -1,8 +1,6 @@
 #include "views/view.hpp"
 #include "pointers.hpp"
-#include "util/math.hpp"
 #include "gta_util.hpp"
-#include "util/misc.hpp"
 #include "gui.hpp"
 
 namespace big
@@ -25,6 +23,8 @@ namespace big
 
 			if (CNetworkPlayerMgr *network_player_mgr = gta_util::get_network_player_mgr())
 				ImGui::Text(std::format("Players: {}/{}", network_player_mgr->m_player_count, network_player_mgr->m_player_limit).c_str());
+
+			ImGui::Text(std::format("Time: {:%d-%m-%Y %H:%M:%OS}", std::chrono::system_clock::now()).c_str());
 
             ImGui::Separator();	
 
