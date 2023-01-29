@@ -17,6 +17,7 @@ namespace big
 		static void esp_settings();
 		static void context_menu_settings();
 		static void stat_editor();
+		static void heist_editor();
 		static void gui_settings();
 		static void hotkey_settings();
 		static void handling_current_profile();

@@ -37,8 +37,11 @@ namespace big
 		PLAYER_DATABASE,
 		SESSION_BROWSER,
 
-		SETTINGS,
+		EDITORS,
 		STAT_EDITOR,
+		HEIST_EDITOR,
+
+		SETTINGS,
 		CONTEXT_MENU_SETTINGS,
 		ESP_SETTINGS,
 		GUI_SETTINGS,
@@ -85,7 +88,7 @@ namespace big
 				{ tabs::CREATOR, { "Creator", view::creator }},
 				{ tabs::TRAIN, { "Train", view::train }},
 				{ tabs::WATER, { "Water", view::water }},
-		}}},
+			}}},
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},
 				{ tabs::SESSION, { "Session", view::session }},
@@ -93,8 +96,11 @@ namespace big
 				{ tabs::PLAYER_DATABASE, { "Player Database", view::player_database }},
 				{ tabs::SESSION_BROWSER, { "Session Browser", view::session_browser }},
 			}}},
+			{tabs::EDITORS, { "Editors", nullptr, {
+				{ tabs::STAT_EDITOR, { "Stat Editor", view::stat_editor }},
+				{ tabs::HEIST_EDITOR, { "Heist Editor", view::heist_editor }},
+			}}},
 			{tabs::SETTINGS, { "Settings", view::settings, {
-				{ tabs::STAT_EDITOR, { "Stat Editor", view::stat_editor}},
 				{ tabs::CONTEXT_MENU_SETTINGS, { "Context Menu", view::context_menu_settings}},
 				{ tabs::ESP_SETTINGS, { "ESP", view::esp_settings}},
 				{ tabs::GUI_SETTINGS, { "GUI", view::gui_settings}},

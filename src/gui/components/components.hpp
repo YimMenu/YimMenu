@@ -25,6 +25,9 @@ namespace big
 		static void input_text_with_hint(const std::string_view label, const std::string_view hint, char* buf, size_t buf_size, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
 		static void input_text(const std::string_view label, char* buf, size_t buf_size, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
 
+		static bool combo(const std::string_view label, int* current_item, const char* const buf[], int buf_size, std::function<void()> cb = nullptr);
+		static bool checkbox(const std::string_view label, bool* v, std::function<void()> cb = nullptr);
+
 		static bool selectable(const std::string_view, bool);
 		static bool selectable(const std::string_view, bool, ImGuiSelectableFlags);
 		static void selectable(const std::string_view, bool, std::function<void()>);
