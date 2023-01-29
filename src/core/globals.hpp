@@ -623,7 +623,7 @@ namespace big
 
 			struct ingame_overlay
 			{
-				bool opened = false;
+				bool opened = true;
 				bool show_fps = true;
 				bool show_players = true;
 				bool show_time = true;
