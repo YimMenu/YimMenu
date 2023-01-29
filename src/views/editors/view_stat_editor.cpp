@@ -6,46 +6,28 @@
 
 namespace big
 {
-	static int year, month, day, hour, minute, second, millisecond;
-
 	static char stat_int_read_result[256] = {};
 	static char stat_int_text[256] = {};
 	static char stat_int_value[256] = {};
-
 	static char stat_bool_read_result[256] = {};
 	static char stat_bool_text[256] = {};
 	static char stat_bool_value[256] = {};
-
 	static char stat_float_read_result[256] = {};
 	static char stat_float_text[256] = {};
 	static char stat_float_value[256] = {};
-
 	static char stat_increment_text[256] = {};
 	static char stat_increment_value[256] = {};
-
 	static char stat_date_read_result[256] = {};
 	static char stat_date_text[256] = {};
 	static char stat_date_value[256] = {};
-
 	static char stat_string_read_result[256] = {};
 	static char stat_string_text[256] = {};
 	static char stat_string_value[256] = {};
-
 	static char stat_label_text[256] = {};
 	static char stat_label_value[256] = {};
-
 	static char stat_user_id_read_result[256] = {};
 	static char stat_user_id_text[256] = {};
 	static char stat_user_id_value[256] = {};
-
-	static char packed_stat_int_read_result[256] = {};
-	static char packed_stat_int_text[256] = {};
-	static char packed_stat_int_value[256] = {};
-
-	static char packed_stat_bool_read_result[256] = {};
-	static char packed_stat_bool_text[256] = {};
-	static char packed_stat_bool_value[256] = {};
-
 	static void tab_item_stat()
 	{
 		if (ImGui::BeginTabItem("Stat"))
@@ -208,6 +190,12 @@ namespace big
 		}
 	}
 
+	static char packed_stat_int_read_result[256] = {};
+	static char packed_stat_int_text[256] = {};
+	static char packed_stat_int_value[256] = {};
+	static char packed_stat_bool_read_result[256] = {};
+	static char packed_stat_bool_text[256] = {};
+	static char packed_stat_bool_value[256] = {};
 	static void tab_item_packed_stat()
 	{
 		if (ImGui::BeginTabItem("Packed Stat"))
@@ -286,6 +274,7 @@ namespace big
 		}
 	}
 
+	static int year, month, day, hour, minute, second, millisecond;
 	void view::stat_editor()
 	{
 		static bool init = ([]()
