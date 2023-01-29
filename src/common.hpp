@@ -54,6 +54,7 @@
 #include "core/globals.hpp"
 #include "gta/natives.hpp"
 #include "ped/CPed.hpp"
+#include "memory/module.hpp"
 
 #include "services/notifications/notification_service.hpp"
 
@@ -65,6 +66,7 @@ namespace big
 	inline HANDLE g_main_thread{};
 	inline DWORD g_main_thread_id{};
 	inline std::atomic_bool g_running{ false };
+	inline std::unique_ptr<memory::module> g_main_module;
 
 	inline CPed* g_local_player;
 }

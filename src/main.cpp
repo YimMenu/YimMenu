@@ -53,6 +53,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			EnableMenuItem(GetSystemMenu(GetConsoleWindow(), 0), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 
+			g_main_module = std::make_unique<memory::module>("GTA5.exe");
+
 			try
 			{
 				LOG(INFO) << "Yim's Menu Initializing";
