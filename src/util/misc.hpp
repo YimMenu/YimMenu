@@ -37,4 +37,14 @@ namespace big::misc
 	{
 		*address |= bits;
 	}
+
+	template<typename T>
+	inline bool is_valid_ptr(T ptr) {
+		uint64_t address = (uint64_t)ptr;
+		if (address < 0x5000) return false;
+		if ((address & 0xFFFFFFFF) == 0xFFFFFFFF) return false;
+		if ((address & 0xFFFFFFFF) <= 0xFF) return false;
+		if (address > 0xFFFFFFFFFFFF) return false;
+		return true;
+	}
 }

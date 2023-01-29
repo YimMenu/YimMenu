@@ -681,6 +681,12 @@ namespace big
 			m_invalid_decal_crash = ptr.add(1).rip().as<PVOID>();
 		});
 
+		// Anim Task Crash
+		main_batch.add("ATC", "E8 ? ? ? ? 84 C0 74 8D", [this](memory::handle ptr)
+		{
+			m_anim_task_crash = ptr.add(1).rip().as<PVOID>();
+		});
+
 		// Encode Session Info
 		main_batch.add("ESI", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 20 57 48 81", [this](memory::handle ptr)
 		{
