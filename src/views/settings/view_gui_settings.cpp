@@ -22,6 +22,8 @@ namespace big
 
 		components::sub_title("Ingame Overlay");
 		ImGui::Checkbox("Show Overlay", &g.window.ingame_overlay.opened);
+		ImGui::SameLine();
+		ImGui::Checkbox("Show when Menu opened", &g.window.ingame_overlay.show_with_menu_opened);
 
 		ImGui::BeginGroup();
 
