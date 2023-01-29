@@ -15,8 +15,8 @@ namespace big
 
 		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
-			// TODO: Doesn't actually do anything
-			WEAPON::REMOVE_ALL_PED_WEAPONS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), FALSE);
+			for (auto& weapon : g_gta_data_service->weapons())
+				WEAPON::REMOVE_WEAPON_FROM_PED(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), weapon.second.m_hash);
 		}
 	};
 
