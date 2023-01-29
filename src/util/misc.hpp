@@ -53,8 +53,6 @@ namespace big::misc
 	inline bool is_valid_vtable(T ptr)
 	{
 		uint64_t address = (uint64_t)ptr;
-		if (!is_valid_ptr(address))
-			return false;
 		return address > g_main_module->begin().as<uint64_t>() && address < g_main_module->end().as<uint64_t>();
 	}
 
