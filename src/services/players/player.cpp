@@ -94,7 +94,6 @@ namespace big
 		return m_is_friend;
 	}
 
-
 	bool player::is_valid() const
 	{
 		return m_net_game_player == nullptr ? false : m_net_game_player->is_valid();
