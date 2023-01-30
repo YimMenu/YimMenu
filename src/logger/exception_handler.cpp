@@ -15,6 +15,12 @@ namespace big
 
     LONG vectored_exception_handler(EXCEPTION_POINTERS* exception_info)
     {
+        const auto exception_code = exception_info->ExceptionRecord->ExceptionCode;
+        if (exception_code == EXCEPTION_BREAKPOINT ||
+            exception_code == DBG_PRINTEXCEPTION_C ||
+            exception_code == DBG_PRINTEXCEPTION_WIDE_C)
+            return EXCEPTION_CONTINUE_SEARCH;
+
         ZyanU64 opcode_address = exception_info->ContextRecord->Rip;
         ZydisDisassembledInstruction instruction;
         ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, opcode_address, reinterpret_cast<void*>(opcode_address), 32, &instruction);
