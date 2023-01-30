@@ -26,13 +26,24 @@ namespace big
 			{
 				for (int i = 0; i < g_matchmaking_service->get_num_found_sessions(); i++)
 				{
-					if (!g_matchmaking_service->get_found_sessions()[i].is_valid)
+					auto& session = g_matchmaking_service->get_found_sessions()[i];
+
+					if (!session.is_valid)
 						continue;
 
-					if (components::selectable(std::to_string(g_matchmaking_service->get_found_sessions()[i].info.m_session_token), i == selected_session_idx))
+					if (components::selectable(std::to_string(session.info.m_session_token), i == selected_session_idx))
 					{
 						selected_session_idx = i;
-						g_pointers->m_encode_session_info(&g_matchmaking_service->get_found_sessions()[i].info, session_info, 0x7D, nullptr);
+						g_pointers->m_encode_session_info(&session.info, session_info, 0x7D, nullptr);
+					}
+
+					if (ImGui::IsItemHovered())
+					{
+						ImGui::SetTooltip(std::format("Num Players: {}\nRegion: {}\nLanguage: {}\nHost: {}",
+							session.attributes.player_count,
+							regions[session.attributes.region].name,
+							languages[session.attributes.language].name,
+							session.info.m_net_player_data.m_gamer_handle.m_rockstar_id).c_str());
 					}
 				}
 			}

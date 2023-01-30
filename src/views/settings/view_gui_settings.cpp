@@ -19,6 +19,26 @@ namespace big
 		{
 			g.window.color = ImGui::ColorConvertFloat4ToU32(col_gui);
 		}
+
+		components::sub_title("Ingame Overlay");
+		ImGui::Checkbox("Show Overlay", &g.window.ingame_overlay.opened);
+		ImGui::SameLine();
+		ImGui::Checkbox("Show when Menu opened", &g.window.ingame_overlay.show_with_menu_opened);
+
+		ImGui::BeginGroup();
+
+		ImGui::Checkbox("Show FPS", &g.window.ingame_overlay.show_fps);
+		ImGui::Checkbox("Show Players", &g.window.ingame_overlay.show_players);
+		ImGui::Checkbox("Show Time", &g.window.ingame_overlay.show_time);
+
+		ImGui::EndGroup();
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+
+		ImGui::Checkbox("Show Replay Interface", &g.window.ingame_overlay.show_replay_interface);
+		ImGui::Checkbox("Show Game Version", &g.window.ingame_overlay.show_game_versions);
+
+		ImGui::EndGroup();
 	}
 
 }

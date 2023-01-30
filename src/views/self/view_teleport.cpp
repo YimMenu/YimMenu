@@ -14,8 +14,7 @@ namespace big
 		components::command_button<"waypointtp">({}, "Waypoint");
 		ImGui::SameLine();
 		components::command_button<"objectivetp">({}, "Objective");
-
-		ImGui::Checkbox("AUTO_TP_TO_WP"_T.data(), &g.self.auto_tp);
+		components::command_checkbox<"autotptowp">();
 
 		ImGui::Text("VEHICLES"_T.data());
 		components::command_button<"lastvehtp">();
