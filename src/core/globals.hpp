@@ -242,10 +242,11 @@ namespace big
 			struct ptfx_effects
 			{
 				bool show = false;
-				PTFXEffects type = PTFXEffects::Lighting;
 				float size = 0.2f;
-
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ptfx_effects, show, type, size)
+				int select = 0;
+				const char* asset = "scr_agencyheist";
+				const char* effect = "scr_fbi_mop_drips";
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ptfx_effects, show, size)
 			} ptfx_effects {};
 
 			bool clean_player = false;
