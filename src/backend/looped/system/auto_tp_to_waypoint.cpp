@@ -4,8 +4,8 @@
 
 namespace big
 {
-	class auto_tp_to_waypoint : looped_command
-	{
+    class auto_tp_to_waypoint : looped_command
+    {
         using looped_command::looped_command;
 
         virtual void on_tick() override
@@ -16,7 +16,7 @@ namespace big
 
             bool temp_disable_tp = (!*g_pointers->m_is_session_started) && CUTSCENE::IS_CUTSCENE_ACTIVE();
             if (!temp_disable_tp)
-			    teleport::to_waypoint();
+                teleport::to_waypoint();
         }
     };
 
