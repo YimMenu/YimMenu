@@ -14,8 +14,7 @@ namespace big
 		components::command_button<"waypointtp">({}, "Waypoint");
 		ImGui::SameLine();
 		components::command_button<"objectivetp">({}, "Objective");
-
-		ImGui::Checkbox("Auto-Teleport To Waypoint", &g.self.auto_tp);
+		components::command_checkbox<"autotptowp">();
 
 		ImGui::Text("Vehicles:");
 		components::command_button<"lastvehtp">();
