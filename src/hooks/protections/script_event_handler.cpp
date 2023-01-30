@@ -3,10 +3,12 @@
 #include "util/session.hpp"
 #include "gta/net_game_event.hpp"
 #include "backend/player_command.hpp"
+#include "gta/script_handler.hpp"
 
 #include <network/CNetGamePlayer.hpp>
 #include <network/Network.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
+#include <script/globals/GlobalPlayerBD.hpp>
 
 namespace big
 {
@@ -67,6 +69,13 @@ namespace big
 				return true;
 			}
 			break;
+		case eRemoteEvent::CeoKick:
+			if (player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
+			{
+				g.reactions.ceo_kick.process(plyr);
+				return true;
+			}
+			break;
 		case eRemoteEvent::CeoMoney:
 			if (g.protections.script_events.ceo_money && player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
 			{
@@ -91,6 +100,15 @@ namespace big
 				return true;
 			}
 			break;
+		case eRemoteEvent::Crash3:
+		{
+			if (isnan(*(float*)&args[3]) || isnan(*(float*)&args[4]))
+			{
+				g.reactions.crash.process(plyr);
+				return true;
+			}
+			break;
+		}
 		case eRemoteEvent::Notification:
 			switch (static_cast<eRemoteEvent>(args[2]))
 			{
@@ -281,9 +299,9 @@ namespace big
 					g.reactions.start_activity.process(plyr);
 					return true;
 				}
-				else if (activity == eActivityType::DefendSpecialCargo || activity == eActivityType::GunrunningDefend || activity == eActivityType::BikerDefend)
+				else if (activity == eActivityType::DefendSpecialCargo || activity == eActivityType::GunrunningDefend || activity == eActivityType::BikerDefend || args[2] == 238)
 				{
-					g.reactions.start_activity.process(plyr);
+					g.reactions.trigger_business_raid.process(plyr);
 					return true;
 				}
 			}
@@ -330,12 +348,40 @@ namespace big
 		case eRemoteEvent::DestroyPersonalVehicle:
 			g.reactions.destroy_personal_vehicle.process(plyr);
 			return true;
+		case eRemoteEvent::KickFromInterior:
+			if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].SimpleInteriorData.Owner != plyr->id())
+			{
+				g.reactions.kick_from_interior.process(plyr);
+				return true;
+			}
+			break;
+		case eRemoteEvent::TriggerCEORaid:
+		{
+			if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")))
+			{
+				if (script->m_net_component && script->m_net_component->m_host && script->m_net_component->m_host->m_net_game_player != player)
+				{
+					g.reactions.trigger_business_raid.process(plyr);
+				}
+			}
+
+			return true;
+		}
+		case eRemoteEvent::BadThing1:
+		case eRemoteEvent::BadThing2:
+			return true;
+		case eRemoteEvent::StartScriptBegin:
+		{
+			g.reactions.start_script.process(plyr);
+			return true;
+		}
 		}
 
 		// detect pasted menus setting args[1] to something other than PLAYER_ID()
 		if (*(int*)&args[1] != player->m_player_id && player->m_player_id != -1)
 		{
 			LOG(INFO) << "Hash = " << (int)args[0];
+			LOG(INFO) << "Sender = " << args[1];
 			g.reactions.tse_sender_mismatch.process(plyr);
 			return true;
 		}

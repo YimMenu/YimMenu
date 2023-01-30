@@ -25,8 +25,8 @@ namespace big
 				if (entry.second->explosion_loop)
 					toxic::blame_explode_player(entry.second, entry.second, EXP_TAG_SUBMARINE_BIG, 9999.0f, true, false, 9999.0f);
 
-				if (entry.second->freeze_loop)
-					TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(entry.second->id()));
+				if (entry.second->freeze_loop && entry.second->get_ped()->m_net_object)
+					g_pointers->m_clear_ped_tasks_network(entry.second->get_ped(), true);
 
 				if (entry.second->ragdoll_loop && entry.second->get_ped()->m_net_object)
 					g_pointers->m_request_ragdoll(entry.second->get_ped()->m_net_object->m_object_id);

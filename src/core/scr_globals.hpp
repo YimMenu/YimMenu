@@ -45,5 +45,28 @@ namespace big::scr_locals
 	namespace am_hunt_the_beast
 	{
 		constexpr static auto broadcast_idx = 599;
+		constexpr static auto player_broadcast_idx = 2583;
+	}
+
+	namespace am_criminal_damage
+	{
+		constexpr static auto broadcast_idx = 110;
+		constexpr static auto score_idx = 105;
+	}
+
+	namespace am_cp_collection
+	{
+		constexpr static auto broadcast_idx = 815;
+		constexpr static auto player_broadcast_idx = 3456;
+	}
+
+	namespace am_king_of_the_castle
+	{
+		constexpr static auto broadcast_idx = 93;
+	}
+
+	namespace fmmc_launcher
+	{
+		constexpr static auto broadcast_idx = 11153;
 	}
 }

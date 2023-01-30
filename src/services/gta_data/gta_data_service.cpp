@@ -23,7 +23,7 @@ namespace big
 	gta_data_service::gta_data_service() :
 		m_peds_cache(g_file_manager->get_project_file("./cache/peds.bin"), 1),
 		m_vehicles_cache(g_file_manager->get_project_file("./cache/vehicles.bin"), 1),
-		m_weapons_cache(g_file_manager->get_project_file("./cache/weapons.bin"), 1),
+		m_weapons_cache(g_file_manager->get_project_file("./cache/weapons.bin"), 2),
 		m_update_state(eGtaDataUpdateState::IDLE)
 	{
 		if (!is_cache_up_to_date())
@@ -194,6 +194,33 @@ namespace big
 		m_weapons_cache.free();
 	}
 
+	inline void parse_ped(std::vector<ped_item>& peds, std::vector<std::uint32_t>& mapped_peds, pugi::xml_document& doc)
+	{
+		const auto& items = doc.select_nodes("/CPedModelInfo__InitDataList/InitDatas/Item");
+		for (const auto& item_node : items)
+		{
+			const auto& item = item_node.node();
+			const auto name = item.child("Name").text().as_string();
+			const auto hash = rage::joaat(name);
+
+			if (std::find(mapped_peds.begin(), mapped_peds.end(), hash) != mapped_peds.end())
+				continue;
+
+			mapped_peds.emplace_back(hash);
+
+			auto ped = ped_item{};
+
+			std::strncpy(ped.m_name, name, sizeof(ped.m_name));
+
+			const auto ped_type = item.child("Pedtype").text().as_string();
+			std::strncpy(ped.m_ped_type, ped_type, sizeof(ped.m_ped_type));
+
+			ped.m_hash = hash;
+
+			peds.emplace_back(std::move(ped));
+		}
+	}
+
 	void gta_data_service::rebuild_cache()
 	{
 		m_update_state = eGtaDataUpdateState::UPDATING;
@@ -287,12 +314,15 @@ namespace big
 							const auto name = item.child("Name").text().as_string();
 							const auto hash = rage::joaat(name);
 
+							if (hash == RAGE_JOAAT("WEAPON_BIRD_CRAP"))
+								continue;
+
 							if (exists(mapped_weapons, hash))
 								continue;
 							mapped_weapons.emplace_back(hash);
 
 							const auto human_name_hash = item.child("HumanNameHash").text().as_string();
-							if (std::strcmp(human_name_hash, "WT_INVALID") == 0)
+							if (std::strcmp(human_name_hash, "WT_INVALID") == 0 || std::strcmp(human_name_hash, "WT_VEHMINE") == 0)
 								continue;
 
 							auto weapon = weapon_item{};
@@ -309,8 +339,11 @@ namespace big
 							bool is_gun = false;
 							bool is_rechargable = false;
 
+							const char* category = "";
+
 							std::size_t pos;
-							while ((pos = weapon_flags.find(' ')) != std::string::npos) {
+							while ((pos = weapon_flags.find(' ')) != std::string::npos) 
+							{
 								const auto flag = weapon_flags.substr(0, pos);
 								if (flag == "Thrown")
 								{
@@ -324,11 +357,19 @@ namespace big
 								{
 									is_rechargable = true;
 								}
+								else if (flag == "Vehicle" || flag == "HiddenFromWeaponWheel" || flag == "NotAWeapon")
+								{
+									goto skip;
+								}
 
 								weapon_flags.erase(0, pos + 1);
 							}
 
-							const auto category = item.child("Group").text().as_string();
+							category = item.child("Group").text().as_string();
+
+							if (std::strlen(category) == 0 || std::strcmp(category, "GROUP_DIGISCANNER") == 0)
+								continue;
+
 							if (std::strlen(category) > 6)
 							{
 								std::strncpy(weapon.m_weapon_type, category + 6, sizeof(weapon.m_weapon_type));
@@ -349,35 +390,16 @@ namespace big
 							weapon.m_hash = hash;
 
 							weapons.emplace_back(std::move(weapon));
+skip:
+							continue;
 						}
 					});
 				}
-				else if (file.filename() == "peds.meta" || file.filename() == "peds.ymt")
+				else if (file.filename() == "peds.meta")
 				{
 					rpf_wrapper.read_xml_file(file, [&exists, &peds, &mapped_peds](pugi::xml_document& doc)
 					{
-						const auto& items = doc.select_nodes("/CPedModelInfo__InitDataList/InitDatas/Item");
-						for (const auto& item_node : items)
-						{
-							const auto& item = item_node.node();
-							const auto name = item.child("Name").text().as_string();
-							const auto hash = rage::joaat(name);
-
-							if (exists(mapped_peds, hash))
-								continue;
-							mapped_peds.emplace_back(hash);
-
-							auto ped = ped_item{};
-
-							std::strncpy(ped.m_name, name, sizeof(ped.m_name));
-
-							const auto ped_type = item.child("Pedtype").text().as_string();
-							std::strncpy(ped.m_ped_type, ped_type, sizeof(ped.m_ped_type));
-
-							ped.m_hash = hash;
-
-							peds.emplace_back(std::move(ped));
-						}
+						parse_ped(peds, mapped_peds, doc);
 					});
 				}
 			}

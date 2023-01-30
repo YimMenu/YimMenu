@@ -56,7 +56,7 @@ namespace big::entity
 		return (bool)hit;
 	}
 
-	inline bool take_control_of(Entity ent, int timeout = 1000)
+	inline bool take_control_of(Entity ent, int timeout = 300)
 	{
 		if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) || !*g_pointers->m_is_session_started) 
 			return true;
@@ -64,7 +64,9 @@ namespace big::entity
 		for (int i = 0; !NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent) && i < timeout; i++)
 		{
 			NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(ent);
-			script::get_current()->yield();
+
+			if (timeout != 0)
+				script::get_current()->yield();
 		}
 
 		if (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(ent)) 

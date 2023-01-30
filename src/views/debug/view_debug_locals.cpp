@@ -6,7 +6,7 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Locals"))
 		{
-
+			
 			ImGui::EndTabItem();
 		}
 	}
