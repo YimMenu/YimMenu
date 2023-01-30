@@ -4,6 +4,7 @@
 #include "views/view.hpp"
 #include "core/data/hud_component_names.hpp"
 #include "util/scripts.hpp"
+#include "core/data/ptfx_effects.hpp"
 
 namespace big
 {
@@ -59,6 +60,29 @@ namespace big
 		ImGui::Checkbox("Dance Mode", &g.self.dance_mode);
 
 		ImGui::EndGroup();
+
+		components::sub_title("PTFX Styles");
+
+		components::command_checkbox<"ptfx">();
+		if (g.self.ptfx_effects.show)
+		{
+			ImGui::SliderFloat("PTFX Size", &g.self.ptfx_effects.size, 0.1f, 2.f);
+			
+			PTFXEffects selected = g.self.ptfx_effects.type;
+			if (ImGui::BeginCombo("PTFX Type", ptfx_types[(int)selected].name))
+			{
+				for (const auto& ptfx_type : ptfx_types)
+				{
+					if (ImGui::Selectable(ptfx_type.name, ptfx_type.type == selected))
+						g.self.ptfx_effects.type = ptfx_type.type;
+
+					if (ptfx_type.type == selected)
+						ImGui::SetItemDefaultFocus();
+				}
+
+				ImGui::EndCombo();
+			}		
+		}
 
 		ImGui::Separator();
 
