@@ -1,6 +1,10 @@
 include(FetchContent)
 
 message("zydis")
+
+set(ZYDIS_BUILD_DOXYGEN OFF)
+set(ZYDIS_FEATURE_ENCODER OFF)
+
 FetchContent_Declare(
     zydis
     GIT_REPOSITORY https://github.com/zyantific/zydis.git
