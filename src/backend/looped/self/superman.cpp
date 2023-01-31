@@ -11,7 +11,7 @@ namespace big
 
         void apply_force(float x, float y, float z)
         {
-            ENTITY::APPLY_FORCE_TO_ENTITY(self::ped, 1, x, y, z, 0, 0, 0, 0, 1, 1, 1, 0, 1);
+            ENTITY::APPLY_FORCE_TO_ENTITY(self::ped, 1, x, y, z, 0, 0, 0, 0, true, true, true, false, true);
         }
 
         virtual void on_tick() override
