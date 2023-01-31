@@ -4,6 +4,7 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "windows.h"
+#include "util/is_key_pressed.hpp"
 
 struct key_state
 {
@@ -25,14 +26,9 @@ inline key_state right_signal_key{ 'L' };
 inline key_state left_signal_key{ 'J' };
 inline key_state hazzards_key{ 'K' };
 
-bool is_key_pressed(int const v_key)
-{
-	return GetAsyncKeyState(v_key) & 0x8000;
-}
-
 void update_key_state(key_state& key_last_tick)
 {
-	if (is_key_pressed(key_last_tick.v_key))
+	if (big::is_key_pressed(key_last_tick.v_key))
 	{
 		switch (key_last_tick.state)
 		{
