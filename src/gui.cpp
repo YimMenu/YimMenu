@@ -15,10 +15,11 @@ namespace big
 	{
 		g_renderer->add_dx_callback(view::gta_data, -1); // -1 highest priority of drawing
 		g_renderer->add_dx_callback(view::notifications, -2); // second highest priority
+		g_renderer->add_dx_callback(view::overlay, -3); // 3rd highest priority
 		g_renderer->add_dx_callback([this]
 		{
 			dx_on_tick();
-		}, -3); // 3rd highest priority
+		}, -4); // 4th highest priority
 
 		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 		{
