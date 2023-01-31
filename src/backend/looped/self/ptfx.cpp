@@ -18,8 +18,8 @@ namespace big
 			PedBones::SKEL_R_Foot
 		};
 
-		void show_ptfx_effect(const char* fx_name, const char* name)
-		{
+        void show_ptfx_effect(const char* fx_name, const char* name)
+        {
 			for (const auto& ptfx_bone : ptfx_bones)
 			{
 				STREAMING::REQUEST_NAMED_PTFX_ASSET(fx_name);

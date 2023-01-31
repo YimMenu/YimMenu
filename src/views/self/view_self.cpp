@@ -89,18 +89,7 @@ namespace big
 			{
 				for (const auto& ptfx_type : ptfx_named[g.self.ptfx_effects.select].effect_names)
 				{
-					auto split = std::string(ptfx_type)
-						| std::ranges::views::split('_')
-						| std::ranges::views::transform([](auto&& str) { return std::string_view(&*str.begin(), std::ranges::distance(str)); });
-
-					std::string friendly_effect_name;
-					for (unsigned short i = 0; auto&& word : split)
-					{
-						i++;
-						friendly_effect_name.append(std::format("{}{} ", char(std::toupper(word[0])), word.substr(1)));
-					}
-
-					if (ImGui::Selectable(friendly_effect_name.c_str(), ptfx_type == g.self.ptfx_effects.effect))
+					if (ImGui::Selectable(ptfx_type, ptfx_type == g.self.ptfx_effects.effect))
 						g.self.ptfx_effects.effect = ptfx_type; // Update our ptfx effect
 
 					if (ptfx_type == g.self.ptfx_effects.effect)
@@ -109,7 +98,7 @@ namespace big
 
 				ImGui::EndCombo();
 			}
-	
+				
 		}
 
 	
