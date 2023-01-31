@@ -50,6 +50,8 @@ namespace big
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("You Will Have To Refresh Again When Exiting Interior.\n SPAMMING WILL CRASH GAME");
 
+			components::command_button<"fastquit">();
+
 			ImGui::EndTabItem();
 		}
 	}
