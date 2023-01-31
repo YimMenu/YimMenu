@@ -156,7 +156,7 @@ namespace big
 				ImGui::Text("PLAYER_INFO_RANK"_T.data(), stats.Rank, stats.RP);
 				ImGui::Text("Health: %d (MaxHealth: %d)", ped_health, ped_maxhealth); // TODO: translate
 				ImGui::Text("PLAYER_INFO_KD"_T.data(), stats.KdRatio);
-				ImGui::Text("PLAYER_INFO_PLAYER_KILLS"_T.data(), stats.KillsOnPlayers);
+				ImGui::Text("PLAYER_INFO_KILLS"_T.data(), stats.KillsOnPlayers);
 				ImGui::Text("PLAYER_INFO_DEATHS"_T.data(), stats.DeathsByPlayers);
 				ImGui::Text("PLAYER_INFO_PROSTITUTES"_T.data(), stats.ProstitutesFrequented);
 				ImGui::Text("PLAYER_INFO_LAP_DANCES"_T.data(), stats.LapDancesBought);
@@ -167,7 +167,7 @@ namespace big
 				ImGui::Separator();
 			}
 
-			if (ImGui::BeginCombo("PLAYER_INFO_CHAT_COMMAND_PERMISSIONS"_T.data(), COMMAND_ACCESS_LEVELS[g_player_service->get_selected()->command_access_level.value_or(g.session.chat_command_default_access_level)]))
+			if (ImGui::BeginCombo("CHAT_COMMAND_PERMISSIONS"_T.data(), COMMAND_ACCESS_LEVELS[g_player_service->get_selected()->command_access_level.value_or(g.session.chat_command_default_access_level)]))
 			{
 				for (const auto& [type, name] : COMMAND_ACCESS_LEVELS)
 				{
