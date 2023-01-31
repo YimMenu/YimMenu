@@ -2,8 +2,8 @@ include(FetchContent)
 
 message("zydis")
 
-set(ZYDIS_BUILD_DOXYGEN OFF)
-set(ZYDIS_FEATURE_ENCODER OFF)
+set(ZYDIS_BUILD_DOXYGEN OFF CACHE BOOL "Zydis Build Doxygen")
+set(ZYDIS_FEATURE_ENCODER OFF CACHE BOOL "Zydis Feature Encoder")
 
 FetchContent_Declare(
     zydis
