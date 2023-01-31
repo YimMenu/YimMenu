@@ -1,4 +1,3 @@
-#include "gta/enums.hpp"
 #include "natives.hpp"
 #include "backend/looped_command.hpp"
 #include "util/is_key_pressed.hpp"
