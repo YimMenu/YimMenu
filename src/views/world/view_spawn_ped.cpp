@@ -7,6 +7,7 @@
 #include "services/gta_data/gta_data_service.hpp"
 #include "services/model_preview/model_preview_service.hpp"
 #include "services/players/player_service.hpp"
+#include "backend/looped/looped.hpp"
 
 #include <imgui_internal.h>
 
@@ -14,8 +15,43 @@
 #define SPAWN_PED_ALL_WEAPONS -1
 #define SPAWN_PED_NO_WEAPONS -2
 
+#define SPAWN_PED_FOR_SELF -1
+#define SPAWN_PED_FOR_EVERYONE -2
+
+static int selected_ped_weapon_type = SPAWN_PED_ALL_WEAPONS;
+static Hash selected_ped_weapon_hash = 0;
+
 namespace big
 {
+	void spawn_ped_give_weapon(
+		const Ped ped
+	)
+	{
+		if (selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS)
+		{
+			return;
+		}
+
+		const auto& weapon_type_arr = g_gta_data_service->weapon_types();
+		for (auto& [_, weapon] : g_gta_data_service->weapons())
+		{
+			if (
+				selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ||
+				weapon.m_weapon_type == weapon_type_arr[selected_ped_weapon_type]
+				)
+			{
+				if (
+					(selected_ped_weapon_hash == 0 ||
+						weapon.m_hash == selected_ped_weapon_hash)
+					&& weapon.m_hash != RAGE_JOAAT("WEAPON_UNARMED")
+					)
+				{
+					WEAPON::GIVE_WEAPON_TO_PED(ped, weapon.m_hash, 9999, false, selected_ped_weapon_hash != 0);
+				}
+			}
+		}
+	}
+
 	Ped spawn_ped_at_location(
 		const int selected_ped_type,
 		const char* ped_model_buf,
@@ -55,7 +91,7 @@ namespace big
 		}
 
 
-		if (selected_ped_for_player_id == -1)
+		if (selected_ped_for_player_id == SPAWN_PED_FOR_SELF)
 		{
 			location = self::pos;
 			player = self::id;
@@ -89,56 +125,77 @@ namespace big
 			return 0;
 		}
 
+		PED::SET_PED_ARMOUR(ped, 100);
+		ENTITY::SET_ENTITY_MAX_HEALTH(ped, 1000);
+		ENTITY::SET_ENTITY_HEALTH(ped, 1000, 0);
+		PED::SET_PED_COMBAT_ABILITY(ped, 100);
+		PED::SET_PED_ACCURACY(ped, 100);
+		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 1, 1);
+		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 3, 1);
+		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 5, 1);
+		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 13, 1);
+		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 21, 1);
+		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 27, 1);
+		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 41, 1);
+		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 46, 1);
+		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 63, 0);
+		PED::SET_PED_COMBAT_ABILITY(ped, 2);
+		PED::SET_PED_COMBAT_MOVEMENT(ped, 2);
+		PED::SET_PED_COMBAT_RANGE(ped, 0);
+		PED::SET_PED_HIGHLY_PERCEPTIVE(ped, true);
+		PED::SET_PED_SEEING_RANGE(ped, 200.0f);
+		PED::SET_PED_HEARING_RANGE(ped, 200.0f);
+		PED::SET_PED_ID_RANGE(ped, 200.0f);
+		PED::SET_PED_FIRING_PATTERN(ped, RAGE_JOAAT("FIRING_PATTERN_FULL_AUTO"));
+		PED::SET_PED_SHOOT_RATE(ped, 150);
+		PED::SET_PED_RANDOM_COMPONENT_VARIATION(ped, 0);
+
 		if (is_bodyguard)
 		{
-			int player_group = PLAYER::GET_PLAYER_GROUP(player);
+			int player_group = PED::GET_PED_GROUP_INDEX(player_ped);
 
-			PED::SET_PED_AS_GROUP_MEMBER(ped, player_group);
-			PED::SET_PED_RELATIONSHIP_GROUP_HASH(ped, PED::GET_PED_RELATIONSHIP_GROUP_HASH(player_ped));
+			if (!PED::DOES_GROUP_EXIST(player_group))
+				player_group = PED::CREATE_GROUP(0);
+
 			PED::SET_PED_AS_GROUP_LEADER(player_ped, player_group);
+			PED::SET_PED_AS_GROUP_MEMBER(ped, player_group);
+			PED::SET_PED_CAN_TELEPORT_TO_GROUP_LEADER(ped, player_group, true);
+			PED::SET_PED_NEVER_LEAVES_GROUP(ped, true);
+			PED::SET_PED_RELATIONSHIP_GROUP_HASH(ped, PED::GET_PED_RELATIONSHIP_GROUP_HASH(player_ped));
 			PED::SET_PED_CAN_BE_TARGETTED_BY_PLAYER(ped, player, true);
-			PED::SET_PED_ARMOUR(ped, 100);
-			ENTITY::SET_ENTITY_MAX_HEALTH(ped, 1000);
-			ENTITY::SET_ENTITY_HEALTH(ped, 1000, 0);
-			PED::SET_PED_COMBAT_ABILITY(ped, 100);
-			PED::SET_PED_COMBAT_ATTRIBUTES(ped, 46, 1);
-			PED::SET_PED_COMBAT_ATTRIBUTES(ped, 63, 0);
 
-			TASK::CLEAR_PED_TASKS_IMMEDIATELY(ped);
-			TASK::TASK_COMBAT_HATED_TARGETS_AROUND_PED(ped, 100.f, 0);
-			PED::SET_PED_KEEP_TASK(ped, true);
-		}
-
-		return ped;
-	}
-
-
-	void spawn_ped_give_weapon(
-		const Ped ped,
-		const int selected_ped_weapon_type,
-		const Hash selected_ped_weapon_hash
-	) {
-		if (selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS)
-		{
-			return;
-		}
-
-		const auto& weapon_type_arr = g_gta_data_service->weapon_types();
-		for (auto& [_, weapon] : g_gta_data_service->weapons())
-		{
-			if (
-				selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ||
-				weapon.m_weapon_type == weapon_type_arr[selected_ped_weapon_type]
-			) {
-				if (
-					(selected_ped_weapon_hash == 0 ||
-					weapon.m_hash == selected_ped_weapon_hash)
-					&& weapon.m_hash != RAGE_JOAAT("WEAPON_UNARMED")
-				) {
-					WEAPON::GIVE_WEAPON_TO_PED(ped, weapon.m_hash, 9999, false, selected_ped_weapon_hash != 0);
-				}
+			if (player != self::id)
+			{
+				PED::SET_PED_KEEP_TASK(ped, true);
+				PED::SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true);
+				TASK::TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true);
+				TASK::TASK_FOLLOW_TO_OFFSET_OF_ENTITY(ped, player, 0.0f, 0.0f, 0.0f, 4.0f, -1, 0.0f, true);
 			}
 		}
+
+		if (g.world.spawn_ped.spawn_invincible)
+		{
+			ENTITY::SET_ENTITY_INVINCIBLE(ped, true);
+		}
+
+		if (g.world.spawn_ped.spawn_invisible)
+		{
+			ENTITY::SET_ENTITY_VISIBLE(ped, false, false);
+		}
+
+		if (g.world.spawn_ped.spawn_as_attacker)
+		{
+			PED::SET_PED_AS_ENEMY(ped, true);
+			PED::SET_PED_KEEP_TASK(ped, true);
+			PED::SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true);
+			TASK::TASK_COMBAT_PED(ped, player_ped, 0, 16);
+			PED::SET_PED_RELATIONSHIP_GROUP_HASH(ped, RAGE_JOAAT("HATES_PLAYER"));
+			PED::SET_PED_ALERTNESS(ped, 3);
+		}
+
+		spawn_ped_give_weapon(ped);
+		spawned_peds.push_back({ ped, selected_ped_for_player_id == SPAWN_PED_FOR_SELF ? self::id : selected_ped_for_player_id, is_bodyguard, g.world.spawn_ped.spawn_as_attacker });
+		return ped;
 	}
 
 	void view::spawn_ped()
@@ -148,22 +205,21 @@ namespace big
 		static char ped_model_buf[64];
 		static Player selected_ped_player_id = -1;
 
-		auto ped_type_arr = g_gta_data_service->ped_types();
-		auto ped_arr = g_gta_data_service->peds();
+		auto& ped_type_arr = g_gta_data_service->ped_types();
+		auto& ped_arr = g_gta_data_service->peds();
 
-
-		static int selected_ped_weapon_type = SPAWN_PED_ALL_WEAPONS;
-		static Hash selected_ped_weapon_hash = 0;
-		auto weapon_type_arr = g_gta_data_service->weapon_types();
-		auto weapon_arr = g_gta_data_service->weapons();
+		auto& weapon_type_arr = g_gta_data_service->weapon_types();
+		auto& weapon_arr = g_gta_data_service->weapons();
 
 		static Player selected_ped_for_player_id = -1;
-		auto player_arr = g_player_service->players();
+		auto& player_arr = g_player_service->players();
 
 		if (!*g_pointers->m_is_session_started)
 		{
 			selected_ped_player_id = -1;
-			selected_ped_for_player_id = -1;
+
+			if (selected_ped_for_player_id != SPAWN_PED_FOR_SELF && selected_ped_for_player_id != SPAWN_PED_FOR_EVERYONE)
+				selected_ped_for_player_id = SPAWN_PED_FOR_SELF;
 		}
 		else
 		{
@@ -172,12 +228,11 @@ namespace big
 				selected_ped_player_id = -1;
 			}
 
-			if (g_player_service->get_by_id(selected_ped_for_player_id) == nullptr)
+			if (selected_ped_for_player_id != SPAWN_PED_FOR_SELF && selected_ped_for_player_id != SPAWN_PED_FOR_EVERYONE && g_player_service->get_by_id(selected_ped_for_player_id) == nullptr)
 			{
-				selected_ped_for_player_id = -1;
+				selected_ped_for_player_id = SPAWN_PED_FOR_SELF;
 			}
 		}
-
 
 		components::sub_title("Ped Model");
 		{
@@ -511,16 +566,29 @@ namespace big
 		{
 			if (ImGui::BeginCombo(
 				"##ped_for",
-				selected_ped_for_player_id == -1 ?
+				(selected_ped_for_player_id == SPAWN_PED_FOR_SELF ?
 				"Self" :
-				g_player_service->get_by_id(selected_ped_for_player_id)->get_name()
-			)) {
-				if (ImGui::Selectable("Self", selected_ped_for_player_id == -1))
+				(selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE ?
+				"Everyone" :
+				g_player_service->get_by_id(selected_ped_for_player_id)->get_name()))
+			)) 
+			{
+				if (ImGui::Selectable("Self", selected_ped_for_player_id == SPAWN_PED_FOR_SELF))
 				{
-					selected_ped_for_player_id = -1;
+					selected_ped_for_player_id = SPAWN_PED_FOR_SELF;
 				}
 
-				if (selected_ped_for_player_id == -1)
+				if (selected_ped_for_player_id == SPAWN_PED_FOR_SELF)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+
+				if (ImGui::Selectable("Everyone", selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE))
+				{
+					selected_ped_for_player_id = SPAWN_PED_FOR_EVERYONE;
+				}
+
+				if (selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE)
 				{
 					ImGui::SetItemDefaultFocus();
 				}
@@ -559,7 +627,12 @@ namespace big
 			}
 		}
 
-		components::button("Change Player Model", [] {
+		ImGui::Checkbox("Invincible", &g.world.spawn_ped.spawn_invincible);
+		ImGui::Checkbox("Invisible", &g.world.spawn_ped.spawn_invisible);
+		ImGui::Checkbox("Attacker", &g.world.spawn_ped.spawn_as_attacker);
+
+		components::button("Change Player Model", [] 
+		{
 			if (selected_ped_type == -2)
 			{
 				if (selected_ped_player_id != -1)
@@ -571,39 +644,61 @@ namespace big
 						ped::steal_identity(ped);
 					}
 				}
-				}
+			}
 			else
 			{
 				if (!ped::change_player_model(rage::joaat(ped_model_buf)))
 				{
-					g_notification_service->push_error("Ped", "Failed to spawn model, did you give an incorrect model ? ");
+					g_notification_service->push_error("Ped", "Failed to spawn model, did you give an incorrect model?");
 					return;
 				}
-			}
 
-			spawn_ped_give_weapon(self::ped, selected_ped_weapon_type, selected_ped_weapon_hash);
-		});
-
-		ImGui::SameLine();
-
-		components::button("Spawn Ped", [] {
-			Ped ped = spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, selected_ped_for_player_id, false);
-
-			if (ped)
-			{
-				spawn_ped_give_weapon(ped, selected_ped_weapon_type, selected_ped_weapon_hash);
+				PED::SET_PED_RANDOM_COMPONENT_VARIATION(self::ped, 0);
 			}
 		});
 
 		ImGui::SameLine();
 
-		components::button("Spawn Bodyguard", [] {
-			Ped ped = spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, selected_ped_for_player_id, true);
-
-			if (ped)
+		components::button("Spawn Ped", [] 
+		{
+			if (selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE)
 			{
-				spawn_ped_give_weapon(ped, selected_ped_weapon_type, selected_ped_weapon_hash);
+				g_player_service->iterate([](const big::player_entry& entry)
+				{
+					spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, entry.second->id(), false);
+				});
 			}
+			else
+			{
+				spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, selected_ped_for_player_id, false);
+			}
+		});
+
+		ImGui::SameLine();
+
+		components::button("Spawn Bodyguard", [] 
+		{
+			if (selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE)
+			{
+				g_player_service->iterate([](const big::player_entry& entry)
+				{
+					spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, entry.second->id(), true);
+				});
+			}
+			else
+			{
+				spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, selected_ped_for_player_id, true);
+			}
+		});
+
+		components::button("Cleanup Spawned Peds", []
+		{
+			for (auto& ped : spawned_peds)
+			{
+				PED::DELETE_PED(&ped.ped_handle);
+			}
+
+			spawned_peds.clear();
 		});
 	}
 }

@@ -57,15 +57,18 @@ namespace big
 	{
 		components::title("Reactions");
 		draw_reaction(g.reactions.bounty);
+		draw_reaction(g.reactions.ceo_kick);
 		draw_reaction(g.reactions.ceo_money);
 		draw_reaction(g.reactions.clear_wanted_level);
 		draw_reaction(g.reactions.crash);
+		draw_reaction(g.reactions.end_session_kick);
 		draw_reaction(g.reactions.destroy_personal_vehicle);
 		draw_reaction(g.reactions.fake_deposit);
 		draw_reaction(g.reactions.force_mission);
 		draw_reaction(g.reactions.force_teleport);
 		draw_reaction(g.reactions.give_collectible);
 		draw_reaction(g.reactions.gta_banner);
+		draw_reaction(g.reactions.kick_from_interior);
 		draw_reaction(g.reactions.mc_teleport);
 		draw_reaction(g.reactions.network_bail);
 		draw_reaction(g.reactions.null_function_kick);
@@ -77,11 +80,16 @@ namespace big
 		draw_reaction(g.reactions.sound_spam);
 		draw_reaction(g.reactions.spectate_notification);
 		draw_reaction(g.reactions.start_activity);
+		draw_reaction(g.reactions.start_script);
 		draw_reaction(g.reactions.teleport_to_warehouse);
 		draw_reaction(g.reactions.transaction_error);
+		draw_reaction(g.reactions.trigger_business_raid);
 		draw_reaction(g.reactions.tse_freeze);
 		draw_reaction(g.reactions.tse_sender_mismatch);
 		draw_reaction(g.reactions.vehicle_kick);
+		draw_reaction(g.reactions.turn_into_beast);
+		draw_reaction(g.reactions.remote_wanted_level);
+		draw_interloper_reaction(g.reactions.remote_wanted_level_others);
 		ImGui::Separator();
 		draw_reaction(g.reactions.clear_ped_tasks);
 		draw_reaction(g.reactions.remote_ragdoll);

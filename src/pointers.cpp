@@ -810,8 +810,36 @@ namespace big
 			m_fragment_physics_crash_2 = ptr.add(1).rip().as<PVOID>();
 		});
 
+		// Clear Ped Tasks Network
+		main_batch.add("CPTN", "E8 ? ? ? ? EB 28 48 8B 8F A0 10 00 00", [this](memory::handle ptr)
+		{
+			m_clear_ped_tasks_network = ptr.add(1).rip().as<functions::clear_ped_tasks_network>();
+		});
+
+		// Infinite Train Crash
+		main_batch.add("ITC", "E8 ? ? ? ? F3 44 0F 10 93 90 03 00 00", [this](memory::handle ptr)
+		{
+			m_infinite_train_crash = ptr.add(1).rip().as<PVOID>();
+			m_get_next_carriage = ptr.add(1).rip().add(0xF).rip().as<functions::get_next_carriage>();
+		});
+
+		// Get Entity Attached To
+		main_batch.add("GEAT", "48 83 EC 28 48 8B 51 50 48 85 D2 74 04", [this](memory::handle ptr)
+		{
+			m_get_entity_attached_to = ptr.as<functions::get_entity_attached_to>();
+		});
+
+		// Received Array Update
+		main_batch.add("RAU", "48 89 5C 24 10 55 56 57 41 54 41 55 41 56 41 57 48 8B EC 48 83 EC 30 48 8B 05", [this](memory::handle ptr)
+		{
+			m_received_array_update = ptr.as<PVOID>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
-		main_batch.run(mem_region);
+		if (!main_batch.run(mem_region))
+		{
+			throw std::runtime_error("Failed to find some patterns.");
+		}
 
 		memory::batch socialclub_batch;
 

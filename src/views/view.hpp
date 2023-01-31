@@ -16,6 +16,7 @@ namespace big
 		static void active_view();
 		static void esp_settings();
 		static void context_menu_settings();
+		static void stat_editor();
 		static void gui_settings();
 		static void hotkey_settings();
 		static void handling_current_profile();
@@ -26,9 +27,11 @@ namespace big
 		static void mobile();
 		static void navigation();
 		static void notifications();
+		static void overlay();
 		static void root();
 		static void self();
 		static void session();
+		static void missions();
 		static void player_database();
 		static void session_browser();
 		static void settings();

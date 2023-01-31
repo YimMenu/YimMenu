@@ -31,7 +31,7 @@ namespace big
 
 			return g_hooking->get_original<hooks::assign_physical_index>()(netPlayerMgr, player, new_index);
 		}
-
+			
 		const auto result = g_hooking->get_original<hooks::assign_physical_index>()(netPlayerMgr, player, new_index);
 		g_player_service->player_join(player);
 		if (net_player_data)

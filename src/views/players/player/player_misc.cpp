@@ -1,4 +1,5 @@
 #include "views/view.hpp"
+#include "util/scripts.hpp"
 
 namespace big
 {
@@ -22,6 +23,13 @@ namespace big
 			ImGui::Checkbox("Off The Radar", &g_player_service->get_selected()->off_radar);
 			ImGui::Checkbox("Never Wanted", &g_player_service->get_selected()->never_wanted);
 			ImGui::Checkbox("Semi Godmode", &g_player_service->get_selected()->semi_godmode);
+
+			components::button("Gooch Test", []
+			{
+				*script_global(1890140).at(244).at(1).as<Player*>() = g_player_service->get_selected()->id();
+				scripts::start_launcher_script(171);
+			});
+
 			ImGui::TreePop();
 		}
 	}
