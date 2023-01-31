@@ -41,7 +41,6 @@ namespace big
 		static void system_desync_kick_protection();
 		static void system_spoofing();
 		static void system_mission_creator();
-		static void system_auto_tp();
 
 		static void vehicle_auto_drive();
 		static void vehicle_boost_behavior();

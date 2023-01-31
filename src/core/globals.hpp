@@ -621,7 +621,21 @@ namespace big
 
 			bool switched_view = true;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, color, gui_scale, switched_view)
+			struct ingame_overlay
+			{
+				bool opened = true;
+				bool show_with_menu_opened = false;
+
+				bool show_fps = true;
+				bool show_players = true;
+				bool show_time = true;
+				bool show_replay_interface = true;
+				bool show_game_versions = true;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ingame_overlay, opened, show_with_menu_opened, show_fps, show_players, show_time, show_replay_interface, show_game_versions)
+			} ingame_overlay{};
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, color, gui_scale, switched_view, ingame_overlay)
 		} window{};
 
 		struct context_menu
