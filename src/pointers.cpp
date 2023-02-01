@@ -568,7 +568,7 @@ namespace big
 		});
 
 		// Serialize Join Request Message
-		main_batch.add("SJRM", "E8 ? ? ? ? 84 C0 0F 84 99 00 00 00 49 8D 8F 78 0D 00 00", [this](memory::handle ptr)
+		main_batch.add("SJRM", "E8 ?? ?? ?? ?? 84 C0 0F 84 9B 00 00 00 49 8D 8F 50 11 00 00", [this](memory::handle ptr)
 		{
 			m_serialize_join_request_message = ptr.add(1).rip().as<PVOID>();
 		});
