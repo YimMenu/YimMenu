@@ -26,7 +26,10 @@ namespace big
 						<< " with Rockstar ID: " << net_player_data->m_gamer_handle_2.m_rockstar_id;
 
 				if (g.notifications.player_leave.notify)
-					g_notification_service->push("Player Left", std::format("{} freeing slot #{} with Rockstar ID: {}", net_player_data->m_name, player->m_player_id, net_player_data->m_gamer_handle_2.m_rockstar_id));
+				{
+					g_notification_service->push("PLAYER_LEFT"_T.data(),
+						std::vformat("PLAYER_LEFT_INFO"_T, std::make_format_args(net_player_data->m_name, player->m_player_id, net_player_data->m_gamer_handle_2.m_rockstar_id)));
+				}
 			}
 
 			return g_hooking->get_original<hooks::assign_physical_index>()(netPlayerMgr, player, new_index);
@@ -45,7 +48,10 @@ namespace big
 					<< " with Rockstar ID: " << net_player_data->m_gamer_handle_2.m_rockstar_id;
 
 			if (g.notifications.player_join.notify)
-				g_notification_service->push("Player Joined", std::format("{} taking slot #{} with Rockstar ID: {}", net_player_data->m_name, player->m_player_id, net_player_data->m_gamer_handle_2.m_rockstar_id));
+			{
+				g_notification_service->push("PLAYER_JOINED"_T.data(),
+					std::vformat("PLAYER_JOINED_INFO"_T, std::make_format_args(net_player_data->m_name, player->m_player_id, net_player_data->m_gamer_handle_2.m_rockstar_id)));
+			}
 
 			auto id = player->m_player_id;
 			g_fiber_pool->queue_job([id]
@@ -60,7 +66,8 @@ namespace big
 
 						if (strcmp(plyr->get_name(), entry->name.data()))
 						{
-							g_notification_service->push("Players", std::format("{} changed their name to {}", entry->name, plyr->get_name()));
+							g_notification_service->push("PLAYERS"_T.data(),
+								std::vformat("PLAYER_CHANGED_NAME"_T, std::make_format_args(entry->name, plyr->get_name())));
 							entry->name = plyr->get_name();
 							g_player_database_service->save();
 						}

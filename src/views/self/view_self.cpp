@@ -21,7 +21,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::sub_title("General");
+		components::sub_title("GENERAL"_T);
 
 		ImGui::BeginGroup();
 
@@ -39,7 +39,7 @@ namespace big
 		components::command_checkbox<"noclip">();
 		components::command_checkbox<"noragdoll">();
 		components::command_checkbox<"fastrun">();
-		ImGui::Checkbox("No Idle Kick", &g.tunables.no_idle_kick);
+		ImGui::Checkbox("NO_IDLE_KICK"_T.data(), &g.tunables.no_idle_kick);
 		components::command_checkbox<"walkunder">();
 		if(!g.self.super_jump)
 			components::command_checkbox<"beastjump">();
@@ -56,15 +56,15 @@ namespace big
 		components::command_checkbox<"nocollision">();
 		components::command_checkbox<"mobileradio">();
 
-		ImGui::Checkbox("Dance Mode", &g.self.dance_mode);
+		ImGui::Checkbox("DANCE_MODE"_T.data(), &g.self.dance_mode);
 
 		ImGui::EndGroup();
 
 		ImGui::Separator();
 
-		components::sub_title("Proofs");
+		components::sub_title("PROOFS"_T);
 
-		if (ImGui::Button("Check all"))
+		if (ImGui::Button("CHECK_ALL"_T.data()))
 		{
 			g.self.proof_bullet = true;
 			g.self.proof_fire = true;
@@ -78,7 +78,7 @@ namespace big
 
 		ImGui::SameLine();
 
-		if (ImGui::Button("Uncheck all"))
+		if (ImGui::Button("UNCHECK_ALL"_T.data()))
 		{
 			g.self.proof_bullet = false;
 			g.self.proof_fire = false;
@@ -92,42 +92,42 @@ namespace big
 
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("Bullet", &g.self.proof_bullet);
-		ImGui::Checkbox("Fire", &g.self.proof_fire);
+		ImGui::Checkbox("BULLET"_T.data(), &g.self.proof_bullet);
+		ImGui::Checkbox("FIRE"_T.data(), &g.self.proof_fire);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("Collision", &g.self.proof_collision);
-		ImGui::Checkbox("Melee", &g.self.proof_melee);
+		ImGui::Checkbox("COLLISION"_T.data(), &g.self.proof_collision);
+		ImGui::Checkbox("MELEE"_T.data(), &g.self.proof_melee);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("Explosion", &g.self.proof_explosion);
-		ImGui::Checkbox("Steam", &g.self.proof_steam);
+		ImGui::Checkbox("EXPLOSION"_T.data(), &g.self.proof_explosion);
+		ImGui::Checkbox("STEAM"_T.data(), &g.self.proof_steam);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("Drown", &g.self.proof_drown);
-		ImGui::Checkbox("Water", &g.self.proof_water);
+		ImGui::Checkbox("DROWN"_T.data(), &g.self.proof_drown);
+		ImGui::Checkbox("WATER"_T.data(), &g.self.proof_water);
 
 		ImGui::EndGroup();
 
 		ImGui::Separator();
 
-		components::sub_title("Police");
+		components::sub_title("POLICE"_T);
 
-		ImGui::Checkbox("Never Wanted", &g.self.never_wanted);
+		ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.self.never_wanted);
 
 		if (!g.self.never_wanted)
 		{
-			ImGui::Checkbox("Force Wanted Level", &g.self.force_wanted_level);
-			ImGui::Text("Wanted Level");
+			ImGui::Checkbox("FORCE_WANTED_LVL"_T.data(), &g.self.force_wanted_level);
+			ImGui::Text("WANTED_LVL"_T.data());
 			if (
 				ImGui::SliderInt("###wanted_level", &g.self.wanted_level, 0, 5) &&
 				!g.self.force_wanted_level &&
@@ -139,31 +139,31 @@ namespace big
 
 		ImGui::Separator();
 
-		components::sub_title("HUD");
+		components::sub_title("HUD"_T);
 
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("Hide Radar", &g.self.hide_radar);
+		ImGui::Checkbox("HIDE_RADAR"_T.data(), &g.self.hide_radar);
 
 		ImGui::SameLine();
 
-		ImGui::Checkbox("Hide Ammo", &g.self.hide_ammo);
+		ImGui::Checkbox("HIDE_AMMO"_T.data(), &g.self.hide_ammo);
 
 		ImGui::SameLine();
 
-		ImGui::Checkbox("Force show HUD", &g.self.force_show_hud);
+		ImGui::Checkbox("FORCE_SHOW_HUD"_T.data(), &g.self.force_show_hud);
 
 		ImGui::Combo("##hud_comp_combo", &g.self.selected_hud_component, hud_component_names, (int)HudComponents::HUD_WEAPONS);
 		ImGui::SameLine();
-		components::button("Hide", [] {
+		components::button("HIDE"_T, [] {
 			g.self.hud_components_states[g.self.selected_hud_component] = true;
 		});
 		ImGui::SameLine();
-		components::button("Show", [] {
+		components::button("SHOW"_T, [] {
 			g.self.hud_components_states[g.self.selected_hud_component] = false;
 		});
 
-		components::button("Hide all", [] {
+		components::button("HIDE_ALL"_T, [] {
 			g.self.hide_radar = true;
 			g.self.hide_ammo = true;
 			for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
@@ -172,7 +172,7 @@ namespace big
 			}
 		});
 		ImGui::SameLine();
-		components::button("Show all", [] {
+		components::button("SHOW_ALL"_T, [] {
 			g.self.hide_radar = false;
 			g.self.hide_ammo = false;
 			for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
@@ -181,9 +181,9 @@ namespace big
 			}
 		});
 		ImGui::SameLine();
-		ImGui::Checkbox("Force show HUD element", &g.self.force_show_hud_element);
+		ImGui::Checkbox("FORCE_SHOW_HUD_ELEMENT"_T.data(), &g.self.force_show_hud_element);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("To force show a HUD specific element, click Hide all then click Show on the desired element.");
+			ImGui::SetTooltip("FORCE_SHOW_HUD_ELEMENT_DESC"_T.data());
 
 		ImGui::EndGroup();
 

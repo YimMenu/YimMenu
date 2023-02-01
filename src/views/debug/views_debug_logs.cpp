@@ -6,18 +6,18 @@ namespace big
 {
 	void debug::logs()
 	{
-		if (ImGui::BeginTabItem("Logs"))
+		if (ImGui::BeginTabItem("DEBUG_TABS_LOGS"_T.data()))
 		{
-			ImGui::Checkbox("Log Metrics", &g.debug.logs.metric_logs);
-			ImGui::Checkbox("Log Packets", &g.debug.logs.packet_logs);
-			ImGui::Checkbox("Native Script Hooks", &g.debug.logs.script_hook_logs);
+			ImGui::Checkbox("DEBUG_LOG_METRICS"_T.data(), &g.debug.logs.metric_logs);
+			ImGui::Checkbox("Log Packets", &g.debug.logs.packet_logs); // TODO: translate
+			ImGui::Checkbox("DEBUG_LOG_NATIVE_SCRIPT_HOOKS"_T.data(), &g.debug.logs.script_hook_logs);
 
-			if (ImGui::TreeNode("Script Event Logging"))
+			if (ImGui::TreeNode("DEBUG_LOG_TREE_SCRIPT_EVENT"_T.data()))
 			{
-				ImGui::Checkbox("Enable Script Event Logging", &g.debug.logs.script_event.logs);
+				ImGui::Checkbox("DEBUG_LOG_SCRIPT_EVENT"_T.data(), &g.debug.logs.script_event.logs);
 				ImGui::Separator();
 
-				ImGui::Checkbox("Filter by Player", &g.debug.logs.script_event.filter_player);
+				ImGui::Checkbox("DEBUG_LOG_SCRIPT_EVENT_FILTER_BY_PLAYER"_T.data(), &g.debug.logs.script_event.filter_player);
 
 				if (g.debug.logs.script_event.filter_player)
 				{
