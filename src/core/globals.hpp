@@ -627,7 +627,7 @@ namespace big
 				int aimbone = 0;
 				bool aimallcops = false;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbottg, aimnpconly, aimanimals, aimarmy, aimswat,
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, aimbottg, aimnpconly, aimanimals, aimarmy, aimswat,
 				aimcop, aimall, aimplayers, aimenemies, aimbone, aimallcops)
 			} aimbot{};
 			bool infinite_range = false;
