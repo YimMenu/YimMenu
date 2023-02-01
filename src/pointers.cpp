@@ -526,7 +526,7 @@ namespace big
 		});
 
 		// Handle Join Request
-		main_batch.add("WJRD", "E8 ? ? ? ? 48 8D 8D 90 00 00 00 F6 D8", [this](memory::handle ptr)
+		main_batch.add("HJR", "E8 ?? ?? ?? ?? 41 8B DF 84 C0 74 06", [this](memory::handle ptr)
 		{
 			m_write_join_response_data = ptr.add(1).rip().as<functions::write_join_response_data>();
 		});
