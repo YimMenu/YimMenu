@@ -4,6 +4,7 @@
 #include "views/view.hpp"
 #include "core/data/hud_component_names.hpp"
 #include "util/scripts.hpp"
+#include "core/data/ptfx_effects.hpp"
 
 namespace big
 {
@@ -60,6 +61,47 @@ namespace big
 
 		ImGui::EndGroup();
 
+		components::sub_title("PTFX Styles");
+
+		components::command_checkbox<"ptfx">();
+		if (g.self.ptfx_effects.show)
+		{
+			ImGui::SliderFloat("PTFX Size", &g.self.ptfx_effects.size, 0.1f, 2.f);
+			if (ImGui::BeginCombo("Asset", ptfx_named[g.self.ptfx_effects.select].friendly_name))
+			{
+				for (int i = 0; i < IM_ARRAYSIZE(ptfx_named); i++)
+				{
+					if (ImGui::Selectable(ptfx_named[i].friendly_name, ptfx_named[i].asset_name == g.self.ptfx_effects.asset))
+					{
+						g.self.ptfx_effects.asset = ptfx_named[i].asset_name; // Update our asset name to be used
+						g.self.ptfx_effects.select = i;
+						g.self.ptfx_effects.effect = ptfx_named[i].effect_names.at(0); // set the effect to the first instance in the vector
+					}
+
+					if (ptfx_named[i].asset_name == g.self.ptfx_effects.asset)
+						ImGui::SetItemDefaultFocus();
+				}
+
+				ImGui::EndCombo();
+			}
+
+			if (ImGui::BeginCombo("Effect", g.self.ptfx_effects.effect))
+			{
+				for (const auto& ptfx_type : ptfx_named[g.self.ptfx_effects.select].effect_names)
+				{
+					if (ImGui::Selectable(ptfx_type, ptfx_type == g.self.ptfx_effects.effect))
+						g.self.ptfx_effects.effect = ptfx_type; // Update our ptfx effect
+
+					if (ptfx_type == g.self.ptfx_effects.effect)
+						ImGui::SetItemDefaultFocus();
+				}
+
+				ImGui::EndCombo();
+			}
+				
+		}
+
+	
 		ImGui::Separator();
 
 		components::sub_title("PROOFS"_T);

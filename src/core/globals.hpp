@@ -6,6 +6,7 @@
 #include "file_manager.hpp"
 #include "backend/reactions/reaction.hpp"
 #include "backend/reactions/interloper_reaction.hpp"
+#include "core/data/ptfx_effects.hpp"
 #include <imgui.h>
 #include <bitset>
 
@@ -238,6 +239,16 @@ namespace big
 
 		struct self 
 		{
+			struct ptfx_effects
+			{
+				bool show = false;
+				float size = 0.2f;
+				int select = 0;
+				const char* asset = "scr_agencyheist";
+				const char* effect = "scr_fbi_mop_drips";
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ptfx_effects, show, size)
+			} ptfx_effects {};
+
 			bool clean_player = false;
 			bool force_wanted_level = false;
 			bool free_cam = false;
@@ -278,7 +289,7 @@ namespace big
 			// do not save below entries
 			bool dance_mode = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self,
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ptfx_effects,
 				clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll,
 				noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water,
 				proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water,
