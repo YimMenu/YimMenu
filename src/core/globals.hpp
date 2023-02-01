@@ -624,12 +624,12 @@ namespace big
 				bool aimall = false; //done
 				bool aimplayers = false; //done
 				bool aimenemies = false; //done
-				bool triggerbot = false;
-				int aimbone;
+				int aimbone = 0;
+				bool aimallcops = false;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbottg, aimnpconly, aimanimals, aimarmy, aimswat,
-				aimcop, aimall, aimplayers, aimenemies, triggerbot, aimbone)
-			} aimbot;
+				aimcop, aimall, aimplayers, aimenemies, aimbone, aimallcops)
+			} aimbot{};
 			bool infinite_range = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons,

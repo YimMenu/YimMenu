@@ -164,22 +164,31 @@ namespace big
 
 		components::command_checkbox<"aimbot">();
 
-		ImGui::SliderFloat("Aimbot Radius", &g.weapons.aimbot.aimradius, 0.1f, 100.f, "%.1f");
-		ImGui::InputInt("Bone To Shoot", &g.weapons.aimbot.aimbone);
+		if(g.weapons.aimbot.aimbottg)
+		{
+			ImGui::InputInt("Bone To Shoot", &g.weapons.aimbot.aimbone);
 
-		components::command_checkbox<"aimnpc">();
-		ImGui::SameLine();
-		components::command_checkbox<"aimall">();
-		ImGui::SameLine();
-		components::command_checkbox<"aimanimal">();
-		components::command_checkbox<"aimarmy">();
-		ImGui::SameLine();
-		components::command_checkbox<"aimswat">();
-		ImGui::SameLine();
-		components::command_checkbox<"aimcop">();
-		ImGui::SameLine();
-		components::command_checkbox<"aimplayers">();
-		components::command_checkbox<"triggerbot">();
+			//todo convert types to combo
 
+			components::command_checkbox<"aimnpc">();
+			ImGui::SameLine();
+			components::command_checkbox<"aimall">();
+			ImGui::SameLine();
+			components::command_checkbox<"aimanimals">();
+			components::command_checkbox<"aimarmy">();
+			ImGui::SameLine();
+			components::command_checkbox<"aimswat">();
+			ImGui::SameLine();
+			components::command_checkbox<"aimcop">();
+			ImGui::SameLine();
+			components::command_checkbox<"aimplayers">();
+			if (g.weapons.aimbot.aimplayers)
+			{
+				//ImGui::Checkbox("Exclude Friends", &g.weapons.aimbot.excludefriend);
+				//ImGui::Checkbox("Exclude Team", &g.weapons.aimbot.excludeteam)
+			}
+			components::command_checkbox<"aimenemies">();
+			components::command_checkbox<"aimallcop">();
+		}
 	}
 }
