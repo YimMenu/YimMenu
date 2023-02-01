@@ -243,9 +243,9 @@ namespace big
 		});
 
 		// Send NET Info to Lobby
-		main_batch.add("SNITL", "33 DB 48 83 C1 68 45 8B F0", [this](memory::handle ptr)
+		main_batch.add("SNITL", "48 8B EC 48 83 EC 50 49 8B F9 45 8B F8 4C 8B E2", [this](memory::handle ptr)
 		{
-			m_send_net_info_to_lobby = ptr.sub(0x26).as<decltype(m_send_net_info_to_lobby)>();
+			m_send_net_info_to_lobby = ptr.sub(24).as<decltype(m_send_net_info_to_lobby)>();
 		});
 
 		// CNetworkObjectMgr
