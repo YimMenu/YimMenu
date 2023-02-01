@@ -10,3 +10,6 @@
 #include "teleport.hpp"
 #include "vehicle.hpp"
 #include "water.hpp"
+#include "local_player.hpp"
+#include "misc.hpp"
+#include "heist.hpp"

@@ -2,9 +2,864 @@
 #include "fiber_pool.hpp"
 #include "util/local_player.hpp"
 #include "util/misc.hpp"
+#include "util/heist.hpp"
+#include "pointers.hpp"
 
 namespace big
 {
+	static int cph_radio_button_index = 0;
+	static int h4_playthrough_status = 0;
+	static int h4cnf_approach = 0;
+	static int h4cnf_bs_entr = 0;
+	static int h4cnf_target = 0;
+	static int h4_progress = 0;
+	static int h4loot_cash_v = 0;
+	static int h4loot_weed_v = 0;
+	static int h4loot_coke_v = 0;
+	static int h4loot_gold_v = 0;
+	static int h4loot_paint_v = 0;
+	static int h4loot_cash_i = 0;
+	static int h4loot_weed_i = 0;
+	static int h4loot_coke_i = 0;
+	static int h4loot_gold_i = 0;
+	static int h4loot_cash_i_scoped = 0;
+	static int h4loot_weed_i_scoped = 0;
+	static int h4loot_coke_i_scoped = 0;
+	static int h4loot_gold_i_scoped = 0;
+	static int h4loot_cash_c = 0;
+	static int h4loot_weed_c = 0;
+	static int h4loot_coke_c = 0;
+	static int h4loot_gold_c = 0;
+	static int h4loot_cash_c_scoped = 0;
+	static int h4loot_weed_c_scoped = 0;
+	static int h4loot_coke_c_scoped = 0;
+	static int h4loot_gold_c_scoped = 0;
+	static int h4loot_paint = 0;
+	static int h4loot_paint_scoped = 0;
+	static int h4cnf_grappel = 0;
+	static int h4cnf_uniform = 0;
+	static int h4cnf_boltcut = 0;
+	static int h4cnf_trojan = 0;
+	static int h4cnf_bs_gen = 0;
+	static int h4cnf_weapons = 0;
+	static int h4_missions = 0;
+	static int h4cnf_bs_abil = 0;
+	static void tab_item_cayo_perico_heist()
+	{
+		if (ImGui::BeginTabItem("Cayo Perico Heist"))
+		{
+			enum Mode
+			{
+				PREP,
+				TUNABLE,
+				TELEPORT,
+				MISC
+			};
+
+			ImGui::RadioButton("Prep", &cph_radio_button_index, PREP); ImGui::SameLine();
+			ImGui::RadioButton("Tunable", &cph_radio_button_index, TUNABLE); ImGui::SameLine();
+			ImGui::RadioButton("Teleport", &cph_radio_button_index, TELEPORT); ImGui::SameLine();
+			ImGui::RadioButton("Misc", &cph_radio_button_index, MISC);
+
+			switch (cph_radio_button_index)
+			{
+			case PREP:
+			{
+				ImGui::Text("Make sure to pay 25K to open the heist before editing");
+				ImGui::Text("If the panel doesn't change, please re-enter the kosatka interior");
+				ImGui::Text(std::format("Complete island heist times: {}", h4_playthrough_status).c_str());
+
+				if (ImGui::TreeNode("Infiltration Points"))
+				{
+					ImGui::BeginGroup();
+
+					static bool airstrip = false;
+					airstrip = misc::has_bit_set(&h4cnf_approach, 0);
+					components::checkbox("Airstrip##infiltration_points", &airstrip, [] { airstrip ? local_player::stat_set_bits("$MPX_H4CNF_APPROACH", 0) : local_player::stat_clear_bits("$MPX_H4CNF_APPROACH", 0); });
+
+					static bool halo_jump = false;
+					halo_jump = misc::has_bit_set(&h4cnf_approach, 1);
+					components::checkbox("Halo Jump##infiltration_points", &halo_jump, [] { halo_jump ? local_player::stat_set_bits("$MPX_H4CNF_APPROACH", 1) : local_player::stat_clear_bits("$MPX_H4CNF_APPROACH", 1); });
+
+					static bool west_beach = false;
+					west_beach = misc::has_bit_set(&h4cnf_approach, 2);
+					components::checkbox("West Beach##infiltration_points", &west_beach, [] { west_beach ? local_player::stat_set_bits("$MPX_H4CNF_APPROACH", 2) : local_player::stat_clear_bits("$MPX_H4CNF_APPROACH", 2); });
+
+					static bool main_dock = false;
+					main_dock = misc::has_bit_set(&h4cnf_approach, 3);
+					components::checkbox("Main Dock##infiltration_points", &main_dock, [] { main_dock ? local_player::stat_set_bits("$MPX_H4CNF_APPROACH", 3) : local_player::stat_clear_bits("$MPX_H4CNF_APPROACH", 3); });
+
+					ImGui::EndGroup(); ImGui::SameLine();
+					ImGui::BeginGroup();
+
+					static bool north_dock = false;
+					north_dock = misc::has_bit_set(&h4cnf_approach, 4);
+					components::checkbox("North Dock##infiltration_points", &north_dock, [] { north_dock ? local_player::stat_set_bits("$MPX_H4CNF_APPROACH", 4) : local_player::stat_clear_bits("$MPX_H4CNF_APPROACH", 4); });
+
+					static bool north_drop_zone = false;
+					north_drop_zone = misc::has_bit_set(&h4cnf_approach, 5);
+					components::checkbox("North Drop Zone##infiltration_points", &north_drop_zone, [] { north_drop_zone ? local_player::stat_set_bits("$MPX_H4CNF_APPROACH", 5) : local_player::stat_clear_bits("$MPX_H4CNF_APPROACH", 5); });
+
+					static bool south_drop_zone = false;
+					south_drop_zone = misc::has_bit_set(&h4cnf_approach, 6);
+					components::checkbox("South Drop Zone##infiltration_points", &south_drop_zone, [] { south_drop_zone ? local_player::stat_set_bits("$MPX_H4CNF_APPROACH", 6) : local_player::stat_clear_bits("$MPX_H4CNF_APPROACH", 6); });
+
+					static bool drainage_tunnel = false;
+					drainage_tunnel = misc::has_bit_set(&h4cnf_approach, 7);
+					components::checkbox("Drainage Tunnel##infiltration_points", &drainage_tunnel, [] { drainage_tunnel ? local_player::stat_set_bits("$MPX_H4CNF_APPROACH", 7) : local_player::stat_clear_bits("$MPX_H4CNF_APPROACH", 7); });
+
+					ImGui::EndGroup();
+					ImGui::TreePop();
+				}
+
+				if (ImGui::TreeNode("Compound Entry Points"))
+				{
+					ImGui::BeginGroup();
+
+					static bool main_gate = false;
+					main_gate = misc::has_bit_set(&h4cnf_bs_entr, 0);
+					components::checkbox("Main Gate##compound_entry_points", &main_gate, [] { main_gate ? local_player::stat_set_bits("$MPX_H4CNF_BS_ENTR", 0) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ENTR", 0); });
+
+					static bool north_wall = false;
+					north_wall = misc::has_bit_set(&h4cnf_bs_entr, 1);
+					components::checkbox("North Wall##compound_entry_points", &north_wall, [] { north_wall ? local_player::stat_set_bits("$MPX_H4CNF_BS_ENTR", 1) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ENTR", 1); });
+
+					static bool north_gate = false;
+					north_gate = misc::has_bit_set(&h4cnf_bs_entr, 2);
+					components::checkbox("North Gate##compound_entry_points", &north_gate, [] { north_gate ? local_player::stat_set_bits("$MPX_H4CNF_BS_ENTR", 2) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ENTR", 2); });
+
+					ImGui::EndGroup(); ImGui::SameLine();
+					ImGui::BeginGroup();
+
+					static bool south_wall = false;
+					south_wall = misc::has_bit_set(&h4cnf_bs_entr, 3);
+					components::checkbox("South Wall##compound_entry_points", &south_wall, [] { south_wall ? local_player::stat_set_bits("$MPX_H4CNF_BS_ENTR", 3) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ENTR", 3); });
+
+					static bool south_gate = false;
+					south_gate = misc::has_bit_set(&h4cnf_bs_entr, 4);
+					components::checkbox("South Gate##compound_entry_points", &south_gate, [] { south_gate ? local_player::stat_set_bits("$MPX_H4CNF_BS_ENTR", 4) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ENTR", 4); });
+
+					static bool drainage_tunnel = false;
+					drainage_tunnel = misc::has_bit_set(&h4cnf_bs_entr, 5);
+					components::checkbox("Drainage Tunnel##compound_entry_points", &drainage_tunnel, [] { drainage_tunnel ? local_player::stat_set_bits("$MPX_H4CNF_BS_ENTR", 5) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ENTR", 5); });
+
+					ImGui::EndGroup();
+					ImGui::TreePop();
+				}
+
+				static bool hard_mode = false;
+				hard_mode = misc::has_bit_set(&h4_progress, 12);
+				components::checkbox("Hard Mode", &hard_mode, [] { hard_mode ? local_player::stat_set_bits("$MPX_H4_PROGRESS", 12) : local_player::stat_clear_bits("$MPX_H4_PROGRESS", 12); });
+
+				if (ImGui::TreeNode("Secondary Targets"))
+				{
+					if (ImGui::InputInt("Cash Value##secondary_targets", &h4loot_cash_v, 0))
+						g_fiber_pool->queue_job([] { local_player::stat_set_int("$MPX_H4LOOT_CASH_V", h4loot_cash_v); });
+					if (ImGui::InputInt("Weed Value##secondary_targets", &h4loot_weed_v, 0))
+						g_fiber_pool->queue_job([] { local_player::stat_set_int("$MPX_H4LOOT_WEED_V", h4loot_weed_v); });
+					if (ImGui::InputInt("Coke Value##secondary_targets", &h4loot_coke_v, 0))
+						g_fiber_pool->queue_job([] { local_player::stat_set_int("$MPX_H4LOOT_COKE_V", h4loot_coke_v); });
+					if (ImGui::InputInt("Gold Value##secondary_targets", &h4loot_gold_v, 0))
+						g_fiber_pool->queue_job([] { local_player::stat_set_int("$MPX_H4LOOT_GOLD_V", h4loot_gold_v); });
+					if (ImGui::InputInt("Paint Value##secondary_targets", &h4loot_paint_v, 0))
+						g_fiber_pool->queue_job([] { local_player::stat_set_int("$MPX_H4LOOT_PAINT_V", h4loot_paint_v); });
+
+					ImGui::Separator();
+
+					static const char* secondary_targets[] = { "None", "Cash", "Weed", "Coke", "Gold" };
+
+					ImGui::Text("Real Island Secondary Targets"); ImGui::SameLine();
+					components::button("Clear##real_island_secondary_targets", []
+						{
+							local_player::stat_set_int("$MPX_H4LOOT_CASH_I", 0);
+							local_player::stat_set_int("$MPX_H4LOOT_WEED_I", 0);
+							local_player::stat_set_int("$MPX_H4LOOT_COKE_I", 0);
+							local_player::stat_set_int("$MPX_H4LOOT_GOLD_I", 0);
+						}); ImGui::SameLine();
+						components::button("All Cash##real_island_secondary_targets", []
+							{
+								local_player::stat_set_int("$MPX_H4LOOT_CASH_I", 16777215);
+								local_player::stat_set_int("$MPX_H4LOOT_WEED_I", 0);
+								local_player::stat_set_int("$MPX_H4LOOT_COKE_I", 0);
+								local_player::stat_set_int("$MPX_H4LOOT_GOLD_I", 0);
+							}); ImGui::SameLine();
+							components::button("All Weed##real_island_secondary_targets", []
+								{
+									local_player::stat_set_int("$MPX_H4LOOT_CASH_I", 0);
+									local_player::stat_set_int("$MPX_H4LOOT_WEED_I", 16777215);
+									local_player::stat_set_int("$MPX_H4LOOT_COKE_I", 0);
+									local_player::stat_set_int("$MPX_H4LOOT_GOLD_I", 0);
+								}); ImGui::SameLine();
+								components::button("All Coke##real_island_secondary_targets", []
+									{
+										local_player::stat_set_int("$MPX_H4LOOT_CASH_I", 0);
+										local_player::stat_set_int("$MPX_H4LOOT_WEED_I", 0);
+										local_player::stat_set_int("$MPX_H4LOOT_COKE_I", 16777215);
+										local_player::stat_set_int("$MPX_H4LOOT_GOLD_I", 0);
+									}); ImGui::SameLine();
+									components::button("All Gold##real_island_secondary_targets", []
+										{
+											local_player::stat_set_int("$MPX_H4LOOT_CASH_I", 0);
+											local_player::stat_set_int("$MPX_H4LOOT_WEED_I", 0);
+											local_player::stat_set_int("$MPX_H4LOOT_COKE_I", 0);
+											local_player::stat_set_int("$MPX_H4LOOT_GOLD_I", 16777215);
+										});
+
+									for (int i = 0; i < 24; i++)
+									{
+										int index = 0;
+										if (misc::has_bit_set(&h4loot_cash_i, i))
+											index = 1;
+										if (misc::has_bit_set(&h4loot_weed_i, i))
+											index = 2;
+										if (misc::has_bit_set(&h4loot_coke_i, i))
+											index = 3;
+										if (misc::has_bit_set(&h4loot_gold_i, i))
+											index = 4;
+										components::button(std::format("{}##{} real_island_secondary_targets", secondary_targets[index], i), [i, index]
+											{
+												switch ((index + 1) % 5)
+												{
+												case 0:
+												{
+													local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I", i);
+													local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I", i);
+													local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I", i);
+													local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I", i);
+												}
+												break;
+												case 1:
+												{
+													local_player::stat_set_bits("$MPX_H4LOOT_CASH_I", i);
+													local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I", i);
+													local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I", i);
+													local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I", i);
+												}
+												break;
+												case 2:
+												{
+													local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I", i);
+													local_player::stat_set_bits("$MPX_H4LOOT_WEED_I", i);
+													local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I", i);
+													local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I", i);
+												}
+												break;
+												case 3:
+												{
+													local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I", i);
+													local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I", i);
+													local_player::stat_set_bits("$MPX_H4LOOT_COKE_I", i);
+													local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I", i);
+												}
+												break;
+												case 4:
+												{
+													local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I", i);
+													local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I", i);
+													local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I", i);
+													local_player::stat_set_bits("$MPX_H4LOOT_GOLD_I", i);
+												}
+												break;
+												}
+											});
+										if ((i + 1) % 8)
+											ImGui::SameLine();
+									}
+
+									ImGui::Separator();
+
+									ImGui::Text("Scoped Island Secondary Targets"); ImGui::SameLine();
+									components::button("Clear##scoped_island_secondary_targets", []
+										{
+											local_player::stat_set_int("$MPX_H4LOOT_CASH_I_SCOPED", 0);
+											local_player::stat_set_int("$MPX_H4LOOT_WEED_I_SCOPED", 0);
+											local_player::stat_set_int("$MPX_H4LOOT_COKE_I_SCOPED", 0);
+											local_player::stat_set_int("$MPX_H4LOOT_GOLD_I_SCOPED", 0);
+										}); ImGui::SameLine();
+										components::button("All Cash##scoped_island_secondary_targets", []
+											{
+												local_player::stat_set_int("$MPX_H4LOOT_CASH_I_SCOPED", 16777215);
+												local_player::stat_set_int("$MPX_H4LOOT_WEED_I_SCOPED", 0);
+												local_player::stat_set_int("$MPX_H4LOOT_COKE_I_SCOPED", 0);
+												local_player::stat_set_int("$MPX_H4LOOT_GOLD_I_SCOPED", 0);
+											}); ImGui::SameLine();
+											components::button("All Weed##scoped_island_secondary_targets", []
+												{
+													local_player::stat_set_int("$MPX_H4LOOT_CASH_I_SCOPED", 0);
+													local_player::stat_set_int("$MPX_H4LOOT_WEED_I_SCOPED", 16777215);
+													local_player::stat_set_int("$MPX_H4LOOT_COKE_I_SCOPED", 0);
+													local_player::stat_set_int("$MPX_H4LOOT_GOLD_I_SCOPED", 0);
+												}); ImGui::SameLine();
+												components::button("All Coke##scoped_island_secondary_targets", []
+													{
+														local_player::stat_set_int("$MPX_H4LOOT_CASH_I_SCOPED", 0);
+														local_player::stat_set_int("$MPX_H4LOOT_WEED_I_SCOPED", 0);
+														local_player::stat_set_int("$MPX_H4LOOT_COKE_I_SCOPED", 16777215);
+														local_player::stat_set_int("$MPX_H4LOOT_GOLD_I_SCOPED", 0);
+													}); ImGui::SameLine();
+													components::button("All Gold##scoped_island_secondary_targets", []
+														{
+															local_player::stat_set_int("$MPX_H4LOOT_CASH_I_SCOPED", 0);
+															local_player::stat_set_int("$MPX_H4LOOT_WEED_I_SCOPED", 0);
+															local_player::stat_set_int("$MPX_H4LOOT_COKE_I_SCOPED", 0);
+															local_player::stat_set_int("$MPX_H4LOOT_GOLD_I_SCOPED", 16777215);
+														});
+
+													for (int i = 0; i < 24; i++)
+													{
+														int index = 0;
+														if (misc::has_bit_set(&h4loot_cash_i_scoped, i))
+															index = 1;
+														if (misc::has_bit_set(&h4loot_weed_i_scoped, i))
+															index = 2;
+														if (misc::has_bit_set(&h4loot_coke_i_scoped, i))
+															index = 3;
+														if (misc::has_bit_set(&h4loot_gold_i_scoped, i))
+															index = 4;
+														components::button(std::format("{}##{} scoped_island_secondary_targets", secondary_targets[index], i), [i, index]
+															{
+																switch ((index + 1) % 5)
+																{
+																case 0:
+																{
+																	local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I_SCOPED", i);
+																	local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I_SCOPED", i);
+																	local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I_SCOPED", i);
+																	local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I_SCOPED", i);
+																}
+																break;
+																case 1:
+																{
+																	local_player::stat_set_bits("$MPX_H4LOOT_CASH_I_SCOPED", i);
+																	local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I_SCOPED", i);
+																	local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I_SCOPED", i);
+																	local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I_SCOPED", i);
+																}
+																break;
+																case 2:
+																{
+																	local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I_SCOPED", i);
+																	local_player::stat_set_bits("$MPX_H4LOOT_WEED_I_SCOPED", i);
+																	local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I_SCOPED", i);
+																	local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I_SCOPED", i);
+																}
+																break;
+																case 3:
+																{
+																	local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I_SCOPED", i);
+																	local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I_SCOPED", i);
+																	local_player::stat_set_bits("$MPX_H4LOOT_COKE_I_SCOPED", i);
+																	local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I_SCOPED", i);
+																}
+																break;
+																case 4:
+																{
+																	local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I_SCOPED", i);
+																	local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I_SCOPED", i);
+																	local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I_SCOPED", i);
+																	local_player::stat_set_bits("$MPX_H4LOOT_GOLD_I_SCOPED", i);
+																}
+																break;
+																}
+															});
+														if ((i + 1) % 8)
+															ImGui::SameLine();
+													}
+
+													ImGui::Separator();
+
+													ImGui::Text("Real Compound Secondary Targets"); ImGui::SameLine();
+													components::button("Clear##real_compound_secondary_targets", []
+														{
+															local_player::stat_set_int("$MPX_H4LOOT_CASH_C", 0);
+															local_player::stat_set_int("$MPX_H4LOOT_WEED_C", 0);
+															local_player::stat_set_int("$MPX_H4LOOT_COKE_C", 0);
+															local_player::stat_set_int("$MPX_H4LOOT_GOLD_C", 0);
+														}); ImGui::SameLine();
+														components::button("All Cash##real_compound_secondary_targets", []
+															{
+																local_player::stat_set_int("$MPX_H4LOOT_CASH_C", 255);
+																local_player::stat_set_int("$MPX_H4LOOT_WEED_C", 0);
+																local_player::stat_set_int("$MPX_H4LOOT_COKE_C", 0);
+																local_player::stat_set_int("$MPX_H4LOOT_GOLD_C", 0);
+															}); ImGui::SameLine();
+															components::button("All Weed##real_compound_secondary_targets", []
+																{
+																	local_player::stat_set_int("$MPX_H4LOOT_CASH_C", 0);
+																	local_player::stat_set_int("$MPX_H4LOOT_WEED_C", 255);
+																	local_player::stat_set_int("$MPX_H4LOOT_COKE_C", 0);
+																	local_player::stat_set_int("$MPX_H4LOOT_GOLD_C", 0);
+																}); ImGui::SameLine();
+																components::button("All Coke##real_compound_secondary_targets", []
+																	{
+																		local_player::stat_set_int("$MPX_H4LOOT_CASH_C", 0);
+																		local_player::stat_set_int("$MPX_H4LOOT_WEED_C", 0);
+																		local_player::stat_set_int("$MPX_H4LOOT_COKE_C", 255);
+																		local_player::stat_set_int("$MPX_H4LOOT_GOLD_C", 0);
+																	}); ImGui::SameLine();
+																	components::button("All Gold##real_compound_secondary_targets", []
+																		{
+																			local_player::stat_set_int("$MPX_H4LOOT_CASH_C", 0);
+																			local_player::stat_set_int("$MPX_H4LOOT_WEED_C", 0);
+																			local_player::stat_set_int("$MPX_H4LOOT_COKE_C", 0);
+																			local_player::stat_set_int("$MPX_H4LOOT_GOLD_C", 255);
+																		});
+
+																	for (int i = 0; i < 8; i++)
+																	{
+																		int index = 0;
+																		if (misc::has_bit_set(&h4loot_cash_c, i))
+																			index = 1;
+																		if (misc::has_bit_set(&h4loot_weed_c, i))
+																			index = 2;
+																		if (misc::has_bit_set(&h4loot_coke_c, i))
+																			index = 3;
+																		if (misc::has_bit_set(&h4loot_gold_c, i))
+																			index = 4;
+																		components::button(std::format("{}##{} real_compound_secondary_targets", secondary_targets[index], i), [i, index]
+																			{
+																				switch ((index + 1) % 5)
+																				{
+																				case 0:
+																				{
+																					local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C", i);
+																					local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C", i);
+																					local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C", i);
+																					local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C", i);
+																				}
+																				break;
+																				case 1:
+																				{
+																					local_player::stat_set_bits("$MPX_H4LOOT_CASH_C", i);
+																					local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C", i);
+																					local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C", i);
+																					local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C", i);
+																				}
+																				break;
+																				case 2:
+																				{
+																					local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C", i);
+																					local_player::stat_set_bits("$MPX_H4LOOT_WEED_C", i);
+																					local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C", i);
+																					local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C", i);
+																				}
+																				break;
+																				case 3:
+																				{
+																					local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C", i);
+																					local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C", i);
+																					local_player::stat_set_bits("$MPX_H4LOOT_COKE_C", i);
+																					local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C", i);
+																				}
+																				break;
+																				case 4:
+																				{
+																					local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C", i);
+																					local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C", i);
+																					local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C", i);
+																					local_player::stat_set_bits("$MPX_H4LOOT_GOLD_C", i);
+																				}
+																				break;
+																				}
+																			});
+																		if ((i + 1) % 8)
+																			ImGui::SameLine();
+																	}
+
+																	ImGui::Separator();
+
+																	ImGui::Text("Scoped Compound Secondary Targets"); ImGui::SameLine();
+																	components::button("Clear##scoped_compound_secondary_targets", []
+																		{
+																			local_player::stat_set_int("$MPX_H4LOOT_CASH_C_SCOPED", 0);
+																			local_player::stat_set_int("$MPX_H4LOOT_WEED_C_SCOPED", 0);
+																			local_player::stat_set_int("$MPX_H4LOOT_COKE_C_SCOPED", 0);
+																			local_player::stat_set_int("$MPX_H4LOOT_GOLD_C_SCOPED", 0);
+																		}); ImGui::SameLine();
+																		components::button("All Cash##scoped_compound_secondary_targets", []
+																			{
+																				local_player::stat_set_int("$MPX_H4LOOT_CASH_C_SCOPED", 255);
+																				local_player::stat_set_int("$MPX_H4LOOT_WEED_C_SCOPED", 0);
+																				local_player::stat_set_int("$MPX_H4LOOT_COKE_C_SCOPED", 0);
+																				local_player::stat_set_int("$MPX_H4LOOT_GOLD_C_SCOPED", 0);
+																			}); ImGui::SameLine();
+																			components::button("All Weed##scoped_compound_secondary_targets", []
+																				{
+																					local_player::stat_set_int("$MPX_H4LOOT_CASH_C_SCOPED", 0);
+																					local_player::stat_set_int("$MPX_H4LOOT_WEED_C_SCOPED", 255);
+																					local_player::stat_set_int("$MPX_H4LOOT_COKE_C_SCOPED", 0);
+																					local_player::stat_set_int("$MPX_H4LOOT_GOLD_C_SCOPED", 0);
+																				}); ImGui::SameLine();
+																				components::button("All Coke##scoped_compound_secondary_targets", []
+																					{
+																						local_player::stat_set_int("$MPX_H4LOOT_CASH_C_SCOPED", 0);
+																						local_player::stat_set_int("$MPX_H4LOOT_WEED_C_SCOPED", 0);
+																						local_player::stat_set_int("$MPX_H4LOOT_COKE_C_SCOPED", 255);
+																						local_player::stat_set_int("$MPX_H4LOOT_GOLD_C_SCOPED", 0);
+																					}); ImGui::SameLine();
+																					components::button("All Gold##scoped_compound_secondary_targets", []
+																						{
+																							local_player::stat_set_int("$MPX_H4LOOT_CASH_C_SCOPED", 0);
+																							local_player::stat_set_int("$MPX_H4LOOT_WEED_C_SCOPED", 0);
+																							local_player::stat_set_int("$MPX_H4LOOT_COKE_C_SCOPED", 0);
+																							local_player::stat_set_int("$MPX_H4LOOT_GOLD_C_SCOPED", 255);
+																						});
+
+																					for (int i = 0; i < 8; i++)
+																					{
+																						int index = 0;
+																						if (misc::has_bit_set(&h4loot_cash_c_scoped, i))
+																							index = 1;
+																						if (misc::has_bit_set(&h4loot_weed_c_scoped, i))
+																							index = 2;
+																						if (misc::has_bit_set(&h4loot_coke_c_scoped, i))
+																							index = 3;
+																						if (misc::has_bit_set(&h4loot_gold_c_scoped, i))
+																							index = 4;
+																						components::button(std::format("{}##{} scoped_compound_secondary_targets", secondary_targets[index], i), [i, index]
+																							{
+																								switch ((index + 1) % 5)
+																								{
+																								case 0:
+																								{
+																									local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C_SCOPED", i);
+																									local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C_SCOPED", i);
+																									local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C_SCOPED", i);
+																									local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C_SCOPED", i);
+																								}
+																								break;
+																								case 1:
+																								{
+																									local_player::stat_set_bits("$MPX_H4LOOT_CASH_C_SCOPED", i);
+																									local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C_SCOPED", i);
+																									local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C_SCOPED", i);
+																									local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C_SCOPED", i);
+																								}
+																								break;
+																								case 2:
+																								{
+																									local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C_SCOPED", i);
+																									local_player::stat_set_bits("$MPX_H4LOOT_WEED_C_SCOPED", i);
+																									local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C_SCOPED", i);
+																									local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C_SCOPED", i);
+																								}
+																								break;
+																								case 3:
+																								{
+																									local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C_SCOPED", i);
+																									local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C_SCOPED", i);
+																									local_player::stat_set_bits("$MPX_H4LOOT_COKE_C_SCOPED", i);
+																									local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C_SCOPED", i);
+																								}
+																								break;
+																								case 4:
+																								{
+																									local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C_SCOPED", i);
+																									local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C_SCOPED", i);
+																									local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C_SCOPED", i);
+																									local_player::stat_set_bits("$MPX_H4LOOT_GOLD_C_SCOPED", i);
+																								}
+																								break;
+																								}
+																							});
+																						if ((i + 1) % 8)
+																							ImGui::SameLine();
+																					}
+
+																					ImGui::Separator();
+
+																					ImGui::Text("Real Paintings"); ImGui::SameLine();
+																					components::button("Clear##real_paintings", []
+																						{
+																							local_player::stat_set_int("$MPX_H4LOOT_PAINT", 0);
+																						}); ImGui::SameLine();
+																						components::button("All Paint##real_paintings", []
+																							{
+																								local_player::stat_set_int("$MPX_H4LOOT_PAINT", 127);
+																							});
+
+																						for (int i = 0; i < 7; i++)
+																						{
+																							components::button(std::format("{}##{} real_paintings", misc::has_bit_set(&h4loot_paint, i) ? "Paint" : "None", i), [i] { !misc::has_bit_set(&h4loot_paint, i) ? local_player::stat_set_bits("$MPX_H4LOOT_PAINT", i) : local_player::stat_clear_bits("$MPX_H4LOOT_PAINT", i); });
+																							if ((i + 1) % 7)
+																								ImGui::SameLine();
+																						}
+
+																						ImGui::Separator();
+
+																						ImGui::Text("Scoped Paintings"); ImGui::SameLine();
+																						components::button("Clear##scoped_paintings", []
+																							{
+																								local_player::stat_set_int("$MPX_H4LOOT_PAINT_SCOPED", 0);
+																							}); ImGui::SameLine();
+																							components::button("All Paint##scoped_paintings", []
+																								{
+																									local_player::stat_set_int("$MPX_H4LOOT_PAINT_SCOPED", 127);
+																								});
+
+																							for (int i = 0; i < 7; i++)
+																							{
+																								components::button(std::format("{}##{} scoped_paintings", misc::has_bit_set(&h4loot_paint_scoped, i) ? "Paint" : "None", i), [i] { !misc::has_bit_set(&h4loot_paint_scoped, i) ? local_player::stat_set_bits("$MPX_H4LOOT_PAINT_SCOPED", i) : local_player::stat_clear_bits("$MPX_H4LOOT_PAINT_SCOPED", i); });
+																								if ((i + 1) % 7)
+																									ImGui::SameLine();
+																							}
+
+																							ImGui::TreePop();
+				}
+
+				if (ImGui::TreeNode("Points Of Interest"))
+				{
+					ImGui::Text("Grappling Equipment Positions (Max = 4)");
+
+					for (int i = 0; i < 16; i++)
+					{
+						components::button(std::format("{}##{} grappling_equipment_positions", misc::has_bit_set(&h4cnf_grappel, i) ? "Grappel" : "None", i), [i] { !misc::has_bit_set(&h4cnf_grappel, i) ? local_player::stat_set_bits("$MPX_H4CNF_GRAPPEL", i) : local_player::stat_clear_bits("$MPX_H4CNF_GRAPPEL", i); });
+						if ((i + 1) % 8)
+							ImGui::SameLine();
+					}
+
+					static bool grappling_equipment1 = false;
+					grappling_equipment1 = misc::has_bit_set(&h4cnf_bs_gen, 0);
+					components::checkbox("Grappling Equipment 1", &grappling_equipment1, [] { grappling_equipment1 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 0) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 0); });
+
+					static bool grappling_equipment2 = false;
+					grappling_equipment2 = misc::has_bit_set(&h4cnf_bs_gen, 1);
+					components::checkbox("Grappling Equipment 2", &grappling_equipment2, [] { grappling_equipment2 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 1) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 1); });
+
+					static bool grappling_equipment3 = false;
+					grappling_equipment3 = misc::has_bit_set(&h4cnf_bs_gen, 2);
+					components::checkbox("Grappling Equipment 3", &grappling_equipment3, [] { grappling_equipment3 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 2) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 2); });
+
+					static bool grappling_equipment4 = false;
+					grappling_equipment4 = misc::has_bit_set(&h4cnf_bs_gen, 3);
+					components::checkbox("Grappling Equipment 4", &grappling_equipment4, [] { grappling_equipment4 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 3) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 3); });
+
+					ImGui::Separator();
+
+					ImGui::Text("Guard Clothing Positions (Max = 4)");
+					for (int i = 0; i < 16; i++)
+					{
+						components::button(std::format("{}##{} guard_clothing_positions", misc::has_bit_set(&h4cnf_uniform, i) ? "Uniform" : "None", i), [i] { !misc::has_bit_set(&h4cnf_uniform, i) ? local_player::stat_set_bits("$MPX_H4CNF_UNIFORM", i) : local_player::stat_clear_bits("$MPX_H4CNF_UNIFORM", i); });
+						if ((i + 1) % 8)
+							ImGui::SameLine();
+					}
+
+					static bool guard_clothing1 = false;
+					guard_clothing1 = misc::has_bit_set(&h4cnf_bs_gen, 4);
+					components::checkbox("Guard Clothing 1", &guard_clothing1, [] { guard_clothing1 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 4) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 4); });
+
+					static bool guard_clothing2 = false;
+					guard_clothing2 = misc::has_bit_set(&h4cnf_bs_gen, 5);
+					components::checkbox("Guard Clothing 2", &guard_clothing2, [] { guard_clothing2 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 5) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 5); });
+
+					static bool guard_clothing3 = false;
+					guard_clothing3 = misc::has_bit_set(&h4cnf_bs_gen, 6);
+					components::checkbox("Guard Clothing 3", &guard_clothing3, [] { guard_clothing3 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 6) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 6); });
+
+					static bool guard_clothing4 = false;
+					guard_clothing4 = misc::has_bit_set(&h4cnf_bs_gen, 7);
+					components::checkbox("Guard Clothing 4", &guard_clothing4, [] { guard_clothing4 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 7) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 7); });
+
+					ImGui::Separator();
+
+					ImGui::Text("Bolt Cutters Positions");
+
+					for (int i = 0; i < 16; i++)
+					{
+						components::button(std::format("{}##{} bolt_cutters_positions", misc::has_bit_set(&h4cnf_boltcut, i) ? "Boltcut" : "None", i), [i] { !misc::has_bit_set(&h4cnf_boltcut, i) ? local_player::stat_set_bits("$MPX_H4CNF_BOLTCUT", i) : local_player::stat_clear_bits("$MPX_H4CNF_BOLTCUT", i); });
+						if ((i + 1) % 8)
+							ImGui::SameLine();
+					}
+
+					static bool bolt_cutters1 = false;
+					bolt_cutters1 = misc::has_bit_set(&h4cnf_bs_gen, 8);
+					components::checkbox("Bolt Cutters 1", &bolt_cutters1, [] { bolt_cutters1 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 8) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 8); });
+
+					static bool bolt_cutters2 = false;
+					bolt_cutters2 = misc::has_bit_set(&h4cnf_bs_gen, 9);
+					components::checkbox("Bolt Cutters 2", &bolt_cutters2, [] { bolt_cutters2 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 9) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 9); });
+
+					static bool bolt_cutters3 = false;
+					bolt_cutters3 = misc::has_bit_set(&h4cnf_bs_gen, 10);
+					components::checkbox("Bolt Cutters 3", &bolt_cutters3, [] { bolt_cutters3 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 10) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 10); });
+
+					static bool bolt_cutters4 = false;
+					bolt_cutters4 = misc::has_bit_set(&h4cnf_bs_gen, 11);
+					components::checkbox("Bolt Cutters 4", &bolt_cutters4, [] { bolt_cutters4 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 11) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 11); });
+
+					ImGui::Separator();
+
+					static const char* supply_truck_positions[] = { "None", "Airstrip", "North Dock", "Main Dock - East", "Main Dock - West", "Compound Main Gate" };
+					components::combo("Supply Truck Position", &h4cnf_trojan, supply_truck_positions, IM_ARRAYSIZE(supply_truck_positions), [] { local_player::stat_set_int("$MPX_H4CNF_TROJAN", h4cnf_trojan); });
+
+					static bool supply_truck = false;
+					supply_truck = misc::has_bit_set(&h4cnf_bs_gen, 15);
+					components::checkbox("Supply Truck", &supply_truck, [] { supply_truck ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 15) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 15); });
+
+					ImGui::Separator();
+
+					static bool cutting_power = false;
+					cutting_power = misc::has_bit_set(&h4cnf_bs_gen, 13);
+					components::checkbox("Cutting Power", &cutting_power, [] { cutting_power ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 13) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 13); });
+
+					static bool power_station = false;
+					power_station = misc::has_bit_set(&h4cnf_bs_gen, 14);
+					components::checkbox("Power Station", &power_station, [] { power_station ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 14) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 14); });
+
+					static bool control_tower = false;
+					control_tower = misc::has_bit_set(&h4cnf_bs_gen, 16);
+					components::checkbox("Control Tower", &control_tower, [] { control_tower ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 16) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 16); });
+
+					ImGui::TreePop();
+				}
+
+				static const char* targets[] = { "Sinsimito Tequila", "Ruby Necklace", "Bearer Bonds", "Pink Diamond", "Maorazo Files", "Panther Statue" };
+				components::combo("Selected Target", &h4cnf_target, targets, IM_ARRAYSIZE(targets), [] { local_player::stat_set_int("$MPX_H4CNF_TARGET", h4cnf_target); });
+
+				static const char* weapons[] = { "None", "Aggressoh", "Conspirator", "Crack Shot", "Saboteur", "Marksman" };
+				components::combo("Selected Weapon", &h4cnf_weapons, weapons, IM_ARRAYSIZE(weapons), [] { local_player::stat_set_int("$MPX_H4CNF_WEAPONS", h4cnf_weapons); });
+
+				static bool scoped_target = false;
+				scoped_target = misc::has_bit_set(&h4_missions, 0);
+				components::checkbox("Scoped Target", &scoped_target, [] { scoped_target ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 0) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 0); });
+
+				static bool submarine_kosatka = false;
+				submarine_kosatka = misc::has_bit_set(&h4_missions, 1);
+				components::checkbox("Approach Vehicles - Submarine: Kosatka", &submarine_kosatka, [] { submarine_kosatka ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 1) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 1); });
+
+				static bool plane_alkonost = false;
+				plane_alkonost = misc::has_bits_set(&h4_missions, 2, 7);
+				components::checkbox("Approach Vehicles - Plane: Alkonost", &plane_alkonost, [] { plane_alkonost ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 2, 7) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 2, 7); });
+
+				static bool plane_velum = false;
+				plane_velum = misc::has_bit_set(&h4_missions, 3);
+				components::checkbox("Approach Vehicles - Plane: Velum", &plane_velum, [] { plane_velum ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 3) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 3); });
+
+				static bool helicopter_stealth_annihilator = false;
+				helicopter_stealth_annihilator = misc::has_bits_set(&h4_missions, 4, 7);
+				components::checkbox("Approach Vehicles - Helicopter: Stealth Annihilator", &helicopter_stealth_annihilator, [] { helicopter_stealth_annihilator ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 4, 7) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 4, 7); });
+
+				static bool boat_patrol_boat = false;
+				boat_patrol_boat = misc::has_bit_set(&h4_missions, 5);
+				components::checkbox("Approach Vehicles - Boat: Patrol Boat", &boat_patrol_boat, [] { boat_patrol_boat ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 5) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 5); });
+
+				static bool boat_longfin = false;
+				boat_longfin = misc::has_bit_set(&h4_missions, 6);
+				components::checkbox("Approach Vehicles - Boat: Longfin", &boat_longfin, [] { boat_longfin ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 6) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 6); });
+
+				static bool demolition_charges = false;
+				demolition_charges = misc::has_bit_set(&h4_missions, 8);
+				components::checkbox("Equipment - Demolition Charges", &demolition_charges, [] { demolition_charges ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 8) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 8); });
+
+				static bool plasma_cutter = false;
+				plasma_cutter = misc::has_bit_set(&h4_missions, 9);
+				components::checkbox("Equipment - Plasma Cutter", &plasma_cutter, [] { plasma_cutter ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 9) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 9); });
+
+				static bool fingerprint_cloner = false;
+				fingerprint_cloner = misc::has_bit_set(&h4_missions, 10);
+				components::checkbox("Equipment - Fingerprint Cloner", &fingerprint_cloner, [] { fingerprint_cloner ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 10) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 10); });
+
+				static bool cutting_torch = false;
+				cutting_torch = misc::has_bit_set(&h4_missions, 11);
+				components::checkbox("Equipment - Cutting Torch", &cutting_torch, [] { cutting_torch ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 11) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 11); });
+
+				static bool weapon_loadout = false;
+				weapon_loadout = misc::has_bit_set(&h4_missions, 12);
+				components::checkbox("Weapon Loadout", &weapon_loadout, [] { weapon_loadout ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 12) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 12); });
+
+				static bool disruption_weapons = false;
+				disruption_weapons = misc::has_bit_set(&h4_missions, 13);
+				components::checkbox("Disruption - Weapons", &disruption_weapons, [] { disruption_weapons ? (local_player::stat_set_bits("$MPX_H4_MISSIONS", 13), local_player::stat_set_int("$MPX_H4CNF_WEP_DISRP", 3)) : (local_player::stat_clear_bits("$MPX_H4_MISSIONS", 13), local_player::stat_set_int("$MPX_H4CNF_WEP_DISRP", 0)); });
+
+				static bool disruption_armor = false;
+				disruption_armor = misc::has_bit_set(&h4_missions, 14);
+				components::checkbox("Disruption - Armor", &disruption_armor, [] { disruption_armor ? (local_player::stat_set_bits("$MPX_H4_MISSIONS", 14), local_player::stat_set_int("$MPX_H4CNF_ARM_DISRP", 3)) : (local_player::stat_clear_bits("$MPX_H4_MISSIONS", 14), local_player::stat_set_int("$MPX_H4CNF_ARM_DISRP", 0)); });
+
+				static bool disruption_air_support = false;
+				disruption_air_support = misc::has_bit_set(&h4_missions, 15);
+				components::checkbox("Disruption - Air Support", &disruption_air_support, [] { disruption_air_support ? (local_player::stat_set_bits("$MPX_H4_MISSIONS", 15), local_player::stat_set_int("$MPX_H4CNF_HEL_DISRP", 3)) : (local_player::stat_clear_bits("$MPX_H4_MISSIONS", 15), local_player::stat_set_int("$MPX_H4CNF_HEL_DISRP", 0)); });
+
+				if (ImGui::TreeNode("Hire Support Crew"))
+				{
+					static bool airstrike = false;
+					airstrike = misc::has_bit_set(&h4cnf_bs_abil, 0);
+					components::checkbox("Airstrike", &airstrike, [] { airstrike ? local_player::stat_set_bits("$MPX_H4CNF_BS_ABIL", 0) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ABIL", 0); });
+
+					static bool sniper = false;
+					sniper = misc::has_bit_set(&h4cnf_bs_abil, 1);
+					components::checkbox("Sniper", &sniper, [] { sniper ? local_player::stat_set_bits("$MPX_H4CNF_BS_ABIL", 1) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ABIL", 1); });
+
+					static bool helicopter_backup = false;
+					helicopter_backup = misc::has_bit_set(&h4cnf_bs_abil, 2);
+					components::checkbox("Helicopter Backup", &helicopter_backup, [] { helicopter_backup ? local_player::stat_set_bits("$MPX_H4CNF_BS_ABIL", 2) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ABIL", 2); });
+
+					static bool recon_drone = false;
+					recon_drone = misc::has_bit_set(&h4cnf_bs_abil, 3);
+					components::checkbox("Recon Drone", &recon_drone, [] { recon_drone ? local_player::stat_set_bits("$MPX_H4CNF_BS_ABIL", 3) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ABIL", 3); });
+
+					static bool supply_drop = false;
+					supply_drop = misc::has_bit_set(&h4cnf_bs_abil, 4);
+					components::checkbox("Supply Drop", &supply_drop, [] { supply_drop ? local_player::stat_set_bits("$MPX_H4CNF_BS_ABIL", 4) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ABIL", 4); });
+
+					static bool weapon_stash = false;
+					weapon_stash = misc::has_bit_set(&h4cnf_bs_abil, 5);
+					components::checkbox("Weapon Stash", &weapon_stash, [] { weapon_stash ? local_player::stat_set_bits("$MPX_H4CNF_BS_ABIL", 5) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ABIL", 5); });
+
+					ImGui::TreePop();
+				}
+			}
+			break;
+			case TUNABLE:
+			{
+				if (*g_pointers->m_script_globals)
+				{
+					ImGui::InputInt("Crew Cut 1", script_global(heist::cayo::crew_cut + 0).as<int*>(), 0);
+					ImGui::InputInt("Crew Cut 2", script_global(heist::cayo::crew_cut + 1).as<int*>(), 0);
+					ImGui::InputInt("Crew Cut 3", script_global(heist::cayo::crew_cut + 2).as<int*>(), 0);
+					ImGui::InputInt("Crew Cut 4", script_global(heist::cayo::crew_cut + 3).as<int*>(), 0);
+
+					ImGui::Separator();
+
+					ImGui::InputInt("Bag Size", script_global(heist::cayo::bag_size).as<int*>(), 0);
+
+					ImGui::Separator();
+
+					ImGui::InputFloat("Fencing Fee", script_global(heist::cayo::fencing_fee).as<float*>());
+					ImGui::InputFloat("Pavel Fee", script_global(heist::cayo::pavel_fee).as<float*>());
+
+					ImGui::Separator();
+
+					ImGui::InputFloat("Multiplier Normal", script_global(heist::cayo::multiplier_normal).as<float*>());
+					ImGui::InputFloat("Multiplier Hard", script_global(heist::cayo::multiplier_hard).as<float*>());
+
+					ImGui::Separator();
+
+					static const char* targets[] = { "Sinsimito Tequila", "Ruby Necklace", "Bearer Bonds", "Pink Diamond", "Maorazo Files", "Panther Statue" };
+					for (int i = 0; i < 6; i++)
+						ImGui::InputInt(std::format("{} Value", targets[i]).c_str(), script_global(heist::cayo::target_value + i).as<int*>(), 0);
+				}
+				else
+				{
+					ImGui::Text("Waiting for the game to initialize");
+				}
+			}
+			break;
+			case TELEPORT:
+			{
+
+			}
+			break;
+			case MISC:
+			{
+
+			}
+			break;
+			}
+
+			ImGui::EndTabItem();
+		}
+	}
+
 	static int dch_radio_button_index = 0;
 	static int cas_heist_flow = 0; 
 	static int h3opt_target = 0;
@@ -25,14 +880,20 @@ namespace big
 		{
 			enum Mode
 			{
-				PREP_EDITOR,
+				PREP,
+				TUNABLE,
+				TELEPORT,
+				MISC
 			};
 
-			ImGui::RadioButton("Prep Editor", &dch_radio_button_index, PREP_EDITOR);
+			ImGui::RadioButton("Prep", &dch_radio_button_index, PREP); ImGui::SameLine();
+			ImGui::RadioButton("Tunable", &dch_radio_button_index, TUNABLE); ImGui::SameLine();
+			ImGui::RadioButton("Teleport", &dch_radio_button_index, TELEPORT); ImGui::SameLine();
+			ImGui::RadioButton("Misc", &dch_radio_button_index, MISC);
 
 			switch (dch_radio_button_index)
 			{
-			case PREP_EDITOR:
+			case PREP:
 			{
 				ImGui::Text("Make sure you have arcade set up and pay 25K to open the heist before editing");
 				ImGui::Text("If the panel doesn't change, please re-enter the arcade interior");
@@ -210,442 +1071,53 @@ namespace big
 				ImGui::EndGroup();
 			}
 				break;
+			case TUNABLE:
+			{
+				if (*g_pointers->m_script_globals)
+				{
+					ImGui::InputInt("Crew Cut 1", script_global(heist::casino::crew_cut + 0).as<int*>(), 0);
+					ImGui::InputInt("Crew Cut 2", script_global(heist::casino::crew_cut + 1).as<int*>(), 0);
+					ImGui::InputInt("Crew Cut 3", script_global(heist::casino::crew_cut + 2).as<int*>(), 0);
+					ImGui::InputInt("Crew Cut 4", script_global(heist::casino::crew_cut + 3).as<int*>(), 0);
+
+					ImGui::Separator();
+
+					ImGui::InputFloat("Multiplier Normal", script_global(heist::casino::multiplier_normal).as<float*>());
+					ImGui::InputFloat("Multiplier Hard", script_global(heist::casino::multiplier_hard).as<float*>());
+					ImGui::InputFloat("Buyer Multiplier Easy", script_global(heist::casino::buyer_multiplier_easy).as<float*>());
+					ImGui::InputFloat("Buyer Multiplier Normal", script_global(heist::casino::buyer_multiplier_normal).as<float*>());
+					ImGui::InputFloat("Buyer Multiplier Hard", script_global(heist::casino::buyer_multiplier_hard).as<float*>());
+
+					ImGui::Separator();
+
+					ImGui::InputInt("Lester Cut", script_global(heist::casino::lester_cut).as<int*>(), 0);
+
+					ImGui::Separator();
+
+					static const char* targets[] = { "Cash", "Gold", "Artwork", "Diamonds" };
+					for (int i = 0; i < IM_ARRAYSIZE(targets); i++)
+						ImGui::InputInt(std::format("{} Value", targets[i]).c_str(), script_global(heist::casino::target_value + i).as<int*>(), 0);
+
+					ImGui::Separator();
+
+					static const char* ais[] = { "Karl Abolaji", "Gustavo Mota", "Charlie Reed", "Chester McCoy", "Patrick McReary", "Karim Denz", "Taliana Martinez", "Eddie Toh", "Zach Nelson", "Chester McCoy", "Rickie Lukens", "Christian Feltz", "Yohan Blair", "Avi Schwartzman", "Paige Harris" };
+					for (int i = 0; i < IM_ARRAYSIZE(ais); i++)
+						ImGui::InputInt(std::format("{} Cut", ais[i]).c_str(), script_global(heist::casino::ai_cut + i).as<int*>(), 0);
+				}
+				else
+				{
+					ImGui::Text("Waiting for the game to initialize");
+				}
 			}
-
-			ImGui::EndTabItem();
-		}
-	}
-
-	static int cph_radio_button_index = 0;
-	static bool cph_ip_airstrip = false;
-	static bool cph_ip_halo_jump = false;
-	static bool cph_ip_west_beach = false;
-	static bool cph_ip_main_dock = false;
-	static bool cph_ip_north_dock = false;
-	static bool cph_ip_north_drop_zone = false;
-	static bool cph_ip_south_drop_zone = false;
-	static bool cph_ip_drainage_tunnel = false;
-	static bool cph_cep_main_gate = false;
-	static bool cph_cep_north_wall = false;
-	static bool cph_cep_north_gate = false;
-	static bool cph_cep_south_wall = false;
-	static bool cph_cep_south_gate = false;
-	static bool cph_cep_drainage_tunnel = false;
-	static bool cph_hard_mode = false;
-	static int cph_st_cash_value = 0;
-	static int cph_st_weed_value = 0;
-	static int cph_st_coke_value = 0;
-	static int cph_st_gold_value = 0;
-	static int cph_st_paint_value = 0;
-	static int cph_st_island_index[24] = {};
-	static int cph_st_compound_index[8] = {};
-	static int cph_h4loot_paint = 0;
-	static int cph_st_island_scoped_index[24] = {};
-	static int cph_st_compound_scoped_index[8] = {};
-	static int cph_h4loot_paint_scoped = 0;
-	static bool cph_poi_grappling_equipment1 = false;
-	static bool cph_poi_grappling_equipment2 = false;
-	static bool cph_poi_grappling_equipment3 = false;
-	static bool cph_poi_grappling_equipment4 = false;
-	static bool cph_poi_guard_clothing1 = false;
-	static bool cph_poi_guard_clothing2 = false;
-	static bool cph_poi_guard_clothing3 = false;
-	static bool cph_poi_guard_clothing4 = false;
-	static bool cph_poi_bolt_cutters1 = false;
-	static bool cph_poi_bolt_cutters2 = false;
-	static bool cph_poi_bolt_cutters3 = false;
-	static bool cph_poi_bolt_cutters4 = false;
-	static bool cph_poi_cutting_power = false;
-	static bool cph_poi_power_station = false;
-	static bool cph_poi_supply_truck = false;
-	static bool cph_poi_control_tower = false;
-	static int cph_h4cnf_grappel = 0;
-	static int cph_h4cnf_uniform = 0;
-	static int cph_h4cnf_boltcut = 0;
-	static int cph_supply_truck_index = 0;
-	static int cph_target_index = 0;
-	static int cph_weapon_index = 0;
-	static bool cph_scoped_target = false;
-	static bool cph_approach_vehicles_submarine_kosatka = false;
-	static bool cph_approach_vehicles_plane_alkonost = false;
-	static bool cph_approach_vehicles_plane_velum = false;
-	static bool cph_approach_vehicles_helicopter_stealth_annihilator = false;
-	static bool cph_approach_vehicles_boat_patrol_boat = false;
-	static bool cph_approach_vehicles_boat_longfin = false;
-	static void tab_item_cayo_perico_heist()
-	{
-		if (ImGui::BeginTabItem("Cayo Perico Heist"))
-		{
-			ImGui::Text("Make sure to pay 25K to open the heist before editing");
-			ImGui::Text("If the panel doesn't change, please re-enter the kosatka interior");
-
-			enum Mode
+				break;
+			case TELEPORT:
 			{
-				PREP_EDITOR,
-			};
 
-			ImGui::RadioButton("Prep Editor", &cph_radio_button_index, PREP_EDITOR);
-
-			switch (cph_radio_button_index)
+			}
+				break;
+			case MISC:
 			{
-			case PREP_EDITOR:
-			{
-				if (ImGui::TreeNode("Infiltration Points & Escape Points"))
-				{
-					components::checkbox("Airstrip##infiltration_points", &cph_ip_airstrip, [] { cph_ip_airstrip ? local_player::stat_set_bits("$MPX_H4CNF_APPROACH", 0) : local_player::stat_clear_bits("$MPX_H4CNF_APPROACH", 0); });
-					components::checkbox("Halo Jump##infiltration_points", &cph_ip_halo_jump, [] { cph_ip_halo_jump ? local_player::stat_set_bits("$MPX_H4CNF_APPROACH", 1) : local_player::stat_clear_bits("$MPX_H4CNF_APPROACH", 1); });
-					components::checkbox("West Beach##infiltration_points", &cph_ip_west_beach, [] { cph_ip_west_beach ? local_player::stat_set_bits("$MPX_H4CNF_APPROACH", 2) : local_player::stat_clear_bits("$MPX_H4CNF_APPROACH", 2); });
-					components::checkbox("Main Dock##infiltration_points", &cph_ip_main_dock, [] { cph_ip_main_dock ? local_player::stat_set_bits("$MPX_H4CNF_APPROACH", 3) : local_player::stat_clear_bits("$MPX_H4CNF_APPROACH", 3); });
-					components::checkbox("North Dock##infiltration_points", &cph_ip_north_dock, [] { cph_ip_north_dock ? local_player::stat_set_bits("$MPX_H4CNF_APPROACH", 4) : local_player::stat_clear_bits("$MPX_H4CNF_APPROACH", 4); });
-					components::checkbox("North Drop Zone##infiltration_points", &cph_ip_north_drop_zone, [] { cph_ip_north_drop_zone ? local_player::stat_set_bits("$MPX_H4CNF_APPROACH", 5) : local_player::stat_clear_bits("$MPX_H4CNF_APPROACH", 5); });
-					components::checkbox("South Drop Zone##infiltration_points", &cph_ip_south_drop_zone, [] { cph_ip_south_drop_zone ? local_player::stat_set_bits("$MPX_H4CNF_APPROACH", 6) : local_player::stat_clear_bits("$MPX_H4CNF_APPROACH", 6); });
-					components::checkbox("Drainage Tunnel##infiltration_points", &cph_ip_drainage_tunnel, [] { cph_ip_drainage_tunnel ? local_player::stat_set_bits("$MPX_H4CNF_APPROACH", 7) : local_player::stat_clear_bits("$MPX_H4CNF_APPROACH", 7); });
-					ImGui::TreePop();
-				}
-				if (ImGui::TreeNode("Compound Entry Points"))
-				{
-					components::checkbox("Main Gate##compound_entry_points", &cph_cep_main_gate, [] { cph_cep_main_gate ? local_player::stat_set_bits("$MPX_H4CNF_BS_ENTR", 0) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ENTR", 0); });
-					components::checkbox("North Wall##compound_entry_points", &cph_cep_north_wall, [] { cph_cep_north_wall ? local_player::stat_set_bits("$MPX_H4CNF_BS_ENTR", 1) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ENTR", 1); });
-					components::checkbox("North Gate##compound_entry_points", &cph_cep_north_gate, [] { cph_cep_north_gate ? local_player::stat_set_bits("$MPX_H4CNF_BS_ENTR", 2) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ENTR", 2); });
-					components::checkbox("South Wall##compound_entry_points", &cph_cep_south_wall, [] { cph_cep_south_wall ? local_player::stat_set_bits("$MPX_H4CNF_BS_ENTR", 3) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ENTR", 3); });
-					components::checkbox("South Gate##compound_entry_points", &cph_cep_south_gate, [] { cph_cep_south_gate ? local_player::stat_set_bits("$MPX_H4CNF_BS_ENTR", 4) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ENTR", 4); });
-					components::checkbox("Drainage Tunnel##compound_entry_points", &cph_cep_drainage_tunnel, [] { cph_cep_drainage_tunnel ? local_player::stat_set_bits("$MPX_H4CNF_BS_ENTR", 5) : local_player::stat_clear_bits("$MPX_H4CNF_BS_ENTR", 5); });
-					ImGui::TreePop();
-				}
-				components::checkbox("Hard Mode", &cph_hard_mode, [] { cph_hard_mode ? local_player::stat_set_bits("$MPX_H4_PROGRESS", 12) : local_player::stat_clear_bits("$MPX_H4_PROGRESS", 12); });
-				if (ImGui::TreeNode("Secondary Targets"))
-				{
-					if (ImGui::InputInt("Cash Value Per Share##secondary_targets", &cph_st_cash_value))
-						g_fiber_pool->queue_job([] { local_player::stat_set_int("$MPX_H4LOOT_CASH_V", cph_st_cash_value); });
-					if (ImGui::InputInt("Weed Value Per Share##secondary_targets", &cph_st_weed_value))
-						g_fiber_pool->queue_job([] { local_player::stat_set_int("$MPX_H4LOOT_WEED_V", cph_st_weed_value); });
-					if (ImGui::InputInt("Coke Value Per Share##secondary_targets", &cph_st_coke_value))
-						g_fiber_pool->queue_job([] { local_player::stat_set_int("$MPX_H4LOOT_COKE_V", cph_st_coke_value); });
-					if (ImGui::InputInt("Gold Value Per Share##secondary_targets", &cph_st_gold_value))
-						g_fiber_pool->queue_job([] { local_player::stat_set_int("$MPX_H4LOOT_GOLD_V", cph_st_gold_value); });
-					if (ImGui::InputInt("Paint Value Per Share##secondary_targets", &cph_st_paint_value))
-						g_fiber_pool->queue_job([] { local_player::stat_set_int("$MPX_H4LOOT_PAINT_V", cph_st_paint_value); });
-
-					static const char* secondary_targets_normal[] = { "None", "Cash", "Weed", "Coke", "Gold" };
-					static const char* secondary_targets_painting[] = { "None", "Paint" };
-					ImGui::Text("Island Secondary Targets");
-					for (int i = 0; i < 24; i++)
-					{
-						components::button(std::format("{}##{} island_secondary_targets", secondary_targets_normal[cph_st_island_index[i]], i), [i]
-						{
-							switch ((cph_st_island_index[i] + 1) % 5)
-							{
-							case 0:
-							{
-								local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I", i);
-							}
-							break;
-							case 1:
-							{
-								local_player::stat_set_bits("$MPX_H4LOOT_CASH_I", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I", i);
-							}
-							break;
-							case 2:
-							{
-								local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I", i);
-								local_player::stat_set_bits("$MPX_H4LOOT_WEED_I", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I", i);
-							}
-							break;
-							case 3:
-							{
-								local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I", i);
-								local_player::stat_set_bits("$MPX_H4LOOT_COKE_I", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I", i);
-							}
-							break;
-							case 4:
-							{
-								local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I", i);
-								local_player::stat_set_bits("$MPX_H4LOOT_GOLD_I", i);
-							}
-							break;
-							}
-						});
-						if ((i + 1) % 8)
-							ImGui::SameLine();
-					}
-					ImGui::Text("Compound Secondary Targets");
-					for (int i = 0; i < 8; i++)
-					{
-						components::button(std::format("{}##{} compound_secondary_targets", secondary_targets_normal[cph_st_compound_index[i]], i), [i]
-						{
-							switch ((cph_st_compound_index[i] + 1) % 5)
-							{
-							case 0:
-							{
-								local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C", i);
-							}
-							break;
-							case 1:
-							{
-								local_player::stat_set_bits("$MPX_H4LOOT_CASH_C", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C", i);
-							}
-							break;
-							case 2:
-							{
-								local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C", i);
-								local_player::stat_set_bits("$MPX_H4LOOT_WEED_C", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C", i);
-							}
-							break;
-							case 3:
-							{
-								local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C", i);
-								local_player::stat_set_bits("$MPX_H4LOOT_COKE_C", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C", i);
-							}
-							break;
-							case 4:
-							{
-								local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C", i);
-								local_player::stat_set_bits("$MPX_H4LOOT_GOLD_C", i);
-							}
-							break;
-							}
-						});
-						ImGui::SameLine();
-					} ImGui::Spacing();
-					ImGui::Text("Painting Positions: "); ImGui::SameLine();
-					for (int i = 0; i < 7; i++)
-					{
-						components::button(std::format("{:d}##{} painting_positions", misc::has_bit_set(&cph_h4loot_paint, i), i), [i] { !misc::has_bit_set(&cph_h4loot_paint, i) ? local_player::stat_set_bits("$MPX_H4LOOT_PAINT", i) : local_player::stat_clear_bits("$MPX_H4LOOT_PAINT", i); });
-						ImGui::SameLine();
-					} ImGui::Spacing();
-
-					ImGui::Text("Island Secondary Targets Scoped Positions");
-					for (int i = 0; i < 24; i++)
-					{
-						components::button(std::format("{:d}##{} island_secondary_targets_scoped_positions", cph_st_island_index[i] == cph_st_island_scoped_index[i] && cph_st_island_index[i] != 0, i), [i]
-						{
-							if (!(cph_st_island_index[i] == cph_st_island_scoped_index[i]))
-							{
-								switch (cph_st_island_index[i])
-								{
-								case 0:
-								{
-									local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I_SCOPED", i);
-								}
-									break;
-								case 1:
-								{
-									local_player::stat_set_bits("$MPX_H4LOOT_CASH_I_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I_SCOPED", i);
-								}
-									break;
-								case 2:
-								{
-									local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I_SCOPED", i);
-									local_player::stat_set_bits("$MPX_H4LOOT_WEED_I_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I_SCOPED", i);
-								}
-									break;
-								case 3:
-								{
-									local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I_SCOPED", i);
-									local_player::stat_set_bits("$MPX_H4LOOT_COKE_I_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I_SCOPED", i);
-								}
-									break;
-								case 4:
-								{
-									local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I_SCOPED", i);
-									local_player::stat_set_bits("$MPX_H4LOOT_GOLD_I_SCOPED", i);
-								}
-									break;
-								}
-							}
-							else
-							{
-								local_player::stat_clear_bits("$MPX_H4LOOT_CASH_I_SCOPED", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_WEED_I_SCOPED", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_COKE_I_SCOPED", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_I_SCOPED", i);
-							}
-						});
-						if ((i + 1) % 8)
-							ImGui::SameLine();
-					}
-					ImGui::Text("Compound Secondary Targets Scoped Positions");
-					for (int i = 0; i < 8; i++)
-					{
-						components::button(std::format("{:d}##{} compound_secondary_targets_scoped_positions", cph_st_compound_index[i] == cph_st_compound_scoped_index[i] && cph_st_compound_index[i] != 0, i), [i]
-						{
-							if (!(cph_st_compound_index[i] == cph_st_compound_scoped_index[i]))
-							{
-								switch (cph_st_compound_index[i])
-								{
-								case 0:
-								{
-									local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C_SCOPED", i);
-								}
-									break;
-								case 1:
-								{
-									local_player::stat_set_bits("$MPX_H4LOOT_CASH_C_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C_SCOPED", i);
-								}
-									break;
-								case 2:
-								{
-									local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C_SCOPED", i);
-									local_player::stat_set_bits("$MPX_H4LOOT_WEED_C_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C_SCOPED", i);
-								}
-									break;
-								case 3:
-								{
-									local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C_SCOPED", i);
-									local_player::stat_set_bits("$MPX_H4LOOT_COKE_C_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C_SCOPED", i);
-								}
-									break;
-								case 4:
-								{
-									local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C_SCOPED", i);
-									local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C_SCOPED", i);
-									local_player::stat_set_bits("$MPX_H4LOOT_GOLD_C_SCOPED", i);
-								}
-									break;
-								}
-							}
-							else
-							{
-								local_player::stat_clear_bits("$MPX_H4LOOT_CASH_C_SCOPED", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_WEED_C_SCOPED", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_COKE_C_SCOPED", i);
-								local_player::stat_clear_bits("$MPX_H4LOOT_GOLD_C_SCOPED", i);
-							}
-						});
-						ImGui::SameLine();
-					} ImGui::Spacing();
-					ImGui::Text("Painting Scoped Positions: "); ImGui::SameLine();
-					for (int i = 0; i < 7; i++)
-					{
-						components::button(std::format("{:d}##{} painting_scoped_positions", misc::has_bit_set(&cph_h4loot_paint_scoped, i) && misc::has_bit_set(&cph_h4loot_paint, i), i), [i] { !misc::has_bit_set(&cph_h4loot_paint_scoped, i) ? local_player::stat_set_bits("$MPX_H4LOOT_PAINT_SCOPED", i) : local_player::stat_clear_bits("$MPX_H4LOOT_PAINT_SCOPED", i); });
-						ImGui::SameLine();
-					} ImGui::Spacing();
-
-					components::button("Scoped All Island Secondary Targets", []
-					{
-						local_player::stat_set_int("$MPX_H4LOOT_CASH_I_SCOPED", local_player::stat_get_int("$MPX_H4LOOT_CASH_I"));
-						local_player::stat_set_int("$MPX_H4LOOT_WEED_I_SCOPED", local_player::stat_get_int("$MPX_H4LOOT_WEED_I"));
-						local_player::stat_set_int("$MPX_H4LOOT_COKE_I_SCOPED", local_player::stat_get_int("$MPX_H4LOOT_COKE_I"));
-						local_player::stat_set_int("$MPX_H4LOOT_GOLD_I_SCOPED", local_player::stat_get_int("$MPX_H4LOOT_GOLD_I"));
-					}); ImGui::SameLine();
-					components::button("Scoped All Compound Secondary Targets", []
-					{
-						local_player::stat_set_int("$MPX_H4LOOT_CASH_C_SCOPED", local_player::stat_get_int("$MPX_H4LOOT_CASH_C"));
-						local_player::stat_set_int("$MPX_H4LOOT_WEED_C_SCOPED", local_player::stat_get_int("$MPX_H4LOOT_WEED_C"));
-						local_player::stat_set_int("$MPX_H4LOOT_COKE_C_SCOPED", local_player::stat_get_int("$MPX_H4LOOT_COKE_C"));
-						local_player::stat_set_int("$MPX_H4LOOT_GOLD_C_SCOPED", local_player::stat_get_int("$MPX_H4LOOT_GOLD_C"));
-					}); ImGui::SameLine();
-					components::button("Scoped All Painting Secondary Targets", [] { local_player::stat_set_int("$MPX_H4LOOT_PAINT_SCOPED", local_player::stat_get_int("$MPX_H4LOOT_PAINT")); });
-					ImGui::TreePop();
-				}
-				if (ImGui::TreeNode("Points Of Interest"))
-				{
-					ImGui::Text("Grappling Equipment Positions: "); ImGui::SameLine();
-					for (int i = 0; i < 16; i++)
-					{
-						components::button(std::format("{:d}##{} grappling_equipment_positions", misc::has_bit_set(&cph_h4cnf_grappel, i), i), [i] { !misc::has_bit_set(&cph_h4cnf_grappel, i) ? local_player::stat_set_bits("$MPX_H4CNF_GRAPPEL", i) : local_player::stat_clear_bits("$MPX_H4CNF_GRAPPEL", i); });
-						ImGui::SameLine();
-					} ImGui::Spacing();
-					ImGui::Text("Guard Clothing Positions: "); ImGui::SameLine();
-					for (int i = 0; i < 16; i++)
-					{
-						components::button(std::format("{:d}##{} guard_clothing_positions", misc::has_bit_set(&cph_h4cnf_uniform, i), i), [i] { !misc::has_bit_set(&cph_h4cnf_uniform, i) ? local_player::stat_set_bits("$MPX_H4CNF_UNIFORM", i) : local_player::stat_clear_bits("$MPX_H4CNF_UNIFORM", i); });
-						ImGui::SameLine();
-					} ImGui::Spacing();
-					ImGui::Text("Bolt Cutters Positions: "); ImGui::SameLine();
-					for (int i = 0; i < 16; i++)
-					{
-						components::button(std::format("{:d}##{} bolt_cutters_positions", misc::has_bit_set(&cph_h4cnf_boltcut, i), i), [i] { !misc::has_bit_set(&cph_h4cnf_boltcut, i) ? local_player::stat_set_bits("$MPX_H4CNF_BOLTCUT", i) : local_player::stat_clear_bits("$MPX_H4CNF_BOLTCUT", i); });
-						ImGui::SameLine();
-					} ImGui::Spacing();
-					static const char* supply_truck_positions[] = { "None", "Airstrip", "North Dock", "Main Dock - East", "Main Dock - West", "Compound Main Gate" };
-					components::combo("Supply Truck Position", &cph_supply_truck_index, supply_truck_positions, IM_ARRAYSIZE(supply_truck_positions), [] { local_player::stat_set_int("$MPX_H4CNF_TROJAN", cph_supply_truck_index); });
-
-					ImGui::BeginGroup();
-					components::checkbox("Grappling Equipment 1", &cph_poi_grappling_equipment1, [] { cph_poi_grappling_equipment1 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 0) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 0); });
-					components::checkbox("Grappling Equipment 2", &cph_poi_grappling_equipment2, [] { cph_poi_grappling_equipment2 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 1) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 1); });
-					components::checkbox("Grappling Equipment 3", &cph_poi_grappling_equipment3, [] { cph_poi_grappling_equipment3 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 2) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 2); });
-					components::checkbox("Grappling Equipment 4", &cph_poi_grappling_equipment4, [] { cph_poi_grappling_equipment4 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 3) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 3); });
-					ImGui::EndGroup(); ImGui::SameLine();
-					ImGui::BeginGroup();
-					components::checkbox("Guard Clothing 1", &cph_poi_guard_clothing1, [] { cph_poi_guard_clothing1 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 4) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 4); });
-					components::checkbox("Guard Clothing 2", &cph_poi_guard_clothing2, [] { cph_poi_guard_clothing2 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 5) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 5); });
-					components::checkbox("Guard Clothing 3", &cph_poi_guard_clothing3, [] { cph_poi_guard_clothing3 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 6) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 6); });
-					components::checkbox("Guard Clothing 4", &cph_poi_guard_clothing4, [] { cph_poi_guard_clothing4 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 7) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 7); });
-					ImGui::EndGroup(); ImGui::SameLine();
-					ImGui::BeginGroup();
-					components::checkbox("Bolt Cutters 1", &cph_poi_bolt_cutters1, [] { cph_poi_bolt_cutters1 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 8) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 8); });
-					components::checkbox("Bolt Cutters 2", &cph_poi_bolt_cutters2, [] { cph_poi_bolt_cutters2 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 9) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 9); });
-					components::checkbox("Bolt Cutters 3", &cph_poi_bolt_cutters3, [] { cph_poi_bolt_cutters3 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 10) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 10); });
-					components::checkbox("Bolt Cutters 4", &cph_poi_bolt_cutters4, [] { cph_poi_bolt_cutters4 ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 11) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 11); });
-					ImGui::EndGroup(); ImGui::SameLine();
-					ImGui::BeginGroup();
-					components::checkbox("Cutting Power", &cph_poi_cutting_power, [] { cph_poi_cutting_power ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 13) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 13); });
-					components::checkbox("Power Station", &cph_poi_power_station, [] { cph_poi_power_station ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 14) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 14); });
-					components::checkbox("Supply Truck", &cph_poi_supply_truck, [] { cph_poi_supply_truck ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 15) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 15); });
-					components::checkbox("Control Tower", &cph_poi_control_tower, [] { cph_poi_control_tower ? local_player::stat_set_bits("$MPX_H4CNF_BS_GEN", 16) : local_player::stat_clear_bits("$MPX_H4CNF_BS_GEN", 16); });
-					ImGui::EndGroup();
-
-					ImGui::TreePop();
-				}
-				static const char* targets[] = { "Sinsimito Tequila", "Ruby Necklace", "Bearer Bonds", "Pink Diamond", "Maorazo Files", "Panther Statue" };
-				components::combo("Selected Target", &cph_target_index, targets, IM_ARRAYSIZE(targets), [] { local_player::stat_set_int("$MPX_H4CNF_TARGET", cph_target_index); });
-				static const char* weapons[] = { "None", "Aggressoh", "Conspirator", "Crack Shot", "Saboteur", "Marksman" };
-				components::combo("Selected Weapon", &cph_weapon_index, weapons, IM_ARRAYSIZE(weapons), [] { local_player::stat_set_int("$MPX_H4CNF_WEAPONS", cph_weapon_index); });
-				components::checkbox("Scoped Target", &cph_scoped_target, [] { cph_scoped_target ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 0) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 0); });
-				components::checkbox("Approach Vehicles - Submarine: Kosatka", &cph_approach_vehicles_submarine_kosatka, [] { cph_approach_vehicles_submarine_kosatka ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 1) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 1); });
-				components::checkbox("Approach Vehicles - Plane: Alkonost", &cph_approach_vehicles_plane_alkonost, [] { cph_approach_vehicles_plane_alkonost ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 2) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 2); });
-				components::checkbox("Approach Vehicles - Plane: Velum", &cph_approach_vehicles_plane_velum, [] { cph_approach_vehicles_plane_velum ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 3) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 3); });
-				components::checkbox("Approach Vehicles - Helicopter: Stealth Annihilator", &cph_approach_vehicles_helicopter_stealth_annihilator, [] { cph_approach_vehicles_helicopter_stealth_annihilator ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 4) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 4); });
-				components::checkbox("Approach Vehicles - Boat: Patrol Boat", &cph_approach_vehicles_boat_patrol_boat, [] { cph_approach_vehicles_boat_patrol_boat ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 5) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 5); });
-				components::checkbox("Approach Vehicles - Boat: Longfin", &cph_approach_vehicles_boat_longfin, [] { cph_approach_vehicles_boat_longfin ? local_player::stat_set_bits("$MPX_H4_MISSIONS", 6) : local_player::stat_clear_bits("$MPX_H4_MISSIONS", 6); });
+				
 			}
 				break;
 			}
@@ -653,10 +1125,300 @@ namespace big
 			ImGui::EndTabItem();
 		}
 	}
+
+	static int dh_radio_button_index = 0;
+	static void tab_item_doomsday_heist()
+	{
+		if (ImGui::BeginTabItem("Doomsday Heist"))
+		{
+			enum Mode
+			{
+				PREP,
+				TUNABLE
+			};
+
+			ImGui::RadioButton("Prep", &dh_radio_button_index, PREP); ImGui::SameLine();
+			ImGui::RadioButton("Tunable", &dh_radio_button_index, TUNABLE);
+
+			switch (dh_radio_button_index)
+			{
+			case PREP:
+			{
+				
+			}
+				break;
+			case TUNABLE:
+			{
+				if (*g_pointers->m_script_globals)
+				{
+					ImGui::InputInt("Crew Cut 1", script_global(heist::doomsday::crew_cut + 0).as<int*>(), 0);
+					ImGui::InputInt("Crew Cut 2", script_global(heist::doomsday::crew_cut + 1).as<int*>(), 0);
+					ImGui::InputInt("Crew Cut 3", script_global(heist::doomsday::crew_cut + 2).as<int*>(), 0);
+					ImGui::InputInt("Crew Cut 4", script_global(heist::doomsday::crew_cut + 3).as<int*>(), 0);
+
+					ImGui::Separator();
+
+					static const char* heists[] = { "The Data Breaches", "The Bogdan Problem", "The Doomsday Scenario" };
+					for (int i = 0; i < IM_ARRAYSIZE(heists); i++)
+						ImGui::InputInt(std::format("{} Reward", heists[i]).c_str(), script_global(heist::doomsday::target_value + i).as<int*>(), 0);
+
+					ImGui::Separator();
+
+					ImGui::InputFloat("Multiplier Normal", script_global(heist::doomsday::multiplier_normal).as<float*>());
+					ImGui::InputFloat("Multiplier Hard", script_global(heist::doomsday::multiplier_hard).as<float*>());
+				}
+				else
+				{
+					ImGui::Text("Waiting for the game to initialize");
+				}
+			}
+				break;
+			}
+
+			ImGui::EndTabItem();
+		}
+	}
+
+	static int ah_radio_button_index = 0;
+	static void tab_item_apart_heist()
+	{
+		if (ImGui::BeginTabItem("Apartment Heist"))
+		{
+			enum Mode
+			{
+				PREP,
+				TUNABLE
+			};
+
+			ImGui::RadioButton("Prep", &ah_radio_button_index, PREP); ImGui::SameLine();
+			ImGui::RadioButton("Tunable", &ah_radio_button_index, TUNABLE);
+
+			switch (ah_radio_button_index)
+			{
+			case PREP:
+			{
+
+			}
+				break;
+			case TUNABLE:
+			{
+				if (*g_pointers->m_script_globals)
+				{
+					ImGui::InputInt("Crew Cut 1", script_global(heist::apart::crew_cut + 0).as<int*>(), 0);
+					ImGui::InputInt("Crew Cut 2", script_global(heist::apart::crew_cut + 1).as<int*>(), 0);
+					ImGui::InputInt("Crew Cut 3", script_global(heist::apart::crew_cut + 2).as<int*>(), 0);
+					ImGui::InputInt("Crew Cut 4", script_global(heist::apart::crew_cut + 3).as<int*>(), 0);
+
+					ImGui::Separator();
+
+					static const char* heists[] = { "The Fleeca Job", "The Prison Break", "The Humane Labs Raid", "Series A Funding", "The Pacific Standard" };
+					for (int i = 0; i < IM_ARRAYSIZE(heists); i++)
+						ImGui::InputInt(std::format("{} Reward", heists[i]).c_str(), script_global(heist::apart::target_value + i).as<int*>(), 0);
+
+					ImGui::Separator();
+
+					ImGui::InputFloat("Multiplier Easy", script_global(heist::apart::multiplier_easy).as<float*>());
+					ImGui::InputFloat("Multiplier Normal", script_global(heist::apart::multiplier_normal).as<float*>());
+					ImGui::InputFloat("Multiplier Hard", script_global(heist::apart::multiplier_hard).as<float*>());
+				}
+				else
+				{
+					ImGui::Text("Waiting for the game to initialize");
+				}
+			}
+				break;
+			}
+
+			ImGui::EndTabItem();
+		}
+	}
+
+	static int asc_radio_button_index = 0;
+	static int tuner_current = 0;
+	static int tuner_gen_bs = 0;
+	static void tab_item_auto_shop_contracts()
+	{
+		if (ImGui::BeginTabItem("Auto Shop Contracts"))
+		{
+			enum Mode
+			{
+				PREP,
+				TUNABLE
+			};
+
+			ImGui::RadioButton("Prep", &asc_radio_button_index, PREP); ImGui::SameLine();
+			ImGui::RadioButton("Tunable", &asc_radio_button_index, TUNABLE);
+
+			switch (asc_radio_button_index)
+			{
+			case PREP:
+			{
+				static const char* contracts[] = { "The Union Depository Contract", "The Superdollar Deal", "The Bank Contract", "The E.C.U Job", "The Prison Contract", "The Agency Deal", "The Lost Contract", "The Data Contract" };
+				components::combo("Selected Contract", &tuner_current, contracts, IM_ARRAYSIZE(contracts), [] { local_player::stat_set_int("$MPX_TUNER_CURRENT", tuner_current); });
+
+				static bool prep1 = false;
+				prep1 = misc::has_bit_set(&tuner_gen_bs, 2);
+				components::checkbox("Prep 1", &prep1, [] { prep1 ? local_player::stat_set_bits("$MPX_TUNER_GEN_BS", 2) : local_player::stat_clear_bits("$MPX_TUNER_GEN_BS", 2); });
+
+				static bool prep2 = false;
+				prep2 = misc::has_bit_set(&tuner_gen_bs, 3);
+				components::checkbox("Prep 2", &prep2, [] { prep2 ? local_player::stat_set_bits("$MPX_TUNER_GEN_BS", 3) : local_player::stat_clear_bits("$MPX_TUNER_GEN_BS", 3); });
+			}
+				break;
+			case TUNABLE:
+			{
+				if (*g_pointers->m_script_globals)
+				{
+					static const char* contracts[] = { "The Union Depository Contract", "The Superdollar Deal", "The Bank Contract", "The E.C.U Job", "The Prison Contract", "The Agency Deal", "The Lost Contract", "The Data Contract" };
+					for (int i = 0; i < IM_ARRAYSIZE(contracts); i++)
+						ImGui::InputInt(std::format("{} Reward", contracts[i]).c_str(), script_global(heist::auto_shop_contracts::contract_reward + i).as<int*>(), 0);
+				}
+				else
+				{
+					ImGui::Text("Waiting for the game to initialize");
+				}
+			}
+				break;
+			}
+
+			ImGui::EndTabItem();
+		}
+	}
+
+	static int avc_radio_button_index = 0;
+	static int fixer_general_bs = 0;
+	static int fixer_story_bs = 0;
+	static void tab_item_agency_vip_contract()
+	{
+		if (ImGui::BeginTabItem("Agency Vip Contract"))
+		{
+			enum Mode
+			{
+				PREP,
+				TUNABLE
+			};
+
+			ImGui::RadioButton("Prep", &avc_radio_button_index, PREP); ImGui::SameLine();
+			ImGui::RadioButton("Tunable", &avc_radio_button_index, TUNABLE);
+
+			switch (avc_radio_button_index)
+			{
+			case PREP:
+			{
+				static bool archive = false;
+				archive = misc::has_bit_set(&fixer_general_bs, 2);
+				components::checkbox("Archive", &archive, [] { archive ? local_player::stat_set_bits("$MPX_FIXER_GENERAL_BS", 2) : local_player::stat_clear_bits("$MPX_FIXER_GENERAL_BS", 2); });
+
+				ImGui::Separator();
+
+				static bool the_meet = false;
+				the_meet = misc::has_bit_set(&fixer_story_bs, 0);
+				components::checkbox("The Meet", &the_meet, [] { the_meet ? local_player::stat_set_bits("$MPX_FIXER_STORY_BS", 0) : local_player::stat_clear_bits("$MPX_FIXER_STORY_BS", 0); });
+
+				static bool data_recovery = false;
+				data_recovery = misc::has_bit_set(&fixer_story_bs, 1);
+				components::checkbox("Data Recovery", &data_recovery, [] { data_recovery ? local_player::stat_set_bits("$MPX_FIXER_STORY_BS", 1) : local_player::stat_clear_bits("$MPX_FIXER_STORY_BS", 1); });
+
+				static bool the_nightclub = false;
+				the_nightclub = misc::has_bit_set(&fixer_story_bs, 2);
+				components::checkbox("Nightlife Leak - The Nightclub", &the_nightclub, [] { the_nightclub ? local_player::stat_set_bits("$MPX_FIXER_STORY_BS", 2) : local_player::stat_clear_bits("$MPX_FIXER_STORY_BS", 2); });
+
+				static bool the_marina = false;
+				the_marina = misc::has_bit_set(&fixer_story_bs, 3);
+				components::checkbox("Nightlife Leak - The Marina", &the_marina, [] { the_marina ? local_player::stat_set_bits("$MPX_FIXER_STORY_BS", 3) : local_player::stat_clear_bits("$MPX_FIXER_STORY_BS", 3); });
+
+				static bool nightlife_leak = false;
+				nightlife_leak = misc::has_bit_set(&fixer_story_bs, 4);
+				components::checkbox("Nightlife Leak", &nightlife_leak, [] { nightlife_leak ? local_player::stat_set_bits("$MPX_FIXER_STORY_BS", 4) : local_player::stat_clear_bits("$MPX_FIXER_STORY_BS", 4); });
+
+				static bool the_country_club = false;
+				the_country_club = misc::has_bit_set(&fixer_story_bs, 5);
+				components::checkbox("High Society Leak - The Country Club", &the_country_club, [] { the_country_club ? local_player::stat_set_bits("$MPX_FIXER_STORY_BS", 5) : local_player::stat_clear_bits("$MPX_FIXER_STORY_BS", 5); });
+
+				static bool guest_life = false;
+				guest_life = misc::has_bit_set(&fixer_story_bs, 6);
+				components::checkbox("High Society Leak - Guest List", &guest_life, [] { guest_life ? local_player::stat_set_bits("$MPX_FIXER_STORY_BS", 6) : local_player::stat_clear_bits("$MPX_FIXER_STORY_BS", 6); });
+
+				static bool high_society_leak = false;
+				high_society_leak = misc::has_bit_set(&fixer_story_bs, 7);
+				components::checkbox("High Society Leak", &high_society_leak, [] { high_society_leak ? local_player::stat_set_bits("$MPX_FIXER_STORY_BS", 7) : local_player::stat_clear_bits("$MPX_FIXER_STORY_BS", 7); });
+
+				static bool davis = false;
+				davis = misc::has_bit_set(&fixer_story_bs, 8);
+				components::checkbox("South Central Leak - Davis", &davis, [] { davis ? local_player::stat_set_bits("$MPX_FIXER_STORY_BS", 8) : local_player::stat_clear_bits("$MPX_FIXER_STORY_BS", 8); });
+
+				static bool the_ballas = false;
+				the_ballas = misc::has_bit_set(&fixer_story_bs, 9);
+				components::checkbox("South Central Leak - The Ballas", &the_ballas, [] { the_ballas ? local_player::stat_set_bits("$MPX_FIXER_STORY_BS", 9) : local_player::stat_clear_bits("$MPX_FIXER_STORY_BS", 9); });
+
+				static bool south_central_leak = false;
+				south_central_leak = misc::has_bit_set(&fixer_story_bs, 10);
+				components::checkbox("South Central Leak", &south_central_leak, [] { south_central_leak ? local_player::stat_set_bits("$MPX_FIXER_STORY_BS", 10) : local_player::stat_clear_bits("$MPX_FIXER_STORY_BS", 10); });
+
+				static bool studio_time = false;
+				studio_time = misc::has_bit_set(&fixer_story_bs, 11);
+				components::checkbox("Studio Time", &studio_time, [] { studio_time ? local_player::stat_set_bits("$MPX_FIXER_STORY_BS", 11) : local_player::stat_clear_bits("$MPX_FIXER_STORY_BS", 11); });
+			}
+				break;
+			case TUNABLE:
+			{
+				if (*g_pointers->m_script_globals)
+				{
+					ImGui::InputInt("Don't Fuck With Dre Reward", script_global(heist::agency_vip_contract::contract_reward).as<int*>(), 0);
+				}
+				else
+				{
+					ImGui::Text("Waiting for the game to initialize");
+				}
+			}
+				break;
+			}
+
+			ImGui::EndTabItem();
+		}
+	}
+
 	void view::heist_editor()
 	{
 		g_fiber_pool->queue_job([] 
 		{
+			h4_playthrough_status = local_player::stat_get_int("$MPX_H4_PLAYTHROUGH_STATUS");
+			h4cnf_approach = local_player::stat_get_int("$MPX_H4CNF_APPROACH");
+			h4cnf_bs_entr = local_player::stat_get_int("$MPX_H4CNF_BS_ENTR");
+			h4cnf_target = local_player::stat_get_int("$MPX_H4CNF_TARGET");
+			h4_progress = local_player::stat_get_int("$MPX_H4_PROGRESS");
+			h4loot_cash_v = local_player::stat_get_int("$MPX_H4LOOT_CASH_V");
+			h4loot_weed_v = local_player::stat_get_int("$MPX_H4LOOT_WEED_V");
+			h4loot_coke_v = local_player::stat_get_int("$MPX_H4LOOT_COKE_V");
+			h4loot_gold_v = local_player::stat_get_int("$MPX_H4LOOT_GOLD_V");
+			h4loot_paint_v = local_player::stat_get_int("$MPX_H4LOOT_PAINT_V");
+			h4loot_cash_i = local_player::stat_get_int("$MPX_H4LOOT_CASH_I");
+			h4loot_weed_i = local_player::stat_get_int("$MPX_H4LOOT_WEED_I");
+			h4loot_coke_i = local_player::stat_get_int("$MPX_H4LOOT_COKE_I");
+			h4loot_gold_i = local_player::stat_get_int("$MPX_H4LOOT_GOLD_I");
+			h4loot_cash_i_scoped = local_player::stat_get_int("$MPX_H4LOOT_CASH_I_SCOPED");
+			h4loot_weed_i_scoped = local_player::stat_get_int("$MPX_H4LOOT_WEED_I_SCOPED");
+			h4loot_coke_i_scoped = local_player::stat_get_int("$MPX_H4LOOT_COKE_I_SCOPED");
+			h4loot_gold_i_scoped = local_player::stat_get_int("$MPX_H4LOOT_GOLD_I_SCOPED");
+			h4loot_cash_c = local_player::stat_get_int("$MPX_H4LOOT_CASH_C");
+			h4loot_weed_c = local_player::stat_get_int("$MPX_H4LOOT_WEED_C");
+			h4loot_coke_c = local_player::stat_get_int("$MPX_H4LOOT_COKE_C");
+			h4loot_gold_c = local_player::stat_get_int("$MPX_H4LOOT_GOLD_C");
+			h4loot_cash_c_scoped = local_player::stat_get_int("$MPX_H4LOOT_CASH_C_SCOPED");
+			h4loot_weed_c_scoped = local_player::stat_get_int("$MPX_H4LOOT_WEED_C_SCOPED");
+			h4loot_coke_c_scoped = local_player::stat_get_int("$MPX_H4LOOT_COKE_C_SCOPED");
+			h4loot_gold_c_scoped = local_player::stat_get_int("$MPX_H4LOOT_GOLD_C_SCOPED");
+			h4loot_paint = local_player::stat_get_int("$MPX_H4LOOT_PAINT");
+			h4loot_paint_scoped = local_player::stat_get_int("$MPX_H4LOOT_PAINT_SCOPED");
+			h4cnf_grappel = local_player::stat_get_int("$MPX_H4CNF_GRAPPEL");
+			h4cnf_uniform = local_player::stat_get_int("$MPX_H4CNF_UNIFORM");
+			h4cnf_boltcut = local_player::stat_get_int("$MPX_H4CNF_BOLTCUT");
+			h4cnf_trojan = local_player::stat_get_int("$MPX_H4CNF_TROJAN");
+			h4cnf_bs_gen = local_player::stat_get_int("$MPX_H4CNF_BS_GEN");
+			h4cnf_weapons = local_player::stat_get_int("$MPX_H4CNF_WEAPONS");
+			h4_missions = local_player::stat_get_int("$MPX_H4_MISSIONS");
+			h4cnf_bs_abil = local_player::stat_get_int("$MPX_H4CNF_BS_ABIL");
+
 			cas_heist_flow = local_player::stat_get_int("$MPX_CAS_HEIST_FLOW");
 			h3opt_target = local_player::stat_get_int("$MPX_H3OPT_TARGET");
 			h3opt_bitset1 = local_player::stat_get_int("$MPX_H3OPT_BITSET1");
@@ -668,143 +1430,24 @@ namespace big
 			h3opt_crewhacker = local_player::stat_get_int("$MPX_H3OPT_CREWHACKER");
 			h3opt_vehs = local_player::stat_get_int("$MPX_H3OPT_VEHS");
 			h3opt_weaps = local_player::stat_get_int("$MPX_H3OPT_WEAPS");
+			h3opt_bitset0 = local_player::stat_get_int("$MPX_H3OPT_BITSET0");
 			h3opt_keylevels = local_player::stat_get_int("$MPX_H3OPT_KEYLEVELS");
 
-			//dch_key_level_index = local_player::stat_get_int("$MPX_H3OPT_KEYLEVELS");
-			//dch_vault_keycards = local_player::stat_bits_test("$MPX_H3OPT_BITSET1", 1);
-			//dch_unmarked_weapons = local_player::stat_bits_test("$MPX_H3OPT_BITSET1", 2);
-			//dch_getaway_vehicles = local_player::stat_bits_test("$MPX_H3OPT_BITSET1", 3);
-			//dch_hacking_device = local_player::stat_bits_test("$MPX_H3OPT_BITSET1", 4);
-			//dch_nano_drone = local_player::stat_bits_test("$MPX_H3OPT_BITSET1", 5);
-			//dch_vault_laser = local_player::stat_bits_test("$MPX_H3OPT_BITSET1", 6);
-			//dch_vault_drills = local_player::stat_bits_test("$MPX_H3OPT_BITSET1", 7);
-			//dch_vault_explosives = local_player::stat_bits_test("$MPX_H3OPT_BITSET1", 8);
-			//dch_thermal_charges = local_player::stat_bits_test("$MPX_H3OPT_BITSET1", 9);
-			//dch_patrol_routes = local_player::stat_bits_test("$MPX_H3OPT_BITSET0", 1);
-			//dch_duggan_shipments = local_player::stat_bits_test("$MPX_H3OPT_BITSET0", 2);
-			//dch_infiltration_suits = local_player::stat_bits_test("$MPX_H3OPT_BITSET0", 3);
-			//dch_power_drills = local_player::stat_bits_test("$MPX_H3OPT_BITSET0", 4);
-			//dch_emp_device = local_player::stat_bits_test("$MPX_H3OPT_BITSET0", 5);
-			//dch_decoy_gunman = local_player::stat_bits_test("$MPX_H3OPT_BITSET0", 6);
-			//dch_clean_vehicle = local_player::stat_bits_test("$MPX_H3OPT_BITSET0", 7);
-			//dch_bugstars_gear = local_player::stat_bits_test("$MPX_H3OPT_BITSET0", 8, 9);
-			//dch_maintenance_gear = local_player::stat_bits_test("$MPX_H3OPT_BITSET0", 10, 11);
-			//dch_gruppe_sechs_gear = local_player::stat_bits_test("$MPX_H3OPT_BITSET0", 12, 13);
-			//dch_after_party = local_player::stat_bits_test("$MPX_H3OPT_BITSET0", 14, 15);
-			//dch_noose_gear = local_player::stat_bits_test("$MPX_H3OPT_BITSET0", 16);
-			//dch_firefighter_gear = local_player::stat_bits_test("$MPX_H3OPT_BITSET0", 17);
-			//dch_tunnel_boring_machine = local_player::stat_bits_test("$MPX_H3OPT_BITSET0", 19);
-			//dch_reinforced_armor = local_player::stat_bits_test("$MPX_H3OPT_BITSET0", 20);
+			tuner_current = local_player::stat_get_int("$MPX_TUNER_CURRENT");
+			tuner_gen_bs = local_player::stat_get_int("$MPX_TUNER_GEN_BS");
 
-			cph_ip_airstrip = local_player::stat_bits_test("$MPX_H4CNF_APPROACH", 0);
-			cph_ip_halo_jump = local_player::stat_bits_test("$MPX_H4CNF_APPROACH", 1);
-			cph_ip_west_beach = local_player::stat_bits_test("$MPX_H4CNF_APPROACH", 2);
-			cph_ip_main_dock = local_player::stat_bits_test("$MPX_H4CNF_APPROACH", 3);
-			cph_ip_north_dock = local_player::stat_bits_test("$MPX_H4CNF_APPROACH", 4);
-			cph_ip_north_drop_zone = local_player::stat_bits_test("$MPX_H4CNF_APPROACH", 5);
-			cph_ip_south_drop_zone = local_player::stat_bits_test("$MPX_H4CNF_APPROACH", 6);
-			cph_ip_drainage_tunnel = local_player::stat_bits_test("$MPX_H4CNF_APPROACH", 7);
-			cph_cep_main_gate = local_player::stat_bits_test("$MPX_H4CNF_BS_ENTR", 0);
-			cph_cep_north_wall = local_player::stat_bits_test("$MPX_H4CNF_BS_ENTR", 1);
-			cph_cep_north_gate = local_player::stat_bits_test("$MPX_H4CNF_BS_ENTR", 2);
-			cph_cep_south_wall = local_player::stat_bits_test("$MPX_H4CNF_BS_ENTR", 3);
-			cph_cep_south_gate = local_player::stat_bits_test("$MPX_H4CNF_BS_ENTR", 4);
-			cph_cep_drainage_tunnel = local_player::stat_bits_test("$MPX_H4CNF_BS_ENTR", 5);
-			cph_hard_mode = local_player::stat_bits_test("$MPX_H4_PROGRESS", 12);
-			cph_st_cash_value = local_player::stat_get_int("$MPX_H4LOOT_CASH_V");
-			cph_st_weed_value = local_player::stat_get_int("$MPX_H4LOOT_WEED_V");
-			cph_st_coke_value = local_player::stat_get_int("$MPX_H4LOOT_COKE_V");
-			cph_st_gold_value = local_player::stat_get_int("$MPX_H4LOOT_GOLD_V");
-			cph_st_paint_value = local_player::stat_get_int("$MPX_H4LOOT_PAINT_V");
-			for (int i = 0; i < 24; i++)
-			{
-				if (local_player::stat_bits_test("$MPX_H4LOOT_CASH_I", i))
-					cph_st_island_index[i] = 1;
-				else if (local_player::stat_bits_test("$MPX_H4LOOT_WEED_I", i))
-					cph_st_island_index[i] = 2;
-				else if (local_player::stat_bits_test("$MPX_H4LOOT_COKE_I", i))
-					cph_st_island_index[i] = 3;
-				else if (local_player::stat_bits_test("$MPX_H4LOOT_GOLD_I", i))
-					cph_st_island_index[i] = 4;
-				else
-					cph_st_island_index[i] = 0;
-			}
-			for (int i = 0; i < 8; i++)
-			{
-				if (local_player::stat_bits_test("$MPX_H4LOOT_CASH_C", i))
-					cph_st_compound_index[i] = 1;
-				else if (local_player::stat_bits_test("$MPX_H4LOOT_WEED_C", i))
-					cph_st_compound_index[i] = 2;
-				else if (local_player::stat_bits_test("$MPX_H4LOOT_COKE_C", i))
-					cph_st_compound_index[i] = 3;
-				else if (local_player::stat_bits_test("$MPX_H4LOOT_GOLD_C", i))
-					cph_st_compound_index[i] = 4;
-				else
-					cph_st_compound_index[i] = 0;
-			}
-			cph_h4loot_paint = local_player::stat_get_int("$MPX_H4LOOT_PAINT");
-			for (int i = 0; i < 24; i++)
-			{
-				if (local_player::stat_bits_test("$MPX_H4LOOT_CASH_I_SCOPED", i))
-					cph_st_island_scoped_index[i] = 1;
-				else if (local_player::stat_bits_test("$MPX_H4LOOT_WEED_I_SCOPED", i))
-					cph_st_island_scoped_index[i] = 2;
-				else if (local_player::stat_bits_test("$MPX_H4LOOT_COKE_I_SCOPED", i))
-					cph_st_island_scoped_index[i] = 3;
-				else if (local_player::stat_bits_test("$MPX_H4LOOT_GOLD_I_SCOPED", i))
-					cph_st_island_scoped_index[i] = 4;
-				else
-					cph_st_island_scoped_index[i] = 0;
-			}
-			for (int i = 0; i < 8; i++)
-			{
-				if (local_player::stat_bits_test("$MPX_H4LOOT_CASH_C_SCOPED", i))
-					cph_st_compound_scoped_index[i] = 1;
-				else if (local_player::stat_bits_test("$MPX_H4LOOT_WEED_C_SCOPED", i))
-					cph_st_compound_scoped_index[i] = 2;
-				else if (local_player::stat_bits_test("$MPX_H4LOOT_COKE_C_SCOPED", i))
-					cph_st_compound_scoped_index[i] = 3;
-				else if (local_player::stat_bits_test("$MPX_H4LOOT_GOLD_C_SCOPED", i))
-					cph_st_compound_scoped_index[i] = 4;
-				else
-					cph_st_compound_scoped_index[i] = 0;
-			}
-			cph_h4loot_paint_scoped = local_player::stat_get_int("$MPX_H4LOOT_PAINT_SCOPED");
-			cph_poi_grappling_equipment1 = local_player::stat_bits_test("$MPX_H4CNF_BS_GEN", 0);
-			cph_poi_grappling_equipment2 = local_player::stat_bits_test("$MPX_H4CNF_BS_GEN", 1);
-			cph_poi_grappling_equipment3 = local_player::stat_bits_test("$MPX_H4CNF_BS_GEN", 2);
-			cph_poi_grappling_equipment4 = local_player::stat_bits_test("$MPX_H4CNF_BS_GEN", 3);
-			cph_poi_guard_clothing1 = local_player::stat_bits_test("$MPX_H4CNF_BS_GEN", 4);
-			cph_poi_guard_clothing2 = local_player::stat_bits_test("$MPX_H4CNF_BS_GEN", 5);
-			cph_poi_guard_clothing3 = local_player::stat_bits_test("$MPX_H4CNF_BS_GEN", 6);
-			cph_poi_guard_clothing4 = local_player::stat_bits_test("$MPX_H4CNF_BS_GEN", 7);
-			cph_poi_bolt_cutters1 = local_player::stat_bits_test("$MPX_H4CNF_BS_GEN", 8);
-			cph_poi_bolt_cutters2 = local_player::stat_bits_test("$MPX_H4CNF_BS_GEN", 9);
-			cph_poi_bolt_cutters3 = local_player::stat_bits_test("$MPX_H4CNF_BS_GEN", 10);
-			cph_poi_bolt_cutters4 = local_player::stat_bits_test("$MPX_H4CNF_BS_GEN", 11);
-			cph_poi_cutting_power = local_player::stat_bits_test("$MPX_H4CNF_BS_GEN", 13);
-			cph_poi_power_station = local_player::stat_bits_test("$MPX_H4CNF_BS_GEN", 14);
-			cph_poi_supply_truck = local_player::stat_bits_test("$MPX_H4CNF_BS_GEN", 15);
-			cph_poi_control_tower = local_player::stat_bits_test("$MPX_H4CNF_BS_GEN", 16);
-			cph_h4cnf_grappel = local_player::stat_get_int("$MPX_H4CNF_GRAPPEL");
-			cph_h4cnf_uniform = local_player::stat_get_int("$MPX_H4CNF_UNIFORM");
-			cph_h4cnf_boltcut = local_player::stat_get_int("$MPX_H4CNF_BOLTCUT");
-			cph_supply_truck_index = local_player::stat_get_int("$MPX_H4CNF_TROJAN");
-			cph_target_index = local_player::stat_get_int("$MPX_H4CNF_TARGET");
-			cph_weapon_index = local_player::stat_get_int("$MPX_H4CNF_WEAPONS");
-			cph_scoped_target = local_player::stat_bits_test("$MPX_H4_MISSIONS", 0);
-			cph_approach_vehicles_submarine_kosatka = local_player::stat_bits_test("$MPX_H4_MISSIONS", 1);
-			cph_approach_vehicles_plane_alkonost = local_player::stat_bits_test("$MPX_H4_MISSIONS", 2);
-			cph_approach_vehicles_plane_velum = local_player::stat_bits_test("$MPX_H4_MISSIONS", 3);
-			cph_approach_vehicles_helicopter_stealth_annihilator = local_player::stat_bits_test("$MPX_H4_MISSIONS", 4);
-			cph_approach_vehicles_boat_patrol_boat = local_player::stat_bits_test("$MPX_H4_MISSIONS", 5);
-			cph_approach_vehicles_boat_longfin = local_player::stat_bits_test("$MPX_H4_MISSIONS", 6);
+			fixer_general_bs = local_player::stat_get_int("$MPX_FIXER_GENERAL_BS");
+			fixer_story_bs = local_player::stat_get_int("$MPX_FIXER_STORY_BS");
 		});
 
 		if (ImGui::BeginTabBar("##heist_editor_tab_bar"))
 		{
-			tab_item_diamond_casino_heist();
 			tab_item_cayo_perico_heist();
+			tab_item_diamond_casino_heist();
+			tab_item_doomsday_heist();
+			tab_item_apart_heist();
+			tab_item_auto_shop_contracts();
+			tab_item_agency_vip_contract();
 			ImGui::EndTabBar();
 		}
 	}

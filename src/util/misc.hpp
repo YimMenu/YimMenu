@@ -43,7 +43,6 @@ namespace big::misc
 		*address |= bits;
 	}
 
-
 	template <typename T>
 	inline std::enable_if_t<std::is_same_v<T, std::string>, T> get_text_value(std::string text)
 	{
