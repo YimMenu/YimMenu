@@ -21,20 +21,22 @@ jobs:
       - name: Check CMake version
         run: cmake --version
 
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1
+      - name: Setup MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
 
       - name: Generate CMake project
-        run: cmake -S. -Bbuild -G "Visual Studio 17 2022" -DCMAKE_CONFIGURATION_TYPES=Release 
+        run: cmake -D CMAKE_BUILD_TYPE=Release -S. -Bbuild -G Ninja
 
       - name: Build 64bit release DLL
-        run: cmake --build build --config Release --target ALL_BUILD
+        run: cmake --build ./build --config Release --target YimMenu --
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: binary
-          path: build/Release/YimMenu.dll
+          path: build/YimMenu.dll
 
       - name: Generate Build Info
         id: var
@@ -42,33 +44,6 @@ jobs:
           echo "full_sha=$(git rev-parse HEAD)" >> $env:GITHUB_OUTPUT
           echo "short_sha=$(git rev-parse --short HEAD)" >> $env:GITHUB_OUTPUT
 
-  check_detections:
-    runs-on: ubuntu-latest
-    name: Check for detections in Binary and notify if necesarry
-    needs: build_nightly
-    steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: binary
-
-      - name: Test file for detected bits
-        id: detections
-        uses: yimura/gtav-sigscan-action@v0.0.3
-        with:
-          file: ./YimMenu.dll
-
-      - name: Notify on Discord
-        if: ${{ steps.detections.outputs.is_detected == 'true' }}
-        uses: tsickert/discord-webhook@v5.3.0
-        with:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          embed-title: YimMenu has been detected by the sigscanner!
-          embed-description: |
-            The following bits have been detected:
-            ```yml
-            ${{ steps.detections.outputs.detected_string }}
-            ```
   check_date:
     runs-on: ubuntu-latest
     name: Check latest commit
@@ -125,12 +100,11 @@ jobs:
             ```
             To verify the build SHA256 during the action, click the build link, go-to "Create Release", open the Echo build sha256 step and read the sha256.
 
-            Compare this build hash with one that you generated yourself from the build artifacts.
-            Alternatively you can download the build artifacts, generate a SHA256 checksum and compare it with the below binary.
+            You can download the build artifacts, generate a SHA256 checksum and compare it with the below binary.
             Build artifacts ARE NOT automatically the same as release assets since release assets can be modified afterwards.
 
             These are nightly builds of YimMenu, they are provided for testing purposes only:
-            - Test if your build environment produces a broken BigBaseV2.dll
+            - Test if your build environment produces a broken YimMenu.dll
             - Test if source code is out of date and no longer compatible with the current version of GTA V
 
             If you wish to use this menu as-is you are on your own, no warranty is provided.

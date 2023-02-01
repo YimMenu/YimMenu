@@ -70,13 +70,13 @@ namespace big::vehicle
 
 	inline void bring(Vehicle veh, Vector3 location, bool put_in = true, int seatIdx = -1)
 	{
-		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh)) return g_notification_service->push_error("Vehicle", "Invalid handle");
+		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh)) return g_notification_service->push_error("VEHICLE"_T.data(), "VEHICLE_INVALID"_T.data());
 
 		auto vecVehicleLocation = ENTITY::GET_ENTITY_COORDS(veh, true);
 		teleport::load_ground_at_3dcoord(vecVehicleLocation);
 
 		if (!entity::take_control_of(veh))
-			return g_notification_service->push_warning("Vehicle", "Failed to take control of remote vehicle.");
+			return g_notification_service->push_warning("VEHICLE"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
 		auto ped = self::ped;
 
 		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, 0);
@@ -654,14 +654,14 @@ namespace big::vehicle
 		if (current_vehicle)
 			VEHICLE::SET_VEHICLE_ENGINE_ON(current_vehicle, state, immediately, disable_auto_start);
 		else
-			return g_notification_service->push_warning("Vehicle", "Please be in a car first then try again.");
+			return g_notification_service->push_warning("VEHICLE"_T.data(), "PLEASE_ENTER_VEHICLE"_T.data());
 	}
 
 	inline bool remote_control_vehicle(Vehicle veh)
 	{
 		if (!entity::take_control_of(veh, 4000))
 		{
-			g_notification_service->push_warning("Remote Control", "Failed to take control of remote vehicle");
+			g_notification_service->push_warning("REMOTE_CONTROL"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
 			return false;
 		}
 

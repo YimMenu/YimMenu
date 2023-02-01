@@ -8,7 +8,7 @@ namespace big
 		if (strcmp(g_gui_service->get_selected()->name, "Debug"))
 			return;
 
-		if (ImGui::Begin("Debug"))
+		if (ImGui::Begin("DEBUG_WINDOW"_T.data()))
 		{
 			ImGui::BeginTabBar("debug_tabbar");
 			misc();
@@ -16,6 +16,7 @@ namespace big
 			globals();
 			locals();
 			script_events();
+			scripts();
 			ImGui::EndTabBar();
 		}
 		ImGui::End();

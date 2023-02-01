@@ -23,6 +23,7 @@ namespace big
 		static void handling_saved_profiles();
 		static void reaction_settings();
 		static void protection_settings();
+		static void translation_settings();
 		static void heading();
 		static void mobile();
 		static void navigation();

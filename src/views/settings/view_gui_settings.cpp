@@ -5,17 +5,17 @@ namespace big
 {
 	void view::gui_settings()
 	{
-		components::sub_title("UI Scale");
+		components::sub_title("SETTINGS_UI_SCALE"_T);
 		ImGui::SliderFloat("##gui-scale", &g.window.gui_scale, 1.f, 1.5f, "%.2f");
 		ImGui::SameLine();
-		if (ImGui::Button("Apply##gui-scale"))
+		if (ImGui::Button("APPLY"_T.data()))
 			g_renderer->rescale(g.window.gui_scale);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Changing the UI scale may break rendering and require you to unload and inject YimMenu again.");
+			ImGui::SetTooltip("SETTINGS_UI_SCALE_DESCRIPTION"_T.data());
 
-		components::sub_title("Colors");
+		components::sub_title("SETTINGS_UI_COLOR"_T);
 		static ImVec4 col_gui = ImGui::ColorConvertU32ToFloat4(g.window.color);
-		if (ImGui::ColorEdit4("Gui Color##gui_picker", (float*)&col_gui, ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoSidePreview))
+		if (ImGui::ColorEdit4("SETTINGS_UI_COLOR_PICKER"_T.data(), (float*)&col_gui, ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoSidePreview))
 		{
 			g.window.color = ImGui::ColorConvertFloat4ToU32(col_gui);
 		}
