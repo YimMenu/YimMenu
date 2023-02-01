@@ -568,7 +568,7 @@ namespace big
 		});
 
 		// Serialize Join Request Message
-		main_batch.add("SPDM", "E8 ? ? ? ? 84 C0 0F 84 99 00 00 00 49 8D 8F 78 0D 00 00", [this](memory::handle ptr)
+		main_batch.add("SJRM", "E8 ? ? ? ? 84 C0 0F 84 99 00 00 00 49 8D 8F 78 0D 00 00", [this](memory::handle ptr)
 		{
 			m_serialize_join_request_message = ptr.add(1).rip().as<PVOID>();
 		});
@@ -689,9 +689,9 @@ namespace big
 		});
 
 		// Decode Session Info
-		main_batch.add("DSI", "48 89 5C 24 08 48 89 6C 24 10 56 57 41 56 48 81 EC C0", [this](memory::handle ptr)
+		main_batch.add("DSI", "E8 ?? ?? ?? ?? 84 C0 74 16 48 8B 4B 60", [this](memory::handle ptr)
 		{
-			m_decode_session_info = ptr.as<functions::decode_session_info>();
+			m_decode_session_info = ptr.add(1).rip().as<functions::decode_session_info>();
 		});
 
 		// Decode Peer Info
