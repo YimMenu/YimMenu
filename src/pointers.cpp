@@ -520,7 +520,7 @@ namespace big
 		});
 
 		// Handle Join Request
-		main_batch.add("HJR", "48 8B C4 4C 89 48 20 4C 89 40 18 48 89 50 10 55 53 56 57 41 54 41 55 41 56 41 57 48 8D A8 E8 FE", [this](memory::handle ptr)
+		main_batch.add("HJR", "48 8B C4 48 89 58 08 4C 89 48 20 4C 89 40 18 48 89 50 10 55 56 57 41 54 41 55 41 56 41 57 48 8D A8 E8", [this](memory::handle ptr)
 		{
 			m_handle_join_request = ptr.as<PVOID>();
 		});
