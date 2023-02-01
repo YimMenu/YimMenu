@@ -695,7 +695,7 @@ namespace big
 		});
 
 		// Decode Peer Info
-		main_batch.add("DPI", "48 8B C4 48 89 58 08 48 89 70 10 57 48 81 EC A0 00 00 00 48 8B DA", [this](memory::handle ptr)
+		main_batch.add("DPI", "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC C0 00 00 00 48 8B F1 49", [this](memory::handle ptr)
 		{
 			m_decode_peer_info = ptr.as<functions::decode_peer_info>();
 		});
