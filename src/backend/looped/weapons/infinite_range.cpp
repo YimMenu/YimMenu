@@ -10,11 +10,11 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = SIZE_MAX;
+			g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = 9999999.0f ;
 		}
 		virtual void on_disable() override
 		{
-			g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = 1.0f;
+			g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = 100.0f;
 		}
 	};
 

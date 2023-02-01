@@ -1,6 +1,8 @@
 #include "backend/looped/looped.hpp"
 #include "natives.hpp"
 #include "backend/looped_command.hpp"
+#include "gta/enums.hpp"
+#include "core/enums.hpp"
 
 namespace big
 {	
@@ -10,93 +12,94 @@ namespace big
 
 		virtual void on_tick() override
 		{ 
-			Ped target = NULL; //defualt to fix mem error
-			float rad = g.weapons.aimbot.aimradius;
-			int bone = g.weapons.aimbot.aimbone;
-			Hash weapon; WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weapon, 0);
-			Vector3 bonec = PED::GET_PED_BONE_COORDS(target, bone, 0, 0, 0);
-			float weaponrange = WEAPON::GET_MAX_RANGE_OF_CURRENT_PED_WEAPON(self::ped);
-			float targetdist = SYSTEM::VDIST(bonec.x, bonec.y, bonec.z, self::pos.x, self::pos.y, self::pos.z);
 
-			if (g.weapons.aimbot.aimall)
+			const int maxPeds = 32;
+			Ped nearbypeds[maxPeds];
+			PED::GET_PED_NEARBY_PEDS(self::ped, nearbypeds, -1);
+			for (int i = 0; i < maxPeds; i++)
 			{
-				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, -1);
-			}
+				Ped target = NULL;
+				int bone = g.weapons.aimbot.aimbone;
+				Vector3 bonec = PED::GET_PED_BONE_COORDS(target, bone, 0, 0, 0);
+				float weaponrange = WEAPON::GET_MAX_RANGE_OF_CURRENT_PED_WEAPON(self::ped);
+				float targetdist = SYSTEM::VDIST(bonec.x, bonec.y, bonec.z, self::pos.x, self::pos.y, self::pos.z);
 
-			if (g.weapons.aimbot.aimanimals)
-			{
-				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, 28);
-			}
-			
-			if (g.weapons.aimbot.aimswat)
-			{
-				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, 27);
-			}
-
-			if (g.weapons.aimbot.aimcop)
-			{
-				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, 6);
-			}
-
-			if (g.weapons.aimbot.aimarmy)
-			{
-				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, 29);
-			}
-
-			if (g.weapons.aimbot.aimnpconly)
-			{
-				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, 26);
-			}
-
-			if (g.weapons.aimbot.aimplayers)
-			{
-				PED::GET_CLOSEST_PED(self::pos.x, self::pos.y, self::pos.z, rad, 0, 0, &target, 0, 0, 1);
-			}
-
-			if (!g.weapons.infinite_range)
-			{
-				if (g.weapons.aimbot.aimall || g.weapons.aimbot.aimnpconly || g.weapons.aimbot.aimanimals || g.weapons.aimbot.aimarmy || g.weapons.aimbot.aimswat || g.weapons.aimbot.aimcop && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, target, 17) && targetdist <= weaponrange)
+				if (g.weapons.aimbot.aimall && PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_AIM) && weaponrange >= targetdist)
 				{
-					TASK::TASK_AIM_GUN_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, 500, true, false);
-					if (g.weapons.aimbot.triggerbot)
+					PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
+				}
+				if (g.weapons.aimbot.aimplayers && PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_AIM) && weaponrange >= targetdist)
+				{
+					PED::IS_PED_A_PLAYER(target);
+					if(true)
 					{
-						PED::IS_PED_DEAD_OR_DYING(target, 1) ? false : true;
-						if (false);
+						PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
+					}
+				}
+				if (g.weapons.aimbot.aimanimals && PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_AIM) && weaponrange >= targetdist)
+				{
+					PED::IS_PED_HUMAN(target);
+					if (false)
+					{
+						PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
+					}
+				}
+				if (g.weapons.aimbot.aimenemies && PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_AIM) && weaponrange >= targetdist)
+				{
+					PED::GET_RELATIONSHIP_BETWEEN_PEDS(self::ped, target);
+					if (4 | 5)
+					{
+						PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
+					}
+				}
+				if (g.weapons.aimbot.aimnpconly && PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_AIM) && weaponrange >= targetdist)
+				{
+					PED::IS_PED_A_PLAYER(target);
+					if (false)
+					{
+						PED::IS_PED_HUMAN(target);
+						if(true)
 						{
-							MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(self::pos.x, self::pos.y, self::pos.z, bonec.x, bonec.y, bonec.z, 1, 0, weapon, self::ped, true, false, 10.0f);
+							PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
 						}
 					}
 				}
-			}
-			if (g.weapons.infinite_range)
-			{
-				if (g.weapons.aimbot.aimall || g.weapons.aimbot.aimnpconly || g.weapons.aimbot.aimanimals || g.weapons.aimbot.aimarmy || g.weapons.aimbot.aimswat || g.weapons.aimbot.aimcop && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, target, 17))
+				if (g.weapons.aimbot.aimcop && PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_AIM) && weaponrange >= targetdist)
 				{
-					TASK::TASK_AIM_GUN_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, 500, true, false);
-					if (g.weapons.aimbot.triggerbot)
+					PED::GET_PED_TYPE(target);
+					if (ePedType::PED_TYPE_COP)
+					{				
+						PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);					
+					}
+				}
+				if (g.weapons.aimbot.aimswat && PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_AIM) && weaponrange >= targetdist)
+				{
+					PED::GET_PED_TYPE(target);
+					if (ePedType::PED_TYPE_SWAT)
 					{
-						PED::IS_PED_DEAD_OR_DYING(target, 1) ? false : true;
-						if (false);
-						{
-							MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(self::pos.x, self::pos.y, self::pos.z, bonec.x, bonec.y, bonec.z, 1, 0, weapon, self::ped, true, false, 10.0f);
-						}
+						PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
+					}
+				}
+				if (g.weapons.aimbot.aimarmy && PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_AIM) && weaponrange >= targetdist)
+				{
+					PED::GET_PED_TYPE(target);
+					if (ePedType::PED_TYPE_ARMY)
+					{
+						PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
 					}
 				}
 			}
 		}
 
-	};
+	}; //todo in gui put into a combo somehow
 
-	//This function only works if the ped is walking normally or wanting to cross a road apparently, need to implement better way of getting them
-
-
-	aimassist g_aimassist("aimbot", "Aimbot", "Aim At Any Target With Perfect Accuracy", g.weapons.aimbot.aimbottog);
-	bool_command g_aimnpc("aimnpc", "Aim At Npc", "Sets the aimbot to aim at npcs only.", g.weapons.aimbot.aimnpconly);
-	bool_command g_aimall("aimall", "Aim At All", "Sets the aimbot to aim at all peds, including animals.", g.weapons.aimbot.aimall);
-	bool_command aimanimal("aimanimal", "Aim At Animals", "Sets the aimbot to aim at all animals.", g.weapons.aimbot.aimanimals);
-	bool_command aimarmy("aimarmy", "Aim At All", "Sets the aimbot to aim at military peds.", g.weapons.aimbot.aimarmy);
-	bool_command aimswat("aimswat", "Aim At All", "Sets the aimbot to aim at swat peds.", g.weapons.aimbot.aimswat);
-	bool_command aimcop("aimcop", "Aim At Cop", "Sets the aimbot to aim at cops.", g.weapons.aimbot.aimcop);
-	bool_command g_aimplayers("aimplayers", "Aim At Players", "Sets the aimbot to aim at players only.", g.weapons.aimbot.aimplayers);
-	bool_command g_triggerbot("triggerbot", "Triggerbot", "Sets aimbot to shoot along with aiming.", g.weapons.aimbot.triggerbot);
+	aimassist g_aimassist("aimbot", "Aimbot", "Aim At Any Target With Perfect Accuracy.", g.weapons.aimbot.aimbottg);
+	bool_command g_aimall("aimall", "Aim All", "Sets the aimbot to aim at all ped types.", g.weapons.aimbot.aimall);
+	bool_command g_aimplayers("aimaplayers", "Aim Players", "Sets the aimbot to aim at players.", g.weapons.aimbot.aimplayers);
+	bool_command g_aimall("aimall", "Aim Animals", "Sets the aimbot to aim at animals", g.weapons.aimbot.aimanimals);
+	bool_command g_aimall("aimall", "Aim All", "Sets the aimbot to aim at all ped types", g.weapons.aimbot.aimall);
+	bool_command g_aimall("aimall", "Aim All", "Sets the aimbot to aim at all ped types", g.weapons.aimbot.aimall);
+	bool_command g_aimall("aimall", "Aim All", "Sets the aimbot to aim at all ped types", g.weapons.aimbot.aimall);
+	bool_command g_aimall("aimall", "Aim All", "Sets the aimbot to aim at all ped types", g.weapons.aimbot.aimall);
+	bool_command g_aimall("aimall", "Aim All", "Sets the aimbot to aim at all ped types", g.weapons.aimbot.aimall);
 }

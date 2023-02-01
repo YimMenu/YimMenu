@@ -615,19 +615,20 @@ namespace big
 			bool aim_assist = false;
 			struct aimbot
 			{
-				bool aimbottog = false;
-				bool aimnpconly = false;
-				bool aimanimals = false;
-				bool aimarmy = false;
-				bool aimswat = false;
-				bool aimcop = false;
-				bool aimall = false;
-				bool aimplayers = false;
+				bool aimbottg = false;
+				bool aimnpconly = false; //done
+				bool aimanimals = false; //done
+				bool aimarmy = false; //done
+				bool aimswat = false; //done
+				bool aimcop = false; //done
+				bool aimall = false; //done
+				bool aimplayers = false; //done
+				bool aimenemies = false; //done
 				bool triggerbot = false;
-				float aimradius = 0.0f;
 				int aimbone;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, aimbottog, aimnpconly, aimall, aimplayers, triggerbot, aimradius, aimbone)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbottg, aimnpconly, aimanimals, aimarmy, aimswat,
+				aimcop, aimall, aimplayers, aimenemies, triggerbot, aimbone)
 			} aimbot;
 			bool infinite_range = false;
 

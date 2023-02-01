@@ -14,7 +14,7 @@ namespace big
 		}
 		virtual void on_disable() override
 		{
-			g_local_player->m_weapon_manager->m_weapon_info->m_damage = 1.0f;
+			g_local_player->m_weapon_manager->m_weapon_info->m_damage = 100.0f;
 		}
 	};
 
