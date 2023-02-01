@@ -367,9 +367,6 @@ namespace big
 
 			return true;
 		}
-		case eRemoteEvent::BadThing1:
-		case eRemoteEvent::BadThing2:
-			return true;
 		case eRemoteEvent::StartScriptBegin:
 		{
 			g.reactions.start_script.process(plyr);
