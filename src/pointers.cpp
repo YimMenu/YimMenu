@@ -623,9 +623,9 @@ namespace big
 		});
 
 		// Send Session Matchmaking Attributes
-		main_batch.add("SPDM", "E8 ? ? ? ? 84 C0 0F 84 19 01 00 00 48 8D 4D A0", [this](memory::handle ptr)
+		main_batch.add("SSMA", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 81 EC D0 00 00 00 49 8B", [this](memory::handle ptr)
 		{
-			m_send_session_matchmaking_attributes = ptr.add(1).rip().as<PVOID>();
+			m_send_session_matchmaking_attributes = ptr.as<PVOID>();
 		});
 
 		// Serialize Take Off Ped Variation Task
