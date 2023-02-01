@@ -556,7 +556,7 @@ namespace big
 		});
 
 		// Process Matchmaking Find Response
-		main_batch.add("PMFR", "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC 90 00 00 00 41", [this](memory::handle ptr)
+		main_batch.add("PMFR", "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC F0 00 00 00 41 83", [this](memory::handle ptr)
 		{
 			m_process_matchmaking_find_response = ptr.as<PVOID>();
 		});
