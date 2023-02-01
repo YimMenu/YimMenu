@@ -794,7 +794,7 @@ namespace big
 		});
 
 		// Connect To Peer
-		main_batch.add("CTP", "48 89 5C 24 08 4C 89 44 24 18 55 56 57 41 54 41 55 41 56 41 57 48 81 EC 80", [this](memory::handle ptr)
+		main_batch.add("CTP", "48 89 5C 24 08 4C 89 4C 24 20 48 89 54 24 10 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 60 4D", [this](memory::handle ptr)
 		{
 			m_connect_to_peer = ptr.as<functions::connect_to_peer>();
 		});
