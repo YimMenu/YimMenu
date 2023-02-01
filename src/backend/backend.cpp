@@ -22,7 +22,6 @@ namespace big
 			looped::system_desync_kick_protection();
 			looped::system_spoofing();
 			looped::system_mission_creator();
-			looped::system_auto_tp();
 
 			for (auto command : g_looped_commands)
 				if (command->is_enabled())
