@@ -574,9 +574,9 @@ namespace big
 		});
 
 		// Is Matchmaking Session Valid
-		main_batch.add("IMSV", "E8 ? ? ? ? 48 81 C7 B8 03 00 00 88 03", [this](memory::handle ptr)
+		main_batch.add("IMSV", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 83 EC 20 45 0F", [this](memory::handle ptr)
 		{
-			memory::byte_patch::make(ptr.add(1).rip().as<void*>(), std::to_array({ 0xB0, 0x01, 0xC3 }))->apply(); // has no observable side effects
+			memory::byte_patch::make(ptr.as<void*>(), std::to_array({ 0xB0, 0x01, 0xC3 }))->apply(); // has no observable side effects
 		});
 
 		// Send Network Damage
