@@ -544,7 +544,7 @@ namespace big
 		});
 
 		// Add Player To Session
-		main_batch.add("APTS", "E8 ? ? ? ? 48 8D 8D A0 01 00 00 8A D8", [this](memory::handle ptr)
+		main_batch.add("APTS", "E8 ?? ?? ?? ?? 48 8D 8D F0 01 00 00 8A D8", [this](memory::handle ptr)
 		{
 			m_add_player_to_session = ptr.add(1).rip().as<PVOID>();
 		});
