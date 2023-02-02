@@ -7,16 +7,15 @@ namespace big
 	{
 		if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr || g_local_player->m_ped_task_flag & (int)ePedTask::TASK_FOOT)
 		{
-			ImGui::Text("Please enter a vehicle.");
+			ImGui::Text("HANDLING_ENTER_VEHICLE"_T.data());
 			return;
 		}
 		g_handling_service->backup_vehicle();
 
-		if (components::button("Reload Profiles"))
+		if (components::button("HANDLING_RELOAD_PROFILES"_T))
 		{
 			g_handling_service->load_files();
 		}
-
 
 		if (ImGui::ListBoxHeader("##handling_profiles"))
 		{

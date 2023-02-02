@@ -40,16 +40,19 @@ namespace big
 		{
 			rage::scrNativeHandler handler = it->second;
 
-			__try
+			[this, hash, handler]
 			{
-				_call_asm(&m_call_context, handler, g_pointers->m_native_return);
-				// handler(&m_call_context);
-				g_pointers->m_fix_vectors(&m_call_context);
-			}
-			__except (EXCEPTION_EXECUTE_HANDLER)
-			{
-				[hash]() { LOG(WARNING) << "Exception caught while trying to call " << hash << " native."; }();
-			}
+				__try
+				{
+					_call_asm(&m_call_context, handler, g_pointers->m_native_return);
+					// handler(&m_call_context);
+					g_pointers->m_fix_vectors(&m_call_context);
+				}
+				__except (EXCEPTION_EXECUTE_HANDLER)
+				{
+					[hash]() { LOG(WARNING) << "Exception caught while trying to call " << hash << " native."; }();
+				}
+			}();
 		}
 		else
 		{
