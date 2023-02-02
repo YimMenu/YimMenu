@@ -166,14 +166,12 @@ namespace big
 		SendToCayoPerico = -369672308, // CELL_HI_INV
 		SendToLocation = 330622597, // &Var222, 11);
 		SoundSpam = 36077543, // CELL_APTINVYACHT
-		// -> TODO update
-		Spectate = -1903870031, // SPEC_TCK1
+		Spectate = -2029707091, // SPEC_TCK1
 		Teleport = -702866045, // Mission_Pass_Notify
 		TeleportToWarehouse = -1796714618, // .f_4 == 50
 		TransactionError = 54323524, // NETWORK_RECEIVE_PLAYER_JOBSHARE_CASH
 		VehicleKick = -1603050746, // PIM_RFMOC
-		// -> TODO update
-		MCTeleport = 879177392, // NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(PLAYER::PLAYER_ID()) == (first one)
+		MCTeleport = 891653640, // NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(PLAYER::PLAYER_ID()) == (first one)
 		StartActivity = 1104117595, // (Var0.f_2, -1); first match
 		MarkPlayerAsBeast = -1721728321, // GB_BOSSBST xref == PLAYER... global (sadly doesn't actually turn people into the beast)
 		KickFromInterior = 786522321, // ENTITY::SET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID(), PED::GET_PED_MAX_HEALTH(PLAYER::PLAYER_PED_ID()), false)
@@ -185,18 +183,13 @@ namespace big
 		Crash2 = 1131623211,
 		Crash3 = 1556360603,
 
-		// -> TODO update
-		TSECommand = 113023613, // CnCTG_IN_BF
-		// -> TODO update
-		TSECommandRotateCam = 0x69979fea /*joaat("pats_horse_right") in script*/, // != 29) && f
+		TSECommand = -1428749433, // CnCTG_IN_BF
+		TSECommandRotateCam = 448051697 /*joaat("pats_horse_right") in script*/, // != 29) && f
 
 		Notification = 2041805809,
-		// -> TODO update
-		NotificationMoneyBanked = -1032040118, // TICK_TC_BANK
-		// -> TODO update
-		NotificationMoneyRemoved = -1197151915, // TICK_TC_REMO
-		// -> TODO update
-		NotificationMoneyStolen = -28878294, // TICK_TC_STOL
+		NotificationMoneyBanked = 276906331, // TICK_TC_BANK
+		NotificationMoneyRemoved = 853249803, // TICK_TC_REMO
+		NotificationMoneyStolen = 82080686, // TICK_TC_STOL
 
 		DestroyPersonalVehicle = -2101545224, // CnC_PV_THEFT
 		TriggerCEORaid = -1388385133,
