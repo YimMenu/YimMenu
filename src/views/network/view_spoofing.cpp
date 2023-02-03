@@ -11,6 +11,8 @@ namespace big
 	{
 		components::small_text("SPOOFING_DESCRIPTION"_T);
 
+		ImGui::Text("!!!!! Spoofing options like name and RID have become impossible to spoof with update 1.66 !!!!!");
+
 		components::sub_title("CREW"_T);
 
 		ImGui::Checkbox("SPOOFING_CREW"_T.data(), &g.spoofing.spoof_crew_data);
