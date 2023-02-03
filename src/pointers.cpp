@@ -243,12 +243,6 @@ namespace big
 			m_blame_explode = memory::byte_patch::make(ptr.as<std::uint16_t*>(), 0xE990).get();
 		});
 
-		// Send NET Info to Lobby
-		main_batch.add("SNITL", "48 8B EC 48 83 EC 50 49 8B F9 45 8B F8 4C 8B E2", [this](memory::handle ptr)
-		{
-			m_send_net_info_to_lobby = ptr.sub(24).as<decltype(m_send_net_info_to_lobby)>();
-		});
-
 		// CNetworkObjectMgr
 		main_batch.add("CNOM", "48 8B 0D ? ? ? ? 45 33 C0 E8 ? ? ? ? 33 FF 4C 8B F0", [this](memory::handle ptr)
 		{
@@ -658,18 +652,6 @@ namespace big
 			memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB)->apply();
 		});
 
-		// Write Bitbuffer Gamer Handle
-		main_batch.add("WBGH", "4C 8B DC 49 89 5B 08 57 48 83 EC 30 48 8B F9", [this](memory::handle ptr)
-		{
-			m_write_bitbuffer_gamer_handle = ptr.as<PVOID>();
-		});
-
-		// Read Bitbuffer Gamer Handle
-		main_batch.add("RBGH", "48 8B C4 48 89 58 10 48 89 68 18 48 89 70 20 57 48 83 EC 30 C6", [this](memory::handle ptr)
-		{
-			m_read_bitbuffer_gamer_handle = ptr.as<PVOID>();
-		});
-
 		// Constraint Attachment Crash
 		main_batch.add("CAC", "40 53 48 83 EC 20 48 8B D9 48 8B 49 38 48 8B 01", [this](memory::handle ptr)
 		{
@@ -764,12 +746,6 @@ namespace big
 		main_batch.add("ICF", "48 8D 0D ? ? ? ? 88 05 ? ? ? ? 48 8D 05", [this](memory::handle ptr)
 		{
 			m_interval_check_func = ptr.add(3).rip().as<PVOID>();
-		});
-
-		// Chat Gamer Info
-		main_batch.add("CGI", "E8 ? ? ? ? 48 8B CF E8 ? ? ? ? 8B E8", [this](memory::handle ptr)
-		{
-			m_chat_gamer_info = ptr.add(1).rip().add(6).rip().as<rage::rlGamerInfo*>();
 		});
 
 		// Sound Overload Detour
