@@ -168,27 +168,55 @@ namespace big
 		{
 			ImGui::InputInt("Bone To Shoot", &g.weapons.aimbot.aimbone);
 
-			//todo convert types to combo
+			//todo convert types to combo to get rid of all this code
+			
 
-			components::command_checkbox<"aimnpc">();
+			if(!g.weapons.aimbot.aimall || !g.weapons.aimbot.aimanimals || !g.weapons.aimbot.aimarmy || !g.weapons.aimbot.aimswat || !g.weapons.aimbot.aimcop || !g.weapons.aimbot.aimplayers || !g.weapons.aimbot.aimenemies || !g.weapons.aimbot.aimallcops)
+			{
+				components::command_checkbox<"aimnpc">();
+			}
 			ImGui::SameLine();
-			components::command_checkbox<"aimall">();
+			if (!g.weapons.aimbot.aimnpc || !g.weapons.aimbot.aimanimals || !g.weapons.aimbot.aimarmy || !g.weapons.aimbot.aimswat || !g.weapons.aimbot.aimcop || !g.weapons.aimbot.aimplayers || !g.weapons.aimbot.aimenemies || !g.weapons.aimbot.aimallcops)
+			{
+				components::command_checkbox<"aimall">();
+			}
 			ImGui::SameLine();
-			components::command_checkbox<"aimanimals">();
-			components::command_checkbox<"aimarmy">();
+			if (!g.weapons.aimbot.aimall || !g.weapons.aimbot.aimnpc || !g.weapons.aimbot.aimarmy || !g.weapons.aimbot.aimswat || !g.weapons.aimbot.aimcop || !g.weapons.aimbot.aimplayers || !g.weapons.aimbot.aimenemies || !g.weapons.aimbot.aimallcops)
+			{
+				components::command_checkbox<"aimanimals">();
+			}
+			if (!g.weapons.aimbot.aimall || !g.weapons.aimbot.aimanimals || !g.weapons.aimbot.aimnpc || !g.weapons.aimbot.aimswat || !g.weapons.aimbot.aimcop || !g.weapons.aimbot.aimplayers || !g.weapons.aimbot.aimenemies || !g.weapons.aimbot.aimallcops)
+			{
+				components::command_checkbox<"aimarmy">();
+			}
 			ImGui::SameLine();
-			components::command_checkbox<"aimswat">();
+			if (!g.weapons.aimbot.aimall || !g.weapons.aimbot.aimanimals || !g.weapons.aimbot.aimarmy || !g.weapons.aimbot.aimnpc || !g.weapons.aimbot.aimcop || !g.weapons.aimbot.aimplayers || !g.weapons.aimbot.aimenemies || !g.weapons.aimbot.aimallcops)
+			{
+				components::command_checkbox<"aimswat">();
+			}
 			ImGui::SameLine();
-			components::command_checkbox<"aimcop">();
+			if (!g.weapons.aimbot.aimall || !g.weapons.aimbot.aimanimals || !g.weapons.aimbot.aimarmy || !g.weapons.aimbot.aimswat || !g.weapons.aimbot.aimnpc || !g.weapons.aimbot.aimplayers || !g.weapons.aimbot.aimenemies || !g.weapons.aimbot.aimallcops)
+			{
+				components::command_checkbox<"aimcop">();
+			}
 			ImGui::SameLine();
-			components::command_checkbox<"aimplayers">();
+			if (!g.weapons.aimbot.aimall || !g.weapons.aimbot.aimanimals || !g.weapons.aimbot.aimarmy || !g.weapons.aimbot.aimswat || !g.weapons.aimbot.aimcop || !g.weapons.aimbot.aimnpc || !g.weapons.aimbot.aimenemies || !g.weapons.aimbot.aimallcops)
+			{
+				components::command_checkbox<"aimplayers">();
+			}
 			if (g.weapons.aimbot.aimplayers)
 			{
-				//ImGui::Checkbox("Exclude Friends", &g.weapons.aimbot.excludefriend);
-				//ImGui::Checkbox("Exclude Team", &g.weapons.aimbot.excludeteam)
+				ImGui::Checkbox("Exclude Friends", &g.weapons.aimbot.excludefriends); //DO FUNCTIONS FOR THIS IF(!FRIENDS || TEAM) CONTINUE IN AIMBOT FILE
+				ImGui::Checkbox("Exclude Team", &g.weapons.aimbot.excludeteam);
 			}
-			components::command_checkbox<"aimenemies">();
-			components::command_checkbox<"aimallcop">();
+			if (!g.weapons.aimbot.aimall || !g.weapons.aimbot.aimanimals || !g.weapons.aimbot.aimarmy || !g.weapons.aimbot.aimswat || !g.weapons.aimbot.aimcop || !g.weapons.aimbot.aimplayers || !g.weapons.aimbot.aimnpc || !g.weapons.aimbot.aimallcops)
+			{
+				components::command_checkbox<"aimenemies">();
+			}
+			if (!g.weapons.aimbot.aimall || !g.weapons.aimbot.aimanimals || !g.weapons.aimbot.aimarmy || !g.weapons.aimbot.aimswat || !g.weapons.aimbot.aimcop || !g.weapons.aimbot.aimplayers || !g.weapons.aimbot.aimenemies || !g.weapons.aimbot.aimnpc)
+			{
+				components::command_checkbox<"aimallcop">();
+			}
 		}
 	}
 }
