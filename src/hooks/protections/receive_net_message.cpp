@@ -72,7 +72,10 @@ namespace big
 		if (frame->get_event_type() != rage::netConnection::InFrame::EventType::FrameReceived)
 			return g_hooking->get_original<hooks::receive_net_message>()(netConnectionManager, a2, frame);
 
-		rage::datBitBuffer buffer((uint8_t*)frame->m_data, frame->m_length);
+		if (frame->m_data == nullptr || frame->m_length == 0)
+			return g_hooking->get_original<hooks::receive_net_message>()(netConnectionManager, a2, frame);
+
+		rage::datBitBuffer buffer(frame->m_data, frame->m_length);
 		buffer.m_flagBits = 1;
 
 		rage::eNetMessage msgType;
@@ -250,6 +253,7 @@ namespace big
 				}
 				case rage::eNetMessage::MsgSessionEstablished:
 				{
+#if 0
 					rage::rlGamerHandle handle{ 0 };
 					if (player->get_net_data())
 					{
@@ -264,6 +268,7 @@ namespace big
 							}
 						}
 					}
+#endif
 					break;
 				}
 				case rage::eNetMessage::MsgNetComplaint:
