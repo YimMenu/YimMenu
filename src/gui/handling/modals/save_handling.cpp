@@ -10,20 +10,20 @@ namespace big
 	void modal_handling::modal_save_handling()
 	{
 		ImGui::SetNextWindowSize({ 520, 325 }, ImGuiCond_FirstUseEver);
-		if (ImGui::BeginPopupModal("Save Handling"))
+		if (ImGui::BeginPopupModal("HANDLING_SAVE_HANDLING"_T.data()))
 		{
 			static char name[32];
 
-			components::input_text_with_hint("Name", "Name", name, sizeof(name));
+			components::input_text_with_hint("NAME"_T, "NAME"_T, name, sizeof(name));
 
-			if (components::button("Cancel"))
+			if (components::button("CANCEL"_T))
 			{
 				strcpy(name, "");
 
 				ImGui::CloseCurrentPopup();
 			}
 			ImGui::SameLine();
-			if (components::button("Save"))
+			if (components::button("SAVE"_T))
 			{
 				g_thread_pool->push([&]
 				{

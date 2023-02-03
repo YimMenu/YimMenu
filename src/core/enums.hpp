@@ -151,54 +151,51 @@ namespace big
 	
 	enum class eRemoteEvent
 	{
-		Bounty = 1370461707, // (137, "FM_TXT_BNTY0", iVar1, PLAYER::GET_PLAYER_NAME(Var2.f_1), "", 5000, Var2.f_6);
-		CeoBan = 316066012, // mpply_vipgameplaydisabledtimer
-		CeoKick = 265836764,
-		CeoMoney = 245065909, // Goon_Paid_Large
-		ClearWantedLevel = 2080651008,
-		ForceMission = 1858712297, // ), Var0.f_2, 1))
-		GiveCollectible = 697566862, // DLC_SUM20_HIDDEN_COLLECTIBLES xref
-		GtaBanner = -795380017, // NETWORK::NETWORK_IS_SCRIPT_ACTIVE("BUSINESS_BATTLES", -1, true, 0) second one
-		NetworkBail = 915462795, // NETWORK::NETWORK_BAIL(16, 0, 0); xref func
-		PersonalVehicleDestroyed = -964882004, // PLYVEH_INS_DES1
-		RemoteOffradar = -162943635, // NETWORK::GET_TIME_DIFFERENCE(NETWORK::GET_NETWORK_TIME(), Var0.f_2)
-		SendToCutscene = 392606458, // (bVar3, bVar4, 125f, 1)
-		SendToCayoPerico = -910497748, // CELL_HI_INV
-		SendToLocation = -93722397, // &Var222, 11);
-		SoundSpam = -1891171016, // CELL_APTINVYACHT
-		Spectate = -1903870031, // SPEC_TCK1
-		Teleport = -168599209, // Mission_Pass_Notify
-		TeleportToWarehouse = 434937615, // .f_4 == 50
-		TransactionError = -492741651, // NETWORK_RECEIVE_PLAYER_JOBSHARE_CASH
-		VehicleKick = -852914485, // PIM_RFMOC
-		MCTeleport = 879177392, // NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(PLAYER::PLAYER_ID()) == (first one)
-		StartActivity = 243072129, // (Var0.f_2, -1); first match
-		MarkPlayerAsBeast = -2001677186, // GB_BOSSBST xref == PLAYER... global (sadly doesn't actually turn people into the beast)
-		KickFromInterior = 1454834612, // ENTITY::SET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID(), PED::GET_PED_MAX_HEALTH(PLAYER::PLAYER_PED_ID()), false)
-		InteriorControl = 1268038438, // eventData.f_3 != _INVALID_PLAYER_INDEX_0()
-		SMS = 1519903406,
-		SendTextLabelSMS = -1387723751,
+		Bounty = 1459520933, // (137, "FM_TXT_BNTY0", iVar1, PLAYER::GET_PLAYER_NAME(Var2.f_1), "", 5000, Var2.f_6);
+		CeoBan = 1517094008, // mpply_vipgameplaydisabledtimer
+		CeoKick = 1421455565,
+		CeoMoney = 75579707, // Goon_Paid_Large
+		ClearWantedLevel = 1743540940,
+		ForceMission = -2138393348, // ), Var0.f_2, 1))
+		GiveCollectible = 1839167950, // DLC_SUM20_HIDDEN_COLLECTIBLES xref
+		GtaBanner = 2114252738, // NETWORK::NETWORK_IS_SCRIPT_ACTIVE("BUSINESS_BATTLES", -1, true, 0) second one
+		NetworkBail = 1017995959, // NETWORK::NETWORK_BAIL(16, 0, 0); xref func
+		PersonalVehicleDestroyed = -642631978, // PLYVEH_INS_DES1
+		RemoteOffradar = 1141648445, // NETWORK::GET_TIME_DIFFERENCE(NETWORK::GET_NETWORK_TIME(), Var0.f_2)
+		SendToCutscene = 2139870214, // (bVar3, bVar4, 125f, 1)
+		SendToCayoPerico = -369672308, // CELL_HI_INV
+		SendToLocation = 330622597, // &Var222, 11);
+		SoundSpam = 36077543, // CELL_APTINVYACHT
+		Spectate = -2029707091, // SPEC_TCK1
+		Teleport = -702866045, // Mission_Pass_Notify
+		TeleportToWarehouse = -1796714618, // .f_4 == 50
+		TransactionError = 54323524, // NETWORK_RECEIVE_PLAYER_JOBSHARE_CASH
+		VehicleKick = -1603050746, // PIM_RFMOC
+		MCTeleport = 891653640, // NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(PLAYER::PLAYER_ID()) == (first one)
+		StartActivity = 1104117595, // (Var0.f_2, -1); first match
+		MarkPlayerAsBeast = -1721728321, // GB_BOSSBST xref == PLAYER... global (sadly doesn't actually turn people into the beast)
+		KickFromInterior = 786522321, // ENTITY::SET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID(), PED::GET_PED_MAX_HEALTH(PLAYER::PLAYER_PED_ID()), false)
+		InteriorControl = 1727896103, // eventData.f_3 != _INVALID_PLAYER_INDEX_0()
+		SMS = 53975141,
+		SendTextLabelSMS = 1075676399,
 
-		Crash = -904555865, // SET_NO_LOADING_SCREEN, xref it
-		Crash2 = 1775863255,
-		Crash3 = 2067191610,
+		Crash = -992162568, // SET_NO_LOADING_SCREEN, xref it
+		Crash2 = 1131623211,
+		Crash3 = 1556360603,
 
-		TSECommand = 113023613, // CnCTG_IN_BF
-		TSECommandRotateCam = 0x69979fea /*joaat("pats_horse_right") in script*/, // != 29) && f
+		TSECommand = -1428749433, // CnCTG_IN_BF
+		TSECommandRotateCam = 448051697 /*joaat("pats_horse_right") in script*/, // != 29) && f
 
-		Notification = 548471420,
-		NotificationMoneyBanked = -1032040118, // TICK_TC_BANK
-		NotificationMoneyRemoved = -1197151915, // TICK_TC_REMO
-		NotificationMoneyStolen = -28878294, // TICK_TC_STOL
+		Notification = 2041805809,
+		NotificationMoneyBanked = 276906331, // TICK_TC_BANK
+		NotificationMoneyRemoved = 853249803, // TICK_TC_REMO
+		NotificationMoneyStolen = 82080686, // TICK_TC_STOL
 
-		DestroyPersonalVehicle = -513394492, // CnC_PV_THEFT
-		TriggerCEORaid = -1322731185,
+		DestroyPersonalVehicle = -2101545224, // CnC_PV_THEFT
+		TriggerCEORaid = -1388385133,
 
-		StartScriptBegin = -1127353498,
-		StartScriptProceed = -16793987,
-
-		BadThing1 = 1279059857,
-		BadThing2 = -343495611
+		StartScriptBegin = -95341040,
+		StartScriptProceed = 1742713914
 	};
 
 	enum class eCollectibleType

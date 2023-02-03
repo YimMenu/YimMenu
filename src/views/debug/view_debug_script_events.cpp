@@ -6,7 +6,7 @@ namespace big
 {
 	void debug::script_events()
 	{
-		if (ImGui::BeginTabItem("Script Events"))
+		if (ImGui::BeginTabItem("DEBUG_TAB_SCRIPT_EVENTS"_T.data()))
 		{
 			static int64_t* args;
 			static int event_arg_count = 3;
@@ -14,7 +14,7 @@ namespace big
 			static int event_player_bits;
 			static bool event_everyone = false;
 
-			ImGui::Text("Script Argument Count:");
+			ImGui::Text("DEBUG_SCRIPT_EVENT_ARG_COUNT"_T.data());
 			ImGui::InputInt("###script_event_arg_count", &event_arg_count);
 			if (event_arg_count > 32)
 				event_arg_count = 32;
@@ -37,7 +37,7 @@ namespace big
 			for (int i = 0; i < event_arg_count; i++)
 			{
 				ImGui::PushID(i);
-				ImGui::Text("Arg[%d]", i);
+				ImGui::Text("DEBUG_SCRIPT_EVENT_ARG"_T.data(), i);
 				ImGui::SameLine();
 
 				ImGui::InputScalar("###input_dynamic_arg", ImGuiDataType_S64, &args[i]);
@@ -47,14 +47,14 @@ namespace big
 
 			ImGui::Separator();
 
-			ImGui::Checkbox("Send to everyone", &event_everyone);
+			ImGui::Checkbox("DEBUG_SCRIPT_EVENT_EVERYONE"_T.data(), &event_everyone);
 			if (!event_everyone)
 			{
-				ImGui::Text("Player ID:");
+				ImGui::Text("DEBUG_SCRIPT_EVENT_PLAYER_ID"_T.data());
 				ImGui::InputInt("###player_bits", &event_player_bits);
 			}
 
-			components::button("Send Event", []
+			components::button("DEBUG_SCRIPT_EVENT_SEND_EVENT"_T, []
 			{
 				args[1] = self::id; // prevent detection from AC
 				g_pointers->m_trigger_script_event(1, args, event_arg_count, event_everyone ? -1 : 1 << event_player_bits);

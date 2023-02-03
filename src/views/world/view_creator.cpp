@@ -21,7 +21,7 @@ namespace big
 		}
 
 		ImGui::PushItemWidth(250);
-		components::sub_title("Saved Jobs");
+		components::sub_title("CREATOR_SAVED_JOBS"_T);
 
 		if (ImGui::ListBoxHeader("##empty", ImVec2(200, 200)))
 		{
@@ -40,14 +40,14 @@ namespace big
 
 		if (!selected_creator_file.empty())
 		{
-			components::button("Save To File", []
+			components::button("CREATOR_SAVE_TO_FILE"_T, []
 			{
 				creator_storage_service::save_file(selected_creator_file);
 			});
 
 			ImGui::SameLine();
 
-			components::button("Load From File", []
+			components::button("CREATOR_LOAD_FROM_FILE"_T, []
 			{
 				creator_storage_service::load_file(selected_creator_file);
 			});
@@ -57,11 +57,11 @@ namespace big
 
 		ImGui::PushItemWidth(250);
 		components::input_text_with_hint(
-			"Job Name",
-			"Ex: My Cool Job",
+			"CREATOR_JOB_FILENAME"_T,
+			"CREATOR_JOB_FILENAME_HINT"_T,
 			job_file_name_input, IM_ARRAYSIZE(job_file_name_input));
 
-		components::button("Create Job File", []
+		components::button("CREATOR_JOB_CREATE_FILE"_T, []
 		{
 			cached_creator_files = false;
 			creator_storage_service::create_file(std::string(job_file_name_input) + ".json");
@@ -69,7 +69,7 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::button("Refresh", []
+		components::button("REFRESH"_T, []
 		{
 			cached_creator_files = false;
 		});
@@ -77,9 +77,9 @@ namespace big
 		ImGui::Separator();
 
 		static char job_link[69]{};
-		components::input_text("SocialClub Job Link", job_link, sizeof(job_link));
+		components::input_text("CREATOR_JOB_LINK"_T, job_link, sizeof(job_link));
 
-		components::button("Import", []
+		components::button("CREATOR_JOB_IMPORT"_T, []
 		{
 			g_thread_pool->push([]
 			{
@@ -100,14 +100,14 @@ namespace big
 						if (g_api_service->download_job_metadata(content_id, f1 < 0 ? 0 : f1, f0 < 0 ? 0 : f0, NETWORK::UGC_GET_CONTENT_LANGUAGE(0)))
 						{
 							cached_creator_files = false;
-							g_notification_service->push("Job Import", "Job Import successfully done");
+							g_notification_service->push("CREATOR_JOB_IMPORT_NOTIFICATION"_T.data(), "CREATOR_JOB_IMPORT_SUCCESS"_T.data());
 						}
 						else {
-							g_notification_service->push_error("Job Import", "Could download job metadata");
+							g_notification_service->push_error("CREATOR_JOB_IMPORT_NOTIFICATION"_T.data(), "CREATOR_JOB_FAILED_METADATA_FETCH"_T.data());
 						}
 					}
 					else {
-						g_notification_service->push_error("Job Import", "UGC QueryContent failed");
+						g_notification_service->push_error("CREATOR_JOB_IMPORT_NOTIFICATION"_T.data(), "CREATOR_JOB_UGC_QUERY_FAILED"_T.data());
 					}
 				});
 			});
@@ -115,19 +115,19 @@ namespace big
 
 		ImGui::EndGroup();
 
-		components::sub_title("Launch Creator");
+		components::sub_title("CREATOR_LAUNCH"_T);
 		ImGui::BeginGroup();
-		components::button("Race", [] { scripts::start_creator_script(RAGE_JOAAT("fm_race_creator")); }); ImGui::SameLine();
-		components::button("Capture", [] { scripts::start_creator_script(RAGE_JOAAT("fm_capture_creator")); }); ImGui::SameLine();
-		components::button("Deathmatch", [] { scripts::start_creator_script(RAGE_JOAAT("fm_deathmatch_creator")); }); ImGui::SameLine();
-		components::button("LTS", [] { scripts::start_creator_script(RAGE_JOAAT("fm_lts_creator")); });
+		components::button("RACE"_T, [] { scripts::start_creator_script(RAGE_JOAAT("fm_race_creator")); }); ImGui::SameLine();
+		components::button("CAPTURE"_T, [] { scripts::start_creator_script(RAGE_JOAAT("fm_capture_creator")); }); ImGui::SameLine();
+		components::button("DEATHMATCH"_T, [] { scripts::start_creator_script(RAGE_JOAAT("fm_deathmatch_creator")); }); ImGui::SameLine();
+		components::button("LTS"_T, [] { scripts::start_creator_script(RAGE_JOAAT("fm_lts_creator")); });
 		ImGui::EndGroup();
 
-		components::sub_title("Creator Options");
+		components::sub_title("CREATOR_OPTIONS"_T);
 		ImGui::BeginGroup();
-		ImGui::Checkbox("Infinite Model Memory", &g.ugc.infinite_model_memory);
+		ImGui::Checkbox("CREATOR_INFINITE_MEMORY"_T.data(), &g.ugc.infinite_model_memory);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Infinite Model Memory is only useful if dev mode is not activated");
+			ImGui::SetTooltip("CREATOR_INFINITE_MEMORY_DESCRIPTION"_T.data());
 
 		ImGui::EndGroup();
 	}

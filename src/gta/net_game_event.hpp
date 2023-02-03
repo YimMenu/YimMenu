@@ -403,12 +403,12 @@ namespace rage
 			uint32_t m_connection_identifier; //0x0044
 			InFrame* m_this; //0x0048
 			uint32_t m_peer_id; //0x0050
-			char pad_0050[36]; //0x0058
-			uint32_t m_length; //0x0078
-			char pad_007C[4]; //0x007C
-			void* m_data; //0x0080
+			char pad_0050[44]; //0x0058
+			uint32_t m_length; //0x0080
+			char pad_007C[4]; //0x0084
+			void* m_data; //0x0088
 		};
-		static_assert(sizeof(rage::netConnection::InFrame) == 0x88);
+		static_assert(sizeof(rage::netConnection::InFrame) == 0x90);
 	}
 	
 	enum class eEventNetworkType : int64_t

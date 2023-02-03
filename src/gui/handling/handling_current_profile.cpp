@@ -8,19 +8,19 @@ namespace big
 	{
 		if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr || g_local_player->m_ped_task_flag & (int)ePedTask::TASK_FOOT)
 		{
-			ImGui::Text("Please enter a vehicle.");
+			ImGui::Text("HANDLING_ENTER_VEHICLE"_T.data());
 			return;
 		}
 		g_handling_service->backup_vehicle();
 
-		if (components::button("Save Profile"))
+		if (components::button("HANDLING_SAVE_PROFILE"_T.data()))
 		{
-			ImGui::OpenPopup("Save Handling");
+			ImGui::OpenPopup("HANDLING_SAVE_HANDLING"_T.data());
 		}
 
 		modal_handling::modal_save_handling();
 		ImGui::SameLine();
-		if (components::button("Restore Handling"))
+		if (components::button("HANDLING_RESTORE_HANDLING"_T.data()))
 			g_handling_service->restore_vehicle();
 
 		ImGui::Separator();

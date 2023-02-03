@@ -14,7 +14,7 @@ namespace big
 
 	navigation_struct* gui_service::get_selected()
 	{
-		navigation_struct tab_none = { "", nullptr };
+		static navigation_struct tab_none = { "", nullptr };
 		if (current_tab.empty() || current_tab.at(0) == tabs::NONE)
 			return &tab_none;
 

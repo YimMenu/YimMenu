@@ -4,15 +4,15 @@ namespace big
 {
 	void tab_current_profile::tab_other()
 	{
-		if (ImGui::BeginTabItem("Other"))
+		if (ImGui::BeginTabItem("HANDLING_TAB_OTHER"_T.data()))
 		{
-			ImGui::Text("Acceleration Multiplier");
+			ImGui::Text("HANDLING_ACCELERATION_MULTIPLIER"_T.data());
 			ImGui::DragFloat("###handling_acceleration", &g_local_player->m_vehicle->m_handling_data->m_acceleration, 1.f, .01f, 10.f);
 
-			ImGui::Text("Downforce Multiplier");
+			ImGui::Text("HANDLING_DOWNFORCE_MULTIPLIER"_T.data());
 			ImGui::DragFloat("###handling_downforce", &g_local_player->m_vehicle->m_handling_data->m_downforce_multiplier, 1.f, 0.f, 10.f);
 
-			ImGui::Text("Inertia Multiplier");
+			ImGui::Text("HANDLING_INERTIA_MULTIPLIER"_T.data());
 			float fInertiaMult[3];
 			fInertiaMult[0] = g_local_player->m_vehicle->m_handling_data->m_inertia_mult.x;
 			fInertiaMult[1] = g_local_player->m_vehicle->m_handling_data->m_inertia_mult.y;

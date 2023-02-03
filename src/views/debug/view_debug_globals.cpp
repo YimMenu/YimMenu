@@ -7,25 +7,25 @@ namespace big
 {
 	void debug::globals()
 	{
-		if (ImGui::BeginTabItem("Globals"))
+		if (ImGui::BeginTabItem("DEBUG_TAB_GLOBALS"_T.data()))
 		{
-			if (ImGui::Checkbox("Enable Freezing", &g_globals_service->m_running) && g_globals_service->m_running)
+			if (ImGui::Checkbox("DEBUG_GLOBALS_ENABLE_FREEZING"_T.data(), &g_globals_service->m_running) && g_globals_service->m_running)
 				g_thread_pool->push([&]() { g_globals_service->loop(); });
 
-			if (components::button("Load"))
+			if (components::button("LOAD"_T))
 				g_globals_service->load();
 			ImGui::SameLine();
-			if (components::button("Save"))
+			if (components::button("SAVE"_T))
 				g_globals_service->save();
 
 
 			ImGui::SameLine();
-			if (components::button("Add Global"))
+			if (components::button("DEBUG_GLOBALS_ADD"_T))
 			{
-				ImGui::OpenPopup("New Global");
+				ImGui::OpenPopup("DEBUG_GLOBALS_NEW"_T.data());
 			}
 
-			if (ImGui::BeginPopupModal("New Global"))
+			if (ImGui::BeginPopupModal("DEBUG_GLOBALS_NEW"_T.data()))
 			{
 				static int base_address = 0;
 				static bool freeze = false;
@@ -34,13 +34,13 @@ namespace big
 				static int offset_count = 0;
 				static int previous_offset_count = 0;
 
-				ImGui::Text("Name:");
+				ImGui::Text("DEBUG_GLOBALS_NAME"_T.data());
 				components::input_text_with_hint("##global_name", "Name", name, sizeof(name));
-				ImGui::Text("Base Address:");
+				ImGui::Text("DEBUG_GLOBALS_BASE_ADDRESS"_T.data());
 				ImGui::InputInt("##modal_global_base_addr", &base_address);
-				ImGui::Text("Freeze:");
+				ImGui::Text("DEBUG_GLOBAL_FREEZE"_T.data());
 				ImGui::Checkbox("##modal_global_freeze", &freeze);
-				ImGui::Text("Number of Offsets:");
+				ImGui::Text("DEBUG_GLOBAL_OFFSET_COUNT"_T.data());
 				ImGui::InputInt("##modal_offset_count", &offset_count);
 
 				if (offset_count < 0) offset_count = 0;
@@ -64,10 +64,10 @@ namespace big
 
 					ImGui::Separator();
 
-					ImGui::Text("Offset: %d", i + 1);
+					ImGui::Text("DEBUG_GLOBAL_OFFSET"_T.data(), i + 1);
 					ImGui::InputInt("##offset", &offsets[i][0]);
 
-					ImGui::Text("Size:");
+					ImGui::Text("DEBUG_GLOBAL_SIZE"_T.data());
 					ImGui::SameLine();
 					ImGui::InputInt("##size", &offsets[i][1]);
 
@@ -75,7 +75,7 @@ namespace big
 				}
 				ImGui::PopItemWidth();
 
-				if (components::button("Cancel"))
+				if (components::button("CANCEL"_T))
 				{
 					strcpy(name, "");
 					freeze = false;
@@ -87,7 +87,7 @@ namespace big
 					ImGui::CloseCurrentPopup();
 				}
 				ImGui::SameLine();
-				if (components::button("Save"))
+				if (components::button("SAVE"_T))
 				{
 					auto new_global = global(name, base_address, freeze, offsets, offset_count);
 					new_global.build_cache();
@@ -114,12 +114,12 @@ namespace big
 				ImGui::Separator();
 
 				ImGui::PushID(global.get_id());
-				ImGui::Checkbox("Freeze", &global.m_freeze);
+				ImGui::Checkbox("DEBUG_GLOBAL_FREEZE_TOGGLE"_T.data(), &global.m_freeze);
 
 				ImGui::BeginGroup();
 
-				ImGui::Text("Name:");
-				ImGui::Text("Value:");
+				ImGui::Text("DEBUG_GLOBALS_NAME"_T.data());
+				ImGui::Text("DEBUG_GLOBALS_VALUE"_T.data());
 
 				ImGui::EndGroup();
 
@@ -139,7 +139,7 @@ namespace big
 
 				ImGui::BeginGroup();
 
-				if (components::button("Delete"))
+				if (components::button("DELETE"_T))
 				{
 					for (int i = 0; i < g_globals_service->m_globals.size(); i++)
 						if (auto& it = g_globals_service->m_globals.at(i); it.get_id() == global.get_id())
@@ -148,7 +148,7 @@ namespace big
 					break;
 				}
 
-				if (components::button("Write"))
+				if (components::button("WRITE"_T))
 					global.write();
 
 				ImGui::PopID();
