@@ -9,22 +9,22 @@ namespace big
 {
 	void view::spoofing()
 	{
-		components::small_text("To spoof any of the below credentials you need to reconnect with the lobby.\nAll spoofed details will be only visible by other players, your game will still show your actual name, ip, rid...");
+		components::small_text("SPOOFING_DESCRIPTION"_T);
 
-		components::sub_title("Username");
+		components::sub_title("USERNAME"_T);
 
-		ImGui::Checkbox("Spoof Username", &g.spoofing.spoof_username);
+		ImGui::Checkbox("SPOOFING_USERNAME"_T.data(), &g.spoofing.spoof_username);
 		if (g.spoofing.spoof_username)
 		{
 			ImGui::SameLine();
-			ImGui::Checkbox("Spoof Username Locally", &g.spoofing.spoof_local_username);
+			ImGui::Checkbox("SPOOFING_USERNAME_LOCAL"_T.data(), &g.spoofing.spoof_local_username);
 		}
 
 		constexpr size_t name_size = RTL_FIELD_SIZE(rage::rlGamerInfo, m_name);
 		static char name[name_size];
 		strcpy_s(name, sizeof(name), g.spoofing.username.c_str());
 
-		ImGui::Text("Username:");
+		ImGui::Text("USERNAME_COLON"_T.data());
 		components::input_text("##username_input", name, sizeof(name));
 
 		if (name != g.spoofing.username)
@@ -32,56 +32,56 @@ namespace big
 
 		ImGui::Separator();
 
-		components::sub_title("IP Address");
+		components::sub_title("IP_ADDRESS"_T);
 
-		ImGui::Checkbox("Spoof IP", &g.spoofing.spoof_ip);
+		ImGui::Checkbox("SPOOFING_IP"_T.data(), &g.spoofing.spoof_ip);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Disable this feature if you're having trouble joining sessions.");
+			ImGui::SetTooltip("SPOOFING_IP_DESCRIPTION"_T.data());
 
-		ImGui::Text("IP Address:");
+		ImGui::Text("IP_ADDRESS_COLON"_T.data());
 		ImGui::DragInt4("##ip_fields", g.spoofing.ip_address.data(), 0, 255);
 
 		ImGui::Separator();
 
-		components::sub_title("Rockstar ID");
+		components::sub_title("ROCKSTAR_ID"_T);
 
-		ImGui::Checkbox("Spoof Rockstar ID", &g.spoofing.spoof_rockstar_id);
+		ImGui::Checkbox("SPOOFING_ROCKSTAR_ID"_T.data(), &g.spoofing.spoof_rockstar_id);
 
-		ImGui::Text("Rockstar ID:");
+		ImGui::Text("ROCKSTAR_ID_COLON"_T.data());
 		ImGui::InputScalar("##rockstar_id_input", ImGuiDataType_U64, &g.spoofing.rockstar_id);
 
-		components::sub_title("Hide Features");
-		ImGui::Checkbox("Hide God Mode", &g.spoofing.spoof_hide_god);
-		ImGui::Checkbox("Hide Spectate", &g.spoofing.spoof_hide_spectate);
+		components::sub_title("SPOOFING_HIDE_FEATURES"_T);
+		ImGui::Checkbox("SPOOFING_HIDE_GOD_MODE"_T.data(), &g.spoofing.spoof_hide_god);
+		ImGui::Checkbox("SPOOFING_HIDE_SPECTATE"_T.data(), &g.spoofing.spoof_hide_spectate);
 
-		components::sub_title("Crew");
+		components::sub_title("CREW"_T);
 
-		ImGui::Checkbox("Spoof Crew", &g.spoofing.spoof_crew_data);
+		ImGui::Checkbox("SPOOFING_CREW"_T.data(), &g.spoofing.spoof_crew_data);
 
 		constexpr size_t crew_tag_size = RTL_FIELD_SIZE(ClanData, m_clan_tag);
 		static char crew_tag[crew_tag_size];
 		strcpy_s(crew_tag, sizeof(crew_tag), g.spoofing.crew_tag.c_str());
 
-		ImGui::Text("Crew Tag:");
+		ImGui::Text("SPOOFING_CREW_TAG"_T.data());
 		components::input_text("##crew_tag_input", crew_tag, sizeof(crew_tag));
 
 		if (crew_tag != g.spoofing.crew_tag)
 			g.spoofing.crew_tag = std::string(crew_tag);
 
-		ImGui::Checkbox("Is Rockstar Crew", &g.spoofing.rockstar_crew);
+		ImGui::Checkbox("SPOOFING_CREW_ROCKSTAR"_T.data(), &g.spoofing.rockstar_crew);
 
-		ImGui::Checkbox("Square Crew Tag", &g.spoofing.square_crew_tag);
+		ImGui::Checkbox("SPOOFING_CREW_SQUARE_TAG"_T.data(), &g.spoofing.square_crew_tag);
 
-		components::sub_title("Extra - Only work when Spoofed RID");
+		components::sub_title("SPOOFING_EXTRA"_T);
 
-		ImGui::Checkbox("Is Cheater", &g.spoofing.spoof_cheater);
-		ImGui::Checkbox("Is Rockstar Dev", &g.spoofing.spoof_rockstar_dev);
-		ImGui::Checkbox("Is Rockstar QA", &g.spoofing.spoof_rockstar_qa);
+		ImGui::Checkbox("SPOOFING_IS_CHEATER"_T.data(), &g.spoofing.spoof_cheater);
+		ImGui::Checkbox("SPOOFING_IS_DEV"_T.data(), &g.spoofing.spoof_rockstar_dev);
+		ImGui::Checkbox("SPOOFING_IS_QA"_T.data(), &g.spoofing.spoof_rockstar_qa);
 
-		components::sub_title("Session Attributes");
-		components::small_text("Only works when session host");
+		components::sub_title("SPOOFING_SESSION_ATTRIBUTES"_T);
+		components::small_text("SPOOFING_ONLY_WORKS_AS_HOST"_T);
 
-		ImGui::Checkbox("Region", &g.spoofing.spoof_session_region_type);
+		ImGui::Checkbox("SPOOFING_ATTRIBUTE_REGION"_T.data(), &g.spoofing.spoof_session_region_type);
 		if (g.spoofing.spoof_session_region_type)
 		{
 			ImGui::SameLine();
@@ -97,7 +97,7 @@ namespace big
 				ImGui::EndCombo();
 			}
 		}
-		ImGui::Checkbox("Language", &g.spoofing.spoof_session_language);
+		ImGui::Checkbox("SPOOFING_ATTRIBUTE_LANGUAGE"_T.data(), &g.spoofing.spoof_session_language);
 		if (g.spoofing.spoof_session_language)
 		{
 			ImGui::SameLine();
@@ -115,7 +115,7 @@ namespace big
 			}
 		}
 
-		ImGui::Checkbox("Player Count", &g.spoofing.spoof_session_player_count);
+		ImGui::Checkbox("SPOOFING_ATTRIBUTE_PLAYER_COUNT"_T.data(), &g.spoofing.spoof_session_player_count);
 		if (g.spoofing.spoof_session_player_count)
 		{
 			ImGui::SameLine();

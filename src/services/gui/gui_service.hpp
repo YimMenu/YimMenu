@@ -45,6 +45,7 @@ namespace big
 		HOTKEY_SETTINGS,
 		REACTION_SETTINGS,
 		PROTECTION_SETTINGS,
+		TRANSLATION_SETTINGS,
 		DEBUG,
 
 		PLAYER
@@ -101,6 +102,7 @@ namespace big
 				{ tabs::HOTKEY_SETTINGS, { "Hotkeys", view::hotkey_settings }},
 				{ tabs::REACTION_SETTINGS, { "Reactions", view::reaction_settings}},
 				{ tabs::PROTECTION_SETTINGS, { "Protection", view::protection_settings}},
+				{ tabs::TRANSLATION_SETTINGS, { "Translation", view::translation_settings}},
 				{ tabs::DEBUG, { "Debug", nullptr }},
 			}}},
 			{tabs::PLAYER, {"", view::view_player}}

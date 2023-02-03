@@ -25,7 +25,7 @@ namespace big
 			const auto vehicle = persist_car_service::load_vehicle(selected_vehicle_file);
 			if (!vehicle)
 			{
-				g_notification_service->push_warning("Persist Car", "Vehicle failed to spawn, there is most likely too many spawned vehicles in the area");
+				g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_TO_MANY_SPAWNED"_T.data());
 			}
 			else if (g.spawn_vehicle.spawn_inside)
 				teleport::into_vehicle(vehicle);
@@ -34,7 +34,7 @@ namespace big
 		}
 		else
 		{
-			g_notification_service->push_warning("Persist Car", "Select a file first");
+			g_notification_service->push_warning("PERSIST_CAR"_T.data(), "SELECT_FILE_FIRST"_T.data());
 		}
 	}
 
@@ -45,7 +45,7 @@ namespace big
 		const auto vehicle_files = persist_car_service::list_files();
 
 		ImGui::PushItemWidth(250);
-		ImGui::Text("Saved Vehicles");
+		ImGui::Text("SAVED_VEHICLES"_T.data());
 
 		if (ImGui::ListBoxHeader("##empty", ImVec2(200, 200)))
 		{
@@ -65,18 +65,18 @@ namespace big
 
 		ImGui::PushItemWidth(250);
 		components::input_text_with_hint(
-			"Vehicle File Name",
-			"Ex: My Cool Car",
+			"VEHICLE_FILE_NAME"_T,
+			"VEHICLE_FILE_NAME_EXAMPLE"_T,
 			vehicle_file_name_input, IM_ARRAYSIZE(vehicle_file_name_input));
 
 		ImGui::SameLine();
 
-		components::button("Save Vehicle", []
+		components::button("SAVE_VEHICLE"_T, []
 		{
 			save_vehicle(vehicle_file_name_input);
 		});
 
-		components::button("Load Vehicle", []
+		components::button("LOAD_VEHICLE"_T, []
 		{
 			load_vehicle(selected_vehicle_file);
 		});

@@ -49,7 +49,7 @@ namespace big
 			}
 			else
 			{
-				ImGui::Text("No sessions");
+				ImGui::Text("NO_SESSIONS"_T.data());
 			}
 
 			ImGui::ListBoxFooter();
@@ -62,25 +62,25 @@ namespace big
 			{
 				auto& session = g_matchmaking_service->get_found_sessions()[selected_session_idx];
 
-				ImGui::Text("Num Players: %d", session.attributes.player_count);
-				ImGui::Text("Discriminator: 0x%X", session.attributes.discriminator);
-				ImGui::Text("Region: %s", regions[session.attributes.region].name);
-				ImGui::Text("Language: %s", languages[session.attributes.language].name);
+				ImGui::Text("SESSION_BROWSER_NUM_PLAYERS"_T.data(), session.attributes.player_count);
+				ImGui::Text("SESSION_BROWSER_DISCRIMINATOR"_T.data(), session.attributes.discriminator);
+				ImGui::Text("SESSION_BROWSER_REGION"_T.data(), regions[session.attributes.region].name);
+				ImGui::Text("SESSION_BROWSER_LANGUAGE"_T.data(), languages[session.attributes.language].name);
 
 				auto& data = session.info.m_net_player_data;
-				ImGui::Text("Host Rockstar ID: %d", data.m_gamer_handle.m_rockstar_id);
+				ImGui::Text("SESSION_BROWSER_HOST_RID"_T.data(), data.m_gamer_handle.m_rockstar_id);
 
-				components::button("Copy Session Info", []
+				components::button("COPY_SESSION_INFO"_T, []
 				{
 					ImGui::SetClipboardText(session_info);
 				});
 				ImGui::SameLine();
-				components::button("Join", [session]
+				components::button("JOIN"_T, [session]
 				{
 					if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 ||
 						STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
 					{
-						g_notification_service->push_error("Join Session", "Player switch in progress, wait a bit.");
+						g_notification_service->push_error("JOIN_SESSION"_T.data(), "PLAYER_SWITCH_IN_PROGRESS"_T.data());
 						return;
 					}
 
@@ -96,12 +96,12 @@ namespace big
 			ImGui::EndChild();
 		}
 
-		if (ImGui::TreeNode("Filters"))
+		if (ImGui::TreeNode("FILTERS"_T.data()))
 		{
-			ImGui::Checkbox("Region", &g.session_browser.region_filter_enabled);
+			ImGui::Checkbox("REGION"_T.data(), &g.session_browser.region_filter_enabled);
 
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("It is highly recommended to keep this filter enabled");
+				ImGui::SetTooltip("REGION_FILTER_DESC"_T.data());
 
 			if (g.session_browser.region_filter_enabled)
 			{
@@ -121,10 +121,10 @@ namespace big
 
 			}
 
-			ImGui::Checkbox("Language", &g.session_browser.language_filter_enabled);
+			ImGui::Checkbox("LANGUAGE"_T.data(), &g.session_browser.language_filter_enabled);
 
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Setting a correct region filter for the language will help tremendously");
+				ImGui::SetTooltip("LANGUAGE_FILTER_DESC"_T.data());
 
 			if (g.session_browser.language_filter_enabled)
 			{
@@ -143,15 +143,15 @@ namespace big
 				}
 			}
 
-			ImGui::Checkbox("Players", &g.session_browser.player_count_filter_enabled);
+			ImGui::Checkbox("PLAYERS"_T.data(), &g.session_browser.player_count_filter_enabled);
 
 			if (g.session_browser.player_count_filter_enabled)
 			{
-				ImGui::InputInt("Minimum", &g.session_browser.player_count_filter_minimum);
-				ImGui::InputInt("Maximum", &g.session_browser.player_count_filter_maximum);
+				ImGui::InputInt("MIN"_T.data(), &g.session_browser.player_count_filter_minimum);
+				ImGui::InputInt("MAX"_T.data(), &g.session_browser.player_count_filter_maximum);
 			}
 
-			ImGui::Checkbox("Pool Type", &g.session_browser.pool_filter_enabled);
+			ImGui::Checkbox("POOL_TYPE"_T.data(), &g.session_browser.pool_filter_enabled);
 			if (g.session_browser.pool_filter_enabled)
 			{
 				ImGui::SameLine();
@@ -161,25 +161,25 @@ namespace big
 			ImGui::TreePop();
 		}
 
-		if (ImGui::TreeNode("Sorting"))
+		if (ImGui::TreeNode("SORTING"_T.data()))
 		{
-			ImGui::Combo("Sort By", &g.session_browser.sort_method, "Off\0Player Count");
+			ImGui::Combo("SORT_BY"_T.data(), &g.session_browser.sort_method, "Off\0Player Count");
 			if (g.session_browser.sort_method != 0)
-				ImGui::Combo("Direction", &g.session_browser.sort_direction, "Ascending\0Descending");
+				ImGui::Combo("DIRECTION"_T.data(), &g.session_browser.sort_direction, "Ascending\0Descending");
 			ImGui::TreePop();
 		}
 
-		if (ImGui::Checkbox("Replace Game Matchmaking", &g.session_browser.replace_game_matchmaking));
+		if (ImGui::Checkbox("REPLACE_GAME_MATCHMAKING"_T.data(), &g.session_browser.replace_game_matchmaking));
 
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("This will replace the default game matchmaking with a custom one that will use the filters and sorting set here");
+			ImGui::SetTooltip("REPLACE_GAME_MATCHMAKING_DESC"_T.data());
 
-		components::button("Refresh", []
+		components::button("REFRESH"_T, []
 		{
 			selected_session_idx = -1;
 
 			if (!g_matchmaking_service->matchmake())
-				g_notification_service->push_error("Matchmaking", "Matchmaking failed");
+				g_notification_service->push_error("MATCHMAKING"_T.data(), "MATCHMAKING_FAIL"_T.data());
 		});
 	}
 }

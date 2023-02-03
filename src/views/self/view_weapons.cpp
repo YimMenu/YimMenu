@@ -11,7 +11,7 @@
 namespace big
 {
 	void view::weapons() {
-		components::sub_title("Ammo");
+		components::sub_title("AMMO"_T);
 
 		ImGui::BeginGroup();
 
@@ -22,7 +22,7 @@ namespace big
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		if (ImGui::Checkbox("Bypass C4 Limit", &g.weapons.bypass_c4_limit))
+		if (ImGui::Checkbox("BYPASS_C4_LIM"_T.data(), &g.weapons.bypass_c4_limit))
 		{
 			if (g.weapons.bypass_c4_limit)
 				g_pointers->m_bypass_max_count_of_active_sticky_bombs->apply();
@@ -36,12 +36,12 @@ namespace big
 
 		ImGui::Separator();
 
-		ImGui::Checkbox("Enable Special Ammo", &g.weapons.ammo_special.toggle);
+		ImGui::Checkbox("ENABLE_SPECIAL_AMMO"_T.data(), &g.weapons.ammo_special.toggle);
 
 		eAmmoSpecialType selected_ammo = g.weapons.ammo_special.type;
 		eExplosionTag selected_explosion = g.weapons.ammo_special.explosion_tag;
 
-		if (ImGui::BeginCombo("Special Ammo", SPECIAL_AMMOS[(int)selected_ammo].name))
+		if (ImGui::BeginCombo("SPECIAL_AMMO"_T.data(), SPECIAL_AMMOS[(int)selected_ammo].name))
 		{
 			for (const auto& special_ammo : SPECIAL_AMMOS)
 			{
@@ -59,7 +59,7 @@ namespace big
 			ImGui::EndCombo();
 		}
 
-		if (ImGui::BeginCombo("Bullet Impact", BULLET_IMPACTS[selected_explosion]))
+		if (ImGui::BeginCombo("BULLET_IMPACT"_T.data(), BULLET_IMPACTS[selected_explosion]))
 		{
 			for (const auto& [type, name] : BULLET_IMPACTS)
 			{
@@ -79,7 +79,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::sub_title("Misc");
+		components::sub_title("MISC"_T);
 
 		components::command_checkbox<"crosshairs">();
 		ImGui::SameLine();
@@ -89,7 +89,7 @@ namespace big
 		ImGui::SameLine();
 		components::command_checkbox<"infrange">();
 
-		components::button("Get All Weapons", []
+		components::button("GET_ALL_WEAPONS"_T, []
 		{
 			for (const auto& [_, weapon] : g_gta_data_service->weapons())
 			{
@@ -100,7 +100,7 @@ namespace big
 			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, parachute_hash, 0, true);
 		});
 		ImGui::SameLine();
-		components::button("Remove Current Weapon", []
+		components::button("REMOVE_CUR_WEAPON"_T, []
 		{
 			Hash weaponHash;
 			WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weaponHash, 1);
@@ -112,13 +112,14 @@ namespace big
 
 		components::command_checkbox<"incrdamage">();
 		ImGui::InputFloat2("Damage", &g.weapons.increased_damage, "%.1f");
+
 		ImGui::Separator();
 
-		components::sub_title("Custom Weapons");
+		components::sub_title("CUSTOM_WEAPONS"_T);
 
 		CustomWeapon selected = g.weapons.custom_weapon;
 
-		if (ImGui::BeginCombo("Weapon", custom_weapons[(int)selected].name))
+		if (ImGui::BeginCombo("WEAPON"_T.data(), custom_weapons[(int)selected].name))
 		{
 			for (const custom_weapon& weapon : custom_weapons)
 			{
@@ -145,7 +146,7 @@ namespace big
 			// this some ugly ass looking code
 			static char vehicle_gun[12];
 			std::memcpy(vehicle_gun, g.weapons.vehicle_gun_model.c_str(), 12);
-			if (ImGui::InputTextWithHint("Shooting Model", "Name of the vehicle model", vehicle_gun, sizeof(vehicle_gun)))
+			if (ImGui::InputTextWithHint("SHOOTING_MODEL"_T.data(), "NAME_VEHICLE_MODEL"_T.data(), vehicle_gun, sizeof(vehicle_gun)))
 			{
 				g.weapons.vehicle_gun_model = vehicle_gun;
 			}

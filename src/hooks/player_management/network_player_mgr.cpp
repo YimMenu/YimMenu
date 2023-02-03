@@ -13,7 +13,7 @@ namespace big
 		if (g.notifications.network_player_mgr_init.log)
 			LOG(INFO) << "CNetworkPlayerMgr#init got called, we're probably entering a session.";
 		if (g.notifications.network_player_mgr_init.notify)
-			g_notification_service->push("Network Player Manager", "Entering session and initializing player data.");
+			g_notification_service->push("NETWORK_PLAYER_MGR"_T.data(), "NETWORK_PLAYER_MGR_INIT"_T.data());
 
 		// set our local spoofed name
 		if (g.spoofing.spoof_username && g.spoofing.spoof_local_username)
@@ -43,7 +43,7 @@ namespace big
 		if (g.notifications.network_player_mgr_shutdown.log)
 			LOG(INFO) << "CNetworkPlayerMgr#shutdown got called, we're probably leaving our session.";
 		if (g.notifications.network_player_mgr_shutdown.notify)
-			g_notification_service->push("Network Player Manager", "Leaving session and cleaning up player data.");
+			g_notification_service->push("NETWORK_PLAYER_MGR"_T.data(), "NETWORK_PLAYER_MGR_DESTROY"_T.data());
 
 		g_hooking->get_original<hooks::network_player_mgr_shutdown>()(_this);
 	}
