@@ -20,9 +20,10 @@ namespace big
 			m_resolution_y = ptr.add(4).rip().as<int*>();
 		});
 
-		main_batch.add("RC", "40 32 ED 83 25", [this](memory::handle ptr)
+		// Region Code
+		main_batch.add("RC", "48 83 EC 28 83 3D ? ? ? ? ? 75 10", [this](memory::handle ptr)
 		{
-			m_region_code = ptr.add(5).rip().add(1).as<uint32_t*>();
+			m_region_code = ptr.add(16).rip().add(1).as<uint32_t*>();
 		});
 
 		// Max Wanted Level
@@ -240,12 +241,6 @@ namespace big
 		main_batch.add("BE", "0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8", [this](memory::handle ptr)
 		{
 			m_blame_explode = memory::byte_patch::make(ptr.as<std::uint16_t*>(), 0xE990).get();
-		});
-
-		// Send NET Info to Lobby
-		main_batch.add("SNITL", "33 DB 48 83 C1 68 45 8B F0", [this](memory::handle ptr)
-		{
-			m_send_net_info_to_lobby = ptr.sub(0x26).as<decltype(m_send_net_info_to_lobby)>();
 		});
 
 		// CNetworkObjectMgr
@@ -519,13 +514,13 @@ namespace big
 		});
 
 		// Handle Join Request
-		main_batch.add("HJR", "48 8B C4 4C 89 48 20 4C 89 40 18 48 89 50 10 55 53 56 57 41 54 41 55 41 56 41 57 48 8D A8 E8 FE", [this](memory::handle ptr)
+		main_batch.add("HJR", "48 8B C4 48 89 58 08 4C 89 48 20 4C 89 40 18 48 89 50 10 55 56 57 41 54 41 55 41 56 41 57 48 8D A8 E8", [this](memory::handle ptr)
 		{
 			m_handle_join_request = ptr.as<PVOID>();
 		});
 
 		// Handle Join Request
-		main_batch.add("WJRD", "E8 ? ? ? ? 48 8D 8D 90 00 00 00 F6 D8", [this](memory::handle ptr)
+		main_batch.add("HJR", "E8 ?? ?? ?? ?? 41 8B DF 84 C0 74 06", [this](memory::handle ptr)
 		{
 			m_write_join_response_data = ptr.add(1).rip().as<functions::write_join_response_data>();
 		});
@@ -543,7 +538,7 @@ namespace big
 		});
 
 		// Add Player To Session
-		main_batch.add("APTS", "E8 ? ? ? ? 48 8D 8D A0 01 00 00 8A D8", [this](memory::handle ptr)
+		main_batch.add("APTS", "E8 ?? ?? ?? ?? 48 8D 8D F0 01 00 00 8A D8", [this](memory::handle ptr)
 		{
 			m_add_player_to_session = ptr.add(1).rip().as<PVOID>();
 		});
@@ -555,7 +550,7 @@ namespace big
 		});
 
 		// Process Matchmaking Find Response
-		main_batch.add("PMFR", "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC 90 00 00 00 41", [this](memory::handle ptr)
+		main_batch.add("PMFR", "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC F0 00 00 00 41 83", [this](memory::handle ptr)
 		{
 			m_process_matchmaking_find_response = ptr.as<PVOID>();
 		});
@@ -567,15 +562,15 @@ namespace big
 		});
 
 		// Serialize Join Request Message
-		main_batch.add("SPDM", "E8 ? ? ? ? 84 C0 0F 84 99 00 00 00 49 8D 8F 78 0D 00 00", [this](memory::handle ptr)
+		main_batch.add("SJRM", "E8 ?? ?? ?? ?? 84 C0 0F 84 9B 00 00 00 49 8D 8F 50 11 00 00", [this](memory::handle ptr)
 		{
 			m_serialize_join_request_message = ptr.add(1).rip().as<PVOID>();
 		});
 
 		// Is Matchmaking Session Valid
-		main_batch.add("IMSV", "E8 ? ? ? ? 48 81 C7 B8 03 00 00 88 03", [this](memory::handle ptr)
+		main_batch.add("IMSV", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 83 EC 20 45 0F", [this](memory::handle ptr)
 		{
-			memory::byte_patch::make(ptr.add(1).rip().as<void*>(), std::to_array({ 0xB0, 0x01, 0xC3 }))->apply(); // has no observable side effects
+			memory::byte_patch::make(ptr.as<void*>(), std::to_array({ 0xB0, 0x01, 0xC3 }))->apply(); // has no observable side effects
 		});
 
 		// Send Network Damage
@@ -622,9 +617,9 @@ namespace big
 		});
 
 		// Send Session Matchmaking Attributes
-		main_batch.add("SPDM", "E8 ? ? ? ? 84 C0 0F 84 19 01 00 00 48 8D 4D A0", [this](memory::handle ptr)
+		main_batch.add("SSMA", "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 81 EC D0 00 00 00 49 8B", [this](memory::handle ptr)
 		{
-			m_send_session_matchmaking_attributes = ptr.add(1).rip().as<PVOID>();
+			m_send_session_matchmaking_attributes = ptr.as<PVOID>();
 		});
 
 		// Serialize Take Off Ped Variation Task
@@ -657,18 +652,6 @@ namespace big
 			memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB)->apply();
 		});
 
-		// Write Bitbuffer Gamer Handle
-		main_batch.add("WBGH", "4C 8B DC 49 89 5B 08 57 48 83 EC 30 48 8B F9", [this](memory::handle ptr)
-		{
-			m_write_bitbuffer_gamer_handle = ptr.as<PVOID>();
-		});
-
-		// Read Bitbuffer Gamer Handle
-		main_batch.add("RBGH", "48 8B C4 48 89 58 10 48 89 68 18 48 89 70 20 57 48 83 EC 30 C6", [this](memory::handle ptr)
-		{
-			m_read_bitbuffer_gamer_handle = ptr.as<PVOID>();
-		});
-
 		// Constraint Attachment Crash
 		main_batch.add("CAC", "40 53 48 83 EC 20 48 8B D9 48 8B 49 38 48 8B 01", [this](memory::handle ptr)
 		{
@@ -688,13 +671,13 @@ namespace big
 		});
 
 		// Decode Session Info
-		main_batch.add("DSI", "48 89 5C 24 08 48 89 6C 24 10 56 57 41 56 48 81 EC C0", [this](memory::handle ptr)
+		main_batch.add("DSI", "E8 ?? ?? ?? ?? 84 C0 74 16 48 8B 4B 60", [this](memory::handle ptr)
 		{
-			m_decode_session_info = ptr.as<functions::decode_session_info>();
+			m_decode_session_info = ptr.add(1).rip().as<functions::decode_session_info>();
 		});
 
 		// Decode Peer Info
-		main_batch.add("DPI", "48 8B C4 48 89 58 08 48 89 70 10 57 48 81 EC A0 00 00 00 48 8B DA", [this](memory::handle ptr)
+		main_batch.add("DPI", "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC C0 00 00 00 48 8B F1 49", [this](memory::handle ptr)
 		{
 			m_decode_peer_info = ptr.as<functions::decode_peer_info>();
 		});
@@ -765,12 +748,6 @@ namespace big
 			m_interval_check_func = ptr.add(3).rip().as<PVOID>();
 		});
 
-		// Chat Gamer Info
-		main_batch.add("CGI", "E8 ? ? ? ? 48 8B CF E8 ? ? ? ? 8B E8", [this](memory::handle ptr)
-		{
-			m_chat_gamer_info = ptr.add(1).rip().add(6).rip().as<rage::rlGamerInfo*>();
-		});
-
 		// Sound Overload Detour
 		main_batch.add("SOD", "66 45 3B C1 74 38", [this](memory::handle ptr)
 		{
@@ -793,7 +770,7 @@ namespace big
 		});
 
 		// Connect To Peer
-		main_batch.add("CTP", "48 89 5C 24 08 4C 89 44 24 18 55 56 57 41 54 41 55 41 56 41 57 48 81 EC 80", [this](memory::handle ptr)
+		main_batch.add("CTP", "48 89 5C 24 08 4C 89 4C 24 20 48 89 54 24 10 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 60 4D", [this](memory::handle ptr)
 		{
 			m_connect_to_peer = ptr.as<functions::connect_to_peer>();
 		});

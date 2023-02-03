@@ -307,7 +307,7 @@ namespace big
 
 		auto offset_object = g_pointers->m_get_net_object(*g_pointers->m_network_object_mgr, f210, true);
 
-		if (f208 == 0 && entity && entity->gap28 == 4 && reinterpret_cast<CPed*>(entity)->m_player_info && player->m_player_info->m_ped && player->m_player_info->m_ped->m_net_object && ownerNetId != player->m_player_info->m_ped->m_net_object->m_object_id && !offset_object)
+		if (f208 == 0 && entity && entity->m_entity_type == 4 && reinterpret_cast<CPed*>(entity)->m_player_info && player->m_player_info->m_ped && player->m_player_info->m_ped->m_net_object && ownerNetId != player->m_player_info->m_ped->m_net_object->m_object_id && !offset_object)
 		{
 			g_notification_service->push_error("WARNING"_T.data(),
 				std::vformat("BLAMED_FOR_EXPLOSION"_T, std::make_format_args(player->get_name(), reinterpret_cast<CPed*>(entity)->m_player_info->m_net_player_data.m_name)));

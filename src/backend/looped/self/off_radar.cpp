@@ -11,7 +11,7 @@ namespace big
 		virtual void on_tick() override
 		{
 			*scr_globals::globalplayer_bd.at(PLAYER::GET_PLAYER_INDEX(), scr_globals::size::globalplayer_bd).at(210).as<int*>() = true;
-			*script_global(2672505).at(56).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
+			*script_global(2672505).at(57).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
 		}
 
 		virtual void on_disable() override

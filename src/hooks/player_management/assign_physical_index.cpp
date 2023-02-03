@@ -58,18 +58,21 @@ namespace big
 			{
 				if (auto plyr = g_player_service->get_by_id(id))
 				{
-					if (auto entry = g_player_database_service->get_player_by_rockstar_id(plyr->get_net_data()->m_gamer_handle_2.m_rockstar_id))
+					if (plyr->get_net_data()->m_gamer_handle_2.m_rockstar_id != 0)
 					{
-						plyr->is_modder = entry->is_modder;
-						plyr->block_join = entry->block_join;
-						plyr->block_join_reason = plyr->block_join_reason;
-
-						if (strcmp(plyr->get_name(), entry->name.data()))
+						if (auto entry = g_player_database_service->get_player_by_rockstar_id(plyr->get_net_data()->m_gamer_handle_2.m_rockstar_id))
 						{
-							g_notification_service->push("PLAYERS"_T.data(),
-								std::vformat("PLAYER_CHANGED_NAME"_T, std::make_format_args(entry->name, plyr->get_name())));
-							entry->name = plyr->get_name();
-							g_player_database_service->save();
+							plyr->is_modder = entry->is_modder;
+							plyr->block_join = entry->block_join;
+							plyr->block_join_reason = plyr->block_join_reason;
+
+							if (strcmp(plyr->get_name(), entry->name.data()))
+							{
+								g_notification_service->push("PLAYERS"_T.data(),
+									std::vformat("PLAYER_CHANGED_NAME"_T, std::make_format_args(entry->name, plyr->get_name())));
+								entry->name = plyr->get_name();
+								g_player_database_service->save();
+							}
 						}
 					}
 
