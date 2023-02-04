@@ -15,7 +15,7 @@ namespace big
 
 		if (ImGui::Begin("overlay", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
 		{
-			ImGui::Text("YimMenu powered by PTD");
+			ImGui::Text("YimMenu");
 
 			ImGui::Separator();
 
@@ -46,7 +46,7 @@ namespace big
 			{
 				ImGui::Separator();
 				ImGui::Text(std::format("Game Version: {}", g_pointers->m_game_version).c_str());
-				ImGui::Text(std::format("Injector Version: {}", g_pointers->m_online_version).c_str());
+				ImGui::Text(std::format("Online Version: {}", g_pointers->m_online_version).c_str());
 			}
 		}
 		ImGui::End();
