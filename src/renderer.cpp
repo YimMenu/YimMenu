@@ -32,7 +32,7 @@ namespace big
 		ImGui_ImplDX11_Init(m_d3d_device, m_d3d_device_context);
 		ImGui_ImplWin32_Init(g_pointers->m_hwnd);
 
-		g_fonts_service.select_font("arial.ttf");
+		g_fonts_service->init_render();
 
 		rescale(g.window.gui_scale);
 
