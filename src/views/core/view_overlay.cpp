@@ -46,7 +46,7 @@ namespace big
 			{
 				ImGui::Separator();
 				ImGui::Text(std::format("Game Version: {}", g_pointers->m_game_version).c_str());
-				ImGui::Text(std::format("Injector Version: {}", g_pointers->m_online_version).c_str());
+				ImGui::Text(std::format("Online Version: {}", g_pointers->m_online_version).c_str());
 			}
 		}
 		ImGui::End();
