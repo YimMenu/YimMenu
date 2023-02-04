@@ -812,6 +812,12 @@ namespace big
 			m_received_array_update = ptr.as<PVOID>();
 		});
 
+		// Receive Pickup
+		main_batch.add("RPI", "49 8B 80 ? ? ? ? 48 85 C0 74 0C F6 80 ? ? ? ? ? 75 03 32 C0 C3", [this](memory::handle ptr)
+		{
+			m_receive_pickup = ptr.as<PVOID>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		if (!main_batch.run(mem_region))
 		{
