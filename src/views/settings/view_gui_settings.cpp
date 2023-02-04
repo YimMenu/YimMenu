@@ -30,6 +30,8 @@ namespace big
 		ImGui::Checkbox("Show FPS", &g.window.ingame_overlay.show_fps);
 		ImGui::Checkbox("Show Players", &g.window.ingame_overlay.show_players);
 		ImGui::Checkbox("Show Time", &g.window.ingame_overlay.show_time);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Show time is currently disabled as it caused problems for some users.");
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
