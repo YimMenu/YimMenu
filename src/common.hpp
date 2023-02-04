@@ -57,6 +57,7 @@
 
 #include "services/notifications/notification_service.hpp"
 #include "services/translation_service/translation_service.hpp"
+#include "services/fonts_service/fonts_service.hpp"
 
 namespace big
 {

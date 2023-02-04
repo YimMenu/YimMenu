@@ -71,6 +71,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				auto pointers_instance = std::make_unique<pointers>();
 				LOG(INFO) << "Pointers initialized.";
 
+				g_fonts_service.init();
+
 				auto renderer_instance = std::make_unique<renderer>();
 				LOG(INFO) << "Renderer initialized.";
 				auto gui_instance = std::make_unique<gui>();

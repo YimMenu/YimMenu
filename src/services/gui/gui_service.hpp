@@ -46,6 +46,7 @@ namespace big
 		REACTION_SETTINGS,
 		PROTECTION_SETTINGS,
 		TRANSLATION_SETTINGS,
+		FONTS_SETTINGS,
 		DEBUG,
 
 		PLAYER
@@ -103,6 +104,7 @@ namespace big
 				{ tabs::REACTION_SETTINGS, { "Reactions", view::reaction_settings}},
 				{ tabs::PROTECTION_SETTINGS, { "Protection", view::protection_settings}},
 				{ tabs::TRANSLATION_SETTINGS, { "Translation", view::translation_settings}},
+				{ tabs::FONTS_SETTINGS, { "Fonts", view::fonts_settings}},
 				{ tabs::DEBUG, { "Debug", nullptr }},
 			}}},
 			{tabs::PLAYER, {"", view::view_player}}
