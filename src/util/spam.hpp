@@ -6,6 +6,7 @@ namespace
 {
 	static const char* spam_texts[] =
 	{
+		"qq", //a chinese chat app
 		"QQ",
 		"WWW.",
 		"www.",
@@ -14,7 +15,7 @@ namespace
 		".TOP",
 		".COM",
 		".top",
-		"\xE3\x80\x90",
+		"\xE3\x80\x90", //left bracket in Chinese input method
 		"/Menu",
 		"Money/",
 		"Money\\\\",
@@ -38,7 +39,13 @@ namespace
 		"PLANO INICIAL", // "initial plan"
 		"REP +",
 		"20R$", // Brazil currency?
-		"l55.me"
+		"l55.me",
+		"\xE5\xBA\x97", //"shop" in Chinese
+		"\xE9\x92\xB1", //"money" in Chinese
+		"\xE5\x88\xB7", //"make(money)" in Chinese
+		"av", //uknowwhat video
+		"\xE8\x90\x9D\xE8\x8E\x89", //"cute girl" in Chinese
+		"\xE5\xA6\x88" //"mother" in Chinese
 	};
 }
 
