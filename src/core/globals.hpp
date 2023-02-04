@@ -232,8 +232,8 @@ namespace big
 
 			bool desync_kick = false;
 			bool rid_join = false;
-			bool lessen_breakups = false;
-			bool receive_pickup = false; // disabled by default due to anticheat concerns
+			bool lessen_breakups = false; // disabled by default due to anticheat concerns
+			bool receive_pickup = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, lessen_breakups, desync_kick, receive_pickup)
 		} protections{};
