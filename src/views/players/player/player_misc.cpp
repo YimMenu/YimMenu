@@ -1,5 +1,6 @@
 #include "views/view.hpp"
 #include "util/scripts.hpp"
+#include "script/globals/GPBD_FM_3.hpp"
 
 namespace big
 {

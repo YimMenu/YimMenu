@@ -24,22 +24,12 @@ namespace big
 		{
 			session::join_by_rockstar_id(rid);
 		});
-		ImGui::SameLine();
-		components::button("KICK_BY_RID"_T, []
-		{
-			session::kick_by_rockstar_id(rid);
-		});
 
 		static char username[20];
 		components::input_text("INPUT_USERNAME"_T, username, sizeof(username));
 		if (components::button("JOIN_BY_USERNAME"_T))
 		{
 			session::join_by_username(username);
-		};
-		ImGui::SameLine();
-		if (components::button("KICK_BY_USERNAME"_T))
-		{
-			session::kick_by_username(username);
 		};
 
 		static char base64[500]{};
@@ -53,8 +43,8 @@ namespace big
 		ImGui::SameLine();
 		components::button("COPY_SESSION_INFO"_T, []
 		{
-			char buf[0x100];
-			g_pointers->m_encode_session_info(&gta_util::get_network()->m_game_session.m_rline_session.m_session_info, buf, 0x7D, nullptr);
+			char buf[0x100]{};
+			g_pointers->m_encode_session_info(&gta_util::get_network()->m_game_session.m_rline_session.m_session_info, buf, 0xA9, nullptr);
 			ImGui::SetClipboardText(buf);
 		});
 

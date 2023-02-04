@@ -21,7 +21,7 @@ namespace big::notify
 		if (player)
 		{
 			g_notification_service->push_error("Protections", std::format("Blocked {} crash from {}", crash, player->get_name()));
-			LOG(WARNING) << "Blocked " << crash << " crash from " << player->get_name() << " (" << (player->get_net_data() ? player->get_net_data()->m_gamer_handle_2.m_rockstar_id : 0) << ")";
+			LOG(WARNING) << "Blocked " << crash << " crash from " << player->get_name() << " (" << (player->get_net_data() ? player->get_net_data()->m_gamer_handle.m_rockstar_id : 0) << ")";
 		}
 		else
 		{
