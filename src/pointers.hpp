@@ -237,6 +237,8 @@ namespace big
 		functions::get_entity_attached_to m_get_entity_attached_to;
 
 		PVOID m_received_array_update;
+
+		PVOID m_receive_pickup{};
 	};
 
 	inline pointers* g_pointers{};
