@@ -31,19 +31,6 @@ namespace big
 				scripts::start_launcher_script(171);
 			});
 
-			components::button("Car Test", []
-			{
-				*script_global(1890140).at(244).as<Player*>() = g_player_service->get_selected()->id();
-				scripts::start_launcher_script(143);
-			});
-
-			components::button("HeadHunter", []
-			{
-				*script_global(1923597).at(11).at(143).as<bool*>() = true;
-				*script_global(1923597).at(11).at(144).as<eActivityType*>() = eActivityType::HeadHunter;
-				*script_global(1923597).at(11).at(145).as<Player*>() = g_player_service->get_selected()->id();
-			});
-
 			ImGui::TreePop();
 		}
 	}
