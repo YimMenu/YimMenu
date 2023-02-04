@@ -459,24 +459,10 @@ namespace big
 
 		struct spoofing
 		{
-			bool spoof_username = false;
-			bool spoof_local_username = false;
-			std::string username = "";
-
-			// enabling this by default causes confusion and many get dropped out of their sessions
-			bool spoof_ip = false;
-			std::array<int, 4> ip_address = { 42, 42, 42, 42 };
-
-			bool spoof_rockstar_id = false;
-			uint64_t rockstar_id = 0;
-
 			bool spoof_cheater = false;
 
 			bool spoof_hide_god = true;
 			bool spoof_hide_spectate = true;
-
-			bool spoof_rockstar_dev = false;
-			bool spoof_rockstar_qa = false;
 
 			bool spoof_crew_data = false;
 			std::string crew_tag = "";
@@ -490,14 +476,9 @@ namespace big
 			bool spoof_session_player_count = false;
 			int session_player_count = 25;
 
-			// don't save
-			bool should_spoof_rockstar_id = false;
-			uint64_t applied_spoof_rockstar_id = 0;
-
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing,
-				spoof_username, spoof_local_username, username, spoof_ip, ip_address, spoof_rockstar_id, rockstar_id,
-				spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_rockstar_dev, spoof_rockstar_qa, spoof_crew_data,
-				crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language,
+				spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew,
+				square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language,
 				session_language, spoof_session_player_count, session_player_count)
 		} spoofing{};
 

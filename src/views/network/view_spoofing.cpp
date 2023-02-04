@@ -33,6 +33,12 @@ namespace big
 
 		ImGui::Checkbox("SPOOFING_CREW_SQUARE_TAG"_T.data(), &g.spoofing.square_crew_tag);
 
+		components::sub_title("SPOOFING_EXTRA"_T);
+
+		ImGui::Checkbox("SPOOFING_IS_CHEATER"_T.data(), &g.spoofing.spoof_cheater);
+		ImGui::Checkbox("SPOOFING_IS_DEV"_T.data(), &g.spoofing.spoof_rockstar_dev);
+		ImGui::Checkbox("SPOOFING_IS_QA"_T.data(), &g.spoofing.spoof_rockstar_qa);
+
 		components::sub_title("SPOOFING_SESSION_ATTRIBUTES"_T);
 		components::small_text("SPOOFING_ONLY_WORKS_AS_HOST"_T);
 
