@@ -665,9 +665,9 @@ namespace big
 		});
 
 		// Encode Session Info
-		main_batch.add("ESI", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 20 57 48 81", [this](memory::handle ptr)
+		main_batch.add("ESI", "E8 ? ? ? ? C6 83 94 01 00 00 01", [this](memory::handle ptr)
 		{
-			m_encode_session_info = ptr.as<functions::encode_session_info>();
+			m_encode_session_info = ptr.add(1).rip().as<functions::encode_session_info>();
 		});
 
 		// Decode Session Info

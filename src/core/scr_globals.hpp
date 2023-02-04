@@ -37,7 +37,7 @@ namespace big::scr_globals
 	static inline script_global vehicle_global = script_global(1586468);
 	static inline script_global mechanic_global = script_global(2793046);
 
-	static inline script_global spawn_global = script_global(2694560);
+	static inline script_global spawn_global = script_global(2694562);
 }
 
 namespace big::scr_locals

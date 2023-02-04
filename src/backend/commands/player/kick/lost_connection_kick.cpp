@@ -19,7 +19,7 @@ namespace big
 			if (*reinterpret_cast<uint8_t*>(&hnd.m_platform) == 3)
 			{
 				buf.WriteInt64(*(int64_t*)&hnd.m_rockstar_id, 64);
-				buf.Write<uint8_t>(*reinterpret_cast<uint8_t*>(reinterpret_cast<__int64>(&hnd) + 9), 8);
+				buf.Write<uint8_t>(hnd.unk_0009, 8);
 			}
 		}
 
@@ -39,12 +39,12 @@ namespace big
 			packet msg{};
 			msg.write_message(rage::eNetMessage::MsgLostConnectionToHost);
 			msg.write<uint64_t>(gta_util::get_network()->m_game_session_ptr->m_rline_session.m_session_id, 64);
-			gamer_handle_serialize((*(rage::rlGamerHandle*)(&player->get_net_data()->m_gamer_handle_2.m_rockstar_id)), msg);
+			gamer_handle_serialize(player->get_net_data()->m_gamer_handle, msg);
 			for (auto& [_, plyr] : g_player_service->players())
 			{
 				if (plyr->is_host())
 				{
-					msg.send(plyr, gta_util::get_network()->m_game_session_ptr->m_connection_identifier);
+					msg.send(plyr->get_session_player()->m_msg_id);
 					break;
 				}
 			}
