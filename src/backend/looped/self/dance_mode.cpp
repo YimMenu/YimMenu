@@ -3,6 +3,7 @@
 #include "util/entity.hpp"
 #include "util/scripts.hpp"
 #include "script_function.hpp"
+#include "services/script_patcher/script_patcher_service.hpp"
 
 namespace big
 {
@@ -14,6 +15,7 @@ namespace big
 
 		if (g.self.dance_mode && g.self.dance_mode != bLastDanceMode)
 		{
+			g_script_patcher_service->update();
 			scripts::request_script(RAGE_JOAAT("am_mp_nightclub"));
 			if (!scripts::wait_till_loaded(RAGE_JOAAT("am_mp_nightclub")))
 				return;
@@ -51,6 +53,7 @@ namespace big
 			g.m_dance_thread = nullptr;
 			g.m_dance_program = nullptr;
 
+			g_script_patcher_service->update();
 			bLastDanceMode = false;
 			return;
 		}

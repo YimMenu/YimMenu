@@ -1,5 +1,6 @@
 #include "natives.hpp"
 #include "backend/looped_command.hpp"
+#include <ped/CPedIntelligence.hpp>
 
 namespace big
 {
@@ -9,8 +10,8 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if (g_local_player)
-				g_local_player->m_oxygen_info->m_oxygen_time = 0;
+			//if (g_local_player)
+			//	g_local_player->m_ped_intelligence->m_oxygen_time = 0;
 		}
 	};
 

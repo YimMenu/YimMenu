@@ -46,8 +46,6 @@ namespace big
 
 		detour_hook_helper::add<hooks::received_event>("RE", g_pointers->m_received_event);
 
-		detour_hook_helper::add<hooks::send_net_info_to_lobby>("SNITL", g_pointers->m_send_net_info_to_lobby);
-
 		detour_hook_helper::add<hooks::assign_physical_index>("API", g_pointers->m_assign_physical_index);
 
 		detour_hook_helper::add<hooks::receive_net_message>("RNM", g_pointers->m_receive_net_message);
@@ -92,9 +90,6 @@ namespace big
 		detour_hook_helper::add<hooks::serialize_take_off_ped_variation_task>("STOPVT", g_pointers->m_serialize_take_off_ped_variation_task);
 
 		detour_hook_helper::add<hooks::create_script_handler>("CSH", g_pointers->m_create_script_handler);
-
-		detour_hook_helper::add<hooks::write_bitbuffer_gamer_handle>("WBGH", g_pointers->m_write_bitbuffer_gamer_handle);
-		detour_hook_helper::add<hooks::read_bitbuffer_gamer_handle>("RBGH", g_pointers->m_read_bitbuffer_gamer_handle);
 
 		detour_hook_helper::add<hooks::queue_dependency>("QD", g_pointers->m_queue_dependency);
 		detour_hook_helper::add<hooks::prepare_metric_for_sending>("PMFS", g_pointers->m_prepare_metric_for_sending);
