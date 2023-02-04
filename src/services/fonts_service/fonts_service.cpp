@@ -154,6 +154,15 @@ namespace big
 		ImGui_ImplDX11_InvalidateDeviceObjects();
 	}
 
+	std::string fonts_service::current_font()
+	{
+		if (changed_font.empty())
+		{
+			return "Default";
+		}
+		return changed_font;
+	}
+
 	fonts_service::fonts_map_t& fonts_service::available_fonts()
 	{
 		return fonts_map;

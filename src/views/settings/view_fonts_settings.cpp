@@ -7,14 +7,18 @@ namespace big
 
 
 		const auto& font_entries = g_fonts_service->available_fonts();
-
+		const auto current_font = g_fonts_service->current_font();
 		ImGui::Text("SETTINGS_FONTS"_T.data());
-		if (ImGui::BeginCombo("##combo", "fonts"))
+		if (ImGui::BeginCombo("##combo-fonts", current_font.c_str()))
 		{
 			for (auto& i : font_entries)
 			{
 				if (ImGui::Selectable(i.first.c_str()))
 					g_fonts_service->select_font(i.first);
+				if (i.first == current_font)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
 			}
 			ImGui::EndCombo();
 		}
