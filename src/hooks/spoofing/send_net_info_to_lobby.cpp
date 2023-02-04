@@ -15,7 +15,7 @@ namespace big
 {
 	bool hooks::send_net_info_to_lobby(rage::rlGamerInfo* player, int64_t a2, int64_t a3, DWORD* a4)
 	{
-		const bool is_local_player = g_local_player->m_player_info->m_net_player_data.m_gamer_handle_2.m_rockstar_id == player->m_gamer_handle_2.m_rockstar_id;
+		const bool is_local_player = g_local_player->m_player_info->m_net_player_data.m_gamer_handle.m_rockstar_id == player->m_gamer_handle.m_rockstar_id;
 
 		// check so we're 100% sure we modify data only for ourselves
 		if (is_local_player)
@@ -36,7 +36,7 @@ namespace big
 			if (g.spoofing.should_spoof_rockstar_id)
 			{
 				player->m_gamer_handle.m_rockstar_id = g.spoofing.applied_spoof_rockstar_id;
-				player->m_gamer_handle_2.m_rockstar_id = g.spoofing.applied_spoof_rockstar_id;
+				player->m_gamer_handle.m_rockstar_id = g.spoofing.applied_spoof_rockstar_id;
 			}
 
 			if (g.notifications.send_net_info_to_lobby.log)

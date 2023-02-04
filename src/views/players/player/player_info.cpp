@@ -108,31 +108,34 @@ namespace big
 
 			if (auto net_player_data = g_player_service->get_selected()->get_net_data(); net_player_data != nullptr)
 			{
-				ImGui::Text("PLAYER_INFO_RID"_T.data(), net_player_data->m_gamer_handle_2.m_rockstar_id);
+				ImGui::Text("PLAYER_INFO_RID"_T.data(), net_player_data->m_gamer_handle.m_rockstar_id);
 
 				ImGui::SameLine();
 
 				ImGui::PushID("##rid");
-				if (ImGui::Button("COPY"_T.data())) ImGui::SetClipboardText(std::to_string(net_player_data->m_gamer_handle_2.m_rockstar_id).data());
+				if (ImGui::Button("COPY"_T.data())) ImGui::SetClipboardText(std::to_string(net_player_data->m_gamer_handle.m_rockstar_id).data());
 				ImGui::PopID();
+
+				auto ip = g_player_service->get_selected()->get_ip_address();
+				auto port = g_player_service->get_selected()->get_port();
 
 				ImGui::Text(
 					"PLAYER_INFO_IP"_T.data(),
-					net_player_data->m_external_ip.m_field1,
-					net_player_data->m_external_ip.m_field2,
-					net_player_data->m_external_ip.m_field3,
-					net_player_data->m_external_ip.m_field4,
-					net_player_data->m_external_port
+					ip.m_field1,
+					ip.m_field2,
+					ip.m_field3,
+					ip.m_field4,
+					port
 				);
 
 				ImGui::SameLine();
 
 				ImGui::PushID("##ip");
-				if (ImGui::Button("COPY"_T.data())) ImGui::SetClipboardText(std::format("{}.{}.{}.{}:{}", net_player_data->m_external_ip.m_field1,
-					net_player_data->m_external_ip.m_field2,
-					net_player_data->m_external_ip.m_field3,
-					net_player_data->m_external_ip.m_field4,
-					net_player_data->m_external_port).data());
+				if (ImGui::Button("COPY"_T.data())) ImGui::SetClipboardText(std::format("{}.{}.{}.{}:{}", ip.m_field1,
+					ip.m_field2,
+					ip.m_field3,
+					ip.m_field4,
+					port).data());
 				ImGui::PopID();
 			}
 
