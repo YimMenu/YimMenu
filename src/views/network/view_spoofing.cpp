@@ -11,7 +11,9 @@ namespace big
 	{
 		components::small_text("SPOOFING_DESCRIPTION"_T);
 
-		ImGui::Text("!!!!! Spoofing options like name and RID have become impossible to spoof with update 1.66 !!!!!");
+		components::sub_title("SPOOFING_HIDE_FEATURES"_T);
+		ImGui::Checkbox("SPOOFING_HIDE_GOD_MODE"_T.data(), &g.spoofing.spoof_hide_god);
+		ImGui::Checkbox("SPOOFING_HIDE_SPECTATE"_T.data(), &g.spoofing.spoof_hide_spectate);
 
 		components::sub_title("CREW"_T);
 
@@ -30,14 +32,6 @@ namespace big
 		ImGui::Checkbox("SPOOFING_CREW_ROCKSTAR"_T.data(), &g.spoofing.rockstar_crew);
 
 		ImGui::Checkbox("SPOOFING_CREW_SQUARE_TAG"_T.data(), &g.spoofing.square_crew_tag);
-
-		components::sub_title("SPOOFING_EXTRA"_T);
-
-		ImGui::Checkbox("SPOOFING_IS_CHEATER"_T.data(), &g.spoofing.spoof_cheater);
-
-		// Can't spoof RID anymore
-		//ImGui::Checkbox("SPOOFING_IS_DEV"_T.data(), &g.spoofing.spoof_rockstar_dev);
-		//ImGui::Checkbox("SPOOFING_IS_QA"_T.data(), &g.spoofing.spoof_rockstar_qa);
 
 		components::sub_title("SPOOFING_SESSION_ATTRIBUTES"_T);
 		components::small_text("SPOOFING_ONLY_WORKS_AS_HOST"_T);
