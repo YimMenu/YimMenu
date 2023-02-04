@@ -6,7 +6,7 @@
 namespace big
 {
     translation_service::translation_service() :
-        m_url("https://cdn.jsdelivr.net/gh/YimMenu/Translations@master")
+        m_url("https://cdn.jsdelivr.net/gh/pzy2000/Translations@master")
     {
         
     }
@@ -119,7 +119,7 @@ namespace big
         auto file = m_translation_directory->get_file(std::format("./{}.json", pack_id));
         if (!file.exists())
         {
-            LOG(INFO) << "Translations for '" << pack_id << "' does not exist, downloading...";
+            LOG(INFO) << "Translations for '" << pack_id << "' does not exist, downloading from "<<m_url;
             if (!download_language_pack(pack_id))
             {
                 LOG(WARNING) << "Failed to download language pack, can't recover...";

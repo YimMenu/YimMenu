@@ -45,7 +45,12 @@ namespace
 		"\xE5\x88\xB7", //"make(money)" in Chinese
 		"av", //uknowwhat video
 		"\xE8\x90\x9D\xE8\x8E\x89", //"cute girl" in Chinese
-		"\xE5\xA6\x88" //"mother" in Chinese
+		"\xE5\xA6\x88", //"mother" in Chinese
+		"\xE7\xBE\x8E\xE5\xA5\xB3", //"sexy girl" in Chinese
+		"\xE5\xBC\xBA\xE5\xA5\xB8", //"rape" in Chinese
+		"\xE8\x90\x9D", //"loli" in Chinese
+		"\xE6\x8C\x82", //"hack" in Chinese
+		"\xE5\x85\x83" //chinese dollar
 	};
 }
 
