@@ -89,11 +89,20 @@ namespace big
 
 	void fonts_service::select_font(const std::string& font)
 	{
+		flag = 1;
+		changed_font = font;
+
+	}
+
+	void fonts_service::change_font()
+	{
+		if (!flag) return;
+		flag = 0;
 		folder windows_fonts(
 			std::filesystem::path(std::getenv("SYSTEMROOT")) / "Fonts"
 		);
 
-		file font_file_path = windows_fonts.get_file(font);
+		file font_file_path = windows_fonts.get_file(changed_font);
 		if (!font_file_path.exists())
 			return;
 		auto font_file = std::ifstream(font_file_path.get_path(), std::ios::binary | std::ios::ate);
@@ -104,55 +113,55 @@ namespace big
 		font_file.read(reinterpret_cast<char*>(font_data.get()), font_data_size);
 		font_file.close();
 
-		auto font_value = fonts_map.at(font);
+		auto font_value = fonts_map.at(changed_font);
 
 		auto& io = ImGui::GetIO();
 
 		{
 			ImFontConfig fnt_cfg{};
 			fnt_cfg.FontDataOwnedByAtlas = false;
-			strcpy(fnt_cfg.Name, "Fnt20px");
+			strcpy(fnt_cfg.Name, "Fnt20px1");
 
 			auto default_font = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 20.f, &fnt_cfg, io.Fonts->GetGlyphRangesDefault());
-			fnt_cfg.MergeMode = true;
-			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 20.f, &fnt_cfg, font_value);
+			//fnt_cfg.MergeMode = true;
+			//io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 20.f, &fnt_cfg, font_value);
 			io.Fonts->Build();
 
 			io.FontDefault = default_font;
 		}
 
-		{
-			ImFontConfig fnt_cfg{};
-			fnt_cfg.FontDataOwnedByAtlas = false;
-			strcpy(fnt_cfg.Name, "Fnt28px");
-
-			g.window.font_title = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 28.f, &fnt_cfg);
-			fnt_cfg.MergeMode = true;
-			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 28.f, &fnt_cfg, font_value);
-			io.Fonts->Build();
-		}
-
-		{
-			ImFontConfig fnt_cfg{};
-			fnt_cfg.FontDataOwnedByAtlas = false;
-			strcpy(fnt_cfg.Name, "Fnt24px");
-
-			g.window.font_sub_title = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 24.f, &fnt_cfg);
-			fnt_cfg.MergeMode = true;
-			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 24.f, &fnt_cfg, font_value);
-			io.Fonts->Build();
-		}
-
-		{
-			ImFontConfig fnt_cfg{};
-			fnt_cfg.FontDataOwnedByAtlas = false;
-			strcpy(fnt_cfg.Name, "Fnt18px");
-
-			g.window.font_small = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 18.f, &fnt_cfg);
-			fnt_cfg.MergeMode = true;
-			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 18.f, &fnt_cfg, font_value);
-			io.Fonts->Build();
-		}
+		//{
+		//	ImFontConfig fnt_cfg{};
+		//	fnt_cfg.FontDataOwnedByAtlas = false;
+		//	strcpy(fnt_cfg.Name, "Fnt28px");
+		//
+		//	g.window.font_title = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 28.f, &fnt_cfg);
+		//	fnt_cfg.MergeMode = true;
+		//	io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 28.f, &fnt_cfg, font_value);
+		//	io.Fonts->Build();
+		//}
+		//
+		//{
+		//	ImFontConfig fnt_cfg{};
+		//	fnt_cfg.FontDataOwnedByAtlas = false;
+		//	strcpy(fnt_cfg.Name, "Fnt24px");
+		//
+		//	g.window.font_sub_title = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 24.f, &fnt_cfg);
+		//	fnt_cfg.MergeMode = true;
+		//	io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 24.f, &fnt_cfg, font_value);
+		//	io.Fonts->Build();
+		//}
+		//
+		//{
+		//	ImFontConfig fnt_cfg{};
+		//	fnt_cfg.FontDataOwnedByAtlas = false;
+		//	strcpy(fnt_cfg.Name, "Fnt18px");
+		//
+		//	g.window.font_small = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 18.f, &fnt_cfg);
+		//	fnt_cfg.MergeMode = true;
+		//	io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 18.f, &fnt_cfg, font_value);
+		//	io.Fonts->Build();
+		//}
 	}
 
 	fonts_service::fonts_map_t& fonts_service::available_fonts()

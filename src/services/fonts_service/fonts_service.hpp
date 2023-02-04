@@ -20,10 +20,13 @@ namespace big
         void init();
         void init_render();
         void select_font(const std::string& font);
+        void change_font();
         fonts_map_t& available_fonts();
 
     private:
         fonts_map_t fonts_map;
+        std::string changed_font;
+        int flag = 0;
 	};
     inline std::unique_ptr<fonts_service> g_fonts_service;
 }

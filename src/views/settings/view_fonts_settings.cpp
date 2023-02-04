@@ -4,6 +4,8 @@ namespace big
 {
 	void view::fonts_settings()
 	{
+
+
 		const auto& font_entries = g_fonts_service->available_fonts();
 
 		ImGui::Text("SETTINGS_FONTS"_T.data());

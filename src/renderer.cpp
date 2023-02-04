@@ -103,6 +103,7 @@ namespace big
 
 	void renderer::new_frame()
 	{
+		g_fonts_service->change_font();
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
