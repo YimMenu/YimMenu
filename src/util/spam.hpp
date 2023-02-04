@@ -25,7 +25,8 @@ namespace
 		"doit#",
 		"krutka#",
 		"<b>",
-		"\xD0\xBC\xD0\xB5", // Cyrillic "me"
+		// causes false positives for people typing in cyrillic
+		// "\xD0\xBC\xD0\xB5", // Cyrillic "me"
 		"P888",
 		"gtacash",
 		"\xE6\x89\xA3\xE6\x89\xA3", // no clue what this is

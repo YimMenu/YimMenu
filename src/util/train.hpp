@@ -46,17 +46,16 @@ namespace big::train
 			entity::take_control_of(train);
 			PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), train, -1);
 
-			g_notification_service->push_error("Hijack Train", "Found a train nearby");
+			g_notification_service->push_error("HIJACK_TRAIN"_T.data(), "HIJACK_TRAIN_FOUND_TRAIN"_T.data());
 		}
 	}
 
 	inline void delete_train()
 	{
-
 		if (!PED::IS_PED_IN_ANY_VEHICLE(PLAYER::PLAYER_PED_ID(), false) && get_closest_train() != 0)
 		{
 			VEHICLE::DELETE_ALL_TRAINS();
-			g_notification_service->push_error("Hijack Train", "Deleted the nearby train");
+			g_notification_service->push_error("HIJACK_TRAIN"_T.data(), "HIJACK_TRAIN_DELETED_TRAIN"_T.data());
 		}
 	}
 

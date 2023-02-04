@@ -6,7 +6,7 @@ namespace big
 {
 	void view::player_kick()
 	{
-		if (ImGui::TreeNode("Kick"))
+		if (ImGui::TreeNode("KICK"_T.data()))
 		{
 			auto const is_session_host = [] { return gta_util::get_network()->m_game_session_ptr->is_host(); };
 

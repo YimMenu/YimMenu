@@ -83,11 +83,6 @@ namespace big
 				}
 			}
 
-			if (stricmp(g_player_service->get_self()->get_name(), args[0].c_str()) == 0 || (g.spoofing.spoof_username && stricmp(g.spoofing.username.c_str(), args[0].c_str()) == 0))
-			{
-				plyr_id = g_player_service->get_self()->id();
-			}
-
 			if (ctx->get_access_level() != CommandAccessLevel::ADMIN && (get_access_level() == CommandAccessLevel::TOXIC || get_access_level() == CommandAccessLevel::AGGRESSIVE) && plyr_id == self::id)
 			{
 				ctx->report_error("Permission denied, cannot call toxic commands on me");
