@@ -7,7 +7,7 @@ namespace big
 		const auto& font_entries = g_fonts_service->available_fonts();
 
 		ImGui::Text("SETTINGS_FONTS"_T.data());
-		if (ImGui::BeginCombo("##combo", "fonts")
+		if (ImGui::BeginCombo("##combo", "fonts"))
 		{
 			for (auto& i : font_entries)
 			{

@@ -153,13 +153,6 @@ namespace big
 			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 18.f, &fnt_cfg, font_value);
 			io.Fonts->Build();
 		}
-
-		{
-			ImFontConfig font_icons_cfg{};
-			font_icons_cfg.FontDataOwnedByAtlas = false;
-			std::strcpy(font_icons_cfg.Name, "Icons");
-			g.window.font_icon = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_icons), sizeof(font_icons), 24.f, &font_icons_cfg);
-		}
 	}
 
 	fonts_service::fonts_map_t& fonts_service::available_fonts()
