@@ -145,6 +145,8 @@ namespace big
 		static void* infinite_train_crash(void* carriage);
 
 		static bool received_array_update(rage::netArrayHandlerBase* array, CNetGamePlayer* sender, rage::datBitBuffer* buffer, int size, std::int16_t cycle);
+
+		static bool receive_pickup(rage::netObject* netobject, void* unk, CPed* ped);
 	};
 
 	class minhook_keepalive

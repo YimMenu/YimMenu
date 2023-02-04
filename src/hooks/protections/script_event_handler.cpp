@@ -367,10 +367,18 @@ namespace big
 
 			return true;
 		}
-		case eRemoteEvent::StartScriptBegin:
+		case eRemoteEvent::StartScriptProceed:
 		{
-			g.reactions.start_script.process(plyr);
-			return true;
+			// TODO: Breaks stuff
+			if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")))
+			{
+				if (script->m_net_component && script->m_net_component->m_host && script->m_net_component->m_host->m_net_game_player != player)
+				{
+					g.reactions.start_script.process(plyr);
+					return true;
+				}
+			}
+			break;
 		}
 		}
 

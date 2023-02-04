@@ -225,7 +225,7 @@ namespace big
 					gamer_handle_deserialize(handle, buffer);
 
 					auto self = g_player_service->get_self();
-					if (self->get_net_data() && self->get_net_data()->m_gamer_handle_2.m_rockstar_id == handle.m_rockstar_id)
+					if (self->get_net_data() && self->get_net_data()->m_gamer_handle.m_rockstar_id == handle.m_rockstar_id)
 					{
 						session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
 						g.reactions.lost_connection_kick.process(player);
@@ -234,7 +234,7 @@ namespace big
 
 					for (auto& [_, plyr] : g_player_service->players())
 					{
-						if (plyr->get_net_data() && plyr != player && plyr->get_net_data()->m_gamer_handle_2.m_rockstar_id == handle.m_rockstar_id)
+						if (plyr->get_net_data() && plyr != player && plyr->get_net_data()->m_gamer_handle.m_rockstar_id == handle.m_rockstar_id)
 						{
 							session::add_infraction(player, Infraction::LOST_CONNECTION_KICK_DETECTED);
 							g.reactions.lost_connection_kick_others.process(player, plyr);
@@ -246,7 +246,7 @@ namespace big
 						}
 					}
 
-					if (player->get_net_data() && player->get_net_data()->m_gamer_handle_2.m_rockstar_id == handle.m_rockstar_id)
+					if (player->get_net_data() && player->get_net_data()->m_gamer_handle.m_rockstar_id == handle.m_rockstar_id)
 						break;
 					else
 						return true;
@@ -262,7 +262,7 @@ namespace big
 						gamer_handle_deserialize(handle, buffer);
 						if (session_id == gta_util::get_network()->m_game_session_ptr->m_rline_session.m_session_id)
 						{
-							if (handle.m_rockstar_id != player->get_net_data()->m_gamer_handle_2.m_rockstar_id)
+							if (handle.m_rockstar_id != player->get_net_data()->m_gamer_handle.m_rockstar_id)
 							{
 								session::add_infraction(player, Infraction::SPOOFED_ROCKSTAR_ID); // TODO: store this RID
 							}
@@ -349,7 +349,7 @@ namespace big
 					gamer_handle_deserialize(handle, buffer);
 
 					auto self = g_player_service->get_self();
-					if (self->get_net_data() && self->get_net_data()->m_gamer_handle_2.m_rockstar_id == handle.m_rockstar_id)
+					if (self->get_net_data() && self->get_net_data()->m_gamer_handle.m_rockstar_id == handle.m_rockstar_id)
 					{
 						g_notification_service->push_error("KICK"_T.data(), "REMOTE_KICK_LOST_CONNECTION"_T.data());
 						return true;
@@ -357,7 +357,7 @@ namespace big
 
 					for (auto& [_, plyr] : g_player_service->players())
 					{
-						if (plyr->get_net_data() && plyr->get_net_data()->m_gamer_handle_2.m_rockstar_id == handle.m_rockstar_id)
+						if (plyr->get_net_data() && plyr->get_net_data()->m_gamer_handle.m_rockstar_id == handle.m_rockstar_id)
 						{
 							g_notification_service->push_error("KICK"_T.data(),
 								std::vformat("REMOTE_KICK_LOST_CONNECTION_PLAYER"_T, std::make_format_args(plyr->get_name())));
