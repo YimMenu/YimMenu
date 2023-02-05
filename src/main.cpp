@@ -75,6 +75,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				auto renderer_instance = std::make_unique<renderer>();
 				LOG(INFO) << "Renderer initialized.";
+
+				g_fonts_service->init();
+				LOG(INFO) << "Fonts initialized.";
+
 				auto gui_instance = std::make_unique<gui>();
 
 				auto fiber_pool_instance = std::make_unique<fiber_pool>(11);
@@ -82,8 +86,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				auto hooking_instance = std::make_unique<hooking>();
 				LOG(INFO) << "Hooking initialized.";
-
-				g_fonts_service->init();
 
 				auto context_menu_service_instance = std::make_unique<context_menu_service>();
 				auto custom_text_service_instance = std::make_unique<custom_text_service>();

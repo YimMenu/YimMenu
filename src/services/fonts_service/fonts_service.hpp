@@ -21,10 +21,11 @@ namespace big
         void init_render();
         void select_font(const std::string& font);
         void change_font();
-        std::string current_font();
+        std::string& current_font();
         fonts_map_t& available_fonts();
 
     private:
+        ImVector<ImWchar> rander_fonts_ranges;
         fonts_map_t fonts_map;
         std::string changed_font;
         int flag = 0;

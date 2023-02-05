@@ -7,7 +7,11 @@ namespace big
 
 
 		const auto& font_entries = g_fonts_service->available_fonts();
-		const auto current_font = g_fonts_service->current_font();
+		std::string current_font = g_fonts_service->current_font();
+		if (current_font.empty())
+		{
+			current_font = "Default";
+		}
 		ImGui::Text("SETTINGS_FONTS"_T.data());
 		if (ImGui::BeginCombo("##combo-fonts", current_font.c_str()))
 		{

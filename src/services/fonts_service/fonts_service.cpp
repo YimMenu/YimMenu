@@ -33,6 +33,11 @@ namespace big
 
 		auto& io = ImGui::GetIO();
 
+		ImFontGlyphRangesBuilder builder;
+		builder.AddRanges(io.Fonts->GetGlyphRangesChineseSimplifiedCommon()); // Add one of the default ranges
+		//builder.AddRanges(io.Fonts->GetGlyphRangesCyrillic());
+		builder.BuildRanges(&rander_fonts_ranges);                          // Build the final result (ordered ranges with all the unique characters submitted)
+
 		{
 			ImFontConfig fnt_cfg{};
 			fnt_cfg.FontDataOwnedByAtlas = false;
@@ -40,8 +45,7 @@ namespace big
 
 			io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 20.f, &fnt_cfg, io.Fonts->GetGlyphRangesDefault());
 			fnt_cfg.MergeMode = true;
-			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 20.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesChineseSimplifiedCommon());
-			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 20.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 20.f, &fnt_cfg, rander_fonts_ranges.Data);
 			io.Fonts->Build();
 		}
 
@@ -52,8 +56,7 @@ namespace big
 
 			g.window.font_title = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 28.f, &fnt_cfg);
 			fnt_cfg.MergeMode = true;
-			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 28.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesChineseSimplifiedCommon());
-			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 28.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 28.f, &fnt_cfg, rander_fonts_ranges.Data);
 			io.Fonts->Build();
 		}
 
@@ -64,8 +67,7 @@ namespace big
 
 			g.window.font_sub_title = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 24.f, &fnt_cfg);
 			fnt_cfg.MergeMode = true;
-			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 24.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesChineseSimplifiedCommon());
-			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 24.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 24.f, &fnt_cfg, rander_fonts_ranges.Data);
 			io.Fonts->Build();
 		}
 
@@ -76,8 +78,7 @@ namespace big
 
 			g.window.font_small = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 18.f, &fnt_cfg);
 			fnt_cfg.MergeMode = true;
-			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 18.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesChineseSimplifiedCommon());
-			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 18.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 18.f, &fnt_cfg, rander_fonts_ranges.Data);
 			io.Fonts->Build();
 		}
 
@@ -155,12 +156,8 @@ namespace big
 		ImGui_ImplDX11_InvalidateDeviceObjects();
 	}
 
-	std::string fonts_service::current_font()
+	std::string& fonts_service::current_font()
 	{
-		if (changed_font.empty())
-		{
-			return "Default";
-		}
 		return changed_font;
 	}
 
