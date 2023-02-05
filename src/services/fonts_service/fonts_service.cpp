@@ -9,8 +9,9 @@ namespace big
 	void fonts_service::init()
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		fonts_map.insert({ "arial.ttf", io.Fonts->GetGlyphRangesDefault() });
-		fonts_map.insert({ "simhei.ttf", io.Fonts->GetGlyphRangesChineseFull() });
+		fonts_map.emplace("arial.ttf", io.Fonts->GetGlyphRangesDefault());
+		fonts_map.emplace("simhei.ttf", io.Fonts->GetGlyphRangesChineseFull());
+		fonts_map.emplace("msmincho.ttc", io.Fonts->GetGlyphRangesJapanese());
 	}
 
 	void fonts_service::init_render()

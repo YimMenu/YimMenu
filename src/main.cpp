@@ -190,6 +190,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				renderer_instance.reset();
 				LOG(INFO) << "Renderer uninitialized.";
 
+				g_fonts_service.reset();
+
 				pointers_instance.reset();
 				LOG(INFO) << "Pointers uninitialized.";
 				
