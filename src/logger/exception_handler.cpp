@@ -1,4 +1,5 @@
 #include "exception_handler.hpp"
+#include "stack_trace.hpp"
 #include <Zydis/Zydis.h>
 
 namespace big
@@ -20,6 +21,9 @@ namespace big
             exception_code == DBG_PRINTEXCEPTION_C ||
             exception_code == DBG_PRINTEXCEPTION_WIDE_C)
             return EXCEPTION_CONTINUE_SEARCH;
+
+        // causes the process to terminate and handles a crash just fine without this log
+        LOG(FATAL) << "Exception Received\n" << stack_trace(exception_info);
 
         ZyanU64 opcode_address = exception_info->ContextRecord->Rip;
         ZydisDisassembledInstruction instruction;
