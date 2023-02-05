@@ -455,7 +455,21 @@ namespace big
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(custom_time, local_weather, hour, minute, second)
 			} custom_time;
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time)
+
+
+			struct blackhole
+			{
+				bool enable = false;
+				bool include_peds = false;
+				bool include_vehicles = false;
+				float color[3] = { 1, 1, 1 };
+				int alpha = 150;
+				rage::fvector3 pos;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(blackhole, enable, include_peds, include_vehicles, color, alpha)
+			} blackhole{};
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole)
 		} world{};
 
 		struct spoofing
