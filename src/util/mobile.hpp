@@ -39,6 +39,11 @@ namespace big::mobile
 			*script_global(scr_globals::mechanic_global).at(886).as<int*>() = 1;
 		}
 
+		inline void request_boat_pickup()
+		{
+			*script_global(scr_globals::mechanic_global).at(887).as<int*>() = 1;
+		}
+
 		inline void request_helicopter_pickup()
 		{
 			*script_global(scr_globals::mechanic_global).at(888).as<int*>() = 1;
@@ -53,6 +58,8 @@ namespace big::mobile
 		{
 			*script_global(scr_globals::mechanic_global).at(4485).as<int*>() = 1;
 		}
+
+
 	}
 
 	namespace mors_mutual
@@ -100,6 +107,11 @@ namespace big::mobile
 		inline void request_bullshark_testosterone()
 		{
 			*script_global(2672505).at(3689).as<int*>() = 1;
+		}
+		
+		inline void request_ballistic_armor() //i think this is a ceo ability atleast?
+		{
+			*script_global(scr_globals::mechanic_global).at(896).as<int*>() = 1;
 		}
 	}
 
