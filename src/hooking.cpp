@@ -101,6 +101,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::received_array_update>("RAU", g_pointers->m_received_array_update);
 
+		detour_hook_helper::add<hooks::receive_pickup>("RPI", g_pointers->m_receive_pickup);
+
 		g_hooking = this;
 	}
 

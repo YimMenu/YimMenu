@@ -45,6 +45,9 @@ namespace big
 		ImGui::Checkbox("LESSEN_BREAKUP_KICK"_T.data(), &g.protections.lessen_breakups);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("LESSEN_BREAKUP_KICK_DESCRIPTION"_T.data());
+		ImGui::Checkbox("Receive Pickup", &g.protections.receive_pickup);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("This prevents any pickup from the ground such as unwanted money drops.\nAttention: Normal pickups are also no longer possible.");
 		ImGui::EndGroup();
 	}
 
