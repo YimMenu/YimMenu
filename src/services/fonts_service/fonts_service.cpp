@@ -35,7 +35,7 @@ namespace big
 
 		ImFontGlyphRangesBuilder builder;
 		builder.AddRanges(io.Fonts->GetGlyphRangesChineseSimplifiedCommon()); // Add one of the default ranges
-		//builder.AddRanges(io.Fonts->GetGlyphRangesCyrillic());
+		builder.AddRanges(io.Fonts->GetGlyphRangesCyrillic());
 		builder.BuildRanges(&rander_fonts_ranges);                          // Build the final result (ordered ranges with all the unique characters submitted)
 
 		{
