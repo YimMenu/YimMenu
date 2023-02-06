@@ -14,11 +14,10 @@ namespace big
 
         SymInitialize(GetCurrentProcess(), nullptr, true);
 
-        m_dump << "== Begin of stacktrace ==\n";
         dump_module_info();
         dump_registers();
         dump_stacktrace();
-        m_dump << "\n== End of stacktrace ==\n";
+        m_dump << "\n--------End of exception--------\n";
     }
 
     stack_trace::~stack_trace()
@@ -33,6 +32,7 @@ namespace big
 
     void stack_trace::dump_module_info()
     {
+        m_dump << "Dumping modules:\n";
         const auto peb = reinterpret_cast<PPEB>(NtCurrentTeb()->ProcessEnvironmentBlock);
         if (!peb)
             return;
@@ -89,6 +89,7 @@ namespace big
 
     void stack_trace::dump_stacktrace()
     {
+        m_dump << "Dumping stacktrace:";
         grab_stacktrace();
 
         // alloc once
