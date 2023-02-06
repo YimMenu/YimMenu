@@ -21,7 +21,7 @@ namespace big::heist::cayo
 		{
 			if (scripts::force_host(RAGE_JOAAT("fm_mission_controller_2020")))
 			{
-				misc::set_bit(script_local(thread, 42279).as<int*>(), 16);
+				misc::set_bit(script_local(thread, 42279).at(1).as<int*>(), 16);
 				*script_local(thread, 42279).at(1375).at(0, 1).as<int*>() = 50;
 			}
 		}
@@ -63,7 +63,7 @@ namespace big::heist::casino
 		{
 			if (scripts::force_host(RAGE_JOAAT("fm_mission_controller")))
 			{
-				misc::set_bit(script_local(thread, 19707).as<int*>(), 16);
+				misc::set_bit(script_local(thread, 19707).at(1).as<int*>(), 16);
 				*script_local(thread, 19707).at(1232).at(0, 1).as<int*>() = 105;
 			}
 		}

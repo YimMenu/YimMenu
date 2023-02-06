@@ -851,13 +851,15 @@ namespace big
 			case TELEPORT:
 			{
 				ImGui::BeginGroup();
-				components::button("Compound Main Gate - Outside", [] { teleport::to_coords({ 4974.012207 , -5704.004883 , 19.88697624 }); });
-				components::button("Compound Main Gate - Inside", [] { teleport::to_coords({ 4991.293457 , -5718.394043 , 19.88019753 }); });
-				components::button("Keycard", [] { teleport::to_coords({ 5013.088379 , -5756.17627 , 28.90014458 }); });
-				components::button("Target - 1", [] { teleport::to_coords({ 5006.895508 , -5755.962891 , 15.48677349 }); });
-				components::button("Target - 2", [] { teleport::to_coords({ 5009.144531 , -5753.708496 , 15.47878361 }); });
-				components::button("Drainage Tunnel", [] { teleport::to_coords({ 5043.570801 , -5815.153809 , -11.01900005 }); });
-				components::button("Escape Cayo Perico", [] { teleport::to_coords({ 4796.765625 , -6281.083008 , -75.83087921 }); });
+				components::button("Compound Main Gate - Outside", [] { teleport::to_coords({ 4974.012207, -5704.004883, 19.88697624 }); });
+				components::button("Compound Main Gate - Inside", [] { teleport::to_coords({ 4991.293457, -5718.394043, 19.88019753 }); });
+				components::button("Keycard", [] { teleport::to_coords({ 5013.088379, -5756.17627, 28.90014458 }); });
+				ImGui::EndGroup(); ImGui::SameLine();
+				ImGui::BeginGroup();
+				components::button("Target - 1", [] { teleport::to_coords({ 5006.895508, -5755.962891, 15.48677349 }); });
+				components::button("Target - 2", [] { teleport::to_coords({ 5009.144531, -5753.708496, 15.47878361 }); });
+				components::button("Drainage Tunnel", [] { teleport::to_coords({ 5043.570801, -5815.153809, -11.01900005 }); });
+				components::button("Escape Cayo Perico", [] { teleport::to_coords({ 4796.765625, -6281.083008, -75.83087921 }); });
 				ImGui::EndGroup();
 			}
 			break;
@@ -1136,13 +1138,14 @@ namespace big
 			case TELEPORT:
 			{
 				ImGui::BeginGroup();
-				components::button("Compound Main Gate - Outside", [] { teleport::to_coords({ 4974.012207 , -5704.004883 , 19.88697624 }); });
-				components::button("Compound Main Gate - Inside", [] { teleport::to_coords({ 4991.293457 , -5718.394043 , 19.88019753 }); });
-				components::button("Keycard", [] { teleport::to_coords({ 5013.088379 , -5756.17627 , 28.90014458 }); });
-				components::button("Target - 1", [] { teleport::to_coords({ 5006.895508 , -5755.962891 , 15.48677349 }); });
-				components::button("Target - 2", [] { teleport::to_coords({ 5009.144531 , -5753.708496 , 15.47878361 }); });
-				components::button("Drainage Tunnel", [] { teleport::to_coords({ 5043.570801 , -5815.153809 , -11.01900005 }); });
-				components::button("Escape Cayo Perico", [] { teleport::to_coords({ 4796.765625 , -6281.083008 , -75.83087921 }); });
+				components::button("Staff Lobby", [] { teleport::to_coords({ 2548.080566, -271.7148438, -58.72298813 }); });
+				components::button("Basement", [] { teleport::to_coords({ 2526.33374, -279.2503357, -70.64446259 }); });
+				components::button("Keypads", [] { teleport::to_coords({ 2468.846436, -279.2178955, -70.69423676 }); });
+				ImGui::EndGroup(); ImGui::SameLine();
+				ImGui::BeginGroup();
+				components::button("Mantrap", [] { teleport::to_coords({ 2423.513916 , -258.9893799 , -70.80651093 }); });
+				components::button("Vault Door - Outside", [] { teleport::to_coords({ 2497.277588, -239.3405457, -70.73901367 }); });
+				components::button("Vault Door - Inside", [] { teleport::to_coords({ 2510.670898, -239.0809784, -70.73706818 }); });
 				ImGui::EndGroup();
 			}
 				break;
