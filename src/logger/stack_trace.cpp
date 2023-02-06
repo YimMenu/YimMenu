@@ -124,15 +124,15 @@ namespace big
 
     void stack_trace::grab_stacktrace()
     {
-        const auto context = m_exception_info->ContextRecord;
+        CONTEXT context = *m_exception_info->ContextRecord;
 
         STACKFRAME64 frame{};
         frame.AddrPC.Mode = AddrModeFlat;
         frame.AddrFrame.Mode = AddrModeFlat;
         frame.AddrStack.Mode = AddrModeFlat;
-        frame.AddrPC.Offset = context->Rip;
-        frame.AddrFrame.Offset = context->Rbp;
-        frame.AddrStack.Offset = context->Rsp;
+        frame.AddrPC.Offset = context.Rip;
+        frame.AddrFrame.Offset = context.Rbp;
+        frame.AddrStack.Offset = context.Rsp;
 
         for (size_t i = 0; i < m_frame_pointers.size(); ++i)
         {
@@ -141,7 +141,7 @@ namespace big
                 GetCurrentProcess(),
                 GetCurrentThread(),
                 &frame,
-                context,
+                &context,
                 nullptr,
                 SymFunctionTableAccess64,
                 SymGetModuleBase64,
