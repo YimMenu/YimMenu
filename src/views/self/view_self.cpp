@@ -169,9 +169,6 @@ namespace big
 
 		if (!g.self.never_wanted)
 		{
-			/*ImGui::Checkbox("FORCE_SHOW_HUD_ELEMENT"_T.data(), &g.self.force_show_hud_element);
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("FORCE_SHOW_HUD_ELEMENT_DESC"_T.data());*/
 			ImGui::Checkbox("FORCE_WANTED_LVL"_T.data(), &g.self.force_wanted_level);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("FORCE_WANTED_LVL_INFO"_T.data());
