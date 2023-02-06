@@ -516,7 +516,7 @@ namespace big
 				bool enabled = false;
 				bool no_collision = false;
 				bool stop_on_exit = false;
-				float speed = 1;
+				float speed = 100;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(fly, dont_stop, enabled, no_collision, stop_on_exit, speed)
 			} fly{};
