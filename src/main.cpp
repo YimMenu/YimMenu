@@ -57,6 +57,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			{
 				LOG(INFO) << "Yim's Menu Initializing";
 				LOGF(INFO, "Git Info\n\tBranch:\t%s\n\tHash:\t%s\n\tDate:\t%s", version::GIT_BRANCH, version::GIT_SHA1, version::GIT_DATE);
+				
+				auto custom_text_service_instance = std::make_unique<custom_text_service>();
+				LOG(INFO) << "Custom Text Service initialized.";
 
 				g_translation_service.init();
 				LOG(INFO) << "Translation Service initialized.";
@@ -82,7 +85,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				LOG(INFO) << "Hooking initialized.";
 
 				auto context_menu_service_instance = std::make_unique<context_menu_service>();
-				auto custom_text_service_instance = std::make_unique<custom_text_service>();
 				auto globals_service_instace = std::make_unique<globals_service>();
 				auto mobile_service_instance = std::make_unique<mobile_service>();
 				auto notification_service_instance = std::make_unique<notification_service>();

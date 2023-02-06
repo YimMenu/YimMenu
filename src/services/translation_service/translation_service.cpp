@@ -2,7 +2,7 @@
 #include "file_manager.hpp"
 #include "thread_pool.hpp"
 #include <cpr/cpr.h>
-
+#include "services/custom_text/custom_text_service.hpp"
 namespace big
 {
     translation_service::translation_service() :
@@ -71,6 +71,8 @@ namespace big
         return { 0, 0 };
     }
 
+
+
     std::map<std::string, translation_entry>& translation_service::available_translations()
     {
         return m_remote_index.translations;
@@ -98,18 +100,26 @@ namespace big
         auto j = load_translation(m_remote_index.default_lang);
         for (auto& [key, value] : j.items())
         {
-            m_translations.insert({ rage::joaat(key), value.get<std::string>() });
+            if (value.is_object() && key == "custom_labels")
+                for (auto &[_key, _value] : value.items())
+                    g_custom_text_service->add_label_overwrite(rage::joaat(_key), _value); 
+            else
+                m_translations.insert({ rage::joaat(key), value.get<std::string>() });
         }
         
         // Don't load selected language if it's the same as default
         if (m_local_index.selected_language != m_remote_index.default_lang)
         {
-            auto j = load_translation(m_local_index.selected_language);
-            for (auto &[key, value] : j.items())
-            {
-                m_translations[rage::joaat(key)] = value;
-            }
-        }
+			auto j = load_translation(m_local_index.selected_language);
+			for (auto &[key, value] : j.items())
+			{
+				if (value.is_object() && key == "custom_labels")
+					for (auto &[_key, _value] : value.items())
+						g_custom_text_service->add_label_overwrite(rage::joaat(_key), _value); 
+				else
+					m_translations[rage::joaat(key)] = value;
+			}
+		}
         
         save_local_index();
     }
