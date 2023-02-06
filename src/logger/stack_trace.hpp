@@ -43,7 +43,8 @@ namespace big
 
         std::stringstream m_dump;
         std::vector<uint64_t> m_frame_pointers;
-        std::vector<module_info> m_modules;
+        
+        inline static std::vector<module_info> m_modules;
 
 
     };

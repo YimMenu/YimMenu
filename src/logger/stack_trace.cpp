@@ -7,7 +7,7 @@ namespace big
 {
     stack_trace::stack_trace(EXCEPTION_POINTERS* exception_info) :
         m_exception_info(exception_info),
-        m_frame_pointers(64)
+        m_frame_pointers(32)
     {
         static std::mutex m;
         std::lock_guard lock(m);
@@ -30,9 +30,16 @@ namespace big
         return m_dump.str();
     }
 
+    // I'd prefer to make some sort of global instance that cache all modules once instead of doing this every time
     void stack_trace::dump_module_info()
     {
-        m_dump << "Dumping modules:\n";
+        // commenting this out as we don't really need this anymore with GTAV only having one single edition
+        //m_dump << "Dumping modules:\n";
+
+        // modules cached already
+        if (m_modules.size())
+            return;
+
         const auto peb = reinterpret_cast<PPEB>(NtCurrentTeb()->ProcessEnvironmentBlock);
         if (!peb)
             return;
@@ -53,10 +60,10 @@ namespace big
             {
                 auto mod_info = module_info(table_entry->FullDllName.Buffer, table_entry->DllBase);
 
-                m_dump
-                    << mod_info.m_path.filename().string()
-                    << " Base Address: " << HEX_TO_UPPER(mod_info.m_base)
-                    << " Size: " << mod_info.m_size << '\n';
+                //m_dump
+                //    << mod_info.m_path.filename().string()
+                //    << " Base Address: " << HEX_TO_UPPER(mod_info.m_base)
+                //    << " Size: " << mod_info.m_size << '\n';
 
                 m_modules.emplace_back(std::move(mod_info));
             }
