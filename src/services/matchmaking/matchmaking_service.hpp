@@ -5,7 +5,7 @@ namespace big
 	class matchmaking_service
 	{
 	public:
-		constexpr static int MAX_SESSIONS_TO_FIND = 1400;
+		constexpr static int MAX_SESSIONS_TO_FIND = 1057;
 
 		struct session_attributes
 		{
