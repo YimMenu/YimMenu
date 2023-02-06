@@ -72,7 +72,7 @@ namespace big
 			{
 				components::input_text("Stat", stat_bool_text, sizeof(stat_bool_text), ImGuiInputTextFlags_None, [] { g.stat_editor.stat.bool_text = stat_bool_text; });
 				components::input_text("Value", stat_bool_value, sizeof(stat_bool_value), ImGuiInputTextFlags_None, [] { g.stat_editor.stat.bool_value = stat_bool_value; });
-				components::button("Apply", [] { local_player::stat_set_bool(stat_bool_text, stat_bool_value); }); ImGui::SameLine();
+				components::button("Apply", [] { local_player::stat_set_bool(stat_bool_text, (std::string)stat_bool_value); }); ImGui::SameLine();
 				ImGui::Checkbox("Read", &g.stat_editor.stat.bool_read);
 				components::input_text("##read_result", stat_bool_read_result, sizeof(stat_bool_read_result), ImGuiInputTextFlags_ReadOnly);
 			}
@@ -228,7 +228,7 @@ namespace big
 			{
 				components::input_text("Index", packed_stat_bool_text, sizeof(packed_stat_bool_text), ImGuiInputTextFlags_None, [] { g.stat_editor.packed_stat.bool_text = packed_stat_bool_text; });
 				components::input_text("Value", packed_stat_bool_value, sizeof(packed_stat_bool_value), ImGuiInputTextFlags_None, [] { g.stat_editor.packed_stat.bool_value = packed_stat_bool_value; });
-				components::button("Apply", [] { local_player::packed_stat_set_bool(packed_stat_bool_text, packed_stat_bool_value); }); ImGui::SameLine();
+				components::button("Apply", [] { local_player::packed_stat_set_bool(packed_stat_bool_text, (std::string)packed_stat_bool_value); }); ImGui::SameLine();
 				ImGui::Checkbox("Read", &g.stat_editor.packed_stat.bool_read);
 				components::input_text("##read_result", packed_stat_bool_read_result, sizeof(packed_stat_bool_read_result), ImGuiInputTextFlags_ReadOnly);
 			}

@@ -3,6 +3,8 @@
 #include "util/local_player.hpp"
 #include "util/misc.hpp"
 #include "util/heist.hpp"
+#include "util/teleport.hpp"
+#include "util/scripts.hpp"
 #include "pointers.hpp"
 
 namespace big
@@ -48,6 +50,8 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Cayo Perico Heist"))
 		{
+			ImGui::Text("Reward Limit: 255K + 10K");
+
 			enum Mode
 			{
 				PREP,
@@ -846,12 +850,29 @@ namespace big
 			break;
 			case TELEPORT:
 			{
-
+				ImGui::BeginGroup();
+				components::button("Compound Main Gate - Outside", [] { teleport::to_coords({ 4974.012207 , -5704.004883 , 19.88697624 }); });
+				components::button("Compound Main Gate - Inside", [] { teleport::to_coords({ 4991.293457 , -5718.394043 , 19.88019753 }); });
+				components::button("Keycard", [] { teleport::to_coords({ 5013.088379 , -5756.17627 , 28.90014458 }); });
+				components::button("Target - 1", [] { teleport::to_coords({ 5006.895508 , -5755.962891 , 15.48677349 }); });
+				components::button("Target - 2", [] { teleport::to_coords({ 5009.144531 , -5753.708496 , 15.47878361 }); });
+				components::button("Drainage Tunnel", [] { teleport::to_coords({ 5043.570801 , -5815.153809 , -11.01900005 }); });
+				components::button("Escape Cayo Perico", [] { teleport::to_coords({ 4796.765625 , -6281.083008 , -75.83087921 }); });
+				ImGui::EndGroup();
 			}
 			break;
 			case MISC:
 			{
-
+				if (auto thread = gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller_2020")); thread)
+				{
+					scripts::force_host(RAGE_JOAAT("fm_mission_controller_2020"));
+					ImGui::InputInt("Take", script_local(thread, heist::cayo::take).as<int*>(), 0);
+					ImGui::InputInt("Team Lives", script_local(thread, heist::cayo::team_lives).as<int*>(), 0);
+				}
+				components::button("Instant Heist Passed", [] { heist::cayo::instant_heist_passed(); });
+				components::button("Hack Fingerprint", [] { heist::cayo::hack_fingerprint(); });
+				components::button("Plasma Cutter Instant Cut", [] { heist::cayo::plasma_cutter_instant_cut(); });
+				components::button("Grate Instant Cut", [] { heist::cayo::grate_instant_cut(); });
 			}
 			break;
 			}
@@ -878,6 +899,8 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Diamond Casino Heist"))
 		{
+			ImGui::Text("Reward Limit: 361.9K + 10K");
+
 			enum Mode
 			{
 				PREP,
@@ -1112,12 +1135,29 @@ namespace big
 				break;
 			case TELEPORT:
 			{
-
+				ImGui::BeginGroup();
+				components::button("Compound Main Gate - Outside", [] { teleport::to_coords({ 4974.012207 , -5704.004883 , 19.88697624 }); });
+				components::button("Compound Main Gate - Inside", [] { teleport::to_coords({ 4991.293457 , -5718.394043 , 19.88019753 }); });
+				components::button("Keycard", [] { teleport::to_coords({ 5013.088379 , -5756.17627 , 28.90014458 }); });
+				components::button("Target - 1", [] { teleport::to_coords({ 5006.895508 , -5755.962891 , 15.48677349 }); });
+				components::button("Target - 2", [] { teleport::to_coords({ 5009.144531 , -5753.708496 , 15.47878361 }); });
+				components::button("Drainage Tunnel", [] { teleport::to_coords({ 5043.570801 , -5815.153809 , -11.01900005 }); });
+				components::button("Escape Cayo Perico", [] { teleport::to_coords({ 4796.765625 , -6281.083008 , -75.83087921 }); });
+				ImGui::EndGroup();
 			}
 				break;
 			case MISC:
 			{
-				
+				if (auto thread = gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller")); thread)
+				{
+					scripts::force_host(RAGE_JOAAT("fm_mission_controller"));
+					ImGui::InputInt("Take", script_local(thread, heist::casino::take).as<int*>(), 0);
+					ImGui::InputInt("Team Lives", script_local(thread, heist::casino::team_lives).as<int*>(), 0);
+				}
+				components::button("Instant Heist Passed", [] { heist::casino::instant_heist_passed(); });
+				components::button("Hack Fingerprint", [] { heist::casino::hack_fingerprint(); });
+				components::button("Hack Keypad", [] { heist::casino::hack_keypad(); });
+				components::button("Break Vault Door", [] { heist::casino::break_vault_door(); });
 			}
 				break;
 			}
@@ -1144,7 +1184,24 @@ namespace big
 			{
 			case PREP:
 			{
-				
+				components::button("Start Heist Finale - The Data Breaches", [] //https://www.unknowncheats.me/forum/3011256-post1.html
+				{
+					local_player::stat_set_int("$MPX_GANGOPS_FLOW_MISSION_PROG", 503);
+					local_player::stat_set_int("$MPX_GANGOPS_HEIST_STATUS", 229383);
+					local_player::stat_set_int("$MPX_GANGOPS_FLOW_NOTIFICATIONS", 1557);
+				});
+				components::button("Start Heist Finale - The Bogdan Problem", [] 
+				{
+					local_player::stat_set_int("$MPX_GANGOPS_FLOW_MISSION_PROG", 240);
+					local_player::stat_set_int("$MPX_GANGOPS_HEIST_STATUS", 229378);
+					local_player::stat_set_int("$MPX_GANGOPS_FLOW_NOTIFICATIONS", 1557);
+				});
+				components::button("Start Heist Finale - The Doomsday Scenario", [] 
+				{
+					local_player::stat_set_int("$MPX_GANGOPS_FLOW_MISSION_PROG", 16368);
+					local_player::stat_set_int("$MPX_GANGOPS_HEIST_STATUS", 229380);
+					local_player::stat_set_int("$MPX_GANGOPS_FLOW_NOTIFICATIONS", 1557);
+				});
 			}
 				break;
 			case TUNABLE:
@@ -1180,10 +1237,13 @@ namespace big
 	}
 
 	static int ah_radio_button_index = 0;
+	static int heist_planning_stage = 0;
 	static void tab_item_apart_heist()
 	{
 		if (ImGui::BeginTabItem("Apartment Heist"))
 		{
+			ImGui::Text("Reward Limit: 15M");
+
 			enum Mode
 			{
 				PREP,
@@ -1197,7 +1257,42 @@ namespace big
 			{
 			case PREP:
 			{
+				components::button("Unlock All Heists", [] //https://www.unknowncheats.me/forum/2399940-post513.html
+				{
+					local_player::stat_set_bool("MPPLY_AWD_COMPLET_HEIST_1STPER", true);
+					local_player::stat_set_bool("MPPLY_AWD_COMPLET_HEIST_MEM", true);
+					local_player::stat_set_bool("MPPLY_AWD_FLEECA_FIN", true);
+					local_player::stat_set_bool("MPPLY_AWD_PRISON_FIN", true);
+					local_player::stat_set_bool("MPPLY_AWD_HUMANE_FIN", true);
+					local_player::stat_set_bool("MPPLY_AWD_SERIESA_FIN", true);
+					local_player::stat_set_bool("MPPLY_AWD_PACIFIC_FIN", true);
+					local_player::stat_set_bool("MPPLY_AWD_HST_ORDER", true);
+					local_player::stat_set_bool("MPPLY_AWD_HST_SAME_TEAM", true);
+					local_player::stat_set_bool("MPPLY_AWD_HST_ULT_CHAL", true);
+					local_player::stat_set_int("MPPLY_HEIST_ACH_TRACKER ", -1);
+				});
 
+				ImGui::Text("Edit after paying 25K to start the heist");
+
+				static bool prep1 = false;
+				prep1 = misc::has_bit_set(&heist_planning_stage, 0 * 3);
+				components::checkbox("Prep 1", &prep1, [] { prep1 ? local_player::stat_set_bits("$MPX_HEIST_PLANNING_STAGE", 0 * 3) : local_player::stat_clear_bits("$MPX_HEIST_PLANNING_STAGE", 0 * 3); });
+
+				static bool prep2 = false;
+				prep2 = misc::has_bit_set(&heist_planning_stage, 1 * 3);
+				components::checkbox("Prep 2", &prep2, [] { prep2 ? local_player::stat_set_bits("$MPX_HEIST_PLANNING_STAGE", 1 * 3) : local_player::stat_clear_bits("$MPX_HEIST_PLANNING_STAGE", 1 * 3); });
+
+				static bool prep3 = false;
+				prep3 = misc::has_bit_set(&heist_planning_stage, 2 * 3);
+				components::checkbox("Prep 3", &prep3, [] { prep3 ? local_player::stat_set_bits("$MPX_HEIST_PLANNING_STAGE", 2 * 3) : local_player::stat_clear_bits("$MPX_HEIST_PLANNING_STAGE", 2 * 3); });
+
+				static bool prep4 = false;
+				prep4 = misc::has_bit_set(&heist_planning_stage, 3 * 3);
+				components::checkbox("Prep 4", &prep4, [] { prep4 ? local_player::stat_set_bits("$MPX_HEIST_PLANNING_STAGE", 3 * 3) : local_player::stat_clear_bits("$MPX_HEIST_PLANNING_STAGE", 3 * 3); });
+
+				static bool prep5 = false;
+				prep5 = misc::has_bit_set(&heist_planning_stage, 4 * 3);
+				components::checkbox("Prep 5", &prep5, [] { prep5 ? local_player::stat_set_bits("$MPX_HEIST_PLANNING_STAGE", 4 * 3) : local_player::stat_clear_bits("$MPX_HEIST_PLANNING_STAGE", 4 * 3); });
 			}
 				break;
 			case TUNABLE:
@@ -1432,6 +1527,8 @@ namespace big
 			h3opt_weaps = local_player::stat_get_int("$MPX_H3OPT_WEAPS");
 			h3opt_bitset0 = local_player::stat_get_int("$MPX_H3OPT_BITSET0");
 			h3opt_keylevels = local_player::stat_get_int("$MPX_H3OPT_KEYLEVELS");
+
+			heist_planning_stage = local_player::stat_get_int("$MPX_HEIST_PLANNING_STAGE");
 
 			tuner_current = local_player::stat_get_int("$MPX_TUNER_CURRENT");
 			tuner_gen_bs = local_player::stat_get_int("$MPX_TUNER_GEN_BS");
