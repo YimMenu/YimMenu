@@ -52,6 +52,47 @@ namespace big
 
 			components::command_button<"fastquit">();
 
+			if (ImGui::TreeNode("Addresses"))
+			{
+				uint64_t local_cped = (uint64_t)g_local_player;
+				ImGui::InputScalar("Local CPed", ImGuiDataType_U64, &local_cped, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
+
+				if (g_local_player)
+				{
+					uint64_t local_playerinfo = (uint64_t)g_local_player->m_player_info;
+					ImGui::InputScalar("Local CPlayerInfo", ImGuiDataType_U64, &local_playerinfo, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
+
+					uint64_t local_vehicle = (uint64_t)g_local_player->m_vehicle;
+					ImGui::InputScalar("Local CAutomobile", ImGuiDataType_U64, &local_vehicle, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
+				}
+
+				if (auto mgr = *g_pointers->m_network_player_mgr)
+				{
+					uint64_t local_netplayer = (uint64_t)mgr->m_local_net_player;
+					ImGui::InputScalar("Local CNetGamePlayer", ImGuiDataType_U64, &local_netplayer, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
+
+					if (mgr->m_local_net_player)
+					{
+						uint64_t local_netplayer = (uint64_t)mgr->m_local_net_player->get_net_data();
+						ImGui::InputScalar("Local netPlayerData", ImGuiDataType_U64, &local_netplayer, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
+					}
+				}
+
+				if (auto network = *g_pointers->m_network)
+				{
+					uint64_t nw = (uint64_t)network;
+					ImGui::InputScalar("Network", ImGuiDataType_U64, &nw, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
+				}
+
+				if (auto omgr = *g_pointers->m_network_object_mgr)
+				{
+					uint64_t nw = (uint64_t)omgr;
+					ImGui::InputScalar("Network Object Mgr", ImGuiDataType_U64, &nw, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
+				}
+
+				ImGui::TreePop();
+			}
+
 			ImGui::EndTabItem();
 		}
 	}

@@ -97,6 +97,7 @@ namespace big
 				ImGui::Checkbox("FULLY_AUTOMATIC_SIGNAL"_T.data(), &g.vehicle.auto_turn_signals);
 			}
 			components::command_checkbox<"driveunder">();
+			components::command_checkbox<"keeponground">();
 
 			ImGui::EndGroup();
 		}
