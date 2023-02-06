@@ -29,10 +29,10 @@ namespace big
 		node->m_is_cheater = g.spoofing.spoof_cheater;
 
 		// spoof r* dev and qa only when spoofing rid because every player in the session will send metrics if you join with that enabled
-		if (g.spoofing.spoof_rockstar_id)
+		/*if (g.spoofing.spoof_rockstar_id)
 		{
 			node->m_is_rockstar_dev = g.spoofing.spoof_rockstar_dev;
 			node->m_is_rockstar_qa = g.spoofing.spoof_rockstar_qa;
-		}
+		}*/
 	}
 }

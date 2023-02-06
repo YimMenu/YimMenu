@@ -13,7 +13,7 @@ namespace big
 		if (!ENTITY::DOES_ENTITY_EXIST(vehicle) ||
 			!ENTITY::IS_ENTITY_A_VEHICLE(vehicle))
 		{
-			g_notification_service->push_warning("Persist Car", "Tried to save a vehicle which does not exist");
+			g_notification_service->push_warning("PERSIST_CAR_TITLE"_T.data(), "PERSIST_CAR_INVALID_VEHICLE_SAVE_ATTEMPT"_T.data());
 			return;
 		}
 

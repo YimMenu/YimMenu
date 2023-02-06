@@ -40,6 +40,8 @@ namespace big
 			g_hotkey_service->update_hotkey("invisveh", g.settings.hotkeys.invisveh);
 		if (ImGui::Hotkey("Toggle Local Veh Invisibility", &g.settings.hotkeys.localinvisveh))
 			g_hotkey_service->update_hotkey("localinvisveh", g.settings.hotkeys.localinvisveh);
+		if (ImGui::Hotkey("Rage Quit (Like Alt + F4)", &g.settings.hotkeys.fast_quit))
+			g_hotkey_service->update_hotkey("fastquit", g.settings.hotkeys.fast_quit);
 
 		ImGui::PopItemWidth();
 	}

@@ -60,13 +60,13 @@ namespace big
 
 	persistent_player* player_database_service::get_or_create_player(player_ptr player)
 	{
-		if (m_players.contains(player->get_net_data()->m_gamer_handle_2.m_rockstar_id))
-			return &m_players[player->get_net_data()->m_gamer_handle_2.m_rockstar_id];
+		if (m_players.contains(player->get_net_data()->m_gamer_handle.m_rockstar_id))
+			return &m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id];
 		else
 		{
-			m_players[player->get_net_data()->m_gamer_handle_2.m_rockstar_id] = { player->get_name(), player->get_net_data()->m_gamer_handle_2.m_rockstar_id };
+			m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id] = { player->get_name(), player->get_net_data()->m_gamer_handle.m_rockstar_id };
 			save();
-			return &m_players[player->get_net_data()->m_gamer_handle_2.m_rockstar_id];
+			return &m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id];
 		}
 	}
 

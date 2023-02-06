@@ -23,6 +23,5 @@ namespace big
 				((rage::phBoundComposite*)g_local_player->m_navigation->m_damp->m_bound)->m_bounds[0]->m_bounding_box_max_xyz_margin_w.w = 0.25;
 		}
 	};
-
 	no_collision g_no_collision("nocollision", "No Collision", "Allows you to walk through vehicles and most obstacles", g.self.no_collision);
 }

@@ -12,13 +12,13 @@ namespace big::teleport
 
 		if (ENTITY::IS_ENTITY_DEAD(ent, true))
 		{
-			g_notification_service->push_warning("Teleport", "Target player is dead.");
+			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_PLAYER_IS_DEAD"_T.data());
 			return false;
 		}
 
 		if (!PED::IS_PED_IN_ANY_VEHICLE(ent, true))
 		{
-			g_notification_service->push_warning("Teleport", "Target player is not in a vehicle.");
+			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_PLAYER_IS_NOT_IN_VEHICLE"_T.data());
 			return false;
 		}
 
@@ -27,7 +27,7 @@ namespace big::teleport
 		if (entity::take_control_of(ent))
 			ENTITY::SET_ENTITY_COORDS(ent, coords.x, coords.y, coords.z, 0, 0, 0, 0);
 		else
-			g_notification_service->push_warning("Teleport", "Failed to take control of player vehicle.");
+			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_FAILED_TO_TAKE_CONTROL"_T.data());
 
 		return true;
 	}
@@ -71,7 +71,7 @@ namespace big::teleport
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh))
 		{
-			g_notification_service->push_warning("Teleport", "Invalid vehicle handle");
+			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_INVALID_VEHICLE"_T.data());
 
 			return false;
 		}
@@ -84,7 +84,7 @@ namespace big::teleport
 
 		if (seat_index == 255)
 		{
-			g_notification_service->push_warning("Teleport", "No seats are free in the player vehicle.");
+			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NO_SEATS_FREE"_T.data());
 
 			return false;
 		}
@@ -141,7 +141,7 @@ namespace big::teleport
 	{
 		if (!to_blip((int)BlipIcons::Waypoint))
 		{
-			g_notification_service->push_warning("Teleport", "Failed to find waypoint position");
+			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NO_WAYPOINT_SET"_T.data());
 
 			return false;
 		}
@@ -154,7 +154,7 @@ namespace big::teleport
 
 		if (!blip::get_objective_location(location))
 		{
-			g_notification_service->push_warning("Teleport", "Failed to find objective position");
+			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NO_OBJECTIVE"_T.data());
 			return false;
 		}
 

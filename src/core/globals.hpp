@@ -6,6 +6,7 @@
 #include "file_manager.hpp"
 #include "backend/reactions/reaction.hpp"
 #include "backend/reactions/interloper_reaction.hpp"
+#include "core/data/ptfx_effects.hpp"
 #include <imgui.h>
 #include <bitset>
 
@@ -232,12 +233,23 @@ namespace big
 			bool desync_kick = false;
 			bool rid_join = false;
 			bool lessen_breakups = false; // disabled by default due to anticheat concerns
+			bool receive_pickup = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, lessen_breakups, desync_kick)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, lessen_breakups, desync_kick, receive_pickup)
 		} protections{};
 
 		struct self 
 		{
+			struct ptfx_effects
+			{
+				bool show = false;
+				float size = 0.2f;
+				int select = 0;
+				const char* asset = "scr_agencyheist";
+				const char* effect = "scr_fbi_mop_drips";
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ptfx_effects, show, size)
+			} ptfx_effects {};
+
 			bool clean_player = false;
 			bool force_wanted_level = false;
 			bool free_cam = false;
@@ -279,7 +291,7 @@ namespace big
 			// do not save below entries
 			bool dance_mode = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self,
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ptfx_effects,
 				clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll,
 				noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water,
 				proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water,
@@ -377,10 +389,11 @@ namespace big
 				int beastjump = 0;
 				int invisveh = 0;
 				int localinvisveh = 0;
+				int fast_quit = 0;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, 
 					noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump,
-					invisveh, localinvisveh)
+					invisveh, localinvisveh, fast_quit)
 			} hotkeys{};
 
 			bool dev_dlc = false;
@@ -448,24 +461,10 @@ namespace big
 
 		struct spoofing
 		{
-			bool spoof_username = false;
-			bool spoof_local_username = false;
-			std::string username = "";
-
-			// enabling this by default causes confusion and many get dropped out of their sessions
-			bool spoof_ip = false;
-			std::array<int, 4> ip_address = { 42, 42, 42, 42 };
-
-			bool spoof_rockstar_id = false;
-			uint64_t rockstar_id = 0;
-
 			bool spoof_cheater = false;
 
 			bool spoof_hide_god = true;
 			bool spoof_hide_spectate = true;
-
-			bool spoof_rockstar_dev = false;
-			bool spoof_rockstar_qa = false;
 
 			bool spoof_crew_data = false;
 			std::string crew_tag = "";
@@ -479,14 +478,9 @@ namespace big
 			bool spoof_session_player_count = false;
 			int session_player_count = 25;
 
-			// don't save
-			bool should_spoof_rockstar_id = false;
-			uint64_t applied_spoof_rockstar_id = 0;
-
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing,
-				spoof_username, spoof_local_username, username, spoof_ip, ip_address, spoof_rockstar_id, rockstar_id,
-				spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_rockstar_dev, spoof_rockstar_qa, spoof_crew_data,
-				crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language,
+				spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew,
+				square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language,
 				session_language, spoof_session_player_count, session_player_count)
 		} spoofing{};
 
@@ -558,6 +552,7 @@ namespace big
 			bool vehinvisibility = false;
 			bool localveh_visibility = false;
 			bool localped_visibility = true;
+			bool keep_on_ground = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle,
 				speedo_meter, fly, rainbow_paint, speed_unit, god_mode,
@@ -565,7 +560,7 @@ namespace big
 				auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior,
 				drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump,
 				keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately,
-				vehinvisibility, localveh_visibility, localped_visibility)
+				vehinvisibility, localveh_visibility, localped_visibility, keep_on_ground)
 		} vehicle{};
 
 		struct weapons

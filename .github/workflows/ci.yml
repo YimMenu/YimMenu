@@ -12,9 +12,6 @@ jobs:
       - name: Check CMake version
         run: cmake --version
 
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1
-
       - name: Cache build/
         id: cache-build
         uses: actions/cache@v3
@@ -22,23 +19,28 @@ jobs:
           path: build
           key: ${{ runner.os }}-build
 
+      - name: Setup MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+
       - name: Generate CMake project
-        run: cmake -S. -Bbuild -G "Visual Studio 17 2022" -DCMAKE_CONFIGURATION_TYPES=Release 
+        run: cmake -D CMAKE_BUILD_TYPE=Release -S. -Bbuild -G Ninja
 
       - name: Build 64bit release DLL
-        run: cmake --build build --config Release --target ALL_BUILD
+        run: cmake --build ./build --config Release --target YimMenu --
 
       - name: Check if DLL got built
-        run: if (-Not (Test-Path -path "build/Release/YimMenu.dll")) {throw 1}
+        run: if (-Not (Test-Path -path "build/YimMenu.dll")) {throw 1}
 
       - name: Rename DLL to YimMenu-dev-{GITHUB_SHA}.dll
         run: |
           del YimMenu-dev-*.dll
           ren YimMenu.dll YimMenu-dev-${{github.sha}}.dll
-        working-directory: build/Release/
+        working-directory: build/
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: binary
-          path: build/Release/YimMenu-dev-*.dll
+          path: build/YimMenu-dev-*.dll
