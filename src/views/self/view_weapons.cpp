@@ -169,8 +169,7 @@ namespace big
 		{
 			ImGui::InputInt("Bone To Shoot", &g.weapons.aimbot.aimbone);
 
-			//todo convert types to combo to get rid of all this code
-			
+			//todo convert types to combo to get rid of all this code			
 
 			if(!g.weapons.aimbot.aimall || !g.weapons.aimbot.aimanimals || !g.weapons.aimbot.aimarmy || !g.weapons.aimbot.aimswat || !g.weapons.aimbot.aimcop || !g.weapons.aimbot.aimplayers || !g.weapons.aimbot.aimenemies || !g.weapons.aimbot.aimallcops)
 			{
@@ -216,7 +215,7 @@ namespace big
 			}
 			if (!g.weapons.aimbot.aimall || !g.weapons.aimbot.aimanimals || !g.weapons.aimbot.aimarmy || !g.weapons.aimbot.aimswat || !g.weapons.aimbot.aimcop || !g.weapons.aimbot.aimplayers || !g.weapons.aimbot.aimenemies || !g.weapons.aimbot.aimnpc)
 			{
-				components::command_checkbox<"aimallcop">();
+				components::command_checkbox<"aimallcops">();
 			}
 		}
 	}

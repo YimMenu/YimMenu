@@ -15,7 +15,7 @@ namespace big
 			PED::GET_PED_NEARBY_PEDS(self::ped, nearbypeds, -1);
 			for (Ped i = 0; i < maxPeds; i++)
 			{
-				Ped target = nearbypeds[i]; //todo actually give it a ped
+				Ped target = nearbypeds[i];
 				int bone = g.weapons.aimbot.aimbone;
 				Vector3 bonec = PED::GET_PED_BONE_COORDS(target, bone, 0, 0, 0);
 				float weaponrange = WEAPON::GET_MAX_RANGE_OF_CURRENT_PED_WEAPON(self::ped);

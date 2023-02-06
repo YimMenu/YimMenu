@@ -236,24 +236,18 @@ namespace big
 
 		components::command_checkbox<"hudcolor">();
 
-		if(ImGui::Checkbox("REPLACE_HUD_COLOUR_WITH_RGBA", &g.self.shcolor))
-		{
-			ImGui::InputInt("Hud Index", &g.self.index);//need to display current val if not displayed
-			ImGui::InputInt("Hud Red", &g.self.r);
-			ImGui::InputInt("Hud Green", &g.self.g);
-			ImGui::InputInt("Hud Blue", &g.self.b);
-			ImGui::InputInt("Hud Alpha", &g.self.a);
-		}
+		ImGui::Checkbox("REPLACE_HUD_COLOUR_WITH_RGBA", &g.self.shcolor);
+		ImGui::InputInt("Hud Index", &g.self.index);//need to display current val if not displayed
+		ImGui::InputInt("Hud Red", &g.self.r);
+		ImGui::InputInt("Hud Green", &g.self.g);
+		ImGui::InputInt("Hud Blue", &g.self.b);
+		ImGui::InputInt("Hud Alpha", &g.self.a);
 
-		if(ImGui::Checkbox("Override Multiplayer Hud Color", &g.self.mhcolor))
-		{
-			ImGui::InputInt("Hud Color", &g.self.hcolor);
-		}
+		ImGui::Checkbox("Override Multiplayer Hud Color", &g.self.mhcolor);
+		ImGui::InputInt("Hud Color", &g.self.hcolor);
 
-		if(ImGui::Checkbox("Override Multiplayer Text Color", &g.self.mtcolor))
-		{
-			ImGui::InputInt("Hud Text Color", &g.self.tcolor);
-		}
+		ImGui::Checkbox("Override Multiplayer Text Color", &g.self.mtcolor);
+		ImGui::InputInt("Hud Text Color", &g.self.tcolor);
 
 		g.self.proof_mask = 0;
 		if (g.self.god_mode)

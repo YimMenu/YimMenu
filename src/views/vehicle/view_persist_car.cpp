@@ -78,7 +78,10 @@ namespace big
 
 		components::button("LOAD_VEHICLE"_T, []
 		{
-			load_vehicle(selected_vehicle_file);
+			if(PED::GET_VEHICLE_PED_IS_IN(self::ped, false) = 0)
+			{
+				load_vehicle(selected_vehicle_file);
+			}
 		});
 
 		ImGui::EndGroup();
