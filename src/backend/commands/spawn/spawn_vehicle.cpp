@@ -45,9 +45,14 @@ namespace big
 					vehicle::max_vehicle(veh);
 				}
 
-				if (g.spawn_vehicle.spawn_inside && ctx->get_sender()->id() == self::id)
+				if (g.spawn_vehicle.spawn_inside && ctx->get_sender()->id() == self::id && !g.self.noclip)
 				{
 					vehicle::teleport_into_vehicle(veh);
+				}
+				else
+				{
+					g_notification_service->push_error("Vehicle", "Please exit noclip before spawning inside a vehicle!\n Spawning vehicle normally...");
+					veh;
 				}
 			}
 		}
