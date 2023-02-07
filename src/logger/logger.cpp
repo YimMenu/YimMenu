@@ -28,6 +28,11 @@ namespace big
             LOGF(VERBOSE, "Wine ({}) environment detected, swapping to simple logger.", wine_get_version());
             m_console_logger = &logger::format_console_simple;
         }
+        if (strlen(std::getenv("NO_COLOR")))
+        {
+            LOG(VERBOSE) << "NO_COLOR environment variable set, swapping to simple logger.";
+            m_console_logger = &logger::format_console_simple;
+        }
 
         initialize();
 
