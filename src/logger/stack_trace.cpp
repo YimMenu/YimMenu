@@ -33,8 +33,7 @@ namespace big
     // I'd prefer to make some sort of global instance that cache all modules once instead of doing this every time
     void stack_trace::dump_module_info()
     {
-        // commenting this out as we don't really need this anymore with GTAV only having one single edition
-        //m_dump << "Dumping modules:\n";
+        m_dump << "Dumping modules:\n";
 
         // modules cached already
         if (m_modules.size())
@@ -60,10 +59,10 @@ namespace big
             {
                 auto mod_info = module_info(table_entry->FullDllName.Buffer, table_entry->DllBase);
 
-                //m_dump
-                //    << mod_info.m_path.filename().string()
-                //    << " Base Address: " << HEX_TO_UPPER(mod_info.m_base)
-                //    << " Size: " << mod_info.m_size << '\n';
+                m_dump
+                    << mod_info.m_path.filename().string()
+                    << " Base Address: " << HEX_TO_UPPER(mod_info.m_base)
+                    << " Size: " << mod_info.m_size << '\n';
 
                 m_modules.emplace_back(std::move(mod_info));
             }
