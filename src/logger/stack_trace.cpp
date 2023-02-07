@@ -101,8 +101,13 @@ namespace big
         // alloc once
         char buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME];
         auto symbol = reinterpret_cast<SYMBOL_INFO*>(buffer);
-        uint64_t displacement64;
+        symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+        symbol->MaxNameLen = MAX_SYM_NAME;
+        
+        DWORD64 displacement64;
         DWORD displacement;
+
+
         IMAGEHLP_LINE64 line;
         line.SizeOfStruct = sizeof(IMAGEHLP_LINE64);
 
