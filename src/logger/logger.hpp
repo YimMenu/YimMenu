@@ -40,11 +40,14 @@ namespace big
 		void close_outstreams();
 
 		void format_console(const LogMessagePtr msg);
+		void format_console_simple(const LogMessagePtr msg);
 		void format_file(const LogMessagePtr msg);
 
 	private:
 		bool m_attach_console;
 		bool m_did_console_exist;
+
+		void (logger::* m_console_logger)(const LogMessagePtr msg);
 
 		std::string_view m_console_title;
 		DWORD m_original_console_mode;

@@ -1,5 +1,6 @@
 #pragma once
 #include "logger.hpp"
+#include "memory/module.hpp"
 
 namespace big
 {
@@ -15,11 +16,19 @@ namespace big
     logger::logger(std::string_view console_title, file file, bool attach_console) :
         m_attach_console(attach_console),
         m_did_console_exist(false),
+        m_console_logger(&logger::format_console),
         m_console_title(console_title),
         m_original_console_mode(0),
         m_console_handle(nullptr),
         m_file(file)
     {
+        auto module = memory::module("ntdll.dll");
+        if (const auto wine_get_version = module.get_export("wine_get_version").as<const char*(*)(void)>(); wine_get_version)
+        {
+            LOGF(VERBOSE, "Wine ({}) environment detected, swapping to simple logger.", wine_get_version());
+            m_console_logger = &logger::format_console_simple;
+        }
+
         initialize();
 
         g_log = this;
@@ -60,7 +69,7 @@ namespace big
         Logger::Init();
         Logger::AddSink([this](LogMessagePtr msg)
         {
-            format_console(std::move(msg));
+            (this->*m_console_logger)(std::move(msg));
         });
         Logger::AddSink([this](LogMessagePtr msg)
         {
@@ -162,6 +171,23 @@ namespace big
             << ADD_COLOR_TO_STREAM(color)
             << "[" << get_level_string(level) << "/" << file << ":" << location.line() << "] "
             << RESET_STREAM_COLOR
+            << msg->Message()
+            << std::flush;
+    }
+
+    void logger::format_console_simple(const LogMessagePtr msg)
+    {
+        const auto color = get_color(msg->Level());
+
+        const auto timestamp = std::format("{0:%H:%M:%S}", msg->Timestamp());
+        const auto& location = msg->Location();
+        const auto level = msg->Level();
+
+        const auto file = std::filesystem::path(location.file_name()).filename().string();
+
+        m_console_out
+            << "[" << timestamp << "]"
+            << "[" << get_level_string(level) << "/" << file << ":" << location.line() << "] "
             << msg->Message()
             << std::flush;
     }
