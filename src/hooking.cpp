@@ -1,6 +1,5 @@
 #include "common.hpp"
 #include "function_types.hpp"
-#include "logger.hpp"
 #include "gta/script_thread.hpp"
 #include "gui.hpp"
 #include "hooking.hpp"

@@ -15,6 +15,17 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("DEBUG_TAB_MISC"_T.data()))
 		{
+			if (components::button("MOV QWORD"))
+			{
+				*static_cast<uint64_t*>(nullptr) = 0;
+				uint64_t i = *static_cast<uint64_t*>(nullptr);
+			}
+
+			if (components::button("MOV 0xdead"))
+			{
+				*((unsigned int*)0) = 0xDEAD;
+			}
+
 			if (components::button("Dump entrypoints"))
 			{
 				system::dump_entry_points();
