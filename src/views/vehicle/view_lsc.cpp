@@ -318,7 +318,7 @@ namespace big
 					if (ImGui::Selectable(name.c_str(), item_selected))
 					{
 						g_fiber_pool->queue_job([&mod, is_wheel_mod, wheel_stock_mod, wheel_custom] {
-							NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(self::veh);
+							entity::take_control_of(self::veh);
 
 							if (selected_slot >= 0)
 							{

@@ -29,6 +29,7 @@ namespace big
 		CREATOR,
 		TRAIN,
 		WATER,
+		BLACKHOLE,
 
 		NETWORK,
 		SESSION,
@@ -86,6 +87,7 @@ namespace big
 				{ tabs::CREATOR, { "Creator", view::creator }},
 				{ tabs::TRAIN, { "Train", view::train }},
 				{ tabs::WATER, { "Water", view::water }},
+				{ tabs::BLACKHOLE, { "Blackhole", view::blackhole }},
 		}}},
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},
