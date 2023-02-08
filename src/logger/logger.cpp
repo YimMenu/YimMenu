@@ -23,14 +23,9 @@ namespace big
         m_file(file)
     {
         auto module = memory::module("ntdll.dll");
-        if (const auto wine_get_version = module.get_export("wine_get_version").as<const char*(*)(void)>(); wine_get_version)
+        if (module.get_export("wine_get_version") || strlen(std::getenv("NO_COLOR")))
         {
-            LOGF(VERBOSE, "Wine ({}) environment detected, swapping to simple logger.", wine_get_version());
-            m_console_logger = &logger::format_console_simple;
-        }
-        if (strlen(std::getenv("NO_COLOR")))
-        {
-            LOG(VERBOSE) << "NO_COLOR environment variable set, swapping to simple logger.";
+            LOG(VERBOSE) << "Using simple logger.";
             m_console_logger = &logger::format_console_simple;
         }
 
