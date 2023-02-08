@@ -140,9 +140,9 @@ namespace big
 		});
 
 		// Send Event Acknowledge
-		main_batch.add("SEA", "48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 7A", [this](memory::handle ptr)
+		main_batch.add("SEA", "E8 ? ? ? ? 66 83 7B 08 5B", [this](memory::handle ptr)
 		{
-			m_send_event_ack = ptr.sub(5).as<decltype(m_send_event_ack)>();
+			m_send_event_ack = ptr.add(1).rip().as<decltype(m_send_event_ack)>();
 		});
 
 		// Received Event Signatures END
