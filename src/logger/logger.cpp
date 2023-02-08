@@ -23,7 +23,7 @@ namespace big
         m_file(file)
     {
         auto module = memory::module("ntdll.dll");
-        if (module.get_export("wine_get_version") || strlen(std::getenv("NO_COLOR")))
+        if (const auto env_no_color = std::getenv("NO_COLOR"); module.get_export("wine_get_version") || (env_no_color && strlen(env_no_color)))
         {
             LOG(VERBOSE) << "Using simple logger.";
             m_console_logger = &logger::format_console_simple;
