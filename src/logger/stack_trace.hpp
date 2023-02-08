@@ -38,6 +38,8 @@ namespace big
         void grab_stacktrace();
         const module_info* get_module_by_address(uint64_t addr) const;
 
+        static std::string exception_code_to_string(const DWORD code);
+
     private:
         EXCEPTION_POINTERS* m_exception_info;
 

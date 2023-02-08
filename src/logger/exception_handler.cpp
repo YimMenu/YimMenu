@@ -22,7 +22,7 @@ namespace big
             exception_code == DBG_PRINTEXCEPTION_WIDE_C)
             return EXCEPTION_CONTINUE_SEARCH;
 
-        LOG(FATAL) << "Exception Received\n" << stack_trace(exception_info);
+        LOG(FATAL) << stack_trace(exception_info);
 
         ZyanU64 opcode_address = exception_info->ContextRecord->Rip;
         ZydisDisassembledInstruction instruction;

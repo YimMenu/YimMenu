@@ -13,7 +13,8 @@ namespace big
         std::lock_guard lock(m);
 
         SymInitialize(GetCurrentProcess(), nullptr, true);
-
+        
+        m_dump << exception_code_to_string(exception_info->ExceptionRecord->ExceptionCode) << '\n';
         dump_module_info();
         dump_registers();
         dump_stacktrace();
@@ -37,7 +38,16 @@ namespace big
 
         // modules cached already
         if (m_modules.size())
+        {
+            for (const auto& module : m_modules)
+            {
+                m_dump
+                    << module.m_path.filename().string()
+                    << " Base Address: " << HEX_TO_UPPER(module.m_base)
+                    << " Size: " << module.m_size << '\n';
+            }
             return;
+        }
 
         const auto peb = reinterpret_cast<PPEB>(NtCurrentTeb()->ProcessEnvironmentBlock);
         if (!peb)
@@ -175,5 +185,38 @@ namespace big
             }
         }
         return nullptr;
+    }
+
+    std::string stack_trace::exception_code_to_string(const DWORD code)
+    {
+        #define MAP_PAIR_STRINGIFY(x) {x, #x}
+        static const std::map<DWORD, std::string> exceptions = {
+            MAP_PAIR_STRINGIFY(EXCEPTION_ACCESS_VIOLATION)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_ARRAY_BOUNDS_EXCEEDED)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_DATATYPE_MISALIGNMENT)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_FLT_DENORMAL_OPERAND)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_FLT_DIVIDE_BY_ZERO)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_FLT_INEXACT_RESULT)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_FLT_INEXACT_RESULT)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_FLT_INVALID_OPERATION)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_FLT_OVERFLOW)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_FLT_STACK_CHECK)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_FLT_UNDERFLOW)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_ILLEGAL_INSTRUCTION)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_IN_PAGE_ERROR)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_INT_DIVIDE_BY_ZERO)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_INT_OVERFLOW)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_INVALID_DISPOSITION)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_NONCONTINUABLE_EXCEPTION)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_PRIV_INSTRUCTION)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_STACK_OVERFLOW)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_BREAKPOINT)
+            , MAP_PAIR_STRINGIFY(EXCEPTION_SINGLE_STEP)
+        };
+
+        if (const auto&it = exceptions.find(code); it != exceptions.end())
+            return it->second;
+
+        return "UNKNOWN_EXCEPTION";
     }
 }
