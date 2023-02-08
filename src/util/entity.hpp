@@ -74,11 +74,11 @@ namespace big::entity
 				if (timeout != 0)
 					script::get_current()->yield();
 			}
-		}
-		if (!network_has_control_of_entity(ptr->m_net_object))
-			return false;
-		int netHandle = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent);
-		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, true);
+			if (!network_has_control_of_entity(ptr->m_net_object))
+				return false;
+			int netHandle = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent);
+			NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, true);
+		}		
 		return true;
 	}
 }
