@@ -213,12 +213,6 @@ namespace big
 			m_write_player_game_state_data_node = ptr.as<functions::write_player_game_state_data_node>();
 		});
 
-		// Request Control of Entity PATCH
-		main_batch.add("RCOE-Patch", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", [this](memory::handle ptr)
-		{
-			memory::byte_patch::make(ptr.add(0x13).as<std::uint16_t*>(), 0x9090)->apply();
-		});
-
 		// Replay Interface
 		main_batch.add("RI", "0F B7 44 24 ? 66 89 44 4E", [this](memory::handle ptr)
 		{
@@ -580,9 +574,15 @@ namespace big
 		});
 
 		// Request Ragdoll
-		main_batch.add("RR", "E8 ? ? ? ? 09 B3 ? ? ? ? 48 8B 5C 24 ?", [this](memory::handle ptr)
+		main_batch.add("RR", "E8 ? ? ? ? 09 B3 ? ? ? ? 48 8B 5C 24", [this](memory::handle ptr)
 		{
 			m_request_ragdoll = ptr.add(1).rip().as<functions::request_ragdoll>();
+		});
+
+		// Request Control
+		main_batch.add("RC", "E8 ? ? ? ? EB 3E 48 8B D3", [this](memory::handle ptr)
+		{
+			m_request_control = ptr.add(1).rip().as<functions::request_control>();
 		});
 
 		// Get Connection Peer & Send Remove Gamer Command

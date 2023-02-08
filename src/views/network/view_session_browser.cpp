@@ -18,6 +18,8 @@ namespace big
 		static char search[64];
 		static char session_info[255];
 
+		ImGui::Text(std::format("Total sessions found: {}", g_matchmaking_service->get_num_found_sessions()).data());
+
 		ImGui::SetNextItemWidth(300.f);
 
 		if (ImGui::ListBoxHeader("###sessions", { 300, static_cast<float>(*g_pointers->m_resolution_y - 400 - 38 * 4) }))
