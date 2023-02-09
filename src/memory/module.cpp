@@ -46,7 +46,7 @@ namespace memory
 		const auto giveup_time = time.has_value()
 			? std::make_optional(std::chrono::high_resolution_clock::now() + time.value())
 			: std::nullopt;
-		LOG(G3LOG_DEBUG) << "Waiting for " << m_name << "...";
+		LOG(VERBOSE) << "Waiting for " << m_name << "...";
 		while (!try_get_module())
 		{
 			if (giveup_time.has_value() && giveup_time <= std::chrono::high_resolution_clock::now())

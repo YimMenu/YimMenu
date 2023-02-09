@@ -1,6 +1,5 @@
 #include "common.hpp"
 #include "function_types.hpp"
-#include "logger.hpp"
 #include "gta/script_thread.hpp"
 #include "gui.hpp"
 #include "hooking.hpp"
@@ -100,6 +99,8 @@ namespace big
 		detour_hook_helper::add<hooks::infinite_train_crash>("ITC", g_pointers->m_infinite_train_crash);
 
 		detour_hook_helper::add<hooks::received_array_update>("RAU", g_pointers->m_received_array_update);
+
+		detour_hook_helper::add<hooks::receive_pickup>("RPI", g_pointers->m_receive_pickup);
 
 		g_hooking = this;
 	}

@@ -140,9 +140,9 @@ namespace big
 		});
 
 		// Send Event Acknowledge
-		main_batch.add("SEA", "48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 7A", [this](memory::handle ptr)
+		main_batch.add("SEA", "E8 ? ? ? ? 66 83 7B 08 5B", [this](memory::handle ptr)
 		{
-			m_send_event_ack = ptr.sub(5).as<decltype(m_send_event_ack)>();
+			m_send_event_ack = ptr.add(1).rip().as<decltype(m_send_event_ack)>();
 		});
 
 		// Received Event Signatures END
@@ -211,12 +211,6 @@ namespace big
 		main_batch.add("WPGSDN", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 54 41 55 41 56 41 57 48 83 EC 30 0F B7 81", [this](memory::handle ptr)
 		{
 			m_write_player_game_state_data_node = ptr.as<functions::write_player_game_state_data_node>();
-		});
-
-		// Request Control of Entity PATCH
-		main_batch.add("RCOE-Patch", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", [this](memory::handle ptr)
-		{
-			memory::byte_patch::make(ptr.add(0x13).as<std::uint16_t*>(), 0x9090)->apply();
 		});
 
 		// Replay Interface
@@ -580,9 +574,15 @@ namespace big
 		});
 
 		// Request Ragdoll
-		main_batch.add("RR", "E8 ? ? ? ? 09 B3 ? ? ? ? 48 8B 5C 24 ?", [this](memory::handle ptr)
+		main_batch.add("RR", "E8 ? ? ? ? 09 B3 ? ? ? ? 48 8B 5C 24", [this](memory::handle ptr)
 		{
 			m_request_ragdoll = ptr.add(1).rip().as<functions::request_ragdoll>();
+		});
+
+		// Request Control
+		main_batch.add("RC", "E8 ? ? ? ? EB 3E 48 8B D3", [this](memory::handle ptr)
+		{
+			m_request_control = ptr.add(1).rip().as<functions::request_control>();
 		});
 
 		// Get Connection Peer & Send Remove Gamer Command
@@ -810,6 +810,12 @@ namespace big
 		main_batch.add("RAU", "48 89 5C 24 10 55 56 57 41 54 41 55 41 56 41 57 48 8B EC 48 83 EC 30 48 8B 05", [this](memory::handle ptr)
 		{
 			m_received_array_update = ptr.as<PVOID>();
+		});
+
+		// Receive Pickup
+		main_batch.add("RPI", "49 8B 80 ? ? ? ? 48 85 C0 74 0C F6 80 ? ? ? ? ? 75 03 32 C0 C3", [this](memory::handle ptr)
+		{
+			m_receive_pickup = ptr.as<PVOID>();
 		});
 
 		auto mem_region = memory::module("GTA5.exe");

@@ -233,8 +233,9 @@ namespace big
 			bool desync_kick = false;
 			bool rid_join = false;
 			bool lessen_breakups = false; // disabled by default due to anticheat concerns
+			bool receive_pickup = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, lessen_breakups, desync_kick)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, lessen_breakups, desync_kick, receive_pickup)
 		} protections{};
 
 		struct self 
@@ -454,7 +455,21 @@ namespace big
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(custom_time, local_weather, hour, minute, second)
 			} custom_time;
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time)
+
+
+			struct blackhole
+			{
+				bool enable = false;
+				bool include_peds = false;
+				bool include_vehicles = false;
+				float color[3] = { 1, 1, 1 };
+				int alpha = 150;
+				rage::fvector3 pos;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(blackhole, enable, include_peds, include_vehicles, color, alpha)
+			} blackhole{};
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole)
 		} world{};
 
 		struct spoofing
@@ -501,7 +516,7 @@ namespace big
 				bool enabled = false;
 				bool no_collision = false;
 				bool stop_on_exit = false;
-				float speed = 1;
+				float speed = 100;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(fly, dont_stop, enabled, no_collision, stop_on_exit, speed)
 			} fly{};
@@ -550,6 +565,7 @@ namespace big
 			bool vehinvisibility = false;
 			bool localveh_visibility = false;
 			bool localped_visibility = true;
+			bool keep_on_ground = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle,
 				speedo_meter, fly, rainbow_paint, speed_unit, god_mode,
@@ -557,7 +573,7 @@ namespace big
 				auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior,
 				drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump,
 				keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately,
-				vehinvisibility, localveh_visibility, localped_visibility)
+				vehinvisibility, localveh_visibility, localped_visibility, keep_on_ground)
 		} vehicle{};
 
 		struct weapons

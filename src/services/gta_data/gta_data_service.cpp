@@ -131,13 +131,13 @@ namespace big
 
 	void gta_data_service::load_data()
 	{
-		LOG(G3LOG_DEBUG) << "Loading data from cache.";
+		LOG(VERBOSE) << "Loading data from cache.";
 
 		load_peds();
 		load_vehicles();
 		load_weapons();
 
-		LOG(G3LOG_DEBUG) << "Loaded all data from cache.";
+		LOG(VERBOSE) << "Loaded all data from cache.";
 	}
 
 	void gta_data_service::load_peds()
@@ -256,7 +256,7 @@ namespace big
 
 					if (dlc_name == "mpG9EC")
 					{
-						LOG(G3LOG_DEBUG) << "Bad DLC, skipping...";
+						LOG(VERBOSE) << "Bad DLC, skipping...";
 
 						return std::size_t(0);
 					}
@@ -410,7 +410,7 @@ skip:
 		m_update_state = eGtaDataUpdateState::IDLE;
 		LOG(INFO) << "Cache has been rebuilt.\n\tPeds: " << peds.size() << "\n\tVehicles: " << vehicles.size() << "\n\tWeapons: " << weapons.size();
 
-		LOG(G3LOG_DEBUG) << "Starting cache saving procedure...";
+		LOG(VERBOSE) << "Starting cache saving procedure...";
 		g_thread_pool->push([this, peds = std::move(peds), vehicles = std::move(vehicles), weapons = std::move(weapons)]
 		{
 			const auto game_version = std::strtoul(g_pointers->m_game_version, nullptr, 10);
