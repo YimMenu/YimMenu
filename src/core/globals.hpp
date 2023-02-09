@@ -611,12 +611,13 @@ namespace big
 			bool no_recoil = false;
 			bool no_spread = false;
 			std::string vehicle_gun_model = "bus";
-			bool bypass_c4_limit = false;
+			bool increased_c4_limit = false;
+			bool increased_flare_limit = false;
 			bool rapid_fire = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons,
 				ammo_special, custom_weapon, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, no_recoil,
-				no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire, gravity_gun)
+				no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun)
 		} weapons{};
 
 		struct window
