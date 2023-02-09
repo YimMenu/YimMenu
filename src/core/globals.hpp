@@ -9,6 +9,8 @@
 #include "core/data/ptfx_effects.hpp"
 #include <imgui.h>
 #include <bitset>
+#include "natives.hpp"
+#include <ped/CPedBoneInfo.hpp>
 
 class CNetGamePlayer;
 
@@ -628,20 +630,16 @@ namespace big
 			{
 				bool aimbottg = false;
 				bool aimnpc = false;
-				bool aimanimals = false;
-				bool aimarmy = false;
-				bool aimswat = false;
-				bool aimcop = false;
 				bool aimall = false;
 				bool aimplayers = false;
 				bool excludefriends = false;
-				bool excludeteam = false;
 				bool aimenemies = false;
-				int aimbone = 0;
-				bool aimallcops = false;
+				int aimbone = (int)ePedBoneType::HEAD;
+				bool aimcops = false;
+				Vector3 target = { 0, 0, 0 };
+				Vector3 bonec = { 0, 0, 0 };
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, aimbottg, aimnpc, aimanimals, aimarmy, aimswat,
-				aimcop, aimall, aimplayers, aimenemies, aimbone, aimallcops)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, aimbottg, aimnpc, aimall, aimplayers, aimenemies, aimbone, aimcops)
 			} aimbot{};
 			bool infinite_range = false;
 
