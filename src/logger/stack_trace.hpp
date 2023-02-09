@@ -14,6 +14,7 @@ namespace big
         std::string str() const;
 
         friend std::ostream& operator<< (std::ostream& os, const stack_trace& st);
+        friend std::ostream& operator<< (std::ostream& os, const stack_trace* st);
 
     private:
         struct module_info
@@ -56,6 +57,13 @@ namespace big
     inline std::ostream& operator<< (std::ostream& os, const stack_trace& st)
     {
         os << st.str();
+
+        return os;
+    }
+
+    inline std::ostream& operator<< (std::ostream& os, const stack_trace* st)
+    {
+        os << st->str();
 
         return os;
     }

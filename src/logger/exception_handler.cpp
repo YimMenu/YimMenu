@@ -23,7 +23,7 @@ namespace big
             return EXCEPTION_CONTINUE_SEARCH;
 
         auto stack_trace_instance = std::make_unique<stack_trace>(exception_info);
-        LOG(FATAL) << *stack_trace_instance.get();
+        LOG(FATAL) << stack_trace_instance.get();
 
         ZyanU64 opcode_address = exception_info->ContextRecord->Rip;
         ZydisDisassembledInstruction instruction;
