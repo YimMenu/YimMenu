@@ -49,7 +49,7 @@
 #include <format>
 #include <nlohmann/json.hpp>
 
-#include "logger.hpp"
+#include "logger/logger.hpp"
 
 #include "core/globals.hpp"
 #include "gta/natives.hpp"

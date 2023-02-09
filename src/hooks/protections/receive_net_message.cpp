@@ -438,7 +438,7 @@ namespace big
 				}
 			}
 
-			LOG(G3LOG_DEBUG) << "RECEIVED PACKET | Type: " << packet_type << " | Length: " << frame->m_length << " | Sender: " <<
+			LOG(VERBOSE) << "RECEIVED PACKET | Type: " << packet_type << " | Length: " << frame->m_length << " | Sender: " <<
 				(player ? player->get_name() : std::format("<M:{}>, <C:{:X}>, <P:{}>", (int)frame->m_msg_id, frame->m_connection_identifier, frame->m_peer_id).c_str()) << " | " << HEX_TO_UPPER((int)msgType);
 		}
 
