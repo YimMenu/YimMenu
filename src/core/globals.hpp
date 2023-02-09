@@ -474,7 +474,7 @@ namespace big
 				int alpha = 150;
 				rage::fvector3 pos;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(blackhole, enable, include_peds, include_vehicles, color, alpha)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(blackhole, include_peds, include_vehicles, color, alpha)
 			} blackhole{};
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole)

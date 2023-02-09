@@ -111,7 +111,7 @@ namespace big
 		});
 
 		components::command_checkbox<"incrdamage">();
-		ImGui::InputFloat2("Damage", &g.weapons.increased_damage, "%.1f");
+		ImGui::InputFloat("Damage", &g.weapons.increased_damage, .1, 10, "%.1f");
 
 		ImGui::Separator();
 
