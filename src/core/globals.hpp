@@ -286,6 +286,7 @@ namespace big
 			bool auto_tp = false;
 			bool super_jump = false;
 			bool beast_jump = false;
+			bool superman = false;
 
 			// do not save below entries
 			bool dance_mode = false;
@@ -295,7 +296,7 @@ namespace big
 				noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water,
 				proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water,
 				proof_mask, hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element,
-				force_show_hud, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump)
+				force_show_hud, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, superman)
 		} self{};
 
 		struct session
