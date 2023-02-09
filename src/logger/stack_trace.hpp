@@ -9,9 +9,12 @@ namespace big
         stack_trace(EXCEPTION_POINTERS* exception_info);
         virtual ~stack_trace();
 
+        CONTEXT m_ret_context{};
+
         std::string str() const;
 
         friend std::ostream& operator<< (std::ostream& os, const stack_trace& st);
+        friend std::ostream& operator<< (std::ostream& os, const stack_trace* st);
 
     private:
         struct module_info
@@ -54,6 +57,13 @@ namespace big
     inline std::ostream& operator<< (std::ostream& os, const stack_trace& st)
     {
         os << st.str();
+
+        return os;
+    }
+
+    inline std::ostream& operator<< (std::ostream& os, const stack_trace* st)
+    {
+        os << st->str();
 
         return os;
     }

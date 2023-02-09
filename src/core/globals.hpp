@@ -293,6 +293,8 @@ namespace big
 			bool mtcolor = false;
 			bool mhcolor = false;
 			int index, r, g, b, a, hcolor, tcolor;
+			bool superman = false;
+
 			// do not save below entries
 			bool dance_mode = false;
 
@@ -302,7 +304,7 @@ namespace big
 				proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water,
 				proof_mask, hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element,
 				force_show_hud, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate,
-				hudcolor, shcolor, mtcolor, mhcolor, index, r, g, b, a, hcolor, tcolor)
+				hudcolor, shcolor, mtcolor, mhcolor, index, r, g, b, a, hcolor, tcolor, superman)
 		} self{};
 
 		struct session
