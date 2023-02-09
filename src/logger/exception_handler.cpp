@@ -22,15 +22,15 @@ namespace big
             exception_code == DBG_PRINTEXCEPTION_WIDE_C)
             return EXCEPTION_CONTINUE_SEARCH;
 
-        auto stack_trace_instance = std::make_unique<stack_trace>(exception_info);
-        LOG(FATAL) << stack_trace_instance.get();
+        stack_trace stack_trace(exception_info);
+        LOG(FATAL) << stack_trace;
 
         ZyanU64 opcode_address = exception_info->ContextRecord->Rip;
         ZydisDisassembledInstruction instruction;
         ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, opcode_address, reinterpret_cast<void*>(opcode_address), 32, &instruction);
 
-        if(stack_trace_instance->m_ret_context.Rip)
-            *exception_info->ContextRecord = stack_trace_instance->m_ret_context;
+        if(stack_trace.m_ret_context.Rip)
+            *exception_info->ContextRecord = stack_trace.m_ret_context;
         else
             exception_info->ContextRecord->Rip += instruction.info.length;
 
