@@ -172,6 +172,9 @@ namespace big
                 break;
             }
             m_frame_pointers[i] = frame.AddrPC.Offset;
+
+            if (i == 1)
+                m_ret_context = context;
         }
     }
 
