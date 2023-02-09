@@ -9,6 +9,8 @@ namespace big
         stack_trace(EXCEPTION_POINTERS* exception_info);
         virtual ~stack_trace();
 
+        CONTEXT m_ret_context{};
+
         std::string str() const;
 
         friend std::ostream& operator<< (std::ostream& os, const stack_trace& st);
