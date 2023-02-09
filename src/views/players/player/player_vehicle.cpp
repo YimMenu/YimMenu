@@ -6,7 +6,7 @@ namespace big
 	{
 		if (ImGui::TreeNode("Vehicle"))
 		{
-            components::player_command_button<"vehkick">(g_player_service->get_selected(), {});
+			components::player_command_button<"vehkick">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
 			components::player_command_button<"flyingveh">(g_player_service->get_selected(), {});
 
@@ -37,7 +37,8 @@ namespace big
 			components::player_command_button<"upgradeveh">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
 			components::player_command_button<"downgradeveh">(g_player_service->get_selected(), {});
+
+			ImGui::TreePop();			
 		}
-        ImGui::TreePop();
 	}
 }
