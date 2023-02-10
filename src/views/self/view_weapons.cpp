@@ -17,6 +17,7 @@ namespace big
 
 		components::command_checkbox<"infammo">();
 		components::command_checkbox<"infclip">();
+		ImGui::Checkbox("Interior Weapon", &g.weapons.interior_weapon);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
