@@ -58,7 +58,7 @@ namespace big::entity
 
 	inline bool network_has_control_of_entity(rage::netObject* net_object)
 	{
-		return net_object && !net_object->m_next_owner_id && (net_object->m_control_id == -1);
+		return !net_object || !net_object->m_next_owner_id && (net_object->m_control_id == -1);
 	}
 
 	inline bool take_control_of(Entity ent, int timeout = 300)

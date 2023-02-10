@@ -22,13 +22,9 @@ namespace big
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		if (ImGui::Checkbox("BYPASS_C4_LIM"_T.data(), &g.weapons.bypass_c4_limit))
-		{
-			if (g.weapons.bypass_c4_limit)
-				g_pointers->m_bypass_max_count_of_active_sticky_bombs->apply();
-			else
-				g_pointers->m_bypass_max_count_of_active_sticky_bombs->restore();
-		}
+		ImGui::Checkbox("Increased C4 Limit (Max = 50)", &g.weapons.increased_c4_limit);
+		ImGui::Checkbox("Increased Flare Limit (Max = 50)", &g.weapons.increased_flare_limit);
+
 		components::command_checkbox<"rapidfire">();
 
 		ImGui::EndGroup();
