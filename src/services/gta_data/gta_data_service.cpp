@@ -51,10 +51,15 @@ namespace big
 
 	void gta_data_service::update_in_online()
 	{
-		m_update_state = eGtaDataUpdateState::WAITING_FOR_ONLINE;
-
+		m_update_state = eGtaDataUpdateState::WAITING_FOR_SINGLE_PLAYER;
 		g_fiber_pool->queue_job([this]
 		{
+			while (*g_pointers->m_game_state != eGameState::Playing)
+			{
+				script::get_current()->yield(100ms);
+			}
+			m_update_state = eGtaDataUpdateState::WAITING_FOR_ONLINE;
+
 			session::join_type(eSessionType::SOLO);
 
 			while (!*g_pointers->m_is_session_started)
@@ -68,6 +73,7 @@ namespace big
 
 	void gta_data_service::update_now()
 	{
+		m_update_state = eGtaDataUpdateState::WAITING_FOR_SINGLE_PLAYER;
 		g_fiber_pool->queue_job([this]
 		{
 			rebuild_cache();
