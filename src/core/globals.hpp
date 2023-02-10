@@ -463,6 +463,7 @@ namespace big
 				bool enable = false;
 				bool include_peds = false;
 				bool include_vehicles = false;
+				float scale = 6.f;
 				float color[3] = { 1, 1, 1 };
 				int alpha = 150;
 				rage::fvector3 pos;

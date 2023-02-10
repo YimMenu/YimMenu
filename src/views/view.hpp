@@ -55,6 +55,7 @@ namespace big
 		static void train();
 		static void water();
 		static void blackhole();
+		static void nearby();
 
 		static void player_info();
 		static void player_troll();
