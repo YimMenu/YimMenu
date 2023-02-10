@@ -56,6 +56,7 @@ namespace big
 		components::command_checkbox<"cleanloop">();
 		components::command_checkbox<"nocollision">();
 		components::command_checkbox<"mobileradio">();
+		components::command_checkbox<"superman">();
 
 		// TODO: fix this, causes a crash
 		// ImGui::Checkbox("DANCE_MODE"_T.data(), &g.self.dance_mode);

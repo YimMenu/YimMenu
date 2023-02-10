@@ -286,6 +286,7 @@ namespace big
 			bool auto_tp = false;
 			bool super_jump = false;
 			bool beast_jump = false;
+			bool superman = false;
 
 			// do not save below entries
 			bool dance_mode = false;
@@ -295,7 +296,7 @@ namespace big
 				noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water,
 				proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water,
 				proof_mask, hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element,
-				force_show_hud, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump)
+				force_show_hud, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, superman)
 		} self{};
 
 		struct session
@@ -455,7 +456,21 @@ namespace big
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(custom_time, local_weather, hour, minute, second)
 			} custom_time;
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time)
+
+
+			struct blackhole
+			{
+				bool enable = false;
+				bool include_peds = false;
+				bool include_vehicles = false;
+				float color[3] = { 1, 1, 1 };
+				int alpha = 150;
+				rage::fvector3 pos;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(blackhole, enable, include_peds, include_vehicles, color, alpha)
+			} blackhole{};
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole)
 		} world{};
 
 		struct spoofing
@@ -502,7 +517,7 @@ namespace big
 				bool enabled = false;
 				bool no_collision = false;
 				bool stop_on_exit = false;
-				float speed = 1;
+				float speed = 100;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(fly, dont_stop, enabled, no_collision, stop_on_exit, speed)
 			} fly{};
