@@ -134,8 +134,6 @@ namespace big
 		functions::start_get_presence_attributes m_start_get_presence_attributes;
 		functions::join_session_by_info m_join_session_by_info;
 
-		memory::byte_patch* m_bypass_max_count_of_active_sticky_bombs;
-
 		functions::reset_network_complaints m_reset_network_complaints{};
 
 		functions::fidevice_get_device m_fidevice_get_device{};
