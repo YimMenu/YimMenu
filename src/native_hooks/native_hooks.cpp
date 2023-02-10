@@ -106,6 +106,8 @@ namespace big
 		add_native_detour(0x812595A0644CE1DE, all_scripts::IS_DLC_PRESENT);
 		add_native_detour(0x1CA59E306ECB80A5, all_scripts::NETWORK_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT);
 		add_native_detour(0xD1110739EEADB592, all_scripts::NETWORK_TRY_TO_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT);
+		add_native_detour(0xADF692B254977C0C, all_scripts::SET_CURRENT_PED_WEAPON);
+		add_native_detour(0xFE99B66D079CF6BC, all_scripts::DISABLE_CONTROL_ACTION);
 
 		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x06843DA7060A026B, carmod_shop::SET_ENTITY_COORDS);
 		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x8E2530AA8ADA980E, carmod_shop::SET_ENTITY_HEADING);
