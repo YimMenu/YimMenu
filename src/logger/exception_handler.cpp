@@ -22,13 +22,17 @@ namespace big
             exception_code == DBG_PRINTEXCEPTION_WIDE_C)
             return EXCEPTION_CONTINUE_SEARCH;
 
-        LOG(FATAL) << stack_trace(exception_info);
+        stack_trace stack_trace(exception_info);
+        LOG(FATAL) << stack_trace;
 
         ZyanU64 opcode_address = exception_info->ContextRecord->Rip;
         ZydisDisassembledInstruction instruction;
         ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, opcode_address, reinterpret_cast<void*>(opcode_address), 32, &instruction);
 
-        exception_info->ContextRecord->Rip += instruction.info.length;
+        if(stack_trace.m_ret_context.Rip)
+            *exception_info->ContextRecord = stack_trace.m_ret_context;
+        else
+            exception_info->ContextRecord->Rip += instruction.info.length;
 
         return EXCEPTION_CONTINUE_EXECUTION;
     }
