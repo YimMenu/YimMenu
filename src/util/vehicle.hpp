@@ -657,6 +657,17 @@ namespace big::vehicle
 			return g_notification_service->push_warning("VEHICLE"_T.data(), "PLEASE_ENTER_VEHICLE"_T.data());
 	}
 
+	inline void downgrade(Vehicle vehicle)
+	{
+		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
+		for (int i = 0; i < 50; i++)
+		{
+			VEHICLE::REMOVE_VEHICLE_MOD(vehicle, i);
+		}
+		VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 18); //Remove turbo on vehicle
+		VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 22); //Remove xeon headlights
+	}
+
 	inline bool remote_control_vehicle(Vehicle veh)
 	{
 		if (!entity::take_control_of(veh, 4000))
