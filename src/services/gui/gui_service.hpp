@@ -30,6 +30,7 @@ namespace big
 		TRAIN,
 		WATER,
 		BLACKHOLE,
+		NEARBY,
 
 		NETWORK,
 		SESSION,
@@ -88,6 +89,7 @@ namespace big
 				{ tabs::TRAIN, { "Train", view::train }},
 				{ tabs::WATER, { "Water", view::water }},
 				{ tabs::BLACKHOLE, { "Blackhole", view::blackhole }},
+				{ tabs::NEARBY, { "Nearby", view::nearby }},
 		}}},
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},
