@@ -15,7 +15,7 @@ namespace big
 
 			for (auto ped : entity::get_entities(false, true))
 			{
-				if (!ENTITY::IS_ENTITY_IN_AIR(ped)) { // Flag 17 = PED_FLAG_BLOCK_NON_TEMPORARY_EVENTS
+				if (!ENTITY::IS_ENTITY_IN_AIR(ped)) { 
 					Vector3 my_location = ENTITY::GET_ENTITY_COORDS(self::ped, 1);
 					my_location.x = my_location.x + (rand() % 100 + (-50)); 
 					my_location.y = my_location.y + (rand() % 100 + (-50));

@@ -10,6 +10,12 @@ namespace big
 	{
 		using looped_command::looped_command;
 
+		virtual void on_enable() override //should help for any stragglers that aren't set by the tick (aka current event)
+		{
+			PLAYER::SET_EVERYONE_IGNORE_PLAYER(self::id, true);
+			PLAYER::SET_POLICE_IGNORE_PLAYER(self::id, true);
+		}
+
 		virtual void on_tick() override
 		{
 
@@ -20,6 +26,12 @@ namespace big
 					TASK::TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true);
 				}
 			}
+		}
+
+		virtual void on_disable() override
+		{
+			PLAYER::SET_EVERYONE_IGNORE_PLAYER(self::id, false);
+			PLAYER::SET_POLICE_IGNORE_PLAYER(self::id, false);
 		}
 	};
 

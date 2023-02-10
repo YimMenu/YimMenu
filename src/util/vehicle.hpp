@@ -664,8 +664,6 @@ namespace big::vehicle
 		{
 			VEHICLE::REMOVE_VEHICLE_MOD(vehicle, i);
 		}
-		VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 18); //Remove turbo on vehicle
-		VEHICLE::REMOVE_VEHICLE_MOD(vehicle, 22); //Remove xeon headlights
 	}
 
 	inline bool remote_control_vehicle(Vehicle veh)
