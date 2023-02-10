@@ -86,6 +86,7 @@ namespace big::entity
 	inline std::vector<Entity> get_entities(bool vehicles, bool peds)
 	{
 		std::vector<Entity> target_entities;
+		target_entities.clear();
 		const auto replay_interface = *g_pointers->m_replay_interface;
 		if (!replay_interface)
 			return target_entities;

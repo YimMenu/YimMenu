@@ -471,7 +471,17 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(blackhole, enable, include_peds, include_vehicles, color, alpha)
 			} blackhole{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole)
+			struct nearby
+			{
+				bool ignore = false;
+				bool ped_rain = false;
+				bool high_alert = false;
+				bool ped_rush = false;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(nearby, ignore, ped_rain, high_alert, ped_rush)
+			} nearby{};
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, nearby)
 		} world{};
 
 		struct spoofing

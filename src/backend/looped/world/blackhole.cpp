@@ -15,7 +15,6 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			//get_entities();
 
 			for (auto entity : entity::get_entities(g.world.blackhole.include_vehicles, g.world.blackhole.include_peds))
 			{
