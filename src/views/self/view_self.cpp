@@ -56,6 +56,7 @@ namespace big
 		components::command_checkbox<"cleanloop">();
 		components::command_checkbox<"nocollision">();
 		components::command_checkbox<"mobileradio">();
+		components::command_checkbox<"superman">();
 
 		// TODO: fix this, causes a crash
 		// ImGui::Checkbox("DANCE_MODE"_T.data(), &g.self.dance_mode);
@@ -170,6 +171,8 @@ namespace big
 		if (!g.self.never_wanted)
 		{
 			ImGui::Checkbox("FORCE_WANTED_LVL"_T.data(), &g.self.force_wanted_level);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("FORCE_WANTED_LVL_INFO"_T.data());
 			ImGui::Text("WANTED_LVL"_T.data());
 			if (
 				ImGui::SliderInt("###wanted_level", &g.self.wanted_level, 0, 5) &&

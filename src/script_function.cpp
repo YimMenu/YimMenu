@@ -30,7 +30,7 @@ namespace big
 			if (!location)
 				LOG(FATAL) << "Failed to find pattern " << m_name << " in script " << program->m_name;
 			else
-				LOG(DEBUG) << "Found pattern " << m_name << " in script " << program->m_name;
+				LOG(VERBOSE) << "Found pattern " << m_name << " in script " << program->m_name;
 
 			m_ip = location.value() + m_offset;
 		}
