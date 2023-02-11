@@ -3,6 +3,9 @@
 #include "natives.hpp"
 #include "backend/looped_command.hpp"
 
+#include "core/scr_globals.hpp"
+#include <script/globals/GlobalPlayerBD.hpp>
+
 namespace big
 {
 	class invisibility : looped_command
@@ -12,13 +15,17 @@ namespace big
 		virtual void on_tick() override
 		{
 			ENTITY::SET_ENTITY_VISIBLE(self::ped, false, 0);
+
 			if (g.self.local_visibility)
 				NETWORK::SET_ENTITY_LOCALLY_VISIBLE(self::ped);
+
+			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].KilledByPlayer = true;
 		}
 
 		virtual void on_disable() override
 		{
 			ENTITY::SET_ENTITY_VISIBLE(self::ped, true, 0);
+			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].KilledByPlayer = false;
 		}
 	};
 

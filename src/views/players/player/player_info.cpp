@@ -106,8 +106,19 @@ namespace big
 
 			ImGui::Separator();
 
-			if (auto net_player_data = g_player_service->get_selected()->get_net_data(); net_player_data != nullptr)
+			if (auto net_player_data = g_player_service->get_selected()->get_net_data())
 			{
+				bool ext_host = (net_player_data->m_host_token & 0x8000000000000000) == 0x8000000000000000;
+				int ext_masked = ext_host ? (net_player_data->m_host_token - 0x8000000000000000) + 0x7ffffff76b48c000 : net_player_data->m_host_token;
+				bool valid = ext_host ?
+					(ext_masked > 0x7ffffff76b48c000 && ext_host < 0xffffffeed6918000) :
+					(ext_masked < 0x7ffffff76b48c000 || ext_masked > 0xffffffeed6918000);
+
+				if (valid)
+					ImGui::Text("Yes");
+				else
+					ImGui::Text("No");
+
 				ImGui::Text("PLAYER_INFO_RID"_T.data(), net_player_data->m_gamer_handle.m_rockstar_id);
 
 				ImGui::SameLine();

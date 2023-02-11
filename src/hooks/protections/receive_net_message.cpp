@@ -93,36 +93,6 @@ namespace big
 		if (!get_msg_type(msgType, buffer))
 			return g_hooking->get_original<hooks::receive_net_message>()(netConnectionManager, a2, frame);
 
-		if ((msgType == rage::eNetMessage::MsgTransitionLaunchNotify && frame->m_connection_identifier != gta_util::get_network()->m_game_session.m_connection_identifier) ||
-			(msgType == rage::eNetMessage::MsgTransitionLaunch && frame->m_connection_identifier != gta_util::get_network()->m_transition_session.m_connection_identifier))
-		{
-			if (player)
-			{
-				g_notification_service->push_error("PROTECTIONS"_T.data(),
-					std::vformat("REMOTE_CRASH_INVALID_TRANSITION_FROM"_T, std::make_format_args(player->get_name())));
-			}
-			else
-			{
-				g_notification_service->push_error("PROTECTIONS"_T.data(), "REMOTE_CRASH_INVALID_TRANSITION"_T.data());
-			}
-
-			return true;
-		}
-
-		if (msgType == rage::eNetMessage::MsgBlacklist && frame->m_connection_identifier != gta_util::get_network()->m_game_session.m_connection_identifier)
-		{
-			if (player)
-			{
-				g_notification_service->push_error("PROTECTIONS"_T.data(),
-					std::vformat("REMOTE_CRASH_INVALID_BLACKLIST_FROM"_T, std::make_format_args(player->get_name())));
-			}
-			else
-			{
-				g_notification_service->push_error("PROTECTIONS"_T.data(), "REMOTE_CRASH_INVALID_BLACKLIST"_T.data());
-			}
-			return true;
-		}
-
 		if (player)
 		{
 			switch (msgType)
