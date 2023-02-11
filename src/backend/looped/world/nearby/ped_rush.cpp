@@ -12,10 +12,17 @@ namespace big
 
 		virtual void on_tick() override
 		{
-
 			for (auto ped : entity::get_entities(false, true))
 			{
 				PED::SET_PED_MOVE_RATE_OVERRIDE(ped, 10.0f);
+			}
+		}
+
+		virtual void on_disable() override //Set the peds back to their normal speed
+		{
+			for (auto ped : entity::get_entities(false, true))
+			{
+				PED::SET_PED_MOVE_RATE_OVERRIDE(ped, 1.0f); 
 			}
 		}
 	};

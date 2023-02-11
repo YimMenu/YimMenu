@@ -10,8 +10,8 @@ namespace big
 	{
 		components::sub_title("Peds");
 		components::button("Delete", [] { for (auto peds : entity::get_entities(false, true)) entity::delete_entity(peds); }, ImVec2(110, 0)); ImGui::SameLine();
-		components::button("Kill", [] { for (auto peds : entity::get_entities(false, true)) ped::kill_ped(peds); }, ImVec2(110, 0), ImVec4(0.95f, 0.2f, 0.2f, 1.f)); ImGui::SameLine();
-		components::button("Kill Enemies", [] { for (auto peds : entity::get_entities(false, true)) ped::kill_ped_by_relation(peds, 4 || 5); }, ImVec2(110, 0), ImVec4(1.f, 0.1f, 0.1f, 1.f));
+		components::button("Kill", [] { for (auto peds : entity::get_entities(false, true)) ped::kill_ped(peds); }, ImVec2(110, 0), ImVec4(0.70196f, 0.3333f, 0.00392f, 1.f)); ImGui::SameLine();
+		components::button("Kill Enemies", [] { for (auto peds : entity::get_entities(false, true)) ped::kill_ped_by_relation(peds, 4 || 5); }, ImVec2(110, 0), ImVec4(0.76078f, 0.f, 0.03529f, 1.f));
 		
 		components::command_checkbox<"pedsignore">(); ImGui::SameLine(140.f);
 		components::command_checkbox<"pedrain">(); 
