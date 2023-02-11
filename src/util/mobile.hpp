@@ -136,7 +136,11 @@ namespace big::mobile
 
 			script::get_current()->yield(100ms);
 
-			*scr_globals::mechanic_global.at(936).as<int*>() = 1; // disable vehicle node distance check
+			// only do this when spawn inside is enabled otherwise the vehicle will spawn relatively far away from players
+			if (g.clone_pv.spawn_inside)
+			{
+				*scr_globals::mechanic_global.at(936).as<int*>() = 1; // disable vehicle node distance check
+			}
 			*scr_globals::mechanic_global.at(923).as<int*>() = 1; // tell freemode to spawn our vehicle
 			*scr_globals::mechanic_global.at(982).as<int*>() = 0; // required
 			*scr_globals::mechanic_global.at(979).as<int*>() = veh_idx;
