@@ -45,5 +45,6 @@ namespace big
 				}
 		}, ImVec2(110, 0), ImVec4(0.4549f, 0.03529f, 0.03529f, 1.f));
 		
+		components::command_checkbox<"vehiclerain">();
 	}
 }

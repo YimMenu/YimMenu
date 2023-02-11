@@ -475,10 +475,11 @@ namespace big
 			{
 				bool ignore = false;
 				bool ped_rain = false;
+				bool veh_rain = false;
 				bool high_alert = false;
 				bool ped_rush = false;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(nearby, ignore, ped_rain, high_alert, ped_rush)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(nearby, ignore, ped_rain, veh_rain, high_alert, ped_rush)
 			} nearby{};
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, nearby)
