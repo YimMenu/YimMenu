@@ -83,11 +83,11 @@ namespace big
 	netAddress player::get_ip_address()
 	{
 		if (this == g_player_service->get_self().get() && get_net_data())
-			return get_net_data()->m_external_ip;
+			return get_net_data()->m_internal_ip;
 
 		if (auto session_player = get_session_player())
 			if (auto peer = g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr, (int)get_session_player()->m_player_data.m_peer_id_2))
-				return netAddress{ ((netConnectionPeer*)peer)->m_external_ip };
+				return netAddress{ ((netConnectionPeer*)peer)->m_internal_ip };
 
 		return { 0 };
 	}
@@ -95,11 +95,11 @@ namespace big
 	uint16_t player::get_port()
 	{
 		if (this == g_player_service->get_self().get() && get_net_data())
-			return get_net_data()->m_external_port;
+			return get_net_data()->m_internal_port;
 
 		if (auto session_player = get_session_player())
 			if (auto peer = g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr, (int)get_session_player()->m_player_data.m_peer_id_2))
-				return ((netConnectionPeer*)peer)->m_external_port;
+				return ((netConnectionPeer*)peer)->m_internal_port;
 
 		return 0;
 	}
