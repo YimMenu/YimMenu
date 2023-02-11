@@ -54,7 +54,7 @@ CMake is used to generate our project files, if you haven't used it before you w
 
 - Clone the repository:
   ```bash
-  git clone https://github.com/YimMenu/YimMenu.git
+  git clone https://github.com/CypherMorgan/YimMenu.git
   ```
 
 -  Go into the directory you just cloned:
