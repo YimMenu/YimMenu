@@ -17,7 +17,6 @@ namespace big
 	{
 		static char name_buf[32];
 		static char search[64];
-		const auto draw_list = ImGui::GetWindowDrawList();
 
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("PLAYER"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
@@ -53,7 +52,7 @@ namespace big
 							circle_color = ImVec4(.5f, .5f, .5f, 1.0f);
 
 						//render status circle
-						draw_list->AddCircleFilled(ImVec2(cursor_pos.x + 4.f + circle_size, cursor_pos.y + 4.f + circle_size), circle_size, ImColor(circle_color));
+						ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(cursor_pos.x + 4.f + circle_size, cursor_pos.y + 4.f + circle_size), circle_size, ImColor(circle_color));
 
 						//we need some padding
 						ImVec2 cursor = ImGui::GetCursorPos();
