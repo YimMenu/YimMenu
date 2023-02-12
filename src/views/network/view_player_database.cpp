@@ -42,17 +42,20 @@ namespace big
 
 						float circle_size = 7.5f;
 						auto cursor_pos = ImGui::GetCursorScreenPos();
-						ImVec4 circle_color;
-
-						if (player.online_state == PlayerOnlineStatus::ONLINE)
-							circle_color = ImVec4(0.f, 1.f, 0.f, 1.f);
-						else if(player.online_state == PlayerOnlineStatus::OFFLINE)
-							circle_color = ImVec4(1.f, 0.f, 0.f, 1.f);
-						else if(player.online_state == PlayerOnlineStatus::UNKNOWN)
-							circle_color = ImVec4(.5f, .5f, .5f, 1.0f);
+						auto plyr_state = player.online_state;
 
 						//render status circle
-						ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(cursor_pos.x + 4.f + circle_size, cursor_pos.y + 4.f + circle_size), circle_size, ImColor(circle_color));
+						ImGui::GetWindowDrawList()->AddCircleFilled(
+							ImVec2(
+								cursor_pos.x + 4.f + circle_size,
+								cursor_pos.y + 4.f + circle_size),
+							circle_size,
+							ImColor(
+								plyr_state == PlayerOnlineStatus::ONLINE ? ImVec4(0.f, 1.f, 0.f, 1.f)
+								: plyr_state == PlayerOnlineStatus::OFFLINE ? ImVec4(1.f, 0.f, 0.f, 1.f)
+								: plyr_state == PlayerOnlineStatus::UNKNOWN ? ImVec4(.5f, .5f, .5f, 1.0f)
+								: ImVec4(.5f, .5f, .5f, 1.0f)
+								));
 
 						//we need some padding
 						ImVec2 cursor = ImGui::GetCursorPos();
