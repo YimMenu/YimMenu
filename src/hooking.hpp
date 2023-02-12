@@ -12,6 +12,7 @@ class CPlayerGameStateDataNode;
 class CPedInventoryDataNode;
 class CDynamicEntityGameStateDataNode;
 class CVehicleGadgetDataNode;
+class CPlayerCameraDataNode;
 class CJoinRequestContext;
 class SessionSortEntry;
 class RemoteGamerInfoMsg;
@@ -147,7 +148,9 @@ namespace big
 		static bool received_array_update(rage::netArrayHandlerBase* array, CNetGamePlayer* sender, rage::datBitBuffer* buffer, int size, std::int16_t cycle);
 
 		static bool receive_pickup(rage::netObject* netobject, void* unk, CPed* ped);
-	};
+
+		static bool write_player_camera_data_node(rage::netObject* player, CPlayerCameraDataNode* node);
+};
 
 	class minhook_keepalive
 	{

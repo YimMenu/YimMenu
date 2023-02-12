@@ -239,6 +239,8 @@ namespace big
 		PVOID m_received_array_update;
 
 		PVOID m_receive_pickup{};
+
+		PVOID m_write_player_camera_data_node{};
 	};
 
 	inline pointers* g_pointers{};

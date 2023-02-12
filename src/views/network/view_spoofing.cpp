@@ -11,6 +11,8 @@ namespace big
 	{
 		components::small_text("SPOOFING_DESCRIPTION"_T);
 
+		ImGui::Checkbox("Hide From Player List", &g.spoofing.hide_from_player_list);
+
 		components::sub_title("SPOOFING_HIDE_FEATURES"_T);
 		ImGui::Checkbox("SPOOFING_HIDE_GOD_MODE"_T.data(), &g.spoofing.spoof_hide_god);
 		ImGui::Checkbox("SPOOFING_HIDE_SPECTATE"_T.data(), &g.spoofing.spoof_hide_spectate);

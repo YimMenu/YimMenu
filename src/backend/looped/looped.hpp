@@ -24,7 +24,6 @@ namespace big
 		static void player_spectate();
 		static void player_remote_control_vehicle();
 
-		static void self_godmode();
 		static void self_police();
 		static void self_hud();
 		static void self_dance_mode();

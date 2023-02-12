@@ -221,26 +221,6 @@ namespace big
 					else
 						return true;
 				}
-				case rage::eNetMessage::MsgSessionEstablished:
-				{
-#if 0
-					rage::rlGamerHandle handle{ 0 };
-					if (player->get_net_data())
-					{
-						uint64_t session_id;
-						buffer.ReadQWord(&session_id, 64);
-						gamer_handle_deserialize(handle, buffer);
-						if (session_id == gta_util::get_network()->m_game_session_ptr->m_rline_session.m_session_id)
-						{
-							if (handle.m_rockstar_id != player->get_net_data()->m_gamer_handle.m_rockstar_id)
-							{
-								session::add_infraction(player, Infraction::SPOOFED_ROCKSTAR_ID); // TODO: store this RID
-							}
-						}
-					}
-#endif
-					break;
-				}
 				case rage::eNetMessage::MsgNetComplaint:
 				{
 					uint64_t host_token{};

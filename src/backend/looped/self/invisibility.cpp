@@ -19,16 +19,16 @@ namespace big
 			if (g.self.local_visibility)
 				NETWORK::SET_ENTITY_LOCALLY_VISIBLE(self::ped);
 
-			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].KilledByPlayer = true;
+			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].IsInvisible = true;
 		}
 
 		virtual void on_disable() override
 		{
 			ENTITY::SET_ENTITY_VISIBLE(self::ped, true, 0);
-			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].KilledByPlayer = false;
+			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].IsInvisible = false;
 		}
 	};
 
 	invisibility g_invisibility("invis", "Invisiblity", "Makes you invisible", g.self.invisibility);
-	bool_command g_local_visibility("localvis", "Visible Locally", "Makes you visible to yourself, other players will still not be able to see you", g.self.local_visibility);
+	bool_command g_local_visibility("localvis", "Visible Locally", "Makes you visible to yourself, but other players would still not be able to see you", g.self.local_visibility);
 }

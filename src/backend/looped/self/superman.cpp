@@ -37,5 +37,5 @@ namespace big
 		}
 	};
 
-	superman g_superman("superman", "Superman", "Fly like a superman..", g.self.superman);
+	superman g_superman("superman", "Superman", "Fly like a superman", g.self.superman);
 }
