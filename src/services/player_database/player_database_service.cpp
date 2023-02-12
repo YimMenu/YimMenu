@@ -1,5 +1,7 @@
 #include "player_database_service.hpp"
 #include "file_manager.hpp"
+#include "util/session.hpp"
+#include "pointers.hpp"
 
 namespace big
 {
@@ -94,5 +96,40 @@ namespace big
 	persistent_player* player_database_service::get_selected()
 	{
 		return m_selected;
+	}
+
+	void player_database_service::invalidate_player_states()
+	{
+		for (auto& item : m_players)
+			item.second.online_state = PlayerOnlineStatus::UNKNOWN;
+	}
+
+	void player_database_service::update_player_states()
+	{
+		invalidate_player_states();
+
+		//fetch current stat for each player.. this will need some time.
+		for (auto& item : m_players)
+		{
+			auto& player = item.second;
+			rage::rlGamerHandle player_handle(player.rockstar_id);
+			rage::rlSessionByGamerTaskResult result;
+			bool success = false;
+			rage::rlTaskStatus state{};
+
+			if (g_pointers->m_start_get_session_by_gamer_handle(0, &player_handle, 1, &result, 1, &success, &state))
+			{
+				while (state.status == 1)
+					script::get_current()->yield();
+
+				if (state.status == 3 && success)
+				{
+					player.online_state = PlayerOnlineStatus::ONLINE;
+					continue;
+				}
+			}
+
+			player.online_state = PlayerOnlineStatus::OFFLINE;
+		}
 	}
 }
