@@ -43,7 +43,6 @@ namespace big
 
 						float circle_size = 7.5f;
 						auto cursor_pos = ImGui::GetCursorScreenPos();
-						auto circle_pos = ImVec2(cursor_pos.x + 4.f + circle_size, cursor_pos.y + 4.f + circle_size);
 						ImVec4 circle_color;
 
 						if (player.online_state == PlayerOnlineStatus::ONLINE)
@@ -54,7 +53,7 @@ namespace big
 							circle_color = ImVec4(.5f, .5f, .5f, 1.0f);
 
 						//render status circle
-						draw_list->AddCircleFilled(circle_pos, circle_size, ImColor(circle_color));
+						draw_list->AddCircleFilled(ImVec2(cursor_pos.x + 4.f + circle_size, cursor_pos.y + 4.f + circle_size), circle_size, ImColor(circle_color));
 
 						//we need some padding
 						ImVec2 cursor = ImGui::GetCursorPos();
