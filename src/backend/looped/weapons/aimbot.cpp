@@ -1,6 +1,7 @@
 #include "natives.hpp"
 #include "backend/looped_command.hpp"
 #include "gta/enums.hpp"
+#include "pointers.hpp"
 
 namespace big
 {	
@@ -10,73 +11,68 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			const int maxPeds = 32;
-			Ped nearbypeds[maxPeds];
-			PED::GET_PED_NEARBY_PEDS(self::ped, nearbypeds, -1);
-			for (int i = 0; i < maxPeds; i++)
+			for (auto replay_interface = *g_pointers->m_replay_interface; g.window.ingame_overlay.show_replay_interface;)
 			{
-				Ped target = nearbypeds[i];
+				int current = replay_interface->m_ped_interface->m_cur_peds;
+				Ped target = replay_interface->m_ped_interface->get_ped(MISC::GET_RANDOM_INT_IN_RANGE(0, current))->)
 				g.weapons.aimbot.aimbone = (int)PedBones::SKEL_Head;
 				int bone = g.weapons.aimbot.aimbone; //need to make option to change it
 				Vector3 bonec = PED::GET_PED_BONE_COORDS(target, bone, 0, 0, 0);
 				g.weapons.aimbot.bonec = bonec;
 				float weaponrange = WEAPON::GET_MAX_RANGE_OF_CURRENT_PED_WEAPON(self::ped);
 				float targetdist = SYSTEM::VDIST(bonec.x, bonec.y, bonec.z, self::pos.x, self::pos.y, self::pos.z);
-				ENTITY::IS_ENTITY_ON_SCREEN(target);
-				if (true)
+				bool os = ENTITY::IS_ENTITY_ON_SCREEN(target);
+				bool requirement = PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_AIM) && weaponrange >= targetdist;
+				if (os)
 				{
-					int offsettedID = i * 2 + 2;
-					if (nearbypeds[offsettedID] && offsettedID != NULL)
+					if (g.weapons.aimbot.aimall && requirement)
 					{
-						if (g.weapons.aimbot.aimall && PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_AIM) && weaponrange >= targetdist)
+						PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
+					}
+					if (g.weapons.aimbot.aimplayers && requirement)
+					{
+						bool p = PED::IS_PED_A_PLAYER(target);
+						if (p)
 						{
-							PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
-						}
-						if (g.weapons.aimbot.aimplayers && PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_AIM) && weaponrange >= targetdist)
-						{
-							PED::IS_PED_A_PLAYER(target);
-							if (true)
+							if (g.weapons.aimbot.excludefriends)
 							{
-								if(g.weapons.aimbot.excludefriends)
-								{
-									PED::GET_RELATIONSHIP_BETWEEN_PEDS(self::ped, target);
-									if (0)
-									{
-										PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
-									}
-								}
-								else
+								int r = PED::GET_RELATIONSHIP_BETWEEN_PEDS(self::ped, target);
+								if (r == 0)
 								{
 									PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
 								}
 							}
-						}
-						if (g.weapons.aimbot.aimenemies && PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_AIM) && weaponrange >= targetdist)
-						{
-							PED::GET_RELATIONSHIP_BETWEEN_PEDS(self::ped, target);
-							if (4 | 5)
+							else
 							{
 								PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
 							}
 						}
-						if (g.weapons.aimbot.aimnpc && PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_AIM) && weaponrange >= targetdist)
+					}
+					if (g.weapons.aimbot.aimenemies && requirement)
+					{
+						int r = PED::GET_RELATIONSHIP_BETWEEN_PEDS(self::ped, target);
+						if (r == 4 || 5)
 						{
-							PED::IS_PED_A_PLAYER(target);
-							if (false)
+							PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
+						}
+					}
+					if (g.weapons.aimbot.aimnpc && requirement)
+					{
+						bool p = PED::IS_PED_A_PLAYER(target);
+						if (!p)
+						{
+							bool h = PED::IS_PED_HUMAN(target);
+							if (h)
 							{
-								PED::IS_PED_HUMAN(target);
-								if (true)
-								{
-									PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
-								}
+								PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
 							}
-							if (g.weapons.aimbot.aimcops && PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_AIM) && weaponrange >= targetdist)
+						}
+						if (g.weapons.aimbot.aimcops && requirement)
+						{
+							PED::GET_PED_TYPE(target);
+							if (ePedType::PED_TYPE_ARMY | ePedType::PED_TYPE_SWAT | ePedType::PED_TYPE_COP)
 							{
-								PED::GET_PED_TYPE(target);
-								if (ePedType::PED_TYPE_ARMY | ePedType::PED_TYPE_SWAT | ePedType::PED_TYPE_COP)
-								{
-									PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
-								}
+								PED::SET_PED_SHOOTS_AT_COORD(self::ped, bonec.x, bonec.y, bonec.z, true);
 							}
 						}
 					}

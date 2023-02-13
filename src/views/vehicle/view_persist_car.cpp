@@ -73,7 +73,7 @@ namespace big
 
 		components::button("SAVE_VEHICLE"_T, []
 		{
-			if (PED::GET_VEHICLE_PED_IS_IN(self::ped, false) < 1)
+			if (PED::GET_VEHICLE_PED_IS_IN(self::ped, false) == 0)
 			{
 				g_notification_service->push_warning("PERSIST_CAR"_T.data(), "You must be in a vehicle. Please enter a vehicle before using load.");
 			}
@@ -85,7 +85,7 @@ namespace big
 
 		components::button("LOAD_VEHICLE"_T, []
 		{
-			if (PED::GET_VEHICLE_PED_IS_IN(self::ped, false) >0)
+			if (PED::GET_VEHICLE_PED_IS_IN(self::ped, false) != 0)
 			{
 				g_notification_service->push_warning("PERSIST_CAR"_T.data(), "You must not be in a vehicle. Please exit your vehicle before using load.");
 			}
