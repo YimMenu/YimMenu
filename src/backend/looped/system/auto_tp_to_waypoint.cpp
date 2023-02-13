@@ -14,9 +14,7 @@ namespace big
             if (!teleport::to_blip((int)BlipIcons::Waypoint))
                 return;
 
-            bool temp_disable_tp = (!*g_pointers->m_is_session_started) && CUTSCENE::IS_CUTSCENE_ACTIVE();
-            if (!temp_disable_tp)
-                teleport::to_waypoint();
+            teleport::to_waypoint();
         }
     };
 

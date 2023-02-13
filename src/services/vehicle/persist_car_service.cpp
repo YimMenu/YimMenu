@@ -131,7 +131,7 @@ namespace big
 			ENTITY::SET_ENTITY_VISIBLE(vehicle_to_attach, attachment.is_visible, 0);
 			ENTITY::SET_ENTITY_COLLISION(vehicle_to_attach, attachment.has_collision, true);
 			ENTITY::SET_ENTITY_INVINCIBLE(vehicle_to_attach, attachment.is_invincible);
-			VEHICLE::SET_VEHICLE_IS_CONSIDERED_BY_PLAYER(vehicle_to_attach, true);
+			VEHICLE::SET_VEHICLE_IS_CONSIDERED_BY_PLAYER(vehicle_to_attach, false);
 		}
 
 		return vehicle;

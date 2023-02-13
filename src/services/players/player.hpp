@@ -65,7 +65,7 @@ namespace big
 		bool ragdoll_loop = false;
 		bool rotate_cam_loop = false;
 
-		rate_limiter m_host_migration_rate_limit{ 1s, 20 };
+		rate_limiter m_host_migration_rate_limit{ 2s, 15 };
 		rate_limiter m_play_sound_rate_limit{ 1s, 10 };
 		rate_limiter m_invites_rate_limit{ 10s, 2 };
 		int m_num_spawned_permanent_vehicles = 0;

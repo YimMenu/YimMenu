@@ -18,8 +18,11 @@ namespace big
 
 			for (auto entity : entity::get_entities(g.world.blackhole.include_vehicles, g.world.blackhole.include_peds))
 			{
-				auto entity_coord = ENTITY::GET_ENTITY_COORDS(entity, false);
-				ENTITY::APPLY_FORCE_TO_ENTITY(entity, 1, ((g.world.blackhole.pos.x - entity_coord.x) * 9.f), ((g.world.blackhole.pos.y - entity_coord.y) * 9.f), ((g.world.blackhole.pos.z - entity_coord.z) * 9.f), 0.f, 0.f, 0.f, 0, false, true, true, 0, 0);
+				if (entity::take_control_of(entity, 0))
+				{
+					auto entity_coord = ENTITY::GET_ENTITY_COORDS(entity, false);
+					ENTITY::APPLY_FORCE_TO_ENTITY(entity, 1, ((g.world.blackhole.pos.x - entity_coord.x) * 9.f), ((g.world.blackhole.pos.y - entity_coord.y) * 9.f), ((g.world.blackhole.pos.z - entity_coord.z) * 9.f), 0.f, 0.f, 0.f, 0, false, true, true, 0, 0);
+				}
 			}
 
 			//draw blackhole
