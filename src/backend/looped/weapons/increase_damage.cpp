@@ -9,7 +9,7 @@ namespace big
 		using looped_command::looped_command;
 
 		CWeaponInfo* p_modified_weapon = nullptr;
-		float og_range = 0.0f;
+		float og_damage = 0.0f;
 
 		virtual void on_tick() override
 		{
@@ -23,11 +23,11 @@ namespace big
 				if (p_modified_weapon != g_local_player->m_weapon_manager->m_weapon_info && g_local_player->m_weapon_manager->m_weapon_info)
 				{
 					if (p_modified_weapon)
-						p_modified_weapon->m_weapon_range = og_range;
+						p_modified_weapon->m_damage = og_damage;
 
-					og_range = g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range;
+					og_damage = g_local_player->m_weapon_manager->m_weapon_info->m_damage;
 					p_modified_weapon = g_local_player->m_weapon_manager->m_weapon_info;
-					g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = 0.0f;
+					g_local_player->m_weapon_manager->m_weapon_info->m_damage = 0.0f;
 				}
 			}
 		}
@@ -35,7 +35,7 @@ namespace big
 		{
 			if (g_local_player && p_modified_weapon)
 			{
-				p_modified_weapon->m_weapon_range = og_range;
+				p_modified_weapon->m_damage = og_damage;
 				p_modified_weapon = nullptr;
 			}
 		}
