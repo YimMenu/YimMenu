@@ -29,6 +29,6 @@ namespace big
 		}
 	};
 
-	vehicle_rain g_vehicle_rain("vehiclerain", "Rain Vehicles", "Will pour down and rain nearby vehicles, watch out.", g.world.nearby.veh_rain);
+	vehicle_rain g_vehicle_rain("vehiclerain", "Rain Vehicles", "Will pour down and rain nearby vehicles, watch out... fr fr", g.world.nearby.veh_rain);
 
 }

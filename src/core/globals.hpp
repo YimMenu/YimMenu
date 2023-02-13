@@ -615,6 +615,15 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(gravity_gun, launch_on_release)
 			} gravity_gun;
 
+			struct aimbot
+			{
+				bool enable = false;
+				bool smoothing = true;
+				float smoothing_speed = 2.f;
+				float fov = 90.f;
+				std::uint32_t selected_bone = 0x796E; // Default to head
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, smoothing, smoothing_speed, fov, selected_bone)
+			} aimbot{};
 			CustomWeapon custom_weapon = CustomWeapon::NONE;
 			bool force_crosshairs = false;
 			bool infinite_ammo = false;
@@ -627,10 +636,12 @@ namespace big
 			bool increased_flare_limit = false;
 			bool rapid_fire = false;
 			bool interior_weapon = false;
+			bool triggerbot = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons,
-				ammo_special, custom_weapon, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, no_recoil,
-				no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon)
+				ammo_special, custom_weapon, aimbot, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, no_recoil,
+				no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon,
+				triggerbot)
 		} weapons{};
 
 		struct window

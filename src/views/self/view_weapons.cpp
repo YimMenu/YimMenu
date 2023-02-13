@@ -153,5 +153,24 @@ namespace big
 
 			break;
 		}
+
+		ImGui::Separator();
+		components::sub_title("Aim Assistance");
+		components::command_checkbox<"triggerbot">(); ImGui::SameLine();
+		components::command_checkbox<"aimbot">();
+
+		if (g.weapons.aimbot.enable) {
+			components::command_checkbox<"smoothing">();
+			if (g.weapons.aimbot.smoothing)
+			{
+				ImGui::SameLine();
+				ImGui::PushItemWidth(220);
+				ImGui::SliderFloat("Speed", &g.weapons.aimbot.smoothing_speed, 1.f, 12.f, "%.1f");
+				ImGui::PopItemWidth();
+			}
+			ImGui::PushItemWidth(350);
+			ImGui::SliderFloat("FOV", &g.weapons.aimbot.fov, 1.f, 360.f, "%.0f");
+			ImGui::PopItemWidth();
+		}
 	}
 }
