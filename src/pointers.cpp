@@ -847,14 +847,6 @@ namespace big
 		}
 		else LOG(WARNING) << "socialclub.dll module was not loaded within the time limit.";
 
-		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 ? ? ? ? 49 8B 80"))
-		{
-			m_bypass_max_count_of_active_sticky_bombs = memory::byte_patch::make(pat.add(4).as<uint8_t*>(), { 99 }).get();
-
-			if (g.weapons.bypass_c4_limit)
-				m_bypass_max_count_of_active_sticky_bombs->apply();
-		}
-
 		/**
 		 * Freemode thread restorer through VM patch
 		 */
