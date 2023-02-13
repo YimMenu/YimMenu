@@ -15,12 +15,12 @@ namespace big
         {
             const auto hash = src->get_arg<rage::joaat_t>(0);
 
-            BOOL return_value = DLC::IS_DLC_PRESENT(hash);
+            bool return_value = DLC::IS_DLC_PRESENT(hash);
 
             if (hash == 0x96F02EE6)
                 return_value = return_value || g.settings.dev_dlc;
 
-            src->set_return_value<BOOL>(return_value);
+            src->set_return_value<BOOL>((BOOL)return_value);
         }
 
         void NETWORK_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT(rage::scrNativeCallContext* src)
@@ -75,7 +75,7 @@ namespace big
                 case ControllerInputs::INPUT_VEH_SELECT_PREV_WEAPON:
                 case ControllerInputs::INPUT_DETONATE:
                 case ControllerInputs::INPUT_PICKUP:
-                case ControllerInputs::INPUT_JUMP:
+                // case ControllerInputs::INPUT_JUMP: TODO: add as separate feature
                 case ControllerInputs::INPUT_TALK:
                 case ControllerInputs::INPUT_AIM:
                 case ControllerInputs::INPUT_MELEE_ATTACK_LIGHT:
@@ -87,11 +87,24 @@ namespace big
                 case ControllerInputs::INPUT_VEH_AIM:
                 case ControllerInputs::INPUT_VEH_PASSENGER_ATTACK:
                 case ControllerInputs::INPUT_VEH_FLY_SELECT_NEXT_WEAPON:
+                case ControllerInputs::INPUT_ATTACK:
+                case ControllerInputs::INPUT_NEXT_WEAPON:
+                case ControllerInputs::INPUT_PREV_WEAPON:
+                case ControllerInputs::INPUT_SELECT_NEXT_WEAPON:
+                case ControllerInputs::INPUT_SELECT_PREV_WEAPON:
                     return;
                 }
             }
 
             PAD::DISABLE_CONTROL_ACTION(src->get_arg<int>(0), (int)action, src->get_arg<int>(2));
+        }
+
+        void HUD_FORCE_WEAPON_WHEEL(rage::scrNativeCallContext* src)
+        {
+            if (g.weapons.interior_weapon && src->get_arg<BOOL>(0) == false)
+                return;
+
+            HUD::HUD_FORCE_WEAPON_WHEEL(src->get_arg<BOOL>(0));
         }
     }
 }
