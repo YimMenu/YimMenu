@@ -14,11 +14,11 @@ namespace big
 			for (auto replay_interface = *g_pointers->m_replay_interface; g.window.ingame_overlay.show_replay_interface;)
 			{
 				int current = replay_interface->m_ped_interface->m_cur_peds;
-				Ped target = replay_interface->m_ped_interface->get_ped(MISC::GET_RANDOM_INT_IN_RANGE(0, current))->)
+				Ped target = replay_interface->m_ped_interface->m_ped_list->m_peds->m_handle;
 				g.weapons.aimbot.aimbone = (int)PedBones::SKEL_Head;
 				int bone = g.weapons.aimbot.aimbone; //need to make option to change it
 				Vector3 bonec = PED::GET_PED_BONE_COORDS(target, bone, 0, 0, 0);
-				g.weapons.aimbot.bonec = bonec;
+				bonec = g.weapons.aimbot.bonec;
 				float weaponrange = WEAPON::GET_MAX_RANGE_OF_CURRENT_PED_WEAPON(self::ped);
 				float targetdist = SYSTEM::VDIST(bonec.x, bonec.y, bonec.z, self::pos.x, self::pos.y, self::pos.z);
 				bool os = ENTITY::IS_ENTITY_ON_SCREEN(target);

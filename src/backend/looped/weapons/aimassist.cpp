@@ -15,7 +15,7 @@ namespace big
 			Vector3 target = {0, 0, 0};
 			PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(self::ped, &targetped);
 			target = PED::GET_PED_BONE_COORDS(targetped, (int)PedBones::SKEL_Head, 0, 0, 0);
-			g.weapons.aimbot.target = target;
+			target = g.weapons.aimbot.target;
 			if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
 				PED::SET_PED_SHOOTS_AT_COORD(self::ped, target.x, target.y, target.z, true);

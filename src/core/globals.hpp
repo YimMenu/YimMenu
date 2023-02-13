@@ -635,8 +635,8 @@ namespace big
 				bool aimenemies = false;
 				int aimbone = (int)ePedBoneType::HEAD;
 				bool aimcops = false;
-				Vector3 target = { 0, 0, 0 };
-				Vector3 bonec = { 0, 0, 0 };
+				rage::fvector3 target;
+				rage::fvector3 bonec;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, aimbottg, aimnpc, aimall, aimplayers, aimenemies, aimbone, aimcops)
 			} aimbot{};
