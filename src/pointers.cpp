@@ -818,6 +818,12 @@ namespace big
 			m_receive_pickup = ptr.as<PVOID>();
 		});
 
+		// Write Player Camera Data Node
+		main_batch.add("WPCDN", "48 8B C4 48 89 58 20 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 B0 48 81 EC 50 01 00 00 4C", [this](memory::handle ptr)
+		{
+			m_write_player_camera_data_node = ptr.as<PVOID>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		if (!main_batch.run(mem_region))
 		{

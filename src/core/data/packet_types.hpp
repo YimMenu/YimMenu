@@ -42,7 +42,7 @@ inline const static constexpr std::pair<const char*, std::uint32_t> packet_types
     { "MsgScriptHostRequest", 0x67 },
     { "MsgScriptHandshakeAck", 0x5B },
     { "MsgScriptHandshake", 0x57 },
-    { "MsgScriptBotLeave", 0x2 },
+    { "MsgScriptBotLeave", 0x2B },
     { "MsgScriptBotJoinAck", 0x63 },
     { "MsgScriptBotJoin", 0x1C },
     { "MsgScriptBotHandshakeAck", 0x31 },

@@ -26,7 +26,7 @@ namespace big
 
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("God Mode", &g.self.god_mode);
+		components::command_checkbox<"godmode">();
 		components::command_checkbox<"otr">();
 		components::command_checkbox<"freecam">();
 		components::command_checkbox<"nophone">();
@@ -52,14 +52,13 @@ namespace big
 
 		components::command_checkbox<"invis">();
 		if (g.self.invisibility)
-			components::command_checkbox<"localvis">();
+			components::command_checkbox<"localvis">(); // TODO: does nothing in SP
 		components::command_checkbox<"cleanloop">();
 		components::command_checkbox<"nocollision">();
 		components::command_checkbox<"mobileradio">();
 		components::command_checkbox<"superman">();
 
-		// TODO: fix this, causes a crash
-		// ImGui::Checkbox("DANCE_MODE"_T.data(), &g.self.dance_mode);
+		ImGui::Checkbox("DANCE_MODE"_T.data(), &g.self.dance_mode);
 
 		ImGui::EndGroup();
 
