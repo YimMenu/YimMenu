@@ -27,7 +27,7 @@ namespace big
 
 					og_range = g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range;
 					p_modified_weapon = g_local_player->m_weapon_manager->m_weapon_info;
-					g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = 0.0f;
+					g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = 1000.0f;
 				}
 			}
 		}

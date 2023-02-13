@@ -2,6 +2,7 @@
 #include <rage/rlSessionInfo.hpp>
 #include <weapon/CAmmoInfo.hpp>
 #include <weapon/CWeaponInfo.hpp>
+#include <ped/CPedBoneInfo.hpp>
 #include "enums.hpp"
 #include "file_manager.hpp"
 #include "backend/reactions/reaction.hpp"
@@ -9,8 +10,6 @@
 #include "core/data/ptfx_effects.hpp"
 #include <imgui.h>
 #include <bitset>
-#include "natives.hpp"
-#include <ped/CPedBoneInfo.hpp>
 
 class CNetGamePlayer;
 
@@ -400,7 +399,7 @@ namespace big
 				int invisveh = 0;
 				int localinvisveh = 0;
 				int fill_ammo = 0;
-        int fast_quit = 0;
+			    int fast_quit = 0;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, 
 					noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump,

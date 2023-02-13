@@ -27,7 +27,7 @@ namespace big
 
 					og_damage = g_local_player->m_weapon_manager->m_weapon_info->m_damage;
 					p_modified_weapon = g_local_player->m_weapon_manager->m_weapon_info;
-					g_local_player->m_weapon_manager->m_weapon_info->m_damage = 0.0f;
+					g_local_player->m_weapon_manager->m_weapon_info->m_damage = g.weapons.increased_damage;
 				}
 			}
 		}
