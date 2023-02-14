@@ -393,6 +393,11 @@ namespace big
 					return;
 				}
 			}
+			else if (type > ScriptEntityChangeType::SetVehicleExclusiveDriver || type < ScriptEntityChangeType::BlockingOfNonTemporaryEvents) {
+				notify::crash_blocked(source_player, "invalid script entity change type");
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				return;
+			}
 			buffer->Seek(0);
 			break;
 		}
@@ -521,6 +526,11 @@ namespace big
 					g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					return;
 				}
+			}
+			else if (type > WorldStateDataType::VehiclePlayerLocking || type < WorldStateDataType::CarGen) {
+				notify::crash_blocked(source_player, "invalid world state type");
+				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				return;
 			}
 
 			buffer->Seek(0);
