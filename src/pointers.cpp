@@ -57,9 +57,10 @@ namespace big
 			m_network_player_mgr = ptr.add(3).rip().as<CNetworkPlayerMgr**>();
 		});
 
-		// Native Handlers
+		// Init Native Tables & Native Handlers
 		main_batch.add("NH", "48 8D 0D ? ? ? ? 48 8B 14 FA E8 ? ? ? ? 48 85 C0 75 0A", [this](memory::handle ptr)
 		{
+			m_init_native_tables = ptr.sub(37).as<PVOID>();
 			m_native_registration_table = ptr.add(3).rip().as<rage::scrNativeRegistrationTable*>();
 			m_get_native_handler = ptr.add(12).rip().as<functions::get_native_handler>();
 		});
@@ -439,12 +440,6 @@ namespace big
 		main_batch.add("JSBI", "E8 ? ? ? ? 0F B6 CB 84 C0 41 0F 44 CD", [this](memory::handle ptr)
 		{
 			m_join_session_by_info = ptr.add(1).rip().as<functions::join_session_by_info>();
-		});
-
-		// Init Native Tables
-		main_batch.add("INT", "8B CB E8 ? ? ? ? 8B 43 70 ? 03 C4 A9 00 C0 FF FF", [this](memory::handle ptr)
-		{
-			m_init_native_tables = ptr.add(3).rip().as<PVOID>();
 		});
 
 		// Script VM
