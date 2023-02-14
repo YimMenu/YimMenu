@@ -8,6 +8,8 @@
 #include "util/scripts.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "util/system.hpp"
+#include "util/ped.hpp"
+#include "entity.hpp"
 
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
@@ -37,6 +39,22 @@ namespace big::toxic
 	{
 		Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(target->id()), true);
 		blame_explode_coord(to_blame, coords, explosion_type, damage, is_audible, is_invisible, camera_shake);
+	}
+
+	inline void send_moaning_ped(Player player)
+	{
+		static const char* speeches[] = { "SEX_GENERIC_FEM", "SEX_HJ", "SEX_ORAL_FEM", "SEX_CLIMAX", "SEX_GENERIC" };
+		static const char* voice_name[] = { "S_F_Y_HOOKER_01_WHITE_FULL_01", "S_F_Y_HOOKER_01_WHITE_FULL_02", "S_F_Y_HOOKER_01_WHITE_FULL_03", "S_F_Y_HOOKER_02_WHITE_FULL_01", "S_F_Y_HOOKER_02_WHITE_FULL_02", "S_F_Y_HOOKER_02_WHITE_FULL_03", "S_F_Y_HOOKER_03_BLACK_FULL_01", "S_F_Y_HOOKER_03_BLACK_FULL_03" };
+		Ped target_ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
+		Vector3 coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(target_ped, 0.0, -1.0, 0.0 + 0.1); // or 0.3 0.2 or 0.1
+		Ped voice_ped = ped::spawn(PED_TYPE_PROSTITUTE, RAGE_JOAAT("s_f_y_hooker_02"), 0, coords, 0.0f);
+		ENTITY::SET_ENTITY_COMPLETELY_DISABLE_COLLISION(voice_ped, true, false);
+		ENTITY::SET_ENTITY_VISIBLE(voice_ped, false, 0);
+		ENTITY::FREEZE_ENTITY_POSITION(voice_ped, true);
+		ENTITY::SET_ENTITY_INVINCIBLE(voice_ped, true);
+		AUDIO::PLAY_PED_AMBIENT_SPEECH_WITH_VOICE_NATIVE(voice_ped, speeches[rand() % 5], voice_name[rand() % 8], "SPEECH_PARAMS_FORCE", true);
+		script::get_current()->yield(5s);
+		entity::delete_entity(voice_ped);
 	}
 
 	inline void start_activity(player_ptr target, eActivityType type)

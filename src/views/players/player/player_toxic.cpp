@@ -38,6 +38,8 @@ namespace big
 			ImGui::SameLine();
 			components::player_command_button<"fakeban">(g_player_service->get_selected(), {});
 
+			components::button("Send Moaning Ped", [] { toxic::send_moaning_ped(g_player_service->get_selected()->id()); });
+
 			static int wanted_level;
 			ImGui::SliderInt("WANTED_LVL"_T.data(), &wanted_level, 0, 5);
 			ImGui::SameLine();
