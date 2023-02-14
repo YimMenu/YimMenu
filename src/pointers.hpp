@@ -190,7 +190,7 @@ namespace big
 		functions::send_network_damage m_send_network_damage;
 		functions::request_ragdoll m_request_ragdoll;
 		functions::request_control m_request_control;
-
+		functions::clear_ped_tasks_network m_clear_ped_tasks_network;
 
 		functions::get_connection_peer m_get_connection_peer{};
 		functions::send_remove_gamer_cmd m_send_remove_gamer_cmd{};
@@ -228,8 +228,6 @@ namespace big
     
 		PVOID m_fragment_physics_crash;
 		PVOID m_fragment_physics_crash_2;
-
-		functions::clear_ped_tasks_network m_clear_ped_tasks_network;
 
 		PVOID m_infinite_train_crash;
 		functions::get_next_carriage m_get_next_carriage;
