@@ -208,6 +208,7 @@ namespace big
 		PVOID m_send_session_matchmaking_attributes;
 
 		PVOID m_serialize_take_off_ped_variation_task;
+		PVOID m_serialize_general_sweep_task;
 
 		PVOID m_create_script_handler;
 

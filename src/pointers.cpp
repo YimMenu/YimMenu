@@ -628,6 +628,12 @@ namespace big
 			m_serialize_take_off_ped_variation_task = ptr.as<PVOID>();
 		});
 
+		// Serialize General Sweep Task
+		main_batch.add("SGST", "48 8B EC 48 83 EC 48 48 8B FA 48 8B F1 E8 ? ? ? ? 8B 46 68", [this](memory::handle ptr)
+		{
+			m_serialize_general_sweep_task = ptr.sub(5).as<PVOID>();
+		});
+
 		// Chat Data
 		main_batch.add("CD", "48 8B 05 ? ? ? ? 0F 45 DF", [this](memory::handle ptr)
 		{

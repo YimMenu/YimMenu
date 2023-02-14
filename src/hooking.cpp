@@ -87,6 +87,7 @@ namespace big
 		detour_hook_helper::add<hooks::send_session_matchmaking_attributes>("SSMA", g_pointers->m_send_session_matchmaking_attributes);
 
 		detour_hook_helper::add<hooks::serialize_take_off_ped_variation_task>("STOPVT", g_pointers->m_serialize_take_off_ped_variation_task);
+		detour_hook_helper::add<hooks::serialize_general_sweep_task>("SGST", g_pointers->m_serialize_general_sweep_task);
 
 		detour_hook_helper::add<hooks::create_script_handler>("CSH", g_pointers->m_create_script_handler);
 
