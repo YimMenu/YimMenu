@@ -393,7 +393,7 @@ namespace big
 					return;
 				}
 			}
-			else if (type > 9 || type < 0) {
+			else if (type > ScriptEntityChangeType::SetVehicleExclusiveDriver || type < ScriptEntityChangeType::BlockingOfNonTemporaryEvents) {
 				notify::crash_blocked(source_player, "invalid script entity change type");
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
