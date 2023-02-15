@@ -46,7 +46,7 @@ namespace big::toxic
 		static const char* speeches[] = { "SEX_GENERIC_FEM", "SEX_HJ", "SEX_ORAL_FEM", "SEX_CLIMAX", "SEX_GENERIC" };
 		static const char* voice_name[] = { "S_F_Y_HOOKER_01_WHITE_FULL_01", "S_F_Y_HOOKER_01_WHITE_FULL_02", "S_F_Y_HOOKER_01_WHITE_FULL_03", "S_F_Y_HOOKER_02_WHITE_FULL_01", "S_F_Y_HOOKER_02_WHITE_FULL_02", "S_F_Y_HOOKER_02_WHITE_FULL_03", "S_F_Y_HOOKER_03_BLACK_FULL_01", "S_F_Y_HOOKER_03_BLACK_FULL_03" };
 		Ped target_ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
-		Vector3 coords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(target_ped, 0.0, -1.0, 0.0 + 0.1); // or 0.3 0.2 or 0.1
+		Vector3 coords = ENTITY::GET_ENTITY_COORDS(target_ped, true);
 		Ped voice_ped = ped::spawn(PED_TYPE_PROSTITUTE, RAGE_JOAAT("s_f_y_hooker_02"), 0, coords, 0.0f);
 		ENTITY::SET_ENTITY_COMPLETELY_DISABLE_COLLISION(voice_ped, true, false);
 		ENTITY::SET_ENTITY_VISIBLE(voice_ped, false, 0);
