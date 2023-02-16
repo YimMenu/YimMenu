@@ -21,6 +21,7 @@ namespace big
 
 		if (ImGui::Button("Add/Change"))
 		{
+			std::lock_guard lock(g.world.model_swapper.m);
 			if (dst_text[0] == '\0' || src_text[0] == '\0')
 			{
 				g_notification_service->push_error("Model Swapper", "Wrong input");
@@ -42,19 +43,24 @@ namespace big
 			}
 			if (i == g.world.model_swapper.models.size())
 				g.world.model_swapper.models.push_back(std::make_pair(dst_text, src_text));
+			g.world.model_swapper.update = true;
 		} ImGui::SameLine();
 		if (ImGui::Button("Delete"))
 		{
+			std::lock_guard lock(g.world.model_swapper.m);
 			if (!g.world.model_swapper.models.size() || selected_index < 0 || selected_index >= g.world.model_swapper.models.size())
 			{
 				g_notification_service->push_error("Model Swapper", "Invalid index");
 				return;
 			}
 			g.world.model_swapper.models.erase(std::begin(g.world.model_swapper.models) + selected_index);
+			g.world.model_swapper.update = true;
 		} ImGui::SameLine();
 		if (ImGui::Button("Clear"))
 		{
+			std::lock_guard lock(g.world.model_swapper.m);
 			g.world.model_swapper.models.clear();
+			g.world.model_swapper.update = true;
 		}
 
 		ImGui::SetNextItemWidth(width);

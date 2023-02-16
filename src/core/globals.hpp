@@ -473,6 +473,8 @@ namespace big
 			struct model_swapper
 			{
 				std::vector<std::pair<std::string, std::string>> models;
+				std::mutex m;
+				bool update = false;
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(model_swapper, models)
 			} model_swapper{};
 
