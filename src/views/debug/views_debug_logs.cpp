@@ -32,6 +32,8 @@ namespace big
 					ImGui::EndListBox();
 				}
 
+				ImGui::Checkbox("Block All", &g.debug.logs.script_event.block_all);
+
 				ImGui::TreePop();
 			}
 
