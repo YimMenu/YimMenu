@@ -151,7 +151,7 @@ namespace big
 
 		static bool write_player_camera_data_node(rage::netObject* player, CPlayerCameraDataNode* node);
 
-		static CBaseModelInfo* get_model_info(rage::joaat_t hash, int* a2);
+		static CBaseModelInfo* get_model_info(rage::joaat_t hash, uint32_t* a2);
 };
 
 	class minhook_keepalive

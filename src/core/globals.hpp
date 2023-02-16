@@ -470,7 +470,13 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(blackhole, enable, include_peds, include_vehicles, color, alpha)
 			} blackhole{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole)
+			struct model_swapper
+			{
+				std::vector<std::pair<std::string, std::string>> models;
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(model_swapper, models)
+			} model_swapper{};
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper)
 		} world{};
 
 		struct spoofing

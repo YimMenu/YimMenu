@@ -95,10 +95,6 @@ namespace big
 			ContextEntityType::SHARED,
 			0,
 			{}, {
-				{"COPY HASH", [this] {
-					ImGui::SetClipboardText(std::format("0x{:08X}", (rage::joaat_t)m_pointer->m_model_info->m_hash).c_str());
-					g_notification_service->push("Context Menu", std::format("Copy hash 0x{:08X}", (rage::joaat_t)m_pointer->m_model_info->m_hash).c_str());
-					}},
 				{"EXPLODE", [this] {
 					rage::fvector3 pos = *m_pointer->m_navigation->get_position();
 					FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 1, 1000, 1, 0, 1, 0);
@@ -107,6 +103,10 @@ namespace big
 					rage::fvector3 pos = *m_pointer->m_navigation->get_position();
 					teleport::to_coords({ pos.x, pos.y, pos.z });
 					}},
+				{"COPY HASH", [this] {
+					ImGui::SetClipboardText(std::format("0x{:08X}", (rage::joaat_t)m_pointer->m_model_info->m_hash).c_str());
+					g_notification_service->push("Context Menu", std::format("Copy hash 0x{:08X}", (rage::joaat_t)m_pointer->m_model_info->m_hash).c_str());
+					}}
 			}
 		};
 
