@@ -160,44 +160,5 @@ namespace big
 
 			break;
 		}
-
-		components::sub_title("Aimbot");
-
-		components::command_checkbox<"aimbot">();
-
-		if(g.weapons.aimbot.aimbottg)
-		{
-			components::input_text("Bone To Shoot", (char*)&g.weapons.aimbot.aimbone, 20);
-
-			//todo convert types to combo to get rid of all this code			
-
-			if(!g.weapons.aimbot.aimall || !g.weapons.aimbot.aimplayers || !g.weapons.aimbot.aimenemies || !g.weapons.aimbot.aimcops)
-			{
-				components::command_checkbox<"aimnpc">();
-			}
-			ImGui::SameLine();
-			if (!g.weapons.aimbot.aimnpc || !g.weapons.aimbot.aimplayers || !g.weapons.aimbot.aimenemies || !g.weapons.aimbot.aimcops)
-			{
-				components::command_checkbox<"aimall">();
-			}
-			ImGui::SameLine();
-			if (!g.weapons.aimbot.aimall || !g.weapons.aimbot.aimnpc || !g.weapons.aimbot.aimenemies || !g.weapons.aimbot.aimcops)
-			{
-				components::command_checkbox<"aimplayers">();
-			}
-			if (!g.weapons.aimbot.aimall || !g.weapons.aimbot.aimplayers || !g.weapons.aimbot.aimnpc || !g.weapons.aimbot.aimcops)
-			{
-				components::command_checkbox<"aimenemies">();
-			}
-			ImGui::SameLine();
-			if (g.weapons.aimbot.aimplayers)
-			{
-				components::command_checkbox<"exfriend">();
-			}
-			if (!g.weapons.aimbot.aimall || !g.weapons.aimbot.aimplayers || !g.weapons.aimbot.aimenemies || !g.weapons.aimbot.aimnpc)
-			{
-				components::command_checkbox<"aimcops">();
-			}
-		}
 	}
 }

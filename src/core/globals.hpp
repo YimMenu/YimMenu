@@ -276,12 +276,6 @@ namespace big
 			bool proof_drown = false;
 			bool proof_water = false;
 			uint32_t proof_mask = 0;
-			bool hide_radar = false;
-			bool hide_ammo = false;
-			int selected_hud_component = 1;
-			std::array<bool, 22> hud_components_states = { false };
-			bool force_show_hud_element = false;
-			bool force_show_hud = false;
 			bool mobile_radio = false;
 			bool fast_respawn = false;
 			bool auto_tp = false;
@@ -289,13 +283,27 @@ namespace big
 			bool beast_jump = false;
 			bool healthregen = false;
 			float healthregenrate = 1.0f;
-			bool hudcolor = false;
-			bool shcolor = false;
-			bool mtcolor = false;
-			bool mhcolor = false;
-			int index, r, g, b, a, hcolor, tcolor;
 			bool superman = false;
+			struct hud
+			{
+				bool hudcolor = false;
+				bool shcolor = false;
+				bool mtcolor = false;
+				bool mhcolor = false;
+				int hcolor = 0;
+				int tcolor = 0;
+				int index, r, g, b, a;
+				bool hide_radar = false;
+				bool hide_ammo = false;
+				int selected_hud_component = 1;
+				std::array<bool, 22> hud_components_states = { false };
+				bool force_show_hud_element = false;
+				bool force_show_hud = false;
 
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hud, hudcolor, shcolor, mtcolor, mhcolor, hcolor, tcolor, index, r, g, b, a,
+					hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element,
+					force_show_hud)
+			} hud{};
 			// do not save below entries
 			bool dance_mode = false;
 
@@ -303,9 +311,8 @@ namespace big
 				clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll,
 				noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water,
 				proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water,
-				proof_mask, hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element,
-				force_show_hud, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate,
-				hudcolor, shcolor, mtcolor, mhcolor, index, r, g, b, a, hcolor, tcolor, superman)
+				proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate,
+				hud, superman)
 		} self{};
 
 		struct session
@@ -625,26 +632,12 @@ namespace big
 			bool bypass_c4_limit = false;
 			bool rapid_fire = false;
 			bool aim_assist = false;
-			struct aimbot
-			{
-				bool aimbottg = false;
-				bool aimnpc = false;
-				bool aimall = false;
-				bool aimplayers = false;
-				bool excludefriends = false;
-				bool aimenemies = false;
-				int aimbone = (int)ePedBoneType::HEAD;
-				bool aimcops = false;
-				rage::fvector3 target;
-				rage::fvector3 bonec;
-
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, aimbottg, aimnpc, aimall, aimplayers, aimenemies, aimbone, aimcops)
-			} aimbot{};
 			bool infinite_range = false;
+			rage::fvector3 aimassisttarget;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons,
 				ammo_special, custom_weapon, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, increase_damage,
-				no_recoil, no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire, gravity_gun, aim_assist, aimbot, infinite_range)
+				no_recoil, no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire, gravity_gun, aim_assist, infinite_range)
 		} weapons{};
 
 		struct window

@@ -9,7 +9,7 @@ namespace big
 
 		virtual void execute(const std::vector<std::uint64_t>&, const std::shared_ptr<command_context> ctx)
 		{
-			NETWORK::NETWORK_BAIL(16, 0, 0);
+			NETWORK::NETWORK_BAIL(16, 0, 0); //todo test
 		}
 	};
 

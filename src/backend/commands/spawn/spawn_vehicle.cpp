@@ -51,8 +51,7 @@ namespace big
 				}
 				else
 				{
-					g_notification_service->push_error("Vehicle", "Please exit noclip before spawning inside a vehicle!\n Spawning vehicle normally...");
-					veh;
+					g_notification_service->push_error("Vehicle", "Please exit noclip before attempting to spawn inside a vehicle!");
 				}
 			}
 		}

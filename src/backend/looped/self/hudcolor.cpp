@@ -10,23 +10,23 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if(g.self.shcolor)
+			if(g.self.hud.shcolor)
 			{
-				HUD::REPLACE_HUD_COLOUR_WITH_RGBA(g.self.index, g.self.r, g.self.g, g.self.b, g.self.a);
+				HUD::REPLACE_HUD_COLOUR_WITH_RGBA(g.self.hud.index, g.self.hud.r, g.self.hud.g, g.self.hud.b, g.self.hud.a);
 			}
-			if(g.self.mhcolor)
+			if(g.self.hud.mhcolor)
 			{
-				HUD::SET_CUSTOM_MP_HUD_COLOR(g.self.hcolor);
+				HUD::SET_CUSTOM_MP_HUD_COLOR(g.self.hud.hcolor);
 			}
-			if(g.self.mtcolor)
+			if(g.self.hud.mtcolor)
 			{
-				HUD::OVERRIDE_MP_TEXT_CHAT_COLOR(0, g.self.tcolor);
+				HUD::OVERRIDE_MP_TEXT_CHAT_COLOR(0, g.self.hud.tcolor);
 			}
 		}
 	};
 
-	hudcolor_looped g_hudcolor_looped("hudcolor", "Hudcolor Overide", "Replaces features of your hud with custom colors you set", g.self.hudcolor);
-	bool_command g_shcolor("singlehudcol", "Hud Color", "enables the singlehudcol", g.self.shcolor);
-	bool_command g_mhcolor("mphudcol", "MP Hud Color", "enables the mphudcol", g.self.mhcolor);
-	bool_command g_mtcolor("mptextcol", "MP Text Color", "enables the mptextcol", g.self.mtcolor);
+	hudcolor_looped g_hudcolor_looped("hudcolor", "Hudcolor Overide", "Replaces features of your hud with custom colors you set", g.self.hud.hudcolor);
+	bool_command g_shcolor("singlehudcol", "Hud Color", "enables the singlehudcol", g.self.hud.shcolor);
+	bool_command g_mhcolor("mphudcol", "MP Hud Color", "enables the mphudcol", g.self.hud.mhcolor);
+	bool_command g_mtcolor("mptextcol", "MP Text Color", "enables the mptextcol", g.self.hud.mtcolor);
 }
