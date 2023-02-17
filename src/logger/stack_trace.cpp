@@ -5,25 +5,29 @@
 
 namespace big
 {
-    stack_trace::stack_trace(EXCEPTION_POINTERS* exception_info) :
-        m_exception_info(exception_info),
+    stack_trace::stack_trace() :
         m_frame_pointers(32)
     {
-        static std::mutex m;
-        std::lock_guard lock(m);
-
         SymInitialize(GetCurrentProcess(), nullptr, true);
-        
-        m_dump << exception_code_to_string(exception_info->ExceptionRecord->ExceptionCode) << '\n';
-        dump_module_info();
-        dump_registers();
-        dump_stacktrace();
-        m_dump << "\n--------End of exception--------\n";
     }
 
     stack_trace::~stack_trace()
     {
         SymCleanup(GetCurrentProcess());
+    }
+
+    void stack_trace::new_stack_trace(EXCEPTION_POINTERS *exception_info)
+    {
+        static std::mutex m;
+        std::lock_guard lock(m);
+
+        m_exception_info = exception_info;
+
+        m_dump << exception_code_to_string(exception_info->ExceptionRecord->ExceptionCode) << '\n';
+        dump_module_info();
+        dump_registers();
+        dump_stacktrace();
+        m_dump << "\n--------End of exception--------\n";
     }
 
     std::string stack_trace::str() const
@@ -172,9 +176,6 @@ namespace big
                 break;
             }
             m_frame_pointers[i] = frame.AddrPC.Offset;
-
-            if (i == 1)
-                m_ret_context = context;
         }
     }
 

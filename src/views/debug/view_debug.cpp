@@ -17,6 +17,7 @@ namespace big
 			locals();
 			script_events();
 			scripts();
+			threads();
 			ImGui::EndTabBar();
 		}
 		ImGui::End();

@@ -15,12 +15,13 @@ namespace big::scr_globals
 	static inline script_global gsbd_kicking(1885209);
 	static inline script_global gsbd_fm_events(1923597);
 	static inline script_global gsbd_block_c(2652258);
+	static inline script_global gsbd_property_instances(1943595);
 
 	static inline script_global globalplayer_bd(2657589);
 	static inline script_global gpbd_fm_3(1894573);
 	static inline script_global gpbd_fm_1(1853910);
 
-	static inline script_global launcher_global(2756257);
+	static inline script_global launcher_global(2756259);
 
 	static inline script_global sp(113648);
 	static inline script_global mission_definition(91469);

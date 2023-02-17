@@ -492,6 +492,8 @@ namespace big
 
 		struct spoofing
 		{
+			bool hide_from_player_list = false;
+
 			bool spoof_cheater = false;
 
 			bool spoof_hide_god = true;
@@ -510,7 +512,7 @@ namespace big
 			int session_player_count = 25;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing,
-				spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew,
+				hide_from_player_list, spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew,
 				square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language,
 				session_language, spoof_session_player_count, session_player_count)
 		} spoofing{};
@@ -629,15 +631,18 @@ namespace big
 			bool no_recoil = false;
 			bool no_spread = false;
 			std::string vehicle_gun_model = "bus";
-			bool bypass_c4_limit = false;
+			bool increased_c4_limit = false;
+			bool increased_flare_limit = false;
 			bool rapid_fire = false;
 			bool aim_assist = false;
 			bool infinite_range = false;
 			rage::fvector3 aimassisttarget;
-
+			bool interior_weapon = false;
+      
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons,
 				ammo_special, custom_weapon, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, increase_damage,
-				no_recoil, no_spread, vehicle_gun_model, bypass_c4_limit, rapid_fire, gravity_gun, aim_assist, infinite_range)
+				no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun,
+        aim_assist, infinite_range, interior_weapon)
 		} weapons{};
 
 		struct window

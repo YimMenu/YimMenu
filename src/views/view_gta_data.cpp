@@ -50,6 +50,12 @@ namespace big
 
 				break;
 			}
+			case eGtaDataUpdateState::WAITING_FOR_SINGLE_PLAYER:
+			{
+				ImGui::Text("GAME_CACHE_WAITING_FOR_SINGLE_PLAYER"_T.data());
+
+				break;
+			}
 			case eGtaDataUpdateState::WAITING_FOR_ONLINE:
 			{
 				ImGui::Text("GAME_CACHE_WAITING_FOR_ONLINE"_T.data());

@@ -57,9 +57,10 @@ namespace big
 			m_network_player_mgr = ptr.add(3).rip().as<CNetworkPlayerMgr**>();
 		});
 
-		// Native Handlers
+		// Init Native Tables & Native Handlers
 		main_batch.add("NH", "48 8D 0D ? ? ? ? 48 8B 14 FA E8 ? ? ? ? 48 85 C0 75 0A", [this](memory::handle ptr)
 		{
+			m_init_native_tables = ptr.sub(37).as<PVOID>();
 			m_native_registration_table = ptr.add(3).rip().as<rage::scrNativeRegistrationTable*>();
 			m_get_native_handler = ptr.add(12).rip().as<functions::get_native_handler>();
 		});
@@ -441,12 +442,6 @@ namespace big
 			m_join_session_by_info = ptr.add(1).rip().as<functions::join_session_by_info>();
 		});
 
-		// Init Native Tables
-		main_batch.add("INT", "8B CB E8 ? ? ? ? 8B 43 70 ? 03 C4 A9 00 C0 FF FF", [this](memory::handle ptr)
-		{
-			m_init_native_tables = ptr.add(3).rip().as<PVOID>();
-		});
-
 		// Script VM
 		main_batch.add("VM", "E8 ? ? ? ? 48 85 FF 48 89 1D", [this](memory::handle ptr)
 		{
@@ -818,6 +813,12 @@ namespace big
 			m_receive_pickup = ptr.as<PVOID>();
 		});
 
+		// Write Player Camera Data Node
+		main_batch.add("WPCDN", "48 8B C4 48 89 58 20 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 B0 48 81 EC 50 01 00 00 4C", [this](memory::handle ptr)
+		{
+			m_write_player_camera_data_node = ptr.as<PVOID>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		if (!main_batch.run(mem_region))
 		{
@@ -846,14 +847,6 @@ namespace big
 			socialclub_batch.run(sc_module);
 		}
 		else LOG(WARNING) << "socialclub.dll module was not loaded within the time limit.";
-
-		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 ? ? ? ? 49 8B 80"))
-		{
-			m_bypass_max_count_of_active_sticky_bombs = memory::byte_patch::make(pat.add(4).as<uint8_t*>(), { 99 }).get();
-
-			if (g.weapons.bypass_c4_limit)
-				m_bypass_max_count_of_active_sticky_bombs->apply();
-		}
 
 		/**
 		 * Freemode thread restorer through VM patch

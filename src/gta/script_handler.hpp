@@ -140,11 +140,7 @@ namespace rage
 		virtual std::int32_t _0x70() = 0;                                                       // 14 (0x70)
 		virtual void* _0x78() = 0;                                                              // 15 (0x78)
 	public:
-		char m_padding1[0x28];                         // 0x08
-		bool m_initialized;                            // 0x30
-		bool m_initialized2;                           // 0x31
-		char m_padding2[0x0E];                         // 0x32
-		rage::netLoggingInterface* m_logger;           // 0x40
+		char pad_0008[104];
 	};
 }
 
@@ -173,10 +169,6 @@ public:
 	std::uint8_t m_0xAD;        // 0xAD
 	std::uint8_t m_0xAE;        // 0xAE
 	std::uint8_t m_0xAF;        // 0xAF
-};
-
-class CGameScriptHandlerMgr : public rage::scriptHandlerMgr
-{
 };
 
 class CScriptParticipant
@@ -309,6 +301,42 @@ public:
 
 }; //Size: 0x01B0
 static_assert(sizeof(CGameScriptHandlerNetComponent) == 0x1B0);
+
+class CRemoteScriptInfo : public CGameScriptId
+{
+public:
+	uint32_t m_participants; //0x0040
+	char pad_0044[4]; //0x0044
+	class CNetGamePlayer* m_host; //0x0048
+	uint32_t m_timestamp_2; //0x0050
+	uint16_t m_host_token; //0x0054
+	uint8_t m_reserved_peds; //0x0056
+	uint8_t m_reserved_vehicles; //0x0057
+	uint8_t m_reserved_objects; //0x0058
+	uint8_t m_reserved_unk1; //0x0059
+	uint8_t m_reserved_unk2; //0x005A
+	uint8_t m_reserved_unk3; //0x005B
+	uint8_t m_reserved_unk4; //0x005C
+	char pad_005D[3]; //0x005D
+}; //Size: 0x0060
+static_assert(sizeof(CRemoteScriptInfo) == 0x60);
+
+class CGameScriptHandlerMgr : public rage::scriptHandlerMgr
+{
+public:
+	char pad_0070[56]; //0x0070
+	class CRemoteScriptInfo m_remote_script_infos[320]; //0x00A8
+	char pad_78A8[4]; //0x78A8
+	uint32_t m_remote_script_start_idx; //0x78AC
+	uint32_t m_remote_script_count; //0x78B0
+	char pad_78B4[4]; //0x78B4
+	class CRemoteScriptInfo m_detached_remote_script_infos[64]; //0x78B8
+	char pad_90B8[4]; //0x90B8
+	uint32_t m_detached_remote_script_start_idx; //0x90BC
+	uint32_t m_detached_remote_script_count; //0x90C0
+	char pad_90C4[28]; //0x90C4
+}; //Size: 0x90E0
+static_assert(sizeof(CGameScriptHandlerMgr) == 0x90E0);
 
 
 static_assert(sizeof(rage::scriptHandler) == 0x60);
