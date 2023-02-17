@@ -9,7 +9,12 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(self::veh, 5.0);
+			auto model = ENTITY::GET_ENTITY_MODEL(self::veh);
+
+			if (ENTITY::IS_ENTITY_IN_AIR(self::veh) &&
+				(VEHICLE::IS_THIS_MODEL_A_CAR(model) ||
+				 VEHICLE::IS_THIS_MODEL_A_BIKE(model)))
+				VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(self::veh, 5.0);
 		}
 	};
 

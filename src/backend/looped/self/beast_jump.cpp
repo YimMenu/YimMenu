@@ -18,5 +18,5 @@ namespace big
 		}
 	};
 	
-	beast_jump_looped g_beast_jump_looped("beastjump", "Beast Jump", "Allows You To Jump As If You Were The Beast Like In The Beast Event", g.self.beast_jump);
+	beast_jump_looped g_beast_jump_looped("beastjump", "Beast Jump", "Allows you to jump as if you were the beast like in the Hunt the Beast event", g.self.beast_jump);
 }

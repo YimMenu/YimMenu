@@ -8,7 +8,7 @@ namespace big
 	{
 		g_hooking->get_original<hooks::serialize_take_off_ped_variation_task>()(info, serializer);
 		if (info->m_prop_hash != 0 &&
-			info->m_variation_component == 9 &&
+			info->m_variation_component == 5 &&
 			info->m_prop_hash != RAGE_JOAAT("p_parachute_s")
 			)
 		{

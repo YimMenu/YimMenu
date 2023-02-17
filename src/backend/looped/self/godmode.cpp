@@ -1,26 +1,41 @@
 #include "backend/looped/looped.hpp"
+#include "natives.hpp"
+#include "backend/looped_command.hpp"
 
 namespace big
 {
-	static uint32_t last_bits = 0;
-	static float last_water_collistion_strength = 0;
-
-	void looped::self_godmode()
+	class godmode_internal : looped_command
 	{
-		if (g_local_player == nullptr)
+		using looped_command::looped_command;
+
+		uint32_t last_bits = 0;
+
+		virtual void on_tick() override
 		{
-			return;
+			if (g_local_player == nullptr)
+			{
+				return;
+			}
+
+			uint32_t bits = g.self.proof_mask;
+			uint32_t changed_bits = bits ^ last_bits;
+			uint32_t changed_or_enabled_bits = bits | changed_bits;
+
+			if (changed_or_enabled_bits)
+			{
+				uint32_t unchanged_bits = g_local_player->m_damage_bits & ~changed_or_enabled_bits;
+				g_local_player->m_damage_bits = unchanged_bits | bits;
+				last_bits = bits;
+			}
 		}
 
-		uint32_t bits = g.self.proof_mask;
-		uint32_t changed_bits = bits ^ last_bits;
-		uint32_t changed_or_enabled_bits = bits | changed_bits;
-
-		if (changed_or_enabled_bits)
+		virtual void on_disable() override
 		{
-			uint32_t unchanged_bits = g_local_player->m_damage_bits & ~changed_or_enabled_bits;
-			g_local_player->m_damage_bits = unchanged_bits | bits;
-			last_bits = bits;
+			g_local_player->m_damage_bits = 0;
 		}
-	}
+	};
+
+	static bool true_ref = true;
+	godmode_internal g_godmode_internal("$$godmode", "", "", true_ref);
+	bool_command g_godmode("godmode", "God Mode", "Prevents you from taking any form of damage", g.self.god_mode);
 }
