@@ -17,6 +17,7 @@ namespace big
 
 	static void update()
 	{
+		std::lock_guard lock(g.world.model_swapper.m);
 		cache_models.clear();
 		for (size_t i = 0; i < g.world.model_swapper.models.size(); i++)
 			cache_models.push_back(std::make_pair(get_hash(g.world.model_swapper.models[i].first), get_hash(g.world.model_swapper.models[i].second)));
@@ -25,7 +26,6 @@ namespace big
 
 	CBaseModelInfo* hooks::get_model_info(rage::joaat_t hash, uint32_t* a2)
 	{
-		std::lock_guard lock(g.world.model_swapper.m);
 		static bool init = ([] { update(); }(), true);
 		if (g.world.model_swapper.update)
 			update();
