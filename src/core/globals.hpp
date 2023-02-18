@@ -622,7 +622,12 @@ namespace big
 				bool enable = false;
 				bool smoothing = true;
 				float smoothing_speed = 2.f;
+				bool on_player = true;
+				bool on_enemy = false;
+				bool on_police = false;
+				bool on_npc = false;
 				float fov = 90.f;
+				float distance = 200.f;
 				std::uint32_t selected_bone = 0x796E; // Default to head
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, smoothing, smoothing_speed, fov, selected_bone)
 			} aimbot{};

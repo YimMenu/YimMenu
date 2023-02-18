@@ -20,6 +20,22 @@ namespace big
 				if (ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, ped, 17) && !ENTITY::IS_ENTITY_DEAD(ped, 0)) // Tracetype is always 17. LOS check
 				{
 					int relation = PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, self::ped); // relation for enemy check
+					int type = PED::GET_PED_TYPE(ped); // for police check, cop types are 6, swat is 27
+					Vector3 world_position = ENTITY::GET_ENTITY_COORDS(ped, false);
+
+					if (SYSTEM::VDIST(self::pos.x, self::pos.y, self::pos.z, world_position.x, world_position.y, world_position.z) > g.weapons.aimbot.distance)
+						continue; // If the entity is further than our preset distance then just skip it
+
+					if (PED::IS_PED_A_PLAYER(ped) && !g.weapons.aimbot.on_player) // check if its a player
+						continue;
+
+					if (((relation == 4) || (relation == 5)) && !g.weapons.aimbot.on_enemy) // relation 4 and 5 are for enemies
+						continue;
+
+					if(((type == 6 && !PED::IS_PED_MODEL(ped, rage::joaat("s_m_y_uscg_01"))) || type == 27 || // s_m_y_uscg_01 = us coast guard 1 (techniaclly military)
+						PED::IS_PED_MODEL(ped, rage::joaat("s_m_y_ranger_01")) || PED::IS_PED_MODEL(ped, rage::joaat("s_f_y_ranger_01"))) // ranger models
+						&& !g.weapons.aimbot.on_police)
+						continue;
 
 					// Update aim lock coords 
 					aim_lock = ENTITY::GET_WORLD_POSITION_OF_ENTITY_BONE(ped, PED::GET_PED_BONE_INDEX(ped, g.weapons.aimbot.selected_bone));
@@ -101,4 +117,7 @@ namespace big
 
 	aimbot g_aimbot("aimbot", "Aimbot", "lock on and kill", g.weapons.aimbot.enable);
 	bool_command g_smoothing("smoothing", "Smoothing", "Controls the snappiness of your lock on", g.weapons.aimbot.smoothing);
+	bool_command g_aimbot_on_player("aimatplayer", "Player", "If you suck at pvp this is for you.", g.weapons.aimbot.on_player);
+	bool_command g_aimbot_on_police("aimatpolice", "Police", "Locks onto cops to kill", g.weapons.aimbot.on_police);
+	bool_command g_aimbot_on_enemy("aimatenemy", "Enemy", "Eliminate your enemies, and win your missions", g.weapons.aimbot.on_enemy);
 }

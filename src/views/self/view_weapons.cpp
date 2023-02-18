@@ -160,6 +160,10 @@ namespace big
 		components::command_checkbox<"aimbot">();
 
 		if (g.weapons.aimbot.enable) {
+			components::command_checkbox<"aimatplayer">(); ImGui::SameLine();
+			components::command_checkbox<"aimatpolice">(); ImGui::SameLine();
+			components::command_checkbox<"aimatenemy">();
+
 			components::command_checkbox<"smoothing">();
 			if (g.weapons.aimbot.smoothing)
 			{
@@ -170,6 +174,7 @@ namespace big
 			}
 			ImGui::PushItemWidth(350);
 			ImGui::SliderFloat("FOV", &g.weapons.aimbot.fov, 1.f, 360.f, "%.0f");
+			ImGui::SliderFloat("Distance", &g.weapons.aimbot.distance, 1.f, 350.f, "%.0f");
 			ImGui::PopItemWidth();
 		}
 	}
