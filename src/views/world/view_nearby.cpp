@@ -32,14 +32,6 @@ namespace big
 		ImGui::Separator();
 		components::sub_title("Vehicles");
 		// Nearby Vehicle Actions
-		components::button<ImVec2(110, 0)>
-			("Delete", [] {
-			for (auto vehs : entity::get_entities(true, false))
-				if (entity::take_control_of(vehs)) {
-					entity::delete_entity(vehs);
-					script::get_current()->yield();
-				}
-		}); ImGui::SameLine();
 
 		components::button<ImVec2(110, 0), ImVec4(0.02745f, 0.4745f, 0.10196f, 1.f)>
 			("Max Upgrade", [] {
