@@ -408,6 +408,9 @@ namespace big
 				<< "\tArgs: " << script_args;
 		}
 
+		if (g.debug.logs.script_event.block_all)
+			return true;
+
 		return false;
 	}
 }
