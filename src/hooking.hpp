@@ -23,6 +23,10 @@ class CNetworkIncrementStatEvent;
 class CScriptedGameEvent;
 class NetworkGameFilterMatchmakingComponent;
 class ClonedTakeOffPedVariationInfo;
+class CPlayerCardStats;
+class CStatsSerializationContext;
+class CPlayerCreationDataNode;
+class CPlayerAppearanceDataNode;
 
 namespace rage
 {
@@ -150,6 +154,12 @@ namespace big
 		static bool receive_pickup(rage::netObject* netobject, void* unk, CPed* ped);
 
 		static bool write_player_camera_data_node(rage::netObject* player, CPlayerCameraDataNode* node);
+
+		static rage::netGameEvent* send_player_card_stats(rage::netGameEvent* a1, CPlayerCardStats* stats);
+		static void serialize_stats(CStatsSerializationContext* context, rage::joaat_t* stats, std::uint32_t stat_count);
+
+		static void write_player_creation_data_node(rage::netObject* player, CPlayerCreationDataNode* node);
+		static void write_player_appearance_data_node(rage::netObject* player, CPlayerAppearanceDataNode* node);
 };
 
 	class minhook_keepalive

@@ -104,6 +104,12 @@ namespace big
 
 		detour_hook_helper::add<hooks::write_player_camera_data_node>("RPI", g_pointers->m_write_player_camera_data_node);
 
+		detour_hook_helper::add<hooks::send_player_card_stats>("SPCS", g_pointers->m_send_player_card_stats);
+		detour_hook_helper::add<hooks::serialize_stats>("SS", g_pointers->m_serialize_stats);
+
+		detour_hook_helper::add<hooks::write_player_creation_data_node>("WPCDN", g_pointers->m_write_player_creation_data_node);
+		detour_hook_helper::add<hooks::write_player_appearance_data_node>("WPADN", g_pointers->m_write_player_appearance_data_node);
+
 		g_hooking = this;
 	}
 

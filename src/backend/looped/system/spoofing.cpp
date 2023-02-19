@@ -3,6 +3,13 @@
 #include <network/Network.hpp>
 #include <network/CCommunications.hpp>
 
+#include "core/scr_globals.hpp"
+
+#include <script/globals/GlobalPlayerBD.hpp>
+#include <script/globals/GPBD_FM.hpp>
+
+#include "natives.hpp"
+
 namespace big
 {
 	static bool bLastForceHost = false;
@@ -28,6 +35,32 @@ namespace big
 				g_local_player->m_player_info->m_net_player_data.m_host_token = host_token;
 
 			bLastForceHost = g.session.force_session_host;
+		}
+
+		if (*g_pointers->m_is_session_started)
+		{
+			gta_util::execute_as_script(RAGE_JOAAT("freemode"), []
+			{
+				if (NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA())
+				{
+					if (g.spoofing.spoof_rank)
+						scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[self::id].PlayerStats.Rank = g.spoofing.rank;
+
+					if (g.spoofing.spoof_job_points)
+						scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[self::id].JobPoints = g.spoofing.job_points;
+
+					if (g.spoofing.spoof_kd_ratio)
+						scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[self::id].PlayerStats.KdRatio = g.spoofing.kd_ratio;
+
+					if (g.spoofing.spoof_blip)
+					{
+						if (g.spoofing.blip_type == 0) // random
+							scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].PlayerBlip.PlayerVehicleBlipType = (rand() % 90);
+						else
+							scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].PlayerBlip.PlayerVehicleBlipType = g.spoofing.blip_type - 1;
+					}
+				}
+			});
 		}
 	}
 }

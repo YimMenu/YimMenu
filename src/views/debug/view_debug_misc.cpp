@@ -59,9 +59,20 @@ namespace big
 				INTERIOR::REFRESH_INTERIOR(interior);
 			}
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("You Will Have To Refresh Again When Exiting Interior.\n SPAMMING WILL CRASH GAME");
+				ImGui::SetTooltip("You will have to refresh again when exiting the interior.\n SPAMMING WILL CRASH GAME");
 
 			components::command_button<"fastquit">();
+
+			if (components::button("DumpStats"))
+			{
+				__int64 ptr = *(__int64*)((__int64)GetModuleHandle(0) + 0x1f257b0);
+
+				using gbs_t = rage::joaat_t(*)(__int64 ptr, int index, int slot, bool);
+				gbs_t get_broadcast_stat = (gbs_t)((__int64)GetModuleHandleA(0) + 0x1076fa8);
+
+				for (int i = 0; i < 0x15; i++)
+					LOG(INFO) << HEX_TO_UPPER(get_broadcast_stat(ptr + 0x298, i, 0, true));
+			}
 
 			if (ImGui::TreeNode("Addresses"))
 			{

@@ -692,6 +692,12 @@ namespace big
 			}
 		});
 
+		components::button("Spoof As Model", []
+		{
+			g.spoofing.spoof_player_model = true;
+			g.spoofing.player_model = ped_model_buf;
+		});
+
 		components::button("Cleanup Spawned Peds", []
 		{
 			for (auto& ped : spawned_peds)

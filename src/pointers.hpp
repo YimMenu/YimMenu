@@ -241,6 +241,14 @@ namespace big
 		PVOID m_receive_pickup{};
 
 		PVOID m_write_player_camera_data_node{};
+
+		PVOID m_send_player_card_stats{};
+		bool* m_force_player_card_refresh{};
+
+		PVOID m_serialize_stats{};
+
+		PVOID m_write_player_creation_data_node{};
+		PVOID m_write_player_appearance_data_node{};
 	};
 
 	inline pointers* g_pointers{};

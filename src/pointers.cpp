@@ -39,7 +39,7 @@ namespace big
 			m_game_state = ptr.add(2).rip().as<eGameState*>();
 		});
 
-		// Is Session Active
+		// Is Session Started
 		main_batch.add("ISA", "40 38 35 ? ? ? ? 75 0E 4C 8B C3 49 8B D7 49 8B CE", [this](memory::handle ptr)
 		{
 			m_is_session_started = ptr.add(3).rip().as<bool*>();
@@ -822,6 +822,36 @@ namespace big
 		main_batch.add("WPCDN", "48 8B C4 48 89 58 20 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 B0 48 81 EC 50 01 00 00 4C", [this](memory::handle ptr)
 		{
 			m_write_player_camera_data_node = ptr.as<PVOID>();
+		});
+
+		// Send Player Card Stats
+		main_batch.add("SPCS", "48 89 5C 24 08 57 48 83 EC 30 48 83 64 24 20 00 48 8B DA 41", [this](memory::handle ptr)
+		{
+			m_send_player_card_stats = ptr.as<PVOID>();
+		});
+
+		// Force Player Card Refresh
+		main_batch.add("FPCR", "44 38 2D ? ? ? ? 74 1D 44 00 A6 BB 07 00 00", [this](memory::handle ptr)
+		{
+			m_force_player_card_refresh = ptr.add(3).rip().as<bool*>();
+		});
+
+		// Serialize Stats
+		main_batch.add("SS", "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8B EC 48 83 EC 50 45", [this](memory::handle ptr)
+		{
+			m_serialize_stats = ptr.as<PVOID>();
+		});
+
+		// Write Player Creation Data Node
+		main_batch.add("WPCDN", "48 83 EC 38 48 8B 81 F0", [this](memory::handle ptr)
+		{
+			m_write_player_creation_data_node = ptr.as<PVOID>();
+		});
+
+		// Write Player Appearance Data Node
+		main_batch.add("WPADN", "48 8B C4 48 89 50 10 48 89 48 08 53", [this](memory::handle ptr)
+		{
+			m_write_player_appearance_data_node = ptr.as<PVOID>();
 		});
 
 		auto mem_region = memory::module("GTA5.exe");

@@ -477,6 +477,24 @@ namespace big
 		{
 			bool hide_from_player_list = false;
 
+			bool spoof_blip = false;
+			int blip_type = 0; // actual blip type + 1
+
+			bool spoof_rank = false;
+			int rank = 1;
+
+			bool spoof_job_points = false;
+			int job_points = 1;
+
+			bool spoof_kd_ratio = false;
+			float kd_ratio = 2.0f;
+
+			bool spoof_bad_sport = false;
+			int badsport_type = 0;
+
+			bool spoof_player_model = false;
+			std::string player_model = "";
+
 			bool spoof_cheater = false;
 
 			bool spoof_hide_god = true;
@@ -497,7 +515,8 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing,
 				hide_from_player_list, spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew,
 				square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language,
-				session_language, spoof_session_player_count, session_player_count)
+				session_language, spoof_session_player_count, session_player_count, spoof_blip, blip_type, spoof_rank, rank, spoof_job_points,
+				job_points, spoof_bad_sport, badsport_type, spoof_kd_ratio, kd_ratio, spoof_player_model, player_model)
 		} spoofing{};
 
 		struct vehicle
