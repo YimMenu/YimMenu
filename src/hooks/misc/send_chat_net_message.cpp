@@ -18,7 +18,7 @@ namespace big
 			}
 		}
 
-		if (g.m_spoofed_peer_ids.contains(host_token))
+		if (host_token != -1 && g.m_spoofed_peer_ids.contains(host_token))
 			msg->m_peer_id = g.m_spoofed_peer_ids[host_token];
 
 		return g_hooking->get_original<hooks::send_chat_net_message>()(mgr, receiver_msg_id, msg, flags, unk);
