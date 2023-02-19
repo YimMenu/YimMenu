@@ -78,6 +78,8 @@ namespace big
 					bool filter_player = true;
 					std::int8_t player_id = -1;
 
+					bool block_all = false; //should not save
+
 					NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_event, logs, filter_player, player_id)
 				} script_event{};
 
