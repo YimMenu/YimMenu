@@ -42,24 +42,30 @@ namespace big
 				STATS::STAT_SET_BOOL(RAGE_JOAAT("mpply_was_i_bad_sport"), FALSE, TRUE);
 			});
 
-			if (components::button("Load MP Map"))
-				DLC::ON_ENTER_MP();
+			components::button("Load MP Map", [] { DLC::ON_ENTER_MP(); });
 
 			ImGui::SameLine();
-			if (components::button("Load SP Map"))
+			components::button("Load SP Map", [] { DLC::ON_ENTER_SP(); });
 
-				DLC::ON_ENTER_SP();
+			components::button("Skip Cutscene", [] { CUTSCENE::STOP_CUTSCENE_IMMEDIATELY(); });
 
-			if (components::button("Skip Cutscene"))
-				CUTSCENE::STOP_CUTSCENE_IMMEDIATELY();
-
-			if (components::button("Refresh Interior"))
+			components::button("Refresh Interior", []\
 			{
 				Interior interior = INTERIOR::GET_INTERIOR_AT_COORDS(self::pos.x, self::pos.y, self::pos.z);
 				INTERIOR::REFRESH_INTERIOR(interior);
-			}
+			});
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("You Will Have To Refresh Again When Exiting Interior.\n SPAMMING WILL CRASH GAME");
+
+			components::button("Network Shutdown And Launch Single Player Game", []\
+			{
+				NETWORK::SHUTDOWN_AND_LAUNCH_SINGLE_PLAYER_GAME();
+			});
+
+			components::button("Network Shutdown And Load Most Recent Save", []\
+			{
+				NETWORK::SHUTDOWN_AND_LOAD_MOST_RECENT_SAVE();
+			});
 
 			components::command_button<"fastquit">();
 
