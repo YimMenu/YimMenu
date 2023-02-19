@@ -100,6 +100,9 @@ namespace big::entity
 				if (!vehicle_ptr)
 					continue;
 
+				if (vehicle_ptr == gta_util::get_local_vehicle())
+					continue;
+
 				const auto veh = g_pointers->m_ptr_to_handle(vehicle_ptr);
 				if (!veh)
 					break;
