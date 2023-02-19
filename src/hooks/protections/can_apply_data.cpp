@@ -509,14 +509,14 @@ namespace big
 			if (i == (int)eNetObjType::NET_OBJ_TYPE_TRAILER)
 				continue;
 			rage::netSyncTree* tree = g_pointers->m_get_sync_tree_for_type(*g_pointers->m_network_object_mgr, i);
-			if (*(uint32_t*)(tree + 0x20) >= trees[i].second.size())
+			if (tree->m_child_node_count > trees[i].second.size())
 			{
-				LOG(FATAL) << "Cache nodes failed";
+				LOG(FATAL) << "Cache nodes failed " << i << tree->m_child_node_count << " " << trees[i].second.size();
 				throw std::runtime_error("Failed to cache nodes");
 			}
-			for (int j = 0; j < *(uint32_t*)(tree + 0x20); j++)
+			for (int j = 0; j < tree->m_child_node_count; j++)
 			{
-				PVOID vft = **(PVOID**)(tree + 0x30 + j * sizeof(PVOID));
+				PVOID vft = *(PVOID*)tree->m_child_nodes[j];
 				for (auto& n : nodes)
 				{
 					if (n.first == trees[i].second[j])
@@ -527,11 +527,6 @@ namespace big
 				}
 			}
 		}
-
-		//for (const auto& n : nodes)
-		//{
-		//	LOG(INFO) << HEX_TO_UPPER(n.second);
-		//}
 	}
 
 	constexpr uint32_t crash_peds[] = { RAGE_JOAAT("slod_human"), RAGE_JOAAT("slod_small_quadped"), RAGE_JOAAT("slod_large_quadped") };
@@ -605,18 +600,12 @@ namespace big
 		}
 		else if (node->IsDataNode())
 		{
-			auto offset_to_address = [](uint64_t off)
-			{
-				static auto base_addr = reinterpret_cast<uint64_t>(GetModuleHandle(nullptr));
-				return base_addr + off;
-			};
-
 			auto vtable = *(void**)node;
 			Hash node_hash = 0;
 
 			for (const auto& n : nodes)
 			{
-				if ((void*)offset_to_address(n.second) == vtable)
+				if ((void*)n.second == vtable)
 				{
 					node_hash = n.first;
 					break;
@@ -744,7 +733,7 @@ namespace big
 	{
 		static bool init = ([] { cache_nodes(); }(), true);
 
-		if (tree->m_child_node_count && check_node(tree->m_sync_node, g.m_syncing_player, object))
+		if (tree->m_child_node_count && check_node(tree->m_next_sync_node, g.m_syncing_player, object))
 		{
 			return false;
 		}
