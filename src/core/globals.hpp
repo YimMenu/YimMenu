@@ -78,6 +78,8 @@ namespace big
 					bool filter_player = true;
 					std::int8_t player_id = -1;
 
+					bool block_all = false; //should not save
+
 					NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_event, logs, filter_player, player_id)
 				} script_event{};
 
@@ -475,6 +477,8 @@ namespace big
 
 		struct spoofing
 		{
+			bool hide_from_player_list = false;
+
 			bool spoof_cheater = false;
 
 			bool spoof_hide_god = true;
@@ -493,7 +497,7 @@ namespace big
 			int session_player_count = 25;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing,
-				spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew,
+				hide_from_player_list, spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew,
 				square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language,
 				session_language, spoof_session_player_count, session_player_count)
 		} spoofing{};

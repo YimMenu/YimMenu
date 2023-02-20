@@ -48,7 +48,7 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if(self::veh == 0)
+			if (self::veh == 0)
 				show_player_ptfx_effect(g.self.ptfx_effects.asset, g.self.ptfx_effects.effect);
 			else
 				show_vehicle_ptfx_effect(g.self.ptfx_effects.asset, g.self.ptfx_effects.effect);
