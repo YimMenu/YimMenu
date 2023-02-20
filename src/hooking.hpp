@@ -160,6 +160,8 @@ namespace big
 
 		static void write_player_creation_data_node(rage::netObject* player, CPlayerCreationDataNode* node);
 		static void write_player_appearance_data_node(rage::netObject* player, CPlayerAppearanceDataNode* node);
+
+		static CBaseModelInfo* get_model_info(rage::joaat_t hash, uint32_t* a2);
 };
 
 	class minhook_keepalive

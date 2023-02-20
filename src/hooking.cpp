@@ -110,6 +110,8 @@ namespace big
 		detour_hook_helper::add<hooks::write_player_creation_data_node>("WPCDN", g_pointers->m_write_player_creation_data_node);
 		detour_hook_helper::add<hooks::write_player_appearance_data_node>("WPADN", g_pointers->m_write_player_appearance_data_node);
 
+		detour_hook_helper::add<hooks::get_model_info>("GMI", g_pointers->m_get_model_info);
+
 		g_hooking = this;
 	}
 

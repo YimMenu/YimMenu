@@ -65,18 +65,17 @@ namespace big
 				INTERIOR::REFRESH_INTERIOR(interior);
 			});
 
-			components::command_button<"fastquit">();
-
-			if (components::button("DumpStats"))
+			components::button("Network Shutdown And Launch Single Player Game", []\
 			{
-				__int64 ptr = *(__int64*)((__int64)GetModuleHandle(0) + 0x1f257b0);
+				NETWORK::SHUTDOWN_AND_LAUNCH_SINGLE_PLAYER_GAME();
+			});
 
-				using gbs_t = rage::joaat_t(*)(__int64 ptr, int index, int slot, bool);
-				gbs_t get_broadcast_stat = (gbs_t)((__int64)GetModuleHandleA(0) + 0x1076fa8);
+			components::button("Network Shutdown And Load Most Recent Save", []\
+			{
+				NETWORK::SHUTDOWN_AND_LOAD_MOST_RECENT_SAVE();
+			});
 
-				for (int i = 0; i < 0x15; i++)
-					LOG(INFO) << HEX_TO_UPPER(get_broadcast_stat(ptr + 0x298, i, 0, true));
-			}
+			components::command_button<"fastquit">();
 
 			if (ImGui::TreeNode("Addresses"))
 			{
