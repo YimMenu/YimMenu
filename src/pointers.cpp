@@ -677,18 +677,6 @@ namespace big
 			m_decode_peer_info = ptr.as<functions::decode_peer_info>();
 		});
 
-		// Can Start Session Joining Check
-		main_batch.add("CSSJC", "77 DB ? ? ? ? ? ? ? 74 09", [this](memory::handle ptr)
-		{
-			memory::byte_patch::make(ptr.as<void*>(), std::to_array({ 0x90, 0x90 }))->apply(); // join faster
-		});
-
-		// Can Start Joining Joining Check
-		main_batch.add("CSJJC", "74 16 48 8B 0B E8 ? ? ? ? 84 C0", [this](memory::handle ptr)
-		{
-			memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB)->apply(); // join faster
-		});
-
 		// NTQVM Caller
 		main_batch.add("NTQVMC", "66 0F 6F 0D ? ? ? ? 66 0F 6F 05 ? ? ? ? 66 0F 66 C4", [this](memory::handle ptr)
 		{
