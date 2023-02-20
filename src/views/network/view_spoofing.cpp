@@ -81,7 +81,7 @@ namespace big
 				g.spoofing.player_model = std::string(model);
 		}
 
-		ImGui::Checkbox("Hide From Player List", &g.spoofing.hide_from_player_list);
+
 
 		components::sub_title("SPOOFING_HIDE_FEATURES"_T);
 		ImGui::Checkbox("SPOOFING_HIDE_GOD_MODE"_T.data(), &g.spoofing.spoof_hide_god);

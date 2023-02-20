@@ -36,21 +36,4 @@ namespace big::math
 
 		return (float)distance_between_vectors(plyr_coords, cam_coords);
 	}
-
-	inline rage::vector3<int> sector_from_coords(rage::fvector3 coords)
-	{
-		rage::vector3<int> sector{};
-		float mag = std::sqrt(coords.x * coords.x + coords.y * coords.y + coords.z * coords.z);
-
-		if (mag > 16.0f)
-		{
-			coords.x *= (16.0f / mag);
-			coords.y *= (16.0f / mag);
-			coords.z *= (16.0f / mag);
-		}
-
-		sector.x = std::clamp<int>(coords.x * 32.0f, -511, 511);
-		sector.y = std::clamp<int>(coords.y * 32.0f, -511, 511);
-		sector.z = std::clamp<int>(coords.z * 32.0f, -511, 511);
-	}
 }

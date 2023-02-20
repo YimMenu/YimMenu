@@ -41,7 +41,7 @@ namespace big
 		{
 			gta_util::execute_as_script(RAGE_JOAAT("freemode"), []
 			{
-				if (NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA())
+				if (NETWORK::NETWORK_GET_THIS_SCRIPT_IS_NETWORK_SCRIPT() && NETWORK::NETWORK_GET_SCRIPT_STATUS() == 2)
 				{
 					if (g.spoofing.spoof_rank)
 						scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[self::id].PlayerStats.Rank = g.spoofing.rank;
