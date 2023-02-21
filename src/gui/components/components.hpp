@@ -65,10 +65,7 @@ namespace big
 		static bool button(const std::string_view text) {
 			bool status = false;
 			ImGui::PushStyleColor(ImGuiCol_Button, color);
-			if (ImGui::Button(text.data(), size))
-				status = true;
-			else
-				status = false;
+			status = ImGui::Button(text.data(), size);
 			ImGui::PopStyleColor(1);
 			return status;
 		}
@@ -79,6 +76,7 @@ namespace big
 				g_fiber_pool->queue_job(cb);
 			}
 		}
+
 		template<typename PredicateFn, typename ComponentsFn>
 		static void disable_unless(PredicateFn predicate_fn, ComponentsFn components_fn) {
 			auto const result = predicate_fn();

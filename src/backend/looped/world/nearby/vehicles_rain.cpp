@@ -12,11 +12,12 @@ namespace big
 
 		virtual void on_tick() override
 		{
-
 			for (auto vehicles : entity::get_entities(true, false))
 			{
-				if (!ENTITY::IS_ENTITY_IN_AIR(vehicles)) {
-					if (entity::take_control_of(vehicles)) {
+				if (!ENTITY::IS_ENTITY_IN_AIR(vehicles)) 
+				{
+					if (entity::take_control_of(vehicles)) 
+					{
 						Vector3 my_location = ENTITY::GET_ENTITY_COORDS(self::ped, 1);
 						my_location.x = my_location.x + (rand() % 100 + (-50));
 						my_location.y = my_location.y + (rand() % 100 + (-50));

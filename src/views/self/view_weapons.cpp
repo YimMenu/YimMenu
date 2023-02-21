@@ -159,7 +159,8 @@ namespace big
 		components::command_checkbox<"triggerbot">(); ImGui::SameLine();
 		components::command_checkbox<"aimbot">();
 
-		if (g.weapons.aimbot.enable) {
+		if (g.weapons.aimbot.enable) 
+		{
 			components::command_checkbox<"aimatplayer">(); ImGui::SameLine();
 			components::command_checkbox<"aimatnpc">(); ImGui::SameLine();
 			components::command_checkbox<"aimatpolice">(); ImGui::SameLine();
