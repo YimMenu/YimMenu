@@ -1,6 +1,6 @@
+#include "backend/looped_command.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
-#include "backend/looped_command.hpp"
 #include "util/math.hpp"
 
 namespace big
@@ -10,7 +10,7 @@ namespace big
 		using looped_command::looped_command;
 
 		const float run_cap = 100.f;
-		float run_speed = 10.f;
+		float run_speed     = 10.f;
 
 		virtual void on_tick() override
 		{
@@ -18,14 +18,14 @@ namespace big
 			{
 				if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
 				{
-					if (run_speed < run_cap) 
+					if (run_speed < run_cap)
 						run_speed += .5f;
 
 					Vector3 location = self::pos;
-					Ped ped = self::ped;
+					Ped ped          = self::ped;
 
 					Vector3 rot = ENTITY::GET_ENTITY_ROTATION(ped, 2);
-					float yaw = math::deg_to_rad(rot.z + 90);
+					float yaw   = math::deg_to_rad(rot.z + 90);
 
 					Vector3 offset;
 					offset.x = location.x + (run_speed * cos(yaw));
@@ -45,7 +45,7 @@ namespace big
 				}
 				else if (PAD::IS_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_SPRINT))
 				{
-					run_speed = 10.f;
+					run_speed                                  = 10.f;
 					g_local_player->m_player_info->m_run_speed = 1.f;
 				}
 			}
@@ -55,7 +55,7 @@ namespace big
 		{
 			if (g_local_player)
 			{
-				run_speed = 10.f;
+				run_speed                                  = 10.f;
 				g_local_player->m_player_info->m_run_speed = 1.f;
 			}
 		}

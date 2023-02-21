@@ -1,9 +1,9 @@
 #include "backend/looped/looped.hpp"
+#include "backend/looped_command.hpp"
+#include "core/scr_globals.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
-#include "backend/looped_command.hpp"
 
-#include "core/scr_globals.hpp"
 #include <script/globals/GlobalPlayerBD.hpp>
 
 namespace big
@@ -30,5 +30,6 @@ namespace big
 	};
 
 	invisibility g_invisibility("invis", "Invisiblity", "Makes you invisible", g.self.invisibility);
-	bool_command g_local_visibility("localvis", "Visible Locally", "Makes you visible to yourself, but other players would still not be able to see you", g.self.local_visibility);
+	bool_command g_local_visibility("localvis", "Visible Locally", "Makes you visible to yourself, but other players would still not be able to see you",
+	    g.self.local_visibility);
 }

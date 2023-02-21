@@ -1,4 +1,5 @@
 #include "hooking.hpp"
+
 #include <datanodes/player/CPlayerCreationDataNode.hpp>
 
 namespace big

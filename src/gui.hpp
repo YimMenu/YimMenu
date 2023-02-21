@@ -8,10 +8,10 @@ namespace big
 	public:
 		gui();
 		virtual ~gui();
-		gui(const gui&) = delete;
-		gui(gui&&) noexcept  = delete;
-		gui& operator=(const gui&) = delete;
-		gui& operator=(gui&&) noexcept  = delete;
+		gui(const gui&)                = delete;
+		gui(gui&&) noexcept            = delete;
+		gui& operator=(const gui&)     = delete;
+		gui& operator=(gui&&) noexcept = delete;
 
 		bool is_open();
 		void toggle(bool toggle);
@@ -32,7 +32,6 @@ namespace big
 	private:
 		bool m_is_open;
 		ImGuiStyle m_default_config;
-
 	};
 
 	inline gui* g_gui;

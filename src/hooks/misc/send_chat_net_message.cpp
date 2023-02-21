@@ -1,8 +1,9 @@
-#include "hooking.hpp"
 #include "gta_util.hpp"
+#include "hooking.hpp"
 #include "services/players/player_service.hpp"
-#include <network/Network.hpp>
+
 #include <network/CMsgTextMessage.hpp>
+#include <network/Network.hpp>
 
 namespace big
 {

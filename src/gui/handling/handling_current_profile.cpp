@@ -37,6 +37,5 @@ namespace big
 		tab_current_profile::tab_rollbars();
 		tab_current_profile::tab_roll_centre_height();
 		ImGui::EndTabBar();
-		
 	}
 }

@@ -7,7 +7,6 @@ namespace big
 
 	class folder
 	{
-
 	public:
 		folder(std::filesystem::path folder_path);
 
@@ -18,13 +17,11 @@ namespace big
 		folder(file_manager* file_manager, std::filesystem::path file_path);
 
 	private:
-
 		friend class file_manager;
 		file_manager* m_file_manager;
 
 		bool m_is_project_file;
 
 		std::filesystem::path m_folder_path;
-
 	};
 }

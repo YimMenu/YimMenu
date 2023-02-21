@@ -1,4 +1,5 @@
 #include "hooking.hpp"
+
 #include <datanodes/player/CPlayerAppearanceDataNode.hpp>
 
 namespace big
@@ -9,8 +10,8 @@ namespace big
 
 		if (g.spoofing.spoof_player_model)
 		{
-			node->m_model_hash = rage::joaat(g.spoofing.player_model);
-			node->m_has_head_blend_data = false;
+			node->m_model_hash                  = rage::joaat(g.spoofing.player_model);
+			node->m_has_head_blend_data         = false;
 			node->components.m_component_bitset = 0;
 		}
 	}

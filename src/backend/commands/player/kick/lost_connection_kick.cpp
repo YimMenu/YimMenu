@@ -1,9 +1,9 @@
 #include "backend/player_command.hpp"
-#include "natives.hpp"
-#include "pointers.hpp"
 #include "core/scr_globals.hpp"
-#include "packet.hpp"
 #include "gta_util.hpp"
+#include "natives.hpp"
+#include "packet.hpp"
+#include "pointers.hpp"
 
 #include <network/Network.hpp>
 
@@ -23,10 +23,7 @@ namespace big
 			}
 		}
 
-		virtual CommandAccessLevel get_access_level()
-		{
-			return CommandAccessLevel::TOXIC;
-		}
+		virtual CommandAccessLevel get_access_level() { return CommandAccessLevel::TOXIC; }
 
 		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{

@@ -1,8 +1,9 @@
-#include "common.hpp"
 #include "batch.hpp"
+
+#include "common.hpp"
 #include "range.hpp"
 
-#include <future> //std::async
+#include <future>//std::async
 
 static std::mutex s_entry_mutex;
 static std::vector<std::future<bool>> g_futures;
@@ -20,15 +21,16 @@ namespace memory
 		{
 			if (entry.m_callback)
 			{
-				std::lock_guard<std::mutex> lock(s_entry_mutex); // Acquire a lock on the mutex to synchronize access.
+				std::lock_guard<std::mutex> lock(s_entry_mutex);// Acquire a lock on the mutex to synchronize access.
 
 				std::invoke(std::move(entry.m_callback), result);
-				LOG(INFO) << "Found '" << entry.m_name << "' GTA5.exe+" << HEX_TO_UPPER(result.as<DWORD64>() - region.begin().as<DWORD64>());
+				LOG(INFO) << "Found '" << entry.m_name << "' GTA5.exe+"
+				          << HEX_TO_UPPER(result.as<DWORD64>() - region.begin().as<DWORD64>());
 
 				return true;
 			}
 		}
-		
+
 		LOG(WARNING) << "Failed to find '" << entry.m_name << "'.";
 
 		return false;
@@ -38,15 +40,14 @@ namespace memory
 	{
 		for (auto& entry : m_entries)
 		{
-			g_futures.emplace_back(
-				std::async(&scan_pattern_and_execute_callback, region, entry));
+			g_futures.emplace_back(std::async(&scan_pattern_and_execute_callback, region, entry));
 		}
 
 		bool found_all_patterns = true;
 		for (auto& future : g_futures)
 		{
 			future.wait();
-			
+
 			if (!future.get())
 				found_all_patterns = false;
 		}

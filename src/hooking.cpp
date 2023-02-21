@@ -1,8 +1,9 @@
+#include "hooking.hpp"
+
 #include "common.hpp"
 #include "function_types.hpp"
 #include "gta/script_thread.hpp"
 #include "gui.hpp"
-#include "hooking.hpp"
 #include "memory/module.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
@@ -14,8 +15,8 @@
 namespace big
 {
 	hooking::hooking() :
-		// Swapchain
-		m_swapchain_hook(*g_pointers->m_swapchain, hooks::swapchain_num_funcs)
+	// Swapchain
+	m_swapchain_hook(*g_pointers->m_swapchain, hooks::swapchain_num_funcs)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -28,12 +29,12 @@ namespace big
 		}
 
 		detour_hook_helper::add<hooks::run_script_threads>("SH", g_pointers->m_run_script_threads);
-		
+
 		detour_hook_helper::add<hooks::get_label_text>("GLT", g_pointers->m_get_label_text);
 
 		detour_hook_helper::add<hooks::check_chat_profanity>("CCP", g_pointers->m_check_chat_profanity);
-    
-        	detour_hook_helper::add<hooks::write_player_game_state_data_node>("WPGSDN", g_pointers->m_write_player_game_state_data_node);
+
+		detour_hook_helper::add<hooks::write_player_game_state_data_node>("WPGSDN", g_pointers->m_write_player_game_state_data_node);
 
 		detour_hook_helper::add<hooks::gta_thread_start>("GTS", g_pointers->m_gta_thread_start);
 		detour_hook_helper::add<hooks::gta_thread_kill>("GTK", g_pointers->m_gta_thread_kill);

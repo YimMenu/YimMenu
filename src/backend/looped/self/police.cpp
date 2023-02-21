@@ -5,7 +5,8 @@ namespace big
 {
 	void looped::self_police()
 	{
-		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr) return;
+		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr)
+			return;
 
 		static bool bLast = false;
 

@@ -1,11 +1,11 @@
 #pragma once
-#include "common.hpp"
 #include "base/HashTable.hpp"
-#include "socialclub/ScInfo.hpp"
+#include "common.hpp"
 #include "function_types.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/replay.hpp"
 #include "memory/byte_patch.hpp"
+#include "socialclub/ScInfo.hpp"
 
 class CCommunications;
 class FriendRegistry;
@@ -31,6 +31,7 @@ namespace big
 	public:
 		explicit pointers();
 		~pointers();
+
 	public:
 		HWND m_hwnd{};
 
@@ -159,8 +160,8 @@ namespace big
 
 		functions::generate_uuid m_generate_uuid{};
 		std::uint64_t* m_host_token{};
-		rage::rlGamerInfo* m_profile_gamer_info{}; // per profile gamer info
-		rage::rlGamerInfo* m_player_info_gamer_info{}; // the gamer info that is applied to CPlayerInfo
+		rage::rlGamerInfo* m_profile_gamer_info{};    // per profile gamer info
+		rage::rlGamerInfo* m_player_info_gamer_info{};// the gamer info that is applied to CPlayerInfo
 		CCommunications** m_communications{};
 
 		PVOID m_update_presence_attribute_int;
@@ -201,7 +202,7 @@ namespace big
 
 		rage::atSingleton<rage::RageSecurity>* m_security;
 		PVOID m_prepare_metric_for_sending;
-		
+
 		PVOID m_queue_dependency;
 		PVOID m_interval_check_func;
 
@@ -225,7 +226,7 @@ namespace big
 
 		functions::send_packet m_send_packet;
 		functions::connect_to_peer m_connect_to_peer;
-    
+
 		PVOID m_fragment_physics_crash;
 		PVOID m_fragment_physics_crash_2;
 

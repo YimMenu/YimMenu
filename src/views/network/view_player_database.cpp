@@ -1,13 +1,13 @@
-#include "views/view.hpp"
+#include "core/data/block_join_reasons.hpp"
+#include "core/data/command_access_levels.hpp"
+#include "core/data/infractions.hpp"
 #include "fiber_pool.hpp"
 #include "pointers.hpp"
-#include "services/players/player_service.hpp"
-#include "services/player_database/player_database_service.hpp"
 #include "services/api/api_service.hpp"
-#include "core/data/block_join_reasons.hpp"
-#include "core/data/infractions.hpp"
-#include "core/data/command_access_levels.hpp"
+#include "services/player_database/player_database_service.hpp"
+#include "services/players/player_service.hpp"
 #include "util/session.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -21,9 +21,9 @@ namespace big
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("PLAYER"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
 
-		if (ImGui::ListBoxHeader("###players", { 180, static_cast<float>(*g_pointers->m_resolution_y - 400 - 38 * 4) }))
+		if (ImGui::ListBoxHeader("###players", {180, static_cast<float>(*g_pointers->m_resolution_y - 400 - 38 * 4)}))
 		{
-		    auto& item_arr = g_player_database_service->get_players();
+			auto& item_arr = g_player_database_service->get_players();
 			if (item_arr.size() > 0)
 			{
 				std::string lower_search = search;
@@ -62,7 +62,7 @@ namespace big
 		if (auto selected = g_player_database_service->get_selected())
 		{
 			ImGui::SameLine();
-			if (ImGui::BeginChild("###selected_player", { 500, static_cast<float>(*g_pointers->m_resolution_y - 388 - 38 * 4) }, false, ImGuiWindowFlags_NoBackground))
+			if (ImGui::BeginChild("###selected_player", {500, static_cast<float>(*g_pointers->m_resolution_y - 388 - 38 * 4)}, false, ImGuiWindowFlags_NoBackground))
 			{
 				if (ImGui::InputText("NAME"_T.data(), name_buf, sizeof(name_buf)))
 				{
@@ -95,7 +95,8 @@ namespace big
 					ImGui::SetTooltip("ONLY_AS_HOST"_T.data());
 
 
-				if (ImGui::BeginCombo("CHAT_COMMAND_PERMISSIONS"_T.data(), COMMAND_ACCESS_LEVELS[current_player.command_access_level.value_or(g.session.chat_command_default_access_level)]))
+				if (ImGui::BeginCombo("CHAT_COMMAND_PERMISSIONS"_T.data(),
+				        COMMAND_ACCESS_LEVELS[current_player.command_access_level.value_or(g.session.chat_command_default_access_level)]))
 				{
 					for (const auto& [type, name] : COMMAND_ACCESS_LEVELS)
 					{
@@ -123,24 +124,22 @@ namespace big
 					}
 				}
 
-				components::button("JOIN_SESSION"_T, []
-				{
-					session::join_by_rockstar_id(current_player.rockstar_id);
-				});
+				components::button("JOIN_SESSION"_T, [] { session::join_by_rockstar_id(current_player.rockstar_id); });
 
 				static char message[256];
 				components::input_text("INPUT_MSG"_T, message, sizeof(message));
 				if (components::button("SEND_MSG"_T))
 				{
-					g_thread_pool->push([selected]
-					{
-						if (g_api_service->send_socialclub_message(selected->rockstar_id, message))
-						{
-							g_notification_service->push("SCAPI"_T.data(), "MSG_SENT_SUCCESS"_T.data());
-							return;
-						}
-						g_notification_service->push_error("SCAPI"_T.data(), "MSG_SENT_FAIL"_T.data());
-					});
+					g_thread_pool->push(
+					    [selected]
+					    {
+						    if (g_api_service->send_socialclub_message(selected->rockstar_id, message))
+						    {
+							    g_notification_service->push("SCAPI"_T.data(), "MSG_SENT_SUCCESS"_T.data());
+							    return;
+						    }
+						    g_notification_service->push_error("SCAPI"_T.data(), "MSG_SENT_FAIL"_T.data());
+					    });
 				};
 
 				if (ImGui::Button("SAVE"_T.data()))

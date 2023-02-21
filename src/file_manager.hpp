@@ -11,23 +11,15 @@ namespace big
 	class file_manager final
 	{
 	public:
-
-		file_manager(std::filesystem::path base_dir)
-			: m_base_dir(base_dir)
+		file_manager(std::filesystem::path base_dir) : m_base_dir(base_dir)
 		{
 			file_manager::ensure_folder_exists(m_base_dir);
 
 			g_file_manager = this;
 		}
-		~file_manager()
-		{
-			g_file_manager = nullptr;
-		}
+		~file_manager() { g_file_manager = nullptr; }
 
-		std::filesystem::path get_base_dir()
-		{
-			return m_base_dir;
-		}
+		std::filesystem::path get_base_dir() { return m_base_dir; }
 
 		file get_project_file(std::filesystem::path file_path)
 		{

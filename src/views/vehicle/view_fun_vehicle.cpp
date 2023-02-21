@@ -1,12 +1,12 @@
+#include "core/data/speed_units.hpp"
 #include "core/enums.hpp"
 #include "fiber_pool.hpp"
 #include "script.hpp"
-#include "views/view.hpp"
-#include "util/vehicle.hpp"
-#include "util/mobile.hpp"
-#include "core/data/speed_units.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "services/model_preview/model_preview_service.hpp"
+#include "util/mobile.hpp"
+#include "util/vehicle.hpp"
+#include "views/view.hpp"
 
 #include <imgui_internal.h>
 
@@ -28,20 +28,21 @@ namespace big
 			{
 				ready = false;
 
-				g_fiber_pool->queue_job([] {
+				g_fiber_pool->queue_job(
+				    []
+				    {
+					    std::map<int, bool> tmp_seats;
 
-					std::map<int, bool> tmp_seats;
+					    int num_of_seats = VEHICLE::GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(self::veh);
 
-					int num_of_seats = VEHICLE::GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(self::veh);
+					    for (int i = -1; i < num_of_seats; i++)
+					    {
+						    tmp_seats[i] = VEHICLE::IS_VEHICLE_SEAT_FREE(self::veh, i, true);
+					    }
 
-					for (int i = -1; i < num_of_seats; i++)
-					{
-						tmp_seats[i] = VEHICLE::IS_VEHICLE_SEAT_FREE(self::veh, i, true);
-					}
-
-					seats = tmp_seats;
-					ready = true;
-				});
+					    seats = tmp_seats;
+					    ready = true;
+				    });
 			}
 
 			if (seats.size() == 0)
@@ -66,13 +67,12 @@ namespace big
 						name = "FUN_VEHICLE_SEAT"_T.data() + std::to_string(idx + 1);
 					}
 
-					if ((idx + 1) % 4 != 0) {
+					if ((idx + 1) % 4 != 0)
+					{
 						ImGui::SameLine();
 					}
 
-					components::button(name, [idx] {
-						PED::SET_PED_INTO_VEHICLE(self::ped, self::veh, idx);
-					});
+					components::button(name, [idx] { PED::SET_PED_INTO_VEHICLE(self::ped, self::veh, idx); });
 					if (!it.second)
 					{
 						ImGui::EndDisabled();
@@ -87,16 +87,15 @@ namespace big
 		{
 			float auto_drive_speed_user_unit = vehicle::mps_to_speed(g.vehicle.auto_drive_speed, g.vehicle.speed_unit);
 			if (ImGui::SliderFloat(
-				std::vformat("FUN_VEHICLE_TOP_SPEED"_T, std::make_format_args(speed_unit_strings[(int)g.vehicle.speed_unit])).c_str(),
-				&auto_drive_speed_user_unit,
-				vehicle::mps_to_speed(0.f, g.vehicle.speed_unit),
-				vehicle::mps_to_speed(150.f, g.vehicle.speed_unit),
-				"%.1f"
-			)) {
+			        std::vformat("FUN_VEHICLE_TOP_SPEED"_T, std::make_format_args(speed_unit_strings[(int)g.vehicle.speed_unit]))
+			            .c_str(),
+			        &auto_drive_speed_user_unit, vehicle::mps_to_speed(0.f, g.vehicle.speed_unit),
+			        vehicle::mps_to_speed(150.f, g.vehicle.speed_unit), "%.1f"))
+			{
 				g.vehicle.auto_drive_speed = vehicle::speed_to_mps(auto_drive_speed_user_unit, g.vehicle.speed_unit);
 			}
 
-			const char* driving_style_names[] = { "LAW_ABIDING"_T.data(), "ROAD_IS_YOURS"_T.data() };
+			const char* driving_style_names[] = {"LAW_ABIDING"_T.data(), "ROAD_IS_YOURS"_T.data()};
 			if (ImGui::BeginCombo("DRIVING_STYLE"_T.data(), driving_style_names[(int)g.vehicle.auto_drive_style]))
 			{
 				for (int i = 0; i < 2; i++)
@@ -105,9 +104,7 @@ namespace big
 					{
 						g.vehicle.auto_drive_style = (AutoDriveStyle)i;
 						g_notification_service->push_warning(
-							"AUTO_DRIVE"_T.data(),
-							std::vformat("DRIVING_STYLE_SET_TO"_T.data(), std::make_format_args(driving_style_names[i]))
-						);
+						    "AUTO_DRIVE"_T.data(), std::vformat("DRIVING_STYLE_SET_TO"_T.data(), std::make_format_args(driving_style_names[i])));
 					}
 
 					if (g.vehicle.auto_drive_style == (AutoDriveStyle)i)
@@ -124,7 +121,7 @@ namespace big
 
 			ImGui::SameLine();
 
-			if (components::button("TO_WAYPOINT"_T)) 
+			if (components::button("TO_WAYPOINT"_T))
 				g.vehicle.auto_drive_destination = AutoDriveDestination::WAYPOINT;
 
 			ImGui::SameLine();
@@ -150,7 +147,7 @@ namespace big
 			ImGui::SameLine();
 			ImGui::Checkbox("SMOKE"_T.data(), &g.vehicle.rainbow_paint.smoke);
 
-			const char* rgb_types[] = { "OFF"_T.data(), "FADE"_T.data(), "SPASM"_T.data() };
+			const char* rgb_types[] = {"OFF"_T.data(), "FADE"_T.data(), "SPASM"_T.data()};
 
 			ImGui::SetNextItemWidth(120);
 			if (ImGui::BeginCombo("RGB_TYPE"_T.data(), rgb_types[(int)g.vehicle.rainbow_paint.type]))
@@ -181,7 +178,7 @@ namespace big
 		}
 		ImGui::Separator();
 
-		const char* boost_behaviors[] = { "DEFAULT"_T.data(), "INSTANT_REFILL"_T.data(), "INFINITE"_T.data() };
+		const char* boost_behaviors[] = {"DEFAULT"_T.data(), "INSTANT_REFILL"_T.data(), "INFINITE"_T.data()};
 		if (ImGui::BeginCombo("BOOST_BEHAVIOR"_T.data(), boost_behaviors[static_cast<int>(g.vehicle.boost_behavior)]))
 		{
 			for (int i = 0; i < 3; i++)
@@ -223,12 +220,11 @@ namespace big
 
 			float fly_speed_user_unit = vehicle::mps_to_speed(g.vehicle.fly.speed, g.vehicle.speed_unit);
 			if (ImGui::SliderFloat(
-				std::vformat("FUN_VEHICLE_SPEED"_T.data(), std::make_format_args(speed_unit_strings[(int)g.vehicle.speed_unit])).c_str(),
-				&fly_speed_user_unit,
-				vehicle::mps_to_speed(0.f, g.vehicle.speed_unit),
-				vehicle::mps_to_speed(150.f, g.vehicle.speed_unit),
-				"%.1f"
-			)) {
+			        std::vformat("FUN_VEHICLE_SPEED"_T.data(), std::make_format_args(speed_unit_strings[(int)g.vehicle.speed_unit]))
+			            .c_str(),
+			        &fly_speed_user_unit, vehicle::mps_to_speed(0.f, g.vehicle.speed_unit),
+			        vehicle::mps_to_speed(150.f, g.vehicle.speed_unit), "%.1f"))
+			{
 				g.vehicle.fly.speed = vehicle::speed_to_mps(fly_speed_user_unit, g.vehicle.speed_unit);
 			}
 		}

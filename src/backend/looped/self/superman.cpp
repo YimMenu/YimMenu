@@ -1,6 +1,6 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
 #include "gta/enums.hpp"
+#include "natives.hpp"
 namespace big
 {
 	class superman : looped_command
@@ -20,13 +20,13 @@ namespace big
 			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, rage::joaat("GADGET_PARACHUTE"), 1, 1);
 			if (!ENTITY::IS_ENTITY_IN_AIR(self::ped) || PED::IS_PED_RAGDOLL(self::ped))
 				return;
-			
+
 			if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_UP_ONLY))
 				apply_force(3, 0, 0);
-				
+
 			if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_DOWN_ONLY))
 				apply_force(3, 6, 0);
-			
+
 			if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
 				apply_force(6, 0, 0);
 		}

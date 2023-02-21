@@ -3,8 +3,8 @@
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "script.hpp"
-#include "windows.h"
 #include "util/is_key_pressed.hpp"
+#include "windows.h"
 
 struct key_state
 {
@@ -22,9 +22,9 @@ struct key_state
 	int v_key;
 };
 
-inline key_state right_signal_key{ 'L' };
-inline key_state left_signal_key{ 'J' };
-inline key_state hazzards_key{ 'K' };
+inline key_state right_signal_key{'L'};
+inline key_state left_signal_key{'J'};
+inline key_state hazzards_key{'K'};
 
 void update_key_state(key_state& key_last_tick)
 {
@@ -32,26 +32,18 @@ void update_key_state(key_state& key_last_tick)
 	{
 		switch (key_last_tick.state)
 		{
-		case key_state::up:
-			key_last_tick.state = key_state::just_pressed;
-			break;
+		case key_state::up: key_last_tick.state = key_state::just_pressed; break;
 
-		case key_state::just_pressed:
-			key_last_tick.state = key_state::down;
-			break;
+		case key_state::just_pressed: key_last_tick.state = key_state::down; break;
 		}
 	}
 	else
 	{
 		switch (key_last_tick.state)
 		{
-		case key_state::down:
-			key_last_tick.state = key_state::just_released;
-			break;
+		case key_state::down: key_last_tick.state = key_state::just_released; break;
 
-		case key_state::just_released:
-			key_last_tick.state = key_state::up;
-			break;
+		case key_state::just_released: key_last_tick.state = key_state::up; break;
 		}
 	}
 }
@@ -64,7 +56,8 @@ void update_key_states()
 	update_key_state(right_signal_key);
 }
 
-struct signal_state {
+struct signal_state
+{
 	enum
 	{
 		right,
@@ -106,7 +99,7 @@ namespace big
 	void looped::vehicle_turn_signals()
 	{
 		static bool hazzards = false;
-		bool b_turn_signals = g.vehicle.turn_signals;
+		bool b_turn_signals  = g.vehicle.turn_signals;
 
 		if (!b_turn_signals && b_turn_signals != b_last_turn_signals)
 		{
@@ -167,6 +160,5 @@ namespace big
 		}
 
 		b_last_turn_signals = g.vehicle.turn_signals;
-
 	}
 }

@@ -1,13 +1,14 @@
 #include "yim_fipackfile.hpp"
-#include "pointers.hpp"
+
 #include "gta/fidevice.hpp"
+#include "pointers.hpp"
 #include "script.hpp"
 
 namespace big
 {
 	yim_fipackfile::yim_fipackfile(rage::fiPackfile* rpf, const std::string& mount_name)
 	{
-		this->rpf = rpf;
+		this->rpf        = rpf;
 		this->mount_name = mount_name;
 	}
 
@@ -18,9 +19,9 @@ namespace big
 		uint16_t mounted_devices_len = *g_pointers->m_fidevices_len;
 		if (mounted_devices_len)
 		{
-			auto devices_arr = *(uint64_t*)g_pointers->m_fidevices;
+			auto devices_arr                        = *(uint64_t*)g_pointers->m_fidevices;
 			uint8_t** current_device_mount_name_ptr = *(unsigned __int8***)g_pointers->m_fidevices;
-			auto device_i = 0;
+			auto device_i                           = 0;
 
 			while (true)
 			{
@@ -70,7 +71,7 @@ namespace big
 				if (rpf == non_dlc_mounted_device)
 				{
 					rpf_wrapper.mount_name = non_dlc_mounted_device_name;
-					already_mounted = true;
+					already_mounted        = true;
 				}
 			}
 
@@ -146,8 +147,8 @@ namespace big
 
 		std::vector<std::string> directories;
 
-		rage::fiFindData findData = { 0 };
-		auto handlef = rpf->FindFirst(parent.c_str(), &findData);
+		rage::fiFindData findData = {0};
+		auto handlef              = rpf->FindFirst(parent.c_str(), &findData);
 		if (handlef != -1)
 		{
 			do
@@ -181,7 +182,7 @@ namespace big
 	{
 		if (const auto handle = rpf->Open(path.string().c_str(), true); handle != -1)
 		{
-			const auto data_length = rpf->GetFileLength(handle);
+			const auto data_length  = rpf->GetFileLength(handle);
 			const auto file_content = std::make_unique<std::uint8_t[]>(data_length);
 
 			rpf->ReadFull(handle, file_content.get(), data_length);
@@ -194,12 +195,13 @@ namespace big
 
 	void yim_fipackfile::read_xml_file(const std::filesystem::path& path, std::function<void(pugi::xml_document& doc)> cb)
 	{
-		read_file(path, [&cb](const std::unique_ptr<std::uint8_t[]>& file_content, const int data_size)
-		{
-			if (pugi::xml_document doc; doc.load_buffer(file_content.get(), data_size).status == pugi::xml_parse_status::status_ok)
-			{
-				cb(doc);
-			}
-		});
+		read_file(path,
+		    [&cb](const std::unique_ptr<std::uint8_t[]>& file_content, const int data_size)
+		    {
+			    if (pugi::xml_document doc; doc.load_buffer(file_content.get(), data_size).status == pugi::xml_parse_status::status_ok)
+			    {
+				    cb(doc);
+			    }
+		    });
 	}
 }

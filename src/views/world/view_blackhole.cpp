@@ -1,5 +1,5 @@
-#include "views/view.hpp"
 #include "util/local_player.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -17,13 +17,15 @@ namespace big
 		ImGui::InputFloat("Y", &g.world.blackhole.pos.y, 5.f, 200.f);
 		ImGui::InputFloat("Z", &g.world.blackhole.pos.z, 5.f, 200.f);
 
-		components::button("Set to current coords", [] {
-			const auto player_pos = g_local_player->get_position();
+		components::button("Set to current coords",
+		    []
+		    {
+			    const auto player_pos = g_local_player->get_position();
 
-			g.world.blackhole.pos.x = player_pos->x;
-			g.world.blackhole.pos.y = player_pos->y;
-			g.world.blackhole.pos.z = player_pos->z;
-		});
+			    g.world.blackhole.pos.x = player_pos->x;
+			    g.world.blackhole.pos.y = player_pos->y;
+			    g.world.blackhole.pos.z = player_pos->z;
+		    });
 
 		components::sub_title("Customize Hole");
 		ImGui::SetNextItemWidth(214);

@@ -1,8 +1,8 @@
 #pragma once
-#include "imgui.h"
 #include "backend/command.hpp"
 #include "backend/looped_command.hpp"
 #include "backend/player_command.hpp"
+#include "imgui.h"
 
 namespace big
 {
@@ -12,6 +12,7 @@ namespace big
 	class components
 	{
 		static void custom_text(const std::string_view, ImFont*);
+
 	public:
 		static bool nav_button(const std::string_view);
 		static bool button(const std::string_view);
@@ -63,7 +64,8 @@ namespace big
 		}
 
 		template<typename PredicateFn, typename ComponentsFn>
-		static void disable_unless(PredicateFn predicate_fn, ComponentsFn components_fn) {
+		static void disable_unless(PredicateFn predicate_fn, ComponentsFn components_fn)
+		{
 			auto const result = predicate_fn();
 			if (!result)
 				ImGui::BeginDisabled(true);

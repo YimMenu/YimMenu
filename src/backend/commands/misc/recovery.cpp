@@ -7,10 +7,7 @@ namespace big
 	{
 		using command::command;
 
-		virtual CommandAccessLevel get_access_level() override
-		{
-			return CommandAccessLevel::NONE;
-		}
+		virtual CommandAccessLevel get_access_level() override { return CommandAccessLevel::NONE; }
 
 		virtual void execute(const std::vector<std::uint64_t>&, const std::shared_ptr<command_context> ctx)
 		{

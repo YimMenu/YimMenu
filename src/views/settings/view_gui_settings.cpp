@@ -1,5 +1,5 @@
-#include "views/view.hpp"
 #include "renderer.hpp"
+#include "views/view.hpp"
 
 namespace big
 {

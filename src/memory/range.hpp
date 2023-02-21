@@ -1,7 +1,8 @@
 #pragma once
-#include <vector>
 #include "fwddec.hpp"
 #include "handle.hpp"
+
+#include <vector>
 
 namespace memory
 {
@@ -18,6 +19,7 @@ namespace memory
 
 		handle scan(pattern const& sig);
 		std::vector<handle> scan_all(pattern const& sig);
+
 	protected:
 		handle m_base;
 		std::size_t m_size;

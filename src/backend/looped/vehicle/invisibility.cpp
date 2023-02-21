@@ -1,7 +1,7 @@
 #include "backend/looped/looped.hpp"
+#include "backend/looped_command.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
-#include "backend/looped_command.hpp"
 
 namespace big
 {
@@ -32,12 +32,10 @@ namespace big
 				NETWORK::SET_ENTITY_LOCALLY_VISIBLE(self::veh);
 		}
 
-		virtual void on_disable() override
-		{
-			ENTITY::SET_ENTITY_VISIBLE(self::veh, true, 0);
-		}
+		virtual void on_disable() override { ENTITY::SET_ENTITY_VISIBLE(self::veh, true, 0); }
 	};
 
 	vehinvisibility g_vehinvisibility("invisveh", "Vehicle Invisiblity", "Makes your car invisible", g.vehicle.vehinvisibility);
-	bool_command g_localveh_visibility("localinvisveh", "Visible Locally", "Makes your car visible to yourself, other players will still not be able to see it", g.vehicle.localveh_visibility);
+	bool_command g_localveh_visibility("localinvisveh", "Visible Locally", "Makes your car visible to yourself, other players will still not be able to see it",
+	    g.vehicle.localveh_visibility);
 }

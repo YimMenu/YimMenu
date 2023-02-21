@@ -1,9 +1,10 @@
-#include "views/view.hpp"
+#include "core/data/blip_types.hpp"
+#include "core/data/language_codes.hpp"
+#include "core/data/region_codes.hpp"
 #include "fiber_pool.hpp"
 #include "util/teleport.hpp"
-#include "core/data/region_codes.hpp"
-#include "core/data/language_codes.hpp"
-#include "core/data/blip_types.hpp"
+#include "views/view.hpp"
+
 #include <network/ClanData.hpp>
 
 namespace big
@@ -80,7 +81,6 @@ namespace big
 			if (model != g.spoofing.player_model)
 				g.spoofing.player_model = std::string(model);
 		}
-
 
 
 		components::sub_title("SPOOFING_HIDE_FEATURES"_T);

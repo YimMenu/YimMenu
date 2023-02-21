@@ -1,8 +1,8 @@
 #pragma once
-#include "gta/joaat.hpp"
-#include "core/enums.hpp"
 #include "context/command_context.hpp"
 #include "context/default_command_context.hpp"
+#include "core/enums.hpp"
+#include "gta/joaat.hpp"
 
 namespace big
 {
@@ -16,7 +16,10 @@ namespace big
 		bool m_fiber_pool;
 
 		virtual void execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) = 0;
-		virtual std::optional<std::vector<std::uint64_t>> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) { return std::vector<std::uint64_t>(); };
+		virtual std::optional<std::vector<std::uint64_t>> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>())
+		{
+			return std::vector<std::uint64_t>();
+		};
 		virtual CommandAccessLevel get_access_level() { return CommandAccessLevel::ADMIN; }
 
 	public:
@@ -35,5 +38,5 @@ namespace big
 		static void process(const std::string& text, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 	};
 
-    inline std::unordered_map<rage::joaat_t, command*> g_commands;
+	inline std::unordered_map<rage::joaat_t, command*> g_commands;
 }
