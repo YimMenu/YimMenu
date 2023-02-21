@@ -40,6 +40,27 @@ namespace big
 					{
 						ImGui::PushID(item.first);
 
+						float circle_size = 7.5f;
+						auto cursor_pos = ImGui::GetCursorScreenPos();
+						auto plyr_state = player.online_state;
+
+						//render status circle
+						ImGui::GetWindowDrawList()->AddCircleFilled(
+							ImVec2(
+								cursor_pos.x + 4.f + circle_size,
+								cursor_pos.y + 4.f + circle_size),
+							circle_size,
+							ImColor(
+								plyr_state == PlayerOnlineStatus::ONLINE ? ImVec4(0.f, 1.f, 0.f, 1.f)
+								: plyr_state == PlayerOnlineStatus::OFFLINE ? ImVec4(1.f, 0.f, 0.f, 1.f)
+								: plyr_state == PlayerOnlineStatus::UNKNOWN ? ImVec4(.5f, .5f, .5f, 1.0f)
+								: ImVec4(.5f, .5f, .5f, 1.0f)
+								));
+
+						//we need some padding
+						ImVec2 cursor = ImGui::GetCursorPos();
+						ImGui::SetCursorPos(ImVec2(cursor.x + 25.f, cursor.y));
+
 						if (components::selectable(player.name, &player == g_player_database_service->get_selected()))
 						{
 							g_player_database_service->set_selected(&player);
@@ -168,6 +189,13 @@ namespace big
 			g_player_database_service->get_players().clear();
 			g_player_database_service->save();
 		}
+
+		ImGui::SameLine();
+
+		components::button("RELOAD_PLYR_ONLINE_STATES"_T, []
+		{
+			g_player_database_service->update_player_states();
+		});
 
 		ImGui::Separator();
 		components::sub_title("NEW_ENTRY"_T);
