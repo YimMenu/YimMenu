@@ -656,6 +656,12 @@ namespace big
 				case RAGE_JOAAT("CPedCreationDataNode"):
 				{
 					const auto creation_node = (CPedCreationDataNode*)(node);
+					if (!model_info::is_model_of_type(creation_node->m_model, eModelType::Ped, eModelType::OnlineOnlyPed))
+					{
+						notify::crash_blocked(sender, "model mismatch");
+						return true;
+					}
+
 					if (is_crash_ped(creation_node->m_model))
 					{
 						notify::crash_blocked(sender, "invalid ped model");
@@ -697,6 +703,11 @@ namespace big
 				case RAGE_JOAAT("CPlayerAppearanceDataNode"):
 				{
 					const auto player_appearance_node = (CPlayerAppearanceDataNode*)(node);
+					if (!model_info::is_model_of_type(player_appearance_node->m_model_hash, eModelType::Ped, eModelType::OnlineOnlyPed))
+					{
+						notify::crash_blocked(sender, "model mismatch");
+						return true;
+					}
 					if (is_crash_ped(player_appearance_node->m_model_hash))
 					{
 						notify::crash_blocked(sender, "invalid player model (appearance node)");
@@ -707,6 +718,11 @@ namespace big
 				case RAGE_JOAAT("CPlayerCreationDataNode"):
 				{
 					const auto player_creation_node = (CPlayerCreationDataNode*)(node);
+					if (!model_info::is_model_of_type(player_creation_node->m_model, eModelType::Ped, eModelType::OnlineOnlyPed))
+					{
+						notify::crash_blocked(sender, "model mismatch");
+						return true;
+					}
 					if (is_crash_ped(player_creation_node->m_model))
 					{
 						notify::crash_blocked(sender, "invalid player model (creation node)");
