@@ -473,14 +473,6 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(blackhole, enable, include_peds, include_vehicles, color, alpha)
 			} blackhole{};
 
-			struct model_swapper
-			{
-				std::vector<std::pair<std::string, std::string>> models;
-				std::mutex m;
-				bool update = false;
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(model_swapper, models)
-			} model_swapper{};
-
 			struct nearby
 			{
 				bool ignore = false;
