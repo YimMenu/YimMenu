@@ -1,6 +1,7 @@
 #pragma once
 #include "gta/joaat.hpp"
 #include "pointers.hpp"
+#include "vehicle/CVehicleModelInfo.hpp"
 
 namespace big
 {
