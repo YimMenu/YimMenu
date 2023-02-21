@@ -60,7 +60,7 @@ namespace big
 			if (const auto model = model_info::get_model(hash))
 			{
 				bool of_type = false;
-				([&of_type, &model](eModelType type) { of_type = model->m_model_type == type; }(args), ...);
+				([&of_type, &model](eModelType type) { of_type |= model->m_model_type == type; }(args), ...);
 				return of_type;
 			}
 			return false;
