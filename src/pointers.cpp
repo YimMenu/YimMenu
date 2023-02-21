@@ -57,9 +57,10 @@ namespace big
 			m_network_player_mgr = ptr.add(3).rip().as<CNetworkPlayerMgr**>();
 		});
 
-		// Native Handlers
+		// Init Native Tables & Native Handlers
 		main_batch.add("NH", "48 8D 0D ? ? ? ? 48 8B 14 FA E8 ? ? ? ? 48 85 C0 75 0A", [this](memory::handle ptr)
 		{
+			m_init_native_tables = ptr.sub(37).as<PVOID>();
 			m_native_registration_table = ptr.add(3).rip().as<rage::scrNativeRegistrationTable*>();
 			m_get_native_handler = ptr.add(12).rip().as<functions::get_native_handler>();
 		});
@@ -140,9 +141,9 @@ namespace big
 		});
 
 		// Send Event Acknowledge
-		main_batch.add("SEA", "48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 7A", [this](memory::handle ptr)
+		main_batch.add("SEA", "E8 ? ? ? ? 66 83 7B 08 5B", [this](memory::handle ptr)
 		{
-			m_send_event_ack = ptr.sub(5).as<decltype(m_send_event_ack)>();
+			m_send_event_ack = ptr.add(1).rip().as<decltype(m_send_event_ack)>();
 		});
 
 		// Received Event Signatures END
@@ -211,12 +212,6 @@ namespace big
 		main_batch.add("WPGSDN", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 54 41 55 41 56 41 57 48 83 EC 30 0F B7 81", [this](memory::handle ptr)
 		{
 			m_write_player_game_state_data_node = ptr.as<functions::write_player_game_state_data_node>();
-		});
-
-		// Request Control of Entity PATCH
-		main_batch.add("RCOE-Patch", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", [this](memory::handle ptr)
-		{
-			memory::byte_patch::make(ptr.add(0x13).as<std::uint16_t*>(), 0x9090)->apply();
 		});
 
 		// Replay Interface
@@ -342,6 +337,12 @@ namespace big
 			m_model_table = ptr.add(3).rip().as<HashTable<CBaseModelInfo*>*>();
 		});
 
+		// Get Model Info
+		main_batch.add("GMI", "41 3B 0A 74 54", [this](memory::handle ptr)
+		{
+			m_get_model_info = ptr.sub(46).as<PVOID>();
+		});
+
 		// Get Label Text
 		main_batch.add("GLT", "75 ? E8 ? ? ? ? 8B 0D ? ? ? ? 65 48 8B 04 25 ? ? ? ? BA ? ? ? ? 48 8B 04 C8 8B 0C 02 D1 E9", [this](memory::handle ptr)
 		{
@@ -445,12 +446,6 @@ namespace big
 		main_batch.add("JSBI", "E8 ? ? ? ? 0F B6 CB 84 C0 41 0F 44 CD", [this](memory::handle ptr)
 		{
 			m_join_session_by_info = ptr.add(1).rip().as<functions::join_session_by_info>();
-		});
-
-		// Init Native Tables
-		main_batch.add("INT", "8B CB E8 ? ? ? ? 8B 43 70 ? 03 C4 A9 00 C0 FF FF", [this](memory::handle ptr)
-		{
-			m_init_native_tables = ptr.add(3).rip().as<PVOID>();
 		});
 
 		// Script VM
@@ -580,9 +575,15 @@ namespace big
 		});
 
 		// Request Ragdoll
-		main_batch.add("RR", "E8 ? ? ? ? 09 B3 ? ? ? ? 48 8B 5C 24 ?", [this](memory::handle ptr)
+		main_batch.add("RR", "E8 ? ? ? ? 09 B3 ? ? ? ? 48 8B 5C 24", [this](memory::handle ptr)
 		{
 			m_request_ragdoll = ptr.add(1).rip().as<functions::request_ragdoll>();
+		});
+
+		// Request Control
+		main_batch.add("RC", "E8 ? ? ? ? EB 3E 48 8B D3", [this](memory::handle ptr)
+		{
+			m_request_control = ptr.add(1).rip().as<functions::request_control>();
 		});
 
 		// Get Connection Peer & Send Remove Gamer Command
@@ -680,18 +681,6 @@ namespace big
 		main_batch.add("DPI", "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC C0 00 00 00 48 8B F1 49", [this](memory::handle ptr)
 		{
 			m_decode_peer_info = ptr.as<functions::decode_peer_info>();
-		});
-
-		// Can Start Session Joining Check
-		main_batch.add("CSSJC", "77 DB ? ? ? ? ? ? ? 74 09", [this](memory::handle ptr)
-		{
-			memory::byte_patch::make(ptr.as<void*>(), std::to_array({ 0x90, 0x90 }))->apply(); // join faster
-		});
-
-		// Can Start Joining Joining Check
-		main_batch.add("CSJJC", "74 16 48 8B 0B E8 ? ? ? ? 84 C0", [this](memory::handle ptr)
-		{
-			memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB)->apply(); // join faster
 		});
 
 		// NTQVM Caller
@@ -818,6 +807,12 @@ namespace big
 			m_receive_pickup = ptr.as<PVOID>();
 		});
 
+		// Write Player Camera Data Node
+		main_batch.add("WPCDN", "48 8B C4 48 89 58 20 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 B0 48 81 EC 50 01 00 00 4C", [this](memory::handle ptr)
+		{
+			m_write_player_camera_data_node = ptr.as<PVOID>();
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		if (!main_batch.run(mem_region))
 		{
@@ -846,14 +841,6 @@ namespace big
 			socialclub_batch.run(sc_module);
 		}
 		else LOG(WARNING) << "socialclub.dll module was not loaded within the time limit.";
-
-		if (auto pat = mem_region.scan("41 80 78 28 ? 0F 85 ? ? ? ? 49 8B 80"))
-		{
-			m_bypass_max_count_of_active_sticky_bombs = memory::byte_patch::make(pat.add(4).as<uint8_t*>(), { 99 }).get();
-
-			if (g.weapons.bypass_c4_limit)
-				m_bypass_max_count_of_active_sticky_bombs->apply();
-		}
 
 		/**
 		 * Freemode thread restorer through VM patch

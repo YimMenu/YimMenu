@@ -403,10 +403,13 @@ namespace big
 			}
 			script_args += " };";
 
-			LOG(G3LOG_DEBUG) << "Script Event:\n"
+			LOG(VERBOSE) << "Script Event:\n"
 				<< "\tPlayer: " << player->get_name() << "\n"
 				<< "\tArgs: " << script_args;
 		}
+
+		if (g.debug.logs.script_event.block_all)
+			return true;
 
 		return false;
 	}

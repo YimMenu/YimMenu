@@ -51,10 +51,15 @@ namespace big
 
 	void gta_data_service::update_in_online()
 	{
-		m_update_state = eGtaDataUpdateState::WAITING_FOR_ONLINE;
-
+		m_update_state = eGtaDataUpdateState::WAITING_FOR_SINGLE_PLAYER;
 		g_fiber_pool->queue_job([this]
 		{
+			while (*g_pointers->m_game_state != eGameState::Playing)
+			{
+				script::get_current()->yield(100ms);
+			}
+			m_update_state = eGtaDataUpdateState::WAITING_FOR_ONLINE;
+
 			session::join_type(eSessionType::SOLO);
 
 			while (!*g_pointers->m_is_session_started)
@@ -68,6 +73,7 @@ namespace big
 
 	void gta_data_service::update_now()
 	{
+		m_update_state = eGtaDataUpdateState::WAITING_FOR_SINGLE_PLAYER;
 		g_fiber_pool->queue_job([this]
 		{
 			rebuild_cache();
@@ -131,13 +137,13 @@ namespace big
 
 	void gta_data_service::load_data()
 	{
-		LOG(G3LOG_DEBUG) << "Loading data from cache.";
+		LOG(VERBOSE) << "Loading data from cache.";
 
 		load_peds();
 		load_vehicles();
 		load_weapons();
 
-		LOG(G3LOG_DEBUG) << "Loaded all data from cache.";
+		LOG(VERBOSE) << "Loaded all data from cache.";
 	}
 
 	void gta_data_service::load_peds()
@@ -256,7 +262,7 @@ namespace big
 
 					if (dlc_name == "mpG9EC")
 					{
-						LOG(G3LOG_DEBUG) << "Bad DLC, skipping...";
+						LOG(VERBOSE) << "Bad DLC, skipping...";
 
 						return std::size_t(0);
 					}
@@ -410,7 +416,7 @@ skip:
 		m_update_state = eGtaDataUpdateState::IDLE;
 		LOG(INFO) << "Cache has been rebuilt.\n\tPeds: " << peds.size() << "\n\tVehicles: " << vehicles.size() << "\n\tWeapons: " << weapons.size();
 
-		LOG(G3LOG_DEBUG) << "Starting cache saving procedure...";
+		LOG(VERBOSE) << "Starting cache saving procedure...";
 		g_thread_pool->push([this, peds = std::move(peds), vehicles = std::move(vehicles), weapons = std::move(weapons)]
 		{
 			const auto game_version = std::strtoul(g_pointers->m_game_version, nullptr, 10);

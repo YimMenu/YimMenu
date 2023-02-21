@@ -106,7 +106,7 @@ namespace big
 
 			ImGui::Separator();
 
-			if (auto net_player_data = g_player_service->get_selected()->get_net_data(); net_player_data != nullptr)
+			if (auto net_player_data = g_player_service->get_selected()->get_net_data())
 			{
 				ImGui::Text("PLAYER_INFO_RID"_T.data(), net_player_data->m_gamer_handle.m_rockstar_id);
 

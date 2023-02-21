@@ -37,7 +37,6 @@ namespace big
 
 		while (g_running)
 		{
-			looped::self_godmode();
 			looped::self_police();
 			looped::self_hud();
 			looped::self_dance_mode();
@@ -60,6 +59,7 @@ namespace big
 			looped::weapons_repair_gun();
 			looped::weapons_steal_vehicle_gun();
 			looped::weapons_vehicle_gun();
+			looped::weapons_c4_limit();
 
 			script::get_current()->yield();
 		}

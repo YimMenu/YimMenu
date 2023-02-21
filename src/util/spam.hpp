@@ -43,7 +43,8 @@ namespace
 		"\xE5\xBA\x97", //"shop" in Chinese
 		"\xE9\x92\xB1", //"money" in Chinese
 		"\xE5\x88\xB7", //"make(money)" in Chinese
-		"av", //uknowwhat video
+		// disabled as it's too verbose 
+		// "av", //uknowwhat video
 		"\xE8\x90\x9D\xE8\x8E\x89", //"cute girl" in Chinese
 		"\xE5\xA6\x88", //"mother" in Chinese
 		"\xE7\xBE\x8E\xE5\xA5\xB3", //"sexy girl" in Chinese
