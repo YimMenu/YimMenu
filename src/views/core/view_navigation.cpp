@@ -4,8 +4,8 @@
 namespace big
 {
 	void view::navigation() {
-		ImGui::SetNextWindowPos({ 10.f, 100.f }, ImGuiCond_Always);
-		ImGui::SetNextWindowSize({ 300.f, 0.f }, ImGuiCond_Always);
+		ImGui::SetNextWindowPos({ 10.f, 100.f * g.window.gui_scale }, ImGuiCond_Always);
+		ImGui::SetNextWindowSize({ 300.f * g.window.gui_scale, 0.f }, ImGuiCond_Always);
 
 		if (ImGui::Begin("navigation", 0, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav))
 		{
@@ -22,7 +22,7 @@ namespace big
 				}
 			}
 
-			ImGui::End();
 		}
+		ImGui::End();
 	}
 }

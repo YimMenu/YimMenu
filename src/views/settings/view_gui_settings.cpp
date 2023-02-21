@@ -6,12 +6,8 @@ namespace big
 	void view::gui_settings()
 	{
 		components::sub_title("SETTINGS_UI_SCALE"_T);
-		ImGui::SliderFloat("##gui-scale", &g.window.gui_scale, 1.f, 1.5f, "%.2f");
-		ImGui::SameLine();
-		if (ImGui::Button("APPLY"_T.data()))
+		if (ImGui::SliderFloat("##gui-scale", &g.window.gui_scale, 1.f, 1.5f, "%.2f"))
 			g_renderer->rescale(g.window.gui_scale);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("SETTINGS_UI_SCALE_DESCRIPTION"_T.data());
 
 		components::sub_title("SETTINGS_UI_COLOR"_T);
 		static ImVec4 col_gui = ImGui::ColorConvertU32ToFloat4(g.window.color);

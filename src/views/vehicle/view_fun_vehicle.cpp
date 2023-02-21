@@ -119,21 +119,23 @@ namespace big
 				ImGui::EndCombo();
 			}
 
-			if (components::button("TO_OBJECTIVE"_T)) {
+			if (components::button("TO_OBJECTIVE"_T))
 				g.vehicle.auto_drive_destination = AutoDriveDestination::OBJECTITVE;
-			}
+
 			ImGui::SameLine();
-			if (components::button("TO_WAYPOINT"_T)) {
+
+			if (components::button("TO_WAYPOINT"_T)) 
 				g.vehicle.auto_drive_destination = AutoDriveDestination::WAYPOINT;
-			}
+
 			ImGui::SameLine();
-			if (components::button("WANDER"_T)) {
+
+			if (components::button("WANDER"_T))
 				g.vehicle.auto_drive_destination = AutoDriveDestination::WANDER;
-			}
+
 			ImGui::SameLine();
-			if (components::button("EMERGENCY_STOP"_T)) {
+
+			if (components::button("EMERGENCY_STOP"_T))
 				g.vehicle.auto_drive_destination = AutoDriveDestination::EMERGENCY_STOP;
-			}
 		}
 		ImGui::Separator();
 

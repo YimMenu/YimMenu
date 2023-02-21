@@ -19,6 +19,8 @@ namespace big
 		void dx_init();
 		void dx_on_tick();
 
+		void restore_default_style();
+
 		void script_on_tick();
 		static void script_func();
 
@@ -29,6 +31,7 @@ namespace big
 
 	private:
 		bool m_is_open;
+		ImGuiStyle m_default_config;
 
 	};
 

@@ -31,7 +31,6 @@ namespace big
 			g.spawn_vehicle.plate = plate_buf;
 		});
 
-
 		static int selected_class = -1;
 		const auto& class_arr = g_gta_data_service->vehicle_classes();
 

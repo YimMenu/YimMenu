@@ -32,6 +32,7 @@ namespace big
 		dx_init();
 
 		g_gui = this;
+		g_renderer->rescale(g.window.gui_scale);
 	}
 
 	gui::~gui()
@@ -109,6 +110,8 @@ namespace big
 		colors[ImGuiCol_PlotHistogram] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
 		colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
 		colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
+
+		memcpy(&m_default_config, &ImGui::GetStyle(), sizeof(ImGuiStyle));
 	}
 
 	void gui::dx_on_tick()
@@ -119,6 +122,11 @@ namespace big
 			view::root();
 			ImGui::PopStyleColor();
 		}
+	}
+
+	void gui::restore_default_style()
+	{
+		memcpy(&ImGui::GetStyle(), &m_default_config, sizeof(ImGuiStyle));
 	}
 
 	void gui::script_on_tick()

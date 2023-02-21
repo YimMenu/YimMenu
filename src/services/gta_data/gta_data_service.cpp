@@ -338,9 +338,7 @@ namespace big
 							const auto display_name = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(human_name_hash);
 							std::strncpy(weapon.m_display_name, display_name, sizeof(weapon.m_name));
 
-							auto weapon_flags = std::string(
-								item.child("WeaponFlags").text().as_string()
-							);
+							auto weapon_flags = std::string(item.child("WeaponFlags").text().as_string());
 
 							bool is_gun = false;
 							bool is_rechargable = false;
@@ -352,21 +350,13 @@ namespace big
 							{
 								const auto flag = weapon_flags.substr(0, pos);
 								if (flag == "Thrown")
-								{
 									weapon.m_throwable = true;
-								}
 								else if (flag == "Gun")
-								{
 									is_gun = true;
-								}
 								else if (flag == "DisplayRechargeTimeHUD")
-								{
 									is_rechargable = true;
-								}
 								else if (flag == "Vehicle" || flag == "HiddenFromWeaponWheel" || flag == "NotAWeapon")
-								{
 									goto skip;
-								}
 
 								weapon_flags.erase(0, pos + 1);
 							}

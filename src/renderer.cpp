@@ -104,8 +104,6 @@ namespace big
 			g.window.font_icon = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_icons), sizeof(font_icons), 24.f, &font_icons_cfg);
 		}
 
-		rescale(g.window.gui_scale);
-
 		g_renderer = this;
 	}
 
@@ -145,7 +143,12 @@ namespace big
 	void renderer::rescale(float rel_size)
 	{
 		pre_reset();
-		ImGui::GetStyle().ScaleAllSizes(rel_size);
+		g_gui->restore_default_style();
+
+		if (rel_size != 1.0f)
+			ImGui::GetStyle().ScaleAllSizes(rel_size);
+
+		ImGui::GetStyle().MouseCursorScale = 1.0f;
 		ImGui::GetIO().FontGlobalScale = rel_size;
 		post_reset();
 	}
