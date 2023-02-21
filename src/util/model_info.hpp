@@ -60,8 +60,8 @@ namespace big
 			bool of_type = false;
 			if (const auto model = model_info::get_model(hash))
 			{
-				of_type = model->m_model_type == arg;
-				([&of_type, &model](eModelType type) { of_type |= model->m_model_type == type; }(args), ...);
+				of_type = (model->m_model_type & arg) == arg;
+				([&of_type, &model](eModelType type) { of_type |= (model->m_model_type & type) == type; }(args), ...);
 			}
 			return of_type;
 		}
