@@ -614,6 +614,16 @@ namespace big
 
 			switch (node_hash)
 			{
+				case (RAGE_JOAAT("CVehicleCreationDataNode")):
+				{
+					const auto creation_node = (CVehicleCreationDataNode*)(node);
+					if (!model_info::is_model_of_type(creation_node->m_model, eModelType::Vehicle))
+					{
+						notify::crash_blocked(sender, "vehicle model mismatch");
+						return true;
+					}
+					break;
+				}
 				case RAGE_JOAAT("CDoorCreationDataNode"):
 				{
 					const auto creation_node = (CDoorCreationDataNode*)(node);
@@ -658,7 +668,7 @@ namespace big
 					const auto creation_node = (CPedCreationDataNode*)(node);
 					if (!model_info::is_model_of_type(creation_node->m_model, eModelType::Ped, eModelType::OnlineOnlyPed))
 					{
-						notify::crash_blocked(sender, "model mismatch");
+						notify::crash_blocked(sender, "ped model mismatch");
 						return true;
 					}
 					if (is_crash_ped(creation_node->m_model))
@@ -692,6 +702,11 @@ namespace big
 				case RAGE_JOAAT("CObjectCreationDataNode"):
 				{
 					const auto creation_node = (CObjectCreationDataNode*)(node);
+					if (!model_info::is_model_of_type(creation_node->m_model, eModelType::Object, eModelType::WorldObject))
+					{
+						notify::crash_blocked(sender, "object model mismatch");
+						return true;
+					}
 					if (is_crash_object(creation_node->m_model))
 					{
 						notify::crash_blocked(sender, "invalid object model");
@@ -704,7 +719,7 @@ namespace big
 					const auto player_appearance_node = (CPlayerAppearanceDataNode*)(node);
 					if (!model_info::is_model_of_type(player_appearance_node->m_model_hash, eModelType::Ped, eModelType::OnlineOnlyPed))
 					{
-						notify::crash_blocked(sender, "model mismatch");
+						notify::crash_blocked(sender, "ped model mismatch");
 						return true;
 					}
 					if (is_crash_ped(player_appearance_node->m_model_hash))
@@ -719,7 +734,7 @@ namespace big
 					const auto player_creation_node = (CPlayerCreationDataNode*)(node);
 					if (!model_info::is_model_of_type(player_creation_node->m_model, eModelType::Ped, eModelType::OnlineOnlyPed))
 					{
-						notify::crash_blocked(sender, "model mismatch");
+						notify::crash_blocked(sender, "ped model mismatch");
 						return true;
 					}
 					if (is_crash_ped(player_creation_node->m_model))
