@@ -562,7 +562,7 @@ namespace big
 
 	inline bool is_crash_vehicle(uint32_t model)
 	{
-		if (!model_info::is_model_of_type(model, eModelType::Vehicle))
+		if (!model_info::is_model_of_type(model, eModelType::Vehicle, eModelType::Airplane))
 			return true;
 		for (auto iterator : crash_vehicles)
 			if (iterator == model)
