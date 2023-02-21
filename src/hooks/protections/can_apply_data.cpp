@@ -562,7 +562,7 @@ namespace big
 
 	inline bool is_crash_vehicle(uint32_t model)
 	{
-		if (!model_info::is_model_of_type(model, eModelType::Vehicle, eModelType::Airplane))
+		if (!model_info::is_model_of_type(model, eModelType::Vehicle, eModelType::Unk133))
 			return true;
 		for (auto iterator : crash_vehicles)
 			if (iterator == model)
@@ -572,7 +572,7 @@ namespace big
 
 	inline bool is_crash_object(uint32_t model)
 	{
-		if (!model_info::is_model_of_type(model, eModelType::Object, eModelType::Destructable, eModelType::WorldObject))
+		if (!model_info::is_model_of_type(model, eModelType::Object, eModelType::Time, eModelType::Weapon, eModelType::Destructable, eModelType::WorldObject, eModelType::Sprinkler, eModelType::Unk65, eModelType::Plant, eModelType::LOD, eModelType::Unk132, eModelType::Building))
 			return true;
 		for (auto iterator : crash_objects)
 			if (iterator == model)
