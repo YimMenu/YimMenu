@@ -643,7 +643,7 @@ namespace big
 				case RAGE_JOAAT("CPickupCreationDataNode"):
 				{
 					const auto creation_node = (CPickupCreationDataNode*)(node);
-					if (is_crash_object(creation_node->m_custom_model))
+					if (creation_node->m_custom_model && is_crash_object(creation_node->m_custom_model))
 					{
 						notify::crash_blocked(sender, "invalid pickup model");
 						return true;
