@@ -661,7 +661,6 @@ namespace big
 						notify::crash_blocked(sender, "model mismatch");
 						return true;
 					}
-
 					if (is_crash_ped(creation_node->m_model))
 					{
 						notify::crash_blocked(sender, "invalid ped model");

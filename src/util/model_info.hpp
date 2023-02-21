@@ -57,13 +57,10 @@ namespace big
 		template<typename T, typename ...Args>
 		static bool is_model_of_type(const rage::joaat_t hash, const T arg, const Args... args)
 		{
+			bool of_type = false;
 			if (const auto model = model_info::get_model(hash))
-			{
-				bool of_type = false;
 				([&of_type, &model](eModelType type) { of_type |= model->m_model_type == type; }(args), ...);
-				return of_type;
-			}
-			return false;
+			return of_type;
 		}
 	};
 }
