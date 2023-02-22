@@ -79,6 +79,8 @@ namespace big
 					bool filter_player = true;
 					std::int8_t player_id = -1;
 
+					bool block_all = false; //should not save
+
 					NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_event, logs, filter_player, player_id)
 				} script_event{};
 
@@ -487,7 +489,15 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(blackhole, include_peds, include_vehicles, color, alpha)
 			} blackhole{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole)
+			struct model_swapper
+			{
+				std::vector<std::pair<std::string, std::string>> models;
+				std::mutex m;
+				bool update = false;
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(model_swapper, models)
+			} model_swapper{};
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper)
 		} world{};
 
 		struct spoofing
