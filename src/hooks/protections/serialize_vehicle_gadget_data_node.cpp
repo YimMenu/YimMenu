@@ -2,7 +2,7 @@
 #include "hooking.hpp"
 #include "util/notify.hpp"
 
-#include <datanodes/vehicle/CVehicleGadgetDataNode.hpp>
+#include <netsync/nodes/vehicle/CVehicleGadgetDataNode.hpp>
 
 namespace big
 {

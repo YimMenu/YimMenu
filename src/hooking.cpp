@@ -64,7 +64,6 @@ namespace big
 		detour_hook_helper::add<hooks::update_presence_attribute_int>("UPAI", g_pointers->m_update_presence_attribute_int);
 		detour_hook_helper::add<hooks::update_presence_attribute_string>("UPAS", g_pointers->m_update_presence_attribute_string);
 
-		detour_hook_helper::add<hooks::serialize_dynamic_entity_game_state_data_node>("SDEGSDN", g_pointers->m_serialize_dynamic_entity_game_state_data_node);
 		detour_hook_helper::add<hooks::serialize_ped_inventory_data_node>("SPIDN", g_pointers->m_serialize_ped_inventory_data_node);
 		detour_hook_helper::add<hooks::serialize_vehicle_gadget_data_node>("SVGDN", g_pointers->m_serialize_vehicle_gadget_data_node);
 

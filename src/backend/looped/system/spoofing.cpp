@@ -54,10 +54,10 @@ namespace big
 					    if (g.spoofing.spoof_blip)
 					    {
 						    if (g.spoofing.blip_type == 0)// random
-							    scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].PlayerBlip.PlayerVehicleBlipType = (rand() % 90);
+							    scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].PlayerBlip.PlayerVehicleBlipType = (eBlipType)(rand() % 90);
 						    else
 							    scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].PlayerBlip.PlayerVehicleBlipType =
-							        g.spoofing.blip_type - 1;
+							        (eBlipType)(g.spoofing.blip_type - 1);
 					    }
 				    }
 			    });

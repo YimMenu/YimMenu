@@ -13,7 +13,10 @@ namespace big
 		g_script_patcher_service->add_patch({RAGE_JOAAT("freemode"), "2D 01 04 00 ? 2C ? ? ? 5D ? ? ? 71 57 ? ? 2C", 5, {0x2E, 0x01, 0x00}, nullptr});// script host kick
 		g_script_patcher_service->add_patch(
 		    {RAGE_JOAAT("freemode"), "2D 00 03 00 00 5D ? ? ? 71 08", 5, {0x2E, 0x00, 0x00}, &g.tunables.no_idle_kick});
-		g_script_patcher_service->add_patch({RAGE_JOAAT("freemode"), "2D 00 03 00 00 5D ? ? ? 56 ? ? 72 2E ? ? 62", 5, {0x72, 0x2E, 0x00, 0x01},
+		g_script_patcher_service->add_patch({RAGE_JOAAT("freemode"),
+		    "2D 00 03 00 00 5D ? ? ? 56 ? ? 72 2E ? ? 62",
+		    5,
+		    {0x72, 0x2E, 0x00, 0x01},
 		    &g.tunables.no_idle_kick});
 		g_script_patcher_service->add_patch({RAGE_JOAAT("freemode"), "5D ? ? ? 76 57 ? ? 5D ? ? ? 76", 0, {0x2E, 0x00, 0x00}, nullptr});// end session kick protection
 		g_script_patcher_service->add_patch({RAGE_JOAAT("freemode"), "2D 01 09 00 00 5D ? ? ? 56 ? ? 2E", 5, {0x2E, 0x01, 0x00}, nullptr});// disable death when undermap/spectating
@@ -28,10 +31,18 @@ namespace big
 		    {RAGE_JOAAT("freemode"), "2C ? ? ? 55 ? ? 71 2C ? ? ? 61", 7, std::vector<uint8_t>(16, 0x0), &g.spoofing.spoof_blip});// prevent normal blip update 2
 		g_script_patcher_service->add_patch({RAGE_JOAAT("shop_controller"), "2D 01 04 00 00 2C ? ? ? 56 ? ? 71", 5, {0x71, 0x2E, 0x01, 0x01}, nullptr});// despawn bypass
 		g_script_patcher_service->add_patch({RAGE_JOAAT("shop_controller"), "38 00 5D ? ? ? 38 00 5D ? ? ? 38 00 41", 0, std::vector<uint8_t>(12, 0x0), nullptr});// godmode/invisibility detection bypass
-		g_script_patcher_service->add_patch({RAGE_JOAAT("am_mp_nightclub"), "2D 01 03 00 00 2C ? ? ? 56 ? ? 72 2E ? ? 38 00", 5, {0x72, 0x2E, 0x01, 0x01},
+		g_script_patcher_service->add_patch({RAGE_JOAAT("am_mp_nightclub"),
+		    "2D 01 03 00 00 2C ? ? ? 56 ? ? 72 2E ? ? 38 00",
+		    5,
+		    {0x72, 0x2E, 0x01, 0x01},
 		    &g.self.dance_mode});
 		g_script_patcher_service->add_patch(
 		    {RAGE_JOAAT("am_mp_nightclub"), "20 56 ? ? 4F ? ? 46 ? ? 41 ? 71", 0, {0x2B, 0x55}, &g.self.dance_mode});
+		g_script_patcher_service->add_patch({RAGE_JOAAT("freemode"),
+		    "5D ? ? ? 56 ? ? 72 39 05 38 04 2C ? ? ? 58",
+		    0,
+		    {0x2B, 0x2B, 0x2B, 0x00, 0x55},
+		    &g.self.invisibility});
 
 		for (auto& entry : *g_pointers->m_script_program_table)
 		{

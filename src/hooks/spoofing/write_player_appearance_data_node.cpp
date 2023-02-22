@@ -1,6 +1,6 @@
 #include "hooking.hpp"
 
-#include <datanodes/player/CPlayerAppearanceDataNode.hpp>
+#include <netsync/nodes/player/CPlayerAppearanceDataNode.hpp>
 
 namespace big
 {

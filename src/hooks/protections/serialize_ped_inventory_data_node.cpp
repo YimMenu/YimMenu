@@ -2,7 +2,7 @@
 #include "hooking.hpp"
 #include "util/notify.hpp"
 
-#include <datanodes/ped/CPedInventoryDataNode.hpp>
+#include <netsync/nodes/ped/CPedInventoryDataNode.hpp>
 
 namespace big
 {

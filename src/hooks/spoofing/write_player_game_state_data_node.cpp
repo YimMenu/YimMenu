@@ -2,7 +2,7 @@
 #include "services/players/player_service.hpp"
 #include "util/globals.hpp"
 
-#include <datanodes/player/CPlayerGameStateDataNode.hpp>
+#include <netsync/nodes/player/CPlayerGameStateDataNode.hpp>
 
 namespace big
 {

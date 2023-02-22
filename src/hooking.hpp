@@ -102,7 +102,6 @@ namespace big
 		static bool update_presence_attribute_string(void* presence_data, int profile_index, char* attr, char* value);
 
 		static void serialize_ped_inventory_data_node(CPedInventoryDataNode* node, rage::CSyncDataBase* data);
-		static void serialize_dynamic_entity_game_state_data_node(CDynamicEntityGameStateDataNode* node, rage::CSyncDataBase* data);
 		static void serialize_vehicle_gadget_data_node(CVehicleGadgetDataNode* node, rage::CSyncDataBase* data);
 
 		static bool handle_join_request(Network* network, rage::snSession* session, rage::rlGamerInfo* player_info, CJoinRequestContext* ctx, BOOL is_transition_session);
@@ -158,8 +157,14 @@ namespace big
 	class minhook_keepalive
 	{
 	public:
-		minhook_keepalive() { MH_Initialize(); }
-		~minhook_keepalive() { MH_Uninitialize(); }
+		minhook_keepalive()
+		{
+			MH_Initialize();
+		}
+		~minhook_keepalive()
+		{
+			MH_Uninitialize();
+		}
 	};
 
 	class hooking

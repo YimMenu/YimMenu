@@ -1,11 +1,12 @@
 #pragma once
-#include <datanodes/player/CPlayerGameStateDataNode.hpp>
-#include <datanodes/vehicle/CVehicleGadgetDataNode.hpp>
 #include <rage/rlTaskStatus.hpp>
 
 class CMsgJoinResponse;
 class NetworkGameFilterMatchmakingComponent;
 class sCloudFile;
+class CPlayerGameStateDataNode;
+class CVehicleGadgetDataNode;
+enum eVehicleGadgetType : uint32_t;
 
 namespace rage
 {
