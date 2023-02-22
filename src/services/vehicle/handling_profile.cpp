@@ -8,7 +8,8 @@ namespace big
 		m_handling_data = *vehicle->m_handling_data;
 
 		//this seems to be not set on vehicle: "Veto Modern"
-		m_handling_data.m_traction_spring_delta_max_ratio = 0.f;
+		if(&m_handling_data.m_traction_spring_delta_max_ratio == nullptr)
+			m_handling_data.m_traction_spring_delta_max_ratio = 0.f;
 	}
 
 	void handling_profile::apply_to(CVehicle* vehicle, bool restore_hash) const
