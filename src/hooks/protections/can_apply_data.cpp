@@ -552,6 +552,8 @@ namespace big
 
 	inline bool is_crash_ped(uint32_t model)
 	{
+		if (!model_info::is_model_of_type(model, eModelType::Ped, eModelType::OnlineOnlyPed))
+			return true;
 		for (auto iterator : crash_peds)
 			if (iterator == model)
 				return true;
@@ -560,6 +562,8 @@ namespace big
 
 	inline bool is_crash_vehicle(uint32_t model)
 	{
+		if (!model_info::is_model_of_type(model, eModelType::Vehicle, eModelType::Unk133))
+			return true;
 		for (auto iterator : crash_vehicles)
 			if (iterator == model)
 				return true;
@@ -568,6 +572,8 @@ namespace big
 
 	inline bool is_crash_object(uint32_t model)
 	{
+		if (!model_info::is_model_of_type(model, eModelType::Object, eModelType::Time, eModelType::Weapon, eModelType::Destructable, eModelType::WorldObject, eModelType::Sprinkler, eModelType::Unk65, eModelType::Plant, eModelType::LOD, eModelType::Unk132, eModelType::Building))
+			return true;
 		for (auto iterator : crash_objects)
 			if (iterator == model)
 				return true;
@@ -614,6 +620,16 @@ namespace big
 
 			switch (node_hash)
 			{
+				case (RAGE_JOAAT("CVehicleCreationDataNode")):
+				{
+					const auto creation_node = (CVehicleCreationDataNode*)(node);
+					if (is_crash_vehicle(creation_node->m_model))
+					{
+						notify::crash_blocked(sender, "invalid vehicle model");
+						return true;
+					}
+					break;
+				}
 				case RAGE_JOAAT("CDoorCreationDataNode"):
 				{
 					const auto creation_node = (CDoorCreationDataNode*)(node);
@@ -627,7 +643,7 @@ namespace big
 				case RAGE_JOAAT("CPickupCreationDataNode"):
 				{
 					const auto creation_node = (CPickupCreationDataNode*)(node);
-					if (is_crash_object(creation_node->m_custom_model))
+					if (creation_node->m_custom_model && is_crash_object(creation_node->m_custom_model))
 					{
 						notify::crash_blocked(sender, "invalid pickup model");
 						return true;
