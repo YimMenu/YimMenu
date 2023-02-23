@@ -23,6 +23,7 @@ class CNetworkIncrementStatEvent;
 class CScriptedGameEvent;
 class NetworkGameFilterMatchmakingComponent;
 class ClonedTakeOffPedVariationInfo;
+class CClonedGeneralSweepInfo;
 
 namespace rage
 {
@@ -130,7 +131,7 @@ namespace big
 		static bool send_session_matchmaking_attributes(void* a1, rage::rlSessionInfo* info, std::uint64_t session_id, bool use_session_id, MatchmakingAttributes* attributes);
 
 		static void serialize_take_off_ped_variation_task(ClonedTakeOffPedVariationInfo* info, rage::CSyncDataBase* serializer);
-		static uint64_t serialize_general_sweep_task(uint64_t a1, rage::CSyncDataBase* serializer);
+		static uint64_t serialize_general_sweep_task(CClonedGeneralSweepInfo* info, rage::CSyncDataBase* serializer);
 
 		static CGameScriptHandler* create_script_handler(CGameScriptHandlerMgr* this_, void* unk);
 		static bool script_handler_is_networked(CGameScriptHandler* this_);
