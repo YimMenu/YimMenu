@@ -665,6 +665,12 @@ namespace big
 			m_invalid_decal_crash = ptr.add(1).rip().as<PVOID>();
 		});
 
+		// Task Parachute Object 0x270
+		main_batch.add("TPO270", "0F 88 ? ? ? ? 75 34", [this](memory::handle ptr)
+		{
+			m_task_parachute_object_0x270 = ptr.sub(6).as<PVOID>();
+		});
+
 		// Encode Session Info
 		main_batch.add("ESI", "E8 ? ? ? ? C6 83 94 01 00 00 01", [this](memory::handle ptr)
 		{
