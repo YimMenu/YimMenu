@@ -27,6 +27,7 @@ class CPlayerCardStats;
 class CStatsSerializationContext;
 class CPlayerCreationDataNode;
 class CPlayerAppearanceDataNode;
+class CFoundDevice;
 
 namespace rage
 {
@@ -152,6 +153,8 @@ namespace big
 		static void write_player_appearance_data_node(rage::netObject* player, CPlayerAppearanceDataNode* node);
 
 		static CBaseModelInfo* get_model_info(rage::joaat_t hash, uint32_t* a2);
+
+		static void enumerate_audio_devices(CFoundDevice* found_devices, int count, int flags);
 	};
 
 	class minhook_keepalive

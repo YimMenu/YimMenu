@@ -247,6 +247,8 @@ namespace big
 
 		PVOID m_write_player_creation_data_node{};
 		PVOID m_write_player_appearance_data_node{};
+
+		PVOID m_enumerate_audio_devices{};
 	};
 
 	inline pointers* g_pointers{};

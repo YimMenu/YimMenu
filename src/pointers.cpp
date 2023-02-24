@@ -1107,6 +1107,14 @@ namespace big
 			    m_write_player_appearance_data_node = ptr.as<PVOID>();
 		    });
 
+		// Enumerate Audio Devices
+		main_batch.add("EAD",
+		    "48 89 5C 24 08 48 89 7C 24 10 55 48 8B EC 48 83 EC 70 41",
+		    [this](memory::handle ptr)
+		    {
+			    m_enumerate_audio_devices = ptr.as<PVOID>();
+		    });
+
 		auto mem_region = memory::module("GTA5.exe");
 		if (!main_batch.run(mem_region))
 		{

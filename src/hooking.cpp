@@ -112,6 +112,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::get_model_info>("GMI", g_pointers->m_get_model_info);
 
+		detour_hook_helper::add<hooks::enumerate_audio_devices>("EAD", g_pointers->m_enumerate_audio_devices);
+
 		g_hooking = this;
 	}
 
