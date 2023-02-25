@@ -6,6 +6,7 @@
 #include "shop_controller.hpp"
 #include "network_session_host.hpp"
 #include "am_launcher.hpp"
+#include "casino.hpp"
 #include "creator.hpp"
 #include "crossmap.hpp"
 
@@ -143,6 +144,8 @@ namespace big
 		add_native_detour(RAGE_JOAAT("fm_lts_creator"), 0x3D3D8B3BE5A83D35, creator::GET_USED_CREATOR_BUDGET);
 		add_native_detour(RAGE_JOAAT("fm_survival_creator"), 0x3D3D8B3BE5A83D35, creator::GET_USED_CREATOR_BUDGET);
 
+		//bypass casino country restrictions
+		add_native_detour(0x158C16F5E4CF41F8, casino::NETWORK_CASINO_CAN_BET);
 
 		for (auto& entry : *g_pointers->m_script_program_table)
 			if (entry.m_program)
