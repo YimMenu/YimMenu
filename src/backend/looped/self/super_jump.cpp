@@ -15,13 +15,9 @@ namespace big
 			{
 				ENTITY::APPLY_FORCE_TO_ENTITY_CENTER_OF_MASS(self::ped, 0, 0, 10000, 5000, true, true, true, false);
 			}
-			if (PED::IS_PED_FALLING(self::ped))
-			{
-				TASK::CLEAR_PED_TASKS(self::ped);
-			}
 			if (WEAPON::HAS_PED_GOT_WEAPON(self::ped, RAGE_JOAAT("p_parachute_s"), false))
 			{
-				WEAPON::SET_CURRENT_PED_WEAPON(self::ped, RAGE_JOAAT("WEAPON_UNARMED"), true);
+				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, RAGE_JOAAT("WEAPON_UNARMED"));
 			}
 
 		}

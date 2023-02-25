@@ -17,6 +17,7 @@ namespace big
 
 		components::command_checkbox<"infammo">();
 		components::command_checkbox<"infclip">();
+		components::command_checkbox<"infrange">();
 		ImGui::Checkbox("Allow Weapons In Interiors", &g.weapons.interior_weapon);
 
 		ImGui::EndGroup();
@@ -27,7 +28,6 @@ namespace big
 		ImGui::Checkbox("Increased Flare Limit (Max = 50)", &g.weapons.increased_flare_limit);
 
 		components::command_checkbox<"rapidfire">();
-		components::command_checkbox<"aimassist">();
 
 		ImGui::EndGroup();
 
@@ -83,8 +83,6 @@ namespace big
 		components::command_checkbox<"norecoil">();
 		ImGui::SameLine();
 		components::command_checkbox<"nospread">();
-		ImGui::SameLine();
-		components::command_checkbox<"infrange">();
 
 		components::button("GET_ALL_WEAPONS"_T, []
 		{
