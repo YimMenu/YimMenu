@@ -8,14 +8,15 @@ namespace big
 		components::command_checkbox<"blackhole">();
 
 		components::sub_title("Entities");
-		ImGui::Checkbox("Vehicles", &g.world.blackhole.include_vehicles);
+		components::command_checkbox<"blackholeincvehs">();
 		ImGui::SameLine();
-		ImGui::Checkbox("Peds", &g.world.blackhole.include_peds);
+		components::command_checkbox<"blackholeincpeds">();
 
 		components::sub_title("Position");
 		ImGui::InputFloat("X", &g.world.blackhole.pos.x, 5.f, 200.f);
 		ImGui::InputFloat("Y", &g.world.blackhole.pos.y, 5.f, 200.f);
 		ImGui::InputFloat("Z", &g.world.blackhole.pos.z, 5.f, 200.f);
+		ImGui::SliderFloat("Scale", &g.world.blackhole.scale, 2.f, 12.f, "%.0f");
 
 		components::button("Set to current coords", [] {
 			const auto player_pos = g_local_player->get_position();

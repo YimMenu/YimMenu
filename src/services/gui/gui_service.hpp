@@ -31,6 +31,7 @@ namespace big
 		WATER,
 		BLACKHOLE,
 		MODEL_SWAPPER,
+		NEARBY,
 
 		NETWORK,
 		SESSION,
@@ -90,7 +91,8 @@ namespace big
 				{ tabs::WATER, { "Water", view::water }},
 				{ tabs::BLACKHOLE, { "Blackhole", view::blackhole }},
 				{ tabs::MODEL_SWAPPER, { "Model Swapper", view::model_swapper }},
-		}}},
+				{ tabs::NEARBY, { "Nearby", view::nearby }}
+			}}},
 			{tabs::NETWORK, { "Network", nullptr, {
 				{ tabs::SPOOFING, { "Spoofing", view::spoofing }},
 				{ tabs::SESSION, { "Session", view::session }},

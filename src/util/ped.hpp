@@ -2,6 +2,7 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "pointers.hpp"
+#include "entity.hpp"
 
 namespace big::ped
 {
@@ -66,6 +67,18 @@ namespace big::ped
 		ENTITY::SET_ENTITY_MAX_HEALTH(self::ped, max_health);
 		ENTITY::SET_ENTITY_HEALTH(self::ped, current_health, 0);
 		PED::SET_PED_ARMOUR(self::ped, current_armor);
+	}
+
+	inline void kill_ped(const Ped ped)
+	{
+		if (entity::take_control_of(ped))
+			PED::APPLY_DAMAGE_TO_PED(ped, PED::GET_PED_MAX_HEALTH(ped) * 2, false, 0);
+	}
+
+	inline void kill_ped_by_relation(Ped ped, int relation_id)
+	{
+		if (PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, PLAYER::PLAYER_PED_ID()) == relation_id)
+			kill_ped(ped);
 	}
 
 	inline Ped spawn(ePedType pedType, Hash hash, Hash clone, Vector3 location, float heading, bool is_networked = true)

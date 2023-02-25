@@ -465,12 +465,24 @@ namespace big
 				bool enable = false;
 				bool include_peds = false;
 				bool include_vehicles = false;
+				float scale = 6.f;
 				float color[3] = { 1, 1, 1 };
 				int alpha = 150;
 				rage::fvector3 pos;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(blackhole, enable, include_peds, include_vehicles, color, alpha)
 			} blackhole{};
+
+			struct nearby
+			{
+				bool ignore = false;
+				bool ped_rain = false;
+				bool veh_rain = false;
+				bool high_alert = false;
+				bool ped_rush = false;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(nearby, ignore, ped_rain, veh_rain, high_alert, ped_rush)
+			} nearby{};
 
 			struct model_swapper
 			{
@@ -480,7 +492,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(model_swapper, models)
 			} model_swapper{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby)
 		} world{};
 
 		struct spoofing
@@ -615,6 +627,21 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(gravity_gun, launch_on_release)
 			} gravity_gun;
 
+			struct aimbot
+			{
+				bool enable = false;
+				bool smoothing = true;
+				float smoothing_speed = 2.f;
+				bool on_player = true;
+				bool on_enemy = false;
+				bool on_police = false;
+				bool on_npc = false;
+				float fov = 90.f;
+				float distance = 200.f;
+				std::uint32_t selected_bone = 0x796E; // Default to head
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, smoothing, smoothing_speed, fov, selected_bone)
+			} aimbot{};
+
 			CustomWeapon custom_weapon = CustomWeapon::NONE;
 			bool force_crosshairs = false;
 			bool infinite_ammo = false;
@@ -627,10 +654,12 @@ namespace big
 			bool increased_flare_limit = false;
 			bool rapid_fire = false;
 			bool interior_weapon = false;
+			bool triggerbot = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons,
-				ammo_special, custom_weapon, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, no_recoil,
-				no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon)
+				ammo_special, custom_weapon, aimbot, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, no_recoil,
+				no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon,
+				triggerbot)
 		} weapons{};
 
 		struct window
