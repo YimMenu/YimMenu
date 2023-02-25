@@ -42,16 +42,7 @@ namespace big
 
         // modules cached already
         if (m_modules.size())
-        {
-            for (const auto& module : m_modules)
-            {
-                m_dump
-                    << module.m_path.filename().string()
-                    << " Base Address: " << HEX_TO_UPPER(module.m_base)
-                    << " Size: " << module.m_size << '\n';
-            }
             return;
-        }
 
         const auto peb = reinterpret_cast<PPEB>(NtCurrentTeb()->ProcessEnvironmentBlock);
         if (!peb)
