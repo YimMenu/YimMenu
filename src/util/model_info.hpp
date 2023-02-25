@@ -55,11 +55,16 @@ namespace big
 			return nullptr;
 		}
 
-		static bool is_model_of_type(const rage::joaat_t hash, const eModelType type)
+		template<typename T, typename ...Args>
+		static bool is_model_of_type(const rage::joaat_t hash, const T arg, const Args... args)
 		{
-			if (const auto model = model_info::get_model(hash); model && model->m_model_type == type)
-				return true;
-			return false;
+			bool of_type = false;
+			if (const auto model = model_info::get_model(hash))
+			{
+				of_type = model->m_model_type == arg;
+				([&of_type, &model](eModelType type) { of_type |= model->m_model_type == type; }(args), ...);
+			}
+			return of_type;
 		}
 	};
 }

@@ -298,10 +298,12 @@ namespace big
 								HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(game_name),
 								sizeof(veh.m_display_name));
 
-							const auto vehicle_class = item.child("vehicleClass").text().as_string();
-							constexpr auto enum_prefix_len = 3;
-							if (std::strlen(vehicle_class) > enum_prefix_len)
-								std::strncpy(veh.m_vehicle_class, vehicle_class + enum_prefix_len, sizeof(veh.m_vehicle_class));
+							char vehicle_class[32];
+							std::sprintf(vehicle_class, "VEH_CLASS_%i", VEHICLE::GET_VEHICLE_CLASS_FROM_NAME(hash));
+							std::strncpy(
+								veh.m_vehicle_class,
+								HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(vehicle_class),
+								sizeof(veh.m_vehicle_class));
 							
 							veh.m_hash = hash;
 
