@@ -1,11 +1,12 @@
+#include "gta/sound.hpp"
 #include "hooking.hpp"
 
 class CFoundDevice
 {
 public:
 	GUID m_guid;
-	char m_name[64];
-	char m_pad[0x44];
+	char16_t m_name[64];
+	int m_device_type;
 	int m_default_type;
 	int m_pad2;
 };
@@ -13,21 +14,29 @@ static_assert(sizeof(CFoundDevice) == 0x9C);
 
 namespace big
 {
-	void hooks::enumerate_audio_devices(CFoundDevice* found_devices, int count, int flags)
+	int hooks::enumerate_audio_devices(CFoundDevice* found_devices, int count, int flags)
 	{
-		g_hooking->get_original<hooks::enumerate_audio_devices>()(found_devices, count, flags);
+		auto res = g_hooking->get_original<hooks::enumerate_audio_devices>()(found_devices, count, flags);
 
-		if (flags & 1)
+		if ((flags & 1) && g.spoofing.voice_chat_audio)
 		{
 			for (int i = 0; i < count; i++)
 			{
-				if (strlen(found_devices[i].m_name) == 0)
+				if (found_devices[i].m_device_type != 2 || found_devices[i].m_default_type != 2)
 				{
-					strcpy(found_devices[i].m_name, "YimMenu Virtual Input Device");
-					found_devices[i].m_guid         = GUID_VIDEO_DIM_TIMEOUT;
+					lstrcpyW((LPWSTR)found_devices[i].m_name, L"YimMenu Virtual Input Device");
+					found_devices[i].m_guid         = g_yim_device;
+					found_devices[i].m_device_type  = 1;
 					found_devices[i].m_default_type = 1;
+
+					if (i >= res)
+						res++;
+
+					break;
 				}
 			}
 		}
+
+		return res;
 	}
 }

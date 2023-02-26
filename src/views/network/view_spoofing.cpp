@@ -82,6 +82,7 @@ namespace big
 				g.spoofing.player_model = std::string(model);
 		}
 
+		components::command_checkbox<"vcaudio">();
 
 		components::sub_title("SPOOFING_HIDE_FEATURES"_T);
 		ImGui::Checkbox("SPOOFING_HIDE_GOD_MODE"_T.data(), &g.spoofing.spoof_hide_god);

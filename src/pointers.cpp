@@ -871,10 +871,13 @@ namespace big
 		    });
 
 		// Task Parachute Object 0x270
-		main_batch.add("TPO270", "0F 88 ? ? ? ? 75 34", [this](memory::handle ptr)
-		{
-			m_task_parachute_object_0x270 = ptr.sub(6).as<PVOID>();
-		});
+		main_batch.add("TPO270",
+		    "0F 88 ? ? ? ? 75 34",
+		    [this](memory::handle ptr)
+		    {
+			    m_task_parachute_object_0x270
+				    = ptr.sub(6).as<PVOID>();
+		    });
 
 		// Encode Session Info
 		main_batch.add("ESI",
@@ -1119,6 +1122,22 @@ namespace big
 		    [this](memory::handle ptr)
 		    {
 			    m_enumerate_audio_devices = ptr.as<PVOID>();
+		    });
+
+		// Direct Sound Capture Create
+		main_batch.add("DSCC",
+		    "E8 ? ? ? ? 33 FF 85 C0 78 C1",
+		    [this](memory::handle ptr)
+		    {
+			    m_direct_sound_capture_create = ptr.add(1).rip().as<PVOID>();
+		    });
+
+		// Refresh Audio Input
+		main_batch.add("RAI",
+		    "40 88 3D ? ? ? ? 89 05 ? ? ? ? 40 38 3D",
+		    [this](memory::handle ptr)
+		    {
+			    m_refresh_audio_input = ptr.add(3).rip().as<bool*>();
 		    });
 
 		auto mem_region = memory::module("GTA5.exe");
