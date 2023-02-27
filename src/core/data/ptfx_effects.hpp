@@ -8,18 +8,21 @@ struct ptfx_library
 };
 
 const ptfx_library ptfx_named[] = {
-    {"Agency Heist", "scr_agencyheist",
+    {"Agency Heist",
+        "scr_agencyheist",
         {
             {"scr_fbi_mop_drips"},
             {"scr_agency3a_door_hvy_trig"},
             {"scr_fbi_dd_breach_smoke"},
         }},
-    {"Alien", "scr_rcbarry1",
+    {"Alien",
+        "scr_rcbarry1",
         {
             {"scr_alien_teleport"},
             {"scr_alien_disintegrate"},
         }},
-    {"Clown", "scr_rcbarry2",
+    {"Clown",
+        "scr_rcbarry2",
         {
             {"scr_clown_death"},
             {"eject_clown"},
@@ -29,7 +32,12 @@ const ptfx_library ptfx_named[] = {
             {"scr_clown_bul"},// this one makes noise? lol
             {"muz_clown"},
         }},
-    {"Firework", "scr_indep_fireworks",
-        {{"scr_indep_firework_sparkle_spawn"}, {"scr_indep_firework_trailburst_spawn"},// add seizure warning
-            {"scr_indep_firework_burst_spawn"}, {"scr_indep_firework_trail_spawn"}}},
+    {"Firework",
+        "scr_indep_fireworks",
+        {
+            {"scr_indep_firework_sparkle_spawn"},
+            {"scr_indep_firework_trailburst_spawn"},// add seizure warning
+            {"scr_indep_firework_burst_spawn"},
+            {"scr_indep_firework_trail_spawn"},
+        }},
 };
