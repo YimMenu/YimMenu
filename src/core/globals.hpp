@@ -62,6 +62,10 @@ namespace big
 
 		rage::scrThread* m_mission_creator_thread = nullptr;
 
+		struct cmd_executor
+		{
+			bool enabled = false;
+		} cmd_executor{};
 		struct debug
 		{
 			struct logs
@@ -392,10 +396,11 @@ namespace big
 				int invisveh = 0;
 				int localinvisveh = 0;
 				int fast_quit = 0;
+				int cmd_excecutor = 0x55; // U
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, 
 					noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump,
-					invisveh, localinvisveh, fast_quit)
+					invisveh, localinvisveh, fast_quit, cmd_excecutor)
 			} hotkeys{};
 
 			bool dev_dlc = false;

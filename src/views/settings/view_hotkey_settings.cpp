@@ -42,6 +42,8 @@ namespace big
 			g_hotkey_service->update_hotkey("localinvisveh", g.settings.hotkeys.localinvisveh);
 		if (ImGui::Hotkey("Rage Quit (Like Alt + F4)", &g.settings.hotkeys.fast_quit))
 			g_hotkey_service->update_hotkey("fastquit", g.settings.hotkeys.fast_quit);
+		if (ImGui::Hotkey("Toggle quicksearch", &g.settings.hotkeys.cmd_excecutor))
+			g_hotkey_service->update_hotkey("cmdexecutor", g.settings.hotkeys.cmd_excecutor);
 
 		ImGui::PopItemWidth();
 	}

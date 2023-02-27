@@ -90,23 +90,43 @@ namespace big
 		g_commands[command]->call(args, ctx);
 	}
 
-	void command::process(const std::string& text, const std::shared_ptr<command_context> ctx)
+	std::vector<command*> command::get_suggestions(const std::string_view search, const int limit)
+	{
+		std::vector<command*> found_commands{};
+		for (auto& [k, command] : g_commands)
+		{
+			if(command->get_label().length() == 0) continue;
+
+			if(command->get_name().contains(search))
+				found_commands.push_back(command);
+			else if (command->get_label().contains(search))
+				found_commands.push_back(command);
+
+			// apply our maximum vector size..
+			if(found_commands.size() > limit) break;
+		}
+
+		return found_commands;
+	}
+
+	bool command::process(const std::string& text, const std::shared_ptr<command_context> ctx)
 	{
 		auto args = split(text, ' ');
 		if (args.size() == 0 || args[0].empty())
 		{
 			ctx->report_error("No command to call");
-			return;
+			return false;
 		}
 		
 		std::uint32_t hash = rage::joaat(args[0]);
 		if (!g_commands.contains(hash))
 		{
 			ctx->report_error(std::format("Command {} does not exist", args[0]));
-			return;
+			return false;
 		}
 
 		args.erase(args.begin());
 		call(hash, args, ctx);
+		return true;
 	}
 }
