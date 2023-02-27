@@ -7,7 +7,9 @@
 
 namespace big
 {
-	personal_vehicle::personal_vehicle(int idx, script_global vehicle_idx) : m_id(idx), m_vehicle_idx(vehicle_idx)
+	personal_vehicle::personal_vehicle(int idx, script_global vehicle_idx) :
+	    m_id(idx),
+	    m_vehicle_idx(vehicle_idx)
 	{
 		m_plate          = m_vehicle_idx.at(1).as<char*>();
 		m_hash           = *m_vehicle_idx.at(66).as<Hash*>();
@@ -63,7 +65,9 @@ namespace big
 			return;
 		m_last_update = std::chrono::high_resolution_clock::now();
 
-		g_fiber_pool->queue_job([this] { register_vehicles(); });
+		g_fiber_pool->queue_job([this] {
+			register_vehicles();
+		});
 	}
 
 	void mobile_service::register_vehicles()

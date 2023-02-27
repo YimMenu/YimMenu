@@ -93,7 +93,10 @@ namespace big
 			return m_internal_addr;
 		}
 
-		int get_id() { return m_internal_id; }
+		int get_id()
+		{
+			return m_internal_id;
+		}
 
 		void set(int value)
 		{
@@ -118,7 +121,10 @@ namespace big
 			return j;
 		}
 
-		void write() { *m_internal_addr = m_value; }
+		void write()
+		{
+			*m_internal_addr = m_value;
+		}
 
 	private:
 		inline static int m_instance_count;

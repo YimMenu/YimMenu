@@ -28,21 +28,19 @@ namespace big
 			{
 				ready = false;
 
-				g_fiber_pool->queue_job(
-				    []
-				    {
-					    std::map<int, bool> tmp_seats;
+				g_fiber_pool->queue_job([] {
+					std::map<int, bool> tmp_seats;
 
-					    int num_of_seats = VEHICLE::GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(self::veh);
+					int num_of_seats = VEHICLE::GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(self::veh);
 
-					    for (int i = -1; i < num_of_seats; i++)
-					    {
-						    tmp_seats[i] = VEHICLE::IS_VEHICLE_SEAT_FREE(self::veh, i, true);
-					    }
+					for (int i = -1; i < num_of_seats; i++)
+					{
+						tmp_seats[i] = VEHICLE::IS_VEHICLE_SEAT_FREE(self::veh, i, true);
+					}
 
-					    seats = tmp_seats;
-					    ready = true;
-				    });
+					seats = tmp_seats;
+					ready = true;
+				});
 			}
 
 			if (seats.size() == 0)
@@ -72,7 +70,9 @@ namespace big
 						ImGui::SameLine();
 					}
 
-					components::button(name, [idx] { PED::SET_PED_INTO_VEHICLE(self::ped, self::veh, idx); });
+					components::button(name, [idx] {
+						PED::SET_PED_INTO_VEHICLE(self::ped, self::veh, idx);
+					});
 					if (!it.second)
 					{
 						ImGui::EndDisabled();
@@ -89,8 +89,10 @@ namespace big
 			if (ImGui::SliderFloat(
 			        std::vformat("FUN_VEHICLE_TOP_SPEED"_T, std::make_format_args(speed_unit_strings[(int)g.vehicle.speed_unit]))
 			            .c_str(),
-			        &auto_drive_speed_user_unit, vehicle::mps_to_speed(0.f, g.vehicle.speed_unit),
-			        vehicle::mps_to_speed(150.f, g.vehicle.speed_unit), "%.1f"))
+			        &auto_drive_speed_user_unit,
+			        vehicle::mps_to_speed(0.f, g.vehicle.speed_unit),
+			        vehicle::mps_to_speed(150.f, g.vehicle.speed_unit),
+			        "%.1f"))
 			{
 				g.vehicle.auto_drive_speed = vehicle::speed_to_mps(auto_drive_speed_user_unit, g.vehicle.speed_unit);
 			}
@@ -103,8 +105,8 @@ namespace big
 					if (ImGui::Selectable(driving_style_names[i], g.vehicle.auto_drive_style == (AutoDriveStyle)i))
 					{
 						g.vehicle.auto_drive_style = (AutoDriveStyle)i;
-						g_notification_service->push_warning(
-						    "AUTO_DRIVE"_T.data(), std::vformat("DRIVING_STYLE_SET_TO"_T.data(), std::make_format_args(driving_style_names[i])));
+						g_notification_service->push_warning("AUTO_DRIVE"_T.data(),
+						    std::vformat("DRIVING_STYLE_SET_TO"_T.data(), std::make_format_args(driving_style_names[i])));
 					}
 
 					if (g.vehicle.auto_drive_style == (AutoDriveStyle)i)
@@ -222,8 +224,10 @@ namespace big
 			if (ImGui::SliderFloat(
 			        std::vformat("FUN_VEHICLE_SPEED"_T.data(), std::make_format_args(speed_unit_strings[(int)g.vehicle.speed_unit]))
 			            .c_str(),
-			        &fly_speed_user_unit, vehicle::mps_to_speed(0.f, g.vehicle.speed_unit),
-			        vehicle::mps_to_speed(150.f, g.vehicle.speed_unit), "%.1f"))
+			        &fly_speed_user_unit,
+			        vehicle::mps_to_speed(0.f, g.vehicle.speed_unit),
+			        vehicle::mps_to_speed(150.f, g.vehicle.speed_unit),
+			        "%.1f"))
 			{
 				g.vehicle.fly.speed = vehicle::speed_to_mps(fly_speed_user_unit, g.vehicle.speed_unit);
 			}

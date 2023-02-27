@@ -11,7 +11,9 @@
 namespace big
 {
 	reaction::reaction(const char* event_name, const char* notify_message, const char* announce_message) :
-	m_event_name(event_name), m_notify_message(notify_message), m_announce_message(announce_message)
+	    m_event_name(event_name),
+	    m_notify_message(notify_message),
+	    m_announce_message(announce_message)
 	{
 	}
 
@@ -36,14 +38,12 @@ namespace big
 
 		if (kick)
 		{
-			g_fiber_pool->queue_job(
-			    [player]
-			    {
-				    ((player_command*)command::get(RAGE_JOAAT("bailkick")))->call(player, {});
-				    ((player_command*)command::get(RAGE_JOAAT("nfkick")))->call(player, {});
-				    script::get_current()->yield(700ms);
-				    ((player_command*)command::get(RAGE_JOAAT("breakup")))->call(player, {});
-			    });
+			g_fiber_pool->queue_job([player] {
+				((player_command*)command::get(RAGE_JOAAT("bailkick")))->call(player, {});
+				((player_command*)command::get(RAGE_JOAAT("nfkick")))->call(player, {});
+				script::get_current()->yield(700ms);
+				((player_command*)command::get(RAGE_JOAAT("breakup")))->call(player, {});
+			});
 		}
 	}
 
@@ -54,17 +54,19 @@ namespace big
 
 		if (announce_in_chat)
 		{
-			g_fiber_pool->queue_job(
-			    [player, this]
-			    {
-				    char chat[255];
-				    snprintf(chat, sizeof(chat), std::format("{} {}", g.session.chat_output_prefix, m_announce_message).data(),
-				        player->get_name());
+			g_fiber_pool->queue_job([player, this] {
+				char chat[255];
+				snprintf(chat,
+				    sizeof(chat),
+				    std::format("{} {}", g.session.chat_output_prefix, m_announce_message).data(),
+				    player->get_name());
 
-				    if (g_hooking->get_original<hooks::send_chat_message>()(
-				            *g_pointers->m_send_chat_ptr, g_player_service->get_self()->get_net_data(), chat, false))
-					    notify::draw_chat(chat, g_player_service->get_self()->get_name(), false);
-			    });
+				if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_send_chat_ptr,
+				        g_player_service->get_self()->get_net_data(),
+				        chat,
+				        false))
+					notify::draw_chat(chat, g_player_service->get_self()->get_name(), false);
+			});
 		}
 
 		if (notify)

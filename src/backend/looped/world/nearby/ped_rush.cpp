@@ -1,5 +1,5 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
+#include "natives.hpp"
 #include "pointers.hpp"
 #include "util/entity.hpp"
 
@@ -18,11 +18,11 @@ namespace big
 			}
 		}
 
-		virtual void on_disable() override //Set the peds back to their normal speed
+		virtual void on_disable() override//Set the peds back to their normal speed
 		{
 			for (auto ped : entity::get_entities(false, true))
 			{
-				PED::SET_PED_MOVE_RATE_OVERRIDE(ped, 1.0f); 
+				PED::SET_PED_MOVE_RATE_OVERRIDE(ped, 1.0f);
 			}
 		}
 	};

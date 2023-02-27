@@ -13,7 +13,10 @@ namespace big
 
 		std::chrono::system_clock::time_point last_oom_kick_time{};
 
-		virtual CommandAccessLevel get_access_level() { return CommandAccessLevel::TOXIC; }
+		virtual CommandAccessLevel get_access_level()
+		{
+			return CommandAccessLevel::TOXIC;
+		}
 
 		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{

@@ -5,18 +5,18 @@
 namespace big
 {
 	player_all_component::player_all_component(player_command* parent, const std::string& name, const std::string& label, const std::string& description, std::optional<std::uint8_t> num_args) :
-	command(name + "all", label, description, num_args), m_parent(parent)
+	    command(name + "all", label, description, num_args),
+	    m_parent(parent)
 	{
 	}
 
 	void player_all_component::execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)
 	{
-		g_fiber_pool->queue_job(
-		    [this, args, &ctx]
-		    {
-			    g_player_service->iterate(
-			        [this, args, &ctx](const player_entry& player) { m_parent->execute(player.second, args, ctx); });
-		    });
+		g_fiber_pool->queue_job([this, args, &ctx] {
+			g_player_service->iterate([this, args, &ctx](const player_entry& player) {
+				m_parent->execute(player.second, args, ctx);
+			});
+		});
 	}
 
 	std::optional<std::vector<std::uint64_t>> player_all_component::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
@@ -25,7 +25,7 @@ namespace big
 	}
 
 	player_command::player_command(const std::string& name, const std::string& label, const std::string& description, std::optional<std::uint8_t> num_args, bool make_all_version) :
-	command(name, label, description, num_args.has_value() ? std::optional{num_args.value() + 1} : std::nullopt)
+	    command(name, label, description, num_args.has_value() ? std::optional{num_args.value() + 1} : std::nullopt)
 	{
 		if (make_all_version)
 			m_all_component = std::make_unique<player_all_component>(this, name, label, description, num_args);
@@ -33,32 +33,30 @@ namespace big
 
 	void player_command::execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)
 	{
-		g_fiber_pool->queue_job(
-		    [this, args, ctx]
-		    {
-			    std::vector<std::uint64_t> new_args;
+		g_fiber_pool->queue_job([this, args, ctx] {
+			std::vector<std::uint64_t> new_args;
 
-			    // TODO: This looks ugly and inefficient
-			    for (int i = 1; i < m_num_args; i++)
-				    new_args.push_back(args[i]);
+			// TODO: This looks ugly and inefficient
+			for (int i = 1; i < m_num_args; i++)
+				new_args.push_back(args[i]);
 
-			    if (g_player_service->get_self()->id() == args[0])
-			    {
-				    execute(g_player_service->get_self(), new_args, ctx);
-				    return;
-			    }
+			if (g_player_service->get_self()->id() == args[0])
+			{
+				execute(g_player_service->get_self(), new_args, ctx);
+				return;
+			}
 
-			    for (auto& plyr : g_player_service->players())
-			    {
-				    if (plyr.second->id() == args[0])
-				    {
-					    execute(plyr.second, new_args, ctx);
-					    return;
-				    }
-			    }
+			for (auto& plyr : g_player_service->players())
+			{
+				if (plyr.second->id() == args[0])
+				{
+					execute(plyr.second, new_args, ctx);
+					return;
+				}
+			}
 
-			    ctx->report_error(std::format("Tried to execute command {}, but a player with index {} was not found", m_name, args[0]));
-		    });
+			ctx->report_error(std::format("Tried to execute command {}, but a player with index {} was not found", m_name, args[0]));
+		});
 	}
 
 	std::optional<std::vector<std::uint64_t>> player_command::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
@@ -116,16 +114,16 @@ namespace big
 		// TODO: Code duplication
 		if (m_num_args.has_value() && args.size() != (m_num_args.value() - 1))
 		{
-			ctx->report_error(std::format(
-			    "Command {} called with the wrong number of arguments. Expected {}, got {}", m_name, m_num_args.value(), args.size()));
+			ctx->report_error(std::format("Command {} called with the wrong number of arguments. Expected {}, got {}",
+			    m_name,
+			    m_num_args.value(),
+			    args.size()));
 			return;
 		}
 
-		g_fiber_pool->queue_job(
-		    [this, player, args, ctx]
-		    {
-			    if (player->is_valid())
-				    execute(player, args, ctx);
-		    });
+		g_fiber_pool->queue_job([this, player, args, ctx] {
+			if (player->is_valid())
+				execute(player, args, ctx);
+		});
 	}
 }

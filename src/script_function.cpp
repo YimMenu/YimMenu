@@ -10,7 +10,11 @@
 namespace big
 {
 	script_function::script_function(const std::string& name, const rage::joaat_t script, const std::string& pattern, int32_t offset) :
-	m_name(name), m_script(script), m_pattern(pattern), m_offset(offset), m_ip(0)
+	    m_name(name),
+	    m_script(script),
+	    m_pattern(pattern),
+	    m_offset(offset),
+	    m_ip(0)
 	{
 	}
 

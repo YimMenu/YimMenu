@@ -8,57 +8,47 @@ namespace big
 {
 	void view::vehicle()
 	{
-		components::button("MORS_FIX_ALL"_T,
-		    []
-		    {
-			    int amount_fixed = mobile::mors_mutual::fix_all();
-			    g_notification_service->push("MOBILE"_T.data(),
-			        std::vformat("VEHICLE_FIX_AMOUNT"_T.data(),
-			            std::make_format_args(
-			                amount_fixed, amount_fixed == 1 ? "VEHICLE_FIX_HAS"_T.data() : "VEHICLE_FIX_HAVE"_T.data())));
-		    });
+		components::button("MORS_FIX_ALL"_T, [] {
+			int amount_fixed = mobile::mors_mutual::fix_all();
+			g_notification_service->push("MOBILE"_T.data(),
+			    std::vformat("VEHICLE_FIX_AMOUNT"_T.data(),
+			        std::make_format_args(amount_fixed,
+			            amount_fixed == 1 ? "VEHICLE_FIX_HAS"_T.data() : "VEHICLE_FIX_HAVE"_T.data())));
+		});
 		ImGui::SameLine();
-		components::button("REPAIR"_T, [] { vehicle::repair(self::veh); });
+		components::button("REPAIR"_T, [] {
+			vehicle::repair(self::veh);
+		});
 
 		ImGui::SameLine();
 		components::command_checkbox<"keepfixed">();
 
 		ImGui::Separator();
 
-		components::button("TP_IN_PV"_T,
-		    []
-		    {
-			    Vehicle veh = mobile::mechanic::get_personal_vehicle();
-			    teleport::into_vehicle(veh);
-		    });
+		components::button("TP_IN_PV"_T, [] {
+			Vehicle veh = mobile::mechanic::get_personal_vehicle();
+			teleport::into_vehicle(veh);
+		});
 		ImGui::SameLine();
-		components::button("BRING_PV"_T,
-		    []
-		    {
-			    Vehicle veh = mobile::mechanic::get_personal_vehicle();
-			    vehicle::bring(veh, self::pos, true);
-		    });
+		components::button("BRING_PV"_T, [] {
+			Vehicle veh = mobile::mechanic::get_personal_vehicle();
+			vehicle::bring(veh, self::pos, true);
+		});
 		ImGui::SameLine();
-		components::button("BRING_CLOSEST_VEHICLE"_T,
-		    []
-		    {
-			    Vehicle veh = vehicle::get_closest_to_location(self::pos, 200);
-			    vehicle::bring(veh, self::pos, true, -1);
-		    });
+		components::button("BRING_CLOSEST_VEHICLE"_T, [] {
+			Vehicle veh = vehicle::get_closest_to_location(self::pos, 200);
+			vehicle::bring(veh, self::pos, true, -1);
+		});
 
 		ImGui::Separator();
 
-		components::button("TURN_ENGINE_ON"_T,
-		    []
-		    {
-			    vehicle::set_engine_state(self::veh, true, g.vehicle.change_engine_state_immediately, g.vehicle.disable_engine_auto_start);
-		    });
+		components::button("TURN_ENGINE_ON"_T, [] {
+			vehicle::set_engine_state(self::veh, true, g.vehicle.change_engine_state_immediately, g.vehicle.disable_engine_auto_start);
+		});
 		ImGui::SameLine();
-		components::button("TURN_ENGINE_OFF"_T,
-		    []
-		    {
-			    vehicle::set_engine_state(self::veh, false, g.vehicle.change_engine_state_immediately, g.vehicle.disable_engine_auto_start);
-		    });
+		components::button("TURN_ENGINE_OFF"_T, [] {
+			vehicle::set_engine_state(self::veh, false, g.vehicle.change_engine_state_immediately, g.vehicle.disable_engine_auto_start);
+		});
 		ImGui::Checkbox("DISABLE_ENGINE_AUTO_START"_T.data(), &g.vehicle.disable_engine_auto_start);
 		ImGui::SameLine();
 		ImGui::Checkbox("CHANGE_STATE_IMMEDIATELY"_T.data(), &g.vehicle.change_engine_state_immediately);

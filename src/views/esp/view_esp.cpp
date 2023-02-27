@@ -64,7 +64,8 @@ namespace big
 			if (distance < g.esp.tracer_render_distance[1] && distance > g.esp.tracer_render_distance[0] && g.esp.tracer)
 				draw_list->AddLine({(float)*g_pointers->m_resolution_x * g.esp.tracer_draw_position[0],
 				                       (float)*g_pointers->m_resolution_y * g.esp.tracer_draw_position[1]},
-				    {esp_x, esp_y}, esp_color);
+				    {esp_x, esp_y},
+				    esp_color);
 
 			if (distance < g.esp.box_render_distance[1] && distance > g.esp.box_render_distance[0] && g.esp.box)
 				draw_list->AddRect({esp_x - (62.5f * multplr), esp_y - (175.f * multplr)}, {esp_x - (62.5f * multplr) + (125.f * multplr), esp_y - (175.f * multplr) + (350.f * multplr)}, esp_color);
@@ -104,7 +105,8 @@ namespace big
 
 				if (!mode_str.empty())
 				{
-					draw_list->AddText({esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 40.f}, ImColor(1.f, 0.f, 0.f, 1.f),
+					draw_list->AddText({esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 40.f},
+					    ImColor(1.f, 0.f, 0.f, 1.f),
 					    mode_str.c_str());
 				}
 			}
@@ -115,13 +117,15 @@ namespace big
 				{
 					if (g.esp.scale_health_from_dist)
 					{
-						draw_list->AddLine({esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 5.f}, {esp_x - (62.5f * multplr) + (125.f * multplr), esp_y + (175.f * multplr) + 5.f},
+						draw_list->AddLine({esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 5.f},
+						    {esp_x - (62.5f * multplr) + (125.f * multplr), esp_y + (175.f * multplr) + 5.f},
 						    health_perc == 0.f      ? death_bg :
 						        health_perc < 0.25f ? health_red_bg :
 						        health_perc < 0.65f ? health_yellow_bg :
 						                              health_green_bg,
 						    4);
-						draw_list->AddLine({esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 5.f}, {esp_x - (62.5f * multplr) + (125.f * multplr) * health_perc, esp_y + (175.f * multplr) + 5.f},
+						draw_list->AddLine({esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 5.f},
+						    {esp_x - (62.5f * multplr) + (125.f * multplr) * health_perc, esp_y + (175.f * multplr) + 5.f},
 						    health_perc < 0.25f     ? health_red :
 						        health_perc < 0.65f ? health_yellow :
 						                              health_green,
@@ -129,13 +133,15 @@ namespace big
 					}
 					else
 					{
-						draw_list->AddLine({esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 5.f}, {esp_x - (62.5f * multplr) + (100.f), esp_y + (175.f * multplr) + 5.f},
+						draw_list->AddLine({esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 5.f},
+						    {esp_x - (62.5f * multplr) + (100.f), esp_y + (175.f * multplr) + 5.f},
 						    health_perc == 0.f      ? death_bg :
 						        health_perc < 0.25f ? health_red_bg :
 						        health_perc < 0.65f ? health_yellow_bg :
 						                              health_green_bg,
 						    4);
-						draw_list->AddLine({esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 5.f}, {esp_x - (62.5f * multplr) + (100.f * health_perc), esp_y + (175.f * multplr) + 5.f},
+						draw_list->AddLine({esp_x - (62.5f * multplr), esp_y + (175.f * multplr) + 5.f},
+						    {esp_x - (62.5f * multplr) + (100.f * health_perc), esp_y + (175.f * multplr) + 5.f},
 						    health_perc < 0.25f     ? health_red :
 						        health_perc < 0.65f ? health_yellow :
 						                              health_green,

@@ -9,7 +9,8 @@
 
 namespace big
 {
-	player::player(CNetGamePlayer* net_game_player) : m_net_game_player(net_game_player)
+	player::player(CNetGamePlayer* net_game_player) :
+	    m_net_game_player(net_game_player)
 	{
 		m_is_friend = friends_service::is_friend(net_game_player);
 	}

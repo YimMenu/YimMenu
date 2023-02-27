@@ -30,9 +30,15 @@ namespace rage
 		std::uint32_t m_strings_count;// 0x70
 		char m_padding8[0x0C];        // 0x74
 
-		bool is_valid() const { return m_code_size != 0; }
+		bool is_valid() const
+		{
+			return m_code_size != 0;
+		}
 
-		std::uint32_t get_num_code_pages() const { return (m_code_size + 0x3FFF) >> 14; }
+		std::uint32_t get_num_code_pages() const
+		{
+			return (m_code_size + 0x3FFF) >> 14;
+		}
 
 		std::uint32_t get_code_page_size(std::uint32_t page) const
 		{
@@ -58,7 +64,10 @@ namespace rage
 			return (numPages * 0x4000) + (m_code_size & 0x3FFF);
 		}
 
-		std::uint8_t* get_code_page(std::uint32_t page) const { return m_code_blocks[page]; }
+		std::uint8_t* get_code_page(std::uint32_t page) const
+		{
+			return m_code_blocks[page];
+		}
 
 		std::uint8_t* get_code_address(std::uint32_t index) const
 		{
@@ -146,9 +155,15 @@ namespace rage
 			return nullptr;
 		}
 
-		scrProgramTableEntry* begin() { return m_data; }
+		scrProgramTableEntry* begin()
+		{
+			return m_data;
+		}
 
-		scrProgramTableEntry* end() { return m_data + m_size; }
+		scrProgramTableEntry* end()
+		{
+			return m_data + m_size;
+		}
 	};
 
 	static_assert(sizeof(scrProgram) == 0x80);

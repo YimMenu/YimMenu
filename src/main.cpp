@@ -37,9 +37,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 		g_hmodule     = hmod;
 		g_main_thread = CreateThread(
-		    nullptr, 0,
-		    [](PVOID) -> DWORD
-		    {
+		    nullptr,
+		    0,
+		    [](PVOID) -> DWORD {
 			    auto handler = exception_handler();
 
 			    while (!FindWindow("grcWindow", nullptr))
@@ -205,7 +205,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    CloseHandle(g_main_thread);
 			    FreeLibraryAndExitThread(g_hmodule, 0);
 		    },
-		    nullptr, 0, &g_main_thread_id);
+		    nullptr,
+		    0,
+		    &g_main_thread_id);
 	}
 
 	return true;

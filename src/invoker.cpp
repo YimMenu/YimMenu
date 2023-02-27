@@ -40,8 +40,7 @@ namespace big
 		{
 			rage::scrNativeHandler handler = it->second;
 
-			[this, hash, handler]
-			{
+			[this, hash, handler] {
 				__try
 				{
 					_call_asm(&m_call_context, handler, g_pointers->m_native_return);
@@ -50,8 +49,7 @@ namespace big
 				}
 				__except (EXCEPTION_EXECUTE_HANDLER)
 				{
-					[hash]()
-					{
+					[hash]() {
 						LOG(WARNING) << "Exception caught while trying to call " << hash << " native.";
 					}();
 				}
@@ -59,8 +57,7 @@ namespace big
 		}
 		else
 		{
-			[hash]()
-			{
+			[hash]() {
 				LOG(WARNING) << "Failed to find " << HEX_TO_UPPER(hash) << " native's handler.";
 			}();
 		}

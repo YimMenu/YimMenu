@@ -196,31 +196,31 @@ namespace big
 
 		ImGui::Combo("##hud_comp_combo", &g.self.selected_hud_component, hud_component_names, (int)HudComponents::HUD_WEAPONS);
 		ImGui::SameLine();
-		components::button("HIDE"_T, [] { g.self.hud_components_states[g.self.selected_hud_component] = true; });
+		components::button("HIDE"_T, [] {
+			g.self.hud_components_states[g.self.selected_hud_component] = true;
+		});
 		ImGui::SameLine();
-		components::button("SHOW"_T, [] { g.self.hud_components_states[g.self.selected_hud_component] = false; });
+		components::button("SHOW"_T, [] {
+			g.self.hud_components_states[g.self.selected_hud_component] = false;
+		});
 
-		components::button("HIDE_ALL"_T,
-		    []
-		    {
-			    g.self.hide_radar = true;
-			    g.self.hide_ammo  = true;
-			    for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
-			    {
-				    g.self.hud_components_states[i] = true;
-			    }
-		    });
+		components::button("HIDE_ALL"_T, [] {
+			g.self.hide_radar = true;
+			g.self.hide_ammo  = true;
+			for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
+			{
+				g.self.hud_components_states[i] = true;
+			}
+		});
 		ImGui::SameLine();
-		components::button("SHOW_ALL"_T,
-		    []
-		    {
-			    g.self.hide_radar = false;
-			    g.self.hide_ammo  = false;
-			    for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
-			    {
-				    g.self.hud_components_states[i] = false;
-			    }
-		    });
+		components::button("SHOW_ALL"_T, [] {
+			g.self.hide_radar = false;
+			g.self.hide_ammo  = false;
+			for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
+			{
+				g.self.hud_components_states[i] = false;
+			}
+		});
 		ImGui::SameLine();
 		ImGui::Checkbox("FORCE_SHOW_HUD_ELEMENT"_T.data(), &g.self.force_show_hud_element);
 		if (ImGui::IsItemHovered())

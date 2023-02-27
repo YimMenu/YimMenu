@@ -32,11 +32,20 @@ namespace big
 		~matchmaking_service();
 		bool matchmake(std::optional<int> constraint = std::nullopt);
 
-		inline int get_num_found_sessions() { return m_num_sessions_found; }
+		inline int get_num_found_sessions()
+		{
+			return m_num_sessions_found;
+		}
 
-		inline session* get_found_sessions() { return m_found_sessions; }
+		inline session* get_found_sessions()
+		{
+			return m_found_sessions;
+		}
 
-		inline bool is_active() { return m_active; }
+		inline bool is_active()
+		{
+			return m_active;
+		}
 	};
 
 	inline matchmaking_service* g_matchmaking_service;

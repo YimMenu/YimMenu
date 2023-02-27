@@ -47,8 +47,8 @@ namespace big
 
 		if (!buffer)
 		{
-			g_notification_service->push_error(
-			    "CREATOR_STORAGE_SAVE_JOB"_T.data(), "CREATOR_STORAGE_CANNOT_OBTAIN_JSON"_T.data());
+			g_notification_service->push_error("CREATOR_STORAGE_SAVE_JOB"_T.data(),
+			    "CREATOR_STORAGE_CANNOT_OBTAIN_JSON"_T.data());
 			return;
 		}
 

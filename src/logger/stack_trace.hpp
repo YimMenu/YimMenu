@@ -19,7 +19,8 @@ namespace big
 		struct module_info
 		{
 			module_info(std::filesystem::path path, void* base) :
-			m_path(path), m_base(reinterpret_cast<uintptr_t>(base))
+			    m_path(path),
+			    m_base(reinterpret_cast<uintptr_t>(base))
 			{
 				const auto dos_header = reinterpret_cast<IMAGE_DOS_HEADER*>(base);
 				const auto nt_header  = reinterpret_cast<IMAGE_NT_HEADERS*>(m_base + dos_header->e_lfanew);

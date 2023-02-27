@@ -15,15 +15,13 @@ namespace big
 		m_save_file = std::make_unique<file>(save_file.get_path());
 		load();
 
-		g_thread_pool->push(
-		    [this]
-		    {
-			    while (m_running)
-			    {
-				    std::this_thread::sleep_for(100ms);
-				    attempt_save();
-			    }
-		    });
+		g_thread_pool->push([this] {
+			while (m_running)
+			{
+				std::this_thread::sleep_for(100ms);
+				attempt_save();
+			}
+		});
 	}
 
 	void menu_settings::attempt_save()

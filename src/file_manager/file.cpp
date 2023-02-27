@@ -6,13 +6,14 @@
 namespace big
 {
 	file::file(file_manager* file_manager, std::filesystem::path file_path) :
-	file(file_manager->get_base_dir() / file_path)
+	    file(file_manager->get_base_dir() / file_path)
 	{
 		m_is_project_file = true;
 	}
 
 	file::file(std::filesystem::path file_path) :
-	m_file_path(file_manager::ensure_file_can_be_created(file_path)), m_is_project_file(false)
+	    m_file_path(file_manager::ensure_file_can_be_created(file_path)),
+	    m_is_project_file(false)
 	{
 	}
 

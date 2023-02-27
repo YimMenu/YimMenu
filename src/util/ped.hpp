@@ -1,7 +1,7 @@
 #pragma once
+#include "entity.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "entity.hpp"
 
 namespace big::ped
 {

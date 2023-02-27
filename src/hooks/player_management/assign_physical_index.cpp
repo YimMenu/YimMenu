@@ -29,8 +29,9 @@ namespace big
 				{
 					g_notification_service->push("PLAYER_LEFT"_T.data(),
 					    std::vformat("PLAYER_LEFT_INFO"_T,
-					        std::make_format_args(
-					            net_player_data->m_name, player->m_player_id, net_player_data->m_gamer_handle.m_rockstar_id)));
+					        std::make_format_args(net_player_data->m_name,
+					            player->m_player_id,
+					            net_player_data->m_gamer_handle.m_rockstar_id)));
 				}
 			}
 
@@ -52,44 +53,43 @@ namespace big
 			{
 				g_notification_service->push("PLAYER_JOINED"_T.data(),
 				    std::vformat("PLAYER_JOINED_INFO"_T,
-				        std::make_format_args(
-				            net_player_data->m_name, player->m_player_id, net_player_data->m_gamer_handle.m_rockstar_id)));
+				        std::make_format_args(net_player_data->m_name,
+				            player->m_player_id,
+				            net_player_data->m_gamer_handle.m_rockstar_id)));
 			}
 
 			auto id = player->m_player_id;
-			g_fiber_pool->queue_job(
-			    [id]
-			    {
-				    if (auto plyr = g_player_service->get_by_id(id))
-				    {
-					    if (plyr->get_net_data()->m_gamer_handle.m_rockstar_id != 0)
-					    {
-						    if (auto entry = g_player_database_service->get_player_by_rockstar_id(
-						            plyr->get_net_data()->m_gamer_handle.m_rockstar_id))
-						    {
-							    plyr->is_modder         = entry->is_modder;
-							    plyr->block_join        = entry->block_join;
-							    plyr->block_join_reason = plyr->block_join_reason;
+			g_fiber_pool->queue_job([id] {
+				if (auto plyr = g_player_service->get_by_id(id))
+				{
+					if (plyr->get_net_data()->m_gamer_handle.m_rockstar_id != 0)
+					{
+						if (auto entry = g_player_database_service->get_player_by_rockstar_id(
+						        plyr->get_net_data()->m_gamer_handle.m_rockstar_id))
+						{
+							plyr->is_modder         = entry->is_modder;
+							plyr->block_join        = entry->block_join;
+							plyr->block_join_reason = plyr->block_join_reason;
 
-							    if (strcmp(plyr->get_name(), entry->name.data()))
-							    {
-								    g_notification_service->push("PLAYERS"_T.data(),
-								        std::vformat("PLAYER_CHANGED_NAME"_T, std::make_format_args(entry->name, plyr->get_name())));
-								    entry->name = plyr->get_name();
-								    g_player_database_service->save();
-							    }
-						    }
-					    }
+							if (strcmp(plyr->get_name(), entry->name.data()))
+							{
+								g_notification_service->push("PLAYERS"_T.data(),
+								    std::vformat("PLAYER_CHANGED_NAME"_T, std::make_format_args(entry->name, plyr->get_name())));
+								entry->name = plyr->get_name();
+								g_player_database_service->save();
+							}
+						}
+					}
 
-					    if (auto snplyr = plyr->get_session_player())
-					    {
-						    packet msg{};
-						    msg.write_message(rage::eNetMessage::MsgSessionEstablishedRequest);
-						    msg.write<uint64_t>(gta_util::get_network()->m_game_session_ptr->m_rline_session.m_session_id, 64);
-						    msg.send(snplyr->m_msg_id);
-					    }
-				    }
-			    });
+					if (auto snplyr = plyr->get_session_player())
+					{
+						packet msg{};
+						msg.write_message(rage::eNetMessage::MsgSessionEstablishedRequest);
+						msg.write<uint64_t>(gta_util::get_network()->m_game_session_ptr->m_rline_session.m_session_id, 64);
+						msg.send(snplyr->m_msg_id);
+					}
+				}
+			});
 		}
 		return result;
 	}

@@ -22,11 +22,15 @@ namespace big
 
 		if (ImGui::TreeNode("LOCAL_WEATHER"_T.data()))
 		{
-			components::button("CLEAR_OVERRIDE"_T, [] { MISC::CLEAR_OVERRIDE_WEATHER(); });
+			components::button("CLEAR_OVERRIDE"_T, [] {
+				MISC::CLEAR_OVERRIDE_WEATHER();
+			});
 
 			if (ImGui::ListBox("##weather-listbox", &g.session.local_weather, session::weathers, 15))
 			{
-				g_fiber_pool->queue_job([] { session::local_weather(); });
+				g_fiber_pool->queue_job([] {
+					session::local_weather();
+				});
 
 				ImGui::ListBoxFooter();
 			}

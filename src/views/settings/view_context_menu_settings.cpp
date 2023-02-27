@@ -10,17 +10,21 @@ namespace big
 		if (g.context_menu.enabled)
 		{
 			ImGui::Text("SETTINGS_CONTEXT_MENU_ENTITY_TYPES"_T.data());
-			ImGui::CheckboxFlags(
-			    "SETTINGS_CONTEXT_MENU_ENTITY_TYPE_OBJECT"_T.data(), reinterpret_cast<int*>(&g.context_menu.allowed_entity_types), static_cast<int>(ContextEntityType::OBJECT));
+			ImGui::CheckboxFlags("SETTINGS_CONTEXT_MENU_ENTITY_TYPE_OBJECT"_T.data(),
+			    reinterpret_cast<int*>(&g.context_menu.allowed_entity_types),
+			    static_cast<int>(ContextEntityType::OBJECT));
 			ImGui::SameLine();
-			ImGui::CheckboxFlags(
-			    "SETTINGS_CONTEXT_MENU_ENTITY_TYPE_PED"_T.data(), reinterpret_cast<int*>(&g.context_menu.allowed_entity_types), static_cast<int>(ContextEntityType::PED));
+			ImGui::CheckboxFlags("SETTINGS_CONTEXT_MENU_ENTITY_TYPE_PED"_T.data(),
+			    reinterpret_cast<int*>(&g.context_menu.allowed_entity_types),
+			    static_cast<int>(ContextEntityType::PED));
 			ImGui::SameLine();
-			ImGui::CheckboxFlags(
-			    "SETTINGS_CONTEXT_MENU_ENTITY_TYPE_PLAYER"_T.data(), reinterpret_cast<int*>(&g.context_menu.allowed_entity_types), static_cast<int>(ContextEntityType::PLAYER));
+			ImGui::CheckboxFlags("SETTINGS_CONTEXT_MENU_ENTITY_TYPE_PLAYER"_T.data(),
+			    reinterpret_cast<int*>(&g.context_menu.allowed_entity_types),
+			    static_cast<int>(ContextEntityType::PLAYER));
 			ImGui::SameLine();
-			ImGui::CheckboxFlags(
-			    "SETTINGS_CONTEXT_MENU_ENTITY_TYPE_VEHICLE"_T.data(), reinterpret_cast<int*>(&g.context_menu.allowed_entity_types), static_cast<int>(ContextEntityType::VEHICLE));
+			ImGui::CheckboxFlags("SETTINGS_CONTEXT_MENU_ENTITY_TYPE_VEHICLE"_T.data(),
+			    reinterpret_cast<int*>(&g.context_menu.allowed_entity_types),
+			    static_cast<int>(ContextEntityType::VEHICLE));
 
 			static ImVec4 selected_option_color = ImGui::ColorConvertU32ToFloat4(g.context_menu.selected_option_color);
 			ImGui::Text("SETTINGS_CONTEXT_MENU_COLOR"_T.data());

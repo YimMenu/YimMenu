@@ -50,8 +50,10 @@ namespace big
 
 					const auto cm_col = ImGui::ColorConvertFloat4ToU32({0.549f, 0.639f, 0.710f, 0.3f});
 
-					draw_list->AddRectFilled(
-					    {cm_start_x - 2.f, cm_start_y}, {cm_start_x + 2.f + cm->menu_size.x, cm_start_y + cm->menu_size.y}, cm_col, 5.f);
+					draw_list->AddRectFilled({cm_start_x - 2.f, cm_start_y},
+					    {cm_start_x + 2.f + cm->menu_size.x, cm_start_y + cm->menu_size.y},
+					    cm_col,
+					    5.f);
 
 					for (std::uint32_t i = 0; i < cm->options.size(); i++)
 					{

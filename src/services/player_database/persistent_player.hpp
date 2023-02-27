@@ -22,13 +22,17 @@ namespace big
 		bool is_modder            = false;
 		std::unordered_set<int> infractions;
 		std::optional<CommandAccessLevel> command_access_level = std::nullopt;
-		PlayerOnlineStatus online_state = PlayerOnlineStatus::UNKNOWN;
+		PlayerOnlineStatus online_state                        = PlayerOnlineStatus::UNKNOWN;
 	};
 
 	static void to_json(nlohmann::json& j, const persistent_player& player)
 	{
-		j = nlohmann::json{{"name", player.name}, {"rockstar_id", player.rockstar_id}, {"block_join", player.block_join},
-		    {"block_join_reason", player.block_join_reason}, {"is_modder", player.is_modder}, {"infractions", player.infractions}};
+		j = nlohmann::json{{"name", player.name},
+		    {"rockstar_id", player.rockstar_id},
+		    {"block_join", player.block_join},
+		    {"block_join_reason", player.block_join_reason},
+		    {"is_modder", player.is_modder},
+		    {"infractions", player.infractions}};
 
 		if (player.command_access_level.has_value())
 			j["command_access_level"] = player.command_access_level.value();

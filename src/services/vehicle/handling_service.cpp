@@ -4,7 +4,8 @@
 
 namespace big
 {
-	handling_service::handling_service() : m_profiles_folder(g_file_manager->get_project_folder("./handling_profiles"))
+	handling_service::handling_service() :
+	    m_profiles_folder(g_file_manager->get_project_folder("./handling_profiles"))
 	{
 		g_handling_service = this;
 

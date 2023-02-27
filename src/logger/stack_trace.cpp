@@ -7,7 +7,8 @@
 
 namespace big
 {
-	stack_trace::stack_trace() : m_frame_pointers(32)
+	stack_trace::stack_trace() :
+	    m_frame_pointers(32)
 	{
 		SymInitialize(GetCurrentProcess(), nullptr, true);
 	}

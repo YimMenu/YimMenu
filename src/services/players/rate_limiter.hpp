@@ -11,7 +11,8 @@ namespace big
 
 	public:
 		rate_limiter(std::chrono::milliseconds time_period, std::uint32_t num_allowed_attempts) :
-		m_attempts_allowed_in_time_period(num_allowed_attempts), m_time_period(time_period)
+		    m_attempts_allowed_in_time_period(num_allowed_attempts),
+		    m_time_period(time_period)
 		{
 		}
 
@@ -32,6 +33,9 @@ namespace big
 		}
 
 		// Check if the rate limit was exceeded by the last process() call. Use this to prevent the player from being flooded with notifications
-		bool exceeded_last_process() { return (m_num_attempts_allowed - 1) == m_attempts_allowed_in_time_period; }
+		bool exceeded_last_process()
+		{
+			return (m_num_attempts_allowed - 1) == m_attempts_allowed_in_time_period;
+		}
 	};
 }

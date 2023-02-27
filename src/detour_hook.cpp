@@ -7,12 +7,16 @@
 
 namespace big
 {
-	detour_hook::detour_hook(std::string name, void* detour) : m_name(std::move(name)), m_detour(detour)
+	detour_hook::detour_hook(std::string name, void* detour) :
+	    m_name(std::move(name)),
+	    m_detour(detour)
 	{
 	}
 
 	detour_hook::detour_hook(std::string name, void* target, void* detour) :
-	m_name(std::move(name)), m_target(target), m_detour(detour)
+	    m_name(std::move(name)),
+	    m_target(target),
+	    m_detour(detour)
 	{
 		create_hook();
 	}

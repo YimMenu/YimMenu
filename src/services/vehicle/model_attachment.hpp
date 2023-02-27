@@ -16,11 +16,16 @@ namespace big
 
 	static void to_json(nlohmann::json& j, const model_attachment& attachment)
 	{
-		j = nlohmann::json{{"model_hash", attachment.model_hash}, {"position_x", attachment.position.x},
-		    {"position_y", attachment.position.y}, {"position_z", attachment.position.z},
-		    {"rotation_x", attachment.rotation.x}, {"rotation_y", attachment.rotation.y},
-		    {"rotation_z", attachment.rotation.z}, {"has_collision", attachment.has_collision},
-		    {"is_visible", attachment.is_visible}, {"is_invincible", attachment.is_invincible}
+		j = nlohmann::json{{"model_hash", attachment.model_hash},
+		    {"position_x", attachment.position.x},
+		    {"position_y", attachment.position.y},
+		    {"position_z", attachment.position.z},
+		    {"rotation_x", attachment.rotation.x},
+		    {"rotation_y", attachment.rotation.y},
+		    {"rotation_z", attachment.rotation.z},
+		    {"has_collision", attachment.has_collision},
+		    {"is_visible", attachment.is_visible},
+		    {"is_invincible", attachment.is_invincible}
 
 		};
 	};

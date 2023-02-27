@@ -10,7 +10,10 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual CommandAccessLevel get_access_level() { return CommandAccessLevel::FRIENDLY; }
+		virtual CommandAccessLevel get_access_level()
+		{
+			return CommandAccessLevel::FRIENDLY;
+		}
 
 		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
@@ -23,17 +26,18 @@ namespace big
 	{
 		using command::command;
 
-		virtual CommandAccessLevel get_access_level() { return CommandAccessLevel::FRIENDLY; }
+		virtual CommandAccessLevel get_access_level()
+		{
+			return CommandAccessLevel::FRIENDLY;
+		}
 
 		virtual void execute(const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
-			g_player_service->iterate(
-			    [](auto& plyr)
-			    {
-				    for (auto& weapon : g_gta_data_service->weapons())
-					    WEAPON::GIVE_WEAPON_TO_PED(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr.second->id()), weapon.second.m_hash, 9999, FALSE, FALSE);
-				    script::get_current()->yield(500ms);
-			    });
+			g_player_service->iterate([](auto& plyr) {
+				for (auto& weapon : g_gta_data_service->weapons())
+					WEAPON::GIVE_WEAPON_TO_PED(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr.second->id()), weapon.second.m_hash, 9999, FALSE, FALSE);
+				script::get_current()->yield(500ms);
+			});
 		}
 	};
 

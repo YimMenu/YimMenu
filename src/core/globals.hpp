@@ -443,9 +443,9 @@ namespace big
 				bool enable           = false;
 				bool include_peds     = false;
 				bool include_vehicles = false;
-				float scale = 6.f;
-				float color[3] = { 1, 1, 1 };
-				int alpha = 150;
+				float scale           = 6.f;
+				float color[3]        = {1, 1, 1};
+				int alpha             = 150;
 				rage::fvector3 pos;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(blackhole, enable, include_peds, include_vehicles, color, alpha)
@@ -453,11 +453,11 @@ namespace big
 
 			struct nearby
 			{
-				bool ignore = false;
-				bool ped_rain = false;
-				bool veh_rain = false;
+				bool ignore     = false;
+				bool ped_rain   = false;
+				bool veh_rain   = false;
 				bool high_alert = false;
-				bool ped_rush = false;
+				bool ped_rush   = false;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(nearby, ignore, ped_rain, veh_rain, high_alert, ped_rush)
 			} nearby{};
@@ -617,37 +617,34 @@ namespace big
 
 			struct aimbot
 			{
-				bool enable = false;
-				bool smoothing = true;
-				float smoothing_speed = 2.f;
-				bool on_player = true;
-				bool on_enemy = false;
-				bool on_police = false;
-				bool on_npc = false;
-				float fov = 90.f;
-				float distance = 200.f;
-				std::uint32_t selected_bone = 0x796E; // Default to head
+				bool enable                 = false;
+				bool smoothing              = true;
+				float smoothing_speed       = 2.f;
+				bool on_player              = true;
+				bool on_enemy               = false;
+				bool on_police              = false;
+				bool on_npc                 = false;
+				float fov                   = 90.f;
+				float distance              = 200.f;
+				std::uint32_t selected_bone = 0x796E;// Default to head
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, smoothing, smoothing_speed, fov, selected_bone)
 			} aimbot{};
 
-			CustomWeapon custom_weapon = CustomWeapon::NONE;
-			bool force_crosshairs = false;
-			bool infinite_ammo = false;
-			bool infinite_mag = false;
-			float increased_damage = 1;
-			bool no_recoil = false;
-			bool no_spread = false;
+			CustomWeapon custom_weapon    = CustomWeapon::NONE;
+			bool force_crosshairs         = false;
+			bool infinite_ammo            = false;
+			bool infinite_mag             = false;
+			float increased_damage        = 1;
+			bool no_recoil                = false;
+			bool no_spread                = false;
 			std::string vehicle_gun_model = "bus";
-			bool increased_c4_limit = false;
-			bool increased_flare_limit = false;
-			bool rapid_fire = false;
-			bool interior_weapon = false;
-			bool triggerbot = false;
+			bool increased_c4_limit       = false;
+			bool increased_flare_limit    = false;
+			bool rapid_fire               = false;
+			bool interior_weapon          = false;
+			bool triggerbot               = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons,
-				ammo_special, custom_weapon, aimbot, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, no_recoil,
-				no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon,
-				triggerbot)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon, triggerbot)
 		} weapons{};
 
 		struct window

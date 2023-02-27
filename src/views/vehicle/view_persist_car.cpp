@@ -68,9 +68,13 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::button("SAVE_VEHICLE"_T, [] { save_vehicle(vehicle_file_name_input); });
+		components::button("SAVE_VEHICLE"_T, [] {
+			save_vehicle(vehicle_file_name_input);
+		});
 
-		components::button("LOAD_VEHICLE"_T, [] { load_vehicle(selected_vehicle_file); });
+		components::button("LOAD_VEHICLE"_T, [] {
+			load_vehicle(selected_vehicle_file);
+		});
 
 		ImGui::EndGroup();
 	}

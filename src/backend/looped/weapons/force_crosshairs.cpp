@@ -13,6 +13,6 @@ namespace big
 		}
 	};
 
-	force_crosshairs g_force_crosshairs(
-	    "crosshairs", "Force Crosshairs", "Shows the crosshair even when you are not aiming", g.weapons.force_crosshairs);// do we need this?
+	force_crosshairs g_force_crosshairs("crosshairs", "Force Crosshairs", "Shows the crosshair even when you are not aiming",
+	    g.weapons.force_crosshairs);// do we need this?
 }

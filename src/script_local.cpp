@@ -6,10 +6,14 @@
 
 namespace big
 {
-	script_local::script_local(rage::scrThread* thread, std::size_t index) : m_index(index), m_stack(thread->m_stack)
+	script_local::script_local(rage::scrThread* thread, std::size_t index) :
+	    m_index(index),
+	    m_stack(thread->m_stack)
 	{
 	}
-	script_local::script_local(PVOID stack, std::size_t index) : m_index(index), m_stack(stack)
+	script_local::script_local(PVOID stack, std::size_t index) :
+	    m_index(index),
+	    m_stack(stack)
 	{
 	}
 

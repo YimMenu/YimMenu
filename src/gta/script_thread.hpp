@@ -45,7 +45,10 @@ namespace rage
 		virtual eThreadState tick(std::uint32_t ops_to_execute)                            = 0;      // 3 (0x18)
 		virtual void kill()                                                                = 0;      // 4 (0x20)
 
-		inline static scrThread* get() { return rage::tlsContext::get()->m_script_thread; }
+		inline static scrThread* get()
+		{
+			return rage::tlsContext::get()->m_script_thread;
+		}
 
 	public:
 		scrThreadContext m_context;                     // 0x08

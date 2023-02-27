@@ -3,7 +3,11 @@
 namespace big
 {
 	hotkey::hotkey(rage::joaat_t name_hash, key_t key, rage::joaat_t command_hash, std::optional<std::chrono::high_resolution_clock::duration> cooldown) :
-	m_name_hash(name_hash), m_key(key), m_command_hash(command_hash), m_cooldown(cooldown), m_wakeup()
+	    m_name_hash(name_hash),
+	    m_key(key),
+	    m_command_hash(command_hash),
+	    m_cooldown(cooldown),
+	    m_wakeup()
 	{
 	}
 

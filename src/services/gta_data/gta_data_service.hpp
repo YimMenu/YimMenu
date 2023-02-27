@@ -39,9 +39,18 @@ namespace big
 		string_vec& vehicle_classes();
 		string_vec& weapon_types();
 
-		ped_map& peds() { return m_peds; }
-		vehicle_map& vehicles() { return m_vehicles; }
-		weapon_map& weapons() { return m_weapons; }
+		ped_map& peds()
+		{
+			return m_peds;
+		}
+		vehicle_map& vehicles()
+		{
+			return m_vehicles;
+		}
+		weapon_map& weapons()
+		{
+			return m_weapons;
+		}
 
 	private:
 		bool is_cache_up_to_date();

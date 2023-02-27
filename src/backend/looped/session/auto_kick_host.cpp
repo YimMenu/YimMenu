@@ -11,14 +11,12 @@ namespace big
 		bool kick_host = *g_pointers->m_is_session_started && g.session.force_session_host && g.session.kick_host_when_forcing_host;
 		if (kick_host && !bLastKickHost)
 		{
-			g_player_service->iterate(
-			    [](auto& plyr)
-			    {
-				    if (plyr.second->is_host())
-				    {
-					    ((player_command*)(command::get(RAGE_JOAAT("lckick"))))->call(plyr.second, {});
-				    }
-			    });
+			g_player_service->iterate([](auto& plyr) {
+				if (plyr.second->is_host())
+				{
+					((player_command*)(command::get(RAGE_JOAAT("lckick"))))->call(plyr.second, {});
+				}
+			});
 		}
 		bLastKickHost = kick_host;
 	}

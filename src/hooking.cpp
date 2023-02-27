@@ -15,8 +15,8 @@
 namespace big
 {
 	hooking::hooking() :
-	// Swapchain
-	m_swapchain_hook(*g_pointers->m_swapchain, hooks::swapchain_num_funcs)
+	    // Swapchain
+	    m_swapchain_hook(*g_pointers->m_swapchain, hooks::swapchain_num_funcs)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);

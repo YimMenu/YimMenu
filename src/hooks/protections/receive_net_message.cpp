@@ -137,8 +137,8 @@ namespace big
 					if (player->m_host_migration_rate_limit.exceeded_last_process())
 					{
 						session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
-						g_notification_service->push_error(
-						    "PROTECTIONS"_T.data(), std::vformat("OOM_KICK"_T, std::make_format_args(player->get_name())));
+						g_notification_service->push_error("PROTECTIONS"_T.data(),
+						    std::vformat("OOM_KICK"_T, std::make_format_args(player->get_name())));
 					}
 					return true;
 				}
@@ -359,8 +359,8 @@ namespace big
 					if (target->id() == g_player_service->get_self()->id())
 						g_notification_service->push_error("KICK"_T.data(), "REMOTE_KICK_BREAKUP"_T.data());
 					else
-						g_notification_service->push_error(
-						    "KICK"_T.data(), std::vformat("REMOTE_KICK_BREAKUP_PLAYER"_T, std::make_format_args(target->get_name())));
+						g_notification_service->push_error("KICK"_T.data(),
+						    std::vformat("REMOTE_KICK_BREAKUP_PLAYER"_T, std::make_format_args(target->get_name())));
 				}
 
 				return true;
@@ -391,7 +391,9 @@ namespace big
 
 			LOG(VERBOSE) << "RECEIVED PACKET | Type: " << packet_type << " | Length: " << frame->m_length << " | Sender: "
 			             << (player ? player->get_name() :
-			                          std::format("<M:{}>, <C:{:X}>, <P:{}>", (int)frame->m_msg_id, frame->m_connection_identifier,
+			                          std::format("<M:{}>, <C:{:X}>, <P:{}>",
+			                              (int)frame->m_msg_id,
+			                              frame->m_connection_identifier,
 			                              frame->m_peer_id)
 			                              .c_str())
 			             << " | " << HEX_TO_UPPER((int)msgType);

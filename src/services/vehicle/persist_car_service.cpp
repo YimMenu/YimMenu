@@ -13,8 +13,8 @@ namespace big
 	{
 		if (!ENTITY::DOES_ENTITY_EXIST(vehicle) || !ENTITY::IS_ENTITY_A_VEHICLE(vehicle))
 		{
-			g_notification_service->push_warning(
-			    "PERSIST_CAR_TITLE"_T.data(), "PERSIST_CAR_INVALID_VEHICLE_SAVE_ATTEMPT"_T.data());
+			g_notification_service->push_warning("PERSIST_CAR_TITLE"_T.data(),
+			    "PERSIST_CAR_INVALID_VEHICLE_SAVE_ATTEMPT"_T.data());
 			return;
 		}
 
@@ -103,8 +103,22 @@ namespace big
 			const auto object     = world_model::spawn(attachment.model_hash);
 			if (object)
 			{
-				ENTITY::ATTACH_ENTITY_TO_ENTITY(object, vehicle, 0, attachment.position.x, attachment.position.y,
-				    attachment.position.z, attachment.rotation.x, attachment.rotation.y, attachment.rotation.z, false, false, false, false, 0, true, 0);
+				ENTITY::ATTACH_ENTITY_TO_ENTITY(object,
+				    vehicle,
+				    0,
+				    attachment.position.x,
+				    attachment.position.y,
+				    attachment.position.z,
+				    attachment.rotation.x,
+				    attachment.rotation.y,
+				    attachment.rotation.z,
+				    false,
+				    false,
+				    false,
+				    false,
+				    0,
+				    true,
+				    0);
 
 				ENTITY::SET_ENTITY_VISIBLE(object, attachment.is_visible, 0);
 				ENTITY::SET_ENTITY_COLLISION(object, attachment.has_collision, true);
@@ -117,10 +131,23 @@ namespace big
 		{
 			const auto vehicle_to_attach = spawn_vehicle_json(j[vehicle_key], ped);
 			auto attachment              = j[model_attachment_key].get<big::model_attachment>();
-			ENTITY::ATTACH_ENTITY_TO_ENTITY(vehicle_to_attach, vehicle, 0, attachment.position.x, attachment.position.y,
-			    attachment.position.z, attachment.rotation.x, attachment.rotation.y, attachment.rotation.z,
+			ENTITY::ATTACH_ENTITY_TO_ENTITY(vehicle_to_attach,
+			    vehicle,
+			    0,
+			    attachment.position.x,
+			    attachment.position.y,
+			    attachment.position.z,
+			    attachment.rotation.x,
+			    attachment.rotation.y,
+			    attachment.rotation.z,
 
-			    false, false, false, false, 0, true, 0);
+			    false,
+			    false,
+			    false,
+			    false,
+			    0,
+			    true,
+			    0);
 
 			ENTITY::SET_ENTITY_VISIBLE(vehicle_to_attach, attachment.is_visible, 0);
 			ENTITY::SET_ENTITY_COLLISION(vehicle_to_attach, attachment.has_collision, true);
@@ -284,8 +311,10 @@ namespace big
 	model_attachment persist_car_service::get_model_attachment(Vehicle vehicle, Object object)
 	{
 		const auto object_location = ENTITY::GET_ENTITY_COORDS(object, 0);
-		const auto location        = ENTITY::GET_OFFSET_FROM_ENTITY_GIVEN_WORLD_COORDS(
-		           vehicle, object_location.x, object_location.y, object_location.z);
+		const auto location        = ENTITY::GET_OFFSET_FROM_ENTITY_GIVEN_WORLD_COORDS(vehicle,
+            object_location.x,
+            object_location.y,
+            object_location.z);
 
 		const auto object_rotation  = ENTITY::GET_ENTITY_ROTATION(object, 0);
 		const auto vehicle_rotation = ENTITY::GET_ENTITY_ROTATION(vehicle, 0);

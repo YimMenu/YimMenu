@@ -13,7 +13,10 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		virtual void on_enable() override { g_script_patcher_service->update(); }
+		virtual void on_enable() override
+		{
+			g_script_patcher_service->update();
+		}
 
 		virtual void on_tick() override
 		{

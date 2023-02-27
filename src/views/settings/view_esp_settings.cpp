@@ -19,16 +19,20 @@ namespace big
 				ImGui::Text("SETTINGS_ESP_TRACER_POSITION"_T.data());
 				ImGui::SliderFloat2("###Draw Position", g.esp.tracer_draw_position, 0.f, 1.f);
 				ImGui::Text("SETTINGS_ESP_TRACER_RENDER_DISTANCE"_T.data());
-				ImGui::SliderFloat2(
-				    "###Tracer Render Distance", g.esp.tracer_render_distance, g.esp.global_render_distance[0], g.esp.global_render_distance[1]);
+				ImGui::SliderFloat2("###Tracer Render Distance",
+				    g.esp.tracer_render_distance,
+				    g.esp.global_render_distance[0],
+				    g.esp.global_render_distance[1]);
 			}
 
 			ImGui::Checkbox("SETTINGS_ESP_BOX"_T.data(), &g.esp.box);
 			if (g.esp.box)
 			{
 				ImGui::Text("SETTINGS_ESP_BOX_RENDER_DISTANCE"_T.data());
-				ImGui::SliderFloat2(
-				    "###Box Render Distance", g.esp.box_render_distance, g.esp.global_render_distance[0], g.esp.global_render_distance[1]);
+				ImGui::SliderFloat2("###Box Render Distance",
+				    g.esp.box_render_distance,
+				    g.esp.global_render_distance[0],
+				    g.esp.global_render_distance[1]);
 			}
 
 			ImGui::Checkbox("SETTINGS_ESP_PLAYER_NAME"_T.data(), &g.esp.name);
@@ -50,8 +54,10 @@ namespace big
 			static ImVec4 col_friend     = ImGui::ColorConvertU32ToFloat4(g.esp.friend_color);
 
 			ImGui::Text("SETTINGS_ESP_DISTANCE_THRESHOLD"_T.data());
-			ImGui::SliderFloat2(
-			    "###Distance threshold", g.esp.distance_threshold, g.esp.global_render_distance[0], g.esp.global_render_distance[1]);
+			ImGui::SliderFloat2("###Distance threshold",
+			    g.esp.distance_threshold,
+			    g.esp.global_render_distance[0],
+			    g.esp.global_render_distance[1]);
 
 			if (ImGui::TreeNode("SETTINGS_ESP_COLORS"_T.data()))
 			{

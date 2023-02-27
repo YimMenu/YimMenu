@@ -6,7 +6,10 @@ namespace big
 	{
 		std::chrono::time_point<std::chrono::system_clock> animation_start_time;
 		std::chrono::time_point<std::chrono::system_clock> animation_current_time;
-		float animation_curve(float t) { return 3 * pow(1.f - t, 2.f) * t + 3 * (1.f - t) * pow(t, 2.f) + pow(t, 3.f); }
+		float animation_curve(float t)
+		{
+			return 3 * pow(1.f - t, 2.f) * t + 3 * (1.f - t) * pow(t, 2.f) + pow(t, 3.f);
+		}
 
 	public:
 		void animate(int milliseconds, std::function<void(float&)> cb)
@@ -25,6 +28,9 @@ namespace big
 			cb(progress);
 		}
 
-		void reset() { animation_start_time = std::chrono::system_clock::now(); }
+		void reset()
+		{
+			animation_start_time = std::chrono::system_clock::now();
+		}
 	};
 }

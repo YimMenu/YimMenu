@@ -58,7 +58,10 @@ namespace rage
 			m_highestBitsRead = 0;
 			m_flagBits        = 0;
 		}
-		uint32_t GetPosition() { return m_bitsRead; }
+		uint32_t GetPosition()
+		{
+			return m_bitsRead;
+		}
 		bool Seek(uint32_t bits)
 		{
 			if (bits >= 0)
@@ -69,9 +72,18 @@ namespace rage
 			}
 			return false;
 		}
-		bool WriteBool(bool integer) { return big::g_pointers->m_write_bitbuf_bool(this, integer, 1); }
-		bool ReadBool(bool* integer) { return big::g_pointers->m_read_bitbuf_bool(this, integer, 1); }
-		bool ReadPeerId(uint64_t* integer) { return this->ReadQWord(integer, 0x40); }
+		bool WriteBool(bool integer)
+		{
+			return big::g_pointers->m_write_bitbuf_bool(this, integer, 1);
+		}
+		bool ReadBool(bool* integer)
+		{
+			return big::g_pointers->m_read_bitbuf_bool(this, integer, 1);
+		}
+		bool ReadPeerId(uint64_t* integer)
+		{
+			return this->ReadQWord(integer, 0x40);
+		}
 		uint64_t ReadBits(size_t numBits)
 		{
 			auto const totalBits = (m_flagBits & 1) ? m_maxBit : m_curBit;
@@ -99,8 +111,14 @@ namespace rage
 			int leftoverBit = (m_curBit % 8) ? 1 : 0;
 			return (m_curBit / 8) + leftoverBit;
 		}
-		bool ReadString(char* string, int bits) { return big::g_pointers->m_read_bitbuf_string(this, string, bits); }
-		bool WriteByte(uint8_t integer, int bits) { return big::g_pointers->m_write_bitbuf_dword(this, integer, bits); }
+		bool ReadString(char* string, int bits)
+		{
+			return big::g_pointers->m_read_bitbuf_string(this, string, bits);
+		}
+		bool WriteByte(uint8_t integer, int bits)
+		{
+			return big::g_pointers->m_write_bitbuf_dword(this, integer, bits);
+		}
 		bool ReadByte(uint8_t* integer, int bits)
 		{
 			uint32_t read;
@@ -189,8 +207,14 @@ namespace rage
 			}
 			return false;
 		}
-		bool WriteArray(void* array, int size) { return big::g_pointers->m_write_bitbuf_array(this, array, size, 0); }
-		bool ReadArray(PVOID array, int size) { return big::g_pointers->m_read_bitbuf_array(this, array, size, 0); }
+		bool WriteArray(void* array, int size)
+		{
+			return big::g_pointers->m_write_bitbuf_array(this, array, size, 0);
+		}
+		bool ReadArray(PVOID array, int size)
+		{
+			return big::g_pointers->m_read_bitbuf_array(this, array, size, 0);
+		}
 
 		template<typename T>
 		inline T Read(int length)
@@ -549,15 +573,30 @@ namespace rage
 	public:
 		virtual ~netGameEvent() = default;
 
-		virtual const char* get_name() { return 0; };
-		virtual bool is_in_scope(netPlayer* player) { return 0; };
-		virtual bool time_to_resend(std::uint32_t time) { return 0; };
-		virtual bool can_change_scope() { return 0; };
+		virtual const char* get_name()
+		{
+			return 0;
+		};
+		virtual bool is_in_scope(netPlayer* player)
+		{
+			return 0;
+		};
+		virtual bool time_to_resend(std::uint32_t time)
+		{
+			return 0;
+		};
+		virtual bool can_change_scope()
+		{
+			return 0;
+		};
 
 		virtual void prepare_data(datBitBuffer* buffer, netPlayer* source_player, netPlayer* target_player){};
 		virtual void handle_data(datBitBuffer* buffer, netPlayer* source_player, netPlayer* target_player){};
 
-		virtual bool decide(netPlayer* source_player, netPlayer* target_player) { return 0; };
+		virtual bool decide(netPlayer* source_player, netPlayer* target_player)
+		{
+			return 0;
+		};
 
 		virtual void prepare_reply(datBitBuffer* buffer, netPlayer* reply_player){};
 		virtual void handle_reply(datBitBuffer* buffer, netPlayer* souce_player){};
@@ -572,12 +611,27 @@ namespace rage
 		virtual void unk_0x78(){};
 
 	public:
-		virtual bool operator==(netGameEvent const& other) { return 0; };
-		virtual bool operator!=(netGameEvent const& other) { return 0; };
+		virtual bool operator==(netGameEvent const& other)
+		{
+			return 0;
+		};
+		virtual bool operator!=(netGameEvent const& other)
+		{
+			return 0;
+		};
 
-		virtual bool must_persist() { return 0; };
-		virtual bool must_persist_when_out_of_scope() { return 0; };
-		virtual bool has_timed_out() { return 0; };
+		virtual bool must_persist()
+		{
+			return 0;
+		};
+		virtual bool must_persist_when_out_of_scope()
+		{
+			return 0;
+		};
+		virtual bool has_timed_out()
+		{
+			return 0;
+		};
 
 	public:
 		std::uint16_t m_id;   // 0x08

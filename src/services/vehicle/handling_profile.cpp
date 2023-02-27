@@ -7,7 +7,7 @@ namespace big
 		m_gravity       = vehicle->m_gravity;
 		m_handling_data = *vehicle->m_handling_data;
 
-		if(std::isinf(m_handling_data.m_traction_spring_delta_max_ratio))
+		if (std::isinf(m_handling_data.m_traction_spring_delta_max_ratio))
 			m_handling_data.m_traction_spring_delta_max_ratio = 0.f;
 	}
 

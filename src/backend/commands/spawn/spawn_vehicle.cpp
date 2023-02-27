@@ -16,7 +16,10 @@ namespace big
 			return std::vector<std::uint64_t>{hash};
 		}
 
-		virtual CommandAccessLevel get_access_level() { return CommandAccessLevel::FRIENDLY; }
+		virtual CommandAccessLevel get_access_level()
+		{
+			return CommandAccessLevel::FRIENDLY;
+		}
 
 		virtual void execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)
 		{

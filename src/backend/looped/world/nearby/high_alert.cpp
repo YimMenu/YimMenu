@@ -1,5 +1,5 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
+#include "natives.hpp"
 #include "pointers.hpp"
 #include "util/entity.hpp"
 
@@ -12,7 +12,6 @@ namespace big
 
 		virtual void on_tick() override
 		{
-
 			for (auto ped : entity::get_entities(false, true))
 			{
 				PED::SET_PED_HIGHLY_PERCEPTIVE(ped, true);

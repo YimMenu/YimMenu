@@ -8,7 +8,10 @@
 
 struct key_state
 {
-	key_state(int v_key) : v_key(v_key) {}
+	key_state(int v_key) :
+	    v_key(v_key)
+	{
+	}
 
 	enum
 	{
@@ -109,8 +112,7 @@ namespace big
 
 		if (g.vehicle.turn_signals)
 		{
-			static bool ran_once = []
-			{
+			static bool ran_once = [] {
 				g_notification_service->push("Instructions", "Manual: J = Left, L = Right, K = Toggle Hazzards");
 				return true;
 			}();

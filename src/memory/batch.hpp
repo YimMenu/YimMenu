@@ -22,7 +22,9 @@ namespace memory
 			std::function<void(memory::handle)> m_callback;
 
 			explicit entry(std::string name, pattern pattern, std::function<void(memory::handle)> callback) :
-			m_name(std::move(name)), m_pattern(std::move(pattern)), m_callback(std::move(callback))
+			    m_name(std::move(name)),
+			    m_pattern(std::move(pattern)),
+			    m_callback(std::move(callback))
 			{
 			}
 		};

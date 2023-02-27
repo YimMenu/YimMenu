@@ -36,7 +36,9 @@ namespace big
 			HUD::DISPLAY_HUD_WHEN_PAUSED_THIS_FRAME();
 		}
 
-		if (std::all_of(std::begin(bHudComponents), std::end(bHudComponents), [](bool i) { return i; }))
+		if (std::all_of(std::begin(bHudComponents), std::end(bHudComponents), [](bool i) {
+			    return i;
+		    }))
 		{
 			HUD::DISPLAY_HUD(false);
 			bHasHUDBeenHidden = true;
