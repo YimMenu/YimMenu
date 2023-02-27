@@ -819,6 +819,18 @@ namespace big
 			m_write_player_camera_data_node = ptr.as<PVOID>();
 		});
 
+		// DC
+		main_batch.add("DC", "48 8B D1 49 8B CA ? ? ? ? ? 48 8B D1 49 8B CA", [this](memory::handle ptr)
+		{
+			m_disable_collision = memory::byte_patch::make(ptr.sub(2).as<uint8_t*>(), 0xEB).get();
+		});
+
+		// AWIV
+		main_batch.add("AWIV", "49 3B C9 7C F0 ? ? C3", [this](memory::handle ptr)
+		{
+			m_allow_weapons_in_vehicle = memory::byte_patch::make(ptr.add(5).as<uint16_t*>(), 0x01B0).get(); //In order for the second xref loop not to stop
+		});
+
 		auto mem_region = memory::module("GTA5.exe");
 		if (!main_batch.run(mem_region))
 		{

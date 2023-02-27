@@ -591,6 +591,8 @@ namespace big
 			bool localveh_visibility = false;
 			bool localped_visibility = true;
 			bool keep_on_ground = false;
+			bool no_collision = false;
+			bool unlimited_weapons = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle,
 				speedo_meter, fly, rainbow_paint, speed_unit, god_mode,
@@ -598,7 +600,7 @@ namespace big
 				auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior,
 				drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump,
 				keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately,
-				vehinvisibility, localveh_visibility, localped_visibility, keep_on_ground)
+				vehinvisibility, localveh_visibility, localped_visibility, keep_on_ground, no_collision, unlimited_weapons)
 		} vehicle{};
 
 		struct weapons
