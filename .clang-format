@@ -64,3 +64,7 @@ SpacesInParentheses: 'false'
 SpacesInSquareBrackets: 'false'
 Standard: Auto
 UseTab: ForIndentation
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+    BeforeLambdaBody: 'false'
