@@ -17,7 +17,8 @@ namespace big
 		uint8_t** m_orig_bytecode;
 
 	public:
-		script_vm_guard(rage::scrProgram* program) : m_program(program)
+		script_vm_guard(rage::scrProgram* program) :
+		    m_program(program)
 		{
 			m_orig_bytecode = program->m_code_blocks;
 

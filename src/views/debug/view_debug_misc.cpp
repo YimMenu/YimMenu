@@ -31,35 +31,41 @@ namespace big
 				system::dump_entry_points();
 			}
 
-			components::button("Network Bail", [] { NETWORK::NETWORK_BAIL(16, 0, 0); });
+			components::button("Network Bail", [] {
+				NETWORK::NETWORK_BAIL(16, 0, 0);
+			});
 
-			components::button("DEBUG_REMOVE_FROM_BAD_SPORT"_T,
-			    []
-			    {
-				    STATS::STAT_SET_FLOAT(RAGE_JOAAT("mpply_overall_badsport"), 0.0f, TRUE);
-				    STATS::STAT_SET_BOOL(RAGE_JOAAT("mpply_was_i_bad_sport"), FALSE, TRUE);
-			    });
+			components::button("DEBUG_REMOVE_FROM_BAD_SPORT"_T, [] {
+				STATS::STAT_SET_FLOAT(RAGE_JOAAT("mpply_overall_badsport"), 0.0f, TRUE);
+				STATS::STAT_SET_BOOL(RAGE_JOAAT("mpply_was_i_bad_sport"), FALSE, TRUE);
+			});
 
-			components::button("Load MP Map", [] { DLC::ON_ENTER_MP(); });
+			components::button("Load MP Map", [] {
+				DLC::ON_ENTER_MP();
+			});
 
 			ImGui::SameLine();
 
-			components::button("Load SP Map", [] { DLC::ON_ENTER_SP(); });
+			components::button("Load SP Map", [] {
+				DLC::ON_ENTER_SP();
+			});
 
-			components::button("Skip Cutscene", [] { CUTSCENE::STOP_CUTSCENE_IMMEDIATELY(); });
+			components::button("Skip Cutscene", [] {
+				CUTSCENE::STOP_CUTSCENE_IMMEDIATELY();
+			});
 
-			components::button("Refresh Interior",
-			    []
-			    {
-				    Interior interior = INTERIOR::GET_INTERIOR_AT_COORDS(self::pos.x, self::pos.y, self::pos.z);
-				    INTERIOR::REFRESH_INTERIOR(interior);
-			    });
+			components::button("Refresh Interior", [] {
+				Interior interior = INTERIOR::GET_INTERIOR_AT_COORDS(self::pos.x, self::pos.y, self::pos.z);
+				INTERIOR::REFRESH_INTERIOR(interior);
+			});
 
-			components::button("Network Shutdown And Launch Single Player Game",
-			    [] { NETWORK::SHUTDOWN_AND_LAUNCH_SINGLE_PLAYER_GAME(); });
+			components::button("Network Shutdown And Launch Single Player Game", [] {
+				NETWORK::SHUTDOWN_AND_LAUNCH_SINGLE_PLAYER_GAME();
+			});
 
-			components::button(
-			    "Network Shutdown And Load Most Recent Save", [] { NETWORK::SHUTDOWN_AND_LOAD_MOST_RECENT_SAVE(); });
+			components::button("Network Shutdown And Load Most Recent Save", [] {
+				NETWORK::SHUTDOWN_AND_LOAD_MOST_RECENT_SAVE();
+			});
 
 			components::command_button<"fastquit">();
 

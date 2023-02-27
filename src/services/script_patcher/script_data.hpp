@@ -11,7 +11,9 @@ namespace big
 		std::uint8_t** m_bytecode;
 
 		script_data(std::uint32_t code_size, std::uint8_t** bytecode, std::uint32_t num_pages) :
-		m_code_size(code_size), m_bytecode(bytecode), m_num_pages(num_pages)
+		    m_code_size(code_size),
+		    m_bytecode(bytecode),
+		    m_num_pages(num_pages)
 		{
 		}
 

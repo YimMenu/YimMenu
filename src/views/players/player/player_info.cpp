@@ -169,8 +169,8 @@ namespace big
 			{
 				for (const auto& [type, name] : COMMAND_ACCESS_LEVELS)
 				{
-					if (ImGui::Selectable(
-					        name, type == g_player_service->get_selected()->command_access_level.value_or(g.session.chat_command_default_access_level)))
+					if (ImGui::Selectable(name,
+					        type == g_player_service->get_selected()->command_access_level.value_or(g.session.chat_command_default_access_level)))
 					{
 						g.session.chat_command_default_access_level = type;
 						g_player_database_service->get_or_create_player(g_player_service->get_selected())->command_access_level = type;

@@ -3,7 +3,10 @@
 namespace big
 {
 	cache_file::cache_file(file cache_file, std::uint32_t cache_version) :
-	m_cache_file(cache_file), m_data(nullptr), m_cache_version(cache_version), m_cache_header()
+	    m_cache_file(cache_file),
+	    m_data(nullptr),
+	    m_cache_version(cache_version),
+	    m_cache_header()
 	{
 	}
 

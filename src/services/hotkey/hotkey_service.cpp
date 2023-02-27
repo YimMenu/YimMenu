@@ -25,8 +25,9 @@ namespace big
 		register_hotkey("localinvisveh", g.settings.hotkeys.localinvisveh, RAGE_JOAAT("localinvisveh"));
 		register_hotkey("fastquit", g.settings.hotkeys.fast_quit, RAGE_JOAAT("fastquit"));
 
-		g_renderer->add_wndproc_callback(
-		    [this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) { wndproc(static_cast<eKeyState>(msg), wparam); });
+		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+			wndproc(static_cast<eKeyState>(msg), wparam);
+		});
 
 		g_hotkey_service = this;
 	}
@@ -43,8 +44,7 @@ namespace big
 
 	bool hotkey_service::update_hotkey(const std::string_view name, const key_t key)
 	{
-		static auto update_hotkey_map = [](hotkey_map& hotkey_map, rage::joaat_t name_hash, key_t new_key) -> bool
-		{
+		static auto update_hotkey_map = [](hotkey_map& hotkey_map, rage::joaat_t name_hash, key_t new_key) -> bool {
 			for (auto it = hotkey_map.begin(); it != hotkey_map.end(); ++it)
 			{
 				auto hotkey = it->second;
@@ -80,7 +80,9 @@ namespace big
 			{
 				if (auto& hotkey = it->second; hotkey.can_exec())
 				{
-					g_fiber_pool->queue_job([&hotkey] { hotkey.exec(); });
+					g_fiber_pool->queue_job([&hotkey] {
+						hotkey.exec();
+					});
 				}
 			}
 		}

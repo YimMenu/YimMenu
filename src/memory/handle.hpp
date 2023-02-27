@@ -37,11 +37,13 @@ namespace memory
 		void* ptr;
 	};
 
-	inline handle::handle(void* ptr) : ptr(ptr)
+	inline handle::handle(void* ptr) :
+	    ptr(ptr)
 	{
 	}
 
-	inline handle::handle(std::uintptr_t ptr) : ptr(reinterpret_cast<void*>(ptr))
+	inline handle::handle(std::uintptr_t ptr) :
+	    ptr(reinterpret_cast<void*>(ptr))
 	{
 	}
 

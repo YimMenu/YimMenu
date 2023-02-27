@@ -15,7 +15,8 @@ IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARA
 
 namespace big
 {
-	renderer::renderer() : m_dxgi_swapchain(*g_pointers->m_swapchain)
+	renderer::renderer() :
+	    m_dxgi_swapchain(*g_pointers->m_swapchain)
 	{
 		if (m_dxgi_swapchain->GetDevice(__uuidof(ID3D11Device), reinterpret_cast<void**>(&m_d3d_device)) < 0)
 		{
@@ -53,8 +54,11 @@ namespace big
 			fnt_cfg.FontDataOwnedByAtlas = false;
 			strcpy(fnt_cfg.Name, "Fnt20px");
 
-			io.Fonts->AddFontFromMemoryTTF(
-			    const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 20.f, &fnt_cfg, io.Fonts->GetGlyphRangesDefault());
+			io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia),
+			    sizeof(font_storopia),
+			    20.f,
+			    &fnt_cfg,
+			    io.Fonts->GetGlyphRangesDefault());
 			fnt_cfg.MergeMode = true;
 			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 20.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesChineseSimplifiedCommon());
 			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 20.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());

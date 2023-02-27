@@ -14,7 +14,13 @@ namespace big
 	}
 
 	logger::logger(std::string_view console_title, file file, bool attach_console) :
-	m_attach_console(attach_console), m_did_console_exist(false), m_console_logger(&logger::format_console), m_console_title(console_title), m_original_console_mode(0), m_console_handle(nullptr), m_file(file)
+	    m_attach_console(attach_console),
+	    m_did_console_exist(false),
+	    m_console_logger(&logger::format_console),
+	    m_console_title(console_title),
+	    m_original_console_mode(0),
+	    m_console_handle(nullptr),
+	    m_file(file)
 	{
 		auto module = memory::module("ntdll.dll");
 		if (const auto env_no_color = std::getenv("NO_COLOR"); module.get_export("wine_get_version") || (env_no_color && strlen(env_no_color)))
@@ -61,8 +67,12 @@ namespace big
 		open_outstreams();
 
 		Logger::Init();
-		Logger::AddSink([this](LogMessagePtr msg) { (this->*m_console_logger)(std::move(msg)); });
-		Logger::AddSink([this](LogMessagePtr msg) { format_file(std::move(msg)); });
+		Logger::AddSink([this](LogMessagePtr msg) {
+			(this->*m_console_logger)(std::move(msg));
+		});
+		Logger::AddSink([this](LogMessagePtr msg) {
+			format_file(std::move(msg));
+		});
 	}
 
 	void logger::destroy()
@@ -85,8 +95,13 @@ namespace big
 			auto time_t     = to_time_t(file_time);
 			auto local_time = std::localtime(&time_t);
 
-			m_file.move(std::format("./backup/{:0>2}-{:0>2}-{}-{:0>2}-{:0>2}-{:0>2}_{}", local_time->tm_mon + 1,
-			    local_time->tm_mday, local_time->tm_year + 1900, local_time->tm_hour, local_time->tm_min, local_time->tm_sec,
+			m_file.move(std::format("./backup/{:0>2}-{:0>2}-{}-{:0>2}-{:0>2}-{:0>2}_{}",
+			    local_time->tm_mon + 1,
+			    local_time->tm_mday,
+			    local_time->tm_year + 1900,
+			    local_time->tm_hour,
+			    local_time->tm_min,
+			    local_time->tm_sec,
 			    m_file.get_path().filename().string().c_str()));
 		}
 	}

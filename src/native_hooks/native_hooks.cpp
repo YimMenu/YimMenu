@@ -3,13 +3,13 @@
 #include "all_scripts.hpp"
 #include "am_launcher.hpp"
 #include "carmod_shop.hpp"
+#include "casino.hpp"
 #include "creator.hpp"
 #include "crossmap.hpp"
 #include "freemode.hpp"
 #include "gta_util.hpp"
 #include "network_session_host.hpp"
 #include "shop_controller.hpp"
-#include "casino.hpp"
 
 #include <script/scrProgram.hpp>
 #include <script/scrProgramTable.hpp>

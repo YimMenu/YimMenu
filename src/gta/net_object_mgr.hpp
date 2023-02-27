@@ -21,17 +21,39 @@ namespace rage
 	public:
 		virtual ~CNetworkSyncDataULBase() = default;
 
-		inline virtual void m_8() {}
-		inline virtual void m_10() {}
-		inline virtual void m_18() {}
-		inline virtual void m_20() {}
-		inline virtual void m_28() {}
-		inline virtual void m_30() {}
-		inline virtual void m_38() {}
-		inline virtual void m_40() {}
-		inline virtual void m_48() {}
-		inline virtual void m_50() {}
-		inline virtual void SetCloningFrequency(int player, int frequency) {}
+		inline virtual void m_8()
+		{
+		}
+		inline virtual void m_10()
+		{
+		}
+		inline virtual void m_18()
+		{
+		}
+		inline virtual void m_20()
+		{
+		}
+		inline virtual void m_28()
+		{
+		}
+		inline virtual void m_30()
+		{
+		}
+		inline virtual void m_38()
+		{
+		}
+		inline virtual void m_40()
+		{
+		}
+		inline virtual void m_48()
+		{
+		}
+		inline virtual void m_50()
+		{
+		}
+		inline virtual void SetCloningFrequency(int player, int frequency)
+		{
+		}
 
 	public:
 		uint8_t pad_10h[49];
@@ -49,7 +71,10 @@ namespace rage
 		uint32_t m6C;
 
 	public:
-		inline bool IsCreationAckedByPlayer(int index) { return (creationAckedPlayers & (1 << index)) != 0; }
+		inline bool IsCreationAckedByPlayer(int index)
+		{
+			return (creationAckedPlayers & (1 << index)) != 0;
+		}
 	};
 
 	class netObject;

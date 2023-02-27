@@ -241,7 +241,10 @@ namespace rage
 		void SetPath(const char* relativeTo, rage::fiDevice* baseDevice, bool allowRoot);
 
 		// compatibility wrapper for NY code
-		inline void SetPath(const char* relativeTo, bool allowRoot) { SetPath(relativeTo, nullptr, allowRoot); }
+		inline void SetPath(const char* relativeTo, bool allowRoot)
+		{
+			SetPath(relativeTo, nullptr, allowRoot);
+		}
 
 		// mounts the device in the device stack
 		void Mount(const char* mountPoint);

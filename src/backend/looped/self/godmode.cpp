@@ -29,7 +29,10 @@ namespace big
 			}
 		}
 
-		virtual void on_disable() override { g_local_player->m_damage_bits = 0; }
+		virtual void on_disable() override
+		{
+			g_local_player->m_damage_bits = 0;
+		}
 	};
 
 	static bool true_ref = true;

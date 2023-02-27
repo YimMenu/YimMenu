@@ -43,8 +43,10 @@ namespace big
 					if (ImGui::IsItemHovered())
 					{
 						ImGui::SetTooltip(std::format("Num Players: {}\nRegion: {}\nLanguage: {}\nHost: {}",
-						    session.attributes.player_count, regions[session.attributes.region].name,
-						    languages[session.attributes.language].name, session.info.m_net_player_data.m_gamer_handle.m_rockstar_id)
+						    session.attributes.player_count,
+						    regions[session.attributes.region].name,
+						    languages[session.attributes.language].name,
+						    session.info.m_net_player_data.m_gamer_handle.m_rockstar_id)
 						                      .c_str());
 					}
 				}
@@ -72,25 +74,25 @@ namespace big
 				auto& data = session.info.m_net_player_data;
 				ImGui::Text("SESSION_BROWSER_HOST_RID"_T.data(), data.m_gamer_handle.m_rockstar_id);
 
-				components::button("COPY_SESSION_INFO"_T, [] { ImGui::SetClipboardText(session_info); });
+				components::button("COPY_SESSION_INFO"_T, [] {
+					ImGui::SetClipboardText(session_info);
+				});
 				ImGui::SameLine();
-				components::button("JOIN"_T,
-				    [session]
-				    {
-					    if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
-					    {
-						    g_notification_service->push_error("JOIN_SESSION"_T.data(), "PLAYER_SWITCH_IN_PROGRESS"_T.data());
-						    return;
-					    }
+				components::button("JOIN"_T, [session] {
+					if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
+					{
+						g_notification_service->push_error("JOIN_SESSION"_T.data(), "PLAYER_SWITCH_IN_PROGRESS"_T.data());
+						return;
+					}
 
-					    bool is_session_free_aim = session.attributes.discriminator & (1 << 17);
-					    bool is_local_free_aim   = PAD::GET_LOCAL_PLAYER_GAMEPAD_AIM_STATE() > 1;
+					bool is_session_free_aim = session.attributes.discriminator & (1 << 17);
+					bool is_local_free_aim   = PAD::GET_LOCAL_PLAYER_GAMEPAD_AIM_STATE() > 1;
 
-					    if (is_session_free_aim != is_local_free_aim)
-						    PLAYER::SET_PLAYER_TARGETING_MODE(is_session_free_aim ? 3 : 1);
+					if (is_session_free_aim != is_local_free_aim)
+						PLAYER::SET_PLAYER_TARGETING_MODE(is_session_free_aim ? 3 : 1);
 
-					    session::join_session(session.info);
-				    });
+					session::join_session(session.info);
+				});
 			}
 			ImGui::EndChild();
 		}
@@ -173,13 +175,11 @@ namespace big
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("REPLACE_GAME_MATCHMAKING_DESC"_T.data());
 
-		components::button("REFRESH"_T,
-		    []
-		    {
-			    selected_session_idx = -1;
+		components::button("REFRESH"_T, [] {
+			selected_session_idx = -1;
 
-			    if (!g_matchmaking_service->matchmake())
-				    g_notification_service->push_error("MATCHMAKING"_T.data(), "MATCHMAKING_FAIL"_T.data());
-		    });
+			if (!g_matchmaking_service->matchmake())
+				g_notification_service->push_error("MATCHMAKING"_T.data(), "MATCHMAKING_FAIL"_T.data());
+		});
 	}
 }

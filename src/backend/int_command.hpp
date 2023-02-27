@@ -15,6 +15,9 @@ namespace big
 
 	public:
 		int_command(const std::string& name, const std::string& label, const std::string& description, int& value, int lower_bound, int upper_bound);
-		inline int& get_value() { return m_value; }
+		inline int& get_value()
+		{
+			return m_value;
+		}
 	};
 }

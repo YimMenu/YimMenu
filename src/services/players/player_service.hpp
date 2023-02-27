@@ -41,7 +41,10 @@ namespace big
 		void player_join(CNetGamePlayer* net_game_player);
 		void player_leave(CNetGamePlayer* net_game_player);
 
-		players& players() { return m_players; }
+		players& players()
+		{
+			return m_players;
+		}
 
 		void iterate(const std::function<void(const player_entry& entry)> func)
 		{

@@ -30,11 +30,13 @@ namespace big
 
 			components::player_command_button<"ceoraid">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
-			components::button("Trigger MC Raid",
-			    [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::BikerDefend); });
+			components::button("Trigger MC Raid", [] {
+				toxic::start_activity(g_player_service->get_selected(), eActivityType::BikerDefend);
+			});
 			ImGui::SameLine();
-			components::button("Trigger Bunker Raid",
-			    [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::GunrunningDefend); });
+			components::button("Trigger Bunker Raid", [] {
+				toxic::start_activity(g_player_service->get_selected(), eActivityType::GunrunningDefend);
+			});
 
 			components::player_command_button<"sext">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
@@ -91,17 +93,21 @@ namespace big
 
 			components::player_command_button<"warehousetp">(g_player_service->get_selected(), {(uint64_t)g.session.send_to_warehouse_idx});
 
-			components::button(
-			    "TP_TO_DARTS"_T, [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::Darts); });
+			components::button("TP_TO_DARTS"_T, [] {
+				toxic::start_activity(g_player_service->get_selected(), eActivityType::Darts);
+			});
 			ImGui::SameLine();
-			components::button("TP_TO_FLIGHT_SCHOOL"_T,
-			    [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::PilotSchool); });
+			components::button("TP_TO_FLIGHT_SCHOOL"_T, [] {
+				toxic::start_activity(g_player_service->get_selected(), eActivityType::PilotSchool);
+			});
 			ImGui::SameLine();
-			components::button("TP_TO_MAP_CENTER"_T,
-			    [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::ArmWresling); });
+			components::button("TP_TO_MAP_CENTER"_T, [] {
+				toxic::start_activity(g_player_service->get_selected(), eActivityType::ArmWresling);
+			});
 
-			components::button("TP_TO_SKYDIVE"_T,
-			    [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::Skydive); });
+			components::button("TP_TO_SKYDIVE"_T, [] {
+				toxic::start_activity(g_player_service->get_selected(), eActivityType::Skydive);
+			});
 			ImGui::SameLine();
 			components::player_command_button<"cayotp">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
@@ -150,22 +156,29 @@ namespace big
 
 			components::small_text("WARP_TIME"_T);
 
-			components::button(
-			    "PLUS_1_MINUTE"_T, [] { toxic::warp_time_forward(g_player_service->get_selected(), 60 * 1000); });
+			components::button("PLUS_1_MINUTE"_T, [] {
+				toxic::warp_time_forward(g_player_service->get_selected(), 60 * 1000);
+			});
 			ImGui::SameLine();
-			components::button(
-			    "PLUS_5_MINUTES"_T, [] { toxic::warp_time_forward(g_player_service->get_selected(), 5 * 60 * 1000); });
+			components::button("PLUS_5_MINUTES"_T, [] {
+				toxic::warp_time_forward(g_player_service->get_selected(), 5 * 60 * 1000);
+			});
 			ImGui::SameLine();
-			components::button(
-			    "PLUS_48_MINUTES"_T, [] { toxic::warp_time_forward(g_player_service->get_selected(), 48 * 60 * 1000); });
+			components::button("PLUS_48_MINUTES"_T, [] {
+				toxic::warp_time_forward(g_player_service->get_selected(), 48 * 60 * 1000);
+			});
 			ImGui::SameLine();
-			components::button(
-			    "PLUS_96_MINUTES"_T, [] { toxic::warp_time_forward(g_player_service->get_selected(), 96 * 60 * 1000); });
+			components::button("PLUS_96_MINUTES"_T, [] {
+				toxic::warp_time_forward(g_player_service->get_selected(), 96 * 60 * 1000);
+			});
 			ImGui::SameLine();
-			components::button(
-			    "PLUS_200_MINUTES"_T, [] { toxic::warp_time_forward(g_player_service->get_selected(), 200 * 60 * 1000); });
+			components::button("PLUS_200_MINUTES"_T, [] {
+				toxic::warp_time_forward(g_player_service->get_selected(), 200 * 60 * 1000);
+			});
 			ImGui::SameLine();
-			components::button("STOP_TIME"_T, [] { toxic::set_time(g_player_service->get_selected(), INT_MAX - 3000); });
+			components::button("STOP_TIME"_T, [] {
+				toxic::set_time(g_player_service->get_selected(), INT_MAX - 3000);
+			});
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("PLAYER_TOXIC_NO_WAY_BACK"_T.data());
 

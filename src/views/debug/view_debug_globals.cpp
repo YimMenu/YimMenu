@@ -11,7 +11,9 @@ namespace big
 		{
 			if (ImGui::Checkbox("DEBUG_GLOBALS_ENABLE_FREEZING"_T.data(), &g_globals_service->m_running)
 			    && g_globals_service->m_running)
-				g_thread_pool->push([&]() { g_globals_service->loop(); });
+				g_thread_pool->push([&]() {
+					g_globals_service->loop();
+				});
 
 			if (components::button("LOAD"_T))
 				g_globals_service->load();

@@ -82,8 +82,7 @@ namespace big::scripts
 	// try to get am_launcher in a consistent state before trying to start the script taking account of all participants
 	inline void start_launcher_script(int script_id)
 	{
-		static auto check_players_in_state = [](GtaThread* launcher, int state) -> bool
-		{
+		static auto check_players_in_state = [](GtaThread* launcher, int state) -> bool {
 			bool set = false;
 
 			if (!launcher->m_net_component)
@@ -201,8 +200,7 @@ namespace big::scripts
 
 	inline void start_creator_script(rage::joaat_t hash)
 	{
-		static auto read_uint24_t = [](uint8_t* arr)
-		{
+		static auto read_uint24_t = [](uint8_t* arr) {
 			return arr[0] + (arr[1] << 8) + (arr[2] << 16);
 		};
 
@@ -235,7 +233,8 @@ namespace big::scripts
 
 		if (auto program = gta_util::find_script_program(hash))
 		{
-			patch_script(program, get_code_location_by_pattern(program, "2D 02 04 00 ? 38 01 38 00 42 13"),
+			patch_script(program,
+			    get_code_location_by_pattern(program, "2D 02 04 00 ? 38 01 38 00 42 13"),
 			    {
 			        0x72,// PUSH_CONST_1
 			        0x00 // NOP
@@ -246,10 +245,13 @@ namespace big::scripts
 
 			if (auto loc = get_code_location_by_pattern(program, "39 04 5D ? ? ? 71"))
 			{
-				patch_script(program, read_uint24_t(program->get_code_address(loc.value() + 3)),
+				patch_script(program,
+				    read_uint24_t(program->get_code_address(loc.value() + 3)),
 				    {
-				        0x73,           // PUSH_CONST_2 0 = mp, 2 = creator, 999 = singleplayer
-				        0x2E, 0x00, 0x01// LEAVE 0 1
+				        0x73,// PUSH_CONST_2 0 = mp, 2 = creator, 999 = singleplayer
+				        0x2E,
+				        0x00,
+				        0x01// LEAVE 0 1
 				    },
 				    5);// allow fast zoom in mp
 			}

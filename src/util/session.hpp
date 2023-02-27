@@ -119,17 +119,17 @@ namespace big::session
 
 	inline void join_by_username(std::string username)
 	{
-		g_thread_pool->push(
-		    [username]
-		    {
-			    uint64_t rid;
-			    if (g_api_service->get_rid_from_username(username, rid))
-			    {
-				    g_fiber_pool->queue_job([rid] { join_by_rockstar_id(rid); });
-				    return;
-			    }
-			    g_notification_service->push_error("RID Joiner", "Target player is offline?");
-		    });
+		g_thread_pool->push([username] {
+			uint64_t rid;
+			if (g_api_service->get_rid_from_username(username, rid))
+			{
+				g_fiber_pool->queue_job([rid] {
+					join_by_rockstar_id(rid);
+				});
+				return;
+			}
+			g_notification_service->push_error("RID Joiner", "Target player is offline?");
+		});
 	}
 
 	inline void add_infraction(player_ptr player, Infraction infraction)
@@ -148,7 +148,8 @@ namespace big::session
 	{
 		const size_t arg_count  = 7;
 		int64_t args[arg_count] = {
-		    (int64_t)eRemoteEvent::GiveCollectible, (int64_t)self::id,
+		    (int64_t)eRemoteEvent::GiveCollectible,
+		    (int64_t)self::id,
 		    (int64_t)col,  // iParam0
 		    (int64_t)index,// iParam1
 		    !uncomplete,   // bParam2

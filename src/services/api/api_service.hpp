@@ -30,7 +30,10 @@ namespace big
 	private:
 		const std::vector<std::string> languages = {"unset", "en", "fr", "de", "it", "es", "pt", "pl", "ru", "es-mx"};
 
-		inline std::string get_ticket() { return g_pointers->m_sc_info->m_ticket; }
+		inline std::string get_ticket()
+		{
+			return g_pointers->m_sc_info->m_ticket;
+		}
 	};
 
 	inline api_service* g_api_service;

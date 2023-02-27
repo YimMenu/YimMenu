@@ -78,28 +78,26 @@ namespace big
 
 				if (g.session_browser.sort_method != 0)
 				{
-					std::qsort(m_found_sessions, m_num_sessions_found, sizeof(session),
-					    [](const void* a1, const void* a2) -> int
-					    {
-						    std::strong_ordering result;
+					std::qsort(m_found_sessions, m_num_sessions_found, sizeof(session), [](const void* a1, const void* a2) -> int {
+						std::strong_ordering result;
 
-						    if (g.session_browser.sort_method == 1)
-						    {
-							    result = (((session*)(a1))->attributes.player_count <=> ((session*)(a2))->attributes.player_count);
-						    }
+						if (g.session_browser.sort_method == 1)
+						{
+							result = (((session*)(a1))->attributes.player_count <=> ((session*)(a2))->attributes.player_count);
+						}
 
-						    if (result == 0)
-							    return 0;
+						if (result == 0)
+							return 0;
 
-						    if (result > 0)
-							    return g.session_browser.sort_direction ? -1 : 1;
+						if (result > 0)
+							return g.session_browser.sort_direction ? -1 : 1;
 
-						    if (result < 0)
-							    return g.session_browser.sort_direction ? 1 : -1;
+						if (result < 0)
+							return g.session_browser.sort_direction ? 1 : -1;
 
 
-						    std::unreachable();
-					    });
+						std::unreachable();
+					});
 				}
 
 				m_active = false;

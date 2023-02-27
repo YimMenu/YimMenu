@@ -7,7 +7,8 @@
 
 namespace big
 {
-	translation_service::translation_service() : m_url("https://cdn.jsdelivr.net/gh/YimMenu/Translations@master")
+	translation_service::translation_service() :
+	    m_url("https://cdn.jsdelivr.net/gh/YimMenu/Translations@master")
 	{
 	}
 
@@ -83,12 +84,10 @@ namespace big
 
 	void translation_service::select_language_pack(const std::string& pack_id)
 	{
-		g_thread_pool->push(
-		    [this, &pack_id]
-		    {
-			    m_local_index.selected_language = pack_id;
-			    load_translations();
-		    });
+		g_thread_pool->push([this, &pack_id] {
+			m_local_index.selected_language = pack_id;
+			load_translations();
+		});
 	}
 
 	void translation_service::load_translations()

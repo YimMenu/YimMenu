@@ -6,7 +6,10 @@ namespace rage
 	struct rgbaColor
 	{
 		rgbaColor(std::uint8_t r = 0, std::uint8_t g = 0, std::uint8_t b = 0, std::uint8_t a = 255) :
-		r(r), g(g), b(b), a(a)
+		    r(r),
+		    g(g),
+		    b(b),
+		    a(a)
 		{
 		}
 

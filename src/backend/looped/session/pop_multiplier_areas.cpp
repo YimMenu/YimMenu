@@ -17,18 +17,22 @@ namespace big
 		{
 			if (!STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() && gta_util::find_script_thread(RAGE_JOAAT("freemode")) && SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
 			{
-				gta_util::execute_as_script(RAGE_JOAAT("freemode"),
-				    []
-				    {
-					    pop_multiplier_id = MISC::ADD_POP_MULTIPLIER_SPHERE(
-					        1.1f, 1.1f, 1.1f, 15000.0f, g.session.disable_peds ? 0.0f : 1.0f, g.session.disable_traffic ? 0.0f : 1.0f, false, true);
+				gta_util::execute_as_script(RAGE_JOAAT("freemode"), [] {
+					pop_multiplier_id = MISC::ADD_POP_MULTIPLIER_SPHERE(1.1f,
+					    1.1f,
+					    1.1f,
+					    15000.0f,
+					    g.session.disable_peds ? 0.0f : 1.0f,
+					    g.session.disable_traffic ? 0.0f : 1.0f,
+					    false,
+					    true);
 
-					    bLastBlockPeds                 = g.session.disable_peds;
-					    bLastBlockVehs                 = g.session.disable_traffic;
-					    bLastPopMultiplierAreasEnabled = true;
+					bLastBlockPeds                 = g.session.disable_peds;
+					bLastBlockVehs                 = g.session.disable_traffic;
+					bLastPopMultiplierAreasEnabled = true;
 
-					    MISC::CLEAR_AREA(1.1f, 1.1f, 1.1f, 19999.9f, true, false, false, true);
-				    });
+					MISC::CLEAR_AREA(1.1f, 1.1f, 1.1f, 19999.9f, true, false, false, true);
+				});
 			}
 		}
 		else if (bLastPopMultiplierAreasEnabled && (g.session.disable_traffic != bLastBlockVehs || g.session.disable_peds != bLastBlockPeds))
@@ -42,8 +46,9 @@ namespace big
 		{
 			if (gta_util::find_script_thread(RAGE_JOAAT("freemode")))
 			{
-				gta_util::execute_as_script(
-				    RAGE_JOAAT("freemode"), [] { MISC::REMOVE_POP_MULTIPLIER_SPHERE(pop_multiplier_id, false); });
+				gta_util::execute_as_script(RAGE_JOAAT("freemode"), [] {
+					MISC::REMOVE_POP_MULTIPLIER_SPHERE(pop_multiplier_id, false);
+				});
 			}
 
 			bLastPopMultiplierAreasEnabled = false;

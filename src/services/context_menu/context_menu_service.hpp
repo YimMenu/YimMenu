@@ -53,10 +53,11 @@ namespace big
 		rage::fwEntity* m_pointer{};
 		model_bounding_box_screen_space m_model_bounding_box_screen_space;
 
-		s_context_menu vehicle_menu{ContextEntityType::VEHICLE, 0, {},
+		s_context_menu vehicle_menu{ContextEntityType::VEHICLE,
+		    0,
+		    {},
 		    {{"KILL ENGINE",
-		         [this]
-		         {
+		         [this] {
 			         if (entity::take_control_of(m_handle))
 			         {
 				         VEHICLE::SET_VEHICLE_ENGINE_HEALTH(m_handle, 0.f);
@@ -64,50 +65,42 @@ namespace big
 			         }
 		         }},
 		        {"DELETE",
-		            [this]
-		            {
+		            [this] {
 			            if (entity::take_control_of(m_handle))
 			            {
 				            entity::delete_entity(m_handle);
 			            }
 		            }},
-		        {"TP INTO",
-		            [this]
-		            {
-			            teleport::into_vehicle(m_handle);
-		            }}}};
+		        {"TP INTO", [this] {
+			         teleport::into_vehicle(m_handle);
+		         }}}};
 
 		s_context_menu ped_menu{ContextEntityType::PED, 0, {}, {}};
 
 		s_context_menu object_menu{ContextEntityType::OBJECT, 0, {}, {}};
 
-		s_context_menu player_menu{ContextEntityType::PLAYER, 0, {},
-		    {{"STEAL IDENTITY",
-		        [this]
-		        {
-			        ped::steal_identity(m_handle);
-		        }}}};
+		s_context_menu player_menu{ContextEntityType::PLAYER, 0, {}, {{"STEAL IDENTITY", [this] {
+			                                                               ped::steal_identity(m_handle);
+		                                                               }}}};
 
-		s_context_menu shared_menu{ContextEntityType::SHARED, 0, {},
+		s_context_menu shared_menu{ContextEntityType::SHARED,
+		    0,
+		    {},
 		    {{"EXPLODE",
-		         [this]
-		         {
+		         [this] {
 			         rage::fvector3 pos = *m_pointer->m_navigation->get_position();
 			         FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 1, 1000, 1, 0, 1, 0);
 		         }},
 		        {"TP TO",
-		            [this]
-		            {
+		            [this] {
 			            rage::fvector3 pos = *m_pointer->m_navigation->get_position();
 			            teleport::to_coords({pos.x, pos.y, pos.z});
 		            }},
-		        {"COPY HASH",
-		            [this]
-		            {
-			            ImGui::SetClipboardText(std::format("0x{:08X}", (rage::joaat_t)m_pointer->m_model_info->m_hash).c_str());
-			            g_notification_service->push("Context Menu",
-			                std::format("Copy hash 0x{:08X}", (rage::joaat_t)m_pointer->m_model_info->m_hash).c_str());
-		            }}}};
+		        {"COPY HASH", [this] {
+			         ImGui::SetClipboardText(std::format("0x{:08X}", (rage::joaat_t)m_pointer->m_model_info->m_hash).c_str());
+			         g_notification_service->push("Context Menu",
+			             std::format("Copy hash 0x{:08X}", (rage::joaat_t)m_pointer->m_model_info->m_hash).c_str());
+		         }}}};
 
 		std::unordered_map<ContextEntityType, s_context_menu> options = {{ContextEntityType::VEHICLE, vehicle_menu}, {ContextEntityType::PLAYER, player_menu}, {ContextEntityType::PED, ped_menu}, {ContextEntityType::SHARED, shared_menu}, {ContextEntityType::OBJECT, object_menu}};
 	};

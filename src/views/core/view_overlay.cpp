@@ -34,17 +34,20 @@ namespace big
 				ImGui::Separator();
 
 				if (replay_interface->m_ped_interface)
-					ImGui::Text(std::format("Ped Pool: {}/{}", replay_interface->m_ped_interface->m_cur_peds,
+					ImGui::Text(std::format("Ped Pool: {}/{}",
+					    replay_interface->m_ped_interface->m_cur_peds,
 					    replay_interface->m_ped_interface->m_max_peds)
 					                .c_str());
 
 				if (replay_interface->m_vehicle_interface)
-					ImGui::Text(std::format("Vehicle Pool: {}/{}", replay_interface->m_vehicle_interface->m_cur_vehicles,
+					ImGui::Text(std::format("Vehicle Pool: {}/{}",
+					    replay_interface->m_vehicle_interface->m_cur_vehicles,
 					    replay_interface->m_vehicle_interface->m_max_vehicles)
 					                .c_str());
 
 				if (replay_interface->m_object_interface)
-					ImGui::Text(std::format("Object Pool: {}/{}", replay_interface->m_object_interface->m_cur_objects,
+					ImGui::Text(std::format("Object Pool: {}/{}",
+					    replay_interface->m_object_interface->m_cur_objects,
 					    replay_interface->m_object_interface->m_max_objects)
 					                .c_str());
 			}

@@ -195,13 +195,11 @@ namespace big
 
 	void yim_fipackfile::read_xml_file(const std::filesystem::path& path, std::function<void(pugi::xml_document& doc)> cb)
 	{
-		read_file(path,
-		    [&cb](const std::unique_ptr<std::uint8_t[]>& file_content, const int data_size)
-		    {
-			    if (pugi::xml_document doc; doc.load_buffer(file_content.get(), data_size).status == pugi::xml_parse_status::status_ok)
-			    {
-				    cb(doc);
-			    }
-		    });
+		read_file(path, [&cb](const std::unique_ptr<std::uint8_t[]>& file_content, const int data_size) {
+			if (pugi::xml_document doc; doc.load_buffer(file_content.get(), data_size).status == pugi::xml_parse_status::status_ok)
+			{
+				cb(doc);
+			}
+		});
 	}
 }

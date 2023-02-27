@@ -5,7 +5,9 @@
 
 namespace memory
 {
-	range::range(handle base, std::size_t size) : m_base(base), m_size(size)
+	range::range(handle base, std::size_t size) :
+	    m_base(base),
+	    m_size(size)
 	{
 	}
 

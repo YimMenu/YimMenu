@@ -1,13 +1,13 @@
 #include "player_database_service.hpp"
 
 #include "file_manager.hpp"
-#include "util/session.hpp"
 #include "pointers.hpp"
+#include "util/session.hpp"
 
 namespace big
 {
 	player_database_service::player_database_service() :
-	m_file_path(g_file_manager->get_project_file("./players.json").get_path())
+	    m_file_path(g_file_manager->get_project_file("./players.json").get_path())
 	{
 		load();
 		g_player_database_service = this;
@@ -67,8 +67,8 @@ namespace big
 			return &m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id];
 		else
 		{
-			m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id] = {
-			    player->get_name(), player->get_net_data()->m_gamer_handle.m_rockstar_id};
+			m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id] = {player->get_name(),
+			    player->get_net_data()->m_gamer_handle.m_rockstar_id};
 			save();
 			return &m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id];
 		}

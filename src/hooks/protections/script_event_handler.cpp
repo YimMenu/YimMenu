@@ -18,8 +18,8 @@ namespace big
 			LOG(WARNING) << "BLOCKED_SCRIPT_EVENT From: " << player_name << " Event Type: " << protection_type;
 
 		if (should_notify)
-			g_notification_service->push_warning(
-			    "Script Event Protection", std::format("From: {}\nEvent Type: {}", player_name.data(), protection_type.data()));
+			g_notification_service->push_warning("Script Event Protection",
+			    std::format("From: {}\nEvent Type: {}", player_name.data(), protection_type.data()));
 	}
 
 	inline bool is_player_driver_of_local_vehicle(Player sender)

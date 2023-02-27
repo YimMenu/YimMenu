@@ -84,28 +84,24 @@ namespace big
 		ImGui::SameLine();
 		components::command_checkbox<"nospread">();
 
-		components::button("GET_ALL_WEAPONS"_T,
-		    []
-		    {
-			    for (const auto& [_, weapon] : g_gta_data_service->weapons())
-			    {
-				    WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.m_hash, 9999, false);
-			    }
+		components::button("GET_ALL_WEAPONS"_T, [] {
+			for (const auto& [_, weapon] : g_gta_data_service->weapons())
+			{
+				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.m_hash, 9999, false);
+			}
 
-			    constexpr auto parachute_hash = RAGE_JOAAT("GADGET_PARACHUTE");
-			    WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, parachute_hash, 0, true);
-		    });
+			constexpr auto parachute_hash = RAGE_JOAAT("GADGET_PARACHUTE");
+			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, parachute_hash, 0, true);
+		});
 		ImGui::SameLine();
-		components::button("REMOVE_CUR_WEAPON"_T,
-		    []
-		    {
-			    Hash weaponHash;
-			    WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weaponHash, 1);
-			    if (weaponHash != RAGE_JOAAT("WEAPON_UNARMED"))
-			    {
-				    WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, weaponHash);
-			    }
-		    });
+		components::button("REMOVE_CUR_WEAPON"_T, [] {
+			Hash weaponHash;
+			WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weaponHash, 1);
+			if (weaponHash != RAGE_JOAAT("WEAPON_UNARMED"))
+			{
+				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, weaponHash);
+			}
+		});
 
 		ImGui::SliderFloat("DMG_MULTIPLR"_T.data(), &g.weapons.increased_damage, 1.f, 10.f, "%.1f");
 
@@ -148,10 +144,42 @@ namespace big
 			}
 			if (ImGui::IsItemActive())
 			{
-				g_fiber_pool->queue_job([] { PAD::DISABLE_ALL_CONTROL_ACTIONS(0); });
+				g_fiber_pool->queue_job([] {
+					PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
+				});
 			}
 
 			break;
+		}
+
+		ImGui::Separator();
+		components::sub_title("Aim Assistance");
+		components::command_checkbox<"triggerbot">();
+		ImGui::SameLine();
+		components::command_checkbox<"aimbot">();
+
+		if (g.weapons.aimbot.enable)
+		{
+			components::command_checkbox<"aimatplayer">();
+			ImGui::SameLine();
+			components::command_checkbox<"aimatnpc">();
+			ImGui::SameLine();
+			components::command_checkbox<"aimatpolice">();
+			ImGui::SameLine();
+			components::command_checkbox<"aimatenemy">();
+
+			components::command_checkbox<"smoothing">();
+			if (g.weapons.aimbot.smoothing)
+			{
+				ImGui::SameLine();
+				ImGui::PushItemWidth(220);
+				ImGui::SliderFloat("Speed", &g.weapons.aimbot.smoothing_speed, 1.f, 12.f, "%.1f");
+				ImGui::PopItemWidth();
+			}
+			ImGui::PushItemWidth(350);
+			ImGui::SliderFloat("FOV", &g.weapons.aimbot.fov, 1.f, 360.f, "%.0f");
+			ImGui::SliderFloat("Distance", &g.weapons.aimbot.distance, 1.f, 350.f, "%.0f");
+			ImGui::PopItemWidth();
 		}
 	}
 }

@@ -5,7 +5,8 @@
 
 namespace big
 {
-	chat_command_context::chat_command_context(player_ptr player) : m_player(player)
+	chat_command_context::chat_command_context(player_ptr player) :
+	    m_player(player)
 	{
 	}
 
@@ -24,18 +25,18 @@ namespace big
 
 	void chat_command_context::report_output(const std::string& output) const
 	{
-		g_fiber_pool->queue_job(
-		    [this, output]
-		    {
-			    char msg[265]{};
-			    msg[0] = g.session.chat_output_prefix;
-			    msg[1] = ' ';
-			    strncpy(msg + 2, output.c_str(), sizeof(msg) - 2);
+		g_fiber_pool->queue_job([this, output] {
+			char msg[265]{};
+			msg[0] = g.session.chat_output_prefix;
+			msg[1] = ' ';
+			strncpy(msg + 2, output.c_str(), sizeof(msg) - 2);
 
-			    if (g_hooking->get_original<hooks::send_chat_message>()(
-			            *g_pointers->m_send_chat_ptr, g_player_service->get_self()->get_net_data(), msg, false))
-				    notify::draw_chat(msg, g_player_service->get_self()->get_name(), false);
-		    });
+			if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_send_chat_ptr,
+			        g_player_service->get_self()->get_net_data(),
+			        msg,
+			        false))
+				notify::draw_chat(msg, g_player_service->get_self()->get_name(), false);
+		});
 	}
 
 	void chat_command_context::report_error(const std::string& error) const

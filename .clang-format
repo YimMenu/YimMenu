@@ -26,7 +26,7 @@ BreakInheritanceList: AfterColon
 BreakStringLiterals: 'false'
 CompactNamespaces: 'false'
 ConstructorInitializerAllOnOneLineOrOnePerLine: 'false'
-ConstructorInitializerIndentWidth: '0'
+ConstructorInitializerIndentWidth: '4'
 Cpp11BracedListStyle: 'true'
 DerivePointerAlignment: 'false'
 FixNamespaceComments: 'false'
@@ -64,3 +64,10 @@ SpacesInParentheses: 'false'
 SpacesInSquareBrackets: 'false'
 Standard: Auto
 UseTab: ForIndentation
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+    BeforeLambdaBody: 'false'
+    AfterCaseLabel: 'true'
+
+PackConstructorInitializers: Never

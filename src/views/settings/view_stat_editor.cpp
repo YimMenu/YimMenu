@@ -147,11 +147,15 @@ namespace big
 			{
 			case INT:
 			{
-				components::input_text("Stat", stat_int_text, sizeof(stat_int_text), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.stat.int_text = stat_int_text; });
-				components::input_text("Value", stat_int_value, sizeof(stat_int_value), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.stat.int_value = stat_int_value; });
-				components::button("Apply", [] { helper::stat_set_int(stat_int_text, stat_int_value); });
+				components::input_text("Stat", stat_int_text, sizeof(stat_int_text), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.stat.int_text = stat_int_text;
+				});
+				components::input_text("Value", stat_int_value, sizeof(stat_int_value), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.stat.int_value = stat_int_value;
+				});
+				components::button("Apply", [] {
+					helper::stat_set_int(stat_int_text, stat_int_value);
+				});
 				ImGui::SameLine();
 				ImGui::Checkbox("Read", &g.stat_editor.stat.int_read);
 				components::input_text("##read_result", stat_int_read_result, sizeof(stat_int_read_result), ImGuiInputTextFlags_ReadOnly);
@@ -159,11 +163,15 @@ namespace big
 			break;
 			case BOOLEAN:
 			{
-				components::input_text("Stat", stat_bool_text, sizeof(stat_bool_text), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.stat.bool_text = stat_bool_text; });
-				components::input_text("Value", stat_bool_value, sizeof(stat_bool_value), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.stat.bool_value = stat_bool_value; });
-				components::button("Apply", [] { helper::stat_set_bool(stat_bool_text, stat_bool_value); });
+				components::input_text("Stat", stat_bool_text, sizeof(stat_bool_text), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.stat.bool_text = stat_bool_text;
+				});
+				components::input_text("Value", stat_bool_value, sizeof(stat_bool_value), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.stat.bool_value = stat_bool_value;
+				});
+				components::button("Apply", [] {
+					helper::stat_set_bool(stat_bool_text, stat_bool_value);
+				});
 				ImGui::SameLine();
 				ImGui::Checkbox("Read", &g.stat_editor.stat.bool_read);
 				components::input_text("##read_result", stat_bool_read_result, sizeof(stat_bool_read_result), ImGuiInputTextFlags_ReadOnly);
@@ -171,11 +179,15 @@ namespace big
 			break;
 			case FLOAT:
 			{
-				components::input_text("Stat", stat_float_text, sizeof(stat_float_text), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.stat.float_text = stat_float_text; });
-				components::input_text("Value", stat_float_value, sizeof(stat_float_value), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.stat.float_value = stat_float_value; });
-				components::button("Apply", [] { helper::stat_set_float(stat_float_text, stat_float_value); });
+				components::input_text("Stat", stat_float_text, sizeof(stat_float_text), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.stat.float_text = stat_float_text;
+				});
+				components::input_text("Value", stat_float_value, sizeof(stat_float_value), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.stat.float_value = stat_float_value;
+				});
+				components::button("Apply", [] {
+					helper::stat_set_float(stat_float_text, stat_float_value);
+				});
 				ImGui::SameLine();
 				ImGui::Checkbox("Read", &g.stat_editor.stat.float_read);
 				components::input_text("##read_result", stat_float_read_result, sizeof(stat_float_read_result), ImGuiInputTextFlags_ReadOnly);
@@ -183,11 +195,15 @@ namespace big
 			break;
 			case INCREMENT:
 			{
-				components::input_text("Stat", stat_increment_text, sizeof(stat_increment_text), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.stat.increment_text = stat_increment_text; });
-				components::input_text("Value", stat_increment_value, sizeof(stat_increment_value), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.stat.increment_value = stat_increment_value; });
-				components::button("Apply", [] { helper::stat_increment(stat_increment_text, stat_increment_value); });
+				components::input_text("Stat", stat_increment_text, sizeof(stat_increment_text), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.stat.increment_text = stat_increment_text;
+				});
+				components::input_text("Value", stat_increment_value, sizeof(stat_increment_value), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.stat.increment_value = stat_increment_value;
+				});
+				components::button("Apply", [] {
+					helper::stat_increment(stat_increment_text, stat_increment_value);
+				});
 				ImGui::SameLine();
 				ImGui::SameLine();
 				ImGui::Checkbox("Loop Write", &g.stat_editor.stat.increment_loop_write);
@@ -195,13 +211,17 @@ namespace big
 			break;
 			case DATE:
 			{
-				components::input_text("Stat", stat_date_text, sizeof(stat_date_text), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.stat.date_text = stat_date_text; });
-				components::input_text("Value", stat_date_value, sizeof(stat_date_value), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.stat.date_value = stat_date_value; });
+				components::input_text("Stat", stat_date_text, sizeof(stat_date_text), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.stat.date_text = stat_date_text;
+				});
+				components::input_text("Value", stat_date_value, sizeof(stat_date_value), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.stat.date_value = stat_date_value;
+				});
 				if (ImGui::IsItemHovered())
 					ImGui::SetTooltip("year month day hour minute second millisecond\nexample: 2022 1 17 21 34 55");
-				components::button("Apply", [] { helper::stat_set_date(stat_date_text, stat_date_value); });
+				components::button("Apply", [] {
+					helper::stat_set_date(stat_date_text, stat_date_value);
+				});
 				ImGui::SameLine();
 				ImGui::Checkbox("Read", &g.stat_editor.stat.date_read);
 				components::input_text("##read_result", stat_date_read_result, sizeof(stat_date_read_result), ImGuiInputTextFlags_ReadOnly);
@@ -209,11 +229,15 @@ namespace big
 			break;
 			case STRING:
 			{
-				components::input_text("Stat", stat_string_text, sizeof(stat_string_text), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.stat.string_text = stat_string_text; });
-				components::input_text("Value", stat_string_value, sizeof(stat_string_value), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.stat.string_value = stat_string_value; });
-				components::button("Apply", [] { helper::stat_set_string(stat_string_text, stat_string_value); });
+				components::input_text("Stat", stat_string_text, sizeof(stat_string_text), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.stat.string_text = stat_string_text;
+				});
+				components::input_text("Value", stat_string_value, sizeof(stat_string_value), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.stat.string_value = stat_string_value;
+				});
+				components::button("Apply", [] {
+					helper::stat_set_string(stat_string_text, stat_string_value);
+				});
 				ImGui::SameLine();
 				ImGui::Checkbox("Read", &g.stat_editor.stat.string_read);
 				components::input_text("##read_result", stat_string_read_result, sizeof(stat_string_read_result), ImGuiInputTextFlags_ReadOnly);
@@ -221,21 +245,29 @@ namespace big
 			break;
 			case LABEL:
 			{
-				components::input_text("Stat", stat_label_text, sizeof(stat_label_text), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.stat.label_text = stat_label_text; });
-				components::input_text("Value", stat_label_value, sizeof(stat_label_value), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.stat.label_value = stat_label_value; });
-				components::button("Apply", [] { helper::stat_set_label(stat_label_text, stat_label_value); });
+				components::input_text("Stat", stat_label_text, sizeof(stat_label_text), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.stat.label_text = stat_label_text;
+				});
+				components::input_text("Value", stat_label_value, sizeof(stat_label_value), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.stat.label_value = stat_label_value;
+				});
+				components::button("Apply", [] {
+					helper::stat_set_label(stat_label_text, stat_label_value);
+				});
 				ImGui::SameLine();
 			}
 			break;
 			case USER_ID:
 			{
-				components::input_text("Stat", stat_user_id_text, sizeof(stat_user_id_text), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.stat.user_id_text = stat_user_id_text; });
-				components::input_text("Value", stat_user_id_value, sizeof(stat_user_id_value), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.stat.user_id_value = stat_user_id_value; });
-				components::button("Apply", [] { helper::stat_set_user_id(stat_user_id_text, stat_user_id_value); });
+				components::input_text("Stat", stat_user_id_text, sizeof(stat_user_id_text), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.stat.user_id_text = stat_user_id_text;
+				});
+				components::input_text("Value", stat_user_id_value, sizeof(stat_user_id_value), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.stat.user_id_value = stat_user_id_value;
+				});
+				components::button("Apply", [] {
+					helper::stat_set_user_id(stat_user_id_text, stat_user_id_value);
+				});
 				ImGui::SameLine();
 				ImGui::Checkbox("Read", &g.stat_editor.stat.user_id_read);
 				components::input_text("##read_result", stat_user_id_read_result, sizeof(stat_user_id_read_result), ImGuiInputTextFlags_ReadOnly);
@@ -245,35 +277,33 @@ namespace big
 			{
 				ImGui::Text("0:Int\n1:Bool\n2:Float\n3:Increment\n4:Date\n5:String\n6:Label\n7:User Id");
 				ImGui::Text("Example:\n$MPX_CHAR_NAME\n5:name\n$MPX_DEFAULT_STATS_SET\n1:0");
-				components::button("Import From Clipboard",
-				    []
-				    {
-					    std::string clipboard_text     = ImGui::GetClipboardText();
-					    std::vector<std::string> lines = split(clipboard_text, '\n');
-					    if (!lines.size() || lines.size() % 2)
-						    return;
-					    for (size_t i = 0; i < lines.size(); i += 2)
-					    {
-						    if (lines[i + 1] == "")
-							    continue;
-						    std::vector<std::string> strs = split(lines[i + 1], ':');
-						    if (strs.size() == 1)
-							    strs.push_back("");//In case the string is to set a ""
-						    int type = get_text_value<int>(strs[0]);
-						    switch (type)
-						    {
-						    case INT: helper::stat_set_int(lines[i], strs[1]); break;
-						    case BOOLEAN: helper::stat_set_bool(lines[i], strs[1]); break;
-						    case FLOAT: helper::stat_set_float(lines[i], strs[1]); break;
-						    case INCREMENT: helper::stat_increment(lines[i], strs[1]); break;
-						    case DATE: helper::stat_set_date(lines[i], strs[1]); break;
-						    case STRING: helper::stat_set_string(lines[i], strs[1]); break;
-						    case LABEL: helper::stat_set_label(lines[i], strs[1]); break;
-						    case USER_ID: helper::stat_set_user_id(lines[i], strs[1]); break;
-						    default: break;
-						    }
-					    }
-				    });
+				components::button("Import From Clipboard", [] {
+					std::string clipboard_text     = ImGui::GetClipboardText();
+					std::vector<std::string> lines = split(clipboard_text, '\n');
+					if (!lines.size() || lines.size() % 2)
+						return;
+					for (size_t i = 0; i < lines.size(); i += 2)
+					{
+						if (lines[i + 1] == "")
+							continue;
+						std::vector<std::string> strs = split(lines[i + 1], ':');
+						if (strs.size() == 1)
+							strs.push_back("");//In case the string is to set a ""
+						int type = get_text_value<int>(strs[0]);
+						switch (type)
+						{
+						case INT: helper::stat_set_int(lines[i], strs[1]); break;
+						case BOOLEAN: helper::stat_set_bool(lines[i], strs[1]); break;
+						case FLOAT: helper::stat_set_float(lines[i], strs[1]); break;
+						case INCREMENT: helper::stat_increment(lines[i], strs[1]); break;
+						case DATE: helper::stat_set_date(lines[i], strs[1]); break;
+						case STRING: helper::stat_set_string(lines[i], strs[1]); break;
+						case LABEL: helper::stat_set_label(lines[i], strs[1]); break;
+						case USER_ID: helper::stat_set_user_id(lines[i], strs[1]); break;
+						default: break;
+						}
+					}
+				});
 			}
 			break;
 			default: break;
@@ -306,12 +336,15 @@ namespace big
 			{
 			case INT:
 			{
-				components::input_text("Index", packed_stat_int_text, sizeof(packed_stat_int_text), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.packed_stat.int_text = packed_stat_int_text; });
-				components::input_text("Value", packed_stat_int_value, sizeof(packed_stat_int_value), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.packed_stat.int_value = packed_stat_int_value; });
-				components::button(
-				    "Apply", [] { helper::packed_stat_set_int(packed_stat_int_text, packed_stat_int_value); });
+				components::input_text("Index", packed_stat_int_text, sizeof(packed_stat_int_text), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.packed_stat.int_text = packed_stat_int_text;
+				});
+				components::input_text("Value", packed_stat_int_value, sizeof(packed_stat_int_value), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.packed_stat.int_value = packed_stat_int_value;
+				});
+				components::button("Apply", [] {
+					helper::packed_stat_set_int(packed_stat_int_text, packed_stat_int_value);
+				});
 				ImGui::SameLine();
 				ImGui::Checkbox("Read", &g.stat_editor.packed_stat.int_read);
 				components::input_text("##read_result", packed_stat_int_read_result, sizeof(packed_stat_int_read_result), ImGuiInputTextFlags_ReadOnly);
@@ -319,12 +352,15 @@ namespace big
 			break;
 			case BOOLEAN:
 			{
-				components::input_text("Index", packed_stat_bool_text, sizeof(packed_stat_bool_text), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.packed_stat.bool_text = packed_stat_bool_text; });
-				components::input_text("Value", packed_stat_bool_value, sizeof(packed_stat_bool_value), ImGuiInputTextFlags_None,
-				    [] { g.stat_editor.packed_stat.bool_value = packed_stat_bool_value; });
-				components::button(
-				    "Apply", [] { helper::packed_stat_set_bool(packed_stat_bool_text, packed_stat_bool_value); });
+				components::input_text("Index", packed_stat_bool_text, sizeof(packed_stat_bool_text), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.packed_stat.bool_text = packed_stat_bool_text;
+				});
+				components::input_text("Value", packed_stat_bool_value, sizeof(packed_stat_bool_value), ImGuiInputTextFlags_None, [] {
+					g.stat_editor.packed_stat.bool_value = packed_stat_bool_value;
+				});
+				components::button("Apply", [] {
+					helper::packed_stat_set_bool(packed_stat_bool_text, packed_stat_bool_value);
+				});
 				ImGui::SameLine();
 				ImGui::Checkbox("Read", &g.stat_editor.packed_stat.bool_read);
 				components::input_text("##read_result", packed_stat_bool_read_result, sizeof(packed_stat_bool_read_result), ImGuiInputTextFlags_ReadOnly);
@@ -334,29 +370,27 @@ namespace big
 			{
 				ImGui::Text("0:Int\n1:Bool");
 				ImGui::Text("Example:\n31786\n0:123\n31786 32786\n1:1");
-				components::button("Import From Clipboard",
-				    []
-				    {
-					    std::string clipboard_text     = ImGui::GetClipboardText();
-					    std::vector<std::string> lines = split(clipboard_text, '\n');
-					    if (!lines.size() || lines.size() % 2)
-						    return;
-					    for (size_t i = 0; i < lines.size(); i += 2)
-					    {
-						    if (lines[i + 1] == "")
-							    continue;
-						    std::vector<std::string> strs = split(lines[i + 1], ':');
-						    if (strs.size() == 1)
-							    continue;
-						    int type = get_text_value<int>(strs[0]);
-						    switch (type)
-						    {
-						    case INT: helper::packed_stat_set_int(lines[i], strs[1]); break;
-						    case BOOLEAN: helper::packed_stat_set_bool(lines[i], strs[1]); break;
-						    default: break;
-						    }
-					    }
-				    });
+				components::button("Import From Clipboard", [] {
+					std::string clipboard_text     = ImGui::GetClipboardText();
+					std::vector<std::string> lines = split(clipboard_text, '\n');
+					if (!lines.size() || lines.size() % 2)
+						return;
+					for (size_t i = 0; i < lines.size(); i += 2)
+					{
+						if (lines[i + 1] == "")
+							continue;
+						std::vector<std::string> strs = split(lines[i + 1], ':');
+						if (strs.size() == 1)
+							continue;
+						int type = get_text_value<int>(strs[0]);
+						switch (type)
+						{
+						case INT: helper::packed_stat_set_int(lines[i], strs[1]); break;
+						case BOOLEAN: helper::packed_stat_set_bool(lines[i], strs[1]); break;
+						default: break;
+						}
+					}
+				});
 			}
 			break;
 			default: break;
@@ -393,35 +427,36 @@ namespace big
 			strcpy_s(packed_stat_bool_value, sizeof(packed_stat_bool_value), g.stat_editor.packed_stat.bool_value.c_str());
 		}(), true);
 
-		g_fiber_pool->queue_job(
-		    []
-		    {
-			    STATS::STAT_GET_INT(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"), &character_index, -1);
-			    CLOCK::GET_POSIX_TIME(&year, &month, &day, &hour, &minute, &second);
-			    if (g.stat_editor.stat.int_read)
-				    strcpy_s(stat_int_read_result, sizeof(stat_int_read_result), helper::stat_get_int(stat_int_text).c_str());
-			    if (g.stat_editor.stat.bool_read)
-				    strcpy_s(stat_bool_read_result, sizeof(stat_bool_read_result), helper::stat_get_bool(stat_bool_text).c_str());
-			    if (g.stat_editor.stat.float_read)
-				    strcpy_s(
-				        stat_float_read_result, sizeof(stat_float_read_result), helper::stat_get_float(stat_float_text).c_str());
-			    if (g.stat_editor.stat.increment_loop_write)
-				    helper::stat_increment(stat_increment_text, stat_increment_value);
-			    if (g.stat_editor.stat.date_read)
-				    strcpy_s(stat_date_read_result, sizeof(stat_date_read_result), helper::stat_get_date(stat_date_text).c_str());
-			    if (g.stat_editor.stat.string_read)
-				    strcpy_s(stat_string_read_result, sizeof(stat_string_read_result),
-				        helper::stat_get_string(stat_string_text).c_str());
-			    if (g.stat_editor.stat.user_id_read)
-				    strcpy_s(stat_user_id_read_result, sizeof(stat_user_id_read_result),
-				        helper::stat_get_user_id(stat_user_id_text).c_str());
-			    if (g.stat_editor.packed_stat.int_read)
-				    strcpy_s(packed_stat_int_read_result, sizeof(packed_stat_int_read_result),
-				        helper::packed_stat_get_int(packed_stat_int_text).c_str());
-			    if (g.stat_editor.packed_stat.bool_read)
-				    strcpy_s(packed_stat_bool_read_result, sizeof(packed_stat_bool_read_result),
-				        helper::packed_stat_get_bool(packed_stat_bool_text).c_str());
-		    });
+		g_fiber_pool->queue_job([] {
+			STATS::STAT_GET_INT(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"), &character_index, -1);
+			CLOCK::GET_POSIX_TIME(&year, &month, &day, &hour, &minute, &second);
+			if (g.stat_editor.stat.int_read)
+				strcpy_s(stat_int_read_result, sizeof(stat_int_read_result), helper::stat_get_int(stat_int_text).c_str());
+			if (g.stat_editor.stat.bool_read)
+				strcpy_s(stat_bool_read_result, sizeof(stat_bool_read_result), helper::stat_get_bool(stat_bool_text).c_str());
+			if (g.stat_editor.stat.float_read)
+				strcpy_s(stat_float_read_result, sizeof(stat_float_read_result), helper::stat_get_float(stat_float_text).c_str());
+			if (g.stat_editor.stat.increment_loop_write)
+				helper::stat_increment(stat_increment_text, stat_increment_value);
+			if (g.stat_editor.stat.date_read)
+				strcpy_s(stat_date_read_result, sizeof(stat_date_read_result), helper::stat_get_date(stat_date_text).c_str());
+			if (g.stat_editor.stat.string_read)
+				strcpy_s(stat_string_read_result,
+				    sizeof(stat_string_read_result),
+				    helper::stat_get_string(stat_string_text).c_str());
+			if (g.stat_editor.stat.user_id_read)
+				strcpy_s(stat_user_id_read_result,
+				    sizeof(stat_user_id_read_result),
+				    helper::stat_get_user_id(stat_user_id_text).c_str());
+			if (g.stat_editor.packed_stat.int_read)
+				strcpy_s(packed_stat_int_read_result,
+				    sizeof(packed_stat_int_read_result),
+				    helper::packed_stat_get_int(packed_stat_int_text).c_str());
+			if (g.stat_editor.packed_stat.bool_read)
+				strcpy_s(packed_stat_bool_read_result,
+				    sizeof(packed_stat_bool_read_result),
+				    helper::packed_stat_get_bool(packed_stat_bool_text).c_str());
+		});
 
 		components::sub_title(std::format("Posix Time: {}-{}-{} {}:{}:{}", year, month, day, hour, minute, second));
 		components::sub_title(std::format("Character Index: {}", character_index));

@@ -1,6 +1,8 @@
 #ifndef COMMON_INC
 #define COMMON_INC
 
+// clang-format off
+
 #include <sdkddkver.h>
 #include <winsock2.h>
 #include <windows.h>
@@ -58,6 +60,8 @@
 #include "services/notifications/notification_service.hpp"
 #include "services/translation_service/translation_service.hpp"
 
+// clang-format on
+
 namespace big
 {
 	using namespace std::chrono_literals;
@@ -65,7 +69,7 @@ namespace big
 	inline HMODULE g_hmodule{};
 	inline HANDLE g_main_thread{};
 	inline DWORD g_main_thread_id{};
-	inline std::atomic_bool g_running{ false };
+	inline std::atomic_bool g_running{false};
 
 	inline CPed* g_local_player;
 }
@@ -81,7 +85,7 @@ namespace self
 template<size_t N>
 struct template_str
 {
-	constexpr template_str(const char(&str)[N])
+	constexpr template_str(const char (&str)[N])
 	{
 		std::copy_n(str, N, value);
 	}

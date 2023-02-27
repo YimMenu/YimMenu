@@ -32,7 +32,10 @@ namespace big
 				NETWORK::SET_ENTITY_LOCALLY_VISIBLE(self::veh);
 		}
 
-		virtual void on_disable() override { ENTITY::SET_ENTITY_VISIBLE(self::veh, true, 0); }
+		virtual void on_disable() override
+		{
+			ENTITY::SET_ENTITY_VISIBLE(self::veh, true, 0);
+		}
 	};
 
 	vehinvisibility g_vehinvisibility("invisveh", "Vehicle Invisiblity", "Makes your car invisible", g.vehicle.vehinvisibility);

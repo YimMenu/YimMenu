@@ -3,12 +3,13 @@
 namespace big
 {
 	inline std::unordered_map<int, const char*> block_join_reasons = {
-	    {1, "None"}, {5, "Been Voted Out"},// You have already been voted out of this game session.
-	    {7, "Incompatible Assets"},        // Failed to join session due to incompatible assets.
-	    {8, "Session Full"},               // The session you're trying to join is currently full.
-	    {9, "Slot Full"},                  // The session you're trying to join is currently full of players.
-	    {10, "No Title Update"},           // Please make sure all players have the latest Title Update.
-	    {12, "Invites Disabled"},          // Invites are currently disabled in the session.
+	    {1, "None"},
+	    {5, "Been Voted Out"},           // You have already been voted out of this game session.
+	    {7, "Incompatible Assets"},      // Failed to join session due to incompatible assets.
+	    {8, "Session Full"},             // The session you're trying to join is currently full.
+	    {9, "Slot Full"},                // The session you're trying to join is currently full of players.
+	    {10, "No Title Update"},         // Please make sure all players have the latest Title Update.
+	    {12, "Invites Disabled"},        // Invites are currently disabled in the session.
 	    {13, "Different Targeting Mode"},// The session you are trying to join is using a different targeting preference. You can change your preference in the Settings tab of the Pause Menu in Grand Theft Auto V. Joining a new GTA Online Session.
 	    {14, "Cheater"},// You are classed as a cheat and can only play with other cheats until you are forgiven.
 	    {16, "Incompatible DLC"},// Incompatible downloadable content. All players must have the latest compatibility pack.

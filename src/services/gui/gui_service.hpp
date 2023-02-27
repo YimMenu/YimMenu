@@ -32,6 +32,7 @@ namespace big
 		WATER,
 		BLACKHOLE,
 		MODEL_SWAPPER,
+		NEARBY,
 
 		NETWORK,
 		SESSION,
@@ -67,17 +68,20 @@ namespace big
 		bool switched_view = true;
 
 		std::map<tabs, navigation_struct> nav = {{tabs::SELF,
-		                                             {"Self", view::self,
+		                                             {"Self",
+		                                                 view::self,
 		                                                 {
 		                                                     {tabs::WEAPONS, {"Weapons", view::weapons}},
 		                                                     {tabs::MOBILE, {"Mobile", view::mobile}},
 		                                                     {tabs::TELEPORT, {"Teleport", view::teleport}},
 		                                                 }}},
 		    {tabs::VEHICLE,
-		        {"Vehicle", view::vehicle,
+		        {"Vehicle",
+		            view::vehicle,
 		            {
 		                {tabs::HANDLING,
-		                    {"Handling", view::handling_current_profile,
+		                    {"Handling",
+		                        view::handling_current_profile,
 		                        {
 		                            {tabs::HANDLING_CURRENT_PROFILE, {"Current Profile", view::handling_current_profile}},
 		                            {tabs::HANDLING_SAVED_PROFILE, {"Saved Profiles", view::handling_saved_profiles}},
@@ -88,19 +92,10 @@ namespace big
 		                {tabs::PERSIST_CAR, {"Persist Car", view::persist_car}},
 		                {tabs::FUN_VEHICLE, {"Fun Features", view::fun_vehicle}},
 		            }}},
-		    {tabs::WORLD,
-		        {"World", nullptr,
-		            {
-		                {tabs::SPAWN_PED, {"Spawn Ped", view::spawn_ped}},
-		                {tabs::TIME_AND_WEATHER, {"Time And Weather", view::time_and_weather}},
-		                {tabs::CREATOR, {"Creator", view::creator}},
-		                {tabs::TRAIN, {"Train", view::train}},
-		                {tabs::WATER, {"Water", view::water}},
-		                {tabs::BLACKHOLE, {"Blackhole", view::blackhole}},
-		                {tabs::MODEL_SWAPPER, {"Model Swapper", view::model_swapper}},
-		            }}},
+		    {tabs::WORLD, {"World", nullptr, {{tabs::SPAWN_PED, {"Spawn Ped", view::spawn_ped}}, {tabs::TIME_AND_WEATHER, {"Time And Weather", view::time_and_weather}}, {tabs::CREATOR, {"Creator", view::creator}}, {tabs::TRAIN, {"Train", view::train}}, {tabs::WATER, {"Water", view::water}}, {tabs::BLACKHOLE, {"Blackhole", view::blackhole}}, {tabs::MODEL_SWAPPER, {"Model Swapper", view::model_swapper}}, {tabs::NEARBY, {"Nearby", view::nearby}}}}},
 		    {tabs::NETWORK,
-		        {"Network", nullptr,
+		        {"Network",
+		            nullptr,
 		            {
 		                {tabs::SPOOFING, {"Spoofing", view::spoofing}},
 		                {tabs::SESSION, {"Session", view::session}},
@@ -109,7 +104,8 @@ namespace big
 		                {tabs::SESSION_BROWSER, {"Session Browser", view::session_browser}},
 		            }}},
 		    {tabs::SETTINGS,
-		        {"Settings", view::settings,
+		        {"Settings",
+		            view::settings,
 		            {
 		                {tabs::STAT_EDITOR, {"Stat Editor", view::stat_editor}},
 		                {tabs::CONTEXT_MENU_SETTINGS, {"Context Menu", view::context_menu_settings}},

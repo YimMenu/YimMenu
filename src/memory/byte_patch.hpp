@@ -37,7 +37,8 @@ namespace memory
 
 	private:
 		template<typename TAddr>
-		byte_patch(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value) : m_address(address)
+		byte_patch(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value) :
+		    m_address(address)
 		{
 			m_size = sizeof(std::remove_pointer_t<std::remove_reference_t<TAddr>>);
 
@@ -49,7 +50,8 @@ namespace memory
 		}
 
 		template<typename TAddr, typename T, std::size_t N>
-		byte_patch(TAddr address, std::span<T, N> span) : m_address((void*)address)
+		byte_patch(TAddr address, std::span<T, N> span) :
+		    m_address((void*)address)
 		{
 			m_size = span.size();
 

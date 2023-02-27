@@ -41,7 +41,8 @@ namespace big
 		HUD::SET_TEXT_OUTLINE();
 		HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
 		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(speed);
-		HUD::END_TEXT_COMMAND_DISPLAY_TEXT(
-		    g.vehicle.speedo_meter.x + (g.vehicle.speedo_meter.left_side ? 0 : .003f), g.vehicle.speedo_meter.y + .04f, 1);
+		HUD::END_TEXT_COMMAND_DISPLAY_TEXT(g.vehicle.speedo_meter.x + (g.vehicle.speedo_meter.left_side ? 0 : .003f),
+		    g.vehicle.speedo_meter.y + .04f,
+		    1);
 	}
 }

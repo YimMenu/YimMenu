@@ -29,19 +29,17 @@ namespace big
 		{
 			auto controlled = g.m_remote_controlled_vehicle;
 			auto controller = g.m_remote_controller_vehicle;
-			g_fiber_pool->queue_job(
-			    [controlled, controller]
-			    {
-				    if (entity::take_control_of(controlled))
-				    {
-					    ENTITY::SET_ENTITY_COLLISION(g.m_remote_controlled_vehicle, TRUE, TRUE);
-					    ENTITY::DETACH_ENTITY(controlled, TRUE, TRUE);
-					    VEHICLE::SET_VEHICLE_DOORS_LOCKED(controlled, 0);
-					    VEHICLE::SET_VEHICLE_DOORS_LOCKED_FOR_ALL_PLAYERS(controlled, FALSE);
-					    ENTITY::SET_ENTITY_INVINCIBLE(controlled, FALSE);
-					    entity::delete_entity(controller);
-				    }
-			    });
+			g_fiber_pool->queue_job([controlled, controller] {
+				if (entity::take_control_of(controlled))
+				{
+					ENTITY::SET_ENTITY_COLLISION(g.m_remote_controlled_vehicle, TRUE, TRUE);
+					ENTITY::DETACH_ENTITY(controlled, TRUE, TRUE);
+					VEHICLE::SET_VEHICLE_DOORS_LOCKED(controlled, 0);
+					VEHICLE::SET_VEHICLE_DOORS_LOCKED_FOR_ALL_PLAYERS(controlled, FALSE);
+					ENTITY::SET_ENTITY_INVINCIBLE(controlled, FALSE);
+					entity::delete_entity(controller);
+				}
+			});
 
 
 			g.m_remote_controller_vehicle = -1;

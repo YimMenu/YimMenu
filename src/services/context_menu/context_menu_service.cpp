@@ -71,15 +71,17 @@ namespace big
 		edge8.z = edge5.z - 2 * dimensions.z * up.z;
 
 		auto any_fail                     = false;
-		static auto imgui_world_to_screen = [&any_fail](rage::fvector3& world_input, ImVec2& screen_result)
-		{
+		static auto imgui_world_to_screen = [&any_fail](rage::fvector3& world_input, ImVec2& screen_result) {
 			if (any_fail)
 			{
 				return;
 			}
 
-			const auto success = GRAPHICS::GET_SCREEN_COORD_FROM_WORLD_COORD(
-			    world_input.x, world_input.y, world_input.z, &screen_result.x, &screen_result.y);
+			const auto success = GRAPHICS::GET_SCREEN_COORD_FROM_WORLD_COORD(world_input.x,
+			    world_input.y,
+			    world_input.z,
+			    &screen_result.x,
+			    &screen_result.y);
 			if (success)
 			{
 				screen_result.x = static_cast<float>(*g_pointers->m_resolution_x) * screen_result.x;
@@ -251,7 +253,8 @@ namespace big
 		{
 			if (type == ContextEntityType::SHARED)
 				continue;
-			menu.options.insert(menu.options.end(), options.at(ContextEntityType::SHARED).options.begin(),
+			menu.options.insert(menu.options.end(),
+			    options.at(ContextEntityType::SHARED).options.begin(),
 			    options.at(ContextEntityType::SHARED).options.end());
 
 			std::uint32_t max_size = 0;

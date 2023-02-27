@@ -6,7 +6,9 @@
 
 namespace big
 {
-	player_service::player_service() : m_self(), m_selected_player(m_dummy)
+	player_service::player_service() :
+	    m_self(),
+	    m_selected_player(m_dummy)
 	{
 		g_player_service = this;
 
@@ -90,8 +92,11 @@ namespace big
 		if (m_selected_player && m_selected_player->equals(net_game_player))
 			m_selected_player = m_dummy;
 
-		if (auto it = std::find_if(m_players.begin(), m_players.end(),
-		        [net_game_player](const auto& p) { return p.second->id() == net_game_player->m_player_id; });
+		if (auto it = std::find_if(m_players.begin(),
+		        m_players.end(),
+		        [net_game_player](const auto& p) {
+			        return p.second->id() == net_game_player->m_player_id;
+		        });
 		    it != m_players.end())
 		{
 			if (m_player_to_use_end_session_kick == it->second)

@@ -25,7 +25,9 @@ namespace big
 			ImGui::SameLine();
 			if (components::button("SAVE"_T))
 			{
-				g_thread_pool->push([&] { g_handling_service->save_profile(name); });
+				g_thread_pool->push([&] {
+					g_handling_service->save_profile(name);
+				});
 				ImGui::CloseCurrentPopup();
 			}
 

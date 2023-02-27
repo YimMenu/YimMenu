@@ -5,7 +5,12 @@
 namespace big
 {
 	script_patch::script_patch(rage::joaat_t script, const memory::pattern pattern, int32_t offset, std::vector<std::uint8_t> patch, bool* enable_bool) :
-	m_script(script), m_pattern(pattern), m_offset(offset), m_patch(std::move(patch)), m_bool(enable_bool), m_ip(0)
+	    m_script(script),
+	    m_pattern(pattern),
+	    m_offset(offset),
+	    m_patch(std::move(patch)),
+	    m_bool(enable_bool),
+	    m_ip(0)
 	{
 	}
 

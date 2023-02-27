@@ -110,8 +110,11 @@ namespace ImGui
 
 		char buf_display[64] = "None";
 
-		ImGui::RenderFrame(
-		    frame_bb.Min, frame_bb.Max, ImGui::GetColorU32(ImVec4(0.20f, 0.25f, 0.30f, 1.0f)), true, style.FrameRounding);
+		ImGui::RenderFrame(frame_bb.Min,
+		    frame_bb.Max,
+		    ImGui::GetColorU32(ImVec4(0.20f, 0.25f, 0.30f, 1.0f)),
+		    true,
+		    style.FrameRounding);
 
 		if (*k != 0 && g.ActiveId != id)
 		{
@@ -124,8 +127,13 @@ namespace ImGui
 
 		const ImRect clip_rect(frame_bb.Min.x, frame_bb.Min.y, frame_bb.Min.x + size.x, frame_bb.Min.y + size.y);// Not using frame_bb.Max because we have adjusted size
 		ImVec2 render_pos = frame_bb.Min + style.FramePadding;
-		ImGui::RenderTextClipped(
-		    frame_bb.Min + style.FramePadding, frame_bb.Max - style.FramePadding, buf_display, NULL, NULL, style.ButtonTextAlign, &clip_rect);
+		ImGui::RenderTextClipped(frame_bb.Min + style.FramePadding,
+		    frame_bb.Max - style.FramePadding,
+		    buf_display,
+		    NULL,
+		    NULL,
+		    style.ButtonTextAlign,
+		    &clip_rect);
 		//RenderTextClipped(frame_bb.Min + style.FramePadding, frame_bb.Max - style.FramePadding, buf_display, NULL, NULL, GetColorU32(ImGuiCol_Text), style.ButtonTextAlign, &clip_rect);
 		//draw_window->DrawList->AddText(g.Font, g.FontSize, render_pos, GetColorU32(ImGuiCol_Text), buf_display, NULL, 0.0f, &clip_rect);
 

@@ -13,7 +13,10 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual CommandAccessLevel get_access_level() { return CommandAccessLevel::TOXIC; }
+		virtual CommandAccessLevel get_access_level()
+		{
+			return CommandAccessLevel::TOXIC;
+		}
 
 		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
@@ -37,7 +40,9 @@ namespace big
 						g_pointers->m_send_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 						    g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 						        (int)plyr->get_session_player()->m_player_data.m_peer_id_2),
-						    gta_util::get_network()->m_game_session_ptr->m_connection_identifier, &cmd, 0x1000000);
+						    gta_util::get_network()->m_game_session_ptr->m_connection_identifier,
+						    &cmd,
+						    0x1000000);
 				}
 
 				g_pointers->m_handle_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr, player->get_session_player(), &cmd);
@@ -51,7 +56,9 @@ namespace big
 						g_pointers->m_send_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 						    g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 						        (int)plyr->get_session_player()->m_player_data.m_peer_id_2),
-						    gta_util::get_network()->m_game_session_ptr->m_connection_identifier, &cmd, 0x1000000);
+						    gta_util::get_network()->m_game_session_ptr->m_connection_identifier,
+						    &cmd,
+						    0x1000000);
 
 						break;
 					}

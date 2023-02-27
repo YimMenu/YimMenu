@@ -5,13 +5,14 @@
 namespace big
 {
 	folder::folder(file_manager* file_manager, std::filesystem::path file_path) :
-	folder(file_manager->get_base_dir() / file_path)
+	    folder(file_manager->get_base_dir() / file_path)
 	{
 		m_file_manager    = file_manager;
 		m_is_project_file = true;
 	}
 
-	folder::folder(std::filesystem::path folder_path) : m_folder_path(file_manager::ensure_folder_exists(folder_path))
+	folder::folder(std::filesystem::path folder_path) :
+	    m_folder_path(file_manager::ensure_folder_exists(folder_path))
 	{
 	}
 

@@ -15,7 +15,9 @@ namespace big
 		uint8_t flags;  // 0x1C
 
 	public:
-		json_serializer(char* _buffer, uint32_t _length) : buffer(_buffer), maxlen(_length)
+		json_serializer(char* _buffer, uint32_t _length) :
+		    buffer(_buffer),
+		    maxlen(_length)
 		{
 			unk0
 				= 0;
@@ -25,7 +27,10 @@ namespace big
 				flags  = 0;
 		}
 
-		inline char* get_string() const { return buffer; }
+		inline char* get_string() const
+		{
+			return buffer;
+		}
 	};
 	static_assert(sizeof(json_serializer) == 0x1D);// size is actually 0x20
 #pragma pack(pop)

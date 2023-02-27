@@ -41,21 +41,16 @@ namespace big
 						ImGui::PushID(item.first);
 
 						float circle_size = 7.5f;
-						auto cursor_pos = ImGui::GetCursorScreenPos();
-						auto plyr_state = player.online_state;
+						auto cursor_pos   = ImGui::GetCursorScreenPos();
+						auto plyr_state   = player.online_state;
 
 						//render status circle
-						ImGui::GetWindowDrawList()->AddCircleFilled(
-							ImVec2(
-								cursor_pos.x + 4.f + circle_size,
-								cursor_pos.y + 4.f + circle_size),
-							circle_size,
-							ImColor(
-								plyr_state == PlayerOnlineStatus::ONLINE ? ImVec4(0.f, 1.f, 0.f, 1.f)
-								: plyr_state == PlayerOnlineStatus::OFFLINE ? ImVec4(1.f, 0.f, 0.f, 1.f)
-								: plyr_state == PlayerOnlineStatus::UNKNOWN ? ImVec4(.5f, .5f, .5f, 1.0f)
-								: ImVec4(.5f, .5f, .5f, 1.0f)
-								));
+						ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(cursor_pos.x + 4.f + circle_size, cursor_pos.y + 4.f + circle_size),
+						    circle_size,
+						    ImColor(plyr_state == PlayerOnlineStatus::ONLINE  ? ImVec4(0.f, 1.f, 0.f, 1.f) :
+						            plyr_state == PlayerOnlineStatus::OFFLINE ? ImVec4(1.f, 0.f, 0.f, 1.f) :
+						            plyr_state == PlayerOnlineStatus::UNKNOWN ? ImVec4(.5f, .5f, .5f, 1.0f) :
+						                                                        ImVec4(.5f, .5f, .5f, 1.0f)));
 
 						//we need some padding
 						ImVec2 cursor = ImGui::GetCursorPos();
@@ -145,22 +140,22 @@ namespace big
 					}
 				}
 
-				components::button("JOIN_SESSION"_T, [] { session::join_by_rockstar_id(current_player.rockstar_id); });
+				components::button("JOIN_SESSION"_T, [] {
+					session::join_by_rockstar_id(current_player.rockstar_id);
+				});
 
 				static char message[256];
 				components::input_text("INPUT_MSG"_T, message, sizeof(message));
 				if (components::button("SEND_MSG"_T))
 				{
-					g_thread_pool->push(
-					    [selected]
-					    {
-						    if (g_api_service->send_socialclub_message(selected->rockstar_id, message))
-						    {
-							    g_notification_service->push("SCAPI"_T.data(), "MSG_SENT_SUCCESS"_T.data());
-							    return;
-						    }
-						    g_notification_service->push_error("SCAPI"_T.data(), "MSG_SENT_FAIL"_T.data());
-					    });
+					g_thread_pool->push([selected] {
+						if (g_api_service->send_socialclub_message(selected->rockstar_id, message))
+						{
+							g_notification_service->push("SCAPI"_T.data(), "MSG_SENT_SUCCESS"_T.data());
+							return;
+						}
+						g_notification_service->push_error("SCAPI"_T.data(), "MSG_SENT_FAIL"_T.data());
+					});
 				};
 
 				if (ImGui::Button("SAVE"_T.data()))
@@ -191,8 +186,7 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::button("RELOAD_PLYR_ONLINE_STATES"_T, []
-		{
+		components::button("RELOAD_PLYR_ONLINE_STATES"_T, [] {
 			g_player_database_service->update_player_states();
 		});
 

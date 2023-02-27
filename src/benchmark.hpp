@@ -8,7 +8,11 @@ namespace big
 	class benchmark
 	{
 	public:
-		explicit benchmark(std::string name = "") : m_start(high_resolution_clock::now()), m_name(name) {}
+		explicit benchmark(std::string name = "") :
+		    m_start(high_resolution_clock::now()),
+		    m_name(name)
+		{
+		}
 
 		void get_runtime()
 		{
@@ -19,7 +23,10 @@ namespace big
 			          << microseconds_elapsed.count() % 1000 << "us";
 		}
 
-		void reset() { m_start = high_resolution_clock::now(); }
+		void reset()
+		{
+			m_start = high_resolution_clock::now();
+		}
 
 	private:
 		high_resolution_clock::time_point m_start;

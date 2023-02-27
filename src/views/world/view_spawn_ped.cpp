@@ -180,7 +180,9 @@ namespace big
 		}
 
 		spawn_ped_give_weapon(ped);
-		spawned_peds.push_back({ped, selected_ped_for_player_id == SPAWN_PED_FOR_SELF ? self::id : selected_ped_for_player_id, is_bodyguard,
+		spawned_peds.push_back({ped,
+		    selected_ped_for_player_id == SPAWN_PED_FOR_SELF ? self::id : selected_ped_for_player_id,
+		    is_bodyguard,
 		    g.world.spawn_ped.spawn_as_attacker});
 		return ped;
 	}
@@ -287,13 +289,11 @@ namespace big
 						}
 						else if (ImGui::IsItemHovered())
 						{
-							g_fiber_pool->queue_job(
-							    []
-							    {
-								    Ped ped   = self::ped;
-								    Hash hash = ENTITY::GET_ENTITY_MODEL(ped);
-								    g_model_preview_service->show_ped(hash, ped);
-							    });
+							g_fiber_pool->queue_job([] {
+								Ped ped   = self::ped;
+								Hash hash = ENTITY::GET_ENTITY_MODEL(ped);
+								g_model_preview_service->show_ped(hash, ped);
+							});
 						}
 
 						if (selected_ped_player_id == -1)
@@ -320,17 +320,15 @@ namespace big
 								}
 								else if (ImGui::IsItemHovered())
 								{
-									g_fiber_pool->queue_job(
-									    [plyr_id]
-									    {
-										    auto plyr = g_player_service->get_by_id(plyr_id);
-										    if (plyr)
-										    {
-											    Ped ped   = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
-											    Hash hash = ENTITY::GET_ENTITY_MODEL(ped);
-											    g_model_preview_service->show_ped(hash, ped);
-										    }
-									    });
+									g_fiber_pool->queue_job([plyr_id] {
+										auto plyr = g_player_service->get_by_id(plyr_id);
+										if (plyr)
+										{
+											Ped ped   = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
+											Hash hash = ENTITY::GET_ENTITY_MODEL(ped);
+											g_model_preview_service->show_ped(hash, ped);
+										}
+									});
 								}
 								ImGui::PopID();
 
@@ -353,8 +351,9 @@ namespace big
 					ImGui::Text("MODEL_NAME"_T.data());
 
 					ImGui::SetNextItemWidth(240.f);
-					components::input_text_with_hint("##ped_model_name", "MODEL_NAME"_T, ped_model_buf, sizeof(ped_model_buf), ImGuiInputTextFlags_EnterReturnsTrue,
-					    [] { ped_model_dropdown_open = false; });
+					components::input_text_with_hint("##ped_model_name", "MODEL_NAME"_T, ped_model_buf, sizeof(ped_model_buf), ImGuiInputTextFlags_EnterReturnsTrue, [] {
+						ped_model_dropdown_open = false;
+					});
 				}
 				ImGui::EndGroup();
 
@@ -597,88 +596,74 @@ namespace big
 		ImGui::Checkbox("Invisible", &g.world.spawn_ped.spawn_invisible);
 		ImGui::Checkbox("Attacker", &g.world.spawn_ped.spawn_as_attacker);
 
-		components::button("CHANGE_PLAYER_MODEL"_T,
-		    []
-		    {
-			    if (selected_ped_type == -2)
-			    {
-				    if (selected_ped_player_id != -1)
-				    {
-					    auto plyr = g_player_service->get_by_id(selected_ped_player_id);
-					    if (plyr)
-					    {
-						    Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
-						    ped::steal_identity(ped);
-					    }
-				    }
-			    }
-			    else
-			    {
-				    if (!ped::change_player_model(rage::joaat(ped_model_buf)))
-				    {
-					    g_notification_service->push_error("PED"_T.data(), "SPAWN_MODEL_FAILED"_T.data());
-					    return;
-				    }
+		components::button("CHANGE_PLAYER_MODEL"_T, [] {
+			if (selected_ped_type == -2)
+			{
+				if (selected_ped_player_id != -1)
+				{
+					auto plyr = g_player_service->get_by_id(selected_ped_player_id);
+					if (plyr)
+					{
+						Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
+						ped::steal_identity(ped);
+					}
+				}
+			}
+			else
+			{
+				if (!ped::change_player_model(rage::joaat(ped_model_buf)))
+				{
+					g_notification_service->push_error("PED"_T.data(), "SPAWN_MODEL_FAILED"_T.data());
+					return;
+				}
 
-				    PED::SET_PED_RANDOM_COMPONENT_VARIATION(self::ped, 0);
-			    }
-		    });
+				PED::SET_PED_RANDOM_COMPONENT_VARIATION(self::ped, 0);
+			}
+		});
 
 		ImGui::SameLine();
 
 
-		components::button("SPAWN_PED"_T,
-		    []
-		    {
-			    if (selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE)
-			    {
-				    g_player_service->iterate(
-				        [](const big::player_entry& entry) {
-					        spawn_ped_at_location(
-					            selected_ped_type, ped_model_buf, selected_ped_player_id, entry.second->id(), false);
-				        });
-			    }
-			    else
-			    {
-				    spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, selected_ped_for_player_id, false);
-			    }
-		    });
+		components::button("SPAWN_PED"_T, [] {
+			if (selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE)
+			{
+				g_player_service->iterate([](const big::player_entry& entry) {
+					spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, entry.second->id(), false);
+				});
+			}
+			else
+			{
+				spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, selected_ped_for_player_id, false);
+			}
+		});
 
 		ImGui::SameLine();
 
-		components::button("SPAWN_BODYGUARD"_T,
-		    []
-		    {
-			    if (selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE)
-			    {
-				    g_player_service->iterate(
-				        [](const big::player_entry& entry) {
-					        spawn_ped_at_location(
-					            selected_ped_type, ped_model_buf, selected_ped_player_id, entry.second->id(), true);
-				        });
-			    }
-			    else
-			    {
-				    spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, selected_ped_for_player_id, true);
-			    }
-		    });
+		components::button("SPAWN_BODYGUARD"_T, [] {
+			if (selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE)
+			{
+				g_player_service->iterate([](const big::player_entry& entry) {
+					spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, entry.second->id(), true);
+				});
+			}
+			else
+			{
+				spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, selected_ped_for_player_id, true);
+			}
+		});
 
-		components::button("Spoof As Model",
-		    []
-		    {
-			    g.spoofing.spoof_player_model = true;
-			    g.spoofing.player_model       = ped_model_buf;
-		    });
+		components::button("Spoof As Model", [] {
+			g.spoofing.spoof_player_model = true;
+			g.spoofing.player_model       = ped_model_buf;
+		});
 
-		components::button("Cleanup Spawned Peds",
-		    []
-		    {
-			    for (auto& ped : spawned_peds)
-			    {
-				    PED::DELETE_PED(&ped.ped_handle);
-			    }
+		components::button("Cleanup Spawned Peds", [] {
+			for (auto& ped : spawned_peds)
+			{
+				PED::DELETE_PED(&ped.ped_handle);
+			}
 
-			    spawned_peds.clear();
-		    });
+			spawned_peds.clear();
+		});
 	}
 }
