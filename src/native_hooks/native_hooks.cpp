@@ -6,7 +6,6 @@
 #include "shop_controller.hpp"
 #include "network_session_host.hpp"
 #include "am_launcher.hpp"
-#include "casino.hpp"
 #include "creator.hpp"
 #include "crossmap.hpp"
 
@@ -110,6 +109,7 @@ namespace big
 		add_native_detour(0xADF692B254977C0C, all_scripts::SET_CURRENT_PED_WEAPON);
 		add_native_detour(0xFE99B66D079CF6BC, all_scripts::DISABLE_CONTROL_ACTION);
 		add_native_detour(0xEB354E5376BC81A7, all_scripts::HUD_FORCE_WEAPON_WHEEL);
+		add_native_detour(0x158C16F5E4CF41F8, all_scripts::NETWORK_CASINO_CAN_BET); //bypass casino country restrictions
 
 		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x06843DA7060A026B, carmod_shop::SET_ENTITY_COORDS);
 		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x8E2530AA8ADA980E, carmod_shop::SET_ENTITY_HEADING);
@@ -143,9 +143,6 @@ namespace big
 		add_native_detour(RAGE_JOAAT("fm_deathmatch_creator"), 0x3D3D8B3BE5A83D35, creator::GET_USED_CREATOR_BUDGET);
 		add_native_detour(RAGE_JOAAT("fm_lts_creator"), 0x3D3D8B3BE5A83D35, creator::GET_USED_CREATOR_BUDGET);
 		add_native_detour(RAGE_JOAAT("fm_survival_creator"), 0x3D3D8B3BE5A83D35, creator::GET_USED_CREATOR_BUDGET);
-
-		//bypass casino country restrictions
-		add_native_detour(0x158C16F5E4CF41F8, casino::NETWORK_CASINO_CAN_BET);
 
 		for (auto& entry : *g_pointers->m_script_program_table)
 			if (entry.m_program)

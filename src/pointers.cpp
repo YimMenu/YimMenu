@@ -167,7 +167,7 @@ namespace big
 		});
 
 		// Read Bitbuffer Boolean
-		main_batch.add("RBB", "E8 ? ? ? ? 84 C0 74 2D 48 8D 57 20", [this](memory::handle ptr)
+		main_batch.add("RBB", "E8 ? ? ? ? 84 C0 74 41 48 8D 56 2C", [this](memory::handle ptr)
 		{
 			m_read_bitbuf_bool = ptr.add(1).rip().as<decltype(m_read_bitbuf_bool)>();
 		});
@@ -419,13 +419,13 @@ namespace big
 		});
 
 		// Send Chat Ptr
-		main_batch.add("SCP", "41 83 7F ? ? 4C 8B 35", [this](memory::handle ptr)
+		main_batch.add("SCP", "83 7E 1C 01 48 8B 3D", [this](memory::handle ptr)
 		{
-			m_send_chat_ptr = ptr.add(8).rip().as<int64_t**>();
+			m_send_chat_ptr = ptr.add(7).rip().as<int64_t**>();
 		});
 
 		// Send Chat Message
-		main_batch.add("SCM", "48 83 EC 20 48 8B F9 48 8B CA 45 8A F1", [this](memory::handle ptr)
+		main_batch.add("SCM", "48 83 EC 20 48 8B F1 48 8B CA 41 8A E9", [this](memory::handle ptr)
 		{
 			m_send_chat_message = ptr.sub(21).as<functions::send_chat_message>();
 		});
@@ -514,8 +514,8 @@ namespace big
 			m_handle_join_request = ptr.as<PVOID>();
 		});
 
-		// Handle Join Request
-		main_batch.add("HJR", "E8 ?? ?? ?? ?? 41 8B DF 84 C0 74 06", [this](memory::handle ptr)
+		// Write Join Response Data
+		main_batch.add("WJRD", "E8 ?? ?? ?? ?? 41 8B DF 84 C0", [this](memory::handle ptr)
 		{
 			m_write_join_response_data = ptr.add(1).rip().as<functions::write_join_response_data>();
 		});
@@ -817,6 +817,18 @@ namespace big
 		main_batch.add("WPCDN", "48 8B C4 48 89 58 20 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 B0 48 81 EC 50 01 00 00 4C", [this](memory::handle ptr)
 		{
 			m_write_player_camera_data_node = ptr.as<PVOID>();
+		});
+
+		// DC
+		main_batch.add("DC", "48 8B D1 49 8B CA ? ? ? ? ? 48 8B D1 49 8B CA", [this](memory::handle ptr)
+		{
+			m_disable_collision = memory::byte_patch::make(ptr.sub(2).as<uint8_t*>(), 0xEB).get();
+		});
+
+		// AWIV
+		main_batch.add("AWIV", "49 3B C9 7C F0 ? ? C3", [this](memory::handle ptr)
+		{
+			m_allow_weapons_in_vehicle = memory::byte_patch::make(ptr.add(5).as<uint16_t*>(), 0x01B0).get(); //In order for the second xref loop not to stop
 		});
 
 		auto mem_region = memory::module("GTA5.exe");
