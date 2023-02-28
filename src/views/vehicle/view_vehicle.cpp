@@ -67,6 +67,8 @@ namespace big
 			{
 				components::command_checkbox<"localinvisveh">();
 			}
+			components::command_checkbox<"vehnocollision">();
+			components::command_checkbox<"vehallweapons">();
 
 			ImGui::EndGroup();
 			ImGui::SameLine();

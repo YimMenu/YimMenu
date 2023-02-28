@@ -566,28 +566,36 @@ namespace big
 			uint32_t proof_mask  = 0;
 
 			AutoDriveDestination auto_drive_destination = AutoDriveDestination::STOPPED;
-			AutoDriveStyle auto_drive_style             = AutoDriveStyle::LAW_ABIDING;
-			float auto_drive_speed                      = 1;
-			bool auto_turn_signals                      = false;
-			eBoostBehaviors boost_behavior              = eBoostBehaviors::DEFAULT;
-			bool drive_on_water                         = false;
-			bool horn_boost                             = false;
-			bool instant_brake                          = false;
-			bool block_homing                           = true;
-			bool ls_customs                             = false;// don't save this to disk
-			bool seatbelt                               = false;
-			bool turn_signals                           = false;
-			bool vehicle_jump                           = false;
-			bool keep_vehicle_repaired                  = false;
-			bool no_water_collision                     = false;
-			bool disable_engine_auto_start              = false;
-			bool change_engine_state_immediately        = false;
-			bool vehinvisibility                        = false;
-			bool localveh_visibility                    = false;
-			bool localped_visibility                    = true;
-			bool keep_on_ground                         = false;
+			AutoDriveStyle auto_drive_style = AutoDriveStyle::LAW_ABIDING;
+			float auto_drive_speed = 1;
+			bool auto_turn_signals = false;
+			eBoostBehaviors boost_behavior = eBoostBehaviors::DEFAULT;
+			bool drive_on_water = false;
+			bool horn_boost = false;
+			bool instant_brake = false;
+			bool block_homing = true;
+			bool ls_customs = false; // don't save this to disk
+			bool seatbelt = false;
+			bool turn_signals = false;
+			bool vehicle_jump = false;
+			bool keep_vehicle_repaired = false;
+			bool no_water_collision = false;
+			bool disable_engine_auto_start = false;
+			bool change_engine_state_immediately = false;
+			bool vehinvisibility = false;
+			bool localveh_visibility = false;
+			bool localped_visibility = true;
+			bool keep_on_ground = false;
+			bool no_collision = false;
+			bool unlimited_weapons = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, vehinvisibility, localveh_visibility, localped_visibility, keep_on_ground)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle,
+				speedo_meter, fly, rainbow_paint, speed_unit, god_mode,
+				proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask,
+				auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior,
+				drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump,
+				keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately,
+				vehinvisibility, localveh_visibility, localped_visibility, keep_on_ground, no_collision, unlimited_weapons)
 		} vehicle{};
 
 		struct weapons
