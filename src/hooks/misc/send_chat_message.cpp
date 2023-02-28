@@ -9,7 +9,6 @@ namespace big
 {
 	bool hooks::send_chat_message(void* team_mgr, rage::rlGamerInfo* local_gamer_info, char* message, bool is_team)
 	{
-		LOG(INFO) << "chat";
 		if (g.session.chat_commands && message[0] == g.session.chat_command_prefix)
 			command::process(std::string(message + 1), std::make_shared<chat_command_context>(g_player_service->get_self()));
 
