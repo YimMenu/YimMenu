@@ -421,7 +421,7 @@ namespace big
 		// Send Chat Ptr
 		main_batch.add("SCP", "83 7E 1C 01 48 8B 3D", [this](memory::handle ptr)
 		{
-			m_send_chat_ptr = ptr.add(8).rip().as<int64_t**>(); //not sure if this is correct..
+			m_send_chat_ptr = ptr.add(7).rip().as<int64_t**>();
 		});
 
 		// Send Chat Message
