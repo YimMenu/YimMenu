@@ -167,9 +167,9 @@ namespace big
 		});
 
 		// Read Bitbuffer Boolean
-		main_batch.add("RBB", "48 8B C4 48 89 58 08 55 56 57 48 83 EC 20 48 83 6", [this](memory::handle ptr)
+		main_batch.add("RBB", "E8 ? ? ? ? 84 C0 74 41 48 8D 56 2C", [this](memory::handle ptr)
 		{
-			m_read_bitbuf_bool = ptr.as<decltype(m_read_bitbuf_bool)>();
+			m_read_bitbuf_bool = ptr.add(1).rip().as<decltype(m_read_bitbuf_bool)>();
 		});
 
 		// Write Bitbuffer WORD/DWORD
@@ -416,6 +416,12 @@ namespace big
 		main_batch.add("IMCD", "E8 ? ? ? ? 40 88 7C 24 ? 49 89 9C 24", [this](memory::handle ptr)
 		{
 			m_invalid_mods_crash_detour = ptr.add(1).rip().as<PVOID>();
+		});
+
+		// Send Chat Ptr
+		main_batch.add("SCP", "83 7E 1C 01 48 8B 3D", [this](memory::handle ptr)
+		{
+			m_send_chat_ptr = ptr.add(8).rip().as<int64_t**>(); //not sure if this is correct..
 		});
 
 		// Send Chat Message
