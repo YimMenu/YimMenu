@@ -66,32 +66,66 @@ namespace big
         {
             const auto action = src->get_arg<ControllerInputs>(1);
 
-            if (g.weapons.interior_weapon)
+            if (g.weapons.interior_weapon) // Filtering from the inside of Kosatka
             {
                 switch (action)
                 {
+                // case ControllerInputs::INPUT_JUMP: TODO: add as separate feature
+                case ControllerInputs::INPUT_ATTACK:
+                case ControllerInputs::INPUT_AIM:
+                case ControllerInputs::INPUT_DUCK:
                 case ControllerInputs::INPUT_SELECT_WEAPON:
+                case ControllerInputs::INPUT_COVER:
+                case ControllerInputs::INPUT_TALK:
+                case ControllerInputs::INPUT_DETONATE:
+                case ControllerInputs::INPUT_WEAPON_SPECIAL:
+                case ControllerInputs::INPUT_WEAPON_SPECIAL_TWO:
+                case ControllerInputs::INPUT_VEH_AIM:
+                case ControllerInputs::INPUT_VEH_ATTACK:
+                case ControllerInputs::INPUT_VEH_ATTACK2:
+                case ControllerInputs::INPUT_VEH_HEADLIGHT:
+                case ControllerInputs::INPUT_VEH_NEXT_RADIO:
+                case ControllerInputs::INPUT_VEH_PREV_RADIO:
+                case ControllerInputs::INPUT_VEH_NEXT_RADIO_TRACK:
+                case ControllerInputs::INPUT_VEH_PREV_RADIO_TRACK:
+                case ControllerInputs::INPUT_VEH_RADIO_WHEEL:
+                case ControllerInputs::INPUT_VEH_PASSENGER_AIM:
+                case ControllerInputs::INPUT_VEH_PASSENGER_ATTACK:
                 case ControllerInputs::INPUT_VEH_SELECT_NEXT_WEAPON:
                 case ControllerInputs::INPUT_VEH_SELECT_PREV_WEAPON:
-                case ControllerInputs::INPUT_DETONATE:
-                case ControllerInputs::INPUT_PICKUP:
-                // case ControllerInputs::INPUT_JUMP: TODO: add as separate feature
-                case ControllerInputs::INPUT_TALK:
-                case ControllerInputs::INPUT_AIM:
+                case ControllerInputs::INPUT_VEH_ROOF:
+                case ControllerInputs::INPUT_VEH_JUMP:
+                case ControllerInputs::INPUT_VEH_FLY_ATTACK:
                 case ControllerInputs::INPUT_MELEE_ATTACK_LIGHT:
                 case ControllerInputs::INPUT_MELEE_ATTACK_HEAVY:
                 case ControllerInputs::INPUT_MELEE_ATTACK_ALTERNATE:
                 case ControllerInputs::INPUT_MELEE_BLOCK:
-                case ControllerInputs::INPUT_VEH_ATTACK:
-                case ControllerInputs::INPUT_VEH_ATTACK2:
-                case ControllerInputs::INPUT_VEH_AIM:
-                case ControllerInputs::INPUT_VEH_PASSENGER_ATTACK:
-                case ControllerInputs::INPUT_VEH_FLY_SELECT_NEXT_WEAPON:
-                case ControllerInputs::INPUT_ATTACK:
-                case ControllerInputs::INPUT_NEXT_WEAPON:
-                case ControllerInputs::INPUT_PREV_WEAPON:
-                case ControllerInputs::INPUT_SELECT_NEXT_WEAPON:
-                case ControllerInputs::INPUT_SELECT_PREV_WEAPON:
+                case ControllerInputs::INPUT_SELECT_WEAPON_UNARMED:
+                case ControllerInputs::INPUT_SELECT_WEAPON_MELEE:
+                case ControllerInputs::INPUT_SELECT_WEAPON_HANDGUN:
+                case ControllerInputs::INPUT_SELECT_WEAPON_SHOTGUN:
+                case ControllerInputs::INPUT_SELECT_WEAPON_SMG:
+                case ControllerInputs::INPUT_SELECT_WEAPON_AUTO_RIFLE:
+                case ControllerInputs::INPUT_SELECT_WEAPON_SNIPER:
+                case ControllerInputs::INPUT_SELECT_WEAPON_HEAVY:
+                case ControllerInputs::INPUT_SELECT_WEAPON_SPECIAL:
+                case ControllerInputs::INPUT_ATTACK2:
+                case ControllerInputs::INPUT_MELEE_ATTACK1:
+                case ControllerInputs::INPUT_MELEE_ATTACK2:
+                case ControllerInputs::INPUT_VEH_GUN_LEFT:
+                case ControllerInputs::INPUT_VEH_GUN_RIGHT:
+                case ControllerInputs::INPUT_VEH_GUN_UP:
+                case ControllerInputs::INPUT_VEH_GUN_DOWN:
+                case ControllerInputs::INPUT_VEH_HYDRAULICS_CONTROL_TOGGLE:
+                case ControllerInputs::INPUT_VEH_MELEE_HOLD:
+                case ControllerInputs::INPUT_VEH_MELEE_LEFT:
+                case ControllerInputs::INPUT_VEH_MELEE_RIGHT:
+                case ControllerInputs::INPUT_VEH_CAR_JUMP:
+                case ControllerInputs::INPUT_VEH_ROCKET_BOOST:
+                case ControllerInputs::INPUT_VEH_FLY_BOOST:
+                case ControllerInputs::INPUT_VEH_PARACHUTE:
+                case ControllerInputs::INPUT_VEH_BIKE_WINGS:
+                case ControllerInputs::INPUT_VEH_TRANSFORM:
                     return;
                 }
             }
@@ -105,6 +139,11 @@ namespace big
                 return;
 
             HUD::HUD_FORCE_WEAPON_WHEEL(src->get_arg<BOOL>(0));
+        }
+
+        void NETWORK_CASINO_CAN_BET(rage::scrNativeCallContext* src)
+        {
+            src->set_return_value<BOOL>(TRUE);
         }
     }
 }
