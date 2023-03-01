@@ -1,10 +1,10 @@
 #pragma once
 #include "gta/joaat.hpp"
 #include "gta/replay.hpp"
+#include "gta_util.hpp"
+#include "math.hpp"
 #include "natives.hpp"
 #include "script.hpp"
-#include "math.hpp"
-#include "gta_util.hpp"
 
 namespace big::entity
 {
@@ -43,15 +43,23 @@ namespace big::entity
 		Vector3 surfaceNormal;
 
 		Vector3 camCoords = CAM::GET_GAMEPLAY_CAM_COORD();
-		Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
-		Vector3 dir = math::rotation_to_direction(rot);
+		Vector3 rot       = CAM::GET_GAMEPLAY_CAM_ROT(2);
+		Vector3 dir       = math::rotation_to_direction(rot);
 		Vector3 farCoords;
 
 		farCoords.x = camCoords.x + dir.x * 1000;
 		farCoords.y = camCoords.y + dir.y * 1000;
 		farCoords.z = camCoords.z + dir.z * 1000;
 
-		int ray = SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(camCoords.x, camCoords.y, camCoords.z, farCoords.x, farCoords.y, farCoords.z, -1, 0, 7);
+		int ray = SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(camCoords.x,
+		    camCoords.y,
+		    camCoords.z,
+		    farCoords.x,
+		    farCoords.y,
+		    farCoords.z,
+		    -1,
+		    0,
+		    7);
 		SHAPETEST::GET_SHAPE_TEST_RESULT(ray, &hit, &endCoords, &surfaceNormal, ent);
 
 		return (bool)hit;
@@ -79,7 +87,7 @@ namespace big::entity
 				return false;
 			int netHandle = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent);
 			NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, true);
-		}		
+		}
 		return true;
 	}
 

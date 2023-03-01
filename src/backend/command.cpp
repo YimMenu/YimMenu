@@ -1,4 +1,5 @@
 #include "command.hpp"
+
 #include "fiber_pool.hpp"
 
 namespace
@@ -27,11 +28,11 @@ namespace
 namespace big
 {
 	command::command(const std::string& name, const std::string& label, const std::string& description, std::optional<std::uint8_t> num_args, bool fiber_pool) :
-		m_name(name),
-		m_label(label),
-		m_description(description),
-		m_num_args(num_args),
-		m_fiber_pool(fiber_pool)
+	    m_name(name),
+	    m_label(label),
+	    m_description(description),
+	    m_num_args(num_args),
+	    m_fiber_pool(fiber_pool)
 	{
 		g_commands[rage::joaat(name)] = this;
 	}
@@ -40,7 +41,10 @@ namespace big
 	{
 		if (m_num_args.has_value() && args.size() != m_num_args.value())
 		{
-			ctx->report_error(std::format("Command {} called with the wrong number of arguments. Expected {}, got {}", m_name, m_num_args.value(), args.size()));
+			ctx->report_error(std::format("Command {} called with the wrong number of arguments. Expected {}, got {}",
+			    m_name,
+			    m_num_args.value(),
+			    args.size()));
 			return;
 		}
 
@@ -51,7 +55,9 @@ namespace big
 		}
 
 		if (m_fiber_pool)
-			g_fiber_pool->queue_job([this, args, ctx] { execute(args, ctx); });
+			g_fiber_pool->queue_job([this, args, ctx] {
+				execute(args, ctx);
+			});
 		else
 			execute(args, ctx);
 	}
@@ -60,7 +66,10 @@ namespace big
 	{
 		if (m_num_args.has_value() && args.size() != m_num_args.value())
 		{
-			ctx->report_error(std::format("Command {} called with the wrong number of arguments. Expected {}, got {}", m_name, m_num_args.value(), args.size()));
+			ctx->report_error(std::format("Command {} called with the wrong number of arguments. Expected {}, got {}",
+			    m_name,
+			    m_num_args.value(),
+			    args.size()));
 			return;
 		}
 
@@ -98,7 +107,7 @@ namespace big
 			ctx->report_error("No command to call");
 			return;
 		}
-		
+
 		std::uint32_t hash = rage::joaat(args[0]);
 		if (!g_commands.contains(hash))
 		{

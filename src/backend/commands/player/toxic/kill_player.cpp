@@ -18,8 +18,24 @@ namespace big
 			if (!player->get_ped())
 				return;
 
-			g_pointers->m_send_network_damage((CEntity*)g_player_service->get_self()->get_ped(), (CEntity*)player->get_ped(), player->get_ped()->m_navigation->get_position(),
-				0, true, RAGE_JOAAT("weapon_explosion"), 10000.0f, 2, 0, (1 << 4), 0, 0, 0, false, false, true, true, nullptr);
+			g_pointers->m_send_network_damage((CEntity*)g_player_service->get_self()->get_ped(),
+			    (CEntity*)player->get_ped(),
+			    player->get_ped()->m_navigation->get_position(),
+			    0,
+			    true,
+			    RAGE_JOAAT("weapon_explosion"),
+			    10000.0f,
+			    2,
+			    0,
+			    (1 << 4),
+			    0,
+			    0,
+			    0,
+			    false,
+			    false,
+			    true,
+			    true,
+			    nullptr);
 		}
 	};
 

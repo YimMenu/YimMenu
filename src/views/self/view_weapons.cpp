@@ -1,16 +1,17 @@
-#include "core/data/custom_weapons.hpp"
-#include "fiber_pool.hpp"
-#include "natives.hpp"
-#include "core/data/special_ammo_types.hpp"
 #include "core/data/bullet_impact_types.hpp"
-#include "services/gta_data/gta_data_service.hpp"
+#include "core/data/custom_weapons.hpp"
+#include "core/data/special_ammo_types.hpp"
+#include "fiber_pool.hpp"
 #include "gta/joaat.hpp"
-#include "views/view.hpp"
+#include "natives.hpp"
 #include "pointers.hpp"
+#include "services/gta_data/gta_data_service.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
-	void view::weapons() {
+	void view::weapons()
+	{
 		components::sub_title("AMMO"_T);
 
 		ImGui::BeginGroup();
@@ -34,7 +35,7 @@ namespace big
 
 		ImGui::Checkbox("ENABLE_SPECIAL_AMMO"_T.data(), &g.weapons.ammo_special.toggle);
 
-		eAmmoSpecialType selected_ammo = g.weapons.ammo_special.type;
+		eAmmoSpecialType selected_ammo   = g.weapons.ammo_special.type;
 		eExplosionTag selected_explosion = g.weapons.ammo_special.explosion_tag;
 
 		if (ImGui::BeginCombo("SPECIAL_AMMO"_T.data(), SPECIAL_AMMOS[(int)selected_ammo].name))
@@ -83,8 +84,7 @@ namespace big
 		ImGui::SameLine();
 		components::command_checkbox<"nospread">();
 
-		components::button("GET_ALL_WEAPONS"_T, []
-		{
+		components::button("GET_ALL_WEAPONS"_T, [] {
 			for (const auto& [_, weapon] : g_gta_data_service->weapons())
 			{
 				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.m_hash, 9999, false);
@@ -94,8 +94,7 @@ namespace big
 			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, parachute_hash, 0, true);
 		});
 		ImGui::SameLine();
-		components::button("REMOVE_CUR_WEAPON"_T, []
-		{
+		components::button("REMOVE_CUR_WEAPON"_T, [] {
 			Hash weaponHash;
 			WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weaponHash, 1);
 			if (weaponHash != RAGE_JOAAT("WEAPON_UNARMED"))
@@ -133,8 +132,8 @@ namespace big
 		switch (selected)
 		{
 		case CustomWeapon::GRAVITY_GUN:
-				ImGui::Checkbox("Launch on release", &g.weapons.gravity_gun.launch_on_release);
-				break;
+			ImGui::Checkbox("Launch on release", &g.weapons.gravity_gun.launch_on_release);
+			break;
 		case CustomWeapon::VEHICLE_GUN:
 			// this some ugly ass looking code
 			static char vehicle_gun[12];
@@ -145,8 +144,7 @@ namespace big
 			}
 			if (ImGui::IsItemActive())
 			{
-				g_fiber_pool->queue_job([]
-				{
+				g_fiber_pool->queue_job([] {
 					PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 				});
 			}
@@ -156,14 +154,18 @@ namespace big
 
 		ImGui::Separator();
 		components::sub_title("Aim Assistance");
-		components::command_checkbox<"triggerbot">(); ImGui::SameLine();
+		components::command_checkbox<"triggerbot">();
+		ImGui::SameLine();
 		components::command_checkbox<"aimbot">();
 
-		if (g.weapons.aimbot.enable) 
+		if (g.weapons.aimbot.enable)
 		{
-			components::command_checkbox<"aimatplayer">(); ImGui::SameLine();
-			components::command_checkbox<"aimatnpc">(); ImGui::SameLine();
-			components::command_checkbox<"aimatpolice">(); ImGui::SameLine();
+			components::command_checkbox<"aimatplayer">();
+			ImGui::SameLine();
+			components::command_checkbox<"aimatnpc">();
+			ImGui::SameLine();
+			components::command_checkbox<"aimatpolice">();
+			ImGui::SameLine();
 			components::command_checkbox<"aimatenemy">();
 
 			components::command_checkbox<"smoothing">();

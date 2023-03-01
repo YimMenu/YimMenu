@@ -1,7 +1,7 @@
 #include "backend/player_command.hpp"
+#include "core/scr_globals.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "core/scr_globals.hpp"
 #include "util/scripts.hpp"
 
 namespace big
@@ -52,23 +52,23 @@ namespace big
 				return;
 			}
 
-			auto thread = gta_util::find_script_thread(RAGE_JOAAT("am_hunt_the_beast"));
-			auto stack = thread->m_stack;
+			auto thread        = gta_util::find_script_thread(RAGE_JOAAT("am_hunt_the_beast"));
+			auto stack         = thread->m_stack;
 			auto net_component = thread->m_net_component;
-			auto idx = scr_locals::am_hunt_the_beast::broadcast_idx;
+			auto idx           = scr_locals::am_hunt_the_beast::broadcast_idx;
 
 			if (!stack || !net_component || !player->is_valid())
 				return;
 
-			*script_local(stack, idx).as<int*>() = 1;
-			*script_local(stack, idx).at(1).as<int*>() = 2; // stage
-			*script_local(stack, idx).at(1).at(6).as<int*>() = net_component->get_participant_index(player->get_net_game_player()); // beast participant idx
-			*script_local(stack, idx).at(1).at(7).as<Player*>() = id; // beast player idx
-			*script_local(stack, idx).at(1).at(2).as<int*>() = INT_MAX; // stopwatch time
-			*script_local(stack, idx).at(1).at(2).at(1).as<bool*>() = true; // stopwatch initialized
-			*script_local(stack, idx).at(1).at(4).at(1).as<bool*>() = false; // destroy old stage 1 stopwatch
-			*script_local(stack, idx).at(1).at(9).as<int*>() = 2; // some distance check
-			*script_local(stack, idx).at(83).as<int*>() = 0; // transformed bitset
+			*script_local(stack, idx).as<int*>()       = 1;
+			*script_local(stack, idx).at(1).as<int*>() = 2;// stage
+			*script_local(stack, idx).at(1).at(6).as<int*>() = net_component->get_participant_index(player->get_net_game_player());// beast participant idx
+			*script_local(stack, idx).at(1).at(7).as<Player*>()     = id;     // beast player idx
+			*script_local(stack, idx).at(1).at(2).as<int*>()        = INT_MAX;// stopwatch time
+			*script_local(stack, idx).at(1).at(2).at(1).as<bool*>() = true;   // stopwatch initialized
+			*script_local(stack, idx).at(1).at(4).at(1).as<bool*>() = false;  // destroy old stage 1 stopwatch
+			*script_local(stack, idx).at(1).at(9).as<int*>()        = 2;      // some distance check
+			*script_local(stack, idx).at(83).as<int*>()             = 0;      // transformed bitset
 		}
 	};
 
@@ -111,9 +111,9 @@ namespace big
 			if (!thread)
 				return;
 
-			auto stack = thread->m_stack;
+			auto stack         = thread->m_stack;
 			auto net_component = thread->m_net_component;
-			auto idx = scr_locals::am_hunt_the_beast::broadcast_idx;
+			auto idx           = scr_locals::am_hunt_the_beast::broadcast_idx;
 
 			if (!stack || !net_component)
 				return;
@@ -124,24 +124,24 @@ namespace big
 
 			for (int i = 0; i < 15; i++)
 			{
-				*script_local(stack, idx).as<int*>() = 1;
-				*script_local(stack, idx).at(1).as<int*>() = 2; // stage
-				*script_local(stack, idx).at(1).at(6).as<int*>() = __rdtsc(); // participant idx
-				*script_local(stack, idx).at(1).at(7).as<Player*>() = __rdtsc(); // beast player idx
-				*script_local(stack, idx).at(1).at(2).as<int*>() = INT_MAX; // stopwatch time
-				*script_local(stack, idx).at(1).at(2).at(1).as<bool*>() = true; // stopwatch initialized
-				*script_local(stack, idx).at(1).at(4).at(1).as<bool*>() = false; // destroy old stage 1 stopwatch
-				*script_local(stack, idx).at(1).at(9).as<int*>() = 2; // some distance check
-				*script_local(stack, idx).at(83).as<int*>() = 0; // transformed bitset
+				*script_local(stack, idx).as<int*>()                    = 1;
+				*script_local(stack, idx).at(1).as<int*>()              = 2;        // stage
+				*script_local(stack, idx).at(1).at(6).as<int*>()        = __rdtsc();// participant idx
+				*script_local(stack, idx).at(1).at(7).as<Player*>()     = __rdtsc();// beast player idx
+				*script_local(stack, idx).at(1).at(2).as<int*>()        = INT_MAX;  // stopwatch time
+				*script_local(stack, idx).at(1).at(2).at(1).as<bool*>() = true;     // stopwatch initialized
+				*script_local(stack, idx).at(1).at(4).at(1).as<bool*>() = false;    // destroy old stage 1 stopwatch
+				*script_local(stack, idx).at(1).at(9).as<int*>()        = 2;        // some distance check
+				*script_local(stack, idx).at(83).as<int*>()             = 0;        // transformed bitset
 				script::get_current()->yield(350ms);
 			}
 
 			// unfortunately we must also turn ourselves into the beast to prevent the script from exiting due to a "missing player"
 
-			*script_local(stack, idx).at(1).at(6).as<int*>() = net_component->m_local_participant_index; // participant idx
-			*script_local(stack, idx).at(1).at(7).as<Player*>() = self::id; // beast player idx
-			*script_local(stack, idx).at(1).at(2).as<int*>() = INT_MAX; // stopwatch time
-			*script_local(stack, idx).at(83).as<int*>() = 0; // transformed bitset
+			*script_local(stack, idx).at(1).at(6).as<int*>() = net_component->m_local_participant_index;// participant idx
+			*script_local(stack, idx).at(1).at(7).as<Player*>() = self::id;// beast player idx
+			*script_local(stack, idx).at(1).at(2).as<int*>()    = INT_MAX; // stopwatch time
+			*script_local(stack, idx).at(83).as<int*>()         = 0;       // transformed bitset
 
 			thread->m_context.m_state = rage::eThreadState::running;
 		}

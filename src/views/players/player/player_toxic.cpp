@@ -1,8 +1,8 @@
-#include "views/view.hpp"
-#include "util/teleport.hpp"
-#include "util/toxic.hpp"
 #include "core/data/apartment_names.hpp"
 #include "core/data/warehouse_names.hpp"
+#include "util/teleport.hpp"
+#include "util/toxic.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -30,9 +30,13 @@ namespace big
 
 			components::player_command_button<"ceoraid">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
-			components::button("Trigger MC Raid", [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::BikerDefend); });
+			components::button("Trigger MC Raid", [] {
+				toxic::start_activity(g_player_service->get_selected(), eActivityType::BikerDefend);
+			});
 			ImGui::SameLine();
-			components::button("Trigger Bunker Raid", [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::GunrunningDefend); });
+			components::button("Trigger Bunker Raid", [] {
+				toxic::start_activity(g_player_service->get_selected(), eActivityType::GunrunningDefend);
+			});
 
 			components::player_command_button<"sext">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
@@ -41,7 +45,7 @@ namespace big
 			static int wanted_level;
 			ImGui::SliderInt("WANTED_LVL"_T.data(), &wanted_level, 0, 5);
 			ImGui::SameLine();
-			components::player_command_button<"wanted">(g_player_service->get_selected(), { (uint64_t)wanted_level }, "Set");
+			components::player_command_button<"wanted">(g_player_service->get_selected(), {(uint64_t)wanted_level}, "Set");
 
 			components::small_text("TELEPORTS"_T);
 
@@ -65,7 +69,7 @@ namespace big
 
 			ImGui::SameLine();
 
-			components::player_command_button<"apartmenttp">(g_player_service->get_selected(), { (uint64_t)g.session.send_to_apartment_idx });
+			components::player_command_button<"apartmenttp">(g_player_service->get_selected(), {(uint64_t)g.session.send_to_apartment_idx});
 
 			if (ImGui::BeginCombo("##warehouse", warehouse_names[g.session.send_to_warehouse_idx]))
 			{
@@ -87,74 +91,94 @@ namespace big
 
 			ImGui::SameLine();
 
-			components::player_command_button<"warehousetp">(g_player_service->get_selected(), { (uint64_t)g.session.send_to_warehouse_idx });
+			components::player_command_button<"warehousetp">(g_player_service->get_selected(), {(uint64_t)g.session.send_to_warehouse_idx});
 
-			components::button("TP_TO_DARTS"_T, [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::Darts); });
+			components::button("TP_TO_DARTS"_T, [] {
+				toxic::start_activity(g_player_service->get_selected(), eActivityType::Darts);
+			});
 			ImGui::SameLine();
-			components::button("TP_TO_FLIGHT_SCHOOL"_T, [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::PilotSchool); });
+			components::button("TP_TO_FLIGHT_SCHOOL"_T, [] {
+				toxic::start_activity(g_player_service->get_selected(), eActivityType::PilotSchool);
+			});
 			ImGui::SameLine();
-			components::button("TP_TO_MAP_CENTER"_T, [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::ArmWresling); });
+			components::button("TP_TO_MAP_CENTER"_T, [] {
+				toxic::start_activity(g_player_service->get_selected(), eActivityType::ArmWresling);
+			});
 
-			components::button("TP_TO_SKYDIVE"_T, [] { toxic::start_activity(g_player_service->get_selected(), eActivityType::Skydive); });
+			components::button("TP_TO_SKYDIVE"_T, [] {
+				toxic::start_activity(g_player_service->get_selected(), eActivityType::Skydive);
+			});
 			ImGui::SameLine();
-			components::player_command_button<"cayotp">(g_player_service->get_selected(), { });
+			components::player_command_button<"cayotp">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
-			components::player_command_button<"interiortp">(g_player_service->get_selected(), { 81 }, "TP To MOC");
+			components::player_command_button<"interiortp">(g_player_service->get_selected(), {81}, "TP To MOC");
 
-			components::player_command_button<"interiortp">(g_player_service->get_selected(), { 123 }, "TP To Casino");
+			components::player_command_button<"interiortp">(g_player_service->get_selected(), {123}, "TP To Casino");
 			ImGui::SameLine();
-			components::player_command_button<"interiortp">(g_player_service->get_selected(), { 124 }, "TP To Penthouse");
+			components::player_command_button<"interiortp">(g_player_service->get_selected(), {124}, "TP To Penthouse");
 			ImGui::SameLine();
-			components::player_command_button<"interiortp">(g_player_service->get_selected(), { 128 }, "TP To Arcade");
+			components::player_command_button<"interiortp">(g_player_service->get_selected(), {128}, "TP To Arcade");
 
-			components::player_command_button<"interiortp">(g_player_service->get_selected(), { 146 }, "TP To Music Locker");
+			components::player_command_button<"interiortp">(g_player_service->get_selected(), {146}, "TP To Music Locker");
 			ImGui::SameLine();
-			components::player_command_button<"interiortp">(g_player_service->get_selected(), { 148 }, "TP To Record A Studios");
+			components::player_command_button<"interiortp">(g_player_service->get_selected(), {148}, "TP To Record A Studios");
 			ImGui::SameLine();
-			components::player_command_button<"interiortp">(g_player_service->get_selected(), { 149 }, "TP To Custom Auto Shop");
+			components::player_command_button<"interiortp">(g_player_service->get_selected(), {149}, "TP To Custom Auto Shop");
 
-			components::player_command_button<"interiortp">(g_player_service->get_selected(), { 155 }, "TP To Agency");
+			components::player_command_button<"interiortp">(g_player_service->get_selected(), {155}, "TP To Agency");
 			ImGui::SameLine();
-			components::player_command_button<"interiortp">(g_player_service->get_selected(), { 160 }, "TP To Freakshop");
+			components::player_command_button<"interiortp">(g_player_service->get_selected(), {160}, "TP To Freakshop");
 			ImGui::SameLine();
-			components::player_command_button<"interiortp">(g_player_service->get_selected(), { 161 }, "TP To Multi Floor Garage");
+			components::player_command_button<"interiortp">(g_player_service->get_selected(), {161}, "TP To Multi Floor Garage");
 			ImGui::SameLine();
-			
-			components::player_command_button<"giveweaps">(g_player_service->get_selected(), { });
-			ImGui::SameLine();
-			components::player_command_button<"remweaps">(g_player_service->get_selected(), { });
 
-			components::player_command_button<"tutorial">(g_player_service->get_selected(), { });
+			components::player_command_button<"giveweaps">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
-			components::player_command_button<"golf">(g_player_service->get_selected(), { });
-			ImGui::SameLine();
-			components::player_command_button<"flightschool">(g_player_service->get_selected(), { });
-			ImGui::SameLine();
-			components::player_command_button<"darts">(g_player_service->get_selected(), { });
+			components::player_command_button<"remweaps">(g_player_service->get_selected(), {});
 
-			components::player_command_button<"badlands">(g_player_service->get_selected(), { });
+			components::player_command_button<"tutorial">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
-			components::player_command_button<"spacemonkey">(g_player_service->get_selected(), { });
+			components::player_command_button<"golf">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
-			components::player_command_button<"wizard">(g_player_service->get_selected(), { });
+			components::player_command_button<"flightschool">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
+			components::player_command_button<"darts">(g_player_service->get_selected(), {});
 
-			components::player_command_button<"qub3d">(g_player_service->get_selected(), { });
+			components::player_command_button<"badlands">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
-			components::player_command_button<"camhedz">(g_player_service->get_selected(), { });
+			components::player_command_button<"spacemonkey">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
+			components::player_command_button<"wizard">(g_player_service->get_selected(), {});
+
+			components::player_command_button<"qub3d">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
+			components::player_command_button<"camhedz">(g_player_service->get_selected(), {});
 
 			components::small_text("WARP_TIME"_T);
 
-			components::button("PLUS_1_MINUTE"_T, [] { toxic::warp_time_forward(g_player_service->get_selected(), 60 * 1000); });
+			components::button("PLUS_1_MINUTE"_T, [] {
+				toxic::warp_time_forward(g_player_service->get_selected(), 60 * 1000);
+			});
 			ImGui::SameLine();
-			components::button("PLUS_5_MINUTES"_T, [] { toxic::warp_time_forward(g_player_service->get_selected(), 5 * 60 * 1000); });
+			components::button("PLUS_5_MINUTES"_T, [] {
+				toxic::warp_time_forward(g_player_service->get_selected(), 5 * 60 * 1000);
+			});
 			ImGui::SameLine();
-			components::button("PLUS_48_MINUTES"_T, [] { toxic::warp_time_forward(g_player_service->get_selected(), 48 * 60 * 1000); });
+			components::button("PLUS_48_MINUTES"_T, [] {
+				toxic::warp_time_forward(g_player_service->get_selected(), 48 * 60 * 1000);
+			});
 			ImGui::SameLine();
-			components::button("PLUS_96_MINUTES"_T, [] { toxic::warp_time_forward(g_player_service->get_selected(), 96 * 60 * 1000); });
+			components::button("PLUS_96_MINUTES"_T, [] {
+				toxic::warp_time_forward(g_player_service->get_selected(), 96 * 60 * 1000);
+			});
 			ImGui::SameLine();
-			components::button("PLUS_200_MINUTES"_T, [] { toxic::warp_time_forward(g_player_service->get_selected(), 200 * 60 * 1000); });
+			components::button("PLUS_200_MINUTES"_T, [] {
+				toxic::warp_time_forward(g_player_service->get_selected(), 200 * 60 * 1000);
+			});
 			ImGui::SameLine();
-			components::button("STOP_TIME"_T, [] { toxic::set_time(g_player_service->get_selected(), INT_MAX - 3000); });
+			components::button("STOP_TIME"_T, [] {
+				toxic::set_time(g_player_service->get_selected(), INT_MAX - 3000);
+			});
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("PLAYER_TOXIC_NO_WAY_BACK"_T.data());
 

@@ -1,7 +1,7 @@
 #include "backend/player_command.hpp"
+#include "core/scr_globals.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "core/scr_globals.hpp"
 
 #include <script/globals/GPBD_FM_3.hpp>
 
@@ -18,12 +18,8 @@ namespace big
 
 		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
-			const size_t arg_count = 8;
-			int64_t args[arg_count] =
-			{
-				(int64_t)eRemoteEvent::SendTextLabelSMS,
-				self::id
-			};
+			const size_t arg_count  = 8;
+			int64_t args[arg_count] = {(int64_t)eRemoteEvent::SendTextLabelSMS, self::id};
 
 			strcpy((char*)&args[2], "HUD_ROSBANPERM");
 

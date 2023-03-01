@@ -1,6 +1,7 @@
 #include "hooking.hpp"
 #include "pointers.hpp"
 #include "services/players/player_service.hpp"
+
 #include <network/CNetworkPlayerMgr.hpp>
 
 namespace big

@@ -1,9 +1,10 @@
+#include "util/train.hpp"
+
 #include "backend/looped/looped.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/blip.hpp"
 #include "util/entity.hpp"
-#include "util/train.hpp"
 
 namespace big
 {
@@ -14,7 +15,7 @@ namespace big
 		if (g.world.train.drive_train)
 		{
 			if (PAD::IS_CONTROL_PRESSED(0, 71))
-				trainSpeed++;	
+				trainSpeed++;
 			if (PAD::IS_CONTROL_PRESSED(0, 72))
 				trainSpeed--;
 
@@ -25,7 +26,7 @@ namespace big
 	void looped::derail_train()
 	{
 		int train = train::get_closest_train();
-		
+
 		if (train != 0)
 			VEHICLE::SET_RENDER_TRAIN_AS_DERAILED(train, g.world.train.derail_train);
 	}

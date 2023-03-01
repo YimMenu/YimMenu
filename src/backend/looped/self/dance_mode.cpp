@@ -1,10 +1,10 @@
 #include "backend/looped/looped.hpp"
+#include "hooking.hpp"
 #include "natives.hpp"
-#include "util/entity.hpp"
-#include "util/scripts.hpp"
 #include "script_function.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
-#include "hooking.hpp"
+#include "util/entity.hpp"
+#include "util/scripts.hpp"
 
 namespace big
 {
@@ -27,7 +27,7 @@ namespace big
 			if (!thread)
 				return;
 
-			g.m_dance_thread = gta_util::find_script_thread_by_id(thread);
+			g.m_dance_thread  = gta_util::find_script_thread_by_id(thread);
 			g.m_dance_program = gta_util::find_script_program(RAGE_JOAAT("am_mp_nightclub"));
 
 			(*g_pointers->m_script_handler_mgr)->attach_thread(g.m_dance_thread);
@@ -35,8 +35,7 @@ namespace big
 			g.m_dance_thread->m_context.m_state = rage::eThreadState::unk_3;
 
 			// perform initial setup
-			gta_util::execute_as_script(g.m_dance_thread, []
-			{
+			gta_util::execute_as_script(g.m_dance_thread, [] {
 				if (auto hook = g_hooking->m_handler_hooks[(CGameScriptHandler*)rage::scrThread::get()->m_handler].get())
 				{
 					hook->disable();
@@ -57,7 +56,7 @@ namespace big
 			if (g.m_dance_thread)
 				g.m_dance_thread->kill();
 
-			g.m_dance_thread = nullptr;
+			g.m_dance_thread  = nullptr;
 			g.m_dance_program = nullptr;
 
 			g_script_patcher_service->update();

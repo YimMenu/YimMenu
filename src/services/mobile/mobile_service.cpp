@@ -1,4 +1,5 @@
 #include "mobile_service.hpp"
+
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "script.hpp"
@@ -6,18 +7,15 @@
 
 namespace big
 {
-	personal_vehicle::personal_vehicle(int idx, script_global vehicle_idx)
-		: m_id(idx), m_vehicle_idx(vehicle_idx)
+	personal_vehicle::personal_vehicle(int idx, script_global vehicle_idx) :
+	    m_id(idx),
+	    m_vehicle_idx(vehicle_idx)
 	{
-		m_plate = m_vehicle_idx.at(1).as<char*>();
-		m_hash = *m_vehicle_idx.at(66).as<Hash*>();
+		m_plate          = m_vehicle_idx.at(1).as<char*>();
+		m_hash           = *m_vehicle_idx.at(66).as<Hash*>();
 		m_state_bitfield = m_vehicle_idx.at(103).as<int*>();
 
-		m_name = std::format(
-			"{} ({})", 
-			HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_hash)), 
-			m_plate
-		);
+		m_name = std::format("{} ({})", HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_hash)), m_plate);
 	}
 
 	std::string personal_vehicle::get_display_name() const
@@ -63,7 +61,8 @@ namespace big
 	void mobile_service::refresh_personal_vehicles()
 	{
 		const auto now = std::chrono::high_resolution_clock::now();
-		if (std::chrono::duration_cast<std::chrono::seconds>(now - m_last_update) < 10s) return;
+		if (std::chrono::duration_cast<std::chrono::seconds>(now - m_last_update) < 10s)
+			return;
 		m_last_update = std::chrono::high_resolution_clock::now();
 
 		g_fiber_pool->queue_job([this] {
@@ -81,8 +80,8 @@ namespace big
 
 			auto veh_idx_global = scr_globals::vehicle_global.at(i, 142);
 
-			const auto hash = *veh_idx_global.at(66).as<Hash*>();
-			const auto& it = m_pv_lookup.find(i);
+			const auto hash   = *veh_idx_global.at(66).as<Hash*>();
+			const auto& it    = m_pv_lookup.find(i);
 			const auto exists = it != m_pv_lookup.end();
 
 			// double check if model is a vehicle
@@ -104,8 +103,8 @@ namespace big
 					continue;
 				}
 
-				m_pv_lookup.emplace(i, veh->get_display_name()); // update lookup table
-				m_personal_vehicles.emplace(veh->get_display_name(), std::move(veh)); // add new vehicle
+				m_pv_lookup.emplace(i, veh->get_display_name());                     // update lookup table
+				m_personal_vehicles.emplace(veh->get_display_name(), std::move(veh));// add new vehicle
 
 				continue;
 			}

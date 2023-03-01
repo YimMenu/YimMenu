@@ -1,5 +1,5 @@
-#include "views/view.hpp"
 #include "util/local_player.hpp"
+#include "views/view.hpp"
 
 namespace big
 {

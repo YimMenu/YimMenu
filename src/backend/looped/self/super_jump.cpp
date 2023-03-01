@@ -1,6 +1,6 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
 #include "gta/enums.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -23,7 +23,6 @@ namespace big
 			{
 				WEAPON::SET_CURRENT_PED_WEAPON(self::ped, RAGE_JOAAT("WEAPON_UNARMED"), true);
 			}
-
 		}
 	};
 

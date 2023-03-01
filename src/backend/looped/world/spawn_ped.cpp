@@ -49,10 +49,10 @@ namespace big
 			{
 				auto pos = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(it->spawned_for_player), false);
 				auto vel = NETWORK::NETWORK_GET_LAST_VEL_RECEIVED_OVER_NETWORK(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(it->spawned_for_player));
-				bool is_veh = PED::IS_PED_IN_ANY_VEHICLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(it->spawned_for_player), true) || PLAYER::IS_REMOTE_PLAYER_IN_NON_CLONED_VEHICLE(it->spawned_for_player);
+				bool is_veh  = PED::IS_PED_IN_ANY_VEHICLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(it->spawned_for_player), true) || PLAYER::IS_REMOTE_PLAYER_IN_NON_CLONED_VEHICLE(it->spawned_for_player);
 				auto ped_pos = ENTITY::GET_ENTITY_COORDS(it->ped_handle, false);
 
-				float distance = is_veh ? 170.0f : 120.0f;
+				float distance       = is_veh ? 170.0f : 120.0f;
 				float spawn_distance = is_veh ? 150.0f : 70.0f;
 
 				if (pos.x != 0.0f && SYSTEM::VDIST2(pos.x, pos.y, pos.z, ped_pos.x, ped_pos.y, ped_pos.z) > distance * distance)

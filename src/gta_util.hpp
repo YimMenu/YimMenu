@@ -3,13 +3,13 @@
 #include "gta/tls_context.hpp"
 #include "pointers.hpp"
 
-#include <ped/CPedFactory.hpp>
 #include <network/CNetworkPlayerMgr.hpp>
+#include <ped/CPedFactory.hpp>
 #include <script/scrProgramTable.hpp>
 
 namespace big::gta_util
 {
-	inline CPed *get_local_ped()
+	inline CPed* get_local_ped()
 	{
 		if (auto ped_factory = *g_pointers->m_ped_factory)
 		{
@@ -31,7 +31,7 @@ namespace big::gta_util
 		return nullptr;
 	}
 
-	inline CPlayerInfo *get_local_playerinfo()
+	inline CPlayerInfo* get_local_playerinfo()
 	{
 		if (auto ped_factory = *g_pointers->m_ped_factory)
 		{
@@ -54,23 +54,23 @@ namespace big::gta_util
 		return *g_pointers->m_network;
 	}
 
-	template <typename F, typename ...Args>
-	void execute_as_script(rage::scrThread* thread, F&& callback, Args &&...args)
+	template<typename F, typename... Args>
+	void execute_as_script(rage::scrThread* thread, F&& callback, Args&&... args)
 	{
-		auto tls_ctx = rage::tlsContext::get();
+		auto tls_ctx   = rage::tlsContext::get();
 		auto og_thread = tls_ctx->m_script_thread;
 
-		tls_ctx->m_script_thread = thread;
+		tls_ctx->m_script_thread           = thread;
 		tls_ctx->m_is_script_thread_active = true;
 
 		std::invoke(std::forward<F>(callback), std::forward<Args>(args)...);
 
-		tls_ctx->m_script_thread = og_thread;
+		tls_ctx->m_script_thread           = og_thread;
 		tls_ctx->m_is_script_thread_active = og_thread != nullptr;
 	}
 
-	template <typename F, typename ...Args>
-	void execute_as_script(rage::joaat_t script_hash, F &&callback, Args &&...args)
+	template<typename F, typename... Args>
+	void execute_as_script(rage::joaat_t script_hash, F&& callback, Args&&... args)
 	{
 		for (auto thread : *g_pointers->m_script_threads)
 		{
@@ -87,10 +87,7 @@ namespace big::gta_util
 	{
 		for (auto thread : *g_pointers->m_script_threads)
 		{
-			if (thread
-				&& thread->m_context.m_thread_id
-				&& thread->m_handler
-				&& thread->m_script_hash == hash)
+			if (thread && thread->m_context.m_thread_id && thread->m_handler && thread->m_script_hash == hash)
 			{
 				return thread;
 			}
@@ -103,9 +100,7 @@ namespace big::gta_util
 	{
 		for (auto thread : *g_pointers->m_script_threads)
 		{
-			if (thread
-				&& thread->m_handler
-				&& thread->m_context.m_thread_id == id)
+			if (thread && thread->m_handler && thread->m_context.m_thread_id == id)
 			{
 				return thread;
 			}

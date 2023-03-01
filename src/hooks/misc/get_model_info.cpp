@@ -20,7 +20,8 @@ namespace big
 		std::lock_guard lock(g.world.model_swapper.m);
 		cache_models.clear();
 		for (size_t i = 0; i < g.world.model_swapper.models.size(); i++)
-			cache_models.push_back(std::make_pair(get_hash(g.world.model_swapper.models[i].first), get_hash(g.world.model_swapper.models[i].second)));
+			cache_models.push_back(
+			    std::make_pair(get_hash(g.world.model_swapper.models[i].first), get_hash(g.world.model_swapper.models[i].second)));
 		g.world.model_swapper.update = false;
 	}
 

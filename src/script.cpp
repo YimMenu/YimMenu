@@ -1,6 +1,7 @@
 #pragma once
-#include "common.hpp"
 #include "script.hpp"
+
+#include "common.hpp"
 
 namespace big
 {
@@ -18,24 +19,26 @@ namespace big
 	}
 
 	script::script(const func_t func, const std::string_view name, const bool toggleable, const std::optional<std::size_t> stack_size) :
-		script(func, stack_size)
+	    script(func, stack_size)
 	{
-		m_name = name;
+		m_name       = name;
 		m_toggleable = toggleable;
 	}
 
 	script::script(const func_t func, const std::optional<std::size_t> stack_size) :
-		m_enabled(true),
-		m_toggleable(false),
-		m_script_fiber(nullptr),
-		m_main_fiber(nullptr),
-		m_func(func)
+	    m_enabled(true),
+	    m_toggleable(false),
+	    m_script_fiber(nullptr),
+	    m_main_fiber(nullptr),
+	    m_func(func)
 	{
-		m_script_fiber = CreateFiber(stack_size.has_value() ? stack_size.value() : 0, [](void* param)
-		{
-			auto this_script = static_cast<script*>(param);
-			this_script->fiber_func();
-		}, this);
+		m_script_fiber = CreateFiber(
+		    stack_size.has_value() ? stack_size.value() : 0,
+		    [](void* param) {
+			    auto this_script = static_cast<script*>(param);
+			    this_script->fiber_func();
+		    },
+		    this);
 	}
 
 	script::~script()

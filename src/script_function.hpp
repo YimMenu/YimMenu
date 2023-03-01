@@ -1,6 +1,6 @@
 #pragma once
-#include "memory/pattern.hpp"
 #include "gta/joaat.hpp"
+#include "memory/pattern.hpp"
 
 namespace big
 {

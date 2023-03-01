@@ -1,13 +1,13 @@
-#include "views/view.hpp"
+#include "core/data/block_join_reasons.hpp"
+#include "core/data/command_access_levels.hpp"
+#include "core/data/infractions.hpp"
 #include "fiber_pool.hpp"
 #include "pointers.hpp"
-#include "services/players/player_service.hpp"
-#include "services/player_database/player_database_service.hpp"
 #include "services/api/api_service.hpp"
-#include "core/data/block_join_reasons.hpp"
-#include "core/data/infractions.hpp"
-#include "core/data/command_access_levels.hpp"
+#include "services/player_database/player_database_service.hpp"
+#include "services/players/player_service.hpp"
 #include "util/session.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -21,9 +21,9 @@ namespace big
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("PLAYER"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
 
-		if (ImGui::ListBoxHeader("###players", { 180, static_cast<float>(*g_pointers->m_resolution_y - 400 - 38 * 4) }))
+		if (ImGui::ListBoxHeader("###players", {180, static_cast<float>(*g_pointers->m_resolution_y - 400 - 38 * 4)}))
 		{
-		    auto& item_arr = g_player_database_service->get_players();
+			auto& item_arr = g_player_database_service->get_players();
 			if (item_arr.size() > 0)
 			{
 				std::string lower_search = search;
@@ -41,21 +41,16 @@ namespace big
 						ImGui::PushID(item.first);
 
 						float circle_size = 7.5f;
-						auto cursor_pos = ImGui::GetCursorScreenPos();
-						auto plyr_state = player.online_state;
+						auto cursor_pos   = ImGui::GetCursorScreenPos();
+						auto plyr_state   = player.online_state;
 
 						//render status circle
-						ImGui::GetWindowDrawList()->AddCircleFilled(
-							ImVec2(
-								cursor_pos.x + 4.f + circle_size,
-								cursor_pos.y + 4.f + circle_size),
-							circle_size,
-							ImColor(
-								plyr_state == PlayerOnlineStatus::ONLINE ? ImVec4(0.f, 1.f, 0.f, 1.f)
-								: plyr_state == PlayerOnlineStatus::OFFLINE ? ImVec4(1.f, 0.f, 0.f, 1.f)
-								: plyr_state == PlayerOnlineStatus::UNKNOWN ? ImVec4(.5f, .5f, .5f, 1.0f)
-								: ImVec4(.5f, .5f, .5f, 1.0f)
-								));
+						ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(cursor_pos.x + 4.f + circle_size, cursor_pos.y + 4.f + circle_size),
+						    circle_size,
+						    ImColor(plyr_state == PlayerOnlineStatus::ONLINE  ? ImVec4(0.f, 1.f, 0.f, 1.f) :
+						            plyr_state == PlayerOnlineStatus::OFFLINE ? ImVec4(1.f, 0.f, 0.f, 1.f) :
+						            plyr_state == PlayerOnlineStatus::UNKNOWN ? ImVec4(.5f, .5f, .5f, 1.0f) :
+						                                                        ImVec4(.5f, .5f, .5f, 1.0f)));
 
 						//we need some padding
 						ImVec2 cursor = ImGui::GetCursorPos();
@@ -83,7 +78,7 @@ namespace big
 		if (auto selected = g_player_database_service->get_selected())
 		{
 			ImGui::SameLine();
-			if (ImGui::BeginChild("###selected_player", { 500, static_cast<float>(*g_pointers->m_resolution_y - 388 - 38 * 4) }, false, ImGuiWindowFlags_NoBackground))
+			if (ImGui::BeginChild("###selected_player", {500, static_cast<float>(*g_pointers->m_resolution_y - 388 - 38 * 4)}, false, ImGuiWindowFlags_NoBackground))
 			{
 				if (ImGui::InputText("NAME"_T.data(), name_buf, sizeof(name_buf)))
 				{
@@ -116,7 +111,8 @@ namespace big
 					ImGui::SetTooltip("ONLY_AS_HOST"_T.data());
 
 
-				if (ImGui::BeginCombo("CHAT_COMMAND_PERMISSIONS"_T.data(), COMMAND_ACCESS_LEVELS[current_player.command_access_level.value_or(g.session.chat_command_default_access_level)]))
+				if (ImGui::BeginCombo("CHAT_COMMAND_PERMISSIONS"_T.data(),
+				        COMMAND_ACCESS_LEVELS[current_player.command_access_level.value_or(g.session.chat_command_default_access_level)]))
 				{
 					for (const auto& [type, name] : COMMAND_ACCESS_LEVELS)
 					{
@@ -144,8 +140,7 @@ namespace big
 					}
 				}
 
-				components::button("JOIN_SESSION"_T, []
-				{
+				components::button("JOIN_SESSION"_T, [] {
 					session::join_by_rockstar_id(current_player.rockstar_id);
 				});
 
@@ -153,8 +148,7 @@ namespace big
 				components::input_text("INPUT_MSG"_T, message, sizeof(message));
 				if (components::button("SEND_MSG"_T))
 				{
-					g_thread_pool->push([selected]
-					{
+					g_thread_pool->push([selected] {
 						if (g_api_service->send_socialclub_message(selected->rockstar_id, message))
 						{
 							g_notification_service->push("SCAPI"_T.data(), "MSG_SENT_SUCCESS"_T.data());
@@ -192,8 +186,7 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::button("RELOAD_PLYR_ONLINE_STATES"_T, []
-		{
+		components::button("RELOAD_PLYR_ONLINE_STATES"_T, [] {
 			g_player_database_service->update_player_states();
 		});
 

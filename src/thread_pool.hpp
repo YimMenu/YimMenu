@@ -12,12 +12,14 @@ namespace big
 		std::vector<std::thread> m_thread_pool;
 
 		std::thread m_managing_thread;
+
 	public:
 		thread_pool();
 		~thread_pool();
 
 		void destroy();
 		void push(std::function<void()> func);
+
 	private:
 		void create();
 		void done();

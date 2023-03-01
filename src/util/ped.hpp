@@ -1,8 +1,7 @@
 #pragma once
-#include "natives.hpp"
-#include "script.hpp"
-#include "pointers.hpp"
 #include "entity.hpp"
+#include "natives.hpp"
+#include "pointers.hpp"
 
 namespace big::ped
 {
@@ -21,15 +20,9 @@ namespace big::ped
 		self::ped = PLAYER::PLAYER_PED_ID();
 		script::get_current()->yield();
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-		for (int i = 0; i < 12; i++) {
-			PED::SET_PED_COMPONENT_VARIATION
-			(
-				self::ped,
-				i,
-				PED::GET_PED_DRAWABLE_VARIATION(self::ped, i),
-				PED::GET_PED_TEXTURE_VARIATION(self::ped, i),
-				PED::GET_PED_PALETTE_VARIATION(self::ped, i)
-			);
+		for (int i = 0; i < 12; i++)
+		{
+			PED::SET_PED_COMPONENT_VARIATION(self::ped, i, PED::GET_PED_DRAWABLE_VARIATION(self::ped, i), PED::GET_PED_TEXTURE_VARIATION(self::ped, i), PED::GET_PED_PALETTE_VARIATION(self::ped, i));
 		}
 		return true;
 	}
@@ -37,19 +30,14 @@ namespace big::ped
 	inline bool steal_outfit(const Ped target)
 	{
 		Ped ped = self::ped;
-		
-		if (ENTITY::GET_ENTITY_MODEL(ped) != ENTITY::GET_ENTITY_MODEL(target)) {
+
+		if (ENTITY::GET_ENTITY_MODEL(ped) != ENTITY::GET_ENTITY_MODEL(target))
+		{
 			return false;
 		}
-		for (int i = 0; i < 12; i++) {
-			PED::SET_PED_COMPONENT_VARIATION
-			(
-				ped,
-				i,
-				PED::GET_PED_DRAWABLE_VARIATION(target, i),
-				PED::GET_PED_TEXTURE_VARIATION(target, i),
-				PED::GET_PED_PALETTE_VARIATION(target, i)
-			);
+		for (int i = 0; i < 12; i++)
+		{
+			PED::SET_PED_COMPONENT_VARIATION(ped, i, PED::GET_PED_DRAWABLE_VARIATION(target, i), PED::GET_PED_TEXTURE_VARIATION(target, i), PED::GET_PED_PALETTE_VARIATION(target, i));
 		}
 
 		return true;
@@ -57,9 +45,9 @@ namespace big::ped
 
 	inline void steal_identity(const Ped target)
 	{
-		const int max_health = ENTITY::GET_ENTITY_MAX_HEALTH(self::ped);
+		const int max_health     = ENTITY::GET_ENTITY_MAX_HEALTH(self::ped);
 		const int current_health = ENTITY::GET_ENTITY_HEALTH(self::ped);
-		const int current_armor = PED::GET_PED_ARMOUR(self::ped);
+		const int current_armor  = PED::GET_PED_ARMOUR(self::ped);
 
 		PLAYER::SET_PLAYER_MODEL(self::id, ENTITY::GET_ENTITY_MODEL(target));
 		script::get_current()->yield();

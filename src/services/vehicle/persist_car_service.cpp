@@ -1,19 +1,20 @@
 #include "persist_car_service.hpp"
-#include "util/vehicle.hpp"
-#include "util/world_model.hpp"
-#include "util/misc.hpp"
-#include "vehicle/CVehicle.hpp"
+
 #include "base/CObject.hpp"
 #include "pointers.hpp"
+#include "util/misc.hpp"
+#include "util/vehicle.hpp"
+#include "util/world_model.hpp"
+#include "vehicle/CVehicle.hpp"
 
 namespace big
 {
 	void persist_car_service::save_vehicle(Vehicle vehicle, std::string_view file_name)
 	{
-		if (!ENTITY::DOES_ENTITY_EXIST(vehicle) ||
-			!ENTITY::IS_ENTITY_A_VEHICLE(vehicle))
+		if (!ENTITY::DOES_ENTITY_EXIST(vehicle) || !ENTITY::IS_ENTITY_A_VEHICLE(vehicle))
 		{
-			g_notification_service->push_warning("PERSIST_CAR_TITLE"_T.data(), "PERSIST_CAR_INVALID_VEHICLE_SAVE_ATTEMPT"_T.data());
+			g_notification_service->push_warning("PERSIST_CAR_TITLE"_T.data(),
+			    "PERSIST_CAR_INVALID_VEHICLE_SAVE_ATTEMPT"_T.data());
 			return;
 		}
 
@@ -99,15 +100,25 @@ namespace big
 		for (const auto& j : model_attachments)
 		{
 			const auto attachment = j.get<model_attachment>();
-			const auto object = world_model::spawn(attachment.model_hash);
+			const auto object     = world_model::spawn(attachment.model_hash);
 			if (object)
 			{
-				ENTITY::ATTACH_ENTITY_TO_ENTITY(
-					object, vehicle,
-					0,
-					attachment.position.x, attachment.position.y, attachment.position.z,
-					attachment.rotation.x, attachment.rotation.y, attachment.rotation.z,
-					false, false, false, false, 0, true, 0);
+				ENTITY::ATTACH_ENTITY_TO_ENTITY(object,
+				    vehicle,
+				    0,
+				    attachment.position.x,
+				    attachment.position.y,
+				    attachment.position.z,
+				    attachment.rotation.x,
+				    attachment.rotation.y,
+				    attachment.rotation.z,
+				    false,
+				    false,
+				    false,
+				    false,
+				    0,
+				    true,
+				    0);
 
 				ENTITY::SET_ENTITY_VISIBLE(object, attachment.is_visible, 0);
 				ENTITY::SET_ENTITY_COLLISION(object, attachment.has_collision, true);
@@ -119,15 +130,25 @@ namespace big
 		for (const auto& j : vehicle_attachments)
 		{
 			const auto vehicle_to_attach = spawn_vehicle_json(j[vehicle_key], ped);
-			auto attachment = j[model_attachment_key].get<big::model_attachment>();
-			ENTITY::ATTACH_ENTITY_TO_ENTITY(
-				vehicle_to_attach, vehicle,
-				0,
-				attachment.position.x, attachment.position.y, attachment.position.z,
-				attachment.rotation.x, attachment.rotation.y, attachment.rotation.z,
+			auto attachment              = j[model_attachment_key].get<big::model_attachment>();
+			ENTITY::ATTACH_ENTITY_TO_ENTITY(vehicle_to_attach,
+			    vehicle,
+			    0,
+			    attachment.position.x,
+			    attachment.position.y,
+			    attachment.position.z,
+			    attachment.rotation.x,
+			    attachment.rotation.y,
+			    attachment.rotation.z,
 
-				false, false, false, false, 0, true, 0);
-			
+			    false,
+			    false,
+			    false,
+			    false,
+			    0,
+			    true,
+			    0);
+
 			ENTITY::SET_ENTITY_VISIBLE(vehicle_to_attach, attachment.is_visible, 0);
 			ENTITY::SET_ENTITY_COLLISION(vehicle_to_attach, attachment.has_collision, true);
 			ENTITY::SET_ENTITY_INVINCIBLE(vehicle_to_attach, attachment.is_invincible);
@@ -264,14 +285,14 @@ namespace big
 
 		nlohmann::json vehicle_json = get_vehicle_json(vehicle);
 
-		vehicle_json[model_attachments_key] = get_model_attachments(vehicle);
+		vehicle_json[model_attachments_key]   = get_model_attachments(vehicle);
 		vehicle_json[vehicle_attachments_key] = get_vehicle_attachents(vehicle);
 
 		Vehicle tow = VEHICLE::GET_ENTITY_ATTACHED_TO_TOW_TRUCK(vehicle);
 		if (ENTITY::DOES_ENTITY_EXIST(tow))
 		{
-			vehicle_json[tow_key] = get_vehicle_json(tow);
-			vehicle_json[tow_key][model_attachments_key] = get_model_attachments(tow, true);
+			vehicle_json[tow_key]                          = get_vehicle_json(tow);
+			vehicle_json[tow_key][model_attachments_key]   = get_model_attachments(tow, true);
 			vehicle_json[tow_key][vehicle_attachments_key] = get_vehicle_attachents(tow);
 		}
 		if (VEHICLE::IS_VEHICLE_ATTACHED_TO_TRAILER(vehicle))
@@ -279,8 +300,8 @@ namespace big
 			Vehicle trailer;
 			VEHICLE::GET_VEHICLE_TRAILER_VEHICLE(vehicle, &trailer);
 
-			vehicle_json[trailer_key] = get_vehicle_json(trailer);
-			vehicle_json[trailer_key][model_attachments_key] = get_model_attachments(trailer);
+			vehicle_json[trailer_key]                          = get_vehicle_json(trailer);
+			vehicle_json[trailer_key][model_attachments_key]   = get_model_attachments(trailer);
 			vehicle_json[trailer_key][vehicle_attachments_key] = get_vehicle_attachents(trailer);
 		}
 
@@ -290,21 +311,24 @@ namespace big
 	model_attachment persist_car_service::get_model_attachment(Vehicle vehicle, Object object)
 	{
 		const auto object_location = ENTITY::GET_ENTITY_COORDS(object, 0);
-		const auto location = ENTITY::GET_OFFSET_FROM_ENTITY_GIVEN_WORLD_COORDS(vehicle, object_location.x, object_location.y, object_location.z);
+		const auto location        = ENTITY::GET_OFFSET_FROM_ENTITY_GIVEN_WORLD_COORDS(vehicle,
+            object_location.x,
+            object_location.y,
+            object_location.z);
 
-		const auto object_rotation = ENTITY::GET_ENTITY_ROTATION(object, 0);
+		const auto object_rotation  = ENTITY::GET_ENTITY_ROTATION(object, 0);
 		const auto vehicle_rotation = ENTITY::GET_ENTITY_ROTATION(vehicle, 0);
-		bool has_collision = ENTITY::GET_ENTITY_COLLISION_DISABLED(object);
-		bool is_visible = ENTITY::IS_ENTITY_VISIBLE(object);
-		CObject* cobject = (CObject*)g_pointers->m_handle_to_ptr(vehicle);
-		bool is_invincible = misc::has_bit_set(&(int&)cobject->m_damage_bits, 8);
+		bool has_collision          = ENTITY::GET_ENTITY_COLLISION_DISABLED(object);
+		bool is_visible             = ENTITY::IS_ENTITY_VISIBLE(object);
+		CObject* cobject            = (CObject*)g_pointers->m_handle_to_ptr(vehicle);
+		bool is_invincible          = misc::has_bit_set(&(int&)cobject->m_damage_bits, 8);
 
 		Vector3 rotation;
 		rotation.x = (object_rotation.x - vehicle_rotation.x);
 		rotation.y = (object_rotation.y - vehicle_rotation.y);
 		rotation.z = (object_rotation.z - vehicle_rotation.z);
 
-		model_attachment attachment = { ENTITY::GET_ENTITY_MODEL(object), location, rotation, !has_collision, is_visible, is_invincible };
+		model_attachment attachment = {ENTITY::GET_ENTITY_MODEL(object), location, rotation, !has_collision, is_visible, is_invincible};
 
 		return attachment;
 	}
@@ -363,16 +387,14 @@ namespace big
 			if (!ENTITY::IS_ENTITY_ATTACHED_TO_ENTITY(vehicle, object))
 				continue;
 
-			if (object == VEHICLE::GET_ENTITY_ATTACHED_TO_TOW_TRUCK(vehicle) ||
-				VEHICLE::IS_VEHICLE_ATTACHED_TO_TOW_TRUCK(object, vehicle))
+			if (object == VEHICLE::GET_ENTITY_ATTACHED_TO_TOW_TRUCK(vehicle) || VEHICLE::IS_VEHICLE_ATTACHED_TO_TOW_TRUCK(object, vehicle))
 				continue;
 
-			if (object == trailer ||
-				VEHICLE::IS_VEHICLE_ATTACHED_TO_TRAILER(object))
+			if (object == trailer || VEHICLE::IS_VEHICLE_ATTACHED_TO_TRAILER(object))
 				continue;
 
 			nlohmann::json model_attachment;
-			model_attachment[vehicle_key] = get_vehicle_json(object);
+			model_attachment[vehicle_key]          = get_vehicle_json(object);
 			model_attachment[model_attachment_key] = get_model_attachment(vehicle, object);
 
 			attached_vehicles.push_back(model_attachment);
@@ -389,7 +411,7 @@ namespace big
 
 		int primary_color, secondary_color;
 		VEHICLE::GET_VEHICLE_COLOURS(vehicle, &primary_color, &secondary_color);
-		vehicle_json[primary_color_key] = primary_color;
+		vehicle_json[primary_color_key]   = primary_color;
 		vehicle_json[secondary_color_key] = secondary_color;
 		if (VEHICLE::GET_IS_VEHICLE_PRIMARY_COLOUR_CUSTOM(vehicle))
 		{
@@ -414,21 +436,21 @@ namespace big
 
 		vehicle_json[radio_station_key] = radio_station;
 
-		vehicle_json[plate_text_key] = VEHICLE::GET_VEHICLE_NUMBER_PLATE_TEXT(vehicle);
+		vehicle_json[plate_text_key]       = VEHICLE::GET_VEHICLE_NUMBER_PLATE_TEXT(vehicle);
 		vehicle_json[plate_text_index_key] = VEHICLE::GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(vehicle);
 
 		int pearlescent_color, wheel_color;
 		VEHICLE::GET_VEHICLE_EXTRA_COLOURS(vehicle, &pearlescent_color, &wheel_color);
 
 		vehicle_json[pearlescent_color_key] = pearlescent_color;
-		bool has_collision = ENTITY::GET_ENTITY_COLLISION_DISABLED(vehicle);
-		bool is_visible = ENTITY::IS_ENTITY_VISIBLE(vehicle);
-		CVehicle* cvehicle = (CVehicle*)g_pointers->m_handle_to_ptr(vehicle);
-		bool is_invincible = misc::has_bit_set(&(int&)cvehicle->m_damage_bits, 8);
-		vehicle_json[has_collision_key] = !has_collision;
-		vehicle_json[is_visible_key] = is_visible;
-		vehicle_json[is_invincible_key] = is_invincible;
-		vehicle_json[wheel_color_key] = wheel_color;
+		bool has_collision                  = ENTITY::GET_ENTITY_COLLISION_DISABLED(vehicle);
+		bool is_visible                     = ENTITY::IS_ENTITY_VISIBLE(vehicle);
+		CVehicle* cvehicle                  = (CVehicle*)g_pointers->m_handle_to_ptr(vehicle);
+		bool is_invincible                  = misc::has_bit_set(&(int&)cvehicle->m_damage_bits, 8);
+		vehicle_json[has_collision_key]     = !has_collision;
+		vehicle_json[is_visible_key]        = is_visible;
+		vehicle_json[is_invincible_key]     = is_invincible;
+		vehicle_json[wheel_color_key]       = wheel_color;
 
 		std::map<int, bool> vehicle_extras;
 		for (int i = 0; i <= 20; i++)
@@ -444,8 +466,7 @@ namespace big
 			vehicle_json[vehicle_livery_key] = VEHICLE::GET_VEHICLE_LIVERY(vehicle);
 		}
 
-		if (VEHICLE::IS_THIS_MODEL_A_CAR(ENTITY::GET_ENTITY_MODEL(vehicle)) ||
-			VEHICLE::IS_THIS_MODEL_A_BIKE(ENTITY::GET_ENTITY_MODEL(vehicle)))
+		if (VEHICLE::IS_THIS_MODEL_A_CAR(ENTITY::GET_ENTITY_MODEL(vehicle)) || VEHICLE::IS_THIS_MODEL_A_BIKE(ENTITY::GET_ENTITY_MODEL(vehicle)))
 		{
 			vehicle_json[wheel_type_key] = VEHICLE::GET_VEHICLE_WHEEL_TYPE(vehicle);
 
@@ -468,7 +489,7 @@ namespace big
 
 				if (VEHICLE::GET_VEHICLE_MOD(vehicle, i) != -1)
 				{
-					int vehicle_mod[2] = { VEHICLE::GET_VEHICLE_MOD(vehicle, i), VEHICLE::GET_VEHICLE_MOD_VARIATION(vehicle, i) };
+					int vehicle_mod[2] = {VEHICLE::GET_VEHICLE_MOD(vehicle, i), VEHICLE::GET_VEHICLE_MOD_VARIATION(vehicle, i)};
 					vehicle_json[mod_names[i]] = vehicle_mod;
 				}
 			}
@@ -479,7 +500,7 @@ namespace big
 
 			int neon_color[3]{};
 			VEHICLE::GET_VEHICLE_NEON_COLOUR(vehicle, &neon_color[0], &neon_color[1], &neon_color[2]);
-			vehicle_json[neon_color_key] = neon_color;
+			vehicle_json[neon_color_key]  = neon_color;
 			vehicle_json[neon_lights_key] = neon_lights;
 
 			if (VEHICLE::IS_VEHICLE_A_CONVERTIBLE(vehicle, 0))
@@ -489,9 +510,9 @@ namespace big
 			VEHICLE::GET_VEHICLE_EXTRA_COLOUR_5(vehicle, &interior_color);
 			VEHICLE::GET_VEHICLE_EXTRA_COLOUR_6(vehicle, &dashboard_color);
 			vehicle_json[interior_color_key] = interior_color;
-			vehicle_json[dash_color_key] = dashboard_color;
+			vehicle_json[dash_color_key]     = dashboard_color;
 
-			vehicle_json[clan_logo_key] = GRAPHICS::DOES_VEHICLE_HAVE_CREW_EMBLEM(vehicle, 0);
+			vehicle_json[clan_logo_key]       = GRAPHICS::DOES_VEHICLE_HAVE_CREW_EMBLEM(vehicle, 0);
 			vehicle_json[headlight_color_key] = VEHICLE::GET_VEHICLE_XENON_LIGHT_COLOR_INDEX(vehicle);
 		}
 
