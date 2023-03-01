@@ -161,8 +161,8 @@ namespace big
 
 		functions::generate_uuid m_generate_uuid{};
 		std::uint64_t* m_host_token{};
-		rage::rlGamerInfo* m_profile_gamer_info{};    // per profile gamer info
-		rage::rlGamerInfo* m_player_info_gamer_info{};// the gamer info that is applied to CPlayerInfo
+		rage::rlGamerInfo* m_profile_gamer_info{};     // per profile gamer info
+		rage::rlGamerInfo* m_player_info_gamer_info{}; // the gamer info that is applied to CPlayerInfo
 		CCommunications** m_communications{};
 
 		PVOID m_update_presence_attribute_int;

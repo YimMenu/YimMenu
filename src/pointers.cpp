@@ -144,8 +144,7 @@ namespace big
 		});
 
 		// Read Bitbuffer Boolean
-		main_batch.add("RBB", "E8 ? ? ? ? 84 C0 74 41 48 8D 56 2C", [this](memory::handle ptr)
-		{
+		main_batch.add("RBB", "E8 ? ? ? ? 84 C0 74 41 48 8D 56 2C", [this](memory::handle ptr) {
 			m_read_bitbuf_bool = ptr.add(1).rip().as<decltype(m_read_bitbuf_bool)>();
 		});
 
@@ -272,9 +271,9 @@ namespace big
 		// Received clone sync & Get sync tree for type & Get net object for player & Get sync type info & Get net object
 		main_batch.add("RCS/GSTFT/GNOFP/GNO/GSTI", "4C 8B FA 41 0F B7 D1", [this](memory::handle ptr) {
 			m_received_clone_sync = ptr.sub(0x1D).as<decltype(m_received_clone_sync)>();
-			m_get_sync_tree_for_type = ptr.add(0x14).rip().as<decltype(m_get_sync_tree_for_type)>();// 0F B7 CA 83 F9 07 .as()
-			m_get_net_object = ptr.add(0x76).rip().as<decltype(m_get_net_object)>();// E8 ? ? ? ? 0F B7 53 7C .add(1).rip().as()
-			m_get_sync_type_info = ptr.add(0x8C).rip().as<decltype(m_get_sync_type_info)>();// 44 0F B7 C1 4C 8D 0D .as()
+			m_get_sync_tree_for_type = ptr.add(0x14).rip().as<decltype(m_get_sync_tree_for_type)>(); // 0F B7 CA 83 F9 07 .as()
+			m_get_net_object = ptr.add(0x76).rip().as<decltype(m_get_net_object)>(); // E8 ? ? ? ? 0F B7 53 7C .add(1).rip().as()
+			m_get_sync_type_info = ptr.add(0x8C).rip().as<decltype(m_get_sync_type_info)>(); // 44 0F B7 C1 4C 8D 0D .as()
 		});
 
 		// Read Bitbuffer Into Sync Tree
@@ -356,14 +355,12 @@ namespace big
 		});
 
 		// Send Chat Ptr
-		main_batch.add("SCP", "83 7E 1C 01 48 8B 3D", [this](memory::handle ptr)
-		{
+		main_batch.add("SCP", "83 7E 1C 01 48 8B 3D", [this](memory::handle ptr) {
 			m_send_chat_ptr = ptr.add(7).rip().as<int64_t**>();
 		});
 
 		// Send Chat Message
-		main_batch.add("SCM", "48 83 EC 20 48 8B F1 48 8B CA 41 8A E9", [this](memory::handle ptr)
-		{
+		main_batch.add("SCM", "48 83 EC 20 48 8B F1 48 8B CA 41 8A E9", [this](memory::handle ptr) {
 			m_send_chat_message = ptr.sub(21).as<functions::send_chat_message>();
 		});
 
@@ -433,8 +430,7 @@ namespace big
 		});
 
 		// Write Join Response Data
-		main_batch.add("WJRD", "E8 ?? ?? ?? ?? 41 8B DF 84 C0", [this](memory::handle ptr)
-		{
+		main_batch.add("WJRD", "E8 ?? ?? ?? ?? 41 8B DF 84 C0", [this](memory::handle ptr) {
 			m_write_join_response_data = ptr.add(1).rip().as<functions::write_join_response_data>();
 		});
 
@@ -475,7 +471,7 @@ namespace big
 
 		// Is Matchmaking Session Valid
 		main_batch.add("IMSV", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 83 EC 20 45 0F", [this](memory::handle ptr) {
-			memory::byte_patch::make(ptr.as<void*>(), std::to_array({0xB0, 0x01, 0xC3}))->apply();// has no observable side effects
+			memory::byte_patch::make(ptr.as<void*>(), std::to_array({0xB0, 0x01, 0xC3}))->apply(); // has no observable side effects
 		});
 
 		// Send Network Damage
@@ -628,8 +624,8 @@ namespace big
 
 		// Sound Overload Detour
 		main_batch.add("SOD", "66 45 3B C1 74 38", [this](memory::handle ptr) {
-			g_sound_overload_ret_addr   = ptr.add(13 + 15).as<decltype(g_sound_overload_ret_addr)>();
-			std::vector<byte> bytes     = {0xFF, 0x25, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90};// far jump opcode + a nop opcode
+			g_sound_overload_ret_addr = ptr.add(13 + 15).as<decltype(g_sound_overload_ret_addr)>();
+			std::vector<byte> bytes = {0xFF, 0x25, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90}; // far jump opcode + a nop opcode
 			*(void**)(bytes.data() + 6) = sound_overload_detour;
 			memory::byte_patch::make(ptr.add(13).as<void*>(), bytes)->apply();
 		});
@@ -716,14 +712,12 @@ namespace big
 		});
 
 		// DC
-		main_batch.add("DC", "48 8B D1 49 8B CA ? ? ? ? ? 48 8B D1 49 8B CA", [this](memory::handle ptr)
-		{
+		main_batch.add("DC", "48 8B D1 49 8B CA ? ? ? ? ? 48 8B D1 49 8B CA", [this](memory::handle ptr) {
 			m_disable_collision = memory::byte_patch::make(ptr.sub(2).as<uint8_t*>(), 0xEB).get();
 		});
 
 		// AWIV
-		main_batch.add("AWIV", "49 3B C9 7C F0 ? ? C3", [this](memory::handle ptr)
-		{
+		main_batch.add("AWIV", "49 3B C9 7C F0 ? ? C3", [this](memory::handle ptr) {
 			m_allow_weapons_in_vehicle = memory::byte_patch::make(ptr.add(5).as<uint16_t*>(), 0x01B0).get(); //In order for the second xref loop not to stop
 		});
 
