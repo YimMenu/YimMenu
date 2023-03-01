@@ -1,15 +1,10 @@
 #pragma once
 #include "common.hpp"
 #include "hotkey.hpp"
+#include "core/enums.hpp"
 
 namespace big
 {
-    enum eKeyState : unsigned int
-    {
-        RELEASE = WM_KEYUP,
-        DOWN = WM_KEYDOWN
-    };
-
     using hotkey_map = std::multimap<key_t, hotkey>;
 
     class hotkey_service final

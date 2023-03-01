@@ -141,13 +141,13 @@ namespace big
 		UNK2 = 1 << 16
 	};
 
-    enum class ePedTask
-    {
-        TASK_NONE,
-        TASK_FOOT = 1 << 4,
-        TASK_UNK = 1 << 5,
-        TASK_DRIVING = 1 << 6
-    };
+	enum class ePedTask
+	{
+		TASK_NONE,
+		TASK_FOOT = 1 << 4,
+		TASK_UNK = 1 << 5,
+		TASK_DRIVING = 1 << 6
+	};
 	
 	enum class eRemoteEvent
 	{
@@ -363,4 +363,10 @@ namespace big
 		{ CommandAccessLevel::TOXIC, "toxic" },
 		{ CommandAccessLevel::ADMIN, "admin" }
 	})
+
+	enum eKeyState : unsigned int
+	{
+		RELEASE = WM_KEYUP,
+		DOWN = WM_KEYDOWN
+	};
 }

@@ -1,6 +1,9 @@
 #include "views/view.hpp"
 #include "pointers.hpp"
 #include "backend/context/default_command_context.hpp"
+#include "gui.hpp"
+#include "services/hotkey/hotkey_service.hpp"
+#include "services/cmd_executor/cmd_executor_service.hpp"
 
 namespace big
 {
@@ -28,26 +31,34 @@ namespace big
 			ImGui::SetNextItemWidth(screen_x * 0.5f);
 			components::input_text_with_hint("", "Type your command", command_buffer, sizeof(command_buffer), ImGuiInputTextFlags_EnterReturnsTrue, []
 			{
-				std::string final_cmd = g_commands.contains(rage::joaat(command_buffer)) ? command_buffer : command::get_suggestions(command_buffer)[0]->get_name();
-				if(command::process(command::get_suggestions(command_buffer)[0]->get_name(), std::make_shared<default_command_context>()))
+				std::string final_cmd = g_commands.contains(rage::joaat(command_buffer)) ? command_buffer : g_cmd_executor_service->get_suggestions(command_buffer)[0]->get_name();
+				if(command::process(g_cmd_executor_service->get_suggestions(command_buffer)[0]->get_name(), std::make_shared<default_command_context>()))
 				{
 					command_buffer[0] = 0;
 					g.cmd_executor.enabled = false;
 				}
 			});
 
-			auto possible_commands = command::get_suggestions(command_buffer);
-			for (auto cmd : possible_commands)
+			auto possible_commands = g_cmd_executor_service->get_suggestions(command_buffer);
+			if (possible_commands.size() == 0)
 			{
-				ImGui::Text(std::format("{} - {}", cmd->get_label(), cmd->get_description()).data());
+				ImGui::Text("No commands could be found. :(");
+			}
+			else
+			{
+				for (auto cmd : possible_commands)
+				{
+					ImGui::Text(std::format("{} - {} - {}", cmd->get_name(), cmd->get_label(), cmd->get_description()).data());
 
-				// check if we aren't on the last iteration
-				if (cmd != possible_commands.back())
-					ImGui::Separator();
+					// check if we aren't on the last iteration
+					if (cmd != possible_commands.back())
+						ImGui::Separator();
+				}
 			}
 
 			ImGui::PopStyleVar();
 		}
+
 		ImGui::End();
 	}
 

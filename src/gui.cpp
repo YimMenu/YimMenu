@@ -3,6 +3,7 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "renderer.hpp"
+#include "util/is_key_pressed.hpp"
 
 #include <imgui.h>
 
@@ -153,6 +154,22 @@ namespace big
 			PAD::DISABLE_CONTROL_ACTION(2, 257, true);
 			PAD::DISABLE_CONTROL_ACTION(2, 262, true);
 			PAD::DISABLE_CONTROL_ACTION(2, 331, true);
+		}
+
+		//wndproc will not work here. the timing here is very difficult. mayby can we hook the creation of the pause menu?
+		//this should be improved..
+		if(is_key_pressed(VK_ESCAPE) && g.cmd_executor.enabled)
+		{
+			g_fiber_pool->queue_job([]
+			{
+				g.cmd_executor.enabled = false;
+				//50 should run stable, IMPROVE THIS!!!
+				for (uint8_t i = 0; i <= 50; i++)
+				{
+					HUD::SET_PAUSE_MENU_ACTIVE(false);
+					script::get_current()->yield();
+				}
+			});
 		}
 	}
 
