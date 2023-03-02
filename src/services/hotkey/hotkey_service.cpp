@@ -72,15 +72,12 @@ namespace big
 		if (const auto chat_data = *g_pointers->m_chat_data; chat_data && (chat_data->m_chat_open || chat_data->m_timer_two))
 			return;
 
-<<<<<<< HEAD
 		//command executer is opened
 		if (g.cmd_executor.enabled)
 			return;
 
 		if (g_gui->is_open())
 			return;
-		== == == = if (g_gui->is_open()) return;
->>>>>>> master
 
 		if (state == eKeyState::RELEASE || state == eKeyState::DOWN)
 		{

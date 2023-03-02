@@ -3,16 +3,13 @@
 #include "common.hpp"
 #include "natives.hpp"
 #include "renderer.hpp"
-<<<<<<< HEAD
-#include "util/is_key_pressed.hpp"
-    == == == =
 #include "script.hpp"
+#include "util/is_key_pressed.hpp"
 #include "views/view.hpp"
-    >>>>>>> master
 
 #include <imgui.h>
 
-    namespace big
+namespace big
 {
 	gui::gui() :
 	    m_is_open(false)
