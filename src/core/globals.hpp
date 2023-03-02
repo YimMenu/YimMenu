@@ -280,11 +280,12 @@ namespace big
 			bool super_jump                            = false;
 			bool beast_jump                            = false;
 			bool superman                              = false;
+			bool npcs_ignore                           = false;
 
 			// do not save below entries
 			bool dance_mode = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element, force_show_hud, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, superman)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element, force_show_hud, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, superman, npcs_ignore)
 		} self{};
 
 		struct session

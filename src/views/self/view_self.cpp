@@ -27,6 +27,7 @@ namespace big
 		ImGui::BeginGroup();
 
 		components::command_checkbox<"godmode">();
+		components::command_checkbox<"npcsignore">();
 		components::command_checkbox<"otr">();
 		components::command_checkbox<"freecam">();
 		components::command_checkbox<"nophone">();
