@@ -1,5 +1,4 @@
 #pragma once
-#include "imgui.h"
 #include "backend/command.hpp"
 #include "backend/looped_command.hpp"
 #include "backend/player_command.hpp"
@@ -13,6 +12,7 @@ namespace big
 	class components
 	{
 		static void custom_text(const std::string_view, ImFont*);
+
 	public:
 		static bool nav_button(const std::string_view);
 		static void icon(const std::string_view);
@@ -62,7 +62,8 @@ namespace big
 		}
 
 		template<ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>
-		static bool button(const std::string_view text) {
+		static bool button(const std::string_view text)
+		{
 			bool status = false;
 			ImGui::PushStyleColor(ImGuiCol_Button, color);
 			status = ImGui::Button(text.data(), size);
@@ -71,14 +72,17 @@ namespace big
 		}
 
 		template<ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>
-		static void button(const std::string_view text, std::function<void()> cb) {
-			if (button<size, color>(text)) {
+		static void button(const std::string_view text, std::function<void()> cb)
+		{
+			if (button<size, color>(text))
+			{
 				g_fiber_pool->queue_job(cb);
 			}
 		}
 
 		template<typename PredicateFn, typename ComponentsFn>
-		static void disable_unless(PredicateFn predicate_fn, ComponentsFn components_fn) {
+		static void disable_unless(PredicateFn predicate_fn, ComponentsFn components_fn)
+		{
 			auto const result = predicate_fn();
 			if (!result)
 				ImGui::BeginDisabled(true);

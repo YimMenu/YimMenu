@@ -1,7 +1,8 @@
-#include "hooking.hpp"
 #include "gta/net_game_event.hpp"
+#include "hooking.hpp"
 #include "util/notify.hpp"
-#include <datanodes/ped/CPedInventoryDataNode.hpp>
+
+#include <netsync/nodes/ped/CPedInventoryDataNode.hpp>
 
 namespace big
 {

@@ -1,12 +1,14 @@
+#include "renderer.hpp"
+
 #include "common.hpp"
 #include "file_manager.hpp"
 #include "fonts/fonts.hpp"
 #include "gui.hpp"
 #include "pointers.hpp"
-#include "renderer.hpp"
-#include <imgui.h>
+
 #include <backends/imgui_impl_dx11.h>
 #include <backends/imgui_impl_win32.h>
+#include <imgui.h>
 #include <imgui_internal.h>
 
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -14,7 +16,7 @@ IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARA
 namespace big
 {
 	renderer::renderer() :
-		m_dxgi_swapchain(*g_pointers->m_swapchain)
+	    m_dxgi_swapchain(*g_pointers->m_swapchain)
 	{
 		if (m_dxgi_swapchain->GetDevice(__uuidof(ID3D11Device), reinterpret_cast<void**>(&m_d3d_device)) < 0)
 		{
@@ -27,22 +29,20 @@ namespace big
 		ImGuiContext* ctx = ImGui::CreateContext();
 
 		static std::string path = file_path.make_preferred().string();
-		ctx->IO.IniFilename = path.c_str();
+		ctx->IO.IniFilename     = path.c_str();
 
 		ImGui_ImplDX11_Init(m_d3d_device, m_d3d_device_context);
 		ImGui_ImplWin32_Init(g_pointers->m_hwnd);
 
-		folder windows_fonts(
-			std::filesystem::path(std::getenv("SYSTEMROOT")) / "Fonts"
-		);
+		folder windows_fonts(std::filesystem::path(std::getenv("SYSTEMROOT")) / "Fonts");
 
 		file font_file_path = windows_fonts.get_file("./msyh.ttc");
 		if (!font_file_path.exists())
 			font_file_path = windows_fonts.get_file("./msyh.ttf");
-		auto font_file = std::ifstream(font_file_path.get_path(), std::ios::binary | std::ios::ate);
+		auto font_file            = std::ifstream(font_file_path.get_path(), std::ios::binary | std::ios::ate);
 		const auto font_data_size = static_cast<int>(font_file.tellg());
-		const auto font_data = std::make_unique<std::uint8_t[]>(font_data_size);
-		
+		const auto font_data      = std::make_unique<std::uint8_t[]>(font_data_size);
+
 		font_file.seekg(0);
 		font_file.read(reinterpret_cast<char*>(font_data.get()), font_data_size);
 		font_file.close();
@@ -54,7 +54,11 @@ namespace big
 			fnt_cfg.FontDataOwnedByAtlas = false;
 			strcpy(fnt_cfg.Name, "Fnt20px");
 
-			io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia), sizeof(font_storopia), 20.f, &fnt_cfg, io.Fonts->GetGlyphRangesDefault());
+			io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_storopia),
+			    sizeof(font_storopia),
+			    20.f,
+			    &fnt_cfg,
+			    io.Fonts->GetGlyphRangesDefault());
 			fnt_cfg.MergeMode = true;
 			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 20.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesChineseSimplifiedCommon());
 			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 20.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
@@ -96,15 +100,13 @@ namespace big
 			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 18.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 			io.Fonts->Build();
 		}
-		
+
 		{
 			ImFontConfig font_icons_cfg{};
 			font_icons_cfg.FontDataOwnedByAtlas = false;
 			std::strcpy(font_icons_cfg.Name, "Icons");
 			g.window.font_icon = io.Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_icons), sizeof(font_icons), 24.f, &font_icons_cfg);
 		}
-
-		rescale(g.window.gui_scale);
 
 		g_renderer = this;
 	}
@@ -120,7 +122,7 @@ namespace big
 
 	bool renderer::add_dx_callback(dx_callback callback, std::uint32_t priority)
 	{
-		if (!m_dx_callbacks.insert({ priority, callback }).second)
+		if (!m_dx_callbacks.insert({priority, callback}).second)
 		{
 			LOG(WARNING) << "Duplicate priority given on DX Callback!";
 
@@ -145,8 +147,13 @@ namespace big
 	void renderer::rescale(float rel_size)
 	{
 		pre_reset();
-		ImGui::GetStyle().ScaleAllSizes(rel_size);
-		ImGui::GetIO().FontGlobalScale = rel_size;
+		g_gui->restore_default_style();
+
+		if (rel_size != 1.0f)
+			ImGui::GetStyle().ScaleAllSizes(rel_size);
+
+		ImGui::GetStyle().MouseCursorScale = 1.0f;
+		ImGui::GetIO().FontGlobalScale     = rel_size;
 		post_reset();
 	}
 

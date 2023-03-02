@@ -1,5 +1,5 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
+#include "natives.hpp"
 #include "util/vehicle.hpp"
 
 namespace big
@@ -15,5 +15,6 @@ namespace big
 		}
 	};
 
-	keep_vehicle_repaired g_keep_vehicle_repaired("keepfixed", "Keep Vehicle Repaired", "Keeps your vehicle free of wear and tear", g.vehicle.keep_vehicle_repaired);
+	keep_vehicle_repaired g_keep_vehicle_repaired("keepfixed", "Keep Vehicle Repaired", "Keeps your vehicle free of wear and tear",
+	    g.vehicle.keep_vehicle_repaired);
 }

@@ -14,7 +14,8 @@ namespace big
 			}
 
 			return CallWindowProcW(g_hooking->m_og_wndproc, hwnd, msg, wparam, lparam);
-		} EXCEPT_CLAUSE
+		}
+		EXCEPT_CLAUSE
 
 		return NULL;
 	}

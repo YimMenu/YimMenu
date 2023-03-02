@@ -55,14 +55,18 @@ namespace big
 			return nullptr;
 		}
 
-		template<typename T, typename ...Args>
+		template<typename T, typename... Args>
 		static bool is_model_of_type(const rage::joaat_t hash, const T arg, const Args... args)
 		{
 			bool of_type = false;
 			if (const auto model = model_info::get_model(hash))
 			{
 				of_type = model->m_model_type == arg;
-				([&of_type, &model](eModelType type) { of_type |= model->m_model_type == type; }(args), ...);
+				(
+				    [&of_type, &model](eModelType type) {
+					    of_type |= model->m_model_type == type;
+				    }(args),
+				    ...);
 			}
 			return of_type;
 		}

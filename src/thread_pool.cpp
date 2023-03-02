@@ -2,7 +2,8 @@
 
 namespace big
 {
-	thread_pool::thread_pool() : m_accept_jobs(true)
+	thread_pool::thread_pool() :
+	    m_accept_jobs(true)
 	{
 		this->m_managing_thread = std::thread(&thread_pool::create, this);
 
@@ -58,13 +59,14 @@ namespace big
 		{
 			std::unique_lock lock(this->m_lock);
 
-			this->m_data_condition.wait(lock, [this]()
-			{
+			this->m_data_condition.wait(lock, [this]() {
 				return !this->m_job_stack.empty() || !this->m_accept_jobs;
 			});
 
-			if (!this->m_accept_jobs) break;
-			if (this->m_job_stack.empty()) continue;
+			if (!this->m_accept_jobs)
+				break;
+			if (this->m_job_stack.empty())
+				continue;
 
 			std::function<void()> job = std::move(this->m_job_stack.top());
 			this->m_job_stack.pop();

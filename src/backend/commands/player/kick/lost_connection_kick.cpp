@@ -1,9 +1,9 @@
 #include "backend/player_command.hpp"
-#include "natives.hpp"
-#include "pointers.hpp"
 #include "core/scr_globals.hpp"
-#include "packet.hpp"
 #include "gta_util.hpp"
+#include "natives.hpp"
+#include "packet.hpp"
+#include "pointers.hpp"
 
 #include <network/Network.hpp>
 

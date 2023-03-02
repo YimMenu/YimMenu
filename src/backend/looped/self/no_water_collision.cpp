@@ -1,7 +1,7 @@
 #include "backend/looped/looped.hpp"
+#include "backend/looped_command.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
-#include "backend/looped_command.hpp"
 
 namespace big
 {
@@ -22,5 +22,6 @@ namespace big
 		}
 	};
 
-	no_water_collision g_no_water_collision("walkunder", "Walk Underwater", "Allows you to walk and shoot underwater", g.self.no_water_collision);
+	no_water_collision
+	    g_no_water_collision("walkunder", "Walk Underwater", "Allows you to walk and shoot underwater", g.self.no_water_collision);
 }

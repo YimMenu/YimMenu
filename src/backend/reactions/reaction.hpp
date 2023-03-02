@@ -12,11 +12,11 @@ namespace big
 
 	public:
 		bool announce_in_chat = false;
-		bool notify = true;
-		bool log = true;
+		bool notify           = true;
+		bool log              = true;
 		bool add_to_player_db = false;
-		bool block_joins = false;
-		bool kick = false;
+		bool block_joins      = false;
+		bool kick             = false;
 
 		const char* m_event_name;
 		const char* m_notify_message;

@@ -12,8 +12,7 @@ namespace big
 			{
 				g_renderer->pre_reset();
 
-				const auto result = g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_resizebuffers)>(swapchain_resizebuffers_index)
-					(this_, buffer_count, width, height, new_format, swapchain_flags);
+				const auto result = g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_resizebuffers)>(swapchain_resizebuffers_index)(this_, buffer_count, width, height, new_format, swapchain_flags);
 
 				if (SUCCEEDED(result))
 				{
@@ -23,9 +22,9 @@ namespace big
 				return result;
 			}
 
-			return g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_resizebuffers)>(swapchain_resizebuffers_index)
-				(this_, buffer_count, width, height, new_format, swapchain_flags);
-		} EXCEPT_CLAUSE
+			return g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_resizebuffers)>(swapchain_resizebuffers_index)(this_, buffer_count, width, height, new_format, swapchain_flags);
+		}
+		EXCEPT_CLAUSE
 
 		return NULL;
 	}

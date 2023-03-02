@@ -1,6 +1,6 @@
+#include "services/hotkey/hotkey_service.hpp"
 #include "views/view.hpp"
 #include "widgets/imgui_hotkey.hpp"
-#include "services/hotkey/hotkey_service.hpp"
 
 namespace big
 {
@@ -9,7 +9,7 @@ namespace big
 		ImGui::PushItemWidth(350.f);
 
 		if (ImGui::Hotkey("Menu Toggle", &g.settings.hotkeys.menu_toggle))
-			g.settings.hotkeys.editing_menu_toggle = true; // make our menu reappear
+			g.settings.hotkeys.editing_menu_toggle = true;// make our menu reappear
 
 		if (ImGui::Hotkey("Teleport to waypoint", &g.settings.hotkeys.teleport_waypoint))
 			g_hotkey_service->update_hotkey("waypoint", g.settings.hotkeys.teleport_waypoint);

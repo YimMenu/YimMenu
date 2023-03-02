@@ -21,15 +21,17 @@ namespace big
 			session_attributes attributes;
 			bool is_valid;
 		};
+
 	private:
 		int m_num_sessions_found = 0;
-		bool m_active = false;
+		bool m_active            = false;
 		session m_found_sessions[MAX_SESSIONS_TO_FIND];
+
 	public:
 		matchmaking_service();
 		~matchmaking_service();
 		bool matchmake(std::optional<int> constraint = std::nullopt);
-		
+
 		inline int get_num_found_sessions()
 		{
 			return m_num_sessions_found;

@@ -22,6 +22,5 @@ namespace big
 		void read_xml_file(const std::filesystem::path& path, std::function<void(pugi::xml_document& doc)> cb);
 
 	private:
-
 	};
 }

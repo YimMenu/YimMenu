@@ -1,9 +1,10 @@
-#include "gta/joaat.hpp"
 #include "creator_storage_service.hpp"
-#include "pointers.hpp"
+
+#include "gta/joaat.hpp"
+#include "gta/sysMemAllocator.hpp"
 #include "gta/tls_context.hpp"
 #include "natives.hpp"
-#include "gta/sysMemAllocator.hpp"
+#include "pointers.hpp"
 #include "script.hpp"
 #include "script_function.hpp"
 
@@ -37,7 +38,7 @@ namespace big
 		}
 
 		char* storage = new char[0x50000];
-		scr_functions::save_to_datafile.static_call({ (uint64_t)storage });
+		scr_functions::save_to_datafile.static_call({(uint64_t)storage});
 		delete[] storage;
 
 		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(RAGE_JOAAT("fm_race_creator"));
@@ -46,7 +47,8 @@ namespace big
 
 		if (!buffer)
 		{
-			g_notification_service->push_error("CREATOR_STORAGE_SAVE_JOB"_T.data(), "CREATOR_STORAGE_CANNOT_OBTAIN_JSON"_T.data());
+			g_notification_service->push_error("CREATOR_STORAGE_SAVE_JOB"_T.data(),
+			    "CREATOR_STORAGE_CANNOT_OBTAIN_JSON"_T.data());
 			return;
 		}
 
@@ -76,7 +78,7 @@ namespace big
 			script::get_current()->yield();
 		}
 
-		scr_functions::load_from_datafile.static_call({ 1, true, false, 0 });
+		scr_functions::load_from_datafile.static_call({1, true, false, 0});
 
 		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(RAGE_JOAAT("fm_race_creator"));
 		file_stream.close();

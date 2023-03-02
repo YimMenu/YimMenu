@@ -1,17 +1,87 @@
-#include "views/view.hpp"
+#include "core/data/blip_types.hpp"
+#include "core/data/language_codes.hpp"
+#include "core/data/region_codes.hpp"
 #include "fiber_pool.hpp"
 #include "util/teleport.hpp"
-#include "core/data/region_codes.hpp"
-#include "core/data/language_codes.hpp"
+#include "views/view.hpp"
+
 #include <network/ClanData.hpp>
 
 namespace big
 {
 	void view::spoofing()
 	{
-		components::small_text("SPOOFING_DESCRIPTION"_T);
+		// requires translation
 
 		ImGui::Checkbox("Hide From Player List", &g.spoofing.hide_from_player_list);
+
+		components::script_patch_checkbox("Spoof Blip Type", &g.spoofing.spoof_blip);
+		if (g.spoofing.spoof_blip)
+		{
+			ImGui::SameLine();
+			if (ImGui::BeginCombo("###blip_type_select", blip_types[g.spoofing.blip_type]))
+			{
+				for (int i = 0; i < blip_types.size(); i++)
+				{
+					if (ImGui::Selectable(blip_types[i], g.spoofing.blip_type == i))
+					{
+						g.spoofing.blip_type = i;
+					}
+				}
+				ImGui::EndCombo();
+			}
+		}
+
+		ImGui::Checkbox("Spoof Rank", &g.spoofing.spoof_rank);
+		if (g.spoofing.spoof_rank)
+		{
+			ImGui::SameLine();
+			if (ImGui::InputInt("###rank", &g.spoofing.rank))
+			{
+				*g_pointers->m_force_player_card_refresh = true;
+			}
+		}
+
+		ImGui::Checkbox("Spoof K/D Ratio", &g.spoofing.spoof_kd_ratio);
+		if (g.spoofing.spoof_kd_ratio)
+		{
+			ImGui::SameLine();
+			if (ImGui::InputFloat("###kd_ratio", &g.spoofing.kd_ratio))
+			{
+				*g_pointers->m_force_player_card_refresh = true;
+			}
+		}
+
+		ImGui::Checkbox("Spoof Badsport State", &g.spoofing.spoof_bad_sport);
+		if (g.spoofing.spoof_bad_sport)
+		{
+			ImGui::SameLine();
+			if (ImGui::Combo("###badsport_select", &g.spoofing.badsport_type, "Clean Player\0Dirty Player\0Bad Sport"))
+			{
+				*g_pointers->m_force_player_card_refresh = true;
+			}
+		}
+
+		ImGui::Checkbox("Spoof Job Points", &g.spoofing.spoof_job_points);
+		if (g.spoofing.spoof_job_points)
+		{
+			ImGui::SameLine();
+			ImGui::InputInt("###jp", &g.spoofing.job_points);
+		}
+
+		ImGui::Checkbox("Spoof Player Model", &g.spoofing.spoof_player_model);
+		if (g.spoofing.spoof_player_model)
+		{
+			static char model[32];
+			strcpy_s(model, sizeof(model), g.spoofing.player_model.c_str());
+
+			ImGui::SameLine();
+			components::input_text("##model_input", model, sizeof(model));
+
+			if (model != g.spoofing.player_model)
+				g.spoofing.player_model = std::string(model);
+		}
+
 
 		components::sub_title("SPOOFING_HIDE_FEATURES"_T);
 		ImGui::Checkbox("SPOOFING_HIDE_GOD_MODE"_T.data(), &g.spoofing.spoof_hide_god);

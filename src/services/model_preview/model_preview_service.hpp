@@ -15,12 +15,13 @@ namespace big
 		bool m_veh_spawn_max = false;
 
 		Hash m_ped_model_hash = 0;
-		Ped m_ped_clone = 0;
+		Ped m_ped_clone       = 0;
 
-		bool m_new_model = false;
-		float m_heading = 0.f;
+		bool m_new_model    = false;
+		float m_heading     = 0.f;
 		bool m_loop_running = false;
-		bool m_running = false;
+		bool m_running      = false;
+
 	public:
 		model_preview_service();
 		~model_preview_service();

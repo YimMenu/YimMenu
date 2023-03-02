@@ -1,9 +1,12 @@
 #include "fidevice.hpp"
+
 #include "pointers.hpp"
 
 namespace rage
 {
-	#define PURECALL() LOG(FATAL) << "pure fiDevice call (" __FUNCTION__ ")"; return 0
+#define PURECALL()                                         \
+	LOG(FATAL) << "pure fiDevice call (" __FUNCTION__ ")"; \
+	return 0
 
 	fiDeviceImplemented::fiDeviceImplemented()
 	{
@@ -11,15 +14,16 @@ namespace rage
 
 	fiDeviceImplemented::~fiDeviceImplemented()
 	{
-
 	}
 
 	fiDevice::~fiDevice()
 	{
-
 	}
 
-	uint64_t fiDeviceImplemented::Open(const char* fileName, bool) { PURECALL(); }
+	uint64_t fiDeviceImplemented::Open(const char* fileName, bool)
+	{
+		PURECALL();
+	}
 
 	uint64_t fiDeviceImplemented::OpenBulk(const char* fileName, uint64_t* ptr)
 	{

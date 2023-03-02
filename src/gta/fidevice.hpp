@@ -1,7 +1,7 @@
 #pragma once
 
-#include "sysMemAllocator.hpp"
 #include "pointers.hpp"
+#include "sysMemAllocator.hpp"
 
 #include <array>
 
@@ -74,9 +74,9 @@ namespace rage
 		// dummy!
 		virtual int m_40(int) = 0;
 
-		virtual bool RemoveFile(const char* file) = 0;
+		virtual bool RemoveFile(const char* file)                = 0;
 		virtual int RenameFile(const char* from, const char* to) = 0;
-		virtual int CreateDirectory(const char* dir) = 0;
+		virtual int CreateDirectory(const char* dir)             = 0;
 
 		virtual int RemoveDirectory(const char* dir) = 0;
 
@@ -84,12 +84,12 @@ namespace rage
 
 		virtual uint64_t GetFileLengthLong(const char* fileName) = 0;
 
-		virtual uint64_t GetFileTime(const char* file) = 0;
+		virtual uint64_t GetFileTime(const char* file)                = 0;
 		virtual bool SetFileTime(const char* file, FILETIME fileTime) = 0;
 
 		virtual uint64_t FindFirst(const char* path, fiFindData* findData) = 0;
-		virtual bool FindNext(uint64_t handle, fiFindData* findData) = 0;
-		virtual int FindClose(uint64_t handle) = 0;
+		virtual bool FindNext(uint64_t handle, fiFindData* findData)       = 0;
+		virtual int FindClose(uint64_t handle)                             = 0;
 
 		virtual rage::fiDevice* GetUnkDevice() = 0;
 
@@ -116,13 +116,13 @@ namespace rage
 
 		virtual int32_t m_yz(void*) = 0;
 
-		virtual int32_t m_zx(void*) = 0; // return 0x40000000
+		virtual int32_t m_zx(void*) = 0;// return 0x40000000
 
 		virtual bool IsCollection() = 0;
 
 		virtual bool m_addedIn1290() = 0;
 
-		virtual fiDevice* GetCollection() = 0; // return this
+		virtual fiDevice* GetCollection() = 0;// return this
 
 		virtual bool m_ax() = 0;
 
@@ -214,13 +214,13 @@ namespace rage
 
 		virtual int32_t m_yz(void*);
 
-		virtual int32_t m_zx(void*); // return 0x40000000
+		virtual int32_t m_zx(void*);// return 0x40000000
 
 		virtual bool IsCollection();
 
 		virtual bool m_addedIn1290();
 
-		virtual fiDevice* GetCollection(); // return this
+		virtual fiDevice* GetCollection();// return this
 
 		virtual bool m_ax();
 
@@ -233,6 +233,7 @@ namespace rage
 	{
 	private:
 		char m_pad[272];
+
 	public:
 		fiDeviceRelative();
 
@@ -256,7 +257,7 @@ namespace rage
 		void* m_0010;
 		char m_buffer[4096];
 		bool m_1018;
-		alignas(int) char m_pad[64]; // unsure
+		alignas(int) char m_pad[64];// unsure
 
 	private:
 		void* AllocKeyState(const uint8_t* key);
@@ -271,6 +272,7 @@ namespace rage
 	{
 	private:
 		char m_pad[368 + (0x650 - 0x590)];
+
 	public:
 		fiPackfile();
 

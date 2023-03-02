@@ -1,5 +1,7 @@
 #include "script_handler.hpp"
+
 #include "pointers.hpp"
+
 #include <network/CNetworkPlayerMgr.hpp>
 
 int CGameScriptHandlerNetComponent::get_participant_index(CNetGamePlayer* player)

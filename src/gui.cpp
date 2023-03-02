@@ -1,30 +1,33 @@
-#include "common.hpp"
 #include "gui.hpp"
+
+#include "common.hpp"
 #include "natives.hpp"
-#include "script.hpp"
 #include "renderer.hpp"
+<<<<<<< HEAD
 #include "util/is_key_pressed.hpp"
+    == == == =
+#include "script.hpp"
+#include "views/view.hpp"
+    >>>>>>> master
 
 #include <imgui.h>
 
-#include "views/view.hpp"
-
-namespace big
+    namespace big
 {
 	gui::gui() :
-		m_is_open(false)
+	    m_is_open(false)
 	{
 		g_renderer->add_dx_callback(view::gta_data, -1);
 		g_renderer->add_dx_callback(view::notifications, -2);
 		g_renderer->add_dx_callback(view::overlay, -3);
 		g_renderer->add_dx_callback(view::cmd_executor, -4);
-		g_renderer->add_dx_callback([this]
-		{
-			dx_on_tick();
-		}, -5);
+		g_renderer->add_dx_callback(
+		    [this] {
+			    dx_on_tick();
+		    },
+		    -5);
 
-		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
-		{
+		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			wndproc(hwnd, msg, wparam, lparam);
 		});
 
@@ -34,6 +37,7 @@ namespace big
 		dx_init();
 
 		g_gui = this;
+		g_renderer->rescale(g.window.gui_scale);
 	}
 
 	gui::~gui()
@@ -55,62 +59,64 @@ namespace big
 
 	void gui::dx_init()
 	{
-		static auto bgColor = ImVec4(0.09f, 0.094f, 0.129f, .9f);
-		static auto primary = ImVec4(0.172f, 0.380f, 0.909f, 1.f);
-		static auto secondary = ImVec4(0.443f, 0.654f, 0.819f, 1.f);
+		static auto bgColor     = ImVec4(0.09f, 0.094f, 0.129f, .9f);
+		static auto primary     = ImVec4(0.172f, 0.380f, 0.909f, 1.f);
+		static auto secondary   = ImVec4(0.443f, 0.654f, 0.819f, 1.f);
 		static auto whiteBroken = ImVec4(0.792f, 0.784f, 0.827f, 1.f);
 
-		auto& style = ImGui::GetStyle();
-		style.WindowPadding = ImVec2(15, 15);
-		style.WindowRounding = 10.f;
-		style.WindowBorderSize = 0.f;
-		style.FramePadding = ImVec2(5, 5);
-		style.FrameRounding = 4.0f;
-		style.ItemSpacing = ImVec2(12, 8);
-		style.ItemInnerSpacing = ImVec2(8, 6);
-		style.IndentSpacing = 25.0f;
-		style.ScrollbarSize = 15.0f;
+		auto& style             = ImGui::GetStyle();
+		style.WindowPadding     = ImVec2(15, 15);
+		style.WindowRounding    = 10.f;
+		style.WindowBorderSize  = 0.f;
+		style.FramePadding      = ImVec2(5, 5);
+		style.FrameRounding     = 4.0f;
+		style.ItemSpacing       = ImVec2(12, 8);
+		style.ItemInnerSpacing  = ImVec2(8, 6);
+		style.IndentSpacing     = 25.0f;
+		style.ScrollbarSize     = 15.0f;
 		style.ScrollbarRounding = 9.0f;
-		style.GrabMinSize = 5.0f;
-		style.GrabRounding = 3.0f;
-		style.ChildRounding = 4.0f;
+		style.GrabMinSize       = 5.0f;
+		style.GrabRounding      = 3.0f;
+		style.ChildRounding     = 4.0f;
 
-		auto& colors = style.Colors;
-		colors[ImGuiCol_Text] = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
-		colors[ImGuiCol_TextDisabled] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
-		colors[ImGuiCol_WindowBg] = ImGui::ColorConvertU32ToFloat4(g.window.color);
-		colors[ImGuiCol_ChildBg] = ImGui::ColorConvertU32ToFloat4(g.window.color);
-		colors[ImGuiCol_PopupBg] = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
-		colors[ImGuiCol_Border] = ImVec4(0.80f, 0.80f, 0.83f, 0.88f);
-		colors[ImGuiCol_BorderShadow] = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);
-		colors[ImGuiCol_FrameBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
-		colors[ImGuiCol_FrameBgHovered] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
-		colors[ImGuiCol_FrameBgActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-		colors[ImGuiCol_TitleBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
-		colors[ImGuiCol_TitleBgCollapsed] = ImVec4(1.00f, 0.98f, 0.95f, 0.75f);
-		colors[ImGuiCol_TitleBgActive] = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
-		colors[ImGuiCol_MenuBarBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
-		colors[ImGuiCol_ScrollbarBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
-		colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
+		auto& colors                          = style.Colors;
+		colors[ImGuiCol_Text]                 = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
+		colors[ImGuiCol_TextDisabled]         = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
+		colors[ImGuiCol_WindowBg]             = ImGui::ColorConvertU32ToFloat4(g.window.color);
+		colors[ImGuiCol_ChildBg]              = ImGui::ColorConvertU32ToFloat4(g.window.color);
+		colors[ImGuiCol_PopupBg]              = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
+		colors[ImGuiCol_Border]               = ImVec4(0.80f, 0.80f, 0.83f, 0.88f);
+		colors[ImGuiCol_BorderShadow]         = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);
+		colors[ImGuiCol_FrameBg]              = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
+		colors[ImGuiCol_FrameBgHovered]       = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
+		colors[ImGuiCol_FrameBgActive]        = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+		colors[ImGuiCol_TitleBg]              = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
+		colors[ImGuiCol_TitleBgCollapsed]     = ImVec4(1.00f, 0.98f, 0.95f, 0.75f);
+		colors[ImGuiCol_TitleBgActive]        = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
+		colors[ImGuiCol_MenuBarBg]            = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
+		colors[ImGuiCol_ScrollbarBg]          = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
+		colors[ImGuiCol_ScrollbarGrab]        = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
 		colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-		colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
-		colors[ImGuiCol_CheckMark] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
-		colors[ImGuiCol_SliderGrab] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
-		colors[ImGuiCol_SliderGrabActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
-		colors[ImGuiCol_Button] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f); 
-		colors[ImGuiCol_ButtonHovered] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
-		colors[ImGuiCol_ButtonActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-		colors[ImGuiCol_Header] = ImVec4(0.30f, 0.29f, 0.32f, 1.00f);
-		colors[ImGuiCol_HeaderHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-		colors[ImGuiCol_HeaderActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
-		colors[ImGuiCol_ResizeGrip] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
-		colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-		colors[ImGuiCol_ResizeGripActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
-		colors[ImGuiCol_PlotLines] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
-		colors[ImGuiCol_PlotLinesHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
-		colors[ImGuiCol_PlotHistogram] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
+		colors[ImGuiCol_ScrollbarGrabActive]  = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
+		colors[ImGuiCol_CheckMark]            = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
+		colors[ImGuiCol_SliderGrab]           = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
+		colors[ImGuiCol_SliderGrabActive]     = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
+		colors[ImGuiCol_Button]               = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
+		colors[ImGuiCol_ButtonHovered]        = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
+		colors[ImGuiCol_ButtonActive]         = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+		colors[ImGuiCol_Header]               = ImVec4(0.30f, 0.29f, 0.32f, 1.00f);
+		colors[ImGuiCol_HeaderHovered]        = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+		colors[ImGuiCol_HeaderActive]         = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
+		colors[ImGuiCol_ResizeGrip]           = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+		colors[ImGuiCol_ResizeGripHovered]    = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+		colors[ImGuiCol_ResizeGripActive]     = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
+		colors[ImGuiCol_PlotLines]            = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
+		colors[ImGuiCol_PlotLinesHovered]     = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
+		colors[ImGuiCol_PlotHistogram]        = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
 		colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
-		colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
+		colors[ImGuiCol_TextSelectedBg]       = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
+
+		memcpy(&m_default_config, &ImGui::GetStyle(), sizeof(ImGuiStyle));
 	}
 
 	void gui::dx_on_tick()
@@ -121,6 +127,11 @@ namespace big
 			view::root();
 			ImGui::PopStyleColor();
 		}
+	}
+
+	void gui::restore_default_style()
+	{
+		memcpy(&ImGui::GetStyle(), &m_default_config, sizeof(ImGuiStyle));
 	}
 
 	void gui::script_on_tick()
@@ -158,10 +169,9 @@ namespace big
 
 		//wndproc will not work here. the timing here is very difficult. mayby can we hook the creation of the pause menu?
 		//this should be improved..
-		if(is_key_pressed(VK_ESCAPE) && g.cmd_executor.enabled)
+		if (is_key_pressed(VK_ESCAPE) && g.cmd_executor.enabled)
 		{
-			g_fiber_pool->queue_job([]
-			{
+			g_fiber_pool->queue_job([] {
 				g.cmd_executor.enabled = false;
 				//50 should run stable, IMPROVE THIS!!!
 				for (uint8_t i = 0; i <= 50; i++)

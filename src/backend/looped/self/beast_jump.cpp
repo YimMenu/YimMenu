@@ -1,6 +1,6 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
 #include "gta/enums.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -17,6 +17,7 @@ namespace big
 			}
 		}
 	};
-	
-	beast_jump_looped g_beast_jump_looped("beastjump", "Beast Jump", "Allows you to jump as if you were the beast like in the Hunt the Beast event", g.self.beast_jump);
+
+	beast_jump_looped g_beast_jump_looped("beastjump", "Beast Jump", "Allows you to jump as if you were the beast like in the Hunt the Beast event",
+	    g.self.beast_jump);
 }

@@ -13,10 +13,11 @@ namespace big
 
 		void fiber_tick();
 		static void fiber_func();
+
 	private:
 		std::recursive_mutex m_mutex;
 		std::stack<std::function<void()>> m_jobs;
 	};
 
-	inline fiber_pool *g_fiber_pool{};
+	inline fiber_pool* g_fiber_pool{};
 }

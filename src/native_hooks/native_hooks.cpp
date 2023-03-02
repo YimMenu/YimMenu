@@ -1,13 +1,14 @@
 #include "native_hooks.hpp"
+
 #include "all_scripts.hpp"
-#include "carmod_shop.hpp"
-#include "freemode.hpp"
-#include "gta_util.hpp"
-#include "shop_controller.hpp"
-#include "network_session_host.hpp"
 #include "am_launcher.hpp"
+#include "carmod_shop.hpp"
 #include "creator.hpp"
 #include "crossmap.hpp"
+#include "freemode.hpp"
+#include "gta_util.hpp"
+#include "network_session_host.hpp"
+#include "shop_controller.hpp"
 
 #include <script/scrProgram.hpp>
 #include <script/scrProgramTable.hpp>
@@ -50,7 +51,7 @@ namespace big
 
 	void native_hook::hook_instance(rage::scrProgram* program, const std::unordered_map<rage::scrNativeHash, rage::scrNativeHandler>& native_replacements)
 	{
-		m_program = program;
+		m_program  = program;
 		m_vmt_hook = std::make_unique<vmt_hook>(m_program, 9);
 		m_vmt_hook->hook(6, &scrprogram_dtor);
 		m_vmt_hook->enable();
@@ -74,7 +75,8 @@ namespace big
 
 		for (int i = 0; i < m_program->m_native_count; i++)
 		{
-			if (auto it = handler_replacements.find((rage::scrNativeHandler)program->m_native_entrypoints[i]); it != handler_replacements.end())
+			if (auto it = handler_replacements.find((rage::scrNativeHandler)program->m_native_entrypoints[i]);
+			    it != handler_replacements.end())
 			{
 				m_handler_hook->hook(i, it->second);
 			}
@@ -109,7 +111,7 @@ namespace big
 		add_native_detour(0xADF692B254977C0C, all_scripts::SET_CURRENT_PED_WEAPON);
 		add_native_detour(0xFE99B66D079CF6BC, all_scripts::DISABLE_CONTROL_ACTION);
 		add_native_detour(0xEB354E5376BC81A7, all_scripts::HUD_FORCE_WEAPON_WHEEL);
-		add_native_detour(0x158C16F5E4CF41F8, all_scripts::NETWORK_CASINO_CAN_BET); //bypass casino country restrictions
+		add_native_detour(0x158C16F5E4CF41F8, all_scripts::NETWORK_CASINO_CAN_BET);//bypass casino country restrictions
 
 		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x06843DA7060A026B, carmod_shop::SET_ENTITY_COORDS);
 		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x8E2530AA8ADA980E, carmod_shop::SET_ENTITY_HEADING);
@@ -136,7 +138,7 @@ namespace big
 		add_native_detour(RAGE_JOAAT("fm_capture_creator"), 0x9F47B058362C84B5, creator::GET_ENTITY_MODEL);
 		add_native_detour(RAGE_JOAAT("fm_deathmatch_creator"), 0x9F47B058362C84B5, creator::GET_ENTITY_MODEL);
 		add_native_detour(RAGE_JOAAT("fm_lts_creator"), 0x9F47B058362C84B5, creator::GET_ENTITY_MODEL);
-		
+
 		// Infinite Model Memory
 		add_native_detour(RAGE_JOAAT("fm_race_creator"), 0x3D3D8B3BE5A83D35, creator::GET_USED_CREATOR_BUDGET);
 		add_native_detour(RAGE_JOAAT("fm_capture_creator"), 0x3D3D8B3BE5A83D35, creator::GET_USED_CREATOR_BUDGET);
@@ -170,7 +172,7 @@ namespace big
 			return;
 		}
 
-		m_native_registrations.emplace(script_hash, std::vector<native_detour>({ { hash, detour } }));
+		m_native_registrations.emplace(script_hash, std::vector<native_detour>({{hash, detour}}));
 	}
 
 	void native_hooks::hook_program(rage::scrProgram* program)
@@ -190,10 +192,7 @@ namespace big
 
 		if (!native_replacements.empty())
 		{
-			m_native_hooks.emplace(
-				program,
-				std::make_unique<native_hook>(program, native_replacements)
-			);
+			m_native_hooks.emplace(program, std::make_unique<native_hook>(program, native_replacements));
 		}
 	}
 }

@@ -17,7 +17,7 @@ namespace big
 	{
 	public:
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		/// <param name="cache_file">FileMgr file object</param>
 		/// <param name="cache_version">Internal version, use this to invalidate the cache when changing the structure of the data</param>

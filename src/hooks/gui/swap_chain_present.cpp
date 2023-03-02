@@ -14,7 +14,8 @@ namespace big
 			}
 
 			return g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_present)>(swapchain_present_index)(this_, sync_interval, flags);
-		} EXCEPT_CLAUSE
+		}
+		EXCEPT_CLAUSE
 
 		return NULL;
 	}

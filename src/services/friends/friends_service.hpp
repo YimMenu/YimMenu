@@ -7,10 +7,10 @@ namespace big
 	public:
 		friends_service();
 		~friends_service();
-		
-		friends_service(const friends_service&) = delete;
-		friends_service(friends_service&&) noexcept = delete;
-		friends_service& operator=(const friends_service&) = delete;
+
+		friends_service(const friends_service&)                = delete;
+		friends_service(friends_service&&) noexcept            = delete;
+		friends_service& operator=(const friends_service&)     = delete;
 		friends_service& operator=(friends_service&&) noexcept = delete;
 
 		[[nodiscard]] static bool is_friend(CNetGamePlayer* net_player);
