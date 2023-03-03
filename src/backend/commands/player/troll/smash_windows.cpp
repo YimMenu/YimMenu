@@ -15,7 +15,7 @@ namespace big
 			if (PED::IS_PED_IN_ANY_VEHICLE(ped, false))
 			{
 				entity::take_control_of(PED::GET_VEHICLE_PED_IS_USING(ped));
-				Vehicle UserVeh = PED::GET_VEHICLE_PED_IS_IN(ped, false);
+				Vehicle UserVeh     = PED::GET_VEHICLE_PED_IS_IN(ped, false);
 				static int windowID = 0;
 				for (windowID = 0; windowID < 10; windowID++)
 				{

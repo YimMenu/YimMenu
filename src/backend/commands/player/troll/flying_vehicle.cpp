@@ -17,11 +17,11 @@ namespace big
 				g_notification_service->push_warning("Toxic", "Target player is not in any vehicle.");
 			}
 			else
-            {
+			{
 				ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
 
 				if (entity::take_control_of(ent))
-                {
+				{
 					ENTITY::APPLY_FORCE_TO_ENTITY(ent, 1, 0.f, 0.f, 50000.f, 0.f, 0.f, 0.f, 0, 0, 1, 1, 0, 1);
 				}
 			}

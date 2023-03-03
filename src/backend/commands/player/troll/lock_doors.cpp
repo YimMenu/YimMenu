@@ -12,10 +12,18 @@ namespace big
 		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
 			int lockStatus = VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(player->id());
-			if (PED::IS_PED_IN_ANY_VEHICLE((player->id()), false))
+			Entity ent     = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
+			if (!PED::IS_PED_IN_ANY_VEHICLE(ent, true))
 			{
-				entity::take_control_of(PED::GET_VEHICLE_PED_IS_USING(player->id()));
-				VEHICLE::SET_VEHICLE_DOORS_LOCKED(PED::GET_VEHICLE_PED_IS_USING(player->id()), 4);
+				g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
+			}
+			else
+			{
+				if (entity::take_control_of(ent))
+				{
+					entity::take_control_of(PED::GET_VEHICLE_PED_IS_USING(player->id()));
+					VEHICLE::SET_VEHICLE_DOORS_LOCKED(PED::GET_VEHICLE_PED_IS_USING(player->id()), 4);
+				}
 			}
 		}
 	};

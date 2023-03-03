@@ -5,7 +5,7 @@
 
 namespace big
 {
-    class open_doors : player_command
+	class open_doors : player_command
 	{
 		using player_command::player_command;
 
@@ -21,9 +21,9 @@ namespace big
 				Vehicle vehicle = PED::GET_VEHICLE_PED_IS_USING(ped);
 
 				if (entity::take_control_of(vehicle))
-                {
+				{
 					for (int i = 0; i < 7; i++)
-                    {
+					{
 						VEHICLE::SET_VEHICLE_DOOR_OPEN(vehicle, i, true, false);
 					}
 				}

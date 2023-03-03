@@ -15,17 +15,18 @@ namespace big
 			{
 				g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
 			}
-			else {
+			else
+			{
 				Vehicle vehicle = PED::GET_VEHICLE_PED_IS_USING(ped);
 
 				if (entity::take_control_of(vehicle))
 				{
-				    VEHICLE::SET_VEHICLE_DOORS_SHUT(vehicle, false);
+					VEHICLE::SET_VEHICLE_DOORS_SHUT(vehicle, false);
 				}
-				else 
+				else
 				{
 					g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
-				}	
+				}
 			}
 		}
 	};
