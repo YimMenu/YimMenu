@@ -2,7 +2,7 @@
 
 namespace rage
 {
-	template <typename T>
+	template<typename T>
 	class atArray;
 
 	class datBitBuffer;

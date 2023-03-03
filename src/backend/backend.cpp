@@ -1,10 +1,11 @@
 #include "backend.hpp"
-#include "script.hpp"
-#include "thread_pool.hpp"
+
 #include "looped/looped.hpp"
-#include "services/context_menu/context_menu_service.hpp"
-#include "script_patches.hpp"
 #include "looped_command.hpp"
+#include "script.hpp"
+#include "script_patches.hpp"
+#include "services/context_menu/context_menu_service.hpp"
+#include "thread_pool.hpp"
 
 namespace big
 {
@@ -15,7 +16,7 @@ namespace big
 
 		register_script_patches();
 
-		while (g_running) 
+		while (g_running)
 		{
 			looped::system_self_globals();
 			looped::system_update_pointers();
@@ -169,7 +170,6 @@ namespace big
 
 		while (g_running)
 		{
-
 			looped::custom_gun_disable_control_action();
 			context_menu_service::disable_control_action_loop();
 
@@ -183,7 +183,6 @@ namespace big
 
 		while (g_running)
 		{
-
 			looped::world_spawn_ped();
 			script::get_current()->yield();
 		}

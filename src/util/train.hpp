@@ -1,17 +1,17 @@
 #pragma once
-#include "gta/enums.hpp"
-#include "services/players/player_service.hpp"
-#include "script_global.hpp"
-#include "pointers.hpp"
-#include "natives.hpp"
 #include "entity.hpp"
+#include "gta/enums.hpp"
+#include "natives.hpp"
+#include "pointers.hpp"
+#include "script_global.hpp"
+#include "services/players/player_service.hpp"
 
 namespace big::train
 {
 	inline auto get_all_vehicles()
 	{
 		std::vector<Vehicle> result;
-		rage::CReplayInterface* CReplayInterface_var = *g_pointers->m_replay_interface; 
+		rage::CReplayInterface* CReplayInterface_var = *g_pointers->m_replay_interface;
 		for (int i = 0; i < 300; i++)
 		{
 			auto vehicle_ptr = CReplayInterface_var->m_vehicle_interface->get_vehicle(i);
@@ -22,7 +22,7 @@ namespace big::train
 				result.push_back(vehicle_handle);
 			}
 		}
-			return result;
+		return result;
 	};
 
 	inline int get_closest_train()

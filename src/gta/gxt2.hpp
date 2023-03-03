@@ -8,7 +8,7 @@ struct GXT2_metadata
 #pragma pack(push, 1)
 struct GXT2_key
 {
-	rage::joaat_t key_hash = -1;
+	rage::joaat_t key_hash       = -1;
 	uint32_t file_offset_to_text = -1;
 };
 static_assert(sizeof(GXT2_key) == 8);

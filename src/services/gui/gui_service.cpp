@@ -14,7 +14,7 @@ namespace big
 
 	navigation_struct* gui_service::get_selected()
 	{
-		static navigation_struct tab_none = { "", nullptr };
+		static navigation_struct tab_none = {"", nullptr};
 		if (current_tab.empty() || current_tab.at(0) == tabs::NONE)
 			return &tab_none;
 
@@ -23,7 +23,8 @@ namespace big
 		{
 			for (const tabs& t : current_tab)
 			{
-				if (t == current_tab.at(0)) continue;
+				if (t == current_tab.at(0))
+					continue;
 				current_nav = &current_nav->sub_nav.at(t);
 			}
 		}
@@ -43,7 +44,8 @@ namespace big
 
 	void gui_service::set_selected(tabs tab)
 	{
-		if (current_tab.empty()) return current_tab.push_back(tab);
+		if (current_tab.empty())
+			return current_tab.push_back(tab);
 		if (auto it = get_selected()->sub_nav.find(tab); it != get_selected()->sub_nav.end())
 			current_tab.push_back(tab);
 		else

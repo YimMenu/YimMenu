@@ -6,7 +6,7 @@ namespace big
 	{
 		ImGui::Text("VIEW_PLAYER_PLAYER_OPTIONS"_T.data(), g_player_service->get_selected()->get_name());
 		ImGui::Checkbox("SPECTATE"_T.data(), &g.player.spectating);
-		
+
 		if (g_player_service->get_selected()->is_valid())
 		{
 			view::player_info();

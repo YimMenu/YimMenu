@@ -1,6 +1,6 @@
 #include "backend/looped/looped.hpp"
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -13,7 +13,7 @@ namespace big
 			WATER::RESET_DEEP_OCEAN_SCALER();
 
 			Vector3 coords = self::pos;
-			float offset[] = { -4, 4 };
+			float offset[] = {-4, 4};
 
 			for (int i = 0; i < 5; i++)
 			{

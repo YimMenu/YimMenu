@@ -11,9 +11,8 @@ namespace big
 	class file_manager final
 	{
 	public:
-
-		file_manager(std::filesystem::path base_dir)
-			: m_base_dir(base_dir)
+		file_manager(std::filesystem::path base_dir) :
+		    m_base_dir(base_dir)
 		{
 			file_manager::ensure_folder_exists(m_base_dir);
 

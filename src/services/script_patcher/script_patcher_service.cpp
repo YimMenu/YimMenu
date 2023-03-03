@@ -1,7 +1,9 @@
-#include <script/scrProgram.hpp>
 #include "script_patcher_service.hpp"
-#include "script_patch.hpp"
+
 #include "script_data.hpp"
+#include "script_patch.hpp"
+
+#include <script/scrProgram.hpp>
 
 namespace big
 {
@@ -43,7 +45,7 @@ namespace big
 
 	void script_patcher_service::create_data_for_script(rage::scrProgram* program)
 	{
-		auto pages = new std::uint8_t *[program->get_num_code_pages()];
+		auto pages = new std::uint8_t*[program->get_num_code_pages()];
 
 		for (auto i = 0u; i < program->get_num_code_pages(); i++)
 		{

@@ -6,7 +6,7 @@
 
 namespace big
 {
-	static std::vector<Entity> ents = { };
+	static std::vector<Entity> ents = {};
 	static Vector3 location;
 	static Vector3 other;
 	static float dist;
@@ -24,16 +24,16 @@ namespace big
 				dist += 5;
 
 			if (!entity::take_control_of(e))
-				return; // TODO: remove from vector
+				return;// TODO: remove from vector
 
 			ENTITY::SET_ENTITY_COLLISION(e, false, false);
 
 			other = ENTITY::GET_ENTITY_COORDS(e, true);
 
 			Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
-			float pitch = math::deg_to_rad(rot.x); // vertical
+			float pitch = math::deg_to_rad(rot.x);// vertical
 			// float roll = rot.y;
-			float yaw = math::deg_to_rad(rot.z + 90); // horizontal
+			float yaw = math::deg_to_rad(rot.z + 90);// horizontal
 
 			Vector3 velocity;
 
@@ -69,7 +69,7 @@ namespace big
 					}
 					else
 					{
-						other = ENTITY::GET_ENTITY_COORDS(ent_to_add, true);
+						other               = ENTITY::GET_ENTITY_COORDS(ent_to_add, true);
 						const int temp_dist = (float)math::distance_between_vectors(location, other);
 
 						if (ents.size() == 0)
@@ -89,7 +89,7 @@ namespace big
 
 								g_notification_service->push_warning("Weapons", "Selected entity at crosshair.");
 							}
-							
+
 							ents.push_back(ent_to_add);
 						}
 					}
@@ -97,7 +97,7 @@ namespace big
 			}
 			if (ents.size() > 0)
 			{
-				for (const auto& e: ents) 
+				for (const auto& e : ents)
 				{
 					apply_velocity(e);
 				}
@@ -105,7 +105,7 @@ namespace big
 		}
 		else if (ents.size() > 0)
 		{
-			for (const Entity& e: ents)
+			for (const Entity& e : ents)
 			{
 				if (entity::take_control_of(e))
 				{

@@ -1,7 +1,7 @@
 #include "backend/player_command.hpp"
+#include "gta/net_object_mgr.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "gta/net_object_mgr.hpp"
 
 namespace big
 {
@@ -21,11 +21,8 @@ namespace big
 			if (!vehicle || !vehicle->m_net_object)
 			{
 				// vehicle hasn't synced yet, use TSE
-				const size_t arg_count = 9;
-				int64_t args[arg_count] = {
-					(int64_t)eRemoteEvent::VehicleKick,
-					self::id, 0, 0, 0, 0, 0, 0, 0
-				};
+				const size_t arg_count  = 9;
+				int64_t args[arg_count] = {(int64_t)eRemoteEvent::VehicleKick, self::id, 0, 0, 0, 0, 0, 0, 0};
 
 				g_pointers->m_trigger_script_event(1, args, arg_count, 1 << player->id());
 			}

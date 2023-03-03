@@ -1,7 +1,7 @@
-#include "view.hpp"
 #include "gui.hpp"
 #include "pointers.hpp"
 #include "services/gta_data/gta_data_service.hpp"
+#include "view.hpp"
 
 namespace big
 {
@@ -16,8 +16,8 @@ namespace big
 			ImGui::OpenPopup("GAME_CACHE"_T.data());
 		}
 
-		ImGui::SetNextWindowSize({ 800, 210 }, ImGuiCond_FirstUseEver);
-		ImGui::SetNextWindowPos({ 200, 200 }, ImGuiCond_FirstUseEver);
+		ImGui::SetNextWindowSize({800, 210}, ImGuiCond_FirstUseEver);
+		ImGui::SetNextWindowPos({200, 200}, ImGuiCond_FirstUseEver);
 		if (ImGui::BeginPopupModal("GAME_CACHE"_T.data()))
 		{
 			switch (g_gta_data_service->state())

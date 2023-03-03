@@ -3,14 +3,15 @@
 
 namespace big
 {
-	enum class eProfanity {
+	enum class eProfanity
+	{
 		PROFANITY_CHAT_CLEAN = -1,
 		PROFANITY_CLEAN,
 		PROFANITY_DIRTY,
 		PROFANITY_UNK,
 		PROFANITY_ERROR
 	};
-	
+
 	int hooks::check_chat_profanity(__int64 chat_type, const char* input, const char** output)
 	{
 		if (g.session.chat_force_clean)

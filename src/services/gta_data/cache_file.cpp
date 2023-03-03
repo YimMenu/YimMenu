@@ -3,12 +3,11 @@
 namespace big
 {
 	cache_file::cache_file(file cache_file, std::uint32_t cache_version) :
-		m_cache_file(cache_file),
-		m_data(nullptr),
-		m_cache_version(cache_version),
-		m_cache_header()
+	    m_cache_file(cache_file),
+	    m_data(nullptr),
+	    m_cache_version(cache_version),
+	    m_cache_header()
 	{
-
 	}
 
 	void cache_file::free()
@@ -39,7 +38,7 @@ namespace big
 		if (!m_data)
 			return false;
 
-	 	auto file = std::ofstream(m_cache_file.get_path(), std::ios::binary);
+		auto file = std::ofstream(m_cache_file.get_path(), std::ios::binary);
 
 		file.write(reinterpret_cast<const char*>(&m_cache_header), sizeof(m_cache_header));
 		file.write(reinterpret_cast<const char*>(m_data.get()), m_cache_header.m_data_size);
@@ -63,10 +62,8 @@ namespace big
 		if (!m_data)
 			return false;
 
-		return
-			m_cache_version	== m_cache_header.m_cache_version &&
-			game_version == m_cache_header.m_game_version &&
-			online_version == m_cache_header.m_online_version;
+		return m_cache_version == m_cache_header.m_cache_version && game_version == m_cache_header.m_game_version
+		    && online_version == m_cache_header.m_online_version;
 	}
 
 	void cache_file::set_data(cache_data&& data, std::uint64_t data_size)
@@ -77,8 +74,8 @@ namespace big
 
 	void cache_file::set_header_version(std::uint32_t game_version, float online_version)
 	{
-		m_cache_header.m_cache_version = m_cache_version;
-		m_cache_header.m_game_version = game_version;
+		m_cache_header.m_cache_version  = m_cache_version;
+		m_cache_header.m_game_version   = game_version;
 		m_cache_header.m_online_version = online_version;
 	}
 }

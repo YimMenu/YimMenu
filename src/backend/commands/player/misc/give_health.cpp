@@ -1,8 +1,8 @@
 #include "backend/player_command.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "util/globals.hpp"
 #include "services/pickups/pickup_service.hpp"
+#include "util/globals.hpp"
 
 namespace big
 {

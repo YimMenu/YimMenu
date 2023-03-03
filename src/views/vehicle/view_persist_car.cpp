@@ -1,10 +1,10 @@
+#include "core/data/speed_units.hpp"
 #include "fiber_pool.hpp"
 #include "script.hpp"
+#include "services/vehicle/persist_car_service.hpp"
+#include "util/mobile.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
-#include "util/mobile.hpp"
-#include "core/data/speed_units.hpp"
-#include "services/vehicle/persist_car_service.hpp"
 
 namespace big
 {
@@ -64,20 +64,15 @@ namespace big
 		static char vehicle_file_name_input[50]{};
 
 		ImGui::PushItemWidth(250);
-		components::input_text_with_hint(
-			"VEHICLE_FILE_NAME"_T,
-			"VEHICLE_FILE_NAME_EXAMPLE"_T,
-			vehicle_file_name_input, IM_ARRAYSIZE(vehicle_file_name_input));
+		components::input_text_with_hint("VEHICLE_FILE_NAME"_T, "VEHICLE_FILE_NAME_EXAMPLE"_T, vehicle_file_name_input, IM_ARRAYSIZE(vehicle_file_name_input));
 
 		ImGui::SameLine();
 
-		components::button("SAVE_VEHICLE"_T, []
-		{
+		components::button("SAVE_VEHICLE"_T, [] {
 			save_vehicle(vehicle_file_name_input);
 		});
 
-		components::button("LOAD_VEHICLE"_T, []
-		{
+		components::button("LOAD_VEHICLE"_T, [] {
 			load_vehicle(selected_vehicle_file);
 		});
 

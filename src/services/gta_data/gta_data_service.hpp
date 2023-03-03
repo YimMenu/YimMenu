@@ -15,10 +15,10 @@ namespace big
 		UPDATING
 	};
 
-	using ped_map = std::map<std::string, ped_item>;
+	using ped_map     = std::map<std::string, ped_item>;
 	using vehicle_map = std::map<std::string, vehicle_item>;
-	using weapon_map = std::map<std::string, weapon_item>;
-	using string_vec = std::vector<std::string>;
+	using weapon_map  = std::map<std::string, weapon_item>;
+	using string_vec  = std::vector<std::string>;
 
 	class gta_data_service final
 	{
@@ -40,15 +40,21 @@ namespace big
 		string_vec& weapon_types();
 
 		ped_map& peds()
-		{ return m_peds; }
+		{
+			return m_peds;
+		}
 		vehicle_map& vehicles()
-		{ return m_vehicles; }
+		{
+			return m_vehicles;
+		}
 		weapon_map& weapons()
-		{ return m_weapons; }
+		{
+			return m_weapons;
+		}
 
 	private:
 		bool is_cache_up_to_date();
-		
+
 		void load_data();
 		void load_peds();
 		void load_vehicles();
@@ -73,10 +79,9 @@ namespace big
 		eGtaDataUpdateState m_update_state;
 
 	private:
-		static constexpr ped_item empty_ped {};
-		static constexpr vehicle_item empty_vehicle {};
-		static constexpr weapon_item empty_weapon {};
-
+		static constexpr ped_item empty_ped{};
+		static constexpr vehicle_item empty_vehicle{};
+		static constexpr weapon_item empty_weapon{};
 	};
 
 	inline gta_data_service* g_gta_data_service{};

@@ -1,9 +1,10 @@
 #include "backend/looped/looped.hpp"
 #include "fiber_pool.hpp"
+#include "gta_util.hpp"
 #include "natives.hpp"
 #include "script.hpp"
 #include "services/players/player_service.hpp"
-#include "gta_util.hpp"
+
 #include <network/Network.hpp>
 
 namespace big
@@ -17,12 +18,14 @@ namespace big
 			return;
 
 		memset(&gta_util::get_network()->m_game_complaint_mgr.m_host_tokens_complained, 0, 64 * sizeof(std::uint64_t));
-		if (!g_player_service->m_player_to_use_complaint_kick || !g_player_service->m_player_to_use_complaint_kick->get()->get_net_data())
+		if (!g_player_service->m_player_to_use_complaint_kick
+		    || !g_player_service->m_player_to_use_complaint_kick->get()->get_net_data())
 			gta_util::get_network()->m_game_complaint_mgr.m_num_tokens_complained = 0;
 		else
 		{
 			gta_util::get_network()->m_game_complaint_mgr.m_num_tokens_complained = 1;
-			gta_util::get_network()->m_game_complaint_mgr.m_host_tokens_complained[0] = g_player_service->m_player_to_use_complaint_kick->get()->get_net_data()->m_host_token;
+			gta_util::get_network()->m_game_complaint_mgr.m_host_tokens_complained[0] =
+			    g_player_service->m_player_to_use_complaint_kick->get()->get_net_data()->m_host_token;
 		}
 
 		auto old = gta_util::get_network()->m_game_complaint_mgr.m_host_token;
@@ -40,7 +43,8 @@ namespace big
 
 			if (g_player_service->get_self() && g_player_service->get_self()->get_net_data())
 			{
-				gta_util::get_network()->m_game_complaint_mgr.m_host_token = g_player_service->get_self()->get_net_data()->m_host_token;
+				gta_util::get_network()->m_game_complaint_mgr.m_host_token =
+				    g_player_service->get_self()->get_net_data()->m_host_token;
 				g_pointers->m_reset_network_complaints(&gta_util::get_network()->m_game_complaint_mgr);
 			}
 		}

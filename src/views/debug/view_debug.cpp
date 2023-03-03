@@ -1,5 +1,6 @@
-#include "services/gui/gui_service.hpp"
 #include "view_debug.hpp"
+
+#include "services/gui/gui_service.hpp"
 
 namespace big
 {

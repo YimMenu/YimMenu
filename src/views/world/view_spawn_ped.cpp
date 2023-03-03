@@ -1,13 +1,13 @@
+#include "backend/looped/looped.hpp"
 #include "fiber_pool.hpp"
-#include "script.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "views/view.hpp"
-#include "util/ped.hpp"
+#include "script.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "services/model_preview/model_preview_service.hpp"
 #include "services/players/player_service.hpp"
-#include "backend/looped/looped.hpp"
+#include "util/ped.hpp"
+#include "views/view.hpp"
 
 #include <imgui_internal.h>
 
@@ -18,14 +18,12 @@
 #define SPAWN_PED_FOR_SELF -1
 #define SPAWN_PED_FOR_EVERYONE -2
 
-static int selected_ped_weapon_type = SPAWN_PED_ALL_WEAPONS;
+static int selected_ped_weapon_type  = SPAWN_PED_ALL_WEAPONS;
 static Hash selected_ped_weapon_hash = 0;
 
 namespace big
 {
-	void spawn_ped_give_weapon(
-		const Ped ped
-	)
+	void spawn_ped_give_weapon(const Ped ped)
 	{
 		if (selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS)
 		{
@@ -35,16 +33,9 @@ namespace big
 		const auto& weapon_type_arr = g_gta_data_service->weapon_types();
 		for (auto& [_, weapon] : g_gta_data_service->weapons())
 		{
-			if (
-				selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ||
-				weapon.m_weapon_type == weapon_type_arr[selected_ped_weapon_type]
-				)
+			if (selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS || weapon.m_weapon_type == weapon_type_arr[selected_ped_weapon_type])
 			{
-				if (
-					(selected_ped_weapon_hash == 0 ||
-						weapon.m_hash == selected_ped_weapon_hash)
-					&& weapon.m_hash != RAGE_JOAAT("WEAPON_UNARMED")
-					)
+				if ((selected_ped_weapon_hash == 0 || weapon.m_hash == selected_ped_weapon_hash) && weapon.m_hash != RAGE_JOAAT("WEAPON_UNARMED"))
 				{
 					WEAPON::GIVE_WEAPON_TO_PED(ped, weapon.m_hash, 9999, false, selected_ped_weapon_hash != 0);
 				}
@@ -52,13 +43,8 @@ namespace big
 		}
 	}
 
-	Ped spawn_ped_at_location(
-		const int selected_ped_type,
-		const char* ped_model_buf,
-		const Player selected_ped_player_id,
-		const Player selected_ped_for_player_id,
-		const bool is_bodyguard
-	) {
+	Ped spawn_ped_at_location(const int selected_ped_type, const char* ped_model_buf, const Player selected_ped_player_id, const Player selected_ped_for_player_id, const bool is_bodyguard)
+	{
 		Hash hash = 0;
 		Ped clone = 0;
 		Vector3 location;
@@ -70,7 +56,7 @@ namespace big
 			if (selected_ped_player_id == -1)
 			{
 				clone = self::ped;
-				hash = ENTITY::GET_ENTITY_MODEL(clone);
+				hash  = ENTITY::GET_ENTITY_MODEL(clone);
 			}
 			else
 			{
@@ -82,7 +68,7 @@ namespace big
 				}
 
 				clone = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
-				hash = ENTITY::GET_ENTITY_MODEL(clone);
+				hash  = ENTITY::GET_ENTITY_MODEL(clone);
 			}
 		}
 		else
@@ -93,8 +79,8 @@ namespace big
 
 		if (selected_ped_for_player_id == SPAWN_PED_FOR_SELF)
 		{
-			location = self::pos;
-			player = self::id;
+			location   = self::pos;
+			player     = self::id;
 			player_ped = self::ped;
 		}
 		else
@@ -111,7 +97,7 @@ namespace big
 			location.x = player_pos.x;
 			location.y = player_pos.y;
 			location.z = player_pos.z;
-			player = plyr->id();
+			player     = plyr->id();
 			player_ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player);
 		}
 
@@ -194,25 +180,28 @@ namespace big
 		}
 
 		spawn_ped_give_weapon(ped);
-		spawned_peds.push_back({ ped, selected_ped_for_player_id == SPAWN_PED_FOR_SELF ? self::id : selected_ped_for_player_id, is_bodyguard, g.world.spawn_ped.spawn_as_attacker });
+		spawned_peds.push_back({ped,
+		    selected_ped_for_player_id == SPAWN_PED_FOR_SELF ? self::id : selected_ped_for_player_id,
+		    is_bodyguard,
+		    g.world.spawn_ped.spawn_as_attacker});
 		return ped;
 	}
 
 	void view::spawn_ped()
 	{
-		static int selected_ped_type = -2;
+		static int selected_ped_type        = -2;
 		static bool ped_model_dropdown_open = false;
 		static char ped_model_buf[64];
 		static Player selected_ped_player_id = -1;
 
 		auto& ped_type_arr = g_gta_data_service->ped_types();
-		auto& ped_arr = g_gta_data_service->peds();
+		auto& ped_arr      = g_gta_data_service->peds();
 
 		auto& weapon_type_arr = g_gta_data_service->weapon_types();
-		auto& weapon_arr = g_gta_data_service->weapons();
+		auto& weapon_arr      = g_gta_data_service->weapons();
 
 		static Player selected_ped_for_player_id = -1;
-		auto& player_arr = g_player_service->players();
+		auto& player_arr                         = g_player_service->players();
 
 		if (!*g_pointers->m_is_session_started)
 		{
@@ -228,7 +217,8 @@ namespace big
 				selected_ped_player_id = -1;
 			}
 
-			if (selected_ped_for_player_id != SPAWN_PED_FOR_SELF && selected_ped_for_player_id != SPAWN_PED_FOR_EVERYONE && g_player_service->get_by_id(selected_ped_for_player_id) == nullptr)
+			if (selected_ped_for_player_id != SPAWN_PED_FOR_SELF && selected_ped_for_player_id != SPAWN_PED_FOR_EVERYONE
+			    && g_player_service->get_by_id(selected_ped_for_player_id) == nullptr)
 			{
 				selected_ped_for_player_id = SPAWN_PED_FOR_SELF;
 			}
@@ -241,13 +231,11 @@ namespace big
 				ImGui::Text("PED_TYPE"_T.data());
 
 				ImGui::SetNextItemWidth(160.f);
-				if (ImGui::BeginCombo(
-					"##ped_type",
-					selected_ped_type == -1 ? "ALL"_T.data() :
-					selected_ped_type == -2 ? "ONLINE_PLAYER"_T.data() :
-					ped_type_arr[selected_ped_type].c_str()
-				)) {
-
+				if (ImGui::BeginCombo("##ped_type",
+				        selected_ped_type == -1     ? "ALL"_T.data() :
+				            selected_ped_type == -2 ? "ONLINE_PLAYER"_T.data() :
+				                                      ped_type_arr[selected_ped_type].c_str()))
+				{
 					if (ImGui::Selectable("ONLINE_PLAYER"_T.data(), selected_ped_type == -2))
 					{
 						selected_ped_type = -2;
@@ -263,7 +251,7 @@ namespace big
 						if (ImGui::Selectable(ped_type_arr[i].c_str(), selected_ped_type == i))
 						{
 							selected_ped_type = i;
-							ped_model_buf[0] = 0;
+							ped_model_buf[0]  = 0;
 						}
 
 						if (selected_ped_type == i)
@@ -286,12 +274,10 @@ namespace big
 					ImGui::Text("PLAYER"_T.data());
 
 					ImGui::SetNextItemWidth(240.f);
-					if (ImGui::BeginCombo(
-						"##ped_player",
-						selected_ped_player_id == -1 ?
-						"SELF"_T.data() :
-						g_player_service->get_by_id(selected_ped_player_id)->get_name()
-					)) {
+					if (ImGui::BeginCombo("##ped_player",
+					        selected_ped_player_id == -1 ? "SELF"_T.data() :
+					                                       g_player_service->get_by_id(selected_ped_player_id)->get_name()))
+					{
 						if (ImGui::Selectable("SELF"_T.data(), selected_ped_player_id == -1))
 						{
 							selected_ped_player_id = -1;
@@ -304,10 +290,10 @@ namespace big
 						else if (ImGui::IsItemHovered())
 						{
 							g_fiber_pool->queue_job([] {
-								Ped ped = self::ped;
+								Ped ped   = self::ped;
 								Hash hash = ENTITY::GET_ENTITY_MODEL(ped);
 								g_model_preview_service->show_ped(hash, ped);
-								});
+							});
 						}
 
 						if (selected_ped_player_id == -1)
@@ -319,7 +305,7 @@ namespace big
 						{
 							for (auto& item : player_arr)
 							{
-								auto plyr = item.second;
+								auto plyr    = item.second;
 								auto plyr_id = plyr->id();
 
 								ImGui::PushID(plyr_id);
@@ -335,16 +321,14 @@ namespace big
 								else if (ImGui::IsItemHovered())
 								{
 									g_fiber_pool->queue_job([plyr_id] {
-
 										auto plyr = g_player_service->get_by_id(plyr_id);
 										if (plyr)
 										{
-											Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
+											Ped ped   = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
 											Hash hash = ENTITY::GET_ENTITY_MODEL(ped);
 											g_model_preview_service->show_ped(hash, ped);
 										}
-										});
-
+									});
 								}
 								ImGui::PopID();
 
@@ -367,13 +351,9 @@ namespace big
 					ImGui::Text("MODEL_NAME"_T.data());
 
 					ImGui::SetNextItemWidth(240.f);
-					components::input_text_with_hint(
-						"##ped_model_name", "MODEL_NAME"_T,
-						ped_model_buf, sizeof(ped_model_buf), ImGuiInputTextFlags_EnterReturnsTrue,
-						[] {
-							ped_model_dropdown_open = false;
-						}
-					);
+					components::input_text_with_hint("##ped_model_name", "MODEL_NAME"_T, ped_model_buf, sizeof(ped_model_buf), ImGuiInputTextFlags_EnterReturnsTrue, [] {
+						ped_model_dropdown_open = false;
+					});
 				}
 				ImGui::EndGroup();
 
@@ -388,14 +368,14 @@ namespace big
 
 					if (ped_model_dropdown_open)
 					{
-						bool is_open = true;
+						bool is_open      = true;
 						bool item_hovered = false;
 
 						std::string lower_search = ped_model_buf;
 						std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
 
-						ImGui::SetNextWindowPos({ ImGui::GetItemRectMin().x, ImGui::GetItemRectMax().y });
-						ImGui::SetNextWindowSize({ 300, 300 });
+						ImGui::SetNextWindowPos({ImGui::GetItemRectMin().x, ImGui::GetItemRectMax().y});
+						ImGui::SetNextWindowSize({300, 300});
 						if (ImGui::Begin("##player_model_popup", &is_open, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_Tooltip))
 						{
 							ImGui::BringWindowToDisplayFront(ImGui::GetCurrentWindow());
@@ -404,16 +384,12 @@ namespace big
 							for (const auto& [_, item] : ped_arr)
 							{
 								std::string ped_type = item.m_ped_type;
-								std::string name = item.m_name;
+								std::string name     = item.m_name;
 
 								std::transform(name.begin(), name.end(), name.begin(), tolower);
 
-								if ((
-									selected_ped_type == -1 || ped_type_arr[selected_ped_type] == ped_type
-								) && (
-									name.find(lower_search) != std::string::npos
-								)) {
-
+								if ((selected_ped_type == -1 || ped_type_arr[selected_ped_type] == ped_type) && (name.find(lower_search) != std::string::npos))
+								{
 									bool selectable_highlighted = lower_search == name;
 									bool selectable_clicked = ImGui::Selectable(item.m_name, selectable_highlighted);
 									ped_model_dropdown_focused |= ImGui::IsItemFocused();
@@ -421,7 +397,7 @@ namespace big
 									if (selectable_clicked)
 									{
 										strncpy(ped_model_buf, item.m_name, 64);
-										ped_model_dropdown_open = false;
+										ped_model_dropdown_open    = false;
 										ped_model_dropdown_focused = false;
 									}
 
@@ -460,14 +436,11 @@ namespace big
 				ImGui::Text("WEAPON_TYPE"_T.data());
 
 				ImGui::SetNextItemWidth(160.f);
-				if (ImGui::BeginCombo(
-					"##ped_weapon_type",
-					selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ?
-					"ALL"_T.data() :
-					selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS ?
-					"NO_WEAPONS"_T.data() :
-					weapon_type_arr[selected_ped_weapon_type].c_str()
-				)) {
+				if (ImGui::BeginCombo("##ped_weapon_type",
+				        selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS    ? "ALL"_T.data() :
+				            selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS ? "NO_WEAPONS"_T.data() :
+				                                                               weapon_type_arr[selected_ped_weapon_type].c_str()))
+				{
 					if (ImGui::Selectable("ALL"_T.data(), selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS))
 					{
 						selected_ped_weapon_type = SPAWN_PED_ALL_WEAPONS;
@@ -514,14 +487,11 @@ namespace big
 				ImGui::Text("WEAPON"_T.data());
 
 				ImGui::SetNextItemWidth(240.f);
-				if (ImGui::BeginCombo(
-					"##ped_weapon",
-					selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS ?
-					"NO_WEAPONS"_T.data() :
-					selected_ped_weapon_hash == 0 ?
-					"ALL"_T.data() :
-					g_gta_data_service->weapon_by_hash(selected_ped_weapon_hash).m_display_name
-				)) {
+				if (ImGui::BeginCombo("##ped_weapon",
+				        selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS ? "NO_WEAPONS"_T.data() :
+				            selected_ped_weapon_hash == 0                ? "ALL"_T.data() :
+				                                            g_gta_data_service->weapon_by_hash(selected_ped_weapon_hash).m_display_name))
+				{
 					if (selected_ped_weapon_type != SPAWN_PED_NO_WEAPONS)
 					{
 						if (ImGui::Selectable("ALL"_T.data(), selected_ped_weapon_hash == 0))
@@ -536,10 +506,8 @@ namespace big
 
 						for (const auto& [_, weapon] : weapon_arr)
 						{
-							if (
-								selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS ||
-								weapon.m_weapon_type == weapon_type_arr[selected_ped_weapon_type]
-							) {
+							if (selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS || weapon.m_weapon_type == weapon_type_arr[selected_ped_weapon_type])
+							{
 								if (ImGui::Selectable(weapon.m_display_name, weapon.m_hash == selected_ped_weapon_hash))
 								{
 									selected_ped_weapon_hash = weapon.m_hash;
@@ -557,21 +525,18 @@ namespace big
 				}
 			}
 			ImGui::EndGroup();
-
 		}
 		ImGui::Separator();
 
 
 		components::sub_title("SPAWN_FOR"_T);
 		{
-			if (ImGui::BeginCombo(
-				"##ped_for",
-				(selected_ped_for_player_id == SPAWN_PED_FOR_SELF ?
-				"Self" :
-				(selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE ?
-				"Everyone" :
-				g_player_service->get_by_id(selected_ped_for_player_id)->get_name()))
-			)) 
+			if (ImGui::BeginCombo("##ped_for",
+			        (selected_ped_for_player_id == SPAWN_PED_FOR_SELF ?
+			                "Self" :
+			                (selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE ?
+			                        "Everyone" :
+			                        g_player_service->get_by_id(selected_ped_for_player_id)->get_name()))))
 			{
 				if (ImGui::Selectable("Self", selected_ped_for_player_id == SPAWN_PED_FOR_SELF))
 				{
@@ -631,8 +596,7 @@ namespace big
 		ImGui::Checkbox("Invisible", &g.world.spawn_ped.spawn_invisible);
 		ImGui::Checkbox("Attacker", &g.world.spawn_ped.spawn_as_attacker);
 
-		components::button("CHANGE_PLAYER_MODEL"_T, [] 
-		{
+		components::button("CHANGE_PLAYER_MODEL"_T, [] {
 			if (selected_ped_type == -2)
 			{
 				if (selected_ped_player_id != -1)
@@ -660,12 +624,10 @@ namespace big
 		ImGui::SameLine();
 
 
-		components::button("SPAWN_PED"_T, [] 
-		{
+		components::button("SPAWN_PED"_T, [] {
 			if (selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE)
 			{
-				g_player_service->iterate([](const big::player_entry& entry)
-				{
+				g_player_service->iterate([](const big::player_entry& entry) {
 					spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, entry.second->id(), false);
 				});
 			}
@@ -677,12 +639,10 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::button("SPAWN_BODYGUARD"_T, [] 
-		{
+		components::button("SPAWN_BODYGUARD"_T, [] {
 			if (selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE)
 			{
-				g_player_service->iterate([](const big::player_entry& entry)
-				{
+				g_player_service->iterate([](const big::player_entry& entry) {
 					spawn_ped_at_location(selected_ped_type, ped_model_buf, selected_ped_player_id, entry.second->id(), true);
 				});
 			}
@@ -692,8 +652,12 @@ namespace big
 			}
 		});
 
-		components::button("Cleanup Spawned Peds", []
-		{
+		components::button("Spoof As Model", [] {
+			g.spoofing.spoof_player_model = true;
+			g.spoofing.player_model       = ped_model_buf;
+		});
+
+		components::button("Cleanup Spawned Peds", [] {
 			for (auto& ped : spawned_peds)
 			{
 				PED::DELETE_PED(&ped.ped_handle);

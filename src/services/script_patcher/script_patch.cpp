@@ -1,24 +1,25 @@
 #include "script_patch.hpp"
+
 #include "script_data.hpp"
 
 namespace big
 {
 	script_patch::script_patch(rage::joaat_t script, const memory::pattern pattern, int32_t offset, std::vector<std::uint8_t> patch, bool* enable_bool) :
-		m_script(script),
-		m_pattern(pattern),
-		m_offset(offset),
-		m_patch(std::move(patch)),
-		m_bool(enable_bool),
-		m_ip(0)
+	    m_script(script),
+	    m_pattern(pattern),
+	    m_offset(offset),
+	    m_patch(std::move(patch)),
+	    m_bool(enable_bool),
+	    m_ip(0)
 	{
 	}
 
-    std::uint8_t* script_patch::get_code_address(script_data* data, std::uint32_t index)
+	std::uint8_t* script_patch::get_code_address(script_data* data, std::uint32_t index)
 	{
 		return &data->m_bytecode[index >> 14][index & 0x3FFF];
 	}
 
-    const std::optional<uint32_t> script_patch::get_code_location_by_pattern(script_data* data, const memory::pattern& pattern)
+	const std::optional<uint32_t> script_patch::get_code_location_by_pattern(script_data* data, const memory::pattern& pattern)
 	{
 		std::uint32_t code_size = data->m_code_size;
 		for (std::uint32_t i = 0; i < (code_size - pattern.m_bytes.size()); i++)
@@ -29,7 +30,7 @@ namespace big
 						goto incorrect;
 
 			return i;
-incorrect:
+		incorrect:
 			continue;
 		}
 

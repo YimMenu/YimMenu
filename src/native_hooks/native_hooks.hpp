@@ -33,9 +33,9 @@ namespace big
 		native_hooks();
 		~native_hooks();
 
-		native_hooks(const native_hooks&) = delete;
-		native_hooks(native_hooks&&) noexcept = delete;
-		native_hooks& operator=(const native_hooks&) = delete;
+		native_hooks(const native_hooks&)                = delete;
+		native_hooks(native_hooks&&) noexcept            = delete;
+		native_hooks& operator=(const native_hooks&)     = delete;
 		native_hooks& operator=(native_hooks&&) noexcept = delete;
 
 		/**

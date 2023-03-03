@@ -11,9 +11,7 @@ namespace big
 
 		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
-			ped::steal_outfit(
-				PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id())
-			);
+			ped::steal_outfit(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()));
 		}
 	};
 

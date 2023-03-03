@@ -1,5 +1,6 @@
 #include "hooking.hpp"
-#include <datanodes/player/CPlayerGamerDataNode.hpp>
+
+#include <netsync/nodes/player/CPlayerGamerDataNode.hpp>
 
 namespace big
 {
@@ -9,16 +10,16 @@ namespace big
 
 		if (g.spoofing.spoof_crew_data)
 		{
-			node->m_clan_data.m_clan_member_id = 1;
-			node->m_clan_data.m_clan_id = 41564112;
-			node->m_clan_data.m_clan_id_2 = 41564112;
-			node->m_clan_data.m_clan_color = 420;
+			node->m_clan_data.m_clan_member_id    = 1;
+			node->m_clan_data.m_clan_id           = 41564112;
+			node->m_clan_data.m_clan_id_2         = 41564112;
+			node->m_clan_data.m_clan_color        = 420;
 			node->m_clan_data.m_clan_member_count = 15;
 			node->m_clan_data.m_clan_created_time = 420;
 
 			strcpy(node->m_clan_data.m_clan_tag, g.spoofing.crew_tag.c_str());
 			node->m_clan_data.m_is_system_clan = g.spoofing.rockstar_crew;
-			node->m_clan_data.m_is_clan_open = g.spoofing.square_crew_tag;
+			node->m_clan_data.m_is_clan_open   = g.spoofing.square_crew_tag;
 
 			if (g.spoofing.rockstar_crew)
 			{

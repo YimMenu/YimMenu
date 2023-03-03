@@ -23,7 +23,7 @@ namespace big
 
 			if (event_arg_count != previous_arg_count)
 			{
-				int64_t* temp_args = new int64_t[event_arg_count]{ 0 };
+				int64_t* temp_args = new int64_t[event_arg_count]{0};
 				memcpy(temp_args, args, sizeof(int64_t) * std::min(event_arg_count, previous_arg_count));
 
 				delete[] args;
@@ -54,9 +54,8 @@ namespace big
 				ImGui::InputInt("###player_bits", &event_player_bits);
 			}
 
-			components::button("DEBUG_SCRIPT_EVENT_SEND_EVENT"_T, []
-			{
-				args[1] = self::id; // prevent detection from AC
+			components::button("DEBUG_SCRIPT_EVENT_SEND_EVENT"_T, [] {
+				args[1] = self::id;// prevent detection from AC
 				g_pointers->m_trigger_script_event(1, args, event_arg_count, event_everyone ? -1 : 1 << event_player_bits);
 			});
 

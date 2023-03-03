@@ -1,6 +1,6 @@
+#include "backend/looped_command.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
-#include "backend/looped_command.hpp"
 
 namespace big
 {
@@ -9,7 +9,7 @@ namespace big
 		using looped_command::looped_command;
 
 		CWeaponInfo* p_modified_weapon = nullptr;
-		float og_recoil_value = 0.0f;
+		float og_recoil_value          = 0.0f;
 
 		virtual void on_tick() override
 		{
@@ -26,7 +26,7 @@ namespace big
 					if (p_modified_weapon)
 						p_modified_weapon->m_explosion_shake_amplitude = og_recoil_value;
 
-					og_recoil_value = weapon_mgr->m_weapon_info->m_explosion_shake_amplitude;
+					og_recoil_value   = weapon_mgr->m_weapon_info->m_explosion_shake_amplitude;
 					p_modified_weapon = weapon_mgr->m_weapon_info;
 					weapon_mgr->m_weapon_info->m_explosion_shake_amplitude = 0.0f;
 				}
@@ -38,7 +38,7 @@ namespace big
 			if (g_local_player && p_modified_weapon)
 			{
 				p_modified_weapon->m_explosion_shake_amplitude = og_recoil_value;
-				p_modified_weapon = nullptr;
+				p_modified_weapon                              = nullptr;
 			}
 		}
 	};

@@ -1,10 +1,10 @@
+#include "fiber_pool.hpp"
+#include "fonts/fonts.hpp"
+#include "natives.hpp"
 #include "pointers.hpp"
 #include "services/gui/gui_service.hpp"
 #include "services/players/player_service.hpp"
 #include "views/view.hpp"
-#include "fonts/fonts.hpp"
-#include "natives.hpp"
-#include "fiber_pool.hpp"
 
 #define IMGUI_DEFINE_PLACEMENT_NEW
 #define IMGUI_DEFINE_MATH_OPERATORS
@@ -25,7 +25,7 @@ namespace big
 		if (const auto ped = plyr->get_ped(); ped != nullptr && ped->m_ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING)
 			player_icons += FONT_ICON_VEHICLE;
 
-		const auto player_iconsc = player_icons.c_str();
+		const auto player_iconsc    = player_icons.c_str();
 		const auto player_icons_end = player_iconsc + player_icons.size();
 
 		// calculate icons width
@@ -42,9 +42,9 @@ namespace big
 		if (selected_player)
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
 
-		ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, { 0.0, 0.5 });
+		ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, {0.0, 0.5});
 		ImGui::PushID(plyr->id());
-		if (ImGui::Button(plyr->get_name(), { 300.0f - ImGui::GetStyle().ScrollbarSize, 0.f }))
+		if (ImGui::Button(plyr->get_name(), {300.0f - ImGui::GetStyle().ScrollbarSize, 0.f}))
 		{
 			g_player_service->set_selected(plyr);
 			g_gui_service->set_selected(tabs::PLAYER);
@@ -69,22 +69,25 @@ namespace big
 	{
 		const auto player_count = g_player_service->players().size() + 1;
 
-		if (!*g_pointers->m_is_session_started && player_count < 2) return;
-		float window_pos = 110.f + g_gui_service->nav_ctr * ImGui::CalcTextSize("W").y + g_gui_service->nav_ctr * ImGui::GetStyle().ItemSpacing.y + g_gui_service->nav_ctr * ImGui::GetStyle().ItemInnerSpacing.y + ImGui::GetStyle().WindowPadding.y;
+		if (!*g_pointers->m_is_session_started && player_count < 2)
+			return;
+		float window_pos = 110.f + g_gui_service->nav_ctr * ImGui::CalcTextSize("W").y
+		    + g_gui_service->nav_ctr * ImGui::GetStyle().ItemSpacing.y
+		    + g_gui_service->nav_ctr * ImGui::GetStyle().ItemInnerSpacing.y + ImGui::GetStyle().WindowPadding.y;
 
-		ImGui::SetNextWindowSize({ 300.f, 0.f });
-		ImGui::SetNextWindowPos({ 10.f, window_pos });
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 2.0f, 2.0f });
+		ImGui::SetNextWindowSize({300.f, 0.f});
+		ImGui::SetNextWindowPos({10.f, window_pos});
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, {2.0f, 2.0f});
 
 		if (ImGui::Begin("playerlist", nullptr, window_flags))
 		{
 			float window_height = (ImGui::CalcTextSize("A").y + ImGui::GetStyle().ItemInnerSpacing.y * 2 + 6.0f) * player_count + 10.0f;
 			window_height = window_height + window_pos > (float)*g_pointers->m_resolution_y - 10.f ? (float)*g_pointers->m_resolution_y - (window_pos + 40.f) : window_height;
 
-			ImGui::PushStyleColor(ImGuiCol_FrameBg, { 0.f, 0.f, 0.f, 0.f });
-			ImGui::PushStyleColor(ImGuiCol_ScrollbarBg, { 0.f, 0.f, 0.f, 0.f });
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, {0.f, 0.f, 0.f, 0.f});
+			ImGui::PushStyleColor(ImGuiCol_ScrollbarBg, {0.f, 0.f, 0.f, 0.f});
 
-			if (ImGui::BeginListBox("##players", { ImGui::GetWindowSize().x - ImGui::GetStyle().WindowPadding.x * 2 , window_height }))
+			if (ImGui::BeginListBox("##players", {ImGui::GetWindowSize().x - ImGui::GetStyle().WindowPadding.x * 2, window_height}))
 			{
 				player_button(g_player_service->get_self());
 

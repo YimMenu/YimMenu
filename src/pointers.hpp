@@ -1,11 +1,11 @@
 #pragma once
-#include "common.hpp"
 #include "base/HashTable.hpp"
-#include "socialclub/ScInfo.hpp"
+#include "common.hpp"
 #include "function_types.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/replay.hpp"
 #include "memory/byte_patch.hpp"
+#include "socialclub/ScInfo.hpp"
 
 class CCommunications;
 class FriendRegistry;
@@ -31,6 +31,7 @@ namespace big
 	public:
 		explicit pointers();
 		~pointers();
+
 	public:
 		HWND m_hwnd{};
 
@@ -79,6 +80,7 @@ namespace big
 		functions::get_screen_coords_for_world_coords m_get_screen_coords_for_world_coords{};
 
 		HashTable<CBaseModelInfo*>* m_model_table;
+		PVOID m_get_model_info;
 
 		PVOID m_gta_thread_start{};
 		PVOID m_gta_thread_kill{};
@@ -87,8 +89,6 @@ namespace big
 		PVOID m_network_player_mgr_shutdown;
 
 		functions::get_gameplay_cam_coords m_get_gameplay_cam_coords;
-
-		functions::give_pickup_rewards m_give_pickup_rewards{};
 
 		PVOID m_write_player_gamer_data_node{};
 
@@ -151,6 +151,7 @@ namespace big
 		PVOID m_invalid_mods_crash_detour{};
 		PVOID m_constraint_attachment_crash{};
 		PVOID m_invalid_decal_crash{};
+		PVOID m_task_parachute_object_0x270{};
 
 		int64_t** m_send_chat_ptr{};
 		functions::send_chat_message m_send_chat_message{};
@@ -160,14 +161,13 @@ namespace big
 
 		functions::generate_uuid m_generate_uuid{};
 		std::uint64_t* m_host_token{};
-		rage::rlGamerInfo* m_profile_gamer_info{}; // per profile gamer info
+		rage::rlGamerInfo* m_profile_gamer_info{};     // per profile gamer info
 		rage::rlGamerInfo* m_player_info_gamer_info{}; // the gamer info that is applied to CPlayerInfo
 		CCommunications** m_communications{};
 
 		PVOID m_update_presence_attribute_int;
 		PVOID m_update_presence_attribute_string;
 
-		PVOID m_serialize_dynamic_entity_game_state_data_node;
 		PVOID m_serialize_ped_inventory_data_node;
 		PVOID m_serialize_vehicle_gadget_data_node;
 		functions::get_vehicle_gadget_array_size m_get_vehicle_gadget_array_size;
@@ -187,6 +187,7 @@ namespace big
 
 		PVOID m_serialize_join_request_message;
 
+		functions::give_pickup_rewards m_give_pickup_rewards{};
 		functions::send_network_damage m_send_network_damage;
 		functions::request_ragdoll m_request_ragdoll;
 		functions::request_control m_request_control;
@@ -201,7 +202,7 @@ namespace big
 
 		rage::atSingleton<rage::RageSecurity>* m_security;
 		PVOID m_prepare_metric_for_sending;
-		
+
 		PVOID m_queue_dependency;
 		PVOID m_interval_check_func;
 
@@ -225,7 +226,7 @@ namespace big
 
 		functions::send_packet m_send_packet;
 		functions::connect_to_peer m_connect_to_peer;
-    
+
 		PVOID m_fragment_physics_crash;
 		PVOID m_fragment_physics_crash_2;
 
@@ -239,6 +240,17 @@ namespace big
 		PVOID m_receive_pickup{};
 
 		PVOID m_write_player_camera_data_node{};
+
+		PVOID m_send_player_card_stats{};
+		bool* m_force_player_card_refresh{};
+
+		PVOID m_serialize_stats{};
+
+		PVOID m_write_player_creation_data_node{};
+		PVOID m_write_player_appearance_data_node{};
+
+		memory::byte_patch* m_disable_collision{};
+		memory::byte_patch* m_allow_weapons_in_vehicle{};
 	};
 
 	inline pointers* g_pointers{};

@@ -1,5 +1,5 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
+#include "natives.hpp"
 #include "util/entity.hpp"
 
 namespace big
@@ -14,5 +14,6 @@ namespace big
 		}
 	};
 
-	clean_player_looped g_clean_player_looped("cleanloop", "Keep Player Clean", "Prevents wetness and decals from being applied on you", g.self.clean_player);
+	clean_player_looped g_clean_player_looped("cleanloop", "Keep Player Clean", "Prevents wetness and decals from being applied on you",
+	    g.self.clean_player);
 }

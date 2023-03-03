@@ -1,10 +1,11 @@
+#include "core/data/lsc_types.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "script.hpp"
 #include "services/vehicle_helper/vehicle_helper.hpp"
-#include "core/data/lsc_types.hpp"
-#include "views/view.hpp"
 #include "util/vehicle.hpp"
+#include "views/view.hpp"
+
 #include <imgui_internal.h>
 
 namespace big
@@ -12,7 +13,7 @@ namespace big
 	void view::lsc()
 	{
 		static Vehicle player_vehicle = 0;
-		static bool ready = true;
+		static bool ready             = true;
 
 		static std::map<int, int32_t> owned_mods;
 		static std::map<int, std::string> slot_display_names;
@@ -20,14 +21,14 @@ namespace big
 		static std::map<std::string, std::vector<int>> front_wheel_map;
 		static std::map<std::string, std::vector<int>> rear_wheel_map;
 
-		static int selected_slot = -1;
-		static bool is_bennys = false;
+		static int selected_slot         = -1;
+		static bool is_bennys            = false;
 		static int front_wheel_stock_mod = -1;
-		static int rear_wheel_stock_mod = -1;
+		static int rear_wheel_stock_mod  = -1;
 
 		if (self::veh == 0 || player_vehicle != self::veh)
 		{
-			if (self::veh == 0 )
+			if (self::veh == 0)
 			{
 				owned_mods.clear();
 				slot_display_names.clear();
@@ -44,7 +45,7 @@ namespace big
 
 		if (player_vehicle != self::veh && ready == true)
 		{
-			ready = false;
+			ready          = false;
 			player_vehicle = self::veh;
 
 			g_fiber_pool->queue_job([] {
@@ -54,7 +55,7 @@ namespace big
 					HUD::REQUEST_ADDITIONAL_TEXT("MOD_MNU", 10);
 					script::get_current()->yield();
 				}
-				
+
 				VEHICLE::SET_VEHICLE_MOD_KIT(player_vehicle, 0);
 
 				Hash model = ENTITY::GET_ENTITY_MODEL(player_vehicle);
@@ -69,17 +70,13 @@ namespace big
 
 				tmp_slot_display_names[MOD_PLATE_STYLE] = "PLATE_STYLE"_T.data();
 				tmp_slot_display_names[MOD_WINDOW_TINT] = "WINDOW_TINT"_T.data();
-				tmp_slot_display_names[MOD_WHEEL_TYPE] = "WHEEL_TYPE"_T.data();
+				tmp_slot_display_names[MOD_WHEEL_TYPE]  = "WHEEL_TYPE"_T.data();
 
 				tmp_mod_display_names[MOD_PLATE_STYLE].insert(lsc_plate_styles.begin(), lsc_plate_styles.end());
 				tmp_mod_display_names[MOD_WINDOW_TINT].insert(lsc_window_tint_types.begin(), lsc_window_tint_types.end());
 				tmp_mod_display_names[MOD_WHEEL_TYPE].insert(lsc_wheel_styles.begin(), lsc_wheel_styles.end());
 
-				is_bennys = owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_ORIGINAL ||
-					owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_BESPOKE ||
-					owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_OPEN_WHEEL ||
-					owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_STREET ||
-					owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_TRACK;
+				is_bennys = owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_ORIGINAL || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_BESPOKE || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_OPEN_WHEEL || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_STREET || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_TRACK;
 
 				for (int slot = MOD_SPOILERS; slot <= MOD_LIGHTBAR; slot++)
 				{
@@ -125,7 +122,6 @@ namespace big
 										{
 											mod_name = new_mod_name;
 										}
-
 									}
 								}
 
@@ -141,7 +137,7 @@ namespace big
 									is_repeated = true;
 								}
 							}
-							else if(slot == MOD_REARWHEEL)
+							else if (slot == MOD_REARWHEEL)
 							{
 								if (is_bennys)
 								{
@@ -153,7 +149,6 @@ namespace big
 										{
 											mod_name = new_mod_name;
 										}
-
 									}
 								}
 
@@ -186,9 +181,9 @@ namespace big
 				}
 
 				slot_display_names = tmp_slot_display_names;
-				mod_display_names = tmp_mod_display_names;
-				front_wheel_map = tmp_front_wheel_map;
-				rear_wheel_map = tmp_rear_wheel_map;
+				mod_display_names  = tmp_mod_display_names;
+				front_wheel_map    = tmp_front_wheel_map;
+				rear_wheel_map     = tmp_rear_wheel_map;
 
 				ready = true;
 			});
@@ -279,8 +274,8 @@ namespace big
 		if (selected_slot != -1)
 		{
 			auto wheel_stock_mod = &front_wheel_stock_mod;
-			auto wheel_custom = &owned_mods[MOD_FRONTWHEEL_VAR];
-			bool is_wheel_mod = false;
+			auto wheel_custom    = &owned_mods[MOD_FRONTWHEEL_VAR];
+			bool is_wheel_mod    = false;
 
 			if (selected_slot == MOD_FRONTWHEEL)
 			{
@@ -289,8 +284,8 @@ namespace big
 			else if (selected_slot == MOD_REARWHEEL)
 			{
 				wheel_stock_mod = &rear_wheel_stock_mod;
-				wheel_custom = &owned_mods[MOD_REARWHEEL_VAR];
-				is_wheel_mod = true;
+				wheel_custom    = &owned_mods[MOD_REARWHEEL_VAR];
+				is_wheel_mod    = true;
 			}
 			else
 			{
@@ -305,7 +300,7 @@ namespace big
 			{
 				for (const auto& it : mod_display_names[selected_slot])
 				{
-					const auto& mod = it.first;
+					const auto& mod  = it.first;
 					const auto& name = it.second;
 
 					bool item_selected = mod == owned_mods[selected_slot];
@@ -328,7 +323,7 @@ namespace big
 								if (is_wheel_mod)
 								{
 									*wheel_stock_mod = mod;
-									*wheel_custom = false;
+									*wheel_custom    = false;
 								}
 							}
 							else if (selected_slot == MOD_WINDOW_TINT)
@@ -356,9 +351,8 @@ namespace big
 
 			ImGui::EndGroup();
 
-			if (
-				is_wheel_mod && *wheel_stock_mod != -1
-			) {
+			if (is_wheel_mod && *wheel_stock_mod != -1)
+			{
 				auto wheel_map = front_wheel_map;
 
 				if (selected_slot == MOD_REARWHEEL)
@@ -373,7 +367,7 @@ namespace big
 				if (ImGui::ListBoxHeader("##style", ImVec2(200, 200)))
 				{
 					std::string mod_name = mod_display_names[selected_slot][*wheel_stock_mod];
-					auto wheel_mods = wheel_map[mod_name];
+					auto wheel_mods      = wheel_map[mod_name];
 
 					for (int i = 0; i < wheel_mods.size(); i++)
 					{
@@ -413,7 +407,6 @@ namespace big
 				ImGui::EndGroup();
 			}
 		}
-
 
 
 		ImGui::Separator();
@@ -458,11 +451,11 @@ namespace big
 		ImGui::SameLine();
 		ImGui::PushID("##neon_check_all");
 		components::button("CHECK_ALL"_T, [] {
-			owned_mods[MOD_XENON_LIGHTS] = true;
-			owned_mods[MOD_NEON_LEFT_ON] = true;
+			owned_mods[MOD_XENON_LIGHTS]  = true;
+			owned_mods[MOD_NEON_LEFT_ON]  = true;
 			owned_mods[MOD_NEON_RIGHT_ON] = true;
 			owned_mods[MOD_NEON_FRONT_ON] = true;
-			owned_mods[MOD_NEON_BACK_ON] = true;
+			owned_mods[MOD_NEON_BACK_ON]  = true;
 
 			VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_XENON_LIGHTS, owned_mods[MOD_XENON_LIGHTS]);
 			VEHICLE::SET_VEHICLE_NEON_ENABLED(player_vehicle, NEON_LEFT, owned_mods[MOD_NEON_LEFT_ON]);
@@ -474,11 +467,11 @@ namespace big
 		ImGui::SameLine();
 		ImGui::PushID("##neon_uncheck_all");
 		components::button("UNCHECK_ALL"_T, [] {
-			owned_mods[MOD_XENON_LIGHTS] = false;
-			owned_mods[MOD_NEON_LEFT_ON] = false;
+			owned_mods[MOD_XENON_LIGHTS]  = false;
+			owned_mods[MOD_NEON_LEFT_ON]  = false;
 			owned_mods[MOD_NEON_RIGHT_ON] = false;
 			owned_mods[MOD_NEON_FRONT_ON] = false;
-			owned_mods[MOD_NEON_BACK_ON] = false;
+			owned_mods[MOD_NEON_BACK_ON]  = false;
 
 			VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_XENON_LIGHTS, owned_mods[MOD_XENON_LIGHTS]);
 			VEHICLE::SET_VEHICLE_NEON_ENABLED(player_vehicle, NEON_LEFT, owned_mods[MOD_NEON_LEFT_ON]);
@@ -492,14 +485,12 @@ namespace big
 		components::sub_title("COLOR_OPTIONS"_T);
 
 		static int color_to_change = 0;
-		static int color_type = 8;
+		static int color_type      = 8;
 
-		if (
-			(color_to_change == 7 && !owned_mods[MOD_XENON_LIGHTS]) ||
-			(color_to_change == 5 && !owned_mods[MOD_TYRE_SMOKE])
-		) {
+		if ((color_to_change == 7 && !owned_mods[MOD_XENON_LIGHTS]) || (color_to_change == 5 && !owned_mods[MOD_TYRE_SMOKE]))
+		{
 			color_to_change = 0;
-			color_type = 8;
+			color_type      = 8;
 		}
 
 		if (ImGui::ListBoxHeader("##color_options", ImVec2(120, 254)))
@@ -517,19 +508,19 @@ namespace big
 			if (ImGui::Selectable("PEARLESCENT"_T.data(), color_to_change == 2))
 			{
 				color_to_change = 2;
-				color_type = 4;
+				color_type      = 4;
 			}
 
 			if (ImGui::Selectable("INTERIOR"_T.data(), color_to_change == 3))
 			{
 				color_to_change = 3;
-				color_type = 6;
+				color_type      = 6;
 			}
 
 			if (ImGui::Selectable("DASHBOARD"_T.data(), color_to_change == 4))
 			{
 				color_to_change = 4;
-				color_type = 7;
+				color_type      = 7;
 			}
 
 			if (!owned_mods[MOD_TYRE_SMOKE])
@@ -539,7 +530,7 @@ namespace big
 			if (ImGui::Selectable("TIRE_SMOKE"_T.data(), color_to_change == 5))
 			{
 				color_to_change = 5;
-				color_type = 8;
+				color_type      = 8;
 			}
 			if (!owned_mods[MOD_TYRE_SMOKE])
 			{
@@ -549,7 +540,7 @@ namespace big
 			if (ImGui::Selectable("WHEEL_COLOR"_T.data(), color_to_change == 6))
 			{
 				color_to_change = 6;
-				color_type = 5;
+				color_type      = 5;
 			}
 
 			if (!owned_mods[MOD_XENON_LIGHTS])
@@ -560,7 +551,7 @@ namespace big
 			if (ImGui::Selectable("HEADLIGHT"_T.data(), color_to_change == 7))
 			{
 				color_to_change = 7;
-				color_type = 9;
+				color_type      = 9;
 			}
 			ImGui::PopID();
 			if (!owned_mods[MOD_XENON_LIGHTS])
@@ -571,7 +562,7 @@ namespace big
 			if (ImGui::Selectable("NEON"_T.data(), color_to_change == 8))
 			{
 				color_to_change = 8;
-				color_type = 8;
+				color_type      = 8;
 			}
 
 			ImGui::ListBoxFooter();
@@ -638,10 +629,10 @@ namespace big
 		{
 			// custom color
 
-			static float color[3] = { 1, 1, 1 };
-			auto color_r = &owned_mods[MOD_PRIMARY_COL_R];
-			auto color_g = &owned_mods[MOD_PRIMARY_COL_G];
-			auto color_b = &owned_mods[MOD_PRIMARY_COL_B];
+			static float color[3] = {1, 1, 1};
+			auto color_r          = &owned_mods[MOD_PRIMARY_COL_R];
+			auto color_g          = &owned_mods[MOD_PRIMARY_COL_G];
+			auto color_b          = &owned_mods[MOD_PRIMARY_COL_B];
 
 			if (color_to_change == 1)
 			{
@@ -674,7 +665,7 @@ namespace big
 					for (const auto& it : lsc_tire_smoke_rgb)
 					{
 						auto& name = it.first;
-						auto& rgb = it.second;
+						auto& rgb  = it.second;
 
 						if (ImGui::Selectable(name.c_str(), false))
 						{
@@ -685,7 +676,6 @@ namespace big
 							*color_g = rgb[1];
 							*color_b = rgb[2];
 						}
-
 					}
 
 					ImGui::ListBoxFooter();
@@ -699,7 +689,7 @@ namespace big
 					for (const auto& it : lsc_neon_rgb)
 					{
 						auto& name = it.first;
-						auto& rgb = it.second;
+						auto& rgb  = it.second;
 
 						if (ImGui::Selectable(name.c_str(), false))
 						{
@@ -733,12 +723,8 @@ namespace big
 					case 1:
 						VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(player_vehicle, *color_r, *color_g, *color_b);
 						break;
-					case 5:
-						VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, *color_r, *color_g, *color_b);
-						break;
-					case 8:
-						VEHICLE::SET_VEHICLE_NEON_COLOUR(player_vehicle, *color_r, *color_g, *color_b);
-						break;
+					case 5: VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(player_vehicle, *color_r, *color_g, *color_b); break;
+					case 8: VEHICLE::SET_VEHICLE_NEON_COLOUR(player_vehicle, *color_r, *color_g, *color_b); break;
 					}
 				});
 			}
@@ -750,21 +736,11 @@ namespace big
 			int selected_color = 0;
 			switch (color_type)
 			{
-			case 4:
-				selected_color = owned_mods[MOD_PEARLESCENT_COL];
-				break;
-			case 5:
-				selected_color = owned_mods[MOD_WHEEL_COL];
-				break;
-			case 6:
-				selected_color = owned_mods[MOD_INTERIOR_COL];
-				break;
-			case 7:
-				selected_color = owned_mods[MOD_DASHBOARD_COL];
-				break;
-			case 9:
-				selected_color = owned_mods[MOD_XENON_COL];
-				break;
+			case 4: selected_color = owned_mods[MOD_PEARLESCENT_COL]; break;
+			case 5: selected_color = owned_mods[MOD_WHEEL_COL]; break;
+			case 6: selected_color = owned_mods[MOD_INTERIOR_COL]; break;
+			case 7: selected_color = owned_mods[MOD_DASHBOARD_COL]; break;
+			case 9: selected_color = owned_mods[MOD_XENON_COL]; break;
 			default:
 				selected_color = (color_to_change == 0) ? owned_mods[MOD_PRIMARY_COL] : owned_mods[MOD_SECONDARY_COL];
 			}
@@ -778,7 +754,7 @@ namespace big
 			{
 				switch (color_type)
 				{
-				case 0: //Chrome
+				case 0://Chrome
 				{
 					if (ImGui::Selectable("CHROME"_T.data(), selected_color == COLOR_CHROME))
 					{
@@ -797,7 +773,7 @@ namespace big
 					}
 					break;
 				}
-				case 1: //Classic
+				case 1://Classic
 				{
 					for (const auto& [color, name] : lsc_classic_colors)
 					{
@@ -818,11 +794,10 @@ namespace big
 								VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, owned_mods[MOD_PRIMARY_COL], owned_mods[MOD_SECONDARY_COL]);
 							});
 						}
-
 					}
 					break;
 				}
-				case 2: //Matte
+				case 2://Matte
 				{
 					for (const auto& [color, name] : lsc_matte_colors)
 					{
@@ -843,11 +818,10 @@ namespace big
 								VEHICLE::SET_VEHICLE_COLOURS(player_vehicle, owned_mods[MOD_PRIMARY_COL], owned_mods[MOD_SECONDARY_COL]);
 							});
 						}
-
 					}
 					break;
 				}
-				case 3: //Metals
+				case 3://Metals
 				{
 					for (const auto& [color, name] : lsc_metal_colors)
 					{
@@ -871,13 +845,13 @@ namespace big
 					}
 					break;
 				}
-				case 4: //Pearlescent
+				case 4://Pearlescent
 				{
 					for (const auto& [color, name] : lsc_classic_colors)
 					{
 						if (ImGui::Selectable(name.c_str(), selected_color == color))
 						{
-							selected_color = color;
+							selected_color                  = color;
 							owned_mods[MOD_PEARLESCENT_COL] = color;
 
 							g_fiber_pool->queue_job([] {
@@ -887,13 +861,13 @@ namespace big
 					}
 					break;
 				}
-				case 5: //Wheel Color
+				case 5://Wheel Color
 				{
 					for (const auto& [color, name] : lsc_classic_colors)
 					{
 						if (ImGui::Selectable(name.c_str(), selected_color == color))
 						{
-							selected_color = color;
+							selected_color            = color;
 							owned_mods[MOD_WHEEL_COL] = color;
 
 							g_fiber_pool->queue_job([] {
@@ -903,13 +877,13 @@ namespace big
 					}
 					break;
 				}
-				case 6: //Interior Color
+				case 6://Interior Color
 				{
 					for (const auto& [color, name] : lsc_classic_colors)
 					{
 						if (ImGui::Selectable(name.c_str(), selected_color == color))
 						{
-							selected_color = color;
+							selected_color               = color;
 							owned_mods[MOD_INTERIOR_COL] = color;
 
 							g_fiber_pool->queue_job([] {
@@ -919,13 +893,13 @@ namespace big
 					}
 					break;
 				}
-				case 7: //Dashboard Color
+				case 7://Dashboard Color
 				{
 					for (const auto& [color, name] : lsc_classic_colors)
 					{
 						if (ImGui::Selectable(name.c_str(), selected_color == color))
 						{
-							selected_color = color;
+							selected_color                = color;
 							owned_mods[MOD_DASHBOARD_COL] = color;
 
 							g_fiber_pool->queue_job([] {
@@ -935,13 +909,13 @@ namespace big
 					}
 					break;
 				}
-				case 9: //Headlight Color
+				case 9://Headlight Color
 				{
 					for (const auto& [color, name] : lsc_headlight_colors)
 					{
 						if (ImGui::Selectable(name.c_str(), selected_color == color))
 						{
-							selected_color = color;
+							selected_color            = color;
 							owned_mods[MOD_XENON_COL] = color;
 
 							g_fiber_pool->queue_job([] {
