@@ -16,16 +16,26 @@ namespace big
 			for (auto ped : entity::get_entities(false, true))
 			{
 				id = PED::GET_PED_GROUP_INDEX(ped);
-				PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, id, id); //should change by the time it goes for p2
+				if (!PED::IS_PED_A_PLAYER(ped))
+				{
+					PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, id, id);
+				}
 				TASK::TASK_COMBAT_HATED_TARGETS_AROUND_PED(ped, 100.f, 0);
 			}
 		}
 		virtual void on_disable() override
 		{
-			PED::SET_RELATIONSHIP_BETWEEN_GROUPS(255, id, id);
+			for (auto ped : entity::get_entities(false, true))
+			{
+				bool b = PED::IS_PED_A_PLAYER(ped);
+				if (!b)
+				{
+					PED::SET_RELATIONSHIP_BETWEEN_GROUPS(255, id, id);
+				}
+			}
 		}
 	};
 
-	combative g_combative("combatpeds", "Combative Peds", "Nearby peds attack eachother.", g.world.nearby.combative);
+	combative g_combative("pedscombat", "Combative", "Nearby peds attack eachother.", g.world.nearby.combative);
 
 }
