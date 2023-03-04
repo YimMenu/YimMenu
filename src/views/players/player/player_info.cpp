@@ -3,6 +3,7 @@
 #include "core/scr_globals.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "views/view.hpp"
+#include "natives.hpp"
 
 #include <script/globals/GPBD_FM.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
@@ -14,6 +15,11 @@ namespace big
 	{
 		if (ImGui::TreeNode("INFO"_T.data()))
 		{
+			components::button("Open SC Overlay", [] {
+				int gamerHandle;
+				NETWORK::NETWORK_HANDLE_FROM_PLAYER(g_player_service->get_selected()->id(), &gamerHandle, 13);
+				NETWORK::NETWORK_SHOW_PROFILE_UI(&gamerHandle);
+			});
 			ImGui::Text("PLAYER_INFO_ID"_T.data(), g_player_service->get_selected()->id());
 
 			ImGui::Text("PLAYER_INFO_SESSION_HOST"_T.data(),
@@ -150,7 +156,7 @@ namespace big
 				ImGui::Text("PLAYER_INFO_BANK"_T.data(), stats.Money - stats.WalletBalance);
 				ImGui::Text("PLAYER_INFO_TOTAL_MONEY"_T.data(), stats.Money);
 				ImGui::Text("PLAYER_INFO_RANK"_T.data(), stats.Rank, stats.RP);
-				ImGui::Text("Health: %d (MaxHealth: %d)", ped_health, ped_maxhealth);// TODO: translate
+				ImGui::Text("Health: %d (MaxHealth: %d)", ped_health, ped_maxhealth); // TODO: translate
 				ImGui::Text("PLAYER_INFO_KD"_T.data(), stats.KdRatio);
 				ImGui::Text("PLAYER_INFO_KILLS"_T.data(), stats.KillsOnPlayers);
 				ImGui::Text("PLAYER_INFO_DEATHS"_T.data(), stats.DeathsByPlayers);
@@ -158,7 +164,7 @@ namespace big
 				ImGui::Text("PLAYER_INFO_LAP_DANCES"_T.data(), stats.LapDancesBought);
 				ImGui::Text("PLAYER_INFO_MISSIONS_CREATED"_T.data(), stats.MissionsCreated);
 				ImGui::Text("PLAYER_INFO_METLDOWN_COMPLETE"_T.data(),
-				    scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].MeltdownComplete ? "YES"_T.data() : "NO"_T.data());// curious to see if anyone has actually played singleplayer
+				    scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].MeltdownComplete ? "YES"_T.data() : "NO"_T.data()); // curious to see if anyone has actually played singleplayer
 
 
 				ImGui::Separator();
