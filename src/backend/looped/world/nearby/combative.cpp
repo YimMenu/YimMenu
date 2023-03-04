@@ -22,10 +22,7 @@ namespace big
 		}
 		virtual void on_disable() override
 		{
-			for (auto ped : entity::get_entities(false, true))
-			{
-				PED::SET_RELATIONSHIP_BETWEEN_GROUPS(255, id, id);
-			}
+			PED::SET_RELATIONSHIP_BETWEEN_GROUPS(255, id, id);
 		}
 	};
 
