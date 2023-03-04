@@ -20,7 +20,11 @@ namespace big
 				{
 					PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, id, id);
 				}
-				TASK::TASK_COMBAT_HATED_TARGETS_AROUND_PED(ped, 100.f, 0);
+				int time = 0;
+				if (!PED::IS_PED_SHOOTING(ped) || !PED::IS_PED_IN_COMBAT(ped, ped) && time <1000)
+				{
+					TASK::TASK_COMBAT_HATED_TARGETS_AROUND_PED(ped, 100.f, 0);
+				}
 			}
 		}
 		virtual void on_disable() override
