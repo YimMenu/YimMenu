@@ -3,7 +3,7 @@
 
 namespace big
 {
-	using custom_label_callback = std::function<const char* (const char*)>;
+	using custom_label_callback = std::function<const char*(const char*)>;
 	class custom_text_service final
 	{
 		std::map<rage::joaat_t, custom_label_callback> m_callbacks;
@@ -13,9 +13,9 @@ namespace big
 		custom_text_service();
 		~custom_text_service();
 
-		custom_text_service(const custom_text_service&) = delete;
-		custom_text_service(custom_text_service&&) noexcept = delete;
-		custom_text_service& operator=(const custom_text_service&) = delete;
+		custom_text_service(const custom_text_service&)                = delete;
+		custom_text_service(custom_text_service&&) noexcept            = delete;
+		custom_text_service& operator=(const custom_text_service&)     = delete;
 		custom_text_service& operator=(custom_text_service&&) noexcept = delete;
 
 		bool add_callback_for_label(rage::joaat_t hash, custom_label_callback&& cb);

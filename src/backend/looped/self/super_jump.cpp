@@ -1,6 +1,6 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
 #include "gta/enums.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -19,7 +19,6 @@ namespace big
 			{
 				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, RAGE_JOAAT("WEAPON_UNARMED"));
 			}
-
 		}
 	};
 

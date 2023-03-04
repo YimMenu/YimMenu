@@ -1,5 +1,5 @@
-#include "gta/pickup_rewards.hpp"
 #include "backend/looped/looped.hpp"
+#include "gta/pickup_rewards.hpp"
 #include "services/players/player_service.hpp"
 #include "util/globals.hpp"
 #include "util/misc.hpp"
@@ -14,13 +14,28 @@ namespace big
 
 		int rotate_cam_bits = 0;
 
-		g_player_service->iterate([&rotate_cam_bits](const player_entry& entry)
-		{
+		g_player_service->iterate([&rotate_cam_bits](const player_entry& entry) {
 			if (g_player_service->get_self()->get_ped() && entry.second->get_ped() && entry.second->get_ped()->m_health > 0)
 			{
 				if (entry.second->kill_loop && !(entry.second->get_ped()->m_damage_bits & (1 << 8)))
-					g_pointers->m_send_network_damage((CEntity*)g_player_service->get_self()->get_ped(), (CEntity*)entry.second->get_ped(), entry.second->get_ped()->m_navigation->get_position(),
-						0, true, RAGE_JOAAT("weapon_explosion"), 10000.0f, 2, 0, (1 << 4), 0, 0, 0, false, false, true, true, nullptr);
+					g_pointers->m_send_network_damage((CEntity*)g_player_service->get_self()->get_ped(),
+					    (CEntity*)entry.second->get_ped(),
+					    entry.second->get_ped()->m_navigation->get_position(),
+					    0,
+					    true,
+					    RAGE_JOAAT("weapon_explosion"),
+					    10000.0f,
+					    2,
+					    0,
+					    (1 << 4),
+					    0,
+					    0,
+					    0,
+					    false,
+					    false,
+					    true,
+					    true,
+					    nullptr);
 
 				if (entry.second->explosion_loop)
 					toxic::blame_explode_player(entry.second, entry.second, EXP_TAG_SUBMARINE_BIG, 9999.0f, true, false, 9999.0f);
@@ -38,12 +53,7 @@ namespace big
 			if (rotate_cam_bits)
 			{
 				const size_t arg_count = 3;
-				int64_t args[arg_count] =
-				{
-					(int64_t)eRemoteEvent::TSECommand,
-					(int64_t)self::id,
-					(int64_t)eRemoteEvent::TSECommandRotateCam
-				};
+				int64_t args[arg_count] = {(int64_t)eRemoteEvent::TSECommand, (int64_t)self::id, (int64_t)eRemoteEvent::TSECommandRotateCam};
 
 				g_pointers->m_trigger_script_event(1, args, arg_count, rotate_cam_bits);
 			}

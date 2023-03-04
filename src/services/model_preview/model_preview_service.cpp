@@ -1,9 +1,10 @@
+#include "model_preview_service.hpp"
+
 #include "fiber_pool.hpp"
 #include "gui.hpp"
 #include "thread_pool.hpp"
 #include "util/ped.hpp"
 #include "util/vehicle.hpp"
-#include "model_preview_service.hpp"
 
 namespace big
 {
@@ -19,7 +20,7 @@ namespace big
 
 	void model_preview_service::show_ped(Hash hash)
 	{
-		m_ped_clone = 0;
+		m_ped_clone      = 0;
 		m_veh_model_hash = 0;
 		m_veh_owned_mods.clear();
 
@@ -44,7 +45,7 @@ namespace big
 		if (m_ped_model_hash != hash || m_ped_clone != clone)
 		{
 			m_ped_model_hash = hash;
-			m_ped_clone = clone;
+			m_ped_clone      = clone;
 
 			if (m_ped_model_hash != 0)
 			{
@@ -58,7 +59,7 @@ namespace big
 	void model_preview_service::show_vehicle(Hash hash, bool spawn_max)
 	{
 		m_ped_model_hash = 0;
-		m_ped_clone = 0;
+		m_ped_clone      = 0;
 		m_veh_owned_mods.clear();
 
 		if (m_veh_model_hash != hash || m_veh_spawn_max != spawn_max)
@@ -68,7 +69,7 @@ namespace big
 			if (m_veh_model_hash != 0)
 			{
 				m_veh_spawn_max = spawn_max;
-				m_new_model = true;
+				m_new_model     = true;
 
 				preview_loop();
 			}
@@ -78,13 +79,11 @@ namespace big
 	void model_preview_service::show_vehicle(const std::map<int, int32_t>& owned_mods, bool spawn_max)
 	{
 		m_ped_model_hash = 0;
-		m_ped_clone = 0;
+		m_ped_clone      = 0;
 
-		if (
-			m_veh_spawn_max != spawn_max ||
-			m_veh_owned_mods.size() != owned_mods.size() ||
-			!std::equal(m_veh_owned_mods.begin(), m_veh_owned_mods.end(), owned_mods.begin())
-		) {
+		if (m_veh_spawn_max != spawn_max || m_veh_owned_mods.size() != owned_mods.size()
+		    || !std::equal(m_veh_owned_mods.begin(), m_veh_owned_mods.end(), owned_mods.begin()))
+		{
 			m_veh_owned_mods.clear();
 
 			auto hash_item = owned_mods.find(MOD_MODEL_HASH);
@@ -95,7 +94,7 @@ namespace big
 			{
 				m_veh_owned_mods.insert(owned_mods.begin(), owned_mods.end());
 				m_veh_spawn_max = spawn_max;
-				m_new_model = true;
+				m_new_model     = true;
 
 				preview_loop();
 			}
@@ -114,10 +113,8 @@ namespace big
 		g_fiber_pool->queue_job([this] {
 			m_loop_running = true;
 
-			while (
-				g_running && m_running && g_gui->is_open() &&
-				(m_ped_model_hash|| m_veh_model_hash)
-			) {
+			while (g_running && m_running && g_gui->is_open() && (m_ped_model_hash || m_veh_model_hash))
+			{
 				Vector3 location;
 
 				if (m_ped_model_hash)
@@ -132,7 +129,7 @@ namespace big
 				if (m_current_ent == 0)
 				{
 					m_new_model = false;
-					location.z = -10.f;
+					location.z  = -10.f;
 
 					if (m_ped_model_hash)
 					{
@@ -196,11 +193,11 @@ namespace big
 			ENTITY::DETACH_ENTITY(m_current_ent, 1, 1);
 			ENTITY::DELETE_ENTITY(&m_current_ent);
 
-			m_current_ent = 0;
+			m_current_ent    = 0;
 			m_ped_model_hash = 0;
 			m_veh_model_hash = 0;
 			m_veh_owned_mods.clear();
-			m_running = false;
+			m_running      = false;
 			m_loop_running = false;
 		});
 	}

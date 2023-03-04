@@ -1,9 +1,9 @@
 #include "backend/looped/looped.hpp"
+#include "core/scr_globals.hpp"
 #include "fiber_pool.hpp"
+#include "gta_util.hpp"
 #include "natives.hpp"
 #include "script.hpp"
-#include "gta_util.hpp"
-#include "core/scr_globals.hpp"
 
 namespace big
 {

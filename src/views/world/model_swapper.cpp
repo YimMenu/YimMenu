@@ -1,5 +1,5 @@
-#include "views/view.hpp"
 #include "pointers.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -12,12 +12,14 @@ namespace big
 		static char dst_text[256];
 		static char src_text[256];
 		static size_t selected_index = -1;
-		static float width = *g_pointers->m_resolution_x / 5.0;
+		static float width           = *g_pointers->m_resolution_x / 5.0;
 
 		ImGui::SetNextItemWidth(width);
-		ImGui::InputText("Dst", dst_text, IM_ARRAYSIZE(dst_text)); ImGui::SameLine();
+		ImGui::InputText("Dst", dst_text, IM_ARRAYSIZE(dst_text));
+		ImGui::SameLine();
 		ImGui::SetNextItemWidth(width);
-		ImGui::InputText("Src", src_text, IM_ARRAYSIZE(src_text)); ImGui::SameLine();
+		ImGui::InputText("Src", src_text, IM_ARRAYSIZE(src_text));
+		ImGui::SameLine();
 
 		if (ImGui::Button("Add/Change"))
 		{
@@ -36,7 +38,7 @@ namespace big
 				transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
 				if (str == tmp)
 				{
-					g.world.model_swapper.models[i].first = dst_text;
+					g.world.model_swapper.models[i].first  = dst_text;
 					g.world.model_swapper.models[i].second = src_text;
 					break;
 				}
@@ -44,18 +46,21 @@ namespace big
 			if (i == g.world.model_swapper.models.size())
 				g.world.model_swapper.models.push_back(std::make_pair(dst_text, src_text));
 			g.world.model_swapper.update = true;
-		} ImGui::SameLine();
+		}
+		ImGui::SameLine();
 		if (ImGui::Button("Delete"))
 		{
 			std::lock_guard lock(g.world.model_swapper.m);
-			if (!g.world.model_swapper.models.size() || selected_index < 0 || selected_index >= g.world.model_swapper.models.size())
+			if (!g.world.model_swapper.models.size() || selected_index < 0
+			    || selected_index >= g.world.model_swapper.models.size())
 			{
 				g_notification_service->push_error("Model Swapper", "Invalid index");
 				return;
 			}
 			g.world.model_swapper.models.erase(std::begin(g.world.model_swapper.models) + selected_index);
 			g.world.model_swapper.update = true;
-		} ImGui::SameLine();
+		}
+		ImGui::SameLine();
 		if (ImGui::Button("Clear"))
 		{
 			std::lock_guard lock(g.world.model_swapper.m);
@@ -79,7 +84,8 @@ namespace big
 					ImGui::SetItemDefaultFocus();
 			}
 			ImGui::EndListBox();
-		} ImGui::SameLine();
+		}
+		ImGui::SameLine();
 		ImGui::SetNextItemWidth(width);
 		if (ImGui::BeginListBox("Src##model_swapper_src"))
 		{

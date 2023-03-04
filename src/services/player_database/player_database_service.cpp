@@ -1,12 +1,13 @@
 #include "player_database_service.hpp"
+
 #include "file_manager.hpp"
-#include "util/session.hpp"
 #include "pointers.hpp"
+#include "util/session.hpp"
 
 namespace big
 {
 	player_database_service::player_database_service() :
-		m_file_path(g_file_manager->get_project_file("./players.json").get_path())
+	    m_file_path(g_file_manager->get_project_file("./players.json").get_path())
 	{
 		load();
 		g_player_database_service = this;
@@ -20,7 +21,7 @@ namespace big
 	void player_database_service::save()
 	{
 		nlohmann::json json;
-		
+
 		for (auto& [rid, player] : m_players)
 		{
 			json[std::to_string(rid)] = player;
@@ -66,7 +67,8 @@ namespace big
 			return &m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id];
 		else
 		{
-			m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id] = { player->get_name(), player->get_net_data()->m_gamer_handle.m_rockstar_id };
+			m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id] = {player->get_name(),
+			    player->get_net_data()->m_gamer_handle.m_rockstar_id};
 			save();
 			return &m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id];
 		}
@@ -74,7 +76,7 @@ namespace big
 
 	void player_database_service::update_rockstar_id(std::uint64_t old, std::uint64_t _new)
 	{
-		auto player = m_players.extract(old);
+		auto player  = m_players.extract(old);
 		player.key() = _new;
 
 		m_players.insert(std::move(player));

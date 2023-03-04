@@ -10,7 +10,7 @@ namespace big
 		bool m_toggleable;
 
 	public:
-		using func_t = void(*)();
+		using func_t = void (*)();
 
 	public:
 		explicit script(const func_t func, const std::string_view name, const bool toggleable = true, const std::optional<std::size_t> stack_size = std::nullopt);
@@ -40,8 +40,15 @@ namespace big
 	};
 
 
-#define TRY_CLAUSE  __try
-#define EXCEPT_CLAUSE  __except (script::script_exception_handler(GetExceptionInformation()), EXCEPTION_EXECUTE_HANDLER) { }
+#define TRY_CLAUSE __try
+#define EXCEPT_CLAUSE                                                                                 \
+	__except (script::script_exception_handler(GetExceptionInformation()), EXCEPTION_EXECUTE_HANDLER) \
+	{                                                                                                 \
+	}
 #define QUEUE_JOB_BEGIN_CLAUSE(...) g_fiber_pool->queue_job([__VA_ARGS__] { __try
-#define QUEUE_JOB_END_CLAUSE __except (script::script_exception_handler(GetExceptionInformation()), EXCEPTION_EXECUTE_HANDLER) {} });
+#define QUEUE_JOB_END_CLAUSE                                                                          \
+	__except (script::script_exception_handler(GetExceptionInformation()), EXCEPTION_EXECUTE_HANDLER) \
+	{                                                                                                 \
+	}                                                                                                 \
+	});
 }

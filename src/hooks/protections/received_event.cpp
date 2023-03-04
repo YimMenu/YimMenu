@@ -1,11 +1,12 @@
+#include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "gta/net_game_event.hpp"
-#include "hooking.hpp"
 #include "gta/script_id.hpp"
-#include "util/notify.hpp"
+#include "hooking.hpp"
 #include "util/math.hpp"
+#include "util/notify.hpp"
 #include "util/toxic.hpp"
-#include "fiber_pool.hpp"
+
 #include <base/CObject.hpp>
 #include <network/CNetGamePlayer.hpp>
 
@@ -13,7 +14,7 @@ namespace big
 {
 	static void script_id_deserialize(CGameScriptId& id, rage::datBitBuffer& buffer)
 	{
-		id.m_hash = buffer.Read<uint32_t>(32);
+		id.m_hash      = buffer.Read<uint32_t>(32);
 		id.m_timestamp = buffer.Read<uint32_t>(32);
 
 		if (buffer.Read<bool>(1))
@@ -25,9 +26,8 @@ namespace big
 
 	void scan_weapon_damage_event(CNetGamePlayer* player, rage::datBitBuffer* buffer)
 	{
-
 		uint8_t damageType;
-		uint32_t weaponType; // weaponHash
+		uint32_t weaponType;// weaponHash
 
 		bool overrideDefaultDamage;
 		bool hitEntityWeapon;
@@ -55,8 +55,8 @@ namespace big
 
 		uint16_t f112_1;
 
-		uint16_t parentGlobalId; // Source entity?
-		uint16_t hitGlobalId; // Target entity?
+		uint16_t parentGlobalId;// Source entity?
+		uint16_t hitGlobalId;   // Target entity?
 
 		uint8_t tyreIndex;
 		uint8_t suspensionIndex;
@@ -70,10 +70,10 @@ namespace big
 		damageType = buffer->Read<uint8_t>(2);
 		weaponType = buffer->Read<uint32_t>(32);
 
-		overrideDefaultDamage = buffer->Read<uint8_t>(1);
-		hitEntityWeapon = buffer->Read<uint8_t>(1);
+		overrideDefaultDamage   = buffer->Read<uint8_t>(1);
+		hitEntityWeapon         = buffer->Read<uint8_t>(1);
 		hitWeaponAmmoAttachment = buffer->Read<uint8_t>(1);
-		silenced = buffer->Read<uint8_t>(1);
+		silenced                = buffer->Read<uint8_t>(1);
 
 		damageFlags = buffer->Read<uint32_t>(24);
 		// (damageFlags >> 1) & 1
@@ -82,8 +82,9 @@ namespace big
 		if (hasActionResult)
 		{
 			actionResultName = buffer->Read<uint32_t>(32);
-			actionResultId = buffer->Read<uint16_t>(16);
-			f104 = buffer->Read<uint32_t>(32);
+			actionResultId   = buffer->Read<uint16_t>(16);
+			f104
+				= buffer->Read<uint32_t>(32);
 		}
 
 		if (overrideDefaultDamage)
@@ -106,7 +107,7 @@ namespace big
 
 		if (isNetTargetPos)
 		{
-			localPos.x = buffer->ReadSignedFloat(16, 55.f);  // divisor: 0x425C0000
+			localPos.x = buffer->ReadSignedFloat(16, 55.f);// divisor: 0x425C0000
 			localPos.y = buffer->ReadSignedFloat(16, 55.f);
 			localPos.z = buffer->ReadSignedFloat(16, 55.f);
 		}
@@ -114,7 +115,7 @@ namespace big
 		if (damageType == 3)
 		{
 			damageTime = buffer->Read<uint32_t>(32);
-			willKill = buffer->Read<uint8_t>(1);
+			willKill   = buffer->Read<uint8_t>(1);
 
 			if (hasActionResult)
 			{
@@ -138,13 +139,13 @@ namespace big
 		}
 		else
 		{
-			parentGlobalId = buffer->Read<uint16_t>(13);  // +118
-			hitGlobalId = buffer->Read<uint16_t>(13);  // +120
+			parentGlobalId = buffer->Read<uint16_t>(13);// +118
+			hitGlobalId    = buffer->Read<uint16_t>(13);// +120
 		}
 
 		if (damageType < 2)
 		{
-			localPos.x = buffer->ReadSignedFloat(16, 55.f);  // divisor: 0x425C0000
+			localPos.x = buffer->ReadSignedFloat(16, 55.f);// divisor: 0x425C0000
 			localPos.y = buffer->ReadSignedFloat(16, 55.f);
 			localPos.z = buffer->ReadSignedFloat(16, 55.f);
 
@@ -154,22 +155,22 @@ namespace big
 
 				if (hasVehicleData)
 				{
-					tyreIndex = buffer->Read<uint8_t>(4); // +122
-					suspensionIndex = buffer->Read<uint8_t>(4); // +123
+					tyreIndex       = buffer->Read<uint8_t>(4);// +122
+					suspensionIndex = buffer->Read<uint8_t>(4);// +123
 				}
 			}
 		}
 		else
 		{
-			hitComponent = buffer->Read<uint8_t>(5); // +108
+			hitComponent = buffer->Read<uint8_t>(5);// +108
 		}
 
-		f133 = buffer->Read<uint8_t>(1);
+		f133         = buffer->Read<uint8_t>(1);
 		hasImpactDir = buffer->Read<uint8_t>(1);
 
 		if (hasImpactDir)
 		{
-			impactDir.x = buffer->ReadSignedFloat(16, 6.2831854820251f);  // divisor: 0x40C90FDB
+			impactDir.x = buffer->ReadSignedFloat(16, 6.2831854820251f);// divisor: 0x40C90FDB
 			impactDir.y = buffer->ReadSignedFloat(16, 6.2831854820251f);
 			impactDir.z = buffer->ReadSignedFloat(16, 6.2831854820251f);
 		}
@@ -177,22 +178,39 @@ namespace big
 		buffer->Seek(0);
 
 		// LOG(INFO) << localPos.x << " " << localPos.y << " " << localPos.z << ". " << math::distance_between_vectors(localPos, *g_local_player->m_navigation->get_position()) << " " << (g_local_player->m_net_object->m_object_id == hitGlobalId ? "TRUE" : "FALSE") << " " << damageType << " " << damageFlags;
-		
+
 		if (damageType == 3 && (damageFlags & (1 << 1)) == 0)
 			hitGlobalId = g_local_player ? g_local_player->m_net_object->m_object_id : 0;
 
-		if (g.session.damage_karma && g_local_player && g_local_player->m_net_object && (g_local_player->m_net_object->m_object_id == hitGlobalId || math::distance_between_vectors(localPos, *g_local_player->m_navigation->get_position()) < 1.5f))
+		if (g.session.damage_karma && g_local_player && g_local_player->m_net_object
+		    && (g_local_player->m_net_object->m_object_id == hitGlobalId
+		        || math::distance_between_vectors(localPos, *g_local_player->m_navigation->get_position()) < 1.5f))
 		{
 			int id = player->m_player_id;
-			g_fiber_pool->queue_job([id, hitComponent, overrideDefaultDamage, weaponType, weaponDamage, tyreIndex, suspensionIndex, damageFlags, actionResultName, actionResultId, f104, hitEntityWeapon, hitWeaponAmmoAttachment, silenced, hasImpactDir, impactDir, localPos]
-			{
+			g_fiber_pool->queue_job([id, hitComponent, overrideDefaultDamage, weaponType, weaponDamage, tyreIndex, suspensionIndex, damageFlags, actionResultName, actionResultId, f104, hitEntityWeapon, hitWeaponAmmoAttachment, silenced, hasImpactDir, impactDir, localPos] {
 				auto player = g_player_service->get_by_id(id);
 
 				if (!player->is_valid() || !player->get_ped())
 					return;
 
-				g_pointers->m_send_network_damage((CEntity*)g_player_service->get_self()->get_ped(), (CEntity*)player->get_ped(), (rage::fvector3*)&localPos, hitComponent, overrideDefaultDamage, weaponType, weaponDamage,
-					tyreIndex, suspensionIndex, damageFlags, actionResultName, actionResultId, f104, hitEntityWeapon, hitWeaponAmmoAttachment, silenced, false, player->get_ped()->m_navigation->get_position());
+				g_pointers->m_send_network_damage((CEntity*)g_player_service->get_self()->get_ped(),
+				    (CEntity*)player->get_ped(),
+				    (rage::fvector3*)&localPos,
+				    hitComponent,
+				    overrideDefaultDamage,
+				    weaponType,
+				    weaponDamage,
+				    tyreIndex,
+				    suspensionIndex,
+				    damageFlags,
+				    actionResultName,
+				    actionResultId,
+				    f104,
+				    hitEntityWeapon,
+				    hitWeaponAmmoAttachment,
+				    silenced,
+				    false,
+				    player->get_ped()->m_navigation->get_position());
 			});
 		}
 	}
@@ -240,38 +258,39 @@ namespace big
 		uint16_t f218;
 		bool f216;
 
+		// clang-format off
+
 		f186 = buffer->Read<uint16_t>(16);
 		f208 = buffer->Read<uint16_t>(13);
-		ownerNetId = buffer->Read<uint16_t>(13);
-		f214 = buffer->Read<uint16_t>(13); // 1604+
-		explosionType = (eExplosionTag)buffer->ReadSigned<int>(8); // 1604+ bit size
+		ownerNetId  = buffer->Read<uint16_t>(13);
+		f214        = buffer->Read<uint16_t>(13);               // 1604+
+		explosionType = (eExplosionTag)buffer->ReadSigned<int>(8);// 1604+ bit size
 		damageScale = buffer->Read<int>(8) / 255.0f;
 
-		posX = buffer->ReadSignedFloat(22, 27648.0f);
-		posY = buffer->ReadSignedFloat(22, 27648.0f);
-		posZ = buffer->ReadFloat(22, 4416.0f) - 1700.0f;
+		posX        = buffer->ReadSignedFloat(22, 27648.0f);
+		posY        = buffer->ReadSignedFloat(22, 27648.0f);
+		posZ        = buffer->ReadFloat(22, 4416.0f) - 1700.0f;
 
-		f242 = buffer->Read<uint8_t>(1);
-		f104 = buffer->Read<uint16_t>(16);
+		f242        = buffer->Read<uint8_t>(1);
+		f104        = buffer->Read<uint16_t>(16);
 		cameraShake = buffer->Read<int>(8) / 127.0f;
 
-		isAudible = buffer->Read<uint8_t>(1);
-		f189 = buffer->Read<uint8_t>(1);
+		isAudible   = buffer->Read<uint8_t>(1);
+		f189        = buffer->Read<uint8_t>(1);
 		isInvisible = buffer->Read<uint8_t>(1);
-		f126 = buffer->Read<uint8_t>(1);
-		f241 = buffer->Read<uint8_t>(1);
-		f243 = buffer->Read<uint8_t>(1); // 1604+
+		f126        = buffer->Read<uint8_t>(1);
+		f241        = buffer->Read<uint8_t>(1);
+		f243        = buffer->Read<uint8_t>(1);// 1604+
 
-		f210 = buffer->Read<uint16_t>(13);
+		f210        = buffer->Read<uint16_t>(13);
 
-		unkX = buffer->ReadSignedFloat(16, 1.1f);
-		unkY = buffer->ReadSignedFloat(16, 1.1f);
-		unkZ = buffer->ReadSignedFloat(16, 1.1f);
+		unkX        = buffer->ReadSignedFloat(16, 1.1f);
+		unkY        = buffer->ReadSignedFloat(16, 1.1f);
+		unkZ        = buffer->ReadSignedFloat(16, 1.1f);
 
-		f190 = buffer->Read<uint8_t>(1);
-		f191 = buffer->Read<uint8_t>(1);
-
-		f164 = buffer->Read<uint32_t>(32);
+		f190     	= buffer->Read<uint8_t>(1);
+		f191        = buffer->Read<uint8_t>(1);
+		f164        = buffer->Read<uint32_t>(32);
 
 		if (f242)
 		{
@@ -286,7 +305,7 @@ namespace big
 			posZ224 = 0;
 		}
 
-		auto f168 = buffer->Read<uint32_t>(32);		 // >= 1868: f_168
+		auto f168 = buffer->Read<uint32_t>(32);// >= 1868: f_168
 
 
 		f240 = buffer->Read<uint8_t>(1);
@@ -307,34 +326,31 @@ namespace big
 
 		auto offset_object = g_pointers->m_get_net_object(*g_pointers->m_network_object_mgr, f210, true);
 
-		if (f208 == 0 && entity && entity->m_entity_type == 4 && reinterpret_cast<CPed*>(entity)->m_player_info && player->m_player_info->m_ped && player->m_player_info->m_ped->m_net_object && ownerNetId != player->m_player_info->m_ped->m_net_object->m_object_id && !offset_object)
+		if (f208 == 0 && entity && entity->m_entity_type == 4 && reinterpret_cast<CPed*>(entity)->m_player_info
+			&& player->m_player_info->m_ped && player->m_player_info->m_ped->m_net_object
+			&& ownerNetId != player->m_player_info->m_ped->m_net_object->m_object_id && !offset_object)
 		{
 			g_notification_service->push_error("WARNING"_T.data(),
-				std::vformat("BLAMED_FOR_EXPLOSION"_T, std::make_format_args(player->get_name(), reinterpret_cast<CPed*>(entity)->m_player_info->m_net_player_data.m_name)));
+				std::vformat("BLAMED_FOR_EXPLOSION"_T,
+					std::make_format_args(player->get_name(),
+						reinterpret_cast<CPed*>(entity)->m_player_info->m_net_player_data.m_name)));
 			session::add_infraction(g_player_service->get_by_id(player->m_player_id), Infraction::BLAME_EXPLOSION_DETECTED);
 			return;
 		}
 
-		if (g.session.explosion_karma && g_local_player && math::distance_between_vectors({ posX, posY, posZ }, *g_local_player->m_navigation->get_position()) < 3.0f)
+		if (g.session.explosion_karma && g_local_player
+			&& math::distance_between_vectors({posX, posY, posZ}, *g_local_player->m_navigation->get_position()) < 3.0f)
 		{
 			int id = player->m_player_id;
-			g_fiber_pool->queue_job([id, explosionType, damageScale, cameraShake, isAudible, isInvisible]
-			{
+			g_fiber_pool->queue_job([id, explosionType, damageScale, cameraShake, isAudible, isInvisible] {
 				toxic::blame_explode_player(g_player_service->get_self(), g_player_service->get_by_id(id), explosionType, damageScale, isAudible, isInvisible, cameraShake);
 			});
 		}
+
+		// clang-format on
 	}
 
-	void hooks::received_event(
-		rage::netEventMgr* event_manager,
-		CNetGamePlayer* source_player,
-		CNetGamePlayer* target_player,
-		uint16_t event_id,
-		int event_index,
-		int event_handled_bitset,
-		int buffer_size,
-		rage::datBitBuffer* buffer
-	)
+	void hooks::received_event(rage::netEventMgr* event_manager, CNetGamePlayer* source_player, CNetGamePlayer* target_player, uint16_t event_id, int event_index, int event_handled_bitset, int buffer_size, rage::datBitBuffer* buffer)
 	{
 		if (event_id > 91u)
 		{
@@ -379,9 +395,9 @@ namespace big
 		case eNetworkEvents::SCRIPT_ENTITY_STATE_CHANGE_EVENT:
 		{
 			uint16_t entity = buffer->Read<uint16_t>(13);
-			auto type = buffer->Read<ScriptEntityChangeType>(4);
-			uint32_t unk = buffer->Read<uint32_t>(32);
-			if (type == ScriptEntityChangeType::SettingOfTaskVehicleTempAction) 
+			auto type       = buffer->Read<ScriptEntityChangeType>(4);
+			uint32_t unk    = buffer->Read<uint32_t>(32);
+			if (type == ScriptEntityChangeType::SettingOfTaskVehicleTempAction)
 			{
 				uint16_t ped_id = buffer->Read<uint16_t>(13);
 				uint32_t action = buffer->Read<uint32_t>(8);
@@ -393,7 +409,8 @@ namespace big
 					return;
 				}
 			}
-			else if (type > ScriptEntityChangeType::SetVehicleExclusiveDriver || type < ScriptEntityChangeType::BlockingOfNonTemporaryEvents) {
+			else if (type > ScriptEntityChangeType::SetVehicleExclusiveDriver || type < ScriptEntityChangeType::BlockingOfNonTemporaryEvents)
+			{
 				notify::crash_blocked(source_player, "invalid script entity change type");
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
@@ -475,7 +492,8 @@ namespace big
 		case eNetworkEvents::REQUEST_CONTROL_EVENT:
 		{
 			int net_id = buffer->Read<int>(13);
-			if (g_local_player && g_local_player->m_vehicle && g_local_player->m_vehicle->m_net_object && g_local_player->m_vehicle->m_net_object->m_object_id == net_id && g_local_player->m_vehicle->m_driver == g_local_player)
+			if (g_local_player && g_local_player->m_vehicle && g_local_player->m_vehicle->m_net_object
+			    && g_local_player->m_vehicle->m_net_object->m_object_id == net_id && g_local_player->m_vehicle->m_driver == g_local_player)
 			{
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				g.reactions.request_control_event.process(plyr);
@@ -493,19 +511,19 @@ namespace big
 
 			if (type == WorldStateDataType::Rope)
 			{
-				buffer->Read<int>(9); // network rope id 
-				buffer->Read<float>(19); // pos x
-				buffer->Read<float>(19); // pos y
-				buffer->Read<float>(19); // pos z
-				buffer->Read<float>(19); // rot x
-				buffer->Read<float>(19); // rot y
-				buffer->Read<float>(19); // rot z
-				buffer->Read<float>(16); // length
-				int type = buffer->Read<int>(4);
+				buffer->Read<int>(9);   // network rope id
+				buffer->Read<float>(19);// pos x
+				buffer->Read<float>(19);// pos y
+				buffer->Read<float>(19);// pos z
+				buffer->Read<float>(19);// rot x
+				buffer->Read<float>(19);// rot y
+				buffer->Read<float>(19);// rot z
+				buffer->Read<float>(16);// length
+				int type             = buffer->Read<int>(4);
 				float initial_length = buffer->Read<float>(16);
-				float min_length = buffer->Read<float>(16);
+				float min_length     = buffer->Read<float>(16);
 
-				if (type == 0 || initial_length < min_length) // https://docs.fivem.net/natives/?_0xE832D760399EB220
+				if (type == 0 || initial_length < min_length)// https://docs.fivem.net/natives/?_0xE832D760399EB220
 				{
 					// most definitely a crash
 					LOG(INFO) << std::hex << std::uppercase << "0x" << id.m_hash;
@@ -516,9 +534,9 @@ namespace big
 			}
 			else if (type == WorldStateDataType::PopGroupOverride)
 			{
-				int pop_schedule = buffer->ReadSigned<int>(8); // Pop Schedule
-				int pop_group = buffer->Read<int>(32); // Pop Group
-				int percentage = buffer->Read<int>(7); // Percentage
+				int pop_schedule = buffer->ReadSigned<int>(8);// Pop Schedule
+				int pop_group    = buffer->Read<int>(32);     // Pop Group
+				int percentage   = buffer->Read<int>(7);      // Percentage
 
 				if (pop_group == 0 && (percentage == 0 || percentage == 103))
 				{
@@ -527,7 +545,8 @@ namespace big
 					return;
 				}
 			}
-			else if (type > WorldStateDataType::VehiclePlayerLocking || type < WorldStateDataType::CarGen) {
+			else if (type > WorldStateDataType::VehiclePlayerLocking || type < WorldStateDataType::CarGen)
+			{
 				notify::crash_blocked(source_player, "invalid world state type");
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
@@ -538,7 +557,7 @@ namespace big
 		}
 		case eNetworkEvents::REMOVE_WEAPON_EVENT:
 		{
-			int net_id = buffer->Read<int>(13);
+			int net_id    = buffer->Read<int>(13);
 			uint32_t hash = buffer->Read<uint32_t>(32);
 
 			if (hash == RAGE_JOAAT("WEAPON_UNARMED"))
@@ -551,7 +570,7 @@ namespace big
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
 				g_notification_service->push_warning("PROTECTIONS"_T.data(),
-					std::vformat("REMOVE_WEAPON_ATTEMPT"_T, std::make_format_args(source_player->get_name())));
+				    std::vformat("REMOVE_WEAPON_ATTEMPT"_T, std::make_format_args(source_player->get_name())));
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
@@ -566,7 +585,7 @@ namespace big
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
 				g_notification_service->push_warning("PROTECTIONS"_T.data(),
-					std::vformat("REMOVE_ALL_WEAPONS_ATTEMPT"_T, std::make_format_args(source_player->get_name())));
+				    std::vformat("REMOVE_ALL_WEAPONS_ATTEMPT"_T, std::make_format_args(source_player->get_name())));
 				g_pointers->m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
@@ -576,8 +595,8 @@ namespace big
 		}
 		case eNetworkEvents::GIVE_CONTROL_EVENT:
 		{
-			uint32_t timestamp = buffer->Read<uint32_t>(32);
-			int count = buffer->Read<int>(2);
+			uint32_t timestamp                = buffer->Read<uint32_t>(32);
+			int count                         = buffer->Read<int>(2);
 			bool all_objects_migrate_together = buffer->Read<bool>(1);
 
 			if (count > 3)
@@ -587,9 +606,9 @@ namespace big
 
 			for (int i = 0; i < count; i++)
 			{
-				int net_id = buffer->Read<int>(13);
+				int net_id              = buffer->Read<int>(13);
 				eNetObjType object_type = buffer->Read<eNetObjType>(4);
-				int migration_type = buffer->Read<int>(3);
+				int migration_type      = buffer->Read<int>(3);
 
 				if (object_type < eNetObjType::NET_OBJ_TYPE_AUTOMOBILE || object_type > eNetObjType::NET_OBJ_TYPE_TRAIN)
 				{
@@ -654,8 +673,7 @@ namespace big
 			scan_weapon_damage_event(source_player, buffer);
 			break;
 		}
-		default:
-			break;
+		default: break;
 		}
 
 		return g_hooking->get_original<received_event>()(event_manager, source_player, target_player, event_id, event_index, event_handled_bitset, buffer_size, buffer);

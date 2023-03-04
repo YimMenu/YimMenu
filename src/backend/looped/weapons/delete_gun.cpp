@@ -27,7 +27,7 @@ namespace big
 						else
 						{
 							Vector3 entLoc = ENTITY::GET_ENTITY_COORDS(entity, true);
-							double dist = math::distance_between_vectors(self::pos, entLoc);
+							double dist    = math::distance_between_vectors(self::pos, entLoc);
 
 							if (dist > 500)
 							{
@@ -39,11 +39,13 @@ namespace big
 								{
 									entity::delete_entity(entity);
 								}
-								else g_notification_service->push_error("Weapons", "Failed to take control of entity.");
+								else
+									g_notification_service->push_error("Weapons", "Failed to take control of entity.");
 							}
 						}
 					}
-					else g_notification_service->push_error("Weapons", "No entity found.");
+					else
+						g_notification_service->push_error("Weapons", "No entity found.");
 				}
 			}
 		}

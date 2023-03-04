@@ -1,15 +1,15 @@
 #pragma once
+#include "debug/view_debug.hpp"
+#include "esp/view_esp.hpp"
 #include "gui/components/components.hpp"
 #include "util/animator.hpp"
-#include "esp/view_esp.hpp"
-#include "debug/view_debug.hpp"
 
 
 namespace big
 {
 	class view
 	{
-		inline static animator window_animator = animator();
+		inline static animator window_animator      = animator();
 		inline static ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav;
 
 	public:
@@ -56,6 +56,7 @@ namespace big
 		static void water();
 		static void blackhole();
 		static void model_swapper();
+		static void nearby();
 
 		static void player_info();
 		static void player_troll();

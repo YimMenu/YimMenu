@@ -14,7 +14,7 @@ namespace big
 
 	inline std::vector<spawned_ped> spawned_peds;
 
-	class looped 
+	class looped
 	{
 	public:
 		static void hud_transition_state();

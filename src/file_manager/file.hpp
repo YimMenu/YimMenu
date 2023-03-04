@@ -7,7 +7,6 @@ namespace big
 	class file
 	{
 	public:
-
 		file(std::filesystem::path file_path);
 
 		file copy(std::filesystem::path new_path);
@@ -23,6 +22,5 @@ namespace big
 
 		bool m_is_project_file;
 		std::filesystem::path m_file_path;
-
 	};
 }

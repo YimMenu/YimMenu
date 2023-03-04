@@ -1,14 +1,14 @@
 #include "backend/looped/looped.hpp"
-#include "pointers.hpp"
-#include "natives.hpp"
-#include "util/entity.hpp"
 #include "fiber_pool.hpp"
+#include "natives.hpp"
+#include "pointers.hpp"
+#include "util/entity.hpp"
 
 namespace big
 {
 	void looped::player_remote_control_vehicle()
 	{
-		if (g.m_remote_controller_vehicle == -1) 
+		if (g.m_remote_controller_vehicle == -1)
 			return;
 
 		if (!ENTITY::DOES_ENTITY_EXIST(g.m_remote_controlled_vehicle))
@@ -29,8 +29,7 @@ namespace big
 		{
 			auto controlled = g.m_remote_controlled_vehicle;
 			auto controller = g.m_remote_controller_vehicle;
-			g_fiber_pool->queue_job([controlled, controller]
-			{
+			g_fiber_pool->queue_job([controlled, controller] {
 				if (entity::take_control_of(controlled))
 				{
 					ENTITY::SET_ENTITY_COLLISION(g.m_remote_controlled_vehicle, TRUE, TRUE);

@@ -28,9 +28,9 @@ namespace big
 		explicit player(CNetGamePlayer* net_game_player);
 		~player() = default;
 
-		player(const player&) = default;
-		player(player&&) noexcept = default;
-		player& operator=(const player&) = default;
+		player(const player&)                = default;
+		player(player&&) noexcept            = default;
+		player& operator=(const player&)     = default;
 		player& operator=(player&&) noexcept = default;
 
 		float screen_position_x = -1.f;
@@ -46,7 +46,7 @@ namespace big
 		[[nodiscard]] class rage::snPeer* get_session_peer();
 		[[nodiscard]] netAddress get_ip_address();
 		[[nodiscard]] uint16_t get_port();
- 
+
 		[[nodiscard]] uint8_t id() const;
 
 		[[nodiscard]] bool is_friend() const;
@@ -55,28 +55,28 @@ namespace big
 
 		std::optional<CommandAccessLevel> command_access_level = std::nullopt;
 
-		bool off_radar = false;
+		bool off_radar    = false;
 		bool never_wanted = false;
 		bool semi_godmode = false;
 
-		bool kill_loop = false;
-		bool explosion_loop = false;
-		bool freeze_loop = false;
-		bool ragdoll_loop = false;
+		bool kill_loop       = false;
+		bool explosion_loop  = false;
+		bool freeze_loop     = false;
+		bool ragdoll_loop    = false;
 		bool rotate_cam_loop = false;
 
-		rate_limiter m_host_migration_rate_limit{ 2s, 15 };
-		rate_limiter m_play_sound_rate_limit{ 1s, 10 };
-		rate_limiter m_invites_rate_limit{ 10s, 2 };
+		rate_limiter m_host_migration_rate_limit{2s, 15};
+		rate_limiter m_play_sound_rate_limit{1s, 10};
+		rate_limiter m_invites_rate_limit{10s, 2};
 		int m_num_spawned_permanent_vehicles = 0;
 
 		bool m_block_permanent_vehicles = false;
 
 		bool exposed_desync_protection = false;
-		bool is_modder = false;
-		bool block_join = false;
-		int block_join_reason = 0;
-		bool is_spammer = false;
+		bool is_modder                 = false;
+		bool block_join                = false;
+		int block_join_reason          = 0;
+		bool is_spammer                = false;
 
 		std::optional<std::uint32_t> player_time_value;
 		std::optional<std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds>> player_time_value_received_time;
@@ -87,6 +87,5 @@ namespace big
 		bool equals(const CNetGamePlayer* net_game_player) const;
 
 		[[nodiscard]] std::string to_lowercase_identifier() const;
-
 	};
 }

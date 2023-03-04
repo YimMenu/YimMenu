@@ -1,7 +1,7 @@
 #pragma once
 #include "natives.hpp"
-#include "script.hpp"
 #include "pointers.hpp"
+#include "script.hpp"
 
 namespace big::world_model
 {

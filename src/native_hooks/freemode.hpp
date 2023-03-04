@@ -13,7 +13,7 @@ namespace big
 		inline void IS_PLAYER_PLAYING(rage::scrNativeCallContext* src)
 		{
 			// block undead OTR
-			if (g.session.decloak_players && src->get_arg<Player>(0) != self::id)
+			if (g.session.decloak_players && src->get_arg<Player>(0) != self::id && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
 				src->set_return_value<BOOL>(TRUE);
 			else
 				src->set_return_value<BOOL>(PLAYER::IS_PLAYER_PLAYING(src->get_arg<Player>(0)));
@@ -45,7 +45,7 @@ namespace big
 
 		void NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA(rage::scrNativeCallContext* src)
 		{
-			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION() || NETWORK::NETWORK_IS_HOST_OF_THIS_SCRIPT())
 			{
 				src->set_return_value<BOOL>(NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA());
 			}
@@ -53,8 +53,7 @@ namespace big
 			{
 				if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("freemode") && g.session.force_script_host)
 				{
-					g_fiber_pool->queue_job([]
-					{
+					g_fiber_pool->queue_job([] {
 						scripts::force_host(RAGE_JOAAT("freemode"));
 						if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")); script && script->m_net_component)
 							script->m_net_component->block_host_migration(true);
@@ -63,8 +62,7 @@ namespace big
 
 				if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("fmmc_launcher") && g.session.force_script_host)
 				{
-					g_fiber_pool->queue_job([]
-					{
+					g_fiber_pool->queue_job([] {
 						scripts::force_host(RAGE_JOAAT("fmmc_launcher"));
 						if (auto script = gta_util::find_script_thread(RAGE_JOAAT("fmmc_launcher")); script && script->m_net_component)
 							script->m_net_component->block_host_migration(true);

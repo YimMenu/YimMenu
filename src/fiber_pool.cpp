@@ -1,5 +1,6 @@
-#include "common.hpp"
 #include "fiber_pool.hpp"
+
+#include "common.hpp"
 #include "script.hpp"
 #include "script_mgr.hpp"
 

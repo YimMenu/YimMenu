@@ -8,16 +8,18 @@ namespace big
 	public:
 		gui();
 		virtual ~gui();
-		gui(const gui&) = delete;
-		gui(gui&&) noexcept  = delete;
-		gui& operator=(const gui&) = delete;
-		gui& operator=(gui&&) noexcept  = delete;
+		gui(const gui&)                = delete;
+		gui(gui&&) noexcept            = delete;
+		gui& operator=(const gui&)     = delete;
+		gui& operator=(gui&&) noexcept = delete;
 
 		bool is_open();
 		void toggle(bool toggle);
 
 		void dx_init();
 		void dx_on_tick();
+
+		void restore_default_style();
 
 		void script_on_tick();
 		static void script_func();
@@ -29,7 +31,7 @@ namespace big
 
 	private:
 		bool m_is_open;
-
+		ImGuiStyle m_default_config;
 	};
 
 	inline gui* g_gui;

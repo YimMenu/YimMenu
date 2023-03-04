@@ -1,5 +1,5 @@
-#include "backend/player_command.hpp"
 #include "backend/bool_command.hpp"
+#include "backend/player_command.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "util/troll.hpp"
@@ -17,5 +17,6 @@ namespace big
 	};
 
 	set_bounty g_bounty("bounty", "Bounty", "Sets a 10k bounty on the player", 0);
-	bool_command g_anonymous_bounty("anonbounty", "Anonymous Bounty", "Don't show your name when setting a bounty on someone", g.session.anonymous_bounty);
+	bool_command g_anonymous_bounty("anonbounty", "Anonymous Bounty", "Don't show your name when setting a bounty on someone",
+	    g.session.anonymous_bounty);
 }

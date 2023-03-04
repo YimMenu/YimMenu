@@ -1,6 +1,6 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
 #include "core/scr_globals.hpp"
+#include "natives.hpp"
 
 namespace big
 {

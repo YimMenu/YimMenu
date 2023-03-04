@@ -10,8 +10,8 @@ namespace big
 	public:
 		looped_command(const std::string& name, const std::string& label, const std::string& description, bool& toggle);
 
-		virtual void on_enable() {};
-		virtual void on_disable() {};
+		virtual void on_enable(){};
+		virtual void on_disable(){};
 		virtual void on_tick() = 0;
 
 		virtual void refresh() override;
