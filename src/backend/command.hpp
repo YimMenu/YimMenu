@@ -39,7 +39,7 @@ namespace big
 		{
 			return m_description;
 		}
-		inline const std::optional<std::uint8_t>& get_arg_cnt()
+		inline const std::optional<std::uint8_t>& get_num_args()
 		{
 			return m_num_args;
 		}

@@ -52,7 +52,7 @@ namespace big
 					    std::make_format_args(cmd->get_name(),
 					        cmd->get_label(),
 					        cmd->get_description(),
-					        cmd->get_arg_cnt() ? cmd->get_arg_cnt().value() : 0))
+					        cmd->get_num_args() ? cmd->get_num_args().value() : 0))
 					                .data());
 
 					// check if we aren't on the last iteration
@@ -67,6 +67,6 @@ namespace big
 		ImGui::End();
 	}
 
-	bool_command g_cmd_executor("cmdexecutor", "Toggle Command Executor", "Toggles the command executor on or off",
-	    g.cmd_executor.enabled, false);
+	bool_command
+	    g_cmd_executor("cmdexecutor", "Toggle Command Executor", "Toggles the command executor window", g.cmd_executor.enabled, false);
 }
