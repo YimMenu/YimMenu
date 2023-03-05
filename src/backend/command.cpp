@@ -118,7 +118,8 @@ namespace big
 			auto multiple_cmds = split(search, ';');
 			for (auto& cmd : multiple_cmds)
 			{
-				std::string lower_search = cmd;
+				auto args                = split(cmd, ' ');
+				std::string lower_search = args[0];
 				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
 
 				if (cmd_name.contains(lower_search))
@@ -137,8 +138,8 @@ namespace big
 
 	bool command::process(const std::string& text, const std::shared_ptr<command_context> ctx, bool use_best_suggestion)
 	{
-		auto multiple_cmds = split(text, ';');
-		bool success       = false;
+		const auto multiple_cmds = split(text, ';');
+		bool success             = true;
 
 		for (auto& cmd : multiple_cmds)
 		{
@@ -147,24 +148,40 @@ namespace big
 			{
 				ctx->report_error("No command to call");
 				success = false;
-				break;
+				continue;
 			}
 
+			//build the best command based on the input
 			if (use_best_suggestion)
-				args[0] = get_suggestions(args[0])[0]->get_name();
+			{
+				const auto cmd_suggestions = get_suggestions(args[0]);
+
+				//is valid suggestion
+				if (cmd_suggestions.size() >= 1)
+				{
+					args[0] = cmd_suggestions[0]->get_name();
+				}
+				else
+				{
+					ctx->report_error(std::format("Command {} does not exist", args[0]));
+					success = false;
+					continue;
+				}
+			}
+
 
 			std::uint32_t hash = rage::joaat(args[0]);
 			if (!g_commands.contains(hash))
 			{
 				ctx->report_error(std::format("Command {} does not exist", args[0]));
 				success = false;
-				break;
+				continue;
 			}
 
-			success = true;
 			args.erase(args.begin());
 			call(hash, args, ctx);
 		}
+
 		return success;
 	}
 }

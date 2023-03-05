@@ -31,8 +31,8 @@ namespace big
 			components::input_text_with_hint("", "CMD_EXECUTOR_TYPE_CMD"_T, command_buffer, sizeof(command_buffer), ImGuiInputTextFlags_EnterReturnsTrue, [] {
 				if (command::process(command_buffer, std::make_shared<default_command_context>(), true))
 				{
-					command_buffer[0]      = 0;
 					g.cmd_executor.enabled = false;
+					command_buffer[0]      = 0;
 				}
 			});
 
