@@ -46,14 +46,14 @@ namespace big
 
 		void call(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 		void call(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
-		std::vector<command*> get_suggestions(std::string_view, int limit = 7);
+		static std::vector<command*> get_suggestions(std::string_view, int limit = 7);
 
 		static command* get(rage::joaat_t command);
 
 		static void call(rage::joaat_t command, const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 		static void call(rage::joaat_t command, const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 
-		static bool process(const std::string& text, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
+		static bool process(const std::string& text, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>(), bool use_best_suggestion = false);
 	};
 
 	inline std::unordered_map<rage::joaat_t, command*> g_commands;

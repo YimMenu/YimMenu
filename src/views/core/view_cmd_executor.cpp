@@ -1,9 +1,8 @@
-#include "views/view.hpp"
-#include "pointers.hpp"
 #include "backend/context/default_command_context.hpp"
 #include "gui.hpp"
+#include "pointers.hpp"
 #include "services/hotkey/hotkey_service.hpp"
-#include "services/cmd_executor/cmd_executor_service.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -29,17 +28,15 @@ namespace big
 			ImGui::SetKeyboardFocusHere(0);
 
 			ImGui::SetNextItemWidth(screen_x * 0.5f);
-			components::input_text_with_hint("", "Type your command", command_buffer, sizeof(command_buffer), ImGuiInputTextFlags_EnterReturnsTrue, []
-			{
-				//std::string final_cmd = g_commands.contains(rage::joaat(command_buffer)) ? command_buffer : g_cmd_executor_service->get_suggestions(command_buffer)[0]->get_name();
-				if(command::process(command_buffer, std::make_shared<default_command_context>()))
+			components::input_text_with_hint("", "Type your command", command_buffer, sizeof(command_buffer), ImGuiInputTextFlags_EnterReturnsTrue, [] {
+				if (command::process(command_buffer, std::make_shared<default_command_context>(), true))
 				{
-					command_buffer[0] = 0;
+					command_buffer[0]      = 0;
 					g.cmd_executor.enabled = false;
 				}
 			});
 
-			auto possible_commands = g_cmd_executor_service->get_suggestions(command_buffer);
+			auto possible_commands = command::get_suggestions(command_buffer);
 			if (possible_commands.size() == 0)
 			{
 				ImGui::Text("No commands could be found. :(");
@@ -48,7 +45,12 @@ namespace big
 			{
 				for (auto cmd : possible_commands)
 				{
-					ImGui::Text(std::format("{} - {} - {} | {} Args", cmd->get_name(), cmd->get_label(), cmd->get_description(), cmd->get_arg_cnt() ? cmd->get_arg_cnt().value() : 0).data());
+					ImGui::Text(std::format("{} - {} - {} | {} Args",
+					    cmd->get_name(),
+					    cmd->get_label(),
+					    cmd->get_description(),
+					    cmd->get_arg_cnt() ? cmd->get_arg_cnt().value() : 0)
+					                .data());
 
 					// check if we aren't on the last iteration
 					if (cmd != possible_commands.back())
@@ -62,5 +64,6 @@ namespace big
 		ImGui::End();
 	}
 
-	bool_command g_cmd_executor("cmdexecutor", "Toggle Command Executor", "Toggles the command executor on or off", g.cmd_executor.enabled);
+	bool_command g_cmd_executor("cmdexecutor", "Toggle Command Executor", "Toggles the command executor on or off",
+	    g.cmd_executor.enabled, false);
 }

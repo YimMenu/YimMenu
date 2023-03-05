@@ -99,26 +99,28 @@ namespace big
 		g_commands[command]->call(args, ctx);
 	}
 
-    std::vector<command*> command::get_suggestions(const std::string_view search, const int limit)
-    {
+	std::vector<command*> command::get_suggestions(const std::string_view search, const int limit)
+	{
 		std::vector<command*> found_commands{};
 		for (auto& [k, command] : g_commands)
 		{
-			if(command->get_label().length() == 0) continue;
+			if (command->get_label().length() == 0)
+				continue;
 
-			if(command->get_name().contains(search))
+			if (command->get_name().contains(search))
 				found_commands.push_back(command);
 			else if (command->get_label().contains(search))
 				found_commands.push_back(command);
 
 			// apply our maximum vector size..
-			if(found_commands.size() > limit) break;
+			if (found_commands.size() > limit)
+				break;
 		}
 
 		return found_commands;
-    }
+	}
 
-	bool command::process(const std::string& text, const std::shared_ptr<command_context> ctx)
+	bool command::process(const std::string& text, const std::shared_ptr<command_context> ctx, bool use_best_suggestion)
 	{
 		auto args = split(text, ' ');
 		if (args.size() == 0 || args[0].empty())
@@ -126,6 +128,9 @@ namespace big
 			ctx->report_error("No command to call");
 			return false;
 		}
+
+		if (use_best_suggestion)
+			args[0] = get_suggestions(args[0])[0]->get_name();
 
 		std::uint32_t hash = rage::joaat(args[0]);
 		if (!g_commands.contains(hash))
