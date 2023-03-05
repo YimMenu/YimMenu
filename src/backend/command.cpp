@@ -99,7 +99,7 @@ namespace big
 		g_commands[command]->call(args, ctx);
 	}
 
-	std::vector<command*> command::get_suggestions(const std::string_view search, const int limit)
+	std::vector<command*> command::get_suggestions(std::string search, const int limit)
 	{
 		std::vector<command*> found_commands{};
 		for (auto& [k, command] : g_commands)
@@ -107,9 +107,18 @@ namespace big
 			if (command->get_label().length() == 0)
 				continue;
 
-			if (command->get_name().contains(search))
+			std::string cmd_name     = command->get_name();
+			std::string cmd_label    = command->get_label();
+			std::string lower_search = search;
+
+			//transform all strings to lower case
+			std::transform(cmd_name.begin(), cmd_name.end(), cmd_name.begin(), tolower);
+			std::transform(cmd_label.begin(), cmd_label.end(), cmd_label.begin(), tolower);
+			std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
+
+			if (cmd_name.contains(lower_search))
 				found_commands.push_back(command);
-			else if (command->get_label().contains(search))
+			else if (cmd_label.contains(lower_search))
 				found_commands.push_back(command);
 
 			// apply our maximum vector size..
