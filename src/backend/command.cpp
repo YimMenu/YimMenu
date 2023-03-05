@@ -101,8 +101,8 @@ namespace big
 
 	std::vector<command*> command::get_suggestions(std::string search, const int limit)
 	{
-		std::vector<command*> found_commands{};
-		for (auto& [k, command] : g_commands)
+		std::vector<command*> result_cmds{};
+		for (auto& [_, command] : g_commands)
 		{
 			if (command->get_label().length() == 0)
 				continue;
@@ -114,34 +114,30 @@ namespace big
 			std::transform(cmd_name.begin(), cmd_name.end(), cmd_name.begin(), tolower);
 			std::transform(cmd_label.begin(), cmd_label.end(), cmd_label.begin(), tolower);
 
-
-			auto multiple_cmds = split(search, ';');
-			for (auto& cmd : multiple_cmds)
+			for (auto& cmd : split(search, ';'))
 			{
-				auto args                = split(cmd, ' ');
-				std::string lower_search = args[0];
+				std::string lower_search = split(cmd, ' ')[0];
 				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
 
 				if (cmd_name.contains(lower_search))
-					found_commands.push_back(command);
+					result_cmds.push_back(command);
 				else if (cmd_label.contains(lower_search))
-					found_commands.push_back(command);
+					result_cmds.push_back(command);
 			}
 
 			// apply our maximum vector size..
-			if (found_commands.size() >= limit)
+			if (result_cmds.size() >= limit)
 				break;
 		}
 
-		return found_commands;
+		return result_cmds;
 	}
 
 	bool command::process(const std::string& text, const std::shared_ptr<command_context> ctx, bool use_best_suggestion)
 	{
-		const auto multiple_cmds = split(text, ';');
-		bool success             = true;
+		bool success = true;
 
-		for (auto& cmd : multiple_cmds)
+		for (auto& cmd : split(text, ';'))
 		{
 			auto args = split(cmd, ' ');
 			if (args.size() == 0 || args[0].empty())
