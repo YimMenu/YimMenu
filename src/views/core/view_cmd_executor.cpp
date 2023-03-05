@@ -36,6 +36,9 @@ namespace big
 				}
 			});
 
+			components::small_text("CMD_EXECUTOR_MULTIPLE_CMDS"_T);
+			ImGui::Spacing();
+
 			auto possible_commands = command::get_suggestions(command_buffer);
 			if (possible_commands.size() == 0)
 			{

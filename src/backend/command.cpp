@@ -107,22 +107,28 @@ namespace big
 			if (command->get_label().length() == 0)
 				continue;
 
-			std::string cmd_name     = command->get_name();
-			std::string cmd_label    = command->get_label();
-			std::string lower_search = search;
+			std::string cmd_name  = command->get_name();
+			std::string cmd_label = command->get_label();
 
 			//transform all strings to lower case
 			std::transform(cmd_name.begin(), cmd_name.end(), cmd_name.begin(), tolower);
 			std::transform(cmd_label.begin(), cmd_label.end(), cmd_label.begin(), tolower);
-			std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
 
-			if (cmd_name.contains(lower_search))
-				found_commands.push_back(command);
-			else if (cmd_label.contains(lower_search))
-				found_commands.push_back(command);
+
+			auto multiple_cmds = split(search, ';');
+			for (auto& cmd : multiple_cmds)
+			{
+				std::string lower_search = cmd;
+				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
+
+				if (cmd_name.contains(lower_search))
+					found_commands.push_back(command);
+				else if (cmd_label.contains(lower_search))
+					found_commands.push_back(command);
+			}
 
 			// apply our maximum vector size..
-			if (found_commands.size() > limit)
+			if (found_commands.size() >= limit)
 				break;
 		}
 
@@ -131,25 +137,34 @@ namespace big
 
 	bool command::process(const std::string& text, const std::shared_ptr<command_context> ctx, bool use_best_suggestion)
 	{
-		auto args = split(text, ' ');
-		if (args.size() == 0 || args[0].empty())
+		auto multiple_cmds = split(text, ';');
+		bool success       = false;
+
+		for (auto& cmd : multiple_cmds)
 		{
-			ctx->report_error("No command to call");
-			return false;
+			auto args = split(cmd, ' ');
+			if (args.size() == 0 || args[0].empty())
+			{
+				ctx->report_error("No command to call");
+				success = false;
+				break;
+			}
+
+			if (use_best_suggestion)
+				args[0] = get_suggestions(args[0])[0]->get_name();
+
+			std::uint32_t hash = rage::joaat(args[0]);
+			if (!g_commands.contains(hash))
+			{
+				ctx->report_error(std::format("Command {} does not exist", args[0]));
+				success = false;
+				break;
+			}
+
+			success = true;
+			args.erase(args.begin());
+			call(hash, args, ctx);
 		}
-
-		if (use_best_suggestion)
-			args[0] = get_suggestions(args[0])[0]->get_name();
-
-		std::uint32_t hash = rage::joaat(args[0]);
-		if (!g_commands.contains(hash))
-		{
-			ctx->report_error(std::format("Command {} does not exist", args[0]));
-			return false;
-		}
-
-		args.erase(args.begin());
-		call(hash, args, ctx);
-		return true;
+		return success;
 	}
 }
