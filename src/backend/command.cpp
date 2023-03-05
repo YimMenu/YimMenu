@@ -102,7 +102,7 @@ namespace big
 	std::vector<command*> command::get_suggestions(std::string search, const int limit)
 	{
 		std::vector<command*> result_cmds{};
-		for (auto& [_, command] : g_commands)
+		for (auto& [hash, command] : g_commands)
 		{
 			if (command->get_label().length() == 0)
 				continue;
