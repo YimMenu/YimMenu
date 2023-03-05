@@ -22,13 +22,13 @@ namespace big
 		{
 			static char command_buffer[255];
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {10.f, 15.f});
-			components::sub_title("YimMenu Command Executor");
+			components::sub_title("CMD_EXECUTOR_TITLE"_T);
 
 			// set focus by default on input box
 			ImGui::SetKeyboardFocusHere(0);
 
 			ImGui::SetNextItemWidth(screen_x * 0.5f);
-			components::input_text_with_hint("", "Type your command", command_buffer, sizeof(command_buffer), ImGuiInputTextFlags_EnterReturnsTrue, [] {
+			components::input_text_with_hint("", "CMD_EXECUTOR_TYPE_CMD"_T, command_buffer, sizeof(command_buffer), ImGuiInputTextFlags_EnterReturnsTrue, [] {
 				if (command::process(command_buffer, std::make_shared<default_command_context>(), true))
 				{
 					command_buffer[0]      = 0;
@@ -39,17 +39,17 @@ namespace big
 			auto possible_commands = command::get_suggestions(command_buffer);
 			if (possible_commands.size() == 0)
 			{
-				ImGui::Text("No commands could be found. :(");
+				ImGui::Text("CMD_EXECUTOR_NO_CMD"_T.data());
 			}
 			else
 			{
 				for (auto cmd : possible_commands)
 				{
-					ImGui::Text(std::format("{} - {} - {} | {} Args",
-					    cmd->get_name(),
-					    cmd->get_label(),
-					    cmd->get_description(),
-					    cmd->get_arg_cnt() ? cmd->get_arg_cnt().value() : 0)
+					ImGui::Text(std::vformat("CMD_EXECUTOR_CMD_TEMPLATE"_T,
+					    std::make_format_args(cmd->get_name(),
+					        cmd->get_label(),
+					        cmd->get_description(),
+					        cmd->get_arg_cnt() ? cmd->get_arg_cnt().value() : 0))
 					                .data());
 
 					// check if we aren't on the last iteration
