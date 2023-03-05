@@ -9,11 +9,11 @@ namespace big
 
 	void looped::self_hud()
 	{
-		const bool bHideRadar = g.self.hud.hide_radar;
-		const bool bHideAmmo = g.self.hud.hide_ammo;
+		const bool bHideRadar        = g.self.hud.hide_radar;
+		const bool bHideAmmo         = g.self.hud.hide_ammo;
 		const bool bForceShowElement = g.self.hud.force_show_hud_element;
-		const bool bForceShowHUD = g.self.hud.force_show_hud;
-		auto& bHudComponents = g.self.hud.hud_components_states;
+		const bool bForceShowHUD     = g.self.hud.force_show_hud;
+		auto& bHudComponents         = g.self.hud.hud_components_states;
 
 		if (bHideRadar)
 		{

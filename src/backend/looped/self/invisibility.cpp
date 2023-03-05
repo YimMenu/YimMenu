@@ -23,7 +23,7 @@ namespace big
 			ENTITY::SET_ENTITY_VISIBLE(self::ped, false, 0);
 
 			if (g.self.local_visibility)
-        NETWORK::SET_ENTITY_LOCALLY_VISIBLE(self::ped);
+				NETWORK::SET_ENTITY_LOCALLY_VISIBLE(self::ped);
 
 			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].IsInvisible = true;
 		}
