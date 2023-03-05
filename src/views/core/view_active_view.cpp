@@ -2,6 +2,7 @@
 
 #include "pointers.hpp"
 #include "services/gui/gui_service.hpp"
+#include "services/translation_service/translation_service.hpp"
 
 namespace big
 {
@@ -18,8 +19,12 @@ namespace big
 		    {(float)*g_pointers->m_resolution_x - 270.f, (float)*g_pointers->m_resolution_y - 110.f});
 		if (ImGui::Begin("main", nullptr, window_flags))
 		{
+			const char* key = nullptr;
+			if (key = g_translation_service.get_translation(g_gui_service->get_selected()->name).data(); !key)
+				key = g_gui_service->get_selected()->name;
+
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
-			components::title(g_gui_service->get_selected()->name);
+			components::title(key);
 			ImGui::Separator();
 			g_gui_service->get_selected()->func();
 			ImGui::PopStyleVar();

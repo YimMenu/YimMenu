@@ -14,6 +14,7 @@ namespace big
 			view::player_kick();
 			view::player_toxic();
 			view::player_misc();
+			view::player_vehicle();
 		}
 	}
 }
