@@ -113,15 +113,15 @@ namespace big
 			//transform all strings to lower case
 			std::transform(cmd_name.begin(), cmd_name.end(), cmd_name.begin(), tolower);
 			std::transform(cmd_label.begin(), cmd_label.end(), cmd_label.begin(), tolower);
+			std::transform(search.begin(), search.end(), search.begin(), tolower);
 
 			for (auto& cmd : split(search, ';'))
 			{
-				std::string lower_search = split(cmd, ' ')[0];
-				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
+				std::string search_label = split(cmd, ' ')[0];
 
-				if (cmd_name.contains(lower_search))
+				if (cmd_name.contains(search_label))
 					result_cmds.push_back(command);
-				else if (cmd_label.contains(lower_search))
+				else if (cmd_label.contains(search_label))
 					result_cmds.push_back(command);
 			}
 
