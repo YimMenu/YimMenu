@@ -57,7 +57,7 @@ namespace big
 
 	struct navigation_struct
 	{
-		const char name[32]        = "";
+		const char name[48]        = "";
 		std::function<void()> func = nullptr;
 		std::map<tabs, navigation_struct> sub_nav{};
 	};
@@ -67,57 +67,98 @@ namespace big
 		std::vector<tabs> current_tab{};
 		bool switched_view = true;
 
-		std::map<tabs, navigation_struct> nav = {{tabs::SELF,
-		                                             {"Self",
-		                                                 view::self,
-		                                                 {
-		                                                     {tabs::WEAPONS, {"Weapons", view::weapons}},
-		                                                     {tabs::MOBILE, {"Mobile", view::mobile}},
-		                                                     {tabs::TELEPORT, {"Teleport", view::teleport}},
-		                                                 }}},
-		    {tabs::VEHICLE,
-		        {"Vehicle",
+		std::map<tabs, navigation_struct> nav = {
+		    {
+		        tabs::SELF,
+		        {
+		            "GUI_TAB_SELF",
+		            view::self,
+		            {
+		                {tabs::WEAPONS, {"GUI_TAB_WEAPONS", view::weapons}},
+		                {tabs::MOBILE, {"GUI_TAB_MOBILE", view::mobile}},
+		                {tabs::TELEPORT, {"GUI_TAB_TELEPORT", view::teleport}},
+		            },
+		        },
+		    },
+		    {
+		        tabs::VEHICLE,
+		        {
+		            "GUI_TAB_VEHICLE",
 		            view::vehicle,
 		            {
-		                {tabs::HANDLING,
-		                    {"Handling",
+		                {
+		                    tabs::HANDLING,
+		                    {
+		                        "GUI_TAB_HANDLING",
 		                        view::handling_current_profile,
 		                        {
-		                            {tabs::HANDLING_CURRENT_PROFILE, {"Current Profile", view::handling_current_profile}},
-		                            {tabs::HANDLING_SAVED_PROFILE, {"Saved Profiles", view::handling_saved_profiles}},
-		                        }}},
-		                {tabs::LSC, {"LS Customs", view::lsc}},
-		                {tabs::SPAWN_VEHICLE, {"Spawn Vehicle", view::spawn_vehicle}},
-		                {tabs::PV, {"Personal Vehicle", view::pv}},
-		                {tabs::PERSIST_CAR, {"Persist Car", view::persist_car}},
-		                {tabs::FUN_VEHICLE, {"Fun Features", view::fun_vehicle}},
-		            }}},
-		    {tabs::WORLD, {"World", nullptr, {{tabs::SPAWN_PED, {"Spawn Ped", view::spawn_ped}}, {tabs::TIME_AND_WEATHER, {"Time And Weather", view::time_and_weather}}, {tabs::CREATOR, {"Creator", view::creator}}, {tabs::TRAIN, {"Train", view::train}}, {tabs::WATER, {"Water", view::water}}, {tabs::BLACKHOLE, {"Blackhole", view::blackhole}}, {tabs::MODEL_SWAPPER, {"Model Swapper", view::model_swapper}}, {tabs::NEARBY, {"Nearby", view::nearby}}}}},
-		    {tabs::NETWORK,
-		        {"Network",
+		                            {tabs::HANDLING_CURRENT_PROFILE, {"GUI_TAB_HANDLING_CURRENT_PROFILE", view::handling_current_profile}},
+		                            {tabs::HANDLING_SAVED_PROFILE, {"GUI_TAB_HANDLING_SAVED_PROFILES", view::handling_saved_profiles}},
+		                        },
+		                    },
+		                },
+		                {tabs::LSC, {"GUI_TAB_LSC", view::lsc}},
+		                {tabs::SPAWN_VEHICLE, {"GUI_TAB_SPAWN_VEHICLE", view::spawn_vehicle}},
+		                {tabs::PV, {"GUI_TAB_PERSONAL_VEHICLE", view::pv}},
+		                {tabs::PERSIST_CAR, {"GUI_TAB_PERSIST_CAR", view::persist_car}},
+		                {tabs::FUN_VEHICLE, {"GUI_TAB_VEHICLE_FUN_FEATURES", view::fun_vehicle}},
+		            },
+		        },
+		    },
+		    {
+		        tabs::WORLD,
+		        {
+		            "GUI_TAB_WORLD",
 		            nullptr,
 		            {
-		                {tabs::SPOOFING, {"Spoofing", view::spoofing}},
-		                {tabs::SESSION, {"Session", view::session}},
-		                {tabs::MISSIONS, {"Missions", view::missions}},
-		                {tabs::PLAYER_DATABASE, {"Player Database", view::player_database}},
-		                {tabs::SESSION_BROWSER, {"Session Browser", view::session_browser}},
-		            }}},
-		    {tabs::SETTINGS,
-		        {"Settings",
+		                {tabs::SPAWN_PED, {"GUI_TAB_SPAWN_PED", view::spawn_ped}},
+		                {tabs::TIME_AND_WEATHER, {"GUI_TAB_TIME_N_WEATHER", view::time_and_weather}},
+		                {tabs::CREATOR, {"GUI_TAB_CREATOR", view::creator}},
+		                {tabs::TRAIN, {"GUI_TAB_TRAIN", view::train}},
+		                {tabs::WATER, {"GUI_TAB_WATER", view::water}},
+		                {tabs::BLACKHOLE, {"GUI_TAB_BLACKHOLE", view::blackhole}},
+		                {tabs::MODEL_SWAPPER, {"GUI_TAB_MODEL_SWAPPER", view::model_swapper}},
+		                {tabs::NEARBY, {"GUI_TAB_NEARBY", view::nearby}},
+		            },
+		        },
+		    },
+		    {
+		        tabs::NETWORK,
+		        {
+		            "GUI_TAB_NETWORK",
+		            nullptr,
+		            {
+		                {tabs::SPOOFING, {"GUI_TAB_SPOOFING", view::spoofing}},
+		                {tabs::SESSION, {"GUI_TAB_SESSION", view::session}},
+		                {tabs::MISSIONS, {"GUI_TAB_MISSIONS", view::missions}},
+		                {tabs::PLAYER_DATABASE, {"GUI_TAB_PLAYER_DB", view::player_database}},
+		                {tabs::SESSION_BROWSER, {"GUI_TAB_SESSION_BROWSER", view::session_browser}},
+		            },
+		        },
+		    },
+		    {
+		        tabs::SETTINGS,
+		        {
+		            "GUI_TAB_SETTINGS",
 		            view::settings,
 		            {
-		                {tabs::STAT_EDITOR, {"Stat Editor", view::stat_editor}},
-		                {tabs::CONTEXT_MENU_SETTINGS, {"Context Menu", view::context_menu_settings}},
-		                {tabs::ESP_SETTINGS, {"ESP", view::esp_settings}},
-		                {tabs::GUI_SETTINGS, {"GUI", view::gui_settings}},
-		                {tabs::HOTKEY_SETTINGS, {"Hotkeys", view::hotkey_settings}},
-		                {tabs::REACTION_SETTINGS, {"Reactions", view::reaction_settings}},
-		                {tabs::PROTECTION_SETTINGS, {"Protection", view::protection_settings}},
-		                {tabs::TRANSLATION_SETTINGS, {"Translation", view::translation_settings}},
-		                {tabs::DEBUG, {"Debug", nullptr}},
-		            }}},
-		    {tabs::PLAYER, {"", view::view_player}}};
+		                {tabs::STAT_EDITOR, {"GUI_TAB_STAT_EDITOR", view::stat_editor}},
+		                {tabs::CONTEXT_MENU_SETTINGS, {"GUI_TAB_CONTEXT_MENU", view::context_menu_settings}},
+		                {tabs::ESP_SETTINGS, {"GUI_TAB_ESP", view::esp_settings}},
+		                {tabs::GUI_SETTINGS, {"GUI_TAB_GUI", view::gui_settings}},
+		                {tabs::HOTKEY_SETTINGS, {"GUI_TAB_HOTKEYS", view::hotkey_settings}},
+		                {tabs::REACTION_SETTINGS, {"GUI_TAB_REACTIONS", view::reaction_settings}},
+		                {tabs::PROTECTION_SETTINGS, {"GUI_TAB_PROTECTION", view::protection_settings}},
+		                {tabs::TRANSLATION_SETTINGS, {"GUI_TAB_TRANSLATION", view::translation_settings}},
+		                {tabs::DEBUG, {"GUI_TAB_DEBUG", nullptr}},
+		            },
+		        },
+		    },
+		    {
+		        tabs::PLAYER,
+		        {"", view::view_player},
+		    },
+		};
 
 	public:
 		gui_service();
