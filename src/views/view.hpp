@@ -64,5 +64,6 @@ namespace big
 		static void player_toxic();
 		static void player_misc();
 		static void player_vehicle();
+		static void player_attacker();
 	};
 }

@@ -25,11 +25,6 @@ namespace big
 			ImGui::Checkbox("NEVER_WANTED"_T.data(), &g_player_service->get_selected()->never_wanted);
 			ImGui::Checkbox("SEMI_GODMODE"_T.data(), &g_player_service->get_selected()->semi_godmode);
 
-			components::button("Gooch Test", [] {
-				*script_global(1890140).at(244).at(1).as<Player*>() = g_player_service->get_selected()->id();
-				scripts::start_launcher_script(171);
-			});
-
 			ImGui::TreePop();
 		}
 	}

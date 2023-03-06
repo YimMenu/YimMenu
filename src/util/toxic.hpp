@@ -8,6 +8,8 @@
 #include "util/scripts.hpp"
 #include "util/session.hpp"
 #include "util/system.hpp"
+#include "util/ped.hpp"
+#include "util/vehicle.hpp"
 
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
@@ -73,7 +75,7 @@ namespace big::toxic
 			    peer,
 			    (*g_pointers->m_network_time)->m_connection_identifier,
 			    &msg,
-			    0x1000000);// repeatedly spamming the event will eventually cause certain bounds checks to disable for some reason
+			    0x1000000); // repeatedly spamming the event will eventually cause certain bounds checks to disable for some reason
 		}
 
 		return true;
@@ -151,4 +153,39 @@ namespace big::toxic
 		set_time_all((*g_pointers->m_network_time)->m_time + millis);
 	}
 
+	inline void Spawn_Attackers(Hash vehicle, float z)
+	{
+		Ped ply     = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
+		Vector3 pos = ENTITY::GET_ENTITY_COORDS(ply, true) + Vector3(1, 1, z);
+		float heading = ENTITY::GET_ENTITY_HEADING(PED::IS_PED_IN_ANY_VEHICLE(ply, false) ? PED::GET_VEHICLE_PED_IS_IN(ply, false) : ply);
+
+		Vehicle veh = vehicle::spawn(vehicle, pos, heading, true);
+		VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
+		VEHICLE::CONTROL_LANDING_GEAR(veh, 3);
+
+		static const Hash playerGroup = rage::joaat("PLAYER");
+		static const Hash civGroup    = rage::joaat("CIVMALE");
+		static const Hash femCivGroup = rage::joaat("CIVFEMALE");
+
+		Hash relationshipGroup;
+		PED::ADD_RELATIONSHIP_GROUP("_HOSTILE_JESUS", &relationshipGroup);
+		PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, playerGroup);
+		PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, civGroup);
+		PED::SET_RELATIONSHIP_BETWEEN_GROUPS(5, relationshipGroup, femCivGroup);
+
+		Ped ped = ped::spawn_in_vehicle("u_m_m_jesus_01", veh, true);
+
+		PED::SET_PED_RELATIONSHIP_GROUP_HASH(ped, relationshipGroup);
+		PED::SET_PED_HEARING_RANGE(ped, 9999.f);
+		PED::SET_PED_CONFIG_FLAG(ped, 281, true);
+
+		TASK::TASK_PLANE_MISSION(ped, veh, 0, ply, 0, 0, 0, 6, 0.0, 0.0, 0.0, 2500.0, -1500.0, 0);
+		TASK::TASK_VEHICLE_FOLLOW(ped, veh, ply, 540, 525117, 1);
+		TASK::TASK_VEHICLE_SHOOT_AT_PED(ped, ply, 100);
+
+		WEAPON::GIVE_WEAPON_TO_PED(ped, rage::joaat("WEAPON_RAILGUN"), 9999, true, true);
+		TASK::TASK_COMBAT_PED(ped, ply, 0, 16);
+
+		PED::SET_PED_FIRING_PATTERN(ped, 0xC6EE6B4C);
+	}
 }
