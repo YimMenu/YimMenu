@@ -18,26 +18,21 @@ class IDirectSoundCaptureBuffer
 
 	virtual int AddRef()
 	{
-		LOG(VERBOSE) << __FUNCTION__;
 		return 0;
 	};
 
 	virtual int Release()
 	{
-		LOG(VERBOSE) << __FUNCTION__;
 		return 0;
 	}
 
 	virtual HRESULT GetCaps(void* caps)
 	{
-		LOG(VERBOSE) << __FUNCTION__;
 		return (HRESULT)0L;// DS_OK
 	}
 
 	virtual HRESULT GetCurrentPosition(int* capture, int* read)
 	{
-		LOG(VERBOSE) << __FUNCTION__ << " current read: " << read_position;
-
 		if (capture)
 			*capture = 0;
 
@@ -49,20 +44,17 @@ class IDirectSoundCaptureBuffer
 
 	virtual HRESULT GetFormat(void* out, int length, int* out_length)
 	{
-		LOG(VERBOSE) << __FUNCTION__;
 		return (HRESULT)0L;// DS_OK
 	}
 
 	virtual HRESULT GetStatus(int* status)
 	{
-		LOG(VERBOSE) << __FUNCTION__;
 		*status = 1;       // DSCBSTATUS_CAPTURING
 		return (HRESULT)0L;// DS_OK
 	}
 
 	virtual HRESULT Initialize(void*, void*)
 	{
-		LOG(VERBOSE) << __FUNCTION__;
 		return (HRESULT)0L;// DS_OK
 	}
 
@@ -78,8 +70,6 @@ class IDirectSoundCaptureBuffer
 		// fix artifacts after audio ends
 		if (dwBytes > 1280)
 			dwOffset = 0;
-
-		LOG(VERBOSE) << __FUNCTION__ << " bytes: " << dwBytes << " offset: " << dwOffset << " page: " << audio_page;
 
 		if (dwOffset + dwBytes <= audio_size)
 		{
@@ -130,46 +120,44 @@ class IDirectSoundCaptureBuffer
 		}
 
 		running = true;
-		big::g_thread_pool->push(
-		    [this]
-		    {
-			    last_read = std::chrono::high_resolution_clock::now();
+		big::g_thread_pool->push([this] {
+			last_read = std::chrono::high_resolution_clock::now();
 
-			    while (running)
-			    {
-				    std::this_thread::yield();
+			while (!big::g_running)
+				std::this_thread::yield();
 
-				    // the buffer can only support up to 32000 bytes of data at once, so we have to page it instead
-				    if (std::chrono::high_resolution_clock::now() - last_read >= 1ms)
-				    {
-					    last_read = std::chrono::high_resolution_clock::now();
-					    read_position += ((2 * 16000) / 1000);// F*M*Nc/1000
+			while (big::g_running && running)
+			{
+				std::this_thread::yield();
 
-					    // reset page idx after audio playback completes
-					    if (GetActualReadPos() > audio_size)
-					    {
-						    read_position = 0;
-						    audio_page    = 0;
-					    }
+				// the buffer can only support up to 32000 bytes of data at once, so we have to page it instead
+				if (std::chrono::high_resolution_clock::now() - last_read >= 1ms)
+				{
+					last_read = std::chrono::high_resolution_clock::now();
+					read_position += ((2 * 16000) / 1000);// F*M*Nc/1000
 
-					    // use next page if we go beyond 32000
-					    if (read_position > 32000)
-					    {
-						    read_position = read_position % 32000;
-						    audio_page++;
-					    }
-				    }
-			    }
-		    });
+					// reset page idx after audio playback completes
+					if (GetActualReadPos() > audio_size)
+					{
+						read_position = 0;
+						audio_page    = 0;
+					}
 
-		LOG(VERBOSE) << __FUNCTION__ << " wave size: " << audio_size;
+					// use next page if we go beyond 32000
+					if (read_position > 32000)
+					{
+						read_position = read_position % 32000;
+						audio_page++;
+					}
+				}
+			}
+		});
+
 		return (HRESULT)0L;// DS_OK
 	}
 
 	virtual HRESULT Stop()
 	{
-		LOG(VERBOSE) << __FUNCTION__;
-
 		running = false;
 		delete[] audio_buffer;
 
@@ -178,7 +166,6 @@ class IDirectSoundCaptureBuffer
 
 	virtual HRESULT Unlock(LPVOID pvAudioPtr1, DWORD dwAudioBytes1, LPVOID pvAudioPtr2, DWORD dwAudioBytes2)
 	{
-		LOG(VERBOSE) << __FUNCTION__;
 		return (HRESULT)0L;// DS_OK
 	}
 
@@ -197,19 +184,16 @@ class IDirectSoundCapture
 
 	virtual int AddRef()
 	{
-		LOG(VERBOSE) << __FUNCTION__;
 		return 0;
 	};
 
 	virtual int Release()
 	{
-		LOG(VERBOSE) << __FUNCTION__;
 		return 0;
 	}
 
 	virtual HRESULT CreateSoundBuffer(void* desc, IDirectSoundCaptureBuffer** buffer, void* unknown)
 	{
-		LOG(VERBOSE) << __FUNCTION__;
 		*buffer = &g_direct_sound_capture_buffer;
 		return (HRESULT)0L;// DS_OK
 	}

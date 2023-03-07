@@ -29,6 +29,7 @@ class CPlayerCreationDataNode;
 class CPlayerAppearanceDataNode;
 class CFoundDevice;
 class IDirectSoundCapture;
+class CVehicleProximityMigrationDataNode;
 
 namespace rage
 {
@@ -159,7 +160,7 @@ namespace big
 		static int enumerate_audio_devices(CFoundDevice* found_devices, int count, int flags);
 		static HRESULT direct_sound_capture_create(GUID* guid, IDirectSoundCapture** sound, void* unknown);
 
-		static void write_vehicle_proximity_migration_data_node(rage::netObject* veh, __int64 node);
+		static void write_vehicle_proximity_migration_data_node(rage::netObject* veh, CVehicleProximityMigrationDataNode* node);
 	};
 
 	class minhook_keepalive

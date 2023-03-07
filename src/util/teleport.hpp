@@ -2,6 +2,7 @@
 #include "blip.hpp"
 #include "entity.hpp"
 #include "gta/enums.hpp"
+#include "gta/net_object_mgr.hpp"
 #include "services/players/player_service.hpp"
 #include "vehicle.hpp"
 
@@ -37,6 +38,10 @@ namespace big::teleport
 
 			g.m_tp_position      = {coords.x, coords.y, coords.z};
 			g.m_tp_player_net_id = player->get_ped()->m_net_object->m_object_id;
+
+			if ((player->is_valid() && PED::IS_PED_IN_ANY_VEHICLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), false))
+			    || PLAYER::IS_REMOTE_PLAYER_IN_NON_CLONED_VEHICLE(player->id()))
+				g_pointers->m_clear_ped_tasks_network(player->get_ped(), true);
 
 			for (int i = 0; i < 15; i++)
 			{
