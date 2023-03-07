@@ -5,16 +5,17 @@
 #include "gta/pickup_rewards.hpp"
 #include "pointers.hpp"
 #include "services/gta_data/gta_data_service.hpp"
+#include "util/ped.hpp"
 #include "util/scripts.hpp"
 #include "util/session.hpp"
 #include "util/system.hpp"
-#include "util/ped.hpp"
 #include "util/vehicle.hpp"
 
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
 #include <timeapi.h>
+
 #pragma comment(lib, "winmm.lib")
 
 namespace big::toxic
@@ -186,6 +187,6 @@ namespace big::toxic
 		WEAPON::GIVE_WEAPON_TO_PED(ped, rage::joaat("WEAPON_RAILGUN"), 9999, true, true);
 		TASK::TASK_COMBAT_PED(ped, ply, 0, 16);
 
-		PED::SET_PED_FIRING_PATTERN(ped, 0xC6EE6B4C);
+		PED::SET_PED_FIRING_PATTERN(ped, rage::joaat("FIRING_PATTERN_FULL_AUTO"));
 	}
 }

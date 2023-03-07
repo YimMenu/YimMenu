@@ -1,6 +1,8 @@
+#include "core\scr_globals.hpp"
 #include "util/toxic.hpp"
 #include "views/view.hpp"
 
+#include <script\globals\GPBD_FM.hpp>
 
 namespace big
 {
@@ -32,13 +34,14 @@ namespace big
 				toxic::Spawn_Attackers(VEHICLE_RHINO, 5);
 			});
 
-			components::button("Gooch Test", [] {
+			components::button("Send Gooch", [] {
 				*script_global(1890140).at(244).at(1).as<Player*>() = g_player_service->get_selected()->id();
 				scripts::start_launcher_script(171);
 			});
 			ImGui::SameLine();
-			components::button("Mugger Test", [] {
-				*script_global(1853348).at(834).at(1).as<Player*>() = g_player_service->get_selected()->id();
+			components::button("Send Mugger", [] { // Probably Wrong, needs testing
+				scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[self::id].GangCallRequestedServices;
+				scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[self::id].GangCallTarget;
 				scripts::start_launcher_script(141);
 			});
 
