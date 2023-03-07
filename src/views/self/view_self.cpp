@@ -244,14 +244,14 @@ namespace big
 
 		components::command_checkbox<"hudcolor">();
 
-		ImGui::Checkbox("Ovveride Hud Color IRGBA", &g.self.hud.shcolor);
+		ImGui::Checkbox("Override Hud Color Specify", &g.self.hud.shcolor);
 		ImGui::InputInt("Hud Index", &g.self.hud.index);//need to display current val if not displayed
 		ImGui::InputInt("Hud Red", &g.self.hud.r);
 		ImGui::InputInt("Hud Green", &g.self.hud.g);
 		ImGui::InputInt("Hud Blue", &g.self.hud.b);
 		ImGui::InputInt("Hud Alpha", &g.self.hud.a);
 
-		ImGui::Checkbox("Override Multiplayer Hud Off Index", &g.self.hud.mhcolor);
+		ImGui::Checkbox("Override Multiplayer Hud Color", &g.self.hud.mhcolor);
 		ImGui::InputInt("Hud Color", &g.self.hud.hcolor);
 
 		ImGui::Checkbox("Override Multiplayer Text Off Index", &g.self.hud.mtcolor);
