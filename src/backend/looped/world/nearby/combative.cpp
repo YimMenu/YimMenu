@@ -17,6 +17,6 @@ namespace big
 			MISC::SET_RIOT_MODE_ENABLED(false);
                 }
         };
-	combative g_combative("pedscombat", "Combative", "Nearby peds attack eachother.", g.world.nearby.combative);
+	combative g_combative("riotmode", "Riot Mode", "Make nearby peds attack eachother.", g.world.nearby.combative);
 
 }
