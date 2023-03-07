@@ -119,7 +119,7 @@ namespace big
 		auto file = m_translation_directory->get_file(std::format("./{}.json", pack_id));
 		if (!file.exists())
 		{
-			LOG(INFO) << "Translations for '" << pack_id << "' does not exist, downloading...from" << m_url;
+			LOG(INFO) << "Translations for '" << pack_id << "' does not exist, downloading from " << m_url;
 			if (!download_language_pack(pack_id))
 			{
 				LOG(WARNING) << "Failed to download language pack, can't recover...";

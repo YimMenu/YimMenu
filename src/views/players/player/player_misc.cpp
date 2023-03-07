@@ -31,11 +31,6 @@ namespace big
 				scripts::start_launcher_script(171);
 			});
 
-			components::button("Car Test", [] {
-				using migrate_object_t          = void (*)(CNetGamePlayer * player, rage::netObject * object, int type);
-				migrate_object_t migrate_object = (migrate_object_t)((__int64)GetModuleHandleA(0) + 0x11b27dc);
-			});
-
 			ImGui::TreePop();
 		}
 	}
