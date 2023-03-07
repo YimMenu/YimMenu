@@ -1,5 +1,6 @@
 #include "script/globals/GPBD_FM_3.hpp"
 #include "util/scripts.hpp"
+#include "util/vehicle.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -28,6 +29,11 @@ namespace big
 			components::button("Gooch Test", [] {
 				*script_global(1890140).at(244).at(1).as<Player*>() = g_player_service->get_selected()->id();
 				scripts::start_launcher_script(171);
+			});
+
+			components::button("Car Test", [] {
+				using migrate_object_t          = void (*)(CNetGamePlayer * player, rage::netObject * object, int type);
+				migrate_object_t migrate_object = (migrate_object_t)((__int64)GetModuleHandleA(0) + 0x11b27dc);
 			});
 
 			ImGui::TreePop();

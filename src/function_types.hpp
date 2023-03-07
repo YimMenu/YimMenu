@@ -21,6 +21,7 @@ namespace rage
 	class snConnectToPeerTaskResult;
 	class rlScHandle;
 	class rlQueryPresenceAttributesContext;
+	enum class eThreadState : uint32_t;
 }
 
 namespace datafile_commands
@@ -115,7 +116,7 @@ namespace big::functions
 	using send_remove_gamer_cmd = void (*)(rage::netConnectionManager* net_connection_mgr, rage::netConnectionPeer* player, int connection_id, rage::snMsgRemoveGamersFromSessionCmd* cmd, int flags);
 	using handle_remove_gamer_cmd = void* (*)(rage::snSession* session, rage::snPlayer* origin, rage::snMsgRemoveGamersFromSessionCmd* cmd);
 
-	using script_vm = int (*)(uint64_t* stack, int64_t** scr_globals, rage::scrProgram* program, rage::scrThreadContext* ctx);
+	using script_vm = rage::eThreadState (*)(uint64_t* stack, int64_t** scr_globals, rage::scrProgram* program, rage::scrThreadContext* ctx);
 
 	using encode_session_info = bool (*)(rage::rlSessionInfo* info, char* buffer, int buffer_size, int* bytes_written);
 	using decode_session_info = bool (*)(rage::rlSessionInfo* out_info, char* buffer, int* bytes_read);
@@ -133,4 +134,6 @@ namespace big::functions
 
 	using get_next_carriage      = void* (*)(void* carriage);
 	using get_entity_attached_to = rage::CDynamicEntity* (*)(rage::CDynamicEntity* entity);
+
+	using migrate_object = void (*)(CNetGamePlayer* player, rage::netObject* object, int type);
 }

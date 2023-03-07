@@ -62,6 +62,45 @@ namespace big
 		tls_ctx->m_is_script_thread_active = og_thread != nullptr;
 	}
 
+	void script_function::call_latent(rage::scrThread* thread, rage::scrProgram* program, std::initializer_list<std::uint64_t> args, bool& done)
+	{
+		g_fiber_pool->queue_job([this, thread, program, args, &done] {
+			auto stack = (uint64_t*)thread->m_stack;
+
+			rage::eThreadState result = rage::eThreadState::idle;
+
+			rage::scrThreadContext ctx = thread->m_context;
+
+			for (auto& arg : args)
+				stack[ctx.m_stack_pointer++] = arg;
+
+			stack[ctx.m_stack_pointer++] = 0;
+			ctx.m_instruction_pointer    = m_ip;
+			ctx.m_state                  = rage::eThreadState::idle;
+
+			while (result != rage::eThreadState::killed)
+			{
+				auto tls_ctx   = rage::tlsContext::get();
+				auto og_thread = tls_ctx->m_script_thread;
+
+				tls_ctx->m_script_thread           = thread;
+				tls_ctx->m_is_script_thread_active = true;
+
+				auto old_ctx      = thread->m_context;
+				thread->m_context = ctx;
+				result = g_pointers->m_script_vm(stack, g_pointers->m_script_globals, program, &thread->m_context);
+				thread->m_context = old_ctx;
+
+				tls_ctx->m_script_thread           = og_thread;
+				tls_ctx->m_is_script_thread_active = og_thread != nullptr;
+
+				script::get_current()->yield();
+			}
+
+			done = true;
+		});
+	}
+
 	void script_function::static_call(std::initializer_list<std::uint64_t> args)
 	{
 		populate_ip();

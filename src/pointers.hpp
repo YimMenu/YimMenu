@@ -255,6 +255,9 @@ namespace big
 
 		memory::byte_patch* m_disable_collision{};
 		memory::byte_patch* m_allow_weapons_in_vehicle{};
+
+		PVOID m_write_vehicle_proximity_migration_data_node{};
+		functions::migrate_object m_migrate_object{};
 	};
 
 	inline pointers* g_pointers{};

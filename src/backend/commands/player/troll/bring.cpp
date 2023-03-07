@@ -15,5 +15,5 @@ namespace big
 		}
 	};
 
-	bring g_bring("bring", "Bring", "Teleports the player to you if they are in a vehicle", 0);
+	bring g_bring("bring", "Bring", "Teleports the player to you", 0, false);
 }

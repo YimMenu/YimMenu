@@ -604,7 +604,7 @@ namespace big
 				}
 				else if (attach_node->m_attached && is_attachment_infinite(get_game_object(object), attach_node->m_attached_to))
 				{
-					notify::crash_blocked(sender, "recursive infinite ped attachment");
+					// notify::crash_blocked(sender, "recursive infinite ped attachment");
 					return true;
 				}
 
