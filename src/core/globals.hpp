@@ -83,7 +83,7 @@ namespace big
 					bool filter_player    = true;
 					std::int8_t player_id = -1;
 
-					bool block_all = false;//should not save
+					bool block_all = false; //should not save
 
 					NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_event, logs, filter_player, player_id)
 				} script_event{};
@@ -149,7 +149,7 @@ namespace big
 			reaction fake_deposit{"Fake Deposit", "Blocked Fake Deposit from %s", "%s tried to show me a fake money notification!"};
 			reaction force_mission{"Force Mission", "Blocked Force Mission from %s", "%s tried to force me into a mission!"};
 			reaction force_teleport{"Force Teleport", "Blocked Force Teleport from %s", "%s tried to teleport me!"};
-			reaction gta_banner{"GTA Banner", "Blocked GTA Banner from %s", "Blocked GTA Banner from %s"};// please don't enable this
+			reaction gta_banner{"GTA Banner", "Blocked GTA Banner from %s", "Blocked GTA Banner from %s"}; // please don't enable this
 			reaction kick_from_interior{"Kick From Interior", "Blocked Kick From Interior from %s", "%s tried to kick me from my interior!"};
 			reaction mc_teleport{"MC Teleport", "Blocked MC Teleport from %s", "%s tried to teleport me!"};
 			reaction network_bail{"Network Bail", "Blocked Network Bail from %s", "%s tried to kick me out!"};
@@ -183,7 +183,7 @@ namespace big
 			reaction request_control_event{"Request Control Event", "Blocked Request Control Event from %s", "%s tried to mess with my vehicle!"};
 			reaction report{"Report", "Blocked Report from %s", "%s tried to report me!"};
 
-			interloper_reaction breakup_others{"Breakup Kicks On Other Players", "%s is trying to breakup kick %s!", "%s is trying to breakup kick %s!", true, true};// blockable only when host but we have no way to specify that atm
+			interloper_reaction breakup_others{"Breakup Kicks On Other Players", "%s is trying to breakup kick %s!", "%s is trying to breakup kick %s!", true, true}; // blockable only when host but we have no way to specify that atm
 			reaction lost_connection_kick{"Lost Connection Kick", "Blocked Lost Connection Kick from %s", "%s tried to kick me out!"};
 			reaction gamer_instruction_kick{"Gamer Instruction Kick", "Blocked Gamer Instruction Kick from %s", "%s tried to kick me out!"};
 			interloper_reaction lost_connection_kick_others{"Lost Connection Kick On Other Players", "%s is trying to lost connection kick %s!", "%s is trying to lost connection kick %s!", true, false};
@@ -229,7 +229,7 @@ namespace big
 
 			bool desync_kick     = false;
 			bool rid_join        = false;
-			bool lessen_breakups = false;// disabled by default due to anticheat concerns
+			bool lessen_breakups = false; // disabled by default due to anticheat concerns
 			bool receive_pickup  = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, lessen_breakups, desync_kick, receive_pickup)
@@ -482,7 +482,7 @@ namespace big
 			bool hide_from_player_list = false;
 
 			bool spoof_blip = false;
-			int blip_type   = 0;// actual blip type + 1
+			int blip_type   = 0; // actual blip type + 1
 
 			bool spoof_rank = false;
 			int rank        = 1;
@@ -501,7 +501,7 @@ namespace big
 
 			bool spoof_cheater = false;
 
-			bool spoof_hide_god = true;
+			bool spoof_hide_god      = true;
 			bool spoof_hide_spectate = true;
 
 			bool spoof_crew_data = false;
@@ -516,10 +516,9 @@ namespace big
 			bool spoof_session_player_count = false;
 			int session_player_count        = 25;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing,
-				hide_from_player_list, spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew,
-				square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language,
-				session_language, spoof_session_player_count, session_player_count)
+			bool voice_chat_audio = false;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing, hide_from_player_list, spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language, session_language, spoof_session_player_count, session_player_count, voice_chat_audio)
 		} spoofing{};
 
 		struct vehicle
@@ -579,7 +578,7 @@ namespace big
 			bool horn_boost                             = false;
 			bool instant_brake                          = false;
 			bool block_homing                           = true;
-			bool ls_customs                             = false;// don't save this to disk
+			bool ls_customs                             = false; // don't save this to disk
 			bool seatbelt                               = false;
 			bool turn_signals                           = false;
 			bool vehicle_jump                           = false;
@@ -635,7 +634,7 @@ namespace big
 				bool on_npc                 = false;
 				float fov                   = 90.f;
 				float distance              = 200.f;
-				std::uint32_t selected_bone = 0x796E;// Default to head
+				std::uint32_t selected_bone = 0x796E; // Default to head
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, smoothing, smoothing_speed, fov, selected_bone)
 			} aimbot{};
 
