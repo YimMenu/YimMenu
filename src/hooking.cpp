@@ -113,6 +113,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::get_model_info>("GMI", g_pointers->m_get_model_info);
 
+		detour_hook_helper::add<hooks::task_jump_constructor>("TJC", g_pointers->m_taskjump_constructor);
+
 		g_hooking = this;
 	}
 
