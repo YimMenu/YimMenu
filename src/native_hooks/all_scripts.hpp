@@ -66,7 +66,7 @@ namespace big
 		{
 			const auto action = src->get_arg<ControllerInputs>(1);
 
-			if (g.weapons.interior_weapon)// Filtering from the inside of Kosatka
+			if (g.weapons.interior_weapon) // Filtering from the inside of Kosatka
 			{
 				switch (action)
 				{
@@ -140,7 +140,7 @@ namespace big
 			HUD::HUD_FORCE_WEAPON_WHEEL(src->get_arg<BOOL>(0));
 		}
 
-		void RETURN_FALSE(rage::scrNativeCallContext* src)
+		void RETURN_TRUE(rage::scrNativeCallContext* src)
 		{
 			src->set_return_value<BOOL>(TRUE);
 		}
