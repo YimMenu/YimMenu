@@ -38,6 +38,7 @@ namespace big::teleport
 
 			g.m_tp_position      = {coords.x, coords.y, coords.z};
 			g.m_tp_player_net_id = player->get_ped()->m_net_object->m_object_id;
+			g.m_tp_veh_net_id    = g_pointers->m_handle_to_ptr(hnd)->m_net_object->m_object_id;
 
 			if ((player->is_valid() && PED::IS_PED_IN_ANY_VEHICLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), false))
 			    || PLAYER::IS_REMOTE_PLAYER_IN_NON_CLONED_VEHICLE(player->id()))

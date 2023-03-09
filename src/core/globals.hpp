@@ -53,6 +53,7 @@ namespace big
 		int m_remote_controller_vehicle = -1;
 		int m_remote_controlled_vehicle = -1;
 
+		std::uint16_t m_tp_veh_net_id;
 		std::uint16_t m_tp_player_net_id;
 		rage::fvector3 m_tp_position;
 
