@@ -1,8 +1,8 @@
-#include "core\scr_globals.hpp"
+#include "core/scr_globals.hpp"
 #include "util/toxic.hpp"
 #include "views/view.hpp"
 
-#include <script\globals\GPBD_FM.hpp>
+#include <script/globals/GPBD_FM.hpp>
 
 namespace big
 {
@@ -11,27 +11,27 @@ namespace big
 		if (ImGui::TreeNode("Attackers"))
 		{
 			components::button("Send Lazer", [] {
-				toxic::Spawn_Attackers(VEHICLE_LAZER, 500);
+				toxic::spawn_attackers(VEHICLE_LAZER, 500);
 			});
 			ImGui::SameLine();
 			components::button("Send Hydra", [] {
-				toxic::Spawn_Attackers(VEHICLE_HYDRA, 500);
+				toxic::spawn_attackers(VEHICLE_HYDRA, 500);
 			});
 
 			components::button("Send RC Tank", [] {
-				toxic::Spawn_Attackers(VEHICLE_MINITANK, 1);
+				toxic::spawn_attackers(VEHICLE_MINITANK, 1);
 			});
 			ImGui::SameLine();
 			components::button("Send Vigilante", [] {
-				toxic::Spawn_Attackers(VEHICLE_VIGILANTE, 20);
+				toxic::spawn_attackers(VEHICLE_VIGILANTE, 20);
 			});
 
 			components::button("Send Buzzard", [] {
-				toxic::Spawn_Attackers(VEHICLE_BUZZARD, 100);
+				toxic::spawn_attackers(VEHICLE_BUZZARD, 100);
 			});
 			ImGui::SameLine();
 			components::button("Send Tank", [] {
-				toxic::Spawn_Attackers(VEHICLE_RHINO, 5);
+				toxic::spawn_attackers(VEHICLE_RHINO, 5);
 			});
 
 			components::button("Send Gooch", [] {
@@ -39,10 +39,10 @@ namespace big
 				scripts::start_launcher_script(171);
 			});
 			ImGui::SameLine();
-			components::button("Send Mugger", [] { // Probably Wrong, needs testing
-				scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[self::id].GangCallRequestedServices;
-				scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[self::id].GangCallTarget;
-				scripts::start_launcher_script(141);
+			components::button("Send Mugger", [] {
+				scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[self::id].GangCallRequestedServices = 0;
+				scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[self::id].GangCallTarget =
+				    g_player_service->get_selected()->id();
 			});
 
 			ImGui::TreePop();

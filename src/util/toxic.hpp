@@ -154,7 +154,7 @@ namespace big::toxic
 		set_time_all((*g_pointers->m_network_time)->m_time + millis);
 	}
 
-	inline void Spawn_Attackers(Hash vehicle, float z)
+	inline void spawn_attackers(Hash vehicle, float z)
 	{
 		Ped ply     = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(g_player_service->get_selected()->id());
 		Vector3 pos = ENTITY::GET_ENTITY_COORDS(ply, true) + Vector3(1, 1, z);
