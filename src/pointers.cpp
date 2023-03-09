@@ -271,9 +271,9 @@ namespace big
 		// Received clone sync & Get sync tree for type & Get net object for player & Get sync type info & Get net object
 		main_batch.add("RCS/GSTFT/GNOFP/GNO/GSTI", "4C 8B FA 41 0F B7 D1", [this](memory::handle ptr) {
 			m_received_clone_sync = ptr.sub(0x1D).as<decltype(m_received_clone_sync)>();
-			m_get_sync_tree_for_type = ptr.add(0x14).rip().as<decltype(m_get_sync_tree_for_type)>(); // 0F B7 CA 83 F9 07 .as()
-			m_get_net_object = ptr.add(0x76).rip().as<decltype(m_get_net_object)>(); // E8 ? ? ? ? 0F B7 53 7C .add(1).rip().as()
-			m_get_sync_type_info = ptr.add(0x8C).rip().as<decltype(m_get_sync_type_info)>(); // 44 0F B7 C1 4C 8D 0D .as()
+			m_get_sync_tree_for_type = ptr.add(0x14).rip().as<decltype(m_get_sync_tree_for_type)>();// 0F B7 CA 83 F9 07 .as()
+			m_get_net_object = ptr.add(0x76).rip().as<decltype(m_get_net_object)>();// E8 ? ? ? ? 0F B7 53 7C .add(1).rip().as()
+			m_get_sync_type_info = ptr.add(0x8C).rip().as<decltype(m_get_sync_type_info)>();// 44 0F B7 C1 4C 8D 0D .as()
 		});
 
 		// Read Bitbuffer Into Sync Tree
@@ -471,7 +471,7 @@ namespace big
 
 		// Is Matchmaking Session Valid
 		main_batch.add("IMSV", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 83 EC 20 45 0F", [this](memory::handle ptr) {
-			memory::byte_patch::make(ptr.as<void*>(), std::to_array({0xB0, 0x01, 0xC3}))->apply(); // has no observable side effects
+			memory::byte_patch::make(ptr.as<void*>(), std::to_array({0xB0, 0x01, 0xC3}))->apply();// has no observable side effects
 		});
 
 		// Send Network Damage
@@ -624,8 +624,8 @@ namespace big
 
 		// Sound Overload Detour
 		main_batch.add("SOD", "66 45 3B C1 74 38", [this](memory::handle ptr) {
-			g_sound_overload_ret_addr = ptr.add(13 + 15).as<decltype(g_sound_overload_ret_addr)>();
-			std::vector<byte> bytes = {0xFF, 0x25, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90}; // far jump opcode + a nop opcode
+			g_sound_overload_ret_addr   = ptr.add(13 + 15).as<decltype(g_sound_overload_ret_addr)>();
+			std::vector<byte> bytes     = {0xFF, 0x25, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90};// far jump opcode + a nop opcode
 			*(void**)(bytes.data() + 6) = sound_overload_detour;
 			memory::byte_patch::make(ptr.add(13).as<void*>(), bytes)->apply();
 		});
@@ -711,14 +711,39 @@ namespace big
 			m_write_player_appearance_data_node = ptr.as<PVOID>();
 		});
 
-		// DC
+		// Enumerate Audio Devices
+		main_batch.add("EAD", "48 89 5C 24 08 48 89 7C 24 10 55 48 8B EC 48 83 EC 70 41", [this](memory::handle ptr) {
+			m_enumerate_audio_devices = ptr.as<PVOID>();
+		});
+
+		// Direct Sound Capture Create
+		main_batch.add("DSCC", "E8 ? ? ? ? 33 FF 85 C0 78 C1", [this](memory::handle ptr) {
+			m_direct_sound_capture_create = ptr.add(1).rip().as<PVOID>();
+		});
+
+		// Refresh Audio Input
+		main_batch.add("RAI", "40 88 3D ? ? ? ? 89 05 ? ? ? ? 40 38 3D", [this](memory::handle ptr) {
+			m_refresh_audio_input = ptr.add(3).rip().as<bool*>();
+		});
+
+		// Disable Collision
 		main_batch.add("DC", "48 8B D1 49 8B CA ? ? ? ? ? 48 8B D1 49 8B CA", [this](memory::handle ptr) {
 			m_disable_collision = memory::byte_patch::make(ptr.sub(2).as<uint8_t*>(), 0xEB).get();
 		});
 
-		// AWIV
+		// Allow Weapons In Vehicle
 		main_batch.add("AWIV", "49 3B C9 7C F0 ? ? C3", [this](memory::handle ptr) {
-			m_allow_weapons_in_vehicle = memory::byte_patch::make(ptr.add(5).as<uint16_t*>(), 0x01B0).get(); //In order for the second xref loop not to stop
+			m_allow_weapons_in_vehicle = memory::byte_patch::make(ptr.add(5).as<uint16_t*>(), 0x01B0).get();//In order for the second xref loop not to stop
+		});
+
+		// Write Vehicle Proximity Migration Data Node
+		main_batch.add("WVPMDN", "48 89 4C 24 08 55 53 56 57 41 54 41 55 41 56 41 57 48 8B EC 48 83 EC 68 4C 8B A9", [this](memory::handle ptr) {
+			m_write_vehicle_proximity_migration_data_node = ptr.as<PVOID>();
+		});
+
+		// Migrate Object
+		main_batch.add("MO", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 83 EC 20 41 8B F8 48", [this](memory::handle ptr) {
+			m_migrate_object = ptr.as<functions::migrate_object>();
 		});
 
 		auto mem_region = memory::module("GTA5.exe");
