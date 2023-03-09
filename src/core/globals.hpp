@@ -53,8 +53,9 @@ namespace big
 		int m_remote_controller_vehicle = -1;
 		int m_remote_controlled_vehicle = -1;
 
-		int m_mod_net_id  = -1;
-		int m_test_net_id = -1;
+		std::uint16_t m_tp_veh_net_id;
+		std::uint16_t m_tp_player_net_id;
+		rage::fvector3 m_tp_position;
 
 		rage::scrThread* m_hunt_the_beast_thread = nullptr;
 
@@ -67,6 +68,10 @@ namespace big
 		{
 			bool enabled = false;
 		} cmd_executor{};
+    
+		rage::scrThread* m_modshop_thread = nullptr;
+		bool in_script_vm = false;
+    
 		struct debug
 		{
 			struct logs
@@ -517,7 +522,9 @@ namespace big
 			bool spoof_session_player_count = false;
 			int session_player_count        = 25;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing, hide_from_player_list, spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language, session_language, spoof_session_player_count, session_player_count, spoof_blip, blip_type, spoof_rank, rank, spoof_job_points, job_points, spoof_bad_sport, badsport_type, spoof_kd_ratio, kd_ratio, spoof_player_model, player_model)
+			bool voice_chat_audio = false;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing, hide_from_player_list, spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language, session_language, spoof_session_player_count, session_player_count, voice_chat_audio)
 		} spoofing{};
 
 		struct vehicle

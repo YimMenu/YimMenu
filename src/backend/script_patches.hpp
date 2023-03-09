@@ -44,6 +44,19 @@ namespace big
 		    {0x2B, 0x2B, 0x2B, 0x00, 0x55},
 		    &g.self.invisibility});
 
+		g_script_patcher_service->add_patch(
+		    {RAGE_JOAAT("carmod_shop"), "2D 01 0A 00 00 4F ? ? 40 ? 41 ? 39 03", 5, {0x2E, 0x01, 0x00}, &g.vehicle.ls_customs});// disable camera
+		g_script_patcher_service->add_patch(
+		    {RAGE_JOAAT("carmod_shop"), "2D 02 10 00 00 2C", 5, {0x71, 0x2E, 0x02, 0x01}, &g.vehicle.ls_customs});
+		g_script_patcher_service->add_patch(
+		    {RAGE_JOAAT("carmod_shop"), "2D 00 B8 00 00", 5, {0x2E, 0x00, 0x00}, &g.vehicle.ls_customs});
+		g_script_patcher_service->add_patch(
+		    {RAGE_JOAAT("carmod_shop"), "06 1F 56 ? ? 62 ? ? ? 56", 0, {0x2B, 0x2B, 0x55}, &g.vehicle.ls_customs});// buy mods for free in SP
+		g_script_patcher_service->add_patch(
+		    {RAGE_JOAAT("carmod_shop"), "2D 03 16 00 00 5D", 5, {0x72, 0x2E, 0x03, 0x01}, &g.vehicle.ls_customs});// allow all vehicles
+		g_script_patcher_service->add_patch(
+		    {RAGE_JOAAT("carmod_shop"), "2D 03 07 00 00 71 38 02", 5, {0x72, 0x2E, 0x03, 0x01}, &g.vehicle.ls_customs});// allow all vehicles 2
+
 		for (auto& entry : *g_pointers->m_script_program_table)
 		{
 			if (entry.m_program)
