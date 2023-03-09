@@ -53,8 +53,9 @@ namespace big
 		int m_remote_controller_vehicle = -1;
 		int m_remote_controlled_vehicle = -1;
 
-		int m_mod_net_id  = -1;
-		int m_test_net_id = -1;
+		std::uint16_t m_tp_veh_net_id;
+		std::uint16_t m_tp_player_net_id;
+		rage::fvector3 m_tp_position;
 
 		rage::scrThread* m_hunt_the_beast_thread = nullptr;
 
@@ -62,6 +63,10 @@ namespace big
 		rage::scrProgram* m_dance_program = nullptr;
 
 		rage::scrThread* m_mission_creator_thread = nullptr;
+
+		rage::scrThread* m_modshop_thread = nullptr;
+
+		bool in_script_vm = false;
 
 		struct debug
 		{
@@ -79,7 +84,7 @@ namespace big
 					bool filter_player    = true;
 					std::int8_t player_id = -1;
 
-					bool block_all = false;//should not save
+					bool block_all = false; //should not save
 
 					NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_event, logs, filter_player, player_id)
 				} script_event{};
@@ -145,7 +150,7 @@ namespace big
 			reaction fake_deposit{"Fake Deposit", "Blocked Fake Deposit from %s", "%s tried to show me a fake money notification!"};
 			reaction force_mission{"Force Mission", "Blocked Force Mission from %s", "%s tried to force me into a mission!"};
 			reaction force_teleport{"Force Teleport", "Blocked Force Teleport from %s", "%s tried to teleport me!"};
-			reaction gta_banner{"GTA Banner", "Blocked GTA Banner from %s", "Blocked GTA Banner from %s"};// please don't enable this
+			reaction gta_banner{"GTA Banner", "Blocked GTA Banner from %s", "Blocked GTA Banner from %s"}; // please don't enable this
 			reaction kick_from_interior{"Kick From Interior", "Blocked Kick From Interior from %s", "%s tried to kick me from my interior!"};
 			reaction mc_teleport{"MC Teleport", "Blocked MC Teleport from %s", "%s tried to teleport me!"};
 			reaction network_bail{"Network Bail", "Blocked Network Bail from %s", "%s tried to kick me out!"};
@@ -179,7 +184,7 @@ namespace big
 			reaction request_control_event{"Request Control Event", "Blocked Request Control Event from %s", "%s tried to mess with my vehicle!"};
 			reaction report{"Report", "Blocked Report from %s", "%s tried to report me!"};
 
-			interloper_reaction breakup_others{"Breakup Kicks On Other Players", "%s is trying to breakup kick %s!", "%s is trying to breakup kick %s!", true, true};// blockable only when host but we have no way to specify that atm
+			interloper_reaction breakup_others{"Breakup Kicks On Other Players", "%s is trying to breakup kick %s!", "%s is trying to breakup kick %s!", true, true}; // blockable only when host but we have no way to specify that atm
 			reaction lost_connection_kick{"Lost Connection Kick", "Blocked Lost Connection Kick from %s", "%s tried to kick me out!"};
 			reaction gamer_instruction_kick{"Gamer Instruction Kick", "Blocked Gamer Instruction Kick from %s", "%s tried to kick me out!"};
 			interloper_reaction lost_connection_kick_others{"Lost Connection Kick On Other Players", "%s is trying to lost connection kick %s!", "%s is trying to lost connection kick %s!", true, false};
@@ -225,7 +230,7 @@ namespace big
 
 			bool desync_kick     = false;
 			bool rid_join        = false;
-			bool lessen_breakups = false;// disabled by default due to anticheat concerns
+			bool lessen_breakups = false; // disabled by default due to anticheat concerns
 			bool receive_pickup  = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, lessen_breakups, desync_kick, receive_pickup)
@@ -478,7 +483,7 @@ namespace big
 			bool hide_from_player_list = false;
 
 			bool spoof_blip = false;
-			int blip_type   = 0;// actual blip type + 1
+			int blip_type   = 0; // actual blip type + 1
 
 			bool spoof_rank = false;
 			int rank        = 1;
@@ -512,7 +517,9 @@ namespace big
 			bool spoof_session_player_count = false;
 			int session_player_count        = 25;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing, hide_from_player_list, spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language, session_language, spoof_session_player_count, session_player_count, spoof_blip, blip_type, spoof_rank, rank, spoof_job_points, job_points, spoof_bad_sport, badsport_type, spoof_kd_ratio, kd_ratio, spoof_player_model, player_model)
+			bool voice_chat_audio = false;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing, hide_from_player_list, spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language, session_language, spoof_session_player_count, session_player_count, voice_chat_audio)
 		} spoofing{};
 
 		struct vehicle
@@ -564,36 +571,30 @@ namespace big
 			uint32_t proof_mask  = 0;
 
 			AutoDriveDestination auto_drive_destination = AutoDriveDestination::STOPPED;
-			AutoDriveStyle auto_drive_style = AutoDriveStyle::LAW_ABIDING;
-			float auto_drive_speed = 1;
-			bool auto_turn_signals = false;
-			eBoostBehaviors boost_behavior = eBoostBehaviors::DEFAULT;
-			bool drive_on_water = false;
-			bool horn_boost = false;
-			bool instant_brake = false;
-			bool block_homing = true;
-			bool ls_customs = false; // don't save this to disk
-			bool seatbelt = false;
-			bool turn_signals = false;
-			bool vehicle_jump = false;
-			bool keep_vehicle_repaired = false;
-			bool no_water_collision = false;
-			bool disable_engine_auto_start = false;
-			bool change_engine_state_immediately = false;
-			bool vehinvisibility = false;
-			bool localveh_visibility = false;
-			bool localped_visibility = true;
-			bool keep_on_ground = false;
-			bool no_collision = false;
-			bool unlimited_weapons = false;
+			AutoDriveStyle auto_drive_style             = AutoDriveStyle::LAW_ABIDING;
+			float auto_drive_speed                      = 1;
+			bool auto_turn_signals                      = false;
+			eBoostBehaviors boost_behavior              = eBoostBehaviors::DEFAULT;
+			bool drive_on_water                         = false;
+			bool horn_boost                             = false;
+			bool instant_brake                          = false;
+			bool block_homing                           = true;
+			bool ls_customs                             = false; // don't save this to disk
+			bool seatbelt                               = false;
+			bool turn_signals                           = false;
+			bool vehicle_jump                           = false;
+			bool keep_vehicle_repaired                  = false;
+			bool no_water_collision                     = false;
+			bool disable_engine_auto_start              = false;
+			bool change_engine_state_immediately        = false;
+			bool vehinvisibility                        = false;
+			bool localveh_visibility                    = false;
+			bool localped_visibility                    = true;
+			bool keep_on_ground                         = false;
+			bool no_collision                           = false;
+			bool unlimited_weapons                      = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle,
-				speedo_meter, fly, rainbow_paint, speed_unit, god_mode,
-				proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask,
-				auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior,
-				drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump,
-				keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately,
-				vehinvisibility, localveh_visibility, localped_visibility, keep_on_ground, no_collision, unlimited_weapons)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, vehinvisibility, localveh_visibility, localped_visibility, keep_on_ground, no_collision, unlimited_weapons)
 		} vehicle{};
 
 		struct weapons
@@ -634,7 +635,7 @@ namespace big
 				bool on_npc                 = false;
 				float fov                   = 90.f;
 				float distance              = 200.f;
-				std::uint32_t selected_bone = 0x796E;// Default to head
+				std::uint32_t selected_bone = 0x796E; // Default to head
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, smoothing, smoothing_speed, fov, selected_bone)
 			} aimbot{};
 

@@ -1,5 +1,6 @@
 #include "stack_trace.hpp"
 
+#include "gta/script_thread.hpp"
 #include "memory/module.hpp"
 
 #include <DbgHelp.h>
@@ -26,9 +27,13 @@ namespace big
 		m_exception_info = exception_info;
 
 		m_dump << exception_code_to_string(exception_info->ExceptionRecord->ExceptionCode) << '\n';
+
+		if (g.in_script_vm)
+			dump_script_info();
 		dump_module_info();
 		dump_registers();
 		dump_stacktrace();
+
 		m_dump << "\n--------End of exception--------\n";
 	}
 
@@ -40,11 +45,11 @@ namespace big
 	// I'd prefer to make some sort of global instance that cache all modules once instead of doing this every time
 	void stack_trace::dump_module_info()
 	{
-		m_dump << "Dumping modules:\n";
+		// modules cached already
+		if (m_modules.size())
+			return;
 
-        // modules cached already
-        if (m_modules.size())
-            return;
+		m_dump << "Dumping modules:\n";
 
 		const auto peb = reinterpret_cast<PPEB>(NtCurrentTeb()->ProcessEnvironmentBlock);
 		if (!peb)
@@ -136,6 +141,13 @@ namespace big
 			const auto module_info = get_module_by_address(addr);
 			m_dump << module_info->m_path.filename().string() << "+" << HEX_TO_UPPER(addr - module_info->m_base) << " " << HEX_TO_UPPER(addr);
 		}
+	}
+
+	void stack_trace::dump_script_info()
+	{
+		m_dump << "Currently executing script: " << rage::scrThread::get()->m_name << '\n';
+		m_dump << "Thread program counter (could be inaccurate): "
+		       << m_exception_info->ContextRecord->Rdi - m_exception_info->ContextRecord->Rsi << '\n';
 	}
 
 	void stack_trace::grab_stacktrace()

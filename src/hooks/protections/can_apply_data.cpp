@@ -20,6 +20,7 @@
 #include "netsync/nodes/train/CTrainGameStateDataNode.hpp"
 #include "netsync/nodes/vehicle/CVehicleCreationDataNode.hpp"
 #include "netsync/nodes/vehicle/CVehicleGadgetDataNode.hpp"
+#include "netsync/nodes/vehicle/CVehicleProximityMigrationDataNode.hpp"
 #include "network/CNetGamePlayer.hpp"
 #include "network/netObject.hpp"
 #include "util/model_info.hpp"
@@ -503,6 +504,21 @@ namespace big
 		return false;
 	}
 
+	inline bool is_in_vehicle(CPed* ped, CVehicle* vehicle)
+	{
+		if (!ped || !vehicle)
+			return false;
+
+		if (ped == vehicle->m_driver)
+			return true;
+
+		for (int i = 0; i < 15; i++)
+			if (vehicle->m_passengers[i] == ped)
+				return true;
+
+		return false;
+	}
+
 	bool check_node(rage::netSyncNodeBase* node, CNetGamePlayer* sender, rage::netObject* object)
 	{
 		if (node->IsParentNode())
@@ -604,7 +620,7 @@ namespace big
 				}
 				else if (attach_node->m_attached && is_attachment_infinite(get_game_object(object), attach_node->m_attached_to))
 				{
-					notify::crash_blocked(sender, "recursive infinite ped attachment");
+					// notify::crash_blocked(sender, "recursive infinite ped attachment");
 					return true;
 				}
 
@@ -649,6 +665,28 @@ namespace big
 					return true;
 				}
 				break;
+			}
+			case RAGE_JOAAT("CVehicleProximityMigrationDataNode"):
+			{
+				if (g_local_player && g_local_player->m_net_object)
+				{
+					const auto migration_node = (CVehicleProximityMigrationDataNode*)(node);
+					if (is_in_vehicle(g_local_player, g_local_player->m_vehicle) && g_local_player->m_vehicle->m_net_object
+					    && g_local_player->m_vehicle->m_net_object->m_object_id == object->m_object_id)
+						return false; // vehicle kick?
+
+					if (!g_local_player->m_vehicle || !g_local_player->m_vehicle->m_net_object
+					    || g_local_player->m_vehicle->m_net_object->m_object_id != object->m_object_id
+					    || !is_in_vehicle(g_local_player, g_local_player->m_vehicle))
+					{
+						for (int i = 0; i < 16; i++)
+						{
+							if (migration_node->m_has_occupants[i]
+							    && migration_node->m_occupants[i] == g_local_player->m_net_object->m_object_id)
+								return true; // remote teleport
+						}
+					}
+				}
 			}
 			}
 		}

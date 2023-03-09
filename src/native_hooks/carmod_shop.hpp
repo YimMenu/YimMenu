@@ -46,6 +46,9 @@ namespace big
 			case RAGE_JOAAT("MP1_AWD_FMRALLYWONNAV"):
 			case RAGE_JOAAT("MP1_AWD_FMWINSEARACE"):
 			case RAGE_JOAAT("MP1_AWD_FMWINAIRRACE"): *out = 1; break;
+			case RAGE_JOAAT("SP0_TOTAL_CASH"):
+			case RAGE_JOAAT("SP1_TOTAL_CASH"):
+			case RAGE_JOAAT("SP2_TOTAL_CASH"): *out = 999999; break;
 			default: src->set_return_value<BOOL>(STATS::STAT_GET_INT(hash, out, src->get_arg<int>(2))); break;
 			}
 		}
@@ -71,6 +74,14 @@ namespace big
 			if (!g.vehicle.ls_customs)
 			{
 				VEHICLE::SET_VEHICLE_LIGHTS(src->get_arg<Vehicle>(0), src->get_arg<int>(1));
+			}
+		}
+
+		inline void DISABLE_ALL_CONTROL_ACTIONS(rage::scrNativeCallContext* src)
+		{
+			if (!g.vehicle.ls_customs)
+			{
+				PAD::DISABLE_ALL_CONTROL_ACTIONS(src->get_arg<int>(0));
 			}
 		}
 	}

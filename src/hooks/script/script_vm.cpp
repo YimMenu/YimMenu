@@ -30,6 +30,8 @@ namespace big
 				scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CurrentShopIndex = old_shop_index;
 				scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CayoPericoFlags  = old_cayo_flags;
 			}
+
+			g.in_script_vm = true;
 		}
 
 		~script_vm_guard()
@@ -47,6 +49,8 @@ namespace big
 					scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CayoPericoFlags  = 1;
 				}
 			}
+
+			g.in_script_vm = false;
 		}
 	};
 
