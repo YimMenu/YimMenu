@@ -586,6 +586,7 @@ namespace big
 			bool keep_on_ground = false;
 			bool no_collision = false;
 			bool unlimited_weapons = false;
+			bool unlimited_ammo = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle,
 				speedo_meter, fly, rainbow_paint, speed_unit, god_mode,
