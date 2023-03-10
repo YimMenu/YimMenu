@@ -4,6 +4,7 @@
 #include "natives.hpp"
 #include "renderer.hpp"
 #include "script.hpp"
+#include "util/is_key_pressed.hpp"
 #include "views/view.hpp"
 
 #include <imgui.h>
@@ -13,14 +14,15 @@ namespace big
 	gui::gui() :
 	    m_is_open(false)
 	{
-		g_renderer->add_dx_callback(view::gta_data, -1);     // -1 highest priority of drawing
-		g_renderer->add_dx_callback(view::notifications, -2);// second highest priority
-		g_renderer->add_dx_callback(view::overlay, -3);      // 3rd highest priority
+		g_renderer->add_dx_callback(view::gta_data, -1);
+		g_renderer->add_dx_callback(view::notifications, -2);
+		g_renderer->add_dx_callback(view::overlay, -3);
+		g_renderer->add_dx_callback(view::cmd_executor, -4);
 		g_renderer->add_dx_callback(
 		    [this] {
 			    dx_on_tick();
 		    },
-		    -4);// 4th highest priority
+		-5);
 
 		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			wndproc(hwnd, msg, wparam, lparam);
@@ -160,6 +162,21 @@ namespace big
 			PAD::DISABLE_CONTROL_ACTION(2, 257, true);
 			PAD::DISABLE_CONTROL_ACTION(2, 262, true);
 			PAD::DISABLE_CONTROL_ACTION(2, 331, true);
+		}
+
+		//wndproc will not work here. the timing here is very difficult. mayby can we hook the creation of the pause menu?
+		//this should be improved..
+		if (is_key_pressed(VK_ESCAPE) && g.cmd_executor.enabled)
+		{
+			g_fiber_pool->queue_job([] {
+				g.cmd_executor.enabled = false;
+				//50 should run stable, IMPROVE THIS!!!
+				for (uint8_t i = 0; i <= 50; i++)
+				{
+					HUD::SET_PAUSE_MENU_ACTIVE(false);
+					script::get_current()->yield();
+				}
+			});
 		}
 	}
 

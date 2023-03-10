@@ -148,47 +148,47 @@ namespace big
 
 	enum class eRemoteEvent
 	{
-		Bounty   = 1459520933,// (137, "FM_TXT_BNTY0", iVar1, PLAYER::GET_PLAYER_NAME(Var2.f_1), "", 5000, Var2.f_6);
-		CeoBan   = 1517094008,// mpply_vipgameplaydisabledtimer
+		Bounty   = 1459520933, // (137, "FM_TXT_BNTY0", iVar1, PLAYER::GET_PLAYER_NAME(Var2.f_1), "", 5000, Var2.f_6);
+		CeoBan   = 1517094008, // mpply_vipgameplaydisabledtimer
 		CeoKick  = 1421455565,
-		CeoMoney = 75579707,// Goon_Paid_Large
+		CeoMoney = 75579707, // Goon_Paid_Large
 		ClearWantedLevel = 1743540940,
-		ForceMission     = -2138393348,// ), Var0.f_2, 1))
-		GiveCollectible  = 1839167950, // DLC_SUM20_HIDDEN_COLLECTIBLES xref
-		GtaBanner        = 2114252738, // NETWORK::NETWORK_IS_SCRIPT_ACTIVE("BUSINESS_BATTLES", -1, true, 0) second one
-		NetworkBail      = 1017995959, // NETWORK::NETWORK_BAIL(16, 0, 0); xref func
-		PersonalVehicleDestroyed = -642631978, // PLYVEH_INS_DES1
-		RemoteOffradar           = 1141648445, // NETWORK::GET_TIME_DIFFERENCE(NETWORK::GET_NETWORK_TIME(), Var0.f_2)
-		SendToCutscene           = 2139870214, // (bVar3, bVar4, 125f, 1)
-		SendToCayoPerico         = -369672308, // CELL_HI_INV
-		SendToLocation           = 330622597,  // &Var222, 11);
-		SoundSpam                = 36077543,   // CELL_APTINVYACHT
-		Spectate                 = -2029707091,// SPEC_TCK1
-		Teleport                 = -702866045, // Mission_Pass_Notify
-		TeleportToWarehouse      = -1796714618,// .f_4 == 50
-		TransactionError         = 54323524,   // NETWORK_RECEIVE_PLAYER_JOBSHARE_CASH
-		VehicleKick              = -1603050746,// PIM_RFMOC
-		MCTeleport    = 891653640, // NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(PLAYER::PLAYER_ID()) == (first one)
-		StartActivity = 1104117595,// (Var0.f_2, -1); first match
-		MarkPlayerAsBeast = -1721728321,// GB_BOSSBST xref == PLAYER... global (sadly doesn't actually turn people into the beast)
-		KickFromInterior = 786522321,// ENTITY::SET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID(), PED::GET_PED_MAX_HEALTH(PLAYER::PLAYER_PED_ID()), false)
-		InteriorControl  = 1727896103,// eventData.f_3 != _INVALID_PLAYER_INDEX_0()
+		ForceMission     = -2138393348, // ), Var0.f_2, 1))
+		GiveCollectible  = 1839167950,  // DLC_SUM20_HIDDEN_COLLECTIBLES xref
+		GtaBanner        = 2114252738,  // NETWORK::NETWORK_IS_SCRIPT_ACTIVE("BUSINESS_BATTLES", -1, true, 0) second one
+		NetworkBail      = 1017995959,  // NETWORK::NETWORK_BAIL(16, 0, 0); xref func
+		PersonalVehicleDestroyed = -642631978,  // PLYVEH_INS_DES1
+		RemoteOffradar           = 1141648445,  // NETWORK::GET_TIME_DIFFERENCE(NETWORK::GET_NETWORK_TIME(), Var0.f_2)
+		SendToCutscene           = 2139870214,  // (bVar3, bVar4, 125f, 1)
+		SendToCayoPerico         = -369672308,  // CELL_HI_INV
+		SendToLocation           = 330622597,   // &Var222, 11);
+		SoundSpam                = 36077543,    // CELL_APTINVYACHT
+		Spectate                 = -2029707091, // SPEC_TCK1
+		Teleport                 = -702866045,  // Mission_Pass_Notify
+		TeleportToWarehouse      = -1796714618, // .f_4 == 50
+		TransactionError         = 54323524,    // NETWORK_RECEIVE_PLAYER_JOBSHARE_CASH
+		VehicleKick              = -1603050746, // PIM_RFMOC
+		MCTeleport    = 891653640,  // NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(PLAYER::PLAYER_ID()) == (first one)
+		StartActivity = 1104117595, // (Var0.f_2, -1); first match
+		MarkPlayerAsBeast = -1721728321, // GB_BOSSBST xref == PLAYER... global (sadly doesn't actually turn people into the beast)
+		KickFromInterior = 786522321, // ENTITY::SET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID(), PED::GET_PED_MAX_HEALTH(PLAYER::PLAYER_PED_ID()), false)
+		InteriorControl  = 1727896103, // eventData.f_3 != _INVALID_PLAYER_INDEX_0()
 		SMS              = 53975141,
 		SendTextLabelSMS = 1075676399,
 
-		Crash  = -992162568,// SET_NO_LOADING_SCREEN, xref it
+		Crash  = -992162568, // SET_NO_LOADING_SCREEN, xref it
 		Crash2 = 1131623211,
 		Crash3 = 1556360603,
 
-		TSECommand          = -1428749433,                                      // CnCTG_IN_BF
-		TSECommandRotateCam = 448051697 /*joaat("pats_horse_right") in script*/,// != 29) && f
+		TSECommand          = -1428749433,                                       // CnCTG_IN_BF
+		TSECommandRotateCam = 448051697 /*joaat("pats_horse_right") in script*/, // != 29) && f
 
 		Notification             = 2041805809,
-		NotificationMoneyBanked  = 276906331,// TICK_TC_BANK
-		NotificationMoneyRemoved = 853249803,// TICK_TC_REMO
-		NotificationMoneyStolen  = 82080686, // TICK_TC_STOL
+		NotificationMoneyBanked  = 276906331, // TICK_TC_BANK
+		NotificationMoneyRemoved = 853249803, // TICK_TC_REMO
+		NotificationMoneyStolen  = 82080686,  // TICK_TC_STOL
 
-		DestroyPersonalVehicle = -2101545224,// CnC_PV_THEFT
+		DestroyPersonalVehicle = -2101545224, // CnC_PV_THEFT
 		TriggerCEORaid         = -1388385133,
 
 		StartScriptBegin   = -95341040,
@@ -353,10 +353,10 @@ namespace big
 	enum class CommandAccessLevel
 	{
 		NONE,
-		FRIENDLY,  // heal, semi godmode...
-		AGGRESSIVE,// kick from vehicle, send to apartment...
-		TOXIC,     // kicks
-		ADMIN      // full access
+		FRIENDLY,   // heal, semi godmode...
+		AGGRESSIVE, // kick from vehicle, send to apartment...
+		TOXIC,      // kicks
+		ADMIN       // full access
 	};
 	NLOHMANN_JSON_SERIALIZE_ENUM(CommandAccessLevel,
 	    {
@@ -366,4 +366,10 @@ namespace big
 	        {CommandAccessLevel::TOXIC, "toxic"},
 	        {CommandAccessLevel::ADMIN, "admin"},
 	    })
+
+	enum eKeyState : unsigned int
+	{
+		RELEASE = WM_KEYUP,
+		DOWN    = WM_KEYDOWN
+	};
 }
