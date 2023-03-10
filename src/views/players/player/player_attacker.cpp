@@ -40,7 +40,7 @@ namespace big
 			});
 			ImGui::SameLine();
 			components::button("Send Mugger", [] {
-				scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[self::id].GangCallRequestedServices = 0;
+				scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[self::id].GangCallRequestedServices;
 				scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[self::id].GangCallTarget =
 				    g_player_service->get_selected()->id();
 			});
