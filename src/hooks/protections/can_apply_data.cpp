@@ -668,7 +668,7 @@ namespace big
 			}
 			case RAGE_JOAAT("CVehicleProximityMigrationDataNode"):
 			{
-				if (g_local_player && g_local_player->m_net_object)
+				if (object && g_local_player && g_local_player->m_net_object)
 				{
 					const auto migration_node = (CVehicleProximityMigrationDataNode*)(node);
 					if (is_in_vehicle(g_local_player, g_local_player->m_vehicle) && g_local_player->m_vehicle->m_net_object
@@ -687,6 +687,8 @@ namespace big
 						}
 					}
 				}
+
+				break;
 			}
 			}
 		}

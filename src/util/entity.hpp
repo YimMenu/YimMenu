@@ -72,22 +72,36 @@ namespace big::entity
 
 	inline bool take_control_of(Entity ent, int timeout = 300)
 	{
-		auto ptr = g_pointers->m_handle_to_ptr(ent);
-		if (ptr)
+		if (auto hnd = g_pointers->m_handle_to_ptr(ent))
 		{
-			if (!*g_pointers->m_is_session_started || network_has_control_of_entity(ptr->m_net_object))
-				return true;
-			for (int i = 0; !network_has_control_of_entity(ptr->m_net_object) && i < timeout; i++)
+			if (!*g_pointers->m_is_session_started || !hnd->m_net_object || network_has_control_of_entity(hnd->m_net_object))
 			{
-				g_pointers->m_request_control(ptr->m_net_object);
-				if (timeout != 0)
-					script::get_current()->yield();
+				return true;
 			}
-			if (!network_has_control_of_entity(ptr->m_net_object))
-				return false;
-			int netHandle = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent);
-			NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, true);
 		}
+		else
+		{
+			return false;
+		}
+
+		for (int i = 0; i < timeout; i++)
+		{
+			auto hnd = g_pointers->m_handle_to_ptr(ent);
+
+			if (!hnd || !hnd->m_net_object)
+				return false;
+
+			g_pointers->m_request_control(hnd->m_net_object);
+			if (timeout != 0)
+				script::get_current()->yield();
+		}
+
+		auto hnd = g_pointers->m_handle_to_ptr(ent);
+		if (!hnd || !hnd->m_net_object || !network_has_control_of_entity(hnd->m_net_object))
+			return false;
+
+		int netHandle = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent);
+		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, true);
 		return true;
 	}
 
