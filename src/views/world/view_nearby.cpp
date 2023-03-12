@@ -38,7 +38,7 @@ namespace big
 		ImGui::SameLine(140.f);
 		components::command_checkbox<"pedrain">();
 		ImGui::SameLine(265.f);
-		components::command_checkbox<"pedscombat">();
+		components::command_checkbox<"riotmode">();
 		components::command_checkbox<"highalert">();
 		ImGui::SameLine(140.f);
 		components::command_checkbox<"pedrush">();
