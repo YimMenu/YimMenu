@@ -38,7 +38,6 @@ namespace big
 			if (command == nullptr)
 				return ImGui::Text("INVALID COMMAND");
 
-
 			if (ImGui::Button(label_override.value_or(command->get_label()).data()))
 				command->call(args);
 			if (ImGui::IsItemHovered())
