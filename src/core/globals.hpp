@@ -468,8 +468,9 @@ namespace big
 				bool veh_rain   = false;
 				bool high_alert = false;
 				bool ped_rush   = false;
+				bool combative  = false;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(nearby, ignore, ped_rain, veh_rain, high_alert, ped_rush)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(nearby, ignore, ped_rain, veh_rain, high_alert, ped_rush, combative)
 			} nearby{};
 
 			struct model_swapper
