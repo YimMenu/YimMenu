@@ -9,7 +9,7 @@ namespace big
 {
 	class view
 	{
-		inline static animator window_animator      = animator();
+		inline static animator window_animator = animator();
 		inline static ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav;
 
 	public:
@@ -63,6 +63,7 @@ namespace big
 		static void player_kick();
 		static void player_toxic();
 		static void player_misc();
+		static void cmd_executor();
 		static void player_vehicle();
 	};
 }

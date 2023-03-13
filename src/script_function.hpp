@@ -17,6 +17,7 @@ namespace big
 		script_function(const std::string& name, const rage::joaat_t script, const std::string& pattern, int32_t offset);
 		void populate_ip();
 		void call(rage::scrThread* thread, rage::scrProgram* program, std::initializer_list<std::uint64_t> args);
+		void call_latent(rage::scrThread* thread, rage::scrProgram* program, std::initializer_list<std::uint64_t> args, bool& done);
 
 		// for pure functions that do not need access to thread stack
 		void static_call(std::initializer_list<std::uint64_t> args);
@@ -33,5 +34,8 @@ namespace big
 
 		static inline script_function save_to_datafile("STD", RAGE_JOAAT("fm_race_creator"), "2D 01 03 00 00 71 2C", 0);
 		static inline script_function load_from_datafile("LFD", RAGE_JOAAT("fm_race_creator"), "2D 04 0D 00 00 71 2C", 0);
+
+		static inline script_function modshop_loop("ML", RAGE_JOAAT("carmod_shop"), "2D 00 07 00 00 71 51", 0);
+		static inline script_function setup_modshop("SM", RAGE_JOAAT("carmod_shop"), "2D 04 12 00 00 38 00 51", 0);
 	}
 }

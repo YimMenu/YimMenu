@@ -6,7 +6,8 @@
 
 namespace big
 {
-	fiber_pool::fiber_pool(std::size_t num_fibers)
+	fiber_pool::fiber_pool(std::size_t num_fibers) :
+	    m_num_fibers(num_fibers)
 	{
 		for (std::size_t i = 0; i < num_fibers; ++i)
 		{
@@ -50,5 +51,23 @@ namespace big
 			g_fiber_pool->fiber_tick();
 			script::get_current()->yield();
 		}
+	}
+
+	int fiber_pool::get_total_fibers()
+	{
+		return m_num_fibers;
+	}
+
+	int fiber_pool::get_used_fibers()
+	{
+		return m_jobs.size();
+	}
+
+	void fiber_pool::reset()
+	{
+		std::lock_guard lock(m_mutex);
+
+		while (!m_jobs.empty())
+			m_jobs.pop();
 	}
 }

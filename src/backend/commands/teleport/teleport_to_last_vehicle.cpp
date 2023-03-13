@@ -1,7 +1,6 @@
 #include "backend/command.hpp"
 #include "natives.hpp"
-#include "util/mobile.hpp"
-#include "util/vehicle.hpp"
+#include "util/teleport.hpp"
 
 namespace big
 {

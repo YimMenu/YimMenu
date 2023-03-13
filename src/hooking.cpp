@@ -11,6 +11,7 @@
 #include "script_mgr.hpp"
 
 #include <MinHook.h>
+#include <vehicle/CVehicle.hpp>
 
 namespace big
 {
@@ -114,6 +115,11 @@ namespace big
 		detour_hook_helper::add<hooks::get_model_info>("GMI", g_pointers->m_get_model_info);
 
 		detour_hook_helper::add<hooks::task_jump_constructor>("TJC", g_pointers->m_taskjump_constructor);
+
+		detour_hook_helper::add<hooks::enumerate_audio_devices>("EAD", g_pointers->m_enumerate_audio_devices);
+		detour_hook_helper::add<hooks::direct_sound_capture_create>("DSCC", g_pointers->m_direct_sound_capture_create);
+
+		detour_hook_helper::add<hooks::write_vehicle_proximity_migration_data_node>("WVPMDN", g_pointers->m_write_vehicle_proximity_migration_data_node);
 
 		g_hooking = this;
 	}
