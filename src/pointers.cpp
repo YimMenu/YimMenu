@@ -721,6 +721,7 @@ namespace big
 			m_allow_weapons_in_vehicle = memory::byte_patch::make(ptr.add(5).as<uint16_t*>(), 0x01B0).get(); //In order for the second xref loop not to stop
 		});
 
+		//Task Jump Constructor
 		main_batch.add("TJC", "48 89 5C 24 ? 89 54 24 10 57 48 83 EC 30 0F 29 74 24", [this](memory::handle ptr) {
 			m_taskjump_constructor = ptr.as<PVOID>();
 		});
