@@ -34,7 +34,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 	if (reason == DLL_PROCESS_ATTACH)
 	{
 		DisableThreadLibraryCalls(hmod);
-
 		g_hmodule     = hmod;
 		g_main_thread = CreateThread(
 		    nullptr,
@@ -149,9 +148,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    matchmaking_service_instance.reset();
 				    LOG(INFO) << "Matchmaking Service reset.";
 				    player_database_service_instance.reset();
-				    LOG(INFO) << "API Service reset.";
-				    api_service_instance.reset();
 				    LOG(INFO) << "Player Database Service reset.";
+				    api_service_instance.reset();
+				    LOG(INFO) << "API Service reset.";
 				    script_patcher_service_instance.reset();
 				    LOG(INFO) << "Script Patcher Service reset.";
 				    gui_service_instance.reset();

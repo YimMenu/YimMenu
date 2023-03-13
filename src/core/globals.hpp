@@ -252,48 +252,61 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ptfx_effects, show, size)
 			} ptfx_effects{};
 
-			bool clean_player                          = false;
-			bool force_wanted_level                    = false;
-			bool free_cam                              = false;
-			bool invisibility                          = false;
-			bool local_visibility                      = true;
-			bool never_wanted                          = false;
-			bool no_ragdoll                            = false;
-			bool noclip                                = false;
-			bool off_radar                             = false;
-			bool super_run                             = false;
-			bool no_collision                          = false;
-			bool unlimited_oxygen                      = false;
-			bool no_water_collision                    = false;
-			int wanted_level                           = 0;
-			bool god_mode                              = false;
-			bool part_water                            = false;
-			bool proof_bullet                          = false;
-			bool proof_fire                            = false;
-			bool proof_collision                       = false;
-			bool proof_melee                           = false;
-			bool proof_explosion                       = false;
-			bool proof_steam                           = false;
-			bool proof_drown                           = false;
-			bool proof_water                           = false;
-			uint32_t proof_mask                        = 0;
-			bool hide_radar                            = false;
-			bool hide_ammo                             = false;
-			int selected_hud_component                 = 1;
-			std::array<bool, 22> hud_components_states = {false};
-			bool force_show_hud_element                = false;
-			bool force_show_hud                        = false;
-			bool mobile_radio                          = false;
-			bool fast_respawn                          = false;
-			bool auto_tp                               = false;
-			bool super_jump                            = false;
-			bool beast_jump                            = false;
-			bool superman                              = false;
+			bool clean_player       = false;
+			bool force_wanted_level = false;
+			bool free_cam           = false;
+			bool invisibility       = false;
+			bool local_visibility   = true;
+			bool never_wanted       = false;
+			bool no_ragdoll         = false;
+			bool noclip             = false;
+			bool off_radar          = false;
+			bool super_run          = false;
+			bool no_collision       = false;
+			bool unlimited_oxygen   = false;
+			bool no_water_collision = false;
+			int wanted_level        = 0;
+			bool god_mode           = false;
+			bool part_water         = false;
+			bool proof_bullet       = false;
+			bool proof_fire         = false;
+			bool proof_collision    = false;
+			bool proof_melee        = false;
+			bool proof_explosion    = false;
+			bool proof_steam        = false;
+			bool proof_drown        = false;
+			bool proof_water        = false;
+			uint32_t proof_mask     = 0;
+			bool mobile_radio       = false;
+			bool fast_respawn       = false;
+			bool auto_tp            = false;
+			bool super_jump         = false;
+			bool beast_jump         = false;
+			bool healthregen        = false;
+			float healthregenrate   = 1.0f;
+			bool superman           = false;
+			struct hud
+			{
+				bool hudcolor = false;
+				bool shcolor  = false;
+				bool mtcolor  = false;
+				bool mhcolor  = false;
+				int hcolor    = 0;
+				int tcolor    = 0;
+				int index, r, g, b, a;
+				bool hide_radar                            = false;
+				bool hide_ammo                             = false;
+				int selected_hud_component                 = 1;
+				std::array<bool, 22> hud_components_states = {false};
+				bool force_show_hud_element                = false;
+				bool force_show_hud                        = false;
 
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hud, hudcolor, shcolor, mtcolor, mhcolor, hcolor, tcolor, index, r, g, b, a, hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element, force_show_hud)
+			} hud{};
 			// do not save below entries
 			bool dance_mode = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element, force_show_hud, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, superman)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman)
 		} self{};
 
 		struct session
@@ -380,10 +393,11 @@ namespace big
 				int beastjump            = 0;
 				int invisveh             = 0;
 				int localinvisveh        = 0;
+				int fill_ammo            = 0;
 				int fast_quit            = 0;
-				int cmd_excecutor        = 0x55; // U
-
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fast_quit, cmd_excecutor)
+				int cmd_excecutor        = 0x55;
+        
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor)
 			} hotkeys{};
 
 			bool dev_dlc = false;
@@ -458,7 +472,7 @@ namespace big
 				int alpha             = 150;
 				rage::fvector3 pos;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(blackhole, enable, include_peds, include_vehicles, color, alpha)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(blackhole, include_peds, include_vehicles, color, alpha)
 			} blackhole{};
 
 			struct nearby
@@ -650,6 +664,7 @@ namespace big
 			bool infinite_ammo            = false;
 			bool infinite_mag             = false;
 			float increased_damage        = 1;
+			bool increase_damage          = false;
 			bool no_recoil                = false;
 			bool no_spread                = false;
 			std::string vehicle_gun_model = "bus";
@@ -658,8 +673,9 @@ namespace big
 			bool rapid_fire               = false;
 			bool interior_weapon          = false;
 			bool triggerbot               = false;
+			bool infinite_range           = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon, triggerbot)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, increase_damage, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon, triggerbot, infinite_range)
 		} weapons{};
 
 		struct window

@@ -55,7 +55,6 @@ namespace big
 		static void custom_gun_disable_control_action();
 		static void weapons_delete_gun();
 		static void weapons_gravity_gun();
-		static void weapons_increased_damage();
 		static void weapons_repair_gun();
 		static void weapons_steal_vehicle_gun();
 		static void weapons_vehicle_gun();

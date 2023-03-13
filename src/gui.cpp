@@ -22,13 +22,13 @@ namespace big
 		    [this] {
 			    dx_on_tick();
 		    },
-		-5);
+		    -5);
 
 		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			wndproc(hwnd, msg, wparam, lparam);
 		});
 
-		g_renderer->add_dx_callback(esp::draw, 2);// TODO: move to ESP service
+		g_renderer->add_dx_callback(esp::draw, 2); // TODO: move to ESP service
 		g_renderer->add_dx_callback(view::context_menu, 1);
 
 		dx_init();

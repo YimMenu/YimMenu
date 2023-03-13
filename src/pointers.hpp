@@ -161,8 +161,8 @@ namespace big
 
 		functions::generate_uuid m_generate_uuid{};
 		std::uint64_t* m_host_token{};
-		rage::rlGamerInfo* m_profile_gamer_info{};    // per profile gamer info
-		rage::rlGamerInfo* m_player_info_gamer_info{};// the gamer info that is applied to CPlayerInfo
+		rage::rlGamerInfo* m_profile_gamer_info{};     // per profile gamer info
+		rage::rlGamerInfo* m_player_info_gamer_info{}; // the gamer info that is applied to CPlayerInfo
 		CCommunications** m_communications{};
 
 		PVOID m_update_presence_attribute_int;
@@ -255,6 +255,8 @@ namespace big
 
 		memory::byte_patch* m_disable_collision{};
 		memory::byte_patch* m_allow_weapons_in_vehicle{};
+
+		PVOID m_taskjump_constructor{};
 
 		PVOID m_write_vehicle_proximity_migration_data_node{};
 		functions::migrate_object m_migrate_object{};

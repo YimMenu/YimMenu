@@ -4,12 +4,12 @@
 namespace big
 {
 
-	class increased_damage : looped_command
+	class infinite_range : looped_command
 	{
 		using looped_command::looped_command;
 
 		CWeaponInfo* p_modified_weapon = nullptr;
-		float og_damage                = 0.0f;
+		float og_range                 = 0.0f;
 
 		virtual void on_tick() override
 		{
@@ -24,11 +24,11 @@ namespace big
 				    && g_local_player->m_weapon_manager->m_weapon_info)
 				{
 					if (p_modified_weapon)
-						p_modified_weapon->m_damage = og_damage;
+						p_modified_weapon->m_weapon_range = og_range;
 
-					og_damage         = g_local_player->m_weapon_manager->m_weapon_info->m_damage;
+					og_range          = g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range;
 					p_modified_weapon = g_local_player->m_weapon_manager->m_weapon_info;
-					g_local_player->m_weapon_manager->m_weapon_info->m_damage = g.weapons.increased_damage;
+					g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = 1000.0f;
 				}
 			}
 		}
@@ -37,12 +37,11 @@ namespace big
 		{
 			if (g_local_player && p_modified_weapon)
 			{
-				p_modified_weapon->m_damage = og_damage;
-				p_modified_weapon           = nullptr;
+				p_modified_weapon->m_weapon_range = og_range;
+				p_modified_weapon                 = nullptr;
 			}
 		}
 	};
 
-	increased_damage
-	    g_increased_damage("incrdamage", "Damage Override", "Sets your damage to whatever you want", g.weapons.increase_damage);
+	infinite_range g_infinite_range("infrange", "Infinite Range", "Kill anything at any distance.", g.weapons.infinite_range);
 }

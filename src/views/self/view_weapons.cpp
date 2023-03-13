@@ -18,6 +18,7 @@ namespace big
 
 		components::command_checkbox<"infammo">();
 		components::command_checkbox<"infclip">();
+		components::command_checkbox<"infrange">();
 		ImGui::Checkbox("Allow Weapons In Interiors", &g.weapons.interior_weapon);
 
 		ImGui::EndGroup();
@@ -103,7 +104,8 @@ namespace big
 			}
 		});
 
-		ImGui::SliderFloat("DMG_MULTIPLR"_T.data(), &g.weapons.increased_damage, 1.f, 10.f, "%.1f");
+		components::command_checkbox<"incrdamage">();
+		ImGui::InputFloat("Damage", &g.weapons.increased_damage, .1, 10, "%.1f");
 
 		ImGui::Separator();
 

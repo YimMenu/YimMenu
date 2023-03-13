@@ -19,6 +19,8 @@ namespace big
 		components::command_button<"skipcutscene">();
 		ImGui::SameLine();
 		components::command_button<"clean">();
+		ImGui::SameLine();
+		components::command_button<"fillammo">();
 
 		ImGui::Separator();
 
@@ -164,6 +166,8 @@ namespace big
 
 		components::sub_title("POLICE"_T);
 
+		components::command_button<"clearwantedlvl">();
+
 		ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.self.never_wanted);
 
 		if (!g.self.never_wanted)
@@ -184,49 +188,68 @@ namespace big
 
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("HIDE_RADAR"_T.data(), &g.self.hide_radar);
+		ImGui::Checkbox("HIDE_RADAR"_T.data(), &g.self.hud.hide_radar);
 
 		ImGui::SameLine();
 
-		ImGui::Checkbox("HIDE_AMMO"_T.data(), &g.self.hide_ammo);
+		ImGui::Checkbox("HIDE_AMMO"_T.data(), &g.self.hud.hide_ammo);
 
 		ImGui::SameLine();
 
-		ImGui::Checkbox("FORCE_SHOW_HUD"_T.data(), &g.self.force_show_hud);
+		ImGui::Checkbox("FORCE_SHOW_HUD"_T.data(), &g.self.hud.force_show_hud);
 
-		ImGui::Combo("##hud_comp_combo", &g.self.selected_hud_component, hud_component_names, (int)HudComponents::HUD_WEAPONS);
+		ImGui::Combo("##hud_comp_combo", &g.self.hud.selected_hud_component, hud_component_names, (int)HudComponents::HUD_WEAPONS);
 		ImGui::SameLine();
 		components::button("HIDE"_T, [] {
-			g.self.hud_components_states[g.self.selected_hud_component] = true;
+			g.self.hud.hud_components_states[g.self.hud.selected_hud_component] = true;
 		});
 		ImGui::SameLine();
 		components::button("SHOW"_T, [] {
-			g.self.hud_components_states[g.self.selected_hud_component] = false;
+			g.self.hud.hud_components_states[g.self.hud.selected_hud_component] = false;
 		});
 
 		components::button("HIDE_ALL"_T, [] {
-			g.self.hide_radar = true;
-			g.self.hide_ammo  = true;
+
+			g.self.hud.hide_radar = true;
+			g.self.hud.hide_ammo = true;
+
 			for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
 			{
-				g.self.hud_components_states[i] = true;
+				g.self.hud.hud_components_states[i] = true;
 			}
 		});
 		ImGui::SameLine();
 		components::button("SHOW_ALL"_T, [] {
-			g.self.hide_radar = false;
-			g.self.hide_ammo  = false;
+
+			g.self.hud.hide_radar = false;
+			g.self.hud.hide_ammo = false;
+
 			for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
 			{
-				g.self.hud_components_states[i] = false;
+				g.self.hud.hud_components_states[i] = false;
 			}
 		});
 		ImGui::SameLine();
-		ImGui::Checkbox("FORCE_SHOW_HUD_ELEMENT"_T.data(), &g.self.force_show_hud_element);
+		ImGui::Checkbox("FORCE_SHOW_HUD_ELEMENT"_T.data(), &g.self.hud.force_show_hud_element);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("FORCE_SHOW_HUD_ELEMENT_DESC"_T.data());
 
 		ImGui::EndGroup();
+
+		components::command_checkbox<"hudcolor">();
+
+		ImGui::Checkbox("Override Hud Color Specify", &g.self.hud.shcolor);
+		ImGui::InputInt("Hud Index", &g.self.hud.index);//need to display current val if not displayed
+		ImGui::InputInt("Hud Red", &g.self.hud.r);
+		ImGui::InputInt("Hud Green", &g.self.hud.g);
+		ImGui::InputInt("Hud Blue", &g.self.hud.b);
+		ImGui::InputInt("Hud Alpha", &g.self.hud.a);
+
+		ImGui::Checkbox("Override Multiplayer Hud Color", &g.self.hud.mhcolor);
+		ImGui::InputInt("Hud Color", &g.self.hud.hcolor);
+
+		ImGui::Checkbox("Override Multiplayer Text Off Index", &g.self.hud.mtcolor);
+		ImGui::InputInt("Hud Text Color", &g.self.hud.tcolor);
 
 		g.self.proof_mask = 0;
 		if (g.self.god_mode)
