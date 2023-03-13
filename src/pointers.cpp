@@ -746,6 +746,16 @@ namespace big
 			m_migrate_object = ptr.as<functions::migrate_object>();
 		});
 
+		// Write Vehicle Proximity Migration Data Node
+		main_batch.add("WVPMDN", "48 89 4C 24 08 55 53 56 57 41 54 41 55 41 56 41 57 48 8B EC 48 83 EC 68 4C 8B A9", [this](memory::handle ptr) {
+			m_write_vehicle_proximity_migration_data_node = ptr.as<PVOID>();
+		});
+
+		// Migrate Object
+		main_batch.add("MO", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 83 EC 20 41 8B F8 48", [this](memory::handle ptr) {
+			m_migrate_object = ptr.as<functions::migrate_object>();
+		});
+
 		//Task Jump Constructor
 		main_batch.add("TJC", "48 89 5C 24 ? 89 54 24 10 57 48 83 EC 30 0F 29 74 24", [this](memory::handle ptr) {
 			m_taskjump_constructor = ptr.as<PVOID>();
