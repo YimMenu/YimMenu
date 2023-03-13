@@ -35,6 +35,9 @@ namespace big
 		static void command_button(const std::vector<std::uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
 		{
 			static command* command = command::get(rage::consteval_joaat(cmd_str.value));
+			if (command == nullptr)
+				return ImGui::Text("INVALID COMMAND");
+
 			if (ImGui::Button(label_override.value_or(command->get_label()).data()))
 				command->call(args);
 			if (ImGui::IsItemHovered())
@@ -45,6 +48,9 @@ namespace big
 		static void player_command_button(player_ptr player = g_player_service->get_selected(), const std::vector<std::uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
 		{
 			static player_command* command = (player_command*)command::get(rage::consteval_joaat(cmd_str.value));
+			if (command == nullptr)
+				return ImGui::Text("INVALID COMMAND");
+
 			if (ImGui::Button(label_override.value_or(command->get_label()).data()))
 				command->call(player, args);
 			if (ImGui::IsItemHovered())
@@ -55,6 +61,9 @@ namespace big
 		static void command_checkbox(std::optional<const std::string_view> label_override = std::nullopt)
 		{
 			static bool_command* command = (bool_command*)command::get(rage::consteval_joaat(cmd_str.value));
+			if (command == nullptr)
+				return ImGui::Text("INVALID COMMAND");
+
 			if (ImGui::Checkbox(label_override.value_or(command->get_label()).data(), &command->is_enabled()))
 				command->refresh();
 			if (ImGui::IsItemHovered())
