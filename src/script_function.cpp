@@ -116,7 +116,7 @@ namespace big
 		call(thread, gta_util::find_script_program(m_script), args);
 
 		delete[] stack;
-		delete[](uint8_t*) thread;// without the cast it ends up calling the destructor which leads to some pretty funny crashes
+		delete[] (uint8_t*)thread; // without the cast it ends up calling the destructor which leads to some pretty funny crashes
 	}
 
 	void script_function::operator()(std::initializer_list<std::uint64_t> args)
