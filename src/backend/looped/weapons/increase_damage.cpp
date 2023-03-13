@@ -32,6 +32,7 @@ namespace big
 				}
 			}
 		}
+
 		virtual void on_disable() override
 		{
 			if (g_local_player && p_modified_weapon)

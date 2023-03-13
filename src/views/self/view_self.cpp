@@ -64,12 +64,6 @@ namespace big
 
 		ImGui::EndGroup();
 
-		components::player_command_button<"lckick">(g_player_service->get_self());
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::Text("Lose connection to others. Only works when not host.");
-		}
-
 		components::sub_title("PTFX Styles");
 
 		components::command_checkbox<"ptfx">();
