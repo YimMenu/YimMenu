@@ -72,22 +72,36 @@ namespace big::entity
 
 	inline bool take_control_of(Entity ent, int timeout = 300)
 	{
-		auto ptr = g_pointers->m_handle_to_ptr(ent);
-		if (ptr)
+		if (auto hnd = g_pointers->m_handle_to_ptr(ent))
 		{
-			if (!*g_pointers->m_is_session_started || network_has_control_of_entity(ptr->m_net_object))
-				return true;
-			for (int i = 0; !network_has_control_of_entity(ptr->m_net_object) && i < timeout; i++)
+			if (!*g_pointers->m_is_session_started || !hnd->m_net_object || network_has_control_of_entity(hnd->m_net_object))
 			{
-				g_pointers->m_request_control(ptr->m_net_object);
-				if (timeout != 0)
-					script::get_current()->yield();
+				return true;
 			}
-			if (!network_has_control_of_entity(ptr->m_net_object))
-				return false;
-			int netHandle = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent);
-			NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, true);
 		}
+		else
+		{
+			return false;
+		}
+
+		for (int i = 0; i < timeout; i++)
+		{
+			auto hnd = g_pointers->m_handle_to_ptr(ent);
+
+			if (!hnd || !hnd->m_net_object)
+				return false;
+
+			g_pointers->m_request_control(hnd->m_net_object);
+			if (timeout != 0)
+				script::get_current()->yield();
+		}
+
+		auto hnd = g_pointers->m_handle_to_ptr(ent);
+		if (!hnd || !hnd->m_net_object || !network_has_control_of_entity(hnd->m_net_object))
+			return false;
+
+		int netHandle = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent);
+		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, true);
 		return true;
 	}
 
@@ -140,5 +154,35 @@ namespace big::entity
 			}
 		}
 		return target_entities;
+	}
+
+	inline bool load_ground_at_3dcoord(Vector3& location)
+	{
+		float groundZ;
+		const uint8_t attempts = 10;
+
+		for (uint8_t i = 0; i < attempts; i++)
+		{
+			// Only request a collision after the first try failed because the location might already be loaded on first attempt.
+			for (uint16_t z = 0; i && z < 1000; z += 100)
+			{
+				STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, (float)z);
+
+				script::get_current()->yield();
+			}
+
+			if (MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, 1000.f, &groundZ, false, false))
+			{
+				location.z = groundZ + 1.f;
+
+				return true;
+			}
+
+			script::get_current()->yield();
+		}
+
+		location.z = 1000.f;
+
+		return false;
 	}
 }

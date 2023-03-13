@@ -8,7 +8,7 @@ namespace big
 		ImGui::SetNextWindowPos({10.f, 100.f * g.window.gui_scale}, ImGuiCond_Always);
 		ImGui::SetNextWindowSize({300.f * g.window.gui_scale, 0.f}, ImGuiCond_Always);
 
-		if (ImGui::Begin("navigation", 0, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav))
+		if (ImGui::Begin("navigation", 0, window_flags))
 		{
 			g_gui_service->reset_nav_size();
 			for (std::pair<tabs, navigation_struct> navItem : g_gui_service->get_navigation())

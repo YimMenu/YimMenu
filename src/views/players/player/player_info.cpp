@@ -1,9 +1,9 @@
 #include "core/data/command_access_levels.hpp"
 #include "core/data/language_codes.hpp"
 #include "core/scr_globals.hpp"
+#include "natives.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "views/view.hpp"
-#include "natives.hpp"
 
 #include <script/globals/GPBD_FM.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
@@ -16,9 +16,9 @@ namespace big
 		if (ImGui::TreeNode("INFO"_T.data()))
 		{
 			components::button("Open SC Overlay", [] {
-				int gamerHandle;
-				NETWORK::NETWORK_HANDLE_FROM_PLAYER(g_player_service->get_selected()->id(), &gamerHandle, 13);
-				NETWORK::NETWORK_SHOW_PROFILE_UI(&gamerHandle);
+				uint64_t gamerHandle[13];
+				NETWORK::NETWORK_HANDLE_FROM_PLAYER(g_player_service->get_selected()->id(), (Any*)&gamerHandle, 13);
+				NETWORK::NETWORK_SHOW_PROFILE_UI((Any*)&gamerHandle);
 			});
 			ImGui::Text("PLAYER_INFO_ID"_T.data(), g_player_service->get_selected()->id());
 
