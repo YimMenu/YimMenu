@@ -144,8 +144,8 @@ namespace big
 		            "GUI_TAB_SETTINGS",
 		            view::settings,
 		            {
-		                {tabs::OUTFIT_EDITOR, {"Outfit Editor", view::outfit_editor}},
-		                {tabs::OUTFIT_SLOTS, {"Outfit Slots", view::outfit_slots}},
+		                {tabs::OUTFIT_EDITOR, {"GUI_TAB_OUTFIT_EDITOR", view::outfit_editor}},
+		                {tabs::OUTFIT_SLOTS, {"GUI_TAB_OUTFIT_SLOTS", view::outfit_slots}},
 		                {tabs::STAT_EDITOR, {"GUI_TAB_STAT_EDITOR", view::stat_editor}},
 		                {tabs::CONTEXT_MENU_SETTINGS, {"GUI_TAB_CONTEXT_MENU", view::context_menu_settings}},
 		                {tabs::ESP_SETTINGS, {"GUI_TAB_ESP", view::esp_settings}},

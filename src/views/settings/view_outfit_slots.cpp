@@ -11,7 +11,7 @@ namespace big
 		{
 			static int slot = 0;
 			ImGui::SetNextItemWidth(160);
-			if (ImGui::InputInt("Slot", &slot))
+			if (ImGui::InputInt("OUTFIT_SLOT"_T, &slot))
 			{
 				if (slot < 0)
 					slot = 19;
@@ -20,7 +20,7 @@ namespace big
 			}
 
 			ImGui::SetNextItemWidth(300);
-			ImGui::InputText("Name", outfit::get_slot_name_address(slot), 16);
+			ImGui::InputText("OUTFIT_NAME"_T, outfit::get_slot_name_address(slot), 16);
 
 			struct outfit_t
 			{
@@ -32,8 +32,8 @@ namespace big
 				int texture_id_max  = 0;
 			};
 
-			static std::vector<outfit_t> components = {{0, "HEAD"}, {1, "BERD"}, {2, "HAIR"}, {3, "UPPR"}, {4, "LOWR"}, {5, "HAND"}, {6, "FEET"}, {7, "TEEF"}, {8, "ACCS"}, {9, "TASK"}, {10, "DECL"}, {11, "JBIB"}};
-			static std::vector<outfit_t> props      = {{0, "HEAD"}, {1, "GLASSES"}, {2, "EARS"}, {3, "UNK1"}, {4, "UNK2"}, {5, "UNK3"}, {6, "WATCH"}, {7, "WRIST"}, {8, "UNK4"}};
+		static std::vector<outfit_t> components = {{0, "OUTFIT_HEAD"_T}, {1, "OUTFIT_BERD"_T}, {2, "OUTFIT_HAIR"_T}, {3, "OUTFIT_UPPR"_T}, {4, "OUTFIT_LOWR"_T}, {5, "OUTFIT_HAND"_T}, {6, "OUTFIT_FEET"_T}, {7, "OUTFIT_TEEF"_T}, {8, "OUTFIT_ACCS"_T}, {9, "OUTFIT_TASK"_T}, {10, "OUTFIT_DECL"_T}, {11, "OUTFIT_JBIB"_T}};
+			static std::vector<outfit_t> props      = {{0, "OUTFIT_HEAD"_T}, {1, "OUTFIT_GLASSES"_T}, {2, "OUTFIT_EARS"_T}, {3, "OUTFIT_UNK1"_T}, {4, "OUTFIT_UNK2"_T}, {5, "OUTFIT_UNK3"_T}, {6, "OUTFIT_WATCH"_T}, {7, "OUTFIT_WRIST"_T}, {8, "OUTFIT_UNK4"_T}};
 
 			g_fiber_pool->queue_job([] {
 				for (auto& item : components)
@@ -55,7 +55,7 @@ namespace big
 				}
 			});
 
-			components::button("Export To Clipboard", [] {
+			components::button("EXPORT_TO_CLIPBOARD"_T, [] {
 				std::stringstream ss;
 				for (auto& item : components)
 					ss << item.drawable_id << " " << item.texture_id << " ";
@@ -66,7 +66,7 @@ namespace big
 			});
 			ImGui::SameLine();
 
-			components::button("Import From Clipboard", [] {
+			components::button("IMPORT_FROM_CLIPBOARD"_T, [] {
 				std::stringstream ss(ImGui::GetClipboardText());
 				for (auto& item : components)
 				{
@@ -102,7 +102,7 @@ namespace big
 			for (auto& item : components)
 			{
 				ImGui::SetNextItemWidth(60);
-				ImGui::InputInt((item.label + " TEX" + +" [0," + std::to_string(item.texture_id_max) + "]").c_str(), outfit::get_component_texture_id_address(slot, item.id), ImGuiInputTextFlags_None);
+				ImGui::InputInt((item.label + " OUTFIT_TEX"_T + +" [0," + std::to_string(item.texture_id_max) + "]").c_str(), outfit::get_component_texture_id_address(slot, item.id), ImGuiInputTextFlags_None);
 			}
 			ImGui::EndGroup();
 
@@ -122,7 +122,7 @@ namespace big
 			for (auto& item : props)
 			{
 				ImGui::SetNextItemWidth(60);
-				ImGui::InputInt((item.label + " TEX" + +" [0," + std::to_string(item.texture_id_max) + "]").c_str(), outfit::get_prop_texture_id_address(slot, item.id), ImGuiInputTextFlags_None);
+				ImGui::InputInt((item.label + " OUTFIT_TEX"_T + +" [0," + std::to_string(item.texture_id_max) + "]").c_str(), outfit::get_prop_texture_id_address(slot, item.id), ImGuiInputTextFlags_None);
 			}
 			ImGui::EndGroup();
 		}
