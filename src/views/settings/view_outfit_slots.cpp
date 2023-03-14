@@ -115,7 +115,7 @@ namespace big
 			for (auto& item : components)
 			{
 				ImGui::SetNextItemWidth(60);
-				ImGui::InputInt((item.label + " [0," + std::to_string(item.drawable_id_max) + "]").c_str(), outfit::get_component_drawable_id_address(slot, item.id), ImGuiInputTextFlags_None);
+				ImGui::InputInt(std::format("{} [0,{}]", item.label, item.drawable_id_max).c_str(), outfit::get_component_drawable_id_address(slot, item.id), ImGuiInputTextFlags_None);
 			}
 			ImGui::EndGroup();
 
@@ -125,10 +125,7 @@ namespace big
 			for (auto& item : components)
 			{
 				ImGui::SetNextItemWidth(60);
-				ImGui::InputInt(
-				    (item.label + " OUTFIT_TEX"_T.data() + +" [0," + std::to_string(item.texture_id_max) + "]").c_str(),
-				    outfit::get_component_texture_id_address(slot, item.id),
-				    ImGuiInputTextFlags_None);
+				ImGui::InputInt(std::format("{} {} [0,{}]", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), outfit::get_component_texture_id_address(slot, item.id), ImGuiInputTextFlags_None);
 			}
 			ImGui::EndGroup();
 
@@ -138,7 +135,7 @@ namespace big
 			for (auto& item : props)
 			{
 				ImGui::SetNextItemWidth(60);
-				ImGui::InputInt((item.label + " [0," + std::to_string(item.drawable_id_max) + "]").c_str(), outfit::get_prop_drawable_id_address(slot, item.id), ImGuiInputTextFlags_None);
+				ImGui::InputInt(std::format("{} [0,{}]", item.label, item.drawable_id_max).c_str(), outfit::get_prop_drawable_id_address(slot, item.id), ImGuiInputTextFlags_None);
 			}
 			ImGui::EndGroup();
 
@@ -148,10 +145,7 @@ namespace big
 			for (auto& item : props)
 			{
 				ImGui::SetNextItemWidth(60);
-				ImGui::InputInt(
-				    (item.label + " OUTFIT_TEX"_T.data() + +" [0," + std::to_string(item.texture_id_max) + "]").c_str(),
-				    outfit::get_prop_texture_id_address(slot, item.id),
-				    ImGuiInputTextFlags_None);
+				ImGui::InputInt(std::format("{} {} [0,{}]", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), outfit::get_prop_texture_id_address(slot, item.id), ImGuiInputTextFlags_None);
 			}
 			ImGui::EndGroup();
 		}
