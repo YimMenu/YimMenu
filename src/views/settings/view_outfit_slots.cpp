@@ -62,7 +62,7 @@ namespace big
 				for (auto& item : props)
 					ss << item.drawable_id << " " << item.texture_id << " ";
 				ImGui::SetClipboardText(ss.str().c_str());
-				g_notification_service->push("Outfit", "Export to clipboard");
+				g_notification_service->push("OUTFIT"_T, "EXPORT_TO_CLIPBOARD"_T);
 			});
 			ImGui::SameLine();
 
