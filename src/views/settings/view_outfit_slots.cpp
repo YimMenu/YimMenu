@@ -32,7 +32,7 @@ namespace big
 				int texture_id_max  = 0;
 			};
 
-		static std::vector<outfit_t> components = {{0, "OUTFIT_HEAD"_T}, {1, "OUTFIT_BERD"_T}, {2, "OUTFIT_HAIR"_T}, {3, "OUTFIT_UPPR"_T}, {4, "OUTFIT_LOWR"_T}, {5, "OUTFIT_HAND"_T}, {6, "OUTFIT_FEET"_T}, {7, "OUTFIT_TEEF"_T}, {8, "OUTFIT_ACCS"_T}, {9, "OUTFIT_TASK"_T}, {10, "OUTFIT_DECL"_T}, {11, "OUTFIT_JBIB"_T}};
+			static std::vector<outfit_t> components = {{0, "OUTFIT_HEAD"_T}, {1, "OUTFIT_BERD"_T}, {2, "OUTFIT_HAIR"_T}, {3, "OUTFIT_UPPR"_T}, {4, "OUTFIT_LOWR"_T}, {5, "OUTFIT_HAND"_T}, {6, "OUTFIT_FEET"_T}, {7, "OUTFIT_TEEF"_T}, {8, "OUTFIT_ACCS"_T}, {9, "OUTFIT_TASK"_T}, {10, "OUTFIT_DECL"_T}, {11, "OUTFIT_JBIB"_T}};
 			static std::vector<outfit_t> props      = {{0, "OUTFIT_HEAD"_T}, {1, "OUTFIT_GLASSES"_T}, {2, "OUTFIT_EARS"_T}, {3, "OUTFIT_UNK1"_T}, {4, "OUTFIT_UNK2"_T}, {5, "OUTFIT_UNK3"_T}, {6, "OUTFIT_WATCH"_T}, {7, "OUTFIT_WRIST"_T}, {8, "OUTFIT_UNK4"_T}};
 
 			g_fiber_pool->queue_job([] {
@@ -58,9 +58,9 @@ namespace big
 			components::button("EXPORT_TO_CLIPBOARD"_T, [] {
 				std::stringstream ss;
 				for (auto& item : components)
-					ss << item.drawable_id << " " << item.texture_id << " ";
+					ss << item.id << " " << item.drawable_id << " " << item.texture_id << " ";
 				for (auto& item : props)
-					ss << item.drawable_id << " " << item.texture_id << " ";
+					ss << item.id << " " << item.drawable_id << " " << item.texture_id << " ";
 				ImGui::SetClipboardText(ss.str().c_str());
 				g_notification_service->push("OUTFIT"_T, "EXPORT_TO_CLIPBOARD"_T);
 			});
@@ -70,21 +70,25 @@ namespace big
 				std::stringstream ss(ImGui::GetClipboardText());
 				for (auto& item : components)
 				{
+					int id         = 0;
 					int draw_id    = 0;
 					int texture_id = 0;
+					ss >> id;
 					ss >> draw_id;
 					ss >> texture_id;
-					*outfit::get_component_drawable_id_address(slot, item.id) = draw_id;
-					*outfit::get_component_texture_id_address(slot, item.id)  = texture_id;
+					*outfit::get_component_drawable_id_address(slot, id) = draw_id;
+					*outfit::get_component_texture_id_address(slot, id)  = texture_id;
 				}
 				for (auto& item : props)
 				{
+					int id         = 0;
 					int draw_id    = 0;
 					int texture_id = 0;
+					ss >> id;
 					ss >> draw_id;
 					ss >> texture_id;
-					*outfit::get_prop_drawable_id_address(slot, item.id) = draw_id;
-					*outfit::get_prop_texture_id_address(slot, item.id)  = texture_id;
+					*outfit::get_prop_drawable_id_address(slot, id) = draw_id;
+					*outfit::get_prop_texture_id_address(slot, id)  = texture_id;
 				}
 			});
 

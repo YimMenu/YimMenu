@@ -62,9 +62,9 @@ namespace big
 		components::button("EXPORT_TO_CLIPBOARD"_T, [] {
 			std::stringstream ss;
 			for (auto& item : components)
-				ss << item.drawable_id << " " << item.texture_id << " ";
+				ss << item.id << " " << item.drawable_id << " " << item.texture_id << " ";
 			for (auto& item : props)
-				ss << item.drawable_id << " " << item.texture_id << " ";
+				ss << item.id << " " << item.drawable_id << " " << item.texture_id << " ";
 			ImGui::SetClipboardText(ss.str().c_str());
 			g_notification_service->push("OUTFIT"_T, "EXPORT_TO_CLIPBOARD"_T);
 		});
@@ -74,22 +74,26 @@ namespace big
 			std::stringstream ss(ImGui::GetClipboardText());
 			for (auto& item : components)
 			{
+				int id         = 0;
 				int draw_id    = 0;
 				int texture_id = 0;
+				ss >> id;
 				ss >> draw_id;
 				ss >> texture_id;
-				PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, draw_id, texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
+				PED::SET_PED_COMPONENT_VARIATION(self::ped, id, draw_id, texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, id));
 			}
 			for (auto& item : props)
 			{
+				int id         = 0;
 				int draw_id    = 0;
 				int texture_id = 0;
+				ss >> id;
 				ss >> draw_id;
 				ss >> texture_id;
 				if (draw_id == -1)
-					PED::CLEAR_PED_PROP(self::ped, item.id, 1);
+					PED::CLEAR_PED_PROP(self::ped, id, 1);
 				else
-					PED::SET_PED_PROP_INDEX(self::ped, item.id, draw_id, texture_id, TRUE, 1);
+					PED::SET_PED_PROP_INDEX(self::ped, id, draw_id, texture_id, TRUE, 1);
 			}
 		});
 
