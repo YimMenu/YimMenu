@@ -121,9 +121,11 @@ namespace big
 		{
 			ImGui::SetNextItemWidth(60);
 			if (ImGui::InputInt((item.label + " [0," + std::to_string(item.drawable_id_max) + "]").c_str(), &item.drawable_id, ImGuiInputTextFlags_None))
+			{
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, 0, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
 				});
+			}
 		}
 		ImGui::EndGroup();
 
@@ -137,9 +139,11 @@ namespace big
 			        (item.label + " OUTFIT_TEX"_T.data() + +" [0," + std::to_string(item.texture_id_max) + "]").c_str(),
 			        &item.texture_id,
 			        ImGuiInputTextFlags_None))
+			{
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, item.texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
 				});
+			}
 		}
 		ImGui::EndGroup();
 
@@ -150,12 +154,14 @@ namespace big
 		{
 			ImGui::SetNextItemWidth(60);
 			if (ImGui::InputInt((item.label + " [0," + std::to_string(item.drawable_id_max) + "]").c_str(), &item.drawable_id, ImGuiInputTextFlags_None))
+			{
 				g_fiber_pool->queue_job([item] {
 					if (item.drawable_id == -1)
 						PED::CLEAR_PED_PROP(self::ped, item.id, 1);
 					else
 						PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, 0, TRUE, 1);
 				});
+			}	
 		}
 		ImGui::EndGroup();
 
@@ -169,9 +175,11 @@ namespace big
 			        (item.label + " OUTFIT_TEX"_T.data() + +" [0," + std::to_string(item.texture_id_max) + "]").c_str(),
 			        &item.texture_id,
 			        ImGuiInputTextFlags_None))
+			{
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, item.texture_id, TRUE, 1);
 				});
+			}
 		}
 		ImGui::EndGroup();
 
