@@ -16,8 +16,27 @@ namespace big
 			int texture_id_max  = 0;
 		};
 
-		static std::vector<outfit_t> components = {{0, "OUTFIT_HEAD"_T}, {1, "OUTFIT_BERD"_T}, {2, "OUTFIT_HAIR"_T}, {3, "OUTFIT_UPPR"_T}, {4, "OUTFIT_LOWR"_T}, {5, "OUTFIT_HAND"_T}, {6, "OUTFIT_FEET"_T}, {7, "OUTFIT_TEEF"_T}, {8, "OUTFIT_ACCS"_T}, {9, "OUTFIT_TASK"_T}, {10, "OUTFIT_DECL"_T}, {11, "OUTFIT_JBIB"_T}};
-		static std::vector<outfit_t> props      = {{0, "OUTFIT_HEAD"_T}, {1, "OUTFIT_GLASSES"_T}, {2, "OUTFIT_EARS"_T}, {3, "OUTFIT_UNK1"_T}, {4, "OUTFIT_UNK2"_T}, {5, "OUTFIT_UNK3"_T}, {6, "OUTFIT_WATCH"_T}, {7, "OUTFIT_WRIST"_T}, {8, "OUTFIT_UNK4"_T}};
+		static std::vector<outfit_t> components = {{0, "OUTFIT_HEAD"_T.data()},
+		    {1, "OUTFIT_BERD"_T.data()},
+		    {2, "OUTFIT_HAIR"_T.data()},
+		    {3, "OUTFIT_UPPR"_T.data()},
+		    {4, "OUTFIT_LOWR"_T.data()},
+		    {5, "OUTFIT_HAND"_T.data()},
+		    {6, "OUTFIT_FEET"_T.data()},
+		    {7, "OUTFIT_TEEF"_T.data()},
+		    {8, "OUTFIT_ACCS"_T.data()},
+		    {9, "OUTFIT_TASK"_T.data()},
+		    {10, "OUTFIT_DECL"_T.data()},
+		    {11, "OUTFIT_JBIB"_T.data()}};
+		static std::vector<outfit_t> props      = {{0, "OUTFIT_HEAD"_T.data()},
+		         {1, "OUTFIT_GLASSES"_T.data()},
+		         {2, "OUTFIT_EARS"_T.data()},
+		         {3, "OUTFIT_UNK1"_T.data()},
+		         {4, "OUTFIT_UNK2"_T.data()},
+		         {5, "OUTFIT_UNK3"_T.data()},
+		         {6, "OUTFIT_WATCH"_T.data()},
+		         {7, "OUTFIT_WRIST"_T.data()},
+		         {8, "OUTFIT_UNK4"_T.data()}};
 
 		g_fiber_pool->queue_job([] {
 			for (auto& item : components)
@@ -66,7 +85,7 @@ namespace big
 			for (auto& item : props)
 				ss << item.id << " " << item.drawable_id << " " << item.texture_id << " ";
 			ImGui::SetClipboardText(ss.str().c_str());
-			g_notification_service->push("OUTFIT"_T, "EXPORT_TO_CLIPBOARD"_T);
+			g_notification_service->push("OUTFIT"_T.data(), "EXPORT_TO_CLIPBOARD"_T.data());
 		});
 		ImGui::SameLine();
 
@@ -114,7 +133,10 @@ namespace big
 		for (auto& item : components)
 		{
 			ImGui::SetNextItemWidth(60);
-			if (ImGui::InputInt((item.label + " OUTFIT_TEX"_T + +" [0," + std::to_string(item.texture_id_max) + "]").c_str(), &item.texture_id, ImGuiInputTextFlags_None))
+			if (ImGui::InputInt(
+			        (item.label + " OUTFIT_TEX"_T.data() + +" [0," + std::to_string(item.texture_id_max) + "]").c_str(),
+			        &item.texture_id,
+			        ImGuiInputTextFlags_None))
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, item.texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
 				});
@@ -143,7 +165,10 @@ namespace big
 		for (auto& item : props)
 		{
 			ImGui::SetNextItemWidth(60);
-			if (ImGui::InputInt((item.label + " OUTFIT_TEX"_T + +" [0," + std::to_string(item.texture_id_max) + "]").c_str(), &item.texture_id, ImGuiInputTextFlags_None))
+			if (ImGui::InputInt(
+			        (item.label + " OUTFIT_TEX"_T.data() + +" [0," + std::to_string(item.texture_id_max) + "]").c_str(),
+			        &item.texture_id,
+			        ImGuiInputTextFlags_None))
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, item.texture_id, TRUE, 1);
 				});
