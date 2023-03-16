@@ -11,6 +11,7 @@ namespace big
 		{
 			if(g_local_player && g_local_player !=nullptr && !g.self.force_wanted_level)
 			{
+				g_local_player->m_player_info->m_wanted_level = 0;
 				g.self.wanted_level = 0;
 				g_local_player->m_player_info->m_is_wanted = false;
 			}
