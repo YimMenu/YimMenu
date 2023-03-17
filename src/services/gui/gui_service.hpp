@@ -42,6 +42,8 @@ namespace big
 		SESSION_BROWSER,
 
 		SETTINGS,
+		OUTFIT_EDITOR,
+		OUTFIT_SLOTS,
 		STAT_EDITOR,
 		CONTEXT_MENU_SETTINGS,
 		ESP_SETTINGS,
@@ -142,6 +144,8 @@ namespace big
 		            "GUI_TAB_SETTINGS",
 		            view::settings,
 		            {
+		                {tabs::OUTFIT_EDITOR, {"GUI_TAB_OUTFIT_EDITOR", view::outfit_editor}},
+		                {tabs::OUTFIT_SLOTS, {"GUI_TAB_OUTFIT_SLOTS", view::outfit_slots}},
 		                {tabs::STAT_EDITOR, {"GUI_TAB_STAT_EDITOR", view::stat_editor}},
 		                {tabs::CONTEXT_MENU_SETTINGS, {"GUI_TAB_CONTEXT_MENU", view::context_menu_settings}},
 		                {tabs::ESP_SETTINGS, {"GUI_TAB_ESP", view::esp_settings}},
