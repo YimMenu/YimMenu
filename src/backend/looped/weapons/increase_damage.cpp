@@ -8,38 +8,21 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		CWeaponInfo* p_modified_weapon = nullptr;
-		float og_damage                = 0.0f;
-
 		virtual void on_tick() override
 		{
-			if (!g_local_player)
+			if (g.weapons.increased_damage != 1) 
 			{
-				return;
-			}
-
-			if (g_local_player->m_weapon_manager)
-			{
-				if (p_modified_weapon != g_local_player->m_weapon_manager->m_weapon_info
-				    && g_local_player->m_weapon_manager->m_weapon_info)
-				{
-					if (p_modified_weapon)
-						p_modified_weapon->m_damage = og_damage;
-
-					og_damage         = g_local_player->m_weapon_manager->m_weapon_info->m_damage;
-					p_modified_weapon = g_local_player->m_weapon_manager->m_weapon_info;
-					g_local_player->m_weapon_manager->m_weapon_info->m_damage = g.weapons.increased_damage;
-				}
+				Hash weapon{}; 
+				WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weapon, 0);
+				WEAPON::SET_WEAPON_DAMAGE_MODIFIER(weapon, g.weapons.increased_damage);
 			}
 		}
 
 		virtual void on_disable() override
 		{
-			if (g_local_player && p_modified_weapon)
-			{
-				p_modified_weapon->m_damage = og_damage;
-				p_modified_weapon           = nullptr;
-			}
+			Hash weapon{}; 
+			WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weapon, 0);
+			WEAPON::SET_WEAPON_DAMAGE_MODIFIER(weapon, 1);
 		}
 	};
 
