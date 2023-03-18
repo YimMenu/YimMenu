@@ -25,7 +25,7 @@ namespace big
 
 		ImGui::Separator();
 
-		components::button("TP_IN_PV"_T, [] {
+		components::button("TP_INTO_PV"_T, [] {
 			Vehicle veh = mobile::mechanic::get_personal_vehicle();
 			teleport::into_vehicle(veh);
 		});
@@ -162,7 +162,7 @@ namespace big
 		}
 		ImGui::Separator();
 
-		components::sub_title("SPEEDO_METER"_T);
+		components::sub_title("SPEEDOMETER"_T);
 		{
 			ImGui::Checkbox("ENABLED"_T.data(), &g.vehicle.speedo_meter.enabled);
 
