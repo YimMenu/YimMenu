@@ -624,8 +624,8 @@ namespace big
 
 		// Sound Overload Detour
 		main_batch.add("SOD", "66 45 3B C1 74 38", [this](memory::handle ptr) {
-			g_sound_overload_ret_addr = ptr.add(13 + 15).as<decltype(g_sound_overload_ret_addr)>();
-			std::vector<byte> bytes = {0xFF, 0x25, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90}; // far jump opcode + a nop opcode
+			g_sound_overload_ret_addr   = ptr.add(13 + 15).as<decltype(g_sound_overload_ret_addr)>();
+			std::vector<byte> bytes     = {0xFF, 0x25, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90}; // far jump opcode + a nop opcode
 			*(void**)(bytes.data() + 6) = sound_overload_detour;
 			memory::byte_patch::make(ptr.add(13).as<void*>(), bytes)->apply();
 		});

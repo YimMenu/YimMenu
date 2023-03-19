@@ -240,7 +240,7 @@ namespace big
 					std::stringstream ss(item.key());
 					int id = 0;
 					ss >> id;
-					int draw_id    = item.value()["draw_id"];
+					int draw_id    = item.value()["drawable_id"];
 					int texture_id = item.value()["texture_id"];
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, id, draw_id, texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, id));
 				}
@@ -250,7 +250,7 @@ namespace big
 					std::stringstream ss(item.key());
 					int id = 0;
 					ss >> id;
-					int draw_id    = item.value()["draw_id"];
+					int draw_id    = item.value()["drawable_id"];
 					int texture_id = item.value()["texture_id"];
 					if (draw_id == -1)
 						PED::CLEAR_PED_PROP(self::ped, id, 1);
