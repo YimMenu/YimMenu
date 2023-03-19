@@ -192,39 +192,36 @@ namespace big
 		ImGui::SameLine();
 
 		components::button("OUTFIT_SAVE_CURRENT"_T, [] {
-			if (outfit_name[0] != '\0')
+			nlohmann::json j;
+			nlohmann::json j_components;
+			nlohmann::json j_props;
+
+			for (auto& item : components)
 			{
-				nlohmann::json j;
-				nlohmann::json j_components;
-				nlohmann::json j_props;
-
-				for (auto& item : components)
-				{
-					nlohmann::json tmp;
-					tmp["drawable_id"]                    = item.drawable_id;
-					tmp["texture_id"]                     = item.texture_id;
-					j_components[std::to_string(item.id)] = tmp;
-				}
-
-				for (auto& item : props)
-				{
-					nlohmann::json tmp;
-					tmp["drawable_id"]               = item.drawable_id;
-					tmp["texture_id"]                = item.texture_id;
-					j_props[std::to_string(item.id)] = tmp;
-				}
-
-				j["components"] = j_components;
-				j["props"]      = j_props;
-
-				size_t index    = 0;
-				std::string str = outfit_name;
-				while (saved_outfit_path.get_file(str + ".json").exists())
-					str = std::format("{} ({})", outfit_name, ++index);
-
-				std::ofstream o(saved_outfit_path.get_file(str + ".json").get_path());
-				o << std::setw(4) << j << std::endl;
+				nlohmann::json tmp;
+				tmp["drawable_id"]                    = item.drawable_id;
+				tmp["texture_id"]                     = item.texture_id;
+				j_components[std::to_string(item.id)] = tmp;
 			}
+
+			for (auto& item : props)
+			{
+				nlohmann::json tmp;
+				tmp["drawable_id"]               = item.drawable_id;
+				tmp["texture_id"]                = item.texture_id;
+				j_props[std::to_string(item.id)] = tmp;
+			}
+
+			j["components"] = j_components;
+			j["props"]      = j_props;
+
+			size_t index    = 0;
+			std::string str = outfit_name;
+			while (saved_outfit_path.get_file(str + ".json").exists())
+				str = std::format("{} ({})", outfit_name, ++index);
+
+			std::ofstream o(saved_outfit_path.get_file(str + ".json").get_path());
+			o << std::setw(4) << j << std::endl;
 		});
 		ImGui::SameLine();
 
