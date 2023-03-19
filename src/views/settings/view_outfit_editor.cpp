@@ -120,7 +120,7 @@ namespace big
 		for (auto& item : components)
 		{
 			ImGui::SetNextItemWidth(60);
-			if (ImGui::InputInt(std::format("{} [0,{}]", item.label, item.drawable_id_max).c_str(), &item.drawable_id, ImGuiInputTextFlags_None))
+			if (ImGui::InputInt(std::format("{} [0,{}]", item.label, item.drawable_id_max).c_str(), &item.drawable_id, 0))
 			{
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, 0, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
@@ -135,7 +135,7 @@ namespace big
 		for (auto& item : components)
 		{
 			ImGui::SetNextItemWidth(60);
-			if (ImGui::InputInt(std::format("{} {} [0,{}]", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id, ImGuiInputTextFlags_None))
+			if (ImGui::InputInt(std::format("{} {} [0,{}]", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id, 0))
 			{
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, item.texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
@@ -150,7 +150,7 @@ namespace big
 		for (auto& item : props)
 		{
 			ImGui::SetNextItemWidth(60);
-			if (ImGui::InputInt(std::format("{} [0,{}]", item.label, item.drawable_id_max).c_str(), &item.drawable_id, ImGuiInputTextFlags_None))
+			if (ImGui::InputInt(std::format("{} [0,{}]", item.label, item.drawable_id_max).c_str(), &item.drawable_id, 0))
 			{
 				g_fiber_pool->queue_job([item] {
 					if (item.drawable_id == -1)
@@ -168,7 +168,7 @@ namespace big
 		for (auto& item : props)
 		{
 			ImGui::SetNextItemWidth(60);
-			if (ImGui::InputInt(std::format("{} {} [0,{}]", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id, ImGuiInputTextFlags_None))
+			if (ImGui::InputInt(std::format("{} {} [0,{}]", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id, 0))
 			{
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, item.texture_id, TRUE, 1);
@@ -192,39 +192,36 @@ namespace big
 		ImGui::SameLine();
 
 		components::button("OUTFIT_SAVE_CURRENT"_T, [] {
-			if (outfit_name[0] != '\0')
+			nlohmann::json j;
+			nlohmann::json j_components;
+			nlohmann::json j_props;
+
+			for (auto& item : components)
 			{
-				nlohmann::json j;
-				nlohmann::json j_components;
-				nlohmann::json j_props;
-
-				for (auto& item : components)
-				{
-					nlohmann::json tmp;
-					tmp["drawable_id"]                    = item.drawable_id;
-					tmp["texture_id"]                     = item.texture_id;
-					j_components[std::to_string(item.id)] = tmp;
-				}
-
-				for (auto& item : props)
-				{
-					nlohmann::json tmp;
-					tmp["drawable_id"]               = item.drawable_id;
-					tmp["texture_id"]                = item.texture_id;
-					j_props[std::to_string(item.id)] = tmp;
-				}
-
-				j["components"] = j_components;
-				j["props"]      = j_props;
-
-				size_t index    = 0;
-				std::string str = outfit_name;
-				while (saved_outfit_path.get_file(str + ".json").exists())
-					str = std::format("{} ({})", outfit_name, ++index);
-
-				std::ofstream o(saved_outfit_path.get_file(str + ".json").get_path());
-				o << std::setw(4) << j << std::endl;
+				nlohmann::json tmp;
+				tmp["drawable_id"]                    = item.drawable_id;
+				tmp["texture_id"]                     = item.texture_id;
+				j_components[std::to_string(item.id)] = tmp;
 			}
+
+			for (auto& item : props)
+			{
+				nlohmann::json tmp;
+				tmp["drawable_id"]               = item.drawable_id;
+				tmp["texture_id"]                = item.texture_id;
+				j_props[std::to_string(item.id)] = tmp;
+			}
+
+			j["components"] = j_components;
+			j["props"]      = j_props;
+
+			size_t index    = 0;
+			std::string str = outfit_name;
+			while (saved_outfit_path.get_file(str + ".json").exists())
+				str = std::format("{}({})", outfit_name, ++index);
+
+			std::ofstream o(saved_outfit_path.get_file(str + ".json").get_path());
+			o << std::setw(4) << j << std::endl;
 		});
 		ImGui::SameLine();
 
@@ -240,7 +237,7 @@ namespace big
 					std::stringstream ss(item.key());
 					int id = 0;
 					ss >> id;
-					int draw_id    = item.value()["draw_id"];
+					int draw_id    = item.value()["drawable_id"];
 					int texture_id = item.value()["texture_id"];
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, id, draw_id, texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, id));
 				}
@@ -250,7 +247,7 @@ namespace big
 					std::stringstream ss(item.key());
 					int id = 0;
 					ss >> id;
-					int draw_id    = item.value()["draw_id"];
+					int draw_id    = item.value()["drawable_id"];
 					int texture_id = item.value()["texture_id"];
 					if (draw_id == -1)
 						PED::CLEAR_PED_PROP(self::ped, id, 1);
