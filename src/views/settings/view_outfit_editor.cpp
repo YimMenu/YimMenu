@@ -218,7 +218,7 @@ namespace big
 			size_t index    = 0;
 			std::string str = outfit_name;
 			while (saved_outfit_path.get_file(str + ".json").exists())
-				str = std::format("{} ({})", outfit_name, ++index);
+				str = std::format("{}({})", outfit_name, ++index);
 
 			std::ofstream o(saved_outfit_path.get_file(str + ".json").get_path());
 			o << std::setw(4) << j << std::endl;
