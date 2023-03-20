@@ -4,6 +4,11 @@
 
 namespace big
 {
+	static int range(int lower_bound, int upper_bound)
+	{
+		return std::rand() % (upper_bound - lower_bound + 1) + lower_bound;
+	}
+
 	void view::outfit_editor()
 	{
 		struct outfit_t
@@ -59,7 +64,12 @@ namespace big
 		});
 
 		components::button("OUTFIT_RANDOM_COMPONENT"_T, [] {
-			PED::SET_PED_RANDOM_COMPONENT_VARIATION(self::ped, 0);
+			for (auto& item : components)
+			{
+				int drawable_id = range(0, PED::GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS(self::ped, item.id) - 1);
+				int texture_id = range(0, PED::GET_NUMBER_OF_PED_TEXTURE_VARIATIONS(self::ped, item.id, drawable_id) - 1);
+				PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, drawable_id, texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
+			}
 		});
 		ImGui::SameLine();
 
@@ -93,26 +103,26 @@ namespace big
 			std::stringstream ss(ImGui::GetClipboardText());
 			for (auto& item : components)
 			{
-				int id         = 0;
-				int draw_id    = 0;
-				int texture_id = 0;
+				int id          = 0;
+				int drawable_id = 0;
+				int texture_id  = 0;
 				ss >> id;
-				ss >> draw_id;
+				ss >> drawable_id;
 				ss >> texture_id;
-				PED::SET_PED_COMPONENT_VARIATION(self::ped, id, draw_id, texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, id));
+				PED::SET_PED_COMPONENT_VARIATION(self::ped, id, drawable_id, texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, id));
 			}
 			for (auto& item : props)
 			{
-				int id         = 0;
-				int draw_id    = 0;
-				int texture_id = 0;
+				int id          = 0;
+				int drawable_id = 0;
+				int texture_id  = 0;
 				ss >> id;
-				ss >> draw_id;
+				ss >> drawable_id;
 				ss >> texture_id;
-				if (draw_id == -1)
+				if (drawable_id == -1)
 					PED::CLEAR_PED_PROP(self::ped, id, 1);
 				else
-					PED::SET_PED_PROP_INDEX(self::ped, id, draw_id, texture_id, TRUE, 1);
+					PED::SET_PED_PROP_INDEX(self::ped, id, drawable_id, texture_id, TRUE, 1);
 			}
 		});
 
@@ -237,9 +247,9 @@ namespace big
 					std::stringstream ss(item.key());
 					int id = 0;
 					ss >> id;
-					int draw_id    = item.value()["drawable_id"];
-					int texture_id = item.value()["texture_id"];
-					PED::SET_PED_COMPONENT_VARIATION(self::ped, id, draw_id, texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, id));
+					int drawable_id = item.value()["drawable_id"];
+					int texture_id  = item.value()["texture_id"];
+					PED::SET_PED_COMPONENT_VARIATION(self::ped, id, drawable_id, texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, id));
 				}
 
 				for (auto& item : j["props"].items())
@@ -247,12 +257,12 @@ namespace big
 					std::stringstream ss(item.key());
 					int id = 0;
 					ss >> id;
-					int draw_id    = item.value()["drawable_id"];
-					int texture_id = item.value()["texture_id"];
-					if (draw_id == -1)
+					int drawable_id = item.value()["drawable_id"];
+					int texture_id  = item.value()["texture_id"];
+					if (drawable_id == -1)
 						PED::CLEAR_PED_PROP(self::ped, id, 1);
 					else
-						PED::SET_PED_PROP_INDEX(self::ped, id, draw_id, texture_id, TRUE, 1);
+						PED::SET_PED_PROP_INDEX(self::ped, id, drawable_id, texture_id, TRUE, 1);
 				}
 			}
 		});

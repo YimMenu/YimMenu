@@ -89,24 +89,24 @@ namespace big
 				std::stringstream ss(ImGui::GetClipboardText());
 				for (auto& item : components)
 				{
-					int id         = 0;
-					int draw_id    = 0;
-					int texture_id = 0;
+					int id          = 0;
+					int drawable_id = 0;
+					int texture_id  = 0;
 					ss >> id;
-					ss >> draw_id;
+					ss >> drawable_id;
 					ss >> texture_id;
-					*outfit::get_component_drawable_id_address(slot, id) = draw_id;
+					*outfit::get_component_drawable_id_address(slot, id) = drawable_id;
 					*outfit::get_component_texture_id_address(slot, id)  = texture_id;
 				}
 				for (auto& item : props)
 				{
-					int id         = 0;
-					int draw_id    = 0;
-					int texture_id = 0;
+					int id          = 0;
+					int drawable_id = 0;
+					int texture_id  = 0;
 					ss >> id;
-					ss >> draw_id;
+					ss >> drawable_id;
 					ss >> texture_id;
-					*outfit::get_prop_drawable_id_address(slot, id) = draw_id;
+					*outfit::get_prop_drawable_id_address(slot, id) = drawable_id;
 					*outfit::get_prop_texture_id_address(slot, id)  = texture_id;
 				}
 			});
