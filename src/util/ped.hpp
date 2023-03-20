@@ -2,6 +2,7 @@
 #include "entity.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
+#include "outfit.hpp"
 
 namespace big::ped
 {
@@ -94,5 +95,19 @@ namespace big::ped
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 
 		return ped;
+	}
+
+	inline void set_ped_random_component_variation(Ped ped)
+	{
+		auto range = [](int lower_bound, int upper_bound) -> int {
+			return std::rand() % (upper_bound - lower_bound + 1) + lower_bound;
+		};
+		outfit::components_t components;
+		for (auto& item : components.items)
+		{
+			int drawable_id = range(0, PED::GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS(ped, item.id) - 1);
+			int texture_id  = range(0, PED::GET_NUMBER_OF_PED_TEXTURE_VARIATIONS(ped, item.id, drawable_id) - 1);
+			PED::SET_PED_COMPONENT_VARIATION(ped, item.id, drawable_id, texture_id, PED::GET_PED_PALETTE_VARIATION(ped, item.id));
+		}
 	}
 }
