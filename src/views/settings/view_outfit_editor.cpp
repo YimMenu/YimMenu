@@ -6,8 +6,7 @@ namespace big
 {
 	static int range(int lower_bound, int upper_bound)
 	{
-		std::srand(std::chrono::system_clock::now().time_since_epoch().count());
-		return rand() % (upper_bound - lower_bound + 1) + lower_bound;
+		return std::rand() % (upper_bound - lower_bound + 1) + lower_bound;
 	}
 
 	void view::outfit_editor()
