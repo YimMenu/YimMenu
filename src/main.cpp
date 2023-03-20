@@ -52,7 +52,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    EnableMenuItem(GetSystemMenu(GetConsoleWindow(), 0), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 
-				std::srand(std::chrono::system_clock::now().time_since_epoch().count());
+			    std::srand(std::chrono::system_clock::now().time_since_epoch().count());
 
 			    try
 			    {
