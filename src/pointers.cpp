@@ -736,6 +736,11 @@ namespace big
 			m_allow_weapons_in_vehicle = memory::byte_patch::make(ptr.add(5).as<uint16_t*>(), 0x01B0).get(); //In order for the second xref loop not to stop
 		});
 
+		// Crash Trigger
+		main_batch.add("CT", "48 3B F8 74 ? 8B 1D", [this](memory::handle ptr) {
+			memory::byte_patch::make(ptr.add(4).as<uint8_t*>(), 0x00)->apply();
+		});
+
 		// Write Vehicle Proximity Migration Data Node
 		main_batch.add("WVPMDN", "48 89 4C 24 08 55 53 56 57 41 54 41 55 41 56 41 57 48 8B EC 48 83 EC 68 4C 8B A9", [this](memory::handle ptr) {
 			m_write_vehicle_proximity_migration_data_node = ptr.as<PVOID>();
