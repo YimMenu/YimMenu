@@ -2,6 +2,8 @@
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "network/CNetGamePlayer.hpp"
+#include "network/ChatData.hpp"
+#include "pointers.hpp"
 #include "script.hpp"
 #include "session.hpp"
 
@@ -87,6 +89,7 @@ namespace big::notify
 		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(scaleform, 255, 255, 255, 255, 0);
 
 		//fix broken scaleforms, when chat alrdy opened
-		HUD::CLOSE_MP_TEXT_CHAT();
+		if (const auto chat_data = *g_pointers->m_chat_data; chat_data && (chat_data->m_chat_open || chat_data->m_timer_two))
+			HUD::CLOSE_MP_TEXT_CHAT();
 	}
 }
