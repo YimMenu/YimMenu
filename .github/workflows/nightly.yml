@@ -65,6 +65,7 @@ jobs:
     needs: [ check_date, build_nightly ]
     if: ${{ needs.check_date.outputs.should_run != 'false' }}
     steps:
+      - uses: actions/checkout@v3
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
