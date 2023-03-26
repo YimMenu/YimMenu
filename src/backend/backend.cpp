@@ -6,7 +6,7 @@
 #include "script_patches.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "thread_pool.hpp"
-#include "services/orbital_drone/orbital_drone.h"
+#include "services/orbital_drone/orbital_drone.hpp"
 
 namespace big
 {
@@ -192,21 +192,15 @@ namespace big
 	{
 		while (true)
 		{
-			if (orbitaldrone::orbital_drone && PAD::IS_CONTROL_JUST_PRESSED(2, (int)ControllerInputs::INPUT_VEH_LOOK_BEHIND))
+			if (orbital_drone_t && PAD::IS_CONTROL_JUST_PRESSED(2, (int)ControllerInputs::INPUT_VEH_LOOK_BEHIND))
 			{
-				g_fiber_pool->queue_job([=] {
-					if (!orbitaldrone::g_orbital_drone.initialized)
-						g_fiber_pool->queue_job([=] {
-							orbitaldrone::g_orbital_drone.initialize();
-						});
-					else
-						g_fiber_pool->queue_job([=] {
-							orbitaldrone::g_orbital_drone.~OrbitalDrone();
-						});
-				});
+				if (!g_orbital_drone_service.initialized)
+					g_orbital_drone_service.initialize();
+				else
+					g_orbital_drone_service.destruct();
 			}
 
-			orbitaldrone::g_orbital_drone.tick();
+			g_orbital_drone_service.tick();
 
 			script::get_current()->yield();
 		}

@@ -5,14 +5,21 @@
 #include "script.hpp"
 #include "gta/enums.hpp"
 #include "fiber_pool.hpp"
+#include "script/globals/GlobalPlayerBD.hpp"
+#include "core/scr_globals.hpp"
 
 
-namespace big::orbitaldrone
+namespace big
 {
-	inline bool orbital_drone;
+	inline bool orbital_drone_t;
 
-	class OrbitalDrone
+	class orbital_drone
 	{
+
+	private:
+		void cam_nav();
+		void orbital_cannon_explosion();
+		void detect_player(Entity ent);
 	public:
 		Cam cam;
 		bool lock;
@@ -21,7 +28,6 @@ namespace big::orbitaldrone
 		Vector3 startpos;
 		int scaleform;
 		bool tp;
-
 	public:
 		bool initialized;
 		void tick();
@@ -29,7 +35,7 @@ namespace big::orbitaldrone
 		{
 			if (this->initialized)
 			{
-				this->~OrbitalDrone();
+				this->destruct();
 				return;
 			}
 
@@ -68,7 +74,7 @@ namespace big::orbitaldrone
 				this->initialized = true;
 			}
 		}
-		~OrbitalDrone()
+		void destruct()
 		{
 			initialized = false;
 
@@ -98,9 +104,6 @@ namespace big::orbitaldrone
 			else
 				ENTITY::SET_ENTITY_COORDS(self, tppos.x, tppos.y, tppos.z, 0, 0, 0, 0);
 
-			//while (CAM::IS_CAM_INTERPOLATING(this->cam)) script::get_current()->yield();
-
-
 			CAM::SET_CAM_ACTIVE(this->cam, false);
 			CAM::DESTROY_CAM(this->cam, 1);
 
@@ -109,15 +112,12 @@ namespace big::orbitaldrone
 			this->lock_ent = -1;
 			this->lock     = false;
 
-
+			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[PLAYER::PLAYER_ID()].OrbitalBitset.Clear(eOrbitalBitset::kOrbitalCannonActive);
 			tp = false;
 		}
 
-	private:
-		void cam_nav();
-		void orbital_cannon_explosion();
 	};
 
-	inline OrbitalDrone g_orbital_drone;
+	inline orbital_drone g_orbital_drone_service;
 
 }

@@ -205,7 +205,7 @@ namespace big
 
 		//Patch blocked explosions
 		main_batch.add("EP", "E8 ? ? ? ? 48 8D 4C 24 20 E8 ? ? ? ? 4C 8D 9C 24 80 01 00 00", [this](memory::handle ptr) {
-			m_explosion_patch = memory::byte_patch::make(ptr.sub(12).as<uint8_t*>(), 0x9090).get();
+			m_explosion_patch = memory::byte_patch::make(ptr.sub(12).as<uint16_t*>(), 0x9090).get();
 		});
 
 		// CNetworkObjectMgr

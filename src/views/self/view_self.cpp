@@ -4,7 +4,7 @@
 #include "util/entity.hpp"
 #include "util/local_player.hpp"
 #include "util/scripts.hpp"
-#include "services/orbital_drone/orbital_drone.h"
+#include "services/orbital_drone/orbital_drone.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -62,7 +62,7 @@ namespace big
 		components::command_checkbox<"superman">();
 
 		ImGui::Checkbox("DANCE_MODE"_T.data(), &g.self.dance_mode);
-		ImGui::Checkbox("Orbital drone", &orbitaldrone::orbital_drone);
+		ImGui::Checkbox("Orbital drone", &orbital_drone_t);
 
 		ImGui::EndGroup();
 
