@@ -18,5 +18,6 @@ namespace big
 		static void vehiclefly_loop();
 		static void disable_control_action_loop();
 		static void world_loop();
+		static void orbital_drone();
 	};
 }

@@ -6,6 +6,7 @@
 #include "script_patches.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "thread_pool.hpp"
+#include "services/orbital_drone/orbital_drone.h"
 
 namespace big
 {
@@ -183,6 +184,30 @@ namespace big
 		while (g_running)
 		{
 			looped::world_spawn_ped();
+			script::get_current()->yield();
+		}
+	}
+
+	void backend::orbital_drone()
+	{
+		while (true)
+		{
+			if (orbitaldrone::orbital_drone && PAD::IS_CONTROL_JUST_PRESSED(2, (int)ControllerInputs::INPUT_VEH_LOOK_BEHIND))
+			{
+				g_fiber_pool->queue_job([=] {
+					if (!orbitaldrone::g_orbital_drone.initialized)
+						g_fiber_pool->queue_job([=] {
+							orbitaldrone::g_orbital_drone.initialize();
+						});
+					else
+						g_fiber_pool->queue_job([=] {
+							orbitaldrone::g_orbital_drone.~OrbitalDrone();
+						});
+				});
+			}
+
+			orbitaldrone::g_orbital_drone.tick();
+
 			script::get_current()->yield();
 		}
 	}
