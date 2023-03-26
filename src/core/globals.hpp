@@ -68,10 +68,8 @@ namespace big
 		{
 			bool enabled = false;
 		} cmd_executor{};
-    
 		rage::scrThread* m_modshop_thread = nullptr;
 		bool in_script_vm = false;
-    
 		struct debug
 		{
 			struct logs
@@ -396,8 +394,9 @@ namespace big
 				int fill_ammo            = 0;
 				int fast_quit            = 0;
 				int cmd_excecutor        = 0x55;
-        
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor)
+				int repairpv             = 0;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv)
 			} hotkeys{};
 
 			bool dev_dlc = false;

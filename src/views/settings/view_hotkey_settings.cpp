@@ -46,6 +46,8 @@ namespace big
 			g_hotkey_service->update_hotkey("fastquit", g.settings.hotkeys.fast_quit);
 		if (ImGui::Hotkey("Toggle Command Executor", &g.settings.hotkeys.cmd_excecutor))
 			g_hotkey_service->update_hotkey("cmdexecutor", g.settings.hotkeys.cmd_excecutor);
+		if (ImGui::Hotkey("Repair PV", &g.settings.hotkeys.repairpv))
+			g_hotkey_service->update_hotkey("repairpv", g.settings.hotkeys.repairpv);
 
 		ImGui::PopItemWidth();
 	}
