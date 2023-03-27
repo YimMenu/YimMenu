@@ -2,14 +2,12 @@
 
 We will use Winget to grab all the required packages without needing to touch Visual Studio IDE to handle installing the C++ compiler and other stuff.
 
-## Installing the packages
+## Installing Visual Studio Code
 
 Install Visual Studio Code if you haven't already
 ```bash
 winget install Microsoft.VisualStudioCode
 ```
-
-Install C++ Desktop Development (we have to do this through VS Community as Microsoft doesn't offer any other methods)
 
 ## Installing required extensions
 
