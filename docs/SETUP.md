@@ -33,6 +33,14 @@ winget install Git.Git
 
 ## C++ Desktop Development
 
+### I don't have Visual Studio Community installed
+
+The below command will do everything for you and won't require any intervention from the you.
+
+```bash
+winget install Microsoft.VisualStudio.2022.Community --silent --override "--wait --quiet --add ProductLang En-us --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended"
+```
+
 ### I have Visual Studio Community installed
 
 **MAKE SURE YOU HAVE Visual Studio Community 2022 OR LATER installed.**
@@ -45,14 +53,6 @@ This will open a screen asking you to select what packages you want to install.
 In there select `Desktop development with C++`, after that click the button at the botton right that says `Install while downloading`.
 
 ![Visual Studio Installer Desktop development with C++](img/vs-installer-desktop-development-with-c%2B%2B.png)
-
-### I don't have Visual Studio Community installed
-
-The below command will do everything for you and won't require any intervention from the you.
-
-```bash
-winget install Microsoft.VisualStudio.2022.Community --silent --override "--wait --quiet --add ProductLang En-us --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended"
-```
 
 ## Cloning YimMenu
 
