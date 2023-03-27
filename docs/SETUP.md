@@ -122,6 +122,7 @@ At the bottom of your IDE you should have the following things:
 ![VS Code Build Options](img/vsc-build.png)
 
 Try match your IDE with what you see in the above screenshot after which you can press the Build button.
+Or alternatively you can also press `F7` to start a build in Visual Studio Code.
 
 If you want to speed up compilation of YimMenu in Visual Studio code you'll have to change a setting in VS Code.
 Open settings and search for `cmake.generator`, change the value of that input field to `Ninja`.
