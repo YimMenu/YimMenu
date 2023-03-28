@@ -5,8 +5,9 @@
 #include "script.hpp"
 #include "script_patches.hpp"
 #include "services/context_menu/context_menu_service.hpp"
-#include "thread_pool.hpp"
 #include "services/orbital_drone/orbital_drone.hpp"
+#include "thread_pool.hpp"
+
 
 namespace big
 {
@@ -192,12 +193,12 @@ namespace big
 	{
 		while (true)
 		{
-			if (orbital_drone_t && PAD::IS_CONTROL_JUST_PRESSED(2, (int)ControllerInputs::INPUT_VEH_LOOK_BEHIND))
+			if (g.world.orbital_drone.enabled && PAD::IS_CONTROL_JUST_PRESSED(2, (int)ControllerInputs::INPUT_VEH_LOOK_BEHIND))
 			{
-				if (!g_orbital_drone_service.initialized)
-					g_orbital_drone_service.initialize();
+				if (!g_orbital_drone_service.initialized())
+					g_orbital_drone_service.init();
 				else
-					g_orbital_drone_service.destruct();
+					g_orbital_drone_service.destroy();
 			}
 
 			g_orbital_drone_service.tick();

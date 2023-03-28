@@ -68,10 +68,10 @@ namespace big
 		{
 			bool enabled = false;
 		} cmd_executor{};
-    
+
 		rage::scrThread* m_modshop_thread = nullptr;
-		bool in_script_vm = false;
-    
+		bool in_script_vm                 = false;
+
 		struct debug
 		{
 			struct logs
@@ -396,7 +396,7 @@ namespace big
 				int fill_ammo            = 0;
 				int fast_quit            = 0;
 				int cmd_excecutor        = 0x55;
-        
+
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor)
 			} hotkeys{};
 
@@ -429,6 +429,11 @@ namespace big
 
 		struct world
 		{
+			struct orbital_drone
+			{
+				bool enabled = false;
+			} orbital_drone{};
+
 			struct train
 			{
 				bool derail_train = false;

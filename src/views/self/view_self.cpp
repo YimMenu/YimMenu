@@ -62,7 +62,6 @@ namespace big
 		components::command_checkbox<"superman">();
 
 		ImGui::Checkbox("DANCE_MODE"_T.data(), &g.self.dance_mode);
-		ImGui::Checkbox("Orbital drone", &orbital_drone_t);
 
 		ImGui::EndGroup();
 
