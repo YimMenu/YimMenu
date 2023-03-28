@@ -307,13 +307,13 @@ namespace big
 		if (PAD::IS_CONTROL_PRESSED(2, (int)ControllerInputs::INPUT_PARACHUTE_BRAKE_RIGHT) || PAD::IS_DISABLED_CONTROL_JUST_PRESSED(2, (int)ControllerInputs::INPUT_PARACHUTE_BRAKE_RIGHT))
 		{
 			nav_override   = true;
-			nav_multiplier = 3.f;
+			nav_multiplier = g.world.orbital_drone.nav_ovverride_fast;
 		}
 
 		if (PAD::IS_CONTROL_PRESSED(2, (int)ControllerInputs::INPUT_PARACHUTE_BRAKE_LEFT) || PAD::IS_DISABLED_CONTROL_PRESSED(2, (int)ControllerInputs::INPUT_PARACHUTE_BRAKE_LEFT))
 		{
 			nav_override   = true;
-			nav_multiplier = 0.25f;
+			nav_multiplier = g.world.orbital_drone.nav_ovverride_slow;
 		}
 
 		if (!nav_override)

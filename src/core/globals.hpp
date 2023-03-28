@@ -432,6 +432,9 @@ namespace big
 			struct orbital_drone
 			{
 				bool enabled = false;
+				float nav_ovverride_fast = 3.f;
+				float nav_ovverride_slow = 0.25f;
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(orbital_drone, nav_ovverride_fast, nav_ovverride_slow);
 			} orbital_drone{};
 
 			struct train
@@ -500,7 +503,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(model_swapper, models)
 			} model_swapper{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone)
 		} world{};
 
 		struct spoofing
