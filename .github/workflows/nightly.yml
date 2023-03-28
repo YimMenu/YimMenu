@@ -65,6 +65,7 @@ jobs:
     needs: [ check_date, build_nightly ]
     if: ${{ needs.check_date.outputs.should_run != 'false' }}
     steps:
+      - uses: actions/checkout@v3
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
@@ -77,13 +78,10 @@ jobs:
           echo "build_sha=$(cat sha256.checksum)" >> $GITHUB_OUTPUT
           cat sha256.checksum
 
-      - name: Remove previous Nightly
-        uses: dev-drprasad/delete-tag-and-release@v0.2.1
+      - name: Run latest-tag
+        uses: EndBug/latest-tag@84c87607fcb948bcef069c9a27445e653113979f
         with:
-          delete_release: true
-          tag_name: nightly
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ref: nightly
 
       - name: Nightly Release
         uses: softprops/action-gh-release@v1
