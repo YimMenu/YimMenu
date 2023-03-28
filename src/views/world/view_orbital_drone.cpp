@@ -10,7 +10,7 @@ namespace big
 		{
 			ImGui::Separator();
 			ImGui::BeginGroup();
-			ImGui::Text("press 'Look behind' (C/R3 by default) to activate\npress WASD buttons or Left thumbstick to navigate press\nUse scroll wheel/Mouse or Right thumbstick to zoom\npress E/Q or L1/R1 to modify speed\npress 'Jump' (Space/X/Square by default) to lock on an entity\npress 'Fire' (Mouse button 1/Right trigger by default) to Obliterate\npress Enter or A/X by default to teleport to target");
+			ImGui::Text("press 'Look behind' (C/R3 by default) to activate\npress WASD buttons or Left thumbstick to navigate\nUse scroll wheel/Mouse or Right thumbstick to zoom\npress E/Q or L1/R1 to modify speed\npress 'Jump' (Space/X/Square by default) to lock on an entity\npress 'Fire' (Mouse button 1/Right trigger by default) to Obliterate\npress Enter or A/X by default to teleport to target");
 			ImGui::EndGroup();
 			ImGui::Separator();
 
