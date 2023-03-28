@@ -3,6 +3,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "outfit.hpp"
+#include "services/players/player_service.hpp"
 
 namespace big::ped
 {
@@ -110,4 +111,38 @@ namespace big::ped
 			PED::SET_PED_COMPONENT_VARIATION(ped, item.id, drawable_id, texture_id, PED::GET_PED_PALETTE_VARIATION(ped, item.id));
 		}
 	}
+
+	inline player_ptr get_player_from_ped(Ped ped)
+	{
+		for (auto& p : g_player_service->players())
+		{
+			if (p.second->get_ped())
+			{
+				if (p.second->get_ped() == g_pointers->m_handle_to_ptr(ped))
+					return p.second;
+			}
+		}
+		return nullptr;
+	}
+
+	inline bool load_animation_dict (const char* dict)
+	{
+		if (STREAMING::HAS_ANIM_DICT_LOADED(dict))
+			return true;
+
+		for (uint8_t i = 0; !STREAMING::HAS_ANIM_DICT_LOADED(dict) && i < 35; i++)
+		{
+			STREAMING::REQUEST_ANIM_DICT(dict);
+			script::get_current()->yield();
+		}
+
+		return STREAMING::HAS_ANIM_DICT_LOADED(dict);
+	}
+
+	inline void ped_play_animation(Ped ped, const std::string_view& animDict, const std::string_view& animName, float speed = 4.f, float speedMultiplier = -4.f, int duration = -1, int flag = 1, float playbackRate = 0, bool lockPos = false)
+	{
+		if (load_animation_dict(animDict.data()))
+			TASK::TASK_PLAY_ANIM(ped, animDict.data(), animName.data(), speed, speedMultiplier, duration, flag, playbackRate, lockPos, lockPos, lockPos);		
+	}
+
 }
