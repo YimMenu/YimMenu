@@ -122,7 +122,7 @@ namespace big::ped
 					return p.second;
 			}
 		}
-		return NULL;
+		return nullptr;
 	}
 
 	inline bool load_animation_dict (const char* dict)
