@@ -9,6 +9,8 @@
 #include "thread_pool.hpp"
 #include "util/session.hpp"
 #include "yim_fipackfile.hpp"
+#include "util/vehicle.hpp"
+#include "util/misc.hpp"
 
 namespace big
 {
@@ -50,6 +52,11 @@ namespace big
 		return m_update_state;
 	}
 
+	void gta_data_service::set_state(eGtaDataUpdateState state)
+	{
+		m_update_state = state;
+	}
+
 	void gta_data_service::update_in_online()
 	{
 		m_update_state = eGtaDataUpdateState::WAITING_FOR_SINGLE_PLAYER;
@@ -66,7 +73,7 @@ namespace big
 			{
 				script::get_current()->yield(100ms);
 			}
-
+			m_update_state = eGtaDataUpdateState::UPDATING;
 			rebuild_cache();
 		});
 	}
@@ -75,6 +82,15 @@ namespace big
 	{
 		m_update_state = eGtaDataUpdateState::WAITING_FOR_SINGLE_PLAYER;
 		g_fiber_pool->queue_job([this] {
+			m_update_state = eGtaDataUpdateState::UPDATING;
+			rebuild_cache();
+		});
+	}
+
+	void gta_data_service::update_on_init()
+	{
+		m_update_state = eGtaDataUpdateState::ON_INIT_WAITING;
+		g_thread_pool->push([this] {
 			rebuild_cache();
 		});
 	}
@@ -226,8 +242,6 @@ namespace big
 
 	void gta_data_service::rebuild_cache()
 	{
-		m_update_state = eGtaDataUpdateState::UPDATING;
-
 		using hash_array = std::vector<std::uint32_t>;
 		hash_array mapped_peds;
 		hash_array mapped_vehicles;
@@ -243,7 +257,7 @@ namespace big
 
 		LOG(INFO) << "Rebuilding cache started...";
 
-		yim_fipackfile::for_each_fipackfile([&](yim_fipackfile& rpf_wrapper) {
+		yim_fipackfile::add_wrapper_call_back([&](yim_fipackfile& rpf_wrapper) {
 			const auto files = rpf_wrapper.get_file_paths();
 			for (const auto& file : files)
 			{
@@ -281,14 +295,15 @@ namespace big
 							std::strncpy(veh.m_name, name, sizeof(veh.m_name));
 
 							const auto manufacturer_display = item.child("vehicleMakeName").text().as_string();
-							std::strncpy(veh.m_display_manufacturer, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(manufacturer_display), sizeof(veh.m_display_manufacturer));
+							std::strncpy(veh.m_display_manufacturer, manufacturer_display, sizeof(veh.m_display_manufacturer));
 
 							const auto game_name = item.child("gameName").text().as_string();
-							std::strncpy(veh.m_display_name, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(game_name), sizeof(veh.m_display_name));
+							std::strncpy(veh.m_display_name, game_name, sizeof(veh.m_display_name));
 
-							char vehicle_class[32];
-							std::sprintf(vehicle_class, "VEH_CLASS_%i", VEHICLE::GET_VEHICLE_CLASS_FROM_NAME(hash));
-							std::strncpy(veh.m_vehicle_class, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(vehicle_class), sizeof(veh.m_vehicle_class));
+							const auto vehicle_class       = item.child("vehicleClass").text().as_string();
+							constexpr auto enum_prefix_len = 3;
+							if (std::strlen(vehicle_class) > enum_prefix_len)
+								std::strncpy(veh.m_vehicle_class, vehicle_class + enum_prefix_len, sizeof(veh.m_vehicle_class));
 
 							veh.m_hash = hash;
 
@@ -321,8 +336,7 @@ namespace big
 
 							std::strncpy(weapon.m_name, name, sizeof(weapon.m_name));
 
-							const auto display_name = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(human_name_hash);
-							std::strncpy(weapon.m_display_name, display_name, sizeof(weapon.m_name));
+							std::strncpy(weapon.m_display_name, human_name_hash, sizeof(weapon.m_display_name));
 
 							auto weapon_flags = std::string(item.child("WeaponFlags").text().as_string());
 
@@ -395,6 +409,42 @@ namespace big
 
 			return files.size();
 		});
+
+		if (state() == eGtaDataUpdateState::UPDATING)
+		{
+			yim_fipackfile::for_each_fipackfile();
+		}	
+		else
+		{
+			while (state() != eGtaDataUpdateState::ON_INIT_UPDATE_END)
+				std::this_thread::sleep_for(100ms);
+		}
+
+		static bool translate_lebel = false;
+
+		g_fiber_pool->queue_job([&] {
+			for (auto& item : vehicles)
+			{
+				std::strncpy(item.m_display_manufacturer, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(item.m_display_manufacturer), sizeof(item.m_display_manufacturer));
+				std::strncpy(item.m_display_name, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(item.m_display_name), sizeof(item.m_display_name));
+				char vehicle_class[32];
+				std::sprintf(vehicle_class, "VEH_CLASS_%i", VEHICLE::GET_VEHICLE_CLASS_FROM_NAME(item.m_hash));
+				std::strncpy(item.m_vehicle_class, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(vehicle_class), sizeof(item.m_vehicle_class));
+			}
+			for (auto& item : weapons)
+			{
+				std::strncpy(item.m_display_name, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(item.m_display_name), sizeof(item.m_display_name));
+			}
+			translate_lebel = true;
+		});
+
+		while (!translate_lebel)
+		{
+			if (state() == eGtaDataUpdateState::UPDATING)
+				script::get_current()->yield();
+			else
+				std::this_thread::sleep_for(100ms);
+		}
 
 		m_update_state = eGtaDataUpdateState::IDLE;
 		LOG(INFO) << "Cache has been rebuilt.\n\tPeds: " << peds.size() << "\n\tVehicles: " << vehicles.size()

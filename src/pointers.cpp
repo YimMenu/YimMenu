@@ -33,7 +33,7 @@ namespace big
 
 		// Game State
 		main_batch.add("GS", "83 3D ? ? ? ? ? 75 17 8B 43 20 25", [this](memory::handle ptr) {
-			m_game_state = ptr.add(2).rip().as<eGameState*>();
+			m_game_state = ptr.add(2).rip().add(1).as<eGameState*>();
 		});
 
 		// Is Session Started
@@ -289,6 +289,11 @@ namespace big
 		// Get Model Info
 		main_batch.add("GMI", "41 3B 0A 74 54", [this](memory::handle ptr) {
 			m_get_model_info = ptr.sub(46).as<PVOID>();
+		});
+
+		// Get Label Text Unk
+		main_batch.add("GLTUNK", "44 8D 4D FC 48 8D 0D", [this](memory::handle ptr) {
+			m_get_label_text_unk = ptr.add(7).rip().as<PVOID>();
 		});
 
 		// Get Label Text

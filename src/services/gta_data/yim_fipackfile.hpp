@@ -14,8 +14,17 @@ namespace big
 	public:
 		explicit yim_fipackfile(rage::fiPackfile* rpf, const std::string& mount_name);
 
-		static void for_each_fipackfile(std::function<size_t(yim_fipackfile& rpf_wrapper)> cb);
+		static std::vector<std::string> get_non_dlc_mounted_devices_names();
+
+		static inline std::vector<std::function<size_t(yim_fipackfile& rpf_wrapper)>> m_wrapper_call_back;
+
+		static void add_wrapper_call_back(std::function<size_t(yim_fipackfile& rpf_wrapper)> cb);
+
+		static void for_each_fipackfile();
+
 		std::vector<std::filesystem::path> get_file_paths(std::string parent = {});
+
+		const char* get_name();
 
 		void read_file(const std::filesystem::path& path, file_contents_callback&& cb);
 
