@@ -1,3 +1,5 @@
+set(CEF_RUNTIME_LIBRARY_FLAG "/MD" CACHE INTERNAL "")
+
 include(FetchContent)
 
 FetchContent_Declare(
@@ -7,7 +9,5 @@ FetchContent_Declare(
     GIT_PROGRESS TRUE
 )
 message("libcef")
-
-set(CEF_RUNTIME_LIBRARY_FLAG "/MD")
 
 FetchContent_MakeAvailable(libcef)
