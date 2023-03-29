@@ -69,7 +69,6 @@ namespace big
 		memory::byte_patch* m_blame_explode;
 		PVOID m_world_model_spawn_bypass;
 		PVOID m_native_return;
-		PVOID m_get_label_text_unk;
 		PVOID m_get_label_text;
 		functions::check_chat_profanity* m_check_chat_profanity{};
 		functions::write_player_game_state_data_node m_write_player_game_state_data_node{};

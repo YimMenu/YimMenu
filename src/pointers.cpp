@@ -291,11 +291,6 @@ namespace big
 			m_get_model_info = ptr.sub(46).as<PVOID>();
 		});
 
-		// Get Label Text Unk
-		main_batch.add("GLTUNK", "44 8D 4D FC 48 8D 0D", [this](memory::handle ptr) {
-			m_get_label_text_unk = ptr.add(7).rip().as<PVOID>();
-		});
-
 		// Get Label Text
 		main_batch.add("GLT", "75 ? E8 ? ? ? ? 8B 0D ? ? ? ? 65 48 8B 04 25 ? ? ? ? BA ? ? ? ? 48 8B 04 C8 8B 0C 02 D1 E9", [this](memory::handle ptr) {
 			m_get_label_text = ptr.sub(19).as<PVOID>();
