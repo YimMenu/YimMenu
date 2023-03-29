@@ -11,6 +11,7 @@
 #include "yim_fipackfile.hpp"
 #include "util/vehicle.hpp"
 #include "util/misc.hpp"
+#include "util/model_info.hpp"
 
 namespace big
 {
@@ -405,6 +406,27 @@ namespace big
 						parse_ped(peds, mapped_peds, doc);
 					});
 				}
+				else if (std::string str = rpf_wrapper.get_name(); (str.find("componentpeds") != std::string::npos || str.find("streamedpeds") != std::string::npos || str.find("mppatches") != std::string::npos || str.find("cutspeds") != std::string::npos) && file.extension() == ".yft")
+				{
+					const auto name = file.stem().string();
+					const auto hash = rage::joaat(name);
+
+					if (std::find(mapped_peds.begin(), mapped_peds.end(), hash) != mapped_peds.end())
+						continue;
+
+					mapped_peds.emplace_back(hash);
+
+					auto ped = ped_item{};
+
+					std::strncpy(ped.m_name, name.c_str(), sizeof(ped.m_name));
+
+					//const auto ped_type = item.child("Pedtype").text().as_string();
+					//std::strncpy(ped.m_ped_type, ped_type, sizeof(ped.m_ped_type));
+
+					ped.m_hash = hash;
+
+					peds.emplace_back(std::move(ped));
+				}
 			}
 
 			return files.size();
@@ -434,6 +456,13 @@ namespace big
 			for (auto& item : weapons)
 			{
 				std::strncpy(item.m_display_name, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(item.m_display_name), sizeof(item.m_display_name));
+			}
+			for (auto it = peds.begin(); it != peds.end();)
+			{
+				if (!model_info::does_model_exist(it->m_hash))
+					peds.erase(it);
+				else
+					++it;
 			}
 			translate_lebel = true;
 		});
