@@ -9,7 +9,6 @@
 #include "script.hpp"
 #include "script_global.hpp"
 #include "services/vehicle_helper/vehicle_helper.hpp"
-#include "model_info.hpp"
 
 namespace big::vehicle
 {
@@ -680,13 +679,5 @@ namespace big::vehicle
 		g.m_remote_controller_vehicle = spawned;
 		g.m_remote_controlled_vehicle = veh;
 		return true;
-	}
-
-	inline int get_vehicle_class_from_name(Hash hash)
-	{
-		int result = 0;
-		if (auto info = model_info::get_vehicle_model(hash))
-			result = (int)info->m_vehicle_class;
-		return result;
 	}
 }

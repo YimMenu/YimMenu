@@ -1,6 +1,4 @@
 #pragma once
-#include "hooking.hpp"
-#include "pointers.hpp"
 
 namespace big::misc
 {
@@ -38,13 +36,5 @@ namespace big::misc
 	inline void set_bits(int* address, int bits)
 	{
 		*address |= bits;
-	}
-
-	inline const char* get_filename_for_audio_conversation(const char* label)
-	{
-		auto result = g_hooking->get_original<hooks::get_label_text>()(g_pointers->m_get_label_text_unk, label);
-		if (!stricmp(result, ""))
-			return "NULL";
-		return result;
 	}
 }

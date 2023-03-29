@@ -10,17 +10,6 @@ namespace big
 {
 	void view::self()
 	{
-		if (ImGui::Button("fuck"))
-		{
-			for (auto i = 0 ; i <= 22; i++)
-			{
-				char vehicle_class[32];
-				std::sprintf(vehicle_class, "VEH_CLASS_%i", i);
-				LOG(INFO) << misc::get_filename_for_audio_conversation(vehicle_class);
-			}
-			LOG(INFO) << stricmp("", misc::get_filename_for_audio_conversation("fuckbabama"));
-		}
-
 		components::command_button<"suicide">();
 		ImGui::SameLine();
 		components::command_button<"heal">();
