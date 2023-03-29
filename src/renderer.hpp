@@ -14,16 +14,16 @@ namespace big
 
 		/**
 		 * @brief Add a callback function to draw your ImGui content in
-		 * 
+		 *
 		 * @param callback Function
 		 * @param priority The higher the priority the value the later it gets drawn on top
-		 * @return true 
-		 * @return false 
+		 * @return true
+		 * @return false
 		 */
 		bool add_dx_callback(dx_callback callback, std::uint32_t priority);
 		/**
 		 * @brief Add a callback function on wndproc
-		 * 
+		 *
 		 * @param callback Function
 		 */
 		void add_wndproc_callback(wndproc_callback callback);
@@ -36,6 +36,8 @@ namespace big
 		void post_reset();
 
 		void wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+
+		void cef_init_render_states();
 
 	private:
 		static void new_frame();

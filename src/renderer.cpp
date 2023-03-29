@@ -1,5 +1,6 @@
 #include "renderer.hpp"
 
+#include "cef/cef_service.hpp"
 #include "common.hpp"
 #include "file_manager.hpp"
 #include "fonts/fonts.hpp"
@@ -136,8 +137,152 @@ namespace big
 		m_wndproc_callbacks.emplace_back(callback);
 	}
 
+	void renderer::cef_init_render_states()
+	{
+		g_cef_service->init_device(m_d3d_device, m_d3d_device_context, m_dxgi_swapchain);
+
+		g_cef_service->init_composition();
+
+		// This may need to be destroyed and remade when gui get rescaled / resolution change, unsure yet as I havent tested
+		//g_cef_service->open_web_page("https://www.youtube.com/watch?v=MxEjnYdfLXU?autoplay=1");
+		g_cef_service->open_web_page("https://jspaint.app");
+	}
+
+	// TODO CEF: move this elsewhere? this is pasted from imgui btw, they do the same thing.
+	// Backup DX state that will be modified to restore it afterwards (unfortunately this is very ugly looking and verbose. Close your eyes!)
+	struct BACKUP_DX11_STATE
+	{
+		UINT ScissorRectsCount, ViewportsCount;
+		D3D11_RECT ScissorRects[D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE];
+		D3D11_VIEWPORT Viewports[D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE];
+		ID3D11RasterizerState* RS;
+		ID3D11BlendState* BlendState;
+		FLOAT BlendFactor[4];
+		UINT SampleMask;
+		UINT StencilRef;
+		ID3D11DepthStencilState* DepthStencilState;
+		ID3D11ShaderResourceView* PSShaderResource;
+		ID3D11SamplerState* PSSampler;
+		ID3D11PixelShader* PS;
+		ID3D11VertexShader* VS;
+		ID3D11GeometryShader* GS;
+		UINT PSInstancesCount, VSInstancesCount, GSInstancesCount;
+		ID3D11ClassInstance *PSInstances[256], *VSInstances[256], *GSInstances[256]; // 256 is max according to PSSetShader documentation
+		D3D11_PRIMITIVE_TOPOLOGY PrimitiveTopology;
+		ID3D11Buffer *IndexBuffer, *VertexBuffer, *VSConstantBuffer;
+		UINT IndexBufferOffset, VertexBufferStride, VertexBufferOffset;
+		DXGI_FORMAT IndexBufferFormat;
+		ID3D11InputLayout* InputLayout;
+	};
+
+	static BACKUP_DX11_STATE cef_backup_dx_state(ID3D11DeviceContext* ctx)
+	{
+		BACKUP_DX11_STATE old = {};
+
+		old.ScissorRectsCount = old.ViewportsCount = D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE;
+		ctx->RSGetScissorRects(&old.ScissorRectsCount, old.ScissorRects);
+		ctx->RSGetViewports(&old.ViewportsCount, old.Viewports);
+		ctx->RSGetState(&old.RS);
+		ctx->OMGetBlendState(&old.BlendState, old.BlendFactor, &old.SampleMask);
+		ctx->OMGetDepthStencilState(&old.DepthStencilState, &old.StencilRef);
+		ctx->PSGetShaderResources(0, 1, &old.PSShaderResource);
+		ctx->PSGetSamplers(0, 1, &old.PSSampler);
+		old.PSInstancesCount = old.VSInstancesCount = old.GSInstancesCount = 256;
+		ctx->PSGetShader(&old.PS, old.PSInstances, &old.PSInstancesCount);
+		ctx->VSGetShader(&old.VS, old.VSInstances, &old.VSInstancesCount);
+		ctx->VSGetConstantBuffers(0, 1, &old.VSConstantBuffer);
+		ctx->GSGetShader(&old.GS, old.GSInstances, &old.GSInstancesCount);
+
+		ctx->IAGetPrimitiveTopology(&old.PrimitiveTopology);
+		ctx->IAGetIndexBuffer(&old.IndexBuffer, &old.IndexBufferFormat, &old.IndexBufferOffset);
+		ctx->IAGetVertexBuffers(0, 1, &old.VertexBuffer, &old.VertexBufferStride, &old.VertexBufferOffset);
+		ctx->IAGetInputLayout(&old.InputLayout);
+
+		return old;
+	}
+
+	static void cef_restore_dx_state(ID3D11DeviceContext* ctx, const BACKUP_DX11_STATE& old)
+	{
+		ctx->RSSetScissorRects(old.ScissorRectsCount, old.ScissorRects);
+		ctx->RSSetViewports(old.ViewportsCount, old.Viewports);
+		ctx->RSSetState(old.RS);
+		if (old.RS)
+			old.RS->Release();
+		ctx->OMSetBlendState(old.BlendState, old.BlendFactor, old.SampleMask);
+		if (old.BlendState)
+			old.BlendState->Release();
+		ctx->OMSetDepthStencilState(old.DepthStencilState, old.StencilRef);
+		if (old.DepthStencilState)
+			old.DepthStencilState->Release();
+		ctx->PSSetShaderResources(0, 1, &old.PSShaderResource);
+		if (old.PSShaderResource)
+			old.PSShaderResource->Release();
+		ctx->PSSetSamplers(0, 1, &old.PSSampler);
+		if (old.PSSampler)
+			old.PSSampler->Release();
+		ctx->PSSetShader(old.PS, old.PSInstances, old.PSInstancesCount);
+		if (old.PS)
+			old.PS->Release();
+		for (UINT i = 0; i < old.PSInstancesCount; i++)
+			if (old.PSInstances[i])
+				old.PSInstances[i]->Release();
+		ctx->VSSetShader(old.VS, old.VSInstances, old.VSInstancesCount);
+		if (old.VS)
+			old.VS->Release();
+		ctx->VSSetConstantBuffers(0, 1, &old.VSConstantBuffer);
+		if (old.VSConstantBuffer)
+			old.VSConstantBuffer->Release();
+		ctx->GSSetShader(old.GS, old.GSInstances, old.GSInstancesCount);
+		if (old.GS)
+			old.GS->Release();
+		for (UINT i = 0; i < old.VSInstancesCount; i++)
+			if (old.VSInstances[i])
+				old.VSInstances[i]->Release();
+		ctx->IASetPrimitiveTopology(old.PrimitiveTopology);
+		ctx->IASetIndexBuffer(old.IndexBuffer, old.IndexBufferFormat, old.IndexBufferOffset);
+		if (old.IndexBuffer)
+			old.IndexBuffer->Release();
+		ctx->IASetVertexBuffers(0, 1, &old.VertexBuffer, &old.VertexBufferStride, &old.VertexBufferOffset);
+		if (old.VertexBuffer)
+			old.VertexBuffer->Release();
+		ctx->IASetInputLayout(old.InputLayout);
+		if (old.InputLayout)
+			old.InputLayout->Release();
+	}
+
 	void renderer::on_present()
 	{
+		if (!g_cef_service)
+		{
+			return;
+		}
+
+		// cef init rendering code
+		// TODO CEF: This really should be placed elsewhere,
+		// It also should have an equivalent like pre_reset / post_reset like ImGui which invalidate device objects
+		// in case the gui get rescaled or swapchain buffer resizing etc
+		static bool init_cef_once = (cef_init_render_states(), true);
+
+		if (g_gui->is_open() && init_cef_once)
+		{
+			const auto ctx_wrapper = g_cef_service->m_d3d_device->immediate_context();
+
+			if (!ctx_wrapper || !g_cef_service->m_swapchain)
+				return;
+
+			const auto& ctx = m_d3d_device_context;
+
+			const auto old_dx_state = cef_backup_dx_state(ctx);
+
+			g_cef_service->m_swapchain->bind(ctx_wrapper);
+
+			g_cef_service->m_composition->render(ctx_wrapper);
+
+			cef_restore_dx_state(ctx, old_dx_state);
+		}
+
+		// imgui
+
 		new_frame();
 		for (const auto& cb : m_dx_callbacks | std::views::values)
 			cb();
