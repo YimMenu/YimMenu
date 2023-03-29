@@ -185,4 +185,71 @@ namespace big::entity
 
 		return false;
 	}
+
+	inline double distance_to_middle_of_screen(const rage::fvector2& screen_pos)
+	{
+		double cumulative_distance{};
+
+		if (screen_pos.x > 0.5)
+			cumulative_distance += screen_pos.x - 0.5;
+		else
+			cumulative_distance += 0.5 - screen_pos.x;
+
+		if (screen_pos.y > 0.5)
+			cumulative_distance += screen_pos.y - 0.5;
+		else
+			cumulative_distance += 0.5 - screen_pos.y;
+
+		return cumulative_distance;
+	}
+
+	inline Entity get_entity_closest_to_middle_of_screen()
+	{
+	
+		Entity closest_entity{};
+		float distance = 1;
+
+		//if (!vehicleInterface || !pedInterface)
+		//	return 0;
+
+		auto replayInterface = *g_pointers->m_replay_interface;
+		auto vehicleInterface = replayInterface->m_vehicle_interface;
+		auto pedInterface     = replayInterface->m_ped_interface;
+
+		for (auto veh : vehicleInterface->m_vehicle_list->m_vehicles)
+		{
+			if (veh.m_entity_ptr)
+			{
+				Vehicle handle = g_pointers->m_ptr_to_handle(veh.m_entity_ptr);
+				Vector3 pos    = ENTITY::GET_ENTITY_COORDS(handle, 1);
+				rage::fvector2 screenpos;
+				HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos.x, pos.y, pos.z, &screenpos.x, &screenpos.y);
+
+				if (distance_to_middle_of_screen(screenpos) < distance && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(PLAYER::PLAYER_PED_ID(), handle, 17))
+				{
+					closest_entity = handle;
+					distance       = distance_to_middle_of_screen(screenpos);
+				}
+			}
+		}
+
+		for (auto ped : pedInterface->m_ped_list->m_peds)
+		{
+			if (ped.m_entity_ptr)
+			{
+				Vehicle handle = g_pointers->m_ptr_to_handle(ped.m_entity_ptr);
+				Vector3 pos    = ENTITY::GET_ENTITY_COORDS(handle, 1);
+				rage::fvector2 screenpos;
+				HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos.x, pos.y, pos.z, &screenpos.x, &screenpos.y);
+
+				if (distance_to_middle_of_screen(screenpos) < distance && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(PLAYER::PLAYER_PED_ID(), handle, 17) && handle != PLAYER::PLAYER_PED_ID())
+				{
+					closest_entity = handle;
+					distance       = distance_to_middle_of_screen(screenpos);
+				}
+			}
+		}
+
+		return closest_entity;
+	}
 }

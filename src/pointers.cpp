@@ -203,6 +203,11 @@ namespace big
 			m_blame_explode = memory::byte_patch::make(ptr.as<std::uint16_t*>(), 0xE990).get();
 		});
 
+		//Patch blocked explosions
+		main_batch.add("EP", "E8 ? ? ? ? 48 8D 4C 24 20 E8 ? ? ? ? 4C 8D 9C 24 80 01 00 00", [this](memory::handle ptr) {
+			m_explosion_patch = memory::byte_patch::make(ptr.sub(12).as<uint16_t*>(), 0x9090).get();
+		});
+
 		// CNetworkObjectMgr
 		main_batch.add("CNOM", "48 8B 0D ? ? ? ? 45 33 C0 E8 ? ? ? ? 33 FF 4C 8B F0", [this](memory::handle ptr) {
 			m_network_object_mgr = ptr.add(3).rip().as<CNetworkObjectMgr**>();
