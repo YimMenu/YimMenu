@@ -15,6 +15,14 @@ namespace big
 			ImGui::Separator();
 
 			ImGui::BeginGroup();
+			ImGui::Checkbox("Detect player on lock", &g.world.orbital_drone.detect_player);
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::BeginTooltip();
+				ImGui::Text("if enabled, changes the selected player to the one it detects upon locking on an entity");
+				ImGui::Text("All explosions will be blamed on the selected player, defaulting to the local player");
+				ImGui::EndTooltip();
+			}
 			ImGui::Text("Adjust fast modifier");
 			ImGui::SliderFloat("##fastspeed", &g.world.orbital_drone.nav_ovverride_fast, 1.f, 10.f);
 			ImGui::Text("Adjust slow modifier");

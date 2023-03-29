@@ -4,6 +4,7 @@
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/entity.hpp"
+#include "services/orbital_drone/orbital_drone.hpp"
 
 namespace big
 {
@@ -20,6 +21,10 @@ namespace big
 
 		virtual void on_tick() override
 		{
+
+			if (g_orbital_drone_service.initialized())
+				return;
+
 			for (const auto& control : controls)
 				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(control), true);
 

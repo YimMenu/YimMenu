@@ -433,9 +433,10 @@ namespace big
 			struct orbital_drone
 			{
 				bool enabled = false;
+				bool detect_player       = false;
 				float nav_ovverride_fast = 3.f;
 				float nav_ovverride_slow = 0.25f;
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(orbital_drone, nav_ovverride_fast, nav_ovverride_slow);
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(orbital_drone, detect_player, nav_ovverride_fast, nav_ovverride_slow);
 			} orbital_drone{};
 
 			struct train

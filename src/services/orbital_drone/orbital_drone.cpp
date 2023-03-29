@@ -31,7 +31,7 @@ namespace big
 		if (*g_pointers->m_is_session_started && gta_util::get_network_player_mgr()->m_local_net_player
 		    && gta_util::get_network_player_mgr()->m_local_net_player->m_player_info->m_ped)
 		{
-			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[PLAYER::PLAYER_ID()].OrbitalBitset.Set(eOrbitalBitset::kOrbitalCannonActive);
+			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].OrbitalBitset.Set(eOrbitalBitset::kOrbitalCannonActive);
 			const auto player_pos =
 			    *gta_util::get_network_player_mgr()->m_local_net_player->m_player_info->m_ped->m_navigation->get_position();
 
@@ -125,6 +125,8 @@ namespace big
 			CAM::SET_CAM_COORD(m_cam, campos.x, campos.y, minz);
 		if (campos.z > maxz)
 			CAM::SET_CAM_COORD(m_cam, campos.x, campos.y, maxz);
+
+		HUD::SET_FAKE_PAUSEMAP_PLAYER_POSITION_THIS_FRAME(campos.x, campos.y);
 
 		Vector3 movepos;
 		bool moved = false;
@@ -235,15 +237,15 @@ namespace big
 			return;
 
 		PAD::ALLOW_ALTERNATIVE_SCRIPT_CONTROLS_LAYOUT(2);
-		PAD::DISABLE_CONTROL_ACTION(0, 24, true);
-		PAD::DISABLE_CONTROL_ACTION(0, 257, true);
-		PAD::DISABLE_CONTROL_ACTION(0, 142, true);
-		PAD::DISABLE_CONTROL_ACTION(0, 141, true);
-		PAD::DISABLE_CONTROL_ACTION(0, 140, true);
-		PAD::DISABLE_CONTROL_ACTION(0, 263, true);
-		PAD::DISABLE_CONTROL_ACTION(0, 264, true);
-		PAD::DISABLE_CONTROL_ACTION(0, 143, true);
-		PAD::DISABLE_CONTROL_ACTION(2, 200, true);
+		PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_ATTACK, true);
+		PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_ATTACK2, true);
+		PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_MELEE_ATTACK_ALTERNATE, true);
+		PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_MELEE_ATTACK_HEAVY, true);
+		PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_MELEE_ATTACK_LIGHT, true);
+		PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_MELEE_ATTACK1, true);
+		PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_MELEE_ATTACK2, true);
+		PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_MELEE_BLOCK, true);
+		PAD::DISABLE_CONTROL_ACTION(2, (int)ControllerInputs::INPUT_FRONTEND_PAUSE_ALTERNATE, true);
 		PAD::DISABLE_CONTROL_ACTION(2, (int)ControllerInputs::INPUT_SELECT_NEXT_WEAPON, true);
 		PAD::DISABLE_CONTROL_ACTION(2, (int)ControllerInputs::INPUT_SELECT_PREV_WEAPON, true);
 		PAD::DISABLE_CONTROL_ACTION(2, (int)ControllerInputs::INPUT_WEAPON_WHEEL_NEXT, true);
@@ -265,9 +267,9 @@ namespace big
 		Vector3 cam_pos = CAM::GET_CAM_COORD(m_cam);
 		Vector3 cam_rot = CAM::GET_CAM_ROT(m_cam, 0);
 
-		Entity self = PLAYER::PLAYER_PED_ID();
-		if (PED::IS_PED_IN_ANY_VEHICLE(self, true) && VEHICLE::GET_PED_IN_VEHICLE_SEAT(PED::GET_VEHICLE_PED_IS_IN(self, false), -1, false) == self)
-			self = PED::GET_VEHICLE_PED_IS_IN(self, false);
+		Entity self = self::ped;
+		if (PED::IS_PED_IN_ANY_VEHICLE(self, true) && VEHICLE::GET_PED_IN_VEHICLE_SEAT(self::veh, -1, false) == self)
+			self = self::veh;
 
 		ENTITY::SET_ENTITY_COORDS(self, cam_pos.x, cam_pos.y, cam_pos.z + 15, 0, 0, 0, 0);
 
@@ -290,7 +292,8 @@ namespace big
 			m_lock_ent = entity::get_entity_closest_to_middle_of_screen();
 			m_lock     = true;
 
-			detect_player(m_lock_ent);
+			if (g.world.orbital_drone.detect_player)
+				detect_player(m_lock_ent);
 		}
 
 		if (PAD::IS_CONTROL_JUST_PRESSED(2, (int)ControllerInputs::INPUT_ATTACK) || PAD::IS_DISABLED_CONTROL_JUST_PRESSED(2, (int)ControllerInputs::INPUT_ATTACK))
