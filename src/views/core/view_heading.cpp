@@ -11,7 +11,7 @@ namespace big
 		{
 			ImGui::BeginGroup();
 			ImGui::Text("HEADING_WELCOME"_T.data());
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.172f, 0.380f, 0.909f, 1.f));
+			ImGui::PushStyleColor(ImGuiCol_Text, ImGui::ColorConvertU32ToFloat4(g.window.coloractive));
 			ImGui::Text(g_local_player == nullptr || g_local_player->m_player_info == nullptr ?
 			        "UNKNOWN_USERNAME"_T.data() :
 			        g_local_player->m_player_info->m_net_player_data.m_name);

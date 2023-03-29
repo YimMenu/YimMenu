@@ -16,27 +16,27 @@ namespace big
 			g.window.color = ImGui::ColorConvertFloat4ToU32(col_gui);
 		}
 		static ImVec4 col_gui_bg = ImGui::ColorConvertU32ToFloat4(g.window.colorbg);
-		if (ImGui::ColorEdit4("BgColor", (float*)&col_gui_bg, ImGuiColorEditFlags_InputRGB))
+		if (ImGui::ColorEdit4("Background", (float*)&col_gui_bg, ImGuiColorEditFlags_InputRGB))
 		{
 			g.window.colorbg = ImGui::ColorConvertFloat4ToU32(col_gui_bg);
 		}
 		static ImVec4 col_gui_sec = ImGui::ColorConvertU32ToFloat4(g.window.colorsec);
-		if (ImGui::ColorEdit4("SecColor", (float*)&col_gui_sec, ImGuiColorEditFlags_InputRGB))
+		if (ImGui::ColorEdit4("Secondary", (float*)&col_gui_sec, ImGuiColorEditFlags_InputRGB))
 		{
 			g.window.colorsec = ImGui::ColorConvertFloat4ToU32(col_gui_sec);
 		}
 		static ImVec4 col_gui_text = ImGui::ColorConvertU32ToFloat4(g.window.colortext);
-		if (ImGui::ColorEdit4("TextColor", (float*)&col_gui_text, ImGuiColorEditFlags_InputRGB))
+		if (ImGui::ColorEdit4("Text", (float*)&col_gui_text, ImGuiColorEditFlags_InputRGB))
 		{
 			g.window.colortext = ImGui::ColorConvertFloat4ToU32(col_gui_text);
 		}
 		static ImVec4 col_gui_hover = ImGui::ColorConvertU32ToFloat4(g.window.colorhover);
-		if (ImGui::ColorEdit4("HoverColor", (float*)&col_gui_hover, ImGuiColorEditFlags_InputRGB))
+		if (ImGui::ColorEdit4("Hover", (float*)&col_gui_hover, ImGuiColorEditFlags_InputRGB))
 		{
 			g.window.colorhover = ImGui::ColorConvertFloat4ToU32(col_gui_hover);
 		}
 		static ImVec4 col_gui_active = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);
-		if (ImGui::ColorEdit4("ActiveColor", (float*)&col_gui_active, ImGuiColorEditFlags_InputRGB))
+		if (ImGui::ColorEdit4("Click", (float*)&col_gui_active, ImGuiColorEditFlags_InputRGB))
 		{
 			g.window.coloractive = ImGui::ColorConvertFloat4ToU32(col_gui_active);
 		}
