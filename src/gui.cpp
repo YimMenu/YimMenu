@@ -77,36 +77,36 @@ namespace big
 		style.ChildRounding     = 4.0f;
 
 		auto& colors                          = style.Colors;
-		colors[ImGuiCol_Text]                 = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
+		colors[ImGuiCol_Text]                 = ImGui::ColorConvertU32ToFloat4(g.window.colortext);
 		colors[ImGuiCol_TextDisabled]         = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
 		colors[ImGuiCol_WindowBg]             = ImGui::ColorConvertU32ToFloat4(g.window.color);
 		colors[ImGuiCol_ChildBg]              = ImGui::ColorConvertU32ToFloat4(g.window.color);
-		colors[ImGuiCol_PopupBg]              = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
-		colors[ImGuiCol_Border]               = ImVec4(0.80f, 0.80f, 0.83f, 0.88f);
+		colors[ImGuiCol_PopupBg]              = ImGui::ColorConvertU32ToFloat4(g.window.colorbg);
+		colors[ImGuiCol_Border]               = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);
 		colors[ImGuiCol_BorderShadow]         = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);
-		colors[ImGuiCol_FrameBg]              = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
-		colors[ImGuiCol_FrameBgHovered]       = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
-		colors[ImGuiCol_FrameBgActive]        = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-		colors[ImGuiCol_TitleBg]              = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
-		colors[ImGuiCol_TitleBgCollapsed]     = ImVec4(1.00f, 0.98f, 0.95f, 0.75f);
-		colors[ImGuiCol_TitleBgActive]        = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
-		colors[ImGuiCol_MenuBarBg]            = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
-		colors[ImGuiCol_ScrollbarBg]          = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
-		colors[ImGuiCol_ScrollbarGrab]        = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
-		colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-		colors[ImGuiCol_ScrollbarGrabActive]  = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
-		colors[ImGuiCol_CheckMark]            = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
-		colors[ImGuiCol_SliderGrab]           = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
-		colors[ImGuiCol_SliderGrabActive]     = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
-		colors[ImGuiCol_Button]               = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
-		colors[ImGuiCol_ButtonHovered]        = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
-		colors[ImGuiCol_ButtonActive]         = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-		colors[ImGuiCol_Header]               = ImVec4(0.30f, 0.29f, 0.32f, 1.00f);
-		colors[ImGuiCol_HeaderHovered]        = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-		colors[ImGuiCol_HeaderActive]         = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
+		colors[ImGuiCol_FrameBg]              = ImGui::ColorConvertU32ToFloat4(g.window.colorbg);      //Checkbox background
+		colors[ImGuiCol_FrameBgHovered]       = ImGui::ColorConvertU32ToFloat4(g.window.colorhover);   //Checkbox hover
+		colors[ImGuiCol_FrameBgActive]        = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);  //Checkbox active
+		colors[ImGuiCol_TitleBg]              = ImGui::ColorConvertU32ToFloat4(g.window.colorbg);
+		colors[ImGuiCol_TitleBgCollapsed]     = ImGui::ColorConvertU32ToFloat4(g.window.colorbg);
+		colors[ImGuiCol_TitleBgActive]        = ImGui::ColorConvertU32ToFloat4(g.window.colorbg);
+		colors[ImGuiCol_MenuBarBg]            = ImGui::ColorConvertU32ToFloat4(g.window.colorbg);
+		colors[ImGuiCol_ScrollbarBg]          = ImGui::ColorConvertU32ToFloat4(g.window.colorbg);      //Scrollbar background
+		colors[ImGuiCol_ScrollbarGrab]        = ImGui::ColorConvertU32ToFloat4(g.window.colorsec);     //Scrollbar handle
+		colors[ImGuiCol_ScrollbarGrabHovered] = ImGui::ColorConvertU32ToFloat4(g.window.colorhover);   //Scrollbar handle hover
+		colors[ImGuiCol_ScrollbarGrabActive]  = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);  //Scrollbar handle active
+		colors[ImGuiCol_CheckMark]            = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);  //Checkmark
+		colors[ImGuiCol_SliderGrab]           = ImGui::ColorConvertU32ToFloat4(g.window.colorsec);     //Slider handle
+		colors[ImGuiCol_SliderGrabActive]     = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);  //Slider handle active
+		colors[ImGuiCol_Button]               = ImGui::ColorConvertU32ToFloat4(g.window.colorsec);
+		colors[ImGuiCol_ButtonHovered]        = ImGui::ColorConvertU32ToFloat4(g.window.colorhover);
+		colors[ImGuiCol_ButtonActive]         = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);
+		colors[ImGuiCol_Header]               = ImGui::ColorConvertU32ToFloat4(g.window.colorsec);
+		colors[ImGuiCol_HeaderHovered]        = ImGui::ColorConvertU32ToFloat4(g.window.colorhover);
+		colors[ImGuiCol_HeaderActive]         = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);
 		colors[ImGuiCol_ResizeGrip]           = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
-		colors[ImGuiCol_ResizeGripHovered]    = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-		colors[ImGuiCol_ResizeGripActive]     = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
+		colors[ImGuiCol_ResizeGripHovered]    = ImGui::ColorConvertU32ToFloat4(g.window.colorhover);
+		colors[ImGuiCol_ResizeGripActive]     = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);
 		colors[ImGuiCol_PlotLines]            = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
 		colors[ImGuiCol_PlotLinesHovered]     = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
 		colors[ImGuiCol_PlotHistogram]        = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
@@ -120,7 +120,40 @@ namespace big
 	{
 		if (m_is_open)
 		{
-			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImGui::ColorConvertU32ToFloat4(g.window.color));
+			//ImGui::PushStyleColor(ImGuiCol_WindowBg, ImGui::ColorConvertU32ToFloat4(g.window.color));
+			//ImGui::PushStyleColor(ImGuiCol_CheckMark, ImGui::ColorConvertU32ToFloat4(g.window.colorsec));
+
+			auto& style = ImGui::GetStyle();
+
+			auto& colors                          = style.Colors;
+			colors[ImGuiCol_Text]                 = ImGui::ColorConvertU32ToFloat4(g.window.colortext);
+			colors[ImGuiCol_WindowBg]             = ImGui::ColorConvertU32ToFloat4(g.window.color);
+			colors[ImGuiCol_ChildBg]              = ImGui::ColorConvertU32ToFloat4(g.window.color);
+			colors[ImGuiCol_PopupBg]              = ImGui::ColorConvertU32ToFloat4(g.window.colorbg);
+			colors[ImGuiCol_Border]               = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);
+			colors[ImGuiCol_FrameBg]              = ImGui::ColorConvertU32ToFloat4(g.window.colorbg);
+			colors[ImGuiCol_FrameBgHovered]       = ImGui::ColorConvertU32ToFloat4(g.window.colorhover);
+			colors[ImGuiCol_FrameBgActive]        = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);
+			colors[ImGuiCol_TitleBg]              = ImGui::ColorConvertU32ToFloat4(g.window.colorbg);
+			colors[ImGuiCol_TitleBgCollapsed]     = ImGui::ColorConvertU32ToFloat4(g.window.colorbg);
+			colors[ImGuiCol_TitleBgActive]        = ImGui::ColorConvertU32ToFloat4(g.window.colorbg);
+			colors[ImGuiCol_MenuBarBg]            = ImGui::ColorConvertU32ToFloat4(g.window.colorbg);
+			colors[ImGuiCol_ScrollbarBg]          = ImGui::ColorConvertU32ToFloat4(g.window.colorbg);
+			colors[ImGuiCol_ScrollbarGrab]        = ImGui::ColorConvertU32ToFloat4(g.window.colorsec);
+			colors[ImGuiCol_ScrollbarGrabHovered] = ImGui::ColorConvertU32ToFloat4(g.window.colorhover);
+			colors[ImGuiCol_ScrollbarGrabActive]  = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);
+			colors[ImGuiCol_CheckMark]            = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);
+			colors[ImGuiCol_SliderGrab]           = ImGui::ColorConvertU32ToFloat4(g.window.colorbg);
+			colors[ImGuiCol_SliderGrabActive]     = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);
+			colors[ImGuiCol_Button]               = ImGui::ColorConvertU32ToFloat4(g.window.colorsec);
+			colors[ImGuiCol_ButtonHovered]        = ImGui::ColorConvertU32ToFloat4(g.window.colorhover);
+			colors[ImGuiCol_ButtonActive]         = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);
+			colors[ImGuiCol_Header]               = ImGui::ColorConvertU32ToFloat4(g.window.colorsec);
+			colors[ImGuiCol_HeaderHovered]        = ImGui::ColorConvertU32ToFloat4(g.window.colorhover);
+			colors[ImGuiCol_HeaderActive]         = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);
+			colors[ImGuiCol_ResizeGripHovered]    = ImGui::ColorConvertU32ToFloat4(g.window.colorhover);
+			colors[ImGuiCol_ResizeGripActive]     = ImGui::ColorConvertU32ToFloat4(g.window.coloractive);
+
 			view::root();
 			ImGui::PopStyleColor();
 		}

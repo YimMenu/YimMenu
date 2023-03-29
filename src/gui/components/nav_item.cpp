@@ -9,7 +9,7 @@ namespace big
 		const bool curTab = !g_gui_service->get_selected_tab().empty() && g_gui_service->get_selected_tab().size() > nested
 		    && navItem.first == g_gui_service->get_selected_tab().at(nested);
 		if (curTab)
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
+			ImGui::PushStyleColor(ImGuiCol_Text, ImGui::ColorConvertU32ToFloat4(g.window.coloractive));
 
 		const char* key = nullptr;
 		if (key = g_translation_service.get_translation(navItem.second.name).data(); !key)
