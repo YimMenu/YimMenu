@@ -1,4 +1,5 @@
 #include "backend/backend.hpp"
+#include "cef/cef_service.hpp"
 #include "common.hpp"
 #include "core/globals.hpp"
 #include "fiber_pool.hpp"
@@ -82,6 +83,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    auto hooking_instance = std::make_unique<hooking>();
 				    LOG(INFO) << "Hooking initialized.";
 
+				    auto cef_service_instance             = std::make_unique<cef_service>();
 				    auto context_menu_service_instance    = std::make_unique<context_menu_service>();
 				    auto custom_text_service_instance     = std::make_unique<custom_text_service>();
 				    auto globals_service_instace          = std::make_unique<globals_service>();
@@ -178,6 +180,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    LOG(INFO) << "Custom Text Service reset.";
 				    context_menu_service_instance.reset();
 				    LOG(INFO) << "Context Service reset.";
+				    cef_service_instance.reset();
+				    LOG(INFO) << "CEF Service reset.";
 				    LOG(INFO) << "Services uninitialized.";
 
 				    hooking_instance.reset();

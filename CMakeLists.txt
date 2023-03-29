@@ -15,10 +15,12 @@ include(scripts/pugixml.cmake)
 include(scripts/json.cmake)
 include(scripts/cpr.cmake)
 include(scripts/zydis.cmake)
+include(scripts/rpclib.cmake)
 
 message("\nFetching custom modules")
 include(scripts/imgui.cmake)
 include(scripts/gtav-classes.cmake)
+include(scripts/libcef.cmake)
 
 
 # YimMenu
@@ -43,10 +45,12 @@ target_include_directories(YimMenu PRIVATE
     "${json_SOURCE_DIR}/single_include"
     "${gtav_classes_SOURCE_DIR}"
     "${imgui_SOURCE_DIR}"
+    "${rpclib_SOURCE_DIR}/include"
+    "${libcef_SOURCE_DIR}"
 )
 
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr Zydis)
+target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr Zydis rpc ${libcef_SOURCE_DIR}/Release/libcef.lib libcef_dll_wrapper)
 
 # Warnings as errors
 set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
