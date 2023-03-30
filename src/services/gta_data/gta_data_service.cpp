@@ -420,9 +420,6 @@ namespace big
 
 					std::strncpy(ped.m_name, name.c_str(), sizeof(ped.m_name));
 
-					//const auto ped_type = item.child("Pedtype").text().as_string();
-					//std::strncpy(ped.m_ped_type, ped_type, sizeof(ped.m_ped_type));
-
 					ped.m_hash = hash;
 
 					peds.emplace_back(std::move(ped));
@@ -459,10 +456,16 @@ namespace big
 			}
 			for (auto it = peds.begin(); it != peds.end();)
 			{
-				if (!model_info::does_model_exist(it->m_hash))
-					peds.erase(it);
-				else
+				if (CPedModelInfo* info = model_info::get_model<CPedModelInfo*>(it->m_hash))
+				{
+					static std::array<std::string, 30> ped_types = {"PLAYER_0", "PLAYER_1", "NETWORK_PLAYER", "PLAYER_2", "CIVMALE", "CIVFEMALE", "COP", "GANG_ALBANIAN", "GANG_BIKER_1", "GANG_BIKER_2", "GANG_BIKER_2", "GANG_RUSSIAN", "GANG_RUSSIAN_2", "GANG_RUSSIAN_2", "GANG_JAMAICAN", "GANG_AFRICAN_AMERICAN", "GANG_KOREAN", "GANG_CHINESE_JAPANESE", "GANG_PUERTO_RICAN", "DEALER", "MEDIC", "FIREMAN", "CRIMINAL", "BUM", "PROSTITUTE", "SPECIAL", "MISSION", "SWAT", "ANIMAL", "ARMY"};
+					std::strncpy(it->m_ped_type, ped_types[*(uint32_t*)((uintptr_t)info + 0x138)].c_str(), sizeof(it->m_ped_type));
 					++it;
+				}					
+				else
+				{
+					peds.erase(it);
+				}				
 			}
 			translate_lebel = true;
 		});
