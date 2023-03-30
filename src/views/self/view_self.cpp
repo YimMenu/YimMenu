@@ -4,6 +4,7 @@
 #include "util/entity.hpp"
 #include "util/local_player.hpp"
 #include "util/scripts.hpp"
+#include "services/orbital_drone/orbital_drone.hpp"
 #include "views/view.hpp"
 
 namespace big
