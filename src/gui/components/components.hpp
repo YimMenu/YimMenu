@@ -74,7 +74,7 @@ namespace big
 		static bool button(const std::string_view text)
 		{
 			bool status = false;
-			ImGui::PushStyleColor(ImGuiCol_Button, color);
+			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::ColorConvertU32ToFloat4(g.window.colorsec));
 			status = ImGui::Button(text.data(), size);
 			ImGui::PopStyleColor(1);
 			return status;

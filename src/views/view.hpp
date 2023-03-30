@@ -10,7 +10,7 @@ namespace big
 	class view
 	{
 		inline static animator window_animator = animator();
-		inline static ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav;
+		inline static ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoTitleBar  | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav;
 
 	public:
 		static void active_view();

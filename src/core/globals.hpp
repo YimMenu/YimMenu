@@ -690,7 +690,25 @@ namespace big
 
 		struct window
 		{
-			ImU32 color     = 3357612055;
+			ImU32 color       = 3207540527;
+			ImU32 colorsec    = 1354020018;
+			ImU32 colortext   = 3372220415;
+			ImU32 colorhover  = 2109455291;
+			ImU32 coloractive = 2902457600;
+			ImU32 colorbg     = 4279505943;
+
+			struct window_flags
+			{
+				bool allow_resize   = true;
+				bool allow_move     = false;
+				bool allow_collapse = true;
+				bool show_titlebar  = true;
+
+
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(window_flags, allow_resize, allow_move, allow_collapse, show_titlebar)
+			} window_flags{};
+
 			float gui_scale = 1.f;
 
 			ImFont* font_title     = nullptr;
@@ -714,7 +732,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ingame_overlay, opened, show_with_menu_opened, show_fps, show_players, show_time, show_replay_interface, show_game_versions)
 			} ingame_overlay{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, color, gui_scale, switched_view, ingame_overlay)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, color, colorsec, colortext, colorhover, coloractive, colorbg, gui_scale, switched_view, ingame_overlay)
 		} window{};
 
 		struct context_menu
