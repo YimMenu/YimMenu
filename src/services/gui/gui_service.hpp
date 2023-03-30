@@ -33,6 +33,7 @@ namespace big
 		BLACKHOLE,
 		MODEL_SWAPPER,
 		NEARBY,
+		ORBITAL_DRONE,
 
 		NETWORK,
 		SESSION,
@@ -121,6 +122,7 @@ namespace big
 		                {tabs::BLACKHOLE, {"GUI_TAB_BLACKHOLE", view::blackhole}},
 		                {tabs::MODEL_SWAPPER, {"GUI_TAB_MODEL_SWAPPER", view::model_swapper}},
 		                {tabs::NEARBY, {"GUI_TAB_NEARBY", view::nearby}},
+		                {tabs::ORBITAL_DRONE, {"Orbital Drone", view::orbital_drone}},
 		            },
 		        },
 		    },
