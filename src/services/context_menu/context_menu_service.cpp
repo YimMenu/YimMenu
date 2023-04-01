@@ -308,12 +308,6 @@ namespace big
 				continue;
 			}
 
-			if (g_gui->is_open())
-			{
-				script::get_current()->yield();
-				continue;
-			}
-
 			if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_VEH_DUCK))
 			{
 				g_context_menu_service->enabled = !g_context_menu_service->enabled;
