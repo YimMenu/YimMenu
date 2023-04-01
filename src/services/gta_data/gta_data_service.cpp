@@ -459,7 +459,7 @@ namespace big
 				if (CPedModelInfo* info = model_info::get_model<CPedModelInfo*>(it->m_hash))
 				{
 					static std::array<std::string, 30> ped_types = {"PLAYER_0", "PLAYER_1", "NETWORK_PLAYER", "PLAYER_2", "CIVMALE", "CIVFEMALE", "COP", "GANG_ALBANIAN", "GANG_BIKER_1", "GANG_BIKER_2", "GANG_BIKER_2", "GANG_RUSSIAN", "GANG_RUSSIAN_2", "GANG_RUSSIAN_2", "GANG_JAMAICAN", "GANG_AFRICAN_AMERICAN", "GANG_KOREAN", "GANG_CHINESE_JAPANESE", "GANG_PUERTO_RICAN", "DEALER", "MEDIC", "FIREMAN", "CRIMINAL", "BUM", "PROSTITUTE", "SPECIAL", "MISSION", "SWAT", "ANIMAL", "ARMY"};
-					std::strncpy(it->m_ped_type, ped_types[*(uint32_t*)((uintptr_t)info + 0x138)].c_str(), sizeof(it->m_ped_type));
+					std::strncpy(it->m_ped_type, ped_types[info->ped_type].c_str(), sizeof(it->m_ped_type));
 					++it;
 				}					
 				else
