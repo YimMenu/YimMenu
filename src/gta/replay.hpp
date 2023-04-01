@@ -3,21 +3,10 @@
 
 #include "common.hpp"
 #include "fwddec.hpp"
+#include "base/CObject.hpp"
 
 namespace rage
 {
-	class CObject : public fwEntity
-	{
-	public:
-	}; //Size: 0x018C
-
-	class CPedFactory
-	{
-	public:
-		virtual ~CPedFactory() = default;
-		class CPed* m_local_ped; //0x0008
-	};                           //Size: 0x0010
-
 	template<typename T = CDynamicEntity>
 	class CEntityEntry
 	{
