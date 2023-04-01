@@ -209,14 +209,11 @@ namespace big::entity
 		Entity closest_entity{};
 		float distance = 1;
 
-		//if (!vehicleInterface || !pedInterface)
-		//	return 0;
-
 		auto replayInterface = *g_pointers->m_replay_interface;
 		auto vehicleInterface = replayInterface->m_vehicle_interface;
 		auto pedInterface     = replayInterface->m_ped_interface;
 
-		for (auto veh : vehicleInterface->m_vehicle_list->m_vehicles)
+		for (const auto veh : (*vehicleInterface->m_vehicle_list))
 		{
 			if (veh.m_entity_ptr)
 			{
@@ -233,7 +230,7 @@ namespace big::entity
 			}
 		}
 
-		for (auto ped : pedInterface->m_ped_list->m_peds)
+		for (auto ped : *pedInterface->m_ped_list)
 		{
 			if (ped.m_entity_ptr)
 			{

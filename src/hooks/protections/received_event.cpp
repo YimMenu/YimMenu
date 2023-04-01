@@ -193,8 +193,8 @@ namespace big
 				if (!player->is_valid() || !player->get_ped())
 					return;
 
-				g_pointers->m_send_network_damage((CEntity*)g_player_service->get_self()->get_ped(),
-				    (CEntity*)player->get_ped(),
+				g_pointers->m_send_network_damage(g_player_service->get_self()->get_ped(),
+				    player->get_ped(),
 				    (rage::fvector3*)&localPos,
 				    hitComponent,
 				    overrideDefaultDamage,
