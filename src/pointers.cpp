@@ -33,7 +33,7 @@ namespace big
 
 		// Game State
 		main_batch.add("GS", "83 3D ? ? ? ? ? 75 17 8B 43 20 25", [this](memory::handle ptr) {
-			m_game_state = ptr.add(2).rip().as<eGameState*>();
+			m_game_state = ptr.add(2).rip().add(1).as<eGameState*>();
 		});
 
 		// Is Session Started
