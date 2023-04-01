@@ -48,6 +48,8 @@ namespace big
 			g_hotkey_service->update_hotkey("cmdexecutor", g.settings.hotkeys.cmd_excecutor);
 		if (ImGui::Hotkey("Repair PV", &g.settings.hotkeys.repairpv))
 			g_hotkey_service->update_hotkey("repairpv", g.settings.hotkeys.repairpv);
+		if (ImGui::Hotkey("Vehicle controller", &g.settings.hotkeys.open_vehicle_controller))
+			g_hotkey_service->update_hotkey("vehiclecontroller", g.settings.hotkeys.open_vehicle_controller);
 
 		ImGui::PopItemWidth();
 	}

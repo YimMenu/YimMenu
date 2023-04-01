@@ -6,6 +6,7 @@
 #include "script_patches.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/orbital_drone/orbital_drone.hpp"
+#include "services/vehicle/vehicle_control_service.hpp"
 #include "thread_pool.hpp"
 
 
@@ -202,6 +203,19 @@ namespace big
 			}
 
 			g_orbital_drone_service.tick();
+
+			script::get_current()->yield();
+		}
+	}
+
+	void backend::vehicle_control()
+	{
+		while (true)
+		{
+			if (g.window.vehicle_control.opened)
+			{
+				g_vehicle_control_service.tick();
+			}
 
 			script::get_current()->yield();
 		}

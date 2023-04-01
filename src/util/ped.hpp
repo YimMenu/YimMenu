@@ -4,6 +4,8 @@
 #include "pointers.hpp"
 #include "outfit.hpp"
 #include "services/players/player_service.hpp"
+#include "math.hpp"
+#include "gta/enums.hpp"
 
 namespace big::ped
 {
@@ -145,10 +147,27 @@ namespace big::ped
 		return STREAMING::HAS_ANIM_DICT_LOADED(dict);
 	}
 
-	inline void ped_play_animation(Ped ped, const std::string_view& animDict, const std::string_view& animName, float speed = 4.f, float speedMultiplier = -4.f, int duration = -1, int flag = 1, float playbackRate = 0, bool lockPos = false)
+	inline void ped_play_animation(Ped ped, const std::string_view& animDict, const std::string_view& animName, float speed = 4.f, float speedMultiplier = -4.f, int duration = -1, int flag = 0, float playbackRate = 0, bool lockPos = false)
 	{
 		if (load_animation_dict(animDict.data()))
 			TASK::TASK_PLAY_ANIM(ped, animDict.data(), animName.data(), speed, speedMultiplier, duration, flag, playbackRate, lockPos, lockPos, lockPos);		
+	}
+
+	/*
+	* Will make the ped enter the vehicle with animation if vehicle is in vicinity
+	* Param movespeed: 1 = walk, 2 = run, 3 = sprint
+	*/
+	inline void ped_enter_vehicle_animated(Ped ped, Vehicle veh, eVehicleSeats seat, int movespeed)
+	{
+		if (entity::take_control_of(ped))
+		{
+			if (ENTITY::DOES_ENTITY_EXIST(veh)) {
+				if (math::distance_between_vectors(ENTITY::GET_ENTITY_COORDS(ped, 0), ENTITY::GET_ENTITY_COORDS(veh, 0)) < 15.f)
+					TASK::TASK_ENTER_VEHICLE(ped, veh, 10000, (int)seat, movespeed, 8, NULL);
+				else
+					PED::SET_PED_INTO_VEHICLE(ped, veh, (int)seat);
+			}
+		}
 	}
 
 }

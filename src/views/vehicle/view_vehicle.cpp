@@ -77,6 +77,8 @@ namespace big
 			components::command_checkbox<"instantbrake">();
 			components::command_checkbox<"blockhoming">();
 			components::command_checkbox<"driveonwater">();
+			components::command_checkbox<"vehiclecontrol">();
+			
 
 			ImGui::EndGroup();
 			ImGui::SameLine();

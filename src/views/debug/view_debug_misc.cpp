@@ -8,6 +8,7 @@
 #include "util/misc.hpp"
 #include "util/system.hpp"
 #include "view_debug.hpp"
+#include "util/ped.hpp"
 
 namespace big
 {
@@ -105,6 +106,21 @@ namespace big
 					ImGui::InputScalar("Network Object Mgr", ImGuiDataType_U64, &nw, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
 				}
 
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Animation player"))
+			{
+				static char dict[100], anim[100];
+
+				ImGui::PushItemWidth(200);
+				components::input_text_with_hint("##dictionary", "Dict", dict, IM_ARRAYSIZE(dict));
+				components::input_text_with_hint("##animation", "Animation", anim, IM_ARRAYSIZE(anim));
+				if (ImGui::Button("Play animation"))
+					g_fiber_pool->queue_job([=] {
+						ped::ped_play_animation(self::ped, dict, anim);
+					});
+				ImGui::PopItemWidth();
 				ImGui::TreePop();
 			}
 
