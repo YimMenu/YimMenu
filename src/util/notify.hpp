@@ -19,23 +19,21 @@ namespace big::notify
 
 	inline void crash_blocked(CNetGamePlayer* player, const char* crash)
 	{
-		if (player)
-		{
-			g_notification_service->push_error("Protections", std::format("Blocked {} crash from {}", crash, player->get_name()));
-			LOG(WARNING) << "Blocked " << crash << " crash from " << player->get_name() << " ("
-			             << (player->get_net_data() ? player->get_net_data()->m_gamer_handle.m_rockstar_id : 0) << ")";
-		}
-		else
-		{
-			g_notification_service->push_error("Protections", std::format("Blocked {} crash from unknown player", crash));
-		}
-
-		if (player)
+		if (player && player->m_player_id != -1)
 		{
 			if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 			{
 				session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
+
+				g_notification_service->push_error("Protections", std::format("Blocked {} crash from {}", crash, plyr->get_name()));
+
+				LOG(WARNING) << "Blocked " << crash << " crash from " << plyr->get_name() << " ("
+				             << (plyr->get_net_data() ? plyr->get_net_data()->m_gamer_handle.m_rockstar_id : 0) << ")";
 			}
+		}
+		else
+		{
+			g_notification_service->push_error("Protections", std::format("Blocked {} crash from unknown player", crash));
 		}
 	}
 
@@ -68,18 +66,18 @@ namespace big::notify
 	{
 		int scaleform = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MULTIPLAYER_CHAT");
 		GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, "ADD_MESSAGE");
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(player_name);// player name
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(msg);            // content
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_TEXTURE_NAME_STRING(HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(is_team ? "MP_CHAT_TEAM" : "MP_CHAT_ALL"));// scope
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(false);                              // teamOnly
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT((int)HudColor::HUD_COLOUR_PURE_WHITE);// eHudColour
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(player_name); // player name
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(msg);             // content
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_TEXTURE_NAME_STRING(HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(is_team ? "MP_CHAT_TEAM" : "MP_CHAT_ALL")); // scope
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(false);                               // teamOnly
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT((int)HudColor::HUD_COLOUR_PURE_WHITE); // eHudColour
 		GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 		GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, "SET_FOCUS");
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(1);                                   // VISIBLE_STATE_DEFAULT
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(0);                                   // scopeType (unused)
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(0);                                   // scope (unused)
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(player_name);          // player
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT((int)HudColor::HUD_COLOUR_PURE_WHITE);// eHudColour
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(1);                                    // VISIBLE_STATE_DEFAULT
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(0);                                    // scopeType (unused)
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(0);                                    // scope (unused)
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(player_name);           // player
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT((int)HudColor::HUD_COLOUR_PURE_WHITE); // eHudColour
 		GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(scaleform, 255, 255, 255, 255, 0);
 	}
