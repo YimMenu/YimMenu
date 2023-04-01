@@ -3,6 +3,10 @@
 #include "util/entity.hpp"
 #include "util/ped.hpp"
 #include "util/teleport.hpp"
+#include "services/vehicle/persist_car_service.hpp"
+#include "backend/command.hpp"
+#include "backend/player_command.hpp"
+#include "services/gta_data/gta_data_service.hpp"
 
 namespace big
 {
@@ -63,7 +67,42 @@ namespace big
 				         VEHICLE::SET_VEHICLE_ENGINE_HEALTH(m_handle, 0.f);
 				         VEHICLE::SET_VEHICLE_ENGINE_ON(m_handle, false, true, false);
 			         }
+			         else
+				         g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
 		         }},
+		        {"COPY VEHICLE",
+		            [this] {
+						Vehicle v = persist_car_service::clone_ped_car(PLAYER::PLAYER_PED_ID(), m_handle);
+			            script::get_current()->yield();
+			            PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), v, -1);
+		            }},
+		        {"BOOST",
+		            [this] {
+			            if (entity::take_control_of(m_handle))
+							VEHICLE::SET_VEHICLE_FORWARD_SPEED(m_handle, 79);
+			            else
+				            g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
+			            
+		            }},
+		        {"LAUNCH",
+		            [this] {
+			            if (entity::take_control_of(m_handle))
+				            ENTITY::APPLY_FORCE_TO_ENTITY(m_handle, 1, 0.f, 0.f, 50000.f, 0.f, 0.f, 0.f, 0, 0, 1, 1, 0, 1);
+			            else
+				            g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
+		            }},
+		        {"EJECT",
+		            [this] {
+			            if (ped::get_player_from_ped(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0)) != NULL)
+			            {
+				            static player_command* command = (player_command*)command::get(rage::consteval_joaat("vehkick"));
+				            command->call(ped::get_player_from_ped(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0)), {});
+			            }
+			           
+				        TASK::CLEAR_PED_TASKS_IMMEDIATELY(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0));
+				        TASK::CLEAR_PED_TASKS_IMMEDIATELY(m_handle);
+			            
+		            }},
 		        {"DELETE",
 		            [this] {
 			            if (entity::take_control_of(m_handle))
@@ -75,13 +114,48 @@ namespace big
 			         teleport::into_vehicle(m_handle);
 		         }}}};
 
-		s_context_menu ped_menu{ContextEntityType::PED, 0, {}, {}};
+		s_context_menu ped_menu{ContextEntityType::PED, 0, {}, {
+		   {"DISARM",
+		       [this] {
+					for (auto& [_, weapon] : g_gta_data_service->weapons())
+						WEAPON::REMOVE_WEAPON_FROM_PED(m_handle, weapon.m_hash);
+		       }},
+		   {"RAGDOLL",
+		      [this] {
+			         PED::SET_PED_TO_RAGDOLL(m_handle, 2000, 2000, 0, 0, 0, 0);
+		            }},
+		   {"DANCE", [this] {
+			         ped::ped_play_animation(m_handle, "mini@strip_club@private_dance@part1", "priv_dance_p1");
+		    }}
+		}};
 
 		s_context_menu object_menu{ContextEntityType::OBJECT, 0, {}, {}};
 
-		s_context_menu player_menu{ContextEntityType::PLAYER, 0, {}, {{"STEAL IDENTITY", [this] {
-			                                                               ped::steal_identity(m_handle);
-		                                                               }}}};
+		s_context_menu player_menu{ContextEntityType::PLAYER, 0, {}, {
+			{"STEAL IDENTITY", [this] {
+				ped::steal_identity(m_handle);
+		     }},
+		    {"BREAKUP KICK", [this] {
+			         static player_command* command = (player_command*)command::get(rage::consteval_joaat("breakup"));
+			         command->call(ped::get_player_from_ped(m_handle), {});
+		     }},
+		    {"KICK", [this] {
+			     static player_command* command = (player_command*)command::get(rage::consteval_joaat("nfkick"));
+			     static player_command* command1 = (player_command*)command::get(rage::consteval_joaat("shkick"));
+			     static player_command* command2 = (player_command*)command::get(rage::consteval_joaat("endkick"));
+			     command->call(ped::get_player_from_ped(m_handle), {});
+			     command1->call(ped::get_player_from_ped(m_handle), {});
+			     command2->call(ped::get_player_from_ped(m_handle), {});
+		     }},
+		    {"DISARM", [this] {
+			     static player_command* command = (player_command*)command::get(rage::consteval_joaat("remweaps"));
+			         command->call(ped::get_player_from_ped(m_handle), {});
+		    }},
+		    {"RAGDOLL", [this] {
+			     static player_command* command = (player_command*)command::get(rage::consteval_joaat("ragdoll"));
+			     command->call(ped::get_player_from_ped(m_handle), {});
+		     }}
+		}};
 
 		s_context_menu shared_menu{ContextEntityType::SHARED,
 		    0,
@@ -95,6 +169,13 @@ namespace big
 		            [this] {
 			            rage::fvector3 pos = *m_pointer->m_navigation->get_position();
 			            teleport::to_coords({pos.x, pos.y, pos.z});
+		            }},
+		        {"ENFLAME",
+		            [this] {
+			            Vector3 pos = ENTITY::GET_ENTITY_COORDS(m_handle, TRUE);
+			            FIRE::START_ENTITY_FIRE(m_handle);
+			            FIRE::START_SCRIPT_FIRE(pos.x, pos.y, pos.z, 25, TRUE);
+			            MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(pos.x, pos.y, pos.z, pos.x, pos.y, pos.z, 1.f, 0, 615608432, PLAYER::PLAYER_PED_ID(), TRUE, TRUE, 1.f);
 		            }},
 		        {"COPY HASH", [this] {
 			         ImGui::SetClipboardText(std::format("0x{:08X}", (rage::joaat_t)m_pointer->m_model_info->m_hash).c_str());

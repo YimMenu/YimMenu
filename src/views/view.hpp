@@ -16,6 +16,8 @@ namespace big
 		static void active_view();
 		static void esp_settings();
 		static void context_menu_settings();
+		static void outfit_editor();
+		static void outfit_slots();
 		static void stat_editor();
 		static void gui_settings();
 		static void hotkey_settings();
@@ -28,6 +30,7 @@ namespace big
 		static void mobile();
 		static void navigation();
 		static void notifications();
+		static void orbital_drone();
 		static void overlay();
 		static void root();
 		static void self();

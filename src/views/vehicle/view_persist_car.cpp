@@ -69,10 +69,16 @@ namespace big
 		ImGui::SameLine();
 
 		components::button("SAVE_VEHICLE"_T, [] {
+			if (!self::veh)
+				return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "You must be in a vehicle. Please enter a vehicle before using load.");
+
 			save_vehicle(vehicle_file_name_input);
 		});
 
 		components::button("LOAD_VEHICLE"_T, [] {
+			if (self::veh)
+				return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "You must not be in a vehicle. Please exit your vehicle before using load.");
+
 			load_vehicle(selected_vehicle_file);
 		});
 

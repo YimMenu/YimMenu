@@ -114,6 +114,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::get_model_info>("GMI", g_pointers->m_get_model_info);
 
+		detour_hook_helper::add<hooks::task_jump_constructor>("TJC", g_pointers->m_taskjump_constructor);
+
 		detour_hook_helper::add<hooks::enumerate_audio_devices>("EAD", g_pointers->m_enumerate_audio_devices);
 		detour_hook_helper::add<hooks::direct_sound_capture_create>("DSCC", g_pointers->m_direct_sound_capture_create);
 

@@ -5,6 +5,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "util/misc.hpp"
+#include "fiber_pool.hpp"
 
 namespace big
 {
@@ -339,7 +340,10 @@ namespace big
 							continue;
 						}
 
-						cm->options.at(cm->current_option).command();
+						g_fiber_pool->queue_job([cm] {
+							cm->options.at(cm->current_option).command();
+						});
+						
 					}
 				}
 			}

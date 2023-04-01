@@ -5,7 +5,9 @@
 #include "script.hpp"
 #include "script_patches.hpp"
 #include "services/context_menu/context_menu_service.hpp"
+#include "services/orbital_drone/orbital_drone.hpp"
 #include "thread_pool.hpp"
+
 
 namespace big
 {
@@ -56,7 +58,6 @@ namespace big
 			looped::weapons_cage_gun();
 			looped::weapons_delete_gun();
 			looped::weapons_gravity_gun();
-			looped::weapons_increased_damage();
 			looped::weapons_repair_gun();
 			looped::weapons_steal_vehicle_gun();
 			looped::weapons_vehicle_gun();
@@ -184,6 +185,24 @@ namespace big
 		while (g_running)
 		{
 			looped::world_spawn_ped();
+			script::get_current()->yield();
+		}
+	}
+
+	void backend::orbital_drone()
+	{
+		while (true)
+		{
+			if (g.world.orbital_drone.enabled && PAD::IS_CONTROL_JUST_PRESSED(2, (int)ControllerInputs::INPUT_VEH_LOOK_BEHIND))
+			{
+				if (!g_orbital_drone_service.initialized())
+					g_orbital_drone_service.init();
+				else
+					g_orbital_drone_service.destroy();
+			}
+
+			g_orbital_drone_service.tick();
+
 			script::get_current()->yield();
 		}
 	}

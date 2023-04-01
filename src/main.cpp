@@ -11,6 +11,7 @@
 #include "script_mgr.hpp"
 #include "services/api/api_service.hpp"
 #include "services/context_menu/context_menu_service.hpp"
+#include "services/orbital_drone/orbital_drone.hpp"
 #include "services/custom_text/custom_text_service.hpp"
 #include "services/globals/globals_service.hpp"
 #include "services/gta_data/gta_data_service.hpp"
@@ -34,7 +35,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 	if (reason == DLL_PROCESS_ATTACH)
 	{
 		DisableThreadLibraryCalls(hmod);
-
 		g_hmodule     = hmod;
 		g_main_thread = CreateThread(
 		    nullptr,
@@ -52,6 +52,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto logger_instance = std::make_unique<logger>("YimMenu", file_manager_instance->get_project_file("./cout.log"));
 
 			    EnableMenuItem(GetSystemMenu(GetConsoleWindow(), 0), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+
+			    std::srand(std::chrono::system_clock::now().time_since_epoch().count());
 
 			    try
 			    {
@@ -112,7 +114,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::turnsignal_loop, "Turn Signals"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::disable_control_action_loop, "Disable Controls"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::world_loop, "World"));
+				    g_script_mgr.add_script(std::make_unique<script>(&backend::orbital_drone, "Orbital Drone"));
 				    g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu, "Context Menu"));
+				    
 				    LOG(INFO) << "Scripts registered.";
 
 				    g_hooking->enable();
@@ -149,9 +153,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    matchmaking_service_instance.reset();
 				    LOG(INFO) << "Matchmaking Service reset.";
 				    player_database_service_instance.reset();
-				    LOG(INFO) << "API Service reset.";
-				    api_service_instance.reset();
 				    LOG(INFO) << "Player Database Service reset.";
+				    api_service_instance.reset();
+				    LOG(INFO) << "API Service reset.";
 				    script_patcher_service_instance.reset();
 				    LOG(INFO) << "Script Patcher Service reset.";
 				    gui_service_instance.reset();
