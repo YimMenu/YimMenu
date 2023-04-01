@@ -108,15 +108,11 @@ namespace big::vehicle
 				float min_dist   = FLT_MAX;
 				int32_t m_handle = 0;
 
-				for (int32_t i = 0; i < veh_interface_size; i++)
+				for (const auto veh_entity : *veh_interface->m_vehicle_list)
 				{
-					auto veh_entity = veh_interface->m_vehicle_list->m_vehicles[i];
-					auto veh_ptr    = veh_entity.m_entity_ptr;
-
+					const auto veh_ptr    = veh_entity.m_entity_ptr;
 					if (!veh_ptr || !veh_ptr->m_navigation)
-					{
 						continue;
-					}
 
 					auto veh_pos_arr = *veh_ptr->m_navigation->get_position();
 					Vector3 veh_pos(veh_pos_arr.x, veh_pos_arr.y, veh_pos_arr.z);
