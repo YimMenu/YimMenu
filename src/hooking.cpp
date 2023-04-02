@@ -121,6 +121,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::write_vehicle_proximity_migration_data_node>("WVPMDN", g_pointers->m_write_vehicle_proximity_migration_data_node);
 
+		detour_hook_helper::add<hooks::fipackfile_mount>("FPFM", g_pointers->m_fipackfile_mount);
+
 		g_hooking = this;
 	}
 

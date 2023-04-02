@@ -18,8 +18,8 @@ namespace big
 			if (g_player_service->get_self()->get_ped() && entry.second->get_ped() && entry.second->get_ped()->m_health > 0)
 			{
 				if (entry.second->kill_loop && !(entry.second->get_ped()->m_damage_bits & (1 << 8)))
-					g_pointers->m_send_network_damage((CEntity*)g_player_service->get_self()->get_ped(),
-					    (CEntity*)entry.second->get_ped(),
+					g_pointers->m_send_network_damage(g_player_service->get_self()->get_ped(),
+					    entry.second->get_ped(),
 					    entry.second->get_ped()->m_navigation->get_position(),
 					    0,
 					    true,
