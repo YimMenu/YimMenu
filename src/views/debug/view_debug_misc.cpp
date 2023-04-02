@@ -9,6 +9,7 @@
 #include "util/system.hpp"
 #include "view_debug.hpp"
 #include "util/ped.hpp"
+#include "util/pathfind.hpp"
 
 namespace big
 {
@@ -64,6 +65,16 @@ namespace big
 
 			components::button("Network Shutdown And Load Most Recent Save", [] {
 				NETWORK::SHUTDOWN_AND_LOAD_MOST_RECENT_SAVE();
+			});
+
+			components::button("Tp to safe pos", [] {
+				Vector3 safepos{};
+				float heading;
+				if (pathfind::find_closest_vehicle_node(self::pos, safepos, heading, eNodeFlags::NF_NONE))
+					ENTITY::SET_ENTITY_COORDS(self::ped, safepos.x, safepos.y, safepos.z, 0, 0, 0, false);
+				else
+					g_notification_service->push_error("Find safe pos", "Failed to find a safe position");
+
 			});
 
 			components::command_button<"fastquit">();

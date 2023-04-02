@@ -260,6 +260,25 @@ namespace big
 		ImGui::SameLine();
 		ImGui::Text("Engine: %s", g_vehicle_control_service.m_controlled_vehicle.engine ? "Running" : "Off");
 
+		components::button(g_vehicle_control_service.driver_performing_task ? "Cancel" : "Summon", [] {
+			if (!g_vehicle_control_service.driver_performing_task)
+			{
+				if (g.window.vehicle_control.operation_animation)
+					g_vehicle_control_service.animated_vehicle_operation(self::ped);
+
+				g_vehicle_control_service.summon_vehicle();
+			}
+			else
+				g_vehicle_control_service.driver_performing_task = false;
+		});
+
+		if (g_vehicle_control_service.driver_performing_task)
+		{
+			ImGui::SameLine();
+			ImGui::Text("Distance: %d", g_vehicle_control_service.distance_to_destination);
+		}
+			
+
 		//TODO ADD RADIO OPTIONS
 
 	}
@@ -274,6 +293,22 @@ namespace big
 			ImGui::Text("Will use animations for several vehicle operations such as:\ntoggling lights, opening/closing doors and entering seats");
 			ImGui::EndTooltip();
 		}
+
+		ImGui::Checkbox("Render distance on vehicle", &g.window.vehicle_control.render_distance_on_veh);
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::BeginTooltip();
+			ImGui::Text("Will display the distance on the controlled vehicle");
+			ImGui::EndTooltip();
+		}
+
+		ImGui::SliderFloat("Max summon distance", &g.window.vehicle_control.max_summon_range, 10.f, 150.f);
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::BeginTooltip();
+			ImGui::Text("At what range the vehicle will drive towards the summoned location as oposed to being teleported");
+			ImGui::EndTooltip();
+		}
 	}
 
 	void view::vehicle_control()
@@ -282,7 +317,7 @@ namespace big
 		if (!g.window.vehicle_control.opened || !*g_pointers->m_is_session_started)
 			return;
 
-		ImGui::SetNextWindowPos(ImVec2(10.0f, 10.0f), ImGuiCond_FirstUseEver, ImVec2(0.0f, 0.0f));
+		ImGui::SetNextWindowPos(ImVec2(500.0f, 10.0f), ImGuiCond_FirstUseEver, ImVec2(0.0f, 0.0f));
 		ImGui::SetNextWindowBgAlpha(0.5f);
 		if (ImGui::Begin("Vehicle controller", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
 		{

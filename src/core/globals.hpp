@@ -718,9 +718,11 @@ namespace big
 			struct vehicle_control
 			{
 				bool opened                = false;
-				bool operation_animation                = false;
+				bool operation_animation   = false;
+				bool render_distance_on_veh   = false;
+				float max_summon_range   = 125.f;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_control, opened, operation_animation)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_control, opened, operation_animation, max_summon_range, render_distance_on_veh)
 			} vehicle_control{};
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, color, gui_scale, switched_view, ingame_overlay, vehicle_control)

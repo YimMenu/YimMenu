@@ -42,15 +42,30 @@ namespace big
 	private:
 		controlled_vehicle update_vehicle(Vehicle veh);
 		void keep_controlled_vehicle_data_updated(controlled_vehicle& veh);
+
+		//Autonomy
+		void driver_tick();
+		bool ensure_driver();
+		void render_distance_on_vehicle();
+		Vector3 destination;
+		Ped driver;
+
+
 	public:
 		controlled_vehicle m_controlled_vehicle;
 		std::map<int, std::string_view> radiostations;
 		bool controlled_vehicle_exists;
 
+		//Autonomy
+		bool driver_performing_task;
+		int distance_to_destination;
+
 		void animated_vehicle_operation(Ped ped);
 		void operate_door(eDoorId, bool);
 		void operate_lights(bool headlights, bool highbeams);
 		void operate_neons(int index, bool toggle);
+		void summon_vehicle();
+
 		void tick();
 	};
 
