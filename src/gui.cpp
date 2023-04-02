@@ -56,6 +56,13 @@ namespace big
 		toggle_mouse();
 	}
 
+	void gui::override_mouse(bool override)
+	{
+		m_override_mouse = override;
+
+		toggle_mouse();
+	}
+
 	void gui::dx_init()
 	{
 		static auto bgColor     = ImVec4(0.09f, 0.094f, 0.129f, .9f);
@@ -135,7 +142,7 @@ namespace big
 
 	void gui::script_on_tick()
 	{
-		if (g_gui->m_is_open)
+		if (g_gui->m_is_open || g_gui->m_override_mouse)
 		{
 			for (uint8_t i = 0; i <= 6; i++)
 				PAD::DISABLE_CONTROL_ACTION(2, i, true);
@@ -214,7 +221,7 @@ namespace big
 
 	void gui::toggle_mouse()
 	{
-		if (m_is_open)
+		if (m_is_open || g_gui->m_override_mouse)
 		{
 			ImGui::GetIO().MouseDrawCursor = true;
 			ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;

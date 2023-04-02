@@ -1,20 +1,43 @@
 #include "vehicle_control_service.hpp"
+
+#include "backend/looped_command.hpp"
+#include "gui.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
+#include "util/pathfind.hpp"
 #include "util/ped.hpp"
 #include "util/vehicle.hpp"
-#include "util/pathfind.hpp"
-#include "backend/bool_command.hpp"
 
 namespace big
 {
+	class vehicle_control_command : looped_command
+	{
+		using looped_command::looped_command;
 
-	bool_command g_vehicle_control("vehiclecontrol", "Vehicle controller", "Enables/Disables the vehicle controller.",
+		virtual void on_enable() override
+		{
+			g_gui->override_mouse(true);
+		}
+
+		virtual void on_tick() override
+		{
+			if (!g_gui->mouse_override())
+			{
+				g_gui->override_mouse(true);
+			}
+		}
+
+		virtual void on_disable() override
+		{
+			g_gui->override_mouse(false);
+		}
+	};
+
+	vehicle_control_command g_vehicle_control("vehiclecontrol", "Vehicle controller", "Enables/Disables the vehicle controller.",
 	    g.window.vehicle_control.opened);
 
 	void update_controlled_vehicle_doors(controlled_vehicle& veh)
 	{
-
 		vehicle_door vehdoor{};
 
 		for (int i = 0; i < MAX_VEHICLE_DOORS; i++)
@@ -26,15 +49,15 @@ namespace big
 			}
 
 			vehdoor.valid     = true;
-			vehdoor.id		  = (eDoorId) i;
+			vehdoor.id        = (eDoorId)i;
 			vehdoor.lockstate = (eVehicleLockState)VEHICLE::GET_VEHICLE_INDIVIDUAL_DOOR_LOCK_STATUS(veh.handle, i);
-			vehdoor.open	  = VEHICLE::GET_VEHICLE_DOOR_ANGLE_RATIO(veh.handle, i) > 0;
+			vehdoor.open      = VEHICLE::GET_VEHICLE_DOOR_ANGLE_RATIO(veh.handle, i) > 0;
 			vehdoor.doorAngle = VEHICLE::GET_VEHICLE_DOOR_ANGLE_RATIO(veh.handle, i);
-			
+
 			veh.doors[i] = vehdoor;
 		}
 
-		veh.lockstate = (eVehicleLockState) VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(veh.handle);
+		veh.lockstate = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(veh.handle);
 	}
 
 	void update_controlled_vehicle_lights(controlled_vehicle& veh)
@@ -43,7 +66,6 @@ namespace big
 
 		for (int i = 0; i < 4; i++)
 			veh.neons[i] = VEHICLE::GET_VEHICLE_NEON_ENABLED(veh.handle, i);
-		
 	}
 
 	controlled_vehicle vehicle_control::update_vehicle(Vehicle veh)
@@ -51,10 +73,10 @@ namespace big
 		controlled_vehicle newveh{};
 
 		newveh.handle = veh;
-		newveh.ptr = (CVehicle*)g_pointers->m_handle_to_ptr(veh);
+		newveh.ptr    = (CVehicle*)g_pointers->m_handle_to_ptr(veh);
 		strcpy(newveh.model_name, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY::GET_ENTITY_MODEL(veh))));
-		newveh.doorCount = VEHICLE::GET_NUMBER_OF_VEHICLE_DOORS(veh);
-		newveh.lockstate = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(veh);
+		newveh.doorCount     = VEHICLE::GET_NUMBER_OF_VEHICLE_DOORS(veh);
+		newveh.lockstate     = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(veh);
 		newveh.isconvertible = VEHICLE::IS_VEHICLE_A_CONVERTIBLE(veh, 0);
 		update_controlled_vehicle_doors(newveh);
 		update_controlled_vehicle_lights(newveh);
@@ -67,8 +89,6 @@ namespace big
 
 	void vehicle_control::keep_controlled_vehicle_data_updated(controlled_vehicle& veh)
 	{
-
-
 		if (!this->controlled_vehicle_exists)
 			return;
 
@@ -76,13 +96,13 @@ namespace big
 		update_controlled_vehicle_lights(veh);
 
 		veh.convertibelstate = VEHICLE::GET_CONVERTIBLE_ROOF_STATE(veh.handle);
-		veh.engine			 = VEHICLE::GET_IS_VEHICLE_ENGINE_RUNNING(veh.handle);
-		veh.radio			 = AUDIO::IS_VEHICLE_RADIO_ON(veh.handle);
-		veh.radiochannel	 = AUDIO::GET_PLAYER_RADIO_STATION_INDEX();
+		veh.engine           = VEHICLE::GET_IS_VEHICLE_ENGINE_RUNNING(veh.handle);
+		veh.radio            = AUDIO::IS_VEHICLE_RADIO_ON(veh.handle);
+		veh.radiochannel     = AUDIO::GET_PLAYER_RADIO_STATION_INDEX();
 
-		if (g.window.vehicle_control.render_distance_on_veh && math::distance_between_vectors(self::pos, ENTITY::GET_ENTITY_COORDS(this->m_controlled_vehicle.handle, true)) > 10.f)
+		if (g.window.vehicle_control.render_distance_on_veh
+		    && math::distance_between_vectors(self::pos, ENTITY::GET_ENTITY_COORDS(this->m_controlled_vehicle.handle, true)) > 10.f)
 			vehicle_control::render_distance_on_vehicle();
-
 	}
 
 	/*
@@ -126,16 +146,14 @@ namespace big
 
 	void vehicle_control::driver_tick()
 	{
-
 		if (!this->controlled_vehicle_exists)
 			return;
 
 		if (ENTITY::DOES_ENTITY_EXIST(this->driver))
 		{
-
 			if (!this->driver_performing_task)
 			{
-				if(entity::take_control_of(this->driver))
+				if (entity::take_control_of(this->driver))
 				{
 					entity::delete_entity(this->driver);
 				}
@@ -148,14 +166,14 @@ namespace big
 					VEHICLE::BRING_VEHICLE_TO_HALT(this->m_controlled_vehicle.handle, 6.f, 5, false);
 				}
 
-				this->distance_to_destination = math::distance_between_vectors(this->destination, ENTITY::GET_ENTITY_COORDS(this->m_controlled_vehicle.handle, true));
+				this->distance_to_destination = math::distance_between_vectors(this->destination,
+				    ENTITY::GET_ENTITY_COORDS(this->m_controlled_vehicle.handle, true));
 			}
 		}
 	}
 
 	bool vehicle_control::ensure_driver()
 	{
-
 		if (!this->controlled_vehicle_exists)
 		{
 			if (ENTITY::DOES_ENTITY_EXIST(this->driver) && entity::take_control_of(this->driver))
@@ -164,7 +182,7 @@ namespace big
 			}
 			return false;
 		}
-			
+
 
 		if (!ENTITY::DOES_ENTITY_EXIST(this->driver))
 		{
@@ -188,14 +206,14 @@ namespace big
 			//LOG(INFO) << "Changing driver attributes";
 			ENTITY::SET_ENTITY_INVINCIBLE(this->driver, true);
 			ENTITY::SET_ENTITY_VISIBLE(this->driver, false, false);
-			PED::SET_PED_COMBAT_ATTRIBUTES(this->driver, (int) eCombatAttributes::CA_LEAVE_VEHICLES, false);
-			PED::SET_PED_COMBAT_ATTRIBUTES(this->driver, (int) eCombatAttributes::CA_USE_VEHICLE, true);
-			PED::SET_PED_COMBAT_ATTRIBUTES(this->driver, (int) eCombatAttributes::CA_DISABLE_FLEE_FROM_COMBAT, true);
-			PED::SET_PED_CONFIG_FLAG(this->driver, (int) ePedConfigFlags::PCF_DisableShockingEvents, true);
-			PED::SET_PED_CONFIG_FLAG(this->driver, (int) ePedConfigFlags::PCF_DisableExplosionReactions, true);
-			PED::SET_PED_CONFIG_FLAG(this->driver, (int) ePedConfigFlags::PCF_DisablePanicInVehicle, true);
-			PED::SET_PED_CONFIG_FLAG(this->driver, (int) ePedConfigFlags::PCF_DisableVehicleCombat, true);
-			PED::SET_PED_CONFIG_FLAG(this->driver, (int) ePedConfigFlags::PCF_DisableUnarmedDrivebys, true);
+			PED::SET_PED_COMBAT_ATTRIBUTES(this->driver, (int)eCombatAttributes::CA_LEAVE_VEHICLES, false);
+			PED::SET_PED_COMBAT_ATTRIBUTES(this->driver, (int)eCombatAttributes::CA_USE_VEHICLE, true);
+			PED::SET_PED_COMBAT_ATTRIBUTES(this->driver, (int)eCombatAttributes::CA_DISABLE_FLEE_FROM_COMBAT, true);
+			PED::SET_PED_CONFIG_FLAG(this->driver, (int)ePedConfigFlags::PCF_DisableShockingEvents, true);
+			PED::SET_PED_CONFIG_FLAG(this->driver, (int)ePedConfigFlags::PCF_DisableExplosionReactions, true);
+			PED::SET_PED_CONFIG_FLAG(this->driver, (int)ePedConfigFlags::PCF_DisablePanicInVehicle, true);
+			PED::SET_PED_CONFIG_FLAG(this->driver, (int)ePedConfigFlags::PCF_DisableVehicleCombat, true);
+			PED::SET_PED_CONFIG_FLAG(this->driver, (int)ePedConfigFlags::PCF_DisableUnarmedDrivebys, true);
 			PED::SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(this->driver, true);
 			PED::SET_PED_CAN_BE_DRAGGED_OUT(this->driver, false);
 			PED::SET_PED_CAN_BE_SHOT_IN_VEHICLE(this->driver, false);
@@ -209,13 +227,15 @@ namespace big
 		if (ENTITY::DOES_ENTITY_EXIST(this->m_controlled_vehicle.handle))
 		{
 			Vector3 vehpos = ENTITY::GET_ENTITY_COORDS(this->m_controlled_vehicle.handle, true);
-			Vector2 screenpos{}; GRAPHICS::GET_SCREEN_COORD_FROM_WORLD_COORD(vehpos.x, vehpos.y, vehpos.z, &screenpos.x, &screenpos.y);
+			Vector2 screenpos{};
+			GRAPHICS::GET_SCREEN_COORD_FROM_WORLD_COORD(vehpos.x, vehpos.y, vehpos.z, &screenpos.x, &screenpos.y);
 
 			HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
 			HUD::SET_TEXT_FONT(4);
 			HUD::SET_TEXT_SCALE(0.3f, 0.463);
 			HUD::SET_TEXT_COLOUR(0, 150, 0, 255);
-			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(std::to_string(math::distance_between_vectors(self::pos, vehpos)).data());
+			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(
+			    std::to_string(math::distance_between_vectors(self::pos, vehpos)).data());
 			HUD::END_TEXT_COMMAND_DISPLAY_TEXT(screenpos.x, screenpos.y, 0);
 		}
 	}
@@ -226,7 +246,7 @@ namespace big
 		    || math::distance_between_vectors(self::pos, ENTITY::GET_ENTITY_COORDS(this->m_controlled_vehicle.handle, true)) < 13.f)
 			return;
 
-		
+
 		Vector3 behindpos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, -4.f, 0.f);
 
 		if (ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT(self::ped, this->m_controlled_vehicle.handle))
@@ -234,8 +254,8 @@ namespace big
 			behindpos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 4.f, 0.f);
 		}
 
-		if (math::distance_between_vectors(self::pos, ENTITY::GET_ENTITY_COORDS(this->m_controlled_vehicle.handle, true))>
-			g.window.vehicle_control.max_summon_range)
+		if (math::distance_between_vectors(self::pos, ENTITY::GET_ENTITY_COORDS(this->m_controlled_vehicle.handle, true))
+		    > g.window.vehicle_control.max_summon_range)
 		{
 			//LOG(INFO) << "Vehicle is too far, teleporting";
 			this->destination = behindpos;
@@ -245,13 +265,14 @@ namespace big
 
 		this->driver_performing_task = true;
 
-		if (ensure_driver()) {
+		if (ensure_driver())
+		{
 			Vector3 destination{};
 			float heading{};
 
 			pathfind::find_closest_vehicle_node(self::pos, destination, heading, eNodeFlags::NF_NONE);
 			for (int i = 0; i < 10 && math::distance_between_vectors(self::pos, destination) < 3.f; i++)
-			{	
+			{
 				pathfind::find_closest_vehicle_node(self::pos, destination, heading, eNodeFlags::NF_NONE, i);
 				//LOG(INFO) << "Node too close to player, iterating next closest";
 			}
@@ -265,7 +286,6 @@ namespace big
 					//LOG(INFO) << "Couldnt find a safe ped pos";
 					destination = behindpos;
 				}
-	
 			}
 
 			this->destination = destination;
@@ -285,16 +305,13 @@ namespace big
 
 			PED::SET_PED_KEEP_TASK(this->driver, true);
 		}
-
 	}
 
 	void vehicle_control::tick()
 	{
-
 		if (!*g_pointers->m_is_session_started)
 			return;
 
-		
 		this->controlled_vehicle_exists = this->m_controlled_vehicle.ptr
 		    && ENTITY::DOES_ENTITY_EXIST(this->m_controlled_vehicle.handle)
 		    && VEHICLE::IS_THIS_MODEL_A_CAR(ENTITY::GET_ENTITY_MODEL(this->m_controlled_vehicle.handle));
@@ -310,6 +327,5 @@ namespace big
 		}
 
 		keep_controlled_vehicle_data_updated(this->m_controlled_vehicle);
-		
 	}
 }
