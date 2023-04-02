@@ -25,7 +25,7 @@ namespace big
 	}
 
 	gta_data_service::gta_data_service() :
-	    m_peds_cache(g_file_manager->get_project_file("./cache/peds.bin"), 1),
+	    m_peds_cache(g_file_manager->get_project_file("./cache/peds.bin"), 2),
 	    m_vehicles_cache(g_file_manager->get_project_file("./cache/vehicles.bin"), 1),
 	    m_weapons_cache(g_file_manager->get_project_file("./cache/weapons.bin"), 2),
 	    m_update_state(eGtaDataUpdateState::IDLE)
