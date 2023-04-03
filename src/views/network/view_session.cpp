@@ -83,7 +83,7 @@ namespace big
 		ImGui::Checkbox("AUTO_KICK_CHAT_SPAMMERS"_T.data(), &g.session.kick_chat_spammers);
 		ImGui::Checkbox("DISABLE_FILTER"_T.data(), &g.session.chat_force_clean);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Your sent chat messages will not be censored to the receivers");// TODO: add translation
+			ImGui::SetTooltip("Your sent chat messages will not be censored to the receivers"); // TODO: add translation
 		ImGui::Checkbox("LOG_CHAT_MSG"_T.data(), &g.session.log_chat_messages);
 		ImGui::Checkbox("LOG_TXT_MSG"_T.data(), &g.session.log_text_messages);
 		static char msg[256];
@@ -150,31 +150,6 @@ namespace big
 					if (auto script = gta_util::find_script_thread(RAGE_JOAAT("fmmc_launcher")); script && script->m_net_component)
 						script->m_net_component->block_host_migration(true);
 				});
-		}
-
-		components::sub_title("REMOTE_NAME_SPOOFING"_T);
-		ImGui::Checkbox("SPOOF_PLAYER_NAMES"_T.data(), &g.session.name_spoof_enabled);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("SPOOF_PLAYER_NAMES_DESC"_T.data());
-
-		if (g.session.name_spoof_enabled)
-		{
-			ImGui::Checkbox("ADVERTISE_YIMMENU"_T.data(), &g.session.advertise_menu);
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("ADVERTISE_YIMMENU_DESC"_T.data());
-
-			if (!g.session.advertise_menu)
-			{
-				constexpr size_t name_size = RTL_FIELD_SIZE(rage::rlGamerInfo, m_name);
-				static char name[name_size];
-				strcpy_s(name, sizeof(name), g.session.spoofed_name.c_str());
-
-				ImGui::Text("PLAYER_SPOOFED_NAME"_T.data());
-				components::input_text("##username_input", name, sizeof(name));
-
-				if (name != g.session.spoofed_name)
-					g.session.spoofed_name = std::string(name);
-			}
 		}
 
 		components::sub_title("ALL_PLAYERS"_T);

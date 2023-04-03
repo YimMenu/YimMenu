@@ -68,10 +68,10 @@ namespace big
 		{
 			bool enabled = false;
 		} cmd_executor{};
-    
+
 		rage::scrThread* m_modshop_thread = nullptr;
 		bool in_script_vm                 = false;
-    
+
 		struct debug
 		{
 			struct logs
@@ -329,9 +329,6 @@ namespace big
 			bool player_magnet_enabled = false;
 			int player_magnet_count    = 32;
 			bool is_team               = false;
-			bool name_spoof_enabled    = false;
-			bool advertise_menu        = false;
-			std::string spoofed_name   = "";
 			bool join_in_sctv_slots    = false;
 
 			const char chat_command_prefix = '/';
@@ -370,7 +367,7 @@ namespace big
 			bool show_cheating_message = false;
 			bool anonymous_bounty      = true;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, local_weather, override_time, override_weather, custom_time, chat_force_clean, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, name_spoof_enabled, advertise_menu, spoofed_name, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, local_weather, override_time, override_weather, custom_time, chat_force_clean, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty)
 		} session{};
 
 		struct settings
@@ -432,7 +429,7 @@ namespace big
 		{
 			struct orbital_drone
 			{
-				bool enabled = false;
+				bool enabled             = false;
 				bool detect_player       = false;
 				float nav_ovverride_fast = 3.f;
 				float nav_ovverride_slow = 0.25f;
