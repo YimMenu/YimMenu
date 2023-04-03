@@ -47,18 +47,18 @@ namespace big
 		void driver_tick();
 		bool ensure_driver();
 		void render_distance_on_vehicle();
-		Vector3 destination;
-		Ped driver;
+		Vector3 m_destination;
+		Ped m_driver;
 
 
 	public:
 		controlled_vehicle m_controlled_vehicle;
 		std::map<int, std::string_view> radiostations;
-		bool controlled_vehicle_exists;
+		bool m_controlled_vehicle_exists;
 
 		//Autonomy
-		bool driver_performing_task;
-		int distance_to_destination;
+		bool m_driver_performing_task;
+		int m_distance_to_destination;
 
 		void animated_vehicle_operation(Ped ped);
 		void operate_door(eDoorId, bool);

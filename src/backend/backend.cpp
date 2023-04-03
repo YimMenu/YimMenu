@@ -212,11 +212,9 @@ namespace big
 	{
 		while (true)
 		{
-			if (g.window.vehicle_control.opened)
-			{
-				g_vehicle_control_service.tick();
-			}
-
+		
+			g_vehicle_control_service.tick();
+			
 			script::get_current()->yield();
 		}
 	}

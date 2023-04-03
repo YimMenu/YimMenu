@@ -260,8 +260,8 @@ namespace big
 		ImGui::SameLine();
 		ImGui::Text("Engine: %s", g_vehicle_control_service.m_controlled_vehicle.engine ? "Running" : "Off");
 
-		components::button(g_vehicle_control_service.driver_performing_task ? "Cancel" : "Summon", [] {
-			if (!g_vehicle_control_service.driver_performing_task)
+		components::button(g_vehicle_control_service.m_driver_performing_task ? "Cancel" : "Summon", [] {
+			if (!g_vehicle_control_service.m_driver_performing_task)
 			{
 				if (g.window.vehicle_control.operation_animation)
 					g_vehicle_control_service.animated_vehicle_operation(self::ped);
@@ -269,13 +269,13 @@ namespace big
 				g_vehicle_control_service.summon_vehicle();
 			}
 			else
-				g_vehicle_control_service.driver_performing_task = false;
+				g_vehicle_control_service.m_driver_performing_task = false;
 		});
 
-		if (g_vehicle_control_service.driver_performing_task)
+		if (g_vehicle_control_service.m_driver_performing_task)
 		{
 			ImGui::SameLine();
-			ImGui::Text("Distance: %d", g_vehicle_control_service.distance_to_destination);
+			ImGui::Text("Distance: %d", g_vehicle_control_service.m_distance_to_destination);
 		}
 			
 
@@ -321,7 +321,7 @@ namespace big
 		ImGui::SetNextWindowBgAlpha(0.5f);
 		if (ImGui::Begin("Vehicle controller", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
 		{
-			if (g_vehicle_control_service.controlled_vehicle_exists){
+			if (g_vehicle_control_service.m_controlled_vehicle_exists){
 			
 
 				ImGui::Text(g_vehicle_control_service.m_controlled_vehicle.model_name);
