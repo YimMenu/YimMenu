@@ -15,7 +15,9 @@ namespace big
 		virtual void on_tick() override
 		{
 			g_player_service->iterate([&](const player_entry& plyr) {
-				auto found = std::find(admin_names.begin(), admin_names.end(), std::to_string(plyr.second->id()));
+				auto found = std::find(admin_names.begin(),
+				    admin_names.end(),
+				    std::to_string(plyr.second->get_net_data()->m_gamer_handle.m_rockstar_id));
 				if (found != admin_names.end())
 				{
 					g_notification_service->push_warning("Potential Admin Found!", "A potential admin has been found in your lobby!");
