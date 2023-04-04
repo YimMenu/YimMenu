@@ -48,9 +48,6 @@ namespace big
 		ImGui::Checkbox("Receive Pickup", &g.protections.receive_pickup);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("This prevents any pickup from the ground such as unwanted money drops.\nAttention: Normal pickups are also no longer possible.");
-		components::command_checkbox("admin_check");
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("This scans the lobby for people with the same IDs as documented R* Admins. This feature may come at a performance loss in it's current state.");
 		ImGui::EndGroup();
 	}
 
