@@ -18,12 +18,12 @@ namespace big
 				auto found = std::find(admin_names.begin(), admin_names.end(), plyr->get_name());
 				if (found != admin_names.end())
 				{
-					g_notification_service->push_warning("Potential Admin Found!", "A potential admin has been found in your lobby!")
+					g_notification_service->push_warning("Potential Admin Found!", "A potential admin has been found in your lobby!");
 				}
 			})
 		}
 	}
 
 	admin_check g_admin_check("admin_check", "Checks for Admins", "Scans players in the lobby for potential Rockstar Admins",
-	    g.self.admin_check)
+	    g.protections.admin_check);
 }
