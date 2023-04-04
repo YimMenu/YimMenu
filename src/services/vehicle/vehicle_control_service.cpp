@@ -320,9 +320,10 @@ namespace big
 			//    4.f,
 			//    5.f);
 
-			int seq = 0;
-			TASK::OPEN_SEQUENCE_TASK(&seq);
-			TASK::TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(0,
+
+
+
+			TASK::TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(m_driver,
 			    m_controlled_vehicle.handle,
 			    destination.x,
 			    destination.y,
@@ -330,8 +331,6 @@ namespace big
 			    50.f,
 			    (int)eDrivingMode::DRIVINGMODE_AVOIDCARS_RECKLESS,
 			    4.f);
-			TASK::CLOSE_SEQUENCE_TASK(seq);
-			TASK::TASK_PERFORM_SEQUENCE(m_driver, seq);
 			PED::SET_PED_KEEP_TASK(m_driver, true);
 			
 		}
