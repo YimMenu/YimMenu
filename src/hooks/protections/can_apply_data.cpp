@@ -495,10 +495,15 @@ namespace big
 		if (object == nullptr)
 			return false;
 
-		while (object = g_pointers->m_get_entity_attached_to(object))
+		constexpr size_t reasonable_limit = 150;
+		size_t i                          = 0;
+		while (object && i < reasonable_limit)
 		{
 			if (object->m_net_object && object->m_net_object->m_object_id == attached_to_net_id)
 				return true;
+
+			object = g_pointers->m_get_entity_attached_to(object);
+			i++;
 		}
 
 		return false;

@@ -46,6 +46,14 @@ namespace big
 					{
 						g_gta_data_service->update_in_online();
 					}
+
+					if (*g_pointers->m_game_state == eGameState::Respawn)
+					{
+						if (ImGui::Button("GAME_CACHE_ON_INIT"_T.data()))
+						{
+							g_gta_data_service->update_on_init();
+						}
+					}		
 				}
 
 				break;
@@ -63,6 +71,18 @@ namespace big
 				break;
 			}
 			case eGtaDataUpdateState::UPDATING:
+			{
+				ImGui::Text("GAME_CACHE_UPDATING"_T.data());
+
+				break;
+			}
+			case eGtaDataUpdateState::ON_INIT_WAITING:
+			{
+				ImGui::Text("GAME_CACHE_WAITING_FOR_SINGLE_PLAYER"_T.data());
+
+				break;
+			}
+			case eGtaDataUpdateState::ON_INIT_UPDATE_START:
 			{
 				ImGui::Text("GAME_CACHE_UPDATING"_T.data());
 

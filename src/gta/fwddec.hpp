@@ -5,6 +5,8 @@ namespace rage
 	template<typename T>
 	class atArray;
 
+	class CEntity;
+
 	class datBitBuffer;
 	class sysMemAllocator;
 
@@ -58,7 +60,6 @@ class CGameScriptHandler;
 class CGameScriptHandlerNetwork;
 class CGameScriptHandlerMgr;
 
-class CEntity;
 class CPhysical;
 
 class CObject;

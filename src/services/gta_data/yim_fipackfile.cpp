@@ -12,7 +12,7 @@ namespace big
 		this->mount_name = mount_name;
 	}
 
-	static std::vector<std::string> get_non_dlc_mounted_devices_names()
+	std::vector<std::string> yim_fipackfile::get_non_dlc_mounted_devices_names()
 	{
 		std::vector<std::string> non_dlc_mounted_devices_names;
 
@@ -37,7 +37,12 @@ namespace big
 		return non_dlc_mounted_devices_names;
 	}
 
-	void yim_fipackfile::for_each_fipackfile(std::function<size_t(yim_fipackfile& rpf_wrapper)> cb)
+	void yim_fipackfile::add_wrapper_call_back(std::function<size_t(yim_fipackfile& rpf_wrapper)> cb)
+	{
+		m_wrapper_call_back.push_back(cb);
+	}
+
+	void yim_fipackfile::for_each_fipackfile()
 	{
 		// the idea is to reuse existing mount points as much as possible because
 		// even when mounting / unmounting properly you'll get file errors
@@ -79,44 +84,19 @@ namespace big
 			{
 				size_t acc = 0;
 
-				rpf_wrapper.mount_name = "memory:/";
-				acc += cb(rpf_wrapper);
+				static std::vector<std::string> mount_names = {"memory:/", "memory:", "dlc", "dlc:", "dlc:/", "dlcpacks:/", "common:/", "commoncrc:/", "update:/", "update2:/", "platform:/", "platformcrc:/", "gamecache:/"};
 
-				rpf_wrapper.mount_name = "memory:";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "dlc";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "dlc:";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "dlc:/";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "dlcpacks:/";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "common:/";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "commoncrc:/";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "update:/";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "update2:/";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "platform:/";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "platformcrc:/";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "gamecache:/";
-				acc += cb(rpf_wrapper);
+				for (auto& mount_name : mount_names)
+				{
+					rpf_wrapper.mount_name = mount_name;
+					if (auto count = rpf_wrapper.get_file_paths().size())
+					{
+						acc += count;
+						std::for_each(m_wrapper_call_back.begin(), m_wrapper_call_back.end(), [&rpf_wrapper](std::function<size_t(yim_fipackfile & rpf_wrapper)> cb) {
+							cb(rpf_wrapper);
+						});
+					}
+				}
 
 				// if we got nothing with those mount points for this rpf, mount it
 				if (!acc)
@@ -124,14 +104,18 @@ namespace big
 					rpf_wrapper.mount_name = default_mount_name;
 					rpf->Mount(default_mount_name);
 
-					cb(rpf_wrapper);
+					std::for_each(m_wrapper_call_back.begin(), m_wrapper_call_back.end(), [&rpf_wrapper](std::function<size_t(yim_fipackfile & rpf_wrapper)> cb) {
+						cb(rpf_wrapper);
+					});
 
 					g_pointers->m_fipackfile_unmount(default_mount_name);
 				}
 			}
 			else
 			{
-				cb(rpf_wrapper);
+				std::for_each(m_wrapper_call_back.begin(), m_wrapper_call_back.end(), [&rpf_wrapper](std::function<size_t(yim_fipackfile & rpf_wrapper)> cb) {
+					cb(rpf_wrapper);
+				});
 			}
 
 			if (i % yield_increment == 0)
@@ -176,6 +160,11 @@ namespace big
 		}
 
 		return file_paths;
+	}
+
+	const char* yim_fipackfile::get_name()
+	{
+		return rpf->GetName();
 	}
 
 	void yim_fipackfile::read_file(const std::filesystem::path& path, file_contents_callback&& cb)
