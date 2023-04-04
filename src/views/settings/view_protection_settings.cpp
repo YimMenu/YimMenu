@@ -50,7 +50,7 @@ namespace big
 			ImGui::SetTooltip("This prevents any pickup from the ground such as unwanted money drops.\nAttention: Normal pickups are also no longer possible.");
 		ImGui::Checkbox("Admin Check", &g.protections.admin_check);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("This scans the lobby for people with the same names as documented R* Admins. \nAttention: Other people can spoof their names. This may trigger false positives if someone is trying to look like a R* admin.");
+			ImGui::SetTooltip("This scans the lobby for people with the same IDs as documented R* Admins. This feature may come at a performance loss in it's current state.");
 		ImGui::EndGroup();
 	}
 
