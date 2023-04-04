@@ -14,15 +14,15 @@ namespace big
 		virtual void on_tick() override
 		{
 			std::vector<std::string> admin_names = {"admin1", "admin2", "admin3"};
-			g_player_service->iterate([&](const player_ptr& plyr) {
-				auto found = std::find(admin_names.begin(), admin_names.end(), plyr->get_name());
+			g_player_service->iterate([&](const player_entry& plyr) {
+				auto found = std::find(admin_names.begin(), admin_names.end(), plyr.second->get_name());
 				if (found != admin_names.end())
 				{
 					g_notification_service->push_warning("Potential Admin Found!", "A potential admin has been found in your lobby!");
 				}
-			})
-		}
-	}
+			});
+		};
+	};
 
 	admin_check g_admin_check("admin_check", "Checks for Admins", "Scans players in the lobby for potential Rockstar Admins",
 	    g.protections.admin_check);
