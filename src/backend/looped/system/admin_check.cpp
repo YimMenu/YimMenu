@@ -23,4 +23,7 @@ namespace big
 			})
 		}
 	}
+
+	admin_check g_admin_check("admin_check", "Checks for Admins", "Scans players in the lobby for potential Rockstar Admins",
+	    g.self.admin_check)
 }
