@@ -276,6 +276,10 @@ namespace big
 		{
 			ImGui::SameLine();
 			ImGui::Text("Distance: %d", g_vehicle_control_service.m_distance_to_destination);
+
+			
+			ImGui::Text("Task: %s", g_vehicle_control_service.m_currentask);
+
 		}
 			
 

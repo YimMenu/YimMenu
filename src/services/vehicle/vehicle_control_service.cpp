@@ -151,6 +151,15 @@ namespace big
 
 		if (ENTITY::DOES_ENTITY_EXIST(m_driver))
 		{
+
+			int task = 0;
+			for (int i = 0; i < ped::task_names.size(); i++)
+			{
+				if (TASK::GET_IS_TASK_ACTIVE(m_driver, i))
+					task = i;
+			}
+			strcpy(m_currentask, ped::task_names.at(task));
+
 			if (!m_driver_performing_task)
 			{
 				if (entity::take_control_of(m_driver))
@@ -160,7 +169,7 @@ namespace big
 			}
 			else
 			{
-				if (math::distance_between_vectors(m_destination, ENTITY::GET_ENTITY_COORDS(m_driver, true)) < 13.f)
+				if (math::distance_between_vectors(m_destination, ENTITY::GET_ENTITY_COORDS(m_driver, true)) < 7.f)
 				{
 					m_driver_performing_task = false;
 					VEHICLE::BRING_VEHICLE_TO_HALT(m_controlled_vehicle.handle, 6.f, 5, false);
@@ -219,6 +228,11 @@ namespace big
 			PED::SET_PED_CAN_BE_SHOT_IN_VEHICLE(m_driver, false);
 			PED::SET_DRIVER_ABILITY(m_driver, 1);
 			PED::SET_DRIVER_RACING_MODIFIER(m_driver, 1);
+
+			PED::CLEAR_RELATIONSHIP_BETWEEN_GROUPS(0, PED::GET_PED_RELATIONSHIP_GROUP_HASH(m_driver), PED::GET_PED_RELATIONSHIP_GROUP_HASH(self::ped));
+			PED::SET_RELATIONSHIP_BETWEEN_GROUPS(0, PED::GET_PED_GROUP_INDEX(m_driver), PED::GET_PED_GROUP_INDEX(self::ped));
+			PED::SET_RELATIONSHIP_BETWEEN_GROUPS(0, PED::GET_PED_GROUP_INDEX(self::ped), PED::GET_PED_GROUP_INDEX(m_driver));
+			PED::SET_PED_AS_GROUP_MEMBER(m_driver, PED::GET_PED_GROUP_INDEX(self::ped));
 		}
 
 		return ENTITY::DOES_ENTITY_EXIST(m_driver);
@@ -242,6 +256,7 @@ namespace big
 		}
 	}
 
+	
 	void vehicle_control::summon_vehicle()
 	{
 		if (!m_controlled_vehicle_exists
@@ -251,7 +266,7 @@ namespace big
 
 		Vector3 behind_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, -4.f, 0.f);
 
-		if (ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT(self::ped, m_controlled_vehicle.handle))
+		if (ensure_driver() && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT(self::ped, m_driver))
 		{
 			behind_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 4.f, 0.f);
 		}
@@ -305,7 +320,9 @@ namespace big
 			//    4.f,
 			//    5.f);
 
-			TASK::TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(m_driver,
+			int seq = 0;
+			TASK::OPEN_SEQUENCE_TASK(&seq);
+			TASK::TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(0,
 			    m_controlled_vehicle.handle,
 			    destination.x,
 			    destination.y,
@@ -313,8 +330,10 @@ namespace big
 			    50.f,
 			    (int)eDrivingMode::DRIVINGMODE_AVOIDCARS_RECKLESS,
 			    4.f);
-
+			TASK::CLOSE_SEQUENCE_TASK(seq);
+			TASK::TASK_PERFORM_SEQUENCE(m_driver, seq);
 			PED::SET_PED_KEEP_TASK(m_driver, true);
+			
 		}
 	}
 

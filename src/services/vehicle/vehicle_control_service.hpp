@@ -59,6 +59,7 @@ namespace big
 		//Autonomy
 		bool m_driver_performing_task;
 		int m_distance_to_destination;
+		char m_currentask[100];
 
 		void animated_vehicle_operation(Ped ped);
 		void operate_door(eDoorId, bool);
