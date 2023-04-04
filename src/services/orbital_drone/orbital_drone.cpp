@@ -378,7 +378,8 @@ namespace big
 		Vector3 campos = CAM::GET_CAM_COORD(m_cam);
 		Vector3 entpos = ENTITY::GET_ENTITY_COORDS(entity::get_entity_closest_to_middle_of_screen(), 0);
 
-		if (ENTITY::DOES_ENTITY_EXIST(g_pointers->m_ptr_to_handle(g_player_service->get_selected()->get_ped())))
+		if (g_player_service->get_selected()->is_valid()
+		        &&ENTITY::DOES_ENTITY_EXIST(g_pointers->m_ptr_to_handle(g_player_service->get_selected()->get_ped())))
 		{
 			toxic::blame_explode_coord(g_player_service->get_selected(), m_ground_pos, eExplosionTag::EXP_TAG_ORBITAL_CANNON, 1.f, TRUE, TRUE, 1.f);
 
