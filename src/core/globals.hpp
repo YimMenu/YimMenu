@@ -68,10 +68,10 @@ namespace big
 		{
 			bool enabled = false;
 		} cmd_executor{};
-    
+
 		rage::scrThread* m_modshop_thread = nullptr;
 		bool in_script_vm                 = false;
-    
+
 		struct debug
 		{
 			struct logs
@@ -285,6 +285,7 @@ namespace big
 			bool healthregen        = false;
 			float healthregenrate   = 1.0f;
 			bool superman           = false;
+			bool admin_check        = false;
 			struct hud
 			{
 				bool hudcolor = false;
@@ -306,7 +307,7 @@ namespace big
 			// do not save below entries
 			bool dance_mode = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, admin_check)
 		} self{};
 
 		struct session
@@ -432,7 +433,7 @@ namespace big
 		{
 			struct orbital_drone
 			{
-				bool enabled = false;
+				bool enabled             = false;
 				bool detect_player       = false;
 				float nav_ovverride_fast = 3.f;
 				float nav_ovverride_slow = 0.25f;
