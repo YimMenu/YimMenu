@@ -8,7 +8,8 @@ namespace big
 	{
 		void STAT_GET_INT(rage::scrNativeCallContext* src)
 		{
-			if (g_vehicle_control_service.m_driver_performing_task && src->get_arg<Hash>(0) == 17723965)
+			if (g_vehicle_control_service.m_driver_performing_task && (src->get_arg<Hash>(0) == RAGE_JOAAT("MP0_PERSONAL_VEHICLE_ACCESS") ||
+				src->get_arg<Hash>(0) == RAGE_JOAAT("MP1_PERSONAL_VEHICLE_ACCESS")))
 			{
 				src->set_return_value<int>(0);
 				return;
