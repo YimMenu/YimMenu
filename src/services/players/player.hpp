@@ -77,7 +77,7 @@ namespace big
 		bool block_join                = false;
 		int block_join_reason          = 0;
 		bool is_spammer                = false;
-
+		bool is_admin                  = false;
 		std::optional<std::uint32_t> player_time_value;
 		std::optional<std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds>> player_time_value_received_time;
 		std::optional<std::uint32_t> time_difference;
