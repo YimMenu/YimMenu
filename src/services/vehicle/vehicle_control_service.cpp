@@ -81,9 +81,6 @@ namespace big
 		update_controlled_vehicle_doors(new_veh);
 		update_controlled_vehicle_lights(new_veh);
 
-		for (int i = 0; i < AUDIO::GET_NUM_UNLOCKED_RADIO_STATIONS(); i++)
-			this->radiostations.insert(std::pair<int, std::string_view>(i, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(AUDIO::GET_RADIO_STATION_NAME(i))));
-
 		return new_veh;
 	}
 
