@@ -737,8 +737,8 @@ namespace big
 		});
 
 		// Allow Weapons In Vehicle
-		main_batch.add("AWIV", "49 3B C9 7C F0 ? ? C3", [this](memory::handle ptr) {
-			m_allow_weapons_in_vehicle = memory::byte_patch::make(ptr.add(5).as<uint16_t*>(), 0x01B0).get(); //In order for the second xref loop not to stop
+		main_batch.add("AWIV", "49 8B 40 08 39 10", [this](memory::handle ptr) {
+			m_allow_weapons_in_vehicle = ptr.sub(23).as<PVOID>();
 		});
 
 		// Crash Trigger
