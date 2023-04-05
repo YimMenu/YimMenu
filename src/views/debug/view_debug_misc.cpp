@@ -8,6 +8,8 @@
 #include "util/misc.hpp"
 #include "util/system.hpp"
 #include "view_debug.hpp"
+#include "util/ped.hpp"
+#include "util/pathfind.hpp"
 
 namespace big
 {
@@ -65,6 +67,16 @@ namespace big
 				NETWORK::SHUTDOWN_AND_LOAD_MOST_RECENT_SAVE();
 			});
 
+			components::button("Tp To Safe Pos", [] {
+				Vector3 safepos{};
+				float heading;
+				if (pathfind::find_closest_vehicle_node(self::pos, safepos, heading, 0))
+					ENTITY::SET_ENTITY_COORDS(self::ped, safepos.x, safepos.y, safepos.z, 0, 0, 0, false);
+				else
+					g_notification_service->push_error("Find safe pos", "Failed to find a safe position");
+
+			});
+
 			components::command_button<"fastquit">();
 
 			if (ImGui::TreeNode("Addresses"))
@@ -105,6 +117,21 @@ namespace big
 					ImGui::InputScalar("Network Object Mgr", ImGuiDataType_U64, &nw, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
 				}
 
+				ImGui::TreePop();
+			}
+
+			if (ImGui::TreeNode("Animation player"))
+			{
+				static char dict[100], anim[100];
+
+				ImGui::PushItemWidth(200);
+				components::input_text_with_hint("##dictionary", "Dict", dict, IM_ARRAYSIZE(dict));
+				components::input_text_with_hint("##animation", "Animation", anim, IM_ARRAYSIZE(anim));
+				if (ImGui::Button("Play animation"))
+					g_fiber_pool->queue_job([=] {
+						ped::ped_play_animation(self::ped, dict, anim);
+					});
+				ImGui::PopItemWidth();
 				ImGui::TreePop();
 			}
 

@@ -123,6 +123,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::fipackfile_mount>("FPFM", g_pointers->m_fipackfile_mount);
 
+		detour_hook_helper::add<hooks::allow_weapons_in_vehicle>("AWIV", g_pointers->m_allow_weapons_in_vehicle);
+
 		g_hooking = this;
 	}
 

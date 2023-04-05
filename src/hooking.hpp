@@ -165,6 +165,8 @@ namespace big
 		static void write_vehicle_proximity_migration_data_node(rage::netObject* veh, CVehicleProximityMigrationDataNode* node);
 
 		static bool fipackfile_mount(rage::fiPackfile* this_, const char* mount_point);
+
+		static bool allow_weapons_in_vehicle(int64_t unk, int weaponinfo_group);
 	};
 
 	class minhook_keepalive

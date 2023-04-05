@@ -394,8 +394,9 @@ namespace big
 				int fast_quit            = 0;
 				int cmd_excecutor        = 0x55;
 				int repairpv             = 0;
+				int open_vehicle_controller = 0;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller)
 			} hotkeys{};
 
 			bool dev_dlc = false;
@@ -711,7 +712,17 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ingame_overlay, opened, show_with_menu_opened, show_fps, show_players, show_time, show_replay_interface, show_game_versions)
 			} ingame_overlay{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, color, gui_scale, switched_view, ingame_overlay)
+			struct vehicle_control
+			{
+				bool opened                = false;
+				bool operation_animation   = true;
+				bool render_distance_on_veh   = false;
+				float max_summon_range   = 200.f;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_control, operation_animation, max_summon_range, render_distance_on_veh)
+			} vehicle_control{};
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, color, gui_scale, switched_view, ingame_overlay, vehicle_control)
 		} window{};
 
 		struct context_menu

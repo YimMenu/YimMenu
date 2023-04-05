@@ -1,3 +1,4 @@
+#include "core/data/admin_rids.hpp"
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
 #include "hooking.hpp"
@@ -8,8 +9,10 @@
 
 #include <network/Network.hpp>
 
+
 namespace big
 {
+
 	void* hooks::assign_physical_index(CNetworkPlayerMgr* netPlayerMgr, CNetGamePlayer* player, uint8_t new_index)
 	{
 		const auto* net_player_data = player->get_net_data();
@@ -42,7 +45,14 @@ namespace big
 		g_player_service->player_join(player);
 		if (net_player_data)
 		{
-			if (g.notifications.player_join.above_map && *g_pointers->m_is_session_started)// prevent loading screen spam
+			auto found = std::find(admin_rids.begin(), admin_rids.end(), net_player_data->m_gamer_handle.m_rockstar_id);
+			if (found != admin_rids.end())
+			{
+				g_notification_service->push_warning("Potential Admin Found!",
+				    std::format("{} has been detected as admin", net_player_data->m_name));
+				LOG(WARNING) << net_player_data->m_name << " (" << net_player_data->m_gamer_handle.m_rockstar_id << ") has been detected as admin";
+			}
+			if (g.notifications.player_join.above_map && *g_pointers->m_is_session_started) // prevent loading screen spam
 				notify::player_joined(player);
 
 			if (g.notifications.player_join.log)
@@ -93,4 +103,5 @@ namespace big
 		}
 		return result;
 	}
+
 }

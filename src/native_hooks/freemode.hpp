@@ -1,10 +1,23 @@
 #pragma once
 #include "script_function.hpp"
+#include "services/vehicle/vehicle_control_service.hpp"
 
 namespace big
 {
 	namespace freemode
 	{
+		void STAT_GET_INT(rage::scrNativeCallContext* src)
+		{
+			if (g_vehicle_control_service.m_driver_performing_task && (src->get_arg<Hash>(0) == RAGE_JOAAT("MP0_PERSONAL_VEHICLE_ACCESS") ||
+				src->get_arg<Hash>(0) == RAGE_JOAAT("MP1_PERSONAL_VEHICLE_ACCESS")))
+			{
+				src->set_return_value<int>(0);
+				return;
+			}
+
+			src->set_return_value(STATS::STAT_GET_INT(src->get_arg<Hash>(0), src->get_arg<int*>(1), src->get_arg<int>(2)));
+		}
+
 		inline void NETWORK_BAIL(rage::scrNativeCallContext* src)
 		{
 			LOG(INFO) << "NETWORK_BAIL prevented";

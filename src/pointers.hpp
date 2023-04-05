@@ -255,7 +255,7 @@ namespace big
 		bool* m_refresh_audio_input{};
 
 		memory::byte_patch* m_disable_collision{};
-		memory::byte_patch* m_allow_weapons_in_vehicle{};
+		PVOID m_allow_weapons_in_vehicle{};
 
 		PVOID m_taskjump_constructor{};
 
