@@ -7,6 +7,7 @@
 #include "services/players/player_service.hpp"
 #include "util/notify.hpp"
 
+#include <format>
 #include <network/Network.hpp>
 
 
@@ -16,13 +17,7 @@ namespace big
 	void* hooks::assign_physical_index(CNetworkPlayerMgr* netPlayerMgr, CNetGamePlayer* player, uint8_t new_index)
 	{
 		const auto* net_player_data = player->get_net_data();
-		g_player_service->iterate([&](const player_entry& plyr) {
-			auto found = std::find(admin_rids.begin(), admin_rids.end(), plyr.second->get_net_data()->m_gamer_handle.m_rockstar_id);
-			if (found != admin_rids.end())
-			{
-				g_notification_service->push_warning("Potential Admin Found!", "A potential admin has been found in your lobby!");
-			}
-		});
+
 		if (new_index == static_cast<uint8_t>(-1))
 		{
 			g.m_spoofed_peer_ids.erase(player->get_net_data()->m_host_token);
@@ -51,6 +46,12 @@ namespace big
 		g_player_service->player_join(player);
 		if (net_player_data)
 		{
+			auto found = std::find(admin_rids.begin(), admin_rids.end(), net_player_data->m_gamer_handle.m_rockstar_id);
+			if (found != admin_rids.end())
+			{
+				g_notification_service->push_warning("Potential Admin Found!",
+				    std::format("{} has been detected as admin", net_player_data->m_name));
+			}
 			if (g.notifications.player_join.above_map && *g_pointers->m_is_session_started) // prevent loading screen spam
 				notify::player_joined(player);
 
