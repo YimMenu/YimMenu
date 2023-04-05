@@ -51,6 +51,9 @@ namespace big
 				g_notification_service->push_warning("Potential Admin Found!",
 				    std::format("{} has been detected as admin", net_player_data->m_name));
 				LOG(WARNING) << net_player_data->m_name << " (" << net_player_data->m_gamer_handle.m_rockstar_id << ") has been detected as admin";
+				auto id = player->m_player_id;
+				if (auto plyr = g_player_service->get_by_id(id))
+					plyr->is_admin = true;
 			}
 			if (g.notifications.player_join.above_map && *g_pointers->m_is_session_started) // prevent loading screen spam
 				notify::player_joined(player);
