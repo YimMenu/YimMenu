@@ -183,7 +183,7 @@ namespace big
 					100.f, 
 					0,
 					0,
-			    	(int)eDrivingMode::DRIVINGMODE_AVOIDCARS_RECKLESS, 4.f, 
+			    	786468, 4.f, 
 					5.f);
 					//LOG(INFO) << "Navmesh probably failed, issiuing regular task ";
 					g_notification_service->push_warning("Vehicle controller", "Your vehicle could not assess an accurate path, it will try something else");
@@ -231,14 +231,14 @@ namespace big
 			//LOG(INFO) << "Changing driver attributes";
 			ENTITY::SET_ENTITY_INVINCIBLE(m_driver, true);
 			ENTITY::SET_ENTITY_VISIBLE(m_driver, false, false);
-			PED::SET_PED_COMBAT_ATTRIBUTES(m_driver, (int)eCombatAttributes::CA_LEAVE_VEHICLES, false);
-			PED::SET_PED_COMBAT_ATTRIBUTES(m_driver, (int)eCombatAttributes::CA_USE_VEHICLE, true);
-			PED::SET_PED_COMBAT_ATTRIBUTES(m_driver, (int)eCombatAttributes::CA_DISABLE_FLEE_FROM_COMBAT, true);
-			PED::SET_PED_CONFIG_FLAG(m_driver, (int)ePedConfigFlags::PCF_DisableShockingEvents, true);
-			PED::SET_PED_CONFIG_FLAG(m_driver, (int)ePedConfigFlags::PCF_DisableExplosionReactions, true);
-			PED::SET_PED_CONFIG_FLAG(m_driver, (int)ePedConfigFlags::PCF_DisablePanicInVehicle, true);
-			PED::SET_PED_CONFIG_FLAG(m_driver, (int)ePedConfigFlags::PCF_DisableVehicleCombat, true);
-			PED::SET_PED_CONFIG_FLAG(m_driver, (int)ePedConfigFlags::PCF_DisableUnarmedDrivebys, true);
+			PED::SET_PED_COMBAT_ATTRIBUTES(m_driver, 3, false);
+			PED::SET_PED_COMBAT_ATTRIBUTES(m_driver, 1, true);
+			PED::SET_PED_COMBAT_ATTRIBUTES(m_driver, 58, true);
+			PED::SET_PED_CONFIG_FLAG(m_driver, 294, true);
+			PED::SET_PED_CONFIG_FLAG(m_driver, 208, true);
+			PED::SET_PED_CONFIG_FLAG(m_driver, 229, true);
+			PED::SET_PED_CONFIG_FLAG(m_driver, 422, true);
+			PED::SET_PED_CONFIG_FLAG(m_driver, 123, true);
 			PED::SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(m_driver, true);
 			PED::SET_PED_CAN_BE_DRAGGED_OUT(m_driver, false);
 			PED::SET_PED_CAN_BE_SHOT_IN_VEHICLE(m_driver, false);
@@ -277,17 +277,17 @@ namespace big
 	{
 		Vector3 original_coords = outcoords;
 		float original_heading = heading;
-		pathfind::find_closest_vehicle_node(self::pos, outcoords, heading, eNodeFlags::NF_NONE);
+		pathfind::find_closest_vehicle_node(self::pos, outcoords, heading, 0);
 		for (int i = 0; i < 10 && math::distance_between_vectors(self::pos, outcoords) < 3.f; i++)
 		{
-			pathfind::find_closest_vehicle_node(self::pos, outcoords, heading, eNodeFlags::NF_NONE, i);
+			pathfind::find_closest_vehicle_node(self::pos, outcoords, heading, 0, i);
 			//LOG(INFO) << "Node too close to player, iterating next closest";
 		}
 		//LOG(INFO) << "Searched for closest vehicle node";
 		if (math::distance_between_vectors(self::pos, outcoords) > 7.f)
 		{
 			//LOG(INFO) << "Node was too far, trying to find safe ped pos";
-			if (!pathfind::find_safe_pos_ped(self::pos, outcoords, true, eGetSafeCoordFlags::GSC_FLAG_ONLY_NETWORK_SPAWN) || math::distance_between_vectors(self::pos, outcoords) > 30.f)
+			if (!pathfind::find_safe_pos_ped(self::pos, outcoords, true, 8) || math::distance_between_vectors(self::pos, outcoords) > 30.f)
 			{
 				//LOG(INFO) << "Couldnt find a safe ped pos";
 				outcoords = original_coords;
@@ -354,7 +354,7 @@ namespace big
 			    destination.y,
 			    destination.z,
 			    100.f,
-			    (int)eDrivingMode::DRIVINGMODE_AVOIDCARS_RECKLESS,
+			    786468,
 			    4.f);
 				PED::SET_PED_KEEP_TASK(m_driver, true);
 			}

@@ -70,7 +70,7 @@ namespace big
 			components::button("Tp To Safe Pos", [] {
 				Vector3 safepos{};
 				float heading;
-				if (pathfind::find_closest_vehicle_node(self::pos, safepos, heading, eNodeFlags::NF_NONE))
+				if (pathfind::find_closest_vehicle_node(self::pos, safepos, heading, 0))
 					ENTITY::SET_ENTITY_COORDS(self::ped, safepos.x, safepos.y, safepos.z, 0, 0, 0, false);
 				else
 					g_notification_service->push_error("Find safe pos", "Failed to find a safe position");

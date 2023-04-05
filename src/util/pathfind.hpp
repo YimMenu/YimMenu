@@ -47,10 +47,10 @@ namespace big::pathfind
 		PATHFIND::REMOVE_NAVMESH_REQUIRED_REGIONS();
 	}
 
-	inline bool find_safe_pos_ped(Vector3 coords, Vector3& outcoords, bool onGround, eGetSafeCoordFlags flag)
+	inline bool find_safe_pos_ped(Vector3 coords, Vector3& outcoords, bool onGround, int flag)
 	{
 		if (load_path_nodes(coords))
-			return PATHFIND::GET_SAFE_COORD_FOR_PED(coords.x, coords.y, coords.z, onGround, &outcoords, (int)flag);
+			return PATHFIND::GET_SAFE_COORD_FOR_PED(coords.x, coords.y, coords.z, onGround, &outcoords, flag);
 		else
 			return false;
 	}
@@ -62,16 +62,16 @@ namespace big::pathfind
 	 zTolerance: how far apart to the Z coords have to be before zMeasureMult kicks in?
 	 nth: Which coords are returned, 1 being closest, 2 being second closesst and so on
 	*/
-	inline bool find_closest_vehicle_node(Vector3 coords, Vector3& outcoords, float& outheading, eNodeFlags flag, int nth = 1, float zMeasureMult = 3.f, float zTolerance = 0.f)
+	inline bool find_closest_vehicle_node(Vector3 coords, Vector3& outcoords, float& outheading, int flag, int nth = 1, float zMeasureMult = 3.f, float zTolerance = 0.f)
 	{
 		int lanes;
 		if (load_path_nodes(coords))
-			return PATHFIND::GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x, coords.y, coords.z, nth, &outcoords, &outheading, &lanes, (int)flag, zMeasureMult, zTolerance);
+			return PATHFIND::GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING(coords.x, coords.y, coords.z, nth, &outcoords, &outheading, &lanes, flag, zMeasureMult, zTolerance);
 		else
 			return false;
 	}
 
-	inline bool find_random_location_in_vicinity(Vector3 coords, Vector3& outcoords, float& outheading, eNodeFlags flag, int vicinity)
+	inline bool find_random_location_in_vicinity(Vector3 coords, Vector3& outcoords, float& outheading, int flag, int vicinity)
 	{
 		
 		int rand1 = rand() % 4;
@@ -89,7 +89,7 @@ namespace big::pathfind
 
 		if (math::distance_between_vectors(outcoords, changedcoords) > vicinity)
 		{
-			if (find_safe_pos_ped(changedcoords, outcoords, true, eGetSafeCoordFlags::GSC_FLAG_NOT_WATER))
+			if (find_safe_pos_ped(changedcoords, outcoords, true, flag))
 				return true;
 			else
 			{
