@@ -27,6 +27,7 @@ namespace big
 		register_hotkey("fillammo", g.settings.hotkeys.fill_ammo, RAGE_JOAAT("fillammo"));
 		register_hotkey("quicksearch", g.settings.hotkeys.cmd_excecutor, RAGE_JOAAT("cmdexecutor"));
 		register_hotkey("repairpv", g.settings.hotkeys.repairpv, RAGE_JOAAT("repairpv"));
+		register_hotkey("vehiclecontroller", g.settings.hotkeys.open_vehicle_controller, RAGE_JOAAT("vehiclecontrol"));
 
 		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			wndproc(static_cast<eKeyState>(msg), wparam);
