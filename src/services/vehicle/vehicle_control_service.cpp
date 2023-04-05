@@ -295,10 +295,8 @@ namespace big
 				return false;
 			}
 		}
-		else
-			return true;
 
-		return false;
+		return true;
 	}
 
 	void vehicle_control::summon_vehicle()
@@ -306,7 +304,6 @@ namespace big
 		if (!m_controlled_vehicle_exists
 		    || math::distance_between_vectors(self::pos, ENTITY::GET_ENTITY_COORDS(m_controlled_vehicle.handle, true)) < 13.f)
 			return;
-
 
 		Vector3 behind_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, -4.f, 0.f);
 
@@ -339,7 +336,6 @@ namespace big
 			else
 			{
 				//LOG(INFO) << "Couldn't find suitable destionation, defaulting to offset of player\nThis might go wrong";
-
 				g_notification_service->push_warning("Vehicle controller", "Couldn't locate an accurate spot, your vehicle is on its way regardless");
 				destination = behind_pos;
 			}

@@ -1,24 +1,23 @@
 #include "gta_util.hpp"
 #include "gui.hpp"
 #include "pointers.hpp"
-#include "views/view.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
-#include "util/vehicle.hpp"
 #include "util/ped.hpp"
+#include "util/vehicle.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
 
 	void render_doors_tab()
 	{
-
 		const char* const doornames[MAX_VEHICLE_DOORS]{
-			"Front left",
-			"Front right",
-			"Back left",
-			"Back right",
-			"Bonnet",
-			"Trunk",
+		    "Front left",
+		    "Front right",
+		    "Back left",
+		    "Back right",
+		    "Bonnet",
+		    "Trunk",
 		};
 
 		const char* const locknames[MAX_VEHICLE_LOCK_STATES]{
@@ -100,10 +99,6 @@ namespace big
 			if (ImGui::Button(buttonlabel.data()))
 			{
 				g_fiber_pool->queue_job([=] {
-					//vehicle::operate_vehicle_door(g_vehicle_control_service.m_controlled_vehicle.handle,
-					//    (eDoorId)i,
-					//    !g_vehicle_control_service.m_controlled_vehicle.doors[i].open);
-
 					g_vehicle_control_service.operate_door((eDoorId)i,
 					    !g_vehicle_control_service.m_controlled_vehicle.doors[i].open);
 				});
@@ -116,14 +111,13 @@ namespace big
 
 	void render_lights_tab()
 	{
-
 		const char* const neonnames[4]{
 		    "Left",
 		    "Right",
 		    "Front",
 		    "Rear",
 		};
-	
+
 		if (ImGui::Button("Toggle lights"))
 		{
 			g_fiber_pool->queue_job([=] {
@@ -134,7 +128,7 @@ namespace big
 		if (ImGui::Button("Toggle High beams"))
 		{
 			g_fiber_pool->queue_job([=] {
-			g_vehicle_control_service.operate_lights(g_vehicle_control_service.m_controlled_vehicle.headlights,
+				g_vehicle_control_service.operate_lights(g_vehicle_control_service.m_controlled_vehicle.headlights,
 				    !g_vehicle_control_service.m_controlled_vehicle.highbeams);
 			});
 		}
@@ -158,7 +152,7 @@ namespace big
 
 		ImGui::Text("Neon lights");
 		ImGui::Separator();
-		
+
 		for (int i = 0; i < 4; i++)
 		{
 			if (ImGui::Checkbox(neonnames[i], &g_vehicle_control_service.m_controlled_vehicle.neons[i]))
@@ -167,9 +161,7 @@ namespace big
 					g_vehicle_control_service.operate_neons(i, g_vehicle_control_service.m_controlled_vehicle.neons[i]);
 				});
 			}
-
 		}
-
 	}
 
 	void render_seats_tab()
@@ -209,13 +201,10 @@ namespace big
 				});
 			}
 		}
-
 	}
 
 	void render_misc_tab()
 	{
-
-	
 		const char* const convertiblestates[4]{
 		    "Up",
 		    "Lowering",
@@ -228,7 +217,6 @@ namespace big
 			if (ImGui::Button(g_vehicle_control_service.m_controlled_vehicle.convertibelstate ? "Raise" : "Lower"))
 			{
 				g_fiber_pool->queue_job([=] {
-
 					if (g.window.vehicle_control.operation_animation)
 						g_vehicle_control_service.animated_vehicle_operation(self::ped);
 
@@ -243,7 +231,8 @@ namespace big
 			ImGui::Text("Convertible state: %s", convertiblestates[g_vehicle_control_service.m_controlled_vehicle.convertibelstate]);
 		}
 
-		if (ImGui::Checkbox(g_vehicle_control_service.m_controlled_vehicle.engine ? "Stop" : "Start", &g_vehicle_control_service.m_controlled_vehicle.engine))
+		if (ImGui::Checkbox(g_vehicle_control_service.m_controlled_vehicle.engine ? "Stop" : "Start",
+		        &g_vehicle_control_service.m_controlled_vehicle.engine))
 		{
 			g_fiber_pool->queue_job([=] {
 				if (g.window.vehicle_control.operation_animation)
@@ -251,9 +240,9 @@ namespace big
 
 				if (entity::take_control_of(g_vehicle_control_service.m_controlled_vehicle.handle))
 					VEHICLE::SET_VEHICLE_ENGINE_ON(g_vehicle_control_service.m_controlled_vehicle.handle,
-				    !g_vehicle_control_service.m_controlled_vehicle.engine,
-				    true,
-				    false);
+					    !g_vehicle_control_service.m_controlled_vehicle.engine,
+					    true,
+					    false);
 			});
 		}
 
@@ -277,19 +266,13 @@ namespace big
 			ImGui::SameLine();
 			ImGui::Text("Distance: %d", g_vehicle_control_service.m_distance_to_destination);
 
-			
+
 			ImGui::Text("Task: %s", g_vehicle_control_service.m_currentask);
-
 		}
-			
-
-		//TODO ADD RADIO OPTIONS
-
 	}
 
 	void render_settings_tab()
 	{
-	
 		ImGui::Checkbox("Use animations", &g.window.vehicle_control.operation_animation);
 		if (ImGui::IsItemHovered())
 		{
@@ -317,7 +300,6 @@ namespace big
 
 	void view::vehicle_control()
 	{
-
 		if (!g.window.vehicle_control.opened || !*g_pointers->m_is_session_started)
 			return;
 
@@ -325,9 +307,8 @@ namespace big
 		ImGui::SetNextWindowBgAlpha(0.5f);
 		if (ImGui::Begin("Vehicle controller", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
 		{
-			if (g_vehicle_control_service.m_controlled_vehicle_exists){
-			
-
+			if (g_vehicle_control_service.m_controlled_vehicle_exists)
+			{
 				ImGui::Text(g_vehicle_control_service.m_controlled_vehicle.model_name);
 				ImGui::Separator();
 				ImGui::Spacing();
