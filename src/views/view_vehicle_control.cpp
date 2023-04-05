@@ -251,7 +251,7 @@ namespace big
 
 				if (entity::take_control_of(g_vehicle_control_service.m_controlled_vehicle.handle))
 					VEHICLE::SET_VEHICLE_ENGINE_ON(g_vehicle_control_service.m_controlled_vehicle.handle,
-				    g_vehicle_control_service.m_controlled_vehicle.engine ? false : true,
+				    !g_vehicle_control_service.m_controlled_vehicle.engine,
 				    true,
 				    false);
 			});
