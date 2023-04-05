@@ -47,6 +47,7 @@ namespace big
 		void driver_tick();
 		bool ensure_driver();
 		void render_distance_on_vehicle();
+		bool find_suitable_destination_near_player(Vector3& outcoords, float& heading);
 		Vector3 m_destination;
 		Ped m_driver;
 

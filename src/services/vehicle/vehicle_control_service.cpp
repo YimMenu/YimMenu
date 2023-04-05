@@ -151,7 +151,6 @@ namespace big
 
 		if (ENTITY::DOES_ENTITY_EXIST(m_driver))
 		{
-
 			int task = 0;
 			for (int i = 0; i < ped::task_names.size(); i++)
 			{
@@ -164,19 +163,22 @@ namespace big
 			{
 				if (entity::take_control_of(m_driver))
 				{
+					pathfind::remove_navmesh_required_areas();
 					entity::delete_entity(m_driver);
 				}
 			}
 			else
 			{
-				if (math::distance_between_vectors(m_destination, ENTITY::GET_ENTITY_COORDS(m_driver, true)) < 7.f)
+				if (math::distance_between_vectors(m_destination, ENTITY::GET_ENTITY_COORDS(m_driver, true)) < 10.f ||
+				math::distance_between_vectors(self::pos, ENTITY::GET_ENTITY_COORDS(m_driver, true)) < 10.f)
 				{
 					m_driver_performing_task = false;
 					VEHICLE::BRING_VEHICLE_TO_HALT(m_controlled_vehicle.handle, 6.f, 5, false);
+					pathfind::remove_navmesh_required_areas();
 				}
 
-				m_distance_to_destination = math::distance_between_vectors(m_destination,
-				    ENTITY::GET_ENTITY_COORDS(m_controlled_vehicle.handle, true));
+				m_distance_to_destination =
+				    math::distance_between_vectors(m_destination, ENTITY::GET_ENTITY_COORDS(m_controlled_vehicle.handle, true));
 			}
 		}
 	}
@@ -251,12 +253,39 @@ namespace big
 			HUD::SET_TEXT_SCALE(0.3f, 0.463);
 			HUD::SET_TEXT_COLOUR(0, 150, 0, 255);
 			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(
-			    std::to_string(math::distance_between_vectors(self::pos, veh_pos)).data());
+				std::to_string(math::distance_between_vectors(self::pos, veh_pos)).data());
 			HUD::END_TEXT_COMMAND_DISPLAY_TEXT(screen_pos.x, screen_pos.y, 0);
 		}
 	}
 
-	
+
+	bool vehicle_control::find_suitable_destination_near_player(Vector3& outcoords, float& heading)
+	{
+		Vector3 original_coords = outcoords;
+		float original_heading = heading;
+		pathfind::find_closest_vehicle_node(self::pos, outcoords, heading, eNodeFlags::NF_NONE);
+		for (int i = 0; i < 10 && math::distance_between_vectors(self::pos, outcoords) < 3.f; i++)
+		{
+			pathfind::find_closest_vehicle_node(self::pos, outcoords, heading, eNodeFlags::NF_NONE, i);
+			//LOG(INFO) << "Node too close to player, iterating next closest";
+		}
+		//LOG(INFO) << "Searched for closest vehicle node";
+		if (math::distance_between_vectors(self::pos, outcoords) > 7.f)
+		{
+			//LOG(INFO) << "Node was too far, trying to find safe ped pos";
+			if (!pathfind::find_safe_pos_ped(self::pos, outcoords, true, eGetSafeCoordFlags::GSC_FLAG_ONLY_NETWORK_SPAWN) || math::distance_between_vectors(self::pos, outcoords) > 30.f)
+			{
+				//LOG(INFO) << "Couldnt find a safe ped pos";
+				outcoords = original_coords;
+				heading = original_heading;
+				return false;
+			}
+		}
+		else return true;
+
+		return false;
+	}
+
 	void vehicle_control::summon_vehicle()
 	{
 		if (!m_controlled_vehicle_exists
@@ -287,51 +316,34 @@ namespace big
 			Vector3 destination{};
 			float heading{};
 
-			pathfind::find_closest_vehicle_node(self::pos, destination, heading, eNodeFlags::NF_NONE);
-			for (int i = 0; i < 10 && math::distance_between_vectors(self::pos, destination) < 3.f; i++)
+			if(vehicle_control::find_suitable_destination_near_player(destination, heading))
 			{
-				pathfind::find_closest_vehicle_node(self::pos, destination, heading, eNodeFlags::NF_NONE, i);
-				//LOG(INFO) << "Node too close to player, iterating next closest";
+				LOG(INFO) << "Suitable destination found";
 			}
-
-			//LOG(INFO) << "Searched for closest vehicle node";
-			if (math::distance_between_vectors(self::pos, destination) > 7.f)
+			else
 			{
-				//LOG(INFO) << "Node was too far, trying to find safe ped pos";
-				if (!pathfind::find_safe_pos_ped(self::pos, destination, true, eGetSafeCoordFlags::GSC_FLAG_ONLY_NETWORK_SPAWN) || math::distance_between_vectors(self::pos, destination) > 30.f)
-				{
-					//LOG(INFO) << "Couldnt find a safe ped pos";
-					destination = behind_pos;
-				}
+				LOG(INFO) << "Couldn't find suitable destionation, defaulting to offset of player\nThis might go wrong";
+				destination = behind_pos;
 			}
 
 			m_destination = destination;
 
-			//LOG(INFO) << "Issuing task to the driver\n";
-			//TASK::TASK_VEHICLE_DRIVE_TO_COORD(m_driver,
-			//    m_controlled_vehicle.handle,
-			//    destination.x,
-			//    destination.y,
-			//    destination.z,
-			//    50.f,
-			//    (int)eDrivingStyle::DRIVINGSTYLE_RACING,
-			//    0,
-			//    (int)eDrivingMode::DRIVINGMODE_AVOIDCARS_RECKLESS,
-			//    4.f,
-			//    5.f);
-
-
-
-
-			TASK::TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(m_driver,
+			Vector3 nav_mesh_region = ENTITY::GET_ENTITY_COORDS(m_driver, true);
+			
+			if(pathfind::load_navmesh_area(nav_mesh_region, m_distance_to_destination)){
+			TASK::TASK_VEHICLE_GOTO_NAVMESH(m_driver,
 			    m_controlled_vehicle.handle,
 			    destination.x,
 			    destination.y,
 			    destination.z,
-			    50.f,
+			    100.f,
 			    (int)eDrivingMode::DRIVINGMODE_AVOIDCARS_RECKLESS,
 			    4.f);
-			PED::SET_PED_KEEP_TASK(m_driver, true);
+				PED::SET_PED_KEEP_TASK(m_driver, true);
+			}
+			else
+				g_notification_service->push_error("Nav mesh", "Failed loading the navmesh");
+
 			
 		}
 	}
@@ -341,12 +353,20 @@ namespace big
 		if (!*g_pointers->m_is_session_started)
 			return;
 
-		m_controlled_vehicle_exists = m_controlled_vehicle.ptr
-		    && ENTITY::DOES_ENTITY_EXIST(m_controlled_vehicle.handle)
+		m_controlled_vehicle_exists = m_controlled_vehicle.ptr && ENTITY::DOES_ENTITY_EXIST(m_controlled_vehicle.handle)
 		    && VEHICLE::IS_THIS_MODEL_A_CAR(ENTITY::GET_ENTITY_MODEL(m_controlled_vehicle.handle));
 
 		driver_tick();
 
+		//Check in memory for vehicle
+		if(g_local_player){
+			if(g_local_player->m_vehicle){
+				if(m_controlled_vehicle.handle != g_pointers->m_ptr_to_handle(g_local_player->m_vehicle))
+ 					m_controlled_vehicle = vehicle_control::update_vehicle(self::veh);
+			}
+		}
+
+		//Manually check if vehicle has changed
 		if (ENTITY::DOES_ENTITY_EXIST(self::veh) && self::veh != m_controlled_vehicle.handle)
 		{
 			m_controlled_vehicle = vehicle_control::update_vehicle(self::veh);
@@ -355,6 +375,10 @@ namespace big
 		if (!g.window.vehicle_control.opened)
 			return;
 
+		//Manual check if there is a last driven vehicle
+		if(!m_controlled_vehicle_exists && ENTITY::DOES_ENTITY_EXIST(VEHICLE::GET_LAST_DRIVEN_VEHICLE()))
+			m_controlled_vehicle = vehicle_control::update_vehicle(VEHICLE::GET_LAST_DRIVEN_VEHICLE());
+		
 		keep_controlled_vehicle_data_updated(m_controlled_vehicle);
 	}
 }

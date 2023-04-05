@@ -306,7 +306,7 @@ namespace big
 			ImGui::EndTooltip();
 		}
 
-		ImGui::SliderFloat("Max summon distance", &g.window.vehicle_control.max_summon_range, 10.f, 150.f);
+		ImGui::SliderFloat("Max summon distance", &g.window.vehicle_control.max_summon_range, 10.f, 250.f);
 		if (ImGui::IsItemHovered())
 		{
 			ImGui::BeginTooltip();

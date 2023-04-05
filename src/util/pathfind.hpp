@@ -25,6 +25,28 @@ namespace big::pathfind
 		return PATHFIND::ARE_NODES_LOADED_FOR_AREA(coords.x, coords.y, coords.z, coords.y);
 	}
 
+	inline bool load_navmesh_area(Vector3 coords, float radius)
+	{
+		if(PATHFIND::ARE_ALL_NAVMESH_REGIONS_LOADED()) return true;
+
+		PATHFIND::ADD_NAVMESH_REQUIRED_REGION(coords.x, coords.z, radius);
+
+		for (int i = 0; i < 35 && !PATHFIND::ARE_ALL_NAVMESH_REGIONS_LOADED(); i++)
+		{
+			script::get_current()->yield(10ms);
+		}
+
+		return PATHFIND::ARE_ALL_NAVMESH_REGIONS_LOADED();
+	}
+
+	/*
+	Be sure to call this after having added a required region to free up memory since the game files suggest it is rather demanding to load navmesh
+	*/
+	inline void remove_navmesh_required_areas()
+	{
+		PATHFIND::REMOVE_NAVMESH_REQUIRED_REGIONS();
+	}
+
 	inline bool find_safe_pos_ped(Vector3 coords, Vector3& outcoords, bool onGround, eGetSafeCoordFlags flag)
 	{
 		if (load_path_nodes(coords))
