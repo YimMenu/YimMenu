@@ -177,6 +177,23 @@ namespace big
 					pathfind::remove_navmesh_required_areas();
 				}
 
+				if(strcmp(m_currentask, "CTaskInVehicleBasic") == 0){
+					TASK::TASK_VEHICLE_DRIVE_TO_COORD(m_driver, 
+					m_controlled_vehicle.handle, 
+					m_destination.x, 
+					m_destination.y, 
+					m_destination.z, 
+					100.f, 
+					0,
+					0,
+			    	(int)eDrivingMode::DRIVINGMODE_AVOIDCARS_RECKLESS, 4.f, 
+					5.f);
+					//LOG(INFO) << "Navmesh probably failed, issiuing regular task ";
+					g_notification_service->push_warning("Vehicle controller", "Your vehicle could not assess an accurate path, it will try something else");
+					script::get_current()->yield(500ms);
+
+				}
+
 				m_distance_to_destination =
 				    math::distance_between_vectors(m_destination, ENTITY::GET_ENTITY_COORDS(m_controlled_vehicle.handle, true));
 			}
@@ -318,11 +335,14 @@ namespace big
 
 			if(vehicle_control::find_suitable_destination_near_player(destination, heading))
 			{
-				LOG(INFO) << "Suitable destination found";
+				//LOG(INFO) << "Suitable destination found";
+				g_notification_service->push_warning("Vehicle controller", "Found a nice spot, your vehicle is on its way");
 			}
 			else
 			{
-				LOG(INFO) << "Couldn't find suitable destionation, defaulting to offset of player\nThis might go wrong";
+				//LOG(INFO) << "Couldn't find suitable destionation, defaulting to offset of player\nThis might go wrong";
+				
+				g_notification_service->push_warning("Vehicle controller", "Couldn't locate an accurate spot, your vehicle is on its way regardless");
 				destination = behind_pos;
 			}
 
@@ -341,8 +361,11 @@ namespace big
 			    4.f);
 				PED::SET_PED_KEEP_TASK(m_driver, true);
 			}
-			else
+			else{
+				//LOG(INFO) << "Navmesh load failed";
 				g_notification_service->push_error("Nav mesh", "Failed loading the navmesh");
+				m_driver_performing_task = false;
+			}
 
 			
 		}
