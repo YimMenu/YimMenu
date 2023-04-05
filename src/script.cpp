@@ -103,14 +103,7 @@ namespace big
 
 	void script::fiber_func()
 	{
-		TRY_CLAUSE
-		{
-			m_func();
-		}
-		EXCEPT_CLAUSE
-		[]() {
-			LOG(INFO) << "Script finished!";
-		}();
+		m_func();
 
 		while (true)
 		{
