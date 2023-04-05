@@ -121,7 +121,6 @@ namespace big
 		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x5F4B6931816E599B, carmod_shop::DISABLE_ALL_CONTROL_ACTIONS);
 
 		add_native_detour(RAGE_JOAAT("freemode"), 0x767FBC2AC802EF3D, freemode::STAT_GET_INT);
-		add_native_detour(RAGE_JOAAT("freemode"), 0x95914459A87EBA28, freemode::NETWORK_BAIL);
 		add_native_detour(RAGE_JOAAT("freemode"), 0x5E9564D8246B909A, freemode::IS_PLAYER_PLAYING);
 		add_native_detour(RAGE_JOAAT("freemode"), 0xEA1C610A04DB6BBB, freemode::SET_ENTITY_VISIBLE);
 		add_native_detour(RAGE_JOAAT("freemode"), 0x231C8F89D0539D8F, freemode::SET_BIGMAP_ACTIVE);

@@ -18,11 +18,6 @@ namespace big
 			src->set_return_value(STATS::STAT_GET_INT(src->get_arg<Hash>(0), src->get_arg<int*>(1), src->get_arg<int>(2)));
 		}
 
-		inline void NETWORK_BAIL(rage::scrNativeCallContext* src)
-		{
-			LOG(INFO) << "NETWORK_BAIL prevented";
-		}
-
 		inline void IS_PLAYER_PLAYING(rage::scrNativeCallContext* src)
 		{
 			// block undead OTR
