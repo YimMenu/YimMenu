@@ -11,6 +11,8 @@ namespace big
 		WEAPONS,
 		TELEPORT,
 		MOBILE,
+		OUTFIT_EDITOR,
+		OUTFIT_SLOTS,
 
 		VEHICLE,
 		HANDLING,
@@ -26,10 +28,8 @@ namespace big
 
 		WORLD,
 		SPAWN_PED,
-		TIME_AND_WEATHER,
 		CREATOR,
 		TRAIN,
-		WATER,
 		BLACKHOLE,
 		MODEL_SWAPPER,
 		NEARBY,
@@ -43,8 +43,6 @@ namespace big
 		SESSION_BROWSER,
 
 		SETTINGS,
-		OUTFIT_EDITOR,
-		OUTFIT_SLOTS,
 		STAT_EDITOR,
 		CONTEXT_MENU_SETTINGS,
 		ESP_SETTINGS,
@@ -80,6 +78,8 @@ namespace big
 		                {tabs::WEAPONS, {"GUI_TAB_WEAPONS", view::weapons}},
 		                {tabs::MOBILE, {"GUI_TAB_MOBILE", view::mobile}},
 		                {tabs::TELEPORT, {"GUI_TAB_TELEPORT", view::teleport}},
+		                {tabs::OUTFIT_EDITOR, {"GUI_TAB_OUTFIT_EDITOR", view::outfit_editor}},
+		                {tabs::OUTFIT_SLOTS, {"GUI_TAB_OUTFIT_SLOTS", view::outfit_slots}},
 		            },
 		        },
 		    },
@@ -112,13 +112,11 @@ namespace big
 		        tabs::WORLD,
 		        {
 		            "GUI_TAB_WORLD",
-		            nullptr,
+		            view::world,
 		            {
 		                {tabs::SPAWN_PED, {"GUI_TAB_SPAWN_PED", view::spawn_ped}},
-		                {tabs::TIME_AND_WEATHER, {"GUI_TAB_TIME_N_WEATHER", view::time_and_weather}},
 		                {tabs::CREATOR, {"GUI_TAB_CREATOR", view::creator}},
 		                {tabs::TRAIN, {"GUI_TAB_TRAIN", view::train}},
-		                {tabs::WATER, {"GUI_TAB_WATER", view::water}},
 		                {tabs::BLACKHOLE, {"GUI_TAB_BLACKHOLE", view::blackhole}},
 		                {tabs::MODEL_SWAPPER, {"GUI_TAB_MODEL_SWAPPER", view::model_swapper}},
 		                {tabs::NEARBY, {"GUI_TAB_NEARBY", view::nearby}},
@@ -146,8 +144,6 @@ namespace big
 		            "GUI_TAB_SETTINGS",
 		            view::settings,
 		            {
-		                {tabs::OUTFIT_EDITOR, {"GUI_TAB_OUTFIT_EDITOR", view::outfit_editor}},
-		                {tabs::OUTFIT_SLOTS, {"GUI_TAB_OUTFIT_SLOTS", view::outfit_slots}},
 		                {tabs::STAT_EDITOR, {"GUI_TAB_STAT_EDITOR", view::stat_editor}},
 		                {tabs::CONTEXT_MENU_SETTINGS, {"GUI_TAB_CONTEXT_MENU", view::context_menu_settings}},
 		                {tabs::ESP_SETTINGS, {"GUI_TAB_ESP", view::esp_settings}},

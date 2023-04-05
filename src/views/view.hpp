@@ -57,10 +57,10 @@ namespace big
 		static void gta_data();
 		static void creator();
 		static void train();
-		static void water();
 		static void blackhole();
 		static void model_swapper();
 		static void nearby();
+		static void world();
 
 		static void player_info();
 		static void player_troll();
