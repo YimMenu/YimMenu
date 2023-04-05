@@ -21,11 +21,6 @@ namespace big
 
 			ImGui::SameLine();
 
-			if (ImGui::Button("nullptr deref"))
-			{
-				*reinterpret_cast<uint64_t*>(0x0) = 1337;
-			}
-
 			if (components::button("Reset"))
 			{
 				g_fiber_pool->reset();
