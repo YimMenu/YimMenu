@@ -1,13 +1,12 @@
 #pragma once
 #include "gta/enums.hpp"
 
-#define MAX_VEHICLE_DOORS 6
-#define MAX_VEHICLE_LOCK_STATES 11
-#define VEH_OP_ANIM_DICT "ANIM@MP_PLAYER_INTMENU@KEY_FOB@"
-#define VEH_OP_ANIM "FOB_CLICK"
-
 namespace big
 {
+	constexpr auto MAX_VEHICLE_DOORS = 6;
+	constexpr auto MAX_VEHICLE_LOCK_STATES = 11;
+	constexpr auto VEH_OP_ANIM_DICT = "ANIM@MP_PLAYER_INTMENU@KEY_FOB@";
+	constexpr auto VEH_OP_ANIM = "FOB_CLICK";
 
 	struct vehicle_door
 	{
