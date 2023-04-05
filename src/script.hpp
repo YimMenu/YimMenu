@@ -27,7 +27,6 @@ namespace big
 		void tick();
 		void yield(std::optional<std::chrono::high_resolution_clock::duration> time = std::nullopt);
 		static script* get_current();
-		static void script_exception_handler(PEXCEPTION_POINTERS exp);
 
 	private:
 		void fiber_func();
