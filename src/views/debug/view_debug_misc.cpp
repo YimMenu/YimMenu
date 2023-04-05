@@ -67,7 +67,7 @@ namespace big
 				NETWORK::SHUTDOWN_AND_LOAD_MOST_RECENT_SAVE();
 			});
 
-			components::button("Tp to safe pos", [] {
+			components::button("Tp To Safe Pos", [] {
 				Vector3 safepos{};
 				float heading;
 				if (pathfind::find_closest_vehicle_node(self::pos, safepos, heading, eNodeFlags::NF_NONE))

@@ -54,7 +54,6 @@ namespace big
 
 	public:
 		controlled_vehicle m_controlled_vehicle;
-		std::map<int, std::string_view> radiostations;
 		bool m_controlled_vehicle_exists;
 
 		//Autonomy
