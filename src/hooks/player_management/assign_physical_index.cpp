@@ -48,8 +48,8 @@ namespace big
 			auto found = std::find(admin_rids.begin(), admin_rids.end(), net_player_data->m_gamer_handle.m_rockstar_id);
 			if (found != admin_rids.end())
 			{
-				g_notification_service->push_warning("Potential Admin Found!",
-				    std::format("{} has been detected as admin", net_player_data->m_name));
+				g_notification_service->push_warning("POTENTIAL_ADMIN_FOUND"_T.data(),
+				    std::vformat("PLAYER_DETECTED_AS_ADMIN"_T, std::make_format_args(net_player_data->m_name)));
 				LOG(WARNING) << net_player_data->m_name << " (" << net_player_data->m_gamer_handle.m_rockstar_id << ") has been detected as admin";
 			}
 			if (g.notifications.player_join.above_map && *g_pointers->m_is_session_started) // prevent loading screen spam
