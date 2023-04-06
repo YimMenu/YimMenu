@@ -32,6 +32,8 @@ namespace big
 		return false;
 	}
 
+	// TODO: ideally the `ptr` in the lambdas should be stored in separate fields than the memory::byte_patch (ideally you'd move those memory::byte_patch away from the pointers class...)
+	// So that the ptrs could be cached
 	void pointers::always_run_main_batch(const memory::module& mem_region)
 	{
 		memory::batch main_batch;
@@ -90,6 +92,11 @@ namespace big
 		main_batch.add("CT", "48 3B F8 74 ? 8B 1D", [this](memory::handle ptr) {
 			memory::byte_patch::make(ptr.add(4).as<uint8_t*>(), 0x00)->apply();
 		});
+
+		if (!main_batch.run(mem_region))
+		{
+			throw std::runtime_error("Failed to find some patterns.");
+		}
 	}
 
 	void pointers::run_cacheable_main_batch(const memory::module& mem_region)
@@ -842,7 +849,7 @@ namespace big
 	}
 
 	// Any change to the sigs should have this number bumped, especially if the existing offsets are changing
-	// Note: you don't need to bump that number when the sigs stay the same and that the game updates,
+	// Note: you don't need to bump that number when all the sigs stay the same and that the game updates,
 	// because we also check against the game version and the online version.
 	constexpr uint32_t pointers_version = 1;
 
@@ -862,43 +869,52 @@ namespace big
 
 		const auto mem_region = memory::module("GTA5.exe");
 
+		// save offsets of the fields to cache
+
+		// get the beginning and the end of what we need to save / load
+		constexpr size_t offset_of_cache_begin_field = offsetof(big::pointers, m_offset_gta_module_cache_start) + sizeof(uintptr_t);
+		constexpr size_t offset_of_cache_end_field   = offsetof(big::pointers, m_offset_gta_module_cache_end);
+		constexpr size_t field_count = (offset_of_cache_end_field - offset_of_cache_begin_field) / sizeof(void*);
+
+		// stupid check to see if we are aligned, don't really guarantee that the for loop below will succeed
+		static_assert(((offset_of_cache_end_field - offset_of_cache_begin_field) % sizeof(void*)) == 0, "not aligned, prolly mean that there are rogue non cacheable fields between start and end");
+
+		const uintptr_t pointer_to_cacheable_data_start = reinterpret_cast<uintptr_t>(this) + offset_of_cache_begin_field;
+		const uintptr_t pointer_to_cacheable_data_end = reinterpret_cast<uintptr_t>(this) + offset_of_cache_end_field;
+
 		if (!is_pointers_cache_up_to_date(version_batch, mem_region))
 		{
 			run_cacheable_main_batch(mem_region);
 
-			// save offsets of the fields to cache
-
-			// get the beginning and the end of what we need to save
-			constexpr size_t offset_of_cache_begin_field = offsetof(big::pointers, m_offset_gta_module_cache_start);
-			constexpr size_t offset_of_cache_end_field   = offsetof(big::pointers, m_offset_gta_module_cache_end);
-
-			// stupid check to see if we are aligned, don't really guarantee that the for loop below will succeed
-			static_assert(((offset_of_cache_end_field - offset_of_cache_begin_field) % sizeof(void*)) == 0, "not aligned, prolly mean that there are rogue non cacheable fields between start and end");
-
 			constexpr size_t data_size = offset_of_cache_end_field - offset_of_cache_begin_field;
 
-			const uintptr_t pointer_to_cacheable_data_start = reinterpret_cast<uintptr_t>(this) + offset_of_cache_begin_field;
-			const uintptr_t pointer_to_cacheable_data_end = reinterpret_cast<uintptr_t>(this) + offset_of_cache_begin_field;
-
-			auto cache_data_ptr = std::make_unique<std::uint8_t[]>(data_size);
+			big::cache_data cache_data_ptr = std::make_unique<std::uint8_t[]>(data_size);
 
 			// multiple things here:
 			// - iterate each cacheable field of the pointers instance
 			// - substract the base module address so that we only keep the offsets
 			// - save that to the cache
 			uintptr_t* cache_data = reinterpret_cast<uintptr_t*>(cache_data_ptr.get());
-			size_t j              = 0;
-			for (uintptr_t i = pointer_to_cacheable_data_start; i != pointer_to_cacheable_data_end; i += sizeof(uintptr_t))
+
+			size_t i              = 0;
+			for (uintptr_t field_ptr = pointer_to_cacheable_data_start; field_ptr != pointer_to_cacheable_data_end; field_ptr += sizeof(uintptr_t))
 			{
-				if (mem_region.contains(memory::handle(i)))
+				const uintptr_t field_value = *reinterpret_cast<uintptr_t*>(field_ptr);
+
+				if (mem_region.contains(memory::handle(field_value)))
 				{
-					cache_data[j++] = i - mem_region.begin().as<uintptr_t>();
+					const uintptr_t offset = field_value - mem_region.begin().as<uintptr_t>();
+					cache_data[i]          = offset;
 				}
 				else
 				{
-					LOG(FATAL) << "Just tried to save to cache a pointer supposedly within the gta 5 module range but wasnt!!! Offset from start of pointers instance: " << (i - reinterpret_cast<uintptr_t>(this));
+					LOG(FATAL) << "Just tried to save to cache a pointer supposedly within the gta 5 module range but wasnt!!! Offset from start of pointers instance: " << (field_ptr - reinterpret_cast<uintptr_t>(this));
 				}
+
+				i++;
 			}
+
+			LOG(INFO) << "Pointers cache: saved " << (data_size / sizeof(uintptr_t)) << " fields to the cache";
 
 			m_pointers_cache.set_data(std::move(cache_data_ptr), data_size);
 
@@ -911,10 +927,37 @@ namespace big
 
 			LOG(INFO) << "Loading pointers instance from cache";
 
-			// todo
+			// multiple things here:
+			// - iterate each cacheable field of the pointers instance
+			// - add the base module address to the current offset retrieved from the cache
+			// - assign that ptr to the pointers field
+			uintptr_t* cache_data = reinterpret_cast<uintptr_t*>(m_pointers_cache.data());
 
-			m_pointers_cache.free();
+			const size_t field_count_from_cache = m_pointers_cache.data_size() / sizeof(uintptr_t);
+			LOG(INFO) << "Pointers cache: Loading " << field_count_from_cache << " fields from the cache";
+
+			uintptr_t* field_ptr = reinterpret_cast<uintptr_t*>(pointer_to_cacheable_data_start);
+			for (size_t i = 0; i < field_count_from_cache; i++)
+			{
+				uintptr_t offset         = cache_data[i];
+				uintptr_t gta_module_ptr = offset + mem_region.begin().as<uintptr_t>();
+
+				if (mem_region.contains(memory::handle(gta_module_ptr)))
+				{
+					*field_ptr = gta_module_ptr;
+				}
+				else
+				{
+					LOG(FATAL) << "Just tried to load from cache a pointer supposedly within the gta 5 module range but wasnt!!! Offset from start of pointers instance: " << (reinterpret_cast<uintptr_t>(field_ptr) - reinterpret_cast<uintptr_t>(this));
+				}
+
+				field_ptr++;
+			}
 		}
+
+		m_pointers_cache.free();
+
+		always_run_main_batch(mem_region);
 
 		run_socialclub_batch();
 
