@@ -236,8 +236,9 @@ namespace big
 			bool rid_join        = false;
 			bool lessen_breakups = false; // disabled by default due to anticheat concerns
 			bool receive_pickup  = false;
+			bool admin_check     = true;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, lessen_breakups, desync_kick, receive_pickup)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, lessen_breakups, desync_kick, receive_pickup, admin_check)
 		} protections{};
 
 		struct self
@@ -374,26 +375,26 @@ namespace big
 		{
 			struct hotkeys
 			{
-				bool editing_menu_toggle = false;
-				int menu_toggle          = VK_INSERT;
-				int teleport_waypoint    = 0;
-				int teleport_objective   = 0;
-				int noclip               = 0;
-				int bringvehicle         = 0;
-				int invis                = 0;
-				int heal                 = 0;
-				int fill_inventory       = 0;
-				int skip_cutscene        = 0;
-				int freecam              = 0;
-				int superrun             = 0;
-				int superjump            = 0;
-				int beastjump            = 0;
-				int invisveh             = 0;
-				int localinvisveh        = 0;
-				int fill_ammo            = 0;
-				int fast_quit            = 0;
-				int cmd_excecutor        = 0x55;
-				int repairpv             = 0;
+				bool editing_menu_toggle    = false;
+				int menu_toggle             = VK_INSERT;
+				int teleport_waypoint       = 0;
+				int teleport_objective      = 0;
+				int noclip                  = 0;
+				int bringvehicle            = 0;
+				int invis                   = 0;
+				int heal                    = 0;
+				int fill_inventory          = 0;
+				int skip_cutscene           = 0;
+				int freecam                 = 0;
+				int superrun                = 0;
+				int superjump               = 0;
+				int beastjump               = 0;
+				int invisveh                = 0;
+				int localinvisveh           = 0;
+				int fill_ammo               = 0;
+				int fast_quit               = 0;
+				int cmd_excecutor           = 0x55;
+				int repairpv                = 0;
 				int open_vehicle_controller = 0;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller)
@@ -714,10 +715,10 @@ namespace big
 
 			struct vehicle_control
 			{
-				bool opened                = false;
-				bool operation_animation   = true;
-				bool render_distance_on_veh   = false;
-				float max_summon_range   = 200.f;
+				bool opened                 = false;
+				bool operation_animation    = true;
+				bool render_distance_on_veh = false;
+				float max_summon_range      = 200.f;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_control, operation_animation, max_summon_range, render_distance_on_veh)
 			} vehicle_control{};
