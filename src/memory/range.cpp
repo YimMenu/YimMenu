@@ -11,22 +11,22 @@ namespace memory
 	{
 	}
 
-	handle range::begin()
+	handle range::begin() const
 	{
 		return m_base;
 	}
 
-	handle range::end()
+	handle range::end() const
 	{
 		return m_base.add(m_size);
 	}
 
-	std::size_t range::size()
+	std::size_t range::size() const
 	{
 		return m_size;
 	}
 
-	bool range::contains(handle h)
+	bool range::contains(handle h) const
 	{
 		return h.as<std::uintptr_t>() >= begin().as<std::uintptr_t>() && h.as<std::uintptr_t>() <= end().as<std::uintptr_t>();
 	}
@@ -83,7 +83,7 @@ namespace memory
 		return nullptr;
 	}
 
-	handle range::scan(pattern const& sig)
+	handle range::scan(pattern const& sig) const
 	{
 		auto data   = sig.m_bytes.data();
 		auto length = sig.m_bytes.size();
@@ -109,7 +109,7 @@ namespace memory
 		return true;
 	}
 
-	std::vector<handle> range::scan_all(pattern const& sig)
+	std::vector<handle> range::scan_all(pattern const& sig) const
 	{
 		std::vector<handle> result{};
 		auto data   = sig.m_bytes.data();
