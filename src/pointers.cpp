@@ -11,7 +11,88 @@ std::uint64_t g_sound_overload_ret_addr;
 
 namespace big
 {
-	pointers::pointers()
+	bool pointers::is_pointers_cache_up_to_date(memory::batch& version_batch, const memory::module& mem_region)
+	{
+		if (version_batch.run(mem_region))
+		{
+			m_pointers_cache.load();
+
+			if (m_pointers_cache.up_to_date(m_game_version_uint32_t, m_online_version_float))
+			{
+				LOG(INFO) << "Pointers cache is up to date, using it.";
+
+				return true;
+			}
+		}
+		else
+		{
+			LOG(WARNING) << "Failed to find version patterns. Can't utilize pointers cache.";
+		}
+
+		return false;
+	}
+
+	void pointers::always_run_main_batch(const memory::module& mem_region)
+	{
+		memory::batch main_batch;
+
+		// Max Wanted Level
+		main_batch.add("MWL", "8B 43 6C 89 05", [this](memory::handle ptr) {
+			m_max_wanted_level   = memory::byte_patch::make(ptr.add(5).rip().as<uint32_t*>(), 0).get();
+			m_max_wanted_level_2 = memory::byte_patch::make(ptr.add(14).rip().as<uint32_t*>(), 0).get();
+		});
+
+		// Blame Explode
+		main_batch.add("BE", "0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8", [this](memory::handle ptr) {
+			m_blame_explode = memory::byte_patch::make(ptr.as<std::uint16_t*>(), 0xE990).get();
+		});
+
+		//Patch blocked explosions
+		main_batch.add("EP", "E8 ? ? ? ? 48 8D 4C 24 20 E8 ? ? ? ? 4C 8D 9C 24 80 01 00 00", [this](memory::handle ptr) {
+			m_explosion_patch = memory::byte_patch::make(ptr.sub(12).as<uint16_t*>(), 0x9090).get();
+		});
+
+		// Is Matchmaking Session Valid
+		main_batch.add("IMSV", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 83 EC 20 45 0F", [this](memory::handle ptr) {
+			memory::byte_patch::make(ptr.as<void*>(), std::to_array({0xB0, 0x01, 0xC3}))->apply(); // has no observable side effects
+		});
+
+		// Broadcast Net Array Patch
+		main_batch.add("BP", "74 73 FF 90 ? ? ? ? 8B D5 4C 8B 00 48 8B C8 41 FF 50 30", [this](memory::handle ptr) {
+			m_broadcast_patch = memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB).get();
+		});
+
+		// Creator Warp Cheat Triggered Patch
+		main_batch.add("CW", "74 44 E8 ? ? ? ? 80 65 2B F8 48 8D 0D ? ? ? ? 48 89 4D 17 48 89 7D 1F 89 7D 27 C7 45", [](memory::handle ptr) {
+			memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB)->apply();
+		});
+
+		// NTQVM Caller
+		main_batch.add("NTQVMC", "66 0F 6F 0D ? ? ? ? 66 0F 6F 05 ? ? ? ? 66 0F 66 C4", [this](memory::handle ptr) {
+			memory::byte_patch::make(ptr.add(4).rip().sub(32).as<uint64_t*>(), (uint64_t)&hooks::nt_query_virtual_memory)
+			    ->apply();
+		});
+
+		// Sound Overload Detour
+		main_batch.add("SOD", "66 45 3B C1 74 38", [this](memory::handle ptr) {
+			g_sound_overload_ret_addr = ptr.add(13 + 15).as<decltype(g_sound_overload_ret_addr)>();
+			std::vector<byte> bytes = {0xFF, 0x25, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90}; // far jump opcode + a nop opcode
+			*(void**)(bytes.data() + 6) = sound_overload_detour;
+			memory::byte_patch::make(ptr.add(13).as<void*>(), bytes)->apply();
+		});
+
+		// Disable Collision
+		main_batch.add("DC", "48 8B D1 49 8B CA ? ? ? ? ? 48 8B D1 49 8B CA", [this](memory::handle ptr) {
+			m_disable_collision = memory::byte_patch::make(ptr.sub(2).as<uint8_t*>(), 0xEB).get();
+		});
+
+		// Crash Trigger
+		main_batch.add("CT", "48 3B F8 74 ? 8B 1D", [this](memory::handle ptr) {
+			memory::byte_patch::make(ptr.add(4).as<uint8_t*>(), 0x00)->apply();
+		});
+	}
+
+	void pointers::run_cacheable_main_batch(const memory::module& mem_region)
 	{
 		memory::batch main_batch;
 
@@ -23,12 +104,6 @@ namespace big
 		// Region Code
 		main_batch.add("RC", "48 83 EC 28 83 3D ? ? ? ? ? 75 10", [this](memory::handle ptr) {
 			m_region_code = ptr.add(16).rip().add(1).as<uint32_t*>();
-		});
-
-		// Max Wanted Level
-		main_batch.add("MWL", "8B 43 6C 89 05", [this](memory::handle ptr) {
-			m_max_wanted_level   = memory::byte_patch::make(ptr.add(5).rip().as<uint32_t*>(), 0).get();
-			m_max_wanted_level_2 = memory::byte_patch::make(ptr.add(14).rip().as<uint32_t*>(), 0).get();
 		});
 
 		// Game State
@@ -198,16 +273,6 @@ namespace big
 			m_handle_to_ptr = ptr.as<decltype(m_handle_to_ptr)>();
 		});
 
-		// Blame Explode
-		main_batch.add("BE", "0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8", [this](memory::handle ptr) {
-			m_blame_explode = memory::byte_patch::make(ptr.as<std::uint16_t*>(), 0xE990).get();
-		});
-
-		//Patch blocked explosions
-		main_batch.add("EP", "E8 ? ? ? ? 48 8D 4C 24 20 E8 ? ? ? ? 4C 8D 9C 24 80 01 00 00", [this](memory::handle ptr) {
-			m_explosion_patch = memory::byte_patch::make(ptr.sub(12).as<uint16_t*>(), 0x9090).get();
-		});
-
 		// CNetworkObjectMgr
 		main_batch.add("CNOM", "48 8B 0D ? ? ? ? 45 33 C0 E8 ? ? ? ? 33 FF 4C 8B F0", [this](memory::handle ptr) {
 			m_network_object_mgr = ptr.add(3).rip().as<CNetworkObjectMgr**>();
@@ -348,12 +413,6 @@ namespace big
 			m_fipackfile_unmount = ptr.add(1).rip().as<functions::fipackfile_unmount>();
 		});
 
-		// game version + online version
-		main_batch.add("GVOV", "8B C3 33 D2 C6 44 24 20", [this](memory::handle ptr) {
-			m_game_version   = ptr.add(0x24).rip().as<const char*>();
-			m_online_version = ptr.add(0x24).rip().add(0x20).as<const char*>();
-		});
-
 		// Invalid Mods Crash Detour
 		main_batch.add("IMCD", "E8 ? ? ? ? 40 88 7C 24 ? 49 89 9C 24", [this](memory::handle ptr) {
 			m_invalid_mods_crash_detour = ptr.add(1).rip().as<PVOID>();
@@ -474,11 +533,6 @@ namespace big
 			m_serialize_join_request_message = ptr.add(1).rip().as<PVOID>();
 		});
 
-		// Is Matchmaking Session Valid
-		main_batch.add("IMSV", "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 83 EC 20 45 0F", [this](memory::handle ptr) {
-			memory::byte_patch::make(ptr.as<void*>(), std::to_array({0xB0, 0x01, 0xC3}))->apply(); // has no observable side effects
-		});
-
 		// Send Network Damage
 		main_batch.add("SND", "E8 ? ? ? ? E9 E9 01 00 00 48 8B CB", [this](memory::handle ptr) {
 			m_send_network_damage = ptr.add(1).rip().as<functions::send_network_damage>();
@@ -508,11 +562,6 @@ namespace big
 		// Broadcast Net Array
 		main_batch.add("BNA", "48 89 5C 24 ? 48 89 54 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 40 48 8B 05 ? ? ? ? 66 44 89 4C 24", [this](memory::handle ptr) {
 			m_broadcast_net_array = ptr.as<PVOID>();
-		});
-
-		// Broadcast Net Array Patch
-		main_batch.add("BP", "74 73 FF 90 ? ? ? ? 8B D5 4C 8B 00 48 8B C8 41 FF 50 30", [this](memory::handle ptr) {
-			m_broadcast_patch = memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB).get();
 		});
 
 		// Rage Security
@@ -545,11 +594,6 @@ namespace big
 			m_create_script_handler = *(ptr.add(3).rip().as<std::uint64_t**>() + 8);
 		});
 
-		// Creator Warp Cheat Triggered Patch
-		main_batch.add("CW", "74 44 E8 ? ? ? ? 80 65 2B F8 48 8D 0D ? ? ? ? 48 89 4D 17 48 89 7D 1F 89 7D 27 C7 45", [](memory::handle ptr) {
-			memory::byte_patch::make(ptr.as<uint8_t*>(), 0xEB)->apply();
-		});
-
 		// Constraint Attachment Crash
 		main_batch.add("CAC", "40 53 48 83 EC 20 48 8B D9 48 8B 49 38 48 8B 01", [this](memory::handle ptr) {
 			m_constraint_attachment_crash = ptr.as<PVOID>();
@@ -579,12 +623,6 @@ namespace big
 		// Decode Peer Info
 		main_batch.add("DPI", "48 89 5C 24 08 48 89 74 24 10 57 48 81 EC C0 00 00 00 48 8B F1 49", [this](memory::handle ptr) {
 			m_decode_peer_info = ptr.as<functions::decode_peer_info>();
-		});
-
-		// NTQVM Caller
-		main_batch.add("NTQVMC", "66 0F 6F 0D ? ? ? ? 66 0F 6F 05 ? ? ? ? 66 0F 66 C4", [this](memory::handle ptr) {
-			memory::byte_patch::make(ptr.add(4).rip().sub(32).as<uint64_t*>(), (uint64_t)&hooks::nt_query_virtual_memory)
-			    ->apply();
 		});
 
 		// Main File Object
@@ -625,14 +663,6 @@ namespace big
 		// Interval Check Function
 		main_batch.add("ICF", "48 8D 0D ? ? ? ? 88 05 ? ? ? ? 48 8D 05", [this](memory::handle ptr) {
 			m_interval_check_func = ptr.add(3).rip().as<PVOID>();
-		});
-
-		// Sound Overload Detour
-		main_batch.add("SOD", "66 45 3B C1 74 38", [this](memory::handle ptr) {
-			g_sound_overload_ret_addr   = ptr.add(13 + 15).as<decltype(g_sound_overload_ret_addr)>();
-			std::vector<byte> bytes     = {0xFF, 0x25, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90}; // far jump opcode + a nop opcode
-			*(void**)(bytes.data() + 6) = sound_overload_detour;
-			memory::byte_patch::make(ptr.add(13).as<void*>(), bytes)->apply();
 		});
 
 		// Prepare Metric For Sending
@@ -731,19 +761,9 @@ namespace big
 			m_refresh_audio_input = ptr.add(3).rip().as<bool*>();
 		});
 
-		// Disable Collision
-		main_batch.add("DC", "48 8B D1 49 8B CA ? ? ? ? ? 48 8B D1 49 8B CA", [this](memory::handle ptr) {
-			m_disable_collision = memory::byte_patch::make(ptr.sub(2).as<uint8_t*>(), 0xEB).get();
-		});
-
 		// Allow Weapons In Vehicle
 		main_batch.add("AWIV", "49 8B 40 08 39 10", [this](memory::handle ptr) {
 			m_allow_weapons_in_vehicle = ptr.sub(23).as<PVOID>();
-		});
-
-		// Crash Trigger
-		main_batch.add("CT", "48 3B F8 74 ? 8B 1D", [this](memory::handle ptr) {
-			memory::byte_patch::make(ptr.add(4).as<uint8_t*>(), 0x00)->apply();
 		});
 
 		// Write Vehicle Proximity Migration Data Node
@@ -756,17 +776,19 @@ namespace big
 			m_migrate_object = ptr.as<functions::migrate_object>();
 		});
 
-		//Task Jump Constructor
+		// Task Jump Constructor
 		main_batch.add("TJC", "48 89 5C 24 ? 89 54 24 10 57 48 83 EC 30 0F 29 74 24", [this](memory::handle ptr) {
 			m_taskjump_constructor = ptr.as<PVOID>();
 		});
 
-		auto mem_region = memory::module("GTA5.exe");
 		if (!main_batch.run(mem_region))
 		{
 			throw std::runtime_error("Failed to find some patterns.");
 		}
+	}
 
+	void pointers::run_socialclub_batch()
+	{
 		memory::batch socialclub_batch;
 
 		// Presence Data
@@ -788,10 +810,10 @@ namespace big
 		}
 		else
 			LOG(WARNING) << "socialclub.dll module was not loaded within the time limit.";
+	}
 
-		/**
-		 * Freemode thread restorer through VM patch
-		 */
+	void pointers::freemode_thread_restorer_through_vm_patch(const memory::module& mem_region)
+	{
 		if (auto pat1 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
 		{
 			memory::byte_patch::make(pat1.add(2).as<uint32_t*>(), 0xc9310272)->apply();
@@ -817,6 +839,86 @@ namespace big
 			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272)->apply();
 			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090)->apply();
 		}
+	}
+
+	// Any change to the sigs should have this number bumped, especially if the existing offsets are changing
+	// Note: you don't need to bump that number when the sigs stay the same and that the game updates,
+	// because we also check against the game version and the online version.
+	constexpr uint32_t pointers_version = 1;
+
+	pointers::pointers() :
+	    m_pointers_cache(g_file_manager->get_project_file("./cache/pointers.bin"), pointers_version)
+	{
+		memory::batch version_batch;
+
+		// game version + online version
+		version_batch.add("GVOV", "8B C3 33 D2 C6 44 24 20", [this](memory::handle ptr) {
+			m_game_version   = ptr.add(0x24).rip().as<const char*>();
+			m_online_version = ptr.add(0x24).rip().add(0x20).as<const char*>();
+
+			m_game_version_uint32_t = std::strtoul(m_game_version, nullptr, 10);
+			m_online_version_float  = std::strtof(m_online_version, nullptr);
+		});
+
+		const auto mem_region = memory::module("GTA5.exe");
+
+		if (!is_pointers_cache_up_to_date(version_batch, mem_region))
+		{
+			run_cacheable_main_batch(mem_region);
+
+			// save offsets of the fields to cache
+
+			// get the beginning and the end of what we need to save
+			constexpr size_t offset_of_cache_begin_field = offsetof(big::pointers, m_offset_gta_module_cache_start);
+			constexpr size_t offset_of_cache_end_field   = offsetof(big::pointers, m_offset_gta_module_cache_end);
+
+			// stupid check to see if we are aligned, don't really guarantee that the for loop below will succeed
+			static_assert(((offset_of_cache_end_field - offset_of_cache_begin_field) % sizeof(void*)) == 0, "not aligned, prolly mean that there are rogue non cacheable fields between start and end");
+
+			constexpr size_t data_size = offset_of_cache_end_field - offset_of_cache_begin_field;
+
+			const uintptr_t pointer_to_cacheable_data_start = reinterpret_cast<uintptr_t>(this) + offset_of_cache_begin_field;
+			const uintptr_t pointer_to_cacheable_data_end = reinterpret_cast<uintptr_t>(this) + offset_of_cache_begin_field;
+
+			auto cache_data_ptr = std::make_unique<std::uint8_t[]>(data_size);
+
+			// multiple things here:
+			// - iterate each cacheable field of the pointers instance
+			// - substract the base module address so that we only keep the offsets
+			// - save that to the cache
+			uintptr_t* cache_data = reinterpret_cast<uintptr_t*>(cache_data_ptr.get());
+			size_t j              = 0;
+			for (uintptr_t i = pointer_to_cacheable_data_start; i != pointer_to_cacheable_data_end; i += sizeof(uintptr_t))
+			{
+				if (mem_region.contains(memory::handle(i)))
+				{
+					cache_data[j++] = i - mem_region.begin().as<uintptr_t>();
+				}
+				else
+				{
+					LOG(FATAL) << "Just tried to save to cache a pointer supposedly within the gta 5 module range but wasnt!!! Offset from start of pointers instance: " << (i - reinterpret_cast<uintptr_t>(this));
+				}
+			}
+
+			m_pointers_cache.set_data(std::move(cache_data_ptr), data_size);
+
+			m_pointers_cache.set_header_version(m_game_version_uint32_t, m_online_version_float);
+			m_pointers_cache.write();
+		}
+		else
+		{
+			// fill pointers instance fields by reading the file data into it
+
+			LOG(INFO) << "Loading pointers instance from cache";
+
+			// todo
+
+			m_pointers_cache.free();
+		}
+
+		run_socialclub_batch();
+
+		freemode_thread_restorer_through_vm_patch(mem_region);
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);
 
