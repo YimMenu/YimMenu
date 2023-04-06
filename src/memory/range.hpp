@@ -11,14 +11,14 @@ namespace memory
 	public:
 		range(handle base, std::size_t size);
 
-		handle begin();
-		handle end();
-		std::size_t size();
+		handle begin() const;
+		handle end() const;
+		std::size_t size() const;
 
-		bool contains(handle h);
+		bool contains(handle h) const;
 
-		handle scan(pattern const& sig);
-		std::vector<handle> scan_all(pattern const& sig);
+		handle scan(pattern const& sig) const;
+		std::vector<handle> scan_all(pattern const& sig) const;
 
 	protected:
 		handle m_base;

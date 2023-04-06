@@ -7,11 +7,11 @@
 #include "pugixml.hpp"
 #include "script.hpp"
 #include "thread_pool.hpp"
-#include "util/session.hpp"
-#include "yim_fipackfile.hpp"
-#include "util/vehicle.hpp"
 #include "util/misc.hpp"
 #include "util/model_info.hpp"
+#include "util/session.hpp"
+#include "util/vehicle.hpp"
+#include "yim_fipackfile.hpp"
 
 namespace big
 {
@@ -142,8 +142,8 @@ namespace big
 		m_vehicles_cache.load();
 		m_weapons_cache.load();
 
-		const auto game_version   = std::strtoul(g_pointers->m_game_version, nullptr, 10);
-		const auto online_version = std::strtof(g_pointers->m_online_version, nullptr);
+		const auto game_version   = g_pointers->m_game_version_uint32_t;
+		const auto online_version = g_pointers->m_online_version_float;
 
 		return m_peds_cache.up_to_date(game_version, online_version) && m_vehicles_cache.up_to_date(game_version, online_version)
 		    && m_weapons_cache.up_to_date(game_version, online_version);
@@ -432,7 +432,7 @@ namespace big
 		if (state() == eGtaDataUpdateState::UPDATING)
 		{
 			yim_fipackfile::for_each_fipackfile();
-		}	
+		}
 		else
 		{
 			while (state() != eGtaDataUpdateState::ON_INIT_UPDATE_END)
@@ -461,11 +461,11 @@ namespace big
 					static std::array<std::string, 30> ped_types = {"PLAYER_0", "PLAYER_1", "NETWORK_PLAYER", "PLAYER_2", "CIVMALE", "CIVFEMALE", "COP", "GANG_ALBANIAN", "GANG_BIKER_1", "GANG_BIKER_2", "GANG_BIKER_2", "GANG_RUSSIAN", "GANG_RUSSIAN_2", "GANG_RUSSIAN_2", "GANG_JAMAICAN", "GANG_AFRICAN_AMERICAN", "GANG_KOREAN", "GANG_CHINESE_JAPANESE", "GANG_PUERTO_RICAN", "DEALER", "MEDIC", "FIREMAN", "CRIMINAL", "BUM", "PROSTITUTE", "SPECIAL", "MISSION", "SWAT", "ANIMAL", "ARMY"};
 					std::strncpy(it->m_ped_type, ped_types[info->ped_type].c_str(), sizeof(it->m_ped_type));
 					++it;
-				}					
+				}
 				else
 				{
 					peds.erase(it);
-				}				
+				}
 			}
 			translate_lebel = true;
 		});
@@ -484,8 +484,8 @@ namespace big
 
 		LOG(VERBOSE) << "Starting cache saving procedure...";
 		g_thread_pool->push([this, peds = std::move(peds), vehicles = std::move(vehicles), weapons = std::move(weapons)] {
-			const auto game_version   = std::strtoul(g_pointers->m_game_version, nullptr, 10);
-			const auto online_version = std::strtof(g_pointers->m_online_version, nullptr);
+			const auto game_version   = g_pointers->m_game_version_uint32_t;
+			const auto online_version = g_pointers->m_online_version_float;
 
 			{
 				const auto data_size = sizeof(ped_item) * peds.size();

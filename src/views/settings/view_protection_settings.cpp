@@ -48,6 +48,7 @@ namespace big
 		ImGui::Checkbox("Receive Pickup", &g.protections.receive_pickup);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("This prevents any pickup from the ground such as unwanted money drops.\nAttention: Normal pickups are also no longer possible.");
+		ImGui::Checkbox("Admin Check", &g.protections.admin_check);
 		ImGui::EndGroup();
 	}
 
