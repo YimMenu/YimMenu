@@ -37,7 +37,7 @@ namespace big
 		ImGui::BeginGroup();
 
 		ImGui::SetNextItemWidth(200);
-		if (ImGui::BeginCombo("##alldoorslock", "All doors"))
+		if (ImGui::BeginCombo("##alldoorslock", "VEHICLE_CONTROLLER_ALL_DOORS"_T.data()))
 		{
 			for (int lockindex = 0; lockindex < MAX_VEHICLE_LOCK_STATES; lockindex++)
 			{
@@ -52,7 +52,7 @@ namespace big
 		}
 		ImGui::SameLine();
 
-		if (ImGui::Button("Open all"))
+		if (components::button("OPEN_ALL_DOORS"_T))
 		{
 			g_fiber_pool->queue_job([=] {
 				g_vehicle_control_service.operate_door(eDoorId::VEH_EXT_DOOR_INVALID_ID, true);
@@ -60,7 +60,7 @@ namespace big
 		}
 		ImGui::SameLine();
 
-		if (ImGui::Button("Close all"))
+		if (components::button("CLOSE_ALL_DOORS"_T))
 		{
 			g_fiber_pool->queue_job([=] {
 				g_vehicle_control_service.operate_door(eDoorId::VEH_EXT_DOOR_INVALID_ID, false);
@@ -75,6 +75,7 @@ namespace big
 
 		for (int i = 0; i < MAX_VEHICLE_DOORS; i++)
 		{
+			ImGui::PushID(i);
 			if (!g_vehicle_control_service.m_controlled_vehicle.doors[i].valid)
 				continue;
 			ImGui::SetNextItemWidth(200);
@@ -94,15 +95,15 @@ namespace big
 
 			ImGui::SameLine(300);
 
-			std::string buttonlabel = g_vehicle_control_service.m_controlled_vehicle.doors[i].open ? "Close" : "Open";
-			buttonlabel.append("##").append(std::to_string(i));
-			if (ImGui::Button(buttonlabel.data()))
+			const auto button_label = g_vehicle_control_service.m_controlled_vehicle.doors[i].open ? "CLOSE"_T : "OPEN"_T;
+			if (components::button(button_label))
 			{
 				g_fiber_pool->queue_job([=] {
 					g_vehicle_control_service.operate_door((eDoorId)i,
 					    !g_vehicle_control_service.m_controlled_vehicle.doors[i].open);
 				});
 			}
+			ImGui::PopID();
 		}
 
 
@@ -118,21 +119,21 @@ namespace big
 		    "Rear",
 		};
 
-		if (ImGui::Button("Toggle lights"))
+		if (components::button("VEHICLE_CONTROLLER_TOGGLE_LIGHTS"_T))
 		{
 			g_fiber_pool->queue_job([=] {
 				g_vehicle_control_service.operate_lights(!g_vehicle_control_service.m_controlled_vehicle.headlights, false);
 			});
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Toggle High beams"))
+		if (components::button("VEHICLE_CONTROLLER_TOGGLE_HIGH_BEAMS"_T))
 		{
 			g_fiber_pool->queue_job([=] {
 				g_vehicle_control_service.operate_lights(g_vehicle_control_service.m_controlled_vehicle.headlights,
 				    !g_vehicle_control_service.m_controlled_vehicle.highbeams);
 			});
 		}
-		if (ImGui::Button("Interior lights on"))
+		if (components::button("VEHICLE_CONTROLLER_INTERIOR_LIGHTS_ON"_T))
 		{
 			g_fiber_pool->queue_job([=] {
 				if (g.window.vehicle_control.operation_animation)
@@ -141,7 +142,7 @@ namespace big
 			});
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Interior lights off"))
+		if (components::button("VEHICLE_CONTROLLER_INTERIOR_LIGHTS_OFF"_T))
 		{
 			g_fiber_pool->queue_job([=] {
 				if (g.window.vehicle_control.operation_animation)
@@ -150,7 +151,7 @@ namespace big
 			});
 		}
 
-		ImGui::Text("Neon lights");
+		ImGui::Text("VEHICLE_CONTROLLER_NEON_LIGHTS"_T.data());
 		ImGui::Separator();
 
 		for (int i = 0; i < 4; i++)
@@ -180,18 +181,18 @@ namespace big
 
 		static int movespeed = 1;
 
-		if (ImGui::RadioButton("Walk", movespeed == 1))
+		if (ImGui::RadioButton("VEHICLE_CONTROLLER_ENTER_VEHICLE_SPEED_WALKING"_T.data(), movespeed == 1))
 			movespeed = 1;
 		ImGui::SameLine();
-		if (ImGui::RadioButton("Run", movespeed == 2))
+		if (ImGui::RadioButton("VEHICLE_CONTROLLER_ENTER_VEHICLE_SPEED_RUNNING"_T.data(), movespeed == 2))
 			movespeed = 2;
 		ImGui::SameLine();
-		if (ImGui::RadioButton("Sprint", movespeed == 3))
+		if (ImGui::RadioButton("VEHICLE_CONTROLLER_ENTER_VEHICLE_SPEED_SPRINTING"_T.data(), movespeed == 3))
 			movespeed = 3;
 
 		for (int i = 0; i < 6; i++)
 		{
-			if (ImGui::Button(seatnames[i]))
+			if (components::button(seatnames[i]))
 			{
 				g_fiber_pool->queue_job([=] {
 					if (g.window.vehicle_control.operation_animation)
@@ -214,7 +215,7 @@ namespace big
 
 		if (g_vehicle_control_service.m_controlled_vehicle.isconvertible)
 		{
-			if (ImGui::Button(g_vehicle_control_service.m_controlled_vehicle.convertibelstate ? "Raise" : "Lower"))
+			if (components::button(g_vehicle_control_service.m_controlled_vehicle.convertibelstate ? "Raise" : "Lower"))
 			{
 				g_fiber_pool->queue_job([=] {
 					if (g.window.vehicle_control.operation_animation)
