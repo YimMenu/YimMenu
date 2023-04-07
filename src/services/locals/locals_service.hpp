@@ -28,6 +28,7 @@ namespace big{
 		std::string m_name;
 		std::vector<local_offset> m_offsets;
 		int m_value;
+        int m_freeze_value;
 
 		local(const char* script_thread_name, const char* name, const int base_address, const bool freeze, const int (*offsets)[2], int offset_count)
 		{

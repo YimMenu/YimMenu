@@ -136,6 +136,11 @@ namespace big
 					if(ImGui::InputInt("##local_value", actual_local.as<int*>())){
 						local.m_value = *actual_local.as<int*>();
 					}
+					ImGui::SameLine();
+					if(ImGui::Checkbox("Freeze", &local.m_freeze))
+						local.m_freeze_value = *actual_local.as<int*>();
+					
+					if(local.m_freeze) *actual_local.as<int*>() = local.m_freeze_value;
 				}
 				else
 				{
@@ -144,17 +149,17 @@ namespace big
 					ImGui::PopStyleColor();
 				}
 
-			if (components::button("Delete"))
-			{
-				for (int i = 0; i < g_locals_service.m_locals.size(); i++)
+				if (components::button("Delete"))
 				{
-					if (auto& it = g_locals_service.m_locals.at(i); it.get_id() == local.get_id()){
-						g_locals_service.m_locals.erase(g_locals_service.m_locals.begin() + i);
-						break;
+					for (int i = 0; i < g_locals_service.m_locals.size(); i++)
+					{
+						if (auto& it = g_locals_service.m_locals.at(i); it.get_id() == local.get_id()){
+							g_locals_service.m_locals.erase(g_locals_service.m_locals.begin() + i);
+							break;
+						}
 					}
+
 				}
-				
-			}
 
 				ImGui::PopID();
 				ImGui::Separator();
