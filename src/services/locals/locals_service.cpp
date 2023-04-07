@@ -1,26 +1,13 @@
 #include "locals_service.hpp"
+#include "pointers.hpp"
 #include "core/data/all_script_names.hpp"
 
 namespace big{
 
-    locals_service::locals_service()
-	{
-		g_globals_service = this;
-	}
-
-	locals_service::~locals_service()
-	{
-		g_globals_service = nullptr;
-
-		m_running = false;
-
-		this->save();
-	}
-
     bool locals_service::is_script_thread_running(GtaThread* thread){
         if(thread)
         {
-            return thread->m_context.m_state == rage::eThreadState::running;
+            return thread->m_context.m_state == rage::eThreadState::running || thread->m_context.m_state == rage::eThreadState::idle;
         }
         return false;
     }
@@ -30,6 +17,22 @@ namespace big{
             if(script_name == s) return true;
         return false;
     }
+
+	GtaThread* locals_service::find_script_thread (Hash hash)
+	{
+		for (auto thread : *g_pointers->m_script_threads)
+		{
+			if (thread
+				&& thread->m_context.m_thread_id
+				&& thread->m_handler
+				&& thread->m_script_hash == hash)
+			{
+				return thread;
+			}
+		}
+
+		return nullptr;
+	}
 
     bool locals_service::load()
 	{
@@ -44,9 +47,30 @@ namespace big{
 		try
 		{
 			nlohmann::json j;
-			j << file;
-
-			//IMPLEMENT LOADING LOCALS
+			file >> j;
+			this->m_locals.clear();
+			for(const auto& l : j.items()){
+				if(!l.key().empty()){
+					local new_local{"", "", 0, 0, 0, 0};
+					new_local.m_base_address = j[l.key()]["base_address"];
+					new_local.m_script_thread_name = j[l.key()]["script_thread_name"];
+					new_local.m_freeze = j[l.key()]["freeze"];
+					new_local.m_name = j[l.key()]["name"];
+					new_local.m_value = j[l.key()]["value"];
+					if(!j[l.key()]["offsets"].is_null()){
+						for(const auto& offset : j[l.key()]["offsets"].items()){
+							if(!offset.key().empty()){
+								local_offset new_offset{0,0};
+								new_offset.m_offset = j[l.key()]["offsets"][offset.key()]["offset"];
+								if(!j[l.key()]["offsets"][offset.key()]["size"].is_null())
+									new_offset.m_size = j[l.key()]["offsets"][offset.key()]["size"];
+								new_local.m_offsets.push_back(new_offset);
+							}
+						}
+					}
+					this->m_locals.push_back(new_local);
+				}
+			}
 		}
 		catch (const std::exception&)
 		{
@@ -58,23 +82,14 @@ namespace big{
 		return true;
 	}
 
-    void locals_service::loop()
-	{
-		while (m_running)
-			for (auto& local : m_locals)
-				if (local.m_freeze)
-					local.write();
-	}
-
 	void locals_service::save()
 	{
-
         std::map<std::string, local> locals_with_names;
         for (auto& l : m_locals){
             locals_with_names.insert(std::pair<std::string, local>(
-                l.m_name.empty() ?  std::string(l.m_script_thread_name).append("_").append(std::to_string(l.m_base_address)) : l.m_name, l));
+                l.m_name.empty() ?  std::string(l.m_script_thread_name + "_" + std::to_string(l.m_base_address)) : l.m_name, l));
         }
-        
+
 		nlohmann::json j;
         for(auto& l : locals_with_names){
             j[l.first]["script_thread_name"] = l.second.m_script_thread_name;

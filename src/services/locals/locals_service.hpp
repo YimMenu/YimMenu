@@ -43,36 +43,15 @@ namespace big{
 				m_offsets.push_back(local_offset(offsets[i][0], offsets[i][1]));
 		}
 
-        int* get()
-		{
-			if (m_freeze)
-				return &m_value;
-			return m_internal_addr;
-		}
-
 		int get_id()
 		{
 			return m_internal_id;
-		}
-
-		void set(int value)
-		{
-			m_value = value;
-			if (!m_freeze)
-				this->write();
-		}
-
-        void write()
-		{
-			*m_internal_addr = m_value;
 		}
 
         private:
 		inline static int m_instance_count;
 
 		int m_internal_id;
-		int* m_internal_addr;
-
     };
     
 
@@ -81,20 +60,17 @@ namespace big{
 		const char* file_location = "\\BigBaseV2\\locals.json";
 
 	public:
-		locals_service();
-		~locals_service();
-
 		bool load();
 		void loop();
 		void save();
 
-        bool is_script_thread_running(GtaThread* thread);
-        bool does_script_exist(std::string script);
+        static bool does_script_exist(std::string script);
+        static GtaThread* find_script_thread(Hash hash);
+        static bool is_script_thread_running(GtaThread* thread);
 
 		std::vector<local> m_locals;
 		bool m_running = false;
 	};
 
-	inline locals_service* g_globals_service{};
-
+	inline locals_service g_locals_service{};
 }
