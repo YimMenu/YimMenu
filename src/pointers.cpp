@@ -93,6 +93,20 @@ namespace big
 			memory::byte_patch::make(ptr.add(4).as<uint8_t*>(), 0x00)->apply();
 		});
 
+		// CScriptEntityExtension Ctor
+		main_batch.add("SEEC", "48 83 EC 20 33 F6 48 8B F9 48 8D 05", [this, mem_region](memory::handle ptr) {
+			void* ctor = ptr.sub(11).as<void*>();
+			auto result = mem_region.scan_all("48 8B 0D ? ? ? ? E8 ? ? ? ? 48 85 C0 74 10 ? ? ? 48 8B C8 E8 ? ? ? ? 48 8B ? EB 02 33");
+			for (auto& item : result)
+			{
+				if (item.add(24).rip().as<void*>() == ctor) //should be two places
+				{
+					LOG(INFO) << "CScriptEntityExtension Ctor Crash Code Patch " << HEX_TO_UPPER(item.add(15).as<void*>());
+					memory::byte_patch::make(item.add(16).as<uint8_t*>(), 0x00)->apply();
+				}	
+			}
+		});
+
 		if (!main_batch.run(mem_region))
 		{
 			throw std::runtime_error("Failed to find some patterns.");
