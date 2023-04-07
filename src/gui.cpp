@@ -12,8 +12,8 @@
 namespace big
 {
 	gui::gui() :
-		m_is_open(false),
-		m_override_mouse(false)
+	    m_is_open(false),
+	    m_override_mouse(false)
 	{
 		g_renderer->add_dx_callback(view::gta_data, -1);
 		g_renderer->add_dx_callback(view::notifications, -2);

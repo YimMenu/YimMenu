@@ -77,8 +77,8 @@ namespace big
 
 		// Sound Overload Detour
 		main_batch.add("SOD", "66 45 3B C1 74 38", [this](memory::handle ptr) {
-			g_sound_overload_ret_addr = ptr.add(13 + 15).as<decltype(g_sound_overload_ret_addr)>();
-			std::vector<byte> bytes = {0xFF, 0x25, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90}; // far jump opcode + a nop opcode
+			g_sound_overload_ret_addr   = ptr.add(13 + 15).as<decltype(g_sound_overload_ret_addr)>();
+			std::vector<byte> bytes     = {0xFF, 0x25, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90}; // far jump opcode + a nop opcode
 			*(void**)(bytes.data() + 6) = sound_overload_detour;
 			memory::byte_patch::make(ptr.add(13).as<void*>(), bytes)->apply();
 		});
@@ -103,7 +103,7 @@ namespace big
 				{
 					LOG(INFO) << "CScriptEntityExtension Ctor Crash Code Patch " << HEX_TO_UPPER(item.add(15).as<void*>());
 					memory::byte_patch::make(item.add(16).as<uint8_t*>(), 0x00)->apply();
-				}	
+				}
 			}
 		});
 
@@ -887,14 +887,14 @@ namespace big
 
 		// get the beginning and the end of what we need to save / load
 		constexpr size_t offset_of_cache_begin_field = offsetof(big::pointers, m_offset_gta_module_cache_start) + sizeof(uintptr_t);
-		constexpr size_t offset_of_cache_end_field   = offsetof(big::pointers, m_offset_gta_module_cache_end);
+		constexpr size_t offset_of_cache_end_field = offsetof(big::pointers, m_offset_gta_module_cache_end);
 		constexpr size_t field_count = (offset_of_cache_end_field - offset_of_cache_begin_field) / sizeof(void*);
 
 		// stupid check to see if we are aligned, don't really guarantee that the for loop below will succeed
 		static_assert(((offset_of_cache_end_field - offset_of_cache_begin_field) % sizeof(void*)) == 0, "not aligned, prolly mean that there are rogue non cacheable fields between start and end");
 
 		const uintptr_t pointer_to_cacheable_data_start = reinterpret_cast<uintptr_t>(this) + offset_of_cache_begin_field;
-		const uintptr_t pointer_to_cacheable_data_end = reinterpret_cast<uintptr_t>(this) + offset_of_cache_end_field;
+		const uintptr_t pointer_to_cacheable_data_end   = reinterpret_cast<uintptr_t>(this) + offset_of_cache_end_field;
 
 		if (!is_pointers_cache_up_to_date(version_batch, mem_region))
 		{
@@ -910,7 +910,7 @@ namespace big
 			// - save that to the cache
 			uintptr_t* cache_data = reinterpret_cast<uintptr_t*>(cache_data_ptr.get());
 
-			size_t i              = 0;
+			size_t i = 0;
 			for (uintptr_t field_ptr = pointer_to_cacheable_data_start; field_ptr != pointer_to_cacheable_data_end; field_ptr += sizeof(uintptr_t))
 			{
 				const uintptr_t field_value = *reinterpret_cast<uintptr_t*>(field_ptr);
