@@ -5,19 +5,6 @@
 
 namespace big
 {
-	void script::script_exception_handler(PEXCEPTION_POINTERS exp)
-	{
-		HMODULE mod{};
-		DWORD64 offset{};
-		char buffer[MAX_PATH]{};
-		if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, (LPCSTR)exp->ExceptionRecord->ExceptionAddress, &mod) == TRUE && mod != nullptr)
-		{
-			offset = ((DWORD64)exp->ExceptionRecord->ExceptionAddress - (DWORD64)mod);
-			GetModuleFileNameA(mod, buffer, MAX_PATH - 1);
-		}
-		LOG(FATAL) << "Exception Code: " << HEX_TO_UPPER(exp->ExceptionRecord->ExceptionCode) << " Exception Offset: " << HEX_TO_UPPER(offset) << " Fault Module Name: " << buffer;
-	}
-
 	script::script(const func_t func, const std::string_view name, const bool toggleable, const std::optional<std::size_t> stack_size) :
 	    script(func, stack_size)
 	{
@@ -103,14 +90,7 @@ namespace big
 
 	void script::fiber_func()
 	{
-		TRY_CLAUSE
-		{
-			m_func();
-		}
-		EXCEPT_CLAUSE
-		[]() {
-			LOG(INFO) << "Script finished!";
-		}();
+		m_func();
 
 		while (true)
 		{

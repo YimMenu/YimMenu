@@ -1,4 +1,6 @@
+#include "thread_pool.hpp"
 #include "views/view.hpp"
+
 
 namespace big
 {
@@ -21,6 +23,16 @@ namespace big
 				}
 			}
 			ImGui::EndCombo();
+		}
+
+		if (components::button("Force Update Languages"))
+		{
+			g_thread_pool->push([]
+			{
+				g_translation_service.update_language_packs();
+
+				g_notification_service->push("Translations", "Finished updating translations.");
+			});
 		}
 	}
 }

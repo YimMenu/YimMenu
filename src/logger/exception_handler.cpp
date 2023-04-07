@@ -8,12 +8,14 @@ namespace big
 {
 	exception_handler::exception_handler()
 	{
-		m_exception_handler = AddVectoredExceptionHandler(1, &vectored_exception_handler);
+		SetErrorMode(0);
+		SetUnhandledExceptionFilter(&vectored_exception_handler);
 	}
 
 	exception_handler::~exception_handler()
 	{
-		RemoveVectoredExceptionHandler(m_exception_handler);
+		// passing NULL / 0 will make it go back to normal exception handling
+		SetUnhandledExceptionFilter(0);
 	}
 
 	inline static stack_trace trace;
