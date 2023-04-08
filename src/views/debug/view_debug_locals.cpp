@@ -101,10 +101,10 @@ namespace big
 
 			if (components::button("Add local"))
 			{
-				ImGui::OpenPopup("Addlocal");
+				ImGui::OpenPopup("##addlocal");
 			}
 
-			if (ImGui::BeginPopupModal("Addlocal"))
+			if (ImGui::BeginPopupModal("##addlocal"))
 			{
 				render_local_creator_popup_content();
 
@@ -118,33 +118,33 @@ namespace big
 
 				ImGui::Text("%s : %s", local.m_name, local.m_script_thread_name);
 				//Find the thread among the script threads
-				local.m_script_thread = locals_service::find_script_thread(rage::joaat(local.m_script_thread_name));
-				//Check whether the specified script is running
-				if (local.m_script_thread && locals_service::is_script_thread_running(local.m_script_thread))
-				{
-					script_local actual_local = script_local(local.m_script_thread, local.m_base_address);
-
-					//Apply offsets to base address
-					for (auto offset : local.m_offsets)
+				if(!local.m_script_thread) local.m_script_thread = gta_util::find_script_thread(rage::joaat(local.m_script_thread_name));
+				
+				if(local.m_script_thread && locals_service::is_script_thread_running(local.m_script_thread)){
+					//Check whether the address is found
+					if (local.m_internal_address)
 					{
-						if (offset.m_size > 0)
-							actual_local.at(offset.m_offset, offset.m_size);
-						else
-							actual_local.at(offset.m_offset);
-					}
+						ImGui::Text("Value");
+						ImGui::SetNextItemWidth(200);
+						if (ImGui::InputInt("##local_value", local.m_internal_address))
+						{
+							local.m_value = *local.m_internal_address;
+						}
+						ImGui::SameLine();
+						if (ImGui::Checkbox("Freeze", &local.m_freeze))
+							local.m_freeze_value = *local.m_internal_address;
 
-					ImGui::Text("Value");
-					ImGui::SetNextItemWidth(200);
-					if (ImGui::InputInt("##local_value", actual_local.as<int*>()))
+						if (local.m_freeze)
+							*local.m_internal_address = local.m_freeze_value;
+					}
+					else
 					{
-						local.m_value = *actual_local.as<int*>();
-					}
-					ImGui::SameLine();
-					if (ImGui::Checkbox("Freeze", &local.m_freeze))
-						local.m_freeze_value = *actual_local.as<int*>();
+						if (components::button("Fetch"))
+						{
+							local.fetch_local_pointer();
+						}
+					}	
 
-					if (local.m_freeze)
-						*actual_local.as<int*>() = local.m_freeze_value;
 				}
 				else
 				{
@@ -152,7 +152,6 @@ namespace big
 					ImGui::Text("%s isn't running", local.m_script_thread_name);
 					ImGui::PopStyleColor();
 				}
-
 				if (components::button("Delete"))
 				{
 					for (int i = 0; i < g_locals_service.m_locals.size(); i++)

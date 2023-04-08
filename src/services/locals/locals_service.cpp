@@ -1,5 +1,4 @@
 #include "locals_service.hpp"
-
 #include "core/data/all_script_names.hpp"
 #include "pointers.hpp"
 
@@ -23,26 +22,13 @@ namespace big
 		return false;
 	}
 
-	GtaThread* locals_service::find_script_thread(Hash hash)
-	{
-		for (auto thread : *g_pointers->m_script_threads)
-		{
-			if (thread && thread->m_context.m_thread_id && thread->m_handler && thread->m_script_hash == hash)
-			{
-				return thread;
-			}
-		}
-
-		return nullptr;
+	std::filesystem::path locals_service::get_path(){
+		return g_file_manager->get_project_file("locals.json").get_path();
 	}
 
 	bool locals_service::load()
 	{
-		std::string path = std::getenv("appdata");
-		path += this->file_location;
-
-		std::ifstream file(path);
-
+		std::ifstream file(locals_service::get_path());
 		if (!file.is_open())
 			return false;
 
@@ -50,7 +36,7 @@ namespace big
 		{
 			nlohmann::json j;
 			file >> j;
-			this->m_locals.clear();
+			m_locals.clear();
 			for (const auto& l : j.items())
 			{
 				if (!l.key().empty())
@@ -75,7 +61,8 @@ namespace big
 							}
 						}
 					}
-					this->m_locals.push_back(new_local);
+					new_local.fetch_local_pointer();
+					m_locals.push_back(new_local);
 				}
 			}
 		}
@@ -114,9 +101,7 @@ namespace big
 			};
 		}
 
-		std::string path = std::getenv("appdata");
-		path += this->file_location;
-		std::ofstream file(path, std::ios::out | std::ios::trunc);
+		std::ofstream file(locals_service::get_path(), std::ios::out | std::ios::trunc);
 
 		try
 		{
