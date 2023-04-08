@@ -26,13 +26,13 @@ namespace big
 		std::map<std::string, translation_entry>& available_translations();
 		const std::string& current_language_pack();
 		void select_language_pack(const std::string& pack_id);
+		void update_language_packs();
 
 	private:
 		void load_translations();
 		nlohmann::json load_translation(const std::string_view pack_id);
 
 		bool download_language_pack(const std::string_view pack_id);
-		void update_language_packs();
 
 		/**
          * @brief Downloads the remote index to compare with our local index
