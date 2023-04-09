@@ -67,9 +67,9 @@ namespace big
 				for (auto offset : m_offsets)
 				{
 					if (offset.m_size > 0)
-						actual_local.at(offset.m_offset, offset.m_size);
+						actual_local = actual_local.at(offset.m_offset, offset.m_size);
 					else
-						actual_local.at(offset.m_offset);
+						actual_local = actual_local.at(offset.m_offset);
 				}
 
 				m_internal_address = actual_local.as<int*>();
