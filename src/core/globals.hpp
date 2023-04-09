@@ -456,8 +456,10 @@ namespace big
 				bool spawn_invincible  = false;
 				bool spawn_invisible   = false;
 				bool spawn_as_attacker = false;
+				bool designated_outfit = false;
+				std::string outfit_clipboard_data = "";
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(spawn_ped, preview_ped, spawn_invincible, spawn_invisible, spawn_as_attacker)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(spawn_ped, preview_ped, spawn_invincible, spawn_invisible, spawn_as_attacker, designated_outfit, outfit_clipboard_data)
 			} spawn_ped{};
 
 			struct custom_time

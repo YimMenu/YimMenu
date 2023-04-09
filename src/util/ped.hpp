@@ -474,10 +474,10 @@ namespace big::ped
 		{
 			return false;
 		}
-		for (int i = 0; i < 12; i++)
-		{
-			PED::SET_PED_COMPONENT_VARIATION(ped, i, PED::GET_PED_DRAWABLE_VARIATION(target, i), PED::GET_PED_TEXTURE_VARIATION(target, i), PED::GET_PED_PALETTE_VARIATION(target, i));
-		}
+
+		outfit::outfit_t outfit;
+		outfit.update(target);
+		outfit.apply(ped);
 
 		return true;
 	}
@@ -540,8 +540,8 @@ namespace big::ped
 		auto range = [](int lower_bound, int upper_bound) -> int {
 			return std::rand() % (upper_bound - lower_bound + 1) + lower_bound;
 		};
-		outfit::components_t components;
-		for (auto& item : components.items)
+		outfit::outfit_t outfit;
+		for (auto& item : outfit.components)
 		{
 			int drawable_id_max = PED::GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS(ped, item.id) - 1;
 			if (drawable_id_max == -1)

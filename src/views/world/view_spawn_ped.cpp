@@ -134,7 +134,16 @@ namespace big
 		PED::SET_PED_ID_RANGE(ped, 200.0f);
 		PED::SET_PED_FIRING_PATTERN(ped, RAGE_JOAAT("FIRING_PATTERN_FULL_AUTO"));
 		PED::SET_PED_SHOOT_RATE(ped, 150);
-		ped::set_ped_random_component_variation(ped);
+		if (g.world.spawn_ped.designated_outfit)
+		{
+			outfit::outfit_t outfit;
+			outfit.import_from_clipboard(g.world.spawn_ped.outfit_clipboard_data);
+			outfit.apply(ped);
+		}
+		else
+		{
+			ped::set_ped_random_component_variation(ped);
+		}
 
 		if (is_bodyguard)
 		{
@@ -595,6 +604,17 @@ namespace big
 		ImGui::Checkbox("Invincible", &g.world.spawn_ped.spawn_invincible);
 		ImGui::Checkbox("Invisible", &g.world.spawn_ped.spawn_invisible);
 		ImGui::Checkbox("Attacker", &g.world.spawn_ped.spawn_as_attacker);
+		ImGui::Checkbox("Designated Outfit", &g.world.spawn_ped.designated_outfit);
+		if (g.world.spawn_ped.designated_outfit)
+		{
+			static char data[256];
+			static bool init = ([] {
+				strncpy(data, g.world.spawn_ped.outfit_clipboard_data.c_str(), sizeof(data));
+			}(), true);
+			ImGui::SameLine();
+			if (ImGui::InputTextWithHint("##world_spawn_ped_outfit_clipboard_Data", "Outfit Clipboard Data", data, sizeof(data)))
+				g.world.spawn_ped.outfit_clipboard_data = data;
+		}
 
 		components::button("CHANGE_PLAYER_MODEL"_T, [] {
 			if (selected_ped_type == -2)
@@ -617,7 +637,16 @@ namespace big
 					return;
 				}
 
-				ped::set_ped_random_component_variation(self::ped);
+				if (g.world.spawn_ped.designated_outfit)
+				{
+					outfit::outfit_t outfit;
+					outfit.import_from_clipboard(g.world.spawn_ped.outfit_clipboard_data);
+					outfit.apply(self::ped);
+				}
+				else
+				{
+					ped::set_ped_random_component_variation(self::ped);
+				}
 			}
 		});
 
