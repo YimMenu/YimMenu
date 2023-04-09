@@ -9,8 +9,8 @@ namespace big
 	{
 		static int base_address            = 0;
 		static bool freeze                 = false;
-		static char name[32]               = "";
-		static char script_thread_name[32] = "";
+		static char name[200]               = "";
+		static char script_thread_name[200] = "";
 		static int(*offsets)[2]            = nullptr;
 		static int offset_count            = 0;
 		static int previous_offset_count   = 0;
@@ -117,6 +117,19 @@ namespace big
 				ImGui::PushID(local.get_id());
 
 				ImGui::Text("%s : %s", local.m_name, local.m_script_thread_name);
+				if(ImGui::IsItemHovered()){
+					ImGui::BeginTooltip();
+					char offsetschain[200] = "";
+					strcat(offsetschain, std::to_string(local.m_base_address).data());
+					for(auto o : local.m_offsets){
+						strcat(offsetschain, std::string(".f_" + std::to_string(o.m_offset)).data());
+						if(o.m_size)
+							strcat(offsetschain, std::string("/" + std::to_string(o.m_size)).data());
+					}
+					ImGui::Text(offsetschain);
+					ImGui::EndTooltip();
+				}
+
 				//Find the thread among the script threads
 				if(!local.m_script_thread) local.m_script_thread = gta_util::find_script_thread(rage::joaat(local.m_script_thread_name));
 				

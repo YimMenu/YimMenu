@@ -43,9 +43,11 @@ namespace big
 				{
 					local new_local{"", "", 0, 0, 0, 0};
 					new_local.m_base_address       = j[l.key()]["base_address"];
-					new_local.m_script_thread_name = j[l.key()]["script_thread_name"];
+					std::string script_name = j[l.key()]["script_thread_name"];
+					strcpy(new_local.m_script_thread_name, script_name.data());
 					new_local.m_freeze             = j[l.key()]["freeze"];
-					new_local.m_name               = j[l.key()]["name"];
+					std::string name = j[l.key()]["name"];
+					strcpy(new_local.m_name, name.data());
 					new_local.m_value              = j[l.key()]["value"];
 					if (!j[l.key()]["offsets"].is_null())
 					{
@@ -81,7 +83,7 @@ namespace big
 		std::map<std::string, local> locals_with_names;
 		for (auto& l : m_locals)
 		{
-			locals_with_names.insert(std::pair<std::string, local>(l.m_name.empty() ? std::string(l.m_script_thread_name + "_" + std::to_string(l.m_base_address)) : l.m_name, l));
+			locals_with_names.insert(std::pair<std::string, local>(std::string(l.m_name).empty() ? std::string(l.m_script_thread_name + std::string("_") + std::to_string(l.m_base_address)) : l.m_name, l));
 		}
 
 		nlohmann::json j;

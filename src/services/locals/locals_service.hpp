@@ -27,10 +27,10 @@ namespace big
 	struct local
 	{
 		GtaThread* m_script_thread;
-		std::string m_script_thread_name;
+		char m_script_thread_name[200];
 		int m_base_address;
 		bool m_freeze = false;
-		std::string m_name;
+		char m_name[200];
 		std::vector<local_offset> m_offsets;
 		int m_value;
 		int m_freeze_value;
@@ -40,10 +40,10 @@ namespace big
 		{
 			m_internal_id = ++m_instance_count;
 
-			m_script_thread_name = script_thread_name;
+			strcpy(m_script_thread_name, script_thread_name);
 			m_base_address       = base_address;
 			m_freeze             = freeze;
-			m_name               = std::string(name);
+			strcpy(m_name, name);
 			m_value              = 0;
 
 			for (int i = 0; i < offset_count; i++)
