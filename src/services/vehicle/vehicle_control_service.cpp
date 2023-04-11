@@ -367,9 +367,6 @@ namespace big
 
 	void vehicle_control::tick()
 	{
-		if (!*g_pointers->m_is_session_started)
-			return;
-
 		m_controlled_vehicle_exists = m_controlled_vehicle.ptr && ENTITY::DOES_ENTITY_EXIST(m_controlled_vehicle.handle)
 		    && VEHICLE::IS_THIS_MODEL_A_CAR(ENTITY::GET_ENTITY_MODEL(m_controlled_vehicle.handle));
 
