@@ -71,7 +71,8 @@ namespace big
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::SameLine();
-		components::button("SAVE"_T, [] {
+		if (components::button("SAVE"_T))
+		{
 			if (locals_service::does_script_exist(script_thread_name))
 			{
 				auto new_local = local(script_thread_name, name, base_address, freeze, offsets, offset_count);
@@ -85,7 +86,7 @@ namespace big
 			{
 				g_notification_service->push_error("Locals editor", "Script does not exist");
 			}
-		});
+		};
 	}
 
 	void debug::locals()

@@ -3,6 +3,7 @@
 #include "core/data/all_script_names.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
+#include "fiber_pool.hpp"
 
 namespace big
 {
@@ -21,7 +22,9 @@ namespace big
 		for (auto s : all_script_names)
 			if (script_name == s)
 				return true;
-		return SCRIPT::DOES_SCRIPT_EXIST(script_name.data());
+		bool script_exists = false;
+		g_fiber_pool->queue_job([&] {script_exists = SCRIPT::DOES_SCRIPT_EXIST(script_name.data());});
+		return script_exists;
 	}
 
 	std::filesystem::path locals_service::get_path()
