@@ -8,7 +8,6 @@
 
 namespace big
 {
-
 	void render_doors_tab()
 	{
 		const char* const doornames[MAX_VEHICLE_DOORS]{
@@ -75,10 +74,10 @@ namespace big
 
 		for (int i = 0; i < MAX_VEHICLE_DOORS; i++)
 		{
-			ImGui::PushID(i);
 			if (!g_vehicle_control_service.m_controlled_vehicle.doors[i].valid)
 				continue;
 			ImGui::SetNextItemWidth(200);
+			ImGui::PushID(i);
 			if (ImGui::BeginCombo(doornames[i], locknames[(int)g_vehicle_control_service.m_controlled_vehicle.doors[i].lockstate]))
 			{
 				for (int lockindex = 0; lockindex < MAX_VEHICLE_LOCK_STATES; lockindex++)
@@ -94,7 +93,7 @@ namespace big
 			}
 
 			ImGui::SameLine(300);
-
+			
 			const auto button_label = g_vehicle_control_service.m_controlled_vehicle.doors[i].open ? "CLOSE"_T : "OPEN"_T;
 			if (components::button(button_label))
 			{
@@ -301,7 +300,7 @@ namespace big
 
 	void view::vehicle_control()
 	{
-		if (!g.window.vehicle_control.opened || !*g_pointers->m_is_session_started)
+		if (!g.window.vehicle_control.opened)
 			return;
 
 		ImGui::SetNextWindowPos(ImVec2(500.0f, 10.0f), ImGuiCond_FirstUseEver, ImVec2(0.0f, 0.0f));
