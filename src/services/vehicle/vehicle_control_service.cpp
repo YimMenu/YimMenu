@@ -187,7 +187,7 @@ namespace big
 					    4.f,
 					    5.f);
 					//LOG(INFO) << "Navmesh probably failed, issiuing regular task ";
-					g_notification_service->push_warning("Vehicle controller", "Your vehicle could not assess an accurate path, it will try something else");
+					g_notification_service->push_warning("VEHICLE_CONTROLLER"_T.data(), "VEHICLE_CONTROLLER_TRY_ALT_PATHFINDING"_T.data());
 					script::get_current()->yield(500ms);
 				}
 
@@ -331,12 +331,12 @@ namespace big
 			if (vehicle_control::find_suitable_destination_near_player(destination, heading))
 			{
 				//LOG(INFO) << "Suitable destination found";
-				g_notification_service->push_warning("Vehicle controller", "Found a nice spot, your vehicle is on its way");
+				g_notification_service->push_warning("VEHICLE_CONTROLLER"_T.data(), "VEHICLE_CONTROLLER_FOUND_LOCATION"_T.data());
 			}
 			else
 			{
 				//LOG(INFO) << "Couldn't find suitable destionation, defaulting to offset of player\nThis might go wrong";
-				g_notification_service->push_warning("Vehicle controller", "Couldn't locate an accurate spot, your vehicle is on its way regardless");
+				g_notification_service->push_warning("VEHICLE_CONTROLLER"_T.data(), "VEHICLE_CONTROLLER_FORCE_PATHFINDING"_T.data());
 				destination = behind_pos;
 			}
 
@@ -359,7 +359,7 @@ namespace big
 			else
 			{
 				//LOG(INFO) << "Navmesh load failed";
-				g_notification_service->push_error("Nav mesh", "Failed loading the navmesh");
+				g_notification_service->push_error("VEHICLE_CONTROLLER"_T.data(), "VEHICLE_CONTROLLER_NAVMESH_FAILURE"_T.data());
 				m_driver_performing_task = false;
 			}
 		}
