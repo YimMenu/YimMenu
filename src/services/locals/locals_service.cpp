@@ -1,5 +1,7 @@
 #include "locals_service.hpp"
+
 #include "core/data/all_script_names.hpp"
+#include "natives.hpp"
 #include "pointers.hpp"
 
 namespace big
@@ -19,10 +21,11 @@ namespace big
 		for (auto s : all_script_names)
 			if (script_name == s)
 				return true;
-		return false;
+		return SCRIPT::DOES_SCRIPT_EXIST(script_name.data());
 	}
 
-	std::filesystem::path locals_service::get_path(){
+	std::filesystem::path locals_service::get_path()
+	{
 		return g_file_manager->get_project_file("locals.json").get_path();
 	}
 
@@ -42,13 +45,13 @@ namespace big
 				if (!l.key().empty())
 				{
 					local new_local{"", "", 0, 0, 0, 0};
-					new_local.m_base_address       = j[l.key()]["base_address"];
-					std::string script_name = j[l.key()]["script_thread_name"];
+					new_local.m_base_address = j[l.key()]["base_address"];
+					std::string script_name  = j[l.key()]["script_thread_name"];
 					strcpy(new_local.m_script_thread_name, script_name.data());
-					new_local.m_freeze             = j[l.key()]["freeze"];
-					std::string name = j[l.key()]["name"];
+					new_local.m_freeze = j[l.key()]["freeze"];
+					std::string name   = j[l.key()]["name"];
 					strcpy(new_local.m_name, name.data());
-					new_local.m_value              = j[l.key()]["value"];
+					new_local.m_value = j[l.key()]["value"];
 					if (!j[l.key()]["offsets"].is_null())
 					{
 						for (const auto& offset : j[l.key()]["offsets"].items())

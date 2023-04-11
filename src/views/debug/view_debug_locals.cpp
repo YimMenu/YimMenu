@@ -7,13 +7,13 @@ namespace big
 
 	void render_local_creator_popup_content()
 	{
-		static int base_address            = 0;
-		static bool freeze                 = false;
+		static int base_address             = 0;
+		static bool freeze                  = false;
 		static char name[200]               = "";
 		static char script_thread_name[200] = "";
-		static int(*offsets)[2]            = nullptr;
-		static int offset_count            = 0;
-		static int previous_offset_count   = 0;
+		static int(*offsets)[2]             = nullptr;
+		static int offset_count             = 0;
+		static int previous_offset_count    = 0;
 		components::input_text_with_hint("##local_name", "Name", name, sizeof(name));
 		components::input_text_with_hint("##local_script_thread_name", "Script thread", script_thread_name, sizeof(script_thread_name));
 		ImGui::Text("Base address");
@@ -55,30 +55,29 @@ namespace big
 		}
 		ImGui::PopItemWidth();
 
-		if (components::button("CANCEL"_T))
-		{
+		static auto reset_values = []() -> void {
 			strcpy(name, "");
 			freeze = false;
 			delete[] offsets;
 			offsets               = nullptr;
 			offset_count          = 0;
 			previous_offset_count = 0;
+		};
+
+		if (components::button("CANCEL"_T))
+		{
+			reset_values();
 
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::SameLine();
-		if (components::button("SAVE"_T))
-		{
+		components::button("SAVE"_T, [] {
 			if (locals_service::does_script_exist(script_thread_name))
 			{
 				auto new_local = local(script_thread_name, name, base_address, freeze, offsets, offset_count);
 				g_locals_service.m_locals.push_back(new_local);
-				strcpy(name, "");
-				freeze = false;
-				delete[] offsets;
-				offsets               = nullptr;
-				offset_count          = 0;
-				previous_offset_count = 0;
+
+				reset_values();
 
 				ImGui::CloseCurrentPopup();
 			}
@@ -86,7 +85,7 @@ namespace big
 			{
 				g_notification_service->push_error("Locals editor", "Script does not exist");
 			}
-		}
+		});
 	}
 
 	void debug::locals()
@@ -111,19 +110,21 @@ namespace big
 				ImGui::EndPopup();
 			}
 
-			for (auto& local : g_locals_service.m_locals)
+			for (auto& local_ : g_locals_service.m_locals)
 			{
 				ImGui::BeginGroup();
-				ImGui::PushID(local.get_id());
+				ImGui::PushID(local_.get_id());
 
-				ImGui::Text("%s : %s", local.m_name, local.m_script_thread_name);
-				if(ImGui::IsItemHovered()){
+				ImGui::Text("%s : %s", local_.m_name, local_.m_script_thread_name);
+				if (ImGui::IsItemHovered())
+				{
 					ImGui::BeginTooltip();
 					char offsetschain[200] = "";
-					strcat(offsetschain, std::to_string(local.m_base_address).data());
-					for(auto o : local.m_offsets){
+					strcat(offsetschain, std::to_string(local_.m_base_address).data());
+					for (auto o : local_.m_offsets)
+					{
 						strcat(offsetschain, std::string(".f_" + std::to_string(o.m_offset)).data());
-						if(o.m_size)
+						if (o.m_size)
 							strcat(offsetschain, std::string("/" + std::to_string(o.m_size)).data());
 					}
 					ImGui::Text(offsetschain);
@@ -131,51 +132,45 @@ namespace big
 				}
 
 				//Find the thread among the script threads
-				if(!local.m_script_thread) local.m_script_thread = gta_util::find_script_thread(rage::joaat(local.m_script_thread_name));
-				
-				if(local.m_script_thread && locals_service::is_script_thread_running(local.m_script_thread)){
+				if (!local_.m_script_thread)
+					local_.m_script_thread = gta_util::find_script_thread(rage::joaat(local_.m_script_thread_name));
+
+				if (local_.m_script_thread && locals_service::is_script_thread_running(local_.m_script_thread))
+				{
 					//Check whether the address is found
-					if (local.m_internal_address)
+					if (local_.m_internal_address)
 					{
 						ImGui::Text("Value");
 						ImGui::SetNextItemWidth(200);
-						if (ImGui::InputInt("##local_value", local.m_internal_address))
+						if (ImGui::InputInt("##local_value", local_.m_internal_address))
 						{
-							local.m_value = *local.m_internal_address;
+							local_.m_value = *local_.m_internal_address;
 						}
 						ImGui::SameLine();
-						if (ImGui::Checkbox("Freeze", &local.m_freeze))
-							local.m_freeze_value = *local.m_internal_address;
+						if (ImGui::Checkbox("Freeze", &local_.m_freeze))
+							local_.m_freeze_value = *local_.m_internal_address;
 
-						if (local.m_freeze)
-							*local.m_internal_address = local.m_freeze_value;
+						if (local_.m_freeze)
+							*local_.m_internal_address = local_.m_freeze_value;
 					}
 					else
 					{
 						if (components::button("Fetch"))
 						{
-							local.fetch_local_pointer();
+							local_.fetch_local_pointer();
 						}
-					}	
-
+					}
 				}
 				else
 				{
 					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-					ImGui::Text("%s isn't running", local.m_script_thread_name);
+					ImGui::Text("%s isn't running", local_.m_script_thread_name);
 					ImGui::PopStyleColor();
 				}
 				if (components::button("Delete"))
-				{
-					for (int i = 0; i < g_locals_service.m_locals.size(); i++)
-					{
-						if (auto& it = g_locals_service.m_locals.at(i); it.get_id() == local.get_id())
-						{
-							g_locals_service.m_locals.erase(g_locals_service.m_locals.begin() + i);
-							break;
-						}
-					}
-				}
+					std::erase_if(g_locals_service.m_locals, [local_](local l) {
+						return l.get_id() == local_.get_id();
+					});
 
 				ImGui::PopID();
 				ImGui::Separator();

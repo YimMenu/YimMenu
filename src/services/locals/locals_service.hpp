@@ -1,10 +1,10 @@
 #pragma once
 
-#include "gta/script_thread.hpp"
-#include "file_manager/file.hpp"
 #include "file_manager.hpp"
-#include "script_local.hpp"
+#include "file_manager/file.hpp"
+#include "gta/script_thread.hpp"
 #include "gta_util.hpp"
+#include "script_local.hpp"
 
 namespace big
 {
@@ -41,10 +41,10 @@ namespace big
 			m_internal_id = ++m_instance_count;
 
 			strcpy(m_script_thread_name, script_thread_name);
-			m_base_address       = base_address;
-			m_freeze             = freeze;
+			m_base_address = base_address;
+			m_freeze       = freeze;
 			strcpy(m_name, name);
-			m_value              = 0;
+			m_value = 0;
 
 			for (int i = 0; i < offset_count; i++)
 				m_offsets.push_back(local_offset(offsets[i][0], offsets[i][1]));
@@ -52,7 +52,7 @@ namespace big
 			fetch_local_pointer();
 		}
 
-		int get_id()
+		int get_id() const
 		{
 			return m_internal_id;
 		}
@@ -60,8 +60,9 @@ namespace big
 		int* fetch_local_pointer()
 		{
 			m_script_thread = gta_util::find_script_thread(rage::joaat(m_script_thread_name));
-			
-			if(m_script_thread){
+
+			if (m_script_thread)
+			{
 				script_local actual_local = script_local(m_script_thread, m_base_address);
 
 				for (auto offset : m_offsets)
@@ -87,7 +88,6 @@ namespace big
 
 	class locals_service
 	{
-	
 	public:
 		std::filesystem::path get_path();
 		bool load();
