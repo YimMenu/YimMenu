@@ -82,19 +82,16 @@ namespace big::entity
 
 		for (int i = 0; i < timeout; i++)
 		{
-			if (!hnd || !hnd->m_net_object)
-				return false;
-
 			g_pointers->m_request_control(hnd->m_net_object);
 
 			if(network_has_control_of_entity(hnd->m_net_object))
-				break;
+				return true;
 
 			if (timeout != 0)
 				script::get_current()->yield();
 		}
 
-		return network_has_control_of_entity(hnd->m_net_object);
+		return false;
 	}
 
 	inline std::vector<Entity> get_entities(bool vehicles, bool peds)
