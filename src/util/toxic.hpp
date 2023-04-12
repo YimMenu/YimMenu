@@ -17,13 +17,21 @@
 
 namespace big::toxic
 {
+	struct explosion_anti_cheat_bypass
+	{
+		inline static memory::byte_patch* m_can_blame_others;
+		inline static memory::byte_patch* m_can_use_blocked_explosions;
+	};
+
 	inline void blame_explode_coord(player_ptr to_blame, Vector3 pos, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
 	{
-		g_pointers->m_blame_explode->apply();
-		g_pointers->m_explosion_patch->apply();
+		explosion_anti_cheat_bypass::m_can_blame_others->apply();
+		explosion_anti_cheat_bypass::m_can_use_blocked_explosions->apply();
+
 		FIRE::ADD_OWNED_EXPLOSION(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(to_blame->id()), pos.x, pos.y, pos.z, (int)explosion_type, damage, is_audible, is_invisible, camera_shake);
-		g_pointers->m_blame_explode->restore();
-		g_pointers->m_explosion_patch->restore();
+
+		explosion_anti_cheat_bypass::m_can_use_blocked_explosions->restore();
+		explosion_anti_cheat_bypass::m_can_blame_others->restore();
 	}
 
 	inline void blame_explode_player(player_ptr to_blame, player_ptr target, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
@@ -152,5 +160,4 @@ namespace big::toxic
 	{
 		set_time_all((*g_pointers->m_network_time)->m_time + millis);
 	}
-
 }

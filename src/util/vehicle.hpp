@@ -13,6 +13,11 @@
 
 namespace big::vehicle
 {
+	struct disable_collisions
+	{
+		inline static memory::byte_patch* m_patch;
+	};
+
 	inline float mps_to_speed(float mps, SpeedUnit speed_unit)
 	{
 		switch (speed_unit)

@@ -24,8 +24,6 @@ namespace rage
 	class rlGamerInfo;
 }
 
-extern "C" std::uint64_t g_sound_overload_ret_addr;
-
 namespace big
 {
 	template<uint32_t hash>
@@ -40,6 +38,9 @@ namespace big
 	class pointers
 	{
 	private:
+		void write_pointers_to_cache(const uintptr_t pointer_to_cacheable_data_start, const uintptr_t pointer_to_cacheable_data_end, const memory::module& mem_region);
+		void load_pointers_from_cache(const uintptr_t pointer_to_cacheable_data_start, const memory::module& mem_region);
+
 		template<size_t N>
 		bool is_pointers_cache_up_to_date(const memory::batch<N>& version_batch, const memory::module& mem_region)
 		{
@@ -61,9 +62,6 @@ namespace big
 
 			return false;
 		}
-
-		// we can't cache things like pointers we allocate on the heap
-		void always_run_main_batch(const memory::module& mem_region);
 
 		static constexpr auto get_cacheable_main_batch();
 
@@ -90,16 +88,6 @@ namespace big
 	public:
 		HWND m_hwnd{};
 
-		memory::byte_patch* m_max_wanted_level;
-		memory::byte_patch* m_max_wanted_level_2;
-
-		memory::byte_patch* m_blame_explode;
-		memory::byte_patch* m_explosion_patch;
-
-		memory::byte_patch* m_disable_collision{};
-
-		memory::byte_patch* m_broadcast_patch;
-
 		uint32_t m_game_version_uint32_t;
 		float m_online_version_float;
 
@@ -113,6 +101,26 @@ namespace big
 		// don't remove, used for signaling the start of the pointers gta module offset cache
 		// Note: between the start and the end, only pointers coming from the gta 5 module should be in there
 		void* m_offset_gta_module_cache_start;
+
+		memory::handle m_max_wanted_level;
+
+		memory::handle m_blame_explode;
+
+		memory::handle m_explosion_patch;
+
+		memory::handle m_is_matchmaking_session_valid;
+
+		memory::handle m_broadcast_patch;
+
+		memory::handle m_creator_warp_cheat_triggered_patch;
+
+		memory::handle m_ntqvm_caller;
+
+		memory::handle m_sound_overload_detour;
+
+		memory::handle m_disable_collision;
+
+		memory::handle m_crash_trigger;
 
 		eGameState* m_game_state{};
 		bool* m_is_session_started{};
@@ -333,6 +341,17 @@ namespace big
 		void* m_offset_gta_module_cache_end;
 	};
 #pragma pack(pop)
+
+	struct pointers_layout_info
+	{
+		// get the beginning and the end of what we need to save / load
+		inline static constexpr size_t offset_of_cache_begin_field = offsetof(big::pointers, m_offset_gta_module_cache_start) + sizeof(uintptr_t);
+		inline static constexpr size_t offset_of_cache_end_field = offsetof(big::pointers, m_offset_gta_module_cache_end);
+		inline static constexpr size_t field_count = (offset_of_cache_end_field - offset_of_cache_begin_field) / sizeof(void*);
+
+		// stupid check to see if we are aligned
+		static_assert(((offset_of_cache_end_field - offset_of_cache_begin_field) % sizeof(void*)) == 0, "not aligned, prolly mean that there are rogue non cacheable fields between start and end");
+	};
 
 	inline pointers* g_pointers{};
 }

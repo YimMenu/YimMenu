@@ -1,4 +1,13 @@
 #pragma once
+#include "memory/fwddec.hpp"
+
+namespace big
+{
+	struct broadcast_net_array
+	{
+		inline static memory::byte_patch* m_patch;
+	};
+}
 
 class CNetGamePlayer;
 
