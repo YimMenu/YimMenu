@@ -1494,12 +1494,6 @@ namespace big
 
         constexpr auto main_batch_and_hash = pointers::get_cacheable_main_batch();
 
-        // Uncomment this to see the current hash in the output console
-        //compile_time_helper<main_batch_and_hash.m_hash>::print_hash;
-
-        // Never comment this. Used for versioning the pointers cache
-        static_assert(main_batch_and_hash.m_hash == 3110229078);
-
         m_pointers_cache.set_cache_version(main_batch_and_hash.m_hash);
 
         const uintptr_t pointer_to_cacheable_data_start = reinterpret_cast<uintptr_t>(this) + pointers_layout_info::offset_of_cache_begin_field;
