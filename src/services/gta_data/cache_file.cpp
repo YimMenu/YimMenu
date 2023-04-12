@@ -2,6 +2,14 @@
 
 namespace big
 {
+	cache_file::cache_file(file cache_file) :
+	    m_cache_file(cache_file),
+	    m_data(nullptr),
+	    m_cache_version(0),
+	    m_cache_header()
+	{
+	}
+
 	cache_file::cache_file(file cache_file, std::uint32_t cache_version) :
 	    m_cache_file(cache_file),
 	    m_data(nullptr),
@@ -77,5 +85,10 @@ namespace big
 		m_cache_header.m_cache_version  = m_cache_version;
 		m_cache_header.m_game_version   = game_version;
 		m_cache_header.m_online_version = online_version;
+	}
+
+	void cache_file::set_cache_version(std::uint32_t cache_version)
+	{
+		m_cache_version = cache_version;
 	}
 }

@@ -1,6 +1,5 @@
 #pragma once
 #include "base/HashTable.hpp"
-#include "common.hpp"
 #include "function_types.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/replay.hpp"
@@ -29,17 +28,53 @@ extern "C" std::uint64_t g_sound_overload_ret_addr;
 
 namespace big
 {
+	template<uint32_t hash>
+	struct compile_time_helper
+	{
+		static_assert(hash == -1);
+		static constexpr bool print_hash = (hash == -1);
+	};
+
 	// needed for serialization of the pointers cache
 #pragma pack(push, 1)
 	class pointers
 	{
 	private:
-		bool is_pointers_cache_up_to_date(memory::batch& version_batch, const memory::module& mem_region);
+		template<size_t N>
+		bool is_pointers_cache_up_to_date(const memory::batch<N>& version_batch, const memory::module& mem_region)
+		{
+			if (version_batch.run(mem_region))
+			{
+				m_pointers_cache.load();
+
+				if (m_pointers_cache.up_to_date(m_game_version_uint32_t, m_online_version_float))
+				{
+					LOG(INFO) << "Pointers cache is up to date, using it.";
+
+					return true;
+				}
+			}
+			else
+			{
+				LOG(WARNING) << "Failed to find version patterns. Can't utilize pointers cache.";
+			}
+
+			return false;
+		}
 
 		// we can't cache things like pointers we allocate on the heap
 		void always_run_main_batch(const memory::module& mem_region);
 
-		void run_cacheable_main_batch(const memory::module& mem_region);
+		static constexpr auto get_cacheable_main_batch();
+
+		template<size_t N>
+		void run_cacheable_main_batch(const memory::batch<N>& batch, const memory::module& mem_region)
+		{
+			if (!batch.run(mem_region))
+			{
+				throw std::runtime_error("Failed to find some patterns.");
+			}
+		}
 
 		void run_socialclub_batch();
 
