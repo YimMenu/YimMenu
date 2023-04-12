@@ -72,37 +72,26 @@ namespace big::entity
 
 	inline bool take_control_of(Entity ent, int timeout = 300)
 	{
-		if (auto hnd = g_pointers->m_handle_to_ptr(ent))
-		{
-			if (!*g_pointers->m_is_session_started || !hnd->m_net_object || network_has_control_of_entity(hnd->m_net_object))
-			{
-				return true;
-			}
-		}
-		else
-		{
+		auto hnd = g_pointers->m_handle_to_ptr(ent);
+
+		if (!hnd || !hnd->m_net_object || !*g_pointers->m_is_session_started)
 			return false;
-		}
+
+		if (network_has_control_of_entity(hnd->m_net_object))
+			return true;
 
 		for (int i = 0; i < timeout; i++)
 		{
-			auto hnd = g_pointers->m_handle_to_ptr(ent);
-
-			if (!hnd || !hnd->m_net_object)
-				return false;
-
 			g_pointers->m_request_control(hnd->m_net_object);
+
+			if (network_has_control_of_entity(hnd->m_net_object))
+				return true;
+
 			if (timeout != 0)
 				script::get_current()->yield();
 		}
 
-		auto hnd = g_pointers->m_handle_to_ptr(ent);
-		if (!hnd || !hnd->m_net_object || !network_has_control_of_entity(hnd->m_net_object))
-			return false;
-
-		int netHandle = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent);
-		NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, true);
-		return true;
+		return false;
 	}
 
 	inline std::vector<Entity> get_entities(bool vehicles, bool peds)
@@ -205,11 +194,10 @@ namespace big::entity
 
 	inline Entity get_entity_closest_to_middle_of_screen()
 	{
-	
 		Entity closest_entity{};
 		float distance = 1;
 
-		auto replayInterface = *g_pointers->m_replay_interface;
+		auto replayInterface  = *g_pointers->m_replay_interface;
 		auto vehicleInterface = replayInterface->m_vehicle_interface;
 		auto pedInterface     = replayInterface->m_ped_interface;
 
