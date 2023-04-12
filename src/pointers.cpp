@@ -7,13 +7,13 @@
 
 namespace big
 {
-	constexpr auto pointers::get_cacheable_main_batch()
-	{
-		// clang-format off
+    constexpr auto pointers::get_cacheable_main_batch()
+    {
+        // clang-format off
 
-		constexpr auto main_batch_and_hash = memory::make_batch<
+        constexpr auto main_batch_and_hash = memory::make_batch<
         // Screen Resolution
-		{
+        {
             "SR",
             "66 0F 6E 0D ? ? ? ? 0F B7 3D",
             [](memory::handle ptr)
@@ -1229,52 +1229,52 @@ namespace big
                 g_pointers->m_taskjump_constructor = ptr.as<PVOID>();
             }
         },
-		// Max Wanted Level
-		{
-		    "MWL",
-		    "8B 43 6C 89 05",
-		    [](memory::handle ptr)
+        // Max Wanted Level
+        {
+            "MWL",
+            "8B 43 6C 89 05",
+            [](memory::handle ptr)
             {
-			    g_pointers->m_max_wanted_level = ptr;
-		    }
-		},
-		// Blame Explode
-		{
-            "BE",
-		    "0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8",
-		    [](memory::handle ptr)
-            {
-			    g_pointers->m_blame_explode = ptr;
-		    }
+                g_pointers->m_max_wanted_level = ptr;
+            }
         },
-		//Patch blocked explosions
-		{
+        // Blame Explode
+        {
+            "BE",
+            "0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_blame_explode = ptr;
+            }
+        },
+        //Patch blocked explosions
+        {
             "EP",
             "E8 ? ? ? ? 48 8D 4C 24 20 E8 ? ? ? ? 4C 8D 9C 24 80 01 00 00",
             [](memory::handle ptr)
             {
-			    g_pointers->m_explosion_patch = ptr;
-		    }
+                g_pointers->m_explosion_patch = ptr;
+            }
         },
-		// Is Matchmaking Session Valid
+        // Is Matchmaking Session Valid
         {
             "IMSV",
             "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 83 EC 20 45 0F",
             [](memory::handle ptr)
             {
-			    g_pointers->m_is_matchmaking_session_valid = ptr;
-		    }
+                g_pointers->m_is_matchmaking_session_valid = ptr;
+            }
         },
-		// Broadcast Net Array Patch
+        // Broadcast Net Array Patch
         {
             "BP",
             "74 73 FF 90 ? ? ? ? 8B D5 4C 8B 00 48 8B C8 41 FF 50 30",
             [](memory::handle ptr)
             {
-			    g_pointers->m_broadcast_patch = ptr;
-		    }
+                g_pointers->m_broadcast_patch = ptr;
+            }
         },
-		// Creator Warp Cheat Triggered Patch
+        // Creator Warp Cheat Triggered Patch
         {
             "CW",
             "74 44 E8 ? ? ? ? 80 65 2B F8 48 8D 0D ? ? ? ? 48 89 4D 17 48 89 7D 1F 89 7D 27 C7 45",
@@ -1282,254 +1282,254 @@ namespace big
             {
                 g_pointers->m_creator_warp_cheat_triggered_patch = ptr;
             }
-		},
-		// NTQVM Caller
+        },
+        // NTQVM Caller
         {
             "NTQVMC",
             "66 0F 6F 0D ? ? ? ? 66 0F 6F 05 ? ? ? ? 66 0F 66 C4",
             [](memory::handle ptr)
             {
-			    g_pointers->m_ntqvm_caller = ptr;
-		    }
+                g_pointers->m_ntqvm_caller = ptr;
+            }
         },
-		// Sound Overload Detour
+        // Sound Overload Detour
         {
             "SOD",
             "66 45 3B C1 74 38",
             [](memory::handle ptr)
             {
                 g_pointers->m_sound_overload_detour = ptr;
-		    }
+            }
         },
-		// Disable Collision
+        // Disable Collision
         {
             "DC",
             "48 8B D1 49 8B CA ? ? ? ? ? 48 8B D1 49 8B CA",
             [](memory::handle ptr)
             {
-			    g_pointers->m_disable_collision = ptr;
-		    }
+                g_pointers->m_disable_collision = ptr;
+            }
         },
-		// Crash Trigger
+        // Crash Trigger
         {
             "CT",
             "48 3B F8 74 ? 8B 1D",
             [](memory::handle ptr)
             {
                 g_pointers->m_crash_trigger = ptr;
-		    }
+            }
         }
-		>();
+        >();
 
-		// clang-format on
+        // clang-format on
 
-		return main_batch_and_hash;
-	}
+        return main_batch_and_hash;
+    }
 
-	void pointers::run_socialclub_batch()
-	{
-		// clang-format off
+    void pointers::run_socialclub_batch()
+    {
+        // clang-format off
 
         constexpr auto socialclub_batch = memory::make_batch<
-		// Presence Data
+        // Presence Data
         {
             "PD",
             "48 8D 05 ? ? ? ? 48 8B F1 48 89 01 48 83 C1 08 E8 ? ? ? ? 48 8D 8E 3B 4E 00 00",
             [](memory::handle ptr)
             {
-			    auto presence_data_vft             = ptr.add(3).rip().as<PVOID*>();
-			    g_pointers->m_update_presence_attribute_int    = presence_data_vft[1];
-			    g_pointers->m_update_presence_attribute_string = presence_data_vft[3];
-		    }
+                auto presence_data_vft             = ptr.add(3).rip().as<PVOID*>();
+                g_pointers->m_update_presence_attribute_int    = presence_data_vft[1];
+                g_pointers->m_update_presence_attribute_string = presence_data_vft[3];
+            }
         },
-		// Start Get Presence Attributes
+        // Start Get Presence Attributes
         {
             "SGPA",
             "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 40 33 DB 41",
             [](memory::handle ptr)
             {
-			    g_pointers->m_start_get_presence_attributes = ptr.as<functions::start_get_presence_attributes>();
-		    }
+                g_pointers->m_start_get_presence_attributes = ptr.as<functions::start_get_presence_attributes>();
+            }
         }
         >();
 
-		// clang-format on
+        // clang-format on
 
-		auto sc_module = memory::module("socialclub.dll");
-		if (sc_module.wait_for_module())
-		{
-			socialclub_batch.m_batch.run(sc_module);
-		}
-		else
-			LOG(WARNING) << "socialclub.dll module was not loaded within the time limit.";
-	}
+        auto sc_module = memory::module("socialclub.dll");
+        if (sc_module.wait_for_module())
+        {
+            socialclub_batch.m_batch.run(sc_module);
+        }
+        else
+            LOG(WARNING) << "socialclub.dll module was not loaded within the time limit.";
+    }
 
-	void pointers::freemode_thread_restorer_through_vm_patch(const memory::module& mem_region)
-	{
-		if (auto pat1 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
-		{
-			memory::byte_patch::make(pat1.add(2).as<uint32_t*>(), 0xc9310272)->apply();
-			memory::byte_patch::make(pat1.add(6).as<uint16_t*>(), 0x9090)->apply();
-		}
+    void pointers::freemode_thread_restorer_through_vm_patch(const memory::module& mem_region)
+    {
+        if (auto pat1 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 48 ff c7"))
+        {
+            memory::byte_patch::make(pat1.add(2).as<uint32_t*>(), 0xc9310272)->apply();
+            memory::byte_patch::make(pat1.add(6).as<uint16_t*>(), 0x9090)->apply();
+        }
 
-		if (auto pat2 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 49 03 fa"))
-		{
-			memory::byte_patch::make(pat2.add(2).as<uint32_t*>(), 0xc9310272)->apply();
-			memory::byte_patch::make(pat2.add(6).as<uint16_t*>(), 0x9090)->apply();
-		}
+        if (auto pat2 = mem_region.scan("3b 0a 0f 83 ? ? ? ? 49 03 fa"))
+        {
+            memory::byte_patch::make(pat2.add(2).as<uint32_t*>(), 0xc9310272)->apply();
+            memory::byte_patch::make(pat2.add(6).as<uint16_t*>(), 0x9090)->apply();
+        }
 
-		auto pat3 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 48 ff c7");
-		for (auto& handle : pat3)
-		{
-			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272)->apply();
-			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090)->apply();
-		}
+        auto pat3 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 48 ff c7");
+        for (auto& handle : pat3)
+        {
+            memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272)->apply();
+            memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090)->apply();
+        }
 
-		auto pat4 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 49 03 fa");
-		for (auto& handle : pat4)
-		{
-			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272)->apply();
-			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090)->apply();
-		}
-	}
+        auto pat4 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 49 03 fa");
+        for (auto& handle : pat4)
+        {
+            memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272)->apply();
+            memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090)->apply();
+        }
+    }
 
-	void pointers::load_pointers_from_cache(const uintptr_t pointer_to_cacheable_data_start, const memory::module& mem_region)
-	{
-		// fill pointers instance fields by reading the file data into it
+    void pointers::load_pointers_from_cache(const uintptr_t pointer_to_cacheable_data_start, const memory::module& mem_region)
+    {
+        // fill pointers instance fields by reading the file data into it
 
-		LOG(INFO) << "Loading pointers instance from cache";
+        LOG(INFO) << "Loading pointers instance from cache";
 
-		// multiple things here:
-		// - iterate each cacheable field of the pointers instance
-		// - add the base module address to the current offset retrieved from the cache
-		// - assign that ptr to the pointers field
-		uintptr_t* cache_data = reinterpret_cast<uintptr_t*>(m_pointers_cache.data());
+        // multiple things here:
+        // - iterate each cacheable field of the pointers instance
+        // - add the base module address to the current offset retrieved from the cache
+        // - assign that ptr to the pointers field
+        uintptr_t* cache_data = reinterpret_cast<uintptr_t*>(m_pointers_cache.data());
 
-		const size_t field_count_from_cache = m_pointers_cache.data_size() / sizeof(uintptr_t);
-		LOG(INFO) << "Pointers cache: Loading " << field_count_from_cache << " fields from the cache";
+        const size_t field_count_from_cache = m_pointers_cache.data_size() / sizeof(uintptr_t);
+        LOG(INFO) << "Pointers cache: Loading " << field_count_from_cache << " fields from the cache";
 
-		uintptr_t* field_ptr = reinterpret_cast<uintptr_t*>(pointer_to_cacheable_data_start);
-		for (size_t i = 0; i < field_count_from_cache; i++)
-		{
-			uintptr_t offset         = cache_data[i];
-			uintptr_t gta_module_ptr = offset + mem_region.begin().as<uintptr_t>();
+        uintptr_t* field_ptr = reinterpret_cast<uintptr_t*>(pointer_to_cacheable_data_start);
+        for (size_t i = 0; i < field_count_from_cache; i++)
+        {
+            uintptr_t offset         = cache_data[i];
+            uintptr_t gta_module_ptr = offset + mem_region.begin().as<uintptr_t>();
 
-			if (mem_region.contains(memory::handle(gta_module_ptr)))
-			{
-				*field_ptr = gta_module_ptr;
-			}
-			else
-			{
-				LOG(FATAL) << "Just tried to load from cache a pointer supposedly within the gta 5 module range but wasnt!!! Offset from start of pointers instance: " << (reinterpret_cast<uintptr_t>(field_ptr) - reinterpret_cast<uintptr_t>(this));
-			}
+            if (mem_region.contains(memory::handle(gta_module_ptr)))
+            {
+                *field_ptr = gta_module_ptr;
+            }
+            else
+            {
+                LOG(FATAL) << "Just tried to load from cache a pointer supposedly within the gta 5 module range but wasnt!!! Offset from start of pointers instance: " << (reinterpret_cast<uintptr_t>(field_ptr) - reinterpret_cast<uintptr_t>(this));
+            }
 
-			field_ptr++;
-		}
-	}
+            field_ptr++;
+        }
+    }
 
-	void pointers::write_pointers_to_cache(const uintptr_t pointer_to_cacheable_data_start, const uintptr_t pointer_to_cacheable_data_end, const memory::module& mem_region)
-	{
-		constexpr size_t data_size = pointers_layout_info::offset_of_cache_end_field - pointers_layout_info::offset_of_cache_begin_field;
+    void pointers::write_pointers_to_cache(const uintptr_t pointer_to_cacheable_data_start, const uintptr_t pointer_to_cacheable_data_end, const memory::module& mem_region)
+    {
+        constexpr size_t data_size = pointers_layout_info::offset_of_cache_end_field - pointers_layout_info::offset_of_cache_begin_field;
 
-		big::cache_data cache_data_ptr = std::make_unique<std::uint8_t[]>(data_size);
+        big::cache_data cache_data_ptr = std::make_unique<std::uint8_t[]>(data_size);
 
-		// multiple things here:
-		// - iterate each cacheable field of the pointers instance
-		// - substract the base module address so that we only keep the offsets
-		// - save that to the cache
-		uintptr_t* cache_data = reinterpret_cast<uintptr_t*>(cache_data_ptr.get());
+        // multiple things here:
+        // - iterate each cacheable field of the pointers instance
+        // - substract the base module address so that we only keep the offsets
+        // - save that to the cache
+        uintptr_t* cache_data = reinterpret_cast<uintptr_t*>(cache_data_ptr.get());
 
-		size_t i = 0;
-		for (uintptr_t field_ptr = pointer_to_cacheable_data_start; field_ptr != pointer_to_cacheable_data_end; field_ptr += sizeof(uintptr_t))
-		{
-			const uintptr_t field_value = *reinterpret_cast<uintptr_t*>(field_ptr);
+        size_t i = 0;
+        for (uintptr_t field_ptr = pointer_to_cacheable_data_start; field_ptr != pointer_to_cacheable_data_end; field_ptr += sizeof(uintptr_t))
+        {
+            const uintptr_t field_value = *reinterpret_cast<uintptr_t*>(field_ptr);
 
-			if (mem_region.contains(memory::handle(field_value)))
-			{
-				const uintptr_t offset = field_value - mem_region.begin().as<uintptr_t>();
-				cache_data[i]          = offset;
-			}
-			else
-			{
-				LOG(FATAL) << "Just tried to save to cache a pointer supposedly within the gta 5 module range but wasnt!!! Offset from start of pointers instance: " << (field_ptr - reinterpret_cast<uintptr_t>(this));
-			}
+            if (mem_region.contains(memory::handle(field_value)))
+            {
+                const uintptr_t offset = field_value - mem_region.begin().as<uintptr_t>();
+                cache_data[i]          = offset;
+            }
+            else
+            {
+                LOG(FATAL) << "Just tried to save to cache a pointer supposedly within the gta 5 module range but wasnt!!! Offset from start of pointers instance: " << (field_ptr - reinterpret_cast<uintptr_t>(this));
+            }
 
-			i++;
-		}
+            i++;
+        }
 
-		LOG(INFO) << "Pointers cache: saved " << (data_size / sizeof(uintptr_t)) << " fields to the cache";
+        LOG(INFO) << "Pointers cache: saved " << (data_size / sizeof(uintptr_t)) << " fields to the cache";
 
-		m_pointers_cache.set_data(std::move(cache_data_ptr), data_size);
+        m_pointers_cache.set_data(std::move(cache_data_ptr), data_size);
 
-		m_pointers_cache.set_header_version(m_game_version_uint32_t, m_online_version_float);
-		m_pointers_cache.write();
-	}
+        m_pointers_cache.set_header_version(m_game_version_uint32_t, m_online_version_float);
+        m_pointers_cache.write();
+    }
 
-	pointers::pointers() :
-	    m_pointers_cache(g_file_manager->get_project_file("./cache/pointers.bin"))
-	{
-		g_pointers = this;
+    pointers::pointers() :
+        m_pointers_cache(g_file_manager->get_project_file("./cache/pointers.bin"))
+    {
+        g_pointers = this;
 
-		// clang-format off
+        // clang-format off
 
-		constexpr auto version_batch = memory::make_batch<
+        constexpr auto version_batch = memory::make_batch<
         // game version + online version
         {
-		    "GVOV",
-		    "8B C3 33 D2 C6 44 24 20",
-		    [](memory::handle ptr)
+            "GVOV",
+            "8B C3 33 D2 C6 44 24 20",
+            [](memory::handle ptr)
             {
-			    g_pointers->m_game_version   = ptr.add(0x24).rip().as<const char*>();
-			    g_pointers->m_online_version = ptr.add(0x24).rip().add(0x20).as<const char*>();
+                g_pointers->m_game_version   = ptr.add(0x24).rip().as<const char*>();
+                g_pointers->m_online_version = ptr.add(0x24).rip().add(0x20).as<const char*>();
 
-			    g_pointers->m_game_version_uint32_t = std::strtoul(g_pointers->m_game_version, nullptr, 10);
-			    g_pointers->m_online_version_float  = std::strtof(g_pointers->m_online_version, nullptr);
-		    }
+                g_pointers->m_game_version_uint32_t = std::strtoul(g_pointers->m_game_version, nullptr, 10);
+                g_pointers->m_online_version_float  = std::strtof(g_pointers->m_online_version, nullptr);
+            }
         }
         >();
 
-		// clang-format on
+        // clang-format on
 
-		const auto mem_region = memory::module("GTA5.exe");
+        const auto mem_region = memory::module("GTA5.exe");
 
-		constexpr auto main_batch_and_hash = pointers::get_cacheable_main_batch();
+        constexpr auto main_batch_and_hash = pointers::get_cacheable_main_batch();
 
-		// Uncomment this to see the current hash in the output console
-		//compile_time_helper<main_batch_and_hash.m_hash>::print_hash;
+        // Uncomment this to see the current hash in the output console
+        //compile_time_helper<main_batch_and_hash.m_hash>::print_hash;
 
-		// Never comment this. Used for versioning the pointers cache
-		static_assert(main_batch_and_hash.m_hash == 3110229078);
+        // Never comment this. Used for versioning the pointers cache
+        static_assert(main_batch_and_hash.m_hash == 3110229078);
 
-		m_pointers_cache.set_cache_version(main_batch_and_hash.m_hash);
+        m_pointers_cache.set_cache_version(main_batch_and_hash.m_hash);
 
-		const uintptr_t pointer_to_cacheable_data_start = reinterpret_cast<uintptr_t>(this) + pointers_layout_info::offset_of_cache_begin_field;
+        const uintptr_t pointer_to_cacheable_data_start = reinterpret_cast<uintptr_t>(this) + pointers_layout_info::offset_of_cache_begin_field;
 
-		if (!is_pointers_cache_up_to_date(version_batch.m_batch, mem_region))
-		{
-			run_cacheable_main_batch(main_batch_and_hash.m_batch, mem_region);
+        if (!is_pointers_cache_up_to_date(version_batch.m_batch, mem_region))
+        {
+            run_cacheable_main_batch(main_batch_and_hash.m_batch, mem_region);
 
-		    const uintptr_t pointer_to_cacheable_data_end = reinterpret_cast<uintptr_t>(this) + pointers_layout_info::offset_of_cache_end_field;
-			write_pointers_to_cache(pointer_to_cacheable_data_start, pointer_to_cacheable_data_end, mem_region);
-		}
-		else
-		{
-			load_pointers_from_cache(pointer_to_cacheable_data_start, mem_region);
-		}
+            const uintptr_t pointer_to_cacheable_data_end = reinterpret_cast<uintptr_t>(this) + pointers_layout_info::offset_of_cache_end_field;
+            write_pointers_to_cache(pointer_to_cacheable_data_start, pointer_to_cacheable_data_end, mem_region);
+        }
+        else
+        {
+            load_pointers_from_cache(pointer_to_cacheable_data_start, mem_region);
+        }
 
-		m_pointers_cache.free();
+        m_pointers_cache.free();
 
-		run_socialclub_batch();
+        run_socialclub_batch();
 
-		freemode_thread_restorer_through_vm_patch(mem_region);
+        freemode_thread_restorer_through_vm_patch(mem_region);
 
-		m_hwnd = FindWindowW(L"grcWindow", nullptr);
+        m_hwnd = FindWindowW(L"grcWindow", nullptr);
 
-		if (!m_hwnd)
-			throw std::runtime_error("Failed to find the game's window.");
-	}
+        if (!m_hwnd)
+            throw std::runtime_error("Failed to find the game's window.");
+    }
 
-	pointers::~pointers()
-	{
-		g_pointers = nullptr;
-	}
+    pointers::~pointers()
+    {
+        g_pointers = nullptr;
+    }
 }
