@@ -74,17 +74,17 @@ namespace big::entity
 	{
 		auto hnd = g_pointers->m_handle_to_ptr(ent);
 
-		if(!hnd || !hnd->m_net_object || !*g_pointers->m_is_session_started) 
+		if (!hnd || !hnd->m_net_object || !*g_pointers->m_is_session_started)
 			return false;
-		
-		if(network_has_control_of_entity(hnd->m_net_object))
+
+		if (network_has_control_of_entity(hnd->m_net_object))
 			return true;
 
 		for (int i = 0; i < timeout; i++)
 		{
 			g_pointers->m_request_control(hnd->m_net_object);
 
-			if(network_has_control_of_entity(hnd->m_net_object))
+			if (network_has_control_of_entity(hnd->m_net_object))
 				return true;
 
 			if (timeout != 0)
@@ -194,11 +194,10 @@ namespace big::entity
 
 	inline Entity get_entity_closest_to_middle_of_screen()
 	{
-	
 		Entity closest_entity{};
 		float distance = 1;
 
-		auto replayInterface = *g_pointers->m_replay_interface;
+		auto replayInterface  = *g_pointers->m_replay_interface;
 		auto vehicleInterface = replayInterface->m_vehicle_interface;
 		auto pedInterface     = replayInterface->m_ped_interface;
 
