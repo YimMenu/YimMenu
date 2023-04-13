@@ -51,7 +51,7 @@ namespace big
 		bool is_gravity_gun_selected = g.weapons.custom_weapon == CustomWeapon::GRAVITY_GUN;
 
 		auto is_zoomed_in = is_gravity_gun_selected && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM);
-		if (is_zoomed_in && WEAPON::IS_PED_WEAPON_READY_TO_SHOOT(self::ped))
+		if (is_zoomed_in && WEAPON::IS_PED_ARMED(self::ped, 4 | 2))
 		{
 			location = self::pos;
 
