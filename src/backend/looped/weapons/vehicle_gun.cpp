@@ -17,16 +17,16 @@ namespace big
 
 		const auto elapsed_time_in_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_now - last_time).count();
 
-		if (is_vehicle_gun_selected && !g_gui->is_open() && elapsed_time_in_ms >= 100 && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK))
+		if (is_vehicle_gun_selected && !g_gui->is_open() && elapsed_time_in_ms >= 100 && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) && WEAPON::IS_PED_WEAPON_READY_TO_SHOOT(self::ped))
 		{
 			Vector3 location = self::pos;
 
 			constexpr int rotation_order = 2;
 
 			Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(rotation_order);
-			float pitch = math::deg_to_rad(rot.x);// vertical
+			float pitch = math::deg_to_rad(rot.x); // vertical
 			//float roll = rot.y;
-			float yaw = math::deg_to_rad(rot.z + 90);// horizontal
+			float yaw = math::deg_to_rad(rot.z + 90); // horizontal
 
 			float dist = 10.f;
 			location.x += dist * cos(pitch) * cos(yaw);

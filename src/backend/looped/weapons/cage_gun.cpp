@@ -9,7 +9,7 @@ namespace big
 	{
 		bool bCageGun = g.weapons.custom_weapon == CustomWeapon::CAGE_GUN;
 
-		if (bCageGun)
+		if (bCageGun && WEAPON::IS_PED_WEAPON_READY_TO_SHOOT(self::ped))
 		{
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
