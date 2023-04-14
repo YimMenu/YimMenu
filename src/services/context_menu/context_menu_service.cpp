@@ -85,8 +85,8 @@ namespace big
 			    &screen_result.y);
 			if (success)
 			{
-				screen_result.x = static_cast<float>(*g_pointers->m_resolution_x) * screen_result.x;
-				screen_result.y = static_cast<float>(*g_pointers->m_resolution_y) * screen_result.y;
+				screen_result.x = static_cast<float>(*g_pointers->m_gta.m_resolution_x) * screen_result.x;
+				screen_result.y = static_cast<float>(*g_pointers->m_gta.m_resolution_y) * screen_result.y;
 			}
 			else
 			{
@@ -193,7 +193,7 @@ namespace big
 	void context_menu_service::get_entity_closest_to_screen_center()
 	{
 		m_pointer = nullptr;
-		if (const auto replay = *g_pointers->m_replay_interface; replay)
+		if (const auto replay = *g_pointers->m_gta.m_replay_interface; replay)
 		{
 			const auto veh_interface = replay->m_vehicle_interface;
 			const auto ped_interface = replay->m_ped_interface;
@@ -212,7 +212,7 @@ namespace big
 						const auto temp_pointer = entity.m_entity_ptr;
 						if (!temp_pointer || !temp_pointer->m_navigation)
 							continue;
-						const auto temp_handle = g_pointers->m_ptr_to_handle(temp_pointer);
+						const auto temp_handle = g_pointers->m_gta.m_ptr_to_handle(temp_pointer);
 
 						const auto pos = temp_pointer->m_navigation->get_position();
 						HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos->x,
@@ -245,7 +245,7 @@ namespace big
 					    && reinterpret_cast<CPed*>(m_pointer)->m_vehicle)
 					{
 						m_pointer = reinterpret_cast<CPed*>(m_pointer)->m_vehicle;
-						m_handle  = g_pointers->m_ptr_to_handle(m_pointer);
+						m_handle  = g_pointers->m_gta.m_ptr_to_handle(m_pointer);
 					}
 					fill_model_bounding_box_screen_space();
 				}

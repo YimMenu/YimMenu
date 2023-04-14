@@ -12,7 +12,7 @@ namespace big
 		{
 			if (g_local_player && g_local_player->m_vehicle)
 			{
-				const Vehicle veh = g_pointers->m_ptr_to_handle(g_local_player->m_vehicle);
+				const Vehicle veh = g_pointers->m_gta.m_ptr_to_handle(g_local_player->m_vehicle);
 				teleport::into_vehicle(veh);
 			}
 		}

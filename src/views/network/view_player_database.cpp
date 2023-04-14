@@ -21,7 +21,7 @@ namespace big
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("PLAYER"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
 
-		if (ImGui::ListBoxHeader("###players", {180, static_cast<float>(*g_pointers->m_resolution_y - 400 - 38 * 4)}))
+		if (ImGui::ListBoxHeader("###players", {180, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 400 - 38 * 4)}))
 		{
 			auto& item_arr = g_player_database_service->get_players();
 			if (item_arr.size() > 0)
@@ -78,7 +78,7 @@ namespace big
 		if (auto selected = g_player_database_service->get_selected())
 		{
 			ImGui::SameLine();
-			if (ImGui::BeginChild("###selected_player", {500, static_cast<float>(*g_pointers->m_resolution_y - 388 - 38 * 4)}, false, ImGuiWindowFlags_NoBackground))
+			if (ImGui::BeginChild("###selected_player", {500, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 388 - 38 * 4)}, false, ImGuiWindowFlags_NoBackground))
 			{
 				if (ImGui::InputText("NAME"_T.data(), name_buf, sizeof(name_buf)))
 				{

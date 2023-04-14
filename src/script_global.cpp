@@ -22,6 +22,6 @@ namespace big
 
 	void* script_global::get()
 	{
-		return g_pointers->m_script_globals[m_index >> 0x12 & 0x3F] + (m_index & 0x3FFFF);
+		return g_pointers->m_gta.m_script_globals[m_index >> 0x12 & 0x3F] + (m_index & 0x3FFFF);
 	}
 }

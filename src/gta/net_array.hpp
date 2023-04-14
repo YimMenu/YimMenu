@@ -211,7 +211,7 @@ namespace rage
 #if 0
 		static inline netArrayHandlerBase* get_by_data(void* data)
 		{
-			if (auto array_mgr = *big::g_pointers->m_game_array_mgr)
+			if (auto array_mgr = *big::g_pointers->m_gta.m_game_array_mgr)
 			{
 				if (auto handler = array_mgr->m_start)
 				{

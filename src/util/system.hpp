@@ -15,7 +15,7 @@ namespace big::system
 
 		for (auto& map : g_crossmap)
 		{
-			auto address = g_pointers->m_get_native_handler(g_pointers->m_native_registration_table, map.second);
+			auto address = g_pointers->m_gta.m_get_native_handler(g_pointers->m_gta.m_native_registration_table, map.second);
 
 			file << std::hex << std::uppercase << "0x" << map.first << " : GTA5.exe + 0x" << (DWORD64)address - base_address << std::endl;
 		}

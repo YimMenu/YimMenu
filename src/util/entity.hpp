@@ -72,9 +72,9 @@ namespace big::entity
 
 	inline bool take_control_of(Entity ent, int timeout = 300)
 	{
-		if (auto hnd = g_pointers->m_handle_to_ptr(ent))
+		if (auto hnd = g_pointers->m_gta.m_handle_to_ptr(ent))
 		{
-			if (!*g_pointers->m_is_session_started || !hnd->m_net_object || network_has_control_of_entity(hnd->m_net_object))
+			if (!*g_pointers->m_gta.m_is_session_started || !hnd->m_net_object || network_has_control_of_entity(hnd->m_net_object))
 			{
 				return true;
 			}
@@ -86,17 +86,17 @@ namespace big::entity
 
 		for (int i = 0; i < timeout; i++)
 		{
-			auto hnd = g_pointers->m_handle_to_ptr(ent);
+			auto hnd = g_pointers->m_gta.m_handle_to_ptr(ent);
 
 			if (!hnd || !hnd->m_net_object)
 				return false;
 
-			g_pointers->m_request_control(hnd->m_net_object);
+			g_pointers->m_gta.m_request_control(hnd->m_net_object);
 			if (timeout != 0)
 				script::get_current()->yield();
 		}
 
-		auto hnd = g_pointers->m_handle_to_ptr(ent);
+		auto hnd = g_pointers->m_gta.m_handle_to_ptr(ent);
 		if (!hnd || !hnd->m_net_object || !network_has_control_of_entity(hnd->m_net_object))
 			return false;
 
@@ -109,7 +109,7 @@ namespace big::entity
 	{
 		std::vector<Entity> target_entities;
 		target_entities.clear();
-		const auto replay_interface = *g_pointers->m_replay_interface;
+		const auto replay_interface = *g_pointers->m_gta.m_replay_interface;
 		if (!replay_interface)
 			return target_entities;
 
@@ -125,7 +125,7 @@ namespace big::entity
 				if (vehicle_ptr == gta_util::get_local_vehicle())
 					continue;
 
-				const auto veh = g_pointers->m_ptr_to_handle(vehicle_ptr);
+				const auto veh = g_pointers->m_gta.m_ptr_to_handle(vehicle_ptr);
 				if (!veh)
 					break;
 
@@ -146,7 +146,7 @@ namespace big::entity
 				if (ped_ptr == gta_util::get_local_ped())
 					continue;
 
-				const auto ped = g_pointers->m_ptr_to_handle(ped_ptr);
+				const auto ped = g_pointers->m_gta.m_ptr_to_handle(ped_ptr);
 				if (!ped)
 					break;
 
@@ -209,7 +209,7 @@ namespace big::entity
 		Entity closest_entity{};
 		float distance = 1;
 
-		auto replayInterface = *g_pointers->m_replay_interface;
+		auto replayInterface = *g_pointers->m_gta.m_replay_interface;
 		auto vehicleInterface = replayInterface->m_vehicle_interface;
 		auto pedInterface     = replayInterface->m_ped_interface;
 
@@ -217,7 +217,7 @@ namespace big::entity
 		{
 			if (veh.m_entity_ptr)
 			{
-				Vehicle handle = g_pointers->m_ptr_to_handle(veh.m_entity_ptr);
+				Vehicle handle = g_pointers->m_gta.m_ptr_to_handle(veh.m_entity_ptr);
 				Vector3 pos    = ENTITY::GET_ENTITY_COORDS(handle, 1);
 				rage::fvector2 screenpos;
 				HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos.x, pos.y, pos.z, &screenpos.x, &screenpos.y);
@@ -234,7 +234,7 @@ namespace big::entity
 		{
 			if (ped.m_entity_ptr)
 			{
-				Vehicle handle = g_pointers->m_ptr_to_handle(ped.m_entity_ptr);
+				Vehicle handle = g_pointers->m_gta.m_ptr_to_handle(ped.m_entity_ptr);
 				Vector3 pos    = ENTITY::GET_ENTITY_COORDS(handle, 1);
 				rage::fvector2 screenpos;
 				HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos.x, pos.y, pos.z, &screenpos.x, &screenpos.y);

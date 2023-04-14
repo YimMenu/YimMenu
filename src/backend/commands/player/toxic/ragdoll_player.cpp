@@ -17,7 +17,7 @@ namespace big
 		{
 			if (auto ped = player->get_ped())
 				if (auto net_object = ped->m_net_object)
-					g_pointers->m_request_ragdoll(net_object->m_object_id);
+					g_pointers->m_gta.m_request_ragdoll(net_object->m_object_id);
 		}
 	};
 
