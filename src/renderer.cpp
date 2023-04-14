@@ -35,7 +35,7 @@ namespace big
 		ImGui_ImplWin32_Init(g_pointers->m_hwnd);
 
 		g_fonts_service->init_render();
-			std::filesystem::path(std::getenv("SYSTEMROOT")) / "Fonts"
+			std::filesystem::path(std::getenv("SYSTEMROOT")) / "Fonts";
 		rescale(g.window.gui_scale);
 
 		rescale(g.window.gui_scale);
