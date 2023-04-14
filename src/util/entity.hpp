@@ -194,11 +194,10 @@ namespace big::entity
 
 	inline Entity get_entity_closest_to_middle_of_screen()
 	{
-	
 		Entity closest_entity{};
 		float distance = 1;
 
-		auto replayInterface = *g_pointers->m_gta.m_replay_interface;
+		auto replayInterface  = *g_pointers->m_gta.m_replay_interface;
 		auto vehicleInterface = replayInterface->m_vehicle_interface;
 		auto pedInterface     = replayInterface->m_ped_interface;
 
