@@ -873,7 +873,7 @@ namespace big
 
 		// get the beginning and the end of what we need to save / load
 		constexpr size_t offset_of_cache_begin_field = offsetof(big::pointers, m_offset_gta_module_cache_start) + sizeof(uintptr_t);
-		constexpr size_t offset_of_cache_end_field   = offsetof(big::pointers, m_offset_gta_module_cache_end);
+		constexpr size_t offset_of_cache_end_field = offsetof(big::pointers, m_offset_gta_module_cache_end);
 		constexpr size_t field_count = (offset_of_cache_end_field - offset_of_cache_begin_field) / sizeof(void*);
 
 		// stupid check to see if we are aligned, don't really guarantee that the for loop below will succeed
@@ -896,7 +896,7 @@ namespace big
 			// - save that to the cache
 			uintptr_t* cache_data = reinterpret_cast<uintptr_t*>(cache_data_ptr.get());
 
-			size_t i              = 0;
+			size_t i = 0;
 			for (uintptr_t field_ptr = pointer_to_cacheable_data_start; field_ptr != pointer_to_cacheable_data_end; field_ptr += sizeof(uintptr_t))
 			{
 				const uintptr_t field_value = *reinterpret_cast<uintptr_t*>(field_ptr);
