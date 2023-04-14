@@ -90,6 +90,22 @@ namespace big
 		});
 	}
 
+	void translation_service::update_language_packs()
+	{
+		for (auto item : std::filesystem::directory_iterator(m_translation_directory->get_path()))
+		{
+			const auto path = item.path();
+			const auto stem = path.stem().string();
+			if (stem == "index" || item.path().extension() != ".json")
+				continue;
+
+			if (!download_language_pack(stem))
+			{
+				LOG(WARNING) << "Failed to update '" << stem << "' language pack";
+			}
+		}
+	}
+
 	void translation_service::load_translations()
 	{
 		m_translations.clear();
@@ -150,22 +166,6 @@ namespace big
 			}
 		}
 		return false;
-	}
-
-	void translation_service::update_language_packs()
-	{
-		for (auto item : std::filesystem::directory_iterator(m_translation_directory->get_path()))
-		{
-			const auto path = item.path();
-			const auto stem = path.stem().string();
-			if (stem == "index" || item.path().extension() != ".json")
-				continue;
-
-			if (!download_language_pack(stem))
-			{
-				LOG(WARNING) << "Failed to update '" << stem << "' language pack";
-			}
-		}
 	}
 
 	bool translation_service::download_index()
