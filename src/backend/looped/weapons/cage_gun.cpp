@@ -24,7 +24,8 @@ namespace big
 							entity::cage_ped(entity);
 						}
 					}
-					else g_notification_service->push_error("Weapons", "No entity found.");
+					else
+						g_notification_service->push_error("Weapons", "No entity found.");
 				}
 			}
 		}

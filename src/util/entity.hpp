@@ -1,9 +1,10 @@
 #pragma once
 #include "gta/joaat.hpp"
 #include "gta/replay.hpp"
+#include "gta_util.hpp"
+#include "math.hpp"
 #include "natives.hpp"
 #include "script.hpp"
-#include "math.hpp"
 
 namespace big::entity
 {
@@ -42,15 +43,23 @@ namespace big::entity
 		Vector3 surfaceNormal;
 
 		Vector3 camCoords = CAM::GET_GAMEPLAY_CAM_COORD();
-		Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
-		Vector3 dir = math::rotation_to_direction(rot);
+		Vector3 rot       = CAM::GET_GAMEPLAY_CAM_ROT(2);
+		Vector3 dir       = math::rotation_to_direction(rot);
 		Vector3 farCoords;
 
 		farCoords.x = camCoords.x + dir.x * 1000;
 		farCoords.y = camCoords.y + dir.y * 1000;
 		farCoords.z = camCoords.z + dir.z * 1000;
 
-		int ray = SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(camCoords.x, camCoords.y, camCoords.z, farCoords.x, farCoords.y, farCoords.z, -1, 0, 7);
+		int ray = SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(camCoords.x,
+		    camCoords.y,
+		    camCoords.z,
+		    farCoords.x,
+		    farCoords.y,
+		    farCoords.z,
+		    -1,
+		    0,
+		    7);
 		SHAPETEST::GET_SHAPE_TEST_RESULT(ray, &hit, &endCoords, &surfaceNormal, ent);
 
 		return (bool)hit;
@@ -63,22 +72,169 @@ namespace big::entity
 
 	inline bool take_control_of(Entity ent, int timeout = 300)
 	{
-		auto ptr = g_pointers->m_handle_to_ptr(ent);
-		if (ptr)
+		auto hnd = g_pointers->m_handle_to_ptr(ent);
+
+		if (!hnd || !hnd->m_net_object || !*g_pointers->m_is_session_started)
+			return false;
+
+		if (network_has_control_of_entity(hnd->m_net_object))
+			return true;
+
+		for (int i = 0; i < timeout; i++)
 		{
-			if (!*g_pointers->m_is_session_started || network_has_control_of_entity(ptr->m_net_object))
+			g_pointers->m_request_control(hnd->m_net_object);
+
+			if (network_has_control_of_entity(hnd->m_net_object))
 				return true;
-			for (int i = 0; !network_has_control_of_entity(ptr->m_net_object) && i < timeout; i++)
+
+			if (timeout != 0)
+				script::get_current()->yield();
+		}
+
+		return false;
+	}
+
+	inline std::vector<Entity> get_entities(bool vehicles, bool peds)
+	{
+		std::vector<Entity> target_entities;
+		target_entities.clear();
+		const auto replay_interface = *g_pointers->m_replay_interface;
+		if (!replay_interface)
+			return target_entities;
+
+		if (vehicles)
+		{
+			const auto vehicle_interface = replay_interface->m_vehicle_interface;
+			for (int i = 0; i < vehicle_interface->m_max_vehicles; i++)
 			{
-				g_pointers->m_request_control(ptr->m_net_object);
-				if (timeout != 0)
-					script::get_current()->yield();
+				const auto vehicle_ptr = vehicle_interface->get_vehicle(i);
+				if (!vehicle_ptr)
+					continue;
+
+				if (vehicle_ptr == gta_util::get_local_vehicle())
+					continue;
+
+				const auto veh = g_pointers->m_ptr_to_handle(vehicle_ptr);
+				if (!veh)
+					break;
+
+				target_entities.push_back(veh);
 			}
-			if (!network_has_control_of_entity(ptr->m_net_object))
-				return false;
-			int netHandle = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(ent);
-			NETWORK::SET_NETWORK_ID_CAN_MIGRATE(netHandle, true);
-		}		
-		return true;
+		}
+
+		if (peds)
+		{
+			const auto ped_interface = replay_interface->m_ped_interface;
+			for (int i = 0; i < ped_interface->m_max_peds; i++)
+			{
+				const auto ped_ptr = ped_interface->get_ped(i);
+				if (!ped_ptr)
+					continue;
+
+				//make sure to don't include ourselves
+				if (ped_ptr == gta_util::get_local_ped())
+					continue;
+
+				const auto ped = g_pointers->m_ptr_to_handle(ped_ptr);
+				if (!ped)
+					break;
+
+				target_entities.push_back(ped);
+			}
+		}
+		return target_entities;
+	}
+
+	inline bool load_ground_at_3dcoord(Vector3& location)
+	{
+		float groundZ;
+		const uint8_t attempts = 10;
+
+		for (uint8_t i = 0; i < attempts; i++)
+		{
+			// Only request a collision after the first try failed because the location might already be loaded on first attempt.
+			for (uint16_t z = 0; i && z < 1000; z += 100)
+			{
+				STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, (float)z);
+
+				script::get_current()->yield();
+			}
+
+			if (MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, 1000.f, &groundZ, false, false))
+			{
+				location.z = groundZ + 1.f;
+
+				return true;
+			}
+
+			script::get_current()->yield();
+		}
+
+		location.z = 1000.f;
+
+		return false;
+	}
+
+	inline double distance_to_middle_of_screen(const rage::fvector2& screen_pos)
+	{
+		double cumulative_distance{};
+
+		if (screen_pos.x > 0.5)
+			cumulative_distance += screen_pos.x - 0.5;
+		else
+			cumulative_distance += 0.5 - screen_pos.x;
+
+		if (screen_pos.y > 0.5)
+			cumulative_distance += screen_pos.y - 0.5;
+		else
+			cumulative_distance += 0.5 - screen_pos.y;
+
+		return cumulative_distance;
+	}
+
+	inline Entity get_entity_closest_to_middle_of_screen()
+	{
+		Entity closest_entity{};
+		float distance = 1;
+
+		auto replayInterface  = *g_pointers->m_replay_interface;
+		auto vehicleInterface = replayInterface->m_vehicle_interface;
+		auto pedInterface     = replayInterface->m_ped_interface;
+
+		for (const auto veh : (*vehicleInterface->m_vehicle_list))
+		{
+			if (veh.m_entity_ptr)
+			{
+				Vehicle handle = g_pointers->m_ptr_to_handle(veh.m_entity_ptr);
+				Vector3 pos    = ENTITY::GET_ENTITY_COORDS(handle, 1);
+				rage::fvector2 screenpos;
+				HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos.x, pos.y, pos.z, &screenpos.x, &screenpos.y);
+
+				if (distance_to_middle_of_screen(screenpos) < distance && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(PLAYER::PLAYER_PED_ID(), handle, 17))
+				{
+					closest_entity = handle;
+					distance       = distance_to_middle_of_screen(screenpos);
+				}
+			}
+		}
+
+		for (auto ped : *pedInterface->m_ped_list)
+		{
+			if (ped.m_entity_ptr)
+			{
+				Vehicle handle = g_pointers->m_ptr_to_handle(ped.m_entity_ptr);
+				Vector3 pos    = ENTITY::GET_ENTITY_COORDS(handle, 1);
+				rage::fvector2 screenpos;
+				HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos.x, pos.y, pos.z, &screenpos.x, &screenpos.y);
+
+				if (distance_to_middle_of_screen(screenpos) < distance && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(PLAYER::PLAYER_PED_ID(), handle, 17) && handle != PLAYER::PLAYER_PED_ID())
+				{
+					closest_entity = handle;
+					distance       = distance_to_middle_of_screen(screenpos);
+				}
+			}
+		}
+
+		return closest_entity;
 	}
 }

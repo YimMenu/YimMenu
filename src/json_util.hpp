@@ -2,7 +2,7 @@
 
 namespace big
 {
-	template <typename ValueType>
+	template<typename ValueType>
 	static inline void set_from_key_or_default(const nlohmann::json& j, const char* key, ValueType& value, ValueType default_value = {})
 	{
 		if (j.contains(key) && !j[key].is_null())

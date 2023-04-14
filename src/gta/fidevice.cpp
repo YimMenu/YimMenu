@@ -1,9 +1,12 @@
 #include "fidevice.hpp"
 #include "pointers.hpp"
+#include "hooking.hpp"
 
 namespace rage
 {
-	#define PURECALL() LOG(FATAL) << "pure fiDevice call (" __FUNCTION__ ")"; return 0
+#define PURECALL()                                         \
+	LOG(FATAL) << "pure fiDevice call (" __FUNCTION__ ")"; \
+	return 0
 
 	fiDeviceImplemented::fiDeviceImplemented()
 	{
@@ -11,15 +14,16 @@ namespace rage
 
 	fiDeviceImplemented::~fiDeviceImplemented()
 	{
-
 	}
 
 	fiDevice::~fiDevice()
 	{
-
 	}
 
-	uint64_t fiDeviceImplemented::Open(const char* fileName, bool) { PURECALL(); }
+	uint64_t fiDeviceImplemented::Open(const char* fileName, bool)
+	{
+		PURECALL();
+	}
 
 	uint64_t fiDeviceImplemented::OpenBulk(const char* fileName, uint64_t* ptr)
 	{
@@ -258,6 +262,6 @@ namespace rage
 
 	bool fiPackfile::Mount(const char* mount_point)
 	{
-		return big::g_pointers->m_fipackfile_mount(this, mount_point);
+		return big::g_hooking->get_original<big::hooks::fipackfile_mount>()(this, mount_point);
 	}
 }

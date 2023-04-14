@@ -1,11 +1,11 @@
 #pragma once
+#include "MinHook.h"
 #include "common.hpp"
 #include "detour_hook.hpp"
+#include "gta/enums.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/script_thread.hpp"
 #include "vmt_hook.hpp"
-#include "MinHook.h"
-#include "gta/enums.hpp"
 
 class CPlayerGamerDataNode;
 class CPlayerGameStateDataNode;
@@ -23,6 +23,13 @@ class CNetworkIncrementStatEvent;
 class CScriptedGameEvent;
 class NetworkGameFilterMatchmakingComponent;
 class ClonedTakeOffPedVariationInfo;
+class CPlayerCardStats;
+class CStatsSerializationContext;
+class CPlayerCreationDataNode;
+class CPlayerAppearanceDataNode;
+class CFoundDevice;
+class IDirectSoundCapture;
+class CVehicleProximityMigrationDataNode;
 
 namespace rage
 {
@@ -49,11 +56,11 @@ namespace big
 	{
 		static bool run_script_threads(std::uint32_t ops_to_execute);
 
-		static constexpr auto swapchain_num_funcs = 19;
-		static constexpr auto swapchain_present_index = 8;
+		static constexpr auto swapchain_num_funcs           = 19;
+		static constexpr auto swapchain_present_index       = 8;
 		static constexpr auto swapchain_resizebuffers_index = 13;
-		static HRESULT swapchain_present(IDXGISwapChain *this_, UINT sync_interval, UINT flags);
-		static HRESULT swapchain_resizebuffers(IDXGISwapChain *this_, UINT buffer_count, UINT width, UINT height, DXGI_FORMAT new_format, UINT swapchain_flags);
+		static HRESULT swapchain_present(IDXGISwapChain* this_, UINT sync_interval, UINT flags);
+		static HRESULT swapchain_resizebuffers(IDXGISwapChain* this_, UINT buffer_count, UINT width, UINT height, DXGI_FORMAT new_format, UINT swapchain_flags);
 
 		static LRESULT wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
@@ -71,16 +78,7 @@ namespace big
 		static bool fragment_physics_crash(uintptr_t a1, uint32_t a2, uintptr_t a3, uintptr_t a4, uintptr_t a5);
 		static bool fragment_physics_crash_2(float* a1, float* a2);
 
-		static void received_event(
-			rage::netEventMgr* event_manager,
-			CNetGamePlayer* source_player,
-			CNetGamePlayer* target_player,
-			uint16_t event_id,
-			int event_index,
-			int event_handled_bitset,
-			int unk,
-			rage::datBitBuffer* bit_buffer
-		);
+		static void received_event(rage::netEventMgr* event_manager, CNetGamePlayer* source_player, CNetGamePlayer* target_player, uint16_t event_id, int event_index, int event_handled_bitset, int unk, rage::datBitBuffer* bit_buffer);
 
 		// these two aren't actually hooks, just helper functions for hooks
 		static bool increment_stat_event(CNetworkIncrementStatEvent* net_event_struct, CNetGamePlayer* sender);
@@ -102,12 +100,12 @@ namespace big
 		static void invalid_mods_crash_detour(int64_t a1, int64_t a2, int a3, char a4);
 		static std::int64_t constraint_attachment_crash(std::uintptr_t a1);
 		static uint64_t invalid_decal(uintptr_t a1, int a2);
+		static uint64_t task_parachute_object_0x270(uint64_t _this, int a2, int a3);
 
 		static bool update_presence_attribute_int(void* presence_data, int profile_index, char* attr, std::uint64_t value);
 		static bool update_presence_attribute_string(void* presence_data, int profile_index, char* attr, char* value);
 
 		static void serialize_ped_inventory_data_node(CPedInventoryDataNode* node, rage::CSyncDataBase* data);
-		static void serialize_dynamic_entity_game_state_data_node(CDynamicEntityGameStateDataNode* node, rage::CSyncDataBase* data);
 		static void serialize_vehicle_gadget_data_node(CVehicleGadgetDataNode* node, rage::CSyncDataBase* data);
 
 		static bool handle_join_request(Network* network, rage::snSession* session, rage::rlGamerInfo* player_info, CJoinRequestContext* ctx, BOOL is_transition_session);
@@ -151,8 +149,25 @@ namespace big
 
 		static bool write_player_camera_data_node(rage::netObject* player, CPlayerCameraDataNode* node);
 
+		static rage::netGameEvent* send_player_card_stats(rage::netGameEvent* a1, CPlayerCardStats* stats);
+		static void serialize_stats(CStatsSerializationContext* context, rage::joaat_t* stats, std::uint32_t stat_count);
+
+		static void write_player_creation_data_node(rage::netObject* player, CPlayerCreationDataNode* node);
+		static void write_player_appearance_data_node(rage::netObject* player, CPlayerAppearanceDataNode* node);
+
+		static void task_jump_constructor(std::uint64_t a1, int a2);
+
 		static CBaseModelInfo* get_model_info(rage::joaat_t hash, uint32_t* a2);
-};
+
+		static int enumerate_audio_devices(CFoundDevice* found_devices, int count, int flags);
+		static HRESULT direct_sound_capture_create(GUID* guid, IDirectSoundCapture** sound, void* unknown);
+
+		static void write_vehicle_proximity_migration_data_node(rage::netObject* veh, CVehicleProximityMigrationDataNode* node);
+
+		static bool fipackfile_mount(rage::fiPackfile* this_, const char* mount_point);
+
+		static bool allow_weapons_in_vehicle(int64_t unk, int weaponinfo_group);
+	};
 
 	class minhook_keepalive
 	{
@@ -170,6 +185,7 @@ namespace big
 	class hooking
 	{
 		friend hooks;
+
 	public:
 		explicit hooking();
 		~hooking();
@@ -181,7 +197,7 @@ namespace big
 		{
 			friend hooking;
 
-			using ret_ptr_fn = std::function<void* ()>;
+			using ret_ptr_fn = std::function<void*()>;
 
 			ret_ptr_fn m_on_hooking_available = nullptr;
 
@@ -191,16 +207,16 @@ namespace big
 
 			void enable_hook_if_hooking_is_already_running();
 
-			template <auto detour_function>
+			template<auto detour_function>
 			struct hook_to_detour_hook_helper
 			{
 				static inline detour_hook* m_detour_hook;
 			};
 
-			template <auto detour_function>
+			template<auto detour_function>
 			static detour_hook_helper* add_internal(detour_hook* dh)
 			{
-				auto d = new detour_hook_helper();
+				auto d           = new detour_hook_helper();
 				d->m_detour_hook = dh;
 
 				m_detour_hook_helpers.push_back(d);
@@ -210,7 +226,7 @@ namespace big
 			}
 
 		public:
-			template <auto detour_function>
+			template<auto detour_function>
 			static void add(const std::string& name, void* target)
 			{
 				auto d = add_internal<detour_function>(new detour_hook(name, target, detour_function));
@@ -218,10 +234,10 @@ namespace big
 				d->enable_hook_if_hooking_is_already_running();
 			}
 
-			template <auto detour_function>
+			template<auto detour_function>
 			static void* add_lazy(const std::string& name, detour_hook_helper::ret_ptr_fn on_hooking_available)
 			{
-				auto d = add_internal<detour_function>(new detour_hook(name, detour_function));
+				auto d                    = add_internal<detour_function>(new detour_hook(name, detour_function));
 				d->m_on_hooking_available = on_hooking_available;
 
 				d->enable_hook_if_hooking_is_already_running();
@@ -230,7 +246,7 @@ namespace big
 			}
 		};
 
-		template <auto detour_function>
+		template<auto detour_function>
 		static auto get_original()
 		{
 			return detour_hook_helper::hook_to_detour_hook_helper<detour_function>::m_detour_hook->get_original<decltype(detour_function)>();

@@ -1,5 +1,5 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -20,5 +20,6 @@ namespace big
 		}
 	};
 
-	no_vehicle_water_collision g_no_vehicle_water_collision("driveunder", "Drive Underwater", "Allows you to drive underwater", g.vehicle.no_water_collision);
+	no_vehicle_water_collision
+	    g_no_vehicle_water_collision("driveunder", "Drive Underwater", "Allows you to drive underwater", g.vehicle.no_water_collision);
 }

@@ -1,6 +1,6 @@
-#include "views/view.hpp"
 #include "fiber_pool.hpp"
 #include "util/session.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -22,15 +22,13 @@ namespace big
 
 		if (ImGui::TreeNode("LOCAL_WEATHER"_T.data()))
 		{
-			components::button("CLEAR_OVERRIDE"_T, []
-			{
+			components::button("CLEAR_OVERRIDE"_T, [] {
 				MISC::CLEAR_OVERRIDE_WEATHER();
 			});
 
 			if (ImGui::ListBox("##weather-listbox", &g.session.local_weather, session::weathers, 15))
 			{
-				g_fiber_pool->queue_job([]
-				{
+				g_fiber_pool->queue_job([] {
 					session::local_weather();
 				});
 

@@ -25,6 +25,9 @@ namespace big
 
 		void set_selected(persistent_player* selected);
 		persistent_player* get_selected();
+
+		void update_player_states();
+		void invalidate_player_states();
 	};
 
 	inline player_database_service* g_player_database_service;

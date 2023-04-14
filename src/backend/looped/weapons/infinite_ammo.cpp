@@ -1,14 +1,11 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
+#include "natives.hpp"
 
 namespace big
 {
 	class infinite_ammo : looped_command
 	{
 		using looped_command::looped_command;
-
-		CWeaponInfo* p_modified_weapon = nullptr;
-		float og_recoil_value = 0.0f;
 
 		virtual void on_tick() override
 		{

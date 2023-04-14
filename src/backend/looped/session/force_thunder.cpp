@@ -1,7 +1,7 @@
 #include "backend/looped/looped.hpp"
+#include "gta_util.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "gta_util.hpp"
 #include "util/session.hpp"
 
 namespace big

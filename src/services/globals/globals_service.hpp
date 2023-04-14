@@ -39,7 +39,7 @@ namespace big
 
 	private:
 		int m_offset = 0;
-		int m_size = 0;
+		int m_size   = 0;
 	};
 
 	struct global
@@ -55,22 +55,22 @@ namespace big
 			m_internal_id = ++m_instance_count;
 
 			m_base_address = data["base_address"];
-			m_freeze = data["freeze"];
-			m_name = data["name"];
-			m_value = data["value"];
+			m_freeze       = data["freeze"];
+			m_name         = data["name"];
+			m_value        = data["value"];
 
 			for (auto& offset : data["offsets"])
 				m_offsets.push_back(global_offset(offset));
 		}
 
-		global(const char* name, const int base_address, const bool freeze, const int(*offsets)[2], int offset_count)
+		global(const char* name, const int base_address, const bool freeze, const int (*offsets)[2], int offset_count)
 		{
 			m_internal_id = ++m_instance_count;
 
 			m_base_address = base_address;
-			m_freeze = freeze;
-			m_name = std::string(name);
-			m_value = 0;
+			m_freeze       = freeze;
+			m_name         = std::string(name);
+			m_value        = 0;
 
 			for (int i = 0; i < offset_count; i++)
 				m_offsets.push_back(global_offset(offsets[i][0], offsets[i][1]));
@@ -110,9 +110,9 @@ namespace big
 			nlohmann::json j;
 
 			j["base_address"] = m_base_address;
-			j["freeze"] = m_freeze;
-			j["name"] = m_name;
-			j["value"] = m_value;
+			j["freeze"]       = m_freeze;
+			j["name"]         = m_name;
+			j["value"]        = m_value;
 
 			j["offsets"] = nlohmann::json::array();
 			for (auto& offset : m_offsets)
@@ -146,7 +146,9 @@ namespace big
 		void save();
 
 		std::vector<global> m_globals;
-		bool m_running = false;;
+		bool m_running = false;
+		;
+
 	private:
 		void build(nlohmann::json& data);
 	};

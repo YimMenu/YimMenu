@@ -1,6 +1,6 @@
+#include "services/hotkey/hotkey_service.hpp"
 #include "views/view.hpp"
 #include "widgets/imgui_hotkey.hpp"
-#include "services/hotkey/hotkey_service.hpp"
 
 namespace big
 {
@@ -40,8 +40,16 @@ namespace big
 			g_hotkey_service->update_hotkey("invisveh", g.settings.hotkeys.invisveh);
 		if (ImGui::Hotkey("Toggle Local Veh Invisibility", &g.settings.hotkeys.localinvisveh))
 			g_hotkey_service->update_hotkey("localinvisveh", g.settings.hotkeys.localinvisveh);
+		if (ImGui::Hotkey("Fill Ammo", &g.settings.hotkeys.fill_ammo));
+			g_hotkey_service->update_hotkey("fillammo", g.settings.hotkeys.fill_ammo);
 		if (ImGui::Hotkey("Rage Quit (Like Alt + F4)", &g.settings.hotkeys.fast_quit))
 			g_hotkey_service->update_hotkey("fastquit", g.settings.hotkeys.fast_quit);
+		if (ImGui::Hotkey("Toggle Command Executor", &g.settings.hotkeys.cmd_excecutor))
+			g_hotkey_service->update_hotkey("cmdexecutor", g.settings.hotkeys.cmd_excecutor);
+		if (ImGui::Hotkey("Repair PV", &g.settings.hotkeys.repairpv))
+			g_hotkey_service->update_hotkey("repairpv", g.settings.hotkeys.repairpv);
+		if (ImGui::Hotkey("Vehicle controller", &g.settings.hotkeys.open_vehicle_controller))
+			g_hotkey_service->update_hotkey("vehiclecontroller", g.settings.hotkeys.open_vehicle_controller);
 
 		ImGui::PopItemWidth();
 	}

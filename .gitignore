@@ -5,6 +5,7 @@
 
 # output directory
 build/
+out/
 
 # precompiled headers
 *.ipch

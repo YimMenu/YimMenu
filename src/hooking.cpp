@@ -1,8 +1,9 @@
+#include "hooking.hpp"
+
 #include "common.hpp"
 #include "function_types.hpp"
 #include "gta/script_thread.hpp"
 #include "gui.hpp"
-#include "hooking.hpp"
 #include "memory/module.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
@@ -10,12 +11,13 @@
 #include "script_mgr.hpp"
 
 #include <MinHook.h>
+#include <vehicle/CVehicle.hpp>
 
 namespace big
 {
 	hooking::hooking() :
-		// Swapchain
-		m_swapchain_hook(*g_pointers->m_swapchain, hooks::swapchain_num_funcs)
+	    // Swapchain
+	    m_swapchain_hook(*g_pointers->m_swapchain, hooks::swapchain_num_funcs)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -28,12 +30,12 @@ namespace big
 		}
 
 		detour_hook_helper::add<hooks::run_script_threads>("SH", g_pointers->m_run_script_threads);
-		
+
 		detour_hook_helper::add<hooks::get_label_text>("GLT", g_pointers->m_get_label_text);
 
 		detour_hook_helper::add<hooks::check_chat_profanity>("CCP", g_pointers->m_check_chat_profanity);
-    
-        	detour_hook_helper::add<hooks::write_player_game_state_data_node>("WPGSDN", g_pointers->m_write_player_game_state_data_node);
+
+		detour_hook_helper::add<hooks::write_player_game_state_data_node>("WPGSDN", g_pointers->m_write_player_game_state_data_node);
 
 		detour_hook_helper::add<hooks::gta_thread_start>("GTS", g_pointers->m_gta_thread_start);
 		detour_hook_helper::add<hooks::gta_thread_kill>("GTK", g_pointers->m_gta_thread_kill);
@@ -59,11 +61,11 @@ namespace big
 		detour_hook_helper::add<hooks::invalid_mods_crash_detour>("IMCD", g_pointers->m_invalid_mods_crash_detour);
 		detour_hook_helper::add<hooks::constraint_attachment_crash>("CAC", g_pointers->m_constraint_attachment_crash);
 		detour_hook_helper::add<hooks::invalid_decal>("IDC", g_pointers->m_invalid_decal_crash);
+		detour_hook_helper::add<hooks::task_parachute_object_0x270>("TPO270", g_pointers->m_task_parachute_object_0x270);
 
 		detour_hook_helper::add<hooks::update_presence_attribute_int>("UPAI", g_pointers->m_update_presence_attribute_int);
 		detour_hook_helper::add<hooks::update_presence_attribute_string>("UPAS", g_pointers->m_update_presence_attribute_string);
 
-		detour_hook_helper::add<hooks::serialize_dynamic_entity_game_state_data_node>("SDEGSDN", g_pointers->m_serialize_dynamic_entity_game_state_data_node);
 		detour_hook_helper::add<hooks::serialize_ped_inventory_data_node>("SPIDN", g_pointers->m_serialize_ped_inventory_data_node);
 		detour_hook_helper::add<hooks::serialize_vehicle_gadget_data_node>("SVGDN", g_pointers->m_serialize_vehicle_gadget_data_node);
 
@@ -104,7 +106,24 @@ namespace big
 
 		detour_hook_helper::add<hooks::write_player_camera_data_node>("WPCDN", g_pointers->m_write_player_camera_data_node);
 
+		detour_hook_helper::add<hooks::send_player_card_stats>("SPCS", g_pointers->m_send_player_card_stats);
+		detour_hook_helper::add<hooks::serialize_stats>("SS", g_pointers->m_serialize_stats);
+
+		detour_hook_helper::add<hooks::write_player_creation_data_node>("WPCDN", g_pointers->m_write_player_creation_data_node);
+		detour_hook_helper::add<hooks::write_player_appearance_data_node>("WPADN", g_pointers->m_write_player_appearance_data_node);
+
 		detour_hook_helper::add<hooks::get_model_info>("GMI", g_pointers->m_get_model_info);
+
+		detour_hook_helper::add<hooks::task_jump_constructor>("TJC", g_pointers->m_taskjump_constructor);
+
+		detour_hook_helper::add<hooks::enumerate_audio_devices>("EAD", g_pointers->m_enumerate_audio_devices);
+		detour_hook_helper::add<hooks::direct_sound_capture_create>("DSCC", g_pointers->m_direct_sound_capture_create);
+
+		detour_hook_helper::add<hooks::write_vehicle_proximity_migration_data_node>("WVPMDN", g_pointers->m_write_vehicle_proximity_migration_data_node);
+
+		detour_hook_helper::add<hooks::fipackfile_mount>("FPFM", g_pointers->m_fipackfile_mount);
+
+		detour_hook_helper::add<hooks::allow_weapons_in_vehicle>("AWIV", g_pointers->m_allow_weapons_in_vehicle);
 
 		g_hooking = this;
 	}

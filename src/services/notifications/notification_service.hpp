@@ -1,7 +1,8 @@
 #pragma once
 namespace big
 {
-	enum class NotificationType {
+	enum class NotificationType
+	{
 		INFO,
 		SUCCESS,
 		WARNING,
@@ -33,12 +34,11 @@ namespace big
 		std::vector<notification> get();
 
 		std::map<NotificationType, ImVec4> notification_colors = {
-			{NotificationType::INFO, ImVec4(0.80f, 0.80f, 0.83f, 1.00f)},
-			{NotificationType::SUCCESS, ImVec4(0.29f, 0.69f, 0.34f, 1.00f)},
-			{NotificationType::WARNING, ImVec4(0.69f ,0.49f, 0.29f, 1.00f) },
-			{NotificationType::DANGER, ImVec4(0.69f, 0.29f , 0.29f, 1.00f)},
+		    {NotificationType::INFO, ImVec4(0.80f, 0.80f, 0.83f, 1.00f)},
+		    {NotificationType::SUCCESS, ImVec4(0.29f, 0.69f, 0.34f, 1.00f)},
+		    {NotificationType::WARNING, ImVec4(0.69f, 0.49f, 0.29f, 1.00f)},
+		    {NotificationType::DANGER, ImVec4(0.69f, 0.29f, 0.29f, 1.00f)},
 		};
-
 	};
 
 	inline notification_service* g_notification_service{};

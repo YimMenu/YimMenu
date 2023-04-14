@@ -1,11 +1,14 @@
 #pragma once
-#include "common.hpp"
 #include "base/HashTable.hpp"
-#include "socialclub/ScInfo.hpp"
+#include "common.hpp"
 #include "function_types.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/replay.hpp"
+#include "memory/batch.hpp"
 #include "memory/byte_patch.hpp"
+#include "memory/module.hpp"
+#include "services/gta_data/cache_file.hpp"
+#include "socialclub/ScInfo.hpp"
 
 class CCommunications;
 class FriendRegistry;
@@ -26,13 +29,55 @@ extern "C" std::uint64_t g_sound_overload_ret_addr;
 
 namespace big
 {
+	// needed for serialization of the pointers cache
+#pragma pack(push, 1)
 	class pointers
 	{
+	private:
+		bool is_pointers_cache_up_to_date(memory::batch& version_batch, const memory::module& mem_region);
+
+		// we can't cache things like pointers we allocate on the heap
+		void always_run_main_batch(const memory::module& mem_region);
+
+		void run_cacheable_main_batch(const memory::module& mem_region);
+
+		void run_socialclub_batch();
+
+		void freemode_thread_restorer_through_vm_patch(const memory::module& mem_region);
+
 	public:
 		explicit pointers();
 		~pointers();
+
+	private:
+		cache_file m_pointers_cache;
+
 	public:
 		HWND m_hwnd{};
+
+		memory::byte_patch* m_max_wanted_level;
+		memory::byte_patch* m_max_wanted_level_2;
+
+		memory::byte_patch* m_blame_explode;
+		memory::byte_patch* m_explosion_patch;
+
+		memory::byte_patch* m_disable_collision{};
+
+		memory::byte_patch* m_broadcast_patch;
+
+		uint32_t m_game_version_uint32_t;
+		float m_online_version_float;
+
+		// Pointers inside social club module START
+		PVOID m_update_presence_attribute_int;
+		PVOID m_update_presence_attribute_string;
+
+		functions::start_get_presence_attributes m_start_get_presence_attributes;
+		// Pointers inside social club module END
+
+		// don't remove, used for signaling the start of the pointers gta module offset cache
+		// Note: between the start and the end, only pointers coming from the gta 5 module should be in there
+		void* m_offset_gta_module_cache_start;
 
 		eGameState* m_game_state{};
 		bool* m_is_session_started{};
@@ -62,10 +107,6 @@ namespace big
 
 		uint32_t* m_region_code;
 
-		memory::byte_patch* m_max_wanted_level;
-		memory::byte_patch* m_max_wanted_level_2;
-
-		memory::byte_patch* m_blame_explode;
 		PVOID m_world_model_spawn_bypass;
 		PVOID m_native_return;
 		PVOID m_get_label_text;
@@ -118,7 +159,6 @@ namespace big
 		functions::get_sync_tree_for_type m_get_sync_tree_for_type{};
 		functions::get_sync_type_info m_get_sync_type_info{};
 		functions::get_net_object m_get_net_object{};
-		functions::get_net_object_for_player m_get_net_object_for_player{};
 		functions::read_bitbuffer_into_sync_tree m_read_bitbuffer_into_sync_tree{};
 		//Sync Signatures END
 
@@ -130,7 +170,6 @@ namespace big
 
 		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
 		functions::start_matchmaking_find_sessions m_start_matchmaking_find_sessions;
-		functions::start_get_presence_attributes m_start_get_presence_attributes;
 		functions::join_session_by_info m_join_session_by_info;
 
 		functions::reset_network_complaints m_reset_network_complaints{};
@@ -150,6 +189,7 @@ namespace big
 		PVOID m_invalid_mods_crash_detour{};
 		PVOID m_constraint_attachment_crash{};
 		PVOID m_invalid_decal_crash{};
+		PVOID m_task_parachute_object_0x270{};
 
 		int64_t** m_send_chat_ptr{};
 		functions::send_chat_message m_send_chat_message{};
@@ -159,14 +199,10 @@ namespace big
 
 		functions::generate_uuid m_generate_uuid{};
 		std::uint64_t* m_host_token{};
-		rage::rlGamerInfo* m_profile_gamer_info{}; // per profile gamer info
+		rage::rlGamerInfo* m_profile_gamer_info{};     // per profile gamer info
 		rage::rlGamerInfo* m_player_info_gamer_info{}; // the gamer info that is applied to CPlayerInfo
 		CCommunications** m_communications{};
 
-		PVOID m_update_presence_attribute_int;
-		PVOID m_update_presence_attribute_string;
-
-		PVOID m_serialize_dynamic_entity_game_state_data_node;
 		PVOID m_serialize_ped_inventory_data_node;
 		PVOID m_serialize_vehicle_gadget_data_node;
 		functions::get_vehicle_gadget_array_size m_get_vehicle_gadget_array_size;
@@ -197,11 +233,10 @@ namespace big
 		functions::handle_remove_gamer_cmd m_handle_remove_gamer_cmd{};
 
 		PVOID m_broadcast_net_array{};
-		memory::byte_patch* m_broadcast_patch;
 
 		rage::atSingleton<rage::RageSecurity>* m_security;
 		PVOID m_prepare_metric_for_sending;
-		
+
 		PVOID m_queue_dependency;
 		PVOID m_interval_check_func;
 
@@ -225,7 +260,7 @@ namespace big
 
 		functions::send_packet m_send_packet;
 		functions::connect_to_peer m_connect_to_peer;
-    
+
 		PVOID m_fragment_physics_crash;
 		PVOID m_fragment_physics_crash_2;
 
@@ -239,7 +274,30 @@ namespace big
 		PVOID m_receive_pickup{};
 
 		PVOID m_write_player_camera_data_node{};
+
+		PVOID m_send_player_card_stats{};
+		bool* m_force_player_card_refresh{};
+
+		PVOID m_serialize_stats{};
+
+		PVOID m_write_player_creation_data_node{};
+		PVOID m_write_player_appearance_data_node{};
+
+		PVOID m_enumerate_audio_devices{};
+		PVOID m_direct_sound_capture_create{};
+		bool* m_refresh_audio_input{};
+
+		PVOID m_allow_weapons_in_vehicle{};
+
+		PVOID m_taskjump_constructor{};
+
+		PVOID m_write_vehicle_proximity_migration_data_node{};
+		functions::migrate_object m_migrate_object{};
+
+		// don't remove, used for signaling the end of the pointers gta module offset cache
+		void* m_offset_gta_module_cache_end;
 	};
+#pragma pack(pop)
 
 	inline pointers* g_pointers{};
 }

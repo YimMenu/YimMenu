@@ -16,12 +16,12 @@ namespace big
 		void send(player_ptr player, int connection_id);
 		void send(int peer_id, int connection_id);
 
-		inline operator rage::datBitBuffer& ()
+		inline operator rage::datBitBuffer&()
 		{
 			return m_buffer;
 		}
 
-		template <typename T>
+		template<typename T>
 		inline void write(T data, int length)
 		{
 			m_buffer.Write<T>(data, length);

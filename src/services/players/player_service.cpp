@@ -1,11 +1,14 @@
-#include "gta_util.hpp"
 #include "player_service.hpp"
+
+#include "gta_util.hpp"
+
 #include <network/CNetworkPlayerMgr.hpp>
 
 namespace big
 {
-	player_service::player_service()
-		: m_self(), m_selected_player(m_dummy)
+	player_service::player_service() :
+	    m_self(),
+	    m_selected_player(m_dummy)
 	{
 		g_player_service = this;
 
@@ -65,7 +68,7 @@ namespace big
 	{
 		if (!m_self_ptr || !m_self_ptr->equals(*m_self))
 		{
-			m_self_ptr = std::make_shared<player>(*m_self);
+			m_self_ptr                       = std::make_shared<player>(*m_self);
 			m_self_ptr->command_access_level = CommandAccessLevel::ADMIN;
 		}
 
@@ -74,24 +77,27 @@ namespace big
 
 	void player_service::player_join(CNetGamePlayer* net_game_player)
 	{
-		if (net_game_player == nullptr || net_game_player == *m_self) return;
+		if (net_game_player == nullptr || net_game_player == *m_self)
+			return;
 
 		auto plyr = std::make_shared<player>(net_game_player);
-		m_players.insert({
-			plyr->get_name(),
-			std::move(plyr)
-		});
+		m_players.insert({plyr->get_name(), std::move(plyr)});
 	}
 
 	void player_service::player_leave(CNetGamePlayer* net_game_player)
 	{
-		if (net_game_player == nullptr) 
+		if (net_game_player == nullptr)
 			return;
 
 		if (m_selected_player && m_selected_player->equals(net_game_player))
 			m_selected_player = m_dummy;
 
-		if (auto it = std::find_if(m_players.begin(), m_players.end(), [net_game_player](const auto& p) { return p.second->id() == net_game_player->m_player_id; }); it != m_players.end())
+		if (auto it = std::find_if(m_players.begin(),
+		        m_players.end(),
+		        [net_game_player](const auto& p) {
+			        return p.second->id() == net_game_player->m_player_id;
+		        });
+		    it != m_players.end())
 		{
 			if (m_player_to_use_end_session_kick == it->second)
 				m_player_to_use_end_session_kick = std::nullopt;

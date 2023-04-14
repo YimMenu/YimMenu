@@ -3,7 +3,7 @@
 
 namespace big
 {
-	using dx_callback = std::function<void()>;
+	using dx_callback      = std::function<void()>;
 	using wndproc_callback = std::function<void(HWND, UINT, WPARAM, LPARAM)>;
 
 	class renderer final
@@ -38,8 +38,8 @@ namespace big
 		void wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 	private:
-        static void new_frame();
-        static void end_frame();
+		static void new_frame();
+		static void end_frame();
 
 	private:
 		IDXGISwapChain* m_dxgi_swapchain;

@@ -6,8 +6,7 @@ namespace rage
 	class matrix4x4
 	{
 	public:
-		union
-		{
+		union {
 			struct
 			{
 				vector4 _1;

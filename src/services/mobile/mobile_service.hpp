@@ -35,17 +35,18 @@ namespace big
 		mobile_service();
 		~mobile_service();
 
-		mobile_service(const mobile_service&) = delete;
-		mobile_service(mobile_service&&) noexcept = delete;
-		mobile_service& operator=(const mobile_service&) = delete;
+		mobile_service(const mobile_service&)                = delete;
+		mobile_service(mobile_service&&) noexcept            = delete;
+		mobile_service& operator=(const mobile_service&)     = delete;
 		mobile_service& operator=(mobile_service&&) noexcept = delete;
 
 		std::map<std::string, std::unique_ptr<personal_vehicle>>& personal_vehicles()
-		{ return m_personal_vehicles; }
+		{
+			return m_personal_vehicles;
+		}
 		void refresh_personal_vehicles();
 		void register_vehicles();
-
 	};
-	
+
 	inline mobile_service* g_mobile_service{};
 }

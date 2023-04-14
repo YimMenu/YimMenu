@@ -1,10 +1,10 @@
 #pragma once
+#include "rage/joaat.hpp"
+
 #include <cstddef>
 #include <cstdint>
 #include <string_view>
 #include <type_traits>
-
-#include "rage/joaat.hpp"
 
 namespace rage
 {

@@ -1,6 +1,6 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
 #include "gta/enums.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -21,5 +21,6 @@ namespace big
 		}
 	};
 
-	block_homing g_block_homing("blockhoming", "Block Homing Missiles", "Prevents homing missiles from locking on to your vehicle", g.vehicle.block_homing);
+	block_homing g_block_homing("blockhoming", "Block Homing Missiles", "Prevents homing missiles from locking on to your vehicle",
+	    g.vehicle.block_homing);
 }

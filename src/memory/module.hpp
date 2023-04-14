@@ -32,6 +32,5 @@ namespace memory
 	private:
 		const std::string_view m_name;
 		bool m_loaded;
-
 	};
 }

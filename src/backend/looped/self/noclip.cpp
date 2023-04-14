@@ -1,21 +1,14 @@
 #include "backend/looped/looped.hpp"
+#include "backend/looped_command.hpp"
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/entity.hpp"
-#include "backend/looped_command.hpp"
+#include "services/orbital_drone/orbital_drone.hpp"
 
 namespace big
 {
-	static constexpr ControllerInputs controls[] =
-	{
-		ControllerInputs::INPUT_SPRINT,
-		ControllerInputs::INPUT_MOVE_UP_ONLY,
-		ControllerInputs::INPUT_MOVE_DOWN_ONLY,
-		ControllerInputs::INPUT_MOVE_LEFT_ONLY,
-		ControllerInputs::INPUT_MOVE_RIGHT_ONLY,
-		ControllerInputs::INPUT_DUCK
-	};
+	static constexpr ControllerInputs controls[] = {ControllerInputs::INPUT_SPRINT, ControllerInputs::INPUT_MOVE_UP_ONLY, ControllerInputs::INPUT_MOVE_DOWN_ONLY, ControllerInputs::INPUT_MOVE_LEFT_ONLY, ControllerInputs::INPUT_MOVE_RIGHT_ONLY, ControllerInputs::INPUT_DUCK};
 
 	static constexpr float speed = 20.f;
 
@@ -28,6 +21,10 @@ namespace big
 
 		virtual void on_tick() override
 		{
+
+			if (g_orbital_drone_service.initialized())
+				return;
+
 			for (const auto& control : controls)
 				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(control), true);
 
@@ -43,7 +40,7 @@ namespace big
 				m_entity = ent;
 			}
 
-			Vector3 vel = { 0.f, 0.f, 0.f };
+			Vector3 vel = {0.f, 0.f, 0.f};
 
 			// Left Shift
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
@@ -81,8 +78,8 @@ namespace big
 				ENTITY::FREEZE_ENTITY_POSITION(ent, false);
 
 				const auto offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, vel.x, vel.y, 0.f);
-				vel.x = offset.x - location.x;
-				vel.y = offset.y - location.y;
+				vel.x             = offset.x - location.x;
+				vel.y             = offset.y - location.y;
 
 				ENTITY::SET_ENTITY_VELOCITY(ent, vel.x * m_speed_multiplier, vel.y * m_speed_multiplier, vel.z * m_speed_multiplier);
 			}
