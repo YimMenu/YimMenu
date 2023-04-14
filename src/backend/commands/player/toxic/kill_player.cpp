@@ -18,7 +18,7 @@ namespace big
 			if (!player->get_ped())
 				return;
 
-			g_pointers->m_send_network_damage(g_player_service->get_self()->get_ped(),
+			g_pointers->m_gta.m_send_network_damage(g_player_service->get_self()->get_ped(),
 			    player->get_ped(),
 			    player->get_ped()->m_navigation->get_position(),
 			    0,

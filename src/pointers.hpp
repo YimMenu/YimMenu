@@ -1,6 +1,5 @@
 #pragma once
 #include "base/HashTable.hpp"
-#include "common.hpp"
 #include "function_types.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/replay.hpp"
@@ -9,39 +8,108 @@
 #include "memory/module.hpp"
 #include "services/gta_data/cache_file.hpp"
 #include "socialclub/ScInfo.hpp"
-
-class CCommunications;
-class FriendRegistry;
-class CNetworkPlayerMgr;
-class Network;
-class ChatData;
-
-namespace rage
-{
-	template<typename T>
-	class atSingleton;
-	class RageSecurity;
-	class netTime;
-	class rlGamerInfo;
-}
-
-extern "C" std::uint64_t g_sound_overload_ret_addr;
+#include "util/compile_time_helpers.hpp"
+#include "gta_pointers.hpp"
+#include "sc_pointers.hpp"
 
 namespace big
 {
-	// needed for serialization of the pointers cache
-#pragma pack(push, 1)
 	class pointers
 	{
 	private:
-		bool is_pointers_cache_up_to_date(memory::batch& version_batch, const memory::module& mem_region);
+		template<cstxpr_str batch_name, auto batch_hash, size_t offset_of_cache_begin_field, size_t offset_of_cache_end_field, memory::batch batch>
+		void write_to_cache_or_read_from_cache(cache_file& cache_file, const memory::module& mem_region, const bool found_version_cache)
+		{
+			static_assert(batch_hash > 0);
 
-		// we can't cache things like pointers we allocate on the heap
-		void always_run_main_batch(const memory::module& mem_region);
+			cache_file.set_cache_version(batch_hash);
 
-		void run_cacheable_main_batch(const memory::module& mem_region);
+			const uintptr_t pointer_to_cacheable_data_start = reinterpret_cast<uintptr_t>(this) + offset_of_cache_begin_field;
 
-		void run_socialclub_batch();
+			if (!found_version_cache || !is_pointers_cache_up_to_date<batch_name>(cache_file, mem_region))
+			{
+				run_batch<batch_name>(batch, mem_region);
+
+				const uintptr_t pointer_to_cacheable_data_end = reinterpret_cast<uintptr_t>(this) + offset_of_cache_end_field;
+				write_pointers_to_cache<batch_name, offset_of_cache_begin_field, offset_of_cache_end_field>(cache_file, pointer_to_cacheable_data_start, pointer_to_cacheable_data_end, mem_region);
+			}
+			else
+			{
+				load_pointers_from_cache(cache_file, pointer_to_cacheable_data_start, mem_region);
+			}
+
+			cache_file.free();
+		}
+
+		void load_pointers_from_cache(const cache_file& cache_file, const uintptr_t pointer_to_cacheable_data_start, const memory::module& mem_region);
+
+		template<cstxpr_str batch_name, size_t offset_of_cache_begin_field, size_t offset_of_cache_end_field>
+		void write_pointers_to_cache(cache_file& cache_file, const uintptr_t pointer_to_cacheable_data_start, const uintptr_t pointer_to_cacheable_data_end, const memory::module& mem_region)
+		{
+			constexpr size_t data_size = offset_of_cache_end_field - offset_of_cache_begin_field;
+
+			cache_data cache_data_ptr = std::make_unique<std::uint8_t[]>(data_size);
+
+			// multiple things here:
+			// - iterate each cacheable field of the pointers instance
+			// - substract the base module address so that we only keep the offsets
+			// - save that to the cache
+			uintptr_t* cache_data = reinterpret_cast<uintptr_t*>(cache_data_ptr.get());
+
+			size_t i = 0;
+			for (uintptr_t field_ptr = pointer_to_cacheable_data_start; field_ptr != pointer_to_cacheable_data_end; field_ptr += sizeof(uintptr_t))
+			{
+				const uintptr_t field_value = *reinterpret_cast<uintptr_t*>(field_ptr);
+
+				if (mem_region.contains(memory::handle(field_value)))
+				{
+					const uintptr_t offset = field_value - mem_region.begin().as<uintptr_t>();
+					cache_data[i]          = offset;
+				}
+				else
+				{
+					LOG(FATAL) << "Just tried to save to cache a pointer supposedly within the " << batch_name.str << " module range but wasnt !!!Offset from start of pointers instance : " << (field_ptr - reinterpret_cast<uintptr_t>(this));
+				}
+
+				i++;
+			}
+
+			LOG(INFO) << "Pointers cache: saved " << (data_size / sizeof(uintptr_t)) << " fields to the cache";
+
+			cache_file.set_data(std::move(cache_data_ptr), data_size);
+
+			cache_file.set_header_version(m_game_version_uint32_t, m_online_version_float);
+			cache_file.write();
+		}
+
+		template<cstxpr_str batch_name>
+		bool is_pointers_cache_up_to_date(cache_file& cache_file, const memory::module& mem_region)
+		{
+			cache_file.load();
+
+			if (cache_file.up_to_date(m_game_version_uint32_t, m_online_version_float))
+			{
+				LOG(INFO) << batch_name.str << " pointers cache is up to date, using it.";
+
+				return true;
+			}
+
+			return false;
+		}
+
+		static constexpr auto get_gta_batch();
+		static constexpr auto get_sc_batch();
+
+		template<cstxpr_str batch_name, size_t N>
+		void run_batch(const memory::batch<N>& batch, const memory::module& mem_region)
+		{
+			if (!memory::batch_runner::run(batch, mem_region))
+			{
+				const std::string error_message =
+				    std::string("Failed to find some patterns for ") + std::string(batch_name.str);
+				throw std::runtime_error(error_message);
+			}
+		}
 
 		void freemode_thread_restorer_through_vm_patch(const memory::module& mem_region);
 
@@ -50,254 +118,24 @@ namespace big
 		~pointers();
 
 	private:
-		cache_file m_pointers_cache;
+		cache_file m_gta_pointers_cache;
+		cache_file m_sc_pointers_cache;
 
 	public:
 		HWND m_hwnd{};
 
-		memory::byte_patch* m_max_wanted_level;
-		memory::byte_patch* m_max_wanted_level_2;
-
-		memory::byte_patch* m_blame_explode;
-		memory::byte_patch* m_explosion_patch;
-
-		memory::byte_patch* m_disable_collision{};
-
-		memory::byte_patch* m_broadcast_patch;
+		// Those version pointers are not in the gta pointers struct due to always having to look for them in the binary
+		// (We use them as a way of checking if the cache needs to be updated or not on game updates)
+		const char* m_game_version;
+		const char* m_online_version;
 
 		uint32_t m_game_version_uint32_t;
 		float m_online_version_float;
 
-		// Pointers inside social club module START
-		PVOID m_update_presence_attribute_int;
-		PVOID m_update_presence_attribute_string;
+		gta_pointers m_gta;
 
-		functions::start_get_presence_attributes m_start_get_presence_attributes;
-		// Pointers inside social club module END
-
-		// don't remove, used for signaling the start of the pointers gta module offset cache
-		// Note: between the start and the end, only pointers coming from the gta 5 module should be in there
-		void* m_offset_gta_module_cache_start;
-
-		eGameState* m_game_state{};
-		bool* m_is_session_started{};
-
-		CPedFactory** m_ped_factory{};
-		CNetworkPlayerMgr** m_network_player_mgr{};
-		CNetworkObjectMgr** m_network_object_mgr{};
-		rage::CReplayInterface** m_replay_interface{};
-
-		functions::ptr_to_handle m_ptr_to_handle{};
-		functions::handle_to_ptr m_handle_to_ptr{};
-		rage::scrNativeRegistrationTable* m_native_registration_table{};
-		functions::get_native_handler m_get_native_handler{};
-		functions::fix_vectors m_fix_vectors{};
-
-		rage::atArray<GtaThread*>* m_script_threads{};
-		rage::scrProgramTable* m_script_program_table{};
-		functions::run_script_threads m_run_script_threads{};
-		std::int64_t** m_script_globals{};
-
-		CGameScriptHandlerMgr** m_script_handler_mgr{};
-
-		IDXGISwapChain** m_swapchain{};
-
-		int* m_resolution_x;
-		int* m_resolution_y;
-
-		uint32_t* m_region_code;
-
-		PVOID m_world_model_spawn_bypass;
-		PVOID m_native_return;
-		PVOID m_get_label_text;
-		functions::check_chat_profanity* m_check_chat_profanity{};
-		functions::write_player_game_state_data_node m_write_player_game_state_data_node{};
-
-		ChatData** m_chat_data;
-		ScInfo* m_sc_info;
-		FriendRegistry* m_friend_registry{};
-
-		functions::get_screen_coords_for_world_coords m_get_screen_coords_for_world_coords{};
-
-		HashTable<CBaseModelInfo*>* m_model_table;
-		PVOID m_get_model_info;
-
-		PVOID m_gta_thread_start{};
-		PVOID m_gta_thread_kill{};
-
-		PVOID m_network_player_mgr_init;
-		PVOID m_network_player_mgr_shutdown;
-
-		functions::get_gameplay_cam_coords m_get_gameplay_cam_coords;
-
-		PVOID m_write_player_gamer_data_node{};
-
-		functions::trigger_script_event m_trigger_script_event{};
-
-		// Bitbuffer Read/Write START
-		functions::read_bitbuf_dword m_read_bitbuf_dword{};
-		functions::read_bitbuf_string m_read_bitbuf_string{};
-		functions::read_bitbuf_bool m_read_bitbuf_bool{};
-		functions::read_bitbuf_array m_read_bitbuf_array{};
-		functions::write_bitbuf_qword m_write_bitbuf_qword{};
-		functions::write_bitbuf_dword m_write_bitbuf_dword{};
-		functions::write_bitbuf_int64 m_write_bitbuf_int64{};
-		functions::write_bitbuf_int32 m_write_bitbuf_int32{};
-		functions::write_bitbuf_bool m_write_bitbuf_bool{};
-		functions::write_bitbuf_array m_write_bitbuf_array{};
-		// Bitbuffer Read/Write END
-
-		// Received Event Signatures START
-		PVOID m_received_event{};
-		functions::send_event_ack m_send_event_ack{};
-		// Received Event Signatures END
-
-		//Sync Signatures START
-		PVOID m_received_clone_create;
-		PVOID m_received_clone_sync;
-		PVOID m_can_apply_data;
-		functions::get_sync_tree_for_type m_get_sync_tree_for_type{};
-		functions::get_sync_type_info m_get_sync_type_info{};
-		functions::get_net_object m_get_net_object{};
-		functions::read_bitbuffer_into_sync_tree m_read_bitbuffer_into_sync_tree{};
-		//Sync Signatures END
-
-		PVOID m_receive_net_message{};
-		PVOID m_get_network_event_data{};
-		PVOID m_assign_physical_index{};
-
-		Network** m_network;
-
-		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
-		functions::start_matchmaking_find_sessions m_start_matchmaking_find_sessions;
-		functions::join_session_by_info m_join_session_by_info;
-
-		functions::reset_network_complaints m_reset_network_complaints{};
-
-		functions::fidevice_get_device m_fidevice_get_device{};
-		uintptr_t m_fidevices{};
-		uint16_t* m_fidevices_len{};
-		functions::fipackfile_ctor m_fipackfile_ctor{};
-		rage::fiPackfile** m_fipackfile_instances{};
-		functions::fipackfile_open_archive m_fipackfile_open_archive{};
-		functions::fipackfile_mount m_fipackfile_mount{};
-		functions::fipackfile_unmount m_fipackfile_unmount{};
-
-		const char* m_game_version;
-		const char* m_online_version;
-
-		PVOID m_invalid_mods_crash_detour{};
-		PVOID m_constraint_attachment_crash{};
-		PVOID m_invalid_decal_crash{};
-		PVOID m_task_parachute_object_0x270{};
-
-		int64_t** m_send_chat_ptr{};
-		functions::send_chat_message m_send_chat_message{};
-
-		PVOID m_init_native_tables{};
-		functions::script_vm m_script_vm{};
-
-		functions::generate_uuid m_generate_uuid{};
-		std::uint64_t* m_host_token{};
-		rage::rlGamerInfo* m_profile_gamer_info{};     // per profile gamer info
-		rage::rlGamerInfo* m_player_info_gamer_info{}; // the gamer info that is applied to CPlayerInfo
-		CCommunications** m_communications{};
-
-		PVOID m_serialize_ped_inventory_data_node;
-		PVOID m_serialize_vehicle_gadget_data_node;
-		functions::get_vehicle_gadget_array_size m_get_vehicle_gadget_array_size;
-
-		PVOID m_handle_join_request;
-		functions::write_join_response_data m_write_join_response_data;
-
-		functions::queue_packet m_queue_packet;
-
-		PVOID m_sort_session_details;
-
-		PVOID m_add_player_to_session;
-		PVOID m_send_chat_net_message;
-
-		PVOID m_process_matchmaking_find_response;
-		PVOID m_serialize_player_data_msg;
-
-		PVOID m_serialize_join_request_message;
-
-		functions::give_pickup_rewards m_give_pickup_rewards{};
-		functions::send_network_damage m_send_network_damage;
-		functions::request_ragdoll m_request_ragdoll;
-		functions::request_control m_request_control;
-		functions::clear_ped_tasks_network m_clear_ped_tasks_network;
-
-		functions::get_connection_peer m_get_connection_peer{};
-		functions::send_remove_gamer_cmd m_send_remove_gamer_cmd{};
-		functions::handle_remove_gamer_cmd m_handle_remove_gamer_cmd{};
-
-		PVOID m_broadcast_net_array{};
-
-		rage::atSingleton<rage::RageSecurity>* m_security;
-		PVOID m_prepare_metric_for_sending;
-
-		PVOID m_queue_dependency;
-		PVOID m_interval_check_func;
-
-		PVOID m_send_session_matchmaking_attributes;
-
-		PVOID m_serialize_take_off_ped_variation_task;
-
-		PVOID m_create_script_handler;
-
-		functions::encode_session_info m_encode_session_info;
-		functions::decode_session_info m_decode_session_info;
-		functions::decode_peer_info m_decode_peer_info;
-
-		datafile_commands::SveFileObject* m_main_file_object;
-		functions::load_cloud_file m_load_cloud_file;
-		functions::set_as_active_cloud_file m_set_as_active_cloud_file;
-		functions::save_json_data m_save_json_data;
-
-		rage::netTime** m_network_time;
-		functions::sync_network_time m_sync_network_time;
-
-		functions::send_packet m_send_packet;
-		functions::connect_to_peer m_connect_to_peer;
-
-		PVOID m_fragment_physics_crash;
-		PVOID m_fragment_physics_crash_2;
-
-		PVOID m_infinite_train_crash;
-		functions::get_next_carriage m_get_next_carriage;
-
-		functions::get_entity_attached_to m_get_entity_attached_to;
-
-		PVOID m_received_array_update;
-
-		PVOID m_receive_pickup{};
-
-		PVOID m_write_player_camera_data_node{};
-
-		PVOID m_send_player_card_stats{};
-		bool* m_force_player_card_refresh{};
-
-		PVOID m_serialize_stats{};
-
-		PVOID m_write_player_creation_data_node{};
-		PVOID m_write_player_appearance_data_node{};
-
-		PVOID m_enumerate_audio_devices{};
-		PVOID m_direct_sound_capture_create{};
-		bool* m_refresh_audio_input{};
-
-		PVOID m_allow_weapons_in_vehicle{};
-
-		PVOID m_taskjump_constructor{};
-
-		PVOID m_write_vehicle_proximity_migration_data_node{};
-		functions::migrate_object m_migrate_object{};
-
-		// don't remove, used for signaling the end of the pointers gta module offset cache
-		void* m_offset_gta_module_cache_end;
+		socialclub_pointers m_sc;
 	};
-#pragma pack(pop)
 
 	inline pointers* g_pointers{};
 }

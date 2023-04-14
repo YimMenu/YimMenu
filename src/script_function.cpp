@@ -56,7 +56,7 @@ namespace big
 		ctx.m_instruction_pointer    = m_ip;
 		ctx.m_state                  = rage::eThreadState::idle;
 
-		g_pointers->m_script_vm(stack, g_pointers->m_script_globals, program, &ctx);
+		g_pointers->m_gta.m_script_vm(stack, g_pointers->m_gta.m_script_globals, program, &ctx);
 
 		tls_ctx->m_script_thread           = og_thread;
 		tls_ctx->m_is_script_thread_active = og_thread != nullptr;
@@ -88,7 +88,7 @@ namespace big
 
 				auto old_ctx      = thread->m_context;
 				thread->m_context = ctx;
-				result = g_pointers->m_script_vm(stack, g_pointers->m_script_globals, program, &thread->m_context);
+				result = g_pointers->m_gta.m_script_vm(stack, g_pointers->m_gta.m_script_globals, program, &thread->m_context);
 				thread->m_context = old_ctx;
 
 				tls_ctx->m_script_thread           = og_thread;

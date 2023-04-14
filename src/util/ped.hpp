@@ -561,7 +561,7 @@ namespace big::ped
 		{
 			if (p.second->get_ped())
 			{
-				if (p.second->get_ped() == g_pointers->m_handle_to_ptr(ped))
+				if (p.second->get_ped() == g_pointers->m_gta.m_handle_to_ptr(ped))
 					return p.second;
 			}
 		}

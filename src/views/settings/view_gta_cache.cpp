@@ -20,7 +20,7 @@ namespace big
 		{
 			g_gta_data_service->set_state(eGtaDataUpdateState::NEEDS_UPDATE);
 
-			if (!*g_pointers->m_is_session_started)
+			if (!*g_pointers->m_gta.m_is_session_started)
 			{
 				g_gta_data_service->update_in_online();
 			}

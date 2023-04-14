@@ -252,12 +252,12 @@ namespace rage
 
 	fiPackfile::fiPackfile()
 	{
-		big::g_pointers->m_fipackfile_ctor(this);
+		big::g_pointers->m_gta.m_fipackfile_ctor(this);
 	}
 
 	bool fiPackfile::OpenPackfile(const char* archive, bool b_true, int type, intptr_t very_false)
 	{
-		return big::g_pointers->m_fipackfile_open_archive(this, archive, b_true, type, very_false);
+		return big::g_pointers->m_gta.m_fipackfile_open_archive(this, archive, b_true, type, very_false);
 	}
 
 	bool fiPackfile::Mount(const char* mount_point)

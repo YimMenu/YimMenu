@@ -71,7 +71,7 @@ namespace big
 	{
 		const auto player_count = g_player_service->players().size() + 1;
 
-		if (!*g_pointers->m_is_session_started && player_count < 2)
+		if (!*g_pointers->m_gta.m_is_session_started && player_count < 2)
 			return;
 		float window_pos = 110.f + g_gui_service->nav_ctr * ImGui::CalcTextSize("W").y
 		    + g_gui_service->nav_ctr * ImGui::GetStyle().ItemSpacing.y
@@ -84,7 +84,7 @@ namespace big
 		if (ImGui::Begin("playerlist", nullptr, window_flags))
 		{
 			float window_height = (ImGui::CalcTextSize("A").y + ImGui::GetStyle().ItemInnerSpacing.y * 2 + 6.0f) * player_count + 10.0f;
-			window_height = window_height + window_pos > (float)*g_pointers->m_resolution_y - 10.f ? (float)*g_pointers->m_resolution_y - (window_pos + 40.f) : window_height;
+			window_height = window_height + window_pos > (float)*g_pointers->m_gta.m_resolution_y - 10.f ? (float)*g_pointers->m_gta.m_resolution_y - (window_pos + 40.f) : window_height;
 
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, {0.f, 0.f, 0.f, 0.f});
 			ImGui::PushStyleColor(ImGuiCol_ScrollbarBg, {0.f, 0.f, 0.f, 0.f});

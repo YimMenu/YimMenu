@@ -17,13 +17,21 @@
 
 namespace big::toxic
 {
+	struct explosion_anti_cheat_bypass
+	{
+		inline static memory::byte_patch* m_can_blame_others;
+		inline static memory::byte_patch* m_can_use_blocked_explosions;
+	};
+
 	inline void blame_explode_coord(player_ptr to_blame, Vector3 pos, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
 	{
-		g_pointers->m_blame_explode->apply();
-		g_pointers->m_explosion_patch->apply();
+		explosion_anti_cheat_bypass::m_can_blame_others->apply();
+		explosion_anti_cheat_bypass::m_can_use_blocked_explosions->apply();
+
 		FIRE::ADD_OWNED_EXPLOSION(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(to_blame->id()), pos.x, pos.y, pos.z, (int)explosion_type, damage, is_audible, is_invisible, camera_shake);
-		g_pointers->m_blame_explode->restore();
-		g_pointers->m_explosion_patch->restore();
+
+		explosion_anti_cheat_bypass::m_can_use_blocked_explosions->restore();
+		explosion_anti_cheat_bypass::m_can_blame_others->restore();
 	}
 
 	inline void blame_explode_player(player_ptr to_blame, player_ptr target, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
@@ -37,7 +45,7 @@ namespace big::toxic
 		const size_t arg_count = 4;
 		int64_t args[arg_count] = {(int64_t)eRemoteEvent::StartActivity, (int64_t)self::id, (int64_t)type, (int64_t) true};
 
-		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
+		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << target->id());
 	}
 
 	inline bool set_time(player_ptr target, uint32_t millis)
@@ -59,21 +67,21 @@ namespace big::toxic
 		rage::netTimeSyncMsg msg{};
 		msg.action    = 1;
 		msg.counter   = target->num_time_syncs_sent;
-		msg.token     = (*g_pointers->m_network_time)->m_time_token;
+		msg.token     = (*g_pointers->m_gta.m_network_time)->m_time_token;
 		msg.timestamp = target->player_time_value.value()
 		    + (uint32_t)(std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now())
 		        - target->player_time_value_received_time.value())
 		          .count();
 		msg.increment = millis;
 
-		auto peer = g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+		auto peer = g_pointers->m_gta.m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 		    (int)target->get_session_player()->m_player_data.m_peer_id_2);
 
 		for (int j = 0; j < 100; j++)
 		{
-			g_pointers->m_sync_network_time(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+			g_pointers->m_gta.m_sync_network_time(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 			    peer,
-			    (*g_pointers->m_network_time)->m_connection_identifier,
+			    (*g_pointers->m_gta.m_network_time)->m_connection_identifier,
 			    &msg,
 			    0x1000000);// repeatedly spamming the event will eventually cause certain bounds checks to disable for some reason
 		}
@@ -111,7 +119,7 @@ namespace big::toxic
 				largest_counter = plyr.second->num_time_syncs_sent;
 		});
 
-		(*g_pointers->m_network_time)->m_time_offset = millis - timeGetTime();
+		(*g_pointers->m_gta.m_network_time)->m_time_offset = millis - timeGetTime();
 
 		rage::netTimeSyncMsg msg{};
 		g_player_service->iterate([&largest_counter, &msg, millis](const player_entry& plyr) {
@@ -125,21 +133,21 @@ namespace big::toxic
 
 			msg.action    = 1;
 			msg.counter   = largest_counter;
-			msg.token     = (*g_pointers->m_network_time)->m_time_token;
+			msg.token     = (*g_pointers->m_gta.m_network_time)->m_time_token;
 			msg.timestamp = plyr.second->player_time_value.value()
 			    + (uint32_t)(std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now())
 			        - plyr.second->player_time_value_received_time.value())
 			          .count();
 			msg.increment = millis;
 
-			auto peer = g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+			auto peer = g_pointers->m_gta.m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 			    (int)plyr.second->get_session_player()->m_player_data.m_peer_id_2);
 
 			for (int j = 0; j < 25; j++)
 			{
-				g_pointers->m_sync_network_time(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+				g_pointers->m_gta.m_sync_network_time(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 				    peer,
-				    (*g_pointers->m_network_time)->m_connection_identifier,
+				    (*g_pointers->m_gta.m_network_time)->m_connection_identifier,
 				    &msg,
 				    0x1000000);
 			}
@@ -150,7 +158,6 @@ namespace big::toxic
 
 	inline void warp_time_forward_all(uint32_t millis)
 	{
-		set_time_all((*g_pointers->m_network_time)->m_time + millis);
+		set_time_all((*g_pointers->m_gta.m_network_time)->m_time + millis);
 	}
-
 }

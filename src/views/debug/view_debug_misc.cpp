@@ -93,7 +93,7 @@ namespace big
 					ImGui::InputScalar("Local CAutomobile", ImGuiDataType_U64, &local_vehicle, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
 				}
 
-				if (auto mgr = *g_pointers->m_network_player_mgr)
+				if (auto mgr = *g_pointers->m_gta.m_network_player_mgr)
 				{
 					uint64_t local_netplayer = (uint64_t)mgr->m_local_net_player;
 					ImGui::InputScalar("Local CNetGamePlayer", ImGuiDataType_U64, &local_netplayer, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
@@ -105,13 +105,13 @@ namespace big
 					}
 				}
 
-				if (auto network = *g_pointers->m_network)
+				if (auto network = *g_pointers->m_gta.m_network)
 				{
 					uint64_t nw = (uint64_t)network;
 					ImGui::InputScalar("Network", ImGuiDataType_U64, &nw, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
 				}
 
-				if (auto omgr = *g_pointers->m_network_object_mgr)
+				if (auto omgr = *g_pointers->m_gta.m_network_object_mgr)
 				{
 					uint64_t nw = (uint64_t)omgr;
 					ImGui::InputScalar("Network Object Mgr", ImGuiDataType_U64, &nw, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);

@@ -74,11 +74,11 @@ namespace rage
 		}
 		bool WriteBool(bool integer)
 		{
-			return big::g_pointers->m_write_bitbuf_bool(this, integer, 1);
+			return big::g_pointers->m_gta.m_write_bitbuf_bool(this, integer, 1);
 		}
 		bool ReadBool(bool* integer)
 		{
-			return big::g_pointers->m_read_bitbuf_bool(this, integer, 1);
+			return big::g_pointers->m_gta.m_read_bitbuf_bool(this, integer, 1);
 		}
 		bool ReadPeerId(uint64_t* integer)
 		{
@@ -113,16 +113,16 @@ namespace rage
 		}
 		bool ReadString(char* string, int bits)
 		{
-			return big::g_pointers->m_read_bitbuf_string(this, string, bits);
+			return big::g_pointers->m_gta.m_read_bitbuf_string(this, string, bits);
 		}
 		bool WriteByte(uint8_t integer, int bits)
 		{
-			return big::g_pointers->m_write_bitbuf_dword(this, integer, bits);
+			return big::g_pointers->m_gta.m_write_bitbuf_dword(this, integer, bits);
 		}
 		bool ReadByte(uint8_t* integer, int bits)
 		{
 			uint32_t read;
-			if (big::g_pointers->m_read_bitbuf_dword(this, &read, bits))
+			if (big::g_pointers->m_gta.m_read_bitbuf_dword(this, &read, bits))
 			{
 				*integer = read;
 				return true;
@@ -131,12 +131,12 @@ namespace rage
 		}
 		bool WriteWord(uint16_t integer, int bits)
 		{
-			return big::g_pointers->m_write_bitbuf_dword(this, integer, bits);
+			return big::g_pointers->m_gta.m_write_bitbuf_dword(this, integer, bits);
 		}
 		bool ReadWord(uint16_t* integer, int bits)
 		{
 			uint32_t read;
-			if (big::g_pointers->m_read_bitbuf_dword(this, &read, bits))
+			if (big::g_pointers->m_gta.m_read_bitbuf_dword(this, &read, bits))
 			{
 				*integer = read;
 				return true;
@@ -145,15 +145,15 @@ namespace rage
 		}
 		bool WriteDword(uint32_t integer, int bits)
 		{
-			return big::g_pointers->m_write_bitbuf_dword(this, integer, bits);
+			return big::g_pointers->m_gta.m_write_bitbuf_dword(this, integer, bits);
 		}
 		bool ReadDword(uint32_t* integer, int bits)
 		{
-			return big::g_pointers->m_read_bitbuf_dword(this, integer, bits);
+			return big::g_pointers->m_gta.m_read_bitbuf_dword(this, integer, bits);
 		}
 		bool WriteInt32(int32_t integer, int bits)
 		{
-			return big::g_pointers->m_write_bitbuf_int32(this, integer, bits);
+			return big::g_pointers->m_gta.m_write_bitbuf_int32(this, integer, bits);
 		}
 		bool ReadInt32(int32_t* integer, int bits)
 		{
@@ -168,7 +168,7 @@ namespace rage
 		}
 		bool WriteQWord(uint64_t integer, int bits)
 		{
-			return big::g_pointers->m_write_bitbuf_qword(this, integer, bits);
+			return big::g_pointers->m_gta.m_write_bitbuf_qword(this, integer, bits);
 		}
 		bool ReadQWord(uint64_t* integer, int bits)
 		{
@@ -194,7 +194,7 @@ namespace rage
 		}
 		bool WriteInt64(int64_t integer, int bits)
 		{
-			return big::g_pointers->m_write_bitbuf_int64(this, integer, bits);
+			return big::g_pointers->m_gta.m_write_bitbuf_int64(this, integer, bits);
 		}
 		bool ReadInt64(int64_t* integer, int bits)
 		{
@@ -209,11 +209,11 @@ namespace rage
 		}
 		bool WriteArray(void* array, int size)
 		{
-			return big::g_pointers->m_write_bitbuf_array(this, array, size, 0);
+			return big::g_pointers->m_gta.m_write_bitbuf_array(this, array, size, 0);
 		}
 		bool ReadArray(PVOID array, int size)
 		{
-			return big::g_pointers->m_read_bitbuf_array(this, array, size, 0);
+			return big::g_pointers->m_gta.m_read_bitbuf_array(this, array, size, 0);
 		}
 
 		template<typename T>

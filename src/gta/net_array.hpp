@@ -1,4 +1,13 @@
 #pragma once
+#include "memory/fwddec.hpp"
+
+namespace big
+{
+	struct broadcast_net_array
+	{
+		inline static memory::byte_patch* m_patch;
+	};
+}
 
 class CNetGamePlayer;
 
@@ -202,7 +211,7 @@ namespace rage
 #if 0
 		static inline netArrayHandlerBase* get_by_data(void* data)
 		{
-			if (auto array_mgr = *big::g_pointers->m_game_array_mgr)
+			if (auto array_mgr = *big::g_pointers->m_gta.m_game_array_mgr)
 			{
 				if (auto handler = array_mgr->m_start)
 				{

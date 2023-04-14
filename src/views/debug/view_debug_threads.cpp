@@ -36,7 +36,7 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Threads"))
 		{
-			if (!g_pointers->m_script_threads)
+			if (!g_pointers->m_gta.m_script_threads)
 			{
 				selected_thread = nullptr;
 				ImGui::EndTabItem();
@@ -47,7 +47,7 @@ namespace big
 
 			if (ImGui::BeginCombo("Thread", selected_thread ? selected_thread->m_name : "NONE"))
 			{
-				for (auto script : *g_pointers->m_script_threads)
+				for (auto script : *g_pointers->m_gta.m_script_threads)
 				{
 					if (script)
 					{
@@ -161,7 +161,7 @@ namespace big
 				update_free_stacks_count();
 			});
 
-			if (*g_pointers->m_game_state != eGameState::Invalid && std::chrono::high_resolution_clock::now() - last_stack_update_time > 100ms)
+			if (*g_pointers->m_gta.m_game_state != eGameState::Invalid && std::chrono::high_resolution_clock::now() - last_stack_update_time > 100ms)
 			{
 				last_stack_update_time = std::chrono::high_resolution_clock::now();
 				g_fiber_pool->queue_job([] {

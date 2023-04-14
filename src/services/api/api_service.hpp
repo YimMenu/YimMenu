@@ -32,7 +32,7 @@ namespace big
 
 		inline std::string get_ticket()
 		{
-			return g_pointers->m_sc_info->m_ticket;
+			return g_pointers->m_gta.m_sc_info->m_ticket;
 		}
 	};
 
