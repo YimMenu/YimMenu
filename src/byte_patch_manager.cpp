@@ -23,7 +23,7 @@ namespace big
 
 		//Patch blocked explosions
 		toxic::explosion_anti_cheat_bypass::m_can_blame_others =
-		    memory::byte_patch::make(g_pointers->m_gta.m_explosion_patch.as<std::uint16_t*>(), 0xE990).get();
+		    memory::byte_patch::make(g_pointers->m_gta.m_blame_explode.as<std::uint16_t*>(), 0xE990).get();
 		toxic::explosion_anti_cheat_bypass::m_can_use_blocked_explosions =
 		    memory::byte_patch::make(g_pointers->m_gta.m_explosion_patch.sub(12).as<uint16_t*>(), 0x9090).get();
 
