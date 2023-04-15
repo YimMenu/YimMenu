@@ -19,6 +19,11 @@ namespace big
 		SymCleanup(GetCurrentProcess());
 	}
 
+	const std::vector<uint64_t>& stack_trace::frame_pointers()
+	{
+		return m_frame_pointers;
+	}
+
 	void stack_trace::new_stack_trace(EXCEPTION_POINTERS* exception_info)
 	{
 		static std::mutex m;

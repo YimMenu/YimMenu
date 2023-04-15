@@ -9,6 +9,7 @@ namespace big
 		stack_trace();
 		virtual ~stack_trace();
 
+		const std::vector<uint64_t>& frame_pointers();
 		void new_stack_trace(EXCEPTION_POINTERS* exception_info);
 		std::string str() const;
 
