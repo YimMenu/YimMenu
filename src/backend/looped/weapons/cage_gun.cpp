@@ -7,7 +7,7 @@ namespace big
 {
 	void looped::weapons_cage_gun()
 	{
-		if (const bool bCageGun = g.weapons.custom_weapon == CustomWeapon::CAGE_GUN;)
+		if (const bool bCageGun = g.weapons.custom_weapon == CustomWeapon::CAGE_GUN; bCageGun)
 		{
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
