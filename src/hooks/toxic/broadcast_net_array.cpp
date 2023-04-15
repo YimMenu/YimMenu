@@ -37,13 +37,13 @@ namespace big
 		{
 			orig_gsbd                          = *scr_globals::gsbd.as<int*>();
 			*scr_globals::gsbd.as<uint32_t*>() = 5;
-			g_pointers->m_broadcast_patch->apply();
+			broadcast_net_array::m_patch->apply();
 		}
 
 		if (need_to_modify_wanted_level)
 		{
 			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].RemoteWantedLevelPlayer = target->m_player_id;
-			g_pointers->m_broadcast_patch->apply();
+			broadcast_net_array::m_patch->apply();
 		}
 
 		if (need_to_turn_player_into_beast)
@@ -64,39 +64,39 @@ namespace big
 			*script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(2).as<int*>() = INT_MAX;// stopwatch time
 			*script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(83).as<int*>() = 0;// transformed bitset
 
-			g_pointers->m_broadcast_patch->apply();
+			broadcast_net_array::m_patch->apply();
 		}
 
 		if (need_to_randomize_replay_protection)
 		{
 			*scr_globals::gsbd_fm_events.at(9).as<uint32_t*>()  = __rdtsc();
 			*scr_globals::gsbd_fm_events.at(10).as<uint32_t*>() = __rdtsc();
-			g_pointers->m_broadcast_patch->apply();
+			broadcast_net_array::m_patch->apply();
 		}
 
 		int ret = g_hooking->get_original<hooks::broadcast_net_array>()(_this, target, bit_buffer, counter, elem_start, silent);
 
 		if (need_to_use_end_session_kick)
 		{
-			g_pointers->m_broadcast_patch->restore();
+			broadcast_net_array::m_patch->restore();
 			*scr_globals::gsbd.as<int*>() = orig_gsbd;
 		}
 
 		if (need_to_modify_wanted_level)
 		{
-			g_pointers->m_broadcast_patch->restore();
+			broadcast_net_array::m_patch->restore();
 		}
 
 		if (need_to_turn_player_into_beast)
 		{
 			*script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(7).as<Player*>() = orig_player;
 			*script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(6).as<int*>() = orig_participant;
-			g_pointers->m_broadcast_patch->restore();
+			broadcast_net_array::m_patch->restore();
 		}
 
 		if (need_to_randomize_replay_protection)
 		{
-			g_pointers->m_broadcast_patch->restore();
+			broadcast_net_array::m_patch->restore();
 		}
 
 		return ret;

@@ -119,7 +119,7 @@ namespace big
 			bool success = false;
 			rage::rlTaskStatus state{};
 
-			if (g_pointers->m_start_get_session_by_gamer_handle(0, &player_handle, 1, &result, 1, &success, &state))
+			if (g_pointers->m_gta.m_start_get_session_by_gamer_handle(0, &player_handle, 1, &result, 1, &success, &state))
 			{
 				while (state.status == 1)
 					script::get_current()->yield();

@@ -71,7 +71,7 @@ namespace big
 
 	void hotkey_service::wndproc(eKeyState state, key_t key)
 	{
-		if (const auto chat_data = *g_pointers->m_chat_data; chat_data && (chat_data->m_chat_open || chat_data->m_timer_two))
+		if (const auto chat_data = *g_pointers->m_gta.m_chat_data; chat_data && (chat_data->m_chat_open || chat_data->m_timer_two))
 			return;
 
 		//command executer is opened

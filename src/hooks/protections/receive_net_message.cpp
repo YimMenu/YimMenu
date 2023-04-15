@@ -270,7 +270,7 @@ namespace big
 				uint32_t counter   = buffer.Read<uint32_t>(32);
 				uint32_t token     = buffer.Read<uint32_t>(32);
 				uint32_t timestamp = buffer.Read<uint32_t>(32);
-				uint32_t time_diff = (*g_pointers->m_network_time)->m_time_offset + frame->m_timestamp;
+				uint32_t time_diff = (*g_pointers->m_gta.m_network_time)->m_time_offset + frame->m_timestamp;
 
 				if (action == 0)
 				{

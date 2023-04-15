@@ -32,7 +32,7 @@ namespace big::troll
 		    *script_global(1923597).at(9).as<int64_t*>(),
 		    *script_global(1923597).at(10).as<int64_t*>()};
 
-		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target->id());
+		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << target->id());
 	}
 
 }

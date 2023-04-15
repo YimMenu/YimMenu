@@ -102,7 +102,7 @@ namespace big::session
 		bool success = false;
 		rage::rlTaskStatus state{};
 
-		if (g_pointers->m_start_get_session_by_gamer_handle(0, &player_handle, 1, &result, 1, &success, &state))
+		if (g_pointers->m_gta.m_start_get_session_by_gamer_handle(0, &player_handle, 1, &result, 1, &success, &state))
 		{
 			while (state.status == 1)
 				script::get_current()->yield();
@@ -157,6 +157,6 @@ namespace big::session
 		    0// bParam3
 		};
 
-		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
+		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << target);
 	}
 }

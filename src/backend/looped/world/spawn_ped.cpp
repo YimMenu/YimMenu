@@ -15,9 +15,9 @@ namespace big
 	static bool bLastLoadPathNodes = false;
 	void looped::world_spawn_ped()
 	{
-		if (*g_pointers->m_is_session_started != last_online)
+		if (*g_pointers->m_gta.m_is_session_started != last_online)
 		{
-			last_online = *g_pointers->m_is_session_started;
+			last_online = *g_pointers->m_gta.m_is_session_started;
 
 			for (auto& ped : spawned_peds)
 				cleanup_spawned_ped(ped);
@@ -38,7 +38,7 @@ namespace big
 
 		for (auto it = spawned_peds.begin(); it != spawned_peds.end();)
 		{
-			if ((*g_pointers->m_is_session_started && !NETWORK::NETWORK_IS_PLAYER_CONNECTED(it->spawned_for_player)) || !ENTITY::DOES_ENTITY_EXIST(it->ped_handle))
+			if ((*g_pointers->m_gta.m_is_session_started && !NETWORK::NETWORK_IS_PLAYER_CONNECTED(it->spawned_for_player)) || !ENTITY::DOES_ENTITY_EXIST(it->ped_handle))
 			{
 				cleanup_spawned_ped(*it);
 				it = spawned_peds.erase(it);

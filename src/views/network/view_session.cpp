@@ -35,13 +35,13 @@ namespace big
 		components::input_text("SESSION_INFO"_T, base64, sizeof(base64));
 		components::button("JOIN_SESSION_INFO"_T, [] {
 			rage::rlSessionInfo info;
-			g_pointers->m_decode_session_info(&info, base64, nullptr);
+			g_pointers->m_gta.m_decode_session_info(&info, base64, nullptr);
 			session::join_session(info);
 		});
 		ImGui::SameLine();
 		components::button("COPY_SESSION_INFO"_T, [] {
 			char buf[0x100]{};
-			g_pointers->m_encode_session_info(&gta_util::get_network()->m_game_session.m_rline_session.m_session_info, buf, 0xA9, nullptr);
+			g_pointers->m_gta.m_encode_session_info(&gta_util::get_network()->m_game_session.m_rline_session.m_session_info, buf, 0xA9, nullptr);
 			ImGui::SetClipboardText(buf);
 		});
 
@@ -62,8 +62,8 @@ namespace big
 		{
 			for (const auto& region_type : regions)
 			{
-				components::selectable(region_type.name, *g_pointers->m_region_code == region_type.id, [&region_type] {
-					*g_pointers->m_region_code = region_type.id;
+				components::selectable(region_type.name, *g_pointers->m_gta.m_region_code == region_type.id, [&region_type] {
+					*g_pointers->m_gta.m_region_code = region_type.id;
 				});
 			}
 			ImGui::EndListBox();
@@ -94,7 +94,7 @@ namespace big
 		components::button("SEND"_T, [] {
 			if (const auto net_game_player = gta_util::get_network_player_mgr()->m_local_net_player; net_game_player)
 			{
-				if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_send_chat_ptr,
+				if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
 				        net_game_player->get_net_data(),
 				        msg,
 				        g.session.is_team))

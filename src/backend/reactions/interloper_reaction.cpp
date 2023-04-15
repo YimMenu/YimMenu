@@ -31,7 +31,7 @@ namespace big
 				    attacker->get_name(),
 				    victim->get_name());
 
-				if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_send_chat_ptr,
+				if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
 				        g_player_service->get_self()->get_net_data(),
 				        chat,
 				        false))

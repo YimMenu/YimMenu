@@ -23,7 +23,7 @@ namespace big
 			    (int64_t)self::id,
 			    scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[player->id()].ScriptEventReplayProtectionCounter};
 
-			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << player->id());
+			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id());
 		}
 	};
 

@@ -73,7 +73,7 @@ namespace big
 		controlled_vehicle new_veh{};
 
 		new_veh.handle = veh;
-		new_veh.ptr    = (CVehicle*)g_pointers->m_handle_to_ptr(veh);
+		new_veh.ptr    = (CVehicle*)g_pointers->m_gta.m_handle_to_ptr(veh);
 		strcpy(new_veh.model_name, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY::GET_ENTITY_MODEL(veh))));
 		new_veh.doorCount     = VEHICLE::GET_NUMBER_OF_VEHICLE_DOORS(veh);
 		new_veh.lockstate     = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(veh);
@@ -377,7 +377,7 @@ namespace big
 		{
 			if (g_local_player->m_vehicle)
 			{
-				if (m_controlled_vehicle.handle != g_pointers->m_ptr_to_handle(g_local_player->m_vehicle))
+				if (m_controlled_vehicle.handle != g_pointers->m_gta.m_ptr_to_handle(g_local_player->m_vehicle))
 					m_controlled_vehicle = vehicle_control::update_vehicle(self::veh);
 			}
 		}
