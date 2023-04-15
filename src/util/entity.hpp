@@ -72,6 +72,9 @@ namespace big::entity
 
 	inline bool take_control_of(Entity ent, int timeout = 300)
 	{
+		if (!*g_pointers->m_gta.m_is_session_started)
+			return true;
+
 		auto hnd = g_pointers->m_gta.m_handle_to_ptr(ent);
 
 		if (!hnd || !hnd->m_net_object || !*g_pointers->m_gta.m_is_session_started)

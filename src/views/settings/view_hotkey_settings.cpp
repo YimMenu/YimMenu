@@ -30,11 +30,11 @@ namespace big
 			g_hotkey_service->update_hotkey("skipcutscene", g.settings.hotkeys.skip_cutscene);
 		if (ImGui::Hotkey("Toggle Freecam", &g.settings.hotkeys.freecam))
 			g_hotkey_service->update_hotkey("freecam", g.settings.hotkeys.freecam);
-		if (ImGui::Hotkey("Toggle fastrun", &g.settings.hotkeys.superrun))
+		if (ImGui::Hotkey("Toggle Fastrun", &g.settings.hotkeys.superrun))
 			g_hotkey_service->update_hotkey("fastrun", g.settings.hotkeys.superrun);
-		if (ImGui::Hotkey("Toggle superjump", &g.settings.hotkeys.superjump))
+		if (ImGui::Hotkey("Toggle Superjump", &g.settings.hotkeys.superjump))
 			g_hotkey_service->update_hotkey("superjump", g.settings.hotkeys.superjump);
-		if (ImGui::Hotkey("Toggle beastjump", &g.settings.hotkeys.beastjump))
+		if (ImGui::Hotkey("Toggle Beastjump", &g.settings.hotkeys.beastjump))
 			g_hotkey_service->update_hotkey("beastjump", g.settings.hotkeys.beastjump);
 		if (ImGui::Hotkey("Toggle Vehicle Invisibility", &g.settings.hotkeys.invisveh))
 			g_hotkey_service->update_hotkey("invisveh", g.settings.hotkeys.invisveh);
