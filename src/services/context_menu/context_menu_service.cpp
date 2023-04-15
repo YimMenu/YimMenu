@@ -300,6 +300,11 @@ namespace big
 	{
 		while (g_running)
 		{
+			if (g_gui->is_open())
+			{
+				script::get_current()->yield();
+				continue;
+			}
 			if (!g.context_menu.enabled)
 			{
 				g_context_menu_service->enabled = false;
