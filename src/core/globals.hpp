@@ -400,9 +400,10 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller)
 			} hotkeys{};
 
-			bool dev_dlc = false;
+			bool dev_dlc           = false;
+			bool exception_handler = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(settings, hotkeys, dev_dlc)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(settings, hotkeys, dev_dlc, exception_handler)
 		} settings{};
 
 		struct spawn_vehicle

@@ -21,20 +21,23 @@ namespace big
 
 	void stack_trace::new_stack_trace(EXCEPTION_POINTERS* exception_info)
 	{
-		static std::mutex m;
-		std::lock_guard lock(m);
+		if (g.settings.exception_handler)
+		{
+			static std::mutex m;
+			std::lock_guard lock(m);
 
-		m_exception_info = exception_info;
+			m_exception_info = exception_info;
 
-		m_dump << exception_code_to_string(exception_info->ExceptionRecord->ExceptionCode) << '\n';
+			m_dump << exception_code_to_string(exception_info->ExceptionRecord->ExceptionCode) << '\n';
 
-		if (g.in_script_vm)
-			dump_script_info();
-		dump_module_info();
-		dump_registers();
-		dump_stacktrace();
 
-		m_dump << "\n--------End of exception--------\n";
+			if (g.in_script_vm)
+				dump_script_info();
+			dump_module_info();
+			dump_registers();
+			dump_stacktrace();
+			m_dump << "\n--------End of exception--------\n";
+		}
 	}
 
 	std::string stack_trace::str() const
