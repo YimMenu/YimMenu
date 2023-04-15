@@ -111,6 +111,7 @@ namespace big
 
 		components::sub_title("CUSTOM_WEAPONS"_T);
 
+		ImGui::Checkbox("Custom Gun only fires when weapon is out", &g.self.custom_weapon_stop);
 		CustomWeapon selected = g.weapons.custom_weapon;
 
 		if (ImGui::BeginCombo("WEAPON"_T.data(), custom_weapons[(int)selected].name))
