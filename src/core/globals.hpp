@@ -560,8 +560,9 @@ namespace big
 
 				bool enabled   = false;
 				bool left_side = false;
+				bool show_current_gear = true;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(speedo_meter, x, y, enabled, left_side)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(speedo_meter, x, y, enabled, left_side, show_current_gear)
 			} speedo_meter{};
 
 			struct fly

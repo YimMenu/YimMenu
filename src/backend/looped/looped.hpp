@@ -47,7 +47,6 @@ namespace big
 		static void vehicle_god_mode();
 		static void vehicle_ls_customs();
 		static void vehicle_rainbow_paint();
-		static void vehicle_speedo_meter();
 		static void vehicle_turn_signals();
 
 		static void weapons_ammo_special_type();
