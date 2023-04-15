@@ -10,7 +10,7 @@ namespace big
 	{
 		bool bRepairGun = g.weapons.custom_weapon == CustomWeapon::REPAIR_GUN;
 
-		if (const bool bRepairGun = g.weapons.custom_weapon == CustomWeapon::REPAIR_GUN; &&WEAPON::IS_PED_ARMED(self::ped, 4 | 2))
+		if (const bool bRepairGun = g.weapons.custom_weapon == CustomWeapon::REPAIR_GUN;)
 		{
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
