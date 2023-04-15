@@ -1,10 +1,12 @@
 #pragma once
 
+#include "gta/enums.hpp"
+#include "math.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "math.hpp"
 #include "script.hpp"
-#include "gta/enums.hpp"
+
+#include <random>
 
 
 namespace big::pathfind
@@ -12,7 +14,8 @@ namespace big::pathfind
 
 	inline bool load_path_nodes(Vector3 coords)
 	{
-		if(PATHFIND::ARE_NODES_LOADED_FOR_AREA(coords.x, coords.y, coords.z, coords.y)) return true;
+		if (PATHFIND::ARE_NODES_LOADED_FOR_AREA(coords.x, coords.y, coords.z, coords.y))
+			return true;
 
 		PATHFIND::REQUEST_PATH_NODES_IN_AREA_THIS_FRAME(coords.x, coords.y, coords.z, coords.y);
 
@@ -27,7 +30,8 @@ namespace big::pathfind
 
 	inline bool load_navmesh_area(Vector3 coords, float radius)
 	{
-		if(PATHFIND::ARE_ALL_NAVMESH_REGIONS_LOADED()) return true;
+		if (PATHFIND::ARE_ALL_NAVMESH_REGIONS_LOADED())
+			return true;
 
 		PATHFIND::ADD_NAVMESH_REQUIRED_REGION(coords.x, coords.z, radius);
 
@@ -71,37 +75,33 @@ namespace big::pathfind
 			return false;
 	}
 
+	inline bool find_random_vehicle_node(Vector3 center, Vector3& outcoords , float radius, bool avoid_dead_ends, bool avoid_highways, int min_lanes = 0){
+
+		int node_id;
+		if (load_path_nodes(center))
+			return PATHFIND::GET_RANDOM_VEHICLE_NODE(center.x, center.y, center.z, radius, 0,  avoid_dead_ends, avoid_highways, &outcoords, &node_id);
+		else
+			return false;
+	}
+
+
 	inline bool find_random_location_in_vicinity(Vector3 coords, Vector3& outcoords, float& outheading, int flag, int vicinity)
 	{
 		
-		int rand1 = rand() % 4;
-		Vector3 changedcoords = coords;
-		
-		switch (rand1)
-		{
-		case 1: changedcoords.x += rand() % vicinity + vicinity / 2; break;
-		case 2: changedcoords.x -= rand() % vicinity + vicinity / 2; break;
-		case 3: changedcoords.y += rand() % vicinity + vicinity / 2; break;
-		case 4: changedcoords.y -= rand() % vicinity + vicinity / 2; break;
+	
+		srand(0);
+		bool apply_to_x = rand() % 2;
+		bool apply_positive = rand() % 2;
+
+		if(apply_to_x){
+			apply_positive ? outcoords.x += vicinity : outcoords.x -= vicinity;
+		}else{
+			apply_positive ? outcoords.y += vicinity : outcoords.y -= vicinity;
 		}
 
-		find_closest_vehicle_node(changedcoords, outcoords, outheading, flag);
+		if(!find_closest_vehicle_node(outcoords, outcoords, outheading, flag))
+			outcoords = coords;
 
-		if (math::distance_between_vectors(outcoords, changedcoords) > vicinity)
-		{
-			if (find_safe_pos_ped(changedcoords, outcoords, true, flag))
-				return true;
-			else
-			{
-				outcoords = coords;
-				return false;
-			}
-				
-		}
-		else
-			return true;
-		
-		return false;
-
+		return outcoords != coords;
 	}
 }

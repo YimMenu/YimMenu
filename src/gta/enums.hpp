@@ -1919,3 +1919,9 @@ enum class eVehicleSeats
 	OUTSIDE_LEFT,
 	OUTSIDE_RIGHT,
 };
+
+enum class eCombatAbilityLevel{
+	POOR,
+	AVERAGE,
+	PROFESSIONAL
+};
