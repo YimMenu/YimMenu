@@ -8,27 +8,57 @@ namespace big
 {
 	void looped::weapons_repair_gun()
 	{
-		if (const bool bRepairGun = g.weapons.custom_weapon == CustomWeapon::REPAIR_GUN; bRepairGun)
+		if (g.self.custom_weapon_stop)
 		{
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+			if (const bool bRepairGun = g.weapons.custom_weapon == CustomWeapon::REPAIR_GUN; bRepairGun && WEAPON::IS_PED_ARMED(self::ped, 4 | 2))
 			{
-				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 				{
-					Entity entity;
-
-					if (entity::raycast(&entity))
+					if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
 					{
-						if (ENTITY::IS_ENTITY_A_VEHICLE(entity))
+						Entity entity;
+
+						if (entity::raycast(&entity))
 						{
-							vehicle::repair(entity);
+							if (ENTITY::IS_ENTITY_A_VEHICLE(entity))
+							{
+								vehicle::repair(entity);
+							}
+							else
+							{
+								g_notification_service->push_warning("Weapons", "Entity is not a vehicle.");
+							}
 						}
 						else
-						{
-							g_notification_service->push_warning("Weapons", "Entity is not a vehicle.");
-						}
+							g_notification_service->push_warning("Weapons", "No entity found.");
 					}
-					else
-						g_notification_service->push_warning("Weapons", "No entity found.");
+				}
+			}
+		}
+		else
+		{
+			if (const bool bRepairGun = g.weapons.custom_weapon == CustomWeapon::REPAIR_GUN; bRepairGun)
+			{
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+				{
+					if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
+					{
+						Entity entity;
+
+						if (entity::raycast(&entity))
+						{
+							if (ENTITY::IS_ENTITY_A_VEHICLE(entity))
+							{
+								vehicle::repair(entity);
+							}
+							else
+							{
+								g_notification_service->push_warning("Weapons", "Entity is not a vehicle.");
+							}
+						}
+						else
+							g_notification_service->push_warning("Weapons", "No entity found.");
+					}
 				}
 			}
 		}

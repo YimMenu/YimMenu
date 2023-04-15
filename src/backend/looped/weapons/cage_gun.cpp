@@ -7,23 +7,49 @@ namespace big
 {
 	void looped::weapons_cage_gun()
 	{
-		if (const bool bCageGun = g.weapons.custom_weapon == CustomWeapon::CAGE_GUN; bCageGun)
+		if (g.self.custom_weapon_stop)
 		{
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+			if (const bool bCageGun = g.weapons.custom_weapon == CustomWeapon::CAGE_GUN; bCageGun && WEAPON::IS_PED_ARMED(self::ped, 4 | 2))
 			{
-				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 				{
-					Entity entity;
-
-					if (entity::raycast(&entity))
+					if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
 					{
-						if (ENTITY::IS_ENTITY_A_PED(entity))
+						Entity entity;
+
+						if (entity::raycast(&entity))
 						{
-							entity::cage_ped(entity);
+							if (ENTITY::IS_ENTITY_A_PED(entity))
+							{
+								entity::cage_ped(entity);
+							}
 						}
+						else
+							g_notification_service->push_error("Weapons", "No entity found.");
 					}
-					else
-						g_notification_service->push_error("Weapons", "No entity found.");
+				}
+			}
+		}
+		else
+		{
+			if (const bool bCageGun = g.weapons.custom_weapon == CustomWeapon::CAGE_GUN; bCageGun)
+			{
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+				{
+					if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
+					{
+						Entity entity;
+
+						if (entity::raycast(&entity))
+						{
+							if (ENTITY::IS_ENTITY_A_PED(entity))
+							{
+								entity::cage_ped(entity);
+							}
+						}
+						else
+							g_notification_service->push_error("Weapons", "No entity found.");
+					}
 				}
 			}
 		}

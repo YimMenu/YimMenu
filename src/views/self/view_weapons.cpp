@@ -111,6 +111,9 @@ namespace big
 
 		components::sub_title("CUSTOM_WEAPONS"_T);
 
+		ImGui::Checkbox("Custom Gun Restriction", &g.self.custom_weapon_stop);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("This only allows custom weapons to be fired when a weapon is out.");
 		CustomWeapon selected = g.weapons.custom_weapon;
 
 		if (ImGui::BeginCombo("WEAPON"_T.data(), custom_weapons[(int)selected].name))

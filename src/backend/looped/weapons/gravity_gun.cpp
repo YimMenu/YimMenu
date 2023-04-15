@@ -48,80 +48,161 @@ namespace big
 
 	void looped::weapons_gravity_gun()
 	{
-		bool is_gravity_gun_selected = g.weapons.custom_weapon == CustomWeapon::GRAVITY_GUN;
-
-		auto is_zoomed_in = is_gravity_gun_selected && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM);
-		if (is_zoomed_in && WEAPON::IS_PED_ARMED(self::ped, 4 | 2))
+		if (g.self.custom_weapon_stop)
 		{
-			location = self::pos;
+			bool is_gravity_gun_selected = g.weapons.custom_weapon == CustomWeapon::GRAVITY_GUN;
 
-			auto is_attack_just_pressed = PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK);
-
-			if (is_attack_just_pressed)
+			auto is_zoomed_in = is_gravity_gun_selected && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM);
+			if (is_zoomed_in && WEAPON::IS_PED_ARMED(self::ped, 4 | 2))
 			{
-				Entity ent_to_add;
+				location = self::pos;
 
-				if (entity::raycast(&ent_to_add))
+				auto is_attack_just_pressed = PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK);
+
+				if (is_attack_just_pressed)
 				{
-					if (ENTITY::IS_ENTITY_A_PED(ent_to_add) && PED::IS_PED_A_PLAYER(ent_to_add))
-					{
-						g_notification_service->push_warning("Weapons", "You can't move player entities!");
-					}
-					else
-					{
-						other               = ENTITY::GET_ENTITY_COORDS(ent_to_add, true);
-						const int temp_dist = (float)math::distance_between_vectors(location, other);
+					Entity ent_to_add;
 
-						if (ents.size() == 0)
+					if (entity::raycast(&ent_to_add))
+					{
+						if (ENTITY::IS_ENTITY_A_PED(ent_to_add) && PED::IS_PED_A_PLAYER(ent_to_add))
 						{
-							dist = temp_dist;
-						}
-
-						if (temp_dist > 500)
-						{
-							g_notification_service->push_warning("Weapons", "Entity is too far.");
+							g_notification_service->push_warning("Weapons", "You can't move player entities!");
 						}
 						else
 						{
-							if (entity::take_control_of(ent_to_add) && ENTITY::IS_ENTITY_A_PED(ent_to_add) && !PED::IS_PED_RAGDOLL(ent_to_add))
-							{
-								TASK::SET_HIGH_FALL_TASK(ent_to_add, 0, 0, 0);
+							other               = ENTITY::GET_ENTITY_COORDS(ent_to_add, true);
+							const int temp_dist = (float)math::distance_between_vectors(location, other);
 
-								g_notification_service->push_warning("Weapons", "Selected entity at crosshair.");
+							if (ents.size() == 0)
+							{
+								dist = temp_dist;
 							}
 
-							ents.push_back(ent_to_add);
+							if (temp_dist > 500)
+							{
+								g_notification_service->push_warning("Weapons", "Entity is too far.");
+							}
+							else
+							{
+								if (entity::take_control_of(ent_to_add) && ENTITY::IS_ENTITY_A_PED(ent_to_add) && !PED::IS_PED_RAGDOLL(ent_to_add))
+								{
+									TASK::SET_HIGH_FALL_TASK(ent_to_add, 0, 0, 0);
+
+									g_notification_service->push_warning("Weapons", "Selected entity at crosshair.");
+								}
+
+								ents.push_back(ent_to_add);
+							}
 						}
 					}
 				}
-			}
-			if (ents.size() > 0)
-			{
-				for (const auto& e : ents)
+				if (ents.size() > 0)
 				{
-					apply_velocity(e);
-				}
-			}
-		}
-		else if (ents.size() > 0)
-		{
-			for (const Entity& e : ents)
-			{
-				if (entity::take_control_of(e))
-				{
-					if (g.weapons.gravity_gun.launch_on_release)
+					for (const auto& e : ents)
 					{
-						dist += 100;
 						apply_velocity(e);
 					}
-					ENTITY::SET_ENTITY_COLLISION(e, true, true);
-					ENTITY::RESET_ENTITY_ALPHA(e);
 				}
 			}
+			else if (ents.size() > 0)
+			{
+				for (const Entity& e : ents)
+				{
+					if (entity::take_control_of(e))
+					{
+						if (g.weapons.gravity_gun.launch_on_release)
+						{
+							dist += 100;
+							apply_velocity(e);
+						}
+						ENTITY::SET_ENTITY_COLLISION(e, true, true);
+						ENTITY::RESET_ENTITY_ALPHA(e);
+					}
+				}
 
-			ents.clear();
+				ents.clear();
 
-			g_notification_service->push("Weapons", "Released entity.");
+				g_notification_service->push("Weapons", "Released entity.");
+			}
+		}
+		else
+		{
+			bool is_gravity_gun_selected = g.weapons.custom_weapon == CustomWeapon::GRAVITY_GUN;
+
+			auto is_zoomed_in = is_gravity_gun_selected && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM);
+			if (is_zoomed_in)
+			{
+				location = self::pos;
+
+				auto is_attack_just_pressed = PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK);
+
+				if (is_attack_just_pressed)
+				{
+					Entity ent_to_add;
+
+					if (entity::raycast(&ent_to_add))
+					{
+						if (ENTITY::IS_ENTITY_A_PED(ent_to_add) && PED::IS_PED_A_PLAYER(ent_to_add))
+						{
+							g_notification_service->push_warning("Weapons", "You can't move player entities!");
+						}
+						else
+						{
+							other               = ENTITY::GET_ENTITY_COORDS(ent_to_add, true);
+							const int temp_dist = (float)math::distance_between_vectors(location, other);
+
+							if (ents.size() == 0)
+							{
+								dist = temp_dist;
+							}
+
+							if (temp_dist > 500)
+							{
+								g_notification_service->push_warning("Weapons", "Entity is too far.");
+							}
+							else
+							{
+								if (entity::take_control_of(ent_to_add) && ENTITY::IS_ENTITY_A_PED(ent_to_add) && !PED::IS_PED_RAGDOLL(ent_to_add))
+								{
+									TASK::SET_HIGH_FALL_TASK(ent_to_add, 0, 0, 0);
+
+									g_notification_service->push_warning("Weapons", "Selected entity at crosshair.");
+								}
+
+								ents.push_back(ent_to_add);
+							}
+						}
+					}
+				}
+				if (ents.size() > 0)
+				{
+					for (const auto& e : ents)
+					{
+						apply_velocity(e);
+					}
+				}
+			}
+			else if (ents.size() > 0)
+			{
+				for (const Entity& e : ents)
+				{
+					if (entity::take_control_of(e))
+					{
+						if (g.weapons.gravity_gun.launch_on_release)
+						{
+							dist += 100;
+							apply_velocity(e);
+						}
+						ENTITY::SET_ENTITY_COLLISION(e, true, true);
+						ENTITY::RESET_ENTITY_ALPHA(e);
+					}
+				}
+
+				ents.clear();
+
+				g_notification_service->push("Weapons", "Released entity.");
+			}
 		}
 	}
 }
