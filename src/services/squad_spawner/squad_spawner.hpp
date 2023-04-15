@@ -61,6 +61,8 @@ namespace big
 		int m_squad_size;
 		eSquadSpawnDistance m_spawn_distance_mode;
 		eCombatAbilityLevel m_combat_ability_level;
+		bool m_stay_in_veh;
+		bool m_spawn_behind_same_velocity; //Spawns behind a moving target with the same velocity as the targets vehicle
 
 		/*
 		Leave vehicle_model empty to spawn a squad on foot
@@ -71,7 +73,7 @@ namespace big
 		squad(const char* name, const char* ped_model, const char* weapon_model, const char* vehicle_model, int squad_size,
 		bool ped_invincibility = false, bool veh_invincibility = false, bool ped_proofs[5] = {},
 		float ped_health = 0, float ped_armor = 0, float spawn_distance = 0, float ped_accuracy = 50.f,
-		eSquadSpawnDistance spawn_distance_mode = eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel combat_ability_level = eCombatAbilityLevel::AVERAGE)
+		eSquadSpawnDistance spawn_distance_mode = eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel combat_ability_level = eCombatAbilityLevel::AVERAGE, bool stay_in_veh = false, bool spawn_behind_same_velocity = false)
 		{
 			m_internal_id = ++m_instance_count;
 
@@ -93,6 +95,8 @@ namespace big
 			m_ped_accuracy = ped_accuracy;
 			m_spawn_distance_mode = spawn_distance_mode;
 			m_combat_ability_level = combat_ability_level;
+			m_stay_in_veh = stay_in_veh;
+			m_spawn_behind_same_velocity = spawn_behind_same_velocity;
 		}
 
 		int get_id()

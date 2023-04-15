@@ -22,6 +22,7 @@ namespace big
 			PED::SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(handle, true);
 			PED::SET_PED_CAN_BE_DRAGGED_OUT(handle, false);
 			PED::SET_RAGDOLL_BLOCKING_FLAGS(handle, 1 | 16); //Block player ragdoll impacts, bullet and colission
+			if(s.m_ped_proofs[4]) PED::SET_RAGDOLL_BLOCKING_FLAGS(handle, 128); //Check for melee proof and disable corresponding ragdoll
 
 			PED::SET_PED_COMBAT_ATTRIBUTES(handle, 2, true);
 			PED::SET_PED_COMBAT_ATTRIBUTES(handle, 4, true);
@@ -59,9 +60,6 @@ namespace big
 			{
 				PED::SET_PED_ARMOUR(handle, s.m_ped_armor);
 			}
-
-			if (!STREAMING::IS_MODEL_VALID(rage::joaat(s.m_weapon_model)))
-				LOG(INFO) << "Squad spawner: Invalid weapon model";
 
 			WEAPON::GIVE_WEAPON_TO_PED(handle, rage::joaat(s.m_weapon_model), 999, false, true);
 			PED::SET_PED_ACCURACY(handle, s.m_ped_accuracy);
@@ -105,12 +103,12 @@ namespace big
 			}
 		}
 
-		LOG(INFO) << "Squad spawner: Desired distance determined at " << s.m_spawn_distance;
+		//LOG(INFO) << "Squad spawner: Desired distance determined at " << s.m_spawn_distance;
 
 		static auto reset_spawn_pos_to_offset = [&]() -> void {
 			Ped player_ped_handle = g_pointers->m_ptr_to_handle(s.target->get_ped());
-			s.m_spawn_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player_ped_handle, 0, -7, 0);
-			LOG(INFO) << "Squad spawner: No suitable spot found, spawning at an offset";
+			s.m_spawn_pos         = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player_ped_handle, 0, -7, 0);
+			//LOG(INFO) << "Squad spawner: No suitable spot found, spawning at an offset";
 			g_notification_service->push_warning("Squad Spawner", "No suitable spot found, spawning at an offset");
 		};
 
@@ -120,7 +118,8 @@ namespace big
 				break;
 		}
 
-		if(math::distance_between_vectors(new_pos, s.m_spawn_pos) > 150) {
+		if (math::distance_between_vectors(new_pos, s.m_spawn_pos) > 150)
+		{
 			reset_spawn_pos_to_offset();
 			return false;
 		}
@@ -176,18 +175,14 @@ namespace big
 			{
 				g_squad_spawner_service.find_suitable_spawn_pos(s);
 			}
-
-			if (VEHICLE::IS_THIS_MODEL_A_PLANE(veh_model_hash) || VEHICLE::IS_THIS_MODEL_A_HELI(veh_model_hash))
-				s.m_spawn_pos.z += 50.f;
-
-			//POSSIBLE USE OF FIND_SPAWN_COORDINATES_FOR_HELI
 		}
 		else
 		{
 			s.m_spawn_pos = custom_pos;
 		}
 
-		LOG(INFO) << "Squad spawner: Distance from target determined: " << math::distance_between_vectors(s.m_spawn_pos, ENTITY::GET_ENTITY_COORDS(target_ped, true));
+
+		//LOG(INFO) << "Squad spawner: Distance from target determined: " << math::distance_between_vectors(s.m_spawn_pos, ENTITY::GET_ENTITY_COORDS(target_ped, true));
 
 		//Spawn squad vehicle
 		if (s.does_squad_have_vehicle())
@@ -198,8 +193,8 @@ namespace big
 		}
 		bool veh_spawned = ENTITY::DOES_ENTITY_EXIST(s.m_veh_handle);
 
-		if (!veh_spawned && s.does_squad_have_vehicle())
-			LOG(INFO) << "Squad spawner: Failed spawning squad vehicle";
+		//if (!veh_spawned && s.does_squad_have_vehicle())
+		//	LOG(INFO) << "Squad spawner: Failed spawning squad vehicle";
 
 		//Spawn squad members
 		for (int i = 0; i < s.m_squad_size; i++)
@@ -220,8 +215,9 @@ namespace big
 					{
 						if (VEHICLE::IS_THIS_MODEL_A_CAR(veh_model_hash))
 						{
-							TASK::TASK_VEHICLE_MISSION_PED_TARGET(0, s.m_veh_handle, target_ped, 4, 100.f, 786469, 5.f, 5.f, true);
-							TASK::TASK_LEAVE_ANY_VEHICLE(0, 0, 0);
+							TASK::TASK_VEHICLE_MISSION_PED_TARGET(0, s.m_veh_handle, target_ped, s.m_stay_in_veh ? 6 : 4, 100.f, 786468, 5.f, 5.f, true);
+							if (!s.m_stay_in_veh)
+								TASK::TASK_LEAVE_ANY_VEHICLE(0, 0, 0);
 						}
 						else if (VEHICLE::IS_THIS_MODEL_A_HELI(veh_model_hash))
 						{
@@ -235,7 +231,7 @@ namespace big
 						}
 						else if (VEHICLE::IS_THIS_MODEL_A_BOAT(veh_model_hash))
 						{
-							TASK::TASK_BOAT_MISSION(0, s.m_veh_handle, 0, target_ped, 0, 0, 0, 6, 300, 786469, 10.f, 7);
+							TASK::TASK_BOAT_MISSION(0, s.m_veh_handle, 0, target_ped, 0, 0, 0, 6, 300, 786468, 10.f, 7);
 						}
 					}
 				}
@@ -244,8 +240,33 @@ namespace big
 				TASK::CLOSE_SEQUENCE_TASK(seq);
 				TASK::TASK_PERFORM_SEQUENCE(s.m_members[i].handle, seq);
 				TASK::CLEAR_SEQUENCE_TASK(&seq);
+
+				if (s.m_stay_in_veh)
+					PED::SET_PED_COMBAT_ATTRIBUTES(s.m_members[i].handle, 3, false);
 			}
 		}
+
+		if (s.m_spawn_behind_same_velocity && s.does_squad_have_vehicle() && veh_spawned && target_player->get_current_vehicle())
+		{	
+			Vehicle target_vehicle = g_pointers->m_ptr_to_handle(target_player->get_current_vehicle());
+
+
+			if(ENTITY::GET_ENTITY_SPEED(target_vehicle) > 25.f && entity::take_control_of(s.m_veh_handle))
+			{
+				
+				Vector3 velocity       = ENTITY::GET_ENTITY_VELOCITY(target_vehicle);
+				Vector3 behindpos      = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(target_vehicle, 0.f, -7.f, 0.f);
+				float heading          = ENTITY::GET_ENTITY_HEADING(target_vehicle);
+
+				ENTITY::SET_ENTITY_COORDS(s.m_veh_handle, behindpos.x, behindpos.y, behindpos.z, 0, 0, 0, false);
+				ENTITY::SET_ENTITY_HEADING(s.m_veh_handle, heading);
+				ENTITY::SET_ENTITY_VELOCITY(s.m_veh_handle, velocity.x, velocity.y, velocity.z);
+			}
+		}
+
+		if (VEHICLE::IS_THIS_MODEL_A_PLANE(veh_model_hash) || VEHICLE::IS_THIS_MODEL_A_HELI(veh_model_hash))
+			s.m_spawn_pos.z += 50.f;
+
 		if (s.has_squad_spawned())
 		{
 			m_active_squads.push_back(s);
