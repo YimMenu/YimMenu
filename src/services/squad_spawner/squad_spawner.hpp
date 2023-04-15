@@ -151,21 +151,27 @@ namespace big
 
 	class squad_spawner
 	{
-
 	public:
-		inline static std::vector<squad> m_templates;
-		inline static std::vector<squad> m_active_squads;
+		squad_spawner(){
+			load_default_templates();
+		}
+		std::vector<squad> m_templates;
+		std::vector<squad> m_active_squads;
 
 	private:
-		static bool find_suitable_spawn_pos(squad&);
-		static squad_member spawn_squad_member(squad);
-		static std::pair<Vehicle, CVehicle*> spawn_squad_vehicle(squad);
+		bool find_suitable_spawn_pos(squad&);
+		squad_member spawn_squad_member(squad);
+		std::pair<Vehicle, CVehicle*> spawn_squad_vehicle(squad);
 
 	public:
+		void load_default_templates();
 		std::filesystem::path get_file_path();
-		static bool spawn_squad(squad, player_ptr target_player, bool override_spawn_pos, Vector3 custom_pos);
+		bool spawn_squad(squad, player_ptr target_player, bool override_spawn_pos, Vector3 custom_pos);
 		bool save_squad(squad);
 		bool fetch_squads();
+
+		void terminate_squads();
 	};
 
+	inline squad_spawner g_squad_spawner_service;
 }

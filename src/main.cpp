@@ -11,8 +11,6 @@
 #include "script_mgr.hpp"
 #include "services/api/api_service.hpp"
 #include "services/context_menu/context_menu_service.hpp"
-#include "services/orbital_drone/orbital_drone.hpp"
-#include "services/vehicle/vehicle_control_service.hpp"
 #include "services/custom_text/custom_text_service.hpp"
 #include "services/globals/globals_service.hpp"
 #include "services/gta_data/gta_data_service.hpp"
@@ -27,7 +25,9 @@
 #include "services/player_database/player_database_service.hpp"
 #include "services/players/player_service.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
+#include "services/squad_spawner/squad_spawner.hpp"
 #include "services/vehicle/handling_service.hpp"
+#include "services/vehicle/vehicle_control_service.hpp"
 #include "thread_pool.hpp"
 #include "version.hpp"
 

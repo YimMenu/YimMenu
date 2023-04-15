@@ -7,6 +7,8 @@
 #include "script.hpp"
 
 #include <random>
+#include <cstdlib>
+#include <ctime>
 
 
 namespace big::pathfind
@@ -89,7 +91,7 @@ namespace big::pathfind
 	{
 		
 	
-		srand(0);
+		srand(time(NULL));
 		bool apply_to_x = rand() % 2;
 		bool apply_positive = rand() % 2;
 

@@ -17,7 +17,8 @@ namespace big
 		handle = ped::spawn(ePedType::PED_TYPE_CIVMALE, rage::joaat(s.m_ped_model), 0, s.m_spawn_pos, 0, true);
 		ptr    = reinterpret_cast<CPed*>(g_pointers->m_handle_to_ptr(handle));
 
-		if (entity::take_control_of(handle)){
+		if (entity::take_control_of(handle))
+		{
 			PED::SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(handle, true);
 			PED::SET_PED_CAN_BE_DRAGGED_OUT(handle, false);
 			PED::SET_RAGDOLL_BLOCKING_FLAGS(handle, 1 | 16); //Block player ragdoll impacts, bullet and colission
@@ -48,6 +49,16 @@ namespace big
 			PED::SET_PED_SUFFERS_CRITICAL_HITS(handle, !s.m_ped_proofs[0]); //Headshot bool is true to disable, hence the unary prefix '!'
 			TASK::SET_PED_PATH_MAY_ENTER_WATER(handle, true);
 			TASK::SET_PED_PATH_PREFER_TO_AVOID_WATER(handle, true);
+
+			if (s.should_override_health())
+			{
+				PED::SET_PED_MAX_HEALTH(handle, s.m_ped_health);
+				ENTITY::SET_ENTITY_HEALTH(handle, s.m_ped_health, 0);
+			}
+			if (s.should_override_armor())
+			{
+				PED::SET_PED_ARMOUR(handle, s.m_ped_armor);
+			}
 
 			if (!STREAMING::IS_MODEL_VALID(rage::joaat(s.m_weapon_model)))
 				LOG(INFO) << "Squad spawner: Invalid weapon model";
@@ -98,7 +109,8 @@ namespace big
 
 		static auto reset_spawn_pos_to_offset = [&]() -> void {
 			Ped player_ped_handle = g_pointers->m_ptr_to_handle(s.target->get_ped());
-			s.m_spawn_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player_ped_handle, 0, (s.m_spawn_distance * 0.3), 0);
+			s.m_spawn_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player_ped_handle, 0, -7, 0);
+			LOG(INFO) << "Squad spawner: No suitable spot found, spawning at an offset";
 			g_notification_service->push_warning("Squad Spawner", "No suitable spot found, spawning at an offset");
 		};
 
@@ -106,6 +118,11 @@ namespace big
 		{
 			if (pathfind::find_random_location_in_vicinity(s.m_spawn_pos, new_pos, s.m_spawn_heading, node_search_flag, s.m_spawn_distance))
 				break;
+		}
+
+		if(math::distance_between_vectors(new_pos, s.m_spawn_pos) > 150) {
+			reset_spawn_pos_to_offset();
+			return false;
 		}
 
 		if (new_pos == s.m_spawn_pos)
@@ -157,7 +174,7 @@ namespace big
 			}
 			else
 			{
-				find_suitable_spawn_pos(s);
+				g_squad_spawner_service.find_suitable_spawn_pos(s);
 			}
 
 			if (VEHICLE::IS_THIS_MODEL_A_PLANE(veh_model_hash) || VEHICLE::IS_THIS_MODEL_A_HELI(veh_model_hash))
@@ -197,7 +214,6 @@ namespace big
 
 				int seq;
 				TASK::OPEN_SEQUENCE_TASK(&seq);
-				LOG(INFO) << "Squad spawner: Task sequence opened for member " << i;
 				if (veh_spawned)
 				{
 					if (i == 0)
@@ -206,29 +222,27 @@ namespace big
 						{
 							TASK::TASK_VEHICLE_MISSION_PED_TARGET(0, s.m_veh_handle, target_ped, 4, 100.f, 786469, 5.f, 5.f, true);
 							TASK::TASK_LEAVE_ANY_VEHICLE(0, 0, 0);
-							LOG(INFO) << "Squad spawner: Added Vehicle Mission and Leave Vehicle to sequence";
 						}
 						else if (VEHICLE::IS_THIS_MODEL_A_HELI(veh_model_hash))
 						{
 							TASK::TASK_HELI_MISSION(0, s.m_veh_handle, 0, target_ped, 0, 0, 0, 6, 200.f, 30.f, -1, 50.f, 20.f, -1, 128 | 4096);
-							LOG(INFO) << "Squad spawner: Added heli mission to sequence";
 							VEHICLE::SET_HELI_BLADES_FULL_SPEED(s.m_veh_handle);
 						}
 						else if (VEHICLE::IS_THIS_MODEL_A_PLANE(veh_model_hash))
 						{
-							LOG(INFO) << "Squad spawner: Added plane mission to sequence";
 							TASK::TASK_PLANE_MISSION(0, s.m_veh_handle, 0, target_ped, 0, 0, 0, 6, 300, 35.f, -1, 100.f, 20.f, true);
 							VEHICLE::SET_VEHICLE_FORWARD_SPEED(s.m_veh_handle, 30.f);
+						}
+						else if (VEHICLE::IS_THIS_MODEL_A_BOAT(veh_model_hash))
+						{
+							TASK::TASK_BOAT_MISSION(0, s.m_veh_handle, 0, target_ped, 0, 0, 0, 6, 300, 786469, 10.f, 7);
 						}
 					}
 				}
 
-
 				TASK::TASK_COMBAT_PED(0, target_ped, 67108864, 16); //flag 67108864 should prevent peds from attaining other targets
-				LOG(INFO) << "Squad spawner: Added combat target to sequence";
 				TASK::CLOSE_SEQUENCE_TASK(seq);
 				TASK::TASK_PERFORM_SEQUENCE(s.m_members[i].handle, seq);
-				LOG(INFO) << "Squad spawner: Closed sequence";
 				TASK::CLEAR_SEQUENCE_TASK(&seq);
 			}
 		}
