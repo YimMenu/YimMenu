@@ -30,22 +30,22 @@ namespace big
 
 			if (gta_util::get_network()->m_game_session.is_host())
 			{
-				g_pointers->m_handle_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr, player->get_session_player(), &cmd);
+				g_pointers->m_gta.m_handle_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr, player->get_session_player(), &cmd);
 			}
 			else if (player->is_host())
 			{
 				for (auto& [_, plyr] : g_player_service->players())
 				{
 					if (plyr->id() != player->id())
-						g_pointers->m_send_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
-						    g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+						g_pointers->m_gta.m_send_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+						    g_pointers->m_gta.m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 						        (int)plyr->get_session_player()->m_player_data.m_peer_id_2),
 						    gta_util::get_network()->m_game_session_ptr->m_connection_identifier,
 						    &cmd,
 						    0x1000000);
 				}
 
-				g_pointers->m_handle_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr, player->get_session_player(), &cmd);
+				g_pointers->m_gta.m_handle_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr, player->get_session_player(), &cmd);
 			}
 			else
 			{
@@ -53,8 +53,8 @@ namespace big
 				{
 					if (plyr->is_host())
 					{
-						g_pointers->m_send_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
-						    g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+						g_pointers->m_gta.m_send_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+						    g_pointers->m_gta.m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 						        (int)plyr->get_session_player()->m_player_data.m_peer_id_2),
 						    gta_util::get_network()->m_game_session_ptr->m_connection_identifier,
 						    &cmd,

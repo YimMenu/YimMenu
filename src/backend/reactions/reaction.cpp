@@ -61,7 +61,7 @@ namespace big
 				    std::format("{} {}", g.session.chat_output_prefix, m_announce_message).data(),
 				    player->get_name());
 
-				if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_send_chat_ptr,
+				if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
 				        g_player_service->get_self()->get_net_data(),
 				        chat,
 				        false))

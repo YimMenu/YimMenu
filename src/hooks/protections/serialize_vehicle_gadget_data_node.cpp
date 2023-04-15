@@ -42,7 +42,7 @@ namespace big
 			if (data->IsSizeCalculator())
 				size = 94;
 			else
-				size = g_pointers->m_get_vehicle_gadget_array_size(node->m_gadget_data[i].m_gadget_type);
+				size = g_pointers->m_gta.m_get_vehicle_gadget_array_size(node->m_gadget_data[i].m_gadget_type);
 
 			data->SerializeArray(&node->m_gadget_data[i].m_data, size);
 		}

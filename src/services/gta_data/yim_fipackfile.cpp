@@ -16,11 +16,11 @@ namespace big
 	{
 		std::vector<std::string> non_dlc_mounted_devices_names;
 
-		uint16_t mounted_devices_len = *g_pointers->m_fidevices_len;
+		uint16_t mounted_devices_len = *g_pointers->m_gta.m_fidevices_len;
 		if (mounted_devices_len)
 		{
-			auto devices_arr                        = *(uint64_t*)g_pointers->m_fidevices;
-			uint8_t** current_device_mount_name_ptr = *(unsigned __int8***)g_pointers->m_fidevices;
+			auto devices_arr                        = *(uint64_t*)g_pointers->m_gta.m_fidevices;
+			uint8_t** current_device_mount_name_ptr = *(unsigned __int8***)g_pointers->m_gta.m_fidevices;
 			auto device_i                           = 0;
 
 			while (true)
@@ -56,9 +56,9 @@ namespace big
 		constexpr auto yield_increment = 80;
 
 		auto i = 1;
-		while (g_pointers->m_fipackfile_instances[i])
+		while (g_pointers->m_gta.m_fipackfile_instances[i])
 		{
-			auto* rpf = g_pointers->m_fipackfile_instances[i];
+			auto* rpf = g_pointers->m_gta.m_fipackfile_instances[i];
 
 			// its hard coded in the binary?
 			if (++i >= 3672)
@@ -108,7 +108,7 @@ namespace big
 						cb(rpf_wrapper);
 					});
 
-					g_pointers->m_fipackfile_unmount(default_mount_name);
+					g_pointers->m_gta.m_fipackfile_unmount(default_mount_name);
 				}
 			}
 			else

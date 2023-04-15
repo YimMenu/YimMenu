@@ -10,7 +10,7 @@ namespace big::world_model
 	static inline std::array<byte, patch_size> backup;
 	static inline void setup_backup()
 	{
-		memcpy(backup.data(), g_pointers->m_world_model_spawn_bypass, patch_size);
+		memcpy(backup.data(), g_pointers->m_gta.m_world_model_spawn_bypass, patch_size);
 	}
 
 	inline Object spawn(Hash hash, Vector3 location = Vector3(), bool is_networked = true)
@@ -27,11 +27,11 @@ namespace big::world_model
 		}
 
 		std::call_once(once_flag, setup_backup);
-		memset(g_pointers->m_world_model_spawn_bypass, 0x90, patch_size);
+		memset(g_pointers->m_gta.m_world_model_spawn_bypass, 0x90, patch_size);
 
 		const auto object = OBJECT::CREATE_OBJECT(hash, location.x, location.y, location.z, is_networked, false, false);
 
-		memcpy(g_pointers->m_world_model_spawn_bypass, backup.data(), patch_size);
+		memcpy(g_pointers->m_gta.m_world_model_spawn_bypass, backup.data(), patch_size);
 
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 

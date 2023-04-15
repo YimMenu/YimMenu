@@ -28,7 +28,7 @@ namespace big
 			return;
 		}
 
-		if (*g_pointers->m_is_session_started && gta_util::get_network_player_mgr()->m_local_net_player
+		if (*g_pointers->m_gta.m_is_session_started && gta_util::get_network_player_mgr()->m_local_net_player
 		    && gta_util::get_network_player_mgr()->m_local_net_player->m_player_info->m_ped)
 		{
 			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].OrbitalBitset.Set(eOrbitalBitset::kOrbitalCannonActive);
@@ -332,7 +332,7 @@ namespace big
 
 		if (ENTITY::IS_ENTITY_A_VEHICLE(ent))
 		{
-			const auto vehicle = reinterpret_cast<CVehicle*>(g_pointers->m_handle_to_ptr(ent));
+			const auto vehicle = reinterpret_cast<CVehicle*>(g_pointers->m_gta.m_handle_to_ptr(ent));
 			if (vehicle)
 			{
 				for (const auto& player : g_player_service->players() | std::ranges::views::values)
@@ -362,7 +362,7 @@ namespace big
 		{
 			for (auto ped : g_player_service->players() | std::ranges::views::values)
 			{
-				if (ped && g_pointers->m_ptr_to_handle(ped->get_ped()) == ent)
+				if (ped && g_pointers->m_gta.m_ptr_to_handle(ped->get_ped()) == ent)
 				{
 					g_player_service->set_selected(ped);
 				}
@@ -379,7 +379,7 @@ namespace big
 		Vector3 entpos = ENTITY::GET_ENTITY_COORDS(entity::get_entity_closest_to_middle_of_screen(), 0);
 
 		if (g_player_service->get_selected()->is_valid()
-		        &&ENTITY::DOES_ENTITY_EXIST(g_pointers->m_ptr_to_handle(g_player_service->get_selected()->get_ped())))
+		        &&ENTITY::DOES_ENTITY_EXIST(g_pointers->m_gta.m_ptr_to_handle(g_player_service->get_selected()->get_ped())))
 		{
 			toxic::blame_explode_coord(g_player_service->get_selected(), m_ground_pos, eExplosionTag::EXP_TAG_ORBITAL_CANNON, 1.f, TRUE, TRUE, 1.f);
 

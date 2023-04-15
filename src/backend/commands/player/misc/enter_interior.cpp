@@ -29,7 +29,7 @@ namespace big
 				    0,
 				    1};
 
-				g_pointers->m_trigger_script_event(1, args, arg_count, 1 << self::id);
+				g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << self::id);
 			}
 			else if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[id].SimpleInteriorData.Index != eSimpleInteriorIndex::SIMPLE_INTERIOR_INVALID)
 			{

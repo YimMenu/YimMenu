@@ -11,7 +11,7 @@ namespace big::gta_util
 {
 	inline CPed* get_local_ped()
 	{
-		if (auto ped_factory = *g_pointers->m_ped_factory)
+		if (auto ped_factory = *g_pointers->m_gta.m_ped_factory)
 		{
 			return ped_factory->m_local_ped;
 		}
@@ -33,7 +33,7 @@ namespace big::gta_util
 
 	inline CPlayerInfo* get_local_playerinfo()
 	{
-		if (auto ped_factory = *g_pointers->m_ped_factory)
+		if (auto ped_factory = *g_pointers->m_gta.m_ped_factory)
 		{
 			if (auto ped = ped_factory->m_local_ped)
 			{
@@ -46,12 +46,12 @@ namespace big::gta_util
 
 	inline CNetworkPlayerMgr* get_network_player_mgr()
 	{
-		return *g_pointers->m_network_player_mgr;
+		return *g_pointers->m_gta.m_network_player_mgr;
 	}
 
 	inline Network* get_network()
 	{
-		return *g_pointers->m_network;
+		return *g_pointers->m_gta.m_network;
 	}
 
 	template<typename F, typename... Args>
@@ -72,7 +72,7 @@ namespace big::gta_util
 	template<typename F, typename... Args>
 	void execute_as_script(rage::joaat_t script_hash, F&& callback, Args&&... args)
 	{
-		for (auto thread : *g_pointers->m_script_threads)
+		for (auto thread : *g_pointers->m_gta.m_script_threads)
 		{
 			if (!thread || !thread->m_context.m_thread_id || thread->m_context.m_script_hash != script_hash)
 				continue;
@@ -85,7 +85,7 @@ namespace big::gta_util
 
 	inline GtaThread* find_script_thread(rage::joaat_t hash)
 	{
-		for (auto thread : *g_pointers->m_script_threads)
+		for (auto thread : *g_pointers->m_gta.m_script_threads)
 		{
 			if (thread && thread->m_context.m_thread_id && thread->m_handler && thread->m_script_hash == hash)
 			{
@@ -98,7 +98,7 @@ namespace big::gta_util
 
 	inline GtaThread* find_script_thread_by_id(std::uint32_t id)
 	{
-		for (auto thread : *g_pointers->m_script_threads)
+		for (auto thread : *g_pointers->m_gta.m_script_threads)
 		{
 			if (thread && thread->m_handler && thread->m_context.m_thread_id == id)
 			{
@@ -111,7 +111,7 @@ namespace big::gta_util
 
 	inline rage::scrProgram* find_script_program(rage::joaat_t hash)
 	{
-		for (auto& script : *g_pointers->m_script_program_table)
+		for (auto& script : *g_pointers->m_gta.m_script_program_table)
 		{
 			if (script.m_program && script.m_program->m_name_hash == hash)
 				return script.m_program;

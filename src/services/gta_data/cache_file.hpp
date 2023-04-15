@@ -20,6 +20,12 @@ namespace big
 		///
 		/// </summary>
 		/// <param name="cache_file">FileMgr file object</param>
+		cache_file(file cache_file);
+
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="cache_file">FileMgr file object</param>
 		/// <param name="cache_version">Internal version, use this to invalidate the cache when changing the structure of the data</param>
 		cache_file(file cache_file, std::uint32_t cache_version);
 
@@ -59,6 +65,8 @@ namespace big
 		/// <param name="game_version">Game Build</param>
 		/// <param name="online_version">Online Version</param>
 		void set_header_version(std::uint32_t game_version, float online_version);
+
+		void set_cache_version(std::uint32_t cache_version);
 
 	private:
 		file m_cache_file;

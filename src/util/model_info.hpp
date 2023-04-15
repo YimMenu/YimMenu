@@ -34,7 +34,7 @@ namespace big
 		template<typename T = CBaseModelInfo*>
 		static T get_model(const rage::joaat_t hash)
 		{
-			const auto model_table = g_pointers->m_model_table;
+			const auto model_table = g_pointers->m_gta.m_model_table;
 			for (auto i = model_table->m_lookup_table[hash % model_table->m_lookup_key]; i; i = i->m_next)
 			{
 				if (i->m_hash == hash)
