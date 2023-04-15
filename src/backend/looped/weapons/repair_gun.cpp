@@ -8,8 +8,6 @@ namespace big
 {
 	void looped::weapons_repair_gun()
 	{
-		bool bRepairGun = g.weapons.custom_weapon == CustomWeapon::REPAIR_GUN;
-
 		if (const bool bRepairGun = g.weapons.custom_weapon == CustomWeapon::REPAIR_GUN; bRepairGun)
 		{
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
