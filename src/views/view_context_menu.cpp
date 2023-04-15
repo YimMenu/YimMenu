@@ -1,3 +1,4 @@
+#include "gui.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "view.hpp"
 
@@ -26,7 +27,7 @@ namespace big
 
 	void view::context_menu()
 	{
-		if (const auto draw_list = ImGui::GetBackgroundDrawList(); draw_list)
+		if (const auto draw_list = ImGui::GetBackgroundDrawList(); draw_list && !g_gui->is_open())
 		{
 			if (g_context_menu_service->enabled && g_context_menu_service->m_pointer
 			    && g_context_menu_service->m_pointer->m_navigation)
