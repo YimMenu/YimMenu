@@ -1347,8 +1347,46 @@ namespace big
             {
                 g_pointers->m_gta.m_crash_trigger = ptr;
             }
+        },
+        // Script VM Patch 1
+        {
+            "SVM1",
+            "3b 0a 0f 83 ? ? ? ? 48 ff c7",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_script_vm_patch_1 = ptr;
+            }
+        },
+        // Script VM Patch 2
+        {
+            "SVM2",
+            "3b 0a 0f 83 ? ? ? ? 49 03 fa",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_script_vm_patch_2 = ptr;
+            }
+        },
+        // Script VM Patches 3 and 4
+        {
+            "SVM3&4",
+            "3b 11 0f 83 ? ? ? ? 48 ff c7",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_script_vm_patch_3 = ptr;
+                g_pointers->m_gta.m_script_vm_patch_4 = ptr.add(0x1C);
+            }
+        },
+        // Script VM Patches 5 and 6
+        {
+            "SVM5&6",
+            "3b 11 0f 83 ? ? ? ? 49 03 fa",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_script_vm_patch_5 = ptr;
+                g_pointers->m_gta.m_script_vm_patch_6 = ptr.add(0x26);
+            }
         }
-        >();
+        >(); // don't leave a trailing comma at the end
 
 		// clang-format on
 
@@ -1385,23 +1423,6 @@ namespace big
 		// clang-format on
 
 		return batch_and_hash;
-	}
-
-	void pointers::freemode_thread_restorer_through_vm_patch(const memory::module& mem_region)
-	{
-		auto pat3 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 48 ff c7");
-		for (auto& handle : pat3)
-		{
-			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272)->apply();
-			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090)->apply();
-		}
-
-		auto pat4 = mem_region.scan_all("3b 11 0f 83 ? ? ? ? 49 03 fa");
-		for (auto& handle : pat4)
-		{
-			memory::byte_patch::make(handle.add(2).as<uint32_t*>(), 0xd2310272)->apply();
-			memory::byte_patch::make(handle.add(6).as<uint16_t*>(), 0x9090)->apply();
-		}
 	}
 
 	void pointers::load_pointers_from_cache(const cache_file& cache_file, const uintptr_t pointer_to_cacheable_data_start, const memory::module& mem_region)
@@ -1467,8 +1488,6 @@ namespace big
 		}
 		else
 			LOG(WARNING) << "socialclub.dll module was not loaded within the time limit.";
-
-		freemode_thread_restorer_through_vm_patch(mem_region);
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);
 

@@ -45,6 +45,13 @@ namespace big
 
 		memory::handle m_crash_trigger;
 
+		memory::handle m_script_vm_patch_1;
+		memory::handle m_script_vm_patch_2;
+		memory::handle m_script_vm_patch_3;
+		memory::handle m_script_vm_patch_4;
+		memory::handle m_script_vm_patch_5;
+		memory::handle m_script_vm_patch_6;
+
 		eGameState* m_game_state{};
 		bool* m_is_session_started{};
 

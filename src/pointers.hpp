@@ -111,8 +111,6 @@ namespace big
 			}
 		}
 
-		void freemode_thread_restorer_through_vm_patch(const memory::module& mem_region);
-
 	public:
 		explicit pointers();
 		~pointers();
