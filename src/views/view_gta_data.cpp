@@ -35,16 +35,9 @@ namespace big
 				}
 				else
 				{
-					ImGui::TextWrapped("GAME_CACHE_SINGLE_PLAYER_DESCRIPTION"_T.data());
-
-					if (ImGui::Button("GAME_CACHE_DONT_CARE"_T.data()))
+					if (ImGui::Button("GAME_CACHE_UPDATE_CACHE"_T.data()))
 					{
 						g_gta_data_service->update_now();
-					}
-
-					if (ImGui::Button("GAME_CACHE_GO_ONLINE"_T.data()))
-					{
-						g_gta_data_service->update_in_online();
 					}
 
 					if (*g_pointers->m_gta.m_game_state == eGameState::Respawn)
@@ -53,7 +46,7 @@ namespace big
 						{
 							g_gta_data_service->update_on_init();
 						}
-					}		
+					}
 				}
 
 				break;

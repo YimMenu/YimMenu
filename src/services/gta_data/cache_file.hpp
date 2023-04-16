@@ -7,8 +7,7 @@ namespace big
 	{
 	public:
 		std::uint32_t m_cache_version;
-		std::uint32_t m_game_version;
-		float m_online_version;
+		std::uint32_t m_file_version;
 		std::uint64_t m_data_size;
 	};
 
@@ -55,7 +54,7 @@ namespace big
 		/// <param name="game_version">Current Game version</param>
 		/// <param name="online_version">Current Online version</param>
 		/// <returns>True if cache is up to date, false otherwise.</returns>
-		bool up_to_date(std::uint32_t game_version, float online_version) const;
+		bool up_to_date(std::uint32_t file_version) const;
 
 
 		void set_data(cache_data&& data, std::uint64_t data_size);
@@ -64,7 +63,7 @@ namespace big
 		/// </summary>
 		/// <param name="game_version">Game Build</param>
 		/// <param name="online_version">Online Version</param>
-		void set_header_version(std::uint32_t game_version, float online_version);
+		void set_header_version(std::uint32_t file_version);
 
 		void set_cache_version(std::uint32_t cache_version);
 

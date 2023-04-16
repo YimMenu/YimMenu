@@ -1,10 +1,10 @@
 #include "core/data/hud_component_names.hpp"
 #include "core/data/ptfx_effects.hpp"
 #include "fiber_pool.hpp"
+#include "services/orbital_drone/orbital_drone.hpp"
 #include "util/entity.hpp"
 #include "util/local_player.hpp"
 #include "util/scripts.hpp"
-#include "services/orbital_drone/orbital_drone.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -55,7 +55,7 @@ namespace big
 
 		components::command_checkbox<"invis">();
 		if (g.self.invisibility)
-			components::command_checkbox<"localvis">();// TODO: does nothing in SP
+			components::command_checkbox<"localvis">(); // TODO: does nothing in SP
 		components::command_checkbox<"cleanloop">();
 		components::command_checkbox<"nocollision">();
 		components::command_checkbox<"mobileradio">();
@@ -77,9 +77,9 @@ namespace big
 				{
 					if (ImGui::Selectable(ptfx_named[i].friendly_name, ptfx_named[i].asset_name == g.self.ptfx_effects.asset))
 					{
-						g.self.ptfx_effects.asset  = ptfx_named[i].asset_name;// Update our asset name to be used
+						g.self.ptfx_effects.asset  = ptfx_named[i].asset_name; // Update our asset name to be used
 						g.self.ptfx_effects.select = i;
-						g.self.ptfx_effects.effect = ptfx_named[i].effect_names.at(0);// set the effect to the first instance in the vector
+						g.self.ptfx_effects.effect = ptfx_named[i].effect_names.at(0); // set the effect to the first instance in the vector
 					}
 
 					if (ptfx_named[i].asset_name == g.self.ptfx_effects.asset)
@@ -94,7 +94,7 @@ namespace big
 				for (const auto& ptfx_type : ptfx_named[g.self.ptfx_effects.select].effect_names)
 				{
 					if (ImGui::Selectable(ptfx_type, ptfx_type == g.self.ptfx_effects.effect))
-						g.self.ptfx_effects.effect = ptfx_type;// Update our ptfx effect
+						g.self.ptfx_effects.effect = ptfx_type; // Update our ptfx effect
 
 					if (ptfx_type == g.self.ptfx_effects.effect)
 						ImGui::SetItemDefaultFocus();
@@ -210,9 +210,8 @@ namespace big
 		});
 
 		components::button("HIDE_ALL"_T, [] {
-
 			g.self.hud.hide_radar = true;
-			g.self.hud.hide_ammo = true;
+			g.self.hud.hide_ammo  = true;
 
 			for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
 			{
@@ -221,9 +220,8 @@ namespace big
 		});
 		ImGui::SameLine();
 		components::button("SHOW_ALL"_T, [] {
-
 			g.self.hud.hide_radar = false;
-			g.self.hud.hide_ammo = false;
+			g.self.hud.hide_ammo  = false;
 
 			for (int i = 0; i < (int)HudComponents::HUD_WEAPONS; i++)
 			{
@@ -237,20 +235,55 @@ namespace big
 
 		ImGui::EndGroup();
 
+		ImGui::BeginGroup();
 		components::command_checkbox<"hudcolor">();
+		static int color_select_index = 0;
 
-		ImGui::Checkbox("Override Hud Color Specify", &g.self.hud.shcolor);
-		ImGui::InputInt("Hud Index", &g.self.hud.index);//need to display current val if not displayed
-		ImGui::InputInt("Hud Red", &g.self.hud.r);
-		ImGui::InputInt("Hud Green", &g.self.hud.g);
-		ImGui::InputInt("Hud Blue", &g.self.hud.b);
-		ImGui::InputInt("Hud Alpha", &g.self.hud.a);
+		if (g.self.hud.color_override)
+		{
+			ImGui::Combo("Color Index", &color_select_index, hud_colors.data(), hud_colors.size());
 
-		ImGui::Checkbox("Override Multiplayer Hud Color", &g.self.hud.mhcolor);
-		ImGui::InputInt("Hud Color", &g.self.hud.hcolor);
+			auto& ovr_color = g.self.hud.hud_color_overrides[color_select_index];
 
-		ImGui::Checkbox("Override Multiplayer Text Off Index", &g.self.hud.mtcolor);
-		ImGui::InputInt("Hud Text Color", &g.self.hud.tcolor);
+			float col[4]{};
+			col[0] = ovr_color.r / 255.0f;
+			col[1] = ovr_color.g / 255.0f;
+			col[2] = ovr_color.b / 255.0f;
+			col[3] = ovr_color.a / 255.0f;
+
+			if (ImGui::ColorPicker4("Override Color", col))
+			{
+				ovr_color.r = (int)(col[0] * 255);
+				ovr_color.g = (int)(col[1] * 255);
+				ovr_color.b = (int)(col[2] * 255);
+				ovr_color.a = (int)(col[3] * 255);
+
+				g_fiber_pool->queue_job([] {
+					auto& col = g.self.hud.hud_color_overrides[color_select_index];
+					HUD::REPLACE_HUD_COLOUR_WITH_RGBA(color_select_index, col.r, col.g, col.b, col.a);
+				});
+			}
+
+			components::button("Restore Default Color", [] {
+				g.self.hud.hud_color_overrides[color_select_index] = g.self.hud.hud_color_defaults[color_select_index];
+
+				auto& col = g.self.hud.hud_color_defaults[color_select_index];
+				HUD::REPLACE_HUD_COLOUR_WITH_RGBA(color_select_index, col.r, col.g, col.b, col.a);
+			});
+
+			ImGui::SameLine();
+
+			components::button("Restore All Defaults", [] {
+				for (int i = 0; i < hud_colors.size(); i++)
+				{
+					auto& col                         = g.self.hud.hud_color_defaults[i];
+					g.self.hud.hud_color_overrides[i] = col;
+					HUD::REPLACE_HUD_COLOUR_WITH_RGBA(i, col.r, col.g, col.b, col.a);
+				}
+			});
+		}
+
+		ImGui::EndGroup();
 
 		g.self.proof_mask = 0;
 		if (g.self.god_mode)

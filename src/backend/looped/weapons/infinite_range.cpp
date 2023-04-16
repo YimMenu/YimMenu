@@ -1,5 +1,5 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -43,5 +43,5 @@ namespace big
 		}
 	};
 
-	infinite_range g_infinite_range("infrange", "Infinite Range", "Kill anything at any distance.", g.weapons.infinite_range);
+	infinite_range g_infinite_range("infrange", "Infinite Range", "Kill anything at any distance", g.weapons.infinite_range);
 }

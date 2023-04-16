@@ -70,6 +70,9 @@ namespace big::notify
 	{
 		int scaleform = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MULTIPLAYER_CHAT");
 
+		while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(scaleform))
+			script::get_current()->yield();
+
 		GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, "ADD_MESSAGE");
 		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(player_name); // player name
 		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(msg);             // content
@@ -88,7 +91,7 @@ namespace big::notify
 
 		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(scaleform, 255, 255, 255, 255, 0);
 
-		//fix broken scaleforms, when chat alrdy opened
+		// fix broken scaleforms, when chat alrdy opened
 		if (const auto chat_data = *g_pointers->m_gta.m_chat_data; chat_data && (chat_data->m_chat_open || chat_data->m_timer_two))
 			HUD::CLOSE_MP_TEXT_CHAT();
 	}

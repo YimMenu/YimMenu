@@ -1,10 +1,10 @@
 #pragma once
-#pragma pack(push, 4)
 
+#include "base/CObject.hpp"
 #include "common.hpp"
 #include "fwddec.hpp"
-#include "base/CObject.hpp"
 
+#pragma pack(push, 4)
 namespace rage
 {
 	template<typename T = CDynamicEntity>

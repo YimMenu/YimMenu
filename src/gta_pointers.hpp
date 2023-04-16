@@ -1,10 +1,14 @@
 #pragma once
+#include <memory/handle.hpp>
 
 class CCommunications;
 class FriendRegistry;
 class CNetworkPlayerMgr;
 class Network;
 class ChatData;
+class ScInfo;
+class GenericPool;
+class VehiclePool;
 
 namespace rage
 {
@@ -40,9 +44,6 @@ namespace big
 		memory::handle m_disable_collision;
 
 		memory::handle m_crash_trigger;
-
-		memory::handle freemode_thread_restorer_through_vm_patch_1;
-		memory::handle freemode_thread_restorer_through_vm_patch_2;
 
 		eGameState* m_game_state{};
 		bool* m_is_session_started{};
@@ -140,8 +141,6 @@ namespace big
 		functions::reset_network_complaints m_reset_network_complaints{};
 
 		functions::fidevice_get_device m_fidevice_get_device{};
-		uintptr_t m_fidevices{};
-		uint16_t* m_fidevices_len{};
 		functions::fipackfile_ctor m_fipackfile_ctor{};
 		rage::fiPackfile** m_fipackfile_instances{};
 		functions::fipackfile_open_archive m_fipackfile_open_archive{};
@@ -255,6 +254,14 @@ namespace big
 
 		PVOID m_write_vehicle_proximity_migration_data_node{};
 		functions::migrate_object m_migrate_object{};
+
+		const char* m_game_version{};
+		const char* m_online_version{};
+
+		GenericPool** m_ped_pool{};
+		GenericPool** m_prop_pool{};
+		VehiclePool*** m_vehicle_pool{};
 	};
 #pragma pack(pop)
+	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");
 }

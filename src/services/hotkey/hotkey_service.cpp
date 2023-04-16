@@ -15,11 +15,11 @@ namespace big
 		register_hotkey("beastjump", g.settings.hotkeys.beastjump, RAGE_JOAAT("beastjump"));
 		register_hotkey("bringpv", g.settings.hotkeys.bringvehicle, RAGE_JOAAT("bringpv"));
 		register_hotkey("quicksearch", g.settings.hotkeys.cmd_excecutor, RAGE_JOAAT("cmdexecutor"));
-		register_hotkey("fastrun", g.settings.hotkeys.teleport_waypoint, RAGE_JOAAT("fastrun"));
+		register_hotkey("fastrun", g.settings.hotkeys.superrun, RAGE_JOAAT("fastrun"));
 		register_hotkey("fastquit", g.settings.hotkeys.fast_quit, RAGE_JOAAT("fastquit"));
 		register_hotkey("fillammo", g.settings.hotkeys.fill_ammo, RAGE_JOAAT("fillammo"));
 		register_hotkey("fillsnacks", g.settings.hotkeys.fill_inventory, RAGE_JOAAT("fillsnacks"));
-		register_hotkey("freecam", g.settings.hotkeys.teleport_waypoint, RAGE_JOAAT("freecam"));
+		register_hotkey("freecam", g.settings.hotkeys.freecam, RAGE_JOAAT("freecam"));
 		register_hotkey("heal", g.settings.hotkeys.heal, RAGE_JOAAT("heal"));
 		register_hotkey("invis", g.settings.hotkeys.invis, RAGE_JOAAT("invis"));
 		register_hotkey("invisveh", g.settings.hotkeys.invisveh, RAGE_JOAAT("invisveh"));

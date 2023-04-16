@@ -65,13 +65,12 @@ namespace big
 		return m_cache_header.m_data_size;
 	}
 
-	bool cache_file::up_to_date(std::uint32_t game_version, float online_version) const
+	bool cache_file::up_to_date(std::uint32_t file_version) const
 	{
 		if (!m_data)
 			return false;
 
-		return m_cache_version == m_cache_header.m_cache_version && game_version == m_cache_header.m_game_version
-		    && online_version == m_cache_header.m_online_version;
+		return m_cache_version == m_cache_header.m_cache_version && file_version == m_cache_header.m_file_version;
 	}
 
 	void cache_file::set_data(cache_data&& data, std::uint64_t data_size)
@@ -80,11 +79,10 @@ namespace big
 		m_cache_header.m_data_size = data_size;
 	}
 
-	void cache_file::set_header_version(std::uint32_t game_version, float online_version)
+	void cache_file::set_header_version(std::uint32_t file_version)
 	{
-		m_cache_header.m_cache_version  = m_cache_version;
-		m_cache_header.m_game_version   = game_version;
-		m_cache_header.m_online_version = online_version;
+		m_cache_header.m_cache_version = m_cache_version;
+		m_cache_header.m_file_version  = file_version;
 	}
 
 	void cache_file::set_cache_version(std::uint32_t cache_version)

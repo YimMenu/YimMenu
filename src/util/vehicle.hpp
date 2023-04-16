@@ -1,6 +1,7 @@
 #pragma once
 #include "core/scr_globals.hpp"
 #include "entity.hpp"
+#include "gta/enums.hpp"
 #include "gta/joaat.hpp"
 #include "gta/vehicle_values.hpp"
 #include "math.hpp"
@@ -9,7 +10,6 @@
 #include "script.hpp"
 #include "script_global.hpp"
 #include "services/vehicle_helper/vehicle_helper.hpp"
-#include "gta/enums.hpp"
 
 namespace big::vehicle
 {
@@ -107,38 +107,33 @@ namespace big::vehicle
 	{
 		if (const auto replay = *g_pointers->m_gta.m_replay_interface; replay)
 		{
-			if (const auto veh_interface = replay->m_vehicle_interface; veh_interface)
+			float min_dist   = FLT_MAX;
+			int32_t m_handle = 0;
+
+			for (const auto veh_entity : pools::get_all_vehicles())
 			{
-				const auto veh_interface_size = veh_interface->m_max_vehicles;
+				const auto veh_ptr = veh_entity;
+				if (!veh_ptr || !veh_ptr->m_navigation)
+					continue;
 
-				float min_dist   = FLT_MAX;
-				int32_t m_handle = 0;
+				auto veh_pos_arr = *veh_ptr->m_navigation->get_position();
+				Vector3 veh_pos(veh_pos_arr.x, veh_pos_arr.y, veh_pos_arr.z);
 
-				for (const auto veh_entity : *veh_interface->m_vehicle_list)
+				float dist = math::distance_between_vectors(veh_pos, location);
+
+				if (dist < min_dist)
 				{
-					const auto veh_ptr    = veh_entity.m_entity_ptr;
-					if (!veh_ptr || !veh_ptr->m_navigation)
-						continue;
+					int32_t tmp_handle = g_pointers->m_gta.m_ptr_to_handle(veh_ptr);
 
-					auto veh_pos_arr = *veh_ptr->m_navigation->get_position();
-					Vector3 veh_pos(veh_pos_arr.x, veh_pos_arr.y, veh_pos_arr.z);
-
-					float dist = math::distance_between_vectors(veh_pos, location);
-
-					if (dist < min_dist)
+					if (entity::take_control_of(tmp_handle))
 					{
-						int32_t tmp_handle = g_pointers->m_gta.m_ptr_to_handle(veh_ptr);
-
-						if (entity::take_control_of(tmp_handle))
-						{
-							min_dist = dist;
-							m_handle = tmp_handle;
-						}
+						min_dist = dist;
+						m_handle = tmp_handle;
 					}
 				}
-
-				return m_handle;
 			}
+
+			return m_handle;
 		}
 
 		return 0;
@@ -331,7 +326,7 @@ namespace big::vehicle
 		owned_mods[MOD_TIRESMOKE_COL_R] = *vehicle_idx.at(62).as<int32_t*>();
 		owned_mods[MOD_TIRESMOKE_COL_G] = *vehicle_idx.at(63).as<int32_t*>();
 		owned_mods[MOD_TIRESMOKE_COL_B] = *vehicle_idx.at(64).as<int32_t*>();
-		owned_mods[MOD_TYRE_SMOKE]      = !(owned_mods[MOD_TIRESMOKE_COL_R] == 255 && owned_mods[MOD_TIRESMOKE_COL_G] == 255 && owned_mods[MOD_TIRESMOKE_COL_B] == 255);
+		owned_mods[MOD_TYRE_SMOKE] = !(owned_mods[MOD_TIRESMOKE_COL_R] == 255 && owned_mods[MOD_TIRESMOKE_COL_G] == 255 && owned_mods[MOD_TIRESMOKE_COL_B] == 255);
 
 
 		// XENON
@@ -702,7 +697,7 @@ namespace big::vehicle
 				if (VEHICLE::GET_IS_DOOR_VALID(veh, (int)doorId))
 					VEHICLE::SET_VEHICLE_INDIVIDUAL_DOORS_LOCKED(veh, (int)doorId, (int)state);
 
-				return VEHICLE::GET_VEHICLE_INDIVIDUAL_DOOR_LOCK_STATUS(veh, (int) doorId) == (int)state;
+				return VEHICLE::GET_VEHICLE_INDIVIDUAL_DOOR_LOCK_STATUS(veh, (int)doorId) == (int)state;
 			}
 		}
 
@@ -715,10 +710,9 @@ namespace big::vehicle
 	*/
 	inline bool operate_vehicle_door(Vehicle veh, eDoorId doorId, bool open)
 	{
-
 		bool success = false;
 		if (ENTITY::DOES_ENTITY_EXIST(veh))
-		{	
+		{
 			for (int i = 0; i < 6; i++)
 			{
 				if (doorId == eDoorId::VEH_EXT_DOOR_INVALID_ID || (int)doorId == i)
@@ -756,11 +750,10 @@ namespace big::vehicle
 	*/
 	inline bool operate_vehicle_neons(Vehicle veh, int index, bool toggle)
 	{
-
 		bool success = false;
 		if (ENTITY::DOES_ENTITY_EXIST(veh))
 		{
-			VEHICLE::SET_VEHICLE_MOD_KIT(veh, 0); 
+			VEHICLE::SET_VEHICLE_MOD_KIT(veh, 0);
 			for (int i = 0; i < 4; i++)
 			{
 				if (index == -1 || index == i)
