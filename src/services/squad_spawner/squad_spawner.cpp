@@ -182,6 +182,9 @@ namespace big
 
 		//LOG(INFO) << "Squad spawner: Distance from target determined: " << math::distance_between_vectors(s.m_spawn_pos, ENTITY::GET_ENTITY_COORDS(target_ped, true));
 
+		if (VEHICLE::IS_THIS_MODEL_A_PLANE(veh_model_hash) || VEHICLE::IS_THIS_MODEL_A_HELI(veh_model_hash))
+			s.m_spawn_pos.z += 50.f;
+
 		//Spawn squad vehicle
 		if (s.does_squad_have_vehicle())
 		{
@@ -260,8 +263,7 @@ namespace big
 			}
 		}
 
-		if (VEHICLE::IS_THIS_MODEL_A_PLANE(veh_model_hash) || VEHICLE::IS_THIS_MODEL_A_HELI(veh_model_hash))
-			s.m_spawn_pos.z += 50.f;
+		
 
 		if (s.has_squad_spawned())
 		{
