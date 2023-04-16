@@ -48,6 +48,7 @@ namespace big
 		int m_internal_id;
 		//Static variables
 		char m_name[32];
+		char m_description[500];
 		char m_ped_model[32];
 		char m_weapon_model[32];
 		char m_vehicle_model[32];
@@ -73,11 +74,12 @@ namespace big
 		squad(const char* name, const char* ped_model, const char* weapon_model, const char* vehicle_model, int squad_size,
 		bool ped_invincibility = false, bool veh_invincibility = false, bool ped_proofs[5] = {},
 		float ped_health = 0, float ped_armor = 0, float spawn_distance = 0, float ped_accuracy = 50.f,
-		eSquadSpawnDistance spawn_distance_mode = eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel combat_ability_level = eCombatAbilityLevel::AVERAGE, bool stay_in_veh = false, bool spawn_behind_same_velocity = false)
+		eSquadSpawnDistance spawn_distance_mode = eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel combat_ability_level = eCombatAbilityLevel::AVERAGE, bool stay_in_veh = false, bool spawn_behind_same_velocity = false, const char* description = "")
 		{
 			m_internal_id = ++m_instance_count;
 
 			strcpy(m_name, name);
+			strcpy(m_description, description);
 			strcpy(m_ped_model, ped_model);
 			strcpy(m_weapon_model, weapon_model);
 			strcpy(m_vehicle_model, vehicle_model);
@@ -102,6 +104,10 @@ namespace big
 		int get_id()
 		{
 			return m_internal_id;
+		}
+
+		bool does_squad_have_description(){
+			return !std::string(m_description).empty();
 		}
 
 		bool does_squad_have_vehicle()

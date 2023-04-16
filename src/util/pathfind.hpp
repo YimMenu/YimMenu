@@ -6,8 +6,6 @@
 #include "pointers.hpp"
 #include "script.hpp"
 
-#include <cstdlib>
-#include <ctime>
 #include <random>
 
 
@@ -112,13 +110,7 @@ namespace big::pathfind
 			{
 				outcoords = coords;
 			}
-			else
-			{
-				LOG(INFO) << "Found safe ped pos";
-			}
 		}
-		else
-			LOG(INFO) << "Found vehicle node";
 
 		return outcoords != coords;
 	}

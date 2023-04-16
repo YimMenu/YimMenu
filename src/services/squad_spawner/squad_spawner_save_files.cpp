@@ -72,16 +72,16 @@ namespace big
 		bool ped_proofs[5] = {0,0,0,0,0};
 		bool ped_proofs_annoying[5] = {1, 0, 0, 1, 1};
 
-		m_templates.push_back(squad("Swat team", "s_m_y_swat_01", "weapon_smg", "riot", 4, false, false, ped_proofs, 400, 400, 0, 75, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::PROFESSIONAL, false));
-		m_templates.push_back(squad("Secret service", "s_m_m_highsec_01", "weapon_carbinerifle", "oracle", 4, false, false, ped_proofs, 0, 200, 0, 75, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::PROFESSIONAL, false));
-		m_templates.push_back(squad("Ballas Gang", "ig_ballasog", "weapon_microsmg", "chino2", 2, false, false, ped_proofs, 0, 0, 0, 50, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::POOR, true));
-		m_templates.push_back(squad("Grove Gang", "g_m_y_famca_01", "weapon_pistol", "chino", 2, false, false, ped_proofs, 0, 0, 0, 50, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::POOR, true));
-		m_templates.push_back(squad("Robbers", "g_m_m_chicold_01", "weapon_smg_mk2", "baller5", 4, false, false, ped_proofs, 0, 0, 0, 65, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::AVERAGE, false));
-		m_templates.push_back(squad("Shotgunners", "g_m_y_lost_03", "weapon_autoshotgun", "daemon", 2, false, false, ped_proofs, 0, 0, 0, 65, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::AVERAGE, false));
-		m_templates.push_back(squad("Machete jesus", "u_m_m_jesus_01", "weapon_machete", "", 1, false, false, ped_proofs_annoying, 0, 0, 0, 10, eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel::AVERAGE, false));
-		m_templates.push_back(squad("Annoying security guard", "mp_m_securoguard_01", "weapon_stungun_mp", "", 1, false, false, ped_proofs_annoying, 0, 0, 0, 100, eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel::PROFESSIONAL, false));
-		m_templates.push_back(squad("Heavy attack choppers", "s_m_y_swat_01", "weapon_mg", "valkyrie", 4, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::PROFESSIONAL, false));
-		m_templates.push_back(squad("Fighter jet", "s_m_m_pilot_02", "weapon_unarmed", "lazer", 1, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::FAR_AWAY, eCombatAbilityLevel::PROFESSIONAL, false));
-		m_templates.push_back(squad("Mobile squad", "s_m_m_highsec_01", "weapon_microsmg", "komoda", 4, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::FAR_AWAY, eCombatAbilityLevel::PROFESSIONAL, true, true));
+		m_templates.push_back(squad("Swat team", "s_m_y_swat_01", "weapon_smg", "riot", 4, false, false, ped_proofs, 400, 400, 0, 75, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::PROFESSIONAL, false, false, "An elite team of swat operatives that will quickly swarm the target"));
+		m_templates.push_back(squad("Secret service", "s_m_m_highsec_01", "weapon_carbinerifle", "oracle", 4, false, false, ped_proofs, 0, 200, 0, 75, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::PROFESSIONAL, false, false, "MIB"));
+		m_templates.push_back(squad("Ballas Gang", "ig_ballasog", "weapon_microsmg", "chino2", 2, false, false, ped_proofs, 0, 0, 0, 50, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::POOR, true, false, "A classic driveby from the local Ballas gang"));
+		m_templates.push_back(squad("Grove Gang", "g_m_y_famca_01", "weapon_pistol", "chino", 2, false, false, ped_proofs, 0, 0, 0, 50, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::POOR, true, false, "A classic driveby from the local Grove gang"));
+		m_templates.push_back(squad("Robbers", "g_m_m_chicold_01", "weapon_smg_mk2", "baller5", 4, false, false, ped_proofs, 0, 0, 0, 65, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::AVERAGE, false, false, "Mysterious mercenaries that hide behind snow masks"));
+		m_templates.push_back(squad("Shotgunners", "g_m_y_lost_03", "weapon_autoshotgun", "daemon", 2, false, false, ped_proofs, 0, 0, 0, 65, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::AVERAGE, false, false, "A duo biker gang that utilize sawn off shotguns on their Harley's"));
+		m_templates.push_back(squad("Machete jesus", "u_m_m_jesus_01", "weapon_machete", "", 1, false, false, ped_proofs_annoying, 0, 0, 0, 10, eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel::AVERAGE, false, false, "Christ has had enough of the sins"));
+		m_templates.push_back(squad("Annoying security guard", "mp_m_securoguard_01", "weapon_stungun_mp", "", 1, false, false, ped_proofs_annoying, 0, 0, 0, 100, eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel::PROFESSIONAL, false, false, "The mall security guard with superiority issues"));
+		m_templates.push_back(squad("Heavy attack choppers", "s_m_y_swat_01", "weapon_mg", "valkyrie", 4, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::PROFESSIONAL, false, false, "Very deadly attack chopper eqquiped with a cannon"));
+		m_templates.push_back(squad("Fighter jet", "s_m_m_pilot_02", "weapon_unarmed", "lazer", 1, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::FAR_AWAY, eCombatAbilityLevel::PROFESSIONAL, false, false, "Tedious yet precise form of attack with a Fighter jet"));
+		m_templates.push_back(squad("Mobile squad", "s_m_m_highsec_01", "weapon_microsmg", "komoda", 4, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::FAR_AWAY, eCombatAbilityLevel::PROFESSIONAL, true, true, "This squad makes use of 'Vehicle catchup'"));
 	}
 }

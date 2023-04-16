@@ -16,6 +16,7 @@ namespace big
 		static eCombatAbilityLevel combat_ability_level = eCombatAbilityLevel::AVERAGE;
 
 		static char name[32];
+		static char description[500];
 		static char ped_model[32];
 		static char veh_model[32];
 		static char weap_model[32];
@@ -48,15 +49,22 @@ namespace big
 			ImGui::EndCombo();
 		}
 
-		if (victim->id() != g_player_service->get_selected()->id())
+		if (victim->id() != g_player_service->get_selected()->id() && victim->is_valid())
 		{
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.5f, 0.3f, 1.0f));
 			ImGui::Text("Warning: Victim and selected player are not the same");
 			ImGui::PopStyleColor();
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.5f, 0.0f, 1.0f));
-			if (ImGui::Button("Get selected"))
+			if (ImGui::Button("Victim = selected"))
 			{
 				victim = g_player_service->get_selected();
+			}
+			ImGui::PopStyleColor();
+			ImGui::SameLine();
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.5f, 1.0f));
+			if (ImGui::Button("Selected = victim"))
+			{
+				g_player_service->set_selected(victim);
 			}
 			ImGui::PopStyleColor();
 		}
@@ -66,6 +74,9 @@ namespace big
 		ImGui::SetNextItemWidth(200);
 		if (ImGui::BeginCombo("Choose from templates", "Templates"))
 		{
+
+			ImGui::Spacing(); ImGui::SameLine();
+			ImGui::LabelText("##defaulttemplates", "Default templates");
 			for (auto temp : g_squad_spawner_service.m_templates)
 			{
 				if (ImGui::Selectable(temp.m_name))
@@ -87,6 +98,8 @@ namespace big
 					stay_in_veh                = temp.m_stay_in_veh;
 					spawn_behind_same_velocity = temp.m_spawn_behind_same_velocity;
 				}
+				if(ImGui::IsItemHovered() && temp.does_squad_have_description())
+					ImGui::SetTooltip(temp.m_description);
 			}
 			ImGui::EndCombo();
 		}
@@ -138,7 +151,7 @@ namespace big
 
 			ImGui::Checkbox("Vehicle catch up", &spawn_behind_same_velocity);
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Will spawn the mobile squad behind the target with identical velocity if applicable\nOnly for squads with a vehicle");
+				ImGui::SetTooltip("Will spawn the mobile squad behind the target with identical velocity if applicable.\nOnly for squads with a vehicle.");
 			ImGui::Checkbox("Stay in vehicle", &stay_in_veh);
 			ImGui::Checkbox("Ped god mode", &ped_invincibility);
 			ImGui::Checkbox("Vehicle god mode", &veh_invincibility);
@@ -162,7 +175,7 @@ namespace big
 			ImGui::SliderFloat("##customspawndistance", &custom_spawn_distance, 10, 500);
 			ImGui::EndGroup();
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Leave these values at 0 to default, except for accuracy");
+				ImGui::SetTooltip("Leave these values at 0 to default, except for accuracy.");
 
 			ImGui::SameLine();
 			ImGui::BeginGroup(); //Chooseables
@@ -179,11 +192,24 @@ namespace big
 			ImGui::PopItemWidth();
 			ImGui::EndGroup();
 
+			components::input_text_with_hint("##description", "Squad description", description, IM_ARRAYSIZE(description));
+
 			ImGui::TreePop();
 		}
 
 		components::button("Spawn squad", [] {
-			g_squad_spawner_service.spawn_squad({name, ped_model, weap_model, veh_model, squad_size, ped_invincibility, veh_invincibility, ped_proofs, ped_health, ped_armor, custom_spawn_distance, ped_accuracy, spawn_distance_mode, combat_ability_level, stay_in_veh, spawn_behind_same_velocity}, victim, false, {});
+			if(!victim->is_valid())
+			{
+				g_notification_service->push_error("Squad spawner", "Choose a victim first");
+				return;
+			}
+			if(std::string(ped_model).empty())
+			{
+				g_notification_service->push_error("Squad spawner", "A ped model is required");
+				return;
+			}
+			
+			g_squad_spawner_service.spawn_squad({name, ped_model, weap_model, veh_model, squad_size, ped_invincibility, veh_invincibility, ped_proofs, ped_health, ped_armor, custom_spawn_distance, ped_accuracy, spawn_distance_mode, combat_ability_level, stay_in_veh, spawn_behind_same_velocity, description}, victim, false, {});
 		});
 	}
 
