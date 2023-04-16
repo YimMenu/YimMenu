@@ -6,9 +6,9 @@
 #include "pointers.hpp"
 #include "script.hpp"
 
-#include <random>
 #include <cstdlib>
 #include <ctime>
+#include <random>
 
 
 namespace big::pathfind
@@ -77,11 +77,11 @@ namespace big::pathfind
 			return false;
 	}
 
-	inline bool find_random_vehicle_node(Vector3 center, Vector3& outcoords , float radius, bool avoid_dead_ends, bool avoid_highways, int min_lanes = 0){
-
+	inline bool find_random_vehicle_node(Vector3 center, Vector3& outcoords, float radius, bool avoid_dead_ends, bool avoid_highways, int min_lanes = 0)
+	{
 		int node_id;
 		if (load_path_nodes(center))
-			return PATHFIND::GET_RANDOM_VEHICLE_NODE(center.x, center.y, center.z, radius, 0,  avoid_dead_ends, avoid_highways, &outcoords, &node_id);
+			return PATHFIND::GET_RANDOM_VEHICLE_NODE(center.x, center.y, center.z, radius, 0, avoid_dead_ends, avoid_highways, &outcoords, &node_id);
 		else
 			return false;
 	}
@@ -89,20 +89,36 @@ namespace big::pathfind
 
 	inline bool find_random_location_in_vicinity(Vector3 coords, Vector3& outcoords, float& outheading, int flag, int vicinity)
 	{
-		
-	
 		srand(time(NULL));
-		bool apply_to_x = rand() % 2;
+		bool apply_to_x     = rand() % 2;
 		bool apply_positive = rand() % 2;
 
-		if(apply_to_x){
+		if (apply_to_x)
+		{
 			apply_positive ? outcoords.x += vicinity : outcoords.x -= vicinity;
-		}else{
+		}
+		else
+		{
 			apply_positive ? outcoords.y += vicinity : outcoords.y -= vicinity;
 		}
 
-		if(!find_closest_vehicle_node(outcoords, outcoords, outheading, flag))
+		Vector3 changed_coords = outcoords;
+
+		if (!find_closest_vehicle_node(outcoords, outcoords, outheading, flag) || math::distance_between_vectors(outcoords, coords) > vicinity || math::distance_between_vectors(outcoords, coords) < (vicinity / 2))
+		{
 			outcoords = coords;
+
+			if (!pathfind::find_safe_pos_ped(changed_coords, outcoords, false, 0))
+			{
+				outcoords = coords;
+			}
+			else
+			{
+				LOG(INFO) << "Found safe ped pos";
+			}
+		}
+		else
+			LOG(INFO) << "Found vehicle node";
 
 		return outcoords != coords;
 	}

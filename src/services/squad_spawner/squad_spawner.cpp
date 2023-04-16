@@ -118,13 +118,8 @@ namespace big
 				break;
 		}
 
-		if (math::distance_between_vectors(new_pos, s.m_spawn_pos) > 150)
-		{
-			reset_spawn_pos_to_offset();
-			return false;
-		}
-
-		if (new_pos == s.m_spawn_pos)
+		//Reset at a distance of 150 or if all searches failed
+		if (math::distance_between_vectors(new_pos, s.m_spawn_pos) > 150 || new_pos == s.m_spawn_pos)
 		{
 			reset_spawn_pos_to_offset();
 			return false;
