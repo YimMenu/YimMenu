@@ -15,7 +15,7 @@ namespace big
 		CPed* ptr{};
 
 		handle = ped::spawn(ePedType::PED_TYPE_CIVMALE, rage::joaat(s.m_ped_model), 0, s.m_spawn_pos, 0, true);
-		ptr    = reinterpret_cast<CPed*>(g_pointers->m_handle_to_ptr(handle));
+		ptr    = reinterpret_cast<CPed*>(g_pointers->m_gta.m_handle_to_ptr(handle));
 
 		if (entity::take_control_of(handle))
 		{
@@ -78,7 +78,7 @@ namespace big
 		CVehicle* ptr{};
 
 		handle = vehicle::spawn(rage::joaat(s.m_vehicle_model), s.m_spawn_pos, 0);
-		ptr    = reinterpret_cast<CVehicle*>(g_pointers->m_handle_to_ptr(handle));
+		ptr    = reinterpret_cast<CVehicle*>(g_pointers->m_gta.m_handle_to_ptr(handle));
 
 		VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(handle, 5);
 		ENTITY::SET_ENTITY_INVINCIBLE(handle, s.m_veh_invincibility);
@@ -107,7 +107,7 @@ namespace big
 		//LOG(INFO) << "Squad spawner: Desired distance determined at " << s.m_spawn_distance;
 
 		static auto reset_spawn_pos_to_offset = [&]() -> void {
-			Ped player_ped_handle = g_pointers->m_ptr_to_handle(s.target->get_ped());
+			Ped player_ped_handle = g_pointers->m_gta.m_ptr_to_handle(s.target->get_ped());
 			s.m_spawn_pos         = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player_ped_handle, 0, -7, 0);
 			//LOG(INFO) << "Squad spawner: No suitable spot found, spawning at an offset";
 			g_notification_service->push_warning("Squad Spawner", "No suitable spot found, spawning at an offset");
@@ -147,7 +147,7 @@ namespace big
 			        .data());
 
 		Hash veh_model_hash = rage::joaat(s.m_vehicle_model);
-		Ped target_ped      = g_pointers->m_ptr_to_handle(s.target->get_ped());
+		Ped target_ped      = g_pointers->m_gta.m_ptr_to_handle(s.target->get_ped());
 		float heading;
 
 		//Check if squad size is suitable in case a vehicle is defined
@@ -246,7 +246,7 @@ namespace big
 
 		if (s.m_spawn_behind_same_velocity && s.does_squad_have_vehicle() && veh_spawned && target_player->get_current_vehicle())
 		{
-			Vehicle target_vehicle = g_pointers->m_ptr_to_handle(target_player->get_current_vehicle());
+			Vehicle target_vehicle = g_pointers->m_gta.m_ptr_to_handle(target_player->get_current_vehicle());
 
 			if (ENTITY::GET_ENTITY_SPEED(target_vehicle) > 25.f && entity::take_control_of(s.m_veh_handle))
 			{
