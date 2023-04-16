@@ -44,10 +44,21 @@ namespace big
 			for (auto p : g_player_service->players() | std::ranges::views::values)
 			{
 				if (ImGui::Selectable(p->get_name(), p->id() == victim->id()))
+				{
 					victim = p;
+					if (g.player.spectating)
+						g_player_service->set_selected(victim);
+				}
 			}
 			ImGui::EndCombo();
 		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Checkbox("SPECTATE"_T.data(), &g.player.spectating))
+		{
+			g_player_service->set_selected(victim);
+		};
 
 		if (victim->id() != g_player_service->get_selected()->id() && victim->is_valid())
 		{
@@ -71,34 +82,69 @@ namespace big
 
 		ImGui::Separator();
 
+		static squad deletion_squad;
+
+		if (!std::string(deletion_squad.m_name).empty())
+			ImGui::OpenPopup("##deletesquad");
+
+		if (ImGui::BeginPopupModal("##deletesquad"))
+		{
+			ImGui::Text("Are you sure you want to delete %s?", deletion_squad.m_name);
+
+			if (ImGui::Button("Yes"))
+			{
+				g_squad_spawner_service.delete_squad(deletion_squad);
+				strcpy(deletion_squad.m_name, "");
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("No"))
+			{
+				strcpy(deletion_squad.m_name, "");
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
+
+
 		ImGui::SetNextItemWidth(200);
 		if (ImGui::BeginCombo("Choose from templates", "Templates"))
 		{
+			components::button("Fetch custom squads", [] {
+				g_squad_spawner_service.fetch_squads();
+			});
 
-			ImGui::Spacing(); ImGui::SameLine();
-			ImGui::LabelText("##defaulttemplates", "Default templates");
-			for (auto temp : g_squad_spawner_service.m_templates)
+			for (auto& temp : g_squad_spawner_service.m_templates)
 			{
 				if (ImGui::Selectable(temp.m_name))
 				{
-					spawn_distance_mode  = temp.m_spawn_distance_mode;
-					combat_ability_level = temp.m_combat_ability_level;
-					strcpy(name, temp.m_name);
-					strcpy(ped_model, temp.m_ped_model);
-					strcpy(veh_model, temp.m_vehicle_model);
-					strcpy(weap_model, temp.m_weapon_model);
-					squad_size            = temp.m_squad_size;
-					ped_invincibility     = temp.m_ped_invincibility;
-					veh_invincibility     = temp.m_veh_invincibility;
-					ped_health            = temp.m_ped_health;
-					ped_armor             = temp.m_ped_armor;
-					ped_accuracy          = temp.m_ped_accuracy;
-					custom_spawn_distance = temp.m_spawn_distance;
-					std::copy(std::begin(temp.m_ped_proofs), std::end(temp.m_ped_proofs), ped_proofs);
-					stay_in_veh                = temp.m_stay_in_veh;
-					spawn_behind_same_velocity = temp.m_spawn_behind_same_velocity;
+					if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+					{
+						deletion_squad = temp;
+					}
+					else
+					{
+						spawn_distance_mode  = temp.m_spawn_distance_mode;
+						combat_ability_level = temp.m_combat_ability_level;
+						strcpy(name, temp.m_name);
+						strcpy(description, temp.m_description);
+						strcpy(ped_model, temp.m_ped_model);
+						strcpy(veh_model, temp.m_vehicle_model);
+						strcpy(weap_model, temp.m_weapon_model);
+						squad_size            = temp.m_squad_size;
+						ped_invincibility     = temp.m_ped_invincibility;
+						veh_invincibility     = temp.m_veh_invincibility;
+						ped_health            = temp.m_ped_health;
+						ped_armor             = temp.m_ped_armor;
+						ped_accuracy          = temp.m_ped_accuracy;
+						custom_spawn_distance = temp.m_spawn_distance;
+						std::copy(std::begin(temp.m_ped_proofs), std::end(temp.m_ped_proofs), ped_proofs);
+						stay_in_veh                = temp.m_stay_in_veh;
+						spawn_behind_same_velocity = temp.m_spawn_behind_same_velocity;
+					}
 				}
-				if(ImGui::IsItemHovered() && temp.does_squad_have_description())
+				if (ImGui::IsItemHovered() && temp.does_squad_have_description())
 					ImGui::SetTooltip(temp.m_description);
 			}
 			ImGui::EndCombo();
@@ -110,6 +156,8 @@ namespace big
 
 		ImGui::Text("Squad Details");
 		ImGui::Spacing();
+
+
 		ImGui::PushItemWidth(200);
 		components::input_text_with_hint("##name", "Squad name", name, IM_ARRAYSIZE(name));
 		components::input_text_with_hint("##pedmodel", "Ped model", ped_model, IM_ARRAYSIZE(ped_model));
@@ -118,6 +166,7 @@ namespace big
 			ImGui::SetTooltip("Leave empty to spawn on foot");
 
 		components::input_text_with_hint("##weapmodel", "Weapon model", weap_model, IM_ARRAYSIZE(weap_model));
+
 		ImGui::Spacing();
 		ImGui::Text("Spawn distance");
 		if (ImGui::BeginCombo("##spawndistance", spawn_distance_modes[(int)spawn_distance_mode]))
@@ -139,7 +188,7 @@ namespace big
 
 		ImGui::Text("Actions");
 		ImGui::Spacing();
-		components::button("Terminate squads", [] {
+		components::button(std::string("Terminate squads"), [] {
 			g_squad_spawner_service.terminate_squads();
 		});
 
@@ -197,19 +246,44 @@ namespace big
 			ImGui::TreePop();
 		}
 
-		components::button("Spawn squad", [] {
-			if(!victim->is_valid())
+		static auto check_validity = [=](bool save) -> bool {
+			if (!victim->is_valid() && !save)
 			{
 				g_notification_service->push_error("Squad spawner", "Choose a victim first");
-				return;
+				return false;
 			}
-			if(std::string(ped_model).empty())
+			if (std::string(ped_model).empty())
 			{
 				g_notification_service->push_error("Squad spawner", "A ped model is required");
-				return;
+				return false;
 			}
-			
-			g_squad_spawner_service.spawn_squad({name, ped_model, weap_model, veh_model, squad_size, ped_invincibility, veh_invincibility, ped_proofs, ped_health, ped_armor, custom_spawn_distance, ped_accuracy, spawn_distance_mode, combat_ability_level, stay_in_veh, spawn_behind_same_velocity, description}, victim, false, {});
+
+			return true;
+		};
+
+		static auto check_if_exists = [=](const char* squad_name) -> bool {
+			bool exists = false;
+
+			for (auto& s : g_squad_spawner_service.m_templates)
+			{
+				if (strcmp(squad_name, s.m_name) == 0)
+				{
+					exists = true;
+					break;
+				}
+			}
+
+			return exists;
+		};
+
+		components::button("Spawn squad", [] {
+			if (check_validity(false))
+				g_squad_spawner_service.spawn_squad({name, ped_model, weap_model, veh_model, squad_size, ped_invincibility, veh_invincibility, ped_proofs, ped_health, ped_armor, custom_spawn_distance, ped_accuracy, spawn_distance_mode, combat_ability_level, stay_in_veh, spawn_behind_same_velocity, description}, victim, false, {});
+		});
+		ImGui::SameLine();
+		components::button("Save", [] {
+			if (check_validity(true) && !check_if_exists(name))
+				g_squad_spawner_service.save_squad({name, ped_model, weap_model, veh_model, squad_size, ped_invincibility, veh_invincibility, ped_proofs, ped_health, ped_armor, custom_spawn_distance, ped_accuracy, spawn_distance_mode, combat_ability_level, stay_in_veh, spawn_behind_same_velocity, description});
 		});
 	}
 

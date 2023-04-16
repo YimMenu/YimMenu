@@ -21,8 +21,9 @@ namespace big
 		{
 			PED::SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(handle, true);
 			PED::SET_PED_CAN_BE_DRAGGED_OUT(handle, false);
-			PED::SET_RAGDOLL_BLOCKING_FLAGS(handle, 1 | 16); //Block player ragdoll impacts, bullet and colission
-			if(s.m_ped_proofs[4]) PED::SET_RAGDOLL_BLOCKING_FLAGS(handle, 128); //Check for melee proof and disable corresponding ragdoll
+			PED::SET_RAGDOLL_BLOCKING_FLAGS(handle, 1 | 16);  //Block player ragdoll impacts, bullet and colission
+			if (s.m_ped_proofs[4])
+				PED::SET_RAGDOLL_BLOCKING_FLAGS(handle, 128); //Check for melee proof and disable corresponding ragdoll
 
 			PED::SET_PED_COMBAT_ATTRIBUTES(handle, 2, true);
 			PED::SET_PED_COMBAT_ATTRIBUTES(handle, 4, true);
@@ -135,7 +136,10 @@ namespace big
 		s.target = target_player;
 
 		if (!s.target->get_net_game_player() || s.m_squad_size < 1 || !STREAMING::IS_MODEL_VALID(rage::joaat(s.m_ped_model)))
+		{
+			g_notification_service->push_error("Squad spawner", "Error spawning squad");
 			return false;
+		}
 
 		if (std::string(s.m_name).empty())
 			strcpy(s.m_name,
@@ -151,7 +155,6 @@ namespace big
 		{
 			if (VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(veh_model_hash) < s.m_squad_size)
 			{
-				//SQUAD SIZE IS INCOMPATIBLE WITH VEHICLE
 				s.m_squad_size = VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(veh_model_hash);
 				g_notification_service->push_warning("Squad Spawner", "The squad vehicle has insufficient seats, decreasing the squad size");
 			}
@@ -242,16 +245,14 @@ namespace big
 		}
 
 		if (s.m_spawn_behind_same_velocity && s.does_squad_have_vehicle() && veh_spawned && target_player->get_current_vehicle())
-		{	
+		{
 			Vehicle target_vehicle = g_pointers->m_ptr_to_handle(target_player->get_current_vehicle());
 
-
-			if(ENTITY::GET_ENTITY_SPEED(target_vehicle) > 25.f && entity::take_control_of(s.m_veh_handle))
+			if (ENTITY::GET_ENTITY_SPEED(target_vehicle) > 25.f && entity::take_control_of(s.m_veh_handle))
 			{
-				
-				Vector3 velocity       = ENTITY::GET_ENTITY_VELOCITY(target_vehicle);
-				Vector3 behindpos      = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(target_vehicle, 0.f, -7.f, 0.f);
-				float heading          = ENTITY::GET_ENTITY_HEADING(target_vehicle);
+				Vector3 velocity  = ENTITY::GET_ENTITY_VELOCITY(target_vehicle);
+				Vector3 behindpos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(target_vehicle, 0.f, -7.f, 0.f);
+				float heading     = ENTITY::GET_ENTITY_HEADING(target_vehicle);
 
 				ENTITY::SET_ENTITY_COORDS(s.m_veh_handle, behindpos.x, behindpos.y, behindpos.z, 0, 0, 0, false);
 				ENTITY::SET_ENTITY_HEADING(s.m_veh_handle, heading);

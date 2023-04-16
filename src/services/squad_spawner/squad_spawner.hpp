@@ -71,6 +71,7 @@ namespace big
 		Leave health and armor at 0 to default
 		Leave spawn_distance at 0 to let the spawn_distance_mode to handle it
 		*/
+		squad(){};
 		squad(const char* name, const char* ped_model, const char* weapon_model, const char* vehicle_model, int squad_size,
 		bool ped_invincibility = false, bool veh_invincibility = false, bool ped_proofs[5] = {},
 		float ped_health = 0, float ped_armor = 0, float spawn_distance = 0, float ped_accuracy = 50.f,
@@ -162,23 +163,30 @@ namespace big
 	class squad_spawner
 	{
 	public:
+		
+		std::vector<squad> m_templates;
+		std::vector<squad> m_active_squads;
+
 		squad_spawner(){
 			load_default_templates();
 		}
-		std::vector<squad> m_templates;
-		std::vector<squad> m_active_squads;
 
 	private:
 		bool find_suitable_spawn_pos(squad&);
 		squad_member spawn_squad_member(squad);
 		std::pair<Vehicle, CVehicle*> spawn_squad_vehicle(squad);
+		
 
 	public:
 		void load_default_templates();
 		std::filesystem::path get_file_path();
 		bool spawn_squad(squad, player_ptr target_player, bool override_spawn_pos, Vector3 custom_pos);
+		nlohmann::json to_json(squad s);
+		squad from_json(nlohmann::json j);
 		bool save_squad(squad);
+		bool delete_squad(squad);
 		bool fetch_squads();
+		
 
 		void terminate_squads();
 	};

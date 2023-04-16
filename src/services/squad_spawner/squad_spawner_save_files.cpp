@@ -5,12 +5,79 @@ namespace big
 
 	std::filesystem::path squad_spawner::get_file_path()
 	{
-		return g_file_manager->get_project_folder("SquadSpawner").get_path();
+		return g_file_manager->get_project_folder("squad_spawner").get_path();
+	}
+
+	nlohmann::json squad_spawner::to_json(squad s)
+	{
+		nlohmann::json j;
+
+		j["name"]                    = s.m_name;
+		j["description"]             = s.m_description;
+		j["pedmodel"]                = s.m_ped_model;
+		j["vehmodel"]                = s.m_vehicle_model;
+		j["weapmodel"]               = s.m_weapon_model;
+		j["pedinvincibility"]        = s.m_ped_invincibility;
+		j["vehinvincibility"]        = s.m_veh_invincibility;
+		j["pedproofs"]["headshot"]   = s.m_ped_proofs[0];
+		j["pedproofs"]["bullet"]     = s.m_ped_proofs[1];
+		j["pedproofs"]["flame"]      = s.m_ped_proofs[2];
+		j["pedproofs"]["melee"]      = s.m_ped_proofs[3];
+		j["pedproofs"]["explosion"]  = s.m_ped_proofs[4];
+		j["pedhealth"]               = s.m_ped_health;
+		j["pedarmor"]                = s.m_ped_armor;
+		j["pedacurracy"]             = s.m_ped_accuracy;
+		j["spawndistance"]           = s.m_spawn_distance;
+		j["squadsize"]               = s.m_squad_size;
+		j["spawndistancemode"]       = s.m_spawn_distance_mode;
+		j["combatabilitylevel"]      = s.m_combat_ability_level;
+		j["stayinveh"]               = s.m_stay_in_veh;
+		j["spawnbehindsamevelocity"] = s.m_spawn_behind_same_velocity;
+
+		return j;
+	}
+
+	squad squad_spawner::from_json(nlohmann::json j)
+	{
+		squad new_squad;
+		std::string_view name_sv       = j["name"];
+		std::string_view desc_sv       = j["description"];
+		std::string_view ped_model_sv  = j["pedmodel"];
+		std::string_view veh_model_sv  = j["vehmodel"];
+		std::string_view weap_model_sv = j["weapmodel"];
+
+		strcpy(new_squad.m_name, name_sv.data());
+		strcpy(new_squad.m_description, desc_sv.data());
+		strcpy(new_squad.m_ped_model, ped_model_sv.data());
+		strcpy(new_squad.m_vehicle_model, veh_model_sv.data());
+		strcpy(new_squad.m_weapon_model, weap_model_sv.data());
+
+		new_squad.m_ped_invincibility = j["pedinvincibility"];
+		new_squad.m_veh_invincibility = j["vehinvincibility"];
+		new_squad.m_ped_proofs[0]     = j["pedproofs"]["headshot"];
+		new_squad.m_ped_proofs[1]     = j["pedproofs"]["bullet"];
+		new_squad.m_ped_proofs[2]     = j["pedproofs"]["flame"];
+		new_squad.m_ped_proofs[3]     = j["pedproofs"]["melee"];
+		new_squad.m_ped_proofs[4]     = j["pedproofs"]["explosion"];
+		new_squad.m_ped_health        = j["pedhealth"];
+		new_squad.m_ped_armor         = j["pedarmor"];
+		new_squad.m_ped_accuracy      = j["pedacurracy"];
+		new_squad.m_spawn_distance    = j["spawndistance"];
+		new_squad.m_squad_size        = j["squadsize"];
+
+		new_squad.m_spawn_distance_mode  = j["spawndistancemode"];
+		new_squad.m_combat_ability_level = j["combatabilitylevel"];
+
+		new_squad.m_stay_in_veh                = j["stayinveh"];
+		new_squad.m_spawn_behind_same_velocity = j["spawnbehindsamevelocity"];
+
+		return new_squad;
 	}
 
 	bool squad_spawner::fetch_squads()
 	{
 		g_squad_spawner_service.m_templates.clear();
+		bool success = false;
 		std::ifstream read;
 		try
 		{
@@ -25,17 +92,18 @@ namespace big
 						read >> j;
 						read.close();
 					}
-					//TODO ADD FROM JSON TO SQUAD STRUCT
+					g_squad_spawner_service.m_templates.push_back(g_squad_spawner_service.from_json(j));
 				}
 			}
-			return true;
+			success = true;
 		}
 		catch (std::exception e)
 		{
 			LOG(WARNING) << "Squad Spawner fetching files failed: " << e.what();
 		}
 
-		return false;
+		g_squad_spawner_service.load_default_templates();
+		return success;
 	}
 
 	bool squad_spawner::save_squad(squad s)
@@ -54,8 +122,10 @@ namespace big
 		{
 			if (write.is_open())
 			{
-				//TODO ADD TO JSON FROM SQUAD STRUCT
+				write << std::setw(4) << squad_spawner::to_json(s) << std::endl;
 				write.close();
+				g_notification_service->push("Squad spawner", std::string("Succesfully saved ").append(s.m_name));
+				fetch_squads();
 				return true;
 			}
 		}
@@ -67,9 +137,17 @@ namespace big
 		return false;
 	}
 
+	bool squad_spawner::delete_squad(squad s){
+		std::string savename = s.m_name;
+		savename.append(".json");
+		std::filesystem::path path = get_file_path() / savename;
+		std::filesystem::remove(path);
+		return fetch_squads();
+	}
+
 	void squad_spawner::load_default_templates()
 	{
-		bool ped_proofs[5] = {0,0,0,0,0};
+		bool ped_proofs[5]          = {0, 0, 0, 0, 0};
 		bool ped_proofs_annoying[5] = {1, 0, 0, 1, 1};
 
 		m_templates.push_back(squad("Swat team", "s_m_y_swat_01", "weapon_smg", "riot", 4, false, false, ped_proofs, 400, 400, 0, 75, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::PROFESSIONAL, false, false, "An elite team of swat operatives that will quickly swarm the target"));
