@@ -8,12 +8,12 @@ namespace big
 		void* current_carriage = carriage;
 		int count              = 0;
 
-		while (g_pointers->m_get_next_carriage(current_carriage))
+		while (g_pointers->m_gta.m_get_next_carriage(current_carriage))
 		{
 			if (++count > 20)
 				return nullptr;
 
-			current_carriage = g_pointers->m_get_next_carriage(current_carriage);
+			current_carriage = g_pointers->m_gta.m_get_next_carriage(current_carriage);
 		}
 
 		return current_carriage;

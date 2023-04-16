@@ -18,7 +18,7 @@ namespace big
 			const size_t arg_count  = 3;
 			int64_t args[arg_count] = {(int64_t)eRemoteEvent::TriggerCEORaid, (int64_t)self::id, 0};
 
-			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << player->id());
+			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id());
 		}
 	};
 

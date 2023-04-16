@@ -24,12 +24,12 @@ namespace big
 				const size_t arg_count  = 9;
 				int64_t args[arg_count] = {(int64_t)eRemoteEvent::VehicleKick, self::id, 0, 0, 0, 0, 0, 0, 0};
 
-				g_pointers->m_trigger_script_event(1, args, arg_count, 1 << player->id());
+				g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id());
 			}
 			else
 			{
 				// use a private method to kick player from vehicle
-				(*g_pointers->m_network_object_mgr)->ChangeOwner(vehicle->m_net_object, g_player_service->get_self()->get_net_game_player(), 0);
+				(*g_pointers->m_gta.m_network_object_mgr)->ChangeOwner(vehicle->m_net_object, g_player_service->get_self()->get_net_game_player(), 0);
 			}
 		}
 	};

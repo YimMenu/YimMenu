@@ -11,13 +11,13 @@ namespace big::train
 	inline auto get_all_vehicles()
 	{
 		std::vector<Vehicle> result;
-		rage::CReplayInterface* CReplayInterface_var = *g_pointers->m_replay_interface;
+		rage::CReplayInterface* CReplayInterface_var = *g_pointers->m_gta.m_replay_interface;
 		for (int i = 0; i < 300; i++)
 		{
 			auto vehicle_ptr = CReplayInterface_var->m_vehicle_interface->get_vehicle(i);
 			if (vehicle_ptr)
 			{
-				Vehicle vehicle_handle = g_pointers->m_ptr_to_handle(vehicle_ptr);
+				Vehicle vehicle_handle = g_pointers->m_gta.m_ptr_to_handle(vehicle_ptr);
 
 				result.push_back(vehicle_handle);
 			}

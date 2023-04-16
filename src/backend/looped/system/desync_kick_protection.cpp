@@ -37,7 +37,7 @@ namespace big
 				if (plyr->get_net_data())
 				{
 					gta_util::get_network()->m_game_complaint_mgr.m_host_token = plyr->get_net_data()->m_host_token;
-					g_pointers->m_reset_network_complaints(&gta_util::get_network()->m_game_complaint_mgr);
+					g_pointers->m_gta.m_reset_network_complaints(&gta_util::get_network()->m_game_complaint_mgr);
 				}
 			}
 
@@ -45,7 +45,7 @@ namespace big
 			{
 				gta_util::get_network()->m_game_complaint_mgr.m_host_token =
 				    g_player_service->get_self()->get_net_data()->m_host_token;
-				g_pointers->m_reset_network_complaints(&gta_util::get_network()->m_game_complaint_mgr);
+				g_pointers->m_gta.m_reset_network_complaints(&gta_util::get_network()->m_game_complaint_mgr);
 			}
 		}
 

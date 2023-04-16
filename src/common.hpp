@@ -35,6 +35,7 @@
 #include <functional>
 #include <utility>
 
+#include <set>
 #include <stack>
 #include <vector>
 

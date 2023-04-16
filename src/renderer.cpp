@@ -16,7 +16,7 @@ IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARA
 namespace big
 {
 	renderer::renderer() :
-	    m_dxgi_swapchain(*g_pointers->m_swapchain)
+	    m_dxgi_swapchain(*g_pointers->m_gta.m_swapchain)
 	{
 		if (m_dxgi_swapchain->GetDevice(__uuidof(ID3D11Device), reinterpret_cast<void**>(&m_d3d_device)) < 0)
 		{

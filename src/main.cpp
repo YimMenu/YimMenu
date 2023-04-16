@@ -1,4 +1,5 @@
 #include "backend/backend.hpp"
+#include "byte_patch_manager.hpp"
 #include "common.hpp"
 #include "core/globals.hpp"
 #include "fiber_pool.hpp"
@@ -73,6 +74,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				    auto pointers_instance = std::make_unique<pointers>();
 				    LOG(INFO) << "Pointers initialized.";
+
+				    auto byte_patch_manager_instance = std::make_unique<byte_patch_manager>();
+				    LOG(INFO) << "Byte Patch Manager initialized.";
 
 				    auto renderer_instance = std::make_unique<renderer>();
 				    LOG(INFO) << "Renderer initialized.";
@@ -191,6 +195,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				    renderer_instance.reset();
 				    LOG(INFO) << "Renderer uninitialized.";
+
+				    byte_patch_manager_instance.reset();
+				    LOG(INFO) << "Byte Patch Manager uninitialized.";
 
 				    pointers_instance.reset();
 				    LOG(INFO) << "Pointers uninitialized.";

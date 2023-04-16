@@ -10,7 +10,7 @@ namespace big
 
 		virtual void on_enable() override
 		{
-			*g_pointers->m_refresh_audio_input = true;
+			*g_pointers->m_gta.m_refresh_audio_input = true;
 		}
 
 		virtual void on_tick() override
@@ -20,7 +20,7 @@ namespace big
 
 		virtual void on_disable() override
 		{
-			*g_pointers->m_refresh_audio_input = true;
+			*g_pointers->m_gta.m_refresh_audio_input = true;
 			NETWORK::NETWORK_OVERRIDE_SEND_RESTRICTIONS_ALL(false);
 		}
 	};

@@ -29,7 +29,7 @@ namespace rage
 	public:
 		static inline fiDevice* GetDevice(const char* path, bool allowRoot)
 		{
-			return big::g_pointers->m_fidevice_get_device(path, allowRoot);
+			return big::g_pointers->m_gta.m_fidevice_get_device(path, allowRoot);
 		}
 
 		static bool MountGlobal(const char* mountPoint, fiDevice* device, bool allowRoot);

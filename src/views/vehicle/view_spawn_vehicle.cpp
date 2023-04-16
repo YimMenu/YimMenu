@@ -9,7 +9,7 @@ namespace big
 {
 	void view::spawn_vehicle()
 	{
-		ImGui::SetWindowSize({0.f, (float)*g_pointers->m_resolution_y}, ImGuiCond_Always);
+		ImGui::SetWindowSize({0.f, (float)*g_pointers->m_gta.m_resolution_y}, ImGuiCond_Always);
 
 		if (ImGui::Checkbox("PREVIEW"_T.data(), &g.spawn_vehicle.preview_vehicle))
 		{
@@ -66,7 +66,7 @@ namespace big
 		components::input_text_with_hint("MODEL_NAME"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
 
 
-		if (ImGui::ListBoxHeader("###vehicles", {300, static_cast<float>(*g_pointers->m_resolution_y - 188 - 38 * 4)}))
+		if (ImGui::ListBoxHeader("###vehicles", {300, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 188 - 38 * 4)}))
 		{
 			if (self::veh)
 			{

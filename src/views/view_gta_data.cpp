@@ -26,7 +26,7 @@ namespace big
 			{
 				ImGui::Text("GAME_CACHE_UPDATE"_T.data());
 
-				if (*g_pointers->m_is_session_started)
+				if (*g_pointers->m_gta.m_is_session_started)
 				{
 					if (ImGui::Button("GAME_CACHE_UPDATE_CACHE"_T.data()))
 					{
@@ -47,7 +47,7 @@ namespace big
 						g_gta_data_service->update_in_online();
 					}
 
-					if (*g_pointers->m_game_state == eGameState::Respawn)
+					if (*g_pointers->m_gta.m_game_state == eGameState::Respawn)
 					{
 						if (ImGui::Button("GAME_CACHE_ON_INIT"_T.data()))
 						{

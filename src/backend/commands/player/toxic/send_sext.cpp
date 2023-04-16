@@ -28,7 +28,7 @@ namespace big
 			strcpy((char*)&args[2],
 			    (std::string("SXT_") + strippers[rand() % strippers.size()] + "_" + sext_types[rand() % sext_types.size()])
 			        .data());
-			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << player->id());
+			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id());
 		}
 	};
 

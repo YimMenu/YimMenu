@@ -22,7 +22,7 @@ namespace big
 		for (const rage::scrNativeMapping& mapping : g_crossmap)
 		{
 			rage::scrNativeHandler handler =
-			    g_pointers->m_get_native_handler(g_pointers->m_native_registration_table, mapping.second);
+			    g_pointers->m_gta.m_get_native_handler(g_pointers->m_gta.m_native_registration_table, mapping.second);
 			m_handler_cache.emplace(mapping.first, handler);
 		}
 
@@ -43,9 +43,9 @@ namespace big
 			[this, hash, handler] {
 				__try
 				{
-					_call_asm(&m_call_context, handler, g_pointers->m_native_return);
+					_call_asm(&m_call_context, handler, g_pointers->m_gta.m_native_return);
 					// handler(&m_call_context);
-					g_pointers->m_fix_vectors(&m_call_context);
+					g_pointers->m_gta.m_fix_vectors(&m_call_context);
 				}
 				__except (EXCEPTION_EXECUTE_HANDLER)
 				{

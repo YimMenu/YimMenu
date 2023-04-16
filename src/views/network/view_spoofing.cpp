@@ -36,7 +36,7 @@ namespace big
 			ImGui::SameLine();
 			if (ImGui::InputInt("###rank", &g.spoofing.rank))
 			{
-				*g_pointers->m_force_player_card_refresh = true;
+				*g_pointers->m_gta.m_force_player_card_refresh = true;
 			}
 		}
 
@@ -46,7 +46,7 @@ namespace big
 			ImGui::SameLine();
 			if (ImGui::InputFloat("###kd_ratio", &g.spoofing.kd_ratio))
 			{
-				*g_pointers->m_force_player_card_refresh = true;
+				*g_pointers->m_gta.m_force_player_card_refresh = true;
 			}
 		}
 
@@ -56,7 +56,7 @@ namespace big
 			ImGui::SameLine();
 			if (ImGui::Combo("###badsport_select", &g.spoofing.badsport_type, "Clean Player\0Dirty Player\0Bad Sport"))
 			{
-				*g_pointers->m_force_player_card_refresh = true;
+				*g_pointers->m_gta.m_force_player_card_refresh = true;
 			}
 		}
 

@@ -57,7 +57,7 @@ namespace big
 		g_script_patcher_service->add_patch(
 		    {RAGE_JOAAT("carmod_shop"), "2D 03 07 00 00 71 38 02", 5, {0x72, 0x2E, 0x03, 0x01}, &g.vehicle.ls_customs});// allow all vehicles 2
 
-		for (auto& entry : *g_pointers->m_script_program_table)
+		for (auto& entry : *g_pointers->m_gta.m_script_program_table)
 		{
 			if (entry.m_program)
 				g_script_patcher_service->on_script_load(entry.m_program);

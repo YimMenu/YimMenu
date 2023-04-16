@@ -1,3 +1,4 @@
+#include "gui.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "view.hpp"
 
@@ -26,7 +27,7 @@ namespace big
 
 	void view::context_menu()
 	{
-		if (const auto draw_list = ImGui::GetBackgroundDrawList(); draw_list)
+		if (const auto draw_list = ImGui::GetBackgroundDrawList(); draw_list && !g_gui->is_open())
 		{
 			if (g_context_menu_service->enabled && g_context_menu_service->m_pointer
 			    && g_context_menu_service->m_pointer->m_navigation)
@@ -39,14 +40,14 @@ namespace big
 				const auto context_target_distance = math::calculate_distance_from_game_cam(context_target_pos);
 				const auto context_target_multplr = context_target_distance > g.esp.global_render_distance[1] ? -1.f : 6.17757f / context_target_distance;
 
-				if (g_pointers->m_get_screen_coords_for_world_coords(context_target_pos.data, &context_screen_x, &context_screen_y))
+				if (g_pointers->m_gta.m_get_screen_coords_for_world_coords(context_target_pos.data, &context_screen_x, &context_screen_y))
 				{
 					const auto cm = g_context_menu_service->get_context_menu();
 					if (cm == nullptr)
 						return;
 
-					const auto cm_start_x = static_cast<float>(*g_pointers->m_resolution_x) * context_screen_x + (67.5f * context_target_multplr);
-					const auto cm_start_y = static_cast<float>(*g_pointers->m_resolution_y) * context_screen_y - (175.f * context_target_multplr);
+					const auto cm_start_x = static_cast<float>(*g_pointers->m_gta.m_resolution_x) * context_screen_x + (67.5f * context_target_multplr);
+					const auto cm_start_y = static_cast<float>(*g_pointers->m_gta.m_resolution_y) * context_screen_y - (175.f * context_target_multplr);
 
 					const auto cm_col = ImGui::ColorConvertFloat4ToU32({0.549f, 0.639f, 0.710f, 0.3f});
 

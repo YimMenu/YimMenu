@@ -286,6 +286,7 @@ namespace big
 			bool healthregen        = false;
 			float healthregenrate   = 1.0f;
 			bool superman           = false;
+			bool custom_weapon_stop = true;
 			struct hud
 			{
 				bool hudcolor = false;
@@ -307,7 +308,7 @@ namespace big
 			// do not save below entries
 			bool dance_mode = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, custom_weapon_stop)
 		} self{};
 
 		struct session
@@ -560,8 +561,9 @@ namespace big
 
 				bool enabled   = false;
 				bool left_side = false;
+				bool show_current_gear = true;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(speedo_meter, x, y, enabled, left_side)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(speedo_meter, x, y, enabled, left_side, show_current_gear)
 			} speedo_meter{};
 
 			struct fly

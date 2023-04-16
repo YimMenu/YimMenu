@@ -24,16 +24,16 @@ namespace big
 				dist += 5;
 
 			if (!entity::take_control_of(e))
-				return;// TODO: remove from vector
+				return; // TODO: remove from vector
 
 			ENTITY::SET_ENTITY_COLLISION(e, false, false);
 
 			other = ENTITY::GET_ENTITY_COORDS(e, true);
 
 			Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
-			float pitch = math::deg_to_rad(rot.x);// vertical
+			float pitch = math::deg_to_rad(rot.x); // vertical
 			// float roll = rot.y;
-			float yaw = math::deg_to_rad(rot.z + 90);// horizontal
+			float yaw = math::deg_to_rad(rot.z + 90); // horizontal
 
 			Vector3 velocity;
 
@@ -51,7 +51,7 @@ namespace big
 		bool is_gravity_gun_selected = g.weapons.custom_weapon == CustomWeapon::GRAVITY_GUN;
 
 		auto is_zoomed_in = is_gravity_gun_selected && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM);
-		if (is_zoomed_in)
+		if (is_zoomed_in && (!g.self.custom_weapon_stop || WEAPON::IS_PED_ARMED(self::ped, 4 | 2)))
 		{
 			location = self::pos;
 

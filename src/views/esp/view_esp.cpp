@@ -37,10 +37,10 @@ namespace big
 
 		uint32_t ped_damage_bits = plyr->get_ped()->m_damage_bits;
 
-		if (g_pointers->m_get_screen_coords_for_world_coords(player_pos.data, &screen_x, &screen_y))
+		if (g_pointers->m_gta.m_get_screen_coords_for_world_coords(player_pos.data, &screen_x, &screen_y))
 		{
-			const auto esp_x = (float)*g_pointers->m_resolution_x * screen_x;
-			const auto esp_y = (float)*g_pointers->m_resolution_y * screen_y;
+			const auto esp_x = (float)*g_pointers->m_gta.m_resolution_x * screen_x;
+			const auto esp_y = (float)*g_pointers->m_gta.m_resolution_y * screen_y;
 
 			std::string name_str;
 			ImVec2 name_pos = {esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 20.f};
@@ -62,8 +62,8 @@ namespace big
 			const auto health_perc = plyr->get_ped()->m_health / (plyr->get_ped()->m_maxhealth + 0.001f);
 
 			if (distance < g.esp.tracer_render_distance[1] && distance > g.esp.tracer_render_distance[0] && g.esp.tracer)
-				draw_list->AddLine({(float)*g_pointers->m_resolution_x * g.esp.tracer_draw_position[0],
-				                       (float)*g_pointers->m_resolution_y * g.esp.tracer_draw_position[1]},
+				draw_list->AddLine({(float)*g_pointers->m_gta.m_resolution_x * g.esp.tracer_draw_position[0],
+				                       (float)*g_pointers->m_gta.m_resolution_y * g.esp.tracer_draw_position[1]},
 				    {esp_x, esp_y},
 				    esp_color);
 
