@@ -6,35 +6,9 @@
 
 namespace big
 {
-	yim_fipackfile::yim_fipackfile(rage::fiPackfile* rpf, const std::string& mount_name)
+	yim_fipackfile::yim_fipackfile(rage::fiPackfile* rpf)
 	{
-		this->rpf        = rpf;
-		this->mount_name = mount_name;
-	}
-
-	std::vector<std::string> yim_fipackfile::get_non_dlc_mounted_devices_names()
-	{
-		std::vector<std::string> non_dlc_mounted_devices_names;
-
-		uint16_t mounted_devices_len = *g_pointers->m_gta.m_fidevices_len;
-		if (mounted_devices_len)
-		{
-			auto devices_arr                        = *(uint64_t*)g_pointers->m_gta.m_fidevices;
-			uint8_t** current_device_mount_name_ptr = *(unsigned __int8***)g_pointers->m_gta.m_fidevices;
-			auto device_i                           = 0;
-
-			while (true)
-			{
-				non_dlc_mounted_devices_names.push_back(*(const char**)current_device_mount_name_ptr);
-
-				++device_i;
-				current_device_mount_name_ptr += 4;
-				if (device_i >= mounted_devices_len)
-					break;
-			}
-		}
-
-		return non_dlc_mounted_devices_names;
+		this->rpf = rpf;
 	}
 
 	void yim_fipackfile::add_wrapper_call_back(std::function<size_t(yim_fipackfile& rpf_wrapper)> cb)
@@ -44,14 +18,6 @@ namespace big
 
 	void yim_fipackfile::for_each_fipackfile()
 	{
-		// the idea is to reuse existing mount points as much as possible because
-		// even when mounting / unmounting properly you'll get file errors
-		// and crashes if the rpf file was already mounted
-
-		// iterate the fidevice array which contains devices that are currently mounted
-		// the dlc devices are in another array
-		const auto non_dlc_mounted_devices_names = get_non_dlc_mounted_devices_names();
-
 		// for not hanging the game too much
 		constexpr auto yield_increment = 80;
 
@@ -66,57 +32,11 @@ namespace big
 				break;
 			}
 
-			yim_fipackfile rpf_wrapper = yim_fipackfile(rpf, default_mount_name);
+			yim_fipackfile rpf_wrapper = yim_fipackfile(rpf);
 
-			auto already_mounted = false;
-			for (const auto& non_dlc_mounted_device_name : non_dlc_mounted_devices_names)
-			{
-				auto* non_dlc_mounted_device = rage::fiDevice::GetDevice(non_dlc_mounted_device_name.c_str(), true);
-
-				if (rpf == non_dlc_mounted_device)
-				{
-					rpf_wrapper.mount_name = non_dlc_mounted_device_name;
-					already_mounted        = true;
-				}
-			}
-
-			if (!already_mounted)
-			{
-				size_t acc = 0;
-
-				static std::vector<std::string> mount_names = {"memory:/", "memory:", "dlc", "dlc:", "dlc:/", "dlcpacks:/", "common:/", "commoncrc:/", "update:/", "update2:/", "platform:/", "platformcrc:/", "gamecache:/"};
-
-				for (auto& mount_name : mount_names)
-				{
-					rpf_wrapper.mount_name = mount_name;
-					if (auto count = rpf_wrapper.get_file_paths().size())
-					{
-						acc += count;
-						std::for_each(m_wrapper_call_back.begin(), m_wrapper_call_back.end(), [&rpf_wrapper](std::function<size_t(yim_fipackfile & rpf_wrapper)> cb) {
-							cb(rpf_wrapper);
-						});
-					}
-				}
-
-				// if we got nothing with those mount points for this rpf, mount it
-				if (!acc)
-				{
-					rpf_wrapper.mount_name = default_mount_name;
-					rpf->Mount(default_mount_name);
-
-					std::for_each(m_wrapper_call_back.begin(), m_wrapper_call_back.end(), [&rpf_wrapper](std::function<size_t(yim_fipackfile & rpf_wrapper)> cb) {
-						cb(rpf_wrapper);
-					});
-
-					g_pointers->m_gta.m_fipackfile_unmount(default_mount_name);
-				}
-			}
-			else
-			{
-				std::for_each(m_wrapper_call_back.begin(), m_wrapper_call_back.end(), [&rpf_wrapper](std::function<size_t(yim_fipackfile & rpf_wrapper)> cb) {
-					cb(rpf_wrapper);
-				});
-			}
+			std::for_each(m_wrapper_call_back.begin(), m_wrapper_call_back.end(), [&rpf_wrapper](std::function<size_t(yim_fipackfile & rpf_wrapper)> cb) {
+				cb(rpf_wrapper);
+			});
 
 			if (i % yield_increment == 0)
 				script::get_current()->yield();
@@ -127,7 +47,7 @@ namespace big
 	{
 		std::vector<std::filesystem::path> file_paths;
 		if (parent.empty())
-			parent = mount_name;
+			parent = "/";
 
 		std::vector<std::string> directories;
 
@@ -137,7 +57,12 @@ namespace big
 		{
 			do
 			{
-				std::string fn = std::string(parent.c_str()) + std::string("/") + std::string(findData.fileName);
+				std::string fn;
+
+				if (parent == "/")
+					fn = std::string(parent.c_str()) + std::string(findData.fileName);
+				else
+					fn = std::string(parent.c_str()) + std::string("/") + std::string(findData.fileName);
 
 				if (findData.fileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 				{

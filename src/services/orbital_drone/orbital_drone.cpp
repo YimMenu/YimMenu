@@ -14,7 +14,7 @@
 
 namespace big
 {
-	bool_command g_orbital_drone("orbitaldrone", "Toggle orbital drone", "Enables/Disables the orbital drone.",
+	bool_command g_orbital_drone("orbitaldrone", "Toggle Orbital Drone", "Enables/Disables the orbital drone",
 	    g.world.orbital_drone.enabled);
 
 	static bool nav_override;
@@ -28,12 +28,10 @@ namespace big
 			return;
 		}
 
-		if (*g_pointers->m_gta.m_is_session_started && gta_util::get_network_player_mgr()->m_local_net_player
-		    && gta_util::get_network_player_mgr()->m_local_net_player->m_player_info->m_ped)
+		if (g_local_player)
 		{
 			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].OrbitalBitset.Set(eOrbitalBitset::kOrbitalCannonActive);
-			const auto player_pos =
-			    *gta_util::get_network_player_mgr()->m_local_net_player->m_player_info->m_ped->m_navigation->get_position();
+			const auto player_pos = *g_local_player->get_position();
 
 			m_start_pos = {player_pos.x, player_pos.y, player_pos.z};
 
@@ -69,7 +67,7 @@ namespace big
 	{
 		m_initialized = false;
 
-		Entity self = PLAYER::PLAYER_PED_ID();
+		Entity self = self::ped;
 		if (PED::IS_PED_IN_ANY_VEHICLE(self, true))
 			self = PED::GET_VEHICLE_PED_IS_IN(self, false);
 
@@ -102,7 +100,7 @@ namespace big
 		m_lock_ent = -1;
 		m_lock     = false;
 
-		scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[PLAYER::PLAYER_ID()].OrbitalBitset.Clear(eOrbitalBitset::kOrbitalCannonActive);
+		scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].OrbitalBitset.Clear(eOrbitalBitset::kOrbitalCannonActive);
 		m_should_tp = false;
 	}
 
@@ -292,7 +290,7 @@ namespace big
 			m_lock_ent = entity::get_entity_closest_to_middle_of_screen();
 			m_lock     = true;
 
-			if (g.world.orbital_drone.detect_player)
+			if (*g_pointers->m_gta.m_is_session_started && g.world.orbital_drone.detect_player)
 				detect_player(m_lock_ent);
 		}
 
@@ -378,8 +376,8 @@ namespace big
 		Vector3 campos = CAM::GET_CAM_COORD(m_cam);
 		Vector3 entpos = ENTITY::GET_ENTITY_COORDS(entity::get_entity_closest_to_middle_of_screen(), 0);
 
-		if (g_player_service->get_selected()->is_valid()
-		        &&ENTITY::DOES_ENTITY_EXIST(g_pointers->m_gta.m_ptr_to_handle(g_player_service->get_selected()->get_ped())))
+		if (*g_pointers->m_gta.m_is_session_started && g_player_service->get_selected()->is_valid()
+		    && ENTITY::DOES_ENTITY_EXIST(g_pointers->m_gta.m_ptr_to_handle(g_player_service->get_selected()->get_ped())))
 		{
 			toxic::blame_explode_coord(g_player_service->get_selected(), m_ground_pos, eExplosionTag::EXP_TAG_ORBITAL_CANNON, 1.f, TRUE, TRUE, 1.f);
 
@@ -388,9 +386,9 @@ namespace big
 		}
 		else
 		{
-			toxic::blame_explode_coord(g_player_service->get_self(), m_ground_pos, eExplosionTag::EXP_TAG_ORBITAL_CANNON, 1.f, TRUE, TRUE, 1.f);
+			toxic::blame_explode_coord(*g_pointers->m_gta.m_is_session_started ? g_player_service->get_self() : nullptr, m_ground_pos, eExplosionTag::EXP_TAG_ORBITAL_CANNON, 1.f, TRUE, TRUE, 1.f);
 			if (MISC::GET_DISTANCE_BETWEEN_COORDS(campos.x, campos.y, campos.z, entpos.x, entpos.y, entpos.z, false) < 10)
-				toxic::blame_explode_coord(g_player_service->get_self(), entpos, eExplosionTag::EXP_TAG_ORBITAL_CANNON, 1.f, TRUE, TRUE, 1.f);
+				toxic::blame_explode_coord(*g_pointers->m_gta.m_is_session_started ? g_player_service->get_self() : nullptr, entpos, eExplosionTag::EXP_TAG_ORBITAL_CANNON, 1.f, TRUE, TRUE, 1.f);
 		}
 
 

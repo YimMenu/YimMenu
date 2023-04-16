@@ -525,16 +525,6 @@ namespace big
                 g_pointers->m_gta.m_fidevice_get_device = ptr.sub(0x1F).as<functions::fidevice_get_device>();
             }
         },
-        // fiDevices
-        {
-            "FDS",
-            "74 1B 48 8D 0D ? ? ? ? 41 8B D6",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_fidevices     = ptr.add(5).rip().as<uintptr_t>();
-                g_pointers->m_gta.m_fidevices_len = ptr.add(5).rip().add(8).as<uint16_t*>();
-            }
-        },
         // fiPackfile ctor
         {
             "FPFC",
@@ -1222,6 +1212,43 @@ namespace big
                 g_pointers->m_gta.m_migrate_object = ptr.as<functions::migrate_object>();
             }
         },
+        // Game Version + Online Version
+        {
+            "GVOV",
+            "8B C3 33 D2 C6 44 24 20",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_game_version   = ptr.add(0x24).rip().as<const char*>();
+                g_pointers->m_gta.m_online_version = ptr.add(0x24).rip().add(0x20).as<const char*>();
+            }
+        },
+        // Ped Pool
+        {
+            "PEP",
+            "4C 8B 35 ? ? ? ? B8 ? ? ? ? 0F 57 F6 89 05 ? ? ? ? 49 63 76 10 4C 8B FE 85 F6 0F 84 ? ? ? ? 49 8B 46 08 49 FF CF FF CE 42 0F B6 0C 38",
+            [](memory::handle ptr)
+		    {
+			    g_pointers->m_gta.m_ped_pool = ptr.add(3).rip().as<GenericPool**>();
+		    }
+        },
+        // Prop Pool
+        {
+            "PRP",
+            "48 8B 0D ? ? ? ? 49 8B D0 E8 ? ? ? ? 39 03 EB 19 41 80 78 ? ? 75 15 48 8B 0D ? ? ? ? 49 8B D0 E8 ? ? ? ? 39 43 04",
+            [](memory::handle ptr)
+		    {
+			    g_pointers->m_gta.m_prop_pool = ptr.add(3).rip().as<GenericPool**>();
+		    }
+        },
+        // Vehicle Pool
+        {
+            "VEP",
+            "4C 8B 25 ? ? ? ? 8B 29 33 F6 49 8B 04 24 33 DB 4C 8D 71 08 44 8B 78 08 45 85 FF 0F 8E ? ? ? ? 4D 8B 0C 24 41 3B 59 08 7D 29 49 8B 51 30 44 8B C3 8B CB 49 C1 E8 05 83 E1 1F 44 8B D3 42 8B 04 82",
+            [](memory::handle ptr)
+		    {
+			    g_pointers->m_gta.m_vehicle_pool = ptr.add(3).rip().as<VehiclePool***>();
+		    }
+        },
         // Task Jump Constructor
         {
             "TJC",
@@ -1320,24 +1347,6 @@ namespace big
             {
                 g_pointers->m_gta.m_crash_trigger = ptr;
             }
-        },
-        // freemode_thread_restorer_through_vm_patch 1
-        {
-            "FMVM1",
-            "3b 0a 0f 83 ? ? ? ? 48 ff c7",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.freemode_thread_restorer_through_vm_patch_1 = ptr;
-            }
-        },
-        // freemode_thread_restorer_through_vm_patch 2
-        {
-            "FMVM2",
-            "3b 0a 0f 83 ? ? ? ? 49 03 fa",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.freemode_thread_restorer_through_vm_patch_2 = ptr;
-            }
         }
         >();
 
@@ -1422,7 +1431,7 @@ namespace big
 			}
 			else
 			{
-				LOG(FATAL) << "Just tried to load from cache a pointer supposedly within the gta 5 module range but wasnt!!! Offset from start of pointers instance: " << (reinterpret_cast<uintptr_t>(field_ptr) - reinterpret_cast<uintptr_t>(this));
+				LOG(FATAL) << "Just tried to load from cache a pointer supposedly within the gta 5 module range but isn't! Offset from start of pointers instance: " << (reinterpret_cast<uintptr_t>(field_ptr) - reinterpret_cast<uintptr_t>(this));
 			}
 
 			field_ptr++;
@@ -1435,33 +1444,7 @@ namespace big
 	{
 		g_pointers = this;
 
-		// clang-format off
-
-        constexpr auto version_batch = memory::make_batch<
-        // game version + online version
-        {
-            "GVOV",
-            "8B C3 33 D2 C6 44 24 20",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_game_version   = ptr.add(0x24).rip().as<const char*>();
-                g_pointers->m_online_version = ptr.add(0x24).rip().add(0x20).as<const char*>();
-
-                g_pointers->m_game_version_uint32_t = std::strtoul(g_pointers->m_game_version, nullptr, 10);
-                g_pointers->m_online_version_float  = std::strtof(g_pointers->m_online_version, nullptr);
-            }
-        }
-        >();
-
-		// clang-format on
-
 		const auto mem_region = memory::module("GTA5.exe");
-
-		const auto found_game_version = memory::batch_runner::run(version_batch.m_batch, mem_region);
-		if (!found_game_version)
-		{
-			LOG(WARNING) << "Failed to find version patterns. Can't utilize pointers cache.";
-		}
 
 		constexpr auto gta_batch_and_hash = pointers::get_gta_batch();
 		constexpr cstxpr_str gta_batch_name{"GTA5"};
@@ -1469,7 +1452,7 @@ namespace big
 		    gta_batch_and_hash.m_hash,
 		    gta_pointers_layout_info::offset_of_cache_begin_field,
 		    gta_pointers_layout_info::offset_of_cache_end_field,
-		    gta_batch_and_hash.m_batch>(m_gta_pointers_cache, mem_region, found_game_version);
+		    gta_batch_and_hash.m_batch>(m_gta_pointers_cache, mem_region);
 
 		auto sc_module = memory::module("socialclub.dll");
 		if (sc_module.wait_for_module())
@@ -1480,7 +1463,7 @@ namespace big
 			    sc_batch_and_hash.m_hash,
 			    sc_pointers_layout_info::offset_of_cache_begin_field,
 			    sc_pointers_layout_info::offset_of_cache_end_field,
-			    sc_batch_and_hash.m_batch>(m_sc_pointers_cache, sc_module, found_game_version);
+			    sc_batch_and_hash.m_batch>(m_sc_pointers_cache, sc_module);
 		}
 		else
 			LOG(WARNING) << "socialclub.dll module was not loaded within the time limit.";

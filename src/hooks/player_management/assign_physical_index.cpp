@@ -48,12 +48,13 @@ namespace big
 		{
 			if (g.protections.admin_check)
 			{
-				auto found = std::find(admin_rids.begin(), admin_rids.end(), net_player_data->m_gamer_handle.m_rockstar_id);
-				if (found != admin_rids.end())
+				if (admin_rids.contains(net_player_data->m_gamer_handle.m_rockstar_id))
 				{
 					g_notification_service->push_warning("POTENTIAL_ADMIN_FOUND"_T.data(),
 					    std::vformat("PLAYER_DETECTED_AS_ADMIN"_T, std::make_format_args(net_player_data->m_name)));
-					LOG(WARNING) << net_player_data->m_name << " (" << net_player_data->m_gamer_handle.m_rockstar_id << ") has been detected as admin";
+
+					LOG(WARNING) << net_player_data->m_name << " (" << net_player_data->m_gamer_handle.m_rockstar_id << ") has been detected as an admin";
+
 					auto id = player->m_player_id;
 					if (auto plyr = g_player_service->get_by_id(id))
 						plyr->is_admin = true;
@@ -96,14 +97,6 @@ namespace big
 								g_player_database_service->save();
 							}
 						}
-					}
-
-					if (auto snplyr = plyr->get_session_player())
-					{
-						packet msg{};
-						msg.write_message(rage::eNetMessage::MsgSessionEstablishedRequest);
-						msg.write<uint64_t>(gta_util::get_network()->m_game_session_ptr->m_rline_session.m_session_id, 64);
-						msg.send(snplyr->m_msg_id);
 					}
 				}
 			});

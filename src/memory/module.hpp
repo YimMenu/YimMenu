@@ -17,6 +17,8 @@ namespace memory
 		memory::handle get_export(std::string_view symbol_name);
 
 		bool loaded() const;
+		size_t size() const;
+
 		/**
 		 * @brief Waits till the given module is loaded.
 		 * 

@@ -15,6 +15,11 @@
 
 namespace big
 {
+	inline bool is_crash_ped(rage::joaat_t hash)
+	{
+		return hash == RAGE_JOAAT("slod_human") || hash == RAGE_JOAAT("slod_small_quadped") || hash == RAGE_JOAAT("slod_large_quadped");
+	}
+
 	bool add_if_not_exists(string_vec& vec, std::string str)
 	{
 		if (std::find(vec.begin(), vec.end(), str) != vec.end())
@@ -25,9 +30,9 @@ namespace big
 	}
 
 	gta_data_service::gta_data_service() :
-	    m_peds_cache(g_file_manager->get_project_file("./cache/peds.bin"), 2),
-	    m_vehicles_cache(g_file_manager->get_project_file("./cache/vehicles.bin"), 1),
-	    m_weapons_cache(g_file_manager->get_project_file("./cache/weapons.bin"), 2),
+	    m_peds_cache(g_file_manager->get_project_file("./cache/peds.bin"), 3),
+	    m_vehicles_cache(g_file_manager->get_project_file("./cache/vehicles.bin"), 2),
+	    m_weapons_cache(g_file_manager->get_project_file("./cache/weapons.bin"), 3),
 	    m_update_state(eGtaDataUpdateState::IDLE)
 	{
 		if (!is_cache_up_to_date())
@@ -142,11 +147,9 @@ namespace big
 		m_vehicles_cache.load();
 		m_weapons_cache.load();
 
-		const auto game_version   = g_pointers->m_game_version_uint32_t;
-		const auto online_version = g_pointers->m_online_version_float;
+		const auto file_version = memory::module("GTA5.exe").size();
 
-		return m_peds_cache.up_to_date(game_version, online_version) && m_vehicles_cache.up_to_date(game_version, online_version)
-		    && m_weapons_cache.up_to_date(game_version, online_version);
+		return m_peds_cache.up_to_date(file_version) && m_vehicles_cache.up_to_date(file_version) && m_weapons_cache.up_to_date(file_version);
 	}
 
 	void gta_data_service::load_data()
@@ -222,6 +225,9 @@ namespace big
 			const auto& item = item_node.node();
 			const auto name  = item.child("Name").text().as_string();
 			const auto hash  = rage::joaat(name);
+
+			if (is_crash_ped(hash))
+				continue;
 
 			if (std::find(mapped_peds.begin(), mapped_peds.end(), hash) != mapped_peds.end())
 				continue;
@@ -411,6 +417,9 @@ namespace big
 					const auto name = file.stem().string();
 					const auto hash = rage::joaat(name);
 
+					if (is_crash_ped(hash))
+						continue;
+
 					if (std::find(mapped_peds.begin(), mapped_peds.end(), hash) != mapped_peds.end())
 						continue;
 
@@ -484,15 +493,14 @@ namespace big
 
 		LOG(VERBOSE) << "Starting cache saving procedure...";
 		g_thread_pool->push([this, peds = std::move(peds), vehicles = std::move(vehicles), weapons = std::move(weapons)] {
-			const auto game_version   = g_pointers->m_game_version_uint32_t;
-			const auto online_version = g_pointers->m_online_version_float;
+			const auto file_version = memory::module("GTA5.exe").size();
 
 			{
 				const auto data_size = sizeof(ped_item) * peds.size();
 				m_peds_cache.set_data(std::make_unique<std::uint8_t[]>(data_size), data_size);
 				std::memcpy(m_peds_cache.data(), peds.data(), data_size);
 
-				m_peds_cache.set_header_version(game_version, online_version);
+				m_peds_cache.set_header_version(file_version);
 				m_peds_cache.write();
 			}
 
@@ -501,7 +509,7 @@ namespace big
 				m_vehicles_cache.set_data(std::make_unique<std::uint8_t[]>(data_size), data_size);
 				std::memcpy(m_vehicles_cache.data(), vehicles.data(), data_size);
 
-				m_vehicles_cache.set_header_version(game_version, online_version);
+				m_vehicles_cache.set_header_version(file_version);
 				m_vehicles_cache.write();
 			}
 
@@ -510,7 +518,7 @@ namespace big
 				m_weapons_cache.set_data(std::make_unique<std::uint8_t[]>(data_size), data_size);
 				std::memcpy(m_weapons_cache.data(), weapons.data(), data_size);
 
-				m_weapons_cache.set_header_version(game_version, online_version);
+				m_weapons_cache.set_header_version(file_version);
 				m_weapons_cache.write();
 			}
 

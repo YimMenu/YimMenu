@@ -1,9 +1,9 @@
 #include "locals_service.hpp"
 
 #include "core/data/all_script_names.hpp"
+#include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "fiber_pool.hpp"
 
 namespace big
 {
@@ -19,12 +19,13 @@ namespace big
 
 	bool locals_service::does_script_exist(std::string script_name)
 	{
+		// TODO: find a better way to check script validity
+
 		for (auto s : all_script_names)
 			if (script_name == s)
 				return true;
-		bool script_exists = false;
-		g_fiber_pool->queue_job([&] {script_exists = SCRIPT::DOES_SCRIPT_EXIST(script_name.data());});
-		return script_exists;
+
+		return false;
 	}
 
 	std::filesystem::path locals_service::get_path()

@@ -11,7 +11,7 @@ namespace big
 		static bool freeze                  = false;
 		static char name[200]               = "";
 		static char script_thread_name[200] = "";
-		static int(*offsets)[2]             = nullptr;
+		static int offsets[10][2]           = {};
 		static int offset_count             = 0;
 		static int previous_offset_count    = 0;
 		components::input_text_with_hint("##local_name", "Name", name, sizeof(name));
@@ -21,21 +21,7 @@ namespace big
 		ImGui::Text("Offsetcount");
 		ImGui::InputInt("##modal_offset_count", &offset_count);
 
-		if (offset_count < 0)
-			offset_count = 0;
-		else if (offset_count > 10)
-			offset_count = 10;
-
-		if (offset_count != previous_offset_count)
-		{
-			int(*new_offsets)[2] = new int[offset_count][2]{0};
-			memcpy(new_offsets, offsets, sizeof(int) * std::min(offset_count, previous_offset_count) * 2);
-
-			delete[] offsets;
-			offsets = new_offsets;
-
-			previous_offset_count = offset_count;
-		}
+		offset_count = std::clamp(offset_count, 0, 10);
 
 		ImGui::PushItemWidth(320.f);
 		for (int i = 0; i < offset_count; i++)
@@ -57,9 +43,7 @@ namespace big
 
 		static auto reset_values = []() -> void {
 			strcpy(name, "");
-			freeze = false;
-			delete[] offsets;
-			offsets               = nullptr;
+			freeze                = false;
 			offset_count          = 0;
 			previous_offset_count = 0;
 		};
@@ -99,7 +83,7 @@ namespace big
 			if (components::button("SAVE"_T))
 				g_locals_service.save();
 
-			if (components::button("Add local"))
+			if (components::button("Add Local"))
 			{
 				ImGui::OpenPopup("##addlocal");
 			}

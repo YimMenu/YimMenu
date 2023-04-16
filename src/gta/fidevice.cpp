@@ -1,6 +1,7 @@
 #include "fidevice.hpp"
-#include "pointers.hpp"
+
 #include "hooking.hpp"
+#include "pointers.hpp"
 
 namespace rage
 {
@@ -263,5 +264,10 @@ namespace rage
 	bool fiPackfile::Mount(const char* mount_point)
 	{
 		return big::g_hooking->get_original<big::hooks::fipackfile_mount>()(this, mount_point);
+	}
+
+	void fiDevice::Unmount(const char* rootPath)
+	{
+		big::g_pointers->m_gta.m_fipackfile_unmount(rootPath);
 	}
 }

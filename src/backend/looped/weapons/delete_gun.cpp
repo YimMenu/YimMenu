@@ -8,7 +8,7 @@ namespace big
 {
 	void looped::weapons_delete_gun()
 	{
-		if (const bool bDeleteGun = g.weapons.custom_weapon == CustomWeapon::DELETE_GUN; bDeleteGun && (!g.self.custom_weapon_stop || WEAPON::IS_PED_ARMED(self::ped, 4 | 2)))
+		if (g.weapons.custom_weapon == CustomWeapon::DELETE_GUN && (!g.self.custom_weapon_stop || WEAPON::IS_PED_ARMED(self::ped, 4 | 2)))
 		{
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
