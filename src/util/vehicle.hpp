@@ -105,38 +105,33 @@ namespace big::vehicle
 
 	inline Vehicle get_closest_to_location(Vector3 location, float range)
 	{
-		if (const auto replay = *g_pointers->m_gta.m_replay_interface; replay)
+		float min_dist   = FLT_MAX;
+		int32_t m_handle = 0;
+
+		for (const auto veh_entity : pools::get_all_vehicles())
 		{
-			float min_dist   = FLT_MAX;
-			int32_t m_handle = 0;
+			const auto veh_ptr = veh_entity;
+			if (!veh_ptr || !veh_ptr->m_navigation)
+				continue;
 
-			for (const auto veh_entity : pools::get_all_vehicles())
+			auto veh_pos_arr = *veh_ptr->m_navigation->get_position();
+			Vector3 veh_pos(veh_pos_arr.x, veh_pos_arr.y, veh_pos_arr.z);
+
+			float dist = math::distance_between_vectors(veh_pos, location);
+
+			if (dist < min_dist)
 			{
-				const auto veh_ptr = veh_entity;
-				if (!veh_ptr || !veh_ptr->m_navigation)
-					continue;
+				int32_t tmp_handle = g_pointers->m_gta.m_ptr_to_handle(veh_ptr);
 
-				auto veh_pos_arr = *veh_ptr->m_navigation->get_position();
-				Vector3 veh_pos(veh_pos_arr.x, veh_pos_arr.y, veh_pos_arr.z);
-
-				float dist = math::distance_between_vectors(veh_pos, location);
-
-				if (dist < min_dist)
+				if (entity::take_control_of(tmp_handle))
 				{
-					int32_t tmp_handle = g_pointers->m_gta.m_ptr_to_handle(veh_ptr);
-
-					if (entity::take_control_of(tmp_handle))
-					{
-						min_dist = dist;
-						m_handle = tmp_handle;
-					}
+					min_dist = dist;
+					m_handle = tmp_handle;
 				}
 			}
-
-			return m_handle;
 		}
 
-		return 0;
+		return m_handle;
 	}
 
 	inline bool set_plate(Vehicle veh, const char* plate)
