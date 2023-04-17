@@ -193,62 +193,52 @@ namespace big
 	void context_menu_service::get_entity_closest_to_screen_center()
 	{
 		m_pointer = nullptr;
-		if (const auto replay = *g_pointers->m_gta.m_replay_interface; replay)
+		if (*g_pointers->m_gta.m_ped_pool && *g_pointers->m_gta.m_prop_pool && *g_pointers->m_gta.m_vehicle_pool
+		    && **g_pointers->m_gta.m_vehicle_pool)
 		{
-			const auto veh_interface = replay->m_vehicle_interface;
-			const auto ped_interface = replay->m_ped_interface;
-			const auto obj_interface = replay->m_object_interface;
+			double distance = 1;
 
-			if (veh_interface && ped_interface && obj_interface)
+			const auto get_closest_to_center = [this, &distance](auto entity_getter_func) -> auto
 			{
-				double distance = 1;
-
-				const auto get_closest_to_center = [this, &distance](auto entity_list) -> auto
+				rage::fvector2 screen_pos{};
+				bool got_an_entity = false;
+				for (const auto entity : entity_getter_func())
 				{
-					rage::fvector2 screen_pos{};
-					bool got_an_entity = false;
-					for (const auto entity : *entity_list)
+					const auto temp_pointer = entity;
+					if (!temp_pointer || !temp_pointer->m_navigation)
+						continue;
+					const auto temp_handle = g_pointers->m_gta.m_ptr_to_handle(temp_pointer);
+
+					const auto pos = temp_pointer->m_navigation->get_position();
+					HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos->x, pos->y, pos->z, &screen_pos.x, &screen_pos.y);
+
+					const auto distance_from_middle = distance_to_middle_of_screen(screen_pos);
+					if (distance_from_middle < distance && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, temp_handle, 17) && temp_handle != self::ped)
 					{
-						const auto temp_pointer = entity.m_entity_ptr;
-						if (!temp_pointer || !temp_pointer->m_navigation)
-							continue;
-						const auto temp_handle = g_pointers->m_gta.m_ptr_to_handle(temp_pointer);
-
-						const auto pos = temp_pointer->m_navigation->get_position();
-						HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos->x,
-						    pos->y,
-						    pos->z,
-						    &screen_pos.x,
-						    &screen_pos.y);
-
-						const auto distance_from_middle = distance_to_middle_of_screen(screen_pos);
-						if (distance_from_middle < distance && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, temp_handle, 17) && temp_handle != self::ped)
-						{
-							m_handle      = temp_handle;
-							m_pointer     = temp_pointer;
-							distance      = distance_from_middle;
-							got_an_entity = true;
-						}
+						m_handle      = temp_handle;
+						m_pointer     = temp_pointer;
+						distance      = distance_from_middle;
+						got_an_entity = true;
 					}
-					return got_an_entity;
-				};
-
-				// I'm using bitwise OR instead or || to avoid compiler optimisation, all functions HAVE to execute
-				auto got_an_entity = get_closest_to_center(veh_interface->m_vehicle_list);
-				got_an_entity |= get_closest_to_center(ped_interface->m_ped_list);
-				got_an_entity |= get_closest_to_center(obj_interface->m_object_list);
-
-				if (got_an_entity)
-				{
-					// if the ped is driving a vehicle take their vehicle instead of the ped (aka. prevent jank)
-					if ((m_pointer->m_model_info->m_model_type == eModelType::Ped || m_pointer->m_model_info->m_model_type == eModelType::OnlineOnlyPed)
-					    && reinterpret_cast<CPed*>(m_pointer)->m_vehicle)
-					{
-						m_pointer = reinterpret_cast<CPed*>(m_pointer)->m_vehicle;
-						m_handle  = g_pointers->m_gta.m_ptr_to_handle(m_pointer);
-					}
-					fill_model_bounding_box_screen_space();
 				}
+				return got_an_entity;
+			};
+
+			// I'm using bitwise OR instead or || to avoid compiler optimisation, all functions HAVE to execute
+			auto got_an_entity = get_closest_to_center(pools::get_all_vehicles);
+			got_an_entity |= get_closest_to_center(pools::get_all_peds);
+			got_an_entity |= get_closest_to_center(pools::get_all_props);
+
+			if (got_an_entity)
+			{
+				// if the ped is driving a vehicle take their vehicle instead of the ped (aka. prevent jank)
+				if ((m_pointer->m_model_info->m_model_type == eModelType::Ped || m_pointer->m_model_info->m_model_type == eModelType::OnlineOnlyPed)
+				    && reinterpret_cast<CPed*>(m_pointer)->m_vehicle)
+				{
+					m_pointer = reinterpret_cast<CPed*>(m_pointer)->m_vehicle;
+					m_handle  = g_pointers->m_gta.m_ptr_to_handle(m_pointer);
+				}
+				fill_model_bounding_box_screen_space();
 			}
 		}
 	}

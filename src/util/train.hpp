@@ -8,31 +8,12 @@
 
 namespace big::train
 {
-	inline auto get_all_vehicles()
-	{
-		std::vector<Vehicle> result;
-		rage::CReplayInterface* CReplayInterface_var = *g_pointers->m_gta.m_replay_interface;
-		for (int i = 0; i < 300; i++)
-		{
-			auto vehicle_ptr = CReplayInterface_var->m_vehicle_interface->get_vehicle(i);
-			if (vehicle_ptr)
-			{
-				Vehicle vehicle_handle = g_pointers->m_gta.m_ptr_to_handle(vehicle_ptr);
-
-				result.push_back(vehicle_handle);
-			}
-		}
-		return result;
-	};
-
 	inline int get_closest_train()
 	{
-		auto allVehicles = get_all_vehicles();
-
-		for (int i = 0; i < allVehicles.size(); i++)
+		for (auto veh : pools::get_all_vehicles())
 		{
-			if (ENTITY::GET_ENTITY_MODEL(allVehicles[i]) == 1030400667)
-				return allVehicles[i];
+			if (veh->m_model_info->m_hash == RAGE_JOAAT("freight"))
+				return g_pointers->m_gta.m_ptr_to_handle(veh);
 		}
 		return 0;
 	}

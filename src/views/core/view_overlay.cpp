@@ -26,6 +26,7 @@ namespace big
 				ImGui::Text(std::format("Players: {}/{}", network_player_mgr->m_player_count, network_player_mgr->m_player_limit)
 				                .c_str());
 
+			// can't easily get used item count using pools, so keeping replay interface for now
 			if (auto replay_interface = *g_pointers->m_gta.m_replay_interface; g.window.ingame_overlay.show_replay_interface)
 			{
 				ImGui::Separator();
@@ -52,8 +53,8 @@ namespace big
 			if (g.window.ingame_overlay.show_game_versions)
 			{
 				ImGui::Separator();
-				ImGui::Text(std::format("Game Version: {}", g_pointers->m_game_version).c_str());
-				ImGui::Text(std::format("Online Version: {}", g_pointers->m_online_version).c_str());
+				ImGui::Text(std::format("Game Version: {}", g_pointers->m_gta.m_game_version).c_str());
+				ImGui::Text(std::format("Online Version: {}", g_pointers->m_gta.m_online_version).c_str());
 			}
 		}
 		ImGui::End();

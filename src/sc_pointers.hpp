@@ -12,4 +12,6 @@ namespace big
 		functions::start_get_presence_attributes m_start_get_presence_attributes;
 	};
 #pragma pack(pop)
+
+	static_assert(sizeof(socialclub_pointers) % 8 == 0, "Pointers are not properly aligned");
 }

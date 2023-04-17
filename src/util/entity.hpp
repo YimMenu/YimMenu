@@ -4,6 +4,7 @@
 #include "gta_util.hpp"
 #include "math.hpp"
 #include "natives.hpp"
+#include "pools.hpp"
 #include "script.hpp"
 
 namespace big::entity
@@ -101,48 +102,27 @@ namespace big::entity
 	{
 		std::vector<Entity> target_entities;
 		target_entities.clear();
-		const auto replay_interface = *g_pointers->m_gta.m_replay_interface;
-		if (!replay_interface)
-			return target_entities;
 
 		if (vehicles)
 		{
-			const auto vehicle_interface = replay_interface->m_vehicle_interface;
-			for (int i = 0; i < vehicle_interface->m_max_vehicles; i++)
+			for (auto vehicle : pools::get_all_vehicles())
 			{
-				const auto vehicle_ptr = vehicle_interface->get_vehicle(i);
-				if (!vehicle_ptr)
+				if (vehicle == gta_util::get_local_vehicle())
 					continue;
 
-				if (vehicle_ptr == gta_util::get_local_vehicle())
-					continue;
-
-				const auto veh = g_pointers->m_gta.m_ptr_to_handle(vehicle_ptr);
-				if (!veh)
-					break;
-
-				target_entities.push_back(veh);
+				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(vehicle));
 			}
 		}
 
 		if (peds)
 		{
-			const auto ped_interface = replay_interface->m_ped_interface;
-			for (int i = 0; i < ped_interface->m_max_peds; i++)
+			for (auto ped : pools::get_all_peds())
 			{
-				const auto ped_ptr = ped_interface->get_ped(i);
-				if (!ped_ptr)
+				// make sure to not include ourselves
+				if (ped == gta_util::get_local_ped())
 					continue;
 
-				//make sure to don't include ourselves
-				if (ped_ptr == gta_util::get_local_ped())
-					continue;
-
-				const auto ped = g_pointers->m_gta.m_ptr_to_handle(ped_ptr);
-				if (!ped)
-					break;
-
-				target_entities.push_back(ped);
+				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(ped));
 			}
 		}
 		return target_entities;
@@ -200,15 +180,13 @@ namespace big::entity
 		Entity closest_entity{};
 		float distance = 1;
 
-		auto replayInterface  = *g_pointers->m_gta.m_replay_interface;
-		auto vehicleInterface = replayInterface->m_vehicle_interface;
-		auto pedInterface     = replayInterface->m_ped_interface;
+		auto replayInterface = *g_pointers->m_gta.m_replay_interface;
 
-		for (const auto veh : (*vehicleInterface->m_vehicle_list))
+		for (const auto veh : pools::get_all_vehicles())
 		{
-			if (veh.m_entity_ptr)
+			if (veh)
 			{
-				Vehicle handle = g_pointers->m_gta.m_ptr_to_handle(veh.m_entity_ptr);
+				Vehicle handle = g_pointers->m_gta.m_ptr_to_handle(veh);
 				Vector3 pos    = ENTITY::GET_ENTITY_COORDS(handle, 1);
 				rage::fvector2 screenpos;
 				HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos.x, pos.y, pos.z, &screenpos.x, &screenpos.y);
@@ -221,11 +199,11 @@ namespace big::entity
 			}
 		}
 
-		for (auto ped : *pedInterface->m_ped_list)
+		for (auto ped : pools::get_all_peds())
 		{
-			if (ped.m_entity_ptr)
+			if (ped)
 			{
-				Vehicle handle = g_pointers->m_gta.m_ptr_to_handle(ped.m_entity_ptr);
+				Vehicle handle = g_pointers->m_gta.m_ptr_to_handle(ped);
 				Vector3 pos    = ENTITY::GET_ENTITY_COORDS(handle, 1);
 				rage::fvector2 screenpos;
 				HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos.x, pos.y, pos.z, &screenpos.x, &screenpos.y);

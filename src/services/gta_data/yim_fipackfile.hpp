@@ -4,15 +4,13 @@
 namespace big
 {
 	using file_contents_callback = std::function<void(const std::unique_ptr<std::uint8_t[]>& file_content, const int data_size)>;
+
 	class yim_fipackfile
 	{
-		static constexpr auto default_mount_name = "yimM:/";
-
 		rage::fiPackfile* rpf;
-		std::string mount_name;
 
 	public:
-		explicit yim_fipackfile(rage::fiPackfile* rpf, const std::string& mount_name);
+		explicit yim_fipackfile(rage::fiPackfile* rpf);
 
 		static std::vector<std::string> get_non_dlc_mounted_devices_names();
 
@@ -29,7 +27,5 @@ namespace big
 		void read_file(const std::filesystem::path& path, file_contents_callback&& cb);
 
 		void read_xml_file(const std::filesystem::path& path, std::function<void(pugi::xml_document& doc)> cb);
-
-	private:
 	};
 }
