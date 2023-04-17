@@ -20,5 +20,6 @@ namespace big
 		static void world_loop();
 		static void orbital_drone();
 		static void vehicle_control();
+		static void squad_spawner();
 	};
 }

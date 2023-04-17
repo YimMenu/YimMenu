@@ -2,6 +2,7 @@
 
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -64,7 +65,6 @@ namespace big
 		eCombatAbilityLevel m_combat_ability_level;
 		bool m_stay_in_veh;
 		bool m_spawn_behind_same_velocity; //Spawns behind a moving target with the same velocity as the targets vehicle
-
 		/*
 		Leave vehicle_model empty to spawn a squad on foot
 		Ped proofs array is indexed as follows; 0 headshot, 1 bullet, 2 flame, 3 melee, 4 explosion
@@ -75,7 +75,8 @@ namespace big
 		squad(const char* name, const char* ped_model, const char* weapon_model, const char* vehicle_model, int squad_size,
 		bool ped_invincibility = false, bool veh_invincibility = false, bool ped_proofs[5] = {},
 		float ped_health = 0, float ped_armor = 0, float spawn_distance = 0, float ped_accuracy = 50.f,
-		eSquadSpawnDistance spawn_distance_mode = eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel combat_ability_level = eCombatAbilityLevel::AVERAGE, bool stay_in_veh = false, bool spawn_behind_same_velocity = false, const char* description = "")
+		eSquadSpawnDistance spawn_distance_mode = eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel combat_ability_level = eCombatAbilityLevel::AVERAGE, 
+		bool stay_in_veh = false, bool spawn_behind_same_velocity = false, const char* description = "")
 		{
 			m_internal_id = ++m_instance_count;
 
@@ -102,7 +103,7 @@ namespace big
 			m_spawn_behind_same_velocity = spawn_behind_same_velocity;
 		}
 
-		int get_id()
+		int get_id() const
 		{
 			return m_internal_id;
 		}
@@ -138,9 +139,25 @@ namespace big
 			return m_members.size() > 0;
 		}
 
+		bool is_squad_alive(){
+			bool alive = false;
+			for(auto& p : m_members)
+				if(!ENTITY::IS_ENTITY_DEAD(p.handle, false))
+					alive = true;
+			return alive;
+		}
+
+		squad_member get_a_member_thats_alive(){
+			for(auto& p : m_members)
+				if(!ENTITY::IS_ENTITY_DEAD(p.handle, false))
+					return p;
+			return {};
+		}
+
 		//Dynamic variables
 		std::vector<squad_member> m_members{};
 		player_ptr target;
+		Ped current_target_ped;
 		Vehicle m_veh_handle;
 		CVehicle* m_veh_ptr;
 		Vector3 m_spawn_pos;
@@ -186,9 +203,12 @@ namespace big
 		bool save_squad(squad);
 		bool delete_squad(squad);
 		bool fetch_squads();
+
+		void tick();
 		
 
 		void terminate_squads();
+		void update_squad_target(squad& s, Ped target_ped);
 	};
 
 	inline squad_spawner g_squad_spawner_service;

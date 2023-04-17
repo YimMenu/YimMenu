@@ -248,11 +248,11 @@ namespace big
 
 		ImGui::Text("Actions");
 		ImGui::Spacing();
-		components::button(std::string("Terminate squads"), [] {
+		components::button(std::string("Terminate " + std::to_string(g_squad_spawner_service.m_active_squads.size()) + " squads"), [] {
 			g_squad_spawner_service.terminate_squads();
 		});
 
-		components::button(std::string("Reset fields"), [] {
+		components::button("Reset fields", [] {
 			spawn_distance_mode   = (eSquadSpawnDistance)1;
 			combat_ability_level  = (eCombatAbilityLevel)2;
 			name[0]               = '\0';

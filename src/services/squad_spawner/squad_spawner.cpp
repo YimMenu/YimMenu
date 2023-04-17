@@ -62,6 +62,10 @@ namespace big
 				PED::SET_PED_ARMOUR(handle, s.m_ped_armor);
 			}
 
+			if(s.does_squad_have_vehicle()){
+				WEAPON::GIVE_WEAPON_TO_PED(handle, rage::joaat("WEAPON_MICROSMG"), 999, false, false);
+			}
+
 			WEAPON::GIVE_WEAPON_TO_PED(handle, rage::joaat(s.m_weapon_model), 999, false, true);
 			PED::SET_PED_ACCURACY(handle, s.m_ped_accuracy);
 			PED::SET_PED_COMBAT_ABILITY(handle, (int)s.m_combat_ability_level);
@@ -86,6 +90,7 @@ namespace big
 
 		return std::pair<Vehicle, CVehicle*>(handle, ptr);
 	}
+
 
 	bool squad_spawner::find_suitable_spawn_pos(squad& s)
 	{
@@ -146,8 +151,8 @@ namespace big
 			    std::string(std::to_string(s.m_squad_size) + std::string("_").append(s.m_ped_model).append("_").append(std::to_string(s.m_internal_id)))
 			        .data());
 
-		Hash veh_model_hash = rage::joaat(s.m_vehicle_model);
-		Ped target_ped      = g_pointers->m_gta.m_ptr_to_handle(s.target->get_ped());
+		Hash veh_model_hash  = rage::joaat(s.m_vehicle_model);
+		s.current_target_ped = g_pointers->m_gta.m_ptr_to_handle(s.target->get_ped());
 		float heading;
 
 		//Check if squad size is suitable in case a vehicle is defined
@@ -163,11 +168,11 @@ namespace big
 		//Decide spawn location
 		if (!override_spawn_pos)
 		{
-			s.m_spawn_pos = ENTITY::GET_ENTITY_COORDS(target_ped, true);
+			s.m_spawn_pos = ENTITY::GET_ENTITY_COORDS(s.current_target_ped, true);
 
 			if (s.m_spawn_distance_mode == eSquadSpawnDistance::ON_TARGET)
 			{
-				s.m_spawn_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(target_ped, 0.0, -7.f, 0.0);
+				s.m_spawn_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(s.current_target_ped, 0.0, -7.f, 0.0);
 			}
 			else
 			{
@@ -216,28 +221,29 @@ namespace big
 					{
 						if (VEHICLE::IS_THIS_MODEL_A_CAR(veh_model_hash))
 						{
-							TASK::TASK_VEHICLE_MISSION_PED_TARGET(0, s.m_veh_handle, target_ped, s.m_stay_in_veh ? 6 : 4, 100.f, 786468, 5.f, 5.f, true);
+							TASK::TASK_VEHICLE_MISSION_PED_TARGET(0, s.m_veh_handle, s.current_target_ped, s.m_stay_in_veh ? 6 : 4, 100.f, 786468, 12.f, 5.f, true);
 							if (!s.m_stay_in_veh)
-								TASK::TASK_LEAVE_ANY_VEHICLE(0, 0, 0);
+								TASK::TASK_LEAVE_ANY_VEHICLE(0, 0, 16);
 						}
 						else if (VEHICLE::IS_THIS_MODEL_A_HELI(veh_model_hash))
 						{
-							TASK::TASK_HELI_MISSION(0, s.m_veh_handle, 0, target_ped, 0, 0, 0, 6, 200.f, 30.f, -1, 50.f, 20.f, -1, 128 | 4096);
+							TASK::TASK_HELI_MISSION(0, s.m_veh_handle, 0, s.current_target_ped, 0, 0, 0, 6, 200.f, 30.f, -1, 50.f, 20.f, -1, 128 | 4096);
 							VEHICLE::SET_HELI_BLADES_FULL_SPEED(s.m_veh_handle);
 						}
 						else if (VEHICLE::IS_THIS_MODEL_A_PLANE(veh_model_hash))
 						{
-							TASK::TASK_PLANE_MISSION(0, s.m_veh_handle, 0, target_ped, 0, 0, 0, 6, 300, 35.f, -1, 100.f, 20.f, true);
+							TASK::TASK_PLANE_MISSION(0, s.m_veh_handle, 0, s.current_target_ped, 0, 0, 0, 6, 300, 35.f, -1, 100.f, 20.f, true);
 							VEHICLE::SET_VEHICLE_FORWARD_SPEED(s.m_veh_handle, 30.f);
 						}
 						else if (VEHICLE::IS_THIS_MODEL_A_BOAT(veh_model_hash))
 						{
-							TASK::TASK_BOAT_MISSION(0, s.m_veh_handle, 0, target_ped, 0, 0, 0, 6, 300, 786468, 10.f, 7);
+							TASK::TASK_BOAT_MISSION(0, s.m_veh_handle, 0, s.current_target_ped, 0, 0, 0, 6, 300, 786468, 10.f, 7);
 						}
 					}
 				}
 
-				TASK::TASK_COMBAT_PED(0, target_ped, 67108864, 16); //flag 67108864 should prevent peds from attaining other targets
+				TASK::TASK_COMBAT_PED(0, s.current_target_ped, 67108864, 16); //flag 67108864 should prevent peds from attaining other targets
+				TASK::SET_SEQUENCE_TO_REPEAT(seq, 1);
 				TASK::CLOSE_SEQUENCE_TASK(seq);
 				TASK::TASK_PERFORM_SEQUENCE(s.m_members[i].handle, seq);
 				TASK::CLEAR_SEQUENCE_TASK(&seq);
@@ -263,7 +269,6 @@ namespace big
 			}
 		}
 
-		
 
 		if (s.has_squad_spawned())
 		{
@@ -271,5 +276,22 @@ namespace big
 			return true;
 		}
 		return false;
+	}
+
+	void squad_spawner::tick()
+	{
+		for (auto& s : m_active_squads)
+		{
+			if (s.is_squad_alive())
+			{
+				
+			}
+			else
+			{
+				std::erase_if(g_squad_spawner_service.m_active_squads, [s](squad s_) {
+					return s.get_id() == s_.get_id();
+				});
+			}
+		}
 	}
 }

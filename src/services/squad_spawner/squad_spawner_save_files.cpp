@@ -137,7 +137,8 @@ namespace big
 		return false;
 	}
 
-	bool squad_spawner::delete_squad(squad s){
+	bool squad_spawner::delete_squad(squad s)
+	{
 		std::string savename = s.m_name;
 		savename.append(".json");
 		std::filesystem::path path = get_file_path() / savename;
@@ -161,5 +162,6 @@ namespace big
 		m_templates.push_back(squad("Heavy attack choppers", "s_m_y_swat_01", "WEAPON_MG", "valkyrie", 4, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::PROFESSIONAL, false, false, "Very deadly attack chopper eqquiped with a cannon"));
 		m_templates.push_back(squad("Fighter jet", "s_m_m_pilot_02", "WEAPON_UNARMED", "lazer", 1, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::FAR_AWAY, eCombatAbilityLevel::PROFESSIONAL, false, false, "Tedious yet precise form of attack with a Fighter jet"));
 		m_templates.push_back(squad("Mobile squad", "s_m_m_highsec_01", "WEAPON_MICROSMG", "komoda", 4, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::FAR_AWAY, eCombatAbilityLevel::PROFESSIONAL, true, true, "This squad makes use of 'Vehicle catchup'"));
+		m_templates.push_back(squad("Altruists", "a_m_m_acult_01", "WEAPON_KNIFE", "", 8, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel::PROFESSIONAL, false, false, "Cannibals fromt the alrtuist cult"));
 	}
 }
