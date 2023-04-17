@@ -14,7 +14,7 @@ namespace big
 		// ordered alphabetically to more easily see if a certain hotkey is present
 		register_hotkey("beastjump", g.settings.hotkeys.beastjump, RAGE_JOAAT("beastjump"));
 		register_hotkey("bringpv", g.settings.hotkeys.bringvehicle, RAGE_JOAAT("bringpv"));
-		register_hotkey("quicksearch", g.settings.hotkeys.cmd_excecutor, RAGE_JOAAT("cmdexecutor"));
+		register_hotkey("cmdexecutor", g.settings.hotkeys.cmd_excecutor, RAGE_JOAAT("cmdexecutor"));
 		register_hotkey("fastrun", g.settings.hotkeys.superrun, RAGE_JOAAT("fastrun"));
 		register_hotkey("fastquit", g.settings.hotkeys.fast_quit, RAGE_JOAAT("fastquit"));
 		register_hotkey("fillammo", g.settings.hotkeys.fill_ammo, RAGE_JOAAT("fillammo"));
