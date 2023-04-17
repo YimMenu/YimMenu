@@ -66,19 +66,6 @@ namespace big
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.5f, 0.3f, 1.0f));
 			ImGui::Text("Warning: Victim and selected player are not the same");
 			ImGui::PopStyleColor();
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.5f, 0.0f, 1.0f));
-			if (ImGui::Button("Victim = selected"))
-			{
-				victim = g_player_service->get_selected();
-			}
-			ImGui::PopStyleColor();
-			ImGui::SameLine();
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.5f, 1.0f));
-			if (ImGui::Button("Selected = victim"))
-			{
-				g_player_service->set_selected(victim);
-			}
-			ImGui::PopStyleColor();
 		}
 
 		ImGui::Separator();
