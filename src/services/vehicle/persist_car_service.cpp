@@ -320,7 +320,7 @@ namespace big
 		const auto vehicle_rotation = ENTITY::GET_ENTITY_ROTATION(vehicle, 0);
 		bool has_collision          = ENTITY::GET_ENTITY_COLLISION_DISABLED(object);
 		bool is_visible             = ENTITY::IS_ENTITY_VISIBLE(object);
-		CObject* cobject            = (CObject*)g_pointers->m_handle_to_ptr(vehicle);
+		CObject* cobject            = (CObject*)g_pointers->m_gta.m_handle_to_ptr(vehicle);
 		bool is_invincible          = misc::has_bit_set(&(int&)cobject->m_damage_bits, 8);
 
 		Vector3 rotation;
@@ -335,18 +335,11 @@ namespace big
 
 	nlohmann::json persist_car_service::get_model_attachments(Vehicle vehicle, bool is_towed_vehicle)
 	{
-		const auto replay_interface = *g_pointers->m_replay_interface;
-
 		std::vector<nlohmann::json> attached_objects;
 
-		const auto object_interface = replay_interface->m_object_interface;
-		for (int i = 0; i < object_interface->m_max_objects; i++)
+		for (auto obj : pools::get_all_props())
 		{
-			const auto object_ptr = object_interface->get_object(i);
-			if (!object_ptr)
-				continue;
-
-			const auto object = g_pointers->m_ptr_to_handle(object_ptr);
+			const auto object = g_pointers->m_gta.m_ptr_to_handle(obj);
 			if (!object)
 				break;
 
@@ -354,7 +347,7 @@ namespace big
 				continue;
 
 			// Don't save tow hook.
-			if (is_towed_vehicle && ENTITY::GET_ENTITY_MODEL(object) == 0xBC344305)
+			if (is_towed_vehicle && ENTITY::GET_ENTITY_MODEL(object) == RAGE_JOAAT("prop_v_hook_s"))
 				continue;
 
 			attached_objects.push_back(get_model_attachment(vehicle, object));
@@ -365,22 +358,14 @@ namespace big
 
 	nlohmann::json persist_car_service::get_vehicle_attachents(Vehicle vehicle)
 	{
-		const auto replay_interface = *g_pointers->m_replay_interface;
-
-		const auto vehicle_interface = replay_interface->m_vehicle_interface;
-
 		std::vector<nlohmann::json> attached_vehicles;
 
 		Vehicle trailer;
 		VEHICLE::GET_VEHICLE_TRAILER_VEHICLE(vehicle, &trailer);
 
-		for (int i = 0; i < vehicle_interface->m_max_vehicles; i++)
+		for (auto veh : pools::get_all_vehicles())
 		{
-			const auto vehicle_ptr = vehicle_interface->get_vehicle(i);
-			if (!vehicle_ptr)
-				continue;
-
-			const auto object = g_pointers->m_ptr_to_handle(vehicle_ptr);
+			const auto object = g_pointers->m_gta.m_ptr_to_handle(veh);
 			if (!object)
 				break;
 
@@ -445,7 +430,7 @@ namespace big
 		vehicle_json[pearlescent_color_key] = pearlescent_color;
 		bool has_collision                  = ENTITY::GET_ENTITY_COLLISION_DISABLED(vehicle);
 		bool is_visible                     = ENTITY::IS_ENTITY_VISIBLE(vehicle);
-		CVehicle* cvehicle                  = (CVehicle*)g_pointers->m_handle_to_ptr(vehicle);
+		CVehicle* cvehicle                  = (CVehicle*)g_pointers->m_gta.m_handle_to_ptr(vehicle);
 		bool is_invincible                  = misc::has_bit_set(&(int&)cvehicle->m_damage_bits, 8);
 		vehicle_json[has_collision_key]     = !has_collision;
 		vehicle_json[is_visible_key]        = is_visible;

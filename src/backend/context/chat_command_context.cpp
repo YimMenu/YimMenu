@@ -31,7 +31,7 @@ namespace big
 			msg[1] = ' ';
 			strncpy(msg + 2, output.c_str(), sizeof(msg) - 2);
 
-			if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_send_chat_ptr,
+			if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
 			        g_player_service->get_self()->get_net_data(),
 			        msg,
 			        false))

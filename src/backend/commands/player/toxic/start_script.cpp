@@ -30,14 +30,14 @@ namespace big
 			args[2 + 19] = arg19;
 			args[24] = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[player->id()].ScriptEventReplayProtectionCounter;
 
-			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << player->id());
+			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id());
 
 			for (int i = 0; i < 2; i++)
 			{
 				const size_t arg_count_2    = 25;
 				int64_t args_2[arg_count_2] = {(int64_t)eRemoteEvent::StartScriptProceed, (int64_t)self::id};
 				args_2[2 + 17]              = 1337;
-				g_pointers->m_trigger_script_event(1, args_2, arg_count_2, 1 << player->id());
+				g_pointers->m_gta.m_trigger_script_event(1, args_2, arg_count_2, 1 << player->id());
 
 				script::get_current()->yield(20ms);
 			}

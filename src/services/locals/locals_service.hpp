@@ -65,7 +65,7 @@ namespace big
 			{
 				script_local actual_local = script_local(m_script_thread, m_base_address);
 
-				for (auto offset : m_offsets)
+				for (auto& offset : m_offsets)
 				{
 					if (offset.m_size > 0)
 						actual_local = actual_local.at(offset.m_offset, offset.m_size);

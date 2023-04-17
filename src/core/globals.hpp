@@ -1,6 +1,7 @@
 #pragma once
 #include "backend/reactions/interloper_reaction.hpp"
 #include "backend/reactions/reaction.hpp"
+#include "core/data/hud_colors.hpp"
 #include "core/data/ptfx_effects.hpp"
 #include "enums.hpp"
 #include "file_manager.hpp"
@@ -21,6 +22,16 @@ namespace rage
 
 namespace big
 {
+	struct color
+	{
+		int r;
+		int g;
+		int b;
+		int a;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(color, r, g, b, a)
+	};
+
 	class menu_settings
 	{
 	public:
@@ -189,11 +200,9 @@ namespace big
 			reaction report{"Report", "Blocked Report from %s", "%s tried to report me!"};
 
 			interloper_reaction breakup_others{"Breakup Kicks On Other Players", "%s is trying to breakup kick %s!", "%s is trying to breakup kick %s!", true, true}; // blockable only when host but we have no way to specify that atm
-			reaction lost_connection_kick{"Lost Connection Kick", "Blocked Lost Connection Kick from %s", "%s tried to kick me out!"};
 			reaction gamer_instruction_kick{"Gamer Instruction Kick", "Blocked Gamer Instruction Kick from %s", "%s tried to kick me out!"};
-			interloper_reaction lost_connection_kick_others{"Lost Connection Kick On Other Players", "%s is trying to lost connection kick %s!", "%s is trying to lost connection kick %s!", true, false};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, ceo_kick, clear_wanted_level, crash, end_session_kick, fake_deposit, force_mission, force_teleport, gta_banner, kick_from_interior, mc_teleport, network_bail, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, trigger_business_raid, start_activity, start_script, null_function_kick, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, request_control_event, report, breakup_others, gamer_instruction_kick, lost_connection_kick, lost_connection_kick_others)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, ceo_kick, clear_wanted_level, crash, end_session_kick, fake_deposit, force_mission, force_teleport, gta_banner, kick_from_interior, mc_teleport, network_bail, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, trigger_business_raid, start_activity, start_script, null_function_kick, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, request_control_event, report, breakup_others, gamer_instruction_kick)
 		} reactions{};
 
 		struct player
@@ -286,15 +295,14 @@ namespace big
 			bool healthregen        = false;
 			float healthregenrate   = 1.0f;
 			bool superman           = false;
+			bool custom_weapon_stop = true;
 			struct hud
 			{
-				bool hudcolor = false;
-				bool shcolor  = false;
-				bool mtcolor  = false;
-				bool mhcolor  = false;
-				int hcolor    = 0;
-				int tcolor    = 0;
-				int index, r, g, b, a;
+				bool color_override                                      = false;
+				bool color_override_initialized                          = false;
+				std::array<color, hud_colors.size()> hud_color_overrides = {};
+				std::array<color, hud_colors.size()> hud_color_defaults  = {}; // don't save
+
 				bool hide_radar                            = false;
 				bool hide_ammo                             = false;
 				int selected_hud_component                 = 1;
@@ -302,12 +310,12 @@ namespace big
 				bool force_show_hud_element                = false;
 				bool force_show_hud                        = false;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hud, hudcolor, shcolor, mtcolor, mhcolor, hcolor, tcolor, index, r, g, b, a, hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element, force_show_hud)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hud, color_override, color_override_initialized, hud_color_overrides, hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element, force_show_hud)
 			} hud{};
 			// do not save below entries
 			bool dance_mode = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, custom_weapon_stop)
 		} self{};
 
 		struct session
@@ -558,10 +566,11 @@ namespace big
 				float x = .9f;
 				float y = .72f;
 
-				bool enabled   = false;
-				bool left_side = false;
+				bool enabled           = false;
+				bool left_side         = false;
+				bool show_current_gear = true;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(speedo_meter, x, y, enabled, left_side)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(speedo_meter, x, y, enabled, left_side, show_current_gear)
 			} speedo_meter{};
 
 			struct fly

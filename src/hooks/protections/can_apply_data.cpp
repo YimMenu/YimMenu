@@ -428,7 +428,7 @@ namespace big
 		{
 			if (i == (int)eNetObjType::NET_OBJ_TYPE_TRAILER)
 				continue;
-			rage::netSyncTree* tree = g_pointers->m_get_sync_tree_for_type(*g_pointers->m_network_object_mgr, i);
+			rage::netSyncTree* tree = g_pointers->m_gta.m_get_sync_tree_for_type(*g_pointers->m_gta.m_network_object_mgr, i);
 			if (tree->m_child_node_count > trees[i].second.size())
 			{
 				LOG(FATAL) << "Cache nodes failed " << i << tree->m_child_node_count << " " << trees[i].second.size();
@@ -502,7 +502,7 @@ namespace big
 			if (object->m_net_object && object->m_net_object->m_object_id == attached_to_net_id)
 				return true;
 
-			object = g_pointers->m_get_entity_attached_to(object);
+			object = g_pointers->m_gta.m_get_entity_attached_to(object);
 			i++;
 		}
 

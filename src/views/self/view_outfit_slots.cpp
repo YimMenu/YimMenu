@@ -7,7 +7,7 @@ namespace big
 {
 	void view::outfit_slots()
 	{
-		if (*g_pointers->m_script_globals)
+		if (*g_pointers->m_gta.m_script_globals)
 		{
 			static int slot = 0;
 			ImGui::SetNextItemWidth(160);

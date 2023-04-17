@@ -89,7 +89,7 @@ namespace big
 			return get_net_data()->m_external_ip;
 
 		if (auto session_player = get_session_player())
-			if (auto peer = g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+			if (auto peer = g_pointers->m_gta.m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 			        (int)get_session_player()->m_player_data.m_peer_id_2))
 				return netAddress{((netConnectionPeer*)peer)->m_external_ip};
 
@@ -102,7 +102,7 @@ namespace big
 			return get_net_data()->m_external_port;
 
 		if (auto session_player = get_session_player())
-			if (auto peer = g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+			if (auto peer = g_pointers->m_gta.m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 			        (int)get_session_player()->m_player_data.m_peer_id_2))
 				return ((netConnectionPeer*)peer)->m_external_port;
 

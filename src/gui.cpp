@@ -4,7 +4,6 @@
 #include "natives.hpp"
 #include "renderer.hpp"
 #include "script.hpp"
-#include "util/is_key_pressed.hpp"
 #include "views/view.hpp"
 
 #include <imgui.h>
@@ -27,6 +26,12 @@ namespace big
 
 		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			wndproc(hwnd, msg, wparam, lparam);
+		});
+		g_renderer->add_wndproc_callback([](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+			if (g.cmd_executor.enabled && msg == WM_KEYUP && wparam == VK_ESCAPE)
+			{
+				g.cmd_executor.enabled = false;
+			}
 		});
 
 		g_renderer->add_dx_callback(view::vehicle_control, 3);
@@ -172,21 +177,6 @@ namespace big
 			PAD::DISABLE_CONTROL_ACTION(2, 257, true);
 			PAD::DISABLE_CONTROL_ACTION(2, 262, true);
 			PAD::DISABLE_CONTROL_ACTION(2, 331, true);
-		}
-
-		//wndproc will not work here. the timing here is very difficult. mayby can we hook the creation of the pause menu?
-		//this should be improved..
-		if (is_key_pressed(VK_ESCAPE) && g.cmd_executor.enabled)
-		{
-			g_fiber_pool->queue_job([] {
-				g.cmd_executor.enabled = false;
-				//50 should run stable, IMPROVE THIS!!!
-				for (uint8_t i = 0; i <= 50; i++)
-				{
-					HUD::SET_PAUSE_MENU_ACTIVE(false);
-					script::get_current()->yield();
-				}
-			});
 		}
 	}
 

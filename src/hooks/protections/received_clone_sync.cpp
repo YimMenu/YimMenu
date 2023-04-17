@@ -11,7 +11,7 @@ namespace big
 			return eAckCode::ACKCODE_FAIL;
 		}
 
-		if (auto net_obj = g_pointers->m_get_net_object(mgr, object_id, true); net_obj && net_obj->m_object_type != (int16_t)object_type)
+		if (auto net_obj = g_pointers->m_gta.m_get_net_object(mgr, object_id, true); net_obj && net_obj->m_object_type != (int16_t)object_type)
 		{
 			notify::crash_blocked(src, "incorrect object type");
 			return eAckCode::ACKCODE_FAIL;

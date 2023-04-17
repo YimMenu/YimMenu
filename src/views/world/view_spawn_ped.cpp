@@ -203,7 +203,7 @@ namespace big
 		static Player selected_ped_for_player_id = -1;
 		auto& player_arr                         = g_player_service->players();
 
-		if (!*g_pointers->m_is_session_started)
+		if (!*g_pointers->m_gta.m_is_session_started)
 		{
 			selected_ped_player_id = -1;
 
@@ -301,7 +301,7 @@ namespace big
 							ImGui::SetItemDefaultFocus();
 						}
 
-						if (*g_pointers->m_is_session_started)
+						if (*g_pointers->m_gta.m_is_session_started)
 						{
 							for (auto& item : player_arr)
 							{
@@ -558,7 +558,7 @@ namespace big
 					ImGui::SetItemDefaultFocus();
 				}
 
-				if (*g_pointers->m_is_session_started)
+				if (*g_pointers->m_gta.m_is_session_started)
 				{
 					for (auto& [_, plyr] : player_arr)
 					{

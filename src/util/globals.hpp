@@ -13,7 +13,7 @@ namespace big::globals
 		       self::id,
 		       *scr_globals::gpbd_fm_3.at(target, scr_globals::size::gpbd_fm_3).at(510).as<int*>()};
 
-		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
+		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << target);
 	}
 
 	inline void give_remote_otr(Player target)
@@ -27,7 +27,7 @@ namespace big::globals
 		       false,
 		       *scr_globals::gpbd_fm_3.at(target, scr_globals::size::gpbd_fm_3).at(510).as<int64_t*>()};
 
-		g_pointers->m_trigger_script_event(1, args, arg_count, 1 << target);
+		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << target);
 	}
 
 	inline Interior get_interior_from_player(Player player)

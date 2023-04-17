@@ -33,7 +33,7 @@ namespace big
 				static int base_address          = 0;
 				static bool freeze               = false;
 				static char name[32]             = "";
-				static int(*offsets)[2]          = nullptr;
+				static int offsets[10][2]        = {};
 				static int offset_count          = 0;
 				static int previous_offset_count = 0;
 
@@ -46,21 +46,7 @@ namespace big
 				ImGui::Text("DEBUG_GLOBAL_OFFSET_COUNT"_T.data());
 				ImGui::InputInt("##modal_offset_count", &offset_count);
 
-				if (offset_count < 0)
-					offset_count = 0;
-				else if (offset_count > 10)
-					offset_count = 10;
-
-				if (offset_count != previous_offset_count)
-				{
-					int(*new_offsets)[2] = new int[offset_count][2]{0};
-					memcpy(new_offsets, offsets, sizeof(int) * std::min(offset_count, previous_offset_count) * 2);
-
-					delete[] offsets;
-					offsets = new_offsets;
-
-					previous_offset_count = offset_count;
-				}
+				offset_count = std::clamp(offset_count, 0, 10);
 
 				ImGui::PushItemWidth(320.f);
 				for (int i = 0; i < offset_count; i++)
@@ -83,9 +69,7 @@ namespace big
 				if (components::button("CANCEL"_T))
 				{
 					strcpy(name, "");
-					freeze = false;
-					delete[] offsets;
-					offsets               = nullptr;
+					freeze                = false;
 					offset_count          = 0;
 					previous_offset_count = 0;
 
@@ -100,9 +84,7 @@ namespace big
 					g_globals_service->m_globals.push_back(new_global);
 
 					strcpy(name, "");
-					freeze = false;
-					delete[] offsets;
-					offsets               = nullptr;
+					freeze                = false;
 					offset_count          = 0;
 					previous_offset_count = 0;
 

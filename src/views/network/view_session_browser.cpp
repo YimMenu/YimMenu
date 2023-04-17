@@ -23,7 +23,7 @@ namespace big
 
 		ImGui::SetNextItemWidth(300.f);
 
-		if (ImGui::ListBoxHeader("###sessions", {300, static_cast<float>(*g_pointers->m_resolution_y - 400 - 38 * 4)}))
+		if (ImGui::ListBoxHeader("###sessions", {300, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 400 - 38 * 4)}))
 		{
 			if (g_matchmaking_service->get_num_found_sessions())
 			{
@@ -37,7 +37,7 @@ namespace big
 					if (components::selectable(std::to_string(session.info.m_session_token), i == selected_session_idx))
 					{
 						selected_session_idx = i;
-						g_pointers->m_encode_session_info(&session.info, session_info, 0x7D, nullptr);
+						g_pointers->m_gta.m_encode_session_info(&session.info, session_info, 0x7D, nullptr);
 					}
 
 					if (ImGui::IsItemHovered())
@@ -62,7 +62,7 @@ namespace big
 		if (selected_session_idx != -1)
 		{
 			ImGui::SameLine();
-			if (ImGui::BeginChild("###selected_session", {300, static_cast<float>(*g_pointers->m_resolution_y - 388 - 38 * 4)}, false, ImGuiWindowFlags_NoBackground))
+			if (ImGui::BeginChild("###selected_session", {300, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 388 - 38 * 4)}, false, ImGuiWindowFlags_NoBackground))
 			{
 				auto& session = g_matchmaking_service->get_found_sessions()[selected_session_idx];
 

@@ -89,7 +89,7 @@ jobs:
           name: Nightly [${{ needs.build_nightly.outputs.short_sha }}]
           tag_name: nightly
           body: |
-            **This release has been build by Github Actions**
+            **This release has been built by Github Actions**
             [Link to build](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
             Build SHA256:
