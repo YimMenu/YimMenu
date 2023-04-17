@@ -17,13 +17,10 @@ namespace big::mobile
 
 	namespace util
 	{
-		int get_current_personal_vehicle(); // forward declare
+		int get_current_personal_vehicle();// forward declare
 		inline void despawn_current_personal_vehicle()
 		{
-			misc::clear_bits(
-				scr_globals::vehicle_global.at(get_current_personal_vehicle(), 142).at(103).as<int*>(),
-				eVehicleFlags::TRIGGER_SPAWN_TOGGLE
-			);
+			misc::clear_bits(scr_globals::vehicle_global.at(get_current_personal_vehicle(), 142).at(103).as<int*>(), eVehicleFlags::TRIGGER_SPAWN_TOGGLE);
 		}
 
 		inline int get_current_personal_vehicle()
@@ -37,6 +34,11 @@ namespace big::mobile
 		inline void request_ammo_drop()
 		{
 			*script_global(scr_globals::mechanic_global).at(886).as<int*>() = 1;
+		}
+
+		inline void request_boat_pickup()
+		{
+			*script_global(scr_globals::mechanic_global).at(887).as<int*>() = 1;
 		}
 
 		inline void request_helicopter_pickup()
@@ -53,30 +55,23 @@ namespace big::mobile
 		{
 			*script_global(scr_globals::mechanic_global).at(4485).as<int*>() = 1;
 		}
+
+
 	}
 
 	namespace mors_mutual
 	{
 		inline bool fix_index(int veh_idx, bool spawn_veh = false)
 		{
-			bool can_be_fixed = misc::has_bits_set(
-				scr_globals::vehicle_global.at(veh_idx, 142).at(103).as<int*>(),
-				eVehicleFlags::DESTROYED | eVehicleFlags::HAS_INSURANCE
-			);
+			bool can_be_fixed = misc::has_bits_set(scr_globals::vehicle_global.at(veh_idx, 142).at(103).as<int*>(), eVehicleFlags::DESTROYED | eVehicleFlags::HAS_INSURANCE);
 
 			if (can_be_fixed)
 			{
-				misc::clear_bits(
-					scr_globals::vehicle_global.at(veh_idx, 142).at(103).as<int*>(),
-					eVehicleFlags::DESTROYED | eVehicleFlags::IMPOUNDED | eVehicleFlags::UNK2
-				);
+				misc::clear_bits(scr_globals::vehicle_global.at(veh_idx, 142).at(103).as<int*>(), eVehicleFlags::DESTROYED | eVehicleFlags::IMPOUNDED | eVehicleFlags::UNK2);
 
 				if (spawn_veh)
 				{
-					misc::set_bits(
-						scr_globals::vehicle_global.at(veh_idx, 142).at(103).as<int*>(),
-						eVehicleFlags::TRIGGER_SPAWN_TOGGLE | eVehicleFlags::SPAWN_AT_MORS_MUTUAL
-					);
+					misc::set_bits(scr_globals::vehicle_global.at(veh_idx, 142).at(103).as<int*>(), eVehicleFlags::TRIGGER_SPAWN_TOGGLE | eVehicleFlags::SPAWN_AT_MORS_MUTUAL);
 				}
 			}
 			return can_be_fixed;
@@ -101,6 +96,11 @@ namespace big::mobile
 		{
 			*script_global(2672505).at(3689).as<int*>() = 1;
 		}
+
+		inline void request_ballistic_armor()//i think this is a ceo ability atleast?
+		{
+			*script_global(scr_globals::mechanic_global).at(896).as<int*>() = 1;
+		}
 	}
 
 	namespace mechanic
@@ -124,16 +124,20 @@ namespace big::mobile
 
 			script::get_current()->yield(100ms);
 
-			*scr_globals::mechanic_global.at(936).as<int*>() = 1; // disable vehicle node distance check
-			*scr_globals::mechanic_global.at(923).as<int*>() = 1; // tell freemode to spawn our vehicle
-			*scr_globals::mechanic_global.at(982).as<int*>() = 0; // required
+			// only do this when spawn inside is enabled otherwise the vehicle will spawn relatively far away from players
+			if (g.clone_pv.spawn_inside)
+			{
+				*scr_globals::mechanic_global.at(936).as<int*>() = 1;// disable vehicle node distance check
+			}
+			*scr_globals::mechanic_global.at(923).as<int*>() = 1;// tell freemode to spawn our vehicle
+			*scr_globals::mechanic_global.at(982).as<int*>() = 0;// required
 			*scr_globals::mechanic_global.at(979).as<int*>() = veh_idx;
 
 			script::get_current()->yield(100ms);
 
 			GtaThread* freemode_thread = gta_util::find_script_thread(RAGE_JOAAT("freemode"));
 			if (freemode_thread)
-				*script_local(freemode_thread, 18630).at(176).as<int*>() = 0; // spawn vehicle instantly
+				*script_local(freemode_thread, 18630).at(176).as<int*>() = 0;// spawn vehicle instantly
 
 			// blocking call till vehicle is delivered
 			notify::busy_spinner("Delivering vehicle...", scr_globals::mechanic_global.at(979).as<int*>(), -1);

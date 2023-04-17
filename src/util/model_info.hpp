@@ -1,6 +1,7 @@
 #pragma once
 #include "gta/joaat.hpp"
 #include "pointers.hpp"
+#include "vehicle/CVehicleModelInfo.hpp"
 
 namespace big
 {
@@ -33,7 +34,7 @@ namespace big
 		template<typename T = CBaseModelInfo*>
 		static T get_model(const rage::joaat_t hash)
 		{
-			const auto model_table = g_pointers->m_model_table;
+			const auto model_table = g_pointers->m_gta.m_model_table;
 			for (auto i = model_table->m_lookup_table[hash % model_table->m_lookup_key]; i; i = i->m_next)
 			{
 				if (i->m_hash == hash)
@@ -54,11 +55,20 @@ namespace big
 			return nullptr;
 		}
 
-		static bool is_model_of_type(const rage::joaat_t hash, const eModelType type)
+		template<typename T, typename... Args>
+		static bool is_model_of_type(const rage::joaat_t hash, const T arg, const Args... args)
 		{
-			if (const auto model = model_info::get_model(hash); model && model->m_model_type == type)
-				return true;
-			return false;
+			bool of_type = false;
+			if (const auto model = model_info::get_model(hash))
+			{
+				of_type = model->m_model_type == arg;
+				(
+				    [&of_type, &model](eModelType type) {
+					    of_type |= model->m_model_type == type;
+				    }(args),
+				    ...);
+			}
+			return of_type;
 		}
 	};
 }

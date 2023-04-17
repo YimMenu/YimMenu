@@ -1,7 +1,6 @@
 #include "backend/command.hpp"
 #include "natives.hpp"
-#include "util/vehicle.hpp"
-#include "util/mobile.hpp"
+#include "util/teleport.hpp"
 
 namespace big
 {
@@ -13,7 +12,7 @@ namespace big
 		{
 			if (g_local_player && g_local_player->m_vehicle)
 			{
-				const Vehicle veh = g_pointers->m_ptr_to_handle(g_local_player->m_vehicle);
+				const Vehicle veh = g_pointers->m_gta.m_ptr_to_handle(g_local_player->m_vehicle);
 				teleport::into_vehicle(veh);
 			}
 		}

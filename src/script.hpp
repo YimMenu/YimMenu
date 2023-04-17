@@ -10,7 +10,7 @@ namespace big
 		bool m_toggleable;
 
 	public:
-		using func_t = void(*)();
+		using func_t = void (*)();
 
 	public:
 		explicit script(const func_t func, const std::string_view name, const bool toggleable = true, const std::optional<std::size_t> stack_size = std::nullopt);
@@ -27,7 +27,6 @@ namespace big
 		void tick();
 		void yield(std::optional<std::chrono::high_resolution_clock::duration> time = std::nullopt);
 		static script* get_current();
-		static void script_exception_handler(PEXCEPTION_POINTERS exp);
 
 	private:
 		void fiber_func();

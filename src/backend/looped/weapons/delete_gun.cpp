@@ -8,9 +8,7 @@ namespace big
 {
 	void looped::weapons_delete_gun()
 	{
-		bool bCageGun = g.weapons.custom_weapon == CustomWeapon::DELETE_GUN;
-
-		if (bCageGun)
+		if (g.weapons.custom_weapon == CustomWeapon::DELETE_GUN && (!g.self.custom_weapon_stop || WEAPON::IS_PED_ARMED(self::ped, 4 | 2)))
 		{
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
@@ -27,7 +25,7 @@ namespace big
 						else
 						{
 							Vector3 entLoc = ENTITY::GET_ENTITY_COORDS(entity, true);
-							double dist = math::distance_between_vectors(self::pos, entLoc);
+							double dist    = math::distance_between_vectors(self::pos, entLoc);
 
 							if (dist > 500)
 							{
@@ -39,11 +37,13 @@ namespace big
 								{
 									entity::delete_entity(entity);
 								}
-								else g_notification_service->push_error("Weapons", "Failed to take control of entity.");
+								else
+									g_notification_service->push_error("Weapons", "Failed to take control of entity.");
 							}
 						}
 					}
-					else g_notification_service->push_error("Weapons", "No entity found.");
+					else
+						g_notification_service->push_error("Weapons", "No entity found.");
 				}
 			}
 		}

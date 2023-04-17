@@ -2,13 +2,11 @@
 
 namespace big
 {
-	void view::view_player() {
+	void view::view_player()
+	{
+		ImGui::Text("VIEW_PLAYER_PLAYER_OPTIONS"_T.data(), g_player_service->get_selected()->get_name());
+		ImGui::Checkbox("SPECTATE"_T.data(), &g.player.spectating);
 
-		std::string title = fmt::format("Player Options: {}", g_player_service->get_selected()->get_name());
-		
-		ImGui::Text(title.c_str());
-		ImGui::Checkbox("Spectate", &g.player.spectating);
-		
 		if (g_player_service->get_selected()->is_valid())
 		{
 			view::player_info();
@@ -16,6 +14,7 @@ namespace big
 			view::player_kick();
 			view::player_toxic();
 			view::player_misc();
+			view::player_vehicle();
 		}
 	}
 }

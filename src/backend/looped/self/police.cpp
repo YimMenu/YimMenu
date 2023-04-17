@@ -1,11 +1,13 @@
 #include "backend/looped/looped.hpp"
 #include "pointers.hpp"
+#include "util/police.hpp"
 
 namespace big
 {
 	void looped::self_police()
 	{
-		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr) return;
+		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr)
+			return;
 
 		static bool bLast = false;
 
@@ -14,18 +16,18 @@ namespace big
 		if (b)
 		{
 			g_local_player->m_player_info->m_wanted_level = 0;
-			g_pointers->m_max_wanted_level->apply();
-			g_pointers->m_max_wanted_level_2->apply();
+			police::m_max_wanted_level->apply();
+			police::m_max_wanted_level_2->apply();
 			bLast = b;
 		}
 		else if (b != bLast)
 		{
-			g_pointers->m_max_wanted_level->restore();
-			g_pointers->m_max_wanted_level_2->restore();
+			police::m_max_wanted_level->restore();
+			police::m_max_wanted_level_2->restore();
 			bLast = b;
 		}
 
-		if(g.self.force_wanted_level && !b)
+		if (g.self.force_wanted_level && !b)
 			g_local_player->m_player_info->m_wanted_level = g.self.wanted_level;
 	}
 }

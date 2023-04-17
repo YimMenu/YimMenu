@@ -10,6 +10,7 @@ namespace big
 		{
 			g_renderer->on_present();
 		}
+
 		return g_hooking->m_swapchain_hook.get_original<decltype(&swapchain_present)>(swapchain_present_index)(this_, sync_interval, flags);
 	}
 }

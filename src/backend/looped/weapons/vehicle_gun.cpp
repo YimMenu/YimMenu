@@ -1,8 +1,9 @@
 #include "backend/looped/looped.hpp"
 #include "core/enums.hpp"
+#include "gta/enums.hpp"
+#include "gui.hpp"
 #include "util/math.hpp"
 #include "util/vehicle.hpp"
-#include "gui.hpp"
 
 namespace big
 {
@@ -16,10 +17,8 @@ namespace big
 
 		const auto elapsed_time_in_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_now - last_time).count();
 
-		if (is_vehicle_gun_selected &&
-			!g_gui->is_open() &&
-			elapsed_time_in_ms >= 100 &&
-			PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK))
+		if (is_vehicle_gun_selected && !g_gui->is_open() && elapsed_time_in_ms >= 100 && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK)
+		    && (!g.self.custom_weapon_stop || WEAPON::IS_PED_ARMED(self::ped, 4 | 2)))
 		{
 			Vector3 location = self::pos;
 
@@ -34,19 +33,10 @@ namespace big
 			location.x += static_cast<float>(dist * cos(pitch) * cos(yaw));
 			location.y += static_cast<float>(dist * sin(yaw) * cos(pitch));
 			location.z += static_cast<float>(dist * sin(pitch));
-			Vehicle veh = vehicle::spawn(
-				rage::joaat(g.weapons.vehicle_gun_model.data()),
-				location,
-				ENTITY::GET_ENTITY_HEADING(self::ped)
-			);
+			Vehicle veh = vehicle::spawn(rage::joaat(g.weapons.vehicle_gun_model.data()), location, ENTITY::GET_ENTITY_HEADING(self::ped));
 
 			dist = 150.f;
-			Vector3 velocity
-			{
-				static_cast<float>(dist * cos(pitch) * cos(yaw)),
-				static_cast<float>(dist * sin(yaw) * cos(pitch)),
-				static_cast<float>(dist * sin(pitch))
-			};
+			Vector3 velocity{static_cast<float>(dist * cos(pitch) * cos(yaw)), static_cast<float>(dist * sin(yaw) * cos(pitch)), static_cast<float>(dist * sin(pitch))};
 
 			ENTITY::SET_ENTITY_ROTATION(veh, rot.x, rot.y, rot.z, rotation_order, 1);
 			ENTITY::SET_ENTITY_VELOCITY(veh, velocity.x, velocity.y, velocity.z);
@@ -59,4 +49,5 @@ namespace big
 			last_time = time_now;
 		}
 	}
+
 }

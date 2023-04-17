@@ -1,36 +1,24 @@
 #include "backend/looped/looped.hpp"
+#include "backend/looped_command.hpp"
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
-#include "backend/looped_command.hpp"
 #include "util/math.hpp"
 
 namespace big
 {
-	static const ControllerInputs controls[] =
-	{
-		ControllerInputs::INPUT_LOOK_LR,
-		ControllerInputs::INPUT_LOOK_UD,
-		ControllerInputs::INPUT_LOOK_UP_ONLY,
-		ControllerInputs::INPUT_LOOK_DOWN_ONLY,
-		ControllerInputs::INPUT_LOOK_LEFT_ONLY,
-		ControllerInputs::INPUT_LOOK_RIGHT_ONLY,
-		ControllerInputs::INPUT_LOOK_LEFT,
-		ControllerInputs::INPUT_LOOK_RIGHT,
-		ControllerInputs::INPUT_LOOK_UP,
-		ControllerInputs::INPUT_LOOK_DOWN
-	};
+	static const ControllerInputs controls[] = {ControllerInputs::INPUT_LOOK_LR, ControllerInputs::INPUT_LOOK_UD, ControllerInputs::INPUT_LOOK_UP_ONLY, ControllerInputs::INPUT_LOOK_DOWN_ONLY, ControllerInputs::INPUT_LOOK_LEFT_ONLY, ControllerInputs::INPUT_LOOK_RIGHT_ONLY, ControllerInputs::INPUT_LOOK_LEFT, ControllerInputs::INPUT_LOOK_RIGHT, ControllerInputs::INPUT_LOOK_UP, ControllerInputs::INPUT_LOOK_DOWN};
 
 	class free_cam : looped_command
 	{
 		using looped_command::looped_command;
 
-	    float speed = 0.5f;
-	    float mult = 0.f;
+		float speed = 0.5f;
+		float mult  = 0.f;
 
-	    Cam camera = -1;
-	    Vector3 position;
-	    Vector3 rotation;
+		Cam camera = -1;
+		Vector3 position;
+		Vector3 rotation;
 
 		virtual void on_enable() override
 		{
@@ -54,7 +42,7 @@ namespace big
 			for (const auto& control : controls)
 				PAD::ENABLE_CONTROL_ACTION(0, static_cast<int>(control), true);
 
-			Vector3 vecChange = { 0.f, 0.f, 0.f };
+			Vector3 vecChange = {0.f, 0.f, 0.f};
 
 			// Left Shift
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
@@ -83,7 +71,7 @@ namespace big
 			Vector3 rot = CAM::GET_CAM_ROT(camera, 2);
 			//float pitch = math::deg_to_rad(rot.x); // vertical
 			//float roll = rot.y;
-			float yaw = math::deg_to_rad(rot.z); // horizontal
+			float yaw = math::deg_to_rad(rot.z);// horizontal
 
 			position.x += (vecChange.x * cos(yaw) - vecChange.y * sin(yaw)) * mult;
 			position.y += (vecChange.x * sin(yaw) + vecChange.y * cos(yaw)) * mult;

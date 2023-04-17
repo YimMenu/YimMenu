@@ -1,10 +1,10 @@
 #pragma once
+#include "rage/joaat.hpp"
+
 #include <cstddef>
 #include <cstdint>
 #include <string_view>
 #include <type_traits>
-
-#include "rage/joaat.hpp"
 
 namespace rage
 {
@@ -26,24 +26,6 @@ namespace rage
 		return hash;
 	}
 	static_assert(consteval_joaat("test") == 0x3f75ccc1);
-}
-
-inline consteval rage::joaat_t operator""_j(const char* s, std::size_t n)
-{
-	rage::joaat_t result = 0;
-
-	for (std::size_t i = 0; i < n; i++)
-	{            
-		result += rage::joaat_to_lower(s[i]);
-		result += (result << 10);
-		result ^= (result >> 6);
-	}
-	
-	result += (result << 3);
-	result ^= (result >> 11);
-	result += (result << 15);
-
-	return result;
 }
 
 #define RAGE_JOAAT_IMPL(str) (::rage::consteval_joaat(str))

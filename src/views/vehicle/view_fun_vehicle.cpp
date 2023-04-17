@@ -1,12 +1,12 @@
+#include "core/data/speed_units.hpp"
 #include "core/enums.hpp"
 #include "fiber_pool.hpp"
 #include "script.hpp"
-#include "views/view.hpp"
-#include "util/vehicle.hpp"
-#include "util/mobile.hpp"
-#include "core/data/speed_units.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "services/model_preview/model_preview_service.hpp"
+#include "util/mobile.hpp"
+#include "util/vehicle.hpp"
+#include "views/view.hpp"
 
 #include <imgui_internal.h>
 
@@ -14,7 +14,7 @@ namespace big
 {
 	void view::fun_vehicle()
 	{
-		components::sub_title("Seat Changer");
+		components::sub_title("SEAT_CHANGER"_T);
 		{
 			static std::map<int, bool> seats;
 			static bool ready = true;
@@ -29,7 +29,6 @@ namespace big
 				ready = false;
 
 				g_fiber_pool->queue_job([] {
-
 					std::map<int, bool> tmp_seats;
 
 					int num_of_seats = VEHICLE::GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(self::veh);
@@ -46,7 +45,7 @@ namespace big
 
 			if (seats.size() == 0)
 			{
-				ImGui::Text("Please enter a vehicle.");
+				ImGui::Text("PLEASE_ENTER_VEHICLE"_T.data());
 			}
 			else
 			{
@@ -59,14 +58,15 @@ namespace big
 						ImGui::BeginDisabled();
 					}
 
-					std::string name = "Driver";
+					std::string name = "DRIVER"_T.data();
 
 					if (idx >= 0)
 					{
-						name = "Seat " + std::to_string(idx + 1);
+						name = "FUN_VEHICLE_SEAT"_T.data() + std::to_string(idx + 1);
 					}
 
-					if ((idx + 1) % 4 != 0) {
+					if ((idx + 1) % 4 != 0)
+					{
 						ImGui::SameLine();
 					}
 
@@ -83,31 +83,30 @@ namespace big
 		ImGui::Separator();
 
 
-		components::sub_title("Auto Drive");
+		components::sub_title("AUTO_DRIVE"_T);
 		{
 			float auto_drive_speed_user_unit = vehicle::mps_to_speed(g.vehicle.auto_drive_speed, g.vehicle.speed_unit);
 			if (ImGui::SliderFloat(
-				fmt::format("Top Speed({})", speed_unit_strings[(int)g.vehicle.speed_unit]).c_str(),
-				&auto_drive_speed_user_unit,
-				vehicle::mps_to_speed(0.f, g.vehicle.speed_unit),
-				vehicle::mps_to_speed(150.f, g.vehicle.speed_unit),
-				"%.1f"
-			)) {
+			        fmt::vformat("FUN_VEHICLE_TOP_SPEED"_T, fmt::make_format_args(speed_unit_strings[(int)g.vehicle.speed_unit]))
+			            .c_str(),
+			        &auto_drive_speed_user_unit,
+			        vehicle::mps_to_speed(0.f, g.vehicle.speed_unit),
+			        vehicle::mps_to_speed(150.f, g.vehicle.speed_unit),
+			        "%.1f"))
+			{
 				g.vehicle.auto_drive_speed = vehicle::speed_to_mps(auto_drive_speed_user_unit, g.vehicle.speed_unit);
 			}
 
-			static constexpr char const* driving_style_names[] = { "Law-Abiding", "The Road Is Yours" };
-			if (ImGui::BeginCombo("Driving Style", driving_style_names[(int)g.vehicle.auto_drive_style]))
+			const char* driving_style_names[] = {"LAW_ABIDING"_T.data(), "ROAD_IS_YOURS"_T.data()};
+			if (ImGui::BeginCombo("DRIVING_STYLE"_T.data(), driving_style_names[(int)g.vehicle.auto_drive_style]))
 			{
 				for (int i = 0; i < 2; i++)
 				{
 					if (ImGui::Selectable(driving_style_names[i], g.vehicle.auto_drive_style == (AutoDriveStyle)i))
 					{
 						g.vehicle.auto_drive_style = (AutoDriveStyle)i;
-						g_notification_service->push_warning(
-							"Auto Drive",
-							fmt::format("Driving style set to {}.", driving_style_names[i])
-						);
+						g_notification_service->push_warning("AUTO_DRIVE"_T.data(),
+						    fmt::vformat("DRIVING_STYLE_SET_TO"_T.data(), fmt::make_format_args(driving_style_names[i])));
 					}
 
 					if (g.vehicle.auto_drive_style == (AutoDriveStyle)i)
@@ -119,39 +118,41 @@ namespace big
 				ImGui::EndCombo();
 			}
 
-			if (components::button("To Objective")) {
+			if (components::button("TO_OBJECTIVE"_T))
 				g.vehicle.auto_drive_destination = AutoDriveDestination::OBJECTITVE;
-			}
+
 			ImGui::SameLine();
-			if (components::button("To Waypoint")) {
+
+			if (components::button("TO_WAYPOINT"_T))
 				g.vehicle.auto_drive_destination = AutoDriveDestination::WAYPOINT;
-			}
+
 			ImGui::SameLine();
-			if (components::button("Wander")) {
+
+			if (components::button("WANDER"_T))
 				g.vehicle.auto_drive_destination = AutoDriveDestination::WANDER;
-			}
+
 			ImGui::SameLine();
-			if (components::button("Emergency Stop")) {
+
+			if (components::button("EMERGENCY_STOP"_T))
 				g.vehicle.auto_drive_destination = AutoDriveDestination::EMERGENCY_STOP;
-			}
 		}
 		ImGui::Separator();
 
 
-		components::sub_title("Rainbow Paint");
+		components::sub_title("RAINBOW_PAINT"_T);
 		{
-			ImGui::Checkbox("Primary", &g.vehicle.rainbow_paint.primary);
+			ImGui::Checkbox("PRIMARY"_T.data(), &g.vehicle.rainbow_paint.primary);
 			ImGui::SameLine();
-			ImGui::Checkbox("Secondary", &g.vehicle.rainbow_paint.secondary);
+			ImGui::Checkbox("SECONDARY"_T.data(), &g.vehicle.rainbow_paint.secondary);
 			ImGui::SameLine();
-			ImGui::Checkbox("Neon", &g.vehicle.rainbow_paint.neon);
+			ImGui::Checkbox("NEON"_T.data(), &g.vehicle.rainbow_paint.neon);
 			ImGui::SameLine();
-			ImGui::Checkbox("Smoke", &g.vehicle.rainbow_paint.smoke);
+			ImGui::Checkbox("SMOKE"_T.data(), &g.vehicle.rainbow_paint.smoke);
 
-			static constexpr char const* rgb_types[] = { "Off", "Fade", "Spasm" };
+			const char* rgb_types[] = {"OFF"_T.data(), "FADE"_T.data(), "SPASM"_T.data()};
 
 			ImGui::SetNextItemWidth(120);
-			if (ImGui::BeginCombo("RGB Type", rgb_types[(int)g.vehicle.rainbow_paint.type]))
+			if (ImGui::BeginCombo("RGB_TYPE"_T.data(), rgb_types[(int)g.vehicle.rainbow_paint.type]))
 			{
 				for (int i = 0; i < 3; i++)
 				{
@@ -174,13 +175,13 @@ namespace big
 			{
 				ImGui::SameLine();
 				ImGui::SetNextItemWidth(150);
-				ImGui::SliderInt("RGB Speed", &g.vehicle.rainbow_paint.speed, 1, 10);
+				ImGui::SliderInt("RGB_SPEED"_T.data(), &g.vehicle.rainbow_paint.speed, 1, 10);
 			}
 		}
 		ImGui::Separator();
 
-		static constexpr char const* boost_behaviors[] = { "Default", "Instant Refill", "Infinite" };
-		if (ImGui::BeginCombo("Boost Behavior", boost_behaviors[static_cast<int>(g.vehicle.boost_behavior)]))
+		const char* boost_behaviors[] = {"DEFAULT"_T.data(), "INSTANT_REFILL"_T.data(), "INFINITE"_T.data()};
+		if (ImGui::BeginCombo("BOOST_BEHAVIOR"_T.data(), boost_behaviors[static_cast<int>(g.vehicle.boost_behavior)]))
 		{
 			for (int i = 0; i < 3; i++)
 			{
@@ -203,30 +204,31 @@ namespace big
 		ImGui::Separator();
 
 
-		components::sub_title("Vehicle Fly");
+		components::sub_title("VEHICLE_FLY"_T);
 		{
 			ImGui::BeginGroup();
 
-			ImGui::Checkbox("Enabled", &g.vehicle.fly.enabled);
-			ImGui::Checkbox("Don't Stop", &g.vehicle.fly.dont_stop);
+			ImGui::Checkbox("ENABLED"_T.data(), &g.vehicle.fly.enabled);
+			ImGui::Checkbox("DONT_STOP"_T.data(), &g.vehicle.fly.dont_stop);
 
 			ImGui::EndGroup();
 			ImGui::SameLine();
 			ImGui::BeginGroup();
 
-			ImGui::Checkbox("Disable Collision", &g.vehicle.fly.no_collision);
-			ImGui::Checkbox("Stop On Exit", &g.vehicle.fly.stop_on_exit);
+			ImGui::Checkbox("DISABLE_COLLISION"_T.data(), &g.vehicle.fly.no_collision);
+			ImGui::Checkbox("STOP_ON_EXIT"_T.data(), &g.vehicle.fly.stop_on_exit);
 
 			ImGui::EndGroup();
 
 			float fly_speed_user_unit = vehicle::mps_to_speed(g.vehicle.fly.speed, g.vehicle.speed_unit);
 			if (ImGui::SliderFloat(
-				fmt::format("Speed({})", speed_unit_strings[(int)g.vehicle.speed_unit]).c_str(),
-				&fly_speed_user_unit,
-				vehicle::mps_to_speed(0.f, g.vehicle.speed_unit),
-				vehicle::mps_to_speed(150.f, g.vehicle.speed_unit),
-				"%.1f"
-			)) {
+			        fmt::vformat("FUN_VEHICLE_SPEED"_T.data(), fmt::make_format_args(speed_unit_strings[(int)g.vehicle.speed_unit]))
+			            .c_str(),
+			        &fly_speed_user_unit,
+			        vehicle::mps_to_speed(0.f, g.vehicle.speed_unit),
+			        vehicle::mps_to_speed(150.f, g.vehicle.speed_unit),
+			        "%.1f"))
+			{
 				g.vehicle.fly.speed = vehicle::speed_to_mps(fly_speed_user_unit, g.vehicle.speed_unit);
 			}
 		}

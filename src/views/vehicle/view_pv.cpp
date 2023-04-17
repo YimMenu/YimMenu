@@ -1,17 +1,18 @@
-#include "views/view.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
-#include "services/mobile/mobile_service.hpp"
 #include "services/gta_data/gta_data_service.hpp"
+#include "services/mobile/mobile_service.hpp"
 #include "services/model_preview/model_preview_service.hpp"
 #include "util/vehicle.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
-	void view::pv() {
-		ImGui::SetWindowSize({ 0.f, (float)*g_pointers->m_resolution_y }, ImGuiCond_Always);
+	void view::pv()
+	{
+		ImGui::SetWindowSize({0.f, (float)*g_pointers->m_gta.m_resolution_y}, ImGuiCond_Always);
 
-		if (ImGui::Checkbox("Preview", &g.clone_pv.preview_vehicle))
+		if (ImGui::Checkbox("PREVIEW"_T.data(), &g.clone_pv.preview_vehicle))
 		{
 			if (!g.clone_pv.preview_vehicle)
 			{
@@ -19,21 +20,21 @@ namespace big
 			}
 		}
 		ImGui::SameLine();
-		ImGui::Checkbox("Spawn In", &g.clone_pv.spawn_inside);
+		ImGui::Checkbox("SPAWN_IN"_T.data(), &g.clone_pv.spawn_inside);
 		ImGui::SameLine();
 
-		static char plate_buf[9] = { 0 };
-		int num_of_rows = 3;
+		static char plate_buf[9] = {0};
+		int num_of_rows          = 3;
 
-		ImGui::Checkbox("Spawn Clone", &g.clone_pv.spawn_clone);
+		ImGui::Checkbox("SPAWN_CLONE"_T.data(), &g.clone_pv.spawn_clone);
 		if (g.clone_pv.spawn_clone)
 		{
 			num_of_rows = 5;
 
-			ImGui::Checkbox("Spawn Maxed", &g.clone_pv.spawn_maxed);
+			ImGui::Checkbox("SPAWN_MAXED"_T.data(), &g.clone_pv.spawn_maxed);
 
 			ImGui::SameLine();
-			ImGui::Checkbox("Clone PV Plate", &g.clone_pv.clone_plate);
+			ImGui::Checkbox("CLONE_PV_PLATE"_T.data(), &g.clone_pv.clone_plate);
 			if (g.clone_pv.clone_plate)
 			{
 				num_of_rows = 4;
@@ -43,7 +44,7 @@ namespace big
 				ImGui::SetNextItemWidth(300.f);
 
 				strncpy(plate_buf, g.clone_pv.plate.c_str(), 9);
-				components::input_text_with_hint("Plate", "Plate Number", plate_buf, sizeof(plate_buf), ImGuiInputTextFlags_None, [] {
+				components::input_text_with_hint("PLATE"_T, "PLATE_NUMBER"_T, plate_buf, sizeof(plate_buf), ImGuiInputTextFlags_None, [] {
 					g.clone_pv.plate = plate_buf;
 				});
 			}
@@ -51,12 +52,13 @@ namespace big
 
 
 		static int selected_class = -1;
-		const auto& class_arr = g_gta_data_service->vehicle_classes();
+		const auto& class_arr     = g_gta_data_service->vehicle_classes();
 
 		ImGui::SetNextItemWidth(300.f);
-		if (ImGui::BeginCombo("Vehicle Class", selected_class == -1 ? "ALL" : class_arr[selected_class].c_str()))
+		if (ImGui::BeginCombo("VEHICLE_CLASS"_T.data(),
+		        selected_class == -1 ? "ALL"_T.data() : class_arr[selected_class].c_str()))
 		{
-			if (ImGui::Selectable("ALL", selected_class == -1))
+			if (ImGui::Selectable("ALL"_T.data(), selected_class == -1))
 			{
 				selected_class = -1;
 			}
@@ -81,14 +83,14 @@ namespace big
 		static char search[64];
 
 		ImGui::SetNextItemWidth(300.f);
-		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None);
+		components::input_text_with_hint("MODEL_NAME"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
 
 		g_mobile_service->refresh_personal_vehicles();
-		if (ImGui::ListBoxHeader("###personal_veh_list", { 300, static_cast<float>(*g_pointers->m_resolution_y - 188 - 38 * num_of_rows) }))
+		if (ImGui::ListBoxHeader("###personal_veh_list", {300, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 188 - 38 * num_of_rows)}))
 		{
 			if (g_mobile_service->personal_vehicles().empty())
 			{
-				ImGui::Text("No personal vehicles found, \nare you online?");
+				ImGui::Text("NO_PERSONAL_VEHICLES"_T.data());
 			}
 			else
 			{
@@ -97,32 +99,28 @@ namespace big
 
 				for (const auto& it : g_mobile_service->personal_vehicles())
 				{
-					const auto& label = it.first;
+					const auto& label        = it.first;
 					const auto& personal_veh = it.second;
-					const auto& item = g_gta_data_service->vehicle_by_hash(personal_veh->get_hash());
+					const auto& item         = g_gta_data_service->vehicle_by_hash(personal_veh->get_hash());
 
-					std::string vehicle_class = item.m_vehicle_class;
-					std::string display_name = label;
+					std::string vehicle_class        = item.m_vehicle_class;
+					std::string display_name         = label;
 					std::string display_manufacturer = item.m_display_manufacturer;
 					std::transform(display_name.begin(), display_name.end(), display_name.begin(), ::tolower);
 					std::transform(display_manufacturer.begin(), display_manufacturer.end(), display_manufacturer.begin(), ::tolower);
 
-					if ((
-						selected_class == -1 || class_arr[selected_class] == vehicle_class
-					) && (
-						display_name.find(lower_search) != std::string::npos ||
-						display_manufacturer.find(lower_search) != std::string::npos
-					)) {
-
+					if ((selected_class == -1 || class_arr[selected_class] == vehicle_class)
+					    && (display_name.find(lower_search) != std::string::npos || display_manufacturer.find(lower_search) != std::string::npos))
+					{
 						ImGui::PushID('v' << 24 & personal_veh->get_id());
 						components::selectable(label, false, [&personal_veh] {
 							if (g.clone_pv.spawn_clone)
 							{
 								Vector3 spawn_location = vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside);
-								float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
+								float spawn_heading    = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 								auto vehicle_idx = personal_veh->get_vehicle_idx();
-								auto owned_mods = vehicle::get_owned_mods_from_vehicle_idx(vehicle_idx);
+								auto owned_mods  = vehicle::get_owned_mods_from_vehicle_idx(vehicle_idx);
 
 								const char* spawn_plate_buf = plate_buf;
 								if (g.clone_pv.clone_plate)
@@ -134,7 +132,7 @@ namespace big
 
 								if (veh == 0)
 								{
-									g_notification_service->push_error("Vehicle", "Unable to spawn vehicle");
+									g_notification_service->push_error("VEHICLE"_T.data(), "UNABLE_TO_SPAWN_VEHICLE"_T.data());
 								}
 								else
 								{
@@ -169,9 +167,8 @@ namespace big
 						{
 							g_fiber_pool->queue_job([&personal_veh] {
 								g_model_preview_service->show_vehicle(
-									vehicle::get_owned_mods_from_vehicle_idx(personal_veh->get_vehicle_idx()),
-									g.clone_pv.spawn_maxed
-								);
+								    vehicle::get_owned_mods_from_vehicle_idx(personal_veh->get_vehicle_idx()),
+								    g.clone_pv.spawn_maxed);
 							});
 						}
 					}

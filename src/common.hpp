@@ -1,6 +1,8 @@
 #ifndef COMMON_INC
 #define COMMON_INC
 
+// clang-format off
+
 #include <sdkddkver.h>
 #include <winsock2.h>
 #include <windows.h>
@@ -33,6 +35,7 @@
 #include <functional>
 #include <utility>
 
+#include <set>
 #include <stack>
 #include <vector>
 
@@ -49,13 +52,16 @@
 #include <fmt/format.h>
 #include <nlohmann/json.hpp>
 
-#include "logger.hpp"
+#include "logger/logger.hpp"
 
 #include "core/globals.hpp"
 #include "gta/natives.hpp"
 #include "ped/CPed.hpp"
 
 #include "services/notifications/notification_service.hpp"
+#include "services/translation_service/translation_service.hpp"
+
+// clang-format on
 
 namespace big
 {
@@ -64,7 +70,7 @@ namespace big
 	inline HMODULE g_hmodule{};
 	inline HANDLE g_main_thread{};
 	inline DWORD g_main_thread_id{};
-	inline std::atomic_bool g_running{ false };
+	inline std::atomic_bool g_running{false};
 
 	inline CPed* g_local_player;
 }
@@ -80,7 +86,7 @@ namespace self
 template<size_t N>
 struct template_str
 {
-	constexpr template_str(const char(&str)[N])
+	constexpr template_str(const char (&str)[N])
 	{
 		std::copy_n(str, N, value);
 	}

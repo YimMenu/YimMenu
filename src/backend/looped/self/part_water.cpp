@@ -1,6 +1,6 @@
 #include "backend/looped/looped.hpp"
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -10,8 +10,10 @@ namespace big
 
 		virtual void on_tick() override
 		{
+			WATER::RESET_DEEP_OCEAN_SCALER();
+
 			Vector3 coords = self::pos;
-			float offset[] = { -4, 4 };
+			float offset[] = {-4, 4};
 
 			for (int i = 0; i < 5; i++)
 			{
@@ -23,7 +25,7 @@ namespace big
 				{
 					coords.y += offset[(i % 2 == 0)];
 				}
-				WATER::MODIFY_WATER(coords.x, coords.y, -500000.0f, 0.2f);
+				WATER::MODIFY_WATER(coords.x, coords.y, 0.0f, 300.0f);
 			}
 		}
 	};

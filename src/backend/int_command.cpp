@@ -3,10 +3,10 @@
 namespace big
 {
 	int_command::int_command(const std::string& name, const std::string& label, const std::string& description, int& value, int lower_bound, int upper_bound) :
-		command(name, label, description, 1),
-		m_value(value),
-		m_lower_bound(lower_bound),
-		m_upper_bound(upper_bound)
+	    command(name, label, description, 1),
+	    m_value(value),
+	    m_lower_bound(lower_bound),
+	    m_upper_bound(upper_bound)
 	{
 	}
 

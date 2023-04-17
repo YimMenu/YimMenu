@@ -1,12 +1,14 @@
-#include "hooking.hpp"
-#include "gta_util.hpp"
-#include "util/session.hpp"
-#include "gta/net_game_event.hpp"
 #include "backend/player_command.hpp"
+#include "gta/net_game_event.hpp"
+#include "gta/script_handler.hpp"
+#include "gta_util.hpp"
+#include "hooking.hpp"
+#include "util/session.hpp"
 
 #include <network/CNetGamePlayer.hpp>
 #include <network/Network.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
+#include <script/globals/GlobalPlayerBD.hpp>
 
 namespace big
 {
@@ -17,8 +19,7 @@ namespace big
 
 		if (should_notify)
 			g_notification_service->push_warning("Script Event Protection",
-				fmt::format("From: {}\nEvent Type: {}", player_name.data(), protection_type.data())
-			);
+			    fmt::format("From: {}\nEvent Type: {}", player_name.data(), protection_type.data()));
 	}
 
 	inline bool is_player_driver_of_local_vehicle(Player sender)
@@ -53,7 +54,7 @@ namespace big
 	{
 		const auto args = scripted_game_event->m_args;
 
-		const auto hash = static_cast<eRemoteEvent>(args[0]);
+		const auto hash        = static_cast<eRemoteEvent>(args[0]);
 		const auto player_name = player->get_name();
 
 		auto plyr = g_player_service->get_by_id(player->m_player_id);
@@ -67,8 +68,16 @@ namespace big
 				return true;
 			}
 			break;
+		case eRemoteEvent::CeoKick:
+			if (player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
+			{
+				g.reactions.ceo_kick.process(plyr);
+				return true;
+			}
+			break;
 		case eRemoteEvent::CeoMoney:
-			if (g.protections.script_events.ceo_money && player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
+			if (g.protections.script_events.ceo_money
+			    && player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
 			{
 				g.reactions.ceo_money.process(plyr);
 				return true;
@@ -81,16 +90,23 @@ namespace big
 				return true;
 			}
 			break;
-		case eRemoteEvent::Crash:
-			g.reactions.crash.process(plyr);
-			return true;
+		case eRemoteEvent::Crash: g.reactions.crash.process(plyr); return true;
 		case eRemoteEvent::Crash2:
-			if (args[2] > 32) // actual crash condition is if args[2] is above 255
+			if (args[2] > 32)// actual crash condition is if args[2] is above 255
 			{
 				g.reactions.crash.process(plyr);
 				return true;
 			}
 			break;
+		case eRemoteEvent::Crash3:
+		{
+			if (std::isnan(*(float*)&args[3]) || std::isnan(*(float*)&args[4]))
+			{
+				g.reactions.crash.process(plyr);
+				return true;
+			}
+			break;
+		}
 		case eRemoteEvent::Notification:
 			switch (static_cast<eRemoteEvent>(args[2]))
 			{
@@ -146,14 +162,16 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::RemoteOffradar:
-			if (g.protections.script_events.remote_off_radar && player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
+			if (g.protections.script_events.remote_off_radar
+			    && player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
 			{
 				g.reactions.remote_off_radar.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::TSECommand:
-			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[2]) == eRemoteEvent::TSECommandRotateCam && !gta_util::get_network()->m_is_activity_session)
+			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[2]) == eRemoteEvent::TSECommandRotateCam
+			    && !gta_util::get_network()->m_is_activity_session)
 			{
 				g.reactions.rotate_cam.process(plyr);
 				return true;
@@ -167,7 +185,8 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::SendToCutscene:
-			if (g.protections.script_events.send_to_cutscene && player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
+			if (g.protections.script_events.send_to_cutscene
+			    && player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
 			{
 				g.reactions.send_to_cutscene.process(plyr);
 				return true;
@@ -234,9 +253,7 @@ namespace big
 				return true;
 			}
 			break;
-		case eRemoteEvent::TransactionError:
-			g.reactions.transaction_error.process(plyr);
-			return true;
+		case eRemoteEvent::TransactionError: g.reactions.transaction_error.process(plyr); return true;
 		case eRemoteEvent::VehicleKick:
 			if (g.protections.script_events.vehicle_kick)
 			{
@@ -281,9 +298,9 @@ namespace big
 					g.reactions.start_activity.process(plyr);
 					return true;
 				}
-				else if (activity == eActivityType::DefendSpecialCargo || activity == eActivityType::GunrunningDefend || activity == eActivityType::BikerDefend)
+				else if (activity == eActivityType::DefendSpecialCargo || activity == eActivityType::GunrunningDefend || activity == eActivityType::BikerDefend || args[2] == 238)
 				{
-					g.reactions.start_activity.process(plyr);
+					g.reactions.trigger_business_raid.process(plyr);
 					return true;
 				}
 			}
@@ -304,7 +321,7 @@ namespace big
 		case eRemoteEvent::InteriorControl:
 		{
 			int interior = (int)args[2];
-			if (interior < 0 || interior > 161) // the upper bound will change after an update
+			if (interior < 0 || interior > 161)// the upper bound will change after an update
 			{
 				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
@@ -327,20 +344,52 @@ namespace big
 				return true;
 			}
 			break;
-		case eRemoteEvent::DestroyPersonalVehicle:
-			g.reactions.destroy_personal_vehicle.process(plyr);
+		case eRemoteEvent::DestroyPersonalVehicle: g.reactions.destroy_personal_vehicle.process(plyr); return true;
+		case eRemoteEvent::KickFromInterior:
+			if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].SimpleInteriorData.Owner != plyr->id())
+			{
+				g.reactions.kick_from_interior.process(plyr);
+				return true;
+			}
+			break;
+		case eRemoteEvent::TriggerCEORaid:
+		{
+			if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")))
+			{
+				if (script->m_net_component && script->m_net_component->m_host && script->m_net_component->m_host->m_net_game_player != player)
+				{
+					g.reactions.trigger_business_raid.process(plyr);
+				}
+			}
+
 			return true;
+		}
+		case eRemoteEvent::StartScriptProceed:
+		{
+			// TODO: Breaks stuff
+			if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")))
+			{
+				if (script->m_net_component && script->m_net_component->m_host && script->m_net_component->m_host->m_net_game_player != player)
+				{
+					g.reactions.start_script.process(plyr);
+					return true;
+				}
+			}
+			break;
+		}
 		}
 
 		// detect pasted menus setting args[1] to something other than PLAYER_ID()
 		if (*(int*)&args[1] != player->m_player_id && player->m_player_id != -1)
 		{
 			LOG(INFO) << "Hash = " << (int)args[0];
+			LOG(INFO) << "Sender = " << args[1];
 			g.reactions.tse_sender_mismatch.process(plyr);
 			return true;
 		}
 
-		if (g.debug.logs.script_event.logs && (!g.debug.logs.script_event.filter_player || g.debug.logs.script_event.player_id == player->m_player_id))
+		if (g.debug.logs.script_event.logs
+		    && (!g.debug.logs.script_event.filter_player || g.debug.logs.script_event.player_id == player->m_player_id))
 		{
 			std::string script_args = "{ ";
 			for (std::size_t i = 0; i < scripted_game_event->m_args_size; i++)
@@ -352,10 +401,13 @@ namespace big
 			}
 			script_args += " };";
 
-			LOG(G3LOG_DEBUG) << "Script Event:\n"
-				<< "\tPlayer: " << player->get_name() << "\n"
-				<< "\tArgs: " << script_args;
+			LOG(VERBOSE) << "Script Event:\n"
+			             << "\tPlayer: " << player->get_name() << "\n"
+			             << "\tArgs: " << script_args;
 		}
+
+		if (g.debug.logs.script_event.block_all)
+			return true;
 
 		return false;
 	}

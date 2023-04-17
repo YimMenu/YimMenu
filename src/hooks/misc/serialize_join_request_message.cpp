@@ -1,5 +1,6 @@
-#include "hooking.hpp"
 #include "gta_util.hpp"
+#include "hooking.hpp"
+
 #include <network/Network.hpp>
 #include <network/RemoteGamerInfoMsg.hpp>
 

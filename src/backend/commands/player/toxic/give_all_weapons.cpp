@@ -1,8 +1,8 @@
 #include "backend/player_command.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "services/gta_data/gta_data_service.hpp"
 #include "script.hpp"
+#include "services/gta_data/gta_data_service.hpp"
 
 namespace big
 {
@@ -33,10 +33,10 @@ namespace big
 
 		virtual void execute(const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
-			g_player_service->iterate([](auto& plyr) { 
+			g_player_service->iterate([](auto& plyr) {
 				for (auto& weapon : g_gta_data_service->weapons())
 					WEAPON::GIVE_WEAPON_TO_PED(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr.second->id()), weapon.second.m_hash, 9999, FALSE, FALSE);
-				script::get_current()->yield(500ms); 
+				script::get_current()->yield(500ms);
 			});
 		}
 	};

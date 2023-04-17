@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
+add_compile_definitions(USE_FMT) # Hello async logger.
+
 # Crosscompiling
 include(scripts/crosscompile.cmake)
 
@@ -13,10 +15,11 @@ include(scripts/git.cmake)
 # Fetch modules
 message("\nFetching modules")
 include(scripts/minhook.cmake)
-include(scripts/g3log.cmake)
+include(scripts/async-logger.cmake)
 include(scripts/pugixml.cmake)
 include(scripts/json.cmake)
 include(scripts/fmt.cmake)
+include(scripts/zydis.cmake)
 if(NOT CROSSCOMPILE) # https://github.com/libcpr/cpr/issues/860
     include(scripts/cpr.cmake) 
 endif()
@@ -55,9 +58,9 @@ target_link_libraries(YimMenu PRIVATE )
 
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
 if(CROSSCOMPILE)
-    target_link_libraries(YimMenu PRIVATE pugixml minhook g3log imgui fmt d3dcompiler dwmapi winmm)
+    target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui fmt Zydis d3dcompiler dwmapi winmm)
 else()
-    target_link_libraries(YimMenu PRIVATE pugixml minhook g3log imgui fmt cpr d3dcompiler dwmapi winmm)
+    target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui fmt Zydis cpr d3dcompiler dwmapi winmm)
 endif()
 
 # Warnings as errors
@@ -66,7 +69,7 @@ if(NOT CROSSCOMPILE)
 endif()
 
 
-add_compile_definitions(YimMenu 
+add_compile_definitions(
     "_CRT_SECURE_NO_WARNINGS"
     "NOMINMAX"
     "WIN32_LEAN_AND_MEAN"

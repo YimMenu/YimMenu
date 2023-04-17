@@ -7,6 +7,8 @@ namespace big::debug
 	extern void logs();
 	extern void misc();
 	extern void script_events();
+	extern void scripts();
+	extern void threads();
 
 	extern void main();
 }

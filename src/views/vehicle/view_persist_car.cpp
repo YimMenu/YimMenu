@@ -1,10 +1,10 @@
+#include "core/data/speed_units.hpp"
 #include "fiber_pool.hpp"
 #include "script.hpp"
-#include "util/vehicle.hpp"
-#include "views/view.hpp"
-#include "util/mobile.hpp"
-#include "core/data/speed_units.hpp"
 #include "services/vehicle/persist_car_service.hpp"
+#include "util/mobile.hpp"
+#include "util/teleport.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -25,7 +25,7 @@ namespace big
 			const auto vehicle = persist_car_service::load_vehicle(selected_vehicle_file);
 			if (!vehicle)
 			{
-				g_notification_service->push_warning("Persist Car", "Vehicle failed to spawn, there is most likely too many spawned vehicles in the area");
+				g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_TO_MANY_SPAWNED"_T.data());
 			}
 			else if (g.spawn_vehicle.spawn_inside)
 				teleport::into_vehicle(vehicle);
@@ -34,7 +34,7 @@ namespace big
 		}
 		else
 		{
-			g_notification_service->push_warning("Persist Car", "Select a file first");
+			g_notification_service->push_warning("PERSIST_CAR"_T.data(), "SELECT_FILE_FIRST"_T.data());
 		}
 	}
 
@@ -45,7 +45,7 @@ namespace big
 		const auto vehicle_files = persist_car_service::list_files();
 
 		ImGui::PushItemWidth(250);
-		ImGui::Text("Saved Vehicles");
+		ImGui::Text("SAVED_VEHICLES"_T.data());
 
 		if (ImGui::ListBoxHeader("##empty", ImVec2(200, 200)))
 		{
@@ -64,20 +64,21 @@ namespace big
 		static char vehicle_file_name_input[50]{};
 
 		ImGui::PushItemWidth(250);
-		components::input_text_with_hint(
-			"Vehicle File Name",
-			"Ex: My Cool Car",
-			vehicle_file_name_input, IM_ARRAYSIZE(vehicle_file_name_input));
+		components::input_text_with_hint("VEHICLE_FILE_NAME"_T, "VEHICLE_FILE_NAME_EXAMPLE"_T, vehicle_file_name_input, IM_ARRAYSIZE(vehicle_file_name_input));
 
 		ImGui::SameLine();
 
-		components::button("Save Vehicle", []
-		{
+		components::button("SAVE_VEHICLE"_T, [] {
+			if (!self::veh)
+				return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "You must be in a vehicle. Please enter a vehicle before using load.");
+
 			save_vehicle(vehicle_file_name_input);
 		});
 
-		components::button("Load Vehicle", []
-		{
+		components::button("LOAD_VEHICLE"_T, [] {
+			if (self::veh)
+				return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "You must not be in a vehicle. Please exit your vehicle before using load.");
+
 			load_vehicle(selected_vehicle_file);
 		});
 

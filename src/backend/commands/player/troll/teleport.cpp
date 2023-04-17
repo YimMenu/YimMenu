@@ -1,7 +1,8 @@
+#include "util/teleport.hpp"
+
 #include "backend/player_command.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "util/teleport.hpp"
 
 namespace big
 {
@@ -14,6 +15,6 @@ namespace big
 			teleport::to_player(player->id());
 		}
 	};
-	
+
 	teleport_to_player g_teleport_to_player("playertp", "Teleport", "Teleports you to the player", 0, false);
 }

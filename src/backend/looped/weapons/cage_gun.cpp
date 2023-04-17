@@ -7,9 +7,7 @@ namespace big
 {
 	void looped::weapons_cage_gun()
 	{
-		bool bCageGun = g.weapons.custom_weapon == CustomWeapon::CAGE_GUN;
-
-		if (bCageGun)
+		if (g.weapons.custom_weapon == CustomWeapon::CAGE_GUN && (!g.self.custom_weapon_stop || WEAPON::IS_PED_ARMED(self::ped, 4 | 2)))
 		{
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
@@ -24,9 +22,11 @@ namespace big
 							entity::cage_ped(entity);
 						}
 					}
-					else g_notification_service->push_error("Weapons", "No entity found.");
+					else
+						g_notification_service->push_error("Weapons", "No entity found.");
 				}
 			}
 		}
 	}
+
 }

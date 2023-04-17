@@ -1,9 +1,9 @@
 #include "backend/player_command.hpp"
+#include "core/scr_globals.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "core/scr_globals.hpp"
-#include "util/globals.hpp"
 #include "script.hpp"
+#include "util/globals.hpp"
 
 #include <script/globals/GlobalPlayerBD.hpp>
 
@@ -23,7 +23,7 @@ namespace big
 				return std::nullopt;
 			}
 
-			return std::vector<std::uint64_t>{ level };
+			return std::vector<std::uint64_t>{level};
 		}
 
 		virtual CommandAccessLevel get_access_level()

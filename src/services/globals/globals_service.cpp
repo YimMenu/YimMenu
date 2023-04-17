@@ -1,4 +1,5 @@
 #include "globals_service.hpp"
+
 #include "thread_pool.hpp"
 
 namespace big
@@ -59,7 +60,8 @@ namespace big
 	{
 		while (m_running)
 			for (auto& global : m_globals)
-				if (global.m_freeze) global.write();
+				if (global.m_freeze)
+					global.write();
 	}
 
 	void globals_service::save()

@@ -1,5 +1,6 @@
-#include "hooking.hpp"
 #include "gta/script_handler.hpp"
+
+#include "hooking.hpp"
 
 namespace big
 {
