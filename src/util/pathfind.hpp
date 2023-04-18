@@ -84,21 +84,27 @@ namespace big::pathfind
 			return false;
 	}
 
-
-	inline bool find_random_location_in_vicinity(Vector3 coords, Vector3& outcoords, float& outheading, int flag, int vicinity)
+	inline void apply_distance_to_random_direction(Vector3& outcoords, float distance)
 	{
-		srand(time(NULL));
-		bool apply_to_x     = rand() % 2;
-		bool apply_positive = rand() % 2;
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_int_distribution<> dis(0, 1);
 
-		if (apply_to_x)
+		if (dis(gen))
 		{
-			apply_positive ? outcoords.x += vicinity : outcoords.x -= vicinity;
+			dis(gen) ? outcoords.x += distance : outcoords.x -= distance;
 		}
 		else
 		{
-			apply_positive ? outcoords.y += vicinity : outcoords.y -= vicinity;
+			dis(gen) ? outcoords.y += distance : outcoords.y -= distance;
 		}
+	}
+
+	inline bool find_random_location_in_vicinity(Vector3 coords, Vector3& outcoords, float& outheading, int flag, int vicinity)
+	{
+		outcoords = coords;
+
+		apply_distance_to_random_direction(outcoords, vicinity);
 
 		Vector3 changed_coords = outcoords;
 
@@ -111,6 +117,44 @@ namespace big::pathfind
 				outcoords = coords;
 			}
 		}
+
+		return outcoords != coords;
+	}
+
+	/*
+	The precision means the algorithm will try and get a position as close to the desired distance as possible
+	Param precision goes up to a value of 200 meaning how many positions it will try and filter from
+	Might prove resource demanding based on hardware
+	*/
+	inline bool find_random_location_in_vicinity_precise(Vector3 coords, Vector3& outcoords, float& outheading, int flag, float vicinity, int precision = 50)
+	{
+		if (precision > 200)
+			precision = 200;
+
+		std::vector<Vector3> found_locations{};
+
+		//Find random positions
+		for (int i = 0; i < precision; i++)
+		{
+			Vector3 new_pos{};
+			find_random_location_in_vicinity(coords, new_pos, outheading, flag, vicinity);
+			found_locations.push_back(new_pos);
+		}
+
+		Vector3 best_location = found_locations[0];
+		//Measure the distance of the position to the given vicinity distance
+		static float distance_to_vicinity = std::abs(vicinity - math::distance_between_vectors(best_location, coords));
+		for (auto l : found_locations)
+		{
+			float new_distance_to_vicinity = std::abs(vicinity - math::distance_between_vectors(l, coords));
+			//If the new distance is smaller, that means we have a position that is closer to the edge
+			if (new_distance_to_vicinity < distance_to_vicinity)
+			{
+				distance_to_vicinity = new_distance_to_vicinity;
+				best_location        = l;
+			}
+		}
+		outcoords = best_location;
 
 		return outcoords != coords;
 	}

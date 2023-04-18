@@ -62,7 +62,8 @@ namespace big
 				PED::SET_PED_ARMOUR(handle, s.m_ped_armor);
 			}
 
-			if(s.does_squad_have_vehicle()){
+			if (s.does_squad_have_vehicle())
+			{
 				WEAPON::GIVE_WEAPON_TO_PED(handle, rage::joaat("WEAPON_MICROSMG"), 999, false, false);
 			}
 
@@ -120,12 +121,12 @@ namespace big
 
 		for (int i = 0; i < 10; i++)
 		{
-			if (pathfind::find_random_location_in_vicinity(s.m_spawn_pos, new_pos, s.m_spawn_heading, node_search_flag, s.m_spawn_distance))
+			if (pathfind::find_random_location_in_vicinity_precise(s.m_spawn_pos, new_pos, s.m_spawn_heading, node_search_flag, s.m_spawn_distance, 200))
 				break;
 		}
 
-		//Reset at a distance of 150 or if all searches failed
-		if (math::distance_between_vectors(new_pos, s.m_spawn_pos) > 150 || new_pos == s.m_spawn_pos)
+		//Reset if all searches failed with an allowance of up to 50.0f
+		if (math::distance_between_vectors(new_pos, s.m_spawn_pos) > (s.m_spawn_distance + 50.f) || new_pos == s.m_spawn_pos)
 		{
 			reset_spawn_pos_to_offset();
 			return false;
@@ -199,13 +200,19 @@ namespace big
 		}
 		bool veh_spawned = ENTITY::DOES_ENTITY_EXIST(s.m_veh_handle);
 
-		//if (!veh_spawned && s.does_squad_have_vehicle())
-		//	LOG(INFO) << "Squad spawner: Failed spawning squad vehicle";
-
 		//Spawn squad members
+		const static Vector3 original_pos = s.m_spawn_pos;
 		for (int i = 0; i < s.m_squad_size; i++)
 		{
+			//Find random position for each consecutive member if disperse is enabled
+			if (i > 0 && s.m_disperse && !s.does_squad_have_vehicle())
+				squad_spawner::find_suitable_spawn_pos(s);
+
 			s.m_members.push_back(squad_spawner::spawn_squad_member(s));
+
+			//Catch position change of Disperse and revert
+			s.m_spawn_pos = original_pos;
+
 
 			if (entity::take_control_of(s.m_members[i].handle))
 			{
@@ -284,7 +291,6 @@ namespace big
 		{
 			if (s.is_squad_alive())
 			{
-				
 			}
 			else
 			{

@@ -33,6 +33,7 @@ namespace big
 		j["combatabilitylevel"]      = s.m_combat_ability_level;
 		j["stayinveh"]               = s.m_stay_in_veh;
 		j["spawnbehindsamevelocity"] = s.m_spawn_behind_same_velocity;
+		j["disperse"]                = s.m_disperse;
 
 		return j;
 	}
@@ -40,11 +41,11 @@ namespace big
 	squad squad_spawner::from_json(nlohmann::json j)
 	{
 		squad new_squad;
-		std::string_view name_sv       = j["name"];
-		std::string_view desc_sv       = j["description"];
-		std::string_view ped_model_sv  = j["pedmodel"];
-		std::string_view veh_model_sv  = j["vehmodel"];
-		std::string_view weap_model_sv = j["weapmodel"];
+		std::string_view name_sv       = j.value<std::string_view>("name", "");
+		std::string_view desc_sv       = j.value<std::string_view>("description", "");
+		std::string_view ped_model_sv  = j.value<std::string_view>("pedmodel", "");
+		std::string_view veh_model_sv  = j.value<std::string_view>("vehmodel", "");
+		std::string_view weap_model_sv = j.value<std::string_view>("weapmodel", "");
 
 		strcpy(new_squad.m_name, name_sv.data());
 		strcpy(new_squad.m_description, desc_sv.data());
@@ -52,24 +53,27 @@ namespace big
 		strcpy(new_squad.m_vehicle_model, veh_model_sv.data());
 		strcpy(new_squad.m_weapon_model, weap_model_sv.data());
 
-		new_squad.m_ped_invincibility = j["pedinvincibility"];
-		new_squad.m_veh_invincibility = j["vehinvincibility"];
-		new_squad.m_ped_proofs[0]     = j["pedproofs"]["headshot"];
-		new_squad.m_ped_proofs[1]     = j["pedproofs"]["bullet"];
-		new_squad.m_ped_proofs[2]     = j["pedproofs"]["flame"];
-		new_squad.m_ped_proofs[3]     = j["pedproofs"]["melee"];
-		new_squad.m_ped_proofs[4]     = j["pedproofs"]["explosion"];
-		new_squad.m_ped_health        = j["pedhealth"];
-		new_squad.m_ped_armor         = j["pedarmor"];
-		new_squad.m_ped_accuracy      = j["pedacurracy"];
-		new_squad.m_spawn_distance    = j["spawndistance"];
-		new_squad.m_squad_size        = j["squadsize"];
+		new_squad.m_ped_invincibility = j.value("pedinvincibility", 0);
+		new_squad.m_veh_invincibility = j.value("vehinvincibility", 0);
 
-		new_squad.m_spawn_distance_mode  = j["spawndistancemode"];
-		new_squad.m_combat_ability_level = j["combatabilitylevel"];
-
-		new_squad.m_stay_in_veh                = j["stayinveh"];
-		new_squad.m_spawn_behind_same_velocity = j["spawnbehindsamevelocity"];
+		if (j.contains("pedproofs"))
+		{
+			new_squad.m_ped_proofs[0] = j["pedproofs"].value("headshot", false);
+			new_squad.m_ped_proofs[1] = j["pedproofs"].value("bullet", false);
+			new_squad.m_ped_proofs[2] = j["pedproofs"].value("flame", false);
+			new_squad.m_ped_proofs[3] = j["pedproofs"].value("melee", false);
+			new_squad.m_ped_proofs[4] = j["pedproofs"].value("explosion", false);
+		}
+		new_squad.m_ped_health                 = j.value("pedhealth", 100);
+		new_squad.m_ped_armor                  = j.value("pedarmor", 0);
+		new_squad.m_ped_accuracy               = j.value("pedacurracy", 50);
+		new_squad.m_spawn_distance             = j.value("spawndistance", 0);
+		new_squad.m_squad_size                 = j.value("squadsize", 1);
+		new_squad.m_spawn_distance_mode        = (eSquadSpawnDistance)j.value("spawndistancemode", 1);
+		new_squad.m_combat_ability_level       = (eCombatAbilityLevel)j.value("combatabilitylevel", 2);
+		new_squad.m_stay_in_veh                = j.value("stayinveh", false);
+		new_squad.m_spawn_behind_same_velocity = j.value("spawnbehindsamevelocity", true);
+		new_squad.m_disperse                   = j.value("disperse", false);
 
 		return new_squad;
 	}
@@ -162,6 +166,6 @@ namespace big
 		m_templates.push_back(squad("Heavy attack choppers", "s_m_y_swat_01", "WEAPON_MG", "valkyrie", 4, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::PROFESSIONAL, false, false, "Very deadly attack chopper eqquiped with a cannon"));
 		m_templates.push_back(squad("Fighter jet", "s_m_m_pilot_02", "WEAPON_UNARMED", "lazer", 1, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::FAR_AWAY, eCombatAbilityLevel::PROFESSIONAL, false, false, "Tedious yet precise form of attack with a Fighter jet"));
 		m_templates.push_back(squad("Mobile squad", "s_m_m_highsec_01", "WEAPON_MICROSMG", "komoda", 4, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::FAR_AWAY, eCombatAbilityLevel::PROFESSIONAL, true, true, "This squad makes use of 'Vehicle catchup'"));
-		m_templates.push_back(squad("Altruists", "a_m_m_acult_01", "WEAPON_KNIFE", "", 8, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel::PROFESSIONAL, false, false, "Cannibals fromt the alrtuist cult"));
+		m_templates.push_back(squad("Altruists", "a_m_m_acult_01", "WEAPON_SNSPISTOL", "", 8, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel::PROFESSIONAL, false, false, "Cannibals from the alrtuist cult will surround the victim using 'Disperse'", true));
 	}
 }

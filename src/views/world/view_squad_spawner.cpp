@@ -34,6 +34,7 @@ namespace big
 		static bool ped_proofs[5];
 		static bool stay_in_veh                = false;
 		static bool spawn_behind_same_velocity = false;
+		static bool disperse                   = false;
 
 		ImGui::Text("Victim");
 		ImGui::SetNextItemWidth(200);
@@ -130,6 +131,7 @@ namespace big
 						std::copy(std::begin(temp.m_ped_proofs), std::end(temp.m_ped_proofs), ped_proofs);
 						stay_in_veh                = temp.m_stay_in_veh;
 						spawn_behind_same_velocity = temp.m_spawn_behind_same_velocity;
+						disperse                   = temp.m_disperse;
 					}
 				}
 				if (ImGui::IsItemHovered() && temp.does_squad_have_description())
@@ -183,7 +185,7 @@ namespace big
 
 		if (!std::string(veh_model).empty() && veh_found == g_gta_data_service->vehicles().end())
 		{
-			if (ImGui::ListBoxHeader("##pedlist", ImVec2(250, 200)))
+			if (ImGui::ListBoxHeader("##vehlist", ImVec2(250, 200)))
 			{
 				for (auto& p : g_gta_data_service->vehicles() | std::ranges::views::values)
 				{
@@ -202,6 +204,8 @@ namespace big
 		}
 
 		components::input_text_with_hint("##weapmodel", "Weapon model", weap_model, IM_ARRAYSIZE(weap_model));
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Leave empty to spawn unarmed, beware that a player can only attain 3 melee attackers at a time");
 
 		auto weap_found = std::find_if(g_gta_data_service->weapons().begin(), g_gta_data_service->weapons().end(), [=](const auto& pair) {
 			return strcmp(pair.second.m_name, weap_model) == 0;
@@ -209,7 +213,7 @@ namespace big
 
 		if (!std::string(weap_model).empty() && weap_found == g_gta_data_service->weapons().end())
 		{
-			if (ImGui::ListBoxHeader("##pedlist", ImVec2(250, 200)))
+			if (ImGui::ListBoxHeader("##weaplist", ImVec2(250, 200)))
 			{
 				for (auto& p : g_gta_data_service->weapons() | std::ranges::views::values)
 				{
@@ -271,6 +275,7 @@ namespace big
 				ped_proofs[i] = false;
 			stay_in_veh                = 0;
 			spawn_behind_same_velocity = 0;
+			disperse                   = 0;
 		});
 
 		ImGui::EndGroup();
@@ -279,6 +284,9 @@ namespace big
 		{
 			ImGui::BeginGroup(); //Toggleables
 
+			ImGui::Checkbox("Disperse", &disperse);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("If the squad is on foot, will scatter units within the spawn distance");
 			ImGui::Checkbox("Vehicle catch up", &spawn_behind_same_velocity);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("Will spawn the mobile squad behind the target with identical velocity if applicable.\nOnly for squads with a vehicle.");
@@ -359,12 +367,12 @@ namespace big
 
 		components::button("Spawn squad", [] {
 			if (check_validity(false))
-				g_squad_spawner_service.spawn_squad({name, ped_model, weap_model, veh_model, squad_size, ped_invincibility, veh_invincibility, ped_proofs, ped_health, ped_armor, custom_spawn_distance, ped_accuracy, spawn_distance_mode, combat_ability_level, stay_in_veh, spawn_behind_same_velocity, description}, victim, false, {});
+				g_squad_spawner_service.spawn_squad({name, ped_model, weap_model, veh_model, squad_size, ped_invincibility, veh_invincibility, ped_proofs, ped_health, ped_armor, custom_spawn_distance, ped_accuracy, spawn_distance_mode, combat_ability_level, stay_in_veh, spawn_behind_same_velocity, description, disperse}, victim, false, {});
 		});
 		ImGui::SameLine();
 		components::button("Save", [] {
 			if (check_validity(true) && !check_if_exists(name))
-				g_squad_spawner_service.save_squad({name, ped_model, weap_model, veh_model, squad_size, ped_invincibility, veh_invincibility, ped_proofs, ped_health, ped_armor, custom_spawn_distance, ped_accuracy, spawn_distance_mode, combat_ability_level, stay_in_veh, spawn_behind_same_velocity, description});
+				g_squad_spawner_service.save_squad({name, ped_model, weap_model, veh_model, squad_size, ped_invincibility, veh_invincibility, ped_proofs, ped_health, ped_armor, custom_spawn_distance, ped_accuracy, spawn_distance_mode, combat_ability_level, stay_in_veh, spawn_behind_same_velocity, description, disperse});
 		});
 	}
 
