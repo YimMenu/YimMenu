@@ -8,8 +8,12 @@ namespace big
 	bool hooks::fipackfile_mount(rage::fiPackfile* this_, const char* mount_point)
 	{
 		static bool init = ([] {
-			if(g_gta_data_service->state() == eGtaDataUpdateState::ON_INIT_WAITING)
+			if (g_gta_data_service->state() == eGtaDataUpdateState::ON_INIT_WAITING)
+			{
+				// parse RPFs loaded before init
+				yim_fipackfile::for_each_fipackfile();
 				g_gta_data_service->set_state(eGtaDataUpdateState::ON_INIT_UPDATE_START);
+			}
 		}(),true);
 
 		auto result = g_hooking->get_original<fipackfile_mount>()(this_, mount_point);
