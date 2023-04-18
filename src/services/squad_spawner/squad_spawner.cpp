@@ -185,7 +185,6 @@ namespace big
 			s.m_spawn_pos = custom_pos;
 		}
 
-
 		//LOG(INFO) << "Squad spawner: Distance from target determined: " << math::distance_between_vectors(s.m_spawn_pos, ENTITY::GET_ENTITY_COORDS(target_ped, true));
 
 		if (VEHICLE::IS_THIS_MODEL_A_PLANE(veh_model_hash) || VEHICLE::IS_THIS_MODEL_A_HELI(veh_model_hash))
@@ -201,7 +200,7 @@ namespace big
 		bool veh_spawned = ENTITY::DOES_ENTITY_EXIST(s.m_veh_handle);
 
 		//Spawn squad members
-		const static Vector3 original_pos = s.m_spawn_pos;
+		const Vector3 original_pos = s.m_spawn_pos;
 		for (int i = 0; i < s.m_squad_size; i++)
 		{
 			//Find random position for each consecutive member if disperse is enabled
@@ -212,7 +211,6 @@ namespace big
 
 			//Catch position change of Disperse and revert
 			s.m_spawn_pos = original_pos;
-
 
 			if (entity::take_control_of(s.m_members[i].handle))
 			{
