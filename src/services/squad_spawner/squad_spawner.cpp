@@ -62,7 +62,7 @@ namespace big
 				PED::SET_PED_ARMOUR(handle, s.m_ped_armor);
 			}
 
-			if (s.does_squad_have_vehicle() && s.m_weapon_model != "WEAPON_UNARMED")
+			if (s.does_squad_have_vehicle() && strcmp(s.m_weapon_model, "WEAPON_UNARMED")  != 0 )
 			{
 				WEAPON::GIVE_WEAPON_TO_PED(handle, rage::joaat("WEAPON_MICROSMG"), 999, false, false);
 			}
