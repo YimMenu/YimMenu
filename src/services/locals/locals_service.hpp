@@ -33,10 +33,15 @@ namespace big
 		char m_name[200];
 		std::vector<local_offset> m_offsets;
 		int m_value;
-		int m_freeze_value;
+		int m_freeze_value_int;
+		float m_freeze_value_float;
+		Vector3 m_freeze_value_vector3;
 		int* m_internal_address;
+		float* m_internal_address_float;
+		Vector3* m_internal_address_vector3;
+		int m_edit_mode = 0;
 
-		local(const char* script_thread_name, const char* name, const int base_address, const bool freeze, const int (*offsets)[2], int offset_count)
+		local(const char* script_thread_name, const char* name, const int base_address, const bool freeze, const int (*offsets)[2], int offset_count, int edit_mode = 0)
 		{
 			m_internal_id = ++m_instance_count;
 
@@ -49,7 +54,11 @@ namespace big
 			for (int i = 0; i < offset_count; i++)
 				m_offsets.push_back(local_offset(offsets[i][0], offsets[i][1]));
 
+			m_edit_mode = edit_mode;
+
 			fetch_local_pointer();
+			fetch_local_pointer_float();
+			fetch_local_pointer_vector3();
 		}
 
 		int get_id() const
@@ -76,6 +85,52 @@ namespace big
 				m_internal_address = actual_local.as<int*>();
 
 				return m_internal_address;
+			}
+			return nullptr;
+		}
+
+		float* fetch_local_pointer_float()
+		{
+			m_script_thread = gta_util::find_script_thread(rage::joaat(m_script_thread_name));
+
+			if (m_script_thread)
+			{
+				script_local actual_local = script_local(m_script_thread, m_base_address);
+
+				for (auto& offset : m_offsets)
+				{
+					if (offset.m_size > 0)
+						actual_local = actual_local.at(offset.m_offset, offset.m_size);
+					else
+						actual_local = actual_local.at(offset.m_offset);
+				}
+
+				m_internal_address_float = actual_local.as<float*>();
+
+				return m_internal_address_float;
+			}
+			return nullptr;
+		}
+
+		Vector3* fetch_local_pointer_vector3()
+		{
+			m_script_thread = gta_util::find_script_thread(rage::joaat(m_script_thread_name));
+
+			if (m_script_thread)
+			{
+				script_local actual_local = script_local(m_script_thread, m_base_address);
+
+				for (auto& offset : m_offsets)
+				{
+					if (offset.m_size > 0)
+						actual_local = actual_local.at(offset.m_offset, offset.m_size);
+					else
+						actual_local = actual_local.at(offset.m_offset);
+				}
+
+				m_internal_address_vector3 = actual_local.as<Vector3*>();
+
+				return m_internal_address_vector3;
 			}
 			return nullptr;
 		}

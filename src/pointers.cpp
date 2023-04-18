@@ -625,6 +625,15 @@ namespace big
                 g_pointers->m_gta.m_script_vm = ptr.add(1).rip().as<functions::script_vm>();
             }
         },
+        // Does script exist
+        {
+            "DSE",
+            "33 D2 8B C1 41 83 C8 FF F7 35 ? ? ? ? 48 8B 05 ? ? ? ? 41 83 CB FF 44 8B 0C 90 44 8B D1 45 3B C8 74 1E 48 8B 15 ? ? ? ?",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_does_script_exist = ptr.as<functions::does_script_exist>();
+            }
+        },
         // Generate UUID
         {
             "GU",

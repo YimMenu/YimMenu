@@ -1,6 +1,7 @@
 #include "gui/components/components.hpp"
 #include "services/locals/locals_service.hpp"
 #include "view_debug.hpp"
+#include "widgets/imgui_bitfield.hpp"
 
 namespace big
 {
@@ -125,24 +126,93 @@ namespace big
 					//Check whether the address is found
 					if (local_.m_internal_address)
 					{
+						if (ImGui::RadioButton("Int", local_.m_edit_mode == 0))
+							local_.m_edit_mode = 0;
+						ImGui::SameLine();
+						if (ImGui::RadioButton("Float", local_.m_edit_mode == 1))
+							local_.m_edit_mode = 1;
+						ImGui::SameLine();
+						if (ImGui::RadioButton("Bitfield", local_.m_edit_mode == 2))
+							local_.m_edit_mode = 2;
+						ImGui::SameLine();
+						if (ImGui::RadioButton("Vector3", local_.m_edit_mode == 3))
+							local_.m_edit_mode = 3;
+
+
 						ImGui::Text("Value");
+
 						ImGui::SetNextItemWidth(200);
-						if (ImGui::InputInt("##local_value", local_.m_internal_address))
+
+						switch (local_.m_edit_mode)
 						{
-							local_.m_value = *local_.m_internal_address;
+						case 0:
+
+							if (ImGui::InputInt("##local_value", local_.m_freeze ? &local_.m_freeze_value_int : local_.m_internal_address))
+							{
+								local_.m_value = *local_.m_internal_address;
+							}
+
+							if (local_.m_freeze)
+							{
+								*local_.m_internal_address = local_.m_freeze_value_int;
+							}
+							break;
+						case 1:
+
+							if (ImGui::InputFloat("##local_value",
+							        local_.m_freeze ? &local_.m_freeze_value_float : local_.m_internal_address_float))
+							{
+								local_.m_value = *local_.m_internal_address;
+							}
+
+							if (local_.m_freeze)
+							{
+								*local_.m_internal_address_float = local_.m_freeze_value_float;
+							}
+							break;
+						case 2:
+
+							if (ImGui::Bitfield("##local_value", local_.m_freeze ? &local_.m_freeze_value_int : local_.m_internal_address))
+							{
+								local_.m_value = *local_.m_internal_address;
+							}
+
+							if (local_.m_freeze)
+							{
+								*local_.m_internal_address = local_.m_freeze_value_int;
+							}
+							break;
+
+						case 3:
+							ImGui::SetNextItemWidth(250);
+							if (ImGui::InputFloat3("##local_value",
+							        local_.m_freeze ? (float*)&local_.m_freeze_value_vector3 : (float*)local_.m_internal_address_vector3))
+							{
+								local_.m_value = *local_.m_internal_address;
+							}
+
+							if (local_.m_freeze)
+							{
+								*local_.m_internal_address_vector3 = local_.m_freeze_value_vector3;
+							}
+							break;
 						}
+
 						ImGui::SameLine();
 						if (ImGui::Checkbox("Freeze", &local_.m_freeze))
-							local_.m_freeze_value = *local_.m_internal_address;
-
-						if (local_.m_freeze)
-							*local_.m_internal_address = local_.m_freeze_value;
+						{
+							local_.m_freeze_value_int   = *local_.m_internal_address;
+							local_.m_freeze_value_float = *local_.m_internal_address_float;
+							local_.m_freeze_value_vector3 = *local_.m_internal_address_vector3;
+						}
 					}
 					else
 					{
 						if (components::button("Fetch"))
 						{
 							local_.fetch_local_pointer();
+							local_.fetch_local_pointer_float();
+							local_.fetch_local_pointer_vector3();
 						}
 					}
 				}
