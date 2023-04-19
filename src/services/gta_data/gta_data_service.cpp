@@ -30,9 +30,9 @@ namespace big
 	}
 
 	gta_data_service::gta_data_service() :
-	    m_peds_cache(g_file_manager->get_project_file("./cache/peds.bin"), 3),
-	    m_vehicles_cache(g_file_manager->get_project_file("./cache/vehicles.bin"), 2),
-	    m_weapons_cache(g_file_manager->get_project_file("./cache/weapons.bin"), 3),
+	    m_peds_cache(g_file_manager->get_project_file("./cache/peds.bin"), 4),
+	    m_vehicles_cache(g_file_manager->get_project_file("./cache/vehicles.bin"), 3),
+	    m_weapons_cache(g_file_manager->get_project_file("./cache/weapons.bin"), 4),
 	    m_update_state(eGtaDataUpdateState::IDLE)
 	{
 		if (!is_cache_up_to_date())
