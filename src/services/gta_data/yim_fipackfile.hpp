@@ -8,11 +8,10 @@ namespace big
 	class yim_fipackfile
 	{
 		rage::fiPackfile* rpf;
+		std::string mount_name;
 
 	public:
-		explicit yim_fipackfile(rage::fiPackfile* rpf);
-
-		static std::vector<std::string> get_non_dlc_mounted_devices_names();
+		explicit yim_fipackfile(rage::fiPackfile* rpf, const std::string& mount_name = "/");
 
 		static inline std::vector<std::function<size_t(yim_fipackfile& rpf_wrapper)>> m_wrapper_call_back;
 
