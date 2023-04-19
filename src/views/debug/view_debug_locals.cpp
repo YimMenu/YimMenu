@@ -103,7 +103,8 @@ namespace big
 				ImGui::BeginGroup();
 				ImGui::PushID(local_.get_id());
 				ImGui::SetNextItemOpen(true, ImGuiCond_FirstUseEver);
-				if (ImGui::TreeNode(strcmp(local_.m_name, "") == 0 ? std::string(local_.m_script_thread_name + std::string(" ")).append(local_.get_local_chain_text()).data(): local_.m_name))
+				if (ImGui::TreeNode(strcmp(local_.m_name, "") == 0 ? 
+					std::string(local_.m_script_thread_name + std::string(" ")).append(local_.get_local_chain_text()).data(): local_.m_name))
 				{
 					ImGui::Text("%s : %s", local_.m_script_thread_name, local_.m_name);
 					if (ImGui::IsItemHovered())
