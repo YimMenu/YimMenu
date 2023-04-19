@@ -66,8 +66,6 @@ namespace big
 						}
 					}
 					new_local.fetch_local_pointer();
-					new_local.fetch_local_pointer_float();
-					new_local.fetch_local_pointer_vector3();
 					m_locals.push_back(new_local);
 				}
 			}

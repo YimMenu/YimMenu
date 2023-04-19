@@ -37,7 +37,6 @@ namespace big
 		float m_freeze_value_float;
 		Vector3 m_freeze_value_vector3;
 		int* m_internal_address;
-		float* m_internal_address_float;
 		Vector3* m_internal_address_vector3;
 		int m_edit_mode = 0;
 
@@ -57,8 +56,6 @@ namespace big
 			m_edit_mode = edit_mode;
 
 			fetch_local_pointer();
-			fetch_local_pointer_float();
-			fetch_local_pointer_vector3();
 		}
 
 		int get_id() const
@@ -82,57 +79,26 @@ namespace big
 						actual_local = actual_local.at(offset.m_offset);
 				}
 
-				m_internal_address = actual_local.as<int*>();
+				m_internal_address         = actual_local.as<int*>();
+				m_internal_address_vector3 = actual_local.as<Vector3*>();
 
 				return m_internal_address;
 			}
 			return nullptr;
 		}
 
-		float* fetch_local_pointer_float()
+		const char* get_local_chain_text()
 		{
-			m_script_thread = gta_util::find_script_thread(rage::joaat(m_script_thread_name));
-
-			if (m_script_thread)
+			static char offsetschain[200] = "";
+			strcpy(offsetschain, "");
+			strcat(offsetschain, std::to_string(m_base_address).data());
+			for (auto o : m_offsets)
 			{
-				script_local actual_local = script_local(m_script_thread, m_base_address);
-
-				for (auto& offset : m_offsets)
-				{
-					if (offset.m_size > 0)
-						actual_local = actual_local.at(offset.m_offset, offset.m_size);
-					else
-						actual_local = actual_local.at(offset.m_offset);
-				}
-
-				m_internal_address_float = actual_local.as<float*>();
-
-				return m_internal_address_float;
+				strcat(offsetschain, std::string(".f_" + std::to_string(o.m_offset)).data());
+				if (o.m_size)
+					strcat(offsetschain, std::string("/" + std::to_string(o.m_size)).data());
 			}
-			return nullptr;
-		}
-
-		Vector3* fetch_local_pointer_vector3()
-		{
-			m_script_thread = gta_util::find_script_thread(rage::joaat(m_script_thread_name));
-
-			if (m_script_thread)
-			{
-				script_local actual_local = script_local(m_script_thread, m_base_address);
-
-				for (auto& offset : m_offsets)
-				{
-					if (offset.m_size > 0)
-						actual_local = actual_local.at(offset.m_offset, offset.m_size);
-					else
-						actual_local = actual_local.at(offset.m_offset);
-				}
-
-				m_internal_address_vector3 = actual_local.as<Vector3*>();
-
-				return m_internal_address_vector3;
-			}
-			return nullptr;
+			return offsetschain;
 		}
 
 	private:

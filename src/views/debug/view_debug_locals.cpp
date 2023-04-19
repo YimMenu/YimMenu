@@ -60,7 +60,9 @@ namespace big
 		{
 			if (locals_service::does_script_exist(script_thread_name))
 			{
+				
 				auto new_local = local(script_thread_name, name, base_address, freeze, offsets, offset_count);
+				if(std::string(name).empty()) strcpy(name, new_local.get_local_chain_text());
 				g_locals_service.m_locals.push_back(new_local);
 
 				reset_values();
@@ -101,19 +103,11 @@ namespace big
 				ImGui::BeginGroup();
 				ImGui::PushID(local_.get_id());
 
-				ImGui::Text("%s : %s", local_.m_name, local_.m_script_thread_name);
+				ImGui::Text("%s : %s", local_.m_script_thread_name, local_.m_name);
 				if (ImGui::IsItemHovered())
 				{
 					ImGui::BeginTooltip();
-					char offsetschain[200] = "";
-					strcat(offsetschain, std::to_string(local_.m_base_address).data());
-					for (auto o : local_.m_offsets)
-					{
-						strcat(offsetschain, std::string(".f_" + std::to_string(o.m_offset)).data());
-						if (o.m_size)
-							strcat(offsetschain, std::string("/" + std::to_string(o.m_size)).data());
-					}
-					ImGui::Text(offsetschain);
+					ImGui::Text(local_.get_local_chain_text());
 					ImGui::EndTooltip();
 				}
 
@@ -139,7 +133,7 @@ namespace big
 							local_.m_edit_mode = 3;
 
 
-						ImGui::Text("Value");
+						ImGui::LabelText(local_.get_local_chain_text(), "Value");
 
 						ImGui::SetNextItemWidth(200);
 
@@ -160,14 +154,14 @@ namespace big
 						case 1:
 
 							if (ImGui::InputFloat("##local_value",
-							        local_.m_freeze ? &local_.m_freeze_value_float : local_.m_internal_address_float))
+							        local_.m_freeze ? &local_.m_freeze_value_float : (float*)local_.m_internal_address))
 							{
 								local_.m_value = *local_.m_internal_address;
 							}
 
 							if (local_.m_freeze)
 							{
-								*local_.m_internal_address_float = local_.m_freeze_value_float;
+								*local_.m_internal_address = local_.m_freeze_value_int;
 							}
 							break;
 						case 2:
@@ -179,21 +173,21 @@ namespace big
 
 							if (local_.m_freeze)
 							{
-								*local_.m_internal_address = local_.m_freeze_value_int;
+								*local_.m_internal_address = local_.m_freeze_value_float;
 							}
 							break;
 
 						case 3:
-							ImGui::SetNextItemWidth(250);
+							ImGui::SetNextItemWidth(300);
 							if (ImGui::InputFloat3("##local_value",
-							        local_.m_freeze ? (float*)&local_.m_freeze_value_vector3 : (float*)local_.m_internal_address_vector3))
+							        local_.m_freeze ? (float*)&local_.m_freeze_value_vector3 : (float*)local_.m_internal_address))
 							{
 								local_.m_value = *local_.m_internal_address;
 							}
 
 							if (local_.m_freeze)
 							{
-								*local_.m_internal_address_vector3 = local_.m_freeze_value_vector3;
+								*local_.m_internal_address_vector3       = local_.m_freeze_value_vector3;
 							}
 							break;
 						}
@@ -201,8 +195,8 @@ namespace big
 						ImGui::SameLine();
 						if (ImGui::Checkbox("Freeze", &local_.m_freeze))
 						{
-							local_.m_freeze_value_int   = *local_.m_internal_address;
-							local_.m_freeze_value_float = *local_.m_internal_address_float;
+							local_.m_freeze_value_int       = *local_.m_internal_address;
+							local_.m_freeze_value_float     = (float)*local_.m_internal_address;
 							local_.m_freeze_value_vector3 = *local_.m_internal_address_vector3;
 						}
 					}
@@ -211,8 +205,6 @@ namespace big
 						if (components::button("Fetch"))
 						{
 							local_.fetch_local_pointer();
-							local_.fetch_local_pointer_float();
-							local_.fetch_local_pointer_vector3();
 						}
 					}
 				}
