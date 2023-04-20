@@ -164,7 +164,6 @@ namespace big
 
 		PVOID m_init_native_tables{};
 		functions::script_vm m_script_vm{};
-		functions::does_script_exist m_does_script_exist{};
 
 		functions::generate_uuid m_generate_uuid{};
 		std::uint64_t* m_host_token{};

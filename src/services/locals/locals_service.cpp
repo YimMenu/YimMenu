@@ -19,7 +19,7 @@ namespace big
 
 	bool locals_service::does_script_exist(std::string script_name)
 	{
-		return g_pointers->m_gta.m_does_script_exist(rage::joaat(script_name));
+		return SCRIPT::DOES_SCRIPT_WITH_NAME_HASH_EXIST(rage::joaat(script_name));
 	}
 
 	std::filesystem::path locals_service::get_path()
