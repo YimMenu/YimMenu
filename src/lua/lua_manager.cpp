@@ -16,6 +16,24 @@ namespace big
 
 	lua_manager::~lua_manager()
 	{
+		for (auto& module : m_modules)
+			module.reset();
+
+		m_modules.clear();
 		g_lua_manager = nullptr;
+	}
+
+	void lua_manager::draw_gui(rage::joaat_t tab_hash)
+	{
+		for (auto& module : m_modules)
+		{
+			if (auto it = module->m_gui.find(tab_hash); it != module->m_gui.end())
+			{
+				ImGui::SameLine();
+
+				for (auto& element : it->second)
+					element->draw();
+			}
+		}
 	}
 }

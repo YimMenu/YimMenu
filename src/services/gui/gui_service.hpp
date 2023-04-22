@@ -62,6 +62,7 @@ namespace big
 		const char name[48]        = "";
 		std::function<void()> func = nullptr;
 		std::map<tabs, navigation_struct> sub_nav{};
+		rage::joaat_t hash = rage::joaat(name);
 	};
 
 	class gui_service final
@@ -148,7 +149,7 @@ namespace big
 		            {
 		                {tabs::CONTEXT_MENU_SETTINGS, {"GUI_TAB_CONTEXT_MENU", view::context_menu_settings}},
 		                {tabs::ESP_SETTINGS, {"GUI_TAB_ESP", view::esp_settings}},
-						{tabs::GTA_CACHE_SETTINGS, {"GTA Cache", view::gta_cache}},
+		                {tabs::GTA_CACHE_SETTINGS, {"GTA Cache", view::gta_cache}},
 		                {tabs::GUI_SETTINGS, {"GUI_TAB_GUI", view::gui_settings}},
 		                {tabs::HOTKEY_SETTINGS, {"GUI_TAB_HOTKEYS", view::hotkey_settings}},
 		                {tabs::REACTION_SETTINGS, {"GUI_TAB_REACTIONS", view::reaction_settings}},

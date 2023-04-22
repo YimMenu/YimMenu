@@ -1,6 +1,7 @@
 #include "lua_module.hpp"
 
 #include "bindings/globals.hpp"
+#include "bindings/gui.hpp"
 #include "bindings/log.hpp"
 #include "bindings/memory.hpp"
 #include "bindings/natives.hpp"
@@ -43,6 +44,7 @@ namespace big
 		lua::script::bind(m_state);
 		lua::natives::bind(m_state);
 		lua::memory::bind(m_state);
+		lua::gui::bind(m_state);
 
 		m_state["!module_name"] = module_name;
 		m_state["!this"]        = this;
@@ -66,5 +68,11 @@ namespace big
 	{
 		for (auto script : m_registered_scripts)
 			g_script_mgr.remove_script(script);
+
+		for (auto& patch : m_registered_patches)
+			patch.reset();
+
+		m_registered_scripts.clear();
+		m_registered_patches.clear();
 	}
 }
