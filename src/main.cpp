@@ -6,6 +6,7 @@
 #include "gui.hpp"
 #include "hooking.hpp"
 #include "logger/exception_handler.hpp"
+#include "lua/lua_manager.hpp"
 #include "native_hooks/native_hooks.hpp"
 #include "pointers.hpp"
 #include "renderer.hpp"
@@ -120,7 +121,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::disable_control_action_loop, "Disable Controls"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::world_loop, "World"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::orbital_drone, "Orbital Drone"));
-				    g_script_mgr.add_script(std::make_unique<script>(&backend::vehicle_control, "Vehicle control"));
+				    g_script_mgr.add_script(std::make_unique<script>(&backend::vehicle_control, "Vehicle Control"));
 				    g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu, "Context Menu"));
 
 				    LOG(INFO) << "Scripts registered.";
@@ -131,10 +132,16 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    auto native_hooks_instance = std::make_unique<native_hooks>();
 				    LOG(INFO) << "Dynamic native hooker initialized.";
 
+				    auto lua_manager_instance = std::make_unique<lua_manager>();
+				    LOG(INFO) << "Lua manager initialized.";
+
 				    g_running = true;
 
 				    while (g_running)
 					    std::this_thread::sleep_for(500ms);
+
+				    lua_manager_instance.reset();
+				    LOG(INFO) << "Lua manager uninitialized.";
 
 				    g_hooking->disable();
 				    LOG(INFO) << "Hooking disabled.";

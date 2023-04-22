@@ -27,7 +27,7 @@ namespace big
 	void scan_weapon_damage_event(CNetGamePlayer* player, rage::datBitBuffer* buffer)
 	{
 		uint8_t damageType;
-		uint32_t weaponType;// weaponHash
+		uint32_t weaponType; // weaponHash
 
 		bool overrideDefaultDamage;
 		bool hitEntityWeapon;
@@ -55,8 +55,8 @@ namespace big
 
 		uint16_t f112_1;
 
-		uint16_t parentGlobalId;// Source entity?
-		uint16_t hitGlobalId;   // Target entity?
+		uint16_t parentGlobalId; // Source entity?
+		uint16_t hitGlobalId;    // Target entity?
 
 		uint8_t tyreIndex;
 		uint8_t suspensionIndex;
@@ -107,7 +107,7 @@ namespace big
 
 		if (isNetTargetPos)
 		{
-			localPos.x = buffer->ReadSignedFloat(16, 55.f);// divisor: 0x425C0000
+			localPos.x = buffer->ReadSignedFloat(16, 55.f); // divisor: 0x425C0000
 			localPos.y = buffer->ReadSignedFloat(16, 55.f);
 			localPos.z = buffer->ReadSignedFloat(16, 55.f);
 		}
@@ -139,13 +139,13 @@ namespace big
 		}
 		else
 		{
-			parentGlobalId = buffer->Read<uint16_t>(13);// +118
-			hitGlobalId    = buffer->Read<uint16_t>(13);// +120
+			parentGlobalId = buffer->Read<uint16_t>(13); // +118
+			hitGlobalId    = buffer->Read<uint16_t>(13); // +120
 		}
 
 		if (damageType < 2)
 		{
-			localPos.x = buffer->ReadSignedFloat(16, 55.f);// divisor: 0x425C0000
+			localPos.x = buffer->ReadSignedFloat(16, 55.f); // divisor: 0x425C0000
 			localPos.y = buffer->ReadSignedFloat(16, 55.f);
 			localPos.z = buffer->ReadSignedFloat(16, 55.f);
 
@@ -155,14 +155,14 @@ namespace big
 
 				if (hasVehicleData)
 				{
-					tyreIndex       = buffer->Read<uint8_t>(4);// +122
-					suspensionIndex = buffer->Read<uint8_t>(4);// +123
+					tyreIndex       = buffer->Read<uint8_t>(4); // +122
+					suspensionIndex = buffer->Read<uint8_t>(4); // +123
 				}
 			}
 		}
 		else
 		{
-			hitComponent = buffer->Read<uint8_t>(5);// +108
+			hitComponent = buffer->Read<uint8_t>(5); // +108
 		}
 
 		f133         = buffer->Read<uint8_t>(1);
@@ -170,7 +170,7 @@ namespace big
 
 		if (hasImpactDir)
 		{
-			impactDir.x = buffer->ReadSignedFloat(16, 6.2831854820251f);// divisor: 0x40C90FDB
+			impactDir.x = buffer->ReadSignedFloat(16, 6.2831854820251f); // divisor: 0x40C90FDB
 			impactDir.y = buffer->ReadSignedFloat(16, 6.2831854820251f);
 			impactDir.z = buffer->ReadSignedFloat(16, 6.2831854820251f);
 		}
@@ -511,19 +511,19 @@ namespace big
 
 			if (type == WorldStateDataType::Rope)
 			{
-				buffer->Read<int>(9);   // network rope id
-				buffer->Read<float>(19);// pos x
-				buffer->Read<float>(19);// pos y
-				buffer->Read<float>(19);// pos z
-				buffer->Read<float>(19);// rot x
-				buffer->Read<float>(19);// rot y
-				buffer->Read<float>(19);// rot z
-				buffer->Read<float>(16);// length
+				buffer->Read<int>(9);    // network rope id
+				buffer->Read<float>(19); // pos x
+				buffer->Read<float>(19); // pos y
+				buffer->Read<float>(19); // pos z
+				buffer->Read<float>(19); // rot x
+				buffer->Read<float>(19); // rot y
+				buffer->Read<float>(19); // rot z
+				buffer->Read<float>(16); // length
 				int type             = buffer->Read<int>(4);
 				float initial_length = buffer->Read<float>(16);
 				float min_length     = buffer->Read<float>(16);
 
-				if (type == 0 || initial_length < min_length)// https://docs.fivem.net/natives/?_0xE832D760399EB220
+				if (type == 0 || initial_length < min_length) // https://docs.fivem.net/natives/?_0xE832D760399EB220
 				{
 					// most definitely a crash
 					LOG(INFO) << std::hex << std::uppercase << "0x" << id.m_hash;
@@ -534,9 +534,9 @@ namespace big
 			}
 			else if (type == WorldStateDataType::PopGroupOverride)
 			{
-				int pop_schedule = buffer->ReadSigned<int>(8);// Pop Schedule
-				int pop_group    = buffer->Read<int>(32);     // Pop Group
-				int percentage   = buffer->Read<int>(7);      // Percentage
+				int pop_schedule = buffer->ReadSigned<int>(8); // Pop Schedule
+				int pop_group    = buffer->Read<int>(32);      // Pop Group
+				int percentage   = buffer->Read<int>(7);       // Percentage
 
 				if (pop_group == 0 && (percentage == 0 || percentage == 103))
 				{
@@ -665,6 +665,12 @@ namespace big
 		}
 		case eNetworkEvents::EXPLOSION_EVENT:
 		{
+			if (plyr && plyr->block_explosions)
+			{
+				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				return;
+			}
+
 			scan_explosion_event(source_player, buffer);
 			break;
 		}

@@ -12,7 +12,8 @@ namespace big
 		explicit script_mgr() = default;
 		~script_mgr()         = default;
 
-		void add_script(std::unique_ptr<script> script);
+		script* add_script(std::unique_ptr<script> script);
+		void remove_script(script* script);
 		void remove_all_scripts();
 
 		script_list& scripts();
