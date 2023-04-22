@@ -33,10 +33,14 @@ namespace big
 		char m_name[200];
 		std::vector<local_offset> m_offsets;
 		int m_value;
-		int m_freeze_value;
+		int m_freeze_value_int;
+		float m_freeze_value_float;
+		Vector3 m_freeze_value_vector3;
 		int* m_internal_address;
+		Vector3* m_internal_address_vector3;
+		int m_edit_mode = 0;
 
-		local(const char* script_thread_name, const char* name, const int base_address, const bool freeze, const int (*offsets)[2], int offset_count)
+		local(const char* script_thread_name, const char* name, const int base_address, const bool freeze, const int (*offsets)[2], int offset_count, int edit_mode = 0)
 		{
 			m_internal_id = ++m_instance_count;
 
@@ -48,6 +52,8 @@ namespace big
 
 			for (int i = 0; i < offset_count; i++)
 				m_offsets.push_back(local_offset(offsets[i][0], offsets[i][1]));
+
+			m_edit_mode = edit_mode;
 
 			fetch_local_pointer();
 		}
@@ -73,11 +79,26 @@ namespace big
 						actual_local = actual_local.at(offset.m_offset);
 				}
 
-				m_internal_address = actual_local.as<int*>();
+				m_internal_address         = actual_local.as<int*>();
+				m_internal_address_vector3 = actual_local.as<Vector3*>();
 
 				return m_internal_address;
 			}
 			return nullptr;
+		}
+
+		const char* get_local_chain_text()
+		{
+			static char offsetschain[200] = "";
+			strcpy(offsetschain, "");
+			strcat(offsetschain, std::to_string(m_base_address).data());
+			for (auto o : m_offsets)
+			{
+				strcat(offsetschain, std::string(".f_" + std::to_string(o.m_offset)).data());
+				if (o.m_size)
+					strcat(offsetschain, std::string("/" + std::to_string(o.m_size)).data());
+			}
+			return offsetschain;
 		}
 
 	private:

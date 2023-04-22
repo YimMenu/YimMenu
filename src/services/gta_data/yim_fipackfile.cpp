@@ -6,9 +6,10 @@
 
 namespace big
 {
-	yim_fipackfile::yim_fipackfile(rage::fiPackfile* rpf)
+	yim_fipackfile::yim_fipackfile(rage::fiPackfile* rpf, const std::string& mount_name)
 	{
 		this->rpf = rpf;
+		this->mount_name = mount_name;
 	}
 
 	void yim_fipackfile::add_wrapper_call_back(std::function<size_t(yim_fipackfile& rpf_wrapper)> cb)
@@ -18,28 +19,18 @@ namespace big
 
 	void yim_fipackfile::for_each_fipackfile()
 	{
-		// for not hanging the game too much
-		constexpr auto yield_increment = 80;
-
-		auto i = 1;
-		while (g_pointers->m_gta.m_fipackfile_instances[i])
+		for (int i = 1; i < 3672; i++) // fipackfile ctor start with 1
 		{
 			auto* rpf = g_pointers->m_gta.m_fipackfile_instances[i];
 
-			// its hard coded in the binary?
-			if (++i >= 3672)
+			if (rpf)
 			{
-				break;
+				yim_fipackfile rpf_wrapper = yim_fipackfile(rpf);
+
+				std::for_each(yim_fipackfile::m_wrapper_call_back.begin(), yim_fipackfile::m_wrapper_call_back.end(), [&rpf_wrapper](std::function<size_t(yim_fipackfile & rpf_wrapper)> cb) {
+					cb(rpf_wrapper);
+				});
 			}
-
-			yim_fipackfile rpf_wrapper = yim_fipackfile(rpf);
-
-			std::for_each(m_wrapper_call_back.begin(), m_wrapper_call_back.end(), [&rpf_wrapper](std::function<size_t(yim_fipackfile & rpf_wrapper)> cb) {
-				cb(rpf_wrapper);
-			});
-
-			if (i % yield_increment == 0)
-				script::get_current()->yield();
 		}
 	}
 
@@ -47,7 +38,7 @@ namespace big
 	{
 		std::vector<std::filesystem::path> file_paths;
 		if (parent.empty())
-			parent = "/";
+			parent = mount_name;
 
 		std::vector<std::string> directories;
 
