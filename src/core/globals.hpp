@@ -633,8 +633,9 @@ namespace big
 			bool unlimited_weapons                      = false;
 			VehicleAbility ability_chosen               = VehicleAbility::NONE;
 			bool ability_toggle                         = false;
+			uint16_t customvalue                        = 0;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, vehinvisibility, localveh_visibility, localped_visibility, keep_on_ground, no_collision, unlimited_weapons, ability_chosen, ability_toggle)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, vehinvisibility, localveh_visibility, localped_visibility, keep_on_ground, no_collision, unlimited_weapons, ability_chosen, ability_toggle, customvalue)
 		} vehicle{};
 
 		struct weapons
@@ -694,7 +695,6 @@ namespace big
 			bool interior_weapon          = false;
 			bool triggerbot               = false;
 			bool infinite_range           = false;
-
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, increase_damage, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon, triggerbot, infinite_range)
 		} weapons{};
 

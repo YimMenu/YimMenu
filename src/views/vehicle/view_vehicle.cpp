@@ -3,6 +3,7 @@
 #include "util/mobile.hpp"
 #include "util/teleport.hpp"
 #include "views/view.hpp"
+#include "vehicle/CVehicleModelInfo.hpp"
 
 namespace big
 {
@@ -158,7 +159,7 @@ namespace big
 		components::command_checkbox<"vehabilities">();
 		if (g.vehicle.ability_toggle)
 		{
-			const char* ability_names[13] = {"No Ability", "Rocket Boost", "Vehicle Jump", "Vehicle Parachute", "Ramp Buggy", "Drift + Jump", "Boost + Parachute", "Jump + Parachute", "Boost + Jump", "Boost + Jump + Parachute", "Boost + Parachute + Rampbuggy", "Boost + Jump + Parachute + Rampbuggy", "miniguns"};
+			const char* ability_names[13] = {"No Ability", "Rocket Boost", "Vehicle Jump", "Vehicle Parachute", "Ramp Buggy", "Drift + Jump", "Boost + Parachute", "Jump + Parachute", "Boost + Jump", "Boost + Jump + Parachute", "Boost + Parachute + Rampbuggy", "Boost + Jump + Parachute + Rampbuggy", "Custom"};
 			if (ImGui::BeginCombo("Selected Ability", ability_names[(int)g.vehicle.ability_chosen]))
 			{
 				for (int i = 0; i < 13; i++)
@@ -177,6 +178,18 @@ namespace big
 
 				ImGui::EndCombo();
 			}
+			CVehicleModelInfo* modelinfo = (CVehicleModelInfo*)g_local_player->m_vehicle->m_model_info;
+
+			ImGui::InputInt("Ability Flag Value", (int*)g.vehicle.customvalue, 1, 10);
+
+			ImGui::Text(std::format("Current Ability Flag: {}", modelinfo->m_ability_flag).c_str());
+
+			ImGui::SameLine();
+
+			ImGui::PushID("##flag");
+			if (ImGui::Button("copy"))
+				ImGui::SetClipboardText(std::to_string(modelinfo->m_ability_flag).data());
+			ImGui::PopID();
 			ImGui::Separator();
 		}
 

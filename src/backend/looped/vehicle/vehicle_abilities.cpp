@@ -21,7 +21,10 @@ namespace big
 			{
 				CVehicleModelInfo* modelinfo = (CVehicleModelInfo*)g_local_player->m_vehicle->m_model_info;
 
-
+				switch (g.vehicle.ability_chosen)
+				{
+				case VehicleAbility::BOOST: modelinfo->m_ability_flag = 0; break;
+				}
 				if (PED::IS_PED_DEAD_OR_DYING(self::ped, 0) || PAD::IS_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_VEH_EXIT))
 				{
 					g.vehicle.ability_chosen  = VehicleAbility::NONE;
@@ -72,9 +75,9 @@ namespace big
 				{
 					modelinfo->m_ability_flag = 512;
 				}
-				if (g.vehicle.ability_chosen == VehicleAbility::TEST)
+				if (g.vehicle.ability_chosen == VehicleAbility::CUSTOM)
 				{
-					modelinfo->m_ability_flag = 8212;
+					modelinfo->m_ability_flag = g.vehicle.customvalue;
 				}
 
 			}
