@@ -1,3 +1,4 @@
+#include "backend/player_command.hpp"
 #include "core/data/admin_rids.hpp"
 #include "core/globals.hpp"
 #include "fiber_pool.hpp"
@@ -46,6 +47,17 @@ namespace big
 		g_player_service->player_join(player);
 		if (net_player_data)
 		{
+			auto bplyr = g_player_service->get_by_id(net_player_data->m_gamer_handle.m_rockstar_id);
+			if (bplyr)
+			{
+				if (bplyr->block_join)
+				{
+					((player_command*)(command::get(RAGE_JOAAT("breakup"))))->call(bplyr, {});
+					g_notification_service->push("Player Kicked due to Block Join bypass",
+					    std::format("{} was kicked", net_player_data->m_name));
+				}
+			}
+
 			if (g.protections.admin_check)
 			{
 				if (admin_rids.contains(net_player_data->m_gamer_handle.m_rockstar_id))
