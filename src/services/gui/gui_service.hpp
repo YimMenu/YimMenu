@@ -28,6 +28,7 @@ namespace big
 
 		WORLD,
 		SPAWN_PED,
+		SQUAD_SPAWNER,
 		CREATOR,
 		TRAIN,
 		BLACKHOLE,
@@ -116,6 +117,7 @@ namespace big
 		            view::world,
 		            {
 		                {tabs::SPAWN_PED, {"GUI_TAB_SPAWN_PED", view::spawn_ped}},
+					    {tabs::SQUAD_SPAWNER, {"Squad spawner", view::squad_spawner}},
 		                {tabs::CREATOR, {"GUI_TAB_CREATOR", view::creator}},
 		                {tabs::TRAIN, {"GUI_TAB_TRAIN", view::train}},
 		                {tabs::BLACKHOLE, {"GUI_TAB_BLACKHOLE", view::blackhole}},
