@@ -21,65 +21,27 @@ namespace big
 			{
 				CVehicleModelInfo* modelinfo = (CVehicleModelInfo*)g_local_player->m_vehicle->m_model_info;
 
-				switch (g.vehicle.ability_chosen)
-				{
-				case VehicleAbility::BOOST: modelinfo->m_ability_flag = 0; break;
-				}
 				if (PED::IS_PED_DEAD_OR_DYING(self::ped, 0) || PAD::IS_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_VEH_EXIT))
 				{
 					g.vehicle.ability_chosen  = VehicleAbility::NONE;
 					modelinfo->m_ability_flag = 0;
 				}
+				switch (g.vehicle.ability_chosen)
+				{
+				case VehicleAbility::BOOST: modelinfo->m_ability_flag = 64; break;
+				case VehicleAbility::BOOSTJUMP: modelinfo->m_ability_flag = 96; break;
+				case VehicleAbility::BOOSTJUMPPARACHUTE: modelinfo->m_ability_flag = 352; break;
+				case VehicleAbility::BOOSTJUMPRRAMPBUGGYPARACHUTE: modelinfo->m_ability_flag = 864; break;
+				case VehicleAbility::BOOSTPARACHUTE: modelinfo->m_ability_flag = 320; break;
+				case VehicleAbility::BOOSTPARACHUTERAMPBUGGY: modelinfo->m_ability_flag = 832; break;
+				case VehicleAbility::DRIFTJUMP: modelinfo->m_ability_flag = 228; break;
+				case VehicleAbility::JUMP: modelinfo->m_ability_flag = 32; break;
+				case VehicleAbility::JUMPPARACHUTE: modelinfo->m_ability_flag = 288; break;
+				case VehicleAbility::PARACHUTE: modelinfo->m_ability_flag = 256; break;
+				case VehicleAbility::RAMPBUGGY: modelinfo->m_ability_flag = 512; break;
+				case VehicleAbility::CUSTOM: modelinfo->m_ability_flag = g.vehicle.customvalue; break;
 
-				if (g.vehicle.ability_chosen == VehicleAbility::BOOST)
-				{
-					modelinfo->m_ability_flag = 64;
 				}
-				if (g.vehicle.ability_chosen == VehicleAbility::BOOSTJUMP)
-				{
-					modelinfo->m_ability_flag = 96;
-				}
-				if (g.vehicle.ability_chosen == VehicleAbility::BOOSTJUMPPARACHUTE)
-				{
-					modelinfo->m_ability_flag = 352;
-				}
-				if (g.vehicle.ability_chosen == VehicleAbility::BOOSTJUMPRRAMPBUGGYPARACHUTE)
-				{
-					modelinfo->m_ability_flag = 864;
-				}
-				if (g.vehicle.ability_chosen == VehicleAbility::BOOSTPARACHUTE)
-				{
-					modelinfo->m_ability_flag = 320;
-				}
-				if (g.vehicle.ability_chosen == VehicleAbility::BOOSTPARACHUTERAMPBUGGY)
-				{
-					modelinfo->m_ability_flag = 832;
-				}
-				if (g.vehicle.ability_chosen == VehicleAbility::DRIFTJUMP)
-				{
-					modelinfo->m_ability_flag = 228;
-				}
-				if (g.vehicle.ability_chosen == VehicleAbility::JUMP)
-				{
-					modelinfo->m_ability_flag = 32;
-				}
-				if (g.vehicle.ability_chosen == VehicleAbility::JUMPPARACHUTE)
-				{
-					modelinfo->m_ability_flag = 288;
-				}
-				if (g.vehicle.ability_chosen == VehicleAbility::PARACHUTE)
-				{
-					modelinfo->m_ability_flag = 256;
-				}
-				if (g.vehicle.ability_chosen == VehicleAbility::RAMPBUGGY)
-				{
-					modelinfo->m_ability_flag = 512;
-				}
-				if (g.vehicle.ability_chosen == VehicleAbility::CUSTOM)
-				{
-					modelinfo->m_ability_flag = g.vehicle.customvalue;
-				}
-
 			}
 			else
 			{
