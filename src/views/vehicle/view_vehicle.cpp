@@ -180,7 +180,7 @@ namespace big
 			}
 			CVehicleModelInfo* modelinfo = (CVehicleModelInfo*)g_local_player->m_vehicle->m_model_info;
 
-			ImGui::InputInt("Ability Flag Value", (int*)g.vehicle.customvalue, 1, 10);
+			ImGui::InputInt("Ability Flag Value", (int*)&g.vehicle.customvalue, 1, 10);
 
 			ImGui::Text(std::format("Current Ability Flag: {}", modelinfo->m_ability_flag).c_str());
 
