@@ -291,7 +291,8 @@ namespace big
 		BOOSTJUMP,                   //96
 		BOOSTJUMPPARACHUTE,          // 352
 		BOOSTPARACHUTERAMPBUGGY,     //832
-		BOOSTJUMPRRAMPBUGGYPARACHUTE //864
+		BOOSTJUMPRRAMPBUGGYPARACHUTE, //864
+		TEST //8212
 	};
 	NLOHMANN_JSON_SERIALIZE_ENUM(VehicleAbility,
 	    {
@@ -305,9 +306,8 @@ namespace big
 	        {VehicleAbility::JUMPPARACHUTE, "Jump + Parachute"},
 	        {VehicleAbility::BOOSTJUMP, "Boost + Jump"},
 	        {VehicleAbility::BOOSTJUMPPARACHUTE, "Boost + Jump + Parachute"},
-	        {VehicleAbility::BOOSTPARACHUTERAMPBUGGY, "Boost + Parachute + Rampbuggy"},
-	        {VehicleAbility::BOOSTJUMPRRAMPBUGGYPARACHUTE, "Boost + Jump + Parachute + Rampbuggy"},
-
+	        {VehicleAbility::BOOSTPARACHUTERAMPBUGGY, "Boost + Parachute + Rampbuggy"}, {VehicleAbility::BOOSTJUMPRRAMPBUGGYPARACHUTE, "Boost + Jump + Parachute + Rampbuggy"},
+			{VehicleAbility::TEST, "TEST"}
 	    })
 
 	enum class eEntityProofs : uint32_t

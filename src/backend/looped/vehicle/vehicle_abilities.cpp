@@ -15,24 +15,17 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		virtual void on_enable() override
-		{
-			if (self::veh)
-				PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_VEH_EXIT, 0);
-		}
 		virtual void on_tick() override
 		{
-			if (g_local_player && g_local_player->m_vehicle)
+			if (g_local_player && g_local_player->m_vehicle && self::veh)
 			{
 				CVehicleModelInfo* modelinfo = (CVehicleModelInfo*)g_local_player->m_vehicle->m_model_info;
 
-				PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_VEH_EXIT, 0);
 
-				if (PED::IS_PED_DEAD_OR_DYING(self::ped, 0) || PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_VEH_EXIT))
+				if (PED::IS_PED_DEAD_OR_DYING(self::ped, 0) || PAD::IS_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_VEH_EXIT))
 				{
 					g.vehicle.ability_chosen  = VehicleAbility::NONE;
 					modelinfo->m_ability_flag = 0;
-					TASK::TASK_LEAVE_VEHICLE(self::ped, self::veh, 0);
 				}
 
 				if (g.vehicle.ability_chosen == VehicleAbility::BOOST)
@@ -79,6 +72,11 @@ namespace big
 				{
 					modelinfo->m_ability_flag = 512;
 				}
+				if (g.vehicle.ability_chosen == VehicleAbility::TEST)
+				{
+					modelinfo->m_ability_flag = 8212;
+				}
+
 			}
 			else
 			{
@@ -88,11 +86,6 @@ namespace big
 			}
 		}
 
-		virtual void on_disable() override
-		{
-			if (self::veh)
-				PAD::ENABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_VEH_EXIT, 0);
-		}
 	};
 
 	ability_selector g_ability_selector("vehabilities", "Override Ability", "Allows you to override your vehicle's ability with whatever you choose!",

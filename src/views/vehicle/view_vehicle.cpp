@@ -158,10 +158,10 @@ namespace big
 		components::command_checkbox<"vehabilities">();
 		if (g.vehicle.ability_toggle)
 		{
-			const char* ability_names[12] = {"No Ability", "Rocket Boost", "Vehicle Jump", "Vehicle Parachute", "Ramp Buggy", "Drift + Jump", "Boost + Parachute", "Jump + Parachute", "Boost + Jump", "Boost + Jump + Parachute", "Boost + Parachute + Rampbuggy", "Boost + Jump + Parachute + Rampbuggy"};
+			const char* ability_names[13] = {"No Ability", "Rocket Boost", "Vehicle Jump", "Vehicle Parachute", "Ramp Buggy", "Drift + Jump", "Boost + Parachute", "Jump + Parachute", "Boost + Jump", "Boost + Jump + Parachute", "Boost + Parachute + Rampbuggy", "Boost + Jump + Parachute + Rampbuggy", "miniguns"};
 			if (ImGui::BeginCombo("Selected Ability", ability_names[(int)g.vehicle.ability_chosen]))
 			{
-				for (int i = 0; i < 12; i++)
+				for (int i = 0; i < 13; i++)
 				{
 					if (ImGui::Selectable(ability_names[i], g.vehicle.ability_chosen == (VehicleAbility)i))
 					{
