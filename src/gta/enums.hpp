@@ -1919,3 +1919,16 @@ enum class eVehicleSeats
 	OUTSIDE_LEFT,
 	OUTSIDE_RIGHT,
 };
+
+enum class eCombatAbilityLevel{
+	POOR,
+	AVERAGE,
+	PROFESSIONAL
+};
+
+NLOHMANN_JSON_SERIALIZE_ENUM(eCombatAbilityLevel, 
+	{
+		{eCombatAbilityLevel::POOR, "poor"},
+		{eCombatAbilityLevel::AVERAGE, "average"},
+		{eCombatAbilityLevel::PROFESSIONAL, "professional"}
+	})
