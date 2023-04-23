@@ -2,6 +2,7 @@
 #include "core/enums.hpp"
 #include "natives.hpp"
 #include "vehicle/CVehicleModelInfo.hpp"
+#include "gta/enums.hpp"
 
 namespace big
 {
@@ -11,10 +12,13 @@ namespace big
 		{
 			CVehicleModelInfo* modelinfo = (CVehicleModelInfo*)g_local_player->m_vehicle->m_model_info;
 
-			if (PED::IS_PED_DEAD_OR_DYING(self::ped, 0)) //FIGURE OUT HOW TO GET LAST VEHICLE
+			PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_VEH_EXIT, 0);
+
+			if (PED::IS_PED_DEAD_OR_DYING(self::ped, 0) || PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_VEH_EXIT)) //FIGURE OUT HOW TO GET LAST VEHICLE
 			{
 				g.vehicle.ability_chosen = VehicleAbility::NONE;
 				modelinfo->m_ability_flag = 0;
+				TASK::TASK_LEAVE_VEHICLE(self::ped, self::veh, 0);
 			}
 
 			if (g.vehicle.ability_chosen == VehicleAbility::BOOST)
