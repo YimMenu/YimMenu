@@ -140,7 +140,7 @@ namespace big
 		                {tabs::MISSIONS, {"GUI_TAB_MISSIONS", view::missions}},
 		                {tabs::PLAYER_DATABASE, {"GUI_TAB_PLAYER_DB", view::player_database}},
 		                {tabs::SESSION_BROWSER, {"GUI_TAB_SESSION_BROWSER", view::session_browser}},
-		                {tabs::STAT_EDITOR, {"GUI_TAB_IPL", view::ipl}},
+		                {tabs::STAT_EDITOR, {"GUI_TAB_STAT_EDITOR", view::stat_editor}},
 		            },
 		        },
 		    },
