@@ -16,13 +16,14 @@ namespace big
 
 	exception_handler::exception_handler()
 	{
-		SetErrorMode(0);
+		m_old_error_mode = SetErrorMode(0);
 		SetUnhandledExceptionFilter(&vectored_exception_handler);
 	}
 
 	exception_handler::~exception_handler()
 	{
 		// passing nullptr will make it go back to normal exception handling
+		SetErrorMode(m_old_error_mode);
 		SetUnhandledExceptionFilter(nullptr);
 	}
 
