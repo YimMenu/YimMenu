@@ -5,6 +5,7 @@
 #include "bindings/log.hpp"
 #include "bindings/memory.hpp"
 #include "bindings/natives.hpp"
+#include "bindings/network.hpp"
 #include "bindings/script.hpp"
 #include "file_manager.hpp"
 #include "script_mgr.hpp"
@@ -46,6 +47,7 @@ namespace big
 		lua::natives::bind(m_state);
 		lua::memory::bind(m_state);
 		lua::gui::bind(m_state);
+		lua::network::bind(m_state);
 
 		m_state["!module_name"] = module_name;
 		m_state["!this"]        = this;
