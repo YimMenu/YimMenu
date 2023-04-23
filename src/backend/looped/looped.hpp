@@ -41,6 +41,7 @@ namespace big
 		static void system_spoofing();
 		static void system_mission_creator();
 
+		static void vehicle_ability();
 		static void vehicle_auto_drive();
 		static void vehicle_boost_behavior();
 		static void vehicle_fly();

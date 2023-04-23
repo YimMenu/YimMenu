@@ -153,6 +153,28 @@ namespace big
 		}
 		ImGui::Separator();
 
+		components::sub_title("Vehicle Ability Selector");
+
+		const char* ability_names[12] = {"No Ability", "Rocket Boost", "Vehicle Jump", "Vehicle Parachute", "Ramp Buggy", "Drift + Jump", "Boost + Parachute", "Jump + Parachute", "Boost + Jump", "Boost + Jump + Parachute", "Boost + Parachute + Rampbuggy", "Boost + Jump + Parachute + Rampbuggy"};
+		if (ImGui::BeginCombo("Selected Ability", ability_names[(int)g.vehicle.ability_chosen]))
+		{
+			for (int i = 0; i < 11; i++)
+			{
+				if (ImGui::Selectable(ability_names[i], g.vehicle.ability_chosen == (VehicleAbility)i))
+				{
+					g.vehicle.ability_chosen = (VehicleAbility)i;
+					g_notification_service->push_warning("Ability Selector", std::vformat("Ability Set To {}.", std::make_format_args(ability_names[i])));
+				}
+
+				if (g.vehicle.ability_chosen == (VehicleAbility)i)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+		ImGui::Separator();
 
 		components::sub_title("SPEED_UNIT"_T);
 		{

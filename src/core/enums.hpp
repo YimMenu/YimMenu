@@ -278,6 +278,38 @@ namespace big
 	        {AutoDriveStyle::THE_ROAD_IS_YOURS, "the_road_is_yours"},
 	    })
 
+	enum class VehicleAbility
+	{
+		NONE,
+		BOOST,                       //64
+		JUMP,                        // 32
+		PARACHUTE,                   //256
+		RAMPBUGGY,                   //512
+		DRIFTJUMP,                   //228
+		BOOSTPARACHUTE,              //320
+		JUMPPARACHUTE,               //288
+		BOOSTJUMP,                   //96
+		BOOSTJUMPPARACHUTE,          // 352
+		BOOSTPARACHUTERAMPBUGGY,     //832
+		BOOSTJUMPRRAMPBUGGYPARACHUTE //864
+	};
+	NLOHMANN_JSON_SERIALIZE_ENUM(VehicleAbility,
+	    {
+	        {VehicleAbility::NONE, "No Ability"},
+	        {VehicleAbility::BOOST, "Rocket Boost"},
+	        {VehicleAbility::JUMP, "Vehicle Jump"},
+	        {VehicleAbility::PARACHUTE, "Vehicle Parachute"},
+	        {VehicleAbility::RAMPBUGGY, "Ramp Buggy"},
+	        {VehicleAbility::DRIFTJUMP, "Drift + Jump"},
+	        {VehicleAbility::BOOSTPARACHUTE, "Boost + Parachute"},
+	        {VehicleAbility::JUMPPARACHUTE, "Jump + Parachute"},
+	        {VehicleAbility::BOOSTJUMP, "Boost + Jump"},
+	        {VehicleAbility::BOOSTJUMPPARACHUTE, "Boost + Jump + Parachute"},
+	        {VehicleAbility::BOOSTPARACHUTERAMPBUGGY, "Boost + Parachute + Rampbuggy"},
+	        {VehicleAbility::BOOSTJUMPRRAMPBUGGYPARACHUTE, "Boost + Jump + Parachute + Rampbuggy"},
+
+	    })
+
 	enum class eEntityProofs : uint32_t
 	{
 		BULLET    = 1 << 4,
