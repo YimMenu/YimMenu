@@ -6,20 +6,15 @@ namespace big
 {
 	lua_manager::lua_manager()
 	{
-		for (const auto& entry : std::filesystem::directory_iterator(g_file_manager->get_project_folder("scripts").get_path()))
-			if (entry.is_regular_file())
-				if (entry.path().filename().string() != "natives.lua")
-					m_modules.push_back(std::make_shared<lua_module>(entry.path().filename().string()));
+		load_all_modules();
 
 		g_lua_manager = this;
 	}
 
 	lua_manager::~lua_manager()
 	{
-		for (auto& module : m_modules)
-			module.reset();
+		unload_all_modules();
 
-		m_modules.clear();
 		g_lua_manager = nullptr;
 	}
 
@@ -35,5 +30,57 @@ namespace big
 					element->draw();
 			}
 		}
+	}
+
+	void lua_manager::unload_module(rage::joaat_t module_id)
+	{
+		std::erase_if(m_modules, [module_id](auto& module) {
+			return module_id == module->module_id();
+		});
+	}
+
+	void lua_manager::load_module(const std::string& module_name)
+	{
+		auto id = rage::joaat(module_name);
+
+		for (auto& module : m_modules)
+			if (module->module_id() == id)
+				return;
+
+		m_modules.push_back(std::make_shared<lua_module>(module_name));
+	}
+
+	std::weak_ptr<lua_module> lua_manager::get_module(rage::joaat_t module_id)
+	{
+		for (auto& module : m_modules)
+			if (module->module_id() == module_id)
+				return module;
+
+		return {};
+	}
+
+	const std::vector<std::shared_ptr<lua_module>>& lua_manager::get_modules()
+	{
+		return m_modules;
+	}
+
+	void lua_manager::reload_all_modules()
+	{
+		unload_all_modules();
+		load_all_modules();
+	}
+
+	void lua_manager::load_all_modules()
+	{
+		for (const auto& entry : std::filesystem::directory_iterator(g_file_manager->get_project_folder("scripts").get_path()))
+			if (entry.is_regular_file())
+				load_module(entry.path().filename().string());
+	}
+	void lua_manager::unload_all_modules()
+	{
+		for (auto& module : m_modules)
+			module.reset();
+
+		m_modules.clear();
 	}
 }

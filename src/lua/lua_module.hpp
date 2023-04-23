@@ -11,6 +11,7 @@ namespace big
 	{
 		sol::state m_state;
 		std::string m_module_name;
+		rage::joaat_t m_module_id;
 
 	public:
 		std::vector<script*> m_registered_scripts;
@@ -19,5 +20,7 @@ namespace big
 
 		lua_module(std::string module_name);
 		~lua_module();
+		rage::joaat_t module_id();
+		const std::string& module_name();
 	};
 }

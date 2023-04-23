@@ -11,6 +11,7 @@ namespace big
 
 	lua_patch::~lua_patch()
 	{
+		m_byte_patch->restore();
 		m_byte_patch->remove();
 	}
 

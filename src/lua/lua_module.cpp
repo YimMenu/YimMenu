@@ -35,7 +35,8 @@ namespace big
 
 	lua_module::lua_module(std::string module_name) :
 	    m_state(),
-	    m_module_name(module_name)
+	    m_module_name(module_name),
+	    m_module_id(rage::joaat(module_name))
 	{
 		m_state.open_libraries();
 
@@ -74,5 +75,15 @@ namespace big
 
 		m_registered_scripts.clear();
 		m_registered_patches.clear();
+	}
+
+	rage::joaat_t lua_module::module_id()
+	{
+		return m_module_id;
+	}
+
+	const std::string& lua_module::module_name()
+	{
+		return m_module_name;
 	}
 }
