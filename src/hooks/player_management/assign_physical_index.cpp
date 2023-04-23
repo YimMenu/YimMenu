@@ -53,9 +53,9 @@ namespace big
 				if (bplyr->block_join)
 				{
 					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(bplyr, {});
-					g_notification_service->push("Player Kicked due to Block Join bypass",
-					    std::format("{} was kicked", net_player_data->m_name));
-					LOG(WARNING) << net_player_data->m_name << "(" << net_player_data->m_gamer_handle.m_rockstar_id << ") has been kicked(breakup) due to block join bypass";
+					g_notification_service->push("Block Join Try 2",
+					    std::format("Block Join method failed for {}, sending breakup kick instead...", net_player_data->m_name));
+					LOG(WARNING) << "Sending Breakup Kick due to block join failure... ";
 				}
 			}
 
