@@ -63,6 +63,7 @@ namespace big
 		static void nearby();
 		static void world();
 		static void gta_cache();
+		static void ipl();
 
 		static void player_info();
 		static void player_troll();
