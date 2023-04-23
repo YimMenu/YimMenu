@@ -11,6 +11,13 @@ namespace big
 	{
 		Ped handle;
 		CPed* ptr;
+		int task_sequence_progress = -1;
+		int task_sequence          = 0;
+
+		~squad_member()
+		{
+			TASK::CLEAR_SEQUENCE_TASK(&task_sequence);
+		}
 
 		Vector3 get_pos()
 		{
@@ -24,15 +31,11 @@ namespace big
 
 		bool is_ped_alive()
 		{
-			if (ptr)
-			{
-				return ptr->m_health > 0;
-			}
-			return false;
+			return ENTITY::DOES_ENTITY_EXIST(handle) && !ENTITY::IS_ENTITY_DEAD(handle, false);
 		}
 	};
 
-	enum class eSquadSpawnDistance : int
+	enum class eSquadSpawnDistance
 	{
 		CUSTOM,
 		ON_TARGET,
@@ -48,13 +51,12 @@ namespace big
     */
 	struct squad
 	{
-		int m_internal_id;
 		//Static variables
-		char m_name[32];
-		char m_description[500];
-		char m_ped_model[32];
-		char m_weapon_model[32];
-		char m_vehicle_model[32];
+		std::string m_name;
+		std::string m_description;
+		std::string m_ped_model;
+		std::string m_weapon_model;
+		std::string m_vehicle_model;
 		bool m_ped_invincibility;
 		bool m_veh_invincibility;
 		bool m_ped_proofs[5]; // 0 headshot, 1 bullet, 2 flame, 3 melee, 4 explosion
@@ -67,7 +69,8 @@ namespace big
 		eCombatAbilityLevel m_combat_ability_level;
 		bool m_stay_in_veh;
 		bool m_spawn_behind_same_velocity; //Spawns behind a moving target with the same velocity as the targets vehicle
-		bool m_disperse; //Spawns attackers that are on foot on seperate positions
+		bool m_disperse;                   //Spawns attackers that are on foot on seperate positions
+
 		/*
 		Leave vehicle_model empty to spawn a squad on foot
 		Ped proofs array is indexed as follows; 0 headshot, 1 bullet, 2 flame, 3 melee, 4 explosion
@@ -75,16 +78,16 @@ namespace big
 		Leave spawn_distance at 0 to let the spawn_distance_mode to handle it
 		*/
 		squad(){};
-		squad(const char* name, const char* ped_model, const char* weapon_model, const char* vehicle_model, int squad_size, bool ped_invincibility = false, bool veh_invincibility = false, bool ped_proofs[5] = {}, float ped_health = 0, float ped_armor = 0, float spawn_distance = 0, float ped_accuracy = 50.f, eSquadSpawnDistance spawn_distance_mode = eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel combat_ability_level = eCombatAbilityLevel::AVERAGE, bool stay_in_veh = false, bool spawn_behind_same_velocity = false, const char* description = "", bool disperse = false)
+		squad(std::string name, std::string ped_model, std::string weapon_model, std::string vehicle_model, int squad_size, bool ped_invincibility = false, bool veh_invincibility = false, bool ped_proofs[5] = {}, float ped_health = 0, float ped_armor = 0, float spawn_distance = 0, float ped_accuracy = 50.f, eSquadSpawnDistance spawn_distance_mode = eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel combat_ability_level = eCombatAbilityLevel::AVERAGE, bool stay_in_veh = false, bool spawn_behind_same_velocity = false, std::string description = "", bool disperse = false)
 		{
 			m_internal_id = ++m_instance_count;
 
-			strcpy(m_name, name);
-			strcpy(m_description, description);
-			strcpy(m_ped_model, ped_model);
-			strcpy(m_weapon_model, weapon_model);
-			strcpy(m_vehicle_model, vehicle_model);
-			m_squad_size = squad_size;
+			m_name          = name;
+			m_description   = description;
+			m_ped_model     = ped_model;
+			m_weapon_model  = weapon_model;
+			m_vehicle_model = vehicle_model;
+			m_squad_size    = squad_size;
 
 			m_ped_invincibility = ped_invincibility;
 			m_veh_invincibility = veh_invincibility;
@@ -146,29 +149,30 @@ namespace big
 
 		bool is_squad_alive()
 		{
-			bool alive = false;
 			for (auto& p : m_members)
-				if (!ENTITY::IS_ENTITY_DEAD(p.handle, false))
-					alive = true;
-			return alive;
+				if (p.is_ped_alive())
+					return true;
+			return false;
 		}
 
 		squad_member get_a_member_thats_alive()
 		{
 			for (auto& p : m_members)
-				if (!ENTITY::IS_ENTITY_DEAD(p.handle, false))
+				if (p.is_ped_alive())
 					return p;
 			return {};
 		}
 
 		//Dynamic variables
 		std::vector<squad_member> m_members{};
-		player_ptr target;
-		Ped current_target_ped;
-		Vehicle m_veh_handle;
-		CVehicle* m_veh_ptr;
-		Vector3 m_spawn_pos;
-		float m_spawn_heading;
+		player_ptr target      = nullptr;
+		Ped current_target_ped = 0;
+		Vehicle m_veh_handle   = 0;
+		CVehicle* m_veh_ptr    = nullptr;
+		Vector3 m_spawn_pos{};
+		float m_spawn_heading = 0;
+
+		int m_internal_id = 0;
 
 		Vector3 get_veh_pos()
 		{
@@ -183,6 +187,10 @@ namespace big
 	private:
 		inline static int m_instance_count;
 	};
+
+	NLOHMANN_JSON_SERIALIZE_ENUM(eSquadSpawnDistance, {{eSquadSpawnDistance::CUSTOM, "custom"}, {eSquadSpawnDistance::ON_TARGET, "on target"}, {eSquadSpawnDistance::CLOSEBY, "closeby"}, {eSquadSpawnDistance::MODERATELY_DISTANCED, "moderately distanced"}, {eSquadSpawnDistance::FAR_AWAY, "far away"}})
+
+	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(squad, m_name, m_description, m_ped_model, m_weapon_model, m_vehicle_model, m_ped_invincibility, m_veh_invincibility, m_ped_proofs, m_ped_health, m_ped_armor, m_ped_accuracy, m_spawn_distance, m_squad_size, m_spawn_distance_mode, m_combat_ability_level, m_stay_in_veh, m_spawn_behind_same_velocity, m_disperse);
 
 	class squad_spawner
 	{
@@ -200,22 +208,18 @@ namespace big
 		squad_member spawn_squad_member(squad);
 		std::pair<Vehicle, CVehicle*> spawn_squad_vehicle(squad);
 
-
 	public:
 		void load_default_templates();
 		std::filesystem::path get_file_path();
 		bool spawn_squad(squad, player_ptr target_player, bool override_spawn_pos, Vector3 custom_pos);
-		nlohmann::json to_json(squad s);
-		squad from_json(nlohmann::json j);
 		bool save_squad(squad);
 		bool delete_squad(squad);
 		bool fetch_squads();
-
 		void tick();
 
-
 		void terminate_squads();
-		void update_squad_target(squad& s, Ped target_ped);
+		void terminate_squad(squad*);
+		void build_and_perform_sequence(squad&, int member);
 	};
 
 	inline squad_spawner g_squad_spawner_service;

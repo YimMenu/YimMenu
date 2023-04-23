@@ -1925,3 +1925,10 @@ enum class eCombatAbilityLevel{
 	AVERAGE,
 	PROFESSIONAL
 };
+
+NLOHMANN_JSON_SERIALIZE_ENUM(eCombatAbilityLevel, 
+	{
+		{eCombatAbilityLevel::POOR, "poor"},
+		{eCombatAbilityLevel::AVERAGE, "average"},
+		{eCombatAbilityLevel::PROFESSIONAL, "professional"}
+	})

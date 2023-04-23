@@ -11,11 +11,7 @@ namespace big
 
 	squad_member squad_spawner::spawn_squad_member(squad s)
 	{
-		Ped handle{};
-		CPed* ptr{};
-
-		handle = ped::spawn(ePedType::PED_TYPE_CIVMALE, rage::joaat(s.m_ped_model), 0, s.m_spawn_pos, 0, true);
-		ptr    = reinterpret_cast<CPed*>(g_pointers->m_gta.m_handle_to_ptr(handle));
+		auto handle = ped::spawn(ePedType::PED_TYPE_CIVMALE, rage::joaat(s.m_ped_model), 0, s.m_spawn_pos, 0, true);
 
 		if (entity::take_control_of(handle))
 		{
@@ -62,7 +58,7 @@ namespace big
 				PED::SET_PED_ARMOUR(handle, s.m_ped_armor);
 			}
 
-			if (s.does_squad_have_vehicle() && strcmp(s.m_weapon_model, "WEAPON_UNARMED")  != 0 )
+			if (s.does_squad_have_vehicle() && s.m_weapon_model != "WEAPON_UNARMED")
 			{
 				WEAPON::GIVE_WEAPON_TO_PED(handle, rage::joaat("WEAPON_MICROSMG"), 999, false, false);
 			}
@@ -74,22 +70,18 @@ namespace big
 			HUD::SET_PED_HAS_AI_BLIP(handle, true);
 			HUD::SET_PED_AI_BLIP_FORCED_ON(handle, true);
 		}
-		return {handle, ptr};
+		return squad_member(handle, reinterpret_cast<CPed*>(g_pointers->m_gta.m_handle_to_ptr(handle)), -1);
 	}
 
 	std::pair<Vehicle, CVehicle*> squad_spawner::spawn_squad_vehicle(squad s)
 	{
-		Vehicle handle{};
-		CVehicle* ptr{};
-
-		handle = vehicle::spawn(rage::joaat(s.m_vehicle_model), s.m_spawn_pos, 0);
-		ptr    = reinterpret_cast<CVehicle*>(g_pointers->m_gta.m_handle_to_ptr(handle));
+		auto handle = vehicle::spawn(rage::joaat(s.m_vehicle_model), s.m_spawn_pos, s.m_spawn_heading);
 
 		VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(handle, 5);
 		ENTITY::SET_ENTITY_INVINCIBLE(handle, s.m_veh_invincibility);
 		VEHICLE::SET_VEHICLE_ENGINE_ON(handle, true, true, false);
 
-		return std::pair<Vehicle, CVehicle*>(handle, ptr);
+		return std::pair<Vehicle, CVehicle*>(handle, reinterpret_cast<CVehicle*>(g_pointers->m_gta.m_handle_to_ptr(handle)));
 	}
 
 
@@ -109,8 +101,6 @@ namespace big
 			case eSquadSpawnDistance::MODERATELY_DISTANCED: s.m_spawn_distance = 70.f; break;
 			}
 		}
-
-		//LOG(INFO) << "Squad spawner: Desired distance determined at " << s.m_spawn_distance;
 
 		static auto reset_spawn_pos_to_offset = [&]() -> void {
 			Ped player_ped_handle = g_pointers->m_gta.m_ptr_to_handle(s.target->get_ped());
@@ -147,10 +137,9 @@ namespace big
 			return false;
 		}
 
-		if (std::string(s.m_name).empty())
-			strcpy(s.m_name,
-			    std::string(std::to_string(s.m_squad_size) + std::string("_").append(s.m_ped_model).append("_").append(std::to_string(s.m_internal_id)))
-			        .data());
+		if (std::string(s.m_name).empty()){
+			  s.m_name =  std::string(std::to_string(s.m_squad_size) + std::string("_").append(s.m_ped_model).append("_").append(std::to_string(s.m_internal_id)));
+		}
 
 		Hash veh_model_hash  = rage::joaat(s.m_vehicle_model);
 		s.current_target_ped = g_pointers->m_gta.m_ptr_to_handle(s.target->get_ped());
@@ -185,8 +174,6 @@ namespace big
 			s.m_spawn_pos = custom_pos;
 		}
 
-		//LOG(INFO) << "Squad spawner: Distance from target determined: " << math::distance_between_vectors(s.m_spawn_pos, ENTITY::GET_ENTITY_COORDS(target_ped, true));
-
 		if (VEHICLE::IS_THIS_MODEL_A_PLANE(veh_model_hash) || VEHICLE::IS_THIS_MODEL_A_HELI(veh_model_hash))
 			s.m_spawn_pos.z += 50.f;
 
@@ -218,40 +205,7 @@ namespace big
 					PED::SET_PED_INTO_VEHICLE(s.m_members[i].handle, s.m_veh_handle, (i - 1));
 				PED::SET_PED_RELATIONSHIP_GROUP_HASH(s.m_members[i].handle, RAGE_JOAAT("HATES_PLAYER"));
 
-				int seq;
-				TASK::OPEN_SEQUENCE_TASK(&seq);
-				if (veh_spawned)
-				{
-					if (i == 0)
-					{
-						if (VEHICLE::IS_THIS_MODEL_A_CAR(veh_model_hash))
-						{
-							TASK::TASK_VEHICLE_MISSION_PED_TARGET(0, s.m_veh_handle, s.current_target_ped, s.m_stay_in_veh ? 6 : 4, 100.f, 786468, 12.f, 5.f, true);
-							if (!s.m_stay_in_veh)
-								TASK::TASK_LEAVE_ANY_VEHICLE(0, 0, 16);
-						}
-						else if (VEHICLE::IS_THIS_MODEL_A_HELI(veh_model_hash))
-						{
-							TASK::TASK_HELI_MISSION(0, s.m_veh_handle, 0, s.current_target_ped, 0, 0, 0, 6, 200.f, 30.f, -1, 50.f, 20.f, -1, 128 | 4096);
-							VEHICLE::SET_HELI_BLADES_FULL_SPEED(s.m_veh_handle);
-						}
-						else if (VEHICLE::IS_THIS_MODEL_A_PLANE(veh_model_hash))
-						{
-							TASK::TASK_PLANE_MISSION(0, s.m_veh_handle, 0, s.current_target_ped, 0, 0, 0, 6, 300, 35.f, -1, 100.f, 20.f, true);
-							VEHICLE::SET_VEHICLE_FORWARD_SPEED(s.m_veh_handle, 30.f);
-						}
-						else if (VEHICLE::IS_THIS_MODEL_A_BOAT(veh_model_hash))
-						{
-							TASK::TASK_BOAT_MISSION(0, s.m_veh_handle, 0, s.current_target_ped, 0, 0, 0, 6, 300, 786468, 10.f, 7);
-						}
-					}
-				}
-
-				TASK::TASK_COMBAT_PED(0, s.current_target_ped, 67108864, 16); //flag 67108864 should prevent peds from attaining other targets
-				TASK::SET_SEQUENCE_TO_REPEAT(seq, 1);
-				TASK::CLOSE_SEQUENCE_TASK(seq);
-				TASK::TASK_PERFORM_SEQUENCE(s.m_members[i].handle, seq);
-				TASK::CLEAR_SEQUENCE_TASK(&seq);
+				squad_spawner::build_and_perform_sequence(s, i);
 
 				if (s.m_stay_in_veh)
 					PED::SET_PED_COMBAT_ATTRIBUTES(s.m_members[i].handle, 3, false);
@@ -274,7 +228,6 @@ namespace big
 			}
 		}
 
-
 		if (s.has_squad_spawned())
 		{
 			m_active_squads.push_back(s);
@@ -289,6 +242,11 @@ namespace big
 		{
 			if (s.is_squad_alive())
 			{
+				for (auto& m : s.m_members)
+				{
+					//This can be used to track attacker progress regarding their task. Anything above -1 means it is in progress.
+					m.task_sequence_progress = TASK::GET_SEQUENCE_PROGRESS(m.handle);
+				}
 			}
 			else
 			{

@@ -8,76 +8,6 @@ namespace big
 		return g_file_manager->get_project_folder("squad_spawner").get_path();
 	}
 
-	nlohmann::json squad_spawner::to_json(squad s)
-	{
-		nlohmann::json j;
-
-		j["name"]                    = s.m_name;
-		j["description"]             = s.m_description;
-		j["pedmodel"]                = s.m_ped_model;
-		j["vehmodel"]                = s.m_vehicle_model;
-		j["weapmodel"]               = s.m_weapon_model;
-		j["pedinvincibility"]        = s.m_ped_invincibility;
-		j["vehinvincibility"]        = s.m_veh_invincibility;
-		j["pedproofs"]["headshot"]   = s.m_ped_proofs[0];
-		j["pedproofs"]["bullet"]     = s.m_ped_proofs[1];
-		j["pedproofs"]["flame"]      = s.m_ped_proofs[2];
-		j["pedproofs"]["melee"]      = s.m_ped_proofs[3];
-		j["pedproofs"]["explosion"]  = s.m_ped_proofs[4];
-		j["pedhealth"]               = s.m_ped_health;
-		j["pedarmor"]                = s.m_ped_armor;
-		j["pedacurracy"]             = s.m_ped_accuracy;
-		j["spawndistance"]           = s.m_spawn_distance;
-		j["squadsize"]               = s.m_squad_size;
-		j["spawndistancemode"]       = s.m_spawn_distance_mode;
-		j["combatabilitylevel"]      = s.m_combat_ability_level;
-		j["stayinveh"]               = s.m_stay_in_veh;
-		j["spawnbehindsamevelocity"] = s.m_spawn_behind_same_velocity;
-		j["disperse"]                = s.m_disperse;
-
-		return j;
-	}
-
-	squad squad_spawner::from_json(nlohmann::json j)
-	{
-		squad new_squad;
-		std::string_view name_sv       = j.value<std::string_view>("name", "");
-		std::string_view desc_sv       = j.value<std::string_view>("description", "");
-		std::string_view ped_model_sv  = j.value<std::string_view>("pedmodel", "");
-		std::string_view veh_model_sv  = j.value<std::string_view>("vehmodel", "");
-		std::string_view weap_model_sv = j.value<std::string_view>("weapmodel", "");
-
-		strcpy(new_squad.m_name, name_sv.data());
-		strcpy(new_squad.m_description, desc_sv.data());
-		strcpy(new_squad.m_ped_model, ped_model_sv.data());
-		strcpy(new_squad.m_vehicle_model, veh_model_sv.data());
-		strcpy(new_squad.m_weapon_model, weap_model_sv.data());
-
-		new_squad.m_ped_invincibility = j.value("pedinvincibility", 0);
-		new_squad.m_veh_invincibility = j.value("vehinvincibility", 0);
-
-		if (j.contains("pedproofs"))
-		{
-			new_squad.m_ped_proofs[0] = j["pedproofs"].value("headshot", false);
-			new_squad.m_ped_proofs[1] = j["pedproofs"].value("bullet", false);
-			new_squad.m_ped_proofs[2] = j["pedproofs"].value("flame", false);
-			new_squad.m_ped_proofs[3] = j["pedproofs"].value("melee", false);
-			new_squad.m_ped_proofs[4] = j["pedproofs"].value("explosion", false);
-		}
-		new_squad.m_ped_health                 = j.value("pedhealth", 100);
-		new_squad.m_ped_armor                  = j.value("pedarmor", 0);
-		new_squad.m_ped_accuracy               = j.value("pedacurracy", 50);
-		new_squad.m_spawn_distance             = j.value("spawndistance", 0);
-		new_squad.m_squad_size                 = j.value("squadsize", 1);
-		new_squad.m_spawn_distance_mode        = (eSquadSpawnDistance)j.value("spawndistancemode", 1);
-		new_squad.m_combat_ability_level       = (eCombatAbilityLevel)j.value("combatabilitylevel", 2);
-		new_squad.m_stay_in_veh                = j.value("stayinveh", false);
-		new_squad.m_spawn_behind_same_velocity = j.value("spawnbehindsamevelocity", true);
-		new_squad.m_disperse                   = j.value("disperse", false);
-
-		return new_squad;
-	}
-
 	bool squad_spawner::fetch_squads()
 	{
 		g_squad_spawner_service.m_templates.clear();
@@ -96,7 +26,12 @@ namespace big
 						read >> j;
 						read.close();
 					}
-					g_squad_spawner_service.m_templates.push_back(g_squad_spawner_service.from_json(j));
+					squad new_squad{};
+					LOG(INFO) << "TEST1";
+					from_json(j, new_squad);
+					LOG(INFO) << "TEST2";
+					g_squad_spawner_service.m_templates.push_back(new_squad);
+					LOG(INFO) << "TEST3";
 				}
 			}
 			success = true;
@@ -113,20 +48,21 @@ namespace big
 	bool squad_spawner::save_squad(squad s)
 	{
 		for (auto s_ : g_squad_spawner_service.m_templates)
-			if (strcmp(s_.m_name, s.m_name) == 0)
+			if (s_.m_name.compare(s.m_name) == 0)
 				return false;
 
 		std::ofstream write;
 		std::string savename = s.m_name;
 		savename.append(".json");
 		std::filesystem::path path = get_file_path() / savename;
-
+		nlohmann::json j;
+		to_json(j, s);
 		write.open(path, std::ofstream::out | std::ofstream::trunc);
 		try
 		{
 			if (write.is_open())
 			{
-				write << std::setw(4) << squad_spawner::to_json(s) << std::endl;
+				write << std::setw(4) << j << std::endl;
 				write.close();
 				g_notification_service->push("Squad spawner", std::string("Succesfully saved ").append(s.m_name));
 				fetch_squads();
