@@ -27,6 +27,7 @@
 #include "services/player_database/player_database_service.hpp"
 #include "services/players/player_service.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
+#include "services/tunables/tunables_service.hpp"
 #include "services/vehicle/handling_service.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
 #include "thread_pool.hpp"
@@ -104,6 +105,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    auto hotkey_service_instance          = std::make_unique<hotkey_service>();
 				    auto matchmaking_service_instance     = std::make_unique<matchmaking_service>();
 				    auto api_service_instance             = std::make_unique<api_service>();
+				    auto tunables_service_instance        = std::make_unique<tunables_service>();
 				    LOG(INFO) << "Registered service instances...";
 
 				    g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
@@ -123,6 +125,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::orbital_drone, "Orbital Drone"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::vehicle_control, "Vehicle Control"));
 				    g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu, "Context Menu"));
+				    g_script_mgr.add_script(std::make_unique<script>(&backend::tunables_script, "Tunables"));
 
 				    LOG(INFO) << "Scripts registered.";
 
@@ -160,7 +163,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    thread_pool_instance->destroy();
 				    LOG(INFO) << "Destroyed thread pool.";
 
-
+				    tunables_service_instance.reset();
+				    LOG(INFO) << "Tunables Service reset.";
 				    hotkey_service_instance.reset();
 				    LOG(INFO) << "Hotkey Service reset.";
 				    matchmaking_service_instance.reset();

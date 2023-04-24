@@ -9,6 +9,7 @@
 #include "gta_util.hpp"
 #include "network_session_host.hpp"
 #include "shop_controller.hpp"
+#include "tunables.hpp"
 
 #include <script/scrProgram.hpp>
 #include <script/scrProgramTable.hpp>
@@ -148,6 +149,11 @@ namespace big
 		add_native_detour(RAGE_JOAAT("fm_deathmatch_creator"), 0x3D3D8B3BE5A83D35, creator::GET_USED_CREATOR_BUDGET);
 		add_native_detour(RAGE_JOAAT("fm_lts_creator"), 0x3D3D8B3BE5A83D35, creator::GET_USED_CREATOR_BUDGET);
 		add_native_detour(RAGE_JOAAT("fm_survival_creator"), 0x3D3D8B3BE5A83D35, creator::GET_USED_CREATOR_BUDGET);
+
+		add_native_detour(RAGE_JOAAT("tuneables_processing"), 0x4EDE34FBADD967A6, tunables::WAIT);
+		add_native_detour(RAGE_JOAAT("tuneables_processing"), 0x40FCE03E50E8DBE8, tunables::NETWORK_ACCESS_TUNABLE_INT_HASH);
+		add_native_detour(RAGE_JOAAT("tuneables_processing"), 0x697F508861875B42, tunables::NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH);
+		add_native_detour(RAGE_JOAAT("tuneables_processing"), 0x972BC203BBC4C4D5, tunables::NETWORK_ACCESS_TUNABLE_FLOAT_HASH);
 
 		for (auto& entry : *g_pointers->m_gta.m_script_program_table)
 			if (entry.m_program)

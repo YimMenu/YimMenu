@@ -320,15 +320,6 @@ namespace big
 
 		struct session
 		{
-			int local_weather     = 0;
-			bool override_time    = {};
-			bool override_weather = false;
-			struct custom_time
-			{
-				int hour{}, minute{}, second{};
-
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(custom_time, hour, minute, second)
-			} custom_time;
 			bool chat_force_clean      = false;
 			bool log_chat_messages     = false;
 			bool log_text_messages     = false;
@@ -376,7 +367,7 @@ namespace big
 			bool show_cheating_message = false;
 			bool anonymous_bounty      = true;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, local_weather, override_time, override_weather, custom_time, chat_force_clean, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, chat_force_clean, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty)
 		} session{};
 
 		struct settings
@@ -470,12 +461,10 @@ namespace big
 
 			struct custom_time
 			{
-				int local_weather     = 0;
-				bool override_time    = {};
-				bool override_weather = false;
+				bool override_time = {};
 				int hour{}, minute{}, second{};
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(custom_time, local_weather, hour, minute, second)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(custom_time, override_time, hour, minute, second)
 			} custom_time;
 
 
@@ -512,7 +501,11 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(model_swapper, models)
 			} model_swapper{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone)
+
+			bool override_weather = false;
+			int local_weather     = 0;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone, local_weather, override_weather)
 		} world{};
 
 		struct spoofing
