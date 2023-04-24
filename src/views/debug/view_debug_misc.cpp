@@ -67,6 +67,10 @@ namespace big
 				NETWORK::SHUTDOWN_AND_LOAD_MOST_RECENT_SAVE();
 			});
 
+			components::button("Remove Black Screen", [] {
+				CAM::DO_SCREEN_FADE_IN(0);
+			});
+
 			components::button("Tp To Safe Pos", [] {
 				Vector3 safepos{};
 				float heading;
