@@ -1385,6 +1385,16 @@ namespace big
                 g_pointers->m_gta.m_script_vm_patch_5 = ptr;
                 g_pointers->m_gta.m_script_vm_patch_6 = ptr.add(0x26);
             }
+        },
+        // Some Train Crash
+        {
+            "STC",
+            "45 32 C0 84 C9 79 03",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_some_train_crash = ptr.as<functions::some_train_crash>();
+                g_pointers->m_gta.m_some_train_array = ptr.add(0x11).rip().as<PVOID>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 

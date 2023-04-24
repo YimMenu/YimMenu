@@ -125,6 +125,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::allow_weapons_in_vehicle>("AWIV", g_pointers->m_gta.m_allow_weapons_in_vehicle);
 
+		detour_hook_helper::add<hooks::fix_some_train_crash>("FSTC", g_pointers->m_gta.m_some_train_crash);
+
 		g_hooking = this;
 	}
 

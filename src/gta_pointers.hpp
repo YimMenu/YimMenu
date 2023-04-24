@@ -268,6 +268,9 @@ namespace big
 		GenericPool** m_ped_pool{};
 		GenericPool** m_prop_pool{};
 		VehiclePool*** m_vehicle_pool{};
+
+		functions::some_train_crash m_some_train_crash{};
+		PVOID m_some_train_array{};
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

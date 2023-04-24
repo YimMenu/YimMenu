@@ -136,4 +136,6 @@ namespace big::functions
 	using get_entity_attached_to = rage::CDynamicEntity* (*)(rage::CDynamicEntity* entity);
 
 	using migrate_object = void (*)(CNetGamePlayer* player, rage::netObject* object, int type);
+
+	using some_train_crash = bool (*)(size_t index_into_array, float* i);
 }
