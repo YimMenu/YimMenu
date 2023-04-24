@@ -2,7 +2,7 @@
 #include "invoker.hpp"
 #include "lua/lua_module.hpp"
 
-namespace lua::natives
+namespace lua::native
 {
 	inline std::vector<std::array<char, 255>> string_pool;
 	inline std::vector<uint64_t> pointer_pool;

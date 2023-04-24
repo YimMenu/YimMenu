@@ -5,35 +5,33 @@
 
 namespace big
 {
-	class burst_tyres : player_command
+	class downgrade_vehicle : player_command
 	{
 		using player_command::player_command;
 
 		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
-			Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
+			Ped ped         = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
+			Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(ped, false);
+
 			if (!PED::IS_PED_IN_ANY_VEHICLE(ped, true))
 			{
 				g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
 			}
-
 			else
 			{
 				Vehicle vehicle = PED::GET_VEHICLE_PED_IS_USING(ped);
 				if (entity::take_control_of(vehicle))
 				{
-					Vehicle vehicle = PED::GET_VEHICLE_PED_IS_USING(ped);
-					entity::take_control_of(vehicle);
-					VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(vehicle, true);
-					static int tireID = 0;
-					for (tireID = 0; tireID < 8; tireID++)
+					VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
+					for (int i = 0; i < 50; i++)
 					{
-						VEHICLE::SET_VEHICLE_TYRE_BURST(vehicle, tireID, true, 1000.0);
+						VEHICLE::REMOVE_VEHICLE_MOD(vehicle, i);
 					}
 				}
 			}
 		}
 	};
 
-	burst_tyres g_burst_tyres("burstwheels", "Burst Vehicle Tyres", "Removes their tyres.", 0);
+	downgrade_vehicle g_downgrade_vehicle("downgradeveh", "Downgrade Vehicle", "Removes all upgrades", 0);
 }

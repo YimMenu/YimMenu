@@ -2,11 +2,10 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "util/teleport.hpp"
-#include "util/vehicle.hpp"
 
 namespace big
 {
-	class black_tint : player_command
+	class smash_windows : player_command
 	{
 		using player_command::player_command;
 
@@ -15,13 +14,20 @@ namespace big
 			Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
 			if (PED::IS_PED_IN_ANY_VEHICLE(ped, false))
 			{
-				entity::take_control_of(PED::GET_VEHICLE_PED_IS_USING(ped));
-				Vehicle UserVeh = PED::GET_VEHICLE_PED_IS_IN(ped, false);
+				Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(ped, false);
 
-				VEHICLE::SET_VEHICLE_WINDOW_TINT(UserVeh, WINDOWTINT_BLACK);
+				if (entity::take_control_of(vehicle))
+				{
+					int window = 0;
+
+					for (window = 0; window < 8; window++)
+					{
+						VEHICLE::SMASH_VEHICLE_WINDOW(vehicle, window);
+					}
+				}
 			}
 		}
 	};
 
-	black_tint g_black_tint("blacktint", "Black Window Tint", "Makes their windows black.", 0);
+	smash_windows g_smash_windows("smashwindows", "Smash Vehicle Windows", "Smashes all their windows", 0);
 }

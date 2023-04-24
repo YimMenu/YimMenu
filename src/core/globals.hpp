@@ -448,8 +448,8 @@ namespace big
 
 			struct train
 			{
-				bool derail_train = false;
 				bool drive_train  = false;
+				bool derail_train = false;
 			} train{};
 
 			struct water
@@ -678,7 +678,6 @@ namespace big
 			} aimbot{};
 
 			CustomWeapon custom_weapon    = CustomWeapon::NONE;
-			bool force_crosshairs         = false;
 			bool infinite_ammo            = false;
 			bool infinite_mag             = false;
 			float increased_damage        = 1;
@@ -693,7 +692,7 @@ namespace big
 			bool triggerbot               = false;
 			bool infinite_range           = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, increase_damage, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon, triggerbot, infinite_range)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, infinite_ammo, infinite_mag, increased_damage, increase_damage, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon, triggerbot, infinite_range)
 		} weapons{};
 
 		struct window

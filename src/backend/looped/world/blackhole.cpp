@@ -7,7 +7,6 @@
 
 namespace big
 {
-
 	class blackhole : looped_command
 	{
 		using looped_command::looped_command;
@@ -64,10 +63,10 @@ namespace big
 		}
 	};
 
-	blackhole g_blackhole("blackhole", "Blackhole", "Spawns a black hole that picks up all the peds and vehicles in your area.",
+	blackhole g_blackhole("blackhole", "Blackhole", "Spawns a blackhole that picks up all the peds and vehicles in your area",
 	    g.world.blackhole.enable);
-	bool_command g_blackhole_peds("blackholeincpeds", "Peds", "Includes all nearby peds in the blackholes path of destruction",
+	bool_command g_blackhole_peds("blackholeincpeds", "Peds", "Includes all nearby peds in the blackhole's path of destruction",
 	    g.world.blackhole.include_peds);
-	bool_command g_blackhole_vehicles("blackholeincvehs", "Vehicles", "Includes all nearby vehicles in the blackholes path of destruction",
+	bool_command g_blackhole_vehicles("blackholeincvehs", "Vehicles", "Includes all nearby vehicles in the blackhole's path of destruction",
 	    g.world.blackhole.include_vehicles);
 }

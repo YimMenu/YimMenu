@@ -5,7 +5,7 @@
 #include "bindings/gui.hpp"
 #include "bindings/log.hpp"
 #include "bindings/memory.hpp"
-#include "bindings/natives.hpp"
+#include "bindings/native.hpp"
 #include "bindings/network.hpp"
 #include "bindings/script.hpp"
 #include "file_manager.hpp"
@@ -45,7 +45,7 @@ namespace big
 		lua::log::bind(m_state);
 		lua::globals::bind(m_state);
 		lua::script::bind(m_state);
-		lua::natives::bind(m_state);
+		lua::native::bind(m_state);
 		lua::memory::bind(m_state);
 		lua::gui::bind(m_state);
 		lua::network::bind(m_state);
@@ -53,6 +53,7 @@ namespace big
 
 		m_state["!module_name"] = module_name;
 		m_state["!this"]        = this;
+		m_state["joaat"]        = rage::joaat;
 
 		m_state.set_exception_handler((sol::exception_handler_function)exception_handler);
 		m_state.set_panic(panic_handler);

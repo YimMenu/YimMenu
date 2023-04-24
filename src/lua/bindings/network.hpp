@@ -1,7 +1,5 @@
 #pragma once
-#include "pointers.hpp"
-#include "util/teleport.hpp"
-
+#include "lua/sol.hpp"
 
 // https://stackoverflow.com/a/40777268
 /**
@@ -22,40 +20,23 @@ inline std::vector<elementType> convert_sequence(sol::table t)
 
 namespace lua::network
 {
-	static void trigger_script_event(int bitset, sol::table _args)
-	{
-		auto args = convert_sequence<int64_t>(_args);
-
-		if (args.size() >= 1)
-			args[1] = self::id;
-
-		big::g_pointers->m_gta.m_trigger_script_event(1, args.data(), args.size(), bitset);
-	}
-
-	static void give_pickup_rewards(int player, int reward)
-	{
-		big::g_pointers->m_gta.m_give_pickup_rewards(1 << player, reward);
-	}
-
-	static void set_player_coords(int player, float x, float y, float z)
-	{
-		big::teleport::teleport_player_to_coords(big::g_player_service->get_by_id(player), {x, y, z});
-	}
-
-	static int get_selected_player()
-	{
-		if (big::g_player_service->get_selected()->is_valid())
-			return big::g_player_service->get_selected()->id();
-
-		return -1;
-	}
+	void trigger_script_event(int bitset, sol::table _args);
+	void give_pickup_rewards(int player, int reward);
+	void set_player_coords(int player_idx, float x, float y, float z);
+	int get_selected_player();
+	int get_selected_database_player_rockstar_id();
+	void flag_player_as_modder(int player_idx);
+	bool is_player_flagged_as_modder(int player_idx);
 
 	static void bind(sol::state& state)
 	{
-		auto ns                    = state["network"].get_or_create<sol::table>();
-		ns["trigger_script_event"] = trigger_script_event;
-		ns["give_pickup_rewards"]  = give_pickup_rewards;
-		ns["set_player_coords"]    = set_player_coords;
-		ns["get_selected_player"]  = get_selected_player;
+		auto ns                                        = state["network"].get_or_create<sol::table>();
+		ns["trigger_script_event"]                     = trigger_script_event;
+		ns["give_pickup_rewards"]                      = give_pickup_rewards;
+		ns["set_player_coords"]                        = set_player_coords;
+		ns["get_selected_player"]                      = get_selected_player;
+		ns["get_selected_database_player_rockstar_id"] = get_selected_database_player_rockstar_id;
+		ns["flag_player_as_modder"]                    = flag_player_as_modder;
+		ns["is_player_flagged_as_modder"]              = is_player_flagged_as_modder;
 	}
 }

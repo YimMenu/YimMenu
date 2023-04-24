@@ -1,33 +1,26 @@
-#include "natives.hpp"
+#include "native.hpp"
 
 #include "lua/natives/natives_data.hpp"
-
-// causes include name collision
-//#include "util/toxic.hpp"
-
 #include "pointers.hpp"
+#include "util/toxic.hpp"
 
-namespace lua::natives
+namespace lua::native
 {
 	uint64_t end_call(uint64_t native_hash)
 	{
-#if 0
 		if (native_hash == 0x172AA1B624FA1013)
 		{
 			big::toxic::explosion_anti_cheat_bypass::m_can_blame_others->apply();
 			big::toxic::explosion_anti_cheat_bypass::m_can_use_blocked_explosions->apply();
 		}
-#endif
 
 		big::g_native_invoker.end_call(native_hash);
 
-#if 0
 		if (native_hash == 0x172AA1B624FA1013)
 		{
 			big::toxic::explosion_anti_cheat_bypass::m_can_blame_others->restore();
 			big::toxic::explosion_anti_cheat_bypass::m_can_use_blocked_explosions->restore();
 		}
-#endif
 
 		if (native_hash == 0xAAA34F8A7CB32098)
 		{

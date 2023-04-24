@@ -18,9 +18,10 @@ namespace big
 			else
 			{
 				Vehicle vehicle = PED::GET_VEHICLE_PED_IS_USING(ped);
+
 				if (entity::take_control_of(vehicle))
 				{
-					VEHICLE::SET_VEHICLE_FORWARD_SPEED(vehicle, 0);
+					VEHICLE::BRING_VEHICLE_TO_HALT(vehicle, 0.0f, 1, 0);
 				}
 				else
 				{

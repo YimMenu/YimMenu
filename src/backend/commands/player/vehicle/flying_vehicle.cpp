@@ -12,6 +12,7 @@ namespace big
 		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
 			Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
+
 			if (!PED::IS_PED_IN_ANY_VEHICLE(ent, true))
 			{
 				g_notification_service->push_warning("Toxic", "Target player is not in any vehicle.");
