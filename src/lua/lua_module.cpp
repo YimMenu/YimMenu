@@ -8,6 +8,7 @@
 #include "bindings/native.hpp"
 #include "bindings/network.hpp"
 #include "bindings/script.hpp"
+#include "bindings/tunables.hpp"
 #include "file_manager.hpp"
 #include "script_mgr.hpp"
 
@@ -50,6 +51,7 @@ namespace big
 		lua::gui::bind(m_state);
 		lua::network::bind(m_state);
 		lua::command::bind(m_state);
+		lua::tunables::bind(m_state);
 
 		m_state["!module_name"] = module_name;
 		m_state["!this"]        = this;
