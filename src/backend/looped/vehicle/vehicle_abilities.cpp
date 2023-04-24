@@ -1,13 +1,8 @@
-#include "backend/looped/looped.hpp"
+#include "backend/looped_command.hpp"
 #include "core/enums.hpp"
 #include "natives.hpp"
 #include "vehicle/CVehicleModelInfo.hpp"
 #include "gta/enums.hpp"
-
-
-#include "backend/looped_command.hpp"
-#include "gta/enums.hpp"
-#include "natives.hpp"
 
 namespace big
 {
@@ -15,9 +10,8 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		uint16_t og_ability		 = 0;
-		bool edited				 = false;
-
+		uint16_t og_ability = 0;
+		bool edited		    = false;
 
 		virtual void on_tick() override
 		{
@@ -28,7 +22,7 @@ namespace big
 				if (!edited && g.vehicle.ability_chosen == VehicleAbility::NONE)
 					og_ability = modelinfo->m_ability_flag;
 
-				if (PED::IS_PED_DEAD_OR_DYING(self::ped, 0) || PAD::IS_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_VEH_EXIT))
+				if (PED::IS_PED_DEAD_OR_DYING(self::ped, 0) || PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_VEH_EXIT))
 				{
 					g.vehicle.ability_chosen  = VehicleAbility::NONE;
 					modelinfo->m_ability_flag = og_ability;
@@ -61,10 +55,6 @@ namespace big
 					edited                    = true;
 					modelinfo->m_ability_flag = 832;
 					break;
-				case VehicleAbility::DRIFTJUMP:
-					edited                    = true;
-					modelinfo->m_ability_flag = 228;
-					break;
 				case VehicleAbility::JUMP:
 					edited                    = true;
 					modelinfo->m_ability_flag = 32;
@@ -83,12 +73,11 @@ namespace big
 					break;
 				case VehicleAbility::CUSTOM:
 					edited                    = true;
-					modelinfo->m_ability_flag = g.vehicle.customvalue;				
+					modelinfo->m_ability_flag = g.vehicle.customvalue;
 					break;
 				}
 			}
 		}
-
 	};
 
 	ability_selector g_ability_selector("vehabilities", "Override Ability", "Allows you to override your vehicle's ability with whatever you've choosen.",

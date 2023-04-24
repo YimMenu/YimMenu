@@ -285,7 +285,6 @@ namespace big
 		JUMP,                        // 32
 		PARACHUTE,                   //256
 		RAMPBUGGY,                   //512
-		DRIFTJUMP,                   //228
 		BOOSTPARACHUTE,              //320
 		JUMPPARACHUTE,               //288
 		BOOSTJUMP,                   //96
@@ -301,7 +300,6 @@ namespace big
 	        {VehicleAbility::JUMP, "Vehicle Jump"},
 	        {VehicleAbility::PARACHUTE, "Vehicle Parachute"},
 	        {VehicleAbility::RAMPBUGGY, "Ramp Buggy"},
-	        {VehicleAbility::DRIFTJUMP, "Drift + Jump"},
 	        {VehicleAbility::BOOSTPARACHUTE, "Boost + Parachute"},
 	        {VehicleAbility::JUMPPARACHUTE, "Jump + Parachute"},
 	        {VehicleAbility::BOOSTJUMP, "Boost + Jump"},
