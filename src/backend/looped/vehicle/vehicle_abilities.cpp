@@ -11,71 +11,48 @@ namespace big
 		using looped_command::looped_command;
 
 		uint16_t og_ability = 0;
-		bool edited		    = false;
+		int byte0;
+		int byte1;
+		bool edited = false;
 
 		virtual void on_tick() override
 		{
+
 			if (g_local_player && g_local_player->m_vehicle && self::veh)
 			{
 				CVehicleModelInfo* modelinfo = (CVehicleModelInfo*)g_local_player->m_vehicle->m_model_info;
 
-				if (!edited && g.vehicle.ability_chosen == VehicleAbility::NONE)
+				if (!edited)
 					og_ability = modelinfo->m_ability_flag;
 
 				if (PED::IS_PED_DEAD_OR_DYING(self::ped, 0) || PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_VEH_EXIT))
 				{
-					g.vehicle.ability_chosen  = VehicleAbility::NONE;
+					g.vehicle.abilities.boost = false;
+					g.vehicle.abilities.jump = false;
+					g.vehicle.abilities.parachute = false;
+					g.vehicle.abilities.rampbuggy = false;
 					modelinfo->m_ability_flag = og_ability;
 					edited                    = false;
 				}
 
-				switch (g.vehicle.ability_chosen)
+				if (!g.vehicle.abilities.boost&& !g.vehicle.abilities.jump&& !g.vehicle.abilities.parachute && !g.vehicle.abilities.rampbuggy)
 				{
-				case VehicleAbility::BOOST:
-					edited                    = true;
-					modelinfo->m_ability_flag = 64;
-					break;
-				case VehicleAbility::BOOSTJUMP:
-					edited                    = true;
-					modelinfo->m_ability_flag = 96;
-					break;
-				case VehicleAbility::BOOSTJUMPPARACHUTE:
-					edited                    = true;
-					modelinfo->m_ability_flag = 352;
-					break;
-				case VehicleAbility::BOOSTJUMPRRAMPBUGGYPARACHUTE:
-					edited                    = true;
-					modelinfo->m_ability_flag = 864;
-					break;
-				case VehicleAbility::BOOSTPARACHUTE:
-					edited                    = true;
-					modelinfo->m_ability_flag = 320;
-					break;
-				case VehicleAbility::BOOSTPARACHUTERAMPBUGGY:
-					edited                    = true;
-					modelinfo->m_ability_flag = 832;
-					break;
-				case VehicleAbility::JUMP:
-					edited                    = true;
-					modelinfo->m_ability_flag = 32;
-					break;
-				case VehicleAbility::JUMPPARACHUTE:
-					edited                    = true;
-					modelinfo->m_ability_flag = 288;
-					break;
-				case VehicleAbility::PARACHUTE:
-					edited                    = true;
-					modelinfo->m_ability_flag = 256;
-					break;
-				case VehicleAbility::RAMPBUGGY:
-					edited                    = true;
-					modelinfo->m_ability_flag = 512;
-					break;
-				case VehicleAbility::CUSTOM:
-					edited                    = true;
-					modelinfo->m_ability_flag = g.vehicle.customvalue;
-					break;
+					modelinfo->m_ability_flag = og_ability;
+					edited                    = false;
 				}
+
+				if (g.vehicle.abilities.jump && !g.vehicle.abilities.boost){edited = true; byte0 = 32;}
+				if (g.vehicle.abilities.boost && !g.vehicle.abilities.jump){edited = true; byte0= 64;}
+				if (g.vehicle.abilities.boost && g.vehicle.abilities.jump){edited = true; byte0 = 96;}
+				if (g.vehicle.abilities.parachute && !g.vehicle.abilities.rampbuggy){edited = true; byte1 = 1;}
+				if (g.vehicle.abilities.rampbuggy && !g.vehicle.abilities.parachute){edited = true; byte1 = 2;}
+				if (g.vehicle.abilities.rampbuggy && g.vehicle.abilities.parachute){edited = true; byte1 = 3;}
+
+				uint16_t value            = modelinfo->m_ability_flag;
+				uint8_t* bytes            = reinterpret_cast<uint8_t*>(&value);
+				bytes[0]                  = byte0;
+				bytes[1]                  = byte1;
+				modelinfo->m_ability_flag = value;
 			}
 		}
 	};

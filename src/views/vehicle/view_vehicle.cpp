@@ -159,25 +159,13 @@ namespace big
 		components::command_checkbox<"vehabilities">();
 		if (g.vehicle.ability_toggle)
 		{
-			const char* ability_names[12] = {"No Ability", "Rocket Boost", "Vehicle Jump", "Vehicle Parachute", "Ramp Buggy", "Boost + Parachute", "Jump + Parachute", "Boost + Jump", "Boost + Jump + Parachute", "Boost + Parachute + Rampbuggy", "Boost + Jump + Parachute + Rampbuggy", "Custom"};
-			if (ImGui::BeginCombo("Selected Ability", ability_names[(int)g.vehicle.ability_chosen]))
-			{
-				for (int i = 0; i < 12; i++)
-				{
-					if (ImGui::Selectable(ability_names[i], g.vehicle.ability_chosen == (VehicleAbility)i))
-					{
-						g.vehicle.ability_chosen = (VehicleAbility)i;
-						g_notification_service->push_warning("Ability Selector", std::vformat("Ability Set To {}.", std::make_format_args(ability_names[i])));
-					}
+			ImGui::Checkbox("Boost", &g.vehicle.abilities.boost);
+			ImGui::Checkbox("Jump", &g.vehicle.abilities.jump);
+			ImGui::Checkbox("Parachute", &g.vehicle.abilities.parachute);
+			ImGui::Checkbox("Rampbuggy", &g.vehicle.abilities.rampbuggy);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Makes cars go over yours, \n be in a vehicle like the scramjet for best results.");
 
-					if (g.vehicle.ability_chosen == (VehicleAbility)i)
-					{
-						ImGui::SetItemDefaultFocus();
-					}
-				}
-
-				ImGui::EndCombo();
-			}
 			CVehicleModelInfo* modelinfo = (CVehicleModelInfo*)g_local_player->m_vehicle->m_model_info;
 
 			ImGui::InputInt("Ability Flag Value", (int*)&g.vehicle.customvalue, 1, 10);

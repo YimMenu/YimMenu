@@ -634,8 +634,19 @@ namespace big
 			VehicleAbility ability_chosen               = VehicleAbility::NONE;
 			bool ability_toggle                         = false;
 			uint16_t customvalue                        = 0;
+			struct abilities
+			{
+				bool boost = false;
+				bool jump  = false;
+				bool parachute = false;
+				bool rampbuggy = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, vehinvisibility, localveh_visibility, localped_visibility, keep_on_ground, no_collision, unlimited_weapons, ability_chosen, ability_toggle, customvalue)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, ability_chosen, ability_toggle, customvalue)
+			} abilities{};
+
+
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, abilities, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, vehinvisibility, localveh_visibility, localped_visibility, keep_on_ground, no_collision, unlimited_weapons, ability_chosen, ability_toggle, customvalue)
 		} vehicle{};
 
 		struct weapons
