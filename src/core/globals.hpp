@@ -584,7 +584,7 @@ namespace big
 				bool primary          = false;
 				bool secondary        = false;
 				bool smoke            = false;
-				int speed             = 0;
+				int speed             = 1;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(rainbow_paint, type, neon, primary, secondary, smoke, speed)
 			} rainbow_paint{};

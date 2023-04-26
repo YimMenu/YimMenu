@@ -3,7 +3,7 @@
 
 namespace big
 {
-	class int_command : command
+	class int_command : public command
 	{
 	protected:
 		int& m_value;
@@ -18,6 +18,14 @@ namespace big
 		inline int& get_value()
 		{
 			return m_value;
+		}
+		inline int get_lower_bound()
+		{
+			return m_lower_bound;
+		}
+		inline int get_upper_bound()
+		{
+			return m_upper_bound;
 		}
 	};
 }

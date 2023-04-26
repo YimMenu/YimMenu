@@ -141,13 +141,13 @@ namespace big
 
 		components::sub_title("RAINBOW_PAINT"_T);
 		{
-			ImGui::Checkbox("PRIMARY"_T.data(), &g.vehicle.rainbow_paint.primary);
+			components::command_checkbox<"rainbowpri">("PRIMARY"_T);
 			ImGui::SameLine();
-			ImGui::Checkbox("SECONDARY"_T.data(), &g.vehicle.rainbow_paint.secondary);
+			components::command_checkbox<"rainbowsec">("SECONDARY"_T);
 			ImGui::SameLine();
-			ImGui::Checkbox("NEON"_T.data(), &g.vehicle.rainbow_paint.neon);
+			components::command_checkbox<"rainbowneons">("NEON"_T);
 			ImGui::SameLine();
-			ImGui::Checkbox("SMOKE"_T.data(), &g.vehicle.rainbow_paint.smoke);
+			components::command_checkbox<"rainbowsmoke">("SMOKE"_T);
 
 			const char* rgb_types[] = {"OFF"_T.data(), "FADE"_T.data(), "SPASM"_T.data()};
 
@@ -175,7 +175,7 @@ namespace big
 			{
 				ImGui::SameLine();
 				ImGui::SetNextItemWidth(150);
-				ImGui::SliderInt("RGB_SPEED"_T.data(), &g.vehicle.rainbow_paint.speed, 1, 10);
+				components::command_int_slider<"rainbowspeed">("RGB_SPEED"_T);
 			}
 		}
 		ImGui::Separator();
@@ -208,7 +208,7 @@ namespace big
 		{
 			ImGui::BeginGroup();
 
-			ImGui::Checkbox("ENABLED"_T.data(), &g.vehicle.fly.enabled);
+			components::command_checkbox<"vehiclefly">("ENABLED"_T);
 			ImGui::Checkbox("DONT_STOP"_T.data(), &g.vehicle.fly.dont_stop);
 
 			ImGui::EndGroup();

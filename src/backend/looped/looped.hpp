@@ -43,11 +43,8 @@ namespace big
 
 		static void vehicle_auto_drive();
 		static void vehicle_boost_behavior();
-		static void vehicle_fly();
-		static void vehicle_god_mode();
 		static void vehicle_ls_customs();
 		static void vehicle_rainbow_paint();
-		static void vehicle_turn_signals();
 
 		static void weapons_ammo_special_type();
 		static void weapons_cage_gun();

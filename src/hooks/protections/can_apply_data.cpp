@@ -671,6 +671,16 @@ namespace big
 				}
 				break;
 			}
+			case RAGE_JOAAT("CTrainGameStateDataNode"):
+			{
+				const auto train_node = (CTrainGameStateDataNode*)(node);
+				if (train_node->m_track_id < 0 || train_node->m_track_id >= 27)
+				{
+					notify::crash_blocked(sender, "out of bound train track index");
+					return true;
+				}
+				break;
+			}
 			case RAGE_JOAAT("CVehicleProximityMigrationDataNode"):
 			{
 				if (object && g_local_player && g_local_player->m_net_object)
@@ -678,7 +688,7 @@ namespace big
 					const auto migration_node = (CVehicleProximityMigrationDataNode*)(node);
 					if (is_in_vehicle(g_local_player, g_local_player->m_vehicle) && g_local_player->m_vehicle->m_net_object
 					    && g_local_player->m_vehicle->m_net_object->m_object_id == object->m_object_id)
-						return false; // vehicle kick?
+						return true; // vehicle kick?
 
 					if (!g_local_player->m_vehicle || !g_local_player->m_vehicle->m_net_object
 					    || g_local_player->m_vehicle->m_net_object->m_object_id != object->m_object_id

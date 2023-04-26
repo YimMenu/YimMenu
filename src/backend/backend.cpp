@@ -77,21 +77,8 @@ namespace big
 		{
 			looped::vehicle_auto_drive();
 			looped::vehicle_boost_behavior();
-			looped::vehicle_god_mode();
 			looped::derail_train();
 			looped::drive_train();
-
-			script::get_current()->yield();
-		}
-	}
-
-	void backend::turnsignal_loop()
-	{
-		LOG(INFO) << "Starting script: turnsignal";
-
-		while (g_running)
-		{
-			looped::vehicle_turn_signals();
 
 			script::get_current()->yield();
 		}
@@ -149,18 +136,6 @@ namespace big
 		while (g_running)
 		{
 			looped::vehicle_rainbow_paint();
-
-			script::get_current()->yield();
-		}
-	}
-
-	void backend::vehiclefly_loop()
-	{
-		LOG(INFO) << "Starting script: Vehicle fly";
-
-		while (g_running)
-		{
-			looped::vehicle_fly();
 
 			script::get_current()->yield();
 		}
