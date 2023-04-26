@@ -47,7 +47,7 @@ namespace big
 		g_player_service->player_join(player);
 		if (net_player_data)
 		{
-			auto bplyr = g_player_service->get_by_id(player->m_player_id);
+			auto bplyr = g_player_service->get_by_rid(player->m_player_id);
 			if (bplyr)
 			{
 				if (bplyr->block_join)
