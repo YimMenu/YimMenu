@@ -35,7 +35,6 @@ namespace big
 		MODEL_SWAPPER,
 		NEARBY,
 		ORBITAL_DRONE,
-		IPL,
 
 		NETWORK,
 		SESSION,
@@ -125,7 +124,6 @@ namespace big
 		                {tabs::MODEL_SWAPPER, {"GUI_TAB_MODEL_SWAPPER", view::model_swapper}},
 		                {tabs::NEARBY, {"GUI_TAB_NEARBY", view::nearby}},
 		                {tabs::ORBITAL_DRONE, {"GUI_TAB_ORBITAL_DRONE", view::orbital_drone}},
-		                {tabs::IPL, {"GUI_TAB_IPL", view::ipl}},
 		            },
 		        },
 		    },
