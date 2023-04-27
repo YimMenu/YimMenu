@@ -28,7 +28,6 @@ namespace big
 		static void self_hud();
 		static void self_dance_mode();
 
-		static void session_local_time();
 		static void session_pop_multiplier_areas();
 		static void session_force_thunder();
 		static void session_block_jobs();

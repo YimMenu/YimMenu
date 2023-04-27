@@ -67,6 +67,11 @@ namespace lua::memory
 		{
 			return pointer(*(uint64_t*)m_address);
 		}
+
+		uint64_t get_address()
+		{
+			return m_address;
+		}
 	};
 
 	pointer scan_pattern(const std::string& pattern);
@@ -94,7 +99,8 @@ namespace lua::memory
 			"patch_qword", &pointer::patch<uint64_t>,
 			"is_null", &pointer::is_null,
 			"is_valid", &pointer::is_valid,
-			"deref", &pointer::deref
+			"deref", &pointer::deref,
+			"get_address", &pointer::get_address
 		);
 
 		ns.new_usertype<big::lua_patch>("patch", sol::no_constructor,

@@ -2,6 +2,9 @@
 #include "gui/button.hpp"
 #include "gui/checkbox.hpp"
 #include "gui/gui_element.hpp"
+#include "gui/input_float.hpp"
+#include "gui/input_int.hpp"
+#include "gui/input_string.hpp"
 #include "gui/sameline.hpp"
 #include "gui/separator.hpp"
 #include "gui/text.hpp"
@@ -63,6 +66,27 @@ namespace lua::gui
 			add_element(state, m_tab_hash, element);
 			return element;
 		}
+
+		std::shared_ptr<lua::gui::input_int> add_input_int(const std::string& name, sol::this_state state)
+		{
+			auto element = std::make_shared<lua::gui::input_int>(name);
+			add_element(state, m_tab_hash, element);
+			return element;
+		}
+
+		std::shared_ptr<lua::gui::input_float> add_input_float(const std::string& name, sol::this_state state)
+		{
+			auto element = std::make_shared<lua::gui::input_float>(name);
+			add_element(state, m_tab_hash, element);
+			return element;
+		}
+
+		std::shared_ptr<lua::gui::input_string> add_input_string(const std::string& name, sol::this_state state)
+		{
+			auto element = std::make_shared<lua::gui::input_string>(name);
+			add_element(state, m_tab_hash, element);
+			return element;
+		}
 	};
 
 	static tab get_tab(const std::string& tab_name)
@@ -118,12 +142,36 @@ namespace lua::gui
 		ns.new_usertype<lua::gui::sameline>("sameline");
 		ns.new_usertype<lua::gui::separator>("separator");
 
+		ns.new_usertype<lua::gui::input_int>("input_int",
+			"set_text", &lua::gui::input_int::set_text,
+			"get_text", &lua::gui::input_int::get_text,
+			"get_value", &lua::gui::input_int::get_value,
+			"set_value", &lua::gui::input_int::set_value
+		);
+
+		ns.new_usertype<lua::gui::input_float>("input_float",
+			"set_text", &lua::gui::input_float::set_text,
+			"get_text", &lua::gui::input_float::get_text,
+			"get_value", &lua::gui::input_float::get_value,
+			"set_value", &lua::gui::input_float::set_value
+		);
+
+		ns.new_usertype<lua::gui::input_string>("input_string",
+			"set_text", &lua::gui::input_string::set_text,
+			"get_text", &lua::gui::input_string::get_text,
+			"get_value", &lua::gui::input_string::get_value,
+			"set_value", &lua::gui::input_string::set_value
+		);
+
 		ns.new_usertype<tab>("tab",
 			"add_button", &tab::add_button,
 			"add_text", &tab::add_text,
 			"add_checkbox", &tab::add_checkbox,
 			"add_sameline", &tab::add_sameline,
-			"add_separator", &tab::add_separator
+			"add_separator", &tab::add_separator,
+			"add_input_int", &tab::add_input_int,
+			"add_input_float", &tab::add_input_float,
+			"add_input_string", &tab::add_input_string
 		);
 		// clang-format on
 	}

@@ -7,7 +7,7 @@ namespace big
 {
 	void view::time_and_weather()
 	{
-		ImGui::Checkbox("OVERRIDE_TIME"_T.data(), &g.world.custom_time.override_time);
+		components::command_checkbox<"timeoverride">();
 
 		if (g.world.custom_time.override_time)
 		{
