@@ -116,7 +116,7 @@ namespace big
 					player->is_spammer = true;
 					if (g.session.kick_chat_spammers)
 					{
-						((player_command*)command::get(RAGE_JOAAT("breakup")))->call(player, {});
+						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
 					}
 					return true;
 				}
@@ -177,7 +177,7 @@ namespace big
 							return true;
 
 						if (g.reactions.breakup_others.karma)
-							((player_command*)command::get(RAGE_JOAAT("breakup")))->call(player, {});
+							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
 					}
 					else
 					{
@@ -185,7 +185,8 @@ namespace big
 						session::add_infraction(player, Infraction::BREAKUP_KICK_DETECTED);
 
 						if (g.reactions.breakup_others.karma)
-							((player_command*)command::get(RAGE_JOAAT("breakup")))->call(player, {});
+							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
+						;
 					}
 				}
 

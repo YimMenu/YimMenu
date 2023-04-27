@@ -132,10 +132,6 @@ namespace big
 		static CGameScriptHandler* create_script_handler(CGameScriptHandlerMgr* this_, void* unk);
 		static bool script_handler_is_networked(CGameScriptHandler* this_);
 		static bool script_handler_dtor(CGameScriptHandler* this_, bool free_memory);
-		static void set_script_as_networked(void*, rage::scrThread* thread, int instance_id);
-
-		static bool write_bitbuffer_gamer_handle(rage::datBitBuffer* buffer, rage::rlGamerHandle* handle);
-		static bool read_bitbuffer_gamer_handle(rage::datBitBuffer* buffer, rage::rlGamerHandle* handle);
 
 		static int nt_query_virtual_memory(void* _this, HANDLE handle, PVOID base_addr, int info_class, MEMORY_BASIC_INFORMATION* info, int size, size_t* return_len);
 		static void queue_dependency(void* dependency);
