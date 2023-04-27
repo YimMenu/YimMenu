@@ -77,19 +77,7 @@ namespace big
 				            net_player_data->m_gamer_handle.m_rockstar_id)));
 			}
 
-			auto id    = player->m_player_id;
-			auto bplyr = g_player_service->get_by_id(net_player_data->m_gamer_handle.m_rockstar_id);
-			if (bplyr)
-			{
-				if (bplyr->block_join)
-				{
-					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(bplyr, {});
-					g_notification_service->push("Block Join Try 2",
-					    std::format("Block Join method failed for {}, sending breakup kick instead...", net_player_data->m_name));
-					LOG(WARNING) << "Sending Breakup Kick due to block join failure... ";
-				}
-			}
-
+			auto id = player->m_player_id;
 			g_fiber_pool->queue_job([id] {
 				if (auto plyr = g_player_service->get_by_id(id))
 				{
@@ -110,6 +98,13 @@ namespace big
 								g_player_database_service->save();
 							}
 						}
+					}
+					if (plyr->block_join)
+					{
+						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(bplyr, {});
+						g_notification_service->push("Block Join",
+							std::format("Block Join method failed for {}, sending breakup kick instead...", net_player_data->m_name));
+						LOG(WARNING) << "Sending Breakup Kick due to block join failure... ";
 					}
 				}
 			});
