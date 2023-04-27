@@ -1,8 +1,10 @@
 #include "lua_module.hpp"
 
 #include "bindings/command.hpp"
+#include "bindings/event.hpp"
 #include "bindings/globals.hpp"
 #include "bindings/gui.hpp"
+#include "bindings/locals.hpp"
 #include "bindings/log.hpp"
 #include "bindings/memory.hpp"
 #include "bindings/native.hpp"
@@ -52,6 +54,8 @@ namespace big
 		lua::network::bind(m_state);
 		lua::command::bind(m_state);
 		lua::tunables::bind(m_state);
+		lua::locals::bind(m_state);
+		lua::event::bind(m_state);
 
 		m_state["!module_name"] = module_name;
 		m_state["!this"]        = this;

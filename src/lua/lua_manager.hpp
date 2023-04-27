@@ -16,6 +16,37 @@ namespace big
 		const std::vector<std::shared_ptr<lua_module>>& get_modules();
 		void reload_all_modules();
 
+		template<template_str hash_str, typename Return = void, typename... Args>
+		inline std::conditional_t<std::is_void_v<Return>, void, std::optional<Return>> trigger_event(Args&&... args)
+		{
+			constexpr auto hash = rage::joaat(hash_str.value);
+
+			for (auto& modules : get_modules())
+			{
+				if (auto vec = modules->m_event_callbacks.find(hash); vec != modules->m_event_callbacks.end())
+				{
+					for (auto& cb : vec->second)
+					{
+						auto result = cb(args...);
+
+						if constexpr (!std::is_void_v<Return>)
+						{
+							if (result.return_count() == 0)
+								continue;
+
+							if (!result[0].is<Return>())
+								continue;
+
+							return result[0].get<Return>();
+						}
+					}
+				}
+			}
+
+			if constexpr (!std::is_void_v<Return>)
+				return std::nullopt;
+		}
+
 	private:
 		void load_all_modules();
 		void unload_all_modules();

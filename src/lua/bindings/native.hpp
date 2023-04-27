@@ -42,6 +42,7 @@ namespace lua::native
 	}
 
 	uint64_t end_call(uint64_t native_hash);
+	std::string end_call_string(uint64_t native_hash);
 
 	static uint64_t get_pointer_value(int pointer_idx)
 	{

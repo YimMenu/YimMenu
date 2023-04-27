@@ -51,7 +51,9 @@ def write_native(name, hash, params, return_type):
         else:
             out_file += f"_natives.push_arg({sanitize_param(param['name'])});"
 
-    if return_type != "void":
+    if is_string(return_type):
+        out_file += f"return _natives.end_call_string({hash});end;\n"
+    elif return_type != "void":
         out_file += f"return _natives.end_call({hash});end;\n"
     else:
         out_file += f"_natives.end_call({hash});end;\n"

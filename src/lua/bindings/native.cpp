@@ -31,6 +31,12 @@ namespace lua::native
 		return big::g_native_invoker.get_return_value<uint64_t>();
 	}
 
+	std::string end_call_string(uint64_t native_hash)
+	{
+		big::g_native_invoker.end_call(native_hash);
+		return std::string(big::g_native_invoker.get_return_value<char*>());
+	}
+
 	void bind(sol::state& state)
 	{
 		auto ns                 = state["_natives"].get_or_create<sol::table>();
@@ -39,6 +45,7 @@ namespace lua::native
 		ns["push_string"]       = push_string;
 		ns["push_pointer"]      = push_pointer;
 		ns["end_call"]          = end_call;
+		ns["end_call_string"]   = end_call_string;
 		ns["get_pointer_value"] = get_pointer_value;
 
 		auto result = state.load_buffer(natives_data, sizeof(natives_data) - 1);
