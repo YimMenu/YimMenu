@@ -23,7 +23,7 @@ namespace big
 
 		static void input_text_with_hint(const std::string_view label, const std::string_view hint, char* buf, size_t buf_size, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
 		static void input_text_with_hint(const std::string_view label, const std::string_view hint, std::string* buf, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
-		
+
 		static void input_text(const std::string_view label, char* buf, size_t buf_size, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
 
 		static bool selectable(const std::string_view, bool);
@@ -49,7 +49,7 @@ namespace big
 		template<template_str cmd_str, ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>
 		static void player_command_button(player_ptr player = g_player_service->get_selected(), const std::vector<std::uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
 		{
-			static player_command* command = (player_command*)command::get(rage::consteval_joaat(cmd_str.value));
+			static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat(cmd_str.value)));
 			if (command == nullptr)
 				return ImGui::Text("INVALID COMMAND");
 
@@ -62,7 +62,7 @@ namespace big
 		template<template_str cmd_str>
 		static void command_checkbox(std::optional<const std::string_view> label_override = std::nullopt)
 		{
-			static bool_command* command = (bool_command*)command::get(rage::consteval_joaat(cmd_str.value));
+			static bool_command* command = dynamic_cast<bool_command*>(command::get(rage::consteval_joaat(cmd_str.value)));
 			if (command == nullptr)
 				return ImGui::Text("INVALID COMMAND");
 

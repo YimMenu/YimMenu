@@ -92,7 +92,7 @@ namespace big
 			break;
 		case eRemoteEvent::Crash: g.reactions.crash.process(plyr); return true;
 		case eRemoteEvent::Crash2:
-			if (args[2] > 32)// actual crash condition is if args[2] is above 255
+			if (args[2] > 32) // actual crash condition is if args[2] is above 255
 			{
 				g.reactions.crash.process(plyr);
 				return true;
@@ -321,7 +321,7 @@ namespace big
 		case eRemoteEvent::InteriorControl:
 		{
 			int interior = (int)args[2];
-			if (interior < 0 || interior > 161)// the upper bound will change after an update
+			if (interior < 0 || interior > 161) // the upper bound will change after an update
 			{
 				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
@@ -337,7 +337,7 @@ namespace big
 				{
 					if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 					{
-						((player_command*)command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
 					}
 				}
 
