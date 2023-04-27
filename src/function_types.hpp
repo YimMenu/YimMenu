@@ -137,5 +137,5 @@ namespace big::functions
 
 	using migrate_object = void (*)(CNetGamePlayer* player, rage::netObject* object, int type);
 
-	using some_train_crash = bool (*)(size_t index_into_array, float* i);
+	using some_train_crash = bool (*)(char index_into_array, float* i);
 }

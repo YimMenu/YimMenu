@@ -164,7 +164,7 @@ namespace big
 
 		static bool allow_weapons_in_vehicle(int64_t unk, int weaponinfo_group);
 
-		static bool fix_some_train_crash(size_t index_into_array, float* i);
+		static bool fix_some_train_crash(char index_into_array, float* i);
 	};
 
 	class minhook_keepalive

@@ -4,7 +4,7 @@
 
 namespace big
 {
-	bool hooks::fix_some_train_crash(size_t index_into_array, float* i)
+	bool hooks::fix_some_train_crash(char index_into_array, float* i)
 	{
 		if (index_into_array < 0)
 			return 0;
@@ -12,9 +12,12 @@ namespace big
 		constexpr size_t sizeof_some_struct = 592;
 		size_t obj_offset                   = sizeof_some_struct * index_into_array;
 
-		if (*((byte*)&g_pointers->m_gta.m_some_train_array + obj_offset + 5))
+		const byte* train_array = reinterpret_cast<byte*>(g_pointers->m_gta.m_some_train_array);
+
+		if (*(train_array + obj_offset + 5))
 		{
-			float exit_cond = *(float*)((byte*)&g_pointers->m_gta.m_some_train_array + obj_offset + 32);
+			float exit_cond = *(float*)(train_array + obj_offset + 32);
+
 			if (exit_cond <= 0)
 			{
 				return 0;
