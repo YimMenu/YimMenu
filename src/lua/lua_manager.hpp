@@ -15,6 +15,7 @@ namespace big
 		std::weak_ptr<lua_module> get_module(rage::joaat_t module_id);
 		const std::vector<std::shared_ptr<lua_module>>& get_modules();
 		void reload_all_modules();
+		void handle_error(const sol::error& error, const sol::state_view& state);
 
 		template<template_str hash_str, typename Return = void, typename... Args>
 		inline std::conditional_t<std::is_void_v<Return>, void, std::optional<Return>> trigger_event(Args&&... args)
@@ -28,6 +29,12 @@ namespace big
 					for (auto& cb : vec->second)
 					{
 						auto result = cb(args...);
+
+						if (!result.valid())
+						{
+							handle_error(result, result.lua_state());
+							continue;
+						}
 
 						if constexpr (!std::is_void_v<Return>)
 						{

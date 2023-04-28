@@ -1,5 +1,6 @@
 #pragma once
 #include "fiber_pool.hpp"
+#include "lua/lua_manager.hpp"
 #include "lua/lua_module.hpp"
 #include "script_mgr.hpp"
 
@@ -13,7 +14,10 @@ namespace lua::script
 		    [func] {
 			    while (big::g_running)
 			    {
-				    func();
+				    auto res = func();
+				    if (!res.valid())
+					    big::g_lua_manager->handle_error(res, res.lua_state());
+
 				    big::script::get_current()->yield();
 			    }
 		    },
@@ -23,7 +27,9 @@ namespace lua::script
 	static void run_in_fiber(sol::function func)
 	{
 		big::g_fiber_pool->queue_job([func] {
-			func();
+			auto res = func();
+			if (!res.valid())
+				big::g_lua_manager->handle_error(res, res.lua_state());
 		});
 	}
 

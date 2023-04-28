@@ -70,6 +70,11 @@ namespace big
 		load_all_modules();
 	}
 
+	void lua_manager::handle_error(const sol::error& error, const sol::state_view& state)
+	{
+		LOG(WARNING) << state["!module_name"].get<std::string_view>() << ": " << error.what();
+	}
+
 	void lua_manager::load_all_modules()
 	{
 		for (const auto& entry : std::filesystem::directory_iterator(g_file_manager->get_project_folder("scripts").get_path()))

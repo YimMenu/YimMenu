@@ -16,9 +16,13 @@
 
 namespace big
 {
-	inline int exception_handler(lua_State* L, std::optional<const void*>, std::string_view what)
+	inline int exception_handler(lua_State* L, sol::optional<const std::exception&> exception, std::string_view what)
 	{
-		LOG(FATAL) << what;
+		if (exception)
+			LOG(WARNING) << exception->what();
+		else
+			LOG(WARNING) << what;
+
 		lua_pushlstring(L, what.data(), what.size());
 		return 1;
 	}

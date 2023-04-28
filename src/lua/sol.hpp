@@ -24,6 +24,7 @@
 // This header was generated with sol v3.3.0 (revision eba86625)
 // https://github.com/ThePhD/sol2
 
+#define SOL_SAFE_FUNCTIONS 1
 #define SOL_PRINT_ERRORS 1
 
 // clang-format off
