@@ -1,6 +1,7 @@
 #include "button.hpp"
 
 #include "fiber_pool.hpp"
+#include "lua/lua_manager.hpp"
 
 namespace lua::gui
 {
@@ -17,11 +18,17 @@ namespace lua::gui
 			if (m_execute_in_fiber_pool)
 			{
 				big::g_fiber_pool->queue_job([this] {
-					m_callback();
+					auto res = m_callback();
+					if (!res.valid())
+						big::g_lua_manager->handle_error(res, res.lua_state());
 				});
 			}
 			else
-				m_callback();
+			{
+				auto res = m_callback();
+				if (!res.valid())
+					big::g_lua_manager->handle_error(res, res.lua_state());
+			}
 		}
 	}
 }

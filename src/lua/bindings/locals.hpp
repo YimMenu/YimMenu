@@ -36,18 +36,18 @@ namespace lua::locals
 		*get<float*>(script, index) = val;
 	}
 
-	static memory::pointer get_local_pointer(const std::string& script, int index)
+	static memory::pointer get_pointer(const std::string& script, int index)
 	{
 		return memory::pointer((uint64_t)get<int*>(script, index));
 	}
 
 	static void bind(sol::state& state)
 	{
-		auto ns                 = state["locals"].get_or_create<sol::table>();
-		ns["get_int"]           = get_int;
-		ns["get_float"]         = get_float;
-		ns["set_int"]           = set_int;
-		ns["set_float"]         = set_float;
-		ns["get_local_pointer"] = get_local_pointer;
+		auto ns           = state["locals"].get_or_create<sol::table>();
+		ns["get_int"]     = get_int;
+		ns["get_float"]   = get_float;
+		ns["set_int"]     = set_int;
+		ns["set_float"]   = set_float;
+		ns["get_pointer"] = get_pointer;
 	}
 }

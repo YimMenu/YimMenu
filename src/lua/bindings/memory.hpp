@@ -43,6 +43,16 @@ namespace lua::memory
 			*(T*)m_address = value;
 		}
 
+		std::string get_string()
+		{
+			return std::string((char*)m_address);
+		}
+
+		void set_string(const std::string& string, int max_length)
+		{
+			strncpy((char*)m_address, string.data(), max_length);
+		}
+
 		template<typename T>
 		big::lua_patch* patch(T value, sol::this_state state)
 		{
@@ -75,24 +85,30 @@ namespace lua::memory
 	};
 
 	pointer scan_pattern(const std::string& pattern);
+	pointer handle_to_ptr(int entity);
+	int ptr_to_handle(pointer mem_addr);
 
 	static void bind(sol::state& state)
 	{
 		auto ns = state["memory"].get_or_create<sol::table>();
 
 		// clang-format off
-		ns.new_usertype<pointer>("handle", sol::constructors<pointer(std::uint64_t)>(),
+		ns.new_usertype<pointer>("pointer", sol::constructors<pointer(std::uint64_t)>(),
 			"add", &pointer::add, 
 			"sub", &pointer::sub, 
 			"rip", &pointer::rip, 
 			"get_byte", &pointer::get<uint8_t>,
 			"get_word", &pointer::get<uint16_t>,
 			"get_dword", &pointer::get<uint32_t>,
+			"get_float", &pointer::get<float>,
 			"get_qword", &pointer::get<uint64_t>,
+			"get_string", &pointer::get_string,
 			"set_byte", &pointer::set<uint8_t>,
 			"set_word", &pointer::set<uint16_t>,
 			"set_dword", &pointer::set<uint32_t>,
+			"set_float", &pointer::set<float>,
 			"set_qword", &pointer::set<uint64_t>,
+			"set_string", &pointer::set_string,
 			"patch_byte", &pointer::patch<uint8_t>,
 			"patch_word", &pointer::patch<uint16_t>,
 			"patch_dword", &pointer::patch<uint32_t>,
@@ -109,6 +125,8 @@ namespace lua::memory
 		);
 		// clang-format on
 
-		ns["scan_pattern"] = scan_pattern;
+		ns["scan_pattern"]  = scan_pattern;
+		ns["handle_to_ptr"] = handle_to_ptr;
+		ns["ptr_to_handle"] = ptr_to_handle;
 	}
 }

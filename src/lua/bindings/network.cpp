@@ -39,8 +39,8 @@ namespace lua::network
 	void set_all_player_coords(float x, float y, float z)
 	{
 		for (auto& player : big::g_player_service->players())
-			big::g_fiber_pool->queue_job([player]() {
-				big::teleport::bring_player(player.second);
+			big::g_fiber_pool->queue_job([player, x, y, z]() {
+				big::teleport::teleport_player_to_coords(player.second, {x, y, z});
 			});
 	}
 
