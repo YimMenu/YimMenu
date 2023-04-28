@@ -77,7 +77,9 @@ namespace big
 				            net_player_data->m_gamer_handle.m_rockstar_id)));
 			}
 
+
 			auto id = player->m_player_id;
+
 			g_fiber_pool->queue_job([id] {
 				if (auto plyr = g_player_service->get_by_id(id))
 				{
