@@ -1,3 +1,4 @@
+#include "backend/player_command.hpp"
 #include "core/data/admin_rids.hpp"
 #include "core/globals.hpp"
 #include "fiber_pool.hpp"
@@ -76,7 +77,9 @@ namespace big
 				            net_player_data->m_gamer_handle.m_rockstar_id)));
 			}
 
+
 			auto id = player->m_player_id;
+
 			g_fiber_pool->queue_job([id] {
 				if (auto plyr = g_player_service->get_by_id(id))
 				{
@@ -97,6 +100,14 @@ namespace big
 								g_player_database_service->save();
 							}
 						}
+					}
+					if (plyr->block_join)
+					{
+						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+						g_notification_service->push("Block Join",
+						    std::format("Block Join method failed for {}, sending breakup kick instead...",
+						        plyr->get_net_data()->m_name));
+						LOG(WARNING) << "Sending Breakup Kick due to block join failure... ";
 					}
 				}
 			});
