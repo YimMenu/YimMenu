@@ -117,7 +117,7 @@ namespace big
 		            view::world,
 		            {
 		                {tabs::SPAWN_PED, {"GUI_TAB_SPAWN_PED", view::spawn_ped}},
-					    {tabs::SQUAD_SPAWNER, {"Squad spawner", view::squad_spawner}},
+		                {tabs::SQUAD_SPAWNER, {"Squad spawner", view::squad_spawner}},
 		                {tabs::CREATOR, {"GUI_TAB_CREATOR", view::creator}},
 		                {tabs::TRAIN, {"GUI_TAB_TRAIN", view::train}},
 		                {tabs::BLACKHOLE, {"GUI_TAB_BLACKHOLE", view::blackhole}},
@@ -150,7 +150,7 @@ namespace big
 		            {
 		                {tabs::CONTEXT_MENU_SETTINGS, {"GUI_TAB_CONTEXT_MENU", view::context_menu_settings}},
 		                {tabs::ESP_SETTINGS, {"GUI_TAB_ESP", view::esp_settings}},
-						{tabs::GTA_CACHE_SETTINGS, {"GTA Cache", view::gta_cache}},
+		                {tabs::GTA_CACHE_SETTINGS, {"GTA Cache", view::gta_cache}},
 		                {tabs::GUI_SETTINGS, {"GUI_TAB_GUI", view::gui_settings}},
 		                {tabs::HOTKEY_SETTINGS, {"GUI_TAB_HOTKEYS", view::hotkey_settings}},
 		                {tabs::REACTION_SETTINGS, {"GUI_TAB_REACTIONS", view::reaction_settings}},
