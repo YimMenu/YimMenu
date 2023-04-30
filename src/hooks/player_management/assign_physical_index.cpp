@@ -90,7 +90,7 @@ namespace big
 						{
 							plyr->is_modder         = entry->is_modder;
 							plyr->block_join        = entry->block_join;
-							plyr->block_join_reason = plyr->block_join_reason;
+							plyr->block_join_reason = entry->block_join_reason;
 
 							if (strcmp(plyr->get_name(), entry->name.data()))
 							{
