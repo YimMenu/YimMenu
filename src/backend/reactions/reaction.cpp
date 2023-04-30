@@ -55,11 +55,16 @@ namespace big
 				else if (g.settings.end_reaction_kick)
 				{
 					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("endkick")))->call(player, {});
+					script::get_current()->yield(700ms);
+					if (player->is_valid())
+					{
+						g_notification_service->push_error("End Kick Failure", "End kicks are blocked by most menus");
+					}
 				}
 				else if (g.settings.nf_reaction_kick)
 				{
 					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
-					script::get_current()->yield(700ms);
+					script::get_current()->yield(15s);
 					if (player->is_valid())
 					{
 						g_notification_service->push_error("Null Function Kick Failed", "Attempting Try 2. Breakup kick will be used if kick fails again...");
