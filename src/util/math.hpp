@@ -23,39 +23,6 @@ namespace big::math
 
 		return Vector3{-sin(z) * num, cos(z) * num, sin(x)};
 	}
-	
-	inline Vector3 add_v3(Vector3 vectorA, Vector3 vectorB) {
-		Vector3 result;
-		result.x = vectorA.x;
-		result.y = vectorA.y;
-		result.z = vectorA.z;
-		result.x += vectorB.x;
-		result.y += vectorB.y;
-		result.z += vectorB.z;
-		return result;
-	}
-
-	inline Vector3 subtract_v3(Vector3 vectorA, Vector3 vectorB) {
-		Vector3 result;
-		result.x = vectorA.x;
-		result.y = vectorA.y;
-		result.z = vectorA.z;
-		result.x -= vectorB.x;
-		result.y -= vectorB.y;
-		result.z -= vectorB.z;
-		return result;
-	}
-
-	inline Vector3 multiply_v3(Vector3 vector, float x) {
-		Vector3 result;
-		result.x = vector.x;
-		result.y = vector.y;
-		result.z = vector.z;
-		result.x *= x;
-		result.y *= x;
-		result.z *= x;
-		return result;
-	}
 
 	inline float calculate_distance_from_game_cam(rage::fvector3 player_position)
 	{
