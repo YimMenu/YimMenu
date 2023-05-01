@@ -116,7 +116,7 @@ namespace big
 						components::selectable(label, false, [&personal_veh] {
 							if (g.clone_pv.spawn_clone)
 							{
-								Vector3 spawn_location = vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside);
+								Vector3 spawn_location = vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside, item.m_hash);
 								float spawn_heading    = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 								auto vehicle_idx = personal_veh->get_vehicle_idx();
