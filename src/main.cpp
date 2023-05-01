@@ -29,9 +29,9 @@
 #include "services/squad_spawner/squad_spawner.hpp"
 #include "services/vehicle/handling_service.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
-#include "services/squad_spawner/squad_spawner.hpp"
 #include "thread_pool.hpp"
 #include "version.hpp"
+
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -117,13 +117,11 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::remote_loop, "Remote"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::lscustoms_loop, "LS Customs"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::rainbowpaint_loop, "Rainbow Paint"));
-				    g_script_mgr.add_script(std::make_unique<script>(&backend::vehiclefly_loop, "Vehicle Fly"));
-				    g_script_mgr.add_script(std::make_unique<script>(&backend::turnsignal_loop, "Turn Signals"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::disable_control_action_loop, "Disable Controls"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::world_loop, "World"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::orbital_drone, "Orbital Drone"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::vehicle_control, "Vehicle control"));
-					g_script_mgr.add_script(std::make_unique<script>(&backend::squad_spawner, "Squad spawner"));
+				    g_script_mgr.add_script(std::make_unique<script>(&backend::squad_spawner, "Squad spawner"));
 				    g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu, "Context Menu"));
 
 				    LOG(INFO) << "Scripts registered.";
