@@ -1,11 +1,15 @@
 #include "player_database_service.hpp"
 
+#include "backend/bool_command.hpp"
 #include "file_manager.hpp"
 #include "pointers.hpp"
 #include "util/session.hpp"
 
 namespace big
 {
+	bool_command g_player_db_auto_update_online_states("player_db_auto_update_states", "Auto Update Player Online States", "Toggling this feature will automatically update the player online states every 5minutes.",
+	    g.player_db.update_player_online_states);
+
 	player_database_service::player_database_service() :
 	    m_file_path(g_file_manager->get_project_file("./players.json").get_path())
 	{
@@ -42,35 +46,61 @@ namespace big
 			file_stream >> json;
 			file_stream.close();
 
-			for (auto& p : json.items())
+			for (auto& [key, value] : json.items())
 			{
-				m_players[std::stoll(p.key())] = p.value().get<persistent_player>();
+				auto player                = value.get<std::shared_ptr<persistent_player>>();
+				m_players[std::stoll(key)] = player;
+
+				std::string lower = player->name;
+				std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+				m_sorted_players[lower] = player;
 			}
 		}
 	}
 
-	std::unordered_map<std::uint64_t, persistent_player>& player_database_service::get_players()
+	std::unordered_map<std::uint64_t, std::shared_ptr<persistent_player>>& player_database_service::get_players()
 	{
 		return m_players;
 	}
 
-	persistent_player* player_database_service::get_player_by_rockstar_id(std::uint64_t rockstar_id)
+	std::map<std::string, std::shared_ptr<persistent_player>>& player_database_service::get_sorted_players()
+	{
+		return m_sorted_players;
+	}
+
+	std::shared_ptr<persistent_player> player_database_service::add_player(std::int64_t rid, const std::string_view name)
+	{
+		std::string lower = name.data();
+		std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+		if (m_players.contains(rid))
+		{
+			m_sorted_players.erase(lower);
+		}
+
+		auto player    = std::make_shared<persistent_player>(name.data(), rid);
+		m_players[rid] = player;
+
+		m_sorted_players[lower] = player;
+
+		return player;
+	}
+
+	std::shared_ptr<persistent_player> player_database_service::get_player_by_rockstar_id(std::uint64_t rockstar_id)
 	{
 		if (m_players.contains(rockstar_id))
-			return &m_players[rockstar_id];
+			return m_players[rockstar_id];
 		return nullptr;
 	}
 
-	persistent_player* player_database_service::get_or_create_player(player_ptr player)
+	std::shared_ptr<persistent_player> player_database_service::get_or_create_player(player_ptr player)
 	{
 		if (m_players.contains(player->get_net_data()->m_gamer_handle.m_rockstar_id))
-			return &m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id];
+			return m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id];
 		else
 		{
-			m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id] = {player->get_name(),
-			    player->get_net_data()->m_gamer_handle.m_rockstar_id};
+			auto player_ptr = add_player(player->get_net_data()->m_gamer_handle.m_rockstar_id, player->get_name());
 			save();
-			return &m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id];
+			return player_ptr;
 		}
 	}
 
@@ -87,15 +117,22 @@ namespace big
 		if (m_selected && m_selected->rockstar_id == rockstar_id)
 			m_selected = nullptr;
 
-		m_players.erase(rockstar_id);
+		if (auto it = m_players.find(rockstar_id); it != m_players.end())
+		{
+			std::string lower = it->second->name;
+			std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+
+			m_sorted_players.erase(lower);
+			m_players.erase(it);
+		}
 	}
 
-	void player_database_service::set_selected(persistent_player* selected)
+	void player_database_service::set_selected(std::shared_ptr<persistent_player> selected)
 	{
 		m_selected = selected;
 	}
 
-	persistent_player* player_database_service::get_selected()
+	std::shared_ptr<persistent_player> player_database_service::get_selected()
 	{
 		return m_selected;
 	}
@@ -103,35 +140,70 @@ namespace big
 	void player_database_service::invalidate_player_states()
 	{
 		for (auto& item : m_players)
-			item.second.online_state = PlayerOnlineStatus::UNKNOWN;
+			item.second->online_state = PlayerOnlineStatus::UNKNOWN;
+	}
+
+	void player_database_service::start_update_loop()
+	{
+		if (!g.player_db.update_player_online_states)
+			return;
+
+		g_thread_pool->push([this] {
+			static auto last_update = std::chrono::high_resolution_clock::now() - 5min;
+			while (g_running && g.player_db.update_player_online_states)
+			{
+				const auto cur = std::chrono::high_resolution_clock::now();
+				if (cur - last_update > 5min)
+				{
+					g_fiber_pool->queue_job([this] {
+						update_player_states();
+					});
+					last_update = cur;
+				}
+
+				std::this_thread::sleep_for(1s);
+			}
+		});
 	}
 
 	void player_database_service::update_player_states()
 	{
 		invalidate_player_states();
+		const auto player_count = m_players.size();
 
-		//fetch current stat for each player.. this will need some time.
-		for (auto& item : m_players)
+		std::vector<std::vector<rage::rlGamerHandle>> gamer_handle_buckets;
+		gamer_handle_buckets.resize(std::ceil(player_count / 32.f));
+
+		auto it = m_players.begin();
+		for (size_t i = 0; i < player_count; ++i)
 		{
-			auto& player = item.second;
-			rage::rlGamerHandle player_handle(player.rockstar_id);
-			rage::rlSessionByGamerTaskResult result;
-			bool success = false;
-			rage::rlTaskStatus state{};
+			gamer_handle_buckets[i / 32].push_back(it->second->rockstar_id);
 
-			if (g_pointers->m_gta.m_start_get_session_by_gamer_handle(0, &player_handle, 1, &result, 1, &success, &state))
+			it++;
+		}
+
+		for (auto& bucket : gamer_handle_buckets)
+		{
+			rage::rlTaskStatus status;
+			std::array<int, 32> online;
+
+			if (g_pointers->m_gta.m_get_gamer_online_state(0, bucket.data(), bucket.size(), online.data(), &status))
 			{
-				while (state.status == 1)
-					script::get_current()->yield();
-
-				if (state.status == 3 && success)
+				while (status.status == 1)
 				{
-					player.online_state = PlayerOnlineStatus::ONLINE;
-					continue;
+					script::get_current()->yield();
+				}
+
+				for (size_t i = 0; i < bucket.size(); ++i)
+				{
+					if (const auto& it = m_players.find(bucket[i].m_rockstar_id); it != m_players.end())
+					{
+						it->second->online_state = PlayerOnlineStatus::OFFLINE;
+						if (online[i] == 1)
+							it->second->online_state = PlayerOnlineStatus::ONLINE;
+					}
 				}
 			}
-
-			player.online_state = PlayerOnlineStatus::OFFLINE;
 		}
 	}
 }
