@@ -149,7 +149,7 @@ namespace big
 					{
 						ImGui::PushID(vehicle.m_hash);
 						components::selectable(vehicle.m_display_name, false, [&vehicle] {
-							const auto spawn_location = vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside);
+							const auto spawn_location = vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside, vehicle.m_hash);
 							const auto spawn_heading  = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 							const auto veh = vehicle::spawn(vehicle.m_hash, spawn_location, spawn_heading);
