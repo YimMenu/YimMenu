@@ -113,7 +113,7 @@ namespace big
 					    && (display_name.find(lower_search) != std::string::npos || display_manufacturer.find(lower_search) != std::string::npos))
 					{
 						ImGui::PushID('v' << 24 & personal_veh->get_id());
-						components::selectable(label, false, [&personal_veh] {
+						components::selectable(label, false, [&] {
 							if (g.clone_pv.spawn_clone)
 							{
 								Vector3 spawn_location = vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside, item.m_hash);
