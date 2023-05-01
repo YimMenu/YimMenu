@@ -11,60 +11,70 @@
 
 namespace big
 {
-	persistent_player current_player;
+	char name_buf[32];
+	char search[64];
+	std::shared_ptr<persistent_player> current_player;
+
+	void draw_player_db_entry(std::shared_ptr<persistent_player> player, const std::string& lower_search)
+	{
+		std::string name = player->name;
+		std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+
+		if (lower_search.empty() || name.find(lower_search) != std::string::npos)
+		{
+			ImGui::PushID(player->rockstar_id);
+
+			float circle_size = 7.5f;
+			auto cursor_pos   = ImGui::GetCursorScreenPos();
+			auto plyr_state   = player->online_state;
+
+			//render status circle
+			ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(cursor_pos.x + 4.f + circle_size, cursor_pos.y + 4.f + circle_size),
+				circle_size,
+				ImColor(plyr_state == PlayerOnlineStatus::ONLINE  ? ImVec4(0.f, 1.f, 0.f, 1.f) :
+						plyr_state == PlayerOnlineStatus::OFFLINE ? ImVec4(1.f, 0.f, 0.f, 1.f) :
+						plyr_state == PlayerOnlineStatus::UNKNOWN ? ImVec4(.5f, .5f, .5f, 1.0f) :
+																	ImVec4(.5f, .5f, .5f, 1.0f)));
+
+			//we need some padding
+			ImVec2 cursor = ImGui::GetCursorPos();
+			ImGui::SetCursorPos(ImVec2(cursor.x + 25.f, cursor.y));
+
+			if (components::selectable(player->name, player == g_player_database_service->get_selected()))
+			{
+				g_player_database_service->set_selected(player);
+				current_player = player;
+				strncpy(name_buf, current_player->name.data(), sizeof(name_buf));
+			}
+
+			ImGui::PopID();
+		}
+	}
 
 	void view::player_database()
 	{
-		static char name_buf[32];
-		static char search[64];
 
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("PLAYER"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
 
 		if (ImGui::ListBoxHeader("###players", {180, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 400 - 38 * 4)}))
 		{
-			auto& item_arr = g_player_database_service->get_players();
+			auto& item_arr = g_player_database_service->get_sorted_players();
 			if (item_arr.size() > 0)
 			{
 				std::string lower_search = search;
 				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
 
-				for (auto& item : item_arr)
+				for (auto& player : item_arr | std::ranges::views::values)
 				{
-					auto& player = item.second;
+					if (player->online_state == PlayerOnlineStatus::ONLINE)
+						draw_player_db_entry(player, lower_search);
+				}
 
-					std::string name = player.name;
-					std::transform(name.begin(), name.end(), name.begin(), ::tolower);
-
-					if (lower_search.empty() || name.find(lower_search) != std::string::npos)
-					{
-						ImGui::PushID(item.first);
-
-						float circle_size = 7.5f;
-						auto cursor_pos   = ImGui::GetCursorScreenPos();
-						auto plyr_state   = player.online_state;
-
-						//render status circle
-						ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(cursor_pos.x + 4.f + circle_size, cursor_pos.y + 4.f + circle_size),
-						    circle_size,
-						    ImColor(plyr_state == PlayerOnlineStatus::ONLINE  ? ImVec4(0.f, 1.f, 0.f, 1.f) :
-						            plyr_state == PlayerOnlineStatus::OFFLINE ? ImVec4(1.f, 0.f, 0.f, 1.f) :
-						            plyr_state == PlayerOnlineStatus::UNKNOWN ? ImVec4(.5f, .5f, .5f, 1.0f) :
-						                                                        ImVec4(.5f, .5f, .5f, 1.0f)));
-
-						//we need some padding
-						ImVec2 cursor = ImGui::GetCursorPos();
-						ImGui::SetCursorPos(ImVec2(cursor.x + 25.f, cursor.y));
-
-						if (components::selectable(player.name, &player == g_player_database_service->get_selected()))
-						{
-							g_player_database_service->set_selected(&player);
-							current_player = player;
-							strncpy(name_buf, current_player.name.data(), sizeof(name_buf));
-						}
-
-						ImGui::PopID();
-					}
+				for (auto& player : item_arr | std::ranges::views::values)
+				{
+					if (player->online_state != PlayerOnlineStatus::ONLINE)
+						draw_player_db_entry(player, lower_search);
 				}
 			}
 			else
@@ -82,23 +92,27 @@ namespace big
 			{
 				if (ImGui::InputText("NAME"_T.data(), name_buf, sizeof(name_buf)))
 				{
-					current_player.name = name_buf;
+					current_player->name = name_buf;
 				}
 
-				ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &current_player.rockstar_id);
-				ImGui::Checkbox("IS_MODDER"_T.data(), &current_player.is_modder);
-				ImGui::Checkbox("BLOCK_JOIN"_T.data(), &current_player.block_join);
+				if (ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &current_player->rockstar_id) || ImGui::Checkbox("IS_MODDER"_T.data(), &current_player->is_modder) || ImGui::Checkbox("BLOCK_JOIN"_T.data(), &current_player->block_join))
+				{
+					if (current_player->rockstar_id != selected->rockstar_id)
+						g_player_database_service->update_rockstar_id(selected->rockstar_id, current_player->rockstar_id);
+					g_player_database_service->save();
+				}
 
-				if (ImGui::BeginCombo("BLOCK_JOIN_ALERT"_T.data(), block_join_reasons[current_player.block_join_reason]))
+				if (ImGui::BeginCombo("BLOCK_JOIN_ALERT"_T.data(), block_join_reasons[current_player->block_join_reason]))
 				{
 					for (const auto& reason : block_join_reasons)
 					{
-						if (ImGui::Selectable(reason.second, reason.first == current_player.block_join_reason))
+						if (ImGui::Selectable(reason.second, reason.first == current_player->block_join_reason))
 						{
-							current_player.block_join_reason = reason.first;
+							current_player->block_join_reason = reason.first;
+							g_player_database_service->save();
 						}
 
-						if (reason.first == current_player.block_join_reason)
+						if (reason.first == current_player->block_join_reason)
 						{
 							ImGui::SetItemDefaultFocus();
 						}
@@ -112,16 +126,17 @@ namespace big
 
 
 				if (ImGui::BeginCombo("CHAT_COMMAND_PERMISSIONS"_T.data(),
-				        COMMAND_ACCESS_LEVELS[current_player.command_access_level.value_or(g.session.chat_command_default_access_level)]))
+				        COMMAND_ACCESS_LEVELS[current_player->command_access_level.value_or(g.session.chat_command_default_access_level)]))
 				{
 					for (const auto& [type, name] : COMMAND_ACCESS_LEVELS)
 					{
-						if (ImGui::Selectable(name, type == current_player.command_access_level.value_or(g.session.chat_command_default_access_level)))
+						if (ImGui::Selectable(name, type == current_player->command_access_level.value_or(g.session.chat_command_default_access_level)))
 						{
-							current_player.command_access_level = type;
+							current_player->command_access_level = type;
+							g_player_database_service->save();
 						}
 
-						if (type == current_player.command_access_level.value_or(g.session.chat_command_default_access_level))
+						if (type == current_player->command_access_level.value_or(g.session.chat_command_default_access_level))
 						{
 							ImGui::SetItemDefaultFocus();
 						}
@@ -130,18 +145,18 @@ namespace big
 					ImGui::EndCombo();
 				}
 
-				if (!current_player.infractions.empty())
+				if (!current_player->infractions.empty())
 				{
 					ImGui::Text("INFRACTIONS"_T.data());
 
-					for (auto& infraction : current_player.infractions)
+					for (auto& infraction : current_player->infractions)
 					{
 						ImGui::BulletText(infraction_desc[(Infraction)infraction]);
 					}
 				}
 
 				components::button("JOIN_SESSION"_T, [] {
-					session::join_by_rockstar_id(current_player.rockstar_id);
+					session::join_by_rockstar_id(current_player->rockstar_id);
 				});
 
 				static char message[256];
@@ -160,10 +175,10 @@ namespace big
 
 				if (ImGui::Button("SAVE"_T.data()))
 				{
-					if (current_player.rockstar_id != selected->rockstar_id)
-						g_player_database_service->update_rockstar_id(selected->rockstar_id, current_player.rockstar_id);
+					if (current_player->rockstar_id != selected->rockstar_id)
+						g_player_database_service->update_rockstar_id(selected->rockstar_id, current_player->rockstar_id);
 
-					*selected = current_player;
+					selected = current_player;
 					g_player_database_service->save();
 				}
 
@@ -181,6 +196,7 @@ namespace big
 		{
 			g_player_database_service->set_selected(nullptr);
 			g_player_database_service->get_players().clear();
+			g_player_database_service->get_sorted_players().clear();
 			g_player_database_service->save();
 		}
 
@@ -189,6 +205,9 @@ namespace big
 		components::button("RELOAD_PLYR_ONLINE_STATES"_T, [] {
 			g_player_database_service->update_player_states();
 		});
+
+		if (components::command_checkbox<"player_db_auto_update_states">())
+			g_player_database_service->start_update_loop();
 
 		ImGui::Separator();
 		components::sub_title("NEW_ENTRY"_T);
@@ -201,7 +220,7 @@ namespace big
 
 		if (ImGui::Button("ADD"_T.data()))
 		{
-			g_player_database_service->get_players()[new_rockstar_id] = persistent_player(new_name, new_rockstar_id);
+			current_player = g_player_database_service->add_player(new_rockstar_id, new_name);
 			g_player_database_service->save();
 		}
 	}
