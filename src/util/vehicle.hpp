@@ -46,9 +46,10 @@ namespace big::vehicle
 
 		if (self::veh != 0)
 		{
-			Vector3 min, max;
+			Vector3 min, max, result;
 			MISC::GET_MODEL_DIMENSIONS(hash, &min, &max);
-			y_offset = math::subtract_v3(max, min).y;
+			result = max - min;
+			y_offset = result.y;
 		}
 		else if (!spawn_inside)
 		{
