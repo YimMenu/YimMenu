@@ -33,7 +33,6 @@ namespace big
 
 	void player_database_service::load()
 	{
-		LOG(VERBOSE) << "attempting load";
 		m_selected = nullptr;
 		if (std::filesystem::exists(m_file_path))
 		{
@@ -53,7 +52,6 @@ namespace big
 				m_sorted_players[lower] = player;
 			}
 		}
-		LOG(VERBOSE) << "finished load";
 	}
 
 	std::unordered_map<std::uint64_t, std::shared_ptr<persistent_player>>& player_database_service::get_players()
