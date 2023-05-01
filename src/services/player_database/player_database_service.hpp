@@ -46,7 +46,8 @@ namespace big
 
 		void set_selected(std::shared_ptr<persistent_player> selected);
 		std::shared_ptr<persistent_player> get_selected();
-
+		
+		void start_update_loop();
 		void update_player_states();
 		void invalidate_player_states();
 	};

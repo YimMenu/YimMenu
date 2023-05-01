@@ -206,6 +206,9 @@ namespace big
 			g_player_database_service->update_player_states();
 		});
 
+		if (components::command_checkbox<"player_db_auto_update_states">())
+			g_player_database_service->start_update_loop();
+
 		ImGui::Separator();
 		components::sub_title("NEW_ENTRY"_T);
 

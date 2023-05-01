@@ -1,15 +1,20 @@
 #include "player_database_service.hpp"
 
+#include "backend/bool_command.hpp"
 #include "file_manager.hpp"
 #include "pointers.hpp"
 #include "util/session.hpp"
 
 namespace big
 {
+	bool_command g_player_db_auto_update_online_states("player_db_auto_update_states", "Auto Update Player Online States", "Toggling this feature will automatically update the player online states every 5minutes.",
+	    g.player_db.update_player_online_states);
+
 	player_database_service::player_database_service() :
 	    m_file_path(g_file_manager->get_project_file("./players.json").get_path())
 	{
 		load();
+		start_update_loop();
 		g_player_database_service = this;
 	}
 
@@ -44,7 +49,7 @@ namespace big
 
 			for (auto& [key, value] : json.items())
 			{
-				auto player = value.get<std::shared_ptr<persistent_player>>();
+				auto player                = value.get<std::shared_ptr<persistent_player>>();
 				m_players[std::stoll(key)] = player;
 
 				std::string lower = player->name;
@@ -73,7 +78,7 @@ namespace big
 			m_sorted_players.erase(lower);
 		}
 
-		auto player = std::make_shared<persistent_player>(name.data(), rid);
+		auto player    = std::make_shared<persistent_player>(name.data(), rid);
 		m_players[rid] = player;
 
 		m_sorted_players[lower] = player;
@@ -121,7 +126,6 @@ namespace big
 			m_sorted_players.erase(lower);
 			m_players.erase(it);
 		}
-
 	}
 
 	void player_database_service::set_selected(std::shared_ptr<persistent_player> selected)
@@ -140,6 +144,24 @@ namespace big
 			item.second->online_state = PlayerOnlineStatus::UNKNOWN;
 	}
 
+	void player_database_service::start_update_loop()
+	{
+		g_thread_pool->push([this] {
+			static auto last_update = std::chrono::high_resolution_clock::now();
+			while (g_running && g.player_db.update_player_online_states)
+			{
+				const auto cur = std::chrono::high_resolution_clock::now();
+				if (cur - last_update > 5min)
+				{
+					update_player_states();
+					last_update = cur;
+				}
+
+				std::this_thread::sleep_for(100ms);
+			}
+		});
+	}
+
 	void player_database_service::update_player_states()
 	{
 		invalidate_player_states();
@@ -155,7 +177,7 @@ namespace big
 
 			it++;
 		}
-		
+
 		for (auto& bucket : gamer_handle_buckets)
 		{
 			rage::rlTaskStatus status;
