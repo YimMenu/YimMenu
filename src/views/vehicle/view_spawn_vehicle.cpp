@@ -83,7 +83,7 @@ namespace big
 					components::selectable(std::vformat("SPAWN_VEHICLE_CURRENT_VEHICLE"_T, std::make_format_args(item.m_display_name)), false, [] {
 						if (self::veh)
 						{
-							Vector3 spawn_location = vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside);
+							Vector3 spawn_location = vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside, veh_hash);
 							float spawn_heading    = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 							auto owned_mods = vehicle::get_owned_mods_from_vehicle(self::veh);
