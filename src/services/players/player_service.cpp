@@ -1,116 +1,119 @@
-#include "player_service.hpp"
-
+#include "backend/player_command.hpp"
+#include "core/data/admin_rids.hpp"
+#include "core/globals.hpp"
+#include "fiber_pool.hpp"
 #include "gta_util.hpp"
+#include "hooking.hpp"
+#include "packet.hpp"
+#include "services/player_database/player_database_service.hpp"
+#include "services/players/player_service.hpp"
+#include "util/notify.hpp"
 
-#include <network/CNetworkPlayerMgr.hpp>
+#include <network/Network.hpp>
+
 
 namespace big
 {
-	player_service::player_service() :
-	    m_self(),
-	    m_selected_player(m_dummy)
+
+	void* hooks::assign_physical_index(CNetworkPlayerMgr* netPlayerMgr, CNetGamePlayer* player, uint8_t new_index)
 	{
-		g_player_service = this;
+		const auto* net_player_data = player->get_net_data();
 
-		const auto network_player_mgr = gta_util::get_network_player_mgr();
-		if (!network_player_mgr)
-			return;
-
-		m_self = &network_player_mgr->m_local_net_player;
-
-		for (uint16_t i = 0; i < network_player_mgr->m_player_limit; ++i)
-			player_join(network_player_mgr->m_player_list[i]);
-	}
-
-	player_service::~player_service()
-	{
-		g_player_service = nullptr;
-	}
-
-	void player_service::do_cleanup()
-	{
-		m_player_to_use_end_session_kick.reset();
-		m_player_to_use_complaint_kick.reset();
-		m_selected_player = m_dummy;
-		m_players.clear();
-	}
-
-	player_ptr player_service::get_by_msg_id(uint32_t msg_id) const
-	{
-		for (const auto& [_, player] : m_players)
-			if (player->get_net_game_player()->m_msg_id == msg_id)
-				return player;
-		return nullptr;
-	}
-
-	player_ptr player_service::get_by_id(uint32_t id) const
-	{
-		for (const auto& [_, player] : m_players)
-			if (player->id() == id)
-				return player;
-		return nullptr;
-	}
-
-	player_ptr player_service::get_by_host_token(uint64_t token) const
-	{
-		for (const auto& [_, player] : m_players)
-			if (player->get_net_data()->m_host_token == token)
-				return player;
-		return nullptr;
-	}
-
-	player_ptr player_service::get_selected() const
-	{
-		return m_selected_player;
-	}
-
-	player_ptr player_service::get_self()
-	{
-		if (!m_self_ptr || !m_self_ptr->equals(*m_self))
+		if (new_index == static_cast<uint8_t>(-1))
 		{
-			m_self_ptr                       = std::make_shared<player>(*m_self);
-			m_self_ptr->command_access_level = CommandAccessLevel::ADMIN;
+			g.m_spoofed_peer_ids.erase(player->get_net_data()->m_host_token);
+			g_player_service->player_leave(player);
+
+			if (net_player_data)
+			{
+				if (g.notifications.player_leave.log)
+					LOG(INFO) << "Player left '" << net_player_data->m_name << "' freeing slot #" << (int)player->m_player_id
+					          << " with Rockstar ID: " << net_player_data->m_gamer_handle.m_rockstar_id;
+
+				if (g.notifications.player_leave.notify)
+				{
+					g_notification_service->push("PLAYER_LEFT"_T.data(),
+					    std::vformat("PLAYER_LEFT_INFO"_T,
+					        std::make_format_args(net_player_data->m_name,
+					            player->m_player_id,
+					            net_player_data->m_gamer_handle.m_rockstar_id)));
+				}
+			}
+
+			return g_hooking->get_original<hooks::assign_physical_index>()(netPlayerMgr, player, new_index);
 		}
 
-		return m_self_ptr;
-	}
-
-	void player_service::player_join(CNetGamePlayer* net_game_player)
-	{
-		if (net_game_player == nullptr || net_game_player == *m_self)
-			return;
-
-		auto plyr = std::make_shared<player>(net_game_player);
-		m_players.insert({plyr->get_name(), std::move(plyr)});
-	}
-
-	void player_service::player_leave(CNetGamePlayer* net_game_player)
-	{
-		if (net_game_player == nullptr)
-			return;
-
-		if (m_selected_player && m_selected_player->equals(net_game_player))
-			m_selected_player = m_dummy;
-
-		if (auto it = std::find_if(m_players.begin(),
-		        m_players.end(),
-		        [net_game_player](const auto& p) {
-			        return p.second->id() == net_game_player->m_player_id;
-		        });
-		    it != m_players.end())
+		const auto result = g_hooking->get_original<hooks::assign_physical_index>()(netPlayerMgr, player, new_index);
+		g_player_service->player_join(player);
+		if (net_player_data)
 		{
-			if (m_player_to_use_end_session_kick == it->second)
-				m_player_to_use_end_session_kick = std::nullopt;
+			if (g.protections.admin_check)
+			{
+				if (admin_rids.contains(net_player_data->m_gamer_handle.m_rockstar_id))
+				{
+					g_notification_service->push_warning("POTENTIAL_ADMIN_FOUND"_T.data(),
+					    std::vformat("PLAYER_DETECTED_AS_ADMIN"_T, std::make_format_args(net_player_data->m_name)));
 
-			if (m_player_to_use_complaint_kick == it->second)
-				m_player_to_use_complaint_kick = std::nullopt;
+					LOG(WARNING) << net_player_data->m_name << " (" << net_player_data->m_gamer_handle.m_rockstar_id << ") has been detected as an admin";
 
-			m_players.erase(it);
+					auto id = player->m_player_id;
+					if (auto plyr = g_player_service->get_by_id(id))
+						plyr->is_admin = true;
+				}
+			}
+			if (g.notifications.player_join.above_map && *g_pointers->m_gta.m_is_session_started) // prevent loading screen spam
+				notify::player_joined(player);
+
+			if (g.notifications.player_join.log)
+				LOG(INFO) << "Player joined '" << net_player_data->m_name << "' allocating slot #" << (int)player->m_player_id
+				          << " with Rockstar ID: " << net_player_data->m_gamer_handle.m_rockstar_id;
+
+			if (g.notifications.player_join.notify)
+			{
+				g_notification_service->push("PLAYER_JOINED"_T.data(),
+				    std::vformat("PLAYER_JOINED_INFO"_T,
+				        std::make_format_args(net_player_data->m_name,
+				            player->m_player_id,
+				            net_player_data->m_gamer_handle.m_rockstar_id)));
+			}
+
+
+			auto id = player->m_player_id;
+
+			g_fiber_pool->queue_job([id] {
+				if (auto plyr = g_player_service->get_by_id(id))
+				{
+					if (plyr->get_net_data()->m_gamer_handle.m_rockstar_id != 0)
+					{
+						if (auto entry = g_player_database_service->get_player_by_rockstar_id(
+						        plyr->get_net_data()->m_gamer_handle.m_rockstar_id))
+						{
+							plyr->is_modder         = entry->is_modder;
+							plyr->block_join        = entry->block_join;
+							plyr->block_join_reason = entry->block_join_reason;
+							plyr->is_friends        = entry->is_friends;
+
+							if (strcmp(plyr->get_name(), entry->name.data()))
+							{
+								g_notification_service->push("PLAYERS"_T.data(),
+								    std::vformat("PLAYER_CHANGED_NAME"_T, std::make_format_args(entry->name, plyr->get_name())));
+								entry->name = plyr->get_name();
+								g_player_database_service->save();
+							}
+						}
+					}
+					if (plyr->block_join)
+					{
+						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+						g_notification_service->push("Block Join",
+						    std::format("Block Join method failed for {}, sending breakup kick instead...",
+						        plyr->get_net_data()->m_name));
+						LOG(WARNING) << "Sending Breakup Kick due to block join failure... ";
+					}
+				}
+			});
 		}
+		return result;
 	}
 
-	void player_service::set_selected(player_ptr plyr)
-	{
-		m_selected_player = plyr;
-	}
 }
