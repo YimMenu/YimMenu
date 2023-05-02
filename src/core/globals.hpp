@@ -213,6 +213,13 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player, character_slot, spectating)
 		} player{};
 
+		struct player_db
+		{
+			bool update_player_online_states = false;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player_db, update_player_online_states)
+		} player_db{};
+
 		struct protections
 		{
 			struct script_events
@@ -862,7 +869,7 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(stat_editor, stat, packed_stat)
 		} stat_editor{};
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, debug, tunables, notifications, player, protections, self, session, settings, spawn_vehicle, clone_pv, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, debug, tunables, notifications, player, player_db, protections, self, session, settings, spawn_vehicle, clone_pv, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor)
 	};
 
 	inline auto g = menu_settings();
