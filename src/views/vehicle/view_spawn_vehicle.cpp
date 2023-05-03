@@ -1,3 +1,4 @@
+#include "backend/commands/spawn/spawn_vehicle.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "services/gta_data/gta_data_service.hpp"
@@ -19,9 +20,9 @@ namespace big
 			}
 		}
 		ImGui::SameLine();
-		components::command_checkbox<"spawnin">();
+		components::command_checkbox(&cmd::g_spawn_inside);
 		ImGui::SameLine();
-		components::command_checkbox<"spawnmaxed">();
+		components::command_checkbox(&cmd::g_spawn_maxed);
 
 		static char plate_buf[9] = {0};
 		strncpy(plate_buf, g.spawn_vehicle.plate.c_str(), 9);

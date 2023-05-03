@@ -1,3 +1,4 @@
+#include "backend/commands/player/kick/breakup_kick.hpp"
 #include "backend/player_command.hpp"
 #include "gta/net_game_event.hpp"
 #include "gta/script_handler.hpp"
@@ -337,7 +338,7 @@ namespace big
 				{
 					if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 					{
-						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+						cmd::g_breakup_kick.call(plyr, {});
 					}
 				}
 

@@ -1,3 +1,9 @@
+#include "backend/commands/teleport/bring_personal_vehicle.hpp"
+#include "backend/commands/teleport/teleport_to_last_vehicle.hpp"
+#include "backend/commands/teleport/teleport_to_objective.hpp"
+#include "backend/commands/teleport/teleport_to_personal_vehicle.hpp"
+#include "backend/commands/teleport/teleport_to_waypoint.hpp"
+#include "backend/looped/system/auto_tp_to_waypoint.hpp"
 #include "core/data/ipls.hpp"
 #include "fiber_pool.hpp"
 #include "util/globals.hpp"
@@ -12,17 +18,17 @@ namespace big
 	{
 		ImGui::Text("BLIPS"_T.data());
 
-		components::command_button<"waypointtp">({}, "Waypoint");
+		components::command_button(&cmd::g_teleport_to_waypoint, {}, "Waypoint");
 		ImGui::SameLine();
-		components::command_button<"objectivetp">({}, "Objective");
-		components::command_checkbox<"autotptowp">();
+		components::command_button(&cmd::g_teleport_to_objective, {}, "Objective");
+		components::command_checkbox(&cmd::g_auto_tp_to_waypoint);
 
 		ImGui::Text("VEHICLES"_T.data());
-		components::command_button<"lastvehtp">();
+		components::command_button(&cmd::g_teleport_to_last_vehicle);
 		ImGui::SameLine();
-		components::command_button<"bringpv">();
+		components::command_button(&cmd::g_bring_personal_vehicle);
 		ImGui::SameLine();
-		components::command_button<"pvtp">();
+		components::command_button(&cmd::g_teleport_to_personal_vehicle);
 
 		components::title("GUI_TAB_IPL"_T.data());
 

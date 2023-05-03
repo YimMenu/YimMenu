@@ -1,3 +1,13 @@
+#include "backend/looped/weapons/aimbot.hpp"
+#include "backend/looped/weapons/force_crosshairs.hpp"
+#include "backend/looped/weapons/increase_damage.hpp"
+#include "backend/looped/weapons/infinite_ammo.hpp"
+#include "backend/looped/weapons/infinite_mag.hpp"
+#include "backend/looped/weapons/infinite_range.hpp"
+#include "backend/looped/weapons/no_recoil.hpp"
+#include "backend/looped/weapons/no_spread.hpp"
+#include "backend/looped/weapons/rapid_fire.hpp"
+#include "backend/looped/weapons/triggerbot.hpp"
 #include "core/data/bullet_impact_types.hpp"
 #include "core/data/custom_weapons.hpp"
 #include "core/data/special_ammo_types.hpp"
@@ -16,9 +26,9 @@ namespace big
 
 		ImGui::BeginGroup();
 
-		components::command_checkbox<"infammo">();
-		components::command_checkbox<"infclip">();
-		components::command_checkbox<"infrange">();
+		components::command_checkbox(&cmd::g_infinite_ammo);
+		components::command_checkbox(&cmd::g_infinite_mag);
+		components::command_checkbox(&cmd::g_infinite_range);
 		ImGui::Checkbox("Allow Weapons In Interiors", &g.weapons.interior_weapon);
 
 		ImGui::EndGroup();
@@ -28,7 +38,7 @@ namespace big
 		ImGui::Checkbox("Increased C4 Limit (Max = 50)", &g.weapons.increased_c4_limit);
 		ImGui::Checkbox("Increased Flare Limit (Max = 50)", &g.weapons.increased_flare_limit);
 
-		components::command_checkbox<"rapidfire">();
+		components::command_checkbox(&cmd::g_rapid_fire);
 
 		ImGui::EndGroup();
 
@@ -79,11 +89,11 @@ namespace big
 
 		components::sub_title("MISC"_T);
 
-		components::command_checkbox<"crosshairs">();
+		components::command_checkbox(&cmd::g_force_crosshairs);
 		ImGui::SameLine();
-		components::command_checkbox<"norecoil">();
+		components::command_checkbox(&cmd::g_no_recoil);
 		ImGui::SameLine();
-		components::command_checkbox<"nospread">();
+		components::command_checkbox(&cmd::g_no_spread);
 
 		components::button("GET_ALL_WEAPONS"_T, [] {
 			for (const auto& [_, weapon] : g_gta_data_service->weapons())
@@ -104,7 +114,7 @@ namespace big
 			}
 		});
 
-		components::command_checkbox<"incrdamage">();
+		components::command_checkbox(&cmd::g_increased_damage);
 		ImGui::InputFloat("Damage", &g.weapons.increased_damage, .1, 10, "%.1f");
 
 		ImGui::Separator();
@@ -157,21 +167,21 @@ namespace big
 
 		ImGui::Separator();
 		components::sub_title("Aim Assistance");
-		components::command_checkbox<"triggerbot">();
+		components::command_checkbox(&cmd::g_triggerbot);
 		ImGui::SameLine();
-		components::command_checkbox<"aimbot">();
+		components::command_checkbox(&cmd::g_aimbot);
 
 		if (g.weapons.aimbot.enable)
 		{
-			components::command_checkbox<"aimatplayer">();
+			components::command_checkbox(&cmd::g_aimbot_on_player);
 			ImGui::SameLine();
-			components::command_checkbox<"aimatnpc">();
+			components::command_checkbox(&cmd::g_aimbot_on_npc);
 			ImGui::SameLine();
-			components::command_checkbox<"aimatpolice">();
+			components::command_checkbox(&cmd::g_aimbot_on_police);
 			ImGui::SameLine();
-			components::command_checkbox<"aimatenemy">();
+			components::command_checkbox(&cmd::g_aimbot_on_enemy);
 
-			components::command_checkbox<"smoothing">();
+			components::command_checkbox(&cmd::g_smoothing);
 			if (g.weapons.aimbot.smoothing)
 			{
 				ImGui::SameLine();

@@ -1,15 +1,11 @@
 #include "player_database_service.hpp"
 
-#include "backend/bool_command.hpp"
 #include "file_manager.hpp"
 #include "pointers.hpp"
 #include "util/session.hpp"
 
 namespace big
 {
-	bool_command g_player_db_auto_update_online_states("player_db_auto_update_states", "Auto Update Player Online States", "Toggling this feature will automatically update the player online states every 5minutes.",
-	    g.player_db.update_player_online_states);
-
 	player_database_service::player_database_service() :
 	    m_file_path(g_file_manager->get_project_file("./players.json").get_path())
 	{

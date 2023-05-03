@@ -3,7 +3,7 @@
 
 namespace big
 {
-	class int_command : command
+	class int_command : public command
 	{
 	protected:
 		int& m_value;

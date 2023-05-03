@@ -1,5 +1,8 @@
 #include "reaction.hpp"
 
+#include "backend/commands/player/kick/bail_kick.hpp"
+#include "backend/commands/player/kick/breakup_kick.hpp"
+#include "backend/commands/player/kick/null_function_kick.hpp"
 #include "backend/player_command.hpp"
 #include "fiber_pool.hpp"
 #include "hooking.hpp"
@@ -39,10 +42,10 @@ namespace big
 		if (kick)
 		{
 			g_fiber_pool->queue_job([player] {
-				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("bailkick")))->call(player, {});
-				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
+				cmd::g_bail_kick.call(player, {});
+				cmd::g_null_function_kick.call(player, {});
 				script::get_current()->yield(700ms);
-				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
+				cmd::g_breakup_kick.call(player, {});
 			});
 		}
 	}

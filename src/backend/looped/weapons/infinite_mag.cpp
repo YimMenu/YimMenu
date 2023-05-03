@@ -1,25 +1,16 @@
-#include "backend/looped_command.hpp"
+#include "infinite_mag.hpp"
+
 #include "natives.hpp"
 
 namespace big
 {
-	class infinite_mag : looped_command
+	void infinite_mag::on_tick()
 	{
-		using looped_command::looped_command;
+		WEAPON::SET_PED_INFINITE_AMMO_CLIP(self::ped, TRUE);
+	}
 
-		CWeaponInfo* p_modified_weapon = nullptr;
-		float og_recoil_value          = 0.0f;
-
-		virtual void on_tick() override
-		{
-			WEAPON::SET_PED_INFINITE_AMMO_CLIP(self::ped, TRUE);
-		}
-
-		virtual void on_disable() override
-		{
-			WEAPON::SET_PED_INFINITE_AMMO_CLIP(self::ped, FALSE);
-		}
-	};
-
-	infinite_mag g_infinite_mag("infclip", "Infinite Clip", "Shoot forever without needing to reload", g.weapons.infinite_mag);
+	void infinite_mag::on_disable()
+	{
+		WEAPON::SET_PED_INFINITE_AMMO_CLIP(self::ped, FALSE);
+	}
 }

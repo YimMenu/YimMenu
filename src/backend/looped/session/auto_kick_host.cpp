@@ -1,3 +1,4 @@
+#include "backend/commands/player/kick/breakup_kick.hpp"
 #include "backend/looped/looped.hpp"
 #include "backend/player_command.hpp"
 #include "natives.hpp"
@@ -14,7 +15,7 @@ namespace big
 			g_player_service->iterate([](auto& plyr) {
 				if (plyr.second->is_host())
 				{
-					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr.second, {});
+					cmd::g_breakup_kick.call(plyr.second, {});
 				}
 			});
 		}

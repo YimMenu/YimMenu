@@ -1,4 +1,6 @@
 #pragma once
+
+#include "backend/bool_command.hpp"
 #include "persistent_player.hpp"
 #include "services/players/player.hpp"
 
@@ -14,7 +16,7 @@ namespace nlohmann
 
 		static void from_json(const json& j, std::shared_ptr<T>& value)
 		{
-			value = std::make_shared<T>();
+			value  = std::make_shared<T>();
 			*value = j.get<T>();
 		}
 	};
@@ -22,6 +24,12 @@ namespace nlohmann
 
 namespace big
 {
+	namespace cmd
+	{
+		inline bool_command g_player_db_auto_update_online_states("player_db_auto_update_states", "Auto Update Player Online States", "Toggling this feature will automatically update the player online states every 5minutes.",
+		    g.player_db.update_player_online_states);
+	}
+
 	class player_database_service
 	{
 		std::unordered_map<std::uint64_t, std::shared_ptr<persistent_player>> m_players;
@@ -46,7 +54,7 @@ namespace big
 
 		void set_selected(std::shared_ptr<persistent_player> selected);
 		std::shared_ptr<persistent_player> get_selected();
-		
+
 		void start_update_loop();
 		void update_player_states();
 		void invalidate_player_states();

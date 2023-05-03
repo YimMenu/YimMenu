@@ -1,3 +1,9 @@
+#include "backend/looped/world/nearby/combative.hpp"
+#include "backend/looped/world/nearby/high_alert.hpp"
+#include "backend/looped/world/nearby/ignore.hpp"
+#include "backend/looped/world/nearby/ped_rush.hpp"
+#include "backend/looped/world/nearby/peds_rain.hpp"
+#include "backend/looped/world/nearby/vehicles_rain.hpp"
 #include "util/entity.hpp"
 #include "util/local_player.hpp"
 #include "util/ped.hpp"
@@ -34,14 +40,14 @@ namespace big
 		});
 
 		// Nearby Ped Loops / Toggles
-		components::command_checkbox<"pedsignore">();
+		components::command_checkbox(&cmd::g_ignore);
 		ImGui::SameLine(140.f);
-		components::command_checkbox<"pedrain">();
+		components::command_checkbox(&cmd::g_ped_rain);
 		ImGui::SameLine(265.f);
-		components::command_checkbox<"riotmode">();
-		components::command_checkbox<"highalert">();
+		components::command_checkbox(&cmd::g_combative);
+		components::command_checkbox(&cmd::g_high_alert);
 		ImGui::SameLine(140.f);
-		components::command_checkbox<"pedrush">();
+		components::command_checkbox(&cmd::g_ped_rush);
 
 		ImGui::Separator();
 		components::sub_title("Vehicles");
@@ -70,6 +76,6 @@ namespace big
 			}
 		});
 
-		components::command_checkbox<"vehiclerain">();
+		components::command_checkbox(&cmd::g_vehicle_rain);
 	}
 }

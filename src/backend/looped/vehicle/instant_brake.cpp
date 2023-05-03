@@ -1,23 +1,16 @@
-#include "backend/looped_command.hpp"
+#include "instant_brake.hpp"
+
 #include "gta/enums.hpp"
 #include "natives.hpp"
 
 namespace big
 {
-	class instant_brake : looped_command
+	void instant_brake::on_tick()
 	{
-		using looped_command::looped_command;
+		if (self::veh == 0 || ENTITY::GET_ENTITY_SPEED_VECTOR(self::veh, true).y < 1.f || !VEHICLE::IS_VEHICLE_ON_ALL_WHEELS(self::veh))
+			return;
 
-		virtual void on_tick() override
-		{
-			if (self::veh == 0 || ENTITY::GET_ENTITY_SPEED_VECTOR(self::veh, true).y < 1.f || !VEHICLE::IS_VEHICLE_ON_ALL_WHEELS(self::veh))
-				return;
-
-			if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_BRAKE) || PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_HANDBRAKE))
-				VEHICLE::SET_VEHICLE_FORWARD_SPEED(self::veh, 0);
-		}
-	};
-
-	instant_brake g_instant_brake("instantbrake", "Instant Brake", "Makes your vehicle stop instantly when you press the brake",
-	    g.vehicle.instant_brake);
+		if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_BRAKE) || PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_HANDBRAKE))
+			VEHICLE::SET_VEHICLE_FORWARD_SPEED(self::veh, 0);
+	}
 }

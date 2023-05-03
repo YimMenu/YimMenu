@@ -1,4 +1,5 @@
-#include "backend/player_command.hpp"
+#include "set_wanted_level.hpp"
+
 #include "core/scr_globals.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
@@ -9,63 +10,56 @@
 
 namespace big
 {
-	class set_wanted_level : player_command
+	std::optional<std::vector<std::uint64_t>> set_wanted_level::parse_args_p(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
 	{
-		using player_command::player_command;
+		uint64_t level = std::atoi(args[0].c_str());
 
-		virtual std::optional<std::vector<std::uint64_t>> parse_args_p(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
+		if (level < 0 || level > 5)
 		{
-			uint64_t level = std::atoi(args[0].c_str());
-
-			if (level < 0 || level > 5)
-			{
-				ctx->report_error(std::format("Wanted level {} is invalid", level));
-				return std::nullopt;
-			}
-
-			return std::vector<std::uint64_t>{level};
+			ctx->report_error(std::format("Wanted level {} is invalid", level));
+			return std::nullopt;
 		}
 
-		virtual CommandAccessLevel get_access_level()
+		return std::vector<std::uint64_t>{level};
+	}
+
+	CommandAccessLevel set_wanted_level::get_access_level()
+	{
+		return CommandAccessLevel::AGGRESSIVE;
+	}
+
+	void set_wanted_level::execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+	{
+		if (player->id() == self::id)
 		{
-			return CommandAccessLevel::AGGRESSIVE;
+			PLAYER::SET_PLAYER_WANTED_LEVEL(self::id, _args[0], FALSE);
 		}
-
-		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		else
 		{
-			if (player->id() == self::id)
+			int id = player->id();
+
+			if (PLAYER::GET_PLAYER_WANTED_LEVEL(id) > _args[0])
 			{
-				PLAYER::SET_PLAYER_WANTED_LEVEL(self::id, _args[0], FALSE);
+				// clear existing wanted
+				globals::clear_wanted_player(id);
+
+				for (int i = 0; PLAYER::GET_PLAYER_WANTED_LEVEL(id) > _args[0] && i < 3600; i++)
+					script::get_current()->yield(1ms);
 			}
-			else
+
+			if (_args[0] > 0)
 			{
-				int id = player->id();
+				auto& gpbd = scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id];
 
-				if (PLAYER::GET_PLAYER_WANTED_LEVEL(id) > _args[0])
-				{
-					// clear existing wanted
-					globals::clear_wanted_player(id);
+				gpbd.RemoteWantedLevelPlayer = id;
+				gpbd.RemoteWantedLevelAmount = _args[0];
 
-					for (int i = 0; PLAYER::GET_PLAYER_WANTED_LEVEL(id) > _args[0] && i < 3600; i++)
-						script::get_current()->yield(1ms);
-				}
+				for (int i = 0; PLAYER::GET_PLAYER_WANTED_LEVEL(id) < _args[0] && i < 3600; i++)
+					script::get_current()->yield(1ms);
 
-				if (_args[0] > 0)
-				{
-					auto& gpbd = scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id];
-
-					gpbd.RemoteWantedLevelPlayer = id;
-					gpbd.RemoteWantedLevelAmount = _args[0];
-
-					for (int i = 0; PLAYER::GET_PLAYER_WANTED_LEVEL(id) < _args[0] && i < 3600; i++)
-						script::get_current()->yield(1ms);
-
-					gpbd.RemoteWantedLevelPlayer = -1;
-					gpbd.RemoteWantedLevelAmount = -1;
-				}
+				gpbd.RemoteWantedLevelPlayer = -1;
+				gpbd.RemoteWantedLevelAmount = -1;
 			}
 		}
-	};
-
-	set_wanted_level g_set_wanted_level("wanted", "Set Wanted Level", "Sets the specified wanted level to the player", 1, false);
+	}
 }

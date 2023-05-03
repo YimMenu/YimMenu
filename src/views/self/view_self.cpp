@@ -1,3 +1,29 @@
+#include "backend/commands/self/ammo.hpp"
+#include "backend/commands/self/beast_jump.hpp"
+#include "backend/commands/self/clean_player.hpp"
+#include "backend/commands/self/clearwanted.hpp"
+#include "backend/commands/self/fill_inventory.hpp"
+#include "backend/commands/self/heal.hpp"
+#include "backend/commands/self/skip_cutscene.hpp"
+#include "backend/commands/self/suicide.hpp"
+#include "backend/commands/self/super_jump.hpp"
+#include "backend/looped/hud/hud_color_override.hpp"
+#include "backend/looped/self/clean_player.hpp"
+#include "backend/looped/self/fast_respawn.hpp"
+#include "backend/looped/self/free_cam.hpp"
+#include "backend/looped/self/godmode.hpp"
+#include "backend/looped/self/invisibility.hpp"
+#include "backend/looped/self/mobile_radio.hpp"
+#include "backend/looped/self/no_collision.hpp"
+#include "backend/looped/self/no_ragdoll.hpp"
+#include "backend/looped/self/no_water_collision.hpp"
+#include "backend/looped/self/noclip.hpp"
+#include "backend/looped/self/off_radar.hpp"
+#include "backend/looped/self/ptfx.hpp"
+#include "backend/looped/self/super_run.hpp"
+#include "backend/looped/self/superman.hpp"
+#include "backend/looped/self/unlimited_oxygen.hpp"
+#include "backend/looped/tunables/disable_phone.hpp"
 #include "core/data/hud_component_names.hpp"
 #include "core/data/ptfx_effects.hpp"
 #include "fiber_pool.hpp"
@@ -11,17 +37,17 @@ namespace big
 {
 	void view::self()
 	{
-		components::command_button<"suicide">();
+		components::command_button(&cmd::g_suicide);
 		ImGui::SameLine();
-		components::command_button<"heal">();
+		components::command_button(&cmd::g_heal);
 		ImGui::SameLine();
-		components::command_button<"fillsnacks">();
+		components::command_button(&cmd::g_fill_inventory);
 		ImGui::SameLine();
-		components::command_button<"skipcutscene">();
+		components::command_button(&cmd::g_skip_cutscene);
 		ImGui::SameLine();
-		components::command_button<"clean">();
+		components::command_button(&cmd::g_clean_player);
 		ImGui::SameLine();
-		components::command_button<"fillammo">();
+		components::command_button(&cmd::g_fill_ammo);
 
 		ImGui::Separator();
 
@@ -29,37 +55,38 @@ namespace big
 
 		ImGui::BeginGroup();
 
-		components::command_checkbox<"godmode">();
-		components::command_checkbox<"otr">();
-		components::command_checkbox<"freecam">();
-		components::command_checkbox<"nophone">();
-		components::command_checkbox<"infoxy">();
-		components::command_checkbox<"fastrespawn">();
+		components::command_checkbox(&cmd::g_godmode);
+		components::command_checkbox(&cmd::g_off_radar);
+		components::command_checkbox(&cmd::g_free_cam);
+		components::command_checkbox(&cmd::g_disable_phone);
+		components::command_checkbox(&cmd::g_unlimited_oxygen);
+		components::command_checkbox(&cmd::g_fast_respawn);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		components::command_checkbox<"noclip">();
-		components::command_checkbox<"noragdoll">();
-		components::command_checkbox<"fastrun">();
+		components::command_checkbox(&cmd::g_noclip);
+		components::command_checkbox(&cmd::g_no_ragdoll);
+		components::command_checkbox(&cmd::g_fast_respawn);
 		ImGui::Checkbox("NO_IDLE_KICK"_T.data(), &g.tunables.no_idle_kick);
-		components::command_checkbox<"walkunder">();
+		components::command_checkbox(&cmd::g_no_water_collision);
 		if (!g.self.super_jump)
-			components::command_checkbox<"beastjump">();
+			components::command_checkbox(&cmd::g_beastjump);
 		if (!g.self.beast_jump)
-			components::command_checkbox<"superjump">();
+			components::command_checkbox(&cmd::g_super_jump);
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		components::command_checkbox<"invis">();
+		components::command_checkbox(&cmd::g_invisibility);
 		if (g.self.invisibility)
-			components::command_checkbox<"localvis">(); // TODO: does nothing in SP
-		components::command_checkbox<"cleanloop">();
-		components::command_checkbox<"nocollision">();
-		components::command_checkbox<"mobileradio">();
-		components::command_checkbox<"superman">();
+			// TODO: does nothing in SP
+			components::command_checkbox(&cmd::g_local_visibility);
+		components::command_checkbox(&cmd::g_clean_player_looped);
+		components::command_checkbox(&cmd::g_no_collision);
+		components::command_checkbox(&cmd::g_mobile_radio);
+		components::command_checkbox(&cmd::g_superman);
 
 		ImGui::Checkbox("DANCE_MODE"_T.data(), &g.self.dance_mode);
 
@@ -67,7 +94,7 @@ namespace big
 
 		components::sub_title("PTFX Styles");
 
-		components::command_checkbox<"ptfx">();
+		components::command_checkbox(&cmd::g_ptfx_looped);
 		if (g.self.ptfx_effects.show)
 		{
 			ImGui::SliderFloat("PTFX Size", &g.self.ptfx_effects.size, 0.1f, 2.f);
@@ -167,7 +194,7 @@ namespace big
 
 		components::sub_title("POLICE"_T);
 
-		components::command_button<"clearwantedlvl">();
+		components::command_button(&cmd::g_clear_wanted);
 
 		ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.self.never_wanted);
 
@@ -236,7 +263,7 @@ namespace big
 		ImGui::EndGroup();
 
 		ImGui::BeginGroup();
-		components::command_checkbox<"hudcolor">();
+		components::command_checkbox(&cmd::g_hudcolor_looped);
 		static int color_select_index = 0;
 
 		if (g.self.hud.color_override)

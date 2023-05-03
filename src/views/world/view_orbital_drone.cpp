@@ -1,10 +1,11 @@
+#include "services/orbital_drone/orbital_drone.hpp"
 #include "views/view.hpp"
 
 namespace big
 {
 	void view::orbital_drone()
 	{
-        components::command_checkbox<"orbitaldrone">();
+		components::command_checkbox(&cmd::g_orbital_drone);
 
 		if (g.world.orbital_drone.enabled)
 		{
@@ -28,6 +29,5 @@ namespace big
 			ImGui::SliderFloat("##slowspeed", &g.world.orbital_drone.nav_ovverride_slow, 0.f, 1.f);
 			ImGui::EndGroup();
 		}
-
 	}
 }

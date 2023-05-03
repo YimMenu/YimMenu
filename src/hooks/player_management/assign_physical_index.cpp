@@ -1,3 +1,4 @@
+#include "backend/commands/player/kick/breakup_kick.hpp"
 #include "backend/player_command.hpp"
 #include "core/data/admin_rids.hpp"
 #include "core/globals.hpp"
@@ -103,7 +104,7 @@ namespace big
 					}
 					if (plyr->block_join)
 					{
-						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+						cmd::g_breakup_kick.call(plyr, {});
 						g_notification_service->push("Block Join",
 						    std::format("Block Join method failed for {}, sending breakup kick instead...",
 						        plyr->get_net_data()->m_name));

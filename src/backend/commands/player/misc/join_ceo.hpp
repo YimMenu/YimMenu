@@ -1,0 +1,18 @@
+#pragma once
+
+#include "backend/player_command.hpp"
+
+namespace big
+{
+	class join_ceo : public player_command
+	{
+		using player_command::player_command;
+
+		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx);
+	};
+
+	namespace cmd
+	{
+		inline join_ceo g_join_ceo("joinceo", "Join CEO/MC", "Joins the player's CEO/MC", 0, false);
+	}
+}

@@ -1,3 +1,4 @@
+#include "backend/looped/system/voice_chat_audio.hpp"
 #include "core/data/blip_types.hpp"
 #include "core/data/language_codes.hpp"
 #include "core/data/region_codes.hpp"
@@ -80,7 +81,7 @@ namespace big
 				g.spoofing.player_model = std::string(model);
 		}
 
-		components::command_checkbox<"vcaudio">();
+		components::command_checkbox(&cmd::g_voice_chat_audio);
 
 		components::sub_title("SPOOFING_HIDE_FEATURES"_T);
 		ImGui::Checkbox("SPOOFING_HIDE_GOD_MODE"_T.data(), &g.spoofing.spoof_hide_god);

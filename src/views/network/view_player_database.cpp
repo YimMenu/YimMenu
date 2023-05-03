@@ -206,7 +206,7 @@ namespace big
 			g_player_database_service->update_player_states();
 		});
 
-		if (components::command_checkbox<"player_db_auto_update_states">())
+		if (components::command_checkbox(&cmd::g_player_db_auto_update_online_states))
 			g_player_database_service->start_update_loop();
 
 		ImGui::Separator();

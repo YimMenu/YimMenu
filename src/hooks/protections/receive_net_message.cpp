@@ -1,4 +1,5 @@
 #include "backend/command.hpp"
+#include "backend/commands/player/kick/breakup_kick.hpp"
 #include "backend/context/chat_command_context.hpp"
 #include "backend/player_command.hpp"
 #include "core/data/packet_types.hpp"
@@ -116,7 +117,7 @@ namespace big
 					player->is_spammer = true;
 					if (g.session.kick_chat_spammers)
 					{
-						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
+						cmd::g_breakup_kick.call(player, {});
 					}
 					return true;
 				}
@@ -177,7 +178,7 @@ namespace big
 							return true;
 
 						if (g.reactions.breakup_others.karma)
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
+							cmd::g_breakup_kick.call(player, {});
 					}
 					else
 					{
@@ -185,7 +186,7 @@ namespace big
 						session::add_infraction(player, Infraction::BREAKUP_KICK_DETECTED);
 
 						if (g.reactions.breakup_others.karma)
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
+							cmd::g_breakup_kick.call(player, {});
 						;
 					}
 				}

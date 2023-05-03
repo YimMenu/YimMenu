@@ -1,5 +1,19 @@
+#include "backend/looped/vehicle/block_homing.hpp"
+#include "backend/looped/vehicle/drive_on_water.hpp"
+#include "backend/looped/vehicle/horn_boost.hpp"
+#include "backend/looped/vehicle/instant_brake.hpp"
+#include "backend/looped/vehicle/invisibility.hpp"
+#include "backend/looped/vehicle/keep_on_ground.hpp"
+#include "backend/looped/vehicle/keep_vehicle_repaired.hpp"
+#include "backend/looped/vehicle/no_collision.hpp"
+#include "backend/looped/vehicle/no_water_collision.hpp"
+#include "backend/looped/vehicle/seatbelt.hpp"
+#include "backend/looped/vehicle/speedo_meter.hpp"
+#include "backend/looped/vehicle/unlimited_weapons.hpp"
+#include "backend/looped/vehicle/vehicle_jump.hpp"
 #include "core/data/speed_units.hpp"
 #include "fiber_pool.hpp"
+#include "services/vehicle/vehicle_control_service.hpp"
 #include "util/mobile.hpp"
 #include "util/teleport.hpp"
 #include "views/view.hpp"
@@ -21,7 +35,7 @@ namespace big
 		});
 
 		ImGui::SameLine();
-		components::command_checkbox<"keepfixed">();
+		components::command_checkbox(&cmd::g_keep_vehicle_repaired);
 
 		ImGui::Separator();
 
@@ -60,38 +74,38 @@ namespace big
 			ImGui::BeginGroup();
 
 			ImGui::Checkbox("GOD_MODE"_T.data(), &g.vehicle.god_mode);
-			components::command_checkbox<"hornboost">();
-			components::command_checkbox<"vehjump">();
-			components::command_checkbox<"invisveh">();
+			components::command_checkbox(&cmd::g_horn_boost);
+			components::command_checkbox(&cmd::g_vehicle_jump);
+			components::command_checkbox(&cmd::g_vehinvisibility);
 			if (g.vehicle.vehinvisibility)
 			{
-				components::command_checkbox<"localinvisveh">();
+				components::command_checkbox(&cmd::g_localveh_visibility);
 			}
-			components::command_checkbox<"vehnocollision">();
-			components::command_checkbox<"vehallweapons">();
+			components::command_checkbox(&cmd::g_veh_no_collision);
+			components::command_checkbox(&cmd::g_veh_unlimited_weapons);
 
 			ImGui::EndGroup();
 			ImGui::SameLine();
 			ImGui::BeginGroup();
 
-			components::command_checkbox<"instantbrake">();
-			components::command_checkbox<"blockhoming">();
-			components::command_checkbox<"driveonwater">();
-			components::command_checkbox<"vehiclecontrol">();
-			
+			components::command_checkbox(&cmd::g_instant_brake);
+			components::command_checkbox(&cmd::g_block_homing);
+			components::command_checkbox(&cmd::g_drive_on_water);
+			components::command_checkbox(&cmd::g_vehicle_control);
+
 
 			ImGui::EndGroup();
 			ImGui::SameLine();
 			ImGui::BeginGroup();
 
-			components::command_checkbox<"seatbelt">();
+			components::command_checkbox(&cmd::g_seatbelt);
 			ImGui::Checkbox("TURN_SIGNALS"_T.data(), &g.vehicle.turn_signals);
 			if (g.vehicle.turn_signals)
 			{
 				ImGui::Checkbox("FULLY_AUTOMATIC_SIGNAL"_T.data(), &g.vehicle.auto_turn_signals);
 			}
-			components::command_checkbox<"driveunder">();
-			components::command_checkbox<"keeponground">();
+			components::command_checkbox(&cmd::g_no_vehicle_water_collision);
+			components::command_checkbox(&cmd::g_keep_on_ground);
 
 			ImGui::EndGroup();
 		}
@@ -166,7 +180,7 @@ namespace big
 
 		components::sub_title("SPEEDO_METER"_T);
 		{
-			components::command_checkbox<"speedometer">();
+			components::command_checkbox(&cmd::g_speedo_meter);
 			if (g.vehicle.speedo_meter.enabled)
 			{
 				ImGui::Text("POS_X_Y"_T.data());
@@ -179,9 +193,9 @@ namespace big
 					g.vehicle.speedo_meter.y = pos[1];
 				}
 
-				components::command_checkbox<"speedometerleftside">();
+				components::command_checkbox(&cmd::g_speedo_meter_left_side);
 				ImGui::SameLine();
-				components::command_checkbox<"speedometergears">();
+				components::command_checkbox(&cmd::g_speedo_meter_gears);
 			}
 		}
 

@@ -1,22 +1,16 @@
-#include "backend/looped_command.hpp"
+#include "infinite_ammo.hpp"
+
 #include "natives.hpp"
 
 namespace big
 {
-	class infinite_ammo : looped_command
+	void infinite_ammo::on_tick()
 	{
-		using looped_command::looped_command;
+		WEAPON::SET_PED_INFINITE_AMMO(self::ped, TRUE, NULL);
+	}
 
-		virtual void on_tick() override
-		{
-			WEAPON::SET_PED_INFINITE_AMMO(self::ped, TRUE, NULL);
-		}
-
-		virtual void on_disable() override
-		{
-			WEAPON::SET_PED_INFINITE_AMMO(self::ped, FALSE, NULL);
-		}
-	};
-
-	infinite_ammo g_infinite_ammo("infammo", "Infinite Ammo", "Never run out of ammo again", g.weapons.infinite_ammo);
+	void infinite_ammo::on_disable()
+	{
+		WEAPON::SET_PED_INFINITE_AMMO(self::ped, FALSE, NULL);
+	}
 }

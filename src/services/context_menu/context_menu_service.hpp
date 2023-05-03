@@ -1,5 +1,12 @@
 #pragma once
 #include "backend/command.hpp"
+#include "backend/commands/player/kick/breakup_kick.hpp"
+#include "backend/commands/player/kick/end_session_kick.hpp"
+#include "backend/commands/player/kick/null_function_kick.hpp"
+#include "backend/commands/player/kick/script_host_kick.hpp"
+#include "backend/commands/player/toxic/ragdoll_player.hpp"
+#include "backend/commands/player/toxic/remove_all_weapons.hpp"
+#include "backend/commands/player/toxic/kick_from_vehicle.hpp"
 #include "backend/player_command.hpp"
 #include "natives.hpp"
 #include "services/gta_data/gta_data_service.hpp"
@@ -95,8 +102,7 @@ namespace big
 		            [this] {
 			            if (ped::get_player_from_ped(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0)) != NULL)
 			            {
-				            static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("vehkick")));
-				            command->call(ped::get_player_from_ped(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0)), {});
+				            cmd::g_kick_from_vehicle.call(ped::get_player_from_ped(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0)), {});
 			            }
 
 			            TASK::CLEAR_PED_TASKS_IMMEDIATELY(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0));
@@ -140,26 +146,20 @@ namespace big
 		         }},
 		        {"BREAKUP KICK",
 		            [this] {
-			            static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("breakup")));
-			            command->call(ped::get_player_from_ped(m_handle), {});
+			            cmd::g_breakup_kick.call(ped::get_player_from_ped(m_handle), {});
 		            }},
 		        {"KICK",
 		            [this] {
-			            static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("nfkick")));
-			            static player_command* command1 = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("shkick")));
-			            static player_command* command2 = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("endkick")));
-			            command->call(ped::get_player_from_ped(m_handle), {});
-			            command1->call(ped::get_player_from_ped(m_handle), {});
-			            command2->call(ped::get_player_from_ped(m_handle), {});
+			            cmd::g_null_function_kick.call(ped::get_player_from_ped(m_handle), {});
+			            cmd::g_script_host_kick.call(ped::get_player_from_ped(m_handle), {});
+			            cmd::g_end_session_kick.call(ped::get_player_from_ped(m_handle), {});
 		            }},
 		        {"DISARM",
 		            [this] {
-			            static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("remweaps")));
-			            command->call(ped::get_player_from_ped(m_handle), {});
+			            cmd::g_remove_all_weapons.call(ped::get_player_from_ped(m_handle), {});
 		            }},
 		        {"RAGDOLL", [this] {
-			         static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("ragdoll")));
-			         command->call(ped::get_player_from_ped(m_handle), {});
+			         cmd::g_ragdoll_player.call(ped::get_player_from_ped(m_handle), {});
 		         }}}};
 
 		s_context_menu shared_menu{ContextEntityType::SHARED,

@@ -1,5 +1,5 @@
-#include "backend/looped/looped.hpp"
-#include "backend/looped_command.hpp"
+#include "invisibility.hpp"
+
 #include "core/scr_globals.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
@@ -9,34 +9,25 @@
 
 namespace big
 {
-	class invisibility : looped_command
+	void invisibility::on_enable()
 	{
-		using looped_command::looped_command;
+		g_script_patcher_service->update();
+	}
 
-		virtual void on_enable() override
-		{
-			g_script_patcher_service->update();
-		}
+	void invisibility::on_tick()
+	{
+		ENTITY::SET_ENTITY_VISIBLE(self::ped, false, 0);
 
-		virtual void on_tick() override
-		{
-			ENTITY::SET_ENTITY_VISIBLE(self::ped, false, 0);
+		if (g.self.local_visibility)
+			NETWORK::SET_ENTITY_LOCALLY_VISIBLE(self::ped);
 
-			if (g.self.local_visibility)
-				NETWORK::SET_ENTITY_LOCALLY_VISIBLE(self::ped);
+		scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].IsInvisible = true;
+	}
 
-			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].IsInvisible = true;
-		}
-
-		virtual void on_disable() override
-		{
-			ENTITY::SET_ENTITY_VISIBLE(self::ped, true, 0);
-			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].IsInvisible = false;
-			g_script_patcher_service->update();
-		}
-	};
-
-	invisibility g_invisibility("invis", "Invisiblity", "Makes you invisible", g.self.invisibility);
-	bool_command g_local_visibility("localvis", "Visible Locally", "Makes you visible to yourself, but other players would still not be able to see you",
-	    g.self.local_visibility);
+	void invisibility::on_disable()
+	{
+		ENTITY::SET_ENTITY_VISIBLE(self::ped, true, 0);
+		scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].IsInvisible = false;
+		g_script_patcher_service->update();
+	}
 }

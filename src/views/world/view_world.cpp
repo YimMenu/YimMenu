@@ -1,4 +1,5 @@
 #include "views/view.hpp"
+#include "backend/looped/self/part_water.hpp"
 
 namespace big
 {
@@ -10,10 +11,10 @@ namespace big
         }
 
         ImGui::Separator();
-        
+
         components::sub_title("GUI_TAB_WATER"_T);
         {
-		    components::command_checkbox<"partwater">();
+		    components::command_checkbox(&cmd::g_partwater);
         }
     }
 }

@@ -1,3 +1,4 @@
+#include "backend/looped/world/blackhole.hpp"
 #include "util/local_player.hpp"
 #include "views/view.hpp"
 
@@ -5,12 +6,12 @@ namespace big
 {
 	void view::blackhole()
 	{
-		components::command_checkbox<"blackhole">();
+		components::command_checkbox(&cmd::g_blackhole);
 
 		components::sub_title("Entities");
-		components::command_checkbox<"blackholeincvehs">();
+		components::command_checkbox(&cmd::g_blackhole_vehicles);
 		ImGui::SameLine();
-		components::command_checkbox<"blackholeincpeds">();
+		components::command_checkbox(&cmd::g_blackhole_peds);
 
 		components::sub_title("Position");
 		ImGui::InputFloat("X", &g.world.blackhole.pos.x, 5.f, 200.f);

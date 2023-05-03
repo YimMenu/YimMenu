@@ -1,6 +1,5 @@
 #include "vehicle_control_service.hpp"
 
-#include "backend/looped_command.hpp"
 #include "gui.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
@@ -10,33 +9,25 @@
 
 namespace big
 {
-	class vehicle_control_command : looped_command
+	void vehicle_control_command::on_enable()
 	{
-		using looped_command::looped_command;
+		g_gui->override_mouse(true);
+	}
 
-		virtual void on_enable() override
+	void vehicle_control_command::on_tick()
+	{
+		if (!g_gui->mouse_override())
 		{
 			g_gui->override_mouse(true);
 		}
+	}
 
-		virtual void on_tick() override
-		{
-			if (!g_gui->mouse_override())
-			{
-				g_gui->override_mouse(true);
-			}
-		}
+	void vehicle_control_command::on_disable()
+	{
+		g_gui->override_mouse(false);
+	}
 
-		virtual void on_disable() override
-		{
-			g_gui->override_mouse(false);
-		}
-	};
-
-	vehicle_control_command g_vehicle_control("vehiclecontrol", "Vehicle controller", "Enables/Disables the vehicle controller.",
-	    g.window.vehicle_control.opened);
-
-	void update_controlled_vehicle_doors(controlled_vehicle& veh)
+	static void update_controlled_vehicle_doors(controlled_vehicle& veh)
 	{
 		vehicle_door veh_door{};
 
@@ -60,7 +51,7 @@ namespace big
 		veh.lockstate = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(veh.handle);
 	}
 
-	void update_controlled_vehicle_lights(controlled_vehicle& veh)
+	static void update_controlled_vehicle_lights(controlled_vehicle& veh)
 	{
 		VEHICLE::GET_VEHICLE_LIGHTS_STATE(veh.handle, &veh.headlights, &veh.highbeams);
 
@@ -102,10 +93,6 @@ namespace big
 			vehicle_control::render_distance_on_vehicle();
 	}
 
-	/*
-	* Imitated from freemode.c script, findable by searching for MISC::GET_HASH_KEY("BONEMASK_HEAD_NECK_AND_R_ARM");
-	* Script uses TASK::TASK_SCRIPTED_ANIMATION but can be dissected to use as follows
-	*/
 	void vehicle_control::animated_vehicle_operation(Ped ped)
 	{
 		ped::ped_play_animation(ped, VEH_OP_ANIM_DICT, VEH_OP_ANIM, 4, -4, -1, 48, 0, false);
@@ -187,7 +174,8 @@ namespace big
 					    4.f,
 					    5.f);
 					//LOG(INFO) << "Navmesh probably failed, issiuing regular task ";
-					g_notification_service->push_warning("VEHICLE_CONTROLLER"_T.data(), "VEHICLE_CONTROLLER_TRY_ALT_PATHFINDING"_T.data());
+					g_notification_service->push_warning("VEHICLE_CONTROLLER"_T.data(),
+					    "VEHICLE_CONTROLLER_TRY_ALT_PATHFINDING"_T.data());
 					script::get_current()->yield(500ms);
 				}
 
@@ -272,7 +260,6 @@ namespace big
 		}
 	}
 
-
 	bool vehicle_control::find_suitable_destination_near_player(Vector3& outcoords, float& heading)
 	{
 		Vector3 original_coords = outcoords;
@@ -331,12 +318,14 @@ namespace big
 			if (vehicle_control::find_suitable_destination_near_player(destination, heading))
 			{
 				//LOG(INFO) << "Suitable destination found";
-				g_notification_service->push_warning("VEHICLE_CONTROLLER"_T.data(), "VEHICLE_CONTROLLER_FOUND_LOCATION"_T.data());
+				g_notification_service->push_warning("VEHICLE_CONTROLLER"_T.data(),
+				    "VEHICLE_CONTROLLER_FOUND_LOCATION"_T.data());
 			}
 			else
 			{
 				//LOG(INFO) << "Couldn't find suitable destionation, defaulting to offset of player\nThis might go wrong";
-				g_notification_service->push_warning("VEHICLE_CONTROLLER"_T.data(), "VEHICLE_CONTROLLER_FORCE_PATHFINDING"_T.data());
+				g_notification_service->push_warning("VEHICLE_CONTROLLER"_T.data(),
+				    "VEHICLE_CONTROLLER_FORCE_PATHFINDING"_T.data());
 				destination = behind_pos;
 			}
 

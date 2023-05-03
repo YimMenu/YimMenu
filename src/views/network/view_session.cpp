@@ -1,6 +1,16 @@
+#include "backend/commands/player/toxic/give_all_weapons.hpp"
+#include "backend/commands/player/toxic/turn_into_beast.hpp"
 #include "core/data/apartment_names.hpp"
 #include "core/data/command_access_levels.hpp"
 #include "core/data/region_codes.hpp"
+#include "backend/commands/player/toxic/remove_all_weapons.hpp"
+#include "backend/commands/player/toxic/ceo_kick.hpp"
+#include "backend/commands/player/toxic/kick_from_vehicle.hpp"
+#include "backend/commands/player/toxic/ragdoll_player.hpp"
+#include "backend/commands/player/toxic/kick_from_interior.hpp"
+#include "backend/commands/player/toxic/force_into_mission.hpp"
+#include "backend/commands/player/toxic/show_transaction_error.hpp"
+#include "backend/commands/player/toxic/trigger_ceo_raid.hpp"
 #include "core/data/warehouse_names.hpp"
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
@@ -177,35 +187,13 @@ namespace big
 			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = global_wanted_level;
 		}
 
-		components::command_button<"killall">({}, "KILL_ALL"_T);
-		ImGui::SameLine();
-		components::command_button<"explodeall">({}, "EXPLODE_ALL"_T);
-
-		ImGui::SameLine();
-
-		components::command_button<"beastall">({});
+		components::command_button(&cmd::g_turn_into_beast_all, {});
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("INCLUDING_YOU"_T.data());
 
-		components::command_button<"giveweapsall">({});
-		ImGui::SameLine();
-		components::command_button<"remweapsall">({});
 
-		components::command_button<"ceokickall">({});
-		ImGui::SameLine();
-		components::command_button<"vehkickall">({});
+		components::command_button(&cmd::g_give_all_weapons_all);
 
-
-		components::command_button<"ragdollall">({}, "RAGDOLL_PLAYERS"_T);
-		ImGui::SameLine();
-		components::command_button<"intkickall">({}, "KICK_ALL_FROM_INTERIORS"_T);
-
-		components::command_button<"missionall">({});
-		ImGui::SameLine();
-		components::command_button<"errorall">({});
-
-		components::command_button<"ceoraidall">({});
-		ImGui::SameLine();
 		components::button("Trigger MC Raid", [] {
 			g_player_service->iterate([](auto& plyr) {
 				toxic::start_activity(plyr.second, eActivityType::BikerDefend);
@@ -217,10 +205,6 @@ namespace big
 				toxic::start_activity(plyr.second, eActivityType::GunrunningDefend);
 			});
 		});
-
-		components::command_button<"sextall">({}, "Send Sexts");
-		ImGui::SameLine();
-		components::command_button<"fakebanall">({}, "Send Fake Ban Messages");
 
 		components::small_text("TELEPORTS"_T);
 
@@ -244,8 +228,6 @@ namespace big
 
 		ImGui::SameLine();
 
-		components::command_button<"apartmenttpall">({(uint64_t)g.session.send_to_apartment_idx}, "TP_ALL_TO_APARTMENT"_T);
-
 		if (ImGui::BeginCombo("##warehouse", warehouse_names[g.session.send_to_warehouse_idx]))
 		{
 			for (int i = 1; i < warehouse_names.size(); i++)
@@ -265,8 +247,6 @@ namespace big
 		}
 
 		ImGui::SameLine();
-
-		components::command_button<"warehousetpall">({(uint64_t)g.session.send_to_warehouse_idx}, "TP_ALL_TO_WAREHOUSE"_T);
 
 		components::button("TP_ALL_TO_DARTS"_T, [] {
 			g_player_service->iterate([](auto& plyr) {
@@ -292,45 +272,6 @@ namespace big
 			});
 		});
 		ImGui::SameLine();
-
-		components::command_button<"interiortpall">({81}, "TP_ALL_TO_MOC"_T);
-
-		ImGui::SameLine();
-		components::command_button<"interiortpall">({123}, "TP_ALL_TO_CASINO"_T);
-		ImGui::SameLine();
-		components::command_button<"interiortpall">({124}, "TP_ALL_TO_PENTHOUSE"_T);
-		ImGui::SameLine();
-		components::command_button<"interiortpall">({128}, "TP_ALL_TO_ARCADE"_T);
-
-		components::command_button<"interiortpall">({146}, "TP_ALL_TO_MUSIC_LOCKER"_T);
-		ImGui::SameLine();
-		components::command_button<"interiortpall">({148}, "TP_ALL_TO_RECORD_A_STUDIOS"_T);
-		ImGui::SameLine();
-		components::command_button<"interiortpall">({149}, "TP_ALL_TO_CUSTOM_AUTO_SHOP"_T);
-
-		components::command_button<"interiortpall">({155}, "TP_ALL_TO_AGENCY"_T);
-		ImGui::SameLine();
-		components::command_button<"interiortpall">({160}, "TP_ALL_TO_FREAKSHOP"_T);
-		ImGui::SameLine();
-		components::command_button<"interiortpall">({161}, "TP_ALL_TO_MULTI_FLOOR_GARAGE"_T);
-
-		components::command_button<"tutorialall">();
-		ImGui::SameLine();
-		components::command_button<"golfall">();
-		ImGui::SameLine();
-		components::command_button<"flightschoolall">();
-		ImGui::SameLine();
-		components::command_button<"dartsall">();
-
-		components::command_button<"badlandsall">();
-		ImGui::SameLine();
-		components::command_button<"spacemonkeyall">();
-		ImGui::SameLine();
-		components::command_button<"wizardall">();
-
-		components::command_button<"qub3dall">();
-		ImGui::SameLine();
-		components::command_button<"camhedzall">();
 
 		ImGui::Checkbox("DISABLE_PEDS"_T.data(), &g.session.disable_peds);
 		ImGui::SameLine();

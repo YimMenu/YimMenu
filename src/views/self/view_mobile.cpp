@@ -1,3 +1,4 @@
+#include "backend/commands/self/request_services.hpp"
 #include "fiber_pool.hpp"
 #include "services/mobile/mobile_service.hpp"
 #include "util/mobile.hpp"
@@ -20,7 +21,7 @@ namespace big
 			mobile::merry_weather::request_helicopter_pickup();
 		});
 
-		components::command_button<"boatpickup">();
+		components::command_button(&cmd::g_boat_pickup);
 
 		components::button("MW_BACKUP_HELI"_T, [] {
 			mobile::merry_weather::request_backup_helicopter();
@@ -48,6 +49,6 @@ namespace big
 			mobile::ceo_abilities::request_bullshark_testosterone();
 		});
 
-		components::command_button<"ballisticarmor">();
+		components::command_button(&cmd::g_ballistic_armor);
 	}
 }

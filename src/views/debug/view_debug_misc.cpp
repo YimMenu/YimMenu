@@ -1,3 +1,4 @@
+#include "backend/commands/system/fast_quit.hpp"
 #include "gta/joaat.hpp"
 #include "gta_util.hpp"
 #include "gui/components/components.hpp"
@@ -6,10 +7,10 @@
 #include "script.hpp"
 #include "script_global.hpp"
 #include "util/misc.hpp"
+#include "util/pathfind.hpp"
+#include "util/ped.hpp"
 #include "util/system.hpp"
 #include "view_debug.hpp"
-#include "util/ped.hpp"
-#include "util/pathfind.hpp"
 
 namespace big
 {
@@ -80,10 +81,9 @@ namespace big
 					ENTITY::SET_ENTITY_COORDS(self::ped, safepos.x, safepos.y, safepos.z, 0, 0, 0, false);
 				else
 					g_notification_service->push_error("Find safe pos", "Failed to find a safe position");
-
 			});
 
-			components::command_button<"fastquit">();
+			components::command_button(&cmd::g_fast_quit);
 
 			if (ImGui::TreeNode("Addresses"))
 			{

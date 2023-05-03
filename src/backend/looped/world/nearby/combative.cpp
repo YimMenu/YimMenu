@@ -1,25 +1,20 @@
-#include "backend/looped_command.hpp"
+#include "combative.hpp"
+
 #include "natives.hpp"
 
 namespace big
 {
-
-	class combative : looped_command
+	void combative::on_enable()
 	{
-		using looped_command::looped_command;
+		MISC::SET_RIOT_MODE_ENABLED(true);
+	}
 
-		virtual void on_enable() override
-		{
-			MISC::SET_RIOT_MODE_ENABLED(true);
-		}
-		
-		virtual void on_tick() override {}
-		
-		virtual void on_disable() override
-		{
-			MISC::SET_RIOT_MODE_ENABLED(false);
-                }
-        };
-	combative g_combative("riotmode", "Riot Mode", "Make nearby peds attack eachother", g.world.nearby.combative);
+	void combative::on_tick()
+	{
+	}
 
+	void on_disable()
+	{
+		MISC::SET_RIOT_MODE_ENABLED(false);
+	}
 }
