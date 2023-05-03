@@ -51,6 +51,7 @@ namespace big
 		bool block_join           = false;
 		int block_join_reason     = 1;
 		bool is_modder            = false;
+		
 		std::unordered_set<int> infractions;
 		std::optional<CommandAccessLevel> command_access_level = std::nullopt;
 		PlayerOnlineStatus online_state                        = PlayerOnlineStatus::UNKNOWN;
