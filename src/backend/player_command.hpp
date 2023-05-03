@@ -33,6 +33,11 @@ namespace big
 		};
 
 	public:
+		player_all_component* all() const
+		{
+			return m_all_component.get();
+		}
+
 		void call(player_ptr player, const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 		player_command(const std::string& name, const std::string& label, const std::string& description, std::optional<std::uint8_t> num_args, bool make_all_version = true);
 	};

@@ -1,16 +1,24 @@
+#include "backend/commands/player/toxic/ceo_kick.hpp"
+#include "backend/commands/player/toxic/explode_player.hpp"
+#include "backend/commands/player/toxic/force_into_mission.hpp"
 #include "backend/commands/player/toxic/give_all_weapons.hpp"
+#include "backend/commands/player/toxic/kick_from_interior.hpp"
+#include "backend/commands/player/toxic/kick_from_vehicle.hpp"
+#include "backend/commands/player/toxic/kill_player.hpp"
+#include "backend/commands/player/toxic/ragdoll_player.hpp"
+#include "backend/commands/player/toxic/remove_all_weapons.hpp"
+#include "backend/commands/player/toxic/send_fake_ban_message.hpp"
+#include "backend/commands/player/toxic/send_sext.hpp"
+#include "backend/commands/player/toxic/send_to_apartment.hpp"
+#include "backend/commands/player/toxic/send_to_interior.hpp"
+#include "backend/commands/player/toxic/send_to_warehouse.hpp"
+#include "backend/commands/player/toxic/show_transaction_error.hpp"
+#include "backend/commands/player/toxic/start_script.hpp"
+#include "backend/commands/player/toxic/trigger_ceo_raid.hpp"
 #include "backend/commands/player/toxic/turn_into_beast.hpp"
 #include "core/data/apartment_names.hpp"
 #include "core/data/command_access_levels.hpp"
 #include "core/data/region_codes.hpp"
-#include "backend/commands/player/toxic/remove_all_weapons.hpp"
-#include "backend/commands/player/toxic/ceo_kick.hpp"
-#include "backend/commands/player/toxic/kick_from_vehicle.hpp"
-#include "backend/commands/player/toxic/ragdoll_player.hpp"
-#include "backend/commands/player/toxic/kick_from_interior.hpp"
-#include "backend/commands/player/toxic/force_into_mission.hpp"
-#include "backend/commands/player/toxic/show_transaction_error.hpp"
-#include "backend/commands/player/toxic/trigger_ceo_raid.hpp"
 #include "core/data/warehouse_names.hpp"
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
@@ -187,12 +195,35 @@ namespace big
 			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = global_wanted_level;
 		}
 
-		components::command_button(&cmd::g_turn_into_beast_all, {});
+		components::command_button(cmd::g_kill_player.all(), {}, "KILL_ALL"_T);
+		ImGui::SameLine();
+		components::command_button(cmd::g_explode_player.all(), {}, "EXPLODE_ALL"_T);
+
+		ImGui::SameLine();
+
+		components::command_button(&cmd::g_turn_into_beast_all);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("INCLUDING_YOU"_T.data());
 
 
 		components::command_button(&cmd::g_give_all_weapons_all);
+		ImGui::SameLine();
+		components::command_button(cmd::g_remove_all_weapons.all());
+
+		components::command_button(cmd::g_ceo_kick.all());
+		ImGui::SameLine();
+		components::command_button(cmd::g_kick_from_vehicle.all());
+
+		components::command_button(cmd::g_ragdoll_player.all(), {}, "RAGDOLL_PLAYERS"_T);
+		ImGui::SameLine();
+		components::command_button(cmd::g_kick_from_interior.all(), {}, "KICK_ALL_FROM_INTERIORS"_T);
+
+		components::command_button(cmd::g_force_into_mission.all(), {});
+		ImGui::SameLine();
+		components::command_button(cmd::g_show_transaction_error.all(), {});
+
+		components::command_button(cmd::g_trigger_ceo_raid.all(), {});
+		ImGui::SameLine();
 
 		components::button("Trigger MC Raid", [] {
 			g_player_service->iterate([](auto& plyr) {
@@ -205,6 +236,10 @@ namespace big
 				toxic::start_activity(plyr.second, eActivityType::GunrunningDefend);
 			});
 		});
+
+		components::command_button(cmd::g_send_sext.all(), {}, "Send Sexts");
+		ImGui::SameLine();
+		components::command_button(cmd::g_send_fake_ban_message.all(), {}, "Send Fake Ban Messages");
 
 		components::small_text("TELEPORTS"_T);
 
@@ -228,6 +263,8 @@ namespace big
 
 		ImGui::SameLine();
 
+		components::command_button(cmd::g_send_to_apartment.all(), {(uint64_t)g.session.send_to_apartment_idx}, "TP_ALL_TO_APARTMENT"_T);
+
 		if (ImGui::BeginCombo("##warehouse", warehouse_names[g.session.send_to_warehouse_idx]))
 		{
 			for (int i = 1; i < warehouse_names.size(); i++)
@@ -247,6 +284,8 @@ namespace big
 		}
 
 		ImGui::SameLine();
+
+		components::command_button(cmd::g_send_to_warehouse.all(), {(uint64_t)g.session.send_to_warehouse_idx}, "TP_ALL_TO_WAREHOUSE"_T);
 
 		components::button("TP_ALL_TO_DARTS"_T, [] {
 			g_player_service->iterate([](auto& plyr) {
@@ -272,6 +311,45 @@ namespace big
 			});
 		});
 		ImGui::SameLine();
+
+		components::command_button(cmd::g_send_to_interior.all(), {81}, "TP_ALL_TO_MOC"_T);
+
+		ImGui::SameLine();
+		components::command_button(cmd::g_send_to_interior.all(), {123}, "TP_ALL_TO_CASINO"_T);
+		ImGui::SameLine();
+		components::command_button(cmd::g_send_to_interior.all(), {124}, "TP_ALL_TO_PENTHOUSE"_T);
+		ImGui::SameLine();
+		components::command_button(cmd::g_send_to_interior.all(), {128}, "TP_ALL_TO_ARCADE"_T);
+
+		components::command_button(cmd::g_send_to_interior.all(), {146}, "TP_ALL_TO_MUSIC_LOCKER"_T);
+		ImGui::SameLine();
+		components::command_button(cmd::g_send_to_interior.all(), {148}, "TP_ALL_TO_RECORD_A_STUDIOS"_T);
+		ImGui::SameLine();
+		components::command_button(cmd::g_send_to_interior.all(), {149}, "TP_ALL_TO_CUSTOM_AUTO_SHOP"_T);
+
+		components::command_button(cmd::g_send_to_interior.all(), {155}, "TP_ALL_TO_AGENCY"_T);
+		ImGui::SameLine();
+		components::command_button(cmd::g_send_to_interior.all(), {160}, "TP_ALL_TO_FREAKSHOP"_T);
+		ImGui::SameLine();
+		components::command_button(cmd::g_send_to_interior.all(), {161}, "TP_ALL_TO_MULTI_FLOOR_GARAGE"_T);
+
+		components::command_button(cmd::g_start_tutorial.all());
+		ImGui::SameLine();
+		components::command_button(cmd::g_start_golf.all());
+		ImGui::SameLine();
+		components::command_button(cmd::g_start_flight_school.all());
+		ImGui::SameLine();
+		components::command_button(cmd::g_start_darts.all());
+
+		components::command_button(cmd::g_start_badlands.all());
+		ImGui::SameLine();
+		components::command_button(cmd::g_start_space_monkey.all());
+		ImGui::SameLine();
+		components::command_button(cmd::g_start_wizards_ruin.all());
+
+		components::command_button(cmd::g_start_qub3d.all());
+		ImGui::SameLine();
+		components::command_button(cmd::g_start_camhedz.all());
 
 		ImGui::Checkbox("DISABLE_PEDS"_T.data(), &g.session.disable_peds);
 		ImGui::SameLine();
