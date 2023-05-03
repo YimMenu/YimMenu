@@ -78,8 +78,13 @@ namespace big
 		            }},
 		        {"BOOST",
 		            [this] {
-			            if (entity::take_control_of(m_handle))
+			            if (entity::take_control_of(m_handle)){
 							VEHICLE::SET_VEHICLE_FORWARD_SPEED(m_handle, 79);
+							if(ENTITY::IS_ENTITY_TOUCHING_ENTITY(self::ped, m_handle)){
+								auto vel = ENTITY::GET_ENTITY_VELOCITY(m_handle);
+								ENTITY::SET_ENTITY_VELOCITY(self::ped, vel.x, vel.y, vel.z);
+							}
+						}
 			            else
 				            g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
 			            
@@ -132,8 +137,16 @@ namespace big
 		s_context_menu object_menu{ContextEntityType::OBJECT, 0, {}, {}};
 
 		s_context_menu player_menu{ContextEntityType::PLAYER, 0, {}, {
+			{"SET SELECTED", [this] {
+				g_player_service->set_selected(ped::get_player_from_ped(m_handle));
+		     }},
 			{"STEAL IDENTITY", [this] {
 				ped::steal_identity(m_handle);
+		     }},
+			{"TP BEHIND", [this] {
+				Vector3 behind_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(m_handle, 0, -5.f, 0);
+				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(self::ped, behind_pos.x, behind_pos.y, behind_pos.z, 0, 0, 0);
+				ENTITY::SET_ENTITY_HEADING(self::ped, ENTITY::GET_ENTITY_HEADING(m_handle));
 		     }},
 		    {"BREAKUP KICK", [this] {
 			         static player_command* command = (player_command*)command::get(rage::consteval_joaat("breakup"));
@@ -169,6 +182,10 @@ namespace big
 		            [this] {
 			            rage::fvector3 pos = *m_pointer->m_navigation->get_position();
 			            teleport::to_coords({pos.x, pos.y, pos.z});
+		            }},
+				{"TP ON TOP",
+		            [this] {
+			            teleport::tp_on_top(m_handle, true);
 		            }},
 		        {"ENFLAME",
 		            [this] {
