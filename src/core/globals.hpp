@@ -295,6 +295,20 @@ namespace big
 			bool healthregen        = false;
 			float healthregenrate   = 1.0f;
 			bool superman           = false;
+
+			struct super_hero_fly
+			{
+				bool enabled         = false;
+				bool gradual         = false;
+				bool explosions      = true;
+				bool auto_land       = true;
+				float fly_speed      = 15.f;
+				float initial_launch = 15.f;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(super_hero_fly, gradual, explosions, auto_land, fly_speed, initial_launch)
+			} super_hero_fly{};
+
+			bool bullet_shield      = false;
 			bool custom_weapon_stop = true;
 			struct hud
 			{
@@ -316,6 +330,7 @@ namespace big
 			bool dance_mode = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, custom_weapon_stop)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, super_hero_fly, custom_weapon_stop)
 		} self{};
 
 		struct session
@@ -406,6 +421,7 @@ namespace big
 				int open_vehicle_controller = 0;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller, super_hero_fly)
 			} hotkeys{};
 
 			bool dev_dlc = false;

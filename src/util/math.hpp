@@ -1,5 +1,6 @@
 #pragma once
 #include "pointers.hpp"
+#include "natives.hpp"
 
 namespace big::math
 {
@@ -30,5 +31,31 @@ namespace big::math
 		const Vector3 cam_coords  = g_pointers->m_gta.m_get_gameplay_cam_coords();
 
 		return (float)distance_between_vectors(plyr_coords, cam_coords);
+	}
+
+	inline Vector3 raycast_coords(Vector3 coord, Vector3 rot, Entity ignore){
+
+		BOOL hit;
+		Vector3 endCoords;
+		Vector3 surfaceNormal;
+		Entity hit_entity;
+		Vector3 dir       = math::rotation_to_direction(rot);
+		Vector3 farCoords;
+
+		farCoords.x = coord.x + dir.x * 1000;
+		farCoords.y = coord.y + dir.y * 1000;
+		farCoords.z = coord.z + dir.z * 1000;
+
+		int ray = SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(coord.x,
+		    coord.y,
+		    coord.z,
+		    farCoords.x,
+		    farCoords.y,
+		    farCoords.z,
+		    -1,
+		    ignore,
+		    7);
+		SHAPETEST::GET_SHAPE_TEST_RESULT(ray, &hit, &endCoords, &surfaceNormal, &hit_entity);
+		return endCoords;
 	}
 }
