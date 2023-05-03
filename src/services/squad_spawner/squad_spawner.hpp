@@ -62,14 +62,16 @@ namespace big
 		bool m_ped_proofs[5]; // 0 headshot, 1 bullet, 2 flame, 3 melee, 4 explosion
 		float m_ped_health;   //Leave at 0 to default
 		float m_ped_armor;    //Leave at 0 to default
-		float m_ped_accuracy;
+		float m_ped_accuracy = 50.f;
 		float m_spawn_distance;
 		int m_squad_size;
-		eSquadSpawnDistance m_spawn_distance_mode;
-		eCombatAbilityLevel m_combat_ability_level;
+		eSquadSpawnDistance m_spawn_distance_mode  = eSquadSpawnDistance::CLOSEBY;
+		eCombatAbilityLevel m_combat_ability_level = eCombatAbilityLevel::AVERAGE;
 		bool m_stay_in_veh;
 		bool m_spawn_behind_same_velocity; //Spawns behind a moving target with the same velocity as the targets vehicle
 		bool m_disperse;                   //Spawns attackers that are on foot on seperate positions
+		bool m_spawn_ahead;
+		bool m_favour_roads;
 
 		/*
 		Leave vehicle_model empty to spawn a squad on foot
@@ -78,7 +80,7 @@ namespace big
 		Leave spawn_distance at 0 to let the spawn_distance_mode to handle it
 		*/
 		squad(){};
-		squad(std::string name, std::string ped_model, std::string weapon_model, std::string vehicle_model, int squad_size, bool ped_invincibility = false, bool veh_invincibility = false, bool ped_proofs[5] = {}, float ped_health = 0, float ped_armor = 0, float spawn_distance = 0, float ped_accuracy = 50.f, eSquadSpawnDistance spawn_distance_mode = eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel combat_ability_level = eCombatAbilityLevel::AVERAGE, bool stay_in_veh = false, bool spawn_behind_same_velocity = false, std::string description = "", bool disperse = false)
+		squad(std::string name, std::string ped_model, std::string weapon_model, std::string vehicle_model, int squad_size, bool ped_invincibility = false, bool veh_invincibility = false, bool ped_proofs[5] = {}, float ped_health = 0, float ped_armor = 0, float spawn_distance = 0, float ped_accuracy = 50.f, eSquadSpawnDistance spawn_distance_mode = eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel combat_ability_level = eCombatAbilityLevel::AVERAGE, bool stay_in_veh = false, bool spawn_behind_same_velocity = false, std::string description = "", bool disperse = false, bool spawn_ahead = false, bool favour_roads = false)
 		{
 			m_internal_id = ++m_instance_count;
 
@@ -104,6 +106,8 @@ namespace big
 			m_stay_in_veh                = stay_in_veh;
 			m_spawn_behind_same_velocity = spawn_behind_same_velocity;
 			m_disperse                   = disperse;
+			m_spawn_ahead                = spawn_ahead;
+			m_favour_roads               = favour_roads;
 		}
 
 		int get_id() const
@@ -190,7 +194,7 @@ namespace big
 
 	NLOHMANN_JSON_SERIALIZE_ENUM(eSquadSpawnDistance, {{eSquadSpawnDistance::CUSTOM, "custom"}, {eSquadSpawnDistance::ON_TARGET, "on target"}, {eSquadSpawnDistance::CLOSEBY, "closeby"}, {eSquadSpawnDistance::MODERATELY_DISTANCED, "moderately distanced"}, {eSquadSpawnDistance::FAR_AWAY, "far away"}})
 
-	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(squad, m_name, m_description, m_ped_model, m_weapon_model, m_vehicle_model, m_ped_invincibility, m_veh_invincibility, m_ped_proofs, m_ped_health, m_ped_armor, m_ped_accuracy, m_spawn_distance, m_squad_size, m_spawn_distance_mode, m_combat_ability_level, m_stay_in_veh, m_spawn_behind_same_velocity, m_disperse);
+	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(squad, m_name, m_description, m_ped_model, m_weapon_model, m_vehicle_model, m_ped_invincibility, m_veh_invincibility, m_ped_proofs, m_ped_health, m_ped_armor, m_ped_accuracy, m_spawn_distance, m_squad_size, m_spawn_distance_mode, m_combat_ability_level, m_stay_in_veh, m_spawn_behind_same_velocity, m_disperse, m_spawn_ahead, m_favour_roads);
 
 	class squad_spawner
 	{
