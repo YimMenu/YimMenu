@@ -1,5 +1,7 @@
 #include "script_host_kick.hpp"
 
+#include "util/scripts.hpp"
+
 namespace big
 {
 	CommandAccessLevel script_host_kick::get_access_level()
