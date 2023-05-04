@@ -387,7 +387,7 @@ namespace big
 				    new_template.m_max_vehicle,
 				    new_template.m_persistent_vehicle},
 				    victim,
-				    new_template.m_spawn_distance_mode == eSquadSpawnDistance::CUSTOM ? true : false,
+				    new_template.m_spawn_distance_mode == eSquadSpawnDistance::CUSTOM,
 				    g_orbital_drone_service.m_ground_pos);
 		});
 		ImGui::SameLine();
