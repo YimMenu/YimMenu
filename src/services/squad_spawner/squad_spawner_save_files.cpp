@@ -27,11 +27,8 @@ namespace big
 						read.close();
 					}
 					squad new_squad{};
-					LOG(INFO) << "TEST1";
 					from_json(j, new_squad);
-					LOG(INFO) << "TEST2";
 					g_squad_spawner_service.m_templates.push_back(new_squad);
-					LOG(INFO) << "TEST3";
 				}
 			}
 			success = true;
