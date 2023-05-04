@@ -66,7 +66,7 @@ namespace big
 		float m_ped_accuracy = 50.f;
 		float m_spawn_distance;
 		int m_squad_size;
-		eSquadSpawnDistance m_spawn_distance_mode = eSquadSpawnDistance::CLOSEBY;
+		eSquadSpawnDistance m_spawn_distance_mode  = eSquadSpawnDistance::CLOSEBY;
 		eCombatAbilityLevel m_combat_ability_level = eCombatAbilityLevel::AVERAGE;
 		bool m_stay_in_veh;
 		bool m_spawn_behind_same_velocity; //Spawns behind a moving target with the same velocity as the targets vehicle

@@ -178,7 +178,6 @@ namespace big
 		{
 			s.m_spawn_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(s.current_target_ped, 0.0, s.m_spawn_distance, 0.0);
 			s.m_spawn_distance = 5.f;
-			LOG(INFO) << "Applied spawn distance ahead";
 		}
 
 		//Actual algorithm to find a nice spot
