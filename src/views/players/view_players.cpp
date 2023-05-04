@@ -16,7 +16,7 @@ namespace big
 	{
 		bool selected_player = plyr == g_player_service->get_selected();
 
-// generate icons string
+		// generate icons string
 		std::string player_icons;
 		if (plyr->is_host())
 			player_icons += FONT_ICON_HOST;
@@ -40,14 +40,16 @@ namespace big
 		const ImRect icons_box(icons_pos, icons_pos + icons_size);
 		ImGui::PopFont();
 
-		if (plyr->is_admin)
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.f, 0.67f, 0.f, 1.f));
-		else if (plyr->is_friends)
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.017f, 0.670f, 0.053f, 0.900f));
-		else if (plyr->is_modder)
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.019f, 0.000f, 1.000f, 0.900f));
-		else if (plyr->block_join)
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.000f, 0.000f, 0.000f, 0.900f));
+			if (plyr->is_admin)
+			    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.f, 0.67f, 0.f, 1.f));
+		        else if (plyr->is_friend())
+			    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.031f, 0.347f, 0.706f, 0.902f)); // Blue
+			else if (plyr->is_friends)
+			    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.031f, 0.347f, 0.706f, 0.902f)); // Blue
+			else if (plyr->is_modder)
+			    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.5f, 0.0f, 1.0f)); //Orange
+			else if (plyr->block_join)
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.000f, 0.000f, 0.000f, 0.900f)); // Red
 
 		if (selected_player)
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
