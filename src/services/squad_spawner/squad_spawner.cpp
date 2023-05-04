@@ -310,6 +310,7 @@ namespace big
 		if (s.has_squad_spawned())
 		{
 			m_active_squads.push_back(s);
+			script::get_current()->yield(100ms);
 			return true;
 		}
 		return false;

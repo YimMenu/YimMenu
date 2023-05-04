@@ -362,6 +362,8 @@ namespace big
 		};
 
 		components::button("Spawn Squad", [] {
+			try{
+				
 			if (check_validity(false))
 				g_squad_spawner_service.spawn_squad({
 					new_template.m_name,
@@ -389,7 +391,14 @@ namespace big
 				    victim,
 				    new_template.m_spawn_distance_mode == eSquadSpawnDistance::CUSTOM,
 				    g_orbital_drone_service.m_ground_pos);
+					
+			}
+			catch (std::exception e)
+			{
+				LOG(WARNING) << "Exception while spawning squad " << e.what();
+			}
 		});
+		
 		ImGui::SameLine();
 		components::button("Save", [] {
 			if (check_validity(true) && !check_if_exists(new_template.m_name))
