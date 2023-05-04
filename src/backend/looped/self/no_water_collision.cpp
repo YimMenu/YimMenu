@@ -1,8 +1,5 @@
 #include "no_water_collision.hpp"
 
-#include "fiber_pool.hpp"
-#include "natives.hpp"
-
 namespace big
 {
 	void no_water_collision::on_tick()

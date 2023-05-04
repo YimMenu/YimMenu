@@ -1,5 +1,7 @@
 #include "null_function_kick.hpp"
 
+#include "pointers.hpp"
+
 namespace big
 {
 	CommandAccessLevel null_function_kick::get_access_level()

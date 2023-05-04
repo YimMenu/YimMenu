@@ -1,9 +1,6 @@
 #pragma once
 
 #include "backend/player_command.hpp"
-#include "core/scr_globals.hpp"
-#include "natives.hpp"
-#include "pointers.hpp"
 
 namespace big
 {
