@@ -59,6 +59,7 @@ namespace big::animations
 		{
 			LOG(INFO) << "Animations file is not in directory. https://raw.githubusercontent.com/DurtyFree/gta-v-data-dumps/master/animDictsCompact.json";
 			g_notification_service->push_warning("Animations", "Please download the appropriate animations json and put it in the mod directory.");
+            return;
 		}
 
 		auto path = g_file_manager->get_project_file("animDictsCompact.json").get_path();
