@@ -126,7 +126,7 @@ namespace big
 
 		bool does_squad_have_vehicle()
 		{
-			return !m_vehicle_model.empty();
+			return !m_vehicle_model.empty() || does_squad_have_persistent_vehicle();
 		}
 
 		bool does_squad_have_persistent_vehicle()
