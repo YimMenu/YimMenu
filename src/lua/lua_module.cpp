@@ -88,6 +88,9 @@ namespace big
 		for (auto& patch : m_registered_patches)
 			patch.reset();
 
+		for (auto memory : m_allocated_memory)
+			delete[] memory;
+
 		m_registered_scripts.clear();
 		m_registered_patches.clear();
 	}

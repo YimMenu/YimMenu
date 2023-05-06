@@ -43,7 +43,7 @@ namespace lua::native
 		ns["begin_call"]        = begin_call;
 		ns["push_arg"]          = push_arg;
 		ns["push_string"]       = push_string;
-		ns["push_pointer"]      = push_pointer;
+		ns["push_pointer"]      = sol::overload(&push_pointer_2, &push_pointer);
 		ns["end_call"]          = end_call;
 		ns["end_call_string"]   = end_call_string;
 		ns["get_pointer_value"] = get_pointer_value;

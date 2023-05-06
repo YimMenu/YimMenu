@@ -11,7 +11,7 @@ namespace lua::memory
 	public:
 		std::uint64_t m_address;
 
-		pointer(std::uint64_t address) :
+		explicit pointer(std::uint64_t address) :
 		    m_address(address)
 		{
 		}
@@ -87,6 +87,8 @@ namespace lua::memory
 	pointer scan_pattern(const std::string& pattern);
 	pointer handle_to_ptr(int entity);
 	int ptr_to_handle(pointer mem_addr);
+	pointer allocate(int size, sol::this_state state);
+	void free(pointer ptr, sol::this_state state);
 
 	static void bind(sol::state& state)
 	{
@@ -128,5 +130,7 @@ namespace lua::memory
 		ns["scan_pattern"]  = scan_pattern;
 		ns["handle_to_ptr"] = handle_to_ptr;
 		ns["ptr_to_handle"] = ptr_to_handle;
+		ns["allocate"]      = allocate;
+		ns["free"]          = free;
 	}
 }

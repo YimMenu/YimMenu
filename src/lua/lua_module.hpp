@@ -18,6 +18,7 @@ namespace big
 		std::vector<std::shared_ptr<lua_patch>> m_registered_patches;
 		std::unordered_map<rage::joaat_t, std::vector<std::shared_ptr<lua::gui::gui_element>>> m_gui;
 		std::unordered_map<rage::joaat_t, std::vector<sol::function>> m_event_callbacks;
+		std::vector<void*> m_allocated_memory;
 
 		lua_module(std::string module_name);
 		~lua_module();

@@ -5,6 +5,8 @@ namespace big
 {
 	class lua_manager
 	{
+		std::mutex m_module_lock;
+
 	public:
 		lua_manager();
 		~lua_manager();

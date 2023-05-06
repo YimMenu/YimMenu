@@ -6,7 +6,7 @@
 
 namespace lua::script
 {
-	static void register_looped_script(const std::string& name, sol::function func, sol::this_state state)
+	static void register_looped(const std::string& name, sol::function func, sol::this_state state)
 	{
 		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
 
@@ -40,9 +40,9 @@ namespace lua::script
 
 	static void bind(sol::state& state)
 	{
-		auto ns                      = state["script"].get_or_create<sol::table>();
-		ns["register_looped_script"] = register_looped_script;
-		ns["run_in_fiber"]           = run_in_fiber;
-		ns["yield"]                  = yield;
+		auto ns               = state["script"].get_or_create<sol::table>();
+		ns["register_looped"] = register_looped;
+		ns["run_in_fiber"]    = run_in_fiber;
+		ns["yield"]           = yield;
 	}
 }

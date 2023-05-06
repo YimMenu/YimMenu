@@ -1,6 +1,7 @@
 #pragma once
 #include "invoker.hpp"
 #include "lua/lua_module.hpp"
+#include "memory.hpp"
 
 namespace lua::native
 {
@@ -39,6 +40,11 @@ namespace lua::native
 	{
 		pointer_pool.push_back(initial_value);
 		big::g_native_invoker.push_arg(&*pointer_pool.end());
+	}
+
+	static void push_pointer_2(memory::pointer ptr)
+	{
+		big::g_native_invoker.push_arg(ptr.get_address());
 	}
 
 	uint64_t end_call(uint64_t native_hash);

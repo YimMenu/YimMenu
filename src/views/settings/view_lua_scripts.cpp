@@ -8,6 +8,7 @@
 namespace big
 {
 	static std::weak_ptr<lua_module> selected_module{};
+	static bool show = true;
 
 	void view::lua_scripts()
 	{
@@ -18,7 +19,7 @@ namespace big
 		{
 			auto& modules = g_lua_manager->get_modules();
 
-			if (modules.size() > 0)
+			if (show && modules.size() > 0)
 			{
 				for (const auto& module : modules)
 				{
@@ -58,7 +59,9 @@ namespace big
 		ImGui::EndGroup();
 
 		components::button("Reload All", [] {
+			show = false;
 			g_lua_manager->reload_all_modules();
+			show = true;
 		});
 	}
 }

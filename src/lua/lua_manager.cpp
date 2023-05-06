@@ -20,6 +20,8 @@ namespace big
 
 	void lua_manager::draw_gui(rage::joaat_t tab_hash)
 	{
+		std::lock_guard guard(m_module_lock);
+
 		for (auto& module : m_modules)
 		{
 			if (auto it = module->m_gui.find(tab_hash); it != module->m_gui.end())
@@ -34,6 +36,8 @@ namespace big
 
 	void lua_manager::unload_module(rage::joaat_t module_id)
 	{
+		std::lock_guard guard(m_module_lock);
+
 		std::erase_if(m_modules, [module_id](auto& module) {
 			return module_id == module->module_id();
 		});
@@ -41,6 +45,8 @@ namespace big
 
 	void lua_manager::load_module(const std::string& module_name)
 	{
+		std::lock_guard guard(m_module_lock);
+
 		auto id = rage::joaat(module_name);
 
 		for (auto& module : m_modules)
@@ -83,6 +89,8 @@ namespace big
 	}
 	void lua_manager::unload_all_modules()
 	{
+		std::lock_guard guard(m_module_lock);
+
 		for (auto& module : m_modules)
 			module.reset();
 
