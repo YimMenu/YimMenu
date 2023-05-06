@@ -19,7 +19,19 @@ namespace big
 	{
 		std::string name = player->name;
 		std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+		bool isFriend  = player->is_friends;
+		bool isModder  = player->is_modder;
+		bool isBlocked = player->block_join;
 
+		ImVec4 backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+
+		if (isFriend)
+			backgroundColor = ImVec4(0.0f, 0.0f, 1.0f, 1.0f); // Blue
+		else if (isModder)
+			backgroundColor = ImVec4(1.0f, 0.5f, 0.0f, 1.0f); //Orange
+		else if (isBlocked)
+			backgroundColor = ImVec4(1.000f, 0.000f, 0.000f, 0.900f); // Red
+				
 		if (lower_search.empty() || name.find(lower_search) != std::string::npos)
 		{
 			ImGui::PushID(player->rockstar_id);
@@ -30,11 +42,18 @@ namespace big
 
 			//render status circle
 			ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(cursor_pos.x + 4.f + circle_size, cursor_pos.y + 4.f + circle_size),
-				circle_size,
-				ImColor(plyr_state == PlayerOnlineStatus::ONLINE  ? ImVec4(0.f, 1.f, 0.f, 1.f) :
-						plyr_state == PlayerOnlineStatus::OFFLINE ? ImVec4(1.f, 0.f, 0.f, 1.f) :
-						plyr_state == PlayerOnlineStatus::UNKNOWN ? ImVec4(.5f, .5f, .5f, 1.0f) :
-																	ImVec4(.5f, .5f, .5f, 1.0f)));
+			    circle_size,
+			    ImColor(plyr_state == PlayerOnlineStatus::ONLINE  ? ImVec4(0.f, 1.f, 0.f, 1.f) :
+			            plyr_state == PlayerOnlineStatus::OFFLINE ? ImVec4(1.f, 0.f, 0.f, 1.f) :
+			            plyr_state == PlayerOnlineStatus::UNKNOWN ? ImVec4(.5f, .5f, .5f, 1.0f) :
+			                                                        ImVec4(.5f, .5f, .5f, 1.0f)));
+			//  Set background color for the entire row
+			//	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)); // breaks all the colors on the menu dont think i need this one
+				ImGui::PushStyleColor(ImGuiCol_Header, backgroundColor);
+				ImGui::PushStyleColor(ImGuiCol_HeaderHovered, backgroundColor);
+				ImGui::PushStyleColor(ImGuiCol_HeaderActive, backgroundColor);
+			//notsure i need this 
+				ImGui::PopStyleColor();
 
 			//we need some padding
 			ImVec2 cursor = ImGui::GetCursorPos();
@@ -53,7 +72,6 @@ namespace big
 
 	void view::player_database()
 	{
-
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("PLAYER"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
 
@@ -64,7 +82,7 @@ namespace big
 			{
 				std::string lower_search = search;
 				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
-
+		
 				for (auto& player : item_arr | std::ranges::views::values)
 				{
 					if (player->online_state == PlayerOnlineStatus::ONLINE)
@@ -95,7 +113,10 @@ namespace big
 					current_player->name = name_buf;
 				}
 
-				if (ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &current_player->rockstar_id) || ImGui::Checkbox("IS_FRIENDS"_T.data(), &current_player->is_friends) || ImGui::Checkbox("IS_MODDER"_T.data(), &current_player->is_modder) || ImGui::Checkbox("BLOCK_JOIN"_T.data(), &current_player->block_join))
+				if (ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &current_player->rockstar_id)
+				    || ImGui::Checkbox("IS_FRIENDS"_T.data(), &current_player->is_friends)
+				    || ImGui::Checkbox("IS_MODDER"_T.data(), &current_player->is_modder)
+				    || ImGui::Checkbox("BLOCK_JOIN"_T.data(), &current_player->block_join))
 				{
 					if (current_player->rockstar_id != selected->rockstar_id)
 						g_player_database_service->update_rockstar_id(selected->rockstar_id, current_player->rockstar_id);
