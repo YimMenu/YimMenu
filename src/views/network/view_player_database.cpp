@@ -25,12 +25,15 @@ namespace big
 
 		ImVec4 backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
 
-		if (isFriend)
-			backgroundColor = ImVec4(0.0f, 0.0f, 1.0f, 1.0f); // Blue
-		else if (isModder)
-			backgroundColor = ImVec4(1.0f, 0.5f, 0.0f, 1.0f); //Orange
-		else if (isBlocked)
+		if (isBlocked) 
 			backgroundColor = ImVec4(1.000f, 0.000f, 0.000f, 0.900f); // Red
+		else if (isFriend) 
+			backgroundColor = ImVec4(0.0f, 0.0f, 1.0f, 1.0f); // Blue
+		else if (isModder) 
+			backgroundColor = ImVec4(1.0f, 0.5f, 0.0f, 1.0f); //Orange
+		if (isFriend || isModder || isBlocked)
+			//notsure i need this
+			ImGui::PopStyleColor();
 				
 		if (lower_search.empty() || name.find(lower_search) != std::string::npos)
 		{
