@@ -32,8 +32,9 @@ namespace lua::native
 
 	static void push_string(const std::string& lua_str)
 	{
+		string_pool.push_back({});
 		strncpy(string_pool.end()->data(), lua_str.data(), 255);
-		big::g_native_invoker.push_arg(string_pool.end()->data());
+		big::g_native_invoker.push_arg(lua_str.data());
 	}
 
 	static void push_pointer(uint64_t initial_value)
