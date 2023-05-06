@@ -31,12 +31,18 @@ namespace big
 			backgroundColor = ImVec4(0.0f, 0.0f, 1.0f, 1.0f); // Blue
 		else if (isModder) 
 			backgroundColor = ImVec4(1.0f, 0.5f, 0.0f, 1.0f); //Orange
-		if (isFriend || isModder || isBlocked)
-			//notsure i need this
-			ImGui::PopStyleColor();
-				
+		//if (isFriend || isModder || isBlocked)
+
+	
 		if (lower_search.empty() || name.find(lower_search) != std::string::npos)
 		{
+			//  Set background color for the entire row
+			//	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)); // breaks all the colors on the menu dont think i need this one
+			ImGui::PushStyleColor(ImGuiCol_Header, backgroundColor);
+			ImGui::PushStyleColor(ImGuiCol_HeaderHovered, backgroundColor);
+			ImGui::PushStyleColor(ImGuiCol_HeaderActive, backgroundColor);
+
+
 			ImGui::PushID(player->rockstar_id);
 
 			float circle_size = 7.5f;
@@ -50,13 +56,7 @@ namespace big
 			            plyr_state == PlayerOnlineStatus::OFFLINE ? ImVec4(1.f, 0.f, 0.f, 1.f) :
 			            plyr_state == PlayerOnlineStatus::UNKNOWN ? ImVec4(.5f, .5f, .5f, 1.0f) :
 			                                                        ImVec4(.5f, .5f, .5f, 1.0f)));
-			//  Set background color for the entire row
-			//	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)); // breaks all the colors on the menu dont think i need this one
-				ImGui::PushStyleColor(ImGuiCol_Header, backgroundColor);
-				ImGui::PushStyleColor(ImGuiCol_HeaderHovered, backgroundColor);
-				ImGui::PushStyleColor(ImGuiCol_HeaderActive, backgroundColor);
-			//notsure i need this 
-				ImGui::PopStyleColor();
+			
 
 			//we need some padding
 			ImVec2 cursor = ImGui::GetCursorPos();
@@ -70,6 +70,9 @@ namespace big
 			}
 
 			ImGui::PopID();
+			ImGui::PopStyleVar();
+			ImGui::PopStyleColor();
+
 		}
 	}
 
@@ -90,12 +93,14 @@ namespace big
 				{
 					if (player->online_state == PlayerOnlineStatus::ONLINE)
 						draw_player_db_entry(player, lower_search);
+					    ImGui::PopStyleColor();
 				}
 
 				for (auto& player : item_arr | std::ranges::views::values)
 				{
 					if (player->online_state != PlayerOnlineStatus::ONLINE)
 						draw_player_db_entry(player, lower_search);
+						ImGui::PopStyleColor();
 				}
 			}
 			else
