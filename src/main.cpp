@@ -27,6 +27,7 @@
 #include "services/player_database/player_database_service.hpp"
 #include "services/players/player_service.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
+#include "services/squad_spawner/squad_spawner.hpp"
 #include "services/tunables/tunables_service.hpp"
 #include "services/vehicle/handling_service.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
@@ -124,6 +125,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::vehicle_control, "Vehicle Control"));
 				    g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu, "Context Menu"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::tunables_script, "Tunables"));
+				    g_script_mgr.add_script(std::make_unique<script>(&backend::squad_spawner, "Tunables"));
 
 				    LOG(INFO) << "Scripts registered.";
 

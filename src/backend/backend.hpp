@@ -19,5 +19,6 @@ namespace big
 		static void orbital_drone();
 		static void vehicle_control();
 		static void tunables_script();
+		static void squad_spawner();
 	};
 }
