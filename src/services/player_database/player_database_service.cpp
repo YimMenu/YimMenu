@@ -201,6 +201,11 @@ namespace big
 						it->second->online_state = PlayerOnlineStatus::OFFLINE;
 						if (online[i] == 1)
 							it->second->online_state = PlayerOnlineStatus::ONLINE;
+						if (it->second->notify_online)
+						{
+							g_notification_service->push_warning("Player Online Notification",
+							    std::format("{} is now online!", it->second->name));
+						}
 					}
 				}
 			}
