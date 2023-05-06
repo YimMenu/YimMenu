@@ -223,7 +223,7 @@ namespace big
 			            Vector3 pos = ENTITY::GET_ENTITY_COORDS(m_handle, TRUE);
 			            FIRE::START_ENTITY_FIRE(m_handle);
 			            FIRE::START_SCRIPT_FIRE(pos.x, pos.y, pos.z, 25, TRUE);
-			            FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, eExplosionTag::DIR_FLAME, 1, false, false, 0, false);
+			            FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, eExplosionTag::MOLOTOV, 1, false, false, 0, false);
 		            }},
 		        {"DELETE",
 		            [this] {
