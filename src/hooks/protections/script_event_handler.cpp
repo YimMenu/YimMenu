@@ -350,7 +350,7 @@ namespace big
 				{
 					if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 					{
-						((player_command*)command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
 					}
 				}
 

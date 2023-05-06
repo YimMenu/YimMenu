@@ -47,6 +47,7 @@ namespace big
 		static void fun_vehicle();
 		static void vehicle_control();
 		static void spawn_ped();
+		static void squad_spawner();
 		static void time_and_weather();
 		static void spoofing();
 		static void teleport();

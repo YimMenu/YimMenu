@@ -91,6 +91,7 @@ namespace big::functions
 	using fipackfile_mount   = bool (*)(rage::fiPackfile* this_, const char* mount_point);
 	using fipackfile_unmount = bool (*)(const char* mount_point);
 
+	using get_gamer_online_state = bool (*)(int profile_index, rage::rlGamerHandle* handles, std::uint32_t count, int* online_state, rage::rlTaskStatus* status);
 	using start_get_session_by_gamer_handle = bool (*)(int profile_index, rage::rlGamerHandle* handles, int count, rage::rlSessionByGamerTaskResult* result, int unk, bool* success, rage::rlTaskStatus* state);
 	using start_matchmaking_find_sessions   = bool (*)(int profile_index, int available_slots, NetworkGameFilterMatchmakingComponent* m_filter, unsigned int max_sessions, rage::rlSessionInfo* result_sessions, int* result_session_count, rage::rlTaskStatus* state);
 	using start_get_presence_attributes     = bool (*)(int profile_index, rage::rlScHandle* handle, rage::rlQueryPresenceAttributesContext* contexts, int count, rage::rlTaskStatus* state);

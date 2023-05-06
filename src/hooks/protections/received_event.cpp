@@ -334,7 +334,8 @@ namespace big
 				std::vformat("BLAMED_FOR_EXPLOSION"_T,
 					std::make_format_args(player->get_name(),
 						reinterpret_cast<CPed*>(entity)->m_player_info->m_net_player_data.m_name)));
-			session::add_infraction(g_player_service->get_by_id(player->m_player_id), Infraction::BLAME_EXPLOSION_DETECTED);
+			// too many false positives, disabling it
+			//session::add_infraction(g_player_service->get_by_id(player->m_player_id), Infraction::BLAME_EXPLOSION_DETECTED);
 			return;
 		}
 

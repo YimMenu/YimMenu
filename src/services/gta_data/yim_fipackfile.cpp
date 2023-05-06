@@ -6,9 +6,10 @@
 
 namespace big
 {
-	yim_fipackfile::yim_fipackfile(rage::fiPackfile* rpf)
+	yim_fipackfile::yim_fipackfile(rage::fiPackfile* rpf, const std::string& mount_name)
 	{
 		this->rpf = rpf;
+		this->mount_name = mount_name;
 	}
 
 	void yim_fipackfile::add_wrapper_call_back(std::function<size_t(yim_fipackfile& rpf_wrapper)> cb)
@@ -18,7 +19,7 @@ namespace big
 
 	void yim_fipackfile::for_each_fipackfile()
 	{
-		for (int i = 0; i < 3672; i++)
+		for (int i = 1; i < 3672; i++) // fipackfile ctor start with 1
 		{
 			auto* rpf = g_pointers->m_gta.m_fipackfile_instances[i];
 
@@ -37,7 +38,7 @@ namespace big
 	{
 		std::vector<std::filesystem::path> file_paths;
 		if (parent.empty())
-			parent = "/";
+			parent = mount_name;
 
 		std::vector<std::string> directories;
 
