@@ -65,7 +65,7 @@ namespace big
 		float m_ped_armor;    //Leave at 0 to default
 		float m_ped_accuracy = 50.f;
 		float m_spawn_distance;
-		int m_squad_size;
+		int m_squad_size = 1;
 		eSquadSpawnDistance m_spawn_distance_mode  = eSquadSpawnDistance::CLOSEBY;
 		eCombatAbilityLevel m_combat_ability_level = eCombatAbilityLevel::AVERAGE;
 		bool m_stay_in_veh;
