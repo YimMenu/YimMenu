@@ -81,7 +81,18 @@ namespace big::pathfind
 	inline bool find_closest_vehicle_node_favour_direction(Vector3 coords, Vector3 facecoords, Vector3& outcoords, float& outheading, int flag, int nth = 1, float zMeasureMult = 3.f, float zTolerance = 0.f)
 	{
 		if (load_path_nodes(coords))
-			return PATHFIND::GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION(coords.x, coords.y, coords.z, facecoords.x, facecoords.y, facecoords.z, nth, &outcoords, &outheading, flag, zMeasureMult, zTolerance);
+			return PATHFIND::GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION(coords.x,
+			    coords.y,
+			    coords.z,
+			    facecoords.x,
+			    facecoords.y,
+			    facecoords.z,
+			    nth,
+			    &outcoords,
+			    &outheading,
+			    flag,
+			    zMeasureMult,
+			    zTolerance);
 		else
 			return false;
 	}
@@ -119,7 +130,7 @@ namespace big::pathfind
 
 		Vector3 changed_coords = outcoords;
 
-		if ( (favour_heading_to_original_coords ? !find_closest_vehicle_node_favour_direction(outcoords, outcoords, outcoords, outheading, flag) : !find_closest_vehicle_node(outcoords, outcoords, outheading, flag)) || math::distance_between_vectors(outcoords, coords) > vicinity || math::distance_between_vectors(outcoords, coords) < (vicinity / 2))
+		if ((favour_heading_to_original_coords ? !find_closest_vehicle_node_favour_direction(outcoords, outcoords, outcoords, outheading, flag) : !find_closest_vehicle_node(outcoords, outcoords, outheading, flag)) || math::distance_between_vectors(outcoords, coords) > vicinity || math::distance_between_vectors(outcoords, coords) < (vicinity / 2))z
 		{
 			outcoords = coords;
 

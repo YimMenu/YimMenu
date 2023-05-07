@@ -1,12 +1,13 @@
 #pragma once
+#include "backend/command.hpp"
+#include "backend/player_command.hpp"
 #include "natives.hpp"
+#include "services/gta_data/gta_data_service.hpp"
+#include "services/vehicle/persist_car_service.hpp"
 #include "util/entity.hpp"
 #include "util/ped.hpp"
 #include "util/teleport.hpp"
-#include "services/vehicle/persist_car_service.hpp"
-#include "backend/command.hpp"
-#include "backend/player_command.hpp"
-#include "services/gta_data/gta_data_service.hpp"
+
 
 namespace big
 {
@@ -72,12 +73,13 @@ namespace big
 		         }},
 		        {"COPY VEHICLE",
 		            [this] {
-						Vehicle v = persist_car_service::clone_ped_car(PLAYER::PLAYER_PED_ID(), m_handle);
+			            Vehicle v = persist_car_service::clone_ped_car(PLAYER::PLAYER_PED_ID(), m_handle);
 			            script::get_current()->yield();
 			            PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), v, -1);
 		            }},
 		        {"BOOST",
 		            [this] {
+
 			            if (entity::take_control_of(m_handle)){
 							VEHICLE::SET_VEHICLE_FORWARD_SPEED(m_handle, 79);
 							if(ENTITY::IS_ENTITY_TOUCHING_ENTITY(self::ped, m_handle)){
@@ -87,7 +89,6 @@ namespace big
 						}
 			            else
 				            g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
-			            
 		            }},
 		        {"LAUNCH",
 		            [this] {
@@ -100,13 +101,12 @@ namespace big
 		            [this] {
 			            if (ped::get_player_from_ped(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0)) != NULL)
 			            {
-				            static player_command* command = (player_command*)command::get(rage::consteval_joaat("vehkick"));
+				            static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("vehkick")));
 				            command->call(ped::get_player_from_ped(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0)), {});
 			            }
-			           
-				        TASK::CLEAR_PED_TASKS_IMMEDIATELY(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0));
-				        TASK::CLEAR_PED_TASKS_IMMEDIATELY(m_handle);
-			            
+
+			            TASK::CLEAR_PED_TASKS_IMMEDIATELY(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0));
+			            TASK::CLEAR_PED_TASKS_IMMEDIATELY(m_handle);
 		            }},
 		        {"DELETE",
 		            [this] {
@@ -119,22 +119,24 @@ namespace big
 			         teleport::into_vehicle(m_handle);
 		         }}}};
 
-		s_context_menu ped_menu{ContextEntityType::PED, 0, {}, {
-		   {"DISARM",
-		       [this] {
-					for (auto& [_, weapon] : g_gta_data_service->weapons())
-						WEAPON::REMOVE_WEAPON_FROM_PED(m_handle, weapon.m_hash);
-		       }},
-		   {"RAGDOLL",
-		      [this] {
-			         PED::SET_PED_TO_RAGDOLL(m_handle, 2000, 2000, 0, 0, 0, 0);
+		s_context_menu ped_menu{ContextEntityType::PED,
+		    0,
+		    {},
+		    {{"DISARM",
+		         [this] {
+			         for (auto& [_, weapon] : g_gta_data_service->weapons())
+				         WEAPON::REMOVE_WEAPON_FROM_PED(m_handle, weapon.m_hash);
+		         }},
+		        {"RAGDOLL",
+		            [this] {
+			            PED::SET_PED_TO_RAGDOLL(m_handle, 2000, 2000, 0, 0, 0, 0);
 		            }},
-		   {"DANCE", [this] {
+		        {"DANCE", [this] {
 			         ped::ped_play_animation(m_handle, "mini@strip_club@private_dance@part1", "priv_dance_p1");
-		    }}
-		}};
+		         }}}};
 
 		s_context_menu object_menu{ContextEntityType::OBJECT, 0, {}, {}};
+
 
 		s_context_menu player_menu{ContextEntityType::PLAYER, 0, {}, {
 			{"SET SELECTED", [this] {
@@ -163,12 +165,7 @@ namespace big
 		    {"DISARM", [this] {
 			     static player_command* command = (player_command*)command::get(rage::consteval_joaat("remweaps"));
 			         command->call(ped::get_player_from_ped(m_handle), {});
-		    }},
-		    {"RAGDOLL", [this] {
-			     static player_command* command = (player_command*)command::get(rage::consteval_joaat("ragdoll"));
-			     command->call(ped::get_player_from_ped(m_handle), {});
-		     }}
-		}};
+		         }}}};
 
 		s_context_menu shared_menu{ContextEntityType::SHARED,
 		    0,

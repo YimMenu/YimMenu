@@ -213,6 +213,13 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player, character_slot, spectating)
 		} player{};
 
+		struct player_db
+		{
+			bool update_player_online_states = false;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player_db, update_player_online_states)
+		} player_db{};
+
 		struct protections
 		{
 			struct script_events
@@ -261,6 +268,12 @@ namespace big
 				const char* effect = "scr_fbi_mop_drips";
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ptfx_effects, show, size)
 			} ptfx_effects{};
+
+			struct ipls
+			{
+				int select = 0;
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ipls, select)
+			} ipls{};
 
 			bool clean_player       = false;
 			bool force_wanted_level = false;
@@ -330,6 +343,7 @@ namespace big
 			bool dance_mode = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, super_hero_fly, custom_weapon_stop)
+
 		} self{};
 
 		struct session
@@ -873,7 +887,7 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(stat_editor, stat, packed_stat)
 		} stat_editor{};
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, debug, tunables, notifications, player, protections, self, session, settings, spawn_vehicle, clone_pv, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, debug, tunables, notifications, player, player_db, protections, self, session, settings, spawn_vehicle, clone_pv, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor)
 	};
 
 	inline auto g = menu_settings();

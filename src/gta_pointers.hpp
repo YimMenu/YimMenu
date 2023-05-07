@@ -141,6 +141,7 @@ namespace big
 
 		Network** m_network;
 
+		functions::get_gamer_online_state m_get_gamer_online_state;
 		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
 		functions::start_matchmaking_find_sessions m_start_matchmaking_find_sessions;
 		functions::join_session_by_info m_join_session_by_info;

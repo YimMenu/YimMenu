@@ -39,10 +39,10 @@ namespace big
 		if (kick)
 		{
 			g_fiber_pool->queue_job([player] {
-				((player_command*)command::get(RAGE_JOAAT("bailkick")))->call(player, {});
-				((player_command*)command::get(RAGE_JOAAT("nfkick")))->call(player, {});
+				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("bailkick")))->call(player, {});
+				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
 				script::get_current()->yield(700ms);
-				((player_command*)command::get(RAGE_JOAAT("breakup")))->call(player, {});
+				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
 			});
 		}
 	}
@@ -71,7 +71,7 @@ namespace big
 
 		if (notify)
 		{
-			char notification[500]{};// I don't like using sprintf but there isn't an alternative afaik
+			char notification[500]{}; // I don't like using sprintf but there isn't an alternative afaik
 			snprintf(notification, sizeof(notification), m_notify_message, player->get_name());
 			g_notification_service->push_warning("Protections", notification);
 		}

@@ -40,6 +40,7 @@ namespace big
 		if (const auto it = logged_exceptions.find(trace_hash); it == logged_exceptions.end())
 		{
 			LOG(FATAL) << trace;
+			Logger::FlushQueue();
 
 			logged_exceptions.insert(trace_hash);
 		}

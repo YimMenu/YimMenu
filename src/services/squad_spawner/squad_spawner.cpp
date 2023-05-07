@@ -1,6 +1,7 @@
 #include "squad_spawner.hpp"
 
 #include "gta/joaat.hpp"
+#include "services/vehicle/persist_car_service.hpp"
 #include "util/math.hpp"
 #include "util/pathfind.hpp"
 #include "util/ped.hpp"
@@ -75,13 +76,37 @@ namespace big
 
 	std::pair<Vehicle, CVehicle*> squad_spawner::spawn_squad_vehicle(squad s)
 	{
-		auto handle = vehicle::spawn(rage::joaat(s.m_vehicle_model), s.m_spawn_pos, s.m_spawn_heading);
+		std::pair<Vehicle, CVehicle*> veh;
+		if (!s.does_squad_have_persistent_vehicle())
+		{
+			veh.first = vehicle::spawn(rage::joaat(s.m_vehicle_model), s.m_spawn_pos, s.m_spawn_heading);
+		}
+		else
+		{
+			const auto persistent_vehicles = persist_car_service::list_files();
 
-		VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(handle, 5);
-		ENTITY::SET_ENTITY_INVINCIBLE(handle, s.m_veh_invincibility);
-		VEHICLE::SET_VEHICLE_ENGINE_ON(handle, true, true, false);
+			for (auto c : persistent_vehicles)
+			{
+				if (c == s.m_persistent_vehicle)
+				{
+					veh.first = persist_car_service::load_vehicle(c);
+					ENTITY::SET_ENTITY_COORDS(veh.first, s.m_spawn_pos.x, s.m_spawn_pos.y, s.m_spawn_pos.z, 0, 0, 0, 1);
+					break;
+				}
+			}
+		}
 
-		return std::pair<Vehicle, CVehicle*>(handle, reinterpret_cast<CVehicle*>(g_pointers->m_gta.m_handle_to_ptr(handle)));
+		veh.second = (CVehicle*)g_pointers->m_gta.m_handle_to_ptr(veh.first);
+
+		VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(veh.first, 5);
+		ENTITY::SET_ENTITY_INVINCIBLE(veh.first, s.m_veh_invincibility);
+		VEHICLE::SET_VEHICLE_ENGINE_ON(veh.first, true, true, false);
+		ENTITY::SET_ENTITY_HEADING(veh.first, s.m_spawn_heading);
+
+		if (s.m_max_vehicle)
+			vehicle::max_vehicle(veh.first);
+
+		return veh;
 	}
 
 	bool find_road(squad& s)
@@ -94,14 +119,17 @@ namespace big
 		pathfind::find_closest_road(s.m_spawn_pos, &south, &north);
 
 		//Check which is closer
-		if (math::distance_between_vectors(south, target_ped_pos) <= math::distance_between_vectors(north, target_ped_pos))
+		if (math::distance_between_vectors(south, s.m_spawn_pos) <= math::distance_between_vectors(north, s.m_spawn_pos))
 			chosen_pos = south;
 		else
 			chosen_pos = north;
 
 		//Get a node to specify heading
-		if (pathfind::find_closest_vehicle_node_favour_direction(chosen_pos, target_ped_pos, s.m_spawn_pos, s.m_spawn_heading, 0))
-			return true;
+		for (int i = 0; i < 100; i++)
+		{
+			if (pathfind::find_closest_vehicle_node_favour_direction(chosen_pos, target_ped_pos, s.m_spawn_pos, s.m_spawn_heading, 0, i) && math::distance_between_vectors(target_ped_pos, s.m_spawn_pos) >= s.m_spawn_distance)
+				return true;
+		}
 
 		s.m_spawn_pos = original_pos;
 		return false;
@@ -150,7 +178,6 @@ namespace big
 		{
 			s.m_spawn_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(s.current_target_ped, 0.0, s.m_spawn_distance, 0.0);
 			s.m_spawn_distance = 5.f;
-			LOG(INFO) << "Applied spawn distance ahead";
 		}
 
 		//Actual algorithm to find a nice spot
@@ -283,6 +310,7 @@ namespace big
 		if (s.has_squad_spawned())
 		{
 			m_active_squads.push_back(s);
+			script::get_current()->yield(100ms);
 			return true;
 		}
 		return false;

@@ -36,8 +36,10 @@ namespace big
 			});
 
 			components::button("DEBUG_REMOVE_FROM_BAD_SPORT"_T, [] {
-				STATS::STAT_SET_FLOAT(RAGE_JOAAT("mpply_overall_badsport"), 0.0f, TRUE);
-				STATS::STAT_SET_BOOL(RAGE_JOAAT("mpply_was_i_bad_sport"), FALSE, TRUE);
+				STATS::STAT_SET_INT(RAGE_JOAAT("MPPLY_BADSPORT_MESSAGE"), 0, 1);
+				STATS::STAT_SET_INT(RAGE_JOAAT("MPPLY_BECAME_BADSPORT_NUM"), 0, 1);
+				STATS::STAT_SET_FLOAT(RAGE_JOAAT("MPPLY_OVERALL_BADSPORT"), 0, true);
+				STATS::STAT_SET_BOOL(RAGE_JOAAT("MPPLY_CHAR_IS_BADSPORT"), false, true);
 			});
 
 			components::button("Load MP Map", [] {

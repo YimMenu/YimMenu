@@ -589,6 +589,15 @@ namespace big
                 g_pointers->m_gta.m_send_chat_message = ptr.sub(21).as<functions::send_chat_message>();
             }
         },
+        // Get Gamer Online State
+        {
+            "GGOS",
+            "48 8B 44 24 70 44 8B CD 4D 8B C6 41 8B D7 48 8B CF 48 89 47 40",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_gamer_online_state = ptr.sub(0x40).as<functions::get_gamer_online_state>();
+            }
+        },
         // Start Get Session By Gamer Handle
         {
             "SGSBGH",
