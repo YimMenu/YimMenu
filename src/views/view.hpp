@@ -18,7 +18,6 @@ namespace big
 		static void context_menu_settings();
 		static void outfit_editor();
 		static void outfit_slots();
-		static void self_fun();
 		static void stat_editor();
 		static void gui_settings();
 		static void hotkey_settings();

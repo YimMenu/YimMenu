@@ -9,7 +9,6 @@ namespace big::debug
 	extern void script_events();
 	extern void scripts();
 	extern void threads();
-	extern void animations();
 
 	extern void main();
 }

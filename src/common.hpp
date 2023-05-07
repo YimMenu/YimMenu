@@ -80,7 +80,6 @@ namespace self
 	inline Ped ped;
 	inline Player id;
 	inline Vector3 pos;
-	inline Vector3 rot;
 	inline Vehicle veh;
 }
 

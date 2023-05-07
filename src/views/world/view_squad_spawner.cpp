@@ -4,7 +4,6 @@
 #include "services/squad_spawner/squad_spawner.hpp"
 #include "services/vehicle/persist_car_service.hpp"
 #include "views/view.hpp"
-#include "services/orbital_drone/orbital_drone.hpp"
 
 namespace big
 {

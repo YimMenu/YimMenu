@@ -582,10 +582,10 @@ namespace big::ped
 		return STREAMING::HAS_ANIM_DICT_LOADED(dict);
 	}
 
-	inline void ped_play_animation(Ped ped, const std::string_view& animDict, const std::string_view& animName, float blendin = 4.f, float blendout = -4.f, int duration = -1, int flag = 0, float startphase = 0, bool phase_controlled = false, int control_flags = 0, bool local = false)
+	inline void ped_play_animation(Ped ped, const std::string_view& animDict, const std::string_view& animName, float speed = 4.f, float speedMultiplier = -4.f, int duration = -1, int flag = 0, float playbackRate = 0, bool lockPos = false)
 	{
 		if (load_animation_dict(animDict.data()))
-			TASK::TASK_PLAY_ANIM(ped, animDict.data(), animName.data(), blendin, blendout, duration, flag, startphase, phase_controlled, control_flags, local);		
+			TASK::TASK_PLAY_ANIM(ped, animDict.data(), animName.data(), speed, speedMultiplier, duration, flag, playbackRate, lockPos, lockPos, lockPos);		
 	}
 
 	/*

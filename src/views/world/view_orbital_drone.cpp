@@ -15,7 +15,6 @@ namespace big
 			ImGui::Separator();
 
 			ImGui::BeginGroup();
-			ImGui::Checkbox("Camera interpolation", &g.world.orbital_drone.interpolation);
 			ImGui::Checkbox("ORBITAL_DRONE_AUTO_LOCK_ON_PLAYER"_T.data(), &g.world.orbital_drone.detect_player);
 			if (ImGui::IsItemHovered())
 			{
@@ -23,13 +22,12 @@ namespace big
 				ImGui::Text("ORBITAL_DRONE_AUTO_LOCK_ON_PLAYER_TOOLTIP"_T.data());
 				ImGui::EndTooltip();
 			}
-			ImGui::Text("Starting Height");
-			ImGui::SliderFloat("##startheight", &g.world.orbital_drone.starting_height, 10.f, 500.f);
 			ImGui::Text("ORBITAL_DRONE_HIGH_SPEED_MULTIPLIER"_T.data());
 			ImGui::SliderFloat("##fastspeed", &g.world.orbital_drone.nav_ovverride_fast, 1.f, 10.f);
 			ImGui::Text("ORBITAL_DRONE_LOW_SPEED_MULTIPLIER"_T.data());
 			ImGui::SliderFloat("##slowspeed", &g.world.orbital_drone.nav_ovverride_slow, 0.f, 1.f);
 			ImGui::EndGroup();
 		}
+
 	}
 }
