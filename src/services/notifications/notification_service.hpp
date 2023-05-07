@@ -31,6 +31,7 @@ namespace big
 		void push(std::string, std::string);
 		void push_warning(std::string, std::string);
 		void push_error(std::string, std::string);
+		void push_success(std::string, std::string);
 		std::vector<notification> get();
 
 		std::map<NotificationType, ImVec4> notification_colors = {
