@@ -3,6 +3,7 @@
 #include "gta/script_handler.hpp"
 #include "gta_util.hpp"
 #include "hooking.hpp"
+#include "lua/lua_manager.hpp"
 #include "util/session.hpp"
 
 #include <network/CNetGamePlayer.hpp>
@@ -58,6 +59,18 @@ namespace big
 		const auto player_name = player->get_name();
 
 		auto plyr = g_player_service->get_by_id(player->m_player_id);
+
+		if (g_lua_manager->get_modules().size() > 0)
+		{
+			std::vector<int32_t> script_event_args;
+
+			for (int i = 0; i < scripted_game_event->m_args_size; i++)
+				script_event_args.push_back(args[i]);
+
+			auto event_ret = g_lua_manager->trigger_event<"script_event", bool>((int)player->m_player_id, script_event_args);
+			if (event_ret.has_value())
+				return true; // don't care, block event if any bool is returned
+		}
 
 		switch (hash)
 		{

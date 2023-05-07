@@ -4,6 +4,7 @@
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
 #include "hooking.hpp"
+#include "lua/lua_manager.hpp"
 #include "packet.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "services/players/player_service.hpp"
@@ -26,6 +27,8 @@ namespace big
 
 			if (net_player_data)
 			{
+				g_lua_manager->trigger_event<"player_leave">(net_player_data->m_name);
+
 				if (g.notifications.player_leave.log)
 					LOG(INFO) << "Player left '" << net_player_data->m_name << "' freeing slot #" << (int)player->m_player_id
 					          << " with Rockstar ID: " << net_player_data->m_gamer_handle.m_rockstar_id;
@@ -61,6 +64,9 @@ namespace big
 						plyr->is_admin = true;
 				}
 			}
+
+			g_lua_manager->trigger_event<"player_join">(net_player_data->m_name, player->m_player_id);
+
 			if (g.notifications.player_join.above_map && *g_pointers->m_gta.m_is_session_started) // prevent loading screen spam
 				notify::player_joined(player);
 

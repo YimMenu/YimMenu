@@ -5,7 +5,6 @@
 
 namespace big
 {
-
 	class high_alert : looped_command
 	{
 		using looped_command::looped_command;
@@ -22,6 +21,6 @@ namespace big
 		}
 	};
 
-	high_alert g_high_alert("highalert", "High Alert", "Not the CoD perk.", g.world.nearby.high_alert);
+	high_alert g_high_alert("highalert", "High Alert", "Not the CoD perk", g.world.nearby.high_alert);
 
 }

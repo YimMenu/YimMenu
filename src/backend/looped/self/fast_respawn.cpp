@@ -18,6 +18,7 @@ namespace big
 				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(self::ped, self::pos.x, self::pos.y, self::pos.z, 0, 0, 0);
 				TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
 				MISC::FORCE_GAME_STATE_PLAYING();
+				MISC::TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("respawn_controller");
 			}
 		}
 	};

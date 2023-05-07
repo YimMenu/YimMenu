@@ -59,7 +59,7 @@ namespace big
 		{
 			ImGui::BeginGroup();
 
-			ImGui::Checkbox("GOD_MODE"_T.data(), &g.vehicle.god_mode);
+			components::command_checkbox<"vehgodmode">("GOD_MODE"_T.data());
 			components::command_checkbox<"hornboost">();
 			components::command_checkbox<"vehjump">();
 			components::command_checkbox<"invisveh">();
@@ -78,7 +78,7 @@ namespace big
 			components::command_checkbox<"blockhoming">();
 			components::command_checkbox<"driveonwater">();
 			components::command_checkbox<"vehiclecontrol">();
-			
+
 
 			ImGui::EndGroup();
 			ImGui::SameLine();
