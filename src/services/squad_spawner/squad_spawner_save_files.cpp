@@ -27,11 +27,8 @@ namespace big
 						read.close();
 					}
 					squad new_squad{};
-					LOG(INFO) << "TEST1";
 					from_json(j, new_squad);
-					LOG(INFO) << "TEST2";
 					g_squad_spawner_service.m_templates.push_back(new_squad);
-					LOG(INFO) << "TEST3";
 				}
 			}
 			success = true;
@@ -99,7 +96,7 @@ namespace big
 		m_templates.push_back(squad("Shotgunners", "g_m_y_lost_03", "WEAPON_AUTOSHOTGUN", "daemon", 2, false, false, ped_proofs, 0, 0, 0, 65, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::AVERAGE, false, false, "A duo biker gang that utilize sawn off shotguns on their Harley's"));
 		m_templates.push_back(squad("Machete jesus", "u_m_m_jesus_01", "WEAPON_MACHETE", "", 1, false, false, ped_proofs_annoying, 0, 0, 0, 10, eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel::AVERAGE, false, false, "Christ has had enough of the sins"));
 		m_templates.push_back(squad("Annoying security guard", "mp_m_securoguard_01", "WEAPON_STUNGUN_MP", "", 1, false, false, ped_proofs_annoying, 0, 0, 0, 100, eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel::PROFESSIONAL, false, false, "The mall security guard with superiority issues"));
-		m_templates.push_back(squad("Heavy attack choppers", "s_m_y_swat_01", "WEAPON_MG", "valkyrie", 4, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::PROFESSIONAL, false, false, "Very deadly attack chopper eqquiped with a cannon"));
+		m_templates.push_back(squad("Heavy attack chopper", "s_m_y_swat_01", "WEAPON_MG", "valkyrie", 4, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::MODERATELY_DISTANCED, eCombatAbilityLevel::PROFESSIONAL, false, false, "Very deadly attack chopper eqquiped with a cannon"));
 		m_templates.push_back(squad("Fighter jet", "s_m_m_pilot_02", "WEAPON_UNARMED", "lazer", 1, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::FAR_AWAY, eCombatAbilityLevel::PROFESSIONAL, false, false, "Tedious yet precise form of attack with a Fighter jet"));
 		m_templates.push_back(squad("Mobile squad", "s_m_m_highsec_01", "WEAPON_MICROSMG", "komoda", 4, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::FAR_AWAY, eCombatAbilityLevel::PROFESSIONAL, true, true, "This squad makes use of 'Vehicle catchup'"));
 		m_templates.push_back(squad("Altruists", "a_m_m_acult_01", "WEAPON_SNSPISTOL", "", 8, false, false, ped_proofs, 0, 0, 0, 100, eSquadSpawnDistance::CLOSEBY, eCombatAbilityLevel::PROFESSIONAL, false, false, "Cannibals from the alrtuist cult will surround the victim using 'Disperse'", true));
