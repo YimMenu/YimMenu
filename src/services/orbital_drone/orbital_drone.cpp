@@ -32,15 +32,14 @@ namespace big
 		{
 			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].OrbitalBitset.Set(eOrbitalBitset::kOrbitalCannonActive);
 			const auto player_pos = *g_local_player->get_position();
-
 			m_start_pos = {player_pos.x, player_pos.y, player_pos.z};
 
 			m_cam = CAM::CREATE_CAM("DEFAULT_SCRIPTED_CAMERA", 0);
-			CAM::SET_CAM_COORD(m_cam, player_pos.x, player_pos.y, player_pos.z + 100.f);
+			CAM::SET_CAM_COORD(m_cam, player_pos.x, player_pos.y, player_pos.z + g.world.orbital_drone.starting_height);
 			CAM::SET_CAM_ROT(m_cam, -90.f, 0, 0, 2);
 			CAM::SET_CAM_FOV(m_cam, 100.f);
 			CAM::SET_CAM_ACTIVE(m_cam, true);
-			CAM::RENDER_SCRIPT_CAMS(true, true, 1000, true, false, 0);
+			CAM::RENDER_SCRIPT_CAMS(true, g.world.orbital_drone.interpolation, 1000, true, false, 0);
 
 			m_scaleform = GRAPHICS::REQUEST_SCALEFORM_MOVIE("ORBITAL_CANNON_CAM");
 
@@ -75,7 +74,7 @@ namespace big
 
 		ENTITY::SET_ENTITY_VISIBLE(self, true, 0);
 
-		CAM::RENDER_SCRIPT_CAMS(false, true, 1000, true, false, 0);
+		CAM::RENDER_SCRIPT_CAMS(false, g.world.orbital_drone.interpolation, 1000, true, false, 0);
 
 		Vector3 tp_pos = m_start_pos;
 

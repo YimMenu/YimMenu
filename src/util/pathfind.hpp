@@ -130,7 +130,7 @@ namespace big::pathfind
 
 		Vector3 changed_coords = outcoords;
 
-		if ((favour_heading_to_original_coords ? !find_closest_vehicle_node_favour_direction(outcoords, outcoords, outcoords, outheading, flag) : !find_closest_vehicle_node(outcoords, outcoords, outheading, flag)) || math::distance_between_vectors(outcoords, coords) > vicinity || math::distance_between_vectors(outcoords, coords) < (vicinity / 2))
+		if ((favour_heading_to_original_coords ? !find_closest_vehicle_node_favour_direction(outcoords, outcoords, outcoords, outheading, flag) : !find_closest_vehicle_node(outcoords, outcoords, outheading, flag)) || math::distance_between_vectors(outcoords, coords) > vicinity || math::distance_between_vectors(outcoords, coords) < (vicinity / 2))z
 		{
 			outcoords = coords;
 

@@ -28,6 +28,8 @@ namespace big
 
 		Vector3 m_ground_pos;
 
+		Vector3 m_ground_pos;
+
 	private:
 		void cam_nav();
 		void detect_player(Entity ent);

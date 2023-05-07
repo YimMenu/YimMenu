@@ -18,6 +18,8 @@ namespace big
 
 		self::pos = ENTITY::GET_ENTITY_COORDS(self::ped, false /*Unused*/);
 
+		self::rot = ENTITY::GET_ENTITY_ROTATION(self::ped, 2);
+
 		if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, 0))
 		{
 			self::veh = PED::GET_VEHICLE_PED_IS_IN(self::ped, false);
