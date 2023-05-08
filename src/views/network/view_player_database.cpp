@@ -15,6 +15,10 @@ namespace big
 	char search[64];
 	std::shared_ptr<persistent_player> current_player;
 
+	int filterIndex             = 0;
+	const char* filterOptions[] = {"All", "Friends", "Modders", "Blocked", "Command Level Access", "Not classified"};
+
+
 	void draw_player_db_entry(std::shared_ptr<persistent_player> player, const std::string& lower_search)
 	{
 		std::string name = player->name;
@@ -36,11 +40,6 @@ namespace big
 			
 		if (lower_search.empty() || name.find(lower_search) != std::string::npos)
 		{
-			//  Set background color for the entire row
-			ImGui::PushStyleColor(ImGuiCol_Header, backgroundColor);
-			ImGui::PushStyleColor(ImGuiCol_HeaderHovered, backgroundColor);
-			ImGui::PushStyleColor(ImGuiCol_HeaderActive, backgroundColor);
-
 			ImGui::PushID(player->rockstar_id);
 
 			float circle_size = 10.0f;
@@ -80,8 +79,7 @@ namespace big
 			}
 
 			ImGui::PopID();
-			ImGui::PopStyleVar();
-			ImGui::PopStyleColor();
+		
 		}
 	}
 
@@ -90,6 +88,11 @@ namespace big
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("PLAYER"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
 
+		float comboWidth = 50.0f;
+		ImGui::Combo("##filterCombo", &filterIndex, filterOptions, IM_ARRAYSIZE(filterOptions));
+		ImGui::SameLine();
+		ImGui::Text("Filter");
+		
 		if (ImGui::ListBoxHeader("###players", {180, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 400 - 38 * 4)}))
 		{
 			auto& item_arr = g_player_database_service->get_sorted_players();
@@ -98,24 +101,94 @@ namespace big
 				std::string lower_search = search;
 				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
 
+				// Loop through the players, considering online state and filtering
 				for (auto& player : item_arr | std::ranges::views::values)
 				{
-					if (player->online_state == PlayerOnlineStatus::ONLINE)
+					// Check if the player meets the filtering criteria
+					bool isFiltered = false;
+					switch (filterIndex)
+					{
+					case 0: // All
+						break;
+					case 1: // Friends
+						if (!player->is_friends)
+							isFiltered = true;
+						break;
+					case 2: // Modders
+						if (!player->is_modder)
+							isFiltered = true;
+						break;
+					case 3: // Blocked
+						if (!player->block_join)
+							isFiltered = true;
+					case 4: // Command level access
+						if (!player->command_access_level.has_value()
+							|| (player->command_access_level != CommandAccessLevel::FRIENDLY 
+							&& player->command_access_level != CommandAccessLevel::AGGRESSIVE
+						    && player->command_access_level != CommandAccessLevel::TOXIC 
+							&& player->command_access_level != CommandAccessLevel::ADMIN))
+							isFiltered = true;
+						break;
+					case 5: // Not classified as modder, friend, or blocked
+						if (player->is_modder || player->is_friends || player->block_join)
+							isFiltered = true;
+						break;
+					}
+
+					// Draw the player entry if it's not filtered and online
+					if (!isFiltered && player->online_state == PlayerOnlineStatus::ONLINE)
 						draw_player_db_entry(player, lower_search);
-					ImGui::PopStyleColor();
 				}
 
+				ImGui::Separator();
+
+				// Loop through the players again for offline entries
 				for (auto& player : item_arr | std::ranges::views::values)
 				{
-					if (player->online_state != PlayerOnlineStatus::ONLINE)
+					// Check if the player meets the filtering criteria
+					bool isFiltered = false;
+					switch (filterIndex)
+					{
+					case 0: // All
+						break;
+					case 1: // Friends
+						if (!player->is_friends)
+							isFiltered = true;
+						break;
+					case 2: // Modders
+						if (!player->is_modder)
+							isFiltered = true;
+						break;
+					case 3: // Blocked
+						if (!player->block_join)
+							isFiltered = true;
+						break;
+					case 4: // Command level access
+						if (!player->command_access_level.has_value() 
+							|| (player->command_access_level != CommandAccessLevel::FRIENDLY 
+							&& player->command_access_level != CommandAccessLevel::AGGRESSIVE
+							&& player->command_access_level != CommandAccessLevel::TOXIC 
+							&& player->command_access_level != CommandAccessLevel::ADMIN))
+     						isFiltered = true;
+						break;
+					case 5: // Not classified as modder, friend, or blocked
+						if (player->is_modder || player->is_friends || player->block_join)
+							isFiltered = true;
+						break;
+					}
+
+					// Draw the player entry if it's not filtered and offline
+					if (!isFiltered && player->online_state != PlayerOnlineStatus::ONLINE)
 						draw_player_db_entry(player, lower_search);
-					ImGui::PopStyleColor();
 				}
+
+				ImGui::PopStyleColor();
 			}
 			else
 			{
 				ImGui::Text("NO_STORED_PLAYERS"_T.data());
 			}
+
 
 			ImGui::ListBoxFooter();
 		}
@@ -131,7 +204,7 @@ namespace big
 				}
 
 				if (ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &current_player->rockstar_id)
-				    || ImGui::Checkbox("IS_FRIENDS"_T.data(), &current_player->is_friends)
+					|| ImGui::Checkbox("IS_FRIENDS"_T.data(), &current_player->is_friends)
 				    || ImGui::Checkbox("IS_MODDER"_T.data(), &current_player->is_modder)
 				    || ImGui::Checkbox("BLOCK_JOIN"_T.data(), &current_player->block_join))
 				{
