@@ -76,6 +76,13 @@ namespace big
 				            player->m_player_id,
 				            net_player_data->m_gamer_handle.m_rockstar_id)));
 			}
+			if (g.session.lock_session)
+			{
+				player_ptr plyr = g_player_service->get_by_id(player->m_player_id);
+				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+				g_notification_service->push_warning("Lock Session",
+				    std::format("A player with the name of {} has been denied entry", plyr->get_net_data()->m_name));
+			}
 
 
 			auto id = player->m_player_id;
