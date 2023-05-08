@@ -88,7 +88,7 @@ namespace big
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("PLAYER"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
 
-		float comboWidth = 50.0f;
+		ImGui::SetNextItemWidth(300.f);
 		ImGui::Combo("##filterCombo", &filterIndex, filterOptions, IM_ARRAYSIZE(filterOptions));
 		ImGui::SameLine();
 		ImGui::Text("Filter");
