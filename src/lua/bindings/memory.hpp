@@ -16,6 +16,11 @@ namespace lua::memory
 		{
 		}
 
+		explicit pointer() :
+		    m_address(0)
+		{
+		}
+
 		pointer add(uint64_t offset)
 		{
 			return pointer(m_address + offset);

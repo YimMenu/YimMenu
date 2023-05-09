@@ -11,6 +11,7 @@
 #include "bindings/network.hpp"
 #include "bindings/script.hpp"
 #include "bindings/tunables.hpp"
+#include "bindings/vector.hpp"
 #include "file_manager.hpp"
 #include "script_mgr.hpp"
 
@@ -60,6 +61,7 @@ namespace big
 		lua::tunables::bind(m_state);
 		lua::locals::bind(m_state);
 		lua::event::bind(m_state);
+		lua::vector::bind(m_state);
 
 		m_state["!module_name"] = module_name;
 		m_state["!this"]        = this;

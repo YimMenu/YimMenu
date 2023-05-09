@@ -1,63 +1,78 @@
 #pragma once
 #include "invoker.hpp"
 #include "lua/lua_module.hpp"
+#include "lua/natives/natives_data.hpp"
 #include "memory.hpp"
 
 namespace lua::native
 {
-	inline std::vector<std::array<char, 255>> string_pool;
-	inline std::vector<uint64_t> pointer_pool;
-
-	static void begin_call(int num_strings, int num_ptrs)
+	template<typename T>
+	T invoke(sol::variadic_args args)
 	{
-		if (num_strings)
-		{
-			string_pool.clear();
-			string_pool.reserve(num_strings);
-		}
-
-		if (num_ptrs)
-		{
-			pointer_pool.clear();
-			pointer_pool.reserve(num_ptrs);
-		}
-
 		big::g_native_invoker.begin_call();
+
+		for (int i = 1; i < args.size(); i++)
+		{
+			if (args[i].is<int>())
+				big::g_native_invoker.push_arg(args[i].get<int>());
+			if (args[i].is<float>())
+				big::g_native_invoker.push_arg(args[i].get<float>());
+			else if (args[i].is<bool>())
+				big::g_native_invoker.push_arg(args[i].get<bool>());
+			else if (args[i].is<memory::pointer>())
+				big::g_native_invoker.push_arg(args[i].get<memory::pointer>().get_address());
+			else if (args[i].is<const char*>())
+				big::g_native_invoker.push_arg(args[i].get<const char*>());
+			else if (args[i].is<rage::fvector3>())
+			{
+				auto vec = args[i].get<rage::fvector3>();
+				big::g_native_invoker.push_arg(vec.x);
+				big::g_native_invoker.push_arg(vec.y);
+				big::g_native_invoker.push_arg(vec.z);
+			}
+			else
+			{
+				LOG(FATAL) << "Unhandled parameter";
+				return T();
+			}
+		}
+
+		big::g_native_invoker.end_call(args[0].as<std::uint64_t>());
+
+		if constexpr (std::is_same_v<T, std::string>)
+		{
+			return std::string(big::g_native_invoker.get_return_value<const char*>());
+		}
+		else if constexpr (std::is_same_v<T, rage::fvector3>)
+		{
+			auto& vec = big::g_native_invoker.get_return_value<Vector3>();
+			return {vec.x, vec.y, vec.z};
+		}
+		else if constexpr (std::is_same_v<T, memory::pointer>)
+		{
+			return memory::pointer(big::g_native_invoker.get_return_value<std::uint64_t>());
+		}
+		else if constexpr (!std::is_void_v<T>)
+		{
+			return big::g_native_invoker.get_return_value<T>();
+		}
 	}
 
-	static void push_arg(uint64_t arg)
+	void bind(sol::state& state)
 	{
-		big::g_native_invoker.push_arg(arg);
+		auto ns            = state["_natives"].get_or_create<sol::table>();
+		ns["invoke_void"]  = invoke<void>;
+		ns["invoke_int"]   = invoke<int>;
+		ns["invoke_float"] = invoke<float>;
+		ns["invoke_bool"]  = invoke<bool>;
+		ns["invoke_str"]   = invoke<std::string>;
+		ns["invoke_vec3"]  = invoke<rage::fvector3>;
+		ns["invoke_ptr"]   = invoke<memory::pointer>;
+
+		auto result = state.load_buffer(natives_data, natives_size);
+		if (!result.valid())
+			LOG(FATAL) << "Failed to load natives data: " << result.get<sol::error>().what();
+
+		result();
 	}
-
-	static void push_string(const std::string& lua_str)
-	{
-		string_pool.push_back({});
-		strncpy(string_pool.end()->data(), lua_str.data(), 255);
-		big::g_native_invoker.push_arg(lua_str.data());
-	}
-
-	static void push_pointer(uint64_t initial_value)
-	{
-		pointer_pool.push_back(initial_value);
-		big::g_native_invoker.push_arg(&*pointer_pool.end());
-	}
-
-	static void push_pointer_2(memory::pointer ptr)
-	{
-		big::g_native_invoker.push_arg(ptr.get_address());
-	}
-
-	uint64_t end_call(uint64_t native_hash);
-	std::string end_call_string(uint64_t native_hash);
-
-	static uint64_t get_pointer_value(int pointer_idx)
-	{
-		if (pointer_idx < pointer_pool.size())
-			return pointer_pool[pointer_idx];
-		else
-			return 0;
-	}
-
-	void bind(sol::state& state);
 }
