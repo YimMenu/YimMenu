@@ -16,6 +16,7 @@ namespace big
 	std::shared_ptr<persistent_player> current_player;
 
 	int filterIndex             = 0;
+
 	const char* filterOptions[] = {"All", "Friends", "Modders", "Blocked", "Command Level Access", "Notify Online", "Not classified"};
 
 	void draw_player_db_entry(std::shared_ptr<persistent_player> player, const std::string& lower_search)
@@ -25,7 +26,7 @@ namespace big
 		bool isBlocked = player->block_join;
 		bool isFriend  = player->is_friends;
 		bool isModder  = player->is_modder;
-		
+
 		ImVec4 onlineColor  = ImVec4(0.0f, 1.0f, 0.0f, 1.0f); // Green
 		ImVec4 offlineColor = ImVec4(0.7f, 0.7f, 0.7f, 1.0f); // Light grey
 		ImVec4 backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -86,11 +87,12 @@ namespace big
 	{
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("PLAYER"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
+
 		ImGui::SetNextItemWidth(300.f);
 		ImGui::Combo("##filterCombo", &filterIndex, filterOptions, IM_ARRAYSIZE(filterOptions));
 		ImGui::SameLine();
 		ImGui::Text("Filter");
-				
+
 		if (ImGui::ListBoxHeader("###players", {180, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 400 - 38 * 4)}))
 		{
 			auto& item_arr = g_player_database_service->get_sorted_players();
@@ -98,7 +100,7 @@ namespace big
 			{
 				std::string lower_search = search;
 				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
-				
+
 				// Loop through the players, considering online state and filtering
 				for (auto& player : item_arr | std::ranges::views::values)
 				{
@@ -127,12 +129,14 @@ namespace big
 							&& player->command_access_level != CommandAccessLevel::ADMIN))
 							isFiltered = true;
 						break;
+
 					case 5: // Notify Online
 						if (!player->notify_online)
 							isFiltered = true;
 						break;
 					case 6: // Not classified as modder, friend, blocked, or notify 
 						if (player->is_modder || player->is_friends || player->block_join || player->notify_online)
+
 							isFiltered = true;
 						break;
 					}
@@ -179,6 +183,7 @@ namespace big
 						break;
 					case 6: // Not classified as modder, friend, blocked, or notify
 						if (player->is_modder || player->is_friends || player->block_join || player->notify_online)
+
 							isFiltered = true;
 						break;
 					}
@@ -210,6 +215,7 @@ namespace big
 				}
 
 				if (ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &current_player->rockstar_id)
+
 				    || ImGui::Checkbox("Notify When Online"_T.data(), &current_player->notify_online)
 				    || ImGui::Checkbox("IS_FRIENDS"_T.data(), &current_player->is_friends)
 				    || ImGui::Checkbox("IS_MODDER"_T.data(), &current_player->is_modder)

@@ -72,9 +72,10 @@ namespace big
 		if (selected_player)
 			ImGui::PopStyleColor();
 
-		if (plyr->is_admin && plyr->is_friends || plyr->is_modder || plyr->block_join)
+    if (plyr->is_admin && plyr->is_friends || plyr->is_modder || plyr->block_join)
 		    
 		ImGui::PopStyleColor();
+
 
 		// render icons on top of the player button
 		ImGui::PushFont(g.window.font_icon);
