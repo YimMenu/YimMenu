@@ -50,6 +50,29 @@ namespace big
 			ImGui::SetTooltip("This prevents any pickup from the ground such as unwanted money drops.\nAttention: Normal pickups are also no longer possible.");
 		ImGui::Checkbox("Admin Check", &g.protections.admin_check);
 		ImGui::EndGroup();
+
+		ImGui::BeginGroup();
+		components::sub_title("Blocked IPs");
+		for (auto& element : g.protections.ip_block_list)
+		{
+			char* text = const_cast<char*>(element.c_str());
+			ImGui::Text(text);
+			if (ImGui::Button("Remove"))
+			{
+				auto result = remove(g.protections.ip_block_list.begin(), g.protections.ip_block_list.end(), element);
+				g.protections.ip_block_list.erase(result, g.protections.ip_block_list.end());
+				g_notification_service->push_warning("IP Blocking", "New IP has been removed to the Block List!");
+			}
+		}
+		ImGui::NewLine();
+		static int64_t ip;
+		ImGui::InputScalar("Address", ImGuiDataType_S64, &ip);
+		if (ImGui::Button("Add"))
+		{
+			g.protections.ip_block_list.push_back(std::to_string(ip));
+			g_notification_service->push_warning("IP Blocking", "New IP has been added to the Block List!");
+		}
+		ImGui::EndGroup();
 	}
 
 }

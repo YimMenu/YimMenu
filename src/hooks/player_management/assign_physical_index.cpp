@@ -85,6 +85,21 @@ namespace big
 				{
 					if (plyr->get_net_data()->m_gamer_handle.m_rockstar_id != 0)
 					{
+						auto ip   = plyr->get_ip_address();
+						auto text = std::format("{}.{}.{}.{}", ip.m_field1, ip.m_field2, ip.m_field3, ip.m_field4);
+						auto it = std::find(g.protections.ip_block_list.begin(), g.protections.ip_block_list.end(), text);
+						if (it != g.protections.ip_block_list.end())
+						{
+							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+							g_notification_service->push_warning("IP Block",
+							    std::format("Blocked a user with the IP of {}.{}.{}.{} and the name of {}",
+							        ip.m_field1,
+							        ip.m_field2,
+							        ip.m_field3,
+							        ip.m_field4,
+							        plyr->get_net_data()->m_name));
+						}
+
 						if (auto entry = g_player_database_service->get_player_by_rockstar_id(
 						        plyr->get_net_data()->m_gamer_handle.m_rockstar_id))
 						{

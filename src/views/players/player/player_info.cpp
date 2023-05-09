@@ -128,6 +128,11 @@ namespace big
 				auto port = g_player_service->get_selected()->get_port();
 
 				ImGui::Text("PLAYER_INFO_IP"_T.data(), ip.m_field1, ip.m_field2, ip.m_field3, ip.m_field4, port);
+				if (ImGui::Button("Add IP to Block List"))
+				{
+					g.protections.ip_block_list.push_back(std::format("{}.{}.{}.{}", ip.m_field1, ip.m_field2, ip.m_field3, ip.m_field4));
+					g_notification_service->push_warning("IP Blocking", "New IP has been added to the Block List!");
+				}
 
 				ImGui::SameLine();
 
@@ -164,7 +169,7 @@ namespace big
 				ImGui::Text("PLAYER_INFO_LAP_DANCES"_T.data(), stats.LapDancesBought);
 				ImGui::Text("PLAYER_INFO_MISSIONS_CREATED"_T.data(), stats.MissionsCreated);
 				ImGui::Text("PLAYER_INFO_METLDOWN_COMPLETE"_T.data(),
-				scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].MeltdownComplete ? "YES"_T.data() : "NO"_T.data()); // curious to see if anyone has actually played singleplayer
+				    scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].MeltdownComplete ? "YES"_T.data() : "NO"_T.data()); // curious to see if anyone has actually played singleplayer
 
 
 				ImGui::Separator();
