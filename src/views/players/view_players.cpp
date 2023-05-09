@@ -15,6 +15,9 @@ namespace big
 	static void player_button(const player_ptr& plyr)
 	{
 		bool selected_player = plyr == g_player_service->get_selected();
+		bool isFriend        = plyr->is_friends;
+		bool isModder        = plyr->is_modder;
+		bool isBlocked       = plyr->block_join;
 
 		// generate icons string
 		std::string player_icons;
@@ -22,6 +25,10 @@ namespace big
 			player_icons += FONT_ICON_HOST;
 		if (plyr->is_friend())
 			player_icons += FONT_ICON_FRIEND;
+		if (plyr->is_friends)
+			player_icons += FONT_ICON_FRIEND;
+		if (plyr->block_join)
+			player_icons += FONT_ICON_NOTFRIEND;
 		if (const auto ped = plyr->get_ped(); ped != nullptr && ped->m_ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING)
 			player_icons += FONT_ICON_VEHICLE;
 
@@ -38,14 +45,21 @@ namespace big
 
 		if (plyr->is_admin)
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.f, 0.67f, 0.f, 1.f));
+		else if (plyr->block_join)
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.000f, 0.000f, 0.000f, 0.900f)); // Red
+		else if (plyr->is_friend())
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.031f, 0.347f, 0.706f, 0.902f)); // Blue
+		else if (plyr->is_friends)
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.031f, 0.347f, 0.706f, 0.902f)); // Blue
 		else if (plyr->is_modder)
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.f, 0.1f, 0.1f, 1.f));
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.5f, 0.0f, 1.0f)); //Orange
 
 		if (selected_player)
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
 
 		ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, {0.0, 0.5});
 		ImGui::PushID(plyr->id());
+
 		if (ImGui::Button(plyr->get_name(), {300.0f - ImGui::GetStyle().ScrollbarSize, 0.f}))
 		{
 			g_player_service->set_selected(plyr);
@@ -58,8 +72,9 @@ namespace big
 		if (selected_player)
 			ImGui::PopStyleColor();
 
-		if (plyr->is_admin || plyr->is_modder)
-			ImGui::PopStyleColor();
+		if (plyr->is_admin && plyr->is_friends || plyr->is_modder || plyr->block_join)
+		    
+		ImGui::PopStyleColor();
 
 		// render icons on top of the player button
 		ImGui::PushFont(g.window.font_icon);
@@ -84,7 +99,8 @@ namespace big
 		if (ImGui::Begin("playerlist", nullptr, window_flags))
 		{
 			float window_height = (ImGui::CalcTextSize("A").y + ImGui::GetStyle().ItemInnerSpacing.y * 2 + 6.0f) * player_count + 10.0f;
-			window_height = window_height + window_pos > (float)*g_pointers->m_gta.m_resolution_y - 10.f ? (float)*g_pointers->m_gta.m_resolution_y - (window_pos + 40.f) : window_height;
+			window_height =
+			    window_height + window_pos > (float)*g_pointers->m_gta.m_resolution_y - 10.f ? (float)*g_pointers->m_gta.m_resolution_y - (window_pos + 40.f) : window_height;
 
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, {0.f, 0.f, 0.f, 0.f});
 			ImGui::PushStyleColor(ImGuiCol_ScrollbarBg, {0.f, 0.f, 0.f, 0.f});
