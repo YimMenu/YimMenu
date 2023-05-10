@@ -26,28 +26,6 @@ namespace big
 		bool isFriend  = player->is_friends;
 		bool isModder  = player->is_modder;
 
-		ImVec4 onlineColor     = ImVec4(0.0f, 1.0f, 0.0f, 1.0f); // Green
-		ImVec4 offlineColor    = ImVec4(0.7f, 0.7f, 0.7f, 1.0f); // Light grey
-		ImVec4 backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
-
-		if (isBlocked)
-			backgroundColor = ImVec4(1.000f, 0.000f, 0.000f, 0.900f); // Red
-		else if (isFriend)
-			backgroundColor = ImVec4(0.031f, 0.347f, 0.706f, 0.902f); // Blue
-		else if (isModder)
-			backgroundColor = ImVec4(1.0f, 0.5f, 0.0f, 1.0f); //Orange
-
-		ImVec4 onlineColor     = ImVec4(0.0f, 1.0f, 0.0f, 1.0f); // Green
-		ImVec4 offlineColor    = ImVec4(0.7f, 0.7f, 0.7f, 1.0f); // Light grey
-		ImVec4 backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
-
-		if (isBlocked)
-			backgroundColor = ImVec4(1.000f, 0.000f, 0.000f, 0.900f); // Red
-		else if (isFriend)
-			backgroundColor = ImVec4(0.031f, 0.347f, 0.706f, 0.902f); // Blue
-		else if (isModder)
-			backgroundColor = ImVec4(1.0f, 0.5f, 0.0f, 1.0f); //Orange
-
 		if (lower_search.empty() || name.find(lower_search) != std::string::npos)
 		{
 			ImGui::PushID(player->rockstar_id);
