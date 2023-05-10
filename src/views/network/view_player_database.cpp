@@ -121,11 +121,12 @@ namespace big
 					case 3: // Blocked
 						if (!player->block_join)
 							isFiltered = true;
+						break;
 					case 4: // Command level access
 						if (!player->command_access_level.has_value()
 							|| (player->command_access_level != CommandAccessLevel::FRIENDLY 
 							&& player->command_access_level != CommandAccessLevel::AGGRESSIVE
-						    && player->command_access_level != CommandAccessLevel::TOXIC 
+						    	&& player->command_access_level != CommandAccessLevel::TOXIC 
 							&& player->command_access_level != CommandAccessLevel::ADMIN))
 							isFiltered = true;
 						break;
