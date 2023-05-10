@@ -16,7 +16,7 @@ namespace big
 	std::shared_ptr<persistent_player> current_player;
 
 	int filterIndex = 0;
-	const char* filterOptions[] = {"All", "Friends", "Modders", "Blocked", "Command Level Access", "Notify Online", "Not classified"};
+	const char* filterOptions[] = {"All", "Friends", "Modders", "Blocked", "Command Level Access", "Not classified"};
 
 	void draw_player_db_entry(std::shared_ptr<persistent_player> player, const std::string& lower_search)
 	{
@@ -25,46 +25,26 @@ namespace big
 		bool isBlocked = player->block_join;
 		bool isFriend  = player->is_friends;
 		bool isModder  = player->is_modder;
-		ImVec4 onlineColor     = ImVec4(0.0f, 1.0f, 0.0f, 1.0f); // Green
-		ImVec4 offlineColor    = ImVec4(0.7f, 0.7f, 0.7f, 1.0f); // Light grey
-		ImVec4 backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
-
-		if (isBlocked)
-			backgroundColor = ImVec4(1.000f, 0.000f, 0.000f, 0.900f); // Red
-		else if (isFriend)
-			backgroundColor = ImVec4(0.031f, 0.347f, 0.706f, 0.902f); // Blue
-		else if (isModder)
-			backgroundColor = ImVec4(1.0f, 0.5f, 0.0f, 1.0f); //Orange
 
 		if (lower_search.empty() || name.find(lower_search) != std::string::npos)
 		{
 			ImGui::PushID(player->rockstar_id);
 
-			float circle_size = 10.0f;
+			float circle_size = 7.5f;
 			auto cursor_pos   = ImGui::GetCursorScreenPos();
 			auto plyr_state   = player->online_state;
 
 			//render status circle
 			ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(cursor_pos.x + 4.f + circle_size, cursor_pos.y + 4.f + circle_size),
 			    circle_size,
-			    ImColor(plyr_state == PlayerOnlineStatus::ONLINE  ? onlineColor :
-			            plyr_state == PlayerOnlineStatus::OFFLINE ? offlineColor :
+			    ImColor(plyr_state == PlayerOnlineStatus::ONLINE  ? ImVec4(0.f, 1.f, 0.f, 1.f) :
+			            plyr_state == PlayerOnlineStatus::OFFLINE ? ImVec4(1.f, 0.f, 0.f, 1.f) :
 			            plyr_state == PlayerOnlineStatus::UNKNOWN ? ImVec4(.5f, .5f, .5f, 1.0f) :
 			                                                        ImVec4(.5f, .5f, .5f, 1.0f)));
 
-			// Render additional circles for blocked, friends, and modders
-			if (isBlocked)
-				ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(cursor_pos.x + 4.f + circle_size, cursor_pos.y + 4.f + circle_size), circle_size - 3.0f, ImColor(backgroundColor));
-
-			if (isFriend)
-				ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(cursor_pos.x + 4.f + circle_size, cursor_pos.y + 4.f + circle_size), circle_size - 3.0f, ImColor(backgroundColor));
-
-			if (isModder)
-				ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(cursor_pos.x + 4.f + circle_size, cursor_pos.y + 4.f + circle_size), circle_size - 3.0f, ImColor(backgroundColor));
-
 			//we need some padding
 			ImVec2 cursor = ImGui::GetCursorPos();
-			ImGui::SetCursorPos(ImVec2(cursor.x + 30.f, cursor.y));
+			ImGui::SetCursorPos(ImVec2(cursor.x + 25.f, cursor.y));
 
 			if (components::selectable(player->name, player == g_player_database_service->get_selected()))
 			{
@@ -85,27 +65,7 @@ namespace big
 		ImGui::Combo("##filterCombo", &filterIndex, filterOptions, IM_ARRAYSIZE(filterOptions));
 		ImGui::SameLine();
 		ImGui::Text("Filter");
-		ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Offline");
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Player is currently offline.");
-		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Online");
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Player is currently online.");
-		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 0.9f), "Blocked");
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Player circle is Red, will always override blue or oragne, use the filters if you have more then one option");
-		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.0f, 0.0f, 1.0f, 1.0f), "Friends");
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Player circle is Blue, will always override orange");
-		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 0.5f, 0.0f, 1.0f), "Modders");
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Player Circle is Orange");
-
-
+		
 		if (ImGui::ListBoxHeader("###players", {180, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 400 - 38 * 4)}))
 		{
 			auto& item_arr = g_player_database_service->get_sorted_players();
@@ -136,17 +96,11 @@ namespace big
 							isFiltered = true;
 						break;
 					case 4: // Command level access
-						if (!player->command_access_level.has_value()
-						    || (player->command_access_level != CommandAccessLevel::FRIENDLY && player->command_access_level != CommandAccessLevel::AGGRESSIVE
-						        && player->command_access_level != CommandAccessLevel::TOXIC && player->command_access_level != CommandAccessLevel::ADMIN))
+						if (!player->command_access_level.has_value() || (player->command_access_level != CommandAccessLevel::FRIENDLY && player->command_access_level != CommandAccessLevel::AGGRESSIVE && player->command_access_level != CommandAccessLevel::TOXIC && player->command_access_level != CommandAccessLevel::ADMIN))
 							isFiltered = true;
 						break;
-					case 5: // Notify Online
-						if (!player->notify_online)
-							isFiltered = true;
-						break;
-					case 6: // Not classified as modder, friend, blocked, or notify
-						if (player->is_modder || player->is_friends || player->block_join || player->notify_online)
+					case 5: // Not classified as modder, friend, blocked, or notify
+						if (player->is_modder || player->is_friends || player->block_join)
 							isFiltered = true;
 						break;
 					}
@@ -155,8 +109,6 @@ namespace big
 					if (!isFiltered && player->online_state == PlayerOnlineStatus::ONLINE)
 						draw_player_db_entry(player, lower_search);
 				}
-
-				ImGui::Separator();
 
 				// Loop through the players again for offline entries
 				for (auto& player : item_arr | std::ranges::views::values)
@@ -180,17 +132,11 @@ namespace big
 							isFiltered = true;
 						break;
 					case 4: // Command level access
-						if (!player->command_access_level.has_value()
-						    || (player->command_access_level != CommandAccessLevel::FRIENDLY && player->command_access_level != CommandAccessLevel::AGGRESSIVE
-						        && player->command_access_level != CommandAccessLevel::TOXIC && player->command_access_level != CommandAccessLevel::ADMIN))
+						if (!player->command_access_level.has_value() || (player->command_access_level != CommandAccessLevel::FRIENDLY && player->command_access_level != CommandAccessLevel::AGGRESSIVE && player->command_access_level != CommandAccessLevel::TOXIC && player->command_access_level != CommandAccessLevel::ADMIN))
 							isFiltered = true;
 						break;
-					case 5: // Notify Online
-						if (!player->notify_online)
-							isFiltered = true;
-						break;
-					case 6: // Not classified as modder, friend, blocked, or notify
-						if (player->is_modder || player->is_friends || player->block_join || player->notify_online)
+					case 5: // Not classified as modder, friend, blocked, or notify
+						if (player->is_modder || player->is_friends || player->block_join)
 							isFiltered = true;
 						break;
 					}
@@ -207,7 +153,6 @@ namespace big
 				ImGui::Text("NO_STORED_PLAYERS"_T.data());
 			}
 
-
 			ImGui::ListBoxFooter();
 		}
 
@@ -221,11 +166,7 @@ namespace big
 					current_player->name = name_buf;
 				}
 
-				if (ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &current_player->rockstar_id)
-				    || ImGui::Checkbox("Notify When Online"_T.data(), &current_player->notify_online)
-				    || ImGui::Checkbox("IS_FRIENDS"_T.data(), &current_player->is_friends)
-				    || ImGui::Checkbox("IS_MODDER"_T.data(), &current_player->is_modder)
-				    || ImGui::Checkbox("BLOCK_JOIN"_T.data(), &current_player->block_join))
+				if (ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &current_player->rockstar_id) || ImGui::Checkbox("IS_FRIENDS"_T.data(), &current_player->is_friends) || ImGui::Checkbox("IS_MODDER"_T.data(), &current_player->is_modder) || ImGui::Checkbox("BLOCK_JOIN"_T.data(), &current_player->block_join))
 				{
 					if (current_player->rockstar_id != selected->rockstar_id)
 						g_player_database_service->update_rockstar_id(selected->rockstar_id, current_player->rockstar_id);
