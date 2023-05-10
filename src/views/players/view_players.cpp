@@ -22,6 +22,10 @@ namespace big
 			player_icons += FONT_ICON_HOST;
 		if (plyr->is_friend())
 			player_icons += FONT_ICON_FRIEND;
+		if (plyr->is_friends)
+			player_icons += FONT_ICON_FRIEND;
+		if (plyr->block_join)
+			player_icons += FONT_ICON_NOTFRIEND;
 		if (const auto ped = plyr->get_ped(); ped != nullptr && ped->m_ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING)
 			player_icons += FONT_ICON_VEHICLE;
 
@@ -36,10 +40,16 @@ namespace big
 		const ImRect icons_box(icons_pos, icons_pos + icons_size);
 		ImGui::PopFont();
 
-		if (plyr->is_admin)
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.f, 0.67f, 0.f, 1.f));
-		else if (plyr->is_modder)
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.f, 0.1f, 0.1f, 1.f));
+			if (plyr->is_admin)
+			    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.f, 0.67f, 0.f, 1.f));
+			else if (plyr->block_join)
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.000f, 0.000f, 0.000f, 0.900f)); // Red
+			else if (plyr->is_friend())
+			    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.031f, 0.347f, 0.706f, 0.902f)); // Blue
+			else if (plyr->is_friends)
+			    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.031f, 0.347f, 0.706f, 0.902f)); // Blue
+			else if (plyr->is_modder)
+			    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.5f, 0.0f, 1.0f)); //Orange
 
 		if (selected_player)
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
@@ -58,7 +68,7 @@ namespace big
 		if (selected_player)
 			ImGui::PopStyleColor();
 
-		if (plyr->is_admin || plyr->is_modder)
+		if (plyr->is_admin || plyr->is_friends || plyr->is_modder || plyr->block_join)
 			ImGui::PopStyleColor();
 
 		// render icons on top of the player button
