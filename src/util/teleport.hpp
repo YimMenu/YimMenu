@@ -163,4 +163,24 @@ namespace big::teleport
 
 		return false;
 	}
+
+	inline bool tp_on_top(Entity ent, bool match_velocity)
+	{
+		if (!ENTITY::DOES_ENTITY_EXIST(ent))
+			return false;
+
+		Vector3 ent_dimensions_max{}, ent_pos{};
+
+		MISC::GET_MODEL_DIMENSIONS(ENTITY::GET_ENTITY_MODEL(ent), nullptr, &ent_dimensions_max);
+		ent_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, 0, 0, ent_dimensions_max.z);
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(self::ped, ent_pos.x, ent_pos.y, ent_pos.z, 0, 0, 0);
+
+		if (match_velocity)
+		{
+			auto ent_velocity = ENTITY::GET_ENTITY_VELOCITY(ent);
+			ENTITY::SET_ENTITY_VELOCITY(self::ped, ent_velocity.x, ent_velocity.y, ent_velocity.z);
+		}
+
+		return false;
+	}
 }
