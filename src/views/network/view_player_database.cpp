@@ -16,7 +16,7 @@ namespace big
 	std::shared_ptr<persistent_player> current_player;
 
 	int filterIndex = 0;
-	const char* filterOptions[] = {"All", "Friends", "Modders", "Blocked", "Command Level Access", "Notify Online", "Not classified"};
+	const char* filterOptions[] = {"All", "Friends", "Modders", "Blocked", "Command Level Access", "Not classified"};
 
 	void draw_player_db_entry(std::shared_ptr<persistent_player> player, const std::string& lower_search)
 	{
@@ -141,12 +141,8 @@ namespace big
 						        && player->command_access_level != CommandAccessLevel::TOXIC && player->command_access_level != CommandAccessLevel::ADMIN))
 							isFiltered = true;
 						break;
-					case 5: // Notify Online
-						if (!player->notify_online)
-							isFiltered = true;
-						break;
-					case 6: // Not classified as modder, friend, blocked, or notify
-						if (player->is_modder || player->is_friends || player->block_join || player->notify_online)
+					case 5: // Not classified as modder, friend, blocked, or notify
+						if (player->is_modder || player->is_friends || player->block_join)
 							isFiltered = true;
 						break;
 					}
@@ -185,12 +181,8 @@ namespace big
 						        && player->command_access_level != CommandAccessLevel::TOXIC && player->command_access_level != CommandAccessLevel::ADMIN))
 							isFiltered = true;
 						break;
-					case 5: // Notify Online
-						if (!player->notify_online)
-							isFiltered = true;
-						break;
-					case 6: // Not classified as modder, friend, blocked, or notify
-						if (player->is_modder || player->is_friends || player->block_join || player->notify_online)
+					case 5: // Not classified as modder, friend, blocked, or notify
+						if (player->is_modder || player->is_friends || player->block_join)
 							isFiltered = true;
 						break;
 					}
@@ -222,7 +214,6 @@ namespace big
 				}
 
 				if (ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &current_player->rockstar_id)
-				    || ImGui::Checkbox("Notify When Online"_T.data(), &current_player->notify_online)
 				    || ImGui::Checkbox("IS_FRIENDS"_T.data(), &current_player->is_friends)
 				    || ImGui::Checkbox("IS_MODDER"_T.data(), &current_player->is_modder)
 				    || ImGui::Checkbox("BLOCK_JOIN"_T.data(), &current_player->block_join))
