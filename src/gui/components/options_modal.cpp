@@ -7,8 +7,8 @@ namespace big
 	*/
 	void components::options_modal(std::string element_name, std::function<void()> render_elements, bool sameline, std::string custom_button_name)
 	{
-        if(sameline)
-		    ImGui::SameLine();
+		if (sameline)
+			ImGui::SameLine();
 
 		if (ImGui::SmallButton(std::string(custom_button_name + "##" + element_name).data()))
 			ImGui::OpenPopup(element_name.data());
