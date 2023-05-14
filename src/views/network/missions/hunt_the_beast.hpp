@@ -54,7 +54,7 @@ namespace big
 					for (int i = 0; i < beast_land_marks; i++)
 					{
 						auto script_local_land_mark = *beast_land_mark_list.at(i, 3).as<Vector3*>();
-						std::string label           = std::format("Tp to landmark {} at {}.{}.{}",
+						std::string label           = std::format("Tp to landmark {} at {}  {}  {}",
                             i,
                             script_local_land_mark.x,
                             script_local_land_mark.y,
