@@ -4,6 +4,7 @@
 #include "script_local.hpp"
 #include "util/scripts.hpp"
 #include "views/view.hpp"
+#include "views/network/missions/hunt_the_beast"
 
 namespace big
 {
@@ -287,6 +288,8 @@ namespace big
 			});
 		}
 
+		if(check_script(RAGE_JOAAT("am_hunt_the_beast")))
+			render_hunt_the_beast_ui();
 
 		if (!mission_found)
 		{
