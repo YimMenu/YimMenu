@@ -4,7 +4,7 @@
 #include "script_local.hpp"
 #include "util/scripts.hpp"
 #include "views/view.hpp"
-#include "views/network/missions/hunt_the_beast"
+#include "views/network/missions/hunt_the_beast.hpp"
 
 namespace big
 {
