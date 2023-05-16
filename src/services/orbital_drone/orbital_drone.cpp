@@ -358,11 +358,14 @@ namespace big
 
 		if (PED::IS_PED_A_PLAYER(ent))
 		{
-			for (auto ped : g_player_service->players() | std::ranges::views::values)
+			for (auto player : g_player_service->players() | std::ranges::views::values)
 			{
-				if (ped && g_pointers->m_gta.m_ptr_to_handle(ped->get_ped()) == ent)
+				if (player)
 				{
-					g_player_service->set_selected(ped);
+					if (const auto ped_ptr = player->get_ped(); ped_ptr && g_pointers->m_gta.m_ptr_to_handle(ped_ptr) == ent)
+					{
+						g_player_service->set_selected(player);
+					}
 				}
 			}
 		}

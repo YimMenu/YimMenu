@@ -4,7 +4,7 @@ message("AsyncLogger")
 FetchContent_Declare(
     AsyncLogger
     GIT_REPOSITORY https://github.com/Yimura/AsyncLogger.git
-    GIT_TAG v0.0.5
+    GIT_TAG v0.0.6
     GIT_PROGRESS TRUE
 )
 FetchContent_MakeAvailable(AsyncLogger)

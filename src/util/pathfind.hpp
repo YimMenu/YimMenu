@@ -75,6 +75,28 @@ namespace big::pathfind
 			return false;
 	}
 
+	/*
+	Same as find_closest_vehicle_node but will favour nodes that are facing the facecoords with their heading
+	*/
+	inline bool find_closest_vehicle_node_favour_direction(Vector3 coords, Vector3 facecoords, Vector3& outcoords, float& outheading, int flag, int nth = 1, float zMeasureMult = 3.f, float zTolerance = 0.f)
+	{
+		if (load_path_nodes(coords))
+			return PATHFIND::GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION(coords.x,
+			    coords.y,
+			    coords.z,
+			    facecoords.x,
+			    facecoords.y,
+			    facecoords.z,
+			    nth,
+			    &outcoords,
+			    &outheading,
+			    flag,
+			    zMeasureMult,
+			    zTolerance);
+		else
+			return false;
+	}
+
 	inline bool find_random_vehicle_node(Vector3 center, Vector3& outcoords, float radius, bool avoid_dead_ends, bool avoid_highways, int min_lanes = 0)
 	{
 		int node_id;
@@ -100,7 +122,7 @@ namespace big::pathfind
 		}
 	}
 
-	inline bool find_random_location_in_vicinity(Vector3 coords, Vector3& outcoords, float& outheading, int flag, int vicinity)
+	inline bool find_random_location_in_vicinity(Vector3 coords, Vector3& outcoords, float& outheading, int flag, int vicinity, bool favour_heading_to_original_coords = false)
 	{
 		outcoords = coords;
 
@@ -108,7 +130,7 @@ namespace big::pathfind
 
 		Vector3 changed_coords = outcoords;
 
-		if (!find_closest_vehicle_node(outcoords, outcoords, outheading, flag) || math::distance_between_vectors(outcoords, coords) > vicinity || math::distance_between_vectors(outcoords, coords) < (vicinity / 2))
+		if ((favour_heading_to_original_coords ? !find_closest_vehicle_node_favour_direction(outcoords, outcoords, outcoords, outheading, flag) : !find_closest_vehicle_node(outcoords, outcoords, outheading, flag)) || math::distance_between_vectors(outcoords, coords) > vicinity || math::distance_between_vectors(outcoords, coords) < (vicinity / 2))
 		{
 			outcoords = coords;
 
@@ -126,7 +148,7 @@ namespace big::pathfind
 	Param precision goes up to a value of 200 meaning how many positions it will try and filter from
 	Might prove resource demanding based on hardware
 	*/
-	inline bool find_random_location_in_vicinity_precise(Vector3 coords, Vector3& outcoords, float& outheading, int flag, float vicinity, int precision = 50)
+	inline bool find_random_location_in_vicinity_precise(Vector3 coords, Vector3& outcoords, float& outheading, int flag, float vicinity, int precision = 50, bool favour_heading_to_original_coords = false)
 	{
 		if (precision > 200)
 			precision = 200;
@@ -137,7 +159,7 @@ namespace big::pathfind
 		for (int i = 0; i < precision; i++)
 		{
 			Vector3 new_pos{};
-			find_random_location_in_vicinity(coords, new_pos, outheading, flag, vicinity);
+			find_random_location_in_vicinity(coords, new_pos, outheading, flag, vicinity, favour_heading_to_original_coords);
 			found_locations.push_back(new_pos);
 		}
 
@@ -157,5 +179,13 @@ namespace big::pathfind
 		outcoords = best_location;
 
 		return outcoords != coords;
+	}
+
+	/*
+	Will give you two vectors representing the road extremes of the road closest to the given coords.
+	*/
+	inline bool find_closest_road(Vector3 coords, Vector3* south_end, Vector3* north_end, int* south_bound_lanes = nullptr, int* north_bound_lanes = nullptr, float* width_between_directional_lanes = nullptr, bool ignore_disabled_nodes = true, float min_lenght = 10.f, float min_lanes = 1)
+	{
+		return PATHFIND::GET_CLOSEST_ROAD(coords.x, coords.y, coords.z, min_lenght, min_lanes, south_end, north_end, south_bound_lanes, north_bound_lanes, width_between_directional_lanes, ignore_disabled_nodes);
 	}
 }
