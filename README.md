@@ -1,137 +1,126 @@
 # YimMenu
 
-![](https://img.shields.io/badge/dynamic/json?color=ffab00&label=Online%20Version&query=%24.game.online&url=https%3A%2F%2Fraw.githubusercontent.com%2FYimMenu%2FYimMenu%2Fmaster%2Fmetadata.json&style=flat-square&labelColor=000000) ![](https://img.shields.io/badge/dynamic/json?color=ffab00&label=Game%20Build&query=%24.game.build&url=https%3A%2F%2Fraw.githubusercontent.com%2FYimMenu%2FYimMenu%2Fmaster%2Fmetadata.json&style=flat-square&labelColor=000000)
+![Versión en línea](https://img.shields.io/badge/dynamic/json?color=ffab00&label=Versión%20en%20línea&query=%24.game.online&url=https%3A%2F%2Fraw.githubusercontent.com%2FYimMenu%2FYimMenu%2Fmaster%2Fmetadata.json&style=flat-square&labelColor=000000) ![Versión del juego](https://img.shields.io/badge/dynamic/json?color=ffab00&label=Versión%20del%20juego&query=%24.game.build&url=https%3A%2F%2Fraw.githubusercontent.com%2FYimMenu%2FYimMenu%2Fmaster%2Fmetadata.json&style=flat-square&labelColor=000000)
 
-A mod menu base for Grand Theft Auto V.
-Strictly for educational purposes.
+YimMenu es una base de menú de modificaciones para Grand Theft Auto V. Estrictamente con fines educativos.
 
-YimMenu is originally based of off [BigBaseV2](https://github.com/Pocakking/BigBaseV2) which was an amazing base at the time but nowadays is a bit dated.
-So here I am with an up-to-date menu focusing on protecting the user from toxic modders.
+YimMenu se basa originalmente en [BigBaseV2](https://github.com/Pocakking/BigBaseV2), que fue una base increíble en su momento, pero en la actualidad está un poco desactualizada. Por eso, aquí estoy con un menú actualizado que se centra en proteger al usuario de los modders tóxicos.
 
-## Table of contents
+## Tabla de contenidos
 
- * [How to build](#how-to-build)
-    * [Curl](#curl)
-    * [Git](#git)
-    * [CMake](#CMake)
-    * [Cloning and generating project files](#cloning-and-generating-project-files)
- * [Staying Up To Date](#staying-up-to-date)
- * [Project Structure](#project-structure)
- * [Features](#features)
- * [Contributing](#contributing)
- 
-## How to build
+- [Cómo compilar](#cómo-compilar)
+  - [Curl](#curl)
+  - [Git](#git)
+  - [CMake](#cmake)
+  - [Clonar y generar archivos del proyecto](#clonar-y-generar-archivos-del-proyecto)
+- [Mantenerse actualizado](#mantenerse-actualizado)
+- [Estructura del proyecto](#estructura-del-proyecto)
+- [Funcionalidades](#funcionalidades)
+- [Contribución](#contribución)
 
-Requirements:
+## Cómo compilar
 
- * [Git](#git)
- * [CMake](#cmake)
+Requisitos:
 
-If you have both of the above requirements you can skip to [cloning the git repo and generating the project files](#cloning-and-generating-project-files).
+- [Git](#git)
+- [CMake](#cmake)
+
+Si tienes ambos requisitos mencionados anteriormente, puedes saltar a [clonar el repositorio de Git y generar los archivos del proyecto](#clonar-y-generar-archivos-del-proyecto).
 
 ### Curl
 
-Curl should be already installed on your computer, but if you are having issues with building the project, you will need to download and install
-it.
+Curl debería estar instalado en tu computadora, pero si tienes problemas para compilar el proyecto, necesitarás descargar e instalar curl.
 
-[Download Link](https://curl.se/download.html)
+[Enlace de descarga](https://curl.se/download.html)
 
 ### Git
 
-If you haven't installed git on your system go and do so as it is **REQUIRED** for setting up a working build environment.
+Si no has instalado Git en tu sistema, debes hacerlo, ya que es **REQUERIDO** para configurar un entorno de compilación funcional.
 
-[Download Link](https://git-scm.com/download/win)
+[Enlace de descarga](https://git-scm.com/download/win)
 
 ### CMake
 
-CMake is used to generate our project files, if you haven't used it before you will need to download and install it.
+CMake se utiliza para generar los archivos del proyecto. Si nunca lo has utilizado antes, deberás descargar e instalarlo.
 
-[Download Link](https://cmake.org/download/)
+[Enlace de descarga](https://cmake.org/download/)
 
-### Cloning and generating project files
+### Clonar y generar archivos del proyecto
 
-- Make sure that you have installed Git and CMake.
+- Asegúrate de haber instalado Git y CMake.
 
-- Clone the repository:
-  ```bash
+- Clona el repositorio:
   git clone https://github.com/YimMenu/YimMenu.git
-  ```
 
--  Go into the directory you just cloned:
-  ```bash
+- Ingresa al directorio que acabas de clonar:
   cd YimMenu
-  ```
 
-#### Generate project files 
+#### Generar archivos del proyecto
 
-> **Note**
-> You will have cd build and cmake again if you add any files or you will get an error when building.
+> **Nota**
+> Si agregas o quitas archivos, deberás ejecutar los siguientes comandos nuevamente o recibirás un error al compilar.
 
-- Windows Only
+- Solo para Windows
 
   - Visual Studio
 
-    If you only use Visual Studio and don't want to mess with command lines, Visual Studio has a CMake extension that does all the work.
+    Si solo utilizas Visual Studio y no deseas lidiar con la línea de comandos, Visual Studio tiene una extensión de CMake que hace todo el trabajo.
 
-    Make sure it is [installed](https://learn.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=msvc-170#installation).
+    Asegúrate de tenerla instalada. [Puedes descargarla aquí](https://learn.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=msvc-170#installation).
 
-    Then, just open Visual Studio, open a local folder, and select the `YimMenu` folder that the `git clone` command just created.
+    Luego, simplemente abre Visual Studio, abre una carpeta local y selecciona la carpeta YimMenu que se creó con el comando git clone.
 
-    Let the CMake extension generate the needed files for building, you can follow the progress in the Output tab of Visual Studio.
+    Deja que la extensión de CMake genere los archivos necesarios para compilar. Puedes seguir el progreso en la pestaña de salida de Visual Studio.
 
-    Then, you can just build by using the Build menu at the top and clicking Build All.
+    Luego, simplemente compila utilizando el menú Build en la parte superior y haz clic en Build All.
 
+- Otros sistemas operativos / IDEs
 
-- Other OSs / IDEs
+  Si utilizas otro sistema operativo o prefieres utilizar la consola en Windows, simplemente sigue estos pasos:
 
-  If you use something else or prefer using the console on Windows, just follow this:
-
-  ```bash
   mkdir build
   cd build
   cmake ..
-  ```
 
-  Now, you will be able to open the solution, and build it.
-  
-## Staying Up To Date
+  Ahora podrás abrir la solución y compilarla.
 
-Pull the latest changes from this repository.
+## Mantenerse actualizado
 
-With a command line it is as easy as:
+Obtén los últimos cambios de este repositorio.
 
-```bash
+Con la línea de comandos es tan fácil como:
+
 git pull
-```
 
-CMake should be handling removed / added files automatically without any user input.
+CMake debería encargarse automáticamente de los archivos eliminados o agregados sin necesidad de intervención del usuario.
 
-If this is not the case for some reason you'll have to redo the steps in the [Generate project files](#generate-project-files) section above.
+Si por alguna razón eso no sucede, deberás repetir los pasos en la sección Generar archivos del proyecto mencionada anteriormente.
 
-If you are doing custom modifications to the codebase and have a fork you are on your own for staying up to date with upstream (this repository), google stuff like "merge from upstream" and learn how to use Git.
+Si estás realizando modificaciones personalizadas en el código base y tienes un fork, tendrás que encargarte de mantenerte actualizado con el repositorio principal (este repositorio). Busca información sobre "merge from upstream" y aprende a utilizar Git.
 
-## Project Structure
+## Estructura del proyecto
 
-- `backend/` all features that should be ran in a loop are in here sorted by category
-- `gui/` includes everything related to UI elements
-- `hooks/` function hooks
-- `native_hooks/` hooks to natives
-- `services/` service files to interact and maintain stuff
-- `util/` general utility functions to keep code as compact and as much in one place as possible
+- backend/: contiene todas las funciones que se ejecutan en un ciclo, organizadas por categoría.
+- gui/: incluye todo lo relacionado con los elementos de la interfaz de usuario.
+- hooks/: hooks de funciones.
+- native_hooks/: hooks de nativas.
+- services/: archivos de servicio para interactuar y mantener cosas.
+- util/: funciones de utilidad general para mantener el código lo más compacto y en un solo lugar posible.
 
-## Features
+## Funcionalidades
 
-Below is an incomplete list of feature that I believe are notable to this "base" or menu.
+A continuación se muestra una lista incompleta de características que considero destacadas de esta "base" o menú.
 
- - Return Native spoofing
- - Custom [settings](src/core/globals.hpp) with deep compare if changes were made, including auto saving
- - Clear and well structured source code
- - Includes a thread pool to queue tasks that shouldn't block the game thread, very similar to fiber pool
- - Updated natives.hpp from https://nativedb.spyral.dev
- - ReClass.NET structures implemented, accessible from a global called g_local_player defined in `common.hpp`
+- Engaño de retorno de nativas.
+- Configuraciones personalizadas settings con comparación profunda si se han realizado cambios, incluido el guardado automático.
+- Código fuente claro y bien estructurado.
+- Incluye un grupo de subprocesos para encolar tareas que no deben bloquear el subproceso del juego, muy similar a un grupo de hilos.
+- Archivo natives.hpp actualizado de https://nativedb.spyral.dev.
+- Estructuras implementadas de ReClass.NET, accesibles desde una variable global llamada g_local_player definida en common.hpp.
 
-## Contributing
+## Contribución
 
-You're free to contribute to YimMenu as long as the features are useful, not overly toxic and do not contain anything money related that might get the menu targeted by Take2.
+Eres libre de contribuir a YimMenu siempre que las características sean útiles, no sean excesivamente tóxicas y no contengan nada relacionado con dinero que pueda hacer que el menú sea objetivo de Take2.
 
-Make sure to read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+Asegúrate de leer el archivo CONTRIBUTING.md.
+
