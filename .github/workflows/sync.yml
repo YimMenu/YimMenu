@@ -13,12 +13,13 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v2
       with:
-        ref: master
+        ref: main
 
     - name: Pull from original repo
       run: |
-        git remote add upstream https://github.com/YimMenu/YimMenu
-        git pull upstream master
+        git remote add upstream https://github.com/original_owner/original_repo.git
+        git config pull.rebase true
+        git pull upstream main
 
     - name: Push to forked repo
       run: |
