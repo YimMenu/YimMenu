@@ -1,0 +1,26 @@
+name: Sync with Original Repo
+
+on:
+  schedule:
+    - cron:  '0 */6 * * *'  # runs every 6 hours
+
+jobs:
+  sync_with_upstream:
+    runs-on: ubuntu-latest
+    name: Sync master with original repo
+    steps:
+    - name: Checkout master
+      uses: actions/checkout@v2
+      with:
+        ref: master
+        fetch-depth: 0
+        token: ${{ PAT.PAT }}  # use a personal access token to get permissions for push
+
+    - name: Pull upstream changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git remote add upstream https://github.com/YimMenu/YimMenu.git
+        git fetch upstream
+        git merge upstream/master --allow-unrelated-histories -m "Merge from original repo" --strategy-option theirs
+        git push origin master
