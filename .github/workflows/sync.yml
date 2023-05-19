@@ -17,7 +17,7 @@ jobs:
 
     - name: Pull from original repo
       run: |
-        git remote add upstream https://github.com/original_owner/original_repo.git
+        git remote add upstream https://github.com/YimMenu/YimMenu.git
         git config pull.rebase true
         git pull upstream main
 
