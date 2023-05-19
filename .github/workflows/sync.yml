@@ -1,0 +1,25 @@
+name: Sync with original
+
+on:
+  schedule:
+    - cron:  '0 0 * * *'
+
+jobs:
+  sync:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+      with:
+        ref: master
+
+    - name: Pull from original repo
+      run: |
+        git remote add upstream https://github.com/YimMenu/YimMenu
+        git pull upstream master
+
+    - name: Push to forked repo
+      run: |
+        git push
