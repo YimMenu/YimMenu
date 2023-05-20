@@ -2,7 +2,7 @@ name: Sync with Original Repo
 
 on:
   schedule:
-    - cron:  '0 */6 * * *'  # runs every 6 hours
+    - cron:  '0 */1 * * *'  # runs every 6 hours
 
 jobs:
   sync_with_upstream:
@@ -14,7 +14,7 @@ jobs:
       with:
         ref: master
         fetch-depth: 0
-        token: ${{ secret.PAT }}  # use a personal access token to get permissions for push
+        token: ${{ secrets.PAT }}  # use a personal access token to get permissions for push
 
     - name: Pull upstream changes
       run: |
