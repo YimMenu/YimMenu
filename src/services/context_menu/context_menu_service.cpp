@@ -198,8 +198,7 @@ namespace big
 		{
 			double distance = 1;
 
-			const auto get_closest_to_center = [this, &distance](auto entity_getter_func) -> auto
-			{
+			const auto get_closest_to_center = [this, &distance](auto entity_getter_func) -> auto {
 				rage::fvector2 screen_pos{};
 				bool got_an_entity = false;
 				for (const auto entity : entity_getter_func())
@@ -215,8 +214,14 @@ namespace big
 					const auto distance_from_middle = distance_to_middle_of_screen(screen_pos);
 					if (distance_from_middle < distance && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, temp_handle, 17) && temp_handle != self::ped)
 					{
-						m_handle      = temp_handle;
-						m_pointer     = temp_pointer;
+						m_handle  = temp_handle;
+						m_pointer = temp_pointer;
+						switch (m_pointer->m_model_info->m_model_type)
+						{
+						case eModelType::Vehicle: m_veh_pointer = temp_pointer; break;
+						case eModelType::Ped: m_ped_pointer = temp_pointer; break;
+						case eModelType::Object: m_prop_pointer = temp_pointer; break;
+						}
 						distance      = distance_from_middle;
 						got_an_entity = true;
 					}
@@ -228,6 +233,44 @@ namespace big
 			auto got_an_entity = get_closest_to_center(pools::get_all_vehicles);
 			got_an_entity |= get_closest_to_center(pools::get_all_peds);
 			got_an_entity |= get_closest_to_center(pools::get_all_props);
+
+			
+			//To avoid priority issues that result in unwanted behaviour, we added another algorithm to compare the 3 different entity types (screen distance).
+			float veh_distance = 1; 
+			float ped_distance = 1;
+			float prop_distance = 1;
+			rage::fvector2 veh_screen_pos{}, ped_screen_pos{}, prop_screen_pos{};
+
+			if(m_veh_pointer)
+			{
+				const auto veh_pos = m_veh_pointer->m_navigation->get_position();
+				HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(veh_pos->x, veh_pos->y, veh_pos->z, &veh_screen_pos.x, &veh_screen_pos.y);
+				veh_distance = distance_to_middle_of_screen(veh_screen_pos);
+			}
+
+			if(m_ped_pointer)
+			{
+				const auto ped_pos = m_ped_pointer->m_navigation->get_position();
+				HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(ped_pos->x, ped_pos->y, ped_pos->z, &ped_screen_pos.x, &ped_screen_pos.y);
+				ped_distance = distance_to_middle_of_screen(ped_screen_pos);
+			}
+
+			if(m_prop_pointer)
+			{
+				const auto prop_pos = m_prop_pointer->m_navigation->get_position();
+				HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(prop_pos->x, prop_pos->y, prop_pos->z, &prop_screen_pos.x, &prop_screen_pos.y);
+				prop_distance = distance_to_middle_of_screen(prop_screen_pos);
+			}
+			
+			float closest = (veh_distance < ped_distance) ? ((veh_distance < prop_distance) ? veh_distance : prop_distance) :
+                   ((ped_distance < prop_distance) ? ped_distance : prop_distance);
+
+			if(closest == veh_distance)
+				m_pointer = m_veh_pointer;
+			else if(closest == ped_distance)
+				m_pointer = m_ped_pointer;
+			else
+				m_pointer = m_prop_pointer;
 
 			if (got_an_entity)
 			{

@@ -56,6 +56,9 @@ namespace big
 
 		Entity m_handle;
 		rage::fwEntity* m_pointer{};
+		rage::fwEntity* m_veh_pointer{};
+		rage::fwEntity* m_ped_pointer{};
+		rage::fwEntity* m_prop_pointer{};
 		model_bounding_box_screen_space m_model_bounding_box_screen_space;
 
 		s_context_menu vehicle_menu{ContextEntityType::VEHICLE,
@@ -85,7 +88,7 @@ namespace big
 			            else
 				            g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
 		            }},
-				{"HALT",
+		        {"HALT",
 		            [this] {
 			            if (entity::take_control_of(m_handle))
 			            {
@@ -148,7 +151,7 @@ namespace big
 		        {"RECRUIT", [this] {
 			         TASK::CLEAR_PED_TASKS(m_handle);
 			         PED::SET_PED_AS_GROUP_MEMBER(m_handle, PED::GET_PED_GROUP_INDEX(self::ped));
-					 PED::SET_PED_RELATIONSHIP_GROUP_HASH(m_handle, PED::GET_PED_RELATIONSHIP_GROUP_HASH(self::ped));
+			         PED::SET_PED_RELATIONSHIP_GROUP_HASH(m_handle, PED::GET_PED_RELATIONSHIP_GROUP_HASH(self::ped));
 			         PED::SET_PED_NEVER_LEAVES_GROUP(m_handle, true);
 			         PED::SET_CAN_ATTACK_FRIENDLY(m_handle, 0, 1);
 			         PED::SET_PED_COMBAT_ABILITY(m_handle, 2);
@@ -158,7 +161,7 @@ namespace big
 			         PED::SET_PED_COMBAT_ATTRIBUTES(m_handle, 13, true);
 			         PED::SET_PED_CONFIG_FLAG(m_handle, 394, true);
 			         PED::SET_PED_CONFIG_FLAG(m_handle, 400, true);
-					 PED::SET_PED_CONFIG_FLAG(m_handle, 134, true);
+			         PED::SET_PED_CONFIG_FLAG(m_handle, 134, true);
 			         WEAPON::GIVE_WEAPON_TO_PED(m_handle, RAGE_JOAAT("weapon_microsmg"), 9999, false, false);
 			         WEAPON::GIVE_WEAPON_TO_PED(m_handle, RAGE_JOAAT("weapon_carbinerifle"), 9999, false, true);
 			         TASK::TASK_COMBAT_HATED_TARGETS_AROUND_PED(self::ped, 100, 67108864);
