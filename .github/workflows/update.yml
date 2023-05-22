@@ -14,7 +14,7 @@ jobs:
       with:
         ref: master
         fetch-depth: 0
-        token: ${{ PAT }}  # use a personal access token to get permissions for push
+        token: ${{ secrets.PAT }}  # use a personal access token to get permissions for push
 
     - name: Pull upstream changes
       run: |
