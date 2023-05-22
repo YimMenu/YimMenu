@@ -62,6 +62,11 @@ namespace big
 						draw_list->AddText({cm_start_x + 7.f, cm_start_y + (20.f * static_cast<float>(i)) + 5.f},
 						    cm->current_option == i ? g.context_menu.selected_option_color : ImGui::ColorConvertFloat4ToU32({1.f, 1.f, 1.f, 1.f}),
 						    co.name.c_str());
+
+						if (i == cm->options.size() - 1 && g.context_menu.show_contextual_info)
+							draw_list->AddText({cm_start_x + 7.f, cm_start_y + (20.f * static_cast<float>(cm->options.size())) + 5.f},
+							    ImGui::ColorConvertFloat4ToU32({1.f, 1.f, 1.f, 1.f}),
+							    g_context_menu_service->contextual_info.c_str());
 					}
 
 					if (g.context_menu.bounding_box_enabled)

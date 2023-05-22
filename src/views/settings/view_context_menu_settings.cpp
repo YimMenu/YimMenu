@@ -34,6 +34,7 @@ namespace big
 			}
 
 			ImGui::Checkbox("SETTINGS_CONTEXT_MENU_BOUNDING_BOX"_T.data(), &g.context_menu.bounding_box_enabled);
+			ImGui::Checkbox("Contextual info", &g.context_menu.show_contextual_info);
 
 			if (g.context_menu.bounding_box_enabled)
 			{

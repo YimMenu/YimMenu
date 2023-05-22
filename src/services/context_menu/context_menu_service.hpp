@@ -59,6 +59,7 @@ namespace big
 		rage::fwEntity* m_veh_pointer{};
 		rage::fwEntity* m_ped_pointer{};
 		rage::fwEntity* m_prop_pointer{};
+		std::string contextual_info;
 		model_bounding_box_screen_space m_model_bounding_box_screen_space;
 
 		s_context_menu vehicle_menu{ContextEntityType::VEHICLE,
@@ -96,6 +97,11 @@ namespace big
 			            }
 			            else
 				            g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
+		            }},
+					{"EMP",
+		            [this] {
+			           Vector3 pos = ENTITY::GET_ENTITY_COORDS(m_handle, false);
+					   FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, eExplosionTag::EXP_TAG_EMPLAUNCHER_EMP, 1, true, false, 0, false);
 		            }},
 		        {"COPY VEHICLE",
 		            [this] {

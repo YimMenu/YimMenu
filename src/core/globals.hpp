@@ -759,7 +759,9 @@ namespace big
 			bool bounding_box_enabled = true;
 			ImU32 bounding_box_color  = 4278255360;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(context_menu, enabled, allowed_entity_types, selected_option_color, bounding_box_enabled, bounding_box_color)
+			bool show_contextual_info = false;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(context_menu, enabled, allowed_entity_types, selected_option_color, bounding_box_enabled, bounding_box_color, show_contextual_info)
 		} context_menu{};
 
 		struct esp
