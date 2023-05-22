@@ -1410,7 +1410,7 @@ namespace big
         // Presence Data
         {
             "PD",
-            "48 8D 05 ? ? ? ? 48 8B F1 48 89 01 48 83 C1 08 E8 ? ? ? ? 48 8D 8E 3B 4E 00 00",
+            "48 8D 05 ? ? ? ? 48 8B F1 48 89 01 48 83 C1 08 E8 ? ? ? ? 33 ED 48 8D 8E 68 5B 00 00",
             [](memory::handle ptr)
             {
                 auto presence_data_vft             = ptr.add(3).rip().as<PVOID*>();
