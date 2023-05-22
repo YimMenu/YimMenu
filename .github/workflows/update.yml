@@ -2,7 +2,7 @@ name: Sync with Original Repo
 
 on:
   schedule:
-    - cron:  '*/10 * * * *'  # runs every 6 hours
+    - cron:  '* */10 * * *'  # runs every 6 hours
 
 jobs:
   sync_with_upstream:
