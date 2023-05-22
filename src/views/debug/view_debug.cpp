@@ -19,6 +19,7 @@ namespace big
 			script_events();
 			scripts();
 			threads();
+			animations();
 			ImGui::EndTabBar();
 		}
 		ImGui::End();
