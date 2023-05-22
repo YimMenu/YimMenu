@@ -22,7 +22,7 @@ namespace lua::memory
 		if (mem_addr.is_null())
 			return 0;
 
-		return big::g_pointers->m_gta.m_ptr_to_handle((void*)mem_addr.m_address);
+		return big::g_pointers->m_gta.m_ptr_to_handle((void*)mem_addr.get_address());
 	}
 
 	pointer allocate(int size, sol::this_state state)
@@ -38,7 +38,7 @@ namespace lua::memory
 		delete[] (void*)ptr.get_address();
 		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
 		std::erase_if(module->m_allocated_memory, [ptr](void* addr) {
-			return ptr.m_address == (uint64_t)addr;
+			return ptr.get_address() == (uint64_t)addr;
 		});
 	}
 }

@@ -8,9 +8,10 @@ namespace lua::memory
 {
 	struct pointer
 	{
-	public:
+	private:
 		std::uint64_t m_address;
 
+	public:
 		explicit pointer(std::uint64_t address) :
 		    m_address(address)
 		{
@@ -83,7 +84,7 @@ namespace lua::memory
 			return pointer(*(uint64_t*)m_address);
 		}
 
-		uint64_t get_address()
+		uint64_t get_address() const
 		{
 			return m_address;
 		}
