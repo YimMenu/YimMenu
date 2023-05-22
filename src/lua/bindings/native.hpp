@@ -13,14 +13,14 @@ namespace lua::native
 
 		for (int i = 1; i < args.size(); i++)
 		{
-			if (args[i].is<int>())
-				big::g_native_invoker.push_arg(args[i].get<uint64_t>());
-			if (args[i].is<float>())
+			if (args[i].is<memory::pointer>())
+				big::g_native_invoker.push_arg(args[i].get<memory::pointer>().get_address());
+			else if (args[i].is<int>())
+				big::g_native_invoker.push_arg(args[i].get<int>());
+			else if (args[i].is<float>())
 				big::g_native_invoker.push_arg(args[i].get<float>());
 			else if (args[i].is<bool>())
 				big::g_native_invoker.push_arg(args[i].get<bool>());
-			else if (args[i].is<memory::pointer>())
-				big::g_native_invoker.push_arg(args[i].get<memory::pointer>().get_address());
 			else if (args[i].is<const char*>())
 				big::g_native_invoker.push_arg(args[i].get<const char*>());
 			else if (args[i].is<rage::fvector3>())
