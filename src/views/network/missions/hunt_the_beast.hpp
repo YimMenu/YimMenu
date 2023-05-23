@@ -1,3 +1,4 @@
+#include "core/scr_globals.hpp"
 #include "script_local.hpp"
 #include "util/math.hpp"
 #include "util/scripts.hpp"
@@ -34,23 +35,23 @@ namespace big
 	{
 		if (auto hunt_the_beast_script_thread = gta_util::find_script_thread(RAGE_JOAAT("am_hunt_the_beast")))
 		{
-			auto beast_player_index = *script_local(hunt_the_beast_script_thread, 599).at(1).at(6).as<uint32_t*>();
-			if (g_player_service->get_by_id(beast_player_index))
+			auto beast_player_index =
+			    *script_local(hunt_the_beast_script_thread, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(6).as<uint32_t*>();
+			if (auto beast = g_player_service->get_by_id(beast_player_index))
 			{
 				ImGui::Text("%s is the beast", g_player_service->get_by_id(beast_player_index).get()->get_name());
 				ImGui::SameLine();
-				components::button("Set as selected", [beast_player_index] {
-					g_player_service->set_selected(g_player_service->get_by_id(beast_player_index));
+				components::button("Set as selected", [beast] {
+					g_player_service->set_selected(beast);
 				});
 
 				ImGui::Spacing();
-
-				auto beast_land_marks = *script_global(262145).at(11711).as<int*>();
+				
+				auto beast_land_mark_list = script_local(hunt_the_beast_script_thread, 599).at(1).at(19);
+				auto beast_land_marks = *beast_land_mark_list.as<int*>();
 
 				if (ImGui::ListBoxHeader("##beastlandmarks", ImVec2(400, 300)))
 				{
-					script_local beast_land_mark_list = script_local(hunt_the_beast_script_thread, 599).at(1).at(19);
-
 					for (int i = 0; i < beast_land_marks; i++)
 					{
 						auto script_local_land_mark = *beast_land_mark_list.at(i, 3).as<Vector3*>();
@@ -61,7 +62,9 @@ namespace big
                             script_local_land_mark.z);
 
 						if (ImGui::Selectable(label.data(), i == get_land_mark_beast_is_closest_to(g_player_service->get_by_id(beast_player_index), beast_land_mark_list)))
-							teleport::to_coords(script_local_land_mark);
+							g_fiber_pool->queue_job([script_local_land_mark] {
+								teleport::teleport_player_to_coords(g_player_service->get_self(), script_local_land_mark);
+							});
 					}
 					ImGui::ListBoxFooter();
 				}
