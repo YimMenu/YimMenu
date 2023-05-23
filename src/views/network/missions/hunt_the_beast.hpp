@@ -62,8 +62,8 @@ namespace big
                             script_local_land_mark.z);
 
 						if (ImGui::Selectable(label.data(), i == get_land_mark_beast_is_closest_to(g_player_service->get_by_id(beast_player_index), beast_land_mark_list)))
-							g_fiber_pool->queue_job([script_local_land_mark] {
-								teleport::teleport_player_to_coords(g_player_service->get_self(), script_local_land_mark);
+							g_fiber_pool->queue_job([script_local_land_mark, beast] {
+								teleport::teleport_player_to_coords(g.player.spectating ? beast : g_player_service->get_self(), script_local_land_mark);
 							});
 					}
 					ImGui::ListBoxFooter();
