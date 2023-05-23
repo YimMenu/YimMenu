@@ -48,7 +48,7 @@ namespace big
 				ImGui::Spacing();
 				
 				auto beast_land_mark_list = script_local(hunt_the_beast_script_thread, 599).at(1).at(19);
-				auto beast_land_marks = *beast_land_mark_list.as<int*>();
+				auto beast_land_marks = *script_global(262145).at(11711).as<int*>();
 
 				if (ImGui::ListBoxHeader("##beastlandmarks", ImVec2(400, 300)))
 				{
