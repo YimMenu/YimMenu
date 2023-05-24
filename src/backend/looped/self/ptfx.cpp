@@ -72,5 +72,5 @@ namespace big
 		}
 	};
 
-	ptfx_looped g_ptfx_looped("ptfx", "Enable PTFX", "Show nice PTFX Effects on your character", g.self.ptfx_effects.show);
+	ptfx_looped g_ptfx_looped("ptfx", "PTFX_CMD", "PTFX_CMD_DESC", g.self.ptfx_effects.show);
 }

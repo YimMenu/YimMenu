@@ -16,5 +16,5 @@ namespace big
 		}
 	};
 
-	teleport_to_player g_teleport_to_player("playertp", "Teleport", "Teleports you to the player", 0, false);
+	teleport_to_player g_teleport_to_player("playertp", "TELEPORT", "TELEPORT_DESC", 0, false);
 }

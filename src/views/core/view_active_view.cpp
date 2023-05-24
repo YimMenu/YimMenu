@@ -25,7 +25,7 @@ namespace big
 		if (ImGui::Begin("main", nullptr, window_flags))
 		{
 			const char* key = nullptr;
-			if (key = g_translation_service.get_translation(selected->name).data(); !key)
+			if (key = g_translation_service.get_translation(selected->hash).data(); !key)
 				key = selected->name;
 
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);

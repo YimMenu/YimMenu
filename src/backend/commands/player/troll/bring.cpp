@@ -29,6 +29,6 @@ namespace big
 		}
 	};
 
-	bring g_bring("bring", "Bring", "Teleports the player to you", 0, false);
-	bring_all g_bring_all("bringall", "Bring All", "Teleports everyone to you, even if they are on foot", 0, false);
+	bring g_bring("bring", "BRING", "BRING_DESC", 0, false);
+	bring_all g_bring_all("bringall", "BRING_ALL", "BRING_ALL_DESC", 0, false);
 }

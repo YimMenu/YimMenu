@@ -14,5 +14,5 @@ namespace big
 		}
 	};
 
-	heal g_heal("heal", "Heal", "Restores full health and armor", 0);
+	heal g_heal("heal", "HEAL", "HEAL_DESC", 0);
 }

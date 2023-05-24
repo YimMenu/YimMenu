@@ -20,5 +20,5 @@ namespace big
 		}
 	};
 
-	clear_wanted_level g_clear_wanted_level("clearwanted", "Clear Wanted Level", "Clears the player's wanted level", 0);
+	clear_wanted_level g_clear_wanted_level("clearwanted", "CLEAR_WANTED_LEVEL", "CLEAR_WANTED_LEVEL_DESC", 0);
 }

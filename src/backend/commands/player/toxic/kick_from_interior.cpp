@@ -143,5 +143,5 @@ namespace big
 		}
 	};
 
-	kick_from_interior g_kick_from_interior("intkick", "Kick From Interior", "Kicks the player from the interior they are in", 0);
+	kick_from_interior g_kick_from_interior("intkick", "KICK_FROM_INTERIOR", "KICK_FROM_INTERIOR_DESC", 0);
 }
