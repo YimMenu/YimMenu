@@ -30,7 +30,6 @@ namespace big
 		static void mobile();
 		static void navigation();
 		static void notifications();
-		static void orbital_drone();
 		static void overlay();
 		static void root();
 		static void self();

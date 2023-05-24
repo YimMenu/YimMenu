@@ -1,6 +1,7 @@
 #include "squad_spawner.hpp"
 
 #include "gta/joaat.hpp"
+#include "services/vehicle/persist_car_service.hpp"
 #include "util/math.hpp"
 #include "util/pathfind.hpp"
 #include "util/ped.hpp"
@@ -75,19 +76,69 @@ namespace big
 
 	std::pair<Vehicle, CVehicle*> squad_spawner::spawn_squad_vehicle(squad s)
 	{
-		auto handle = vehicle::spawn(rage::joaat(s.m_vehicle_model), s.m_spawn_pos, s.m_spawn_heading);
+		std::pair<Vehicle, CVehicle*> veh;
+		if (!s.does_squad_have_persistent_vehicle())
+		{
+			veh.first = vehicle::spawn(rage::joaat(s.m_vehicle_model), s.m_spawn_pos, s.m_spawn_heading);
+		}
+		else
+		{
+			const auto persistent_vehicles = persist_car_service::list_files();
 
-		VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(handle, 5);
-		ENTITY::SET_ENTITY_INVINCIBLE(handle, s.m_veh_invincibility);
-		VEHICLE::SET_VEHICLE_ENGINE_ON(handle, true, true, false);
+			for (auto c : persistent_vehicles)
+			{
+				if (c == s.m_persistent_vehicle)
+				{
+					veh.first = persist_car_service::load_vehicle(c);
+					ENTITY::SET_ENTITY_COORDS(veh.first, s.m_spawn_pos.x, s.m_spawn_pos.y, s.m_spawn_pos.z, 0, 0, 0, 1);
+					break;
+				}
+			}
+		}
 
-		return std::pair<Vehicle, CVehicle*>(handle, reinterpret_cast<CVehicle*>(g_pointers->m_gta.m_handle_to_ptr(handle)));
+		veh.second = (CVehicle*)g_pointers->m_gta.m_handle_to_ptr(veh.first);
+
+		VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(veh.first, 5);
+		ENTITY::SET_ENTITY_INVINCIBLE(veh.first, s.m_veh_invincibility);
+		VEHICLE::SET_VEHICLE_ENGINE_ON(veh.first, true, true, false);
+		ENTITY::SET_ENTITY_HEADING(veh.first, s.m_spawn_heading);
+
+		if (s.m_max_vehicle)
+			vehicle::max_vehicle(veh.first);
+
+		return veh;
 	}
 
+	bool find_road(squad& s)
+	{
+		const Vector3 original_pos   = s.m_spawn_pos;
+		const Vector3 target_ped_pos = ENTITY::GET_ENTITY_COORDS(s.current_target_ped, false);
+		Vector3 south, north, chosen_pos;
+
+		//Initial search for an actual road
+		pathfind::find_closest_road(s.m_spawn_pos, &south, &north);
+
+		//Check which is closer
+		if (math::distance_between_vectors(south, s.m_spawn_pos) <= math::distance_between_vectors(north, s.m_spawn_pos))
+			chosen_pos = south;
+		else
+			chosen_pos = north;
+
+		//Get a node to specify heading
+		for (int i = 0; i < 100; i++)
+		{
+			if (pathfind::find_closest_vehicle_node_favour_direction(chosen_pos, target_ped_pos, s.m_spawn_pos, s.m_spawn_heading, 0, i) && math::distance_between_vectors(target_ped_pos, s.m_spawn_pos) >= s.m_spawn_distance)
+				return true;
+		}
+
+		s.m_spawn_pos = original_pos;
+		return false;
+	}
 
 	bool squad_spawner::find_suitable_spawn_pos(squad& s)
 	{
-		Hash veh_model_hash = rage::joaat(s.m_vehicle_model);
+		const Vector3 original_pos = s.m_spawn_pos;
+		Hash veh_model_hash        = rage::joaat(s.m_vehicle_model);
 		int node_search_flag = (VEHICLE::IS_THIS_MODEL_A_BOAT(veh_model_hash) || VEHICLE::IS_THIS_MODEL_A_JETSKI(veh_model_hash)) ? 2 : 0;
 		Vector3 new_pos = s.m_spawn_pos;
 
@@ -102,21 +153,48 @@ namespace big
 			}
 		}
 
+		const float original_spawn_distance = s.m_spawn_distance;
+
 		static auto reset_spawn_pos_to_offset = [&]() -> void {
 			Ped player_ped_handle = g_pointers->m_gta.m_ptr_to_handle(s.target->get_ped());
 			s.m_spawn_pos         = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player_ped_handle, 0, -7, 0);
-			//LOG(INFO) << "Squad spawner: No suitable spot found, spawning at an offset";
 			g_notification_service->push_warning("Squad Spawner", "No suitable spot found, spawning at an offset");
 		};
 
-		for (int i = 0; i < 10; i++)
+		static auto is_pos_valid = [&]() -> bool {
+			return math::distance_between_vectors(new_pos, s.m_spawn_pos) < (s.m_spawn_distance + 50.f) && new_pos != s.m_spawn_pos;
+		};
+
+		static auto find_location = [&]() -> void {
+			for (int i = 0; i < 10; i++)
+			{
+				if (pathfind::find_random_location_in_vicinity_precise(s.m_spawn_pos, new_pos, s.m_spawn_heading, node_search_flag, s.m_spawn_distance, 200, true))
+					break;
+			}
+		};
+
+		//Use spawn distance to find a position ahead of target and limit the vicinity
+		if (s.m_spawn_ahead)
 		{
-			if (pathfind::find_random_location_in_vicinity_precise(s.m_spawn_pos, new_pos, s.m_spawn_heading, node_search_flag, s.m_spawn_distance, 200))
-				break;
+			s.m_spawn_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(s.current_target_ped, 0.0, s.m_spawn_distance, 0.0);
+			s.m_spawn_distance = 5.f;
+		}
+
+		//Actual algorithm to find a nice spot
+		find_location();
+
+		//Try and find a road
+		if (s.m_favour_roads)
+		{
+			if (find_road(s) && is_pos_valid())
+				return true;
+
+			//If the road search failed, revert to original method
+			find_location();
 		}
 
 		//Reset if all searches failed with an allowance of up to 50.0f
-		if (math::distance_between_vectors(new_pos, s.m_spawn_pos) > (s.m_spawn_distance + 50.f) || new_pos == s.m_spawn_pos)
+		if (!is_pos_valid())
 		{
 			reset_spawn_pos_to_offset();
 			return false;
@@ -137,8 +215,9 @@ namespace big
 			return false;
 		}
 
-		if (std::string(s.m_name).empty()){
-			  s.m_name =  std::string(std::to_string(s.m_squad_size) + std::string("_").append(s.m_ped_model).append("_").append(std::to_string(s.m_internal_id)));
+		if (std::string(s.m_name).empty())
+		{
+			s.m_name = std::string(std::to_string(s.m_squad_size) + std::string("_").append(s.m_ped_model).append("_").append(std::to_string(s.m_internal_id)));
 		}
 
 		Hash veh_model_hash  = rage::joaat(s.m_vehicle_model);
@@ -231,6 +310,7 @@ namespace big
 		if (s.has_squad_spawned())
 		{
 			m_active_squads.push_back(s);
+			script::get_current()->yield(100ms);
 			return true;
 		}
 		return false;

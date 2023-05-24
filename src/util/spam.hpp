@@ -64,16 +64,16 @@ namespace big::spam
 
 		return false;
 	}
-
+	
 	inline void log_chat(char* msg, player_ptr player, bool is_spam)
 	{
 		std::ofstream spam_log(g_file_manager->get_project_file(is_spam ? "./spam.log" : "./chat.log").get_path(), std::ios::app);
 
 		auto& plData = *player->get_net_data();
+		auto ip      = player->get_ip_address();
 
-		spam_log << player->get_name() << " (" << plData.m_gamer_handle.m_rockstar_id << ") <"
-		         << (int)plData.m_external_ip.m_field1 << "." << (int)plData.m_external_ip.m_field2 << "."
-		         << (int)plData.m_external_ip.m_field3 << "." << (int)plData.m_external_ip.m_field4 << ">: " << msg << std::endl;
+		spam_log << player->get_name() << " (" << plData.m_gamer_handle.m_rockstar_id << ") <" << (int)ip.m_field1 << "."
+		         << (int)ip.m_field2 << "." << (int)ip.m_field3 << "." << (int)ip.m_field4 << ">: " << msg << std::endl;
 
 		spam_log.close();
 	}
