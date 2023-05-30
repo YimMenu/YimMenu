@@ -8,7 +8,7 @@ namespace lua::memory
 {
 	pointer scan_pattern(const std::string& pattern)
 	{
-		return pointer(::memory::module("GTA5.exe").scan(::memory::pattern(pattern)).as<uint64_t>());
+		return pointer(::memory::module("GTA5.exe").scan(::memory::pattern(pattern)).value().as<uint64_t>());
 	}
 
 	pointer handle_to_ptr(int entity)

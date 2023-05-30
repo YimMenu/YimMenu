@@ -38,11 +38,17 @@ namespace lua::script
 		big::script::get_current()->yield();
 	}
 
+	static void sleep(int ms)
+	{
+		big::script::get_current()->yield(std::chrono::milliseconds(ms));
+	}
+
 	static void bind(sol::state& state)
 	{
 		auto ns               = state["script"].get_or_create<sol::table>();
 		ns["register_looped"] = register_looped;
 		ns["run_in_fiber"]    = run_in_fiber;
 		ns["yield"]           = yield;
+		ns["sleep"]           = sleep;
 	}
 }
