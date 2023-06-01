@@ -5,7 +5,7 @@ namespace big
 {
     void looped::vehicle_disable_siren()
     {
-		if (g.vehicle.enable_siren_mute = true)
+		if (g.vehicle.enable_siren_mute)
 		{
 			Vehicle vehicle = self::veh;
 			bool toggle     = true; // Enable muted siren state
