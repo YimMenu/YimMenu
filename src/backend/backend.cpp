@@ -80,6 +80,7 @@ namespace big
 			looped::vehicle_god_mode();
 			looped::derail_train();
 			looped::drive_train();
+			looped::vehicle_disable_siren();
 
 			script::get_current()->yield();
 		}

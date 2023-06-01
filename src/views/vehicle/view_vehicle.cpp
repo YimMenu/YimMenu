@@ -93,6 +93,8 @@ namespace big
 			components::command_checkbox<"driveunder">();
 			components::command_checkbox<"keeponground">();
 
+			ImGui::Checkbox("Disable Siren", &g.vehcile.enable_siren_mute);
+
 			ImGui::EndGroup();
 		}
 		ImGui::Separator();
