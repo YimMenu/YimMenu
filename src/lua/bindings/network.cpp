@@ -86,10 +86,12 @@ namespace lua::network
 
 	void send_chat_message(const std::string& msg, bool team_only)
 	{
-		if (big::g_hooking->get_original<big::hooks::send_chat_message>()(*big::g_pointers->m_gta.m_send_chat_ptr,
-		        big::g_player_service->get_self()->get_net_data(),
-		        (char*)msg.c_str(),
-		        team_only))
-			big::notify::draw_chat((char*)msg.data(), big::g_player_service->get_self()->get_name(), team_only);
+		big::g_fiber_pool->queue_job([msg, team_only] {
+			if (big::g_hooking->get_original<big::hooks::send_chat_message>()(*big::g_pointers->m_gta.m_send_chat_ptr,
+			        big::g_player_service->get_self()->get_net_data(),
+			        (char*)msg.c_str(),
+			        team_only))
+				big::notify::draw_chat((char*)msg.data(), big::g_player_service->get_self()->get_name(), team_only);
+		});
 	}
 }
