@@ -9,23 +9,17 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			Vehicle vehicle = self::veh;
-			bool toggle     = true; // Enable muted siren state
-
-			if (ENTITY::DOES_ENTITY_EXIST(vehicle))
+			if (ENTITY::DOES_ENTITY_EXIST(self::veh))
 				{
-					VEHICLE::SET_VEHICLE_HAS_MUTED_SIRENS(vehicle, toggle);
+					VEHICLE::SET_VEHICLE_HAS_MUTED_SIRENS(self::veh, true); // Enables muted siren state
 				}
 		}
 
 		virtual void on_disable() override
 		{
-			Vehicle vehicle = self::veh;
-			bool toggle     = false; // Enable muted siren state
-
-			if (ENTITY::DOES_ENTITY_EXIST(vehicle))
+			if (ENTITY::DOES_ENTITY_EXIST(self::veh))
 				{
-					VEHICLE::SET_VEHICLE_HAS_MUTED_SIRENS(vehicle, toggle);
+					VEHICLE::SET_VEHICLE_HAS_MUTED_SIRENS(self::veh, false); // Disables muted siren state
 				}
 		}
 	};
