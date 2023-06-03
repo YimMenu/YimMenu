@@ -13,7 +13,8 @@ namespace big
 		{
 			Ped ped         = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
 			Vehicle vehicle = PED::GET_VEHICLE_PED_IS_IN(ped, false);
-			if (!PED::IS_PED_IN_ANY_VEHICLE(vehicle, true))
+			
+			if (!PED::IS_PED_IN_ANY_VEHICLE(ped, true))
 			{
 				g_notification_service->push_warning("Toxic", "Target player is not in a vehicle.");
 			}
