@@ -24,6 +24,6 @@ namespace big
 		}
 	};
 
-	siren_mute g_siren_mute("mutesiren", "Mute Siren", "Disables the siren sound of Emergency vehicles.",
+	siren_mute g_siren_mute("mutesiren", "Mute Siren", "Disables the siren sound of Emergency vehicles",
 	    g.vehicle.siren_mute);
 }
