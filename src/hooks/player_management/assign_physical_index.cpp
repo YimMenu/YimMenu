@@ -77,10 +77,10 @@ namespace big
 				            net_player_data->m_gamer_handle.m_rockstar_id)));
 			}
 
+			auto id           = player->m_player_id;
+			bool lock_session = g.session.lock_session;
 
-			auto id = player->m_player_id;
-
-			g_fiber_pool->queue_job([id] {
+			g_fiber_pool->queue_job([id, lock_session] {
 				if (auto plyr = g_player_service->get_by_id(id))
 				{
 					if (plyr->get_net_data()->m_gamer_handle.m_rockstar_id != 0)
@@ -108,6 +108,12 @@ namespace big
 						    std::format("Block Join method failed for {}, sending breakup kick instead...",
 						        plyr->get_net_data()->m_name));
 						LOG(WARNING) << "Sending Breakup Kick due to block join failure... ";
+					}
+					if (lock_session)
+					{
+						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+						g_notification_service->push_warning("Lock Session",
+						    std::format("A player with the name of {} has been denied entry", plyr->get_net_data()->m_name));
 					}
 				}
 			});
