@@ -12,6 +12,9 @@ namespace big::teleport
 	{
 		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
 
+		if(ent == self::ped || ent == self::veh)
+			PED::SET_PED_COORDS_KEEP_VEHICLE(ent, coords.x, coords.y, coords.z);
+
 		if (ENTITY::IS_ENTITY_DEAD(ent, true))
 		{
 			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_PLAYER_IS_DEAD"_T.data());

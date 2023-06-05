@@ -4,6 +4,10 @@
 #include "script_local.hpp"
 #include "util/scripts.hpp"
 #include "views/view.hpp"
+#include "views/network/missions/hunt_the_beast.hpp"
+#include "views/network/missions/king_of_the_castle.hpp"
+#include "views/network/missions/cp_collection.hpp"
+#include "views/network/missions/criminal_damage.hpp"
 
 namespace big
 {
@@ -109,184 +113,16 @@ namespace big
 		ImGui::Separator();
 
 		if (check_script(RAGE_JOAAT("am_criminal_damage")))
-		{
-			components::sub_title("Criminal Damage");
-			components::button("Start Event##criminal_damage", [] {
-				if (scripts::force_host(RAGE_JOAAT("am_criminal_damage")))
-					if (auto script = gta_util::find_script_thread(RAGE_JOAAT("am_criminal_damage")))
-						*script_local(script->m_stack, scr_locals::am_criminal_damage::broadcast_idx).at(43).as<int*>() = 0;
-			});
-			ImGui::SameLine();
-			components::button("Finish Event##criminal_damage", [] {
-				if (scripts::force_host(RAGE_JOAAT("am_criminal_damage")))
-					if (auto script = gta_util::find_script_thread(RAGE_JOAAT("am_criminal_damage")))
-						*script_local(script->m_stack, scr_locals::am_criminal_damage::broadcast_idx).at(39).as<int*>() = 0;
-			});
-
-			components::button("Max Score", [] {
-				if (auto criminal_damage = gta_util::find_script_thread(RAGE_JOAAT("am_criminal_damage")))
-					*script_local(criminal_damage->m_stack, scr_locals::am_criminal_damage::score_idx).as<int*>() = 999'999'999;
-			});
-		}
+			render_criminal_damage_ui();
 
 		if (check_script(RAGE_JOAAT("am_cp_collection")))
-		{
-			components::sub_title("Checkpoints");
-
-			components::button("Start Event##cp_collection", [] {
-				if (scripts::force_host(RAGE_JOAAT("am_cp_collection")))
-					if (auto script = gta_util::find_script_thread(RAGE_JOAAT("am_cp_collection")))
-						*script_local(script->m_stack, scr_locals::am_cp_collection::broadcast_idx).at(667).as<int*>() = 0;
-			});
-			ImGui::SameLine();
-			components::button("Finish Event##cp_collection", [] {
-				if (scripts::force_host(RAGE_JOAAT("am_cp_collection")))
-					if (auto script = gta_util::find_script_thread(RAGE_JOAAT("am_cp_collection")))
-						*script_local(script->m_stack, scr_locals::am_cp_collection::broadcast_idx).at(661).as<int*>() = 0;
-			});
-
-			components::button("Win Event", [] {
-				if (auto checkpoints = gta_util::find_script_thread(RAGE_JOAAT("am_cp_collection")))
-					*script_local(checkpoints->m_stack, scr_locals::am_cp_collection::player_broadcast_idx)
-					     .at(checkpoints->m_net_component->m_local_participant_index, 5)
-					     .at(4)
-					     .as<int*>() = 999'999'999;
-
-				script::get_current()->yield(1s);
-
-				if (scripts::force_host(RAGE_JOAAT("am_cp_collection")))
-				{
-					if (auto checkpoints = gta_util::find_script_thread(RAGE_JOAAT("am_cp_collection")))
-					{
-						*script_local(checkpoints->m_stack, scr_locals::am_cp_collection::broadcast_idx).at(708).as<int*>() = 0;
-					}
-				}
-			});
-			ImGui::SameLine();
-			components::button("Scramble Checkpoints", [] {
-				std::vector<Vector3> active_player_positions;
-
-				for (auto& plyr : g_player_service->players())
-				{
-					if (plyr.second->is_valid() && NETWORK::NETWORK_IS_PLAYER_A_PARTICIPANT_ON_SCRIPT(plyr.second->id(), "am_cp_collection", -1))
-					{
-						active_player_positions.push_back(
-						    ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr.second->id()), false));
-					}
-				}
-
-				if (scripts::force_host(RAGE_JOAAT("am_cp_collection")))
-				{
-					if (auto checkpoints = gta_util::find_script_thread(RAGE_JOAAT("am_cp_collection")))
-					{
-						for (int i = 0; i < 100; i++)
-						{
-							*script_local(checkpoints->m_stack, scr_locals::am_cp_collection::broadcast_idx)
-							     .at(10)
-							     .at(i, 5)
-							     .as<Vector3*>() = active_player_positions[i % active_player_positions.size()];
-						}
-					}
-				}
-			});
-		}
+			render_cp_collection_ui();
 
 		if (check_script(RAGE_JOAAT("am_king_of_the_castle")))
-		{
-			components::sub_title("King Of The Castle");
-			components::button("Complete Event##kotc", [] {
-				if (scripts::force_host(RAGE_JOAAT("am_king_of_the_castle")))
-					if (auto script = gta_util::find_script_thread(RAGE_JOAAT("am_king_of_the_castle")))
-						*script_local(script->m_stack, scr_locals::am_king_of_the_castle::broadcast_idx).at(1).at(1).as<int*>() = 0;
-			});
-			ImGui::SameLine();
-			components::button("Expire Event (if possible)##kotc", [] {
-				if (scripts::force_host(RAGE_JOAAT("am_king_of_the_castle")))
-					if (auto script = gta_util::find_script_thread(RAGE_JOAAT("am_king_of_the_castle")))
-						*script_local(script->m_stack, scr_locals::am_king_of_the_castle::broadcast_idx).at(1).at(3).as<int*>() = 0;
-			});
+			render_king_of_the_castle_ui();
 
-			components::button("Become The King##kotc", [] {
-				if (scripts::force_host(RAGE_JOAAT("am_king_of_the_castle")))
-				{
-					if (auto kotc = gta_util::find_script_thread(RAGE_JOAAT("am_king_of_the_castle")))
-					{
-						*script_local(kotc->m_stack, scr_locals::am_king_of_the_castle::broadcast_idx)
-						     .at(6)
-						     .at(0, 204)
-						     .at(74)
-						     .at(0, 4)
-						     .as<int*>() = 0;
-						*script_local(kotc->m_stack, scr_locals::am_king_of_the_castle::broadcast_idx)
-						     .at(6)
-						     .at(0, 204)
-						     .at(74)
-						     .at(0, 4)
-						     .at(1)
-						     .as<int*>() = self::id;
-						*script_local(kotc->m_stack, scr_locals::am_king_of_the_castle::broadcast_idx)
-						     .at(6)
-						     .at(0, 204)
-						     .at(74)
-						     .at(0, 4)
-						     .at(2)
-						     .as<int*>() = self::id;
-						*script_local(kotc->m_stack, scr_locals::am_king_of_the_castle::broadcast_idx)
-						     .at(6)
-						     .at(0, 204)
-						     .at(74)
-						     .at(0, 4)
-						     .at(3)
-						     .as<float*>() = 999999999.0f;
-					}
-				}
-			});
-			ImGui::SameLine();
-			components::button("Dethrone Everyone##kotc", [] {
-				if (scripts::force_host(RAGE_JOAAT("am_king_of_the_castle")))
-				{
-					if (auto kotc = gta_util::find_script_thread(RAGE_JOAAT("am_king_of_the_castle")))
-					{
-						for (int i = 0; i < *script_local(kotc->m_stack, scr_locals::am_king_of_the_castle::broadcast_idx)
-						                         .at(6)
-						                         .at(0, 204)
-						                         .at(74)
-						                         .as<int*>();
-						     i++)
-						{
-							*script_local(kotc->m_stack, scr_locals::am_king_of_the_castle::broadcast_idx)
-							     .at(6)
-							     .at(0, 204)
-							     .at(74)
-							     .at(i, 4)
-							     .as<int*>() = -1;
-							*script_local(kotc->m_stack, scr_locals::am_king_of_the_castle::broadcast_idx)
-							     .at(6)
-							     .at(0, 204)
-							     .at(74)
-							     .at(i, 4)
-							     .at(1)
-							     .as<int*>() = -1;
-							*script_local(kotc->m_stack, scr_locals::am_king_of_the_castle::broadcast_idx)
-							     .at(6)
-							     .at(0, 204)
-							     .at(74)
-							     .at(i, 4)
-							     .at(2)
-							     .as<int*>() = -1;
-							*script_local(kotc->m_stack, scr_locals::am_king_of_the_castle::broadcast_idx)
-							     .at(6)
-							     .at(0, 204)
-							     .at(74)
-							     .at(i, 4)
-							     .at(3)
-							     .as<float*>() = -1.0f;
-						}
-					}
-				}
-			});
-		}
-
+		if(check_script(RAGE_JOAAT("am_hunt_the_beast")))
+			render_hunt_the_beast_ui();
 
 		if (!mission_found)
 		{

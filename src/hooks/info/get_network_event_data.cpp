@@ -13,7 +13,7 @@ namespace big
 		{
 		case rage::eEventNetworkType::CEventNetworkRemovedFromSessionDueToComplaints:
 		{
-			g_notification_service->push_warning("KICKED"_T.data(), "USER_DESYNC_KICKED"_T.data());
+			g_notification_service->push_success("KICKED"_T.data(), "USER_DESYNC_KICKED"_T.data());
 			break;
 		}
 		case rage::eEventNetworkType::CEventNetworkEntityDamage:
