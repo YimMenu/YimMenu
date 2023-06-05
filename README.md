@@ -19,7 +19,7 @@ So here I am with an up-to-date menu focusing on protecting the user from toxic 
  
 ## How to compile YimMenu
 
-Read the [SETUP](wiki/Setup-your-PC-for-YimMenu-Development) guide.
+Read the [SETUP](/YimMenu/YimMenu/wiki/Setup-your-PC-for-YimMenu-Development) guide.
 
 ## Make your own flavour of YimMenu
 
@@ -40,7 +40,7 @@ git pull
 
 CMake should be handling removed / added files automatically without any user input.
 
-If this is not the case for some reason you'll have to redo the steps in the [Making changes to the source code section of the SETUP](wiki/Setup-your-PC-for-YimMenu-Development#making-changes-to-the-source-code).
+If this is not the case for some reason you'll have to redo the steps in the [Making changes to the source code section of the SETUP](/YimMenu/YimMenu/wiki/Setup-your-PC-for-YimMenu-Development#making-changes-to-the-source-code).
 
 If you are doing custom modifications to the codebase and have a fork you are on your own for staying up to date with upstream (this repository), google stuff like "merge from upstream" and learn how to use Git.
 
