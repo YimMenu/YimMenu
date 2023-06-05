@@ -28,6 +28,7 @@ namespace big::train
 				TASK::CLEAR_PED_TASKS_IMMEDIATELY(ped);
 
 			PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), train, -1);
+			g_notification_service->push_success("HIJACK_TRAIN"_T.data(), "HIJACK_TRAIN_FOUND_TRAIN"_T.data());
 		}
 		else
 		{

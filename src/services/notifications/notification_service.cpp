@@ -37,7 +37,7 @@ namespace big
 		this->push({NotificationType::DANGER, title, message, std::chrono::system_clock::now(), 7000.f, 1.f});
 	}
 
-	void notification_service::push_success(std::string title, std::string message)
+	void notification_service::push_success(const std::string& title, const std::string& message)
 	{
 		this->push({NotificationType::SUCCESS, title, message, std::chrono::system_clock::now(), 7000.f, 1.f});
 	}
