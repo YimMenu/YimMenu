@@ -93,6 +93,8 @@ namespace big
 			components::command_checkbox<"driveunder">();
 			components::command_checkbox<"keeponground">();
 
+			components::command_checkbox<"mutesiren">();
+
 			ImGui::EndGroup();
 		}
 		ImGui::Separator();
