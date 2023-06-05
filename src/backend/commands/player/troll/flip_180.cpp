@@ -11,28 +11,30 @@ namespace big
 
 		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
-			Entity ent               = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
-			float Heading            = ENTITY::GET_ENTITY_HEADING(ent);
-			Vector3 flipCar180Coords = ENTITY::GET_ENTITY_COORDS(ent, 1);
-			if (!PED::IS_PED_IN_ANY_VEHICLE(ent, true))
+			Ped ped            = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
+			float heading      = ENTITY::GET_ENTITY_HEADING(ped);
+			Vector3 car_coords = ENTITY::GET_ENTITY_COORDS(ped, 1);
+			
+			if (!PED::IS_PED_IN_ANY_VEHICLE(ped, true))
 			{
 				g_notification_service->push_warning("Toxic", "Target player is not in any vehicle.");
 			}
 			else
 			{
-				if (entity::take_control_of(ent))
+				Vehicle vehicle = PED::GET_VEHICLE_PED_IS_USING(ped);
+				float speed     = ENTITY::GET_ENTITY_SPEED(vehicle);
+
+				if (entity::take_control_of(vehicle))
 				{
-					if (Heading > 180.0)
-					{
-						Heading -= 180.0;
-					}
+					if (heading > 180.0)
+						heading -= 180.0;
+
 					else
-					{
-						Heading += 180.0;
-						ENTITY::SET_ENTITY_COORDS(ent, flipCar180Coords.x, flipCar180Coords.y, flipCar180Coords.z, 0, 0, 0, 1);
-						ENTITY::SET_ENTITY_HEADING(ent, Heading);
-						VEHICLE::SET_VEHICLE_FORWARD_SPEED(ent, ENTITY::GET_ENTITY_SPEED(ent));
-					}
+						heading += 180.0;
+					
+					ENTITY::SET_ENTITY_COORDS(vehicle, car_coords.x, car_coords.y, car_coords.z, 0, 0, 0, 1);
+					ENTITY::SET_ENTITY_HEADING(vehicle, heading);
+					VEHICLE::SET_VEHICLE_FORWARD_SPEED(vehicle, speed);
 				}
 			}
 		}
