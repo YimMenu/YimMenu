@@ -105,7 +105,7 @@ namespace big
 					if (ImGui::Selectable(driving_style_names[i], g.vehicle.auto_drive_style == (AutoDriveStyle)i))
 					{
 						g.vehicle.auto_drive_style = (AutoDriveStyle)i;
-						g_notification_service->push_warning("AUTO_DRIVE"_T.data(),
+						g_notification_service->push_success("AUTO_DRIVE"_T.data(),
 						    std::vformat("DRIVING_STYLE_SET_TO"_T.data(), std::make_format_args(driving_style_names[i])));
 					}
 
