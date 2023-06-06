@@ -22,22 +22,22 @@ namespace big
 		this->notifications.emplace(std::hash<std::string>{}(n.message + n.title), n);
 	}
 
-	void notification_service::push(std::string title, std::string message)
+	void notification_service::push(const std::string& title, const std::string& message)
 	{
 		this->push({NotificationType::INFO, title, message, std::chrono::system_clock::now(), 5000.f, 1.f});
 	}
 
-	void notification_service::push_warning(std::string title, std::string message)
+	void notification_service::push_warning(const std::string& title, const std::string& message)
 	{
 		this->push({NotificationType::WARNING, title, message, std::chrono::system_clock::now(), 7000.f, 1.f});
 	}
 
-	void notification_service::push_error(std::string title, std::string message)
+	void notification_service::push_error(const std::string& title, const std::string& message)
 	{
 		this->push({NotificationType::DANGER, title, message, std::chrono::system_clock::now(), 7000.f, 1.f});
 	}
 
-	void notification_service::push_success(std::string title, std::string message)
+	void notification_service::push_success(const std::string& title, const std::string& message)
 	{
 		this->push({NotificationType::SUCCESS, title, message, std::chrono::system_clock::now(), 7000.f, 1.f});
 	}

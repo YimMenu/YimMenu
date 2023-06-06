@@ -19,10 +19,9 @@ namespace memory
 
 	void byte_patch::remove() const
 	{
-		if (const auto it = std::find(m_patches.begin(), m_patches.end(), this); it != m_patches.end())
-		{
-			m_patches.erase(it);
-		}
+		std::erase_if(m_patches, [this](auto& el) {
+			return el.get() == this;
+		});
 	}
 
 	void byte_patch::restore_all()

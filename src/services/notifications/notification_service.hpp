@@ -28,10 +28,10 @@ namespace big
 		virtual ~notification_service();
 
 		void push(notification);
-		void push(std::string, std::string);
-		void push_warning(std::string, std::string);
-		void push_error(std::string, std::string);
-		void push_success(std::string, std::string);
+		void push(const std::string&, const std::string&);
+		void push_warning(const std::string&, const std::string&);
+		void push_error(const std::string&, const std::string&);
+		void push_success(const std::string&, const std::string&);
 		std::vector<notification> get();
 
 		std::map<NotificationType, ImVec4> notification_colors = {

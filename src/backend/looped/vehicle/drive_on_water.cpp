@@ -12,45 +12,32 @@ namespace big
 
 		const rage::joaat_t drive_on_water_surface_hash = RAGE_JOAAT("stt_prop_stunt_bblock_xl3");
 		Vector3 drive_on_water_last_loc;
+		Object surface;
 
 		void drive_on_water_hide_surface()
 		{
-			Object surface = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(drive_on_water_last_loc.x,
-			    drive_on_water_last_loc.y,
-			    drive_on_water_last_loc.z,
-			    4.0,
-			    drive_on_water_surface_hash,
-			    0,
-			    0,
-			    1);
-
-			if (surface)
+			if (surface && entity::take_control_of(surface, 0))
 			{
-				entity::take_control_of(surface);
 				ENTITY::SET_ENTITY_COORDS(surface, 0, 0, -1000.0f, 0, 0, 0, 1);
 				ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&surface);
 				ENTITY::DELETE_ENTITY(&surface);
-				WATER::RESET_DEEP_OCEAN_SCALER();
+				surface = 0;
 			}
+
+			WATER::RESET_DEEP_OCEAN_SCALER();
 		}
 
 		virtual void on_tick() override
 		{
-			Vector3 location = ENTITY::GET_ENTITY_COORDS(self::veh, 1);
+			Vector3 location = ENTITY::GET_ENTITY_COORDS(self::veh, true);
 			float height     = 0;
 
-			WATER::SET_DEEP_OCEAN_SCALER(0);
-			if (location.z - height < 10 && WATER::GET_WATER_HEIGHT_NO_WAVES(location.x, location.y, location.z, &height) && self::veh)
-			{
-				Object surface = OBJECT::GET_CLOSEST_OBJECT_OF_TYPE(drive_on_water_last_loc.x,
-				    drive_on_water_last_loc.y,
-				    drive_on_water_last_loc.z,
-				    4.0,
-				    drive_on_water_surface_hash,
-				    0,
-				    0,
-				    1);
+			if (self::veh)
+				WATER::SET_DEEP_OCEAN_SCALER(0);
 
+			if (self::veh && location.z - height < 10
+			    && WATER::GET_WATER_HEIGHT_NO_WAVES(location.x, location.y, location.z, &height))
+			{
 				if (ENTITY::DOES_ENTITY_EXIST(surface) && height > -50.0f)
 				{
 					entity::take_control_of(surface);
@@ -68,8 +55,8 @@ namespace big
 
 					if (location.z < height - 2.f)
 					{
-						entity::take_control_of(self::veh);
-						ENTITY::SET_ENTITY_COORDS(self::veh, location.x, location.y, height, 0, 0, 0, 0);
+						if (entity::take_control_of(self::veh, 0))
+							ENTITY::SET_ENTITY_COORDS(self::veh, location.x, location.y, height, 0, 0, 0, 0);
 					}
 				}
 				else
@@ -90,7 +77,6 @@ namespace big
                         1,
                         0);
 
-					entity::take_control_of(surface);
 					ENTITY::FREEZE_ENTITY_POSITION(surface, 1);
 					ENTITY::SET_ENTITY_ALPHA(surface, 0, 1);
 					ENTITY::SET_ENTITY_VISIBLE(surface, false, 0);

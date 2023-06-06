@@ -17,7 +17,7 @@ namespace memory
 
 		bool contains(handle h) const;
 
-		handle scan(pattern const& sig) const;
+		std::optional<handle> scan(pattern const& sig) const;
 		std::vector<handle> scan_all(pattern const& sig) const;
 
 	protected:

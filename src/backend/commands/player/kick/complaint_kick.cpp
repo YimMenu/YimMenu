@@ -29,5 +29,5 @@ namespace big
 		}
 	};
 
-	complaint_kick g_complaint_kick("desync", "Desync Kick", "This may take around 10 seconds to kick the player. Does not work against the host", 0);// this is pretty much desync except we don't actually remove the player from CNetworkPlayerMgr
+	complaint_kick g_complaint_kick("desync", "COMPLAINT_KICK", "COMPLAINT_KICK_DESC", 0); // this is pretty much desync except we don't actually remove the player from CNetworkPlayerMgr
 }

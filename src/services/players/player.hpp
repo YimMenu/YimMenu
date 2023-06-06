@@ -83,6 +83,8 @@ namespace big
 		std::optional<std::uint32_t> time_difference;
 		std::uint32_t num_time_syncs_sent = 9999;
 
+		bool block_explosions = false;
+
 	protected:
 		bool equals(const CNetGamePlayer* net_game_player) const;
 

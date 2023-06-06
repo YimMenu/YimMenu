@@ -6,6 +6,7 @@
 # output directory
 build/
 out/
+__pycache__/
 
 # precompiled headers
 *.ipch

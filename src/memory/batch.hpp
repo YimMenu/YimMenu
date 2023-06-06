@@ -1,7 +1,7 @@
 #pragma once
 #include "pattern.hpp"
-#include "signature.hpp"
 #include "range.hpp"
+#include "signature.hpp"
 
 #include <future>
 
@@ -96,15 +96,15 @@ namespace memory
 
 		inline static bool scan_pattern_and_execute_callback(range region, signature entry)
 		{
-			if (auto result = region.scan(entry.m_ida))
+			if (auto result = region.scan(entry.m_ida); result.has_value())
 			{
 				if (entry.m_on_signature_found)
 				{
 					std::lock_guard<std::mutex> lock(s_entry_mutex); // Acquire a lock on the mutex to synchronize access.
 
-					std::invoke(std::move(entry.m_on_signature_found), result);
+					std::invoke(std::move(entry.m_on_signature_found), result.value());
 					LOG(INFO) << "Found '" << entry.m_name << "' GTA5.exe+"
-					          << HEX_TO_UPPER(result.as<DWORD64>() - region.begin().as<DWORD64>());
+					          << HEX_TO_UPPER(result.value().as<DWORD64>() - region.begin().as<DWORD64>());
 
 					return true;
 				}

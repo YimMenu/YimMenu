@@ -9,7 +9,7 @@ namespace big
 {
 	void looped::vehicle_auto_drive()
 	{
-		static std::map<AutoDriveStyle, int> driving_style_flags = {{AutoDriveStyle::LAW_ABIDING, 443}, {AutoDriveStyle::THE_ROAD_IS_YOURS, 787004}};
+		static std::unordered_map<AutoDriveStyle, int> driving_style_flags = {{AutoDriveStyle::LAW_ABIDING, 443}, {AutoDriveStyle::THE_ROAD_IS_YOURS, 787004}};
 
 		static int changing_driving_styles              = false;
 		static AutoDriveDestination current_destination = AutoDriveDestination::STOPPED;
