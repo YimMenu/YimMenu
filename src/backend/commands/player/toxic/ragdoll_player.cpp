@@ -21,5 +21,5 @@ namespace big
 		}
 	};
 
-	ragdoll_player g_ragdoll_player("ragdoll", "Ragdoll Player", "Ragdolls the player", 0);
+	ragdoll_player g_ragdoll_player("ragdoll", "RAGDOLL_PLAYER", "RAGDOLL_PLAYER_DESC", 0);
 }

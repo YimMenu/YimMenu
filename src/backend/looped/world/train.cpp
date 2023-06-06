@@ -10,24 +10,26 @@ namespace big
 {
 	void looped::drive_train()
 	{
-		int trainSpeed = ENTITY::GET_ENTITY_SPEED(train::get_closest_train());
-
-		if (g.world.train.drive_train)
+		if (self::veh && VEHICLE::IS_THIS_MODEL_A_TRAIN(ENTITY::GET_ENTITY_MODEL(self::veh)))
 		{
-			if (PAD::IS_CONTROL_PRESSED(0, 71))
-				trainSpeed++;
-			if (PAD::IS_CONTROL_PRESSED(0, 72))
-				trainSpeed--;
+			int trainSpeed = ENTITY::GET_ENTITY_SPEED(self::veh);
 
-			train::set_train_speed(trainSpeed);
+			if (g.world.train.drive_train)
+			{
+				if (PAD::IS_CONTROL_PRESSED(0, 71))
+					trainSpeed++;
+
+				if (PAD::IS_CONTROL_PRESSED(0, 72))
+					trainSpeed--;
+
+				VEHICLE::SET_TRAIN_CRUISE_SPEED(self::veh, trainSpeed);
+			}
 		}
 	}
 
 	void looped::derail_train()
 	{
-		int train = train::get_closest_train();
-
-		if (train != 0)
-			VEHICLE::SET_RENDER_TRAIN_AS_DERAILED(train, g.world.train.derail_train);
+		if (self::veh && VEHICLE::IS_THIS_MODEL_A_TRAIN(ENTITY::GET_ENTITY_MODEL(self::veh)))
+			VEHICLE::SET_RENDER_TRAIN_AS_DERAILED(self::veh, g.world.train.derail_train);
 	}
 }

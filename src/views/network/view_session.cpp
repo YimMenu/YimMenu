@@ -191,6 +191,9 @@ namespace big
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("INCLUDING_YOU"_T.data());
 
+
+		components::command_button<"bringall">({});
+		ImGui::SameLine();
 		components::command_button<"giveweapsall">({});
 		ImGui::SameLine();
 		components::command_button<"remweapsall">({});

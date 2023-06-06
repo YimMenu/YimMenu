@@ -6,6 +6,7 @@
 #include "script_patches.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/orbital_drone/orbital_drone.hpp"
+#include "services/tunables/tunables_service.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
 #include "services/squad_spawner/squad_spawner.hpp"
 #include "thread_pool.hpp"
@@ -77,21 +78,8 @@ namespace big
 		{
 			looped::vehicle_auto_drive();
 			looped::vehicle_boost_behavior();
-			looped::vehicle_god_mode();
 			looped::derail_train();
 			looped::drive_train();
-
-			script::get_current()->yield();
-		}
-	}
-
-	void backend::turnsignal_loop()
-	{
-		LOG(INFO) << "Starting script: turnsignal";
-
-		while (g_running)
-		{
-			looped::vehicle_turn_signals();
 
 			script::get_current()->yield();
 		}
@@ -104,7 +92,6 @@ namespace big
 		while (g_running)
 		{
 			looped::hud_transition_state();
-			looped::session_local_time();
 			looped::session_pop_multiplier_areas();
 			looped::session_force_thunder();
 			looped::session_randomize_ceo_colors();
@@ -149,18 +136,6 @@ namespace big
 		while (g_running)
 		{
 			looped::vehicle_rainbow_paint();
-
-			script::get_current()->yield();
-		}
-	}
-
-	void backend::vehiclefly_loop()
-	{
-		LOG(INFO) << "Starting script: Vehicle fly";
-
-		while (g_running)
-		{
-			looped::vehicle_fly();
 
 			script::get_current()->yield();
 		}
@@ -212,11 +187,15 @@ namespace big
 	{
 		while (true)
 		{
-		
 			g_vehicle_control_service.tick();
-			
+
 			script::get_current()->yield();
 		}
+	}
+
+	void backend::tunables_script()
+	{
+		g_tunables_service->run_script();
 	}
 
 	void backend::squad_spawner()

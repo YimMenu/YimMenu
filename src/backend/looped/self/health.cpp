@@ -1,6 +1,6 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
 #include "gta/enums.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -21,5 +21,5 @@ namespace big
 		}
 	};
 
-	health_regen_looped g_health_regen_looped("healthregen", "Override Health Regen", "Turn on the regen multiplier you have set.", g.self.healthregen);
+	health_regen_looped g_health_regen_looped("healthregen", "HEALTH_REGEN", "HEALTH_REGEN_DESC", g.self.healthregen);
 }

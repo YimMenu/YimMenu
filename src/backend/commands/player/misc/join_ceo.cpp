@@ -16,5 +16,5 @@ namespace big
 		}
 	};
 
-	join_ceo g_join_ceo("joinceo", "Join CEO/MC", "Joins the player's CEO/MC", 0, false);
+	join_ceo g_join_ceo("joinceo", "JOIN_CEO", "JOIN_CEO_DESC", 0, false);
 }

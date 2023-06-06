@@ -26,5 +26,5 @@ namespace big
 		}
 	};
 
-	send_to_island g_send_to_island("cayotp", "TP To Cayo Perico", "Teleports the player to Cayo Perico", 0);
+	send_to_island g_send_to_island("cayotp", "TP_TO_CAYO", "TP_TO_CAYO_DESC", 0);
 }

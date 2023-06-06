@@ -18,5 +18,5 @@ namespace big
 		}
 	};
 
-	teleport_into_vehicle g_teleport_into_vehicle("playervehtp", "Teleport Into Vehicle", "Teleports into the players vehicle. Spectate the player beforehand for best results", 0, false);
+	teleport_into_vehicle g_teleport_into_vehicle("playervehtp", "TELEPORT_INTO_VEHICLE", "TELEPORT_INTO_VEHICLE_DESC", 0, false);
 }

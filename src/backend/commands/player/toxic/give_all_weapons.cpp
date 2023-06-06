@@ -41,6 +41,6 @@ namespace big
 		}
 	};
 
-	give_all_weapons g_give_all_weapons("giveweaps", "Give Weapons", "Gives all weapons to the player", 0, false);
-	give_all_weapons_all g_give_all_weapons_all("giveweapsall", "Give Weapons", "Gives weapons to everyone. Don't spam this or you will crash", 0);
+	give_all_weapons g_give_all_weapons("giveweaps", "GIVE_WEAPONS", "GIVE_WEAPONS_DESC", 0, false);
+	give_all_weapons_all g_give_all_weapons_all("giveweapsall", "GIVE_WEAPONS", "GIVE_WEAPONS_ALL_DESC", 0);
 }

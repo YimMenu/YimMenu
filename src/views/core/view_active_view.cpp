@@ -1,5 +1,6 @@
 #include "views/view.hpp"
 
+#include "lua/lua_manager.hpp"
 #include "pointers.hpp"
 #include "services/gui/gui_service.hpp"
 #include "services/translation_service/translation_service.hpp"
@@ -8,7 +9,9 @@ namespace big
 {
 	void view::active_view()
 	{
-		if (g_gui_service->get_selected()->func == nullptr)
+		auto selected = g_gui_service->get_selected();
+
+		if (selected->func == nullptr)
 			return;
 
 		static float alpha = 1.f;
@@ -17,16 +20,22 @@ namespace big
 		ImGui::SetNextWindowSize({0.f, 0.f});
 		ImGui::SetNextWindowSizeConstraints({300.f, 100.f},
 		    {(float)*g_pointers->m_gta.m_resolution_x - 270.f, (float)*g_pointers->m_gta.m_resolution_y - 110.f});
+
+
 		if (ImGui::Begin("main", nullptr, window_flags))
 		{
 			const char* key = nullptr;
-			if (key = g_translation_service.get_translation(g_gui_service->get_selected()->name).data(); !key)
-				key = g_gui_service->get_selected()->name;
+			if (key = g_translation_service.get_translation(selected->hash).data(); !key)
+				key = selected->name;
 
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
 			components::title(key);
 			ImGui::Separator();
-			g_gui_service->get_selected()->func();
+			selected->func();
+
+			if (g_lua_manager)
+				g_lua_manager->draw_gui(selected->hash);
+
 			ImGui::PopStyleVar();
 		}
 		ImGui::End();

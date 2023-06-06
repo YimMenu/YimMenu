@@ -154,7 +154,7 @@ namespace big::vehicle
 
 	inline bool repair(Vehicle veh)
 	{
-		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh))
+		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh, 0))
 		{
 			return false;
 		}

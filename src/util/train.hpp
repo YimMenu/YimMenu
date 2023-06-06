@@ -24,25 +24,33 @@ namespace big::train
 
 		if (train != 0)
 		{
-			entity::take_control_of(train);
-			PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), train, -1);
+			if (auto ped = VEHICLE::GET_PED_IN_VEHICLE_SEAT(train, -1, true))
+				TASK::CLEAR_PED_TASKS_IMMEDIATELY(ped);
 
+			PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), train, -1);
 			g_notification_service->push_success("HIJACK_TRAIN"_T.data(), "HIJACK_TRAIN_FOUND_TRAIN"_T.data());
+		}
+		else
+		{
+			g_notification_service->push_warning("HIJACK_TRAIN"_T.data(), "Cannot find any trains nearby");
 		}
 	}
 
 	inline void delete_train()
 	{
-		if (!PED::IS_PED_IN_ANY_VEHICLE(PLAYER::PLAYER_PED_ID(), false) && get_closest_train() != 0)
+		if (!self::veh && get_closest_train() != 0)
 		{
 			VEHICLE::DELETE_ALL_TRAINS();
-			g_notification_service->push_error("HIJACK_TRAIN"_T.data(), "HIJACK_TRAIN_DELETED_TRAIN"_T.data());
+		}
+		else
+		{
+			g_notification_service->push_warning("HIJACK_TRAIN"_T.data(), "Cannot find any trains nearby");
 		}
 	}
 
 	inline void exit_train()
 	{
-		if (PED::IS_PED_IN_ANY_VEHICLE(PLAYER::PLAYER_PED_ID(), false))
+		if (self::veh && VEHICLE::IS_THIS_MODEL_A_TRAIN(ENTITY::GET_ENTITY_MODEL(self::veh)))
 			TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::PLAYER_PED_ID());
 	}
 

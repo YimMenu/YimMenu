@@ -61,5 +61,5 @@ namespace big
 		}
 	};
 
-	super_run g_super_run("fastrun", "Super Run", "Makes you run much faster", g.self.super_run);
+	super_run g_super_run("fastrun", "SUPER_RUN", "SUPER_RUN_DESC", g.self.super_run);
 }

@@ -30,7 +30,9 @@ namespace big
 	command::command(const std::string& name, const std::string& label, const std::string& description, std::optional<std::uint8_t> num_args, bool fiber_pool) :
 	    m_name(name),
 	    m_label(label),
+	    m_label_hash(rage::joaat(label)),
 	    m_description(description),
+	    m_description_hash(rage::joaat(description)),
 	    m_num_args(num_args),
 	    m_fiber_pool(fiber_pool)
 	{
