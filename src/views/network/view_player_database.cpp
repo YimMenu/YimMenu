@@ -96,7 +96,8 @@ namespace big
 
 				if (ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &current_player->rockstar_id)
 				    || ImGui::Checkbox("IS_MODDER"_T.data(), &current_player->is_modder)
-				    || ImGui::Checkbox("BLOCK_JOIN"_T.data(), &current_player->block_join))
+				    || ImGui::Checkbox("BLOCK_JOIN"_T.data(), &current_player->block_join)
+					|| ImGui::Checkbox("Notify When Online", &current_player->notify_online))
 				{
 					if (current_player->rockstar_id != selected->rockstar_id)
 						g_player_database_service->update_rockstar_id(selected->rockstar_id, current_player->rockstar_id);
