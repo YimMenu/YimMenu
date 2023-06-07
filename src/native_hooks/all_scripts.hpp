@@ -140,6 +140,14 @@ namespace big
 			HUD::HUD_FORCE_WEAPON_WHEEL(src->get_arg<BOOL>(0));
 		}
 
+		void NETWORK_OVERRIDE_CLOCK_TIME(rage::scrNativeCallContext* src)
+		{
+			if (g.world.custom_time.override_time)
+				return;
+
+			NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<int>(2));
+		}
+
 		void RETURN_TRUE(rage::scrNativeCallContext* src)
 		{
 			src->set_return_value<BOOL>(TRUE);

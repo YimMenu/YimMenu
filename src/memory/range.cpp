@@ -33,7 +33,7 @@ namespace memory
 
 	// https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm
 	// https://www.youtube.com/watch?v=AuZUeshhy-s
-	handle scan_pattern(const std::optional<std::uint8_t>* sig, std::size_t length, handle begin, std::size_t module_size)
+	std::optional<handle> scan_pattern(const std::optional<std::uint8_t>* sig, std::size_t length, handle begin, std::size_t module_size)
 	{
 		std::size_t maxShift = length;
 		std::size_t max_idx  = length - 1;
@@ -80,10 +80,10 @@ namespace memory
 				}
 			}
 		}
-		return nullptr;
+		return std::nullopt;
 	}
 
-	handle range::scan(pattern const& sig) const
+	std::optional<handle> range::scan(pattern const& sig) const
 	{
 		auto data   = sig.m_bytes.data();
 		auto length = sig.m_bytes.size();
@@ -93,7 +93,7 @@ namespace memory
 			return result;
 		}
 
-		return nullptr;
+		return std::nullopt;
 	}
 
 	bool pattern_matches(std::uint8_t* target, const std::optional<std::uint8_t>* sig, std::size_t length)
@@ -124,6 +124,6 @@ namespace memory
 			}
 		}
 
-		return std::move(result);
+		return result;
 	}
 }

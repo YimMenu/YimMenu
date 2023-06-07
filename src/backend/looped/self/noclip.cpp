@@ -3,8 +3,8 @@
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
-#include "util/entity.hpp"
 #include "services/orbital_drone/orbital_drone.hpp"
+#include "util/entity.hpp"
 
 namespace big
 {
@@ -94,5 +94,5 @@ namespace big
 		}
 	};
 
-	noclip g_noclip("noclip", "No Clip", "Allows you to fly through the map", g.self.noclip);
+	noclip g_noclip("noclip", "NO_CLIP", "NO_CLIP_DESC", g.self.noclip);
 }

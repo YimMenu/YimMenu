@@ -21,5 +21,5 @@ namespace big
 		}
 	};
 
-	give_ammo g_give_ammo("giveammo", "Give Ammo", "Gives the player some ammo", 0);
+	give_ammo g_give_ammo("giveammo", "GIVE_AMMO", "GIVE_AMMO_DESC", 0);
 }

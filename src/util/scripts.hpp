@@ -114,7 +114,7 @@ namespace big::scripts
 				return;
 			}
 
-			launcher->m_context.m_state = rage::eThreadState::unk_3;// prevent bad things from happening to the thread in the meantime
+			launcher->m_context.m_state = rage::eThreadState::unk_3; // prevent bad things from happening to the thread in the meantime
 
 			// 3) Remove players from that annoying waiting stage
 			if (check_players_in_state(launcher, 5))
@@ -122,13 +122,13 @@ namespace big::scripts
 				for (int i = 0; check_players_in_state(launcher, 5); i++)
 				{
 					if (i > 200)
-						break;// 3F) Timeout
+						break; // 3F) Timeout
 
 					*scr_globals::launcher_global.at(3).at(1).as<int*>() = 0;
 					*scr_globals::launcher_global.at(2).as<int*>()       = 6;
 					script::get_current()->yield(10ms);
 				}
-			}// State should now be 6 or 0
+			} // State should now be 6 or 0
 
 			// 4) Check if a script is already being executed, and unstuck from that state if so
 			if (check_players_in_state(launcher, 6))
@@ -136,13 +136,13 @@ namespace big::scripts
 				for (int i = 0; check_players_in_state(launcher, 6); i++)
 				{
 					if (i > 200)
-						break;// 4F) Timeout
+						break; // 4F) Timeout
 
 					*scr_globals::launcher_global.at(3).at(1).as<int*>() = 0;
 					*scr_globals::launcher_global.at(2).as<int*>()       = 7;
 					script::get_current()->yield(10ms);
 				}
-			}// State should now be 7 or 0
+			} // State should now be 7 or 0
 
 			// 5) Get everyone out of state 7
 			if (check_players_in_state(launcher, 7))
@@ -150,16 +150,16 @@ namespace big::scripts
 				for (int i = 0; check_players_in_state(launcher, 7); i++)
 				{
 					if (i > 200)
-						break;// 5F) Timeout
+						break; // 5F) Timeout
 
 					*scr_globals::launcher_global.at(2).as<int*>() = 0;
 					script::get_current()->yield(10ms);
 				}
-			}// State should now be 0
+			} // State should now be 0
 
 			// 6) Actually get the script to start
-			misc::set_bit(scr_globals::launcher_global.at(1).as<int*>(), 1);// run immediately
-			*scr_globals::launcher_global.at(2).as<int*>() = 6;// will change to 7 shortly but that's fine as players are guaranteed not to be in the waiting stage
+			misc::set_bit(scr_globals::launcher_global.at(1).as<int*>(), 1); // run immediately
+			*scr_globals::launcher_global.at(2).as<int*>() = 6; // will change to 7 shortly but that's fine as players are guaranteed not to be in the waiting stage
 			*script_local(launcher->m_stack, 232).at(self::id, 3).at(2).as<int*>() = 6;
 			*scr_globals::launcher_global.at(3).at(1).as<int*>()                   = script_id;
 
@@ -236,24 +236,24 @@ namespace big::scripts
 			patch_script(program,
 			    get_code_location_by_pattern(program, "2D 02 04 00 ? 38 01 38 00 42 13"),
 			    {
-			        0x72,// PUSH_CONST_1
-			        0x00 // NOP
+			        0x72, // PUSH_CONST_1
+			        0x00  // NOP
 			    },
-			    5);// place anywhere
+			    5); // place anywhere
 
-			patch_script(program, get_code_location_by_pattern(program, "71 08 2A 56 ? ? 2C ? ? ? 1F 56 ? ? 72"), {0x00, 0x00, 0x00, 0x00, 0x00}, 0xE);// don't bail on network mode
+			patch_script(program, get_code_location_by_pattern(program, "71 08 2A 56 ? ? 2C ? ? ? 1F 56 ? ? 72"), {0x00, 0x00, 0x00, 0x00, 0x00}, 0xE); // don't bail on network mode
 
 			if (auto loc = get_code_location_by_pattern(program, "39 04 5D ? ? ? 71"))
 			{
 				patch_script(program,
 				    read_uint24_t(program->get_code_address(loc.value() + 3)),
 				    {
-				        0x73,// PUSH_CONST_2 0 = mp, 2 = creator, 999 = singleplayer
+				        0x73, // PUSH_CONST_2 0 = mp, 2 = creator, 999 = singleplayer
 				        0x2E,
 				        0x00,
-				        0x01// LEAVE 0 1
+				        0x01 // LEAVE 0 1
 				    },
-				    5);// allow fast zoom in mp
+				    5); // allow fast zoom in mp
 			}
 		}
 

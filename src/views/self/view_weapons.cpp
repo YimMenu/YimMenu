@@ -79,8 +79,6 @@ namespace big
 
 		components::sub_title("MISC"_T);
 
-		components::command_checkbox<"crosshairs">();
-		ImGui::SameLine();
 		components::command_checkbox<"norecoil">();
 		ImGui::SameLine();
 		components::command_checkbox<"nospread">();

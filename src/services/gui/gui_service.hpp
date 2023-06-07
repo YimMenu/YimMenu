@@ -34,7 +34,6 @@ namespace big
 		BLACKHOLE,
 		MODEL_SWAPPER,
 		NEARBY,
-		ORBITAL_DRONE,
 
 		NETWORK,
 		SESSION,
@@ -45,6 +44,7 @@ namespace big
 		STAT_EDITOR,
 
 		SETTINGS,
+		LUA_SCRIPTS,
 		CONTEXT_MENU_SETTINGS,
 		ESP_SETTINGS,
 		GTA_CACHE_SETTINGS,
@@ -63,6 +63,7 @@ namespace big
 		const char name[48]        = "";
 		std::function<void()> func = nullptr;
 		std::map<tabs, navigation_struct> sub_nav{};
+		rage::joaat_t hash = rage::joaat(name);
 	};
 
 	class gui_service final
@@ -123,7 +124,6 @@ namespace big
 		                {tabs::BLACKHOLE, {"GUI_TAB_BLACKHOLE", view::blackhole}},
 		                {tabs::MODEL_SWAPPER, {"GUI_TAB_MODEL_SWAPPER", view::model_swapper}},
 		                {tabs::NEARBY, {"GUI_TAB_NEARBY", view::nearby}},
-		                {tabs::ORBITAL_DRONE, {"GUI_TAB_ORBITAL_DRONE", view::orbital_drone}},
 		            },
 		        },
 		    },
@@ -148,6 +148,7 @@ namespace big
 		            "GUI_TAB_SETTINGS",
 		            view::settings,
 		            {
+		                {tabs::LUA_SCRIPTS, {"GUI_TAB_LUA_SCRIPTS", view::lua_scripts}},
 		                {tabs::CONTEXT_MENU_SETTINGS, {"GUI_TAB_CONTEXT_MENU", view::context_menu_settings}},
 		                {tabs::ESP_SETTINGS, {"GUI_TAB_ESP", view::esp_settings}},
 		                {tabs::GTA_CACHE_SETTINGS, {"GTA Cache", view::gta_cache}},

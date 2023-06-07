@@ -32,5 +32,5 @@ namespace big
 		}
 	};
 
-	send_sext g_send_sext("sext", "Send Sext", "Sends a random sext (with an image attachment) to the player", 0);
+	send_sext g_send_sext("sext", "SEND_SEXT", "SEND_SEXT_DESC", 0);
 }

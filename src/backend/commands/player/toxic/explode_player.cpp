@@ -20,5 +20,5 @@ namespace big
 		}
 	};
 
-	explode_player g_explode_player("explode", "Explode Player", "Blows the player up", 0);
+	explode_player g_explode_player("explode", "EXPLODE_PLAYER", "EXPLODE_PLAYER_DESC", 0);
 }

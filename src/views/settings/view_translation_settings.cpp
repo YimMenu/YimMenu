@@ -27,11 +27,10 @@ namespace big
 
 		if (components::button("Force Update Languages"))
 		{
-			g_thread_pool->push([]
-			{
+			g_thread_pool->push([] {
 				g_translation_service.update_language_packs();
 
-				g_notification_service->push("Translations", "Finished updating translations.");
+				g_notification_service->push_success("Translations", "Finished updating translations.");
 			});
 		}
 	}
