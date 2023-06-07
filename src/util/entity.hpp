@@ -6,6 +6,7 @@
 #include "natives.hpp"
 #include "pools.hpp"
 #include "script.hpp"
+#include "services/players/player_service.hpp"
 
 namespace big::entity
 {
@@ -175,46 +176,66 @@ namespace big::entity
 		return cumulative_distance;
 	}
 
-	inline Entity get_entity_closest_to_middle_of_screen()
+	inline Entity get_entity_closest_to_middle_of_screen(rage::fwEntity** pointer = nullptr, std::vector<Entity> ignore_entities = {}, bool include_veh = true, bool include_ped = true, bool include_prop = true, bool include_players = true)
 	{
 		Entity closest_entity{};
-		float distance = 1;
+		rage::fwEntity* closest_entity_ptr = nullptr;
+		float distance                     = 1;
 
-		auto replayInterface = *g_pointers->m_gta.m_replay_interface;
+		auto ignored_entity = [=](Entity handle) -> bool {
+			if (handle == self::ped)
+				return true;
 
-		for (const auto veh : pools::get_all_vehicles())
-		{
-			if (veh)
+			for (auto ent : ignore_entities)
 			{
-				Vehicle handle = g_pointers->m_gta.m_ptr_to_handle(veh);
-				Vector3 pos    = ENTITY::GET_ENTITY_COORDS(handle, 1);
-				rage::fvector2 screenpos;
-				HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos.x, pos.y, pos.z, &screenpos.x, &screenpos.y);
+				if (handle == ent)
+					return true;
+			}
 
-				if (distance_to_middle_of_screen(screenpos) < distance && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(PLAYER::PLAYER_PED_ID(), handle, 17))
+			return false;
+		};
+
+		auto update_closest_entity = [&](Entity handle, rage::fwEntity* entity_ptr) {
+			Vector3 pos = ENTITY::GET_ENTITY_COORDS(handle, 1);
+			rage::fvector2 screenpos;
+			HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos.x, pos.y, pos.z, &screenpos.x, &screenpos.y);
+
+			if (distance_to_middle_of_screen(screenpos) < distance && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, handle, 17) && !ignored_entity(handle))
+			{
+				closest_entity     = handle;
+				closest_entity_ptr = entity_ptr;
+				distance           = distance_to_middle_of_screen(screenpos);
+			}
+		};
+
+		auto include_pool = [&](auto& pool) {
+			for (const auto ptr : pool())
+				if (ptr)
+					update_closest_entity(g_pointers->m_gta.m_ptr_to_handle(ptr), ptr);
+		};
+
+		if (include_veh)
+			include_pool(pools::get_all_vehicles);
+
+		if (include_ped)
+			include_pool(pools::get_all_peds);
+
+		if (include_prop)
+			include_pool(pools::get_all_props);
+
+		if (include_players)
+		{
+			for (auto player : g_player_service->players() | std::ranges::views::values)
+			{
+				if (player->get_ped())
 				{
-					closest_entity = handle;
-					distance       = distance_to_middle_of_screen(screenpos);
+					Ped handle = g_pointers->m_gta.m_ptr_to_handle(player->get_ped());
+					update_closest_entity(handle, player->get_ped());
 				}
 			}
 		}
 
-		for (auto ped : pools::get_all_peds())
-		{
-			if (ped)
-			{
-				Vehicle handle = g_pointers->m_gta.m_ptr_to_handle(ped);
-				Vector3 pos    = ENTITY::GET_ENTITY_COORDS(handle, 1);
-				rage::fvector2 screenpos;
-				HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos.x, pos.y, pos.z, &screenpos.x, &screenpos.y);
-
-				if (distance_to_middle_of_screen(screenpos) < distance && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(PLAYER::PLAYER_PED_ID(), handle, 17) && handle != PLAYER::PLAYER_PED_ID())
-				{
-					closest_entity = handle;
-					distance       = distance_to_middle_of_screen(screenpos);
-				}
-			}
-		}
+		*pointer = closest_entity_ptr;
 
 		return closest_entity;
 	}
