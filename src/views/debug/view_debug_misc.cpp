@@ -21,17 +21,17 @@ namespace big
 
 			ImGui::SameLine();
 
-			if (components::button("Reset"))
+			if (components::button("RESET"_T.data()))
 			{
 				g_fiber_pool->reset();
 			}
 
-			if (components::button("Dump entrypoints"))
+			if (components::button("DUMP_ENTRYPOINTS"_T.data()))
 			{
 				system::dump_entry_points();
 			}
 
-			components::button("Network Bail", [] {
+			components::button("NETWORK_BAIL"_T.data(), [] {
 				NETWORK::NETWORK_BAIL(16, 0, 0);
 			});
 
@@ -42,38 +42,38 @@ namespace big
 				STATS::STAT_SET_BOOL(RAGE_JOAAT("MPPLY_CHAR_IS_BADSPORT"), false, true);
 			});
 
-			components::button("Load MP Map", [] {
+			components::button("LOAD_MP_MAP"_T.data(), [] {
 				DLC::ON_ENTER_MP();
 			});
 
 			ImGui::SameLine();
 
-			components::button("Load SP Map", [] {
+			components::button("LOAD_SP_MAP"_T.data(), [] {
 				DLC::ON_ENTER_SP();
 			});
 
-			components::button("Skip Cutscene", [] {
+			components::button("SKIP_CUTSCENE"_T.data(), [] {
 				CUTSCENE::STOP_CUTSCENE_IMMEDIATELY();
 			});
 
-			components::button("Refresh Interior", [] {
+			components::button("REFRESH_INTERIOR"_T.data(), [] {
 				Interior interior = INTERIOR::GET_INTERIOR_AT_COORDS(self::pos.x, self::pos.y, self::pos.z);
 				INTERIOR::REFRESH_INTERIOR(interior);
 			});
 
-			components::button("Network Shutdown And Launch Single Player Game", [] {
+			components::button("NET_SHUTDOWN_AND_LOAD_SP", [] {
 				NETWORK::SHUTDOWN_AND_LAUNCH_SINGLE_PLAYER_GAME();
 			});
 
-			components::button("Network Shutdown And Load Most Recent Save", [] {
+			components::button("NET_SHUTDOWN_AND_LOAD_SAVE"_T.data(), [] {
 				NETWORK::SHUTDOWN_AND_LOAD_MOST_RECENT_SAVE();
 			});
 
-			components::button("Remove Black Screen", [] {
+			components::button("REMOVE_BLACKSCREEN"_T.data(), [] {
 				CAM::DO_SCREEN_FADE_IN(0);
 			});
 
-			components::button("Tp To Safe Pos", [] {
+			components::button("TP_TO_SAFE_POS"_T.data(), [] {
 				Vector3 safepos{};
 				float heading;
 				if (pathfind::find_closest_vehicle_node(self::pos, safepos, heading, 0))
@@ -85,55 +85,55 @@ namespace big
 
 			components::command_button<"fastquit">();
 
-			if (ImGui::TreeNode("Addresses"))
+			if (ImGui::TreeNode("ADDRESSES"_T.data()))
 			{
 				uint64_t local_cped = (uint64_t)g_local_player;
-				ImGui::InputScalar("Local CPed", ImGuiDataType_U64, &local_cped, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
+				ImGui::InputScalar("Local_CPED"_T.data(), ImGuiDataType_U64, &local_cped, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
 
 				if (g_local_player)
 				{
 					uint64_t local_playerinfo = (uint64_t)g_local_player->m_player_info;
-					ImGui::InputScalar("Local CPlayerInfo", ImGuiDataType_U64, &local_playerinfo, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
+					ImGui::InputScalar("LOCAL_CPLAYERINFO"_T.data(), ImGuiDataType_U64, &local_playerinfo, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
 
 					uint64_t local_vehicle = (uint64_t)g_local_player->m_vehicle;
-					ImGui::InputScalar("Local CAutomobile", ImGuiDataType_U64, &local_vehicle, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
+					ImGui::InputScalar("LOCAL_CAUTOMOBILE"_T.data(), ImGuiDataType_U64, &local_vehicle, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
 				}
 
 				if (auto mgr = *g_pointers->m_gta.m_network_player_mgr)
 				{
 					uint64_t local_netplayer = (uint64_t)mgr->m_local_net_player;
-					ImGui::InputScalar("Local CNetGamePlayer", ImGuiDataType_U64, &local_netplayer, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
+					ImGui::InputScalar("LOCAL_CNETGAMEPLAYER"_T.data(), ImGuiDataType_U64, &local_netplayer, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
 
 					if (mgr->m_local_net_player)
 					{
 						uint64_t local_netplayer = (uint64_t)mgr->m_local_net_player->get_net_data();
-						ImGui::InputScalar("Local netPlayerData", ImGuiDataType_U64, &local_netplayer, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
+						ImGui::InputScalar("LOCAL_NETPLAYERDATA"_T.data(), ImGuiDataType_U64, &local_netplayer, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
 					}
 				}
 
 				if (auto network = *g_pointers->m_gta.m_network)
 				{
 					uint64_t nw = (uint64_t)network;
-					ImGui::InputScalar("Network", ImGuiDataType_U64, &nw, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
+					ImGui::InputScalar("NETWORK"_T.data(), ImGuiDataType_U64, &nw, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
 				}
 
 				if (auto omgr = *g_pointers->m_gta.m_network_object_mgr)
 				{
 					uint64_t nw = (uint64_t)omgr;
-					ImGui::InputScalar("Network Object Mgr", ImGuiDataType_U64, &nw, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
+					ImGui::InputScalar("NETWORK_OBJ_MGR"_T.data(), ImGuiDataType_U64, &nw, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
 				}
 
 				ImGui::TreePop();
 			}
 
-			if (ImGui::TreeNode("Animation player"))
+			if (ImGui::TreeNode("ANIMATION_PLAYER"_T.data()))
 			{
 				static char dict[100], anim[100];
 
 				ImGui::PushItemWidth(200);
-				components::input_text_with_hint("##dictionary", "Dict", dict, IM_ARRAYSIZE(dict));
-				components::input_text_with_hint("##animation", "Animation", anim, IM_ARRAYSIZE(anim));
-				if (ImGui::Button("Play animation"))
+				components::input_text_with_hint("##dictionary", "DICT"_T.data(), dict, IM_ARRAYSIZE(dict));
+				components::input_text_with_hint("##animation", "ANIMATION"_T.data(), anim, IM_ARRAYSIZE(anim));
+				if (ImGui::Button("PLAY_ANIMATION"_T.data()))
 					g_fiber_pool->queue_job([=] {
 						ped::ped_play_animation(self::ped, dict, anim);
 					});
