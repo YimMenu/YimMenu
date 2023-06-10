@@ -3,6 +3,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "services/gui/gui_service.hpp"
+#include "services/player_database/player_database_service.hpp"
 #include "services/players/player_service.hpp"
 #include "views/view.hpp"
 
@@ -52,6 +53,19 @@ namespace big
 			g_gui_service->set_selected(tabs::PLAYER);
 			g.window.switched_view = true;
 		}
+		if (ImGui::IsItemHovered() && g_player_database_service->get_player_by_rockstar_id(plyr->get_net_data()->m_gamer_handle.m_rockstar_id) != nullptr)
+		{
+			auto sorted_player = g_player_database_service->get_player_by_rockstar_id(plyr->get_net_data()->m_gamer_handle.m_rockstar_id);
+
+			if (!sorted_player->infractions.empty())
+			{
+				ImGui::BeginTooltip();
+				for (auto infraction : sorted_player->infractions)
+					ImGui::BulletText(infraction_desc[(Infraction)infraction]);
+				ImGui::EndTooltip();
+			}
+		}
+
 		ImGui::PopID();
 		ImGui::PopStyleVar();
 
@@ -84,7 +98,8 @@ namespace big
 		if (ImGui::Begin("playerlist", nullptr, window_flags))
 		{
 			float window_height = (ImGui::CalcTextSize("A").y + ImGui::GetStyle().ItemInnerSpacing.y * 2 + 6.0f) * player_count + 10.0f;
-			window_height = window_height + window_pos > (float)*g_pointers->m_gta.m_resolution_y - 10.f ? (float)*g_pointers->m_gta.m_resolution_y - (window_pos + 40.f) : window_height;
+			window_height =
+			    window_height + window_pos > (float)*g_pointers->m_gta.m_resolution_y - 10.f ? (float)*g_pointers->m_gta.m_resolution_y - (window_pos + 40.f) : window_height;
 
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, {0.f, 0.f, 0.f, 0.f});
 			ImGui::PushStyleColor(ImGuiCol_ScrollbarBg, {0.f, 0.f, 0.f, 0.f});

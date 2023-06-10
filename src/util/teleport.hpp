@@ -177,9 +177,9 @@ namespace big::teleport
 		if (!ENTITY::DOES_ENTITY_EXIST(ent))
 			return false;
 
-		Vector3 ent_dimensions_max{}, ent_pos{};
+		Vector3 ent_dimensions_max{}, ent_dimensions_min{}, ent_pos{};
 
-		MISC::GET_MODEL_DIMENSIONS(ENTITY::GET_ENTITY_MODEL(ent), nullptr, &ent_dimensions_max);
+		MISC::GET_MODEL_DIMENSIONS(ENTITY::GET_ENTITY_MODEL(ent), &ent_dimensions_min, &ent_dimensions_max);
 		ent_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, 0, 0, ent_dimensions_max.z);
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(self::ped, ent_pos.x, ent_pos.y, ent_pos.z, 0, 0, 0);
 
