@@ -30,50 +30,48 @@ namespace big
 
 		components::command_checkbox<"rapidfire">();
 
-		ImGui::EndGroup();
-
-		ImGui::Separator();
-
 		ImGui::Checkbox("ENABLE_SPECIAL_AMMO"_T.data(), &g.weapons.ammo_special.toggle);
+		components::options_modal("Special ammo", [] {
+			eAmmoSpecialType selected_ammo   = g.weapons.ammo_special.type;
+			eExplosionTag selected_explosion = g.weapons.ammo_special.explosion_tag;
 
-		eAmmoSpecialType selected_ammo   = g.weapons.ammo_special.type;
-		eExplosionTag selected_explosion = g.weapons.ammo_special.explosion_tag;
-
-		if (ImGui::BeginCombo("SPECIAL_AMMO"_T.data(), SPECIAL_AMMOS[(int)selected_ammo].name))
-		{
-			for (const auto& special_ammo : SPECIAL_AMMOS)
+			if (ImGui::BeginCombo("SPECIAL_AMMO"_T.data(), SPECIAL_AMMOS[(int)selected_ammo].name))
 			{
-				if (ImGui::Selectable(special_ammo.name, special_ammo.type == selected_ammo))
+				for (const auto& special_ammo : SPECIAL_AMMOS)
 				{
-					g.weapons.ammo_special.type = special_ammo.type;
-				}
+					if (ImGui::Selectable(special_ammo.name, special_ammo.type == selected_ammo))
+					{
+						g.weapons.ammo_special.type = special_ammo.type;
+					}
 
-				if (special_ammo.type == selected_ammo)
-				{
-					ImGui::SetItemDefaultFocus();
+					if (special_ammo.type == selected_ammo)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
 				}
+				ImGui::EndCombo();
 			}
 
-			ImGui::EndCombo();
-		}
-
-		if (ImGui::BeginCombo("BULLET_IMPACT"_T.data(), BULLET_IMPACTS[selected_explosion]))
-		{
-			for (const auto& [type, name] : BULLET_IMPACTS)
+			if (ImGui::BeginCombo("BULLET_IMPACT"_T.data(), BULLET_IMPACTS[selected_explosion]))
 			{
-				if (ImGui::Selectable(name, type == selected_explosion))
+				for (const auto& [type, name] : BULLET_IMPACTS)
 				{
-					g.weapons.ammo_special.explosion_tag = type;
+					if (ImGui::Selectable(name, type == selected_explosion))
+					{
+						g.weapons.ammo_special.explosion_tag = type;
+					}
+
+					if (type == selected_explosion)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
 				}
 
-				if (type == selected_explosion)
-				{
-					ImGui::SetItemDefaultFocus();
-				}
+				ImGui::EndCombo();
 			}
+		});
 
-			ImGui::EndCombo();
-		}
+		ImGui::EndGroup();
 
 		ImGui::Separator();
 
