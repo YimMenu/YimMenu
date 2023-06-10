@@ -611,6 +611,23 @@ namespace big::vehicle
 		}
 	}
 
+	inline void max_vehicle_performance(Vehicle veh)
+	{
+		if(entity::take_control_of(veh))
+		{
+			VehicleModType perfomance_mods[] = {MOD_ENGINE, MOD_BRAKES, MOD_TRANSMISSION, MOD_SUSPENSION, MOD_ARMOR, MOD_NITROUS, MOD_TURBO};
+			VEHICLE::SET_VEHICLE_MOD_KIT(veh, 0);
+
+			for(auto mod_slot : perfomance_mods)
+			{
+				if(mod_slot != MOD_NITROUS && mod_slot != MOD_TURBO)
+					VEHICLE::SET_VEHICLE_MOD(veh, mod_slot, VEHICLE::GET_NUM_VEHICLE_MODS(veh, mod_slot) -1, true);
+				else
+					VEHICLE::TOGGLE_VEHICLE_MOD(veh, mod_slot, true);
+			}
+		}
+	}
+
 	inline void set_engine_state(Vehicle current_vehicle, bool state, bool immediately, bool disable_auto_start)
 	{
 		if (current_vehicle)

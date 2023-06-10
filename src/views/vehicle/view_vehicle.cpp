@@ -95,6 +95,23 @@ namespace big
 
 			components::command_checkbox<"mutesiren">();
 
+			components::command_checkbox<"speedometer">();
+			components::options_modal("Speedometer", [] {
+				ImGui::Text("POS_X_Y"_T.data());
+
+				float pos[2] = {g.vehicle.speedo_meter.x, g.vehicle.speedo_meter.y};
+
+				if (ImGui::SliderFloat2("###speedo_pos", pos, .001f, .999f, "%.3f"))
+				{
+					g.vehicle.speedo_meter.x = pos[0];
+					g.vehicle.speedo_meter.y = pos[1];
+				}
+
+				components::command_checkbox<"speedometerleftside">();
+				ImGui::SameLine();
+				components::command_checkbox<"speedometergears">();
+			});
+
 			ImGui::EndGroup();
 		}
 		ImGui::Separator();
@@ -163,28 +180,6 @@ namespace big
 			ImGui::RadioButton(speed_unit_strings[(int)SpeedUnit::MIPH].c_str(), (int*)&g.vehicle.speed_unit, (int)SpeedUnit::MIPH);
 			ImGui::SameLine();
 			ImGui::RadioButton(speed_unit_strings[(int)SpeedUnit::MPS].c_str(), (int*)&g.vehicle.speed_unit, (int)SpeedUnit::MPS);
-		}
-		ImGui::Separator();
-
-		components::sub_title("SPEEDO_METER"_T);
-		{
-			components::command_checkbox<"speedometer">();
-			if (g.vehicle.speedo_meter.enabled)
-			{
-				ImGui::Text("POS_X_Y"_T.data());
-
-				float pos[2] = {g.vehicle.speedo_meter.x, g.vehicle.speedo_meter.y};
-
-				if (ImGui::SliderFloat2("###speedo_pos", pos, .001f, .999f, "%.3f"))
-				{
-					g.vehicle.speedo_meter.x = pos[0];
-					g.vehicle.speedo_meter.y = pos[1];
-				}
-
-				components::command_checkbox<"speedometerleftside">();
-				ImGui::SameLine();
-				components::command_checkbox<"speedometergears">();
-			}
 		}
 
 		g.vehicle.proof_mask = 0;
