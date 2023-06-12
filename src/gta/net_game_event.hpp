@@ -541,7 +541,6 @@ namespace rage
 	{
 	public:
 		DEFINE_RAGE_RTTI(rage::CEventNetwork);
-		virtual ~CEventNetwork()                                        = default;//0x0000 (0)
 		virtual void unk_0008()                                         = 0;      //0x0008 (1)
 		virtual void unk_0010()                                         = 0;      //0x0010 (2)
 		virtual eEventNetworkType get_type()                            = 0;      //0x0018 (3)
