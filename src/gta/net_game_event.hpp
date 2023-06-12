@@ -1,6 +1,7 @@
 #pragma once
 #include "fwddec.hpp"
 #include "pointers.hpp"
+#include <base/atRTTI.hpp>
 
 #include <cstdint>
 
@@ -539,6 +540,7 @@ namespace rage
 	class CEventNetwork
 	{
 	public:
+		DEFINE_RAGE_RTTI(rage::CEventNetwork);
 		virtual ~CEventNetwork()                                        = default;//0x0000 (0)
 		virtual void unk_0008()                                         = 0;      //0x0008 (1)
 		virtual void unk_0010()                                         = 0;      //0x0010 (2)
