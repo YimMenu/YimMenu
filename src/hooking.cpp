@@ -59,7 +59,6 @@ namespace big
 		detour_hook_helper::add<hooks::write_player_gamer_data_node>("WPGDN", g_pointers->m_gta.m_write_player_gamer_data_node);
 
 		detour_hook_helper::add<hooks::invalid_mods_crash_detour>("IMCD", g_pointers->m_gta.m_invalid_mods_crash_detour);
-		detour_hook_helper::add<hooks::constraint_attachment_crash>("CAC", g_pointers->m_gta.m_constraint_attachment_crash);
 		detour_hook_helper::add<hooks::invalid_decal>("IDC", g_pointers->m_gta.m_invalid_decal_crash);
 		detour_hook_helper::add<hooks::task_parachute_object_0x270>("TPO270", g_pointers->m_gta.m_task_parachute_object_0x270);
 

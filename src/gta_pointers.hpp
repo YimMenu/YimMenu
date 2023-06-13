@@ -156,7 +156,6 @@ namespace big
 		functions::fipackfile_unmount m_fipackfile_unmount{};
 
 		PVOID m_invalid_mods_crash_detour{};
-		PVOID m_constraint_attachment_crash{};
 		PVOID m_invalid_decal_crash{};
 		PVOID m_task_parachute_object_0x270{};
 

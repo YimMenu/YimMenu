@@ -219,7 +219,7 @@ namespace big
         // Read Bitbuffer String
         {
             "RBS",
-            "E8 ? ? ? ? 48 8D 4F 3C",
+            "E9 ? ? ? ? CC 13 66 41",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_read_bitbuf_string = ptr.add(1).rip().as<decltype(gta_pointers::m_read_bitbuf_string)>();
@@ -444,13 +444,13 @@ namespace big
         // Received clone sync & Get sync tree for type & Get net object for player & Get sync type info & Get net object
         {
             "RCS/GSTFT/GNOFP/GNO/GSTI",
-            "4C 8B FA 41 0F B7 D1",
+            "4C 8B F9 BD 08 00 00 00",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_received_clone_sync = ptr.sub(0x1D).as<decltype(gta_pointers::m_received_clone_sync)>();
-                g_pointers->m_gta.m_get_sync_tree_for_type = ptr.add(0x14).rip().as<decltype(gta_pointers::m_get_sync_tree_for_type)>(); // 0F B7 CA 83 F9 07 .as()
-                g_pointers->m_gta.m_get_net_object = ptr.add(0x76).rip().as<decltype(gta_pointers::m_get_net_object)>(); // E8 ? ? ? ? 0F B7 53 7C .add(1).rip().as()
-                g_pointers->m_gta.m_get_sync_type_info = ptr.add(0x8C).rip().as<decltype(gta_pointers::m_get_sync_type_info)>(); // 44 0F B7 C1 4C 8D 0D .as()
+                g_pointers->m_gta.m_received_clone_sync = ptr.sub(0x27).as<decltype(gta_pointers::m_received_clone_sync)>();
+                g_pointers->m_gta.m_get_sync_tree_for_type = ptr.add(0x9).rip().as<decltype(gta_pointers::m_get_sync_tree_for_type)>(); // 0F B7 CA 83 F9 07 .as()
+                g_pointers->m_gta.m_get_net_object = ptr.add(0xE3).rip().as<decltype(gta_pointers::m_get_net_object)>(); // E8 ? ? ? ? 0F B7 53 7C .add(1).rip().as()
+                g_pointers->m_gta.m_get_sync_type_info = ptr.add(0xF9).rip().as<decltype(gta_pointers::m_get_sync_type_info)>(); // 44 0F B7 C1 4C 8D 0D .as()
             }
         },
         // Read Bitbuffer Into Sync Tree
@@ -894,15 +894,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_create_script_handler = *(ptr.add(3).rip().as<std::uint64_t**>() + 8);
-            }
-        },
-        // Constraint Attachment Crash
-        {
-            "CAC",
-            "40 53 48 83 EC 20 48 8B D9 48 8B 49 38 48 8B 01",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_constraint_attachment_crash = ptr.as<PVOID>();
             }
         },
         // Invalid Decal Crash
