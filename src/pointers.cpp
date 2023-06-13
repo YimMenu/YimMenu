@@ -446,7 +446,7 @@ namespace big
         {
             "RCS/GSTFT/GNOFP/GNO/GSTI",
             "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 83 EC 40 4C 8B EA",
-            [](memory::handle ptr)
+            [](memory::handle ptr) 
             {
                 g_pointers->m_gta.m_received_clone_sync = ptr.as<decltype(gta_pointers::m_received_clone_sync)>();
                 g_pointers->m_gta.m_get_sync_tree_for_type = ptr.add(0x2F).add(1).rip().as<decltype(gta_pointers::m_get_sync_tree_for_type)>(); // 0F B7 CA 83 F9 07 .as()

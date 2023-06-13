@@ -52,8 +52,8 @@ namespace big
 		detour_hook_helper::add<hooks::receive_net_message>("RNM", g_pointers->m_gta.m_receive_net_message);
 
 		detour_hook_helper::add<hooks::received_clone_create>("RCC", g_pointers->m_gta.m_received_clone_create);
-		//detour_hook_helper::add<hooks::received_clone_sync>("RCS", g_pointers->m_gta.m_received_clone_sync);
-		//detour_hook_helper::add<hooks::can_apply_data>("CAD", g_pointers->m_gta.m_can_apply_data);
+		detour_hook_helper::add<hooks::received_clone_sync>("RCS", g_pointers->m_gta.m_received_clone_sync);
+		detour_hook_helper::add<hooks::can_apply_data>("CAD", g_pointers->m_gta.m_can_apply_data);
 
 		detour_hook_helper::add<hooks::get_network_event_data>("GNED", g_pointers->m_gta.m_get_network_event_data);
 		detour_hook_helper::add<hooks::write_player_gamer_data_node>("WPGDN", g_pointers->m_gta.m_write_player_gamer_data_node);
@@ -97,7 +97,7 @@ namespace big
 		detour_hook_helper::add<hooks::fragment_physics_crash>("FPC", g_pointers->m_gta.m_fragment_physics_crash);
 		detour_hook_helper::add<hooks::fragment_physics_crash_2>("FPC2", g_pointers->m_gta.m_fragment_physics_crash_2);
 
-		detour_hook_helper::add<hooks::infinite_train_crash>("ITC", g_pointers->m_gta.m_infinite_train_crash);
+		// detour_hook_helper::add<hooks::infinite_train_crash>("ITC", g_pointers->m_gta.m_infinite_train_crash);
 
 		detour_hook_helper::add<hooks::received_array_update>("RAU", g_pointers->m_gta.m_received_array_update);
 
