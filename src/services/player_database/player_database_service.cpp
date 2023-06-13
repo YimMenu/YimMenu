@@ -137,12 +137,6 @@ namespace big
 		return m_selected;
 	}
 
-	void player_database_service::invalidate_player_states()
-	{
-		for (auto& item : m_players)
-			item.second->online_state = PlayerOnlineStatus::UNKNOWN;
-	}
-
 	void player_database_service::start_update_loop()
 	{
 		if (!g.player_db.update_player_online_states)
@@ -168,7 +162,6 @@ namespace big
 
 	void player_database_service::update_player_states()
 	{
-		invalidate_player_states();
 		const auto player_count = m_players.size();
 
 		std::vector<std::vector<rage::rlGamerHandle>> gamer_handle_buckets;
@@ -198,9 +191,17 @@ namespace big
 				{
 					if (const auto& it = m_players.find(bucket[i].m_rockstar_id); it != m_players.end())
 					{
-						it->second->online_state = PlayerOnlineStatus::OFFLINE;
 						if (online[i] == 1)
+						{
+							if (it->second->online_state == PlayerOnlineStatus::OFFLINE && it->second->notify_online)
+							{
+								g_notification_service->push_success("Player DB", std::format("{} is now online!", it->second->name));
+							}
 							it->second->online_state = PlayerOnlineStatus::ONLINE;
+
+							continue;
+						}
+						it->second->online_state = PlayerOnlineStatus::OFFLINE;
 					}
 				}
 			}

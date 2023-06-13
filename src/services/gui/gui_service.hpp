@@ -148,7 +148,6 @@ namespace big
 		            "GUI_TAB_SETTINGS",
 		            view::settings,
 		            {
-		                {tabs::LUA_SCRIPTS, {"GUI_TAB_LUA_SCRIPTS", view::lua_scripts}},
 		                {tabs::CONTEXT_MENU_SETTINGS, {"GUI_TAB_CONTEXT_MENU", view::context_menu_settings}},
 		                {tabs::ESP_SETTINGS, {"GUI_TAB_ESP", view::esp_settings}},
 		                {tabs::GTA_CACHE_SETTINGS, {"GTA Cache", view::gta_cache}},
