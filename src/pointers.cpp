@@ -781,7 +781,7 @@ namespace big
         // Serialize Join Request Message
         {
             "SJRM",
-            "E8 ?? ?? ?? ?? 84 C0 0F 84 9B 00 00 00 49 8D 8F 50 11 00 00",
+            "E8 ?? ?? ?? ?? 84 C0 0F 84 9B 00 00 00 49 8D 8F 48 11 00 00",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_serialize_join_request_message = ptr.add(1).rip().as<PVOID>();
