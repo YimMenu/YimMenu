@@ -20,6 +20,7 @@ namespace big
 
 		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
+#if 0
 			rage::snMsgRemoveGamersFromSessionCmd cmd{};
 			cmd.m_session_id  = gta_util::get_network()->m_game_session_ptr->m_rline_session.m_session_id;
 			cmd.m_num_peers   = 1;
@@ -64,6 +65,7 @@ namespace big
 					}
 				}
 			}
+#endif
 		}
 	};
 
