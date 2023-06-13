@@ -1075,7 +1075,7 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_infinite_train_crash = ptr.add(1).rip().as<PVOID>();
-                g_pointers->m_gta.m_get_next_carriage    = ptr.add(1).rip().add(0xF).rip().as<functions::get_next_carriage>();
+                g_pointers->m_gta.m_get_next_carriage    = ptr.add(1).rip().add(0x15).rip().as<functions::get_next_carriage>();
             }
         },
         // Get Entity Attached To

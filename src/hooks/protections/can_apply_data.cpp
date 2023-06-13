@@ -714,7 +714,7 @@ namespace big
 	{
 		static bool init = ([] { cache_nodes(); }(), true);
 
-		if (tree->m_child_node_count && check_node(tree->m_next_sync_node, g.m_syncing_player, object))
+		if (tree->m_child_node_count && tree->m_next_sync_node && check_node(tree->m_next_sync_node, g.m_syncing_player, object))
 		{
 			return false;
 		}
