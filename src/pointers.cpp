@@ -827,7 +827,7 @@ namespace big
         // Handle Remove Gamer Command
         {
             "HRGC",
-            "41 FF C6 FF C7",
+            "48 85 D2 0F 84 0E 04",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_handle_remove_gamer_cmd = ptr.sub(0x6E).as<functions::handle_remove_gamer_cmd>();
