@@ -219,10 +219,10 @@ namespace big
         // Read Bitbuffer String
         {
             "RBS",
-            "E8 ? ? ? ? 48 8D 4F 3C",
+            "48 89 5C 24 08 48 89 6C 24 18 56 57 41 56 48 83 EC 20 48 8B F2 45",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_read_bitbuf_string = ptr.add(1).rip().as<decltype(gta_pointers::m_read_bitbuf_string)>();
+                g_pointers->m_gta.m_read_bitbuf_string = ptr.as<decltype(gta_pointers::m_read_bitbuf_string)>();
             }
         },
         // Read Bitbuffer Boolean
@@ -442,15 +442,16 @@ namespace big
             }
         },
         // Received clone sync & Get sync tree for type & Get net object for player & Get sync type info & Get net object
+                //TODO
         {
             "RCS/GSTFT/GNOFP/GNO/GSTI",
-            "4C 8B FA 41 0F B7 D1",
+            "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 83 EC 40 4C 8B EA",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_received_clone_sync = ptr.sub(0x1D).as<decltype(gta_pointers::m_received_clone_sync)>();
-                g_pointers->m_gta.m_get_sync_tree_for_type = ptr.add(0x14).rip().as<decltype(gta_pointers::m_get_sync_tree_for_type)>(); // 0F B7 CA 83 F9 07 .as()
-                g_pointers->m_gta.m_get_net_object = ptr.add(0x76).rip().as<decltype(gta_pointers::m_get_net_object)>(); // E8 ? ? ? ? 0F B7 53 7C .add(1).rip().as()
-                g_pointers->m_gta.m_get_sync_type_info = ptr.add(0x8C).rip().as<decltype(gta_pointers::m_get_sync_type_info)>(); // 44 0F B7 C1 4C 8D 0D .as()
+                g_pointers->m_gta.m_received_clone_sync = ptr.as<decltype(gta_pointers::m_received_clone_sync)>();
+                g_pointers->m_gta.m_get_sync_tree_for_type = ptr.add(0x2F).add(1).rip().as<decltype(gta_pointers::m_get_sync_tree_for_type)>(); // 0F B7 CA 83 F9 07 .as()
+                g_pointers->m_gta.m_get_net_object = ptr.add(0x109).add(1).rip().as<decltype(gta_pointers::m_get_net_object)>(); // E8 ? ? ? ? 0F B7 53 7C .add(1).rip().as()
+                g_pointers->m_gta.m_get_sync_type_info = ptr.add(0x11F).add(1).rip().as<decltype(gta_pointers::m_get_sync_type_info)>(); // 44 0F B7 C1 4C 8D 0D .as()
             }
         },
         // Read Bitbuffer Into Sync Tree
@@ -709,7 +710,7 @@ namespace big
         // Handle Join Request
         {
             "HJR",
-            "48 8B C4 48 89 58 08 4C 89 48 20 4C 89 40 18 48 89 50 10 55 56 57 41 54 41 55 41 56 41 57 48 8D A8 E8",
+            "48 8B C4 48 89 58 08 4C 89 48 20 4C 89 40 18 48 89 50 10 55 56 57 41 54 41 55 41 56 41 57 48 8D A8 C8 FE",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_handle_join_request = ptr.as<PVOID>();
@@ -718,7 +719,7 @@ namespace big
         // Write Join Response Data
         {
             "WJRD",
-            "E8 ?? ?? ?? ?? 41 8B DF 84 C0",
+            "E8 ? ? ? ? 41 8B DF 84 C0",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_write_join_response_data = ptr.add(1).rip().as<functions::write_join_response_data>();
@@ -745,7 +746,7 @@ namespace big
         // Add Player To Session
         {
             "APTS",
-            "E8 ?? ?? ?? ?? 48 8D 8D F0 01 00 00 8A D8",
+            "E8 ? ? ? ? 48 8D 8D F0 01 00 00 8A D8",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_add_player_to_session = ptr.add(1).rip().as<PVOID>();
@@ -781,7 +782,7 @@ namespace big
         // Serialize Join Request Message
         {
             "SJRM",
-            "E8 ?? ?? ?? ?? 84 C0 0F 84 9B 00 00 00 49 8D 8F 50 11 00 00",
+            "E8 ? ? ? ? 84 C0 0F 84 9B 00 00 00 49 8D 8F 48 11 00 00",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_serialize_join_request_message = ptr.add(1).rip().as<PVOID>();
@@ -827,10 +828,10 @@ namespace big
         // Handle Remove Gamer Command
         {
             "HRGC",
-            "41 FF C6 FF C7",
+            "48 85 D2 0F 84 0E 04",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_handle_remove_gamer_cmd = ptr.sub(0x6E).as<functions::handle_remove_gamer_cmd>();
+                g_pointers->m_gta.m_handle_remove_gamer_cmd = ptr.as<functions::handle_remove_gamer_cmd>();
             }
         },
         // Broadcast Net Array
@@ -896,15 +897,6 @@ namespace big
                 g_pointers->m_gta.m_create_script_handler = *(ptr.add(3).rip().as<std::uint64_t**>() + 8);
             }
         },
-        // Constraint Attachment Crash
-        {
-            "CAC",
-            "40 53 48 83 EC 20 48 8B D9 48 8B 49 38 48 8B 01",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_constraint_attachment_crash = ptr.as<PVOID>();
-            }
-        },
         // Invalid Decal Crash
         {
             "IDC",
@@ -935,7 +927,7 @@ namespace big
         // Decode Session Info
         {
             "DSI",
-            "E8 ?? ?? ?? ?? 84 C0 74 16 48 8B 4B 60",
+            "E8 ? ? ? ? 84 C0 74 16 48 8B 4B 60",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_decode_session_info = ptr.add(1).rip().as<functions::decode_session_info>();
