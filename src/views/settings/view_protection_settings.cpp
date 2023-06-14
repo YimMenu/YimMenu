@@ -34,7 +34,6 @@ namespace big
 		ImGui::Checkbox("SPECTATE"_T.data(), &g.protections.script_events.spectate);
 		ImGui::Checkbox("VEHICLE_KICK"_T.data(), &g.protections.script_events.vehicle_kick);
 		ImGui::Checkbox("WANTED_LEVEL"_T.data(), &g.protections.script_events.clear_wanted_level);
-		ImGui::Checkbox("DESYNC_KICK"_T.data(), &g.protections.desync_kick);
 		ImGui::EndGroup();
 		ImGui::SameLine();
 

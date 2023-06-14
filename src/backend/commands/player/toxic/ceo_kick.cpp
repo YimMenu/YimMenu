@@ -3,6 +3,8 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 
+#include <script/globals/GPBD_FM_3.hpp>
+
 namespace big
 {
 	class ceo_kick : player_command
@@ -16,7 +18,7 @@ namespace big
 
 		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
-			auto leader = *scr_globals::gpbd_fm_3.at(player->id(), scr_globals::size::gpbd_fm_3).at(10).as<int*>();
+			auto leader = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[player->id()].BossGoon.Boss;
 
 			if (leader == -1)
 				return;

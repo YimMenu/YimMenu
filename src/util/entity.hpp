@@ -235,7 +235,8 @@ namespace big::entity
 			}
 		}
 
-		*pointer = closest_entity_ptr;
+		if (pointer)
+			*pointer = closest_entity_ptr;
 
 		return closest_entity;
 	}

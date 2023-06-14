@@ -60,7 +60,7 @@ namespace big
 
 		auto plyr = g_player_service->get_by_id(player->m_player_id);
 
-		if (g_lua_manager->get_modules().size() > 0)
+		if (g_lua_manager && g_lua_manager->get_modules().size() > 0)
 		{
 			std::vector<int32_t> script_event_args;
 
@@ -343,20 +343,6 @@ namespace big
 			}
 			break;
 		}
-		case eRemoteEvent::SMS:
-			if (g.protections.script_events.send_sms)
-			{
-				if (g.session.kick_chat_spammers)
-				{
-					if (auto plyr = g_player_service->get_by_id(player->m_player_id))
-					{
-						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
-					}
-				}
-
-				return true;
-			}
-			break;
 		case eRemoteEvent::DestroyPersonalVehicle: g.reactions.destroy_personal_vehicle.process(plyr); return true;
 		case eRemoteEvent::KickFromInterior:
 			if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].SimpleInteriorData.Owner != plyr->id())

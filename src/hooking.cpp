@@ -59,15 +59,11 @@ namespace big
 		detour_hook_helper::add<hooks::write_player_gamer_data_node>("WPGDN", g_pointers->m_gta.m_write_player_gamer_data_node);
 
 		detour_hook_helper::add<hooks::invalid_mods_crash_detour>("IMCD", g_pointers->m_gta.m_invalid_mods_crash_detour);
-		detour_hook_helper::add<hooks::constraint_attachment_crash>("CAC", g_pointers->m_gta.m_constraint_attachment_crash);
 		detour_hook_helper::add<hooks::invalid_decal>("IDC", g_pointers->m_gta.m_invalid_decal_crash);
 		detour_hook_helper::add<hooks::task_parachute_object_0x270>("TPO270", g_pointers->m_gta.m_task_parachute_object_0x270);
 
 		detour_hook_helper::add<hooks::update_presence_attribute_int>("UPAI", g_pointers->m_sc.m_update_presence_attribute_int);
 		detour_hook_helper::add<hooks::update_presence_attribute_string>("UPAS", g_pointers->m_sc.m_update_presence_attribute_string);
-
-		detour_hook_helper::add<hooks::serialize_ped_inventory_data_node>("SPIDN", g_pointers->m_gta.m_serialize_ped_inventory_data_node);
-		detour_hook_helper::add<hooks::serialize_vehicle_gadget_data_node>("SVGDN", g_pointers->m_gta.m_serialize_vehicle_gadget_data_node);
 
 		detour_hook_helper::add<hooks::handle_join_request>("HJR", g_pointers->m_gta.m_handle_join_request);
 
@@ -95,10 +91,7 @@ namespace big
 		detour_hook_helper::add<hooks::queue_dependency>("QD", g_pointers->m_gta.m_queue_dependency);
 		detour_hook_helper::add<hooks::prepare_metric_for_sending>("PMFS", g_pointers->m_gta.m_prepare_metric_for_sending);
 
-		detour_hook_helper::add<hooks::fragment_physics_crash>("FPC", g_pointers->m_gta.m_fragment_physics_crash);
 		detour_hook_helper::add<hooks::fragment_physics_crash_2>("FPC2", g_pointers->m_gta.m_fragment_physics_crash_2);
-
-		detour_hook_helper::add<hooks::infinite_train_crash>("ITC", g_pointers->m_gta.m_infinite_train_crash);
 
 		detour_hook_helper::add<hooks::received_array_update>("RAU", g_pointers->m_gta.m_received_array_update);
 

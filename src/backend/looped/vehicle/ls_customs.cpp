@@ -51,8 +51,8 @@ namespace big
 					g_script_patcher_service->update();
 
 					scr_functions::setup_modshop.call_latent(g.m_modshop_thread, gta_util::find_script_program(RAGE_JOAAT("carmod_shop")), {45, 0, 18, 0}, bModshopReady);
-					*script_local(g.m_modshop_thread->m_stack, 730).at(446).as<int*>() = 2;
-					*script_local(g.m_modshop_thread->m_stack, 2237).as<ControllerInputs*>() = ControllerInputs::INPUT_FRONTEND_LT;
+					*script_local(g.m_modshop_thread->m_stack, 731).at(446).as<int*>() = 2;
+					*script_local(g.m_modshop_thread->m_stack, 2238).as<ControllerInputs*>() = ControllerInputs::INPUT_FRONTEND_LT;
 				}
 			});
 			bLastLsCustoms = true;
@@ -82,18 +82,18 @@ namespace big
 		{
 			PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_VEH_CIN_CAM, true);
 
-			if (*script_local(g.m_modshop_thread->m_stack, 2466).as<bool*>() && PAD::IS_CONTROL_JUST_PRESSED(2, (int)ControllerInputs::INPUT_FRONTEND_ACCEPT))
+			if (*script_local(g.m_modshop_thread->m_stack, 2467).as<bool*>() && PAD::IS_CONTROL_JUST_PRESSED(2, (int)ControllerInputs::INPUT_FRONTEND_ACCEPT))
 				g.vehicle.ls_customs = false;
 		}
 
 		if (g.vehicle.ls_customs && bModshopReady && g.m_modshop_thread && g.m_modshop_thread->m_stack)
 		{
-			*script_local(g.m_modshop_thread->m_stack, 2418).as<bool*>()           = false;
-			*script_local(g.m_modshop_thread->m_stack, 730).at(638).as<int*>()     = -1;
-			*script_local(g.m_modshop_thread->m_stack, 730).at(409).as<Vehicle*>() = self::veh;
+			*script_local(g.m_modshop_thread->m_stack, 2419).as<bool*>()           = false;
+			*script_local(g.m_modshop_thread->m_stack, 731).at(638).as<int*>()     = -1;
+			*script_local(g.m_modshop_thread->m_stack, 731).at(409).as<Vehicle*>() = self::veh;
 
-			if (*script_local(g.m_modshop_thread->m_stack, 730).at(446).as<int*>() == 0)
-				*script_local(g.m_modshop_thread->m_stack, 730).at(446).as<int*>() = 2;
+			if (*script_local(g.m_modshop_thread->m_stack, 731).at(446).as<int*>() == 0)
+				*script_local(g.m_modshop_thread->m_stack, 731).at(446).as<int*>() = 2;
 
 			scr_functions::modshop_loop.call(g.m_modshop_thread, gta_util::find_script_program(RAGE_JOAAT("carmod_shop")), {});
 		}

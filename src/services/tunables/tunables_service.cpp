@@ -62,7 +62,7 @@ namespace big
 				{
 					std::uint64_t args[] = {6, 27, 1}; // TODO: check args
 
-					int id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS(RAGE_JOAAT("tuneables_processing"), (Any*)args, sizeof(args) / 8, 1424);
+					int id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS(RAGE_JOAAT("tuneables_processing"), (Any*)args, sizeof(args) / 8, 5050);
 
 					if (!id)
 					{
@@ -82,6 +82,12 @@ namespace big
 			{
 				if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("tuneables_processing")) == 0)
 				{
+					if (m_tunables.size() == 0)
+					{
+						LOG(FATAL) << "Failed to cache tunables";
+						return;
+					}
+
 					m_script_started = false;
 					m_initialized    = true;
 					LOG(INFO) << "Saving " << m_tunables.size() << " tunables to cache";
