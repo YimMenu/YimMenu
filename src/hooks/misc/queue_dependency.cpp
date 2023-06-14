@@ -41,8 +41,8 @@ namespace big
 		auto f2 = *(__int64*)(cb + 0x100);
 		auto f3 = *(__int64*)(cb + 0x1A0);
 
-		//if (!(f1 && f2 && f3))
-		//	return false;
+		if (!is_address_in_game_region(f1) || !is_address_in_game_region(f2) || !is_address_in_game_region(f3))
+			return false;
 
 		return is_jump(f1) || is_jump(f2) || is_jump(f3);
 	}
@@ -50,7 +50,9 @@ namespace big
 	void hooks::queue_dependency(void* dependency)
 	{
 		if (is_unwanted_dependency((__int64)dependency))
+		{
 			return;
+		}
 
 		return g_hooking->get_original<hooks::queue_dependency>()(dependency);
 	}
