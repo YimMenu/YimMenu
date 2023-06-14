@@ -3,13 +3,6 @@
 
 namespace big::scr_globals
 {
-	namespace size
-	{
-		constexpr int globalplayer_bd = 466;
-		constexpr int gpbd_fm_3       = 608;
-		constexpr int gpbd_fm_1       = 862;
-	}
-
 	static inline script_global gsbd(2648711);
 	static inline script_global gsbd_fm(1835504);
 	static inline script_global gsbd_kicking(1885447);
@@ -40,6 +33,8 @@ namespace big::scr_globals
 	static inline script_global mechanic_global = script_global(2794162);
 
 	static inline script_global spawn_global = script_global(2694613);
+
+	static inline script_global offradar_time(2672524);
 }
 
 namespace big::scr_locals

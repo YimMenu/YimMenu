@@ -41,8 +41,8 @@ namespace big
 		auto f2 = *(__int64*)(cb + 0x100);
 		auto f3 = *(__int64*)(cb + 0x1A0);
 
-		if (!(f1 && f2 && f3))
-			return false;
+		//if (!(f1 && f2 && f3))
+		//	return false;
 
 		return is_jump(f1) || is_jump(f2) || is_jump(f3);
 	}

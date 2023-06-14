@@ -210,7 +210,7 @@ namespace big::scripts
 			return;
 		}
 
-		if (MISC::GET_NUMBER_OF_FREE_STACKS_OF_THIS_SIZE(54000) == 0)
+		if (MISC::GET_NUMBER_OF_FREE_STACKS_OF_THIS_SIZE(57500) == 0)
 		{
 			g_notification_service->push_warning("Creator", "No free stacks for MISSION stack size");
 		}
@@ -226,7 +226,7 @@ namespace big::scripts
 		*scr_globals::mission_creator_exited.as<bool*>()               = false;
 		*scr_globals::mission_creator_radar_follows_camera.as<bool*>() = true;
 
-		if (SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH(hash, 54000))
+		if (SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH(hash, 57500))
 		{
 			g.m_mission_creator_thread = gta_util::find_script_thread(hash);
 		}
