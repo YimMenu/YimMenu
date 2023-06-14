@@ -10,12 +10,12 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			*script_global(20366).as<bool*>() = true;
+			*script_global(20483).as<bool*>() = true;
 		}
 
 		virtual void on_disable() override
 		{
-			*script_global(20366).as<bool*>() = false;
+			*script_global(20483).as<bool*>() = false;
 		}
 	};
 

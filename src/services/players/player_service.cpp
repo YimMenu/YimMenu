@@ -7,7 +7,7 @@
 namespace big
 {
 	player_service::player_service() :
-	    m_self(),
+	    m_self(nullptr),
 	    m_selected_player(m_dummy)
 	{
 		g_player_service = this;

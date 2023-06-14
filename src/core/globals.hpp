@@ -258,13 +258,12 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_events, bounty, ceo_money, clear_wanted_level, fake_deposit, force_mission, force_teleport, gta_banner, mc_teleport, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate, give_collectible, vehicle_kick, teleport_to_warehouse, start_activity, send_sms)
 			} script_events{};
 
-			bool desync_kick     = false;
 			bool rid_join        = false;
 			bool lessen_breakups = false; // disabled by default due to anticheat concerns
 			bool receive_pickup  = false;
 			bool admin_check     = true;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, lessen_breakups, desync_kick, receive_pickup, admin_check)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, lessen_breakups, receive_pickup, admin_check)
 		} protections{};
 
 		struct self

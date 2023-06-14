@@ -20,6 +20,7 @@
 #include <network/snConnectToPeerTask.hpp>
 #include <rage/rlQueryPresenceAttributesContext.hpp>
 #include <rage/rlScHandle.hpp>
+#include <script/globals/GPBD_FM_3.hpp>
 
 namespace big::session
 {
@@ -40,7 +41,7 @@ namespace big::session
 		if (session == eSessionType::LEAVE_ONLINE)
 			*script_global(1574589).at(2).as<int*>() = -1;
 		else
-			*script_global(1575017).as<int*>() = (int)session;
+			*script_global(1575020).as<int*>() = (int)session;
 
 		*script_global(1574589).as<int*>() = 1;
 		script::get_current()->yield(200ms);
@@ -51,18 +52,18 @@ namespace big::session
 	{
 		int idx = index / 32;
 		int bit = index % 32;
-		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(354).at(idx, 1).as<int*>(), bit);
-		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(347).at(idx, 1).as<int*>(), bit);
-		misc::set_bit(scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).at(205).at(idx, 1).as<int*>(), bit);
+		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(361).at(idx, 1).as<int*>(), bit);
+		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(353).at(idx, 1).as<int*>(), bit);
+		misc::set_bit((int*)&scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.ActiveFreemodeEvents[idx], bit);
 	}
 
 	inline void clear_fm_event_index(int index)
 	{
 		int idx = index / 32;
 		int bit = index % 32;
-		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(354).at(idx, 1).as<int*>(), bit);
-		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(347).at(idx, 1).as<int*>(), bit);
-		misc::clear_bit(scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).at(205).at(idx, 1).as<int*>(), bit);
+		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(361).at(idx, 1).as<int*>(), bit);
+		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(353).at(idx, 1).as<int*>(), bit);
+		misc::clear_bit((int*)&scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.ActiveFreemodeEvents[idx], bit);
 	}
 
 	inline void join_session(const rage::rlSessionInfo& info)

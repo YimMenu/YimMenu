@@ -482,6 +482,8 @@ namespace big
 
 	inline bool is_crash_object(uint32_t model)
 	{
+		if (!model_info::get_model(model))
+			return false;
 		if (!model_info::is_model_of_type(model, eModelType::Object, eModelType::Time, eModelType::Weapon, eModelType::Destructable, eModelType::WorldObject, eModelType::Sprinkler, eModelType::Unk65, eModelType::Plant, eModelType::LOD, eModelType::Unk132, eModelType::Building))
 			return true;
 		for (auto iterator : crash_objects)
@@ -714,7 +716,7 @@ namespace big
 	{
 		static bool init = ([] { cache_nodes(); }(), true);
 
-		if (tree->m_child_node_count && check_node(tree->m_next_sync_node, g.m_syncing_player, object))
+		if (tree->m_child_node_count && tree->m_next_sync_node && check_node(tree->m_next_sync_node, g.m_syncing_player, object))
 		{
 			return false;
 		}
