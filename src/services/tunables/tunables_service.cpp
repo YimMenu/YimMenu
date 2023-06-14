@@ -62,7 +62,7 @@ namespace big
 				{
 					std::uint64_t args[] = {6, 27, 1}; // TODO: check args
 
-					int id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS(RAGE_JOAAT("tuneables_processing"), (Any*)args, sizeof(args) / 8, 1424);
+					int id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS(RAGE_JOAAT("tuneables_processing"), (Any*)args, sizeof(args) / 8, 5050);
 
 					if (!id)
 					{
