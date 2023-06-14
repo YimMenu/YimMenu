@@ -33,12 +33,12 @@ namespace big
 				    1,
 				    1,
 				    1);
-				STREAMING::REMOVE_PTFX_ASSET();
 			}
 		}
 
 		void show_vehicle_ptfx_effect(const char* fx_name, const char* name)
 		{
+			STREAMING::REQUEST_NAMED_PTFX_ASSET(fx_name);
 			for (const auto& ptfx_bone : ptfx_vehicle_pos)
 			{
 				GRAPHICS::USE_PARTICLE_FX_ASSET(fx_name);
@@ -65,7 +65,12 @@ namespace big
 			else
 				show_vehicle_ptfx_effect(g.self.ptfx_effects.asset, g.self.ptfx_effects.effect);
 		}
+
+		virtual void on_disable() override
+		{
+			STREAMING::REMOVE_PTFX_ASSET();
+		}
 	};
 
-	ptfx_looped g_ptfx_looped("ptfx", "Enable PTFX", "Show nice PTFX Effects on your character", g.self.ptfx_effects.show);
+	ptfx_looped g_ptfx_looped("ptfx", "PTFX_CMD", "PTFX_CMD_DESC", g.self.ptfx_effects.show);
 }

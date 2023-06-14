@@ -28,7 +28,7 @@ namespace big
 			    (int64_t)(int)_args[0],
 			    (int64_t)self::id,
 			    (int64_t) false,
-			    (int64_t) true,// true means enter sender interior
+			    (int64_t) true, // true means enter sender interior
 			    (int64_t) * (uint32_t*)&coords.x,
 			    (int64_t) * (uint32_t*)&coords.y,
 			    (int64_t) * (uint32_t*)&coords.z,
@@ -43,5 +43,5 @@ namespace big
 		}
 	};
 
-	send_to_interior g_send_to_interior("interiortp", "TP To Interior", "Teleports the player to the specified interior index", 1);
+	send_to_interior g_send_to_interior("interiortp", "TP_TO_INTERIOR", "TP_TO_INTERIOR_DESC", 1);
 }

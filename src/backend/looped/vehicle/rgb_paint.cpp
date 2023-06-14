@@ -1,3 +1,5 @@
+#include "backend/bool_command.hpp"
+#include "backend/int_command.hpp"
 #include "backend/looped/looped.hpp"
 #include "natives.hpp"
 #include "script.hpp"
@@ -127,4 +129,16 @@ namespace big
 			last_rgb_run_time = std::chrono::system_clock::now();
 		}
 	}
+
+	bool_command g_rainbow_paint_primary("rainbowpri", "Rainbow Paint: Apply to Primary", "Applies active rainbow effect to the current vehicle's primary color",
+	    g.vehicle.rainbow_paint.primary);
+	bool_command g_rainbow_paint_secondary("rainbowsec", "Rainbow Paint: Apply to Secondary", "Applies active rainbow effect to the current vehicle's secondary color",
+	    g.vehicle.rainbow_paint.secondary);
+	bool_command g_rainbow_paint_neon("rainbowneons", "Rainbow Paint: Apply to Neons", "Applies active rainbow effect to the current vehicle's neon color",
+	    g.vehicle.rainbow_paint.neon);
+	bool_command g_rainbow_paint_smoke("rainbowsmoke", "Rainbow Paint: Apply to Tire Smoke", "Applies active rainbow effect to the current vehicle's tire smoke color",
+	    g.vehicle.rainbow_paint.smoke);
+	int_command g_rainbow_paint_speed("rainbowspeed", "Rainbow Paint: Speed", "Speed of the rainbow paint effect",
+	    g.vehicle.rainbow_paint.speed, 1, 10);
+
 }

@@ -21,9 +21,9 @@ namespace big
 		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
 			rage::snMsgRemoveGamersFromSessionCmd cmd{};
-			cmd.m_session_id  = gta_util::get_network()->m_game_session_ptr->m_rline_session.m_session_id;
-			cmd.m_num_peers   = 1;
-			cmd.m_peer_ids[0] = player->get_session_peer()->m_peer_data.m_peer_id_2;
+			cmd.m_session_id = gta_util::get_network()->m_game_session_ptr->m_rline_session.m_session_id;
+			cmd.m_num_peers  = 1;
+			cmd.m_handles[0] = player->get_net_data()->m_gamer_handle;
 
 			if (g.session.show_cheating_message)
 				cmd.m_unk = 19;
@@ -39,7 +39,7 @@ namespace big
 					if (plyr->id() != player->id())
 						g_pointers->m_gta.m_send_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 						    g_pointers->m_gta.m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
-						        (int)plyr->get_session_player()->m_player_data.m_peer_id_2),
+						        plyr->get_session_player()->m_player_data.m_peer_id_2),
 						    gta_util::get_network()->m_game_session_ptr->m_connection_identifier,
 						    &cmd,
 						    0x1000000);
@@ -55,7 +55,7 @@ namespace big
 					{
 						g_pointers->m_gta.m_send_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 						    g_pointers->m_gta.m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
-						        (int)plyr->get_session_player()->m_player_data.m_peer_id_2),
+						        plyr->get_session_player()->m_player_data.m_peer_id_2),
 						    gta_util::get_network()->m_game_session_ptr->m_connection_identifier,
 						    &cmd,
 						    0x1000000);
@@ -67,7 +67,7 @@ namespace big
 		}
 	};
 
-	breakup_kick g_breakup_kick("breakup", "Breakup Kick", "Nearly unblockable but could be detected by others", 0, false);
-	bool_command g_show_cheating_message("breakupcheating", "Show Cheating Message", "Shows a \"was detected cheating and has been removed from the session\" instead of the usual leave message when the player gets kicked",
+	breakup_kick g_breakup_kick("breakup", "BREAKUP_KICK", "BREAKUP_KICK_DESC", 0, false);
+	bool_command g_show_cheating_message("breakupcheating", "BREAKUP_KICK_SHOW_CHEATING", "BREAKUP_KICK_SHOW_CHEATING_DESC",
 	    g.session.show_cheating_message);
 }

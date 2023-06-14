@@ -4,6 +4,7 @@
 
 namespace big
 {
+	// this doesn't actually work
 	class partwater : looped_command
 	{
 		using looped_command::looped_command;
@@ -30,5 +31,5 @@ namespace big
 		}
 	};
 
-	partwater g_partwater("partwater", "Part Water", "Makes you like Moses", g.world.water.part_water);
+	partwater g_partwater("partwater", "PART_WATER", "PART_WATER_DESC", g.world.water.part_water);
 }

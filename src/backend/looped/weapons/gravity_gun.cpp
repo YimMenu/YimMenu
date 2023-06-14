@@ -121,7 +121,7 @@ namespace big
 
 			ents.clear();
 
-			g_notification_service->push("Weapons", "Released entity.");
+			g_notification_service->push_success("Weapons", "Released entity.");
 		}
 	}
 }

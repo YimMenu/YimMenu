@@ -15,5 +15,5 @@ namespace big
 		}
 	};
 
-	steal_outfit g_steal_outfit("copyoutfit", "Steal Outfit", "Copies the player's outfit to your ped", 0, false);
+	steal_outfit g_steal_outfit("copyoutfit", "STEAL_OUTFIT", "STEAL_OUTFIT_DESC", 0, false);
 }

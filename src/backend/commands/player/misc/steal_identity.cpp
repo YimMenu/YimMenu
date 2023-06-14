@@ -15,5 +15,5 @@ namespace big
 		}
 	};
 
-	steal_identity g_steal_identity("copymodel", "Steal Identity", "Copies the player's model to your ped", 0, false);// do we really need this?
+	steal_identity g_steal_identity("copymodel", "STEAL_IDENTITY", "STEAL_IDENTITY_DESC", 0, false); // do we really need this?
 }

@@ -20,6 +20,7 @@
 #include <network/snConnectToPeerTask.hpp>
 #include <rage/rlQueryPresenceAttributesContext.hpp>
 #include <rage/rlScHandle.hpp>
+#include <script/globals/GPBD_FM_3.hpp>
 
 namespace big::session
 {
@@ -35,45 +36,34 @@ namespace big::session
 
 	inline void join_type(eSessionType session)
 	{
-		*script_global(2695915).as<int*>() = (session == eSessionType::SC_TV ? 1 : 0);// If SC TV Then Enable Spectator Mode
+		*script_global(2695915).as<int*>() = (session == eSessionType::SC_TV ? 1 : 0); // If SC TV Then Enable Spectator Mode
 
 		if (session == eSessionType::LEAVE_ONLINE)
 			*script_global(1574589).at(2).as<int*>() = -1;
 		else
-			*script_global(1575017).as<int*>() = (int)session;
+			*script_global(1575020).as<int*>() = (int)session;
 
 		*script_global(1574589).as<int*>() = 1;
 		script::get_current()->yield(200ms);
 		*script_global(1574589).as<int*>() = 0;
 	}
 
-	static constexpr char const* weathers[] = {"EXTRASUNNY", "CLEAR", "CLOUDS", "SMOG", "FOGGY", "OVERCAST", "RAIN", "THUNDER", "CLEARING", "NEUTRAL", "SNOW", "BLIZZARD", "SNOWLIGHT", "XMAS", "HALLOWEEN"};
-
-	inline void local_weather()
-	{
-		MISC::CLEAR_OVERRIDE_WEATHER();
-
-		MISC::SET_OVERRIDE_WEATHER(weathers[g.session.local_weather]);
-
-		*script_global(262145).at(4752).as<bool*>() = g.session.local_weather == 13;
-	}
-
 	inline void set_fm_event_index(int index)
 	{
 		int idx = index / 32;
 		int bit = index % 32;
-		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(354).at(idx, 1).as<int*>(), bit);
-		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(347).at(idx, 1).as<int*>(), bit);
-		misc::set_bit(scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).at(205).at(idx, 1).as<int*>(), bit);
+		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(361).at(idx, 1).as<int*>(), bit);
+		misc::set_bit(scr_globals::gsbd_fm_events.at(11).at(353).at(idx, 1).as<int*>(), bit);
+		misc::set_bit((int*)&scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.ActiveFreemodeEvents[idx], bit);
 	}
 
 	inline void clear_fm_event_index(int index)
 	{
 		int idx = index / 32;
 		int bit = index % 32;
-		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(354).at(idx, 1).as<int*>(), bit);
-		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(347).at(idx, 1).as<int*>(), bit);
-		misc::clear_bit(scr_globals::gpbd_fm_3.at(self::id, scr_globals::size::gpbd_fm_3).at(10).at(205).at(idx, 1).as<int*>(), bit);
+		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(361).at(idx, 1).as<int*>(), bit);
+		misc::clear_bit(scr_globals::gsbd_fm_events.at(11).at(353).at(idx, 1).as<int*>(), bit);
+		misc::clear_bit((int*)&scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.ActiveFreemodeEvents[idx], bit);
 	}
 
 	inline void join_session(const rage::rlSessionInfo& info)
@@ -150,11 +140,11 @@ namespace big::session
 		int64_t args[arg_count] = {
 		    (int64_t)eRemoteEvent::GiveCollectible,
 		    (int64_t)self::id,
-		    (int64_t)col,  // iParam0
-		    (int64_t)index,// iParam1
-		    !uncomplete,   // bParam2
+		    (int64_t)col,   // iParam0
+		    (int64_t)index, // iParam1
+		    !uncomplete,    // bParam2
 		    true,
-		    0// bParam3
+		    0 // bParam3
 		};
 
 		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << target);

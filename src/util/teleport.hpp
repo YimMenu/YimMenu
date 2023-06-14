@@ -12,6 +12,9 @@ namespace big::teleport
 	{
 		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
 
+		if(ent == self::ped || ent == self::veh)
+			PED::SET_PED_COORDS_KEEP_VEHICLE(ent, coords.x, coords.y, coords.z);
+
 		if (ENTITY::IS_ENTITY_DEAD(ent, true))
 		{
 			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_PLAYER_IS_DEAD"_T.data());
@@ -36,9 +39,10 @@ namespace big::teleport
 			ENTITY::SET_ENTITY_COLLISION(hnd, false, false);
 			ENTITY::FREEZE_ENTITY_POSITION(hnd, true);
 
-			g.m_tp_position      = {coords.x, coords.y, coords.z};
-			g.m_tp_player_net_id = player->get_ped()->m_net_object->m_object_id;
-			g.m_tp_veh_net_id    = g_pointers->m_gta.m_handle_to_ptr(hnd)->m_net_object->m_object_id;
+			auto obj_id                      = player->get_ped()->m_net_object->m_object_id;
+			remote_player_teleport remote_tp = {obj_id, {coords.x, coords.y, coords.z}};
+
+			g.m_remote_player_teleports.emplace(g_pointers->m_gta.m_handle_to_ptr(hnd)->m_net_object->m_object_id, remote_tp);
 
 			if ((player->is_valid() && PED::IS_PED_IN_ANY_VEHICLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), false))
 			    || PLAYER::IS_REMOTE_PLAYER_IN_NON_CLONED_VEHICLE(player->id()))
@@ -58,6 +62,10 @@ namespace big::teleport
 			}
 
 			entity::delete_entity(hnd);
+
+			std::erase_if(g.m_remote_player_teleports, [obj_id](auto& obj) {
+				return obj.first == obj_id;
+			});
 
 			return true;
 		}
@@ -169,9 +177,9 @@ namespace big::teleport
 		if (!ENTITY::DOES_ENTITY_EXIST(ent))
 			return false;
 
-		Vector3 ent_dimensions_max{}, ent_pos{};
+		Vector3 ent_dimensions_max{}, ent_dimensions_min{}, ent_pos{};
 
-		MISC::GET_MODEL_DIMENSIONS(ENTITY::GET_ENTITY_MODEL(ent), nullptr, &ent_dimensions_max);
+		MISC::GET_MODEL_DIMENSIONS(ENTITY::GET_ENTITY_MODEL(ent), &ent_dimensions_min, &ent_dimensions_max);
 		ent_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, 0, 0, ent_dimensions_max.z);
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(self::ped, ent_pos.x, ent_pos.y, ent_pos.z, 0, 0, 0);
 

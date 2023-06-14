@@ -28,5 +28,5 @@ namespace big
 		}
 	};
 
-	send_to_apartment g_send_to_apartment("apartmenttp", "TP To Apartment", "Teleports the player to the specified apartment index", 1);
+	send_to_apartment g_send_to_apartment("apartmenttp", "TP_TO_APARTMENT", "TP_TO_APARTMENT_DESC", 1);
 }

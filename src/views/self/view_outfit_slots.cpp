@@ -52,7 +52,7 @@ namespace big
 				for (auto& item : props.items)
 					ss << item.id << " " << item.drawable_id << " " << item.texture_id << " ";
 				ImGui::SetClipboardText(ss.str().c_str());
-				g_notification_service->push("OUTFIT"_T.data(), "EXPORT_TO_CLIPBOARD"_T.data());
+				g_notification_service->push_success("OUTFIT"_T.data(), "EXPORT_TO_CLIPBOARD"_T.data());
 			});
 			ImGui::SameLine();
 

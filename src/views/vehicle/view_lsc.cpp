@@ -203,6 +203,17 @@ namespace big
 			});
 		}
 
+		ImGui::SameLine();
+		if (components::button("Max Performance"))
+		{
+			g_fiber_pool->queue_job([] {
+				vehicle::max_vehicle_performance(self::veh);
+				
+				// refresh mod names
+				player_vehicle = 0;
+			});
+		}
+
 		ImGui::Separator();
 
 		static char plate[9];

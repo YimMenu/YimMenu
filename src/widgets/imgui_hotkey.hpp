@@ -112,7 +112,7 @@ namespace ImGui
 
 		ImGui::RenderFrame(frame_bb.Min,
 		    frame_bb.Max,
-		    ImGui::GetColorU32(ImVec4(0.20f, 0.25f, 0.30f, 1.0f)),
+		    (ImColor)style.Colors[ImGuiCol_FrameBg],
 		    true,
 		    style.FrameRounding);
 

@@ -13,6 +13,7 @@
 
 #include <network/Network.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
+#include <script/globals/GlobalPlayerBD.hpp>
 
 namespace big
 {
@@ -124,6 +125,10 @@ namespace big
 			}
 		}
 
+		components::sub_title("Lobby Lock");
+		ImGui::Checkbox("Lock", &g.session.lock_session);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Blocks all players from joining. May not work on some modders.");
 		components::sub_title("DECLOAK"_T);
 		components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T, &g.session.decloak_players);
 
@@ -167,14 +172,14 @@ namespace big
 
 		if (ImGui::SliderInt("WANTED_LVL"_T.data(), &global_wanted_level, 0, 5))
 		{
-			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = global_wanted_level;
+			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].RemoteWantedLevelAmount = global_wanted_level;
 		}
 
 		ImGui::SameLine();
 		if (ImGui::Checkbox("FORCE"_T.data(), &g.session.wanted_level_all))
 		{
-			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(212).as<Player*>() = __rdtsc() + 32;
-			*scr_globals::globalplayer_bd.at(self::id, scr_globals::size::globalplayer_bd).at(213).as<int*>() = global_wanted_level;
+			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].RemoteWantedLevelPlayer = __rdtsc() + 32;
+			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].RemoteWantedLevelAmount = global_wanted_level;
 		}
 
 		components::command_button<"killall">({}, "KILL_ALL"_T);
@@ -187,6 +192,9 @@ namespace big
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("INCLUDING_YOU"_T.data());
 
+
+		components::command_button<"bringall">({});
+		ImGui::SameLine();
 		components::command_button<"giveweapsall">({});
 		ImGui::SameLine();
 		components::command_button<"remweapsall">({});

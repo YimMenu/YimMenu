@@ -5,7 +5,6 @@
 
 namespace big
 {
-
 	class ped_rain : looped_command
 	{
 		using looped_command::looped_command;
@@ -14,7 +13,7 @@ namespace big
 		{
 			for (auto ped : entity::get_entities(false, true))
 			{
-				if (!ENTITY::IS_ENTITY_IN_AIR(ped))
+				if (!ENTITY::IS_ENTITY_IN_AIR(ped) && entity::take_control_of(ped, 0))
 				{
 					Vector3 my_location = ENTITY::GET_ENTITY_COORDS(self::ped, 1);
 					my_location.x       = my_location.x + (rand() % 100 + (-50));
@@ -27,6 +26,6 @@ namespace big
 		}
 	};
 
-	ped_rain g_ped_rain("pedrain", "Rain Peds", "Will pour down and rain nearby peds.", g.world.nearby.ped_rain);
+	ped_rain g_ped_rain("pedrain", "Rain Peds", "Will pour down and rain nearby peds", g.world.nearby.ped_rain);
 
 }
