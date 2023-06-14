@@ -37,8 +37,6 @@ namespace big
 
 		memory::handle m_creator_warp_cheat_triggered_patch;
 
-		memory::handle m_ntqvm_caller;
-
 		memory::handle m_sound_overload_detour;
 
 		memory::handle m_disable_collision;
@@ -171,10 +169,6 @@ namespace big
 		rage::rlGamerInfo* m_player_info_gamer_info{}; // the gamer info that is applied to CPlayerInfo
 		CCommunications** m_communications{};
 
-		PVOID m_serialize_ped_inventory_data_node;
-		PVOID m_serialize_vehicle_gadget_data_node;
-		functions::get_vehicle_gadget_array_size m_get_vehicle_gadget_array_size;
-
 		PVOID m_handle_join_request;
 		functions::write_join_response_data m_write_join_response_data;
 
@@ -229,11 +223,7 @@ namespace big
 		functions::send_packet m_send_packet;
 		functions::connect_to_peer m_connect_to_peer;
 
-		PVOID m_fragment_physics_crash;
 		PVOID m_fragment_physics_crash_2;
-
-		PVOID m_infinite_train_crash;
-		functions::get_next_carriage m_get_next_carriage;
 
 		functions::get_entity_attached_to m_get_entity_attached_to;
 

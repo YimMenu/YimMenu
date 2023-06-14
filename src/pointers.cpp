@@ -442,7 +442,6 @@ namespace big
             }
         },
         // Received clone sync & Get sync tree for type & Get net object for player & Get sync type info & Get net object
-                //TODO
         {
             "RCS/GSTFT/GNOFP/GNO/GSTI",
             "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 83 EC 40 4C 8B EA",
@@ -678,33 +677,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_communications = ptr.add(3).rip().as<CCommunications**>();
-            }
-        },
-        // Serialize Ped Inventory Data Node
-        {
-            "SPIDN",
-            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 20 48 8B 02 48 8B F1 48 8B CA 48 8B FA FF 90",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_serialize_ped_inventory_data_node = ptr.as<PVOID>();
-            }
-        },
-        // Serialize Vehicle Gadget Data Node
-        {
-            "SVGDN",
-            "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 30 48 8B 02 48 8D",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_serialize_vehicle_gadget_data_node = ptr.as<PVOID>();
-            }
-        },
-        // Get Vehicle Gadget Array Size
-        {
-            "GVGAS",
-            "40 53 48 83 EC 40 33 DB E8",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_get_vehicle_gadget_array_size = ptr.as<functions::get_vehicle_gadget_array_size>();
             }
         },
         // Handle Join Request
@@ -1041,15 +1013,6 @@ namespace big
                 g_pointers->m_gta.m_connect_to_peer = ptr.as<functions::connect_to_peer>();
             }
         },
-        // Fragment Physics Crash
-        {
-            "FPC",
-            "E8 ? ? ? ? 44 8B 4D 1C",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_fragment_physics_crash = ptr.add(1).rip().as<PVOID>();
-            }
-        },
         // Fragment Physics Crash 2
         {
             "FPC2",
@@ -1066,16 +1029,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_clear_ped_tasks_network = ptr.add(1).rip().as<functions::clear_ped_tasks_network>();
-            }
-        },
-        // Infinite Train Crash
-        {
-            "ITC",
-            "E8 ? ? ? ? F3 44 0F 10 93 90 03 00 00",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_infinite_train_crash = ptr.add(1).rip().as<PVOID>();
-                g_pointers->m_gta.m_get_next_carriage    = ptr.add(1).rip().add(0x15).rip().as<functions::get_next_carriage>();
             }
         },
         // Get Entity Attached To
@@ -1311,15 +1264,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_creator_warp_cheat_triggered_patch = ptr;
-            }
-        },
-        // NTQVM Caller
-        {
-            "NTQVMC",
-            "66 0F 6F 0D ? ? ? ? 66 0F 6F 05 ? ? ? ? 66 0F 66 C4",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_ntqvm_caller = ptr;
             }
         },
         // Sound Overload Detour
