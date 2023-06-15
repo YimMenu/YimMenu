@@ -1,16 +1,29 @@
-#include "backend/looped/looped.hpp"
-#include "util/vehicle.hpp"
+#include "backend/looped_command.hpp"
+#include "natives.hpp"
 
 namespace big
 {
-	void looped::vehicle_keep_engine_running()
+	class keep_engine_running : looped_command
 	{
-		if (!g.vehicle.keep_engine_running && !g.vehicle.disable_engine_auto_start)
-			return;
+		using looped_command::looped_command;
 
-		if (g.vehicle.keep_engine_running)
-			vehicle::keep_engine_running(self::veh, true);
-		else
-			vehicle::keep_engine_running(self::veh, false);
-	}
+		virtual void on_tick() override
+		{
+			if (ENTITY::DOES_ENTITY_EXIST(self::veh) && !VEHICLE::GET_IS_VEHICLE_ENGINE_RUNNING(self::veh))
+			{
+				VEHICLE::SET_VEHICLE_KEEP_ENGINE_ON_WHEN_ABANDONED(self::veh, true);
+			}
+		}
+
+		virtual void on_disable() override
+		{
+			if (ENTITY::DOES_ENTITY_EXIST(self::veh) && VEHICLE::GET_IS_VEHICLE_ENGINE_RUNNING(self::veh))
+			{
+				VEHICLE::SET_VEHICLE_KEEP_ENGINE_ON_WHEN_ABANDONED(self::veh, false);
+			}
+		}
+	};
+
+	keep_engine_running g_keep_engine_running("keepengine", "Keep Engine Running", "Keeps the engine running when you exit the vehicle",
+	    g.vehicle.keep_engine_running);
 }

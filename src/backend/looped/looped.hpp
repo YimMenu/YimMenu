@@ -42,7 +42,6 @@ namespace big
 
 		static void vehicle_auto_drive();
 		static void vehicle_boost_behavior();
-		static void vehicle_keep_engine_running();
 		static void vehicle_ls_customs();
 		static void vehicle_rainbow_paint();
 

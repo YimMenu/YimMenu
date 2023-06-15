@@ -78,7 +78,6 @@ namespace big
 		{
 			looped::vehicle_auto_drive();
 			looped::vehicle_boost_behavior();
-			looped::vehicle_keep_engine_running();
 			looped::derail_train();
 			looped::drive_train();
 

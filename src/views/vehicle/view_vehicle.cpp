@@ -53,7 +53,7 @@ namespace big
 		ImGui::SameLine();
 		ImGui::Checkbox("CHANGE_STATE_IMMEDIATELY"_T.data(), &g.vehicle.change_engine_state_immediately);
 		ImGui::SameLine();
-		ImGui::Checkbox("KEEP_ENGINE_ON"_T.data(), &g.vehicle.keep_engine_running);
+		components::command_checkbox<"keepengine">();
 
 		ImGui::Separator();
 
