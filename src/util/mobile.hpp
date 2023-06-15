@@ -112,7 +112,7 @@ namespace big::mobile
 
 		inline void summon_vehicle_by_index(int veh_idx)
 		{
-			if (*scr_globals::mechanic_global.at(979).as<int*>() != -1)
+			if (*scr_globals::mechanic_global.at(985).as<int*>() != -1)
 				return g_notification_service->push_warning("Vehicle", "Mechanic is not ready to deliver a vehicle right now.");
 
 			if (g.clone_pv.spawn_inside && self::veh)
@@ -127,11 +127,11 @@ namespace big::mobile
 			// only do this when spawn inside is enabled otherwise the vehicle will spawn relatively far away from players
 			if (g.clone_pv.spawn_inside)
 			{
-				*scr_globals::mechanic_global.at(936).as<int*>() = 1;// disable vehicle node distance check
+				*scr_globals::mechanic_global.at(942).as<int*>() = 1;// disable vehicle node distance check
 			}
-			*scr_globals::mechanic_global.at(923).as<int*>() = 1;// tell freemode to spawn our vehicle
-			*scr_globals::mechanic_global.at(982).as<int*>() = 0;// required
-			*scr_globals::mechanic_global.at(979).as<int*>() = veh_idx;
+			*scr_globals::mechanic_global.at(928).as<int*>() = 1;// tell freemode to spawn our vehicle
+			*scr_globals::mechanic_global.at(988).as<int*>() = 0;// required
+			*scr_globals::mechanic_global.at(985).as<int*>() = veh_idx;
 
 			script::get_current()->yield(100ms);
 
@@ -140,7 +140,7 @@ namespace big::mobile
 				*script_local(freemode_thread, 18630).at(176).as<int*>() = 0;// spawn vehicle instantly
 
 			// blocking call till vehicle is delivered
-			notify::busy_spinner("Delivering vehicle...", scr_globals::mechanic_global.at(979).as<int*>(), -1);
+			notify::busy_spinner("Delivering vehicle...", scr_globals::mechanic_global.at(985).as<int*>(), -1);
 
 			if (g.clone_pv.spawn_inside)
 			{
