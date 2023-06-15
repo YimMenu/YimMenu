@@ -26,6 +26,16 @@ namespace big
 				ImGui::Text(std::format("Players: {}/{}", network_player_mgr->m_player_count, network_player_mgr->m_player_limit)
 				                .c_str());
 
+			if (g.window.ingame_overlay.show_position && g_local_player)
+			{
+				ImGui::Separator();
+
+				ImGui::Text("Pos: %.2f, %.2f, %.2f",
+				    g_local_player->get_position()->x,
+				    g_local_player->get_position()->y,
+				    g_local_player->get_position()->z);
+			}
+
 			// can't easily get used item count using pools, so keeping replay interface for now
 			if (auto replay_interface = *g_pointers->m_gta.m_replay_interface; g.window.ingame_overlay.show_replay_interface)
 			{

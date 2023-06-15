@@ -34,6 +34,7 @@ namespace big
 		ImGui::BeginGroup();
 
 		ImGui::Checkbox("Show Replay Interface", &g.window.ingame_overlay.show_replay_interface);
+		ImGui::Checkbox("Show Position", &g.window.ingame_overlay.show_position);
 		ImGui::Checkbox("Show Game Version", &g.window.ingame_overlay.show_game_versions);
 
 		ImGui::EndGroup();

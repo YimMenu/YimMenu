@@ -733,9 +733,10 @@ namespace big
 				bool show_players          = true;
 				bool show_time             = true;
 				bool show_replay_interface = true;
+				bool show_position         = false;
 				bool show_game_versions    = true;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ingame_overlay, opened, show_with_menu_opened, show_fps, show_players, show_time, show_replay_interface, show_game_versions)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ingame_overlay, opened, show_with_menu_opened, show_fps, show_players, show_time, show_replay_interface, show_position, show_game_versions)
 			} ingame_overlay{};
 
 			struct vehicle_control
