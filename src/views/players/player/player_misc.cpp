@@ -27,7 +27,7 @@ namespace big
 			ImGui::Checkbox("SEMI_GODMODE"_T.data(), &g_player_service->get_selected()->semi_godmode);
 
 			components::button("Gooch Test", [] {
-				*script_global(1890140).at(244).at(1).as<Player*>() = g_player_service->get_selected()->id();
+				*script_global(1890378).at(289).at(1).as<Player*>() = g_player_service->get_selected()->id();
 				scripts::start_launcher_script(171);
 			});
 
