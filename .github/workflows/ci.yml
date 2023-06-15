@@ -12,13 +12,6 @@ jobs:
       - name: Check CMake version
         run: cmake --version
 
-      - name: Cache build/
-        id: cache-build
-        uses: actions/cache@v3
-        with:
-          path: build
-          key: ${{ runner.os }}-build
-
       - name: Setup MSVC environment
         uses: ilammy/msvc-dev-cmd@v1
         with:
