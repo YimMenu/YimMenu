@@ -3,11 +3,11 @@
 #include "gta_util.hpp"
 #include "script_local.hpp"
 #include "util/scripts.hpp"
-#include "views/view.hpp"
-#include "views/network/missions/hunt_the_beast.hpp"
-#include "views/network/missions/king_of_the_castle.hpp"
 #include "views/network/missions/cp_collection.hpp"
 #include "views/network/missions/criminal_damage.hpp"
+#include "views/network/missions/hunt_the_beast.hpp"
+#include "views/network/missions/king_of_the_castle.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -72,16 +72,16 @@ namespace big
 
 		ImGui::BeginGroup();
 		components::button("One-On-One Deathmatch", [] {
-			scripts::start_launcher_script(197);
+			scripts::start_launcher_script(204);
 		});
 		components::button("Impromptu Race", [] {
 			scripts::start_launcher_script(16);
 		});
 		components::button("Flight School", [] {
-			scripts::start_launcher_script(196);
+			scripts::start_launcher_script(203);
 		});
 		components::button("Golf", [] {
-			scripts::start_launcher_script(193);
+			scripts::start_launcher_script(200);
 		});
 		components::button("Tutorial", [] {
 			scripts::start_launcher_script(20);
@@ -94,19 +94,28 @@ namespace big
 
 		ImGui::BeginGroup();
 		components::button("Gunslinger", [] {
-			scripts::start_launcher_script(211);
+			scripts::start_launcher_script(218);
 		});
 		components::button("Space Monkey", [] {
-			scripts::start_launcher_script(216);
+			scripts::start_launcher_script(223);
 		});
 		components::button("Wizard", [] {
-			scripts::start_launcher_script(212);
+			scripts::start_launcher_script(219);
 		});
 		components::button("QUB3D", [] {
-			scripts::start_launcher_script(217);
+			scripts::start_launcher_script(224);
 		});
 		components::button("Camhedz", [] {
-			scripts::start_launcher_script(218);
+			scripts::start_launcher_script(225);
+		});
+		ImGui::EndGroup();
+
+		ImGui::BeginGroup();
+		components::button("Ghost Hunt", [] {
+			scripts::start_launcher_script(174);
+		});
+		components::button("Possesed Animals", [] {
+			scripts::start_launcher_script(179);
 		});
 		ImGui::EndGroup();
 
@@ -121,7 +130,7 @@ namespace big
 		if (check_script(RAGE_JOAAT("am_king_of_the_castle")))
 			render_king_of_the_castle_ui();
 
-		if(check_script(RAGE_JOAAT("am_hunt_the_beast")))
+		if (check_script(RAGE_JOAAT("am_hunt_the_beast")))
 			render_hunt_the_beast_ui();
 
 		if (!mission_found)
