@@ -279,16 +279,20 @@ namespace big
 				ImGui::Text("Example:\n$MPX_CHAR_NAME\n5:name\n$MPX_DEFAULT_STATS_SET\n1:0");
 				components::button("Import From Clipboard", [] {
 					std::string clipboard_text     = ImGui::GetClipboardText();
-					std::vector<std::string> lines = split(clipboard_text, '\n');
+					std::vector<std::string> lines = split(clipboard_text, '\r\n');
 					if (!lines.size() || lines.size() % 2)
 						return;
 					for (size_t i = 0; i < lines.size(); i += 2)
 					{
+						lines[i].erase(std::remove(lines[i].begin(), lines[i].end(), '\n'), lines[i].cend());
+						lines[i].erase(std::remove(lines[i].begin(), lines[i].end(), '\r'), lines[i].cend());
+						lines[i + 1].erase(std::remove(lines[i + 1].begin(), lines[i + 1].end(), '\n'), lines[i + 1].cend());
+						lines[i + 1].erase(std::remove(lines[i + 1].begin(), lines[i + 1].end(), '\r'), lines[i + 1].cend());
 						if (lines[i + 1] == "")
 							continue;
 						std::vector<std::string> strs = split(lines[i + 1], ':');
 						if (strs.size() == 1)
-							strs.push_back("");//In case the string is to set a ""
+							strs.push_back(""); //In case the string is to set a ""
 						int type = get_text_value<int>(strs[0]);
 						switch (type)
 						{
@@ -372,11 +376,15 @@ namespace big
 				ImGui::Text("Example:\n31786\n0:123\n31786 32786\n1:1");
 				components::button("Import From Clipboard", [] {
 					std::string clipboard_text     = ImGui::GetClipboardText();
-					std::vector<std::string> lines = split(clipboard_text, '\n');
+					std::vector<std::string> lines = split(clipboard_text, '\r\n');
 					if (!lines.size() || lines.size() % 2)
 						return;
 					for (size_t i = 0; i < lines.size(); i += 2)
 					{
+						lines[i].erase(std::remove(lines[i].begin(), lines[i].end(), '\n'), lines[i].cend());
+						lines[i].erase(std::remove(lines[i].begin(), lines[i].end(), '\r'), lines[i].cend());
+						lines[i + 1].erase(std::remove(lines[i + 1].begin(), lines[i + 1].end(), '\n'), lines[i + 1].cend());
+						lines[i + 1].erase(std::remove(lines[i + 1].begin(), lines[i + 1].end(), '\r'), lines[i + 1].cend());
 						if (lines[i + 1] == "")
 							continue;
 						std::vector<std::string> strs = split(lines[i + 1], ':');
