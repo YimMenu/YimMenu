@@ -52,6 +52,8 @@ namespace big
 		ImGui::Checkbox("DISABLE_ENGINE_AUTO_START"_T.data(), &g.vehicle.disable_engine_auto_start);
 		ImGui::SameLine();
 		ImGui::Checkbox("CHANGE_STATE_IMMEDIATELY"_T.data(), &g.vehicle.change_engine_state_immediately);
+		ImGui::SameLine();
+		ImGui::Checkbox("KEEP_ENGINE_ON"_T.data(), &g.vehicle.keep_engine_running);
 
 		ImGui::Separator();
 

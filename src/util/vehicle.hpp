@@ -48,7 +48,7 @@ namespace big::vehicle
 		{
 			Vector3 min, max, result;
 			MISC::GET_MODEL_DIMENSIONS(hash, &min, &max);
-			result = max - min;
+			result   = max - min;
 			y_offset = result.y;
 		}
 		else if (!spawn_inside)
@@ -613,15 +613,15 @@ namespace big::vehicle
 
 	inline void max_vehicle_performance(Vehicle veh)
 	{
-		if(entity::take_control_of(veh))
+		if (entity::take_control_of(veh))
 		{
 			VehicleModType perfomance_mods[] = {MOD_ENGINE, MOD_BRAKES, MOD_TRANSMISSION, MOD_SUSPENSION, MOD_ARMOR, MOD_NITROUS, MOD_TURBO};
 			VEHICLE::SET_VEHICLE_MOD_KIT(veh, 0);
 
-			for(auto mod_slot : perfomance_mods)
+			for (auto mod_slot : perfomance_mods)
 			{
-				if(mod_slot != MOD_NITROUS && mod_slot != MOD_TURBO)
-					VEHICLE::SET_VEHICLE_MOD(veh, mod_slot, VEHICLE::GET_NUM_VEHICLE_MODS(veh, mod_slot) -1, true);
+				if (mod_slot != MOD_NITROUS && mod_slot != MOD_TURBO)
+					VEHICLE::SET_VEHICLE_MOD(veh, mod_slot, VEHICLE::GET_NUM_VEHICLE_MODS(veh, mod_slot) - 1, true);
 				else
 					VEHICLE::TOGGLE_VEHICLE_MOD(veh, mod_slot, true);
 			}
@@ -634,6 +634,15 @@ namespace big::vehicle
 			VEHICLE::SET_VEHICLE_ENGINE_ON(current_vehicle, state, immediately, disable_auto_start);
 		else
 			return g_notification_service->push_warning("VEHICLE"_T.data(), "PLEASE_ENTER_VEHICLE"_T.data());
+	}
+
+	inline bool keep_engine_running(Vehicle current_vehicle, bool state)
+	{
+		if (!ENTITY::DOES_ENTITY_EXIST(current_vehicle) || !ENTITY::IS_ENTITY_A_VEHICLE(current_vehicle) || !PED::IS_PED_IN_ANY_VEHICLE(self::ped, false) || !entity::take_control_of(current_vehicle))
+			return false;
+
+		VEHICLE::SET_VEHICLE_KEEP_ENGINE_ON_WHEN_ABANDONED(current_vehicle, state);
+		return true;
 	}
 
 	inline void downgrade(Vehicle vehicle)
