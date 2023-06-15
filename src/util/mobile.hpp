@@ -13,7 +13,7 @@
 
 namespace big::mobile
 {
-	inline auto player_global = script_global(2657589);
+	inline auto player_global = script_global(2657704);
 
 	namespace util
 	{
@@ -33,27 +33,27 @@ namespace big::mobile
 	{
 		inline void request_ammo_drop()
 		{
-			*script_global(scr_globals::mechanic_global).at(886).as<int*>() = 1;
+			*script_global(scr_globals::mechanic_global).at(891).as<int*>() = 1;
 		}
 
 		inline void request_boat_pickup()
 		{
-			*script_global(scr_globals::mechanic_global).at(887).as<int*>() = 1;
+			*script_global(scr_globals::mechanic_global).at(892).as<int*>() = 1;
 		}
 
 		inline void request_helicopter_pickup()
 		{
-			*script_global(scr_globals::mechanic_global).at(888).as<int*>() = 1;
+			*script_global(scr_globals::mechanic_global).at(893).as<int*>() = 1;
 		}
 
 		inline void request_backup_helicopter()
 		{
-			*script_global(scr_globals::mechanic_global).at(4484).as<int*>() = 1;
+			*script_global(scr_globals::mechanic_global).at(4491).as<int*>() = 1;
 		}
 
 		inline void request_airstrike()
 		{
-			*script_global(scr_globals::mechanic_global).at(4485).as<int*>() = 1;
+			*script_global(scr_globals::mechanic_global).at(4492).as<int*>() = 1;
 		}
 
 

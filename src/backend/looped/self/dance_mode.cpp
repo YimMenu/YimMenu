@@ -66,7 +66,7 @@ namespace big
 
 		if (g.self.dance_mode && g.m_dance_thread->m_handler)
 		{
-			*script_global(1950102).as<bool*>() = true;
+			*script_global(1950837).as<bool*>() = true;
 			scr_functions::dance_loop.call(g.m_dance_thread, g.m_dance_program, {});
 		}
 	}
