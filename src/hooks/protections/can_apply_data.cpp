@@ -676,7 +676,7 @@ namespace big
 			case RAGE_JOAAT("CTrainGameStateDataNode"):
 			{
 				const auto train_node = (CTrainGameStateDataNode*)(node);
-				if (train_node->m_track_id < 0 || train_node->m_track_id >= 27)
+				if (int(train_node->m_track_id) >= 27)
 				{
 					notify::crash_blocked(sender, "out of bound train track index");
 					return true;
