@@ -13,7 +13,7 @@
 
 namespace big::mobile
 {
-	inline auto player_global = script_global(2657589);
+	inline auto player_global = script_global(2657704);
 
 	namespace util
 	{
