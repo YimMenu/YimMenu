@@ -636,15 +636,6 @@ namespace big::vehicle
 			return g_notification_service->push_warning("VEHICLE"_T.data(), "PLEASE_ENTER_VEHICLE"_T.data());
 	}
 
-	inline bool keep_engine_running(Vehicle current_vehicle, bool state)
-	{
-		if (!ENTITY::DOES_ENTITY_EXIST(current_vehicle) || !ENTITY::IS_ENTITY_A_VEHICLE(current_vehicle) || !PED::IS_PED_IN_ANY_VEHICLE(self::ped, false) || !entity::take_control_of(current_vehicle))
-			return false;
-
-		VEHICLE::SET_VEHICLE_KEEP_ENGINE_ON_WHEN_ABANDONED(current_vehicle, state);
-		return true;
-	}
-
 	inline void downgrade(Vehicle vehicle)
 	{
 		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
