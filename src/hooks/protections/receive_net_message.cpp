@@ -6,6 +6,7 @@
 #include "gta/script_id.hpp"
 #include "gta_util.hpp"
 #include "hooking.hpp"
+#include "lua/lua_manager.hpp"
 #include "natives.hpp"
 #include "services/players/player_service.hpp"
 #include "util/session.hpp"
@@ -127,6 +128,8 @@ namespace big
 
 					if (g.session.chat_commands && message[0] == g.session.chat_command_prefix)
 						command::process(std::string(message + 1), std::make_shared<chat_command_context>(player));
+					else
+						g_lua_manager->trigger_event<"chat_message_received">(player->id(), message);
 				}
 				break;
 			}

@@ -15,6 +15,7 @@ include(scripts/pugixml.cmake)
 include(scripts/json.cmake)
 include(scripts/cpr.cmake)
 include(scripts/zydis.cmake)
+include(scripts/lua.cmake)
 
 message("\nFetching custom modules")
 include(scripts/imgui.cmake)
@@ -46,7 +47,7 @@ target_include_directories(YimMenu PRIVATE
 )
 
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr Zydis)
+target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr Zydis lua_static)
 
 # Warnings as errors
 set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)

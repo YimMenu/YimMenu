@@ -154,7 +154,7 @@ namespace big::vehicle
 
 	inline bool repair(Vehicle veh)
 	{
-		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh))
+		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh, 0))
 		{
 			return false;
 		}
@@ -607,6 +607,23 @@ namespace big::vehicle
 				{
 					VEHICLE::SET_VEHICLE_MOD(veh, slot, selected_mod, true);
 				}
+			}
+		}
+	}
+
+	inline void max_vehicle_performance(Vehicle veh)
+	{
+		if(entity::take_control_of(veh))
+		{
+			VehicleModType perfomance_mods[] = {MOD_ENGINE, MOD_BRAKES, MOD_TRANSMISSION, MOD_SUSPENSION, MOD_ARMOR, MOD_NITROUS, MOD_TURBO};
+			VEHICLE::SET_VEHICLE_MOD_KIT(veh, 0);
+
+			for(auto mod_slot : perfomance_mods)
+			{
+				if(mod_slot != MOD_NITROUS && mod_slot != MOD_TURBO)
+					VEHICLE::SET_VEHICLE_MOD(veh, mod_slot, VEHICLE::GET_NUM_VEHICLE_MODS(veh, mod_slot) -1, true);
+				else
+					VEHICLE::TOGGLE_VEHICLE_MOD(veh, mod_slot, true);
 			}
 		}
 	}

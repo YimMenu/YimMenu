@@ -44,5 +44,5 @@ namespace big
 		}
 	};
 
-	oom_kick g_oom_kick("oomkick", "OOM Kick", "Causes the player to be kicked with an alert. This kick has a high chance of backfiring in its current state", 0, false);
+	oom_kick g_oom_kick("oomkick", "OOM_KICK_CMD", "OOM_KICK_CMD_DESC", 0, false);
 }

@@ -666,6 +666,12 @@ namespace big
 		}
 		case eNetworkEvents::EXPLOSION_EVENT:
 		{
+			if (plyr && plyr->block_explosions)
+			{
+				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				return;
+			}
+
 			scan_explosion_event(source_player, buffer);
 			break;
 		}

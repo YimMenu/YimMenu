@@ -21,5 +21,5 @@ namespace big
 		}
 	};
 
-	give_armor g_give_armor("givearmor", "Give Armor", "Gives the player some armor", 0);
+	give_armor g_give_armor("givearmor", "GIVE_ARMOR", "GIVE_ARMOR_DESC", 0);
 }

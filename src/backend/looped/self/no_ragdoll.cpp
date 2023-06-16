@@ -20,5 +20,5 @@ namespace big
 		}
 	};
 
-	no_ragdoll g_no_ragdoll("noragdoll", "No Ragdoll", "Prevents you from ragdolling", g.self.no_ragdoll);
+	no_ragdoll g_no_ragdoll("noragdoll", "NO_RAGDOLL", "NO_RAGDOLL_DESC", g.self.no_ragdoll);
 }

@@ -49,7 +49,6 @@ namespace big
 		
 		void start_update_loop();
 		void update_player_states();
-		void invalidate_player_states();
 	};
 
 	inline player_database_service* g_player_database_service;

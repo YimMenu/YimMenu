@@ -35,6 +35,10 @@ namespace big
 		components::command_checkbox<"nophone">();
 		components::command_checkbox<"infoxy">();
 		components::command_checkbox<"fastrespawn">();
+		components::command_checkbox<"invis">();
+		if (g.self.invisibility)
+			components::command_checkbox<"localvis">(); // TODO: does nothing in SP
+		components::command_checkbox<"nocollision">();
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
@@ -49,27 +53,81 @@ namespace big
 			components::command_checkbox<"beastjump">();
 		if (!g.self.beast_jump)
 			components::command_checkbox<"superjump">();
+
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		components::command_checkbox<"invis">();
-		if (g.self.invisibility)
-			components::command_checkbox<"localvis">(); // TODO: does nothing in SP
 		components::command_checkbox<"cleanloop">();
-		components::command_checkbox<"nocollision">();
 		components::command_checkbox<"mobileradio">();
 		components::command_checkbox<"superman">();
 
 		ImGui::Checkbox("DANCE_MODE"_T.data(), &g.self.dance_mode);
 
-		ImGui::EndGroup();
+		components::command_checkbox<"orbitaldrone">();
+		components::options_modal("Orbital drone", [] {
+			ImGui::Separator();
+			ImGui::BeginGroup();
+			ImGui::Text("ORBITAL_DRONE_USAGE_DESCR"_T.data());
+			ImGui::EndGroup();
+			ImGui::Separator();
 
-		components::sub_title("PTFX Styles");
+			ImGui::BeginGroup();
+			ImGui::Checkbox("ORBITAL_DRONE_AUTO_LOCK_ON_PLAYER"_T.data(), &g.world.orbital_drone.detect_player);
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::BeginTooltip();
+				ImGui::Text("ORBITAL_DRONE_AUTO_LOCK_ON_PLAYER_TOOLTIP"_T.data());
+				ImGui::EndTooltip();
+			}
+			ImGui::Text("ORBITAL_DRONE_HIGH_SPEED_MULTIPLIER"_T.data());
+			ImGui::SliderFloat("##fastspeed", &g.world.orbital_drone.nav_ovverride_fast, 1.f, 10.f);
+			ImGui::Text("ORBITAL_DRONE_LOW_SPEED_MULTIPLIER"_T.data());
+			ImGui::SliderFloat("##slowspeed", &g.world.orbital_drone.nav_ovverride_slow, 0.f, 1.f);
+			ImGui::EndGroup();
+		});
+
+		ImGui::Checkbox("SETTINGS_CONTEXT_MENU"_T.data(), &g.context_menu.enabled);
+		components::options_modal("SETTINGS_CONTEXT_MENU"_T.data(), [] {
+			ImGui::Text("SETTINGS_CONTEXT_MENU_ENTITY_TYPES"_T.data());
+			ImGui::CheckboxFlags("SETTINGS_CONTEXT_MENU_ENTITY_TYPE_OBJECT"_T.data(),
+			    reinterpret_cast<int*>(&g.context_menu.allowed_entity_types),
+			    static_cast<int>(ContextEntityType::OBJECT));
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("SETTINGS_CONTEXT_MENU_ENTITY_TYPE_PED"_T.data(),
+			    reinterpret_cast<int*>(&g.context_menu.allowed_entity_types),
+			    static_cast<int>(ContextEntityType::PED));
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("SETTINGS_CONTEXT_MENU_ENTITY_TYPE_PLAYER"_T.data(),
+			    reinterpret_cast<int*>(&g.context_menu.allowed_entity_types),
+			    static_cast<int>(ContextEntityType::PLAYER));
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("SETTINGS_CONTEXT_MENU_ENTITY_TYPE_VEHICLE"_T.data(),
+			    reinterpret_cast<int*>(&g.context_menu.allowed_entity_types),
+			    static_cast<int>(ContextEntityType::VEHICLE));
+
+			static ImVec4 selected_option_color = ImGui::ColorConvertU32ToFloat4(g.context_menu.selected_option_color);
+			ImGui::Text("SETTINGS_CONTEXT_MENU_COLOR"_T.data());
+			if (ImGui::ColorEdit4("###BSelected Option Color##cm_picker", (float*)&selected_option_color, ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoSidePreview))
+			{
+				g.context_menu.selected_option_color = ImGui::ColorConvertFloat4ToU32(selected_option_color);
+			}
+
+			ImGui::Checkbox("SETTINGS_CONTEXT_MENU_BOUNDING_BOX"_T.data(), &g.context_menu.bounding_box_enabled);
+
+			if (g.context_menu.bounding_box_enabled)
+			{
+				static ImVec4 bounding_box_color = ImGui::ColorConvertU32ToFloat4(g.context_menu.bounding_box_color);
+				ImGui::Text("SETTINGS_CONTEXT_MENU_BOUNDING_BOX_COLOR"_T.data());
+				if (ImGui::ColorEdit4("###Bounding Box Color##cm_picker", (float*)&bounding_box_color, ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoSidePreview))
+				{
+					g.context_menu.bounding_box_color = ImGui::ColorConvertFloat4ToU32(bounding_box_color);
+				}
+			}
+		});
 
 		components::command_checkbox<"ptfx">();
-		if (g.self.ptfx_effects.show)
-		{
+		components::options_modal("PTFX", [] {
 			ImGui::SliderFloat("PTFX Size", &g.self.ptfx_effects.size, 0.1f, 2.f);
 			if (ImGui::BeginCombo("Asset", ptfx_named[g.self.ptfx_effects.select].friendly_name))
 			{
@@ -102,8 +160,26 @@ namespace big
 
 				ImGui::EndCombo();
 			}
-		}
+		});
 
+		ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.self.never_wanted);
+		components::options_modal("Police", [] {
+			ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.self.never_wanted);
+			components::command_button<"clearwantedlvl">();
+			if (!g.self.never_wanted)
+			{
+				ImGui::Checkbox("FORCE_WANTED_LVL"_T.data(), &g.self.force_wanted_level);
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("FORCE_WANTED_LVL_INFO"_T.data());
+				ImGui::Text("WANTED_LVL"_T.data());
+				if (ImGui::SliderInt("###wanted_level", &g.self.wanted_level, 0, 5) && !g.self.force_wanted_level && g_local_player != nullptr)
+				{
+					g_local_player->m_player_info->m_wanted_level = g.self.wanted_level;
+				}
+			}
+		});
+
+		ImGui::EndGroup();
 
 		ImGui::Separator();
 
@@ -162,26 +238,6 @@ namespace big
 		ImGui::Checkbox("WATER"_T.data(), &g.self.proof_water);
 
 		ImGui::EndGroup();
-
-		ImGui::Separator();
-
-		components::sub_title("POLICE"_T);
-
-		components::command_button<"clearwantedlvl">();
-
-		ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.self.never_wanted);
-
-		if (!g.self.never_wanted)
-		{
-			ImGui::Checkbox("FORCE_WANTED_LVL"_T.data(), &g.self.force_wanted_level);
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("FORCE_WANTED_LVL_INFO"_T.data());
-			ImGui::Text("WANTED_LVL"_T.data());
-			if (ImGui::SliderInt("###wanted_level", &g.self.wanted_level, 0, 5) && !g.self.force_wanted_level && g_local_player != nullptr)
-			{
-				g_local_player->m_player_info->m_wanted_level = g.self.wanted_level;
-			}
-		}
 
 		ImGui::Separator();
 

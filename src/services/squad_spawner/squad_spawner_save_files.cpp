@@ -61,7 +61,7 @@ namespace big
 			{
 				write << std::setw(4) << j << std::endl;
 				write.close();
-				g_notification_service->push("Squad spawner", std::string("Succesfully saved ").append(s.m_name));
+				g_notification_service->push_success("Squad spawner", std::string("Succesfully saved ").append(s.m_name));
 				fetch_squads();
 				return true;
 			}

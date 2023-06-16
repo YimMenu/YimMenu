@@ -10,7 +10,8 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if (self::veh && PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_VEH_HANDBRAKE))
+			PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_VEH_HANDBRAKE, false);
+			if (self::veh && PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_VEH_HANDBRAKE))
 			{
 				ENTITY::APPLY_FORCE_TO_ENTITY(self::veh, 1, 0.0, 0.0, 20, 0.0, 0.0, 0.0, 0, 0, 1, 1, 0, 1);
 			}
