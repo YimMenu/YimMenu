@@ -31,6 +31,29 @@ namespace big
 			}
 		});
 
+		// The function below is causing the error
+		/*
+      auto valueButton = [](const char* label, const char* tooltip, std::function<void()> callback) {
+			ImGui::Button(label, ImVec2(45, 45));
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip(tooltip);
+			if (ImGui::IsItemClicked())
+				callback();
+		};
+    */
+		// The error is: 'drawable_id' cannot be modified because it is being accessed through a const object
+		// How can I fix this?
+		// I tried to remove the const from the function but it didn't work
+		// I also tried to remove the const from the struct but it didn't work either
+		// Help me please
+		auto valueButton = [](const char* label, const char* tooltip, std::function<void()> callback) {
+			ImGui::Button(label, ImVec2(45, 45));
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip(tooltip);
+			if (ImGui::IsItemClicked())
+				callback();
+		};
+
 		components::button("OUTFIT_RANDOM_COMPONENT"_T, [] {
 			ped::set_ped_random_component_variation(self::ped);
 		});
@@ -93,23 +116,19 @@ namespace big
 		for (auto& item : components.items)
 		{
 			ImGui::BeginGroup();
-			ImGui::Button("+", ImVec2(45, 0));
-			if (ImGui::IsItemClicked())
-			{
+			valueButton("+", "Increase", [&item] {
 				item.drawable_id = std::min(item.drawable_id + 1, item.drawable_id_max);
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, 0, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
 				});
-			}
+			});
 			ImGui::SameLine();
-			ImGui::Button("-", ImVec2(45, 0));
-			if (ImGui::IsItemClicked())
-			{
+			valueButton("-", "Decrease", [&item] {
 				item.drawable_id = std::max(item.drawable_id - 1, 0);
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, 0, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
 				});
-			}
+			});
 			ImGui::EndGroup();
 
 			ImGui::SameLine();
@@ -130,23 +149,19 @@ namespace big
 		for (auto& item : components.items)
 		{
 			ImGui::BeginGroup();
-			ImGui::Button("+", ImVec2(45, 0));
-			if (ImGui::IsItemClicked())
-			{
+			valueButton("+", "Increase", [&item] {
 				item.texture_id = std::min(item.texture_id + 1, item.texture_id_max);
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, item.texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
 				});
-			}
+			});
 			ImGui::SameLine();
-			ImGui::Button("-", ImVec2(45, 0));
-			if (ImGui::IsItemClicked())
-			{
+			valueButton("-", "Decrease", [&item] {
 				item.texture_id = std::max(item.texture_id - 1, 0);
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, item.texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
 				});
-			}
+			});
 			ImGui::EndGroup();
 
 			ImGui::SameLine();
@@ -167,9 +182,7 @@ namespace big
 		for (auto& item : props.items)
 		{
 			ImGui::BeginGroup();
-			ImGui::Button("+", ImVec2(45, 0));
-			if (ImGui::IsItemClicked())
-			{
+			valueButton("+", "Increase", [&item] {
 				item.drawable_id = std::min(item.drawable_id + 1, item.drawable_id_max);
 				g_fiber_pool->queue_job([item] {
 					if (item.drawable_id == -1)
@@ -177,11 +190,9 @@ namespace big
 					else
 						PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, 0, TRUE, 1);
 				});
-			}
+			});
 			ImGui::SameLine();
-			ImGui::Button("-", ImVec2(45, 0));
-			if (ImGui::IsItemClicked())
-			{
+			valueButton("-", "Decrease", [&item] {
 				item.drawable_id = std::max(item.drawable_id - 1, -1);
 				g_fiber_pool->queue_job([item] {
 					if (item.drawable_id == -1)
@@ -189,7 +200,7 @@ namespace big
 					else
 						PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, 0, TRUE, 1);
 				});
-			}
+			});
 			ImGui::EndGroup();
 
 			ImGui::SameLine();
@@ -213,23 +224,19 @@ namespace big
 		for (auto& item : props.items)
 		{
 			ImGui::BeginGroup();
-			ImGui::Button("+", ImVec2(45, 0));
-			if (ImGui::IsItemClicked())
-			{
+			valueButton("+", "Increase", [&item] {
 				item.texture_id = std::min(item.texture_id + 1, item.texture_id_max);
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, item.texture_id, TRUE, 1);
 				});
-			}
+			});
 			ImGui::SameLine();
-			ImGui::Button("-", ImVec2(45, 0));
-			if (ImGui::IsItemClicked())
-			{
+			valueButton("-", "Decrease", [&item] {
 				item.texture_id = std::max(item.texture_id - 1, -1);
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, item.texture_id, TRUE, 1);
 				});
-			}
+			});
 			ImGui::EndGroup();
 
 			ImGui::SameLine();
