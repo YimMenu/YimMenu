@@ -12,9 +12,16 @@ namespace big
 				return gta_util::get_network()->m_game_session_ptr->is_host();
 			};
 
-			//components::player_command_button<"breakup">(g_player_service->get_selected());
-			//ImGui::SameLine();
-			//components::command_checkbox<"breakupcheating">();
+			if (!g_player_service->get_self()->is_host())
+				ImGui::Text("These kicks require host"), ImGui::BeginDisabled();
+			
+			components::button("Host kick", []{NETWORK::NETWORK_SESSION_KICK_PLAYER(g_player_service->get_selected()->id());}),
+			components::player_command_button<"breakup">(g_player_service->get_selected());
+
+			ImGui::EndDisabled();
+
+			ImGui::SameLine();
+			components::command_checkbox<"breakupcheating">();
 
 			components::player_command_button<"bailkick">(g_player_service->get_selected());
 			ImGui::SameLine();

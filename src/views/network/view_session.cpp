@@ -126,9 +126,16 @@ namespace big
 		}
 
 		components::sub_title("Lobby Lock");
+		if (!g_player_service->get_self()->is_host())
+			ImGui::BeginDisabled();
+
 		ImGui::Checkbox("Lock", &g.session.lock_session);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Blocks all players from joining. May not work on some modders.");
+		
+		ImGui::EndDisabled();
+
+
 		components::sub_title("DECLOAK"_T);
 		components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T, &g.session.decloak_players);
 
