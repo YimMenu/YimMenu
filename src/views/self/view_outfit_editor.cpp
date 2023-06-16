@@ -92,8 +92,8 @@ namespace big
 		ImGui::BeginGroup();
 		for (auto& item : components.items)
 		{
-			ImGui::SetNextItemWidth(60);
-			if (ImGui::InputInt(std::format("{} [0,{}]", item.label, item.drawable_id_max).c_str(), &item.drawable_id, 0))
+			ImGui::SetNextItemWidth(110);
+			if (ImGui::InputInt(std::format("{} [0,{}]##1", item.label, item.drawable_id_max).c_str(), &item.drawable_id))
 			{
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, 0, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
@@ -107,8 +107,8 @@ namespace big
 		ImGui::BeginGroup();
 		for (auto& item : components.items)
 		{
-			ImGui::SetNextItemWidth(60);
-			if (ImGui::InputInt(std::format("{} {} [0,{}]", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id, 0))
+			ImGui::SetNextItemWidth(110);
+			if (ImGui::InputInt(std::format("{} {} [0,{}]##2", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id))
 			{
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, item.texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
@@ -122,8 +122,8 @@ namespace big
 		ImGui::BeginGroup();
 		for (auto& item : props.items)
 		{
-			ImGui::SetNextItemWidth(60);
-			if (ImGui::InputInt(std::format("{} [0,{}]", item.label, item.drawable_id_max).c_str(), &item.drawable_id, 0))
+			ImGui::SetNextItemWidth(110);
+			if (ImGui::InputInt(std::format("{} [0,{}]##3", item.label, item.drawable_id_max).c_str(), &item.drawable_id))
 			{
 				g_fiber_pool->queue_job([item] {
 					if (item.drawable_id == -1)
@@ -140,8 +140,8 @@ namespace big
 		ImGui::BeginGroup();
 		for (auto& item : props.items)
 		{
-			ImGui::SetNextItemWidth(60);
-			if (ImGui::InputInt(std::format("{} {} [0,{}]", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id, 0))
+			ImGui::SetNextItemWidth(110);
+			if (ImGui::InputInt(std::format("{} {} [0,{}]##4", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id))
 			{
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, item.texture_id, TRUE, 1);
