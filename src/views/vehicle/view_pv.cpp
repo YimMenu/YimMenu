@@ -86,7 +86,7 @@ namespace big
                 components::input_text_with_hint("MODEL_NAME"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
 
                 g_mobile_service->refresh_personal_vehicles();
-                if (ImGui::ListBoxHeader("###personal_veh_list", {300, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 188 - 38 * num_of_rows)}))
+                if (ImGui::BeginListBox("###personal_veh_list", {300, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 188 - 38 * num_of_rows)}))
                 {
                         if (g_mobile_service->personal_vehicles().empty())
                         {
@@ -176,7 +176,7 @@ namespace big
                                 }
                         }
 
-                        ImGui::ListBoxFooter();
+                        ImGui::EndListBox();
                 }
         }
 }

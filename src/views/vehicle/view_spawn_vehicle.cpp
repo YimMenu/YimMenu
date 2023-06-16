@@ -66,7 +66,7 @@ namespace big
                 components::input_text_with_hint("MODEL_NAME"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
 
 
-                if (ImGui::ListBoxHeader("###vehicles", {300, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 188 - 38 * 4)}))
+                if (ImGui::BeginListBox("###vehicles", {300, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 188 - 38 * 4)}))
                 {
                         if (self::veh)
                         {
@@ -193,7 +193,7 @@ namespace big
                         {
                                 ImGui::Text("NO_VEHICLE_IN_REGISTRY"_T.data());
                         }
-                        ImGui::ListBoxFooter();
+                        ImGui::EndListBox();
                 }
         }
 }

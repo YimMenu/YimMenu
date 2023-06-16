@@ -55,7 +55,7 @@ namespace big
 				if (!num_landmarks)
 					num_landmarks = g_tunables_service->get_tunable<int*>(RAGE_JOAAT("HUNT_THE_BEAST_NUMBER_OF_ACTIVE_LANDMARKS"));
 
-				if (ImGui::ListBoxHeader("##beastlandmarks", ImVec2(400, 300)))
+				if (ImGui::BeginListBox("##beastlandmarks", ImVec2(400, 300)))
 				{
 					for (int i = 0; i < (num_landmarks ? *num_landmarks : 10); i++)
 					{
@@ -71,7 +71,7 @@ namespace big
 								teleport::teleport_player_to_coords(g.player.spectating ? beast : g_player_service->get_self(), script_local_land_mark);
 							});
 					}
-					ImGui::ListBoxFooter();
+					ImGui::EndListBox();
 				}
 			}
 			else
