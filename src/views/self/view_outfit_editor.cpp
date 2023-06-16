@@ -92,6 +92,28 @@ namespace big
 		ImGui::BeginGroup();
 		for (auto& item : components.items)
 		{
+			ImGui::BeginGroup();
+			ImGui::Button("+", ImVec2(45, 0));
+			if (ImGui::IsItemClicked())
+			{
+				item.drawable_id = std::min(item.drawable_id + 1, item.drawable_id_max);
+				g_fiber_pool->queue_job([item] {
+					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, 0, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
+				});
+			}
+			ImGui::SameLine();
+			ImGui::Button("-", ImVec2(45, 0));
+			if (ImGui::IsItemClicked())
+			{
+				item.drawable_id = std::max(item.drawable_id - 1, 0);
+				g_fiber_pool->queue_job([item] {
+					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, 0, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
+				});
+			}
+			ImGui::EndGroup();
+
+			ImGui::SameLine();
+
 			ImGui::SetNextItemWidth(60);
 			if (ImGui::InputInt(std::format("{} [0,{}]", item.label, item.drawable_id_max).c_str(), &item.drawable_id, 0))
 			{
@@ -107,6 +129,28 @@ namespace big
 		ImGui::BeginGroup();
 		for (auto& item : components.items)
 		{
+			ImGui::BeginGroup();
+			ImGui::Button("+", ImVec2(45, 0));
+			if (ImGui::IsItemClicked())
+			{
+				item.texture_id = std::min(item.texture_id + 1, item.texture_id_max);
+				g_fiber_pool->queue_job([item] {
+					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, item.texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
+				});
+			}
+			ImGui::SameLine();
+			ImGui::Button("-", ImVec2(45, 0));
+			if (ImGui::IsItemClicked())
+			{
+				item.texture_id = std::max(item.texture_id - 1, 0);
+				g_fiber_pool->queue_job([item] {
+					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, item.texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
+				});
+			}
+			ImGui::EndGroup();
+
+			ImGui::SameLine();
+
 			ImGui::SetNextItemWidth(60);
 			if (ImGui::InputInt(std::format("{} {} [0,{}]", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id, 0))
 			{
@@ -122,6 +166,34 @@ namespace big
 		ImGui::BeginGroup();
 		for (auto& item : props.items)
 		{
+			ImGui::BeginGroup();
+			ImGui::Button("+", ImVec2(45, 0));
+			if (ImGui::IsItemClicked())
+			{
+				item.drawable_id = std::min(item.drawable_id + 1, item.drawable_id_max);
+				g_fiber_pool->queue_job([item] {
+					if (item.drawable_id == -1)
+						PED::CLEAR_PED_PROP(self::ped, item.id, 1);
+					else
+						PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, 0, TRUE, 1);
+				});
+			}
+			ImGui::SameLine();
+			ImGui::Button("-", ImVec2(45, 0));
+			if (ImGui::IsItemClicked())
+			{
+				item.drawable_id = std::max(item.drawable_id - 1, -1);
+				g_fiber_pool->queue_job([item] {
+					if (item.drawable_id == -1)
+						PED::CLEAR_PED_PROP(self::ped, item.id, 1);
+					else
+						PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, 0, TRUE, 1);
+				});
+			}
+			ImGui::EndGroup();
+
+			ImGui::SameLine();
+
 			ImGui::SetNextItemWidth(60);
 			if (ImGui::InputInt(std::format("{} [0,{}]", item.label, item.drawable_id_max).c_str(), &item.drawable_id, 0))
 			{
@@ -140,6 +212,28 @@ namespace big
 		ImGui::BeginGroup();
 		for (auto& item : props.items)
 		{
+			ImGui::BeginGroup();
+			ImGui::Button("+", ImVec2(45, 0));
+			if (ImGui::IsItemClicked())
+			{
+				item.texture_id = std::min(item.texture_id + 1, item.texture_id_max);
+				g_fiber_pool->queue_job([item] {
+					PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, item.texture_id, TRUE, 1);
+				});
+			}
+			ImGui::SameLine();
+			ImGui::Button("-", ImVec2(45, 0));
+			if (ImGui::IsItemClicked())
+			{
+				item.texture_id = std::max(item.texture_id - 1, -1);
+				g_fiber_pool->queue_job([item] {
+					PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, item.texture_id, TRUE, 1);
+				});
+			}
+			ImGui::EndGroup();
+
+			ImGui::SameLine();
+
 			ImGui::SetNextItemWidth(60);
 			if (ImGui::InputInt(std::format("{} {} [0,{}]", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id, 0))
 			{
