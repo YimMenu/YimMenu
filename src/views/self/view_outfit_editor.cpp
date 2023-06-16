@@ -31,21 +31,6 @@ namespace big
 			}
 		});
 
-		// The function below is causing the error
-		/*
-      auto valueButton = [](const char* label, const char* tooltip, std::function<void()> callback) {
-			ImGui::Button(label, ImVec2(45, 45));
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip(tooltip);
-			if (ImGui::IsItemClicked())
-				callback();
-		};
-    */
-		// The error is: 'drawable_id' cannot be modified because it is being accessed through a const object
-		// How can I fix this?
-		// I tried to remove the const from the function but it didn't work
-		// I also tried to remove the const from the struct but it didn't work either
-		// Help me please
 		auto valueButton = [](const char* label, const char* tooltip, std::function<void()> callback) {
 			ImGui::Button(label, ImVec2(45, 45));
 			if (ImGui::IsItemHovered())
