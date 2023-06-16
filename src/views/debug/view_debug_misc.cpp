@@ -83,6 +83,8 @@ namespace big
 
 			});
 
+			ImGui::Checkbox("ImGui Demo", &g.window.demo);
+
 			components::command_button<"fastquit">();
 
 			if (ImGui::TreeNode("ADDRESSES"_T.data()))

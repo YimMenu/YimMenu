@@ -725,6 +725,7 @@ namespace big
 			ImFont* font_small     = nullptr;
 			ImFont* font_icon      = nullptr;
 
+			bool demo = false;
 			bool switched_view = true;
 
 			struct ingame_overlay
@@ -751,7 +752,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_control, operation_animation, max_summon_range, render_distance_on_veh)
 			} vehicle_control{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, color, gui_scale, switched_view, ingame_overlay, vehicle_control)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, color, demo, gui_scale, switched_view, ingame_overlay, vehicle_control)
 		} window{};
 
 		struct context_menu

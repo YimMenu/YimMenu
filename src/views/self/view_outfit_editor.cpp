@@ -92,7 +92,7 @@ namespace big
 		ImGui::BeginGroup();
 		for (auto& item : components.items)
 		{
-			ImGui::SetNextItemWidth(110);
+			ImGui::SetNextItemWidth(120);
 			if (ImGui::InputInt(std::format("{} [0,{}]##1", item.label, item.drawable_id_max).c_str(), &item.drawable_id))
 			{
 				g_fiber_pool->queue_job([item] {
@@ -107,7 +107,7 @@ namespace big
 		ImGui::BeginGroup();
 		for (auto& item : components.items)
 		{
-			ImGui::SetNextItemWidth(110);
+			ImGui::SetNextItemWidth(120);
 			if (ImGui::InputInt(std::format("{} {} [0,{}]##2", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id))
 			{
 				g_fiber_pool->queue_job([item] {
@@ -122,7 +122,7 @@ namespace big
 		ImGui::BeginGroup();
 		for (auto& item : props.items)
 		{
-			ImGui::SetNextItemWidth(110);
+			ImGui::SetNextItemWidth(120);
 			if (ImGui::InputInt(std::format("{} [0,{}]##3", item.label, item.drawable_id_max).c_str(), &item.drawable_id))
 			{
 				g_fiber_pool->queue_job([item] {
@@ -140,7 +140,7 @@ namespace big
 		ImGui::BeginGroup();
 		for (auto& item : props.items)
 		{
-			ImGui::SetNextItemWidth(110);
+			ImGui::SetNextItemWidth(120);
 			if (ImGui::InputInt(std::format("{} {} [0,{}]##4", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id))
 			{
 				g_fiber_pool->queue_job([item] {
