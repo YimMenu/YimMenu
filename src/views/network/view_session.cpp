@@ -135,7 +135,6 @@ namespace big
 		
 		ImGui::EndDisabled();
 
-
 		components::sub_title("DECLOAK"_T);
 		components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T, &g.session.decloak_players);
 
