@@ -45,7 +45,6 @@ namespace big
 		components::command_checkbox<"autodisarm">();
 		components::options_modal("Auto Disarm", []{
 			ImGui::Checkbox("Neutralize", &g.world.nearby.auto_disarm.neutralize);
-			ImGui::Checkbox("Divert", &g.world.nearby.auto_disarm.divert);
 		});
 
 		ImGui::Separator();
