@@ -1,3 +1,4 @@
+#pragma once
 #include "gta/pools.hpp"
 
 namespace big::pools

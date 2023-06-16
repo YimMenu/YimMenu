@@ -513,7 +513,14 @@ namespace big
 				bool ped_rush   = false;
 				bool combative  = false;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(nearby, ignore, ped_rain, veh_rain, high_alert, ped_rush, combative)
+				struct auto_disarm
+				{
+					bool enable     = false;
+					bool neutralize = false;
+					NLOHMANN_DEFINE_TYPE_INTRUSIVE(auto_disarm, enable, neutralize)
+				} auto_disarm{};
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(nearby, ignore, ped_rain, veh_rain, high_alert, ped_rush, combative, auto_disarm)
 			} nearby{};
 
 			struct model_swapper
