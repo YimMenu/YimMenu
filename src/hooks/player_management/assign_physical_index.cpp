@@ -120,9 +120,11 @@ namespace big
 						else
 						{
 							g_notification_service->push_warning("Block Join",
-							    std::format("Block Join method failed for {}, can't send breakup without host...",
+							    std::format("Block Join method failed for {}, can't send breakup without host...\n trying Desync",
 							        plyr->get_net_data()->m_name));
-							LOG(WARNING) << "Failed blocking join due to not being host... ";
+							LOG(WARNING) << "Failed blocking join due to not being host... trying Desync ";
+
+							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("desync")))->call(plyr, {});
 						}
 					}
 					if (lock_session && g_player_service->get_self()->is_host())

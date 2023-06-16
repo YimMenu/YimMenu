@@ -126,9 +126,8 @@ namespace big
 		}
 
 		components::sub_title("Lobby Lock");
-		if (!g_player_service->get_self()->is_host())
-			ImGui::BeginDisabled();
-
+		ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
+		
 		ImGui::Checkbox("Lock", &g.session.lock_session);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Blocks all players from joining. May not work on some modders.");
