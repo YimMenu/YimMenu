@@ -36,10 +36,6 @@ namespace big
 				}
 			}
 		}
-
-		virtual void on_disable() override
-		{
-		}
 	};
 
 	auto_disarm g_auto_disarm("autodisarm", "Auto Disarm", "Disarm nearby pedestrians", g.world.nearby.auto_disarm.enable);
