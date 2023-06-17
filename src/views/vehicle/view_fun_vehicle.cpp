@@ -82,6 +82,88 @@ namespace big
 		}
 		ImGui::Separator();
 
+		components::sub_title("WINDOWS"_T);
+		{
+			int num_of_windows = 4;
+
+			if (self::veh == 0)
+			{
+				ImGui::Text("PLEASE_ENTER_VEHICLE"_T.data());
+			}
+			else
+			{
+				if (components::tooltip_button("ALL_WINDOWS_DOWN"_T.data(), "Roll all the windows down"))
+				{
+					VEHICLE::ROLL_DOWN_WINDOWS(self::veh);
+				}
+
+				ImGui::SameLine();
+
+				if (components::tooltip_button("ALL_WINDOWS_UP"_T.data(), "Roll all the windows up"))
+				{
+					for (int i = 0; i < num_of_windows; i++)
+					{
+						VEHICLE::ROLL_UP_WINDOW(self::veh, i);
+					}
+				}
+
+				components::small_text("Roll Windows Down");
+				if (components::tooltip_button("FRONT_LEFT_WINDOW_DOWN"_T.data(), "Roll the driver window down"))
+				{
+					VEHICLE::ROLL_DOWN_WINDOW(self::veh, 0);
+				}
+
+				ImGui::SameLine();
+
+				if (components::tooltip_button("FRONT_RIGHT_WINDOW_DOWN"_T.data(), "Roll the passenger window down"))
+				{
+					VEHICLE::ROLL_DOWN_WINDOW(self::veh, 1);
+				}
+
+				ImGui::SameLine();
+
+				if (components::tooltip_button("BACK_LEFT_WINDOW_DOWN"_T.data(), "Roll the back left window down"))
+				{
+					VEHICLE::ROLL_DOWN_WINDOW(self::veh, 2);
+				}
+
+				ImGui::SameLine();
+
+				if (components::tooltip_button("BACK_RIGHT_WINDOW_DOWN"_T.data(), "Roll the back right window down"))
+				{
+					VEHICLE::ROLL_DOWN_WINDOW(self::veh, 3);
+				}
+
+				components::small_text("Roll Windows Up");
+				if (components::tooltip_button("FRONT_LEFT_WINDOW_UP"_T.data(), "Roll the driver window up"))
+				{
+					VEHICLE::ROLL_UP_WINDOW(self::veh, 0);
+				}
+
+				ImGui::SameLine();
+
+				if (components::tooltip_button("FRONT_RIGHT_WINDOW_UP"_T.data(), "Roll the passenger window up"))
+				{
+					VEHICLE::ROLL_UP_WINDOW(self::veh, 1);
+				}
+
+				ImGui::SameLine();
+
+				if (components::tooltip_button("BACK_LEFT_WINDOW_UP"_T.data(), "Roll the back left window up"))
+				{
+					VEHICLE::ROLL_UP_WINDOW(self::veh, 2);
+				}
+
+				ImGui::SameLine();
+
+				if (components::tooltip_button("BACK_RIGHT_WINDOW_UP"_T.data(), "Roll the back right window up"))
+				{
+					VEHICLE::ROLL_UP_WINDOW(self::veh, 3);
+				}
+			}
+		}
+
+		ImGui::Separator();
 
 		components::sub_title("AUTO_DRIVE"_T);
 		{

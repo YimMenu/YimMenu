@@ -107,6 +107,19 @@ namespace big
 			return status;
 		}
 
+		// Button with Tooltip
+		template<ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>
+		static bool tooltip_button(const std::string_view text, const std::string_view tooltip)
+		{
+			bool status = false;
+			ImGui::PushStyleColor(ImGuiCol_Button, color);
+			status = ImGui::Button(text.data(), size);
+			ImGui::PopStyleColor(1);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip(tooltip.data());
+			return status;
+		}
+
 		template<ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>
 		static void button(const std::string_view text, std::function<void()> cb)
 		{
