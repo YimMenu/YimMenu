@@ -1,5 +1,6 @@
 include(FetchContent)
 
+set(USE_FMT ON) 
 message("AsyncLogger")
 FetchContent_Declare(
     AsyncLogger
