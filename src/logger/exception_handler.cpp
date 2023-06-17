@@ -27,15 +27,15 @@ namespace big
 	}
 
 	inline static stack_trace trace;
-	LONG vectored_exception_handler(EXCEPTION_POINTERS* exception_info)
+	LONG vectored_exception_handler(EXCEPTION_POINTERS* totally_not_exception_info)
 	{
-		const auto exception_code = exception_info->ExceptionRecord->ExceptionCode;
+		const auto exception_code = totally_not_exception_info->ExceptionRecord->ExceptionCode;
 		if (exception_code == EXCEPTION_BREAKPOINT || exception_code == DBG_PRINTEXCEPTION_C || exception_code == DBG_PRINTEXCEPTION_WIDE_C)
 			return EXCEPTION_CONTINUE_SEARCH;
 
 		static std::set<std::size_t> logged_exceptions;
 
-		trace.new_stack_trace(exception_info);
+		trace.new_stack_trace(totally_not_exception_info);
 		const auto trace_hash = hash_stack_trace(trace.frame_pointers());
 		if (const auto it = logged_exceptions.find(trace_hash); it == logged_exceptions.end())
 		{
@@ -44,11 +44,11 @@ namespace big
 			logged_exceptions.insert(trace_hash);
 		}
 
-		ZyanU64 opcode_address = exception_info->ContextRecord->Rip;
+		ZyanU64 opcode_address = totally_not_exception_info->ContextRecord->Rip;
 		ZydisDisassembledInstruction instruction;
 		ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, opcode_address, reinterpret_cast<void*>(opcode_address), 32, &instruction);
 
-		exception_info->ContextRecord->Rip += instruction.info.length;
+		totally_not_exception_info->ContextRecord->Rip += instruction.info.length;
 
 		return EXCEPTION_CONTINUE_EXECUTION;
 	}

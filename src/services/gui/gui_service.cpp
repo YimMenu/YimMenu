@@ -16,7 +16,7 @@ namespace big
 	{
 		static navigation_struct tab_none = {"", nullptr};
 		if (current_tab.empty() || current_tab.at(0) == tabs::NONE)
-			return tab_none;
+			return &tab_none;
 
 		navigation_struct* current_nav = &nav.at(current_tab.at(0));
 		if (current_tab.size() > 1)

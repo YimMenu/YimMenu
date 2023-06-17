@@ -156,7 +156,6 @@ namespace big
 							g_notification_service->push("SCAPI"_T.data(), "MSG_SENT_SUCCESS"_T.data());
 							return;
 						}
-<<<<<<< HEAD
 						g_notification_service->push_error("SCAPI"_T.data(), "MSG_SENT_FAIL"_T.data());
 #else
 					g_notification_service->push_error("SCAPI"_T.data(), "cpr is broken in MinGW!");
@@ -205,12 +204,8 @@ namespace big
 		components::input_text("NAME"_T, new_name, sizeof(new_name));
 		ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &new_rockstar_id);
 
-<<<<<<< HEAD
 #ifndef __clang__ // ! FIXME What?
-		if (ImGui::Button("Add"))
-=======
 		if (ImGui::Button("ADD"_T.data()))
->>>>>>> 3c2245f7800f8ebfee75e60d7b9e608f7abb1622
 		{
 			g_player_database_service->get_players()[new_rockstar_id] = persistent_player(new_name, new_rockstar_id);
 			g_player_database_service->save();

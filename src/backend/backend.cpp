@@ -211,7 +211,6 @@ namespace big
 	{
 		while (true)
 		{
-		
 			g_vehicle_control_service.tick();
 			
 			script::get_current()->yield();

@@ -11,6 +11,7 @@ namespace big
 {
 	constexpr auto pointers::get_gta_batch()
 	{
+        #if 0
 		// clang-format off
 
         constexpr auto batch_and_hash = memory::make_batch<
@@ -1351,12 +1352,14 @@ namespace big
         >();
 
 		// clang-format on
+        #endif
 
-		return batch_and_hash;
+		return nullptr /* batch_and_hash*/;
 	}
 
 	constexpr auto pointers::get_sc_batch()
 	{
+        #if 0
 		// clang-format off
 
         constexpr auto batch_and_hash = memory::make_batch<
@@ -1383,8 +1386,9 @@ namespace big
         >();
 
 		// clang-format on
+        #endif
 
-		return batch_and_hash;
+		return nullptr /* batch_and_hash*/;
 	}
 
 	void pointers::freemode_thread_restorer_through_vm_patch(const memory::module& mem_region)
@@ -1448,22 +1452,26 @@ namespace big
 
 		constexpr auto gta_batch_and_hash = pointers::get_gta_batch();
 		constexpr cstxpr_str gta_batch_name{"GTA5"};
+#if 0
 		write_to_cache_or_read_from_cache<gta_batch_name,
 		    gta_batch_and_hash.m_hash,
 		    gta_pointers_layout_info::offset_of_cache_begin_field,
 		    gta_pointers_layout_info::offset_of_cache_end_field,
 		    gta_batch_and_hash.m_batch>(m_gta_pointers_cache, mem_region);
+#endif
 
 		auto sc_module = memory::module("socialclub.dll");
 		if (sc_module.wait_for_module())
 		{
 			constexpr auto sc_batch_and_hash = pointers::get_sc_batch();
 			constexpr cstxpr_str sc_batch_name{"Social Club"};
+#if 0
 			write_to_cache_or_read_from_cache<sc_batch_name,
 			    sc_batch_and_hash.m_hash,
 			    sc_pointers_layout_info::offset_of_cache_begin_field,
 			    sc_pointers_layout_info::offset_of_cache_end_field,
 			    sc_batch_and_hash.m_batch>(m_sc_pointers_cache, sc_module);
+#endif
 		}
 		else
 			LOG(WARNING) << "socialclub.dll module was not loaded within the time limit.";

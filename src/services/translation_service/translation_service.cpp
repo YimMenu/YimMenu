@@ -3,7 +3,9 @@
 #include "file_manager.hpp"
 #include "thread_pool.hpp"
 
+#ifndef CROSSCOMPILING
 #include <cpr/cpr.h>
+#endif // CROSSCOMPILING
 
 namespace big
 {
@@ -149,6 +151,7 @@ namespace big
 
 	bool translation_service::download_language_pack(const std::string_view pack_id)
 	{
+#ifndef CROSSCOMPILING
 		if (auto it = m_remote_index.translations.find(pack_id.data()); it != m_remote_index.translations.end())
 		{
 			cpr::Response response = cpr::Get(cpr::Url{m_url + "/" + it->second.file});
@@ -165,11 +168,13 @@ namespace big
 				return true;
 			}
 		}
+#endif
 		return false;
 	}
 
 	bool translation_service::download_index()
 	{
+#ifndef CROSSCOMPILING
 		cpr::Response response = cpr::Get(cpr::Url{m_url + "/index.json"});
 
 		if (response.status_code == 200)
@@ -178,6 +183,7 @@ namespace big
 
 			return true;
 		}
+#endif // CROSSCOMPILING
 		return false;
 	}
 

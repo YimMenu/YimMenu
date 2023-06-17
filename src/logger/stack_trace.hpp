@@ -10,7 +10,7 @@ namespace big
 		virtual ~stack_trace();
 
 		const std::vector<uint64_t>& frame_pointers();
-		void new_stack_trace(EXCEPTION_POINTERS* exception_info);
+		void new_stack_trace(EXCEPTION_POINTERS* totally_not_exception_info);
 		std::string str() const;
 
 		friend std::ostream& operator<<(std::ostream& os, const stack_trace& st);
@@ -45,7 +45,7 @@ namespace big
 		static std::string exception_code_to_string(const DWORD code);
 
 	private:
-		EXCEPTION_POINTERS* m_exception_info;
+		EXCEPTION_POINTERS* m_totally_not_exception_info;
 
 		std::stringstream m_dump;
 		std::vector<uint64_t> m_frame_pointers;

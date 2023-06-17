@@ -24,14 +24,14 @@ namespace big
 		return m_frame_pointers;
 	}
 
-	void stack_trace::new_stack_trace(EXCEPTION_POINTERS* exception_info)
+	void stack_trace::new_stack_trace(EXCEPTION_POINTERS* totally_not_exception_info)
 	{
 		static std::mutex m;
 		std::lock_guard lock(m);
 
-		m_exception_info = exception_info;
+		m_totally_not_exception_info = totally_not_exception_info;
 
-		m_dump << exception_code_to_string(exception_info->ExceptionRecord->ExceptionCode) << '\n';
+		m_dump << exception_code_to_string(totally_not_exception_info->ExceptionRecord->ExceptionCode) << '\n';
 
 		if (g.in_script_vm)
 			dump_script_info();
@@ -86,7 +86,7 @@ namespace big
 
 	void stack_trace::dump_registers()
 	{
-		const auto context = m_exception_info->ContextRecord;
+		const auto context = m_totally_not_exception_info->ContextRecord;
 
 		m_dump << "Dumping registers:\n"
 		       << "RAX: " << HEX_TO_UPPER(context->Rax) << '\n'
@@ -152,12 +152,12 @@ namespace big
 	{
 		m_dump << "Currently executing script: " << rage::scrThread::get()->m_name << '\n';
 		m_dump << "Thread program counter (could be inaccurate): "
-		       << m_exception_info->ContextRecord->Rdi - m_exception_info->ContextRecord->Rsi << '\n';
+		       << m_totally_not_exception_info->ContextRecord->Rdi - m_totally_not_exception_info->ContextRecord->Rsi << '\n';
 	}
 
 	void stack_trace::grab_stacktrace()
 	{
-		CONTEXT context = *m_exception_info->ContextRecord;
+		CONTEXT context = *m_totally_not_exception_info->ContextRecord;
 
 		STACKFRAME64 frame{};
 		frame.AddrPC.Mode      = AddrModeFlat;

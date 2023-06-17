@@ -13,5 +13,5 @@ namespace big
 		void* m_exception_handler;
 	};
 
-	extern LONG vectored_exception_handler(EXCEPTION_POINTERS* exception_info);
+	extern LONG vectored_exception_handler(EXCEPTION_POINTERS* totally_not_exception_info);
 }
