@@ -70,7 +70,7 @@ namespace big::session
 	{
 		g.session.join_queued = true;
 		g.session.info        = info;
-		session::join_type({eSessionType::NEW_PUBLIC});
+		session::join_type(eSessionType::NEW_PUBLIC);
 		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
 		{
 			g.session.join_queued = false;

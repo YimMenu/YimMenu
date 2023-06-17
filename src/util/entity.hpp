@@ -225,12 +225,12 @@ namespace big::entity
 
 		if (include_players)
 		{
-			for (auto player : g_player_service->players() | std::ranges::views::values)
+			for (auto player : g_player_service->players())
 			{
-				if (player->get_ped())
+				if (player.second->get_ped())
 				{
-					Ped handle = g_pointers->m_gta.m_ptr_to_handle(player->get_ped());
-					update_closest_entity(handle, player->get_ped());
+					Ped handle = g_pointers->m_gta.m_ptr_to_handle(player.second->get_ped());
+					update_closest_entity(handle, player.second->get_ped());
 				}
 			}
 		}

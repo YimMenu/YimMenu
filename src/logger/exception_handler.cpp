@@ -17,7 +17,7 @@ namespace big
 	exception_handler::exception_handler()
 	{
 		m_old_error_mode = SetErrorMode(0);
-		m_exception_handler = SetUnhandledExceptionFilter(&vectored_exception_handler);
+		m_exception_handler = (void*)SetUnhandledExceptionFilter(&vectored_exception_handler);
 	}
 
 	exception_handler::~exception_handler()
