@@ -1,4 +1,5 @@
 #include "script/globals/GPBD_FM_3.hpp"
+#include "services/script_connection/script_connection_service.hpp"
 #include "util/scripts.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
@@ -26,9 +27,9 @@ namespace big
 			ImGui::Checkbox("NEVER_WANTED"_T.data(), &g_player_service->get_selected()->never_wanted);
 			ImGui::Checkbox("SEMI_GODMODE"_T.data(), &g_player_service->get_selected()->semi_godmode);
 
-			components::button("Gooch Test", [] {
+			components::button("Send Gooch", [] {
 				*script_global(1890378).at(289).at(1).as<Player*>() = g_player_service->get_selected()->id();
-				scripts::start_launcher_script(171);
+				scripts::start_launcher_script(scripts::launcher_index_from_hash(RAGE_JOAAT("fm_content_xmas_mugger")));
 			});
 
 			ImGui::TreePop();
