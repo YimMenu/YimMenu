@@ -27,7 +27,7 @@ namespace lua::memory
 
 	pointer allocate(int size, sol::this_state state)
 	{
-		void* mem   = new uint8_t[](size);
+		void* mem   = new uint8_t[]{(uint8_t)size};
 		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
 		module->m_allocated_memory.push_back(mem);
 		return pointer((uint64_t)mem);

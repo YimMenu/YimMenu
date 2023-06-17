@@ -21,16 +21,16 @@ namespace memory
 		void remove() const;
 
 		template<typename TAddr>
-		static const std::unique_ptr<byte_patch>& make(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
+		static const std::shared_ptr<byte_patch>& make(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
 		{
-			return m_patches.emplace_back(std::unique_ptr<byte_patch>(new byte_patch(address, value)));
+			return m_patches.emplace_back(std::shared_ptr<byte_patch>(new byte_patch(address, value)));
 		}
 
 		template<typename TAddr, typename T>
 		requires SpanCompatibleType<T>
-		static const std::unique_ptr<byte_patch>& make(TAddr address, T span_compatible)
+		static const std::shared_ptr<byte_patch>& make(TAddr address, T span_compatible)
 		{
-			return m_patches.emplace_back(std::unique_ptr<byte_patch>(new byte_patch(address, std::span{span_compatible})));
+			return m_patches.emplace_back(std::shared_ptr<byte_patch>(new byte_patch(address, std::span{span_compatible})));
 		}
 
 		static void restore_all();
@@ -62,11 +62,7 @@ namespace memory
 			for (int i = 0; i < m_size; i++)
 				m_value[i] = span[i];
 		}
-#ifdef __clang__ // ! FIXME This is not a fix it just lets the compilation to contitue, link will fail after that.
-		static std::vector<std::unique_ptr<byte_patch>> m_patches;
-#else
-		static inline std::vector<std::unique_ptr<byte_patch>> m_patches;
-#endif // __clang__
+		static inline std::vector<std::shared_ptr<byte_patch>> m_patches;
 
 	private:
 		void* m_address;

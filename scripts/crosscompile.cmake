@@ -39,7 +39,7 @@ if(CROSSCOMPILE)
         set(CMAKE_C_COMPILER clang)
         set(CMAKE_CXX_COMPILER clang++)
 
-        add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-fuse-ld=lld;-femulated-tls${CXX_FLAGS}>")
+        add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-fuse-ld=lld;-femulated-tls;-fms-extensions;${CXX_FLAGS}>")
         add_link_options(-fuse-ld=lld -femulated-tls)
     endif()
 

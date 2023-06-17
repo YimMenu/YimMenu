@@ -64,16 +64,16 @@ namespace big
 				std::string lower_search = search;
 				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
 
-				for (auto& player : item_arr | std::ranges::views::values)
+				for (auto& player : item_arr)
 				{
-					if (player->online_state == PlayerOnlineStatus::ONLINE)
-						draw_player_db_entry(player, lower_search);
+					if (player.second->online_state == PlayerOnlineStatus::ONLINE)
+						draw_player_db_entry(player.second, lower_search);
 				}
 
-				for (auto& player : item_arr | std::ranges::views::values)
+				for (auto& player : item_arr)
 				{
-					if (player->online_state != PlayerOnlineStatus::ONLINE)
-						draw_player_db_entry(player, lower_search);
+					if (player.second->online_state != PlayerOnlineStatus::ONLINE)
+						draw_player_db_entry(player.second, lower_search);
 				}
 			}
 			else

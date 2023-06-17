@@ -33,6 +33,36 @@ jobs:
             name: binary-MinGW
             path: build/YimMenu-dev-*.dll
 
+  ci_clang:
+      runs-on: ubuntu-latest
+      container: ghcr.io/yimmenu/yimmenu:latest
+      name: CI Clang
+      steps:
+        - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+        - uses: actions/checkout@v3
+        
+        - name: Cache build/
+          id: cache-build
+          uses: actions/cache@v3
+          with:
+            path: build
+            key: ${{ runner.os }}-build
+
+        - name: Generate CMake project
+          run: cmake -DVERSION=1.3.4 -DCMAKE_BUILD_TYPE:STRING=Release -S. -Bbuild -DCROSSCOMPILE:BOOL=TRUE -DUSE_CLANG:BOOL=TRUE -G Ninja
+
+        - name: Build 64bit release DLL
+          run: |
+            cmake --build build --config Release
+            mv build/libYimMenu.dll build/YimMenu-dev-${{github.sha}}.dll
+
+        - name: Upload Artifact
+          uses: actions/upload-artifact@v3
+          with:
+            name: binary-Clang
+            path: build/YimMenu-dev-*.dll
+
   ci_msvc:
     runs-on: windows-latest
     name: CI MSVC

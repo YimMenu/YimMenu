@@ -77,12 +77,17 @@ namespace big
 			m_sorted_players.erase(lower);
 		}
 
+#ifndef __clang__
 		auto player    = std::make_shared<persistent_player>(name.data(), rid);
+
 		m_players[rid] = player;
 
 		m_sorted_players[lower] = player;
 
 		return player;
+#else
+		return nullptr;
+#endif // __clang__
 	}
 
 	std::shared_ptr<persistent_player> player_database_service::get_player_by_rockstar_id(std::uint64_t rockstar_id)

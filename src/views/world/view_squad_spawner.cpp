@@ -23,11 +23,11 @@ namespace big
 			auto self = g_player_service->get_self();
 			if (ImGui::Selectable(self->get_name(), self->id() == victim->id()))
 				victim = self;
-			for (auto p : g_player_service->players() | std::ranges::views::values)
+			for (auto p : g_player_service->players())
 			{
-				if (ImGui::Selectable(p->get_name(), p->id() == victim->id()))
+				if (ImGui::Selectable(p.second->get_name(), p.second->id() == victim->id()))
 				{
-					victim = p;
+					victim = p.second;
 					if (g.player.spectating)
 						g_player_service->set_selected(victim);
 				}
@@ -53,12 +53,12 @@ namespace big
 
 		static squad deletion_squad;
 
-		if (!std::string(deletion_squad.m_name).empty())
+		if (!deletion_squad.m_name.empty())
 			ImGui::OpenPopup("##deletesquad");
 
 		if (ImGui::BeginPopupModal("##deletesquad"))
 		{
-			ImGui::Text("Are you sure you want to delete %s?", deletion_squad.m_name);
+			ImGui::Text("Are you sure you want to delete %s?", deletion_squad.m_name.c_str());
 
 			if (ImGui::Button("Yes"))
 			{
@@ -123,15 +123,15 @@ namespace big
 		{
 			if (ImGui::ListBoxHeader("##pedlist", ImVec2(250, 200)))
 			{
-				for (auto& p : g_gta_data_service->peds() | std::ranges::views::values)
+				for (auto& p : g_gta_data_service->peds())
 				{
-					std::string p_model = p.m_name;
+					std::string p_model = p.second.m_name;
 					std::string filter  = new_template.m_ped_model;
 					std::transform(p_model.begin(), p_model.end(), p_model.begin(), ::tolower);
 					std::transform(filter.begin(), filter.end(), filter.begin(), ::tolower);
-					if (p_model.find(filter) != std::string::npos && ImGui::Selectable(p.m_name))
+					if (p_model.find(filter) != std::string::npos && ImGui::Selectable(p.second.m_name))
 					{
-						new_template.m_ped_model = p.m_name;
+						new_template.m_ped_model = p.second.m_name;
 					}
 				}
 
@@ -151,15 +151,15 @@ namespace big
 		{
 			if (ImGui::ListBoxHeader("##vehlist", ImVec2(250, 200)))
 			{
-				for (auto& p : g_gta_data_service->vehicles() | std::ranges::views::values)
+				for (auto& p : g_gta_data_service->vehicles())
 				{
-					std::string p_model = p.m_name;
+					std::string p_model = p.second.m_name;
 					std::string filter  = new_template.m_vehicle_model;
 					std::transform(p_model.begin(), p_model.end(), p_model.begin(), ::tolower);
 					std::transform(filter.begin(), filter.end(), filter.begin(), ::tolower);
-					if (p_model.find(filter) != std::string::npos && ImGui::Selectable(p.m_name))
+					if (p_model.find(filter) != std::string::npos && ImGui::Selectable(p.second.m_name))
 					{
-						new_template.m_vehicle_model = p.m_name;
+						new_template.m_vehicle_model = p.second.m_name;
 					}
 				}
 
@@ -179,15 +179,15 @@ namespace big
 		{
 			if (ImGui::ListBoxHeader("##weaplist", ImVec2(250, 200)))
 			{
-				for (auto& p : g_gta_data_service->weapons() | std::ranges::views::values)
+				for (auto& p : g_gta_data_service->weapons())
 				{
-					std::string p_model = p.m_name;
+					std::string p_model = p.second.m_name;
 					std::string filter  = new_template.m_weapon_model;
 					std::transform(p_model.begin(), p_model.end(), p_model.begin(), ::tolower);
 					std::transform(filter.begin(), filter.end(), filter.begin(), ::tolower);
-					if (p_model.find(filter) != std::string::npos && ImGui::Selectable(p.m_name))
+					if (p_model.find(filter) != std::string::npos && ImGui::Selectable(p.second.m_name))
 					{
-						new_template.m_weapon_model = p.m_name;
+						new_template.m_weapon_model = p.second.m_name;
 					}
 				}
 

@@ -71,7 +71,7 @@ namespace big
 			HUD::SET_PED_HAS_AI_BLIP(handle, true);
 			HUD::SET_PED_AI_BLIP_FORCED_ON(handle, true);
 		}
-		return squad_member(handle, reinterpret_cast<CPed*>(g_pointers->m_gta.m_handle_to_ptr(handle)), -1);
+		return {handle, reinterpret_cast<CPed*>(g_pointers->m_gta.m_handle_to_ptr(handle)), -1, 0};
 	}
 
 	std::pair<Vehicle, CVehicle*> squad_spawner::spawn_squad_vehicle(squad s)

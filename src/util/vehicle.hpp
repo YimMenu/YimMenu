@@ -24,6 +24,7 @@ namespace big::vehicle
 		{
 		case SpeedUnit::KMPH: return mps * 3.6f; break;
 		case SpeedUnit::MIPH: return mps * 2.2369f; break;
+		case SpeedUnit::MPS:  return mps; break;
 		}
 
 		return mps;
@@ -35,6 +36,7 @@ namespace big::vehicle
 		{
 		case SpeedUnit::KMPH: return speed / 3.6f; break;
 		case SpeedUnit::MIPH: return speed / 2.2369f; break;
+		case SpeedUnit::MPS:  return speed; break;
 		}
 
 		return speed;
