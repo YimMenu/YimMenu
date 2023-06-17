@@ -28,5 +28,5 @@ namespace big
 		}
 	};
 
-	send_to_warehouse g_send_to_warehouse("warehousetp", "TP To Warehouse", "Teleports the player to the specified warehouse index", 1);
+	send_to_warehouse g_send_to_warehouse("warehousetp", "TP_TO_WAREHOUSE", "TP_TO_WAREHOUSE_DESC", 1);
 }

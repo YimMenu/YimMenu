@@ -28,12 +28,12 @@ namespace big
 
 		WORLD,
 		SPAWN_PED,
+		SQUAD_SPAWNER,
 		CREATOR,
 		TRAIN,
 		BLACKHOLE,
 		MODEL_SWAPPER,
 		NEARBY,
-		ORBITAL_DRONE,
 
 		NETWORK,
 		SESSION,
@@ -44,6 +44,7 @@ namespace big
 		STAT_EDITOR,
 
 		SETTINGS,
+		LUA_SCRIPTS,
 		CONTEXT_MENU_SETTINGS,
 		ESP_SETTINGS,
 		GTA_CACHE_SETTINGS,
@@ -62,6 +63,7 @@ namespace big
 		const char name[48]        = "";
 		std::function<void()> func = nullptr;
 		std::map<tabs, navigation_struct> sub_nav{};
+		rage::joaat_t hash = rage::joaat(name);
 	};
 
 	class gui_service final
@@ -116,12 +118,12 @@ namespace big
 		            view::world,
 		            {
 		                {tabs::SPAWN_PED, {"GUI_TAB_SPAWN_PED", view::spawn_ped}},
+		                {tabs::SQUAD_SPAWNER, {"Squad spawner", view::squad_spawner}},
 		                {tabs::CREATOR, {"GUI_TAB_CREATOR", view::creator}},
 		                {tabs::TRAIN, {"GUI_TAB_TRAIN", view::train}},
 		                {tabs::BLACKHOLE, {"GUI_TAB_BLACKHOLE", view::blackhole}},
 		                {tabs::MODEL_SWAPPER, {"GUI_TAB_MODEL_SWAPPER", view::model_swapper}},
 		                {tabs::NEARBY, {"GUI_TAB_NEARBY", view::nearby}},
-		                {tabs::ORBITAL_DRONE, {"GUI_TAB_ORBITAL_DRONE", view::orbital_drone}},
 		            },
 		        },
 		    },
@@ -146,9 +148,9 @@ namespace big
 		            "GUI_TAB_SETTINGS",
 		            view::settings,
 		            {
-		                {tabs::CONTEXT_MENU_SETTINGS, {"GUI_TAB_CONTEXT_MENU", view::context_menu_settings}},
+		                {tabs::LUA_SCRIPTS, {"GUI_TAB_LUA_SCRIPTS", view::lua_scripts}},
 		                {tabs::ESP_SETTINGS, {"GUI_TAB_ESP", view::esp_settings}},
-						{tabs::GTA_CACHE_SETTINGS, {"GTA Cache", view::gta_cache}},
+		                {tabs::GTA_CACHE_SETTINGS, {"GTA Cache", view::gta_cache}},
 		                {tabs::GUI_SETTINGS, {"GUI_TAB_GUI", view::gui_settings}},
 		                {tabs::HOTKEY_SETTINGS, {"GUI_TAB_HOTKEYS", view::hotkey_settings}},
 		                {tabs::REACTION_SETTINGS, {"GUI_TAB_REACTIONS", view::reaction_settings}},

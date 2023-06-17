@@ -20,6 +20,7 @@ include(scripts/pugixml.cmake)
 include(scripts/json.cmake)
 include(scripts/fmt.cmake)
 include(scripts/zydis.cmake)
+include(scripts/lua.cmake)
 if(NOT CROSSCOMPILE) # https://github.com/libcpr/cpr/issues/860
     include(scripts/cpr.cmake) 
 endif()
@@ -58,9 +59,9 @@ target_link_libraries(YimMenu PRIVATE )
 
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
 if(CROSSCOMPILE)
-    target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui fmt Zydis d3dcompiler dwmapi winmm)
+    target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui fmt Zydis lua_static d3dcompiler dwmapi winmm psapi)
 else()
-    target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui fmt Zydis cpr d3dcompiler dwmapi winmm)
+    target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui fmt Zydis cpr lua_static d3dcompiler dwmapi winmm psapi)
 endif()
 
 # Warnings as errors

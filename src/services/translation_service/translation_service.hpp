@@ -4,6 +4,10 @@
 #include "local_index.hpp"
 #include "remote_index.hpp"
 
+#ifndef CROSSCOMPILING
+#include <cpr/response.h>
+#endif // CROSSCOMPILING
+
 namespace big
 {
 	using translation_map = std::unordered_map<rage::joaat_t, std::string>;
@@ -47,9 +51,14 @@ namespace big
          * @brief Attempts to load the remote from the local index fallback
          */
 		void use_fallback_remote();
+#ifndef CROSSCOMPILING
+		cpr::Response download_file(const std::string& filename);
+#endif // CROSSCOMPILING
 
 	private:
 		const std::string m_url;
+		const std::string m_fallback_url;
+
 		std::unique_ptr<folder> m_translation_directory;
 		local_index m_local_index;
 		remote_index m_remote_index;

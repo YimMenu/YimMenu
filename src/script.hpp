@@ -10,7 +10,7 @@ namespace big
 		bool m_toggleable;
 
 	public:
-		using func_t = void (*)();
+		using func_t = std::function<void(void)>;
 
 	public:
 		explicit script(const func_t func, const std::string_view name, const bool toggleable = true, const std::optional<std::size_t> stack_size = std::nullopt);

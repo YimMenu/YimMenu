@@ -1,8 +1,10 @@
+#include "backend/player_command.hpp"
 #include "core/data/admin_rids.hpp"
 #include "core/globals.hpp"
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
 #include "hooking.hpp"
+#include "lua/lua_manager.hpp"
 #include "packet.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "services/players/player_service.hpp"
@@ -25,6 +27,8 @@ namespace big
 
 			if (net_player_data)
 			{
+				g_lua_manager->trigger_event<"player_leave">(net_player_data->m_name);
+
 				if (g.notifications.player_leave.log)
 					LOG(INFO) << "Player left '" << net_player_data->m_name << "' freeing slot #" << (int)player->m_player_id
 					          << " with Rockstar ID: " << net_player_data->m_gamer_handle.m_rockstar_id;
@@ -60,6 +64,9 @@ namespace big
 						plyr->is_admin = true;
 				}
 			}
+
+			g_lua_manager->trigger_event<"player_join">(net_player_data->m_name, player->m_player_id);
+
 			if (g.notifications.player_join.above_map && *g_pointers->m_gta.m_is_session_started) // prevent loading screen spam
 				notify::player_joined(player);
 
@@ -76,8 +83,10 @@ namespace big
 				            net_player_data->m_gamer_handle.m_rockstar_id)));
 			}
 
-			auto id = player->m_player_id;
-			g_fiber_pool->queue_job([id] {
+			auto id           = player->m_player_id;
+			bool lock_session = g.session.lock_session;
+
+			g_fiber_pool->queue_job([id, lock_session] {
 				if (auto plyr = g_player_service->get_by_id(id))
 				{
 					if (plyr->get_net_data()->m_gamer_handle.m_rockstar_id != 0)
@@ -87,7 +96,7 @@ namespace big
 						{
 							plyr->is_modder         = entry->is_modder;
 							plyr->block_join        = entry->block_join;
-							plyr->block_join_reason = plyr->block_join_reason;
+							plyr->block_join_reason = entry->block_join_reason;
 
 							if (strcmp(plyr->get_name(), entry->name.data()))
 							{
@@ -97,6 +106,20 @@ namespace big
 								g_player_database_service->save();
 							}
 						}
+					}
+					if (plyr->block_join)
+					{
+						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+						g_notification_service->push_warning("Block Join",
+						    fmt::format("Block Join method failed for {}, sending breakup kick instead...",
+						        plyr->get_net_data()->m_name));
+						LOG(WARNING) << "Sending Breakup Kick due to block join failure... ";
+					}
+					if (lock_session)
+					{
+						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+						g_notification_service->push_warning("Lock Session",
+						    fmt::format("A player with the name of {} has been denied entry", plyr->get_net_data()->m_name));
 					}
 				}
 			});

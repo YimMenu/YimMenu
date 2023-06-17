@@ -67,5 +67,5 @@ namespace big
 		}
 	};
 
-	set_wanted_level g_set_wanted_level("wanted", "Set Wanted Level", "Sets the specified wanted level to the player", 1, false);
+	set_wanted_level g_set_wanted_level("wanted", "SET_WANTED_LEVEL", "SET_WANTED_LEVEL_DESC", 1, false);
 }

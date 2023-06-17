@@ -360,9 +360,12 @@ namespace big
 		{
 			for (auto player : g_player_service->players())
 			{
-				if (player.second && g_pointers->m_gta.m_ptr_to_handle(player.second->get_ped()) == ent)
+				if (player.second)
 				{
-					g_player_service->set_selected(player.second);
+					if (const auto ped_ptr = player.second->get_ped(); ped_ptr && g_pointers->m_gta.m_ptr_to_handle(ped_ptr) == ent)
+					{
+						g_player_service->set_selected(player.second);
+					}
 				}
 			}
 		}

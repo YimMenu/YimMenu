@@ -30,7 +30,6 @@ namespace big
 		static void mobile();
 		static void navigation();
 		static void notifications();
-		static void orbital_drone();
 		static void overlay();
 		static void root();
 		static void self();
@@ -47,6 +46,7 @@ namespace big
 		static void fun_vehicle();
 		static void vehicle_control();
 		static void spawn_ped();
+		static void squad_spawner();
 		static void time_and_weather();
 		static void spoofing();
 		static void teleport();
@@ -62,6 +62,7 @@ namespace big
 		static void nearby();
 		static void world();
 		static void gta_cache();
+		static void lua_scripts();
 
 		static void player_info();
 		static void player_troll();

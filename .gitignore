@@ -8,6 +8,7 @@ build/
 build_mingw/
 build_msvc/
 out/
+__pycache__/
 
 # precompiled headers
 *.ipch

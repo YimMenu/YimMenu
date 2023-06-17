@@ -32,6 +32,12 @@ namespace big
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(color, r, g, b, a)
 	};
 
+	struct remote_player_teleport
+	{
+		std::int16_t m_player_net_id;
+		rage::fvector3 m_position;
+	};
+
 	class menu_settings
 	{
 	public:
@@ -64,9 +70,13 @@ namespace big
 		int m_remote_controller_vehicle = -1;
 		int m_remote_controlled_vehicle = -1;
 
+		/*
 		std::uint16_t m_tp_veh_net_id;
 		std::uint16_t m_tp_player_net_id;
 		rage::fvector3 m_tp_position;
+		*/
+
+		std::unordered_map<std::uint16_t, remote_player_teleport> m_remote_player_teleports;
 
 		rage::scrThread* m_hunt_the_beast_thread = nullptr;
 
@@ -213,6 +223,13 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player, character_slot, spectating)
 		} player{};
 
+		struct player_db
+		{
+			bool update_player_online_states = false;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player_db, update_player_online_states)
+		} player_db{};
+
 		struct protections
 		{
 			struct script_events
@@ -241,13 +258,12 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_events, bounty, ceo_money, clear_wanted_level, fake_deposit, force_mission, force_teleport, gta_banner, mc_teleport, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate, give_collectible, vehicle_kick, teleport_to_warehouse, start_activity, send_sms)
 			} script_events{};
 
-			bool desync_kick     = false;
 			bool rid_join        = false;
 			bool lessen_breakups = false; // disabled by default due to anticheat concerns
 			bool receive_pickup  = false;
 			bool admin_check     = true;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, lessen_breakups, desync_kick, receive_pickup, admin_check)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, lessen_breakups, receive_pickup, admin_check)
 		} protections{};
 
 		struct self
@@ -261,6 +277,12 @@ namespace big
 				const char* effect = "scr_fbi_mop_drips";
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ptfx_effects, show, size)
 			} ptfx_effects{};
+
+			struct ipls
+			{
+				int select = 0;
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ipls, select)
+			} ipls{};
 
 			bool clean_player       = false;
 			bool force_wanted_level = false;
@@ -315,20 +337,11 @@ namespace big
 			// do not save below entries
 			bool dance_mode = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, custom_weapon_stop)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ipls, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, custom_weapon_stop)
 		} self{};
 
 		struct session
 		{
-			int local_weather     = 0;
-			bool override_time    = {};
-			bool override_weather = false;
-			struct custom_time
-			{
-				int hour{}, minute{}, second{};
-
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(custom_time, hour, minute, second)
-			} custom_time;
 			bool chat_force_clean      = false;
 			bool log_chat_messages     = false;
 			bool log_text_messages     = false;
@@ -339,6 +352,7 @@ namespace big
 			int player_magnet_count    = 32;
 			bool is_team               = false;
 			bool join_in_sctv_slots    = false;
+			bool lock_session          = false;
 
 			const char chat_command_prefix = '/';
 			const char chat_output_prefix  = '>';
@@ -376,7 +390,7 @@ namespace big
 			bool show_cheating_message = false;
 			bool anonymous_bounty      = true;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, local_weather, override_time, override_weather, custom_time, chat_force_clean, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, chat_force_clean, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session)
 		} session{};
 
 		struct settings
@@ -448,8 +462,8 @@ namespace big
 
 			struct train
 			{
-				bool derail_train = false;
 				bool drive_train  = false;
+				bool derail_train = false;
 			} train{};
 
 			struct water
@@ -470,12 +484,10 @@ namespace big
 
 			struct custom_time
 			{
-				int local_weather     = 0;
-				bool override_time    = {};
-				bool override_weather = false;
+				bool override_time = {};
 				int hour{}, minute{}, second{};
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(custom_time, local_weather, hour, minute, second)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(custom_time, override_time, hour, minute, second)
 			} custom_time;
 
 
@@ -512,7 +524,11 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(model_swapper, models)
 			} model_swapper{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone)
+
+			bool override_weather = false;
+			int local_weather     = 0;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone, local_weather, override_weather)
 		} world{};
 
 		struct spoofing
@@ -591,7 +607,7 @@ namespace big
 				bool primary          = false;
 				bool secondary        = false;
 				bool smoke            = false;
-				int speed             = 0;
+				int speed             = 1;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(rainbow_paint, type, neon, primary, secondary, smoke, speed)
 			} rainbow_paint{};
@@ -625,14 +641,16 @@ namespace big
 			bool no_water_collision                     = false;
 			bool disable_engine_auto_start              = false;
 			bool change_engine_state_immediately        = false;
+			bool keep_engine_running                    = false;
 			bool vehinvisibility                        = false;
 			bool localveh_visibility                    = false;
 			bool localped_visibility                    = true;
 			bool keep_on_ground                         = false;
 			bool no_collision                           = false;
 			bool unlimited_weapons                      = false;
+			bool siren_mute                             = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, vehinvisibility, localveh_visibility, localped_visibility, keep_on_ground, no_collision, unlimited_weapons)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, keep_engine_running, vehinvisibility, localveh_visibility, localped_visibility, keep_on_ground, no_collision, unlimited_weapons, siren_mute)
 		} vehicle{};
 
 		struct weapons
@@ -678,7 +696,6 @@ namespace big
 			} aimbot{};
 
 			CustomWeapon custom_weapon    = CustomWeapon::NONE;
-			bool force_crosshairs         = false;
 			bool infinite_ammo            = false;
 			bool infinite_mag             = false;
 			float increased_damage        = 1;
@@ -693,7 +710,7 @@ namespace big
 			bool triggerbot               = false;
 			bool infinite_range           = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, force_crosshairs, infinite_ammo, infinite_mag, increased_damage, increase_damage, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon, triggerbot, infinite_range)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, infinite_ammo, infinite_mag, increased_damage, increase_damage, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon, triggerbot, infinite_range)
 		} weapons{};
 
 		struct window
@@ -856,7 +873,7 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(stat_editor, stat, packed_stat)
 		} stat_editor{};
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, debug, tunables, notifications, player, protections, self, session, settings, spawn_vehicle, clone_pv, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, debug, tunables, notifications, player, player_db, protections, self, session, settings, spawn_vehicle, clone_pv, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor)
 	};
 
 	inline auto g = menu_settings();

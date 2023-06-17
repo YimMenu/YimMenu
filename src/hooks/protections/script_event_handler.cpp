@@ -3,6 +3,7 @@
 #include "gta/script_handler.hpp"
 #include "gta_util.hpp"
 #include "hooking.hpp"
+#include "lua/lua_manager.hpp"
 #include "util/session.hpp"
 
 #include <network/CNetGamePlayer.hpp>
@@ -59,6 +60,18 @@ namespace big
 
 		auto plyr = g_player_service->get_by_id(player->m_player_id);
 
+		if (g_lua_manager && g_lua_manager->get_modules().size() > 0)
+		{
+			std::vector<int32_t> script_event_args;
+
+			for (int i = 0; i < scripted_game_event->m_args_size; i++)
+				script_event_args.push_back(args[i]);
+
+			auto event_ret = g_lua_manager->trigger_event<"script_event", bool>((int)player->m_player_id, script_event_args);
+			if (event_ret.has_value())
+				return true; // don't care, block event if any bool is returned
+		}
+
 		switch (hash)
 		{
 		case eRemoteEvent::Bounty:
@@ -92,7 +105,7 @@ namespace big
 			break;
 		case eRemoteEvent::Crash: g.reactions.crash.process(plyr); return true;
 		case eRemoteEvent::Crash2:
-			if (args[2] > 32)// actual crash condition is if args[2] is above 255
+			if (args[2] > 32) // actual crash condition is if args[2] is above 255
 			{
 				g.reactions.crash.process(plyr);
 				return true;
@@ -321,7 +334,7 @@ namespace big
 		case eRemoteEvent::InteriorControl:
 		{
 			int interior = (int)args[2];
-			if (interior < 0 || interior > 161)// the upper bound will change after an update
+			if (interior < 0 || interior > 161) // the upper bound will change after an update
 			{
 				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
@@ -330,20 +343,6 @@ namespace big
 			}
 			break;
 		}
-		case eRemoteEvent::SMS:
-			if (g.protections.script_events.send_sms)
-			{
-				if (g.session.kick_chat_spammers)
-				{
-					if (auto plyr = g_player_service->get_by_id(player->m_player_id))
-					{
-						((player_command*)command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
-					}
-				}
-
-				return true;
-			}
-			break;
 		case eRemoteEvent::DestroyPersonalVehicle: g.reactions.destroy_personal_vehicle.process(plyr); return true;
 		case eRemoteEvent::KickFromInterior:
 			if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].SimpleInteriorData.Owner != plyr->id())

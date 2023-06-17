@@ -19,13 +19,7 @@ namespace big
 
 	bool locals_service::does_script_exist(std::string script_name)
 	{
-		// TODO: find a better way to check script validity
-
-		for (auto s : all_script_names)
-			if (script_name == s)
-				return true;
-
-		return false;
+		return SCRIPT::DOES_SCRIPT_WITH_NAME_HASH_EXIST(rage::joaat(script_name));
 	}
 
 	std::filesystem::path locals_service::get_path()
@@ -48,14 +42,15 @@ namespace big
 			{
 				if (!l.key().empty())
 				{
-					local new_local{"", "", 0, 0, 0, 0};
+					local new_local{"", "", 0, 0, 0, 0, 0};
 					new_local.m_base_address = j[l.key()]["base_address"];
 					std::string script_name  = j[l.key()]["script_thread_name"];
 					strcpy(new_local.m_script_thread_name, script_name.data());
 					new_local.m_freeze = j[l.key()]["freeze"];
 					std::string name   = j[l.key()]["name"];
 					strcpy(new_local.m_name, name.data());
-					new_local.m_value = j[l.key()]["value"];
+					new_local.m_value     = j[l.key()]["value"];
+					new_local.m_edit_mode = j[l.key()].value<int>("editmode", 0);
 					if (!j[l.key()]["offsets"].is_null())
 					{
 						for (const auto& offset : j[l.key()]["offsets"].items())
@@ -101,6 +96,7 @@ namespace big
 			j[l.first]["freeze"]             = l.second.m_freeze;
 			j[l.first]["name"]               = l.second.m_name;
 			j[l.first]["value"]              = l.second.m_value;
+			j[l.first]["editmode"]           = l.second.m_edit_mode;
 
 			for (int i = 0; i < l.second.m_offsets.size(); i++)
 			{

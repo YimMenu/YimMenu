@@ -6,6 +6,7 @@
 #include "gta/script_id.hpp"
 #include "gta_util.hpp"
 #include "hooking.hpp"
+#include "lua/lua_manager.hpp"
 #include "natives.hpp"
 #include "services/players/player_service.hpp"
 #include "util/session.hpp"
@@ -116,7 +117,7 @@ namespace big
 					player->is_spammer = true;
 					if (g.session.kick_chat_spammers)
 					{
-						((player_command*)command::get(RAGE_JOAAT("breakup")))->call(player, {});
+						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
 					}
 					return true;
 				}
@@ -127,6 +128,8 @@ namespace big
 
 					if (g.session.chat_commands && message[0] == g.session.chat_command_prefix)
 						command::process(std::string(message + 1), std::make_shared<chat_command_context>(player));
+					else
+						g_lua_manager->trigger_event<"chat_message_received">(player->id(), message);
 				}
 				break;
 			}
@@ -177,7 +180,7 @@ namespace big
 							return true;
 
 						if (g.reactions.breakup_others.karma)
-							((player_command*)command::get(RAGE_JOAAT("breakup")))->call(player, {});
+							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
 					}
 					else
 					{
@@ -185,7 +188,8 @@ namespace big
 						session::add_infraction(player, Infraction::BREAKUP_KICK_DETECTED);
 
 						if (g.reactions.breakup_others.karma)
-							((player_command*)command::get(RAGE_JOAAT("breakup")))->call(player, {});
+							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
+						;
 					}
 				}
 

@@ -15,11 +15,6 @@ namespace big
 	{
 		if (ImGui::TreeNode("INFO"_T.data()))
 		{
-			components::button("Open SC Overlay", [] {
-				uint64_t gamerHandle[13];
-				NETWORK::NETWORK_HANDLE_FROM_PLAYER(g_player_service->get_selected()->id(), (Any*)&gamerHandle, 13);
-				NETWORK::NETWORK_SHOW_PROFILE_UI((Any*)&gamerHandle);
-			});
 			ImGui::Text("PLAYER_INFO_ID"_T.data(), g_player_service->get_selected()->id());
 
 			ImGui::Text("PLAYER_INFO_SESSION_HOST"_T.data(),
@@ -164,11 +159,13 @@ namespace big
 				ImGui::Text("PLAYER_INFO_LAP_DANCES"_T.data(), stats.LapDancesBought);
 				ImGui::Text("PLAYER_INFO_MISSIONS_CREATED"_T.data(), stats.MissionsCreated);
 				ImGui::Text("PLAYER_INFO_METLDOWN_COMPLETE"_T.data(),
-				scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].MeltdownComplete ? "YES"_T.data() : "NO"_T.data()); // curious to see if anyone has actually played singleplayer
+				    scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].MeltdownComplete ? "YES"_T.data() : "NO"_T.data()); // curious to see if anyone has actually played singleplayer
 
 
 				ImGui::Separator();
 			}
+
+			ImGui::Checkbox("Block Explosions", &g_player_service->get_selected()->block_explosions);
 
 			if (ImGui::BeginCombo("CHAT_COMMAND_PERMISSIONS"_T.data(),
 			        COMMAND_ACCESS_LEVELS[g_player_service->get_selected()->command_access_level.value_or(g.session.chat_command_default_access_level)]))
@@ -196,6 +193,14 @@ namespace big
 			{
 				g_player_database_service->get_or_create_player(g_player_service->get_selected());
 			}
+
+			ImGui::SameLine();
+
+			components::button("Open SC Overlay", [] {
+				uint64_t gamerHandle[13];
+				NETWORK::NETWORK_HANDLE_FROM_PLAYER(g_player_service->get_selected()->id(), (Any*)&gamerHandle, 13);
+				NETWORK::NETWORK_SHOW_PROFILE_UI((Any*)&gamerHandle);
+			});
 
 			ImGui::TreePop();
 		}

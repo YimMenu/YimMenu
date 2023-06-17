@@ -482,6 +482,8 @@ namespace big
 
 	inline bool is_crash_object(uint32_t model)
 	{
+		if (!model_info::get_model(model))
+			return false;
 		if (!model_info::is_model_of_type(model, eModelType::Object, eModelType::Time, eModelType::Weapon, eModelType::Destructable, eModelType::WorldObject, eModelType::Sprinkler, eModelType::Unk65, eModelType::Plant, eModelType::LOD, eModelType::Unk132, eModelType::Building))
 			return true;
 		for (auto iterator : crash_objects)
@@ -671,6 +673,16 @@ namespace big
 				}
 				break;
 			}
+			case RAGE_JOAAT("CTrainGameStateDataNode"):
+			{
+				const auto train_node = (CTrainGameStateDataNode*)(node);
+				if (train_node->m_track_id < 0 || train_node->m_track_id >= 27)
+				{
+					notify::crash_blocked(sender, "out of bound train track index");
+					return true;
+				}
+				break;
+			}
 			case RAGE_JOAAT("CVehicleProximityMigrationDataNode"):
 			{
 				if (object && g_local_player && g_local_player->m_net_object)
@@ -678,7 +690,7 @@ namespace big
 					const auto migration_node = (CVehicleProximityMigrationDataNode*)(node);
 					if (is_in_vehicle(g_local_player, g_local_player->m_vehicle) && g_local_player->m_vehicle->m_net_object
 					    && g_local_player->m_vehicle->m_net_object->m_object_id == object->m_object_id)
-						return false; // vehicle kick?
+						return true; // vehicle kick?
 
 					if (!g_local_player->m_vehicle || !g_local_player->m_vehicle->m_net_object
 					    || g_local_player->m_vehicle->m_net_object->m_object_id != object->m_object_id
@@ -704,7 +716,7 @@ namespace big
 	{
 		static bool init = ([] { cache_nodes(); }(), true);
 
-		if (tree->m_child_node_count && check_node(tree->m_next_sync_node, g.m_syncing_player, object))
+		if (tree->m_child_node_count && tree->m_next_sync_node && check_node(tree->m_next_sync_node, g.m_syncing_player, object))
 		{
 			return false;
 		}

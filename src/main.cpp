@@ -6,6 +6,7 @@
 #include "gui.hpp"
 #include "hooking.hpp"
 #include "logger/exception_handler.hpp"
+#include "lua/lua_manager.hpp"
 #include "native_hooks/native_hooks.hpp"
 #include "pointers.hpp"
 #include "renderer.hpp"
@@ -28,6 +29,8 @@
 #include "services/player_database/player_database_service.hpp"
 #include "services/players/player_service.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
+#include "services/squad_spawner/squad_spawner.hpp"
+#include "services/tunables/tunables_service.hpp"
 #include "services/vehicle/handling_service.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
 #include "thread_pool.hpp"
@@ -108,6 +111,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    auto player_database_service_instance = std::make_unique<player_database_service>();
 				    auto hotkey_service_instance          = std::make_unique<hotkey_service>();
 				    auto matchmaking_service_instance     = std::make_unique<matchmaking_service>();
+				    auto tunables_service_instance        = std::make_unique<tunables_service>();
 #ifndef CROSSCOMPILING
 				    auto api_service_instance = std::make_unique<api_service>();
 #endif // CROSSCOMPILING
@@ -123,13 +127,13 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::remote_loop, "Remote"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::lscustoms_loop, "LS Customs"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::rainbowpaint_loop, "Rainbow Paint"));
-				    g_script_mgr.add_script(std::make_unique<script>(&backend::vehiclefly_loop, "Vehicle Fly"));
-				    g_script_mgr.add_script(std::make_unique<script>(&backend::turnsignal_loop, "Turn Signals"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::disable_control_action_loop, "Disable Controls"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::world_loop, "World"));
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::orbital_drone, "Orbital Drone"));
-				    g_script_mgr.add_script(std::make_unique<script>(&backend::vehicle_control, "Vehicle control"));
+				    g_script_mgr.add_script(std::make_unique<script>(&backend::vehicle_control, "Vehicle Control"));
 				    g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu, "Context Menu"));
+				    g_script_mgr.add_script(std::make_unique<script>(&backend::tunables_script, "Tunables"));
+				    g_script_mgr.add_script(std::make_unique<script>(&backend::squad_spawner, "Tunables"));
 
 				    LOG(INFO) << "Scripts registered.";
 
@@ -139,10 +143,19 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    auto native_hooks_instance = std::make_unique<native_hooks>();
 				    LOG(INFO) << "Dynamic native hooker initialized.";
 
+				    auto lua_manager_instance = std::make_unique<lua_manager>();
+				    LOG(INFO) << "Lua manager initialized.";
+
 				    g_running = true;
+
+				    // start update loop after setting g_running to true to prevent it from exiting instantly
+				    g_player_database_service->start_update_loop();
 
 				    while (g_running)
 					    std::this_thread::sleep_for(500ms);
+
+				    lua_manager_instance.reset();
+				    LOG(INFO) << "Lua manager uninitialized.";
 
 				    g_hooking->disable();
 				    LOG(INFO) << "Hooking disabled.";
@@ -161,7 +174,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    thread_pool_instance->destroy();
 				    LOG(INFO) << "Destroyed thread pool.";
 
-
+				    tunables_service_instance.reset();
+				    LOG(INFO) << "Tunables Service reset.";
 				    hotkey_service_instance.reset();
 				    LOG(INFO) << "Hotkey Service reset.";
 				    matchmaking_service_instance.reset();

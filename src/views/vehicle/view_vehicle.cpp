@@ -10,7 +10,7 @@ namespace big
 	{
 		components::button("MORS_FIX_ALL"_T, [] {
 			int amount_fixed = mobile::mors_mutual::fix_all();
-			g_notification_service->push("MOBILE"_T.data(),
+			g_notification_service->push_success("MOBILE"_T.data(),
 			    fmt::vformat("VEHICLE_FIX_AMOUNT"_T.data(),
 			        fmt::make_format_args(amount_fixed,
 			            amount_fixed == 1 ? "VEHICLE_FIX_HAS"_T.data() : "VEHICLE_FIX_HAVE"_T.data())));
@@ -52,6 +52,8 @@ namespace big
 		ImGui::Checkbox("DISABLE_ENGINE_AUTO_START"_T.data(), &g.vehicle.disable_engine_auto_start);
 		ImGui::SameLine();
 		ImGui::Checkbox("CHANGE_STATE_IMMEDIATELY"_T.data(), &g.vehicle.change_engine_state_immediately);
+		ImGui::SameLine();
+		components::command_checkbox<"keepengine">();
 
 		ImGui::Separator();
 
@@ -59,7 +61,7 @@ namespace big
 		{
 			ImGui::BeginGroup();
 
-			ImGui::Checkbox("GOD_MODE"_T.data(), &g.vehicle.god_mode);
+			components::command_checkbox<"vehgodmode">("GOD_MODE"_T.data());
 			components::command_checkbox<"hornboost">();
 			components::command_checkbox<"vehjump">();
 			components::command_checkbox<"invisveh">();
@@ -78,7 +80,7 @@ namespace big
 			components::command_checkbox<"blockhoming">();
 			components::command_checkbox<"driveonwater">();
 			components::command_checkbox<"vehiclecontrol">();
-			
+
 
 			ImGui::EndGroup();
 			ImGui::SameLine();
@@ -92,6 +94,25 @@ namespace big
 			}
 			components::command_checkbox<"driveunder">();
 			components::command_checkbox<"keeponground">();
+
+			components::command_checkbox<"mutesiren">();
+
+			components::command_checkbox<"speedometer">();
+			components::options_modal("Speedometer", [] {
+				ImGui::Text("POS_X_Y"_T.data());
+
+				float pos[2] = {g.vehicle.speedo_meter.x, g.vehicle.speedo_meter.y};
+
+				if (ImGui::SliderFloat2("###speedo_pos", pos, .001f, .999f, "%.3f"))
+				{
+					g.vehicle.speedo_meter.x = pos[0];
+					g.vehicle.speedo_meter.y = pos[1];
+				}
+
+				components::command_checkbox<"speedometerleftside">();
+				ImGui::SameLine();
+				components::command_checkbox<"speedometergears">();
+			});
 
 			ImGui::EndGroup();
 		}
@@ -161,28 +182,6 @@ namespace big
 			ImGui::RadioButton(speed_unit_strings[(int)SpeedUnit::MIPH].c_str(), (int*)&g.vehicle.speed_unit, (int)SpeedUnit::MIPH);
 			ImGui::SameLine();
 			ImGui::RadioButton(speed_unit_strings[(int)SpeedUnit::MPS].c_str(), (int*)&g.vehicle.speed_unit, (int)SpeedUnit::MPS);
-		}
-		ImGui::Separator();
-
-		components::sub_title("SPEEDO_METER"_T);
-		{
-			components::command_checkbox<"speedometer">();
-			if (g.vehicle.speedo_meter.enabled)
-			{
-				ImGui::Text("POS_X_Y"_T.data());
-
-				float pos[2] = {g.vehicle.speedo_meter.x, g.vehicle.speedo_meter.y};
-
-				if (ImGui::SliderFloat2("###speedo_pos", pos, .001f, .999f, "%.3f"))
-				{
-					g.vehicle.speedo_meter.x = pos[0];
-					g.vehicle.speedo_meter.y = pos[1];
-				}
-
-				components::command_checkbox<"speedometerleftside">();
-				ImGui::SameLine();
-				components::command_checkbox<"speedometergears">();
-			}
 		}
 
 		g.vehicle.proof_mask = 0;

@@ -1,5 +1,6 @@
 #pragma once
 #include "backend/command.hpp"
+#include "backend/int_command.hpp"
 #include "backend/looped_command.hpp"
 #include "backend/player_command.hpp"
 #include "fiber_pool.hpp"
@@ -22,6 +23,8 @@ namespace big
 		static void nav_item(std::pair<tabs, navigation_struct>&, int);
 
 		static void input_text_with_hint(const std::string_view label, const std::string_view hint, char* buf, size_t buf_size, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
+		static void input_text_with_hint(const std::string_view label, const std::string_view hint, std::string* buf, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
+
 		static void input_text(const std::string_view label, char* buf, size_t buf_size, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
 
 		static bool selectable(const std::string_view, bool);
@@ -30,6 +33,8 @@ namespace big
 		static void selectable(const std::string_view, bool, ImGuiSelectableFlags, std::function<void()>);
 
 		static bool script_patch_checkbox(const std::string_view text, bool* option, const std::string_view tooltip = "");
+
+		static void options_modal(std::string element_name, std::function<void()> render_elements, bool sameline = true, std::string custom_button_name = "Options");
 
 		template<template_str cmd_str, ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>
 		static void command_button(const std::vector<std::uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
@@ -52,9 +57,9 @@ namespace big
 		static void player_command_button(player_ptr player = g_player_service->get_selected(), const std::vector<std::uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
 		{
 #ifdef __clang__ // ! FIXME This is not a fix it just lets the compilation to contitue.
-			static player_command* command = (player_command*)command::get(rage::joaat(cmd_str.value));
+			static player_command* command = dynamic_cast<player_command*>(command::get(rage::joaat(cmd_str.value)));
 #else
-			static player_command* command = (player_command*)command::get(rage::consteval_joaat(cmd_str.value));
+			static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat(cmd_str.value)));
 #endif // __clang__
 			if (command == nullptr)
 				return ImGui::Text("INVALID COMMAND");
@@ -66,18 +71,44 @@ namespace big
 		}
 
 		template<template_str cmd_str>
-		static void command_checkbox(std::optional<const std::string_view> label_override = std::nullopt)
+		static bool command_checkbox(std::optional<const std::string_view> label_override = std::nullopt)
 		{
 #ifdef __clang__ // ! FIXME This is not a fix it just lets the compilation to contitue.
-			static bool_command* command = (bool_command*)command::get(rage::joaat(cmd_str.value));
+			static bool_command* command = dynamic_cast<bool_command*>(command::get(rage::joaat(cmd_str.value)));
 #else
-			static bool_command* command = (bool_command*)command::get(rage::consteval_joaat(cmd_str.value));
+			static bool_command* command = dynamic_cast<bool_command*>(command::get(rage::consteval_joaat(cmd_str.value)));
+#endif // __clang__
+			if (command == nullptr)
+			{
+				ImGui::Text("INVALID COMMAND");
+				return false;
+			}
+
+			bool updated;
+			if (updated = ImGui::Checkbox(label_override.value_or(command->get_label()).data(), &command->is_enabled()))
+				command->refresh();
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip(command->get_description().c_str());
+
+			return updated;
+		}
+
+		template<template_str cmd_str>
+		static void command_int_slider(std::optional<const std::string_view> label_override = std::nullopt)
+		{
+#ifdef __clang__ // ! FIXME This is not a fix it just lets the compilation to contitue.
+			static int_command* command = (int_command*)command::get(rage::joaat(cmd_str.value));
+#else
+			static int_command* command = (int_command*)command::get(rage::consteval_joaat(cmd_str.value));
 #endif // __clang__
 			if (command == nullptr)
 				return ImGui::Text("INVALID COMMAND");
 
-			if (ImGui::Checkbox(label_override.value_or(command->get_label()).data(), &command->is_enabled()))
-				command->refresh();
+			ImGui::SliderInt(label_override.value_or(command->get_label()).data(),
+			    &command->get_value(),
+			    command->get_lower_bound(),
+			    command->get_upper_bound());
+
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip(command->get_description().c_str());
 		}

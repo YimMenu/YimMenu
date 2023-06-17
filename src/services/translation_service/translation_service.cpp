@@ -10,7 +10,8 @@
 namespace big
 {
 	translation_service::translation_service() :
-	    m_url("https://cdn.jsdelivr.net/gh/YimMenu/Translations@master")
+	    m_url("https://raw.githubusercontent.com/YimMenu/Translations/master"),
+	    m_fallback_url("https://cdn.jsdelivr.net/gh/YimMenu/Translations@master")
 	{
 	}
 
@@ -41,7 +42,6 @@ namespace big
 				m_local_index.version = m_remote_index.version;
 			}
 			load_translations();
-
 			return;
 		}
 
@@ -154,7 +154,7 @@ namespace big
 #ifndef CROSSCOMPILING
 		if (auto it = m_remote_index.translations.find(pack_id.data()); it != m_remote_index.translations.end())
 		{
-			cpr::Response response = cpr::Get(cpr::Url{m_url + "/" + it->second.file});
+			cpr::Response response = download_file("/" + it->second.file);
 
 			if (response.status_code == 200)
 			{
@@ -175,7 +175,7 @@ namespace big
 	bool translation_service::download_index()
 	{
 #ifndef CROSSCOMPILING
-		cpr::Response response = cpr::Get(cpr::Url{m_url + "/index.json"});
+		cpr::Response response = download_file("/index.json");
 
 		if (response.status_code == 200)
 		{
@@ -216,4 +216,16 @@ namespace big
 		m_remote_index.default_lang = m_local_index.fallback_default_language;
 		m_remote_index.translations = m_local_index.fallback_languages;
 	}
+
+#ifndef CROSSCOMPILING
+	cpr::Response translation_service::download_file(const std::string& filename)
+	{
+		cpr::Response response = cpr::Get(cpr::Url{m_url + filename});
+
+		if (response.status_code != 200)
+			response = cpr::Get(cpr::Url{m_fallback_url + filename});
+
+		return response;
+	}
+#endif // CROSSCOMPILING
 }

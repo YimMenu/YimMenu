@@ -27,5 +27,5 @@ namespace big
 		}
 	};
 
-	bail_kick g_bail_kick("bailkick", "Bail Kick", "Blocked by most menus", 0);
+	bail_kick g_bail_kick("bailkick", "BAIL_KICK", "BAIL_KICK_DESC", 0);
 }

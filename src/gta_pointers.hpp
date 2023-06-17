@@ -37,13 +37,18 @@ namespace big
 
 		memory::handle m_creator_warp_cheat_triggered_patch;
 
-		memory::handle m_ntqvm_caller;
-
 		memory::handle m_sound_overload_detour;
 
 		memory::handle m_disable_collision;
 
 		memory::handle m_crash_trigger;
+
+		memory::handle m_script_vm_patch_1;
+		memory::handle m_script_vm_patch_2;
+		memory::handle m_script_vm_patch_3;
+		memory::handle m_script_vm_patch_4;
+		memory::handle m_script_vm_patch_5;
+		memory::handle m_script_vm_patch_6;
 
 		eGameState* m_game_state{};
 		bool* m_is_session_started{};
@@ -134,6 +139,7 @@ namespace big
 
 		Network** m_network;
 
+		functions::get_gamer_online_state m_get_gamer_online_state;
 		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
 		functions::start_matchmaking_find_sessions m_start_matchmaking_find_sessions;
 		functions::join_session_by_info m_join_session_by_info;
@@ -148,7 +154,6 @@ namespace big
 		functions::fipackfile_unmount m_fipackfile_unmount{};
 
 		PVOID m_invalid_mods_crash_detour{};
-		PVOID m_constraint_attachment_crash{};
 		PVOID m_invalid_decal_crash{};
 		PVOID m_task_parachute_object_0x270{};
 
@@ -163,10 +168,6 @@ namespace big
 		rage::rlGamerInfo* m_profile_gamer_info{};     // per profile gamer info
 		rage::rlGamerInfo* m_player_info_gamer_info{}; // the gamer info that is applied to CPlayerInfo
 		CCommunications** m_communications{};
-
-		PVOID m_serialize_ped_inventory_data_node;
-		PVOID m_serialize_vehicle_gadget_data_node;
-		functions::get_vehicle_gadget_array_size m_get_vehicle_gadget_array_size;
 
 		PVOID m_handle_join_request;
 		functions::write_join_response_data m_write_join_response_data;
@@ -222,11 +223,7 @@ namespace big
 		functions::send_packet m_send_packet;
 		functions::connect_to_peer m_connect_to_peer;
 
-		PVOID m_fragment_physics_crash;
 		PVOID m_fragment_physics_crash_2;
-
-		PVOID m_infinite_train_crash;
-		functions::get_next_carriage m_get_next_carriage;
 
 		functions::get_entity_attached_to m_get_entity_attached_to;
 
