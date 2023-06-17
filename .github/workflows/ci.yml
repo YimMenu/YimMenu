@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   ci_mingw:
       runs-on: ubuntu-latest
-      container: ghcr.io/yimmenu/yimmenu:latest
+      container: ghcr.io/tupoyemenu/yimmenu:latest
       name: CI MinGW
       steps:
         - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
@@ -35,7 +35,7 @@ jobs:
 
   ci_clang:
       runs-on: ubuntu-latest
-      container: ghcr.io/yimmenu/yimmenu:latest
+      container: ghcr.io/tupoyemenu/yimmenu:latest
       name: CI Clang
       steps:
         - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
