@@ -1910,6 +1910,18 @@ enum class eDoorId
 	VEH_EXT_BOOT
 };
 
+enum class eVehicleWindows
+{
+	WINDOW_FRONT_LEFT = 0,
+	WINDOW_FRONT_RIGHT,
+	WINDOW_REAR_LEFT,
+	WINDOW_REAR_RIGHT,
+	WINDOW_MIDDLE_LEFT,
+	WINDOW_MIDDLE_RIGHT,
+	WINDSCREEN_FRONT,
+	WINDSCREEN_REAR
+};
+
 enum class eVehicleSeats
 {
 	DRIVER = -1,
@@ -1920,15 +1932,11 @@ enum class eVehicleSeats
 	OUTSIDE_RIGHT,
 };
 
-enum class eCombatAbilityLevel{
+enum class eCombatAbilityLevel
+{
 	POOR,
 	AVERAGE,
 	PROFESSIONAL
 };
 
-NLOHMANN_JSON_SERIALIZE_ENUM(eCombatAbilityLevel, 
-	{
-		{eCombatAbilityLevel::POOR, "poor"},
-		{eCombatAbilityLevel::AVERAGE, "average"},
-		{eCombatAbilityLevel::PROFESSIONAL, "professional"}
-	})
+NLOHMANN_JSON_SERIALIZE_ENUM(eCombatAbilityLevel, {{eCombatAbilityLevel::POOR, "poor"}, {eCombatAbilityLevel::AVERAGE, "average"}, {eCombatAbilityLevel::PROFESSIONAL, "professional"}})

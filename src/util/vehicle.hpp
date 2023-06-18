@@ -746,6 +746,29 @@ namespace big::vehicle
 		return success;
 	}
 
+	inline bool operate_vehicle_windows(Vehicle veh, eVehicleWindows window, bool open)
+	{
+		bool success = false;
+		if (ENTITY::DOES_ENTITY_EXIST(veh))
+		{
+			for (int i = 0; i < 7; i++)
+			{
+				if (window == eVehicleWindows::WINDOW_FRONT_LEFT || (int)window == i)
+				{
+					if (VEHICLE::IS_VEHICLE_WINDOW_INTACT(veh, i))
+					{
+						if (open)
+							VEHICLE::ROLL_DOWN_WINDOW(veh, i);
+						else
+							VEHICLE::ROLL_UP_WINDOW(veh, i);
+					}
+					success = true;
+				}
+			}
+		}
+		return success;
+	}
+
 	inline bool operate_vehicle_headlights(Vehicle veh, bool lights, bool highbeams)
 	{
 		if (ENTITY::DOES_ENTITY_EXIST(veh))

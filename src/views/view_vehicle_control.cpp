@@ -93,7 +93,7 @@ namespace big
 			}
 
 			ImGui::SameLine(300);
-			
+
 			const auto button_label = g_vehicle_control_service.m_controlled_vehicle.doors[i].open ? "CLOSE"_T : "OPEN"_T;
 			if (components::button(button_label))
 			{
@@ -106,6 +106,40 @@ namespace big
 		}
 
 
+		ImGui::EndGroup();
+	}
+
+	void render_windows_tab()
+	{
+		// TODO: Implement
+		const char* const windownames[MAX_VEHICLE_WINDOWS]{
+		    "Front left",
+		    "Front right",
+		    "Back left",
+		    "Back right",
+		    "Front",
+		    "Rear",
+		};
+
+		ImGui::BeginGroup();
+		for (int i = 0; i < MAX_VEHICLE_WINDOWS; i++)
+		{
+			// if (!g_vehicle_control_service.m_controlled_vehicle.windows[i].valid)
+			// 	continue;
+			ImGui::SetNextItemWidth(200);
+			ImGui::PushID(i);
+			ImGui::Text(windownames[i]);
+			ImGui::SameLine(300);
+			const auto button_label = g_vehicle_control_service.m_controlled_vehicle.windows[i].open ? "CLOSE"_T : "OPEN"_T;
+			if (components::button(button_label))
+			{
+				g_fiber_pool->queue_job([=] {
+					g_vehicle_control_service.operate_window((eVehicleWindows)i,
+					    !g_vehicle_control_service.m_controlled_vehicle.windows[i].open);
+				});
+			}
+			ImGui::PopID();
+		}
 		ImGui::EndGroup();
 	}
 
@@ -317,6 +351,13 @@ namespace big
 					if (ImGui::BeginTabItem("Doors"))
 					{
 						render_doors_tab();
+
+						ImGui::EndTabItem();
+					}
+
+					if (ImGui::BeginTabItem("Windows"))
+					{
+						render_windows_tab();
 
 						ImGui::EndTabItem();
 					}
