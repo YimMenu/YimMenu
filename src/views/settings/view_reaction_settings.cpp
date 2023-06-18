@@ -1,4 +1,6 @@
+#include "core/globals.hpp"
 #include "views/view.hpp"
+
 
 namespace big
 {
@@ -101,6 +103,13 @@ namespace big
 		ImGui::Separator();
 		draw_reaction(g.reactions.gamer_instruction_kick);
 		draw_interloper_reaction(g.reactions.breakup_others);
+
+		components::title("Reaction Kick Method");
+		components::sub_title("Kick Option:");
+		ImGui::Checkbox("Default", &g.settings.default_reaction_kick);
+		ImGui::Checkbox("Breakup Kick", &g.settings.breakup_reaction_kick);
+		ImGui::Checkbox("End Session Kick##kick_method", &g.settings.end_reaction_kick);
+		ImGui::Checkbox("Null Function Kick##kick_method", &g.settings.nf_reaction_kick);
 
 		components::title("SETTINGS_NOTIFICATIONS"_T);
 		components::sub_title("SETTINGS_NOTIFY_GTA_THREADS"_T);

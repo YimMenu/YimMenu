@@ -1,12 +1,14 @@
 #include "reaction.hpp"
 
 #include "backend/player_command.hpp"
+#include "core/globals.hpp"
 #include "fiber_pool.hpp"
 #include "hooking.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "util/notify.hpp"
+
 
 namespace big
 {
@@ -46,6 +48,42 @@ namespace big
 				if(g_player_service->get_self()->is_host())
 					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
 					NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
+				if (g.settings.default_reaction_kick)
+				{
+					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("bailkick")))->call(player, {});
+					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
+					script::get_current()->yield(700ms);
+					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
+				}
+				else if (g.settings.breakup_reaction_kick)
+				{
+					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
+				}
+				else if (g.settings.end_reaction_kick)
+				{
+					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("endkick")))->call(player, {});
+					script::get_current()->yield(700ms);
+					if (player->is_valid())
+					{
+						g_notification_service->push_error("End Kick Failure", "End kicks are blocked by most menus");
+					}
+				}
+				else if (g.settings.nf_reaction_kick)
+				{
+					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
+					script::get_current()->yield(15s);
+					if (player->is_valid())
+					{
+						g_notification_service->push_error("Null Function Kick Failed", "Attempting Try 2. Breakup kick will be used if kick fails again...");
+						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
+						script::get_current()->yield(700ms);
+						if (player->is_valid())
+						{
+							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
+							g_notification_service->push_warning("Breakup Kick Sent", "A breakup kick has been sent due to Null Function failed attempts.");
+						}
+					}
+				}
 			});
 		}
 	}
