@@ -42,6 +42,10 @@ namespace big
 		components::command_checkbox<"highalert">();
 		ImGui::SameLine(140.f);
 		components::command_checkbox<"pedrush">();
+		components::command_checkbox<"autodisarm">();
+		components::options_modal("Auto Disarm", []{
+			ImGui::Checkbox("Neutralize", &g.world.nearby.auto_disarm.neutralize);
+		});
 
 		ImGui::Separator();
 		components::sub_title("Vehicles");

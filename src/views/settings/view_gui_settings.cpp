@@ -6,7 +6,7 @@ namespace big
 	void view::gui_settings()
 	{
 		components::sub_title("SETTINGS_UI_SCALE"_T);
-		if (ImGui::SliderFloat("##gui-scale", &g.window.gui_scale, 1.f, 1.5f, "%.2f"))
+		if (ImGui::SliderFloat("##gui-scale", &g.window.gui_scale, 0.75f, 1.5f, "%.2f"))
 			g_renderer->rescale(g.window.gui_scale);
 
 		components::sub_title("SETTINGS_UI_COLOR"_T);
@@ -16,10 +16,10 @@ namespace big
 			g.window.color = ImGui::ColorConvertFloat4ToU32(col_gui);
 		}
 
-		components::sub_title("Ingame Overlay");
+		components::sub_title("In-Game Overlay");
 		ImGui::Checkbox("Show Overlay", &g.window.ingame_overlay.opened);
 		ImGui::SameLine();
-		ImGui::Checkbox("Show when Menu opened", &g.window.ingame_overlay.show_with_menu_opened);
+		ImGui::Checkbox("Show When Menu Opened", &g.window.ingame_overlay.show_with_menu_opened);
 
 		ImGui::BeginGroup();
 

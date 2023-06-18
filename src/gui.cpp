@@ -11,8 +11,8 @@
 namespace big
 {
 	gui::gui() :
-		m_is_open(false),
-		m_override_mouse(false)
+	    m_is_open(false),
+	    m_override_mouse(false)
 	{
 		g_renderer->add_dx_callback(view::gta_data, -1);
 		g_renderer->add_dx_callback(view::notifications, -2);
@@ -92,7 +92,7 @@ namespace big
 		style.ChildRounding     = 4.0f;
 
 		auto& colors                          = style.Colors;
-		colors[ImGuiCol_Text]                 = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
+		colors[ImGuiCol_Text]                 = ImVec4(1.0f, 1.0f, 1.0f, 1.00f); // ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
 		colors[ImGuiCol_TextDisabled]         = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
 		colors[ImGuiCol_WindowBg]             = ImGui::ColorConvertU32ToFloat4(g.window.color);
 		colors[ImGuiCol_ChildBg]              = ImGui::ColorConvertU32ToFloat4(g.window.color);
@@ -128,7 +128,7 @@ namespace big
 		colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
 		colors[ImGuiCol_TextSelectedBg]       = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
 
-		memcpy(&m_default_config, &ImGui::GetStyle(), sizeof(ImGuiStyle));
+		save_default_style();
 	}
 
 	void gui::dx_on_tick()
@@ -139,6 +139,11 @@ namespace big
 			view::root();
 			ImGui::PopStyleColor();
 		}
+	}
+
+	void gui::save_default_style()
+	{
+		memcpy(&m_default_config, &ImGui::GetStyle(), sizeof(ImGuiStyle));
 	}
 
 	void gui::restore_default_style()

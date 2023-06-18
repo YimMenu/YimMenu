@@ -117,7 +117,12 @@ namespace big
 					player->is_spammer = true;
 					if (g.session.kick_chat_spammers)
 					{
-						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
+						if(g_player_service->get_self()->is_host())
+							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
+							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
+						
+						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("bailkick")))->call(player, {});
+						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
 					}
 					return true;
 				}
