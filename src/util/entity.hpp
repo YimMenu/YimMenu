@@ -99,7 +99,7 @@ namespace big::entity
 		return false;
 	}
 
-	inline std::vector<Entity> get_entities(bool vehicles, bool peds)
+	inline std::vector<Entity> get_entities(bool vehicles, bool peds, bool props = false)
 	{
 		std::vector<Entity> target_entities;
 		target_entities.clear();
@@ -108,7 +108,7 @@ namespace big::entity
 		{
 			for (auto vehicle : pools::get_all_vehicles())
 			{
-				if (vehicle == gta_util::get_local_vehicle())
+				if (!vehicle || vehicle == gta_util::get_local_vehicle())
 					continue;
 
 				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(vehicle));
@@ -120,10 +120,21 @@ namespace big::entity
 			for (auto ped : pools::get_all_peds())
 			{
 				// make sure to not include ourselves
-				if (ped == gta_util::get_local_ped())
+				if (!ped || ped == gta_util::get_local_ped())
 					continue;
 
 				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(ped));
+			}
+		}
+
+		if (props)
+		{
+			for (auto prop : pools::get_all_props())
+			{
+				if (!prop)
+					continue;
+
+				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(prop));
 			}
 		}
 		return target_entities;
