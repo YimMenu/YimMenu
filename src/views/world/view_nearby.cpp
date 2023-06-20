@@ -103,33 +103,27 @@ namespace big
 			components::button("Delete all", [&] {
 				auto list = entity::get_entities(included_entity_types[0], included_entity_types[1], included_entity_types[2], own_vehicle);
 
-				quantity = list.size();
+				quantity  = list.size();
 				remaining = quantity;
 				g_notification_service->push("Entity deletion", std::format("Deleting {} entities", quantity));
 				deleting   = true;
 				int failed = 0;
 				for (auto ent : list)
 				{
-					if(ent == self::ped)
+					if (ent == self::ped)
 						continue;
 
 					if (ENTITY::DOES_ENTITY_EXIST(ent))
 					{
 						if (ENTITY::IS_ENTITY_A_VEHICLE(ent))
-						{
 							if (ent == self::veh && own_vehicle)
 								TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
-
-							if (entity::take_control_of(ent, 25))
-								VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(ent, 255, 0, 0),entity::delete_entity(ent);
-						}
-						else
-						{
-							entity::delete_entity(ent);
-						}
+						
+						if (entity::take_control_of(ent, 25))
+								entity::delete_entity(ent);
 					}
 
-					script::get_current()->yield(2ms);
+					script::get_current()->yield(5ms);
 
 					if (ENTITY::DOES_ENTITY_EXIST(ent))
 						failed++;
