@@ -54,6 +54,13 @@ namespace big::notify
 		HUD::BUSYSPINNER_OFF();
 	}
 
+	inline void show_subtitle(std::string_view text, int ms = 2000)
+	{
+		HUD::BEGIN_TEXT_COMMAND_PRINT("STRING");
+		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.data());
+		HUD::END_TEXT_COMMAND_PRINT(ms, 1);
+	}
+
 	inline void display_help_text(std::string_view text)
 	{
 		HUD::BEGIN_TEXT_COMMAND_DISPLAY_HELP("STRING");

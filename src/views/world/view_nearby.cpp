@@ -1,5 +1,6 @@
 #include "util/entity.hpp"
 #include "util/local_player.hpp"
+#include "util/notify.hpp"
 #include "util/ped.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
@@ -43,13 +44,12 @@ namespace big
 		ImGui::SameLine(140.f);
 		components::command_checkbox<"pedrush">();
 		components::command_checkbox<"autodisarm">();
-		components::options_modal("Auto Disarm", []{
+		components::options_modal("Auto Disarm", [] {
 			ImGui::Checkbox("Neutralize", &g.world.nearby.auto_disarm.neutralize);
 		});
 
 		ImGui::Separator();
 		components::sub_title("Vehicles");
-		// Nearby Vehicle Actions
 
 		components::button<ImVec2(110, 0), ImVec4(0.02745f, 0.4745f, 0.10196f, 1.f)>("Max Upgrade", [] {
 			for (auto vehs : entity::get_entities(true, false))
@@ -75,5 +75,65 @@ namespace big
 		});
 
 		components::command_checkbox<"vehiclerain">();
+
+		ImGui::Separator();
+		components::sub_title("All");
+
+		static bool included_entity_types[3];
+		static bool own_vehicle, deleting;
+		static int quantity, remaining;
+
+		ImGui::Text("Include:");
+		ImGui::Checkbox("Vehicles", &included_entity_types[0]);
+		ImGui::SameLine();
+		ImGui::Checkbox("Peds", &included_entity_types[1]);
+		ImGui::SameLine();
+		ImGui::Checkbox("Props", &included_entity_types[2]);
+
+		if (included_entity_types[0])
+			ImGui::Checkbox("Self vehicle", &own_vehicle);
+
+		if (deleting)
+		{
+			float progress = 1 - static_cast<float>(remaining) / 100;
+			progress       = std::clamp(progress, 0.0f, 1.0f);
+			ImGui::ProgressBar(progress, ImVec2(200, 50));
+		}
+		else
+		{
+			components::button("Delete all", [&] {
+				auto list = entity::get_entities(included_entity_types[0], included_entity_types[1], included_entity_types[2], own_vehicle);
+
+				//Erase entities from the list that shouldn't be removed.
+				for (auto ent : list)
+				{
+					if (math::distance_between_vectors(self::pos, ENTITY::GET_ENTITY_COORDS(ent, false)) > 500.f || (ENTITY::IS_ENTITY_A_VEHICLE(ent) && PED::IS_PED_A_PLAYER(VEHICLE::GET_PED_IN_VEHICLE_SEAT(ent, -1, true))) || (ENTITY::IS_ENTITY_A_PED(ent) && PED::IS_PED_A_PLAYER(ent)))
+						list.erase(std::find(list.begin(), list.end(), ent));
+				}
+
+				quantity = list.size();
+				g_notification_service->push("Entity deletion", std::format("Deleting {} entities", quantity));
+				deleting   = true;
+				int failed = 0;
+				for (auto ent : list)
+				{
+					if (entity::take_control_of(ent, 25))
+						entity::delete_entity(ent);
+					else
+						failed++;
+
+					std::erase_if(list, [=](Entity ent_) {
+						return ent == ent_;
+					});
+
+					remaining = list.size();
+				}
+
+				if (failed > 0)
+					g_notification_service->push_warning("Entity deletion", std::format("Failed deleting {} entities", failed));
+
+				deleting = false;
+			});
+		}
 	}
 }

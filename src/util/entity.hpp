@@ -99,16 +99,15 @@ namespace big::entity
 		return false;
 	}
 
-	inline std::vector<Entity> get_entities(bool vehicles, bool peds, bool props = false)
+	inline std::vector<Entity> get_entities(bool vehicles, bool peds, bool props = false, bool include_self_veh = false)
 	{
 		std::vector<Entity> target_entities;
-		target_entities.clear();
 
 		if (vehicles)
 		{
 			for (auto vehicle : pools::get_all_vehicles())
 			{
-				if (!vehicle || vehicle == gta_util::get_local_vehicle())
+				if ((!vehicle || !g_pointers->m_gta.m_ptr_to_handle(vehicle)) || (!include_self_veh && vehicle == gta_util::get_local_vehicle()))
 					continue;
 
 				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(vehicle));
@@ -120,7 +119,7 @@ namespace big::entity
 			for (auto ped : pools::get_all_peds())
 			{
 				// make sure to not include ourselves
-				if (!ped || ped == gta_util::get_local_ped())
+				if ((!ped || !g_pointers->m_gta.m_ptr_to_handle(ped)) || ped == gta_util::get_local_ped())
 					continue;
 
 				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(ped));
@@ -131,7 +130,7 @@ namespace big::entity
 		{
 			for (auto prop : pools::get_all_props())
 			{
-				if (!prop)
+				if (!prop || !g_pointers->m_gta.m_ptr_to_handle(prop))
 					continue;
 
 				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(prop));
