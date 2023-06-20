@@ -35,7 +35,6 @@ namespace big
 			std::copy(std::begin(coords), std::end(coords), std::begin(new_location));
 		});
 
-
 		components::small_text("Custom teleport");
 		ImGui::SetNextItemWidth(400);
 		ImGui::InputFloat3("##Customlocation", new_location);
