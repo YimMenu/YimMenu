@@ -95,8 +95,7 @@ namespace big
 
 		if (deleting)
 		{
-			float progress = 1 - static_cast<float>(remaining) / 100;
-			progress       = std::clamp(progress, 0.0f, 1.0f);
+			float progress = 1 - static_cast<float>(remaining) / quantity;
 			ImGui::ProgressBar(progress, ImVec2(200, 25));
 		}
 		else
@@ -105,11 +104,15 @@ namespace big
 				auto list = entity::get_entities(included_entity_types[0], included_entity_types[1], included_entity_types[2], own_vehicle);
 
 				quantity = list.size();
+				remaining = quantity;
 				g_notification_service->push("Entity deletion", std::format("Deleting {} entities", quantity));
 				deleting   = true;
 				int failed = 0;
 				for (auto ent : list)
 				{
+					if(ent == self::ped)
+						continue;
+
 					if (ENTITY::DOES_ENTITY_EXIST(ent))
 					{
 						if (ENTITY::IS_ENTITY_A_VEHICLE(ent))
@@ -118,7 +121,7 @@ namespace big
 								TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
 
 							if (entity::take_control_of(ent, 25))
-								entity::delete_entity(ent);
+								VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(ent, 255, 0, 0),entity::delete_entity(ent);
 						}
 						else
 						{
@@ -126,14 +129,12 @@ namespace big
 						}
 					}
 
+					script::get_current()->yield(2ms);
+
 					if (ENTITY::DOES_ENTITY_EXIST(ent))
 						failed++;
-
-					std::erase_if(list, [=](Entity ent_) {
-						return ent == ent_;
-					});
-
-					remaining = list.size();
+					else
+						remaining--;
 				}
 
 				if (failed > 0)
