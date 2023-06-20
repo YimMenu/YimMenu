@@ -97,19 +97,12 @@ namespace big
 		{
 			float progress = 1 - static_cast<float>(remaining) / 100;
 			progress       = std::clamp(progress, 0.0f, 1.0f);
-			ImGui::ProgressBar(progress, ImVec2(200, 50));
+			ImGui::ProgressBar(progress, ImVec2(200, 25));
 		}
 		else
 		{
 			components::button("Delete all", [&] {
 				auto list = entity::get_entities(included_entity_types[0], included_entity_types[1], included_entity_types[2], own_vehicle);
-
-				//Erase entities from the list that shouldn't be removed.
-				for (auto ent : list)
-				{
-					if (math::distance_between_vectors(self::pos, ENTITY::GET_ENTITY_COORDS(ent, false)) > 500.f || (ENTITY::IS_ENTITY_A_VEHICLE(ent) && PED::IS_PED_A_PLAYER(VEHICLE::GET_PED_IN_VEHICLE_SEAT(ent, -1, true))) || (ENTITY::IS_ENTITY_A_PED(ent) && PED::IS_PED_A_PLAYER(ent)))
-						list.erase(std::find(list.begin(), list.end(), ent));
-				}
 
 				quantity = list.size();
 				g_notification_service->push("Entity deletion", std::format("Deleting {} entities", quantity));
@@ -117,9 +110,23 @@ namespace big
 				int failed = 0;
 				for (auto ent : list)
 				{
-					if (entity::take_control_of(ent, 25))
-						entity::delete_entity(ent);
-					else
+					if (ENTITY::DOES_ENTITY_EXIST(ent))
+					{
+						if (ENTITY::IS_ENTITY_A_VEHICLE(ent))
+						{
+							if(ent == self::veh && own_vehicle)
+								TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
+
+							if (entity::take_control_of(ent, 25))
+								entity::delete_entity(ent);
+						}
+						else
+						{
+							entity::delete_entity(ent);
+						}
+					}
+
+					if(ENTITY::DOES_ENTITY_EXIST(ent))
 						failed++;
 
 					std::erase_if(list, [=](Entity ent_) {
