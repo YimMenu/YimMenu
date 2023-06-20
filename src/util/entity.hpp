@@ -30,9 +30,9 @@ namespace big::entity
 
 	inline void delete_entity(Entity ent)
 	{
-		if(!ENTITY::DOES_ENTITY_EXIST(ent))
+		if (!ENTITY::DOES_ENTITY_EXIST(ent))
 			return;
-			
+
 		ENTITY::DETACH_ENTITY(ent, 1, 1);
 		ENTITY::SET_ENTITY_VISIBLE(ent, false, false);
 		NETWORK::NETWORK_SET_ENTITY_ONLY_EXISTS_FOR_PARTICIPANTS(ent, true);

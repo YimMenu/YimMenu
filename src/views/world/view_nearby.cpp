@@ -114,7 +114,7 @@ namespace big
 					{
 						if (ENTITY::IS_ENTITY_A_VEHICLE(ent))
 						{
-							if(ent == self::veh && own_vehicle)
+							if (ent == self::veh && own_vehicle)
 								TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
 
 							if (entity::take_control_of(ent, 25))
@@ -126,7 +126,7 @@ namespace big
 						}
 					}
 
-					if(ENTITY::DOES_ENTITY_EXIST(ent))
+					if (ENTITY::DOES_ENTITY_EXIST(ent))
 						failed++;
 
 					std::erase_if(list, [=](Entity ent_) {
