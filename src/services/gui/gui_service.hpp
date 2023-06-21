@@ -36,7 +36,6 @@ namespace big
 		NEARBY,
 
 		NETWORK,
-		SESSION,
 		MISSIONS,
 		SPOOFING,
 		PLAYER_DATABASE,
@@ -131,10 +130,9 @@ namespace big
 		        tabs::NETWORK,
 		        {
 		            "GUI_TAB_NETWORK",
-		            nullptr,
+		            view::session,
 		            {
 		                {tabs::SPOOFING, {"GUI_TAB_SPOOFING", view::spoofing}},
-		                {tabs::SESSION, {"GUI_TAB_SESSION", view::session}},
 		                {tabs::MISSIONS, {"GUI_TAB_MISSIONS", view::missions}},
 		                {tabs::PLAYER_DATABASE, {"GUI_TAB_PLAYER_DB", view::player_database}},
 		                {tabs::SESSION_BROWSER, {"GUI_TAB_SESSION_BROWSER", view::session_browser}},

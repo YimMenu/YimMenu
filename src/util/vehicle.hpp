@@ -48,7 +48,7 @@ namespace big::vehicle
 		{
 			Vector3 min, max, result;
 			MISC::GET_MODEL_DIMENSIONS(hash, &min, &max);
-			result = max - min;
+			result   = max - min;
 			y_offset = result.y;
 		}
 		else if (!spawn_inside)
@@ -613,15 +613,15 @@ namespace big::vehicle
 
 	inline void max_vehicle_performance(Vehicle veh)
 	{
-		if(entity::take_control_of(veh))
+		if (entity::take_control_of(veh))
 		{
 			VehicleModType perfomance_mods[] = {MOD_ENGINE, MOD_BRAKES, MOD_TRANSMISSION, MOD_SUSPENSION, MOD_ARMOR, MOD_NITROUS, MOD_TURBO};
 			VEHICLE::SET_VEHICLE_MOD_KIT(veh, 0);
 
-			for(auto mod_slot : perfomance_mods)
+			for (auto mod_slot : perfomance_mods)
 			{
-				if(mod_slot != MOD_NITROUS && mod_slot != MOD_TURBO)
-					VEHICLE::SET_VEHICLE_MOD(veh, mod_slot, VEHICLE::GET_NUM_VEHICLE_MODS(veh, mod_slot) -1, true);
+				if (mod_slot != MOD_NITROUS && mod_slot != MOD_TURBO)
+					VEHICLE::SET_VEHICLE_MOD(veh, mod_slot, VEHICLE::GET_NUM_VEHICLE_MODS(veh, mod_slot) - 1, true);
 				else
 					VEHICLE::TOGGLE_VEHICLE_MOD(veh, mod_slot, true);
 			}
