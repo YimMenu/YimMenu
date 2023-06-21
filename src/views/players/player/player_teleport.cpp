@@ -21,9 +21,9 @@ namespace big
 			ImGui::SameLine();
 			components::player_command_button<"bring">(g_player_service->get_selected());
 			components::button("Waypoint", [] {
-			Vector3 location;
-			if (blip::get_blip_location(location,(int) BlipIcons::Waypoint))
-				entity::load_ground_at_3dcoord(location),teleport::teleport_player_to_coords(g_player_service->get_selected(), location);
+				Vector3 location;
+				if (blip::get_blip_location(location, (int)BlipIcons::Waypoint))
+					entity::load_ground_at_3dcoord(location), teleport::teleport_player_to_coords(g_player_service->get_selected(), location);
 			});
 
 			components::options_modal(
@@ -115,21 +115,24 @@ namespace big
 			    false,
 			    "Interior");
 
-				static float new_location[3];
-				static float current_location[3] = {g_player_service->get_selected()->get_ped()->m_navigation->get_position()->x, g_player_service->get_selected()->get_ped()->m_navigation->get_position()->y, g_player_service->get_selected()->get_ped()->m_navigation->get_position()->z};
-				
-				components::small_text("Custom TP");
-				ImGui::SetNextItemWidth(400);
-				ImGui::InputFloat3("##customlocation", new_location);
-				components::button("TP", []{
-					teleport::teleport_player_to_coords(g_player_service->get_selected(), {new_location[0], new_location[1], new_location[2]});
-				});
-				ImGui::SameLine();
-				if(ImGui::Button("Get current"))
-				{
-					std::copy(std::begin(current_location), std::end(current_location), std::begin(new_location));
-				}
-				
+			static float new_location[3];
+			static float current_location[3] = {
+			    g_player_service->get_selected()->get_ped()->m_navigation->get_position()->x,
+			    g_player_service->get_selected()->get_ped()->m_navigation->get_position()->y,
+			    g_player_service->get_selected()->get_ped()->m_navigation->get_position()->z};
+
+			components::small_text("Custom TP");
+			ImGui::SetNextItemWidth(400);
+			ImGui::InputFloat3("##customlocation", new_location);
+			components::button("TP", [] {
+				teleport::teleport_player_to_coords(g_player_service->get_selected(), {new_location[0], new_location[1], new_location[2]});
+			});
+			ImGui::SameLine();
+			if (ImGui::Button("Get current"))
+			{
+				std::copy(std::begin(current_location), std::end(current_location), std::begin(new_location));
+			}
+
 			ImGui::ListBoxFooter();
 		}
 		ImGui::EndGroup();

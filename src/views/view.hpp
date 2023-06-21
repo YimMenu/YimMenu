@@ -8,7 +8,6 @@
 constexpr auto listbox_width  = 0.5f;
 constexpr auto listbox_height = 0.2f;
 
-
 namespace big
 {
 
@@ -16,7 +15,7 @@ namespace big
 	{
 		return {750 * listbox_width, 1000 * listbox_height};
 	}
-	
+
 	class view
 	{
 		inline static animator window_animator = animator();

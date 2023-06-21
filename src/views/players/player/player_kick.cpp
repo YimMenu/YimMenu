@@ -16,7 +16,7 @@ namespace big
 
 			ImGui::Text("Host/breakup kick require Host");
 			ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
-			
+
 			components::player_command_button<"hostkick">(g_player_service->get_selected());
 			components::player_command_button<"breakup">(g_player_service->get_selected());
 
