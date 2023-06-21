@@ -177,7 +177,7 @@ namespace big
 			}
 			ImGui::PushItemWidth(350);
 			ImGui::SliderFloat("FOV", &g.weapons.aimbot.fov, 1.f, 360.f, "%.0f");
-			ImGui::SliderFloat("Distance", &g.weapons.aimbot.distance, 1.f, 350.f, "%.0f");
+			ImGui::SliderFloat("Distance", &g.weapons.aimbot.distance, 1.f, 1000.f, "%.0f");
 			ImGui::PopItemWidth();
 		}
 	}
