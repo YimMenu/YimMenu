@@ -42,7 +42,7 @@ namespace big::outfit
 		    {8, "OUTFIT_UNK4"_T.data()}};
 	};
 
-	void check_bounds_drawable(outfit_t* item)
+	inline void check_bounds_drawable(outfit_t* item)
 	{
 		if(item->drawable_id > item->drawable_id_max)
 			item->drawable_id = item->drawable_id_max;
@@ -50,7 +50,7 @@ namespace big::outfit
 			item->drawable_id = -1;
 	}
 
-	void check_bounds_texture(outfit_t* item)
+	inline void check_bounds_texture(outfit_t* item)
 	{
 		if(item->texture_id > item->texture_id_max)
 			item->texture_id = item->texture_id_max;
