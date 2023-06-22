@@ -6,10 +6,10 @@
 #include "script.hpp"
 #include "script_global.hpp"
 #include "util/misc.hpp"
+#include "util/pathfind.hpp"
+#include "util/ped.hpp"
 #include "util/system.hpp"
 #include "view_debug.hpp"
-#include "util/ped.hpp"
-#include "util/pathfind.hpp"
 
 namespace big
 {
@@ -61,7 +61,7 @@ namespace big
 				INTERIOR::REFRESH_INTERIOR(interior);
 			});
 
-			components::button("NET_SHUTDOWN_AND_LOAD_SP", [] {
+			components::button("NET_SHUTDOWN_AND_LOAD_SP"_T.data(), [] {
 				NETWORK::SHUTDOWN_AND_LAUNCH_SINGLE_PLAYER_GAME();
 			});
 
@@ -80,7 +80,6 @@ namespace big
 					ENTITY::SET_ENTITY_COORDS(self::ped, safepos.x, safepos.y, safepos.z, 0, 0, 0, false);
 				else
 					g_notification_service->push_error("Find safe pos", "Failed to find a safe position");
-
 			});
 
 			components::command_button<"fastquit">();

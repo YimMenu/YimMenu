@@ -10,6 +10,8 @@ namespace big
 		if (!g.window.ingame_overlay.opened || (g_gui->is_open() && !g.window.ingame_overlay.show_with_menu_opened))
 			return;
 
+		g_gui->push_theme_colors();
+
 		ImGui::SetNextWindowPos(ImVec2(10.0f, 10.0f), ImGuiCond_FirstUseEver, ImVec2(0.0f, 0.0f));
 		ImGui::SetNextWindowBgAlpha(0.5f);
 
@@ -68,5 +70,7 @@ namespace big
 			}
 		}
 		ImGui::End();
+
+		g_gui->pop_theme_colors();
 	}
 }

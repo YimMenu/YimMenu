@@ -32,6 +32,9 @@ namespace big
 		void save_default_style();
 		void restore_default_style();
 
+		void push_theme_colors();
+		void pop_theme_colors();
+
 		void script_on_tick();
 		static void script_func();
 
