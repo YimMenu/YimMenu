@@ -18,7 +18,6 @@
 
 namespace big
 {
-
 	void render_rid_joiner()
 	{
 		ImGui::BeginGroup();
@@ -227,7 +226,7 @@ namespace big
 		ImGui::EndGroup();
 	}
 
-	void view::session()
+	void view::network()
 	{
 		render_rid_joiner();
 		ImGui::SameLine();
