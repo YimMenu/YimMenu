@@ -23,11 +23,20 @@ namespace big
 		components::sub_title("Movement");
 		ImGui::Spacing();
 
+		components::small_text("Current coordinates");
+		float coords[3] = {self::pos.x, self::pos.y, self::pos.z};
 		static float new_location[3];
 		static float increment = 1;
 
+		ImGui::SetNextItemWidth(400);
+		ImGui::InputFloat3("##currentcoordinates", coords, "%f", ImGuiInputTextFlags_ReadOnly);
+		ImGui::SameLine();
+		components::button("Copy to custom", [coords] {
+			std::copy(std::begin(coords), std::end(coords), std::begin(new_location));
+		});
+
 		components::small_text("Custom teleport");
-		ImGui::SetNextItemWidth(200);
+		ImGui::SetNextItemWidth(400);
 		ImGui::InputFloat3("##Customlocation", new_location);
 		ImGui::SameLine();
 		components::button("Teleport", [] {
@@ -36,6 +45,8 @@ namespace big
 
 		ImGui::Spacing();
 		components::small_text("Specific movement");
+		ImGui::Spacing();
+
 		ImGui::SetNextItemWidth(200);
 		ImGui::InputFloat("Distance", &increment);
 
