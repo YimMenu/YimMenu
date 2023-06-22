@@ -6,7 +6,7 @@ namespace big
 	{
 		ImGui::BeginGroup();
 		components::sub_title("Vehicle");
-		if (ImGui::ListBoxHeader("##veh", get_listbox_dimensions()))
+		if (ImGui::BeginListBox("##veh", get_listbox_dimensions()))
 		{
 			components::player_command_button<"vehkick">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
@@ -42,7 +42,7 @@ namespace big
 
 			components::player_command_button<"rcplayer">(g_player_service->get_selected());
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 		ImGui::EndGroup();
 	}

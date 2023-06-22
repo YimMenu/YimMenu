@@ -6,22 +6,6 @@
 
 namespace big
 {
-	void check_bounds_drawable(outfit::outfit_t* item)
-	{
-		if(item->drawable_id > item->drawable_id_max)
-			item->drawable_id = item->drawable_id_max;
-		if(item->drawable_id < -1)
-			item->drawable_id = -1;
-	}
-
-	void check_bounds_texture(outfit::outfit_t* item)
-	{
-		if(item->texture_id > item->texture_id_max)
-			item->texture_id = item->texture_id_max;
-		if(item->texture_id < -1)
-			item->texture_id = -1;
-	}
-	
 	void view::outfit_editor()
 	{
 		static outfit::components_t components;
@@ -111,7 +95,7 @@ namespace big
 			ImGui::SetNextItemWidth(120);
 			if (ImGui::InputInt(std::format("{} [0,{}]##1", item.label, item.drawable_id_max).c_str(), &item.drawable_id))
 			{
-				check_bounds_drawable(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
+				outfit::check_bounds_drawable(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
 
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, 0, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
@@ -128,7 +112,7 @@ namespace big
 			ImGui::SetNextItemWidth(120);
 			if (ImGui::InputInt(std::format("{} {} [0,{}]##2", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id))
 			{
-				check_bounds_texture(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
+				outfit::check_bounds_texture(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
 
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, item.texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
@@ -145,7 +129,7 @@ namespace big
 			ImGui::SetNextItemWidth(120);
 			if (ImGui::InputInt(std::format("{} [0,{}]##3", item.label, item.drawable_id_max).c_str(), &item.drawable_id))
 			{
-				check_bounds_drawable(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
+				outfit::check_bounds_drawable(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
 
 				g_fiber_pool->queue_job([item] {
 					if (item.drawable_id == -1)
@@ -165,7 +149,7 @@ namespace big
 			ImGui::SetNextItemWidth(120);
 			if (ImGui::InputInt(std::format("{} {} [0,{}]##4", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id))
 			{
-				check_bounds_texture(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
+				outfit::check_bounds_texture(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
 
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, item.texture_id, TRUE, 1);
