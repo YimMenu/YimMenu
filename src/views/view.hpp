@@ -4,9 +4,18 @@
 #include "gui/components/components.hpp"
 #include "util/animator.hpp"
 
+//Percentage of window space
+constexpr auto listbox_width  = 0.5f;
+constexpr auto listbox_height = 0.2f;
 
 namespace big
 {
+
+	inline ImVec2 get_listbox_dimensions()
+	{
+		return {750 * listbox_width, 1000 * listbox_height};
+	}
+
 	class view
 	{
 		inline static animator window_animator = animator();
@@ -65,7 +74,7 @@ namespace big
 		static void lua_scripts();
 
 		static void player_info();
-		static void player_troll();
+		static void player_teleport();
 		static void player_kick();
 		static void player_toxic();
 		static void player_misc();

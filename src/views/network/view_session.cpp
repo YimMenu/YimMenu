@@ -15,16 +15,9 @@
 #include <script/globals/GPBD_FM_3.hpp>
 #include <script/globals/GlobalPlayerBD.hpp>
 
-//Percentage of window space
-constexpr auto listbox_width  = 0.5f;
-constexpr auto listbox_height = 0.2f;
 
 namespace big
 {
-	static ImVec2 get_listbox_dimensions()
-	{
-		return {750 * listbox_width, ImGui::GetWindowHeight() * listbox_height};
-	}
 
 	void render_rid_joiner()
 	{
