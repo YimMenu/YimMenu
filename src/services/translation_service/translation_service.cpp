@@ -60,16 +60,16 @@ namespace big
 
 	std::string_view translation_service::get_translation(const std::string_view translation_key) const
 	{
-		return get_translation(rage::joaat(translation_key));
+		return get_translation(rage::joaat(translation_key), translation_key);
 	}
 
 
-	std::string_view translation_service::get_translation(const rage::joaat_t translation_key) const
+	std::string_view translation_service::get_translation(const rage::joaat_t translation_key, const std::string_view fallback) const
 	{
 		if (auto it = m_translations.find(translation_key); it != m_translations.end())
 			return it->second.c_str();
 
-		return {0, 0};
+		return fallback;
 	}
 
 	std::map<std::string, translation_entry>& translation_service::available_translations()
