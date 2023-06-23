@@ -43,8 +43,6 @@ namespace big
 			[this, hash, handler] {
 				__try
 				{
-					//_call_asm(&m_call_context, handler, g_pointers->m_gta.m_native_return);
-
 					// return address checks are no longer a thing
 					handler(&m_call_context);
 					g_pointers->m_gta.m_fix_vectors(&m_call_context);

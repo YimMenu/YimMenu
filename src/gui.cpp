@@ -174,14 +174,7 @@ namespace big
 
 	void gui::pop_theme_colors()
 	{
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
+		ImGui::PopStyleColor(8);
 	}
 
 	void gui::script_on_tick()

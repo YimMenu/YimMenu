@@ -56,12 +56,6 @@ namespace big
 
 	rage::eThreadState hooks::script_vm(uint64_t* start_stack, uint64_t** scr_globals, rage::scrProgram* program, rage::scrThreadContext* ctx)
 	{
-		if (program->m_name_hash == RAGE_JOAAT("net_tunable_check")) // not sure what starts this, but it tries to crash the game and must be blocked
-		{
-			ctx->m_state = rage::eThreadState::killed;
-			return rage::eThreadState::killed;
-		}
-
 		script_vm_guard guard(program);
 		return g_hooking->get_original<hooks::script_vm>()(start_stack, scr_globals, program, ctx);
 	}

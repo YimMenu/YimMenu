@@ -32,10 +32,9 @@ namespace big
 			{
 				ImGui::Separator();
 
-				ImGui::Text("Pos: %.2f, %.2f, %.2f",
-				    g_local_player->get_position()->x,
-				    g_local_player->get_position()->y,
-				    g_local_player->get_position()->z);
+				auto& pos = *g_local_player->get_position();
+
+				ImGui::Text("Pos: %.2f, %.2f, %.2f", pos.x, pos.y, pos.z);
 			}
 
 			// can't easily get used item count using pools, so keeping replay interface for now
