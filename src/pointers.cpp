@@ -1137,6 +1137,7 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_refresh_audio_input = ptr.add(3).rip().as<bool*>();
+                g_pointers->m_gta.m_refresh_audio_input_2 = ptr.add(3).rip().as<bool*>() + 2;
             }
         },
         // Allow Weapons In Vehicle

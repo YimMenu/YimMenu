@@ -1,4 +1,5 @@
 #include "script/globals/GPBD_FM_3.hpp"
+#include "services/script_connection/script_connection_service.hpp"
 #include "util/scripts.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"

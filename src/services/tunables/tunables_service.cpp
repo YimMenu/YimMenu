@@ -4,6 +4,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
+#include "services/script_connection/script_connection_service.hpp" // for the stack size
 #include "services/script_patcher/script_patcher_service.hpp"
 #include "thread_pool.hpp"
 #include "util/scripts.hpp"
@@ -60,9 +61,9 @@ namespace big
 
 				if (SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED(RAGE_JOAAT("tuneables_processing")))
 				{
-					std::uint64_t args[] = {6, 27, 1}; // TODO: check args
+					std::uint64_t args[] = {6, 27}; // TODO: check args
 
-					int id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS(RAGE_JOAAT("tuneables_processing"), (Any*)args, sizeof(args) / 8, 5050);
+					int id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS(RAGE_JOAAT("tuneables_processing"), (Any*)args, sizeof(args) / 8, DEFAULT_STACK_SIZE);
 
 					if (!id)
 					{
@@ -85,6 +86,7 @@ namespace big
 					if (m_tunables.size() == 0)
 					{
 						LOG(FATAL) << "Failed to cache tunables";
+						g_script_patcher_service->update();
 						return;
 					}
 

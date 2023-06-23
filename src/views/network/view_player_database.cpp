@@ -13,6 +13,8 @@ namespace big
 {
 	char name_buf[32];
 	char search[64];
+	char note_buffer[1024];
+	bool notes_dirty = false;
 	std::shared_ptr<persistent_player> current_player;
 
 	void draw_player_db_entry(std::shared_ptr<persistent_player> player, const std::string& lower_search)
@@ -42,9 +44,17 @@ namespace big
 
 			if (components::selectable(player->name, player == g_player_database_service->get_selected()))
 			{
+				if (notes_dirty)
+				{
+					// Ensure notes are saved
+					g_player_database_service->save();
+					notes_dirty = false;
+				}
+
 				g_player_database_service->set_selected(player);
 				current_player = player;
 				strncpy(name_buf, current_player->name.data(), sizeof(name_buf));
+				strncpy(note_buffer, current_player->notes.data(), sizeof(note_buffer));
 			}
 
 			ImGui::PopID();
@@ -97,7 +107,7 @@ namespace big
 				if (ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &current_player->rockstar_id)
 				    || ImGui::Checkbox("IS_MODDER"_T.data(), &current_player->is_modder)
 				    || ImGui::Checkbox("BLOCK_JOIN"_T.data(), &current_player->block_join)
-					|| ImGui::Checkbox("Notify When Online", &current_player->notify_online))
+				    || ImGui::Checkbox("Notify When Online", &current_player->notify_online))
 				{
 					if (current_player->rockstar_id != selected->rockstar_id)
 						g_player_database_service->update_rockstar_id(selected->rockstar_id, current_player->rockstar_id);
@@ -155,6 +165,12 @@ namespace big
 					{
 						ImGui::BulletText(infraction_desc[(Infraction)infraction]);
 					}
+				}
+
+				if (ImGui::InputTextMultiline("Notes", note_buffer, sizeof(note_buffer)))
+				{
+					current_player->notes = note_buffer;
+					notes_dirty           = true;
 				}
 
 				components::button("JOIN_SESSION"_T, [] {
