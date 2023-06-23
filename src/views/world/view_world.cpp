@@ -27,7 +27,8 @@ namespace big
 		components::button<ImVec2(110, 0), ImVec4(0.70196f, 0.3333f, 0.00392f, 1.f)>("Kill", [] {
 			for (auto peds : entity::get_entities(false, true))
 			{
-				ped::kill_ped(peds);
+                if(!PED::IS_PED_A_PLAYER(peds))
+				    ped::kill_ped(peds);
 			}
 		});
 		ImGui::SameLine();
@@ -53,8 +54,6 @@ namespace big
 		components::options_modal("Auto Disarm", [] {
 			ImGui::Checkbox("Neutralize", &g.world.nearby.auto_disarm.neutralize);
 		});
-
-		
 
 		ImGui::Separator();
 		components::sub_title("Vehicles");
