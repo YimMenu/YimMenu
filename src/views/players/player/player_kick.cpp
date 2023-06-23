@@ -14,7 +14,9 @@ namespace big
 				return gta_util::get_network()->m_game_session_ptr->is_host();
 			};
 
-			ImGui::Text("Host/breakup kick require Host");
+			if (!g_player_service->get_self()->is_host())
+				ImGui::Text("Host and breakup kick require session host");
+
 			ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
 
 			components::player_command_button<"hostkick">(g_player_service->get_selected());

@@ -26,6 +26,7 @@
 #include "services/pickups/pickup_service.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "services/players/player_service.hpp"
+#include "services/script_connection/script_connection_service.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
 #include "services/squad_spawner/squad_spawner.hpp"
 #include "services/tunables/tunables_service.hpp"
@@ -90,23 +91,24 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    auto hooking_instance = std::make_unique<hooking>();
 				    LOG(INFO) << "Hooking initialized.";
 
-				    auto context_menu_service_instance    = std::make_unique<context_menu_service>();
-				    auto custom_text_service_instance     = std::make_unique<custom_text_service>();
-				    auto globals_service_instace          = std::make_unique<globals_service>();
-				    auto mobile_service_instance          = std::make_unique<mobile_service>();
-				    auto notification_service_instance    = std::make_unique<notification_service>();
-				    auto pickup_service_instance          = std::make_unique<pickup_service>();
-				    auto player_service_instance          = std::make_unique<player_service>();
-				    auto gta_data_service_instance        = std::make_unique<gta_data_service>();
-				    auto model_preview_service_instance   = std::make_unique<model_preview_service>();
-				    auto handling_service_instance        = std::make_unique<handling_service>();
-				    auto gui_service_instance             = std::make_unique<gui_service>();
-				    auto script_patcher_service_instance  = std::make_unique<script_patcher_service>();
-				    auto player_database_service_instance = std::make_unique<player_database_service>();
-				    auto hotkey_service_instance          = std::make_unique<hotkey_service>();
-				    auto matchmaking_service_instance     = std::make_unique<matchmaking_service>();
-				    auto api_service_instance             = std::make_unique<api_service>();
-				    auto tunables_service_instance        = std::make_unique<tunables_service>();
+				    auto context_menu_service_instance      = std::make_unique<context_menu_service>();
+				    auto custom_text_service_instance       = std::make_unique<custom_text_service>();
+				    auto globals_service_instace            = std::make_unique<globals_service>();
+				    auto mobile_service_instance            = std::make_unique<mobile_service>();
+				    auto notification_service_instance      = std::make_unique<notification_service>();
+				    auto pickup_service_instance            = std::make_unique<pickup_service>();
+				    auto player_service_instance            = std::make_unique<player_service>();
+				    auto gta_data_service_instance          = std::make_unique<gta_data_service>();
+				    auto model_preview_service_instance     = std::make_unique<model_preview_service>();
+				    auto handling_service_instance          = std::make_unique<handling_service>();
+				    auto gui_service_instance               = std::make_unique<gui_service>();
+				    auto script_patcher_service_instance    = std::make_unique<script_patcher_service>();
+				    auto player_database_service_instance   = std::make_unique<player_database_service>();
+				    auto hotkey_service_instance            = std::make_unique<hotkey_service>();
+				    auto matchmaking_service_instance       = std::make_unique<matchmaking_service>();
+				    auto api_service_instance               = std::make_unique<api_service>();
+				    auto tunables_service_instance          = std::make_unique<tunables_service>();
+				    auto script_connection_service_instance = std::make_unique<script_connection_service>();
 				    LOG(INFO) << "Registered service instances...";
 
 				    g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
@@ -166,6 +168,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    thread_pool_instance->destroy();
 				    LOG(INFO) << "Destroyed thread pool.";
 
+				    script_connection_service_instance.reset();
+				    LOG(INFO) << "Script Connection Service reset.";
 				    tunables_service_instance.reset();
 				    LOG(INFO) << "Tunables Service reset.";
 				    hotkey_service_instance.reset();

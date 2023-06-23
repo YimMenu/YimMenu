@@ -11,8 +11,8 @@
 namespace big
 {
 	gui::gui() :
-		m_is_open(false),
-		m_override_mouse(false)
+	    m_is_open(false),
+	    m_override_mouse(false)
 	{
 		g_renderer->add_dx_callback(view::gta_data, -1);
 		g_renderer->add_dx_callback(view::notifications, -2);
@@ -92,10 +92,10 @@ namespace big
 		style.ChildRounding     = 4.0f;
 
 		auto& colors                          = style.Colors;
-		colors[ImGuiCol_Text]                 = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
+		colors[ImGuiCol_Text]                 = ImGui::ColorConvertU32ToFloat4(g.window.text_color);
 		colors[ImGuiCol_TextDisabled]         = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
-		colors[ImGuiCol_WindowBg]             = ImGui::ColorConvertU32ToFloat4(g.window.color);
-		colors[ImGuiCol_ChildBg]              = ImGui::ColorConvertU32ToFloat4(g.window.color);
+		colors[ImGuiCol_WindowBg]             = ImGui::ColorConvertU32ToFloat4(g.window.background_color);
+		colors[ImGuiCol_ChildBg]              = ImGui::ColorConvertU32ToFloat4(g.window.background_color);
 		colors[ImGuiCol_PopupBg]              = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
 		colors[ImGuiCol_Border]               = ImVec4(0.80f, 0.80f, 0.83f, 0.88f);
 		colors[ImGuiCol_BorderShadow]         = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);
@@ -110,7 +110,7 @@ namespace big
 		colors[ImGuiCol_ScrollbarGrab]        = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
 		colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
 		colors[ImGuiCol_ScrollbarGrabActive]  = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
-		colors[ImGuiCol_CheckMark]            = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
+		colors[ImGuiCol_CheckMark]            = ImVec4(1.00f, 0.98f, 0.95f, 0.61f);
 		colors[ImGuiCol_SliderGrab]           = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
 		colors[ImGuiCol_SliderGrabActive]     = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
 		colors[ImGuiCol_Button]               = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
@@ -128,22 +128,53 @@ namespace big
 		colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
 		colors[ImGuiCol_TextSelectedBg]       = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
 
-		memcpy(&m_default_config, &ImGui::GetStyle(), sizeof(ImGuiStyle));
+		save_default_style();
 	}
 
 	void gui::dx_on_tick()
 	{
 		if (m_is_open)
 		{
-			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImGui::ColorConvertU32ToFloat4(g.window.color));
-			view::root();
-			ImGui::PopStyleColor();
+			push_theme_colors();
+			view::root(); // frame bg
+			pop_theme_colors();
 		}
+	}
+
+	void gui::save_default_style()
+	{
+		memcpy(&m_default_config, &ImGui::GetStyle(), sizeof(ImGuiStyle));
 	}
 
 	void gui::restore_default_style()
 	{
 		memcpy(&ImGui::GetStyle(), &m_default_config, sizeof(ImGuiStyle));
+	}
+
+	void gui::push_theme_colors()
+	{
+		auto button_color = ImGui::ColorConvertU32ToFloat4(g.window.button_color);
+		auto button_active_color =
+		    ImVec4(button_color.x + 0.33f, button_color.y + 0.33f, button_color.z + 0.33f, button_color.w);
+		auto frame_color = ImGui::ColorConvertU32ToFloat4(g.window.frame_color);
+		auto frame_hovered_color =
+		    ImVec4(frame_color.x + 0.14f, frame_color.y + 0.14f, frame_color.z + 0.14f, button_color.w);
+		auto frame_active_color =
+		    ImVec4(frame_color.x + 0.30f, frame_color.y + 0.30f, frame_color.z + 0.30f, button_color.w);
+
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImGui::ColorConvertU32ToFloat4(g.window.background_color));
+		ImGui::PushStyleColor(ImGuiCol_Text, ImGui::ColorConvertU32ToFloat4(g.window.text_color));
+		ImGui::PushStyleColor(ImGuiCol_Button, button_color);
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, button_color);
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, button_active_color);
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, frame_color);
+		ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, frame_hovered_color);
+		ImGui::PushStyleColor(ImGuiCol_FrameBgActive, frame_active_color);
+	}
+
+	void gui::pop_theme_colors()
+	{
+		ImGui::PopStyleColor(8);
 	}
 
 	void gui::script_on_tick()
