@@ -913,3 +913,24 @@ enum DrugWars : Hash
 	VEHICLE_TULIP2      = RAGE_JOAAT("tulip2"),
 	VEHICLE_VIRTUE      = RAGE_JOAAT("virtue")
 };
+
+enum LSMercenaries : Hash
+{
+	VEHICLE_BUFFALO5    = RAGE_JOAAT("buffalo5"),
+	VEHICLE_COUREUR     = RAGE_JOAAT("coureur"),
+	VEHICLE_STINGERTT   = RAGE_JOAAT("stingertt"),
+	VEHICLE_CONADA2     = RAGE_JOAAT("conada2"),
+	VEHICLE_RAIJU       = RAGE_JOAAT("raiju"),
+	VEHICLE_STREAMER216 = RAGE_JOAAT("streamer216"),
+	VEHICLE_INDUCTOR    = RAGE_JOAAT("inductor"),
+	VEHICLE_INDUCTOR2   = RAGE_JOAAT("inductor2"),
+	VEHICLE_BRIGHAM     = RAGE_JOAAT("brigham"),
+	VEHICLE_CLIQUE2     = RAGE_JOAAT("clique2"),
+	VEHICLE_GAUNTLET6   = RAGE_JOAAT("gauntlet6"),
+	VEHICLE_L35         = RAGE_JOAAT("l35"),
+	VEHICLE_MONSTROCITI = RAGE_JOAAT("monstrociti"),
+	VEHICLE_RATEL       = RAGE_JOAAT("ratel"),
+	VEHICLE_AVENGER3    = RAGE_JOAAT("avenger3"),
+	VEHICLE_AVENGER4    = RAGE_JOAAT("avenger4"),
+	VEHICLE_SPEEDO5     = RAGE_JOAAT("speedo5")
+};
