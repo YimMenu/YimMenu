@@ -16,7 +16,7 @@ namespace big
 		ImGui::BeginGroup();
 		components::sub_title("Info");
 
-		if (ImGui::ListBoxHeader("##infobox", get_listbox_dimensions()))
+		if (ImGui::BeginListBox("##infobox", get_listbox_dimensions()))
 		{
 			uint32_t ped_damage_bits = 0;
 			uint32_t ped_task_flag   = 0;
@@ -203,7 +203,7 @@ namespace big
 				ImGui::PopID();
 			}
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 		ImGui::EndGroup();
 	}

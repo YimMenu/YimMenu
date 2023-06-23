@@ -121,7 +121,7 @@ namespace big
 
 		if (!new_template.m_ped_model.empty() && ped_found == g_gta_data_service->peds().end())
 		{
-			if (ImGui::ListBoxHeader("##pedlist", ImVec2(250, 200)))
+			if (ImGui::BeginListBox("##pedlist", ImVec2(250, 200)))
 			{
 				for (auto& p : g_gta_data_service->peds() | std::ranges::views::values)
 				{
@@ -135,7 +135,7 @@ namespace big
 					}
 				}
 
-				ImGui::ListBoxFooter();
+				ImGui::EndListBox();
 			}
 		}
 
@@ -149,7 +149,7 @@ namespace big
 
 		if (!new_template.m_vehicle_model.empty() && veh_found == g_gta_data_service->vehicles().end())
 		{
-			if (ImGui::ListBoxHeader("##vehlist", ImVec2(250, 200)))
+			if (ImGui::BeginListBox("##vehlist", ImVec2(250, 200)))
 			{
 				for (auto& p : g_gta_data_service->vehicles() | std::ranges::views::values)
 				{
@@ -163,7 +163,7 @@ namespace big
 					}
 				}
 
-				ImGui::ListBoxFooter();
+				ImGui::EndListBox();
 			}
 		}
 
@@ -177,7 +177,7 @@ namespace big
 
 		if (!new_template.m_weapon_model.empty() && weap_found == g_gta_data_service->weapons().end())
 		{
-			if (ImGui::ListBoxHeader("##weaplist", ImVec2(250, 200)))
+			if (ImGui::BeginListBox("##weaplist", ImVec2(250, 200)))
 			{
 				for (auto& p : g_gta_data_service->weapons() | std::ranges::views::values)
 				{
@@ -191,7 +191,7 @@ namespace big
 					}
 				}
 
-				ImGui::ListBoxFooter();
+				ImGui::EndListBox();
 			}
 		}
 

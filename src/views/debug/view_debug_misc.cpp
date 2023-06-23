@@ -82,6 +82,8 @@ namespace big
 					g_notification_service->push_error("Find safe pos", "Failed to find a safe position");
 			});
 
+			ImGui::Checkbox("ImGui Demo", &g.window.demo);
+
 			components::command_button<"fastquit">();
 
 			if (ImGui::TreeNode("ADDRESSES"_T.data()))

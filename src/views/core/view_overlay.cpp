@@ -40,7 +40,8 @@ namespace big
 			// can't easily get used item count using pools, so keeping replay interface for now
 			if (auto replay_interface = *g_pointers->m_gta.m_replay_interface; g.window.ingame_overlay.show_replay_interface)
 			{
-				ImGui::Separator();
+				if (replay_interface->m_ped_interface || replay_interface->m_vehicle_interface || replay_interface->m_object_interface)
+					ImGui::Separator();
 
 				if (replay_interface->m_ped_interface)
 					ImGui::Text(std::format("Ped Pool: {}/{}",

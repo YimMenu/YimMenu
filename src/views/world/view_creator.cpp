@@ -23,7 +23,7 @@ namespace big
 		ImGui::PushItemWidth(250);
 		components::sub_title("CREATOR_SAVED_JOBS"_T);
 
-		if (ImGui::ListBoxHeader("##empty", ImVec2(200, 200)))
+		if (ImGui::BeginListBox("##empty", ImVec2(200, 200)))
 		{
 			for (const auto& pair : creator_files)
 			{
@@ -31,7 +31,7 @@ namespace big
 					selected_creator_file = pair;
 			}
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 
 		ImGui::SameLine();

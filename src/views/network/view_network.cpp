@@ -22,7 +22,7 @@ namespace big
 	{
 		ImGui::BeginGroup();
 		components::sub_title("Rid joiner");
-		if (ImGui::ListBoxHeader("##ridjoiner", get_listbox_dimensions()))
+		if (ImGui::BeginListBox("##ridjoiner", get_listbox_dimensions()))
 		{
 			static uint64_t rid = 0;
 			static char username[20];
@@ -58,7 +58,7 @@ namespace big
 			});
 
 			ImGui::PopItemWidth();
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 		ImGui::EndGroup();
 	}
@@ -67,7 +67,7 @@ namespace big
 	{
 		ImGui::BeginGroup();
 		components::sub_title("SESSION_SWITCHER"_T);
-		if (ImGui::ListBoxHeader("###session_switch", get_listbox_dimensions()))
+		if (ImGui::BeginListBox("###session_switch", get_listbox_dimensions()))
 		{
 			if (ImGui::BeginCombo("##regionswitcher", "Regions"))
 			{
@@ -99,7 +99,7 @@ namespace big
 		ImGui::BeginGroup();
 
 		components::sub_title("Misc");
-		if (ImGui::ListBoxHeader("##miscsession", get_listbox_dimensions()))
+		if (ImGui::BeginListBox("##miscsession", get_listbox_dimensions()))
 		{
 			ImGui::Checkbox("Join Sctv", &g.session.join_in_sctv_slots); //CHANGE TRANSLATION JOIN_IN_SCTV
 			if (ImGui::IsItemHovered())
@@ -122,7 +122,7 @@ namespace big
 
 			components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T, &g.session.decloak_players);
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 
 		ImGui::EndGroup();
@@ -133,7 +133,7 @@ namespace big
 		ImGui::BeginGroup();
 
 		components::sub_title("Chat");
-		if (ImGui::ListBoxHeader("##chat", get_listbox_dimensions()))
+		if (ImGui::BeginListBox("##chat", get_listbox_dimensions()))
 		{
 			static char msg[256];
 			ImGui::Checkbox("AUTO_KICK_CHAT_SPAMMERS"_T.data(), &g.session.kick_chat_spammers);
@@ -182,7 +182,7 @@ namespace big
 				}
 			}
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 
 		ImGui::EndGroup();
@@ -193,7 +193,7 @@ namespace big
 		ImGui::BeginGroup();
 
 		components::sub_title("Globals");
-		if (ImGui::ListBoxHeader("##globals", get_listbox_dimensions()))
+		if (ImGui::BeginListBox("##globals", get_listbox_dimensions()))
 		{
 			static int global_wanted_level = 0;
 
@@ -220,7 +220,7 @@ namespace big
 				scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].RemoteWantedLevelAmount = global_wanted_level;
 			}
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 
 		ImGui::EndGroup();
