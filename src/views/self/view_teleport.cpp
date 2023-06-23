@@ -110,7 +110,7 @@ namespace big
 			ImGui::EndCombo();
 		}
 
-		auto selected_ipl = ipls[g.self.ipls.select];
+		const auto& selected_ipl = ipls[g.self.ipls.select];
 		if (components::button("LOAD_IPL"_T.data()))
 		{
 			//unload all previous ipls

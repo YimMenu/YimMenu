@@ -10,6 +10,8 @@ namespace big
 		if (!g.window.ingame_overlay.opened || (g_gui->is_open() && !g.window.ingame_overlay.show_with_menu_opened))
 			return;
 
+		g_gui->push_theme_colors();
+
 		ImGui::SetNextWindowPos(ImVec2(10.0f, 10.0f), ImGuiCond_FirstUseEver, ImVec2(0.0f, 0.0f));
 		ImGui::SetNextWindowBgAlpha(0.5f);
 
@@ -26,10 +28,20 @@ namespace big
 				ImGui::Text(std::format("Players: {}/{}", network_player_mgr->m_player_count, network_player_mgr->m_player_limit)
 				                .c_str());
 
+			if (g.window.ingame_overlay.show_position && g_local_player)
+			{
+				ImGui::Separator();
+
+				auto& pos = *g_local_player->get_position();
+
+				ImGui::Text("Pos: %.2f, %.2f, %.2f", pos.x, pos.y, pos.z);
+			}
+
 			// can't easily get used item count using pools, so keeping replay interface for now
 			if (auto replay_interface = *g_pointers->m_gta.m_replay_interface; g.window.ingame_overlay.show_replay_interface)
 			{
-				ImGui::Separator();
+				if (replay_interface->m_ped_interface || replay_interface->m_vehicle_interface || replay_interface->m_object_interface)
+					ImGui::Separator();
 
 				if (replay_interface->m_ped_interface)
 					ImGui::Text(std::format("Ped Pool: {}/{}",
@@ -58,5 +70,7 @@ namespace big
 			}
 		}
 		ImGui::End();
+
+		g_gui->pop_theme_colors();
 	}
 }

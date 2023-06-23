@@ -130,7 +130,7 @@ namespace big
 		        tabs::NETWORK,
 		        {
 		            "GUI_TAB_NETWORK",
-		            view::session,
+		            view::network,
 		            {
 		                {tabs::SPOOFING, {"GUI_TAB_SPOOFING", view::spoofing}},
 		                {tabs::MISSIONS, {"GUI_TAB_MISSIONS", view::missions}},

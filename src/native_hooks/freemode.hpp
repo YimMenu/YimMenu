@@ -6,10 +6,22 @@ namespace big
 {
 	namespace freemode
 	{
+		void GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(rage::scrNativeCallContext* src)
+		{
+			const auto hash = src->get_arg<rage::joaat_t>(0);
+
+			if (hash == RAGE_JOAAT("director_mode") || hash == RAGE_JOAAT("main"))
+			{
+				src->set_return_value(0);
+				return;
+			}
+
+			src->set_return_value(SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(hash));
+		}
+
 		void STAT_GET_INT(rage::scrNativeCallContext* src)
 		{
-			if (g_vehicle_control_service.m_driver_performing_task && (src->get_arg<Hash>(0) == RAGE_JOAAT("MP0_PERSONAL_VEHICLE_ACCESS") ||
-				src->get_arg<Hash>(0) == RAGE_JOAAT("MP1_PERSONAL_VEHICLE_ACCESS")))
+			if (g_vehicle_control_service.m_driver_performing_task && (src->get_arg<Hash>(0) == RAGE_JOAAT("MP0_PERSONAL_VEHICLE_ACCESS") || src->get_arg<Hash>(0) == RAGE_JOAAT("MP1_PERSONAL_VEHICLE_ACCESS")))
 			{
 				src->set_return_value<int>(0);
 				return;
@@ -53,7 +65,7 @@ namespace big
 
 		void NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA(rage::scrNativeCallContext* src)
 		{
-			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION() || NETWORK::NETWORK_IS_HOST_OF_THIS_SCRIPT())
+			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION() || NETWORK::NETWORK_IS_IN_TRANSITION() || NETWORK::NETWORK_IS_TRANSITION_TO_GAME() || NETWORK::NETWORK_IS_HOST_OF_THIS_SCRIPT())
 			{
 				src->set_return_value<BOOL>(NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA());
 			}

@@ -11,7 +11,7 @@ namespace big
 	{
 		ImGui::BeginGroup();
 		components::sub_title("Toxic");
-		if (ImGui::ListBoxHeader("##toxic", get_listbox_dimensions()))
+		if (ImGui::BeginListBox("##toxic", get_listbox_dimensions()))
 		{
 			components::player_command_button<"kill">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
@@ -121,7 +121,7 @@ namespace big
 				troll::set_bounty_on_player(g_player_service->get_selected(), bounty_value, g.session.anonymous_bounty);
 			});
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 		ImGui::EndGroup();
 	}

@@ -21,9 +21,6 @@ namespace big
 
 		inline void NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH(rage::scrNativeCallContext* src)
 		{
-			if (src->get_arg<Hash>(1) == RAGE_JOAAT("TURN_SNOW_ON_OFF"))
-				LOG(INFO) << "Snow loaded";
-
 			g_tunables_service->register_tunable(src->get_arg<Hash>(1), src->get_arg<BOOL*>(2));
 			src->set_return_value<BOOL>(NETWORK::NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH(src->get_arg<Hash>(0), src->get_arg<Hash>(1), src->get_arg<BOOL*>(2)));
 		};

@@ -15,7 +15,7 @@ namespace big
 		ImGui::PushItemWidth(250);
 		components::sub_title("Loaded Lua Scipts");
 
-		if (ImGui::ListBoxHeader("##empty", ImVec2(200, 200)))
+		if (ImGui::BeginListBox("##empty", ImVec2(200, 200)))
 		{
 			auto& modules = g_lua_manager->get_modules();
 
@@ -33,7 +33,7 @@ namespace big
 				ImGui::Text("No scripts loaded");
 			}
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 
 		ImGui::SameLine();

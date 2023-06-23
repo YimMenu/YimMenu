@@ -6,6 +6,7 @@
 #include "script_patches.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/orbital_drone/orbital_drone.hpp"
+#include "services/script_connection/script_connection_service.hpp"
 #include "services/squad_spawner/squad_spawner.hpp"
 #include "services/tunables/tunables_service.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
@@ -97,6 +98,9 @@ namespace big
 			looped::session_randomize_ceo_colors();
 			looped::session_auto_kick_host();
 			looped::session_block_jobs();
+
+			if (g_script_connection_service)
+				g_script_connection_service->on_tick();
 
 			script::get_current()->yield();
 		}
