@@ -17,7 +17,7 @@ namespace big
 		});
 
 		ImGui::SameLine();
-		components::button("Delete",[]{
+		components::button("Delete Current",[]{
 			auto handle = self::veh;
 			if(ENTITY::DOES_ENTITY_EXIST(handle))
 				TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped), entity::delete_entity(handle);
