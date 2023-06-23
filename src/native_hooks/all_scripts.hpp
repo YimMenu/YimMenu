@@ -157,5 +157,9 @@ namespace big
 		{
 			src->set_return_value<BOOL>(FALSE);
 		}
+
+		void DO_NOTHING(rage::scrNativeCallContext* src)
+		{
+		}
 	}
 }

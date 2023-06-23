@@ -268,7 +268,7 @@ namespace big
 		ImGui::BeginGroup();
 
 		components::sub_title("SLOT"_T);
-		if (ImGui::ListBoxHeader("##slot", ImVec2(200, 200)))
+		if (ImGui::BeginListBox("##slot", ImVec2(200, 200)))
 		{
 			for (const auto& [slot, name] : slot_display_names)
 			{
@@ -277,7 +277,7 @@ namespace big
 					selected_slot = slot;
 				}
 			}
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 
 		ImGui::EndGroup();
@@ -307,7 +307,7 @@ namespace big
 			ImGui::BeginGroup();
 
 			components::sub_title("MOD"_T);
-			if (ImGui::ListBoxHeader("##mod", ImVec2(240, 200)))
+			if (ImGui::BeginListBox("##mod", ImVec2(240, 200)))
 			{
 				for (const auto& it : mod_display_names[selected_slot])
 				{
@@ -357,7 +357,7 @@ namespace big
 						});
 					}
 				}
-				ImGui::ListBoxFooter();
+				ImGui::EndListBox();
 			}
 
 			ImGui::EndGroup();
@@ -375,7 +375,7 @@ namespace big
 				ImGui::BeginGroup();
 
 				components::sub_title("STYLE"_T);
-				if (ImGui::ListBoxHeader("##style", ImVec2(200, 200)))
+				if (ImGui::BeginListBox("##style", ImVec2(200, 200)))
 				{
 					std::string mod_name = mod_display_names[selected_slot][*wheel_stock_mod];
 					auto wheel_mods      = wheel_map[mod_name];
@@ -412,7 +412,7 @@ namespace big
 							});
 						}
 					}
-					ImGui::ListBoxFooter();
+					ImGui::EndListBox();
 				}
 
 				ImGui::EndGroup();
@@ -504,7 +504,7 @@ namespace big
 			color_type      = 8;
 		}
 
-		if (ImGui::ListBoxHeader("##color_options", ImVec2(120, 254)))
+		if (ImGui::BeginListBox("##color_options", ImVec2(120, 254)))
 		{
 			if (ImGui::Selectable("PRIMARY"_T.data(), color_to_change == 0, ImGuiSelectableFlags_SelectOnClick))
 			{
@@ -576,7 +576,7 @@ namespace big
 				color_type      = 8;
 			}
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 
 
@@ -590,7 +590,7 @@ namespace big
 			// primary and secondary color
 
 			ImGui::SameLine();
-			if (ImGui::ListBoxHeader("##colors", ImVec2(140, 254)))
+			if (ImGui::BeginListBox("##colors", ImVec2(140, 254)))
 			{
 				if (ImGui::Selectable("CUSTOM"_T.data(), color_type == 8, ImGuiSelectableFlags_SelectOnClick))
 				{
@@ -627,7 +627,7 @@ namespace big
 				{
 					color_type = 3;
 				}
-				ImGui::ListBoxFooter();
+				ImGui::EndListBox();
 			}
 		}
 		else if (color_to_change == 7)
@@ -671,7 +671,7 @@ namespace big
 			if (color_to_change == 5)
 			{
 				ImGui::SameLine();
-				if (ImGui::ListBoxHeader("##tire_smoke_rgb", ImVec2(140, 254)))
+				if (ImGui::BeginListBox("##tire_smoke_rgb", ImVec2(140, 254)))
 				{
 					for (const auto& it : lsc_tire_smoke_rgb)
 					{
@@ -689,13 +689,13 @@ namespace big
 						}
 					}
 
-					ImGui::ListBoxFooter();
+					ImGui::EndListBox();
 				}
 			}
 			else if (color_to_change == 8)
 			{
 				ImGui::SameLine();
-				if (ImGui::ListBoxHeader("##neon_rgb", ImVec2(140, 254)))
+				if (ImGui::BeginListBox("##neon_rgb", ImVec2(140, 254)))
 				{
 					for (const auto& it : lsc_neon_rgb)
 					{
@@ -713,7 +713,7 @@ namespace big
 						}
 					}
 
-					ImGui::ListBoxFooter();
+					ImGui::EndListBox();
 				}
 			}
 
@@ -761,7 +761,7 @@ namespace big
 				ImGui::SameLine();
 			}
 
-			if (ImGui::ListBoxHeader("##color", ImVec2(180, 254)))
+			if (ImGui::BeginListBox("##color", ImVec2(180, 254)))
 			{
 				switch (color_type)
 				{
@@ -938,7 +938,7 @@ namespace big
 				}
 				}
 
-				ImGui::ListBoxFooter();
+				ImGui::EndListBox();
 			}
 		}
 	}

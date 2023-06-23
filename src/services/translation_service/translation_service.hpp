@@ -23,7 +23,7 @@ namespace big
 		void init();
 
 		std::string_view get_translation(const std::string_view translation_key) const;
-		std::string_view get_translation(const rage::joaat_t translation_key) const;
+		std::string_view get_translation(const rage::joaat_t translation_key, const std::string_view fallback = { 0, 0 }) const;
 
 		std::map<std::string, translation_entry>& available_translations();
 		const std::string& current_language_pack();

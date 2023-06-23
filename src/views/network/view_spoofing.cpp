@@ -147,5 +147,12 @@ namespace big
 			ImGui::SameLine();
 			ImGui::InputInt("###player_count", &g.spoofing.session_player_count);
 		}
+
+		ImGui::Checkbox("Spoof Session Bad Sport Status", &g.spoofing.spoof_session_bad_sport_status);
+		if (g.spoofing.spoof_session_bad_sport_status)
+		{
+			ImGui::SameLine();
+			ImGui::Checkbox("Badsport", &g.spoofing.session_bad_sport);
+		}
 	}
 }

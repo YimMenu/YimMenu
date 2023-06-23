@@ -47,7 +47,7 @@ namespace big
 		ImGui::PushItemWidth(250);
 		ImGui::Text("SAVED_VEHICLES"_T.data());
 
-		if (ImGui::ListBoxHeader("##empty", ImVec2(200, 200)))
+		if (ImGui::BeginListBox("##empty", ImVec2(200, 200)))
 		{
 			for (const auto& pair : vehicle_files)
 			{
@@ -55,7 +55,7 @@ namespace big
 					selected_vehicle_file = pair;
 			}
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 
 		ImGui::SameLine();
