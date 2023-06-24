@@ -82,11 +82,9 @@ namespace big
 			}
 
 			draw_list->AddText(name_pos, esp_color, name_str.c_str());
-
+			std::string mode_str = "";
 			if (g.esp.god)
 			{
-				std::string mode_str = "";
-
 				if (ped_damage_bits & (uint32_t)eEntityProofs::GOD)
 				{
 					mode_str = "ESP_GOD"_T.data();
@@ -102,13 +100,19 @@ namespace big
 						mode_str += "ESP_EXPLOSION"_T.data();
 					}
 				}
+			}
 
-				if (!mode_str.empty())
-				{
-					draw_list->AddText({esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 40.f},
-					    ImColor(1.f, 0.f, 0.f, 1.f),
-					    mode_str.c_str());
-				}
+			if (auto player_vehicle = plyr->get_current_vehicle())
+			{
+				if (player_vehicle->m_damage_bits & (uint32_t)eEntityProofs::GOD)
+					mode_str = +"VEH_GOD";
+			}
+
+			if (!mode_str.empty())
+			{
+				draw_list->AddText({esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 40.f},
+				    ImColor(1.f, 0.f, 0.f, 1.f),
+				    mode_str.c_str());
 			}
 
 			if (!(ped_damage_bits & (uint32_t)eEntityProofs::GOD))

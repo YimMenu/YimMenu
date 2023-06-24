@@ -33,7 +33,6 @@ namespace big
 		TRAIN,
 		BLACKHOLE,
 		MODEL_SWAPPER,
-		NEARBY,
 
 		NETWORK,
 		MISSIONS,
@@ -122,7 +121,6 @@ namespace big
 		                {tabs::TRAIN, {"GUI_TAB_TRAIN", view::train}},
 		                {tabs::BLACKHOLE, {"GUI_TAB_BLACKHOLE", view::blackhole}},
 		                {tabs::MODEL_SWAPPER, {"GUI_TAB_MODEL_SWAPPER", view::model_swapper}},
-		                {tabs::NEARBY, {"GUI_TAB_NEARBY", view::nearby}},
 		            },
 		        },
 		    },
