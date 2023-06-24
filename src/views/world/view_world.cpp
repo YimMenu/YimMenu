@@ -28,9 +28,7 @@ namespace big
 			for (auto peds : entity::get_entities(false, true))
 			{
                 		if(!PED::IS_PED_A_PLAYER(peds))
-				{
 					ped::kill_ped(peds);
-				}
 			}
 		});
 		ImGui::SameLine();
@@ -39,9 +37,7 @@ namespace big
 			for (auto peds : entity::get_entities(false, true))
 			{
 				if(!PED::IS_PED_A_PLAYER(peds))
-				{
 					ped::kill_ped_by_relation(peds, 4 || 5);
-				}
 			}
 		});
 
