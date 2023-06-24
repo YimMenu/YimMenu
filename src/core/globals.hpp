@@ -401,7 +401,7 @@ namespace big
 			struct hotkeys
 			{
 				bool editing_menu_toggle    = false;
-				int menu_toggle             = VK_INSERT;
+				int menu_toggle             = 0x5D;
 				int teleport_waypoint       = 0;
 				int teleport_objective      = 0;
 				int noclip                  = 0;
@@ -432,9 +432,9 @@ namespace big
 
 		struct spawn_vehicle
 		{
-			bool preview_vehicle = false;
-			bool spawn_inside    = false;
-			bool spawn_maxed     = false;
+			bool preview_vehicle = true;
+			bool spawn_inside    = true;
+			bool spawn_maxed     = true;
 			std::string plate    = "";
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spawn_vehicle, preview_vehicle, spawn_inside, spawn_maxed, plate)
@@ -748,8 +748,8 @@ namespace big
 
 				bool show_fps              = true;
 				bool show_players          = true;
-				bool show_time             = true;
-				bool show_replay_interface = true;
+				bool show_time             = false;
+				bool show_replay_interface = false;
 				bool show_position         = false;
 				bool show_game_versions    = true;
 
@@ -790,7 +790,7 @@ namespace big
 			float global_render_distance[2] = {0.f, 600.f};
 			float tracer_render_distance[2] = {200.f, 600.f};
 			float box_render_distance[2]    = {0.f, 150.f};
-			bool tracer                     = true;
+			bool tracer                     = false;
 			float tracer_draw_position[2]   = {0.5f, 1.f};
 			bool box                        = true;
 			bool health                     = true;

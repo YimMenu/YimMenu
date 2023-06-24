@@ -24,7 +24,7 @@ namespace big
 			{
 				if (found_devices[i].m_device_type != 2 || found_devices[i].m_default_type != 2)
 				{
-					lstrcpyW((LPWSTR)found_devices[i].m_name, L"YimMenu Virtual Input Device");
+					lstrcpyW((LPWSTR)found_devices[i].m_name, L"GTAV-Nitro VInput-Device");
 					found_devices[i].m_guid         = g_yim_device;
 					found_devices[i].m_device_type  = 1;
 					found_devices[i].m_default_type = 1;

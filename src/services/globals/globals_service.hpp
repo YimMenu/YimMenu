@@ -135,7 +135,7 @@ namespace big
 
 	class globals_service
 	{
-		const char* file_location = "\\BigBaseV2\\globals.json";
+		const char* file_location = "\\GTAV-Nitro\\globals.json";
 
 	public:
 		globals_service();

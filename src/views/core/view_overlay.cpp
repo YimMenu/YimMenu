@@ -17,7 +17,7 @@ namespace big
 
 		if (ImGui::Begin("overlay", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
 		{
-			ImGui::Text("YimMenu");
+			ImGui::Text("GTAV-Nitro");
 
 			ImGui::Separator();
 

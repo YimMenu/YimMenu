@@ -8,8 +8,8 @@
 namespace big
 {
 	translation_service::translation_service() :
-	    m_url("https://raw.githubusercontent.com/YimMenu/Translations/master"),
-	    m_fallback_url("https://cdn.jsdelivr.net/gh/YimMenu/Translations@master")
+	    m_url("https://cdn.jsdelivr.net/gh/Papela/Online-Repos@master/GTAV-Nitro/Traducciones"),
+	    m_fallback_url("https://cdn.jsdelivr.net/gh/Papela/Online-Repos@master/GTAV-Nitro/Traducciones")
 	{
 	}
 

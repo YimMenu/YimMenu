@@ -22,8 +22,8 @@ include(scripts/imgui.cmake)
 include(scripts/gtav-classes.cmake)
 
 
-# YimMenu
-message(STATUS "YimMenu")
+# GTAV-Nitro
+message(STATUS "GTAV-Nitro")
 file(GLOB_RECURSE SRC_MAIN
     "${SRC_DIR}/**.hpp"
     "${SRC_DIR}/**.h"
