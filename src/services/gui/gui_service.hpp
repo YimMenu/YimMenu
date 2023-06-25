@@ -22,8 +22,6 @@ namespace big
 		HANDLING_CURRENT_PROFILE,
 		LSC,
 		SPAWN_VEHICLE,
-		PV,
-		PERSIST_CAR,
 		FUN_VEHICLE,
 
 		WORLD,
@@ -58,7 +56,7 @@ namespace big
 
 	struct navigation_struct
 	{
-		char name[48]        = "";
+		char name[48]              = "";
 		std::function<void()> func = nullptr;
 		std::map<tabs, navigation_struct> sub_nav{};
 		rage::joaat_t hash = rage::joaat(name);
@@ -103,8 +101,6 @@ namespace big
 		                },
 		                {tabs::LSC, {"GUI_TAB_LSC", view::lsc}},
 		                {tabs::SPAWN_VEHICLE, {"GUI_TAB_SPAWN_VEHICLE", view::spawn_vehicle}},
-		                {tabs::PV, {"GUI_TAB_PERSONAL_VEHICLE", view::pv}},
-		                {tabs::PERSIST_CAR, {"GUI_TAB_PERSIST_CAR", view::persist_car}},
 		                {tabs::FUN_VEHICLE, {"GUI_TAB_VEHICLE_FUN_FEATURES", view::fun_vehicle}},
 		            },
 		        },

@@ -7,7 +7,7 @@
 
 namespace big
 {
-	void view::spawn_vehicle()
+	void render_spawn_new_vehicle()
 	{
 		ImGui::SetWindowSize({0.f, (float)*g_pointers->m_gta.m_resolution_y}, ImGuiCond_Always);
 
@@ -36,7 +36,7 @@ namespace big
 
 		ImGui::SetNextItemWidth(300.f);
 		if (ImGui::BeginCombo("VEHICLE_CLASS"_T.data(),
-			selected_class == -1 ? "ALL"_T.data() : class_arr[selected_class].c_str()))
+		        selected_class == -1 ? "ALL"_T.data() : class_arr[selected_class].c_str()))
 		{
 			if (ImGui::Selectable("ALL"_T.data(), selected_class == -1))
 			{
@@ -194,6 +194,23 @@ namespace big
 				ImGui::Text("NO_VEHICLE_IN_REGISTRY"_T.data());
 			}
 			ImGui::EndListBox();
+		}
+	}
+
+	void view::spawn_vehicle()
+	{
+		static int spawn_type = 0;
+		ImGui::RadioButton("New", &spawn_type, 0);
+		ImGui::SameLine();
+		ImGui::RadioButton("Personal", &spawn_type, 1);
+		ImGui::SameLine();
+		ImGui::RadioButton("Persistent", &spawn_type, 2);
+
+		switch (spawn_type)
+		{
+		case 0: render_spawn_new_vehicle(); break;
+		case 1: view::pv(); break;
+		case 2: view::persist_car(); break;
 		}
 	}
 }
