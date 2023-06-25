@@ -15,6 +15,14 @@ namespace big
 			        std::make_format_args(amount_fixed,
 			            amount_fixed == 1 ? "VEHICLE_FIX_HAS"_T.data() : "VEHICLE_FIX_HAVE"_T.data())));
 		});
+
+		ImGui::SameLine();
+		components::button("Delete Current",[]{
+			auto handle = self::veh;
+			if(ENTITY::DOES_ENTITY_EXIST(handle))
+				TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped), entity::delete_entity(handle);
+		});
+
 		ImGui::SameLine();
 		components::button("REPAIR"_T, [] {
 			vehicle::repair(self::veh);
