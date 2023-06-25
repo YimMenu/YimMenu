@@ -29,7 +29,12 @@
 
 namespace big
 {
-	static std::vector<std::pair<Hash, std::vector<uint64_t>>> trees = {
+	struct sync_tree_children
+	{
+		Hash parent;
+		std::vector<Hash> children;
+	};
+	static std::vector<sync_tree_children> trees = {
 	    {RAGE_JOAAT("CAutomobileSyncTree"),
 	        {
 	            RAGE_JOAAT("CVehicleCreationDataNode"),
@@ -420,7 +425,94 @@ namespace big
 	        }},
 	};
 
-	static auto nodes = std::to_array<std::pair<Hash, uint64_t>>({{RAGE_JOAAT("CAutomobileCreationDataNode"), 0}, {RAGE_JOAAT("CBikeGameStateDataNode"), 0}, {RAGE_JOAAT("CBoatGameStateDataNode"), 0}, {RAGE_JOAAT("CDoorCreationDataNode"), 0}, {RAGE_JOAAT("CDoorMovementDataNode"), 0}, {RAGE_JOAAT("CDoorScriptGameStateDataNode"), 0}, {RAGE_JOAAT("CDoorScriptInfoDataNode"), 0}, {RAGE_JOAAT("CDynamicEntityGameStateDataNode"), 0}, {RAGE_JOAAT("CEntityOrientationDataNode"), 0}, {RAGE_JOAAT("CEntityScriptGameStateDataNode"), 0}, {RAGE_JOAAT("CEntityScriptInfoDataNode"), 0}, {RAGE_JOAAT("CGlobalFlagsDataNode"), 0}, {RAGE_JOAAT("CHeliControlDataNode"), 0}, {RAGE_JOAAT("CHeliHealthDataNode"), 0}, {RAGE_JOAAT("CMigrationDataNode"), 0}, {RAGE_JOAAT("CObjectCreationDataNode"), 0}, {RAGE_JOAAT("CObjectGameStateDataNode"), 0}, {RAGE_JOAAT("CObjectOrientationNode"), 0}, {RAGE_JOAAT("CObjectScriptGameStateDataNode"), 0}, {RAGE_JOAAT("CObjectSectorPosNode"), 0}, {RAGE_JOAAT("CPedAIDataNode"), 0}, {RAGE_JOAAT("CPedAppearanceDataNode"), 0}, {RAGE_JOAAT("CPedAttachDataNode"), 0}, {RAGE_JOAAT("CPedComponentReservationDataNode"), 0}, {RAGE_JOAAT("CPedCreationDataNode"), 0}, {RAGE_JOAAT("CPedGameStateDataNode"), 0}, {RAGE_JOAAT("CPedHealthDataNode"), 0}, {RAGE_JOAAT("CPedInventoryDataNode"), 0}, {RAGE_JOAAT("CPedMovementDataNode"), 0}, {RAGE_JOAAT("CPedMovementGroupDataNode"), 0}, {RAGE_JOAAT("CPedOrientationDataNode"), 0}, {RAGE_JOAAT("CPedScriptCreationDataNode"), 0}, {RAGE_JOAAT("CPedScriptGameStateDataNode"), 0}, {RAGE_JOAAT("CPedSectorPosMapNode"), 0}, {RAGE_JOAAT("CPedSectorPosNavMeshNode"), 0}, {RAGE_JOAAT("CPedTaskSequenceDataNode"), 0}, {RAGE_JOAAT("CPedTaskSpecificDataNode"), 0}, {RAGE_JOAAT("CPedTaskTreeDataNode"), 0}, {RAGE_JOAAT("CPhysicalAngVelocityDataNode"), 0}, {RAGE_JOAAT("CPhysicalAttachDataNode"), 0}, {RAGE_JOAAT("CPhysicalGameStateDataNode"), 0}, {RAGE_JOAAT("CPhysicalHealthDataNode"), 0}, {RAGE_JOAAT("CPhysicalMigrationDataNode"), 0}, {RAGE_JOAAT("CPhysicalScriptGameStateDataNode"), 0}, {RAGE_JOAAT("CPhysicalScriptMigrationDataNode"), 0}, {RAGE_JOAAT("CPhysicalVelocityDataNode"), 0}, {RAGE_JOAAT("CPickupCreationDataNode"), 0}, {RAGE_JOAAT("CPickupPlacementCreationDataNode"), 0}, {RAGE_JOAAT("CPickupPlacementStateDataNode"), 0}, {RAGE_JOAAT("CPickupScriptGameStateNode"), 0}, {RAGE_JOAAT("CPickupSectorPosNode"), 0}, {RAGE_JOAAT("CPlaneControlDataNode"), 0}, {RAGE_JOAAT("CPlaneGameStateDataNode"), 0}, {RAGE_JOAAT("CPlayerAmbientModelStreamingNode"), 0}, {RAGE_JOAAT("CPlayerAppearanceDataNode"), 0}, {RAGE_JOAAT("CPlayerCameraDataNode"), 0}, {RAGE_JOAAT("CPlayerCreationDataNode"), 0}, {RAGE_JOAAT("CPlayerExtendedGameStateNode"), 0}, {RAGE_JOAAT("CPlayerGameStateDataNode"), 0}, {RAGE_JOAAT("CPlayerGamerDataNode"), 0}, {RAGE_JOAAT("CPlayerPedGroupDataNode"), 0}, {RAGE_JOAAT("CPlayerSectorPosNode"), 0}, {RAGE_JOAAT("CPlayerWantedAndLOSDataNode"), 0}, {RAGE_JOAAT("CSectorDataNode"), 0}, {RAGE_JOAAT("CSectorPositionDataNode"), 0}, {RAGE_JOAAT("CSubmarineControlDataNode"), 0}, {RAGE_JOAAT("CSubmarineGameStateDataNode"), 0}, {RAGE_JOAAT("CTrainGameStateDataNode"), 0}, {RAGE_JOAAT("CVehicleAngVelocityDataNode"), 0}, {RAGE_JOAAT("CVehicleAppearanceDataNode"), 0}, {RAGE_JOAAT("CVehicleComponentReservationDataNode"), 0}, {RAGE_JOAAT("CVehicleControlDataNode"), 0}, {RAGE_JOAAT("CVehicleCreationDataNode"), 0}, {RAGE_JOAAT("CVehicleDamageStatusDataNode"), 0}, {RAGE_JOAAT("CVehicleGadgetDataNode"), 0}, {RAGE_JOAAT("CVehicleGameStateDataNode"), 0}, {RAGE_JOAAT("CVehicleHealthDataNode"), 0}, {RAGE_JOAAT("CVehicleProximityMigrationDataNode"), 0}, {RAGE_JOAAT("CVehicleScriptGameStateDataNode"), 0}, {RAGE_JOAAT("CVehicleSteeringDataNode"), 0}, {RAGE_JOAAT("CVehicleTaskDataNode"), 0}});
+	struct sync_node
+	{
+		Hash node_hash;
+		void* vtable_addr;
+	};
+	static auto nodes = std::to_array<sync_node>({
+	    {RAGE_JOAAT("CAutomobileCreationDataNode"), 0},
+	    {RAGE_JOAAT("CBikeGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CBoatGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CDoorCreationDataNode"), 0},
+	    {RAGE_JOAAT("CDoorMovementDataNode"), 0},
+	    {RAGE_JOAAT("CDoorScriptGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CDoorScriptInfoDataNode"), 0},
+	    {RAGE_JOAAT("CDynamicEntityGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CEntityOrientationDataNode"), 0},
+	    {RAGE_JOAAT("CEntityScriptGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CEntityScriptInfoDataNode"), 0},
+	    {RAGE_JOAAT("CGlobalFlagsDataNode"), 0},
+	    {RAGE_JOAAT("CHeliControlDataNode"), 0},
+	    {RAGE_JOAAT("CHeliHealthDataNode"), 0},
+	    {RAGE_JOAAT("CMigrationDataNode"), 0},
+	    {RAGE_JOAAT("CObjectCreationDataNode"), 0},
+	    {RAGE_JOAAT("CObjectGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CObjectOrientationNode"), 0},
+	    {RAGE_JOAAT("CObjectScriptGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CObjectSectorPosNode"), 0},
+	    {RAGE_JOAAT("CPedAIDataNode"), 0},
+	    {RAGE_JOAAT("CPedAppearanceDataNode"), 0},
+	    {RAGE_JOAAT("CPedAttachDataNode"), 0},
+	    {RAGE_JOAAT("CPedComponentReservationDataNode"), 0},
+	    {RAGE_JOAAT("CPedCreationDataNode"), 0},
+	    {RAGE_JOAAT("CPedGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CPedHealthDataNode"), 0},
+	    {RAGE_JOAAT("CPedInventoryDataNode"), 0},
+	    {RAGE_JOAAT("CPedMovementDataNode"), 0},
+	    {RAGE_JOAAT("CPedMovementGroupDataNode"), 0},
+	    {RAGE_JOAAT("CPedOrientationDataNode"), 0},
+	    {RAGE_JOAAT("CPedScriptCreationDataNode"), 0},
+	    {RAGE_JOAAT("CPedScriptGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CPedSectorPosMapNode"), 0},
+	    {RAGE_JOAAT("CPedSectorPosNavMeshNode"), 0},
+	    {RAGE_JOAAT("CPedTaskSequenceDataNode"), 0},
+	    {RAGE_JOAAT("CPedTaskSpecificDataNode"), 0},
+	    {RAGE_JOAAT("CPedTaskTreeDataNode"), 0},
+	    {RAGE_JOAAT("CPhysicalAngVelocityDataNode"), 0},
+	    {RAGE_JOAAT("CPhysicalAttachDataNode"), 0},
+	    {RAGE_JOAAT("CPhysicalGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CPhysicalHealthDataNode"), 0},
+	    {RAGE_JOAAT("CPhysicalMigrationDataNode"), 0},
+	    {RAGE_JOAAT("CPhysicalScriptGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CPhysicalScriptMigrationDataNode"), 0},
+	    {RAGE_JOAAT("CPhysicalVelocityDataNode"), 0},
+	    {RAGE_JOAAT("CPickupCreationDataNode"), 0},
+	    {RAGE_JOAAT("CPickupPlacementCreationDataNode"), 0},
+	    {RAGE_JOAAT("CPickupPlacementStateDataNode"), 0},
+	    {RAGE_JOAAT("CPickupScriptGameStateNode"), 0},
+	    {RAGE_JOAAT("CPickupSectorPosNode"), 0},
+	    {RAGE_JOAAT("CPlaneControlDataNode"), 0},
+	    {RAGE_JOAAT("CPlaneGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CPlayerAmbientModelStreamingNode"), 0},
+	    {RAGE_JOAAT("CPlayerAppearanceDataNode"), 0},
+	    {RAGE_JOAAT("CPlayerCameraDataNode"), 0},
+	    {RAGE_JOAAT("CPlayerCreationDataNode"), 0},
+	    {RAGE_JOAAT("CPlayerExtendedGameStateNode"), 0},
+	    {RAGE_JOAAT("CPlayerGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CPlayerGamerDataNode"), 0},
+	    {RAGE_JOAAT("CPlayerPedGroupDataNode"), 0},
+	    {RAGE_JOAAT("CPlayerSectorPosNode"), 0},
+	    {RAGE_JOAAT("CPlayerWantedAndLOSDataNode"), 0},
+	    {RAGE_JOAAT("CSectorDataNode"), 0},
+	    {RAGE_JOAAT("CSectorPositionDataNode"), 0},
+	    {RAGE_JOAAT("CSubmarineControlDataNode"), 0},
+	    {RAGE_JOAAT("CSubmarineGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CTrainGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CVehicleAngVelocityDataNode"), 0},
+	    {RAGE_JOAAT("CVehicleAppearanceDataNode"), 0},
+	    {RAGE_JOAAT("CVehicleComponentReservationDataNode"), 0},
+	    {RAGE_JOAAT("CVehicleControlDataNode"), 0},
+	    {RAGE_JOAAT("CVehicleCreationDataNode"), 0},
+	    {RAGE_JOAAT("CVehicleDamageStatusDataNode"), 0},
+	    {RAGE_JOAAT("CVehicleGadgetDataNode"), 0},
+	    {RAGE_JOAAT("CVehicleGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CVehicleHealthDataNode"), 0},
+	    {RAGE_JOAAT("CVehicleProximityMigrationDataNode"), 0},
+	    {RAGE_JOAAT("CVehicleScriptGameStateDataNode"), 0},
+	    {RAGE_JOAAT("CVehicleSteeringDataNode"), 0},
+	    {RAGE_JOAAT("CVehicleTaskDataNode"), 0},
+	});
 
 	static void cache_nodes()
 	{
@@ -429,9 +521,9 @@ namespace big
 			if (i == (int)eNetObjType::NET_OBJ_TYPE_TRAILER)
 				continue;
 			rage::netSyncTree* tree = g_pointers->m_gta.m_get_sync_tree_for_type(*g_pointers->m_gta.m_network_object_mgr, i);
-			if (tree->m_child_node_count > trees[i].second.size())
+			if (tree->m_child_node_count > trees[i].children.size())
 			{
-				LOG(FATAL) << "Cache nodes failed " << i << tree->m_child_node_count << " " << trees[i].second.size();
+				LOG(FATAL) << "Cache nodes failed " << i << tree->m_child_node_count << " " << trees[i].children.size();
 				throw std::runtime_error("Failed to cache nodes");
 			}
 			for (int j = 0; j < tree->m_child_node_count; j++)
@@ -439,9 +531,9 @@ namespace big
 				PVOID vft = *(PVOID*)tree->m_child_nodes[j];
 				for (auto& n : nodes)
 				{
-					if (n.first == trees[i].second[j])
+					if (n.node_hash == trees[i].children[j])
 					{
-						n.second = (uint64_t)vft;
+						n.vtable_addr = vft;
 						break;
 					}
 				}
@@ -543,9 +635,9 @@ namespace big
 
 			for (const auto& n : nodes)
 			{
-				if ((void*)n.second == vtable)
+				if (n.vtable_addr == vtable)
 				{
-					node_hash = n.first;
+					node_hash = n.node_hash;
 					break;
 				}
 			}
