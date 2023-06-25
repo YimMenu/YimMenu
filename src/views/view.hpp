@@ -68,7 +68,6 @@ namespace big
 		static void train();
 		static void blackhole();
 		static void model_swapper();
-		static void nearby();
 		static void world();
 		static void gta_cache();
 		static void lua_scripts();
