@@ -27,8 +27,8 @@ namespace big
 		components::button<ImVec2(110, 0), ImVec4(0.70196f, 0.3333f, 0.00392f, 1.f)>("Kill", [] {
 			for (auto peds : entity::get_entities(false, true))
 			{
-                if(!PED::IS_PED_A_PLAYER(peds))
-				    ped::kill_ped(peds);
+                		if(!PED::IS_PED_A_PLAYER(peds))
+					ped::kill_ped(peds);
 			}
 		});
 		ImGui::SameLine();
@@ -36,7 +36,8 @@ namespace big
 		components::button<ImVec2(110, 0), ImVec4(0.76078f, 0.f, 0.03529f, 1.f)>("Kill Enemies", [] {
 			for (auto peds : entity::get_entities(false, true))
 			{
-				ped::kill_ped_by_relation(peds, 4 || 5);
+				if(!PED::IS_PED_A_PLAYER(peds))
+					ped::kill_ped_by_relation(peds, 4 || 5);
 			}
 		});
 
