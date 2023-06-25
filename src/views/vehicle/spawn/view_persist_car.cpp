@@ -52,7 +52,9 @@ namespace big
 			for (const auto& pair : vehicle_files)
 			{
 				if (ImGui::Selectable(pair.c_str(), selected_vehicle_file == pair))
-					selected_vehicle_file = pair;
+					selected_vehicle_file = pair, g_fiber_pool->queue_job([] {
+						load_vehicle(selected_vehicle_file);
+					});
 			}
 
 			ImGui::EndListBox();
@@ -63,23 +65,15 @@ namespace big
 		ImGui::BeginGroup();
 		static char vehicle_file_name_input[50]{};
 
+		components::small_text("VEHICLE_FILE_NAME"_T);
 		ImGui::PushItemWidth(250);
-		components::input_text_with_hint("VEHICLE_FILE_NAME"_T, "VEHICLE_FILE_NAME_EXAMPLE"_T, vehicle_file_name_input, IM_ARRAYSIZE(vehicle_file_name_input));
-
-		ImGui::SameLine();
+		components::input_text_with_hint("##vehiclefilename", "VEHICLE_FILE_NAME_EXAMPLE"_T, vehicle_file_name_input, IM_ARRAYSIZE(vehicle_file_name_input));
 
 		components::button("SAVE_VEHICLE"_T, [] {
 			if (!self::veh)
 				return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "You must be in a vehicle. Please enter a vehicle before using load.");
 
 			save_vehicle(vehicle_file_name_input);
-		});
-
-		components::button("LOAD_VEHICLE"_T, [] {
-			if (self::veh)
-				return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "You must not be in a vehicle. Please exit your vehicle before using load.");
-
-			load_vehicle(selected_vehicle_file);
 		});
 
 		ImGui::EndGroup();
