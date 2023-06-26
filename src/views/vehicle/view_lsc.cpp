@@ -228,8 +228,7 @@ namespace big
 			});
 		}
 
-		ImGui::Separator();
-		components::sub_title("MOD_OPTIONS"_T);
+		ImGui::SeparatorText("MOD_OPTIONS"_T.data());
 
 		bool is_bulletproof_tires = !owned_mods[MOD_TIRE_CAN_BURST];
 		if (ImGui::Checkbox("BULLETPROOF_TIRES"_T.data(), (bool*)&is_bulletproof_tires))
@@ -263,7 +262,7 @@ namespace big
 			});
 		}
 
-		ImGui::Separator();
+		ImGui::SeparatorText("Mod Slots");
 
 		ImGui::BeginGroup();
 
@@ -420,7 +419,7 @@ namespace big
 		}
 
 
-		ImGui::Separator();
+		ImGui::SeparatorText("NEON_LIGHT_OPTIONS"_T.data());
 		components::sub_title("NEON_LIGHT_OPTIONS"_T);
 
 		ImGui::PushID("##headlight_en");
@@ -492,8 +491,7 @@ namespace big
 		});
 		ImGui::PopID();
 
-		ImGui::Separator();
-		components::sub_title("COLOR_OPTIONS"_T);
+		ImGui::SeparatorText("COLOR_OPTIONS"_T.data());
 
 		static int color_to_change = 0;
 		static int color_type      = 8;

@@ -28,7 +28,7 @@ namespace big
 			});
 
 			ImGui::SetNextItemWidth(400);
-			components::input_text_with_hint("", "Dictionary", &current_dict);
+			components::input_text_with_hint("##dictionaryfilter", "Dictionary", &current_dict);
 
 			if (animations::has_anim_list_been_populated() && ImGui::BeginListBox("##dictionaries", ImVec2(400, 200)))
 			{

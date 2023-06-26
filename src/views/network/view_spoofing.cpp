@@ -82,11 +82,11 @@ namespace big
 
 		components::command_checkbox<"vcaudio">();
 
-		components::sub_title("SPOOFING_HIDE_FEATURES"_T);
+		ImGui::SeparatorText("SPOOFING_HIDE_FEATURES"_T.data());
 		ImGui::Checkbox("SPOOFING_HIDE_GOD_MODE"_T.data(), &g.spoofing.spoof_hide_god);
 		ImGui::Checkbox("SPOOFING_HIDE_SPECTATE"_T.data(), &g.spoofing.spoof_hide_spectate);
 
-		components::sub_title("CREW"_T);
+		ImGui::SeparatorText("CREW"_T.data());
 
 		ImGui::Checkbox("SPOOFING_CREW"_T.data(), &g.spoofing.spoof_crew_data);
 
@@ -104,7 +104,7 @@ namespace big
 
 		ImGui::Checkbox("SPOOFING_CREW_SQUARE_TAG"_T.data(), &g.spoofing.square_crew_tag);
 
-		components::sub_title("SPOOFING_SESSION_ATTRIBUTES"_T);
+		ImGui::SeparatorText("SPOOFING_SESSION_ATTRIBUTES"_T.data());
 		components::small_text("SPOOFING_ONLY_WORKS_AS_HOST"_T);
 
 		ImGui::Checkbox("SPOOFING_ATTRIBUTE_REGION"_T.data(), &g.spoofing.spoof_session_region_type);

@@ -48,7 +48,6 @@ namespace big
 
 			static int wanted_level;
 			ImGui::SliderInt("WANTED_LVL"_T.data(), &wanted_level, 0, 5);
-			ImGui::SameLine();
 			components::player_command_button<"wanted">(g_player_service->get_selected(), {(uint64_t)wanted_level}, "Set");
 			ImGui::SameLine();
 			components::player_command_button<"remweaps">(g_player_service->get_selected(), {});

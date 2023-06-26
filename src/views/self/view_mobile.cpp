@@ -9,8 +9,7 @@ namespace big
 	{
 		ImGui::SetWindowSize({0.f, (float)*g_pointers->m_gta.m_resolution_y}, ImGuiCond_Always);
 
-		components::sub_title("MERRYWEATHER"_T);
-		ImGui::Separator();
+		ImGui::SeparatorText("MERRYWEATHER"_T.data());
 
 		components::button("MW_AMMO_DROP"_T, [] {
 			mobile::merry_weather::request_ammo_drop();
@@ -30,8 +29,8 @@ namespace big
 			mobile::merry_weather::request_airstrike();
 		});
 
-		components::sub_title("MORS_MUTUAL"_T);
-		ImGui::Separator();
+		
+		ImGui::SeparatorText("MORS_MUTUAL"_T.data());
 
 		components::button("MORS_FIX_ALL"_T, [] {
 			int amount_fixed = mobile::mors_mutual::fix_all();
@@ -41,8 +40,7 @@ namespace big
 			            amount_fixed == 1 ? "VEHICLE_FIX_HAS"_T.data() : "VEHICLE_FIX_HAVE"_T.data())));
 		});
 
-		components::sub_title("CEO_ABILITIES"_T);
-		ImGui::Separator();
+		ImGui::SeparatorText("CEO_ABILITIES"_T.data());
 
 		components::button("CEO_BULLSHARK"_T, [] {
 			mobile::ceo_abilities::request_bullshark_testosterone();
