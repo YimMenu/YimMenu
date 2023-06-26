@@ -732,7 +732,7 @@ namespace big
 			ImU32 background_color = 3696311571;
 			ImU32 text_color       = 4294967295;
 			ImU32 button_color     = 2947901213;
-			ImU32 frame_color      = 2946802852;
+			ImU32 frame_color      = 2942518340;
 			float gui_scale        = 1.f;
 
 			ImFont* font_title     = nullptr;
