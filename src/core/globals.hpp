@@ -7,10 +7,13 @@
 #include "file_manager.hpp"
 
 #include <bitset>
-#include <imgui.h>
 #include <rage/rlSessionInfo.hpp>
 #include <weapon/CAmmoInfo.hpp>
 #include <weapon/CWeaponInfo.hpp>
+
+#define IMGUI_DEFINE_MATH_OPERATORS
+#include <imgui.h>
+
 
 class CNetGamePlayer;
 
@@ -735,6 +738,7 @@ namespace big
 			ImFont* font_small     = nullptr;
 			ImFont* font_icon      = nullptr;
 
+			bool demo = false;
 			bool switched_view = true;
 
 			struct ingame_overlay
@@ -762,7 +766,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_control, operation_animation, max_summon_range, render_distance_on_veh)
 			} vehicle_control{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, background_color, text_color, button_color, frame_color, gui_scale, switched_view, ingame_overlay, vehicle_control)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, background_color, demo, text_color, button_color, frame_color, gui_scale, switched_view, ingame_overlay, vehicle_control)
 		} window{};
 
 		struct context_menu

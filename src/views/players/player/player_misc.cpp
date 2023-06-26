@@ -10,7 +10,7 @@ namespace big
 	{
 		ImGui::BeginGroup();
 		components::sub_title("Misc");
-		if (ImGui::ListBoxHeader("##misc", get_listbox_dimensions()))
+		if (ImGui::BeginListBox("##misc", get_listbox_dimensions()))
 		{
 			components::player_command_button<"joinceo">(g_player_service->get_selected());
 			ImGui::SameLine();
@@ -31,7 +31,7 @@ namespace big
 			ImGui::Checkbox("NEVER_WANTED"_T.data(), &g_player_service->get_selected()->never_wanted);
 			ImGui::Checkbox("SEMI_GODMODE"_T.data(), &g_player_service->get_selected()->semi_godmode);
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 
 		ImGui::EndGroup();

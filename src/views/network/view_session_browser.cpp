@@ -23,7 +23,7 @@ namespace big
 
 		ImGui::SetNextItemWidth(300.f);
 
-		if (ImGui::ListBoxHeader("###sessions", {300, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 400 - 38 * 4)}))
+		if (ImGui::BeginListBox("###sessions", {300, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 400 - 38 * 4)}))
 		{
 			if (g_matchmaking_service->get_num_found_sessions())
 			{
@@ -56,7 +56,7 @@ namespace big
 				ImGui::Text("NO_SESSIONS"_T.data());
 			}
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 
 		if (selected_session_idx != -1)

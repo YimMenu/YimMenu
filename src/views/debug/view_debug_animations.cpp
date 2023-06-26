@@ -30,7 +30,7 @@ namespace big
 			ImGui::SetNextItemWidth(400);
 			components::input_text_with_hint("", "Dictionary", &current_dict);
 
-			if (animations::has_anim_list_been_populated() && ImGui::ListBoxHeader("##dictionaries", ImVec2(400, 200)))
+			if (animations::has_anim_list_been_populated() && ImGui::BeginListBox("##dictionaries", ImVec2(400, 200)))
 			{
 				for (auto& entry : animations::all_dicts)
 				{
@@ -45,10 +45,10 @@ namespace big
 					}
 				}
 
-				ImGui::ListBoxFooter();
+				ImGui::EndListBox();
 			}
 
-			if (selected_dict_anim_list.size() > 0 && ImGui::ListBoxHeader("##animations", ImVec2(400, 200)))
+			if (selected_dict_anim_list.size() > 0 && ImGui::BeginListBox("##animations", ImVec2(400, 200)))
 			{
 				for (auto& entry : selected_dict_anim_list)
 				{
@@ -63,7 +63,7 @@ namespace big
 					}
 				}
 
-				ImGui::ListBoxFooter();
+				ImGui::EndListBox();
 			}
 
 			components::button("Stop", [] {

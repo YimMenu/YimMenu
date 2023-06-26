@@ -13,7 +13,7 @@ namespace big
 
 		components::sub_title("Teleport");
 
-		if (ImGui::ListBoxHeader("##teleport", get_listbox_dimensions()))
+		if (ImGui::BeginListBox("##teleport", get_listbox_dimensions()))
 		{
 			components::player_command_button<"playertp">(g_player_service->get_selected());
 			ImGui::SameLine();
@@ -133,7 +133,7 @@ namespace big
 				std::copy(std::begin(current_location), std::end(current_location), std::begin(new_location));
 			}
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 		ImGui::EndGroup();
 	}

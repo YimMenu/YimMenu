@@ -8,7 +8,7 @@ namespace big
 	{
 		ImGui::BeginGroup();
 		components::sub_title("Kick");
-		if (ImGui::ListBoxHeader("##kick", get_listbox_dimensions()))
+		if (ImGui::BeginListBox("##kick", get_listbox_dimensions()))
 		{
 			auto const is_session_host = [] {
 				return gta_util::get_network()->m_game_session_ptr->is_host();
@@ -39,7 +39,7 @@ namespace big
 			ImGui::SameLine();
 			components::player_command_button<"desync">(g_player_service->get_selected());
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 
 		ImGui::EndGroup();
