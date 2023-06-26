@@ -1,8 +1,6 @@
 #pragma once
-#include "invoker.hpp"
-#include "lua/lua_module.hpp"
+#include "lua/sol.hpp"
 #include "lua/natives/lua_native_binding.hpp"
-#include "memory.hpp"
 
 namespace lua::native
 {
