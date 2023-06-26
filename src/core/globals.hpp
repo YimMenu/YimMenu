@@ -594,9 +594,9 @@ namespace big
 				float x = .9f;
 				float y = .72f;
 
-				bool enabled           = false;
+				bool enabled           = true;
 				bool left_side         = false;
-				bool show_current_gear = true;
+				bool show_current_gear = false;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(speedo_meter, x, y, enabled, left_side, show_current_gear)
 			} speedo_meter{};
@@ -624,7 +624,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(rainbow_paint, type, neon, primary, secondary, smoke, speed)
 			} rainbow_paint{};
 
-			SpeedUnit speed_unit = SpeedUnit::MIPH;
+			SpeedUnit speed_unit = SpeedUnit::KMPH;
 
 			bool god_mode        = false;
 			bool proof_bullet    = false;
@@ -644,7 +644,7 @@ namespace big
 			bool drive_on_water                         = false;
 			bool horn_boost                             = false;
 			bool instant_brake                          = false;
-			bool block_homing                           = true;
+			bool block_homing                           = false;
 			bool ls_customs                             = false; // don't save this to disk
 			bool seatbelt                               = false;
 			bool turn_signals                           = false;
@@ -727,10 +727,10 @@ namespace big
 
 		struct window
 		{
-			ImU32 background_color = 3189656871;
+			ImU32 background_color = 3187671040;
 			ImU32 text_color       = 4294967295;
-			ImU32 button_color     = 4216956014;
-			ImU32 frame_color      = 2939772740;
+			ImU32 button_color     = 4211081216;
+			ImU32 frame_color      = 2937789213;
 			float gui_scale        = 1.f;
 
 			ImFont* font_title     = nullptr;
