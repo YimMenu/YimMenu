@@ -1,4 +1,5 @@
 #include "hooking.hpp"
+#include "memory/handle.hpp"
 #include "pointers.hpp"
 
 #include <Psapi.h>
@@ -35,6 +36,16 @@ namespace big
 		return value == 0xE9;
 	}
 
+	bool is_hook(__int64 fptr)
+	{
+		bool is_hook = !is_address_in_game_region((int64_t)memory::handle(fptr).add(1).rip().as<int64_t*>());
+
+		if (is_hook)
+			LOG(INFO) << "IsHook: TRUE";
+
+		return is_hook;
+	}
+
 	bool is_unwanted_dependency(__int64 cb)
 	{
 		auto f1 = *(__int64*)(cb + 0x60);
@@ -44,7 +55,7 @@ namespace big
 		if (!is_address_in_game_region(f1) || !is_address_in_game_region(f2) || !is_address_in_game_region(f3))
 			return false;
 
-		return is_jump(f1) || is_jump(f2) || is_jump(f3);
+		return (is_jump(f1) && !is_hook(f1)) || (is_jump(f2) && !is_hook(f2)) || (is_jump(f3) && !is_hook(f3));
 	}
 
 	void hooks::queue_dependency(void* dependency)

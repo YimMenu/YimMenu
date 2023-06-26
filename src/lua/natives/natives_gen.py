@@ -47,6 +47,8 @@ def write_native(name, hash, params, return_type):
 
     out_file += f"return _natives.{invoke_type}({hash},"
     for param in params:
+        if param['type'] == "float":
+            out_file += "0xDEADDEADDEADDEAD,"
         out_file += f"{sanitize_param(param['name'])},"
     out_file = out_file.removesuffix(",")
     out_file += ");end,\n"
