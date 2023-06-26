@@ -50,6 +50,13 @@ namespace big
 	{
 		m_state.open_libraries();
 
+		const auto scripts_folder = g_file_manager->get_project_folder("scripts");
+
+		// used for adding our own paths to the search paths of the lua require function
+		const std::string package_path = m_state["package"]["path"];
+		const auto scripts_search_path = scripts_folder.get_path() / "?.lua";
+		m_state["package"]["path"] = package_path + (!package_path.empty() ? ";" : "") + scripts_search_path.string();
+
 		lua::log::bind(m_state);
 		lua::globals::bind(m_state);
 		lua::script::bind(m_state);
@@ -70,7 +77,7 @@ namespace big
 		m_state.set_exception_handler((sol::exception_handler_function)exception_handler);
 		m_state.set_panic(panic_handler);
 
-		auto result = m_state.load_file(g_file_manager->get_project_folder("scripts").get_file(module_name).get_path().string());
+		auto result = m_state.load_file(scripts_folder.get_file(module_name).get_path().string());
 
 		if (!result.valid())
 		{
