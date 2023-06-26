@@ -208,7 +208,7 @@ namespace big
 		{
 			g_fiber_pool->queue_job([] {
 				vehicle::max_vehicle_performance(self::veh);
-				
+
 				// refresh mod names
 				player_vehicle = 0;
 			});
@@ -418,9 +418,7 @@ namespace big
 			}
 		}
 
-
 		ImGui::SeparatorText("NEON_LIGHT_OPTIONS"_T.data());
-		components::sub_title("NEON_LIGHT_OPTIONS"_T);
 
 		ImGui::PushID("##headlight_en");
 		if (ImGui::Checkbox("HEADLIGHT"_T.data(), (bool*)&owned_mods[MOD_XENON_LIGHTS]))
@@ -763,7 +761,7 @@ namespace big
 			{
 				switch (color_type)
 				{
-				case 0://Chrome
+				case 0: //Chrome
 				{
 					if (ImGui::Selectable("CHROME"_T.data(), selected_color == COLOR_CHROME))
 					{
@@ -782,7 +780,7 @@ namespace big
 					}
 					break;
 				}
-				case 1://Classic
+				case 1: //Classic
 				{
 					for (const auto& [color, name] : lsc_classic_colors)
 					{
@@ -806,7 +804,7 @@ namespace big
 					}
 					break;
 				}
-				case 2://Matte
+				case 2: //Matte
 				{
 					for (const auto& [color, name] : lsc_matte_colors)
 					{
@@ -830,7 +828,7 @@ namespace big
 					}
 					break;
 				}
-				case 3://Metals
+				case 3: //Metals
 				{
 					for (const auto& [color, name] : lsc_metal_colors)
 					{
@@ -854,7 +852,7 @@ namespace big
 					}
 					break;
 				}
-				case 4://Pearlescent
+				case 4: //Pearlescent
 				{
 					for (const auto& [color, name] : lsc_classic_colors)
 					{
@@ -870,7 +868,7 @@ namespace big
 					}
 					break;
 				}
-				case 5://Wheel Color
+				case 5: //Wheel Color
 				{
 					for (const auto& [color, name] : lsc_classic_colors)
 					{
@@ -886,7 +884,7 @@ namespace big
 					}
 					break;
 				}
-				case 6://Interior Color
+				case 6: //Interior Color
 				{
 					for (const auto& [color, name] : lsc_classic_colors)
 					{
@@ -902,7 +900,7 @@ namespace big
 					}
 					break;
 				}
-				case 7://Dashboard Color
+				case 7: //Dashboard Color
 				{
 					for (const auto& [color, name] : lsc_classic_colors)
 					{
@@ -918,7 +916,7 @@ namespace big
 					}
 					break;
 				}
-				case 9://Headlight Color
+				case 9: //Headlight Color
 				{
 					for (const auto& [color, name] : lsc_headlight_colors)
 					{
