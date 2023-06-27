@@ -7,7 +7,7 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		std::array<int*, 8> m_tunables;
+		std::array<int*, 8> m_tunables = { nullptr };
 		std::array<int, 8> m_restore;
 		bool m_ready_to_use;
 
@@ -28,18 +28,17 @@ namespace big
 				m_ready_to_use = true;
 				for (int i = 0; i < m_restore.size(); ++i)
 				{
-					if (m_tunables[i])
-					{
-						m_restore[i] = *m_tunables[i];
-					}
-					else m_ready_to_use = false;
+					if (m_ready_to_use = m_tunables[i]; !m_ready_to_use)
+						break;
+					m_restore[i] = *m_tunables[i];
 				}
 			}
 			else
 			{
 				for (const auto& tunable : m_tunables)
 				{
-					*tunable = INT_MAX;
+					if (tunable)
+						*tunable = INT_MAX;
 				}
 			}
 		}
@@ -48,7 +47,8 @@ namespace big
         {
 			for (int i = 0; m_ready_to_use && i < m_restore.size(); ++i)
 			{
-				*m_tunables[i] = m_restore[i];
+				if (m_tunables[i])
+					*m_tunables[i] = m_restore[i];
 			}
         }
 	};
