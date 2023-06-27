@@ -421,8 +421,10 @@ namespace big
 				int cmd_excecutor           = 0x55;
 				int repairpv                = 0;
 				int open_vehicle_controller = 0;
+				int clear_wanted            = 0;
+				int random_ped_components   = 0;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller, clear_wanted, random_ped_components)
 			} hotkeys{};
 
 			bool dev_dlc = false;
@@ -727,10 +729,10 @@ namespace big
 
 		struct window
 		{
-			ImU32 background_color = 3189656871;
+			ImU32 background_color = 3696311571;
 			ImU32 text_color       = 4294967295;
-			ImU32 button_color     = 4216956014;
-			ImU32 frame_color      = 2939772740;
+			ImU32 button_color     = 2947901213;
+			ImU32 frame_color      = 2942518340;
 			float gui_scale        = 1.f;
 
 			ImFont* font_title     = nullptr;
@@ -738,7 +740,7 @@ namespace big
 			ImFont* font_small     = nullptr;
 			ImFont* font_icon      = nullptr;
 
-			bool demo = false;
+			bool demo          = false;
 			bool switched_view = true;
 
 			struct ingame_overlay

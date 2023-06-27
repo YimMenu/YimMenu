@@ -63,9 +63,7 @@ namespace big
 		ImGui::SameLine();
 		components::command_checkbox<"keepengine">();
 
-		ImGui::Separator();
-
-		components::sub_title("GENERAL"_T);
+		ImGui::SeparatorText("GENERAL"_T.data());
 		{
 			ImGui::BeginGroup();
 
@@ -124,10 +122,7 @@ namespace big
 
 			ImGui::EndGroup();
 		}
-		ImGui::Separator();
-
-
-		components::sub_title("PROOFS"_T);
+		ImGui::SeparatorText("PROOFS"_T.data());
 		{
 			if (ImGui::Button("CHECK_ALL"_T.data()))
 			{
@@ -180,10 +175,7 @@ namespace big
 
 			ImGui::EndGroup();
 		}
-		ImGui::Separator();
-
-
-		components::sub_title("SPEED_UNIT"_T);
+		ImGui::SeparatorText("SPEED_UNIT"_T.data());
 		{
 			ImGui::RadioButton(speed_unit_strings[(int)SpeedUnit::KMPH].c_str(), (int*)&g.vehicle.speed_unit, (int)SpeedUnit::KMPH);
 			ImGui::SameLine();

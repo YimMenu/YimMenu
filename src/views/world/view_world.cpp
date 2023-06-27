@@ -1,34 +1,26 @@
-#include "views/view.hpp"
 #include "util/entity.hpp"
-#include "util/ped.hpp"
 #include "util/notify.hpp"
+#include "util/ped.hpp"
 #include "util/vehicle.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
-    void view::world()
-    {
-        components::sub_title("GUI_TAB_TIME_N_WEATHER"_T);
-        {
-            view::time_and_weather();
-        }
+	void view::world()
+	{
+		ImGui::SeparatorText("GUI_TAB_TIME_N_WEATHER"_T.data());
+		{
+			view::time_and_weather();
+		}
 
-        ImGui::Separator();
-        
-        components::sub_title("GUI_TAB_WATER"_T);
-        {
-		    components::command_checkbox<"partwater">();
-        }
-
-        ImGui::Separator();
-        components::sub_title("Peds");
+		ImGui::SeparatorText("Peds");
 		// Nearby Ped Actions
 
 		components::button<ImVec2(110, 0), ImVec4(0.70196f, 0.3333f, 0.00392f, 1.f)>("Kill", [] {
 			for (auto peds : entity::get_entities(false, true))
 			{
-                if(!PED::IS_PED_A_PLAYER(peds))
-				    ped::kill_ped(peds);
+				if (!PED::IS_PED_A_PLAYER(peds))
+					ped::kill_ped(peds);
 			}
 		});
 		ImGui::SameLine();
@@ -55,7 +47,7 @@ namespace big
 			ImGui::Checkbox("Neutralize", &g.world.nearby.auto_disarm.neutralize);
 		});
 
-		ImGui::Separator();
+		ImGui::SeparatorText("Vehicles");
 		components::sub_title("Vehicles");
 
 		components::button<ImVec2(110, 0), ImVec4(0.02745f, 0.4745f, 0.10196f, 1.f)>("Max Upgrade", [] {
@@ -83,8 +75,7 @@ namespace big
 
 		components::command_checkbox<"vehiclerain">();
 
-		ImGui::Separator();
-		components::sub_title("Entities");
+		ImGui::SeparatorText("Entities");
 
 		static bool included_entity_types[3];
 		static bool own_vehicle, deleting;
@@ -125,9 +116,9 @@ namespace big
 						if (ENTITY::IS_ENTITY_A_VEHICLE(ent))
 							if (ent == self::veh && own_vehicle)
 								TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
-						
+
 						if (entity::take_control_of(ent, 25))
-								entity::delete_entity(ent);
+							entity::delete_entity(ent);
 					}
 
 					script::get_current()->yield(5ms);
@@ -144,5 +135,5 @@ namespace big
 				deleting = false;
 			});
 		}
-    }
+	}
 }

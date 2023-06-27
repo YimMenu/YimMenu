@@ -10,7 +10,7 @@ namespace big
 {
 	void view::teleport()
 	{
-		components::sub_title("BLIPS"_T.data());
+		ImGui::SeparatorText("BLIPS"_T.data());
 		ImGui::Spacing();
 
 		components::command_button<"waypointtp">({}, "Waypoint");
@@ -18,9 +18,8 @@ namespace big
 		components::command_button<"objectivetp">({}, "Objective");
 		components::command_checkbox<"autotptowp">();
 
-		ImGui::Separator();
+		ImGui::SeparatorText("Movement");
 
-		components::sub_title("Movement");
 		ImGui::Spacing();
 
 		components::small_text("Current coordinates");
@@ -81,9 +80,7 @@ namespace big
 		});
 		ImGui::EndGroup();
 
-		ImGui::Separator();
-
-		components::sub_title("VEHICLES"_T.data());
+		ImGui::SeparatorText("VEHICLES"_T.data());
 		ImGui::Spacing();
 
 		components::command_button<"lastvehtp">();
@@ -92,9 +89,7 @@ namespace big
 		ImGui::SameLine();
 		components::command_button<"pvtp">();
 
-		ImGui::Separator();
-
-		components::sub_title("GUI_TAB_IPL"_T.data());
+		ImGui::SeparatorText("GUI_TAB_IPL"_T.data());
 
 		if (ImGui::BeginCombo("IPL_LOCATION"_T.data(), ipls[g.self.ipls.select].friendly_name))
 		{

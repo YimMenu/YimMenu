@@ -224,7 +224,8 @@ namespace big
 			}
 		}
 
-		components::sub_title("PED_MODEL"_T);
+		
+		ImGui::SeparatorText("PED_MODEL"_T.data());
 		{
 			ImGui::BeginGroup();
 			{
@@ -428,8 +429,8 @@ namespace big
 		}
 		ImGui::Separator();
 
-
-		components::sub_title("WEAPON"_T);
+		
+		ImGui::SeparatorText("WEAPON"_T.data());
 		{
 			ImGui::BeginGroup();
 			{
@@ -528,8 +529,8 @@ namespace big
 		}
 		ImGui::Separator();
 
-
-		components::sub_title("SPAWN_FOR"_T);
+		
+		ImGui::SeparatorText("SPAWN_FOR"_T.data());
 		{
 			if (ImGui::BeginCombo("##ped_for",
 			        (selected_ped_for_player_id == SPAWN_PED_FOR_SELF ?
