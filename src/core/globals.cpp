@@ -126,8 +126,7 @@ namespace big
 	bool menu_settings::write_default_config()
 	{
 		std::ofstream file(m_save_file->get_path(), std::ios::out | std::ios::trunc);
-		nlohmann::json j = *this;
-		file << j.dump(4);
+		file << m_default_options.dump(4);
 		file.close();
 
 		return true;
