@@ -47,7 +47,7 @@ namespace big
 			components::player_command_button<"fakeban">(g_player_service->get_selected(), {});
 
 			static int wanted_level;
-			components::small_text("WANTED_LVL");
+			components::small_text("WANTED_LVL"_T);
 			ImGui::SliderInt("##wantedlevelslider", &wanted_level, 0, 5);
 			ImGui::SameLine();
 			components::player_command_button<"wanted">(g_player_service->get_selected(), {(uint64_t)wanted_level}, "Set");
