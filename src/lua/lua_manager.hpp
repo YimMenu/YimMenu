@@ -15,7 +15,7 @@ namespace big
 		void unload_module(rage::joaat_t module_id);
 		void load_module(const std::string& module_name);
 		std::weak_ptr<lua_module> get_module(rage::joaat_t module_id);
-		const std::vector<std::shared_ptr<lua_module>>& get_modules();
+		const std::vector<std::shared_ptr<lua_module>>& get_modules() const;
 		void reload_all_modules();
 		void handle_error(const sol::error& error, const sol::state_view& state);
 

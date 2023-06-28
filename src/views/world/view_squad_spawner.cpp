@@ -16,7 +16,8 @@ namespace big
 		static squad new_template{};
 		static player_ptr victim = g_player_service->get_selected();
 
-		ImGui::Text("Victim");
+		
+		ImGui::SeparatorText("Victim");
 		ImGui::SetNextItemWidth(200);
 		if (ImGui::BeginCombo("##victim", victim->get_name()))
 		{
@@ -103,11 +104,9 @@ namespace big
 			ImGui::EndCombo();
 		}
 
-		ImGui::Separator();
+		ImGui::SeparatorText("Squad Details");
 
 		ImGui::BeginGroup(); //Main variables
-
-		ImGui::Text("Squad Details");
 		ImGui::Spacing();
 
 		ImGui::PushItemWidth(250);

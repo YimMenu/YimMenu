@@ -49,11 +49,11 @@ namespace big
 
 		void attempt_save();
 		bool load();
+		bool write_default_config();
 
 	private:
 		bool deep_compare(nlohmann::json& current_settings, const nlohmann::json& default_settings, bool compare_value = false);
 		bool save();
-		bool write_default_config();
 
 	private:
 		bool m_running;
@@ -421,8 +421,10 @@ namespace big
 				int cmd_excecutor           = 0x55;
 				int repairpv                = 0;
 				int open_vehicle_controller = 0;
+				int clear_wanted            = 0;
+				int random_ped_components   = 0;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller, clear_wanted, random_ped_components)
 			} hotkeys{};
 
 			bool dev_dlc = false;
@@ -738,7 +740,7 @@ namespace big
 			ImFont* font_small     = nullptr;
 			ImFont* font_icon      = nullptr;
 
-			bool demo = false;
+			bool demo          = false;
 			bool switched_view = true;
 
 			struct ingame_overlay

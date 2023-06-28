@@ -156,6 +156,8 @@ namespace big
 		auto button_color = ImGui::ColorConvertU32ToFloat4(g.window.button_color);
 		auto button_active_color =
 		    ImVec4(button_color.x + 0.33f, button_color.y + 0.33f, button_color.z + 0.33f, button_color.w);
+		auto button_hovered_color =
+		    ImVec4(button_color.x + 0.15f, button_color.y + 0.15f, button_color.z + 0.15f, button_color.w);
 		auto frame_color = ImGui::ColorConvertU32ToFloat4(g.window.frame_color);
 		auto frame_hovered_color =
 		    ImVec4(frame_color.x + 0.14f, frame_color.y + 0.14f, frame_color.z + 0.14f, button_color.w);
@@ -165,7 +167,7 @@ namespace big
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImGui::ColorConvertU32ToFloat4(g.window.background_color));
 		ImGui::PushStyleColor(ImGuiCol_Text, ImGui::ColorConvertU32ToFloat4(g.window.text_color));
 		ImGui::PushStyleColor(ImGuiCol_Button, button_color);
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, button_color);
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, button_hovered_color);
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, button_active_color);
 		ImGui::PushStyleColor(ImGuiCol_FrameBg, frame_color);
 		ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, frame_hovered_color);

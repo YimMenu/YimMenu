@@ -22,13 +22,13 @@ namespace big
 	{
 		std::lock_guard guard(m_module_lock);
 
-		for (auto& module : m_modules)
+		for (const auto& module : m_modules)
 		{
-			if (auto it = module->m_gui.find(tab_hash); it != module->m_gui.end())
+			if (const auto it = module->m_gui.find(tab_hash); it != module->m_gui.end())
 			{
 				ImGui::SameLine();
 
-				for (auto& element : it->second)
+				for (const auto& element : it->second)
 					element->draw();
 			}
 		}
@@ -47,9 +47,9 @@ namespace big
 	{
 		std::lock_guard guard(m_module_lock);
 
-		auto id = rage::joaat(module_name);
+		const auto id = rage::joaat(module_name);
 
-		for (auto& module : m_modules)
+		for (const auto& module : m_modules)
 			if (module->module_id() == id)
 				return;
 
@@ -58,14 +58,14 @@ namespace big
 
 	std::weak_ptr<lua_module> lua_manager::get_module(rage::joaat_t module_id)
 	{
-		for (auto& module : m_modules)
+		for (const auto& module : m_modules)
 			if (module->module_id() == module_id)
 				return module;
 
 		return {};
 	}
 
-	const std::vector<std::shared_ptr<lua_module>>& lua_manager::get_modules()
+	const std::vector<std::shared_ptr<lua_module>>& lua_manager::get_modules() const
 	{
 		return m_modules;
 	}
