@@ -2,7 +2,7 @@
 
 Table containing functions for printing to console / log file.
 
-Functions (3)
+## Functions (3)
 
 ### `info(data)`
 

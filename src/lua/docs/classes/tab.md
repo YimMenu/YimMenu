@@ -49,6 +49,8 @@ checkbox = tab:add_checkbox(name)
 
 ### `add_sameline()`
 
+Add a ImGui::SameLine.
+
 - **Returns:**
   - `sameline`: the sameline object instance.
 
@@ -59,6 +61,8 @@ sameline = tab:add_sameline()
 
 ### `add_separator()`
 
+Add a ImGui::Separator.
+
 - **Returns:**
   - `separator`: the separator object instance.
 
@@ -68,6 +72,8 @@ separator = tab:add_separator()
 ```
 
 ### `add_input_int(name)`
+
+Add a ImGui::InputInt.
 
 - **Parameters:**
   - `name` (string): Text that will be written next to the input field.
@@ -82,6 +88,8 @@ input_int = tab:add_input_int(name)
 
 ### `add_input_float(name)`
 
+Add a ImGui::InputFloat.
+
 - **Parameters:**
   - `name` (string): Text that will be written next to the input field.
 
@@ -94,6 +102,8 @@ input_float = tab:add_input_float(name)
 ```
 
 ### `add_input_string(name)`
+
+Add a ImGui::InputText.
 
 - **Parameters:**
   - `name` (string): Text that will be written next to the input field.

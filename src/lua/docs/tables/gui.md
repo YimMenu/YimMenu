@@ -2,7 +2,7 @@
 
 Table containing functions for modifying the menu GUI.
 
-Functions (5)
+## Functions (5)
 
 ### `get_tab(tab_name)`
 

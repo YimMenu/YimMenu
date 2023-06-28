@@ -2,7 +2,7 @@
 
 Table containing functions for manipulating gta script globals.
 
-Functions (7)
+## Functions (7)
 
 ### `get_int(global)`
 

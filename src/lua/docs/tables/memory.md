@@ -2,7 +2,7 @@
 
 Table containing helper functions related to process memory.
 
-Functions (5)
+## Functions (5)
 
 ### `scan_pattern(pattern)`
 

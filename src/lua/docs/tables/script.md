@@ -2,7 +2,7 @@
 
 Table containing helper functions related to gta scripts.
 
-Functions (4)
+## Functions (4)
 
 ### `register_looped(name, func)`
 
