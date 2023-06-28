@@ -101,7 +101,7 @@ namespace big
 		components::sub_title("Misc");
 		if (ImGui::BeginListBox("##miscsession", get_listbox_dimensions()))
 		{
-			ImGui::Checkbox("Join Sctv", &g.session.join_in_sctv_slots); //CHANGE TRANSLATION JOIN_IN_SCTV
+			ImGui::Checkbox("JOIN_IN_SCTV"_T.data(), &g.session.join_in_sctv_slots);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("JOIN_IN_SCTV_DESC"_T.data());
 

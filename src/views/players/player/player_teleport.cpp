@@ -116,16 +116,13 @@ namespace big
 			    "Interior");
 
 			static float new_location[3];
-			static float current_location[3] = {
-			    g_player_service->get_selected()->get_ped()->m_navigation->get_position()->x,
-			    g_player_service->get_selected()->get_ped()->m_navigation->get_position()->y,
-			    g_player_service->get_selected()->get_ped()->m_navigation->get_position()->z};
+			auto& current_location = *reinterpret_cast<float(*)[3]>(g_player_service->get_selected()->get_ped()->m_navigation->get_position());
 
 			components::small_text("Custom TP");
 			ImGui::SetNextItemWidth(400);
 			ImGui::InputFloat3("##customlocation", new_location);
 			components::button("TP", [] {
-				teleport::teleport_player_to_coords(g_player_service->get_selected(), {new_location[0], new_location[1], new_location[2]});
+				teleport::teleport_player_to_coords(g_player_service->get_selected(), *reinterpret_cast<rage::fvector3*>(&new_location));
 			});
 			ImGui::SameLine();
 			if (ImGui::Button("Get current"))
