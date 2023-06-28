@@ -44,7 +44,7 @@ class Table:
                 s += field.print_markdown()
 
         if len(self.functions) > 0:
-            s += f"Functions ({len(self.functions)})\n"
+            s += f"## Functions ({len(self.functions)})\n"
             s += "\n"
 
             self.check_for_duplicate_function_names()
