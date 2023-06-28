@@ -393,24 +393,18 @@ def parse_lua_api_doc(folder_path):
 
 
 def parse_table_doc(cur_table, line, line_lower):
-    if (
-        line_lower.replace("//", "").strip().startswith("name")
-        and lua_api_comment_separator in line_lower
-    ):
+    if is_lua_doc_comment_startswith(line_lower, "name"):
         table_name = line.split(lua_api_comment_separator, 1)[1].strip()
         cur_table = make_table(table_name)
     else:
         if len(cur_table.description) != 0:
             cur_table.description += "\n"
-        cur_table.description += line.replace("//", "").strip()
+        cur_table.description += line.replace("// ", "").replace("//", "").rstrip()
 
     return cur_table
 
 def parse_class_doc(cur_class, line, line_lower):
-    if (
-        line_lower.replace("//", "").strip().startswith("name")
-        and lua_api_comment_separator in line_lower
-    ):
+    if is_lua_doc_comment_startswith(line_lower, "name"):
         class_name = line.split(lua_api_comment_separator, 1)[1].strip()
         cur_class = make_class(class_name)
     elif is_lua_doc_comment_startswith(line_lower, "inherit"):
@@ -419,90 +413,87 @@ def parse_class_doc(cur_class, line, line_lower):
     else:
         if len(cur_class.description) != 0:
             cur_class.description += "\n"
-        cur_class.description += line.replace("//", "").strip()
+        cur_class.description += line.replace("// ", "").replace("//", "").rstrip()
 
     return cur_class
 
 
 def parse_function_doc(cur_function, cur_table, cur_class, line, line_lower):
-    if lua_api_comment_separator in line_lower:
-        if is_lua_doc_comment_startswith(line_lower, "table"):
-            table_name = line.split(lua_api_comment_separator, 1)[1].strip()
-            cur_table = make_table(table_name)
+    if is_lua_doc_comment_startswith(line_lower, "table") and lua_api_comment_separator in line_lower:
+        table_name = line.split(lua_api_comment_separator, 1)[1].strip()
+        cur_table = make_table(table_name)
 
-            cur_function = Function("Didnt get name yet", cur_table, [], None, "", "")
-            cur_table.functions.append(cur_function)
-        elif is_lua_doc_comment_startswith(line_lower, "class"):
-            class_name = line.split(lua_api_comment_separator, 1)[1].strip()
-            cur_class = make_class(class_name)
+        cur_function = Function("Didnt get name yet", cur_table, [], None, "", "")
+        cur_table.functions.append(cur_function)
+    elif is_lua_doc_comment_startswith(line_lower, "class") and lua_api_comment_separator in line_lower:
+        class_name = line.split(lua_api_comment_separator, 1)[1].strip()
+        cur_class = make_class(class_name)
 
-            cur_function = Function("Didnt get name yet", cur_class, [], None, "", "")
-            cur_class.functions.append(cur_function)
-        elif is_lua_doc_comment_startswith(line_lower, "name"):
-            function_name = line.split(lua_api_comment_separator, 1)[1].strip()
-            cur_function.name = function_name
+        cur_function = Function("Didnt get name yet", cur_class, [], None, "", "")
+        cur_class.functions.append(cur_function)
+    elif is_lua_doc_comment_startswith(line_lower, "name") and lua_api_comment_separator in line_lower:
+        function_name = line.split(lua_api_comment_separator, 1)[1].strip()
+        cur_function.name = function_name
 
-            if function_name not in functions:
-                functions[function_name] = cur_function
-        elif is_lua_doc_comment_startswith(line_lower, "param"):
-            parameter = make_parameter_from_doc_line(line)
-            cur_function.parameters.append(parameter)
-        elif is_lua_doc_comment_startswith(line_lower, "return"):
-            return_info = line_lower.split(lua_api_comment_separator, 2)
-            try:
-                cur_function.return_type = return_info[1].strip()
-                cur_function.return_description = return_info[2].strip()
-            except IndexError:
-                pass
+        if function_name not in functions:
+            functions[function_name] = cur_function
+    elif is_lua_doc_comment_startswith(line_lower, "param") and lua_api_comment_separator in line_lower:
+        parameter = make_parameter_from_doc_line(line)
+        cur_function.parameters.append(parameter)
+    elif is_lua_doc_comment_startswith(line_lower, "return") and lua_api_comment_separator in line_lower:
+        return_info = line_lower.split(lua_api_comment_separator, 2)
+        try:
+            cur_function.return_type = return_info[1].strip()
+            cur_function.return_description = return_info[2].strip()
+        except IndexError:
+            pass
     else:
         if len(cur_function.description) != 0:
             cur_function.description += "\n"
-        cur_function.description += line.replace("//", "").strip()
+        cur_function.description += line.replace("// ", "").replace("//", "").rstrip()
 
     return cur_function, cur_table, cur_class
 
 
 def parse_field_doc(cur_field, cur_table, cur_class, line, line_lower):
-    if lua_api_comment_separator in line_lower:
-        if is_lua_doc_comment_startswith(line_lower, "table"):
-            table_name = line.split(lua_api_comment_separator, 1)[1].strip()
-            cur_table = make_table(table_name)
+    if is_lua_doc_comment_startswith(line_lower, "table") and lua_api_comment_separator in line_lower:
+        table_name = line.split(lua_api_comment_separator, 1)[1].strip()
+        cur_table = make_table(table_name)
 
-            cur_field = Field("Didnt get name yet", "", "")
-            cur_table.fields.append(cur_field)
-        if is_lua_doc_comment_startswith(line_lower, "class"):
-            class_name = line.split(lua_api_comment_separator, 1)[1].strip()
-            cur_class = make_class(class_name)
+        cur_field = Field("Didnt get name yet", "", "")
+        cur_table.fields.append(cur_field)
+    elif is_lua_doc_comment_startswith(line_lower, "class") and lua_api_comment_separator in line_lower:
+        class_name = line.split(lua_api_comment_separator, 1)[1].strip()
+        cur_class = make_class(class_name)
 
-            cur_field = Field("Didnt get name yet", "", "")
-            cur_class.fields.append(cur_field)
-        elif is_lua_doc_comment_startswith(line_lower, "field"):
-            field_info = line.split(lua_api_comment_separator, 2)
-            cur_field.name = field_info[1].strip()
-            cur_field.type_ = field_info[2].strip()
+        cur_field = Field("Didnt get name yet", "", "")
+        cur_class.fields.append(cur_field)
+    elif is_lua_doc_comment_startswith(line_lower, "field") and lua_api_comment_separator in line_lower:
+        field_info = line.split(lua_api_comment_separator, 2)
+        cur_field.name = field_info[1].strip()
+        cur_field.type_ = field_info[2].strip()
     else:
         if len(cur_field.description) != 0:
             cur_field.description += "\n"
-        cur_field.description += line.replace("//", "").strip()
+        cur_field.description += line.replace("// ", "").replace("//", "").rstrip()
 
     return cur_field, cur_table, cur_class
 
 
 def parse_constructor_doc(cur_constructor, cur_class, line, line_lower):
-    if lua_api_comment_separator in line_lower:
-        if is_lua_doc_comment_startswith(line_lower, "class"):
-            class_name = line.split(lua_api_comment_separator, 1)[1].strip()
-            cur_class = make_class(class_name)
+    if is_lua_doc_comment_startswith(line_lower, "class") and lua_api_comment_separator in line_lower:
+        class_name = line.split(lua_api_comment_separator, 1)[1].strip()
+        cur_class = make_class(class_name)
 
-            cur_constructor = Constructor(cur_class, [], "")
-            cur_class.constructors.append(cur_constructor)
-        elif is_lua_doc_comment_startswith(line_lower, "param"):
-            parameter = make_parameter_from_doc_line(line)
-            cur_constructor.parameters.append(parameter)
+        cur_constructor = Constructor(cur_class, [], "")
+        cur_class.constructors.append(cur_constructor)
+    elif is_lua_doc_comment_startswith(line_lower, "param") and lua_api_comment_separator in line_lower:
+        parameter = make_parameter_from_doc_line(line)
+        cur_constructor.parameters.append(parameter)
     else:
         if len(cur_constructor.description) != 0:
             cur_constructor.description += "\n"
-        cur_constructor.description += line.replace("//", "").strip()
+        cur_constructor.description += line.replace("// ", "").replace("//", "").rstrip()
 
     return cur_constructor, cur_class
 
