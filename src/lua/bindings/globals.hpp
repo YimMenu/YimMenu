@@ -7,7 +7,6 @@ namespace lua::globals
 	// Lua API: Table
 	// Name: globals
 	// Table containing functions for manipulating gta script globals.
-	// XD lol.
 
 	// Lua API: Function
 	// Table: globals
