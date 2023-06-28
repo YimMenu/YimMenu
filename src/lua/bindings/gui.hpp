@@ -22,6 +22,9 @@ namespace lua::gui
 		module->m_gui[hash].push_back(std::move(element));
 	}
 
+	// Lua API: Class
+	// Name: tab
+	// Class for representing a tab within the GUI.
 	class tab
 	{
 		rage::joaat_t m_tab_hash;
@@ -32,6 +35,12 @@ namespace lua::gui
 		{
 		}
 
+		// Lua API: Function
+		// Class: tab
+		// Name: add_button
+		// Param: name: string: Text written inside the button.
+		// Param: callback: function: function that will be called when the button is clicked.
+		// Add a button to the gui tab.
 		std::shared_ptr<lua::gui::button> add_button(const std::string& name, sol::function callback, sol::this_state state)
 		{
 			auto element = std::make_shared<lua::gui::button>(name, callback);
@@ -39,6 +48,12 @@ namespace lua::gui
 			return element;
 		}
 
+		// Lua API: Function
+		// Class: tab
+		// Name: add_text
+		// Param: name: string: Text that will be written.
+		// Returns: text: The text object instance.
+		// Add text to the gui tab.
 		std::shared_ptr<lua::gui::text> add_text(const std::string& name, sol::this_state state)
 		{
 			auto element = std::make_shared<lua::gui::text>(name);
@@ -46,6 +61,12 @@ namespace lua::gui
 			return element;
 		}
 
+		// Lua API: Function
+		// Class: tab
+		// Name: add_checkbox
+		// Param: name: string: Text that will be written next to the checkbox.
+		// Returns: checkbox: The checkbox object instance.
+		// Add a checkbox widget to the gui tab.
 		std::shared_ptr<lua::gui::checkbox> add_checkbox(const std::string& name, sol::this_state state)
 		{
 			auto element = std::make_shared<lua::gui::checkbox>(name);
@@ -53,6 +74,11 @@ namespace lua::gui
 			return element;
 		}
 
+		// Lua API: Function
+		// Class: tab
+		// Name: add_sameline
+		// Returns: sameline: The sameline object instance.
+		// Add a ImGui::SameLine.
 		std::shared_ptr<lua::gui::sameline> add_sameline(sol::this_state state)
 		{
 			auto element = std::make_shared<lua::gui::sameline>();
@@ -60,6 +86,11 @@ namespace lua::gui
 			return element;
 		}
 
+		// Lua API: Function
+		// Class: tab
+		// Name: add_separator
+		// Returns: separator: The separator object instance.
+		// Add a ImGui::Separator.
 		std::shared_ptr<lua::gui::separator> add_separator(sol::this_state state)
 		{
 			auto element = std::make_shared<lua::gui::separator>();
@@ -67,6 +98,12 @@ namespace lua::gui
 			return element;
 		}
 
+		// Lua API: Function
+		// Class: tab
+		// Name: add_input_int
+		// Param: name: string: Text that will be written next to the input field.
+		// Returns: input_int: The input_int object instance.
+		// Add a ImGui::InputInt.
 		std::shared_ptr<lua::gui::input_int> add_input_int(const std::string& name, sol::this_state state)
 		{
 			auto element = std::make_shared<lua::gui::input_int>(name);
@@ -74,6 +111,12 @@ namespace lua::gui
 			return element;
 		}
 
+		// Lua API: Function
+		// Class: tab
+		// Name: add_input_float
+		// Param: name: string: Text that will be written next to the input field.
+		// Returns: input_float: The input_float object instance.
+		// Add a ImGui::InputFloat.
 		std::shared_ptr<lua::gui::input_float> add_input_float(const std::string& name, sol::this_state state)
 		{
 			auto element = std::make_shared<lua::gui::input_float>(name);
@@ -81,6 +124,12 @@ namespace lua::gui
 			return element;
 		}
 
+		// Lua API: Function
+		// Class: tab
+		// Name: add_input_string
+		// Param: name: string: Text that will be written next to the input field.
+		// Returns: input_string: The input_string object instance.
+		// Add a ImGui::InputText.
 		std::shared_ptr<lua::gui::input_string> add_input_string(const std::string& name, sol::this_state state)
 		{
 			auto element = std::make_shared<lua::gui::input_string>(name);
