@@ -20,8 +20,9 @@ class DocKind(Enum):
 
 
 class Table:
-    def __init__(self, name, functions, description):
+    def __init__(self, name, fields, functions, description):
         self.name = name.strip()
+        self.fields = fields
         self.functions = functions
         self.description = description
 
@@ -32,6 +33,15 @@ class Table:
         if len(self.description) > 0:
             s += f"{self.description}\n"
             s += "\n"
+
+        if len(self.fields) > 0:
+            s += f"## Fields ({len(self.fields)})\n"
+            s += "\n"
+
+            self.check_for_duplicate_fields_names()
+
+            for field in self.fields:
+                s += field.print_markdown()
 
         if len(self.functions) > 0:
             s += f"Functions ({len(self.functions)})\n"
@@ -45,6 +55,15 @@ class Table:
             s += "\n"
 
         return s
+
+    def check_for_duplicate_fields_names(self):
+        seen = set()
+        duplicates = [x for x in self.fields if x.name in seen or seen.add(x.name)]
+        if len(duplicates) > 0:
+            print("Error while building lua doc. Duplicate field names:")
+            for dup in duplicates:
+                print(dup)
+            exit(1)
 
     def check_for_duplicate_function_names(self):
         seen = set()
@@ -281,7 +300,7 @@ class Function:
 
 def make_table(table_name):
     if table_name not in tables:
-        tables[table_name] = Table(table_name, [], "")
+        tables[table_name] = Table(table_name, [], [], "")
     cur_table = tables[table_name]
     return cur_table
 
@@ -349,8 +368,9 @@ def parse_lua_api_doc(folder_path):
                                         line_lower,
                                     )
                                 case DocKind.Field:
-                                    (cur_field, cur_class) = parse_field_doc(
+                                    (cur_field, cur_table, cur_class) = parse_field_doc(
                                         cur_field,
+                                        cur_table,
                                         cur_class,
                                         line,
                                         line_lower,
@@ -442,8 +462,14 @@ def parse_function_doc(cur_function, cur_table, cur_class, line, line_lower):
     return cur_function, cur_table, cur_class
 
 
-def parse_field_doc(cur_field, cur_class, line, line_lower):
+def parse_field_doc(cur_field, cur_table, cur_class, line, line_lower):
     if lua_api_comment_separator in line_lower:
+        if is_lua_doc_comment_startswith(line_lower, "table"):
+            table_name = line.split(lua_api_comment_separator, 1)[1].strip()
+            cur_table = make_table(table_name)
+
+            cur_field = Field("Didnt get name yet", "", "")
+            cur_table.fields.append(cur_field)
         if is_lua_doc_comment_startswith(line_lower, "class"):
             class_name = line.split(lua_api_comment_separator, 1)[1].strip()
             cur_class = make_class(class_name)
@@ -459,7 +485,7 @@ def parse_field_doc(cur_field, cur_class, line, line_lower):
             cur_field.description += "\n"
         cur_field.description += line.replace("//", "").strip()
 
-    return cur_field, cur_class
+    return cur_field, cur_table, cur_class
 
 
 def parse_constructor_doc(cur_constructor, cur_class, line, line_lower):
