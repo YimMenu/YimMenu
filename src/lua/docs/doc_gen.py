@@ -290,6 +290,8 @@ class Function:
         if self.return_type is not None and len(self.return_type) > 0:
             s += self.return_type + " = "
 
+        if "Global Table" in prefix:
+            prefix = ""
         s += f"{prefix}{self.name}({parameters_str})\n"
 
         s += "```\n"
@@ -399,7 +401,7 @@ def parse_table_doc(cur_table, line, line_lower):
     else:
         if len(cur_table.description) != 0:
             cur_table.description += "\n"
-        cur_table.description += line.replace("// ", "").replace("//", "").rstrip()
+        cur_table.description += sanitize_description(line)
 
     return cur_table
 
@@ -413,7 +415,7 @@ def parse_class_doc(cur_class, line, line_lower):
     else:
         if len(cur_class.description) != 0:
             cur_class.description += "\n"
-        cur_class.description += line.replace("// ", "").replace("//", "").rstrip()
+        cur_class.description += sanitize_description(line)
 
     return cur_class
 
@@ -450,7 +452,7 @@ def parse_function_doc(cur_function, cur_table, cur_class, line, line_lower):
     else:
         if len(cur_function.description) != 0:
             cur_function.description += "\n"
-        cur_function.description += line.replace("// ", "").replace("//", "").rstrip()
+        cur_function.description += sanitize_description(line)
 
     return cur_function, cur_table, cur_class
 
@@ -475,7 +477,10 @@ def parse_field_doc(cur_field, cur_table, cur_class, line, line_lower):
     else:
         if len(cur_field.description) != 0:
             cur_field.description += "\n"
-        cur_field.description += line.replace("// ", "").replace("//", "").rstrip()
+
+        if line.startswith("// "):
+            line = line[3:]
+        cur_field.description += sanitize_description(line)
 
     return cur_field, cur_table, cur_class
 
@@ -493,7 +498,7 @@ def parse_constructor_doc(cur_constructor, cur_class, line, line_lower):
     else:
         if len(cur_constructor.description) != 0:
             cur_constructor.description += "\n"
-        cur_constructor.description += line.replace("// ", "").replace("//", "").rstrip()
+        cur_constructor.description += sanitize_description(line)
 
     return cur_constructor, cur_class
 
@@ -511,6 +516,12 @@ def make_parameter_from_doc_line(line):
 
     return Parameter(param_name, param_type, param_desc)
 
+def sanitize_description(line):
+    if line.startswith("// ") and line[3] != ' ':
+        line = line[3:]
+    if line.startswith("//"):
+        line = line[2:]
+    return line.rstrip()
 
 def is_lua_doc_comment_startswith(line_lower, starts_with_text):
     return line_lower.replace("//", "").strip().startswith(starts_with_text)
