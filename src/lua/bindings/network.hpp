@@ -34,10 +34,10 @@ namespace lua::network
 
 	// Lua API: Function
 	// Table: network
-	// Name: trigger_script_event
-	// Param: bitset: integer
-	// Param: _args: table
-	// Call trigger_script_event (TSE)
+	// Name: give_pickup_rewards
+	// Param: player: integer: Index of the player.
+	// Param: reward: integer: Index of the reward pickup.
+	// Give the given pickup reward to the given player.
 	void give_pickup_rewards(int player, int reward);
 
 	// Lua API: Function
