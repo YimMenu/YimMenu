@@ -89,26 +89,57 @@ namespace lua::gui
 		}
 	};
 
+	// Lua API: Table
+	// Name: gui
+	// Table containing functions for modifying the menu GUI.
+
+	// Lua API: Function
+	// Table: gui
+	// Name: get_tab
+	// Param: tab_name: string: Name of the tab to get.
+	// Returns: tab: A tab instance which corresponds to the tab in the GUI.
 	static tab get_tab(const std::string& tab_name)
 	{
 		return tab(rage::joaat(tab_name));
 	}
 
+	// Lua API: Function
+	// Table: gui
+	// Name: show_message
+	// Param: title: string
+	// Param: message: string
+	// Shows a message to the user with the given title and message.
 	static void show_message(const std::string& title, const std::string& message)
 	{
 		big::g_notification_service->push(title, message);
 	}
 
+	// Lua API: Function
+	// Table: gui
+	// Name: show_warning
+	// Param: title: string
+	// Param: message: string
+	// Shows a warning to the user with the given title and message.
 	static void show_warning(const std::string& title, const std::string& message)
 	{
 		big::g_notification_service->push_warning(title, message);
 	}
 
+	// Lua API: Function
+	// Table: gui
+	// Name: show_error
+	// Param: title: string
+	// Param: message: string
+	// Shows an error to the user with the given title and message.
 	static void show_error(const std::string& title, const std::string& message)
 	{
 		big::g_notification_service->push_error(title, message);
 	}
 
+	// Lua API: Function
+	// Table: gui
+	// Name: is_open
+	// Returns: bool: Returns true if the GUI is open.
 	bool is_open();
 
 	static void bind(sol::state& state)
