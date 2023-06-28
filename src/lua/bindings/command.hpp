@@ -5,6 +5,16 @@
 
 namespace lua::command
 {
+	// Lua API: Class
+	// Name: command
+	// Class for calling menu commands.
+
+	// Lua API: Function
+	// Table: command
+	// Name: call
+	// Param: command_name: string: The name of the command that will be called.
+	// Param: _args: table: Optional. List of arguments for the command.
+	// Call a menu command.
 	static void call(const std::string& command_name, std::optional<sol::table> _args)
 	{
 		auto args = convert_sequence<uint64_t>(_args.value_or(sol::table()));
@@ -15,6 +25,13 @@ namespace lua::command
 			command->call(args, {});
 	}
 
+	// Lua API: Function
+	// Table: command
+	// Name: call_player
+	// Param: player_idx: integer: Index of the player on which the menu command will be executed.
+	// Param: command_name: string: The name of the command that will be called.
+	// Param: _args: table: Optional. List of arguments for the command.
+	// Call a menu command on a given player.
 	static void call_player(int player_idx, const std::string& command_name, std::optional<sol::table> _args)
 	{
 		auto args = convert_sequence<uint64_t>(_args.value_or(sol::table()));
