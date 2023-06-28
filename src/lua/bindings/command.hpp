@@ -5,9 +5,9 @@
 
 namespace lua::command
 {
-	// Lua API: Class
+	// Lua API: Table
 	// Name: command
-	// Class for calling menu commands.
+	// Table for calling menu commands.
 
 	// Lua API: Function
 	// Table: command
