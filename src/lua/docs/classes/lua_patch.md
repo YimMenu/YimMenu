@@ -1,5 +1,7 @@
 # Class: lua_patch
 
+Class representing a in-memory patch.
+
 ## Functions (2)
 
 ### `apply()`

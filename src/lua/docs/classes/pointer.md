@@ -1,5 +1,7 @@
 # Class: pointer
 
+Class representing a 64-bit memory address.
+
 ## Constructors (1)
 
 ### `new(address)`
