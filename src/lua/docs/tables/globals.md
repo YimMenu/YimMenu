@@ -1,7 +1,6 @@
 # Table: globals
 
 Table containing functions for manipulating gta script globals.
-XD lol.
 
 Functions (7)
 
