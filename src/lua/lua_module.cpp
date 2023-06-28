@@ -50,27 +50,19 @@ namespace big
 	{
 		m_state.open_libraries();
 
-		lua::log::bind(m_state);
-		lua::globals::bind(m_state);
-		lua::script::bind(m_state);
-		lua::native::bind(m_state);
-		lua::memory::bind(m_state);
-		lua::gui::bind(m_state);
-		lua::network::bind(m_state);
-		lua::command::bind(m_state);
-		lua::tunables::bind(m_state);
-		lua::locals::bind(m_state);
-		lua::event::bind(m_state);
-		lua::vector::bind(m_state);
+		const auto scripts_folder = g_file_manager->get_project_folder("scripts");
+
+		add_folder_to_require_available_paths(scripts_folder);
+
+		init_lua_api();
 
 		m_state["!module_name"] = module_name;
 		m_state["!this"]        = this;
-		m_state["joaat"]        = rage::joaat;
 
 		m_state.set_exception_handler((sol::exception_handler_function)exception_handler);
 		m_state.set_panic(panic_handler);
 
-		auto result = m_state.load_file(g_file_manager->get_project_folder("scripts").get_file(module_name).get_path().string());
+		auto result = m_state.load_file(scripts_folder.get_file(module_name).get_path().string());
 
 		if (!result.valid())
 		{
@@ -105,5 +97,29 @@ namespace big
 	const std::string& lua_module::module_name()
 	{
 		return m_module_name;
+	}
+
+	void lua_module::add_folder_to_require_available_paths(const big::folder& scripts_folder)
+	{
+		const std::string package_path = m_state["package"]["path"];
+		const auto scripts_search_path = scripts_folder.get_path() / "?.lua";
+		m_state["package"]["path"] = package_path + (!package_path.empty() ? ";" : "") + scripts_search_path.string();
+	}
+
+	void lua_module::init_lua_api()
+	{
+		lua::log::bind(m_state);
+		lua::globals::bind(m_state);
+		lua::script::bind(m_state);
+		lua::native::bind(m_state);
+		lua::memory::bind(m_state);
+		lua::gui::bind(m_state);
+		lua::network::bind(m_state);
+		lua::command::bind(m_state);
+		lua::tunables::bind(m_state);
+		lua::locals::bind(m_state);
+		lua::event::bind(m_state);
+		lua::vector::bind(m_state);
+		m_state["joaat"] = rage::joaat;
 	}
 }
