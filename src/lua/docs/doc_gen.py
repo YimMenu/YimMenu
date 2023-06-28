@@ -57,8 +57,9 @@ class Table:
 
 
 class Class:
-    def __init__(self, name, fields, constructors, functions, description):
+    def __init__(self, name, inheritance, fields, constructors, functions, description):
         self.name = name.strip()
+        self.inheritance = inheritance
         self.fields = fields
         self.constructors = constructors
         self.functions = functions
@@ -67,6 +68,11 @@ class Class:
     def __str__(self):
         s = f"# Class: {self.name}\n"
         s += "\n"
+
+        if len(self.inheritance) > 0:
+            inherited_class_names = ", ".join(self.inheritance)
+            s += f"## Inherit from {len(self.inheritance)} class: {inherited_class_names}\n"
+            s += "\n"
 
         if len(self.description) > 0:
             s += f"{self.description}\n"
@@ -282,7 +288,7 @@ def make_table(table_name):
 
 def make_class(class_name):
     if class_name not in classes:
-        classes[class_name] = Class(class_name, [], [], [], "")
+        classes[class_name] = Class(class_name, [], [], [], [], "")
     cur_class = classes[class_name]
     return cur_class
 
@@ -387,6 +393,9 @@ def parse_class_doc(cur_class, line, line_lower):
     ):
         class_name = line.split(lua_api_comment_separator, 1)[1].strip()
         cur_class = make_class(class_name)
+    elif is_lua_doc_comment_startswith(line_lower, "inherit"):
+        inherited_class_name = line.split(lua_api_comment_separator, 1)[1].strip()
+        cur_class.inheritance.append(inherited_class_name)
     else:
         if len(cur_class.description) != 0:
             cur_class.description += "\n"
