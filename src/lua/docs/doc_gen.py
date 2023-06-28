@@ -326,6 +326,10 @@ def parse_lua_api_doc(folder_path):
                                     cur_table = parse_table_doc(
                                         cur_table, line, line_lower
                                     )
+                                case DocKind.Class:
+                                    cur_class = parse_class_doc(
+                                        cur_class, line, line_lower
+                                    )
                                 case DocKind.Function:
                                     (
                                         cur_function,
@@ -375,6 +379,20 @@ def parse_table_doc(cur_table, line, line_lower):
         cur_table.description += line.replace("//", "").strip()
 
     return cur_table
+
+def parse_class_doc(cur_class, line, line_lower):
+    if (
+        line_lower.replace("//", "").strip().startswith("name")
+        and lua_api_comment_separator in line_lower
+    ):
+        class_name = line.split(lua_api_comment_separator, 1)[1].strip()
+        cur_class = make_class(class_name)
+    else:
+        if len(cur_class.description) != 0:
+            cur_class.description += "\n"
+        cur_class.description += line.replace("//", "").strip()
+
+    return cur_class
 
 
 def parse_function_doc(cur_function, cur_table, cur_class, line, line_lower):
