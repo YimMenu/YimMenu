@@ -6,6 +6,8 @@ namespace big
 {
 	lua_manager::lua_manager()
 	{
+		m_schedule_reload_modules = false;
+
 		load_all_modules();
 
 		g_lua_manager = this;
@@ -58,22 +60,13 @@ namespace big
 
 	std::weak_ptr<lua_module> lua_manager::get_module(rage::joaat_t module_id)
 	{
+		std::lock_guard guard(m_module_lock);
+
 		for (const auto& module : m_modules)
 			if (module->module_id() == module_id)
 				return module;
 
 		return {};
-	}
-
-	const std::vector<std::shared_ptr<lua_module>>& lua_manager::get_modules() const
-	{
-		return m_modules;
-	}
-
-	void lua_manager::reload_all_modules()
-	{
-		unload_all_modules();
-		load_all_modules();
 	}
 
 	void lua_manager::handle_error(const sol::error& error, const sol::state_view& state)
