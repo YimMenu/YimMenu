@@ -141,5 +141,93 @@ namespace big
 		ImGui::Text(std::vformat("IPL_POSITION"_T,
 		    std::make_format_args(selected_ipl.location.x, selected_ipl.location.y, selected_ipl.location.z))
 		                .data());
+
+		ImGui::SeparatorText("Custom Locations");
+
+		ImGui::BeginGroup();
+		static std::string new_location_name;
+		static std::string category = "Default";
+		static teleport::telelocation deletion_telelocation;
+
+		if (!std::string(deletion_telelocation.name).empty())
+			ImGui::OpenPopup("##deletelocation");
+
+		if (ImGui::BeginPopupModal("##deletelocation"))
+		{
+			ImGui::Text("Are you sure you want to delete %s?", deletion_telelocation.name);
+
+			if (ImGui::Button("Yes"))
+			{
+				teleport::delete_saved_location(deletion_telelocation.name);
+				deletion_telelocation.name = "";
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("No"))
+			{
+				deletion_telelocation.name = "";
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
+
+		ImGui::PushItemWidth(300);
+		components::input_text_with_hint("Category", "Category", &category);
+		components::input_text_with_hint("Location name", "New location", &new_location_name);
+		ImGui::PopItemWidth();
+
+		components::button("Save current location", [] {
+			auto found_location = std::find_if(teleport::all_saved_locations.begin(), teleport::all_saved_locations.end(), [](const teleport::telelocation& location) {
+				return location.name == new_location_name;
+			});
+
+			if (found_location == teleport::all_saved_locations.end())
+				teleport::save_new_location({new_location_name, self::pos.x, self::pos.y, self::pos.z, category});
+			else
+				g_notification_service->push_warning("Telelocation", std::format("Location with the name {} already exists", new_location_name));
+		});
+
+		ImGui::BeginGroup();
+		components::small_text("Categories");
+		if (ImGui::BeginListBox("##categories", ImVec2(250, 150)))
+		{
+			for (auto& l : teleport::all_location_categories)
+			{
+				if (ImGui::Selectable(l.data(), l == category))
+				{
+					category = l;
+				}
+			}
+			ImGui::EndListBox();
+		}
+		ImGui::EndGroup();
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+		components::small_text("Locations");
+		if (ImGui::BeginListBox("##telelocations", ImVec2(250, 150)))
+		{
+			for (auto& l : teleport::all_saved_locations)
+			{
+				if (l.category == category && ImGui::Selectable(l.name.data()))
+				{
+					if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+					{
+						deletion_telelocation = l;
+					}
+					else
+						g_fiber_pool->queue_job([l] {
+							teleport::teleport_player_to_coords(g_player_service->get_self(), {l.x, l.y, l.z});
+						});
+				}
+			}
+			ImGui::EndListBox();
+		}
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Shift click to delete");
+
+		ImGui::EndGroup();
+
+		ImGui::EndGroup();
 	}
 }

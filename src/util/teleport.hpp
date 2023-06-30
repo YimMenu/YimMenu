@@ -8,6 +8,160 @@
 
 namespace big::teleport
 {
+	struct telelocation
+	{
+		std::string name;
+		float x, y, z;
+		std::string category = "Default";
+	};
+
+	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(telelocation, name, x, y, z, category);
+
+	inline std::vector<telelocation> all_saved_locations;
+	inline std::vector<std::string> all_location_categories;
+
+	inline std::filesystem::path get_telelocations_file_path()
+	{
+		return g_file_manager->get_project_file("telelocations.json").get_path();
+	}
+
+	inline bool fetch_saved_locations()
+	{
+		all_saved_locations.clear();
+		all_location_categories.clear();
+		auto path = get_telelocations_file_path();
+		std::ifstream file(path, std::ifstream::in);
+
+		try
+		{
+			if (!file.is_open())
+				return false;
+
+			nlohmann::json j;
+			file >> j;
+
+			if (j.empty() || !j.is_array())
+			{
+				return false;
+			}
+
+			for (const auto& location : j)
+			{
+				telelocation t;
+				from_json(location, t);
+				all_saved_locations.push_back(t);
+
+				auto found_location = std::find_if(all_location_categories.begin(), all_location_categories.end(), [t](const std::string& cat) {
+					return cat == t.category;
+				});
+
+				if (found_location == all_location_categories.end())
+					all_location_categories.push_back(t.category);
+			}
+
+			return true;
+		}
+		catch (const std::exception& e)
+		{
+			LOG(WARNING) << "Failed fetching saved locations: " << e.what() << '\n';
+			return false;
+		}
+
+		return false;
+	}
+
+	inline bool save_new_location(telelocation t)
+	{
+		auto path = get_telelocations_file_path();
+
+		try
+		{
+			std::ifstream file_in(path, std::ifstream::in);
+			nlohmann::json j_existing;
+			if (file_in.is_open())
+			{
+				file_in >> j_existing;
+				if (j_existing.empty())
+				{
+					j_existing = nlohmann::json::array();
+				}
+				file_in.close();
+			}
+
+			nlohmann::json j;
+			to_json(j, t);
+
+			j_existing.push_back(j);
+
+			std::ofstream file_out(path, std::ofstream::trunc | std::ofstream::binary);
+			if (!file_out.is_open())
+				return false;
+
+			file_out << j_existing.dump(4);
+			file_out.close();
+
+			fetch_saved_locations();
+			return true;
+		}
+		catch (const std::exception& e)
+		{
+			LOG(WARNING) << "Failed saving location: " << e.what() << '\n';
+			return false;
+		}
+
+		return false;
+	}
+
+	inline bool delete_saved_location(const std::string& locationName)
+	{
+		auto path = get_telelocations_file_path();
+
+		try
+		{
+			std::ifstream file_in(path, std::ifstream::in);
+			nlohmann::json j_existing;
+			if (file_in.is_open())
+			{
+				file_in >> j_existing;
+				if (j_existing.empty())
+				{
+					return false;
+				}
+				file_in.close();
+			}
+
+			// Create a new JSON array to store the modified locations
+			nlohmann::json j_modified = nlohmann::json::array();
+
+			for (const auto& location : j_existing)
+			{
+				if (location.is_object() && location.contains("name") && location["name"] != locationName)
+				{
+					// If the location's name doesn't match, add it to the modified array
+					j_modified.push_back(location);
+				}
+			}
+
+			std::ofstream file_out(path, std::ofstream::trunc | std::ofstream::binary);
+			if (!file_out.is_open())
+				return false;
+
+			file_out << j_modified.dump(4);
+			file_out.close();
+
+			fetch_saved_locations();
+
+			return true;
+		}
+		catch (const std::exception& e)
+		{
+			LOG(WARNING) << "Failed deleting location: " << e.what() << '\n';
+			return false;
+		}
+
+		return false;
+	}
+
 	inline bool teleport_player_to_coords(player_ptr player, Vector3 coords)
 	{
 		Entity ent;
