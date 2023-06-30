@@ -41,12 +41,9 @@ namespace big
 		ImGui::Checkbox("BLOCK_RID_JOINING"_T.data(), &g.protections.rid_join);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("BLOCK_RID_JOINING_DESCRIPTION"_T.data());
-		ImGui::Checkbox("LESSEN_BREAKUP_KICK"_T.data(), &g.protections.lessen_breakups);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("LESSEN_BREAKUP_KICK_DESCRIPTION"_T.data());
 		ImGui::Checkbox("RECEIVE_PICKUP"_T.data(), &g.protections.receive_pickup);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("This prevents any pickup from the ground such as unwanted money drops.\nAttention: Normal pickups are also no longer possible.");
+			ImGui::SetTooltip("This prevents the collection of pickups such as unwanted money bags\nNote: Normal pickups are also no longer possible to collect with this enabled");
 		ImGui::Checkbox("ADMIN_CHECK"_T.data(), &g.protections.admin_check);
 		ImGui::EndGroup();
 	}

@@ -16,6 +16,7 @@
 #include "netsync/nodes/pickup/CPickupCreationDataNode.hpp"
 #include "netsync/nodes/player/CPlayerAppearanceDataNode.hpp"
 #include "netsync/nodes/player/CPlayerCreationDataNode.hpp"
+#include "netsync/nodes/player/CPlayerGameStateDataNode.hpp"
 #include "netsync/nodes/proximity_migrateable/CSectorDataNode.hpp"
 #include "netsync/nodes/train/CTrainGameStateDataNode.hpp"
 #include "netsync/nodes/vehicle/CVehicleCreationDataNode.hpp"
@@ -65,8 +66,7 @@ namespace big
 
 		std::array<sync_node_vft_to_ids, sync_tree_count> sync_trees_sync_node_vft_to_ids;
 
-		std::array<sync_tree_node_array_index_to_node_id_t, sync_tree_count> sync_trees_node_array_index_to_node_id =
-		{
+		std::array<sync_tree_node_array_index_to_node_id_t, sync_tree_count> sync_trees_node_array_index_to_node_id = {
 		    {
 		        // AUTOMOBILE
 		        {
@@ -505,7 +505,6 @@ namespace big
 	class sync_node_finder
 	{
 	private:
-
 		static inline sync_node_finder_t finder;
 
 	public:
@@ -616,6 +615,17 @@ namespace big
 		for (int i = 0; i < 15; i++)
 			if (vehicle->m_passengers[i] == ped)
 				return true;
+
+		return false;
+	}
+
+	inline bool is_local_player_an_occupant(CVehicleProximityMigrationDataNode* node)
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			if (node->m_has_occupants[i] && node->m_occupants[i] == g_local_player->m_net_object->m_object_id)
+				return true;
+		}
 
 		return false;
 	}
@@ -754,7 +764,18 @@ namespace big
 					const auto sector_node = (CSectorDataNode*)(node);
 					if (sector_node->m_pos_x == 712 || sector_node->m_pos_y == 712 || sector_node->m_pos_z == 712)
 					{
-						notify::crash_blocked(sender, "invalid sector position");
+						notify::crash_blocked(sender, "invalid sector position (sector node)");
+						return true;
+					}
+					break;
+				}
+				case sync_node_id("CPlayerGameStateDataNode"):
+				{
+					const auto game_state_node = (CPlayerGameStateDataNode*)(node);
+					if (game_state_node->m_population_control_sphere_x == 712 || game_state_node->m_population_control_sphere_y == 712
+					    || game_state_node->m_population_control_sphere_z == 712)
+					{
+						notify::crash_blocked(sender, "invalid sector position (player game state node)");
 						return true;
 					}
 					break;
@@ -773,17 +794,15 @@ namespace big
 				{
 					if (object && g_local_player && g_local_player->m_net_object)
 					{
+						const auto migration_node = (CVehicleProximityMigrationDataNode*)(node);
+
 						if (!g_local_player->m_vehicle || !g_local_player->m_vehicle->m_net_object
 						    || g_local_player->m_vehicle->m_net_object->m_object_id != object->m_object_id
 						    || !is_in_vehicle(g_local_player, g_local_player->m_vehicle))
 						{
-							const auto migration_node = (CVehicleProximityMigrationDataNode*)(node);
-
-							for (int i = 0; i < 16; i++)
+							if (is_local_player_an_occupant(migration_node))
 							{
-								if (migration_node->m_has_occupants[i]
-								    && migration_node->m_occupants[i] == g_local_player->m_net_object->m_object_id)
-									return true; // remote teleport
+								return true; // remote teleport
 							}
 						}
 					}
@@ -792,7 +811,7 @@ namespace big
 				}
 				}
 			}
-}
+		}
 		return false;
 	}
 
