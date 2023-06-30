@@ -158,7 +158,7 @@ namespace big
 
 			if (ImGui::Button("Yes"))
 			{
-				teleport::delete_saved_location(deletion_telelocation.name);
+				teleport::delete_saved_location(category, deletion_telelocation.name);
 				deletion_telelocation.name = "";
 				ImGui::CloseCurrentPopup();
 			}
@@ -178,21 +178,14 @@ namespace big
 		ImGui::PopItemWidth();
 
 		components::button("Save current location", [] {
-			auto found_location = std::find_if(teleport::all_saved_locations.begin(), teleport::all_saved_locations.end(), [](const teleport::telelocation& location) {
-				return location.name == new_location_name;
-			});
-
-			if (found_location == teleport::all_saved_locations.end())
-				teleport::save_new_location({new_location_name, self::pos.x, self::pos.y, self::pos.z, category});
-			else
-				g_notification_service->push_warning("Telelocation", std::format("Location with the name {} already exists", new_location_name));
+			teleport::save_new_location(category, {new_location_name, self::pos.x, self::pos.y, self::pos.z});
 		});
 
 		ImGui::BeginGroup();
 		components::small_text("Categories");
 		if (ImGui::BeginListBox("##categories", ImVec2(250, 150)))
 		{
-			for (auto& l : teleport::all_location_categories)
+			for (auto& l : teleport::all_saved_locations | std::ranges::views::keys)
 			{
 				if (ImGui::Selectable(l.data(), l == category))
 				{
@@ -207,22 +200,27 @@ namespace big
 		components::small_text("Locations");
 		if (ImGui::BeginListBox("##telelocations", ImVec2(250, 150)))
 		{
-			for (auto& l : teleport::all_saved_locations)
+			if (teleport::all_saved_locations.find(category) != teleport::all_saved_locations.end())
 			{
-				if (l.category == category && ImGui::Selectable(l.name.data()))
+				for (const auto& l : teleport::all_saved_locations.at(category))
 				{
-					if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+					if (ImGui::Selectable(l.name.data()))
 					{
-						deletion_telelocation = l;
+						if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+						{
+							deletion_telelocation = l;
+						}
+						else
+							g_fiber_pool->queue_job([l] {
+								teleport::teleport_player_to_coords(g_player_service->get_self(), {l.x, l.y, l.z});
+							});
 					}
-					else
-						g_fiber_pool->queue_job([l] {
-							teleport::teleport_player_to_coords(g_player_service->get_self(), {l.x, l.y, l.z});
-						});
 				}
 			}
+
 			ImGui::EndListBox();
 		}
+
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Shift click to delete");
 
