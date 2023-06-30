@@ -17,7 +17,7 @@ base_text_element:set_text(new_text)
 ### `get_text()`
 
 - **Returns:**
-  - `string`: returns the current text for that gui text element.
+  - `string`: Returns the current text for that gui text element.
 
 **Exemple Usage:**
 ```lua

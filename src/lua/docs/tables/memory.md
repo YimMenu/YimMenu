@@ -12,7 +12,7 @@ Scans the specified memory pattern within the "GTA5.exe" module and returns a po
   - `pattern` (string): byte pattern (IDA format)
 
 - **Returns:**
-  - `pointer`: a pointer to the found address.
+  - `pointer`: A pointer to the found address.
 
 **Exemple Usage:**
 ```lua
@@ -25,7 +25,7 @@ pointer = memory.scan_pattern(pattern)
   - `entity` (number): script game entity handle
 
 - **Returns:**
-  - `pointer`: a rage::cdynamicentity pointer to the script game entity handle
+  - `pointer`: A rage::CDynamicEntity pointer to the script game entity handle
 
 **Exemple Usage:**
 ```lua
@@ -38,7 +38,7 @@ pointer = memory.handle_to_ptr(entity)
   - `mem_addr` (pointer): A rage::CDynamicEntity pointer.
 
 - **Returns:**
-  - `number`: the script game entity handle linked to the given rage::cdynamicentity pointer.
+  - `number`: The script game entity handle linked to the given rage::CDynamicEntity pointer.
 
 **Exemple Usage:**
 ```lua
@@ -51,7 +51,7 @@ number = memory.ptr_to_handle(mem_addr)
   - `size` (integer): The number of bytes to allocate on the heap.
 
 - **Returns:**
-  - `pointer`: a pointer to the newly allocated memory.
+  - `pointer`: A pointer to the newly allocated memory.
 
 **Exemple Usage:**
 ```lua

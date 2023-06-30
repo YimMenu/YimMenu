@@ -9,7 +9,7 @@ Class for representing an input field for editing a float value within the GUI.
 ### `get_value()`
 
 - **Returns:**
-  - `float`: get the value currently written inside the input field.
+  - `float`: Get the value currently written inside the input field.
 
 **Exemple Usage:**
 ```lua

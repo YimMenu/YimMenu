@@ -217,7 +217,7 @@ The original value is restored when you call the restore function on the lua_pat
   - `value` (number): new value.
 
 - **Returns:**
-  - `lua_patch`: memory patch instance for modifying the value at the memory address with the specified value. can call apply / restore on the object.
+  - `lua_patch`: memory patch instance for modifying the value at the memory address with the specified value. Can call apply / restore on the object.
 
 **Exemple Usage:**
 ```lua
@@ -234,7 +234,7 @@ The original value is restored when you call the restore function on the lua_pat
   - `value` (number): new value.
 
 - **Returns:**
-  - `lua_patch`: memory patch instance for modifying the value at the memory address with the specified value. can call apply / restore on the object.
+  - `lua_patch`: memory patch instance for modifying the value at the memory address with the specified value. Can call apply / restore on the object.
 
 **Exemple Usage:**
 ```lua
@@ -251,7 +251,7 @@ The original value is restored when you call the restore function on the lua_pat
   - `value` (number): new value.
 
 - **Returns:**
-  - `lua_patch`: memory patch instance for modifying the value at the memory address with the specified value. can call apply / restore on the object.
+  - `lua_patch`: memory patch instance for modifying the value at the memory address with the specified value. Can call apply / restore on the object.
 
 **Exemple Usage:**
 ```lua
@@ -268,7 +268,7 @@ The original value is restored when you call the restore function on the lua_pat
   - `value` (number): new value.
 
 - **Returns:**
-  - `lua_patch`: memory patch instance for modifying the value at the memory address with the specified value. can call apply / restore on the object.
+  - `lua_patch`: memory patch instance for modifying the value at the memory address with the specified value. Can call apply / restore on the object.
 
 **Exemple Usage:**
 ```lua
@@ -278,7 +278,7 @@ lua_patch = pointer:patch_qword(value)
 ### `is_null()`
 
 - **Returns:**
-  - `boolean`: returns true if the address is null.
+  - `boolean`: Returns true if the address is null.
 
 **Exemple Usage:**
 ```lua
@@ -288,7 +288,7 @@ boolean = pointer:is_null()
 ### `is_valid()`
 
 - **Returns:**
-  - `boolean`: returns true if the address is not null.
+  - `boolean`: Returns true if the address is not null.
 
 **Exemple Usage:**
 ```lua
@@ -300,7 +300,7 @@ boolean = pointer:is_valid()
 Dereferences the memory address and returns a new pointer object pointing to the value at that address.
 
 - **Returns:**
-  - `pointer`: a new pointer object pointing to the value at that address.
+  - `pointer`: A new pointer object pointing to the value at that address.
 
 **Exemple Usage:**
 ```lua
@@ -312,7 +312,7 @@ pointer = pointer:deref()
 Retrieves the memory address stored in the pointer object.
 
 - **Returns:**
-  - `number`: the memory address stored in the pointer object as a number.
+  - `number`: The memory address stored in the pointer object as a number.
 
 **Exemple Usage:**
 ```lua

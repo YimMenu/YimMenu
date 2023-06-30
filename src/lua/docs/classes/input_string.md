@@ -9,7 +9,7 @@ Class for representing an input field for editing a string value within the GUI.
 ### `get_value()`
 
 - **Returns:**
-  - `string`: get the value currently written inside the input field.
+  - `string`: Get the value currently written inside the input field.
 
 **Exemple Usage:**
 ```lua

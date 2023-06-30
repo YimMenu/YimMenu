@@ -10,7 +10,7 @@ Custom fields, functions, etc added to The Lua [Global Table](https://www.lua.or
   - `str` (string): The string that needs to be joaat hashed.
 
 - **Returns:**
-  - `integer`: the joaat hashed input string.
+  - `integer`: The joaat hashed input string.
 
 **Exemple Usage:**
 ```lua

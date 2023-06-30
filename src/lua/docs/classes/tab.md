@@ -25,7 +25,7 @@ Add text to the gui tab.
   - `name` (string): Text that will be written.
 
 - **Returns:**
-  - `text`: the text object instance.
+  - `text`: The text object instance.
 
 **Exemple Usage:**
 ```lua
@@ -40,7 +40,7 @@ Add a checkbox widget to the gui tab.
   - `name` (string): Text that will be written next to the checkbox.
 
 - **Returns:**
-  - `checkbox`: the checkbox object instance.
+  - `checkbox`: The checkbox object instance.
 
 **Exemple Usage:**
 ```lua
@@ -52,7 +52,7 @@ checkbox = tab:add_checkbox(name)
 Add a ImGui::SameLine.
 
 - **Returns:**
-  - `sameline`: the sameline object instance.
+  - `sameline`: The sameline object instance.
 
 **Exemple Usage:**
 ```lua
@@ -64,7 +64,7 @@ sameline = tab:add_sameline()
 Add a ImGui::Separator.
 
 - **Returns:**
-  - `separator`: the separator object instance.
+  - `separator`: The separator object instance.
 
 **Exemple Usage:**
 ```lua
@@ -79,7 +79,7 @@ Add a ImGui::InputInt.
   - `name` (string): Text that will be written next to the input field.
 
 - **Returns:**
-  - `input_int`: the input_int object instance.
+  - `input_int`: The input_int object instance.
 
 **Exemple Usage:**
 ```lua
@@ -94,7 +94,7 @@ Add a ImGui::InputFloat.
   - `name` (string): Text that will be written next to the input field.
 
 - **Returns:**
-  - `input_float`: the input_float object instance.
+  - `input_float`: The input_float object instance.
 
 **Exemple Usage:**
 ```lua
@@ -109,7 +109,7 @@ Add a ImGui::InputText.
   - `name` (string): Text that will be written next to the input field.
 
 - **Returns:**
-  - `input_string`: the input_string object instance.
+  - `input_string`: The input_string object instance.
 
 **Exemple Usage:**
 ```lua

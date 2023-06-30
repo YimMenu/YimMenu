@@ -10,7 +10,7 @@ Table for manipulating gta tunables.
   - `tunable_name` (string): The name of the tunable.
 
 - **Returns:**
-  - `integer`: the value of the given tunable.
+  - `integer`: The value of the given tunable.
 
 **Exemple Usage:**
 ```lua
@@ -23,7 +23,7 @@ integer = tunables.get_int(tunable_name)
   - `tunable_name` (string): The name of the tunable.
 
 - **Returns:**
-  - `float`: the value of the given tunable.
+  - `float`: The value of the given tunable.
 
 **Exemple Usage:**
 ```lua
@@ -36,7 +36,7 @@ float = tunables.get_float(tunable_name)
   - `tunable_name` (string): The name of the tunable.
 
 - **Returns:**
-  - `boolean`: the value of the given tunable.
+  - `boolean`: The value of the given tunable.
 
 **Exemple Usage:**
 ```lua

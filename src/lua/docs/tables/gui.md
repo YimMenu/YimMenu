@@ -10,7 +10,7 @@ Table containing functions for modifying the menu GUI.
   - `tab_name` (string): Name of the tab to get.
 
 - **Returns:**
-  - `tab`: a tab instance which corresponds to the tab in the gui.
+  - `tab`: A tab instance which corresponds to the tab in the GUI.
 
 **Exemple Usage:**
 ```lua
@@ -59,7 +59,7 @@ gui.show_error(title, message)
 ### `is_open()`
 
 - **Returns:**
-  - `bool`: returns true if the gui is open.
+  - `bool`: Returns true if the GUI is open.
 
 **Exemple Usage:**
 ```lua

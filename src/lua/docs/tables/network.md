@@ -62,7 +62,7 @@ network.set_all_player_coords(x, y, z)
 ### `get_selected_player()`
 
 - **Returns:**
-  - `integer`: returns the index of the currently selected player in the gui.
+  - `integer`: Returns the index of the currently selected player in the GUI.
 
 **Exemple Usage:**
 ```lua
@@ -72,7 +72,7 @@ integer = network.get_selected_player()
 ### `get_selected_database_player_rockstar_id()`
 
 - **Returns:**
-  - `integer`: returns the rockstar id of the currently selected player in the gui.
+  - `integer`: Returns the rockstar id of the currently selected player in the GUI.
 
 **Exemple Usage:**
 ```lua
@@ -97,7 +97,7 @@ network.flag_player_as_modder(player_idx)
   - `player_idx` (integer): Index of the player.
 
 - **Returns:**
-  - `boolean`: returns true if the given player is flagged as a modder.
+  - `boolean`: Returns true if the given player is flagged as a modder.
 
 **Exemple Usage:**
 ```lua

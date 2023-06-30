@@ -9,7 +9,7 @@ Class for representing an input field for editing an integer value within the GU
 ### `get_value()`
 
 - **Returns:**
-  - `integer`: get the value currently written inside the input field.
+  - `integer`: Get the value currently written inside the input field.
 
 **Exemple Usage:**
 ```lua

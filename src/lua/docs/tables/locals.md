@@ -11,7 +11,7 @@ Table for manipulating GTA scripts locals.
   - `index` (index): Index of the script local.
 
 - **Returns:**
-  - `integer`: the value of the given local.
+  - `integer`: The value of the given local.
 
 **Exemple Usage:**
 ```lua
@@ -25,7 +25,7 @@ integer = locals.get_int(script, index)
   - `index` (index): Index of the script local.
 
 - **Returns:**
-  - `float`: the value of the given local.
+  - `float`: The value of the given local.
 
 **Exemple Usage:**
 ```lua
@@ -63,7 +63,7 @@ locals.set_float(script, index, val)
   - `index` (index): Index of the script local.
 
 - **Returns:**
-  - `pointer`: the pointer to the given local.
+  - `pointer`: The pointer to the given local.
 
 **Exemple Usage:**
 ```lua

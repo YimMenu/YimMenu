@@ -9,7 +9,7 @@ Class representing a gui checkbox.
 ### `is_enabled()`
 
 - **Returns:**
-  - `boolean`: is the checkbox checked?
+  - `boolean`: Is the checkbox checked?
 
 **Exemple Usage:**
 ```lua
