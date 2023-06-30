@@ -83,6 +83,11 @@ namespace big::teleport
 			return t.name == location_name;
 		});
 
+		if (!it->second.size())
+		{
+			all_saved_locations.erase(category);
+		}
+
 		std::ofstream file_out(path, std::ofstream::trunc | std::ofstream::binary);
 		if (!file_out.is_open())
 			return false;
