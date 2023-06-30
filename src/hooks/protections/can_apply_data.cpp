@@ -773,10 +773,6 @@ namespace big
 				{
 					if (object && g_local_player && g_local_player->m_net_object)
 					{
-						if (is_in_vehicle(g_local_player, g_local_player->m_vehicle) && g_local_player->m_vehicle->m_net_object
-						    && g_local_player->m_vehicle->m_net_object->m_object_id == object->m_object_id)
-							return true; // vehicle kick?
-
 						if (!g_local_player->m_vehicle || !g_local_player->m_vehicle->m_net_object
 						    || g_local_player->m_vehicle->m_net_object->m_object_id != object->m_object_id
 						    || !is_in_vehicle(g_local_player, g_local_player->m_vehicle))
