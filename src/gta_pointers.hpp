@@ -259,6 +259,8 @@ namespace big
 		GenericPool** m_ped_pool{};
 		GenericPool** m_prop_pool{};
 		VehiclePool*** m_vehicle_pool{};
+
+		PVOID m_netfilter_handle_message{};
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

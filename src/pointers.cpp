@@ -1213,6 +1213,15 @@ namespace big
                 g_pointers->m_gta.m_taskjump_constructor = ptr.as<PVOID>();
             }
         },
+        // NetFilter Handle Message
+        {
+            "NHM",
+            "40 55 56 57 41 54 41 55 41 56 41 57 48 81 EC 50 01 00 00 48 8D 6C 24 30",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_netfilter_handle_message = ptr.as<PVOID>();
+            }
+        },
         // Max Wanted Level
         {
             "MWL",

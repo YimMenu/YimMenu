@@ -163,6 +163,7 @@ namespace big
 		static bool fipackfile_mount(rage::fiPackfile* this_, const char* mount_point);
 
 		static bool allow_weapons_in_vehicle(int64_t unk, int weaponinfo_group);
+		static int netfilter_handle_message(__int64 filter, char* message, int flags);
 	};
 
 	class minhook_keepalive
