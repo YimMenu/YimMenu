@@ -69,9 +69,7 @@ namespace big
 
 		detour_hook_helper::add<hooks::sort_session_details>("SSD", g_pointers->m_gta.m_sort_session_details);
 
-		detour_hook_helper::add<hooks::add_player_to_session>("APTS", g_pointers->m_gta.m_add_player_to_session);
 		detour_hook_helper::add<hooks::send_chat_message>("SCM", g_pointers->m_gta.m_send_chat_message);
-		detour_hook_helper::add<hooks::send_chat_net_message>("SCNM", g_pointers->m_gta.m_send_chat_net_message);
 
 		detour_hook_helper::add<hooks::process_matchmaking_find_response>("PMFR", g_pointers->m_gta.m_process_matchmaking_find_response);
 		detour_hook_helper::add<hooks::serialize_player_data_msg>("SJPD", g_pointers->m_gta.m_serialize_player_data_msg);

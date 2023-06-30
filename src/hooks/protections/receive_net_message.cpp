@@ -117,10 +117,10 @@ namespace big
 					player->is_spammer = true;
 					if (g.session.kick_chat_spammers)
 					{
-						if(g_player_service->get_self()->is_host())
+						if (g_player_service->get_self()->is_host())
 							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
-						
+							    dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
+
 						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("bailkick")))->call(player, {});
 						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
 					}
@@ -135,6 +135,20 @@ namespace big
 						command::process(std::string(message + 1), std::make_shared<chat_command_context>(player));
 					else
 						g_lua_manager->trigger_event<"chat_message_received">(player->id(), message);
+
+					if (msgType == rage::eNetMessage::MsgTextMessage && g_pointers->m_gta.m_chat_data && player->get_net_data())
+					{
+						rage::rlGamerHandle temp{};
+						gamer_handle_deserialize(temp, buffer);
+						bool is_team = buffer.Read<bool>(1);
+
+						g_pointers->m_gta.m_handle_chat_message(*g_pointers->m_gta.m_chat_data,
+						    nullptr,
+						    &player->get_net_data()->m_gamer_handle,
+						    message,
+						    is_team);
+						return true;
+					}
 				}
 				break;
 			}
