@@ -102,10 +102,12 @@ namespace big
 				}
 			}
 
-			if (auto player_vehicle = plyr->get_current_vehicle())
+			if (auto player_vehicle = plyr->get_current_vehicle();
+				player_vehicle &&
+				(plyr->get_ped()->m_ped_task_flag & (uint32_t)ePedTask::TASK_DRIVING) &&
+				(player_vehicle->m_damage_bits & (uint32_t)eEntityProofs::GOD))
 			{
-				if (player_vehicle->m_damage_bits & (uint32_t)eEntityProofs::GOD)
-					mode_str = +"VEH_GOD";
+				mode_str =+ "Vehicle God";
 			}
 
 			if (!mode_str.empty())
