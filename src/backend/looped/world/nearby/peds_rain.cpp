@@ -13,7 +13,7 @@ namespace big
 		{
 			for (auto ped : entity::get_entities(false, true))
 			{
-				if (!ENTITY::IS_ENTITY_IN_AIR(ped) && entity::take_control_of(ped, 0))
+				if (!ENTITY::IS_ENTITY_IN_AIR(ped) && entity::take_control_of(ped, 0) && !PED::IS_PED_A_PLAYER(ped) && ped != self::ped)
 				{
 					Vector3 my_location = ENTITY::GET_ENTITY_COORDS(self::ped, 1);
 					my_location.x       = my_location.x + (rand() % 100 + (-50));

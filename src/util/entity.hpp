@@ -121,6 +121,9 @@ namespace big::entity
 		{
 			for (auto ped : pools::get_all_peds())
 			{
+				if(ped == g_local_player)
+					continue;
+
 				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(ped));
 			}
 		}
