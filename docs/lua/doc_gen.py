@@ -1,7 +1,7 @@
 import os
 from enum import Enum
 
-src_folder = "../../"
+src_folder = "../../src/"
 
 lua_api_comment_identifier = "lua api"
 lua_api_comment_separator = ":"
