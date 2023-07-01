@@ -23,7 +23,7 @@ namespace big
 		void init();
 
 		std::string_view get_translation(const std::string_view translation_key) const;
-		std::string_view get_translation(const rage::joaat_t translation_key, const std::string_view fallback = { 0, 0 }) const;
+		std::string_view get_translation(const rage::joaat_t translation_key, const std::string_view fallback = {0, 0}) const;
 
 		std::map<std::string, translation_entry>& available_translations();
 		const std::string& current_language_pack();
@@ -32,6 +32,7 @@ namespace big
 
 	private:
 		void load_translations();
+		bool does_language_exist(const std::string_view language);
 		nlohmann::json load_translation(const std::string_view pack_id);
 
 		bool download_language_pack(const std::string_view pack_id);
@@ -50,6 +51,8 @@ namespace big
          */
 		void use_fallback_remote();
 		cpr::Response download_file(const std::string& filename);
+
+		void try_set_default_language();
 
 	private:
 		const std::string m_url;

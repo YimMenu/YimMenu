@@ -1,6 +1,8 @@
 #include "translation_service.hpp"
 
+#include "fiber_pool.hpp"
 #include "file_manager.hpp"
+#include "pointers.hpp"
 #include "thread_pool.hpp"
 
 #include <cpr/cpr.h>
@@ -39,7 +41,12 @@ namespace big
 				update_language_packs();
 				m_local_index.version = m_remote_index.version;
 			}
+
 			load_translations();
+
+			if (loaded_remote_index)
+				try_set_default_language();
+
 			return;
 		}
 
@@ -56,6 +63,7 @@ namespace big
 		m_local_index.version                   = m_remote_index.version;
 
 		load_translations();
+		try_set_default_language();
 	}
 
 	std::string_view translation_service::get_translation(const std::string_view translation_key) const
@@ -128,6 +136,18 @@ namespace big
 		}
 
 		save_local_index();
+	}
+
+	bool translation_service::does_language_exist(const std::string_view language)
+	{
+		auto file = m_translation_directory->get_file(std::format("./{}.json", language));
+		if (file.exists())
+			return true;
+
+		if (auto it = m_remote_index.translations.find(language.data()); it != m_remote_index.translations.end())
+			return true;
+
+		return false;
 	}
 
 	nlohmann::json translation_service::load_translation(const std::string_view pack_id)
@@ -219,5 +239,41 @@ namespace big
 			response = cpr::Get(cpr::Url{m_fallback_url + filename});
 
 		return response;
+	}
+
+	void translation_service::try_set_default_language()
+	{
+		if (!m_local_index.default_language_set)
+		{
+			g_fiber_pool->queue_job([this] {
+				std::string preferred_lang = "en_US";
+				auto game_lang             = *g_pointers->m_gta.m_language;
+
+				switch (game_lang)
+				{
+				case 1: preferred_lang = "fr_FR"; break;
+				case 2: preferred_lang = "de_DE"; break;
+				case 3: preferred_lang = "it_IT"; break;
+				case 4:
+				case 11: preferred_lang = "es_ES"; break;
+				case 5: preferred_lang = "pt_BR"; break;
+				case 6: preferred_lang = "pl_PL"; break;
+				case 7: preferred_lang = "ru_RU"; break;
+				case 8: preferred_lang = "ko_KR"; break;
+				case 9: preferred_lang = "zh_TW"; break;
+				case 10: preferred_lang = "ja_JP"; break;
+				case 12: preferred_lang = "zh_CN"; break;
+				}
+
+				if (does_language_exist(preferred_lang))
+				{
+					m_local_index.selected_language = preferred_lang;
+					save_local_index();
+				}
+
+				m_local_index.default_language_set = true;
+				load_translations();
+			});
+		}
 	}
 }
