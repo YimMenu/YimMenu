@@ -69,9 +69,7 @@ namespace big
 
 		detour_hook_helper::add<hooks::sort_session_details>("SSD", g_pointers->m_gta.m_sort_session_details);
 
-		detour_hook_helper::add<hooks::add_player_to_session>("APTS", g_pointers->m_gta.m_add_player_to_session);
 		detour_hook_helper::add<hooks::send_chat_message>("SCM", g_pointers->m_gta.m_send_chat_message);
-		detour_hook_helper::add<hooks::send_chat_net_message>("SCNM", g_pointers->m_gta.m_send_chat_net_message);
 
 		detour_hook_helper::add<hooks::process_matchmaking_find_response>("PMFR", g_pointers->m_gta.m_process_matchmaking_find_response);
 		detour_hook_helper::add<hooks::serialize_player_data_msg>("SJPD", g_pointers->m_gta.m_serialize_player_data_msg);
@@ -117,6 +115,8 @@ namespace big
 		detour_hook_helper::add<hooks::fipackfile_mount>("FPFM", g_pointers->m_gta.m_fipackfile_mount);
 
 		detour_hook_helper::add<hooks::allow_weapons_in_vehicle>("AWIV", g_pointers->m_gta.m_allow_weapons_in_vehicle);
+
+		detour_hook_helper::add<hooks::netfilter_handle_message>("NHM", g_pointers->m_gta.m_netfilter_handle_message);
 
 		g_hooking = this;
 	}

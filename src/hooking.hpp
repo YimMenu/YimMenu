@@ -98,22 +98,16 @@ namespace big
 		static bool write_player_game_state_data_node(rage::netObject* player, CPlayerGameStateDataNode* node);
 
 		static void invalid_mods_crash_detour(int64_t a1, int64_t a2, int a3, char a4);
-		static std::int64_t constraint_attachment_crash(std::uintptr_t a1);
 		static uint64_t invalid_decal(uintptr_t a1, int a2);
 		static uint64_t task_parachute_object_0x270(uint64_t _this, int a2, int a3);
 
 		static bool update_presence_attribute_int(void* presence_data, int profile_index, char* attr, std::uint64_t value);
 		static bool update_presence_attribute_string(void* presence_data, int profile_index, char* attr, char* value);
 
-		static void serialize_ped_inventory_data_node(CPedInventoryDataNode* node, rage::CSyncDataBase* data);
-		static void serialize_vehicle_gadget_data_node(CVehicleGadgetDataNode* node, rage::CSyncDataBase* data);
-
 		static bool handle_join_request(Network* network, rage::snSession* session, rage::rlGamerInfo* player_info, CJoinRequestContext* ctx, BOOL is_transition_session);
 
 		static bool sort_session_details(SessionSortEntry* e1, SessionSortEntry* e2);
 
-		static bool add_player_to_session(rage::netConnectionManager* mgr, int receiver_msg_id, int* out_command_hndl, RemoteGamerInfoMsg* msg, int flags, void* unk);
-		static bool send_chat_net_message(rage::netConnectionManager* mgr, int receiver_msg_id, CMsgTextMessage* msg, int flags, void* unk);
 		static bool send_chat_message(void* team_mgr, rage::rlGamerInfo* local_gamer_info, char* message, bool is_team);
 
 		static bool process_matchmaking_find_response(void* _this, void* unused, rage::JSONNode* node, int* unk);
@@ -136,8 +130,6 @@ namespace big
 		static int nt_query_virtual_memory(void* _this, HANDLE handle, PVOID base_addr, int info_class, MEMORY_BASIC_INFORMATION* info, int size, size_t* return_len);
 		static void queue_dependency(void* dependency);
 		static void prepare_metric_for_sending(rage::datBitBuffer* bit_buffer, int unk, int time, rage::rlMetric* metric);
-
-		static void* infinite_train_crash(void* carriage);
 
 		static bool received_array_update(rage::netArrayHandlerBase* array, CNetGamePlayer* sender, rage::datBitBuffer* buffer, int size, std::int16_t cycle);
 
@@ -163,6 +155,7 @@ namespace big
 		static bool fipackfile_mount(rage::fiPackfile* this_, const char* mount_point);
 
 		static bool allow_weapons_in_vehicle(int64_t unk, int weaponinfo_group);
+		static int netfilter_handle_message(__int64 filter, char* message, int flags);
 	};
 
 	class minhook_keepalive
