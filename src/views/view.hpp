@@ -24,7 +24,6 @@ namespace big
 	public:
 		static void active_view();
 		static void esp_settings();
-		static void context_menu_settings();
 		static void outfit_editor();
 		static void outfit_slots();
 		static void stat_editor();
@@ -34,7 +33,6 @@ namespace big
 		static void handling_saved_profiles();
 		static void reaction_settings();
 		static void protection_settings();
-		static void translation_settings();
 		static void heading();
 		static void mobile();
 		static void navigation();

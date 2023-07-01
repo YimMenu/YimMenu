@@ -66,9 +66,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    LOG(INFO) << "Yim's Menu Initializing";
 				    LOGF(INFO, "Git Info\n\tBranch:\t{}\n\tHash:\t{}\n\tDate:\t{}", version::GIT_BRANCH, version::GIT_SHA1, version::GIT_DATE);
 
-				    g_translation_service.init();
-				    LOG(INFO) << "Translation Service initialized.";
-
 				    auto thread_pool_instance = std::make_unique<thread_pool>();
 				    LOG(INFO) << "Thread pool initialized.";
 
@@ -87,6 +84,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 				    auto fiber_pool_instance = std::make_unique<fiber_pool>(11);
 				    LOG(INFO) << "Fiber pool initialized.";
+
+				    g_translation_service.init();
+				    LOG(INFO) << "Translation Service initialized.";
 
 				    auto hooking_instance = std::make_unique<hooking>();
 				    LOG(INFO) << "Hooking initialized.";
