@@ -103,6 +103,8 @@ namespace big
 			}
 			ImGui::EndCombo();
 		}
+		if(ImGui::IsItemHovered())
+			ImGui::SetTooltip("Shift click to delete");
 
 		ImGui::SeparatorText("Squad Details");
 

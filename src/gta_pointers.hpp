@@ -176,9 +176,6 @@ namespace big
 
 		PVOID m_sort_session_details;
 
-		PVOID m_add_player_to_session;
-		PVOID m_send_chat_net_message;
-
 		PVOID m_process_matchmaking_find_response;
 		PVOID m_serialize_player_data_msg;
 
@@ -259,6 +256,10 @@ namespace big
 		GenericPool** m_ped_pool{};
 		GenericPool** m_prop_pool{};
 		VehiclePool*** m_vehicle_pool{};
+
+		PVOID m_netfilter_handle_message{};
+
+		functions::handle_chat_message m_handle_chat_message{};
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");
