@@ -134,7 +134,7 @@ namespace big
 					if (g.session.chat_commands && message[0] == g.session.chat_command_prefix)
 						command::process(std::string(message + 1), std::make_shared<chat_command_context>(player));
 					else
-						g_lua_manager->trigger_event<"chat_message_received">(player->id(), message);
+						g_lua_manager->trigger_event<menu_event::ChatMessageReceived>(player->id(), message);
 
 					if (msgType == rage::eNetMessage::MsgTextMessage && g_pointers->m_gta.m_chat_data && player->get_net_data())
 					{

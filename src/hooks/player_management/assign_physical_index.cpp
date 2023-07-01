@@ -26,7 +26,7 @@ namespace big
 
 			if (net_player_data)
 			{
-				g_lua_manager->trigger_event<"player_leave">(net_player_data->m_name);
+				g_lua_manager->trigger_event<menu_event::PlayerLeave>(net_player_data->m_name);
 
 				if (g.notifications.player_leave.log)
 					LOG(INFO) << "Player left '" << net_player_data->m_name << "' freeing slot #" << (int)player->m_player_id
@@ -64,7 +64,7 @@ namespace big
 				}
 			}
 
-			g_lua_manager->trigger_event<"player_join">(net_player_data->m_name, player->m_player_id);
+			g_lua_manager->trigger_event<menu_event::PlayerJoin>(net_player_data->m_name, player->m_player_id);
 
 			if (g.notifications.player_join.above_map && *g_pointers->m_gta.m_is_session_started) // prevent loading screen spam
 				notify::player_joined(player);
