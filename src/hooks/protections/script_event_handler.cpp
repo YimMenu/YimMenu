@@ -60,7 +60,7 @@ namespace big
 
 		auto plyr = g_player_service->get_by_id(player->m_player_id);
 
-		if (g_lua_manager && g_lua_manager->get_modules().size() > 0)
+		if (g_lua_manager && g_lua_manager->get_module_count() > 0)
 		{
 			std::vector<int32_t> script_event_args;
 
