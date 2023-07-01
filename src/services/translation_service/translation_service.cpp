@@ -164,7 +164,20 @@ namespace big
 			// make a copy available
 			m_local_index.fallback_languages[pack_id.data()] = m_remote_index.translations[pack_id.data()];
 		}
-		return nlohmann::json::parse(std::ifstream(file.get_path(), std::ios::binary));
+
+		try
+		{
+			return nlohmann::json::parse(std::ifstream(file.get_path(), std::ios::binary));
+		}
+		catch (std::exception& e)
+		{
+			LOG(WARNING) << "Failed to parse language pack. " << e.what();
+
+			if (auto it = m_remote_index.translations.find(pack_id.data()); it != m_remote_index.translations.end()) // ensure that local language files are not removed
+				std::filesystem::remove(file.get_path());
+
+			return {};
+		}
 	}
 
 	bool translation_service::download_language_pack(const std::string_view pack_id)
@@ -175,12 +188,20 @@ namespace big
 
 			if (response.status_code == 200)
 			{
-				auto json      = nlohmann::json::parse(response.text);
-				auto lang_file = m_translation_directory->get_file("./" + it->second.file);
+				try
+				{
+					auto json      = nlohmann::json::parse(response.text);
+					auto lang_file = m_translation_directory->get_file("./" + it->second.file);
 
-				auto out_file = std::ofstream(lang_file.get_path(), std::ios::binary | std::ios::trunc);
-				out_file << json.dump(4);
-				out_file.close();
+					auto out_file = std::ofstream(lang_file.get_path(), std::ios::binary | std::ios::trunc);
+					out_file << json.dump(4);
+					out_file.close();
+				}
+				catch (std::exception& e)
+				{
+					LOG(WARNING) << "Failed to parse language pack. " << e.what();
+					return false;
+				}
 
 				return true;
 			}
