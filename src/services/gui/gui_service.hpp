@@ -147,7 +147,6 @@ namespace big
 		                {tabs::HOTKEY_SETTINGS, {"GUI_TAB_HOTKEYS", view::hotkey_settings}},
 		                {tabs::REACTION_SETTINGS, {"GUI_TAB_REACTIONS", view::reaction_settings}},
 		                {tabs::PROTECTION_SETTINGS, {"GUI_TAB_PROTECTION", view::protection_settings}},
-		                {tabs::TRANSLATION_SETTINGS, {"GUI_TAB_TRANSLATION", view::translation_settings}},
 		                {tabs::DEBUG, {"GUI_TAB_DEBUG", nullptr}},
 		            },
 		        },

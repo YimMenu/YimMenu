@@ -40,20 +40,27 @@ namespace big
 		m_selected = nullptr;
 		if (std::filesystem::exists(m_file_path))
 		{
-			std::ifstream file_stream(m_file_path);
-
-			nlohmann::json json;
-			file_stream >> json;
-			file_stream.close();
-
-			for (auto& [key, value] : json.items())
+			try
 			{
-				auto player                = value.get<std::shared_ptr<persistent_player>>();
-				m_players[std::stoll(key)] = player;
+				std::ifstream file_stream(m_file_path);
 
-				std::string lower = player->name;
-				std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
-				m_sorted_players[lower] = player;
+				nlohmann::json json;
+				file_stream >> json;
+				file_stream.close();
+
+				for (auto& [key, value] : json.items())
+				{
+					auto player                = value.get<std::shared_ptr<persistent_player>>();
+					m_players[std::stoll(key)] = player;
+
+					std::string lower = player->name;
+					std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+					m_sorted_players[lower] = player;
+				}
+			}
+			catch (std::exception& e)
+			{
+				LOG(WARNING) << "Failed to load player database file. " << e.what();
 			}
 		}
 	}
@@ -195,7 +202,8 @@ namespace big
 						{
 							if (it->second->online_state == PlayerOnlineStatus::OFFLINE && it->second->notify_online)
 							{
-								g_notification_service->push_success("Player DB", std::format("{} is now online!", it->second->name));
+								g_notification_service->push_success("Player DB",
+								    std::format("{} is now online!", it->second->name));
 							}
 							it->second->online_state = PlayerOnlineStatus::ONLINE;
 
