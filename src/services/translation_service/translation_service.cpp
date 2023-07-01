@@ -194,7 +194,15 @@ namespace big
 
 		if (response.status_code == 200)
 		{
-			m_remote_index = nlohmann::json::parse(response.text);
+			try
+			{
+				m_remote_index = nlohmann::json::parse(response.text);
+			}
+			catch (std::exception& e)
+			{
+				LOG(WARNING) << "Failed to load remote index. " << e.what();
+				return false;
+			}
 
 			return true;
 		}
@@ -206,8 +214,16 @@ namespace big
 		const auto local_index = m_translation_directory->get_file("./index.json");
 		if (local_index.exists())
 		{
-			const auto path = local_index.get_path();
-			m_local_index   = nlohmann::json::parse(std::ifstream(path, std::ios::binary));
+			try
+			{
+				const auto path = local_index.get_path();
+				m_local_index   = nlohmann::json::parse(std::ifstream(path, std::ios::binary));
+			}
+			catch (std::exception& e)
+			{
+				LOG(WARNING) << "Failed to load local index. " << e.what();
+				return false;
+			}
 
 			return true;
 		}
