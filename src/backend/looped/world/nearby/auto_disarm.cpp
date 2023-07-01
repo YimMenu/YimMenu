@@ -25,7 +25,7 @@ namespace big
 
 				if (!PED::IS_PED_A_PLAYER(handle) && ENTITY::DOES_ENTITY_EXIST(PED::GET_PED_TARGET_FROM_COMBAT_PED(handle, false)))
 				{
-					if (entity::take_control_of(handle))
+					if (entity::take_control_of(handle, 0))
 					{
 						if (WEAPON::IS_PED_ARMED(handle, 1 | 2 | 4))
 							WEAPON::REMOVE_ALL_PED_WEAPONS(handle, false);

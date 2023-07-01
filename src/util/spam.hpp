@@ -80,4 +80,6 @@ namespace big::spam
 
 		spam_log.close();
 	}
+
+
 }

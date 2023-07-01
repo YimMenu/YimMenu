@@ -715,24 +715,6 @@ namespace big
                 g_pointers->m_gta.m_sort_session_details = ptr.sub(0x10).as<PVOID>();
             }
         },
-        // Add Player To Session
-        {
-            "APTS",
-            "E8 ? ? ? ? 48 8D 8D F0 01 00 00 8A D8",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_add_player_to_session = ptr.add(1).rip().as<PVOID>();
-            }
-        },
-        // Send Chat Net Message
-        {
-            "SCNM",
-            "E8 ? ? ? ? 41 FF C4 48 83 C5 08",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_send_chat_net_message = ptr.add(1).rip().as<PVOID>();
-            }
-        },
         // Process Matchmaking Find Response
         {
             "PMFR",
@@ -1211,6 +1193,24 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_taskjump_constructor = ptr.as<PVOID>();
+            }
+        },
+        // NetFilter Handle Message
+        {
+            "NHM",
+            "40 55 56 57 41 54 41 55 41 56 41 57 48 81 EC 50 01 00 00 48 8D 6C 24 30",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_netfilter_handle_message = ptr.as<PVOID>();
+            }
+        },
+        // Handle Chat Message
+        {
+            "HCM",
+            "4D 85 C9 0F 84 8D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_handle_chat_message = ptr.as<functions::handle_chat_message>();
             }
         },
         // Max Wanted Level
