@@ -1,6 +1,5 @@
 #include "backend/player_command.hpp"
 #include "core/data/admin_rids.hpp"
-#include "core/globals.hpp"
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
 #include "hooking.hpp"
