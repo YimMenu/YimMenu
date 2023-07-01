@@ -38,9 +38,11 @@ namespace big
 		template<menu_event menu_event_, typename Return = void, typename... Args>
 		inline std::conditional_t<std::is_void_v<Return>, void, std::optional<Return>> trigger_event(Args&&... args)
 		{
-			for (auto& modules : get_modules())
+			std::lock_guard guard(m_module_lock);
+
+			for (auto& module : m_modules)
 			{
-				if (auto vec = modules->m_event_callbacks.find(menu_event_); vec != modules->m_event_callbacks.end())
+				if (auto vec = module->m_event_callbacks.find(menu_event_); vec != module->m_event_callbacks.end())
 				{
 					for (auto& cb : vec->second)
 					{
