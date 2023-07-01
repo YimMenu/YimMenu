@@ -58,6 +58,10 @@ namespace big
 			g_lua_manager->load_all_modules();
 			g_lua_manager->m_schedule_reload_modules = false;
 		}
+		else
+		{
+			g_lua_manager->load_modules_from_queue();
+		}
 
 		if (m_scripts_to_add.size())
 		{

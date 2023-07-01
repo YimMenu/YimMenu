@@ -23,9 +23,15 @@ namespace big
 		}
 
 		void draw_gui(rage::joaat_t tab_hash);
+
 		void unload_module(rage::joaat_t module_id);
 		void load_module(const std::string& module_name);
+
+		void queue_load_module(const std::string& module_name, std::function<void(std::weak_ptr<lua_module>)> on_module_loaded);
+		void load_modules_from_queue();
+
 		std::weak_ptr<lua_module> get_module(rage::joaat_t module_id);
+
 		void handle_error(const sol::error& error, const sol::state_view& state);
 
 		template<template_str hash_str, typename Return = void, typename... Args>
@@ -79,6 +85,13 @@ namespace big
 
 	private:
 		std::vector<std::shared_ptr<lua_module>> m_modules;
+
+		struct module_load_info
+		{
+			std::string m_name;
+			std::function<void(std::weak_ptr<lua_module>)> m_on_module_loaded;
+		};
+		std::queue<module_load_info> m_modules_load_queue;
 	};
 
 	inline lua_manager* g_lua_manager;

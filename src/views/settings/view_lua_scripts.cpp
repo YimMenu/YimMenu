@@ -41,8 +41,9 @@ namespace big
 				auto id   = selected_module.lock()->module_id();
 
 				g_lua_manager->unload_module(id);
-				g_lua_manager->load_module(name);
-				selected_module = g_lua_manager->get_module(id);
+				g_lua_manager->queue_load_module(name, [](std::weak_ptr<big::lua_module> loaded_module) {
+					selected_module = loaded_module;
+				});
 			}
 		}
 
