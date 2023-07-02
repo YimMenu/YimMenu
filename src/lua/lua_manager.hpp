@@ -20,11 +20,13 @@ namespace big
 		static constexpr std::chrono::seconds m_delay_between_changed_scripts_check = 3s;
 		std::chrono::high_resolution_clock::time_point m_wake_time_changed_scripts_check;
 
+		folder m_scripts_folder;
+
 	public:
 		bool m_schedule_reload_modules;
 
 	public:
-		lua_manager();
+		lua_manager(folder scripts_folder);
 		~lua_manager();
 
 		void load_all_modules();
@@ -33,6 +35,11 @@ namespace big
 		inline auto get_module_count() const
 		{
 			return m_modules.size();
+		}
+
+		inline const folder& get_scripts_folder() const
+		{
+			return m_scripts_folder;
 		}
 
 		void draw_gui(rage::joaat_t tab_hash);
