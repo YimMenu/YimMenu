@@ -63,6 +63,11 @@ namespace big
 
 	void lua_manager::reload_changed_scripts()
 	{
+		if (!g.lua.enable_auto_reload_changed_scripts)
+		{
+			return;
+		}
+
 		if (m_wake_time_changed_scripts_check <= std::chrono::high_resolution_clock::now())
 		{
 			for (const auto& entry : std::filesystem::directory_iterator(g_file_manager->get_project_folder("scripts").get_path()))
@@ -82,7 +87,6 @@ namespace big
 							break;
 						}
 					}
-
 				}
 			}
 
