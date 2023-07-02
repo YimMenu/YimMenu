@@ -1,5 +1,6 @@
 #pragma once
 #include "lua_module.hpp"
+#include "core/enums.hpp"
 
 namespace big
 {
@@ -34,16 +35,14 @@ namespace big
 
 		void handle_error(const sol::error& error, const sol::state_view& state);
 
-		template<template_str hash_str, typename Return = void, typename... Args>
+		template<menu_event menu_event_, typename Return = void, typename... Args>
 		inline std::conditional_t<std::is_void_v<Return>, void, std::optional<Return>> trigger_event(Args&&... args)
 		{
-			constexpr auto hash = rage::joaat(hash_str.value);
-
 			std::lock_guard guard(m_module_lock);
 
 			for (auto& module : m_modules)
 			{
-				if (auto vec = module->m_event_callbacks.find(hash); vec != module->m_event_callbacks.end())
+				if (auto vec = module->m_event_callbacks.find(menu_event_); vec != module->m_event_callbacks.end())
 				{
 					for (auto& cb : vec->second)
 					{

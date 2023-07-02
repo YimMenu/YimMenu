@@ -54,7 +54,7 @@
 
 #include "logger/logger.hpp"
 
-#include "core/globals.hpp"
+#include "core/settings.hpp"
 #include "gta/natives.hpp"
 #include "ped/CPed.hpp"
 
