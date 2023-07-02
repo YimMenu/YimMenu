@@ -53,7 +53,14 @@ namespace big
 		{
 			g_lua_manager->m_schedule_reload_modules = true;
 		}
-
+		ImGui::SameLine();
 		ImGui::Checkbox("Auto Reload Changed Scripts", &g.lua.enable_auto_reload_changed_scripts);
+
+		if (components::button("Open Lua Scripts Folder"))
+		{
+			std::string command = "explorer.exe /select," + g_lua_manager->get_scripts_folder().get_path().string();
+
+			std::system(command.c_str());
+		}
 	}
 }
