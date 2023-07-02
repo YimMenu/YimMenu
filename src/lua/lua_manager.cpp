@@ -6,6 +6,8 @@ namespace big
 {
 	lua_manager::lua_manager()
 	{
+		m_schedule_reload_modules = false;
+
 		load_all_modules();
 
 		g_lua_manager = this;
@@ -56,24 +58,36 @@ namespace big
 		m_modules.push_back(std::make_shared<lua_module>(module_name));
 	}
 
+	void lua_manager::queue_load_module(const std::string& module_name, std::function<void(std::weak_ptr<lua_module>)> on_module_loaded)
+	{
+		m_modules_load_queue.push({module_name, on_module_loaded});
+	}
+
+	void lua_manager::load_modules_from_queue()
+	{
+		while (m_modules_load_queue.size())
+		{
+			auto& module_load_info = m_modules_load_queue.front();
+
+			const auto id = rage::joaat(module_load_info.m_name);
+
+			load_module(module_load_info.m_name);
+			auto loaded_module = get_module(id);
+			module_load_info.m_on_module_loaded(loaded_module);
+
+			m_modules_load_queue.pop();
+		}
+	}
+
 	std::weak_ptr<lua_module> lua_manager::get_module(rage::joaat_t module_id)
 	{
+		std::lock_guard guard(m_module_lock);
+
 		for (const auto& module : m_modules)
 			if (module->module_id() == module_id)
 				return module;
 
 		return {};
-	}
-
-	const std::vector<std::shared_ptr<lua_module>>& lua_manager::get_modules() const
-	{
-		return m_modules;
-	}
-
-	void lua_manager::reload_all_modules()
-	{
-		unload_all_modules();
-		load_all_modules();
 	}
 
 	void lua_manager::handle_error(const sol::error& error, const sol::state_view& state)

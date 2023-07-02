@@ -260,6 +260,9 @@ namespace big
 		PVOID m_netfilter_handle_message{};
 
 		functions::handle_chat_message m_handle_chat_message{};
+
+		int* m_language;
+		functions::update_language m_update_language{};
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

@@ -139,4 +139,6 @@ namespace big::functions
 	using migrate_object = void (*)(CNetGamePlayer* player, rage::netObject* object, int type);
 
 	using handle_chat_message = void (*)(void* chat_data, void*, rage::rlGamerHandle* handle, const char* text, bool is_team);
+
+	using update_language = void (*)(bool);
 }

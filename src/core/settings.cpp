@@ -1,4 +1,4 @@
-#include "globals.hpp"
+#include "settings.hpp"
 
 #include "thread_pool.hpp"
 
