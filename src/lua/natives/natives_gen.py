@@ -182,10 +182,10 @@ def get_natives_func_from_natives_hpp_file(natives_hpp):
         if "namespace " in line:
             current_namespace = line.replace("namespace ", "").strip()
             functions_per_namespaces[current_namespace] = []
-        elif "NATIVE_DECL" in line:
+        elif "static" in line:
             words = line.split()
 
-            # remove NATIVE_DECL from the words array
+            # remove static from the words array
             words.pop(0)
 
             func_name = ""
@@ -196,13 +196,17 @@ def get_natives_func_from_natives_hpp_file(natives_hpp):
 
                     continue
 
+            # Sol somehow choke on this, terrible software
+            if func_name == "DRAW_TEXTURED_POLY_WITH_THREE_COLOURS":
+                continue
+
             args = []
             args_start = line.split("(")[1]
             if args_start[0] == ")":
                 # no args
                 pass
             else:
-                args_str = args_start.rstrip()[:-1]
+                args_str = args_start.split(")")[0]
                 i = 0
                 for arg in args_str.split(","):
                     arg_type = arg[: arg.rfind(" ")].strip()
@@ -211,7 +215,7 @@ def get_natives_func_from_natives_hpp_file(natives_hpp):
                     i += 1
 
             return_type = (
-                line[: line.find(func_name)].replace("NATIVE_DECL", "").strip()
+                line[: line.find(func_name)].replace("static", "").strip()
             )
 
             native_func = NativeFunc(current_namespace, func_name, args, return_type)

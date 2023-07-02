@@ -2004,6 +2004,11 @@ namespace lua::native
 		CAM::SET_CAM_DOF_MAX_NEAR_IN_FOCUS_DISTANCE_BLEND_LEVEL(camera, p1);
 	}
 
+	void LUA_NATIVE_CAM_SET_CAM_DOF_SHOULD_KEEP_LOOK_AT_TARGET_IN_FOCUS( Cam camera, bool state )
+	{
+		CAM::SET_CAM_DOF_SHOULD_KEEP_LOOK_AT_TARGET_IN_FOCUS(camera, state);
+	}
+
 	void LUA_NATIVE_CAM_ATTACH_CAM_TO_ENTITY( Cam cam, Entity entity, float xOffset, float yOffset, float zOffset, bool isRelative )
 	{
 		CAM::ATTACH_CAM_TO_ENTITY(cam, entity, xOffset, yOffset, zOffset, isRelative);
@@ -4111,9 +4116,9 @@ namespace lua::native
 		return retval;
 	}
 
-	Entity LUA_NATIVE_ENTITY__GET_LAST_ENTITY_HIT_BY_ENTITY( Entity entity )
+	Entity LUA_NATIVE_ENTITY_GET_LAST_ENTITY_HIT_BY_ENTITY_( Entity entity )
 	{
-		auto retval = ENTITY::_GET_LAST_ENTITY_HIT_BY_ENTITY(entity);
+		auto retval = ENTITY::GET_LAST_ENTITY_HIT_BY_ENTITY_(entity);
 		return retval;
 	}
 
@@ -4358,6 +4363,12 @@ namespace lua::native
 		return retval;
 	}
 
+	int LUA_NATIVE_ENTITY_GET_NEAREST_PARTICIPANT_TO_ENTITY( Entity entity )
+	{
+		auto retval = ENTITY::GET_NEAREST_PARTICIPANT_TO_ENTITY(entity);
+		return retval;
+	}
+
 	int LUA_NATIVE_ENTITY_GET_ENTITY_TYPE( Entity entity )
 	{
 		auto retval = ENTITY::GET_ENTITY_TYPE(entity);
@@ -4589,6 +4600,11 @@ namespace lua::native
 	void LUA_NATIVE_ENTITY_ATTACH_ENTITY_TO_ENTITY_PHYSICALLY( Entity entity1, Entity entity2, int boneIndex1, int boneIndex2, float xPos1, float yPos1, float zPos1, float xPos2, float yPos2, float zPos2, float xRot, float yRot, float zRot, float breakForce, bool fixedRot, bool p15, bool collision, bool p17, int p18 )
 	{
 		ENTITY::ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(entity1, entity2, boneIndex1, boneIndex2, xPos1, yPos1, zPos1, xPos2, yPos2, zPos2, xRot, yRot, zRot, breakForce, fixedRot, p15, collision, p17, p18);
+	}
+
+	void LUA_NATIVE_ENTITY_ATTACH_ENTITY_TO_ENTITY_PHYSICALLY_OVERRIDE_INVERSE_MASS( Entity firstEntityIndex, Entity secondEntityIndex, int firstEntityBoneIndex, int secondEntityBoneIndex, float secondEntityOffsetX, float secondEntityOffsetY, float secondEntityOffsetZ, float firstEntityOffsetX, float firstEntityOffsetY, float firstEntityOffsetZ, float vecRotationX, float vecRotationY, float vecRotationZ, float physicalStrength, bool constrainRotation, bool doInitialWarp, bool collideWithEntity, bool addInitialSeperation, int rotOrder, float invMassScaleA, float invMassScaleB )
+	{
+		ENTITY::ATTACH_ENTITY_TO_ENTITY_PHYSICALLY_OVERRIDE_INVERSE_MASS(firstEntityIndex, secondEntityIndex, firstEntityBoneIndex, secondEntityBoneIndex, secondEntityOffsetX, secondEntityOffsetY, secondEntityOffsetZ, firstEntityOffsetX, firstEntityOffsetY, firstEntityOffsetZ, vecRotationX, vecRotationY, vecRotationZ, physicalStrength, constrainRotation, doInitialWarp, collideWithEntity, addInitialSeperation, rotOrder, invMassScaleA, invMassScaleB);
 	}
 
 	void LUA_NATIVE_ENTITY_PROCESS_ENTITY_ATTACHMENTS( Entity entity )
@@ -5653,11 +5669,6 @@ namespace lua::native
 	void LUA_NATIVE_GRAPHICS_DRAW_TEXTURED_POLY( float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, int red, int green, int blue, int alpha, const char* textureDict, const char* textureName, float u1, float v1, float w1, float u2, float v2, float w2, float u3, float v3, float w3 )
 	{
 		GRAPHICS::DRAW_TEXTURED_POLY(x1, y1, z1, x2, y2, z2, x3, y3, z3, red, green, blue, alpha, textureDict, textureName, u1, v1, w1, u2, v2, w2, u3, v3, w3);
-	}
-
-	void LUA_NATIVE_GRAPHICS_DRAW_TEXTURED_POLY_WITH_THREE_COLOURS( float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float red1, float green1, float blue1, int alpha1, float red2, float green2, float blue2, int alpha2, float red3, float green3, float blue3, int alpha3, const char* textureDict, const char* textureName, float u1, float v1, float w1, float u2, float v2, float w2, float u3, float v3, float w3 )
-	{
-		GRAPHICS::DRAW_TEXTURED_POLY_WITH_THREE_COLOURS(x1, y1, z1, x2, y2, z2, x3, y3, z3, red1, green1, blue1, alpha1, red2, green2, blue2, alpha2, red3, green3, blue3, alpha3, textureDict, textureName, u1, v1, w1, u2, v2, w2, u3, v3, w3);
 	}
 
 	void LUA_NATIVE_GRAPHICS_DRAW_BOX( float x1, float y1, float z1, float x2, float y2, float z2, int red, int green, int blue, int alpha )
@@ -9291,6 +9302,11 @@ namespace lua::native
 		HUD::SET_USE_ISLAND_MAP(toggle);
 	}
 
+	void LUA_NATIVE_HUD_SET_PAUSE_EXTERIOR_RENDERING_WHILE_IN_INTERIOR_(  )
+	{
+		HUD::SET_PAUSE_EXTERIOR_RENDERING_WHILE_IN_INTERIOR_();
+	}
+
 	void LUA_NATIVE_HUD_DONT_TILT_MINIMAP_THIS_FRAME(  )
 	{
 		HUD::DONT_TILT_MINIMAP_THIS_FRAME();
@@ -10348,9 +10364,9 @@ namespace lua::native
 		return retval;
 	}
 
-	void LUA_NATIVE_HUD_OPEN_SOCIAL_CLUB_MENU(  )
+	void LUA_NATIVE_HUD_OPEN_SOCIAL_CLUB_MENU( Hash menu )
 	{
-		HUD::OPEN_SOCIAL_CLUB_MENU();
+		HUD::OPEN_SOCIAL_CLUB_MENU(menu);
 	}
 
 	void LUA_NATIVE_HUD_CLOSE_SOCIAL_CLUB_MENU(  )
@@ -13099,11 +13115,6 @@ namespace lua::native
 		MONEY::NETWORK_EARN_FROM_NOT_BADSPORT(amount);
 	}
 
-	void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_ROCKSTAR( int amount )
-	{
-		MONEY::NETWORK_EARN_FROM_ROCKSTAR(amount);
-	}
-
 	void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_VEHICLE( Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7 )
 	{
 		MONEY::NETWORK_EARN_FROM_VEHICLE(p0, p1, p2, p3, p4, p5, p6, p7);
@@ -13175,14 +13186,14 @@ namespace lua::native
 		MONEY::NETWORK_EARN_FROM_CONTRABAND(amount, p1);
 	}
 
-	void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_DESTROYING_CONTRABAND( Any p0 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_DESTROYING_CONTRABAND( Any p0, Any p1, Any p2 )
 	{
-		MONEY::NETWORK_EARN_FROM_DESTROYING_CONTRABAND(p0);
+		MONEY::NETWORK_EARN_FROM_DESTROYING_CONTRABAND(p0, p1, p2);
 	}
 
-	void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_SMUGGLER_WORK( Any p0, Any p1, Any p2, Any p3, Any p4 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_SMUGGLER_WORK( Any p0, Any p1, Any p2, Any p3, Any p4, Any p5 )
 	{
-		MONEY::NETWORK_EARN_FROM_SMUGGLER_WORK(p0, p1, p2, p3, p4);
+		MONEY::NETWORK_EARN_FROM_SMUGGLER_WORK(p0, p1, p2, p3, p4, p5);
 	}
 
 	void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_HANGAR_TRADE( Any p0, Any p1 )
@@ -13305,9 +13316,9 @@ namespace lua::native
 		MONEY::NETWORK_BUY_AIRSTRIKE(cost, p1, p2, p3);
 	}
 
-	void LUA_NATIVE_MONEY_NETWORK_BUY_BACKUP_GANG( int p0, int p1, bool p2, bool p3 )
+	void LUA_NATIVE_MONEY_NETWORK_BUY_BACKUP_GANG( int p0, int p1, bool p2, bool p3, int npcProvider )
 	{
-		MONEY::NETWORK_BUY_BACKUP_GANG(p0, p1, p2, p3);
+		MONEY::NETWORK_BUY_BACKUP_GANG(p0, p1, p2, p3, npcProvider);
 	}
 
 	void LUA_NATIVE_MONEY_NETWORK_BUY_HELI_STRIKE( int cost, bool p1, bool p2, Any p3 )
@@ -13531,9 +13542,9 @@ namespace lua::native
 		MONEY::NETWORK_SPENT_MOVE_YACHT(amount, p1, p2);
 	}
 
-	void LUA_NATIVE_MONEY_NETWORK_SPENT_RENAME_ORGANIZATION( Any p0, Any p1, Any p2 )
+	void LUA_NATIVE_MONEY_NETWORK_SPENT_RENAME_ORGANIZATION( Any p0, Any p1, Any p2, Any p3 )
 	{
-		MONEY::NETWORK_SPENT_RENAME_ORGANIZATION(p0, p1, p2);
+		MONEY::NETWORK_SPENT_RENAME_ORGANIZATION(p0, p1, p2, p3);
 	}
 
 	void LUA_NATIVE_MONEY_NETWORK_BUY_CONTRABAND_MISSION( int p0, int p1, Hash p2, bool p3, bool p4 )
@@ -13571,14 +13582,14 @@ namespace lua::native
 		MONEY::NETWORK_SPENT_PA_HELI_PICKUP(p0, p1, p2, p3);
 	}
 
-	void LUA_NATIVE_MONEY_NETWORK_SPENT_PURCHASE_OFFICE_PROPERTY( Any p0, Any p1, Any p2, Any p3 )
+	void LUA_NATIVE_MONEY_NETWORK_SPENT_PURCHASE_OFFICE_PROPERTY( Any p0, Any p1, Any p2, Any p3, Any p4 )
 	{
-		MONEY::NETWORK_SPENT_PURCHASE_OFFICE_PROPERTY(p0, p1, p2, p3);
+		MONEY::NETWORK_SPENT_PURCHASE_OFFICE_PROPERTY(p0, p1, p2, p3, p4);
 	}
 
-	void LUA_NATIVE_MONEY_NETWORK_SPENT_UPGRADE_OFFICE_PROPERTY( Any p0, Any p1, Any p2, Any p3 )
+	void LUA_NATIVE_MONEY_NETWORK_SPENT_UPGRADE_OFFICE_PROPERTY( Any p0, Any p1, Any p2, Any p3, Any p4 )
 	{
-		MONEY::NETWORK_SPENT_UPGRADE_OFFICE_PROPERTY(p0, p1, p2, p3);
+		MONEY::NETWORK_SPENT_UPGRADE_OFFICE_PROPERTY(p0, p1, p2, p3, p4);
 	}
 
 	void LUA_NATIVE_MONEY_NETWORK_SPENT_PURCHASE_WAREHOUSE_PROPERTY( Any p0, Any p1, Any p2, Any p3 )
@@ -14430,144 +14441,184 @@ namespace lua::native
 		MONEY::NETWORK_YOHAN_SOURCE_GOODS(p0, p1, p2, p3);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_SPEND_BUY_MFGARAGE( Any p0, Any p1, Any p2, Any p3 )
+	void LUA_NATIVE_MONEY_NETWORK_SPEND_BUY_MFGARAGE_( Any p0, Any p1, Any p2, Any p3 )
 	{
-		MONEY::_NETWORK_SPEND_BUY_MFGARAGE(p0, p1, p2, p3);
+		MONEY::NETWORK_SPEND_BUY_MFGARAGE_(p0, p1, p2, p3);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_SPEND_UPGRADE_MFGARAGE( Any p0, Any p1, Any p2, Any p3 )
+	void LUA_NATIVE_MONEY_NETWORK_SPEND_UPGRADE_MFGARAGE_( Any p0, Any p1, Any p2, Any p3 )
 	{
-		MONEY::_NETWORK_SPEND_UPGRADE_MFGARAGE(p0, p1, p2, p3);
+		MONEY::NETWORK_SPEND_UPGRADE_MFGARAGE_(p0, p1, p2, p3);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_SPEND_BUY_SUPPLIES( int p0, bool p1, bool p2, int p3 )
+	void LUA_NATIVE_MONEY_NETWORK_SPEND_BUY_SUPPLIES_( int p0, bool p1, bool p2, int p3 )
 	{
-		MONEY::_NETWORK_SPEND_BUY_SUPPLIES(p0, p1, p2, p3);
+		MONEY::NETWORK_SPEND_BUY_SUPPLIES_(p0, p1, p2, p3);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_SPEND_BUY_ACID_LAB( Any p0, Any p1, Any p2, Any p3 )
+	void LUA_NATIVE_MONEY_NETWORK_SPEND_BUY_ACID_LAB_( Any p0, Any p1, Any p2, Any p3 )
 	{
-		MONEY::_NETWORK_SPEND_BUY_ACID_LAB(p0, p1, p2, p3);
+		MONEY::NETWORK_SPEND_BUY_ACID_LAB_(p0, p1, p2, p3);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_SPEND_UPGRADE_ACID_LAB_EQUIPMENT( Any p0, Any p1, Any p2, Any p3 )
+	void LUA_NATIVE_MONEY_NETWORK_SPEND_UPGRADE_ACID_LAB_EQUIPMENT_( Any p0, Any p1, Any p2, Any p3 )
 	{
-		MONEY::_NETWORK_SPEND_UPGRADE_ACID_LAB_EQUIPMENT(p0, p1, p2, p3);
+		MONEY::NETWORK_SPEND_UPGRADE_ACID_LAB_EQUIPMENT_(p0, p1, p2, p3);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_SPEND_UPGRADE_ACID_LAB_ARMOR( int p0, bool p1, bool p2, int p3 )
+	void LUA_NATIVE_MONEY_NETWORK_SPEND_UPGRADE_ACID_LAB_ARMOR_( int p0, bool p1, bool p2, int p3 )
 	{
-		MONEY::_NETWORK_SPEND_UPGRADE_ACID_LAB_ARMOR(p0, p1, p2, p3);
+		MONEY::NETWORK_SPEND_UPGRADE_ACID_LAB_ARMOR_(p0, p1, p2, p3);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_SPEND_UPGRADE_ACID_LAB_SCOOP( int p0, bool p1, bool p2, int p3 )
+	void LUA_NATIVE_MONEY_NETWORK_SPEND_UPGRADE_ACID_LAB_SCOOP_( int p0, bool p1, bool p2, int p3 )
 	{
-		MONEY::_NETWORK_SPEND_UPGRADE_ACID_LAB_SCOOP(p0, p1, p2, p3);
+		MONEY::NETWORK_SPEND_UPGRADE_ACID_LAB_SCOOP_(p0, p1, p2, p3);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_SPEND_UPGRADE_ACID_LAB_MINES( int p0, bool p1, bool p2, int p3 )
+	void LUA_NATIVE_MONEY_NETWORK_SPEND_UPGRADE_ACID_LAB_MINES_( int p0, bool p1, bool p2, int p3 )
 	{
-		MONEY::_NETWORK_SPEND_UPGRADE_ACID_LAB_MINES(p0, p1, p2, p3);
+		MONEY::NETWORK_SPEND_UPGRADE_ACID_LAB_MINES_(p0, p1, p2, p3);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_SPEND_RENAME_ACID_LAB( Any p0, Any p1, Any p2, Any p3 )
+	void LUA_NATIVE_MONEY_NETWORK_SPEND_RENAME_ACID_LAB_( Any p0, Any p1, Any p2, Any p3 )
 	{
-		MONEY::_NETWORK_SPEND_RENAME_ACID_LAB(p0, p1, p2, p3);
+		MONEY::NETWORK_SPEND_RENAME_ACID_LAB_(p0, p1, p2, p3);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_SPEND_RENAME_ACID_PRODUCT( Any p0, Any p1, Any p2, Any p3 )
+	void LUA_NATIVE_MONEY_NETWORK_SPEND_RENAME_ACID_PRODUCT_( Any p0, Any p1, Any p2, Any p3 )
 	{
-		MONEY::_NETWORK_SPEND_RENAME_ACID_PRODUCT(p0, p1, p2, p3);
+		MONEY::NETWORK_SPEND_RENAME_ACID_PRODUCT_(p0, p1, p2, p3);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_AWARD_JUGGALO_MISSION( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_AWARD_JUGGALO_MISSION_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_AWARD_JUGGALO_MISSION(p0, p1);
+		MONEY::NETWORK_EARN_AWARD_JUGGALO_MISSION_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_AWARD_ACID_LAB( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_AWARD_ACID_LAB_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_AWARD_ACID_LAB(p0, p1);
+		MONEY::NETWORK_EARN_AWARD_ACID_LAB_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_AWARD_DAILY_STASH( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_AWARD_DAILY_STASH_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_AWARD_DAILY_STASH(p0, p1);
+		MONEY::NETWORK_EARN_AWARD_DAILY_STASH_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_AWARD_DEAD_DROP( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_AWARD_DEAD_DROP_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_AWARD_DEAD_DROP(p0, p1);
+		MONEY::NETWORK_EARN_AWARD_DEAD_DROP_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_AWARD_RANDOM_EVENT( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_AWARD_RANDOM_EVENT_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_AWARD_RANDOM_EVENT(p0, p1);
+		MONEY::NETWORK_EARN_AWARD_RANDOM_EVENT_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_AWARD_TAXI( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_AWARD_TAXI_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_AWARD_TAXI(p0, p1);
+		MONEY::NETWORK_EARN_AWARD_TAXI_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_STREET_DEALER( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_STREET_DEALER_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_STREET_DEALER(p0, p1);
+		MONEY::NETWORK_EARN_STREET_DEALER_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_SELL_ACID( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_SELL_ACID_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_SELL_ACID(p0, p1);
+		MONEY::NETWORK_EARN_SELL_ACID_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_SETUP_PARTICIPATION_ACID_LAB( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_SETUP_PARTICIPATION_ACID_LAB_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_SETUP_PARTICIPATION_ACID_LAB(p0, p1);
+		MONEY::NETWORK_EARN_SETUP_PARTICIPATION_ACID_LAB_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_SOURCE_PARTICIPATION_ACID_LAB( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_SOURCE_PARTICIPATION_ACID_LAB_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_SOURCE_PARTICIPATION_ACID_LAB(p0, p1);
+		MONEY::NETWORK_EARN_SOURCE_PARTICIPATION_ACID_LAB_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_SELL_PARTICIPATION_ACID_LAB( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_SELL_PARTICIPATION_ACID_LAB_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_SELL_PARTICIPATION_ACID_LAB(p0, p1);
+		MONEY::NETWORK_EARN_SELL_PARTICIPATION_ACID_LAB_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_JUGGALO_STORY_MISSION( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_JUGGALO_STORY_MISSION_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_JUGGALO_STORY_MISSION(p0, p1);
+		MONEY::NETWORK_EARN_JUGGALO_STORY_MISSION_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_JUGGALO_STORY_MISSION_PARTICIPATION( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_JUGGALO_STORY_MISSION_PARTICIPATION_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_JUGGALO_STORY_MISSION_PARTICIPATION(p0, p1);
+		MONEY::NETWORK_EARN_JUGGALO_STORY_MISSION_PARTICIPATION_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_FOOLIGAN_JOB( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_FOOLIGAN_JOB_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_FOOLIGAN_JOB(p0, p1);
+		MONEY::NETWORK_EARN_FOOLIGAN_JOB_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_FOOLIGAN_JOB_PARTICIPATION( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_FOOLIGAN_JOB_PARTICIPATION_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_FOOLIGAN_JOB_PARTICIPATION(p0, p1);
+		MONEY::NETWORK_EARN_FOOLIGAN_JOB_PARTICIPATION_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_TAXI_JOB( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_TAXI_JOB_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_TAXI_JOB(p0, p1);
+		MONEY::NETWORK_EARN_TAXI_JOB_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_DAILY_STASH_HOUSE_COMPLETED( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_DAILY_STASH_HOUSE_COMPLETED_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_DAILY_STASH_HOUSE_COMPLETED(p0, p1);
+		MONEY::NETWORK_EARN_DAILY_STASH_HOUSE_COMPLETED_(p0, p1);
 	}
 
-	void LUA_NATIVE_MONEY__NETWORK_EARN_DAILY_STASH_HOUSE_PARTICIPATION( Any p0, Any p1 )
+	void LUA_NATIVE_MONEY_NETWORK_EARN_DAILY_STASH_HOUSE_PARTICIPATION_( Any p0, Any p1 )
 	{
-		MONEY::_NETWORK_EARN_DAILY_STASH_HOUSE_PARTICIPATION(p0, p1);
+		MONEY::NETWORK_EARN_DAILY_STASH_HOUSE_PARTICIPATION_(p0, p1);
+	}
+
+	void LUA_NATIVE_MONEY_NETWORK_EARN_AVENGER_( int amount, int p1 )
+	{
+		MONEY::NETWORK_EARN_AVENGER_(amount, p1);
+	}
+
+	void LUA_NATIVE_MONEY_NETWORK_EARN_SMUGGLER_OPS_( Any p0, Any p1, Any p2 )
+	{
+		MONEY::NETWORK_EARN_SMUGGLER_OPS_(p0, p1, p2);
+	}
+
+	void LUA_NATIVE_MONEY_NETWORK_EARN_BONUS_OBJECTIVE_( int amount, Any p1, Any p2 )
+	{
+		MONEY::NETWORK_EARN_BONUS_OBJECTIVE_(amount, p1, p2);
+	}
+
+	void LUA_NATIVE_MONEY_NETWORK_EARN_PROGRESS_HUB_( Any p0, Any p1 )
+	{
+		MONEY::NETWORK_EARN_PROGRESS_HUB_(p0, p1);
+	}
+
+	void LUA_NATIVE_MONEY_NETWORK_SPENT_AIR_FREIGHT_( int hangarCargoSourcingPrice, bool fromBank, bool fromBankAndWallet, int cost, int warehouseId, int warehouseSlot )
+	{
+		MONEY::NETWORK_SPENT_AIR_FREIGHT_(hangarCargoSourcingPrice, fromBank, fromBankAndWallet, cost, warehouseId, warehouseSlot);
+	}
+
+	void LUA_NATIVE_MONEY_NETWORK_SPENT_SKIP_CARGO_SOURCE_SETUP_( int amount, bool fromBank, bool fromBankAndWallet, int cost )
+	{
+		MONEY::NETWORK_SPENT_SKIP_CARGO_SOURCE_SETUP_(amount, fromBank, fromBankAndWallet, cost);
+	}
+
+	void LUA_NATIVE_MONEY_NETWORK_SPENT_STEALTH_MODULE_( int amount, bool fromBank, bool fromBankAndWallet, Hash p3 )
+	{
+		MONEY::NETWORK_SPENT_STEALTH_MODULE_(amount, fromBank, fromBankAndWallet, p3);
+	}
+
+	void LUA_NATIVE_MONEY_NETWORK_SPENT_MISSILE_JAMMER_( int amount, bool fromBank, bool fromBankAndWallet, Hash p3 )
+	{
+		MONEY::NETWORK_SPENT_MISSILE_JAMMER_(amount, fromBank, fromBankAndWallet, p3);
 	}
 
 	int LUA_NATIVE_MONEY_NETWORK_GET_VC_BANK_BALANCE(  )
@@ -14612,9 +14663,9 @@ namespace lua::native
 		return retval;
 	}
 
-	const char* LUA_NATIVE_MONEY_NETWORK_GET_STRING_BANK_WALLET_BALANCE(  )
+	const char* LUA_NATIVE_MONEY_NETWORK_GET_STRING_BANK_WALLET_BALANCE( int character )
 	{
-		auto retval = MONEY::NETWORK_GET_STRING_BANK_WALLET_BALANCE();
+		auto retval = MONEY::NETWORK_GET_STRING_BANK_WALLET_BALANCE(character);
 		return retval;
 	}
 
@@ -16515,9 +16566,9 @@ namespace lua::native
 		return retval;
 	}
 
-	float LUA_NATIVE_NETWORK__NETWORK_GET_RANDOM_FLOAT_RANGED( float rangeStart, float rangeEnd )
+	float LUA_NATIVE_NETWORK_NETWORK_GET_RANDOM_FLOAT_RANGED_( float rangeStart, float rangeEnd )
 	{
-		auto retval = NETWORK::_NETWORK_GET_RANDOM_FLOAT_RANGED(rangeStart, rangeEnd);
+		auto retval = NETWORK::NETWORK_GET_RANDOM_FLOAT_RANGED_(rangeStart, rangeEnd);
 		return retval;
 	}
 
@@ -16536,24 +16587,6 @@ namespace lua::native
 	bool LUA_NATIVE_NETWORK_NETWORK_PLAYER_IS_BADSPORT(  )
 	{
 		auto retval = (bool)NETWORK::NETWORK_PLAYER_IS_BADSPORT();
-		return retval;
-	}
-
-	bool LUA_NATIVE_NETWORK_TRIGGER_PLAYER_CRC_HACKER_CHECK( Player player, int p1, Hash scriptHash )
-	{
-		auto retval = (bool)NETWORK::TRIGGER_PLAYER_CRC_HACKER_CHECK(player, p1, scriptHash);
-		return retval;
-	}
-
-	bool LUA_NATIVE_NETWORK_TRIGGER_TUNING_CRC_HACKER_CHECK( Player player, const char* p1, const char* p2 )
-	{
-		auto retval = (bool)NETWORK::TRIGGER_TUNING_CRC_HACKER_CHECK(player, p1, p2);
-		return retval;
-	}
-
-	bool LUA_NATIVE_NETWORK_TRIGGER_FILE_CRC_HACKER_CHECK( Player player, const char* p1 )
-	{
-		auto retval = (bool)NETWORK::TRIGGER_FILE_CRC_HACKER_CHECK(player, p1);
 		return retval;
 	}
 
@@ -16873,6 +16906,11 @@ namespace lua::native
 	void LUA_NATIVE_NETWORK_NETWORK_SET_VEHICLE_DRIVEN_IN_TEST_DRIVE( bool toggle )
 	{
 		NETWORK::NETWORK_SET_VEHICLE_DRIVEN_IN_TEST_DRIVE(toggle);
+	}
+
+	void LUA_NATIVE_NETWORK_NETWORK_SET_VEHICLE_DRIVEN_LOCATION( Hash location )
+	{
+		NETWORK::NETWORK_SET_VEHICLE_DRIVEN_LOCATION(location);
 	}
 
 	void LUA_NATIVE_NETWORK_NETWORK_RESURRECT_LOCAL_PLAYER( float x, float y, float z, float heading, bool p4, bool changetime, bool p6, int p7, int p8 )
@@ -18072,24 +18110,24 @@ namespace lua::native
 		NETWORK::SET_LOCAL_PLAYER_VISIBLE_IN_CUTSCENE(p0, p1);
 	}
 
-	void LUA_NATIVE_NETWORK_SET_LOCAL_PLAYER_INVISIBLE_LOCALLY( bool p0 )
+	void LUA_NATIVE_NETWORK_SET_LOCAL_PLAYER_INVISIBLE_LOCALLY( bool bIncludePlayersVehicle )
 	{
-		NETWORK::SET_LOCAL_PLAYER_INVISIBLE_LOCALLY(p0);
+		NETWORK::SET_LOCAL_PLAYER_INVISIBLE_LOCALLY(bIncludePlayersVehicle);
 	}
 
-	void LUA_NATIVE_NETWORK_SET_LOCAL_PLAYER_VISIBLE_LOCALLY( bool p0 )
+	void LUA_NATIVE_NETWORK_SET_LOCAL_PLAYER_VISIBLE_LOCALLY( bool bIncludePlayersVehicle )
 	{
-		NETWORK::SET_LOCAL_PLAYER_VISIBLE_LOCALLY(p0);
+		NETWORK::SET_LOCAL_PLAYER_VISIBLE_LOCALLY(bIncludePlayersVehicle);
 	}
 
-	void LUA_NATIVE_NETWORK_SET_PLAYER_INVISIBLE_LOCALLY( Player player, bool toggle )
+	void LUA_NATIVE_NETWORK_SET_PLAYER_INVISIBLE_LOCALLY( Player player, bool bIncludePlayersVehicle )
 	{
-		NETWORK::SET_PLAYER_INVISIBLE_LOCALLY(player, toggle);
+		NETWORK::SET_PLAYER_INVISIBLE_LOCALLY(player, bIncludePlayersVehicle);
 	}
 
-	void LUA_NATIVE_NETWORK_SET_PLAYER_VISIBLE_LOCALLY( Player player, bool toggle )
+	void LUA_NATIVE_NETWORK_SET_PLAYER_VISIBLE_LOCALLY( Player player, bool bIncludePlayersVehicle )
 	{
-		NETWORK::SET_PLAYER_VISIBLE_LOCALLY(player, toggle);
+		NETWORK::SET_PLAYER_VISIBLE_LOCALLY(player, bIncludePlayersVehicle);
 	}
 
 	void LUA_NATIVE_NETWORK_FADE_OUT_LOCAL_PLAYER( bool p0 )
@@ -21454,6 +21492,16 @@ namespace lua::native
 		return return_values;
 	}
 
+	std::tuple<Vector3, Vector3, float> LUA_NATIVE_PATHFIND_GET_SPAWN_COORDS_FOR_VEHICLE_NODE( int nodeAddress, float towardsCoorsX, float towardsCoorsY, float towardsCoorsZ, Vector3 centrePoint, float heading )
+	{
+		std::tuple<Vector3, Vector3, float> return_values;
+		std::get<0>(return_values) = PATHFIND::GET_SPAWN_COORDS_FOR_VEHICLE_NODE(nodeAddress, towardsCoorsX, towardsCoorsY, towardsCoorsZ, &centrePoint, &heading);
+		std::get<1>(return_values) = centrePoint;
+		std::get<2>(return_values) = heading;
+
+		return return_values;
+	}
+
 	std::tuple<Hash, Hash> LUA_NATIVE_PATHFIND_GET_STREET_NAME_AT_COORD( float x, float y, float z, Hash streetName, Hash crossingRoad )
 	{
 		std::tuple<Hash, Hash> return_values;
@@ -21910,9 +21958,9 @@ namespace lua::native
 		return retval;
 	}
 
-	Vehicle LUA_NATIVE_PED_GET_VEHICLE_PED_IS_IN( Ped ped, bool includeLastVehicle )
+	Vehicle LUA_NATIVE_PED_GET_VEHICLE_PED_IS_IN( Ped ped, bool includeEntering )
 	{
-		auto retval = PED::GET_VEHICLE_PED_IS_IN(ped, includeLastVehicle);
+		auto retval = PED::GET_VEHICLE_PED_IS_IN(ped, includeEntering);
 		return retval;
 	}
 
@@ -26402,9 +26450,9 @@ namespace lua::native
 		return retval;
 	}
 
-	void LUA_NATIVE_PLAYER_SIMULATE_PLAYER_INPUT_GAIT( Player player, float amount, int gaitType, float speed, bool p4, bool p5 )
+	void LUA_NATIVE_PLAYER_SIMULATE_PLAYER_INPUT_GAIT( Player player, float amount, int gaitType, float speed, bool p4, bool p5, Any p6 )
 	{
-		PLAYER::SIMULATE_PLAYER_INPUT_GAIT(player, amount, gaitType, speed, p4, p5);
+		PLAYER::SIMULATE_PLAYER_INPUT_GAIT(player, amount, gaitType, speed, p4, p5, p6);
 	}
 
 	void LUA_NATIVE_PLAYER_RESET_PLAYER_INPUT_GAIT( Player player )
@@ -27810,6 +27858,12 @@ namespace lua::native
 		return retval;
 	}
 
+	Hash LUA_NATIVE_STATS_GET_STAT_HASH_FOR_CHARACTER_STAT_( int dataType, int statIndex, int charSlot )
+	{
+		auto retval = STATS::GET_STAT_HASH_FOR_CHARACTER_STAT_(dataType, statIndex, charSlot);
+		return retval;
+	}
+
 	bool LUA_NATIVE_STATS_STAT_SET_INT( Hash statName, int value, bool save )
 	{
 		auto retval = (bool)STATS::STAT_SET_INT(statName, value, save);
@@ -28074,6 +28128,11 @@ namespace lua::native
 		STATS::PLAYSTATS_BACKGROUND_SCRIPT_ACTION(action, value);
 	}
 
+	void LUA_NATIVE_STATS_PLAYSTATS_FLOW_LOW_( float posX, float posY, float posZ, const char* p3, Any p4, int amount )
+	{
+		STATS::PLAYSTATS_FLOW_LOW_(posX, posY, posZ, p3, p4, amount);
+	}
+
 	void LUA_NATIVE_STATS_PLAYSTATS_NPC_INVITE( const char* p0 )
 	{
 		STATS::PLAYSTATS_NPC_INVITE(p0);
@@ -28303,9 +28362,9 @@ namespace lua::native
 		STATS::PLAYSTATS_PEGASUS_AS_PERSONAL_AIRCRAFT(modelHash);
 	}
 
-	void LUA_NATIVE_STATS__PLAYSTATS_SHOPMENU_NAV( Any p0, Any p1, Any p2 )
+	void LUA_NATIVE_STATS_PLAYSTATS_SHOPMENU_NAV_( Any p0, Any p1, Any p2 )
 	{
-		STATS::_PLAYSTATS_SHOPMENU_NAV(p0, p1, p2);
+		STATS::PLAYSTATS_SHOPMENU_NAV_(p0, p1, p2);
 	}
 
 	void LUA_NATIVE_STATS_PLAYSTATS_FM_EVENT_CHALLENGES( Any p0 )
@@ -29045,9 +29104,9 @@ namespace lua::native
 		STATS::PLAYSTATS_HIT_CONTRABAND_DESTROY_LIMIT(p0);
 	}
 
-	void LUA_NATIVE_STATS_START_BEING_BOSS( Any p0 )
+	void LUA_NATIVE_STATS_START_BEING_BOSS( Any p0, Any p1 )
 	{
-		STATS::START_BEING_BOSS(p0);
+		STATS::START_BEING_BOSS(p0, p1);
 	}
 
 	void LUA_NATIVE_STATS_START_BEING_GOON( Any p0, Any p1, Any p2 )
@@ -29055,9 +29114,9 @@ namespace lua::native
 		STATS::START_BEING_GOON(p0, p1, p2);
 	}
 
-	void LUA_NATIVE_STATS_END_BEING_BOSS( Any p0, Any p1 )
+	void LUA_NATIVE_STATS_END_BEING_BOSS( Any p0, Any p1, Any p2 )
 	{
-		STATS::END_BEING_BOSS(p0, p1);
+		STATS::END_BEING_BOSS(p0, p1, p2);
 	}
 
 	void LUA_NATIVE_STATS_END_BEING_GOON( Any p0, Any p1, Any p2, Any p3, Any p4 )
@@ -29510,29 +29569,55 @@ namespace lua::native
 		STATS::PLAYSTATS_HUB_EXIT(p0);
 	}
 
+	void LUA_NATIVE_STATS_PLAYSTATS_VEH_DEL( int bossId1, int bossId2, int bossType, int vehicleID, int reason )
+	{
+		STATS::PLAYSTATS_VEH_DEL(bossId1, bossId2, bossType, vehicleID, reason);
+	}
+
 	void LUA_NATIVE_STATS_PLAYSTATS_INVENTORY( Any p0 )
 	{
 		STATS::PLAYSTATS_INVENTORY(p0);
 	}
 
-	void LUA_NATIVE_STATS__PLAYSTATS_ACID_MISSION_END( Any p0 )
+	void LUA_NATIVE_STATS_PLAYSTATS_ACID_MISSION_END_( Any p0 )
 	{
-		STATS::_PLAYSTATS_ACID_MISSION_END(p0);
+		STATS::PLAYSTATS_ACID_MISSION_END_(p0);
 	}
 
-	void LUA_NATIVE_STATS__PLAYSTATS_ACID_RND( Any p0 )
+	void LUA_NATIVE_STATS_PLAYSTATS_ACID_RND_( Any p0 )
 	{
-		STATS::_PLAYSTATS_ACID_RND(p0);
+		STATS::PLAYSTATS_ACID_RND_(p0);
 	}
 
-	void LUA_NATIVE_STATS__PLAYSTATS_IDLE( Any p0, Any p1, Any p2 )
+	void LUA_NATIVE_STATS_PLAYSTATS_IDLE_( Any p0, Any p1, Any p2 )
 	{
-		STATS::_PLAYSTATS_IDLE(p0, p1, p2);
+		STATS::PLAYSTATS_IDLE_(p0, p1, p2);
 	}
 
-	void LUA_NATIVE_STATS__PLAYSTATS_PLAYER_STYLE( Any p0 )
+	void LUA_NATIVE_STATS_PLAYSTATS_PLAYER_STYLE_( Any p0 )
 	{
-		STATS::_PLAYSTATS_PLAYER_STYLE(p0);
+		STATS::PLAYSTATS_PLAYER_STYLE_(p0);
+	}
+
+	void LUA_NATIVE_STATS_PLAYSTATS_RANDOM_EVENT_( Any p0 )
+	{
+		STATS::PLAYSTATS_RANDOM_EVENT_(p0);
+	}
+
+	void LUA_NATIVE_STATS_PLAYSTATS_ATTRITION_STAGE_END_( Any p0 )
+	{
+		STATS::PLAYSTATS_ATTRITION_STAGE_END_(p0);
+	}
+
+	void LUA_NATIVE_STATS_PLAYSTATS_SHOWROOM_NAV_( Any p0, Any p1, Hash entity )
+	{
+		STATS::PLAYSTATS_SHOWROOM_NAV_(p0, p1, entity);
+	}
+
+	Any LUA_NATIVE_STATS_PLAYSTATS_SHOWROOM_OVERVIEW_( Any data )
+	{
+		STATS::PLAYSTATS_SHOWROOM_OVERVIEW_(&data);
+		return data;
 	}
 
 	void LUA_NATIVE_STREAMING_LOAD_ALL_OBJECTS_NOW(  )
@@ -32100,6 +32185,12 @@ namespace lua::native
 		VEHICLE::DETONATE_VEHICLE_PHONE_EXPLOSIVE_DEVICE();
 	}
 
+	bool LUA_NATIVE_VEHICLE_HAVE_VEHICLE_REAR_DOORS_BEEN_BLOWN_OPEN_BY_STICKYBOMB( Vehicle vehicle )
+	{
+		auto retval = (bool)VEHICLE::HAVE_VEHICLE_REAR_DOORS_BEEN_BLOWN_OPEN_BY_STICKYBOMB(vehicle);
+		return retval;
+	}
+
 	void LUA_NATIVE_VEHICLE_SET_TAXI_LIGHTS( Vehicle vehicle, bool state )
 	{
 		VEHICLE::SET_TAXI_LIGHTS(vehicle, state);
@@ -32244,9 +32335,9 @@ namespace lua::native
 		VEHICLE::SET_BOAT_IGNORE_LAND_PROBES(p0, p1);
 	}
 
-	void LUA_NATIVE_VEHICLE__0x85FC953F6C6CBDE1( Vehicle vehicle, bool p1 )
+	void LUA_NATIVE_VEHICLE_SET_BOUNDS_AFFECT_WATER_PROBES_( Vehicle vehicle, bool toggle )
 	{
-		VEHICLE::_0x85FC953F6C6CBDE1(vehicle, p1);
+		VEHICLE::SET_BOUNDS_AFFECT_WATER_PROBES_(vehicle, toggle);
 	}
 
 	void LUA_NATIVE_VEHICLE_SET_BOAT_ANCHOR( Vehicle vehicle, bool toggle )
@@ -33969,9 +34060,9 @@ namespace lua::native
 		return return_values;
 	}
 
-	Vehicle LUA_NATIVE_VEHICLE__GET_VEHICLE_TRAILER_PARENT_VEHICLE( Vehicle trailer )
+	Vehicle LUA_NATIVE_VEHICLE_GET_VEHICLE_TRAILER_PARENT_VEHICLE_( Vehicle trailer )
 	{
-		auto retval = VEHICLE::_GET_VEHICLE_TRAILER_PARENT_VEHICLE(trailer);
+		auto retval = VEHICLE::GET_VEHICLE_TRAILER_PARENT_VEHICLE_(trailer);
 		return retval;
 	}
 
@@ -35679,6 +35770,17 @@ namespace lua::native
 	bool LUA_NATIVE_VEHICLE_ARE_FOLDING_WINGS_DEPLOYED( Vehicle vehicle )
 	{
 		auto retval = (bool)VEHICLE::ARE_FOLDING_WINGS_DEPLOYED(vehicle);
+		return retval;
+	}
+
+	void LUA_NATIVE_VEHICLE_SET_DEPLOY_MISSILE_BAYS_( Vehicle vehicle, bool deploy )
+	{
+		VEHICLE::SET_DEPLOY_MISSILE_BAYS_(vehicle, deploy);
+	}
+
+	bool LUA_NATIVE_VEHICLE_ARE_MISSILE_BAYS_DEPLOYED_( Vehicle vehicle )
+	{
+		auto retval = (bool)VEHICLE::ARE_MISSILE_BAYS_DEPLOYED_(vehicle);
 		return retval;
 	}
 
