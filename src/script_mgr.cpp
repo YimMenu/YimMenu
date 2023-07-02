@@ -49,6 +49,8 @@ namespace big
 			g_lua_manager->unload_all_modules();
 		}
 
+		g_lua_manager->reload_changed_scripts();
+
 		std::erase_if(m_scripts, [](std::unique_ptr<script>& iter) {
 			return iter->m_should_be_deleted;
 		});
