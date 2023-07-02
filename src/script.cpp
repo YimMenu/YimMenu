@@ -5,7 +5,7 @@
 
 namespace big
 {
-	script::script(const func_t func, const std::string_view name, const bool toggleable, const std::optional<std::size_t> stack_size) :
+	script::script(const func_t func, const std::string& name, const bool toggleable, const std::optional<std::size_t> stack_size) :
 	    script(func, stack_size)
 	{
 		m_name       = name;
@@ -17,7 +17,8 @@ namespace big
 	    m_toggleable(false),
 	    m_script_fiber(nullptr),
 	    m_main_fiber(nullptr),
-	    m_func(func)
+	    m_func(func),
+	    m_should_be_deleted(false)
 	{
 		m_script_fiber = CreateFiber(
 		    stack_size.has_value() ? stack_size.value() : 0,

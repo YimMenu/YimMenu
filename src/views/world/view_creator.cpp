@@ -75,7 +75,7 @@ namespace big
 		components::button("CREATOR_JOB_IMPORT"_T, [] {
 			g_thread_pool->push([] {
 				std::string content_id = job_link;
-				nlohmann::json job_details;
+
 				if (content_id.starts_with("https://"))
 					content_id = content_id.substr(46);
 

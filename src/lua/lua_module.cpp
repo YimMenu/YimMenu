@@ -12,6 +12,7 @@
 #include "bindings/script.hpp"
 #include "bindings/tunables.hpp"
 #include "bindings/vector.hpp"
+#include "bindings/global_table.hpp"
 #include "file_manager.hpp"
 #include "script_mgr.hpp"
 
@@ -120,6 +121,6 @@ namespace big
 		lua::locals::bind(m_state);
 		lua::event::bind(m_state);
 		lua::vector::bind(m_state);
-		m_state["joaat"] = rage::joaat;
+		lua::global_table::bind(m_state);
 	}
 }
