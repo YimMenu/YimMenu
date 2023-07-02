@@ -6,7 +6,19 @@ namespace big
 {
 	class lua_manager
 	{
+	private:
 		std::mutex m_module_lock;
+		std::vector<std::shared_ptr<lua_module>> m_modules;
+
+		struct module_load_info
+		{
+			std::string m_name;
+			std::function<void(std::weak_ptr<lua_module>)> m_on_module_loaded;
+		};
+		std::queue<module_load_info> m_modules_load_queue;
+
+		static constexpr std::chrono::seconds m_delay_between_changed_scripts_check = 3s;
+		std::chrono::high_resolution_clock::time_point m_wake_time_changed_scripts_check;
 
 	public:
 		bool m_schedule_reload_modules;
@@ -27,6 +39,8 @@ namespace big
 
 		void unload_module(rage::joaat_t module_id);
 		void load_module(const std::string& module_name);
+
+		void reload_changed_scripts();
 
 		void queue_load_module(const std::string& module_name, std::function<void(std::weak_ptr<lua_module>)> on_module_loaded);
 		void load_modules_from_queue();
@@ -81,16 +95,6 @@ namespace big
 				func(module);
 			}
 		}
-
-	private:
-		std::vector<std::shared_ptr<lua_module>> m_modules;
-
-		struct module_load_info
-		{
-			std::string m_name;
-			std::function<void(std::weak_ptr<lua_module>)> m_on_module_loaded;
-		};
-		std::queue<module_load_info> m_modules_load_queue;
 	};
 
 	inline lua_manager* g_lua_manager;
