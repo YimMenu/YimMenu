@@ -245,8 +245,16 @@ namespace big
 		if (ImGui::Button("SEARCH"_T.data()))
 		{
 			g_thread_pool->push([]{
-				g_api_service->get_rid_from_username(new_name, *(uint64_t*)&new_rockstar_id);
+				if (!g_api_service->get_rid_from_username(new_name, *(uint64_t*)&new_rockstar_id))
+				{
+					g_notification_service->push_error("New Player DB Entry", std::format("No user '{}' called could be found.", new_name));
+					new_rockstar_id = 0;
+				}
 			});
+		}
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::SetTooltip("Do you know only the name of someone and not their Rockstar ID? Just fill in the username and click \"search\".");
 		}
 	}
 }
