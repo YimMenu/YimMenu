@@ -241,5 +241,12 @@ namespace big
 			current_player = g_player_database_service->add_player(new_rockstar_id, new_name);
 			g_player_database_service->save();
 		}
+		ImGui::SameLine();
+		if (ImGui::Button("SEARCH"_T.data()))
+		{
+			g_thread_pool->push([]{
+				g_api_service->get_rid_from_username(new_name, *(uint64_t*)&new_rockstar_id);
+			});
+		}
 	}
 }
