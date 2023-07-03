@@ -17,7 +17,7 @@ namespace big::mobile
 
 	namespace util
 	{
-		int get_current_personal_vehicle();// forward declare
+		int get_current_personal_vehicle(); // forward declare
 		inline void despawn_current_personal_vehicle()
 		{
 			misc::clear_bits(scr_globals::vehicle_global.at(get_current_personal_vehicle(), 142).at(103).as<int*>(), eVehicleFlags::TRIGGER_SPAWN_TOGGLE);
@@ -94,10 +94,10 @@ namespace big::mobile
 	{
 		inline void request_bullshark_testosterone()
 		{
-			*script_global(2672505).at(3689).as<int*>() = 1;
+			*script_global(2672524).at(3690).as<int*>() = 1;
 		}
 
-		inline void request_ballistic_armor()//i think this is a ceo ability atleast?
+		inline void request_ballistic_armor() //i think this is a ceo ability atleast?
 		{
 			*script_global(scr_globals::mechanic_global).at(896).as<int*>() = 1;
 		}
@@ -127,17 +127,17 @@ namespace big::mobile
 			// only do this when spawn inside is enabled otherwise the vehicle will spawn relatively far away from players
 			if (g.clone_pv.spawn_inside)
 			{
-				*scr_globals::mechanic_global.at(942).as<int*>() = 1;// disable vehicle node distance check
+				*scr_globals::mechanic_global.at(942).as<int*>() = 1; // disable vehicle node distance check
 			}
-			*scr_globals::mechanic_global.at(928).as<int*>() = 1;// tell freemode to spawn our vehicle
-			*scr_globals::mechanic_global.at(988).as<int*>() = 0;// required
+			*scr_globals::mechanic_global.at(928).as<int*>() = 1;     // tell freemode to spawn our vehicle
+			*scr_globals::mechanic_global.at(988).as<int*>() = 0;     // required
 			*scr_globals::mechanic_global.at(985).as<int*>() = veh_idx;
 
 			script::get_current()->yield(100ms);
 
 			GtaThread* freemode_thread = gta_util::find_script_thread(RAGE_JOAAT("freemode"));
 			if (freemode_thread)
-				*script_local(freemode_thread, 18630).at(176).as<int*>() = 0;// spawn vehicle instantly
+				*script_local(freemode_thread, 18630).at(176).as<int*>() = 0; // spawn vehicle instantly
 
 			// blocking call till vehicle is delivered
 			notify::busy_spinner("Delivering vehicle...", scr_globals::mechanic_global.at(985).as<int*>(), -1);
