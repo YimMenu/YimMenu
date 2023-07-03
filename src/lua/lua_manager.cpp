@@ -4,16 +4,17 @@
 
 namespace big
 {
-	lua_manager::lua_manager()
+	lua_manager::lua_manager(folder scripts_folder) :
+	    m_scripts_folder(scripts_folder)
 	{
 		m_schedule_reload_modules = false;
 
 		m_wake_time_changed_scripts_check =
 			std::chrono::high_resolution_clock::now() + m_delay_between_changed_scripts_check;
 
-		load_all_modules();
-
 		g_lua_manager = this;
+
+		load_all_modules();
 	}
 
 	lua_manager::~lua_manager()
@@ -70,7 +71,7 @@ namespace big
 
 		if (m_wake_time_changed_scripts_check <= std::chrono::high_resolution_clock::now())
 		{
-			for (const auto& entry : std::filesystem::directory_iterator(g_file_manager->get_project_folder("scripts").get_path()))
+			for (const auto& entry : std::filesystem::directory_iterator(m_scripts_folder.get_path()))
 			{
 				if (entry.is_regular_file())
 				{
@@ -134,7 +135,7 @@ namespace big
 
 	void lua_manager::load_all_modules()
 	{
-		for (const auto& entry : std::filesystem::directory_iterator(g_file_manager->get_project_folder("scripts").get_path()))
+		for (const auto& entry : std::filesystem::directory_iterator(m_scripts_folder.get_path()))
 			if (entry.is_regular_file())
 				load_module(entry.path().filename().string());
 	}
