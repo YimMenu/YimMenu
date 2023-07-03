@@ -47,8 +47,6 @@ class Table:
             s += f"## Functions ({len(self.functions)})\n"
             s += "\n"
 
-            self.check_for_duplicate_function_names()
-
             for func in self.functions:
                 s += func.print_markdown(f"{self.name}.")
 
@@ -61,15 +59,6 @@ class Table:
         duplicates = [x for x in self.fields if x.name in seen or seen.add(x.name)]
         if len(duplicates) > 0:
             print("Error while building lua doc. Duplicate field names:")
-            for dup in duplicates:
-                print(dup)
-            exit(1)
-
-    def check_for_duplicate_function_names(self):
-        seen = set()
-        duplicates = [x for x in self.functions if x.name in seen or seen.add(x.name)]
-        if len(duplicates) > 0:
-            print("Error while building lua doc. Duplicate function names:")
             for dup in duplicates:
                 print(dup)
             exit(1)
@@ -117,8 +106,6 @@ class Class:
             s += f"## Functions ({len(self.functions)})\n"
             s += "\n"
 
-            self.check_for_duplicate_function_names()
-
             for func in self.functions:
                 s += func.print_markdown(f"{self.name}:")
 
@@ -131,15 +118,6 @@ class Class:
         duplicates = [x for x in self.fields if x.name in seen or seen.add(x.name)]
         if len(duplicates) > 0:
             print("Error while building lua doc. Duplicate field names:")
-            for dup in duplicates:
-                print(dup)
-            exit(1)
-
-    def check_for_duplicate_function_names(self):
-        seen = set()
-        duplicates = [x for x in self.functions if x.name in seen or seen.add(x.name)]
-        if len(duplicates) > 0:
-            print("Error while building lua doc. Duplicate function names:")
             for dup in duplicates:
                 print(dup)
             exit(1)
