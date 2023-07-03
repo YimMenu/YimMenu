@@ -116,7 +116,7 @@ namespace big
 		static void overlay_indicator(const std::string_view text, bool value)
 		{
 			ImGui::Text(std::format("{}: ", text).data());
-			ImGui::SameLine();
+			ImGui::SameLine(180);
 			ImGui::TextColored(value ? green : red, value ? "Enabled" : "Disabled");
 		}
 
