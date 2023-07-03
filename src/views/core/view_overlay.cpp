@@ -28,6 +28,35 @@ namespace big
 				ImGui::Text(std::format("Players: {}/{}", network_player_mgr->m_player_count, network_player_mgr->m_player_limit)
 				                .c_str());
 
+			if (g.window.ingame_overlay.show_indicators)
+			{
+				ImGui::Separator();
+
+				if (g.window.ingame_overlay_indicators.show_player_godmode)
+					components::overlay_indicator("Player Godmode", g.self.god_mode);
+
+				if (g.window.ingame_overlay_indicators.show_off_radar)
+					components::overlay_indicator("Off Radar", g.self.off_radar);
+
+				if (g.window.ingame_overlay_indicators.show_vehicle_godmode)
+					components::overlay_indicator("Vehicle Godmode", g.vehicle.god_mode);
+
+				if (g.window.ingame_overlay_indicators.show_never_wanted)
+					components::overlay_indicator("Never Wanted", g.self.never_wanted);
+
+				if (g.window.ingame_overlay_indicators.show_infinite_ammo)
+					components::overlay_indicator("Infinite Ammo", g.weapons.infinite_ammo);
+
+				if (g.window.ingame_overlay_indicators.show_infinite_mag)
+					components::overlay_indicator("Infinite Magazine", g.weapons.infinite_mag);
+
+				if (g.window.ingame_overlay_indicators.show_aimbot)
+					components::overlay_indicator("Aimbot", g.weapons.aimbot.enable);
+
+				if (g.window.ingame_overlay_indicators.show_triggerbot)
+					components::overlay_indicator("Triggerbot", g.weapons.triggerbot);
+			}
+
 			if (g.window.ingame_overlay.show_position && g_local_player)
 			{
 				ImGui::Separator();

@@ -748,14 +748,29 @@ namespace big
 				bool show_with_menu_opened = false;
 
 				bool show_fps              = true;
+				bool show_indicators       = true;
 				bool show_players          = true;
 				bool show_time             = true;
 				bool show_replay_interface = true;
 				bool show_position         = false;
 				bool show_game_versions    = true;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ingame_overlay, opened, show_with_menu_opened, show_fps, show_players, show_time, show_replay_interface, show_position, show_game_versions)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ingame_overlay, opened, show_with_menu_opened, show_fps, show_indicators, show_players, show_time, show_replay_interface, show_position, show_game_versions)
 			} ingame_overlay{};
+
+			struct ingame_overlay_indicators
+			{
+				bool show_player_godmode  = true;
+				bool show_off_radar       = true;
+				bool show_vehicle_godmode = true;
+				bool show_never_wanted    = true;
+				bool show_infinite_ammo   = false;
+				bool show_infinite_mag    = false;
+				bool show_aimbot          = false;
+				bool show_triggerbot      = false;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ingame_overlay_indicators, show_player_godmode, show_off_radar, show_vehicle_godmode, show_never_wanted, show_infinite_ammo, show_infinite_mag, show_aimbot, show_triggerbot)
+			} ingame_overlay_indicators{};
 
 			struct vehicle_control
 			{
