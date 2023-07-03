@@ -47,7 +47,7 @@ namespace big
 		ImGui::Checkbox("Show Time", &g.window.ingame_overlay.show_time);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Show time is currently disabled as it caused problems for some users.");
-		ImGui::Checkbox("Show Features", &g.window.ingame_overlay.show_indicators);
+		ImGui::Checkbox("Show Indicators", &g.window.ingame_overlay.show_indicators);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
