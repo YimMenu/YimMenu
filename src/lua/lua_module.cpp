@@ -12,6 +12,7 @@
 #include "bindings/script.hpp"
 #include "bindings/tunables.hpp"
 #include "bindings/vector.hpp"
+#include "bindings/global_table.hpp"
 #include "file_manager.hpp"
 #include "script_mgr.hpp"
 
@@ -50,7 +51,7 @@ namespace big
 	{
 		m_state.open_libraries();
 
-		const auto scripts_folder = g_file_manager->get_project_folder("scripts");
+		const auto& scripts_folder = g_lua_manager->get_scripts_folder();
 
 		add_folder_to_require_available_paths(scripts_folder);
 
@@ -62,7 +63,9 @@ namespace big
 		m_state.set_exception_handler((sol::exception_handler_function)exception_handler);
 		m_state.set_panic(panic_handler);
 
-		auto result = m_state.load_file(scripts_folder.get_file(module_name).get_path().string());
+		const auto script_file_path = scripts_folder.get_file(module_name).get_path();
+		m_last_write_time           = std::filesystem::last_write_time(script_file_path);
+		auto result                 = m_state.load_file(script_file_path.string());
 
 		if (!result.valid())
 		{
@@ -89,14 +92,19 @@ namespace big
 		m_registered_patches.clear();
 	}
 
-	rage::joaat_t lua_module::module_id()
+	rage::joaat_t lua_module::module_id() const
 	{
 		return m_module_id;
 	}
 
-	const std::string& lua_module::module_name()
+	const std::string& lua_module::module_name() const
 	{
 		return m_module_name;
+	}
+
+	const std::chrono::time_point<std::chrono::file_clock> lua_module::last_write_time() const
+	{
+		return m_last_write_time;
 	}
 
 	void lua_module::add_folder_to_require_available_paths(const big::folder& scripts_folder)
@@ -120,6 +128,6 @@ namespace big
 		lua::locals::bind(m_state);
 		lua::event::bind(m_state);
 		lua::vector::bind(m_state);
-		m_state["joaat"] = rage::joaat;
+		lua::global_table::bind(m_state);
 	}
 }

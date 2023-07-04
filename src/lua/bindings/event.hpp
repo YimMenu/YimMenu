@@ -5,17 +5,109 @@
 
 namespace lua::event
 {
-	static void register_handler(const std::string& name, sol::function func, sol::this_state state)
-	{
-		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
+	// Lua API: Table
+	// Name: menu_event
+	// Table containing all possible events to which you can respond.
 
-		auto hash = rage::joaat(name);
-		module->m_event_callbacks.emplace(hash, std::vector<sol::function>());
-		module->m_event_callbacks[hash].push_back(func);
+	// Lua API: Field
+	// Table: menu_event
+	// Field: PlayerLeave: integer
+	// Event that is triggered when a player leave the game session.
+	// **Exemple Usage:**
+	// ```lua
+	// event.register_handler(menu_event.PlayerLeave, function (player_name)
+	//     log.info(player_name)
+	// end)
+	// ```
+
+	// Lua API: Field
+	// Table: menu_event
+	// Field: PlayerJoin: integer
+	// Event that is triggered when a player join the game session.
+	// **Exemple Usage:**
+	// ```lua
+	// event.register_handler(menu_event.PlayerJoin, function (player_name, player_id)
+	//     log.info(player_name)
+	//     log.info(player_id)
+	// end)
+	// ```
+
+	// Lua API: Field
+	// Table: menu_event
+	// Field: PlayerMgrInit: integer
+	// Event that is triggered when the player manager initialize. Usually called when we are joining a session.
+	// **Exemple Usage:**
+	// ```lua
+	// event.register_handler(menu_event.PlayerMgrInit, function ()
+	//     log.info("Player manager inited, we just joined a session.")
+	// end)
+	// ```
+
+	// Lua API: Field
+	// Table: menu_event
+	// Field: PlayerMgrShutdown: integer
+	// Event that is triggered when the player manager shutdown. Usually called when we are leaving a session.
+	// **Exemple Usage:**
+	// ```lua
+	// event.register_handler(menu_event.PlayerMgrShutdown, function ()
+	//     log.info("Player manager inited, we just joined a session.")
+	// end)
+	// ```
+
+	// Lua API: Field
+	// Table: menu_event
+	// Field: ChatMessageReceived: integer
+	// Event that is triggered when we receive a in-game chat message.
+	// **Exemple Usage:**
+	// ```lua
+	// event.register_handler(menu_event.ChatMessageReceived, function (player_id, chat_message)
+	//     log.info(player_id)
+	//     log.info(chat_message)
+	// end)
+	// ```
+
+	// Lua API: Field
+	// Table: menu_event
+	// Field: ScriptedGameEventReceived: integer
+	// Event that is triggered when we receive a scripted game event.
+	// **Exemple Usage:**
+	// ```lua
+	// event.register_handler(menu_event.ScriptedGameEventReceived, function (player_id, script_event_args)
+	//     log.info(player_id)
+	//     log.info(script_event_args)
+	// end)
+	// ```
+
+	// Lua API: Table
+	// Name: event
+	// Table for responding to various events. The list of events is available in the menu_event table.
+
+	// Lua API: Function
+	// Table: event
+	// Name: register_handler
+	// Param: menu_event: menu_event: The menu_event that we want to respond to.
+	// Param: func: function: The function that will be called.
+	// Register a function that will be called each time the corresponding menu_event is triggered.
+	static void register_handler(const menu_event& menu_event, sol::function func, sol::this_state state)
+	{
+		const auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
+		
+		module->m_event_callbacks[menu_event].push_back(func);
 	}
 
 	static void bind(sol::state& state)
 	{
+		state.new_enum<menu_event>("menu_event",
+		{
+			{"PlayerLeave",					menu_event::PlayerLeave},
+			{"PlayerJoin",					menu_event::PlayerJoin},
+			{"PlayerMgrInit",				menu_event::PlayerMgrInit},
+			{"PlayerMgrShutdown",			menu_event::PlayerMgrShutdown},
+			{"ChatMessageReceived",			menu_event::ChatMessageReceived},
+			{"ScriptedGameEventReceived",	menu_event::ScriptedGameEventReceived},
+		});
+
+
 		auto ns                = state["event"].get_or_create<sol::table>();
 		ns["register_handler"] = register_handler;
 		// TODO: triggering events through script?

@@ -47,6 +47,7 @@ namespace big
 		ImGui::Checkbox("Show Time", &g.window.ingame_overlay.show_time);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Show time is currently disabled as it caused problems for some users.");
+		ImGui::Checkbox("Show Indicators", &g.window.ingame_overlay.show_indicators);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
@@ -57,6 +58,28 @@ namespace big
 		ImGui::Checkbox("Show Game Version", &g.window.ingame_overlay.show_game_versions);
 
 		ImGui::EndGroup();
+
+		if (g.window.ingame_overlay.show_indicators)
+		{
+			if (ImGui::TreeNode("Overlay Indicators"))
+			{
+				ImGui::BeginGroup();
+				ImGui::Checkbox("Show Player Godmode", &g.window.ingame_overlay_indicators.show_player_godmode);
+				ImGui::Checkbox("Show Off Radar", &g.window.ingame_overlay_indicators.show_off_radar);
+				ImGui::Checkbox("Show Vehicle Godmode", &g.window.ingame_overlay_indicators.show_vehicle_godmode);
+				ImGui::Checkbox("Show Never Wanted", &g.window.ingame_overlay_indicators.show_never_wanted);
+				ImGui::EndGroup();
+				ImGui::SameLine();
+				ImGui::BeginGroup();
+				ImGui::Checkbox("Show Infinite Ammo", &g.window.ingame_overlay_indicators.show_infinite_ammo);
+				ImGui::Checkbox("Show Infinite Magazine", &g.window.ingame_overlay_indicators.show_infinite_mag);
+				ImGui::Checkbox("Show Aimbot", &g.window.ingame_overlay_indicators.show_aimbot);
+				ImGui::Checkbox("Show Triggerbot", &g.window.ingame_overlay_indicators.show_triggerbot);
+				ImGui::EndGroup();
+
+				ImGui::TreePop();
+			}
+		}
 	}
 
 }

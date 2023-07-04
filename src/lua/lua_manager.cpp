@@ -4,11 +4,17 @@
 
 namespace big
 {
-	lua_manager::lua_manager()
+	lua_manager::lua_manager(folder scripts_folder) :
+	    m_scripts_folder(scripts_folder)
 	{
-		load_all_modules();
+		m_schedule_reload_modules = false;
+
+		m_wake_time_changed_scripts_check =
+			std::chrono::high_resolution_clock::now() + m_delay_between_changed_scripts_check;
 
 		g_lua_manager = this;
+
+		load_all_modules();
 	}
 
 	lua_manager::~lua_manager()
@@ -56,24 +62,70 @@ namespace big
 		m_modules.push_back(std::make_shared<lua_module>(module_name));
 	}
 
+	void lua_manager::reload_changed_scripts()
+	{
+		if (!g.lua.enable_auto_reload_changed_scripts)
+		{
+			return;
+		}
+
+		if (m_wake_time_changed_scripts_check <= std::chrono::high_resolution_clock::now())
+		{
+			for (const auto& entry : std::filesystem::directory_iterator(m_scripts_folder.get_path()))
+			{
+				if (entry.is_regular_file())
+				{
+					const auto module_name = entry.path().filename().string();
+					const auto last_write_time = entry.last_write_time();
+
+					for (const auto& module : m_modules)
+					{
+						if (module->module_name() == module_name &&
+							module->last_write_time() < last_write_time)
+						{
+							unload_module(module->module_id());
+							queue_load_module(module_name, nullptr);
+							break;
+						}
+					}
+				}
+			}
+
+			m_wake_time_changed_scripts_check = std::chrono::high_resolution_clock::now() + m_delay_between_changed_scripts_check;
+		}
+	}
+
+	void lua_manager::queue_load_module(const std::string& module_name, std::function<void(std::weak_ptr<lua_module>)> on_module_loaded)
+	{
+		m_modules_load_queue.push({module_name, on_module_loaded});
+	}
+
+	void lua_manager::load_modules_from_queue()
+	{
+		while (m_modules_load_queue.size())
+		{
+			auto& module_load_info = m_modules_load_queue.front();
+
+			const auto id = rage::joaat(module_load_info.m_name);
+
+			load_module(module_load_info.m_name);
+			auto loaded_module = get_module(id);
+			if (module_load_info.m_on_module_loaded)
+				module_load_info.m_on_module_loaded(loaded_module);
+
+			m_modules_load_queue.pop();
+		}
+	}
+
 	std::weak_ptr<lua_module> lua_manager::get_module(rage::joaat_t module_id)
 	{
+		std::lock_guard guard(m_module_lock);
+
 		for (const auto& module : m_modules)
 			if (module->module_id() == module_id)
 				return module;
 
 		return {};
-	}
-
-	const std::vector<std::shared_ptr<lua_module>>& lua_manager::get_modules() const
-	{
-		return m_modules;
-	}
-
-	void lua_manager::reload_all_modules()
-	{
-		unload_all_modules();
-		load_all_modules();
 	}
 
 	void lua_manager::handle_error(const sol::error& error, const sol::state_view& state)
@@ -83,7 +135,7 @@ namespace big
 
 	void lua_manager::load_all_modules()
 	{
-		for (const auto& entry : std::filesystem::directory_iterator(g_file_manager->get_project_folder("scripts").get_path()))
+		for (const auto& entry : std::filesystem::directory_iterator(m_scripts_folder.get_path()))
 			if (entry.is_regular_file())
 				load_module(entry.path().filename().string());
 	}

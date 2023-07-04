@@ -1,6 +1,5 @@
 #include "base/CBaseModelInfo.hpp"
 #include "base/CObject.hpp"
-#include "core/globals.hpp"
 #include "entities/fwEntity.hpp"
 #include "gta/net_object_mgr.hpp"
 #include "hooking.hpp"
