@@ -12,7 +12,7 @@ Registers a function that will be looped as a gta script.
   - `name` (string): name of your new looped script
   - `func` (function): function that will be executed in a forever loop.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 script.register_looped(name, func)
 ```
@@ -24,7 +24,7 @@ Executes a function inside the fiber pool, you can call natives inside it.
 - **Parameters:**
   - `func` (function): function that will be executed once in the fiber pool, you can call natives inside it.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 script.run_in_fiber(func)
 ```
@@ -33,7 +33,7 @@ script.run_in_fiber(func)
 
 Yield execution.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 script.yield()
 ```
@@ -45,7 +45,7 @@ Sleep for the given amount of time, time is in milliseconds.
 - **Parameters:**
   - `ms` (integer): The amount of time in milliseconds that we will sleep for.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 script.sleep(ms)
 ```
