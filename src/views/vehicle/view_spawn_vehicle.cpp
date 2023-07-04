@@ -205,12 +205,15 @@ namespace big
 		ImGui::RadioButton("Personal", &spawn_type, 1);
 		ImGui::SameLine();
 		ImGui::RadioButton("Persistent", &spawn_type, 2);
+		ImGui::SameLine();
+		ImGui::RadioButton("Xml", &spawn_type, 3);
 
 		switch (spawn_type)
 		{
 		case 0: render_spawn_new_vehicle(); break;
 		case 1: view::pv(); break;
 		case 2: view::persist_car(); break;
+		case 3: view::xml_vehicles(); break;
 		}
 	}
 }

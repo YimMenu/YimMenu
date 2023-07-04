@@ -31,6 +31,7 @@
 #include "services/tunables/tunables_service.hpp"
 #include "services/vehicle/handling_service.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
+#include "services/vehicle/xml_vehicles_service.hpp"
 #include "thread_pool.hpp"
 #include "util/migrate.hpp"
 #include "version.hpp"
@@ -108,6 +109,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto api_service_instance               = std::make_unique<api_service>();
 			    auto tunables_service_instance          = std::make_unique<tunables_service>();
 			    auto script_connection_service_instance = std::make_unique<script_connection_service>();
+			    auto xml_vehicles_service_instance      = std::make_unique<xml_vehicles_service>();
 			    LOG(INFO) << "Registered service instances...";
 
 			    g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
@@ -201,6 +203,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Custom Text Service reset.";
 			    context_menu_service_instance.reset();
 			    LOG(INFO) << "Context Service reset.";
+				xml_vehicles_service_instance.reset();
+				LOG(INFO) << "Xml Vehicles Service reset.";
 			    LOG(INFO) << "Services uninitialized.";
 
 			    hooking_instance.reset();
