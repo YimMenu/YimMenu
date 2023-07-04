@@ -35,6 +35,7 @@ namespace big
 			return m_modules.size();
 		}
 
+		bool has_gui_to_draw(rage::joaat_t tab_hash);
 		void draw_gui(rage::joaat_t tab_hash);
 
 		void unload_module(rage::joaat_t module_id);

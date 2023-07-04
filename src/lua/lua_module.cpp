@@ -79,17 +79,16 @@ namespace big
 
 	lua_module::~lua_module()
 	{
+		for (const auto owned_tab : m_owned_tabs)
+		{
+			big::g_gui_service->remove_from_nav(owned_tab);
+		}
+
 		for (auto script : m_registered_scripts)
 			g_script_mgr.remove_script(script);
 
-		for (auto& patch : m_registered_patches)
-			patch.reset();
-
 		for (auto memory : m_allocated_memory)
 			delete[] memory;
-
-		m_registered_scripts.clear();
-		m_registered_patches.clear();
 	}
 
 	rage::joaat_t lua_module::module_id() const
