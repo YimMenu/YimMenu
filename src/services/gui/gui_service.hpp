@@ -156,6 +156,7 @@ namespace big
 		        {"", view::view_player},
 		    },
 		};
+		void remove_from_nav_internal(std::map<big::tabs, big::navigation_struct>& nav, big::tabs existing_tab_id);
 
 	public:
 		gui_service();
@@ -171,6 +172,7 @@ namespace big
 		void increment_nav_size();
 		void reset_nav_size();
 		std::map<tabs, navigation_struct>& get_navigation();
+		void remove_from_nav(tabs existing_tab_id);
 	};
 
 	inline gui_service* g_gui_service{};
