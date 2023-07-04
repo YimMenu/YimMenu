@@ -1,5 +1,6 @@
 #include "chat_command_context.hpp"
 
+#include "fiber_pool.hpp"
 #include "hooking.hpp"
 #include "util/notify.hpp"
 

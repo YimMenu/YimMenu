@@ -1,11 +1,12 @@
 #pragma once
 #include "entity.hpp"
-#include "natives.hpp"
-#include "pointers.hpp"
-#include "outfit.hpp"
-#include "services/players/player_service.hpp"
-#include "math.hpp"
 #include "gta/enums.hpp"
+#include "local_player.hpp"
+#include "math.hpp"
+#include "natives.hpp"
+#include "outfit.hpp"
+#include "pointers.hpp"
+#include "services/players/player_service.hpp"
 
 namespace big::ped
 {
@@ -546,7 +547,7 @@ namespace big::ped
 			int drawable_id_max = PED::GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS(ped, item.id) - 1;
 			if (drawable_id_max == -1)
 				continue;
-			int drawable_id = range(0, drawable_id_max);
+			int drawable_id    = range(0, drawable_id_max);
 			int texture_id_max = PED::GET_NUMBER_OF_PED_TEXTURE_VARIATIONS(ped, item.id, drawable_id) - 1;
 			if (texture_id_max == -1)
 				continue;
@@ -568,7 +569,7 @@ namespace big::ped
 		return nullptr;
 	}
 
-	inline bool load_animation_dict (const char* dict)
+	inline bool load_animation_dict(const char* dict)
 	{
 		if (STREAMING::HAS_ANIM_DICT_LOADED(dict))
 			return true;
@@ -585,7 +586,7 @@ namespace big::ped
 	inline void ped_play_animation(Ped ped, const std::string_view& animDict, const std::string_view& animName, float speed = 4.f, float speedMultiplier = -4.f, int duration = -1, int flag = 0, float playbackRate = 0, bool lockPos = false)
 	{
 		if (load_animation_dict(animDict.data()))
-			TASK::TASK_PLAY_ANIM(ped, animDict.data(), animName.data(), speed, speedMultiplier, duration, flag, playbackRate, lockPos, lockPos, lockPos);		
+			TASK::TASK_PLAY_ANIM(ped, animDict.data(), animName.data(), speed, speedMultiplier, duration, flag, playbackRate, lockPos, lockPos, lockPos);
 	}
 
 	/*
@@ -596,7 +597,8 @@ namespace big::ped
 	{
 		if (entity::take_control_of(ped))
 		{
-			if (ENTITY::DOES_ENTITY_EXIST(veh)) {
+			if (ENTITY::DOES_ENTITY_EXIST(veh))
+			{
 				if (math::distance_between_vectors(ENTITY::GET_ENTITY_COORDS(ped, 0), ENTITY::GET_ENTITY_COORDS(veh, 0)) < 15.f)
 					TASK::TASK_ENTER_VEHICLE(ped, veh, 10000, (int)seat, movespeed, 8, NULL);
 				else
