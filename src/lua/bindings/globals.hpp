@@ -111,11 +111,11 @@ namespace lua::globals
 	{
 		auto ns           = state["globals"].get_or_create<sol::table>();
 		ns["get_int"]     = get_int;
-		ns["get_uint"]     = get_uint;
+		ns["get_uint"]    = get_uint;
 		ns["get_float"]   = get_float;
 		ns["get_string"]  = get_string;
 		ns["set_int"]     = set_int;
-		ns["set_uint"]     = set_uint;
+		ns["set_uint"]    = set_uint;
 		ns["set_float"]   = set_float;
 		ns["set_string"]  = set_string;
 		ns["get_pointer"] = get_pointer;
