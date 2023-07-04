@@ -51,7 +51,7 @@ namespace big
 	{
 		m_state.open_libraries();
 
-		const auto scripts_folder = g_file_manager->get_project_folder("scripts");
+		const auto& scripts_folder = g_lua_manager->get_scripts_folder();
 
 		add_folder_to_require_available_paths(scripts_folder);
 
