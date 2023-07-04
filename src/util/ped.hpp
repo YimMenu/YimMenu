@@ -499,14 +499,16 @@ namespace big::ped
 
 	inline void kill_ped(const Ped ped)
 	{
-		if (entity::take_control_of(ped))
-			PED::APPLY_DAMAGE_TO_PED(ped, PED::GET_PED_MAX_HEALTH(ped) * 2, false, 0);
-	}
+		if (entity::take_control_of(ped, 0))
+			ENTITY::SET_ENTITY_HEALTH(ped, 0, self::ped);
+		else
+		{
+			auto ptr = g_pointers->m_gta.m_handle_to_ptr(ped);
+			if (!ptr)
+				return;
 
-	inline void kill_ped_by_relation(Ped ped, int relation_id)
-	{
-		if (PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, PLAYER::PLAYER_PED_ID()) == relation_id)
-			kill_ped(ped);
+			g_pointers->m_gta.m_send_network_damage(g_player_service->get_self()->get_ped(), ptr, ptr->get_position(), 0, true, RAGE_JOAAT("weapon_explosion"), 10000.0f, 2, 0, (1 << 4), 0, 0, 0, false, false, true, true, nullptr);
+		}
 	}
 
 	inline Ped spawn(ePedType pedType, Hash hash, Hash clone, Vector3 location, float heading, bool is_networked = true)
