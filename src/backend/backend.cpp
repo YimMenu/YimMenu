@@ -13,6 +13,7 @@
 #include "thread_pool.hpp"
 #include "util/teleport.hpp"
 #include "services/squad_spawner/squad_spawner.hpp"
+#include "services/vehicle/xml_vehicles_service.hpp"
 
 
 namespace big
@@ -25,6 +26,7 @@ namespace big
 		register_script_patches();
 		teleport::fetch_saved_locations();
 		g_squad_spawner_service.fetch_squads();
+		g_xml_vehicles_service->fetch_xml_files();
 
 		while (g_running)
 		{

@@ -20,7 +20,7 @@ namespace big
 				components::selectable(name, false, [&doc] {
 					auto handle = g_xml_vehicles_service->spawn_from_xml(doc, self::pos);
 					if (g.spawn_vehicle.spawn_inside)
-					    vehicle::teleport_into_vehicle(handle);
+						vehicle::teleport_into_vehicle(handle);
 				});
 			}
 

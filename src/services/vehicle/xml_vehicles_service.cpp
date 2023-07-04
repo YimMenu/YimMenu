@@ -131,7 +131,11 @@ namespace big
 			if (ped_properties_node.child("AnimActive").text().as_bool())
 				ped::ped_play_animation(ped_handle,
 				    ped_properties_node.child("AnimDict").text().as_string(),
-				    ped_properties_node.child("AnimName").text().as_string(), 4, -4, -1, 1);
+				    ped_properties_node.child("AnimName").text().as_string(),
+				    4,
+				    -4,
+				    -1,
+				    1);
 
 			ENTITY::ATTACH_ENTITY_TO_ENTITY(ped_handle, handle, bone, offset.x, offset.y, offset.z, rot.x, rot.y, rot.z, false, false, true, false, 2, true, false);
 		}
