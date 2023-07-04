@@ -9,6 +9,7 @@
 #include "gui/separator.hpp"
 #include "gui/text.hpp"
 #include "lua/lua_module.hpp"
+#include "services/gui/gui_service.hpp"
 
 namespace lua::gui
 {
@@ -27,12 +28,136 @@ namespace lua::gui
 	// Class for representing a tab within the GUI.
 	class tab
 	{
+		big::tabs m_id;
 		rage::joaat_t m_tab_hash;
 
 	public:
-		tab(rage::joaat_t hash) :
-		    m_tab_hash(hash)
+		inline big::tabs id() const
 		{
+			return m_id;
+		}
+
+		inline rage::joaat_t hash() const
+		{
+			return m_tab_hash;
+		}
+
+		bool check_if_existing_tab_and_fill_id(const std::map<big::tabs, big::navigation_struct>& nav)
+		{
+			for (const auto& nav_item : nav)
+			{
+				if (nav_item.second.hash == m_tab_hash)
+				{
+					m_id = nav_item.first;
+					return true;
+				}
+				
+				if (check_if_existing_tab_and_fill_id(nav_item.second.sub_nav))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		static void add_to_existing_tab(std::map<big::tabs, big::navigation_struct>& nav, const rage::joaat_t existing_tab_hash, const std::pair<big::tabs, big::navigation_struct>& new_tab, const sol::this_state& state)
+		{
+			for (auto& nav_item : nav)
+			{
+				if (nav_item.second.hash == existing_tab_hash)
+				{
+					auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
+					module->m_tab_to_sub_tabs[nav_item.first].push_back(new_tab.first);
+
+					nav_item.second.sub_nav.emplace(new_tab);
+					return;
+				}
+
+				add_to_existing_tab(nav_item.second.sub_nav, existing_tab_hash, new_tab, state);
+			}
+		}
+
+		std::pair<big::tabs, big::navigation_struct> make_tab_nav(const std::string& name, const rage::joaat_t tab_hash, const sol::this_state& state)
+		{
+			static size_t custom_tab_count = size_t(big::tabs::RUNTIME_CUSTOM);
+			m_id = big::tabs(custom_tab_count);
+
+			custom_tab_count++;
+
+			big::navigation_struct new_navigation_struct{};
+			strcpy(new_navigation_struct.name, name.c_str());
+			new_navigation_struct.hash = tab_hash;
+
+			return std::make_pair(m_id, new_navigation_struct);
+		}
+
+		tab(const std::string& name, const sol::this_state& state) :
+		    m_tab_hash(rage::joaat(name))
+		{
+			auto& nav = big::g_gui_service->get_navigation();
+
+			if (check_if_existing_tab_and_fill_id(nav))
+			{
+				return;
+			}
+
+			// add top tab
+			nav.emplace(make_tab_nav(name, m_tab_hash, state));
+
+			auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
+			module->m_owned_tabs.push_back(id());
+		}
+
+		tab(const std::string& name, const rage::joaat_t parent_tab_hash, const sol::this_state& state) :
+		    m_tab_hash(rage::joaat(name))
+		{
+			auto& nav = big::g_gui_service->get_navigation();
+
+			if (check_if_existing_tab_and_fill_id(nav))
+			{
+				return;
+			}
+
+			const auto sub_tab = make_tab_nav(name, m_tab_hash, state);
+			add_to_existing_tab(nav, parent_tab_hash, sub_tab, state);
+
+			auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
+			module->m_owned_tabs.push_back(id());
+		}
+
+		// Lua API: Function
+		// Class: tab
+		// Name: clear
+		// Clear the tab of all its custom lua content that you own.
+		void clear(sol::this_state state)
+		{
+			auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
+
+			if (module->m_gui.contains(m_tab_hash))
+				module->m_gui[m_tab_hash] = {};
+
+			for (auto sub_tab : module->m_tab_to_sub_tabs[id()])
+			{
+				for (const auto owned_tab : module->m_owned_tabs)
+				{
+					if (sub_tab == owned_tab)
+					{
+						big::g_gui_service->remove_from_nav(sub_tab);
+					}
+				}
+			}
+		}
+
+		// Lua API: Function
+		// Class: tab
+		// Name: add_tab
+		// Add a sub tab to this tab.
+		tab add_tab(const std::string& name, sol::this_state state)
+		{
+			const auto sub_tab = tab(name, m_tab_hash, state);
+
+			return sub_tab;
 		}
 
 		// Lua API: Function
@@ -147,9 +272,21 @@ namespace lua::gui
 	// Name: get_tab
 	// Param: tab_name: string: Name of the tab to get.
 	// Returns: tab: A tab instance which corresponds to the tab in the GUI.
-	static tab get_tab(const std::string& tab_name)
+	static tab get_tab(const std::string& tab_name, sol::this_state state)
 	{
-		return tab(rage::joaat(tab_name));
+		return tab(tab_name, state);
+	}
+
+	// Lua API: Function
+	// Table: gui
+	// Name: add_tab
+	// Param: tab_name: string: Name of the tab to add.
+	// Returns: tab: A tab instance which corresponds to the new tab in the GUI.
+	static tab add_tab(const std::string& tab_name, sol::this_state state)
+	{
+		const auto new_tab = tab(tab_name, state);
+
+		return new_tab;
 	}
 
 	// Lua API: Function
@@ -195,6 +332,7 @@ namespace lua::gui
 	{
 		auto ns            = state["gui"].get_or_create<sol::table>();
 		ns["get_tab"]      = get_tab;
+		ns["add_tab"]      = add_tab;
 		ns["show_message"] = show_message;
 		ns["show_warning"] = show_warning;
 		ns["show_error"]   = show_error;
@@ -244,6 +382,8 @@ namespace lua::gui
 		);
 
 		ns.new_usertype<tab>("tab",
+			"clear", &tab::clear,
+			"add_tab", &tab::add_tab,
 			"add_button", &tab::add_button,
 			"add_text", &tab::add_text,
 			"add_checkbox", &tab::add_checkbox,

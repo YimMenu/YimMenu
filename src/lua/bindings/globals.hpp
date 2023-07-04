@@ -21,6 +21,17 @@ namespace lua::globals
 
 	// Lua API: Function
 	// Table: globals
+	// Name: get_uint
+	// Param: global: integer: index of the global
+	// Returns: integer: value of the global
+	// Retrieves an uint global value.
+	static int get_uint(int global)
+	{
+		return *big::script_global(global).as<unsigned int*>();
+	}
+
+	// Lua API: Function
+	// Table: globals
 	// Name: get_float
 	// Param: global: integer: index of the global
 	// Returns: float: value of the global
@@ -50,6 +61,17 @@ namespace lua::globals
 	static void set_int(int global, int val)
 	{
 		*big::script_global(global).as<int*>() = val;
+	}
+
+	// Lua API: Function
+	// Table: globals
+	// Name: set_uint
+	// Param: global: integer: index of the global
+	// Param: val: integer: new value for the global
+	// Sets an uint global value.
+	static void set_uint(int global, unsigned int val)
+	{
+		*big::script_global(global).as<unsigned int*>() = val;
 	}
 
 	// Lua API: Function
@@ -89,9 +111,11 @@ namespace lua::globals
 	{
 		auto ns           = state["globals"].get_or_create<sol::table>();
 		ns["get_int"]     = get_int;
+		ns["get_uint"]    = get_uint;
 		ns["get_float"]   = get_float;
 		ns["get_string"]  = get_string;
 		ns["set_int"]     = set_int;
+		ns["set_uint"]    = set_uint;
 		ns["set_float"]   = set_float;
 		ns["set_string"]  = set_string;
 		ns["get_pointer"] = get_pointer;
