@@ -44,6 +44,8 @@ namespace big
 	{
 		auto vehicle_properties_node = vehicle_node.child("VehicleProperties");
 		auto vehicle_colors_node     = vehicle_properties_node.child("Colours");
+		auto vehicle_mods_node       = vehicle_properties_node.child("Mods");
+		auto vehicle_doors_node      = vehicle_properties_node.child("DoorsOpen");
 
 		VEHICLE::SET_VEHICLE_LIVERY(vehicle_handle, vehicle_properties_node.child("Livery").text().as_int());
 		VEHICLE::SET_VEHICLE_MOD_COLOR_1(vehicle_handle,
@@ -77,6 +79,34 @@ namespace big
 		    vehicle_colors_node.child("tyreSmoke_B").text().as_int());
 
 		ENTITY::SET_ENTITY_VISIBLE(vehicle_handle, vehicle_node.child("IsVisible").text().as_bool(), true);
+
+		for (int i = 0; i < 48; i++)
+		{
+			std::string_view mod_item = "_";
+			VEHICLE::SET_VEHICLE_MOD_KIT(vehicle_handle, 0);
+			if (i >= 17 && i <= 22)
+				VEHICLE::TOGGLE_VEHICLE_MOD(vehicle_handle,
+				    i,
+				    vehicle_mods_node.child(std::string(mod_item).append(std::to_string(i)).data()).text().as_int());
+			else
+				VEHICLE::SET_VEHICLE_MOD(vehicle_handle,
+				    i,
+				    vehicle_mods_node.child(std::string(mod_item).append(std::to_string(i)).data()).text().as_int(),
+				    true);
+		}
+
+		if (vehicle_doors_node.child("BackLeftDoor").text().as_bool())
+			vehicle::operate_vehicle_door(vehicle_handle, eDoorId::VEH_EXT_DOOR_DSIDE_R, true);
+		if (vehicle_doors_node.child("BackRightDoor").text().as_bool())
+			vehicle::operate_vehicle_door(vehicle_handle, eDoorId::VEH_EXT_DOOR_PSIDE_R, true);
+		if (vehicle_doors_node.child("FrontLeftDoor").text().as_bool())
+			vehicle::operate_vehicle_door(vehicle_handle, eDoorId::VEH_EXT_DOOR_DSIDE_F, true);
+		if (vehicle_doors_node.child("FrontRightDoor").text().as_bool())
+			vehicle::operate_vehicle_door(vehicle_handle, eDoorId::VEH_EXT_DOOR_PSIDE_F, true);
+		if (vehicle_doors_node.child("Hood").text().as_bool())
+			vehicle::operate_vehicle_door(vehicle_handle, eDoorId::VEH_EXT_BONNET, true);
+		if (vehicle_doors_node.child("Trunk").text().as_bool())
+			vehicle::operate_vehicle_door(vehicle_handle, eDoorId::VEH_EXT_BOOT, true);
 	}
 
 	void ped_attachment(pugi::xml_node ped_node, Hash ped_model, Vector3 pos, Vector3 rot, Vector3 offset, Vehicle handle, int bone)
