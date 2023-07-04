@@ -1,6 +1,10 @@
 #include "xml_vehicles_service.hpp"
 
 #include "file_manager.hpp"
+#include "pointers.hpp"
+#include "util/ped.hpp"
+#include "util/vehicle.hpp"
+#include "util/world_model.hpp"
 
 namespace big
 {
@@ -36,20 +40,11 @@ namespace big
 		}
 	}
 
-	Vehicle xml_vehicles_service::spawn_from_xml(pugi::xml_document& doc, Vector3 pos)
+	void apply_vehicle_properties(Vehicle vehicle_handle, pugi::xml_node vehicle_node)
 	{
-		auto vehicle_node              = doc.child("Vehicle");
-		auto vehicle_properties_node   = vehicle_node.child("VehicleProperties");
-		auto vehicle_colors_node       = vehicle_properties_node.child("Colours");
-		auto vehicle_attachments_node = vehicle_node.child("SpoonerAttachments");
+		auto vehicle_properties_node = vehicle_node.child("VehicleProperties");
+		auto vehicle_colors_node     = vehicle_properties_node.child("Colours");
 
-		auto vehicle_handle = vehicle::spawn(vehicle_node.child("ModelHash").text().as_uint(),
-		    pos,
-		    ENTITY::GET_ENTITY_HEADING(self::ped),
-		    *g_pointers->m_gta.m_is_session_started,
-		    false);
-
-		//Appearance
 		VEHICLE::SET_VEHICLE_LIVERY(vehicle_handle, vehicle_properties_node.child("Livery").text().as_int());
 		VEHICLE::SET_VEHICLE_MOD_COLOR_1(vehicle_handle,
 		    vehicle_colors_node.child("Mod1_a").text().as_int(),
@@ -82,11 +77,139 @@ namespace big
 		    vehicle_colors_node.child("tyreSmoke_B").text().as_int());
 
 		ENTITY::SET_ENTITY_VISIBLE(vehicle_handle, vehicle_node.child("IsVisible").text().as_bool(), true);
+	}
 
-        for (auto attachment_item = vehicle_attachments_node.first_child(); attachment_item; attachment_item = vehicle_attachments_node.next_sibling())
-        {
-            auto entity_attachment_node = attachment_item.child("Attachment");
-            auto entity_model = attachment_item.child("ModelHash").text().as_uint();
-        }
+	void ped_attachment(pugi::xml_node ped_node, Hash ped_model, Vector3 pos, Vector3 rot, Vector3 offset, Vehicle handle, int bone)
+	{
+		auto ped_properties_node = ped_node.child("PedProperties");
+
+		Ped ped_handle = ped::spawn(ePedType::PED_TYPE_CIVMALE, ped_model, 0, pos, 0, *g_pointers->m_gta.m_is_session_started);
+
+		if (entity::take_control_of(ped_handle))
+		{
+			PED::SET_PED_CAN_RAGDOLL(ped_handle, ped_node.child("CanRagdoll").text().as_bool(true));
+			PED::SET_PED_RAGDOLL_ON_COLLISION(ped_handle, ped_node.child("CanRagdoll").text().as_bool(false));
+
+			if (ped_node.child("HasShortHeight").text().as_bool())
+				PED::SET_PED_CONFIG_FLAG(ped_handle, 223, 1);
+
+			ENTITY::SET_ENTITY_VISIBLE(ped_handle, ped_node.child("IsVisible").text().as_bool(), true);
+			ENTITY::SET_ENTITY_INVINCIBLE(ped_handle, ped_node.child("IsInvincible").text().as_bool());
+			ENTITY::SET_ENTITY_DYNAMIC(ped_handle, ped_node.child("Dynamic").text().as_bool());
+			ENTITY::SET_ENTITY_ALPHA(ped_handle, ped_node.child("OpacityLevel").text().as_int(), false);
+
+			PED::SET_PED_MAX_HEALTH(ped_handle, ped_node.child("MaxHealth").text().as_float());
+			ENTITY::SET_ENTITY_HEALTH(ped_handle, ped_node.child("Health").text().as_float(), false);
+			PED::SET_PED_ARMOUR(ped_handle, ped_properties_node.child("Armour").text().as_float());
+			ENTITY::SET_ENTITY_PROOFS(ped_handle,
+			    ped_node.child("IsBulletProof").text().as_bool(),
+			    ped_node.child("IsFireProof").text().as_bool(),
+			    ped_node.child("IsExplosionProof").text().as_bool(),
+			    ped_node.child("IsCollisionProof").text().as_bool(),
+			    ped_node.child("IsMeleeProof").text().as_bool(),
+			    false,
+			    false,
+			    false);
+
+			PED::SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped_handle, ped_node.child("IsStill").text().as_bool());
+			PED::SET_PED_ARMOUR(ped_handle, ped_node.child("Armour").text().as_int());
+			if (!WEAPON::HAS_PED_GOT_WEAPON(ped_handle, ped_node.child("CurrentWeapon").text().as_uint(), false))
+				WEAPON::GIVE_WEAPON_TO_PED(ped_handle, ped_node.child("CurrentWeapon").text().as_uint(), 9999, true, false);
+			WEAPON::SET_CURRENT_PED_WEAPON(ped_handle, ped_node.child("CurrentWeapon").text().as_uint(), true);
+			PED::SET_PED_CAN_SWITCH_WEAPON(ped_handle, false);
+			PED::SET_PED_COMBAT_ABILITY(ped_handle, 2);
+			PED::SET_PED_COMBAT_MOVEMENT(ped_handle, 2);
+
+			PED::SET_PED_CAN_PLAY_AMBIENT_ANIMS(ped_handle, true);
+			PED::SET_PED_CAN_PLAY_AMBIENT_BASE_ANIMS(ped_handle, true);
+			PED::SET_PED_CAN_PLAY_GESTURE_ANIMS(ped_handle, true);
+			PED::SET_PED_CAN_PLAY_VISEME_ANIMS(ped_handle, true, TRUE);
+
+			if (ped_properties_node.child("ScenarioActive").text().as_bool())
+				TASK::TASK_START_SCENARIO_IN_PLACE(ped_handle, const_cast<PCHAR>(ped_node.child("ScenarioName").text().as_string()), 0, true);
+
+			if (ped_properties_node.child("AnimActive").text().as_bool())
+				ped::ped_play_animation(ped_handle,
+				    ped_properties_node.child("AnimDict").text().as_string(),
+				    ped_properties_node.child("AnimName").text().as_string(), 4, -4, -1, 1);
+
+			ENTITY::ATTACH_ENTITY_TO_ENTITY(ped_handle, handle, bone, offset.x, offset.y, offset.z, rot.x, rot.y, rot.z, false, false, true, false, 2, true, false);
+		}
+	}
+
+	void vehicle_attachment(pugi::xml_node node, Hash vehicle_model, Vector3 pos, Vector3 rot, Vector3 offset, Vehicle handle, int bone)
+	{
+		Vehicle attachment_handle = vehicle::spawn(vehicle_model, pos, 0, *g_pointers->m_gta.m_is_session_started, false);
+
+		apply_vehicle_properties(attachment_handle, node);
+
+		ENTITY::ATTACH_ENTITY_TO_ENTITY(attachment_handle, handle, bone, offset.x, offset.y, offset.z, rot.x, rot.y, rot.z, false, false, true, false, 2, true, false);
+	}
+
+
+	void object_attachment(pugi::xml_node attachment_node, Hash object_model, Vector3 pos, Vector3 rot, Vector3 offset, Vehicle handle, int bone)
+	{
+		Object object_handle = world_model::spawn(object_model, pos, *g_pointers->m_gta.m_is_session_started);
+		ENTITY::SET_ENTITY_VISIBLE(object_handle, attachment_node.child("IsVisible").text().as_bool(), true);
+		ENTITY::SET_ENTITY_INVINCIBLE(object_handle, attachment_node.child("IsInvincible").text().as_bool());
+		ENTITY::ATTACH_ENTITY_TO_ENTITY(object_handle, handle, bone, offset.x, offset.y, offset.z, rot.x, rot.y, rot.z, false, false, true, false, 2, true, false);
+	}
+
+	Vehicle xml_vehicles_service::spawn_from_xml(pugi::xml_document& doc, Vector3 pos)
+	{
+		auto vehicle_node             = doc.child("Vehicle");
+		auto vehicle_attachments_node = vehicle_node.child("SpoonerAttachments");
+
+		auto vehicle_handle = vehicle::spawn(vehicle_node.child("ModelHash").text().as_uint(),
+		    pos,
+		    ENTITY::GET_ENTITY_HEADING(self::ped),
+		    *g_pointers->m_gta.m_is_session_started,
+		    false);
+
+		ENTITY::SET_ENTITY_VISIBLE(vehicle_handle, vehicle_node.child("IsVisible").text().as_bool(), false);
+		ENTITY::SET_ENTITY_INVINCIBLE(vehicle_handle, vehicle_node.child("IsInvincible").text().as_bool());
+		ENTITY::SET_ENTITY_PROOFS(vehicle_handle,
+		    vehicle_node.child("IsBulletProof").text().as_bool(),
+		    vehicle_node.child("IsFireProof").text().as_bool(),
+		    vehicle_node.child("IsExplosionProof").text().as_bool(),
+		    vehicle_node.child("IsCollisionProof").text().as_bool(),
+		    vehicle_node.child("IsMeleeProof").text().as_bool(),
+		    false,
+		    false,
+		    false);
+
+		//Appearance
+		apply_vehicle_properties(vehicle_handle, vehicle_node);
+
+		//Attachments
+		for (auto attachment_item = vehicle_attachments_node.first_child(); attachment_item;
+		     attachment_item      = attachment_item.next_sibling())
+		{
+			//Yes the node Attachment has a node called Attachment, go figure
+			auto entity_attachment_node = attachment_item.child("Attachment");
+			auto entity_model           = attachment_item.child("ModelHash").text().as_uint();
+			auto entity_vector_node     = attachment_item.child("PositionRotation");
+
+			Vector3 position = {entity_vector_node.child("X").text().as_float(),
+			    entity_vector_node.child("Y").text().as_float(),
+			    entity_vector_node.child("Z").text().as_float()};
+			Vector3 rotation = {entity_attachment_node.child("Pitch").text().as_float(),
+			    entity_attachment_node.child("Roll").text().as_float(),
+			    entity_attachment_node.child("Yaw").text().as_float()};
+			Vector3 offset   = {entity_attachment_node.child("X").text().as_float(),
+			      entity_attachment_node.child("Y").text().as_float(),
+			      entity_attachment_node.child("Z").text().as_float()};
+			int bone         = entity_attachment_node.child("BoneIndex").text().as_int();
+			int type         = attachment_item.child("Type").text().as_int();
+
+			if (type == 1)
+				ped_attachment(attachment_item, entity_model, position, rotation, offset, vehicle_handle, bone);
+			else if (type == 2)
+				vehicle_attachment(attachment_item, entity_model, position, rotation, offset, vehicle_handle, bone);
+			else if (type == 3)
+				object_attachment(attachment_item, entity_model, position, rotation, offset, vehicle_handle, bone);
+		}
+
+		return vehicle_handle;
 	}
 }
