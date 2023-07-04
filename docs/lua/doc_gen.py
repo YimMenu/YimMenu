@@ -587,3 +587,46 @@ for class_name, class_ in classes.items():
     f = open(file_name, "a")
     f.write(str(class_))
     f.close()
+
+
+
+commands_file_name = f"./commands.md"
+if os.path.exists(commands_file_name):
+    os.remove(commands_file_name)
+f = open(commands_file_name, "a")
+
+f.write("""# Commands
+
+All the current commands from the menu are listed below.
+
+**Example Usage through Lua:**
+
+```lua
+command.call("spawn", {joaat("adder")})
+command.call_player(somePlayerIndex, "spawn", {joaat("adder")})
+```
+
+For a complete list of available command functions, please refer to the command table documentation.
+
+""")
+
+
+commands = []
+with open("./commands_dump.txt", "r") as file:
+    for line in file:
+        cmd = line.split("|", 1)[1].strip().split("|")
+        commands.append(cmd)
+
+f.write(f"## Command Count: {len(commands)}\n\n")
+
+for cmd in commands:
+    name = cmd[0]
+    label = cmd[1]
+    desc = cmd[2]
+    arg_count = cmd[3]
+    f.write(f"### {name}\n")
+    f.write(f"{desc}\n")
+    f.write(f"Arg Count: {arg_count}\n")
+    f.write("\n")
+
+f.close()
