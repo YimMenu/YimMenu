@@ -47,6 +47,9 @@ namespace big
 				if (g.window.ingame_overlay_indicators.show_infinite_ammo)
 					components::overlay_indicator("Infinite Ammo", g.weapons.infinite_ammo);
 
+				if (g.window.ingame_overlay_indicators.show_always_full_ammo)
+					components::overlay_indicator("Always Full Ammo", g.weapons.always_full_ammo);
+
 				if (g.window.ingame_overlay_indicators.show_infinite_mag)
 					components::overlay_indicator("Infinite Magazine", g.weapons.infinite_mag);
 

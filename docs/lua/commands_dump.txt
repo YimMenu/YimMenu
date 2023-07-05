@@ -1,212 +1,213 @@
-[19:05:57.0610103][INFO/command.cpp:45] Command | bailkick | BAIL_KICK | BAIL_KICK_DESC | 1
-[19:05:57.0611656][INFO/command.cpp:45] Command | bailkickall | BAIL_KICK | BAIL_KICK_DESC | 0
-[19:05:57.0611769][INFO/command.cpp:45] Command | breakup | BREAKUP_KICK | BREAKUP_KICK_DESC | 1
-[19:05:57.0611876][INFO/command.cpp:45] Command | breakupcheating | BREAKUP_KICK_SHOW_CHEATING | BREAKUP_KICK_SHOW_CHEATING_DESC | 0
-[19:05:57.0612078][INFO/command.cpp:45] Command | desync | COMPLAINT_KICK | COMPLAINT_KICK_DESC | 1
-[19:05:57.0612135][INFO/command.cpp:45] Command | desyncall | COMPLAINT_KICK | COMPLAINT_KICK_DESC | 0
-[19:05:57.0612238][INFO/command.cpp:45] Command | endkick | END_KICK | END_KICK_DESC | 1
-[19:05:57.0612302][INFO/command.cpp:45] Command | hostkick | Host Kick | Host kick that only works when host | 1
-[19:05:57.0612407][INFO/command.cpp:45] Command | nfkick | NULL_FUNCTION_KICK | NULL_FUNCTION_KICK_DESC | 1
-[19:05:57.0612461][INFO/command.cpp:45] Command | nfkickall | NULL_FUNCTION_KICK | NULL_FUNCTION_KICK_DESC | 0
-[19:05:57.0612564][INFO/command.cpp:45] Command | oomkick | OOM_KICK_CMD | OOM_KICK_CMD_DESC | 1
-[19:05:57.0612623][INFO/command.cpp:45] Command | shkick | SCRIPT_HOST_KICK | SCRIPT_HOST_KICK_DESC | 1
-[19:05:57.0612764][INFO/command.cpp:45] Command | clearwanted | CLEAR_WANTED_LEVEL | CLEAR_WANTED_LEVEL_DESC | 1
-[19:05:57.0612820][INFO/command.cpp:45] Command | clearwantedall | CLEAR_WANTED_LEVEL | CLEAR_WANTED_LEVEL_DESC | 0
-[19:05:57.0612904][INFO/command.cpp:45] Command | enterint | ENTER_INTERIOR | ENTER_INTERIOR_DESC | 1
-[19:05:57.0613008][INFO/command.cpp:45] Command | giveammo | GIVE_AMMO | GIVE_AMMO_DESC | 1
-[19:05:57.0613067][INFO/command.cpp:45] Command | giveammoall | GIVE_AMMO | GIVE_AMMO_DESC | 0
-[19:05:57.0613120][INFO/command.cpp:45] Command | givearmor | GIVE_ARMOR | GIVE_ARMOR_DESC | 1
-[19:05:57.0613167][INFO/command.cpp:45] Command | givearmorall | GIVE_ARMOR | GIVE_ARMOR_DESC | 0
-[19:05:57.0613326][INFO/command.cpp:45] Command | givehealth | GIVE_HEALTH | GIVE_HEALTH_DESC | 1
-[19:05:57.0613376][INFO/command.cpp:45] Command | givehealthall | GIVE_HEALTH | GIVE_HEALTH_DESC | 0
-[19:05:57.0613918][INFO/command.cpp:45] Command | joinceo | JOIN_CEO | JOIN_CEO_DESC | 1
-[19:05:57.0614020][INFO/command.cpp:45] Command | copymodel | STEAL_IDENTITY | STEAL_IDENTITY_DESC | 1
-[19:05:57.0614114][INFO/command.cpp:45] Command | copyoutfit | STEAL_OUTFIT | STEAL_OUTFIT_DESC | 1
-[19:05:57.0614209][INFO/command.cpp:45] Command | ceokick | CEO_KICK | CEO_KICK_DESC | 1
-[19:05:57.0614254][INFO/command.cpp:45] Command | ceokickall | CEO_KICK | CEO_KICK_DESC | 0
-[19:05:57.0614683][INFO/command.cpp:45] Command | explode | EXPLODE_PLAYER | EXPLODE_PLAYER_DESC | 1
-[19:05:57.0614738][INFO/command.cpp:45] Command | explodeall | EXPLODE_PLAYER | EXPLODE_PLAYER_DESC | 0
-[19:05:57.0614795][INFO/command.cpp:45] Command | mission | FORCE_INTO_MISSION | FORCE_INTO_MISSION_DESC | 1
-[19:05:57.0614845][INFO/command.cpp:45] Command | missionall | FORCE_INTO_MISSION | FORCE_INTO_MISSION_DESC | 0
-[19:05:57.0614954][INFO/command.cpp:45] Command | giveweaps | GIVE_WEAPONS | GIVE_WEAPONS_DESC | 1
-[19:05:57.0615007][INFO/command.cpp:45] Command | giveweapsall | GIVE_WEAPONS | GIVE_WEAPONS_ALL_DESC | 0
-[19:05:57.0615190][INFO/command.cpp:45] Command | intkick | KICK_FROM_INTERIOR | KICK_FROM_INTERIOR_DESC | 1
-[19:05:57.0615245][INFO/command.cpp:45] Command | intkickall | KICK_FROM_INTERIOR | KICK_FROM_INTERIOR_DESC | 0
-[19:05:57.0615294][INFO/command.cpp:45] Command | vehkick | VEHICLE_KICK | VEHICLE_KICK_DESC | 1
-[19:05:57.0615341][INFO/command.cpp:45] Command | vehkickall | VEHICLE_KICK | VEHICLE_KICK_DESC | 0
-[19:05:57.0615386][INFO/command.cpp:45] Command | kill | KILL_PLAYER | KILL_PLAYER_DESC | 1
-[19:05:57.0615431][INFO/command.cpp:45] Command | killall | KILL_PLAYER | KILL_PLAYER_DESC | 0
-[19:05:57.0615477][INFO/command.cpp:45] Command | ragdoll | RAGDOLL_PLAYER | RAGDOLL_PLAYER_DESC | 1
-[19:05:57.0615522][INFO/command.cpp:45] Command | ragdollall | RAGDOLL_PLAYER | RAGDOLL_PLAYER_DESC | 0
-[19:05:57.0615614][INFO/command.cpp:45] Command | remweaps | REMOVE_ALL_WEAPONS | REMOVE_ALL_WEAPONS_DESC | 1
-[19:05:57.0615666][INFO/command.cpp:45] Command | remweapsall | REMOVE_ALL_WEAPONS | REMOVE_ALL_WEAPONS_DESC | 0
-[19:05:57.0615768][INFO/command.cpp:45] Command | fakeban | FAKE_BAN_MESSAGE | FAKE_BAN_MESSAGE_DESC | 1
-[19:05:57.0615818][INFO/command.cpp:45] Command | fakebanall | FAKE_BAN_MESSAGE | FAKE_BAN_MESSAGE_DESC | 0
-[19:05:57.0615872][INFO/command.cpp:45] Command | sext | SEND_SEXT | SEND_SEXT_DESC | 1
-[19:05:57.0615914][INFO/command.cpp:45] Command | sextall | SEND_SEXT | SEND_SEXT_DESC | 0
-[19:05:57.0616008][INFO/command.cpp:45] Command | apartmenttp | TP_TO_APARTMENT | TP_TO_APARTMENT_DESC | 2
-[19:05:57.0616056][INFO/command.cpp:45] Command | apartmenttpall | TP_TO_APARTMENT | TP_TO_APARTMENT_DESC | 1
-[19:05:57.0616107][INFO/command.cpp:45] Command | interiortp | TP_TO_INTERIOR | TP_TO_INTERIOR_DESC | 2
-[19:05:57.0616151][INFO/command.cpp:45] Command | interiortpall | TP_TO_INTERIOR | TP_TO_INTERIOR_DESC | 1
-[19:05:57.0616212][INFO/command.cpp:45] Command | warehousetp | TP_TO_WAREHOUSE | TP_TO_WAREHOUSE_DESC | 2
-[19:05:57.0616259][INFO/command.cpp:45] Command | warehousetpall | TP_TO_WAREHOUSE | TP_TO_WAREHOUSE_DESC | 1
-[19:05:57.0616357][INFO/command.cpp:45] Command | wanted | SET_WANTED_LEVEL | SET_WANTED_LEVEL_DESC | 2
-[19:05:57.0616460][INFO/command.cpp:45] Command | error | SHOW_TRANSACTION_ERROR | SHOW_TRANSACTION_ERROR_DESC | 1
-[19:05:57.0616514][INFO/command.cpp:45] Command | errorall | SHOW_TRANSACTION_ERROR | SHOW_TRANSACTION_ERROR_DESC | 0
-[19:05:57.0616620][INFO/command.cpp:45] Command | tutorial | Start Tutorial | Plays that unskippable cutscene used in the tutorial | 1
-[19:05:57.0616673][INFO/command.cpp:45] Command | tutorialall | Start Tutorial | Plays that unskippable cutscene used in the tutorial | 0
-[19:05:57.0616747][INFO/command.cpp:45] Command | golf | Start Golf | Starts golf | 1
-[19:05:57.0616792][INFO/command.cpp:45] Command | golfall | Start Golf | Starts golf | 0
-[19:05:57.0616842][INFO/command.cpp:45] Command | flightschool | Start Flight School | Teleports player to the airport and starts flight school | 1
-[19:05:57.0616918][INFO/command.cpp:45] Command | flightschoolall | Start Flight School | Teleports player to the airport and starts flight school | 0
-[19:05:57.0616971][INFO/command.cpp:45] Command | darts | Start Darts | Starts darts in a Sandy Shores bar | 1
-[19:05:57.0617019][INFO/command.cpp:45] Command | dartsall | Start Darts | Starts darts in a Sandy Shores bar | 0
-[19:05:57.0617073][INFO/command.cpp:45] Command | badlands | Start Badlands Revenge II | Starts the arcade game Badlands Revenge II in fullscreen | 1
-[19:05:57.0617132][INFO/command.cpp:45] Command | badlandsall | Start Badlands Revenge II | Starts the arcade game Badlands Revenge II in fullscreen | 0
-[19:05:57.0617184][INFO/command.cpp:45] Command | spacemonkey | Start Space Monkey 3 | Starts the arcade game Space Monkey 3 in fullscreen | 1
-[19:05:57.0617234][INFO/command.cpp:45] Command | spacemonkeyall | Start Space Monkey 3 | Starts the arcade game Space Monkey 3 in fullscreen | 0
-[19:05:57.0617287][INFO/command.cpp:45] Command | wizard | Start The Wizard's Ruin | Starts the arcade game The Wizard's Ruin in fullscreen | 1
-[19:05:57.0617340][INFO/command.cpp:45] Command | wizardall | Start The Wizard's Ruin | Starts the arcade game The Wizard's Ruin in fullscreen | 0
-[19:05:57.0617390][INFO/command.cpp:45] Command | qub3d | Start Qub3D | Starts the arcade game Qub3D in fullscreen | 1
-[19:05:57.0617437][INFO/command.cpp:45] Command | qub3dall | Start Qub3D | Starts the arcade game Qub3D in fullscreen | 0
-[19:05:57.0617497][INFO/command.cpp:45] Command | camhedz | Start Camhedz | Starts the arcade game Camhedz in fullscreen | 1
-[19:05:57.0617546][INFO/command.cpp:45] Command | camhedzall | Start Camhedz | Starts the arcade game Camhedz in fullscreen | 0
-[19:05:57.0617655][INFO/command.cpp:45] Command | ceoraid | TRIGGER_CEO_RAID | TRIGGER_CEO_RAID_DESC | 1
-[19:05:57.0617704][INFO/command.cpp:45] Command | ceoraidall | TRIGGER_CEO_RAID | TRIGGER_CEO_RAID_DESC | 0
-[19:05:57.0618069][INFO/command.cpp:45] Command | beast | TURN_INTO_BEAST | TURN_INTO_BEAST_DESC | 1
-[19:05:57.0618139][INFO/command.cpp:45] Command | beastall | TURN_INTO_BEAST_ALL | TURN_INTO_BEAST_ALL_DESC | 0
-[19:05:57.0618195][INFO/command.cpp:45] Command | bring | BRING | BRING_DESC | 1
-[19:05:57.0618240][INFO/command.cpp:45] Command | bringall | BRING_ALL | BRING_ALL_DESC | 0
-[19:05:57.0618353][INFO/command.cpp:45] Command | bounty | BOUNTY | BOUNTY_DESC | 1
-[19:05:57.0618483][INFO/command.cpp:45] Command | bountyall | BOUNTY | BOUNTY_DESC | 0
-[19:05:57.0618531][INFO/command.cpp:45] Command | anonbounty | BOUNTY_ANON | BOUNTY_ANON_DESC | 0
-[19:05:57.0618627][INFO/command.cpp:45] Command | playertp | TELEPORT | TELEPORT_DESC | 1
-[19:05:57.0618746][INFO/command.cpp:45] Command | playervehtp | TELEPORT_INTO_VEHICLE | TELEPORT_INTO_VEHICLE_DESC | 1
-[19:05:57.0618873][INFO/command.cpp:45] Command | boostveh | Boost Vehicle | Boosts their car very fast. | 1
-[19:05:57.0618926][INFO/command.cpp:45] Command | boostvehall | Boost Vehicle | Boosts their car very fast. | 0
-[19:05:57.0618983][INFO/command.cpp:45] Command | burstwheels | Burst Vehicle Tyres | Removes their tyres. | 1
-[19:05:57.0619034][INFO/command.cpp:45] Command | burstwheelsall | Burst Vehicle Tyres | Removes their tyres. | 0
-[19:05:57.0619134][INFO/command.cpp:45] Command | closedoors | Close Vehicle Doors | Closes all vehicle doors | 1
-[19:05:57.0619193][INFO/command.cpp:45] Command | closedoorsall | Close Vehicle Doors | Closes all vehicle doors | 0
-[19:05:57.0619253][INFO/command.cpp:45] Command | downgradeveh | Downgrade Vehicle | Removes all upgrades | 1
-[19:05:57.0619304][INFO/command.cpp:45] Command | downgradevehall | Downgrade Vehicle | Removes all upgrades | 0
-[19:05:57.0619397][INFO/command.cpp:45] Command | flip180 | Rotate 180 | Rotates their car around | 1
-[19:05:57.0619449][INFO/command.cpp:45] Command | flip180all | Rotate 180 | Rotates their car around | 0
-[19:05:57.0619663][INFO/command.cpp:45] Command | flyingveh | Flying Vehicle | Catapults their car to  the sky. | 1
-[19:05:57.0619717][INFO/command.cpp:45] Command | flyingvehall | Flying Vehicle | Catapults their car to  the sky. | 0
-[19:05:57.0619772][INFO/command.cpp:45] Command | killengine | Kill Vehicle Engine | Breaks their engine | 1
-[19:05:57.0619820][INFO/command.cpp:45] Command | killengineall | Kill Vehicle Engine | Breaks their engine | 0
-[19:05:57.0619921][INFO/command.cpp:45] Command | lockveh | Lock Vehicle | Locks vehicle doors | 1
-[19:05:57.0619967][INFO/command.cpp:45] Command | lockvehall | Lock Vehicle | Locks vehicle doors | 0
-[19:05:57.0620021][INFO/command.cpp:45] Command | opendoors | Opens Vehicle Doors | Opens all vehicle doors | 1
-[19:05:57.0620067][INFO/command.cpp:45] Command | opendoorsall | Opens Vehicle Doors | Opens all vehicle doors | 0
-[19:05:57.0620164][INFO/command.cpp:45] Command | rcplayer | Remote Control Vehicle | Take control of the player's vehicle. Spectate the player beforehand for best results | 1
-[19:05:57.0620254][INFO/command.cpp:45] Command | smashwindows | Smash Vehicle Windows | Smashes all their windows | 1
-[19:05:57.0620304][INFO/command.cpp:45] Command | smashwindowsall | Smash Vehicle Windows | Smashes all their windows | 0
-[19:05:57.0620427][INFO/command.cpp:45] Command | stopveh | Stop Vehicle | Stops players vehicle | 1
-[19:05:57.0620478][INFO/command.cpp:45] Command | stopvehall | Stop Vehicle | Stops players vehicle | 0
-[19:05:57.0620565][INFO/command.cpp:45] Command | unlockveh | Unlock Vehicle Doors | Unlocks Vehicle Doors | 1
-[19:05:57.0620610][INFO/command.cpp:45] Command | unlockvehall | Unlock Vehicle Doors | Unlocks Vehicle Doors | 0
-[19:05:57.0620661][INFO/command.cpp:45] Command | upgradeveh | Upgrade Vehicle | Upgrades players vehicle | 1
-[19:05:57.0620703][INFO/command.cpp:45] Command | upgradevehall | Upgrade Vehicle | Upgrades players vehicle | 0
-[19:05:57.0620796][INFO/command.cpp:45] Command | blacktint | Black Window Tint | Makes their windows black. | 1
-[19:05:57.0620847][INFO/command.cpp:45] Command | blacktintall | Black Window Tint | Makes their windows black. | 0
-[19:05:57.0620893][INFO/command.cpp:45] Command | fillammo | Fill Ammo | Fills all of your ammo. | 0
-[19:05:57.0620937][INFO/command.cpp:45] Command | beastjump | Beast Jump | Allows you to jump as if you were the beast like in the Hunt the Beast event | 0
-[19:05:57.0620992][INFO/command.cpp:45] Command | clean | Clean Player | Cleans the player of wetness and decals | 0
-[19:05:57.0621090][INFO/command.cpp:45] Command | clearwantedlvl | Clear Wanted Level | Clears your wanted level | 0
-[19:05:57.0621146][INFO/command.cpp:45] Command | fillsnacks | Fill Inventory | Refills snacks and armor | 0
-[19:05:57.0621230][INFO/command.cpp:45] Command | heal | HEAL | HEAL_DESC | 0
-[19:05:57.0621285][INFO/command.cpp:45] Command | repairpv | Repair PV | Repairs your currently active personal vehicle | 0
-[19:05:57.0621446][INFO/command.cpp:45] Command | boatpickup | Request Boat Pickup | Request a boat pickup | 0
-[19:05:57.0621501][INFO/command.cpp:45] Command | ballisticarmor | Request Ballistic Equipment | Requests ballistic equipment which includes ballistic armor and an minigun | 0
-[19:05:57.0621600][INFO/command.cpp:45] Command | skipcutscene | Skip Cutscene | Skips the currently playing cutscene | 0
-[19:05:57.0621652][INFO/command.cpp:45] Command | suicide | Suicide | Kills you | 0
-[19:05:57.0621700][INFO/command.cpp:45] Command | superjump | Super Jump | Jump really high | 0
-[19:05:57.0621795][INFO/command.cpp:45] Command | spawn | Spawn Vehicle | Spawn a vehicle with the specified model | 1
-[19:05:57.0621873][INFO/command.cpp:45] Command | spawnmaxed | Spawn Maxed | Controls whether the vehicle spawned will have its mods maxed out | 0
-[19:05:57.0621936][INFO/command.cpp:45] Command | spawnin | Spawn Inside | Controls whether the player should be set inside the vehicle after it spawns | 0
-[19:05:57.0622005][INFO/command.cpp:45] Command | fastquit | Rage Quit | We all have bad times sometimes. Close your GTA instant. | 0
-[19:05:57.0622119][INFO/command.cpp:45] Command | bringpv | Bring Personal Vehicle | Teleports your PV near you | 0
-[19:05:57.0622223][INFO/command.cpp:45] Command | lastvehtp | Teleport To Last Vehicle | Teleports you into your last driven vehicle | 0
-[19:05:57.0622311][INFO/command.cpp:45] Command | objectivetp | Teleport To Objective | Teleports you to your mission objective | 0
-[19:05:57.0622399][INFO/command.cpp:45] Command | pvtp | Teleport To Personal Vehicle | Teleports you into your PV | 0
-[19:05:57.0622498][INFO/command.cpp:45] Command | waypointtp | Teleport To Waypoint | Teleports you to your waypoint | 0
-[19:05:57.0622687][INFO/command.cpp:45] Command | hudcolor | Override HUD Color | Override HUD colors | 0
-[19:05:57.0622852][INFO/command.cpp:45] Command | cleanloop | KEEP_PLAYER_CLEAN | KEEP_PLAYER_CLEAN_DESC | 0
-[19:05:57.0623194][INFO/command.cpp:45] Command | fastrespawn | INSTANT_RESPAWN | INSTANT_RESPAWN_DESC | 0
-[19:05:57.0623313][INFO/command.cpp:45] Command | freecam | FREECAM | FREECAM_DESC | 0
-[19:05:57.0623374][INFO/command.cpp:45] Command | godmode | GODMODE | GODMODE_DESC | 0
-[19:05:57.0623464][INFO/command.cpp:45] Command | healthregen | HEALTH_REGEN | HEALTH_REGEN_DESC | 0
-[19:05:57.0623563][INFO/command.cpp:45] Command | invis | INVISIBILITY | INVISIBILITY_DESC | 0
-[19:05:57.0623620][INFO/command.cpp:45] Command | localvis | LOCAL_VISIBILITY | LOCAL_VISIBILITY_DESC | 0
-[19:05:57.0623671][INFO/command.cpp:45] Command | mobileradio | MOBILE_RADIO | MOBILE_RADIO_DESC | 0
-[19:05:57.0623717][INFO/command.cpp:45] Command | nocollision | NO_COLLISION | NO_COLLISION_DESC | 0
-[19:05:57.0623815][INFO/command.cpp:45] Command | noragdoll | NO_RAGDOLL | NO_RAGDOLL_DESC | 0
-[19:05:57.0623868][INFO/command.cpp:45] Command | walkunder | WALK_UNDERWATER | WALK_UNDERWATER_DESC | 0
-[19:05:57.0623918][INFO/command.cpp:45] Command | noclip | NO_CLIP | NO_CLIP_DESC | 0
-[19:05:57.0624014][INFO/command.cpp:45] Command | otr | OFF_RADAR | OFF_RADAR_DESC | 0
-[19:05:57.0624067][INFO/command.cpp:45] Command | ptfx | PTFX_CMD | PTFX_CMD_DESC | 0
-[19:05:57.0624169][INFO/command.cpp:45] Command | fastrun | SUPER_RUN | SUPER_RUN_DESC | 0
-[19:05:57.0624241][INFO/command.cpp:45] Command | superman | SUPERMAN | SUPERMAN_DESC | 0
-[19:05:57.0624302][INFO/command.cpp:45] Command | infoxy | UNLIMITED_OXYGEN | UNLIMITED_OXYGEN_DESC | 0
-[19:05:57.0624583][INFO/command.cpp:45] Command | autotptowp | Auto-Teleport To Waypoint | Automatically teleports you to a waypoint as soon as you set one | 0
-[19:05:57.0624734][INFO/command.cpp:45] Command | vcaudio | Play Audio Through Voice Chat | Plays the audio.wav file in the project folder through voice chat. The wave file must be encoded with a mono 16 bit 16kHz PCM format. You have to reset voice chat settings whenever you load the menu for the sound to play | 0
-[19:05:57.0624872][INFO/command.cpp:45] Command | nophone | Disable Phone | Blocks phone and stops all phone calls | 0
-[19:05:57.0624939][INFO/command.cpp:45] Command | noidlekick | NO_IDLE_KICK | Prevents you from being kicked while idling. | 0
-[19:05:57.0625000][INFO/command.cpp:45] Command | blockhoming | Block Homing Missiles | Prevents homing missiles from locking on to your vehicle | 0
-[19:05:57.0625118][INFO/command.cpp:45] Command | mutesiren | Mute Siren | Disables the siren sound of Emergency vehicles | 0
-[19:05:57.0625179][INFO/command.cpp:45] Command | driveonwater | Drive On Water | Allows you to drive on water | 0
-[19:05:57.0625280][INFO/command.cpp:45] Command | vehiclefly | Vehicle Fly | Fly with any land vehicle | 0
-[19:05:57.0625359][INFO/command.cpp:45] Command | hornboost | Horn Boost | Boosts your vehicle forward when you sound the horn | 0
-[19:05:57.0625412][INFO/command.cpp:45] Command | instantbrake | Instant Brake | Makes your vehicle stop instantly when you press the brake | 0
-[19:05:57.0625510][INFO/command.cpp:45] Command | invisveh | Vehicle Invisiblity | Makes your car invisible | 0
-[19:05:57.0625571][INFO/command.cpp:45] Command | localinvisveh | Visible Locally | Makes your car visible to yourself, other players will still not be able to see it | 0
-[19:05:57.0625632][INFO/command.cpp:45] Command | keepengine | Keep Engine Running | Keeps the engine running when you exit the vehicle | 0
-[19:05:57.0625747][INFO/command.cpp:45] Command | keeponground | Keep On Ground | Makes it so your vehicle is always on the ground on all four wheels | 0
-[19:05:57.0625861][INFO/command.cpp:45] Command | keepfixed | Keep Vehicle Repaired | Keeps your vehicle free of wear and tear | 0
-[19:05:57.0626109][INFO/command.cpp:45] Command | vehnocollision | No Collision | Same as Ped No Collision, except this is global and also affects Ped | 0
-[19:05:57.0626343][INFO/command.cpp:45] Command | driveunder | Drive Underwater | Allows you to drive underwater | 0
-[19:05:57.0626473][INFO/command.cpp:45] Command | rainbowpri | Rainbow Paint: Apply to Primary | Applies active rainbow effect to the current vehicle's primary color | 0
-[19:05:57.0626543][INFO/command.cpp:45] Command | rainbowsec | Rainbow Paint: Apply to Secondary | Applies active rainbow effect to the current vehicle's secondary color | 0
-[19:05:57.0626609][INFO/command.cpp:45] Command | rainbowneons | Rainbow Paint: Apply to Neons | Applies active rainbow effect to the current vehicle's neon color | 0
-[19:05:57.0626665][INFO/command.cpp:45] Command | rainbowsmoke | Rainbow Paint: Apply to Tire Smoke | Applies active rainbow effect to the current vehicle's tire smoke color | 0
-[19:05:57.0630026][INFO/command.cpp:45] Command | rainbowspeed | Rainbow Paint: Speed | Speed of the rainbow paint effect | 1
-[19:05:57.0630142][INFO/command.cpp:45] Command | seatbelt | Seatbelt | Prevent you from falling off bikes or flying through the windshield | 0
-[19:05:57.0630273][INFO/command.cpp:45] Command | speedometer | Speedometer | Enable/disable the speedo meter for vehicles. | 0
-[19:05:57.0630339][INFO/command.cpp:45] Command | speedometergears | Show current gear | Adds the current gear the vehicle is in to the speedo meter. | 0
-[19:05:57.0630395][INFO/command.cpp:45] Command | speedometerleftside | Align to left | Aligns the speedo meter text to the left instead of to the right. | 0
-[19:05:57.0630447][INFO/command.cpp:45] Command | turnsignals | Turn Signals | Makes your car invisible | 0
-[19:05:57.0630546][INFO/command.cpp:45] Command | vehallweapons | Allow Weapons In Vehicle | Allows you to use all weapons in vehicle | 0
-[19:05:57.0630611][INFO/command.cpp:45] Command | vehgodmode | Vehicle God Mode | Prevents your vehicle from taking any form of damage | 0
-[19:05:57.0630709][INFO/command.cpp:45] Command | vehjump | Vehicle Jump | Makes the vehicle jump when you press the handbrake | 0
-[19:05:57.0630761][INFO/command.cpp:45] Command | aimbot | Aimbot | Lock on and kill | 0
-[19:05:57.0630848][INFO/command.cpp:45] Command | smoothing | Smoothing | Controls the snappiness of your lock on | 0
-[19:05:57.0630910][INFO/command.cpp:45] Command | aimatplayer | Player | If you suck at PVP, this is for you | 0
-[19:05:57.0630962][INFO/command.cpp:45] Command | aimatnpc | NPC | Generally kills normal NPCs | 0
-[19:05:57.0631008][INFO/command.cpp:45] Command | aimatpolice | Police | Locks onto cops to kill | 0
-[19:05:57.0631058][INFO/command.cpp:45] Command | aimatenemy | Enemy | Eliminate your enemies, and win your missions | 0
-[19:05:57.0631131][INFO/command.cpp:45] Command | incrdamage | Damage Override | Sets your damage to whatever you want | 0
-[19:05:57.0631303][INFO/command.cpp:45] Command | infammo | Infinite Ammo | Never run out of ammo again | 0
-[19:05:57.0631364][INFO/command.cpp:45] Command | infclip | Infinite Clip | Shoot forever without needing to reload | 0
-[19:05:57.0631487][INFO/command.cpp:45] Command | infrange | Infinite Range | Kill anything at any distance | 0
-[19:05:57.0631548][INFO/command.cpp:45] Command | norecoil | No Recoil | Removes weapon recoil when shooting | 0
-[19:05:57.0631604][INFO/command.cpp:45] Command | nospread | No Spread | Removes weapon spread when shooting | 0
-[19:05:57.0631722][INFO/command.cpp:45] Command | rapidfire | Rapid Fire | Makes your weapon fire insanely fast | 0
-[19:05:57.0631825][INFO/command.cpp:45] Command | triggerbot | Triggerbot | Shoots at a ped with fast ease | 0
-[19:05:57.0631956][INFO/command.cpp:45] Command | blackhole | Blackhole | Spawns a blackhole that picks up all the peds and vehicles in your area | 0
-[19:05:57.0632013][INFO/command.cpp:45] Command | blackholeincpeds | Peds | Includes all nearby peds in the blackhole's path of destruction | 0
-[19:05:57.0632068][INFO/command.cpp:45] Command | blackholeincvehs | Vehicles | Includes all nearby vehicles in the blackhole's path of destruction | 0
-[19:05:57.0632117][INFO/command.cpp:45] Command | autodisarm | Auto Disarm | Disarm nearby pedestrians | 0
-[19:05:57.0632212][INFO/command.cpp:45] Command | riotmode | Riot Mode | Make nearby peds attack each other | 0
-[19:05:57.0632270][INFO/command.cpp:45] Command | highalert | High Alert | Not the CoD perk | 0
-[19:05:57.0632412][INFO/command.cpp:45] Command | pedsignore | Ignore | Nearby peds will ignore you and become oblivious to your actions | 0
-[19:05:57.0632469][INFO/command.cpp:45] Command | pedrush | Ped Rush | Makes the nearby peds move with a purpose | 0
-[19:05:57.0632523][INFO/command.cpp:45] Command | pedrain | Rain Peds | Will pour down and rain nearby peds | 0
-[19:05:57.0632621][INFO/command.cpp:45] Command | vehiclerain | Rain Vehicles | Drops surrounding vehicles, vehicles can hit and kill you! | 0
-[19:05:57.0632680][INFO/command.cpp:45] Command | timeoverride | Override Time | Overrides current time. This is local and cannot be seen by other players | 0
-[19:05:57.0632779][INFO/command.cpp:45] Command | weatheroverride | Override Weather | Overrides current weather. This is local and cannot be seen by other players | 0
-[19:05:57.3533937][INFO/command.cpp:45] Command | orbitaldrone | Toggle Orbital Drone | Enables/Disables the orbital drone | 0
-[19:05:57.3534147][INFO/command.cpp:45] Command | player_db_auto_update_states | Auto Update Player Online States | Toggling this feature will automatically update the player online states every 5minutes. | 0
-[19:05:57.3534619][INFO/command.cpp:45] Command | vehiclecontrol | Vehicle controller | Enables/Disables the vehicle controller. | 0
-[19:05:57.3535802][INFO/command.cpp:45] Command | cmdexecutor | Toggle Command Executor | Toggles the command executor window | 0
+[20:46:19.2951571][INFO/command.cpp:48] Command | bailkick | BAIL_KICK | BAIL_KICK_DESC | 1
+[20:46:19.2954010][INFO/command.cpp:48] Command | bailkickall | BAIL_KICK | BAIL_KICK_DESC | 0
+[20:46:19.2954096][INFO/command.cpp:48] Command | breakup | BREAKUP_KICK | BREAKUP_KICK_DESC | 1
+[20:46:19.2954208][INFO/command.cpp:48] Command | breakupcheating | BREAKUP_KICK_SHOW_CHEATING | BREAKUP_KICK_SHOW_CHEATING_DESC | 0
+[20:46:19.2954534][INFO/command.cpp:48] Command | desync | COMPLAINT_KICK | COMPLAINT_KICK_DESC | 1
+[20:46:19.2954565][INFO/command.cpp:48] Command | desyncall | COMPLAINT_KICK | COMPLAINT_KICK_DESC | 0
+[20:46:19.2954673][INFO/command.cpp:48] Command | endkick | END_KICK | END_KICK_DESC | 1
+[20:46:19.2954710][INFO/command.cpp:48] Command | hostkick | Host Kick | Host kick that only works when host | 1
+[20:46:19.2954760][INFO/command.cpp:48] Command | nfkick | NULL_FUNCTION_KICK | NULL_FUNCTION_KICK_DESC | 1
+[20:46:19.2954789][INFO/command.cpp:48] Command | nfkickall | NULL_FUNCTION_KICK | NULL_FUNCTION_KICK_DESC | 0
+[20:46:19.2954887][INFO/command.cpp:48] Command | oomkick | OOM_KICK_CMD | OOM_KICK_CMD_DESC | 1
+[20:46:19.2955047][INFO/command.cpp:48] Command | shkick | SCRIPT_HOST_KICK | SCRIPT_HOST_KICK_DESC | 1
+[20:46:19.2955089][INFO/command.cpp:48] Command | clearwanted | CLEAR_WANTED_LEVEL | CLEAR_WANTED_LEVEL_DESC | 1
+[20:46:19.2955118][INFO/command.cpp:48] Command | clearwantedall | CLEAR_WANTED_LEVEL | CLEAR_WANTED_LEVEL_DESC | 0
+[20:46:19.2955236][INFO/command.cpp:48] Command | enterint | ENTER_INTERIOR | ENTER_INTERIOR_DESC | 1
+[20:46:19.2955274][INFO/command.cpp:48] Command | giveammo | GIVE_AMMO | GIVE_AMMO_DESC | 1
+[20:46:19.2955332][INFO/command.cpp:48] Command | giveammoall | GIVE_AMMO | GIVE_AMMO_DESC | 0
+[20:46:19.2955420][INFO/command.cpp:48] Command | givearmor | GIVE_ARMOR | GIVE_ARMOR_DESC | 1
+[20:46:19.2955445][INFO/command.cpp:48] Command | givearmorall | GIVE_ARMOR | GIVE_ARMOR_DESC | 0
+[20:46:19.2955511][INFO/command.cpp:48] Command | givehealth | GIVE_HEALTH | GIVE_HEALTH_DESC | 1
+[20:46:19.2955537][INFO/command.cpp:48] Command | givehealthall | GIVE_HEALTH | GIVE_HEALTH_DESC | 0
+[20:46:19.2956163][INFO/command.cpp:48] Command | joinceo | JOIN_CEO | JOIN_CEO_DESC | 1
+[20:46:19.2956200][INFO/command.cpp:48] Command | copymodel | STEAL_IDENTITY | STEAL_IDENTITY_DESC | 1
+[20:46:19.2956285][INFO/command.cpp:48] Command | copyoutfit | STEAL_OUTFIT | STEAL_OUTFIT_DESC | 1
+[20:46:19.2956433][INFO/command.cpp:48] Command | ceokick | CEO_KICK | CEO_KICK_DESC | 1
+[20:46:19.2956462][INFO/command.cpp:48] Command | ceokickall | CEO_KICK | CEO_KICK_DESC | 0
+[20:46:19.2957014][INFO/command.cpp:48] Command | explode | EXPLODE_PLAYER | EXPLODE_PLAYER_DESC | 1
+[20:46:19.2957050][INFO/command.cpp:48] Command | explodeall | EXPLODE_PLAYER | EXPLODE_PLAYER_DESC | 0
+[20:46:19.2957201][INFO/command.cpp:48] Command | mission | FORCE_INTO_MISSION | FORCE_INTO_MISSION_DESC | 1
+[20:46:19.2957230][INFO/command.cpp:48] Command | missionall | FORCE_INTO_MISSION | FORCE_INTO_MISSION_DESC | 0
+[20:46:19.2957297][INFO/command.cpp:48] Command | giveweaps | GIVE_WEAPONS | GIVE_WEAPONS_DESC | 1
+[20:46:19.2957329][INFO/command.cpp:48] Command | giveweapsall | GIVE_WEAPONS | GIVE_WEAPONS_ALL_DESC | 0
+[20:46:19.2957428][INFO/command.cpp:48] Command | intkick | KICK_FROM_INTERIOR | KICK_FROM_INTERIOR_DESC | 1
+[20:46:19.2957458][INFO/command.cpp:48] Command | intkickall | KICK_FROM_INTERIOR | KICK_FROM_INTERIOR_DESC | 0
+[20:46:19.2957495][INFO/command.cpp:48] Command | vehkick | VEHICLE_KICK | VEHICLE_KICK_DESC | 1
+[20:46:19.2957521][INFO/command.cpp:48] Command | vehkickall | VEHICLE_KICK | VEHICLE_KICK_DESC | 0
+[20:46:19.2957634][INFO/command.cpp:48] Command | kill | KILL_PLAYER | KILL_PLAYER_DESC | 1
+[20:46:19.2957672][INFO/command.cpp:48] Command | killall | KILL_PLAYER | KILL_PLAYER_DESC | 0
+[20:46:19.2957702][INFO/command.cpp:48] Command | ragdoll | RAGDOLL_PLAYER | RAGDOLL_PLAYER_DESC | 1
+[20:46:19.2957726][INFO/command.cpp:48] Command | ragdollall | RAGDOLL_PLAYER | RAGDOLL_PLAYER_DESC | 0
+[20:46:19.2957758][INFO/command.cpp:48] Command | remweaps | REMOVE_ALL_WEAPONS | REMOVE_ALL_WEAPONS_DESC | 1
+[20:46:19.2957794][INFO/command.cpp:48] Command | remweapsall | REMOVE_ALL_WEAPONS | REMOVE_ALL_WEAPONS_DESC | 0
+[20:46:19.2957905][INFO/command.cpp:48] Command | fakeban | FAKE_BAN_MESSAGE | FAKE_BAN_MESSAGE_DESC | 1
+[20:46:19.2957943][INFO/command.cpp:48] Command | fakebanall | FAKE_BAN_MESSAGE | FAKE_BAN_MESSAGE_DESC | 0
+[20:46:19.2958030][INFO/command.cpp:48] Command | sext | SEND_SEXT | SEND_SEXT_DESC | 1
+[20:46:19.2958057][INFO/command.cpp:48] Command | sextall | SEND_SEXT | SEND_SEXT_DESC | 0
+[20:46:19.2958089][INFO/command.cpp:48] Command | apartmenttp | TP_TO_APARTMENT | TP_TO_APARTMENT_DESC | 2
+[20:46:19.2958111][INFO/command.cpp:48] Command | apartmenttpall | TP_TO_APARTMENT | TP_TO_APARTMENT_DESC | 1
+[20:46:19.2958135][INFO/command.cpp:48] Command | interiortp | TP_TO_INTERIOR | TP_TO_INTERIOR_DESC | 2
+[20:46:19.2958155][INFO/command.cpp:48] Command | interiortpall | TP_TO_INTERIOR | TP_TO_INTERIOR_DESC | 1
+[20:46:19.2958248][INFO/command.cpp:48] Command | warehousetp | TP_TO_WAREHOUSE | TP_TO_WAREHOUSE_DESC | 2
+[20:46:19.2958299][INFO/command.cpp:48] Command | warehousetpall | TP_TO_WAREHOUSE | TP_TO_WAREHOUSE_DESC | 1
+[20:46:19.2958388][INFO/command.cpp:48] Command | wanted | SET_WANTED_LEVEL | SET_WANTED_LEVEL_DESC | 2
+[20:46:19.2958429][INFO/command.cpp:48] Command | error | SHOW_TRANSACTION_ERROR | SHOW_TRANSACTION_ERROR_DESC | 1
+[20:46:19.2958463][INFO/command.cpp:48] Command | errorall | SHOW_TRANSACTION_ERROR | SHOW_TRANSACTION_ERROR_DESC | 0
+[20:46:19.2958587][INFO/command.cpp:48] Command | tutorial | Start Tutorial | Plays that unskippable cutscene used in the tutorial | 1
+[20:46:19.2958620][INFO/command.cpp:48] Command | tutorialall | Start Tutorial | Plays that unskippable cutscene used in the tutorial | 0
+[20:46:19.2958745][INFO/command.cpp:48] Command | golf | Start Golf | Starts golf | 1
+[20:46:19.2958776][INFO/command.cpp:48] Command | golfall | Start Golf | Starts golf | 0
+[20:46:19.2958916][INFO/command.cpp:48] Command | flightschool | Start Flight School | Teleports player to the airport and starts flight school | 1
+[20:46:19.2959257][INFO/command.cpp:48] Command | flightschoolall | Start Flight School | Teleports player to the airport and starts flight school | 0
+[20:46:19.2959301][INFO/command.cpp:48] Command | darts | Start Darts | Starts darts in a Sandy Shores bar | 1
+[20:46:19.2959364][INFO/command.cpp:48] Command | dartsall | Start Darts | Starts darts in a Sandy Shores bar | 0
+[20:46:19.2959398][INFO/command.cpp:48] Command | badlands | Start Badlands Revenge II | Starts the arcade game Badlands Revenge II in fullscreen | 1
+[20:46:19.2959442][INFO/command.cpp:48] Command | badlandsall | Start Badlands Revenge II | Starts the arcade game Badlands Revenge II in fullscreen | 0
+[20:46:19.2959478][INFO/command.cpp:48] Command | spacemonkey | Start Space Monkey 3 | Starts the arcade game Space Monkey 3 in fullscreen | 1
+[20:46:19.2959529][INFO/command.cpp:48] Command | spacemonkeyall | Start Space Monkey 3 | Starts the arcade game Space Monkey 3 in fullscreen | 0
+[20:46:19.2959580][INFO/command.cpp:48] Command | wizard | Start The Wizard's Ruin | Starts the arcade game The Wizard's Ruin in fullscreen | 1
+[20:46:19.2959617][INFO/command.cpp:48] Command | wizardall | Start The Wizard's Ruin | Starts the arcade game The Wizard's Ruin in fullscreen | 0
+[20:46:19.2959652][INFO/command.cpp:48] Command | qub3d | Start Qub3D | Starts the arcade game Qub3D in fullscreen | 1
+[20:46:19.2959689][INFO/command.cpp:48] Command | qub3dall | Start Qub3D | Starts the arcade game Qub3D in fullscreen | 0
+[20:46:19.2959724][INFO/command.cpp:48] Command | camhedz | Start Camhedz | Starts the arcade game Camhedz in fullscreen | 1
+[20:46:19.2959757][INFO/command.cpp:48] Command | camhedzall | Start Camhedz | Starts the arcade game Camhedz in fullscreen | 0
+[20:46:19.2959797][INFO/command.cpp:48] Command | ceoraid | TRIGGER_CEO_RAID | TRIGGER_CEO_RAID_DESC | 1
+[20:46:19.2959821][INFO/command.cpp:48] Command | ceoraidall | TRIGGER_CEO_RAID | TRIGGER_CEO_RAID_DESC | 0
+[20:46:19.2959941][INFO/command.cpp:48] Command | beast | TURN_INTO_BEAST | TURN_INTO_BEAST_DESC | 1
+[20:46:19.2959968][INFO/command.cpp:48] Command | beastall | TURN_INTO_BEAST_ALL | TURN_INTO_BEAST_ALL_DESC | 0
+[20:46:19.2960096][INFO/command.cpp:48] Command | bring | BRING | BRING_DESC | 1
+[20:46:19.2960140][INFO/command.cpp:48] Command | bringall | BRING_ALL | BRING_ALL_DESC | 0
+[20:46:19.2960269][INFO/command.cpp:48] Command | bounty | BOUNTY | BOUNTY_DESC | 1
+[20:46:19.2960289][INFO/command.cpp:48] Command | bountyall | BOUNTY | BOUNTY_DESC | 0
+[20:46:19.2960312][INFO/command.cpp:48] Command | anonbounty | BOUNTY_ANON | BOUNTY_ANON_DESC | 0
+[20:46:19.2960377][INFO/command.cpp:48] Command | playertp | TELEPORT | TELEPORT_DESC | 1
+[20:46:19.2960584][INFO/command.cpp:48] Command | playervehtp | TELEPORT_INTO_VEHICLE | TELEPORT_INTO_VEHICLE_DESC | 1
+[20:46:19.2960655][INFO/command.cpp:48] Command | boostveh | Boost Vehicle | Boosts their car very fast. | 1
+[20:46:19.2960687][INFO/command.cpp:48] Command | boostvehall | Boost Vehicle | Boosts their car very fast. | 0
+[20:46:19.2960890][INFO/command.cpp:48] Command | burstwheels | Burst Vehicle Tyres | Removes their tyres. | 1
+[20:46:19.2960944][INFO/command.cpp:48] Command | burstwheelsall | Burst Vehicle Tyres | Removes their tyres. | 0
+[20:46:19.2961043][INFO/command.cpp:48] Command | closedoors | Close Vehicle Doors | Closes all vehicle doors | 1
+[20:46:19.2961078][INFO/command.cpp:48] Command | closedoorsall | Close Vehicle Doors | Closes all vehicle doors | 0
+[20:46:19.2961125][INFO/command.cpp:48] Command | downgradeveh | Downgrade Vehicle | Removes all upgrades | 1
+[20:46:19.2961157][INFO/command.cpp:48] Command | downgradevehall | Downgrade Vehicle | Removes all upgrades | 0
+[20:46:19.2961261][INFO/command.cpp:48] Command | flip180 | Rotate 180 | Rotates their car around | 1
+[20:46:19.2961291][INFO/command.cpp:48] Command | flip180all | Rotate 180 | Rotates their car around | 0
+[20:46:19.2961335][INFO/command.cpp:48] Command | flyingveh | Flying Vehicle | Catapults their car to  the sky. | 1
+[20:46:19.2961371][INFO/command.cpp:48] Command | flyingvehall | Flying Vehicle | Catapults their car to  the sky. | 0
+[20:46:19.2961481][INFO/command.cpp:48] Command | killengine | Kill Vehicle Engine | Breaks their engine | 1
+[20:46:19.2961505][INFO/command.cpp:48] Command | killengineall | Kill Vehicle Engine | Breaks their engine | 0
+[20:46:19.2961544][INFO/command.cpp:48] Command | lockveh | Lock Vehicle | Locks vehicle doors | 1
+[20:46:19.2961570][INFO/command.cpp:48] Command | lockvehall | Lock Vehicle | Locks vehicle doors | 0
+[20:46:19.2961666][INFO/command.cpp:48] Command | opendoors | Opens Vehicle Doors | Opens all vehicle doors | 1
+[20:46:19.2961729][INFO/command.cpp:48] Command | opendoorsall | Opens Vehicle Doors | Opens all vehicle doors | 0
+[20:46:19.2961843][INFO/command.cpp:48] Command | rcplayer | Remote Control Vehicle | Take control of the player's vehicle. Spectate the player beforehand for best results | 1
+[20:46:19.2961946][INFO/command.cpp:48] Command | smashwindows | Smash Vehicle Windows | Smashes all their windows | 1
+[20:46:19.2961970][INFO/command.cpp:48] Command | smashwindowsall | Smash Vehicle Windows | Smashes all their windows | 0
+[20:46:19.2962089][INFO/command.cpp:48] Command | stopveh | Stop Vehicle | Stops players vehicle | 1
+[20:46:19.2962115][INFO/command.cpp:48] Command | stopvehall | Stop Vehicle | Stops players vehicle | 0
+[20:46:19.2962157][INFO/command.cpp:48] Command | unlockveh | Unlock Vehicle Doors | Unlocks Vehicle Doors | 1
+[20:46:19.2962181][INFO/command.cpp:48] Command | unlockvehall | Unlock Vehicle Doors | Unlocks Vehicle Doors | 0
+[20:46:19.2962299][INFO/command.cpp:48] Command | upgradeveh | Upgrade Vehicle | Upgrades players vehicle | 1
+[20:46:19.2962329][INFO/command.cpp:48] Command | upgradevehall | Upgrade Vehicle | Upgrades players vehicle | 0
+[20:46:19.2962415][INFO/command.cpp:48] Command | blacktint | Black Window Tint | Makes their windows black. | 1
+[20:46:19.2962434][INFO/command.cpp:48] Command | blacktintall | Black Window Tint | Makes their windows black. | 0
+[20:46:19.2962457][INFO/command.cpp:48] Command | fillammo | Fill Ammo | Fills all of your ammo. | 0
+[20:46:19.2962485][INFO/command.cpp:48] Command | beastjump | Beast Jump | Allows you to jump as if you were the beast like in the Hunt the Beast event | 0
+[20:46:19.2962526][INFO/command.cpp:48] Command | clean | Clean Player | Cleans the player of wetness and decals | 0
+[20:46:19.2962671][INFO/command.cpp:48] Command | clearwantedlvl | Clear Wanted Level | Clears your wanted level | 0
+[20:46:19.2962707][INFO/command.cpp:48] Command | fillsnacks | Fill Inventory | Refills snacks and armor | 0
+[20:46:19.2962743][INFO/command.cpp:48] Command | heal | HEAL | HEAL_DESC | 0
+[20:46:19.2962879][INFO/command.cpp:48] Command | repairpv | Repair PV | Repairs your currently active personal vehicle | 0
+[20:46:19.2963100][INFO/command.cpp:48] Command | boatpickup | Request Boat Pickup | Request a boat pickup | 0
+[20:46:19.2963147][INFO/command.cpp:48] Command | ballisticarmor | Request Ballistic Equipment | Requests ballistic equipment which includes ballistic armor and an minigun | 0
+[20:46:19.2963206][INFO/command.cpp:48] Command | skipcutscene | Skip Cutscene | Skips the currently playing cutscene | 0
+[20:46:19.2963260][INFO/command.cpp:48] Command | suicide | Suicide | Kills you | 0
+[20:46:19.2963365][INFO/command.cpp:48] Command | superjump | Super Jump | Jump really high | 0
+[20:46:19.2963461][INFO/command.cpp:48] Command | spawn | Spawn Vehicle | Spawn a vehicle with the specified model | 1
+[20:46:19.2963523][INFO/command.cpp:48] Command | spawnmaxed | Spawn Maxed | Controls whether the vehicle spawned will have its mods maxed out | 0
+[20:46:19.2963572][INFO/command.cpp:48] Command | spawnin | Spawn Inside | Controls whether the player should be set inside the vehicle after it spawns | 0
+[20:46:19.2963659][INFO/command.cpp:48] Command | fastquit | Rage Quit | We all have bad times sometimes. Close your GTA instant. | 0
+[20:46:19.2963764][INFO/command.cpp:48] Command | bringpv | Bring Personal Vehicle | Teleports your PV near you | 0
+[20:46:19.2963790][INFO/command.cpp:48] Command | lastvehtp | Teleport To Last Vehicle | Teleports you into your last driven vehicle | 0
+[20:46:19.2963853][INFO/command.cpp:48] Command | objectivetp | Teleport To Objective | Teleports you to your mission objective | 0
+[20:46:19.2963886][INFO/command.cpp:48] Command | pvtp | Teleport To Personal Vehicle | Teleports you into your PV | 0
+[20:46:19.2963953][INFO/command.cpp:48] Command | waypointtp | Teleport To Waypoint | Teleports you to your waypoint | 0
+[20:46:19.2964104][INFO/command.cpp:48] Command | hudcolor | Override HUD Color | Override HUD colors | 0
+[20:46:19.2964469][INFO/command.cpp:48] Command | cleanloop | KEEP_PLAYER_CLEAN | KEEP_PLAYER_CLEAN_DESC | 0
+[20:46:19.2964816][INFO/command.cpp:48] Command | fastrespawn | INSTANT_RESPAWN | INSTANT_RESPAWN_DESC | 0
+[20:46:19.2964859][INFO/command.cpp:48] Command | freecam | FREECAM | FREECAM_DESC | 0
+[20:46:19.2964981][INFO/command.cpp:48] Command | godmode | GODMODE | GODMODE_DESC | 0
+[20:46:19.2965027][INFO/command.cpp:48] Command | healthregen | HEALTH_REGEN | HEALTH_REGEN_DESC | 0
+[20:46:19.2965145][INFO/command.cpp:48] Command | invis | INVISIBILITY | INVISIBILITY_DESC | 0
+[20:46:19.2965182][INFO/command.cpp:48] Command | localvis | LOCAL_VISIBILITY | LOCAL_VISIBILITY_DESC | 0
+[20:46:19.2965221][INFO/command.cpp:48] Command | mobileradio | MOBILE_RADIO | MOBILE_RADIO_DESC | 0
+[20:46:19.2965475][INFO/command.cpp:48] Command | nocollision | NO_COLLISION | NO_COLLISION_DESC | 0
+[20:46:19.2965507][INFO/command.cpp:48] Command | noragdoll | NO_RAGDOLL | NO_RAGDOLL_DESC | 0
+[20:46:19.2965647][INFO/command.cpp:48] Command | walkunder | WALK_UNDERWATER | WALK_UNDERWATER_DESC | 0
+[20:46:19.2965680][INFO/command.cpp:48] Command | noclip | NO_CLIP | NO_CLIP_DESC | 0
+[20:46:19.2965771][INFO/command.cpp:48] Command | otr | OFF_RADAR | OFF_RADAR_DESC | 0
+[20:46:19.2965799][INFO/command.cpp:48] Command | ptfx | PTFX_CMD | PTFX_CMD_DESC | 0
+[20:46:19.2965829][INFO/command.cpp:48] Command | fastrun | SUPER_RUN | SUPER_RUN_DESC | 0
+[20:46:19.2965914][INFO/command.cpp:48] Command | superman | SUPERMAN | SUPERMAN_DESC | 0
+[20:46:19.2965996][INFO/command.cpp:48] Command | infoxy | UNLIMITED_OXYGEN | UNLIMITED_OXYGEN_DESC | 0
+[20:46:19.2966346][INFO/command.cpp:48] Command | autotptowp | Auto-Teleport To Waypoint | Automatically teleports you to a waypoint as soon as you set one | 0
+[20:46:19.2966488][INFO/command.cpp:48] Command | vcaudio | Play Audio Through Voice Chat | Plays the audio.wav file in the project folder through voice chat. The wave file must be encoded with a mono 16 bit 16kHz PCM format. You have to reset voice chat settings whenever you load the menu for the sound to play | 0
+[20:46:19.2966713][INFO/command.cpp:48] Command | nophone | Disable Phone | Blocks phone and stops all phone calls | 0
+[20:46:19.2966766][INFO/command.cpp:48] Command | noidlekick | NO_IDLE_KICK | Prevents you from being kicked while idling. | 0
+[20:46:19.2966812][INFO/command.cpp:48] Command | blockhoming | Block Homing Missiles | Prevents homing missiles from locking on to your vehicle | 0
+[20:46:19.2966900][INFO/command.cpp:48] Command | mutesiren | Mute Siren | Disables the siren sound of Emergency vehicles | 0
+[20:46:19.2966933][INFO/command.cpp:48] Command | driveonwater | Drive On Water | Allows you to drive on water | 0
+[20:46:19.2967031][INFO/command.cpp:48] Command | vehiclefly | Vehicle Fly | Fly with any land vehicle | 0
+[20:46:19.2967088][INFO/command.cpp:48] Command | hornboost | Horn Boost | Boosts your vehicle forward when you sound the horn | 0
+[20:46:19.2967132][INFO/command.cpp:48] Command | instantbrake | Instant Brake | Makes your vehicle stop instantly when you press the brake | 0
+[20:46:19.2967309][INFO/command.cpp:48] Command | invisveh | Vehicle Invisiblity | Makes your car invisible | 0
+[20:46:19.2967349][INFO/command.cpp:48] Command | localinvisveh | Visible Locally | Makes your car visible to yourself, other players will still not be able to see it | 0
+[20:46:19.2967419][INFO/command.cpp:48] Command | keepengine | Keep Engine Running | Keeps the engine running when you exit the vehicle | 0
+[20:46:19.2967557][INFO/command.cpp:48] Command | keeponground | Keep On Ground | Makes it so your vehicle is always on the ground on all four wheels | 0
+[20:46:19.2967723][INFO/command.cpp:48] Command | keepfixed | Keep Vehicle Repaired | Keeps your vehicle free of wear and tear | 0
+[20:46:19.2968314][INFO/command.cpp:48] Command | vehnocollision | No Collision | Same as Ped No Collision, except this is global and also affects Ped | 0
+[20:46:19.2968417][INFO/command.cpp:48] Command | driveunder | Drive Underwater | Allows you to drive underwater | 0
+[20:46:19.2968629][INFO/command.cpp:48] Command | rainbowpri | Rainbow Paint: Apply to Primary | Applies active rainbow effect to the current vehicle's primary color | 0
+[20:46:19.2968687][INFO/command.cpp:48] Command | rainbowsec | Rainbow Paint: Apply to Secondary | Applies active rainbow effect to the current vehicle's secondary color | 0
+[20:46:19.2968749][INFO/command.cpp:48] Command | rainbowneons | Rainbow Paint: Apply to Neons | Applies active rainbow effect to the current vehicle's neon color | 0
+[20:46:19.2968807][INFO/command.cpp:48] Command | rainbowsmoke | Rainbow Paint: Apply to Tire Smoke | Applies active rainbow effect to the current vehicle's tire smoke color | 0
+[20:46:19.2969275][INFO/command.cpp:48] Command | rainbowspeed | Rainbow Paint: Speed | Speed of the rainbow paint effect | 1
+[20:46:19.2969393][INFO/command.cpp:48] Command | seatbelt | Seatbelt | Prevent you from falling off bikes or flying through the windshield | 0
+[20:46:19.2969589][INFO/command.cpp:48] Command | speedometer | Speedometer | Enable/disable the speedo meter for vehicles. | 0
+[20:46:19.2969794][INFO/command.cpp:48] Command | speedometergears | Show current gear | Adds the current gear the vehicle is in to the speedo meter. | 0
+[20:46:19.2969841][INFO/command.cpp:48] Command | speedometerleftside | Align to left | Aligns the speedo meter text to the left instead of to the right. | 0
+[20:46:19.2969896][INFO/command.cpp:48] Command | turnsignals | Turn Signals | Makes your car invisible | 0
+[20:46:19.2970068][INFO/command.cpp:48] Command | vehallweapons | Allow Weapons In Vehicle | Allows you to use all weapons in vehicle | 0
+[20:46:19.2970121][INFO/command.cpp:48] Command | vehgodmode | Vehicle God Mode | Prevents your vehicle from taking any form of damage | 0
+[20:46:19.2970171][INFO/command.cpp:48] Command | vehjump | Vehicle Jump | Makes the vehicle jump when you press the handbrake | 0
+[20:46:19.2970264][INFO/command.cpp:48] Command | aimbot | Aimbot | Lock on and kill | 0
+[20:46:19.2970470][INFO/command.cpp:48] Command | smoothing | Smoothing | Controls the snappiness of your lock on | 0
+[20:46:19.2970522][INFO/command.cpp:48] Command | aimatplayer | Player | If you suck at PVP, this is for you | 0
+[20:46:19.2970571][INFO/command.cpp:48] Command | aimatnpc | NPC | Generally kills normal NPCs | 0
+[20:46:19.2970606][INFO/command.cpp:48] Command | aimatpolice | Police | Locks onto cops to kill | 0
+[20:46:19.2970638][INFO/command.cpp:48] Command | aimatenemy | Enemy | Eliminate your enemies, and win your missions | 0
+[20:46:19.2970672][INFO/command.cpp:48] Command | alwaysfullammo | Always Full Ammo | Refills your ammo every tick | 0
+[20:46:19.2970756][INFO/command.cpp:48] Command | incrdamage | Damage Override | Sets your damage to whatever you want | 0
+[20:46:19.2970805][INFO/command.cpp:48] Command | infammo | Infinite Ammo | Never run out of ammo again | 0
+[20:46:19.2970942][INFO/command.cpp:48] Command | infclip | Infinite Clip | Shoot forever without needing to reload | 0
+[20:46:19.2970987][INFO/command.cpp:48] Command | infrange | Infinite Range | Kill anything at any distance | 0
+[20:46:19.2971038][INFO/command.cpp:48] Command | norecoil | No Recoil | Removes weapon recoil when shooting | 0
+[20:46:19.2971160][INFO/command.cpp:48] Command | nospread | No Spread | Removes weapon spread when shooting | 0
+[20:46:19.2971250][INFO/command.cpp:48] Command | rapidfire | Rapid Fire | Makes your weapon fire insanely fast | 0
+[20:46:19.2971356][INFO/command.cpp:48] Command | triggerbot | Triggerbot | Shoots at a ped with fast ease | 0
+[20:46:19.2971553][INFO/command.cpp:48] Command | blackhole | Blackhole | Spawns a blackhole that picks up all the peds and vehicles in your area | 0
+[20:46:19.2971607][INFO/command.cpp:48] Command | blackholeincpeds | Peds | Includes all nearby peds in the blackhole's path of destruction | 0
+[20:46:19.2971666][INFO/command.cpp:48] Command | blackholeincvehs | Vehicles | Includes all nearby vehicles in the blackhole's path of destruction | 0
+[20:46:19.2971714][INFO/command.cpp:48] Command | autodisarm | Auto Disarm | Disarm nearby pedestrians | 0
+[20:46:19.2971860][INFO/command.cpp:48] Command | riotmode | Riot Mode | Make nearby peds attack each other | 0
+[20:46:19.2971916][INFO/command.cpp:48] Command | highalert | High Alert | Not the CoD perk | 0
+[20:46:19.2972027][INFO/command.cpp:48] Command | pedsignore | Ignore | Nearby peds will ignore you and become oblivious to your actions | 0
+[20:46:19.2972081][INFO/command.cpp:48] Command | pedrush | Ped Rush | Makes the nearby peds move with a purpose | 0
+[20:46:19.2972263][INFO/command.cpp:48] Command | pedrain | Rain Peds | Will pour down and rain nearby peds | 0
+[20:46:19.2972321][INFO/command.cpp:48] Command | vehiclerain | Rain Vehicles | Drops surrounding vehicles, vehicles can hit and kill you! | 0
+[20:46:19.2972373][INFO/command.cpp:48] Command | timeoverride | Override Time | Overrides current time. This is local and cannot be seen by other players | 0
+[20:46:19.2972635][INFO/command.cpp:48] Command | weatheroverride | Override Weather | Overrides current weather. This is local and cannot be seen by other players | 0
+[20:46:19.5970941][INFO/command.cpp:48] Command | orbitaldrone | Toggle Orbital Drone | Enables/Disables the orbital drone | 0
+[20:46:19.5971135][INFO/command.cpp:48] Command | player_db_auto_update_states | Auto Update Player Online States | Toggling this feature will automatically update the player online states every 5minutes. | 0
+[20:46:19.5971390][INFO/command.cpp:48] Command | vehiclecontrol | Vehicle controller | Enables/Disables the vehicle controller. | 0
+[20:46:19.5972044][INFO/command.cpp:48] Command | cmdexecutor | Toggle Command Executor | Toggles the command executor window | 0
