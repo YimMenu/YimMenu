@@ -72,6 +72,7 @@ namespace big
 				ImGui::SameLine();
 				ImGui::BeginGroup();
 				ImGui::Checkbox("Show Infinite Ammo", &g.window.ingame_overlay_indicators.show_infinite_ammo);
+				ImGui::Checkbox("Show Always Full Ammo", &g.window.ingame_overlay_indicators.show_always_full_ammo);
 				ImGui::Checkbox("Show Infinite Magazine", &g.window.ingame_overlay_indicators.show_infinite_mag);
 				ImGui::Checkbox("Show Aimbot", &g.window.ingame_overlay_indicators.show_aimbot);
 				ImGui::Checkbox("Show Triggerbot", &g.window.ingame_overlay_indicators.show_triggerbot);

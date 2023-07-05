@@ -712,6 +712,7 @@ namespace big
 
 			CustomWeapon custom_weapon    = CustomWeapon::NONE;
 			bool infinite_ammo            = false;
+			bool always_full_ammo         = false;
 			bool infinite_mag             = false;
 			float increased_damage        = 1;
 			bool increase_damage          = false;
@@ -725,7 +726,7 @@ namespace big
 			bool triggerbot               = false;
 			bool infinite_range           = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, infinite_ammo, infinite_mag, increased_damage, increase_damage, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon, triggerbot, infinite_range)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, infinite_ammo, always_full_ammo, infinite_mag, increased_damage, increase_damage, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon, triggerbot, infinite_range)
 		} weapons{};
 
 		struct window
@@ -762,16 +763,17 @@ namespace big
 
 			struct ingame_overlay_indicators
 			{
-				bool show_player_godmode  = true;
-				bool show_off_radar       = true;
-				bool show_vehicle_godmode = true;
-				bool show_never_wanted    = true;
-				bool show_infinite_ammo   = false;
-				bool show_infinite_mag    = false;
-				bool show_aimbot          = false;
-				bool show_triggerbot      = false;
+				bool show_player_godmode   = true;
+				bool show_off_radar        = true;
+				bool show_vehicle_godmode  = true;
+				bool show_never_wanted     = true;
+				bool show_infinite_ammo    = false;
+				bool show_always_full_ammo = false;
+				bool show_infinite_mag     = false;
+				bool show_aimbot           = false;
+				bool show_triggerbot       = false;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ingame_overlay_indicators, show_player_godmode, show_off_radar, show_vehicle_godmode, show_never_wanted, show_infinite_ammo, show_infinite_mag, show_aimbot, show_triggerbot)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ingame_overlay_indicators, show_player_godmode, show_off_radar, show_vehicle_godmode, show_never_wanted, show_always_full_ammo, show_infinite_ammo, show_infinite_mag, show_aimbot, show_triggerbot)
 			} ingame_overlay_indicators{};
 
 			struct vehicle_control
