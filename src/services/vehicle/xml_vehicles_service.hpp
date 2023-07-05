@@ -9,6 +9,7 @@ namespace big
 	{
 	public:
 		xml_vehicles_service();
+		~xml_vehicles_service();
 		std::map<std::string, pugi::xml_document> m_all_xml_vehicles;
 
 		void fetch_xml_files();
