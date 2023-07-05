@@ -63,9 +63,7 @@ namespace big
 		{
 			if (ImGui::TreeNode("Overlay Indicators"))
 			{
-				ImGui::Separator();
 				ImGui::BeginGroup();
-				ImGui::Text("True by default");
 				ImGui::Checkbox("Show Player Godmode", &g.window.ingame_overlay_indicators.show_player_godmode);
 				ImGui::Checkbox("Show Off Radar", &g.window.ingame_overlay_indicators.show_off_radar);
 				ImGui::Checkbox("Show Vehicle Godmode", &g.window.ingame_overlay_indicators.show_vehicle_godmode);
@@ -75,7 +73,6 @@ namespace big
 				ImGui::SameLine();
 
 				ImGui::BeginGroup();
-				ImGui::Text("False by default");
 				ImGui::Checkbox("Show Infinite Ammo", &g.window.ingame_overlay_indicators.show_infinite_ammo);
 				ImGui::Checkbox("Show Infinite Magazine", &g.window.ingame_overlay_indicators.show_infinite_mag);
 				ImGui::Checkbox("Show Aimbot", &g.window.ingame_overlay_indicators.show_aimbot);
