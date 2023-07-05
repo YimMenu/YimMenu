@@ -5,6 +5,7 @@
 #include "hooking.hpp"
 #include "native_hooks.hpp"
 #include "natives.hpp"
+#include "util/notify.hpp"
 #include "util/scripts.hpp"
 
 namespace big
@@ -25,13 +26,10 @@ namespace big
 
 		void NETWORK_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT(rage::scrNativeCallContext* src)
 		{
-			if (rage::scrThread::get() && rage::scrThread::get()->m_handler)
+			if (src->get_arg<int>(2) >= 0x100)
 			{
-				if (auto hook = g_hooking->m_handler_hooks[(CGameScriptHandler*)rage::scrThread::get()->m_handler].get())
-				{
-					hook->disable();
-					g_hooking->m_handler_hooks.erase((CGameScriptHandler*)rage::scrThread::get()->m_handler);
-				}
+				notify::crash_blocked(nullptr, "out of bounds instance id");
+				return;
 			}
 
 			NETWORK::NETWORK_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT(src->get_arg<int>(0), src->get_arg<BOOL>(1), src->get_arg<int>(2));
@@ -39,13 +37,11 @@ namespace big
 
 		void NETWORK_TRY_TO_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT(rage::scrNativeCallContext* src)
 		{
-			if (rage::scrThread::get() && rage::scrThread::get()->m_handler)
+			if (src->get_arg<int>(2) >= 0x100)
 			{
-				if (auto hook = g_hooking->m_handler_hooks[(CGameScriptHandler*)rage::scrThread::get()->m_handler].get())
-				{
-					hook->disable();
-					g_hooking->m_handler_hooks.erase((CGameScriptHandler*)rage::scrThread::get()->m_handler);
-				}
+				notify::crash_blocked(nullptr, "out of bounds instance id");
+				src->set_return_value<BOOL>(FALSE);
+				return;
 			}
 
 			src->set_return_value<BOOL>(NETWORK::NETWORK_TRY_TO_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT(src->get_arg<int>(0), src->get_arg<BOOL>(1), src->get_arg<int>(2)));

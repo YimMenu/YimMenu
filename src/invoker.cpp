@@ -36,6 +36,9 @@ namespace big
 
 	void native_invoker::end_call(rage::scrNativeHash hash)
 	{
+		if (!m_handlers_cached)
+			cache_handlers();
+
 		if (auto it = m_handler_cache.find(hash); it != m_handler_cache.end())
 		{
 			rage::scrNativeHandler handler = it->second;
