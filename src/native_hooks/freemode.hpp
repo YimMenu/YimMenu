@@ -71,26 +71,25 @@ namespace big
 			}
 			else
 			{
-				if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("freemode") && g.session.force_script_host)
+				if (g.session.force_script_host && (g.session.fast_join || NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA()))
 				{
-					g_fiber_pool->queue_job([] {
-						scripts::force_host(RAGE_JOAAT("freemode"));
-						if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")); script && script->m_net_component)
+					auto hash = SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME();
+					g_fiber_pool->queue_job([hash] {
+						scripts::force_host(hash);
+						if (auto script = gta_util::find_script_thread(hash); script && script->m_net_component)
 							script->m_net_component->block_host_migration(true);
 					});
 				}
 
-				if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("fmmc_launcher") && g.session.force_script_host)
+				if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("freemode") && g.session.fast_join)
 				{
-					g_fiber_pool->queue_job([] {
-						scripts::force_host(RAGE_JOAAT("fmmc_launcher"));
-						if (auto script = gta_util::find_script_thread(RAGE_JOAAT("fmmc_launcher")); script && script->m_net_component)
-							script->m_net_component->block_host_migration(true);
-					});
+					scr_functions::set_freemode_session_active({});
+					src->set_return_value<BOOL>(TRUE);
 				}
-
-				scr_functions::set_freemode_session_active({});
-				src->set_return_value<BOOL>(TRUE);
+				else
+				{
+					src->set_return_value<BOOL>(NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA());
+				}
 			}
 		}
 	}

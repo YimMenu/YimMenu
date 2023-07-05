@@ -8,12 +8,20 @@
 #include "services/player_database/player_database_service.hpp"
 #include "services/players/player_service.hpp"
 #include "util/notify.hpp"
+#include "util/session.hpp"
 
 #include <network/Network.hpp>
 
 
 namespace big
 {
+	inline bool is_spoofed_host_token(std::uint64_t token)
+	{
+		if (token < 200'000'000)
+			return true;
+
+		return false;
+	}
 
 	void* hooks::assign_physical_index(CNetworkPlayerMgr* netPlayerMgr, CNetGamePlayer* player, uint8_t new_index)
 	{
@@ -82,10 +90,9 @@ namespace big
 				            net_player_data->m_gamer_handle.m_rockstar_id)));
 			}
 
-			auto id           = player->m_player_id;
-			bool lock_session = g.session.lock_session;
+			auto id = player->m_player_id;
 
-			g_fiber_pool->queue_job([id, lock_session] {
+			g_fiber_pool->queue_job([id] {
 				if (auto plyr = g_player_service->get_by_id(id))
 				{
 					if (plyr->get_net_data()->m_gamer_handle.m_rockstar_id != 0)
@@ -106,31 +113,29 @@ namespace big
 							}
 						}
 					}
+
 					if (plyr->block_join)
 					{
 						if (g_player_service->get_self()->is_host())
 						{
 							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
-							g_notification_service->push_warning("Block Join",
-							    std::format("Block Join method failed for {}, sending breakup kick instead...",
-							        plyr->get_net_data()->m_name));
-							LOG(WARNING) << "Sending Breakup Kick due to block join failure... ";
 						}
 						else
 						{
-							g_notification_service->push_warning("Block Join",
-							    std::format("Block Join method failed for {}, can't send breakup without host...\n trying Desync",
-							        plyr->get_net_data()->m_name));
-							LOG(WARNING) << "Failed blocking join due to not being host... trying Desync ";
-
 							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("desync")))->call(plyr, {});
 						}
 					}
-					if (lock_session && g_player_service->get_self()->is_host())
+
+					if (g.session.lock_session && g_player_service->get_self()->is_host())
 					{
 						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
 						g_notification_service->push_warning("Lock Session",
 						    std::format("A player with the name of {} has been denied entry", plyr->get_net_data()->m_name));
+					}
+
+					if (is_spoofed_host_token(plyr->get_net_data()->m_host_token))
+					{
+						session::add_infraction(plyr, Infraction::SPOOFED_HOST_TOKEN);
 					}
 				}
 			});

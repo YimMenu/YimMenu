@@ -842,15 +842,6 @@ namespace big
                 g_pointers->m_gta.m_sc_info = ptr.sub(4).rip().as<ScInfo*>();
             }
         },
-        // Create Script Handler
-        {
-            "CSH",
-            "48 8D 05 ? ? ? ? 4C 8D 0D ? ? ? ? 41 83 C8 FF 48 89 03 89 53 70 88 53 74 4C 89 4B 68 48 89 93",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_create_script_handler = *(ptr.add(3).rip().as<std::uint64_t**>() + 8);
-            }
-        },
         // Invalid Decal Crash
         {
             "IDC",
@@ -1223,6 +1214,15 @@ namespace big
                 g_pointers->m_gta.m_update_language = ptr.add(0x38).rip().as<functions::update_language>();
             }
         },
+        // Get Host Array Handler By Index
+        {
+            "GHAHBI",
+            "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 8A 81 8F",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_host_array_handler_by_index = ptr.as<functions::get_host_array_handler_by_index>();
+            }
+        },
         // Max Wanted Level
         {
             "MWL",
@@ -1340,6 +1340,15 @@ namespace big
             {
                 g_pointers->m_gta.m_script_vm_patch_5 = ptr;
                 g_pointers->m_gta.m_script_vm_patch_6 = ptr.add(0x26);
+            }
+        },
+        // CTheScripts::GetHandlerCheckNetwork patch (aka Model Spawn Bypass)
+        {
+            "CTSHP",
+            "48 8B C8 FF 52 30 84 C0 74 05 48",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_model_spawn_bypass = ptr.add(8).as<PVOID>();
             }
         }
         >(); // don't leave a trailing comma at the end

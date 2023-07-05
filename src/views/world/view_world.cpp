@@ -14,7 +14,6 @@ namespace big
 		}
 
 		ImGui::SeparatorText("Peds");
-		// Nearby Ped Actions
 
 		components::button<ImVec2(110, 0), ImVec4(0.70196f, 0.3333f, 0.00392f, 1.f)>("Kill", [] {
 			for (auto peds : entity::get_entities(false, true))
@@ -26,10 +25,14 @@ namespace big
 		ImGui::SameLine();
 
 		components::button<ImVec2(110, 0), ImVec4(0.76078f, 0.f, 0.03529f, 1.f)>("Kill Enemies", [] {
-			for (auto peds : entity::get_entities(false, true))
+			for (auto ped : entity::get_entities(false, true))
 			{
-				if (!PED::IS_PED_A_PLAYER(peds))
-					ped::kill_ped_by_relation(peds, 4 || 5);
+				if (!PED::IS_PED_A_PLAYER(ped))
+				{
+					auto relation = PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, self::ped);
+					if (relation == 4 || relation == 5)
+						ped::kill_ped(ped);
+				}
 			}
 		});
 
@@ -104,12 +107,13 @@ namespace big
 
 				quantity  = list.size();
 				remaining = quantity;
-				g_notification_service->push("Entity deletion", std::format("Deleting {} entities", quantity));
+				g_notification_service->push("Entity Deletion", std::format("Deleting {} entities", quantity));
 				deleting   = true;
 				int failed = 0;
+
 				for (auto ent : list)
 				{
-					if (ent == self::ped)
+					if (PED::IS_PED_A_PLAYER(ent))
 						continue;
 
 					if (ENTITY::DOES_ENTITY_EXIST(ent))
@@ -122,8 +126,6 @@ namespace big
 							entity::delete_entity(ent);
 					}
 
-					script::get_current()->yield(5ms);
-
 					if (ENTITY::DOES_ENTITY_EXIST(ent))
 						failed++;
 					else
@@ -131,7 +133,7 @@ namespace big
 				}
 
 				if (failed > 0)
-					g_notification_service->push_warning("Entity deletion", std::format("Failed deleting {} entities", failed));
+					g_notification_service->push_warning("Entity Deletion", std::format("Failed deleting {} entities", failed));
 
 				deleting = false;
 			});
