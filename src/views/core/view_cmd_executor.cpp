@@ -27,7 +27,7 @@ namespace big
 			// set focus by default on input box
 			ImGui::SetKeyboardFocusHere(0);
 
-			ImGui::SetNextItemWidth(screen_x * 0.5f);
+			ImGui::SetNextItemWidth((screen_x * 0.5f) - 30.f);
 			components::input_text_with_hint("", "CMD_EXECUTOR_TYPE_CMD"_T, command_buffer, sizeof(command_buffer), ImGuiInputTextFlags_EnterReturnsTrue, [] {
 				if (command::process(command_buffer, std::make_shared<default_command_context>(), true))
 				{
