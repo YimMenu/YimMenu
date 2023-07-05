@@ -75,4 +75,26 @@ namespace big
 	{
 		return nav;
 	}
+
+	void gui_service::remove_from_nav_internal(std::map<big::tabs, big::navigation_struct>& nav, big::tabs existing_tab_id)
+	{
+		std::erase_if(nav, [&](auto& nav_item) {
+			if (nav_item.first == existing_tab_id)
+			{
+				set_selected(tabs::NONE);
+				return true;
+			}
+			else
+			{
+				remove_from_nav_internal(nav_item.second.sub_nav, existing_tab_id);
+			}
+
+			return false;
+		});
+	}
+
+	void gui_service::remove_from_nav(tabs existing_tab_id)
+	{
+		remove_from_nav_internal(get_navigation(), existing_tab_id);
+	}
 }

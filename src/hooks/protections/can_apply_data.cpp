@@ -16,6 +16,7 @@
 #include "netsync/nodes/player/CPlayerAppearanceDataNode.hpp"
 #include "netsync/nodes/player/CPlayerCreationDataNode.hpp"
 #include "netsync/nodes/player/CPlayerGameStateDataNode.hpp"
+#include "netsync/nodes/player/CPlayerGamerDataNode.hpp"
 #include "netsync/nodes/proximity_migrateable/CSectorDataNode.hpp"
 #include "netsync/nodes/train/CTrainGameStateDataNode.hpp"
 #include "netsync/nodes/vehicle/CVehicleCreationDataNode.hpp"
@@ -25,6 +26,7 @@
 #include "network/netObject.hpp"
 #include "util/model_info.hpp"
 #include "util/notify.hpp"
+#include "util/session.hpp"
 #include "vehicle/CVehicleModelInfo.hpp"
 
 namespace big
@@ -547,10 +549,45 @@ namespace big
 
 	constexpr uint32_t crash_objects[] = {RAGE_JOAAT("prop_dummy_01"), RAGE_JOAAT("prop_dummy_car"), RAGE_JOAAT("prop_dummy_light"), RAGE_JOAAT("prop_dummy_plane"), RAGE_JOAAT("prop_distantcar_night"), RAGE_JOAAT("prop_distantcar_day"), RAGE_JOAAT("hei_bh1_08_details4_em_night"), RAGE_JOAAT("dt1_18_sq_night_slod"), RAGE_JOAAT("ss1_12_night_slod"), -1288391198, RAGE_JOAAT("h4_prop_bush_bgnvla_med_01"), RAGE_JOAAT("h4_prop_bush_bgnvla_lrg_01"), RAGE_JOAAT("h4_prop_bush_buddleia_low_01"), RAGE_JOAAT("h4_prop_bush_ear_aa"), RAGE_JOAAT("h4_prop_bush_ear_ab"), RAGE_JOAAT("h4_prop_bush_fern_low_01"), RAGE_JOAAT("h4_prop_bush_fern_tall_cc"), RAGE_JOAAT("h4_prop_bush_mang_ad"), RAGE_JOAAT("h4_prop_bush_mang_low_aa"), RAGE_JOAAT("h4_prop_bush_mang_low_ab"), RAGE_JOAAT("h4_prop_bush_seagrape_low_01"), RAGE_JOAAT("prop_h4_ground_cover"), RAGE_JOAAT("h4_prop_weed_groundcover_01"), RAGE_JOAAT("h4_prop_grass_med_01"), RAGE_JOAAT("h4_prop_grass_tropical_lush_01"), RAGE_JOAAT("h4_prop_grass_wiregrass_01"), RAGE_JOAAT("h4_prop_weed_01_plant"), RAGE_JOAAT("h4_prop_weed_01_row"), RAGE_JOAAT("urbanweeds02_l1"), RAGE_JOAAT("proc_forest_grass01"), RAGE_JOAAT("prop_small_bushyba"), RAGE_JOAAT("v_res_d_dildo_a"), RAGE_JOAAT("v_res_d_dildo_b"), RAGE_JOAAT("v_res_d_dildo_c"), RAGE_JOAAT("v_res_d_dildo_d"), RAGE_JOAAT("v_res_d_dildo_e"), RAGE_JOAAT("v_res_d_dildo_f"), RAGE_JOAAT("v_res_skateboard"), RAGE_JOAAT("prop_battery_01"), RAGE_JOAAT("prop_barbell_01"), RAGE_JOAAT("prop_barbell_02"), RAGE_JOAAT("prop_bandsaw_01"), RAGE_JOAAT("prop_bbq_3"), RAGE_JOAAT("v_med_curtainsnewcloth2"), RAGE_JOAAT("bh1_07_flagpoles"), 92962485};
 
-	inline CObject* get_game_object(rage::netObject* object)
-	{
-		return *(CObject**)((__int64)object + 0x50);
-	}
+	constexpr uint32_t valid_player_models[] = {
+	    RAGE_JOAAT("mp_m_freemode_01"),
+	    RAGE_JOAAT("mp_f_freemode_01"),
+	    RAGE_JOAAT("u_m_m_filmdirector"),
+	    RAGE_JOAAT("player_zero"),
+	    RAGE_JOAAT("player_one"),
+	    RAGE_JOAAT("player_two"),
+	    // peyote
+	    RAGE_JOAAT("A_C_Boar"),
+	    RAGE_JOAAT("A_C_Cat_01"),
+	    RAGE_JOAAT("A_C_Cow"),
+	    RAGE_JOAAT("A_C_Coyote"),
+	    RAGE_JOAAT("A_C_Deer"),
+	    RAGE_JOAAT("A_C_Husky"),
+	    RAGE_JOAAT("A_C_MtLion"),
+	    RAGE_JOAAT("A_C_Pig"),
+	    RAGE_JOAAT("A_C_Poodle"),
+	    RAGE_JOAAT("A_C_Pug"),
+	    RAGE_JOAAT("A_C_Rabbit_01"),
+	    RAGE_JOAAT("A_C_Retriever"),
+	    RAGE_JOAAT("A_C_Rottweiler"),
+	    RAGE_JOAAT("A_C_shepherd"),
+	    RAGE_JOAAT("A_C_Westy"),
+	    RAGE_JOAAT("A_C_Chickenhawk"),
+	    RAGE_JOAAT("A_C_Cormorant"),
+	    RAGE_JOAAT("A_C_Crow"),
+	    RAGE_JOAAT("A_C_Hen"),
+	    RAGE_JOAAT("A_C_Pigeon"),
+	    RAGE_JOAAT("A_C_Seagull"),
+	    RAGE_JOAAT("A_C_Dolphin"),
+	    RAGE_JOAAT("A_C_Fish"),
+	    RAGE_JOAAT("A_C_KillerWhale"),
+	    RAGE_JOAAT("A_C_SharkHammer"),
+	    RAGE_JOAAT("A_C_SharkTiger"),
+	    RAGE_JOAAT("A_C_Stingray"),
+	    RAGE_JOAAT("IG_Orleans"),
+	    RAGE_JOAAT("A_C_Chop"),
+	    RAGE_JOAAT("A_C_HumpBack"),
+	};
 
 	inline bool is_crash_ped(uint32_t model)
 	{
@@ -566,9 +603,11 @@ namespace big
 	{
 		if (!model_info::is_model_of_type(model, eModelType::Vehicle, eModelType::Unk133))
 			return true;
+
 		for (auto iterator : crash_vehicles)
 			if (iterator == model)
 				return true;
+
 		return false;
 	}
 
@@ -576,28 +615,81 @@ namespace big
 	{
 		if (!model_info::get_model(model))
 			return false;
+
 		if (!model_info::is_model_of_type(model, eModelType::Object, eModelType::Time, eModelType::Weapon, eModelType::Destructable, eModelType::WorldObject, eModelType::Sprinkler, eModelType::Unk65, eModelType::Plant, eModelType::LOD, eModelType::Unk132, eModelType::Building))
 			return true;
+
 		for (auto iterator : crash_objects)
 			if (iterator == model)
 				return true;
 		return false;
 	}
 
-	inline bool is_attachment_infinite(rage::CDynamicEntity* object, uint16_t attached_to_net_id)
+	inline bool is_valid_player_model(uint32_t model)
+	{
+		for (auto iterator : valid_player_models)
+			if (iterator == model)
+				return true;
+		return false;
+	}
+
+	inline void check_player_model(player_ptr player, uint32_t model)
+	{
+		if (!player)
+			return;
+
+		if (NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+			return;
+
+		if (!is_valid_player_model(model))
+		{
+			session::add_infraction(player, Infraction::INVALID_PLAYER_MODEL);
+		}
+	}
+
+	// the game function does weird stuff that we don't want
+	inline CObject* get_entity_attached_to(CObject* entity)
+	{
+		if (!entity)
+			return nullptr;
+
+		if (!entity->gap50)
+			return nullptr;
+
+		__int64 component = *(__int64*)((__int64)(entity->gap50) + 0x48);
+
+		if (!component)
+			return nullptr;
+
+		int unk_count = *(int*)(component + 0x5C) & 0xF;
+
+		if (unk_count < 2)
+			return nullptr;
+
+		return *(CObject**)(component);
+	}
+
+	inline bool is_attachment_infinite(rage::netObject* object, uint16_t attached_to_net_id, int from_bone, int to_bone)
 	{
 		if (object == nullptr)
 			return false;
 
-		constexpr size_t reasonable_limit = 150;
-		size_t i                          = 0;
-		while (object && i < reasonable_limit)
+		auto target = g_pointers->m_gta.m_get_net_object(*g_pointers->m_gta.m_network_object_mgr, attached_to_net_id, false);
+
+		while (target)
 		{
-			if (object->m_net_object && object->m_net_object->m_object_id == attached_to_net_id)
+			if (target == object)
 				return true;
 
-			object = g_pointers->m_gta.m_get_entity_attached_to(object);
-			i++;
+			auto next = get_entity_attached_to(target->GetGameObject());
+
+			if (!next)
+				return false;
+
+			if (!next->m_net_object)
+				return false;
+
+			target = next->m_net_object;
 		}
 
 		return false;
@@ -629,6 +721,26 @@ namespace big
 		return false;
 	}
 
+	inline bool is_sane_override_pos(float x, float y, float z)
+	{
+		if (isnan(x) || isnan(y) || isnan(z))
+			return false;
+
+		if (isinf(x) || isinf(y) || isinf(z))
+			return false;
+
+		if (x > 5000.0f || x < -5000.0f)
+			return false;
+
+		if (y > 8500.0f || y < -5000.0f)
+			return false;
+
+		if (z > 1600.0f || z < -700.0f)
+			return false;
+
+		return true;
+	}
+
 	bool check_node(rage::netSyncNodeBase* node, CNetGamePlayer* sender, rage::netObject* object)
 	{
 		if (node->IsParentNode())
@@ -641,10 +753,14 @@ namespace big
 		}
 		else if (node->IsDataNode())
 		{
-			const auto vft = *(uintptr_t*)node;
+			const auto vft   = *(uintptr_t*)node;
+			auto sender_plyr = g_player_service->get_by_id(sender->m_player_id);
 
 			for (const sync_node_id node_id : sync_node_finder::find((eNetObjType)object->m_object_type, vft))
 			{
+				if ((((CProjectBaseSyncDataNode*)node)->flags & 1) == 0)
+					continue;
+
 				switch (node_id)
 				{
 				case sync_node_id("CVehicleCreationDataNode"):
@@ -681,17 +797,13 @@ namespace big
 				{
 					const auto attach_node = (CPhysicalAttachDataNode*)(node);
 
-					// TODO: Find a better method to avoid false positives
-					auto model_hash = get_game_object(object) ? get_game_object(object)->m_model_info->m_hash : 0;
-					if (attach_node->m_attached && attach_node->m_attached_to == object->m_object_id && (model_hash != RAGE_JOAAT("hauler2") && model_hash != RAGE_JOAAT("phantom3")))
+					if (attach_node->m_attached
+					    && is_attachment_infinite(object,
+					        attach_node->m_attached_to,
+					        attach_node->m_attach_bone,
+					        attach_node->m_other_attach_bone))
 					{
-						// notify::crash_blocked(sender, "infinite physical attachment");
-						return true;
-					}
-					else if (attach_node->m_attached
-					    && is_attachment_infinite((rage::CDynamicEntity*)get_game_object(object), attach_node->m_attached_to))
-					{
-						// notify::crash_blocked(sender, "recursive infinite physical attachment");
+						notify::crash_blocked(sender, "infinite physical attachment");
 						return true;
 					}
 
@@ -715,14 +827,13 @@ namespace big
 				case sync_node_id("CPedAttachDataNode"):
 				{
 					const auto attach_node = (CPedAttachDataNode*)(node);
-					if (attach_node->m_attached && attach_node->m_attached_to == object->m_object_id)
+					if (attach_node->m_attached
+					    && is_attachment_infinite(object,
+					        attach_node->m_attached_to,
+					        attach_node->m_attachment_bone,
+					        attach_node->m_attachment_bone))
 					{
 						notify::crash_blocked(sender, "infinite ped attachment");
-						return true;
-					}
-					else if (attach_node->m_attached && is_attachment_infinite(get_game_object(object), attach_node->m_attached_to))
-					{
-						// notify::crash_blocked(sender, "recursive infinite ped attachment");
 						return true;
 					}
 
@@ -746,6 +857,7 @@ namespace big
 						notify::crash_blocked(sender, "invalid player model (appearance node)");
 						return true;
 					}
+					check_player_model(sender_plyr, player_appearance_node->m_model_hash);
 					break;
 				}
 				case sync_node_id("CPlayerCreationDataNode"):
@@ -756,6 +868,7 @@ namespace big
 						notify::crash_blocked(sender, "invalid player model (creation node)");
 						return true;
 					}
+					check_player_model(sender_plyr, player_creation_node->m_model);
 					break;
 				}
 				case sync_node_id("CSectorDataNode"):
@@ -771,8 +884,10 @@ namespace big
 				case sync_node_id("CPlayerGameStateDataNode"):
 				{
 					const auto game_state_node = (CPlayerGameStateDataNode*)(node);
-					if (game_state_node->m_population_control_sphere_x == 712 || game_state_node->m_population_control_sphere_y == 712
-					    || game_state_node->m_population_control_sphere_z == 712)
+					if (game_state_node->m_is_overriding_population_control_sphere
+					    && !is_sane_override_pos(game_state_node->m_population_control_sphere_x,
+					        game_state_node->m_population_control_sphere_y,
+					        game_state_node->m_population_control_sphere_z))
 					{
 						notify::crash_blocked(sender, "invalid sector position (player game state node)");
 						return true;
@@ -784,7 +899,7 @@ namespace big
 					const auto train_node = (CTrainGameStateDataNode*)(node);
 					if (train_node->m_track_id < 0 || train_node->m_track_id >= 27)
 					{
-						notify::crash_blocked(sender, "out of bound train track index");
+						notify::crash_blocked(sender, "out of bounds train track index");
 						return true;
 					}
 					break;
@@ -806,6 +921,24 @@ namespace big
 						}
 					}
 
+					break;
+				}
+				case sync_node_id("CPlayerGamerDataNode"):
+				{
+					const auto gamer_node = (CPlayerGamerDataNode*)(node);
+
+					if (sender_plyr)
+					{
+						if (gamer_node->m_clan_data.m_clan_id > 0 && gamer_node->m_clan_data.m_clan_id_2 > 0)
+						{
+							auto len = strlen(gamer_node->m_clan_data.m_clan_tag);
+
+							if (len <= 2)
+							{
+								session::add_infraction(sender_plyr, Infraction::SPOOFED_DATA);
+							}
+						}
+					}
 					break;
 				}
 				}

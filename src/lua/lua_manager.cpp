@@ -24,6 +24,24 @@ namespace big
 		g_lua_manager = nullptr;
 	}
 
+	bool lua_manager::has_gui_to_draw(rage::joaat_t tab_hash)
+	{
+		std::lock_guard guard(m_module_lock);
+
+		for (const auto& module : m_modules)
+		{
+			if (const auto it = module->m_gui.find(tab_hash); it != module->m_gui.end())
+			{
+				if (it->second.size())
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	void lua_manager::draw_gui(rage::joaat_t tab_hash)
 	{
 		std::lock_guard guard(m_module_lock);

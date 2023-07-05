@@ -203,8 +203,6 @@ namespace big
 
 		PVOID m_serialize_take_off_ped_variation_task;
 
-		PVOID m_create_script_handler;
-
 		functions::encode_session_info m_encode_session_info;
 		functions::decode_session_info m_decode_session_info;
 		functions::decode_peer_info m_decode_peer_info;
@@ -263,6 +261,10 @@ namespace big
 
 		int* m_language;
 		functions::update_language m_update_language{};
+
+		PVOID m_model_spawn_bypass{};
+
+		functions::get_host_array_handler_by_index m_get_host_array_handler_by_index;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

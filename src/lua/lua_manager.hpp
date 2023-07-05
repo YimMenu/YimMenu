@@ -37,10 +37,14 @@ namespace big
 			return m_modules.size();
 		}
 
+
+		bool has_gui_to_draw(rage::joaat_t tab_hash);
+
 		inline const folder& get_scripts_folder() const
 		{
 			return m_scripts_folder;
 		}
+
 
 		void draw_gui(rage::joaat_t tab_hash);
 

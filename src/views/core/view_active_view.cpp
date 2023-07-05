@@ -9,12 +9,15 @@ namespace big
 {
 	void view::active_view()
 	{
-		auto selected = g_gui_service->get_selected();
+		const auto selected = g_gui_service->get_selected();
 
-		if (selected->func == nullptr)
+		if (selected->func == nullptr &&
+			(g_lua_manager && !g_lua_manager->has_gui_to_draw(selected->hash)))
+		{
 			return;
+		}
 
-		static float alpha = 1.f;
+		constexpr float alpha = 1.f;
 
 		ImGui::SetNextWindowPos({(300.f + 20.f) * g.window.gui_scale, 100.f * g.window.gui_scale}, ImGuiCond_Always);
 		ImGui::SetNextWindowSize({0.f, 0.f});
@@ -31,7 +34,9 @@ namespace big
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
 			components::title(key);
 			ImGui::Separator();
-			selected->func();
+
+			if (selected->func)
+				selected->func();
 
 			if (g_lua_manager)
 				g_lua_manager->draw_gui(selected->hash);

@@ -4,6 +4,8 @@
 #include "gta_util.hpp"
 #include "hooking.hpp"
 #include "script_local.hpp"
+#include "services/players/player_service.hpp"
+#include "util/misc.hpp"
 #include "util/notify.hpp"
 
 #include <script/globals/GlobalPlayerBD.hpp>
@@ -59,7 +61,7 @@ namespace big
 				}
 			}
 
-			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[sender->m_player_id].RemoteWantedLevelPlayer = -1;// reset locally
+			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[sender->m_player_id].RemoteWantedLevelPlayer = -1; // reset locally
 		}
 
 		if (array->m_array == scr_globals::gsbd.as<void*>() && *scr_globals::gsbd.as<eFreemodeState*>() == eFreemodeState::CLOSING)
