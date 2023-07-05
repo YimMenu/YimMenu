@@ -125,6 +125,14 @@ namespace big
 		vehicle::operate_vehicle_door(m_controlled_vehicle.handle, door, open);
 	}
 
+	void vehicle_control::operate_window(eWindowId window, bool open)
+	{
+		if (g.window.vehicle_control.operation_animation)
+			animated_vehicle_operation(self::ped);
+
+		vehicle::operate_vehicle_window(m_controlled_vehicle.handle, window, open);
+	}
+
 	void vehicle_control::operate_lights(bool headlights, bool highbeams)
 	{
 		if (g.window.vehicle_control.operation_animation)
