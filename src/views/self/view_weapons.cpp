@@ -17,6 +17,7 @@ namespace big
 		ImGui::BeginGroup();
 
 		components::command_checkbox<"infammo">();
+		components::command_checkbox<"alwaysfullammo">();
 		components::command_checkbox<"infclip">();
 		components::command_checkbox<"infrange">();
 		ImGui::Checkbox("Allow Weapons In Interiors", &g.weapons.interior_weapon);
