@@ -11,7 +11,7 @@ Logs an informational message.
 - **Parameters:**
   - `data` (string)
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 log.info(data)
 ```
@@ -23,7 +23,7 @@ Logs a warning message.
 - **Parameters:**
   - `data` (string)
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 log.warning(data)
 ```
@@ -35,7 +35,7 @@ Logs a debug message.
 - **Parameters:**
   - `data` (string)
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 log.debug(data)
 ```

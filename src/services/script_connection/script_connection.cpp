@@ -95,12 +95,6 @@ namespace big
 	bool script_connection::set_script_as_networked()
 	{
 		gta_util::execute_as_script(m_thread, [this] {
-			if (auto hook = g_hooking->m_handler_hooks[(CGameScriptHandler*)m_thread->m_handler].get())
-			{
-				hook->disable();
-				g_hooking->m_handler_hooks.erase((CGameScriptHandler*)m_thread->m_handler);
-			}
-
 			NETWORK::NETWORK_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT(32, true, m_instance_id);
 		});
 

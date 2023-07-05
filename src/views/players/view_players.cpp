@@ -23,7 +23,7 @@ namespace big
 			player_icons += FONT_ICON_HOST;
 		if (plyr->is_friend())
 			player_icons += FONT_ICON_FRIEND;
-		if (const auto ped = plyr->get_ped(); ped != nullptr && ped->m_ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING)
+		if (const auto ped = plyr->get_ped(); (ped != nullptr && ped->m_ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING))
 			player_icons += FONT_ICON_VEHICLE;
 
 		const auto player_iconsc    = player_icons.c_str();
@@ -53,9 +53,11 @@ namespace big
 			g_gui_service->set_selected(tabs::PLAYER);
 			g.window.switched_view = true;
 		}
-		if (ImGui::IsItemHovered() && g_player_database_service->get_player_by_rockstar_id(plyr->get_net_data()->m_gamer_handle.m_rockstar_id) != nullptr)
+		if (ImGui::IsItemHovered()
+		    && g_player_database_service->get_player_by_rockstar_id(plyr->get_net_data()->m_gamer_handle.m_rockstar_id) != nullptr)
 		{
-			auto sorted_player = g_player_database_service->get_player_by_rockstar_id(plyr->get_net_data()->m_gamer_handle.m_rockstar_id);
+			auto sorted_player =
+			    g_player_database_service->get_player_by_rockstar_id(plyr->get_net_data()->m_gamer_handle.m_rockstar_id);
 
 			if (!sorted_player->infractions.empty())
 			{

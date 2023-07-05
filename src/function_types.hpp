@@ -6,6 +6,7 @@ class NetworkGameFilterMatchmakingComponent;
 class sCloudFile;
 class CPlayerGameStateDataNode;
 class CVehicleGadgetDataNode;
+class CGameScriptHandlerNetComponent;
 enum eVehicleGadgetType : uint32_t;
 
 namespace rage
@@ -22,6 +23,7 @@ namespace rage
 	class rlScHandle;
 	class rlQueryPresenceAttributesContext;
 	enum class eThreadState : uint32_t;
+	class netArrayHandlerBase;
 }
 
 namespace datafile_commands
@@ -141,4 +143,6 @@ namespace big::functions
 	using handle_chat_message = void (*)(void* chat_data, void*, rage::rlGamerHandle* handle, const char* text, bool is_team);
 
 	using update_language = void (*)(bool);
+
+	using get_host_array_handler_by_index = rage::netArrayHandlerBase* (*)(CGameScriptHandlerNetComponent* component, int index);
 }

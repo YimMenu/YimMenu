@@ -14,7 +14,7 @@ Scans the specified memory pattern within the "GTA5.exe" module and returns a po
 - **Returns:**
   - `pointer`: A pointer to the found address.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 pointer = memory.scan_pattern(pattern)
 ```
@@ -27,7 +27,7 @@ pointer = memory.scan_pattern(pattern)
 - **Returns:**
   - `pointer`: A rage::CDynamicEntity pointer to the script game entity handle
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 pointer = memory.handle_to_ptr(entity)
 ```
@@ -40,7 +40,7 @@ pointer = memory.handle_to_ptr(entity)
 - **Returns:**
   - `number`: The script game entity handle linked to the given rage::CDynamicEntity pointer.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 number = memory.ptr_to_handle(mem_addr)
 ```
@@ -53,7 +53,7 @@ number = memory.ptr_to_handle(mem_addr)
 - **Returns:**
   - `pointer`: A pointer to the newly allocated memory.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 pointer = memory.allocate(size)
 ```
@@ -63,7 +63,7 @@ pointer = memory.allocate(size)
 - **Parameters:**
   - `ptr` (pointer): The pointer that must be freed.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 memory.free(ptr)
 ```

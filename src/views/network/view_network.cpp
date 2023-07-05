@@ -265,6 +265,14 @@ namespace big
 						script->m_net_component->block_host_migration(true);
 				});
 		}
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("This might break freemode missions and interiors. Use with caution");
+
+		ImGui::SameLine();
+
+		ImGui::Checkbox("Fast Join", &g.session.fast_join);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("This WILL break jobs");
 
 		ImGui::Spacing();
 

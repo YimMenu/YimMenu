@@ -22,7 +22,7 @@ namespace lua::command
 		const auto command = big::command::get(rage::joaat(command_name));
 
 		if (command)
-			command->call(args, {});
+			command->call(args);
 	}
 
 	// Lua API: Function
@@ -44,7 +44,7 @@ namespace lua::command
 
 			if (player)
 			{
-				command->call(player, args, {});
+				command->call(player, args);
 			}
 		}
 	}
