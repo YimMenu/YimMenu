@@ -58,6 +58,9 @@ namespace big
 
 				if (g.window.ingame_overlay_indicators.show_triggerbot)
 					components::overlay_indicator("Triggerbot", g.weapons.triggerbot);
+
+				if (g.window.ingame_overlay_indicators.show_invisibility)
+					components::overlay_indicator("Invisibility", g.self.invisibility);
 			}
 
 			if (g.window.ingame_overlay.show_position && g_local_player)

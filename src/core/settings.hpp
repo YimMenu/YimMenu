@@ -772,8 +772,9 @@ namespace big
 				bool show_infinite_mag     = false;
 				bool show_aimbot           = false;
 				bool show_triggerbot       = false;
+				bool show_invisibility    = false;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ingame_overlay_indicators, show_player_godmode, show_off_radar, show_vehicle_godmode, show_never_wanted, show_always_full_ammo, show_infinite_ammo, show_infinite_mag, show_aimbot, show_triggerbot)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ingame_overlay_indicators, show_player_godmode, show_off_radar, show_vehicle_godmode, show_never_wanted, show_always_full_ammo, show_infinite_ammo, show_infinite_mag, show_aimbot, show_triggerbot, show_invisibility)
 			} ingame_overlay_indicators{};
 
 			struct vehicle_control
@@ -786,7 +787,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_control, operation_animation, max_summon_range, render_distance_on_veh)
 			} vehicle_control{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, background_color, demo, text_color, button_color, frame_color, gui_scale, switched_view, ingame_overlay, vehicle_control)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, background_color, demo, text_color, button_color, frame_color, gui_scale, switched_view, ingame_overlay, vehicle_control, ingame_overlay_indicators)
 		} window{};
 
 		struct context_menu
