@@ -3,10 +3,11 @@
 
 namespace big
 {
-	constexpr auto MAX_VEHICLE_DOORS = 6;
+	constexpr auto MAX_VEHICLE_DOORS       = 6;
+	constexpr auto MAX_VEHICLE_WINDOWS     = 4;
 	constexpr auto MAX_VEHICLE_LOCK_STATES = 11;
-	constexpr auto VEH_OP_ANIM_DICT = "ANIM@MP_PLAYER_INTMENU@KEY_FOB@";
-	constexpr auto VEH_OP_ANIM = "FOB_CLICK";
+	constexpr auto VEH_OP_ANIM_DICT        = "ANIM@MP_PLAYER_INTMENU@KEY_FOB@";
+	constexpr auto VEH_OP_ANIM             = "FOB_CLICK";
 
 	struct vehicle_door
 	{
@@ -17,6 +18,11 @@ namespace big
 		bool valid;
 	};
 
+	struct vehicle_window
+	{
+		eWindowId id;
+	};
+
 
 	struct controlled_vehicle
 	{
@@ -24,6 +30,7 @@ namespace big
 		CVehicle* ptr;
 		char model_name[100];
 		vehicle_door doors[6];
+		vehicle_window windows[4];
 		int doorCount;
 		eVehicleLockState lockstate;
 		bool engine;
@@ -32,8 +39,7 @@ namespace big
 		bool radio;
 		int radiochannel;
 		int convertibelstate;
-		int headlights,
-			 highbeams;
+		int headlights, highbeams;
 	};
 
 	class vehicle_control
@@ -62,6 +68,7 @@ namespace big
 
 		void animated_vehicle_operation(Ped ped);
 		void operate_door(eDoorId, bool);
+		void operate_window(eWindowId, bool);
 		void operate_lights(bool headlights, bool highbeams);
 		void operate_neons(int index, bool toggle);
 		void summon_vehicle();

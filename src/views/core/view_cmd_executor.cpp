@@ -18,7 +18,7 @@ namespace big
 		ImGui::SetNextWindowBgAlpha(0.65f);
 		ImGui::SetNextWindowSize({screen_x * 0.5f, -1});
 
-		if (ImGui::Begin("cmd_executor", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
+		if (ImGui::Begin("cmd_executor", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMouseInputs))
 		{
 			static char command_buffer[255];
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {10.f, 15.f});
