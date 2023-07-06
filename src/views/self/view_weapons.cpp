@@ -198,18 +198,14 @@ namespace big
 		}
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
-		if (ImGui::Button("Give Weapon"))
+		if (components::button("Give Weapon"))
 		{
-			g_fiber_pool->queue_job([] {
-				WEAPON::GIVE_WEAPON_TO_PED(self::ped, selected_weapon_hash, 9999, false, true);
-			});
+			WEAPON::GIVE_WEAPON_TO_PED(self::ped, selected_weapon_hash, 9999, false, true);
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Remove Weapon"))
+		if (components::button("Remove Weapon"))
 		{
-			g_fiber_pool->queue_job([] {
-				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, selected_weapon_hash);
-			});
+			WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, selected_weapon_hash);
 		}
 
 		ImGui::PushItemWidth(250);
@@ -241,18 +237,14 @@ namespace big
 			ImGui::EndCombo();
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Add to Weapon"))
+		if (components::button("Add to Weapon"))
 		{
-			g_fiber_pool->queue_job([] {
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(self::ped, selected_weapon_hash, selected_weapon_attachment_hash);
-			});
+			WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(self::ped, selected_weapon_hash, selected_weapon_attachment_hash);
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Remove from Weapon"))
+		if (components::button("Remove from Weapon"))
 		{
-			g_fiber_pool->queue_job([] {
-				WEAPON::REMOVE_WEAPON_COMPONENT_FROM_PED(self::ped, selected_weapon_hash, selected_weapon_attachment_hash);
-			});
+			WEAPON::REMOVE_WEAPON_COMPONENT_FROM_PED(self::ped, selected_weapon_hash, selected_weapon_attachment_hash);
 		}
 		ImGui::PopItemWidth();
 

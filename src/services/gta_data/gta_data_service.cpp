@@ -337,9 +337,8 @@ namespace big
 				}
 				else if (const auto file_str = file.string(); file_str.find("weaponcomponents") != std::string::npos && file.extension() == ".meta")
 				{
-					LOG(INFO) << file.string();
 					rpf_wrapper.read_xml_file(file, [&exists, &weapon_components, &mapped_components](pugi::xml_document& doc) {
-						const auto& items = doc.select_nodes("/CWeaponComponentInfoBlob/Infos/Item[@type='CWeaponComponentClipInfo']");
+						const auto& items = doc.select_nodes("/CWeaponComponentInfoBlob/Infos/*[self::Item[@type='CWeaponComponentInfo'] or self::Item[@type='CWeaponComponentFlashLightInfo'] or self::Item[@type='CWeaponComponentScopeInfo'] or self::Item[@type='CWeaponComponentSuppressorInfo'] or self::Item[@type='CWeaponComponentVariantModelInfo'] or self::Item[@type='CWeaponComponentClipInfo']]");
 						for (const auto& item_node : items)
 						{
 							const auto item = item_node.node();
@@ -348,13 +347,11 @@ namespace big
 
 							if (!name.starts_with("COMPONENT"))
 							{
-								LOG(INFO) << "Skipping: " << name;
 								continue;
 							}
 
 							if (exists(mapped_components, hash))
 							{
-								LOG(INFO) << "We already did: " << name;
 								continue;
 							}
 							mapped_components.emplace_back(hash);
@@ -413,8 +410,6 @@ namespace big
 							bool is_rechargable = false;
 
 							const char* category = "";
-
-							int attachment_counter = 0;
 
 							std::size_t pos;
 							while ((pos = weapon_flags.find(' ')) != std::string::npos)
