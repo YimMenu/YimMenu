@@ -10,12 +10,11 @@ namespace big
 	public:
 		struct version_info
 		{
-			int m_game_build;
-			float m_online_version;
-			int m_schema_version;
+			std::string m_game_build;
+			std::string m_online_version;
 			std::uint32_t m_file_version;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(version_info, m_game_build, m_online_version, m_schema_version, m_file_version)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(version_info, m_game_build, m_online_version, m_file_version)
 		} version_info{};
 
 		std::map<std::string, weapon_item> weapon_map;

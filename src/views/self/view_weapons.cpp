@@ -216,14 +216,15 @@ namespace big
 			{
 				for (std::string attachment : weapon.m_attachments)
 				{
-					Hash attachment_hash        = rage::joaat(attachment);
-					bool is_selected            = attachment_hash == selected_weapon_attachment_hash;
-					auto attachment_component   = g_gta_data_service->weapon_component_by_hash(attachment_hash);
-					std::string attachment_name = attachment;
-					if (attachment_component.m_hash != NULL)
+					auto attachment_component   = g_gta_data_service->weapon_component_by_name(attachment);
+					std::string attachment_name = attachment_component.m_display_name;
+					Hash attachment_hash        = attachment_component.m_hash;
+					if (attachment_hash == NULL)
 					{
-						attachment_name = attachment_component.m_display_name;
+						attachment_name = attachment;
+						attachment_hash = rage::joaat(attachment);
 					}
+					bool is_selected = attachment_hash == selected_weapon_attachment_hash;
 					if (ImGui::Selectable(attachment_name.c_str(), is_selected, ImGuiSelectableFlags_None))
 					{
 						selected_weapon_attachment      = attachment_name;

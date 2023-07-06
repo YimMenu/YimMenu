@@ -361,7 +361,6 @@ namespace big
 
 							if (LocName.ends_with("INVALID") || LocName.ends_with("RAIL"))
 							{
-								LOG(INFO) << name << " has an invalid attachment name.";
 								continue;
 							}
 
@@ -589,7 +588,9 @@ namespace big
 				const auto data_size = sizeof(weapon_item) * weapons.size();
 				//m_weapons_cache.set_data(std::make_unique<std::uint8_t[]>(data_size), data_size);
 
-				m_weapons_cache.version_info.m_file_version = file_version;
+				m_weapons_cache.version_info.m_game_build		= g_pointers->m_gta.m_game_version;
+				m_weapons_cache.version_info.m_online_version   = g_pointers->m_gta.m_online_version;
+				m_weapons_cache.version_info.m_file_version		= file_version;
 				
 				for (auto weapon : weapons)
 				{
