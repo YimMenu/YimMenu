@@ -192,6 +192,8 @@ namespace big
 
 		load_peds();
 		load_vehicles();
+		LOG(INFO) << "Loading " << m_weapons_cache.weapon_map.size() << " weapons from cache.";
+		LOG(INFO) << "Loading " << m_weapons_cache.weapon_components.size() << " weapon components from cache.";
 
 		LOG(VERBOSE) << "Loaded all data from cache.";
 	}

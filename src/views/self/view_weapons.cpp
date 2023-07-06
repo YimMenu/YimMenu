@@ -188,8 +188,10 @@ namespace big
 				bool is_selected = weapon.second.m_hash == selected_weapon_hash;
 				if (weapon.second.m_display_name != "NULL" && ImGui::Selectable(weapon.second.m_display_name.c_str(), is_selected, ImGuiSelectableFlags_None))
 				{
-					selected_weapon      = weapon.second.m_display_name;
-					selected_weapon_hash = weapon.second.m_hash;
+					selected_weapon					= weapon.second.m_display_name;
+					selected_weapon_hash			= weapon.second.m_hash;
+					selected_weapon_attachment_hash = {};
+					selected_weapon_attachment.clear();
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -198,15 +200,13 @@ namespace big
 		}
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
-		if (components::button("Give Weapon"))
-		{
+		components::button("Give Weapon", [] {
 			WEAPON::GIVE_WEAPON_TO_PED(self::ped, selected_weapon_hash, 9999, false, true);
-		}
+		});
 		ImGui::SameLine();
-		if (components::button("Remove Weapon"))
-		{
+		components::button("Remove Weapon", [] {
 			WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, selected_weapon_hash);
-		}
+		});
 
 		ImGui::PushItemWidth(250);
 		if (ImGui::BeginCombo("Attachments", selected_weapon_attachment.c_str()))
@@ -225,7 +225,8 @@ namespace big
 						attachment_hash = rage::joaat(attachment);
 					}
 					bool is_selected = attachment_hash == selected_weapon_attachment_hash;
-					if (ImGui::Selectable(attachment_name.c_str(), is_selected, ImGuiSelectableFlags_None))
+					std::string display_name = attachment_name.append("##").append(std::to_string(attachment_hash));
+					if (ImGui::Selectable(display_name.c_str(), is_selected, ImGuiSelectableFlags_None))
 					{
 						selected_weapon_attachment      = attachment_name;
 						selected_weapon_attachment_hash = attachment_hash;
@@ -238,15 +239,13 @@ namespace big
 			ImGui::EndCombo();
 		}
 		ImGui::SameLine();
-		if (components::button("Add to Weapon"))
-		{
+		components::button("Add to Weapon", [] {
 			WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(self::ped, selected_weapon_hash, selected_weapon_attachment_hash);
-		}
+		});
 		ImGui::SameLine();
-		if (components::button("Remove from Weapon"))
-		{
+		components::button("Remove from Weapon", [] {
 			WEAPON::REMOVE_WEAPON_COMPONENT_FROM_PED(self::ped, selected_weapon_hash, selected_weapon_attachment_hash);
-		}
+		});
 		ImGui::PopItemWidth();
 
 		static const char* default_tints[]{"Black tint", "Green tint", "Gold tint", "Pink tint", "Army tint", "LSPD tint", "Orange tint", "Platinum tint"};
