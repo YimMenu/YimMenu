@@ -19,7 +19,7 @@ namespace big
 
 	void yim_fipackfile::for_each_fipackfile()
 	{
-		for (int i = 1; i < 3672; i++) // fipackfile ctor start with 1
+		for (int i = 1; i < 3928; i++) // fipackfile ctor start with 1
 		{
 			auto* rpf = g_pointers->m_gta.m_fipackfile_instances[i];
 
