@@ -40,17 +40,20 @@ namespace big
 
 				    if (id != -1)
 				    {
-					    auto& stats     = scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].PlayerStats;
-					    auto& boss_goon = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[id].BossGoon;
+					    auto& stats          = scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].PlayerStats;
+					    auto& boss_goon      = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[id].BossGoon;
+
+					    const auto money = reinterpret_cast<uint64_t&>(stats.Money);
+						const auto wallet = reinterpret_cast<uint64_t&>(stats.WalletBalance);
 
 					    if (boss_goon.Language >= 0 && boss_goon.Language < 13)
 						    ImGui::Text("PLAYER_INFO_LANGUAGE"_T.data(), languages[boss_goon.Language].name);
 
 					    ImGui::Text("PLAYER_INFO_CEO_NAME"_T.data(), boss_goon.GangName);
 					    ImGui::Text("PLAYER_INFO_MC_NAME"_T.data(), boss_goon.ClubhouseName);
-					    ImGui::Text("PLAYER_INFO_WALLET"_T.data(), stats.WalletBalance);
-					    ImGui::Text("PLAYER_INFO_BANK"_T.data(), stats.Money - stats.WalletBalance);
-					    ImGui::Text("PLAYER_INFO_TOTAL_MONEY"_T.data(), stats.Money);
+					    ImGui::Text("PLAYER_INFO_WALLET"_T.data(), wallet);
+					    ImGui::Text("PLAYER_INFO_BANK"_T.data(), money - wallet);
+					    ImGui::Text("PLAYER_INFO_TOTAL_MONEY"_T.data(), money);
 					    ImGui::Text("PLAYER_INFO_RANK"_T.data(), stats.Rank, stats.RP);
 					    ImGui::Text("Health: %d (MaxHealth: %d)", ped_health, ped_maxhealth); // TODO: translate
 					    ImGui::Text("PLAYER_INFO_KD"_T.data(), stats.KdRatio);
