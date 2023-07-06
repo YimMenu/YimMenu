@@ -58,7 +58,7 @@ namespace big
 	private:
 		bool m_running;
 
-		std::unique_ptr<file> m_save_file;
+		file m_save_file;
 
 		nlohmann::json m_default_options;
 		nlohmann::json m_options;
