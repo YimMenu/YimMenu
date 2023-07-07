@@ -378,21 +378,9 @@ namespace big
 		Vector3 campos = CAM::GET_CAM_COORD(m_cam);
 		Vector3 entpos = ENTITY::GET_ENTITY_COORDS(entity::get_entity_closest_to_middle_of_screen(), 0);
 
-		if (*g_pointers->m_gta.m_is_session_started && g_player_service->get_selected()->is_valid()
-		    && ENTITY::DOES_ENTITY_EXIST(g_pointers->m_gta.m_ptr_to_handle(g_player_service->get_selected()->get_ped())))
-		{
-			toxic::blame_explode_coord(g_player_service->get_selected(), m_ground_pos, eExplosionTag::EXP_TAG_ORBITAL_CANNON, 1.f, TRUE, TRUE, 1.f);
-
-			if (MISC::GET_DISTANCE_BETWEEN_COORDS(campos.x, campos.y, campos.z, entpos.x, entpos.y, entpos.z, false) < 10)
-				toxic::blame_explode_coord(g_player_service->get_selected(), entpos, eExplosionTag::EXP_TAG_ORBITAL_CANNON, 1.f, TRUE, TRUE, 1.f);
-		}
-		else
-		{
-			toxic::blame_explode_coord(*g_pointers->m_gta.m_is_session_started ? g_player_service->get_self() : nullptr, m_ground_pos, eExplosionTag::EXP_TAG_ORBITAL_CANNON, 1.f, TRUE, TRUE, 1.f);
-			if (MISC::GET_DISTANCE_BETWEEN_COORDS(campos.x, campos.y, campos.z, entpos.x, entpos.y, entpos.z, false) < 10)
-				toxic::blame_explode_coord(*g_pointers->m_gta.m_is_session_started ? g_player_service->get_self() : nullptr, entpos, eExplosionTag::EXP_TAG_ORBITAL_CANNON, 1.f, TRUE, TRUE, 1.f);
-		}
-
+		toxic::blame_explode_coord(*g_pointers->m_gta.m_is_session_started ? g_player_service->get_self() : nullptr, m_ground_pos, eExplosionTag::EXP_TAG_ORBITAL_CANNON, 1.f, TRUE, TRUE, 1.f);
+		if (MISC::GET_DISTANCE_BETWEEN_COORDS(campos.x, campos.y, campos.z, entpos.x, entpos.y, entpos.z, false) < 10)
+			toxic::blame_explode_coord(*g_pointers->m_gta.m_is_session_started ? g_player_service->get_self() : nullptr, entpos, eExplosionTag::EXP_TAG_ORBITAL_CANNON, 1.f, TRUE, TRUE, 1.f);
 
 		if (!STREAMING::HAS_NAMED_PTFX_ASSET_LOADED("scr_xm_orbital"))
 		{

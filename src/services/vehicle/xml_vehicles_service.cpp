@@ -41,7 +41,7 @@ namespace big
 		}
 		catch (const std::exception& e)
 		{
-			LOG(WARNING) << "Failed fetching xml vehicles: " << e.what() << std::endl;
+			LOG(WARNING) << "Failed fetching XML vehicles: " << e.what() << std::endl;
 		}
 	}
 
@@ -213,6 +213,7 @@ namespace big
 
 		ENTITY::SET_ENTITY_VISIBLE(vehicle_handle, vehicle_node.child("IsVisible").text().as_bool(), false);
 		ENTITY::SET_ENTITY_INVINCIBLE(vehicle_handle, vehicle_node.child("IsInvincible").text().as_bool());
+		ENTITY::SET_ENTITY_ALPHA(vehicle_handle, vehicle_node.child("OpacityLevel").text().as_int(), false);
 		ENTITY::SET_ENTITY_PROOFS(vehicle_handle,
 		    vehicle_node.child("IsBulletProof").text().as_bool(),
 		    vehicle_node.child("IsFireProof").text().as_bool(),
@@ -255,19 +256,35 @@ namespace big
 				attachment_handle = vehicle_attachment(attachment_item, entity_model, position, rotation, offset, vehicle_handle, bone);
 			else if (type == 3)
 				attachment_handle = object_attachment(attachment_item, entity_model, position, rotation, offset, vehicle_handle, bone);
-			
-			if(!attachment_item.child("PtfxLopAsset").text().empty())
+
+			if (!attachment_item.child("PtfxLopAsset").text().empty())
 			{
 				const char* asset = const_cast<PCHAR>(attachment_item.child("PtfxLopAsset").text().as_string());
 				STREAMING::REQUEST_NAMED_PTFX_ASSET(asset);
 
 				for (int i = 0; i < 35 && !STREAMING::HAS_NAMED_PTFX_ASSET_LOADED(asset); i++)
 					STREAMING::REQUEST_NAMED_PTFX_ASSET(asset), script::get_current()->yield();
-				
-				if(STREAMING::HAS_NAMED_PTFX_ASSET_LOADED(asset))
+
+				if (STREAMING::HAS_NAMED_PTFX_ASSET_LOADED(asset))
 				{
 					GRAPHICS::USE_PARTICLE_FX_ASSET(asset);
-					GRAPHICS::START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY(const_cast<PCHAR>(attachment_item.child("PtfxLopEffect").text().as_string()), attachment_handle, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1);
+					GRAPHICS::START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY(
+					    const_cast<PCHAR>(attachment_item.child("PtfxLopEffect").text().as_string()),
+					    attachment_handle,
+					    0,
+					    0,
+					    0,
+					    0,
+					    0,
+					    0,
+					    1,
+					    0,
+					    0,
+					    0,
+					    1,
+					    1,
+					    1,
+					    1);
 					STREAMING::REMOVE_NAMED_PTFX_ASSET(asset);
 				}
 			}
