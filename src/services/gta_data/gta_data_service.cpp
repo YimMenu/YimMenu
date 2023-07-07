@@ -161,7 +161,7 @@ namespace big
 		m_peds_cache.load();
 		m_vehicles_cache.load();
 
-		auto weapons_file = big::g_file_manager->get_project_file("./cache/weapons.json");
+		auto weapons_file = g_file_manager->get_project_file("./cache/weapons.json");
 		if (weapons_file.exists())
 		{
 			std::ifstream file(weapons_file.get_path());
