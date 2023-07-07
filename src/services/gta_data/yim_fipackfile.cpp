@@ -17,12 +17,12 @@ namespace big
 		m_wrapper_call_back.push_back(cb);
 	}
 
-	void yim_fipackfile::traverse_rpf_file(const std::string& path, int depth)
+	void yim_fipackfile::traverse_rpf_file(const std::u8string& path, int depth)
 	{
 		std::string mount_path = std::format("temp{}:/", depth);
 
 		rage::fiPackfile packfile;
-		packfile.OpenPackfile(path.c_str(), true, 0, 0);
+		packfile.OpenPackfile(reinterpret_cast<const char*>(path.c_str()), true, 0, 0);
 		packfile.Mount(mount_path.c_str());
 
 		yim_fipackfile rpf_wrapper = yim_fipackfile(&packfile, mount_path);
@@ -32,7 +32,7 @@ namespace big
 		{
 			if (file.extension() == ".rpf")
 			{
-				if (auto handle = ((rage::fiDevice*)&packfile)->Open(file.string().c_str(), true))
+				if (auto handle = ((rage::fiDevice*)&packfile)->Open(reinterpret_cast<const char*>(file.u8string().c_str()), true))
 				{
 					uint32_t encryption_type{};
 					((rage::fiDevice*)&packfile)->Seek(handle, 12, 0);
@@ -42,7 +42,7 @@ namespace big
 					if (encryption_type == 0xFFFFFF9)
 						continue; // skip AES encrypted RPFs
 
-					traverse_rpf_file(file.string(), depth + 1);
+					traverse_rpf_file(file.u8string(), depth + 1);
 				}
 			}
 			else
@@ -63,11 +63,11 @@ namespace big
 		{
 			auto rel_path = std::filesystem::relative(entry.path());
 
-			if (rel_path.string().contains("mods"))
+			if (rel_path.u8string().contains(u8"mods"))
 				continue;
 
 			if (rel_path.extension() == ".rpf")
-				traverse_rpf_file(rel_path.string());
+				traverse_rpf_file(rel_path.u8string());
 		}
 	}
 
