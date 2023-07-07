@@ -535,31 +535,25 @@ namespace big
                 g_pointers->m_gta.m_fipackfile_instances = ptr.add(26).rip().as<rage::fiPackfile**>();
             }
         },
-        // fiPackfile open archive
+        // fiPackfile dtor
         {
-            "FPFOA",
-            "48 8D 68 98 48 81 EC 40 01 00 00 41 8B F9",
+            "FPFD",
+            "48 89 5C 24 08 57 48 83 EC 20 48 8D 05 ? ? ? ? 33 FF 48 8B D9 48 89 01 40 88",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_fipackfile_open_archive = ptr.sub(0x18).as<functions::fipackfile_open_archive>();
+                g_pointers->m_gta.m_fipackfile_dtor = ptr.as<functions::fipackfile_dtor>();
             }
         },
-        // fiPackfile mount
+        // fiPackfile stuff
         {
-            "FPFM",
-            "84 C0 74 1D 48 85 DB 74 0F 48",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_fipackfile_mount = ptr.sub(0x1E).as<functions::fipackfile_mount>();
-            }
-        },
-        // fiPackfile unmount
-        {
-            "FPFUM",
-            "E8 ? ? ? ? 84 C0 74 37 80 3D",
+            "FPU&FPCA&FPOA&FPM",
+            "E8 ? ? ? ? 48 8D 0D ? ? ? ? E8 ? ? ? ? 8A 05 ? ? ? ? 48 8D 0D",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_fipackfile_unmount = ptr.add(1).rip().as<functions::fipackfile_unmount>();
+                g_pointers->m_gta.m_fipackfile_close_archive = ptr.add(0xD).rip().as<functions::fipackfile_close_archive>();
+                g_pointers->m_gta.m_fipackfile_open_archive = ptr.add(0x34).rip().as<functions::fipackfile_open_archive>();
+                g_pointers->m_gta.m_fipackfile_mount = ptr.add(0x47).rip().as<functions::fipackfile_mount>();
             }
         },
         // Invalid Mods Crash Detour

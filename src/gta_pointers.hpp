@@ -148,10 +148,12 @@ namespace big
 
 		functions::fidevice_get_device m_fidevice_get_device{};
 		functions::fipackfile_ctor m_fipackfile_ctor{};
+		functions::fipackfile_dtor m_fipackfile_dtor{};
 		rage::fiPackfile** m_fipackfile_instances{};
 		functions::fipackfile_open_archive m_fipackfile_open_archive{};
 		functions::fipackfile_mount m_fipackfile_mount{};
 		functions::fipackfile_unmount m_fipackfile_unmount{};
+		functions::fipackfile_close_archive m_fipackfile_close_archive{};
 
 		PVOID m_invalid_mods_crash_detour{};
 		PVOID m_invalid_decal_crash{};
