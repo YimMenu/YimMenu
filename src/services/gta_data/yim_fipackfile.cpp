@@ -8,29 +8,66 @@ namespace big
 {
 	yim_fipackfile::yim_fipackfile(rage::fiPackfile* rpf, const std::string& mount_name)
 	{
-		this->rpf = rpf;
+		this->rpf        = rpf;
 		this->mount_name = mount_name;
 	}
 
-	void yim_fipackfile::add_wrapper_call_back(std::function<size_t(yim_fipackfile& rpf_wrapper)> cb)
+	void yim_fipackfile::add_wrapper_call_back(std::function<void(yim_fipackfile& rpf_wrapper, std::filesystem::path path)> cb)
 	{
 		m_wrapper_call_back.push_back(cb);
 	}
 
-	void yim_fipackfile::for_each_fipackfile()
+	void yim_fipackfile::traverse_rpf_file(const std::string& path, int depth)
 	{
-		for (int i = 1; i < 3672; i++) // fipackfile ctor start with 1
+		std::string mount_path = std::format("temp{}:/", depth);
+
+		rage::fiPackfile packfile;
+		packfile.OpenPackfile(path.c_str(), true, 0, 0);
+		packfile.Mount(mount_path.c_str());
+
+		yim_fipackfile rpf_wrapper = yim_fipackfile(&packfile, mount_path);
+
+		const auto files = rpf_wrapper.get_file_paths();
+		for (const auto& file : files)
 		{
-			auto* rpf = g_pointers->m_gta.m_fipackfile_instances[i];
-
-			if (rpf)
+			if (file.extension() == ".rpf")
 			{
-				yim_fipackfile rpf_wrapper = yim_fipackfile(rpf);
+				if (auto handle = ((rage::fiDevice*)&packfile)->Open(file.string().c_str(), true))
+				{
+					uint32_t encryption_type{};
+					((rage::fiDevice*)&packfile)->Seek(handle, 12, 0);
+					((rage::fiDevice*)&packfile)->Read(handle, &encryption_type, 4);
+					((rage::fiDevice*)&packfile)->Close(handle);
 
-				std::for_each(yim_fipackfile::m_wrapper_call_back.begin(), yim_fipackfile::m_wrapper_call_back.end(), [&rpf_wrapper](std::function<size_t(yim_fipackfile & rpf_wrapper)> cb) {
-					cb(rpf_wrapper);
+					if (encryption_type == 0xFFFFFF9)
+						continue; // skip AES encrypted RPFs
+
+					traverse_rpf_file(file.string(), depth + 1);
+				}
+			}
+			else
+			{
+				std::for_each(yim_fipackfile::m_wrapper_call_back.begin(), yim_fipackfile::m_wrapper_call_back.end(), [&rpf_wrapper, file](std::function<void(yim_fipackfile & rpf_wrapper, std::filesystem::path path)> cb) {
+					cb(rpf_wrapper, file);
 				});
 			}
+		}
+
+		packfile.Unmount(mount_path.c_str());
+		packfile.ClosePackfile();
+	}
+
+	void yim_fipackfile::for_each_fipackfile()
+	{
+		for (auto& entry : std::filesystem::recursive_directory_iterator(std::filesystem::current_path()))
+		{
+			auto rel_path = std::filesystem::relative(entry.path());
+
+			if (rel_path.string().contains("mods"))
+				continue;
+
+			if (rel_path.extension() == ".rpf")
+				traverse_rpf_file(rel_path.string());
 		}
 	}
 
@@ -50,7 +87,7 @@ namespace big
 			{
 				std::string fn;
 
-				if (parent == "/")
+				if (parent == mount_name)
 					fn = std::string(parent.c_str()) + std::string(findData.fileName);
 				else
 					fn = std::string(parent.c_str()) + std::string("/") + std::string(findData.fileName);
