@@ -57,13 +57,51 @@ namespace big
 		packfile.ClosePackfile();
 	}
 
+	std::string UTF16ToCP(uint32_t code_page, std::wstring_view input)
+	{
+		if (input.empty())
+			return {};
+
+		const auto size = WideCharToMultiByte(code_page, 0, input.data(), static_cast<int>(input.size()), nullptr, 0, nullptr, nullptr);
+
+		std::string output(size, '\0');
+
+		if (size
+		    != WideCharToMultiByte(code_page,
+		        0,
+		        input.data(),
+		        static_cast<int>(input.size()),
+		        output.data(),
+		        static_cast<int>(output.size()),
+		        nullptr,
+		        nullptr))
+		{
+			const auto error_code = GetLastError();
+			LOG(WARNING) << "WideCharToMultiByte Error in String " << error_code;
+			return {};
+		}
+
+		return output;
+	}
+
 	void yim_fipackfile::for_each_fipackfile()
 	{
 		for (auto& entry : std::filesystem::recursive_directory_iterator(std::filesystem::current_path()))
 		{
-			auto rel_path = std::filesystem::relative(entry.path());
+			if (!entry.is_regular_file())
+			{
+				continue;
+			}
 
-			if (rel_path.u8string().contains(u8"mods"))
+			const auto rel_path = std::filesystem::relative(entry.path());
+
+			const auto utf8_path = UTF16ToCP(CP_UTF8, entry.path().native());
+
+			LOG(INFO) << utf8_path;
+			if (utf8_path.empty())
+				continue;
+
+			if (utf8_path.contains("mods"))
 				continue;
 
 			if (rel_path.extension() == ".rpf")
