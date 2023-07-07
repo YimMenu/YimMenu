@@ -17,9 +17,13 @@ namespace big
 		if (g_gta_data_service->state() == eGtaDataUpdateState::ON_INIT_UPDATE_START)
 		{
 			yim_fipackfile rpf_wrapper = yim_fipackfile(this_, mount_point);
-			std::for_each(yim_fipackfile::m_wrapper_call_back.begin(), yim_fipackfile::m_wrapper_call_back.end(), [&rpf_wrapper](std::function<size_t(yim_fipackfile & rpf_wrapper)> cb) {
-				cb(rpf_wrapper);
-			});
+			const auto files           = rpf_wrapper.get_file_paths();
+			for (const auto& file : files)
+			{
+				std::for_each(yim_fipackfile::m_wrapper_call_back.begin(), yim_fipackfile::m_wrapper_call_back.end(), [&rpf_wrapper, file](std::function<void(yim_fipackfile & rpf_wrapper, std::filesystem::path path)> cb) {
+					cb(rpf_wrapper, file);
+				});
+			}
 
 			if (!stricmp(this_->GetName(), "BgScript.rpf"))
 			{
