@@ -56,7 +56,6 @@ namespace big
 		CPedFactory** m_ped_factory{};
 		CNetworkPlayerMgr** m_network_player_mgr{};
 		CNetworkObjectMgr** m_network_object_mgr{};
-		rage::CReplayInterface** m_replay_interface{};
 
 		functions::ptr_to_handle m_ptr_to_handle{};
 		functions::handle_to_ptr m_handle_to_ptr{};

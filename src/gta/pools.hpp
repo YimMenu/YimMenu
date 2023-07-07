@@ -56,7 +56,7 @@ public:
 		std::vector<Entity> arr;
 		for (auto entity : *static_cast<T*>(this))
 		{
-			if(entity)
+			if (entity)
 				arr.push_back(big::g_pointers->m_gta.m_ptr_to_handle(entity));
 		}
 
@@ -98,10 +98,12 @@ public:
 class GenericPool : public PoolUtils<GenericPool>
 {
 public:
-	UINT64 m_pool_address;
-	BYTE* m_bit_array;
-	UINT32 m_size;
-	UINT32 m_item_size;
+	UINT64 m_pool_address; // 0x0
+	BYTE* m_bit_array;     // 0x8
+	UINT32 m_size;         // 0x10
+	UINT32 m_item_size;    // 0x14
+	UINT32 m_pad[2];       // 0x18
+	UINT32 m_item_count;   // 0x20
 
 	inline bool is_valid(UINT32 i)
 	{
@@ -113,6 +115,11 @@ public:
 		return mask(i) & (m_pool_address + i * m_item_size);
 	}
 
+	inline int get_item_count()
+	{
+		return (4 * m_item_count) >> 2;
+	}
+
 private:
 	inline long long mask(UINT32 i)
 	{
@@ -120,3 +127,4 @@ private:
 		return ~((num1 | -num1) >> 63);
 	}
 };
+static_assert(offsetof(GenericPool, GenericPool::m_item_count) == 0x20);

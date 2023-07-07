@@ -297,15 +297,6 @@ namespace big
                 g_pointers->m_gta.m_write_player_game_state_data_node = ptr.as<functions::write_player_game_state_data_node>();
             }
         },
-        // Replay Interface
-        {
-            "RI",
-            "0F B7 44 24 ? 66 89 44 4E",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_replay_interface = ptr.add(0x1F).rip().as<rage::CReplayInterface**>();
-            }
-        },
         // Ptr To Handle
         {
             "PTH",
