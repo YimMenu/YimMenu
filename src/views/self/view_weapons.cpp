@@ -261,11 +261,8 @@ namespace big
 			ImGui::Combo("Tints", &tint, default_tints, IM_ARRAYSIZE(default_tints));
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Apply"))
-		{
-			g_fiber_pool->queue_job([] {
-				WEAPON::SET_PED_WEAPON_TINT_INDEX(self::ped, selected_weapon_hash, tint);
-			});
-		}
+		components::button("Apply", [] {
+			WEAPON::SET_PED_WEAPON_TINT_INDEX(self::ped, selected_weapon_hash, tint);
+		});
 	}
 }

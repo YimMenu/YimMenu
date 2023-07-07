@@ -365,8 +365,8 @@ namespace big
 
 						component.m_name         = name;
 						component.m_hash         = hash;
-						component.m_display_name = item.child("LocName").text().as_string();
-						component.m_display_desc = item.child("LocDesc").text().as_string();
+						component.m_display_name = LocName;
+						component.m_display_desc = LocDesc;
 
 						weapon_components.push_back(component);
 					}
