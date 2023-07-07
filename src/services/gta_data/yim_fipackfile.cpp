@@ -57,7 +57,7 @@ namespace big
 		packfile.ClosePackfile();
 	}
 
-	std::string UTF16ToCP(uint32_t code_page, std::wstring_view input)
+	static std::string UTF16ToCP(uint32_t code_page, std::wstring_view input)
 	{
 		if (input.empty())
 			return {};
@@ -97,7 +97,6 @@ namespace big
 
 			const auto utf8_path = UTF16ToCP(CP_UTF8, entry.path().native());
 
-			LOG(INFO) << utf8_path;
 			if (utf8_path.empty())
 				continue;
 
