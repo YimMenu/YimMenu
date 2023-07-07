@@ -21,7 +21,7 @@ namespace big
 
 	void xml_vehicles_service::fetch_xml_files()
 	{
-		auto folder_path = g_file_manager->get_project_folder("xml_vehicles").get_path();
+		auto folder_path = g_file_manager.get_project_folder("xml_vehicles").get_path();
 
 		try
 		{
