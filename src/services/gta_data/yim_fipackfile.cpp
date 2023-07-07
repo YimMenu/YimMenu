@@ -17,12 +17,12 @@ namespace big
 		m_wrapper_call_back.push_back(cb);
 	}
 
-	void yim_fipackfile::traverse_rpf_file(const std::string& path, int depth)
+	void yim_fipackfile::traverse_rpf_file(const std::u8string& path, int depth)
 	{
 		std::string mount_path = std::format("temp{}:/", depth);
 
 		rage::fiPackfile packfile;
-		packfile.OpenPackfile(path.c_str(), true, 0, 0);
+		packfile.OpenPackfile(reinterpret_cast<const char*>(path.c_str()), true, 0, 0);
 		packfile.Mount(mount_path.c_str());
 
 		yim_fipackfile rpf_wrapper = yim_fipackfile(&packfile, mount_path);
@@ -32,7 +32,7 @@ namespace big
 		{
 			if (file.extension() == ".rpf")
 			{
-				if (auto handle = ((rage::fiDevice*)&packfile)->Open(file.string().c_str(), true))
+				if (auto handle = ((rage::fiDevice*)&packfile)->Open(reinterpret_cast<const char*>(file.u8string().c_str()), true))
 				{
 					uint32_t encryption_type{};
 					((rage::fiDevice*)&packfile)->Seek(handle, 12, 0);
@@ -42,7 +42,7 @@ namespace big
 					if (encryption_type == 0xFFFFFF9)
 						continue; // skip AES encrypted RPFs
 
-					traverse_rpf_file(file.string(), depth + 1);
+					traverse_rpf_file(file.u8string(), depth + 1);
 				}
 			}
 			else
@@ -57,17 +57,54 @@ namespace big
 		packfile.ClosePackfile();
 	}
 
+	static std::string UTF16ToCP(uint32_t code_page, std::wstring_view input)
+	{
+		if (input.empty())
+			return {};
+
+		const auto size = WideCharToMultiByte(code_page, 0, input.data(), static_cast<int>(input.size()), nullptr, 0, nullptr, nullptr);
+
+		std::string output(size, '\0');
+
+		if (size
+		    != WideCharToMultiByte(code_page,
+		        0,
+		        input.data(),
+		        static_cast<int>(input.size()),
+		        output.data(),
+		        static_cast<int>(output.size()),
+		        nullptr,
+		        nullptr))
+		{
+			const auto error_code = GetLastError();
+			LOG(WARNING) << "WideCharToMultiByte Error in String " << error_code;
+			return {};
+		}
+
+		return output;
+	}
+
 	void yim_fipackfile::for_each_fipackfile()
 	{
 		for (auto& entry : std::filesystem::recursive_directory_iterator(std::filesystem::current_path()))
 		{
-			auto rel_path = std::filesystem::relative(entry.path());
+			if (!entry.is_regular_file())
+			{
+				continue;
+			}
 
-			if (rel_path.string().contains("mods"))
+			const auto rel_path = std::filesystem::relative(entry.path());
+
+			const auto utf8_path = UTF16ToCP(CP_UTF8, entry.path().native());
+
+			if (utf8_path.empty())
+				continue;
+
+			if (utf8_path.contains("mods"))
 				continue;
 
 			if (rel_path.extension() == ".rpf")
-				traverse_rpf_file(rel_path.string());
+				traverse_rpf_file(rel_path.u8string());
 		}
 	}
 
