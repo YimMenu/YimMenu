@@ -13,10 +13,11 @@ namespace big
 	public:
 		explicit yim_fipackfile(rage::fiPackfile* rpf, const std::string& mount_name = "/");
 
-		static inline std::vector<std::function<size_t(yim_fipackfile& rpf_wrapper)>> m_wrapper_call_back;
+		static inline std::vector<std::function<void(yim_fipackfile& rpf_wrapper, std::filesystem::path path)>> m_wrapper_call_back;
 
-		static void add_wrapper_call_back(std::function<size_t(yim_fipackfile& rpf_wrapper)> cb);
+		static void add_wrapper_call_back(std::function<void(yim_fipackfile& rpf_wrapper, std::filesystem::path path)> cb);
 
+		static void traverse_rpf_file(const std::string& path, int depth = 0);
 		static void for_each_fipackfile();
 
 		std::vector<std::filesystem::path> get_file_paths(std::string parent = {});
