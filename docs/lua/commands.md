@@ -11,7 +11,7 @@ command.call_player(somePlayerIndex, "spawn", {joaat("adder")})
 
 For a complete list of available command functions, please refer to the command table documentation.
 
-## Command Count: 212
+## Command Count: 213
 
 ### bailkick 
  BAIL_KICK_DESC 
@@ -763,6 +763,10 @@ Arg Count:  0
 
 ### aimatenemy 
  Eliminate your enemies, and win your missions 
+Arg Count:  0
+
+### alwaysfullammo 
+ Refills your ammo every tick
 Arg Count:  0
 
 ### incrdamage 
