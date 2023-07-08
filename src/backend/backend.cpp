@@ -11,9 +11,9 @@
 #include "services/tunables/tunables_service.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
 #include "thread_pool.hpp"
-#include "util/teleport.hpp"
 #include "services/squad_spawner/squad_spawner.hpp"
 #include "services/vehicle/xml_vehicles_service.hpp"
+#include "services/custom_teleport/custom_teleport_service.hpp"
 
 
 namespace big
@@ -24,9 +24,10 @@ namespace big
 			command->refresh();
 
 		register_script_patches();
-		teleport::fetch_saved_locations();
+
 		g_squad_spawner_service.fetch_squads();
 		g_xml_vehicles_service->fetch_xml_files();
+		g_custom_teleport_service.fetch_saved_locations();
 
 		while (g_running)
 		{
