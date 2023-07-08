@@ -129,7 +129,7 @@ namespace big
 
 	big::folder persist_weapons::get_weapon_config_folder()
 	{
-		const auto folder = g_file_manager->get_project_folder("./weapon_loadouts");
+		const auto folder = g_file_manager.get_project_folder("./weapon_loadouts");
 
 		return folder;
 	}
