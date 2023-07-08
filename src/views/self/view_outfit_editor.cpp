@@ -161,7 +161,7 @@ namespace big
 		ImGui::Separator();
 
 		static char outfit_name[MAX_PATH] = {};
-		static folder saved_outfit_path   = g_file_manager->get_project_folder("saved_outfits");
+		static folder saved_outfit_path   = g_file_manager.get_project_folder("saved_outfits");
 		std::vector<std::string> saved_outfits;
 		for (const auto& directory_entry : std::filesystem::directory_iterator(saved_outfit_path.get_path()))
 			saved_outfits.push_back(directory_entry.path().filename().generic_string());

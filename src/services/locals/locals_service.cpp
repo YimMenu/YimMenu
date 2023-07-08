@@ -24,7 +24,7 @@ namespace big
 
 	std::filesystem::path locals_service::get_path()
 	{
-		return g_file_manager->get_project_file("locals.json").get_path();
+		return g_file_manager.get_project_file("locals.json").get_path();
 	}
 
 	bool locals_service::load()

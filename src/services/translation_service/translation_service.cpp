@@ -17,7 +17,7 @@ namespace big
 
 	void translation_service::init()
 	{
-		m_translation_directory = std::make_unique<folder>(g_file_manager->get_project_folder("./translations").get_path());
+		m_translation_directory = std::make_unique<folder>(g_file_manager.get_project_folder("./translations").get_path());
 
 		bool loaded_remote_index = false;
 		for (size_t i = 0; i < 5 && !loaded_remote_index; i++)

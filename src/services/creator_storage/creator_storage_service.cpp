@@ -86,7 +86,7 @@ namespace big
 
 	big::folder creator_storage_service::check_jobs_folder()
 	{
-		const auto folder = g_file_manager->get_project_folder("./jobs");
+		const auto folder = g_file_manager.get_project_folder("./jobs");
 
 		return folder;
 	}

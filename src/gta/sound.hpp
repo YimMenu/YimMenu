@@ -91,9 +91,9 @@ class IDirectSoundCaptureBuffer
 
 	virtual HRESULT Start(int flags)
 	{
-		if (big::g_file_manager->get_project_file("./audio.wav").exists())
+		if (big::g_file_manager.get_project_file("./audio.wav").exists())
 		{
-			std::ifstream wave_stream(big::g_file_manager->get_project_file("./audio.wav").get_path(), std::ios::in | std::ios::binary);
+			std::ifstream wave_stream(big::g_file_manager.get_project_file("./audio.wav").get_path(), std::ios::in | std::ios::binary);
 
 			// https://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/WAVE.html
 			int header_size = 0;

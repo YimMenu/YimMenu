@@ -30,8 +30,8 @@ namespace big
 	}
 
 	gta_data_service::gta_data_service() :
-	    m_peds_cache(g_file_manager->get_project_file("./cache/peds.bin"), 5),
-	    m_vehicles_cache(g_file_manager->get_project_file("./cache/vehicles.bin"), 4),
+	    m_peds_cache(g_file_manager.get_project_file("./cache/peds.bin"), 5),
+	    m_vehicles_cache(g_file_manager.get_project_file("./cache/vehicles.bin"), 4),
 	    m_update_state(eGtaDataUpdateState::IDLE)
 	{
 		if (!is_cache_up_to_date())
@@ -161,7 +161,7 @@ namespace big
 		m_peds_cache.load();
 		m_vehicles_cache.load();
 
-		auto weapons_file = g_file_manager->get_project_file("./cache/weapons.json");
+		auto weapons_file = g_file_manager.get_project_file("./cache/weapons.json");
 		if (weapons_file.exists())
 		{
 			std::ifstream file(weapons_file.get_path());
@@ -593,7 +593,7 @@ namespace big
 					m_weapons_cache.weapon_components.insert({weapon_component.m_name, weapon_component});
 				}
 
-				auto weapons_file = big::g_file_manager->get_project_file("./cache/weapons.json");
+				auto weapons_file = g_file_manager.get_project_file("./cache/weapons.json");
 				std::ofstream file(weapons_file.get_path());
 				try
 				{
