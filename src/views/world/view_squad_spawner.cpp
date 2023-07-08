@@ -186,7 +186,7 @@ namespace big
 					std::string filter  = new_template.m_weapon_model;
 					std::transform(p_model.begin(), p_model.end(), p_model.begin(), ::tolower);
 					std::transform(filter.begin(), filter.end(), filter.begin(), ::tolower);
-					if (p_model.find(filter) != std::string::npos && ImGui::Selectable(p.m_name))
+					if (p_model.find(filter) != std::string::npos && ImGui::Selectable(p.m_name.c_str()))
 					{
 						new_template.m_weapon_model = p.m_name;
 					}
