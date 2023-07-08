@@ -514,7 +514,7 @@ namespace big
 
 	big::folder persist_car_service::check_vehicle_folder()
 	{
-		const auto folder = g_file_manager->get_project_folder("./saved_json_vehicles");
+		const auto folder = g_file_manager.get_project_folder("./saved_json_vehicles");
 
 		return folder;
 	}

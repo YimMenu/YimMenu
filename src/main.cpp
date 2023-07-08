@@ -55,9 +55,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    std::filesystem::path base_dir = std::getenv("appdata");
 			    base_dir /= "YimMenu";
 			    do_migration(base_dir);
-			    auto file_manager_instance = std::make_unique<file_manager>(base_dir);
+			    g_file_manager.init(base_dir);
 
-			    auto logger_instance = std::make_unique<logger>("YimMenu", file_manager_instance->get_project_file("./cout.log"));
+			    auto logger_instance = std::make_unique<logger>("YimMenu", g_file_manager.get_project_file("./cout.log"));
 
 			    EnableMenuItem(GetSystemMenu(GetConsoleWindow(), 0), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 
@@ -69,7 +69,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto thread_pool_instance = std::make_unique<thread_pool>();
 			    LOG(INFO) << "Thread pool initialized.";
 
-			    g.init(file_manager_instance->get_project_file("./settings.json"));
+			    g.init(g_file_manager.get_project_file("./settings.json"));
 			    LOG(INFO) << "Settings Loaded.";
 
 			    auto pointers_instance = std::make_unique<pointers>();
@@ -138,7 +138,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto native_hooks_instance = std::make_unique<native_hooks>();
 			    LOG(INFO) << "Dynamic native hooker initialized.";
 
-			    auto lua_manager_instance = std::make_unique<lua_manager>(g_file_manager->get_project_folder("scripts"));
+			    auto lua_manager_instance = std::make_unique<lua_manager>(g_file_manager.get_project_folder("scripts"));
 			    LOG(INFO) << "Lua manager initialized.";
 
 			    g_running = true;
@@ -228,8 +228,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Farewell!";
 			    logger_instance->destroy();
 			    logger_instance.reset();
-
-			    file_manager_instance.reset();
 
 			    CloseHandle(g_main_thread);
 			    FreeLibraryAndExitThread(g_hmodule, 0);

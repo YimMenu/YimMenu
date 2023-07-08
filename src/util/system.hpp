@@ -10,7 +10,7 @@ namespace big::system
 	{
 		DWORD64 base_address = memory::module("GTA5.exe").begin().as<DWORD64>();
 
-		const auto file_path = g_file_manager->get_project_file("./entrypoints.txt");
+		const auto file_path = g_file_manager.get_project_file("./entrypoints.txt");
 		auto file            = std::ofstream(file_path.get_path(), std::ios::out | std::ios::trunc);
 
 		for (auto& map : g_crossmap)
