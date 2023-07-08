@@ -917,7 +917,15 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(lua, enable_auto_reload_changed_scripts)
 		} lua{};
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, debug, tunables, notifications, player, player_db, protections, self, session, settings, spawn_vehicle, clone_pv, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor, lua)
+		struct persist_weapons
+		{
+			bool enabled = false;
+			std::string weapon_loadout_file;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(persist_weapons, enabled, weapon_loadout_file)
+		} persist_weapons{};
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, debug, tunables, notifications, player, player_db, protections, self, session, settings, spawn_vehicle, clone_pv, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor, lua, persist_weapons)
 	};
 
 	inline auto g = menu_settings();
