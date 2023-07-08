@@ -70,6 +70,7 @@ namespace big
 		static void world();
 		static void gta_cache();
 		static void lua_scripts();
+		static void shortcuts();
 
 		static void player_info();
 		static void player_teleport();

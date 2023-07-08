@@ -197,10 +197,10 @@ namespace big
 
 	void view::spawn_vehicle()
 	{
-		static int spawn_type = 0;
-		ImGui::RadioButton("New", &spawn_type, 0);
-		ImGui::SameLine();
+		static int spawn_type = 1;
 		ImGui::RadioButton("Personal", &spawn_type, 1);
+		ImGui::SameLine();
+		ImGui::RadioButton("New", &spawn_type, 0);
 		ImGui::SameLine();
 		ImGui::RadioButton("Persistent", &spawn_type, 2);
 		ImGui::SameLine();

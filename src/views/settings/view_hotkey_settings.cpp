@@ -52,6 +52,8 @@ namespace big
 			g_hotkey_service->update_hotkey("vehiclecontroller", g.settings.hotkeys.open_vehicle_controller);
 		if (ImGui::Hotkey("Clear Wanted", &g.settings.hotkeys.clear_wanted))
 			g_hotkey_service->update_hotkey("clearwantedlvl", g.settings.hotkeys.clear_wanted);
+		if (ImGui::Hotkey("Quick Menu", &g.settings.hotkeys.quickmenu))
+			g_hotkey_service->update_hotkey("quickmenu", g.settings.hotkeys.quickmenu);
 
 		ImGui::PopItemWidth();
 	}
