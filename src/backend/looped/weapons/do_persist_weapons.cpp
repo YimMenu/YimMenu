@@ -1,5 +1,5 @@
 #include "backend/looped/looped.hpp"
-#include "services/persist_weapons/persist_weapons.h"
+#include "services/persist_weapons/persist_weapons.hpp"
 
 namespace big
 {

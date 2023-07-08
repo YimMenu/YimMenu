@@ -1,4 +1,4 @@
-#include "persist_weapons.h"
+#include "persist_weapons.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "gta/weapons.hpp"
 #include "natives.hpp"

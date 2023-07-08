@@ -1,6 +1,6 @@
 #pragma once
 
-#include "weaponloadout_json.h"
+#include "weaponloadout_json.hpp"
 
 namespace big
 {
