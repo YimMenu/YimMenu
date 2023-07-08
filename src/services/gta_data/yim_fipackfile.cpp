@@ -84,9 +84,49 @@ namespace big
 		return output;
 	}
 
+	static std::filesystem::path get_game_folder_path()
+	{
+		std::wstring game_module_path(MAX_PATH, '\0');
+
+		if (GetModuleFileNameW(nullptr, game_module_path.data(), game_module_path.size()))
+		{
+			const auto game_folder = std::filesystem::path(game_module_path).parent_path();
+
+			if (std::filesystem::is_directory(game_folder))
+			{
+				return game_folder;
+			}
+			else
+			{
+				LOG(WARNING) << "game_folder variable is not directory " << reinterpret_cast<const char*>(game_folder.u8string().c_str());
+			}
+		}
+		else
+		{
+			LOG(WARNING) << "Failed getting gta module path. Error code: " << GetLastError();
+		}
+
+		return {};
+	}
+
 	void yim_fipackfile::for_each_fipackfile()
 	{
-		for (auto& entry : std::filesystem::recursive_directory_iterator(std::filesystem::current_path()))
+		const auto gta_folder = get_game_folder_path();
+		if (gta_folder.empty())
+		{
+			LOG(WARNING) << "get_game_folder_path() failed, aborting.";
+		}
+
+		try
+		{
+			LOG(INFO) << "gta_folder: " << reinterpret_cast<const char*>(gta_folder.u8string().c_str());
+		}
+		catch (const std::exception& e)
+		{
+			LOG(WARNING) << "Failed printing gta_folder: " << e.what();
+		}
+
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(gta_folder, std::filesystem::directory_options::skip_permission_denied))
 		{
 			if (!entry.is_regular_file())
 			{
@@ -94,6 +134,8 @@ namespace big
 			}
 
 			const auto rel_path = std::filesystem::relative(entry.path());
+			if (rel_path.empty())
+				continue;
 
 			const auto utf8_path = UTF16ToCP(CP_UTF8, entry.path().native());
 

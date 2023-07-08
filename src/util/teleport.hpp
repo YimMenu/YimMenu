@@ -20,7 +20,7 @@ namespace big::teleport
 
 	inline std::filesystem::path get_telelocations_file_path()
 	{
-		return g_file_manager->get_project_file("telelocations.json").get_path();
+		return g_file_manager.get_project_file("telelocations.json").get_path();
 	}
 
 	inline bool fetch_saved_locations()

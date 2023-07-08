@@ -12,7 +12,7 @@
 namespace big
 {
 	tunables_service::tunables_service() :
-	    m_cache_file(g_file_manager->get_project_file("./cache/tunables.bin"), 1)
+	    m_cache_file(g_file_manager.get_project_file("./cache/tunables.bin"), 1)
 	{
 		m_cache_file.load();
 
