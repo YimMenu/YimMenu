@@ -1,4 +1,5 @@
 #include "custom_teleport_service.hpp"
+#include "util/notify.hpp"
 
 namespace big
 {
@@ -7,7 +8,7 @@ namespace big
 		return g_file_manager->get_project_file("telelocations.json").get_path();
 	}
 
-    std::vector<telelocation> custom_teleport_service::saved_locations_filtered_list(std::string filter)
+	std::vector<telelocation> custom_teleport_service::saved_locations_filtered_list(std::string filter)
 	{
 		std::vector<telelocation> filterlist{};
 
@@ -68,6 +69,8 @@ namespace big
 		file_out << j.dump(4);
 		file_out.close();
 
+        g_notification_service->push_success("Custom Teleport", std::format("Succesfully saved location {}", t.name));
+        
 		return true;
 	}
 
@@ -98,5 +101,13 @@ namespace big
 
 		return true;
 	}
-} 
 
+	telelocation* custom_teleport_service::get_saved_location_by_name(std::string name)
+	{
+		for (auto& loc : g_custom_teleport_service.saved_locations_filtered_list())
+			if (loc.name == name)
+				return &loc;
+
+		return nullptr;
+	}
+}

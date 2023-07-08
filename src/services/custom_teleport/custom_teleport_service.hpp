@@ -18,7 +18,8 @@ namespace big
         bool fetch_saved_locations();
         bool save_new_location(const std::string& category, telelocation t);
         bool delete_saved_location(const std::string& category, const std::string& location_name);
-        std::vector<telelocation> saved_locations_filtered_list(std::string filter);
+        telelocation* get_saved_location_by_name(std::string);
+        std::vector<telelocation> saved_locations_filtered_list(std::string filter = "");
     
     private:
         std::filesystem::path get_telelocations_file_path();
