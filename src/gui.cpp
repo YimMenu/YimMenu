@@ -17,8 +17,8 @@ namespace big
 		g_renderer->add_dx_callback(view::gta_data, -1);
 		g_renderer->add_dx_callback(view::notifications, -2);
 		g_renderer->add_dx_callback(view::overlay, -3);
-		g_renderer->add_dx_callback(view::shortcuts, -4);
-		g_renderer->add_dx_callback(view::cmd_executor, -5);
+		g_renderer->add_dx_callback(view::quickmenu, -5);
+		g_renderer->add_dx_callback(view::cmd_executor, -4);
 		g_renderer->add_dx_callback(
 		    [this] {
 			    dx_on_tick();

@@ -423,7 +423,7 @@ namespace big
 				int open_vehicle_controller = 0;
 				int clear_wanted            = 0;
 				int random_ped_components   = 0;
-				int quickmenu              = 0;
+				int quickmenu               = 0;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller, clear_wanted, random_ped_components, quickmenu)
 			} hotkeys{};
