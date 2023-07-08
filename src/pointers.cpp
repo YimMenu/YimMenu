@@ -1419,8 +1419,8 @@ namespace big
 	}
 
 	pointers::pointers() :
-	    m_gta_pointers_cache(g_file_manager->get_project_file("./cache/gta_pointers.bin")),
-	    m_sc_pointers_cache(g_file_manager->get_project_file("./cache/sc_pointers.bin"))
+	    m_gta_pointers_cache(g_file_manager.get_project_file("./cache/gta_pointers.bin")),
+	    m_sc_pointers_cache(g_file_manager.get_project_file("./cache/sc_pointers.bin"))
 	{
 		g_pointers = this;
 

@@ -5,7 +5,7 @@ namespace big
 
 	std::filesystem::path squad_spawner::get_file_path()
 	{
-		return g_file_manager->get_project_folder("squad_spawner").get_path();
+		return g_file_manager.get_project_folder("squad_spawner").get_path();
 	}
 
 	bool squad_spawner::fetch_squads()

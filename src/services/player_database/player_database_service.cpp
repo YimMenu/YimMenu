@@ -11,7 +11,7 @@ namespace big
 	    g.player_db.update_player_online_states);
 
 	player_database_service::player_database_service() :
-	    m_file_path(g_file_manager->get_project_file("./players.json").get_path())
+	    m_file_path(g_file_manager.get_project_file("./players.json").get_path())
 	{
 		load();
 		g_player_database_service = this;
