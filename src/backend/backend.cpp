@@ -5,15 +5,14 @@
 #include "script.hpp"
 #include "script_patches.hpp"
 #include "services/context_menu/context_menu_service.hpp"
+#include "services/custom_teleport/custom_teleport_service.hpp"
 #include "services/orbital_drone/orbital_drone.hpp"
 #include "services/script_connection/script_connection_service.hpp"
 #include "services/squad_spawner/squad_spawner.hpp"
 #include "services/tunables/tunables_service.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
-#include "thread_pool.hpp"
-#include "services/squad_spawner/squad_spawner.hpp"
 #include "services/vehicle/xml_vehicles_service.hpp"
-#include "services/custom_teleport/custom_teleport_service.hpp"
+#include "thread_pool.hpp"
 
 
 namespace big

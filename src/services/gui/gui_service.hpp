@@ -11,6 +11,7 @@ namespace big
 		SELF,
 		WEAPONS,
 		TELEPORT,
+		CUSTOM_TELEPORT,
 		MOBILE,
 		OUTFIT_EDITOR,
 		OUTFIT_SLOTS,
@@ -80,13 +81,16 @@ namespace big
 
 		// clang-format off
 		std::map<tabs, navigation_struct> nav = {
-		    {
+		   {
 				TAB_DECL(SELF),
 		            view::self,
 		            {
 						{TAB_DECL(WEAPONS), view::weapons}},
 						{TAB_DECL(MOBILE), view::mobile}},
-						{TAB_DECL(TELEPORT), view::teleport}},
+						{TAB_DECL(TELEPORT), view::teleport,
+						{
+							{TAB_DECL(CUSTOM_TELEPORT), view::custom_teleport}},
+						}}},
 						{TAB_DECL(OUTFIT_EDITOR), view::outfit_editor}},
 		                {TAB_DECL(OUTFIT_SLOTS), view::outfit_slots}},
 		            },
@@ -156,26 +160,27 @@ namespace big
 		        {"", view::view_player},
 		    },
 		};
-		// clang-format on
+// clang-format on
 
-		void remove_from_nav_internal(std::map<big::tabs, big::navigation_struct>& nav, big::tabs existing_tab_id);
+void remove_from_nav_internal(std::map<big::tabs, big::navigation_struct>& nav, big::tabs existing_tab_id);
 
-	public:
-		gui_service();
-		virtual ~gui_service();
+public:
+gui_service();
+virtual ~gui_service();
 
-		int nav_ctr = 0;
+int nav_ctr = 0;
 
-		navigation_struct* get_selected();
-		std::vector<tabs>& get_selected_tab();
-		bool has_switched_view();
-		void set_selected(tabs);
-		void set_nav_size(int);
-		void increment_nav_size();
-		void reset_nav_size();
-		std::map<tabs, navigation_struct>& get_navigation();
-		void remove_from_nav(tabs existing_tab_id);
-	};
+navigation_struct* get_selected();
+std::vector<tabs>& get_selected_tab();
+bool has_switched_view();
+void set_selected(tabs);
+void set_nav_size(int);
+void increment_nav_size();
+void reset_nav_size();
+std::map<tabs, navigation_struct>& get_navigation();
+void remove_from_nav(tabs existing_tab_id);
+}
+;
 
-	inline gui_service* g_gui_service{};
+inline gui_service* g_gui_service{};
 }
