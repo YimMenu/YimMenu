@@ -63,6 +63,7 @@ namespace big
 					if (encryption_type == 0xFFFFFF9)
 						continue; // skip AES encrypted RPFs
 
+					// OPEN / CFXP
 					if (encryption_type == 0x4E45504F || encryption_type == 0x50584643)
 					{
 						LOG(INFO) << "Modded RPF, skipping " << reinterpret_cast<const char*>(file.u8string().c_str());
