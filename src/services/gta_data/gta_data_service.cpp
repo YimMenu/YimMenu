@@ -135,8 +135,8 @@ namespace big
 
 	const weapon_component& gta_data_service::weapon_component_by_name(std::string name)
 	{
-		for (const auto& [name, component] : m_weapons_cache.weapon_components)
-			if (name == name)
+		for (const auto& [name_key, component] : m_weapons_cache.weapon_components)
+			if (name_key == name)
 				return component;
 		return gta_data_service::empty_component;
 	}
