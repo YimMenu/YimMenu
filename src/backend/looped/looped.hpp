@@ -54,6 +54,7 @@ namespace big
 		static void weapons_steal_vehicle_gun();
 		static void weapons_vehicle_gun();
 		static void weapons_c4_limit();
+		static void weapons_do_persist_weapons();
 
 		static void drive_train();
 		static void derail_train();
