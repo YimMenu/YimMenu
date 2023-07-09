@@ -26,27 +26,9 @@ namespace big
 			{
 				ImGui::Text("GAME_CACHE_UPDATE"_T.data());
 
-				if (*g_pointers->m_gta.m_is_session_started)
+				if (ImGui::Button("GAME_CACHE_UPDATE_CACHE"_T.data()))
 				{
-					if (ImGui::Button("GAME_CACHE_UPDATE_CACHE"_T.data()))
-					{
-						g_gta_data_service->update_now();
-					}
-				}
-				else
-				{
-					if (ImGui::Button("GAME_CACHE_UPDATE_CACHE"_T.data()))
-					{
-						g_gta_data_service->update_now();
-					}
-
-					if (*g_pointers->m_gta.m_game_state == eGameState::Respawn)
-					{
-						if (ImGui::Button("GAME_CACHE_ON_INIT"_T.data()))
-						{
-							g_gta_data_service->update_on_init();
-						}
-					}
+					g_gta_data_service->update_now();
 				}
 
 				break;
@@ -57,25 +39,7 @@ namespace big
 
 				break;
 			}
-			case eGtaDataUpdateState::WAITING_FOR_ONLINE:
-			{
-				ImGui::Text("GAME_CACHE_WAITING_FOR_ONLINE"_T.data());
-
-				break;
-			}
 			case eGtaDataUpdateState::UPDATING:
-			{
-				ImGui::Text("GAME_CACHE_UPDATING"_T.data());
-
-				break;
-			}
-			case eGtaDataUpdateState::ON_INIT_WAITING:
-			{
-				ImGui::Text("GAME_CACHE_WAITING_FOR_SINGLE_PLAYER"_T.data());
-
-				break;
-			}
-			case eGtaDataUpdateState::ON_INIT_UPDATE_START:
 			{
 				ImGui::Text("GAME_CACHE_UPDATING"_T.data());
 
