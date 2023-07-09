@@ -62,40 +62,11 @@ namespace big
 		m_update_state = state;
 	}
 
-	void gta_data_service::update_in_online()
-	{
-		m_update_state = eGtaDataUpdateState::WAITING_FOR_SINGLE_PLAYER;
-		g_fiber_pool->queue_job([this] {
-			while (*g_pointers->m_gta.m_game_state != eGameState::Playing)
-			{
-				script::get_current()->yield(100ms);
-			}
-			m_update_state = eGtaDataUpdateState::WAITING_FOR_ONLINE;
-
-			session::join_type(eSessionType::SOLO);
-
-			while (!*g_pointers->m_gta.m_is_session_started)
-			{
-				script::get_current()->yield(100ms);
-			}
-			m_update_state = eGtaDataUpdateState::UPDATING;
-			rebuild_cache();
-		});
-	}
-
 	void gta_data_service::update_now()
 	{
 		m_update_state = eGtaDataUpdateState::WAITING_FOR_SINGLE_PLAYER;
 		g_fiber_pool->queue_job([this] {
 			m_update_state = eGtaDataUpdateState::UPDATING;
-			rebuild_cache();
-		});
-	}
-
-	void gta_data_service::update_on_init()
-	{
-		m_update_state = eGtaDataUpdateState::ON_INIT_WAITING;
-		g_thread_pool->push([this] {
 			rebuild_cache();
 		});
 	}
@@ -500,11 +471,6 @@ namespace big
 		if (state() == eGtaDataUpdateState::UPDATING)
 		{
 			yim_fipackfile::for_each_fipackfile();
-		}
-		else
-		{
-			while (state() != eGtaDataUpdateState::ON_INIT_UPDATE_END)
-				std::this_thread::sleep_for(100ms);
 		}
 
 		static bool translate_lebel = false;

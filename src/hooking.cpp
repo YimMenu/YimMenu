@@ -110,8 +110,6 @@ namespace big
 
 		detour_hook_helper::add<hooks::write_vehicle_proximity_migration_data_node>("WVPMDN", g_pointers->m_gta.m_write_vehicle_proximity_migration_data_node);
 
-		detour_hook_helper::add<hooks::fipackfile_mount>("FPFM", g_pointers->m_gta.m_fipackfile_mount);
-
 		detour_hook_helper::add<hooks::allow_weapons_in_vehicle>("AWIV", g_pointers->m_gta.m_allow_weapons_in_vehicle);
 
 		detour_hook_helper::add<hooks::netfilter_handle_message>("NHM", g_pointers->m_gta.m_netfilter_handle_message);

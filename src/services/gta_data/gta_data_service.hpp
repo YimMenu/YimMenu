@@ -11,11 +11,7 @@ namespace big
 		IDLE,
 		NEEDS_UPDATE,
 		WAITING_FOR_SINGLE_PLAYER,
-		WAITING_FOR_ONLINE,
-		UPDATING,
-		ON_INIT_WAITING,
-		ON_INIT_UPDATE_START,
-		ON_INIT_UPDATE_END
+		UPDATING
 	};
 
 	using ped_map     = std::map<std::string, ped_item>;
@@ -31,9 +27,7 @@ namespace big
 		bool cache_needs_update() const;
 		eGtaDataUpdateState state() const;
 		void set_state(eGtaDataUpdateState state);
-		void update_in_online();
 		void update_now();
-		void update_on_init();
 
 		const ped_item& ped_by_hash(std::uint32_t hash);
 		const vehicle_item& vehicle_by_hash(std::uint32_t hash);
