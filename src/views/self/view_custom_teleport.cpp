@@ -28,6 +28,13 @@ namespace big
 		return closest_location;
 	}
 
+	float get_distance_to_telelocation(telelocation t)
+	{
+		return math::distance_between_vectors(Vector3(t.x,t.y,t.z), Vector3(g_local_player->m_navigation->get_position()->x,
+		    g_local_player->m_navigation->get_position()->y,
+		    g_local_player->m_navigation->get_position()->z));
+	}
+
 	void view::custom_teleport()
 	{
 		ImGui::BeginGroup();
@@ -127,6 +134,14 @@ namespace big
 								});
 							}
 						}
+					}
+					if (ImGui::IsItemHovered())
+					{
+						ImGui::BeginTooltip();
+						if (l.name.length() > 27)
+							ImGui::Text(l.name.data());
+						ImGui::Text("Distance: %f", get_distance_to_telelocation(l));
+						ImGui::EndTooltip();
 					}
 				}
 			}
