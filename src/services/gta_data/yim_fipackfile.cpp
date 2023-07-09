@@ -65,7 +65,7 @@ namespace big
 
 					if (encryption_type == 0x4E45504F || encryption_type == 0x50584643)
 					{
-						LOG(INFO) << "OpenIV RPF, skipping " << reinterpret_cast<const char*>(file.u8string().c_str());
+						LOG(INFO) << "Modded RPF, skipping " << reinterpret_cast<const char*>(file.u8string().c_str());
 
 						continue;
 					}
