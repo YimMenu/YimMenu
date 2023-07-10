@@ -889,7 +889,7 @@ namespace big
 					        game_state_node->m_population_control_sphere_y,
 					        game_state_node->m_population_control_sphere_z))
 					{
-						notify::crash_blocked(sender, "invalid sector position (player game state node)");
+						// notify::crash_blocked(sender, "invalid sector position (player game state node)");
 						return true;
 					}
 					break;
@@ -899,7 +899,7 @@ namespace big
 					const auto train_node = (CTrainGameStateDataNode*)(node);
 					if (train_node->m_track_id < 0 || train_node->m_track_id >= 27)
 					{
-						notify::crash_blocked(sender, "out of bounds train track index");
+						// notify::crash_blocked(sender, "out of bounds train track index");
 						return true;
 					}
 					break;
