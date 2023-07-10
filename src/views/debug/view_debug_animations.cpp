@@ -10,8 +10,9 @@ namespace big
 		static std::string current_dict, current_anim;
 		static std::vector<std::string> selected_dict_anim_list{};
 
-		*dict = current_dict;
-		*anim = current_anim;
+		if(dict && anim)
+			*dict = current_dict,
+			*anim = current_anim;
 
 		static auto reload_anim_list = []() -> void {
 			selected_dict_anim_list.clear();
@@ -21,8 +22,9 @@ namespace big
 				selected_dict_anim_list.push_back(it->second);
 			}
 		};
-
-		ImGui::Text("There are %d dictionaries with %d animations in memory", animations::anim_dict_count(), animations::total_anim_count());
+		
+		if(animations::has_anim_list_been_populated())
+			ImGui::Text(std::format("There are {} dictionaries with {} animations in memory", animations::anim_dict_count(), animations::total_anim_count()).data());
 
 		components::button("Fetch All Anims", [] {
 			animations::fetch_all_anims();

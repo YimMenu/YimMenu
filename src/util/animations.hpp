@@ -7,43 +7,42 @@
 
 namespace big::animations
 {
-
 	inline static std::multimap<std::string, std::string> all_anims;
 	inline static std::vector<std::string> all_dicts;
 
 	enum class anim_flags
 	{
-		LOOPING                          = 1 << 0,  // 1
-		HOLD_LAST_FRAME                  = 1 << 1,  // 2
-		REPOSITION_WHEN_FINISHED         = 1 << 2,  // 4
-		NOT_INTERRUPTABLE                = 1 << 3,  // 8
-		UPPERBODY                        = 1 << 4,  // 16
-		SECONDARY                        = 1 << 5,  // 32
+		LOOPING                          = 1 << 0, 
+		HOLD_LAST_FRAME                  = 1 << 1, 
+		REPOSITION_WHEN_FINISHED         = 1 << 2, 
+		NOT_INTERRUPTABLE                = 1 << 3, 
+		UPPERBODY                        = 1 << 4, 
+		SECONDARY                        = 1 << 5, 
 		REORIENT_WHEN_FINISHED           = 1 << 6,
-		ABORT_ON_PED_MOVEMENT            = 1 << 7,  // 64
-		ADDITIVE                         = 1 << 8,  // 128
-		TURN_OFF_COLLISION               = 1 << 9,  // 256
-		OVERRIDE_PHYSICS                 = 1 << 10, // 512
-		IGNORE_GRAVITY                   = 1 << 11, // 1024
-		EXTRACT_INITIAL_OFFSET           = 1 << 12, // 2048
-		EXIT_AFTER_INTERRUPTED           = 1 << 13, // 4096
-		TAG_SYNC_IN                      = 1 << 14, // 8192
-		TAG_SYNC_OUT                     = 1 << 15, // 16384
-		TAG_SYNC_CONTINUOUS              = 1 << 16, // 32768
-		FORCE_START                      = 1 << 17, // 65536
-		USE_KINEMATIC_PHYSICS            = 1 << 18, // 131072
-		USE_MOVER_EXTRACTION             = 1 << 19, // 262144
-		HIDE_WEAPON                      = 1 << 20, // 524288
-		ENDS_IN_DEAD_POSE                = 1 << 21, // 1048576
-		ACTIVATE_RAGDOLL_ON_COLLISION    = 1 << 22, // 2097152
-		DONT_EXIT_ON_DEATH               = 1 << 23, // 4194304
-		ABORT_ON_WEAPON_DAMAGE           = 1 << 24, // 8388608
-		DISABLE_FORCED_PHYSICS_UPDATE    = 1 << 25, // 16777216
-		PROCESS_ATTACHMENTS_ON_START     = 1 << 26, // 33554432
-		EXPAND_PED_CAPSULE_FROM_SKELETON = 1 << 27, // 67108864
-		USE_ALTERNATIVE_FP_ANIM          = 1 << 28, // 134217728
-		BLENDOUT_WRT_LAST_FRAME          = 1 << 29, // 268435456
-		USE_FULL_BLENDING                = 1 << 30  // 536870912
+		ABORT_ON_PED_MOVEMENT            = 1 << 7, 
+		ADDITIVE                         = 1 << 8, 
+		TURN_OFF_COLLISION               = 1 << 9, 
+		OVERRIDE_PHYSICS                 = 1 << 10,
+		IGNORE_GRAVITY                   = 1 << 11,
+		EXTRACT_INITIAL_OFFSET           = 1 << 12,
+		EXIT_AFTER_INTERRUPTED           = 1 << 13,
+		TAG_SYNC_IN                      = 1 << 14,
+		TAG_SYNC_OUT                     = 1 << 15,
+		TAG_SYNC_CONTINUOUS              = 1 << 16,
+		FORCE_START                      = 1 << 17,
+		USE_KINEMATIC_PHYSICS            = 1 << 18,
+		USE_MOVER_EXTRACTION             = 1 << 19,
+		HIDE_WEAPON                      = 1 << 20,
+		ENDS_IN_DEAD_POSE                = 1 << 21,
+		ACTIVATE_RAGDOLL_ON_COLLISION    = 1 << 22,
+		DONT_EXIT_ON_DEATH               = 1 << 23,
+		ABORT_ON_WEAPON_DAMAGE           = 1 << 24,
+		DISABLE_FORCED_PHYSICS_UPDATE    = 1 << 25,
+		PROCESS_ATTACHMENTS_ON_START     = 1 << 26,
+		EXPAND_PED_CAPSULE_FROM_SKELETON = 1 << 27,
+		USE_ALTERNATIVE_FP_ANIM          = 1 << 28,
+		BLENDOUT_WRT_LAST_FRAME          = 1 << 29,
+		USE_FULL_BLENDING                = 1 << 30 
 	};
 
 	/*
