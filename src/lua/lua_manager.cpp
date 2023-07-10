@@ -50,7 +50,7 @@ namespace big
 		{
 			if (const auto it = module->m_gui.find(tab_hash); it != module->m_gui.end())
 			{
-				ImGui::SameLine();
+				ImGui::Separator();
 
 				for (const auto& element : it->second)
 					element->draw();
