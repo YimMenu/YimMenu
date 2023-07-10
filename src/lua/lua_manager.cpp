@@ -46,14 +46,23 @@ namespace big
 	{
 		std::lock_guard guard(m_module_lock);
 
+		bool add_separator = false;
+
 		for (const auto& module : m_modules)
 		{
 			if (const auto it = module->m_gui.find(tab_hash); it != module->m_gui.end())
 			{
-				ImGui::Separator();
+				if (add_separator)
+				{
+					ImGui::Separator();
+					add_separator = false;
+				}
 
 				for (const auto& element : it->second)
+				{
 					element->draw();
+					add_separator = true;
+				}
 			}
 		}
 	}
