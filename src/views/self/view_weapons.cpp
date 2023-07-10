@@ -7,6 +7,7 @@
 #include "pointers.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "views/view.hpp"
+#include "services/persist_weapons/persist_weapons.hpp"
 
 namespace big
 {
@@ -177,92 +178,131 @@ namespace big
 			ImGui::PopItemWidth();
 		}
 
-		ImGui::SeparatorText("Ammunation");
-		static Hash selected_weapon_hash, selected_weapon_attachment_hash{};
-		static std::string selected_weapon, selected_weapon_attachment;
-		ImGui::PushItemWidth(300);
-		if (ImGui::BeginCombo("Weapons", selected_weapon.c_str()))
+		if (ImGui::CollapsingHeader("Ammunation"))
 		{
-			for (auto& weapon : g_gta_data_service->weapons())
+			static Hash selected_weapon_hash, selected_weapon_attachment_hash{};
+			static std::string selected_weapon, selected_weapon_attachment;
+			ImGui::PushItemWidth(300);
+			if (ImGui::BeginCombo("Weapons", selected_weapon.c_str()))
 			{
-				bool is_selected = weapon.second.m_hash == selected_weapon_hash;
-				if (weapon.second.m_display_name != "NULL" && ImGui::Selectable(weapon.second.m_display_name.c_str(), is_selected, ImGuiSelectableFlags_None))
+				for (auto& weapon : g_gta_data_service->weapons())
 				{
-					selected_weapon					= weapon.second.m_display_name;
-					selected_weapon_hash			= weapon.second.m_hash;
-					selected_weapon_attachment_hash = {};
-					selected_weapon_attachment.clear();
-				}
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
-			}
-			ImGui::EndCombo();
-		}
-		ImGui::PopItemWidth();
-		ImGui::SameLine();
-		components::button("Give Weapon", [] {
-			WEAPON::GIVE_WEAPON_TO_PED(self::ped, selected_weapon_hash, 9999, false, true);
-		});
-		ImGui::SameLine();
-		components::button("Remove Weapon", [] {
-			WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, selected_weapon_hash);
-		});
-
-		ImGui::PushItemWidth(250);
-		if (ImGui::BeginCombo("Attachments", selected_weapon_attachment.c_str()))
-		{
-			auto weapon = g_gta_data_service->weapon_by_hash(selected_weapon_hash);
-			if (!weapon.m_attachments.empty())
-			{
-				for (std::string attachment : weapon.m_attachments)
-				{
-					auto attachment_component   = g_gta_data_service->weapon_component_by_name(attachment);
-					std::string attachment_name = attachment_component.m_display_name;
-					Hash attachment_hash        = attachment_component.m_hash;
-					if (attachment_hash == NULL)
+					bool is_selected = weapon.second.m_hash == selected_weapon_hash;
+					if (weapon.second.m_display_name != "NULL" && ImGui::Selectable(weapon.second.m_display_name.c_str(), is_selected, ImGuiSelectableFlags_None))
 					{
-						attachment_name = attachment;
-						attachment_hash = rage::joaat(attachment);
-					}
-					bool is_selected = attachment_hash == selected_weapon_attachment_hash;
-					std::string display_name = attachment_name.append("##").append(std::to_string(attachment_hash));
-					if (ImGui::Selectable(display_name.c_str(), is_selected, ImGuiSelectableFlags_None))
-					{
-						selected_weapon_attachment      = attachment_name;
-						selected_weapon_attachment_hash = attachment_hash;
+						selected_weapon                 = weapon.second.m_display_name;
+						selected_weapon_hash            = weapon.second.m_hash;
+						selected_weapon_attachment_hash = {};
+						selected_weapon_attachment.clear();
 					}
 					if (is_selected)
 						ImGui::SetItemDefaultFocus();
 				}
+				ImGui::EndCombo();
 			}
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+			components::button("Give Weapon", [] {
+				WEAPON::GIVE_WEAPON_TO_PED(self::ped, selected_weapon_hash, 9999, false, true);
+			});
+			ImGui::SameLine();
+			components::button("Remove Weapon", [] {
+				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, selected_weapon_hash);
+			});
 
-			ImGui::EndCombo();
+			ImGui::PushItemWidth(250);
+			if (ImGui::BeginCombo("Attachments", selected_weapon_attachment.c_str()))
+			{
+				auto weapon = g_gta_data_service->weapon_by_hash(selected_weapon_hash);
+				if (!weapon.m_attachments.empty())
+				{
+					for (std::string attachment : weapon.m_attachments)
+					{
+						auto attachment_component   = g_gta_data_service->weapon_component_by_name(attachment);
+						std::string attachment_name = attachment_component.m_display_name;
+						Hash attachment_hash        = attachment_component.m_hash;
+						if (attachment_hash == NULL)
+						{
+							attachment_name = attachment;
+							attachment_hash = rage::joaat(attachment);
+						}
+						bool is_selected         = attachment_hash == selected_weapon_attachment_hash;
+						std::string display_name = attachment_name.append("##").append(std::to_string(attachment_hash));
+						if (ImGui::Selectable(display_name.c_str(), is_selected, ImGuiSelectableFlags_None))
+						{
+							selected_weapon_attachment      = attachment_name;
+							selected_weapon_attachment_hash = attachment_hash;
+						}
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
+					}
+				}
+
+				ImGui::EndCombo();
+			}
+			ImGui::SameLine();
+			components::button("Add to Weapon", [] {
+				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(self::ped, selected_weapon_hash, selected_weapon_attachment_hash);
+			});
+			ImGui::SameLine();
+			components::button("Remove from Weapon", [] {
+				WEAPON::REMOVE_WEAPON_COMPONENT_FROM_PED(self::ped, selected_weapon_hash, selected_weapon_attachment_hash);
+			});
+			ImGui::PopItemWidth();
+
+			static const char* default_tints[]{"Black tint", "Green tint", "Gold tint", "Pink tint", "Army tint", "LSPD tint", "Orange tint", "Platinum tint"};
+			static const char* mk2_tints[]{"Classic Black", "Classic Grey", "Classic Two - Tone", "Classic White", "Classic Beige", "Classic Green", "Classic Blue", "Classic Earth", "Classic Brown & Black", "Red Contrast", "Blue Contrast", "Yellow Contrast", "Orange Contrast", "Bold Pink", "Bold Purple & Yellow", "Bold Orange", "Bold Green & Purple", "Bold Red Features", "Bold Green Features", "Bold Cyan Features", "Bold Yellow Features", "Bold Red & White", "Bold Blue & White", "Metallic Gold", "Metallic Platinum", "Metallic Grey & Lilac", "Metallic Purple & Lime", "Metallic Red", "Metallic Green", "Metallic Blue", "Metallic White & Aqua", "Metallic Red & Yellow"};
+			static int tint;
+
+			if (selected_weapon.ends_with("Mk II"))
+			{
+				ImGui::Combo("Tints", &tint, mk2_tints, IM_ARRAYSIZE(mk2_tints));
+			}
+			else
+			{
+				ImGui::Combo("Tints", &tint, default_tints, IM_ARRAYSIZE(default_tints));
+			}
+			ImGui::SameLine();
+			components::button("Apply", [] {
+				WEAPON::SET_PED_WEAPON_TINT_INDEX(self::ped, selected_weapon_hash, tint);
+			});
 		}
-		ImGui::SameLine();
-		components::button("Add to Weapon", [] {
-			WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(self::ped, selected_weapon_hash, selected_weapon_attachment_hash);
-		});
-		ImGui::SameLine();
-		components::button("Remove from Weapon", [] {
-			WEAPON::REMOVE_WEAPON_COMPONENT_FROM_PED(self::ped, selected_weapon_hash, selected_weapon_attachment_hash);
-		});
-		ImGui::PopItemWidth();
-
-		static const char* default_tints[]{"Black tint", "Green tint", "Gold tint", "Pink tint", "Army tint", "LSPD tint", "Orange tint", "Platinum tint"};
-		static const char* mk2_tints[]{"Classic Black", "Classic Grey", "Classic Two - Tone", "Classic White", "Classic Beige", "Classic Green", "Classic Blue", "Classic Earth", "Classic Brown & Black", "Red Contrast", "Blue Contrast", "Yellow Contrast", "Orange Contrast", "Bold Pink", "Bold Purple & Yellow", "Bold Orange", "Bold Green & Purple", "Bold Red Features", "Bold Green Features", "Bold Cyan Features", "Bold Yellow Features", "Bold Red & White", "Bold Blue & White", "Metallic Gold", "Metallic Platinum", "Metallic Grey & Lilac", "Metallic Purple & Lime", "Metallic Red", "Metallic Green", "Metallic Blue", "Metallic White & Aqua", "Metallic Red & Yellow"};
-		static int tint;
-
-		if (selected_weapon.ends_with("Mk II"))
+		if (ImGui::CollapsingHeader("Persist Weapons"))
 		{
-			ImGui::Combo("Tints", &tint, mk2_tints, IM_ARRAYSIZE(mk2_tints));
+			ImGui::Checkbox("Enabled", &g.persist_weapons.enabled);
+
+			static std::string selected_loadout = g.persist_weapons.weapon_loadout_file;
+			ImGui::PushItemWidth(250);
+			if (ImGui::BeginListBox("Saved Loadouts", ImVec2(200, 200)))
+			{
+				for (auto filename : persist_weapons::list_weapon_loadouts())
+				{
+					if (components::selectable(filename, filename == selected_loadout))
+					{
+						selected_loadout = filename;
+					}
+				}
+				ImGui::EndListBox();
+			}
+			ImGui::SameLine();
+			ImGui::BeginGroup();
+			static std::string input_file_name;
+			components::input_text_with_hint("Weapon Loadout Filename", "Loadout Name", &input_file_name);
+			components::button("Save Loadout", [] {
+				persist_weapons::save_weapons(input_file_name);
+				input_file_name.clear();
+			});
+			ImGui::SameLine();
+			components::button("Load Loadout", [] {
+				persist_weapons::give_player_loadout(selected_loadout);
+			});
+			ImGui::SameLine();
+			components::button("Set Loadout", [] {
+				persist_weapons::set_weapon_loadout(selected_loadout);
+			});
+			ImGui::Text(std::format("Current Loadout: {}:", g.persist_weapons.weapon_loadout_file).data());
+			ImGui::EndGroup();
+			ImGui::PopItemWidth();
 		}
-		else
-		{
-			ImGui::Combo("Tints", &tint, default_tints, IM_ARRAYSIZE(default_tints));
-		}
-		ImGui::SameLine();
-		components::button("Apply", [] {
-			WEAPON::SET_PED_WEAPON_TINT_INDEX(self::ped, selected_weapon_hash, tint);
-		});
 	}
 }
