@@ -36,7 +36,10 @@ namespace big
 			ImGui::Separator();
 
 			if (selected->func)
+			{
 				selected->func();
+				ImGui::Separator();
+			}
 
 			if (g_lua_manager)
 				g_lua_manager->draw_gui(selected->hash);
