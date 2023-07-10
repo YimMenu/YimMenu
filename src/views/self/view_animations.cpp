@@ -53,6 +53,9 @@ namespace big
 		{
 			ImGui::SliderFloat("Blend in", &new_template.blendin, -5, 10);
 			ImGui::SliderFloat("Blend out", &new_template.blendout, -5, 10);
+			ImGui::InputInt("Duration in ms", &new_template.time_to_play);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("-1 will make the duration indefinite, assuming it is looped");
 			ImGui::PopItemWidth();
 
 			ImGui::BeginGroup(); //Regular flags
