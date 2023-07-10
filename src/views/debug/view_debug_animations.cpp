@@ -57,14 +57,14 @@ namespace big
 					{
 						current_anim = entry;
 						g_fiber_pool->queue_job([=] {
-							ped::ped_play_animation(self::ped, current_dict, current_anim, 4.f, -4.f, -1, 0, 0, false);
+							ped::ped_play_animation(self::ped, current_dict, current_anim, 4.f, -4.f, -1, 1, 0, false);
 							});
 					}
 					else if (loopCHKBX && ImGui::Selectable(entry.data(), entry == current_anim))
 					{
 						current_anim = entry;
 						g_fiber_pool->queue_job([=] {
-							ped::ped_play_animation(self::ped, current_dict, current_anim, 4.f, -4.f, -1, 1, 0, false);
+							ped::ped_play_animation(self::ped, current_dict, current_anim, 4.f, -4.f, -1, 0, 0, false);
 							});
 					}
 				}
