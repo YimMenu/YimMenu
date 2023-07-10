@@ -21,9 +21,6 @@ namespace big
 		if (!player->get_ped())
 			return false;
 
-		if (!NETWORK::NETWORK_ARE_PLAYERS_IN_SAME_TUTORIAL_SESSION(self::id, player->id()))
-			return false; // probably not
-
 		if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[player->id()].IsInvisible)
 			return true;
 
@@ -99,6 +96,9 @@ namespace big
 					}
 
 					if (NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+						break;
+
+					if (!NETWORK::NETWORK_ARE_PLAYERS_IN_SAME_TUTORIAL_SESSION(self::id, player->id()))
 						break;
 
 					if (globals::get_interior_from_player(player->id()) != 0)

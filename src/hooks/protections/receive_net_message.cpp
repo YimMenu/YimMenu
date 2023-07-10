@@ -177,16 +177,6 @@ namespace big
 				}
 				return true;
 			}
-			case rage::eNetMessage::MsgRequestObjectIds:
-			{
-				if (player->block_join)
-				{
-					g_notification_service->push("BLOCK_JOIN"_T.data(),
-					    std::vformat("BLOCK_JOIN_PREVENT_PLAYER_JOIN"_T, std::make_format_args(player->get_name())));
-					return true;
-				}
-				break;
-			}
 			case rage::eNetMessage::MsgScriptHostRequest:
 			{
 				CGameScriptId script;

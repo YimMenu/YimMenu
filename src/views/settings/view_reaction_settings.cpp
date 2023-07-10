@@ -14,6 +14,7 @@ namespace big
 
 	void draw_reaction(reaction& reaction)
 	{
+		ImGui::PushID(&reaction);
 		if (ImGui::TreeNode(reaction.m_event_name))
 		{
 			ImGui::Checkbox("REACTION_CHAT"_T.data(), &reaction.announce_in_chat);
@@ -25,11 +26,13 @@ namespace big
 			ImGui::Checkbox("REACTION_KICK_PLAYER"_T.data(), &reaction.kick);
 			ImGui::TreePop();
 		}
+		ImGui::PopID();
 	}
 
 	// TODO code duplication
 	void draw_interloper_reaction(interloper_reaction& reaction)
 	{
+		ImGui::PushID(&reaction);
 		if (ImGui::TreeNode(reaction.m_event_name))
 		{
 			ImGui::Checkbox("REACTION_CHAT"_T.data(), &reaction.announce_in_chat);
@@ -51,6 +54,7 @@ namespace big
 
 			ImGui::TreePop();
 		}
+		ImGui::PopID();
 	}
 
 	void view::reaction_settings()
@@ -77,6 +81,7 @@ namespace big
 		draw_reaction(g.reactions.rotate_cam);
 		draw_reaction(g.reactions.send_to_cutscene);
 		draw_reaction(g.reactions.send_to_location);
+		draw_reaction(g.reactions.send_to_interior);
 		draw_reaction(g.reactions.sound_spam);
 		draw_reaction(g.reactions.spectate_notification);
 		draw_reaction(g.reactions.start_activity);
@@ -98,6 +103,8 @@ namespace big
 		draw_reaction(g.reactions.report);
 		draw_reaction(g.reactions.report_cash_spawn);
 		draw_reaction(g.reactions.request_control_event);
+		draw_reaction(g.reactions.spectate);
+		draw_interloper_reaction(g.reactions.spectate_others);
 		ImGui::Separator();
 		draw_reaction(g.reactions.gamer_instruction_kick);
 

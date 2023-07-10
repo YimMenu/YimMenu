@@ -266,6 +266,8 @@ namespace big
 		PVOID m_model_spawn_bypass{};
 
 		functions::get_host_array_handler_by_index m_get_host_array_handler_by_index;
+
+		PVOID m_send_non_physical_player_data;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

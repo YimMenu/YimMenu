@@ -53,6 +53,15 @@ namespace big
 			}
 		}
 
+		inline void STAT_SET_INT(rage::scrNativeCallContext* src)
+		{
+			const auto hash = src->get_arg<Hash>(0);
+			if (hash == RAGE_JOAAT("SP0_TOTAL_CASH") || hash == RAGE_JOAAT("SP1_TOTAL_CASH") || hash == RAGE_JOAAT("SP2_TOTAL_CASH"))
+				return;
+
+			src->set_return_value<BOOL>(STATS::STAT_SET_INT(hash, src->get_arg<int>(1), src->get_arg<int>(2)));
+		}
+
 		inline void SET_ENTITY_COORDS(rage::scrNativeCallContext* src)
 		{
 			if (!g.vehicle.ls_customs)

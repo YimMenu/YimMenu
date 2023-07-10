@@ -30,6 +30,7 @@ class CPlayerAppearanceDataNode;
 class CFoundDevice;
 class IDirectSoundCapture;
 class CVehicleProximityMigrationDataNode;
+class CNonPhysicalPlayerData;
 
 namespace rage
 {
@@ -152,6 +153,8 @@ namespace big
 
 		static bool allow_weapons_in_vehicle(int64_t unk, int weaponinfo_group);
 		static int netfilter_handle_message(__int64 filter, char* message, int flags);
+
+		static void send_non_physical_player_data(CNetGamePlayer* player, __int64 message, int flags, void* a4, CNetGamePlayer* a5);
 	};
 
 	class minhook_keepalive

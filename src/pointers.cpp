@@ -1208,6 +1208,15 @@ namespace big
                 g_pointers->m_gta.m_get_host_array_handler_by_index = ptr.as<functions::get_host_array_handler_by_index>();
             }
         },
+        // Send Non Physical Player Data
+        {
+            "SNPPD",
+            "E8 ? ? ? ? 4C 8B 0F 44 0F B7 85 A0 01 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_send_non_physical_player_data = ptr.add(1).rip().as<PVOID>();
+            }
+        },
         // Max Wanted Level
         {
             "MWL",

@@ -19,7 +19,8 @@ namespace big
 		ATTACKING_WHEN_HIDDEN_FROM_PLAYER_LIST,
 		SPOOFED_DATA,
 		SPOOFED_HOST_TOKEN,
-		INVALID_PLAYER_MODEL
+		INVALID_PLAYER_MODEL,
+		USED_INFINITE_AMMO
 	};
 
 	inline std::unordered_map<Infraction, const char*> infraction_desc = {
@@ -37,5 +38,6 @@ namespace big
 	    {Infraction::SPOOFED_DATA, "Had spoofed data"},
 	    {Infraction::SPOOFED_HOST_TOKEN, "Had spoofed their host token"},
 	    {Infraction::INVALID_PLAYER_MODEL, "Had used an invalid player model"},
+	    {Infraction::USED_INFINITE_AMMO, "Used infinite ammo"},
 	};
 }
