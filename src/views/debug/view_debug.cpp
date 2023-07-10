@@ -19,7 +19,12 @@ namespace big
 			script_events();
 			scripts();
 			threads();
-			animations();
+			if(ImGui::BeginTabItem("Debug Animations"))
+			{
+				animations();
+				ImGui::EndTabItem();
+			}
+			
 			ImGui::EndTabBar();
 		}
 		ImGui::End();

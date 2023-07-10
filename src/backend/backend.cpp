@@ -13,6 +13,7 @@
 #include "services/vehicle/vehicle_control_service.hpp"
 #include "services/vehicle/xml_vehicles_service.hpp"
 #include "thread_pool.hpp"
+#include "services/ped_animations/ped_animations_service.hpp"
 
 
 namespace big
@@ -27,6 +28,7 @@ namespace big
 		g_squad_spawner_service.fetch_squads();
 		g_xml_vehicles_service->fetch_xml_files();
 		g_custom_teleport_service.fetch_saved_locations();
+		g_ped_animation_service.fetch_saved_animations();
 
 		while (g_running)
 		{
