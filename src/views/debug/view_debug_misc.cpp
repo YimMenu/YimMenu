@@ -11,6 +11,8 @@
 #include "util/system.hpp"
 #include "view_debug.hpp"
 
+#include "hooking.hpp"
+
 namespace big
 {
 	void debug::misc()
@@ -24,6 +26,11 @@ namespace big
 			if (components::button("RESET"_T.data()))
 			{
 				g_fiber_pool->reset();
+			}
+
+			if (components::button("Trigger GTA Error Message Box"))
+			{
+				hooks::log_error_message_box(0xBAFD530B, 1);
 			}
 
 			if (components::button("DUMP_ENTRYPOINTS"_T.data()))

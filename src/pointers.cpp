@@ -1344,6 +1344,24 @@ namespace big
             {
                 g_pointers->m_gta.m_model_spawn_bypass = ptr.add(8).as<PVOID>();
             }
+        },
+        // ERROR message box
+        {
+            "E0MB",
+            "E8 ? ? ? ? CC FF 15",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_error_message_box = ptr.add(1).rip().as<PVOID>();
+            }
+        },
+        // Get title caption for ERROR message box
+        {
+            "GTCE0MB",
+            "E8 ? ? ? ? 48 83 CB FF 48 8D 8D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_title_caption_error_message_box = ptr.add(1).rip().as<functions::get_title_caption_error_message_box>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 
