@@ -11,8 +11,8 @@ namespace big
 	{
 		const auto selected = g_gui_service->get_selected();
 
-		if (selected->func == nullptr &&
-			(g_lua_manager && !g_lua_manager->has_gui_to_draw(selected->hash)))
+		bool has_lua_gui_to_draw = g_lua_manager && g_lua_manager->has_gui_to_draw(selected->hash);
+		if (selected->func == nullptr && !has_lua_gui_to_draw)
 		{
 			return;
 		}
@@ -38,7 +38,9 @@ namespace big
 			if (selected->func)
 			{
 				selected->func();
-				ImGui::Separator();
+
+				if (has_lua_gui_to_draw)
+					ImGui::Separator();
 			}
 
 			if (g_lua_manager)
