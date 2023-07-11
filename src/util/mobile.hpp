@@ -142,7 +142,7 @@ namespace big::mobile
 				// \(func_\d{3}\(&\(uParam0->f_\d{3}\), \d+000, 0\) \|\| func
 				// or if you prefer a string "VD_FAIL4"
 				// or if you really prefer an image https://i.imgur.com/K8vMILe.png
-				*script_local(freemode_thread, 18717).at(176).as<int*>() = 0; // spawn vehicle instantly
+				*scr_locals::fm_mobile::mobile.set(freemode_thread).at(176).as<int*>() = 0; // spawn vehicle instantly
 			}
 
 			// blocking call till vehicle is delivered
@@ -150,7 +150,7 @@ namespace big::mobile
 
 			if (g.clone_pv.spawn_inside)
 			{
-				big::vehicle::bring(get_personal_vehicle(), self::pos, true);
+				vehicle::bring(get_personal_vehicle(), self::pos, true);
 			}
 		}
 	}
