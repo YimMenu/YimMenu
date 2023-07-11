@@ -137,9 +137,6 @@ namespace big
 		{
 			static char msg[256];
 			ImGui::Checkbox("AUTO_KICK_CHAT_SPAMMERS"_T.data(), &g.session.kick_chat_spammers);
-			ImGui::Checkbox("DISABLE_FILTER"_T.data(), &g.session.chat_force_clean);
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Your sent chat messages will not be censored to the receivers"); // TODO: add translation
 			ImGui::Checkbox("LOG_CHAT_MSG"_T.data(), &g.session.log_chat_messages);
 			ImGui::Checkbox("LOG_TXT_MSG"_T.data(), &g.session.log_text_messages);
 			components::input_text_with_hint("##message", "Chat message", msg, sizeof(msg));

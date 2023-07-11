@@ -65,7 +65,6 @@ namespace big
 		static LRESULT wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 		static const char* get_label_text(void* unk, const char* label);
-		static int check_chat_profanity(__int64 chat_type, const char* input, const char** output);
 
 		static GtaThread* gta_thread_start(unsigned int** a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
