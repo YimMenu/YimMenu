@@ -12,7 +12,7 @@
 namespace big
 {
 	tunables_service::tunables_service() :
-	    m_cache_file(g_file_manager->get_project_file("./cache/tunables.bin"), 1)
+	    m_cache_file(g_file_manager.get_project_file("./cache/tunables.bin"), 1)
 	{
 		m_cache_file.load();
 
@@ -24,7 +24,7 @@ namespace big
 			g_thread_pool->push([this] {
 				while (!g_pointers->m_gta.m_script_globals[1])
 				{
-					if (!m_loading)
+					if (!m_loading || !g_running)
 						return;
 
 					std::this_thread::yield();

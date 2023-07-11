@@ -267,6 +267,10 @@ namespace big
 
 		functions::get_host_array_handler_by_index m_get_host_array_handler_by_index;
 
+		PVOID m_error_message_box{};
+
+		functions::get_title_caption_error_message_box m_get_title_caption_error_message_box{};
+
 		PVOID m_send_non_physical_player_data;
 	};
 #pragma pack(pop)

@@ -3,6 +3,7 @@
 #include "gta/fidevice.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
+#include "util/string_conversions.hpp"
 
 namespace big
 {
@@ -17,12 +18,33 @@ namespace big
 		m_wrapper_call_back.push_back(cb);
 	}
 
-	void yim_fipackfile::traverse_rpf_file(const std::string& path, int depth)
+	static bool safe_open_pack_file(rage::fiPackfile& packfile, const std::u8string& path)
+	{
+		bool success = false;
+
+		__try
+		{
+			success = packfile.OpenPackfile(reinterpret_cast<const char*>(path.c_str()), true, 0, 0);
+		}
+		__except (EXCEPTION_EXECUTE_HANDLER)
+		{
+			return false;
+		}
+
+		return success;
+	}
+
+	void yim_fipackfile::traverse_rpf_file(const std::u8string& path, int depth)
 	{
 		std::string mount_path = std::format("temp{}:/", depth);
 
 		rage::fiPackfile packfile;
-		packfile.OpenPackfile(path.c_str(), true, 0, 0);
+		if (!safe_open_pack_file(packfile, path))
+		{
+			LOG(INFO) << "Failed opening " << reinterpret_cast<const char*>(path.c_str());
+			return;
+		}
+		
 		packfile.Mount(mount_path.c_str());
 
 		yim_fipackfile rpf_wrapper = yim_fipackfile(&packfile, mount_path);
@@ -32,7 +54,7 @@ namespace big
 		{
 			if (file.extension() == ".rpf")
 			{
-				if (auto handle = ((rage::fiDevice*)&packfile)->Open(file.string().c_str(), true))
+				if (auto handle = ((rage::fiDevice*)&packfile)->Open(reinterpret_cast<const char*>(file.u8string().c_str()), true))
 				{
 					uint32_t encryption_type{};
 					((rage::fiDevice*)&packfile)->Seek(handle, 12, 0);
@@ -42,7 +64,15 @@ namespace big
 					if (encryption_type == 0xFFFFFF9)
 						continue; // skip AES encrypted RPFs
 
-					traverse_rpf_file(file.string(), depth + 1);
+					// OPEN / CFXP
+					if (encryption_type == 0x4E45504F || encryption_type == 0x50584643)
+					{
+						LOG(INFO) << "Modded RPF, skipping " << reinterpret_cast<const char*>(file.u8string().c_str());
+
+						continue;
+					}
+
+					traverse_rpf_file(file.u8string(), depth + 1);
 				}
 			}
 			else
@@ -57,17 +87,69 @@ namespace big
 		packfile.ClosePackfile();
 	}
 
+	static std::filesystem::path get_game_folder_path()
+	{
+		std::wstring game_module_path(MAX_PATH, '\0');
+
+		if (GetModuleFileNameW(nullptr, game_module_path.data(), game_module_path.size()))
+		{
+			const auto game_folder = std::filesystem::path(game_module_path).parent_path();
+
+			if (std::filesystem::is_directory(game_folder))
+			{
+				return game_folder;
+			}
+			else
+			{
+				LOG(WARNING) << "game_folder variable is not directory " << reinterpret_cast<const char*>(game_folder.u8string().c_str());
+			}
+		}
+		else
+		{
+			LOG(WARNING) << "Failed getting gta module path. Error code: " << GetLastError();
+		}
+
+		return {};
+	}
+
 	void yim_fipackfile::for_each_fipackfile()
 	{
-		for (auto& entry : std::filesystem::recursive_directory_iterator(std::filesystem::current_path()))
+		const auto gta_folder = get_game_folder_path();
+		if (gta_folder.empty())
 		{
-			auto rel_path = std::filesystem::relative(entry.path());
+			LOG(WARNING) << "get_game_folder_path() failed, aborting.";
+		}
 
-			if (rel_path.string().contains("mods"))
+		try
+		{
+			LOG(INFO) << "gta_folder: " << reinterpret_cast<const char*>(gta_folder.u8string().c_str());
+		}
+		catch (const std::exception& e)
+		{
+			LOG(WARNING) << "Failed printing gta_folder: " << e.what();
+		}
+
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(gta_folder, std::filesystem::directory_options::skip_permission_denied))
+		{
+			if (!entry.is_regular_file())
+			{
+				continue;
+			}
+
+			const auto rel_path = std::filesystem::relative(entry.path());
+			if (rel_path.empty())
+				continue;
+
+			const auto utf8_path = string_conversions::utf_16_to_code_page(CP_UTF8, entry.path().native());
+
+			if (utf8_path.empty())
+				continue;
+
+			if (utf8_path.contains("mods"))
 				continue;
 
 			if (rel_path.extension() == ".rpf")
-				traverse_rpf_file(rel_path.string());
+				traverse_rpf_file(rel_path.u8string());
 		}
 	}
 

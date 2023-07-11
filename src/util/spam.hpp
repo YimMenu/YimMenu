@@ -70,7 +70,7 @@ namespace big::spam
 
 	inline void log_chat(char* msg, player_ptr player, bool is_spam)
 	{
-		std::ofstream spam_log(g_file_manager->get_project_file(is_spam ? "./spam.log" : "./chat.log").get_path(), std::ios::app);
+		std::ofstream spam_log(g_file_manager.get_project_file(is_spam ? "./spam.log" : "./chat.log").get_path(), std::ios::app);
 
 		auto& plData = *player->get_net_data();
 		auto ip      = player->get_ip_address();

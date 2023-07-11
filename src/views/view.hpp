@@ -58,6 +58,7 @@ namespace big
 		static void time_and_weather();
 		static void spoofing();
 		static void teleport();
+		static void custom_teleport();
 		static void view_player();
 		static void players();
 		static void weapons();

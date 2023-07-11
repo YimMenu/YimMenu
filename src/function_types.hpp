@@ -147,4 +147,6 @@ namespace big::functions
 	using update_language = void (*)(bool);
 
 	using get_host_array_handler_by_index = rage::netArrayHandlerBase* (*)(CGameScriptHandlerNetComponent* component, int index);
+
+	using get_title_caption_error_message_box = const wchar_t* (*)(rage::joaat_t joaated_error_code);
 }

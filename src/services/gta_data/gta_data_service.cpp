@@ -30,9 +30,8 @@ namespace big
 	}
 
 	gta_data_service::gta_data_service() :
-	    m_peds_cache(g_file_manager->get_project_file("./cache/peds.bin"), 5),
-	    m_vehicles_cache(g_file_manager->get_project_file("./cache/vehicles.bin"), 4),
-	    m_weapons_cache(g_file_manager->get_project_file("./cache/weapons.bin"), 5),
+	    m_peds_cache(g_file_manager.get_project_file("./cache/peds.bin"), 5),
+	    m_vehicles_cache(g_file_manager.get_project_file("./cache/vehicles.bin"), 4),
 	    m_update_state(eGtaDataUpdateState::IDLE)
 	{
 		if (!is_cache_up_to_date())
@@ -63,40 +62,11 @@ namespace big
 		m_update_state = state;
 	}
 
-	void gta_data_service::update_in_online()
-	{
-		m_update_state = eGtaDataUpdateState::WAITING_FOR_SINGLE_PLAYER;
-		g_fiber_pool->queue_job([this] {
-			while (*g_pointers->m_gta.m_game_state != eGameState::Playing)
-			{
-				script::get_current()->yield(100ms);
-			}
-			m_update_state = eGtaDataUpdateState::WAITING_FOR_ONLINE;
-
-			session::join_type(eSessionType::SOLO);
-
-			while (!*g_pointers->m_gta.m_is_session_started)
-			{
-				script::get_current()->yield(100ms);
-			}
-			m_update_state = eGtaDataUpdateState::UPDATING;
-			rebuild_cache();
-		});
-	}
-
 	void gta_data_service::update_now()
 	{
 		m_update_state = eGtaDataUpdateState::WAITING_FOR_SINGLE_PLAYER;
 		g_fiber_pool->queue_job([this] {
 			m_update_state = eGtaDataUpdateState::UPDATING;
-			rebuild_cache();
-		});
-	}
-
-	void gta_data_service::update_on_init()
-	{
-		m_update_state = eGtaDataUpdateState::ON_INIT_WAITING;
-		g_thread_pool->push([this] {
 			rebuild_cache();
 		});
 	}
@@ -120,10 +90,26 @@ namespace big
 
 	const weapon_item& gta_data_service::weapon_by_hash(std::uint32_t hash)
 	{
-		for (const auto& [name, weapon] : m_weapons)
+		for (const auto& [name, weapon] : m_weapons_cache.weapon_map)
 			if (rage::joaat(name) == hash)
 				return weapon;
 		return gta_data_service::empty_weapon;
+	}
+
+	const weapon_component& gta_data_service::weapon_component_by_hash(std::uint32_t hash)
+	{
+		for (const auto& [name, component] : m_weapons_cache.weapon_components)
+			if (component.m_hash == hash)
+				return component;
+		return gta_data_service::empty_component;
+	}
+
+	const weapon_component& gta_data_service::weapon_component_by_name(std::string name)
+	{
+		for (const auto& [name_key, component] : m_weapons_cache.weapon_components)
+			if (name_key == name)
+				return component;
+		return gta_data_service::empty_component;
 	}
 
 	string_vec& gta_data_service::ped_types()
@@ -145,7 +131,26 @@ namespace big
 	{
 		m_peds_cache.load();
 		m_vehicles_cache.load();
-		m_weapons_cache.load();
+
+		auto weapons_file = g_file_manager.get_project_file("./cache/weapons.json");
+		if (weapons_file.exists())
+		{
+			std::ifstream file(weapons_file.get_path());
+			file.open(weapons_file.get_path());
+
+			try
+			{
+				nlohmann::json weapons_file_json;
+				file >> weapons_file_json;
+				m_weapons_cache = weapons_file_json["weapons_cache"];
+				file.close();
+			}
+			catch (const std::exception& exception)
+			{
+				file.close();
+				LOG(WARNING) << "Detected corrupt weapons: " << exception.what();
+			}
+		}
 
 		const auto file_version = memory::module("GTA5.exe").size();
 
@@ -158,7 +163,8 @@ namespace big
 
 		load_peds();
 		load_vehicles();
-		load_weapons();
+		LOG(INFO) << "Loading " << m_weapons_cache.weapon_map.size() << " weapons from cache.";
+		LOG(INFO) << "Loading " << m_weapons_cache.weapon_components.size() << " weapon components from cache.";
 
 		LOG(VERBOSE) << "Loaded all data from cache.";
 	}
@@ -199,24 +205,6 @@ namespace big
 		m_vehicles_cache.free();
 	}
 
-	void gta_data_service::load_weapons()
-	{
-		const auto weapon_count = m_weapons_cache.data_size() / sizeof(weapon_item);
-		LOG(INFO) << "Loading " << weapon_count << " weapons from cache.";
-
-		auto cached_weapons = reinterpret_cast<const weapon_item*>(m_weapons_cache.data());
-		for (size_t i = 0; i < weapon_count; i++)
-		{
-			const auto weapon = cached_weapons[i];
-
-			add_if_not_exists(m_weapon_types, weapon.m_weapon_type);
-			m_weapons.insert({weapon.m_name, weapon});
-		}
-
-		std::sort(m_weapon_types.begin(), m_weapon_types.end());
-		m_weapons_cache.free();
-	}
-
 	inline void parse_ped(std::vector<ped_item>& peds, std::vector<std::uint32_t>& mapped_peds, pugi::xml_document& doc)
 	{
 		const auto& items = doc.select_nodes("/CPedModelInfo__InitDataList/InitDatas/Item");
@@ -253,10 +241,12 @@ namespace big
 		hash_array mapped_peds;
 		hash_array mapped_vehicles;
 		hash_array mapped_weapons;
+		hash_array mapped_components;
 
 		std::vector<ped_item> peds;
 		std::vector<vehicle_item> vehicles;
 		std::vector<weapon_item> weapons;
+		std::vector<weapon_component> weapon_components;
 
 		constexpr auto exists = [](const hash_array& arr, std::uint32_t val) -> bool {
 			return std::find(arr.begin(), arr.end(), val) != arr.end();
@@ -313,6 +303,46 @@ namespace big
 					}
 				});
 			}
+			else if (const auto file_str = path.string(); file_str.find("weaponcomponents") != std::string::npos && path.extension() == ".meta")
+			{
+				rpf_wrapper.read_xml_file(path, [&exists, &weapon_components, &mapped_components](pugi::xml_document& doc) {
+					const auto& items = doc.select_nodes("/CWeaponComponentInfoBlob/Infos/*[self::Item[@type='CWeaponComponentInfo'] or self::Item[@type='CWeaponComponentFlashLightInfo'] or self::Item[@type='CWeaponComponentScopeInfo'] or self::Item[@type='CWeaponComponentSuppressorInfo'] or self::Item[@type='CWeaponComponentVariantModelInfo'] or self::Item[@type='CWeaponComponentClipInfo']]");
+					for (const auto& item_node : items)
+					{
+						const auto item        = item_node.node();
+						const std::string name = item.child("Name").text().as_string();
+						const auto hash        = rage::joaat(name);
+
+						if (!name.starts_with("COMPONENT"))
+						{
+							continue;
+						}
+
+						if (exists(mapped_components, hash))
+						{
+							continue;
+						}
+						mapped_components.emplace_back(hash);
+
+						std::string LocName = item.child("LocName").text().as_string();
+						std::string LocDesc = item.child("LocDesc").text().as_string();
+
+						if (LocName.ends_with("INVALID") || LocName.ends_with("RAIL"))
+						{
+							continue;
+						}
+
+						weapon_component component;
+
+						component.m_name         = name;
+						component.m_hash         = hash;
+						component.m_display_name = LocName;
+						component.m_display_desc = LocDesc;
+
+						weapon_components.push_back(component);
+					}
+				});
+			}
 			else if (const auto file_str = path.string(); file_str.find("weapon") != std::string::npos && path.extension() == ".meta")
 			{
 				rpf_wrapper.read_xml_file(path, [&exists, &weapons, &mapped_weapons](pugi::xml_document& doc) {
@@ -336,9 +366,9 @@ namespace big
 
 						auto weapon = weapon_item{};
 
-						std::strncpy(weapon.m_name, name, sizeof(weapon.m_name));
+						weapon.m_name = name;
 
-						std::strncpy(weapon.m_display_name, human_name_hash, sizeof(weapon.m_display_name));
+						weapon.m_display_name = human_name_hash;
 
 						auto weapon_flags = std::string(item.child("WeaponFlags").text().as_string());
 
@@ -378,10 +408,10 @@ namespace big
 
 						if (std::strlen(category) > 6)
 						{
-							std::strncpy(weapon.m_weapon_type, category + 6, sizeof(weapon.m_weapon_type));
+							weapon.m_weapon_type = category + 6;
 						}
 
-						if (is_gun || !std::strcmp(weapon.m_weapon_type, "MELEE") || !std::strcmp(weapon.m_weapon_type, "UNARMED"))
+						if (is_gun || weapon.m_weapon_type == "MELEE" || weapon.m_weapon_type == "UNARMED")
 						{
 							const std::string reward_prefix = "REWARD_";
 							weapon.m_reward_hash            = rage::joaat(reward_prefix + name);
@@ -390,6 +420,14 @@ namespace big
 							{
 								std::string weapon_id     = name + 7;
 								weapon.m_reward_ammo_hash = rage::joaat(reward_prefix + "AMMO_" + weapon_id);
+							}
+						}
+
+						for (pugi::xml_node attach_point : item.child("AttachPoints").children("Item"))
+						{
+							for (pugi::xml_node component : attach_point.child("Components").children("Item"))
+							{
+								weapon.m_attachments.push_back(component.child_value("Name"));
 							}
 						}
 
@@ -434,11 +472,6 @@ namespace big
 		{
 			yim_fipackfile::for_each_fipackfile();
 		}
-		else
-		{
-			while (state() != eGtaDataUpdateState::ON_INIT_UPDATE_END)
-				std::this_thread::sleep_for(100ms);
-		}
 
 		static bool translate_lebel = false;
 
@@ -453,7 +486,12 @@ namespace big
 			}
 			for (auto& item : weapons)
 			{
-				std::strncpy(item.m_display_name, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(item.m_display_name), sizeof(item.m_display_name));
+				item.m_display_name = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(item.m_display_name.c_str());
+			}
+			for (auto& item : weapon_components)
+			{
+				item.m_display_name = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(item.m_display_name.c_str());
+				item.m_display_desc = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(item.m_display_desc.c_str());
 			}
 			for (auto it = peds.begin(); it != peds.end();)
 			{
@@ -481,10 +519,10 @@ namespace big
 
 		m_update_state = eGtaDataUpdateState::IDLE;
 		LOG(INFO) << "Cache has been rebuilt.\n\tPeds: " << peds.size() << "\n\tVehicles: " << vehicles.size()
-		          << "\n\tWeapons: " << weapons.size();
+		          << "\n\tWeapons: " << weapons.size() << "\n\tWeaponComponents: " << weapon_components.size();
 
 		LOG(VERBOSE) << "Starting cache saving procedure...";
-		g_thread_pool->push([this, peds = std::move(peds), vehicles = std::move(vehicles), weapons = std::move(weapons)] {
+		g_thread_pool->push([this, peds = std::move(peds), vehicles = std::move(vehicles), weapons = std::move(weapons), weapon_components = std::move(weapon_components)] {
 			const auto file_version = memory::module("GTA5.exe").size();
 
 			{
@@ -506,12 +544,34 @@ namespace big
 			}
 
 			{
-				const auto data_size = sizeof(weapon_item) * weapons.size();
-				m_weapons_cache.set_data(std::make_unique<std::uint8_t[]>(data_size), data_size);
-				std::memcpy(m_weapons_cache.data(), weapons.data(), data_size);
+				m_weapons_cache.version_info.m_game_build     = g_pointers->m_gta.m_game_version;
+				m_weapons_cache.version_info.m_online_version = g_pointers->m_gta.m_online_version;
+				m_weapons_cache.version_info.m_file_version   = file_version;
 
-				m_weapons_cache.set_header_version(file_version);
-				m_weapons_cache.write();
+				for (auto weapon : weapons)
+				{
+					add_if_not_exists(m_weapon_types, weapon.m_weapon_type);
+					m_weapons_cache.weapon_map.insert({weapon.m_name, weapon});
+				}
+
+				for (auto weapon_component : weapon_components)
+				{
+					m_weapons_cache.weapon_components.insert({weapon_component.m_name, weapon_component});
+				}
+
+				auto weapons_file = g_file_manager.get_project_file("./cache/weapons.json");
+				std::ofstream file(weapons_file.get_path());
+				try
+				{
+					nlohmann::json weapons_file_json;
+					weapons_file_json["weapons_cache"] = m_weapons_cache;
+					file << weapons_file_json;
+					file.flush();
+				}
+				catch (const std::exception& exception)
+				{
+					LOG(WARNING) << "Failed to write weapons JSON: " << exception.what();
+				}
 			}
 
 			LOG(INFO) << "Finished writing cache to disk.";

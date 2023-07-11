@@ -2,7 +2,7 @@
 #include "cache_file.hpp"
 #include "ped_item.hpp"
 #include "vehicle_item.hpp"
-#include "weapon_item.hpp"
+#include "weapon_file.hpp"
 
 namespace big
 {
@@ -11,16 +11,11 @@ namespace big
 		IDLE,
 		NEEDS_UPDATE,
 		WAITING_FOR_SINGLE_PLAYER,
-		WAITING_FOR_ONLINE,
-		UPDATING,
-		ON_INIT_WAITING,
-		ON_INIT_UPDATE_START,
-		ON_INIT_UPDATE_END
+		UPDATING
 	};
 
 	using ped_map     = std::map<std::string, ped_item>;
 	using vehicle_map = std::map<std::string, vehicle_item>;
-	using weapon_map  = std::map<std::string, weapon_item>;
 	using string_vec  = std::vector<std::string>;
 
 	class gta_data_service final
@@ -32,13 +27,13 @@ namespace big
 		bool cache_needs_update() const;
 		eGtaDataUpdateState state() const;
 		void set_state(eGtaDataUpdateState state);
-		void update_in_online();
 		void update_now();
-		void update_on_init();
 
 		const ped_item& ped_by_hash(std::uint32_t hash);
 		const vehicle_item& vehicle_by_hash(std::uint32_t hash);
 		const weapon_item& weapon_by_hash(std::uint32_t hash);
+		const weapon_component& weapon_component_by_hash(std::uint32_t hash);
+		const weapon_component& weapon_component_by_name(std::string name);
 
 		string_vec& ped_types();
 		string_vec& vehicle_classes();
@@ -52,9 +47,13 @@ namespace big
 		{
 			return m_vehicles;
 		}
-		weapon_map& weapons()
+		std::map<std::string, weapon_item>& weapons()
 		{
-			return m_weapons;
+			return m_weapons_cache.weapon_map;
+		}
+		std::map<std::string, weapon_component>& weapon_components()
+		{
+			return m_weapons_cache.weapon_components;
 		}
 
 	private:
@@ -63,19 +62,17 @@ namespace big
 		void load_data();
 		void load_peds();
 		void load_vehicles();
-		void load_weapons();
 
 		void rebuild_cache();
 
 	private:
 		cache_file m_peds_cache;
 		cache_file m_vehicles_cache;
-		cache_file m_weapons_cache;
+		weapon_file m_weapons_cache;
 
 		// std::map is free sorting algo
 		ped_map m_peds;
 		vehicle_map m_vehicles;
-		weapon_map m_weapons;
 
 		string_vec m_ped_types;
 		string_vec m_vehicle_classes;
@@ -87,6 +84,7 @@ namespace big
 		static constexpr ped_item empty_ped{};
 		static constexpr vehicle_item empty_vehicle{};
 		static constexpr weapon_item empty_weapon{};
+		static constexpr weapon_component empty_component{};
 	};
 
 	inline gta_data_service* g_gta_data_service{};

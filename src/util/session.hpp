@@ -34,8 +34,15 @@ namespace big::session
 		}
 	}
 
-	inline void join_type(eSessionType session)
+	inline bool join_type(eSessionType session)
 	{
+		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
+		{
+			g_notification_service->push_error("RID Joiner", "Player switch in progress, wait a bit.");
+
+			return false;
+		}
+		
 		*script_global(2695915).as<int*>() = (session == eSessionType::SC_TV ? 1 : 0); // If SC TV Then Enable Spectator Mode
 
 		if (session == eSessionType::LEAVE_ONLINE)
@@ -46,6 +53,8 @@ namespace big::session
 		*script_global(1574589).as<int*>() = 1;
 		script::get_current()->yield(200ms);
 		*script_global(1574589).as<int*>() = 0;
+
+		return true;
 	}
 
 	inline void set_fm_event_index(int index)
