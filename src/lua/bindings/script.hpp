@@ -12,24 +12,20 @@ namespace lua::script
 	class script_util
 	{
 	public:
+		// We keep the two functions below yield and sleep for backcompat.
+		// The idea of exposing big::script::get_current()->yield directly to lua
+		// on the surface looks like it could works but it doesnt, the lua stack end up exploding.
+
 		// Lua API: Function
 		// Class: script_util
 		// Name: yield
 		// Yield execution.
-		void yield()
-		{
-			big::script::get_current()->yield();
-		}
 
 		// Lua API: Function
 		// Class: script_util
 		// Name: sleep
 		// Param: ms: integer: The amount of time in milliseconds that we will sleep for.
 		// Sleep for the given amount of time, time is in milliseconds.
-		void sleep(int ms)
-		{
-			big::script::get_current()->yield(std::chrono::milliseconds(ms));
-		}
 	};
 	static script_util dummy_script_util;
 
@@ -66,12 +62,12 @@ namespace lua::script
 	//     ENTITY.DELETE_ENTITY(spawnedVehicle)
 	// end)
 	// ```
-	static void register_looped(const std::string& name, sol::function func, sol::this_state state)
+	static void register_looped(const std::string& name, sol::coroutine func, sol::this_state state)
 	{
 		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
 
 		module->m_registered_scripts.push_back(big::g_script_mgr.add_script(std::make_unique<big::script>(
-		    [func] {
+		    [func] () mutable {
 			    while (big::g_running)
 			    {
 				    auto res = func(dummy_script_util);
@@ -79,7 +75,14 @@ namespace lua::script
 				    if (!res.valid())
 					    big::g_lua_manager->handle_error(res, res.lua_state());
 
-				    big::script::get_current()->yield();
+					if (func.runnable())
+					{
+					    big::script::get_current()->yield(std::chrono::milliseconds(res.return_count() ? res[0] : 0));
+					}
+					else
+					{
+					    big::script::get_current()->yield();
+					}
 			    }
 		    },
 		    name)));
@@ -113,13 +116,27 @@ namespace lua::script
     //     ENTITY.DELETE_ENTITY(spawnedVehicle)
 	// end)
 	// ```
-	static void run_in_fiber(sol::function func)
+	static void run_in_fiber(sol::coroutine func)
 	{
-		big::g_fiber_pool->queue_job([func] {
-			auto res = func(dummy_script_util);
+		big::g_fiber_pool->queue_job([func] () mutable {
+			while (big::g_running)
+			{
+				auto res = func(dummy_script_util);
 
-			if (!res.valid())
-				big::g_lua_manager->handle_error(res, res.lua_state());
+				if (!res.valid())
+					big::g_lua_manager->handle_error(res, res.lua_state());
+
+				// Still runnable, meaning that the user function yielded
+				// and that there is more code to run still.
+				if (func.runnable())
+				{
+					big::script::get_current()->yield(std::chrono::milliseconds(res.return_count() ? res[0] : 0));
+				}
+				else
+				{
+					break;
+				}
+			}
 		});
 	}
 
@@ -129,10 +146,12 @@ namespace lua::script
 		ns["register_looped"] = register_looped;
 		ns["run_in_fiber"]    = run_in_fiber;
 
+		sol::function lua_coroutine_yield = state["coroutine"]["yield"];
+
 		//clang-format off
 		state.new_usertype<script_util>("script_util",
-			"yield", &script_util::yield,
-			"sleep", &script_util::sleep);
+		    "yield", lua_coroutine_yield,
+		    "sleep", lua_coroutine_yield);
 		//clang-format on
 	}
 }
