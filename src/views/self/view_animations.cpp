@@ -121,9 +121,8 @@ namespace big
 			if (g_ped_animation_service.get_animation_by_name(new_template.name))
 			{
 				g_notification_service->push_warning("Animations",
-				    std::format("Animation with the name {} already exists, overwriting...", new_template.name));
-				g_ped_animation_service.delete_saved_animation(category, *g_ped_animation_service.get_animation_by_name(new_template.name));
-				return true;
+				    std::format("Animation with the name {} already exists", new_template.name));
+				return false;
 			}
 
 			if (new_template.anim.empty())
