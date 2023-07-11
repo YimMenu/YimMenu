@@ -118,9 +118,9 @@ namespace big
 
 	void lua_module::add_folder_to_require_available_paths(const big::folder& scripts_folder)
 	{
-			const std::string package_path = m_state["package"]["path"];
-			const auto scripts_search_path = scripts_folder.get_path() / "?.lua";
-			m_state["package"]["path"] = package_path + (!package_path.empty() ? ";" : "") + scripts_search_path.string();
+		const std::string package_path = m_state["package"]["path"];
+		const auto scripts_search_path = scripts_folder.get_path() / "?.lua";
+		m_state["package"]["path"] = package_path + (!package_path.empty() ? ";" : "") + scripts_search_path.string();
 	}
 
 	void lua_module::init_lua_api()
