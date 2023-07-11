@@ -150,6 +150,12 @@ namespace big
 				return false;
 			}
 
+			if (category.empty())
+			{
+				g_notification_service->push_warning("Animations", "Category can't be empty");
+				return false;
+			}
+
 			if (new_template.anim.empty())
 			{
 				g_notification_service->push_warning("Animations", "Animation name can't be empty");
