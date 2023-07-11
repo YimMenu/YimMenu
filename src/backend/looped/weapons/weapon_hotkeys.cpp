@@ -2,29 +2,11 @@
 #include "natives.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "gta/enums.hpp"
-
-#define IsKeyPressedHelper(key) GetAsyncKeyState(key) & 0x8000
+#include "gui.hpp"
 
 namespace big
 {
 	const int input_array[6] = {(int)ControllerInputs::INPUT_SELECT_WEAPON_UNARMED, (int)ControllerInputs::INPUT_SELECT_WEAPON_MELEE, (int)ControllerInputs::INPUT_SELECT_WEAPON_HANDGUN, (int)ControllerInputs::INPUT_SELECT_WEAPON_SHOTGUN, (int)ControllerInputs::INPUT_SELECT_WEAPON_SMG, (int)ControllerInputs::INPUT_SELECT_WEAPON_AUTO_RIFLE};
-
-	static bool is_key_pressed_once(bool& bIsPressed, DWORD vk)
-	{
-		if (IsKeyPressedHelper(vk))
-		{
-			if (bIsPressed == false)
-			{
-				bIsPressed = true;
-				return true;
-			}
-		}
-		else if (bIsPressed == true)
-		{
-			bIsPressed = false;
-		}
-		return false;
-	}
 
 	static void resolve_weapon_hotkey(Hash weapon)
 	{
@@ -42,7 +24,7 @@ namespace big
 	{
 		Ped player_ped = self::ped;
 
-		if (!g.weapons.enable_weapon_hotkeys || PED::IS_PED_DEAD_OR_DYING(player_ped, true) || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() || DLC::GET_IS_LOADING_SCREEN_ACTIVE() || HUD::IS_MP_TEXT_CHAT_TYPING())
+		if (!g.weapons.enable_weapon_hotkeys || g_gui->is_open() || HUD::IS_PAUSE_MENU_ACTIVE() || PED::IS_PED_DEAD_OR_DYING(player_ped, true) || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() || DLC::GET_IS_LOADING_SCREEN_ACTIVE() || HUD::IS_MP_TEXT_CHAT_TYPING())
 		{
 			return;
 		}
@@ -50,12 +32,11 @@ namespace big
 		Hash current_weapon, current_vehicle_weapon;
 		WEAPON::GET_CURRENT_PED_WEAPON(player_ped, &current_weapon, -1);
 		WEAPON::GET_CURRENT_PED_VEHICLE_WEAPON(player_ped, &current_vehicle_weapon);
-		static bool is_key_pressed_bools[6];
 		for (int iterator_keys = 0; iterator_keys < 6; iterator_keys++)
 		{
-			if (is_key_pressed_once(is_key_pressed_bools[iterator_keys], '1' + iterator_keys))
+			PAD::DISABLE_CONTROL_ACTION(0, input_array[iterator_keys], TRUE);
+			if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, input_array[iterator_keys]))
 			{
-				PAD::DISABLE_CONTROL_ACTION(0, input_array[iterator_keys], TRUE);
 				auto hotkey_vector = g.weapons.weapon_hotkeys[iterator_keys];
 				Hash weapon_hash_to_select = hotkey_vector[0];
 				for (auto vector_iterator = hotkey_vector.begin(); vector_iterator != hotkey_vector.end(); ++vector_iterator)
