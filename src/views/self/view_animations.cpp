@@ -49,6 +49,15 @@ namespace big
 		    "List From Debug");
 		components::input_text_with_hint("##anim", "Anim", &new_template.anim);
 
+		ImGui::SameLine();
+		components::button("Play", [] {
+			g_ped_animation_service.play_saved_ped_animation(new_template, self::ped);
+		});
+		ImGui::SameLine();
+		components::button("Stop", [] {
+			TASK::CLEAR_PED_TASKS(self::ped);
+		});
+
 		if (ImGui::TreeNode("Advanced Options"))
 		{
 			ImGui::SliderFloat("Blend in", &new_template.blendin, -5, 10);
@@ -96,14 +105,6 @@ namespace big
 			ImGui::TreePop();
 		}
 
-		components::button("Play", [] {
-			g_ped_animation_service.play_saved_ped_animation(new_template, self::ped);
-		});
-		ImGui::SameLine();
-		components::button("Stop", [] {
-			TASK::CLEAR_PED_TASKS(self::ped);
-		});
-
 		ImGui::SeparatorText("Saving");
 
 		components::input_text_with_hint("Category", "Category", &category);
@@ -120,8 +121,9 @@ namespace big
 			if (g_ped_animation_service.get_animation_by_name(new_template.name))
 			{
 				g_notification_service->push_warning("Animations",
-				    std::format("Animation with the name {} already exists", new_template.name));
-				return false;
+				    std::format("Animation with the name {} already exists, overwriting...", new_template.name));
+				g_ped_animation_service.delete_saved_animation(category, *g_ped_animation_service.get_animation_by_name(new_template.name));
+				return true;
 			}
 
 			if (new_template.anim.empty())
@@ -133,6 +135,8 @@ namespace big
 			return true;
 		};
 
+		ImGui::SameLine();
+
 		components::button("Save", [] {
 			if (save_response())
 				g_ped_animation_service.save_new_animation(category, new_template);
@@ -141,6 +145,7 @@ namespace big
 		ImGui::EndGroup();
 
 		ImGui::SeparatorText("Saved");
+		components::button("Refresh", []{g_ped_animation_service.fetch_saved_animations();});
 
 		components::small_text("Double click to play\nShift click to delete");
 
@@ -152,7 +157,7 @@ namespace big
 
 		ImGui::BeginGroup();
 		components::small_text("Categories");
-		if (ImGui::BeginListBox("##categories", {200, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.5)}))
+		if (ImGui::BeginListBox("##categories", {200, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.4)}))
 		{
 			for (auto& l : g_ped_animation_service.all_saved_animations | std::ranges::views::keys)
 			{
@@ -167,7 +172,7 @@ namespace big
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 		components::small_text("Animations");
-		if (ImGui::BeginListBox("##animations", {200, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.5)}))
+		if (ImGui::BeginListBox("##animations", {200, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.4)}))
 		{
 			if (g_ped_animation_service.all_saved_animations.find(category)
 			    != g_ped_animation_service.all_saved_animations.end())
