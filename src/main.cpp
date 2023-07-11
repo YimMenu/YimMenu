@@ -149,6 +149,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    while (g_running)
 				    std::this_thread::sleep_for(500ms);
 
+				g_script_mgr.remove_all_scripts();
+			    LOG(INFO) << "Scripts unregistered.";
+
 			    lua_manager_instance.reset();
 			    LOG(INFO) << "Lua manager uninitialized.";
 
@@ -157,9 +160,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    native_hooks_instance.reset();
 			    LOG(INFO) << "Dynamic native hooker uninitialized.";
-
-			    g_script_mgr.remove_all_scripts();
-			    LOG(INFO) << "Scripts unregistered.";
 
 			    // cleans up the thread responsible for saving settings
 			    g.destroy();

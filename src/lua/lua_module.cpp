@@ -49,7 +49,17 @@ namespace big
 	    m_module_name(module_name),
 	    m_module_id(rage::joaat(module_name))
 	{
-		m_state.open_libraries();
+		m_state.open_libraries(
+			sol::lib::base,
+			sol::lib::package,
+			sol::lib::coroutine,
+		    sol::lib::string,
+		    sol::lib::math,
+			sol::lib::table,
+		    sol::lib::debug,
+			sol::lib::bit32,
+			sol::lib::utf8
+		);
 
 		const auto& scripts_folder = g_lua_manager->get_scripts_folder();
 
