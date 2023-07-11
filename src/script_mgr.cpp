@@ -38,9 +38,16 @@ namespace big
 		gta_util::execute_as_script(RAGE_JOAAT("main_persistent"), std::mem_fn(&script_mgr::tick_internal), this);
 	}
 
+	void script_mgr::ensure_main_fiber()
+	{
+		ConvertThreadToFiber(nullptr);
+
+		m_can_tick = true;
+	}
+
 	void script_mgr::tick_internal()
 	{
-		static bool ensure_main_fiber = (ConvertThreadToFiber(nullptr), true);
+		static bool ensure_it = (ensure_main_fiber(), true);
 
 		std::lock_guard lock(m_mutex);
 
