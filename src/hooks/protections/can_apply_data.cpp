@@ -889,7 +889,7 @@ namespace big
 					        game_state_node->m_population_control_sphere_y,
 					        game_state_node->m_population_control_sphere_z))
 					{
-						// notify::crash_blocked(sender, "invalid sector position (player game state node)");
+						notify::crash_blocked(sender, "invalid sector position (player game state node)");
 						return true;
 					}
 					break;
