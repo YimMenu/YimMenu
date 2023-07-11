@@ -6,7 +6,7 @@
 
 namespace big
 {
-	const int input_array[6] = {(int)ControllerInputs::INPUT_SELECT_WEAPON_UNARMED, (int)ControllerInputs::INPUT_SELECT_WEAPON_MELEE, (int)ControllerInputs::INPUT_SELECT_WEAPON_HANDGUN, (int)ControllerInputs::INPUT_SELECT_WEAPON_SHOTGUN, (int)ControllerInputs::INPUT_SELECT_WEAPON_SMG, (int)ControllerInputs::INPUT_SELECT_WEAPON_AUTO_RIFLE};
+	const int input_array[6] = {(int)ControllerInputs::INPUT_SELECT_WEAPON_UNARMED, (int)ControllerInputs::INPUT_SELECT_WEAPON_MELEE, (int)ControllerInputs::INPUT_SELECT_WEAPON_SHOTGUN, (int)ControllerInputs::INPUT_SELECT_WEAPON_HEAVY, (int)ControllerInputs::INPUT_SELECT_WEAPON_SPECIAL, (int)ControllerInputs::INPUT_SELECT_WEAPON_HANDGUN};
 
 	static void resolve_weapon_hotkey(Hash weapon)
 	{
@@ -34,7 +34,7 @@ namespace big
 		WEAPON::GET_CURRENT_PED_VEHICLE_WEAPON(player_ped, &current_vehicle_weapon);
 		for (int iterator_keys = 0; iterator_keys < 6; iterator_keys++)
 		{
-			PAD::DISABLE_CONTROL_ACTION(0, input_array[iterator_keys], TRUE);
+			PAD::DISABLE_CONTROL_ACTION(0, input_array[iterator_keys], FALSE);
 			if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, input_array[iterator_keys]))
 			{
 				auto hotkey_vector = g.weapons.weapon_hotkeys[iterator_keys];
