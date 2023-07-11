@@ -67,6 +67,31 @@ namespace big
 				ImGui::SetTooltip("-1 will make the duration indefinite, assuming it is looped");
 			ImGui::PopItemWidth();
 
+			ImGui::Checkbox("Ambient", &new_template.ambient);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Current location and rotation will be saved and used");
+
+			if (new_template.ambient)
+			{
+				new_template.pos[0] = self::pos.x;
+				new_template.pos[1] = self::pos.y;
+				new_template.pos[2] = self::pos.z;
+
+				new_template.rot[0] = self::rot.x;
+				new_template.rot[1] = self::rot.y;
+				new_template.rot[2] = self::rot.z;
+			}
+			else
+			{
+				new_template.pos[0] = 0;
+				new_template.pos[1] = 0;
+				new_template.pos[2] = 0;
+
+				new_template.rot[0] = 0;
+				new_template.rot[1] = 0;
+				new_template.rot[2] = 0;
+			}
+
 			ImGui::BeginGroup(); //Regular flags
 
 			ImGui::CheckboxFlags("Looped", reinterpret_cast<unsigned int*>(&new_template.flags), static_cast<unsigned int>(animations::anim_flags::LOOPING));
@@ -144,9 +169,17 @@ namespace big
 		ImGui::EndGroup();
 
 		ImGui::SeparatorText("Saved");
-		components::button("Refresh", []{g_ped_animation_service.fetch_saved_animations();});
+		components::button("Refresh", [] {
+			g_ped_animation_service.fetch_saved_animations();
+		});
 
 		components::small_text("Double click to play\nShift click to delete");
+
+		ImGui::SameLine();
+
+		ImGui::Checkbox("Prompt Ambient", &g.self.prompt_ambient_animations);
+		if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Ambient animations will be prompted if you are close to one");
 
 		static std::string filter;
 
@@ -209,6 +242,9 @@ namespace big
 							ImGui::Text(p.name.data());
 
 						ImGui::Text(std::format("Dict: {}\nAnim: {}", p.dict, p.anim).data());
+
+						if (p.ambient)
+							ImGui::BulletText("Ambient animation");
 						ImGui::EndTooltip();
 					}
 				}

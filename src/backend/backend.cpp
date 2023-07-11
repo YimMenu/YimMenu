@@ -7,13 +7,13 @@
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/custom_teleport/custom_teleport_service.hpp"
 #include "services/orbital_drone/orbital_drone.hpp"
+#include "services/ped_animations/ped_animations_service.hpp"
 #include "services/script_connection/script_connection_service.hpp"
 #include "services/squad_spawner/squad_spawner.hpp"
 #include "services/tunables/tunables_service.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
 #include "services/vehicle/xml_vehicles_service.hpp"
 #include "thread_pool.hpp"
-#include "services/ped_animations/ped_animations_service.hpp"
 
 
 namespace big
@@ -55,6 +55,16 @@ namespace big
 			looped::self_police();
 			looped::self_hud();
 			looped::self_dance_mode();
+
+			script::get_current()->yield();
+		}
+	}
+
+	void backend::ambient_animations_loop()
+	{
+		while (g_running)
+		{
+			g_ped_animation_service.ambient_animations_prompt_tick();
 
 			script::get_current()->yield();
 		}

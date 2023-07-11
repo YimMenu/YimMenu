@@ -8,6 +8,7 @@ namespace big
 	public:
 		static void loop();
 		static void self_loop();
+		static void ambient_animations_loop();
 		static void weapons_loop();
 		static void vehicles_loop();
 		static void misc_loop();
