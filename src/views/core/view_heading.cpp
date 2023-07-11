@@ -24,7 +24,6 @@ namespace big
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.69f, 0.29f, 0.29f, 1.00f));
 			if (components::nav_button("UNLOAD"_T))
 			{
-				g_fiber_pool->reset();
 				g_fiber_pool->queue_job([] {
 					for (auto& command : g_looped_commands)
 						if (command->is_enabled())
