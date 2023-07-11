@@ -169,8 +169,7 @@ namespace big
 			}
 			else
 			{
-				notify::display_help_text(
-				    std::format("Press ~INPUT_PICKUP~ to stop ~g~{}", closest_ambient_animation.name));
+				notify::display_help_text(std::format("Press ~INPUT_PICKUP~ to stop playing ~g~{}", closest_ambient_animation.name));
 				if (PAD::IS_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_PICKUP))
 				{
 					TASK::CLEAR_PED_TASKS(self::ped);
