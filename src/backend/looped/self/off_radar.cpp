@@ -12,13 +12,16 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].OffRadarActive = true;
-			*scr_globals::offradar_time.at(57).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
+
+			MISC::SET_BIT(script_global(2794162).at(4667).as<int*>(), 2);
+			*scr_globals::globalplayer_bd.at(PLAYER::PLAYER_ID(), 463).at(210).as<bool*>() = true;
+			*script_global(2672505).at(57).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
 		}
 
 		virtual void on_disable() override
 		{
-			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].OffRadarActive = false;
+			MISC::CLEAR_BIT(script_global(2794162).at(4667).as<int*>(), 2);
+			*scr_globals::globalplayer_bd.at(PLAYER::PLAYER_ID(), 463).at(210).as<bool*>() = false;
 		}
 	};
 

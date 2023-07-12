@@ -101,6 +101,36 @@ namespace big::mobile
 		{
 			*script_global(scr_globals::mechanic_global).at(896).as<int*>() = 1;
 		}
+
+		inline void request_avenger()
+		{
+			*script_global(scr_globals::mechanic_global).at(938).as<int*>() = 1;
+		}
+
+		inline void request_kosatka()
+		{
+			*script_global(scr_globals::mechanic_global).at(960).as<int*>() = 1;
+		}
+
+		inline void request_mobile_operations_center()
+		{
+			*script_global(scr_globals::mechanic_global).at(930).as<int*>() = 1;
+		}
+
+		inline void request_terrobyte()
+		{
+			*script_global(scr_globals::mechanic_global).at(943).as<int*>() = 1;
+		}
+
+		inline void request_acidlab()
+		{
+			*script_global(scr_globals::mechanic_global).at(944).as<int*>() = 1;
+		}
+
+		inline void request_acidlab_bike()
+		{
+			*script_global(scr_globals::mechanic_global).at(994).as<int*>() = 1;
+		}
 	}
 
 	namespace mechanic
@@ -146,6 +176,25 @@ namespace big::mobile
 			{
 				big::vehicle::bring(get_personal_vehicle(), self::pos, true);
 			}
+		}
+	}
+
+	namespace misc
+	{
+		inline void request_taxi()
+		{
+			*script_global(scr_globals::mechanic_global).at(853).as<int*>() = 1;
+		}
+
+		inline void request_minitank()
+		{
+			*script_global(scr_globals::mechanic_global).at(6880).as<bool*>() = true;
+
+		}
+
+		inline void request_rc_banditio()
+		{
+			*script_global(scr_globals::mechanic_global).at(6879).as<bool*>() = true;
 		}
 	}
 }
