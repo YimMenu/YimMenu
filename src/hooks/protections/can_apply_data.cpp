@@ -963,8 +963,8 @@ namespace big
 					const auto train_node = (CTrainGameStateDataNode*)(node);
 					if (train_node->m_track_id < 0 || train_node->m_track_id >= 27)
 					{
-						notify::crash_blocked(sender, "out of bounds train track index");
-						LOG(INFO) << train_node->m_track_id;
+						//notify::crash_blocked(sender, "out of bounds train track index");
+						//LOG(INFO) << train_node->m_track_id;
 						return true;
 					}
 					break;
