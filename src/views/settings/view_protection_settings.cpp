@@ -45,6 +45,7 @@ namespace big
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("This prevents the collection of pickups such as unwanted money bags\nNote: Normal pickups are also no longer possible to collect with this enabled");
 		ImGui::Checkbox("ADMIN_CHECK"_T.data(), &g.protections.admin_check);
+		ImGui::Checkbox("Kick Rejoin", &g.protections.kick_rejoin);
 		ImGui::EndGroup();
 	}
 

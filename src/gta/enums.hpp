@@ -509,6 +509,17 @@ enum class eNetworkEvents : uint16_t
 	NETWORK_CHECK_CATALOG_CRC
 };
 
+enum class KickReason : std::uint8_t
+{
+	VOTED_OUT,
+	PEER_COMPLAINTS,
+	CONNECTION_ERROR,
+	NAT_TYPE,
+	SCADMIN,
+	SCADMIN_BLACKLIST,
+	NUM_REASONS
+};
+
 enum class ScriptEntityChangeType
 {
 	BlockingOfNonTemporaryEvents,
