@@ -47,7 +47,10 @@ namespace big::session
 		if (session == eSessionType::LEAVE_ONLINE)
 			*script_global(1574589).at(2).as<int*>() = -1;
 		else
-			*script_global(1575020).as<int*>() = (int)session;
+		{
+			*script_global(1574589).at(2).as<int*>() = 0;
+			*script_global(1575020).as<int*>()       = (int)session;
+		}
 
 		*script_global(1574589).as<int*>() = 1;
 
@@ -59,6 +62,7 @@ namespace big::session
 		scr_functions::reset_session_data({true, true});
 		*script_global(32284).as<int*>()   = 0;
 		*script_global(1574934).as<int*>() = 1;
+		*script_global(1574995).as<int*>() = 32;
 
 		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
 		{
