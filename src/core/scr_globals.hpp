@@ -1,5 +1,6 @@
 #pragma once
 #include "script_global.hpp"
+#include "script_local.hpp"
 
 namespace big::scr_globals
 {
@@ -29,10 +30,10 @@ namespace big::scr_globals
 	static inline script_global in_multiplayer(78689); // g_bInMultiplayer
 	static inline script_global transition_state(1574996);
 
-	static inline script_global vehicle_global  = script_global(1586488);
-	static inline script_global mechanic_global = script_global(2794162);
+	static inline script_global vehicle_global(1586488);
+	static inline script_global mechanic_global(2794162);
 
-	static inline script_global spawn_global = script_global(2694613);
+	static inline script_global spawn_global(2694613);
 
 	static inline script_global offradar_time(2672524);
 }
@@ -65,5 +66,12 @@ namespace big::scr_locals
 	namespace fmmc_launcher
 	{
 		constexpr static auto broadcast_idx = 11629;
+	}
+
+	namespace fm_mobile
+	{
+		// first uLocal_ in this function call
+		// func_\d+\((&.Local_\d+(, )?){9}\);
+		inline static script_local mobile(18717);
 	}
 }

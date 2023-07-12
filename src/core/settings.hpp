@@ -343,7 +343,6 @@ namespace big
 
 		struct session
 		{
-			bool chat_force_clean      = false;
 			bool log_chat_messages     = false;
 			bool log_text_messages     = false;
 			bool decloak_players       = false;
@@ -393,7 +392,7 @@ namespace big
 
 			bool fast_join = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, chat_force_clean, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join)
 		} session{};
 
 		struct settings
@@ -724,8 +723,10 @@ namespace big
 			bool interior_weapon          = false;
 			bool triggerbot               = false;
 			bool infinite_range           = false;
+			bool enable_weapon_hotkeys    = false;
+			std::map<int, std::vector<std::uint32_t>> weapon_hotkeys{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, infinite_ammo, always_full_ammo, infinite_mag, increased_damage, increase_damage, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon, triggerbot, infinite_range)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, infinite_ammo, always_full_ammo, infinite_mag, increased_damage, increase_damage, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon, triggerbot, infinite_range, enable_weapon_hotkeys, weapon_hotkeys)
 		} weapons{};
 
 		struct window

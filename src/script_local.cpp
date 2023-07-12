@@ -17,6 +17,22 @@ namespace big
 	{
 	}
 
+	script_local::script_local(std::size_t index) :
+		m_index(index),
+		m_stack(nullptr)
+	{
+	}
+
+	script_local script_local::set(rage::scrThread* thread)
+	{
+		return script_local(thread, m_index);
+	}
+
+	script_local script_local::set(void* stack)
+	{
+		return script_local(stack, m_index);
+	}
+
 	script_local script_local::at(std::ptrdiff_t index)
 	{
 		return script_local(m_stack, m_index + index);
