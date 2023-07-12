@@ -137,6 +137,10 @@ namespace big
 			         for (auto& [_, weapon] : g_gta_data_service->weapons())
 				         WEAPON::REMOVE_WEAPON_FROM_PED(m_handle, weapon.m_hash);
 		         }},
+		        {"KILL",
+		            [this] {
+			            ped::kill_ped(m_handle);
+		            }},
 		        {"RAGDOLL",
 		            [this] {
 			            PED::SET_PED_TO_RAGDOLL(m_handle, 2000, 2000, 0, 0, 0, 0);
@@ -177,19 +181,19 @@ namespace big
 		            [this] {
 			            ped::steal_identity(m_handle);
 		            }},
-		        {"BREAKUP KICK",
-		            [this] {
-			            static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("breakup")));
-			            command->call(ped::get_player_from_ped(m_handle), {});
-		            }},
 		        {"KICK",
 		            [this] {
 			            static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("nfkick")));
 			            static player_command* command1 = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("shkick")));
 			            static player_command* command2 = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("endkick")));
+			            static player_command* command3 = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("desync")));
+			            static player_command* command4 = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("breakup")));
 			            command->call(ped::get_player_from_ped(m_handle), {});
 			            command1->call(ped::get_player_from_ped(m_handle), {});
 			            command2->call(ped::get_player_from_ped(m_handle), {});
+			            command3->call(ped::get_player_from_ped(m_handle), {});
+			            script::get_current()->yield(500ms);
+			            command4->call(ped::get_player_from_ped(m_handle), {});
 		            }},
 		        {"DISARM",
 		            [this] {
@@ -217,6 +221,25 @@ namespace big
 		        {"TP ON TOP",
 		            [this] {
 			            teleport::tp_on_top(m_handle, true);
+		            }},
+		        {"BRING",
+		            [this] {
+			            rage::fvector3 pos = *g_local_player->m_navigation->get_position();
+
+			            if (PED::IS_PED_A_PLAYER(m_handle))
+			            {
+				            if (auto plyr = g_player_service->get_by_id(NETWORK::NETWORK_GET_PLAYER_INDEX_FROM_PED(m_handle)))
+				            {
+					            teleport::teleport_player_to_coords(plyr, {pos.x, pos.y, pos.z});
+				            }
+			            }
+			            else
+			            {
+				            if (entity::take_control_of(m_handle))
+				            {
+					            ENTITY::SET_ENTITY_COORDS(m_handle, pos.x, pos.y, pos.z, false, false, false, false);
+				            }
+			            }
 		            }},
 		        {"ENFLAME",
 		            [this] {
