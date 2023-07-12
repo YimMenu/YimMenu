@@ -403,7 +403,9 @@ namespace big
 				int menu_toggle             = VK_INSERT;
 				int teleport_waypoint       = 0;
 				int teleport_objective      = 0;
+				int teleport_pv             = 0;
 				int noclip                  = 0;
+				int vehicle_flymode         = 0;
 				int bringvehicle            = 0;
 				int invis                   = 0;
 				int heal                    = 0;
@@ -417,13 +419,13 @@ namespace big
 				int localinvisveh           = 0;
 				int fill_ammo               = 0;
 				int fast_quit               = 0;
-				int cmd_excecutor           = 0x55;
+				int cmd_excecutor           = 'U';
 				int repairpv                = 0;
 				int open_vehicle_controller = 0;
 				int clear_wanted            = 0;
 				int random_ped_components   = 0;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, noclip, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller, clear_wanted, random_ped_components)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, teleport_pv, noclip, vehicle_flymode, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller, clear_wanted, random_ped_components)
 			} hotkeys{};
 
 			bool dev_dlc = false;
