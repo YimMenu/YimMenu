@@ -15,6 +15,8 @@ namespace big
 			g_hotkey_service->update_hotkey("waypoint", g.settings.hotkeys.teleport_waypoint);
 		if (ImGui::Hotkey("Teleport to objective", &g.settings.hotkeys.teleport_objective))
 			g_hotkey_service->update_hotkey("objective", g.settings.hotkeys.teleport_objective);
+		if (ImGui::Hotkey("Teleport into PV", &g.settings.hotkeys.teleport_pv))
+			g_hotkey_service->update_hotkey("pvtp", g.settings.hotkeys.teleport_pv);
 
 		if (ImGui::Hotkey("Toggle Noclip", &g.settings.hotkeys.noclip))
 			g_hotkey_service->update_hotkey("noclip", g.settings.hotkeys.noclip);
@@ -50,6 +52,8 @@ namespace big
 			g_hotkey_service->update_hotkey("repairpv", g.settings.hotkeys.repairpv);
 		if (ImGui::Hotkey("Vehicle controller", &g.settings.hotkeys.open_vehicle_controller))
 			g_hotkey_service->update_hotkey("vehiclecontroller", g.settings.hotkeys.open_vehicle_controller);
+		if (ImGui::Hotkey("Toggle Vehicle Fly", &g.settings.hotkeys.vehicle_flymode))
+			g_hotkey_service->update_hotkey("vehiclefly", g.settings.hotkeys.vehicle_flymode);
 		if (ImGui::Hotkey("Clear Wanted", &g.settings.hotkeys.clear_wanted))
 			g_hotkey_service->update_hotkey("clearwantedlvl", g.settings.hotkeys.clear_wanted);
 
