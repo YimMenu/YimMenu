@@ -85,6 +85,8 @@ namespace big
 
 		bool block_explosions = false;
 
+		int spectating_player = -1;
+
 	protected:
 		bool equals(const CNetGamePlayer* net_game_player) const;
 

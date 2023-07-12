@@ -175,10 +175,10 @@ namespace big
 		}
 		ImGui::Separator();
 
-		const char* boost_behaviors[] = {"DEFAULT"_T.data(), "INSTANT_REFILL"_T.data(), "INFINITE"_T.data()};
+		const char* boost_behaviors[] = {"DEFAULT"_T.data(), "INSTANT_REFILL"_T.data(), "INFINITE"_T.data(), "HOLD_FOR_BOOST"_T.data()};
 		if (ImGui::BeginCombo("BOOST_BEHAVIOR"_T.data(), boost_behaviors[static_cast<int>(g.vehicle.boost_behavior)]))
 		{
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < 4; i++)
 			{
 				bool itemSelected = g.vehicle.boost_behavior == static_cast<eBoostBehaviors>(i);
 

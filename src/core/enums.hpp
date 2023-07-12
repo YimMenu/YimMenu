@@ -6,9 +6,10 @@ namespace big
 	{
 		DEFAULT,
 		INSTANT_REFIL,
-		INFINITE_BOOST
+		INFINITE_BOOST,
+		HOLD_FOR_INFINITE
 	};
-	NLOHMANN_JSON_SERIALIZE_ENUM(eBoostBehaviors, {{eBoostBehaviors::DEFAULT, "default"}, {eBoostBehaviors::INSTANT_REFIL, "instant"}, {eBoostBehaviors::INFINITE_BOOST, "infinite"}})
+	NLOHMANN_JSON_SERIALIZE_ENUM(eBoostBehaviors, {{eBoostBehaviors::DEFAULT, "default"}, {eBoostBehaviors::INSTANT_REFIL, "instant"}, {eBoostBehaviors::INFINITE_BOOST, "infinite"}, {eBoostBehaviors::HOLD_FOR_INFINITE, "hold"}})
 
 	enum class CustomWeapon
 	{

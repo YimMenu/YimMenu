@@ -37,5 +37,7 @@ namespace big
 
 		static inline script_function modshop_loop("ML", RAGE_JOAAT("carmod_shop"), "2D 00 07 00 00 71 51", 0);
 		static inline script_function setup_modshop("SM", RAGE_JOAAT("carmod_shop"), "2D 04 12 00 00 38 00 51", 0);
+
+		static inline script_function reset_session_data("RSD", RAGE_JOAAT("pausemenu_multiplayer"), "2D 02 7D 00 00", 0);
 	}
 }
