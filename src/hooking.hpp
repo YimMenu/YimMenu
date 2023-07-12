@@ -30,6 +30,7 @@ class CPlayerAppearanceDataNode;
 class CFoundDevice;
 class IDirectSoundCapture;
 class CVehicleProximityMigrationDataNode;
+class CNonPhysicalPlayerData;
 
 namespace rage
 {
@@ -151,6 +152,8 @@ namespace big
 		static int netfilter_handle_message(__int64 filter, char* message, int flags);
 
 		static void log_error_message_box(rage::joaat_t joaated_error_code, char a2);
+
+		static void send_non_physical_player_data(CNetGamePlayer* player, __int64 message, int flags, void* a4, CNetGamePlayer* a5);
 	};
 
 	class minhook_keepalive

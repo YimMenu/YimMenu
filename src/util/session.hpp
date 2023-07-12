@@ -8,6 +8,7 @@
 #include "pointers.hpp"
 #include "rage/rlSessionByGamerTaskResult.hpp"
 #include "script.hpp"
+#include "script_function.hpp"
 #include "script_global.hpp"
 #include "services/api/api_service.hpp"
 #include "services/player_database/player_database_service.hpp"
@@ -36,24 +37,41 @@ namespace big::session
 
 	inline bool join_type(eSessionType session)
 	{
-		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
-		{
-			g_notification_service->push_error("RID Joiner", "Player switch in progress, wait a bit.");
+		SCRIPT::REQUEST_SCRIPT_WITH_NAME_HASH(RAGE_JOAAT("pausemenu_multiplayer"));
 
-			return false;
-		}
-		
-		*script_global(2695915).as<int*>() = (session == eSessionType::SC_TV ? 1 : 0); // If SC TV Then Enable Spectator Mode
+		while (!SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED(RAGE_JOAAT("pausemenu_multiplayer")))
+			script::get_current()->yield();
+
+		*script_global(2695915).as<int*>() = (session == eSessionType::SC_TV ? 1 : 0); // If SCTV then enable spectator mode
 
 		if (session == eSessionType::LEAVE_ONLINE)
 			*script_global(1574589).at(2).as<int*>() = -1;
 		else
-			*script_global(1575020).as<int*>() = (int)session;
+		{
+			*script_global(1574589).at(2).as<int*>() = 0;
+			*script_global(1575020).as<int*>()       = (int)session;
+		}
 
 		*script_global(1574589).as<int*>() = 1;
-		script::get_current()->yield(200ms);
-		*script_global(1574589).as<int*>() = 0;
 
+		if (*g_pointers->m_gta.m_is_session_started && session != eSessionType::LEAVE_ONLINE)
+		{
+			*scr_globals::transition_state.as<eTransitionState*>() = eTransitionState::TRANSITION_STATE_LOOK_TO_JOIN_ANOTHER_SESSION_FM;
+		}
+
+		scr_functions::reset_session_data({true, true});
+		*script_global(32284).as<int*>()   = 0;
+		*script_global(1574934).as<int*>() = 1;
+		*script_global(1574995).as<int*>() = 32;
+
+		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
+		{
+			*script_global(2694534).as<int*>() = 1;
+			script::get_current()->yield(200ms);
+			*script_global(1574589).as<int*>() = 0;
+		}
+
+		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(RAGE_JOAAT("pausemenu_multiplayer"));
 		return true;
 	}
 
@@ -77,6 +95,12 @@ namespace big::session
 
 	inline void join_session(const rage::rlSessionInfo& info)
 	{
+		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
+		{
+			g_notification_service->push_error("RID Joiner", "Player switch in progress, wait a bit.");
+			return;
+		}
+
 		g.session.join_queued = true;
 		g.session.info        = info;
 		session::join_type({eSessionType::NEW_PUBLIC});

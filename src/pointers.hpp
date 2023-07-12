@@ -2,7 +2,6 @@
 #include "base/HashTable.hpp"
 #include "function_types.hpp"
 #include "gta/fwddec.hpp"
-#include "gta/replay.hpp"
 #include "gta_pointers.hpp"
 #include "memory/batch.hpp"
 #include "memory/byte_patch.hpp"

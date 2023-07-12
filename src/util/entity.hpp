@@ -1,6 +1,5 @@
 #pragma once
 #include "gta/joaat.hpp"
-#include "gta/replay.hpp"
 #include "gta_util.hpp"
 #include "math.hpp"
 #include "natives.hpp"
@@ -121,7 +120,7 @@ namespace big::entity
 		{
 			for (auto ped : pools::get_all_peds())
 			{
-				if(ped == g_local_player)
+				if (ped == g_local_player)
 					continue;
 
 				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(ped));

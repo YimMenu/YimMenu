@@ -120,7 +120,8 @@ namespace big
 
 			ImGui::EndDisabled();
 
-			components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T, &g.session.decloak_players);
+			components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T, &g.session.decloak_players, "Reveals players that are off the radar");
+			components::script_patch_checkbox("Reveal Hidden Players", &g.session.unhide_players_from_player_list, "Reveals players that have hidden themselves from the player list");
 
 			ImGui::EndListBox();
 		}

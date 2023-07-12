@@ -85,7 +85,7 @@ namespace big
 			            else
 				            g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
 		            }},
-				{"HALT",
+		        {"HALT",
 		            [this] {
 			            if (entity::take_control_of(m_handle))
 			            {
@@ -137,18 +137,22 @@ namespace big
 			         for (auto& [_, weapon] : g_gta_data_service->weapons())
 				         WEAPON::REMOVE_WEAPON_FROM_PED(m_handle, weapon.m_hash);
 		         }},
+		        {"KILL",
+		            [this] {
+			            ped::kill_ped(m_handle);
+		            }},
 		        {"RAGDOLL",
 		            [this] {
 			            PED::SET_PED_TO_RAGDOLL(m_handle, 2000, 2000, 0, 0, 0, 0);
 		            }},
 		        {"DANCE",
 		            [this] {
-			            ped::ped_play_animation(m_handle, "mini@strip_club@private_dance@part1", "priv_dance_p1");
+			            ped::ped_play_animation(m_handle, "mini@strip_club@private_dance@part1", "priv_dance_p1", 3.5f, -4.0f, -1, 1);
 		            }},
 		        {"RECRUIT", [this] {
 			         TASK::CLEAR_PED_TASKS(m_handle);
 			         PED::SET_PED_AS_GROUP_MEMBER(m_handle, PED::GET_PED_GROUP_INDEX(self::ped));
-					 PED::SET_PED_RELATIONSHIP_GROUP_HASH(m_handle, PED::GET_PED_RELATIONSHIP_GROUP_HASH(self::ped));
+			         PED::SET_PED_RELATIONSHIP_GROUP_HASH(m_handle, PED::GET_PED_RELATIONSHIP_GROUP_HASH(self::ped));
 			         PED::SET_PED_NEVER_LEAVES_GROUP(m_handle, true);
 			         PED::SET_CAN_ATTACK_FRIENDLY(m_handle, 0, 1);
 			         PED::SET_PED_COMBAT_ABILITY(m_handle, 2);
@@ -158,7 +162,7 @@ namespace big
 			         PED::SET_PED_COMBAT_ATTRIBUTES(m_handle, 13, true);
 			         PED::SET_PED_CONFIG_FLAG(m_handle, 394, true);
 			         PED::SET_PED_CONFIG_FLAG(m_handle, 400, true);
-					 PED::SET_PED_CONFIG_FLAG(m_handle, 134, true);
+			         PED::SET_PED_CONFIG_FLAG(m_handle, 134, true);
 			         WEAPON::GIVE_WEAPON_TO_PED(m_handle, RAGE_JOAAT("weapon_microsmg"), 9999, false, false);
 			         WEAPON::GIVE_WEAPON_TO_PED(m_handle, RAGE_JOAAT("weapon_carbinerifle"), 9999, false, true);
 			         TASK::TASK_COMBAT_HATED_TARGETS_AROUND_PED(self::ped, 100, 67108864);
@@ -177,19 +181,19 @@ namespace big
 		            [this] {
 			            ped::steal_identity(m_handle);
 		            }},
-		        {"BREAKUP KICK",
-		            [this] {
-			            static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("breakup")));
-			            command->call(ped::get_player_from_ped(m_handle), {});
-		            }},
 		        {"KICK",
 		            [this] {
 			            static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("nfkick")));
 			            static player_command* command1 = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("shkick")));
 			            static player_command* command2 = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("endkick")));
+			            static player_command* command3 = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("desync")));
+			            static player_command* command4 = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("breakup")));
 			            command->call(ped::get_player_from_ped(m_handle), {});
 			            command1->call(ped::get_player_from_ped(m_handle), {});
 			            command2->call(ped::get_player_from_ped(m_handle), {});
+			            command3->call(ped::get_player_from_ped(m_handle), {});
+			            script::get_current()->yield(500ms);
+			            command4->call(ped::get_player_from_ped(m_handle), {});
 		            }},
 		        {"DISARM",
 		            [this] {
@@ -217,6 +221,25 @@ namespace big
 		        {"TP ON TOP",
 		            [this] {
 			            teleport::tp_on_top(m_handle, true);
+		            }},
+		        {"BRING",
+		            [this] {
+			            rage::fvector3 pos = *g_local_player->m_navigation->get_position();
+
+			            if (PED::IS_PED_A_PLAYER(m_handle))
+			            {
+				            if (auto plyr = g_player_service->get_by_id(NETWORK::NETWORK_GET_PLAYER_INDEX_FROM_PED(m_handle)))
+				            {
+					            teleport::teleport_player_to_coords(plyr, {pos.x, pos.y, pos.z});
+				            }
+			            }
+			            else
+			            {
+				            if (entity::take_control_of(m_handle))
+				            {
+					            ENTITY::SET_ENTITY_COORDS(m_handle, pos.x, pos.y, pos.z, false, false, false, false);
+				            }
+			            }
 		            }},
 		        {"ENFLAME",
 		            [this] {
