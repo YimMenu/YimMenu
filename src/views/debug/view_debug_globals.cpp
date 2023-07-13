@@ -249,6 +249,7 @@ namespace big
 				global_test.global_appendages.clear();
 			}
 			ImGui::EndGroup();
+			ImGui::EndTabItem();
 		}
 	}
 }
