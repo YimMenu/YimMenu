@@ -45,37 +45,36 @@ namespace big
 	}
 
 	lua_module::lua_module(std::string module_name) :
-	    m_state(),
 	    m_module_name(module_name),
 	    m_module_id(rage::joaat(module_name))
 	{
-		m_state.open_libraries(
+		m_state = std::make_unique<sol::state>();
+
+		auto& state = *m_state;
+
+		state.open_libraries(
 			sol::lib::base,
 			sol::lib::package,
 			sol::lib::coroutine,
 		    sol::lib::string,
+		    sol::lib::os,
 		    sol::lib::math,
 			sol::lib::table,
-		    sol::lib::debug,
 			sol::lib::bit32,
 			sol::lib::utf8
 		);
 
-		const auto& scripts_folder = g_lua_manager->get_scripts_folder();
-
-		add_folder_to_require_available_paths(scripts_folder);
-
 		init_lua_api();
 
-		m_state["!module_name"] = module_name;
-		m_state["!this"]        = this;
+		state["!module_name"] = module_name;
+		state["!this"]        = this;
 
-		m_state.set_exception_handler((sol::exception_handler_function)exception_handler);
-		m_state.set_panic(panic_handler);
+		state.set_exception_handler((sol::exception_handler_function)exception_handler);
+		state.set_panic(panic_handler);
 
-		const auto script_file_path = scripts_folder.get_file(module_name).get_path();
+		const auto script_file_path = g_lua_manager->get_scripts_folder().get_file(module_name).get_path();
 		m_last_write_time           = std::filesystem::last_write_time(script_file_path);
-		auto result                 = m_state.load_file(script_file_path.string());
+		auto result                 = state.load_file(script_file_path.string());
 
 		if (!result.valid())
 		{
@@ -95,7 +94,17 @@ namespace big
 		}
 
 		for (auto script : m_registered_scripts)
+		{
 			g_script_mgr.remove_script(script);
+		}
+
+		// the lua state is about to be destroyed,
+		// but we need to keep it around a little bit longer
+		// until the script manager properly finish executing any potential lua script.
+		// There are most likely much better ways of doing all this, feel free to refactor I guess.
+		std::shared_ptr<sol::state> lua_state_shared = std::shared_ptr<sol::state>(std::move(m_state));
+		g_script_mgr.add_on_script_batch_removed([lua_state_shared] {
+		});
 
 		for (auto memory : m_allocated_memory)
 			delete[] memory;
@@ -116,27 +125,73 @@ namespace big
 		return m_last_write_time;
 	}
 
-	void lua_module::add_folder_to_require_available_paths(const big::folder& scripts_folder)
+	void lua_module::set_folder_for_lua_require()
 	{
-		const std::string package_path = m_state["package"]["path"];
-		const auto scripts_search_path = scripts_folder.get_path() / "?.lua";
-		m_state["package"]["path"] = package_path + (!package_path.empty() ? ";" : "") + scripts_search_path.string();
+		auto& state = *m_state;
+
+		const auto scripts_search_path = g_lua_manager->get_scripts_folder().get_path() / "?.lua";
+		state["package"]["path"]       = scripts_search_path.string();
+	}
+
+	void lua_module::sandbox_lua_os_library()
+	{
+		auto& state = *m_state;
+
+		const auto& os = state["os"];
+		sol::table sandbox_os(state, sol::create);
+
+		sandbox_os["clock"]     = os["clock"];
+		sandbox_os["date"]      = os["date"];
+		sandbox_os["difftime"]	= os["difftime"];
+		sandbox_os["time"]      = os["time"];
+
+		state["os"] = sandbox_os;
+	}
+
+	void lua_module::sandbox_lua_loads()
+	{
+		auto& state = *m_state;
+
+		// That's from lua base lib, luaB
+		state.set_function("load", nullptr);
+		state.set_function("loadstring", nullptr);
+		state.set_function("loadfile", nullptr);
+		state.set_function("dofile", nullptr);
+
+		// That's from lua package lib.
+		// We only allow dependencies between .lua files, no DLLs.
+		state["package"]["loadlib"] = nullptr;
+		state["package"]["cpath"]   = "";
+
+		// 1                   2               3            4
+		// {searcher_preload, searcher_Lua, searcher_C, searcher_Croot, NULL};
+		state["package"]["searchers"][3]   = nullptr;
+		state["package"]["searchers"][4] = nullptr;
+
+		set_folder_for_lua_require();
 	}
 
 	void lua_module::init_lua_api()
 	{
-		lua::log::bind(m_state);
-		lua::globals::bind(m_state);
-		lua::script::bind(m_state);
-		lua::native::bind(m_state);
-		lua::memory::bind(m_state);
-		lua::gui::bind(m_state);
-		lua::network::bind(m_state);
-		lua::command::bind(m_state);
-		lua::tunables::bind(m_state);
-		lua::locals::bind(m_state);
-		lua::event::bind(m_state);
-		lua::vector::bind(m_state);
-		lua::global_table::bind(m_state);
+		auto& state = *m_state;
+
+		// https://blog.rubenwardy.com/2020/07/26/sol3-script-sandbox/
+		// https://www.lua.org/manual/5.4/manual.html#pdf-require
+		sandbox_lua_os_library();
+		sandbox_lua_loads();
+
+		lua::log::bind(state);
+		lua::globals::bind(state);
+		lua::script::bind(state);
+		lua::native::bind(state);
+		lua::memory::bind(state);
+		lua::gui::bind(state);
+		lua::network::bind(state);
+		lua::command::bind(state);
+		lua::tunables::bind(state);
+		lua::locals::bind(state);
+		lua::event::bind(state);
+		lua::vector::bind(state);
+		lua::global_table::bind(state);
 	}
 }
