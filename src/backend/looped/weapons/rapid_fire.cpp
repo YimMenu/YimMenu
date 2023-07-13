@@ -20,8 +20,6 @@ namespace big
 					if (!weapon_entity)
 						return;
 
-					LOG(INFO) << weapon_entity;
-
 					Vector3 dim_min;
 					Vector3 dim_max;
 					MISC::GET_MODEL_DIMENSIONS(ENTITY::GET_ENTITY_MODEL(weapon_entity), &dim_min, &dim_max);
@@ -36,14 +34,15 @@ namespace big
 					Vector3 end = camera_position + camera_direction * 2000.0;
 
 					const auto raycast_handle =
-					    SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(
-							camera_position.x,
+					    SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(camera_position.x,
 					        camera_position.y,
 					        camera_position.z,
 					        end.x,
 					        end.y,
 					        end.z,
-					        -1, 0, 7);
+					        -1,
+					        0,
+					        7);
 					int did_raycast_hit = 0;
 					Vector3 raycast_hit_position{};
 					Vector3 raycast_surface_normal_hit_position{};
