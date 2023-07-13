@@ -12,7 +12,6 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			//if (!HUD::IS_PAUSE_MENU_ACTIVE() && !g_gui->is_open() && !PED::IS_PED_DEAD_OR_DYING(self::ped, true) && !PED::IS_PED_IN_ANY_VEHICLE(self::ped, TRUE))
 			if (!HUD::IS_PAUSE_MENU_ACTIVE() && !g_gui->is_open() && !PED::IS_PED_DEAD_OR_DYING(self::ped, true))
 			{
 				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK))
