@@ -11,7 +11,7 @@ namespace big
 
 	class lua_module
 	{
-		sol::state m_state;
+		std::unique_ptr<sol::state> m_state;
 
 		std::string m_module_name;
 		rage::joaat_t m_module_id;
@@ -37,8 +37,11 @@ namespace big
 		const std::string& module_name() const;
 		const std::chrono::time_point<std::chrono::file_clock> last_write_time() const;
 
-		// used for adding our own paths to the search paths of the lua require function
-		void add_folder_to_require_available_paths(const big::folder& scripts_folder);
+		// used for sandboxing and limiting to only our custom search path for the lua require function
+		void set_folder_for_lua_require();
+
+		void sandbox_lua_os_library();
+		void sandbox_lua_loads();
 
 		void init_lua_api();
 	};

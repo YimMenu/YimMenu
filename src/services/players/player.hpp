@@ -92,6 +92,8 @@ namespace big
 
 		int spectating_player = -1;
 
+		int spectating_player = -1;
+
 	protected:
 		bool equals(const CNetGamePlayer* net_game_player) const;
 
