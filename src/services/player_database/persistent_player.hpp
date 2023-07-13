@@ -50,7 +50,7 @@ namespace big
 		std::unordered_set<int> infractions;
 		std::string notes                                      = "";
 		std::optional<CommandAccessLevel> command_access_level = std::nullopt;
-		GSType session_type                                    = GSType(-1);
+		GSType session_type                                    = GSType(-2);
 		int64_t session_id                                     = -1;
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(persistent_player, name, rockstar_id, block_join, block_join_reason, is_modder, notify_online, infractions, notes, command_access_level)
