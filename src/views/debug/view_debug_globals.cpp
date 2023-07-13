@@ -12,22 +12,22 @@ namespace big
 		GlobalAppendageType_PlayerId,
 	};
 
-	struct global_test_json_inner
+	struct global_debug_inner
 	{
 		GlobalAppendageType type{};
 		std::ptrdiff_t index{};
 		std::size_t size{};
 		std::string global_name{};
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(global_test_json_inner, type, index, size, global_name)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(global_debug_inner, type, index, size, global_name)
 	};
 
-	struct global_test_json
+	struct global_debug
 	{
 		std::size_t global_index{};
-		std::vector<global_test_json_inner> global_appendages{};
+		std::vector<global_debug_inner> global_appendages{};
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(global_test_json, global_index, global_appendages)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(global_debug, global_index, global_appendages)
 	};
 
 	nlohmann::json get_globals_json()
@@ -35,7 +35,7 @@ namespace big
 		nlohmann::json globals{};
 
 		auto file = g_file_manager.get_project_file("./globals.json");
-		if (!file.exists())
+		if (file.exists())
 		{
 			std::ifstream iffstream_file(file.get_path());
 			iffstream_file >> globals;
@@ -44,18 +44,18 @@ namespace big
 		return globals;
 	}
 
-	void load_global_menu(const std::string& selected_global, global_test_json& global_obj)
+	void load_global_menu(const std::string& selected_global, global_debug& global_obj)
 	{
 		if (!selected_global.empty())
 		{
 			auto globals = get_globals_json();
 			if (globals[selected_global].is_null())
 				return;
-			global_obj = globals[selected_global].get<global_test_json>();
+			global_obj = globals[selected_global].get<global_debug>();
 		}
 	}
 
-	int64_t* get_global_ptr(global_test_json& global_test)
+	int64_t* get_global_ptr(global_debug& global_test)
 	{
 		script_global global_to_read = script_global(global_test.global_index);
 		for (auto item : global_test.global_appendages)
@@ -69,7 +69,7 @@ namespace big
 			}
 			else if (item.type == GlobalAppendageType_ReadGlobal)
 			{
-				global_test_json global_read;
+				global_debug global_read;
 				load_global_menu(item.global_name, global_read);
 				if (auto ptr = get_global_ptr(global_read))
 					if (item.size != 0)
@@ -93,16 +93,16 @@ namespace big
 		return retn_val;
 	}
 
-	std::map<std::string, global_test_json> list_globals()
+	std::map<std::string, global_debug> list_globals()
 	{
 		auto json = get_globals_json();
-		std::map<std::string, global_test_json> return_value;
+		std::map<std::string, global_debug> return_value;
 		for (auto& item : json.items())
 			return_value[item.key()] = item.value();
 		return return_value;
 	}
 
-	void save_global(char* global_name, global_test_json& global_obj)
+	void save_global(char* global_name, global_debug& global_obj)
 	{
 		std::string teleport_name_string = global_name;
 		if (!teleport_name_string.empty())
@@ -134,7 +134,7 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("DEBUG_TAB_GLOBALS"_T.data()))
 		{
-			static global_test_json global_test{};
+			static global_debug global_test{};
 			static script_global glo_bal_sunday = script_global(global_test.global_index);
 			ImGui::SetNextItemWidth(200.f);
 			if (ImGui::InputScalar("Global", ImGuiDataType_U64, &global_test.global_index))
