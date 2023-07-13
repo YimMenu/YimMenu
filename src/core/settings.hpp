@@ -230,9 +230,15 @@ namespace big
 
 		struct player_db
 		{
-			bool update_player_online_states = false;
+			bool update_player_online_states   = true;
+			bool notify_when_online            = false;
+			bool notify_when_joinable          = true;
+			bool notify_when_unjoinable        = false;
+			bool notify_when_offline           = false;
+			bool notify_on_session_type_change = false;
+			bool notify_on_session_change      = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player_db, update_player_online_states)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player_db, update_player_online_states, notify_when_online, notify_when_joinable, notify_when_unjoinable, notify_when_offline, notify_on_session_type_change, notify_on_session_change)
 		} player_db{};
 
 		struct protections
