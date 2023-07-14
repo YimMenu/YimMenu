@@ -185,16 +185,5 @@ namespace big::mobile
 		{
 			*script_global(scr_globals::mechanic_global).at(853).as<int*>() = 1;
 		}
-
-		inline void request_minitank()
-		{
-			*script_global(scr_globals::mechanic_global).at(6880).as<bool*>() = true;
-
-		}
-
-		inline void request_rc_banditio()
-		{
-			*script_global(scr_globals::mechanic_global).at(6879).as<bool*>() = true;
-		}
 	}
 }

@@ -39,33 +39,30 @@ namespace big
 
 		components::command_button<"ballisticarmor">();
 
-
-		ImGui::SeparatorText("CEO_SERVICES"_T.data()); //do name in translation
-
-		components::button("CEO_MOC"_T, [] {
+		components::button("Request MOC", [] {
 			mobile::ceo_abilities::request_mobile_operations_center();
 		});
 
-		components::button("CEO_AVENGER"_T, [] {
+		components::button("Request Avenger", [] {
 			mobile::ceo_abilities::request_avenger();
 		});
 
-		components::button("CEO_TERROBYTE"_T, [] {
+		components::button("Request Terrobyte", [] {
 			mobile::ceo_abilities::request_terrobyte();
 		});
 
-		components::button("CEO_ACIDLAB"_T, [] {
+		components::button("Request Acid Lab", [] {
 			mobile::ceo_abilities::request_acidlab();
 		});
 
-		components::button("CEO_ACIDLAB_BIKE"_T, [] {
+		components::button("Request Acid Bike", [] {
 			mobile::ceo_abilities::request_acidlab_bike();
 		});
 
 
-		ImGui::SeparatorText("MOBILE_MISC"_T.data()); //do name in translation
+		ImGui::SeparatorText("Miscellaneous");
 
-		components::button("MM_TAXI"_T, [] {
+		components::button("Request Taxi", [] {
 			mobile::misc::request_taxi();
 		});
 
