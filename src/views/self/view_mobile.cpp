@@ -42,32 +42,16 @@ namespace big
 
 		ImGui::SeparatorText("Services");
 
-		components::button("Request MOC", [] {
-			mobile::ceo_abilities::request_mobile_operations_center();
-		});
-
-		components::button("Request Avenger", [] {
-			mobile::ceo_abilities::request_avenger();
-		});
-
-		components::button("Request Terrobyte", [] {
-			mobile::ceo_abilities::request_terrobyte();
-		});
-
-		components::button("Request Acid Lab", [] {
-			mobile::ceo_abilities::request_acidlab();
-		});
-
-		components::button("Request Acid Bike", [] {
-			mobile::ceo_abilities::request_acidlab_bike();
-		});
-
+		components::command_button<"avenger">();
+		components::command_button<"kosatka">();
+		components::command_button<"moc">();
+		components::command_button<"terrorbyte">();
+		components::command_button<"acidlab">();
+		components::command_button<"acidbike">();
 
 		ImGui::SeparatorText("Miscellaneous");
 
-		components::button("Request Taxi", [] {
-			mobile::misc::request_taxi();
-		});
+		components::command_button<"taxi">();
 
 
 		ImGui::SeparatorText("MORS_MUTUAL"_T.data());

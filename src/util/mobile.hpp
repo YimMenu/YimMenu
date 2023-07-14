@@ -55,8 +55,6 @@ namespace big::mobile
 		{
 			*script_global(scr_globals::mechanic_global).at(4492).as<int*>() = 1;
 		}
-
-
 	}
 
 	namespace mors_mutual
@@ -101,7 +99,10 @@ namespace big::mobile
 		{
 			*script_global(scr_globals::mechanic_global).at(896).as<int*>() = 1;
 		}
+	}
 
+	namespace services
+	{
 		inline void request_avenger()
 		{
 			*script_global(scr_globals::mechanic_global).at(938).as<int*>() = 1;
@@ -117,7 +118,7 @@ namespace big::mobile
 			*script_global(scr_globals::mechanic_global).at(930).as<int*>() = 1;
 		}
 
-		inline void request_terrobyte()
+		inline void request_terrorbyte()
 		{
 			*script_global(scr_globals::mechanic_global).at(943).as<int*>() = 1;
 		}
@@ -185,7 +186,7 @@ namespace big::mobile
 		}
 	}
 
-	namespace misc
+	namespace mobile_misc
 	{
 		inline void request_taxi()
 		{
