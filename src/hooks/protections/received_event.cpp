@@ -368,6 +368,12 @@ namespace big
 
 		auto plyr = g_player_service->get_by_id(source_player->m_player_id);
 
+		if (plyr && plyr->block_net_events)
+		{
+			g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+			return;
+		}
+
 		switch (static_cast<eNetworkEvents>(event_id))
 		{
 		case eNetworkEvents::KICK_VOTES_EVENT:

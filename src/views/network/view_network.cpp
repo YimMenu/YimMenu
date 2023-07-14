@@ -47,8 +47,10 @@ namespace big
 			ImGui::SameLine();
 			components::button("JOIN_SESSION_INFO"_T, [] {
 				rage::rlSessionInfo info;
-				g_pointers->m_gta.m_decode_session_info(&info, base64, nullptr);
-				session::join_session(info);
+				if (g_pointers->m_gta.m_decode_session_info(&info, base64, nullptr))
+					session::join_session(info);
+				else
+					g_notification_service->push_error("Join", "Session info is invalid");
 			});
 
 			components::button("COPY_SESSION_INFO"_T, [] {
@@ -120,7 +122,8 @@ namespace big
 
 			ImGui::EndDisabled();
 
-			components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T, &g.session.decloak_players);
+			components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T, &g.session.decloak_players, "Reveals players that are off the radar");
+			components::script_patch_checkbox("Reveal Hidden Players", &g.session.unhide_players_from_player_list, "Reveals players that have hidden themselves from the player list");
 
 			components::command_button<"sextall">({}, "Send Sexts");
 			ImGui::SameLine();
@@ -141,9 +144,6 @@ namespace big
 		{
 			static char msg[256];
 			ImGui::Checkbox("AUTO_KICK_CHAT_SPAMMERS"_T.data(), &g.session.kick_chat_spammers);
-			ImGui::Checkbox("DISABLE_FILTER"_T.data(), &g.session.chat_force_clean);
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Your sent chat messages will not be censored to the receivers"); // TODO: add translation
 			ImGui::Checkbox("LOG_CHAT_MSG"_T.data(), &g.session.log_chat_messages);
 			ImGui::Checkbox("LOG_TXT_MSG"_T.data(), &g.session.log_text_messages);
 			components::input_text_with_hint("##message", "Chat message", msg, sizeof(msg));

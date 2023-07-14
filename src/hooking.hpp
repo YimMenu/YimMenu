@@ -30,6 +30,7 @@ class CPlayerAppearanceDataNode;
 class CFoundDevice;
 class IDirectSoundCapture;
 class CVehicleProximityMigrationDataNode;
+class CNonPhysicalPlayerData;
 
 namespace rage
 {
@@ -65,7 +66,6 @@ namespace big
 		static LRESULT wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 		static const char* get_label_text(void* unk, const char* label);
-		static int check_chat_profanity(__int64 chat_type, const char* input, const char** output);
 
 		static GtaThread* gta_thread_start(unsigned int** a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
@@ -152,6 +152,8 @@ namespace big
 		static int netfilter_handle_message(__int64 filter, char* message, int flags);
 
 		static void log_error_message_box(rage::joaat_t joaated_error_code, char a2);
+
+		static void send_non_physical_player_data(CNetGamePlayer* player, __int64 message, int flags, void* a4, CNetGamePlayer* a5);
 	};
 
 	class minhook_keepalive

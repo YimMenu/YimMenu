@@ -509,6 +509,17 @@ enum class eNetworkEvents : uint16_t
 	NETWORK_CHECK_CATALOG_CRC
 };
 
+enum class KickReason : std::uint8_t
+{
+	VOTED_OUT,
+	PEER_COMPLAINTS,
+	CONNECTION_ERROR,
+	NAT_TYPE,
+	SCADMIN,
+	SCADMIN_BLACKLIST,
+	NUM_REASONS
+};
+
 enum class ScriptEntityChangeType
 {
 	BlockingOfNonTemporaryEvents,
@@ -1937,3 +1948,19 @@ enum class eCombatAbilityLevel
 };
 
 NLOHMANN_JSON_SERIALIZE_ENUM(eCombatAbilityLevel, {{eCombatAbilityLevel::POOR, "poor"}, {eCombatAbilityLevel::AVERAGE, "average"}, {eCombatAbilityLevel::PROFESSIONAL, "professional"}})
+
+enum class GSType : int32_t
+{
+	Unknown = -2,
+
+	// actual values start here
+	Invalid = -1,
+	InviteOnly,
+	FriendsOnly,
+	ClosedCrew,
+	OpenCrew,
+	Job,
+	Public,
+	Max,
+	Modder = 69 // stand?
+};

@@ -2,13 +2,42 @@
 
 #include "backend/bool_command.hpp"
 #include "file_manager.hpp"
+#include "gta/enums.hpp"
 #include "pointers.hpp"
 #include "util/session.hpp"
 
 namespace big
 {
-	bool_command g_player_db_auto_update_online_states("player_db_auto_update_states", "Auto Update Player Online States", "Toggling this feature will automatically update the player online states every 5minutes.",
+	bool_command g_player_db_auto_update_online_states("player_db_auto_update_states", "Auto Update Tracked Player States", "Toggling this feature will automatically update the tracked players' online states every minute",
 	    g.player_db.update_player_online_states);
+
+	void player_database_service::handle_session_type_change(persistent_player& player, GSType new_session_type)
+	{
+		if (!player.notify_online)
+			return;
+
+		if (g.player_db.notify_when_joinable && !is_joinable_session(player.session_type) && is_joinable_session(new_session_type))
+		{
+			g_notification_service->push_success("Player DB", std::format("{} is now in a joinable session", player.name));
+		}
+		else if (g.player_db.notify_when_online && (player.session_type == GSType::Invalid || player.session_type == GSType::Unknown) && new_session_type != GSType::Invalid)
+		{
+			g_notification_service->push_success("Player DB", std::format("{} is now online", player.name));
+		}
+		else if (g.player_db.notify_when_unjoinable && is_joinable_session(player.session_type) && !is_joinable_session(new_session_type) && new_session_type != GSType::Invalid)
+		{
+			g_notification_service->push("Player DB", std::format("{} is no longer in a joinable session", player.name));
+		}
+		else if (g.player_db.notify_when_offline && player.session_type != GSType::Invalid && player.session_type != GSType::Unknown && new_session_type == GSType::Invalid)
+		{
+			g_notification_service->push("Player DB", std::format("{} is no longer online", player.name));
+		}
+
+		if (g.player_db.notify_on_session_type_change && (int)new_session_type >= (int)GSType::InviteOnly && (int)new_session_type < (int)GSType::Max)
+		{
+			g_notification_service->push("Player DB", std::format("{} is now in a{} {} session", player.name, new_session_type == GSType::InviteOnly ? "n" : "", get_session_type_str(new_session_type)));
+		}
+	}
 
 	player_database_service::player_database_service() :
 	    m_file_path(g_file_manager.get_project_file("./players.json").get_path())
@@ -150,14 +179,14 @@ namespace big
 			return;
 
 		g_thread_pool->push([this] {
-			static auto last_update = std::chrono::high_resolution_clock::now() - 5min;
+			static auto last_update = std::chrono::high_resolution_clock::now() - 45s;
 			while (g_running && g.player_db.update_player_online_states)
 			{
 				const auto cur = std::chrono::high_resolution_clock::now();
-				if (cur - last_update > 5min)
+				if (cur - last_update > 45s)
 				{
 					g_fiber_pool->queue_job([this] {
-						update_player_states();
+						update_player_states(true);
 					});
 					last_update = cur;
 				}
@@ -167,52 +196,105 @@ namespace big
 		});
 	}
 
-	void player_database_service::update_player_states()
+	void player_database_service::update_player_states(bool tracked_only)
 	{
-		const auto player_count = m_players.size();
+		const auto player_count    = m_players.size();
+		constexpr auto bucket_size = 100;
 
-		std::vector<std::vector<rage::rlGamerHandle>> gamer_handle_buckets;
-		gamer_handle_buckets.resize(std::ceil(player_count / 32.f));
+		std::vector<std::vector<rage::rlScHandle>> gamer_handle_buckets;
+		gamer_handle_buckets.resize(std::ceil(player_count / (float)bucket_size));
 
-		auto it = m_players.begin();
-		for (size_t i = 0; i < player_count; ++i)
+		size_t i = 0;
+		for (auto& player : m_players)
 		{
-			gamer_handle_buckets[i / 32].push_back(it->second->rockstar_id);
-
-			it++;
+			if (!tracked_only || player.second->notify_online)
+			{
+				gamer_handle_buckets[i / bucket_size].push_back(player.second->rockstar_id);
+				i++;
+			}
 		}
+
+		if (i == 0)
+			return;
 
 		for (auto& bucket : gamer_handle_buckets)
 		{
-			rage::rlTaskStatus status;
-			std::array<int, 32> online;
+			rage::rlTaskStatus status{};
+			rage::rlQueryPresenceAttributesContext contexts[bucket_size][2]{};
+			rage::rlQueryPresenceAttributesContext* contexts_per_player[bucket_size]{};
 
-			if (g_pointers->m_gta.m_get_gamer_online_state(0, bucket.data(), bucket.size(), online.data(), &status))
+			for (int i = 0; i < bucket_size; i++)
+			{
+				contexts[i][0].m_presence_attibute_type = 3;
+				strcpy(contexts[i][0].m_presence_attribute_key, "gstype");
+				strcpy(contexts[i][0].m_presence_attribute_value, "-1");
+				contexts[i][1].m_presence_attibute_type = 3;
+				strcpy(contexts[i][1].m_presence_attribute_key, "gsinfo");
+				contexts_per_player[i] = contexts[i];
+			}
+
+			if (g_pointers->m_sc.m_start_get_presence_attributes(0, bucket.data(), bucket.size(), contexts_per_player, 2, &status))
 			{
 				while (status.status == 1)
 				{
 					script::get_current()->yield();
 				}
 
-				for (size_t i = 0; i < bucket.size(); ++i)
+				if (status.status == 3)
 				{
-					if (const auto& it = m_players.find(bucket[i].m_rockstar_id); it != m_players.end())
+					for (size_t i = 0; i < bucket.size(); ++i)
 					{
-						if (online[i] == 1)
+						if (const auto& it = m_players.find(bucket[i].m_rockstar_id); it != m_players.end())
 						{
-							if (it->second->online_state == PlayerOnlineStatus::OFFLINE && it->second->notify_online)
-							{
-								g_notification_service->push_success("Player DB",
-								    std::format("{} is now online!", it->second->name));
-							}
-							it->second->online_state = PlayerOnlineStatus::ONLINE;
+							rage::rlSessionInfo info{};
+							info.m_session_token = -1;
+							GSType gstype        = (GSType)atoi(contexts[i][0].m_presence_attribute_value);
 
-							continue;
+							if (!g_pointers->m_gta.m_decode_session_info(&info, contexts[i][1].m_presence_attribute_value, nullptr))
+								gstype = GSType::Invalid;
+
+							if (it->second->session_type != gstype)
+							{
+								handle_session_type_change(*it->second, gstype);
+							}
+							else if (it->second->notify_online && it->second->session_id != info.m_session_token)
+							{
+								g_notification_service->push("Player DB",
+								    std::format("{} has joined a new session", it->second->name));
+							}
+
+							it->second->session_type = gstype;
+							it->second->session_id   = info.m_session_token;
 						}
-						it->second->online_state = PlayerOnlineStatus::OFFLINE;
 					}
+				}
+				else
+				{
+					LOG(WARNING) << "Presence attribute endpoint failed";
 				}
 			}
 		}
+	}
+
+	bool player_database_service::is_joinable_session(GSType type)
+	{
+		return type == GSType::Public || type == GSType::OpenCrew;
+	}
+
+	const char* player_database_service::get_session_type_str(GSType type)
+	{
+		switch (type)
+		{
+		case GSType::Invalid: return "Offline";
+		case GSType::InviteOnly: return "Invite Only";
+		case GSType::FriendsOnly: return "Friends Only";
+		case GSType::ClosedCrew: return "Closed Crew";
+		case GSType::OpenCrew: return "Crew";
+		case GSType::Job: return "In Mission";
+		case GSType::Public: return "Public";
+		case GSType::Modder: return "Unknown (Concealed By Modder)";
+		}
+
+		return "Unknown";
 	}
 }

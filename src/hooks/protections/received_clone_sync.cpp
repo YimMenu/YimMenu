@@ -1,4 +1,5 @@
 #include "hooking.hpp"
+#include "services/players/player_service.hpp"
 #include "util/notify.hpp"
 
 namespace big
@@ -16,6 +17,11 @@ namespace big
 			notify::crash_blocked(src, "incorrect object type");
 			return eAckCode::ACKCODE_FAIL;
 		}
+
+		auto plyr = g_player_service->get_by_id(src->m_player_id);
+
+		if (plyr && plyr->block_clone_create)
+			return eAckCode::ACKCODE_FAIL;
 
 		g.m_syncing_player = src;
 		return g_hooking->get_original<received_clone_sync>()(mgr, src, dst, object_type, object_id, buffer, unk, timestamp);

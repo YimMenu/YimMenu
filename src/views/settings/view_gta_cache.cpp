@@ -12,9 +12,10 @@ namespace big
 		auto ped_count = g_gta_data_service->peds().size();
 		auto veh_count = g_gta_data_service->vehicles().size();
 		auto wep_count = g_gta_data_service->weapons().size();
+		auto wep_comp_count = g_gta_data_service->weapon_components().size();
 
 		components::sub_title("GTA cache stats:");
-		ImGui::Text("Peds Cached: %d\nVehicles Cached: %d\nWeapons Cached: %d", ped_count, veh_count, wep_count);
+		ImGui::Text("Peds Cached: %d\nVehicles Cached: %d\nWeapons Cached: %d\nWeapon Components Cached: %d", ped_count, veh_count, wep_count, wep_comp_count);
 
 		if (components::button("Rebuild Cache"))
 		{

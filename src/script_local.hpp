@@ -8,6 +8,10 @@ namespace big
 	public:
 		explicit script_local(rage::scrThread* thread, std::size_t index);
 		explicit script_local(PVOID stack, std::size_t index);
+		explicit script_local(std::size_t index);
+
+		script_local set(rage::scrThread* thread);
+		script_local set(void* stack);
 
 		script_local at(std::ptrdiff_t index);
 		script_local at(std::ptrdiff_t index, std::size_t size);

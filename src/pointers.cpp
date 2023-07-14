@@ -297,15 +297,6 @@ namespace big
                 g_pointers->m_gta.m_write_player_game_state_data_node = ptr.as<functions::write_player_game_state_data_node>();
             }
         },
-        // Replay Interface
-        {
-            "RI",
-            "0F B7 44 24 ? 66 89 44 4E",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_replay_interface = ptr.add(0x1F).rip().as<rage::CReplayInterface**>();
-            }
-        },
         // Ptr To Handle
         {
             "PTH",
@@ -1217,6 +1208,15 @@ namespace big
                 g_pointers->m_gta.m_get_host_array_handler_by_index = ptr.as<functions::get_host_array_handler_by_index>();
             }
         },
+        // Send Non Physical Player Data
+        {
+            "SNPPD",
+            "E8 ? ? ? ? 4C 8B 0F 44 0F B7 85 A0 01 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_send_non_physical_player_data = ptr.add(1).rip().as<PVOID>();
+            }
+        },
         // Max Wanted Level
         {
             "MWL",
@@ -1389,7 +1389,7 @@ namespace big
         // Start Get Presence Attributes
         {
             "SGPA",
-            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 40 33 DB 41",
+            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 40 33 DB 49",
             [](memory::handle ptr)
             {
                 g_pointers->m_sc.m_start_get_presence_attributes = ptr.as<functions::start_get_presence_attributes>();

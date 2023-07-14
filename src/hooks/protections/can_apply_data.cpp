@@ -723,22 +723,9 @@ namespace big
 
 	inline bool is_sane_override_pos(float x, float y, float z)
 	{
-		if (isnan(x) || isnan(y) || isnan(z))
-			return false;
+		bool crash = (char)(fmaxf(0.0, (x + 149.0) - -8192.0) / 75.0) == 255 || (char)(fmaxf(0.0, (y + 149.0) - -8192.0) / 75.0) == 255;
 
-		if (isinf(x) || isinf(y) || isinf(z))
-			return false;
-
-		if (x > 5000.0f || x < -5000.0f)
-			return false;
-
-		if (y > 8500.0f || y < -5000.0f)
-			return false;
-
-		if (z > 1600.0f || z < -700.0f)
-			return false;
-
-		return true;
+		return !crash;
 	}
 
 	bool check_node(rage::netSyncNodeBase* node, CNetGamePlayer* sender, rage::netObject* object)
@@ -805,6 +792,22 @@ namespace big
 					{
 						notify::crash_blocked(sender, "infinite physical attachment");
 						return true;
+					}
+
+					if (attach_node->m_attached && object && object->m_object_type == (int16_t)eNetObjType::NET_OBJ_TYPE_TRAILER)
+					{
+						if (auto net_obj =
+						        g_pointers->m_gta.m_get_net_object(*g_pointers->m_gta.m_network_object_mgr, attach_node->m_attached_to, false))
+						{
+							if (auto entity = net_obj->GetGameObject())
+							{
+								if (entity->m_entity_type != 3)
+								{
+									notify::crash_blocked(sender, "invalid attachment");
+									return true;
+								}
+							}
+						}
 					}
 
 					break;
@@ -887,11 +890,72 @@ namespace big
 					if (game_state_node->m_is_overriding_population_control_sphere
 					    && !is_sane_override_pos(game_state_node->m_population_control_sphere_x,
 					        game_state_node->m_population_control_sphere_y,
-					        game_state_node->m_population_control_sphere_z))
+					        game_state_node->m_population_control_sphere_z)
+					    && gta_util::get_network()->m_game_session_ptr->is_host())
 					{
 						notify::crash_blocked(sender, "invalid sector position (player game state node)");
 						return true;
 					}
+
+					if (sender_plyr)
+					{
+						if (game_state_node->m_is_spectating)
+						{
+							if (!sender_plyr->get_ped())
+								break;
+
+							if (sender_plyr->get_ped()->m_health <= 0.0f) // you spectate the player that killed you
+								break;
+
+							auto net_obj = g_pointers->m_gta.m_get_net_object(*g_pointers->m_gta.m_network_object_mgr,
+							    game_state_node->m_spectating_net_id,
+							    false);
+
+							if (!net_obj)
+								break;
+
+							auto entity = net_obj->GetGameObject();
+
+							if (!entity || entity->m_entity_type != 4)
+								break;
+
+							auto player_info = ((CPed*)entity)->m_player_info;
+
+							if (!player_info)
+								break;
+
+							player_ptr target = nullptr;
+
+							if (g_local_player && (CPed*)entity == g_local_player)
+							{
+								target = g_player_service->get_self();
+							}
+							else
+							{
+								for (auto p : g_player_service->players())
+									if (p.second->get_player_info() == player_info)
+										target = p.second;
+							}
+
+							if (!target || !target->is_valid())
+								break;
+
+							if (target->id() != sender_plyr->spectating_player)
+							{
+								if (target->id() == self::id)
+									g.reactions.spectate.process(sender_plyr);
+								else
+									g.reactions.spectate_others.process(sender_plyr, target);
+
+								sender_plyr->spectating_player = target->id();
+							}
+						}
+						else
+						{
+							sender_plyr->spectating_player = -1;
+						}
+					}
+
 					break;
 				}
 				case sync_node_id("CTrainGameStateDataNode"):
@@ -899,7 +963,8 @@ namespace big
 					const auto train_node = (CTrainGameStateDataNode*)(node);
 					if (train_node->m_track_id < 0 || train_node->m_track_id >= 27)
 					{
-						// notify::crash_blocked(sender, "out of bounds train track index");
+						//notify::crash_blocked(sender, "out of bounds train track index");
+						//LOG(INFO) << train_node->m_track_id;
 						return true;
 					}
 					break;
