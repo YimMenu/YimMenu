@@ -2,6 +2,41 @@
 
 namespace big
 {
+	auto initial_protections = g.protections;
+
+	void set_all_protections(bool state)
+	{
+		g.protections.script_events.bounty                     = state;
+		g.protections.script_events.ceo_money                  = state;
+		g.protections.script_events.fake_deposit               = state;
+		g.protections.script_events.force_mission              = state;
+		g.protections.script_events.force_teleport             = state;
+		g.protections.script_events.gta_banner                 = state;
+		g.protections.script_events.mc_teleport                = state;
+		g.protections.script_events.send_to_cutscene           = state;
+		g.protections.script_events.send_to_location           = state;
+		g.protections.script_events.sound_spam                 = state;
+		g.protections.script_events.personal_vehicle_destroyed = state;
+		g.protections.script_events.remote_off_radar           = state;
+		g.protections.script_events.rotate_cam                 = state;
+		g.protections.script_events.teleport_to_warehouse      = state;
+		g.protections.script_events.start_activity             = state;
+		g.protections.script_events.send_sms                   = state;
+		g.protections.script_events.spectate                   = state;
+		g.protections.script_events.vehicle_kick               = state;
+		g.protections.script_events.clear_wanted_level         = state;
+
+		g.protections.rid_join       = state;
+		g.protections.receive_pickup = state;
+		g.protections.admin_check    = state;
+		g.protections.kick_rejoin    = state;
+	}
+
+	void reset_protections()
+	{
+		g.protections = initial_protections;
+	}
+
 	void view::protection_settings()
 	{
 		ImGui::BeginGroup();
@@ -47,6 +82,17 @@ namespace big
 		ImGui::Checkbox("ADMIN_CHECK"_T.data(), &g.protections.admin_check);
 		ImGui::Checkbox("Kick Rejoin", &g.protections.kick_rejoin);
 		ImGui::EndGroup();
-	}
 
+		ImGui::SeparatorText("Options");
+		ImGui::BeginGroup();
+		if (ImGui::Button("Enable All Protections"))
+			set_all_protections(true);
+		ImGui::SameLine();
+		if (ImGui::Button("Disable All Protections"))
+			set_all_protections(false);
+		ImGui::SameLine();
+		if (ImGui::Button("Reset Protections"))
+			reset_protections();
+		ImGui::EndGroup();
+	};
 }
