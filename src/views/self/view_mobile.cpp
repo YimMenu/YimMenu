@@ -9,6 +9,7 @@ namespace big
 	{
 		ImGui::SetWindowSize({0.f, (float)*g_pointers->m_gta.m_resolution_y}, ImGuiCond_Always);
 
+
 		ImGui::SeparatorText("MERRYWEATHER"_T.data());
 
 		components::button("MW_AMMO_DROP"_T, [] {
@@ -29,7 +30,30 @@ namespace big
 			mobile::merry_weather::request_airstrike();
 		});
 
-		
+
+		ImGui::SeparatorText("CEO_ABILITIES"_T.data());
+
+		components::button("CEO_BULLSHARK"_T, [] {
+			mobile::ceo_abilities::request_bullshark_testosterone();
+		});
+
+		components::command_button<"ballisticarmor">();
+
+
+		ImGui::SeparatorText("Services");
+
+		components::command_button<"avenger">();
+		components::command_button<"kosatka">();
+		components::command_button<"moc">();
+		components::command_button<"terrorbyte">();
+		components::command_button<"acidlab">();
+		components::command_button<"acidbike">();
+
+		ImGui::SeparatorText("Miscellaneous");
+
+		components::command_button<"taxi">();
+
+
 		ImGui::SeparatorText("MORS_MUTUAL"_T.data());
 
 		components::button("MORS_FIX_ALL"_T, [] {
@@ -39,13 +63,5 @@ namespace big
 			        std::make_format_args(amount_fixed,
 			            amount_fixed == 1 ? "VEHICLE_FIX_HAS"_T.data() : "VEHICLE_FIX_HAVE"_T.data())));
 		});
-
-		ImGui::SeparatorText("CEO_ABILITIES"_T.data());
-
-		components::button("CEO_BULLSHARK"_T, [] {
-			mobile::ceo_abilities::request_bullshark_testosterone();
-		});
-
-		components::command_button<"ballisticarmor">();
 	}
 }

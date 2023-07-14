@@ -304,6 +304,7 @@ namespace big
 			bool no_ragdoll         = false;
 			bool noclip             = false;
 			bool off_radar          = false;
+			bool ghost_org          = false;
 			bool super_run          = false;
 			bool no_collision       = false;
 			bool unlimited_oxygen   = false;
