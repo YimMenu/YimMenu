@@ -7,6 +7,8 @@
 #include "util/scripts.hpp"
 #include "views/view.hpp"
 
+#include <script/globals/GPBD_FM_3.hpp>
+
 namespace big
 {
 	void view::self()
@@ -29,7 +31,7 @@ namespace big
 
 		components::command_checkbox<"godmode">();
 		components::command_checkbox<"otr">();
-		if (g.self.off_radar)
+		if (g.self.off_radar && scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss == self::id)
 			components::command_checkbox<"ghostorg">();
 		components::command_checkbox<"freecam">();
 		components::command_checkbox<"nophone">();
