@@ -408,6 +408,15 @@ namespace big
 
 		struct settings
 		{
+			bool dev_dlc = false;
+
+			struct rainbow
+			{
+				bool fade = false;
+				bool spasm = false;
+				int speed = 1;
+			} rainbow{};
+
 			struct hotkeys
 			{
 				bool editing_menu_toggle    = false;
@@ -438,8 +447,6 @@ namespace big
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, teleport_pv, noclip, vehicle_flymode, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller, clear_wanted, random_ped_components)
 			} hotkeys{};
-
-			bool dev_dlc = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(settings, hotkeys, dev_dlc)
 		} settings{};
@@ -704,7 +711,14 @@ namespace big
 			{
 				bool launch_on_release = false;
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(gravity_gun, launch_on_release)
-			} gravity_gun;
+			} gravity_gun{};
+
+			struct paintgun
+			{
+				bool rainbow	= false;
+				float col[4]    = {0.f, 0.f, 1.f, 1.f};
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(paintgun, rainbow, col)
+			} paintgun{};
 
 			struct aimbot
 			{
@@ -739,7 +753,7 @@ namespace big
 			bool enable_weapon_hotkeys    = false;
 			std::map<int, std::vector<std::uint32_t>> weapon_hotkeys{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, infinite_ammo, always_full_ammo, infinite_mag, increased_damage, increase_damage, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, interior_weapon, triggerbot, infinite_range, enable_weapon_hotkeys, weapon_hotkeys)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, infinite_ammo, always_full_ammo, infinite_mag, increased_damage, increase_damage, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, paintgun, interior_weapon, triggerbot, infinite_range, enable_weapon_hotkeys, weapon_hotkeys)
 		} weapons{};
 
 		struct window
