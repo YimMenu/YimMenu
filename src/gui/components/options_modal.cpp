@@ -10,7 +10,7 @@ namespace big
 		if (sameline)
 			ImGui::SameLine();
 
-		if (ImGui::SmallButton(std::string(custom_button_name + "##" + element_name).data()))
+		if (ImGui::Button(std::string(custom_button_name + "##" + element_name).data()))
 			ImGui::OpenPopup(element_name.data());
 
 		ImGui::SetNextWindowPos(ImVec2(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f), ImGuiCond_Always, ImVec2(0.5f, 0.5f));

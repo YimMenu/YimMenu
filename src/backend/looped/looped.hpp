@@ -39,12 +39,14 @@ namespace big
 		static void system_desync_kick_protection();
 		static void system_spoofing();
 		static void system_mission_creator();
+		static void system_rainbow();
 
 		static void vehicle_auto_drive();
 		static void vehicle_boost_behavior();
 		static void vehicle_ls_customs();
 		static void vehicle_rainbow_paint();
 
+		static void weapons_tp_gun();
 		static void weapons_ammo_special_type();
 		static void weapons_cage_gun();
 		static void custom_gun_disable_control_action();
@@ -56,6 +58,7 @@ namespace big
 		static void weapons_c4_limit();
 		static void weapons_do_persist_weapons();
 		static void weapons_do_weapon_hotkeys();
+		static void weapons_paint_gun();
 
 		static void drive_train();
 		static void derail_train();
