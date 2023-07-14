@@ -1,3 +1,4 @@
+#include "gta/pools.hpp"
 #include "gta_util.hpp"
 #include "gui.hpp"
 #include "pointers.hpp"
@@ -77,28 +78,28 @@ namespace big
 				ImGui::Text("Pos: %.2f, %.2f, %.2f", pos.x, pos.y, pos.z);
 			}
 
-			// can't easily get used item count using pools, so keeping replay interface for now
-			if (auto replay_interface = *g_pointers->m_gta.m_replay_interface; g.window.ingame_overlay.show_replay_interface)
+			if (g.window.ingame_overlay.show_replay_interface)
 			{
-				if (replay_interface->m_ped_interface || replay_interface->m_vehicle_interface || replay_interface->m_object_interface)
+				if (*g_pointers->m_gta.m_ped_pool || (*g_pointers->m_gta.m_vehicle_pool && **g_pointers->m_gta.m_vehicle_pool)
+				    || *g_pointers->m_gta.m_prop_pool)
 					ImGui::Separator();
 
-				if (replay_interface->m_ped_interface)
+				if (*g_pointers->m_gta.m_ped_pool)
 					ImGui::Text(std::format("Ped Pool: {}/{}",
-					    replay_interface->m_ped_interface->m_cur_peds,
-					    replay_interface->m_ped_interface->m_max_peds)
+					    (*g_pointers->m_gta.m_ped_pool)->get_item_count(),
+					    (*g_pointers->m_gta.m_ped_pool)->m_size)
 					                .c_str());
 
-				if (replay_interface->m_vehicle_interface)
+				if (*g_pointers->m_gta.m_vehicle_pool && **g_pointers->m_gta.m_vehicle_pool)
 					ImGui::Text(std::format("Vehicle Pool: {}/{}",
-					    replay_interface->m_vehicle_interface->m_cur_vehicles,
-					    replay_interface->m_vehicle_interface->m_max_vehicles)
+					    (**g_pointers->m_gta.m_vehicle_pool)->m_item_count,
+					    (**g_pointers->m_gta.m_vehicle_pool)->m_size)
 					                .c_str());
 
-				if (replay_interface->m_object_interface)
+				if (*g_pointers->m_gta.m_prop_pool)
 					ImGui::Text(std::format("Object Pool: {}/{}",
-					    replay_interface->m_object_interface->m_cur_objects,
-					    replay_interface->m_object_interface->m_max_objects)
+					    (*g_pointers->m_gta.m_prop_pool)->get_item_count(),
+					    (*g_pointers->m_gta.m_prop_pool)->m_size)
 					                .c_str());
 			}
 

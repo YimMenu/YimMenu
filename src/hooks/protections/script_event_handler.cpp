@@ -4,6 +4,7 @@
 #include "gta_util.hpp"
 #include "hooking.hpp"
 #include "lua/lua_manager.hpp"
+#include "util/math.hpp"
 #include "util/session.hpp"
 
 #include <network/CNetGamePlayer.hpp>
@@ -49,6 +50,11 @@ namespace big
 		}
 
 		return false;
+	}
+
+	inline bool is_player_our_boss(Player sender)
+	{
+		return sender == scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss;
 	}
 
 	bool hooks::scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player)
@@ -156,10 +162,16 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::MCTeleport:
-			if (g.protections.script_events.mc_teleport && args[3] <= 32)
+			if (g.protections.script_events.mc_teleport && args[3] <= 32 && !is_player_our_boss(plyr->id()))
 			{
-				g.reactions.mc_teleport.process(plyr);
-				return true;
+				for (int i = 0; i < 32; i++)
+				{
+					if (args[4 + i] == NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(self::id))
+					{
+						g.reactions.mc_teleport.process(plyr);
+						return true;
+					}
+				}
 			}
 			else if (args[3] > 32)
 			{
@@ -175,16 +187,14 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::RemoteOffradar:
-			if (g.protections.script_events.remote_off_radar
-			    && player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
+			if (g.protections.script_events.remote_off_radar && !is_player_our_boss(plyr->id()) && !is_player_driver_of_local_vehicle(plyr->id()))
 			{
 				g.reactions.remote_off_radar.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::TSECommand:
-			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[2]) == eRemoteEvent::TSECommandRotateCam
-			    && !gta_util::get_network()->m_is_activity_session)
+			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[2]) == eRemoteEvent::TSECommandRotateCam && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
 			{
 				g.reactions.rotate_cam.process(plyr);
 				return true;
@@ -198,8 +208,7 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::SendToCutscene:
-			if (g.protections.script_events.send_to_cutscene
-			    && player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
+			if (g.protections.script_events.send_to_cutscene && !is_player_our_boss(plyr->id()))
 			{
 				g.reactions.send_to_cutscene.process(plyr);
 				return true;
@@ -207,6 +216,9 @@ namespace big
 			break;
 		case eRemoteEvent::SendToLocation:
 		{
+			if (is_player_our_boss(plyr->id()))
+				break;
+
 			bool known_location = false;
 
 			if (args[2] == 0 && args[3] == 0)
@@ -242,11 +254,9 @@ namespace big
 		}
 		case eRemoteEvent::SoundSpam:
 		{
-			auto plyr = g_player_service->get_by_id(player->m_player_id);
-
 			if (g.protections.script_events.sound_spam && (!plyr || plyr->m_invites_rate_limit.process()))
 			{
-				if (plyr && plyr->m_invites_rate_limit.exceeded_last_process())
+				if (plyr->m_invites_rate_limit.exceeded_last_process())
 					g.reactions.sound_spam.process(plyr);
 				return true;
 			}
@@ -275,8 +285,7 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::NetworkBail:
-			if (auto plyr = g_player_service->get_by_id(player->m_player_id))
-				session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
+			session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
 			g.reactions.network_bail.process(plyr);
 			return true;
 		case eRemoteEvent::TeleportToWarehouse:
@@ -341,6 +350,25 @@ namespace big
 				g.reactions.null_function_kick.process(plyr);
 				return true;
 			}
+
+			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+				break;
+
+			if (!g_local_player)
+				break;
+
+			if (is_player_our_boss(plyr->id()))
+				break;
+
+			if (is_player_driver_of_local_vehicle(plyr->id()))
+				break;
+
+			if (!plyr->get_ped() || math::distance_between_vectors(*plyr->get_ped()->get_position(), *g_local_player->get_position()) > 75.0f)
+			{
+				g.reactions.send_to_interior.process(plyr);
+				return true;
+			}
+
 			break;
 		}
 		case eRemoteEvent::DestroyPersonalVehicle: g.reactions.destroy_personal_vehicle.process(plyr); return true;

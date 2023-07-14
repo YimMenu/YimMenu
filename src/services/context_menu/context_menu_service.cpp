@@ -1,11 +1,12 @@
 #include "context_menu_service.hpp"
 
 #include "fiber_pool.hpp"
-#include "gta/replay.hpp"
 #include "gui.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "util/misc.hpp"
+
+#include <network/ChatData.hpp>
 
 namespace big
 {
@@ -228,11 +229,11 @@ namespace big
 	    ControllerInputs::INPUT_VEH_SELECT_NEXT_WEAPON,
 	    ControllerInputs::INPUT_SELECT_NEXT_WEAPON,
 	    ControllerInputs::INPUT_SELECT_PREV_WEAPON,
-	    ControllerInputs::INPUT_WEAPON_WHEEL_NEXT,
-	    ControllerInputs::INPUT_WEAPON_WHEEL_PREV,
 	    ControllerInputs::INPUT_ATTACK,
+	    ControllerInputs::INPUT_ATTACK2,
 	    ControllerInputs::INPUT_SPECIAL_ABILITY,
 	    ControllerInputs::INPUT_VEH_MOUSE_CONTROL_OVERRIDE,
+	    ControllerInputs::INPUT_SNIPER_ZOOM,
 	};
 
 	void context_menu_service::disable_control_action_loop()
@@ -248,11 +249,13 @@ namespace big
 	{
 		while (g_running)
 		{
-			if (g_gui->is_open())
+			if (g_gui->is_open() || HUD::IS_PAUSE_MENU_ACTIVE()
+			    || (*g_pointers->m_gta.m_chat_data && (*g_pointers->m_gta.m_chat_data)->m_chat_open))
 			{
 				script::get_current()->yield();
 				continue;
 			}
+
 			if (!g.context_menu.enabled)
 			{
 				g_context_menu_service->enabled = false;
@@ -261,9 +264,19 @@ namespace big
 				continue;
 			}
 
-			if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_VEH_DUCK))
+			if (PAD::IS_USING_KEYBOARD_AND_MOUSE(0))
 			{
-				g_context_menu_service->enabled = !g_context_menu_service->enabled;
+				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_VEH_DUCK))
+				{
+					g_context_menu_service->enabled = !g_context_menu_service->enabled;
+				}
+			}
+			else
+			{
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM) && PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_FRONTEND_Y))
+				{
+					g_context_menu_service->enabled = !g_context_menu_service->enabled;
+				}
 			}
 
 			if (g_context_menu_service->enabled)
@@ -279,12 +292,20 @@ namespace big
 					continue;
 				}
 
-				if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_NEXT))
+				ControllerInputs next_key = PAD::IS_USING_KEYBOARD_AND_MOUSE(0) ? ControllerInputs::INPUT_WEAPON_WHEEL_NEXT : ControllerInputs::INPUT_SCRIPT_PAD_DOWN;
+				ControllerInputs prev_key = PAD::IS_USING_KEYBOARD_AND_MOUSE(0) ? ControllerInputs::INPUT_WEAPON_WHEEL_PREV : ControllerInputs::INPUT_SCRIPT_PAD_UP;
+				ControllerInputs execute_key = PAD::IS_USING_KEYBOARD_AND_MOUSE(0) ? ControllerInputs::INPUT_ATTACK : ControllerInputs::INPUT_FRONTEND_ACCEPT;
+
+				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(next_key), true);
+				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(prev_key), true);
+				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(execute_key), true);
+
+				if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)next_key))
 					cm->current_option = cm->options.size() <= cm->current_option + 1 ? 0 : cm->current_option + 1;
-				if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV))
+				if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)prev_key))
 					cm->current_option = 0 > cm->current_option - 1 ? static_cast<int>(cm->options.size()) - 1 : cm->current_option - 1;
 
-				if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) || PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_SPECIAL_ABILITY))
+				if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)execute_key))
 				{
 					if (!g_context_menu_service->m_pointer)
 					{

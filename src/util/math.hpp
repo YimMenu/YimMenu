@@ -14,6 +14,11 @@ namespace big::math
 		return (float)sqrt(pow((a.x - b.x), 2) + pow((a.y - b.y), 2) + pow((a.z - b.z), 2));
 	}
 
+	inline float distance_between_vectors(rage::fvector3 a, rage::fvector3 b)
+	{
+		return (float)sqrt(pow((a.x - b.x), 2) + pow((a.y - b.y), 2) + pow((a.z - b.z), 2));
+	}
+
 	inline Vector3 rotation_to_direction(Vector3 rotation)
 	{
 		float x = deg_to_rad(rotation.x);

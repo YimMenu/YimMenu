@@ -114,6 +114,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::log_error_message_box>("E0MBH", g_pointers->m_gta.m_error_message_box);
 
+		detour_hook_helper::add<hooks::send_non_physical_player_data>("SNPPD", g_pointers->m_gta.m_send_non_physical_player_data);
+
 		g_hooking = this;
 	}
 
