@@ -23,7 +23,7 @@ namespace big
 		{
 			if (!g.self.ghost_org)
 				MISC::CLEAR_BIT(script_global(2794162).at(4667).as<int*>(), 2);
-			*scr_globals::globalplayer_bd.at(PLAYER::PLAYER_ID(), 463).at(210).as<bool*>() = false;
+			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].OffRadarActive = false;
 		}
 	};
 
