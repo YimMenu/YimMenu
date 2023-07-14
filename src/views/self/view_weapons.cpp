@@ -148,6 +148,9 @@ namespace big
 			}
 
 			break;
+		case CustomWeapon::PAINT_GUN:
+			ImGui::Checkbox("Rainbow Color", &g.weapons.paintgun.rainbow);
+			if (!g.weapons.paintgun.rainbow) { ImGui::ColorEdit4("Paint Gun Color", g.weapons.paintgun.col); }
 		}
 
 		ImGui::SeparatorText("Aim Assistance");
@@ -216,12 +219,12 @@ namespace big
 			ImGui::PushItemWidth(250);
 			if (ImGui::BeginCombo("Attachments", selected_weapon_attachment.c_str()))
 			{
-				auto weapon = g_gta_data_service->weapon_by_hash(selected_weapon_hash);
+				weapon_item weapon = g_gta_data_service->weapon_by_hash(selected_weapon_hash);
 				if (!weapon.m_attachments.empty())
 				{
 					for (std::string attachment : weapon.m_attachments)
 					{
-						auto attachment_component   = g_gta_data_service->weapon_component_by_name(attachment);
+						weapon_component attachment_component   = g_gta_data_service->weapon_component_by_name(attachment);
 						std::string attachment_name = attachment_component.m_display_name;
 						Hash attachment_hash        = attachment_component.m_hash;
 						if (attachment_hash == NULL)
@@ -280,7 +283,7 @@ namespace big
 			ImGui::PushItemWidth(250);
 			if (ImGui::BeginListBox("Saved Loadouts", ImVec2(200, 200)))
 			{
-				for (auto filename : persist_weapons::list_weapon_loadouts())
+				for (std::string filename : persist_weapons::list_weapon_loadouts())
 				{
 					if (components::selectable(filename, filename == selected_loadout))
 					{
@@ -330,7 +333,7 @@ namespace big
 				for (auto& weapon_hash : g.weapons.weapon_hotkeys[selected_key])
 				{
 					ImGui::PushID(counter);
-					auto weapon = g_gta_data_service->weapon_by_hash(weapon_hash);
+					weapon_item weapon = g_gta_data_service->weapon_by_hash(weapon_hash);
 					ImGui::PushItemWidth(300);
 					if (ImGui::BeginCombo("Weapons", weapon.m_display_name.c_str()))
 					{
