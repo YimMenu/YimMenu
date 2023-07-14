@@ -35,6 +35,7 @@ namespace big
 			looped::system_desync_kick_protection();
 			looped::system_spoofing();
 			looped::system_mission_creator();
+			looped::system_rainbow();
 
 			for (auto command : g_looped_commands)
 				if (command->is_enabled())
@@ -64,6 +65,8 @@ namespace big
 
 		while (g_running)
 		{
+			looped::weapons_tp_gun();
+			looped::weapons_paint_gun();
 			looped::weapons_ammo_special_type();
 			looped::weapons_cage_gun();
 			looped::weapons_delete_gun();
