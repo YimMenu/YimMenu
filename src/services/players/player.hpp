@@ -83,7 +83,12 @@ namespace big
 		std::optional<std::uint32_t> time_difference;
 		std::uint32_t num_time_syncs_sent = 9999;
 
-		bool block_explosions = false;
+		bool block_explosions   = false;
+		bool block_clone_create = false;
+		bool block_clone_sync   = false;
+		bool block_net_events   = false;
+		bool log_clones         = false;
+		bool log_network_events = false;
 
 		int spectating_player = -1;
 

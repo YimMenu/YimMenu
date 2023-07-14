@@ -3,12 +3,12 @@
 #include "core/data/special_ammo_types.hpp"
 #include "fiber_pool.hpp"
 #include "gta/joaat.hpp"
+#include "gta/weapons.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "services/gta_data/gta_data_service.hpp"
-#include "views/view.hpp"
 #include "services/persist_weapons/persist_weapons.hpp"
-#include "gta/weapons.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -274,7 +274,7 @@ namespace big
 		}
 		if (ImGui::CollapsingHeader("Persist Weapons"))
 		{
-			ImGui::Checkbox("Enabled", &g.persist_weapons.enabled);
+			ImGui::Checkbox("Enabled##persist_weapons", &g.persist_weapons.enabled);
 
 			static std::string selected_loadout = g.persist_weapons.weapon_loadout_file;
 			ImGui::PushItemWidth(250);
@@ -311,14 +311,14 @@ namespace big
 		}
 		if (ImGui::CollapsingHeader("Weapon Hotkeys"))
 		{
-			ImGui::Checkbox("Enabled", &g.weapons.enable_weapon_hotkeys);
+			ImGui::Checkbox("Enabled##weapon_hotkeys", &g.weapons.enable_weapon_hotkeys);
 			if (ImGui::IsItemHovered())
 			{
 				ImGui::SetTooltip("This will select the next weapon in the hotkey list.\r\nThe first weapon in the list is the first weapon it will select, then the second is the one it will select after and so on.\r\nAfter the end of the list, it will wrap back to the first weapon.");
 			}
 
 			static int selected_key = 0;
-			const char* const keys[]{ "1", "2", "3", "4", "5", "6" };
+			const char* const keys[]{"1", "2", "3", "4", "5", "6"};
 
 			ImGui::PushItemWidth(250);
 			ImGui::Combo("Key", &selected_key, keys, IM_ARRAYSIZE(keys));

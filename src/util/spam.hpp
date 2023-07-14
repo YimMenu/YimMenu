@@ -11,6 +11,8 @@ namespace
 	    "www.",
 	    ".cn",
 	    ".CN",
+	    ".cc",
+	    ".CC",
 	    ".TOP",
 	    ".COM",
 	    ".top",
@@ -25,8 +27,6 @@ namespace
 	    "doit#",
 	    "krutka#",
 	    "<b>",
-	    // causes false positives for people typing in cyrillic
-	    // "\xD0\xBC\xD0\xB5", // Cyrillic "me"
 	    "P888",
 	    "gtacash",
 	    "\xE6\x89\xA3\xE6\x89\xA3", // no clue what this is
@@ -39,21 +39,22 @@ namespace
 	    "REP +",
 	    "20R$", // Brazil currency?
 	    "l55.me",
-	    "\xE5\xBA\x97", //"shop" in Chinese
-	    "\xE9\x92\xB1", //"money" in Chinese
-	    "\xE5\x88\xB7", //"make(money)" in Chinese
-	    // disabled as it's too verbose
-	    // "av", //uknowwhat video
-	    "\xE8\x90\x9D\xE8\x8E\x89", //"cute girl" in Chinese
-	    "\xE5\xA6\x88",             //"mother" in Chinese
-	    "\xE7\xBE\x8E\xE5\xA5\xB3", //"sexy girl" in Chinese
-	    "\xE5\xBC\xBA\xE5\xA5\xB8", //"rape" in Chinese
-	    "\xE8\x90\x9D",             //"loli" in Chinese
-	    "\xE6\x8C\x82",             //"hack" in Chinese
-	    "\xE5\x85\x83",             //chinese dollar
+	    "\xE5\xBA\x97",                         //"shop" in Chinese
+	    "\xE9\x92\xB1",                         //"money" in Chinese
+	    "\xE5\x88\xB7",                         //"make(money)" in Chinese
+	    "\xE8\x90\x9D\xE8\x8E\x89",             // "cute girl" in Chinese
+	    "\xE5\xA6\x88",                         // "mother" in Chinese
+	    "\xE7\xBE\x8E\xE5\xA5\xB3",             // "sexy girl" in Chinese
+	    "\xE5\xBC\xBA\xE5\xA5\xB8",             // "rape" in Chinese
+	    "\xE8\x90\x9D",                         // "loli" in Chinese
+	    "\xE6\x8C\x82",                         // "hack" in Chinese
+	    "\xE5\x85\x83",                         // chinese dollar
+	    "\xE9\x98\xB4\xE4\xBC\xA0\xE5\xAA\x92", // "Yin Media" in Chinese
+	    "\xE7\xBD\x91\xE7\xBA\xA2",             // "internet celebrities" in Chinese
 	    "TRUSTPILOT",
 	    "cashlounge",
 	    "Fast Delivery",
+	    "yosativa",
 	};
 }
 
