@@ -2,7 +2,7 @@
 #include "core/enums.hpp"
 #include "gta/enums.hpp"
 #include "util/entity.hpp"
-#include "util/color.hpp"
+#include "core/data/color.hpp"
 
 namespace big
 {

@@ -3,7 +3,7 @@
 #include "backend/looped/looped.hpp"
 #include "natives.hpp"
 #include "script.hpp"
-#include "util/color.hpp"
+#include "core/data/color.hpp"
 
 namespace big
 {
@@ -57,7 +57,7 @@ namespace big
 			delay = std::chrono::milliseconds(((delay_step * 10) + 10) - (g.vehicle.rainbow_paint.speed * delay_step));
 			last_rgb_run_time = std::chrono::system_clock::now();
 		}
-	};
+	}
 
 	bool_command g_rainbow_paint_primary("rainbowpri", "Rainbow Paint: Apply to Primary", "Applies active rainbow effect to the current vehicle's primary color",
 	    g.vehicle.rainbow_paint.primary);

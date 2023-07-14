@@ -709,7 +709,6 @@ namespace big
 
 			struct paintgun
 			{
-				bool debugclear = false; //remove later
 				bool rainbow	= false;
 				float col[4]    = {0.f, 0.f, 1.f, 1.f};
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(paintgun, rainbow, col)

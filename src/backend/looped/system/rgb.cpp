@@ -1,5 +1,5 @@
 #include "backend/looped/looped.hpp"
-#include "util/color.hpp"
+#include "core/data/color.hpp"
 
 namespace big
 {
@@ -18,76 +18,80 @@ namespace big
 			rgb_controller_blue_down,
 		};
 
-		if (g.settings.rainbow.spasm)
-		{
-			rgb.red   = rand() % 256;
-			rgb.green = rand() % 256;
-			rgb.blue  = rand() % 256;
-		}
 
-		if (last_rgb_run_time + delay < std::chrono::system_clock::now() && g.settings.rainbow.fade)
+		if (last_rgb_run_time + delay < std::chrono::system_clock::now())
 		{
 			int delay_step = 100;
-
-			static int rgb_controller_v = rgb_controller_green_up;
-
-			switch (rgb_controller_v)
+			if (g.settings.rainbow.spasm)
 			{
-			case rgb_controller_green_up:
-				rgb.green += 5;
-				if (rgb.green >= 255)
-				{
-					rgb.green        = 255;
-					rgb_controller_v = rgb_controller_red_down;
-				}
-				break;
+				rgb.red   = rand() % 256;
+				rgb.green = rand() % 256;
+				rgb.blue  = rand() % 256;
+			}
+			else if (g.settings.rainbow.fade)
+			{
+				int delay_step = 10;
 
-			case rgb_controller_red_down:
-				rgb.red -= 5;
-				if (rgb.red < 0)
-				{
-					rgb.red          = 0;
-					rgb_controller_v = rgb_controller_blue_up;
-				}
-				break;
+				static int rgb_controller_v = rgb_controller_green_up;
 
-			case rgb_controller_blue_up:
-				rgb.blue += 5;
-				if (rgb.blue >= 255)
+				switch (rgb_controller_v)
 				{
-					rgb.blue         = 255;
-					rgb_controller_v = rgb_controller_green_down;
-				}
-				break;
+				case rgb_controller_green_up:
+					rgb.green += 5;
+					if (rgb.green >= 255)
+					{
+						rgb.green        = 255;
+						rgb_controller_v = rgb_controller_red_down;
+					}
+					break;
 
-			case rgb_controller_green_down:
-				rgb.green -= 5;
-				if (rgb.green < 0)
-				{
-					rgb.green        = 0;
-					rgb_controller_v = rgb_controller_red_up;
-				}
-				break;
+				case rgb_controller_red_down:
+					rgb.red -= 5;
+					if (rgb.red < 0)
+					{
+						rgb.red          = 0;
+						rgb_controller_v = rgb_controller_blue_up;
+					}
+					break;
 
-			case rgb_controller_red_up:
-				rgb.red += 5;
-				if (rgb.red >= 255)
-				{
-					rgb.red          = 255;
-					rgb_controller_v = rgb_controller_blue_down;
-				}
-				break;
+				case rgb_controller_blue_up:
+					rgb.blue += 5;
+					if (rgb.blue >= 255)
+					{
+						rgb.blue         = 255;
+						rgb_controller_v = rgb_controller_green_down;
+					}
+					break;
 
-			case rgb_controller_blue_down:
-				rgb.blue -= 5;
-				if (rgb.blue < 0)
-				{
-					rgb.blue         = 0;
-					rgb_controller_v = rgb_controller_green_up;
-				}
-				break;
+				case rgb_controller_green_down:
+					rgb.green -= 5;
+					if (rgb.green < 0)
+					{
+						rgb.green        = 0;
+						rgb_controller_v = rgb_controller_red_up;
+					}
+					break;
 
-			default: break;
+				case rgb_controller_red_up:
+					rgb.red += 5;
+					if (rgb.red >= 255)
+					{
+						rgb.red          = 255;
+						rgb_controller_v = rgb_controller_blue_down;
+					}
+					break;
+
+				case rgb_controller_blue_down:
+					rgb.blue -= 5;
+					if (rgb.blue < 0)
+					{
+						rgb.blue         = 0;
+						rgb_controller_v = rgb_controller_green_up;
+					}
+					break;
+
+				default: break;
+				}
 			}
 
 			delay = std::chrono::milliseconds(((delay_step * 10) + 10) - (g.settings.rainbow.speed * delay_step));

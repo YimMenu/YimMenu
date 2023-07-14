@@ -151,7 +151,6 @@ namespace big
 		case CustomWeapon::PAINT_GUN:
 			ImGui::Checkbox("Rainbow Color", &g.weapons.paintgun.rainbow);
 			if (!g.weapons.paintgun.rainbow) { ImGui::ColorEdit4("Paint Gun Color", g.weapons.paintgun.col); }
-			ImGui::Checkbox("Clear decal", &g.weapons.paintgun.debugclear);
 		}
 
 		ImGui::SeparatorText("Aim Assistance");
