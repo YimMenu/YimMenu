@@ -22,7 +22,7 @@ namespace big
 	{
 		ImGui::BeginGroup();
 		components::sub_title("Rid joiner");
-		if (ImGui::BeginListBox("##ridjoiner", {.5f * 750, 195.f}))
+		if (ImGui::BeginListBox("##ridjoiner", get_listbox_dimensions()))
 		{
 			static uint64_t rid = 0;
 			static char username[20];
@@ -479,10 +479,10 @@ namespace big
 			ImGui::SetTooltip("DISABLE_CEO_MONEY_DESC"_T.data());
 		ImGui::SameLine();
 		ImGui::Checkbox("Block Jobs", &g.session.block_jobs);
-
-		ImGui::Checkbox("Random CEO Colors", &g.session.randomize_ceo_colors);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Prevents remote players from starting jobs while in your session");
+
+		ImGui::Checkbox("RANDOMIZE_CEO_COLORS"_T.data(), &g.session.randomize_ceo_colors);
 		ImGui::SameLine();
 		components::script_patch_checkbox("Block Muggers", &g.session.block_muggers, "For the entire session");
 
