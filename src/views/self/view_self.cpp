@@ -29,6 +29,8 @@ namespace big
 
 		components::command_checkbox<"godmode">();
 		components::command_checkbox<"otr">();
+		if (g.self.off_radar)
+			components::command_checkbox<"ghostorg">();
 		components::command_checkbox<"freecam">();
 		components::command_checkbox<"nophone">();
 		components::command_checkbox<"infoxy">();
@@ -36,7 +38,6 @@ namespace big
 		components::command_checkbox<"invis">();
 		if (g.self.invisibility)
 			components::command_checkbox<"localvis">(); // TODO: does nothing in SP
-		components::command_checkbox<"nocollision">();
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
@@ -51,6 +52,7 @@ namespace big
 			components::command_checkbox<"beastjump">();
 		if (!g.self.beast_jump)
 			components::command_checkbox<"superjump">();
+		components::command_checkbox<"nocollision">();
 
 		ImGui::EndGroup();
 		ImGui::SameLine();

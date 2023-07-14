@@ -28,5 +28,5 @@ namespace big
 	};
 
 	off_radar g_off_radar("otr", "OFF_RADAR", "OFF_RADAR_DESC", g.self.off_radar);
-	bool_command ghost_org("ghostorg", "Ghost Org", "Ghost Organization for free.", g.self.ghost_org);
+	bool_command ghost_org("ghostorg", "Ghost Org", "Use Ghost Organization instead of standard off radar.", g.self.ghost_org);
 }
