@@ -47,8 +47,10 @@ namespace big
 			ImGui::SameLine();
 			components::button("JOIN_SESSION_INFO"_T, [] {
 				rage::rlSessionInfo info;
-				g_pointers->m_gta.m_decode_session_info(&info, base64, nullptr);
-				session::join_session(info);
+				if (g_pointers->m_gta.m_decode_session_info(&info, base64, nullptr))
+					session::join_session(info);
+				else
+					g_notification_service->push_error("Join", "Session info is invalid");
 			});
 
 			components::button("COPY_SESSION_INFO"_T, [] {

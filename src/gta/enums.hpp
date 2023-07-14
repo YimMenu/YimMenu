@@ -1948,3 +1948,19 @@ enum class eCombatAbilityLevel
 };
 
 NLOHMANN_JSON_SERIALIZE_ENUM(eCombatAbilityLevel, {{eCombatAbilityLevel::POOR, "poor"}, {eCombatAbilityLevel::AVERAGE, "average"}, {eCombatAbilityLevel::PROFESSIONAL, "professional"}})
+
+enum class GSType : int32_t
+{
+	Unknown = -2,
+
+	// actual values start here
+	Invalid = -1,
+	InviteOnly,
+	FriendsOnly,
+	ClosedCrew,
+	OpenCrew,
+	Job,
+	Public,
+	Max,
+	Modder = 69 // stand?
+};
