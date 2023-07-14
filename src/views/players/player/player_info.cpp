@@ -40,11 +40,11 @@ namespace big
 
 				    if (id != -1)
 				    {
-					    auto& stats          = scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].PlayerStats;
-					    auto& boss_goon      = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[id].BossGoon;
+					    auto& stats     = scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].PlayerStats;
+					    auto& boss_goon = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[id].BossGoon;
 
-					    const auto money = reinterpret_cast<uint64_t&>(stats.Money);
-						const auto wallet = reinterpret_cast<uint64_t&>(stats.WalletBalance);
+					    const auto money  = reinterpret_cast<uint64_t&>(stats.Money);
+					    const auto wallet = reinterpret_cast<uint64_t&>(stats.WalletBalance);
 
 					    if (boss_goon.Language >= 0 && boss_goon.Language < 13)
 						    ImGui::Text("PLAYER_INFO_LANGUAGE"_T.data(), languages[boss_goon.Language].name);
@@ -69,6 +69,11 @@ namespace big
 				    }
 
 				    ImGui::Checkbox("Block Explosions", &g_player_service->get_selected()->block_explosions);
+				    ImGui::Checkbox("Block Clone Creates", &g_player_service->get_selected()->block_clone_create);
+				    ImGui::Checkbox("Block Clone Syncs", &g_player_service->get_selected()->block_clone_sync);
+				    ImGui::Checkbox("Block Network Events", &g_player_service->get_selected()->block_net_events);
+
+				    ImGui::Separator();
 
 				    if (ImGui::BeginCombo("CHAT_COMMAND_PERMISSIONS"_T.data(),
 				            COMMAND_ACCESS_LEVELS[g_player_service->get_selected()->command_access_level.value_or(
