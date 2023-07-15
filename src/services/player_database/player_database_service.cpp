@@ -376,11 +376,6 @@ namespace big
 							std::string mission_id   = contexts[i][7].m_presence_attribute_string_value;
 							std::string mission_name = contexts[i][6].m_presence_attribute_string_value;
 
-							LOG(INFO) << (int)contexts[i][0].m_presence_attribute_int_value << " " << contexts[i][2].m_presence_attribute_int_value << " "
-							          << contexts[i][3].m_presence_attribute_int_value << " " << contexts[i][5].m_presence_attribute_int_value << " "
-							          << contexts[i][8].m_presence_attribute_int_value << " " << contexts[i][7].m_presence_attribute_string_value << " "
-							          << contexts[i][6].m_presence_attribute_string_value;
-
 							if (contexts[i][1].m_presence_attribute_string_value[0] == 0
 							    || !g_pointers->m_gta.m_decode_session_info(&info, contexts[i][1].m_presence_attribute_string_value, nullptr))
 								gstype = GSType::Invalid;
