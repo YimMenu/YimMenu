@@ -29,6 +29,10 @@ namespace big
 		std::shared_ptr<persistent_player> m_selected = nullptr;
 
 		void handle_session_type_change(persistent_player& player, GSType new_session_type);
+		static void handle_game_mode_change(std::uint64_t rid, GameMode old_game_mode, GameMode new_game_mode, std::string mission_id, std::string mission_name); // run in fiber pool
+		bool join_being_redirected = false;
+		void handle_join_redirect();
+		std::atomic_bool updating = false;
 
 	public:
 		std::filesystem::path m_file_path;
@@ -54,6 +58,13 @@ namespace big
 
 		static bool is_joinable_session(GSType type);
 		static const char* get_session_type_str(GSType type);
+		static const char* get_game_mode_str(GameMode mode);
+		static bool can_fetch_name(GameMode mode);
+		static const char* get_name_by_content_id(const std::string& content_id);
+		inline bool is_redirect_join_active()
+		{
+			return join_being_redirected;
+		}
 	};
 
 	inline player_database_service* g_player_database_service;
