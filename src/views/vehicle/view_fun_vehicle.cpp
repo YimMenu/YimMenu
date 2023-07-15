@@ -14,7 +14,6 @@ namespace big
 {
 	void view::fun_vehicle()
 	{
-		
 		ImGui::SeparatorText("SEAT_CHANGER"_T.data());
 		{
 			static std::map<int, bool> seats;
@@ -134,6 +133,34 @@ namespace big
 			if (components::button("EMERGENCY_STOP"_T))
 				g.vehicle.auto_drive_destination = AutoDriveDestination::EMERGENCY_STOP;
 		}
+
+		ImGui::SeparatorText("DIRT_LEVEL"_T.data());
+		{
+			if (!ENTITY::DOES_ENTITY_EXIST(self::veh))
+			{
+				ImGui::Text("PLEASE_ENTER_VEHICLE"_T.data());
+				return;
+			}
+
+			if (g.vehicle.keep_vehicle_clean)
+			{
+				ImGui::Text("KEEP_VEHICLE_CLEAN"_T.data());
+				return;
+			}
+
+			if (g.vehicle.keep_vehicle_repaired)
+			{
+				ImGui::Text("KEEP_VEHICLE_REPAIRED"_T.data());
+				return;
+			}
+
+			float dirt_level = VEHICLE::GET_VEHICLE_DIRT_LEVEL(self::veh);
+			if (ImGui::SliderFloat("DIRT_LEVEL"_T.data(), &dirt_level, 0.f, 15.f, "%.1f"))
+			{
+				VEHICLE::SET_VEHICLE_DIRT_LEVEL(self::veh, dirt_level);
+			}
+		}
+
 		ImGui::SeparatorText("RAINBOW_PAINT"_T.data());
 		{
 			components::command_checkbox<"rainbowpri">("PRIMARY"_T);
@@ -175,7 +202,10 @@ namespace big
 		}
 		ImGui::Separator();
 
-		const char* boost_behaviors[] = {"DEFAULT"_T.data(), "INSTANT_REFILL"_T.data(), "INFINITE"_T.data(), "HOLD_FOR_BOOST"_T.data()};
+		const char* boost_behaviors[] = {"DEFAULT"_T.data(),
+		    "INSTANT_REFILL"_T.data(),
+		    "INFINITE"_T.data(),
+		    "HOLD_FOR_BOOST"_T.data()};
 		if (ImGui::BeginCombo("BOOST_BEHAVIOR"_T.data(), boost_behaviors[static_cast<int>(g.vehicle.boost_behavior)]))
 		{
 			for (int i = 0; i < 4; i++)
