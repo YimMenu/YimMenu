@@ -478,8 +478,6 @@ namespace big
 				else
 				{
 					LOG(WARNING) << "Presence attribute endpoint failed";
-					for (auto& id : bucket)
-						LOG(INFO) << id.m_rockstar_id << " " << (int)id.m_platform << " " << (int)id.unk_0008;
 				}
 			}
 		}
