@@ -272,6 +272,8 @@ namespace big
 		functions::get_title_caption_error_message_box m_get_title_caption_error_message_box{};
 
 		PVOID m_send_non_physical_player_data;
+
+		void** m_presence_data{};
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

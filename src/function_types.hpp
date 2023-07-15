@@ -149,4 +149,7 @@ namespace big::functions
 	using get_host_array_handler_by_index = rage::netArrayHandlerBase* (*)(CGameScriptHandlerNetComponent* component, int index);
 
 	using get_title_caption_error_message_box = const wchar_t* (*)(rage::joaat_t joaated_error_code);
+
+	using update_presence_attribute_int = void (*)(void* presence_data, int profile_index, char* attr, std::uint64_t value);
+	using update_presence_attribute_string = void (*)(void* presence_data, int profile_index, char* attr, char* value);
 }

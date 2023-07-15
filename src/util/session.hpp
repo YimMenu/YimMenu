@@ -58,6 +58,10 @@ namespace big::session
 		{
 			*scr_globals::transition_state.as<eTransitionState*>() = eTransitionState::TRANSITION_STATE_LOOK_TO_JOIN_ANOTHER_SESSION_FM;
 		}
+		else if (session == eSessionType::LEAVE_ONLINE)
+		{
+			*scr_globals::transition_state.as<eTransitionState*>() = eTransitionState::TRANSITION_STATE_RETURN_TO_SINGLEPLAYER;
+		}
 
 		scr_functions::reset_session_data({true, true});
 		*script_global(32284).as<int*>()   = 0;

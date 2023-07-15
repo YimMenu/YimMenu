@@ -36,6 +36,7 @@ namespace nlohmann
 }
 
 enum class GSType : int32_t;
+enum class GameMode : int32_t;
 
 namespace big
 {
@@ -50,10 +51,22 @@ namespace big
 		std::unordered_set<int> infractions;
 		std::string notes                                      = "";
 		std::optional<CommandAccessLevel> command_access_level = std::nullopt;
-		GSType session_type                                    = GSType(-2);
-		int64_t session_id                                     = -1;
+		bool join_redirect                                     = false;
+		int join_redirect_preference                           = 1;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(persistent_player, name, rockstar_id, block_join, block_join_reason, is_modder, notify_online, infractions, notes, command_access_level)
+		// non-persistent tracker info
+		GSType session_type                = GSType(-2);
+		int64_t session_id                 = -1;
+		bool is_spectating                 = false;
+		bool is_host_of_session            = false;
+		int64_t transition_session_id      = -1;
+		bool is_host_of_transition_session = false;
+		GameMode game_mode                 = GameMode(-1);
+		std::string game_mode_name         = "Unknown";
+		std::string game_mode_id           = "";
+		rage::rlSessionInfo redirect_info{};
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(persistent_player, name, rockstar_id, block_join, block_join_reason, is_modder, notify_online, infractions, notes, command_access_level, join_redirect, join_redirect_preference)
 	};
 
 };

@@ -88,6 +88,8 @@ namespace big
 						int f1 = NETWORK::UGC_GET_CONTENT_FILE_VERSION(0, 1);
 						int f0 = NETWORK::UGC_GET_CONTENT_FILE_VERSION(0, 0);
 
+						NETWORK::UGC_GET_CONTENT_NAME(0);
+
 						if (g_api_service->download_job_metadata(content_id, f1 < 0 ? 0 : f1, f0 < 0 ? 0 : f0, NETWORK::UGC_GET_CONTENT_LANGUAGE(0)))
 						{
 							cached_creator_files = false;
