@@ -2,6 +2,7 @@
 
 #include "bindings/command.hpp"
 #include "bindings/event.hpp"
+#include "bindings/global_table.hpp"
 #include "bindings/globals.hpp"
 #include "bindings/gui.hpp"
 #include "bindings/locals.hpp"
@@ -12,7 +13,6 @@
 #include "bindings/script.hpp"
 #include "bindings/tunables.hpp"
 #include "bindings/vector.hpp"
-#include "bindings/global_table.hpp"
 #include "file_manager.hpp"
 #include "script_mgr.hpp"
 
@@ -52,6 +52,7 @@ namespace big
 
 		auto& state = *m_state;
 
+		// clang-format off
 		state.open_libraries(
 			sol::lib::base,
 			sol::lib::package,
@@ -63,6 +64,7 @@ namespace big
 			sol::lib::bit32,
 			sol::lib::utf8
 		);
+		// clang-format on
 
 		init_lua_api();
 
@@ -140,12 +142,22 @@ namespace big
 		const auto& os = state["os"];
 		sol::table sandbox_os(state, sol::create);
 
-		sandbox_os["clock"]     = os["clock"];
-		sandbox_os["date"]      = os["date"];
-		sandbox_os["difftime"]	= os["difftime"];
-		sandbox_os["time"]      = os["time"];
+		sandbox_os["clock"]    = os["clock"];
+		sandbox_os["date"]     = os["date"];
+		sandbox_os["difftime"] = os["difftime"];
+		sandbox_os["time"]     = os["time"];
 
 		state["os"] = sandbox_os;
+	}
+
+	template<size_t N>
+	static constexpr auto not_supported_lua_function(const char (&function_name)[N])
+	{
+		return [function_name](sol::this_state current_state, sol::variadic_args args) {
+			const auto module = sol::state_view(current_state)["!this"].get<big::lua_module*>();
+
+			LOG(FATAL) << module->module_name() << " tried calling a currently not supported lua function: " << function_name;
+		};
 	}
 
 	void lua_module::sandbox_lua_loads()
@@ -153,20 +165,20 @@ namespace big
 		auto& state = *m_state;
 
 		// That's from lua base lib, luaB
-		state.set_function("load", nullptr);
-		state.set_function("loadstring", nullptr);
-		state.set_function("loadfile", nullptr);
-		state.set_function("dofile", nullptr);
+		state["load"]       = not_supported_lua_function("load");
+		state["loadstring"] = not_supported_lua_function("loadstring");
+		state["loadfile"]   = not_supported_lua_function("loadfile");
+		state["dofile"]     = not_supported_lua_function("dofile");
 
 		// That's from lua package lib.
 		// We only allow dependencies between .lua files, no DLLs.
-		state["package"]["loadlib"] = nullptr;
+		state["package"]["loadlib"] = not_supported_lua_function("package.loadlib");
 		state["package"]["cpath"]   = "";
 
 		// 1                   2               3            4
 		// {searcher_preload, searcher_Lua, searcher_C, searcher_Croot, NULL};
-		state["package"]["searchers"][3]   = nullptr;
-		state["package"]["searchers"][4] = nullptr;
+		state["package"]["searchers"][3] = not_supported_lua_function("package.searcher C");
+		state["package"]["searchers"][4] = not_supported_lua_function("package.searcher Croot");
 
 		set_folder_for_lua_require();
 	}
