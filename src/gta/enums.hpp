@@ -2020,3 +2020,16 @@ enum class GSType : int32_t
 	Max,
 	Modder = 69 // stand?
 };
+
+enum class GameMode : int32_t
+{
+	None          = -1,
+	Mission       = 0,
+	Deathmatch    = 1, // or koth
+	Race          = 2,
+	Survival      = 3,
+	GangAttack    = 6,
+	Golf          = 0xB,
+	Tennis        = 0xC,
+	ShootingRange = 0xD
+};

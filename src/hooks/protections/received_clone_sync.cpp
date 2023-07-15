@@ -20,7 +20,7 @@ namespace big
 
 		auto plyr = g_player_service->get_by_id(src->m_player_id);
 
-		if (plyr && plyr->block_clone_create)
+		if (plyr && plyr->block_clone_sync)
 			return eAckCode::ACKCODE_FAIL;
 
 		g.m_syncing_player = src;

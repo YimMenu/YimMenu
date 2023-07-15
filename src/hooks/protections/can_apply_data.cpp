@@ -34,6 +34,7 @@ namespace big
 	struct sync_node_id
 	{
 		Hash id;
+		const char* name;
 
 		constexpr sync_node_id()
 		{
@@ -43,7 +44,8 @@ namespace big
 		template<size_t N>
 		constexpr sync_node_id(char const (&pp)[N])
 		{
-			id = rage::consteval_joaat(pp);
+			id   = rage::consteval_joaat(pp);
+			name = pp;
 		}
 
 		// implicit conversion
@@ -728,6 +730,113 @@ namespace big
 		return !crash;
 	}
 
+#define LOG_FIELD_H(type, field) LOG(INFO) << "\t" << #field << ": " << HEX_TO_UPPER((((type*)(node))->field));
+#define LOG_FIELD(type, field) LOG(INFO) << "\t" << #field << ": " << ((((type*)(node))->field));
+#define LOG_FIELD_C(type, field) LOG(INFO) << "\t" << #field << ": " << (int)((((type*)(node))->field));
+#define LOG_FIELD_B(type, field) LOG(INFO) << "\t" << #field << ": " << ((((type*)(node))->field) ? "YES" : "NO");
+#define LOG_FIELD_V3(type, field)                                                                                    \
+	LOG(INFO) << "\t" << #field << ": X: " << ((((type*)(node))->field)).x << " Y: " << ((((type*)(node))->field)).y \
+	          << " Z: " << ((((type*)(node))->field)).z;
+#define LOG_FIELD_V4(type, field)                                                                                    \
+	LOG(INFO) << "\t" << #field << ": X: " << ((((type*)(node))->field)).x << " Y: " << ((((type*)(node))->field)).y \
+	          << " Z: " << ((((type*)(node))->field)).z << " W: " << ((((type*)(node))->field)).w;
+
+	void log_node(sync_node_id node_id, player_ptr sender, CProjectBaseSyncDataNode* node)
+	{
+		LOG(INFO) << sender->get_name() << ": " << node_id.name;
+
+		switch (node_id)
+		{
+		case sync_node_id("CVehicleCreationDataNode"):
+			LOG_FIELD(CVehicleCreationDataNode, m_pop_type);
+			LOG_FIELD(CVehicleCreationDataNode, m_random_seed);
+			LOG_FIELD_H(CVehicleCreationDataNode, m_model);
+			LOG_FIELD(CVehicleCreationDataNode, m_vehicle_status);
+			LOG_FIELD(CVehicleCreationDataNode, m_max_health);
+			LOG_FIELD(CVehicleCreationDataNode, m_creation_token);
+			LOG_FIELD_B(CVehicleCreationDataNode, m_needs_to_be_hotwired);
+			LOG_FIELD_B(CVehicleCreationDataNode, m_tires_dont_burst);
+			break;
+		case sync_node_id("CPedCreationDataNode"):
+			LOG_FIELD(CPedCreationDataNode, m_pop_type);
+			LOG_FIELD_H(CPedCreationDataNode, m_model);
+			LOG_FIELD(CPedCreationDataNode, m_random_seed);
+			LOG_FIELD(CPedCreationDataNode, m_max_health);
+			LOG_FIELD_B(CPedCreationDataNode, m_in_vehicle);
+			LOG_FIELD(CPedCreationDataNode, pad_0xD1[0]);
+			LOG_FIELD(CPedCreationDataNode, m_vehicle_id);
+			LOG_FIELD(CPedCreationDataNode, m_vehicle_seat);
+			LOG_FIELD_B(CPedCreationDataNode, m_has_prop);
+			LOG_FIELD(CPedCreationDataNode, m_prop_model);
+			LOG_FIELD_B(CPedCreationDataNode, m_is_standing);
+			LOG_FIELD_B(CPedCreationDataNode, m_is_respawn_object_id);
+			LOG_FIELD_B(CPedCreationDataNode, m_is_respawn_flagged_for_removal);
+			LOG_FIELD_B(CPedCreationDataNode, m_has_attr_damage_to_player);
+			LOG_FIELD_C(CPedCreationDataNode, m_attribute_damage_to_player);
+			LOG_FIELD_H(CPedCreationDataNode, m_voice_hash);
+			break;
+		case sync_node_id("CObjectCreationDataNode"):
+			LOG_FIELD(CObjectCreationDataNode, unk_00C0);
+			LOG_FIELD_V4(CObjectCreationDataNode, m_object_orientation);
+			LOG_FIELD_V3(CObjectCreationDataNode, m_object_position);
+			LOG_FIELD_V3(CObjectCreationDataNode, m_dummy_position);
+			LOG_FIELD_V3(CObjectCreationDataNode, m_script_grab_position);
+			LOG_FIELD(CObjectCreationDataNode, m_script_grab_radius);
+			LOG_FIELD(CObjectCreationDataNode, m_created_by);
+			LOG_FIELD_H(CObjectCreationDataNode, m_model);
+			LOG_FIELD(CObjectCreationDataNode, m_frag_group_index);
+			LOG_FIELD(CObjectCreationDataNode, m_ownership_token);
+			LOG_FIELD(CObjectCreationDataNode, unk_015C);
+			LOG_FIELD_B(CObjectCreationDataNode, m_no_reassign);
+			LOG_FIELD_B(CObjectCreationDataNode, unk_0161);
+			LOG_FIELD_B(CObjectCreationDataNode, m_player_wants_control);
+			LOG_FIELD_B(CObjectCreationDataNode, m_has_init_physics);
+			LOG_FIELD_B(CObjectCreationDataNode, m_script_grabbed_from_world);
+			LOG_FIELD_B(CObjectCreationDataNode, m_has_frag_group);
+			LOG_FIELD_B(CObjectCreationDataNode, m_is_broken);
+			LOG_FIELD_B(CObjectCreationDataNode, m_has_exploded);
+			LOG_FIELD_B(CObjectCreationDataNode, m_keep_registered);
+			LOG_FIELD_B(CObjectCreationDataNode, m_has_frag_group);
+			LOG_FIELD_B(CObjectCreationDataNode, unk_0169);
+			LOG_FIELD_B(CObjectCreationDataNode, unk_016A);
+			LOG_FIELD_B(CObjectCreationDataNode, unk_016B);
+			break;
+		case sync_node_id("CTrainGameStateDataNode"):
+			LOG_FIELD_B(CTrainGameStateDataNode, m_is_engine);
+			LOG_FIELD_B(CTrainGameStateDataNode, m_is_caboose);
+			LOG_FIELD_B(CTrainGameStateDataNode, m_is_mission_train);
+			LOG_FIELD_B(CTrainGameStateDataNode, m_direction);
+			LOG_FIELD_B(CTrainGameStateDataNode, m_has_passenger_carriages);
+			LOG_FIELD_B(CTrainGameStateDataNode, m_render_derailed);
+			LOG_FIELD_B(CTrainGameStateDataNode, unk_00C6);
+			LOG_FIELD_B(CTrainGameStateDataNode, unk_00C7);
+			LOG_FIELD(CTrainGameStateDataNode, m_engine_id);
+			LOG_FIELD_C(CTrainGameStateDataNode, m_train_config_index);
+			LOG_FIELD_C(CTrainGameStateDataNode, m_carriage_config_index);
+			LOG_FIELD_C(CTrainGameStateDataNode, m_track_id);
+			LOG_FIELD(CTrainGameStateDataNode, m_distance_from_engine);
+			LOG_FIELD(CTrainGameStateDataNode, m_cruise_speed);
+			LOG_FIELD(CTrainGameStateDataNode, m_linked_to_backward_id);
+			LOG_FIELD(CTrainGameStateDataNode, m_linked_to_forward_id);
+			LOG_FIELD(CTrainGameStateDataNode, m_train_state);
+			LOG_FIELD_B(CTrainGameStateDataNode, unk_00E0);
+			LOG_FIELD_B(CTrainGameStateDataNode, m_force_doors_open);
+			break;
+		case sync_node_id("CDynamicEntityGameStateDataNode"):
+			LOG_FIELD(CDynamicEntityGameStateDataNode, m_interior_index);
+			LOG_FIELD_B(CDynamicEntityGameStateDataNode, unk_00C4);
+			LOG_FIELD_B(CDynamicEntityGameStateDataNode, unk_00C5);
+			LOG_FIELD(CDynamicEntityGameStateDataNode, m_decor_count);
+			for (int i = 0; i < ((CDynamicEntityGameStateDataNode*)node)->m_decor_count; i++)
+			{
+				LOG_FIELD(CDynamicEntityGameStateDataNode, m_decors[i].m_type);
+				LOG_FIELD_H(CDynamicEntityGameStateDataNode, m_decors[i].m_name_hash);
+				LOG_FIELD(CDynamicEntityGameStateDataNode, m_decors[i].m_value);
+			}
+			break;
+		}
+	}
+
 	bool check_node(rage::netSyncNodeBase* node, CNetGamePlayer* sender, rage::netObject* object)
 	{
 		if (node->IsParentNode())
@@ -747,6 +856,9 @@ namespace big
 			{
 				if ((((CProjectBaseSyncDataNode*)node)->flags & 1) == 0)
 					continue;
+
+				if (sender_plyr && sender_plyr->log_clones)
+					log_node(node_id, sender_plyr, (CProjectBaseSyncDataNode*)node);
 
 				switch (node_id)
 				{

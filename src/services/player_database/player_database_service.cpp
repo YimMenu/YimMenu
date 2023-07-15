@@ -3,13 +3,30 @@
 #include "backend/bool_command.hpp"
 #include "file_manager.hpp"
 #include "gta/enums.hpp"
+#include "hooking.hpp"
 #include "pointers.hpp"
 #include "util/session.hpp"
 
 namespace big
 {
-	bool_command g_player_db_auto_update_online_states("player_db_auto_update_states", "Auto Update Tracked Player States", "Toggling this feature will automatically update the tracked players' online states every minute",
+	bool_command g_player_db_auto_update_online_states("player_db_auto_update_states", "Auto Update Tracked Player States", "Toggling this feature will automatically update the tracked players' online states every minute. You must enable this for join redirect to work",
 	    g.player_db.update_player_online_states);
+
+	const char* player_database_service::get_name_by_content_id(const std::string& content_id)
+	{
+		if (NETWORK::UGC_QUERY_BY_CONTENT_ID(content_id.c_str(), false, "gta5mission"))
+		{
+			while (NETWORK::UGC_IS_GETTING())
+				script::get_current()->yield();
+
+			if (!NETWORK::UGC_DID_GET_SUCCEED())
+				return "";
+
+			return NETWORK::UGC_GET_CONTENT_NAME(0);
+		}
+
+		return "";
+	}
 
 	void player_database_service::handle_session_type_change(persistent_player& player, GSType new_session_type)
 	{
@@ -36,6 +53,84 @@ namespace big
 		if (g.player_db.notify_on_session_type_change && (int)new_session_type >= (int)GSType::InviteOnly && (int)new_session_type < (int)GSType::Max)
 		{
 			g_notification_service->push("Player DB", std::format("{} is now in a{} {} session", player.name, new_session_type == GSType::InviteOnly ? "n" : "", get_session_type_str(new_session_type)));
+		}
+	}
+
+	void player_database_service::handle_game_mode_change(std::uint64_t rid, GameMode old_game_mode, GameMode new_game_mode, std::string mission_id, std::string mission_name)
+	{
+		const char* old_game_mode_str = get_game_mode_str(old_game_mode);
+		const char* new_game_mode_str = get_game_mode_str(new_game_mode);
+		auto player                   = g_player_database_service->get_player_by_rockstar_id(rid);
+
+		if (new_game_mode == GameMode::None && old_game_mode != GameMode::None && old_game_mode_str != "None")
+		{
+			g_notification_service->push("Player DB", std::format("{} is no longer in a {}", player->name, old_game_mode_str));
+			return;
+		}
+
+		if (!can_fetch_name(new_game_mode))
+		{
+			if (new_game_mode_str != "None")
+				g_notification_service->push("Player DB", std::format("{} is now in a {}", player->name, new_game_mode_str));
+
+			return;
+		}
+
+		if (mission_name.empty())
+		{
+			mission_name = get_name_by_content_id(mission_id);
+		}
+
+		if (mission_name.empty())
+		{
+			g_notification_service->push("Player DB", std::format("{} is now in a {}", player->name, new_game_mode_str));
+			return;
+		}
+
+		g_notification_service->push("Player DB", std::format("{} has joined the {} \"{}\"", player->name, new_game_mode_str, mission_name));
+		player->game_mode_name = mission_name;
+	}
+
+	void player_database_service::handle_join_redirect()
+	{
+		if (!*g_pointers->m_gta.m_presence_data)
+			return;
+
+		int current_preference_level = 0;
+		rage::rlSessionInfo preferred_session{};
+
+		for (auto& player : m_players)
+		{
+			if (player.second->join_redirect && is_joinable_session(player.second->session_type)
+			    && current_preference_level < player.second->join_redirect_preference)
+			{
+				current_preference_level = player.second->join_redirect_preference;
+				preferred_session        = player.second->redirect_info;
+			}
+		}
+
+		if (current_preference_level != 0)
+		{
+			join_being_redirected = true;
+			char buf[0x100]{};
+			g_pointers->m_gta.m_encode_session_info(&preferred_session, buf, 0xA9, nullptr);
+
+			g_hooking->get_original<hooks::update_presence_attribute_string>()(*g_pointers->m_gta.m_presence_data, 0, (char*)"gsinfo", buf);
+			g_hooking->get_original<hooks::update_presence_attribute_int>()(*g_pointers->m_gta.m_presence_data,
+			    0,
+			    (char*)"gstok",
+			    preferred_session.m_session_token);
+			g_hooking->get_original<hooks::update_presence_attribute_int>()(*g_pointers->m_gta.m_presence_data,
+			    0,
+			    (char*)"gsid",
+			    preferred_session.m_unk);
+			g_hooking->get_original<hooks::update_presence_attribute_int>()(*g_pointers->m_gta.m_presence_data, 0, (char*)"gstype", 5);
+			g_hooking->get_original<hooks::update_presence_attribute_int>()(*g_pointers->m_gta.m_presence_data, 0, (char*)"gshost", 0);
+			g_hooking->get_original<hooks::update_presence_attribute_int>()(*g_pointers->m_gta.m_presence_data, 0, (char*)"gsjoin", 1);
+		}
+		else
+		{
+			join_being_redirected = false;
 		}
 	}
 
@@ -183,12 +278,14 @@ namespace big
 			while (g_running && g.player_db.update_player_online_states)
 			{
 				const auto cur = std::chrono::high_resolution_clock::now();
-				if (cur - last_update > 45s)
+				if (cur - last_update > 45s && !updating)
 				{
+					updating = true;
 					g_fiber_pool->queue_job([this] {
 						update_player_states(true);
+						updating    = false;
+						last_update = std::chrono::high_resolution_clock::now();
 					});
-					last_update = cur;
 				}
 
 				std::this_thread::sleep_for(1s);
@@ -198,17 +295,21 @@ namespace big
 
 	void player_database_service::update_player_states(bool tracked_only)
 	{
-		const auto player_count    = m_players.size();
 		constexpr auto bucket_size = 100;
 
-		std::vector<std::vector<rage::rlScHandle>> gamer_handle_buckets;
-		gamer_handle_buckets.resize(std::ceil(player_count / (float)bucket_size));
+		std::vector<std::vector<rage::rlScHandle>> gamer_handle_buckets{};
 
 		size_t i = 0;
 		for (auto& player : m_players)
 		{
-			if (!tracked_only || player.second->notify_online)
+			if (!tracked_only || (player.second->notify_online || player.second->join_redirect))
 			{
+				if (gamer_handle_buckets.size() <= i / bucket_size)
+					gamer_handle_buckets.push_back({});
+
+				if (player.second->rockstar_id == 0 || ((int64_t)player.second->rockstar_id) < 0)
+					continue;
+
 				gamer_handle_buckets[i / bucket_size].push_back(player.second->rockstar_id);
 				i++;
 			}
@@ -220,20 +321,35 @@ namespace big
 		for (auto& bucket : gamer_handle_buckets)
 		{
 			rage::rlTaskStatus status{};
-			rage::rlQueryPresenceAttributesContext contexts[bucket_size][2]{};
+
+			rage::rlQueryPresenceAttributesContext contexts[bucket_size][9]{};
 			rage::rlQueryPresenceAttributesContext* contexts_per_player[bucket_size]{};
 
-			for (int i = 0; i < bucket_size; i++)
+			for (int i = 0; i < bucket.size(); i++)
 			{
-				contexts[i][0].m_presence_attibute_type = 3;
+				contexts[i][0].m_presence_attibute_type = 1;
 				strcpy(contexts[i][0].m_presence_attribute_key, "gstype");
-				strcpy(contexts[i][0].m_presence_attribute_value, "-1");
-				contexts[i][1].m_presence_attibute_type = 3;
+				contexts[i][0].m_presence_attribute_int_value = -1;
+				contexts[i][1].m_presence_attibute_type       = 3;
 				strcpy(contexts[i][1].m_presence_attribute_key, "gsinfo");
+				contexts[i][2].m_presence_attibute_type = 1;
+				strcpy(contexts[i][2].m_presence_attribute_key, "sctv");
+				contexts[i][3].m_presence_attibute_type = 1;
+				strcpy(contexts[i][3].m_presence_attribute_key, "gshost");
+				contexts[i][4].m_presence_attibute_type = 3;
+				strcpy(contexts[i][4].m_presence_attribute_key, "trinfo");
+				contexts[i][5].m_presence_attibute_type = 1;
+				strcpy(contexts[i][5].m_presence_attribute_key, "trhost");
+				contexts[i][6].m_presence_attibute_type = 3;
+				strcpy(contexts[i][6].m_presence_attribute_key, "mp_mis_str");
+				contexts[i][7].m_presence_attibute_type = 3;
+				strcpy(contexts[i][7].m_presence_attribute_key, "mp_mis_id");
+				contexts[i][8].m_presence_attibute_type = 1;
+				strcpy(contexts[i][8].m_presence_attribute_key, "mp_curr_gamemode");
 				contexts_per_player[i] = contexts[i];
 			}
 
-			if (g_pointers->m_sc.m_start_get_presence_attributes(0, bucket.data(), bucket.size(), contexts_per_player, 2, &status))
+			if (g_pointers->m_sc.m_start_get_presence_attributes(0, bucket.data(), bucket.size(), contexts_per_player, 9, &status))
 			{
 				while (status.status == 1)
 				{
@@ -247,26 +363,110 @@ namespace big
 						if (const auto& it = m_players.find(bucket[i].m_rockstar_id); it != m_players.end())
 						{
 							rage::rlSessionInfo info{};
-							info.m_session_token = -1;
-							GSType gstype        = (GSType)atoi(contexts[i][0].m_presence_attribute_value);
+							rage::rlSessionInfo transition_info{};
+							info.m_session_token            = -1;
+							transition_info.m_session_token = -1;
+							GSType gstype           = (GSType)(int)contexts[i][0].m_presence_attribute_int_value;
+							bool is_spectating      = (bool)contexts[i][2].m_presence_attribute_int_value;
+							bool is_host_of_session = (bool)contexts[i][3].m_presence_attribute_int_value;
+							bool is_host_of_transition_session = (bool)contexts[i][5].m_presence_attribute_int_value;
+							GameMode game_mode       = (GameMode)contexts[i][8].m_presence_attribute_int_value;
+							std::string mission_id   = contexts[i][7].m_presence_attribute_string_value;
+							std::string mission_name = contexts[i][6].m_presence_attribute_string_value;
 
-							if (!g_pointers->m_gta.m_decode_session_info(&info, contexts[i][1].m_presence_attribute_value, nullptr))
+							if (contexts[i][1].m_presence_attribute_string_value[0] == 0
+							    || !g_pointers->m_gta.m_decode_session_info(&info, contexts[i][1].m_presence_attribute_string_value, nullptr))
 								gstype = GSType::Invalid;
+
+							if (can_fetch_name(game_mode) && mission_name.empty() && mission_id.empty())
+								game_mode = GameMode::None;
+
+							if (contexts[i][4].m_presence_attribute_string_value[0] == 0
+							    || !g_pointers->m_gta.m_decode_session_info(&transition_info, contexts[i][4].m_presence_attribute_string_value, nullptr))
+								transition_info.m_session_token = -1;
 
 							if (it->second->session_type != gstype)
 							{
 								handle_session_type_change(*it->second, gstype);
 							}
-							else if (it->second->notify_online && it->second->session_id != info.m_session_token)
+							else if (it->second->notify_online && it->second->session_id != info.m_session_token
+							    && g.player_db.notify_on_session_change)
 							{
 								g_notification_service->push("Player DB",
 								    std::format("{} has joined a new session", it->second->name));
 							}
 
-							it->second->session_type = gstype;
-							it->second->session_id   = info.m_session_token;
+							if (gstype != GSType::Invalid)
+							{
+								if (it->second->notify_online && is_spectating != it->second->is_spectating
+								    && g.player_db.notify_on_spectator_change)
+								{
+									if (is_spectating)
+									{
+										g_notification_service->push("Player DB",
+										    std::format("{} is now spectating", it->second->name));
+									}
+									else
+									{
+										g_notification_service->push("Player DB",
+										    std::format("{} is no longer spectating", it->second->name));
+									}
+								}
+
+								if (it->second->notify_online && is_host_of_session != it->second->is_host_of_session
+								    && g.player_db.notify_on_become_host && is_host_of_session && it->second->session_id == info.m_session_token)
+								{
+									g_notification_service->push("Player DB",
+									    std::format("{} is now the host of their session", it->second->name));
+								}
+
+								if (it->second->notify_online && g.player_db.notify_on_transition_change
+								    && transition_info.m_session_token != -1 && it->second->transition_session_id == -1)
+								{
+									if (is_host_of_transition_session)
+									{
+										g_notification_service->push("Player DB",
+										    std::format("{} has hosted a job lobby", it->second->name));
+									}
+									else
+									{
+										g_notification_service->push("Player DB",
+										    std::format("{} has joined a job lobby", it->second->name));
+									}
+								}
+								else if (it->second->notify_online && g.player_db.notify_on_transition_change
+								    && transition_info.m_session_token == -1 && it->second->transition_session_id != -1)
+								{
+									g_notification_service->push("Player DB",
+									    std::format("{} is no longer in a job lobby", it->second->name));
+								}
+
+								if (it->second->notify_online && g.player_db.notify_on_mission_change
+								    && game_mode != it->second->game_mode)
+								{
+									auto rid           = it->second->rockstar_id;
+									auto old_game_mode = it->second->game_mode;
+									g_fiber_pool->queue_job([rid, old_game_mode, game_mode, mission_id, mission_name] {
+										handle_game_mode_change(rid, old_game_mode, game_mode, mission_id, mission_name);
+									});
+								}
+							}
+
+							if (it->second->join_redirect)
+								it->second->redirect_info = info;
+
+							it->second->session_type                  = gstype;
+							it->second->session_id                    = info.m_session_token;
+							it->second->is_spectating                 = is_spectating;
+							it->second->is_host_of_session            = is_host_of_session;
+							it->second->transition_session_id         = transition_info.m_session_token;
+							it->second->is_host_of_transition_session = is_host_of_transition_session;
+							it->second->game_mode                     = game_mode;
+							it->second->game_mode_id                  = mission_id;
+							it->second->game_mode_name                = mission_name;
 						}
 					}
+					handle_join_redirect();
 				}
 				else
 				{
@@ -296,5 +496,36 @@ namespace big
 		}
 
 		return "Unknown";
+	}
+
+	const char* player_database_service::get_game_mode_str(GameMode mode)
+	{
+		switch (mode)
+		{
+		case GameMode::None: return "None";
+		case GameMode::Mission: return "Mission";
+		case GameMode::Deathmatch: return "Deathmatch";
+		case GameMode::Race: return "Race";
+		case GameMode::Survival: return "Survival";
+		case GameMode::GangAttack: return "Gang Attack";
+		case GameMode::Golf: return "Golf";
+		case GameMode::Tennis: return "Tennis";
+		case GameMode::ShootingRange: return "Shooting Range";
+		}
+
+		return "Unknown";
+	}
+
+	bool player_database_service::can_fetch_name(GameMode mode)
+	{
+		switch (mode)
+		{
+		case GameMode::Mission:
+		case GameMode::Deathmatch:
+		case GameMode::Race:
+		case GameMode::Survival: return true;
+		}
+
+		return false;
 	}
 }
