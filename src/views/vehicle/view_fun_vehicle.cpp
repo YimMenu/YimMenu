@@ -138,19 +138,19 @@ namespace big
 		{
 			if (!ENTITY::DOES_ENTITY_EXIST(self::veh))
 			{
-				ImGui::Text("Please enter a vehicle");
+				ImGui::Text("PLEASE_ENTER_VEHICLE"_T.data());
 				return;
 			}
 
 			if (g.vehicle.keep_vehicle_clean)
 			{
-				ImGui::Text("Keep vehicle clean is enabled, disable it to change dirt level");
+				ImGui::Text("KEEP_VEHICLE_CLEAN"_T.data());
 				return;
 			}
 
 			if (g.vehicle.keep_vehicle_repaired)
 			{
-				ImGui::Text("Keep vehicle repaired is enabled, disable it to change dirt level");
+				ImGui::Text("KEEP_VEHICLE_REPAIRED"_T.data());
 				return;
 			}
 
