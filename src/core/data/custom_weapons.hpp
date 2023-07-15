@@ -15,4 +15,6 @@ const custom_weapon custom_weapons[] = {
     {big::CustomWeapon::STEAL_VEHICLE_GUN, "Steal Vehicle Gun"},
     {big::CustomWeapon::REPAIR_GUN, "Repair Gun"},
     {big::CustomWeapon::VEHICLE_GUN, "Vehicle Gun"},
+    {big::CustomWeapon::TP_GUN, "Tp Gun"},
+    {big::CustomWeapon::PAINT_GUN, "Paint Gun"},
 };

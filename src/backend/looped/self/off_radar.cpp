@@ -1,4 +1,5 @@
 #include "backend/looped_command.hpp"
+#include "backend/bool_command.hpp"
 #include "core/scr_globals.hpp"
 #include "natives.hpp"
 
@@ -12,15 +13,20 @@ namespace big
 
 		virtual void on_tick() override
 		{
+			if (g.self.ghost_org)
+				MISC::SET_BIT(script_global(2794162).at(4667).as<int*>(), 2);
 			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].OffRadarActive = true;
 			*scr_globals::offradar_time.at(57).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
 		}
 
 		virtual void on_disable() override
 		{
+			if (!g.self.ghost_org)
+				MISC::CLEAR_BIT(script_global(2794162).at(4667).as<int*>(), 2);
 			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].OffRadarActive = false;
 		}
 	};
 
 	off_radar g_off_radar("otr", "OFF_RADAR", "OFF_RADAR_DESC", g.self.off_radar);
+	bool_command ghost_org("ghostorg", "Ghost Org", "Use Ghost Organization instead of standard off radar.", g.self.ghost_org);
 }

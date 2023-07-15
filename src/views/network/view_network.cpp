@@ -125,6 +125,10 @@ namespace big
 			components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T, &g.session.decloak_players, "Reveals players that are off the radar");
 			components::script_patch_checkbox("Reveal Hidden Players", &g.session.unhide_players_from_player_list, "Reveals players that have hidden themselves from the player list");
 
+			components::command_button<"sextall">({}, "Send Sexts");
+			ImGui::SameLine();
+			components::command_button<"fakebanall">({}, "Send Fake Ban Messages");
+
 			ImGui::EndListBox();
 		}
 
@@ -222,6 +226,34 @@ namespace big
 
 			ImGui::EndListBox();
 		}
+
+		components::small_text("WARP_TIME"_T.data());
+
+		components::button("PLUS_1_MINUTE"_T, [] {
+			toxic::warp_time_forward_all(60 * 1000);
+		});
+		ImGui::SameLine();
+		components::button("PLUS_5_MINUTES"_T, [] {
+			toxic::warp_time_forward_all(5 * 60 * 1000);
+		});
+		ImGui::SameLine();
+		components::button("PLUS_48_MINUTES"_T, [] {
+			toxic::warp_time_forward_all(48 * 60 * 1000);
+		});
+
+		components::button("PLUS_96_MINUTES"_T, [] {
+			toxic::warp_time_forward_all(96 * 60 * 1000);
+		});
+		ImGui::SameLine();
+		components::button("PLUS_200_MINUTES"_T, [] {
+			toxic::warp_time_forward_all(200 * 60 * 1000);
+		});
+		ImGui::SameLine();
+		components::button("STOP_TIME"_T, [] {
+			toxic::set_time_all(INT_MAX - 3000);
+		});
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("STOP_TIME_DESC"_T.data());
 
 		ImGui::EndGroup();
 	}
@@ -441,53 +473,21 @@ namespace big
 		    true,
 		    "Teleport");
 
-		ImGui::EndGroup();
-
-
-		components::command_button<"sextall">({}, "Send Sexts");
-		ImGui::SameLine();
-		components::command_button<"fakebanall">({}, "Send Fake Ban Messages");
-
-		components::small_text("WARP_TIME"_T.data());
-
-		components::button("PLUS_1_MINUTE"_T, [] {
-			toxic::warp_time_forward_all(60 * 1000);
-		});
-		ImGui::SameLine();
-		components::button("PLUS_5_MINUTES"_T, [] {
-			toxic::warp_time_forward_all(5 * 60 * 1000);
-		});
-		ImGui::SameLine();
-		components::button("PLUS_48_MINUTES"_T, [] {
-			toxic::warp_time_forward_all(48 * 60 * 1000);
-		});
-		ImGui::SameLine();
-		components::button("PLUS_96_MINUTES"_T, [] {
-			toxic::warp_time_forward_all(96 * 60 * 1000);
-		});
-		ImGui::SameLine();
-		components::button("PLUS_200_MINUTES"_T, [] {
-			toxic::warp_time_forward_all(200 * 60 * 1000);
-		});
-		ImGui::SameLine();
-		components::button("STOP_TIME"_T, [] {
-			toxic::set_time_all(INT_MAX - 3000);
-		});
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("STOP_TIME_DESC"_T.data());
-
 		components::sub_title("SCRIPT_HOST_FEATURES"_T);
 		ImGui::Checkbox("DISABLE_CEO_MONEY"_T.data(), &g.session.block_ceo_money);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("DISABLE_CEO_MONEY_DESC"_T.data());
 		ImGui::SameLine();
-		ImGui::Checkbox("RANDOMIZE_CEO_COLORS"_T.data(), &g.session.randomize_ceo_colors);
 		ImGui::Checkbox("Block Jobs", &g.session.block_jobs);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Prevents remote players from starting jobs while in your session");
+
+		ImGui::Checkbox("RANDOMIZE_CEO_COLORS"_T.data(), &g.session.randomize_ceo_colors);
 		ImGui::SameLine();
 		components::script_patch_checkbox("Block Muggers", &g.session.block_muggers, "For the entire session");
-		ImGui::SameLine();
+
 		components::script_patch_checkbox("Block CEO Raids", &g.session.block_ceo_raids, "For the entire session");
+
+		ImGui::EndGroup();
 	}
 }
