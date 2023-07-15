@@ -356,8 +356,6 @@ namespace big
 					script::get_current()->yield();
 				}
 
-				LOG(INFO) << status.status;
-
 				if (status.status == 3)
 				{
 					for (size_t i = 0; i < bucket.size(); ++i)
