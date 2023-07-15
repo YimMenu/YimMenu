@@ -148,6 +148,12 @@ namespace big
 				return;
 			}
 
+			if (g.vehicle.keep_vehicle_repaired)
+			{
+				ImGui::Text("Keep vehicle repaired is enabled, disable it to change dirt level");
+				return;
+			}
+
 			float dirt_level = VEHICLE::GET_VEHICLE_DIRT_LEVEL(self::veh);
 			if (ImGui::SliderFloat("DIRT_LEVEL"_T.data(), &dirt_level, 0.f, 15.f, "%.1f"))
 			{
