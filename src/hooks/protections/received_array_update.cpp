@@ -22,7 +22,7 @@ namespace big
 		{
 			old_beast_index = *script_local(beast->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(6).as<int*>();
 			if (beast->m_net_component)
-				participant_id = beast->m_net_component->m_local_participant_index;
+				participant_id = ((CGameScriptHandlerNetComponent*)beast->m_net_component)->m_local_participant_index;
 		}
 
 		bool result = g_hooking->get_original<hooks::received_array_update>()(array, sender, buffer, size, cycle);

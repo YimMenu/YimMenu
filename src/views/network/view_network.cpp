@@ -290,11 +290,11 @@ namespace big
 				g_fiber_pool->queue_job([] {
 					scripts::force_host(RAGE_JOAAT("freemode"));
 					if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")); script && script->m_net_component)
-						script->m_net_component->block_host_migration(true);
+						((CGameScriptHandlerNetComponent*)script->m_net_component)->block_host_migration(true);
 
 					scripts::force_host(RAGE_JOAAT("fmmc_launcher"));
 					if (auto script = gta_util::find_script_thread(RAGE_JOAAT("fmmc_launcher")); script && script->m_net_component)
-						script->m_net_component->block_host_migration(true);
+						((CGameScriptHandlerNetComponent*)script->m_net_component)->block_host_migration(true);
 				});
 		}
 		if (ImGui::IsItemHovered())

@@ -2,7 +2,7 @@
 
 #include "common.hpp"
 #include "gta/script_thread.hpp"
-#include "gta/tls_context.hpp"
+#include "script/tlsContext.hpp"
 #include "gta_util.hpp"
 #include "invoker.hpp"
 #include "pointers.hpp"
