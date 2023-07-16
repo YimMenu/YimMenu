@@ -136,8 +136,7 @@ namespace big
 
 		ImGui::SeparatorText("DIRT_LEVEL"_T.data());
 		{
-			auto vehicle = (CVehicle*)g_pointers->m_gta.m_handle_to_ptr(self::veh);
-			if (vehicle == nullptr)
+			if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr)
 			{
 				ImGui::Text("PLEASE_ENTER_VEHICLE"_T.data());
 			}
@@ -151,7 +150,7 @@ namespace big
 			}
 			else
 			{
-				ImGui::SliderFloat("DIRT_LEVEL"_T.data(), &vehicle->m_dirt_level, 0.f, 15.f, "%.1f");
+				ImGui::SliderFloat("DIRT_LEVEL"_T.data(), &g_local_player->m_vehicle->m_dirt_level, 0.f, 15.f, "%.1f");
 			}
 		}
 
