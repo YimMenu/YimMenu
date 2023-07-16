@@ -42,6 +42,7 @@ namespace big
 		static void system_rainbow();
 
 		static void vehicle_auto_drive();
+		static void vehicle_allow_all_weapons();
 		static void vehicle_boost_behavior();
 		static void vehicle_ls_customs();
 		static void vehicle_rainbow_paint();

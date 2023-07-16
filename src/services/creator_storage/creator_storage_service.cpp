@@ -2,7 +2,7 @@
 
 #include "gta/joaat.hpp"
 #include "gta/sysMemAllocator.hpp"
-#include "gta/tls_context.hpp"
+#include "script/tlsContext.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "script.hpp"

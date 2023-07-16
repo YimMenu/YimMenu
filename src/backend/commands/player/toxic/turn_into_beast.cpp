@@ -54,7 +54,7 @@ namespace big
 
 			auto thread        = gta_util::find_script_thread(RAGE_JOAAT("am_hunt_the_beast"));
 			auto stack         = thread->m_stack;
-			auto net_component = thread->m_net_component;
+			auto net_component = (CGameScriptHandlerNetComponent*)thread->m_net_component;
 			auto idx           = scr_locals::am_hunt_the_beast::broadcast_idx;
 
 			if (!stack || !net_component || !player->is_valid())
@@ -112,13 +112,13 @@ namespace big
 				return;
 
 			auto stack         = thread->m_stack;
-			auto net_component = thread->m_net_component;
+			auto net_component = (CGameScriptHandlerNetComponent*)thread->m_net_component;
 			auto idx           = scr_locals::am_hunt_the_beast::broadcast_idx;
 
 			if (!stack || !net_component)
 				return;
 
-			thread->m_net_component->block_host_migration(true);
+			((CGameScriptHandlerNetComponent*)thread->m_net_component)->block_host_migration(true);
 			thread->m_context.m_state = rage::eThreadState::unk_3;
 			g.m_hunt_the_beast_thread = thread;
 

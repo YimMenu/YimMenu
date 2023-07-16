@@ -77,7 +77,7 @@ namespace big
 					g_fiber_pool->queue_job([hash] {
 						scripts::force_host(hash);
 						if (auto script = gta_util::find_script_thread(hash); script && script->m_net_component)
-							script->m_net_component->block_host_migration(true);
+							((CGameScriptHandlerNetComponent*)script->m_net_component)->block_host_migration(true);
 					});
 				}
 

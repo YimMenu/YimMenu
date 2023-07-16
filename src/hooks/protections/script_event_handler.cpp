@@ -383,7 +383,7 @@ namespace big
 		{
 			if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")))
 			{
-				if (script->m_net_component && script->m_net_component->m_host && script->m_net_component->m_host->m_net_game_player != player)
+				if (script->m_net_component && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host->m_net_game_player != player)
 				{
 					g.reactions.trigger_business_raid.process(plyr);
 				}
@@ -396,7 +396,7 @@ namespace big
 			// TODO: Breaks stuff
 			if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")))
 			{
-				if (script->m_net_component && script->m_net_component->m_host && script->m_net_component->m_host->m_net_game_player != player)
+				if (script->m_net_component && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host->m_net_game_player != player)
 				{
 					g.reactions.start_script.process(plyr);
 					return true;

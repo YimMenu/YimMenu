@@ -1,7 +1,7 @@
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "gta/net_game_event.hpp"
-#include "gta/script_id.hpp"
+#include "script/scriptIdBase.hpp"
 #include "hooking.hpp"
 #include "util/math.hpp"
 #include "util/notify.hpp"
