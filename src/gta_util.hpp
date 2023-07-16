@@ -1,6 +1,6 @@
 #pragma once
 #include "gta/script_thread.hpp"
-#include "gta/tls_context.hpp"
+#include "script/tlsContext.hpp"
 #include "pointers.hpp"
 
 #include <network/CNetworkPlayerMgr.hpp>

@@ -1380,6 +1380,17 @@ namespace big
             {
                 g_pointers->m_gta.m_window_hook = ptr;
             }
+        },
+        // Vehicle Metadata Manager.
+        {
+            "VEHMMGR",
+            "7C B8 48 8B 0D",
+            [](memory::handle ptr)
+            {
+                ptr = ptr.add(5).rip();
+                g_pointers->m_gta.m_driveby_metadata_mgr = ptr.as<CVehicleDriveByMetadataMgr*>();
+                g_pointers->m_gta.m_vehicle_layout_metadata_mgr = ptr.add(0x20).as<CVehicleSeatMetadataMgr*>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 

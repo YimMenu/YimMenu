@@ -46,7 +46,8 @@ namespace big
 				int num_array_handlers{};
 				int received_array_handlers{};
 
-				while (auto handler = g_pointers->m_gta.m_get_host_array_handler_by_index(freemode->m_net_component, num_array_handlers++))
+				while (
+				    auto handler = g_pointers->m_gta.m_get_host_array_handler_by_index((CGameScriptHandlerNetComponent*)freemode->m_net_component, num_array_handlers++))
 					if (handler->m_flags & 1)
 						received_array_handlers++;
 
