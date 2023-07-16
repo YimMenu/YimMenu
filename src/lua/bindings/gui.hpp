@@ -166,7 +166,7 @@ namespace lua::gui
 		// Param: name: string: Text written inside the button.
 		// Param: callback: function: function that will be called when the button is clicked.
 		// Add a button to the gui tab.
-		std::shared_ptr<lua::gui::button> add_button(const std::string& name, sol::function callback, sol::this_state state)
+		std::shared_ptr<lua::gui::button> add_button(const std::string& name, sol::protected_function callback, sol::this_state state)
 		{
 			auto element = std::make_shared<lua::gui::button>(name, callback);
 			add_element(state, m_tab_hash, element);

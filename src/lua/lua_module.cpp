@@ -18,30 +18,41 @@
 
 namespace big
 {
-	inline int exception_handler(lua_State* L, sol::optional<const std::exception&> exception, std::string_view what)
+	// https://sol2.readthedocs.io/en/latest/exceptions.html
+	int exception_handler(lua_State* L, sol::optional<const std::exception&> maybe_exception, sol::string_view description)
 	{
-		if (exception)
-			LOG(WARNING) << exception->what();
+		// L is the lua state, which you can wrap in a state_view if necessary
+		// maybe_exception will contain exception, if it exists
+		// description will either be the what() of the exception or a description saying that we hit the general-case catch(...)
+		if (maybe_exception)
+		{
+			const std::exception& ex = *maybe_exception;
+			LOG(FATAL) << ex.what();
+		}
 		else
-			LOG(WARNING) << what;
+		{
+			LOG(FATAL) << description;
+		}
+		Logger::FlushQueue();
 
-		lua_pushlstring(L, what.data(), what.size());
-		return 1;
+		// you must push 1 element onto the stack to be
+		// transported through as the error object in Lua
+		// note that Lua -- and 99.5% of all Lua users and libraries -- expects a string
+		// so we push a single string (in our case, the description of the error)
+		return sol::stack::push(L, description);
 	}
 
-	inline int panic_handler(lua_State* L)
+	inline void panic_handler(sol::optional<std::string> maybe_msg)
 	{
-		size_t messagesize;
-		const char* message = lua_tolstring(L, -1, &messagesize);
-		if (message)
+		LOG(FATAL) << "Lua is in a panic state and will now abort() the application";
+		if (maybe_msg)
 		{
-			std::string err(message, messagesize);
-			lua_settop(L, 0);
-			LOG(FATAL) << err;
+			const std::string& msg = maybe_msg.value();
+			LOG(FATAL) << "error message: " << msg;
 		}
-		lua_settop(L, 0);
-		LOG(FATAL) << "An unexpected error occurred and panic has been invoked";
-		return 1;
+		Logger::FlushQueue();
+
+		// When this function exits, Lua will exhibit default behavior and abort()
 	}
 
 	lua_module::lua_module(std::string module_name) :
@@ -71,20 +82,18 @@ namespace big
 		state["!module_name"] = module_name;
 		state["!this"]        = this;
 
-		state.set_exception_handler((sol::exception_handler_function)exception_handler);
-		state.set_panic(panic_handler);
+		state.set_exception_handler(exception_handler);
+		state.set_panic(sol::c_call<decltype(&panic_handler), &panic_handler>);
 
 		const auto script_file_path = g_lua_manager->get_scripts_folder().get_file(module_name).get_path();
 		m_last_write_time           = std::filesystem::last_write_time(script_file_path);
-		auto result                 = state.load_file(script_file_path.string());
+
+		auto result = state.safe_script_file(script_file_path.string(), &sol::script_pass_on_error, sol::load_mode::text);
 
 		if (!result.valid())
 		{
-			LOG(WARNING) << module_name << " failed to load: " << result.get<sol::error>().what();
-		}
-		else
-		{
-			result();
+			LOG(FATAL) << module_name << " failed to load: " << result.get<sol::error>().what();
+			Logger::FlushQueue();
 		}
 	}
 
@@ -157,6 +166,7 @@ namespace big
 			const auto module = sol::state_view(current_state)["!this"].get<big::lua_module*>();
 
 			LOG(FATAL) << module->module_name() << " tried calling a currently not supported lua function: " << function_name;
+			Logger::FlushQueue();
 		};
 	}
 
