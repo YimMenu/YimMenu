@@ -1372,6 +1372,15 @@ namespace big
                 g_pointers->m_gta.m_get_title_caption_error_message_box = ptr.add(1).rip().as<functions::get_title_caption_error_message_box>();
             }
         },
+        // Disable Window Hook
+        {
+            "DT",
+            "48 83 EC 28 33 C9 FF 15 ? ? ? ? 45 33 C9",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_window_hook = ptr;
+            }
+        },
         // Vehicle Metadata Manager.
         {
             "VEHMMGR",

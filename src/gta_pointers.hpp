@@ -45,6 +45,8 @@ namespace big
 
 		memory::handle m_crash_trigger;
 
+		memory::handle m_window_hook;
+
 		memory::handle m_script_vm_patch_1;
 		memory::handle m_script_vm_patch_2;
 		memory::handle m_script_vm_patch_3;
