@@ -163,8 +163,7 @@ namespace big
 
 		load_peds();
 		load_vehicles();
-		LOG(INFO) << "Loading " << m_weapons_cache.weapon_map.size() << " weapons from cache.";
-		LOG(INFO) << "Loading " << m_weapons_cache.weapon_components.size() << " weapon components from cache.";
+		load_weapons();
 
 		LOG(VERBOSE) << "Loaded all data from cache.";
 	}
@@ -203,6 +202,19 @@ namespace big
 
 		std::sort(m_vehicle_classes.begin(), m_vehicle_classes.end());
 		m_vehicles_cache.free();
+	}
+
+	void gta_data_service::load_weapons()
+	{
+		LOG(INFO) << "Loading " << m_weapons_cache.weapon_map.size() << " weapons from cache.";
+		LOG(INFO) << "Loading " << m_weapons_cache.weapon_components.size() << " weapon components from cache.";
+
+		for (const auto& [_, weapon] : m_weapons_cache.weapon_map)
+		{
+			add_if_not_exists(m_weapon_types, weapon.m_weapon_type);
+		}
+
+		std::sort(m_weapon_types.begin(), m_weapon_types.end());
 	}
 
 	inline void parse_ped(std::vector<ped_item>& peds, std::vector<std::uint32_t>& mapped_peds, pugi::xml_document& doc)
