@@ -13,6 +13,7 @@
 #include "bindings/script.hpp"
 #include "bindings/tunables.hpp"
 #include "bindings/vector.hpp"
+#include "bindings/imgui.hpp"
 #include "file_manager.hpp"
 #include "script_mgr.hpp"
 
@@ -215,5 +216,6 @@ namespace big
 		lua::event::bind(state);
 		lua::vector::bind(state);
 		lua::global_table::bind(state);
+		lua::imgui::bind(state, state.globals());
 	}
 }

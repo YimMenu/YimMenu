@@ -5,6 +5,7 @@
 #include "gui/input_float.hpp"
 #include "gui/input_int.hpp"
 #include "gui/input_string.hpp"
+#include "gui/raw_imgui_callback.hpp"
 #include "gui/sameline.hpp"
 #include "gui/separator.hpp"
 #include "gui/text.hpp"
@@ -13,6 +14,13 @@
 
 namespace lua::gui
 {
+	static void add_independent_element(lua_State* state, std::shared_ptr<lua::gui::gui_element> element)
+	{
+		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
+
+		module->m_independent_gui.push_back(std::move(element));
+	}
+
 	static void add_element(lua_State* state, std::uint32_t hash, std::shared_ptr<lua::gui::gui_element> element)
 	{
 		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
@@ -51,7 +59,7 @@ namespace lua::gui
 					m_id = nav_item.first;
 					return true;
 				}
-				
+
 				if (check_if_existing_tab_and_fill_id(nav_item.second.sub_nav))
 				{
 					return true;
@@ -81,7 +89,7 @@ namespace lua::gui
 		std::pair<big::tabs, big::navigation_struct> make_tab_nav(const std::string& name, const rage::joaat_t tab_hash, const sol::this_state& state)
 		{
 			static size_t custom_tab_count = size_t(big::tabs::RUNTIME_CUSTOM);
-			m_id = big::tabs(custom_tab_count);
+			m_id                           = big::tabs(custom_tab_count);
 
 			custom_tab_count++;
 
@@ -261,6 +269,32 @@ namespace lua::gui
 			add_element(state, m_tab_hash, element);
 			return element;
 		}
+
+		// Lua API: Function
+		// Class: tab
+		// Name: add_imgui
+		// Param: imgui_rendering: function: Function that will be called every rendering frame, you can call ImGui functions in it, please check the ImGui.md documentation file for more info.
+		// Registers a function that will be called every rendering frame, you can call ImGui functions in it, please check the ImGui.md documentation file for more info.
+		// **Example Usage:**
+		// ```lua
+		// tab:add_imgui(function()
+		//   if ImGui.Begin("My Custom Window") then
+		//       if ImGui.Button("Label") then
+		//         script.run_in_fiber(function(script)
+		//           -- call natives in there
+		//         end)
+		//       end
+		// 
+		//       ImGui.End()
+		//   end
+		// end)
+		// ```
+		std::shared_ptr<lua::gui::raw_imgui_callback> add_imgui(sol::protected_function imgui_rendering, sol::this_state state)
+		{
+			auto element = std::make_shared<lua::gui::raw_imgui_callback>(imgui_rendering);
+			add_element(state, m_tab_hash, element);
+			return element;
+		}
 	};
 
 	// Lua API: Table
@@ -328,6 +362,32 @@ namespace lua::gui
 	// Returns: bool: Returns true if the GUI is open.
 	bool is_open();
 
+	// Lua API: Function
+	// Table: gui
+	// Name: add_imgui
+	// Param: imgui_rendering: function: Function that will be called every rendering frame, you can call ImGui functions in it, please check the ImGui.md documentation file for more info.
+	// Registers a function that will be called every rendering frame, you can call ImGui functions in it, please check the ImGui.md documentation file for more info.
+	// **Example Usage:**
+	// ```lua
+	// gui.add_imgui(function()
+	//   if ImGui.Begin("My Custom Window") then
+	//       if ImGui.Button("Label") then
+	//         script.run_in_fiber(function(script)
+	//           -- call natives in there
+	//         end)
+	//       end
+	//
+	//       ImGui.End()
+	//   end
+	// end)
+	// ```
+	static std::shared_ptr<lua::gui::raw_imgui_callback> add_imgui(sol::protected_function imgui_rendering, sol::this_state state)
+	{
+		auto element = std::make_shared<lua::gui::raw_imgui_callback>(imgui_rendering);
+		add_independent_element(state, element);
+		return element;
+	}
+
 	static void bind(sol::state& state)
 	{
 		auto ns            = state["gui"].get_or_create<sol::table>();
@@ -337,6 +397,7 @@ namespace lua::gui
 		ns["show_warning"] = show_warning;
 		ns["show_error"]   = show_error;
 		ns["is_open"]      = is_open;
+		ns["add_imgui"]    = add_imgui;
 
 		// clang-format off
 		ns.new_usertype<lua::gui::button>("button",
@@ -391,7 +452,8 @@ namespace lua::gui
 			"add_separator", &tab::add_separator,
 			"add_input_int", &tab::add_input_int,
 			"add_input_float", &tab::add_input_float,
-			"add_input_string", &tab::add_input_string
+			"add_input_string", &tab::add_input_string,
+			"add_imgui", &tab::add_imgui
 		);
 		// clang-format on
 	}

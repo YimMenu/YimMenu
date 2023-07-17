@@ -42,6 +42,19 @@ namespace big
 		return false;
 	}
 
+	void lua_manager::draw_independent_gui()
+	{
+		std::lock_guard guard(m_module_lock);
+
+		for (const auto& module : m_modules)
+		{
+			for (const auto& element : module->m_independent_gui)
+			{
+				element->draw();
+			}
+		}
+	}
+
 	void lua_manager::draw_gui(rage::joaat_t tab_hash)
 	{
 		std::lock_guard guard(m_module_lock);
