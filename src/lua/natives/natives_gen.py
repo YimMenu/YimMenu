@@ -265,11 +265,13 @@ def generate_native_binding_cpp_and_hpp_file(functions_per_namespaces):
     print_cpp("")
     print_cpp("namespace lua::native")
     print_cpp("{")
-    print_cpp("\t" + generated_function_name)
-    print_cpp("\t{")
 
     i = 0
+
     for namespace_name, native_funcs in functions_per_namespaces.items():
+        print_cpp("\t" + "static void init_native_binding_" + namespace_name + "(sol::state& L)")
+        print_cpp("\t{")
+
         print_cpp(
             "\t\tauto "
             + namespace_name
@@ -293,7 +295,16 @@ def generate_native_binding_cpp_and_hpp_file(functions_per_namespaces):
                 + ");"
             )
 
+        print_cpp("\t}")
         print_cpp("")
+
+    print_cpp("\t" + generated_function_name)
+    print_cpp("\t{")
+
+    for namespace_name, native_funcs in functions_per_namespaces.items():
+        # call each binding functions inside generated_function_name
+
+        print_cpp("\t\t" + "init_native_binding_" + namespace_name + "(L);")
 
     print_cpp("\t}")
     print_cpp("}")
@@ -334,3 +345,4 @@ def write_lua_native_wrappers_hpp_code(hpp_lua_native_wrappers_print_buf):
 write_cpp_code(cpp_print_buf)
 write_hpp_code(hpp_print_buf)
 write_lua_native_wrappers_hpp_code(hpp_lua_native_wrappers_print_buf)
+
