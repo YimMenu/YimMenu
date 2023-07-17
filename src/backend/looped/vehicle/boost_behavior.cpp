@@ -1,5 +1,6 @@
 #include "backend/looped/looped.hpp"
 #include "core/enums.hpp"
+#include "gta/enums.hpp"
 #include "natives.hpp"
 
 namespace big
@@ -19,6 +20,18 @@ namespace big
 			{
 				vehicle->m_boost_allow_recharge = true;
 				vehicle->m_boost                = 3.f;
+			}
+			else if (g.vehicle.boost_behavior == eBoostBehaviors::HOLD_FOR_INFINITE)
+			{
+				if (vehicle->m_boost_state && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_ROCKET_BOOST))
+				{
+					vehicle->m_boost_allow_recharge = true;
+					vehicle->m_boost                = 3.f;
+				}
+				else if (vehicle->m_boost_state)
+				{
+					vehicle->m_boost_state = false;
+				}
 			}
 		}
 	}

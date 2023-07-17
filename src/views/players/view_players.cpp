@@ -13,6 +13,7 @@
 
 namespace big
 {
+	bool has_scrollbar = false;
 	static void player_button(const player_ptr& plyr)
 	{
 		bool selected_player = plyr == g_player_service->get_selected();
@@ -23,7 +24,7 @@ namespace big
 			player_icons += FONT_ICON_HOST;
 		if (plyr->is_friend())
 			player_icons += FONT_ICON_FRIEND;
-		if (const auto ped = plyr->get_ped(); ped != nullptr && ped->m_ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING)
+		if (const auto ped = plyr->get_ped(); (ped != nullptr && ped->m_ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING))
 			player_icons += FONT_ICON_VEHICLE;
 
 		const auto player_iconsc    = player_icons.c_str();
@@ -47,15 +48,21 @@ namespace big
 
 		ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, {0.0, 0.5});
 		ImGui::PushID(plyr->id());
-		if (ImGui::Button(plyr->get_name(), {300.0f - ImGui::GetStyle().ScrollbarSize, 0.f}))
+
+		const auto style = ImGui::GetStyle();
+		// branchless conditional calculation
+		const auto plyr_btn_width = 300.f - (style.ItemInnerSpacing.x * 2) - (has_scrollbar * style.ScrollbarSize);
+		if (ImGui::Button(plyr->get_name(), { plyr_btn_width, 0.f}))
 		{
 			g_player_service->set_selected(plyr);
 			g_gui_service->set_selected(tabs::PLAYER);
 			g.window.switched_view = true;
 		}
-		if (ImGui::IsItemHovered() && g_player_database_service->get_player_by_rockstar_id(plyr->get_net_data()->m_gamer_handle.m_rockstar_id) != nullptr)
+		if (ImGui::IsItemHovered()
+		    && g_player_database_service->get_player_by_rockstar_id(plyr->get_net_data()->m_gamer_handle.m_rockstar_id) != nullptr)
 		{
-			auto sorted_player = g_player_database_service->get_player_by_rockstar_id(plyr->get_net_data()->m_gamer_handle.m_rockstar_id);
+			auto sorted_player =
+			    g_player_database_service->get_player_by_rockstar_id(plyr->get_net_data()->m_gamer_handle.m_rockstar_id);
 
 			if (!sorted_player->infractions.empty())
 			{
@@ -83,6 +90,7 @@ namespace big
 
 	void view::players()
 	{
+		// player count does not include ourself that's why +1
 		const auto player_count = g_player_service->players().size() + 1;
 
 		if (!*g_pointers->m_gta.m_is_session_started && player_count < 2)
@@ -97,15 +105,24 @@ namespace big
 
 		if (ImGui::Begin("playerlist", nullptr, window_flags))
 		{
-			float window_height = (ImGui::CalcTextSize("A").y + ImGui::GetStyle().ItemInnerSpacing.y * 2 + 6.0f) * player_count + 10.0f;
-			window_height =
-			    window_height + window_pos > (float)*g_pointers->m_gta.m_resolution_y - 10.f ? (float)*g_pointers->m_gta.m_resolution_y - (window_pos + 40.f) : window_height;
+			const auto style = ImGui::GetStyle();
+			float window_height = (
+				ImGui::CalcTextSize("A").y + style.FramePadding.y * 2.0f + style.ItemSpacing.y) // button size
+				* player_count // amount of players
+				+ (player_count > 1) * ((style.ItemSpacing.y * 2) + 1.f) // account for ImGui::Separator spacing
+				+ (player_count == 1) * 2.f; // some arbitrary height to make it fit
+			// used to account for scrollbar width
+			has_scrollbar = window_height + window_pos > (float)*g_pointers->m_gta.m_resolution_y - 10.f;
+
+			// basically whichever is smaller, the max available screenspace or the calculated window_height
+			window_height = has_scrollbar ? (float)*g_pointers->m_gta.m_resolution_y - (window_pos + 40.f) : window_height;
 
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, {0.f, 0.f, 0.f, 0.f});
 			ImGui::PushStyleColor(ImGuiCol_ScrollbarBg, {0.f, 0.f, 0.f, 0.f});
 
 			if (ImGui::BeginListBox("##players", {ImGui::GetWindowSize().x - ImGui::GetStyle().WindowPadding.x * 2, window_height}))
 			{
+				ImGui::SetScrollX(0);
 				player_button(g_player_service->get_self());
 
 				if (player_count > 1)

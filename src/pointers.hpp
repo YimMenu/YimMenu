@@ -2,7 +2,6 @@
 #include "base/HashTable.hpp"
 #include "function_types.hpp"
 #include "gta/fwddec.hpp"
-#include "gta/replay.hpp"
 #include "gta_pointers.hpp"
 #include "memory/batch.hpp"
 #include "memory/byte_patch.hpp"
@@ -22,7 +21,10 @@ namespace big
 		{
 			static_assert(batch_hash > 0);
 
-			cache_file.set_cache_version(batch_hash);
+			constexpr size_t field_count = (offset_of_cache_end_field - offset_of_cache_begin_field) / sizeof(void*);
+			constexpr auto cache_version = batch_hash + field_count;
+
+			cache_file.set_cache_version(cache_version);
 
 			const uintptr_t pointer_to_cacheable_data_start = reinterpret_cast<uintptr_t>(this) + offset_of_cache_begin_field;
 

@@ -33,8 +33,6 @@ namespace big
 
 		detour_hook_helper::add<hooks::get_label_text>("GLT", (void*)g_pointers->m_gta.m_get_label_text);
 
-		detour_hook_helper::add<hooks::check_chat_profanity>("CCP", (void*)g_pointers->m_gta.m_check_chat_profanity);
-
 		detour_hook_helper::add<hooks::write_player_game_state_data_node>("WPGSDN", (void*)g_pointers->m_gta.m_write_player_game_state_data_node);
 
 		detour_hook_helper::add<hooks::gta_thread_start>("GTS", (void*)g_pointers->m_gta.m_gta_thread_start);
@@ -69,9 +67,7 @@ namespace big
 
 		detour_hook_helper::add<hooks::sort_session_details>("SSD", (void*)g_pointers->m_gta.m_sort_session_details);
 
-		detour_hook_helper::add<hooks::add_player_to_session>("APTS", (void*)g_pointers->m_gta.m_add_player_to_session);
 		detour_hook_helper::add<hooks::send_chat_message>("SCM", (void*)g_pointers->m_gta.m_send_chat_message);
-		detour_hook_helper::add<hooks::send_chat_net_message>("SCNM", (void*)g_pointers->m_gta.m_send_chat_net_message);
 
 		detour_hook_helper::add<hooks::process_matchmaking_find_response>("PMFR", (void*)g_pointers->m_gta.m_process_matchmaking_find_response);
 		detour_hook_helper::add<hooks::serialize_player_data_msg>("SJPD", (void*)g_pointers->m_gta.m_serialize_player_data_msg);
@@ -85,8 +81,6 @@ namespace big
 		detour_hook_helper::add<hooks::send_session_matchmaking_attributes>("SSMA", (void*)g_pointers->m_gta.m_send_session_matchmaking_attributes);
 
 		detour_hook_helper::add<hooks::serialize_take_off_ped_variation_task>("STOPVT", (void*)g_pointers->m_gta.m_serialize_take_off_ped_variation_task);
-
-		detour_hook_helper::add<hooks::create_script_handler>("CSH", (void*)g_pointers->m_gta.m_create_script_handler);
 
 		detour_hook_helper::add<hooks::queue_dependency>("QD", (void*)g_pointers->m_gta.m_queue_dependency);
 		detour_hook_helper::add<hooks::prepare_metric_for_sending>("PMFS", (void*)g_pointers->m_gta.m_prepare_metric_for_sending);
@@ -114,9 +108,11 @@ namespace big
 
 		detour_hook_helper::add<hooks::write_vehicle_proximity_migration_data_node>("WVPMDN", (void*)g_pointers->m_gta.m_write_vehicle_proximity_migration_data_node);
 
-		detour_hook_helper::add<hooks::fipackfile_mount>("FPFM", (void*)g_pointers->m_gta.m_fipackfile_mount);
+		detour_hook_helper::add<hooks::netfilter_handle_message>("NHM", (void*)g_pointers->m_gta.m_netfilter_handle_message);
 
-		detour_hook_helper::add<hooks::allow_weapons_in_vehicle>("AWIV", (void*)g_pointers->m_gta.m_allow_weapons_in_vehicle);
+		detour_hook_helper::add<hooks::log_error_message_box>("E0MBH", (void*)g_pointers->m_gta.m_error_message_box);
+
+		detour_hook_helper::add<hooks::send_non_physical_player_data>("SNPPD", (void*)g_pointers->m_gta.m_send_non_physical_player_data);
 
 		g_hooking = this;
 	}
@@ -139,12 +135,6 @@ namespace big
 		for (const auto& detour_hook_helper : m_detour_hook_helpers)
 		{
 			detour_hook_helper->m_detour_hook->enable();
-		}
-
-		for (auto& thread : *g_pointers->m_gta.m_script_threads)
-		{
-			if (thread->m_handler)
-				hook_script_handler((CGameScriptHandler*)thread->m_handler);
 		}
 
 		MH_ApplyQueued();
@@ -171,7 +161,6 @@ namespace big
 			delete detour_hook_helper;
 		}
 		m_detour_hook_helpers.clear();
-		m_handler_hooks.clear();
 	}
 
 	hooking::detour_hook_helper::~detour_hook_helper()
@@ -195,8 +184,6 @@ namespace big
 
 	bool hooks::run_script_threads(std::uint32_t ops_to_execute)
 	{
-		g_native_invoker.cache_handlers();
-
 		if (g_running)
 		{
 			g_script_mgr.tick();

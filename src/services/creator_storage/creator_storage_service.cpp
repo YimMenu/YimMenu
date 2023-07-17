@@ -2,7 +2,7 @@
 
 #include "gta/joaat.hpp"
 #include "gta/sysMemAllocator.hpp"
-#include "gta/tls_context.hpp"
+#include "script/tlsContext.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
@@ -86,7 +86,7 @@ namespace big
 
 	big::folder creator_storage_service::check_jobs_folder()
 	{
-		const auto folder = g_file_manager->get_project_folder("./jobs");
+		const auto folder = g_file_manager.get_project_folder("./jobs");
 
 		return folder;
 	}

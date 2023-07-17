@@ -36,13 +36,18 @@ namespace big
 
 	void native_invoker::end_call(rage::scrNativeHash hash)
 	{
+		if (!m_handlers_cached)
+			cache_handlers();
+
 		if (auto it = m_handler_cache.find(hash); it != m_handler_cache.end())
 		{
 			rage::scrNativeHandler handler = it->second;
 
-			_call_asm(&m_call_context, reinterpret_cast<void*>(handler), g_pointers->m_gta.m_native_return);
-			// handler(&m_call_context);
-			g_pointers->m_gta.m_fix_vectors(&m_call_context);
+			[this, hash, handler] {
+				// return address checks are no longer a thing
+				handler(&m_call_context);
+				g_pointers->m_gta.m_fix_vectors(&m_call_context);
+			}();
 		}
 		else
 		{

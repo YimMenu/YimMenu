@@ -2,8 +2,16 @@
 
 namespace big
 {
+	static inline void set_all_protections(bool state)
+	{
+		for (size_t i = (size_t)&g.protections; i <= (size_t) & (g.protections.kick_rejoin); i++)
+			*(bool*)i = state;
+	}
+
 	void view::protection_settings()
 	{
+		auto initial_protections = g.protections;
+
 		ImGui::BeginGroup();
 		ImGui::Checkbox("BOUNTY"_T.data(), &g.protections.script_events.bounty);
 		ImGui::Checkbox("CEO_MONEY"_T.data(), &g.protections.script_events.ceo_money);
@@ -41,14 +49,23 @@ namespace big
 		ImGui::Checkbox("BLOCK_RID_JOINING"_T.data(), &g.protections.rid_join);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("BLOCK_RID_JOINING_DESCRIPTION"_T.data());
-		ImGui::Checkbox("LESSEN_BREAKUP_KICK"_T.data(), &g.protections.lessen_breakups);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("LESSEN_BREAKUP_KICK_DESCRIPTION"_T.data());
 		ImGui::Checkbox("RECEIVE_PICKUP"_T.data(), &g.protections.receive_pickup);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("This prevents any pickup from the ground such as unwanted money drops.\nAttention: Normal pickups are also no longer possible.");
+			ImGui::SetTooltip("This prevents the collection of pickups such as unwanted money bags\nNote: Normal pickups are also no longer possible to collect with this enabled");
 		ImGui::Checkbox("ADMIN_CHECK"_T.data(), &g.protections.admin_check);
+		ImGui::Checkbox("Kick Rejoin", &g.protections.kick_rejoin);
 		ImGui::EndGroup();
-	}
 
+		ImGui::SeparatorText("Options");
+		ImGui::BeginGroup();
+		if (ImGui::Button("Enable All Protections"))
+			set_all_protections(true);
+		ImGui::SameLine();
+		if (ImGui::Button("Disable All Protections"))
+			set_all_protections(false);
+		ImGui::SameLine();
+		if (ImGui::Button("Reset Protections"))
+			g.protections = initial_protections;
+		ImGui::EndGroup();
+	};
 }

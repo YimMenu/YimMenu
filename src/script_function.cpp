@@ -106,17 +106,17 @@ namespace big
 		populate_ip();
 
 		rage::scrThread* thread = (rage::scrThread*)new uint8_t[sizeof(rage::scrThread)];
-		memcpy(thread, rage::scrThread::get(), sizeof(rage::scrThread));
+		memcpy(thread, rage::tlsContext::get()->m_script_thread, sizeof(rage::scrThread));
 
 		void* stack                       = new uint64_t[25000];
-		thread->m_stack                   = stack;
+		thread->m_stack                   = (rage::scrValue*)stack;
 		thread->m_context.m_stack_size    = 25000;
 		thread->m_context.m_stack_pointer = 1;
 
 		call(thread, gta_util::find_script_program(m_script), args);
 
 		delete[] stack;
-		delete[](uint8_t*) thread; // without the cast it ends up calling the destructor which leads to some pretty funny crashes
+		delete[] (uint8_t*)thread; // without the cast it ends up calling the destructor which leads to some pretty funny crashes
 	}
 
 	void script_function::operator()(std::initializer_list<std::uint64_t> args)

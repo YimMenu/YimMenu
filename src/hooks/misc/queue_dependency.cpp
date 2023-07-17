@@ -7,8 +7,8 @@ namespace big
 {
 	bool inline is_address_in_game_region(uint64_t address)
 	{
-		static uint64_t moduleBase = NULL;
-		static uint64_t moduleSize = NULL;
+		static uint64_t moduleBase = 0;
+		static uint64_t moduleSize = 0;
 		if ((!moduleBase) || (!moduleSize))
 		{
 			MODULEINFO info;

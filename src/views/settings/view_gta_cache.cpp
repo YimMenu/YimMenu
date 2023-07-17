@@ -12,22 +12,15 @@ namespace big
 		auto ped_count = g_gta_data_service->peds().size();
 		auto veh_count = g_gta_data_service->vehicles().size();
 		auto wep_count = g_gta_data_service->weapons().size();
+		auto wep_comp_count = g_gta_data_service->weapon_components().size();
 
 		components::sub_title("GTA cache stats:");
-		ImGui::Text("Peds Cached: %d\nVehicles Cached: %d\nWeapons Cached: %d", ped_count, veh_count, wep_count);
+		ImGui::Text("Peds Cached: %d\nVehicles Cached: %d\nWeapons Cached: %d\nWeapon Components Cached: %d", ped_count, veh_count, wep_count, wep_comp_count);
 
-		if (components::button("Rebuild Cache in Online"))
+		if (components::button("Rebuild Cache"))
 		{
 			g_gta_data_service->set_state(eGtaDataUpdateState::NEEDS_UPDATE);
-
-			if (!*g_pointers->m_gta.m_is_session_started)
-			{
-				g_gta_data_service->update_in_online();
-			}
-			else
-			{
-				g_gta_data_service->update_now();
-			}
+			g_gta_data_service->update_now();
 		}
 	}
 }

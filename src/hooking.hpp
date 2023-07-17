@@ -30,6 +30,7 @@ class CPlayerAppearanceDataNode;
 class CFoundDevice;
 class IDirectSoundCapture;
 class CVehicleProximityMigrationDataNode;
+class CNonPhysicalPlayerData;
 
 namespace rage
 {
@@ -65,7 +66,6 @@ namespace big
 		static LRESULT wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 		static const char* get_label_text(void* unk, const char* label);
-		static int check_chat_profanity(__int64 chat_type, const char* input, const char** output);
 
 		static GtaThread* gta_thread_start(unsigned int** a1, unsigned int a2);
 		static rage::eThreadState gta_thread_kill(GtaThread* thread);
@@ -98,22 +98,16 @@ namespace big
 		static bool write_player_game_state_data_node(rage::netObject* player, CPlayerGameStateDataNode* node);
 
 		static void invalid_mods_crash_detour(int64_t a1, int64_t a2, int a3, char a4);
-		static std::int64_t constraint_attachment_crash(std::uintptr_t a1);
 		static uint64_t invalid_decal(uintptr_t a1, int a2);
 		static uint64_t task_parachute_object_0x270(uint64_t _this, int a2, int a3);
 
 		static bool update_presence_attribute_int(void* presence_data, int profile_index, char* attr, std::uint64_t value);
 		static bool update_presence_attribute_string(void* presence_data, int profile_index, char* attr, char* value);
 
-		static void serialize_ped_inventory_data_node(CPedInventoryDataNode* node, rage::CSyncDataBase* data);
-		static void serialize_vehicle_gadget_data_node(CVehicleGadgetDataNode* node, rage::CSyncDataBase* data);
-
 		static bool handle_join_request(Network* network, rage::snSession* session, rage::rlGamerInfo* player_info, CJoinRequestContext* ctx, BOOL is_transition_session);
 
 		static bool sort_session_details(SessionSortEntry* e1, SessionSortEntry* e2);
 
-		static bool add_player_to_session(rage::netConnectionManager* mgr, int receiver_msg_id, int* out_command_hndl, RemoteGamerInfoMsg* msg, int flags, void* unk);
-		static bool send_chat_net_message(rage::netConnectionManager* mgr, int receiver_msg_id, CMsgTextMessage* msg, int flags, void* unk);
 		static bool send_chat_message(void* team_mgr, rage::rlGamerInfo* local_gamer_info, char* message, bool is_team);
 
 		static bool process_matchmaking_find_response(void* _this, void* unused, rage::JSONNode* node, int* unk);
@@ -129,15 +123,9 @@ namespace big
 
 		static void serialize_take_off_ped_variation_task(ClonedTakeOffPedVariationInfo* info, rage::CSyncDataBase* serializer);
 
-		static CGameScriptHandler* create_script_handler(CGameScriptHandlerMgr* this_, void* unk);
-		static bool script_handler_is_networked(CGameScriptHandler* this_);
-		static bool script_handler_dtor(CGameScriptHandler* this_, bool free_memory);
-
 		static int nt_query_virtual_memory(void* _this, HANDLE handle, PVOID base_addr, int info_class, MEMORY_BASIC_INFORMATION* info, int size, size_t* return_len);
 		static void queue_dependency(void* dependency);
 		static void prepare_metric_for_sending(rage::datBitBuffer* bit_buffer, int unk, int time, rage::rlMetric* metric);
-
-		static void* infinite_train_crash(void* carriage);
 
 		static bool received_array_update(rage::netArrayHandlerBase* array, CNetGamePlayer* sender, rage::datBitBuffer* buffer, int size, std::int16_t cycle);
 
@@ -160,9 +148,11 @@ namespace big
 
 		static void write_vehicle_proximity_migration_data_node(rage::netObject* veh, CVehicleProximityMigrationDataNode* node);
 
-		static bool fipackfile_mount(rage::fiPackfile* this_, const char* mount_point);
+		static int netfilter_handle_message(__int64 filter, char* message, int flags);
 
-		static bool allow_weapons_in_vehicle(int64_t unk, int weaponinfo_group);
+		static void log_error_message_box(rage::joaat_t joaated_error_code, char a2);
+
+		static void send_non_physical_player_data(CNetGamePlayer* player, __int64 message, int flags, void* a4, CNetGamePlayer* a5);
 	};
 
 	class minhook_keepalive
@@ -247,9 +237,6 @@ namespace big
 		{
 			return detour_hook_helper::hook_to_detour_hook_helper<detour_function>::m_detour_hook->template get_original<decltype(detour_function)>();
 		}
-
-		void hook_script_handler(CGameScriptHandler* handler);
-		std::unordered_map<CGameScriptHandler*, std::unique_ptr<vmt_hook>> m_handler_hooks;
 
 	private:
 		bool m_enabled{};

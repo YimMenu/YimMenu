@@ -4,10 +4,7 @@
 namespace memory
 {
 	template<typename T>
-	concept SpanCompatibleType = requires(T a)
-	{
-		std::span{a};
-	};
+	concept SpanCompatibleType = requires(T a) { std::span{a}; };
 
 	class byte_patch
 	{
@@ -69,7 +66,8 @@ namespace memory
 		std::unique_ptr<byte[]> m_value;
 		std::unique_ptr<byte[]> m_original_bytes;
 		std::size_t m_size;
+		DWORD m_old_protect;
 
-		friend bool operator==(const std::unique_ptr<byte_patch>& a, const byte_patch* b);
+		friend bool operator==(const std::shared_ptr<byte_patch>& a, const byte_patch* b);
 	};
 }

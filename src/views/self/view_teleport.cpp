@@ -10,7 +10,7 @@ namespace big
 {
 	void view::teleport()
 	{
-		components::sub_title("BLIPS"_T.data());
+		ImGui::SeparatorText("BLIPS"_T.data());
 		ImGui::Spacing();
 
 		components::command_button<"waypointtp">({}, "Waypoint");
@@ -18,16 +18,24 @@ namespace big
 		components::command_button<"objectivetp">({}, "Objective");
 		components::command_checkbox<"autotptowp">();
 
-		ImGui::Separator();
+		ImGui::SeparatorText("Movement");
 
-		components::sub_title("Movement");
 		ImGui::Spacing();
 
+		components::small_text("Current coordinates");
+		float coords[3] = {self::pos.x, self::pos.y, self::pos.z};
 		static float new_location[3];
 		static float increment = 1;
 
+		ImGui::SetNextItemWidth(400);
+		ImGui::InputFloat3("##currentcoordinates", coords, "%f", ImGuiInputTextFlags_ReadOnly);
+		ImGui::SameLine();
+		components::button("Copy to custom", [coords] {
+			std::copy(std::begin(coords), std::end(coords), std::begin(new_location));
+		});
+
 		components::small_text("Custom teleport");
-		ImGui::SetNextItemWidth(200);
+		ImGui::SetNextItemWidth(400);
 		ImGui::InputFloat3("##Customlocation", new_location);
 		ImGui::SameLine();
 		components::button("Teleport", [] {
@@ -36,6 +44,8 @@ namespace big
 
 		ImGui::Spacing();
 		components::small_text("Specific movement");
+		ImGui::Spacing();
+
 		ImGui::SetNextItemWidth(200);
 		ImGui::InputFloat("Distance", &increment);
 
@@ -70,9 +80,7 @@ namespace big
 		});
 		ImGui::EndGroup();
 
-		ImGui::Separator();
-
-		components::sub_title("VEHICLES"_T.data());
+		ImGui::SeparatorText("VEHICLES"_T.data());
 		ImGui::Spacing();
 
 		components::command_button<"lastvehtp">();
@@ -81,9 +89,7 @@ namespace big
 		ImGui::SameLine();
 		components::command_button<"pvtp">();
 
-		ImGui::Separator();
-
-		components::sub_title("GUI_TAB_IPL"_T.data());
+		ImGui::SeparatorText("GUI_TAB_IPL"_T.data());
 
 		if (ImGui::BeginCombo("IPL_LOCATION"_T.data(), ipls[g.self.ipls.select].friendly_name))
 		{
@@ -99,7 +105,7 @@ namespace big
 			ImGui::EndCombo();
 		}
 
-		auto selected_ipl = ipls[g.self.ipls.select];
+		const auto& selected_ipl = ipls[g.self.ipls.select];
 		if (components::button("LOAD_IPL"_T.data()))
 		{
 			//unload all previous ipls

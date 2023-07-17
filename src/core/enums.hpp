@@ -6,9 +6,10 @@ namespace big
 	{
 		DEFAULT,
 		INSTANT_REFIL,
-		INFINITE_BOOST
+		INFINITE_BOOST,
+		HOLD_FOR_INFINITE
 	};
-	NLOHMANN_JSON_SERIALIZE_ENUM(eBoostBehaviors, {{eBoostBehaviors::DEFAULT, "default"}, {eBoostBehaviors::INSTANT_REFIL, "instant"}, {eBoostBehaviors::INFINITE_BOOST, "infinite"}})
+	NLOHMANN_JSON_SERIALIZE_ENUM(eBoostBehaviors, {{eBoostBehaviors::DEFAULT, "default"}, {eBoostBehaviors::INSTANT_REFIL, "instant"}, {eBoostBehaviors::INFINITE_BOOST, "infinite"}, {eBoostBehaviors::HOLD_FOR_INFINITE, "hold"}})
 
 	enum class CustomWeapon
 	{
@@ -18,7 +19,9 @@ namespace big
 		GRAVITY_GUN,
 		STEAL_VEHICLE_GUN,
 		REPAIR_GUN,
-		VEHICLE_GUN
+		VEHICLE_GUN,
+		TP_GUN,
+		PAINT_GUN
 	};
 	NLOHMANN_JSON_SERIALIZE_ENUM(CustomWeapon,
 	    {
@@ -29,6 +32,8 @@ namespace big
 	        {CustomWeapon::STEAL_VEHICLE_GUN, "steal"},
 	        {CustomWeapon::REPAIR_GUN, "repair"},
 	        {CustomWeapon::VEHICLE_GUN, "vehicle"},
+	        {CustomWeapon::TP_GUN, "tp"},
+	        {CustomWeapon::PAINT_GUN, "paint"},
 	    })
 
 	enum class ContextEntityType : uint8_t

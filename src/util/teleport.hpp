@@ -10,9 +10,14 @@ namespace big::teleport
 {
 	inline bool teleport_player_to_coords(player_ptr player, Vector3 coords)
 	{
-		Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
+		Entity ent;
 
-		if(ent == self::ped || ent == self::veh)
+		if (*g_pointers->m_gta.m_is_session_started)
+			ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
+		else
+			ent = PLAYER::PLAYER_PED_ID();
+
+		if (ent == self::ped || ent == self::veh)
 			PED::SET_PED_COORDS_KEEP_VEHICLE(ent, coords.x, coords.y, coords.z);
 
 		if (ENTITY::IS_ENTITY_DEAD(ent, true))

@@ -224,7 +224,8 @@ namespace big
 			}
 		}
 
-		components::sub_title("PED_MODEL"_T);
+		
+		ImGui::SeparatorText("PED_MODEL"_T.data());
 		{
 			ImGui::BeginGroup();
 			{
@@ -428,8 +429,8 @@ namespace big
 		}
 		ImGui::Separator();
 
-
-		components::sub_title("WEAPON"_T);
+		
+		ImGui::SeparatorText("WEAPON"_T.data());
 		{
 			ImGui::BeginGroup();
 			{
@@ -490,7 +491,7 @@ namespace big
 				if (ImGui::BeginCombo("##ped_weapon",
 				        selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS ? "NO_WEAPONS"_T.data() :
 				            selected_ped_weapon_hash == 0                ? "ALL"_T.data() :
-				                                            g_gta_data_service->weapon_by_hash(selected_ped_weapon_hash).m_display_name))
+				                                            g_gta_data_service->weapon_by_hash(selected_ped_weapon_hash).m_display_name.c_str()))
 				{
 					if (selected_ped_weapon_type != SPAWN_PED_NO_WEAPONS)
 					{
@@ -508,7 +509,7 @@ namespace big
 						{
 							if (selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS || weapon.m_weapon_type == weapon_type_arr[selected_ped_weapon_type])
 							{
-								if (ImGui::Selectable(weapon.m_display_name, weapon.m_hash == selected_ped_weapon_hash))
+								if (ImGui::Selectable(weapon.m_display_name.c_str(), weapon.m_hash == selected_ped_weapon_hash))
 								{
 									selected_ped_weapon_hash = weapon.m_hash;
 								}
@@ -528,8 +529,8 @@ namespace big
 		}
 		ImGui::Separator();
 
-
-		components::sub_title("SPAWN_FOR"_T);
+		
+		ImGui::SeparatorText("SPAWN_FOR"_T.data());
 		{
 			if (ImGui::BeginCombo("##ped_for",
 			        (selected_ped_for_player_id == SPAWN_PED_FOR_SELF ?

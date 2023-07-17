@@ -1,4 +1,5 @@
 #pragma once
+#include "core/data/all_script_names.hpp"
 #include "core/scr_globals.hpp"
 #include "fiber_pool.hpp"
 #include "gta/script_handler.hpp"
@@ -61,7 +62,7 @@ namespace big::scripts
 	{
 		if (auto launcher = gta_util::find_script_thread(hash); launcher && launcher->m_net_component)
 		{
-			for (int i = 0; !launcher->m_net_component->is_local_player_host(); i++)
+			for (int i = 0; !((CGameScriptHandlerNetComponent*)launcher->m_net_component)->is_local_player_host(); i++)
 			{
 				if (i > 200)
 					return false;
@@ -78,6 +79,15 @@ namespace big::scripts
 		return true;
 	}
 
+	inline int launcher_index_from_hash(rage::joaat_t script_hash)
+	{
+		for (int i = 0; i < launcher_scripts.size(); i++)
+			if (launcher_scripts[i] == script_hash)
+				return i;
+
+		return -1;
+	}
+
 	// force launcher script over the lobby, take two
 	// try to get am_launcher in a consistent state before trying to start the script taking account of all participants
 	inline void start_launcher_script(int script_id)
@@ -90,7 +100,7 @@ namespace big::scripts
 
 			for (auto& [_, plyr] : g_player_service->players())
 			{
-				if (launcher->m_net_component->is_player_a_participant(plyr->get_net_game_player()))
+				if (((CGameScriptHandlerNetComponent*)launcher->m_net_component)->is_player_a_participant(plyr->get_net_game_player()))
 				{
 					if (*script_local(launcher->m_stack, 233).at(plyr->id(), 3).at(2).as<int*>() == state)
 					{

@@ -9,8 +9,8 @@ namespace big
 	{
 		ImGui::SetWindowSize({0.f, (float)*g_pointers->m_gta.m_resolution_y}, ImGuiCond_Always);
 
-		components::sub_title("MERRYWEATHER"_T);
-		ImGui::Separator();
+
+		ImGui::SeparatorText("MERRYWEATHER"_T.data());
 
 		components::button("MW_AMMO_DROP"_T, [] {
 			mobile::merry_weather::request_ammo_drop();
@@ -30,8 +30,31 @@ namespace big
 			mobile::merry_weather::request_airstrike();
 		});
 
-		components::sub_title("MORS_MUTUAL"_T);
-		ImGui::Separator();
+
+		ImGui::SeparatorText("CEO_ABILITIES"_T.data());
+
+		components::button("CEO_BULLSHARK"_T, [] {
+			mobile::ceo_abilities::request_bullshark_testosterone();
+		});
+
+		components::command_button<"ballisticarmor">();
+
+
+		ImGui::SeparatorText("Services");
+
+		components::command_button<"avenger">();
+		components::command_button<"kosatka">();
+		components::command_button<"moc">();
+		components::command_button<"terrorbyte">();
+		components::command_button<"acidlab">();
+		components::command_button<"acidbike">();
+
+		ImGui::SeparatorText("Miscellaneous");
+
+		components::command_button<"taxi">();
+
+
+		ImGui::SeparatorText("MORS_MUTUAL"_T.data());
 
 		components::button("MORS_FIX_ALL"_T, [] {
 			int amount_fixed = mobile::mors_mutual::fix_all();
@@ -40,14 +63,5 @@ namespace big
 			        fmt::make_format_args(amount_fixed,
 			            amount_fixed == 1 ? "VEHICLE_FIX_HAS"_T.data() : "VEHICLE_FIX_HAVE"_T.data())));
 		});
-
-		components::sub_title("CEO_ABILITIES"_T);
-		ImGui::Separator();
-
-		components::button("CEO_BULLSHARK"_T, [] {
-			mobile::ceo_abilities::request_bullshark_testosterone();
-		});
-
-		components::command_button<"ballisticarmor">();
 	}
 }

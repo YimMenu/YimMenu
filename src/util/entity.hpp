@@ -1,6 +1,5 @@
 #pragma once
 #include "gta/joaat.hpp"
-#include "gta/replay.hpp"
 #include "gta_util.hpp"
 #include "math.hpp"
 #include "natives.hpp"
@@ -30,6 +29,9 @@ namespace big::entity
 
 	inline void delete_entity(Entity ent)
 	{
+		if (!ENTITY::DOES_ENTITY_EXIST(ent))
+			return;
+
 		ENTITY::DETACH_ENTITY(ent, 1, 1);
 		ENTITY::SET_ENTITY_VISIBLE(ent, false, false);
 		NETWORK::NETWORK_SET_ENTITY_ONLY_EXISTS_FOR_PARTICIPANTS(ent, true);
@@ -67,6 +69,34 @@ namespace big::entity
 		return (bool)hit;
 	}
 
+	inline bool raycast(Vector3* endcoor)
+	{
+		Entity ent;
+		BOOL hit;
+		Vector3 surfaceNormal;
+
+		Vector3 camCoords = CAM::GET_GAMEPLAY_CAM_COORD();
+		Vector3 dir       = math::rotation_to_direction(CAM::GET_GAMEPLAY_CAM_ROT(2));
+		Vector3 farCoords;
+
+		farCoords.x = camCoords.x + dir.x * 1000;
+		farCoords.y = camCoords.y + dir.y * 1000;
+		farCoords.z = camCoords.z + dir.z * 1000;
+
+		int ray = SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(camCoords.x,
+		    camCoords.y,
+		    camCoords.z,
+		    farCoords.x,
+		    farCoords.y,
+		    farCoords.z,
+		    -1,
+		    0,
+		    7);
+		SHAPETEST::GET_SHAPE_TEST_RESULT(ray, &hit, endcoor, &surfaceNormal, &ent);
+
+		return (bool)hit;
+	}
+
 	inline bool network_has_control_of_entity(rage::netObject* net_object)
 	{
 		return !net_object || !net_object->m_next_owner_id && (net_object->m_control_id == -1);
@@ -99,16 +129,15 @@ namespace big::entity
 		return false;
 	}
 
-	inline std::vector<Entity> get_entities(bool vehicles, bool peds)
+	inline std::vector<Entity> get_entities(bool vehicles, bool peds, bool props = false, bool include_self_veh = false)
 	{
 		std::vector<Entity> target_entities;
-		target_entities.clear();
 
 		if (vehicles)
 		{
 			for (auto vehicle : pools::get_all_vehicles())
 			{
-				if (vehicle == gta_util::get_local_vehicle())
+				if (!include_self_veh && vehicle == gta_util::get_local_vehicle())
 					continue;
 
 				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(vehicle));
@@ -119,11 +148,18 @@ namespace big::entity
 		{
 			for (auto ped : pools::get_all_peds())
 			{
-				// make sure to not include ourselves
-				if (ped == gta_util::get_local_ped())
+				if (ped == g_local_player)
 					continue;
 
 				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(ped));
+			}
+		}
+
+		if (props)
+		{
+			for (auto prop : pools::get_all_props())
+			{
+				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(prop));
 			}
 		}
 		return target_entities;

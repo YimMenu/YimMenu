@@ -7,6 +7,8 @@
 #include "util/scripts.hpp"
 #include "views/view.hpp"
 
+#include <script/globals/GPBD_FM_3.hpp>
+
 namespace big
 {
 	void view::self()
@@ -23,14 +25,14 @@ namespace big
 		ImGui::SameLine();
 		components::command_button<"fillammo">();
 
-		ImGui::Separator();
-
-		components::sub_title("GENERAL"_T);
+		ImGui::SeparatorText("GENERAL"_T.data());
 
 		ImGui::BeginGroup();
 
 		components::command_checkbox<"godmode">();
 		components::command_checkbox<"otr">();
+		if (g.self.off_radar && scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss == self::id)
+			components::command_checkbox<"ghostorg">();
 		components::command_checkbox<"freecam">();
 		components::command_checkbox<"nophone">();
 		components::command_checkbox<"infoxy">();
@@ -38,7 +40,6 @@ namespace big
 		components::command_checkbox<"invis">();
 		if (g.self.invisibility)
 			components::command_checkbox<"localvis">(); // TODO: does nothing in SP
-		components::command_checkbox<"nocollision">();
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
@@ -47,12 +48,13 @@ namespace big
 		components::command_checkbox<"noclip">();
 		components::command_checkbox<"noragdoll">();
 		components::command_checkbox<"fastrun">();
-		ImGui::Checkbox("NO_IDLE_KICK"_T.data(), &g.tunables.no_idle_kick);
+		components::command_checkbox<"noidlekick">();
 		components::command_checkbox<"walkunder">();
 		if (!g.self.super_jump)
 			components::command_checkbox<"beastjump">();
 		if (!g.self.beast_jump)
 			components::command_checkbox<"superjump">();
+		components::command_checkbox<"nocollision">();
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
@@ -181,9 +183,7 @@ namespace big
 
 		ImGui::EndGroup();
 
-		ImGui::Separator();
-
-		components::sub_title("PROOFS"_T);
+		ImGui::SeparatorText("PROOFS"_T.data());
 
 		if (ImGui::Button("CHECK_ALL"_T.data()))
 		{
@@ -239,9 +239,7 @@ namespace big
 
 		ImGui::EndGroup();
 
-		ImGui::Separator();
-
-		components::sub_title("HUD"_T);
+		ImGui::SeparatorText("HUD"_T.data());
 
 		ImGui::BeginGroup();
 

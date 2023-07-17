@@ -9,6 +9,8 @@ class ChatData;
 class ScInfo;
 class GenericPool;
 class VehiclePool;
+class CVehicleSeatMetadataMgr;
+class CVehicleDriveByMetadataMgr;
 
 namespace rage
 {
@@ -56,7 +58,6 @@ namespace big
 		CPedFactory** m_ped_factory{};
 		CNetworkPlayerMgr** m_network_player_mgr{};
 		CNetworkObjectMgr** m_network_object_mgr{};
-		rage::CReplayInterface** m_replay_interface{};
 
 		functions::ptr_to_handle m_ptr_to_handle{};
 		functions::handle_to_ptr m_handle_to_ptr{};
@@ -148,10 +149,12 @@ namespace big
 
 		functions::fidevice_get_device m_fidevice_get_device{};
 		functions::fipackfile_ctor m_fipackfile_ctor{};
+		functions::fipackfile_dtor m_fipackfile_dtor{};
 		rage::fiPackfile** m_fipackfile_instances{};
 		functions::fipackfile_open_archive m_fipackfile_open_archive{};
 		functions::fipackfile_mount m_fipackfile_mount{};
 		functions::fipackfile_unmount m_fipackfile_unmount{};
+		functions::fipackfile_close_archive m_fipackfile_close_archive{};
 
 		PVOID m_invalid_mods_crash_detour{};
 		PVOID m_invalid_decal_crash{};
@@ -175,9 +178,6 @@ namespace big
 		functions::queue_packet m_queue_packet;
 
 		PVOID m_sort_session_details;
-
-		PVOID m_add_player_to_session;
-		PVOID m_send_chat_net_message;
 
 		PVOID m_process_matchmaking_find_response;
 		PVOID m_serialize_player_data_msg;
@@ -205,8 +205,6 @@ namespace big
 		PVOID m_send_session_matchmaking_attributes;
 
 		PVOID m_serialize_take_off_ped_variation_task;
-
-		PVOID m_create_script_handler;
 
 		functions::encode_session_info m_encode_session_info;
 		functions::decode_session_info m_decode_session_info;
@@ -244,6 +242,7 @@ namespace big
 		PVOID m_enumerate_audio_devices{};
 		PVOID m_direct_sound_capture_create{};
 		bool* m_refresh_audio_input{};
+		bool* m_refresh_audio_input_2{};
 
 		PVOID m_allow_weapons_in_vehicle{};
 
@@ -258,6 +257,28 @@ namespace big
 		GenericPool** m_ped_pool{};
 		GenericPool** m_prop_pool{};
 		VehiclePool*** m_vehicle_pool{};
+
+		PVOID m_netfilter_handle_message{};
+
+		functions::handle_chat_message m_handle_chat_message{};
+
+		int* m_language;
+		functions::update_language m_update_language{};
+
+		PVOID m_model_spawn_bypass{};
+
+		functions::get_host_array_handler_by_index m_get_host_array_handler_by_index;
+
+		PVOID m_error_message_box{};
+
+		functions::get_title_caption_error_message_box m_get_title_caption_error_message_box{};
+
+		PVOID m_send_non_physical_player_data;
+
+		void** m_presence_data{};
+
+		CVehicleSeatMetadataMgr* m_vehicle_layout_metadata_mgr{};
+		CVehicleDriveByMetadataMgr* m_driveby_metadata_mgr{};
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");
