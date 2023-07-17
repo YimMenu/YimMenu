@@ -88,7 +88,7 @@ namespace lua::event
 	// Param: menu_event: menu_event: The menu_event that we want to respond to.
 	// Param: func: function: The function that will be called.
 	// Register a function that will be called each time the corresponding menu_event is triggered.
-	static void register_handler(const menu_event& menu_event, sol::function func, sol::this_state state)
+	static void register_handler(const menu_event& menu_event, sol::protected_function func, sol::this_state state)
 	{
 		const auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
 		
