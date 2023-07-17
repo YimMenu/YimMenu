@@ -116,9 +116,16 @@ namespace big
 
 			ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
 
-			ImGui::Checkbox("Lobby Lock", &g.session.lock_session);
+
+			if (ImGui::Checkbox("Lobby Lock", &g.session.lock_session))
+			{
+				ImGui::Checkbox("Allow Friends Into Locked Lobby", &g.session.allow_friends_into_locked_session);
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Allows Friends to Join Lobby While Locked");
+			}
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("Blocks all players from joining. May not work on some modders.");
+
 
 			ImGui::EndDisabled();
 
