@@ -128,7 +128,7 @@ namespace big
 
 					if (g.session.lock_session && g_player_service->get_self()->is_host())
 					{
-						if (plyr.is_friend() && g.session.allow_friends_into_locked_session)
+						if (plyr->is_friend() && g.session.allow_friends_into_locked_session)
 						{
 							g_notification_service->push_success("Lock Session",
 							    std::format("A player friended player with the name of {} has been allowed to join the locked session",
