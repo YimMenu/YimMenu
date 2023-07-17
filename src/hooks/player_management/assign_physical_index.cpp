@@ -131,7 +131,7 @@ namespace big
 						if (plyr.is_friend() && g.session.allow_friends_into_locked_session)
 						{
 							g_notification_service->push_success("Lock Session",
-							    std::format("A player friended player with the name of {} has been allowed to join the locked lobby!",
+							    std::format("A player friended player with the name of {} has been allowed to join the locked session",
 							        plyr->get_net_data()->m_name));
 						}
 						else
