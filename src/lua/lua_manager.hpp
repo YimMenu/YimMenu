@@ -46,6 +46,7 @@ namespace big
 		}
 
 
+		void draw_independent_gui();
 		void draw_gui(rage::joaat_t tab_hash);
 
 		void unload_module(rage::joaat_t module_id);
