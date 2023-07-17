@@ -70,14 +70,13 @@ namespace lua::script
 	//     ENTITY.DELETE_ENTITY(spawnedVehicle)
 	// end)
 	// ```
-	static void register_looped(const std::string& name, sol::function func_, sol::this_state state)
+	static void register_looped(const std::string& name, sol::protected_function func_, sol::this_state state)
 	{
 		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
 
 		std::unique_ptr<big::script> lua_script = std::make_unique<big::script>(
 		    [func_, state]() mutable {
-
-				sol::thread t       = sol::thread::create(state);
+			    sol::thread t       = sol::thread::create(state);
 			    sol::coroutine func = sol::coroutine(t.state(), func_);
 
 			    while (big::g_running)
@@ -97,8 +96,7 @@ namespace lua::script
 				    }
 			    }
 		    },
-			name
-		);
+		    name);
 
 		const auto registered_script = big::g_script_mgr.add_script(std::move(lua_script));
 
@@ -115,25 +113,25 @@ namespace lua::script
 	// script.run_in_fiber(function (script)
 	//     -- sleep until next game frame
 	//     script:yield()
-	// 
+	//
 	//     local ModelHash = joaat("adder")
-    //     if not STREAMING.IS_MODEL_IN_CDIMAGE(ModelHash) then return end
-    //     STREAMING.REQUEST_MODEL(ModelHash) -- Request the model
-    //     while not STREAMING.HAS_MODEL_LOADED(ModelHash) do -- Waits for the model to load
-    //         script:yield()
-    //     end
-    //     local myPed = PLAYER.PLAYER_PED_ID()
-    //     local myCoords = ENTITY.GET_ENTITY_COORDS(myPed, true)
-    //     -- Spawns a networked vehicle on your current coords
-    //     local spawnedVehicle = VEHICLE.CREATE_VEHICLE(ModelHash, myCoords.x, myCoords.y, myCoords.z, ENTITY.GET_ENTITY_HEADING(myPed), true, false) 
-    //     -- removes model from game memory as we no longer need it
-    //     STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ModelHash)
+	//     if not STREAMING.IS_MODEL_IN_CDIMAGE(ModelHash) then return end
+	//     STREAMING.REQUEST_MODEL(ModelHash) -- Request the model
+	//     while not STREAMING.HAS_MODEL_LOADED(ModelHash) do -- Waits for the model to load
+	//         script:yield()
+	//     end
+	//     local myPed = PLAYER.PLAYER_PED_ID()
+	//     local myCoords = ENTITY.GET_ENTITY_COORDS(myPed, true)
+	//     -- Spawns a networked vehicle on your current coords
+	//     local spawnedVehicle = VEHICLE.CREATE_VEHICLE(ModelHash, myCoords.x, myCoords.y, myCoords.z, ENTITY.GET_ENTITY_HEADING(myPed), true, false)
+	//     -- removes model from game memory as we no longer need it
+	//     STREAMING.SET_MODEL_AS_NO_LONGER_NEEDED(ModelHash)
 	//     -- sleep for 2s
-    //     script:sleep(2000)
-    //     ENTITY.DELETE_ENTITY(spawnedVehicle)
+	//     script:sleep(2000)
+	//     ENTITY.DELETE_ENTITY(spawnedVehicle)
 	// end)
 	// ```
-	static void run_in_fiber(sol::function func_, sol::this_state state)
+	static void run_in_fiber(sol::protected_function func_, sol::this_state state)
 	{
 		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
 

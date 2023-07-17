@@ -136,28 +136,21 @@ namespace big
 
 		ImGui::SeparatorText("DIRT_LEVEL"_T.data());
 		{
-			if (!ENTITY::DOES_ENTITY_EXIST(self::veh))
+			if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr)
 			{
 				ImGui::Text("PLEASE_ENTER_VEHICLE"_T.data());
-				return;
 			}
-
-			if (g.vehicle.keep_vehicle_clean)
+			else if (g.vehicle.keep_vehicle_clean)
 			{
 				ImGui::Text("KEEP_VEHICLE_CLEAN"_T.data());
-				return;
 			}
-
-			if (g.vehicle.keep_vehicle_repaired)
+			else if (g.vehicle.keep_vehicle_repaired) 
 			{
 				ImGui::Text("KEEP_VEHICLE_REPAIRED"_T.data());
-				return;
 			}
-
-			float dirt_level = VEHICLE::GET_VEHICLE_DIRT_LEVEL(self::veh);
-			if (ImGui::SliderFloat("DIRT_LEVEL"_T.data(), &dirt_level, 0.f, 15.f, "%.1f"))
+			else
 			{
-				VEHICLE::SET_VEHICLE_DIRT_LEVEL(self::veh, dirt_level);
+				ImGui::SliderFloat("DIRT_LEVEL"_T.data(), &g_local_player->m_vehicle->m_dirt_level, 0.f, 15.f, "%.1f");
 			}
 		}
 

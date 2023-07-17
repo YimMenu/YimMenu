@@ -10,11 +10,11 @@ namespace lua::gui
 	// Class representing a gui button.
 	class button : public base_text_element
 	{
-		sol::function m_callback;
+		sol::protected_function m_callback;
 		bool m_execute_in_fiber_pool = true;
 
 	public:
-		button(std::string text, sol::function callback);
+		button(std::string text, sol::protected_function callback);
 
 		void draw() override;
 	};
