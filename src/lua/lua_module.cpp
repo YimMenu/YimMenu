@@ -2,6 +2,7 @@
 
 #include "bindings/command.hpp"
 #include "bindings/event.hpp"
+#include "bindings/global_table.hpp"
 #include "bindings/globals.hpp"
 #include "bindings/gui.hpp"
 #include "bindings/locals.hpp"
@@ -12,39 +13,50 @@
 #include "bindings/script.hpp"
 #include "bindings/tunables.hpp"
 #include "bindings/vector.hpp"
-#include "bindings/global_table.hpp"
+#include "bindings/imgui.hpp"
 #include "file_manager.hpp"
 #include "script_mgr.hpp"
 
 namespace big
 {
-	inline int exception_handler(lua_State* L, sol::optional<const std::exception&> exception, std::string_view what)
+	// https://sol2.readthedocs.io/en/latest/exceptions.html
+	int exception_handler(lua_State* L, sol::optional<const std::exception&> maybe_exception, sol::string_view description)
 	{
-		if (exception)
-			LOG(WARNING) << exception->what();
-		else
-			LOG(WARNING) << what;
-
-		lua_pushlstring(L, what.data(), what.size());
-		return 1;
-	}
-
-	inline int panic_handler(lua_State* L)
-	{
-		size_t messagesize;
-		const char* message = lua_tolstring(L, -1, &messagesize);
-		if (message)
+		// L is the lua state, which you can wrap in a state_view if necessary
+		// maybe_exception will contain exception, if it exists
+		// description will either be the what() of the exception or a description saying that we hit the general-case catch(...)
+		if (maybe_exception)
 		{
-			std::string err(message, messagesize);
-			lua_settop(L, 0);
-			LOG(FATAL) << err;
+			const std::exception& ex = *maybe_exception;
+			LOG(FATAL) << ex.what();
 		}
-		lua_settop(L, 0);
-		LOG(FATAL) << "An unexpected error occurred and panic has been invoked";
-		return 1;
+		else
+		{
+			LOG(FATAL) << description;
+		}
+		Logger::FlushQueue();
+
+		// you must push 1 element onto the stack to be
+		// transported through as the error object in Lua
+		// note that Lua -- and 99.5% of all Lua users and libraries -- expects a string
+		// so we push a single string (in our case, the description of the error)
+		return sol::stack::push(L, description);
 	}
 
-	lua_module::lua_module(std::string module_name) :
+	inline void panic_handler(sol::optional<std::string> maybe_msg)
+	{
+		LOG(FATAL) << "Lua is in a panic state and will now abort() the application";
+		if (maybe_msg)
+		{
+			const std::string& msg = maybe_msg.value();
+			LOG(FATAL) << "error message: " << msg;
+		}
+		Logger::FlushQueue();
+
+		// When this function exits, Lua will exhibit default behavior and abort()
+	}
+
+	lua_module::lua_module(std::string module_name, folder& scripts_folder) :
 	    m_module_name(module_name),
 	    m_module_id(rage::joaat(module_name))
 	{
@@ -52,6 +64,7 @@ namespace big
 
 		auto& state = *m_state;
 
+		// clang-format off
 		state.open_libraries(
 			sol::lib::base,
 			sol::lib::package,
@@ -63,26 +76,25 @@ namespace big
 			sol::lib::bit32,
 			sol::lib::utf8
 		);
+		// clang-format on
 
-		init_lua_api();
+		init_lua_api(scripts_folder);
 
 		state["!module_name"] = module_name;
 		state["!this"]        = this;
 
-		state.set_exception_handler((sol::exception_handler_function)exception_handler);
-		state.set_panic(panic_handler);
+		state.set_exception_handler(exception_handler);
+		state.set_panic(sol::c_call<decltype(&panic_handler), &panic_handler>);
 
-		const auto script_file_path = g_lua_manager->get_scripts_folder().get_file(module_name).get_path();
+		const auto script_file_path = scripts_folder.get_file(module_name).get_path();
 		m_last_write_time           = std::filesystem::last_write_time(script_file_path);
-		auto result                 = state.load_file(script_file_path.string());
+
+		auto result = state.safe_script_file(script_file_path.string(), &sol::script_pass_on_error, sol::load_mode::text);
 
 		if (!result.valid())
 		{
-			LOG(WARNING) << module_name << " failed to load: " << result.get<sol::error>().what();
-		}
-		else
-		{
-			result();
+			LOG(FATAL) << module_name << " failed to load: " << result.get<sol::error>().what();
+			Logger::FlushQueue();
 		}
 	}
 
@@ -125,11 +137,11 @@ namespace big
 		return m_last_write_time;
 	}
 
-	void lua_module::set_folder_for_lua_require()
+	void lua_module::set_folder_for_lua_require(folder& scripts_folder)
 	{
 		auto& state = *m_state;
 
-		const auto scripts_search_path = g_lua_manager->get_scripts_folder().get_path() / "?.lua";
+		const auto scripts_search_path = scripts_folder.get_path() / "?.lua";
 		state["package"]["path"]       = scripts_search_path.string();
 	}
 
@@ -140,45 +152,56 @@ namespace big
 		const auto& os = state["os"];
 		sol::table sandbox_os(state, sol::create);
 
-		sandbox_os["clock"]     = os["clock"];
-		sandbox_os["date"]      = os["date"];
-		sandbox_os["difftime"]	= os["difftime"];
-		sandbox_os["time"]      = os["time"];
+		sandbox_os["clock"]    = os["clock"];
+		sandbox_os["date"]     = os["date"];
+		sandbox_os["difftime"] = os["difftime"];
+		sandbox_os["time"]     = os["time"];
 
 		state["os"] = sandbox_os;
 	}
 
-	void lua_module::sandbox_lua_loads()
+	template<size_t N>
+	static constexpr auto not_supported_lua_function(const char (&function_name)[N])
+	{
+		return [function_name](sol::this_state current_state, sol::variadic_args args) {
+			const auto module = sol::state_view(current_state)["!this"].get<big::lua_module*>();
+
+			LOG(FATAL) << module->module_name() << " tried calling a currently not supported lua function: " << function_name;
+			Logger::FlushQueue();
+		};
+	}
+
+	void lua_module::sandbox_lua_loads(folder& scripts_folder)
 	{
 		auto& state = *m_state;
 
 		// That's from lua base lib, luaB
-		state.set_function("load", nullptr);
-		state.set_function("loadstring", nullptr);
-		state.set_function("loadfile", nullptr);
-		state.set_function("dofile", nullptr);
+		state["load"]       = not_supported_lua_function("load");
+		state["loadstring"] = not_supported_lua_function("loadstring");
+		state["loadfile"]   = not_supported_lua_function("loadfile");
+		state["dofile"]     = not_supported_lua_function("dofile");
 
 		// That's from lua package lib.
 		// We only allow dependencies between .lua files, no DLLs.
-		state["package"]["loadlib"] = nullptr;
+		state["package"]["loadlib"] = not_supported_lua_function("package.loadlib");
 		state["package"]["cpath"]   = "";
 
 		// 1                   2               3            4
 		// {searcher_preload, searcher_Lua, searcher_C, searcher_Croot, NULL};
-		state["package"]["searchers"][3]   = nullptr;
-		state["package"]["searchers"][4] = nullptr;
+		state["package"]["searchers"][3] = not_supported_lua_function("package.searcher C");
+		state["package"]["searchers"][4] = not_supported_lua_function("package.searcher Croot");
 
-		set_folder_for_lua_require();
+		set_folder_for_lua_require(scripts_folder);
 	}
 
-	void lua_module::init_lua_api()
+	void lua_module::init_lua_api(folder& scripts_folder)
 	{
 		auto& state = *m_state;
 
 		// https://blog.rubenwardy.com/2020/07/26/sol3-script-sandbox/
 		// https://www.lua.org/manual/5.4/manual.html#pdf-require
 		sandbox_lua_os_library();
-		sandbox_lua_loads();
+		sandbox_lua_loads(scripts_folder);
 
 		lua::log::bind(state);
 		lua::globals::bind(state);
@@ -193,5 +216,6 @@ namespace big
 		lua::event::bind(state);
 		lua::vector::bind(state);
 		lua::global_table::bind(state);
+		lua::imgui::bind(state, state.globals());
 	}
 }

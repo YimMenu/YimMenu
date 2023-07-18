@@ -299,41 +299,43 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ipls, select)
 			} ipls{};
 
-			bool clean_player       = false;
-			bool force_wanted_level = false;
-			bool free_cam           = false;
-			bool invisibility       = false;
-			bool local_visibility   = true;
-			bool never_wanted       = false;
-			bool no_ragdoll         = false;
-			bool noclip             = false;
-			bool off_radar          = false;
-			bool ghost_org          = false;
-			bool super_run          = false;
-			bool no_collision       = false;
-			bool unlimited_oxygen   = false;
-			bool no_water_collision = false;
-			int wanted_level        = 0;
-			bool god_mode           = false;
-			bool part_water         = false;
-			bool proof_bullet       = false;
-			bool proof_fire         = false;
-			bool proof_collision    = false;
-			bool proof_melee        = false;
-			bool proof_explosion    = false;
-			bool proof_steam        = false;
-			bool proof_drown        = false;
-			bool proof_water        = false;
-			uint32_t proof_mask     = 0;
-			bool mobile_radio       = false;
-			bool fast_respawn       = false;
-			bool auto_tp            = false;
-			bool super_jump         = false;
-			bool beast_jump         = false;
-			bool healthregen        = false;
-			float healthregenrate   = 1.0f;
-			bool superman           = false;
-			bool custom_weapon_stop = true;
+			bool clean_player          = false;
+			bool force_wanted_level    = false;
+			bool free_cam              = false;
+			bool invisibility          = false;
+			bool local_visibility      = true;
+			bool never_wanted          = false;
+			bool no_ragdoll            = false;
+			bool noclip                = false;
+			bool off_radar             = false;
+			bool ghost_org             = false;
+			bool super_run             = false;
+			bool no_collision          = false;
+			bool unlimited_oxygen      = false;
+			bool no_water_collision    = false;
+			int wanted_level           = 0;
+			bool god_mode              = false;
+			bool part_water            = false;
+			bool proof_bullet          = false;
+			bool proof_fire            = false;
+			bool proof_collision       = false;
+			bool proof_melee           = false;
+			bool proof_explosion       = false;
+			bool proof_steam           = false;
+			bool proof_drown           = false;
+			bool proof_water           = false;
+			uint32_t proof_mask        = 0;
+			bool mobile_radio          = false;
+			bool fast_respawn          = false;
+			bool auto_tp               = false;
+			bool super_jump            = false;
+			bool beast_jump            = false;
+			bool healthregen           = false;
+			float healthregenrate      = 1.0f;
+			bool superman              = false;
+			bool custom_weapon_stop    = true;
+			std::string persist_outfit = "";
+			bool persist_outfits_mis   = false;
 			struct hud
 			{
 				bool color_override                                      = false;
@@ -353,22 +355,23 @@ namespace big
 			// do not save below entries
 			bool dance_mode = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ipls, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, custom_weapon_stop)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ipls, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, custom_weapon_stop, persist_outfit)
 		} self{};
 
 		struct session
 		{
-			bool log_chat_messages               = false;
-			bool log_text_messages               = false;
-			bool decloak_players                 = false;
-			bool unhide_players_from_player_list = true;
-			bool force_session_host              = false;
-			bool force_script_host               = false;
-			bool player_magnet_enabled           = false;
-			int player_magnet_count              = 32;
-			bool is_team                         = false;
-			bool join_in_sctv_slots              = false;
-			bool lock_session                    = false;
+			bool log_chat_messages                 = false;
+			bool log_text_messages                 = false;
+			bool decloak_players                   = false;
+			bool unhide_players_from_player_list   = true;
+			bool force_session_host                = false;
+			bool force_script_host                 = false;
+			bool player_magnet_enabled             = false;
+			int player_magnet_count                = 32;
+			bool is_team                           = false;
+			bool join_in_sctv_slots                = false;
+			bool lock_session                      = false;
+			bool allow_friends_into_locked_session = false;
 
 			const char chat_command_prefix = '/';
 			const char chat_output_prefix  = '>';
@@ -408,7 +411,7 @@ namespace big
 
 			bool fast_join = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session)
 		} session{};
 
 		struct settings
@@ -417,9 +420,9 @@ namespace big
 
 			struct rainbow
 			{
-				bool fade = false;
+				bool fade  = false;
 				bool spasm = false;
-				int speed = 1;
+				int speed  = 1;
 			} rainbow{};
 
 			struct hotkeys
@@ -680,15 +683,15 @@ namespace big
 			bool disable_engine_auto_start              = false;
 			bool change_engine_state_immediately        = false;
 			bool keep_engine_running                    = false;
+			bool keep_vehicle_clean                     = false;
 			bool vehinvisibility                        = false;
 			bool localveh_visibility                    = false;
-			bool localped_visibility                    = true;
 			bool keep_on_ground                         = false;
 			bool no_collision                           = false;
 			bool unlimited_weapons                      = false;
 			bool siren_mute                             = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, keep_engine_running, vehinvisibility, localveh_visibility, localped_visibility, keep_on_ground, no_collision, unlimited_weapons, siren_mute)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, keep_engine_running, keep_vehicle_clean, vehinvisibility, localveh_visibility, keep_on_ground, no_collision, unlimited_weapons, siren_mute)
 		} vehicle{};
 
 		struct weapons
@@ -720,8 +723,8 @@ namespace big
 
 			struct paintgun
 			{
-				bool rainbow	= false;
-				float col[4]    = {0.f, 0.f, 1.f, 1.f};
+				bool rainbow = false;
+				float col[4] = {0.f, 0.f, 1.f, 1.f};
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(paintgun, rainbow, col)
 			} paintgun{};
 

@@ -128,9 +128,18 @@ namespace big
 
 					if (g.session.lock_session && g_player_service->get_self()->is_host())
 					{
-						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
-						g_notification_service->push_warning("Lock Session",
-						    std::format("A player with the name of {} has been denied entry", plyr->get_net_data()->m_name));
+						if (plyr->is_friend() && g.session.allow_friends_into_locked_session)
+						{
+							g_notification_service->push_success("Lock Session",
+							    std::format("A friend with the name of {} has been allowed to join the locked session",
+							        plyr->get_net_data()->m_name));
+						}
+						else
+						{
+							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+							g_notification_service->push_warning("Lock Session",
+							    std::format("A player with the name of {} has been denied entry", plyr->get_net_data()->m_name));
+						}
 					}
 
 					if (is_spoofed_host_token(plyr->get_net_data()->m_host_token))

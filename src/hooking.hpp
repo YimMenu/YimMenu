@@ -148,7 +148,6 @@ namespace big
 
 		static void write_vehicle_proximity_migration_data_node(rage::netObject* veh, CVehicleProximityMigrationDataNode* node);
 
-		static bool allow_weapons_in_vehicle(int64_t unk, int weaponinfo_group);
 		static int netfilter_handle_message(__int64 filter, char* message, int flags);
 
 		static void log_error_message_box(rage::joaat_t joaated_error_code, char a2);

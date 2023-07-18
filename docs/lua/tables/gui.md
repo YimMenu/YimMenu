@@ -2,7 +2,7 @@
 
 Table containing functions for modifying the menu GUI.
 
-## Functions (6)
+## Functions (7)
 
 ### `get_tab(tab_name)`
 
@@ -77,6 +77,32 @@ gui.show_error(title, message)
 **Example Usage:**
 ```lua
 bool = gui.is_open()
+```
+
+### `add_imgui(imgui_rendering)`
+
+Registers a function that will be called every rendering frame, you can call ImGui functions in it, please check the ImGui.md documentation file for more info.
+**Example Usage:**
+```lua
+gui.add_imgui(function()
+   if ImGui.Begin("My Custom Window") then
+       if ImGui.Button("Label") then
+         script.run_in_fiber(function(script)
+           -- call natives in there
+         end)
+       end
+
+       ImGui.End()
+   end
+end)
+```
+
+- **Parameters:**
+  - `imgui_rendering` (function): Function that will be called every rendering frame, you can call ImGui functions in it, please check the ImGui.md documentation file for more info.
+
+**Example Usage:**
+```lua
+gui.add_imgui(imgui_rendering)
 ```
 
 

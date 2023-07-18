@@ -27,6 +27,7 @@ namespace big
 		static void self_police();
 		static void self_hud();
 		static void self_dance_mode();
+		static void self_persist_outfit();
 
 		static void session_pop_multiplier_areas();
 		static void session_force_thunder();
@@ -42,6 +43,7 @@ namespace big
 		static void system_rainbow();
 
 		static void vehicle_auto_drive();
+		static void vehicle_allow_all_weapons();
 		static void vehicle_boost_behavior();
 		static void vehicle_ls_customs();
 		static void vehicle_rainbow_paint();

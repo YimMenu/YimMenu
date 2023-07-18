@@ -108,8 +108,6 @@ namespace big
 
 		detour_hook_helper::add<hooks::write_vehicle_proximity_migration_data_node>("WVPMDN", g_pointers->m_gta.m_write_vehicle_proximity_migration_data_node);
 
-		detour_hook_helper::add<hooks::allow_weapons_in_vehicle>("AWIV", g_pointers->m_gta.m_allow_weapons_in_vehicle);
-
 		detour_hook_helper::add<hooks::netfilter_handle_message>("NHM", g_pointers->m_gta.m_netfilter_handle_message);
 
 		detour_hook_helper::add<hooks::log_error_message_box>("E0MBH", g_pointers->m_gta.m_error_message_box);
@@ -133,6 +131,8 @@ namespace big
 	{
 		m_swapchain_hook.enable();
 		m_og_wndproc = WNDPROC(SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, LONG_PTR(&hooks::wndproc)));
+		// window hook: pt2
+		UnhookWindowsHookEx(*g_pointers->m_gta.m_window_hook.add(45).rip().as<HHOOK*>());
 
 		for (const auto& detour_hook_helper : m_detour_hook_helpers)
 		{
@@ -153,6 +153,8 @@ namespace big
 			detour_hook_helper->m_detour_hook->disable();
 		}
 
+		// window hook: pt2
+		SetWindowsHookExA(13, g_pointers->m_gta.m_window_hook.add(18).rip().as<HOOKPROC>(), GetModuleHandleA("GTA5.exe"), 0);
 		SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(m_og_wndproc));
 		m_swapchain_hook.disable();
 

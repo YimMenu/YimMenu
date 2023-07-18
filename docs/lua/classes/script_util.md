@@ -8,7 +8,7 @@ Class for gta script utils, the instance is usually given to you.
 
 Yield execution.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 script_util:yield()
 ```
@@ -20,7 +20,7 @@ Sleep for the given amount of time, time is in milliseconds.
 - **Parameters:**
   - `ms` (integer): The amount of time in milliseconds that we will sleep for.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 script_util:sleep(ms)
 ```

@@ -62,6 +62,7 @@ namespace big
 		void load_data();
 		void load_peds();
 		void load_vehicles();
+		void load_weapons();
 
 		void rebuild_cache();
 

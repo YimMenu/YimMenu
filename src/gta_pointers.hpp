@@ -9,6 +9,8 @@ class ChatData;
 class ScInfo;
 class GenericPool;
 class VehiclePool;
+class CVehicleSeatMetadataMgr;
+class CVehicleDriveByMetadataMgr;
 
 namespace rage
 {
@@ -42,6 +44,8 @@ namespace big
 		memory::handle m_disable_collision;
 
 		memory::handle m_crash_trigger;
+
+		memory::handle m_window_hook;
 
 		memory::handle m_script_vm_patch_1;
 		memory::handle m_script_vm_patch_2;
@@ -274,6 +278,9 @@ namespace big
 		PVOID m_send_non_physical_player_data;
 
 		void** m_presence_data{};
+
+		CVehicleSeatMetadataMgr* m_vehicle_layout_metadata_mgr{};
+		CVehicleDriveByMetadataMgr* m_driveby_metadata_mgr{};
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

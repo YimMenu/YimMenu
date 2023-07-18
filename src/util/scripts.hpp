@@ -62,7 +62,7 @@ namespace big::scripts
 	{
 		if (auto launcher = gta_util::find_script_thread(hash); launcher && launcher->m_net_component)
 		{
-			for (int i = 0; !launcher->m_net_component->is_local_player_host(); i++)
+			for (int i = 0; !((CGameScriptHandlerNetComponent*)launcher->m_net_component)->is_local_player_host(); i++)
 			{
 				if (i > 200)
 					return false;
@@ -100,7 +100,7 @@ namespace big::scripts
 
 			for (auto& [_, plyr] : g_player_service->players())
 			{
-				if (launcher->m_net_component->is_player_a_participant(plyr->get_net_game_player()))
+				if (((CGameScriptHandlerNetComponent*)launcher->m_net_component)->is_player_a_participant(plyr->get_net_game_player()))
 				{
 					if (*script_local(launcher->m_stack, 233).at(plyr->id(), 3).at(2).as<int*>() == state)
 					{

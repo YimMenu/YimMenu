@@ -7,9 +7,10 @@ namespace big
 	{
 		std::string name;
 		float x, y, z;
+		float yaw = 0.0f, pitch = 0.0f, roll = 0.0f;
 	};
 
-	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(telelocation, name, x, y, z);
+	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(telelocation, name, x, y, z, yaw, pitch, roll);
 
 	class custom_teleport_service
 	{

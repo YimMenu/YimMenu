@@ -42,6 +42,19 @@ namespace big
 		return false;
 	}
 
+	void lua_manager::draw_independent_gui()
+	{
+		std::lock_guard guard(m_module_lock);
+
+		for (const auto& module : m_modules)
+		{
+			for (const auto& element : module->m_independent_gui)
+			{
+				element->draw();
+			}
+		}
+	}
+
 	void lua_manager::draw_gui(rage::joaat_t tab_hash)
 	{
 		std::lock_guard guard(m_module_lock);
@@ -86,7 +99,7 @@ namespace big
 			if (module->module_id() == id)
 				return;
 
-		m_modules.push_back(std::make_shared<lua_module>(module_name));
+		m_modules.push_back(std::make_shared<lua_module>(module_name, m_scripts_folder));
 	}
 
 	void lua_manager::reload_changed_scripts()
@@ -157,7 +170,8 @@ namespace big
 
 	void lua_manager::handle_error(const sol::error& error, const sol::state_view& state)
 	{
-		LOG(WARNING) << state["!module_name"].get<std::string_view>() << ": " << error.what();
+		LOG(FATAL) << state["!module_name"].get<std::string_view>() << ": " << error.what();
+		Logger::FlushQueue();
 	}
 
 	void lua_manager::load_all_modules()
