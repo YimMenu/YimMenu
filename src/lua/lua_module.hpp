@@ -31,7 +31,7 @@ namespace big
 		std::unordered_map<menu_event, std::vector<sol::protected_function>> m_event_callbacks;
 		std::vector<void*> m_allocated_memory;
 
-		lua_module(std::string module_name);
+		lua_module(std::string module_name, folder& scripts_folder);
 		~lua_module();
 
 		rage::joaat_t module_id() const;
@@ -39,11 +39,11 @@ namespace big
 		const std::chrono::time_point<std::chrono::file_clock> last_write_time() const;
 
 		// used for sandboxing and limiting to only our custom search path for the lua require function
-		void set_folder_for_lua_require();
+		void set_folder_for_lua_require(folder& scripts_folder);
 
 		void sandbox_lua_os_library();
-		void sandbox_lua_loads();
+		void sandbox_lua_loads(folder& scripts_folder);
 
-		void init_lua_api();
+		void init_lua_api(folder& scripts_folder);
 	};
 }
