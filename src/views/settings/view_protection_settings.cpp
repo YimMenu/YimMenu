@@ -8,10 +8,13 @@ namespace big
 			*(bool*)i = state;
 	}
 
+	static inline void reset_protections()
+	{
+		g.protections = {};
+	}
+
 	void view::protection_settings()
 	{
-		auto initial_protections = g.protections;
-
 		ImGui::BeginGroup();
 		ImGui::Checkbox("BOUNTY"_T.data(), &g.protections.script_events.bounty);
 		ImGui::Checkbox("CEO_MONEY"_T.data(), &g.protections.script_events.ceo_money);
@@ -65,7 +68,7 @@ namespace big
 			set_all_protections(false);
 		ImGui::SameLine();
 		if (ImGui::Button("Reset Protections"))
-			g.protections = initial_protections;
+			reset_protections();
 		ImGui::EndGroup();
 	};
 }
