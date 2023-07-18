@@ -37,6 +37,12 @@ namespace lua::gui
 
 		// Lua API: Function
 		// Class: tab
+		// Name: is_selected
+		// Returns: boolean: Returns true if this tab is the one currently selected in the GUI.
+		bool is_selected(sol::this_state state);
+
+		// Lua API: Function
+		// Class: tab
 		// Name: clear
 		// Clear the tab of all its custom lua content that you own.
 		void clear(sol::this_state state);
@@ -123,7 +129,7 @@ namespace lua::gui
 		//           -- call natives in there
 		//         end)
 		//       end
-		// 
+		//
 		//       ImGui.End()
 		//   end
 		// end)
