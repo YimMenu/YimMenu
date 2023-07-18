@@ -99,7 +99,7 @@ namespace big
 			if (module->module_id() == id)
 				return;
 
-		m_modules.push_back(std::make_shared<lua_module>(module_name));
+		m_modules.push_back(std::make_shared<lua_module>(module_name, m_scripts_folder));
 	}
 
 	void lua_manager::reload_changed_scripts()
