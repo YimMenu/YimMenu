@@ -1,0 +1,28 @@
+name: Improvement request
+description: Improve an existing feature in YimMenu.
+title: "[Improvement]: "
+labels: improvement
+body:
+- type: textarea
+  attributes:
+    label: Which feature
+    description: "Explain to us which feature you want to see improved and what you'd like to be changed about it."
+    placeholder: "I'd like for the Settings -> ESP feature to be structured differently, currently it's too obscure on how each of the features work together."
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Reason
+    description: Provide Reasoning
+    placeholder: "Tell us why you'd want for us to improve this feature in YimMenu."
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Additional context
+    description: |
+      Add any other context about the request here.
+      
+      Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+  validations:
+    required: false
