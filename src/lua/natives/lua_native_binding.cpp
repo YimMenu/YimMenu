@@ -1,5 +1,4 @@
 #include "lua_native_binding.hpp"
-#include "natives.hpp"
 
 namespace lua::native
 {
