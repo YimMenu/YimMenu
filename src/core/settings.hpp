@@ -360,17 +360,18 @@ namespace big
 
 		struct session
 		{
-			bool log_chat_messages               = false;
-			bool log_text_messages               = false;
-			bool decloak_players                 = false;
-			bool unhide_players_from_player_list = true;
-			bool force_session_host              = false;
-			bool force_script_host               = false;
-			bool player_magnet_enabled           = false;
-			int player_magnet_count              = 32;
-			bool is_team                         = false;
-			bool join_in_sctv_slots              = false;
-			bool lock_session                    = false;
+			bool log_chat_messages                 = false;
+			bool log_text_messages                 = false;
+			bool decloak_players                   = false;
+			bool unhide_players_from_player_list   = true;
+			bool force_session_host                = false;
+			bool force_script_host                 = false;
+			bool player_magnet_enabled             = false;
+			int player_magnet_count                = 32;
+			bool is_team                           = false;
+			bool join_in_sctv_slots                = false;
+			bool lock_session                      = false;
+			bool allow_friends_into_locked_session = false;
 
 			const char chat_command_prefix = '/';
 			const char chat_output_prefix  = '>';
@@ -410,7 +411,7 @@ namespace big
 
 			bool fast_join = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session)
 		} session{};
 
 		struct settings
@@ -419,9 +420,9 @@ namespace big
 
 			struct rainbow
 			{
-				bool fade = false;
+				bool fade  = false;
 				bool spasm = false;
-				int speed = 1;
+				int speed  = 1;
 			} rainbow{};
 
 			struct hotkeys
@@ -722,8 +723,8 @@ namespace big
 
 			struct paintgun
 			{
-				bool rainbow	= false;
-				float col[4]    = {0.f, 0.f, 1.f, 1.f};
+				bool rainbow = false;
+				float col[4] = {0.f, 0.f, 1.f, 1.f};
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(paintgun, rainbow, col)
 			} paintgun{};
 
