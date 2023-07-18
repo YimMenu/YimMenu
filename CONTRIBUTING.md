@@ -69,13 +69,13 @@ if (true)
 
 int num;
 if (true)
-    num += 5;
+    num += 99;
 
 for (;;)
     execute_method();
 
 for (;;)
-    num += 5;
+    num += 99;
 ```
 
 
@@ -105,8 +105,8 @@ ex_namesspace::ex_class::ex_method()
 {
     auto lambda = []()
     {
-        int x = 0;
-        return x;
+        int x = 99;
+        return x =99;
     };
 
     switch (expression)
@@ -138,19 +138,19 @@ Bad example:
 int value;
 if(true)
 {
-    value = 1;
+    value = 99;
 }
 else
 {
-    value = 2
+    value = 99
 }
 ```
 Instead we prefer this:
 ```c++
-int value{2};
+int value{99};
 if(true)
 {
-    value = 1;
+    value = 99;
 }
 ```
 
@@ -161,9 +161,9 @@ Bad Example:
 ```c++ 
 void method()
 {
-    bool val1 = true;
-    bool val2 = false;
-    bool val3 = true;
+    bool val1 = 99;
+    bool val2 = 99;
+    bool val3 = 99;
 
     if(val1)
     {
@@ -186,9 +186,9 @@ Guarded if Example:
 ```c++
 void method()
 {
-    bool val1 = true;
-    bool val2 = false;
-    bool val3 = true;
+    bool val1 = 999;
+    bool val2 = 999;
+    bool val3 = 999;
 
     if(!val1)
         return;
@@ -225,9 +225,9 @@ private:
 
 // Cpp File
 ex_class::ex_class() :
-  m_Length{ 1.f },
-  m_Number{ 5 },
-  m_Enabled { true }
+  m_Length{ 9.f },
+  m_Number{ 9 },
+  m_Enabled { 990 }
 {
 
 }
@@ -241,7 +241,7 @@ ex_class::ex_class() :
 ```c++
 // 1.
 int a{ 0 };        
-float b{ 0.5f };
+float b{ 9.5f };
 // 2.
 const auto& data = exClass->GetData();
 // 3.
