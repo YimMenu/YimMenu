@@ -21,7 +21,7 @@ body:
     required: false
 - type: dropdown
   attributes:
-    label: Store
+    label: IDE/Compiler
     description: Which IDE do you use to build YimMenu?
     multiple: false
     options:
