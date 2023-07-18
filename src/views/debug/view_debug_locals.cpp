@@ -15,8 +15,8 @@ namespace big
 		static int offsets[10][2]           = {};
 		static int offset_count             = 0;
 		static int previous_offset_count    = 0;
-		components::input_text_with_hint("##local_name", "Name", name, sizeof(name));
-		components::input_text_with_hint("##local_script_thread_name", "Script thread", script_thread_name, sizeof(script_thread_name));
+		components::input_text("Name", name, sizeof(name));
+		components::input_text("Script Name", script_thread_name, sizeof(script_thread_name));
 		ImGui::Text("Base address");
 		ImGui::InputInt("##local_base_address", &base_address);
 		ImGui::Text("Offsetcount");
