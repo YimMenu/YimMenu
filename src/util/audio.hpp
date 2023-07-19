@@ -134,6 +134,11 @@ namespace big::audio
 		try
 		{
 			PlaySound(TEXT(base.c_str()), NULL, SND_FILENAME | SND_ASYNC);
+			return true;
+		}
+		catch
+		{
+			return false;
 		}
 	}
 
