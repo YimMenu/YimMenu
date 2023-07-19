@@ -2,6 +2,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "util/entity.hpp"
+#include "gta/enums.hpp"
 
 namespace big
 {
@@ -19,7 +20,7 @@ namespace big
 		{
 			for (auto ped : entity::get_entities(false, true))
 			{
-				if (!PED::GET_PED_CONFIG_FLAG(ped, 17, true))
+				if (!PED::GET_PED_CONFIG_FLAG(ped, ePedConfigFlags::CPED_CONFIG_FLAG_BlockNonTemporaryEvents, true))
 				{ // Flag 17 = PED_FLAG_BLOCK_NON_TEMPORARY_EVENTS
 					PED::SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true);
 					TASK::TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true);

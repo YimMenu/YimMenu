@@ -2,6 +2,7 @@
 #include "backend/looped_command.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
+#include "gta/enums.hpp"
 
 namespace big
 {
@@ -13,7 +14,7 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if (!PED::GET_PED_CONFIG_FLAG(self::ped, 62, false))
+			if (!PED::GET_PED_CONFIG_FLAG(self::ped, ePedConfigFlags::CPED_CONFIG_FLAG_InVehicle, false))
 			{
 				if (last_driving)
 				{

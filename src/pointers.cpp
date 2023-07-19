@@ -1391,6 +1391,15 @@ namespace big
                 g_pointers->m_gta.m_driveby_metadata_mgr = ptr.as<CVehicleDriveByMetadataMgr*>();
                 g_pointers->m_gta.m_vehicle_layout_metadata_mgr = ptr.add(0x20).as<CVehicleSeatMetadataMgr*>();
             }
+        },
+        // Blip List
+        {
+            "BLPLST",
+            "4C 8D 05 ? ? ? ? 0F B7 C1",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_blip_list = ptr.add(3).rip().as<CBlipList*>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 

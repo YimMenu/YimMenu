@@ -22,7 +22,7 @@ namespace big
 
 			if (!personal_vehicle)
 			{
-				if (!PED::GET_PED_CONFIG_FLAG(self::ped, 62, false))
+				if (!PED::GET_PED_CONFIG_FLAG(self::ped, ePedConfigFlags::CPED_CONFIG_FLAG_InVehicle, false))
 				{
 					if (last_driving)
 					{
