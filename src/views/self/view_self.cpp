@@ -7,10 +7,14 @@
 #include "util/scripts.hpp"
 #include "views/view.hpp"
 
+#include <fiber_pool.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
+#include <thread_pool.hpp>
+
 
 namespace big
 {
+
 	void view::self()
 	{
 		components::command_button<"suicide">();
@@ -162,6 +166,26 @@ namespace big
 
 				ImGui::EndCombo();
 			}
+		});
+		ImGui::NewLine();
+		ImGui::Checkbox("Navigation", &g.self.nav);
+		components::options_modal("Navigation", [] {
+			ImGui::BeginDisabled(!g.self.nav);
+			ImGui::NewLine();
+			ImGui::Text("Having Textual Navigation is recommended while using Vocal Navigation.");
+			ImGui::NewLine();
+
+			ImGui::Checkbox("Vocal Navigation", &g.self.nav_voice);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Vocal Navigation is not perfected yet. It gets you there...");
+			ImGui::Checkbox("Textual Navigation", &g.self.nav_text);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Provides Popups with directions.");
+			ImGui::NewLine();
+			ImGui::Text("Make sure you have the following .wav files installed to the navigation directory in YimMenu.");
+			ImGui::NewLine();
+			ImGui::Text("routerecalc,highlightedroute mile,thousandfeet,fivehundredfeet,onehundredfeet,keepleft,keepright,straight,turnleft,turnright");
+			ImGui::EndDisabled();
 		});
 
 		ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.self.never_wanted);

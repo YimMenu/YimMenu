@@ -9,6 +9,17 @@ namespace big::math
 		return (float)radian;
 	}
 
+	inline int meters_to_feet(int meters)
+	{
+		float conversion_rate = 3.28084;
+		return (int)(meters * conversion_rate);
+	}
+
+	inline int divided_by_ten(int feet)
+	{
+		return (int)(feet / 10);
+	}
+
 	inline float distance_between_vectors(Vector3 a, Vector3 b)
 	{
 		return (float)sqrt(pow((a.x - b.x), 2) + pow((a.y - b.y), 2) + pow((a.z - b.z), 2));
