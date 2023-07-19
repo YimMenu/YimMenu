@@ -11,7 +11,7 @@ namespace big
 		if (g.self.persist_outfit.empty())
 			return; //Off
 
-		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr || g_local_player->m_player_info->m_game_state == eGameState::InMPCutscene || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() || DLC::GET_IS_LOADING_SCREEN_ACTIVE())
+		if (g_local_player == nullptr || PED::IS_PED_DEAD_OR_DYING(self::ped, TRUE) || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() || DLC::GET_IS_LOADING_SCREEN_ACTIVE())
 			return; //Dead or Loading
 
 		if (PED::GET_PED_DRAWABLE_VARIATION(self::ped, 5) == 0 && PED::GET_PED_DRAWABLE_VARIATION(self::ped, 4) >= 14 && PED::GET_PED_DRAWABLE_VARIATION(self::ped, 4) <= 18)
