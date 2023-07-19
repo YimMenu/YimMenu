@@ -221,8 +221,6 @@ namespace big::teleport
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(entity, blip->m_x, blip->m_y, blip->m_z, FALSE, FALSE, TRUE);
 		ENTITY::SET_ENTITY_HEADING(entity, blip->m_rotation);
 
-		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, blip->m_x, blip->m_y, blip->m_z);
-
 		return false;
 	}
 
