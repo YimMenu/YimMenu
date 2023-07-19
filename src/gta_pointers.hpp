@@ -11,6 +11,7 @@ class GenericPool;
 class VehiclePool;
 class CVehicleSeatMetadataMgr;
 class CVehicleDriveByMetadataMgr;
+class CBlipList;
 
 namespace rage
 {
@@ -281,6 +282,8 @@ namespace big
 
 		CVehicleSeatMetadataMgr* m_vehicle_layout_metadata_mgr{};
 		CVehicleDriveByMetadataMgr* m_driveby_metadata_mgr{};
+
+		CBlipList* m_blip_list{};
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

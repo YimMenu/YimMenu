@@ -199,6 +199,31 @@ namespace big::teleport
 		return false;
 	}
 
+	inline bool to_highlighted_blip()
+	{
+		if (!*g_pointers->m_gta.m_is_session_started)
+		{
+			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NOT_ONLINE"_T.data());
+			return false;
+		}
+
+		auto blip = blip::get_selected_blip();
+		if (blip == nullptr)
+		{
+			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NOTHING_SELECTED"_T.data());
+			return false;
+		}
+		Entity entity = self::ped;
+		if (PED::GET_PED_CONFIG_FLAG(self::ped, 62, TRUE))
+		{
+			entity = self::veh;
+		}
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(entity, blip->m_x, blip->m_y, blip->m_z, FALSE, FALSE, TRUE);
+		ENTITY::SET_ENTITY_HEADING(entity, blip->m_rotation);
+
+		return false;
+	}
+
 	inline bool tp_on_top(Entity ent, bool match_velocity)
 	{
 		if (!ENTITY::DOES_ENTITY_EXIST(ent))
