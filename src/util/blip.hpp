@@ -55,12 +55,9 @@ namespace big::blip
 		{
 
 			auto blip = g_pointers->m_gta.m_blip_list->m_Blips[i].m_pBlip;
-			if (blip)
+			if (blip && (blip->m_display_bits & BlipDisplayBits::BlipIsSelected))
 			{
-				if (blip->m_display_bits & BlipDisplayBits::BlipIsSelected)
-				{
-					return blip;
-				}
+				return blip;
 			}
 		}
 		return nullptr;

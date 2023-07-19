@@ -14,7 +14,7 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if (!PED::GET_PED_CONFIG_FLAG(self::ped, ePedConfigFlags::CPED_CONFIG_FLAG_InVehicle, false))
+			if (!PED::GET_PED_CONFIG_FLAG(self::ped, 62, false))
 			{
 				if (last_driving)
 				{

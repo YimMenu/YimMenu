@@ -214,7 +214,7 @@ namespace big::teleport
 			return false;
 		}
 		Entity entity = self::ped;
-		if (PED::GET_PED_CONFIG_FLAG(self::ped, ePedConfigFlags::CPED_CONFIG_FLAG_InVehicle, TRUE))
+		if (PED::GET_PED_CONFIG_FLAG(self::ped, 62, TRUE))
 		{
 			entity = self::veh;
 		}
