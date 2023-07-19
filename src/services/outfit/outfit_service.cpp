@@ -42,11 +42,8 @@ namespace big
 				if (id == 0)
 				{
 					//Prevent player ped from taking helmet off.
-					PED::SET_PED_HELMET_PROP_INDEX(self::ped, drawable_id, 0);
-					PED::SET_PED_HELMET_TEXTURE_INDEX(self::ped, texture_id);
 					PED::SET_PED_CONFIG_FLAG(self::ped, 34, true);
-					if (!PED::IS_PED_ON_ANY_BIKE(self::ped))
-						PED::SET_PED_CONFIG_FLAG(self::ped, 36, true);
+					PED::SET_PED_CONFIG_FLAG(self::ped, 36, true);
 				}
 			}
 		}
