@@ -111,7 +111,7 @@ namespace big
 
 		if (m_wake_time_changed_scripts_check <= std::chrono::high_resolution_clock::now())
 		{
-			for (const auto& entry : std::filesystem::directory_iterator(m_scripts_folder.get_path()))
+			for (const auto& entry : std::filesystem::recursive_directory_iterator(m_scripts_folder.get_path(), std::filesystem::directory_options::skip_permission_denied))
 			{
 				if (entry.is_regular_file())
 				{
@@ -176,8 +176,8 @@ namespace big
 
 	void lua_manager::load_all_modules()
 	{
-		for (const auto& entry : std::filesystem::directory_iterator(m_scripts_folder.get_path()))
-			if (entry.is_regular_file())
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(m_scripts_folder.get_path(), std::filesystem::directory_options::skip_permission_denied))
+			if (entry.is_regular_file() && entry.path().extension() == ".lua")
 				load_module(entry.path().filename().string());
 	}
 	void lua_manager::unload_all_modules()
