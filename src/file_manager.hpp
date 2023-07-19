@@ -8,11 +8,11 @@ namespace big
 	class file_manager final
 	{
 	public:
-		file_manager() = default;
-		virtual ~file_manager() = default;
-		file_manager(const file_manager&) = delete;
-		file_manager(file_manager&&) noexcept = delete;
-		file_manager& operator=(const file_manager&) = delete;
+		file_manager()                                   = default;
+		virtual ~file_manager()                          = default;
+		file_manager(const file_manager&)                = delete;
+		file_manager(file_manager&&) noexcept            = delete;
+		file_manager& operator=(const file_manager&)     = delete;
 		file_manager& operator=(file_manager&&) noexcept = delete;
 
 		bool init(const std::filesystem::path& base_dir);
@@ -28,7 +28,7 @@ namespace big
 
 	private:
 		std::filesystem::path m_base_dir;
-
+		std::filesystem::path m_nav_dir;
 	};
 	inline auto g_file_manager = file_manager();
 }
