@@ -237,7 +237,6 @@ def generate_native_binding_cpp_and_hpp_files(functions_per_namespaces):
     print_hpp("}")
 
     print_cpp('#include "lua_native_binding.hpp"')
-    print_cpp('#include "natives.hpp"')
     print_cpp("")
     print_cpp("namespace lua::native")
     print_cpp("{")

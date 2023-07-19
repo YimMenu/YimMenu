@@ -56,7 +56,7 @@ namespace big
 		// When this function exits, Lua will exhibit default behavior and abort()
 	}
 
-	lua_module::lua_module(std::string module_name) :
+	lua_module::lua_module(std::string module_name, folder& scripts_folder) :
 	    m_module_name(module_name),
 	    m_module_id(rage::joaat(module_name))
 	{
@@ -78,7 +78,7 @@ namespace big
 		);
 		// clang-format on
 
-		init_lua_api();
+		init_lua_api(scripts_folder);
 
 		state["!module_name"] = module_name;
 		state["!this"]        = this;
@@ -86,7 +86,7 @@ namespace big
 		state.set_exception_handler(exception_handler);
 		state.set_panic(sol::c_call<decltype(&panic_handler), &panic_handler>);
 
-		const auto script_file_path = g_lua_manager->get_scripts_folder().get_file(module_name).get_path();
+		const auto script_file_path = scripts_folder.get_file(module_name).get_path();
 		m_last_write_time           = std::filesystem::last_write_time(script_file_path);
 
 		auto result = state.safe_script_file(script_file_path.string(), &sol::script_pass_on_error, sol::load_mode::text);
@@ -137,11 +137,11 @@ namespace big
 		return m_last_write_time;
 	}
 
-	void lua_module::set_folder_for_lua_require()
+	void lua_module::set_folder_for_lua_require(folder& scripts_folder)
 	{
 		auto& state = *m_state;
 
-		const auto scripts_search_path = g_lua_manager->get_scripts_folder().get_path() / "?.lua";
+		const auto scripts_search_path = scripts_folder.get_path() / "?.lua";
 		state["package"]["path"]       = scripts_search_path.string();
 	}
 
@@ -171,7 +171,7 @@ namespace big
 		};
 	}
 
-	void lua_module::sandbox_lua_loads()
+	void lua_module::sandbox_lua_loads(folder& scripts_folder)
 	{
 		auto& state = *m_state;
 
@@ -191,17 +191,17 @@ namespace big
 		state["package"]["searchers"][3] = not_supported_lua_function("package.searcher C");
 		state["package"]["searchers"][4] = not_supported_lua_function("package.searcher Croot");
 
-		set_folder_for_lua_require();
+		set_folder_for_lua_require(scripts_folder);
 	}
 
-	void lua_module::init_lua_api()
+	void lua_module::init_lua_api(folder& scripts_folder)
 	{
 		auto& state = *m_state;
 
 		// https://blog.rubenwardy.com/2020/07/26/sol3-script-sandbox/
 		// https://www.lua.org/manual/5.4/manual.html#pdf-require
 		sandbox_lua_os_library();
-		sandbox_lua_loads();
+		sandbox_lua_loads(scripts_folder);
 
 		lua::log::bind(state);
 		lua::globals::bind(state);

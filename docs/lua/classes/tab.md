@@ -2,7 +2,17 @@
 
 Class for representing a tab within the GUI.
 
-## Functions (11)
+## Functions (12)
+
+### `is_selected()`
+
+- **Returns:**
+  - `boolean`: Returns true if this tab is the currently selected one in the GUI.
+
+**Example Usage:**
+```lua
+boolean = tab:is_selected()
+```
 
 ### `clear()`
 
