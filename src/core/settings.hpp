@@ -334,9 +334,9 @@ namespace big
 			float healthregenrate   = 1.0f;
 			bool superman           = false;
 			bool custom_weapon_stop = true;
-			bool nav                = true;
-			bool nav_voice          = true;
-			bool nav_text           = true;
+			bool nav                = false;
+			bool nav_voice          = false;
+			bool nav_text           = false;
 			struct hud
 			{
 				bool color_override                                      = false;

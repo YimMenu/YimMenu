@@ -170,6 +170,10 @@ namespace big
 		ImGui::NewLine();
 		ImGui::Checkbox("Navigation", &g.self.nav);
 		components::options_modal("Navigation", [] {
+			if (!g.self.nav)
+			{
+				ImGui::Text("You Must Enable Navigation to Edit These Settings");
+			}
 			ImGui::BeginDisabled(!g.self.nav);
 			ImGui::NewLine();
 			ImGui::Text("Having Textual Navigation is recommended while using Vocal Navigation.");
