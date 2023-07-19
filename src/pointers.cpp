@@ -535,31 +535,25 @@ namespace big
                 g_pointers->m_gta.m_fipackfile_instances = ptr.add(26).rip().as<rage::fiPackfile**>();
             }
         },
-        // fiPackfile open archive
+        // fiPackfile dtor
         {
-            "FPFOA",
-            "48 8D 68 98 48 81 EC 40 01 00 00 41 8B F9",
+            "FPFD",
+            "48 89 5C 24 08 57 48 83 EC 20 48 8D 05 ? ? ? ? 33 FF 48 8B D9 48 89 01 40 88",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_fipackfile_open_archive = ptr.sub(0x18).as<functions::fipackfile_open_archive>();
+                g_pointers->m_gta.m_fipackfile_dtor = ptr.as<functions::fipackfile_dtor>();
             }
         },
-        // fiPackfile mount
+        // fiPackfile stuff
         {
-            "FPFM",
-            "84 C0 74 1D 48 85 DB 74 0F 48",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_fipackfile_mount = ptr.sub(0x1E).as<functions::fipackfile_mount>();
-            }
-        },
-        // fiPackfile unmount
-        {
-            "FPFUM",
-            "E8 ? ? ? ? 84 C0 74 37 80 3D",
+            "FPU&FPCA&FPOA&FPM",
+            "E8 ? ? ? ? 48 8D 0D ? ? ? ? E8 ? ? ? ? 8A 05 ? ? ? ? 48 8D 0D",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_fipackfile_unmount = ptr.add(1).rip().as<functions::fipackfile_unmount>();
+                g_pointers->m_gta.m_fipackfile_close_archive = ptr.add(0xD).rip().as<functions::fipackfile_close_archive>();
+                g_pointers->m_gta.m_fipackfile_open_archive = ptr.add(0x34).rip().as<functions::fipackfile_open_archive>();
+                g_pointers->m_gta.m_fipackfile_mount = ptr.add(0x47).rip().as<functions::fipackfile_mount>();
             }
         },
         // Invalid Mods Crash Detour
@@ -715,24 +709,6 @@ namespace big
                 g_pointers->m_gta.m_sort_session_details = ptr.sub(0x10).as<PVOID>();
             }
         },
-        // Add Player To Session
-        {
-            "APTS",
-            "E8 ? ? ? ? 48 8D 8D F0 01 00 00 8A D8",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_add_player_to_session = ptr.add(1).rip().as<PVOID>();
-            }
-        },
-        // Send Chat Net Message
-        {
-            "SCNM",
-            "E8 ? ? ? ? 41 FF C4 48 83 C5 08",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_send_chat_net_message = ptr.add(1).rip().as<PVOID>();
-            }
-        },
         // Process Matchmaking Find Response
         {
             "PMFR",
@@ -858,15 +834,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_sc_info = ptr.sub(4).rip().as<ScInfo*>();
-            }
-        },
-        // Create Script Handler
-        {
-            "CSH",
-            "48 8D 05 ? ? ? ? 4C 8D 0D ? ? ? ? 41 83 C8 FF 48 89 03 89 53 70 88 53 74 4C 89 4B 68 48 89 93",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_create_script_handler = *(ptr.add(3).rip().as<std::uint64_t**>() + 8);
             }
         },
         // Invalid Decal Crash
@@ -1137,6 +1104,7 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_refresh_audio_input = ptr.add(3).rip().as<bool*>();
+                g_pointers->m_gta.m_refresh_audio_input_2 = ptr.add(3).rip().as<bool*>() + 2;
             }
         },
         // Allow Weapons In Vehicle
@@ -1210,6 +1178,43 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_taskjump_constructor = ptr.as<PVOID>();
+            }
+        },
+        // NetFilter Handle Message
+        {
+            "NHM",
+            "40 55 56 57 41 54 41 55 41 56 41 57 48 81 EC 50 01 00 00 48 8D 6C 24 30",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_netfilter_handle_message = ptr.as<PVOID>();
+            }
+        },
+        // Handle Chat Message
+        {
+            "HCM",
+            "4D 85 C9 0F 84 8D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_handle_chat_message = ptr.as<functions::handle_chat_message>();
+            }
+        },
+        // Language & Update Language
+        {
+            "L&UL",
+            "83 3D ? ? ? ? ? 44 8B C3",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_language = ptr.add(2).rip().add(1).as<int*>();
+                g_pointers->m_gta.m_update_language = ptr.add(0x38).rip().as<functions::update_language>();
+            }
+        },
+        // Get Host Array Handler By Index
+        {
+            "GHAHBI",
+            "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 8A 81 8F",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_host_array_handler_by_index = ptr.as<functions::get_host_array_handler_by_index>();
             }
         },
         // Max Wanted Level
@@ -1330,6 +1335,15 @@ namespace big
                 g_pointers->m_gta.m_script_vm_patch_5 = ptr;
                 g_pointers->m_gta.m_script_vm_patch_6 = ptr.add(0x26);
             }
+        },
+        // CTheScripts::GetHandlerCheckNetwork patch (aka Model Spawn Bypass)
+        {
+            "CTSHP",
+            "48 8B C8 FF 52 30 84 C0 74 05 48",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_model_spawn_bypass = ptr.add(8).as<PVOID>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 
@@ -1405,8 +1419,8 @@ namespace big
 	}
 
 	pointers::pointers() :
-	    m_gta_pointers_cache(g_file_manager->get_project_file("./cache/gta_pointers.bin")),
-	    m_sc_pointers_cache(g_file_manager->get_project_file("./cache/sc_pointers.bin"))
+	    m_gta_pointers_cache(g_file_manager.get_project_file("./cache/gta_pointers.bin")),
+	    m_sc_pointers_cache(g_file_manager.get_project_file("./cache/sc_pointers.bin"))
 	{
 		g_pointers = this;
 

@@ -102,7 +102,6 @@ namespace big
 		draw_reaction(g.reactions.request_control_event);
 		ImGui::Separator();
 		draw_reaction(g.reactions.gamer_instruction_kick);
-		draw_interloper_reaction(g.reactions.breakup_others);
 
 		components::title("Reaction Kick Method");
 		components::sub_title("Kick Option:");

@@ -93,7 +93,7 @@ namespace big
 			}
 
 			ImGui::SameLine(300);
-			
+
 			const auto button_label = g_vehicle_control_service.m_controlled_vehicle.doors[i].open ? "CLOSE"_T : "OPEN"_T;
 			if (components::button(button_label))
 			{
@@ -107,6 +107,48 @@ namespace big
 
 
 		ImGui::EndGroup();
+	}
+
+	void render_windows_tab()
+	{
+		const char* const windownames[4]{
+		    "Front left",
+		    "Front right",
+		    "Back left",
+		    "Back right",
+		};
+
+		ImGui::BeginGroup();
+		ImGui::Spacing();
+		ImGui::SetNextItemWidth(200);
+		components::button("Roll Down All", [] {
+			g_vehicle_control_service.operate_window(eWindowId::WINDOW_INVALID_ID, true);
+		});
+		ImGui::SameLine();
+		components::button("Roll Up All", [] {
+			g_vehicle_control_service.operate_window(eWindowId::WINDOW_INVALID_ID, false);
+		});
+		ImGui::EndGroup();
+
+		ImGui::Spacing();
+		ImGui::Separator();
+
+		ImGui::BeginGroup();
+		for (int i = 0; i < 4; i++)
+		{
+			ImGui::SetNextItemWidth(200);
+			ImGui::PushID(i);
+			ImGui::Text(windownames[i]);
+			ImGui::SameLine(300);
+			components::button("Roll Down", [i] {
+				g_vehicle_control_service.operate_window((eWindowId)i, true);
+			});
+			ImGui::SameLine();
+			components::button("Roll Up", [i] {
+				g_vehicle_control_service.operate_window((eWindowId)i, false);
+			});
+			ImGui::PopID();
+		}
 	}
 
 	void render_lights_tab()
@@ -317,6 +359,13 @@ namespace big
 					if (ImGui::BeginTabItem("Doors"))
 					{
 						render_doors_tab();
+
+						ImGui::EndTabItem();
+					}
+
+					if (ImGui::BeginTabItem("Windows"))
+					{
+						render_windows_tab();
 
 						ImGui::EndTabItem();
 					}

@@ -42,6 +42,22 @@ namespace big::outfit
 		    {8, "OUTFIT_UNK4"_T.data()}};
 	};
 
+	inline void check_bounds_drawable(outfit_t* item)
+	{
+		if(item->drawable_id > item->drawable_id_max)
+			item->drawable_id = item->drawable_id_max;
+		if(item->drawable_id < -1)
+			item->drawable_id = -1;
+	}
+
+	inline void check_bounds_texture(outfit_t* item)
+	{
+		if(item->texture_id > item->texture_id_max)
+			item->texture_id = item->texture_id_max;
+		if(item->texture_id < -1)
+			item->texture_id = -1;
+	}
+
 	inline char* get_slot_name_address(int slot)
 	{
 		return script_global(2359296).at(0, 5568).at(681).at(2460).at(slot, 8).as<char*>();

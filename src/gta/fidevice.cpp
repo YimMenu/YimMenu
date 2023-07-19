@@ -13,12 +13,9 @@ namespace rage
 	{
 	}
 
-	fiDeviceImplemented::~fiDeviceImplemented()
+	void fiDeviceImplemented::Destroy()
 	{
-	}
-
-	fiDevice::~fiDevice()
-	{
+		LOG(FATAL) << "pure fiDevice call (" __FUNCTION__ ")";
 	}
 
 	uint64_t fiDeviceImplemented::Open(const char* fileName, bool)
@@ -256,6 +253,11 @@ namespace rage
 		big::g_pointers->m_gta.m_fipackfile_ctor(this);
 	}
 
+	fiPackfile::~fiPackfile()
+	{
+		big::g_pointers->m_gta.m_fipackfile_dtor(this);
+	}
+
 	bool fiPackfile::OpenPackfile(const char* archive, bool b_true, int type, intptr_t very_false)
 	{
 		return big::g_pointers->m_gta.m_fipackfile_open_archive(this, archive, b_true, type, very_false);
@@ -264,6 +266,11 @@ namespace rage
 	bool fiPackfile::Mount(const char* mount_point)
 	{
 		return big::g_hooking->get_original<big::hooks::fipackfile_mount>()(this, mount_point);
+	}
+
+	void fiPackfile::ClosePackfile()
+	{
+		big::g_pointers->m_gta.m_fipackfile_close_archive(this);
 	}
 
 	void fiDevice::Unmount(const char* rootPath)

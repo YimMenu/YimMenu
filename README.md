@@ -14,7 +14,6 @@ So here I am with an up-to-date menu focusing on protecting the user from toxic 
  * [Make your own flavour of YimMenu](#make-your-own-flavour-of-yimmenu)
  * [Staying Up To Date](#staying-up-to-date)
  * [Project Structure](#project-structure)
- * [Features](#features)
  * [Contributing](#contributing)
  
 ## How to compile YimMenu

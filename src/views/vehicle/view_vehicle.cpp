@@ -15,6 +15,14 @@ namespace big
 			        std::make_format_args(amount_fixed,
 			            amount_fixed == 1 ? "VEHICLE_FIX_HAS"_T.data() : "VEHICLE_FIX_HAVE"_T.data())));
 		});
+
+		ImGui::SameLine();
+		components::button("Delete Current",[]{
+			auto handle = self::veh;
+			if(ENTITY::DOES_ENTITY_EXIST(handle))
+				TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped), entity::delete_entity(handle);
+		});
+
 		ImGui::SameLine();
 		components::button("REPAIR"_T, [] {
 			vehicle::repair(self::veh);
@@ -55,9 +63,7 @@ namespace big
 		ImGui::SameLine();
 		components::command_checkbox<"keepengine">();
 
-		ImGui::Separator();
-
-		components::sub_title("GENERAL"_T);
+		ImGui::SeparatorText("GENERAL"_T.data());
 		{
 			ImGui::BeginGroup();
 
@@ -116,10 +122,7 @@ namespace big
 
 			ImGui::EndGroup();
 		}
-		ImGui::Separator();
-
-
-		components::sub_title("PROOFS"_T);
+		ImGui::SeparatorText("PROOFS"_T.data());
 		{
 			if (ImGui::Button("CHECK_ALL"_T.data()))
 			{
@@ -172,10 +175,7 @@ namespace big
 
 			ImGui::EndGroup();
 		}
-		ImGui::Separator();
-
-
-		components::sub_title("SPEED_UNIT"_T);
+		ImGui::SeparatorText("SPEED_UNIT"_T.data());
 		{
 			ImGui::RadioButton(speed_unit_strings[(int)SpeedUnit::KMPH].c_str(), (int*)&g.vehicle.speed_unit, (int)SpeedUnit::KMPH);
 			ImGui::SameLine();

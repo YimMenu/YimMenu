@@ -10,8 +10,8 @@ namespace big
 		{
 			components::sub_title("DEBUG_SCRIPTS_SUB_TITLE"_T);
 
-			for (const auto& script : g_script_mgr.scripts())
-			{
+			g_script_mgr.for_each_script([](const auto& script) {
+
 				if (script->is_toggleable())
 				{
 					if (ImGui::Checkbox(script->name(), script->toggle_ptr()))
@@ -19,7 +19,8 @@ namespace big
 						g_notification_service->push(std::string(script->name()).append(" script"), script->is_enabled() ? "Resumed" : "Halted");
 					}
 				}
-			}
+			});
+
 			ImGui::EndTabItem();
 		}
 	}

@@ -85,8 +85,8 @@ namespace big
 			ImGui::BeginGroup();
 			for (auto& item : components.items)
 			{
-				ImGui::SetNextItemWidth(60);
-				ImGui::InputInt(std::format("{} [0,{}]", item.label, item.drawable_id_max).c_str(), outfit::get_component_drawable_id_address(slot, item.id), 0);
+				ImGui::SetNextItemWidth(120);
+				ImGui::InputInt(std::format("{} [0,{}]##1", item.label, item.drawable_id_max).c_str(), outfit::get_component_drawable_id_address(slot, item.id));
 			}
 			ImGui::EndGroup();
 
@@ -95,8 +95,8 @@ namespace big
 			ImGui::BeginGroup();
 			for (auto& item : components.items)
 			{
-				ImGui::SetNextItemWidth(60);
-				ImGui::InputInt(std::format("{} {} [0,{}]", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), outfit::get_component_texture_id_address(slot, item.id), 0);
+				ImGui::SetNextItemWidth(120);
+				ImGui::InputInt(std::format("{} {} [0,{}]##2", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), outfit::get_component_texture_id_address(slot, item.id));
 			}
 			ImGui::EndGroup();
 
@@ -105,8 +105,8 @@ namespace big
 			ImGui::BeginGroup();
 			for (auto& item : props.items)
 			{
-				ImGui::SetNextItemWidth(60);
-				ImGui::InputInt(std::format("{} [0,{}]", item.label, item.drawable_id_max).c_str(), outfit::get_prop_drawable_id_address(slot, item.id), 0);
+				ImGui::SetNextItemWidth(120);
+				ImGui::InputInt(std::format("{} [0,{}]##3", item.label, item.drawable_id_max).c_str(), outfit::get_prop_drawable_id_address(slot, item.id));
 			}
 			ImGui::EndGroup();
 
@@ -115,8 +115,8 @@ namespace big
 			ImGui::BeginGroup();
 			for (auto& item : props.items)
 			{
-				ImGui::SetNextItemWidth(60);
-				ImGui::InputInt(std::format("{} {} [0,{}]", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), outfit::get_prop_texture_id_address(slot, item.id), 0);
+				ImGui::SetNextItemWidth(120);
+				ImGui::InputInt(std::format("{} {} [0,{}]##4", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), outfit::get_prop_texture_id_address(slot, item.id));
 			}
 			ImGui::EndGroup();
 		}

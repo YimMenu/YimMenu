@@ -4,9 +4,18 @@
 #include "gui/components/components.hpp"
 #include "util/animator.hpp"
 
+//Percentage of window space
+constexpr auto listbox_width  = 0.5f;
+constexpr auto listbox_height = 0.2f;
 
 namespace big
 {
+
+	inline ImVec2 get_listbox_dimensions()
+	{
+		return {750 * listbox_width, 1000 * listbox_height};
+	}
+
 	class view
 	{
 		inline static animator window_animator = animator();
@@ -15,7 +24,6 @@ namespace big
 	public:
 		static void active_view();
 		static void esp_settings();
-		static void context_menu_settings();
 		static void outfit_editor();
 		static void outfit_slots();
 		static void stat_editor();
@@ -25,7 +33,6 @@ namespace big
 		static void handling_saved_profiles();
 		static void reaction_settings();
 		static void protection_settings();
-		static void translation_settings();
 		static void heading();
 		static void mobile();
 		static void navigation();
@@ -33,7 +40,7 @@ namespace big
 		static void overlay();
 		static void root();
 		static void self();
-		static void session();
+		static void network();
 		static void missions();
 		static void player_database();
 		static void session_browser();
@@ -43,6 +50,7 @@ namespace big
 		static void spawn_vehicle();
 		static void pv();
 		static void persist_car();
+		static void xml_vehicles();
 		static void fun_vehicle();
 		static void vehicle_control();
 		static void spawn_ped();
@@ -59,13 +67,12 @@ namespace big
 		static void train();
 		static void blackhole();
 		static void model_swapper();
-		static void nearby();
 		static void world();
 		static void gta_cache();
 		static void lua_scripts();
 
 		static void player_info();
-		static void player_troll();
+		static void player_teleport();
 		static void player_kick();
 		static void player_toxic();
 		static void player_misc();

@@ -1,8 +1,8 @@
 #pragma once
 #include "fwddec.hpp"
 #include "pointers.hpp"
-#include <base/atRTTI.hpp>
 
+#include <base/atRTTI.hpp>
 #include <cstdint>
 
 #pragma pack(push, 1)
@@ -31,9 +31,9 @@ namespace rage
 		virtual bool SerializeFloat(float* flt, float divisor, int size)             = 0;
 		virtual bool SerializeNetworkId(uint16_t* net_id)                            = 0;
 		virtual bool SerializeVector3(rage::fvector3* vec3, float divisor, int size) = 0;
-		virtual bool SerializeQuaternion(void* unk)                                  = 0;// i have no clue what that is
+		virtual bool SerializeQuaternion(void* unk)                                  = 0; // i have no clue what that is
 		virtual bool SerializeVector3SignedZComponent(rage::fvector3* vec3, float divisor, int size) = 0;
-		virtual bool SerializeOrientation(rage::fvector4* vec4, float size) = 0;// yes, the size is a float
+		virtual bool SerializeOrientation(rage::fvector4* vec4, float size) = 0; // yes, the size is a float
 		virtual bool SerializeArray(void* array, int size)                  = 0;
 		virtual bool SerializeString(char* str, int max_length)             = 0;
 		virtual bool IsSizeCalculator()                                     = 0;
@@ -212,6 +212,16 @@ namespace rage
 		{
 			return big::g_pointers->m_gta.m_write_bitbuf_array(this, array, size, 0);
 		}
+
+		void WriteString(char* string, int max_len)
+		{
+			auto len      = std::min(max_len, (int)strlen(string) + 1);
+			bool extended = len > 127;
+			Write<bool>(extended, 1);
+			Write<int>(len, extended ? 15 : 7);
+			WriteArray(string, 8 * len);
+		}
+
 		bool ReadArray(PVOID array, int size)
 		{
 			return big::g_pointers->m_gta.m_read_bitbuf_array(this, array, size, 0);
@@ -291,13 +301,13 @@ namespace rage
 		}
 
 	public:
-		void* m_data;              //0x0000
-		uint32_t m_bitOffset;      //0x0008
-		uint32_t m_maxBit;         //0x000C
-		uint32_t m_bitsRead;       //0x0010
-		uint32_t m_curBit;         //0x0014
-		uint32_t m_highestBitsRead;//0x0018
-		uint8_t m_flagBits;        //0x001C
+		void* m_data;               //0x0000
+		uint32_t m_bitOffset;       //0x0008
+		uint32_t m_maxBit;          //0x000C
+		uint32_t m_bitsRead;        //0x0010
+		uint32_t m_curBit;          //0x0014
+		uint32_t m_highestBitsRead; //0x0018
+		uint8_t m_flagBits;         //0x001C
 	};
 
 	enum class eNetMessage : uint32_t
@@ -318,7 +328,7 @@ namespace rage
 		MsgConfigResponse              = 0x5F,
 		MsgConfigRequest               = 0x48,
 		MsgChangeSessionAttributesCmd  = 0x5A,
-		MsgAddGamerToSessionCmd        = 0x64,// this is where send net info to lobby is called, among other things
+		MsgAddGamerToSessionCmd        = 0x64, // this is where send net info to lobby is called, among other things
 		MsgReassignResponse            = 0x10,
 		MsgReassignNegotiate           = 0x01,
 		MsgReassignConfirm             = 0x26,
@@ -342,20 +352,20 @@ namespace rage
 		MsgScriptHostRequest           = 0x67,
 		MsgScriptHandshakeAck          = 0x5B,
 		MsgScriptHandshake             = 0x57,
-		MsgScriptBotLeave              = 0x2B,// unused?
-		MsgScriptBotJoinAck            = 0x63,// unused?
-		MsgScriptBotJoin               = 0x1C,// unused?
-		MsgScriptBotHandshakeAck       = 0x31,// unused?
-		MsgScriptBotHandshake          = 0x4B,// unused?
+		MsgScriptBotLeave              = 0x2B, // unused?
+		MsgScriptBotJoinAck            = 0x63, // unused?
+		MsgScriptBotJoin               = 0x1C, // unused?
+		MsgScriptBotHandshakeAck       = 0x31, // unused?
+		MsgScriptBotHandshake          = 0x4B, // unused?
 		MsgPartyLeaveGame              = 0x3D,
 		MsgPartyEnterGame              = 0x1E,
-		MsgCloneSync                   = 0x4E,// aka clone_create, clone_sync etc.
-		MsgActivateNetworkBot          = 0x65,// unused?
+		MsgCloneSync                   = 0x4E, // aka clone_create, clone_sync etc.
+		MsgActivateNetworkBot          = 0x65, // unused?
 		MsgRequestObjectIds            = 0x29,
 		MsgInformObjectIds             = 0x09,
-		MsgTextMessage                 = 0x24,// this one is for chat
+		MsgTextMessage                 = 0x24, // this one is for chat
 		MsgPlayerIsTyping              = 0x61,
-		MsgPackedEvents                = 0x4F,// aka received_event
+		MsgPackedEvents                = 0x4F, // aka received_event
 		MsgPackedEventReliablesMsgs    = 0x20,
 		MsgRequestKickFromHost         = 0x0D,
 		MsgTransitionToGameStart       = 0x50,
@@ -367,7 +377,7 @@ namespace rage
 		MsgTransitionLaunchNotify      = 0x1B,
 		MsgTransitionLaunch            = 0x19,
 		MsgTransitionGamerInstruction  = 0x14,
-		MsgTextMessage2                = 0x0A,// this one is for phone message
+		MsgTextMessage2                = 0x0A, // this one is for phone message
 		MsgSessionEstablishedRequest   = 0x52,
 		MsgSessionEstablished          = 0x07,
 		MsgRequestTransitionParameters = 0x42,
@@ -376,8 +386,8 @@ namespace rage
 		MsgPlayerCardSync              = 0x3A,
 		MsgPlayerCardRequest           = 0x6A,
 		MsgLostConnectionToHost        = 0x81,
-		MsgKickPlayer                  = 0x34,// host kick
-		MsgDebugStall                  = 0x7E,// unused?
+		MsgKickPlayer                  = 0x34, // host kick
+		MsgDebugStall                  = 0x7E, // unused?
 		MsgCheckQueuedJoinRequestReply = 0x59,
 		MsgCheckQueuedJoinRequest      = 0x51,
 		MsgBlacklist                   = 0x0C,
@@ -391,19 +401,19 @@ namespace rage
 		MsgTextChatStatus                       = 0x00,
 		MsgJoinResponse2                        = 0x08,
 		MsgJoinRequest2                         = 0x68,
-		MsgNetTimeSync      = 0x38,// ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 37
-		MsgNetComplaint     = 0x55,// ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 54
-		MsgNetLagPing       = 0x27,// unused? ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 26
-		MsgSearchResponse   = 0x6B,// unused? ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 6A
-		MsgSearchRequest    = 0x05,// unused?
-		MsgQosProbeResponse = 0x2C,// ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 2B
-		MsgQosProbeRequest  = 0x1D,// ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 1C
-		MsgCxnRelayAddressChanged  = 0x49,// ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 48
-		MsgCxnRequestRemoteTimeout = 0x2F,// ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 2E
-		MsgSessionDetailRequest    = 0x22,// ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 21
-		MsgSessionDetailResponse   = 0x13,// ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 12
-		MsgKeyExchangeOffer = 0x0F,// ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 0E (last result)
-		MsgKeyExchangeAnswer = 0x44,// ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 43
+		MsgNetTimeSync      = 0x38, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 37
+		MsgNetComplaint     = 0x55, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 54
+		MsgNetLagPing       = 0x27, // unused? ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 26
+		MsgSearchResponse   = 0x6B, // unused? ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 6A
+		MsgSearchRequest    = 0x05, // unused?
+		MsgQosProbeResponse = 0x2C, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 2B
+		MsgQosProbeRequest  = 0x1D, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 1C
+		MsgCxnRelayAddressChanged  = 0x49, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 48
+		MsgCxnRequestRemoteTimeout = 0x2F, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 2E
+		MsgSessionDetailRequest    = 0x22, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 21
+		MsgSessionDetailResponse   = 0x13, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 12
+		MsgKeyExchangeOffer = 0x0F, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 0E (last result)
+		MsgKeyExchangeAnswer = 0x44, // ctor 40 53 48 83 EC 20 BA ? ? ? ? 4C 8D 0D ? ? ? ? 48 8B D9 44 8D 42 43
 		Msg_0x87             = 0x87,
 		Msg_0x88             = 0x88,
 		Msg_0x80             = 0x80,
@@ -433,16 +443,16 @@ namespace rage
 			virtual EventType get_event_type() = 0;
 			virtual uint32_t _0x18()           = 0;
 
-			uint32_t m_timestamp;            //0x0008
-			char pad_0008[52];               //0x000C
-			uint32_t m_msg_id;               //0x0040
-			uint32_t m_connection_identifier;//0x0044
-			InFrame* m_this;                 //0x0048
-			uint32_t m_peer_id;              //0x0050
-			char pad_0050[44];               //0x0058
-			uint32_t m_length;               //0x0080
-			char pad_007C[4];                //0x0084
-			void* m_data;                    //0x0088
+			uint32_t m_timestamp;             //0x0008
+			char pad_0008[52];                //0x000C
+			uint32_t m_msg_id;                //0x0040
+			uint32_t m_connection_identifier; //0x0044
+			InFrame* m_this;                  //0x0048
+			uint32_t m_peer_id;               //0x0050
+			char pad_0050[44];                //0x0058
+			uint32_t m_length;                //0x0080
+			char pad_007C[4];                 //0x0084
+			void* m_data;                     //0x0088
 		};
 		static_assert(sizeof(rage::netConnection::InFrame) == 0x90);
 	}
@@ -541,32 +551,32 @@ namespace rage
 	{
 	public:
 		DEFINE_RAGE_RTTI(rage::CEventNetwork);
-		virtual void unk_0008()                                         = 0;      //0x0008 (1)
-		virtual void unk_0010()                                         = 0;      //0x0010 (2)
-		virtual eEventNetworkType get_type()                            = 0;      //0x0018 (3)
-		virtual void unk_0020()                                         = 0;      //0x0020 (4)
-		virtual void unk_0028()                                         = 0;      //0x0028 (5)
-		virtual bool get_extra_information(void* info_array, int check) = 0;      //0x0030 (6)
-		virtual void unk_0038()                                         = 0;      //0x0038 (7)
-	};                                                                            //Size: 0x0008
+		virtual void unk_0008()                                         = 0; //0x0008 (1)
+		virtual void unk_0010()                                         = 0; //0x0010 (2)
+		virtual eEventNetworkType get_type()                            = 0; //0x0018 (3)
+		virtual void unk_0020()                                         = 0; //0x0020 (4)
+		virtual void unk_0028()                                         = 0; //0x0028 (5)
+		virtual bool get_extra_information(void* info_array, int check) = 0; //0x0030 (6)
+		virtual void unk_0038()                                         = 0; //0x0038 (7)
+	};                                                                       //Size: 0x0008
 
 	class sEntityDamagedData
 	{
 	public:
-		alignas(8) Entity m_victim_index;              //0x0000
-		alignas(8) Entity m_damager_index;             //0x0008
-		alignas(8) float m_damage;                     //0x0010
-		alignas(8) float m_endurance_damage;           //0x0018
-		alignas(8) bool m_victim_incapacitated;        //0x0020
-		alignas(8) bool m_victim_destroyed;            //0x0028
-		alignas(8) int m_weapon_used;                  //0x0030
-		alignas(8) float m_victim_speed;               //0x0038
-		alignas(8) float m_damager_speed;              //0x0040
-		alignas(8) bool m_is_responsible_for_collision;//0x0048
-		alignas(8) bool m_is_headshot;                 //0x0050
-		alignas(8) bool m_is_with_melee_weapon;        //0x0058
-		alignas(8) int m_hit_material;                 //0x0060
-	};                                                 //Size: 0x0068
+		alignas(8) Entity m_victim_index;               //0x0000
+		alignas(8) Entity m_damager_index;              //0x0008
+		alignas(8) float m_damage;                      //0x0010
+		alignas(8) float m_endurance_damage;            //0x0018
+		alignas(8) bool m_victim_incapacitated;         //0x0020
+		alignas(8) bool m_victim_destroyed;             //0x0028
+		alignas(8) int m_weapon_used;                   //0x0030
+		alignas(8) float m_victim_speed;                //0x0038
+		alignas(8) float m_damager_speed;               //0x0040
+		alignas(8) bool m_is_responsible_for_collision; //0x0048
+		alignas(8) bool m_is_headshot;                  //0x0050
+		alignas(8) bool m_is_with_melee_weapon;         //0x0058
+		alignas(8) int m_hit_material;                  //0x0060
+	};                                                  //Size: 0x0068
 	static_assert(sizeof(sEntityDamagedData) == 0x68);
 
 	class netGameEvent
@@ -635,19 +645,19 @@ namespace rage
 		};
 
 	public:
-		std::uint16_t m_id;   // 0x08
-		bool m_requires_reply;// 0x0A
+		std::uint16_t m_id;    // 0x08
+		bool m_requires_reply; // 0x0A
 	private:
-		char m_padding1[0x05];// 0x0B
+		char m_padding1[0x05]; // 0x0B
 	public:
-		netPlayer* m_source_player; // 0x10
-		netPlayer* m_target_player; // 0x18
-		std::uint32_t m_resend_time;// 0x20
+		netPlayer* m_source_player;  // 0x10
+		netPlayer* m_target_player;  // 0x18
+		std::uint32_t m_resend_time; // 0x20
 	private:
-		std::uint16_t m_0x24;// 0x24
-		std::uint8_t m_0x26; // 0x26
-		std::uint8_t m_0x27; // 0x27
-		std::uint32_t m_0x28;// 0x28
+		std::uint16_t m_0x24; // 0x24
+		std::uint8_t m_0x26;  // 0x26
+		std::uint8_t m_0x27;  // 0x27
+		std::uint32_t m_0x28; // 0x28
 		char m_padding2[0x04];
 	};
 }
@@ -655,16 +665,16 @@ namespace rage
 class CScriptedGameEvent : public rage::netGameEvent
 {
 public:
-	char m_padding[0x40];     // 0x30
-	std::int64_t m_args[54];  // 0x70
-	std::uint32_t m_bitset;   // 0x220
-	std::uint32_t m_args_size;// 0x224
+	char m_padding[0x40];      // 0x30
+	std::int64_t m_args[54];   // 0x70
+	std::uint32_t m_bitset;    // 0x220
+	std::uint32_t m_args_size; // 0x224
 };
 
 class CNetworkIncrementStatEvent : public rage::netGameEvent
 {
 public:
-	Hash m_stat;           // 0x30
-	std::uint32_t m_amount;// 0x34
+	Hash m_stat;            // 0x30
+	std::uint32_t m_amount; // 0x34
 };
 #pragma pack(pop)

@@ -17,7 +17,7 @@ namespace big
 			g_handling_service->load_files();
 		}
 
-		if (ImGui::ListBoxHeader("##handling_profiles"))
+		if (ImGui::BeginListBox("##handling_profiles"))
 		{
 			for (auto& [name, profile] : g_handling_service->profiles())
 			{

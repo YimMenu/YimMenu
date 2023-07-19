@@ -1,4 +1,5 @@
 #include "bool_command.hpp"
+#include "services/translation_service/translation_service.hpp"
 
 namespace big
 {
@@ -18,14 +19,14 @@ namespace big
 				m_toggle = false;
 
 				if (m_show_notify)
-					ctx->report_output(std::format("{} has been disabled", m_label));
+					ctx->report_output(std::format("{} has been disabled", g_translation_service.get_translation(m_label)));
 			}
 			else
 			{
 				m_toggle = true;
 
 				if (m_show_notify)
-					ctx->report_output(std::format("{} has been enabled", m_label));
+					ctx->report_output(std::format("{} has been enabled", g_translation_service.get_translation(m_label)));
 			}
 		}
 		else

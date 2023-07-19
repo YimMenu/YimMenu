@@ -1,8 +1,8 @@
 include(FetchContent)
 FetchContent_Declare(
     imgui
-    GIT_REPOSITORY https://github.com/YimMenu/imgui.git
-    GIT_TAG        a241dc7990b631fde6575771173c2442d43d2812
+    GIT_REPOSITORY https://github.com/ocornut/imgui.git
+    GIT_TAG        94c46d74869ec991c101c187088da0f25d6c8e40
     GIT_PROGRESS TRUE
 )
 message("ImGui")

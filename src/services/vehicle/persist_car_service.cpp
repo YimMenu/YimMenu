@@ -35,8 +35,16 @@ namespace big
 
 		nlohmann::json vehicle_json;
 
-		file_stream >> vehicle_json;
-		file_stream.close();
+		try
+		{
+			file_stream >> vehicle_json;
+			file_stream.close();
+		}
+		catch (std::exception& e)
+		{
+			g_notification_service->push_warning("PERSIST_CAR_TITLE"_T.data(), "Failed to load JSON file");
+			return NULL;
+		}
 
 		return spawn_vehicle_full(vehicle_json, self::ped);
 	}
@@ -506,7 +514,7 @@ namespace big
 
 	big::folder persist_car_service::check_vehicle_folder()
 	{
-		const auto folder = g_file_manager->get_project_folder("./saved_json_vehicles");
+		const auto folder = g_file_manager.get_project_folder("./saved_json_vehicles");
 
 		return folder;
 	}

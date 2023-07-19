@@ -23,9 +23,7 @@ namespace big
 		ImGui::SameLine();
 		components::command_button<"fillammo">();
 
-		ImGui::Separator();
-
-		components::sub_title("GENERAL"_T);
+		ImGui::SeparatorText("GENERAL"_T.data());
 
 		ImGui::BeginGroup();
 
@@ -47,7 +45,7 @@ namespace big
 		components::command_checkbox<"noclip">();
 		components::command_checkbox<"noragdoll">();
 		components::command_checkbox<"fastrun">();
-		ImGui::Checkbox("NO_IDLE_KICK"_T.data(), &g.tunables.no_idle_kick);
+		components::command_checkbox<"noidlekick">();
 		components::command_checkbox<"walkunder">();
 		if (!g.self.super_jump)
 			components::command_checkbox<"beastjump">();
@@ -181,9 +179,7 @@ namespace big
 
 		ImGui::EndGroup();
 
-		ImGui::Separator();
-
-		components::sub_title("PROOFS"_T);
+		ImGui::SeparatorText("PROOFS"_T.data());
 
 		if (ImGui::Button("CHECK_ALL"_T.data()))
 		{
@@ -239,9 +235,7 @@ namespace big
 
 		ImGui::EndGroup();
 
-		ImGui::Separator();
-
-		components::sub_title("HUD"_T);
+		ImGui::SeparatorText("HUD"_T.data());
 
 		ImGui::BeginGroup();
 

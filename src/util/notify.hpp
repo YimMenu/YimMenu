@@ -5,7 +5,6 @@
 #include "network/ChatData.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
-#include "session.hpp"
 
 #include <script/HudColor.hpp>
 
@@ -31,14 +30,6 @@ namespace big::notify
 		{
 			g_notification_service->push_error("Protections", std::format("Blocked {} crash from unknown player", crash));
 		}
-
-		if (player)
-		{
-			if (auto plyr = g_player_service->get_by_id(player->m_player_id))
-			{
-				session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
-			}
-		}
 	}
 
 	// Shows a busy spinner till the value at the address equals the value passed or if timeout is hit
@@ -52,6 +43,13 @@ namespace big::notify
 			script::get_current()->yield(10ms);
 
 		HUD::BUSYSPINNER_OFF();
+	}
+
+	inline void show_subtitle(std::string_view text, int ms = 2000)
+	{
+		HUD::BEGIN_TEXT_COMMAND_PRINT("STRING");
+		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.data());
+		HUD::END_TEXT_COMMAND_PRINT(ms, 1);
 	}
 
 	inline void display_help_text(std::string_view text)

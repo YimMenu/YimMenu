@@ -117,10 +117,10 @@ namespace big
 					player->is_spammer = true;
 					if (g.session.kick_chat_spammers)
 					{
-						if(g_player_service->get_self()->is_host())
+						if (g_player_service->get_self()->is_host())
 							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
-						
+							    dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
+
 						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("bailkick")))->call(player, {});
 						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
 					}
@@ -134,7 +134,21 @@ namespace big
 					if (g.session.chat_commands && message[0] == g.session.chat_command_prefix)
 						command::process(std::string(message + 1), std::make_shared<chat_command_context>(player));
 					else
-						g_lua_manager->trigger_event<"chat_message_received">(player->id(), message);
+						g_lua_manager->trigger_event<menu_event::ChatMessageReceived>(player->id(), message);
+
+					if (msgType == rage::eNetMessage::MsgTextMessage && g_pointers->m_gta.m_chat_data && player->get_net_data())
+					{
+						rage::rlGamerHandle temp{};
+						gamer_handle_deserialize(temp, buffer);
+						bool is_team = buffer.Read<bool>(1);
+
+						g_pointers->m_gta.m_handle_chat_message(*g_pointers->m_gta.m_chat_data,
+						    nullptr,
+						    &player->get_net_data()->m_gamer_handle,
+						    message,
+						    is_team);
+						return true;
+					}
 				}
 				break;
 			}
@@ -152,71 +166,16 @@ namespace big
 				}
 				break;
 			}
-			case rage::eNetMessage::MsgRemoveGamersFromSessionCmd:
-			{
-				player_ptr pl;
-				uint64_t session_id;
-				buffer.ReadQWord(&session_id, 64);
-				uint32_t count;
-				buffer.ReadDword(&count, 6);
-				for (std::uint32_t i = 0; i < count; i++)
-				{
-					uint64_t peer_id;
-					buffer.ReadQWord(&peer_id, 64);
-					for (std::uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_peer_count; i++)
-					{
-						if (gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_peer_id_2 == peer_id)
-						{
-							pl = g_player_service->get_by_host_token(
-							    gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_host_token);
-							break;
-						}
-					}
-				}
-
-				if (player && pl && player->id() != pl->id() && count == 1 && frame->m_msg_id == -1)
-				{
-					if (g_player_service->get_self()->is_host())
-					{
-						g.reactions.breakup_others.process(player, pl);
-						session::add_infraction(player, Infraction::BREAKUP_KICK_DETECTED);
-
-						if (g.reactions.breakup_others.block)
-							return true;
-
-						if (g.reactions.breakup_others.karma)
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
-					}
-					else
-					{
-						g.reactions.breakup_others.process(player, pl);
-						session::add_infraction(player, Infraction::BREAKUP_KICK_DETECTED);
-
-						if (g.reactions.breakup_others.karma)
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {});
-						;
-					}
-				}
-
-				break;
-			}
 			case rage::eNetMessage::MsgNetComplaint:
 			{
 				uint64_t host_token{};
 				buffer.ReadQWord(&host_token, 64);
-
-				std::vector<CNetGamePlayer*> players;
-
-				uint32_t num_of_tokens{};
-				buffer.ReadDword(&num_of_tokens, 32);
-
 				if (player && host_token != player->get_net_data()->m_host_token && !player->exposed_desync_protection)
 				{
 					session::add_infraction(player, Infraction::DESYNC_PROTECTION);
 					player->exposed_desync_protection = true;
 				}
-
-				return true; // block desync kicks as host
+				return true;
 			}
 			case rage::eNetMessage::MsgRequestObjectIds:
 			{

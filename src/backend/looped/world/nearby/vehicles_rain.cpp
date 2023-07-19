@@ -14,7 +14,7 @@ namespace big
 		{
 			for (auto vehicles : entity::get_entities(true, false))
 			{
-				if (!ENTITY::IS_ENTITY_IN_AIR(vehicles))
+				if (!ENTITY::IS_ENTITY_IN_AIR(vehicles) && vehicles != self::veh)
 				{
 					if (entity::take_control_of(vehicles, 0))
 					{

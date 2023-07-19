@@ -10,5 +10,8 @@ namespace big
 		view::active_view();
 
 		debug::main();
+
+		if (g.window.demo) // It is not the YimMenu way.
+			ImGui::ShowDemoWindow(&g.window.demo);
 	}
 }

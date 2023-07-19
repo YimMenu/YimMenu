@@ -10,7 +10,7 @@ namespace big
 {
 	void view::teleport()
 	{
-		components::sub_title("BLIPS"_T.data());
+		ImGui::SeparatorText("BLIPS"_T.data());
 		ImGui::Spacing();
 
 		components::command_button<"waypointtp">({}, "Waypoint");
@@ -18,16 +18,24 @@ namespace big
 		components::command_button<"objectivetp">({}, "Objective");
 		components::command_checkbox<"autotptowp">();
 
-		ImGui::Separator();
+		ImGui::SeparatorText("Movement");
 
-		components::sub_title("Movement");
 		ImGui::Spacing();
 
+		components::small_text("Current coordinates");
+		float coords[3] = {self::pos.x, self::pos.y, self::pos.z};
 		static float new_location[3];
 		static float increment = 1;
 
+		ImGui::SetNextItemWidth(400);
+		ImGui::InputFloat3("##currentcoordinates", coords, "%f", ImGuiInputTextFlags_ReadOnly);
+		ImGui::SameLine();
+		components::button("Copy to custom", [coords] {
+			std::copy(std::begin(coords), std::end(coords), std::begin(new_location));
+		});
+
 		components::small_text("Custom teleport");
-		ImGui::SetNextItemWidth(200);
+		ImGui::SetNextItemWidth(400);
 		ImGui::InputFloat3("##Customlocation", new_location);
 		ImGui::SameLine();
 		components::button("Teleport", [] {
@@ -36,6 +44,8 @@ namespace big
 
 		ImGui::Spacing();
 		components::small_text("Specific movement");
+		ImGui::Spacing();
+
 		ImGui::SetNextItemWidth(200);
 		ImGui::InputFloat("Distance", &increment);
 
@@ -70,9 +80,7 @@ namespace big
 		});
 		ImGui::EndGroup();
 
-		ImGui::Separator();
-
-		components::sub_title("VEHICLES"_T.data());
+		ImGui::SeparatorText("VEHICLES"_T.data());
 		ImGui::Spacing();
 
 		components::command_button<"lastvehtp">();
@@ -81,9 +89,7 @@ namespace big
 		ImGui::SameLine();
 		components::command_button<"pvtp">();
 
-		ImGui::Separator();
-
-		components::sub_title("GUI_TAB_IPL"_T.data());
+		ImGui::SeparatorText("GUI_TAB_IPL"_T.data());
 
 		if (ImGui::BeginCombo("IPL_LOCATION"_T.data(), ipls[g.self.ipls.select].friendly_name))
 		{
@@ -99,7 +105,7 @@ namespace big
 			ImGui::EndCombo();
 		}
 
-		auto selected_ipl = ipls[g.self.ipls.select];
+		const auto& selected_ipl = ipls[g.self.ipls.select];
 		if (components::button("LOAD_IPL"_T.data()))
 		{
 			//unload all previous ipls
@@ -135,5 +141,91 @@ namespace big
 		ImGui::Text(std::vformat("IPL_POSITION"_T,
 		    std::make_format_args(selected_ipl.location.x, selected_ipl.location.y, selected_ipl.location.z))
 		                .data());
+
+		ImGui::SeparatorText("Custom Locations");
+
+		ImGui::BeginGroup();
+		static std::string new_location_name;
+		static std::string category = "Default";
+		static teleport::telelocation deletion_telelocation;
+
+		if (!std::string(deletion_telelocation.name).empty())
+			ImGui::OpenPopup("##deletelocation");
+
+		if (ImGui::BeginPopupModal("##deletelocation"))
+		{
+			ImGui::Text("Are you sure you want to delete %s?", deletion_telelocation.name);
+
+			if (ImGui::Button("Yes"))
+			{
+				teleport::delete_saved_location(category, deletion_telelocation.name);
+				deletion_telelocation.name = "";
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("No"))
+			{
+				deletion_telelocation.name = "";
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
+
+		ImGui::PushItemWidth(300);
+		components::input_text_with_hint("Category", "Category", &category);
+		components::input_text_with_hint("Location name", "New location", &new_location_name);
+		ImGui::PopItemWidth();
+
+		components::button("Save current location", [] {
+			teleport::save_new_location(category, {new_location_name, self::pos.x, self::pos.y, self::pos.z});
+		});
+
+		ImGui::BeginGroup();
+		components::small_text("Categories");
+		if (ImGui::BeginListBox("##categories", ImVec2(250, 150)))
+		{
+			for (auto& l : teleport::all_saved_locations | std::ranges::views::keys)
+			{
+				if (ImGui::Selectable(l.data(), l == category))
+				{
+					category = l;
+				}
+			}
+			ImGui::EndListBox();
+		}
+		ImGui::EndGroup();
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+		components::small_text("Locations");
+		if (ImGui::BeginListBox("##telelocations", ImVec2(250, 150)))
+		{
+			if (teleport::all_saved_locations.find(category) != teleport::all_saved_locations.end())
+			{
+				for (const auto& l : teleport::all_saved_locations.at(category))
+				{
+					if (ImGui::Selectable(l.name.data()))
+					{
+						if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+						{
+							deletion_telelocation = l;
+						}
+						else
+							g_fiber_pool->queue_job([l] {
+								teleport::teleport_player_to_coords(g_player_service->get_self(), {l.x, l.y, l.z});
+							});
+					}
+				}
+			}
+
+			ImGui::EndListBox();
+		}
+
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Shift click to delete");
+
+		ImGui::EndGroup();
+
+		ImGui::EndGroup();
 	}
 }

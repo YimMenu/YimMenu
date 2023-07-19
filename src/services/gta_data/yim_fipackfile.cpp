@@ -8,29 +8,145 @@ namespace big
 {
 	yim_fipackfile::yim_fipackfile(rage::fiPackfile* rpf, const std::string& mount_name)
 	{
-		this->rpf = rpf;
+		this->rpf        = rpf;
 		this->mount_name = mount_name;
 	}
 
-	void yim_fipackfile::add_wrapper_call_back(std::function<size_t(yim_fipackfile& rpf_wrapper)> cb)
+	void yim_fipackfile::add_wrapper_call_back(std::function<void(yim_fipackfile& rpf_wrapper, std::filesystem::path path)> cb)
 	{
 		m_wrapper_call_back.push_back(cb);
 	}
 
-	void yim_fipackfile::for_each_fipackfile()
+	void yim_fipackfile::traverse_rpf_file(const std::u8string& path, int depth)
 	{
-		for (int i = 1; i < 3672; i++) // fipackfile ctor start with 1
+		std::string mount_path = std::format("temp{}:/", depth);
+
+		rage::fiPackfile packfile;
+		packfile.OpenPackfile(reinterpret_cast<const char*>(path.c_str()), true, 0, 0);
+		packfile.Mount(mount_path.c_str());
+
+		yim_fipackfile rpf_wrapper = yim_fipackfile(&packfile, mount_path);
+
+		const auto files = rpf_wrapper.get_file_paths();
+		for (const auto& file : files)
 		{
-			auto* rpf = g_pointers->m_gta.m_fipackfile_instances[i];
-
-			if (rpf)
+			if (file.extension() == ".rpf")
 			{
-				yim_fipackfile rpf_wrapper = yim_fipackfile(rpf);
+				if (auto handle = ((rage::fiDevice*)&packfile)->Open(reinterpret_cast<const char*>(file.u8string().c_str()), true))
+				{
+					uint32_t encryption_type{};
+					((rage::fiDevice*)&packfile)->Seek(handle, 12, 0);
+					((rage::fiDevice*)&packfile)->Read(handle, &encryption_type, 4);
+					((rage::fiDevice*)&packfile)->Close(handle);
 
-				std::for_each(yim_fipackfile::m_wrapper_call_back.begin(), yim_fipackfile::m_wrapper_call_back.end(), [&rpf_wrapper](std::function<size_t(yim_fipackfile & rpf_wrapper)> cb) {
-					cb(rpf_wrapper);
+					if (encryption_type == 0xFFFFFF9)
+						continue; // skip AES encrypted RPFs
+
+					traverse_rpf_file(file.u8string(), depth + 1);
+				}
+			}
+			else
+			{
+				std::for_each(yim_fipackfile::m_wrapper_call_back.begin(), yim_fipackfile::m_wrapper_call_back.end(), [&rpf_wrapper, file](std::function<void(yim_fipackfile & rpf_wrapper, std::filesystem::path path)> cb) {
+					cb(rpf_wrapper, file);
 				});
 			}
+		}
+
+		packfile.Unmount(mount_path.c_str());
+		packfile.ClosePackfile();
+	}
+
+	static std::string UTF16ToCP(uint32_t code_page, std::wstring_view input)
+	{
+		if (input.empty())
+			return {};
+
+		const auto size = WideCharToMultiByte(code_page, 0, input.data(), static_cast<int>(input.size()), nullptr, 0, nullptr, nullptr);
+
+		std::string output(size, '\0');
+
+		if (size
+		    != WideCharToMultiByte(code_page,
+		        0,
+		        input.data(),
+		        static_cast<int>(input.size()),
+		        output.data(),
+		        static_cast<int>(output.size()),
+		        nullptr,
+		        nullptr))
+		{
+			const auto error_code = GetLastError();
+			LOG(WARNING) << "WideCharToMultiByte Error in String " << error_code;
+			return {};
+		}
+
+		return output;
+	}
+
+	static std::filesystem::path get_game_folder_path()
+	{
+		std::wstring game_module_path(MAX_PATH, '\0');
+
+		if (GetModuleFileNameW(nullptr, game_module_path.data(), game_module_path.size()))
+		{
+			const auto game_folder = std::filesystem::path(game_module_path).parent_path();
+
+			if (std::filesystem::is_directory(game_folder))
+			{
+				return game_folder;
+			}
+			else
+			{
+				LOG(WARNING) << "game_folder variable is not directory " << reinterpret_cast<const char*>(game_folder.u8string().c_str());
+			}
+		}
+		else
+		{
+			LOG(WARNING) << "Failed getting gta module path. Error code: " << GetLastError();
+		}
+
+		return {};
+	}
+
+	void yim_fipackfile::for_each_fipackfile()
+	{
+		const auto gta_folder = get_game_folder_path();
+		if (gta_folder.empty())
+		{
+			LOG(WARNING) << "get_game_folder_path() failed, aborting.";
+		}
+
+		try
+		{
+			LOG(INFO) << "gta_folder: " << reinterpret_cast<const char*>(gta_folder.u8string().c_str());
+		}
+		catch (const std::exception& e)
+		{
+			LOG(WARNING) << "Failed printing gta_folder: " << e.what();
+		}
+
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(gta_folder, std::filesystem::directory_options::skip_permission_denied))
+		{
+			if (!entry.is_regular_file())
+			{
+				continue;
+			}
+
+			const auto rel_path = std::filesystem::relative(entry.path());
+			if (rel_path.empty())
+				continue;
+
+			const auto utf8_path = UTF16ToCP(CP_UTF8, entry.path().native());
+
+			if (utf8_path.empty())
+				continue;
+
+			if (utf8_path.contains("mods"))
+				continue;
+
+			if (rel_path.extension() == ".rpf")
+				traverse_rpf_file(rel_path.u8string());
 		}
 	}
 
@@ -50,7 +166,7 @@ namespace big
 			{
 				std::string fn;
 
-				if (parent == "/")
+				if (parent == mount_name)
 					fn = std::string(parent.c_str()) + std::string(findData.fileName);
 				else
 					fn = std::string(parent.c_str()) + std::string("/") + std::string(findData.fileName);

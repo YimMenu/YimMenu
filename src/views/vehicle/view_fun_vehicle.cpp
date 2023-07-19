@@ -14,7 +14,8 @@ namespace big
 {
 	void view::fun_vehicle()
 	{
-		components::sub_title("SEAT_CHANGER"_T);
+		
+		ImGui::SeparatorText("SEAT_CHANGER"_T.data());
 		{
 			static std::map<int, bool> seats;
 			static bool ready = true;
@@ -80,10 +81,7 @@ namespace big
 				}
 			}
 		}
-		ImGui::Separator();
-
-
-		components::sub_title("AUTO_DRIVE"_T);
+		ImGui::SeparatorText("AUTO_DRIVE"_T.data());
 		{
 			float auto_drive_speed_user_unit = vehicle::mps_to_speed(g.vehicle.auto_drive_speed, g.vehicle.speed_unit);
 			if (ImGui::SliderFloat(
@@ -136,10 +134,7 @@ namespace big
 			if (components::button("EMERGENCY_STOP"_T))
 				g.vehicle.auto_drive_destination = AutoDriveDestination::EMERGENCY_STOP;
 		}
-		ImGui::Separator();
-
-
-		components::sub_title("RAINBOW_PAINT"_T);
+		ImGui::SeparatorText("RAINBOW_PAINT"_T.data());
 		{
 			components::command_checkbox<"rainbowpri">("PRIMARY"_T);
 			ImGui::SameLine();
@@ -200,11 +195,7 @@ namespace big
 
 			ImGui::EndCombo();
 		}
-
-		ImGui::Separator();
-
-
-		components::sub_title("VEHICLE_FLY"_T);
+		ImGui::SeparatorText("VEHICLE_FLY"_T.data());
 		{
 			ImGui::BeginGroup();
 

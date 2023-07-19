@@ -5,7 +5,7 @@
 namespace big
 {
 	handling_service::handling_service() :
-	    m_profiles_folder(g_file_manager->get_project_folder("./handling_profiles"))
+	    m_profiles_folder(g_file_manager.get_project_folder("./handling_profiles"))
 	{
 		g_handling_service = this;
 
@@ -30,14 +30,21 @@ namespace big
 			auto file_path = item.path();
 			if (file_path.extension() == ".json")
 			{
-				auto profile_file = std::ifstream(file_path, std::ios::binary);
-				nlohmann::json j;
-				profile_file >> j;
-				profile_file.close();
+				try
+				{
+					auto profile_file = std::ifstream(file_path, std::ios::binary);
+					nlohmann::json j;
+					profile_file >> j;
+					profile_file.close();
 
-				m_handling_profiles.emplace(file_path.stem().string(), j.get<handling_profile>());
+					m_handling_profiles.emplace(file_path.stem().string(), j.get<handling_profile>());
 
-				++files_loaded;
+					++files_loaded;
+				}
+				catch (std::exception& e)
+				{
+					LOG(WARNING) << "Failed to load " << file_path.filename() << ". " << e.what();
+				}
 			}
 			// deprecate this
 			else if (file_path.extension() == ".bin")
@@ -46,7 +53,7 @@ namespace big
 
 				auto profile_file = std::ifstream(file_path, std::ios::binary);
 				auto profile      = handling_profile();
-				profile_file.read(reinterpret_cast<char*>(&profile), 328);// hardcoded old size to prevent overreading
+				profile_file.read(reinterpret_cast<char*>(&profile), 328); // hardcoded old size to prevent overreading
 				profile_file.close();
 
 				const auto new_save = file_path.stem().string();

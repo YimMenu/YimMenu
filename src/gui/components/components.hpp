@@ -101,10 +101,23 @@ namespace big
 		static bool button(const std::string_view text)
 		{
 			bool status = false;
-			ImGui::PushStyleColor(ImGuiCol_Button, color);
+
+			if constexpr (color.x != 0.24f || color.y != 0.23f || color.z != 0.29f || color.w != 1.0f)
+				ImGui::PushStyleColor(ImGuiCol_Button, color);
+
 			status = ImGui::Button(text.data(), size);
-			ImGui::PopStyleColor(1);
+
+			if constexpr (color.x != 0.24f || color.y != 0.23f || color.z != 0.29f || color.w != 1.0f)
+				ImGui::PopStyleColor(1);
 			return status;
+		}
+
+		template<ImVec4 green = ImVec4(0.0f, 1.0f, 0.0f, 1.0f), ImVec4 red = ImVec4(1.0f, 0.0f, 0.0f, 1.0f)>
+		static void overlay_indicator(const std::string_view text, bool value)
+		{
+			ImGui::Text(std::format("{}: ", text).data());
+			ImGui::SameLine(180);
+			ImGui::TextColored(value ? green : red, value ? "Enabled" : "Disabled");
 		}
 
 		template<ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>

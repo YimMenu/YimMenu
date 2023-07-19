@@ -4,26 +4,20 @@
 
 namespace big
 {
-	globals_service::globals_service()
-	{
-		g_globals_service = this;
-	}
+	globals_service::globals_service() :
+		m_globals_file(g_file_manager.get_project_file("./globals.json"))
+	{ }
 
 	globals_service::~globals_service()
 	{
-		g_globals_service = nullptr;
-
 		m_running = false;
 
-		this->save();
+		save();
 	}
 
-	void globals_service::build(nlohmann::json& data)
+	void globals_service::build()
 	{
 		m_globals.clear();
-
-		for (auto& offset : data)
-			m_globals.push_back(global(offset));
 
 		for (auto& global : m_globals)
 			global.build_cache();
@@ -31,10 +25,9 @@ namespace big
 
 	bool globals_service::load()
 	{
-		std::string path = std::getenv("appdata");
-		path += this->file_location;
+		m_globals_file;
 
-		std::ifstream file(path);
+		std::ifstream file(m_globals_file.get_path(), std::ios::binary);
 
 		if (!file.is_open())
 			return false;
@@ -42,9 +35,10 @@ namespace big
 		try
 		{
 			nlohmann::json j;
-			j << file;
+			file >> j;
+			m_globals = j.get<global_vec>();
 
-			this->build(j);
+			build();
 		}
 		catch (const std::exception&)
 		{
@@ -66,13 +60,9 @@ namespace big
 
 	void globals_service::save()
 	{
-		nlohmann::json j = nlohmann::json::array();
-		for (auto& global : m_globals)
-			j.push_back(global.to_json());
+		nlohmann::json j = m_globals;
 
-		std::string path = std::getenv("appdata");
-		path += this->file_location;
-		std::ofstream file(path, std::ios::out | std::ios::trunc);
+		std::ofstream file(m_globals_file.get_path(), std::ios::binary | std::ios::out | std::ios::trunc);
 
 		try
 		{

@@ -21,7 +21,7 @@ namespace big
 
 				if (g.debug.logs.script_event.filter_player)
 				{
-					ImGui::ListBoxHeader("##filter_player");
+					ImGui::BeginListBox("##filter_player");
 					for (const auto& [_, player] : g_player_service->players())
 					{
 						if (components::selectable(player->get_name(), g.debug.logs.script_event.player_id == player->id()))

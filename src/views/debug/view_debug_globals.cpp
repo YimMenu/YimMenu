@@ -9,17 +9,17 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("DEBUG_TAB_GLOBALS"_T.data()))
 		{
-			if (ImGui::Checkbox("DEBUG_GLOBALS_ENABLE_FREEZING"_T.data(), &g_globals_service->m_running)
-			    && g_globals_service->m_running)
+			if (ImGui::Checkbox("DEBUG_GLOBALS_ENABLE_FREEZING"_T.data(), &g_globals_service.m_running)
+			    && g_globals_service.m_running)
 				g_thread_pool->push([&]() {
-					g_globals_service->loop();
+					g_globals_service.loop();
 				});
 
 			if (components::button("LOAD"_T))
-				g_globals_service->load();
+				g_globals_service.load();
 			ImGui::SameLine();
 			if (components::button("SAVE"_T))
-				g_globals_service->save();
+				g_globals_service.save();
 
 
 			ImGui::SameLine();
@@ -81,7 +81,7 @@ namespace big
 					auto new_global = global(name, base_address, freeze, offsets, offset_count);
 					new_global.build_cache();
 
-					g_globals_service->m_globals.push_back(new_global);
+					g_globals_service.m_globals.push_back(new_global);
 
 					strcpy(name, "");
 					freeze                = false;
@@ -94,7 +94,7 @@ namespace big
 				ImGui::EndPopup();
 			}
 
-			for (auto& global : g_globals_service->m_globals)
+			for (auto& global : g_globals_service.m_globals)
 			{
 				char label[64];
 
@@ -128,9 +128,9 @@ namespace big
 
 				if (components::button("DELETE"_T))
 				{
-					for (int i = 0; i < g_globals_service->m_globals.size(); i++)
-						if (auto& it = g_globals_service->m_globals.at(i); it.get_id() == global.get_id())
-							g_globals_service->m_globals.erase(g_globals_service->m_globals.begin() + i);
+					for (int i = 0; i < g_globals_service.m_globals.size(); i++)
+						if (auto& it = g_globals_service.m_globals.at(i); it.get_id() == global.get_id())
+							g_globals_service.m_globals.erase(g_globals_service.m_globals.begin() + i);
 
 					break;
 				}

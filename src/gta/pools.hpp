@@ -56,7 +56,8 @@ public:
 		std::vector<Entity> arr;
 		for (auto entity : *static_cast<T*>(this))
 		{
-			arr.push_back(big::g_pointers->m_gta.m_ptr_to_handle(entity));
+			if(entity)
+				arr.push_back(big::g_pointers->m_gta.m_ptr_to_handle(entity));
 		}
 
 		return arr;

@@ -1,7 +1,6 @@
 #include "orbital_drone.hpp"
 
 #include "backend/bool_command.hpp"
-#include "core/globals.hpp"
 #include "gui.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"

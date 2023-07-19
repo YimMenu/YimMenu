@@ -16,7 +16,15 @@ namespace big
 		void remove_script(script* script);
 		void remove_all_scripts();
 
-		script_list& scripts();
+		inline void for_each_script(auto func)
+		{
+			std::lock_guard lock(m_mutex);
+
+			for (const auto& script : m_scripts)
+			{
+				func(script);
+			}
+		}
 
 		void tick();
 
@@ -26,6 +34,7 @@ namespace big
 	private:
 		std::recursive_mutex m_mutex;
 		script_list m_scripts;
+		script_list m_scripts_to_add;
 	};
 
 	inline script_mgr g_script_mgr;

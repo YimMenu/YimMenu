@@ -1,11 +1,12 @@
 #pragma once
 #include "entity.hpp"
-#include "natives.hpp"
-#include "pointers.hpp"
-#include "outfit.hpp"
-#include "services/players/player_service.hpp"
-#include "math.hpp"
 #include "gta/enums.hpp"
+#include "local_player.hpp"
+#include "math.hpp"
+#include "natives.hpp"
+#include "outfit.hpp"
+#include "pointers.hpp"
+#include "services/players/player_service.hpp"
 
 namespace big::ped
 {
@@ -498,14 +499,16 @@ namespace big::ped
 
 	inline void kill_ped(const Ped ped)
 	{
-		if (entity::take_control_of(ped))
-			PED::APPLY_DAMAGE_TO_PED(ped, PED::GET_PED_MAX_HEALTH(ped) * 2, false, 0);
-	}
+		if (entity::take_control_of(ped, 0))
+			ENTITY::SET_ENTITY_HEALTH(ped, 0, self::ped);
+		else
+		{
+			auto ptr = g_pointers->m_gta.m_handle_to_ptr(ped);
+			if (!ptr)
+				return;
 
-	inline void kill_ped_by_relation(Ped ped, int relation_id)
-	{
-		if (PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, PLAYER::PLAYER_PED_ID()) == relation_id)
-			kill_ped(ped);
+			g_pointers->m_gta.m_send_network_damage(g_player_service->get_self()->get_ped(), ptr, ptr->get_position(), 0, true, RAGE_JOAAT("weapon_explosion"), 10000.0f, 2, 0, (1 << 4), 0, 0, 0, false, false, true, true, nullptr);
+		}
 	}
 
 	inline Ped spawn(ePedType pedType, Hash hash, Hash clone, Vector3 location, float heading, bool is_networked = true)
@@ -546,7 +549,7 @@ namespace big::ped
 			int drawable_id_max = PED::GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS(ped, item.id) - 1;
 			if (drawable_id_max == -1)
 				continue;
-			int drawable_id = range(0, drawable_id_max);
+			int drawable_id    = range(0, drawable_id_max);
 			int texture_id_max = PED::GET_NUMBER_OF_PED_TEXTURE_VARIATIONS(ped, item.id, drawable_id) - 1;
 			if (texture_id_max == -1)
 				continue;
@@ -568,7 +571,7 @@ namespace big::ped
 		return nullptr;
 	}
 
-	inline bool load_animation_dict (const char* dict)
+	inline bool load_animation_dict(const char* dict)
 	{
 		if (STREAMING::HAS_ANIM_DICT_LOADED(dict))
 			return true;
@@ -585,7 +588,7 @@ namespace big::ped
 	inline void ped_play_animation(Ped ped, const std::string_view& animDict, const std::string_view& animName, float speed = 4.f, float speedMultiplier = -4.f, int duration = -1, int flag = 0, float playbackRate = 0, bool lockPos = false)
 	{
 		if (load_animation_dict(animDict.data()))
-			TASK::TASK_PLAY_ANIM(ped, animDict.data(), animName.data(), speed, speedMultiplier, duration, flag, playbackRate, lockPos, lockPos, lockPos);		
+			TASK::TASK_PLAY_ANIM(ped, animDict.data(), animName.data(), speed, speedMultiplier, duration, flag, playbackRate, lockPos, lockPos, lockPos);
 	}
 
 	/*
@@ -596,7 +599,8 @@ namespace big::ped
 	{
 		if (entity::take_control_of(ped))
 		{
-			if (ENTITY::DOES_ENTITY_EXIST(veh)) {
+			if (ENTITY::DOES_ENTITY_EXIST(veh))
+			{
 				if (math::distance_between_vectors(ENTITY::GET_ENTITY_COORDS(ped, 0), ENTITY::GET_ENTITY_COORDS(veh, 0)) < 15.f)
 					TASK::TASK_ENTER_VEHICLE(ped, veh, 10000, (int)seat, movespeed, 8, NULL);
 				else

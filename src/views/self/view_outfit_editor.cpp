@@ -92,9 +92,11 @@ namespace big
 		ImGui::BeginGroup();
 		for (auto& item : components.items)
 		{
-			ImGui::SetNextItemWidth(60);
-			if (ImGui::InputInt(std::format("{} [0,{}]", item.label, item.drawable_id_max).c_str(), &item.drawable_id, 0))
+			ImGui::SetNextItemWidth(120);
+			if (ImGui::InputInt(std::format("{} [0,{}]##1", item.label, item.drawable_id_max).c_str(), &item.drawable_id))
 			{
+				outfit::check_bounds_drawable(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
+
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, 0, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
 				});
@@ -107,9 +109,11 @@ namespace big
 		ImGui::BeginGroup();
 		for (auto& item : components.items)
 		{
-			ImGui::SetNextItemWidth(60);
-			if (ImGui::InputInt(std::format("{} {} [0,{}]", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id, 0))
+			ImGui::SetNextItemWidth(120);
+			if (ImGui::InputInt(std::format("{} {} [0,{}]##2", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id))
 			{
+				outfit::check_bounds_texture(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
+
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, item.texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
 				});
@@ -122,9 +126,11 @@ namespace big
 		ImGui::BeginGroup();
 		for (auto& item : props.items)
 		{
-			ImGui::SetNextItemWidth(60);
-			if (ImGui::InputInt(std::format("{} [0,{}]", item.label, item.drawable_id_max).c_str(), &item.drawable_id, 0))
+			ImGui::SetNextItemWidth(120);
+			if (ImGui::InputInt(std::format("{} [0,{}]##3", item.label, item.drawable_id_max).c_str(), &item.drawable_id))
 			{
+				outfit::check_bounds_drawable(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
+
 				g_fiber_pool->queue_job([item] {
 					if (item.drawable_id == -1)
 						PED::CLEAR_PED_PROP(self::ped, item.id, 1);
@@ -140,9 +146,11 @@ namespace big
 		ImGui::BeginGroup();
 		for (auto& item : props.items)
 		{
-			ImGui::SetNextItemWidth(60);
-			if (ImGui::InputInt(std::format("{} {} [0,{}]", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id, 0))
+			ImGui::SetNextItemWidth(120);
+			if (ImGui::InputInt(std::format("{} {} [0,{}]##4", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id))
 			{
+				outfit::check_bounds_texture(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
+
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, item.texture_id, TRUE, 1);
 				});
@@ -153,7 +161,7 @@ namespace big
 		ImGui::Separator();
 
 		static char outfit_name[MAX_PATH] = {};
-		static folder saved_outfit_path   = g_file_manager->get_project_folder("saved_outfits");
+		static folder saved_outfit_path   = g_file_manager.get_project_folder("saved_outfits");
 		std::vector<std::string> saved_outfits;
 		for (const auto& directory_entry : std::filesystem::directory_iterator(saved_outfit_path.get_path()))
 			saved_outfits.push_back(directory_entry.path().filename().generic_string());

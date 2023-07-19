@@ -5,15 +5,17 @@ namespace big
 {
 	class script
 	{
-		std::string_view m_name;
+		std::string m_name;
 		bool m_enabled;
 		bool m_toggleable;
 
 	public:
 		using func_t = std::function<void(void)>;
 
+		bool m_should_be_deleted;
+
 	public:
-		explicit script(const func_t func, const std::string_view name, const bool toggleable = true, const std::optional<std::size_t> stack_size = std::nullopt);
+		explicit script(const func_t func, const std::string& name, const bool toggleable = true, const std::optional<std::size_t> stack_size = std::nullopt);
 		explicit script(const func_t func, const std::optional<std::size_t> stack_size = std::nullopt);
 		~script();
 

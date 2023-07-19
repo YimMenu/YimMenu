@@ -30,7 +30,11 @@ namespace big
 		MISC::GET_MODEL_DIMENSIONS(hash, &min, &max);
 		const auto dimensions = (max - min) * 0.5f;
 
-		const auto& position = *m_pointer->m_navigation->get_position();
+		// sanity check
+		if (!m_pointer || !m_pointer->m_navigation)
+			return;
+		// make copy just in case
+		const auto position = *m_pointer->m_navigation->get_position();
 
 		rage::fvector3 front_upper_right, back_lower_left;
 		front_upper_right.x = position.x + dimensions.y * forward.x + dimensions.x * right.x + dimensions.z * up.x;

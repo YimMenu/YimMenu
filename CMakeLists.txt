@@ -32,6 +32,13 @@ file(GLOB_RECURSE SRC_MAIN
     "${SRC_DIR}/**.cxx"
     "${SRC_DIR}/**.asm"
 )
+
+if (MSVC)
+  add_compile_options(/bigobj)
+else ()
+  add_compile_options(-Wa,-mbig-obj)
+endif ()
+
 add_library(YimMenu MODULE "${SRC_MAIN}")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)

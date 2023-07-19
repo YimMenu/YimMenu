@@ -37,6 +37,18 @@ namespace big
 	    m_fiber_pool(fiber_pool)
 	{
 		g_commands[rage::joaat(name)] = this;
+
+		constexpr bool generate_command_documentation = false;
+		if constexpr (generate_command_documentation)
+		{
+			auto translated_label = g_translation_service.get_translation(m_label);
+			auto translated_desc  = g_translation_service.get_translation(m_description);
+			if (!translated_label.empty())
+			{
+				LOG(INFO) << "Command | " << m_name << " | " << translated_label << " | " << translated_desc << " | "
+				          << std::to_string(m_num_args.value_or(0));
+			}
+		}
 	}
 
 	void command::call(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)

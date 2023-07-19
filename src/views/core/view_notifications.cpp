@@ -42,8 +42,13 @@ namespace big
 
 		dl->AddRectFilled({(float)*g_pointers->m_gta.m_resolution_x - 360.f, 10.f + start_pos},
 		    {(float)*g_pointers->m_gta.m_resolution_x - 10.f, start_pos + 45.f + total_size},
-		    g.window.color);
-		dl->AddRectFilledMultiColor({(float)*g_pointers->m_gta.m_resolution_x - 360.f, 10.f + start_pos}, {(float)*g_pointers->m_gta.m_resolution_x - 255.f, start_pos + 45.f + total_size}, fadeBegin, fadeEnd, fadeEnd, fadeBegin);
+		    g.window.background_color);
+		dl->AddRectFilledMultiColor({(float)*g_pointers->m_gta.m_resolution_x - 360.f, 10.f + start_pos},
+		    {(float)*g_pointers->m_gta.m_resolution_x - 255.f, start_pos + 45.f + total_size},
+		    fadeBegin,
+		    fadeEnd,
+		    fadeEnd,
+		    fadeBegin);
 
 		dl->AddText(g.window.font_sub_title,
 		    22.f,

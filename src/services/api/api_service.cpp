@@ -22,11 +22,19 @@ namespace big
 
 		if (response.status_code == 200)
 		{
-			nlohmann::json obj = nlohmann::json::parse(response.text);
-			if (obj["Total"] > 0 && username.compare(obj["Accounts"].at(0)["Nickname"]) == 0)
+			try
 			{
-				result = obj["Accounts"].at(0)["RockstarId"];
-				return true;
+				nlohmann::json obj = nlohmann::json::parse(response.text);
+
+				if (obj["Total"] > 0 && username.compare(obj["Accounts"].at(0)["Nickname"]) == 0)
+				{
+					result = obj["Accounts"].at(0)["RockstarId"];
+					return true;
+				}
+			}
+			catch (std::exception& e)
+			{
+				return false;
 			}
 		}
 
@@ -39,9 +47,16 @@ namespace big
 
 		if (response.status_code == 200)
 		{
-			nlohmann::json obj = nlohmann::json::parse(response.text);
-			result             = obj["Accounts"].at(0)["RockstarAccount"]["Name"];
-			return true;
+			try
+			{
+				nlohmann::json obj = nlohmann::json::parse(response.text);
+				result             = obj["Accounts"].at(0)["RockstarAccount"]["Name"];
+				return true;
+			}
+			catch (std::exception& e)
+			{
+				return false;
+			}
 		}
 
 		return false;
@@ -61,9 +76,18 @@ namespace big
 		    cpr::Header{{"X-AMC", "true"}, {"X-Requested-With", "XMLHttpRequest"}},
 		    cpr::Parameters{{"title", "gtav"}, {"contentId", content_id.data()}});
 
-		result = nlohmann::json::parse(response.text);
+		if (response.status_code != 200)
+			return false;
 
-		return response.status_code == 200;
+		try
+		{
+			result = nlohmann::json::parse(response.text);
+			return true;
+		}
+		catch (std::exception& e)
+		{
+			return false;
+		}
 	}
 
 	bool api_service::download_job_metadata(std::string_view content_id, int f1, int f0, int lang)
