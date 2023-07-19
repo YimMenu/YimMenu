@@ -5,7 +5,7 @@
 
 namespace lua::gui
 {
-	button::button(std::string text, sol::function callback) :
+	button::button(std::string text, sol::protected_function callback) :
 	    base_text_element(text),
 	    m_callback(callback)
 	{

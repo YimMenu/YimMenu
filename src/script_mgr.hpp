@@ -16,6 +16,8 @@ namespace big
 		void remove_script(script* script);
 		void remove_all_scripts();
 
+		void add_on_script_batch_removed(std::function<void()> f);
+
 		inline void for_each_script(auto func)
 		{
 			std::lock_guard lock(m_mutex);
@@ -28,13 +30,22 @@ namespace big
 
 		void tick();
 
+		[[nodiscard]] inline bool can_tick() const
+		{
+			return m_can_tick;
+		}
+
 	private:
+		void ensure_main_fiber();
 		void tick_internal();
 
 	private:
 		std::recursive_mutex m_mutex;
 		script_list m_scripts;
 		script_list m_scripts_to_add;
+		std::queue<std::function<void()>> m_on_script_batch_removed;
+
+		bool m_can_tick = false;
 	};
 
 	inline script_mgr g_script_mgr;

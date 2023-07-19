@@ -150,7 +150,7 @@ namespace big
 
 	void stack_trace::dump_script_info()
 	{
-		m_dump << "Currently executing script: " << rage::scrThread::get()->m_name << '\n';
+		m_dump << "Currently executing script: " << rage::tlsContext::get()->m_script_thread->m_name << '\n';
 		m_dump << "Thread program counter (could be inaccurate): "
 		       << m_exception_info->ContextRecord->Rdi - m_exception_info->ContextRecord->Rsi << '\n';
 	}

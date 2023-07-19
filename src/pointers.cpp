@@ -297,15 +297,6 @@ namespace big
                 g_pointers->m_gta.m_write_player_game_state_data_node = ptr.as<functions::write_player_game_state_data_node>();
             }
         },
-        // Replay Interface
-        {
-            "RI",
-            "0F B7 44 24 ? 66 89 44 4E",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_replay_interface = ptr.add(0x1F).rip().as<rage::CReplayInterface**>();
-            }
-        },
         // Ptr To Handle
         {
             "PTH",
@@ -1217,6 +1208,24 @@ namespace big
                 g_pointers->m_gta.m_get_host_array_handler_by_index = ptr.as<functions::get_host_array_handler_by_index>();
             }
         },
+        // Send Non Physical Player Data
+        {
+            "SNPPD",
+            "E8 ? ? ? ? 4C 8B 0F 44 0F B7 85 A0 01 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_send_non_physical_player_data = ptr.add(1).rip().as<PVOID>();
+            }
+        },
+        // Presence Data
+        {
+            "PD",
+            "48 8B 0D ? ? ? ? 44 8B 4B 60",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_presence_data = ptr.add(3).rip().as<void**>();
+            }
+        },
         // Max Wanted Level
         {
             "MWL",
@@ -1344,6 +1353,44 @@ namespace big
             {
                 g_pointers->m_gta.m_model_spawn_bypass = ptr.add(8).as<PVOID>();
             }
+        },
+        // ERROR message box
+        {
+            "E0MB",
+            "E8 ? ? ? ? CC FF 15",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_error_message_box = ptr.add(1).rip().as<PVOID>();
+            }
+        },
+        // Get title caption for ERROR message box
+        {
+            "GTCE0MB",
+            "E8 ? ? ? ? 48 83 CB FF 48 8D 8D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_title_caption_error_message_box = ptr.add(1).rip().as<functions::get_title_caption_error_message_box>();
+            }
+        },
+        // Disable Window Hook
+        {
+            "DT",
+            "48 83 EC 28 33 C9 FF 15 ? ? ? ? 45 33 C9",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_window_hook = ptr;
+            }
+        },
+        // Vehicle Metadata Manager.
+        {
+            "VEHMMGR",
+            "7C B8 48 8B 0D",
+            [](memory::handle ptr)
+            {
+                ptr = ptr.add(5).rip();
+                g_pointers->m_gta.m_driveby_metadata_mgr = ptr.as<CVehicleDriveByMetadataMgr*>();
+                g_pointers->m_gta.m_vehicle_layout_metadata_mgr = ptr.add(0x20).as<CVehicleSeatMetadataMgr*>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 
@@ -1364,17 +1411,27 @@ namespace big
             [](memory::handle ptr)
             {
                 auto presence_data_vft             = ptr.add(3).rip().as<PVOID*>();
-                g_pointers->m_sc.m_update_presence_attribute_int    = presence_data_vft[1];
-                g_pointers->m_sc.m_update_presence_attribute_string = presence_data_vft[3];
+                g_pointers->m_sc.m_update_presence_attribute_int    = (functions::update_presence_attribute_int)presence_data_vft[1];
+                g_pointers->m_sc.m_update_presence_attribute_string = (functions::update_presence_attribute_string)presence_data_vft[3];
             }
         },
         // Start Get Presence Attributes
         {
             "SGPA",
-            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 40 33 DB 41",
+            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 40 33 DB 49",
             [](memory::handle ptr)
             {
                 g_pointers->m_sc.m_start_get_presence_attributes = ptr.as<functions::start_get_presence_attributes>();
+            }
+        },
+        // Read Attribute Patch
+        {
+            "RAP",
+            "75 72 EB 23 80 F9 03",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_sc.m_read_attribute_patch = ptr.as<PVOID>();
+                g_pointers->m_sc.m_read_attribute_patch_2 = ptr.add(0x74).as<PVOID>();
             }
         }
         >();

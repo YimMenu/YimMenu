@@ -8,7 +8,7 @@
 
 namespace big::teleport
 {
-	inline bool teleport_player_to_coords(player_ptr player, Vector3 coords)
+	inline bool teleport_player_to_coords(player_ptr player, Vector3 coords, Vector3 euler = {0, 0, 0})
 	{
 		Entity ent;
 
@@ -17,7 +17,9 @@ namespace big::teleport
 		else
 			ent = PLAYER::PLAYER_PED_ID();
 
-		if (ent == self::ped || ent == self::veh)
+		bool is_local_player = (ent == self::ped || ent == self::veh);
+
+		if (is_local_player)
 			PED::SET_PED_COORDS_KEEP_VEHICLE(ent, coords.x, coords.y, coords.z);
 
 		if (ENTITY::IS_ENTITY_DEAD(ent, true))
@@ -31,9 +33,22 @@ namespace big::teleport
 			ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
 
 			if (entity::take_control_of(ent))
-				ENTITY::SET_ENTITY_COORDS(ent, coords.x, coords.y, coords.z, 0, 0, 0, 0);
+			{
+				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, coords.x, coords.y, coords.z, TRUE, TRUE, TRUE);
+				if (euler.x + euler.y + euler.z != 0.0f)
+				{
+					ENTITY::SET_ENTITY_HEADING(ent, euler.x);
+					if (is_local_player)
+					{
+						CAM::SET_GAMEPLAY_CAM_RELATIVE_PITCH(euler.y, 1.f);
+						CAM::SET_GAMEPLAY_CAM_RELATIVE_HEADING(euler.z);
+					}
+				}
+			}
 			else
+			{
 				g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_FAILED_TO_TAKE_CONTROL"_T.data());
+			}
 
 			return true;
 		}
@@ -48,6 +63,13 @@ namespace big::teleport
 			remote_player_teleport remote_tp = {obj_id, {coords.x, coords.y, coords.z}};
 
 			g.m_remote_player_teleports.emplace(g_pointers->m_gta.m_handle_to_ptr(hnd)->m_net_object->m_object_id, remote_tp);
+
+			if (is_local_player)
+			{
+				ENTITY::SET_ENTITY_HEADING(ent, euler.x);
+				CAM::SET_GAMEPLAY_CAM_RELATIVE_PITCH(euler.y, 1.f);
+				CAM::SET_GAMEPLAY_CAM_RELATIVE_HEADING(euler.z);
+			}
 
 			if ((player->is_valid() && PED::IS_PED_IN_ANY_VEHICLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), false))
 			    || PLAYER::IS_REMOTE_PLAYER_IN_NON_CLONED_VEHICLE(player->id()))

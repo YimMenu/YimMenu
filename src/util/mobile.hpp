@@ -55,8 +55,6 @@ namespace big::mobile
 		{
 			*script_global(scr_globals::mechanic_global).at(4492).as<int*>() = 1;
 		}
-
-
 	}
 
 	namespace mors_mutual
@@ -103,6 +101,39 @@ namespace big::mobile
 		}
 	}
 
+	namespace services
+	{
+		inline void request_avenger()
+		{
+			*script_global(scr_globals::mechanic_global).at(938).as<int*>() = 1;
+		}
+
+		inline void request_kosatka()
+		{
+			*script_global(scr_globals::mechanic_global).at(960).as<int*>() = 1;
+		}
+
+		inline void request_mobile_operations_center()
+		{
+			*script_global(scr_globals::mechanic_global).at(930).as<int*>() = 1;
+		}
+
+		inline void request_terrorbyte()
+		{
+			*script_global(scr_globals::mechanic_global).at(943).as<int*>() = 1;
+		}
+
+		inline void request_acidlab()
+		{
+			*script_global(scr_globals::mechanic_global).at(944).as<int*>() = 1;
+		}
+
+		inline void request_acidlab_bike()
+		{
+			*script_global(scr_globals::mechanic_global).at(994).as<int*>() = 1;
+		}
+	}
+
 	namespace mechanic
 	{
 		inline Vehicle get_personal_vehicle()
@@ -137,15 +168,29 @@ namespace big::mobile
 
 			GtaThread* freemode_thread = gta_util::find_script_thread(RAGE_JOAAT("freemode"));
 			if (freemode_thread)
-				*script_local(freemode_thread, 18630).at(176).as<int*>() = 0; // spawn vehicle instantly
+			{
+				// regex to find this shit easily
+				// \(func_\d{3}\(&\(uParam0->f_\d{3}\), \d+000, 0\) \|\| func
+				// or if you prefer a string "VD_FAIL4"
+				// or if you really prefer an image https://i.imgur.com/K8vMILe.png
+				*scr_locals::fm_mobile::mobile.set(freemode_thread).at(176).as<int*>() = 0; // spawn vehicle instantly
+			}
 
 			// blocking call till vehicle is delivered
 			notify::busy_spinner("Delivering vehicle...", scr_globals::mechanic_global.at(985).as<int*>(), -1);
 
 			if (g.clone_pv.spawn_inside)
 			{
-				big::vehicle::bring(get_personal_vehicle(), self::pos, true);
+				vehicle::bring(get_personal_vehicle(), self::pos, true);
 			}
+		}
+	}
+
+	namespace mobile_misc
+	{
+		inline void request_taxi()
+		{
+			*script_global(scr_globals::mechanic_global).at(853).as<int*>() = 1;
 		}
 	}
 }

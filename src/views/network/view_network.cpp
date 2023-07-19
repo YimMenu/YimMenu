@@ -47,8 +47,10 @@ namespace big
 			ImGui::SameLine();
 			components::button("JOIN_SESSION_INFO"_T, [] {
 				rage::rlSessionInfo info;
-				g_pointers->m_gta.m_decode_session_info(&info, base64, nullptr);
-				session::join_session(info);
+				if (g_pointers->m_gta.m_decode_session_info(&info, base64, nullptr))
+					session::join_session(info);
+				else
+					g_notification_service->push_error("Join", "Session info is invalid");
 			});
 
 			components::button("COPY_SESSION_INFO"_T, [] {
@@ -114,13 +116,25 @@ namespace big
 
 			ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
 
-			ImGui::Checkbox("Lobby Lock", &g.session.lock_session);
+
+			if (ImGui::Checkbox("Lobby Lock", &g.session.lock_session))
+			{
+				ImGui::Checkbox("Allow Friends Into Locked Lobby", &g.session.allow_friends_into_locked_session);
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Allows Friends to Join Lobby While Locked");
+			}
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("Blocks all players from joining. May not work on some modders.");
 
+
 			ImGui::EndDisabled();
 
-			components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T, &g.session.decloak_players);
+			components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T, &g.session.decloak_players, "Reveals players that are off the radar");
+			components::script_patch_checkbox("Reveal Hidden Players", &g.session.unhide_players_from_player_list, "Reveals players that have hidden themselves from the player list");
+
+			components::command_button<"sextall">({}, "Send Sexts");
+			ImGui::SameLine();
+			components::command_button<"fakebanall">({}, "Send Fake Ban Messages");
 
 			ImGui::EndListBox();
 		}
@@ -137,9 +151,6 @@ namespace big
 		{
 			static char msg[256];
 			ImGui::Checkbox("AUTO_KICK_CHAT_SPAMMERS"_T.data(), &g.session.kick_chat_spammers);
-			ImGui::Checkbox("DISABLE_FILTER"_T.data(), &g.session.chat_force_clean);
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Your sent chat messages will not be censored to the receivers"); // TODO: add translation
 			ImGui::Checkbox("LOG_CHAT_MSG"_T.data(), &g.session.log_chat_messages);
 			ImGui::Checkbox("LOG_TXT_MSG"_T.data(), &g.session.log_text_messages);
 			components::input_text_with_hint("##message", "Chat message", msg, sizeof(msg));
@@ -223,6 +234,34 @@ namespace big
 			ImGui::EndListBox();
 		}
 
+		components::small_text("WARP_TIME"_T.data());
+
+		components::button("PLUS_1_MINUTE"_T, [] {
+			toxic::warp_time_forward_all(60 * 1000);
+		});
+		ImGui::SameLine();
+		components::button("PLUS_5_MINUTES"_T, [] {
+			toxic::warp_time_forward_all(5 * 60 * 1000);
+		});
+		ImGui::SameLine();
+		components::button("PLUS_48_MINUTES"_T, [] {
+			toxic::warp_time_forward_all(48 * 60 * 1000);
+		});
+
+		components::button("PLUS_96_MINUTES"_T, [] {
+			toxic::warp_time_forward_all(96 * 60 * 1000);
+		});
+		ImGui::SameLine();
+		components::button("PLUS_200_MINUTES"_T, [] {
+			toxic::warp_time_forward_all(200 * 60 * 1000);
+		});
+		ImGui::SameLine();
+		components::button("STOP_TIME"_T, [] {
+			toxic::set_time_all(INT_MAX - 3000);
+		});
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("STOP_TIME_DESC"_T.data());
+
 		ImGui::EndGroup();
 	}
 
@@ -258,11 +297,11 @@ namespace big
 				g_fiber_pool->queue_job([] {
 					scripts::force_host(RAGE_JOAAT("freemode"));
 					if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")); script && script->m_net_component)
-						script->m_net_component->block_host_migration(true);
+						((CGameScriptHandlerNetComponent*)script->m_net_component)->block_host_migration(true);
 
 					scripts::force_host(RAGE_JOAAT("fmmc_launcher"));
 					if (auto script = gta_util::find_script_thread(RAGE_JOAAT("fmmc_launcher")); script && script->m_net_component)
-						script->m_net_component->block_host_migration(true);
+						((CGameScriptHandlerNetComponent*)script->m_net_component)->block_host_migration(true);
 				});
 		}
 		if (ImGui::IsItemHovered())
@@ -441,53 +480,21 @@ namespace big
 		    true,
 		    "Teleport");
 
-		ImGui::EndGroup();
-
-
-		components::command_button<"sextall">({}, "Send Sexts");
-		ImGui::SameLine();
-		components::command_button<"fakebanall">({}, "Send Fake Ban Messages");
-
-		components::small_text("WARP_TIME"_T.data());
-
-		components::button("PLUS_1_MINUTE"_T, [] {
-			toxic::warp_time_forward_all(60 * 1000);
-		});
-		ImGui::SameLine();
-		components::button("PLUS_5_MINUTES"_T, [] {
-			toxic::warp_time_forward_all(5 * 60 * 1000);
-		});
-		ImGui::SameLine();
-		components::button("PLUS_48_MINUTES"_T, [] {
-			toxic::warp_time_forward_all(48 * 60 * 1000);
-		});
-		ImGui::SameLine();
-		components::button("PLUS_96_MINUTES"_T, [] {
-			toxic::warp_time_forward_all(96 * 60 * 1000);
-		});
-		ImGui::SameLine();
-		components::button("PLUS_200_MINUTES"_T, [] {
-			toxic::warp_time_forward_all(200 * 60 * 1000);
-		});
-		ImGui::SameLine();
-		components::button("STOP_TIME"_T, [] {
-			toxic::set_time_all(INT_MAX - 3000);
-		});
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("STOP_TIME_DESC"_T.data());
-
 		components::sub_title("SCRIPT_HOST_FEATURES"_T);
 		ImGui::Checkbox("DISABLE_CEO_MONEY"_T.data(), &g.session.block_ceo_money);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("DISABLE_CEO_MONEY_DESC"_T.data());
 		ImGui::SameLine();
-		ImGui::Checkbox("RANDOMIZE_CEO_COLORS"_T.data(), &g.session.randomize_ceo_colors);
 		ImGui::Checkbox("Block Jobs", &g.session.block_jobs);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Prevents remote players from starting jobs while in your session");
+
+		ImGui::Checkbox("RANDOMIZE_CEO_COLORS"_T.data(), &g.session.randomize_ceo_colors);
 		ImGui::SameLine();
 		components::script_patch_checkbox("Block Muggers", &g.session.block_muggers, "For the entire session");
-		ImGui::SameLine();
+
 		components::script_patch_checkbox("Block CEO Raids", &g.session.block_ceo_raids, "For the entire session");
+
+		ImGui::EndGroup();
 	}
 }

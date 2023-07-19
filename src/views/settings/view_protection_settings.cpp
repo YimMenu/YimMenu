@@ -2,6 +2,17 @@
 
 namespace big
 {
+	static inline void set_all_protections(bool state)
+	{
+		for (size_t i = (size_t)&g.protections; i <= (size_t) & (g.protections.kick_rejoin); i++)
+			*(bool*)i = state;
+	}
+
+	static inline void reset_protections()
+	{
+		g.protections = {};
+	}
+
 	void view::protection_settings()
 	{
 		ImGui::BeginGroup();
@@ -45,7 +56,19 @@ namespace big
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("This prevents the collection of pickups such as unwanted money bags\nNote: Normal pickups are also no longer possible to collect with this enabled");
 		ImGui::Checkbox("ADMIN_CHECK"_T.data(), &g.protections.admin_check);
+		ImGui::Checkbox("Kick Rejoin", &g.protections.kick_rejoin);
 		ImGui::EndGroup();
-	}
 
+		ImGui::SeparatorText("Options");
+		ImGui::BeginGroup();
+		if (ImGui::Button("Enable All Protections"))
+			set_all_protections(true);
+		ImGui::SameLine();
+		if (ImGui::Button("Disable All Protections"))
+			set_all_protections(false);
+		ImGui::SameLine();
+		if (ImGui::Button("Reset Protections"))
+			reset_protections();
+		ImGui::EndGroup();
+	};
 }

@@ -2,7 +2,7 @@
 
 #include "common.hpp"
 #include "gta/script_thread.hpp"
-#include "gta/tls_context.hpp"
+#include "script/tlsContext.hpp"
 #include "gta_util.hpp"
 #include "invoker.hpp"
 #include "pointers.hpp"
@@ -33,14 +33,26 @@ namespace big
 		m_scripts.clear();
 	}
 
+	void script_mgr::add_on_script_batch_removed(std::function<void()> f)
+	{
+		m_on_script_batch_removed.push(f);
+	}
+
 	void script_mgr::tick()
 	{
 		gta_util::execute_as_script(RAGE_JOAAT("main_persistent"), std::mem_fn(&script_mgr::tick_internal), this);
 	}
 
+	void script_mgr::ensure_main_fiber()
+	{
+		ConvertThreadToFiber(nullptr);
+
+		m_can_tick = true;
+	}
+
 	void script_mgr::tick_internal()
 	{
-		static bool ensure_main_fiber = (ConvertThreadToFiber(nullptr), true);
+		static bool ensure_it = (ensure_main_fiber(), true);
 
 		std::lock_guard lock(m_mutex);
 
@@ -54,6 +66,18 @@ namespace big
 		std::erase_if(m_scripts, [](std::unique_ptr<script>& iter) {
 			return iter->m_should_be_deleted;
 		});
+
+		while (m_on_script_batch_removed.size())
+		{
+			auto& f = m_on_script_batch_removed.front();
+
+			if (f)
+			{
+				f();
+			}
+
+			m_on_script_batch_removed.pop();
+		}
 
 		if (g_lua_manager->m_schedule_reload_modules)
 		{

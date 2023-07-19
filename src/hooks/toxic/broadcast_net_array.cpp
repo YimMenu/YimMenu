@@ -58,7 +58,7 @@ namespace big
 			                        .as<int*>();
 
 			*script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(6).as<int*>() =
-			    g.m_hunt_the_beast_thread->m_net_component->get_participant_index(target);// participant idx
+			    ((CGameScriptHandlerNetComponent*)g.m_hunt_the_beast_thread->m_net_component)->get_participant_index(target);// participant idx
 			*script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(7).as<Player*>() =
 			    target->m_player_id;// beast player idx
 			*script_local(g.m_hunt_the_beast_thread->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(2).as<int*>() = INT_MAX;// stopwatch time

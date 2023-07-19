@@ -3,6 +3,7 @@
 #include "gta/fidevice.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
+#include "util/string_conversions.hpp"
 
 namespace big
 {
@@ -86,33 +87,6 @@ namespace big
 		packfile.ClosePackfile();
 	}
 
-	static std::string UTF16ToCP(uint32_t code_page, std::wstring_view input)
-	{
-		if (input.empty())
-			return {};
-
-		const auto size = WideCharToMultiByte(code_page, 0, input.data(), static_cast<int>(input.size()), nullptr, 0, nullptr, nullptr);
-
-		std::string output(size, '\0');
-
-		if (size
-		    != WideCharToMultiByte(code_page,
-		        0,
-		        input.data(),
-		        static_cast<int>(input.size()),
-		        output.data(),
-		        static_cast<int>(output.size()),
-		        nullptr,
-		        nullptr))
-		{
-			const auto error_code = GetLastError();
-			LOG(WARNING) << "WideCharToMultiByte Error in String " << error_code;
-			return {};
-		}
-
-		return output;
-	}
-
 	static std::filesystem::path get_game_folder_path()
 	{
 		std::wstring game_module_path(MAX_PATH, '\0');
@@ -166,7 +140,7 @@ namespace big
 			if (rel_path.empty())
 				continue;
 
-			const auto utf8_path = UTF16ToCP(CP_UTF8, entry.path().native());
+			const auto utf8_path = string_conversions::utf_16_to_code_page(CP_UTF8, entry.path().native());
 
 			if (utf8_path.empty())
 				continue;

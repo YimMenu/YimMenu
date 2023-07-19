@@ -24,7 +24,7 @@ namespace big
 			g_thread_pool->push([this] {
 				while (!g_pointers->m_gta.m_script_globals[1])
 				{
-					if (!m_loading)
+					if (!m_loading || !g_running)
 						return;
 
 					std::this_thread::yield();

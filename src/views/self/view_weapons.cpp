@@ -3,11 +3,12 @@
 #include "core/data/special_ammo_types.hpp"
 #include "fiber_pool.hpp"
 #include "gta/joaat.hpp"
+#include "gta/weapons.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "services/gta_data/gta_data_service.hpp"
-#include "views/view.hpp"
 #include "services/persist_weapons/persist_weapons.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -147,6 +148,9 @@ namespace big
 			}
 
 			break;
+		case CustomWeapon::PAINT_GUN:
+			ImGui::Checkbox("Rainbow Color", &g.weapons.paintgun.rainbow);
+			if (!g.weapons.paintgun.rainbow) { ImGui::ColorEdit4("Paint Gun Color", g.weapons.paintgun.col); }
 		}
 
 		ImGui::SeparatorText("Aim Assistance");
@@ -196,7 +200,9 @@ namespace big
 						selected_weapon_attachment.clear();
 					}
 					if (is_selected)
+					{
 						ImGui::SetItemDefaultFocus();
+					}
 				}
 				ImGui::EndCombo();
 			}
@@ -213,12 +219,12 @@ namespace big
 			ImGui::PushItemWidth(250);
 			if (ImGui::BeginCombo("Attachments", selected_weapon_attachment.c_str()))
 			{
-				auto weapon = g_gta_data_service->weapon_by_hash(selected_weapon_hash);
+				weapon_item weapon = g_gta_data_service->weapon_by_hash(selected_weapon_hash);
 				if (!weapon.m_attachments.empty())
 				{
 					for (std::string attachment : weapon.m_attachments)
 					{
-						auto attachment_component   = g_gta_data_service->weapon_component_by_name(attachment);
+						weapon_component attachment_component   = g_gta_data_service->weapon_component_by_name(attachment);
 						std::string attachment_name = attachment_component.m_display_name;
 						Hash attachment_hash        = attachment_component.m_hash;
 						if (attachment_hash == NULL)
@@ -234,7 +240,9 @@ namespace big
 							selected_weapon_attachment_hash = attachment_hash;
 						}
 						if (is_selected)
+						{
 							ImGui::SetItemDefaultFocus();
+						}
 					}
 				}
 
@@ -269,13 +277,13 @@ namespace big
 		}
 		if (ImGui::CollapsingHeader("Persist Weapons"))
 		{
-			ImGui::Checkbox("Enabled", &g.persist_weapons.enabled);
+			ImGui::Checkbox("Enabled##persist_weapons", &g.persist_weapons.enabled);
 
 			static std::string selected_loadout = g.persist_weapons.weapon_loadout_file;
 			ImGui::PushItemWidth(250);
 			if (ImGui::BeginListBox("Saved Loadouts", ImVec2(200, 200)))
 			{
-				for (auto filename : persist_weapons::list_weapon_loadouts())
+				for (std::string filename : persist_weapons::list_weapon_loadouts())
 				{
 					if (components::selectable(filename, filename == selected_loadout))
 					{
@@ -303,6 +311,73 @@ namespace big
 			ImGui::Text(std::format("Current Loadout: {}:", g.persist_weapons.weapon_loadout_file).data());
 			ImGui::EndGroup();
 			ImGui::PopItemWidth();
+		}
+		if (ImGui::CollapsingHeader("Weapon Hotkeys"))
+		{
+			ImGui::Checkbox("Enabled##weapon_hotkeys", &g.weapons.enable_weapon_hotkeys);
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::SetTooltip("This will select the next weapon in the hotkey list.\r\nThe first weapon in the list is the first weapon it will select, then the second is the one it will select after and so on.\r\nAfter the end of the list, it will wrap back to the first weapon.");
+			}
+
+			static int selected_key = 0;
+			const char* const keys[]{"1", "2", "3", "4", "5", "6"};
+
+			ImGui::PushItemWidth(250);
+			ImGui::Combo("Key", &selected_key, keys, IM_ARRAYSIZE(keys));
+			ImGui::PopItemWidth();
+
+			if (!g.weapons.weapon_hotkeys[selected_key].empty())
+			{
+				int counter{};
+				for (auto& weapon_hash : g.weapons.weapon_hotkeys[selected_key])
+				{
+					ImGui::PushID(counter);
+					weapon_item weapon = g_gta_data_service->weapon_by_hash(weapon_hash);
+					ImGui::PushItemWidth(300);
+					if (ImGui::BeginCombo("Weapons", weapon.m_display_name.c_str()))
+					{
+						for (auto& weapon : g_gta_data_service->weapons())
+						{
+							if (weapon.second.m_display_name == "NULL")
+							{
+								continue;
+							}
+							bool is_selected = weapon.second.m_hash == weapon_hash;
+							if (ImGui::Selectable(weapon.second.m_display_name.c_str(), is_selected, ImGuiSelectableFlags_None))
+							{
+								weapon_hash = weapon.second.m_hash;
+							}
+							if (is_selected)
+							{
+								ImGui::SetItemDefaultFocus();
+							}
+						}
+						ImGui::EndCombo();
+					}
+					ImGui::SameLine();
+					components::button("Set To Current Weapon", [&weapon_hash] {
+						WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weapon_hash, NULL);
+						if (weapon_hash == NULL)
+						{
+							WEAPON::GET_CURRENT_PED_VEHICLE_WEAPON(self::ped, &weapon_hash);
+						}
+					});
+					ImGui::SameLine();
+					if (ImGui::Button("Remove Weapon"))
+					{
+						g.weapons.weapon_hotkeys[selected_key].erase(g.weapons.weapon_hotkeys[selected_key].begin() + counter);
+					}
+					ImGui::PopID();
+					ImGui::PopItemWidth();
+					counter++;
+				}
+			}
+
+			if (ImGui::Button("Add Weapon"))
+			{
+				g.weapons.weapon_hotkeys[selected_key].push_back(WEAPON_UNARMED);
+			}
 		}
 	}
 }

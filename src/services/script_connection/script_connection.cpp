@@ -167,7 +167,7 @@ namespace big
 	{
 		if (m_thread && m_thread->m_net_component)
 		{
-			for (int i = 0; !m_thread->m_net_component->is_local_player_host(); i++)
+			for (int i = 0; !((CGameScriptHandlerNetComponent*)m_thread->m_net_component)->is_local_player_host(); i++)
 			{
 				if (i > 200)
 					return false;
@@ -180,7 +180,7 @@ namespace big
 					return false;
 			}
 
-			m_thread->m_net_component->block_host_migration(true);
+			((CGameScriptHandlerNetComponent*)m_thread->m_net_component)->block_host_migration(true);
 		}
 
 		return true;

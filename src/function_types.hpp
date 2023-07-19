@@ -98,7 +98,7 @@ namespace big::functions
 	using get_gamer_online_state = bool (*)(int profile_index, rage::rlGamerHandle* handles, std::uint32_t count, int* online_state, rage::rlTaskStatus* status);
 	using start_get_session_by_gamer_handle = bool (*)(int profile_index, rage::rlGamerHandle* handles, int count, rage::rlSessionByGamerTaskResult* result, int unk, bool* success, rage::rlTaskStatus* state);
 	using start_matchmaking_find_sessions = bool (*)(int profile_index, int available_slots, NetworkGameFilterMatchmakingComponent* m_filter, unsigned int max_sessions, rage::rlSessionInfo* result_sessions, int* result_session_count, rage::rlTaskStatus* state);
-	using start_get_presence_attributes = bool (*)(int profile_index, rage::rlScHandle* handle, rage::rlQueryPresenceAttributesContext* contexts, int count, rage::rlTaskStatus* state);
+	using start_get_presence_attributes = bool (*)(int profile_index, rage::rlScHandle* handle, int num_handles, rage::rlQueryPresenceAttributesContext** contexts, int count, rage::rlTaskStatus* state);
 	using join_session_by_info = bool (*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
 
 	using generate_uuid = bool (*)(std::uint64_t* uuid);
@@ -147,4 +147,9 @@ namespace big::functions
 	using update_language = void (*)(bool);
 
 	using get_host_array_handler_by_index = rage::netArrayHandlerBase* (*)(CGameScriptHandlerNetComponent* component, int index);
+
+	using get_title_caption_error_message_box = const wchar_t* (*)(rage::joaat_t joaated_error_code);
+
+	using update_presence_attribute_int = void (*)(void* presence_data, int profile_index, char* attr, std::uint64_t value);
+	using update_presence_attribute_string = void (*)(void* presence_data, int profile_index, char* attr, char* value);
 }

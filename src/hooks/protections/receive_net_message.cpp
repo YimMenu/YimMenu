@@ -3,7 +3,7 @@
 #include "backend/player_command.hpp"
 #include "core/data/packet_types.hpp"
 #include "gta/net_game_event.hpp"
-#include "gta/script_id.hpp"
+#include "script/scriptIdBase.hpp"
 #include "gta_util.hpp"
 #include "hooking.hpp"
 #include "lua/lua_manager.hpp"
@@ -177,16 +177,6 @@ namespace big
 				}
 				return true;
 			}
-			case rage::eNetMessage::MsgRequestObjectIds:
-			{
-				if (player->block_join)
-				{
-					g_notification_service->push("BLOCK_JOIN"_T.data(),
-					    std::vformat("BLOCK_JOIN_PREVENT_PLAYER_JOIN"_T, std::make_format_args(player->get_name())));
-					return true;
-				}
-				break;
-			}
 			case rage::eNetMessage::MsgScriptHostRequest:
 			{
 				CGameScriptId script;
@@ -216,7 +206,7 @@ namespace big
 			}
 			case rage::eNetMessage::MsgTransitionGamerInstruction:
 			{
-				// this kick is still a thing
+				// it doesn't work but a certain p2c uses it
 				if (is_kick_instruction(buffer))
 				{
 					g.reactions.gamer_instruction_kick.process(player);
@@ -224,6 +214,28 @@ namespace big
 				}
 				break;
 			}
+			case rage::eNetMessage::MsgKickPlayer:
+			{
+				KickReason reason = buffer.Read<KickReason>(3);
+
+				if (!player->is_host())
+					return true;
+
+				if (reason == KickReason::VOTED_OUT)
+				{
+					g_notification_service->push_warning("Protections", "You have been kicked by the host");
+					return true;
+				}
+
+				break;
+			}
+			}
+		}
+		else
+		{
+			switch (msgType)
+			{
+			case rage::eNetMessage::MsgScriptMigrateHost: return true;
 			}
 		}
 

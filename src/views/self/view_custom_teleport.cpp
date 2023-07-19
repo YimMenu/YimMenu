@@ -77,8 +77,21 @@ namespace big
 			if (g_custom_teleport_service.get_saved_location_by_name(new_location_name))
 				g_notification_service->push_warning("Custom Teleport", std::format("Location with the name {} already exists", new_location_name));
 			else
-				g_custom_teleport_service.save_new_location(category,
-				    {new_location_name, self::pos.x, self::pos.y, self::pos.z});
+			{
+				telelocation teleport_location;
+				Entity teleport_entity = self::ped;
+				if (self::veh != 0)
+					teleport_entity = self::veh;
+				auto coords                  = ENTITY::GET_ENTITY_COORDS(teleport_entity, TRUE);
+				teleport_location.name       = new_location_name;
+				teleport_location.x          = coords.x;
+				teleport_location.y          = coords.y;
+				teleport_location.z          = coords.z;
+				teleport_location.yaw        = ENTITY::GET_ENTITY_HEADING(teleport_entity);
+				teleport_location.pitch      = CAM::GET_GAMEPLAY_CAM_RELATIVE_PITCH();
+				teleport_location.roll       = CAM::GET_GAMEPLAY_CAM_RELATIVE_HEADING();
+				g_custom_teleport_service.save_new_location(category, teleport_location);
+			}
 		});
 
 		ImGui::Separator();
@@ -130,7 +143,7 @@ namespace big
 							if (ImGui::IsMouseDoubleClicked(0))
 							{
 								g_fiber_pool->queue_job([l] {
-									teleport::teleport_player_to_coords(g_player_service->get_self(), {l.x, l.y, l.z});
+									teleport::teleport_player_to_coords(g_player_service->get_self(), {l.x, l.y, l.z}, {l.yaw, l.pitch, l.roll});
 								});
 							}
 						}

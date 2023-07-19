@@ -37,6 +37,7 @@ namespace big
 			looped::system_desync_kick_protection();
 			looped::system_spoofing();
 			looped::system_mission_creator();
+			looped::system_rainbow();
 
 			for (auto command : g_looped_commands)
 				if (command->is_enabled())
@@ -55,6 +56,7 @@ namespace big
 			looped::self_police();
 			looped::self_hud();
 			looped::self_dance_mode();
+			looped::self_persist_outfit();
 
 			script::get_current()->yield();
 		}
@@ -76,6 +78,8 @@ namespace big
 
 		while (g_running)
 		{
+			looped::weapons_tp_gun();
+			looped::weapons_paint_gun();
 			looped::weapons_ammo_special_type();
 			looped::weapons_cage_gun();
 			looped::weapons_delete_gun();
@@ -85,6 +89,7 @@ namespace big
 			looped::weapons_vehicle_gun();
 			looped::weapons_c4_limit();
 			looped::weapons_do_persist_weapons();
+			looped::weapons_do_weapon_hotkeys();
 
 			script::get_current()->yield();
 		}
@@ -97,6 +102,7 @@ namespace big
 		while (g_running)
 		{
 			looped::vehicle_auto_drive();
+			looped::vehicle_allow_all_weapons();
 			looped::vehicle_boost_behavior();
 			looped::derail_train();
 			looped::drive_train();

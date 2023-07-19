@@ -1,0 +1,53 @@
+name: Build issue
+description: Report a problem with building YimMenu
+title: "[Build]: "
+labels: build
+body:
+- type: textarea
+  attributes:
+    label: Describe the build issues
+    description: A clear and concise description of what the issue is.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Screenshots and/or Logs
+    description: "Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in."
+    value: |
+      ```
+      <paste your logs here>
+      ```
+  validations:
+    required: false
+- type: dropdown
+  attributes:
+    label: IDE/Compiler
+    description: Which IDE do you use to build YimMenu?
+    multiple: false
+    options:
+      - Visual Studio 2022
+      - Visual Studio Code
+      - Command Line
+      - Other (please mention in "Additional context")
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Additional context
+    description: Add any other context about the problem here.
+  validations:
+    required: false
+- type: checkboxes
+  attributes:
+    label: Setup Guide
+    description: You confirm that you followed the setup guide as described [here](https://github.com/YimMenu/YimMenu/wiki/Setup-your-PC-for-YimMenu-Development).
+    options:
+      - label: I confirm that I followed the setup guide correctly.
+        required: true
+- type: checkboxes
+  attributes:
+    label: YimMenu Source Code
+    description: You confirm that you haven't modified YimMenu and are building the latest version of the source code.
+    options:
+      - label: I've confirmed this is an issue with building unmodified YimMenu.
+        required: true

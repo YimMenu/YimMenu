@@ -2,7 +2,17 @@
 
 Class for representing a tab within the GUI.
 
-## Functions (10)
+## Functions (12)
+
+### `is_selected()`
+
+- **Returns:**
+  - `boolean`: Returns true if this tab is the currently selected one in the GUI.
+
+**Example Usage:**
+```lua
+boolean = tab:is_selected()
+```
 
 ### `clear()`
 
@@ -132,6 +142,32 @@ Add a ImGui::InputText.
 **Example Usage:**
 ```lua
 input_string = tab:add_input_string(name)
+```
+
+### `add_imgui(imgui_rendering)`
+
+Registers a function that will be called every rendering frame, you can call ImGui functions in it, please check the ImGui.md documentation file for more info.
+**Example Usage:**
+```lua
+tab:add_imgui(function()
+   if ImGui.Begin("My Custom Window") then
+       if ImGui.Button("Label") then
+         script.run_in_fiber(function(script)
+           -- call natives in there
+         end)
+       end
+
+       ImGui.End()
+   end
+end)
+```
+
+- **Parameters:**
+  - `imgui_rendering` (function): Function that will be called every rendering frame, you can call ImGui functions in it, please check the ImGui.md documentation file for more info.
+
+**Example Usage:**
+```lua
+tab:add_imgui(imgui_rendering)
 ```
 
 

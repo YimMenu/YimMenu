@@ -11,11 +11,8 @@ namespace big
 
 		virtual void execute(const std::vector<std::uint64_t>&, const std::shared_ptr<command_context> ctx)
 		{
-			if (g_local_player && g_local_player->m_vehicle)
-			{
-				Vehicle veh = mobile::mechanic::get_personal_vehicle();
-				teleport::into_vehicle(veh);
-			}
+			Vehicle veh = mobile::mechanic::get_personal_vehicle();
+			teleport::into_vehicle(veh);
 		}
 	};
 
