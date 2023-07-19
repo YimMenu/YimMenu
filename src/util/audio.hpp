@@ -17,6 +17,7 @@ namespace big::audio
 		eStraight,
 		eTurnLeft,
 		eTurnRight,
+		eFiveHundredFeet,
 		eError
 	};
 	string_code hash_input(std::string const& input)
@@ -53,13 +54,17 @@ namespace big::audio
 		{
 			return eTurnRight;
 		}
+		else if (input == "FiveHundredFeet")
+		{
+			return eFiveHundredFeet;
+		}
 		else
 		{
 			return eError;
-		};
+		}
 	}
 
-	inline void play_sound(std::string audio_item, int feet)
+	inline void play_sound_nav(std::string audio_item, int feet)
 	{
 		std::filesystem::path base = std::getenv("appdata");
 		base /= "YimMenu";
@@ -80,18 +85,22 @@ namespace big::audio
 				break;
 			case 1000:
 				base /= "thousandfeet.WAV";
-				PlaySound(TEXT(TEXT(base.string().c_str())), NULL, SND_FILENAME | SND_ASYNC);
+				PlaySound(TEXT(base.string().c_str()), NULL, SND_FILENAME | SND_ASYNC);
 				break;
 
 			case 500:
 				base /= "fivehundredfeet.WAV";
-				PlaySound(TEXT(TEXT(base.string().c_str())), NULL, SND_FILENAME | SND_ASYNC);
+				PlaySound(TEXT(base.string().c_str()), NULL, SND_FILENAME | SND_ASYNC);
 				break;
 			case 100:
 				base /= "onehundredfeet.WAV";
-				PlaySound(TEXT(TEXT(base.string().c_str())), NULL, SND_FILENAME | SND_ASYNC);
+				PlaySound(TEXT(base.string().c_str()), NULL, SND_FILENAME | SND_ASYNC);
 				break;
 			}
+			break;
+		case eFiveHundredFeet:
+			base /= "fivehundredfeet.WAV";
+			PlaySound(TEXT(base.string().c_str()), NULL, SND_FILENAME | SND_ASYNC);
 			break;
 
 		case eKeepLeft:
@@ -116,6 +125,15 @@ namespace big::audio
 			base /= "turnright.WAV";
 			PlaySound(TEXT(base.string().c_str()), NULL, SND_FILENAME | SND_ASYNC);
 			break;
+		}
+	}
+
+	// path param must be the absolute path with .WAV at the end
+	inline bool play_sound(std::string path)
+	{
+		try
+		{
+			PlaySound(TEXT(base.c_str()), NULL, SND_FILENAME | SND_ASYNC);
 		}
 	}
 
