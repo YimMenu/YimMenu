@@ -122,6 +122,7 @@ namespace big
 						if (is_invincible(player))
 						{
 							session::add_infraction(player, Infraction::ATTACKING_WITH_GODMODE);
+							g.reactions.modder_detection.process(player);
 						}
 
 						if (is_invisible(player))
@@ -134,16 +135,19 @@ namespace big
 								break;
 
 							session::add_infraction(player, Infraction::ATTACKING_WITH_INVISIBILITY);
+							g.reactions.modder_detection.process(player);
 						}
 
 						if (is_hidden_from_player_list(player))
 						{
 							session::add_infraction(player, Infraction::ATTACKING_WHEN_HIDDEN_FROM_PLAYER_LIST);
+							g.reactions.modder_detection.process(player);
 						}
 
 						if (is_using_orbital_cannon(player))
 						{
 							session::add_infraction(player, Infraction::SPOOFED_DATA);
+							g.reactions.modder_detection.process(player);
 						}
 					}
 				}

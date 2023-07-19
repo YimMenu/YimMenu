@@ -145,6 +145,7 @@ namespace big
 					if (is_spoofed_host_token(plyr->get_net_data()->m_host_token))
 					{
 						session::add_infraction(plyr, Infraction::SPOOFED_HOST_TOKEN);
+						g.reactions.modder_detection.process(plyr);
 					}
 				}
 			});
