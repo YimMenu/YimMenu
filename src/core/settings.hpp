@@ -432,6 +432,7 @@ namespace big
 				int teleport_waypoint       = 0;
 				int teleport_objective      = 0;
 				int teleport_pv             = 0;
+				int teleport_selected       = 0;
 				int noclip                  = 0;
 				int vehicle_flymode         = 0;
 				int bringvehicle            = 0;

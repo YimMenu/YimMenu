@@ -1027,24 +1027,15 @@ enum class BlipColors
 	WaypointColor  = 0x54
 };
 
-enum class BlipDisplayBits
+enum BlipDisplayBits
 {
-	BlipIsBright                 = (1 << 1),
-	BlipEngageFlashing           = (1 << 3),
-	BlipFlashForRoute            = (1 << 5),
-	BlipIsOnMinimap              = (1 << 6),
-	BlipIsHighDetail             = (1 << 8),
-	BlipUseBlipColorForDirection = (1 << 9),
-	BlipIsSmall                  = (1 << 10),
-	BlipShowCone                 = (1 << 11),
-	BlipIsMissionCreatorBlip     = (1 << 12),
-	BlipShowCheckmark            = (1 << 15),
-	BlipShowDollarSign           = (1 << 16),
-	BlipShowHeadingIndicator     = (1 << 17),
-	BlipShowFullCircle           = (1 << 18),
-	BlipIsFriend                 = (1 << 19),
-	BlipIsCrew                   = (1 << 20),
-	BlipIsSelected               = (1 << 22),
+	BlipShowCheckmark            = (1 << 16),
+	BlipShowDollarSign           = (1 << 17),
+	BlipShowHeadingIndicator     = (1 << 18),
+	BlipShowFullCircle           = (1 << 19),
+	BlipIsFriend                 = (1 << 20),
+	BlipIsCrew                   = (1 << 21),
+	BlipIsSelected               = (1 << 23),
 };
 
 enum class BlipRenderBits

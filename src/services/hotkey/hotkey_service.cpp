@@ -34,6 +34,7 @@ namespace big
 		register_hotkey("vehiclecontroller", g.settings.hotkeys.open_vehicle_controller, RAGE_JOAAT("vehiclecontrol"));
 		register_hotkey("vehiclefly", g.settings.hotkeys.vehicle_flymode, RAGE_JOAAT("vehiclefly"));
 		register_hotkey("waypoint", g.settings.hotkeys.teleport_waypoint, RAGE_JOAAT("waypointtp"));
+		register_hotkey("highlighttp", g.settings.hotkeys.teleport_selected, RAGE_JOAAT("highlighttp"));
 
 		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			wndproc(static_cast<eKeyState>(msg), wparam);
