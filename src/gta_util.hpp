@@ -96,7 +96,7 @@ namespace big::gta_util
 		return nullptr;
 	}
 
-	inline GtaThread* find_script_thread_by_id(std::uint32_t id)
+	inline GtaThread* find_script_thread_by_id(uint32_t id)
 	{
 		for (auto thread : *g_pointers->m_gta.m_script_threads)
 		{

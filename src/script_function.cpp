@@ -38,7 +38,7 @@ namespace big
 		}
 	}
 
-	void script_function::call(rage::scrThread* thread, rage::scrProgram* program, std::initializer_list<std::uint64_t> args)
+	void script_function::call(rage::scrThread* thread, rage::scrProgram* program, std::initializer_list<uint64_t> args)
 	{
 		auto tls_ctx   = rage::tlsContext::get();
 		auto stack     = (uint64_t*)thread->m_stack;
@@ -62,7 +62,7 @@ namespace big
 		tls_ctx->m_is_script_thread_active = og_thread != nullptr;
 	}
 
-	void script_function::call_latent(rage::scrThread* thread, rage::scrProgram* program, std::initializer_list<std::uint64_t> args, bool& done)
+	void script_function::call_latent(rage::scrThread* thread, rage::scrProgram* program, std::initializer_list<uint64_t> args, bool& done)
 	{
 		g_fiber_pool->queue_job([this, thread, program, args, &done] {
 			auto stack = (uint64_t*)thread->m_stack;
@@ -101,7 +101,7 @@ namespace big
 		});
 	}
 
-	void script_function::static_call(std::initializer_list<std::uint64_t> args)
+	void script_function::static_call(std::initializer_list<uint64_t> args)
 	{
 		populate_ip();
 
@@ -119,7 +119,7 @@ namespace big
 		delete[] (uint8_t*)thread; // without the cast it ends up calling the destructor which leads to some pretty funny crashes
 	}
 
-	void script_function::operator()(std::initializer_list<std::uint64_t> args)
+	void script_function::operator()(std::initializer_list<uint64_t> args)
 	{
 		populate_ip();
 

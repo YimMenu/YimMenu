@@ -89,7 +89,7 @@ namespace big
 		const auto script_file_path = scripts_folder.get_file(module_name).get_path();
 		m_last_write_time           = std::filesystem::last_write_time(script_file_path);
 
-		auto result = state.safe_script_file(script_file_path.string(), &sol::script_pass_on_error, sol::load_mode::text);
+		auto result = state.safe_script_file(script_file_path.string(), &sol::script_pass_on_error, g.lua.allow_compiled_lua_scripts ? sol::load_mode::any : sol::load_mode::text);
 
 		if (!result.valid())
 		{

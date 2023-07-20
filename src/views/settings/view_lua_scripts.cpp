@@ -56,6 +56,14 @@ namespace big
 		ImGui::SameLine();
 		ImGui::Checkbox("Auto Reload Changed Scripts", &g.lua.enable_auto_reload_changed_scripts);
 
+		ImGui::Checkbox("Allow compiled Lua Scripts (.luac)", &g.lua.allow_compiled_lua_scripts);
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.76078f, 0.f, 0.03529f, 1.f));
+			ImGui::SetTooltip("Don't activate this feature unless you know how to decompile lua scripts and understand the script.\nUse at your own risk!");
+			ImGui::PopStyleColor();
+		}
+
 		if (components::button("Open Lua Scripts Folder"))
 		{
 			std::string command = "explorer.exe /select," + g_lua_manager->get_scripts_folder().get_path().string();

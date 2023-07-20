@@ -8,9 +8,9 @@ namespace big
 		std::string m_name;
 		std::string m_display_name;
 		std::string m_weapon_type;
-		std::uint32_t m_hash;
-		std::uint32_t m_reward_hash;
-		std::uint32_t m_reward_ammo_hash;
+		uint32_t m_hash;
+		uint32_t m_reward_hash;
+		uint32_t m_reward_ammo_hash;
 		std::vector<std::string> m_attachments;
 		bool m_throwable;
 

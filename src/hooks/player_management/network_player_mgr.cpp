@@ -8,7 +8,7 @@
 
 namespace big
 {
-	void hooks::network_player_mgr_init(CNetworkPlayerMgr* _this, std::uint64_t a2, std::uint32_t a3, std::uint32_t a4[4])
+	void hooks::network_player_mgr_init(CNetworkPlayerMgr* _this, uint64_t a2, uint32_t a3, uint32_t a4[4])
 	{
 		if (g.notifications.network_player_mgr_init.log)
 			LOG(INFO) << "CNetworkPlayerMgr#init got called, we're probably entering a session.";

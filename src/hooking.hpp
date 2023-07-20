@@ -31,6 +31,7 @@ class CFoundDevice;
 class IDirectSoundCapture;
 class CVehicleProximityMigrationDataNode;
 class CNonPhysicalPlayerData;
+class TimecycleKeyframeData;
 
 namespace rage
 {
@@ -55,7 +56,7 @@ namespace big
 {
 	struct hooks
 	{
-		static bool run_script_threads(std::uint32_t ops_to_execute);
+		static bool run_script_threads(uint32_t ops_to_execute);
 
 		static constexpr auto swapchain_num_funcs           = 19;
 		static constexpr auto swapchain_present_index       = 8;
@@ -72,7 +73,7 @@ namespace big
 		static bool init_native_tables(rage::scrProgram* program);
 		static rage::eThreadState script_vm(uint64_t* start_stack, uint64_t** scr_globals, rage::scrProgram* program, rage::scrThreadContext* ctx);
 
-		static void network_player_mgr_init(CNetworkPlayerMgr* _this, std::uint64_t a2, std::uint32_t a3, std::uint32_t a4[4]);
+		static void network_player_mgr_init(CNetworkPlayerMgr* _this, uint64_t a2, uint32_t a3, uint32_t a4[4]);
 		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
 
 		static bool fragment_physics_crash(uintptr_t a1, uint32_t a2, uintptr_t a3, uintptr_t a4, uintptr_t a5);
@@ -101,7 +102,7 @@ namespace big
 		static uint64_t invalid_decal(uintptr_t a1, int a2);
 		static uint64_t task_parachute_object_0x270(uint64_t _this, int a2, int a3);
 
-		static bool update_presence_attribute_int(void* presence_data, int profile_index, char* attr, std::uint64_t value);
+		static bool update_presence_attribute_int(void* presence_data, int profile_index, char* attr, uint64_t value);
 		static bool update_presence_attribute_string(void* presence_data, int profile_index, char* attr, char* value);
 
 		static bool handle_join_request(Network* network, rage::snSession* session, rage::rlGamerInfo* player_info, CJoinRequestContext* ctx, BOOL is_transition_session);
@@ -119,7 +120,7 @@ namespace big
 
 		static unsigned int broadcast_net_array(rage::netArrayHandlerBase* _this, CNetGamePlayer* target, rage::datBitBuffer* bit_buffer, uint16_t counter, uint32_t* elem_start, bool silent);
 
-		static bool send_session_matchmaking_attributes(void* a1, rage::rlSessionInfo* info, std::uint64_t session_id, bool use_session_id, MatchmakingAttributes* attributes);
+		static bool send_session_matchmaking_attributes(void* a1, rage::rlSessionInfo* info, uint64_t session_id, bool use_session_id, MatchmakingAttributes* attributes);
 
 		static void serialize_take_off_ped_variation_task(ClonedTakeOffPedVariationInfo* info, rage::CSyncDataBase* serializer);
 
@@ -127,19 +128,19 @@ namespace big
 		static void queue_dependency(void* dependency);
 		static void prepare_metric_for_sending(rage::datBitBuffer* bit_buffer, int unk, int time, rage::rlMetric* metric);
 
-		static bool received_array_update(rage::netArrayHandlerBase* array, CNetGamePlayer* sender, rage::datBitBuffer* buffer, int size, std::int16_t cycle);
+		static bool received_array_update(rage::netArrayHandlerBase* array, CNetGamePlayer* sender, rage::datBitBuffer* buffer, int size, int16_t cycle);
 
 		static bool receive_pickup(rage::netObject* netobject, void* unk, CPed* ped);
 
 		static bool write_player_camera_data_node(rage::netObject* player, CPlayerCameraDataNode* node);
 
 		static rage::netGameEvent* send_player_card_stats(rage::netGameEvent* a1, CPlayerCardStats* stats);
-		static void serialize_stats(CStatsSerializationContext* context, rage::joaat_t* stats, std::uint32_t stat_count);
+		static void serialize_stats(CStatsSerializationContext* context, rage::joaat_t* stats, uint32_t stat_count);
 
 		static void write_player_creation_data_node(rage::netObject* player, CPlayerCreationDataNode* node);
 		static void write_player_appearance_data_node(rage::netObject* player, CPlayerAppearanceDataNode* node);
 
-		static void task_jump_constructor(std::uint64_t a1, int a2);
+		static void task_jump_constructor(uint64_t a1, int a2);
 
 		static CBaseModelInfo* get_model_info(rage::joaat_t hash, uint32_t* a2);
 
@@ -153,6 +154,8 @@ namespace big
 		static void log_error_message_box(rage::joaat_t joaated_error_code, char a2);
 
 		static void send_non_physical_player_data(CNetGamePlayer* player, __int64 message, int flags, void* a4, CNetGamePlayer* a5);
+
+		static int64_t update_timecycle_keyframe_data(int64_t timecycleManager, TimecycleKeyframeData* timecycleKeyframeData);
 	};
 
 	class minhook_keepalive
