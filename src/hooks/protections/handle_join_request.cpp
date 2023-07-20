@@ -10,8 +10,9 @@ namespace big
 {
 	bool hooks::handle_join_request(Network* network, rage::snSession* session, rage::rlGamerInfo* player_info, CJoinRequestContext* ctx, BOOL is_transition_session)
 	{
-		if (auto player = g_player_database_service->get_player_by_rockstar_id(player_info->m_gamer_handle.m_rockstar_id);
-		    player && player->block_join)
+		if (auto player = g_player_database_service->get_player_by_rockstar_id(player_info->m_gamer_handle.m_rockstar_id); player
+		    && player->block_join && !g.session.allow_friends_into_locked_session
+		    && !g_player_service->get_by_host_token(player_info->m_host_token)->is_friend())
 		{
 			CMsgJoinResponse response{};
 			response.m_status_code = player->block_join_reason;
