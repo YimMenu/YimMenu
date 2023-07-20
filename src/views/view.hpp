@@ -67,6 +67,7 @@ namespace big
 		static void creator();
 		static void train();
 		static void blackhole();
+		static void missile();
 		static void model_swapper();
 		static void world();
 		static void gta_cache();
