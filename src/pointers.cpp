@@ -1390,15 +1390,6 @@ namespace big
                 ptr = ptr.add(5).rip();
                 g_pointers->m_gta.m_driveby_metadata_mgr = ptr.as<CVehicleDriveByMetadataMgr*>();
                 g_pointers->m_gta.m_vehicle_layout_metadata_mgr = ptr.add(0x20).as<CVehicleSeatMetadataMgr*>();
-            },
-            // Blip List
-            {
-                "BLPLST",
-                "4C 8D 05 ? ? ? ? 0F B7 C1",
-                [](memory::handle ptr)
-                {
-                    g_pointers->m_gta.m_blip_list = ptr.add(3).rip().as<CBlipList*>();
-                }
             }
         },
         // Blip List
@@ -1408,15 +1399,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_blip_list = ptr.add(3).rip().as<CBlipList*>();
-            }
-        },
-        // TimecycleKeyframeData
-        {
-            "TCYCL",
-            "48 83 EC 18 48 8B 0D",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_timecycle_keyframe_override = ptr.as<PVOID>();
             }
         },
         // TimecycleKeyframeData

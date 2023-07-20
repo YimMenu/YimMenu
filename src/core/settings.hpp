@@ -955,7 +955,6 @@ namespace big
 		struct lua
 		{
 			bool enable_auto_reload_changed_scripts = false;
-			bool allow_compiled_lua_scripts         = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(lua, enable_auto_reload_changed_scripts)
 		} lua{};
