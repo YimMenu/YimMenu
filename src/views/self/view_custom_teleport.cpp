@@ -1,6 +1,7 @@
 #include "services/custom_teleport/custom_teleport_service.hpp"
 #include "util/math.hpp"
 #include "util/teleport.hpp"
+#include "util/blip.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -38,7 +39,7 @@ namespace big
 	void view::custom_teleport()
 	{
 		ImGui::BeginGroup();
-		static std::string new_location_name;
+		static std::string new_location_name{};
 		static std::string category = "Default";
 		static telelocation deletion_telelocation;
 		static std::string filter{};
@@ -74,8 +75,14 @@ namespace big
 		ImGui::PopItemWidth();
 
 		components::button("Save current location", [] {
-			if (g_custom_teleport_service.get_saved_location_by_name(new_location_name))
+			if (new_location_name.empty())
+			{
+				g_notification_service->push_warning("Custom Teleport", "Please enter a valid name.");
+			}
+			else if (g_custom_teleport_service.get_saved_location_by_name(new_location_name))
+			{
 				g_notification_service->push_warning("Custom Teleport", std::format("Location with the name {} already exists", new_location_name));
+			}
 			else
 			{
 				telelocation teleport_location;
@@ -90,6 +97,40 @@ namespace big
 				teleport_location.yaw        = ENTITY::GET_ENTITY_HEADING(teleport_entity);
 				teleport_location.pitch      = CAM::GET_GAMEPLAY_CAM_RELATIVE_PITCH();
 				teleport_location.roll       = CAM::GET_GAMEPLAY_CAM_RELATIVE_HEADING();
+				g_custom_teleport_service.save_new_location(category, teleport_location);
+			}
+		});
+		ImGui::SameLine();
+		components::button("Save current selected blip", [] {
+			if (new_location_name.empty())
+			{
+				g_notification_service->push_warning("Custom Teleport", "Please enter a valid name.");
+			}
+			else if (g_custom_teleport_service.get_saved_location_by_name(new_location_name))
+			{
+				g_notification_service->push_warning("Custom Teleport", std::format("Location with the name {} already exists", new_location_name));
+			}
+			else if (!*g_pointers->m_gta.m_is_session_started)
+			{
+				g_notification_service->push_warning("Custom Teleport", "TELEPORT_NOT_ONLINE"_T.data());
+				return;
+			}
+			else
+			{
+				telelocation teleport_location;
+				auto blip = blip::get_selected_blip();
+				if (blip == nullptr)
+				{
+					g_notification_service->push_warning("Custom Teleport", std::format("Cannot find selected blip."));
+					return;
+				}
+				teleport_location.name  = new_location_name;
+				teleport_location.x     = blip->m_x;
+				teleport_location.y     = blip->m_y;
+				teleport_location.z     = blip->m_z;
+				teleport_location.yaw   = blip->m_rotation;
+				teleport_location.pitch = 0.0f;
+				teleport_location.roll  = 0.0f;
 				g_custom_teleport_service.save_new_location(category, teleport_location);
 			}
 		});
