@@ -18,8 +18,8 @@ namespace big
 		{
 			g_lua_manager->for_each_module([](auto& module) {
 				if (ImGui::Selectable(module->module_name().c_str(),
-					!selected_module.expired() && selected_module.lock().get() == module.get()))
-				selected_module = module;
+				        !selected_module.expired() && selected_module.lock().get() == module.get()))
+					selected_module = module;
 			});
 
 			ImGui::EndListBox();
@@ -37,11 +37,10 @@ namespace big
 
 			if (components::button("Reload"))
 			{
-				auto name = selected_module.lock()->module_name();
-				auto id   = selected_module.lock()->module_id();
+				auto id = selected_module.lock()->module_id();
 
 				g_lua_manager->unload_module(id);
-				g_lua_manager->queue_load_module(name, [](std::weak_ptr<big::lua_module> loaded_module) {
+				g_lua_manager->queue_load_module(selected_module.lock()->module_path(), [](std::weak_ptr<big::lua_module> loaded_module) {
 					selected_module = loaded_module;
 				});
 			}

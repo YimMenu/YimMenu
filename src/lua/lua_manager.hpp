@@ -1,6 +1,6 @@
 #pragma once
-#include "lua_module.hpp"
 #include "core/enums.hpp"
+#include "lua_module.hpp"
 
 namespace big
 {
@@ -12,7 +12,7 @@ namespace big
 
 		struct module_load_info
 		{
-			std::string m_name;
+			std::filesystem::path m_module_path;
 			std::function<void(std::weak_ptr<lua_module>)> m_on_module_loaded;
 		};
 		std::queue<module_load_info> m_modules_load_queue;
@@ -50,11 +50,11 @@ namespace big
 		void draw_gui(rage::joaat_t tab_hash);
 
 		void unload_module(rage::joaat_t module_id);
-		void load_module(const std::string& module_name);
+		void load_module(const std::filesystem::path& module_path);
 
 		void reload_changed_scripts();
 
-		void queue_load_module(const std::string& module_name, std::function<void(std::weak_ptr<lua_module>)> on_module_loaded);
+		void queue_load_module(const std::filesystem::path& module_path, std::function<void(std::weak_ptr<lua_module>)> on_module_loaded);
 		void load_modules_from_queue();
 
 		std::weak_ptr<lua_module> get_module(rage::joaat_t module_id);

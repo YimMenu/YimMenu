@@ -5,6 +5,7 @@
 #include "bindings/global_table.hpp"
 #include "bindings/globals.hpp"
 #include "bindings/gui.hpp"
+#include "bindings/imgui.hpp"
 #include "bindings/locals.hpp"
 #include "bindings/log.hpp"
 #include "bindings/memory.hpp"
@@ -13,7 +14,6 @@
 #include "bindings/script.hpp"
 #include "bindings/tunables.hpp"
 #include "bindings/vector.hpp"
-#include "bindings/imgui.hpp"
 #include "file_manager.hpp"
 #include "script_mgr.hpp"
 
@@ -56,9 +56,10 @@ namespace big
 		// When this function exits, Lua will exhibit default behavior and abort()
 	}
 
-	lua_module::lua_module(std::string module_name, folder& scripts_folder) :
-	    m_module_name(module_name),
-	    m_module_id(rage::joaat(module_name))
+	lua_module::lua_module(const std::filesystem::path& module_path, folder& scripts_folder) :
+	    m_module_path(module_path),
+	    m_module_name(module_path.filename().string()),
+	    m_module_id(rage::joaat(m_module_name))
 	{
 		m_state = std::make_unique<sol::state>();
 
@@ -80,20 +81,19 @@ namespace big
 
 		init_lua_api(scripts_folder);
 
-		state["!module_name"] = module_name;
+		state["!module_name"] = m_module_name;
 		state["!this"]        = this;
 
 		state.set_exception_handler(exception_handler);
 		state.set_panic(sol::c_call<decltype(&panic_handler), &panic_handler>);
 
-		const auto script_file_path = scripts_folder.get_file(module_name).get_path();
-		m_last_write_time           = std::filesystem::last_write_time(script_file_path);
+		m_last_write_time = std::filesystem::last_write_time(m_module_path);
 
-		auto result = state.safe_script_file(script_file_path.string(), &sol::script_pass_on_error, sol::load_mode::text);
+		auto result = state.safe_script_file(m_module_path.string(), &sol::script_pass_on_error, sol::load_mode::text);
 
 		if (!result.valid())
 		{
-			LOG(FATAL) << module_name << " failed to load: " << result.get<sol::error>().what();
+			LOG(FATAL) << m_module_name << " failed to load: " << result.get<sol::error>().what();
 			Logger::FlushQueue();
 		}
 	}
@@ -130,6 +130,11 @@ namespace big
 	const std::string& lua_module::module_name() const
 	{
 		return m_module_name;
+	}
+
+	const std::filesystem::path& lua_module::module_path() const
+	{
+		return m_module_path;
 	}
 
 	const std::chrono::time_point<std::chrono::file_clock> lua_module::last_write_time() const

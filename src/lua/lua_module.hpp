@@ -1,8 +1,9 @@
 #pragma once
 #include "bindings/gui/gui_element.hpp"
+#include "core/data/menu_event.hpp"
 #include "lua_patch.hpp"
 #include "sol.hpp"
-#include "core/data/menu_event.hpp"
+
 #include <services/gui/gui_service.hpp>
 
 namespace big
@@ -12,6 +13,8 @@ namespace big
 	class lua_module
 	{
 		std::unique_ptr<sol::state> m_state;
+
+		std::filesystem::path m_module_path;
 
 		std::string m_module_name;
 		rage::joaat_t m_module_id;
@@ -31,8 +34,10 @@ namespace big
 		std::unordered_map<menu_event, std::vector<sol::protected_function>> m_event_callbacks;
 		std::vector<void*> m_allocated_memory;
 
-		lua_module(std::string module_name, folder& scripts_folder);
+		lua_module(const std::filesystem::path& module_path, folder& scripts_folder);
 		~lua_module();
+
+		const std::filesystem::path& module_path() const;
 
 		rage::joaat_t module_id() const;
 		const std::string& module_name() const;
