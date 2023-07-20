@@ -24,12 +24,12 @@ namespace big
 {
 	class player_database_service
 	{
-		std::unordered_map<std::uint64_t, std::shared_ptr<persistent_player>> m_players;
+		std::unordered_map<uint64_t, std::shared_ptr<persistent_player>> m_players;
 		std::map<std::string, std::shared_ptr<persistent_player>> m_sorted_players;
 		std::shared_ptr<persistent_player> m_selected = nullptr;
 
 		void handle_session_type_change(persistent_player& player, GSType new_session_type);
-		static void handle_game_mode_change(std::uint64_t rid, GameMode old_game_mode, GameMode new_game_mode, std::string mission_id, std::string mission_name); // run in fiber pool
+		static void handle_game_mode_change(uint64_t rid, GameMode old_game_mode, GameMode new_game_mode, std::string mission_id, std::string mission_name); // run in fiber pool
 		bool join_being_redirected = false;
 		void handle_join_redirect();
 		std::atomic_bool updating = false;
@@ -43,12 +43,12 @@ namespace big
 		void load();
 
 		std::shared_ptr<persistent_player> add_player(std::int64_t rid, const std::string_view name);
-		std::unordered_map<std::uint64_t, std::shared_ptr<persistent_player>>& get_players();
+		std::unordered_map<uint64_t, std::shared_ptr<persistent_player>>& get_players();
 		std::map<std::string, std::shared_ptr<persistent_player>>& get_sorted_players();
-		std::shared_ptr<persistent_player> get_player_by_rockstar_id(std::uint64_t rockstar_id);
+		std::shared_ptr<persistent_player> get_player_by_rockstar_id(uint64_t rockstar_id);
 		std::shared_ptr<persistent_player> get_or_create_player(player_ptr player);
-		void update_rockstar_id(std::uint64_t old, std::uint64_t _new);
-		void remove_rockstar_id(std::uint64_t rockstar_id);
+		void update_rockstar_id(uint64_t old, uint64_t _new);
+		void remove_rockstar_id(uint64_t rockstar_id);
 
 		void set_selected(std::shared_ptr<persistent_player> selected);
 		std::shared_ptr<persistent_player> get_selected();

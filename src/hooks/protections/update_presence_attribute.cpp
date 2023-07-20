@@ -8,7 +8,7 @@ namespace big
 		return g.protections.rid_join || (g_player_database_service && g_player_database_service->is_redirect_join_active());
 	}
 
-	bool hooks::update_presence_attribute_int(void* presence_data, int profile_index, char* attr, std::uint64_t value)
+	bool hooks::update_presence_attribute_int(void* presence_data, int profile_index, char* attr, uint64_t value)
 	{
 		auto hash = rage::joaat(attr);
 		if (block_session_presence() && (hash == RAGE_JOAAT("gstok") || hash == RAGE_JOAAT("gsid") || hash == RAGE_JOAAT("gstype") || hash == RAGE_JOAAT("gshost") || hash == RAGE_JOAAT("gsjoin")))

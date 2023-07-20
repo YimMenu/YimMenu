@@ -11,7 +11,7 @@ namespace lua::memory
 	struct pointer
 	{
 	private:
-		std::uint64_t m_address;
+		uint64_t m_address;
 
 	public:
 
@@ -19,7 +19,7 @@ namespace lua::memory
 		// Class: pointer
 		// Param: address: integer: Address
 		// Returns a memory instance, with the given address.
-		explicit pointer(std::uint64_t address);
+		explicit pointer(uint64_t address);
 
 		explicit pointer();
 
