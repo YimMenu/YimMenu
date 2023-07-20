@@ -16,13 +16,13 @@ namespace big
 	public:
 		script_function(const std::string& name, const rage::joaat_t script, const std::string& pattern, int32_t offset);
 		void populate_ip();
-		void call(rage::scrThread* thread, rage::scrProgram* program, std::initializer_list<std::uint64_t> args);
-		void call_latent(rage::scrThread* thread, rage::scrProgram* program, std::initializer_list<std::uint64_t> args, bool& done);
+		void call(rage::scrThread* thread, rage::scrProgram* program, std::initializer_list<uint64_t> args);
+		void call_latent(rage::scrThread* thread, rage::scrProgram* program, std::initializer_list<uint64_t> args, bool& done);
 
 		// for pure functions that do not need access to thread stack
-		void static_call(std::initializer_list<std::uint64_t> args);
+		void static_call(std::initializer_list<uint64_t> args);
 
-		void operator()(std::initializer_list<std::uint64_t> args);
+		void operator()(std::initializer_list<uint64_t> args);
 	};
 
 	namespace scr_functions

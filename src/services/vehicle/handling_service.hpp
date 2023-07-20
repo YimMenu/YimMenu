@@ -32,7 +32,7 @@ namespace big
 		handling_profiles m_handling_profiles;
 
 		// contains the handling profiles of a vehicles before they're been modified
-		std::unordered_map<std::uint32_t, handling_profile> m_vehicle_backups;
+		std::unordered_map<uint32_t, handling_profile> m_vehicle_backups;
 	};
 
 	inline handling_service* g_handling_service{};

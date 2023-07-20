@@ -56,7 +56,7 @@ namespace big
 		}
 	}
 
-	void player_database_service::handle_game_mode_change(std::uint64_t rid, GameMode old_game_mode, GameMode new_game_mode, std::string mission_id, std::string mission_name)
+	void player_database_service::handle_game_mode_change(uint64_t rid, GameMode old_game_mode, GameMode new_game_mode, std::string mission_id, std::string mission_name)
 	{
 		const char* old_game_mode_str = get_game_mode_str(old_game_mode);
 		const char* new_game_mode_str = get_game_mode_str(new_game_mode);
@@ -189,7 +189,7 @@ namespace big
 		}
 	}
 
-	std::unordered_map<std::uint64_t, std::shared_ptr<persistent_player>>& player_database_service::get_players()
+	std::unordered_map<uint64_t, std::shared_ptr<persistent_player>>& player_database_service::get_players()
 	{
 		return m_players;
 	}
@@ -216,7 +216,7 @@ namespace big
 		return player;
 	}
 
-	std::shared_ptr<persistent_player> player_database_service::get_player_by_rockstar_id(std::uint64_t rockstar_id)
+	std::shared_ptr<persistent_player> player_database_service::get_player_by_rockstar_id(uint64_t rockstar_id)
 	{
 		if (m_players.contains(rockstar_id))
 			return m_players[rockstar_id];
@@ -235,7 +235,7 @@ namespace big
 		}
 	}
 
-	void player_database_service::update_rockstar_id(std::uint64_t old, std::uint64_t _new)
+	void player_database_service::update_rockstar_id(uint64_t old, uint64_t _new)
 	{
 		auto player  = m_players.extract(old);
 		player.key() = _new;
@@ -243,7 +243,7 @@ namespace big
 		m_players.insert(std::move(player));
 	}
 
-	void player_database_service::remove_rockstar_id(std::uint64_t rockstar_id)
+	void player_database_service::remove_rockstar_id(uint64_t rockstar_id)
 	{
 		if (m_selected && m_selected->rockstar_id == rockstar_id)
 			m_selected = nullptr;

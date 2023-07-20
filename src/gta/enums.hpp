@@ -3,7 +3,7 @@
 
 constexpr auto MAX_PLAYERS = 32;
 
-enum class ControllerInputs : std::uint32_t
+enum class ControllerInputs : uint32_t
 {
 	INPUT_NEXT_CAMERA,
 	INPUT_LOOK_LR,
@@ -372,7 +372,7 @@ enum class ControllerInputs : std::uint32_t
 	SCRIPTED_INPUT_LAST
 };
 
-enum class RadioStationIndexes : std::uint32_t
+enum class RadioStationIndexes : uint32_t
 {
 	RADIO_LSROCKRADIO,
 	RADIO_NONSTOPPOPFM,
@@ -509,7 +509,7 @@ enum class eNetworkEvents : uint16_t
 	NETWORK_CHECK_CATALOG_CRC
 };
 
-enum class KickReason : std::uint8_t
+enum class KickReason : uint8_t
 {
 	VOTED_OUT,
 	PEER_COMPLAINTS,
@@ -1043,7 +1043,7 @@ enum class BlipRenderBits
 	BlipIsOnScreen = (1 << 6)
 };
 
-enum class eFrameFlags : std::uint32_t
+enum class eFrameFlags : uint32_t
 {
 	eFrameFlagExplosiveAmmo  = 1 << 11,
 	eFrameFlagFireAmmo       = 1 << 12,
@@ -1069,13 +1069,13 @@ enum class eNetObjType
 	NET_OBJ_TYPE_TRAIN
 };
 
-enum class eNetObjectFlags : std::uint16_t
+enum class eNetObjectFlags : uint16_t
 {
 	NET_OBJ_FLAGS_FROM_SCRIPT = 1 << 2,
 	NET_OBJ_FLAGS_SCRIPTED    = 1 << 6,
 };
 
-enum class eAckCode : std::uint32_t
+enum class eAckCode : uint32_t
 {
 	ACKCODE_SUCCESS,
 	ACKCODE_FAIL,
@@ -1088,7 +1088,7 @@ enum class eAckCode : std::uint32_t
 	ACKCODE_NONE
 };
 
-enum class PedBones : std::uint32_t
+enum class PedBones : uint32_t
 {
 	SKEL_ROOT                        = 0x0,
 	SKEL_Pelvis                      = 0x2E28,

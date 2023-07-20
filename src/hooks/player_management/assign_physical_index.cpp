@@ -15,7 +15,7 @@
 
 namespace big
 {
-	inline bool is_spoofed_host_token(std::uint64_t token)
+	inline bool is_spoofed_host_token(uint64_t token)
 	{
 		if (token < 200'000'000)
 			return true;

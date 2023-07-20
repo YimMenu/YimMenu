@@ -13,7 +13,7 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual std::optional<std::vector<std::uint64_t>> parse_args_p(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
+		virtual std::optional<std::vector<uint64_t>> parse_args_p(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
 		{
 			uint64_t level = std::atoi(args[0].c_str());
 
@@ -23,7 +23,7 @@ namespace big
 				return std::nullopt;
 			}
 
-			return std::vector<std::uint64_t>{level};
+			return std::vector<uint64_t>{level};
 		}
 
 		virtual CommandAccessLevel get_access_level()
@@ -31,7 +31,7 @@ namespace big
 			return CommandAccessLevel::AGGRESSIVE;
 		}
 
-		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const std::vector<uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
 			if (player->id() == self::id)
 			{

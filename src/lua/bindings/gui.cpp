@@ -11,7 +11,7 @@ namespace lua::gui
 		module->m_independent_gui.push_back(std::move(element));
 	}
 
-	static void add_element(lua_State* state, std::uint32_t hash, std::shared_ptr<lua::gui::gui_element> element)
+	static void add_element(lua_State* state, uint32_t hash, std::shared_ptr<lua::gui::gui_element> element)
 	{
 		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
 

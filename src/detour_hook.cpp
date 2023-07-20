@@ -72,7 +72,7 @@ namespace big
 	void detour_hook::fix_hook_address()
 	{
 		auto ptr = memory::handle(m_target);
-		while (ptr.as<std::uint8_t&>() == 0xE9)
+		while (ptr.as<uint8_t&>() == 0xE9)
 			ptr = ptr.add(1).rip();
 		m_target = ptr.as<void*>();
 	}

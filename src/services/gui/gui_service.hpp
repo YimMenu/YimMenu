@@ -33,6 +33,7 @@ namespace big
 		TRAIN,
 		BLACKHOLE,
 		MODEL_SWAPPER,
+		VFX,
 
 		NETWORK,
 		MISSIONS,
@@ -125,6 +126,7 @@ namespace big
 						{TAB_DECL(TRAIN), view::train}},
 						{TAB_DECL(BLACKHOLE), view::blackhole}},
 						{TAB_DECL(MODEL_SWAPPER), view::model_swapper}},
+						{TAB_DECL(VFX), view::vfx}},
 		            },
 		        },
 		    },

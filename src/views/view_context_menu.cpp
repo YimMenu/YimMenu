@@ -56,7 +56,7 @@ namespace big
 					    cm_col,
 					    5.f);
 
-					for (std::uint32_t i = 0; i < cm->options.size(); i++)
+					for (uint32_t i = 0; i < cm->options.size(); i++)
 					{
 						const auto co = cm->options.at(i);
 						draw_list->AddText({cm_start_x + 7.f, cm_start_y + (20.f * static_cast<float>(i)) + 5.f},

@@ -72,7 +72,7 @@ namespace big
 	}
 
 	// innefficient getters, don't care to fix right now
-	const ped_item& gta_data_service::ped_by_hash(std::uint32_t hash)
+	const ped_item& gta_data_service::ped_by_hash(uint32_t hash)
 	{
 		for (const auto& [name, ped] : m_peds)
 			if (rage::joaat(name) == hash)
@@ -80,7 +80,7 @@ namespace big
 		return gta_data_service::empty_ped;
 	}
 
-	const vehicle_item& gta_data_service::vehicle_by_hash(std::uint32_t hash)
+	const vehicle_item& gta_data_service::vehicle_by_hash(uint32_t hash)
 	{
 		for (const auto& [name, veh] : m_vehicles)
 			if (rage::joaat(name) == hash)
@@ -88,7 +88,7 @@ namespace big
 		return gta_data_service::empty_vehicle;
 	}
 
-	const weapon_item& gta_data_service::weapon_by_hash(std::uint32_t hash)
+	const weapon_item& gta_data_service::weapon_by_hash(uint32_t hash)
 	{
 		for (const auto& [name, weapon] : m_weapons_cache.weapon_map)
 			if (rage::joaat(name) == hash)
@@ -96,7 +96,7 @@ namespace big
 		return gta_data_service::empty_weapon;
 	}
 
-	const weapon_component& gta_data_service::weapon_component_by_hash(std::uint32_t hash)
+	const weapon_component& gta_data_service::weapon_component_by_hash(uint32_t hash)
 	{
 		for (const auto& [name, component] : m_weapons_cache.weapon_components)
 			if (component.m_hash == hash)
@@ -217,7 +217,7 @@ namespace big
 		std::sort(m_weapon_types.begin(), m_weapon_types.end());
 	}
 
-	inline void parse_ped(std::vector<ped_item>& peds, std::vector<std::uint32_t>& mapped_peds, pugi::xml_document& doc)
+	inline void parse_ped(std::vector<ped_item>& peds, std::vector<uint32_t>& mapped_peds, pugi::xml_document& doc)
 	{
 		const auto& items = doc.select_nodes("/CPedModelInfo__InitDataList/InitDatas/Item");
 		for (const auto& item_node : items)
@@ -249,7 +249,7 @@ namespace big
 
 	void gta_data_service::rebuild_cache()
 	{
-		using hash_array = std::vector<std::uint32_t>;
+		using hash_array = std::vector<uint32_t>;
 		hash_array mapped_peds;
 		hash_array mapped_vehicles;
 		hash_array mapped_weapons;
@@ -260,7 +260,7 @@ namespace big
 		std::vector<weapon_item> weapons;
 		std::vector<weapon_component> weapon_components;
 
-		constexpr auto exists = [](const hash_array& arr, std::uint32_t val) -> bool {
+		constexpr auto exists = [](const hash_array& arr, uint32_t val) -> bool {
 			return std::find(arr.begin(), arr.end(), val) != arr.end();
 		};
 
@@ -539,7 +539,7 @@ namespace big
 
 			{
 				const auto data_size = sizeof(ped_item) * peds.size();
-				m_peds_cache.set_data(std::make_unique<std::uint8_t[]>(data_size), data_size);
+				m_peds_cache.set_data(std::make_unique<uint8_t[]>(data_size), data_size);
 				std::memcpy(m_peds_cache.data(), peds.data(), data_size);
 
 				m_peds_cache.set_header_version(file_version);
@@ -548,7 +548,7 @@ namespace big
 
 			{
 				const auto data_size = sizeof(vehicle_item) * vehicles.size();
-				m_vehicles_cache.set_data(std::make_unique<std::uint8_t[]>(data_size), data_size);
+				m_vehicles_cache.set_data(std::make_unique<uint8_t[]>(data_size), data_size);
 				std::memcpy(m_vehicles_cache.data(), vehicles.data(), data_size);
 
 				m_vehicles_cache.set_header_version(file_version);
