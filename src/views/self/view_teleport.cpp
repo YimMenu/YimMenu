@@ -16,6 +16,8 @@ namespace big
 		components::command_button<"waypointtp">({}, "Waypoint");
 		ImGui::SameLine();
 		components::command_button<"objectivetp">({}, "Objective");
+		ImGui::SameLine();
+		components::command_button<"highlighttp">({}, "Selected");
 		components::command_checkbox<"autotptowp">();
 
 		ImGui::SeparatorText("Movement");
