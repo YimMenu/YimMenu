@@ -1418,6 +1418,15 @@ namespace big
             {
                 g_pointers->m_gta.m_timecycle_keyframe_override = ptr.as<PVOID>();
             }
+        },
+        // TimecycleKeyframeData
+        {
+            "TCYCL",
+            "48 83 EC 18 48 8B 0D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_timecycle_keyframe_override = ptr.as<PVOID>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 

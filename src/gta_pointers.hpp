@@ -279,12 +279,10 @@ namespace big
 
 		PVOID m_send_non_physical_player_data;
 
-		void** m_presence_data;
+		void** m_presence_data{};
 
-		CVehicleSeatMetadataMgr* m_vehicle_layout_metadata_mgr;
-		CVehicleDriveByMetadataMgr* m_driveby_metadata_mgr;
-		CBlipList* m_blip_list{};
-		PVOID m_timecycle_keyframe_override;
+		CVehicleSeatMetadataMgr* m_vehicle_layout_metadata_mgr{};
+		CVehicleDriveByMetadataMgr* m_driveby_metadata_mgr{};
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");
