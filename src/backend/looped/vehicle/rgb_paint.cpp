@@ -3,59 +3,58 @@
 #include "backend/looped/looped.hpp"
 #include "natives.hpp"
 #include "script.hpp"
-#include "core/data/color.hpp"
 
 namespace big
 {
+	float red = 255.f, green = 0.f, blue = 0.f;
 	void looped::vehicle_rainbow_paint()
 	{
-		static std::chrono::system_clock::time_point last_rgb_run_time;
-		static std::chrono::milliseconds delay = 0s;
-
-		static int red   = 255;
-		static int green = 0;
-		static int blue  = 0;
-
-		if (self::veh && g.vehicle.rainbow_paint.type != RainbowPaintType::Off && last_rgb_run_time + delay < std::chrono::system_clock::now())
+		if (g.vehicle.rainbow_paint.type == RainbowPaintType::Spasm)
 		{
-			int delay_step = 100;
+				red   = rand() % 255;
+				green = rand() % 255;
+				blue  = rand() % 255;
+		}
+		if (g.vehicle.rainbow_paint.type == RainbowPaintType::Fade) //messy but gets job done
+		{
+			if (red > 0 && blue == 0)
+			{
+				green += g.vehicle.rainbow_paint.speed;
+				red -= g.vehicle.rainbow_paint.speed;
+			}
+			if (green > 0 && red == 0)
+			{
+				blue += g.vehicle.rainbow_paint.speed;
+				green -= g.vehicle.rainbow_paint.speed;
+			}
+			if (blue > 0 && green == 0)
+			{
+				red += g.vehicle.rainbow_paint.speed;
+				blue -= g.vehicle.rainbow_paint.speed;
+			}
+			if (red > 255) {red = 255;} //checks
+			if (green > 255) {green = 255;}
+			if (blue > 255) {blue = 255;}
+			if (red < 0) {red = 0;}
+			if (green < 0) {green = 0;}
+			if (blue < 0) {blue = 0;}
+		}
 
-			if (g.vehicle.rainbow_paint.type == RainbowPaintType::Spasm)
-			{
-				red   = rand() % 256;
-				green = rand() % 256;
-				blue  = rand() % 256;
-			}
-			else if (g.vehicle.rainbow_paint.type == RainbowPaintType::Fade)
-			{
-				red   = rgb.red;
-				blue  = rgb.blue;
-				green = rgb.green;
-			}
-
-			if (g.vehicle.rainbow_paint.primary)
-			{
-				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(self::veh, red, green, blue);
-			}
-			if (g.vehicle.rainbow_paint.secondary)
-			{
-				VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(self::veh, red, green, blue);
-			}
-			if (g.vehicle.rainbow_paint.neon)
-			{
-				VEHICLE::SET_VEHICLE_NEON_ENABLED(self::veh, 0, 1);
-				VEHICLE::SET_VEHICLE_NEON_ENABLED(self::veh, 1, 1);
-				VEHICLE::SET_VEHICLE_NEON_ENABLED(self::veh, 2, 1);
-				VEHICLE::SET_VEHICLE_NEON_ENABLED(self::veh, 3, 1);
-				VEHICLE::SET_VEHICLE_NEON_COLOUR(self::veh, red, green, blue);
-			}
-			if (g.vehicle.rainbow_paint.smoke)
-			{
-				VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(self::veh, red, green, blue);
-			}
-
-			delay = std::chrono::milliseconds(((delay_step * 10) + 10) - (g.vehicle.rainbow_paint.speed * delay_step));
-			last_rgb_run_time = std::chrono::system_clock::now();
+		if (g.vehicle.rainbow_paint.primary)
+		{
+			VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(self::veh, red, green, blue);
+		}
+		if (g.vehicle.rainbow_paint.secondary)
+		{
+			VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(self::veh, red, green, blue);
+		}
+		if (g.vehicle.rainbow_paint.neon)
+		{
+			VEHICLE::SET_VEHICLE_NEON_COLOUR(self::veh, red, green, blue);
+		}
+		if (g.vehicle.rainbow_paint.smoke)
+		{
+			VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(self::veh, red, green, blue);
 		}
 	}
 
