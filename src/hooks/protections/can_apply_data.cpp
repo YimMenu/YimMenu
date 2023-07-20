@@ -646,7 +646,6 @@ namespace big
 		if (!is_valid_player_model(model))
 		{
 			session::add_infraction(player, Infraction::INVALID_PLAYER_MODEL);
-			g.reactions.modder_detection.process(player);
 		}
 	}
 

@@ -168,6 +168,7 @@ namespace big::session
 			player->is_modder = true;
 			plyr->infractions.insert((int)infraction);
 			g_player_database_service->save();
+			g.reactions.modder_detection.process(player);
 		}
 	}
 

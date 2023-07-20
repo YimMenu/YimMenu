@@ -174,7 +174,6 @@ namespace big
 				{
 					session::add_infraction(player, Infraction::DESYNC_PROTECTION);
 					player->exposed_desync_protection = true;
-					g.reactions.modder_detection.process(player);
 				}
 				return true;
 			}
