@@ -418,13 +418,6 @@ namespace big
 		{
 			bool dev_dlc = false;
 
-			struct rainbow
-			{
-				bool fade  = false;
-				bool spasm = false;
-				int speed  = 1;
-			} rainbow{};
-
 			struct hotkeys
 			{
 				bool editing_menu_toggle    = false;
