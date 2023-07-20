@@ -6,7 +6,7 @@
 
 namespace lua::memory
 {
-	pointer::pointer(std::uint64_t address) :
+	pointer::pointer(uint64_t address) :
 	    m_address(address)
 	{
 	}
@@ -130,7 +130,7 @@ namespace lua::memory
 	{
 		auto ns = state["memory"].get_or_create<sol::table>();
 
-		auto pointer_ut = ns.new_usertype<pointer>("pointer", sol::constructors<pointer(std::uint64_t)>());
+		auto pointer_ut = ns.new_usertype<pointer>("pointer", sol::constructors<pointer(uint64_t)>());
 
 		pointer_ut["add"]         = &pointer::add;
 		pointer_ut["sub"]         = &pointer::sub;

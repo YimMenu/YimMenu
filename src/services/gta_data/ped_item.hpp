@@ -8,7 +8,7 @@ namespace big
 	public:
 		char m_name[32];
 		char m_ped_type[32];
-		std::uint32_t m_hash;
+		uint32_t m_hash;
 	};
 #pragma pack(pop)
 }

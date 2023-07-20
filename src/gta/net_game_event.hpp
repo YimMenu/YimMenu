@@ -592,7 +592,7 @@ namespace rage
 		{
 			return 0;
 		};
-		virtual bool time_to_resend(std::uint32_t time)
+		virtual bool time_to_resend(uint32_t time)
 		{
 			return 0;
 		};
@@ -645,19 +645,19 @@ namespace rage
 		};
 
 	public:
-		std::uint16_t m_id;    // 0x08
+		uint16_t m_id;    // 0x08
 		bool m_requires_reply; // 0x0A
 	private:
 		char m_padding1[0x05]; // 0x0B
 	public:
 		netPlayer* m_source_player;  // 0x10
 		netPlayer* m_target_player;  // 0x18
-		std::uint32_t m_resend_time; // 0x20
+		uint32_t m_resend_time; // 0x20
 	private:
-		std::uint16_t m_0x24; // 0x24
-		std::uint8_t m_0x26;  // 0x26
-		std::uint8_t m_0x27;  // 0x27
-		std::uint32_t m_0x28; // 0x28
+		uint16_t m_0x24; // 0x24
+		uint8_t m_0x26;  // 0x26
+		uint8_t m_0x27;  // 0x27
+		uint32_t m_0x28; // 0x28
 		char m_padding2[0x04];
 	};
 }
@@ -667,14 +667,14 @@ class CScriptedGameEvent : public rage::netGameEvent
 public:
 	char m_padding[0x40];      // 0x30
 	std::int64_t m_args[54];   // 0x70
-	std::uint32_t m_bitset;    // 0x220
-	std::uint32_t m_args_size; // 0x224
+	uint32_t m_bitset;    // 0x220
+	uint32_t m_args_size; // 0x224
 };
 
 class CNetworkIncrementStatEvent : public rage::netGameEvent
 {
 public:
 	Hash m_stat;            // 0x30
-	std::uint32_t m_amount; // 0x34
+	uint32_t m_amount; // 0x34
 };
 #pragma pack(pop)

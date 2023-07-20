@@ -10,7 +10,7 @@ namespace big
 	{
 	}
 
-	void bool_command::execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)
+	void bool_command::execute(const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx)
 	{
 		if (args.size() == 0)
 		{
@@ -37,9 +37,9 @@ namespace big
 		this->refresh();
 	}
 
-	std::optional<std::vector<std::uint64_t>> bool_command::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
+	std::optional<std::vector<uint64_t>> bool_command::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
 	{
-		std::vector<std::uint64_t> result;
+		std::vector<uint64_t> result;
 
 		if (args.size() == 0)
 			return result;

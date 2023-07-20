@@ -20,7 +20,7 @@ namespace big
 		 * @return true 
 		 * @return false 
 		 */
-		bool add_dx_callback(dx_callback callback, std::uint32_t priority);
+		bool add_dx_callback(dx_callback callback, uint32_t priority);
 		/**
 		 * @brief Add a callback function on wndproc
 		 * 
@@ -46,7 +46,7 @@ namespace big
 		ID3D11Device* m_d3d_device;
 		ID3D11DeviceContext* m_d3d_device_context;
 
-		std::map<std::uint32_t, dx_callback> m_dx_callbacks;
+		std::map<uint32_t, dx_callback> m_dx_callbacks;
 		std::vector<wndproc_callback> m_wndproc_callbacks;
 	};
 

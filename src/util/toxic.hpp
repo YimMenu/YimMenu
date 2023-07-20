@@ -122,7 +122,7 @@ namespace big::toxic
 			return;
 		}
 
-		std::uint32_t largest_counter = 9999;
+		uint32_t largest_counter = 9999;
 		g_player_service->iterate([&largest_counter](const player_entry& plyr) {
 			if (plyr.second->num_time_syncs_sent > largest_counter)
 				largest_counter = plyr.second->num_time_syncs_sent;

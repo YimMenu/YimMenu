@@ -1,6 +1,6 @@
 #pragma once
 
-inline const static constexpr std::pair<const char*, std::uint32_t> packet_types[] = {
+inline const static constexpr std::pair<const char*, uint32_t> packet_types[] = {
     {"MsgInvalid", -1},
     {"MsgSessionAcceptChat", 0x62},
     {"MsgStartMatchCmd", 0x2D},
