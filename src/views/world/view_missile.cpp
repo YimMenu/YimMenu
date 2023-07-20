@@ -9,7 +9,7 @@ namespace big
 {
 	void view::missile()
 	{
-		ImGui::Text("Missle Launch");
+		ImGui::Text("Missile Launch");
 
 		static player_ptr victim = g_player_service->get_selected();
 		ImGui::SeparatorText("Victim");
