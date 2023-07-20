@@ -37,10 +37,11 @@ namespace big
 
 			if (components::button("Reload"))
 			{
-				auto id = selected_module.lock()->module_id();
+				const auto module_path = selected_module.lock()->module_path();
+				const auto id = selected_module.lock()->module_id();
 
 				g_lua_manager->unload_module(id);
-				g_lua_manager->queue_load_module(selected_module.lock()->module_path(), [](std::weak_ptr<big::lua_module> loaded_module) {
+				g_lua_manager->queue_load_module(module_path, [](std::weak_ptr<big::lua_module> loaded_module) {
 					selected_module = loaded_module;
 				});
 			}
