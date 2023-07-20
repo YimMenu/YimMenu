@@ -97,11 +97,13 @@ namespace big
 		const auto id = rage::joaat(module_name);
 
 		for (const auto& module : m_modules)
+		{
 			if (module->module_id() == id)
 			{
 				LOG(WARNING) << "Module with the name " << module_name << " already loaded.";
 				return;
 			}
+		}
 
 		m_modules.push_back(std::make_shared<lua_module>(module_path, m_scripts_folder));
 	}
