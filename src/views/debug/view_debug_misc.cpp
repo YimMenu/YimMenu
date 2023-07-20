@@ -10,6 +10,7 @@
 #include "util/ped.hpp"
 #include "util/system.hpp"
 #include "view_debug.hpp"
+#include "gta/color.hpp"
 
 #include "hooking.hpp"
 
@@ -17,6 +18,8 @@ namespace big
 {
 	void debug::misc()
 	{
+		rage::rgbaColor a;
+
 		if (ImGui::BeginTabItem("DEBUG_TAB_MISC"_T.data()))
 		{
 			ImGui::Text("Fiber Pool Usage %d/%d", g_fiber_pool->get_used_fibers(), g_fiber_pool->get_total_fibers());

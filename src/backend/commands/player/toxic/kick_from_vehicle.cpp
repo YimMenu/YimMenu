@@ -14,7 +14,7 @@ namespace big
 			return CommandAccessLevel::AGGRESSIVE;
 		}
 
-		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const std::vector<uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
 			auto vehicle = player->get_current_vehicle();
 

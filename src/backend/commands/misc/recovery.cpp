@@ -12,7 +12,7 @@ namespace big
 			return CommandAccessLevel::NONE;
 		}
 
-		virtual void execute(const std::vector<std::uint64_t>&, const std::shared_ptr<command_context> ctx)
+		virtual void execute(const std::vector<uint64_t>&, const std::shared_ptr<command_context> ctx)
 		{
 			ctx->report_error("Money and recovery options are not supported in YimMenu to keep Rockstar/Take Two happy. You can try Kiddion's Modest Menu (free) instead, but make sure to only get it from UnknownCheats.me, the rest are scams and may contain malware");
 		}

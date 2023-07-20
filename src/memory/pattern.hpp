@@ -23,6 +23,6 @@ namespace memory
 		{
 		}
 
-		std::vector<std::optional<std::uint8_t>> m_bytes;
+		std::vector<std::optional<uint8_t>> m_bytes;
 	};
 }

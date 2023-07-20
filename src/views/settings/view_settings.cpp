@@ -58,6 +58,11 @@ namespace big
 			});
 		}
 
+		ImGui::SeparatorText("Rainbow");
+		ImGui::Checkbox("Spasm", &g.settings.rainbow.spasm);
+		ImGui::Checkbox("Fade", &g.settings.rainbow.fade);
+		ImGui::SliderInt("Speed", &g.settings.rainbow.speed, 0, 10); // TODO: THIS SPEED DOESNT MAKE SENSE
+
 		ImGui::SeparatorText("SETTINGS_MISC"_T.data());
 		ImGui::Checkbox("SETTINGS_MISC_DEV_DLC"_T.data(), &g.settings.dev_dlc);
 
@@ -66,5 +71,7 @@ namespace big
 			g.write_default_config();
 			g.load();
 		}
+
+
 	}
 }

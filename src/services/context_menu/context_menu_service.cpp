@@ -212,7 +212,7 @@ namespace big
 			    options.at(ContextEntityType::SHARED).options.begin(),
 			    options.at(ContextEntityType::SHARED).options.end());
 
-			std::uint32_t max_size = 0;
+			uint32_t max_size = 0;
 			for (auto& [name, _] : menu.options)
 			{
 				max_size = static_cast<int>(max_size < name.length() ? name.length() : max_size);

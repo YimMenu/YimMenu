@@ -12,7 +12,7 @@ namespace big
 		{
 			std::string m_game_build;
 			std::string m_online_version;
-			std::uint32_t m_file_version;
+			uint32_t m_file_version;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(version_info, m_game_build, m_online_version, m_file_version)
 		} version_info{};
@@ -22,7 +22,7 @@ namespace big
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapon_file, version_info, weapon_map, weapon_components)
 
-		bool up_to_date(std::uint32_t file_version) const
+		bool up_to_date(uint32_t file_version) const
 		{
 			return file_version == version_info.m_file_version;
 		}

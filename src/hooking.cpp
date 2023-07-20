@@ -114,6 +114,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::send_non_physical_player_data>("SNPPD", g_pointers->m_gta.m_send_non_physical_player_data);
 
+		detour_hook_helper::add<hooks::update_timecycle_keyframe_data>("UTCKD", g_pointers->m_gta.m_timecycle_keyframe_override);
+
 		g_hooking = this;
 	}
 
@@ -186,7 +188,7 @@ namespace big
 		}
 	}
 
-	bool hooks::run_script_threads(std::uint32_t ops_to_execute)
+	bool hooks::run_script_threads(uint32_t ops_to_execute)
 	{
 		if (g_running)
 		{

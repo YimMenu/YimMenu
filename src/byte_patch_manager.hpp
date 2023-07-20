@@ -1,6 +1,6 @@
 #pragma once
 
-extern "C" std::uint64_t g_sound_overload_ret_addr;
+extern "C" uint64_t g_sound_overload_ret_addr;
 
 namespace big
 {
