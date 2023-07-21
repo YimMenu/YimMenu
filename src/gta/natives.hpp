@@ -19,22 +19,22 @@ namespace rage
 		template<typename T>
 		void push_arg(T&& value)
 		{
-			static_assert(sizeof(T) <= sizeof(std::uint64_t));
-			*reinterpret_cast<std::remove_cv_t<std::remove_reference_t<T>>*>(reinterpret_cast<std::uint64_t*>(m_args) + (m_arg_count++)) = std::forward<T>(value);
+			static_assert(sizeof(T) <= sizeof(uint64_t));
+			*reinterpret_cast<std::remove_cv_t<std::remove_reference_t<T>>*>(reinterpret_cast<uint64_t*>(m_args) + (m_arg_count++)) = std::forward<T>(value);
 		}
 
 		template<typename T>
 		T& get_arg(std::size_t index)
 		{
-			static_assert(sizeof(T) <= sizeof(std::uint64_t));
-			return *reinterpret_cast<T*>(reinterpret_cast<std::uint64_t*>(m_args) + index);
+			static_assert(sizeof(T) <= sizeof(uint64_t));
+			return *reinterpret_cast<T*>(reinterpret_cast<uint64_t*>(m_args) + index);
 		}
 
 		template<typename T>
 		void set_arg(std::size_t index, T&& value)
 		{
-			static_assert(sizeof(T) <= sizeof(std::uint64_t));
-			*reinterpret_cast<std::remove_cv_t<std::remove_reference_t<T>>*>(reinterpret_cast<std::uint64_t*>(m_args) + index) = std::forward<T>(value);
+			static_assert(sizeof(T) <= sizeof(uint64_t));
+			*reinterpret_cast<std::remove_cv_t<std::remove_reference_t<T>>*>(reinterpret_cast<uint64_t*>(m_args) + index) = std::forward<T>(value);
 		}
 
 		template<typename T>
@@ -57,13 +57,13 @@ namespace rage
 
 	protected:
 		void* m_return_value;
-		std::uint32_t m_arg_count;
+		uint32_t m_arg_count;
 		void* m_args;
 		std::int32_t m_data_count;
-		std::uint32_t m_data[48];
+		uint32_t m_data[48];
 	};
 	static_assert(sizeof(scrNativeCallContext) == 0xE0);
-	using scrNativeHash    = std::uint64_t;
+	using scrNativeHash    = uint64_t;
 	using scrNativeMapping = std::pair<scrNativeHash, scrNativeHash>;
 	using scrNativeHandler = void (*)(scrNativeCallContext*);
 
@@ -89,14 +89,14 @@ namespace rage
 			}
 			return reinterpret_cast<scrNativeRegistration*>(result);
 		}
-		std::uint32_t get_num_entries()
+		uint32_t get_num_entries()
 		{
-			return static_cast<std::uint32_t>(((std::uintptr_t)&m_numEntries1) ^ m_numEntries1 ^ m_numEntries2);
+			return static_cast<uint32_t>(((std::uintptr_t)&m_numEntries1) ^ m_numEntries1 ^ m_numEntries2);
 		}
-		std::uint64_t get_hash(std::uint32_t index)
+		uint64_t get_hash(uint32_t index)
 		{
 			auto nativeAddress = 16 * index + std::uintptr_t(&m_nextRegistration1) + 0x54;
-			std::uint64_t result;
+			uint64_t result;
 			auto charTableOfRegs = (char*)&result - nativeAddress;
 			auto addressIndex    = nativeAddress ^ *(DWORD*)(nativeAddress + 8);
 			for (auto i = 0; i < 3; i++)
@@ -112,7 +112,7 @@ namespace rage
 	class scrNativeRegistrationTable
 	{
 		scrNativeRegistration* m_entries[0xFF];
-		std::uint32_t m_unk;
+		uint32_t m_unk;
 		bool m_initialized;
 	};
 #pragma pack(pop)

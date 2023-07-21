@@ -1,6 +1,7 @@
 #include "backend/looped/looped.hpp"
 #include "backend/looped_command.hpp"
 #include "natives.hpp"
+#include "util/mobile.hpp"
 
 namespace big
 {
@@ -12,34 +13,37 @@ namespace big
 		float last_water_collistion_strength = 0;
 		bool last_driving                    = false;
 
-		virtual void on_tick() override
+		void apply_godmode_to_vehicle(CVehicle* vehicle, bool personal_vehicle = false)
 		{
-			if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr)
+			if (vehicle == nullptr)
 			{
 				return;
 			}
 
-			if (!PED::GET_PED_CONFIG_FLAG(self::ped, 62, false))
+			if (!personal_vehicle)
 			{
-				if (last_driving)
+				if (!PED::GET_PED_CONFIG_FLAG(self::ped, 62, false))
 				{
-					g_local_player->m_vehicle->m_deform_god  = 0x9C;
-					g_local_player->m_vehicle->m_damage_bits = 0;
+					if (last_driving)
+					{
+						vehicle->m_deform_god  = 0x9C;
+						vehicle->m_damage_bits = 0;
+					}
+
+					last_driving = false;
+					return;
 				}
 
-				last_driving = false;
-				return;
+				last_driving = true;
 			}
-
-			last_driving = true;
 
 			if (g.vehicle.god_mode || g.vehicle.proof_collision)
 			{
-				g_local_player->m_vehicle->m_deform_god = 0x8C;
+				vehicle->m_deform_god = 0x8C;
 			}
 			else
 			{
-				g_local_player->m_vehicle->m_deform_god = 0x9C;
+				vehicle->m_deform_god = 0x9C;
 			}
 
 			uint32_t bits                    = g.vehicle.proof_mask;
@@ -48,9 +52,26 @@ namespace big
 
 			if (changed_or_enabled_bits)
 			{
-				uint32_t unchanged_bits = g_local_player->m_vehicle->m_damage_bits & ~changed_or_enabled_bits;
-				g_local_player->m_vehicle->m_damage_bits = unchanged_bits | bits;
-				last_bits                                = bits;
+				uint32_t unchanged_bits = vehicle->m_damage_bits & ~changed_or_enabled_bits;
+				vehicle->m_damage_bits  = unchanged_bits | bits;
+				if (personal_vehicle == false)
+				{
+					last_bits = bits;
+				}
+			}
+		}
+
+		virtual void on_tick() override
+		{
+			if (g_local_player)
+			{
+				Vehicle personal_vehicle = mobile::mechanic::get_personal_vehicle();
+				if (ENTITY::DOES_ENTITY_EXIST(personal_vehicle))
+				{
+					const auto personal_vehicle_ptr = reinterpret_cast<CVehicle*>(g_pointers->m_gta.m_handle_to_ptr(personal_vehicle));
+					apply_godmode_to_vehicle(personal_vehicle_ptr, true);
+				}
+				apply_godmode_to_vehicle(g_local_player->m_vehicle);
 			}
 		}
 

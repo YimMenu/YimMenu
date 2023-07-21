@@ -9,7 +9,7 @@
 #include "util/vehicle.hpp"
 
 extern "C" void sound_overload_detour();
-std::uint64_t g_sound_overload_ret_addr;
+uint64_t g_sound_overload_ret_addr;
 
 namespace big
 {
@@ -23,7 +23,7 @@ namespace big
 
 		// Patch blocked explosions
 		toxic::explosion_anti_cheat_bypass::m_can_blame_others =
-		    memory::byte_patch::make(g_pointers->m_gta.m_blame_explode.as<std::uint16_t*>(), 0xE990).get();
+		    memory::byte_patch::make(g_pointers->m_gta.m_blame_explode.as<uint16_t*>(), 0xE990).get();
 		toxic::explosion_anti_cheat_bypass::m_can_use_blocked_explosions =
 		    memory::byte_patch::make(g_pointers->m_gta.m_explosion_patch.sub(12).as<uint16_t*>(), 0x9090).get();
 

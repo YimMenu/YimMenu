@@ -378,7 +378,7 @@ namespace big
 		{
 		case eNetworkEvents::KICK_VOTES_EVENT:
 		{
-			std::uint32_t player_bitfield = buffer->Read<uint32_t>(32);
+			uint32_t player_bitfield = buffer->Read<uint32_t>(32);
 			if (player_bitfield & (1 << target_player->m_player_id))
 			{
 				g.reactions.kick_vote.process(plyr);
@@ -644,7 +644,7 @@ namespace big
 			bool is_entity = buffer->Read<bool>(1);
 			std::int16_t entity_net_id;
 			rage::fvector3 position;
-			std::uint32_t ref_hash;
+			uint32_t ref_hash;
 
 			if (is_entity)
 				entity_net_id = buffer->Read<std::int16_t>(13);
@@ -657,9 +657,9 @@ namespace big
 
 			bool has_ref = buffer->Read<bool>(1);
 			if (has_ref)
-				ref_hash = buffer->Read<std::uint32_t>(32);
+				ref_hash = buffer->Read<uint32_t>(32);
 
-			std::uint32_t sound_hash = buffer->Read<std::uint32_t>(32);
+			uint32_t sound_hash = buffer->Read<uint32_t>(32);
 
 			if (sound_hash == RAGE_JOAAT("Remote_Ring") && plyr)
 			{

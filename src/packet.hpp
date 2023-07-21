@@ -42,7 +42,7 @@ namespace big
 			}
 		}
 
-		inline void write_peer_id(std::uint64_t peer_id)
+		inline void write_peer_id(uint64_t peer_id)
 		{
 			char b[8];
 			rage::datBitBuffer buf(b, 8);

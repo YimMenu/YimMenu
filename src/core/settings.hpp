@@ -68,18 +68,18 @@ namespace big
 		int player_count = 0;
 
 		CNetGamePlayer* m_syncing_player = nullptr;
-		std::unordered_map<std::uint64_t, std::uint64_t> m_spoofed_peer_ids;
+		std::unordered_map<uint64_t, uint64_t> m_spoofed_peer_ids;
 
 		int m_remote_controller_vehicle = -1;
 		int m_remote_controlled_vehicle = -1;
 
 		/*
-		std::uint16_t m_tp_veh_net_id;
-		std::uint16_t m_tp_player_net_id;
+		uint16_t m_tp_veh_net_id;
+		uint16_t m_tp_player_net_id;
 		rage::fvector3 m_tp_position;
 		*/
 
-		std::unordered_map<std::uint16_t, remote_player_teleport> m_remote_player_teleports;
+		std::unordered_map<uint16_t, remote_player_teleport> m_remote_player_teleports;
 
 		rage::scrThread* m_hunt_the_beast_thread = nullptr;
 
@@ -290,12 +290,14 @@ namespace big
 				int select         = 0;
 				const char* asset  = "scr_agencyheist";
 				const char* effect = "scr_fbi_mop_drips";
+
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ptfx_effects, show, size)
 			} ptfx_effects{};
 
 			struct ipls
 			{
 				int select = 0;
+
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ipls, select)
 			} ipls{};
 
@@ -355,7 +357,7 @@ namespace big
 			// do not save below entries
 			bool dance_mode = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ipls, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, custom_weapon_stop, persist_outfit)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ipls, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, custom_weapon_stop, persist_outfit, persist_outfits_mis)
 		} self{};
 
 		struct session
@@ -432,6 +434,7 @@ namespace big
 				int teleport_waypoint       = 0;
 				int teleport_objective      = 0;
 				int teleport_pv             = 0;
+				int teleport_selected       = 0;
 				int noclip                  = 0;
 				int vehicle_flymode         = 0;
 				int bringvehicle            = 0;
@@ -489,6 +492,7 @@ namespace big
 				bool detect_player       = false;
 				float nav_ovverride_fast = 3.f;
 				float nav_ovverride_slow = 0.25f;
+
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(orbital_drone, detect_player, nav_ovverride_fast, nav_ovverride_slow);
 			} orbital_drone{};
 
@@ -501,6 +505,7 @@ namespace big
 			struct water
 			{
 				bool part_water = false;
+
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(water, part_water)
 			} water{};
 
@@ -560,6 +565,7 @@ namespace big
 				std::vector<std::pair<std::string, std::string>> models;
 				std::mutex m;
 				bool update = false;
+
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(model_swapper, models)
 			} model_swapper{};
 
@@ -739,7 +745,7 @@ namespace big
 				bool on_npc                 = false;
 				float fov                   = 90.f;
 				float distance              = 200.f;
-				std::uint32_t selected_bone = 0x796E; // Default to head
+				uint32_t selected_bone = 0x796E; // Default to head
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, smoothing, smoothing_speed, fov, distance, selected_bone)
 			} aimbot{};
 
@@ -759,7 +765,7 @@ namespace big
 			bool triggerbot               = false;
 			bool infinite_range           = false;
 			bool enable_weapon_hotkeys    = false;
-			std::map<int, std::vector<std::uint32_t>> weapon_hotkeys{};
+			std::map<int, std::vector<uint32_t>> weapon_hotkeys{};
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, infinite_ammo, always_full_ammo, infinite_mag, increased_damage, increase_damage, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, paintgun, interior_weapon, triggerbot, infinite_range, enable_weapon_hotkeys, weapon_hotkeys)
 		} weapons{};
@@ -962,6 +968,21 @@ namespace big
 		} persist_weapons{};
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, debug, tunables, notifications, player, player_db, protections, self, session, settings, spawn_vehicle, clone_pv, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor, lua, persist_weapons)
+	
+		struct vfx
+		{
+			bool enable_custom_sky_color = false;
+
+			float azimuth_east[4]       = {1, 0, 0, 0};
+			float azimuth_west[4]       = {1, 0, 0, 0};
+			float azimuth_transition[4] = {1, 0, 0, 0};
+			float zenith[4]             = {1, 0, 0, 0};
+
+			float stars_intensity = 1;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vfx, azimuth_east, azimuth_west, azimuth_transition, zenith, stars_intensity)
+		} vfx{};
+
 	};
 
 	inline auto g = menu_settings();

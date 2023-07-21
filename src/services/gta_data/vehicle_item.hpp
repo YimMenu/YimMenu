@@ -10,7 +10,7 @@ namespace big
 		char m_display_name[32];
 		char m_display_manufacturer[32];
 		char m_vehicle_class[32];
-		std::uint32_t m_hash;
+		uint32_t m_hash;
 	};
 #pragma pack(pop)
 }

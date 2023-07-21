@@ -11,7 +11,7 @@ namespace lua::gui
 		module->m_independent_gui.push_back(std::move(element));
 	}
 
-	static void add_element(lua_State* state, std::uint32_t hash, std::shared_ptr<lua::gui::gui_element> element)
+	static void add_element(lua_State* state, uint32_t hash, std::shared_ptr<lua::gui::gui_element> element)
 	{
 		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
 
@@ -113,6 +113,11 @@ namespace lua::gui
 
 		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
 		module->m_owned_tabs.push_back(id());
+	}
+
+	bool tab::is_selected(sol::this_state state)
+	{
+		return big::g_gui_service->get_selected()->hash == m_tab_hash;
 	}
 
 	void tab::clear(sol::this_state state)
@@ -318,10 +323,10 @@ namespace lua::gui
 		text_ut["set_text"] = &lua::gui::text::set_text;
 		text_ut["set_font"] = &lua::gui::text::set_font;
 
-		auto checkbox_ut       = ns.new_usertype<lua::gui::checkbox>("checkbox");
-		checkbox_ut["get_text"] = &lua::gui::checkbox::get_text;
-		checkbox_ut["set_text"] = &lua::gui::checkbox::set_text;
-		checkbox_ut["is_enabled"] = &lua::gui::checkbox::is_enabled;
+		auto checkbox_ut           = ns.new_usertype<lua::gui::checkbox>("checkbox");
+		checkbox_ut["get_text"]    = &lua::gui::checkbox::get_text;
+		checkbox_ut["set_text"]    = &lua::gui::checkbox::set_text;
+		checkbox_ut["is_enabled"]  = &lua::gui::checkbox::is_enabled;
 		checkbox_ut["set_enabled"] = &lua::gui::checkbox::set_enabled;
 
 		ns.new_usertype<lua::gui::sameline>("sameline");
@@ -346,6 +351,7 @@ namespace lua::gui
 		input_string_ut["set_value"] = &lua::gui::input_string::set_value;
 
 		auto tab_ut                = ns.new_usertype<tab>("tab");
+		tab_ut["is_selected"]      = &tab::is_selected;
 		tab_ut["clear"]            = &tab::clear;
 		tab_ut["add_tab"]          = &tab::add_tab;
 		tab_ut["add_button"]       = &tab::add_button;
