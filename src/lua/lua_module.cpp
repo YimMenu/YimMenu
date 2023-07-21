@@ -1,6 +1,7 @@
 #include "lua_module.hpp"
 
 #include "bindings/command.hpp"
+#include "bindings/entities.hpp"
 #include "bindings/event.hpp"
 #include "bindings/global_table.hpp"
 #include "bindings/globals.hpp"
@@ -206,6 +207,7 @@ namespace big
 		lua::vector::bind(m_state);
 		lua::global_table::bind(m_state);
 		lua::imgui::bind(m_state, m_state.globals());
+    lua::entities::bind(state);
 	}
 
 	void lua_module::load_and_call_script()
