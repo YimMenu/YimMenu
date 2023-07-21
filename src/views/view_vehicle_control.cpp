@@ -331,6 +331,7 @@ namespace big
 			ImGui::EndTooltip();
 		}
 
+		ImGui::BeginDisabled(g.window.vehicle_control.no_max_summon);
 		ImGui::SliderFloat("Max summon distance", &g.window.vehicle_control.max_summon_range, 10.f, 250.f);
 		if (ImGui::IsItemHovered())
 		{
@@ -338,6 +339,9 @@ namespace big
 			ImGui::Text("At what range the vehicle will drive towards the summoned location as oposed to being teleported");
 			ImGui::EndTooltip();
 		}
+		ImGui::EndDisabled();
+
+		ImGui::Checkbox("No Max Summon Distance", &g.window.vehicle_control.no_max_summon);
 	}
 
 	void view::vehicle_control()

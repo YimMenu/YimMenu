@@ -736,15 +736,15 @@ namespace big
 
 			struct aimbot
 			{
-				bool enable                 = false;
-				bool smoothing              = true;
-				float smoothing_speed       = 2.f;
-				bool on_player              = true;
-				bool on_enemy               = false;
-				bool on_police              = false;
-				bool on_npc                 = false;
-				float fov                   = 90.f;
-				float distance              = 200.f;
+				bool enable            = false;
+				bool smoothing         = true;
+				float smoothing_speed  = 2.f;
+				bool on_player         = true;
+				bool on_enemy          = false;
+				bool on_police         = false;
+				bool on_npc            = false;
+				float fov              = 90.f;
+				float distance         = 200.f;
 				uint32_t selected_bone = 0x796E; // Default to head
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, smoothing, smoothing_speed, fov, distance, selected_bone)
 			} aimbot{};
@@ -824,8 +824,9 @@ namespace big
 				bool operation_animation    = true;
 				bool render_distance_on_veh = false;
 				float max_summon_range      = 200.f;
+				bool no_max_summon          = false;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_control, operation_animation, max_summon_range, render_distance_on_veh)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_control, operation_animation, max_summon_range, render_distance_on_veh, no_max_summon)
 			} vehicle_control{};
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, background_color, demo, text_color, button_color, frame_color, gui_scale, switched_view, ingame_overlay, vehicle_control, ingame_overlay_indicators)
@@ -968,7 +969,7 @@ namespace big
 		} persist_weapons{};
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, debug, tunables, notifications, player, player_db, protections, self, session, settings, spawn_vehicle, clone_pv, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor, lua, persist_weapons)
-	
+
 		struct vfx
 		{
 			bool enable_custom_sky_color = false;
@@ -982,7 +983,6 @@ namespace big
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vfx, azimuth_east, azimuth_west, azimuth_transition, zenith, stars_intensity)
 		} vfx{};
-
 	};
 
 	inline auto g = menu_settings();
