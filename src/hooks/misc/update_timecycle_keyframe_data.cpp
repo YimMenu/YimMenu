@@ -1,5 +1,4 @@
 #include "hooking.hpp"
-#include "core/data/color.hpp"
 
 #include <misc/vfx/TimecycleKeyframeData.hpp>
 

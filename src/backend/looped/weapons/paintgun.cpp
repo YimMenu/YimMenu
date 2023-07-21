@@ -27,12 +27,10 @@ namespace big
 				red += g.weapons.paintgun.speed;
 				blue -= g.weapons.paintgun.speed;
 			}
-			if (red > 255) {red = 255;} //checks to prevent freezing
-			if (green > 255) {green = 255;}
-			if (blue > 255) {blue = 255;}
-			if (red < 0) {red = 0;}
-			if (green < 0) {green = 0;}
-			if (blue < 0) {blue = 0;}
+			red   = std::clamp(red, 0.f, 255.f);
+			green = std::clamp(green, 0.f, 255.f);
+			blue  = std::clamp(blue, 0.f, 255.f);
+
 		}
 
 		if (g.weapons.paintgun.rainbow)
