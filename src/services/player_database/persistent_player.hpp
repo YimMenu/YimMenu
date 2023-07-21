@@ -43,7 +43,7 @@ namespace big
 	struct persistent_player
 	{
 		std::string name;
-		std::uint64_t rockstar_id = 0;
+		uint64_t rockstar_id = 0;
 		bool block_join           = false;
 		int block_join_reason     = 1;
 		bool is_modder            = false;

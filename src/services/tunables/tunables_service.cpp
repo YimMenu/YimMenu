@@ -61,7 +61,7 @@ namespace big
 
 				if (SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED(RAGE_JOAAT("tuneables_processing")))
 				{
-					std::uint64_t args[] = {6, 27}; // TODO: check args
+					uint64_t args[] = {6, 27}; // TODO: check args
 
 					int id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS(RAGE_JOAAT("tuneables_processing"), (Any*)args, sizeof(args) / 8, DEFAULT_STACK_SIZE);
 
@@ -102,12 +102,12 @@ namespace big
 
 	void tunables_service::save()
 	{
-		auto data_size = sizeof(std::uint32_t) + sizeof(tunable_save_struct) * m_tunables.size();
-		auto data      = std::make_unique<std::uint8_t[]>(data_size);
+		auto data_size = sizeof(uint32_t) + sizeof(tunable_save_struct) * m_tunables.size();
+		auto data      = std::make_unique<uint8_t[]>(data_size);
 		auto data_ptr  = data.get();
 
-		*(std::uint32_t*)data_ptr = m_tunables.size();
-		data_ptr += sizeof(std::uint32_t);
+		*(uint32_t*)data_ptr = m_tunables.size();
+		data_ptr += sizeof(uint32_t);
 
 		for (auto& [hash, ptr] : m_tunables)
 		{
@@ -126,8 +126,8 @@ namespace big
 	{
 		auto data = m_cache_file.data();
 
-		auto num_tunables = *(std::uint32_t*)data;
-		data += sizeof(std::uint32_t);
+		auto num_tunables = *(uint32_t*)data;
+		data += sizeof(uint32_t);
 
 		for (int i = 0; i < num_tunables; i++)
 		{

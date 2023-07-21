@@ -9,7 +9,7 @@ namespace big
 	struct tunable_save_struct
 	{
 		rage::joaat_t hash;
-		std::uint32_t offset;
+		uint32_t offset;
 	};
 #pragma pack(pop)
 

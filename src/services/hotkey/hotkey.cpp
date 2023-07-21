@@ -21,7 +21,7 @@ namespace big
 		if (m_cooldown.has_value())
 			m_wakeup = std::chrono::high_resolution_clock::now() + m_cooldown.value();
 
-		command::get(m_command_hash)->call(std::vector<std::uint64_t>());
+		command::get(m_command_hash)->call(std::vector<uint64_t>());
 	}
 
 	rage::joaat_t hotkey::name_hash() const
