@@ -29,10 +29,10 @@ namespace big
 		void set_state(eGtaDataUpdateState state);
 		void update_now();
 
-		const ped_item& ped_by_hash(std::uint32_t hash);
-		const vehicle_item& vehicle_by_hash(std::uint32_t hash);
-		const weapon_item& weapon_by_hash(std::uint32_t hash);
-		const weapon_component& weapon_component_by_hash(std::uint32_t hash);
+		const ped_item& ped_by_hash(uint32_t hash);
+		const vehicle_item& vehicle_by_hash(uint32_t hash);
+		const weapon_item& weapon_by_hash(uint32_t hash);
+		const weapon_component& weapon_component_by_hash(uint32_t hash);
 		const weapon_component& weapon_component_by_name(std::string name);
 
 		string_vec& ped_types();

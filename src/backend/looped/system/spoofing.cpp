@@ -15,7 +15,7 @@ namespace big
 	{
 		if (bLastForceHost != g.session.force_session_host && gta_util::get_network()->m_game_session_state == 0)
 		{
-			std::uint64_t host_token;
+			uint64_t host_token;
 			g_pointers->m_gta.m_generate_uuid(&host_token);
 
 			host_token = g.session.force_session_host ? (rand() % 10000) : host_token;
