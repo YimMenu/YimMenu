@@ -207,7 +207,7 @@ namespace big
 		lua::vector::bind(m_state);
 		lua::global_table::bind(m_state);
 		lua::imgui::bind(m_state, m_state.globals());
-    lua::entities::bind(state);
+		lua::entities::bind(m_state);
 	}
 
 	void lua_module::load_and_call_script()
