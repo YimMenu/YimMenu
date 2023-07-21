@@ -38,6 +38,7 @@ namespace big
 		dump_module_info();
 		dump_registers();
 		dump_stacktrace();
+		dump_cpp_exception();
 
 		m_dump << "\n--------End of exception--------\n";
 	}
@@ -155,6 +156,16 @@ namespace big
 		       << m_exception_info->ContextRecord->Rdi - m_exception_info->ContextRecord->Rsi << '\n';
 	}
 
+	void stack_trace::dump_cpp_exception()
+	{
+		constexpr DWORD msvc_exception_code = 0xe06d7363;
+		if (m_exception_info->ExceptionRecord->ExceptionCode == msvc_exception_code)
+		{
+			m_dump
+			    << reinterpret_cast<const std::exception*>(m_exception_info->ExceptionRecord->ExceptionInformation[1])->what() << '\n';
+		}
+	}
+
 	void stack_trace::grab_stacktrace()
 	{
 		CONTEXT context = *m_exception_info->ContextRecord;
@@ -200,6 +211,6 @@ namespace big
 		if (const auto& it = exceptions.find(code); it != exceptions.end())
 			return it->second;
 
-		return "UNKNOWN_EXCEPTION";
+		return "UNKNOWN_EXCEPTION: CODE: " + std::to_string(code);
 	}
 }
