@@ -1,8 +1,8 @@
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "gta/net_game_event.hpp"
-#include "script/scriptIdBase.hpp"
 #include "hooking.hpp"
+#include "script/scriptIdBase.hpp"
 #include "util/math.hpp"
 #include "util/notify.hpp"
 #include "util/toxic.hpp"
@@ -500,7 +500,7 @@ namespace big
 		{
 			int net_id = buffer->Read<int>(13);
 			if (g_local_player && g_local_player->m_vehicle && g_local_player->m_vehicle->m_net_object
-			    && g_local_player->m_vehicle->m_net_object->m_object_id == net_id && g_local_player->m_vehicle->m_driver == g_local_player)
+			    && g_local_player->m_vehicle->m_net_object->m_object_id == net_id && g_local_player->m_vehicle->m_driver == g_local_player && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
 			{
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				g.reactions.request_control_event.process(plyr);

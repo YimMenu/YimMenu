@@ -24,11 +24,15 @@
 #include "netsync/nodes/ped/CPedMovementDataNode.hpp"
 #include "netsync/nodes/ped/CPedOrientationDataNode.hpp"
 #include "netsync/nodes/ped/CPedScriptCreationDataNode.hpp"
+#include "netsync/nodes/ped/CPedTaskSequenceDataNode.hpp"
 #include "netsync/nodes/ped/CPedTaskSpecificDataNode.hpp"
+#include "netsync/nodes/ped/CPedTaskTreeDataNode.hpp"
 #include "netsync/nodes/physical/CPhysicalAngVelocityDataNode.hpp"
 #include "netsync/nodes/physical/CPhysicalAttachDataNode.hpp"
+#include "netsync/nodes/physical/CPhysicalGameStateDataNode.hpp"
 #include "netsync/nodes/physical/CPhysicalHealthDataNode.hpp"
 #include "netsync/nodes/physical/CPhysicalMigrationDataNode.hpp"
+#include "netsync/nodes/physical/CPhysicalScriptGameStateDataNode.hpp"
 #include "netsync/nodes/physical/CPhysicalScriptMigrationDataNode.hpp"
 #include "netsync/nodes/physical/CPhysicalVelocityDataNode.hpp"
 #include "netsync/nodes/pickup/CPickupCreationDataNode.hpp"
@@ -40,6 +44,7 @@
 #include "netsync/nodes/player/CPlayerGameStateDataNode.hpp"
 #include "netsync/nodes/player/CPlayerGamerDataNode.hpp"
 #include "netsync/nodes/player/CPlayerSectorPosNode.hpp"
+#include "netsync/nodes/player/CPlayerWantedAndLOSDataNode.hpp"
 #include "netsync/nodes/proximity_migrateable/CGlobalFlagsDataNode.hpp"
 #include "netsync/nodes/proximity_migrateable/CMigrationDataNode.hpp"
 #include "netsync/nodes/proximity_migrateable/CSectorDataNode.hpp"
@@ -48,6 +53,7 @@
 #include "netsync/nodes/vehicle/CVehicleCreationDataNode.hpp"
 #include "netsync/nodes/vehicle/CVehicleGadgetDataNode.hpp"
 #include "netsync/nodes/vehicle/CVehicleProximityMigrationDataNode.hpp"
+#include "netsync/nodes/vehicle/CVehicleTaskDataNode.hpp"
 #include "network/CNetGamePlayer.hpp"
 #include "network/netObject.hpp"
 #include "util/model_info.hpp"
@@ -781,6 +787,30 @@ namespace big
 		return buffer;
 	}
 
+	inline bool is_valid_clan_tag(char* data, bool system_clan)
+	{
+		int length = strlen(data);
+
+		if (length <= (system_clan ? 2 : 3))
+			return false;
+
+		for (int i = 0; i < length; i++)
+		{
+			if (data[i] >= '0' && data[i] <= '9')
+				continue;
+
+			if (data[i] >= 'A' && data[i] <= 'Z')
+				continue;
+
+			if (data[i] >= 'a' && data[i] <= 'z')
+				continue;
+
+			return false;
+		}
+
+		return true;
+	}
+
 #define LOG_FIELD_H(type, field) LOG(INFO) << "\t" << #field << ": " << HEX_TO_UPPER((((type*)(node))->field));
 #define LOG_FIELD(type, field) LOG(INFO) << "\t" << #field << ": " << ((((type*)(node))->field));
 #define LOG_FIELD_C(type, field) LOG(INFO) << "\t" << #field << ": " << (int)((((type*)(node))->field));
@@ -921,9 +951,9 @@ namespace big
 			LOG_FIELD_B(CDoorScriptInfoDataNode, m_existing_door_system_entry);
 			break;
 		case sync_node_id("CEntityScriptGameStateDataNode"):
-			LOG_FIELD_B(CEntityScriptGameStateDataNode, m_visible);
-			LOG_FIELD_B(CEntityScriptGameStateDataNode, m_uses_collision);
 			LOG_FIELD_B(CEntityScriptGameStateDataNode, m_fixed);
+			LOG_FIELD_B(CEntityScriptGameStateDataNode, m_uses_collision);
+			LOG_FIELD_B(CEntityScriptGameStateDataNode, m_completely_disabled_collision);
 			break;
 		case sync_node_id("CPedAIDataNode"):
 			LOG_FIELD_H(CPedAIDataNode, m_relationship_group);
@@ -1349,6 +1379,119 @@ namespace big
 			LOG_FIELD_V3(CVehicleProximityMigrationDataNode, m_position);
 			LOG_FIELD_V3(CVehicleProximityMigrationDataNode, m_velocity);
 			break;
+		case sync_node_id("CPlayerGamerDataNode"):
+			LOG_FIELD(CPlayerGamerDataNode, m_clan_data.m_clan_member_id);
+			LOG_FIELD(CPlayerGamerDataNode, m_clan_data.m_clan_id);
+			LOG_FIELD(CPlayerGamerDataNode, m_clan_data.m_clan_color);
+			LOG_FIELD(CPlayerGamerDataNode, m_clan_data.m_clan_member_count);
+			LOG_FIELD(CPlayerGamerDataNode, m_clan_data.m_clan_created_time);
+			LOG_FIELD_B(CPlayerGamerDataNode, m_clan_data.m_is_system_clan);
+			LOG_FIELD_B(CPlayerGamerDataNode, m_clan_data.m_is_clan_open);
+			LOG_FIELD(CPlayerGamerDataNode, m_clan_data.m_clan_name);
+			LOG_FIELD(CPlayerGamerDataNode, m_clan_data.m_clan_tag);
+			LOG_FIELD(CPlayerGamerDataNode, m_clan_data.m_clan_motto);
+			LOG_FIELD(CPlayerGamerDataNode, m_clan_data.m_clan_id_2);
+			LOG_FIELD(CPlayerGamerDataNode, m_clan_data.m_clan_rank_name);
+			LOG_FIELD(CPlayerGamerDataNode, m_clan_data.m_clan_rank_order);
+			LOG_FIELD(CPlayerGamerDataNode, m_clan_data.m_clan_rank_flags);
+			LOG_FIELD_B(CPlayerGamerDataNode, m_need_crew_rank_sysflags);
+			LOG_FIELD_B(CPlayerGamerDataNode, m_need_crew_rank_title);
+			LOG_FIELD(CPlayerGamerDataNode, m_crew_rank_title);
+			LOG_FIELD_B(CPlayerGamerDataNode, m_has_started_transition);
+			LOG_FIELD_B(CPlayerGamerDataNode, m_has_transition_info);
+			LOG_FIELD(CPlayerGamerDataNode, m_transition_info_buffer);
+			LOG_FIELD(CPlayerGamerDataNode, m_player_privilege_flags);
+			LOG_FIELD(CPlayerGamerDataNode, m_matchmaking_group);
+			LOG_FIELD_B(CPlayerGamerDataNode, m_need_mute_data);
+			LOG_FIELD(CPlayerGamerDataNode, m_mute_count);
+			LOG_FIELD(CPlayerGamerDataNode, m_mute_talkers_count);
+			LOG_FIELD(CPlayerGamerDataNode, m_unk);
+			LOG_FIELD(CPlayerGamerDataNode, m_account_id);
+			break;
+		case sync_node_id("CPhysicalGameStateDataNode"):
+			LOG_FIELD_B(CPhysicalGameStateDataNode, m_is_visible);
+			LOG_FIELD_B(CPhysicalGameStateDataNode, m_flag2);
+			LOG_FIELD_B(CPhysicalGameStateDataNode, m_flag3);
+			LOG_FIELD_B(CPhysicalGameStateDataNode, m_flag4);
+			LOG_FIELD(CPhysicalGameStateDataNode, m_val1);
+			LOG_FIELD(CPhysicalGameStateDataNode, m_unk204);
+			LOG_FIELD_B(CPhysicalGameStateDataNode, m_unk5);
+			break;
+		case sync_node_id("CPhysicalScriptGameStateDataNode"):
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_godmode);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_dont_load_collision);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_freeze_on_collision_load);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_only_damaged_by_player);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_bullet_proof);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_fire_proof);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_explosion_proof);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_collision_proof);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_melee_proof);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_cannot_be_damaged_by_relationship_group);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_can_only_be_damaged_by_relationship_group);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_smoke_proof);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_steam_proof);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_can_only_be_damaged_by_participants);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_dont_reset_proofs_on_cleanup_mission);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_no_reassign);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_pass_control_in_tutorial);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_visible_in_cutscene);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_visible_in_cutscene_remain_hack);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_pickup_by_cargobob_disabled);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_godmode);
+			LOG_FIELD(CPhysicalScriptGameStateDataNode, m_relationship_group);
+			LOG_FIELD(CPhysicalScriptGameStateDataNode, m_always_cloned_for_players);
+			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_trigger_damage_event_for_zero_damage);
+			LOG_FIELD(CPhysicalScriptGameStateDataNode, m_max_speed);
+			break;
+		case sync_node_id("CPedTaskTreeDataNode"):
+			LOG_FIELD(CPedTaskTreeDataNode, m_task_bitset);
+			for (int i = 0; i < 8; i++)
+			{
+				if (((CPedTaskTreeDataNode*)node)->m_task_bitset & (1 << i))
+				{
+					LOG_FIELD_APPLY(CPedTaskTreeDataNode, m_tasks[i].m_task_type, get_task_type_string);
+					LOG_FIELD(CPedTaskTreeDataNode, m_tasks[i].m_priority);
+					LOG_FIELD(CPedTaskTreeDataNode, m_tasks[i].m_tree_depth);
+					LOG_FIELD(CPedTaskTreeDataNode, m_tasks[i].m_sequence_id);
+					LOG_FIELD_B(CPedTaskTreeDataNode, m_tasks[i].m_active);
+				}
+			}
+			LOG_FIELD(CPedTaskTreeDataNode, m_script_command);
+			LOG_FIELD(CPedTaskTreeDataNode, m_script_command_stage);
+			break;
+		case sync_node_id("CPedTaskSequenceDataNode"):
+			LOG_FIELD_B(CPedTaskSequenceDataNode, m_has_sequence);
+			LOG_FIELD(CPedTaskSequenceDataNode, m_sequence_resource_id);
+			LOG_FIELD(CPedTaskSequenceDataNode, m_num_tasks_in_sequence);
+			for (int i = 0; i < ((CPedTaskSequenceDataNode*)node)->m_num_tasks_in_sequence; i++)
+			{
+				LOG_FIELD_APPLY(CPedTaskSequenceDataNode, m_task_data[i].m_task_type, get_task_type_string);
+				LOG_FIELD(CPedTaskSequenceDataNode, m_task_data[i].m_task_data_size);
+			}
+			LOG_FIELD(CPedTaskSequenceDataNode, m_unk);
+			break;
+		case sync_node_id("CVehicleTaskDataNode"):
+			LOG_FIELD_APPLY(CVehicleTaskDataNode, m_task_type, get_task_type_string);
+			LOG_FIELD(CVehicleTaskDataNode, m_task_data_size);
+			break;
+		case sync_node_id("CPlayerWantedAndLOSDataNode"):
+			LOG_FIELD_V3(CPlayerWantedAndLOSDataNode, m_wanted_position);
+			LOG_FIELD(CPlayerWantedAndLOSDataNode, m_time_in_prev_pursuit);
+			LOG_FIELD_V3(CPlayerWantedAndLOSDataNode, m_unk_position);
+			LOG_FIELD(CPlayerWantedAndLOSDataNode, m_time_in_pursuit);
+			LOG_FIELD(CPlayerWantedAndLOSDataNode, m_wanted_level);
+			LOG_FIELD(CPlayerWantedAndLOSDataNode, m_unk_wanted_level);
+			LOG_FIELD(CPlayerWantedAndLOSDataNode, m_current_time);
+			LOG_FIELD(CPlayerWantedAndLOSDataNode, m_unk_player_bitset);
+			LOG_FIELD(CPlayerWantedAndLOSDataNode, m_pursuit_start_time);
+			LOG_FIELD_C(CPlayerWantedAndLOSDataNode, m_fake_wanted_level);
+			LOG_FIELD_B(CPlayerWantedAndLOSDataNode, m_cops_cant_see_player);
+			LOG_FIELD_B(CPlayerWantedAndLOSDataNode, m_is_evading);
+			LOG_FIELD_B(CPlayerWantedAndLOSDataNode, m_pending_wanted_level);
+			LOG_FIELD_B(CPlayerWantedAndLOSDataNode, m_unk3);
+			LOG_FIELD_C(CPlayerWantedAndLOSDataNode, m_unk_player_index);
+			break;
 		}
 	}
 
@@ -1619,11 +1762,19 @@ namespace big
 
 				if (sender_plyr)
 				{
-					if (gamer_node->m_clan_data.m_clan_id > 0 && gamer_node->m_clan_data.m_clan_id_2 > 0)
+					if (gamer_node->m_clan_data.m_clan_id == 123456 && gamer_node->m_clan_data.m_clan_id_2 == 123456)
 					{
-						auto len = strlen(gamer_node->m_clan_data.m_clan_tag);
+						session::add_infraction(sender_plyr, Infraction::SPOOFED_DATA);
+					}
+					else if (gamer_node->m_clan_data.m_clan_id > 0 && gamer_node->m_clan_data.m_clan_id_2 > 0)
+					{
+						if (!is_valid_clan_tag(gamer_node->m_clan_data.m_clan_tag, gamer_node->m_clan_data.m_is_system_clan))
+						{
+							session::add_infraction(sender_plyr, Infraction::SPOOFED_DATA);
+						}
 
-						if (len <= 2)
+						if (gamer_node->m_clan_data.m_is_system_clan
+						    && (!gamer_node->m_clan_data.m_is_clan_open || gamer_node->m_clan_data.m_clan_member_count == 0))
 						{
 							session::add_infraction(sender_plyr, Infraction::SPOOFED_DATA);
 						}
