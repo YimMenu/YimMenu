@@ -4,13 +4,13 @@
 
 namespace big
 {
-	player_all_component::player_all_component(player_command* parent, const std::string& name, const std::string& label, const std::string& description, std::optional<std::uint8_t> num_args) :
+	player_all_component::player_all_component(player_command* parent, const std::string& name, const std::string& label, const std::string& description, std::optional<uint8_t> num_args) :
 	    command(name + "all", label, description, num_args),
 	    m_parent(parent)
 	{
 	}
 
-	void player_all_component::execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)
+	void player_all_component::execute(const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx)
 	{
 		g_fiber_pool->queue_job([this, args, &ctx] {
 			g_player_service->iterate([this, args, &ctx](const player_entry& player) {
@@ -19,22 +19,22 @@ namespace big
 		});
 	}
 
-	std::optional<std::vector<std::uint64_t>> player_all_component::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
+	std::optional<std::vector<uint64_t>> player_all_component::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
 	{
 		return m_parent->parse_args_p(args, ctx);
 	}
 
-	player_command::player_command(const std::string& name, const std::string& label, const std::string& description, std::optional<std::uint8_t> num_args, bool make_all_version) :
+	player_command::player_command(const std::string& name, const std::string& label, const std::string& description, std::optional<uint8_t> num_args, bool make_all_version) :
 	    command(name, label, description, num_args.has_value() ? std::optional{num_args.value() + 1} : std::nullopt)
 	{
 		if (make_all_version)
 			m_all_component = std::make_unique<player_all_component>(this, name, label, description, num_args);
 	}
 
-	void player_command::execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)
+	void player_command::execute(const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx)
 	{
 		g_fiber_pool->queue_job([this, args, ctx] {
-			std::vector<std::uint64_t> new_args;
+			std::vector<uint64_t> new_args;
 
 			// TODO: This looks ugly and inefficient
 			for (int i = 1; i < m_num_args; i++)
@@ -59,10 +59,10 @@ namespace big
 		});
 	}
 
-	std::optional<std::vector<std::uint64_t>> player_command::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
+	std::optional<std::vector<uint64_t>> player_command::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
 	{
 		std::vector<std::string> new_args;
-		std::vector<std::uint64_t> result;
+		std::vector<uint64_t> result;
 
 		if (args[0] == "me" || args[0] == "self")
 		{
@@ -109,7 +109,7 @@ namespace big
 		return result;
 	}
 
-	void player_command::call(player_ptr player, const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)
+	void player_command::call(player_ptr player, const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx)
 	{
 		// TODO: Code duplication
 		if (m_num_args.has_value() && args.size() != (m_num_args.value() - 1))

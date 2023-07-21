@@ -11,7 +11,7 @@ namespace big
 {
 	void looped::system_desync_kick_protection()
 	{
-		memset(&gta_util::get_network()->m_game_complaint_mgr.m_host_tokens_complained, 0, 64 * sizeof(std::uint64_t));
+		memset(&gta_util::get_network()->m_game_complaint_mgr.m_host_tokens_complained, 0, 64 * sizeof(uint64_t));
 
 		if (!g_player_service->m_player_to_use_complaint_kick
 		    || !g_player_service->m_player_to_use_complaint_kick->get()->get_net_data())

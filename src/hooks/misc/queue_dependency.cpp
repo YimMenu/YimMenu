@@ -31,7 +31,7 @@ namespace big
 		if (!is_address_in_game_region(fptr))
 			return false;
 
-		auto value = *(std::uint8_t*)(fptr);
+		auto value = *(uint8_t*)(fptr);
 		return value == 0xE9;
 	}
 

@@ -33,7 +33,7 @@ namespace datafile_commands
 
 namespace big::functions
 {
-	using run_script_threads = bool (*)(std::uint32_t ops_to_execute);
+	using run_script_threads = bool (*)(uint32_t ops_to_execute);
 	using get_native_handler = rage::scrNativeHandler (*)(rage::scrNativeRegistrationTable* registration_table, rage::scrNativeHash hash);
 	using fix_vectors = void (*)(rage::scrNativeCallContext* call_ctx);
 
@@ -95,13 +95,13 @@ namespace big::functions
 	using fipackfile_unmount       = bool (*)(const char* mount_point);
 	using fipackfile_close_archive = void (*)(rage::fiDevice* this_);
 
-	using get_gamer_online_state = bool (*)(int profile_index, rage::rlGamerHandle* handles, std::uint32_t count, int* online_state, rage::rlTaskStatus* status);
+	using get_gamer_online_state = bool (*)(int profile_index, rage::rlGamerHandle* handles, uint32_t count, int* online_state, rage::rlTaskStatus* status);
 	using start_get_session_by_gamer_handle = bool (*)(int profile_index, rage::rlGamerHandle* handles, int count, rage::rlSessionByGamerTaskResult* result, int unk, bool* success, rage::rlTaskStatus* state);
 	using start_matchmaking_find_sessions = bool (*)(int profile_index, int available_slots, NetworkGameFilterMatchmakingComponent* m_filter, unsigned int max_sessions, rage::rlSessionInfo* result_sessions, int* result_session_count, rage::rlTaskStatus* state);
 	using start_get_presence_attributes = bool (*)(int profile_index, rage::rlScHandle* handle, int num_handles, rage::rlQueryPresenceAttributesContext** contexts, int count, rage::rlTaskStatus* state);
 	using join_session_by_info = bool (*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
 
-	using generate_uuid = bool (*)(std::uint64_t* uuid);
+	using generate_uuid = bool (*)(uint64_t* uuid);
 
 	using get_vehicle_gadget_array_size = int (*)(eVehicleGadgetType type);
 
@@ -109,11 +109,11 @@ namespace big::functions
 
 	using queue_packet = bool (*)(rage::netConnectionManager* mgr, int msg_id, void* data, int size, int flags, void* unk);
 
-	using generate_uuid = bool (*)(std::uint64_t* uuid);
+	using generate_uuid = bool (*)(uint64_t* uuid);
 
 	using send_chat_message = bool (*)(int64_t* send_chat_ptr, rage::rlGamerInfo* gamer_info, char* message, bool is_team);
 
-	using send_network_damage = void (*)(rage::CEntity* source, rage::CEntity* target, rage::fvector3* position, int hit_component, bool override_default_damage, int weapon_type, float override_damage, int tire_index, int suspension_index, int flags, std::uint32_t action_result_hash, std::int16_t action_result_id, int action_unk, bool hit_weapon, bool hit_weapon_ammo_attachment, bool silenced, bool unk, rage::fvector3* impact_direction);
+	using send_network_damage = void (*)(rage::CEntity* source, rage::CEntity* target, rage::fvector3* position, int hit_component, bool override_default_damage, int weapon_type, float override_damage, int tire_index, int suspension_index, int flags, uint32_t action_result_hash, int16_t action_result_id, int action_unk, bool hit_weapon, bool hit_weapon_ammo_attachment, bool silenced, bool unk, rage::fvector3* impact_direction);
 	using request_ragdoll = void (*)(uint16_t object_id);
 	using request_control = void (*)(rage::netObject* net_object);
 
@@ -150,6 +150,6 @@ namespace big::functions
 
 	using get_title_caption_error_message_box = const wchar_t* (*)(rage::joaat_t joaated_error_code);
 
-	using update_presence_attribute_int = void (*)(void* presence_data, int profile_index, char* attr, std::uint64_t value);
+	using update_presence_attribute_int = void (*)(void* presence_data, int profile_index, char* attr, uint64_t value);
 	using update_presence_attribute_string = void (*)(void* presence_data, int profile_index, char* attr, char* value);
 }

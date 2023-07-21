@@ -17,14 +17,14 @@ namespace big
 
 	void thread_pool::create()
 	{
-		const std::uint32_t thread_count = std::thread::hardware_concurrency();
+		const uint32_t thread_count = std::thread::hardware_concurrency();
 
 		LOG(VERBOSE) << "Allocating " << thread_count << " threads in thread pool.";
 		this->m_thread_pool.reserve(thread_count);
 
 		m_available_thread_count = thread_count;
 
-		for (std::uint32_t i = 0; i < thread_count; i++)
+		for (uint32_t i = 0; i < thread_count; i++)
 			this->m_thread_pool.emplace_back(std::thread(&thread_pool::run, this));
 	}
 

@@ -17,7 +17,7 @@ namespace big
 			return CommandAccessLevel::TOXIC;
 		}
 
-		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const std::vector<uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
 			if (gta_util::get_network()->m_game_session_ptr->is_host())
 			{

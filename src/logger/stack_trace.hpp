@@ -39,6 +39,7 @@ namespace big
 		void dump_registers();
 		void dump_stacktrace();
 		void dump_script_info();
+		void dump_cpp_exception();
 		void grab_stacktrace();
 		const module_info* get_module_by_address(uint64_t addr) const;
 

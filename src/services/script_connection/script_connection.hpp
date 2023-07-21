@@ -26,8 +26,8 @@ namespace big
 		std::function<void(rage::scrThread*, uint64_t*, uint64_t*)> m_broadcast_setup_callback{};
 		std::function<void(rage::scrThread*, uint64_t*, uint64_t*)> m_broadcast_modify_callback{};
 
-		std::uint64_t* m_host_broadcast_data                                         = nullptr;
-		std::uint64_t* m_player_broadcast_data                                       = nullptr;
+		uint64_t* m_host_broadcast_data                                         = nullptr;
+		uint64_t* m_player_broadcast_data                                       = nullptr;
 		std::optional<std::chrono::system_clock::time_point> m_startup_complete_time = std::nullopt;
 
 		bool does_remote_script_exist();

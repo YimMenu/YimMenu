@@ -18,7 +18,7 @@ namespace big
 			return CommandAccessLevel::TOXIC;
 		}
 
-		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const std::vector<uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
 			if (std::chrono::system_clock::now() - last_oom_kick_time < 7s)
 			{

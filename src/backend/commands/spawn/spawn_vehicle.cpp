@@ -10,10 +10,10 @@ namespace big
         {
                 using command::command;
 
-                virtual std::optional<std::vector<std::uint64_t>> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
+                virtual std::optional<std::vector<uint64_t>> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
                 {
                         auto hash = rage::joaat(args[0]);
-                        return std::vector<std::uint64_t>{hash};
+                        return std::vector<uint64_t>{hash};
                 }
 
                 virtual CommandAccessLevel get_access_level()
@@ -21,7 +21,7 @@ namespace big
                         return CommandAccessLevel::FRIENDLY;
                 }
 
-                virtual void execute(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)
+                virtual void execute(const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx)
                 {
                         if (!STREAMING::IS_MODEL_IN_CDIMAGE(args[0]) || !STREAMING::IS_MODEL_A_VEHICLE(args[0]))
                         {

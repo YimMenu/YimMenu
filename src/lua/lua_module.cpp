@@ -1,10 +1,12 @@
 #include "lua_module.hpp"
 
 #include "bindings/command.hpp"
+#include "bindings/entities.hpp"
 #include "bindings/event.hpp"
 #include "bindings/global_table.hpp"
 #include "bindings/globals.hpp"
 #include "bindings/gui.hpp"
+#include "bindings/imgui.hpp"
 #include "bindings/locals.hpp"
 #include "bindings/log.hpp"
 #include "bindings/memory.hpp"
@@ -13,7 +15,6 @@
 #include "bindings/script.hpp"
 #include "bindings/tunables.hpp"
 #include "bindings/vector.hpp"
-#include "bindings/imgui.hpp"
 #include "file_manager.hpp"
 #include "script_mgr.hpp"
 
@@ -217,5 +218,6 @@ namespace big
 		lua::vector::bind(state);
 		lua::global_table::bind(state);
 		lua::imgui::bind(state, state.globals());
+		lua::entities::bind(state);
 	}
 }
