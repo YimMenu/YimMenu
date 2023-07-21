@@ -107,9 +107,11 @@ namespace lua::memory
 	// Returns: pointer: A pointer to the newly allocated memory.
 	static pointer allocate(int size, sol::this_state state)
 	{
-		void* mem   = new uint8_t[](size);
-		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
+		void* mem = new uint8_t[](size);
+
+		big::lua_module* module = sol::state_view(state)["!this"];
 		module->m_allocated_memory.push_back(mem);
+
 		return pointer((uint64_t)mem);
 	}
 
@@ -120,7 +122,9 @@ namespace lua::memory
 	static void free(pointer ptr, sol::this_state state)
 	{
 		delete[] (void*)ptr.get_address();
-		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
+
+		big::lua_module* module = sol::state_view(state)["!this"];
+
 		std::erase_if(module->m_allocated_memory, [ptr](void* addr) {
 			return ptr.get_address() == (uint64_t)addr;
 		});

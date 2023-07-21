@@ -7,8 +7,6 @@ namespace big
 	lua_manager::lua_manager(folder scripts_folder) :
 	    m_scripts_folder(scripts_folder)
 	{
-		m_schedule_reload_modules = false;
-
 		m_wake_time_changed_scripts_check = std::chrono::high_resolution_clock::now() + m_delay_between_changed_scripts_check;
 
 		g_lua_manager = this;
@@ -105,7 +103,10 @@ namespace big
 			}
 		}
 
-		m_modules.push_back(std::make_shared<lua_module>(module_path, m_scripts_folder));
+		const auto module = std::make_shared<lua_module>(module_path, m_scripts_folder);
+		module->load_and_call_script();
+
+		m_modules.push_back(module);
 	}
 
 	void lua_manager::reload_changed_scripts()
@@ -129,7 +130,7 @@ namespace big
 						if (module->module_path() == module_path && module->last_write_time() < last_write_time)
 						{
 							unload_module(module->module_id());
-							queue_load_module(module_path, nullptr);
+							load_module(module_path);
 							break;
 						}
 					}
@@ -137,28 +138,6 @@ namespace big
 			}
 
 			m_wake_time_changed_scripts_check = std::chrono::high_resolution_clock::now() + m_delay_between_changed_scripts_check;
-		}
-	}
-
-	void lua_manager::queue_load_module(const std::filesystem::path& module_path, std::function<void(std::weak_ptr<lua_module>)> on_module_loaded)
-	{
-		m_modules_load_queue.push({module_path, on_module_loaded});
-	}
-
-	void lua_manager::load_modules_from_queue()
-	{
-		while (m_modules_load_queue.size())
-		{
-			auto& module_load_info = m_modules_load_queue.front();
-
-			const auto id = rage::joaat(module_load_info.m_module_path.filename().string());
-
-			load_module(module_load_info.m_module_path);
-			auto loaded_module = get_module(id);
-			if (module_load_info.m_on_module_loaded)
-				module_load_info.m_on_module_loaded(loaded_module);
-
-			m_modules_load_queue.pop();
 		}
 	}
 

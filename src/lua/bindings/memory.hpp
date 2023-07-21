@@ -172,9 +172,10 @@ namespace lua::memory
 		template<typename T>
 		big::lua_patch* patch(T value, sol::this_state state)
 		{
-			auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
-			auto patch  = std::make_shared<big::lua_patch>(::memory::byte_patch::make((T*)m_address, value).get());
-			auto raw    = patch.get();
+			big::lua_module* module = sol::state_view(state)["!this"];
+
+			auto patch = std::make_unique<big::lua_patch>(::memory::byte_patch::make((T*)m_address, value).get());
+			auto raw   = patch.get();
 			module->m_registered_patches.push_back(std::move(patch));
 			return raw;
 		}

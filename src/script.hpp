@@ -8,11 +8,10 @@ namespace big
 		std::string m_name;
 		bool m_enabled;
 		bool m_toggleable;
+		bool m_done;
 
 	public:
 		using func_t = std::function<void(void)>;
-
-		bool m_should_be_deleted;
 
 	public:
 		explicit script(const func_t func, const std::string& name, const bool toggleable = true, const std::optional<std::size_t> stack_size = std::nullopt);
@@ -25,6 +24,8 @@ namespace big
 		[[nodiscard]] bool* toggle_ptr();
 
 		[[nodiscard]] bool is_toggleable() const;
+
+		[[nodiscard]] bool is_done() const;
 
 		void tick();
 		void yield(std::optional<std::chrono::high_resolution_clock::duration> time = std::nullopt);

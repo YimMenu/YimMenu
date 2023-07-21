@@ -37,13 +37,12 @@ namespace big
 
 			if (components::button("Reload"))
 			{
-				const auto module_path = selected_module.lock()->module_path();
+				const std::filesystem::path module_path = selected_module.lock()->module_path();
 				const auto id = selected_module.lock()->module_id();
 
 				g_lua_manager->unload_module(id);
-				g_lua_manager->queue_load_module(module_path, [](std::weak_ptr<big::lua_module> loaded_module) {
-					selected_module = loaded_module;
-				});
+				g_lua_manager->load_module(module_path);
+				selected_module = g_lua_manager->get_module(id);
 			}
 		}
 
@@ -51,7 +50,8 @@ namespace big
 
 		if (components::button("Reload All"))
 		{
-			g_lua_manager->m_schedule_reload_modules = true;
+			g_lua_manager->unload_all_modules();
+			g_lua_manager->load_all_modules();
 		}
 		ImGui::SameLine();
 		ImGui::Checkbox("Auto Reload Changed Scripts", &g.lua.enable_auto_reload_changed_scripts);
