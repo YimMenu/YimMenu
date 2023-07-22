@@ -52,8 +52,6 @@ namespace big
 
 			if (is_reliable_message(msg))
 				g_pointers->m_gta.m_remove_message_from_unacked_reliables(&cxn->m_unacked_reliable_message_list, &msg->word4C);
-			else
-				LOG(INFO) << "hmm";
 
 			free_message(msg, reinterpret_cast<rage::sysMemAllocator*>(cxn->m_allocator));
 		}

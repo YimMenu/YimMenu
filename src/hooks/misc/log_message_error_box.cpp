@@ -31,7 +31,7 @@ namespace big
 
 	void hooks::log_error_message_box(rage::joaat_t joaated_error_code, char a2)
 	{
-		if (joaated_error_code == 0x971454B7)
+		if (joaated_error_code == RAGE_JOAAT("ERR_NET_EVENT"))
 			return;
 
 		LOG(WARNING) << "Error Code: " << string_conversions::utf_16_to_code_page(CP_UTF8, g_pointers->m_gta.m_get_title_caption_error_message_box(joaated_error_code));
