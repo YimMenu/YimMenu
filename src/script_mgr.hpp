@@ -1,6 +1,7 @@
 #pragma once
 #include "common.hpp"
 #include "script.hpp"
+#include "lua/lua_manager.hpp"
 
 namespace big
 {
@@ -12,11 +13,8 @@ namespace big
 		explicit script_mgr() = default;
 		~script_mgr()         = default;
 
-		script* add_script(std::unique_ptr<script> script);
-		void remove_script(script* script);
+		void add_script(std::unique_ptr<script> script);
 		void remove_all_scripts();
-
-		void add_on_script_batch_removed(std::function<void()> f);
 
 		inline void for_each_script(auto func)
 		{
@@ -26,6 +24,12 @@ namespace big
 			{
 				func(script);
 			}
+
+			g_lua_manager->for_each_module([&func](const std::shared_ptr<lua_module>& module) {
+				module->for_each_script([&func](script* script) {
+					func(script);
+				});
+			});
 		}
 
 		void tick();
@@ -42,8 +46,6 @@ namespace big
 	private:
 		std::recursive_mutex m_mutex;
 		script_list m_scripts;
-		script_list m_scripts_to_add;
-		std::queue<std::function<void()>> m_on_script_batch_removed;
 
 		bool m_can_tick = false;
 	};

@@ -208,8 +208,9 @@ namespace big
 			reaction clear_ped_tasks{"Clear Ped Tasks", "Blocked Clear Ped Tasks from %s", "%s tried to freeze me!"};
 			reaction remote_ragdoll{"Remote Ragdoll", "Blocked Remote Ragdoll from %s", "%s tried to ragdoll me!"};
 			reaction kick_vote{"Kick Vote", "%s is voting to kick you!", "%s is voting to kick me!"};
-			reaction report_cash_spawn{"Cash Spawn", "%s is spawning cash", "%s is spawning cash"};
-			reaction modder_detection{"Modder Detection", "%s is detected as a modder by the anticheat", "%s is detected as a modder by the anticheat"};
+			reaction report_cash_spawn{"Cash Spawn", "%s is spawning cash!", "%s is spawning cash!"};
+			reaction modder_detection{"Modder Detection", "%s is detected as a modder!", "%s is detected as a modder!"};
+			reaction game_anti_cheat_modder_detection{"Game Anti-Cheat Modder Detection", "%s is detected as a modder by the game anti-cheat!", "%s is detected as a modder by the game anti-cheat!"};
 			reaction request_control_event{"Request Control Event", "Blocked Request Control Event from %s", "%s tried to mess with my vehicle!"};
 			reaction report{"Report", "Blocked Report from %s", "%s tried to report me!"};
 			reaction spectate{"Spectate", "%s is spectating you", "%s is spectating me!"};
@@ -217,7 +218,7 @@ namespace big
 
 			reaction gamer_instruction_kick{"Gamer Instruction Kick", "Blocked Gamer Instruction Kick from %s", "%s tried to kick me out!"};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, ceo_kick, clear_wanted_level, crash, end_session_kick, fake_deposit, force_mission, force_teleport, gta_banner, kick_from_interior, mc_teleport, network_bail, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, trigger_business_raid, start_activity, start_script, null_function_kick, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, request_control_event, report, gamer_instruction_kick, send_to_interior, spectate, spectate_others)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, ceo_kick, clear_wanted_level, crash, end_session_kick, fake_deposit, force_mission, force_teleport, gta_banner, kick_from_interior, mc_teleport, network_bail, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, trigger_business_raid, start_activity, start_script, null_function_kick, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, game_anti_cheat_modder_detection, request_control_event, report, gamer_instruction_kick, send_to_interior, spectate, spectate_others)
 		} reactions{};
 
 		struct player
@@ -968,7 +969,7 @@ namespace big
 		} persist_weapons{};
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, debug, tunables, notifications, player, player_db, protections, self, session, settings, spawn_vehicle, clone_pv, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor, lua, persist_weapons)
-	
+
 		struct vfx
 		{
 			bool enable_custom_sky_color = false;
@@ -982,7 +983,6 @@ namespace big
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vfx, azimuth_east, azimuth_west, azimuth_transition, zenith, stars_intensity)
 		} vfx{};
-
 	};
 
 	inline auto g = menu_settings();
