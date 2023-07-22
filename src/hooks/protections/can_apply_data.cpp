@@ -50,12 +50,14 @@
 #include "netsync/nodes/proximity_migrateable/CSectorDataNode.hpp"
 #include "netsync/nodes/proximity_migrateable/CSectorPositionDataNode.hpp"
 #include "netsync/nodes/train/CTrainGameStateDataNode.hpp"
+#include "netsync/nodes/vehicle/CVehicleControlDataNode.hpp"
 #include "netsync/nodes/vehicle/CVehicleCreationDataNode.hpp"
 #include "netsync/nodes/vehicle/CVehicleGadgetDataNode.hpp"
 #include "netsync/nodes/vehicle/CVehicleProximityMigrationDataNode.hpp"
 #include "netsync/nodes/vehicle/CVehicleTaskDataNode.hpp"
 #include "network/CNetGamePlayer.hpp"
 #include "network/netObject.hpp"
+#include "ped/CPed.hpp"
 #include "util/model_info.hpp"
 #include "util/notify.hpp"
 #include "util/session.hpp"
@@ -1605,7 +1607,10 @@ namespace big
 				        attach_node->m_attachment_bone,
 				        attach_node->m_attachment_bone))
 				{
-					notify::crash_blocked(sender, "infinite ped attachment");
+					if (auto game_object = (CPed*)object->GetGameObject())
+						if (!game_object->m_player_info)
+							notify::crash_blocked(sender, "infinite ped attachment"); // parachute false positives
+
 					return true;
 				}
 
@@ -1780,6 +1785,44 @@ namespace big
 						}
 					}
 				}
+				break;
+			}
+			case sync_node_id("CPedGameStateDataNode"):
+			{
+				const auto game_state_node = (CPedGameStateDataNode*)(node);
+				if (game_state_node->m_on_mount)
+				{
+					notify::crash_blocked(sender, "mount flag");
+					return true;
+				}
+				for (int i = 0; i < game_state_node->m_num_equiped_gadgets; i++)
+				{
+					if (game_state_node->m_gadget_hash[i] != RAGE_JOAAT("gadget_parachute") && game_state_node->m_gadget_hash[i] != RAGE_JOAAT("gadget_nightvision"))
+					{
+						notify::crash_blocked(sender, "invalid gadget");
+						return true;
+					}
+				}
+				break;
+			}
+			case sync_node_id("CVehicleControlDataNode"):
+			{
+				const auto control_node = (CVehicleControlDataNode*)(node);
+				if (control_node->m_is_submarine_car)
+				{
+					if (auto vehicle = (CVehicle*)object->GetGameObject())
+					{
+						if (auto model_info = vehicle->m_model_info)
+						{
+							if (model_info->m_hash != RAGE_JOAAT("stromberg") && model_info->m_hash != RAGE_JOAAT("toreador"))
+							{
+								notify::crash_blocked(sender, "submarine car");
+								return true;
+							}
+						}
+					}
+				}
+
 				break;
 			}
 			}

