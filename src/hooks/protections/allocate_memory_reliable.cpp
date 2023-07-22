@@ -1,7 +1,8 @@
 #include "gta/net_game_event.hpp"
-#include "gta/sysMemAllocator.hpp"
 #include "hooking.hpp"
 #include "pointers.hpp"
+
+#include <rage/sysMemAllocator.hpp>
 
 namespace big
 {
