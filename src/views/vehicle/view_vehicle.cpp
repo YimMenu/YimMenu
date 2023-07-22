@@ -184,6 +184,35 @@ namespace big
 			ImGui::SameLine();
 			ImGui::RadioButton(speed_unit_strings[(int)SpeedUnit::MPS].c_str(), (int*)&g.vehicle.speed_unit, (int)SpeedUnit::MPS);
 		}
+		ImGui::SeparatorText("Plane Controls");
+		if (ImGui::Button("AutoLand at LSIA"))
+		{
+			g_fiber_pool->queue_job([] {
+				if (VEHICLE::IS_THIS_MODEL_A_PLANE(ENTITY::GET_ENTITY_MODEL(self::veh)))
+				{
+					TASK::TASK_PLANE_LAND(self::ped, self::veh, -1024.981201, -3128.771729, 13.944453, -1370.038574, -2929.581543, 13.944449);
+					g_notification_service->push_success("Autoland", "Starting Autoland at LSIA...");
+				}
+			});
+		}
+		if (ImGui::Button("Autoland at Fort Zancudo"))
+		{
+			g_fiber_pool->queue_job([] {
+				if (VEHICLE::IS_THIS_MODEL_A_PLANE(ENTITY::GET_ENTITY_MODEL(self::veh)))
+				{
+					TASK::TASK_PLANE_LAND(self::ped, self::veh, -2041.194458, 2877.726074, 32.925156, -2141.520264, 2935.591309, 32.890343);
+					g_notification_service->push_success("Autoland", "Starting Autoland at Fort Zancudo...");
+				}
+			});
+		}
+		if (ImGui::Button("Cancel Autoland"))
+		{
+			g_fiber_pool->queue_job([] {
+				TASK::CLEAR_PED_TASKS(self::ped);
+				g_notification_service->push_success("Autoland", "Cancelled Autoland");
+			});
+		}
+
 
 		g.vehicle.proof_mask = 0;
 		if (g.vehicle.god_mode)
