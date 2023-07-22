@@ -184,7 +184,7 @@ namespace big
 			ImGui::SameLine();
 			ImGui::RadioButton(speed_unit_strings[(int)SpeedUnit::MPS].c_str(), (int*)&g.vehicle.speed_unit, (int)SpeedUnit::MPS);
 		}
-		ImGui::SeparatorText("Plane Controls");
+		ImGui::SeparatorText("Autolanding");
 		{
 			if (ImGui::Button("AutoLand at LSIA"))
 			{
