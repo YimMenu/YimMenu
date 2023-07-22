@@ -9,18 +9,26 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		uint32_t last_bits                   = 0;
-		bool has_vehicle_any_modified_data   = false;
-		bool has_vehicle_modified_deform_god = false;
-		uint8_t original_deform_god          = 0;
+		static constexpr uint8_t deform_god_bit = 1 << 4;
 
-		void restore_vehicle_data(CVehicle* vehicle)
+		struct orig_veh_data
 		{
-			vehicle->m_deform_god  = original_deform_god;
-			vehicle->m_damage_bits = 0;
+			uint8_t m_deform_god        = 0;
+			uint32_t m_damage_bits      = 0;
+			uint32_t m_last_damage_bits = 0;
+		};
 
-			has_vehicle_modified_deform_god = false;
-			has_vehicle_any_modified_data   = false;
+		std::unordered_map<CVehicle*, orig_veh_data> m_orig_veh_datas;
+
+		void restore_original_vehicle_data(CVehicle* vehicle)
+		{
+			if (m_orig_veh_datas.contains(vehicle))
+			{
+				vehicle->m_deform_god  = m_orig_veh_datas[vehicle].m_deform_god;
+				vehicle->m_damage_bits = m_orig_veh_datas[vehicle].m_damage_bits;
+
+				m_orig_veh_datas.erase(vehicle);
+			}
 		}
 
 		bool restore_vehicle_data_when_leaving_it(CVehicle* vehicle)
@@ -28,15 +36,21 @@ namespace big
 			const auto is_not_in_vehicle = !PED::GET_PED_CONFIG_FLAG(self::ped, 62, false);
 			if (is_not_in_vehicle)
 			{
-				if (has_vehicle_any_modified_data)
-				{
-					restore_vehicle_data(vehicle);
-				}
+				restore_original_vehicle_data(vehicle);
 
 				return true;
 			}
 
 			return false;
+		}
+
+		void save_original_veh_data(CVehicle* vehicle)
+		{
+			if (!m_orig_veh_datas.contains(vehicle))
+			{
+				m_orig_veh_datas[vehicle].m_deform_god  = vehicle->m_deform_god;
+				m_orig_veh_datas[vehicle].m_damage_bits = vehicle->m_damage_bits;
+			}
 		}
 
 		void apply_godmode_to_vehicle(CVehicle* vehicle, bool personal_vehicle = false)
@@ -54,58 +68,66 @@ namespace big
 				}
 			}
 
+			save_original_veh_data(vehicle);
+
 			if (g.vehicle.god_mode || g.vehicle.proof_collision)
 			{
-				if (!has_vehicle_modified_deform_god)
-				{
-					original_deform_god = vehicle->m_deform_god;
-				}
-
-				vehicle->m_deform_god           = 0x8C;
-				has_vehicle_any_modified_data   = true;
-				has_vehicle_modified_deform_god = true;
+				vehicle->m_deform_god &= ~(deform_god_bit);
 			}
 			else
 			{
-				vehicle->m_deform_god           = original_deform_god;
-				has_vehicle_modified_deform_god = false;
+				vehicle->m_deform_god |= deform_god_bit;
 			}
 
 			uint32_t bits                    = g.vehicle.proof_mask;
-			uint32_t changed_bits            = bits ^ last_bits;
+			uint32_t changed_bits            = bits ^ m_orig_veh_datas[vehicle].m_last_damage_bits;
 			uint32_t changed_or_enabled_bits = bits | changed_bits;
 
 			if (changed_or_enabled_bits)
 			{
-				uint32_t unchanged_bits       = vehicle->m_damage_bits & ~changed_or_enabled_bits;
-				vehicle->m_damage_bits        = unchanged_bits | bits;
-				has_vehicle_any_modified_data = true;
-				if (personal_vehicle == false)
-				{
-					last_bits = bits;
-				}
+				uint32_t unchanged_bits                      = vehicle->m_damage_bits & ~changed_or_enabled_bits;
+				vehicle->m_damage_bits                       = unchanged_bits | bits;
+				m_orig_veh_datas[vehicle].m_last_damage_bits = bits;
 			}
+		}
+
+		CVehicle* get_personal_vehicle()
+		{
+			Vehicle personal_vehicle = mobile::mechanic::get_personal_vehicle();
+			if (ENTITY::DOES_ENTITY_EXIST(personal_vehicle))
+			{
+				return reinterpret_cast<CVehicle*>(g_pointers->m_gta.m_handle_to_ptr(personal_vehicle));
+			}
+
+			return nullptr;
 		}
 
 		virtual void on_tick() override
 		{
 			if (g_local_player)
 			{
-				Vehicle personal_vehicle = mobile::mechanic::get_personal_vehicle();
-				if (ENTITY::DOES_ENTITY_EXIST(personal_vehicle))
+				const auto personal_vehicle = get_personal_vehicle();
+				if (personal_vehicle)
 				{
-					const auto personal_vehicle_ptr = reinterpret_cast<CVehicle*>(g_pointers->m_gta.m_handle_to_ptr(personal_vehicle));
-					apply_godmode_to_vehicle(personal_vehicle_ptr, true);
+					apply_godmode_to_vehicle(personal_vehicle, true);
 				}
+
 				apply_godmode_to_vehicle(g_local_player->m_vehicle);
 			}
 		}
 
 		virtual void on_disable() override
 		{
-			if (g_local_player && g_local_player->m_vehicle)
+			if (g_local_player)
 			{
-				restore_vehicle_data(g_local_player->m_vehicle);
+				if (g_local_player->m_vehicle)
+					restore_original_vehicle_data(g_local_player->m_vehicle);
+
+				const auto personal_vehicle = get_personal_vehicle();
+				if (personal_vehicle)
+				{
+					restore_original_vehicle_data(personal_vehicle);
+				}
 			}
 		}
 	};
