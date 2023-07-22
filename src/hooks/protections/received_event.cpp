@@ -6,6 +6,7 @@
 #include "util/math.hpp"
 #include "util/notify.hpp"
 #include "util/toxic.hpp"
+#include "util/mobile.hpp"
 
 #include <base/CObject.hpp>
 #include <network/CNetGamePlayer.hpp>
@@ -498,13 +499,20 @@ namespace big
 		}
 		case eNetworkEvents::REQUEST_CONTROL_EVENT:
 		{
-			int net_id = buffer->Read<int>(13);
+			auto net_id = buffer->Read<int>(13);
 			if (g_local_player && g_local_player->m_vehicle && g_local_player->m_vehicle->m_net_object
-			    && g_local_player->m_vehicle->m_net_object->m_object_id == net_id && g_local_player->m_vehicle->m_driver == g_local_player && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+			    && g_local_player->m_vehicle->m_net_object->m_object_id == net_id) //The request is for a vehicle we are currently in.
 			{
-				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-				g.reactions.request_control_event.process(plyr);
-				return;
+				Vehicle personal_vehicle = mobile::mechanic::get_personal_vehicle();
+				Vehicle veh              = g_pointers->m_gta.m_ptr_to_handle(g_local_player->m_vehicle);
+				if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION() //If we're in Freemode.
+					|| personal_vehicle == veh //Or we're in our personal vehicle.
+					|| DECORATOR::DECOR_GET_INT(veh, "RandomId") == g_local_player->m_net_object->m_object_id) // Or it's a vehicle we spawned.
+				{
+					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset); // Tell them to get bent.
+					g.reactions.request_control_event.process(plyr);
+					return;
+				}
 			}
 			buffer->Seek(0);
 			break;
