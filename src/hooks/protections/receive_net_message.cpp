@@ -3,17 +3,18 @@
 #include "backend/player_command.hpp"
 #include "core/data/packet_types.hpp"
 #include "gta/net_game_event.hpp"
-#include "script/scriptIdBase.hpp"
 #include "gta_util.hpp"
 #include "hooking.hpp"
 #include "lua/lua_manager.hpp"
 #include "natives.hpp"
+#include "script/scriptIdBase.hpp"
 #include "services/players/player_service.hpp"
 #include "util/session.hpp"
 #include "util/spam.hpp"
 
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
+
 
 inline void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
 {
@@ -121,7 +122,7 @@ namespace big
 							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
 							    dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
 
-						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("bailkick")))->call(player, {});
+						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("endkick")))->call(player, {});
 						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
 					}
 					return true;
