@@ -493,7 +493,7 @@ namespace big
 			if (auto plyr = g_player_service->get_by_id(source_player->m_player_id))
 				session::add_infraction(plyr, Infraction::TRIGGERED_ANTICHEAT);
 
-			g.reactions.modder_detection.process(plyr);
+			g.reactions.game_anti_cheat_modder_detection.process(plyr);
 			break;
 		}
 		case eNetworkEvents::REQUEST_CONTROL_EVENT:
