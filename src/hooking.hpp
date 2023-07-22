@@ -7,6 +7,8 @@
 #include "gta/script_thread.hpp"
 #include "vmt_hook.hpp"
 
+#include <network/netConnection.hpp>
+
 class CPlayerGamerDataNode;
 class CPlayerGameStateDataNode;
 class CPedInventoryDataNode;
@@ -45,11 +47,6 @@ namespace rage
 	class datBitBuffer;
 	class rlMetric;
 	class rlTaskStatus;
-
-	namespace netConnection
-	{
-		class InFrame;
-	}
 }
 
 namespace big
@@ -76,7 +73,6 @@ namespace big
 		static void network_player_mgr_init(CNetworkPlayerMgr* _this, uint64_t a2, uint32_t a3, uint32_t a4[4]);
 		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
 
-		static bool fragment_physics_crash(uintptr_t a1, uint32_t a2, uintptr_t a3, uintptr_t a4, uintptr_t a5);
 		static bool fragment_physics_crash_2(float* a1, float* a2);
 
 		static void received_event(rage::netEventMgr* event_manager, CNetGamePlayer* source_player, CNetGamePlayer* target_player, uint16_t event_id, int event_index, int event_handled_bitset, int unk, rage::datBitBuffer* bit_buffer);
@@ -156,6 +152,12 @@ namespace big
 		static void send_non_physical_player_data(CNetGamePlayer* player, __int64 message, int flags, void* a4, CNetGamePlayer* a5);
 
 		static int64_t update_timecycle_keyframe_data(int64_t timecycleManager, TimecycleKeyframeData* timecycleKeyframeData);
+
+		static void* allocate_memory_reliable(rage::netConnection* cxn, int required_memory);
+
+		static void* render_ped(__int64 renderer, CPed* ped, __int64 a3, __int64 a4);
+		static void render_entity(__int64 renderer, rage::fwEntity* entity, int unk, bool a4);
+		static __int64 render_big_ped(__int64 renderer, CPed* ped, __int64 a3, __int64 a4);
 	};
 
 	class minhook_keepalive
