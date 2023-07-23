@@ -165,7 +165,7 @@ namespace big
 
 								if (local_.m_freeze)
 								{
-									*local_.m_internal_address = local_.m_freeze_value_int;
+									*local_.m_internal_address = local_.m_freeze_value_float;
 								}
 								break;
 							case 2:
@@ -178,7 +178,7 @@ namespace big
 
 								if (local_.m_freeze)
 								{
-									*local_.m_internal_address = local_.m_freeze_value_float;
+									*local_.m_internal_address = local_.m_freeze_value_int;
 								}
 								break;
 
