@@ -72,6 +72,7 @@ namespace big
 				    ImGui::Checkbox("Block Clone Creates", &g_player_service->get_selected()->block_clone_create);
 				    ImGui::Checkbox("Block Clone Syncs", &g_player_service->get_selected()->block_clone_sync);
 				    ImGui::Checkbox("Block Network Events", &g_player_service->get_selected()->block_net_events);
+				    ImGui::Checkbox("Log Clones", &g_player_service->get_selected()->log_clones);
 
 				    ImGui::Separator();
 

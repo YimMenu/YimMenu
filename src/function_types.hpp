@@ -12,7 +12,10 @@ enum eVehicleGadgetType : uint32_t;
 namespace rage
 {
 	class netConnectionManager;
-	class netConnectionPeer;
+	class netPeerAddress;
+	class netConnection;
+	class netMessageQueue;
+	class netQueuedMessage;
 	class snMsgRemoveGamersFromSessionCmd;
 	class snSession;
 	class snPlayer;
@@ -117,8 +120,8 @@ namespace big::functions
 	using request_ragdoll = void (*)(uint16_t object_id);
 	using request_control = void (*)(rage::netObject* net_object);
 
-	using get_connection_peer = rage::netConnectionPeer* (*)(rage::netConnectionManager* manager, int peer_id);
-	using send_remove_gamer_cmd = void (*)(rage::netConnectionManager* net_connection_mgr, rage::netConnectionPeer* player, int connection_id, rage::snMsgRemoveGamersFromSessionCmd* cmd, int flags);
+	using get_peer_address = rage::netPeerAddress* (*)(rage::netConnectionManager* manager, int peer_id);
+	using send_remove_gamer_cmd = void (*)(rage::netConnectionManager* net_connection_mgr, rage::netPeerAddress* adde, int connection_id, rage::snMsgRemoveGamersFromSessionCmd* cmd, int flags);
 	using handle_remove_gamer_cmd = void* (*)(rage::snSession* session, rage::snPlayer* origin, rage::snMsgRemoveGamersFromSessionCmd* cmd);
 
 	using script_vm = rage::eThreadState (*)(uint64_t* stack, int64_t** scr_globals, rage::scrProgram* program, rage::scrThreadContext* ctx);
@@ -131,8 +134,8 @@ namespace big::functions
 	using set_as_active_cloud_file = void (*)(datafile_commands::SveFileObject* object, sCloudFile** file);
 	using save_json_data = char* (*)(datafile_commands::SveFileObject* object, int* out_length, const char* reason);
 
-	using sync_network_time = bool (*)(rage::netConnectionManager* mgr, rage::netConnectionPeer* peer, int connection_id, rage::netTimeSyncMsg* msg, int flags);
-	using send_packet = bool (*)(rage::netConnectionManager* mgr, rage::netConnectionPeer* peer, int connection_id, void* data, int size, int flags);
+	using sync_network_time = bool (*)(rage::netConnectionManager* mgr, rage::netPeerAddress* addr, int connection_id, rage::netTimeSyncMsg* msg, int flags);
+	using send_packet = bool (*)(rage::netConnectionManager* mgr, rage::netPeerAddress* adde, int connection_id, void* data, int size, int flags);
 	using connect_to_peer = bool (*)(rage::netConnectionManager* mgr, rage::rlGamerInfoBase* gamer_info, rage::snConnectToPeerTaskData* data, rage::snConnectToPeerTaskResult* result, rage::rlTaskStatus* status);
 
 	using clear_ped_tasks_network = void (*)(CPed* ped, bool immediately);
@@ -152,4 +155,8 @@ namespace big::functions
 
 	using update_presence_attribute_int = void (*)(void* presence_data, int profile_index, char* attr, uint64_t value);
 	using update_presence_attribute_string = void (*)(void* presence_data, int profile_index, char* attr, char* value);
+
+	using connection_manager_try_free_memory = void (*)(rage::netConnectionManager* mgr);
+	using remove_message_from_queue          = void (*)(rage::netMessageQueue* queue, rage::netQueuedMessage* message);
+	using remove_message_from_unacked_reliables = void (*)(void* list, uint16_t* unk);
 }
