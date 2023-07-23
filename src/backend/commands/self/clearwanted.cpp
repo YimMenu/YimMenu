@@ -7,7 +7,7 @@ namespace big
 	{
 		using command::command;
 
-		virtual void execute(const std::vector<std::uint64_t>&, const std::shared_ptr<command_context> ctx)
+		virtual void execute(const std::vector<uint64_t>&, const std::shared_ptr<command_context> ctx)
 		{
 			if(g_local_player && g_local_player !=nullptr && !g.self.force_wanted_level)
 			{

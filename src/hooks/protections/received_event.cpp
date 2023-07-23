@@ -1,8 +1,8 @@
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "gta/net_game_event.hpp"
-#include "gta/script_id.hpp"
 #include "hooking.hpp"
+#include "script/scriptIdBase.hpp"
 #include "util/math.hpp"
 #include "util/notify.hpp"
 #include "util/toxic.hpp"
@@ -368,11 +368,17 @@ namespace big
 
 		auto plyr = g_player_service->get_by_id(source_player->m_player_id);
 
+		if (plyr && plyr->block_net_events)
+		{
+			g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+			return;
+		}
+
 		switch (static_cast<eNetworkEvents>(event_id))
 		{
 		case eNetworkEvents::KICK_VOTES_EVENT:
 		{
-			std::uint32_t player_bitfield = buffer->Read<uint32_t>(32);
+			uint32_t player_bitfield = buffer->Read<uint32_t>(32);
 			if (player_bitfield & (1 << target_player->m_player_id))
 			{
 				g.reactions.kick_vote.process(plyr);
@@ -487,14 +493,14 @@ namespace big
 			if (auto plyr = g_player_service->get_by_id(source_player->m_player_id))
 				session::add_infraction(plyr, Infraction::TRIGGERED_ANTICHEAT);
 
-			g.reactions.modder_detection.process(plyr);
+			g.reactions.game_anti_cheat_modder_detection.process(plyr);
 			break;
 		}
 		case eNetworkEvents::REQUEST_CONTROL_EVENT:
 		{
 			int net_id = buffer->Read<int>(13);
 			if (g_local_player && g_local_player->m_vehicle && g_local_player->m_vehicle->m_net_object
-			    && g_local_player->m_vehicle->m_net_object->m_object_id == net_id && g_local_player->m_vehicle->m_driver == g_local_player)
+			    && g_local_player->m_vehicle->m_net_object->m_object_id == net_id && g_local_player->m_vehicle->m_driver == g_local_player && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
 			{
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				g.reactions.request_control_event.process(plyr);
@@ -526,8 +532,6 @@ namespace big
 
 				if (type == 0 || initial_length < min_length) // https://docs.fivem.net/natives/?_0xE832D760399EB220
 				{
-					// most definitely a crash
-					LOG(INFO) << std::hex << std::uppercase << "0x" << id.m_hash;
 					notify::crash_blocked(source_player, "rope");
 					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					return;
@@ -638,7 +642,7 @@ namespace big
 			bool is_entity = buffer->Read<bool>(1);
 			std::int16_t entity_net_id;
 			rage::fvector3 position;
-			std::uint32_t ref_hash;
+			uint32_t ref_hash;
 
 			if (is_entity)
 				entity_net_id = buffer->Read<std::int16_t>(13);
@@ -651,9 +655,9 @@ namespace big
 
 			bool has_ref = buffer->Read<bool>(1);
 			if (has_ref)
-				ref_hash = buffer->Read<std::uint32_t>(32);
+				ref_hash = buffer->Read<uint32_t>(32);
 
-			std::uint32_t sound_hash = buffer->Read<std::uint32_t>(32);
+			uint32_t sound_hash = buffer->Read<uint32_t>(32);
 
 			if (sound_hash == RAGE_JOAAT("Remote_Ring") && plyr)
 			{

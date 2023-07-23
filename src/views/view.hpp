@@ -58,6 +58,7 @@ namespace big
 		static void time_and_weather();
 		static void spoofing();
 		static void teleport();
+		static void custom_teleport();
 		static void view_player();
 		static void players();
 		static void weapons();
@@ -71,6 +72,7 @@ namespace big
 		static void gta_cache();
 		static void lua_scripts();
 		static void quickmenu();
+		static void vfx();
 
 		static void player_info();
 		static void player_teleport();

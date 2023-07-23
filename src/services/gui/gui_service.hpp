@@ -11,6 +11,7 @@ namespace big
 		SELF,
 		WEAPONS,
 		TELEPORT,
+		CUSTOM_TELEPORT,
 		MOBILE,
 		OUTFIT_EDITOR,
 		OUTFIT_SLOTS,
@@ -32,6 +33,7 @@ namespace big
 		TRAIN,
 		BLACKHOLE,
 		MODEL_SWAPPER,
+		VFX,
 
 		NETWORK,
 		MISSIONS,
@@ -86,7 +88,10 @@ namespace big
 		            {
 						{TAB_DECL(WEAPONS), view::weapons}},
 						{TAB_DECL(MOBILE), view::mobile}},
-						{TAB_DECL(TELEPORT), view::teleport}},
+						{TAB_DECL(TELEPORT), view::teleport,
+						{
+							{TAB_DECL(CUSTOM_TELEPORT), view::custom_teleport}},
+						}}},
 						{TAB_DECL(OUTFIT_EDITOR), view::outfit_editor}},
 		                {TAB_DECL(OUTFIT_SLOTS), view::outfit_slots}},
 		            },
@@ -121,6 +126,7 @@ namespace big
 						{TAB_DECL(TRAIN), view::train}},
 						{TAB_DECL(BLACKHOLE), view::blackhole}},
 						{TAB_DECL(MODEL_SWAPPER), view::model_swapper}},
+						{TAB_DECL(VFX), view::vfx}},
 		            },
 		        },
 		    },

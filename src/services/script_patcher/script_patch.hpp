@@ -15,7 +15,7 @@ namespace big
 		bool* m_bool;
 		int32_t m_ip;
 
-		static std::uint8_t* get_code_address(script_data* data, std::uint32_t index);
+		static uint8_t* get_code_address(script_data* data, uint32_t index);
 		static const std::optional<uint32_t> get_code_location_by_pattern(script_data* data, const memory::pattern& pattern);
 		void enable(script_data* data);
 		void disable(script_data* data);
@@ -26,7 +26,7 @@ namespace big
 			return m_script;
 		}
 
-		script_patch(rage::joaat_t script, const memory::pattern pattern, int32_t offset, std::vector<std::uint8_t> patch, bool* enable_bool);
+		script_patch(rage::joaat_t script, const memory::pattern pattern, int32_t offset, std::vector<uint8_t> patch, bool* enable_bool);
 		void update(script_data* data);
 	};
 }

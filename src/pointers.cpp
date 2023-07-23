@@ -297,15 +297,6 @@ namespace big
                 g_pointers->m_gta.m_write_player_game_state_data_node = ptr.as<functions::write_player_game_state_data_node>();
             }
         },
-        // Replay Interface
-        {
-            "RI",
-            "0F B7 44 24 ? 66 89 44 4E",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_replay_interface = ptr.add(0x1F).rip().as<rage::CReplayInterface**>();
-            }
-        },
         // Ptr To Handle
         {
             "PTH",
@@ -643,7 +634,7 @@ namespace big
             "48 8B 05 ? ? ? ? 48 83 F8 FF",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_host_token = ptr.add(3).rip().as<std::uint64_t*>();
+                g_pointers->m_gta.m_host_token = ptr.add(3).rip().as<uint64_t*>();
             }
         },
         // Profile Gamer Info
@@ -769,7 +760,7 @@ namespace big
             "8D 42 FF 83 F8 FD 77 3D",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_get_connection_peer   = ptr.add(23).rip().as<functions::get_connection_peer>();
+                g_pointers->m_gta.m_get_peer_address      = ptr.add(23).rip().as<functions::get_peer_address>();
                 g_pointers->m_gta.m_send_remove_gamer_cmd = ptr.add(65).rip().as<functions::send_remove_gamer_cmd>();
             }
         },
@@ -1217,6 +1208,80 @@ namespace big
                 g_pointers->m_gta.m_get_host_array_handler_by_index = ptr.as<functions::get_host_array_handler_by_index>();
             }
         },
+        // Send Non Physical Player Data
+        {
+            "SNPPD",
+            "E8 ? ? ? ? 4C 8B 0F 44 0F B7 85 A0 01 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_send_non_physical_player_data = ptr.add(1).rip().as<PVOID>();
+            }
+        },
+        // Presence Data
+        {
+            "PD",
+            "48 8B 0D ? ? ? ? 44 8B 4B 60",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_presence_data = ptr.add(3).rip().as<void**>();
+            }
+        },
+        // Allocate Memory Reliable & Connection Manager Try Free Memory
+        {
+            "AMR&CMTFM",
+            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 83 EC 20 48 8B D9 48 8B 49 18",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_allocate_memory_reliable = ptr.as<PVOID>();
+                g_pointers->m_gta.m_connection_manager_try_free_memory = ptr.add(0x52).rip().as<functions::connection_manager_try_free_memory>();
+            }
+        },
+        // Remove Message From Queue & Remove Message From Unacked Reliables
+        {
+            "RMFQ&RMFUR",
+            "E8 ? ? ? ? 0F B7 43 4C 48 8D 55 20",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_remove_message_from_queue = ptr.add(1).rip().as<functions::remove_message_from_queue>();
+                g_pointers->m_gta.m_remove_message_from_unacked_reliables = ptr.add(0x19).rip().as<functions::remove_message_from_unacked_reliables>();
+            }
+        },
+        // Draw Handler Manager
+        {
+            "DHM",
+            "48 89 05 ? ? ? ? EB 07 48 89 1D ? ? ? ? 48 8B CB",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_draw_handler_mgr = ptr.add(3).rip().as<PVOID*>();
+            }
+        },
+        // Render Ped
+        {
+            "RP",
+            "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 81 EC 80 00 00 00 48 8B FA",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_render_ped = ptr.as<PVOID*>();
+            }
+        },
+        // Render Entity
+        {
+            "RE",
+            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 57 41 54 41 55 41 56 41 57 48 83 EC 70 0F BA",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_render_entity = ptr.as<PVOID*>();
+            }
+        },
+        // Render Big Ped
+        {
+            "RE",
+            "48 89 5C 24 08 4C 89 44 24 18 55 56 57 41 54 41 55 41 56 41 57 48 8B EC 48 81 EC 80 00 00 00 48",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_render_big_ped = ptr.as<PVOID*>();
+            }
+        },
         // Max Wanted Level
         {
             "MWL",
@@ -1344,6 +1409,71 @@ namespace big
             {
                 g_pointers->m_gta.m_model_spawn_bypass = ptr.add(8).as<PVOID>();
             }
+        },
+        // ERROR message box
+        {
+            "E0MB",
+            "E8 ? ? ? ? CC FF 15",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_error_message_box = ptr.add(1).rip().as<PVOID>();
+            }
+        },
+        // Get title caption for ERROR message box
+        {
+            "GTCE0MB",
+            "E8 ? ? ? ? 48 83 CB FF 48 8D 8D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_title_caption_error_message_box = ptr.add(1).rip().as<functions::get_title_caption_error_message_box>();
+            }
+        },
+        // Disable Window Hook
+        {
+            "DT",
+            "48 83 EC 28 33 C9 FF 15 ? ? ? ? 45 33 C9",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_window_hook = ptr;
+            }
+        },
+        // Vehicle Metadata Manager.
+        {
+            "VEHMMGR",
+            "7C B8 48 8B 0D",
+            [](memory::handle ptr)
+            {
+                ptr = ptr.add(5).rip();
+                g_pointers->m_gta.m_driveby_metadata_mgr = ptr.as<CVehicleDriveByMetadataMgr*>();
+                g_pointers->m_gta.m_vehicle_layout_metadata_mgr = ptr.add(0x20).as<CVehicleSeatMetadataMgr*>();
+            }
+        },
+        // Blip List
+        {
+            "BLPLST",
+            "4C 8D 05 ? ? ? ? 0F B7 C1",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_blip_list = ptr.add(3).rip().as<CBlipList*>();
+            }
+        },
+        // TimecycleKeyframeData
+        {
+            "TCYCL",
+            "48 83 EC 18 48 8B 0D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_timecycle_keyframe_override = ptr.as<PVOID>();
+            }
+        },
+        // Free Event Error
+        {
+            "FEE",
+            "48 8B 5C 24 40 48 8B 6C 24 48 48 8B 74 24 50 48 8B 7C 24 58 48 83 C4 30 41 5E C3 48 8B 0D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_free_event_error = ptr.add(0x31).as<PVOID>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 
@@ -1364,17 +1494,27 @@ namespace big
             [](memory::handle ptr)
             {
                 auto presence_data_vft             = ptr.add(3).rip().as<PVOID*>();
-                g_pointers->m_sc.m_update_presence_attribute_int    = presence_data_vft[1];
-                g_pointers->m_sc.m_update_presence_attribute_string = presence_data_vft[3];
+                g_pointers->m_sc.m_update_presence_attribute_int    = (functions::update_presence_attribute_int)presence_data_vft[1];
+                g_pointers->m_sc.m_update_presence_attribute_string = (functions::update_presence_attribute_string)presence_data_vft[3];
             }
         },
         // Start Get Presence Attributes
         {
             "SGPA",
-            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 40 33 DB 41",
+            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 40 33 DB 49",
             [](memory::handle ptr)
             {
                 g_pointers->m_sc.m_start_get_presence_attributes = ptr.as<functions::start_get_presence_attributes>();
+            }
+        },
+        // Read Attribute Patch
+        {
+            "RAP",
+            "75 72 EB 23 80 F9 03",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_sc.m_read_attribute_patch = ptr.as<PVOID>();
+                g_pointers->m_sc.m_read_attribute_patch_2 = ptr.add(0x74).as<PVOID>();
             }
         }
         >();

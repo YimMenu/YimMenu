@@ -83,7 +83,7 @@ namespace big::toxic
 		          .count();
 		msg.increment = millis;
 
-		auto peer = g_pointers->m_gta.m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+		auto peer = g_pointers->m_gta.m_get_peer_address(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 		    (int)target->get_session_player()->m_player_data.m_peer_id_2);
 
 		for (int j = 0; j < 100; j++)
@@ -122,7 +122,7 @@ namespace big::toxic
 			return;
 		}
 
-		std::uint32_t largest_counter = 9999;
+		uint32_t largest_counter = 9999;
 		g_player_service->iterate([&largest_counter](const player_entry& plyr) {
 			if (plyr.second->num_time_syncs_sent > largest_counter)
 				largest_counter = plyr.second->num_time_syncs_sent;
@@ -149,7 +149,7 @@ namespace big::toxic
 			          .count();
 			msg.increment = millis;
 
-			auto peer = g_pointers->m_gta.m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+			auto peer = g_pointers->m_gta.m_get_peer_address(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 			    (int)plyr.second->get_session_player()->m_player_data.m_peer_id_2);
 
 			for (int j = 0; j < 25; j++)

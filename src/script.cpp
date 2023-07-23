@@ -18,7 +18,7 @@ namespace big
 	    m_script_fiber(nullptr),
 	    m_main_fiber(nullptr),
 	    m_func(func),
-	    m_should_be_deleted(false)
+	    m_done(false)
 	{
 		m_script_fiber = CreateFiber(
 		    stack_size.has_value() ? stack_size.value() : 0,
@@ -61,6 +61,11 @@ namespace big
 		return m_toggleable;
 	}
 
+	bool script::is_done() const
+	{
+		return m_done;
+	}
+
 	void script::tick()
 	{
 		m_main_fiber = GetCurrentFiber();
@@ -92,6 +97,8 @@ namespace big
 	void script::fiber_func()
 	{
 		m_func();
+
+		m_done = true;
 
 		while (true)
 		{

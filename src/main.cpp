@@ -13,7 +13,6 @@
 #include "services/api/api_service.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/custom_text/custom_text_service.hpp"
-#include "services/globals/globals_service.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "services/gui/gui_service.hpp"
 #include "services/hotkey/hotkey_service.hpp"
@@ -93,7 +92,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    auto context_menu_service_instance      = std::make_unique<context_menu_service>();
 			    auto custom_text_service_instance       = std::make_unique<custom_text_service>();
-			    auto globals_service_instace            = std::make_unique<globals_service>();
 			    auto mobile_service_instance            = std::make_unique<mobile_service>();
 			    auto notification_service_instance      = std::make_unique<notification_service>();
 			    auto pickup_service_instance            = std::make_unique<pickup_service>();
@@ -149,6 +147,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    while (g_running)
 				    std::this_thread::sleep_for(500ms);
 
+				g_script_mgr.remove_all_scripts();
+			    LOG(INFO) << "Scripts unregistered.";
+
 			    lua_manager_instance.reset();
 			    LOG(INFO) << "Lua manager uninitialized.";
 
@@ -157,9 +158,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    native_hooks_instance.reset();
 			    LOG(INFO) << "Dynamic native hooker uninitialized.";
-
-			    g_script_mgr.remove_all_scripts();
-			    LOG(INFO) << "Scripts unregistered.";
 
 			    // cleans up the thread responsible for saving settings
 			    g.destroy();
@@ -197,8 +195,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Player Service reset.";
 			    pickup_service_instance.reset();
 			    LOG(INFO) << "Pickup Service reset.";
-			    globals_service_instace.reset();
-			    LOG(INFO) << "Globals Service reset.";
 			    custom_text_service_instance.reset();
 			    LOG(INFO) << "Custom Text Service reset.";
 			    context_menu_service_instance.reset();

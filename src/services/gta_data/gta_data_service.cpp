@@ -62,27 +62,6 @@ namespace big
 		m_update_state = state;
 	}
 
-	void gta_data_service::update_in_online()
-	{
-		m_update_state = eGtaDataUpdateState::WAITING_FOR_SINGLE_PLAYER;
-		g_fiber_pool->queue_job([this] {
-			while (*g_pointers->m_gta.m_game_state != eGameState::Playing)
-			{
-				script::get_current()->yield(100ms);
-			}
-			m_update_state = eGtaDataUpdateState::WAITING_FOR_ONLINE;
-
-			session::join_type(eSessionType::SOLO);
-
-			while (!*g_pointers->m_gta.m_is_session_started)
-			{
-				script::get_current()->yield(100ms);
-			}
-			m_update_state = eGtaDataUpdateState::UPDATING;
-			rebuild_cache();
-		});
-	}
-
 	void gta_data_service::update_now()
 	{
 		m_update_state = eGtaDataUpdateState::WAITING_FOR_SINGLE_PLAYER;
@@ -92,16 +71,8 @@ namespace big
 		});
 	}
 
-	void gta_data_service::update_on_init()
-	{
-		m_update_state = eGtaDataUpdateState::ON_INIT_WAITING;
-		g_thread_pool->push([this] {
-			rebuild_cache();
-		});
-	}
-
 	// innefficient getters, don't care to fix right now
-	const ped_item& gta_data_service::ped_by_hash(std::uint32_t hash)
+	const ped_item& gta_data_service::ped_by_hash(uint32_t hash)
 	{
 		for (const auto& [name, ped] : m_peds)
 			if (rage::joaat(name) == hash)
@@ -109,7 +80,7 @@ namespace big
 		return gta_data_service::empty_ped;
 	}
 
-	const vehicle_item& gta_data_service::vehicle_by_hash(std::uint32_t hash)
+	const vehicle_item& gta_data_service::vehicle_by_hash(uint32_t hash)
 	{
 		for (const auto& [name, veh] : m_vehicles)
 			if (rage::joaat(name) == hash)
@@ -117,7 +88,7 @@ namespace big
 		return gta_data_service::empty_vehicle;
 	}
 
-	const weapon_item& gta_data_service::weapon_by_hash(std::uint32_t hash)
+	const weapon_item& gta_data_service::weapon_by_hash(uint32_t hash)
 	{
 		for (const auto& [name, weapon] : m_weapons_cache.weapon_map)
 			if (rage::joaat(name) == hash)
@@ -125,19 +96,19 @@ namespace big
 		return gta_data_service::empty_weapon;
 	}
 
-	const weapon_component& gta_data_service::weapon_component_by_hash(std::uint32_t hash)
+	const weapon_component& gta_data_service::weapon_component_by_hash(uint32_t hash)
 	{
-		for (const auto& component : m_weapons_cache.weapon_components)
-			if (component.second.m_hash == hash)
-				return component.second;
+		for (const auto& [name, component] : m_weapons_cache.weapon_components)
+			if (component.m_hash == hash)
+				return component;
 		return gta_data_service::empty_component;
 	}
 
 	const weapon_component& gta_data_service::weapon_component_by_name(std::string name)
 	{
-		for (const auto& component : m_weapons_cache.weapon_components)
-			if (component.first == name)
-				return component.second;
+		for (const auto& [name_key, component] : m_weapons_cache.weapon_components)
+			if (name_key == name)
+				return component;
 		return gta_data_service::empty_component;
 	}
 
@@ -192,8 +163,7 @@ namespace big
 
 		load_peds();
 		load_vehicles();
-		LOG(INFO) << "Loading " << m_weapons_cache.weapon_map.size() << " weapons from cache.";
-		LOG(INFO) << "Loading " << m_weapons_cache.weapon_components.size() << " weapon components from cache.";
+		load_weapons();
 
 		LOG(VERBOSE) << "Loaded all data from cache.";
 	}
@@ -234,7 +204,20 @@ namespace big
 		m_vehicles_cache.free();
 	}
 
-	inline void parse_ped(std::vector<ped_item>& peds, std::vector<std::uint32_t>& mapped_peds, pugi::xml_document& doc)
+	void gta_data_service::load_weapons()
+	{
+		LOG(INFO) << "Loading " << m_weapons_cache.weapon_map.size() << " weapons from cache.";
+		LOG(INFO) << "Loading " << m_weapons_cache.weapon_components.size() << " weapon components from cache.";
+
+		for (const auto& [_, weapon] : m_weapons_cache.weapon_map)
+		{
+			add_if_not_exists(m_weapon_types, weapon.m_weapon_type);
+		}
+
+		std::sort(m_weapon_types.begin(), m_weapon_types.end());
+	}
+
+	inline void parse_ped(std::vector<ped_item>& peds, std::vector<uint32_t>& mapped_peds, pugi::xml_document& doc)
 	{
 		const auto& items = doc.select_nodes("/CPedModelInfo__InitDataList/InitDatas/Item");
 		for (const auto& item_node : items)
@@ -266,7 +249,7 @@ namespace big
 
 	void gta_data_service::rebuild_cache()
 	{
-		using hash_array = std::vector<std::uint32_t>;
+		using hash_array = std::vector<uint32_t>;
 		hash_array mapped_peds;
 		hash_array mapped_vehicles;
 		hash_array mapped_weapons;
@@ -277,7 +260,7 @@ namespace big
 		std::vector<weapon_item> weapons;
 		std::vector<weapon_component> weapon_components;
 
-		constexpr auto exists = [](const hash_array& arr, std::uint32_t val) -> bool {
+		constexpr auto exists = [](const hash_array& arr, uint32_t val) -> bool {
 			return std::find(arr.begin(), arr.end(), val) != arr.end();
 		};
 
@@ -501,11 +484,6 @@ namespace big
 		{
 			yim_fipackfile::for_each_fipackfile();
 		}
-		else
-		{
-			while (state() != eGtaDataUpdateState::ON_INIT_UPDATE_END)
-				std::this_thread::sleep_for(100ms);
-		}
 
 		static bool translate_lebel = false;
 
@@ -561,7 +539,7 @@ namespace big
 
 			{
 				const auto data_size = sizeof(ped_item) * peds.size();
-				m_peds_cache.set_data(std::make_unique<std::uint8_t[]>(data_size), data_size);
+				m_peds_cache.set_data(std::make_unique<uint8_t[]>(data_size), data_size);
 				std::memcpy(m_peds_cache.data(), peds.data(), data_size);
 
 				m_peds_cache.set_header_version(file_version);
@@ -570,7 +548,7 @@ namespace big
 
 			{
 				const auto data_size = sizeof(vehicle_item) * vehicles.size();
-				m_vehicles_cache.set_data(std::make_unique<std::uint8_t[]>(data_size), data_size);
+				m_vehicles_cache.set_data(std::make_unique<uint8_t[]>(data_size), data_size);
 				std::memcpy(m_vehicles_cache.data(), vehicles.data(), data_size);
 
 				m_vehicles_cache.set_header_version(file_version);

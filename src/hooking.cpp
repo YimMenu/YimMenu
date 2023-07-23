@@ -33,8 +33,6 @@ namespace big
 
 		detour_hook_helper::add<hooks::get_label_text>("GLT", g_pointers->m_gta.m_get_label_text);
 
-		detour_hook_helper::add<hooks::check_chat_profanity>("CCP", g_pointers->m_gta.m_check_chat_profanity);
-
 		detour_hook_helper::add<hooks::write_player_game_state_data_node>("WPGSDN", g_pointers->m_gta.m_write_player_game_state_data_node);
 
 		detour_hook_helper::add<hooks::gta_thread_start>("GTS", g_pointers->m_gta.m_gta_thread_start);
@@ -110,11 +108,19 @@ namespace big
 
 		detour_hook_helper::add<hooks::write_vehicle_proximity_migration_data_node>("WVPMDN", g_pointers->m_gta.m_write_vehicle_proximity_migration_data_node);
 
-		detour_hook_helper::add<hooks::fipackfile_mount>("FPFM", g_pointers->m_gta.m_fipackfile_mount);
-
-		detour_hook_helper::add<hooks::allow_weapons_in_vehicle>("AWIV", g_pointers->m_gta.m_allow_weapons_in_vehicle);
-
 		detour_hook_helper::add<hooks::netfilter_handle_message>("NHM", g_pointers->m_gta.m_netfilter_handle_message);
+
+		detour_hook_helper::add<hooks::log_error_message_box>("E0MBH", g_pointers->m_gta.m_error_message_box);
+
+		detour_hook_helper::add<hooks::send_non_physical_player_data>("SNPPD", g_pointers->m_gta.m_send_non_physical_player_data);
+
+		detour_hook_helper::add<hooks::update_timecycle_keyframe_data>("UTCKD", g_pointers->m_gta.m_timecycle_keyframe_override);
+
+		detour_hook_helper::add<hooks::allocate_memory_reliable>("AMR", g_pointers->m_gta.m_allocate_memory_reliable);
+
+		detour_hook_helper::add<hooks::render_ped>("RP", g_pointers->m_gta.m_render_ped);
+		detour_hook_helper::add<hooks::render_entity>("RE", g_pointers->m_gta.m_render_entity);
+		detour_hook_helper::add<hooks::render_big_ped>("RBP", g_pointers->m_gta.m_render_big_ped);
 
 		g_hooking = this;
 	}
@@ -133,6 +139,8 @@ namespace big
 	{
 		m_swapchain_hook.enable();
 		m_og_wndproc = WNDPROC(SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, LONG_PTR(&hooks::wndproc)));
+		// window hook: pt2
+		UnhookWindowsHookEx(*g_pointers->m_gta.m_window_hook.add(45).rip().as<HHOOK*>());
 
 		for (const auto& detour_hook_helper : m_detour_hook_helpers)
 		{
@@ -153,6 +161,8 @@ namespace big
 			detour_hook_helper->m_detour_hook->disable();
 		}
 
+		// window hook: pt2
+		SetWindowsHookExA(13, g_pointers->m_gta.m_window_hook.add(18).rip().as<HOOKPROC>(), GetModuleHandleA("GTA5.exe"), 0);
 		SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(m_og_wndproc));
 		m_swapchain_hook.disable();
 
@@ -184,7 +194,7 @@ namespace big
 		}
 	}
 
-	bool hooks::run_script_threads(std::uint32_t ops_to_execute)
+	bool hooks::run_script_threads(uint32_t ops_to_execute)
 	{
 		if (g_running)
 		{

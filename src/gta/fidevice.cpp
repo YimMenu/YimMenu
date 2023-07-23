@@ -265,7 +265,7 @@ namespace rage
 
 	bool fiPackfile::Mount(const char* mount_point)
 	{
-		return big::g_hooking->get_original<big::hooks::fipackfile_mount>()(this, mount_point);
+		return big::g_pointers->m_gta.m_fipackfile_mount(this, mount_point);
 	}
 
 	void fiPackfile::ClosePackfile()

@@ -2,6 +2,7 @@
 #include "backend/looped_command.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
+#include "gta/enums.hpp"
 
 namespace big
 {

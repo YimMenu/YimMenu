@@ -55,7 +55,7 @@ namespace big
 
 	rage::snPlayer* player::get_session_player()
 	{
-		for (std::uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_player_count; i++)
+		for (uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_player_count; i++)
 		{
 			if (gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_host_token == get_net_data()->m_host_token)
 			{
@@ -71,7 +71,7 @@ namespace big
 
 	rage::snPeer* player::get_session_peer()
 	{
-		for (std::uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_peer_count; i++)
+		for (uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_peer_count; i++)
 		{
 			if (gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_gamer_handle.m_rockstar_id
 			    == get_net_data()->m_gamer_handle.m_rockstar_id)
@@ -89,9 +89,9 @@ namespace big
 			return get_net_data()->m_external_ip;
 
 		if (auto session_player = get_session_player())
-			if (auto peer = g_pointers->m_gta.m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+			if (auto peer = g_pointers->m_gta.m_get_peer_address(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 			        (int)get_session_player()->m_player_data.m_peer_id_2))
-				return netAddress{((netConnectionPeer*)peer)->m_external_ip};
+				return netAddress{((rage::netPeerAddress*)peer)->m_external_ip};
 
 		return {0};
 	}
@@ -102,9 +102,9 @@ namespace big
 			return get_net_data()->m_external_port;
 
 		if (auto session_player = get_session_player())
-			if (auto peer = g_pointers->m_gta.m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+			if (auto peer = g_pointers->m_gta.m_get_peer_address(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
 			        (int)get_session_player()->m_player_data.m_peer_id_2))
-				return ((netConnectionPeer*)peer)->m_external_port;
+				return ((rage::netPeerAddress*)peer)->m_external_port;
 
 		return 0;
 	}

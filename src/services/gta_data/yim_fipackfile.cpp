@@ -3,6 +3,7 @@
 #include "gta/fidevice.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
+#include "util/string_conversions.hpp"
 
 namespace big
 {
@@ -17,12 +18,33 @@ namespace big
 		m_wrapper_call_back.push_back(cb);
 	}
 
+	static bool safe_open_pack_file(rage::fiPackfile& packfile, const std::u8string& path)
+	{
+		bool success = false;
+
+		__try
+		{
+			success = packfile.OpenPackfile(reinterpret_cast<const char*>(path.c_str()), true, 0, 0);
+		}
+		__except (EXCEPTION_EXECUTE_HANDLER)
+		{
+			return false;
+		}
+
+		return success;
+	}
+
 	void yim_fipackfile::traverse_rpf_file(const std::u8string& path, int depth)
 	{
 		std::string mount_path = std::format("temp{}:/", depth);
 
 		rage::fiPackfile packfile;
-		packfile.OpenPackfile(reinterpret_cast<const char*>(path.c_str()), true, 0, 0);
+		if (!safe_open_pack_file(packfile, path))
+		{
+			LOG(INFO) << "Failed opening " << reinterpret_cast<const char*>(path.c_str());
+			return;
+		}
+		
 		packfile.Mount(mount_path.c_str());
 
 		yim_fipackfile rpf_wrapper = yim_fipackfile(&packfile, mount_path);
@@ -42,6 +64,14 @@ namespace big
 					if (encryption_type == 0xFFFFFF9)
 						continue; // skip AES encrypted RPFs
 
+					// OPEN / CFXP
+					if (encryption_type == 0x4E45504F || encryption_type == 0x50584643)
+					{
+						LOG(INFO) << "Modded RPF, skipping " << reinterpret_cast<const char*>(file.u8string().c_str());
+
+						continue;
+					}
+
 					traverse_rpf_file(file.u8string(), depth + 1);
 				}
 			}
@@ -55,33 +85,6 @@ namespace big
 
 		packfile.Unmount(mount_path.c_str());
 		packfile.ClosePackfile();
-	}
-
-	static std::string UTF16ToCP(uint32_t code_page, std::wstring_view input)
-	{
-		if (input.empty())
-			return {};
-
-		const auto size = WideCharToMultiByte(code_page, 0, input.data(), static_cast<int>(input.size()), nullptr, 0, nullptr, nullptr);
-
-		std::string output(size, '\0');
-
-		if (size
-		    != WideCharToMultiByte(code_page,
-		        0,
-		        input.data(),
-		        static_cast<int>(input.size()),
-		        output.data(),
-		        static_cast<int>(output.size()),
-		        nullptr,
-		        nullptr))
-		{
-			const auto error_code = GetLastError();
-			LOG(WARNING) << "WideCharToMultiByte Error in String " << error_code;
-			return {};
-		}
-
-		return output;
 	}
 
 	static std::filesystem::path get_game_folder_path()
@@ -137,7 +140,7 @@ namespace big
 			if (rel_path.empty())
 				continue;
 
-			const auto utf8_path = UTF16ToCP(CP_UTF8, entry.path().native());
+			const auto utf8_path = string_conversions::utf_16_to_code_page(CP_UTF8, entry.path().native());
 
 			if (utf8_path.empty())
 				continue;
@@ -204,7 +207,7 @@ namespace big
 		if (const auto handle = rpf->Open(path.string().c_str(), true); handle != -1)
 		{
 			const auto data_length  = rpf->GetFileLength(handle);
-			const auto file_content = std::make_unique<std::uint8_t[]>(data_length);
+			const auto file_content = std::make_unique<uint8_t[]>(data_length);
 
 			rpf->ReadFull(handle, file_content.get(), data_length);
 
@@ -216,7 +219,7 @@ namespace big
 
 	void yim_fipackfile::read_xml_file(const std::filesystem::path& path, std::function<void(pugi::xml_document& doc)> cb)
 	{
-		read_file(path, [&cb](const std::unique_ptr<std::uint8_t[]>& file_content, const int data_size) {
+		read_file(path, [&cb](const std::unique_ptr<uint8_t[]>& file_content, const int data_size) {
 			if (pugi::xml_document doc; doc.load_buffer(file_content.get(), data_size).status == pugi::xml_parse_status::status_ok)
 			{
 				cb(doc);
