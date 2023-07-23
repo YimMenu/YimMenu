@@ -5,6 +5,8 @@ namespace big
 {
 	class bool_command : public command
 	{
+		bool m_last_enabled = false;
+
 	protected:
 		bool& m_toggle;
 		bool m_show_notify;
@@ -18,14 +20,11 @@ namespace big
 			return m_toggle;
 		}
 
-		virtual void refresh(){};
-		virtual void enable()
-		{
-			m_toggle = true;
-		};
-		virtual void disable()
-		{
-			m_toggle = false;
-		};
+		virtual void on_enable(){};
+		virtual void on_disable(){};
+		virtual void refresh();
+
+		virtual void enable();
+		virtual void disable();
 	};
 }

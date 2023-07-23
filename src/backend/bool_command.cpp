@@ -1,4 +1,5 @@
 #include "bool_command.hpp"
+#include "fiber_pool.hpp"
 #include "services/translation_service/translation_service.hpp"
 
 namespace big
@@ -64,5 +65,47 @@ namespace big
 
 		ctx->report_error(std::format("Cannot convert\"{}\" into a boolean in command {}", args[0], m_name));
 		return std::nullopt;
+	}
+
+	void bool_command::enable()
+	{
+		if (!m_toggle)
+		{
+			m_toggle       = true;
+			m_last_enabled = true;
+			g_fiber_pool->queue_job([this] {
+				on_enable();
+			});
+		}
+	}
+
+	void bool_command::disable()
+	{
+		if (m_toggle)
+		{
+			m_toggle       = false;
+			m_last_enabled = false;
+			g_fiber_pool->queue_job([this] {
+				on_disable();
+			});
+		}
+	}
+
+	void bool_command::refresh()
+	{
+		if (m_toggle && !m_last_enabled)
+		{
+			m_last_enabled = true;
+			g_fiber_pool->queue_job([this] {
+				on_enable();
+			});
+		}
+		else if (!m_toggle && m_last_enabled)
+		{
+			m_last_enabled = false;
+			g_fiber_pool->queue_job([this] {
+				on_disable();
+			});
+		}
 	}
 }
