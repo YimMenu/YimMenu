@@ -16,6 +16,9 @@ namespace big
 	bool has_scrollbar = false;
 	static void player_button(const player_ptr& plyr)
 	{
+		if (plyr == nullptr)
+			return;
+
 		bool selected_player = plyr == g_player_service->get_selected();
 
 		// generate icons string

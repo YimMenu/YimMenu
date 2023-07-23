@@ -150,6 +150,7 @@ namespace big
 			break;
 		case CustomWeapon::PAINT_GUN:
 			ImGui::Checkbox("Rainbow Color", &g.weapons.paintgun.rainbow);
+			ImGui::SliderFloat("Rainbow Speed", &g.weapons.paintgun.speed, 0.f, 10.f);
 			if (!g.weapons.paintgun.rainbow) { ImGui::ColorEdit4("Paint Gun Color", g.weapons.paintgun.col); }
 		}
 

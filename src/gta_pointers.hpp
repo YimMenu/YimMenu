@@ -194,7 +194,7 @@ namespace big
 		functions::request_control m_request_control;
 		functions::clear_ped_tasks_network m_clear_ped_tasks_network;
 
-		functions::get_peer_address m_get_peer_address;
+		functions::get_connection_peer m_get_connection_peer;
 		functions::send_remove_gamer_cmd m_send_remove_gamer_cmd;
 		functions::handle_remove_gamer_cmd m_handle_remove_gamer_cmd;
 
@@ -298,6 +298,8 @@ namespace big
 		PVOID m_render_ped;
 		PVOID m_render_entity;
 		PVOID m_render_big_ped;
+
+		bool* m_force_relay_connections;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

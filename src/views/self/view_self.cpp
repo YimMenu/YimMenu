@@ -46,6 +46,17 @@ namespace big
 		ImGui::BeginGroup();
 
 		components::command_checkbox<"noclip">();
+		components::options_modal("Noclip", [] {
+			ImGui::Separator();
+
+			ImGui::BeginGroup();
+			ImGui::Text("NOCLIP_AIM_SPEED_MULTIPLIER"_T.data());
+			ImGui::SliderFloat("##noclipaimspeedmult", &g.self.noclip_aim_speed_multiplier, 0.1f, 1.0f);
+			ImGui::Text("NOCLIP_SPEED_MULTIPLIER"_T.data());
+			ImGui::SliderFloat("##noclipspeedmult", &g.self.noclip_speed_multiplier, 1.f, 100.f);
+			ImGui::EndGroup();
+		});
+
 		components::command_checkbox<"noragdoll">();
 		components::command_checkbox<"fastrun">();
 		components::command_checkbox<"noidlekick">();
