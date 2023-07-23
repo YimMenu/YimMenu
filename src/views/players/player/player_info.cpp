@@ -289,6 +289,17 @@ namespace big
 						ImGui::Text("IP Address: Hidden");
 					else
 						ImGui::Text("IP Address: Unknown");
+
+					auto cxn_type = g_player_service->get_selected()->get_connection_peer() ?
+					    g_player_service->get_selected()->get_connection_peer()->m_peer_address.m_connection_type :
+					    0;
+
+					if (g.protections.force_relay_connections && ImGui::IsItemHovered())
+						ImGui::SetTooltip("IP addresses cannot be seen when Force Relay Connections is enabled");
+					else if (cxn_type == 2 && ImGui::IsItemHovered())
+						ImGui::SetTooltip("Cannot retrieve IP address since this player is connected through dedicated servers");
+					else if (cxn_type == 3 && ImGui::IsItemHovered())
+						ImGui::SetTooltip("Cannot retrieve IP address since this player is connected through another player");
 				}
 			}
 
