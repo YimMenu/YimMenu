@@ -120,7 +120,9 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(logs, metric_logs, packet_logs, script_hook_logs, script_event)
 			} logs{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(debug, logs)
+			bool window_hook = false;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(debug, logs, window_hook)
 		} debug{};
 
 		struct tunables
