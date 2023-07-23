@@ -7,7 +7,7 @@ Class for representing a tab within the GUI.
 ### `is_selected()`
 
 - **Returns:**
-  - `boolean`: Returns true if this tab is the currently selected one in the GUI.
+  - `boolean`: Returns true if this tab is the one currently selected in the GUI.
 
 **Example Usage:**
 ```lua

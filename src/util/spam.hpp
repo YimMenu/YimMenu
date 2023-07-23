@@ -55,6 +55,7 @@ namespace
 	    "cashlounge",
 	    "Fast Delivery",
 	    "yosativa",
+	    "rich2day",
 	};
 }
 

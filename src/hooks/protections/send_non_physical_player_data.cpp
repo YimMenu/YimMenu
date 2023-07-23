@@ -1,4 +1,5 @@
 #include "hooking.hpp"
+#include "pointers.hpp"
 #include "services/players/player_service.hpp"
 
 #include <network/CNetGamePlayer.hpp>
@@ -12,7 +13,7 @@ namespace big
 		auto data         = *(CNonPhysicalPlayerData**)(message + 0x10);
 		int old_bubble_id = data->m_bubble_id;
 
-		if (plyr && plyr->block_join)
+		if (plyr && plyr->block_join && *g_pointers->m_gta.m_is_session_started)
 		{
 			data->m_bubble_id = 10;
 			g_notification_service->push("BLOCK_JOIN"_T.data(), std::vformat("BLOCK_JOIN_PREVENT_PLAYER_JOIN"_T, std::make_format_args(plyr->get_name())));
