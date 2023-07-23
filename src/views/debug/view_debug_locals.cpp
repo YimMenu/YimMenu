@@ -165,7 +165,7 @@ namespace big
 
 								if (local_.m_freeze)
 								{
-									*local_.m_internal_address = local_.m_freeze_value_float;
+									*(float*)local_.m_internal_address = local_.m_freeze_value_float;
 								}
 								break;
 							case 2:
@@ -201,7 +201,7 @@ namespace big
 							if (ImGui::Checkbox("Freeze", &local_.m_freeze))
 							{
 								local_.m_freeze_value_int     = *local_.m_internal_address;
-								local_.m_freeze_value_float   = (float)*local_.m_internal_address;
+								local_.m_freeze_value_float   = *reinterpret_cast<float*>(local_.m_internal_address);
 								local_.m_freeze_value_vector3 = *local_.m_internal_address_vector3;
 							}
 						}
