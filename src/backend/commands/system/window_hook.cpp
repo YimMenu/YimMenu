@@ -1,33 +1,31 @@
-#include "backend/looped_command.hpp"
+#include "backend/bool_command.hpp"
 #include "memory/byte_patch.hpp"
 #include "pointers.hpp"
 
 namespace big
 {
-	class window_hook : looped_command
+	class window_hook : bool_command
 	{
-		using looped_command::looped_command;
+		using bool_command::bool_command;
 
 		memory::byte_patch* m_window_hook_patch;
 
-		virtual void on_enable() override
+		virtual void refresh() override
 		{
 			static auto patch = (m_window_hook_patch = memory::byte_patch::make(g_pointers->m_gta.m_window_hook.as<void*>(), std::to_array({0xC3, 0x90, 0x90, 0x90}))
 			                                               .get(),
 			    true);
 
-			m_window_hook_patch->apply();
-			UnhookWindowsHookEx(*g_pointers->m_gta.m_window_hook.add(45).rip().as<HHOOK*>());
-		}
-
-		virtual void on_tick() override
-		{
-		}
-
-		virtual void on_disable() override
-		{
-			SetWindowsHookExA(13, g_pointers->m_gta.m_window_hook.add(18).rip().as<HOOKPROC>(), GetModuleHandleA("GTA5.exe"), 0);
-			m_window_hook_patch->restore();
+			if (m_toggle)
+			{
+				m_window_hook_patch->apply();
+				UnhookWindowsHookEx(*g_pointers->m_gta.m_window_hook.add(45).rip().as<HHOOK*>());
+			}
+			else
+			{
+				SetWindowsHookExA(13, g_pointers->m_gta.m_window_hook.add(18).rip().as<HOOKPROC>(), GetModuleHandleA("GTA5.exe"), 0);
+				m_window_hook_patch->restore();
+			}
 		}
 	};
 
