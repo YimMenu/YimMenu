@@ -422,13 +422,6 @@ namespace big
 		{
 			bool dev_dlc = false;
 
-			struct rainbow
-			{
-				bool fade  = false;
-				bool spasm = false;
-				int speed  = 1;
-			} rainbow{};
-
 			struct hotkeys
 			{
 				bool editing_menu_toggle    = false;
@@ -732,6 +725,7 @@ namespace big
 			struct paintgun
 			{
 				bool rainbow = false;
+				float speed  = 1.f;
 				float col[4] = {0.f, 0.f, 1.f, 1.f};
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(paintgun, rainbow, col)
 			} paintgun{};
