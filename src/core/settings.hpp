@@ -303,43 +303,45 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ipls, select)
 			} ipls{};
 
-			bool clean_player          = false;
-			bool force_wanted_level    = false;
-			bool free_cam              = false;
-			bool invisibility          = false;
-			bool local_visibility      = true;
-			bool never_wanted          = false;
-			bool no_ragdoll            = false;
-			bool noclip                = false;
-			bool off_radar             = false;
-			bool ghost_org             = false;
-			bool super_run             = false;
-			bool no_collision          = false;
-			bool unlimited_oxygen      = false;
-			bool no_water_collision    = false;
-			int wanted_level           = 0;
-			bool god_mode              = false;
-			bool part_water            = false;
-			bool proof_bullet          = false;
-			bool proof_fire            = false;
-			bool proof_collision       = false;
-			bool proof_melee           = false;
-			bool proof_explosion       = false;
-			bool proof_steam           = false;
-			bool proof_drown           = false;
-			bool proof_water           = false;
-			uint32_t proof_mask        = 0;
-			bool mobile_radio          = false;
-			bool fast_respawn          = false;
-			bool auto_tp               = false;
-			bool super_jump            = false;
-			bool beast_jump            = false;
-			bool healthregen           = false;
-			float healthregenrate      = 1.0f;
-			bool superman              = false;
-			bool custom_weapon_stop    = true;
-			std::string persist_outfit = "";
-			bool persist_outfits_mis   = false;
+			bool clean_player                 = false;
+			bool force_wanted_level           = false;
+			bool free_cam                     = false;
+			bool invisibility                 = false;
+			bool local_visibility             = true;
+			bool never_wanted                 = false;
+			bool no_ragdoll                   = false;
+			bool noclip                       = false;
+			float noclip_aim_speed_multiplier = 0.25f;
+			float noclip_speed_multiplier     = 20.f;
+			bool off_radar                    = false;
+			bool ghost_org                    = false;
+			bool super_run                    = false;
+			bool no_collision                 = false;
+			bool unlimited_oxygen             = false;
+			bool no_water_collision           = false;
+			int wanted_level                  = 0;
+			bool god_mode                     = false;
+			bool part_water                   = false;
+			bool proof_bullet                 = false;
+			bool proof_fire                   = false;
+			bool proof_collision              = false;
+			bool proof_melee                  = false;
+			bool proof_explosion              = false;
+			bool proof_steam                  = false;
+			bool proof_drown                  = false;
+			bool proof_water                  = false;
+			uint32_t proof_mask               = 0;
+			bool mobile_radio                 = false;
+			bool fast_respawn                 = false;
+			bool auto_tp                      = false;
+			bool super_jump                   = false;
+			bool beast_jump                   = false;
+			bool healthregen                  = false;
+			float healthregenrate             = 1.0f;
+			bool superman                     = false;
+			bool custom_weapon_stop           = true;
+			std::string persist_outfit        = "";
+			bool persist_outfits_mis          = false;
 			struct hud
 			{
 				bool color_override                                      = false;
@@ -359,7 +361,7 @@ namespace big
 			// do not save below entries
 			bool dance_mode = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ipls, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, custom_weapon_stop, persist_outfit, persist_outfits_mis)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ipls, ptfx_effects, clean_player, force_wanted_level, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, noclip_aim_speed_multiplier, noclip_speed_multiplier, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, custom_weapon_stop, persist_outfit, persist_outfits_mis)
 		} self{};
 
 		struct session
