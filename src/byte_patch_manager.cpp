@@ -80,6 +80,9 @@ namespace big
 
 		// window hook: pt1
 		memory::byte_patch::make(g_pointers->m_gta.m_window_hook.as<void*>(), std::to_array({0xC3, 0x90, 0x90, 0x90}))->apply();
+
+		// Prevent the game from crashing when flooded with outgoing events
+		memory::byte_patch::make(g_pointers->m_gta.m_free_event_error, std::vector{0x90, 0x90, 0x90, 0x90, 0x90})->apply();
 	}
 
 	byte_patch_manager::byte_patch_manager()

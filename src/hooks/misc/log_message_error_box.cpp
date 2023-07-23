@@ -1,7 +1,7 @@
 #include "hooking.hpp"
+#include "logger/stack_trace.hpp"
 #include "pointers.hpp"
 #include "util/string_conversions.hpp"
-#include "logger/stack_trace.hpp"
 
 namespace big
 {
@@ -31,10 +31,10 @@ namespace big
 
 	void hooks::log_error_message_box(rage::joaat_t joaated_error_code, char a2)
 	{
-		LOG(WARNING) << "Error Code: " <<
-			string_conversions::utf_16_to_code_page(
-				CP_UTF8,
-				g_pointers->m_gta.m_get_title_caption_error_message_box(joaated_error_code));
+		if (joaated_error_code == RAGE_JOAAT("ERR_NET_EVENT"))
+			return;
+
+		LOG(WARNING) << "Error Code: " << string_conversions::utf_16_to_code_page(CP_UTF8, g_pointers->m_gta.m_get_title_caption_error_message_box(joaated_error_code));
 
 		log_stack_trace();
 	}
