@@ -16,6 +16,7 @@ namespace rage
 	class netConnection;
 	class netMessageQueue;
 	class netQueuedMessage;
+	class netConnectionPeer;
 	class snMsgRemoveGamersFromSessionCmd;
 	class snSession;
 	class snPlayer;
@@ -120,7 +121,7 @@ namespace big::functions
 	using request_ragdoll = void (*)(uint16_t object_id);
 	using request_control = void (*)(rage::netObject* net_object);
 
-	using get_peer_address = rage::netPeerAddress* (*)(rage::netConnectionManager* manager, int peer_id);
+	using get_connection_peer = rage::netConnectionPeer* (*)(rage::netConnectionManager* manager, int peer_id);
 	using send_remove_gamer_cmd = void (*)(rage::netConnectionManager* net_connection_mgr, rage::netPeerAddress* adde, int connection_id, rage::snMsgRemoveGamersFromSessionCmd* cmd, int flags);
 	using handle_remove_gamer_cmd = void* (*)(rage::snSession* session, rage::snPlayer* origin, rage::snMsgRemoveGamersFromSessionCmd* cmd);
 
