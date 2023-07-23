@@ -57,6 +57,7 @@ namespace big
 			ImGui::SetTooltip("This prevents the collection of pickups such as unwanted money bags\nNote: Normal pickups are also no longer possible to collect with this enabled");
 		ImGui::Checkbox("ADMIN_CHECK"_T.data(), &g.protections.admin_check);
 		ImGui::Checkbox("Kick Rejoin", &g.protections.kick_rejoin);
+		components::command_checkbox<"forcerelays">();
 		ImGui::EndGroup();
 
 		ImGui::SeparatorText("Options");

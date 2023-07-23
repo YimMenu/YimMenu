@@ -754,14 +754,22 @@ namespace big
                 g_pointers->m_gta.m_request_control = ptr.add(1).rip().as<functions::request_control>();
             }
         },
-        // Get Connection Peer & Send Remove Gamer Command
+        // Send Remove Gamer Command
         {
-            "GCP&SRGC",
+            "SRGC",
             "8D 42 FF 83 F8 FD 77 3D",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_get_peer_address      = ptr.add(23).rip().as<functions::get_peer_address>();
                 g_pointers->m_gta.m_send_remove_gamer_cmd = ptr.add(65).rip().as<functions::send_remove_gamer_cmd>();
+            }
+        },
+        // Get Connection Peer
+        {
+            "GCP",
+            "48 89 5C 24 08 48 89 74 24 18 89 54 24 10 57 48 83 EC 40 48",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_connection_peer = ptr.as<functions::get_connection_peer>();
             }
         },
         // Handle Remove Gamer Command
@@ -1280,6 +1288,15 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_render_big_ped = ptr.as<PVOID*>();
+            }
+        },
+        // Force Relay Connections
+        {
+            "FRC",
+            "8A 05 ? ? ? ? 88 83 BC 00 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_force_relay_connections = ptr.add(2).rip().as<bool*>();
             }
         },
         // Max Wanted Level

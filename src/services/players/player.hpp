@@ -12,6 +12,7 @@ namespace rage
 	class snPlayer;
 	class snPeer;
 	class rlGamerInfo;
+	class netConnectionPeer;
 }
 
 namespace big
@@ -44,7 +45,8 @@ namespace big
 		[[nodiscard]] CPlayerInfo* get_player_info() const;
 		[[nodiscard]] class rage::snPlayer* get_session_player();
 		[[nodiscard]] class rage::snPeer* get_session_peer();
-		[[nodiscard]] netAddress get_ip_address();
+		[[nodiscard]] class rage::netConnectionPeer* get_connection_peer();
+		[[nodiscard]] std::optional<netAddress> get_ip_address();
 		[[nodiscard]] uint16_t get_port();
 
 		[[nodiscard]] uint8_t id() const;
