@@ -11,20 +11,20 @@ namespace memory
 	public:
 		virtual ~byte_patch();
 
-		void apply();
-		void restore();
+		void apply() const;
+		void restore() const;
 
 		void remove() const;
 
 		template<typename TAddr>
-		static const std::unique_ptr<byte_patch>& make(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value, std::source_location caller = std::source_location::current())
+		static const std::unique_ptr<byte_patch>& make(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
 		{
 			return m_patches.emplace_back(std::unique_ptr<byte_patch>(new byte_patch(address, value)));
 		}
 
 		template<typename TAddr, typename T>
 		    requires SpanCompatibleType<T>
-		static const std::unique_ptr<byte_patch>& make(TAddr address, T span_compatible, std::source_location caller = std::source_location::current())
+		static const std::unique_ptr<byte_patch>& make(TAddr address, T span_compatible)
 		{
 			return m_patches.emplace_back(std::unique_ptr<byte_patch>(new byte_patch(address, std::span{span_compatible})));
 		}
