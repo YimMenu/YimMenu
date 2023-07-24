@@ -1,11 +1,11 @@
-#include "backend/looped_command.hpp"
+#include "backend/bool_command.hpp"
 #include "natives.hpp"
 
 namespace big
 {
-	class hudcolor_looped : looped_command
+	class hudcolor : bool_command
 	{
-		using looped_command::looped_command;
+		using bool_command::bool_command;
 
 		virtual void on_enable() override
 		{
@@ -31,10 +31,6 @@ namespace big
 			}
 		}
 
-		virtual void on_tick() override
-		{
-		}
-
 		virtual void on_disable() override
 		{
 			for (int i = 0; i < hud_colors.size(); i++)
@@ -45,5 +41,5 @@ namespace big
 		}
 	};
 
-	hudcolor_looped g_hudcolor_looped("hudcolor", "Override HUD Color", "Override HUD colors", g.self.hud.color_override);
+	hudcolor g_hudcolor_looped("hudcolor", "Override HUD Color", "Override HUD colors", g.self.hud.color_override);
 }
