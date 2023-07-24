@@ -16,18 +16,15 @@ namespace memory
 
 		void remove() const;
 
-		[[nodiscard]] bool is_active() const
-		{ return m_is_active; }
-
 		template<typename TAddr>
-		static const std::unique_ptr<byte_patch>& make(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
+		static const std::unique_ptr<byte_patch>& make(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value, std::source_location caller = std::source_location::current())
 		{
 			return m_patches.emplace_back(std::unique_ptr<byte_patch>(new byte_patch(address, value)));
 		}
 
 		template<typename TAddr, typename T>
 		    requires SpanCompatibleType<T>
-		static const std::unique_ptr<byte_patch>& make(TAddr address, T span_compatible)
+		static const std::unique_ptr<byte_patch>& make(TAddr address, T span_compatible, std::source_location caller = std::source_location::current())
 		{
 			return m_patches.emplace_back(std::unique_ptr<byte_patch>(new byte_patch(address, std::span{span_compatible})));
 		}
@@ -37,7 +34,7 @@ namespace memory
 	private:
 		template<typename TAddr>
 		byte_patch(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value) :
-		    m_address(address), m_is_active(false)
+		    m_address(address)
 		{
 			m_size = sizeof(std::remove_pointer_t<std::remove_reference_t<TAddr>>);
 
@@ -50,7 +47,7 @@ namespace memory
 
 		template<typename TAddr, typename T, std::size_t N>
 		byte_patch(TAddr address, std::span<T, N> span) :
-		    m_address((void*)address), m_is_active(false)
+		    m_address((void*)address)
 		{
 			m_size = span.size();
 
@@ -71,7 +68,6 @@ namespace memory
 		std::unique_ptr<byte[]> m_original_bytes;
 		std::size_t m_size;
 		DWORD m_old_protect;
-		bool m_is_active;
 
 		friend bool operator==(const std::unique_ptr<byte_patch>& a, const byte_patch* b);
 	};
