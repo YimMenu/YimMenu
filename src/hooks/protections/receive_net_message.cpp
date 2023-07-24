@@ -15,6 +15,7 @@
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
 
+
 inline void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
 {
 	constexpr int PC_PLATFORM = 3;
@@ -121,7 +122,7 @@ namespace big
 							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
 							    dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
 
-						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("bailkick")))->call(player, {});
+						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("endkick")))->call(player, {});
 						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
 					}
 					return true;
