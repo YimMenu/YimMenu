@@ -7,17 +7,32 @@
 
 namespace big
 {
-	detour_hook::detour_hook(std::string name, void* detour) :
-	    m_name(std::move(name)),
-	    m_detour(detour)
+	detour_hook::detour_hook()
 	{
 	}
 
-	detour_hook::detour_hook(std::string name, void* target, void* detour) :
-	    m_name(std::move(name)),
-	    m_target(target),
-	    m_detour(detour)
+	detour_hook::detour_hook(const std::string& name, void* detour)
 	{
+		set_instance(name, detour);
+	}
+
+	detour_hook::detour_hook(const std::string& name, void* target, void* detour)
+	{
+		set_instance(name, target, detour);
+	}
+
+	void big::detour_hook::set_instance(const std::string& name, void* detour)
+	{
+		m_name   = name;
+		m_detour = detour;
+	}
+
+	void big::detour_hook::set_instance(const std::string& name, void* target, void* detour)
+	{
+		m_name   = name;
+		m_target = target;
+		m_detour = detour;
+
 		create_hook();
 	}
 
