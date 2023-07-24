@@ -9,9 +9,9 @@ namespace big
 		return rage::fvector4(color[0], color[1], color[2], color[3]);
 	}
 
-	int64_t hooks::update_timecycle_keyframe_data(int64_t timecycleManager, TimecycleKeyframeData* timecycleKeyframeData)
+	void hooks::update_timecycle_keyframe_data(int64_t timecycleManager, TimecycleKeyframeData* timecycleKeyframeData)
 	{
-		int64_t result = g_hooking->get_original<update_timecycle_keyframe_data>()(timecycleManager, timecycleKeyframeData);
+		g_hooking->get_original<update_timecycle_keyframe_data>()(timecycleManager, timecycleKeyframeData);
 
 		if (g.vfx.enable_custom_sky_color)
 		{
@@ -22,7 +22,5 @@ namespace big
 
 			timecycleKeyframeData->m_stars_iten = g.vfx.stars_intensity;
 		}
-
-		return result;
 	}
 }

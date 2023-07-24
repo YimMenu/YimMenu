@@ -2,7 +2,7 @@
 
 namespace big
 {
-	uint64_t hooks::task_parachute_object_0x270(uint64_t _this, int a2, int a3)
+	int hooks::task_parachute_object_0x270(uint64_t _this, int a2, int a3)
 	{
 		if (a2 == 1 && a3 == 1)// enter crash func
 		{
