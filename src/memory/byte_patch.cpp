@@ -9,8 +9,11 @@ namespace memory
 
 	void byte_patch::apply() const
 	{
+		DWORD temp;
+
 		VirtualProtect(m_address, m_size, PAGE_EXECUTE_READWRITE, (PDWORD)&m_old_protect);
 		memcpy(m_address, m_value.get(), m_size);
+		VirtualProtect(m_address, m_size, m_old_protect, &temp);
 	}
 
 	void byte_patch::restore() const
