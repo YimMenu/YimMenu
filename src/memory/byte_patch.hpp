@@ -11,11 +11,13 @@ namespace memory
 	public:
 		virtual ~byte_patch();
 
-		void apply() const;
-
-		void restore() const;
+		void apply();
+		void restore();
 
 		void remove() const;
+
+		[[nodiscard]] bool is_active() const
+		{ return m_is_active; }
 
 		template<typename TAddr>
 		static const std::unique_ptr<byte_patch>& make(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value)
@@ -35,7 +37,7 @@ namespace memory
 	private:
 		template<typename TAddr>
 		byte_patch(TAddr address, std::remove_pointer_t<std::remove_reference_t<TAddr>> value) :
-		    m_address(address)
+		    m_address(address), m_is_active(false)
 		{
 			m_size = sizeof(std::remove_pointer_t<std::remove_reference_t<TAddr>>);
 
@@ -48,7 +50,7 @@ namespace memory
 
 		template<typename TAddr, typename T, std::size_t N>
 		byte_patch(TAddr address, std::span<T, N> span) :
-		    m_address((void*)address)
+		    m_address((void*)address), m_is_active(false)
 		{
 			m_size = span.size();
 
@@ -69,6 +71,7 @@ namespace memory
 		std::unique_ptr<byte[]> m_original_bytes;
 		std::size_t m_size;
 		DWORD m_old_protect;
+		bool m_is_active;
 
 		friend bool operator==(const std::unique_ptr<byte_patch>& a, const byte_patch* b);
 	};
