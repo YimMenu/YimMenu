@@ -35,7 +35,7 @@ namespace big
 	static_assert(sizeof(json_serializer) == 0x1D);// size is actually 0x20
 #pragma pack(pop)
 
-	void hooks::prepare_metric_for_sending(rage::datBitBuffer* bit_buffer, int unk, int time, rage::rlMetric* metric)
+	bool hooks::prepare_metric_for_sending(rage::datBitBuffer* bit_buffer, int unk, int time, rage::rlMetric* metric)
 	{
 		if (g.debug.logs.metric_logs)
 		{
@@ -46,5 +46,7 @@ namespace big
 
 			LOG(INFO) << "METRIC: " << metric->get_name() << "; DATA: " << serializer.get_string();
 		}
+
+		return g_hooking->get_original<prepare_metric_for_sending>()(bit_buffer, unk, time, metric);
 	}
 }
