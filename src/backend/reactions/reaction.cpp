@@ -45,7 +45,7 @@ namespace big
 				script::get_current()->yield(700ms);
 				if(g_player_service->get_self()->is_host())
 					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
-					    NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
+					NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
 			});
 		}
 
