@@ -45,8 +45,16 @@ namespace big
 				script::get_current()->yield(700ms);
 				if(g_player_service->get_self()->is_host())
 					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
-					NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
+					    NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
 			});
+		}
+
+		if (timeout)
+		{
+			    player->block_net_events   = true;
+			    player->block_clone_sync   = true;
+			    player->block_clone_create = true;
+			    LOG(WARNING) << std::format("{} has been timed out", player->get_name());
 		}
 	}
 
