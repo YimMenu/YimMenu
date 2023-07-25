@@ -11,7 +11,7 @@ namespace big
 	{
 	}
 
-	void bool_command::execute(const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx)
+	void bool_command::execute(const command_arguments& args, const std::shared_ptr<command_context> ctx)
 	{
 		if (args.size() == 0)
 		{
@@ -32,15 +32,15 @@ namespace big
 		}
 		else
 		{
-			m_toggle = args[0];
+			m_toggle = args.get<bool>(0);
 		}
 
 		this->refresh();
 	}
 
-	std::optional<std::vector<uint64_t>> bool_command::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
+	std::optional<command_arguments> bool_command::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
 	{
-		std::vector<uint64_t> result;
+		command_arguments result(1);
 
 		if (args.size() == 0)
 			return result;
@@ -53,13 +53,13 @@ namespace big
 
 		if (args[0] == "yes" || args[0] == "on" || args[0] == "enable" || args[0] == "true")
 		{
-			result.push_back(1);
+			result.push(true);
 			return result;
 		}
 
 		if (args[0] == "no" || args[0] == "off" || args[0] == "disable" || args[0] == "false")
 		{
-			result.push_back(0);
+			result.push(false);
 			return result;
 		}
 
