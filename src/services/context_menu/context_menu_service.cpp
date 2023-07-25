@@ -250,7 +250,7 @@ namespace big
 		while (g_running)
 		{
 			if (g_gui->is_open() || HUD::IS_PAUSE_MENU_ACTIVE()
-			    || (*g_pointers->m_gta.m_chat_data && (*g_pointers->m_gta.m_chat_data)->m_chat_open))
+			    || (*g_pointers->m_gta.m_chat_data && (*g_pointers->m_gta.m_chat_data)->m_chat_open) || g.cmd_executor.enabled)
 			{
 				script::get_current()->yield();
 				continue;
