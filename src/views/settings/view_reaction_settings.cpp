@@ -24,6 +24,7 @@ namespace big
 			if (reaction.add_to_player_db)
 				ImGui::Checkbox("REACTION_BLOCK_JOINS"_T.data(), &reaction.block_joins);
 			ImGui::Checkbox("REACTION_KICK_PLAYER"_T.data(), &reaction.kick);
+			ImGui::Checkbox("Timeout", &reaction.timeout);
 			ImGui::TreePop();
 		}
 		ImGui::PopID();
