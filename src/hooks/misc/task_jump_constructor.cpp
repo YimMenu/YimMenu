@@ -2,7 +2,7 @@
 
 namespace big
 {
-	void hooks::task_jump_constructor(uint64_t a1, int a2)
+	__int64 hooks::task_jump_constructor(uint64_t a1, int a2)
 	{
 		if (g.self.super_jump)
 			a2 |= 1 << 15;
