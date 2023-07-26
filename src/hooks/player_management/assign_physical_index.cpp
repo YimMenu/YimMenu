@@ -114,7 +114,7 @@ namespace big
 						}
 					}
 
-					if (plyr->block_join)
+					if (plyr->block_join && *g_pointers->m_gta.m_is_session_started)
 					{
 						if (g_player_service->get_self()->is_host())
 						{
@@ -126,7 +126,7 @@ namespace big
 						}
 					}
 
-					if (g.session.lock_session && g_player_service->get_self()->is_host())
+					if (g.session.lock_session && g_player_service->get_self()->is_host() && *g_pointers->m_gta.m_is_session_started)
 					{
 						if (plyr->is_friend() && g.session.allow_friends_into_locked_session)
 						{

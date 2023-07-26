@@ -10,7 +10,7 @@ namespace big
 {
 	static constexpr ControllerInputs controls[] = {ControllerInputs::INPUT_SPRINT, ControllerInputs::INPUT_MOVE_UP_ONLY, ControllerInputs::INPUT_MOVE_DOWN_ONLY, ControllerInputs::INPUT_MOVE_LEFT_ONLY, ControllerInputs::INPUT_MOVE_RIGHT_ONLY, ControllerInputs::INPUT_DUCK};
 
-	static constexpr float speed = 20.f;
+	static constexpr float speed = 1.0f;
 
 	class noclip : looped_command
 	{
@@ -39,7 +39,7 @@ namespace big
 				m_entity = ent;
 			}
 
-			Vector3 vel = {0.f, 0.f, 0.f};
+			Vector3 vel{};
 
 			// Left Shift
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
@@ -76,11 +76,27 @@ namespace big
 
 				ENTITY::FREEZE_ENTITY_POSITION(ent, false);
 
-				const auto offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, vel.x, vel.y, 0.f);
-				vel.x             = offset.x - location.x;
-				vel.y             = offset.y - location.y;
+				const auto is_aiming = PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM);
+				if (is_aiming)
+				{
+					vel = vel * g.self.noclip_aim_speed_multiplier;
 
-				ENTITY::SET_ENTITY_VELOCITY(ent, vel.x * m_speed_multiplier, vel.y * m_speed_multiplier, vel.z * m_speed_multiplier);
+					const auto offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, vel.x * m_speed_multiplier, vel.y * m_speed_multiplier, vel.z * m_speed_multiplier);
+
+					ENTITY::SET_ENTITY_VELOCITY(ent, 0, 0, 0);
+					ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, offset.x, offset.y, offset.z, true, true, true);
+				}
+				else
+				{
+					vel = vel * g.self.noclip_speed_multiplier;
+
+					const auto offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, vel.x, vel.y, 0.f);
+					vel.x             = offset.x - location.x;
+					vel.y             = offset.y - location.y;
+
+					ENTITY::SET_ENTITY_MAX_SPEED(ent, 999999999999);
+					ENTITY::SET_ENTITY_VELOCITY(ent, vel.x * m_speed_multiplier, vel.y * m_speed_multiplier, vel.z * m_speed_multiplier);
+				}
 			}
 		}
 

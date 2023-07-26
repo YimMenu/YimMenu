@@ -48,6 +48,14 @@ namespace big
 					NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
 			});
 		}
+
+		if (timeout)
+		{
+			    player->block_net_events   = true;
+			    player->block_clone_sync   = true;
+			    player->block_clone_create = true;
+			    LOG(WARNING) << std::format("{} has been timed out", player->get_name());
+		}
 	}
 
 

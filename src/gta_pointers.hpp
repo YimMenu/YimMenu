@@ -286,6 +286,20 @@ namespace big
 
 		CBlipList* m_blip_list;
 		PVOID m_timecycle_keyframe_override;
+
+		PVOID m_allocate_memory_reliable;
+		functions::connection_manager_try_free_memory m_connection_manager_try_free_memory;
+		functions::remove_message_from_queue m_remove_message_from_queue;
+		functions::remove_message_from_unacked_reliables m_remove_message_from_unacked_reliables;
+
+		PVOID m_free_event_error;
+
+		PVOID* m_draw_handler_mgr;
+		PVOID m_render_ped;
+		PVOID m_render_entity;
+		PVOID m_render_big_ped;
+
+		bool* m_force_relay_connections;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

@@ -23,6 +23,9 @@ if(Git_FOUND)
         OUTPUT_VARIABLE GIT_COMMIT_SUBJECT
         ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
 
+    # Commit messages may have quotes in them, which can affect the const char* variable.
+    string(REPLACE "\"" "\\\"" GIT_COMMIT_SUBJECT "${GIT_COMMIT_SUBJECT}")
+
     # branch name
     execute_process(COMMAND
         "${GIT_EXECUTABLE}" branch --show-current

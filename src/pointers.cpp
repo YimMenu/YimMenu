@@ -754,14 +754,22 @@ namespace big
                 g_pointers->m_gta.m_request_control = ptr.add(1).rip().as<functions::request_control>();
             }
         },
-        // Get Connection Peer & Send Remove Gamer Command
+        // Send Remove Gamer Command
         {
-            "GCP&SRGC",
+            "SRGC",
             "8D 42 FF 83 F8 FD 77 3D",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_get_connection_peer   = ptr.add(23).rip().as<functions::get_connection_peer>();
                 g_pointers->m_gta.m_send_remove_gamer_cmd = ptr.add(65).rip().as<functions::send_remove_gamer_cmd>();
+            }
+        },
+        // Get Connection Peer
+        {
+            "GCP",
+            "48 89 5C 24 08 48 89 74 24 18 89 54 24 10 57 48 83 EC 40 48",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_connection_peer = ptr.as<functions::get_connection_peer>();
             }
         },
         // Handle Remove Gamer Command
@@ -1226,6 +1234,71 @@ namespace big
                 g_pointers->m_gta.m_presence_data = ptr.add(3).rip().as<void**>();
             }
         },
+        // Allocate Memory Reliable & Connection Manager Try Free Memory
+        {
+            "AMR&CMTFM",
+            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 83 EC 20 48 8B D9 48 8B 49 18",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_allocate_memory_reliable = ptr.as<PVOID>();
+                g_pointers->m_gta.m_connection_manager_try_free_memory = ptr.add(0x52).rip().as<functions::connection_manager_try_free_memory>();
+            }
+        },
+        // Remove Message From Queue & Remove Message From Unacked Reliables
+        {
+            "RMFQ&RMFUR",
+            "E8 ? ? ? ? 0F B7 43 4C 48 8D 55 20",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_remove_message_from_queue = ptr.add(1).rip().as<functions::remove_message_from_queue>();
+                g_pointers->m_gta.m_remove_message_from_unacked_reliables = ptr.add(0x19).rip().as<functions::remove_message_from_unacked_reliables>();
+            }
+        },
+        // Draw Handler Manager
+        {
+            "DHM",
+            "48 89 05 ? ? ? ? EB 07 48 89 1D ? ? ? ? 48 8B CB",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_draw_handler_mgr = ptr.add(3).rip().as<PVOID*>();
+            }
+        },
+        // Render Ped
+        {
+            "RP",
+            "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 54 41 55 41 56 41 57 48 81 EC 80 00 00 00 48 8B FA",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_render_ped = ptr.as<PVOID*>();
+            }
+        },
+        // Render Entity
+        {
+            "RE",
+            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 57 41 54 41 55 41 56 41 57 48 83 EC 70 0F BA",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_render_entity = ptr.as<PVOID*>();
+            }
+        },
+        // Render Big Ped
+        {
+            "RE",
+            "48 89 5C 24 08 4C 89 44 24 18 55 56 57 41 54 41 55 41 56 41 57 48 8B EC 48 81 EC 80 00 00 00 48",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_render_big_ped = ptr.as<PVOID*>();
+            }
+        },
+        // Force Relay Connections
+        {
+            "FRC",
+            "8A 05 ? ? ? ? 88 83 BC 00 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_force_relay_connections = ptr.add(2).rip().as<bool*>();
+            }
+        },
         // Max Wanted Level
         {
             "MWL",
@@ -1408,6 +1481,15 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_timecycle_keyframe_override = ptr.as<PVOID>();
+            }
+        },
+        // Free Event Error
+        {
+            "FEE",
+            "48 8B 5C 24 40 48 8B 6C 24 48 48 8B 74 24 50 48 8B 7C 24 58 48 83 C4 30 41 5E C3 48 8B 0D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_free_event_error = ptr.add(0x31).as<PVOID>();
             }
         }
         >(); // don't leave a trailing comma at the end

@@ -17,7 +17,7 @@ namespace big
 	{
 		static char name_buf[32];
 		static char search[64];
-		static char session_info[255];
+		static char session_info[0x100]{};
 
 		ImGui::Text(std::format("Total sessions found: {}", g_matchmaking_service->get_num_found_sessions()).data());
 
@@ -37,7 +37,7 @@ namespace big
 					if (components::selectable(std::to_string(session.info.m_session_token), i == selected_session_idx))
 					{
 						selected_session_idx = i;
-						g_pointers->m_gta.m_encode_session_info(&session.info, session_info, 0x7D, nullptr);
+						g_pointers->m_gta.m_encode_session_info(&session.info, session_info, 0xA9, nullptr);
 					}
 
 					if (ImGui::IsItemHovered())

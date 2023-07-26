@@ -2,6 +2,6 @@
 
 namespace big
 {
-	bool_command g_beastjump("beastjump", "Beast Jump", "Allows you to jump as if you were the beast like in the Hunt the Beast event",
+	bool_command g_beastjump("beastjump", "BEAST_JUMP", "BEAST_JUMP_DESC",
 	    g.self.beast_jump);
 }
