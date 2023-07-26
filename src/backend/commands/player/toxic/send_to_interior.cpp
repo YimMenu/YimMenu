@@ -8,24 +8,19 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual std::optional<std::vector<uint64_t>> parse_args_p(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
-		{
-			return std::vector<uint64_t>{(uint64_t)std::atoi(args[0].c_str())};
-		}
-
 		virtual CommandAccessLevel get_access_level()
 		{
 			return CommandAccessLevel::AGGRESSIVE;
 		}
 
-		virtual void execute(player_ptr player, const std::vector<uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx)
 		{
 			float max   = 1e+38f;
 			auto coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), FALSE);
 			const size_t arg_count  = 15;
 			int64_t args[arg_count] = {(int64_t)eRemoteEvent::InteriorControl,
 			    (int64_t)self::id,
-			    (int64_t)(int)_args[0],
+			    (int64_t)_args.get<int>(0),
 			    (int64_t)self::id,
 			    (int64_t) false,
 			    (int64_t) true, // true means enter sender interior

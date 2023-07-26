@@ -8,7 +8,7 @@ namespace big
 	class empty_session : command
 	{
 		using command::command;
-		virtual void execute(const std::vector<uint64_t>&, const std::shared_ptr<command_context> ctx)
+		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx)
 		{
 			g_player_service->iterate([](const player_entry& player) {
 				auto mgr = *g_pointers->m_gta.m_network_player_mgr;

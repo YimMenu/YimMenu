@@ -23,7 +23,7 @@ namespace big
 			return CommandAccessLevel::AGGRESSIVE;
 		}
 
-		virtual void execute(player_ptr player, const std::vector<uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx)
 		{
 			if (scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[player->id()].PropertyData.Index != -1)
 			{
