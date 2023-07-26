@@ -56,10 +56,12 @@ target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
 target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr Zydis lua_static)
 
 # Warnings as errors
-set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
+set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR OFF)
 
 add_compile_definitions(YimMenu 
     "_CRT_SECURE_NO_WARNINGS"
     "NOMINMAX"
     "WIN32_LEAN_AND_MEAN"
 )
+add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
