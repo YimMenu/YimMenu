@@ -161,5 +161,5 @@ namespace big
 		}
 	};
 
-	turn_signals g_turn_signals("turnsignals", "Turn Signals", "Makes your car invisible", g.vehicle.turn_signals);
+	turn_signals g_turn_signals("turnsignals", "TURN_SIGNALS", "TURN_SIGNALS_DESC", g.vehicle.turn_signals);
 }

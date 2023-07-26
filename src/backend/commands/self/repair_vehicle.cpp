@@ -12,5 +12,5 @@ namespace big
                         vehicle::repair(self::veh);
                 }
         };
-        repairpv g_repairpv("repairpv", "Repair PV", "Repairs your currently active personal vehicle", 0);
+        repairpv g_repairpv("repairpv", "REPAIR_PV", "REPAIR_PV_DESC", 0);
 }
