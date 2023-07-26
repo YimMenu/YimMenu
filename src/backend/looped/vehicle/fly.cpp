@@ -124,5 +124,5 @@ namespace big
 		}
 	};
 
-	vehicle_fly g_vehicle_fly("vehiclefly", "Vehicle Fly", "Fly with any land vehicle", g.vehicle.fly.enabled);
+	vehicle_fly g_vehicle_fly("vehiclefly", "VEHICLE_FLY", "VEHICLE_FLY_DESC", g.vehicle.fly.enabled);
 }
