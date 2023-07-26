@@ -9,6 +9,7 @@ namespace big
 	    m_toggle(toggle),
 	    m_show_notify(show_notify)
 	{
+		g_bool_commands.push_back(this);
 	}
 
 	void bool_command::execute(const command_arguments& args, const std::shared_ptr<command_context> ctx)

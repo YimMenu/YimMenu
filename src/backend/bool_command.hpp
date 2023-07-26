@@ -27,4 +27,6 @@ namespace big
 		virtual void enable();
 		virtual void disable();
 	};
+
+	inline std::vector<bool_command*> g_bool_commands;
 }
