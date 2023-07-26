@@ -56,7 +56,7 @@ namespace big
         {
             if (m_idx >= m_argument_count)
             {
-                throw std::runtime_error("Attempted to pop argument beyond allocated argument size.");
+                throw std::runtime_error("Attempted to shift argument beyond allocated argument size.");
             }
 
             return reinterpret_cast<const T&>(m_argument_data[m_idx++]);
@@ -68,7 +68,7 @@ namespace big
         {
             if (m_idx >= m_argument_count)
             {
-                throw std::runtime_error("Attempted to pop argument beyond allocated argument size.");
+                throw std::runtime_error("Attempted to shift argument beyond allocated argument size.");
             }
 
             return static_cast<const T>(m_argument_data[m_idx++]);
