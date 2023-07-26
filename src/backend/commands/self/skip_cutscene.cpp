@@ -13,5 +13,5 @@ namespace big
 		}
 	};
 
-	skip_cutscene g_skip_cutscene("skipcutscene", "Skip Cutscene", "Skips the currently playing cutscene", 0);
+	skip_cutscene g_skip_cutscene("skipcutscene", "SKIP_CUTSCENE", "SKIP_CUTSCENE_DESC", 0);
 }

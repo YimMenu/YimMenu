@@ -18,5 +18,5 @@ namespace big
 		}
 	};
 
-	clear_wanted g_clear_wanted("clearwantedlvl", "Clear Wanted Level", "Clears your wanted level", 0);
+	clear_wanted g_clear_wanted("clearwantedlvl", "CLEAR_WANTED_LEVEL", "CLEAR_WANTED_LEVEL_DESC_SELF", 0);
 }

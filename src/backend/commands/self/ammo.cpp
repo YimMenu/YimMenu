@@ -18,5 +18,5 @@ namespace big
 			}
 		}
 	};
-	fill_ammo g_fill_ammo("fillammo", "Fill Ammo", "Fills all of your ammo.", 0);
+	fill_ammo g_fill_ammo("fillammo", "FILL_AMMO", "FILL_AMMO_DESC", 0);
 }

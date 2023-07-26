@@ -14,5 +14,5 @@ namespace big
 		}
 	};
 
-	clean_player g_clean_player("clean", "Clean Player", "Cleans the player of wetness and decals", 0);
+	clean_player g_clean_player("clean", "CLEAN_PLAYER", "CLEAN_PLAYER_DESC", 0);
 }

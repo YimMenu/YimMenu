@@ -94,5 +94,5 @@ namespace big
 		}
 	};
 
-	drive_on_water g_drive_on_water("driveonwater", "Drive On Water", "Allows you to drive on water", g.vehicle.drive_on_water);
+	drive_on_water g_drive_on_water("driveonwater", "DRIVE_ON_WATER", "DRIVE_ON_WATER_DESC", g.vehicle.drive_on_water);
 }
