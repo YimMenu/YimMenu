@@ -19,6 +19,11 @@ namespace big
 		Entity m_entity;
 		float m_speed_multiplier;
 
+		inline bool can_update_location()
+		{
+			return !(g.cmd_executor.enabled || g.self.free_cam);
+		}
+
 		virtual void on_tick() override
 		{
 			if (g_orbital_drone_service.initialized())
@@ -41,24 +46,27 @@ namespace big
 
 			Vector3 vel{};
 
-			// Left Shift
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
-				vel.z += speed / 2;
-			// Left Control
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_DUCK))
-				vel.z -= speed / 2;
-			// Forward
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_UP_ONLY))
-				vel.y += speed;
-			// Backward
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_DOWN_ONLY))
-				vel.y -= speed;
-			// Left
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_LEFT_ONLY))
-				vel.x -= speed;
-			// Right
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_RIGHT_ONLY))
-				vel.x += speed;
+			if (can_update_location())
+			{
+				// Left Shift
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
+					vel.z += speed / 2;
+				// Left Control
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_DUCK))
+					vel.z -= speed / 2;
+				// Forward
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_UP_ONLY))
+					vel.y += speed;
+				// Backward
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_DOWN_ONLY))
+					vel.y -= speed;
+				// Left
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_LEFT_ONLY))
+					vel.x -= speed;
+				// Right
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_RIGHT_ONLY))
+					vel.x += speed;
+			}
 
 			auto rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
 			ENTITY::SET_ENTITY_ROTATION(ent, 0.f, rot.y, rot.z, 2, 0);

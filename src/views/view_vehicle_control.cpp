@@ -1,3 +1,5 @@
+#include "backend/bool_command.hpp"
+#include "backend/float_command.hpp"
 #include "gta_util.hpp"
 #include "gui.hpp"
 #include "pointers.hpp"
@@ -313,31 +315,18 @@ namespace big
 		}
 	}
 
+	bool_command use_animations("vehcontroluseanims", "Use animations", "Will use animations for several vehicle operations such as:\ntoggling lights, opening/closing doors and entering seats",
+	    g.window.vehicle_control.operation_animation);
+	bool_command render_veh_dist("vehcontrolrendervehdist", "Render distance on vehicle", "Will display the distance on the controlled vehicle",
+	    g.window.vehicle_control.render_distance_on_veh);
+	float_command max_summon_dist("vehcontrolmaxsummondist", "Max summon distance", "At what range the vehicle will drive towards the summoned location as oposed to being teleported",
+	    g.window.vehicle_control.max_summon_range, 10.f, 250.f);
+
 	void render_settings_tab()
 	{
-		ImGui::Checkbox("Use animations", &g.window.vehicle_control.operation_animation);
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::BeginTooltip();
-			ImGui::Text("Will use animations for several vehicle operations such as:\ntoggling lights, opening/closing doors and entering seats");
-			ImGui::EndTooltip();
-		}
-
-		ImGui::Checkbox("Render distance on vehicle", &g.window.vehicle_control.render_distance_on_veh);
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::BeginTooltip();
-			ImGui::Text("Will display the distance on the controlled vehicle");
-			ImGui::EndTooltip();
-		}
-
-		ImGui::SliderFloat("Max summon distance", &g.window.vehicle_control.max_summon_range, 10.f, 250.f);
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::BeginTooltip();
-			ImGui::Text("At what range the vehicle will drive towards the summoned location as oposed to being teleported");
-			ImGui::EndTooltip();
-		}
+		components::command_checkbox<"vehcontroluseanims">();
+		components::command_checkbox<"vehcontrolrendervehdist">();
+		components::command_float_slider<"vehcontrolmaxsummondist">();
 	}
 
 	void view::vehicle_control()

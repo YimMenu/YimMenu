@@ -1,4 +1,5 @@
 #pragma once
+#include "command_arguments.hpp"
 #include "context/command_context.hpp"
 #include "context/default_command_context.hpp"
 #include "core/enums.hpp"
@@ -17,10 +18,10 @@ namespace big
 		std::optional<uint8_t> m_num_args;
 		bool m_fiber_pool;
 
-		virtual void execute(const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) = 0;
-		virtual std::optional<std::vector<uint64_t>> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>())
+		virtual void execute(const command_arguments& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) = 0;
+		virtual std::optional<command_arguments> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>())
 		{
-			return std::vector<uint64_t>();
+			return {0};
 		};
 		virtual CommandAccessLevel get_access_level()
 		{
@@ -54,13 +55,13 @@ namespace big
 			return m_num_args;
 		}
 
-		void call(const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
+		void call(command_arguments& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 		void call(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 		static std::vector<command*> get_suggestions(std::string, int limit = 7);
 
 		static command* get(rage::joaat_t command);
 
-		static void call(rage::joaat_t command, const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
+		static void call(rage::joaat_t command, command_arguments& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 		static void call(rage::joaat_t command, const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 
 		static bool process(const std::string& text, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>(), bool use_best_suggestion = false);

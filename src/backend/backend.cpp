@@ -19,7 +19,7 @@ namespace big
 {
 	void backend::loop()
 	{
-		for (auto& command : g_looped_commands)
+		for (auto& command : g_bool_commands)
 			command->refresh();
 
 		register_script_patches();
