@@ -21,7 +21,7 @@ namespace big
 	void render_rid_joiner()
 	{
 		ImGui::BeginGroup();
-		components::sub_title("Rid joiner");
+		components::sub_title("RID_JOINER"_T.data());
 		if (ImGui::BeginListBox("##ridjoiner", get_listbox_dimensions()))
 		{
 			static uint64_t rid = 0;
@@ -71,7 +71,7 @@ namespace big
 		components::sub_title("SESSION_SWITCHER"_T);
 		if (ImGui::BeginListBox("###session_switch", get_listbox_dimensions()))
 		{
-			if (ImGui::BeginCombo("##regionswitcher", "Regions"))
+			if (ImGui::BeginCombo("##regionswitcher", "REGIONS"_T.data()))
 			{
 				for (const auto& region_type : regions)
 				{
@@ -100,7 +100,7 @@ namespace big
 	{
 		ImGui::BeginGroup();
 
-		components::sub_title("Misc");
+		components::sub_title("MISC"_T.data());
 		if (ImGui::BeginListBox("##miscsession", get_listbox_dimensions()))
 		{
 			ImGui::Checkbox("JOIN_IN_SCTV"_T.data(), &g.session.join_in_sctv_slots);
@@ -117,24 +117,28 @@ namespace big
 			ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
 
 
-			if (ImGui::Checkbox("Lobby Lock", &g.session.lock_session))
+			if (ImGui::Checkbox("LOBBY_LOCK"_T.data(), &g.session.lock_session))
 			{
-				ImGui::Checkbox("Allow Friends Into Locked Lobby", &g.session.allow_friends_into_locked_session);
+				ImGui::Checkbox("LOBBY_LOCK_ALLOW_FRIENDS"_T.data(), &g.session.allow_friends_into_locked_session);
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("Allows Friends to Join Lobby While Locked");
+					ImGui::SetTooltip("LOBBY_LOCK_ALLOW_FRIENDS_DESC"_T.data());
 			}
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Blocks all players from joining. May not work on some modders.");
+				ImGui::SetTooltip("LOBBY_LOCK_DESC"_T.data());
 
 
 			ImGui::EndDisabled();
 
-			components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T, &g.session.decloak_players, "Reveals players that are off the radar");
-			components::script_patch_checkbox("Reveal Hidden Players", &g.session.unhide_players_from_player_list, "Reveals players that have hidden themselves from the player list");
+			components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T,
+			    &g.session.decloak_players,
+			    "REVEAL_OTR_PLAYERS_DESC"_T.data());
+			components::script_patch_checkbox("REVEAL_HIDDEN_PLAYERS"_T,
+			    &g.session.unhide_players_from_player_list,
+			    "REVEAL_HIDDEN_PLAYERS_DESC"_T.data());
 
-			components::command_button<"sextall">({}, "Send Sexts");
+			components::command_button<"sextall">({}, "SEND_SEXT"_T.data());
 			ImGui::SameLine();
-			components::command_button<"fakebanall">({}, "Send Fake Ban Messages");
+			components::command_button<"fakebanall">({}, "FAKE_BAN_MESSAGE"_T.data());
 
 			ImGui::EndListBox();
 		}
@@ -146,7 +150,7 @@ namespace big
 	{
 		ImGui::BeginGroup();
 
-		components::sub_title("Chat");
+		components::sub_title("CHAT"_T.data());
 		if (ImGui::BeginListBox("##chat", get_listbox_dimensions()))
 		{
 			static char msg[256];
@@ -203,7 +207,7 @@ namespace big
 	{
 		ImGui::BeginGroup();
 
-		components::sub_title("Globals");
+		components::sub_title("GLOBALS"_T.data());
 		if (ImGui::BeginListBox("##globals", get_listbox_dimensions()))
 		{
 			static int global_wanted_level = 0;
@@ -305,19 +309,19 @@ namespace big
 				});
 		}
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("This might break freemode missions and interiors. Use with caution");
+			ImGui::SetTooltip("FORCE_SCRIPT_HOST_DESC"_T.data());
 
 		ImGui::SameLine();
 
-		ImGui::Checkbox("Fast Join", &g.session.fast_join);
+		ImGui::Checkbox("FAST_JOIN"_T.data(), &g.session.fast_join);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("This WILL break jobs");
+			ImGui::SetTooltip("FAST_JOIN_DESC"_T.data());
 
 		ImGui::Spacing();
 
-		components::sub_title("Players");
+		components::sub_title("PLAYERS"_T.data());
 		components::options_modal(
-		    "Griefing",
+		    "GRIEFING"_T.data(),
 		    [] {
 			    components::command_button<"killall">({}, "KILL_ALL"_T);
 			    ImGui::SameLine();
@@ -351,23 +355,23 @@ namespace big
 
 			    components::command_button<"ceoraidall">({});
 			    ImGui::SameLine();
-			    components::button("Trigger MC Raid", [] {
+			    components::button("TRIGGER_MC_RAID"_T.data(), [] {
 				    g_player_service->iterate([](auto& plyr) {
 					    toxic::start_activity(plyr.second, eActivityType::BikerDefend);
 				    });
 			    });
 			    ImGui::SameLine();
-			    components::button("Trigger Bunker Raid", [] {
+			    components::button("TRIGGER_BUNKER_RAID"_T.data(), [] {
 				    g_player_service->iterate([](auto& plyr) {
 					    toxic::start_activity(plyr.second, eActivityType::GunrunningDefend);
 				    });
 			    });
 		    },
 		    false,
-		    "Griefing");
+		    "GRIEFING"_T.data());
 
 		components::options_modal(
-		    "Teleport",
+		    "TELEPORT"_T.data(),
 		    [] {
 			    if (ImGui::BeginCombo("##apartment", apartment_names[g.session.send_to_apartment_idx]))
 			    {
@@ -478,23 +482,25 @@ namespace big
 			    components::command_button<"camhedzall">();
 		    },
 		    true,
-		    "Teleport");
-		components::command_button<"emptysession">({}, "Empty Session");
+		    "TELEPORT"_T.data());
+		components::command_button<"emptysession">({}, "EMPTY_SESSION"_T.data());
 
 		components::sub_title("SCRIPT_HOST_FEATURES"_T);
 		ImGui::Checkbox("DISABLE_CEO_MONEY"_T.data(), &g.session.block_ceo_money);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("DISABLE_CEO_MONEY_DESC"_T.data());
 		ImGui::SameLine();
-		ImGui::Checkbox("Block Jobs", &g.session.block_jobs);
+		ImGui::Checkbox("BLOCK_JOBS"_T.data(), &g.session.block_jobs);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Prevents remote players from starting jobs while in your session");
+			ImGui::SetTooltip("BLOCK_JOBS_DESC"_T.data());
 
 		ImGui::Checkbox("RANDOMIZE_CEO_COLORS"_T.data(), &g.session.randomize_ceo_colors);
 		ImGui::SameLine();
-		components::script_patch_checkbox("Block Muggers", &g.session.block_muggers, "For the entire session");
+		components::script_patch_checkbox("BLOCK_MUGGERS"_T.data(), &g.session.block_muggers, "BLOCK_MUGGERS_DESC"_T.data());
 
-		components::script_patch_checkbox("Block CEO Raids", &g.session.block_ceo_raids, "For the entire session");
+		components::script_patch_checkbox("BLOCK_CEO_RAIDS"_T.data(),
+		    &g.session.block_ceo_raids,
+		    "BLOCK_CEO_RAIDS_DESC"_T.data());
 
 		ImGui::EndGroup();
 	}
