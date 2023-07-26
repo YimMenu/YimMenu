@@ -21,8 +21,6 @@ namespace big
 	{
 		for (auto& command : g_bool_commands)
 			command->refresh();
-		for (auto& command : g_looped_commands)
-			command->refresh();
 
 		register_script_patches();
 
