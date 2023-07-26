@@ -16,6 +16,7 @@
 
 
 class CNetGamePlayer;
+enum class eNetObjType;
 
 namespace rage
 {
@@ -67,7 +68,8 @@ namespace big
 		int friend_count = 0;
 		int player_count = 0;
 
-		CNetGamePlayer* m_syncing_player = nullptr;
+		CNetGamePlayer* m_syncing_player  = nullptr;
+		eNetObjType m_syncing_object_type = (eNetObjType)-1;
 		std::unordered_map<uint64_t, uint64_t> m_spoofed_peer_ids;
 
 		int m_remote_controller_vehicle = -1;
@@ -119,6 +121,15 @@ namespace big
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(logs, metric_logs, packet_logs, script_hook_logs, script_event)
 			} logs{};
+
+			struct fuzzer
+			{
+				bool enabled = false;
+				bool enabled_object_types[14];
+				bool active                    = false;
+				int thread_id                  = 0;
+				std::int16_t syncing_object_id = -1;
+			} fuzzer{};
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(debug, logs)
 		} debug{};
@@ -253,7 +264,6 @@ namespace big
 				bool bounty                     = true;
 				bool ceo_money                  = true;
 				bool clear_wanted_level         = true;
-				bool fake_deposit               = true;
 				bool force_mission              = true;
 				bool force_teleport             = true;
 				bool gta_banner                 = false;
@@ -271,7 +281,7 @@ namespace big
 				bool start_activity             = true;
 				bool send_sms                   = true;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_events, bounty, ceo_money, clear_wanted_level, fake_deposit, force_mission, force_teleport, gta_banner, mc_teleport, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate, give_collectible, vehicle_kick, teleport_to_warehouse, start_activity, send_sms)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_events, bounty, ceo_money, clear_wanted_level, force_mission, force_teleport, gta_banner, mc_teleport, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate, give_collectible, vehicle_kick, teleport_to_warehouse, start_activity, send_sms)
 			} script_events{};
 
 			bool rid_join                = false;

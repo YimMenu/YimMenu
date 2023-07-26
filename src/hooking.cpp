@@ -122,6 +122,8 @@ namespace big
 		detour_hook_helper::add<hooks::render_entity>("RE", g_pointers->m_gta.m_render_entity);
 		detour_hook_helper::add<hooks::render_big_ped>("RBP", g_pointers->m_gta.m_render_big_ped);
 
+		detour_hook_helper::add<hooks::read_bits_single>("RBS", g_pointers->m_gta.m_read_bits_single);
+
 		g_hooking = this;
 	}
 

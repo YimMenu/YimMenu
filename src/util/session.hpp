@@ -161,6 +161,9 @@ namespace big::session
 
 	inline void add_infraction(player_ptr player, Infraction infraction)
 	{
+		if (g.debug.fuzzer.enabled)
+			return;
+
 		auto plyr = g_player_database_service->get_or_create_player(player);
 		if (!plyr->infractions.contains((int)infraction))
 		{

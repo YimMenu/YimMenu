@@ -1029,13 +1029,13 @@ enum class BlipColors
 
 enum BlipDisplayBits
 {
-	BlipShowCheckmark            = (1 << 16),
-	BlipShowDollarSign           = (1 << 17),
-	BlipShowHeadingIndicator     = (1 << 18),
-	BlipShowFullCircle           = (1 << 19),
-	BlipIsFriend                 = (1 << 20),
-	BlipIsCrew                   = (1 << 21),
-	BlipIsSelected               = (1 << 23),
+	BlipShowCheckmark        = (1 << 16),
+	BlipShowDollarSign       = (1 << 17),
+	BlipShowHeadingIndicator = (1 << 18),
+	BlipShowFullCircle       = (1 << 19),
+	BlipIsFriend             = (1 << 20),
+	BlipIsCrew               = (1 << 21),
+	BlipIsSelected           = (1 << 23),
 };
 
 enum class BlipRenderBits
@@ -1068,6 +1068,23 @@ enum class eNetObjType
 	NET_OBJ_TYPE_TRAILER,
 	NET_OBJ_TYPE_TRAIN
 };
+
+constexpr const auto net_object_type_strs = std::to_array({
+    "AUTOMOBILE",
+    "BIKE",
+    "BOAT",
+    "DOOR",
+    "HELI",
+    "OBJECT",
+    "PED",
+    "PICKUP",
+    "PICKUP_PLACEMENT",
+    "PLANE",
+    "SUBMARINE",
+    "PLAYER",
+    "TRAILER",
+    "TRAIN",
+});
 
 enum class eNetObjectFlags : uint16_t
 {

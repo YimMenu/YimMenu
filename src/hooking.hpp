@@ -158,6 +158,8 @@ namespace big
 		static void* render_ped(__int64 renderer, CPed* ped, __int64 a3, __int64 a4);
 		static void render_entity(__int64 renderer, rage::fwEntity* entity, int unk, bool a4);
 		static __int64 render_big_ped(__int64 renderer, CPed* ped, __int64 a3, __int64 a4);
+
+		static bool read_bits_single(void* data, int* out_value, int size, int offset);
 	};
 
 	class minhook_keepalive

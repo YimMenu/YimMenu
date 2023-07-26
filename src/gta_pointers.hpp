@@ -300,6 +300,8 @@ namespace big
 		PVOID m_render_big_ped;
 
 		bool* m_force_relay_connections;
+
+		PVOID m_read_bits_single;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

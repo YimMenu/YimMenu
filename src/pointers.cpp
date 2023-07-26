@@ -676,7 +676,7 @@ namespace big
         // Write Join Response Data
         {
             "WJRD",
-            "E8 ? ? ? ? 41 8B DF 84 C0",
+            "E8 ? ? ? ? 84 C0 74 07 40 84 FF 41 0F 95 C6",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_write_join_response_data = ptr.add(1).rip().as<functions::write_join_response_data>();
@@ -1297,6 +1297,15 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_force_relay_connections = ptr.add(2).rip().as<bool*>();
+            }
+        },
+        // Read Bits Single
+        {
+            "RBS",
+            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 41 57 33 FF",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_read_bits_single = ptr.as<PVOID*>();
             }
         },
         // Max Wanted Level

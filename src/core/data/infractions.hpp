@@ -11,7 +11,7 @@ namespace big
 		LOST_CONNECTION_KICK_DETECTED, // do not use
 		SPOOFED_ROCKSTAR_ID,           // do not use
 		TRIGGERED_ANTICHEAT,
-		TRIED_CRASH_PLAYER, // do not use
+		TRIED_CRASH_PLAYER,
 		TRIED_KICK_PLAYER,
 		BLAME_EXPLOSION_DETECTED, // do not use (for now)
 		ATTACKING_WITH_GODMODE,

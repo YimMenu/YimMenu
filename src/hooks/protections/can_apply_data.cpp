@@ -72,7 +72,8 @@ namespace big
 
 		constexpr sync_node_id()
 		{
-			id = 0;
+			id   = 0;
+			name = "INVALID NODE ID!";
 		}
 
 		template<size_t N>
@@ -582,7 +583,7 @@ namespace big
 
 	constexpr uint32_t crash_vehicles[] = {RAGE_JOAAT("arbitergt"), RAGE_JOAAT("astron2"), RAGE_JOAAT("cyclone2"), RAGE_JOAAT("ignus2"), RAGE_JOAAT("s95")};
 
-	constexpr uint32_t crash_objects[] = {RAGE_JOAAT("prop_dummy_01"), RAGE_JOAAT("prop_dummy_car"), RAGE_JOAAT("prop_dummy_light"), RAGE_JOAAT("prop_dummy_plane"), RAGE_JOAAT("prop_distantcar_night"), RAGE_JOAAT("prop_distantcar_day"), RAGE_JOAAT("hei_bh1_08_details4_em_night"), RAGE_JOAAT("dt1_18_sq_night_slod"), RAGE_JOAAT("ss1_12_night_slod"), -1288391198, RAGE_JOAAT("h4_prop_bush_bgnvla_med_01"), RAGE_JOAAT("h4_prop_bush_bgnvla_lrg_01"), RAGE_JOAAT("h4_prop_bush_buddleia_low_01"), RAGE_JOAAT("h4_prop_bush_ear_aa"), RAGE_JOAAT("h4_prop_bush_ear_ab"), RAGE_JOAAT("h4_prop_bush_fern_low_01"), RAGE_JOAAT("h4_prop_bush_fern_tall_cc"), RAGE_JOAAT("h4_prop_bush_mang_ad"), RAGE_JOAAT("h4_prop_bush_mang_low_aa"), RAGE_JOAAT("h4_prop_bush_mang_low_ab"), RAGE_JOAAT("h4_prop_bush_seagrape_low_01"), RAGE_JOAAT("prop_h4_ground_cover"), RAGE_JOAAT("h4_prop_weed_groundcover_01"), RAGE_JOAAT("h4_prop_grass_med_01"), RAGE_JOAAT("h4_prop_grass_tropical_lush_01"), RAGE_JOAAT("h4_prop_grass_wiregrass_01"), RAGE_JOAAT("h4_prop_weed_01_plant"), RAGE_JOAAT("h4_prop_weed_01_row"), RAGE_JOAAT("urbanweeds02_l1"), RAGE_JOAAT("proc_forest_grass01"), RAGE_JOAAT("prop_small_bushyba"), RAGE_JOAAT("v_res_d_dildo_a"), RAGE_JOAAT("v_res_d_dildo_b"), RAGE_JOAAT("v_res_d_dildo_c"), RAGE_JOAAT("v_res_d_dildo_d"), RAGE_JOAAT("v_res_d_dildo_e"), RAGE_JOAAT("v_res_d_dildo_f"), RAGE_JOAAT("v_res_skateboard"), RAGE_JOAAT("prop_battery_01"), RAGE_JOAAT("prop_barbell_01"), RAGE_JOAAT("prop_barbell_02"), RAGE_JOAAT("prop_bandsaw_01"), RAGE_JOAAT("prop_bbq_3"), RAGE_JOAAT("v_med_curtainsnewcloth2"), RAGE_JOAAT("bh1_07_flagpoles"), 92962485, RAGE_JOAAT("proc_dry_plants_01"), RAGE_JOAAT("proc_leafyplant_01"), RAGE_JOAAT("proc_grassplantmix_02"), RAGE_JOAAT("proc_dryplantsgrass_01"), RAGE_JOAAT("proc_dryplantsgrass_02"), RAGE_JOAAT("proc_dryplantsgrass_02"), RAGE_JOAAT("proc_grasses01"), RAGE_JOAAT("prop_dryweed_002_a"), RAGE_JOAAT("prop_fernba"), RAGE_JOAAT("prop_weed_001_aa"), RAGE_JOAAT("urbangrnfrnds_01"), RAGE_JOAAT("urbanweeds01"), RAGE_JOAAT("prop_dandy_b"), RAGE_JOAAT("v_proc2_temp"), RAGE_JOAAT("prop_fernbb"), RAGE_JOAAT("proc_drygrassfronds01"), RAGE_JOAAT("prop_log_ae"), RAGE_JOAAT("prop_grass_da")};
+	constexpr uint32_t crash_objects[] = {RAGE_JOAAT("prop_dummy_01"), RAGE_JOAAT("prop_dummy_car"), RAGE_JOAAT("prop_dummy_light"), RAGE_JOAAT("prop_dummy_plane"), RAGE_JOAAT("prop_distantcar_night"), RAGE_JOAAT("prop_distantcar_day"), RAGE_JOAAT("hei_bh1_08_details4_em_night"), RAGE_JOAAT("dt1_18_sq_night_slod"), RAGE_JOAAT("ss1_12_night_slod"), -1288391198, RAGE_JOAAT("h4_prop_bush_bgnvla_med_01"), RAGE_JOAAT("h4_prop_bush_bgnvla_lrg_01"), RAGE_JOAAT("h4_prop_bush_buddleia_low_01"), RAGE_JOAAT("h4_prop_bush_ear_aa"), RAGE_JOAAT("h4_prop_bush_ear_ab"), RAGE_JOAAT("h4_prop_bush_fern_low_01"), RAGE_JOAAT("h4_prop_bush_fern_tall_cc"), RAGE_JOAAT("h4_prop_bush_mang_ad"), RAGE_JOAAT("h4_prop_bush_mang_low_aa"), RAGE_JOAAT("h4_prop_bush_mang_low_ab"), RAGE_JOAAT("h4_prop_bush_seagrape_low_01"), RAGE_JOAAT("prop_h4_ground_cover"), RAGE_JOAAT("h4_prop_weed_groundcover_01"), RAGE_JOAAT("h4_prop_grass_med_01"), RAGE_JOAAT("h4_prop_grass_tropical_lush_01"), RAGE_JOAAT("h4_prop_grass_wiregrass_01"), RAGE_JOAAT("h4_prop_weed_01_plant"), RAGE_JOAAT("h4_prop_weed_01_row"), RAGE_JOAAT("urbanweeds02_l1"), RAGE_JOAAT("proc_forest_grass01"), RAGE_JOAAT("prop_small_bushyba"), RAGE_JOAAT("v_res_d_dildo_a"), RAGE_JOAAT("v_res_d_dildo_b"), RAGE_JOAAT("v_res_d_dildo_c"), RAGE_JOAAT("v_res_d_dildo_d"), RAGE_JOAAT("v_res_d_dildo_e"), RAGE_JOAAT("v_res_d_dildo_f"), RAGE_JOAAT("v_res_skateboard"), RAGE_JOAAT("prop_battery_01"), RAGE_JOAAT("prop_barbell_01"), RAGE_JOAAT("prop_barbell_02"), RAGE_JOAAT("prop_bandsaw_01"), RAGE_JOAAT("prop_bbq_3"), RAGE_JOAAT("v_med_curtainsnewcloth2"), RAGE_JOAAT("bh1_07_flagpoles"), 92962485, RAGE_JOAAT("proc_dry_plants_01"), RAGE_JOAAT("proc_leafyplant_01"), RAGE_JOAAT("proc_grassplantmix_02"), RAGE_JOAAT("proc_dryplantsgrass_01"), RAGE_JOAAT("proc_dryplantsgrass_02"), RAGE_JOAAT("proc_dryplantsgrass_02"), RAGE_JOAAT("proc_grasses01"), RAGE_JOAAT("prop_dryweed_002_a"), RAGE_JOAAT("prop_fernba"), RAGE_JOAAT("prop_weed_001_aa"), RAGE_JOAAT("urbangrnfrnds_01"), RAGE_JOAAT("urbanweeds01"), RAGE_JOAAT("prop_dandy_b"), RAGE_JOAAT("v_proc2_temp"), RAGE_JOAAT("prop_fernbb"), RAGE_JOAAT("proc_drygrassfronds01"), RAGE_JOAAT("prop_log_ae"), RAGE_JOAAT("prop_grass_da"), RAGE_JOAAT("prop_fragtest_cnst_04")};
 
 	constexpr uint32_t valid_player_models[] = {
 	    RAGE_JOAAT("mp_m_freemode_01"),
@@ -758,7 +759,7 @@ namespace big
 
 	inline bool is_sane_override_pos(float x, float y, float z)
 	{
-		bool crash = (char)(fmaxf(0.0, (x + 149.0) - -8192.0) / 75.0) == 255 || (char)(fmaxf(0.0, (y + 149.0) - -8192.0) / 75.0) == 255;
+		bool crash = ((int)round(fmaxf(0.0, (x + 149.0) - -8192.0) / 75.0)) == 255 || ((int)round(fmaxf(0.0, (y + 149.0) - -8192.0) / 75.0)) == 255;
 
 		return !crash;
 	}
@@ -1173,6 +1174,7 @@ namespace big
 			LOG_FIELD(CPickupPlacementCreationDataNode, m_team_permits);
 			break;
 		case sync_node_id("CPlayerCameraDataNode"):
+		{
 			LOG_FIELD(CPlayerCameraDataNode, m_free_cam_pos_x);
 			LOG_FIELD(CPlayerCameraDataNode, m_free_cam_pos_y);
 			LOG_FIELD(CPlayerCameraDataNode, m_free_cam_pos_z);
@@ -1184,7 +1186,11 @@ namespace big
 			LOG_FIELD_B(CPlayerCameraDataNode, m_free_cam);
 			LOG_FIELD_B(CPlayerCameraDataNode, m_has_position_offset);
 			LOG_FIELD_B(CPlayerCameraDataNode, m_is_long_range_target);
+			LOG_FIELD_B(CPlayerCameraDataNode, pad_0110[3]);
+			auto unk_pos = (rage::fvector3*)((__int64)node + 0xF0);
+			LOG(INFO) << unk_pos->x << " " << unk_pos->y << " " << unk_pos->z;
 			break;
+		}
 		case sync_node_id("CPlayerCreationDataNode"):
 			LOG_FIELD_H(CPlayerCreationDataNode, m_model);
 			LOG_FIELD(CPlayerCreationDataNode, m_num_scars);
@@ -1494,7 +1500,70 @@ namespace big
 			LOG_FIELD_B(CPlayerWantedAndLOSDataNode, m_unk3);
 			LOG_FIELD_C(CPlayerWantedAndLOSDataNode, m_unk_player_index);
 			break;
+		case sync_node_id("CVehicleControlDataNode"):
+			LOG_FIELD(CVehicleControlDataNode, m_num_wheels);
+			LOG_FIELD(CVehicleControlDataNode, dwordC4);
+			LOG_FIELD(CVehicleControlDataNode, m_brake_control);
+			LOG_FIELD(CVehicleControlDataNode, dwordCC);
+			LOG_FIELD(CVehicleControlDataNode, m_road_node_address);
+			LOG_FIELD_B(CVehicleControlDataNode, m_kers_active);
+			LOG_FIELD_B(CVehicleControlDataNode, m_bringing_vehicle_to_halt);
+			LOG_FIELD(CVehicleControlDataNode, m_halt_distance);
+			LOG_FIELD_B(CVehicleControlDataNode, m_control_vertical_velocity);
+			LOG_FIELD_B(CVehicleControlDataNode, m_has_suspension_data);
+			LOG_FIELD_B(CVehicleControlDataNode, byteDE);
+			for (int i = 0; i < 10; i++)
+				LOG_FIELD(CVehicleControlDataNode, m_suspension_heights[i]);
+			LOG_FIELD_B(CVehicleControlDataNode, byte108);
+			LOG_FIELD_B(CVehicleControlDataNode, byte109);
+			LOG_FIELD_B(CVehicleControlDataNode, byte10A);
+			LOG_FIELD_B(CVehicleControlDataNode, byte10B);
+			LOG_FIELD_B(CVehicleControlDataNode, byte10C);
+			LOG_FIELD_B(CVehicleControlDataNode, byte10D);
+			LOG_FIELD_B(CVehicleControlDataNode, byte10E);
+			LOG_FIELD(CVehicleControlDataNode, float110);
+			LOG_FIELD(CVehicleControlDataNode, dword114);
+			LOG_FIELD_B(CVehicleControlDataNode, byte118);
+			LOG_FIELD_B(CVehicleControlDataNode, m_is_submarine_car);
+			LOG_FIELD(CVehicleControlDataNode, m_rudder_rotation_x);
+			LOG_FIELD(CVehicleControlDataNode, m_rudder_rotation_y);
+			LOG_FIELD(CVehicleControlDataNode, m_rudder_rotation_z);
+			LOG_FIELD_B(CVehicleControlDataNode, byte128);
+			LOG_FIELD_B(CVehicleControlDataNode, byte129);
+			break;
 		}
+	}
+
+	eNetObjType vehicle_type_to_object_type(eVehicleType type)
+	{
+		switch (type)
+		{
+		case eVehicleType::VEHICLE_TYPE_CAR:
+		case eVehicleType::VEHICLE_TYPE_SUBMARINECAR:
+		case eVehicleType::VEHICLE_TYPE_AUTOGYRO:
+		case eVehicleType::VEHICLE_TYPE_QUADBIKE:
+		case eVehicleType::VEHICLE_TYPE_AMPHIBIOUS_QUADBIKE:
+		case eVehicleType::VEHICLE_TYPE_AMPHIBIOUS_AUTOMOBILE: return eNetObjType::NET_OBJ_TYPE_AUTOMOBILE;
+		case eVehicleType::VEHICLE_TYPE_HELI:
+		case eVehicleType::VEHICLE_TYPE_BLIMP: return eNetObjType::NET_OBJ_TYPE_HELI;
+		case eVehicleType::VEHICLE_TYPE_PLANE: return eNetObjType::NET_OBJ_TYPE_PLANE;
+		case eVehicleType::VEHICLE_TYPE_BIKE:
+		case eVehicleType::VEHICLE_TYPE_BICYCLE: return eNetObjType::NET_OBJ_TYPE_BIKE;
+		case eVehicleType::VEHICLE_TYPE_TRAILER: return eNetObjType::NET_OBJ_TYPE_TRAILER;
+		case eVehicleType::VEHICLE_TYPE_TRAIN: return eNetObjType::NET_OBJ_TYPE_TRAIN;
+		case eVehicleType::VEHICLE_TYPE_SUBMARINE: return eNetObjType::NET_OBJ_TYPE_SUBMARINE;
+		case eVehicleType::VEHICLE_TYPE_DRAFT: return eNetObjType::NET_OBJ_TYPE_AUTOMOBILE; // this appears to be unused
+		}
+
+		return eNetObjType::NET_OBJ_TYPE_AUTOMOBILE;
+	}
+
+	bool is_crash_ped_task(eTaskTypeIndex type)
+	{
+		if (type == eTaskTypeIndex::CTaskUnalerted)
+			return true;
+
+		return false;
 	}
 
 	bool check_node(rage::netSyncNodeBase* node, CNetGamePlayer* sender, rage::netObject* object)
@@ -1516,7 +1585,7 @@ namespace big
 			if ((((CProjectBaseSyncDataNode*)node)->flags & 1) == 0)
 				return false;
 
-			if (sender_plyr && sender_plyr->log_clones)
+			if (g.debug.fuzzer.active && g.debug.fuzzer.enabled || sender_plyr && sender_plyr->log_clones)
 				log_node(node_id, sender_plyr, (CProjectBaseSyncDataNode*)node, object);
 
 			switch (node_id)
@@ -1528,6 +1597,14 @@ namespace big
 				{
 					notify::crash_blocked(sender, "invalid vehicle model");
 					return true;
+				}
+				if (auto info = model_info::get_vehicle_model(creation_node->m_model))
+				{
+					if (vehicle_type_to_object_type(info->m_vehicle_type) != g.m_syncing_object_type)
+					{
+						notify::crash_blocked(sender, "vehicle model mismatch");
+						return true;
+					}
 				}
 				break;
 			}
@@ -1651,7 +1728,7 @@ namespace big
 			case sync_node_id("CSectorDataNode"):
 			{
 				const auto sector_node = (CSectorDataNode*)(node);
-				if (sector_node->m_pos_x == 712 || sector_node->m_pos_y == 712 || sector_node->m_pos_z == 712)
+				if (sector_node->m_pos_x >= 711 || sector_node->m_pos_y >= 711)
 				{
 					notify::crash_blocked(sender, "invalid sector position (sector node)");
 					return true;
@@ -1664,10 +1741,11 @@ namespace big
 				if (game_state_node->m_is_overriding_population_control_sphere
 				    && !is_sane_override_pos(game_state_node->m_population_control_sphere_x,
 				        game_state_node->m_population_control_sphere_y,
-				        game_state_node->m_population_control_sphere_z)
-				    && gta_util::get_network()->m_game_session_ptr->is_host())
+				        game_state_node->m_population_control_sphere_z))
 				{
-					notify::crash_blocked(sender, "invalid sector position (player game state node)");
+					if (gta_util::get_network()->m_game_session_ptr->is_host())
+						notify::crash_blocked(sender, "invalid sector position (player game state node)");
+
 					return true;
 				}
 
@@ -1734,10 +1812,11 @@ namespace big
 			case sync_node_id("CTrainGameStateDataNode"):
 			{
 				const auto train_node = (CTrainGameStateDataNode*)(node);
-				if (train_node->m_track_id < 0 || train_node->m_track_id >= 27)
+				int track_id          = train_node->m_track_id;
+				if (track_id != -1 && (track_id < 0 || track_id >= 27))
 				{
-					//notify::crash_blocked(sender, "out of bounds train track index");
-					//LOG(INFO) << train_node->m_track_id;
+					notify::crash_blocked(sender, "out of bounds train track index");
+					LOG(INFO) << (int)train_node->m_track_id;
 					return true;
 				}
 				break;
@@ -1812,18 +1891,61 @@ namespace big
 				{
 					if (auto vehicle = (CVehicle*)object->GetGameObject())
 					{
-						if (auto model_info = vehicle->m_model_info)
+						if (auto model_info = static_cast<CVehicleModelInfo*>(vehicle->m_model_info))
 						{
-							if (model_info->m_hash != RAGE_JOAAT("stromberg") && model_info->m_hash != RAGE_JOAAT("toreador"))
+							if (model_info->m_vehicle_type != eVehicleType::VEHICLE_TYPE_SUBMARINECAR)
 							{
 								notify::crash_blocked(sender, "submarine car");
 								return true;
 							}
 						}
 					}
+
+					return true;
 				}
 
 				break;
+			}
+			case sync_node_id("CPlayerCameraDataNode"):
+			{
+				const auto camera_node = (CPlayerCameraDataNode*)(node);
+				if (!is_sane_override_pos(camera_node->m_free_cam_pos_x, camera_node->m_free_cam_pos_y, camera_node->m_free_cam_pos_z))
+				{
+					if (gta_util::get_network()->m_game_session_ptr->is_host())
+						notify::crash_blocked(sender, "invalid sector position (camera data node)");
+					return true;
+				}
+
+				break;
+			}
+			case sync_node_id("CVehicleGadgetDataNode"):
+			{
+				const auto gadget_node = (CVehicleGadgetDataNode*)(node);
+				for (int i = 0; i < gadget_node->m_gadget_count; i++)
+				{
+					if (gadget_node->m_gadget_data[i].m_gadget_type > 6)
+					{
+						notify::crash_blocked(sender, "out of bounds gadget type");
+						return true;
+					}
+				}
+				break;
+			}
+			case sync_node_id("CPedTaskTreeDataNode"):
+			{
+				const auto task_node = (CPedTaskTreeDataNode*)(node);
+
+				for (int i = 0; i < 8; i++)
+				{
+					if (task_node->m_task_bitset & (1 << i))
+					{
+						if (is_crash_ped_task((eTaskTypeIndex)task_node->m_tasks[i].m_task_type))
+						{
+							notify::crash_blocked(sender, "invalid ped task");
+							return true;
+						}
+					}
+				}
 			}
 			}
 		}
