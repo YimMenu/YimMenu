@@ -13,7 +13,7 @@ namespace big
     private:
         const std::size_t m_argument_count;
         std::vector<uint64_t> m_argument_data;
-        std::size_t m_idx;
+        mutable std::size_t m_idx;
 
     public:
         command_arguments(std::size_t argument_count = 0) :
@@ -52,7 +52,7 @@ namespace big
 
         template<typename T = uint64_t>
             requires ArgumentLimit<T>
-        T pop()
+        T shift() const
         {
             if (m_idx >= m_argument_count)
             {
@@ -64,27 +64,26 @@ namespace big
 
         template<typename T = uint64_t>
             requires ArgumentLimit<T>
-        std::enable_if_t<std::is_pointer_v<T>, const T> pop() const
+        std::enable_if_t<std::is_pointer_v<T>, T> shift() const
         {
             if (m_idx >= m_argument_count)
             {
                 throw std::runtime_error("Attempted to pop argument beyond allocated argument size.");
             }
 
-            return static_cast<T>(m_argument_data[m_idx++]);
+            return static_cast<const T>(m_argument_data[m_idx++]);
         }
 
         template<typename T = uint64_t>
             requires ArgumentLimit<T>
         void push(T arg)
         {
-            if (m_idx >= m_argument_count)
+            if (m_idx++ >= m_argument_count)
             {
                 throw std::runtime_error("Attempted to push argument beyond allocated argument size.");
             }
 
             m_argument_data.push_back(reinterpret_cast<uint64_t&>(arg));
-            m_idx++;
         }
 
         template<typename T = uint64_t>
@@ -99,9 +98,11 @@ namespace big
             m_argument_data[idx] = reinterpret_cast<uint64_t&>(arg);
         }
 
-        void reset()
+        command_arguments& reset_idx()
         {
             m_idx = 0;
+
+            return *this;
         }
 
         std::size_t size() const

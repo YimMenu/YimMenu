@@ -55,13 +55,13 @@ namespace big
 			return m_num_args;
 		}
 
-		void call(const command_arguments& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
+		void call(command_arguments& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 		void call(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 		static std::vector<command*> get_suggestions(std::string, int limit = 7);
 
 		static command* get(rage::joaat_t command);
 
-		static void call(rage::joaat_t command, const command_arguments& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
+		static void call(rage::joaat_t command, command_arguments& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 		static void call(rage::joaat_t command, const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 
 		static bool process(const std::string& text, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>(), bool use_best_suggestion = false);

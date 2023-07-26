@@ -45,7 +45,10 @@ namespace big
 				return ImGui::Text("INVALID COMMAND");
 
 			if (ImGui::Button(label_override.value_or(command->get_label()).data()))
-				command->call(args);
+			{
+				command_arguments _args(args);
+				command->call(_args);
+			}
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip(command->get_description().c_str());
 		}
