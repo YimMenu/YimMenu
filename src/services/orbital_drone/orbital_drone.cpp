@@ -13,7 +13,7 @@
 
 namespace big
 {
-	bool_command g_orbital_drone("orbitaldrone", "Toggle Orbital Drone", "Enables/Disables the orbital drone",
+	bool_command g_orbital_drone("orbitaldrone", "ORBITAL_DRONE", "ORBITAL_DRONE_DESC",
 	    g.world.orbital_drone.enabled);
 
 	static bool nav_override;

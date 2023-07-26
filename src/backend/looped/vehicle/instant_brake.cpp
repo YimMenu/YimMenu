@@ -18,6 +18,6 @@ namespace big
 		}
 	};
 
-	instant_brake g_instant_brake("instantbrake", "Instant Brake", "Makes your vehicle stop instantly when you press the brake",
+	instant_brake g_instant_brake("instantbrake", "INSTANT_BRAKE", "INSTANT_BRAKE_DESC",
 	    g.vehicle.instant_brake);
 }

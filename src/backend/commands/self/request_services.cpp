@@ -94,13 +94,13 @@ namespace big
 		}
 	};
 
-	boat_pickup g_boat_pickup("boatpickup", "Request Boat Pickup", "Request a boat pickup", 0);
-	ballistic_armor g_ballistic_armor("ballisticarmor", "Request Ballistic Equipment", "Requests ballistic equipment which includes ballistic armor and an minigun", 0);
-	request_avenger g_request_avenger("avenger", "Request Avenger", "Requests the Avenger", 0);
-	request_kosatka g_request_kosatka("kosatka", "Request Kosatka", "Requests the Kosatka", 0);
-	request_moc g_request_moc("moc", "Request M.O.C", "Requests the Mobile Operations Center", 0);
-	request_terrorbyte g_request_terrorbyte("terrorbyte", "Request Terrorbyte", "Requests the terrorbyte", 0);
-	request_acidlab g_request_acidlab("acidlab", "Request Acid Lab", "Requests the Acid Lab", 0);
-	request_acidlab_bike g_request_acidlab_bike("acidbike", "Request Acid Bike", "Requests the Acid Lab Delivery Bike", 0);
-	request_taxi g_request_taxi("taxi", "Request Taxi", "Requests a taxi to give you a ride", 0);
+	boat_pickup g_boat_pickup("boatpickup", "REQUEST_BOAT", "REQUEST_BOAT_DESC", 0);
+	ballistic_armor g_ballistic_armor("ballisticarmor", "REQUEST_BALLISTIC", "REQUEST_BALLISTIC_DESC", 0);
+	request_avenger g_request_avenger("avenger", "REQUEST_AVENGER", "REQUEST_AVENGER_DESC", 0);
+	request_kosatka g_request_kosatka("kosatka", "REQUEST_KOSATKA", "REQUEST_KOSATKA_DESC", 0);
+	request_moc g_request_moc("moc", "REQUEST_MOC", "REQUEST_MOC_DESC", 0);
+	request_terrorbyte g_request_terrorbyte("terrorbyte", "REQUEST_TERRORBYTE", "REQUEST_TERRORBYTE_DESC", 0);
+	request_acidlab g_request_acidlab("acidlab", "REQUEST_ACIDLAB", "REQUEST_ACIDLAB_DESC", 0);
+	request_acidlab_bike g_request_acidlab_bike("acidbike", "REQUEST_ACIDBIKE", "REQUEST_ACIDBIKE_DESC", 0);
+	request_taxi g_request_taxi("taxi", "REQUEST_TAXI", "REQUEST_TAXI_DESC", 0);
 }
