@@ -53,7 +53,7 @@ namespace lua::stats
 	// Name: get_bool
 	// Param: stat_name: string: the stat name.
 	// Returns: boolean: The value of the given stat.
-	static bool get_bool_name(std::string& stat_name)
+	static bool get_bool_name(std::string stat_name)
 	{
 		return get_bool_hash(stat_text_to_hash(stat_name));
 	}
@@ -79,7 +79,7 @@ namespace lua::stats
 	// Param: stat_name: string: the stat name.
 	// Param: bit_index: integer: bit index.
 	// Returns: boolean: The value of the given stat.
-	static bool get_bool_masked_name(std::string& stat_name, int bit_index)
+	static bool get_bool_masked_name(std::string stat_name, int bit_index)
 	{
 		return get_bool_masked_hash(stat_text_to_hash(stat_name), bit_index);
 	}
@@ -102,7 +102,7 @@ namespace lua::stats
 	// Name: get_float
 	// Param: stat_name: string: the stat name.
 	// Returns: float: The value of the given stat.
-	static float get_float_name(std::string& stat_name)
+	static float get_float_name(std::string stat_name)
 	{
 		return get_float_hash(stat_text_to_hash(stat_name));
 	}
@@ -125,7 +125,7 @@ namespace lua::stats
 	// Name: get_int
 	// Param: stat_name: string: the stat name.
 	// Returns: integer: The value of the given stat.
-	static int get_int_name(std::string& stat_name)
+	static int get_int_name(std::string stat_name)
 	{
 		return get_int_hash(stat_text_to_hash(stat_name));
 	}
@@ -152,7 +152,7 @@ namespace lua::stats
 	// Param: bit_index: integer: bit index.
 	// Param: bit_size: integer: bit size.
 	// Returns: integer: The value of the given stat.
-	static int get_masked_int_name(std::string& stat_name, int bit_index, int bit_size)
+	static int get_masked_int_name(std::string stat_name, int bit_index, int bit_size)
 	{
 		return get_masked_int_hash(stat_text_to_hash(stat_name), bit_index, bit_size);
 	}
@@ -174,7 +174,7 @@ namespace lua::stats
 	// Param: stat_name: string: the stat name.
 	// Param: new_value: boolean: the new value for the stat.
 	// Returns: boolean: True if succeeded.
-	static bool set_bool_name(std::string& stat_name, bool new_value)
+	static bool set_bool_name(std::string stat_name, bool new_value)
 	{
 		return set_bool_hash(stat_text_to_hash(stat_name), new_value);
 	}
@@ -199,7 +199,7 @@ namespace lua::stats
 	// Param: new_value: boolean: the new value for the stat.
 	// Param: bit_index: integer: bit_index.
 	// Returns: boolean: True if succeeded.
-	static bool set_bool_masked_name(std::string& stat_name, bool new_value, int bit_index)
+	static bool set_bool_masked_name(std::string stat_name, bool new_value, int bit_index)
 	{
 		return set_bool_masked_hash(stat_text_to_hash(stat_name), new_value, bit_index);
 	}
@@ -221,7 +221,7 @@ namespace lua::stats
 	// Param: stat_name: string: the stat name.
 	// Param: new_value: float: the new value for the stat.
 	// Returns: boolean: True if succeeded.
-	static bool set_float_name(std::string& stat_name, float new_value)
+	static bool set_float_name(std::string stat_name, float new_value)
 	{
 		return set_float_hash(stat_text_to_hash(stat_name), new_value);
 	}
@@ -243,7 +243,7 @@ namespace lua::stats
 	// Param: stat_name: string: the stat name.
 	// Param: new_value: integer: the new value for the stat.
 	// Returns: boolean: True if succeeded.
-	static bool set_int_name(std::string& stat_name, int new_value)
+	static bool set_int_name(std::string stat_name, int new_value)
 	{
 		return set_int_hash(stat_text_to_hash(stat_name), new_value);
 	}
@@ -269,7 +269,7 @@ namespace lua::stats
 	// Param: bit_start: integer: bit_start.
 	// Param: bit_size: integer: bit_size.
 	// Returns: boolean: True if succeeded.
-	static bool set_masked_int_name(std::string& stat_name, int new_value, int bit_start, int bit_size)
+	static bool set_masked_int_name(std::string stat_name, int new_value, int bit_start, int bit_size)
 	{
 		return set_masked_int_hash(stat_text_to_hash(stat_name), new_value, bit_start, bit_size);
 	}
