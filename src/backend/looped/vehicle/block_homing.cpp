@@ -21,6 +21,6 @@ namespace big
 		}
 	};
 
-	block_homing g_block_homing("blockhoming", "Block Homing Missiles", "Prevents homing missiles from locking on to your vehicle",
+	block_homing g_block_homing("blockhoming", "BLOCK_HOMING", "BLOCK_HOMING_DESC",
 	    g.vehicle.block_homing);
 }

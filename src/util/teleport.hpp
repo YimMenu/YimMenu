@@ -54,15 +54,16 @@ namespace big::teleport
 		}
 		else
 		{
-			auto hnd = vehicle::spawn(RAGE_JOAAT("ninef"), *player->get_ped()->get_position(), 0.0f, true);
+			auto hnd = vehicle::spawn(VEHICLE_RCBANDITO, *player->get_ped()->get_position(), 0.0f, true);
 			ENTITY::SET_ENTITY_VISIBLE(hnd, false, false);
 			ENTITY::SET_ENTITY_COLLISION(hnd, false, false);
 			ENTITY::FREEZE_ENTITY_POSITION(hnd, true);
 
 			auto obj_id                      = player->get_ped()->m_net_object->m_object_id;
+			auto veh_id                      = g_pointers->m_gta.m_handle_to_ptr(hnd)->m_net_object->m_object_id;
 			remote_player_teleport remote_tp = {obj_id, {coords.x, coords.y, coords.z}};
 
-			g.m_remote_player_teleports.emplace(g_pointers->m_gta.m_handle_to_ptr(hnd)->m_net_object->m_object_id, remote_tp);
+			g.m_remote_player_teleports.emplace(veh_id, remote_tp);
 
 			if (is_local_player)
 			{
@@ -90,8 +91,8 @@ namespace big::teleport
 
 			entity::delete_entity(hnd);
 
-			std::erase_if(g.m_remote_player_teleports, [obj_id](auto& obj) {
-				return obj.first == obj_id;
+			std::erase_if(g.m_remote_player_teleports, [veh_id](auto& obj) {
+				return obj.first == veh_id;
 			});
 
 			return true;

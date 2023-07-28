@@ -3,34 +3,50 @@
 #include "backend/looped/looped.hpp"
 #include "natives.hpp"
 #include "script.hpp"
-#include "core/data/color.hpp"
 
 namespace big
 {
+	float red = 255.f, green = 0.f, blue = 0.f;
 	void looped::vehicle_rainbow_paint()
 	{
 		static std::chrono::system_clock::time_point last_rgb_run_time;
 		static std::chrono::milliseconds delay = 0s;
+		static bool ran                        = false;
 
-		static int red   = 255;
-		static int green = 0;
-		static int blue  = 0;
-
-		if (self::veh && g.vehicle.rainbow_paint.type != RainbowPaintType::Off && last_rgb_run_time + delay < std::chrono::system_clock::now())
+		if (self::veh && g.vehicle.rainbow_paint.type != RainbowPaintType::Off)
 		{
-			int delay_step = 100;
-
-			if (g.vehicle.rainbow_paint.type == RainbowPaintType::Spasm)
+			if (g.vehicle.rainbow_paint.type == RainbowPaintType::Spasm && last_rgb_run_time + delay < std::chrono::system_clock::now())
 			{
-				red   = rand() % 256;
-				green = rand() % 256;
-				blue  = rand() % 256;
+				red   = rand() % 255;
+				green = rand() % 255;
+				blue  = rand() % 255;
+				delay             = std::chrono::milliseconds((110) - (g.vehicle.rainbow_paint.speed * 10));
+				last_rgb_run_time = std::chrono::system_clock::now();
+				ran               = true;
 			}
-			else if (g.vehicle.rainbow_paint.type == RainbowPaintType::Fade)
+
+			if (g.vehicle.rainbow_paint.type == RainbowPaintType::Fade) //messy but gets job done
 			{
-				red   = rgb.red;
-				blue  = rgb.blue;
-				green = rgb.green;
+				if (ran) { red = 255; green = 0; blue  = 0; ran   = false; }
+
+				if (red > 0 && blue == 0)
+				{
+					green += g.vehicle.rainbow_paint.speed;
+					red -= g.vehicle.rainbow_paint.speed;
+				}
+				if (green > 0 && red == 0)
+				{
+					blue += g.vehicle.rainbow_paint.speed;
+					green -= g.vehicle.rainbow_paint.speed;
+				}
+				if (blue > 0 && green == 0)
+				{
+					red += g.vehicle.rainbow_paint.speed;
+					blue -= g.vehicle.rainbow_paint.speed;
+				}
+				red   = std::clamp(red, 0.f, 255.f);
+				green = std::clamp(green, 0.f, 255.f);
+				blue  = std::clamp(blue, 0.f, 255.f);
 			}
 
 			if (g.vehicle.rainbow_paint.primary)
@@ -43,19 +59,12 @@ namespace big
 			}
 			if (g.vehicle.rainbow_paint.neon)
 			{
-				VEHICLE::SET_VEHICLE_NEON_ENABLED(self::veh, 0, 1);
-				VEHICLE::SET_VEHICLE_NEON_ENABLED(self::veh, 1, 1);
-				VEHICLE::SET_VEHICLE_NEON_ENABLED(self::veh, 2, 1);
-				VEHICLE::SET_VEHICLE_NEON_ENABLED(self::veh, 3, 1);
 				VEHICLE::SET_VEHICLE_NEON_COLOUR(self::veh, red, green, blue);
 			}
 			if (g.vehicle.rainbow_paint.smoke)
 			{
 				VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(self::veh, red, green, blue);
 			}
-
-			delay = std::chrono::milliseconds(((delay_step * 10) + 10) - (g.vehicle.rainbow_paint.speed * delay_step));
-			last_rgb_run_time = std::chrono::system_clock::now();
 		}
 	}
 

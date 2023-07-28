@@ -19,6 +19,8 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("DEBUG_TAB_MISC"_T.data()))
 		{
+			components::command_checkbox<"windowhook">("Disable GTA Window Hook");
+
 			ImGui::Text("Fiber Pool Usage %d/%d", g_fiber_pool->get_used_fibers(), g_fiber_pool->get_total_fibers());
 
 			ImGui::SameLine();

@@ -12,7 +12,7 @@ namespace lua::gui
 		ImGui::InputFloat(m_text.c_str(), &m_value);
 	}
 
-	int input_float::get_value()
+	float input_float::get_value()
 	{
 		return m_value;
 	}

@@ -2,18 +2,41 @@
 #include "core/enums.hpp"
 #include "gta/enums.hpp"
 #include "util/entity.hpp"
-#include "core/data/color.hpp"
 
 namespace big
 {
 	void looped::weapons_paint_gun()
 	{
+		static Vector3 col = {0, 0, 0};
+		static float red = 255.f, green = 0.f, blue = 0.f;
+
 		if (g.weapons.paintgun.rainbow)
 		{
-			g.weapons.paintgun.col[0] = rgb.red;
-			g.weapons.paintgun.col[1] = rgb.green;
-			g.weapons.paintgun.col[2] = rgb.blue;
+			if (red > 0 && blue == 0)
+			{
+				green += red;
+				red -= g.weapons.paintgun.speed;
+			}
+			if (green > 0 && red == 0)
+			{
+				blue += g.weapons.paintgun.speed;
+				green -= g.weapons.paintgun.speed;
+			}
+			if (blue > 0 && green == 0)
+			{
+				red += g.weapons.paintgun.speed;
+				blue -= g.weapons.paintgun.speed;
+			}
+			red   = std::clamp(red, 0.f, 255.f);
+			green = std::clamp(green, 0.f, 255.f);
+			blue  = std::clamp(blue, 0.f, 255.f);
+
 		}
+
+		if (g.weapons.paintgun.rainbow)
+			col = {red, green, blue};
+		else
+			col = {g.weapons.paintgun.col[0], g.weapons.paintgun.col[1], g.weapons.paintgun.col[2]};
 
 		if (g.weapons.custom_weapon == CustomWeapon::PAINT_GUN && (!g.self.custom_weapon_stop || WEAPON::IS_PED_ARMED(self::ped, 4 | 2)))
 		{
@@ -35,9 +58,9 @@ namespace big
 					    0.f, // always 0
 					    0.5f, //size x
 					    0.4f, //size y
-					    g.weapons.paintgun.col[0],
-					    g.weapons.paintgun.col[1],
-					    g.weapons.paintgun.col[2],
+					    col.x,
+					    col.y,
+					    col.z,
 					    g.weapons.paintgun.col[3],
 					    -1,
 					    true,

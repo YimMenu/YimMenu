@@ -6,59 +6,62 @@
 
 namespace big
 {
-        class spawn_vehicle : command
-        {
-                using command::command;
+	class spawn_vehicle : command
+	{
+		using command::command;
 
-                virtual std::optional<std::vector<uint64_t>> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
-                {
-                        auto hash = rage::joaat(args[0]);
-                        return std::vector<uint64_t>{hash};
-                }
+		virtual std::optional<command_arguments> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
+		{
+			command_arguments result(1);
+			result.push(rage::joaat(args[0]));
 
-                virtual CommandAccessLevel get_access_level()
-                {
-                        return CommandAccessLevel::FRIENDLY;
-                }
+			return result;
+		}
 
-                virtual void execute(const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx)
-                {
-                        if (!STREAMING::IS_MODEL_IN_CDIMAGE(args[0]) || !STREAMING::IS_MODEL_A_VEHICLE(args[0]))
-                        {
-                                ctx->report_error("Specified model is invalid");
-                                return;
-                        }
+		virtual CommandAccessLevel get_access_level()
+		{
+			return CommandAccessLevel::FRIENDLY;
+		}
 
-                        const auto spawn_location =
-                            vehicle::get_spawn_location(ctx->get_sender()->id() == self::id ? g.spawn_vehicle.spawn_inside : false,
-                                args[0],
-                                PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(ctx->get_sender()->id()));
-                        const auto spawn_heading = ENTITY::GET_ENTITY_HEADING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(ctx->get_sender()->id()));
+		virtual void execute(const command_arguments& args, const std::shared_ptr<command_context> ctx)
+		{
+            const auto hash = args.get<rage::joaat_t>(0);
+			if (!STREAMING::IS_MODEL_IN_CDIMAGE(hash) || !STREAMING::IS_MODEL_A_VEHICLE(hash))
+			{
+				ctx->report_error("Specified model is invalid");
+				return;
+			}
 
-                        const auto veh = vehicle::spawn(args[0], spawn_location, spawn_heading);
+			const auto spawn_location =
+			    vehicle::get_spawn_location(ctx->get_sender()->id() == self::id ? g.spawn_vehicle.spawn_inside : false,
+			        hash,
+			        PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(ctx->get_sender()->id()));
+			const auto spawn_heading = ENTITY::GET_ENTITY_HEADING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(ctx->get_sender()->id()));
 
-                        if (veh == 0)
-                        {
-                                g_notification_service->push_error("Vehicle", "Unable to spawn vehicle");
-                        }
-                        else
-                        {
-                                if (g.spawn_vehicle.spawn_maxed)
-                                {
-                                        vehicle::max_vehicle(veh);
-                                }
+			const auto veh = vehicle::spawn(hash, spawn_location, spawn_heading);
 
-                                if (g.spawn_vehicle.spawn_inside && ctx->get_sender()->id() == self::id)
-                                {
-                                        vehicle::teleport_into_vehicle(veh);
-                                }
-                        }
-                }
-        };
+			if (veh == 0)
+			{
+				g_notification_service->push_error("Vehicle", "Unable to spawn vehicle");
+			}
+			else
+			{
+				if (g.spawn_vehicle.spawn_maxed)
+				{
+					vehicle::max_vehicle(veh);
+				}
 
-        spawn_vehicle g_spawn_vehicle("spawn", "Spawn Vehicle", "Spawn a vehicle with the specified model", 1);
-        bool_command g_spawn_maxed("spawnmaxed", "Spawn Maxed", "Controls whether the vehicle spawned will have its mods maxed out",
-            g.spawn_vehicle.spawn_maxed);
-        bool_command g_spawn_inside("spawnin", "Spawn Inside", "Controls whether the player should be set inside the vehicle after it spawns",
-            g.spawn_vehicle.spawn_inside);
+				if (g.spawn_vehicle.spawn_inside && ctx->get_sender()->id() == self::id)
+				{
+					vehicle::teleport_into_vehicle(veh);
+				}
+			}
+		}
+	};
+
+	spawn_vehicle g_spawn_vehicle("spawn", "Spawn Vehicle", "Spawn a vehicle with the specified model", 1);
+	bool_command g_spawn_maxed("spawnmaxed", "Spawn Maxed", "Controls whether the vehicle spawned will have its mods maxed out",
+	    g.spawn_vehicle.spawn_maxed);
+	bool_command g_spawn_inside("spawnin", "Spawn Inside", "Controls whether the player should be set inside the vehicle after it spawns",
+	    g.spawn_vehicle.spawn_inside);
 }

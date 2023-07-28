@@ -16,9 +16,8 @@ include(scripts/json.cmake)
 include(scripts/cpr.cmake)
 include(scripts/zydis.cmake)
 include(scripts/lua.cmake)
-
-message("\nFetching custom modules")
 include(scripts/imgui.cmake)
+message("\nFetching custom modules")
 include(scripts/gtav-classes.cmake)
 
 

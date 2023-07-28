@@ -21,5 +21,5 @@ namespace big
 	};
 
 	no_vehicle_water_collision
-	    g_no_vehicle_water_collision("driveunder", "Drive Underwater", "Allows you to drive underwater", g.vehicle.no_water_collision);
+	    g_no_vehicle_water_collision("driveunder", "NO_COLLISION_WATER", "NO_COLLISION_WATER_DESC", g.vehicle.no_water_collision);
 }

@@ -10,7 +10,7 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual void execute(player_ptr player, const std::vector<uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx)
 		{
 			teleport::bring_player(player);
 		}
@@ -20,7 +20,7 @@ namespace big
 	{
 		using command::command;
 
-		virtual void execute(const std::vector<uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(const command_arguments& _args, const std::shared_ptr<command_context> ctx)
 		{
 			for (auto& player : g_player_service->players())
 				g_fiber_pool->queue_job([player]() {

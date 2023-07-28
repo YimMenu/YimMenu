@@ -150,6 +150,7 @@ namespace big
 			break;
 		case CustomWeapon::PAINT_GUN:
 			ImGui::Checkbox("Rainbow Color", &g.weapons.paintgun.rainbow);
+			ImGui::SliderFloat("Rainbow Speed", &g.weapons.paintgun.speed, 0.f, 10.f);
 			if (!g.weapons.paintgun.rainbow) { ImGui::ColorEdit4("Paint Gun Color", g.weapons.paintgun.col); }
 		}
 
@@ -295,7 +296,7 @@ namespace big
 			ImGui::SameLine();
 			ImGui::BeginGroup();
 			static std::string input_file_name;
-			components::input_text_with_hint("Weapon Loadout Filename", "Loadout Name", &input_file_name);
+			components::input_text_with_hint("Weapon Loadout Filename", "Loadout Name", input_file_name);
 			components::button("Save Loadout", [] {
 				persist_weapons::save_weapons(input_file_name);
 				input_file_name.clear();
