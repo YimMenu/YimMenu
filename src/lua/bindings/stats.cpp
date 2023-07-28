@@ -5,21 +5,6 @@
 
 namespace lua::stats
 {
-	static Hash stat_text_to_hash(std::string& text)
-	{
-		if (text[0] == '$')
-		{
-			text = text.substr(1);
-		}
-
-		std::transform(text.begin(), text.end(), text.begin(), ::toupper);
-
-		if (text.substr(0, 3) == "MPX")
-			text[2] = get_character_index() + '0';
-
-		return rage::joaat(text);
-	}
-
 	// Lua API: Table
 	// Name: stats
 	// Table for manipulating GTA stats.
@@ -33,6 +18,21 @@ namespace lua::stats
 		int character_index = 0;
 		STATS::STAT_GET_INT(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"), &character_index, -1);
 		return character_index;
+	}
+
+	static Hash stat_text_to_hash(std::string& text)
+	{
+		if (text[0] == '$')
+		{
+			text = text.substr(1);
+		}
+
+		std::transform(text.begin(), text.end(), text.begin(), ::toupper);
+
+		if (text.substr(0, 3) == "MPX")
+			text[2] = get_character_index() + '0';
+
+		return rage::joaat(text);
 	}
 
 	// Lua API: Function
