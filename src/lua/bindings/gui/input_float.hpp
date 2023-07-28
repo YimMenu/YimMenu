@@ -21,7 +21,7 @@ namespace lua::gui
 		// Class: input_float
 		// Name: get_value
 		// Returns: float: Get the value currently written inside the input field.
-		int get_value();
+		float get_value();
 
 		// Lua API: Function
 		// Class: input_float
