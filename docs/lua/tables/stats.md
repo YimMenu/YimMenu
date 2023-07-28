@@ -57,7 +57,7 @@ boolean = stats.get_bool_masked(stat_hash, bit_index)
 ### `get_bool_masked(stat_name, bit_index)`
 
 - **Parameters:**
-  - `stat_name` (integer): the stat name.
+  - `stat_name` (string): the stat name.
   - `bit_index` (integer): bit index.
 
 - **Returns:**
