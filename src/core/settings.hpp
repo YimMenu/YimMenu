@@ -978,7 +978,7 @@ namespace big
 
 			float stars_intensity = 1;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vfx, azimuth_east, azimuth_west, azimuth_transition, zenith, stars_intensity)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vfx, enable_custom_sky_color, azimuth_east, azimuth_west, azimuth_transition, zenith, stars_intensity)
 		} vfx{};
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, debug, tunables, notifications, player, player_db, protections, self, session, settings, spawn_vehicle, clone_pv, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor, lua, persist_weapons, vfx)
