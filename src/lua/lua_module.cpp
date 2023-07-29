@@ -231,8 +231,11 @@ namespace big
 	{
 		std::lock_guard guard(m_registered_scripts_mutex);
 
-		for (auto& script : m_registered_scripts)
+		const auto script_count = m_registered_scripts.size();
+		for (size_t i = 0; i < script_count; i++)
 		{
+			const auto script = m_registered_scripts[i].get();
+
 			if (script->is_enabled())
 			{
 				script->tick();
