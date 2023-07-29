@@ -42,7 +42,7 @@ namespace big::session
 		while (!SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED(RAGE_JOAAT("pausemenu_multiplayer")))
 			script::get_current()->yield();
 
-		*script_global(2695915).as<int*>() = (session == eSessionType::SC_TV ? 1 : 0); // If SCTV then enable spectator mode
+		*scr_globals::sctv_spectator.as<int*>() = (session == eSessionType::SC_TV ? 1 : 0); // If SCTV then enable spectator mode
 
 		if (session == eSessionType::LEAVE_ONLINE)
 			*script_global(1574589).at(2).as<int*>() = -1;

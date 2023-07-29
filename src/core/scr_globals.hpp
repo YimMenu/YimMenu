@@ -29,6 +29,7 @@ namespace big::scr_globals
 
 	static inline const script_global in_multiplayer(78689); // g_bInMultiplayer
 	static inline const script_global transition_state(1574996);
+	static inline const script_global sctv_spectator(2695969); // pausemenu_multiplayer function 0xE49C42EC
 
 	static inline const script_global vehicle_global(1586488);
 	static inline const script_global mechanic_global(2794162);
