@@ -87,6 +87,9 @@ namespace big
 
 	std::int16_t get_first_veh_id()
 	{
+		if (g_local_player && g_local_player->m_vehicle && g_local_player->m_vehicle->m_net_object)
+			return g_local_player->m_vehicle->m_net_object->m_object_id;
+
 		for (auto veh : pools::get_all_vehicles())
 			if (auto net = static_cast<rage::CDynamicEntity*>(veh)->m_net_object; net && (net->m_owner_id == -1 || net->m_owner_id == self::id))
 				return net->m_object_id;

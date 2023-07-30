@@ -50,6 +50,7 @@
 #include "netsync/nodes/proximity_migrateable/CSectorDataNode.hpp"
 #include "netsync/nodes/proximity_migrateable/CSectorPositionDataNode.hpp"
 #include "netsync/nodes/train/CTrainGameStateDataNode.hpp"
+#include "netsync/nodes/vehicle/CVehicleComponentReservationDataNode.hpp"
 #include "netsync/nodes/vehicle/CVehicleControlDataNode.hpp"
 #include "netsync/nodes/vehicle/CVehicleCreationDataNode.hpp"
 #include "netsync/nodes/vehicle/CVehicleGadgetDataNode.hpp"
@@ -58,6 +59,7 @@
 #include "network/CNetGamePlayer.hpp"
 #include "network/netObject.hpp"
 #include "ped/CPed.hpp"
+#include "services/gta_data/gta_data_service.hpp"
 #include "util/model_info.hpp"
 #include "util/notify.hpp"
 #include "util/session.hpp"
@@ -790,6 +792,58 @@ namespace big
 		return buffer;
 	}
 
+	inline std::string get_model_hash_string(uint32_t model)
+	{
+		auto info = model_info::get_model(model);
+
+		if (!info)
+			return std::format("0x{:X}", model);
+
+		const char* model_str = nullptr;
+
+		if (info->m_model_type == eModelType::Vehicle)
+		{
+			for (auto& [name, data] : g_gta_data_service->vehicles())
+			{
+				if (data.m_hash == model)
+				{
+					model_str = name.data();
+				}
+			}
+		}
+		else if (info->m_model_type == eModelType::Ped || info->m_model_type == eModelType::OnlineOnlyPed)
+		{
+			for (auto& [name, data] : g_gta_data_service->peds())
+			{
+				if (data.m_hash == model)
+				{
+					model_str = name.data();
+				}
+			}
+		}
+
+		if (!model_str)
+			return std::format("0x{:X}", model);
+
+		return std::format("{} (0x{:X})", model_str, model);
+	}
+
+	inline std::string get_network_id_string(int16_t net_id)
+	{
+		auto net_obj = g_pointers->m_gta.m_get_net_object(*g_pointers->m_gta.m_network_object_mgr, net_id, false);
+
+		if (!net_obj)
+			return std::format("{}", net_id);
+
+		if (auto game_obj = net_obj->GetGameObject(); !game_obj || !game_obj->m_model_info)
+			return std::format("{} ({})", net_id, net_object_type_strs[net_obj->m_object_type]);
+
+		return std::format("{} ({}, {})",
+		    net_id,
+		    net_object_type_strs[net_obj->m_object_type],
+		    get_model_hash_string(net_obj->GetGameObject()->m_model_info->m_hash));
+	}
+
 	inline bool is_valid_clan_tag(char* data, bool system_clan)
 	{
 		int length = strlen(data);
@@ -826,6 +880,9 @@ namespace big
 	          << " Z: " << ((((type*)(node))->field)).z << " W: " << ((((type*)(node))->field)).w;
 #define LOG_FIELD_APPLY(type, field, func) LOG(INFO) << "\t" << #field << ": " << func((((type*)(node))->field));
 
+#define LOG_FIELD_MH(type, field) LOG_FIELD_APPLY(type, field, get_model_hash_string);
+#define LOG_FIELD_NI(type, field) LOG_FIELD_APPLY(type, field, get_network_id_string);
+
 	void log_node(const sync_node_id& node_id, player_ptr sender, CProjectBaseSyncDataNode* node, rage::netObject* object)
 	{
 		if (object)
@@ -838,7 +895,7 @@ namespace big
 		case sync_node_id("CVehicleCreationDataNode"):
 			LOG_FIELD(CVehicleCreationDataNode, m_pop_type);
 			LOG_FIELD(CVehicleCreationDataNode, m_random_seed);
-			LOG_FIELD_H(CVehicleCreationDataNode, m_model);
+			LOG_FIELD_MH(CVehicleCreationDataNode, m_model);
 			LOG_FIELD(CVehicleCreationDataNode, m_vehicle_status);
 			LOG_FIELD(CVehicleCreationDataNode, m_max_health);
 			LOG_FIELD(CVehicleCreationDataNode, m_creation_token);
@@ -847,12 +904,12 @@ namespace big
 			break;
 		case sync_node_id("CPedCreationDataNode"):
 			LOG_FIELD(CPedCreationDataNode, m_pop_type);
-			LOG_FIELD_H(CPedCreationDataNode, m_model);
+			LOG_FIELD_MH(CPedCreationDataNode, m_model);
 			LOG_FIELD(CPedCreationDataNode, m_random_seed);
 			LOG_FIELD(CPedCreationDataNode, m_max_health);
 			LOG_FIELD_B(CPedCreationDataNode, m_in_vehicle);
 			LOG_FIELD(CPedCreationDataNode, pad_0xD1[0]);
-			LOG_FIELD(CPedCreationDataNode, m_vehicle_id);
+			LOG_FIELD_NI(CPedCreationDataNode, m_vehicle_id);
 			LOG_FIELD(CPedCreationDataNode, m_vehicle_seat);
 			LOG_FIELD_B(CPedCreationDataNode, m_has_prop);
 			LOG_FIELD(CPedCreationDataNode, m_prop_model);
@@ -871,7 +928,7 @@ namespace big
 			LOG_FIELD_V3(CObjectCreationDataNode, m_script_grab_position);
 			LOG_FIELD(CObjectCreationDataNode, m_script_grab_radius);
 			LOG_FIELD(CObjectCreationDataNode, m_created_by);
-			LOG_FIELD_H(CObjectCreationDataNode, m_model);
+			LOG_FIELD_MH(CObjectCreationDataNode, m_model);
 			LOG_FIELD(CObjectCreationDataNode, m_frag_group_index);
 			LOG_FIELD(CObjectCreationDataNode, m_ownership_token);
 			LOG_FIELD(CObjectCreationDataNode, unk_015C);
@@ -898,14 +955,14 @@ namespace big
 			LOG_FIELD_B(CTrainGameStateDataNode, m_render_derailed);
 			LOG_FIELD_B(CTrainGameStateDataNode, unk_00C6);
 			LOG_FIELD_B(CTrainGameStateDataNode, unk_00C7);
-			LOG_FIELD(CTrainGameStateDataNode, m_engine_id);
+			LOG_FIELD_NI(CTrainGameStateDataNode, m_engine_id);
 			LOG_FIELD_C(CTrainGameStateDataNode, m_train_config_index);
 			LOG_FIELD_C(CTrainGameStateDataNode, m_carriage_config_index);
 			LOG_FIELD_C(CTrainGameStateDataNode, m_track_id);
 			LOG_FIELD(CTrainGameStateDataNode, m_distance_from_engine);
 			LOG_FIELD(CTrainGameStateDataNode, m_cruise_speed);
-			LOG_FIELD(CTrainGameStateDataNode, m_linked_to_backward_id);
-			LOG_FIELD(CTrainGameStateDataNode, m_linked_to_forward_id);
+			LOG_FIELD_NI(CTrainGameStateDataNode, m_linked_to_backward_id);
+			LOG_FIELD_NI(CTrainGameStateDataNode, m_linked_to_forward_id);
 			LOG_FIELD(CTrainGameStateDataNode, m_train_state);
 			LOG_FIELD_B(CTrainGameStateDataNode, unk_00E0);
 			LOG_FIELD_B(CTrainGameStateDataNode, m_force_doors_open);
@@ -926,7 +983,7 @@ namespace big
 			LOG_FIELD_B(CAutomobileCreationDataNode, m_all_doors_closed);
 			break;
 		case sync_node_id("CDoorCreationDataNode"):
-			LOG_FIELD_H(CDoorCreationDataNode, m_model);
+			LOG_FIELD_MH(CDoorCreationDataNode, m_model);
 			LOG_FIELD_V3(CDoorCreationDataNode, m_pos);
 			LOG_FIELD_B(CDoorCreationDataNode, m_is_script_door);
 			LOG_FIELD_B(CDoorCreationDataNode, m_player_wants_control);
@@ -965,7 +1022,7 @@ namespace big
 		case sync_node_id("CPedAttachDataNode"):
 			LOG_FIELD_V3(CPedAttachDataNode, m_offset);
 			LOG_FIELD_V4(CPedAttachDataNode, m_orientation);
-			LOG_FIELD(CPedAttachDataNode, m_attached_to);
+			LOG_FIELD_NI(CPedAttachDataNode, m_attached_to);
 			LOG_FIELD(CPedAttachDataNode, m_attachment_bone);
 			LOG_FIELD(CPedAttachDataNode, m_attachment_flags);
 			LOG_FIELD(CPedAttachDataNode, m_heading_1);
@@ -1001,15 +1058,15 @@ namespace big
 			{
 				for (int i = 0; i < ((CPedGameStateDataNode*)node)->m_num_equiped_gadgets; i++)
 				{
-					LOG_FIELD_B(CPedGameStateDataNode, m_gadget_hash[i]);
+					LOG_FIELD_H(CPedGameStateDataNode, m_gadget_hash[i]);
 				}
 			}
 			LOG_FIELD(CPedGameStateDataNode, m_seat);
 			LOG_FIELD(CPedGameStateDataNode, m_action_mode_override);
 			LOG_FIELD(CPedGameStateDataNode, unk_013C);
 			LOG_FIELD(CPedGameStateDataNode, m_vehicle);
-			LOG_FIELD(CPedGameStateDataNode, m_mount_id);
-			LOG_FIELD(CPedGameStateDataNode, m_custodian_id);
+			LOG_FIELD_NI(CPedGameStateDataNode, m_mount_id);
+			LOG_FIELD_NI(CPedGameStateDataNode, m_custodian_id);
 			LOG_FIELD(CPedGameStateDataNode, unk_0146);
 			LOG_FIELD_B(CPedGameStateDataNode, m_tint_index);
 			LOG_FIELD_C(CPedGameStateDataNode, pad_0149);
@@ -1064,7 +1121,7 @@ namespace big
 			LOG_FIELD_H(CPedHealthDataNode, m_weapon_damage_hash);
 			LOG_FIELD(CPedHealthDataNode, m_hurt_end_time);
 			LOG_FIELD_H(CPedHealthDataNode, m_weapon_damage_component);
-			LOG_FIELD(CPedHealthDataNode, m_weapon_damage_entity);
+			LOG_FIELD_NI(CPedHealthDataNode, m_weapon_damage_entity);
 			LOG_FIELD_B(CPedHealthDataNode, m_has_max_health);
 			LOG_FIELD_B(CPedHealthDataNode, m_has_default_armor);
 			LOG_FIELD_B(CPedHealthDataNode, unk_00E4);
@@ -1105,7 +1162,7 @@ namespace big
 		case sync_node_id("CPhysicalAttachDataNode"):
 			LOG_FIELD_B(CPhysicalAttachDataNode, m_attached);
 			LOG_FIELD_B(CPhysicalAttachDataNode, unk_00C1);
-			LOG_FIELD(CPhysicalAttachDataNode, m_attached_to);
+			LOG_FIELD_NI(CPhysicalAttachDataNode, m_attached_to);
 			LOG_FIELD_V3(CPhysicalAttachDataNode, m_offset);
 			LOG_FIELD_V4(CPhysicalAttachDataNode, m_orientation);
 			LOG_FIELD_V3(CPhysicalAttachDataNode, m_parent_offset);
@@ -1124,7 +1181,7 @@ namespace big
 			LOG_FIELD_B(CPhysicalHealthDataNode, m_has_max_health_changed);
 			LOG_FIELD(CPhysicalHealthDataNode, m_max_health);
 			LOG_FIELD(CPhysicalHealthDataNode, m_current_health);
-			LOG_FIELD(CPhysicalHealthDataNode, m_weapon_damage_entity);
+			LOG_FIELD_NI(CPhysicalHealthDataNode, m_weapon_damage_entity);
 			LOG_FIELD_H(CPhysicalHealthDataNode, m_weapon_damage_hash);
 			LOG_FIELD(CPhysicalHealthDataNode, unk_00D8);
 			break;
@@ -1146,7 +1203,7 @@ namespace big
 			LOG_FIELD_B(CPickupCreationDataNode, m_has_placement);
 			LOG_FIELD_H(CPickupCreationDataNode, m_pickup_hash);
 			LOG_FIELD(CPickupCreationDataNode, m_amount);
-			LOG_FIELD_H(CPickupCreationDataNode, m_custom_model);
+			LOG_FIELD_MH(CPickupCreationDataNode, m_custom_model);
 			LOG_FIELD(CPickupCreationDataNode, m_life_time);
 			LOG_FIELD(CPickupCreationDataNode, m_num_weapon_components);
 			if (((CPickupCreationDataNode*)node)->m_num_weapon_components <= 12)
@@ -1182,7 +1239,7 @@ namespace big
 			LOG_FIELD(CPlayerCameraDataNode, m_lock_on_target_offset_y);
 			LOG_FIELD(CPlayerCameraDataNode, m_camera_x);
 			LOG_FIELD(CPlayerCameraDataNode, m_camera_z);
-			LOG_FIELD(CPlayerCameraDataNode, m_free_aim_locked_on_target);
+			LOG_FIELD_NI(CPlayerCameraDataNode, m_free_aim_locked_on_target);
 			LOG_FIELD_B(CPlayerCameraDataNode, m_free_cam);
 			LOG_FIELD_B(CPlayerCameraDataNode, m_has_position_offset);
 			LOG_FIELD_B(CPlayerCameraDataNode, m_is_long_range_target);
@@ -1192,7 +1249,7 @@ namespace big
 			break;
 		}
 		case sync_node_id("CPlayerCreationDataNode"):
-			LOG_FIELD_H(CPlayerCreationDataNode, m_model);
+			LOG_FIELD_MH(CPlayerCreationDataNode, m_model);
 			LOG_FIELD(CPlayerCreationDataNode, m_num_scars);
 			LOG_FIELD(CPlayerCreationDataNode, unk_0188);
 			LOG_FIELD_B(CPlayerCreationDataNode, unk_0240);
@@ -1280,7 +1337,7 @@ namespace big
 			LOG_FIELD_B(CPlayerGameStateDataNode, unk_0125);
 			LOG_FIELD_B(CPlayerGameStateDataNode, unk_0126);
 			LOG_FIELD_B(CPlayerGameStateDataNode, unk_0127);
-			LOG_FIELD(CPlayerGameStateDataNode, m_spectating_net_id);
+			LOG_FIELD_NI(CPlayerGameStateDataNode, m_spectating_net_id);
 			LOG_FIELD_C(CPlayerGameStateDataNode, m_antagonistic_to_player_id);
 			LOG_FIELD_C(CPlayerGameStateDataNode, m_tutorial_index);
 			LOG_FIELD_C(CPlayerGameStateDataNode, m_tutorial_instance_id);
@@ -1343,7 +1400,7 @@ namespace big
 			LOG_FIELD_B(CPlayerSectorPosNode, m_is_standing_on_entity);
 			LOG_FIELD_B(CPlayerSectorPosNode, unk_00CD);
 			LOG_FIELD_B(CPlayerSectorPosNode, unk_00CE);
-			LOG_FIELD(CPlayerSectorPosNode, m_entity_standing_on);
+			LOG_FIELD_NI(CPlayerSectorPosNode, m_entity_standing_on);
 			LOG_FIELD_V3(CPlayerSectorPosNode, m_standing_on_entity_offset);
 			LOG_FIELD(CPlayerSectorPosNode, m_stealth_noise);
 			break;
@@ -1531,6 +1588,11 @@ namespace big
 			LOG_FIELD_B(CVehicleControlDataNode, byte128);
 			LOG_FIELD_B(CVehicleControlDataNode, byte129);
 			break;
+		case sync_node_id("CVehicleComponentReservationDataNode"):
+			LOG_FIELD_B(CVehicleComponentReservationDataNode, m_has_component_reservations);
+			LOG_FIELD(CVehicleComponentReservationDataNode, m_num_peds_using_component);
+			for (int i = 0; i < ((CVehicleComponentReservationDataNode*)node)->m_num_peds_using_component; i++)
+				LOG_FIELD_NI(CVehicleComponentReservationDataNode, m_peds_using_component[i]);
 		}
 	}
 
@@ -1552,6 +1614,7 @@ namespace big
 		case eVehicleType::VEHICLE_TYPE_TRAILER: return eNetObjType::NET_OBJ_TYPE_TRAILER;
 		case eVehicleType::VEHICLE_TYPE_TRAIN: return eNetObjType::NET_OBJ_TYPE_TRAIN;
 		case eVehicleType::VEHICLE_TYPE_SUBMARINE: return eNetObjType::NET_OBJ_TYPE_SUBMARINE;
+		case eVehicleType::VEHICLE_TYPE_BOAT: return eNetObjType::NET_OBJ_TYPE_BOAT;
 		case eVehicleType::VEHICLE_TYPE_DRAFT: return eNetObjType::NET_OBJ_TYPE_AUTOMOBILE; // this appears to be unused
 		}
 
@@ -1560,8 +1623,37 @@ namespace big
 
 	bool is_crash_ped_task(eTaskTypeIndex type)
 	{
-		if (type == eTaskTypeIndex::CTaskUnalerted)
+		if (type == eTaskTypeIndex::CTaskUnalerted && g.m_syncing_object_type == eNetObjType::NET_OBJ_TYPE_PLAYER)
 			return true;
+
+		return false;
+	}
+
+	bool is_crash_vehicle_task(eTaskTypeIndex type)
+	{
+		switch (type)
+		{
+		case eTaskTypeIndex::CTaskVehicleGoToPlane:
+		case eTaskTypeIndex::CTaskVehicleLandPlane:
+		case eTaskTypeIndex::CTaskVehiclePlayerDrivePlane:
+		case eTaskTypeIndex::CTaskVehiclePlaneChase: return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_PLANE;
+		case eTaskTypeIndex::CTaskVehicleGoToHelicopter:
+		case eTaskTypeIndex::CTaskVehiclePoliceBehaviourHelicopter:
+		case eTaskTypeIndex::CTaskVehiclePlayerDriveHeli:
+		case eTaskTypeIndex::CTaskVehicleLand:
+		case eTaskTypeIndex::CTaskVehicleHeliProtect: return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_HELI;
+		case eTaskTypeIndex::CTaskVehicleGoToBoat:
+		case eTaskTypeIndex::CTaskVehicleCruiseBoat:
+		case eTaskTypeIndex::CTaskVehicleFleeBoat:
+		case eTaskTypeIndex::CTaskVehiclePoliceBehaviourBoat:
+		case eTaskTypeIndex::CTaskVehiclePlayerDriveBoat:
+			return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_BOAT;
+		case eTaskTypeIndex::CTaskVehicleGoToSubmarine:
+		case eTaskTypeIndex::CTaskVehiclePlayerDriveSubmarine:
+			return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_SUBMARINE;
+		case eTaskTypeIndex::CTaskVehicleFleeAirborne:
+			return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_HELI && g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_PLANE;
+		}
 
 		return false;
 	}
@@ -1633,10 +1725,11 @@ namespace big
 				const auto attach_node = (CPhysicalAttachDataNode*)(node);
 
 				if (attach_node->m_attached
-				    && is_attachment_infinite(object,
-				        attach_node->m_attached_to,
-				        attach_node->m_attach_bone,
-				        attach_node->m_other_attach_bone))
+				    && (object->m_object_id == attach_node->m_attached_to
+				        || is_attachment_infinite(object,
+				            attach_node->m_attached_to,
+				            attach_node->m_attach_bone,
+				            attach_node->m_other_attach_bone)))
 				{
 					notify::crash_blocked(sender, "infinite physical attachment");
 					return true;
@@ -1679,10 +1772,11 @@ namespace big
 			{
 				const auto attach_node = (CPedAttachDataNode*)(node);
 				if (attach_node->m_attached
-				    && is_attachment_infinite(object,
-				        attach_node->m_attached_to,
-				        attach_node->m_attachment_bone,
-				        attach_node->m_attachment_bone))
+				    && (object->m_object_id == attach_node->m_attached_to
+				        || is_attachment_infinite(object,
+				            attach_node->m_attached_to,
+				            attach_node->m_attachment_bone,
+				            attach_node->m_attachment_bone)))
 				{
 					if (auto game_object = (CPed*)object->GetGameObject())
 						if (!game_object->m_player_info)
@@ -1946,6 +2040,19 @@ namespace big
 						}
 					}
 				}
+
+				break;
+			}
+			case sync_node_id("CVehicleTaskDataNode"):
+			{
+				const auto task_node = (CVehicleTaskDataNode*)(node);
+				if (is_crash_vehicle_task((eTaskTypeIndex)task_node->m_task_type))
+				{
+					notify::crash_blocked(sender, "invalid vehicle task");
+					return true;
+				}
+
+				break;
 			}
 			}
 		}
