@@ -37,6 +37,8 @@ namespace big::session
 
 	inline bool join_type(eSessionType session)
 	{
+		Vector3 pos = ENTITY::GET_ENTITY_COORDS(self::ped, false);
+		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, pos.x, pos.y, 751.f);
 		SCRIPT::REQUEST_SCRIPT_WITH_NAME_HASH(RAGE_JOAAT("pausemenu_multiplayer"));
 
 		while (!SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED(RAGE_JOAAT("pausemenu_multiplayer")))
