@@ -20,6 +20,6 @@ namespace big
 		}
 	};
 
-	seatbelt g_seatbelt("seatbelt", "Seatbelt", "Prevent you from falling off bikes or flying through the windshield",
+	seatbelt g_seatbelt("seatbelt", "SEATBELT", "SEATBELT_DESC",
 	    g.vehicle.seatbelt);
 }

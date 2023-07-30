@@ -10,14 +10,14 @@ namespace big
 	{
 	}
 
-	void int_command::execute(const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx)
+	void int_command::execute(const command_arguments& args, const std::shared_ptr<command_context> ctx)
 	{
-		m_value = args[0];
+		m_value = args.get<int>(0);
 	}
 
-	std::optional<std::vector<uint64_t>> int_command::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
+	std::optional<command_arguments> int_command::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
 	{
-		std::vector<uint64_t> result;
+		command_arguments result(1);
 		int value = std::atoi(args[0].c_str());
 
 		if (value < m_lower_bound || value > m_upper_bound)
@@ -26,7 +26,7 @@ namespace big
 			return std::nullopt;
 		}
 
-		result.push_back(value);
+		result.push(value);
 		return result;
 	}
 }

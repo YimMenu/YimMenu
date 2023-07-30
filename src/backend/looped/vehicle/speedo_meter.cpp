@@ -62,7 +62,7 @@ namespace big
 	};
 
 	speedo_meter
-	    g_speedo_meter("speedometer", "Speedometer", "Enable/disable the speedo meter for vehicles.", g.vehicle.speedo_meter.enabled);
+	    g_speedo_meter("speedometer", "SPEEDO_METER", "SPEEDO_METER_DESC", g.vehicle.speedo_meter.enabled);
 	bool_command g_speedo_meter_gears("speedometergears", "Show current gear", "Adds the current gear the vehicle is in to the speedo meter.",
 	    g.vehicle.speedo_meter.show_current_gear);
 	bool_command g_speedo_meter_left_side("speedometerleftside", "Align to left", "Aligns the speedo meter text to the left instead of to the right.",

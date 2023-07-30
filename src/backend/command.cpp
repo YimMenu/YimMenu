@@ -51,7 +51,7 @@ namespace big
 		}
 	}
 
-	void command::call(const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx)
+	void command::call(command_arguments& args, const std::shared_ptr<command_context> ctx)
 	{
 		if (m_num_args.has_value() && args.size() != m_num_args.value())
 		{
@@ -68,6 +68,7 @@ namespace big
 			return;
 		}
 
+		args.reset_idx();
 		if (m_fiber_pool)
 			g_fiber_pool->queue_job([this, args, ctx] {
 				execute(args, ctx);
@@ -103,7 +104,7 @@ namespace big
 		return g_commands[command];
 	}
 
-	void command::call(rage::joaat_t command, const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx)
+	void command::call(rage::joaat_t command, command_arguments& args, const std::shared_ptr<command_context> ctx)
 	{
 		g_commands[command]->call(args, ctx);
 	}

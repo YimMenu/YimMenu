@@ -29,7 +29,7 @@ namespace big
 		}
 	}
 
-	void hooks::log_error_message_box(rage::joaat_t joaated_error_code, char a2)
+	void hooks::log_error_message_box(rage::joaat_t joaated_error_code, bool a2)
 	{
 		if (joaated_error_code == RAGE_JOAAT("ERR_NET_EVENT"))
 			return;

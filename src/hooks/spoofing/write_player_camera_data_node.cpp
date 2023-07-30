@@ -7,9 +7,9 @@
 
 namespace big
 {
-	bool hooks::write_player_camera_data_node(rage::netObject* player, CPlayerCameraDataNode* node)
+	void hooks::write_player_camera_data_node(rage::netObject* player, CPlayerCameraDataNode* node)
 	{
-		auto ret = g_hooking->get_original<hooks::write_player_camera_data_node>()(player, node);
+		g_hooking->get_original<hooks::write_player_camera_data_node>()(player, node);
 
 		if (g.spoofing.spoof_hide_spectate && g.player.spectating)
 		{
@@ -17,7 +17,5 @@ namespace big
 			node->m_free_cam_pos_y -= 50.0f;
 			node->m_camera_x -= 50.0f;
 		}
-
-		return ret;
 	}
 }
