@@ -8,12 +8,12 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual CommandAccessLevel get_access_level()
+		virtual CommandAccessLevel get_access_level() override
 		{
 			return CommandAccessLevel::AGGRESSIVE;
 		}
 
-		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			float max   = 1e+38f;
 			auto coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), FALSE);

@@ -9,7 +9,7 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), FALSE);
 			if (veh == 0)
