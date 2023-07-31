@@ -32,6 +32,27 @@ namespace
 
 namespace big
 {
+	static void set_clipboard(const char* message)
+	{
+		HGLOBAL h;
+		LPVOID p;
+		int size;
+		//calc the num of unicode char
+		size = MultiByteToWideChar(CP_UTF8, NULL, message, -1, NULL, 0);
+		if (!size)
+			return;
+		h = GlobalAlloc(GHND | GMEM_SHARE, size * 2);
+		if (!h)
+			return;
+		p = GlobalLock(h);
+		//utf8 to unicode
+		MultiByteToWideChar(CP_UTF8, NULL, message, -1, (LPWSTR)p, size);
+		GlobalUnlock(h);
+		OpenClipboard(NULL);
+		EmptyClipboard();
+		SetClipboardData(CF_UNICODETEXT, h);
+		CloseClipboard();
+	}
 
 	void debug::threads()
 	{
@@ -79,21 +100,58 @@ namespace big
 
 			if (selected_thread)
 			{
-				ImGui::Combo("State", (int*)&selected_thread->m_context.m_state, "RUNNING\0WAITING\0KILLED\0PAUSED\0STATE_4");
+				auto net_handler = reinterpret_cast<CGameScriptHandlerNetComponent*>(selected_thread->m_net_component);
 
-				ImGui::Text("Stack Pointer / Stack Size %d/%d",
-				    selected_thread->m_context.m_stack_pointer,
-				    selected_thread->m_context.m_stack_size);
-				ImGui::Text("IP: %X", selected_thread->m_context.m_instruction_pointer);
+				if (net_handler)
+				{
+					auto host = net_handler->get_host();
+					if (host)
+					{
+						ImGui::Text("Script Host: %s", host->get_name());
+
+						if (!net_handler->is_local_player_host())
+						{
+							components::button("Take Control", [net_handler] {
+								net_handler->send_host_migration_event(g_player_service->get_self()->get_net_game_player());
+								script::get_current()->yield(10ms);
+								if (selected_thread->m_stack && selected_thread->m_net_component)
+								{
+									net_handler->block_host_migration(true);
+								}
+							});
+						}
+					}
+				}
+
+
+				ImGui::Combo("State", (int*)&selected_thread->m_context.m_state, "RUNNING\0WAITING\0KILLED\0PAUSED\0STATE_4");
+				//Script Pointer
+				ImGui::Text("Script Pointer: ");
+				ImGui::SameLine();
+				if (ImGui::Button(std::format("0x{:X}", (DWORD64)selected_thread).c_str()))
+					set_clipboard(std::format("0x{:X}", (DWORD64)selected_thread).c_str());
+				//Stack Pointer
+				ImGui::Text("Stack Pointer: ");
+				ImGui::SameLine();
+				if (ImGui::Button(std::format("0x{:X}", (DWORD64)selected_thread->m_stack).c_str()))
+					set_clipboard(std::format("0x{:X}", (DWORD64)selected_thread->m_stack).c_str());
+				ImGui::SameLine();
+				ImGui::Text("Internal Stack Pointer: %d Stack Size: %d",
+				    selected_thread->m_context.m_stack_pointer, selected_thread->m_context.m_stack_size);
+				//Instruction Pointer
+				ImGui::Text("Instruction Pointer: %X", selected_thread->m_context.m_instruction_pointer);
+
 				if (selected_thread->m_context.m_state == rage::eThreadState::killed)
 					ImGui::Text("Exit Reason: %s", selected_thread->m_exit_message);
-
-				if (ImGui::Button("Kill"))
+				else
 				{
-					if (selected_thread->m_context.m_stack_size != 0)
-						selected_thread->kill();
+					if (ImGui::Button("Kill"))
+					{
+						if (selected_thread->m_context.m_stack_size != 0)
+							selected_thread->kill();
 
-					selected_thread->m_context.m_state = rage::eThreadState::killed;
+						selected_thread->m_context.m_state = rage::eThreadState::killed;
+					}
 				}
 			}
 
