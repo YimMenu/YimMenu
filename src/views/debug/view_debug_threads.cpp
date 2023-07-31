@@ -32,28 +32,6 @@ namespace
 
 namespace big
 {
-	static void set_clipboard(const char* message)
-	{
-		HGLOBAL h;
-		LPVOID p;
-		int size;
-		//calc the num of unicode char
-		size = MultiByteToWideChar(CP_UTF8, NULL, message, -1, NULL, 0);
-		if (!size)
-			return;
-		h = GlobalAlloc(GHND | GMEM_SHARE, size * 2);
-		if (!h)
-			return;
-		p = GlobalLock(h);
-		//utf8 to unicode
-		MultiByteToWideChar(CP_UTF8, NULL, message, -1, (LPWSTR)p, size);
-		GlobalUnlock(h);
-		OpenClipboard(NULL);
-		EmptyClipboard();
-		SetClipboardData(CF_UNICODETEXT, h);
-		CloseClipboard();
-	}
-
 	void debug::threads()
 	{
 		if (ImGui::BeginTabItem("Threads"))
@@ -129,12 +107,12 @@ namespace big
 				ImGui::Text("Script Pointer: ");
 				ImGui::SameLine();
 				if (ImGui::Button(std::format("0x{:X}", (DWORD64)selected_thread).c_str()))
-					set_clipboard(std::format("0x{:X}", (DWORD64)selected_thread).c_str());
+					ImGui::SetClipboardText(std::format("0x{:X}", (DWORD64)selected_thread).c_str());
 				//Stack Pointer
 				ImGui::Text("Stack Pointer: ");
 				ImGui::SameLine();
 				if (ImGui::Button(std::format("0x{:X}", (DWORD64)selected_thread->m_stack).c_str()))
-					set_clipboard(std::format("0x{:X}", (DWORD64)selected_thread->m_stack).c_str());
+					ImGui::SetClipboardText(std::format("0x{:X}", (DWORD64)selected_thread->m_stack).c_str());
 				ImGui::SameLine();
 				ImGui::Text("Internal Stack Pointer: %d Stack Size: %d",
 				    selected_thread->m_context.m_stack_pointer, selected_thread->m_context.m_stack_size);
