@@ -844,13 +844,22 @@ namespace big
                 g_pointers->m_gta.m_invalid_decal_crash = ptr.add(1).rip().as<PVOID>();
             }
         },
-        // Task Parachute Object 0x270
+        // Task Parachute Object
         {
-            "TPO270",
+            "TPO",
             "0F 88 ? ? ? ? 75 34",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_task_parachute_object_0x270 = ptr.sub(6).as<PVOID>();
+                g_pointers->m_gta.m_task_parachute_object = ptr.sub(6).as<PVOID>();
+            }
+        },
+        // Task Ambient Clips
+        {
+            "TAC",
+            "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 80 3D ? ? ? ? ? 41 8B D8 8B F2",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_task_ambient_clips = ptr.as<PVOID>();
             }
         },
         // Encode Session Info

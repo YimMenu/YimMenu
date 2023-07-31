@@ -130,8 +130,6 @@ namespace big
 				int thread_id                  = 0;
 				std::int16_t syncing_object_id = -1;
 			} fuzzer{};
-
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(debug, logs)
 			bool window_hook = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(debug, logs, window_hook)

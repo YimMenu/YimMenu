@@ -37,6 +37,7 @@
 #include "netsync/nodes/physical/CPhysicalVelocityDataNode.hpp"
 #include "netsync/nodes/pickup/CPickupCreationDataNode.hpp"
 #include "netsync/nodes/pickup_placement/CPickupPlacementCreationDataNode.hpp"
+#include "netsync/nodes/player/CPlayerAmbientModelStreamingNode.hpp"
 #include "netsync/nodes/player/CPlayerAppearanceDataNode.hpp"
 #include "netsync/nodes/player/CPlayerCameraDataNode.hpp"
 #include "netsync/nodes/player/CPlayerCreationDataNode.hpp"
@@ -1593,6 +1594,13 @@ namespace big
 			LOG_FIELD(CVehicleComponentReservationDataNode, m_num_peds_using_component);
 			for (int i = 0; i < ((CVehicleComponentReservationDataNode*)node)->m_num_peds_using_component; i++)
 				LOG_FIELD_NI(CVehicleComponentReservationDataNode, m_peds_using_component[i]);
+			break;
+		case sync_node_id("CPlayerAmbientModelStreamingNode"):
+			LOG_FIELD(CPlayerAmbientModelStreamingNode, m_allowed_ped_model_start_offset);
+			LOG_FIELD(CPlayerAmbientModelStreamingNode, m_allowed_vehicle_model_start_offset);
+			LOG_FIELD(CPlayerAmbientModelStreamingNode, m_vehicle_anim_streaming_target_entrypoint);
+			LOG_FIELD_NI(CPlayerAmbientModelStreamingNode, m_vehicle_anim_streaming_target);
+			break;
 		}
 	}
 
@@ -1717,6 +1725,16 @@ namespace big
 				{
 					notify::crash_blocked(sender, "invalid pickup model");
 					return true;
+				}
+
+				for (int i = 0; i < creation_node->m_num_weapon_components; i++)
+				{
+					uint64_t buffer[20]{};
+					if (!WEAPON::GET_WEAPON_COMPONENT_HUD_STATS(creation_node->m_weapon_component[i], (Any*)buffer)) // trying to save a pointer here
+					{
+						notify::crash_blocked(sender, "invalid pickup weapon component hash");
+						return true;
+					}
 				}
 				break;
 			}
@@ -1845,6 +1863,17 @@ namespace big
 
 				if (sender_plyr)
 				{
+					if (game_state_node->m_super_jump)
+					{
+						session::add_infraction(sender_plyr, Infraction::SUPER_JUMP);
+					}
+
+					if (!game_state_node->m_is_max_armor_and_health_default && game_state_node->m_max_health == 0.0f
+					    && game_state_node->m_player_state == 1)
+					{
+						session::add_infraction(sender_plyr, Infraction::SUPER_JUMP);
+					}
+
 					if (game_state_node->m_is_spectating)
 					{
 						if (!sender_plyr->get_ped())
@@ -1907,7 +1936,7 @@ namespace big
 			{
 				const auto train_node = (CTrainGameStateDataNode*)(node);
 				int track_id          = train_node->m_track_id;
-				if (track_id != -1 && (track_id < 0 || track_id >= 27))
+				if (track_id != -1 && (track_id < 0 || track_id >= 12))
 				{
 					notify::crash_blocked(sender, "out of bounds train track index");
 					LOG(INFO) << (int)train_node->m_track_id;

@@ -96,7 +96,8 @@ namespace big
 
 		static void invalid_mods_crash_detour(int64_t a1, int64_t a2, int a3, char a4);
 		static void invalid_decal(uintptr_t a1, int a2);
-		static int task_parachute_object_0x270(uint64_t _this, int a2, int a3);
+		static int task_parachute_object(uint64_t _this, int a2, int a3);
+		static int task_ambient_clips(uint64_t _this, int a2, int a3);
 
 		static bool update_presence_attribute_int(void* presence_data, int profile_index, char* attr, uint64_t value);
 		static bool update_presence_attribute_string(void* presence_data, int profile_index, char* attr, char* value);

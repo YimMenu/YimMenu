@@ -162,7 +162,8 @@ namespace big
 
 		PVOID m_invalid_mods_crash_detour;
 		PVOID m_invalid_decal_crash;
-		PVOID m_task_parachute_object_0x270;
+		PVOID m_task_parachute_object;
+		PVOID m_task_ambient_clips;
 
 		int64_t** m_send_chat_ptr;
 		functions::send_chat_message m_send_chat_message;

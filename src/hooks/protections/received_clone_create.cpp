@@ -24,9 +24,7 @@ namespace big
 		if (g.debug.fuzzer.enabled_object_types[(int)object_type])
 			g.debug.fuzzer.active = true;
 		g.debug.fuzzer.syncing_object_id = object_id;
-		auto ret = g_hooking->get_original<hooks::received_clone_create>()(mgr, src, dst, object_type, object_id, object_flag, buffer, timestamp);
+		g_hooking->get_original<hooks::received_clone_create>()(mgr, src, dst, object_type, object_id, object_flag, buffer, timestamp);
 		g.debug.fuzzer.active = false;
-
-		return ret;
 	}
 }
