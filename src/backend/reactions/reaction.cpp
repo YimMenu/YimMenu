@@ -38,23 +38,22 @@ namespace big
 
 		if (kick)  
 		{
-			g_fiber_pool->queue_job([player] {
-				
+			g_fiber_pool->queue_job([player] 
+			{
 				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("bailkick")))->call(player, {});
 				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
 				script::get_current()->yield(700ms);
 				if(g_player_service->get_self()->is_host())
-					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
-					NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
+					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}), NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
 			});
 		}
 
 		if (timeout)
 		{
-			    player->block_net_events   = true;
-			    player->block_clone_sync   = true;
-			    player->block_clone_create = true;
-			    LOG(WARNING) << std::format("{} has been timed out", player->get_name());
+			player->block_net_events   = true;
+			player->block_clone_sync   = true;
+			player->block_clone_create = true;
+			LOG(WARNING) << std::format("{} has been timed out", player->get_name());
 		}
 	}
 
@@ -66,21 +65,22 @@ namespace big
 
 		 if (announce_in_chat)
    		{
-        	g_fiber_pool->queue_job([player, this] {
-           	 	std::string chat = std::format("{} {}",
-                g.session.chat_output_prefix, 
-                m_announce_message,
-                player->get_name());
+        	g_fiber_pool->queue_job([player, this] 
+			{
+				std::string chat = std::format("{} {}",
+				g.session.chat_output_prefix, 
+				m_announce_message,
+				player->get_name());
 
-            if (g_hooking->get_original<hooks::send_chat_message>()(
-                *g_pointers->m_gta.m_send_chat_ptr,
-                g_player_service->get_self()->get_net_data(),
-                chat.c_str(),
-                false))
-            {
-                notify::draw_chat(chat, g_player_service->get_self()->get_name(), false);
-            }
-        });
+				if (g_hooking->get_original<hooks::send_chat_message>()(
+					*g_pointers->m_gta.m_send_chat_ptr,
+					g_player_service->get_self()->get_net_data(),
+					chat.c_str(),
+					false))
+				{
+					notify::draw_chat(chat, g_player_service->get_self()->get_name(), false);
+				}
+        	});
     	}
 
 		if (notify)
