@@ -38,22 +38,23 @@ namespace big
 
 		if (kick)  
 		{
-			g_fiber_pool->queue_job([player] 
-			{
+			g_fiber_pool->queue_job([player] {
+				
 				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("bailkick")))->call(player, {});
 				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
 				script::get_current()->yield(700ms);
 				if(g_player_service->get_self()->is_host())
-					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}), NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
+					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
+					NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
 			});
 		}
 
 		if (timeout)
 		{
-			player->block_net_events   = true;
-			player->block_clone_sync   = true;
-			player->block_clone_create = true;
-			LOG(WARNING) << std::format("{} has been timed out", player->get_name());
+			    player->block_net_events   = true;
+			    player->block_clone_sync   = true;
+			    player->block_clone_create = true;
+			    LOG(WARNING) << std::format("{} has been timed out", player->get_name());
 		}
 	}
 
@@ -63,32 +64,28 @@ namespace big
 		if (!player->is_valid())
 			return;
 
-		 if (announce_in_chat)
-   		{
-        	g_fiber_pool->queue_job([player, this] 
-			{
-				std::string chat = std::format("{} {}",
-				g.session.chat_output_prefix, 
-				m_announce_message,
-				player->get_name());
+		if (announce_in_chat)
+		{
+			g_fiber_pool->queue_job([player, this] {
+				char chat[255];
+				snprintf(chat,
+				    sizeof(chat),
+				    std::format("{} {}", g.session.chat_output_prefix, m_announce_message).data(),
+				    player->get_name());
 
-				if (g_hooking->get_original<hooks::send_chat_message>()(
-					*g_pointers->m_gta.m_send_chat_ptr,
-					g_player_service->get_self()->get_net_data(),
-					chat.c_str(),
-					false))
-				{
+				if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
+				        g_player_service->get_self()->get_net_data(),
+				        chat,
+				        false))
 					notify::draw_chat(chat, g_player_service->get_self()->get_name(), false);
-				}
-        	});
-    	}
+			});
+		}
 
 		if (notify)
 		{
-			std::string notification = std::format("{} {}", 
-			m_notify_message, 
-			player->get_name());
-			g_notification_service->push_warning("Protections", notification.c_str());
+			char notification[500]{}; // I don't like using sprintf but there isn't an alternative afaik
+			snprintf(notification, sizeof(notification), m_notify_message, player->get_name());
+			g_notification_service->push_warning("Protections", notification);
 		}
 
 		process_common(player);
