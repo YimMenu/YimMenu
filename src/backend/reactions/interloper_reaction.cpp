@@ -24,28 +24,33 @@ namespace big
 		if (announce_in_chat)
 		{
 			g_fiber_pool->queue_job([attacker, victim, this] {
-				char chat[255];
-				snprintf(chat,
-				    sizeof(chat),
-				    std::format("{} {}", g.session.chat_output_prefix, m_announce_message).data(),
-				    attacker->get_name(),
-				    victim->get_name());
+				std::string chat = std::format("{} {} {}",
+					g.session.chat_output_prefix, 
+					m_announce_message,
+					attacker->get_name(),
+					victim->get_name());
 
-				if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
-				        g_player_service->get_self()->get_net_data(),
-				        chat,
-				        false))
+				if (g_hooking->get_original<hooks::send_chat_message>()(
+					*g_pointers->m_gta.m_send_chat_ptr,
+					g_player_service->get_self()->get_net_data(),
+					chat.c_str(),
+					false))
+				{
 					notify::draw_chat(chat, g_player_service->get_self()->get_name(), false);
+				}
 			});
 		}
 
 		if (notify)
 		{
-			char notification[500]{};// I don't like using sprintf but there isn't an alternative afaik
-			snprintf(notification, sizeof(notification), m_notify_message, attacker->get_name(), victim->get_name());
-			g_notification_service->push_warning("Protections", notification);
+			std::string notification = std::format("{} {} {}",
+				m_notify_message,
+				attacker->get_name(),
+				victim->get_name());
+			g_notification_service->push_warning("Protections", notification.c_str());
 		}
 
-		process_common(attacker);
+    	process_common(attacker);
 	}
+
 }
