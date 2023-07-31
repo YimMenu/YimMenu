@@ -67,7 +67,7 @@ namespace big
 		 if (announce_in_chat)
    		{
         	g_fiber_pool->queue_job([player, this] {
-            std::string chat = std::format("{} {}",
+           	 	std::string chat = std::format("{} {}",
                 g.session.chat_output_prefix, 
                 m_announce_message,
                 player->get_name());
@@ -86,8 +86,8 @@ namespace big
 		if (notify)
 		{
 			std::string notification = std::format("{} {}", 
-				m_notify_message, 
-				player->get_name());
+			m_notify_message, 
+			player->get_name());
 			g_notification_service->push_warning("Protections", notification.c_str());
 		}
 
