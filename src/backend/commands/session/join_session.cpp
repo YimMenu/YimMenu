@@ -26,26 +26,26 @@ namespace big
 			std::string valid_args;
 			if (was_session_string)
 			{
-                for (const auto& session_type_string : m_session_types | std::ranges::views::values)
-                {
-                    if (!empty(valid_args))
-                    {
-                        valid_args += ", ";
-                    }
-                    valid_args += session_type_string;
-                }
+				for (const auto& session_type_string : m_session_types | std::ranges::views::values)
+				{
+					if (!empty(valid_args))
+					{
+						valid_args += ", ";
+					}
+					valid_args += session_type_string;
+				}
 
-			    return valid_args;
+				return valid_args;
 			}
-            
-            for (const auto& session_type_id : m_session_types | std::ranges::views::keys)
-            {
-                    if (!empty(valid_args))
-                    {
-                        valid_args += ", ";
-                    }
-                    valid_args += std::to_string(static_cast<int>(session_type_id));
-            }
+
+			for (const auto& session_type_id : m_session_types | std::ranges::views::keys)
+			{
+				if (!empty(valid_args))
+				{
+					valid_args += ", ";
+				}
+				valid_args += std::to_string(static_cast<int>(session_type_id));
+			}
 
 			return valid_args;
 		}
