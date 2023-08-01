@@ -18,7 +18,9 @@ namespace big
 	file file_manager::get_project_file(std::filesystem::path file_path)
     {
         if (file_path.is_absolute())
-            throw std::exception("Project files are relative to the BaseDir, don't use absolute paths!");
+            throw std::invalid_argument("Project files are relative to the BaseDir, don't use absolute paths!");
+        if (file_path.string().contains(".."))
+			throw std::invalid_argument("Relative path traversal is not allowed, refrain from using \"..\" in file paths.");
 
         return file_manager::ensure_file_can_be_created(m_base_dir / file_path);
     }
@@ -26,7 +28,9 @@ namespace big
 	folder file_manager::get_project_folder(std::filesystem::path folder_path)
     {
         if (folder_path.is_absolute())
-            throw std::exception("Project folders are relative to the BaseDir, don't use absolute paths!");
+            throw std::invalid_argument("Project folders are relative to the BaseDir, don't use absolute paths!");
+        if (folder_path.string().contains(".."))
+			throw std::invalid_argument("Relative path traversal is not allowed, refrain from using \"..\" in folder paths.");
 
         return file_manager::ensure_folder_exists(m_base_dir / folder_path);
     }
