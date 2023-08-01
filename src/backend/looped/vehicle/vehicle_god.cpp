@@ -109,10 +109,20 @@ namespace big
 				const auto personal_vehicle = get_personal_vehicle();
 				if (personal_vehicle)
 				{
-					apply_godmode_to_vehicle(personal_vehicle, true);
+					if (personal_vehicle == g_local_player->m_vehicle)
+					{
+						apply_godmode_to_vehicle(personal_vehicle, true);
+					}
+					else
+					{
+						apply_godmode_to_vehicle(personal_vehicle, true);
+						apply_godmode_to_vehicle(g_local_player->m_vehicle);
+					}
 				}
-
-				apply_godmode_to_vehicle(g_local_player->m_vehicle);
+				else
+				{
+					apply_godmode_to_vehicle(g_local_player->m_vehicle);
+				}
 			}
 		}
 
