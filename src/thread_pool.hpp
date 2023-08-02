@@ -20,8 +20,6 @@ namespace big
 		std::mutex m_lock;
 		std::vector<std::thread> m_thread_pool;
 
-		std::thread m_managing_thread;
-
 		std::atomic<size_t> m_allocated_thread_count;
 
 	public:

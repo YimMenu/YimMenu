@@ -30,7 +30,6 @@ namespace big
 
 	void thread_pool::destroy()
 	{
-		m_managing_thread.join();
 		{
 			std::unique_lock lock(m_lock);
 			m_accept_jobs = false;
