@@ -424,39 +424,6 @@ namespace rage
 		Msg_0x86             = 0x86,
 	};
 
-	namespace netConnection
-	{
-		class InFrame
-		{
-		public:
-			enum class EventType
-			{
-				ConnectionClosed  = 3,
-				FrameReceived     = 4,
-				BandwidthExceeded = 6,
-				OutOfMemory       = 7
-			};
-
-			virtual ~InFrame() = default;
-
-			virtual void destroy()             = 0;
-			virtual EventType get_event_type() = 0;
-			virtual uint32_t _0x18()           = 0;
-
-			uint32_t m_timestamp;             //0x0008
-			char pad_0008[52];                //0x000C
-			uint32_t m_msg_id;                //0x0040
-			uint32_t m_connection_identifier; //0x0044
-			InFrame* m_this;                  //0x0048
-			uint32_t m_peer_id;               //0x0050
-			char pad_0050[44];                //0x0058
-			uint32_t m_length;                //0x0080
-			char pad_007C[4];                 //0x0084
-			void* m_data;                     //0x0088
-		};
-		static_assert(sizeof(rage::netConnection::InFrame) == 0x90);
-	}
-
 	enum class eEventNetworkType : int64_t
 	{
 		CEventNetworkPlayerJoinScript                     = 153,
@@ -592,7 +559,7 @@ namespace rage
 		{
 			return 0;
 		};
-		virtual bool time_to_resend(std::uint32_t time)
+		virtual bool time_to_resend(uint32_t time)
 		{
 			return 0;
 		};
@@ -645,19 +612,19 @@ namespace rage
 		};
 
 	public:
-		std::uint16_t m_id;    // 0x08
+		uint16_t m_id;         // 0x08
 		bool m_requires_reply; // 0x0A
 	private:
 		char m_padding1[0x05]; // 0x0B
 	public:
-		netPlayer* m_source_player;  // 0x10
-		netPlayer* m_target_player;  // 0x18
-		std::uint32_t m_resend_time; // 0x20
+		netPlayer* m_source_player; // 0x10
+		netPlayer* m_target_player; // 0x18
+		uint32_t m_resend_time;     // 0x20
 	private:
-		std::uint16_t m_0x24; // 0x24
-		std::uint8_t m_0x26;  // 0x26
-		std::uint8_t m_0x27;  // 0x27
-		std::uint32_t m_0x28; // 0x28
+		uint16_t m_0x24; // 0x24
+		uint8_t m_0x26;  // 0x26
+		uint8_t m_0x27;  // 0x27
+		uint32_t m_0x28; // 0x28
 		char m_padding2[0x04];
 	};
 }
@@ -665,16 +632,16 @@ namespace rage
 class CScriptedGameEvent : public rage::netGameEvent
 {
 public:
-	char m_padding[0x40];      // 0x30
-	std::int64_t m_args[54];   // 0x70
-	std::uint32_t m_bitset;    // 0x220
-	std::uint32_t m_args_size; // 0x224
+	char m_padding[0x40];    // 0x30
+	std::int64_t m_args[54]; // 0x70
+	uint32_t m_bitset;       // 0x220
+	uint32_t m_args_size;    // 0x224
 };
 
 class CNetworkIncrementStatEvent : public rage::netGameEvent
 {
 public:
-	Hash m_stat;            // 0x30
-	std::uint32_t m_amount; // 0x34
+	Hash m_stat;       // 0x30
+	uint32_t m_amount; // 0x34
 };
 #pragma pack(pop)

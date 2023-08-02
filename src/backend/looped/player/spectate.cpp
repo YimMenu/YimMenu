@@ -7,7 +7,7 @@ namespace big
 {
 	static bool bReset = true;
 
-	void looped::player_spectate()
+	void looped::player_spectate() 
 	{
 		const auto vehicle = self::veh;
 		const auto ped     = self::ped;

@@ -5,12 +5,12 @@
 
 namespace big
 {
-	void hooks::serialize_stats(CStatsSerializationContext* context, rage::joaat_t* stats, std::uint32_t stat_count)
+	void hooks::serialize_stats(CStatsSerializationContext* context, rage::joaat_t* stats, uint32_t stat_count)
 	{
 		g_hooking->get_original<hooks::serialize_stats>()(context, stats, stat_count);
 
 		// variable length array so we can't iterate it directly. Looks ugly but should work
-		std::uint32_t* data = reinterpret_cast<std::uint32_t*>(context->m_entries);
+		uint32_t* data = reinterpret_cast<uint32_t*>(context->m_entries);
 
 		for (int i = 0; i < context->m_size / 4; i++)
 		{

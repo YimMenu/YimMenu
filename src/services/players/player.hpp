@@ -12,6 +12,7 @@ namespace rage
 	class snPlayer;
 	class snPeer;
 	class rlGamerInfo;
+	class netConnectionPeer;
 }
 
 namespace big
@@ -44,7 +45,8 @@ namespace big
 		[[nodiscard]] CPlayerInfo* get_player_info() const;
 		[[nodiscard]] class rage::snPlayer* get_session_player();
 		[[nodiscard]] class rage::snPeer* get_session_peer();
-		[[nodiscard]] netAddress get_ip_address();
+		[[nodiscard]] class rage::netConnectionPeer* get_connection_peer();
+		[[nodiscard]] std::optional<netAddress> get_ip_address();
 		[[nodiscard]] uint16_t get_port();
 
 		[[nodiscard]] uint8_t id() const;
@@ -68,6 +70,10 @@ namespace big
 		rate_limiter m_host_migration_rate_limit{2s, 15};
 		rate_limiter m_play_sound_rate_limit{1s, 10};
 		rate_limiter m_invites_rate_limit{10s, 2};
+		rate_limiter m_radio_request_rate_limit{5s, 2};
+
+		bool block_radio_requests = false;
+
 		int m_num_spawned_permanent_vehicles = 0;
 
 		bool m_block_permanent_vehicles = false;
@@ -78,10 +84,10 @@ namespace big
 		int block_join_reason          = 0;
 		bool is_spammer                = false;
 		bool is_admin                  = false;
-		std::optional<std::uint32_t> player_time_value;
+		std::optional<uint32_t> player_time_value;
 		std::optional<std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds>> player_time_value_received_time;
-		std::optional<std::uint32_t> time_difference;
-		std::uint32_t num_time_syncs_sent = 9999;
+		std::optional<uint32_t> time_difference;
+		uint32_t num_time_syncs_sent = 9999;
 
 		bool block_explosions   = false;
 		bool block_clone_create = false;

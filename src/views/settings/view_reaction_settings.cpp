@@ -24,6 +24,7 @@ namespace big
 			if (reaction.add_to_player_db)
 				ImGui::Checkbox("REACTION_BLOCK_JOINS"_T.data(), &reaction.block_joins);
 			ImGui::Checkbox("REACTION_KICK_PLAYER"_T.data(), &reaction.kick);
+			ImGui::Checkbox("TIMEOUT"_T.data(), &reaction.timeout);
 			ImGui::TreePop();
 		}
 		ImGui::PopID();
@@ -100,6 +101,7 @@ namespace big
 		draw_reaction(g.reactions.remote_ragdoll);
 		draw_reaction(g.reactions.kick_vote);
 		draw_reaction(g.reactions.modder_detection);
+		draw_reaction(g.reactions.game_anti_cheat_modder_detection);
 		draw_reaction(g.reactions.report);
 		draw_reaction(g.reactions.report_cash_spawn);
 		draw_reaction(g.reactions.request_control_event);

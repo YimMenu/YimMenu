@@ -26,7 +26,7 @@ namespace big
 		// aka the ones that still don't have their m_target assigned
 		for (auto& detour_hook_helper : m_detour_hook_helpers)
 		{
-			detour_hook_helper->m_detour_hook->set_target_and_create_hook(detour_hook_helper->m_on_hooking_available());
+			detour_hook_helper.m_detour_hook->set_target_and_create_hook(detour_hook_helper.m_on_hooking_available());
 		}
 
 		detour_hook_helper::add<hooks::run_script_threads>("SH", g_pointers->m_gta.m_run_script_threads);
@@ -114,6 +114,14 @@ namespace big
 
 		detour_hook_helper::add<hooks::send_non_physical_player_data>("SNPPD", g_pointers->m_gta.m_send_non_physical_player_data);
 
+		detour_hook_helper::add<hooks::update_timecycle_keyframe_data>("UTCKD", g_pointers->m_gta.m_timecycle_keyframe_override);
+
+		detour_hook_helper::add<hooks::allocate_memory_reliable>("AMR", g_pointers->m_gta.m_allocate_memory_reliable);
+
+		detour_hook_helper::add<hooks::render_ped>("RP", g_pointers->m_gta.m_render_ped);
+		detour_hook_helper::add<hooks::render_entity>("RE", g_pointers->m_gta.m_render_entity);
+		detour_hook_helper::add<hooks::render_big_ped>("RBP", g_pointers->m_gta.m_render_big_ped);
+
 		g_hooking = this;
 	}
 
@@ -131,12 +139,10 @@ namespace big
 	{
 		m_swapchain_hook.enable();
 		m_og_wndproc = WNDPROC(SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, LONG_PTR(&hooks::wndproc)));
-		// window hook: pt2
-		UnhookWindowsHookEx(*g_pointers->m_gta.m_window_hook.add(45).rip().as<HHOOK*>());
 
-		for (const auto& detour_hook_helper : m_detour_hook_helpers)
+		for (auto& detour_hook_helper : m_detour_hook_helpers)
 		{
-			detour_hook_helper->m_detour_hook->enable();
+			detour_hook_helper.m_detour_hook->enable();
 		}
 
 		MH_ApplyQueued();
@@ -148,28 +154,21 @@ namespace big
 	{
 		m_enabled = false;
 
-		for (const auto& detour_hook_helper : m_detour_hook_helpers)
+		for (auto& detour_hook_helper : m_detour_hook_helpers)
 		{
-			detour_hook_helper->m_detour_hook->disable();
+			detour_hook_helper.m_detour_hook->disable();
 		}
 
-		// window hook: pt2
-		SetWindowsHookExA(13, g_pointers->m_gta.m_window_hook.add(18).rip().as<HOOKPROC>(), GetModuleHandleA("GTA5.exe"), 0);
 		SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(m_og_wndproc));
 		m_swapchain_hook.disable();
 
 		MH_ApplyQueued();
 
-		for (const auto& detour_hook_helper : m_detour_hook_helpers)
-		{
-			delete detour_hook_helper;
-		}
 		m_detour_hook_helpers.clear();
 	}
 
 	hooking::detour_hook_helper::~detour_hook_helper()
 	{
-		delete m_detour_hook;
 	}
 
 	void hooking::detour_hook_helper::enable_hook_if_hooking_is_already_running()
@@ -186,7 +185,7 @@ namespace big
 		}
 	}
 
-	bool hooks::run_script_threads(std::uint32_t ops_to_execute)
+	bool hooks::run_script_threads(uint32_t ops_to_execute)
 	{
 		if (g_running)
 		{

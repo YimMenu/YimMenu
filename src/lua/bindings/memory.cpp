@@ -6,7 +6,7 @@
 
 namespace lua::memory
 {
-	pointer::pointer(std::uint64_t address) :
+	pointer::pointer(uint64_t address) :
 	    m_address(address)
 	{
 	}
@@ -107,9 +107,11 @@ namespace lua::memory
 	// Returns: pointer: A pointer to the newly allocated memory.
 	static pointer allocate(int size, sol::this_state state)
 	{
-		void* mem   = new uint8_t[](size);
-		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
+		void* mem = new uint8_t[](size);
+
+		big::lua_module* module = sol::state_view(state)["!this"];
 		module->m_allocated_memory.push_back(mem);
+
 		return pointer((uint64_t)mem);
 	}
 
@@ -120,7 +122,9 @@ namespace lua::memory
 	static void free(pointer ptr, sol::this_state state)
 	{
 		delete[] (void*)ptr.get_address();
-		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
+
+		big::lua_module* module = sol::state_view(state)["!this"];
+
 		std::erase_if(module->m_allocated_memory, [ptr](void* addr) {
 			return ptr.get_address() == (uint64_t)addr;
 		});
@@ -130,7 +134,7 @@ namespace lua::memory
 	{
 		auto ns = state["memory"].get_or_create<sol::table>();
 
-		auto pointer_ut = ns.new_usertype<pointer>("pointer", sol::constructors<pointer(std::uint64_t)>());
+		auto pointer_ut = ns.new_usertype<pointer>("pointer", sol::constructors<pointer(uint64_t)>());
 
 		pointer_ut["add"]         = &pointer::add;
 		pointer_ut["sub"]         = &pointer::sub;

@@ -20,6 +20,11 @@ namespace big
 		Vector3 position;
 		Vector3 rotation;
 
+		inline bool can_update_location()
+		{
+			return !(g.cmd_executor.enabled || g.self.noclip);
+		}
+
 		virtual void on_enable() override
 		{
 			camera = CAM::CREATE_CAM("DEFAULT_SCRIPTED_CAMERA", 0);
@@ -44,24 +49,27 @@ namespace big
 
 			Vector3 vecChange = {0.f, 0.f, 0.f};
 
-			// Left Shift
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
-				vecChange.z += speed / 2;
-			// Left Control
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_DUCK))
-				vecChange.z -= speed / 2;
-			// Forward
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_UP_ONLY))
-				vecChange.y += speed;
-			// Backward
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_DOWN_ONLY))
-				vecChange.y -= speed;
-			// Left
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_LEFT_ONLY))
-				vecChange.x -= speed;
-			// Right
-			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_RIGHT_ONLY))
-				vecChange.x += speed;
+			if (can_update_location())
+			{
+				// Left Shift
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_SPRINT))
+					vecChange.z += speed / 2;
+				// Left Control
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_DUCK))
+					vecChange.z -= speed / 2;
+				// Forward
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_UP_ONLY))
+					vecChange.y += speed;
+				// Backward
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_DOWN_ONLY))
+					vecChange.y -= speed;
+				// Left
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_LEFT_ONLY))
+					vecChange.x -= speed;
+				// Right
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_MOVE_RIGHT_ONLY))
+					vecChange.x += speed;
+			}
 
 			if (vecChange.x == 0.f && vecChange.y == 0.f && vecChange.z == 0.f)
 				mult = 0.f;

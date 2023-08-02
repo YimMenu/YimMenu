@@ -53,7 +53,7 @@ namespace lua::script
 	// ```
 	static void register_looped(const std::string& name, sol::protected_function func_, sol::this_state state)
 	{
-		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
+		big::lua_module* module = sol::state_view(state)["!this"];
 
 		std::unique_ptr<big::script> lua_script = std::make_unique<big::script>(
 		    [func_, state]() mutable {
@@ -79,9 +79,7 @@ namespace lua::script
 		    },
 		    name);
 
-		const auto registered_script = big::g_script_mgr.add_script(std::move(lua_script));
-
-		module->m_registered_scripts.push_back(registered_script);
+		module->m_registered_scripts.push_back(std::move(lua_script));
 	}
 
 	// Lua API: Function
@@ -114,7 +112,7 @@ namespace lua::script
 	// ```
 	static void run_in_fiber(sol::protected_function func_, sol::this_state state)
 	{
-		auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
+		big::lua_module* module = sol::state_view(state)["!this"];
 
 		static size_t name_i = 0;
 		std::string job_name = module->module_name() + std::to_string(name_i++);
@@ -138,16 +136,13 @@ namespace lua::script
 				    }
 				    else
 				    {
-					    big::g_script_mgr.remove_script(big::script::get_current());
 					    break;
 				    }
 			    }
 		    },
 		    job_name);
 
-		const auto registered_script = big::g_script_mgr.add_script(std::move(lua_script));
-
-		module->m_registered_scripts.push_back(registered_script);
+		module->m_registered_scripts.push_back(std::move(lua_script));
 	}
 
 	void bind(sol::state& state)

@@ -19,5 +19,5 @@ namespace big
 	};
 
 	vehicle_jump
-	    g_vehicle_jump("vehjump", "Vehicle Jump", "Makes the vehicle jump when you press the handbrake", g.vehicle.vehicle_jump);
+	    g_vehicle_jump("vehjump", "VEHICLE_JUMP", "VEHICLE_JUMP_DESC", g.vehicle.vehicle_jump);
 }

@@ -54,15 +54,16 @@ namespace big::teleport
 		}
 		else
 		{
-			auto hnd = vehicle::spawn(RAGE_JOAAT("ninef"), *player->get_ped()->get_position(), 0.0f, true);
+			auto hnd = vehicle::spawn(VEHICLE_RCBANDITO, *player->get_ped()->get_position(), 0.0f, true);
 			ENTITY::SET_ENTITY_VISIBLE(hnd, false, false);
 			ENTITY::SET_ENTITY_COLLISION(hnd, false, false);
 			ENTITY::FREEZE_ENTITY_POSITION(hnd, true);
 
 			auto obj_id                      = player->get_ped()->m_net_object->m_object_id;
+			auto veh_id                      = g_pointers->m_gta.m_handle_to_ptr(hnd)->m_net_object->m_object_id;
 			remote_player_teleport remote_tp = {obj_id, {coords.x, coords.y, coords.z}};
 
-			g.m_remote_player_teleports.emplace(g_pointers->m_gta.m_handle_to_ptr(hnd)->m_net_object->m_object_id, remote_tp);
+			g.m_remote_player_teleports.emplace(veh_id, remote_tp);
 
 			if (is_local_player)
 			{
@@ -90,8 +91,8 @@ namespace big::teleport
 
 			entity::delete_entity(hnd);
 
-			std::erase_if(g.m_remote_player_teleports, [obj_id](auto& obj) {
-				return obj.first == obj_id;
+			std::erase_if(g.m_remote_player_teleports, [veh_id](auto& obj) {
+				return obj.first == veh_id;
 			});
 
 			return true;
@@ -195,6 +196,31 @@ namespace big::teleport
 		}
 
 		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
+
+		return false;
+	}
+
+	inline bool to_highlighted_blip()
+	{
+		if (!*g_pointers->m_gta.m_is_session_started)
+		{
+			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NOT_ONLINE"_T.data());
+			return false;
+		}
+
+		auto blip = blip::get_selected_blip();
+		if (blip == nullptr)
+		{
+			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NOTHING_SELECTED"_T.data());
+			return false;
+		}
+		Entity entity = self::ped;
+		if (PED::GET_PED_CONFIG_FLAG(self::ped, 62, TRUE))
+		{
+			entity = self::veh;
+		}
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(entity, blip->m_x, blip->m_y, blip->m_z, FALSE, FALSE, TRUE);
+		ENTITY::SET_ENTITY_HEADING(entity, blip->m_rotation);
 
 		return false;
 	}

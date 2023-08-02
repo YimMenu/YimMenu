@@ -20,7 +20,7 @@ namespace big
 {
 	void backend::loop()
 	{
-		for (auto& command : g_looped_commands)
+		for (auto& command : g_bool_commands)
 			command->refresh();
 
 		register_script_patches();
@@ -37,7 +37,6 @@ namespace big
 			looped::system_desync_kick_protection();
 			looped::system_spoofing();
 			looped::system_mission_creator();
-			looped::system_rainbow();
 
 			for (auto command : g_looped_commands)
 				if (command->is_enabled())

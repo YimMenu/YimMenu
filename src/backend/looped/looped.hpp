@@ -40,7 +40,6 @@ namespace big
 		static void system_desync_kick_protection();
 		static void system_spoofing();
 		static void system_mission_creator();
-		static void system_rainbow();
 
 		static void vehicle_auto_drive();
 		static void vehicle_allow_all_weapons();

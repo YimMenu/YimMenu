@@ -212,7 +212,7 @@ namespace big
 			    options.at(ContextEntityType::SHARED).options.begin(),
 			    options.at(ContextEntityType::SHARED).options.end());
 
-			std::uint32_t max_size = 0;
+			uint32_t max_size = 0;
 			for (auto& [name, _] : menu.options)
 			{
 				max_size = static_cast<int>(max_size < name.length() ? name.length() : max_size);
@@ -250,7 +250,7 @@ namespace big
 		while (g_running)
 		{
 			if (g_gui->is_open() || HUD::IS_PAUSE_MENU_ACTIVE()
-			    || (*g_pointers->m_gta.m_chat_data && (*g_pointers->m_gta.m_chat_data)->m_chat_open))
+			    || (*g_pointers->m_gta.m_chat_data && (*g_pointers->m_gta.m_chat_data)->m_chat_open) || g.cmd_executor.enabled)
 			{
 				script::get_current()->yield();
 				continue;

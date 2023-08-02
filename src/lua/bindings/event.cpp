@@ -1,5 +1,6 @@
 #pragma once
 #include "event.hpp"
+
 #include "fiber_pool.hpp"
 #include "lua/lua_module.hpp"
 #include "script_mgr.hpp"
@@ -91,22 +92,22 @@ namespace lua::event
 	// Register a function that will be called each time the corresponding menu_event is triggered.
 	static void register_handler(const menu_event& menu_event, sol::protected_function func, sol::this_state state)
 	{
-		const auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
-		
+		big::lua_module* module = sol::state_view(state)["!this"];
+
 		module->m_event_callbacks[menu_event].push_back(func);
 	}
 
 	void bind(sol::state& state)
 	{
 		state.new_enum<menu_event>("menu_event",
-		{
-			{"PlayerLeave",					menu_event::PlayerLeave},
-			{"PlayerJoin",					menu_event::PlayerJoin},
-			{"PlayerMgrInit",				menu_event::PlayerMgrInit},
-			{"PlayerMgrShutdown",			menu_event::PlayerMgrShutdown},
-			{"ChatMessageReceived",			menu_event::ChatMessageReceived},
-			{"ScriptedGameEventReceived",	menu_event::ScriptedGameEventReceived},
-		});
+		    {
+		        {"PlayerLeave", menu_event::PlayerLeave},
+		        {"PlayerJoin", menu_event::PlayerJoin},
+		        {"PlayerMgrInit", menu_event::PlayerMgrInit},
+		        {"PlayerMgrShutdown", menu_event::PlayerMgrShutdown},
+		        {"ChatMessageReceived", menu_event::ChatMessageReceived},
+		        {"ScriptedGameEventReceived", menu_event::ScriptedGameEventReceived},
+		    });
 
 
 		auto ns                = state["event"].get_or_create<sol::table>();

@@ -10,7 +10,7 @@ namespace big
 	{
 	}
 
-	cache_file::cache_file(file cache_file, std::uint32_t cache_version) :
+	cache_file::cache_file(file cache_file, uint32_t cache_version) :
 	    m_cache_file(cache_file),
 	    m_data(nullptr),
 	    m_cache_version(cache_version),
@@ -34,7 +34,7 @@ namespace big
 
 		file.read(reinterpret_cast<char*>(&m_cache_header), sizeof(m_cache_header));
 
-		m_data = std::make_unique<std::uint8_t[]>(m_cache_header.m_data_size);
+		m_data = std::make_unique<uint8_t[]>(m_cache_header.m_data_size);
 		file.read(reinterpret_cast<char*>(m_data.get()), m_cache_header.m_data_size);
 
 		file.close();
@@ -55,17 +55,17 @@ namespace big
 		return true;
 	}
 
-	std::uint8_t* cache_file::data() const
+	uint8_t* cache_file::data() const
 	{
 		return m_data.get();
 	}
 
-	std::uint64_t cache_file::data_size() const
+	uint64_t cache_file::data_size() const
 	{
 		return m_cache_header.m_data_size;
 	}
 
-	bool cache_file::up_to_date(std::uint32_t file_version) const
+	bool cache_file::up_to_date(uint32_t file_version) const
 	{
 		if (!m_data)
 			return false;
@@ -73,19 +73,19 @@ namespace big
 		return m_cache_version == m_cache_header.m_cache_version && file_version == m_cache_header.m_file_version;
 	}
 
-	void cache_file::set_data(cache_data&& data, std::uint64_t data_size)
+	void cache_file::set_data(cache_data&& data, uint64_t data_size)
 	{
 		m_data.swap(data);
 		m_cache_header.m_data_size = data_size;
 	}
 
-	void cache_file::set_header_version(std::uint32_t file_version)
+	void cache_file::set_header_version(uint32_t file_version)
 	{
 		m_cache_header.m_cache_version = m_cache_version;
 		m_cache_header.m_file_version  = file_version;
 	}
 
-	void cache_file::set_cache_version(std::uint32_t cache_version)
+	void cache_file::set_cache_version(uint32_t cache_version)
 	{
 		m_cache_version = cache_version;
 	}

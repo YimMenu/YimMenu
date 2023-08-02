@@ -11,7 +11,7 @@ namespace lua::memory
 	struct pointer
 	{
 	private:
-		std::uint64_t m_address;
+		uint64_t m_address;
 
 	public:
 
@@ -19,7 +19,7 @@ namespace lua::memory
 		// Class: pointer
 		// Param: address: integer: Address
 		// Returns a memory instance, with the given address.
-		explicit pointer(std::uint64_t address);
+		explicit pointer(uint64_t address);
 
 		explicit pointer();
 
@@ -172,9 +172,10 @@ namespace lua::memory
 		template<typename T>
 		big::lua_patch* patch(T value, sol::this_state state)
 		{
-			auto module = sol::state_view(state)["!this"].get<big::lua_module*>();
-			auto patch  = std::make_shared<big::lua_patch>(::memory::byte_patch::make((T*)m_address, value).get());
-			auto raw    = patch.get();
+			big::lua_module* module = sol::state_view(state)["!this"];
+
+			auto patch = std::make_unique<big::lua_patch>(::memory::byte_patch::make((T*)m_address, value).get());
+			auto raw   = patch.get();
 			module->m_registered_patches.push_back(std::move(patch));
 			return raw;
 		}
