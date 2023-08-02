@@ -13,7 +13,7 @@ namespace big
 	{
 		if (file_path.is_absolute())
 			throw std::invalid_argument("folder#get_file requires a relative path.");
-        if (file_path.string().contains(".."))
+		if (file_path.string().contains(".."))
 			throw std::invalid_argument("Relative path traversal is not allowed, refrain from using \"..\" in file paths.");
 
 		return file(m_folder_path / file_path);
