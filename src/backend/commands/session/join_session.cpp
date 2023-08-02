@@ -10,7 +10,7 @@ namespace big
 		    {eSessionType::NEW_PUBLIC, "NEWPUB"},
 		    {eSessionType::CLOSED_CREW, "CLOSEDCREW"},
 		    {eSessionType::CREW, "NEWCREW"},
-		    {eSessionType::CLOSED_FRIENDS, "NEWFRIENDS"},
+		    {eSessionType::CLOSED_FRIENDS, "CLOSEDFRIENDS"},
 		    {eSessionType::FIND_FRIEND, "FRIENDS"},
 		    {eSessionType::SOLO, "SOLO"},
 		    {eSessionType::INVITE_ONLY, "INVITE"},
