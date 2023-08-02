@@ -39,7 +39,7 @@ namespace big
 		}
 
 		ImGui::PushItemWidth(250);
-		components::input_text_with_hint("##dict", "Dict", &new_template.dict);
+		components::input_text_with_hint("##dict", "Dict", new_template.dict);
 		components::options_modal(
 		    "Debug animations",
 		    [] {
@@ -47,7 +47,7 @@ namespace big
 		    },
 		    true,
 		    "List From Debug");
-		components::input_text_with_hint("##anim", "Anim", &new_template.anim);
+		components::input_text_with_hint("##anim", "Anim", new_template.anim);
 
 		ImGui::SameLine();
 		components::button("Play", [] {
@@ -132,8 +132,8 @@ namespace big
 
 		ImGui::SeparatorText("Saving");
 
-		components::input_text_with_hint("Category", "Category", &category);
-		components::input_text_with_hint("Name", "Name", &new_template.name);
+		components::input_text_with_hint("Category", "Category", category);
+		components::input_text_with_hint("Name", "Name", new_template.name);
 
 		static auto save_response = [=]() -> bool {
 			if (!STREAMING::DOES_ANIM_DICT_EXIST(new_template.dict.data()))
@@ -191,7 +191,7 @@ namespace big
 
 		ImGui::BeginGroup();
 
-		components::input_text_with_hint("##filter", "Search", &filter);
+		components::input_text_with_hint("##filter", "Search", filter);
 
 		ImGui::BeginGroup();
 		components::small_text("Categories");
