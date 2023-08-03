@@ -148,8 +148,8 @@ namespace big
 		            }},
 		        {"ANIMATION",
 		            [this] {
-			            ped::ped_play_animation(m_handle, g_ped_animation_service.current_animation.dict, g_ped_animation_service.current_animation.anim, g_ped_animation_service.current_animation.blendin, g_ped_animation_service.current_animation.blendout, g_ped_animation_service.current_animation.time_to_play, g_ped_animation_service.current_animation.flags);
-		            }},
+						g_ped_animation_service.play_saved_ped_animation(g_ped_animation_service.current_animation, m_handle);
+			            }},
 		        {"RECRUIT", [this] {
 			         TASK::CLEAR_PED_TASKS(m_handle);
 			         PED::SET_PED_AS_GROUP_MEMBER(m_handle, PED::GET_PED_GROUP_INDEX(self::ped));
