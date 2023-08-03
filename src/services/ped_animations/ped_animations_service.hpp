@@ -24,6 +24,8 @@ namespace big
     {
     public:
         std::map<std::string, std::vector<ped_animation>> all_saved_animations;
+        ped_animation current_animation;
+        
         bool fetch_saved_animations();
         bool save_new_animation(const std::string& category, ped_animation);
         bool delete_saved_animation(const std::string& category, ped_animation);
