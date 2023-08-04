@@ -11,9 +11,11 @@ namespace big
 		static std::vector<std::string> selected_dict_anim_list{};
 
 		if(dict && anim)
-			*dict = current_dict,
+		{
+			*dict = current_dict;
 			*anim = current_anim;
-
+		}
+			
 		static auto reload_anim_list = []() -> void {
 			selected_dict_anim_list.clear();
 			auto range = animations::all_anims.equal_range(current_dict);
