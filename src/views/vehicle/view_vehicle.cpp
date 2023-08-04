@@ -20,8 +20,12 @@ namespace big
 
 		ImGui::SameLine();
 		components::button("Delete Current", [] {
-			if (g_local_player->m_vehicle)
-				LOG(INFO) << HEX_TO_UPPER(g_local_player->m_vehicle->m_signature) << " IsSame?: " << (g_local_player->m_vehicle->m_signature == RAGE_JOAAT("YimMenuSignature"));
+			auto handle = self::veh;
+			if (ENTITY::DOES_ENTITY_EXIST(handle))
+			{
+				TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
+				entity::delete_entity(handle);
+			}
 		});
 
 		ImGui::SameLine();
