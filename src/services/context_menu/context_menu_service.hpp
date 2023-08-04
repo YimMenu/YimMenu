@@ -7,6 +7,7 @@
 #include "util/entity.hpp"
 #include "util/ped.hpp"
 #include "util/teleport.hpp"
+#include "services/ped_animations/ped_animations_service.hpp"
 
 
 namespace big
@@ -145,10 +146,13 @@ namespace big
 		            [this] {
 			            PED::SET_PED_TO_RAGDOLL(m_handle, 2000, 2000, 0, 0, 0, 0);
 		            }},
-		        {"DANCE",
+		        {"ANIMATION",
 		            [this] {
-			            ped::ped_play_animation(m_handle, "mini@strip_club@private_dance@part1", "priv_dance_p1", 3.5f, -4.0f, -1, 1);
-		            }},
+						if(STREAMING::DOES_ANIM_DICT_EXIST(g_ped_animation_service.current_animation.dict.data()))
+							g_ped_animation_service.play_saved_ped_animation(g_ped_animation_service.current_animation, m_handle);
+						else
+							ped::ped_play_animation(m_handle, "mini@strip_club@private_dance@part1", "priv_dance_p1", 3.5f, -4.0f, -1, 1);
+			            }},
 		        {"RECRUIT", [this] {
 			         TASK::CLEAR_PED_TASKS(m_handle);
 			         PED::SET_PED_AS_GROUP_MEMBER(m_handle, PED::GET_PED_GROUP_INDEX(self::ped));
