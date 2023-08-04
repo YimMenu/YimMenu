@@ -130,7 +130,6 @@ namespace big
 								}
 
 								auto veh = vehicle::clone_from_owned_mods(owned_mods, spawn_location, spawn_heading);
-
 								if (veh == 0)
 								{
 									g_notification_service->push_error("VEHICLE"_T.data(), "UNABLE_TO_SPAWN_VEHICLE"_T.data());
@@ -149,6 +148,8 @@ namespace big
 										vehicle::teleport_into_vehicle(veh);
 									}
 								}
+								// cleanup clones
+								ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
 							}
 							else
 							{

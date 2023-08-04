@@ -170,7 +170,7 @@ namespace big::vehicle
 
 	inline Vehicle spawn(Hash hash, Vector3 location, float heading, bool is_networked = true, bool script_veh = false)
 	{
-		for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+		for (int i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
 		{
 			STREAMING::REQUEST_MODEL(hash);
 			script::get_current()->yield();
@@ -182,7 +182,6 @@ namespace big::vehicle
 		}
 
 		auto veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, script_veh, false);
-
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 
 		if (*g_pointers->m_gta.m_is_session_started)
