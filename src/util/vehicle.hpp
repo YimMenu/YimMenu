@@ -62,7 +62,8 @@ namespace big::vehicle
 	inline void set_mp_bitset(Vehicle veh)
 	{
 		DECORATOR::DECOR_SET_INT(veh, "MPBitset", 0);
-		DECORATOR::DECOR_SET_INT(veh, "RandomId", g_local_player->m_net_object->m_object_id);
+		CVehicle* vehicle_ptr = reinterpret_cast<CVehicle*>(g_pointers->m_gta.m_handle_to_ptr(veh));
+		vehicle_ptr->m_signature = RAGE_JOAAT("YimMenuSignature");
 		auto networkId = NETWORK::VEH_TO_NET(veh);
 		if (NETWORK::NETWORK_GET_ENTITY_IS_NETWORKED(veh))
 			NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true);

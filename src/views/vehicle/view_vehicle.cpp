@@ -4,6 +4,8 @@
 #include "util/teleport.hpp"
 #include "views/view.hpp"
 
+#define HEX_TO_UPPER(value) "0x" << std::hex << std::uppercase << (DWORD64)value << std::dec << std::nouppercase
+
 namespace big
 {
 	void view::vehicle()
@@ -18,9 +20,8 @@ namespace big
 
 		ImGui::SameLine();
 		components::button("Delete Current", [] {
-			auto handle = self::veh;
-			if (ENTITY::DOES_ENTITY_EXIST(handle))
-				TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped), entity::delete_entity(handle);
+			if (g_local_player->m_vehicle)
+				LOG(INFO) << HEX_TO_UPPER(g_local_player->m_vehicle->m_signature) << " IsSame?: " << (g_local_player->m_vehicle->m_signature == RAGE_JOAAT("YimMenuSignature"));
 		});
 
 		ImGui::SameLine();
