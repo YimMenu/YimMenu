@@ -43,6 +43,10 @@ namespace big
 				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("bailkick")))->call(player, {});
 				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
 				script::get_current()->yield(700ms);
+
+				if (!player->is_host() && !g_player_service->get_self()->is_host())
+					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("desync")))->call(player, {});
+
 				if(g_player_service->get_self()->is_host())
 					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
 					NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
