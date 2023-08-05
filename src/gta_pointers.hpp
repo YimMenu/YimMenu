@@ -13,11 +13,16 @@ class CVehicleSeatMetadataMgr;
 class CVehicleDriveByMetadataMgr;
 class CBlipList;
 class TimecycleKeyframeData;
+class CTrainConfig;
 
 namespace rage
 {
 	template<typename T>
 	class atSingleton;
+
+	template<typename T>
+	class atArray;
+
 	class RageSecurity;
 	class netTime;
 	class rlGamerInfo;
@@ -210,6 +215,7 @@ namespace big
 		PVOID m_send_session_matchmaking_attributes;
 
 		PVOID m_serialize_take_off_ped_variation_task;
+		PVOID m_serialize_parachute_task;
 
 		functions::encode_session_info m_encode_session_info;
 		functions::decode_session_info m_decode_session_info;
@@ -302,7 +308,18 @@ namespace big
 
 		bool* m_force_relay_connections;
 
+		functions::remove_reference m_remove_reference;
+
 		PVOID m_read_bits_single;
+		void** m_sync_data_reader_vtable;
+
+		PVOID m_serialize_ped_task_specific_data_node;
+		PVOID m_serialize_ped_task_sequence_data_node;
+		PVOID m_serialize_object_game_state_data_node;
+
+		GenericPool** m_interior_proxy_pool;
+
+		rage::atArray<CTrainConfig>* m_train_config_array;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

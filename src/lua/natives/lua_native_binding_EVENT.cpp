@@ -3,71 +3,71 @@
 
 namespace lua::native
 {
-	static void LUA_NATIVE_EVENT_SET_DECISION_MAKER( Ped ped, Hash name )
+	static void LUA_NATIVE_EVENT_SET_DECISION_MAKER(Ped ped, Hash name)
 	{
 		EVENT::SET_DECISION_MAKER(ped, name);
 	}
 
-	static void LUA_NATIVE_EVENT_CLEAR_DECISION_MAKER_EVENT_RESPONSE( Hash name, int eventType )
+	static void LUA_NATIVE_EVENT_CLEAR_DECISION_MAKER_EVENT_RESPONSE(Hash name, int eventType)
 	{
 		EVENT::CLEAR_DECISION_MAKER_EVENT_RESPONSE(name, eventType);
 	}
 
-	static void LUA_NATIVE_EVENT_BLOCK_DECISION_MAKER_EVENT( Hash name, int eventType )
+	static void LUA_NATIVE_EVENT_BLOCK_DECISION_MAKER_EVENT(Hash name, int eventType)
 	{
 		EVENT::BLOCK_DECISION_MAKER_EVENT(name, eventType);
 	}
 
-	static void LUA_NATIVE_EVENT_UNBLOCK_DECISION_MAKER_EVENT( Hash name, int eventType )
+	static void LUA_NATIVE_EVENT_UNBLOCK_DECISION_MAKER_EVENT(Hash name, int eventType)
 	{
 		EVENT::UNBLOCK_DECISION_MAKER_EVENT(name, eventType);
 	}
 
-	static int LUA_NATIVE_EVENT_ADD_SHOCKING_EVENT_AT_POSITION( int eventType, float x, float y, float z, float duration )
+	static int LUA_NATIVE_EVENT_ADD_SHOCKING_EVENT_AT_POSITION(int eventType, float x, float y, float z, float duration)
 	{
 		auto retval = EVENT::ADD_SHOCKING_EVENT_AT_POSITION(eventType, x, y, z, duration);
 		return retval;
 	}
 
-	static int LUA_NATIVE_EVENT_ADD_SHOCKING_EVENT_FOR_ENTITY( int eventType, Entity entity, float duration )
+	static int LUA_NATIVE_EVENT_ADD_SHOCKING_EVENT_FOR_ENTITY(int eventType, Entity entity, float duration)
 	{
 		auto retval = EVENT::ADD_SHOCKING_EVENT_FOR_ENTITY(eventType, entity, duration);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_EVENT_IS_SHOCKING_EVENT_IN_SPHERE( int eventType, float x, float y, float z, float radius )
+	static bool LUA_NATIVE_EVENT_IS_SHOCKING_EVENT_IN_SPHERE(int eventType, float x, float y, float z, float radius)
 	{
 		auto retval = (bool)EVENT::IS_SHOCKING_EVENT_IN_SPHERE(eventType, x, y, z, radius);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_EVENT_REMOVE_SHOCKING_EVENT( ScrHandle event )
+	static bool LUA_NATIVE_EVENT_REMOVE_SHOCKING_EVENT(ScrHandle event)
 	{
 		auto retval = (bool)EVENT::REMOVE_SHOCKING_EVENT(event);
 		return retval;
 	}
 
-	static void LUA_NATIVE_EVENT_REMOVE_ALL_SHOCKING_EVENTS( bool p0 )
+	static void LUA_NATIVE_EVENT_REMOVE_ALL_SHOCKING_EVENTS(bool p0)
 	{
 		EVENT::REMOVE_ALL_SHOCKING_EVENTS(p0);
 	}
 
-	static void LUA_NATIVE_EVENT_REMOVE_SHOCKING_EVENT_SPAWN_BLOCKING_AREAS(  )
+	static void LUA_NATIVE_EVENT_REMOVE_SHOCKING_EVENT_SPAWN_BLOCKING_AREAS()
 	{
 		EVENT::REMOVE_SHOCKING_EVENT_SPAWN_BLOCKING_AREAS();
 	}
 
-	static void LUA_NATIVE_EVENT_SUPPRESS_SHOCKING_EVENTS_NEXT_FRAME(  )
+	static void LUA_NATIVE_EVENT_SUPPRESS_SHOCKING_EVENTS_NEXT_FRAME()
 	{
 		EVENT::SUPPRESS_SHOCKING_EVENTS_NEXT_FRAME();
 	}
 
-	static void LUA_NATIVE_EVENT_SUPPRESS_SHOCKING_EVENT_TYPE_NEXT_FRAME( int eventType )
+	static void LUA_NATIVE_EVENT_SUPPRESS_SHOCKING_EVENT_TYPE_NEXT_FRAME(int eventType)
 	{
 		EVENT::SUPPRESS_SHOCKING_EVENT_TYPE_NEXT_FRAME(eventType);
 	}
 
-	static void LUA_NATIVE_EVENT_SUPPRESS_AGITATION_EVENTS_NEXT_FRAME(  )
+	static void LUA_NATIVE_EVENT_SUPPRESS_AGITATION_EVENTS_NEXT_FRAME()
 	{
 		EVENT::SUPPRESS_AGITATION_EVENTS_NEXT_FRAME();
 	}

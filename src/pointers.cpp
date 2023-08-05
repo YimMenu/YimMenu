@@ -817,6 +817,15 @@ namespace big
                 g_pointers->m_gta.m_serialize_take_off_ped_variation_task = ptr.as<PVOID>();
             }
         },
+        // Serialize Parachute Task
+        {
+            "SPT",
+            "40 55 53 56 57 41 54 48 8B",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_serialize_parachute_task = ptr.as<PVOID>();
+            }
+        },
         // Chat Data
         {
             "CD",
@@ -1315,6 +1324,69 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_read_bits_single = ptr.as<PVOID*>();
+            }
+        },
+        // Remove Reference
+        {
+            "RR",
+            "48 89 5C 24 08 57 48 83 EC 20 80 3D ? ? ? ? ? 48 8B FA 48 8B D9 74 13",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_remove_reference = ptr.as<functions::remove_reference>();
+            }
+        },
+        // Sync Data Reader Vtable
+        {
+            "RBS",
+            "48 8D 05 ? ? ? ? 48 8D 54 24 20 48 89 44 24 20 48 8D 44 24 40",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_sync_data_reader_vtable = ptr.add(3).rip().as<void**>();
+            }
+        },
+        // Serialize Ped Task Specific Data Node
+        {
+            "SPTSPDN",
+            "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B 02 48 8B F9 48 8B CA 48 8B F2 FF 90 ? ? ? ? 84",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_serialize_ped_task_specific_data_node = ptr.as<PVOID>();
+            }
+        },
+        // Serialize Ped Task Sequence Data Node
+        {
+            "SPTSQDN",
+            "48 8B C4 48 89 58 10 48 89 68 18 48 89 70 20 57 41 56 41 57 48 83 EC 20 4C 8D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_serialize_ped_task_sequence_data_node = ptr.as<PVOID>();
+            }
+        },
+        // Serialize Object Game State Data Node
+        {
+            "SOGSDN",
+            "48 89 5C 24 18 48 89 6C 24 20 56 57 41 56 48 83 EC 20 48 8B 02 4C",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_serialize_object_game_state_data_node = ptr.as<PVOID>();
+            }
+        },
+        // Interior Proxy Pool
+        {
+            "IPP",
+            "4C 8B 05 ? ? ? ? 4C 0F BF 0B",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_interior_proxy_pool = ptr.add(3).rip().as<GenericPool**>();
+            }
+        },
+        // Train Config Array
+        {
+            "TCA",
+            "48 8D 0D ? ? ? ? E8 ? ? ? ? 44 88 64 24 30 4C 8D 8C 24 60 02 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_train_config_array = ptr.add(3).rip().as<rage::atArray<CTrainConfig>*>();
             }
         },
         // Max Wanted Level

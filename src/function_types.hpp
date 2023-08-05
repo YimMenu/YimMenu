@@ -28,6 +28,7 @@ namespace rage
 	class rlQueryPresenceAttributesContext;
 	enum class eThreadState : uint32_t;
 	class netArrayHandlerBase;
+	class fwRefAwareBase;
 }
 
 namespace datafile_commands
@@ -160,4 +161,6 @@ namespace big::functions
 	using connection_manager_try_free_memory = void (*)(rage::netConnectionManager* mgr);
 	using remove_message_from_queue          = void (*)(rage::netMessageQueue* queue, rage::netQueuedMessage* message);
 	using remove_message_from_unacked_reliables = void (*)(void* list, uint16_t* unk);
+
+	using remove_reference = void (*)(rage::fwRefAwareBase* object, void* reference);
 }

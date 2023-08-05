@@ -6,6 +6,7 @@
 #include "gta/fwddec.hpp"
 #include "gta/script_thread.hpp"
 #include "vmt_hook.hpp"
+#include "vtable_hook.hpp"
 
 #include <network/netConnection.hpp>
 
@@ -34,6 +35,8 @@ class IDirectSoundCapture;
 class CVehicleProximityMigrationDataNode;
 class CNonPhysicalPlayerData;
 class TimecycleKeyframeData;
+class CPedTaskSpecificDataNode;
+class CPedTaskSequenceDataNode;
 
 namespace rage
 {
@@ -120,6 +123,7 @@ namespace big
 		static bool send_session_matchmaking_attributes(void* a1, rage::rlSessionInfo* info, uint64_t session_id, bool use_session_id, MatchmakingAttributes* attributes);
 
 		static void serialize_take_off_ped_variation_task(ClonedTakeOffPedVariationInfo* info, rage::CSyncDataBase* serializer);
+		static void serialize_parachute_task(__int64 info, rage::CSyncDataBase* serializer);
 
 		static int nt_query_virtual_memory(void* _this, HANDLE handle, PVOID base_addr, int info_class, MEMORY_BASIC_INFORMATION* info, int size, size_t* return_len);
 		static void queue_dependency(void* dependency);
@@ -161,6 +165,24 @@ namespace big
 		static __int64 render_big_ped(__int64 renderer, CPed* ped, __int64 a3, __int64 a4);
 
 		static bool read_bits_single(void* data, int* out_value, int size, int offset);
+
+		static bool sync_reader_serialize_dword(void* _this, uint32_t* dword, int size);
+		static bool sync_reader_serialize_word(void* _this, uint16_t* word, int size);
+		static bool sync_reader_serialize_byte(void* _this, uint8_t* byte, int size);
+		static bool sync_reader_serialize_int32(void* _this, int32_t* i, int size);
+		static bool sync_reader_serialize_int16(void* _this, int16_t* i, int size);
+		static bool sync_reader_serialize_signed_byte(void* _this, int8_t* i, int size);
+		static bool sync_reader_serialize_bool(void* _this, bool* flag, int size);
+		static bool sync_reader_serialize_signed_float(void* _this, float* flt, float divisor, int size);
+		static bool sync_reader_serialize_float(void* _this, float* flt, float divisor, int size);
+		static bool sync_reader_serialize_net_id(void* _this, uint16_t* id);
+		static bool sync_reader_serialize_vec3(void* _this, rage::fvector3* vec, float divisor, int size);
+		static bool sync_reader_serialize_vec3_signed(void* _this, rage::fvector3* vec, float divisor, int size);
+		static bool sync_reader_serialize_array(void* _this, void* array, int size);
+
+		static void serialize_ped_task_specific_data_node(CPedTaskSpecificDataNode* node, rage::CSyncDataBase* data);
+		static void serialize_ped_task_sequence_data_node(CPedTaskSequenceDataNode* node, rage::CSyncDataBase* data);
+		static void serialize_object_game_state_data_node(__int64 node, rage::CSyncDataBase* data);
 	};
 
 	class minhook_keepalive
@@ -249,6 +271,7 @@ namespace big
 		minhook_keepalive m_minhook_keepalive;
 
 		vmt_hook m_swapchain_hook;
+		vtable_hook m_sync_data_reader_hook;
 
 		WNDPROC m_og_wndproc = nullptr;
 
