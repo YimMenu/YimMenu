@@ -66,11 +66,7 @@ namespace big
 		int m_distance_to_destination;
 		char m_currentask[100];
 
-		void animated_vehicle_operation(Ped ped);
-		void operate_door(eDoorId, bool);
-		void operate_window(eWindowId, bool);
-		void operate_lights(bool headlights, bool highbeams);
-		void operate_neons(int index, bool toggle);
+		void vehicle_operation(std::function<void()> operation);
 		void summon_vehicle();
 
 		void tick();

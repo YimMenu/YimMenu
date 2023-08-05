@@ -106,47 +106,20 @@ namespace big
 	* Imitated from freemode.c script, findable by searching for MISC::GET_HASH_KEY("BONEMASK_HEAD_NECK_AND_R_ARM");
 	* Script uses TASK::TASK_SCRIPTED_ANIMATION but can be dissected to use as follows
 	*/
-	void vehicle_control::animated_vehicle_operation(Ped ped)
+	void vehicle_control::vehicle_operation(std::function<void()> operation)
 	{
-		ped::ped_play_animation(ped, VEH_OP_ANIM_DICT, VEH_OP_ANIM, 4, -4, -1, 48, 0, false);
-		AUDIO::PLAY_SOUND_FROM_ENTITY(-1, "Remote_Control_Fob", self::ped, "PI_Menu_Sounds", true, 0);
-		script::get_current()->yield(100ms);
-		for (int i = 0; i < 35 && ENTITY::IS_ENTITY_PLAYING_ANIM(self::ped, VEH_OP_ANIM_DICT, VEH_OP_ANIM, 3); i++)
+		if (g.window.vehicle_control.operation_animation)
 		{
-			script::get_current()->yield(10ms);
+			ped::ped_play_animation(self::ped, VEH_OP_ANIM_DICT, VEH_OP_ANIM, 4, -4, -1, 48, 0, false);
+			AUDIO::PLAY_SOUND_FROM_ENTITY(-1, "Remote_Control_Fob", self::ped, "PI_Menu_Sounds", true, 0);
+			script::get_current()->yield(100ms);
+			for (int i = 0; i < 35 && ENTITY::IS_ENTITY_PLAYING_ANIM(self::ped, VEH_OP_ANIM_DICT, VEH_OP_ANIM, 3); i++)
+			{
+				script::get_current()->yield(10ms);
+			}
 		}
-	}
 
-	void vehicle_control::operate_door(eDoorId door, bool open)
-	{
-		if (g.window.vehicle_control.operation_animation)
-			animated_vehicle_operation(self::ped);
-
-		vehicle::operate_vehicle_door(m_controlled_vehicle.handle, door, open);
-	}
-
-	void vehicle_control::operate_window(eWindowId window, bool open)
-	{
-		if (g.window.vehicle_control.operation_animation)
-			animated_vehicle_operation(self::ped);
-
-		vehicle::operate_vehicle_window(m_controlled_vehicle.handle, window, open);
-	}
-
-	void vehicle_control::operate_lights(bool headlights, bool highbeams)
-	{
-		if (g.window.vehicle_control.operation_animation)
-			animated_vehicle_operation(self::ped);
-
-		vehicle::operate_vehicle_headlights(m_controlled_vehicle.handle, headlights, highbeams);
-	}
-
-	void vehicle_control::operate_neons(int index, bool toggle)
-	{
-		if (g.window.vehicle_control.operation_animation)
-			animated_vehicle_operation(self::ped);
-
-		vehicle::operate_vehicle_neons(m_controlled_vehicle.handle, index, toggle);
+		operation();
 	}
 
 	void vehicle_control::driver_tick()

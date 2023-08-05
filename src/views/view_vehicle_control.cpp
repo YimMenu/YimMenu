@@ -42,31 +42,29 @@ namespace big
 		{
 			for (int lockindex = 0; lockindex < MAX_VEHICLE_LOCK_STATES; lockindex++)
 			{
-				if (ImGui::Selectable(locknames[lockindex]))
-				{
-					g_fiber_pool->queue_job([=] {
+				components::selectable(locknames[lockindex], false, [lockindex] {
+					g_vehicle_control_service.vehicle_operation([lockindex] {
 						vehicle::change_vehicle_door_lock_state(g_vehicle_control_service.m_controlled_vehicle.handle, eDoorId::VEH_EXT_DOOR_INVALID_ID, (eVehicleLockState)lockindex);
 					});
-				};
+				});
 			}
 			ImGui::EndCombo();
 		}
 		ImGui::SameLine();
 
-		if (components::button("OPEN_ALL_DOORS"_T))
-		{
-			g_fiber_pool->queue_job([=] {
-				g_vehicle_control_service.operate_door(eDoorId::VEH_EXT_DOOR_INVALID_ID, true);
+		components::button("OPEN_ALL_DOORS"_T, [] {
+			g_vehicle_control_service.vehicle_operation([] {
+				vehicle::operate_vehicle_door(g_vehicle_control_service.m_controlled_vehicle.handle, eDoorId::VEH_EXT_DOOR_INVALID_ID, true);
 			});
-		}
+		});
+
 		ImGui::SameLine();
 
-		if (components::button("CLOSE_ALL_DOORS"_T))
-		{
-			g_fiber_pool->queue_job([=] {
-				g_vehicle_control_service.operate_door(eDoorId::VEH_EXT_DOOR_INVALID_ID, false);
+		components::button("CLOSE_ALL_DOORS"_T, [] {
+			g_vehicle_control_service.vehicle_operation([] {
+				vehicle::operate_vehicle_door(g_vehicle_control_service.m_controlled_vehicle.handle, eDoorId::VEH_EXT_DOOR_INVALID_ID, false);
 			});
-		}
+		});
 
 		ImGui::EndGroup();
 
@@ -84,12 +82,11 @@ namespace big
 			{
 				for (int lockindex = 0; lockindex < MAX_VEHICLE_LOCK_STATES; lockindex++)
 				{
-					if (ImGui::Selectable(locknames[lockindex]))
-					{
-						g_fiber_pool->queue_job([=] {
+					components::selectable(locknames[lockindex], false, [i, lockindex] {
+						g_vehicle_control_service.vehicle_operation([i, lockindex] {
 							vehicle::change_vehicle_door_lock_state(g_vehicle_control_service.m_controlled_vehicle.handle, (eDoorId)i, (eVehicleLockState)lockindex);
 						});
-					};
+					});
 				}
 				ImGui::EndCombo();
 			}
@@ -97,13 +94,14 @@ namespace big
 			ImGui::SameLine(300);
 
 			const auto button_label = g_vehicle_control_service.m_controlled_vehicle.doors[i].open ? "CLOSE"_T : "OPEN"_T;
-			if (components::button(button_label))
-			{
-				g_fiber_pool->queue_job([=] {
-					g_vehicle_control_service.operate_door((eDoorId)i,
+			components::button(button_label, [i] {
+				g_vehicle_control_service.vehicle_operation([i] {
+					vehicle::operate_vehicle_door(g_vehicle_control_service.m_controlled_vehicle.handle,
+					    (eDoorId)i,
 					    !g_vehicle_control_service.m_controlled_vehicle.doors[i].open);
 				});
-			}
+			});
+
 			ImGui::PopID();
 		}
 
@@ -124,11 +122,15 @@ namespace big
 		ImGui::Spacing();
 		ImGui::SetNextItemWidth(200);
 		components::button("Roll Down All", [] {
-			g_vehicle_control_service.operate_window(eWindowId::WINDOW_INVALID_ID, true);
+			g_vehicle_control_service.vehicle_operation([] {
+				vehicle::operate_vehicle_window(g_vehicle_control_service.m_controlled_vehicle.handle, eWindowId::WINDOW_INVALID_ID, true);
+			});
 		});
 		ImGui::SameLine();
 		components::button("Roll Up All", [] {
-			g_vehicle_control_service.operate_window(eWindowId::WINDOW_INVALID_ID, false);
+			g_vehicle_control_service.vehicle_operation([] {
+				vehicle::operate_vehicle_window(g_vehicle_control_service.m_controlled_vehicle.handle, eWindowId::WINDOW_INVALID_ID, false);
+			});
 		});
 		ImGui::EndGroup();
 
@@ -143,11 +145,15 @@ namespace big
 			ImGui::Text(windownames[i]);
 			ImGui::SameLine(300);
 			components::button("Roll Down", [i] {
-				g_vehicle_control_service.operate_window((eWindowId)i, true);
+				g_vehicle_control_service.vehicle_operation([i] {
+					vehicle::operate_vehicle_window(g_vehicle_control_service.m_controlled_vehicle.handle, (eWindowId)i, true);
+				});
 			});
 			ImGui::SameLine();
 			components::button("Roll Up", [i] {
-				g_vehicle_control_service.operate_window((eWindowId)i, false);
+				g_vehicle_control_service.vehicle_operation([i] {
+					vehicle::operate_vehicle_window(g_vehicle_control_service.m_controlled_vehicle.handle, (eWindowId)i, false);
+				});
 			});
 			ImGui::PopID();
 		}
@@ -162,37 +168,36 @@ namespace big
 		    "Rear",
 		};
 
-		if (components::button("VEHICLE_CONTROLLER_TOGGLE_LIGHTS"_T))
-		{
-			g_fiber_pool->queue_job([=] {
-				g_vehicle_control_service.operate_lights(!g_vehicle_control_service.m_controlled_vehicle.headlights, false);
+		components::button("VEHICLE_CONTROLLER_TOGGLE_LIGHTS"_T, [] {
+			g_vehicle_control_service.vehicle_operation([=] {
+				vehicle::operate_vehicle_headlights(g_vehicle_control_service.m_controlled_vehicle.handle,
+				    !g_vehicle_control_service.m_controlled_vehicle.headlights,
+				    false);
 			});
-		}
+		});
+
 		ImGui::SameLine();
-		if (components::button("VEHICLE_CONTROLLER_TOGGLE_HIGH_BEAMS"_T))
-		{
-			g_fiber_pool->queue_job([=] {
-				g_vehicle_control_service.operate_lights(g_vehicle_control_service.m_controlled_vehicle.headlights,
+		components::button("VEHICLE_CONTROLLER_TOGGLE_HIGH_BEAMS"_T, [] {
+			g_vehicle_control_service.vehicle_operation([=] {
+				vehicle::operate_vehicle_headlights(g_vehicle_control_service.m_controlled_vehicle.handle,
+				    g_vehicle_control_service.m_controlled_vehicle.headlights,
 				    !g_vehicle_control_service.m_controlled_vehicle.highbeams);
 			});
-		}
-		if (components::button("VEHICLE_CONTROLLER_INTERIOR_LIGHTS_ON"_T))
-		{
-			g_fiber_pool->queue_job([=] {
-				if (g.window.vehicle_control.operation_animation)
-					g_vehicle_control_service.animated_vehicle_operation(self::ped);
+		});
+
+		components::button("VEHICLE_CONTROLLER_INTERIOR_LIGHTS_ON"_T, [] {
+			g_vehicle_control_service.vehicle_operation([] {
 				VEHICLE::SET_VEHICLE_INTERIORLIGHT(g_vehicle_control_service.m_controlled_vehicle.handle, true);
 			});
-		}
+		});
+
 		ImGui::SameLine();
-		if (components::button("VEHICLE_CONTROLLER_INTERIOR_LIGHTS_OFF"_T))
-		{
-			g_fiber_pool->queue_job([=] {
-				if (g.window.vehicle_control.operation_animation)
-					g_vehicle_control_service.animated_vehicle_operation(self::ped);
+
+		components::button("VEHICLE_CONTROLLER_INTERIOR_LIGHTS_OFF"_T, [] {
+			g_vehicle_control_service.vehicle_operation([] {
 				VEHICLE::SET_VEHICLE_INTERIORLIGHT(g_vehicle_control_service.m_controlled_vehicle.handle, false);
 			});
-		}
+		});
 
 		ImGui::Text("VEHICLE_CONTROLLER_NEON_LIGHTS"_T.data());
 		ImGui::Separator();
@@ -202,7 +207,11 @@ namespace big
 			if (ImGui::Checkbox(neonnames[i], &g_vehicle_control_service.m_controlled_vehicle.neons[i]))
 			{
 				g_fiber_pool->queue_job([=] {
-					g_vehicle_control_service.operate_neons(i, g_vehicle_control_service.m_controlled_vehicle.neons[i]);
+					g_vehicle_control_service.vehicle_operation([i] {
+						vehicle::operate_vehicle_neons(g_vehicle_control_service.m_controlled_vehicle.handle,
+						    i,
+						    g_vehicle_control_service.m_controlled_vehicle.neons[i]);
+					});
 				});
 			}
 		}
@@ -258,18 +267,14 @@ namespace big
 
 		if (g_vehicle_control_service.m_controlled_vehicle.isconvertible)
 		{
-			if (components::button(g_vehicle_control_service.m_controlled_vehicle.convertibelstate ? "Raise" : "Lower"))
-			{
-				g_fiber_pool->queue_job([=] {
-					if (g.window.vehicle_control.operation_animation)
-						g_vehicle_control_service.animated_vehicle_operation(self::ped);
-
+			components::button(g_vehicle_control_service.m_controlled_vehicle.convertibelstate ? "Raise" : "Lower", [] {
+				g_vehicle_control_service.vehicle_operation([] {
 					if (g_vehicle_control_service.m_controlled_vehicle.convertibelstate > 0)
 						VEHICLE::RAISE_CONVERTIBLE_ROOF(g_vehicle_control_service.m_controlled_vehicle.handle, false);
 					else
 						VEHICLE::LOWER_CONVERTIBLE_ROOF(g_vehicle_control_service.m_controlled_vehicle.handle, false);
 				});
-			}
+			});
 
 			ImGui::SameLine();
 			ImGui::Text("Convertible state: %s", convertiblestates[g_vehicle_control_service.m_controlled_vehicle.convertibelstate]);
@@ -279,14 +284,12 @@ namespace big
 		        &g_vehicle_control_service.m_controlled_vehicle.engine))
 		{
 			g_fiber_pool->queue_job([=] {
-				if (g.window.vehicle_control.operation_animation)
-					g_vehicle_control_service.animated_vehicle_operation(self::ped);
-
-				if (entity::take_control_of(g_vehicle_control_service.m_controlled_vehicle.handle))
+				g_vehicle_control_service.vehicle_operation([] {
 					VEHICLE::SET_VEHICLE_ENGINE_ON(g_vehicle_control_service.m_controlled_vehicle.handle,
 					    !g_vehicle_control_service.m_controlled_vehicle.engine,
 					    true,
 					    false);
+				});
 			});
 		}
 
@@ -295,12 +298,9 @@ namespace big
 
 		components::button(g_vehicle_control_service.m_driver_performing_task ? "Cancel" : "Summon", [] {
 			if (!g_vehicle_control_service.m_driver_performing_task)
-			{
-				if (g.window.vehicle_control.operation_animation)
-					g_vehicle_control_service.animated_vehicle_operation(self::ped);
-
-				g_vehicle_control_service.summon_vehicle();
-			}
+				g_vehicle_control_service.vehicle_operation([] {
+					g_vehicle_control_service.summon_vehicle();
+				});
 			else
 				g_vehicle_control_service.m_driver_performing_task = false;
 		});
@@ -309,7 +309,6 @@ namespace big
 		{
 			ImGui::SameLine();
 			ImGui::Text("Distance: %d", g_vehicle_control_service.m_distance_to_destination);
-
 
 			ImGui::Text("Task: %s", g_vehicle_control_service.m_currentask);
 		}
