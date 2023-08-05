@@ -321,15 +321,6 @@ namespace big
 			behind_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 4.f, 0.f);
 		}
 
-		if (math::distance_between_vectors(self::pos, ENTITY::GET_ENTITY_COORDS(m_controlled_vehicle.handle, true))
-		    > g.window.vehicle_control.max_summon_range)
-		{
-			//LOG(INFO) << "Vehicle is too far, teleporting";
-			m_destination = behind_pos;
-			ENTITY::SET_ENTITY_COORDS(m_controlled_vehicle.handle, behind_pos.x, behind_pos.y, behind_pos.z, 0, 0, 0, false);
-			return;
-		}
-
 		m_driver_performing_task = true;
 
 		if (ensure_driver())

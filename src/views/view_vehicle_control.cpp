@@ -319,14 +319,11 @@ namespace big
 	    g.window.vehicle_control.operation_animation);
 	bool_command render_veh_dist("vehcontrolrendervehdist", "Render distance on vehicle", "Will display the distance on the controlled vehicle",
 	    g.window.vehicle_control.render_distance_on_veh);
-	float_command max_summon_dist("vehcontrolmaxsummondist", "Max summon distance", "At what range the vehicle will drive towards the summoned location as oposed to being teleported",
-	    g.window.vehicle_control.max_summon_range, 10.f, 250.f);
 
 	void render_settings_tab()
 	{
 		components::command_checkbox<"vehcontroluseanims">();
 		components::command_checkbox<"vehcontrolrendervehdist">();
-		components::command_float_slider<"vehcontrolmaxsummondist">();
 	}
 
 	void view::vehicle_control()
