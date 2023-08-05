@@ -30,7 +30,7 @@ namespace big
 			{
 				vehicle->m_boost_allow_recharge = true;
 				vehicle->m_boost                = 3.f;
-				vehicle->m_kers_boost           = vehicle->m_kers_boost_max + 0.1f;
+				vehicle->m_kers_boost           = vehicle->m_kers_boost_max - 0.01f;
 			}
 			else if (g.vehicle.boost_behavior == eBoostBehaviors::HOLD_FOR_INFINITE) //Hold for Boost
 			{
@@ -48,9 +48,9 @@ namespace big
 							vehicle->m_boost_state = false;
 						}
 					}
-					else // Then it has to be KERS
+					else
 					{
-						vehicle->m_kers_boost = vehicle->m_kers_boost_max + 0.1f;
+						vehicle->m_kers_boost = vehicle->m_kers_boost_max - 0.01f;
 					}
 				}
 			}
