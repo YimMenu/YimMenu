@@ -46,6 +46,9 @@ namespace big
 				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("endkick")))->call(player, {});
 				script::get_current()->yield(700ms);
 
+				if (g_player_service->get_self()->is_host())
+					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
+				
 				if (!player->is_host() && !g_player_service->get_self()->is_host())
 					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("desync")))->call(player, {});
 
