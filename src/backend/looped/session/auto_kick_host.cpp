@@ -16,6 +16,7 @@ namespace big
 				{
 					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("bailkick")))->call(plyr.second, {});
 					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(plyr.second, {});
+					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("oomkick")))->call(plyr.second, {});
 					//dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr.second, {});
 				}
 			});
