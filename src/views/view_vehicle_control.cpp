@@ -323,14 +323,14 @@ namespace big
 	{
 		components::command_checkbox<"vehcontroluseanims">();
 		components::command_checkbox<"vehcontrolrendervehdist">();
+		ImGui::Checkbox("Vehicle info", &g.window.vehicle_control.show_info);
 
 		ImGui::SeparatorText("Selection mode");
-		ImGui::RadioButton("Last Driven", (int*) &g_vehicle_control_service.m_selection_mode, (int) eControlledVehSelectionMode::LAST_DRIVEN);
+		ImGui::RadioButton("Last Driven", (int*)&g_vehicle_control_service.m_selection_mode, (int)eControlledVehSelectionMode::LAST_DRIVEN);
 		ImGui::SameLine();
-		ImGui::RadioButton("Personal", (int*) &g_vehicle_control_service.m_selection_mode, (int) eControlledVehSelectionMode::PERSONAL);
+		ImGui::RadioButton("Personal", (int*)&g_vehicle_control_service.m_selection_mode, (int)eControlledVehSelectionMode::PERSONAL);
 		ImGui::SameLine();
-		ImGui::RadioButton("Closest", (int*) &g_vehicle_control_service.m_selection_mode, (int) eControlledVehSelectionMode::CLOSEST);
-
+		ImGui::RadioButton("Closest", (int*)&g_vehicle_control_service.m_selection_mode, (int)eControlledVehSelectionMode::CLOSEST);
 	}
 
 	void view::vehicle_control()
@@ -345,6 +345,15 @@ namespace big
 			if (g_vehicle_control_service.m_controlled_vehicle_exists)
 			{
 				ImGui::Text(g_vehicle_control_service.m_controlled_vehicle.model_name);
+				if (g.window.vehicle_control.show_info)
+				{
+					ImGui::Text(std::format("Health: {}\nPassengers: {}/{}",
+					    g_vehicle_control_service.m_controlled_vehicle.ptr->m_health,
+					    g_vehicle_control_service.m_controlled_vehicle.ptr->m_num_of_passengers,
+					    g_vehicle_control_service.m_controlled_vehicle.ptr->m_max_passengers)
+					                .data());
+				}
+
 				ImGui::Separator();
 				ImGui::Spacing();
 				if (ImGui::BeginTabBar("##vehiclecontroltabbar"))

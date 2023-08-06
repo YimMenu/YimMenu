@@ -305,47 +305,47 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ipls, select)
 			} ipls{};
 
-			bool clean_player          = false;
-			bool force_wanted_level    = false;
-			bool free_cam              = false;
-			bool invisibility          = false;
-			bool local_visibility      = true;
-			bool never_wanted          = false;
-			bool no_ragdoll            = false;
-			bool noclip                = false;
+			bool clean_player                 = false;
+			bool force_wanted_level           = false;
+			bool free_cam                     = false;
+			bool invisibility                 = false;
+			bool local_visibility             = true;
+			bool never_wanted                 = false;
+			bool no_ragdoll                   = false;
+			bool noclip                       = false;
 			float noclip_aim_speed_multiplier = 0.25f;
 			float noclip_speed_multiplier     = 20.f;
-			bool off_radar             = false;
-			bool ghost_org             = false;
-			bool super_run             = false;
-			bool no_collision          = false;
-			bool unlimited_oxygen      = false;
-			bool no_water_collision    = false;
-			int wanted_level           = 0;
-			bool god_mode              = false;
-			bool part_water            = false;
-			bool proof_bullet          = false;
-			bool proof_fire            = false;
-			bool proof_collision       = false;
-			bool proof_melee           = false;
-			bool proof_explosion       = false;
-			bool proof_steam           = false;
-			bool proof_drown           = false;
-			bool proof_water           = false;
-			uint32_t proof_mask        = 0;
-			bool mobile_radio          = false;
-			bool fast_respawn          = false;
-			bool auto_tp               = false;
-			bool super_jump            = false;
-			bool beast_jump            = false;
-			bool healthregen           = false;
-			float healthregenrate      = 1.0f;
-			bool superman              = false;
-			bool custom_weapon_stop    = true;
-			bool prompt_ambient_animations = false;
-			std::string persist_outfit = "";
-			bool persist_outfits_mis   = false;
-      
+			bool off_radar                    = false;
+			bool ghost_org                    = false;
+			bool super_run                    = false;
+			bool no_collision                 = false;
+			bool unlimited_oxygen             = false;
+			bool no_water_collision           = false;
+			int wanted_level                  = 0;
+			bool god_mode                     = false;
+			bool part_water                   = false;
+			bool proof_bullet                 = false;
+			bool proof_fire                   = false;
+			bool proof_collision              = false;
+			bool proof_melee                  = false;
+			bool proof_explosion              = false;
+			bool proof_steam                  = false;
+			bool proof_drown                  = false;
+			bool proof_water                  = false;
+			uint32_t proof_mask               = 0;
+			bool mobile_radio                 = false;
+			bool fast_respawn                 = false;
+			bool auto_tp                      = false;
+			bool super_jump                   = false;
+			bool beast_jump                   = false;
+			bool healthregen                  = false;
+			float healthregenrate             = 1.0f;
+			bool superman                     = false;
+			bool custom_weapon_stop           = true;
+			bool prompt_ambient_animations    = false;
+			std::string persist_outfit        = "";
+			bool persist_outfits_mis          = false;
+
 			struct hud
 			{
 				bool color_override                                      = false;
@@ -825,8 +825,9 @@ namespace big
 				bool opened                 = false;
 				bool operation_animation    = true;
 				bool render_distance_on_veh = false;
+				bool show_info              = false;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_control, operation_animation, render_distance_on_veh)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_control, operation_animation, render_distance_on_veh, show_info)
 			} vehicle_control{};
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, background_color, demo, text_color, button_color, frame_color, gui_scale, switched_view, ingame_overlay, vehicle_control, ingame_overlay_indicators)
