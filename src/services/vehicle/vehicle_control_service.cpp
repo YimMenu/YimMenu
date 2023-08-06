@@ -7,6 +7,7 @@
 #include "util/pathfind.hpp"
 #include "util/ped.hpp"
 #include "util/vehicle.hpp"
+#include "util/mobile.hpp"
 
 namespace big
 {
@@ -119,7 +120,8 @@ namespace big
 			}
 		}
 
-		operation();
+		if (entity::take_control_of(m_controlled_vehicle.handle))
+			operation();
 	}
 
 	void vehicle_control::driver_tick()
@@ -340,13 +342,8 @@ namespace big
 		}
 	}
 
-	void vehicle_control::tick()
+	void vehicle_control::get_last_driven_vehicle()
 	{
-		m_controlled_vehicle_exists = m_controlled_vehicle.ptr && ENTITY::DOES_ENTITY_EXIST(m_controlled_vehicle.handle)
-		    && VEHICLE::IS_THIS_MODEL_A_CAR(ENTITY::GET_ENTITY_MODEL(m_controlled_vehicle.handle));
-
-		driver_tick();
-
 		//Check in memory for vehicle
 		if (g_local_player)
 		{
@@ -363,13 +360,41 @@ namespace big
 			m_controlled_vehicle = vehicle_control::update_vehicle(self::veh);
 		}
 
-		if (!g.window.vehicle_control.opened)
-			return;
-
 		//Manual check if there is a last driven vehicle
 		if (!m_controlled_vehicle_exists && ENTITY::DOES_ENTITY_EXIST(VEHICLE::GET_LAST_DRIVEN_VEHICLE()))
 			m_controlled_vehicle = vehicle_control::update_vehicle(VEHICLE::GET_LAST_DRIVEN_VEHICLE());
+	}
 
+	void vehicle_control::get_personal_vehicle()
+	{
+		m_controlled_vehicle = vehicle_control::update_vehicle(mobile::mechanic::get_personal_vehicle());
+	}
+
+	void vehicle_control::get_closest_vehicle()
+	{
+		if(PED::IS_PED_IN_ANY_VEHICLE(self::ped, true))
+			m_controlled_vehicle = vehicle_control::update_vehicle(PED::GET_VEHICLE_PED_IS_USING(self::ped));
+		else
+		{
+			m_controlled_vehicle = vehicle_control::update_vehicle(vehicle::get_closest_to_location(self::pos, 1000));
+		}
+	}
+
+	void vehicle_control::tick()
+	{
+		m_controlled_vehicle_exists = m_controlled_vehicle.ptr && ENTITY::DOES_ENTITY_EXIST(m_controlled_vehicle.handle);
+
+		driver_tick();
 		keep_controlled_vehicle_data_updated(m_controlled_vehicle);
+
+		if (!g.window.vehicle_control.opened)
+			return;
+
+		switch (m_selection_mode)
+		{
+		case eControlledVehSelectionMode::LAST_DRIVEN: get_last_driven_vehicle(); break;
+		case eControlledVehSelectionMode::PERSONAL: get_personal_vehicle(); break;
+		case eControlledVehSelectionMode::CLOSEST: get_closest_vehicle(); break;
+		}
 	}
 }

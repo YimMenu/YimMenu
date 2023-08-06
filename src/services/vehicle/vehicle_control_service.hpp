@@ -9,6 +9,13 @@ namespace big
 	constexpr auto VEH_OP_ANIM_DICT        = "ANIM@MP_PLAYER_INTMENU@KEY_FOB@";
 	constexpr auto VEH_OP_ANIM             = "FOB_CLICK";
 
+	enum class eControlledVehSelectionMode
+	{
+		LAST_DRIVEN,
+		PERSONAL,
+		CLOSEST
+	};
+
 	struct vehicle_door
 	{
 		eDoorId id;
@@ -47,6 +54,9 @@ namespace big
 	private:
 		controlled_vehicle update_vehicle(Vehicle veh);
 		void keep_controlled_vehicle_data_updated(controlled_vehicle& veh);
+		void get_last_driven_vehicle();
+		void get_personal_vehicle();
+		void get_closest_vehicle();
 
 		//Autonomy
 		void driver_tick();
@@ -60,6 +70,7 @@ namespace big
 	public:
 		controlled_vehicle m_controlled_vehicle;
 		bool m_controlled_vehicle_exists;
+		eControlledVehSelectionMode m_selection_mode = eControlledVehSelectionMode::LAST_DRIVEN;
 
 		//Autonomy
 		bool m_driver_performing_task;

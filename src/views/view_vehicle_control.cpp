@@ -323,6 +323,14 @@ namespace big
 	{
 		components::command_checkbox<"vehcontroluseanims">();
 		components::command_checkbox<"vehcontrolrendervehdist">();
+
+		ImGui::SeparatorText("Selection mode");
+		ImGui::RadioButton("Last Driven", (int*) &g_vehicle_control_service.m_selection_mode, (int) eControlledVehSelectionMode::LAST_DRIVEN);
+		ImGui::SameLine();
+		ImGui::RadioButton("Personal", (int*) &g_vehicle_control_service.m_selection_mode, (int) eControlledVehSelectionMode::PERSONAL);
+		ImGui::SameLine();
+		ImGui::RadioButton("Closest", (int*) &g_vehicle_control_service.m_selection_mode, (int) eControlledVehSelectionMode::CLOSEST);
+
 	}
 
 	void view::vehicle_control()
@@ -383,13 +391,14 @@ namespace big
 						ImGui::EndTabItem();
 					}
 
-
 					ImGui::EndTabBar();
 				}
 			}
 			else
 			{
 				ImGui::Text("No vehicle available");
+				ImGui::Separator();
+				render_settings_tab();
 			}
 		}
 		ImGui::End();
