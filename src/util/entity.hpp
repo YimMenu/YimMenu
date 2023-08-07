@@ -27,16 +27,23 @@ namespace big::entity
 		PED::RESET_PED_VISIBLE_DAMAGE(player_ped);
 	}
 
+	bool take_control_of(Entity ent, int timeout = 300);
 	inline void delete_entity(Entity ent)
 	{
 		if (!ENTITY::DOES_ENTITY_EXIST(ent))
 			return;
+		if (!take_control_of(ent))
+		{
+			LOG(VERBOSE) << "Failed to take control of entity before deleting";
+			return;
+		}
 
 		ENTITY::DETACH_ENTITY(ent, 1, 1);
-		ENTITY::SET_ENTITY_VISIBLE(ent, false, false);
-		NETWORK::NETWORK_SET_ENTITY_ONLY_EXISTS_FOR_PARTICIPANTS(ent, true);
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, 0, 0, 0, 0, 0, 0);
-		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(ent, 1, 1);
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, 7000.f, 7000.f, 15.f, 0, 0, 0);
+		if (!ENTITY::IS_ENTITY_A_MISSION_ENTITY(ent))
+		{
+			ENTITY::SET_ENTITY_AS_MISSION_ENTITY(ent, true, true);
+		}
 		ENTITY::DELETE_ENTITY(&ent);
 	}
 
@@ -102,7 +109,7 @@ namespace big::entity
 		return !net_object || !net_object->m_next_owner_id && (net_object->m_control_id == -1);
 	}
 
-	inline bool take_control_of(Entity ent, int timeout = 300)
+	inline bool take_control_of(Entity ent, int timeout)
 	{
 		if (!*g_pointers->m_gta.m_is_session_started)
 			return true;

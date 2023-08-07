@@ -149,6 +149,8 @@ namespace big
 										vehicle::teleport_into_vehicle(veh);
 									}
 								}
+								// cleanup clones
+								ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
 							}
 							else
 							{
