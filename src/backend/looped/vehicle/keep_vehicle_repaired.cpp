@@ -17,6 +17,14 @@ namespace big
 			}
 			if (VEHICLE::GET_DOES_VEHICLE_HAVE_DAMAGE_DECALS(veh))
 			{
+				for (int i = 0; i < 6; i++)
+				{
+					if (VEHICLE::IS_VEHICLE_DOOR_DAMAGED(veh, i))
+					{
+						VEHICLE::SET_VEHICLE_FIXED(veh);
+					}
+				}
+
 				if (VEHICLE::IS_VEHICLE_BUMPER_BOUNCING(veh, TRUE) || VEHICLE::GET_VEHICLE_NUM_OF_BROKEN_OFF_PARTS(veh) > 0)
 				{
 					VEHICLE::SET_VEHICLE_FIXED(veh);

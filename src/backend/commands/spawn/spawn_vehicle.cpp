@@ -38,7 +38,7 @@ namespace big
 			        PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(ctx->get_sender()->id()));
 			const auto spawn_heading = ENTITY::GET_ENTITY_HEADING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(ctx->get_sender()->id()));
 
-			const auto veh = vehicle::spawn(hash, spawn_location, spawn_heading);
+			auto veh = vehicle::spawn(hash, spawn_location, spawn_heading);
 
 			if (veh == 0)
 			{
@@ -55,6 +55,7 @@ namespace big
 				{
 					vehicle::teleport_into_vehicle(veh);
 				}
+				ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
 			}
 		}
 	};
