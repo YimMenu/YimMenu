@@ -40,21 +40,7 @@ namespace big
 		{
 			g_fiber_pool->queue_job([player] {
 				
-				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("bailkick")))->call(player, {});
-				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
-				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("oomkick")))->call(player, {});
-				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("endkick")))->call(player, {});
-				script::get_current()->yield(700ms);
-
-				if (g_player_service->get_self()->is_host())
-					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
-				
-				if (!player->is_host() && !g_player_service->get_self()->is_host())
-					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("desync")))->call(player, {});
-
-				if(g_player_service->get_self()->is_host())
-					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
-					NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
+				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("multikick")))->call(player, {});
 			});
 		}
 
