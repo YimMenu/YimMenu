@@ -2,6 +2,7 @@
 #include "core/scr_globals.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
+#include "script.hpp"
 
 namespace big
 {
