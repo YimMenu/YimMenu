@@ -2,6 +2,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "util/entity.hpp"
+#include "gta/enums.hpp"
 
 namespace big
 {

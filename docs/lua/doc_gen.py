@@ -17,6 +17,7 @@ class DocKind(Enum):
     Field = "field"
     Constructor = "constructor"
     Function = "function"
+    Tabs = "tabs"
 
 
 class Table:
@@ -47,8 +48,6 @@ class Table:
             s += f"## Functions ({len(self.functions)})\n"
             s += "\n"
 
-            self.check_for_duplicate_function_names()
-
             for func in self.functions:
                 s += func.print_markdown(f"{self.name}.")
 
@@ -61,15 +60,6 @@ class Table:
         duplicates = [x for x in self.fields if x.name in seen or seen.add(x.name)]
         if len(duplicates) > 0:
             print("Error while building lua doc. Duplicate field names:")
-            for dup in duplicates:
-                print(dup)
-            exit(1)
-
-    def check_for_duplicate_function_names(self):
-        seen = set()
-        duplicates = [x for x in self.functions if x.name in seen or seen.add(x.name)]
-        if len(duplicates) > 0:
-            print("Error while building lua doc. Duplicate function names:")
             for dup in duplicates:
                 print(dup)
             exit(1)
@@ -117,8 +107,6 @@ class Class:
             s += f"## Functions ({len(self.functions)})\n"
             s += "\n"
 
-            self.check_for_duplicate_function_names()
-
             for func in self.functions:
                 s += func.print_markdown(f"{self.name}:")
 
@@ -131,15 +119,6 @@ class Class:
         duplicates = [x for x in self.fields if x.name in seen or seen.add(x.name)]
         if len(duplicates) > 0:
             print("Error while building lua doc. Duplicate field names:")
-            for dup in duplicates:
-                print(dup)
-            exit(1)
-
-    def check_for_duplicate_function_names(self):
-        seen = set()
-        duplicates = [x for x in self.functions if x.name in seen or seen.add(x.name)]
-        if len(duplicates) > 0:
-            print("Error while building lua doc. Duplicate function names:")
             for dup in duplicates:
                 print(dup)
             exit(1)
@@ -203,7 +182,7 @@ class Constructor:
                     s += f"\n"
             s += "\n"
 
-        s += f"**Exemple Usage:**\n"
+        s += f"**Example Usage:**\n"
         s += "```lua\n"
 
         s += f"myInstance = {self.parent.name}:new({parameters_str})\n"
@@ -285,7 +264,7 @@ class Function:
 
             s += "\n"
 
-        s += f"**Exemple Usage:**\n"
+        s += f"**Example Usage:**\n"
         s += "```lua\n"
         if self.return_type is not None and len(self.return_type) > 0:
             s += self.return_type + " = "
@@ -345,7 +324,8 @@ def parse_lua_api_doc(folder_path):
                                 .lower()
                             )
 
-                            continue
+                            if doc_kind is not DocKind.Tabs:
+                                continue
 
                         if doc_kind is not None and "//" in line:
                             match doc_kind:
@@ -387,6 +367,7 @@ def parse_lua_api_doc(folder_path):
                                         line,
                                         line_lower,
                                     )
+                                case DocKind.Tabs: parse_tabs_doc(file)
                                 case _:
                                     # print("unsupported doc kind: " + str(doc_kind))
                                     pass
@@ -503,6 +484,28 @@ def parse_constructor_doc(cur_constructor, cur_class, line, line_lower):
     return cur_constructor, cur_class
 
 
+tabs_enum = []
+def parse_tabs_doc(file):
+    start_parsing = False
+    for line in file:
+        if "enum class" in line.lower():
+            start_parsing = True
+            continue
+
+        if start_parsing:
+            if "};" in line.lower():
+                return
+            if "{" == line.lower().strip():
+                continue
+            if "//" in line.lower():
+                continue
+            if "" == line.lower().strip():
+                continue
+            else:
+                tabs_enum.append(line.replace(",", "").strip())
+            
+
+
 def make_parameter_from_doc_line(line):
     param_info = line.split(lua_api_comment_separator, 3)[1:]
     param_name = param_type = param_desc = ""
@@ -542,6 +545,36 @@ for table_name, table in tables.items():
     f.write(str(table))
     f.close()
 
+tabs_file_name = f"./tabs.md"
+if os.path.exists(tabs_file_name):
+    os.remove(tabs_file_name)
+f = open(tabs_file_name, "a")
+
+f.write("""# Tabs
+
+All the tabs from the menu are listed below, used as parameter for adding gui elements to them.
+
+**Example Usage:**
+
+```lua
+missionsTab = gui.get_tab("GUI_TAB_MISSIONS")
+missionsTab:add_button("Click me", function ()
+    log.info("You clicked!")
+end)
+```
+
+For a complete list of available gui functions, please refer to the tab class documentation and the gui table documentation.
+
+""")
+
+f.write(f"## Tab Count: {len(tabs_enum)}\n\n")
+
+# Minus the first, because it's the `NONE` tab, minus the last one because it's for runtime defined tabs.
+for i in range(1, len(tabs_enum) - 1 ):
+    f.write("### `GUI_TAB_" + tabs_enum[i] + "`\n")
+
+f.close()
+
 try:
     os.makedirs("./classes/")
 except:
@@ -554,3 +587,46 @@ for class_name, class_ in classes.items():
     f = open(file_name, "a")
     f.write(str(class_))
     f.close()
+
+
+
+commands_file_name = f"./commands.md"
+if os.path.exists(commands_file_name):
+    os.remove(commands_file_name)
+f = open(commands_file_name, "a")
+
+f.write("""# Commands
+
+All the current commands from the menu are listed below.
+
+**Example Usage through Lua:**
+
+```lua
+command.call("spawn", {joaat("adder")})
+command.call_player(somePlayerIndex, "spawn", {joaat("adder")})
+```
+
+For a complete list of available command functions, please refer to the command table documentation.
+
+""")
+
+
+commands = []
+with open("./commands_dump.txt", "r") as file:
+    for line in file:
+        cmd = line.split("|", 1)[1].strip().split("|")
+        commands.append(cmd)
+
+f.write(f"## Command Count: {len(commands)}\n\n")
+
+for cmd in commands:
+    name = cmd[0]
+    label = cmd[1]
+    desc = cmd[2]
+    arg_count = cmd[3]
+    f.write(f"### {name}\n")
+    f.write(f"{desc}\n")
+    f.write(f"Arg Count: {arg_count}\n")
+    f.write("\n")
+
+f.close()

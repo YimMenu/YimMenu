@@ -40,6 +40,7 @@ namespace big
 		static void overlay();
 		static void root();
 		static void self();
+		static void animations();
 		static void network();
 		static void missions();
 		static void player_database();
@@ -50,6 +51,7 @@ namespace big
 		static void spawn_vehicle();
 		static void pv();
 		static void persist_car();
+		static void xml_vehicles();
 		static void fun_vehicle();
 		static void vehicle_control();
 		static void spawn_ped();
@@ -57,6 +59,7 @@ namespace big
 		static void time_and_weather();
 		static void spoofing();
 		static void teleport();
+		static void custom_teleport();
 		static void view_player();
 		static void players();
 		static void weapons();
@@ -69,6 +72,7 @@ namespace big
 		static void world();
 		static void gta_cache();
 		static void lua_scripts();
+		static void vfx();
 
 		static void player_info();
 		static void player_teleport();

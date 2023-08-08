@@ -6,7 +6,7 @@
 
 namespace big
 {
-	void looped::player_remote_control_vehicle()
+	void looped::player_remote_control_vehicle() 
 	{
 		if (g.m_remote_controller_vehicle == -1)
 			return;

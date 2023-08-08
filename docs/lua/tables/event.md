@@ -12,7 +12,7 @@ Register a function that will be called each time the corresponding menu_event i
   - `menu_event` (menu_event): The menu_event that we want to respond to.
   - `func` (function): The function that will be called.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 event.register_handler(menu_event, func)
 ```

@@ -62,6 +62,7 @@ namespace big::vehicle
 	inline void set_mp_bitset(Vehicle veh)
 	{
 		DECORATOR::DECOR_SET_INT(veh, "MPBitset", 0);
+		DECORATOR::DECOR_SET_INT(veh, "RandomId", g_local_player->m_net_object->m_object_id);
 		auto networkId = NETWORK::VEH_TO_NET(veh);
 		if (NETWORK::NETWORK_GET_ENTITY_IS_NETWORKED(veh))
 			NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkId, true);
@@ -160,7 +161,6 @@ namespace big::vehicle
 		}
 
 		VEHICLE::SET_VEHICLE_FIXED(veh);
-		VEHICLE::SET_VEHICLE_DEFORMATION_FIXED(veh);
 		VEHICLE::SET_VEHICLE_DIRT_LEVEL(veh, 0.f);
 
 		return true;
@@ -168,7 +168,7 @@ namespace big::vehicle
 
 	inline Vehicle spawn(Hash hash, Vector3 location, float heading, bool is_networked = true, bool script_veh = false)
 	{
-		for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+		for (int i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
 		{
 			STREAMING::REQUEST_MODEL(hash);
 			script::get_current()->yield();
@@ -739,6 +739,35 @@ namespace big::vehicle
 						else
 							VEHICLE::SET_VEHICLE_DOOR_SHUT(veh, i, false);
 					}
+					success = true;
+				}
+			}
+		}
+		return success;
+	}
+
+	inline bool operate_vehicle_window(Vehicle veh, eWindowId windowId, bool open)
+	{
+		bool success = false;
+		if (ENTITY::DOES_ENTITY_EXIST(veh))
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				if (windowId == eWindowId::WINDOW_INVALID_ID)
+				{
+					if (open)
+						VEHICLE::ROLL_DOWN_WINDOWS(veh);
+					else
+						VEHICLE::ROLL_UP_WINDOW(veh, i);
+				}
+
+				if ((int)windowId == i)
+				{
+					if (open)
+						VEHICLE::ROLL_DOWN_WINDOW(veh, i);
+					else
+						VEHICLE::ROLL_UP_WINDOW(veh, i);
+
 					success = true;
 				}
 			}

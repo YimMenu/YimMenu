@@ -2,7 +2,35 @@
 
 Class for representing a tab within the GUI.
 
-## Functions (8)
+## Functions (12)
+
+### `is_selected()`
+
+- **Returns:**
+  - `boolean`: Returns true if this tab is the one currently selected in the GUI.
+
+**Example Usage:**
+```lua
+boolean = tab:is_selected()
+```
+
+### `clear()`
+
+Clear the tab of all its custom lua content that you own.
+
+**Example Usage:**
+```lua
+tab:clear()
+```
+
+### `add_tab()`
+
+Add a sub tab to this tab.
+
+**Example Usage:**
+```lua
+tab:add_tab()
+```
 
 ### `add_button(name, callback)`
 
@@ -12,7 +40,7 @@ Add a button to the gui tab.
   - `name` (string): Text written inside the button.
   - `callback` (function): function that will be called when the button is clicked.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 tab:add_button(name, callback)
 ```
@@ -27,7 +55,7 @@ Add text to the gui tab.
 - **Returns:**
   - `text`: The text object instance.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 text = tab:add_text(name)
 ```
@@ -42,7 +70,7 @@ Add a checkbox widget to the gui tab.
 - **Returns:**
   - `checkbox`: The checkbox object instance.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 checkbox = tab:add_checkbox(name)
 ```
@@ -54,7 +82,7 @@ Add a ImGui::SameLine.
 - **Returns:**
   - `sameline`: The sameline object instance.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 sameline = tab:add_sameline()
 ```
@@ -66,7 +94,7 @@ Add a ImGui::Separator.
 - **Returns:**
   - `separator`: The separator object instance.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 separator = tab:add_separator()
 ```
@@ -81,7 +109,7 @@ Add a ImGui::InputInt.
 - **Returns:**
   - `input_int`: The input_int object instance.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 input_int = tab:add_input_int(name)
 ```
@@ -96,7 +124,7 @@ Add a ImGui::InputFloat.
 - **Returns:**
   - `input_float`: The input_float object instance.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 input_float = tab:add_input_float(name)
 ```
@@ -111,9 +139,35 @@ Add a ImGui::InputText.
 - **Returns:**
   - `input_string`: The input_string object instance.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 input_string = tab:add_input_string(name)
+```
+
+### `add_imgui(imgui_rendering)`
+
+Registers a function that will be called every rendering frame, you can call ImGui functions in it, please check the ImGui.md documentation file for more info.
+**Example Usage:**
+```lua
+tab:add_imgui(function()
+   if ImGui.Begin("My Custom Window") then
+       if ImGui.Button("Label") then
+         script.run_in_fiber(function(script)
+           -- call natives in there
+         end)
+       end
+
+       ImGui.End()
+   end
+end)
+```
+
+- **Parameters:**
+  - `imgui_rendering` (function): Function that will be called every rendering frame, you can call ImGui functions in it, please check the ImGui.md documentation file for more info.
+
+**Example Usage:**
+```lua
+tab:add_imgui(imgui_rendering)
 ```
 
 

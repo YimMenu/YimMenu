@@ -1,18 +1,22 @@
 #pragma once
-#include "lua_module.hpp"
 #include "core/enums.hpp"
+#include "lua_module.hpp"
 
 namespace big
 {
 	class lua_manager
 	{
+	private:
 		std::mutex m_module_lock;
+		std::vector<std::shared_ptr<lua_module>> m_modules;
+
+		static constexpr std::chrono::seconds m_delay_between_changed_scripts_check = 3s;
+		std::chrono::high_resolution_clock::time_point m_wake_time_changed_scripts_check;
+
+		folder m_scripts_folder;
 
 	public:
-		bool m_schedule_reload_modules;
-
-	public:
-		lua_manager();
+		lua_manager(folder scripts_folder);
 		~lua_manager();
 
 		void load_all_modules();
@@ -23,15 +27,21 @@ namespace big
 			return m_modules.size();
 		}
 
+		inline const folder& get_scripts_folder() const
+		{
+			return m_scripts_folder;
+		}
+
+		std::weak_ptr<lua_module> get_module(rage::joaat_t module_id);
+
+		bool has_gui_to_draw(rage::joaat_t tab_hash);
+		void draw_independent_gui();
 		void draw_gui(rage::joaat_t tab_hash);
 
 		void unload_module(rage::joaat_t module_id);
-		void load_module(const std::string& module_name);
+		void load_module(const std::filesystem::path& module_path);
 
-		void queue_load_module(const std::string& module_name, std::function<void(std::weak_ptr<lua_module>)> on_module_loaded);
-		void load_modules_from_queue();
-
-		std::weak_ptr<lua_module> get_module(rage::joaat_t module_id);
+		void reload_changed_scripts();
 
 		void handle_error(const sol::error& error, const sol::state_view& state);
 
@@ -81,16 +91,6 @@ namespace big
 				func(module);
 			}
 		}
-
-	private:
-		std::vector<std::shared_ptr<lua_module>> m_modules;
-
-		struct module_load_info
-		{
-			std::string m_name;
-			std::function<void(std::weak_ptr<lua_module>)> m_on_module_loaded;
-		};
-		std::queue<module_load_info> m_modules_load_queue;
 	};
 
 	inline lua_manager* g_lua_manager;

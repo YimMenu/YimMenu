@@ -11,7 +11,7 @@ namespace big
 
 	private:
 		void* m_exception_handler;
-		std::uint32_t m_old_error_mode;
+		uint32_t m_old_error_mode;
 	};
 
 	extern LONG vectored_exception_handler(EXCEPTION_POINTERS* exception_info);

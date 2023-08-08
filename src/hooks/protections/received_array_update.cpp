@@ -4,6 +4,8 @@
 #include "gta_util.hpp"
 #include "hooking.hpp"
 #include "script_local.hpp"
+#include "services/players/player_service.hpp"
+#include "util/misc.hpp"
 #include "util/notify.hpp"
 
 #include <script/globals/GlobalPlayerBD.hpp>
@@ -20,7 +22,7 @@ namespace big
 		{
 			old_beast_index = *script_local(beast->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(6).as<int*>();
 			if (beast->m_net_component)
-				participant_id = beast->m_net_component->m_local_participant_index;
+				participant_id = ((CGameScriptHandlerNetComponent*)beast->m_net_component)->m_local_participant_index;
 		}
 
 		bool result = g_hooking->get_original<hooks::received_array_update>()(array, sender, buffer, size, cycle);
@@ -59,7 +61,7 @@ namespace big
 				}
 			}
 
-			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[sender->m_player_id].RemoteWantedLevelPlayer = -1;// reset locally
+			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[sender->m_player_id].RemoteWantedLevelPlayer = -1; // reset locally
 		}
 
 		if (array->m_array == scr_globals::gsbd.as<void*>() && *scr_globals::gsbd.as<eFreemodeState*>() == eFreemodeState::CLOSING)

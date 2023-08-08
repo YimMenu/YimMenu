@@ -5,7 +5,7 @@
 #include "network/ChatData.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
-#include "session.hpp"
+#include "services/players/player_service.hpp"
 
 #include <script/HudColor.hpp>
 
@@ -23,21 +23,19 @@ namespace big::notify
 	{
 		if (player)
 		{
-			g_notification_service->push_error("Protections", std::format("Blocked {} crash from {}", crash, player->get_name()));
-			LOG(WARNING) << "Blocked " << crash << " crash from " << player->get_name() << " ("
-			             << (player->get_net_data() ? player->get_net_data()->m_gamer_handle.m_rockstar_id : 0) << ")";
+			if (g.reactions.crash.notify)
+				g_notification_service->push_error("Protections", std::format("Blocked {} crash from {}", crash, player->get_name()));
+
+			if (g.reactions.crash.log)
+				LOG(WARNING) << "Blocked " << crash << " crash from " << player->get_name() << " ("
+				             << (player->get_net_data() ? player->get_net_data()->m_gamer_handle.m_rockstar_id : 0) << ")";
+		
+			g.reactions.crash.process_common(g_player_service->get_by_id(player->m_player_id));
 		}
 		else
 		{
-			g_notification_service->push_error("Protections", std::format("Blocked {} crash from unknown player", crash));
-		}
-
-		if (player)
-		{
-			if (auto plyr = g_player_service->get_by_id(player->m_player_id))
-			{
-				session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
-			}
+			if (g.reactions.crash.notify)
+				g_notification_service->push_error("Protections", std::format("Blocked {} crash from unknown player", crash));
 		}
 	}
 

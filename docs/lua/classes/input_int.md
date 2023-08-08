@@ -11,7 +11,7 @@ Class for representing an input field for editing an integer value within the GU
 - **Returns:**
   - `integer`: Get the value currently written inside the input field.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 integer = input_int:get_value()
 ```
@@ -21,7 +21,7 @@ integer = input_int:get_value()
 - **Parameters:**
   - `val` (integer): Set the value currently written inside the input field.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 input_int:set_value(val)
 ```

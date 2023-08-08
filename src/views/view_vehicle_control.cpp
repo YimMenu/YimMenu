@@ -1,3 +1,5 @@
+#include "backend/bool_command.hpp"
+#include "backend/float_command.hpp"
 #include "gta_util.hpp"
 #include "gui.hpp"
 #include "pointers.hpp"
@@ -93,7 +95,7 @@ namespace big
 			}
 
 			ImGui::SameLine(300);
-			
+
 			const auto button_label = g_vehicle_control_service.m_controlled_vehicle.doors[i].open ? "CLOSE"_T : "OPEN"_T;
 			if (components::button(button_label))
 			{
@@ -107,6 +109,48 @@ namespace big
 
 
 		ImGui::EndGroup();
+	}
+
+	void render_windows_tab()
+	{
+		const char* const windownames[4]{
+		    "Front left",
+		    "Front right",
+		    "Back left",
+		    "Back right",
+		};
+
+		ImGui::BeginGroup();
+		ImGui::Spacing();
+		ImGui::SetNextItemWidth(200);
+		components::button("Roll Down All", [] {
+			g_vehicle_control_service.operate_window(eWindowId::WINDOW_INVALID_ID, true);
+		});
+		ImGui::SameLine();
+		components::button("Roll Up All", [] {
+			g_vehicle_control_service.operate_window(eWindowId::WINDOW_INVALID_ID, false);
+		});
+		ImGui::EndGroup();
+
+		ImGui::Spacing();
+		ImGui::Separator();
+
+		ImGui::BeginGroup();
+		for (int i = 0; i < 4; i++)
+		{
+			ImGui::SetNextItemWidth(200);
+			ImGui::PushID(i);
+			ImGui::Text(windownames[i]);
+			ImGui::SameLine(300);
+			components::button("Roll Down", [i] {
+				g_vehicle_control_service.operate_window((eWindowId)i, true);
+			});
+			ImGui::SameLine();
+			components::button("Roll Up", [i] {
+				g_vehicle_control_service.operate_window((eWindowId)i, false);
+			});
+			ImGui::PopID();
+		}
 	}
 
 	void render_lights_tab()
@@ -271,31 +315,18 @@ namespace big
 		}
 	}
 
+	bool_command use_animations("vehcontroluseanims", "Use animations", "Will use animations for several vehicle operations such as:\ntoggling lights, opening/closing doors and entering seats",
+	    g.window.vehicle_control.operation_animation);
+	bool_command render_veh_dist("vehcontrolrendervehdist", "Render distance on vehicle", "Will display the distance on the controlled vehicle",
+	    g.window.vehicle_control.render_distance_on_veh);
+	float_command max_summon_dist("vehcontrolmaxsummondist", "Max summon distance", "At what range the vehicle will drive towards the summoned location as oposed to being teleported",
+	    g.window.vehicle_control.max_summon_range, 10.f, 250.f);
+
 	void render_settings_tab()
 	{
-		ImGui::Checkbox("Use animations", &g.window.vehicle_control.operation_animation);
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::BeginTooltip();
-			ImGui::Text("Will use animations for several vehicle operations such as:\ntoggling lights, opening/closing doors and entering seats");
-			ImGui::EndTooltip();
-		}
-
-		ImGui::Checkbox("Render distance on vehicle", &g.window.vehicle_control.render_distance_on_veh);
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::BeginTooltip();
-			ImGui::Text("Will display the distance on the controlled vehicle");
-			ImGui::EndTooltip();
-		}
-
-		ImGui::SliderFloat("Max summon distance", &g.window.vehicle_control.max_summon_range, 10.f, 250.f);
-		if (ImGui::IsItemHovered())
-		{
-			ImGui::BeginTooltip();
-			ImGui::Text("At what range the vehicle will drive towards the summoned location as oposed to being teleported");
-			ImGui::EndTooltip();
-		}
+		components::command_checkbox<"vehcontroluseanims">();
+		components::command_checkbox<"vehcontrolrendervehdist">();
+		components::command_float_slider<"vehcontrolmaxsummondist">();
 	}
 
 	void view::vehicle_control()
@@ -317,6 +348,13 @@ namespace big
 					if (ImGui::BeginTabItem("Doors"))
 					{
 						render_doors_tab();
+
+						ImGui::EndTabItem();
+					}
+
+					if (ImGui::BeginTabItem("Windows"))
+					{
+						render_windows_tab();
 
 						ImGui::EndTabItem();
 					}

@@ -1,6 +1,6 @@
 #pragma once
 #include "gta/script_thread.hpp"
-#include "gta/tls_context.hpp"
+#include "script/tlsContext.hpp"
 #include "pointers.hpp"
 
 #include <network/CNetworkPlayerMgr.hpp>
@@ -96,7 +96,7 @@ namespace big::gta_util
 		return nullptr;
 	}
 
-	inline GtaThread* find_script_thread_by_id(std::uint32_t id)
+	inline GtaThread* find_script_thread_by_id(uint32_t id)
 	{
 		for (auto thread : *g_pointers->m_gta.m_script_threads)
 		{

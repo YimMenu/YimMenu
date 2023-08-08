@@ -17,9 +17,9 @@ namespace big
 		});
 
 		ImGui::SameLine();
-		components::button("Delete Current",[]{
+		components::button("Delete Current", [] {
 			auto handle = self::veh;
-			if(ENTITY::DOES_ENTITY_EXIST(handle))
+			if (ENTITY::DOES_ENTITY_EXIST(handle))
 				TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped), entity::delete_entity(handle);
 		});
 
@@ -86,6 +86,7 @@ namespace big
 			components::command_checkbox<"blockhoming">();
 			components::command_checkbox<"driveonwater">();
 			components::command_checkbox<"vehiclecontrol">();
+			components::command_checkbox<"keepvehicleclean">();
 
 
 			ImGui::EndGroup();

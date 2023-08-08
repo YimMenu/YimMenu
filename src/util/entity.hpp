@@ -1,6 +1,5 @@
 #pragma once
 #include "gta/joaat.hpp"
-#include "gta/replay.hpp"
 #include "gta_util.hpp"
 #include "math.hpp"
 #include "natives.hpp"
@@ -28,16 +27,23 @@ namespace big::entity
 		PED::RESET_PED_VISIBLE_DAMAGE(player_ped);
 	}
 
+	bool take_control_of(Entity ent, int timeout = 300);
 	inline void delete_entity(Entity ent)
 	{
 		if (!ENTITY::DOES_ENTITY_EXIST(ent))
 			return;
+		if (!take_control_of(ent))
+		{
+			LOG(VERBOSE) << "Failed to take control of entity before deleting";
+			return;
+		}
 
 		ENTITY::DETACH_ENTITY(ent, 1, 1);
-		ENTITY::SET_ENTITY_VISIBLE(ent, false, false);
-		NETWORK::NETWORK_SET_ENTITY_ONLY_EXISTS_FOR_PARTICIPANTS(ent, true);
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, 0, 0, 0, 0, 0, 0);
-		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(ent, 1, 1);
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, 7000.f, 7000.f, 15.f, 0, 0, 0);
+		if (!ENTITY::IS_ENTITY_A_MISSION_ENTITY(ent))
+		{
+			ENTITY::SET_ENTITY_AS_MISSION_ENTITY(ent, true, true);
+		}
 		ENTITY::DELETE_ENTITY(&ent);
 	}
 
@@ -70,12 +76,40 @@ namespace big::entity
 		return (bool)hit;
 	}
 
+	inline bool raycast(Vector3* endcoor)
+	{
+		Entity ent;
+		BOOL hit;
+		Vector3 surfaceNormal;
+
+		Vector3 camCoords = CAM::GET_GAMEPLAY_CAM_COORD();
+		Vector3 dir       = math::rotation_to_direction(CAM::GET_GAMEPLAY_CAM_ROT(2));
+		Vector3 farCoords;
+
+		farCoords.x = camCoords.x + dir.x * 1000;
+		farCoords.y = camCoords.y + dir.y * 1000;
+		farCoords.z = camCoords.z + dir.z * 1000;
+
+		int ray = SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(camCoords.x,
+		    camCoords.y,
+		    camCoords.z,
+		    farCoords.x,
+		    farCoords.y,
+		    farCoords.z,
+		    -1,
+		    0,
+		    7);
+		SHAPETEST::GET_SHAPE_TEST_RESULT(ray, &hit, endcoor, &surfaceNormal, &ent);
+
+		return (bool)hit;
+	}
+
 	inline bool network_has_control_of_entity(rage::netObject* net_object)
 	{
 		return !net_object || !net_object->m_next_owner_id && (net_object->m_control_id == -1);
 	}
 
-	inline bool take_control_of(Entity ent, int timeout = 300)
+	inline bool take_control_of(Entity ent, int timeout)
 	{
 		if (!*g_pointers->m_gta.m_is_session_started)
 			return true;
@@ -121,7 +155,7 @@ namespace big::entity
 		{
 			for (auto ped : pools::get_all_peds())
 			{
-				if(ped == g_local_player)
+				if (ped == g_local_player)
 					continue;
 
 				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(ped));

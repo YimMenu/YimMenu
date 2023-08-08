@@ -4,10 +4,7 @@
 namespace memory
 {
 	template<typename T>
-	concept SpanCompatibleType = requires(T a)
-	{
-		std::span{a};
-	};
+	concept SpanCompatibleType = requires(T a) { std::span{a}; };
 
 	class byte_patch
 	{
@@ -15,7 +12,6 @@ namespace memory
 		virtual ~byte_patch();
 
 		void apply() const;
-
 		void restore() const;
 
 		void remove() const;
@@ -27,7 +23,7 @@ namespace memory
 		}
 
 		template<typename TAddr, typename T>
-		requires SpanCompatibleType<T>
+		    requires SpanCompatibleType<T>
 		static const std::unique_ptr<byte_patch>& make(TAddr address, T span_compatible)
 		{
 			return m_patches.emplace_back(std::unique_ptr<byte_patch>(new byte_patch(address, std::span{span_compatible})));
@@ -71,6 +67,7 @@ namespace memory
 		std::unique_ptr<byte[]> m_value;
 		std::unique_ptr<byte[]> m_original_bytes;
 		std::size_t m_size;
+		DWORD m_old_protect;
 
 		friend bool operator==(const std::unique_ptr<byte_patch>& a, const byte_patch* b);
 	};

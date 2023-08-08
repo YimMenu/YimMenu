@@ -95,12 +95,6 @@ namespace big
 	bool script_connection::set_script_as_networked()
 	{
 		gta_util::execute_as_script(m_thread, [this] {
-			if (auto hook = g_hooking->m_handler_hooks[(CGameScriptHandler*)m_thread->m_handler].get())
-			{
-				hook->disable();
-				g_hooking->m_handler_hooks.erase((CGameScriptHandler*)m_thread->m_handler);
-			}
-
 			NETWORK::NETWORK_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT(32, true, m_instance_id);
 		});
 
@@ -173,7 +167,7 @@ namespace big
 	{
 		if (m_thread && m_thread->m_net_component)
 		{
-			for (int i = 0; !m_thread->m_net_component->is_local_player_host(); i++)
+			for (int i = 0; !((CGameScriptHandlerNetComponent*)m_thread->m_net_component)->is_local_player_host(); i++)
 			{
 				if (i > 200)
 					return false;
@@ -186,7 +180,7 @@ namespace big
 					return false;
 			}
 
-			m_thread->m_net_component->block_host_migration(true);
+			((CGameScriptHandlerNetComponent*)m_thread->m_net_component)->block_host_migration(true);
 		}
 
 		return true;

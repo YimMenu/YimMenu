@@ -115,19 +115,22 @@ namespace big
 			    false,
 			    "Interior");
 
-			static float new_location[3];
-			auto& current_location = *reinterpret_cast<float(*)[3]>(g_player_service->get_selected()->get_ped()->m_navigation->get_position());
-
-			components::small_text("Custom TP");
-			ImGui::SetNextItemWidth(400);
-			ImGui::InputFloat3("##customlocation", new_location);
-			components::button("TP", [] {
-				teleport::teleport_player_to_coords(g_player_service->get_selected(), *reinterpret_cast<rage::fvector3*>(&new_location));
-			});
-			ImGui::SameLine();
-			if (ImGui::Button("Get current"))
+			if (g_player_service->get_selected()->get_ped())
 			{
-				std::copy(std::begin(current_location), std::end(current_location), std::begin(new_location));
+				static float new_location[3];
+				auto& current_location = *reinterpret_cast<float(*)[3]>(g_player_service->get_selected()->get_ped()->get_position());
+
+				components::small_text("Custom TP");
+				ImGui::SetNextItemWidth(400);
+				ImGui::InputFloat3("##customlocation", new_location);
+				components::button("TP", [] {
+					teleport::teleport_player_to_coords(g_player_service->get_selected(), *reinterpret_cast<rage::fvector3*>(&new_location));
+				});
+				ImGui::SameLine();
+				if (ImGui::Button("Get current"))
+				{
+					std::copy(std::begin(current_location), std::end(current_location), std::begin(new_location));
+				}
 			}
 
 			ImGui::EndListBox();

@@ -6,11 +6,16 @@ class NetworkGameFilterMatchmakingComponent;
 class sCloudFile;
 class CPlayerGameStateDataNode;
 class CVehicleGadgetDataNode;
+class CGameScriptHandlerNetComponent;
 enum eVehicleGadgetType : uint32_t;
 
 namespace rage
 {
 	class netConnectionManager;
+	class netPeerAddress;
+	class netConnection;
+	class netMessageQueue;
+	class netQueuedMessage;
 	class netConnectionPeer;
 	class snMsgRemoveGamersFromSessionCmd;
 	class snSession;
@@ -22,6 +27,7 @@ namespace rage
 	class rlScHandle;
 	class rlQueryPresenceAttributesContext;
 	enum class eThreadState : uint32_t;
+	class netArrayHandlerBase;
 }
 
 namespace datafile_commands
@@ -31,7 +37,7 @@ namespace datafile_commands
 
 namespace big::functions
 {
-	using run_script_threads = bool (*)(std::uint32_t ops_to_execute);
+	using run_script_threads = bool (*)(uint32_t ops_to_execute);
 	using get_native_handler = rage::scrNativeHandler (*)(rage::scrNativeRegistrationTable* registration_table, rage::scrNativeHash hash);
 	using fix_vectors = void (*)(rage::scrNativeCallContext* call_ctx);
 
@@ -87,17 +93,19 @@ namespace big::functions
 
 	using fidevice_get_device = rage::fiDevice* (*)(const char* path, bool allow_root);
 	using fipackfile_ctor     = rage::fiPackfile* (*)(rage::fiPackfile* this_);
+	using fipackfile_dtor     = rage::fiPackfile* (*)(rage::fiPackfile* this_);
 	using fipackfile_open_archive = bool (*)(rage::fiPackfile* this_, const char* archive, bool b_true, int type, intptr_t very_false);
-	using fipackfile_mount   = bool (*)(rage::fiPackfile* this_, const char* mount_point);
-	using fipackfile_unmount = bool (*)(const char* mount_point);
+	using fipackfile_mount         = bool (*)(rage::fiPackfile* this_, const char* mount_point);
+	using fipackfile_unmount       = bool (*)(const char* mount_point);
+	using fipackfile_close_archive = void (*)(rage::fiDevice* this_);
 
-	using get_gamer_online_state = bool (*)(int profile_index, rage::rlGamerHandle* handles, std::uint32_t count, int* online_state, rage::rlTaskStatus* status);
+	using get_gamer_online_state = bool (*)(int profile_index, rage::rlGamerHandle* handles, uint32_t count, int* online_state, rage::rlTaskStatus* status);
 	using start_get_session_by_gamer_handle = bool (*)(int profile_index, rage::rlGamerHandle* handles, int count, rage::rlSessionByGamerTaskResult* result, int unk, bool* success, rage::rlTaskStatus* state);
 	using start_matchmaking_find_sessions = bool (*)(int profile_index, int available_slots, NetworkGameFilterMatchmakingComponent* m_filter, unsigned int max_sessions, rage::rlSessionInfo* result_sessions, int* result_session_count, rage::rlTaskStatus* state);
-	using start_get_presence_attributes = bool (*)(int profile_index, rage::rlScHandle* handle, rage::rlQueryPresenceAttributesContext* contexts, int count, rage::rlTaskStatus* state);
+	using start_get_presence_attributes = bool (*)(int profile_index, rage::rlScHandle* handle, int num_handles, rage::rlQueryPresenceAttributesContext** contexts, int count, rage::rlTaskStatus* state);
 	using join_session_by_info = bool (*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
 
-	using generate_uuid = bool (*)(std::uint64_t* uuid);
+	using generate_uuid = bool (*)(uint64_t* uuid);
 
 	using get_vehicle_gadget_array_size = int (*)(eVehicleGadgetType type);
 
@@ -105,16 +113,16 @@ namespace big::functions
 
 	using queue_packet = bool (*)(rage::netConnectionManager* mgr, int msg_id, void* data, int size, int flags, void* unk);
 
-	using generate_uuid = bool (*)(std::uint64_t* uuid);
+	using generate_uuid = bool (*)(uint64_t* uuid);
 
 	using send_chat_message = bool (*)(int64_t* send_chat_ptr, rage::rlGamerInfo* gamer_info, char* message, bool is_team);
 
-	using send_network_damage = void (*)(rage::CEntity* source, rage::CEntity* target, rage::fvector3* position, int hit_component, bool override_default_damage, int weapon_type, float override_damage, int tire_index, int suspension_index, int flags, std::uint32_t action_result_hash, std::int16_t action_result_id, int action_unk, bool hit_weapon, bool hit_weapon_ammo_attachment, bool silenced, bool unk, rage::fvector3* impact_direction);
+	using send_network_damage = void (*)(rage::CEntity* source, rage::CEntity* target, rage::fvector3* position, int hit_component, bool override_default_damage, int weapon_type, float override_damage, int tire_index, int suspension_index, int flags, uint32_t action_result_hash, int16_t action_result_id, int action_unk, bool hit_weapon, bool hit_weapon_ammo_attachment, bool silenced, bool unk, rage::fvector3* impact_direction);
 	using request_ragdoll = void (*)(uint16_t object_id);
 	using request_control = void (*)(rage::netObject* net_object);
 
 	using get_connection_peer = rage::netConnectionPeer* (*)(rage::netConnectionManager* manager, int peer_id);
-	using send_remove_gamer_cmd = void (*)(rage::netConnectionManager* net_connection_mgr, rage::netConnectionPeer* player, int connection_id, rage::snMsgRemoveGamersFromSessionCmd* cmd, int flags);
+	using send_remove_gamer_cmd = void (*)(rage::netConnectionManager* net_connection_mgr, rage::netPeerAddress* adde, int connection_id, rage::snMsgRemoveGamersFromSessionCmd* cmd, int flags);
 	using handle_remove_gamer_cmd = void* (*)(rage::snSession* session, rage::snPlayer* origin, rage::snMsgRemoveGamersFromSessionCmd* cmd);
 
 	using script_vm = rage::eThreadState (*)(uint64_t* stack, int64_t** scr_globals, rage::scrProgram* program, rage::scrThreadContext* ctx);
@@ -127,8 +135,8 @@ namespace big::functions
 	using set_as_active_cloud_file = void (*)(datafile_commands::SveFileObject* object, sCloudFile** file);
 	using save_json_data = char* (*)(datafile_commands::SveFileObject* object, int* out_length, const char* reason);
 
-	using sync_network_time = bool (*)(rage::netConnectionManager* mgr, rage::netConnectionPeer* peer, int connection_id, rage::netTimeSyncMsg* msg, int flags);
-	using send_packet = bool (*)(rage::netConnectionManager* mgr, rage::netConnectionPeer* peer, int connection_id, void* data, int size, int flags);
+	using sync_network_time = bool (*)(rage::netConnectionManager* mgr, rage::netPeerAddress* addr, int connection_id, rage::netTimeSyncMsg* msg, int flags);
+	using send_packet = bool (*)(rage::netConnectionManager* mgr, rage::netPeerAddress* adde, int connection_id, void* data, int size, int flags);
 	using connect_to_peer = bool (*)(rage::netConnectionManager* mgr, rage::rlGamerInfoBase* gamer_info, rage::snConnectToPeerTaskData* data, rage::snConnectToPeerTaskResult* result, rage::rlTaskStatus* status);
 
 	using clear_ped_tasks_network = void (*)(CPed* ped, bool immediately);
@@ -141,4 +149,15 @@ namespace big::functions
 	using handle_chat_message = void (*)(void* chat_data, void*, rage::rlGamerHandle* handle, const char* text, bool is_team);
 
 	using update_language = void (*)(bool);
+
+	using get_host_array_handler_by_index = rage::netArrayHandlerBase* (*)(CGameScriptHandlerNetComponent* component, int index);
+
+	using get_title_caption_error_message_box = const wchar_t* (*)(rage::joaat_t joaated_error_code);
+
+	using update_presence_attribute_int = void (*)(void* presence_data, int profile_index, char* attr, uint64_t value);
+	using update_presence_attribute_string = void (*)(void* presence_data, int profile_index, char* attr, char* value);
+
+	using connection_manager_try_free_memory = void (*)(rage::netConnectionManager* mgr);
+	using remove_message_from_queue          = void (*)(rage::netMessageQueue* queue, rage::netQueuedMessage* message);
+	using remove_message_from_unacked_reliables = void (*)(void* list, uint16_t* unk);
 }

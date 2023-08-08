@@ -7,7 +7,7 @@ Table containing all possible events to which you can respond.
 ### `PlayerLeave`
 
 Event that is triggered when a player leave the game session.
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 event.register_handler(menu_event.PlayerLeave, function (player_name)
     log.info(player_name)
@@ -19,7 +19,7 @@ end)
 ### `PlayerJoin`
 
 Event that is triggered when a player join the game session.
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 event.register_handler(menu_event.PlayerJoin, function (player_name, player_id)
     log.info(player_name)
@@ -32,7 +32,7 @@ end)
 ### `PlayerMgrInit`
 
 Event that is triggered when the player manager initialize. Usually called when we are joining a session.
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 event.register_handler(menu_event.PlayerMgrInit, function ()
     log.info("Player manager inited, we just joined a session.")
@@ -44,10 +44,10 @@ end)
 ### `PlayerMgrShutdown`
 
 Event that is triggered when the player manager shutdown. Usually called when we are leaving a session.
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 event.register_handler(menu_event.PlayerMgrShutdown, function ()
-    log.info("Player manager inited, we just joined a session.")
+    log.info("Player manager inited, we just left a session.")
 end)
 ```
 
@@ -56,7 +56,7 @@ end)
 ### `ChatMessageReceived`
 
 Event that is triggered when we receive a in-game chat message.
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 event.register_handler(menu_event.ChatMessageReceived, function (player_id, chat_message)
     log.info(player_id)
@@ -69,7 +69,7 @@ end)
 ### `ScriptedGameEventReceived`
 
 Event that is triggered when we receive a scripted game event.
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 event.register_handler(menu_event.ScriptedGameEventReceived, function (player_id, script_event_args)
     log.info(player_id)

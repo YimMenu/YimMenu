@@ -11,12 +11,16 @@
 #include "util/system.hpp"
 #include "view_debug.hpp"
 
+#include "hooking.hpp"
+
 namespace big
 {
 	void debug::misc()
 	{
 		if (ImGui::BeginTabItem("DEBUG_TAB_MISC"_T.data()))
 		{
+			components::command_checkbox<"windowhook">("Disable GTA Window Hook");
+
 			ImGui::Text("Fiber Pool Usage %d/%d", g_fiber_pool->get_used_fibers(), g_fiber_pool->get_total_fibers());
 
 			ImGui::SameLine();
@@ -24,6 +28,11 @@ namespace big
 			if (components::button("RESET"_T.data()))
 			{
 				g_fiber_pool->reset();
+			}
+
+			if (components::button("Trigger GTA Error Message Box"))
+			{
+				hooks::log_error_message_box(0xBAFD530B, 1);
 			}
 
 			if (components::button("DUMP_ENTRYPOINTS"_T.data()))

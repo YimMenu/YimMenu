@@ -1,31 +1,31 @@
-# YimMenu
+# GTAV-Nitrox
 
 ![](https://img.shields.io/badge/dynamic/json?color=ffab00&label=Online%20Version&query=%24.game.online&url=https%3A%2F%2Fraw.githubusercontent.com%2FYimMenu%2FYimMenu%2Fmaster%2Fmetadata.json&style=flat-square&labelColor=000000) ![](https://img.shields.io/badge/dynamic/json?color=ffab00&label=Game%20Build&query=%24.game.build&url=https%3A%2F%2Fraw.githubusercontent.com%2FYimMenu%2FYimMenu%2Fmaster%2Fmetadata.json&style=flat-square&labelColor=000000)
 
 A mod menu base for Grand Theft Auto V.
 Strictly for educational purposes.
 
-YimMenu is originally based of off [BigBaseV2](https://github.com/Pocakking/BigBaseV2) which was an amazing base at the time but nowadays is a bit dated.
+GTAV-Nitrox is originally based of off [YimMenu](https://github.com/YimMenu/YimMenu).
 So here I am with an up-to-date menu focusing on protecting the user from toxic modders.
 
 ## Table of contents
 
  * [How to build](#how-to-build)
- * [Make your own flavour of YimMenu](#make-your-own-flavour-of-yimmenu)
+ * [Make your own flavour of GTAV-Nitrox](#make-your-own-flavour-of-yimmenu)
  * [Staying Up To Date](#staying-up-to-date)
  * [Project Structure](#project-structure)
  * [Contributing](#contributing)
  
-## How to compile YimMenu
+## How to compile GTAV-Nitrox
 
 Read the [SETUP](https://github.com/YimMenu/YimMenu/wiki/Setup-your-PC-for-YimMenu-Development) guide.
 
-## Make your own flavour of YimMenu
+## Make your own flavour of GTAV-Nitrox
 
-Fork YimMenu and git clone that repository instead of https://github.com/YimMenu/YimMenu.git
+Fork GTAV-Nitrox and git clone that repository instead of https://github.com/Papela/GTAV-Nitro.git
 
-Click the below link to make your own fork of YimMenu:
-https://github.com/YimMenu/YimMenu/fork
+Click the below link to make your own fork of GTAV-Nitrox:
+https://github.com/Papela/GTAV-Nitro/fork
   
 ## Staying Up To Date
 
@@ -54,6 +54,6 @@ If you are doing custom modifications to the codebase and have a fork you are on
 
 ## Contributing
 
-You're free to contribute to YimMenu as long as the features are useful, not overly toxic and do not contain anything money related that might get the menu targeted by Take2.
+You're free to contribute to GTAV-Nitrox as long as the features are useful, not overly toxic and do not contain anything money related that might get the menu targeted by Take2.
 
 Make sure to read the [CONTRIBUTING.md](CONTRIBUTING.md) file.

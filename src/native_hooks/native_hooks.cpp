@@ -125,6 +125,7 @@ namespace big
 		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x8E2530AA8ADA980E, carmod_shop::SET_ENTITY_HEADING);
 		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x34E710FF01247C5A, carmod_shop::SET_VEHICLE_LIGHTS);
 		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x767FBC2AC802EF3D, carmod_shop::STAT_GET_INT);
+		add_native_detour(RAGE_JOAAT("carmod_shop"), 0xB3271D7AB655B441, carmod_shop::STAT_SET_INT);
 		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x5F4B6931816E599B, carmod_shop::DISABLE_ALL_CONTROL_ACTIONS);
 
 		add_native_detour(RAGE_JOAAT("freemode"), 0x2C83A9DA6BFFC4F9, freemode::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH);

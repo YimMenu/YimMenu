@@ -26,14 +26,12 @@ namespace big
 		// aka the ones that still don't have their m_target assigned
 		for (auto& detour_hook_helper : m_detour_hook_helpers)
 		{
-			detour_hook_helper->m_detour_hook->set_target_and_create_hook(detour_hook_helper->m_on_hooking_available());
+			detour_hook_helper.m_detour_hook->set_target_and_create_hook(detour_hook_helper.m_on_hooking_available());
 		}
 
 		detour_hook_helper::add<hooks::run_script_threads>("SH", g_pointers->m_gta.m_run_script_threads);
 
 		detour_hook_helper::add<hooks::get_label_text>("GLT", g_pointers->m_gta.m_get_label_text);
-
-		detour_hook_helper::add<hooks::check_chat_profanity>("CCP", g_pointers->m_gta.m_check_chat_profanity);
 
 		detour_hook_helper::add<hooks::write_player_game_state_data_node>("WPGSDN", g_pointers->m_gta.m_write_player_game_state_data_node);
 
@@ -84,8 +82,6 @@ namespace big
 
 		detour_hook_helper::add<hooks::serialize_take_off_ped_variation_task>("STOPVT", g_pointers->m_gta.m_serialize_take_off_ped_variation_task);
 
-		detour_hook_helper::add<hooks::create_script_handler>("CSH", g_pointers->m_gta.m_create_script_handler);
-
 		detour_hook_helper::add<hooks::queue_dependency>("QD", g_pointers->m_gta.m_queue_dependency);
 		detour_hook_helper::add<hooks::prepare_metric_for_sending>("PMFS", g_pointers->m_gta.m_prepare_metric_for_sending);
 
@@ -112,11 +108,19 @@ namespace big
 
 		detour_hook_helper::add<hooks::write_vehicle_proximity_migration_data_node>("WVPMDN", g_pointers->m_gta.m_write_vehicle_proximity_migration_data_node);
 
-		detour_hook_helper::add<hooks::fipackfile_mount>("FPFM", g_pointers->m_gta.m_fipackfile_mount);
-
-		detour_hook_helper::add<hooks::allow_weapons_in_vehicle>("AWIV", g_pointers->m_gta.m_allow_weapons_in_vehicle);
-
 		detour_hook_helper::add<hooks::netfilter_handle_message>("NHM", g_pointers->m_gta.m_netfilter_handle_message);
+
+		detour_hook_helper::add<hooks::log_error_message_box>("E0MBH", g_pointers->m_gta.m_error_message_box);
+
+		detour_hook_helper::add<hooks::send_non_physical_player_data>("SNPPD", g_pointers->m_gta.m_send_non_physical_player_data);
+
+		detour_hook_helper::add<hooks::update_timecycle_keyframe_data>("UTCKD", g_pointers->m_gta.m_timecycle_keyframe_override);
+
+		detour_hook_helper::add<hooks::allocate_memory_reliable>("AMR", g_pointers->m_gta.m_allocate_memory_reliable);
+
+		detour_hook_helper::add<hooks::render_ped>("RP", g_pointers->m_gta.m_render_ped);
+		detour_hook_helper::add<hooks::render_entity>("RE", g_pointers->m_gta.m_render_entity);
+		detour_hook_helper::add<hooks::render_big_ped>("RBP", g_pointers->m_gta.m_render_big_ped);
 
 		g_hooking = this;
 	}
@@ -136,15 +140,9 @@ namespace big
 		m_swapchain_hook.enable();
 		m_og_wndproc = WNDPROC(SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, LONG_PTR(&hooks::wndproc)));
 
-		for (const auto& detour_hook_helper : m_detour_hook_helpers)
+		for (auto& detour_hook_helper : m_detour_hook_helpers)
 		{
-			detour_hook_helper->m_detour_hook->enable();
-		}
-
-		for (auto& thread : *g_pointers->m_gta.m_script_threads)
-		{
-			if (thread->m_handler)
-				hook_script_handler((CGameScriptHandler*)thread->m_handler);
+			detour_hook_helper.m_detour_hook->enable();
 		}
 
 		MH_ApplyQueued();
@@ -156,9 +154,9 @@ namespace big
 	{
 		m_enabled = false;
 
-		for (const auto& detour_hook_helper : m_detour_hook_helpers)
+		for (auto& detour_hook_helper : m_detour_hook_helpers)
 		{
-			detour_hook_helper->m_detour_hook->disable();
+			detour_hook_helper.m_detour_hook->disable();
 		}
 
 		SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(m_og_wndproc));
@@ -166,17 +164,11 @@ namespace big
 
 		MH_ApplyQueued();
 
-		for (const auto& detour_hook_helper : m_detour_hook_helpers)
-		{
-			delete detour_hook_helper;
-		}
 		m_detour_hook_helpers.clear();
-		m_handler_hooks.clear();
 	}
 
 	hooking::detour_hook_helper::~detour_hook_helper()
 	{
-		delete m_detour_hook;
 	}
 
 	void hooking::detour_hook_helper::enable_hook_if_hooking_is_already_running()
@@ -193,10 +185,8 @@ namespace big
 		}
 	}
 
-	bool hooks::run_script_threads(std::uint32_t ops_to_execute)
+	bool hooks::run_script_threads(uint32_t ops_to_execute)
 	{
-		g_native_invoker.cache_handlers();
-
 		if (g_running)
 		{
 			g_script_mgr.tick();

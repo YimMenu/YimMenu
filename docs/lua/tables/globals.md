@@ -2,7 +2,7 @@
 
 Table containing functions for manipulating gta script globals.
 
-## Functions (7)
+## Functions (9)
 
 ### `get_int(global)`
 
@@ -14,9 +14,24 @@ Retrieves an int global value.
 - **Returns:**
   - `integer`: value of the global
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 integer = globals.get_int(global)
+```
+
+### `get_uint(global)`
+
+Retrieves an uint global value.
+
+- **Parameters:**
+  - `global` (integer): index of the global
+
+- **Returns:**
+  - `integer`: value of the global
+
+**Example Usage:**
+```lua
+integer = globals.get_uint(global)
 ```
 
 ### `get_float(global)`
@@ -29,7 +44,7 @@ Retrieves a float global value.
 - **Returns:**
   - `float`: value of the global
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 float = globals.get_float(global)
 ```
@@ -44,7 +59,7 @@ Retrieves a string global value.
 - **Returns:**
   - `string`: value of the global
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 string = globals.get_string(global)
 ```
@@ -57,9 +72,22 @@ Sets an int global value.
   - `global` (integer): index of the global
   - `val` (integer): new value for the global
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 globals.set_int(global, val)
+```
+
+### `set_uint(global, val)`
+
+Sets an uint global value.
+
+- **Parameters:**
+  - `global` (integer): index of the global
+  - `val` (integer): new value for the global
+
+**Example Usage:**
+```lua
+globals.set_uint(global, val)
 ```
 
 ### `set_float(global, val)`
@@ -70,7 +98,7 @@ Sets a float global value.
   - `global` (integer): index of the global
   - `val` (float): new value for the global
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 globals.set_float(global, val)
 ```
@@ -83,7 +111,7 @@ Sets a string global value.
   - `global` (integer): index of the global
   - `str` (string): new value for the global
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 globals.set_string(global, str)
 ```
@@ -98,7 +126,7 @@ Retrieves a pointer global.
 - **Returns:**
   - `pointer`: value of the global
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 pointer = globals.get_pointer(global)
 ```

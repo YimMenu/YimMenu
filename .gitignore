@@ -1,6 +1,7 @@
 # IDE
 .vs/
-.vscode/
+.vscode/*
+!.vscode/launch.json
 .cache/
 
 # output directory

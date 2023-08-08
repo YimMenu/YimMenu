@@ -12,7 +12,7 @@ Call trigger_script_event (TSE)
   - `bitset` (integer)
   - `_args` (table)
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 network.trigger_script_event(bitset, _args)
 ```
@@ -25,7 +25,7 @@ Give the given pickup reward to the given player.
   - `player` (integer): Index of the player.
   - `reward` (integer): Index of the reward pickup.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 network.give_pickup_rewards(player, reward)
 ```
@@ -40,7 +40,7 @@ Teleport the given player to the given position.
   - `y` (float): New y position.
   - `z` (float): New z position.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 network.set_player_coords(player_idx, x, y, z)
 ```
@@ -54,7 +54,7 @@ Teleport all players to the given position.
   - `y` (float): New y position.
   - `z` (float): New z position.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 network.set_all_player_coords(x, y, z)
 ```
@@ -64,7 +64,7 @@ network.set_all_player_coords(x, y, z)
 - **Returns:**
   - `integer`: Returns the index of the currently selected player in the GUI.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 integer = network.get_selected_player()
 ```
@@ -74,7 +74,7 @@ integer = network.get_selected_player()
 - **Returns:**
   - `integer`: Returns the rockstar id of the currently selected player in the GUI.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 integer = network.get_selected_database_player_rockstar_id()
 ```
@@ -86,7 +86,7 @@ Flags the given player as a modder in our local database.
 - **Parameters:**
   - `player_idx` (integer): Index of the player.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 network.flag_player_as_modder(player_idx)
 ```
@@ -99,7 +99,7 @@ network.flag_player_as_modder(player_idx)
 - **Returns:**
   - `boolean`: Returns true if the given player is flagged as a modder.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 boolean = network.is_player_flagged_as_modder(player_idx)
 ```
@@ -111,7 +111,7 @@ Try to force ourself to be host for the given GTA Script.
 - **Parameters:**
   - `script_name` (string): Name of the script
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 network.force_script_host(script_name)
 ```
@@ -124,7 +124,7 @@ Sends a message to the in game chat.
   - `msg` (string): Message to be sent.
   - `team_only` (boolean): Should be true if the msg should only be sent to our team.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 network.send_chat_message(msg, team_only)
 ```
