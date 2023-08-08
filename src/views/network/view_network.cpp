@@ -107,6 +107,10 @@ namespace big
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("JOIN_IN_SCTV_DESC"_T.data());
 
+			ImGui::Checkbox("SEAMLESS_JOIN"_T.data(), &g.tunables.seamless_join);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("SEAMLESS_JOIN_DESC"_T.data());
+
 			ImGui::Checkbox("PLAYER_MAGNET"_T.data(), &g.session.player_magnet_enabled);
 			if (g.session.player_magnet_enabled)
 			{

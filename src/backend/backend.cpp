@@ -117,6 +117,7 @@ namespace big
 		while (g_running)
 		{
 			looped::hud_transition_state();
+			//looped::seamless_join(); // causes to not compile correctly
 			looped::session_pop_multiplier_areas();
 			looped::session_force_thunder();
 			looped::session_randomize_ceo_colors();

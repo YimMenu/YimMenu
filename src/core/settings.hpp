@@ -129,8 +129,9 @@ namespace big
 		{
 			bool disable_phone = false;
 			bool no_idle_kick  = false;
+			bool seamless_join = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(tunables, disable_phone, no_idle_kick)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(tunables, disable_phone, no_idle_kick, seamless_join)
 		} tunables{};
 
 		struct notifications
