@@ -11,15 +11,7 @@ command.call_player(somePlayerIndex, "spawn", {joaat("adder")})
 
 For a complete list of available command functions, please refer to the command table documentation.
 
-## Command Count: 214
-
-### bailkick 
- BAIL_KICK_DESC 
-Arg Count:  1
-
-### bailkickall 
- BAIL_KICK_DESC 
-Arg Count:  0
+## Command Count: 212
 
 ### breakup 
  BREAKUP_KICK_DESC 

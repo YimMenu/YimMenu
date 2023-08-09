@@ -29,8 +29,6 @@ namespace big
 			
 			components::player_command_button<"multikick">(g_player_service->get_selected());
 			ImGui::SameLine();
-			components::player_command_button<"bailkick">(g_player_service->get_selected());
-			ImGui::SameLine();
 			components::player_command_button<"nfkick">(g_player_service->get_selected());
 
 			components::player_command_button<"oomkick">(g_player_service->get_selected());

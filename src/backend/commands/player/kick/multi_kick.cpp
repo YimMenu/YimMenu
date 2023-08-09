@@ -17,7 +17,6 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
-			dynamic_cast<player_command*>(command::get(RAGE_JOAAT("bailkick")))->call(player, {});
 			dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
 			dynamic_cast<player_command*>(command::get(RAGE_JOAAT("oomkick")))->call(player, {});
 			dynamic_cast<player_command*>(command::get(RAGE_JOAAT("endkick")))->call(player, {});
