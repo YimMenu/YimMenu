@@ -3,7 +3,7 @@
 
 constexpr auto MAX_PLAYERS = 32;
 
-enum class ControllerInputs : std::uint32_t
+enum class ControllerInputs : uint32_t
 {
 	INPUT_NEXT_CAMERA,
 	INPUT_LOOK_LR,
@@ -372,7 +372,7 @@ enum class ControllerInputs : std::uint32_t
 	SCRIPTED_INPUT_LAST
 };
 
-enum class RadioStationIndexes : std::uint32_t
+enum class RadioStationIndexes : uint32_t
 {
 	RADIO_LSROCKRADIO,
 	RADIO_NONSTOPPOPFM,
@@ -507,6 +507,17 @@ enum class eNetworkEvents : uint16_t
 	ACTIVATE_VEHICLE_SPECIAL_ABILITY_EVENT,
 	BLOCK_WEAPON_SELECTION,
 	NETWORK_CHECK_CATALOG_CRC
+};
+
+enum class KickReason : uint8_t
+{
+	VOTED_OUT,
+	PEER_COMPLAINTS,
+	CONNECTION_ERROR,
+	NAT_TYPE,
+	SCADMIN,
+	SCADMIN_BLACKLIST,
+	NUM_REASONS
 };
 
 enum class ScriptEntityChangeType
@@ -1016,24 +1027,15 @@ enum class BlipColors
 	WaypointColor  = 0x54
 };
 
-enum class BlipDisplayBits
+enum BlipDisplayBits
 {
-	BlipIsBright                 = (1 << 1),
-	BlipEngageFlashing           = (1 << 3),
-	BlipFlashForRoute            = (1 << 5),
-	BlipIsOnMinimap              = (1 << 6),
-	BlipIsHighDetail             = (1 << 8),
-	BlipUseBlipColorForDirection = (1 << 9),
-	BlipIsSmall                  = (1 << 10),
-	BlipShowCone                 = (1 << 11),
-	BlipIsMissionCreatorBlip     = (1 << 12),
-	BlipShowCheckmark            = (1 << 15),
-	BlipShowDollarSign           = (1 << 16),
-	BlipShowHeadingIndicator     = (1 << 17),
-	BlipShowFullCircle           = (1 << 18),
-	BlipIsFriend                 = (1 << 19),
-	BlipIsCrew                   = (1 << 20),
-	BlipIsSelected               = (1 << 22),
+	BlipShowCheckmark            = (1 << 16),
+	BlipShowDollarSign           = (1 << 17),
+	BlipShowHeadingIndicator     = (1 << 18),
+	BlipShowFullCircle           = (1 << 19),
+	BlipIsFriend                 = (1 << 20),
+	BlipIsCrew                   = (1 << 21),
+	BlipIsSelected               = (1 << 23),
 };
 
 enum class BlipRenderBits
@@ -1041,7 +1043,7 @@ enum class BlipRenderBits
 	BlipIsOnScreen = (1 << 6)
 };
 
-enum class eFrameFlags : std::uint32_t
+enum class eFrameFlags : uint32_t
 {
 	eFrameFlagExplosiveAmmo  = 1 << 11,
 	eFrameFlagFireAmmo       = 1 << 12,
@@ -1067,13 +1069,13 @@ enum class eNetObjType
 	NET_OBJ_TYPE_TRAIN
 };
 
-enum class eNetObjectFlags : std::uint16_t
+enum class eNetObjectFlags : uint16_t
 {
 	NET_OBJ_FLAGS_FROM_SCRIPT = 1 << 2,
 	NET_OBJ_FLAGS_SCRIPTED    = 1 << 6,
 };
 
-enum class eAckCode : std::uint32_t
+enum class eAckCode : uint32_t
 {
 	ACKCODE_SUCCESS,
 	ACKCODE_FAIL,
@@ -1086,7 +1088,7 @@ enum class eAckCode : std::uint32_t
 	ACKCODE_NONE
 };
 
-enum class PedBones : std::uint32_t
+enum class PedBones : uint32_t
 {
 	SKEL_ROOT                        = 0x0,
 	SKEL_Pelvis                      = 0x2E28,
@@ -1461,6 +1463,62 @@ enum class eVehicleLockState
 	VEHICLELOCK_LOCKED_BUT_BOOT_UNLOCKED,
 	VEHICLELOCK_LOCKED_NO_PASSENGERS,
 	VEHICLELOCK_CANNOT_ENTER
+};
+
+enum class DecalTypes
+{
+	splatters_blood          = 1010,
+	splatters_blood_dir      = 1015,
+	splatters_blood_mist     = 1017,
+	splatters_mud            = 1020,
+	splatters_paint          = 1030,
+	splatters_water          = 1040,
+	splatters_water_hydrant  = 1050,
+	splatters_blood2         = 1110,
+	weapImpact_metal         = 4010,
+	weapImpact_concrete      = 4020,
+	weapImpact_mattress      = 4030,
+	weapImpact_mud           = 4032,
+	weapImpact_wood          = 4050,
+	weapImpact_sand          = 4053,
+	weapImpact_cardboard     = 4040,
+	weapImpact_melee_glass   = 4100,
+	weapImpact_glass_blood   = 4102,
+	weapImpact_glass_blood2  = 4104,
+	weapImpact_shotgun_paper = 4200,
+	weapImpact_shotgun_mattress,
+	weapImpact_shotgun_metal,
+	weapImpact_shotgun_wood,
+	weapImpact_shotgun_dirt,
+	weapImpact_shotgun_tvscreen,
+	weapImpact_shotgun_tvscreen2,
+	weapImpact_shotgun_tvscreen3,
+	weapImpact_melee_concrete = 4310,
+	weapImpact_melee_wood     = 4312,
+	weapImpact_melee_metal    = 4314,
+	burn1                     = 4421,
+	burn2,
+	burn3,
+	burn4,
+	burn5,
+	bang_concrete_bang = 5000,
+	bang_concrete_bang2,
+	bang_bullet_bang,
+	bang_bullet_bang2 = 5004,
+	bang_glass        = 5031,
+	bang_glass2,
+	solidPool_water = 9000,
+	solidPool_blood,
+	solidPool_oil,
+	solidPool_petrol,
+	solidPool_mud,
+	porousPool_water,
+	porousPool_blood,
+	porousPool_oil,
+	porousPool_petrol,
+	porousPool_mud,
+	porousPool_water_ped_drip,
+	liquidTrail_water = 9050
 };
 
 enum class eTaskTypeIndex
@@ -1910,6 +1968,15 @@ enum class eDoorId
 	VEH_EXT_BOOT
 };
 
+enum class eWindowId
+{
+	WINDOW_INVALID_ID  = -1,
+	FRONT_LEFT_WINDOW  = 0,
+	FRONT_RIGHT_WINDOW = 1,
+	REAR_LEFT_WINDOW   = 2,
+	REAR_RIGHT_WINDOW  = 3,
+};
+
 enum class eVehicleSeats
 {
 	DRIVER = -1,
@@ -1920,15 +1987,40 @@ enum class eVehicleSeats
 	OUTSIDE_RIGHT,
 };
 
-enum class eCombatAbilityLevel{
+enum class eCombatAbilityLevel
+{
 	POOR,
 	AVERAGE,
 	PROFESSIONAL
 };
 
-NLOHMANN_JSON_SERIALIZE_ENUM(eCombatAbilityLevel, 
-	{
-		{eCombatAbilityLevel::POOR, "poor"},
-		{eCombatAbilityLevel::AVERAGE, "average"},
-		{eCombatAbilityLevel::PROFESSIONAL, "professional"}
-	})
+NLOHMANN_JSON_SERIALIZE_ENUM(eCombatAbilityLevel, {{eCombatAbilityLevel::POOR, "poor"}, {eCombatAbilityLevel::AVERAGE, "average"}, {eCombatAbilityLevel::PROFESSIONAL, "professional"}})
+
+enum class GSType : int32_t
+{
+	Unknown = -2,
+
+	// actual values start here
+	Invalid = -1,
+	InviteOnly,
+	FriendsOnly,
+	ClosedCrew,
+	OpenCrew,
+	Job,
+	Public,
+	Max,
+	Modder = 69 // stand?
+};
+
+enum class GameMode : int32_t
+{
+	None          = -1,
+	Mission       = 0,
+	Deathmatch    = 1, // or koth
+	Race          = 2,
+	Survival      = 3,
+	GangAttack    = 6,
+	Golf          = 0xB,
+	Tennis        = 0xC,
+	ShootingRange = 0xD
+};

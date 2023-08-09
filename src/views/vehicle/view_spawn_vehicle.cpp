@@ -59,12 +59,10 @@ namespace big
 			ImGui::EndCombo();
 		}
 
-
 		static char search[64];
 
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("MODEL_NAME"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
-
 
 		if (ImGui::BeginListBox("###vehicles", {300, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 188 - 38 * 4)}))
 		{
@@ -153,7 +151,7 @@ namespace big
 							    vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside, vehicle.m_hash);
 							const auto spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
-							const auto veh = vehicle::spawn(vehicle.m_hash, spawn_location, spawn_heading);
+							auto veh = vehicle::spawn(vehicle.m_hash, spawn_location, spawn_heading);
 
 							if (veh == 0)
 							{
@@ -175,6 +173,7 @@ namespace big
 							}
 
 							g_model_preview_service->stop_preview();
+							ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
 						});
 						ImGui::PopID();
 
@@ -205,12 +204,15 @@ namespace big
 		ImGui::RadioButton("Personal", &spawn_type, 1);
 		ImGui::SameLine();
 		ImGui::RadioButton("Persistent", &spawn_type, 2);
+		ImGui::SameLine();
+		ImGui::RadioButton("Xml", &spawn_type, 3);
 
 		switch (spawn_type)
 		{
 		case 0: render_spawn_new_vehicle(); break;
 		case 1: view::pv(); break;
 		case 2: view::persist_car(); break;
+		case 3: view::xml_vehicles(); break;
 		}
 	}
 }

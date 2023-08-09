@@ -45,11 +45,11 @@ namespace big
 
 	void script_patcher_service::create_data_for_script(rage::scrProgram* program)
 	{
-		auto pages = new std::uint8_t*[program->get_num_code_pages()];
+		auto pages = new uint8_t*[program->get_num_code_pages()];
 
 		for (auto i = 0u; i < program->get_num_code_pages(); i++)
 		{
-			pages[i] = new std::uint8_t[program->get_code_page_size(i)];
+			pages[i] = new uint8_t[program->get_code_page_size(i)];
 			std::memcpy(pages[i], program->get_code_page(i), program->get_code_page_size(i));
 		}
 
@@ -79,7 +79,7 @@ namespace big
 		}
 	}
 
-	std::uint8_t** script_patcher_service::get_script_bytecode(rage::joaat_t script)
+	uint8_t** script_patcher_service::get_script_bytecode(rage::joaat_t script)
 	{
 		if (auto data = get_data_for_script(script))
 			return data->m_bytecode;

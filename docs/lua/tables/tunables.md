@@ -12,7 +12,7 @@ Table for manipulating gta tunables.
 - **Returns:**
   - `integer`: The value of the given tunable.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 integer = tunables.get_int(tunable_name)
 ```
@@ -25,7 +25,7 @@ integer = tunables.get_int(tunable_name)
 - **Returns:**
   - `float`: The value of the given tunable.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 float = tunables.get_float(tunable_name)
 ```
@@ -38,7 +38,7 @@ float = tunables.get_float(tunable_name)
 - **Returns:**
   - `boolean`: The value of the given tunable.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 boolean = tunables.get_bool(tunable_name)
 ```
@@ -49,7 +49,7 @@ boolean = tunables.get_bool(tunable_name)
   - `tunable_name` (string): The name of the tunable.
   - `val` (integer): The new value of the given tunable.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 tunables.set_int(tunable_name, val)
 ```
@@ -60,7 +60,7 @@ tunables.set_int(tunable_name, val)
   - `tunable_name` (string): The name of the tunable.
   - `val` (float): The new value of the given tunable.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 tunables.set_float(tunable_name, val)
 ```
@@ -71,7 +71,7 @@ tunables.set_float(tunable_name, val)
   - `tunable_name` (string): The name of the tunable.
   - `val` (boolean): The new value of the given tunable.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 tunables.set_bool(tunable_name, val)
 ```

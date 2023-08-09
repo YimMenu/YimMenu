@@ -9,7 +9,7 @@ namespace big
 	// rate limit script events to prevent crashes
 	static int offRadarPlayer    = 0;
 	static int neverWantedPlayer = 0;
-	void looped::player_good_options()
+	void looped::player_good_options() 
 	{
 		if (!*g_pointers->m_gta.m_is_session_started)
 			return;

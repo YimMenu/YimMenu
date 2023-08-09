@@ -113,8 +113,8 @@ namespace big
 
 		ImGui::PushItemWidth(250);
 
-		components::input_text_with_hint("##name", "Name", &new_template.m_name);
-		components::input_text_with_hint("##pedmodel", "Ped model", &new_template.m_ped_model);
+		components::input_text_with_hint("##name", "Name", new_template.m_name);
+		components::input_text_with_hint("##pedmodel", "Ped model", new_template.m_ped_model);
 
 		auto ped_found = std::find_if(g_gta_data_service->peds().begin(), g_gta_data_service->peds().end(), [=](const auto& pair) {
 			return pair.second.m_name == new_template.m_ped_model;
@@ -140,7 +140,7 @@ namespace big
 			}
 		}
 
-		components::input_text_with_hint("##vehmodel", "Vehicle model", &new_template.m_vehicle_model);
+		components::input_text_with_hint("##vehmodel", "Vehicle model", new_template.m_vehicle_model);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Leave empty to spawn on foot");
 
@@ -168,7 +168,7 @@ namespace big
 			}
 		}
 
-		components::input_text_with_hint("##weapmodel", "Weapon model", &new_template.m_weapon_model);
+		components::input_text_with_hint("##weapmodel", "Weapon model", new_template.m_weapon_model);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Leave empty to spawn unarmed, beware that a player can only attain 3 melee attackers at a time");
 
@@ -186,7 +186,7 @@ namespace big
 					std::string filter  = new_template.m_weapon_model;
 					std::transform(p_model.begin(), p_model.end(), p_model.begin(), ::tolower);
 					std::transform(filter.begin(), filter.end(), filter.begin(), ::tolower);
-					if (p_model.find(filter) != std::string::npos && ImGui::Selectable(p.m_name))
+					if (p_model.find(filter) != std::string::npos && ImGui::Selectable(p.m_name.c_str()))
 					{
 						new_template.m_weapon_model = p.m_name;
 					}
@@ -325,7 +325,7 @@ namespace big
 			ImGui::PopItemWidth();
 			ImGui::EndGroup();
 
-			components::input_text_with_hint("##new_template.m_description", "Description", &new_template.m_description);
+			components::input_text_with_hint("##new_template.m_description", "Description", new_template.m_description);
 
 			ImGui::TreePop();
 		}

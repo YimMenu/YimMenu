@@ -16,13 +16,13 @@ namespace big
 	public:
 		script_function(const std::string& name, const rage::joaat_t script, const std::string& pattern, int32_t offset);
 		void populate_ip();
-		void call(rage::scrThread* thread, rage::scrProgram* program, std::initializer_list<std::uint64_t> args);
-		void call_latent(rage::scrThread* thread, rage::scrProgram* program, std::initializer_list<std::uint64_t> args, bool& done);
+		void call(rage::scrThread* thread, rage::scrProgram* program, std::initializer_list<uint64_t> args);
+		void call_latent(rage::scrThread* thread, rage::scrProgram* program, std::initializer_list<uint64_t> args, bool& done);
 
 		// for pure functions that do not need access to thread stack
-		void static_call(std::initializer_list<std::uint64_t> args);
+		void static_call(std::initializer_list<uint64_t> args);
 
-		void operator()(std::initializer_list<std::uint64_t> args);
+		void operator()(std::initializer_list<uint64_t> args);
 	};
 
 	namespace scr_functions
@@ -37,5 +37,7 @@ namespace big
 
 		static inline script_function modshop_loop("ML", RAGE_JOAAT("carmod_shop"), "2D 00 07 00 00 71 51", 0);
 		static inline script_function setup_modshop("SM", RAGE_JOAAT("carmod_shop"), "2D 04 12 00 00 38 00 51", 0);
+
+		static inline script_function reset_session_data("RSD", RAGE_JOAAT("pausemenu_multiplayer"), "2D 02 7D 00 00", 0);
 	}
 }

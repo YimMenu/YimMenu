@@ -13,7 +13,6 @@
 #include "services/api/api_service.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/custom_text/custom_text_service.hpp"
-#include "services/globals/globals_service.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "services/gui/gui_service.hpp"
 #include "services/hotkey/hotkey_service.hpp"
@@ -31,6 +30,7 @@
 #include "services/tunables/tunables_service.hpp"
 #include "services/vehicle/handling_service.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
+#include "services/vehicle/xml_vehicles_service.hpp"
 #include "thread_pool.hpp"
 #include "util/migrate.hpp"
 #include "version.hpp"
@@ -54,9 +54,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    std::filesystem::path base_dir = std::getenv("appdata");
 			    base_dir /= "GTAV-Nitro";
 			    do_migration(base_dir);
-			    auto file_manager_instance = std::make_unique<file_manager>(base_dir);
+			    g_file_manager.init(base_dir);
 
-			    auto logger_instance = std::make_unique<logger>("GTAV-Nitro", file_manager_instance->get_project_file("./cout.log"));
+			    auto logger_instance = std::make_unique<logger>("GTAV-Nitro", g_file_manager.get_project_file("./cout.log"));
 
 			    EnableMenuItem(GetSystemMenu(GetConsoleWindow(), 0), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 
@@ -68,7 +68,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto thread_pool_instance = std::make_unique<thread_pool>();
 			    LOG(INFO) << "Thread pool initialized.";
 
-			    g.init(file_manager_instance->get_project_file("./settings.json"));
+			    g.init(g_file_manager.get_project_file("./settings.json"));
 			    LOG(INFO) << "Settings Loaded.";
 
 			    auto pointers_instance = std::make_unique<pointers>();
@@ -92,7 +92,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    auto context_menu_service_instance      = std::make_unique<context_menu_service>();
 			    auto custom_text_service_instance       = std::make_unique<custom_text_service>();
-			    auto globals_service_instace            = std::make_unique<globals_service>();
 			    auto mobile_service_instance            = std::make_unique<mobile_service>();
 			    auto notification_service_instance      = std::make_unique<notification_service>();
 			    auto pickup_service_instance            = std::make_unique<pickup_service>();
@@ -108,6 +107,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto api_service_instance               = std::make_unique<api_service>();
 			    auto tunables_service_instance          = std::make_unique<tunables_service>();
 			    auto script_connection_service_instance = std::make_unique<script_connection_service>();
+			    auto xml_vehicles_service_instance      = std::make_unique<xml_vehicles_service>();
 			    LOG(INFO) << "Registered service instances...";
 
 			    g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
@@ -127,6 +127,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu, "Context Menu"));
 			    g_script_mgr.add_script(std::make_unique<script>(&backend::tunables_script, "Tunables"));
 			    g_script_mgr.add_script(std::make_unique<script>(&backend::squad_spawner, "Squad Spawner"));
+			    g_script_mgr.add_script(std::make_unique<script>(&backend::ambient_animations_loop, "Ambient Animations"));
 
 			    LOG(INFO) << "Scripts registered.";
 
@@ -136,7 +137,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto native_hooks_instance = std::make_unique<native_hooks>();
 			    LOG(INFO) << "Dynamic native hooker initialized.";
 
-			    auto lua_manager_instance = std::make_unique<lua_manager>();
+			    auto lua_manager_instance = std::make_unique<lua_manager>(g_file_manager.get_project_folder("scripts"));
 			    LOG(INFO) << "Lua manager initialized.";
 
 			    g_running = true;
@@ -147,6 +148,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    while (g_running)
 				    std::this_thread::sleep_for(500ms);
 
+				g_script_mgr.remove_all_scripts();
+			    LOG(INFO) << "Scripts unregistered.";
+
 			    lua_manager_instance.reset();
 			    LOG(INFO) << "Lua manager uninitialized.";
 
@@ -155,9 +159,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    native_hooks_instance.reset();
 			    LOG(INFO) << "Dynamic native hooker uninitialized.";
-
-			    g_script_mgr.remove_all_scripts();
-			    LOG(INFO) << "Scripts unregistered.";
 
 			    // cleans up the thread responsible for saving settings
 			    g.destroy();
@@ -195,12 +196,12 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Player Service reset.";
 			    pickup_service_instance.reset();
 			    LOG(INFO) << "Pickup Service reset.";
-			    globals_service_instace.reset();
-			    LOG(INFO) << "Globals Service reset.";
 			    custom_text_service_instance.reset();
 			    LOG(INFO) << "Custom Text Service reset.";
 			    context_menu_service_instance.reset();
 			    LOG(INFO) << "Context Service reset.";
+				xml_vehicles_service_instance.reset();
+				LOG(INFO) << "Xml Vehicles Service reset.";
 			    LOG(INFO) << "Services uninitialized.";
 
 			    hooking_instance.reset();
@@ -224,8 +225,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Farewell!";
 			    logger_instance->destroy();
 			    logger_instance.reset();
-
-			    file_manager_instance.reset();
 
 			    CloseHandle(g_main_thread);
 			    FreeLibraryAndExitThread(g_hmodule, 0);

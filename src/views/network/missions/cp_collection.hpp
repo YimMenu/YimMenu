@@ -24,7 +24,7 @@ namespace big
 		components::button("Win Event", [] {
 			if (auto checkpoints = gta_util::find_script_thread(RAGE_JOAAT("am_cp_collection")))
 				*script_local(checkpoints->m_stack, scr_locals::am_cp_collection::player_broadcast_idx)
-				     .at(checkpoints->m_net_component->m_local_participant_index, 5)
+				     .at(((CGameScriptHandlerNetComponent*)checkpoints->m_net_component)->m_local_participant_index, 5)
 				     .at(4)
 				     .as<int*>() = 999'999'999;
 

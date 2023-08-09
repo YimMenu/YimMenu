@@ -9,7 +9,7 @@ Class representing a gui text element.
 - **Parameters:**
   - `new_text` (string): The new text for that gui text element.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 base_text_element:set_text(new_text)
 ```
@@ -19,7 +19,7 @@ base_text_element:set_text(new_text)
 - **Returns:**
   - `string`: Returns the current text for that gui text element.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 string = base_text_element:get_text()
 ```

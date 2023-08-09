@@ -8,98 +8,7 @@
 
 namespace big::teleport
 {
-	struct telelocation
-	{
-		std::string name;
-		float x, y, z;
-	};
-
-	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(telelocation, name, x, y, z);
-
-	inline std::map<std::string, std::vector<telelocation>> all_saved_locations;
-
-	inline std::filesystem::path get_telelocations_file_path()
-	{
-		return g_file_manager->get_project_file("telelocations.json").get_path();
-	}
-
-	inline bool fetch_saved_locations()
-	{
-		all_saved_locations.clear();
-
-		auto path = get_telelocations_file_path();
-		std::ifstream file(path, std::ios::binary);
-
-		try
-		{
-			if (!file.is_open())
-				return false;
-
-			nlohmann::json j;
-			file >> j;
-			all_saved_locations = j.get<std::map<std::string, std::vector<telelocation>>>();
-
-			return true;
-		}
-		catch (const std::exception& e)
-		{
-			LOG(WARNING) << "Failed fetching saved locations: " << e.what() << '\n';
-			return false;
-		}
-
-		return false;
-	}
-
-	inline bool save_new_location(const std::string& category, telelocation t)
-	{
-		const auto& pair = all_saved_locations.insert({category, {t}});
-		if (!pair.second)
-		{
-			pair.first->second.push_back(t);
-		}
-
-		auto path = get_telelocations_file_path();
-
-		std::ofstream file_out(path, std::ofstream::trunc | std::ofstream::binary);
-		if (!file_out.is_open())
-			return false;
-
-		nlohmann::json j = all_saved_locations;
-		file_out << j.dump(4);
-		file_out.close();
-
-		return true;
-	}
-
-	inline bool delete_saved_location(const std::string& category, const std::string& location_name)
-	{
-		auto path = get_telelocations_file_path();
-
-		const auto& it = all_saved_locations.find(category);
-		if (it == all_saved_locations.end())
-			return false;
-
-		std::erase_if(it->second, [location_name](telelocation t) {
-			return t.name == location_name;
-		});
-
-		if (!it->second.size())
-		{
-			all_saved_locations.erase(category);
-		}
-
-		std::ofstream file_out(path, std::ofstream::trunc | std::ofstream::binary);
-		if (!file_out.is_open())
-			return false;
-
-		nlohmann::json j = all_saved_locations;
-		file_out << j.dump(4);
-		file_out.close();
-
-		return true;
-	}
-
-	inline bool teleport_player_to_coords(player_ptr player, Vector3 coords)
+	inline bool teleport_player_to_coords(player_ptr player, Vector3 coords, Vector3 euler = {0, 0, 0})
 	{
 		Entity ent;
 
@@ -108,7 +17,9 @@ namespace big::teleport
 		else
 			ent = PLAYER::PLAYER_PED_ID();
 
-		if (ent == self::ped || ent == self::veh)
+		bool is_local_player = (ent == self::ped || ent == self::veh);
+
+		if (is_local_player)
 			PED::SET_PED_COORDS_KEEP_VEHICLE(ent, coords.x, coords.y, coords.z);
 
 		if (ENTITY::IS_ENTITY_DEAD(ent, true))
@@ -122,23 +33,44 @@ namespace big::teleport
 			ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
 
 			if (entity::take_control_of(ent))
-				ENTITY::SET_ENTITY_COORDS(ent, coords.x, coords.y, coords.z, 0, 0, 0, 0);
+			{
+				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, coords.x, coords.y, coords.z, TRUE, TRUE, TRUE);
+				if (euler.x + euler.y + euler.z != 0.0f)
+				{
+					ENTITY::SET_ENTITY_HEADING(ent, euler.x);
+					if (is_local_player)
+					{
+						CAM::SET_GAMEPLAY_CAM_RELATIVE_PITCH(euler.y, 1.f);
+						CAM::SET_GAMEPLAY_CAM_RELATIVE_HEADING(euler.z);
+					}
+				}
+			}
 			else
+			{
 				g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_FAILED_TO_TAKE_CONTROL"_T.data());
+			}
 
 			return true;
 		}
 		else
 		{
-			auto hnd = vehicle::spawn(RAGE_JOAAT("ninef"), *player->get_ped()->get_position(), 0.0f, true);
+			auto hnd = vehicle::spawn(VEHICLE_RCBANDITO, *player->get_ped()->get_position(), 0.0f, true);
 			ENTITY::SET_ENTITY_VISIBLE(hnd, false, false);
 			ENTITY::SET_ENTITY_COLLISION(hnd, false, false);
 			ENTITY::FREEZE_ENTITY_POSITION(hnd, true);
 
 			auto obj_id                      = player->get_ped()->m_net_object->m_object_id;
+			auto veh_id                      = g_pointers->m_gta.m_handle_to_ptr(hnd)->m_net_object->m_object_id;
 			remote_player_teleport remote_tp = {obj_id, {coords.x, coords.y, coords.z}};
 
-			g.m_remote_player_teleports.emplace(g_pointers->m_gta.m_handle_to_ptr(hnd)->m_net_object->m_object_id, remote_tp);
+			g.m_remote_player_teleports.emplace(veh_id, remote_tp);
+
+			if (is_local_player)
+			{
+				ENTITY::SET_ENTITY_HEADING(ent, euler.x);
+				CAM::SET_GAMEPLAY_CAM_RELATIVE_PITCH(euler.y, 1.f);
+				CAM::SET_GAMEPLAY_CAM_RELATIVE_HEADING(euler.z);
+			}
 
 			if ((player->is_valid() && PED::IS_PED_IN_ANY_VEHICLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), false))
 			    || PLAYER::IS_REMOTE_PLAYER_IN_NON_CLONED_VEHICLE(player->id()))
@@ -159,8 +91,8 @@ namespace big::teleport
 
 			entity::delete_entity(hnd);
 
-			std::erase_if(g.m_remote_player_teleports, [obj_id](auto& obj) {
-				return obj.first == obj_id;
+			std::erase_if(g.m_remote_player_teleports, [veh_id](auto& obj) {
+				return obj.first == veh_id;
 			});
 
 			return true;
@@ -264,6 +196,31 @@ namespace big::teleport
 		}
 
 		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
+
+		return false;
+	}
+
+	inline bool to_highlighted_blip()
+	{
+		if (!*g_pointers->m_gta.m_is_session_started)
+		{
+			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NOT_ONLINE"_T.data());
+			return false;
+		}
+
+		auto blip = blip::get_selected_blip();
+		if (blip == nullptr)
+		{
+			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NOTHING_SELECTED"_T.data());
+			return false;
+		}
+		Entity entity = self::ped;
+		if (PED::GET_PED_CONFIG_FLAG(self::ped, 62, TRUE))
+		{
+			entity = self::veh;
+		}
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(entity, blip->m_x, blip->m_y, blip->m_z, FALSE, FALSE, TRUE);
+		ENTITY::SET_ENTITY_HEADING(entity, blip->m_rotation);
 
 		return false;
 	}

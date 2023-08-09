@@ -27,7 +27,7 @@ namespace
 
 namespace big
 {
-	command::command(const std::string& name, const std::string& label, const std::string& description, std::optional<std::uint8_t> num_args, bool fiber_pool) :
+	command::command(const std::string& name, const std::string& label, const std::string& description, std::optional<uint8_t> num_args, bool fiber_pool) :
 	    m_name(name),
 	    m_label(label),
 	    m_label_hash(rage::joaat(label)),
@@ -37,9 +37,21 @@ namespace big
 	    m_fiber_pool(fiber_pool)
 	{
 		g_commands[rage::joaat(name)] = this;
+
+		constexpr bool generate_command_documentation = false;
+		if constexpr (generate_command_documentation)
+		{
+			auto translated_label = g_translation_service.get_translation(m_label);
+			auto translated_desc  = g_translation_service.get_translation(m_description);
+			if (!translated_label.empty())
+			{
+				LOG(INFO) << "Command | " << m_name << " | " << translated_label << " | " << translated_desc << " | "
+				          << std::to_string(m_num_args.value_or(0));
+			}
+		}
 	}
 
-	void command::call(const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)
+	void command::call(command_arguments& args, const std::shared_ptr<command_context> ctx)
 	{
 		if (m_num_args.has_value() && args.size() != m_num_args.value())
 		{
@@ -56,6 +68,7 @@ namespace big
 			return;
 		}
 
+		args.reset_idx();
 		if (m_fiber_pool)
 			g_fiber_pool->queue_job([this, args, ctx] {
 				execute(args, ctx);
@@ -91,7 +104,7 @@ namespace big
 		return g_commands[command];
 	}
 
-	void command::call(rage::joaat_t command, const std::vector<std::uint64_t>& args, const std::shared_ptr<command_context> ctx)
+	void command::call(rage::joaat_t command, command_arguments& args, const std::shared_ptr<command_context> ctx)
 	{
 		g_commands[command]->call(args, ctx);
 	}
@@ -168,7 +181,7 @@ namespace big
 			}
 
 
-			std::uint32_t hash = rage::joaat(args[0]);
+			uint32_t hash = rage::joaat(args[0]);
 			if (!g_commands.contains(hash))
 			{
 				ctx->report_error(std::format("Command {} does not exist", args[0]));

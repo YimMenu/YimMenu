@@ -6,9 +6,13 @@ namespace big
 {
 	void components::nav_item(std::pair<tabs, navigation_struct>& navItem, int nested)
 	{
-		const bool curTab = !g_gui_service->get_selected_tab().empty() && g_gui_service->get_selected_tab().size() > nested
-		    && navItem.first == g_gui_service->get_selected_tab().at(nested);
-		if (curTab)
+		const bool current_tab =
+			!g_gui_service->get_selected_tab().empty() &&
+			g_gui_service->get_selected_tab().size() > nested &&
+			navItem.first == g_gui_service->get_selected_tab().at(nested);
+
+
+		if (current_tab)
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
 
 		const char* key = nullptr;
@@ -17,16 +21,16 @@ namespace big
 		if (components::nav_button(key))
 			g_gui_service->set_selected(navItem.first);
 
-		if (curTab)
+		if (current_tab)
 			ImGui::PopStyleColor();
 
-		if (curTab && !navItem.second.sub_nav.empty())
+		if (current_tab && !navItem.second.sub_nav.empty())
 		{
-			ImDrawList* dl = ImGui::GetForegroundDrawList();
+			ImDrawList* draw_list = ImGui::GetForegroundDrawList();
 
 			for (std::pair<tabs, navigation_struct> item : navItem.second.sub_nav)
 			{
-				dl->AddRectFilled({10.f, ImGui::GetCursorPosY() + (100.f * g.window.gui_scale)},
+				draw_list->AddRectFilled({10.f, ImGui::GetCursorPosY() + (100.f * g.window.gui_scale)},
 				    {(10.f + (300.f * g.window.gui_scale)),
 				        (ImGui::GetCursorPosY() + (100.f * (g.window.gui_scale)) + ImGui::CalcTextSize("A").y
 				            + (ImGui::GetStyle().ItemInnerSpacing.y / g.window.gui_scale) * 2)},

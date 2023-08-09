@@ -62,7 +62,7 @@ namespace big::scripts
 	{
 		if (auto launcher = gta_util::find_script_thread(hash); launcher && launcher->m_net_component)
 		{
-			for (int i = 0; !launcher->m_net_component->is_local_player_host(); i++)
+			for (int i = 0; !((CGameScriptHandlerNetComponent*)launcher->m_net_component)->is_local_player_host(); i++)
 			{
 				if (i > 200)
 					return false;
@@ -100,7 +100,7 @@ namespace big::scripts
 
 			for (auto& [_, plyr] : g_player_service->players())
 			{
-				if (launcher->m_net_component->is_player_a_participant(plyr->get_net_game_player()))
+				if (((CGameScriptHandlerNetComponent*)launcher->m_net_component)->is_player_a_participant(plyr->get_net_game_player()))
 				{
 					if (*script_local(launcher->m_stack, 233).at(plyr->id(), 3).at(2).as<int*>() == state)
 					{
@@ -184,10 +184,10 @@ namespace big::scripts
 
 	inline const std::optional<uint32_t> get_code_location_by_pattern(rage::scrProgram* program, const memory::pattern& pattern)
 	{
-		std::uint32_t code_size = program->m_code_size;
-		for (std::uint32_t i = 0; i < (code_size - pattern.m_bytes.size()); i++)
+		uint32_t code_size = program->m_code_size;
+		for (uint32_t i = 0; i < (code_size - pattern.m_bytes.size()); i++)
 		{
-			for (std::uint32_t j = 0; j < pattern.m_bytes.size(); j++)
+			for (uint32_t j = 0; j < pattern.m_bytes.size(); j++)
 				if (pattern.m_bytes[j].has_value())
 					if (pattern.m_bytes[j].value() != *program->get_code_address(i + j))
 						goto incorrect;
@@ -201,9 +201,9 @@ namespace big::scripts
 	}
 
 	// we can't use the script patch service for this
-	inline void patch_script(rage::scrProgram* program, std::optional<std::uint32_t> location, std::vector<std::uint8_t> patch, int offset)
+	inline void patch_script(rage::scrProgram* program, std::optional<uint32_t> location, std::vector<uint8_t> patch, int offset)
 	{
-		std::uint8_t* bytearray = patch.data();
+		uint8_t* bytearray = patch.data();
 		if (location)
 			memcpy(program->get_code_address(location.value() + offset), bytearray, patch.size());
 	}

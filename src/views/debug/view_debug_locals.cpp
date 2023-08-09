@@ -15,8 +15,8 @@ namespace big
 		static int offsets[10][2]           = {};
 		static int offset_count             = 0;
 		static int previous_offset_count    = 0;
-		components::input_text_with_hint("##local_name", "Name", name, sizeof(name));
-		components::input_text_with_hint("##local_script_thread_name", "Script thread", script_thread_name, sizeof(script_thread_name));
+		components::input_text("Name", name, sizeof(name));
+		components::input_text("Script Name", script_thread_name, sizeof(script_thread_name));
 		ImGui::Text("Base address");
 		ImGui::InputInt("##local_base_address", &base_address);
 		ImGui::Text("Offsetcount");
@@ -165,7 +165,7 @@ namespace big
 
 								if (local_.m_freeze)
 								{
-									*local_.m_internal_address = local_.m_freeze_value_int;
+									*(float*)local_.m_internal_address = local_.m_freeze_value_float;
 								}
 								break;
 							case 2:
@@ -178,7 +178,7 @@ namespace big
 
 								if (local_.m_freeze)
 								{
-									*local_.m_internal_address = local_.m_freeze_value_float;
+									*local_.m_internal_address = local_.m_freeze_value_int;
 								}
 								break;
 
@@ -201,7 +201,7 @@ namespace big
 							if (ImGui::Checkbox("Freeze", &local_.m_freeze))
 							{
 								local_.m_freeze_value_int     = *local_.m_internal_address;
-								local_.m_freeze_value_float   = (float)*local_.m_internal_address;
+								local_.m_freeze_value_float   = *reinterpret_cast<float*>(local_.m_internal_address);
 								local_.m_freeze_value_vector3 = *local_.m_internal_address_vector3;
 							}
 						}

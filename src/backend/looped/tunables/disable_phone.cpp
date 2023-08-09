@@ -19,5 +19,5 @@ namespace big
 		}
 	};
 
-	disable_phone g_disable_phone("nophone", "Disable Phone", "Blocks phone and stops all phone calls", g.tunables.disable_phone);
+	disable_phone g_disable_phone("nophone", "DISABLE_PHONE", "DISABLE_PHONE_DESC", g.tunables.disable_phone);
 }

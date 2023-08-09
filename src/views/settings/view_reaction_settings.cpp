@@ -14,6 +14,7 @@ namespace big
 
 	void draw_reaction(reaction& reaction)
 	{
+		ImGui::PushID(&reaction);
 		if (ImGui::TreeNode(reaction.m_event_name))
 		{
 			ImGui::Checkbox("REACTION_CHAT"_T.data(), &reaction.announce_in_chat);
@@ -23,13 +24,16 @@ namespace big
 			if (reaction.add_to_player_db)
 				ImGui::Checkbox("REACTION_BLOCK_JOINS"_T.data(), &reaction.block_joins);
 			ImGui::Checkbox("REACTION_KICK_PLAYER"_T.data(), &reaction.kick);
+			ImGui::Checkbox("TIMEOUT"_T.data(), &reaction.timeout);
 			ImGui::TreePop();
 		}
+		ImGui::PopID();
 	}
 
 	// TODO code duplication
 	void draw_interloper_reaction(interloper_reaction& reaction)
 	{
+		ImGui::PushID(&reaction);
 		if (ImGui::TreeNode(reaction.m_event_name))
 		{
 			ImGui::Checkbox("REACTION_CHAT"_T.data(), &reaction.announce_in_chat);
@@ -51,6 +55,7 @@ namespace big
 
 			ImGui::TreePop();
 		}
+		ImGui::PopID();
 	}
 
 	void view::reaction_settings()
@@ -77,6 +82,7 @@ namespace big
 		draw_reaction(g.reactions.rotate_cam);
 		draw_reaction(g.reactions.send_to_cutscene);
 		draw_reaction(g.reactions.send_to_location);
+		draw_reaction(g.reactions.send_to_interior);
 		draw_reaction(g.reactions.sound_spam);
 		draw_reaction(g.reactions.spectate_notification);
 		draw_reaction(g.reactions.start_activity);
@@ -95,12 +101,14 @@ namespace big
 		draw_reaction(g.reactions.remote_ragdoll);
 		draw_reaction(g.reactions.kick_vote);
 		draw_reaction(g.reactions.modder_detection);
+		draw_reaction(g.reactions.game_anti_cheat_modder_detection);
 		draw_reaction(g.reactions.report);
 		draw_reaction(g.reactions.report_cash_spawn);
 		draw_reaction(g.reactions.request_control_event);
+		draw_reaction(g.reactions.spectate);
+		draw_interloper_reaction(g.reactions.spectate_others);
 		ImGui::Separator();
 		draw_reaction(g.reactions.gamer_instruction_kick);
-		draw_interloper_reaction(g.reactions.breakup_others);
 
 		components::title("SETTINGS_NOTIFICATIONS"_T);
 		components::sub_title("SETTINGS_NOTIFY_GTA_THREADS"_T);

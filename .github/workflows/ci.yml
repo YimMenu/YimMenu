@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   ci:
-    runs-on: windows-latest
+    runs-on: [self-hosted, Windows]
     name: CI
     steps:
       - uses: actions/checkout@v3

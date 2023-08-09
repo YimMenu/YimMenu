@@ -16,14 +16,13 @@ include(scripts/json.cmake)
 include(scripts/cpr.cmake)
 include(scripts/zydis.cmake)
 include(scripts/lua.cmake)
-
-message("\nFetching custom modules")
 include(scripts/imgui.cmake)
+message("\nFetching custom modules")
 include(scripts/gtav-classes.cmake)
 
 
-# GTAV-Nitro
-message(STATUS "GTAV-Nitro")
+# YimMenu
+message(STATUS "YimMenu")
 file(GLOB_RECURSE SRC_MAIN
     "${SRC_DIR}/**.hpp"
     "${SRC_DIR}/**.h"

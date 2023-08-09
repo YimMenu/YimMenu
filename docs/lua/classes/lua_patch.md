@@ -8,7 +8,7 @@ Class representing a in-memory patch.
 
 Apply the modified value.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 lua_patch:apply()
 ```
@@ -17,7 +17,7 @@ lua_patch:apply()
 
 Restore the original value.
 
-**Exemple Usage:**
+**Example Usage:**
 ```lua
 lua_patch:restore()
 ```

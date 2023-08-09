@@ -1,19 +1,15 @@
-#include "backend/looped_command.hpp"
+#include "backend/bool_command.hpp"
 #include "natives.hpp"
 
 namespace big
 {
-	class combative : looped_command
+	class combative : bool_command
 	{
-		using looped_command::looped_command;
+		using bool_command::bool_command;
 
 		virtual void on_enable() override
 		{
 			MISC::SET_RIOT_MODE_ENABLED(true);
-		}
-
-		virtual void on_tick() override
-		{
 		}
 
 		virtual void on_disable() override

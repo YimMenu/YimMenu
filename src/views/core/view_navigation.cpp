@@ -11,13 +11,13 @@ namespace big
 		if (ImGui::Begin("navigation", 0, window_flags))
 		{
 			g_gui_service->reset_nav_size();
-			for (std::pair<tabs, navigation_struct> navItem : g_gui_service->get_navigation())
+			for (std::pair<tabs, navigation_struct> nav_item : g_gui_service->get_navigation())
 			{
-				switch (navItem.first)
+				switch (nav_item.first)
 				{
 				case tabs::PLAYER:
 				case tabs::DEBUG: continue;
-				default: components::nav_item(navItem, 0);
+				default: components::nav_item(nav_item, 0);
 				}
 			}
 		}
