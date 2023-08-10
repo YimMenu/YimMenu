@@ -18,14 +18,5 @@ namespace big
 			node->m_has_head_blend_data         = false;
 			node->components.m_component_bitset = 0;
 		}
-
-#if 0 
-		node->m_anim_task_active            = true;
-		node->m_mobile_phone_task_active    = true;
-		node->m_mobile_phone_gesture_active = true;
-		node->m_anim_name_hash              = rand();
-		node->m_anim_dict_index             = 30000; // ERR_STR_MOD_INFO?
-		node->m_phone_mode                  = /* rand() % 4*/ 1;
-#endif
 	}
 }
