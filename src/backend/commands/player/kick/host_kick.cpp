@@ -7,12 +7,12 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual CommandAccessLevel get_access_level()
+		virtual CommandAccessLevel get_access_level() override 
 		{
 			return CommandAccessLevel::TOXIC;
 		}
 
-		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			if (!g_player_service->get_self()->is_host())
 			{

@@ -13,7 +13,7 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			int id = player->id();
 			if (scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].PropertyData.Index != -1)

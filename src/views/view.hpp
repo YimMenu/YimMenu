@@ -38,6 +38,7 @@ namespace big
 		static void overlay();
 		static void root();
 		static void self();
+		static void animations();
 		static void network();
 		static void missions();
 		static void player_database();

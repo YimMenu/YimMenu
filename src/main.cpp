@@ -127,6 +127,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu, "Context Menu"));
 			    g_script_mgr.add_script(std::make_unique<script>(&backend::tunables_script, "Tunables"));
 			    g_script_mgr.add_script(std::make_unique<script>(&backend::squad_spawner, "Squad Spawner"));
+			    g_script_mgr.add_script(std::make_unique<script>(&backend::ambient_animations_loop, "Ambient Animations"));
 
 			    LOG(INFO) << "Scripts registered.";
 

@@ -11,10 +11,12 @@ namespace big
 		if (ImGui::Hotkey("Menu Toggle", &g.settings.hotkeys.menu_toggle))
 			g.settings.hotkeys.editing_menu_toggle = true; // make our menu reappear
 
-		if (ImGui::Hotkey("Teleport to waypoint", &g.settings.hotkeys.teleport_waypoint))
+		if (ImGui::Hotkey("Teleport to Waypoint", &g.settings.hotkeys.teleport_waypoint))
 			g_hotkey_service->update_hotkey("waypoint", g.settings.hotkeys.teleport_waypoint);
-		if (ImGui::Hotkey("Teleport to objective", &g.settings.hotkeys.teleport_objective))
+		if (ImGui::Hotkey("Teleport to Objective", &g.settings.hotkeys.teleport_objective))
 			g_hotkey_service->update_hotkey("objective", g.settings.hotkeys.teleport_objective);
+		if (ImGui::Hotkey("Teleport to Selected", &g.settings.hotkeys.teleport_selected))
+			g_hotkey_service->update_hotkey("highlighttp", g.settings.hotkeys.teleport_selected);
 		if (ImGui::Hotkey("Teleport into PV", &g.settings.hotkeys.teleport_pv))
 			g_hotkey_service->update_hotkey("pvtp", g.settings.hotkeys.teleport_pv);
 

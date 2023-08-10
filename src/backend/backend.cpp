@@ -7,6 +7,7 @@
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/custom_teleport/custom_teleport_service.hpp"
 #include "services/orbital_drone/orbital_drone.hpp"
+#include "services/ped_animations/ped_animations_service.hpp"
 #include "services/script_connection/script_connection_service.hpp"
 #include "services/squad_spawner/squad_spawner.hpp"
 #include "services/tunables/tunables_service.hpp"
@@ -27,6 +28,7 @@ namespace big
 		g_squad_spawner_service.fetch_squads();
 		g_xml_vehicles_service->fetch_xml_files();
 		g_custom_teleport_service.fetch_saved_locations();
+		g_ped_animation_service.fetch_saved_animations();
 
 		while (g_running)
 		{
@@ -54,6 +56,16 @@ namespace big
 			looped::self_hud();
 			looped::self_dance_mode();
 			looped::self_persist_outfit();
+
+			script::get_current()->yield();
+		}
+	}
+
+	void backend::ambient_animations_loop()
+	{
+		while (g_running)
+		{
+			g_ped_animation_service.ambient_animations_prompt_tick();
 
 			script::get_current()->yield();
 		}
