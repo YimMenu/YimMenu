@@ -179,10 +179,6 @@ namespace big
 		static bool sync_reader_serialize_vec3(void* _this, rage::fvector3* vec, float divisor, int size);
 		static bool sync_reader_serialize_vec3_signed(void* _this, rage::fvector3* vec, float divisor, int size);
 		static bool sync_reader_serialize_array(void* _this, void* array, int size);
-
-		static void serialize_ped_task_specific_data_node(CPedTaskSpecificDataNode* node, rage::CSyncDataBase* data);
-		static void serialize_ped_task_sequence_data_node(CPedTaskSequenceDataNode* node, rage::CSyncDataBase* data);
-		static void serialize_object_game_state_data_node(__int64 node, rage::CSyncDataBase* data);
 	};
 
 	class minhook_keepalive

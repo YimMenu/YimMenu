@@ -313,13 +313,21 @@ namespace big
 		PVOID m_read_bits_single;
 		void** m_sync_data_reader_vtable;
 
-		PVOID m_serialize_ped_task_specific_data_node;
-		PVOID m_serialize_ped_task_sequence_data_node;
-		PVOID m_serialize_object_game_state_data_node;
-
 		GenericPool** m_interior_proxy_pool;
 
 		rage::atArray<CTrainConfig>* m_train_config_array;
+
+		functions::activate_special_ability m_activate_special_ability;
+		PVOID m_activate_special_ability_patch;
+
+		functions::set_wanted_level m_set_wanted_level;
+
+		rage::netEventMgr** m_net_event_manager;
+		GenericPool** m_net_event_pool;
+		functions::check_event_queue m_check_event_queue;
+		functions::get_new_pool_item m_get_new_pool_item;
+		functions::construct_door_break_event m_construct_door_break_event;
+		functions::queue_network_event m_queue_network_event;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

@@ -146,10 +146,6 @@ namespace big
 
 		detour_hook_helper::add<hooks::read_bits_single>("RBS", g_pointers->m_gta.m_read_bits_single);
 
-		detour_hook_helper::add<hooks::serialize_ped_task_specific_data_node>("SPTSPDN", g_pointers->m_gta.m_serialize_ped_task_specific_data_node);
-		detour_hook_helper::add<hooks::serialize_ped_task_sequence_data_node>("SPTSQDN", g_pointers->m_gta.m_serialize_ped_task_sequence_data_node);
-		detour_hook_helper::add<hooks::serialize_object_game_state_data_node>("SOGSDN", g_pointers->m_gta.m_serialize_object_game_state_data_node);
-
 		g_hooking = this;
 	}
 

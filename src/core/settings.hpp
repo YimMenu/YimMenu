@@ -422,6 +422,7 @@ namespace big
 			bool off_radar_all    = false;
 			bool semi_godmode_all = false;
 			bool wanted_level_all = false;
+			bool vehicle_fix_all  = false;
 
 			bool show_cheating_message = false;
 			bool anonymous_bounty      = true;

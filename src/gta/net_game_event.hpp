@@ -637,6 +637,7 @@ namespace rage
 		uint32_t m_0x28; // 0x28
 		char m_padding2[0x04];
 	};
+	static_assert(sizeof(rage::netGameEvent) == 0x30);
 }
 
 class CScriptedGameEvent : public rage::netGameEvent
@@ -653,5 +654,12 @@ class CNetworkIncrementStatEvent : public rage::netGameEvent
 public:
 	Hash m_stat;       // 0x30
 	uint32_t m_amount; // 0x34
+};
+
+class CDoorBreakEvent : public rage::netGameEvent
+{
+public:
+	std::uint16_t m_vehicle_id; // 0x30
+	std::uint8_t m_door_id;     // 0x32
 };
 #pragma pack(pop)

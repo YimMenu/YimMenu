@@ -1344,33 +1344,6 @@ namespace big
                 g_pointers->m_gta.m_sync_data_reader_vtable = ptr.add(3).rip().as<void**>();
             }
         },
-        // Serialize Ped Task Specific Data Node
-        {
-            "SPTSPDN",
-            "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B 02 48 8B F9 48 8B CA 48 8B F2 FF 90 ? ? ? ? 84",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_serialize_ped_task_specific_data_node = ptr.as<PVOID>();
-            }
-        },
-        // Serialize Ped Task Sequence Data Node
-        {
-            "SPTSQDN",
-            "48 8B C4 48 89 58 10 48 89 68 18 48 89 70 20 57 41 56 41 57 48 83 EC 20 4C 8D",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_serialize_ped_task_sequence_data_node = ptr.as<PVOID>();
-            }
-        },
-        // Serialize Object Game State Data Node
-        {
-            "SOGSDN",
-            "48 89 5C 24 18 48 89 6C 24 20 56 57 41 56 48 83 EC 20 48 8B 02 4C",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_serialize_object_game_state_data_node = ptr.as<PVOID>();
-            }
-        },
         // Interior Proxy Pool
         {
             "IPP",
@@ -1387,6 +1360,46 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_train_config_array = ptr.add(3).rip().as<rage::atArray<CTrainConfig>*>();
+            }
+        },
+        // Activate Special Ability
+        {
+            "ASA",
+            "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 33 DB 8B F2 48 8B F9 48 39 99 D0",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_activate_special_ability = ptr.as<functions::activate_special_ability>();
+            }
+        },
+        // Set Wanted Level
+        {
+            "SWL",
+            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 44 88 48 20 57 41 54 41 55 41 56 41 57 48 83 EC 30 4C 8B F1 48 8B 0D ? ? ? ? 44 8B E2",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_set_wanted_level = ptr.as<functions::set_wanted_level>();
+            }
+        },
+        // Event Stuff
+        {
+            "NEM&CEQ&NEP&GNPI&QNE",
+            "48 39 99 D0 00 00 00 74 3C",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_net_event_manager = ptr.add(0xC).rip().as<rage::netEventMgr**>();
+                g_pointers->m_gta.m_check_event_queue = ptr.add(0x13).rip().as<functions::check_event_queue>();
+                g_pointers->m_gta.m_net_event_pool = ptr.add(0x1A).rip().as<GenericPool**>();
+                g_pointers->m_gta.m_get_new_pool_item = ptr.add(0x1F).rip().as<functions::get_new_pool_item>();
+                g_pointers->m_gta.m_queue_network_event = ptr.add(0x41).rip().as<functions::queue_network_event>();
+            }
+        },
+        // Construct Door Break Event
+        {
+            "CDBE",
+            "48 89 5C 24 08 57 48 83 EC 30 33 FF BA 1B",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_construct_door_break_event = ptr.as<functions::construct_door_break_event>();
             }
         },
         // Max Wanted Level
@@ -1580,6 +1593,15 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_free_event_error = ptr.add(0x31).as<PVOID>();
+            }
+        },
+        // Activate Special Ability Patch
+        {
+            "ASAP",
+            "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 0F B7 49 30 48 8B F2 E8 ? ? ? ? 33 DB 48 8B F8 48 85 C0 74 35",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_activate_special_ability_patch = ptr.as<PVOID>();
             }
         }
         >(); // don't leave a trailing comma at the end

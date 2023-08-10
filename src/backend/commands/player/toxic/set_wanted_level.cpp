@@ -55,16 +55,11 @@ namespace big
 
 				if (wanted_level > 0)
 				{
-					auto& gpbd = scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id];
-
-					gpbd.RemoteWantedLevelPlayer = id;
-					gpbd.RemoteWantedLevelAmount = wanted_level;
-
-					for (int i = 0; PLAYER::GET_PLAYER_WANTED_LEVEL(id) < wanted_level && i < 3600; i++)
-						script::get_current()->yield(1ms);
-
-					gpbd.RemoteWantedLevelPlayer = -1;
-					gpbd.RemoteWantedLevelAmount = -1;
+					for (int i = 0; PLAYER::GET_PLAYER_WANTED_LEVEL(id) < wanted_level && player->is_valid() && i < 10; i++)
+					{
+						g_pointers->m_gta.m_set_wanted_level(player->get_net_game_player(), wanted_level, 0, -1);
+						script::get_current()->yield(200ms);
+					}
 				}
 			}
 		}
