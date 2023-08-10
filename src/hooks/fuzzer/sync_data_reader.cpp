@@ -177,8 +177,8 @@ namespace big
 
 		if (fuzzer::is_fuzzer_enabled())
 		{
-			fuzzer::handle_vtable_write(array, size, __FUNCTION__);
-			fuzzer::fuzz_data(array, size);
+			fuzzer::handle_vtable_write(array, size / 8, __FUNCTION__);
+			fuzzer::fuzz_data(array, size / 8);
 			return true;
 		}
 
