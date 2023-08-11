@@ -16,9 +16,10 @@ namespace big
 		return !m_cooldown.has_value() || std::chrono::high_resolution_clock::now() >= m_wakeup;
 	}
 
+	static bool IS_MP_TEXT_CHAT_TYPING;
 	void hotkey::exec()
 	{
-		if (m_cooldown.has_value())
+		if (!IS_MP_TEXT_CHAT_TYPING && m_cooldown.has_value())
 			m_wakeup = std::chrono::high_resolution_clock::now() + m_cooldown.value();
 
 		command::get(m_command_hash)->call({});
