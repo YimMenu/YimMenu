@@ -72,6 +72,18 @@ namespace big
 			         else
 				         g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
 		         }},
+		        {"FIX VEHICLE",
+		            [this] {
+			            if (entity::take_control_of(m_handle))
+			            {
+				            VEHICLE::SET_VEHICLE_ENGINE_HEALTH(m_handle, 1000.f);
+				            VEHICLE::SET_VEHICLE_FIXED(m_handle);
+				            VEHICLE::SET_VEHICLE_DEFORMATION_FIXED(m_handle);
+				            VEHICLE::SET_VEHICLE_DIRT_LEVEL(m_handle, 0.f);
+			            }
+			            else
+				            g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
+		            }},		     
 		        {"BURST TIRES",
 		            [this] {
 			            if (entity::take_control_of(m_handle))
