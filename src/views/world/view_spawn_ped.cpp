@@ -660,6 +660,9 @@ namespace big
 			g.spoofing.player_model       = ped_model_buf;
 		});
 
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("This WILL break freemode missions and jobs");
+
 		if (g.spoofing.spoof_player_model)
 		{
 			ImGui::SameLine();
