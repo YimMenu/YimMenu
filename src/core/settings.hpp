@@ -574,8 +574,10 @@ namespace big
 
 			bool override_weather = false;
 			int local_weather     = 0;
+			
+			float override_waves  = 0.f;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone, local_weather, override_weather)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone, local_weather, override_weather, override_waves)
 		} world{};
 
 		struct spoofing

@@ -1,4 +1,4 @@
-#include "util/entity.hpp"
+﻿#include "util/entity.hpp"
 #include "util/notify.hpp"
 #include "util/ped.hpp"
 #include "util/vehicle.hpp"
@@ -138,5 +138,12 @@ namespace big
 				deleting = false;
 			});
 		}
+
+		ImGui::SeparatorText("Miscellaneous");
+
+		if(ImGui::InputFloat("Wave strength", &g.world.override_waves, 1, 1, "%.1f"))
+			MISC::WATER_OVERRIDE_SET_STRENGTH(g.world.override_waves);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("0 - default | 1 - still | higher = stronger");
 	}
 }
