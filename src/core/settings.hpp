@@ -70,16 +70,9 @@ namespace big
 
 		CNetGamePlayer* m_syncing_player  = nullptr;
 		eNetObjType m_syncing_object_type = (eNetObjType)-1;
-		std::unordered_map<uint64_t, uint64_t> m_spoofed_peer_ids;
 
 		int m_remote_controller_vehicle = -1;
 		int m_remote_controlled_vehicle = -1;
-
-		/*
-		uint16_t m_tp_veh_net_id;
-		uint16_t m_tp_player_net_id;
-		rage::fvector3 m_tp_position;
-		*/
 
 		std::unordered_map<uint16_t, remote_player_teleport> m_remote_player_teleports;
 
@@ -314,47 +307,47 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ipls, select)
 			} ipls{};
 
-			bool clean_player          = false;
-			bool force_wanted_level    = false;
-			bool free_cam              = false;
-			bool invisibility          = false;
-			bool local_visibility      = true;
-			bool never_wanted          = false;
-			bool no_ragdoll            = false;
-			bool noclip                = false;
+			bool clean_player                 = false;
+			bool force_wanted_level           = false;
+			bool free_cam                     = false;
+			bool invisibility                 = false;
+			bool local_visibility             = true;
+			bool never_wanted                 = false;
+			bool no_ragdoll                   = false;
+			bool noclip                       = false;
 			float noclip_aim_speed_multiplier = 0.25f;
 			float noclip_speed_multiplier     = 20.f;
-			bool off_radar             = false;
-			bool ghost_org             = false;
-			bool super_run             = false;
-			bool no_collision          = false;
-			bool unlimited_oxygen      = false;
-			bool no_water_collision    = false;
-			int wanted_level           = 0;
-			bool god_mode              = false;
-			bool part_water            = false;
-			bool proof_bullet          = false;
-			bool proof_fire            = false;
-			bool proof_collision       = false;
-			bool proof_melee           = false;
-			bool proof_explosion       = false;
-			bool proof_steam           = false;
-			bool proof_drown           = false;
-			bool proof_water           = false;
-			uint32_t proof_mask        = 0;
-			bool mobile_radio          = false;
-			bool fast_respawn          = false;
-			bool auto_tp               = false;
-			bool super_jump            = false;
-			bool beast_jump            = false;
-			bool healthregen           = false;
-			float healthregenrate      = 1.0f;
-			bool superman              = false;
-			bool custom_weapon_stop    = true;
-			bool prompt_ambient_animations = false;
-			std::string persist_outfit = "";
-			bool persist_outfits_mis   = false;
-      
+			bool off_radar                    = false;
+			bool ghost_org                    = false;
+			bool super_run                    = false;
+			bool no_collision                 = false;
+			bool unlimited_oxygen             = false;
+			bool no_water_collision           = false;
+			int wanted_level                  = 0;
+			bool god_mode                     = false;
+			bool part_water                   = false;
+			bool proof_bullet                 = false;
+			bool proof_fire                   = false;
+			bool proof_collision              = false;
+			bool proof_melee                  = false;
+			bool proof_explosion              = false;
+			bool proof_steam                  = false;
+			bool proof_drown                  = false;
+			bool proof_water                  = false;
+			uint32_t proof_mask               = 0;
+			bool mobile_radio                 = false;
+			bool fast_respawn                 = false;
+			bool auto_tp                      = false;
+			bool super_jump                   = false;
+			bool beast_jump                   = false;
+			bool healthregen                  = false;
+			float healthregenrate             = 1.0f;
+			bool superman                     = false;
+			bool custom_weapon_stop           = true;
+			bool prompt_ambient_animations    = false;
+			std::string persist_outfit        = "";
+			bool persist_outfits_mis          = false;
+
 			struct hud
 			{
 				bool color_override                                      = false;
@@ -584,7 +577,9 @@ namespace big
 			bool override_weather = false;
 			int local_weather     = 0;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone, local_weather, override_weather)
+			bool blackout = false;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone, local_weather, override_weather, blackout)
 		} world{};
 
 		struct spoofing
@@ -606,8 +601,9 @@ namespace big
 			bool spoof_bad_sport = false;
 			int badsport_type    = 0;
 
-			bool spoof_player_model  = false;
-			std::string player_model = "";
+			bool spoof_player_model   = false;
+			std::string player_model  = "";
+			std::string player_outfit = "";
 
 			bool spoof_cheater = false;
 

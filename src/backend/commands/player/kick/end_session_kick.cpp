@@ -25,6 +25,8 @@ namespace big
 
 			g_player_service->m_player_to_use_end_session_kick = player;
 			*scr_globals::gsbd.as<int*>() = (int)(__rdtsc() % 50000) + 6; // making the game trigger the broadcast is a bit difficult and requires a little bit of tampering with the value and some luck
+			script::get_current()->yield(5s);
+			*scr_globals::gsbd.as<int*>() = 4;
 		}
 	};
 

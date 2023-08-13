@@ -10,47 +10,47 @@ namespace rage
 	class scrNativeCallContext
 	{
 	public:
-		void reset()
+		constexpr void reset()
 		{
 			m_arg_count  = 0;
 			m_data_count = 0;
 		}
 
 		template<typename T>
-		void push_arg(T&& value)
+		constexpr void push_arg(T&& value)
 		{
 			static_assert(sizeof(T) <= sizeof(uint64_t));
 			*reinterpret_cast<std::remove_cv_t<std::remove_reference_t<T>>*>(reinterpret_cast<uint64_t*>(m_args) + (m_arg_count++)) = std::forward<T>(value);
 		}
 
 		template<typename T>
-		T& get_arg(std::size_t index)
+		constexpr T& get_arg(std::size_t index)
 		{
 			static_assert(sizeof(T) <= sizeof(uint64_t));
 			return *reinterpret_cast<T*>(reinterpret_cast<uint64_t*>(m_args) + index);
 		}
 
 		template<typename T>
-		void set_arg(std::size_t index, T&& value)
+		constexpr void set_arg(std::size_t index, T&& value)
 		{
 			static_assert(sizeof(T) <= sizeof(uint64_t));
 			*reinterpret_cast<std::remove_cv_t<std::remove_reference_t<T>>*>(reinterpret_cast<uint64_t*>(m_args) + index) = std::forward<T>(value);
 		}
 
 		template<typename T>
-		T* get_return_value()
+		constexpr T* get_return_value()
 		{
 			return reinterpret_cast<T*>(m_return_value);
 		}
 
 		template<typename T>
-		void set_return_value(T&& value)
+		constexpr void set_return_value(T&& value)
 		{
 			*reinterpret_cast<std::remove_cv_t<std::remove_reference_t<T>>*>(m_return_value) = std::forward<T>(value);
 		}
 
 		template<typename T>
-		void set_return_value(T& value)
+		constexpr void set_return_value(T& value)
 		{
 			*reinterpret_cast<std::remove_cv_t<std::remove_reference_t<T>>*>(m_return_value) = std::forward<T>(value);
 		}

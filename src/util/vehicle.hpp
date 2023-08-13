@@ -594,7 +594,7 @@ namespace big::vehicle
 
 				for (int mod = count - 1; mod >= -1; mod--)
 				{
-					if (vehicle_helper::check_mod_blacklist(model, slot, mod))
+					if (VEHICLE::IS_VEHICLE_MOD_GEN9_EXCLUSIVE(veh, slot, mod))
 					{
 						continue;
 					}
