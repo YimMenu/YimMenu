@@ -140,8 +140,12 @@ namespace big
 
 			ImGui::SeparatorText("Miscellaneous");
 
-			if (ImGui::InputFloat("Wave strength", &g.world.override_waves, 1, 1, "%.1f"))
+			int override_waves_as_int = static_cast<int>(g.world.override_waves);
+			if (ImGui::SliderInt("Waves strength", &override_waves_as_int, 0, 5))
+			{
+				g.world.override_waves = static_cast<float>(override_waves_as_int);
 				MISC::WATER_OVERRIDE_SET_STRENGTH(g.world.override_waves);
+			}
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("0 - default | 1 - still | higher = stronger");
 		}
