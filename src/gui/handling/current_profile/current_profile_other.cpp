@@ -1,9 +1,13 @@
 #include "current_profile_tabs.hpp"
+#include "natives.hpp"
 
 namespace big
 {
 	void tab_current_profile::tab_other()
 	{
+		static bool overrideSpeedLimit = false;
+		static float speedLimitKMH     = 0.0f;
+
 		if (ImGui::BeginTabItem("HANDLING_TAB_OTHER"_T.data()))
 		{
 			ImGui::Text("HANDLING_ACCELERATION_MULTIPLIER"_T.data());
@@ -23,6 +27,10 @@ namespace big
 				g_local_player->m_vehicle->m_handling_data->m_inertia_mult.y = fInertiaMult[1];
 				g_local_player->m_vehicle->m_handling_data->m_inertia_mult.z = fInertiaMult[2];
 			}
+			ImGui::Text("Speed Limit Override");
+			ImGui::SliderFloat("km/h", &speedLimitKMH, 0.f, 1000.f);
+			float speedLimitMS = speedLimitKMH * 0.277778f;
+			VEHICLE::SET_VEHICLE_MAX_SPEED(self::veh, speedLimitMS);
 
 			ImGui::EndTabItem();
 		}
